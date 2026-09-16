@@ -16,12 +16,14 @@
  *  - Une source peut être DEGRADED (descriptions manquantes) tout en ayant vu
  *    la totalité de son board : elle garde le droit d'attester, sinon plus
  *    aucune offre expirée ne se fermerait.
- *  - Une source peut avoir écrit 20 offres — donc franchir la garde « silent
- *    zero » de la purge — alors qu'elle en déclarait 109 : elle n'a PAS le
+ *  - Une source peut avoir écrit 20 offres — donc franchir une simple garde de
+ *    « zéro silencieux » — alors qu'elle en déclarait 109 : elle n'a PAS le
  *    droit de déclarer les 89 autres disparues (cas `lagardere-travel-retail`).
  *
  * Ce module ne ferme ni n'écrit rien. Il répond à une seule question, et cette
- * réponse est ensuite lue par la purge (ingest) et par la clôture (refresh).
+ * réponse est lue par la clôture (refresh) depuis les faits scellés de la capture
+ * attestante (`attestingCapture.ts`), et par la santé (`health.ts`) à titre
+ * d'indicateur. L'ancienne purge de génération, second lecteur, a été supprimée.
  */
 
 /** L'issue d'une exécution de source, du point de vue du cycle de vie. */

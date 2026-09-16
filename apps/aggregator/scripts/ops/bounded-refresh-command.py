@@ -40,9 +40,14 @@ SCRIPT = (
 )
 
 
+# Must match REFRESH_MANIFEST_VERSION in src/pipeline/refreshManifest.ts. Version 4 names the admitted
+# capture behind every absence proof; earlier stored plans remain history and cannot be applied.
+REFRESH_MANIFEST_VERSION = 4
+
+
 def bounded_refresh_command(run_name: str, keys: str, manifest_path: str) -> str:
     manifest = json.loads(pathlib.Path(manifest_path).read_text())
-    if manifest.get('version') != 2:
+    if manifest.get('version') != REFRESH_MANIFEST_VERSION:
         raise ValueError('Unsupported refresh manifest')
     if not re.fullmatch(r'[a-f0-9]{64}', manifest.get('planHash', '')):
         raise ValueError('Invalid manifest hash')

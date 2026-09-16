@@ -1,0 +1,349 @@
+{
+  "target": "clone",
+  "database": "catwalks_rehearsal_20260915",
+  "container": "catwalks-stock-rehearsal-dc2bef22be",
+  "readOnlyProven": true,
+  "measuredAt": "2026-09-16T07:34:59.236846+00:00",
+  "rows": {
+    "Job": 87607,
+    "JobSource": 90764,
+    "SourceObservation": 141933,
+    "Source": 536,
+    "SourceRevision": 536,
+    "SourceRun": 7551,
+    "PipelineRun": 77,
+    "PipelineEvent": 6149,
+    "CaptureBatch": 0,
+    "CaptureOutcome": 0,
+    "SourceValidation": 0,
+    "SourceIngestionAdmission": 0,
+    "SourceExtraction": 0,
+    "RawCapture": 0,
+    "MaintenancePlan": 4205,
+    "DataCorrection": 28907,
+    "migrations": 69
+  },
+  "jobsByGeneration": [
+    {
+      "pipelineVersion": 6,
+      "isActive": false,
+      "n": 413
+    },
+    {
+      "pipelineVersion": 7,
+      "isActive": false,
+      "n": 4176
+    },
+    {
+      "pipelineVersion": 7,
+      "isActive": true,
+      "n": 83018
+    }
+  ],
+  "generationPurgeExposure": {
+    "activeJobsBelowVersion7WithActiveSource": 0,
+    "bySource": null,
+    "sourcesConcerned": 0
+  },
+  "sourceRuns": {
+    "total": 7551,
+    "oldest": "2026-09-04T12:00:56.677",
+    "newest": "2026-09-14T11:18:41.538",
+    "withoutRunId": 7257,
+    "byStatus": [
+      {
+        "status": "BROKEN",
+        "n": 40
+      },
+      {
+        "status": "DEGRADED",
+        "n": 442
+      },
+      {
+        "status": "NEW",
+        "n": 111
+      },
+      {
+        "status": "OK",
+        "n": 6958
+      }
+    ],
+    "latestPerSourceCanAttest": 216,
+    "latestPerSourceTotal": 539,
+    "activeSourcesWithoutAnyRun": 0
+  },
+  "pipelineEvents": {
+    "byEvent": [
+      {
+        "event": "job.publication_held",
+        "n": 1009,
+        "first": "2026-09-09T05:53:42.324",
+        "last": "2026-09-14T10:46:29.856"
+      },
+      {
+        "event": "job.write_failed",
+        "n": 2408,
+        "first": "2026-09-09T18:30:05.204",
+        "last": "2026-09-14T11:18:32.847"
+      },
+      {
+        "event": "source.enumeration_observed",
+        "n": 285,
+        "first": "2026-09-09T13:12:03.299",
+        "last": "2026-09-14T11:17:45.566"
+      },
+      {
+        "event": "source.purge_refused",
+        "n": 78,
+        "first": "2026-09-09T14:21:02.872",
+        "last": "2026-09-14T11:18:41.511"
+      },
+      {
+        "event": "source.rows_rejected",
+        "n": 12,
+        "first": "2026-09-09T20:26:53.545",
+        "last": "2026-09-10T17:18:49.078"
+      }
+    ],
+    "enumerationWithCanonicalIds": 81,
+    "sourcesWithEnumerationEvidence": 93,
+    "runsByStatus": [
+      {
+        "status": "COMPLETED",
+        "n": 62
+      },
+      {
+        "status": "COMPLETED_WITH_ERRORS",
+        "n": 13
+      },
+      {
+        "status": "INTERRUPTED",
+        "n": 2
+      }
+    ]
+  },
+  "captureChain": {
+    "batchesByPurposeFormat": null,
+    "batchesWithRevision": 0,
+    "batchesWithRunId": 0,
+    "admissions": 0,
+    "validationsByVerdict": null,
+    "jobSourcesWithCapture": 0,
+    "activeJobSources": 85327,
+    "activeJobSourcesWithCapture": 0,
+    "observationsHeld": 1140,
+    "observationsWithCapture": 0
+  },
+  "lifecycle": {
+    "jobs": [
+      {
+        "isActive": false,
+        "closed": false,
+        "withdrawalReason": "DISCOVERY_ONLY_SOURCE_NOT_A_POSTING_SOURCE",
+        "n": 584
+      },
+      {
+        "isActive": false,
+        "closed": false,
+        "withdrawalReason": "IDENTITY_CONTRADICTED",
+        "n": 12
+      },
+      {
+        "isActive": false,
+        "closed": false,
+        "withdrawalReason": "OUT_OF_SCOPE",
+        "n": 432
+      },
+      {
+        "isActive": false,
+        "closed": false,
+        "withdrawalReason": "PUBLICATION_UNVERIFIED",
+        "n": 1
+      },
+      {
+        "isActive": false,
+        "closed": false,
+        "withdrawalReason": "SOURCE_RETIRED",
+        "n": 316
+      },
+      {
+        "isActive": false,
+        "closed": false,
+        "withdrawalReason": null,
+        "n": 240
+      },
+      {
+        "isActive": false,
+        "closed": true,
+        "withdrawalReason": null,
+        "n": 3004
+      },
+      {
+        "isActive": true,
+        "closed": false,
+        "withdrawalReason": null,
+        "n": 83018
+      }
+    ],
+    "sourcesByStatus": [
+      {
+        "status": "ACTIVE",
+        "n": 436
+      },
+      {
+        "status": "PAUSED",
+        "n": 8
+      },
+      {
+        "status": "RETIRED",
+        "n": 92
+      }
+    ],
+    "maintenancePlans": [
+      {
+        "kind": "PUBLICATION_GROUP_REPAIR",
+        "version": 3,
+        "n": 3351
+      },
+      {
+        "kind": "PUBLICATION_GROUP_REPAIR",
+        "version": 4,
+        "n": 293
+      },
+      {
+        "kind": "PUBLICATION_GROUP_REPAIR",
+        "version": 5,
+        "n": 1
+      },
+      {
+        "kind": "SOURCE_EXPIRY",
+        "version": 3,
+        "n": 560
+      }
+    ],
+    "corrections": [
+      {
+        "finding": "ADMINISTRATIVE_WITHDRAWAL_LIFECYCLE",
+        "n": 371
+      },
+      {
+        "finding": "Douglas US publication dates parsed as day/month",
+        "n": 26
+      },
+      {
+        "finding": "Employer publication date omitted",
+        "n": 6584
+      },
+      {
+        "finding": "Flatchr reviewed parent group omitted",
+        "n": 2
+      },
+      {
+        "finding": "France filter flag contradicts retained canonical country",
+        "n": 2
+      },
+      {
+        "finding": "ICIMS_REVIEWED_DETAIL_ORIGINS",
+        "n": 1
+      },
+      {
+        "finding": "LOT1_DUPLICATE_PORTAL_RETIREMENT",
+        "n": 26
+      },
+      {
+        "finding": "LOT1_EMPLOYER_IDENTITY",
+        "n": 1433
+      },
+      {
+        "finding": "LOT1_POSTING_CONSOLIDATION",
+        "n": 118
+      },
+      {
+        "finding": "P0_EMPLOYER_HOMONYMS",
+        "n": 782
+      },
+      {
+        "finding": "P0_ORACLE_IDENTITY",
+        "n": 85
+      },
+      {
+        "finding": "P0_SMCP_BRAND",
+        "n": 461
+      },
+      {
+        "finding": "P0_SOURCE_OWNER",
+        "n": 3800
+      },
+      {
+        "finding": "REVIEWED_INVALID_SOURCE_CONTENT",
+        "n": 450
+      },
+      {
+        "finding": "REVIEWED_PORTAL_OWNER",
+        "n": 5304
+      },
+      {
+        "finding": "REVIEWED_PUBLICATION_PARTITION",
+        "n": 3645
+      },
+      {
+        "finding": "Reviewed occupation catalogue activation; posting replay is separate",
+        "n": 1
+      },
+      {
+        "finding": "Reviewed occupation replay: all canonical postings reclassified; conservation verified and second pass writes zero",
+        "n": 1
+      },
+      {
+        "finding": "SOURCE_DECLARED_EXPIRY",
+        "n": 4609
+      },
+      {
+        "finding": "direct-source-onboarding",
+        "n": 6
+      },
+      {
+        "finding": "employment-structured-paths",
+        "n": 1195
+      },
+      {
+        "finding": "fashionjobs-discovery-only",
+        "n": 1
+      },
+      {
+        "finding": "jobaffinity-direct-portals",
+        "n": 4
+      }
+    ],
+    "jobEventsByType": [
+      {
+        "type": "CHANGED",
+        "n": 10848
+      },
+      {
+        "type": "CLOSED",
+        "n": 1765
+      },
+      {
+        "type": "CORRECTED",
+        "n": 14036
+      },
+      {
+        "type": "MERGED",
+        "n": 278
+      },
+      {
+        "type": "OPENED",
+        "n": 16509
+      },
+      {
+        "type": "REOPENED",
+        "n": 217
+      },
+      {
+        "type": "WITHDRAWN",
+        "n": 971
+      }
+    ]
+  }
+}

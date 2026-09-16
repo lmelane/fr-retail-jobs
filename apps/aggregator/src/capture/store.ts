@@ -110,6 +110,7 @@ export async function archiveRawBlob(db: PrismaClient, hash: string, store: Obje
         { observations: { some: { observedAt: { gte: cutoff } } } },
         { extractions: { some: { capturedAt: { gte: cutoff } } } },
         { manifests: { some: { completedAt: { gte: cutoff } } } },
+        { completions: { some: { completedAt: { gte: cutoff } } } },
       ] } });
       if (recent) return { purged: false };
     }

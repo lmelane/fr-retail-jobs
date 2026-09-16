@@ -1,4 +1,5 @@
-/** Read-only preview of the exact planner used by runRefresh.
+/** Read-only preview of the exact planner used by runRefresh. Every absence proof names the
+ * admitted, sealed and completed capture it comes from (`eligibility[].captureBatchId`).
  * Usage: refresh-preview.mts --keys=<k1,k2> [--out=<file.json>] [--manifest-out=<file.json>]
  */
 import { PrismaClient } from '@prisma/client';
@@ -36,6 +37,7 @@ try {
     administrativeWithdrawals: plan.orphans.map(job => job.id),
     reopenings: plan.revived.map(job => ({ jobId: job.id, closedAt: job.closedAt, withdrawnAt: job.withdrawnAt })),
     unverifiable, heldSeen: states.PRESENT_BUT_HELD ?? 0, writeFailedSeen: states.PRESENT_BUT_WRITE_FAILED ?? 0,
+    rejectedSeen: states.PRESENT_BUT_REJECTED ?? 0, skippedSeen: states.PRESENT_BUT_SKIPPED ?? 0,
     guards: { refused: plan.refused, closureRatioPct: plan.liveTotal ? 100 * plan.wouldClose.length / plan.liveTotal : 0,
       limits: plan.limits,
       ineligible: absencePlan.eligibility.filter(source => !source.eligible) },

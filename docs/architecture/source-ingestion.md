@@ -1,6 +1,6 @@
 # Admission des collectes d’ingestion
 
-État du lot 5G3B3B, 16 septembre 2026. Ce contrat couvre les collectes et les écritures d’ingestion. Il complète la [qualification](source-onboarding.md) et le [contrat d’accès](source-access.md).
+État du lot 5G3C, 16 septembre 2026. Ce contrat couvre les collectes, les écritures d’ingestion, la fin d’ingestion et les preuves d’absence qui en découlent. Il complète la [qualification](source-onboarding.md) et le [contrat d’accès](source-access.md).
 
 ## Avant le premier appel réseau
 
@@ -30,13 +30,23 @@ Toute publication exige une sortie native archivée, liée à une capture du reg
 
 Une nouvelle décision d’identité positive impose elle aussi une nouvelle collecte : le résultat ne s’attribue pas implicitement un périmètre d’employeur changé pendant son exécution. Une validation plus ancienne ne qualifie pas les nouveaux octets. Les requêtes déjà parties restent conservées ; une révocation ne peut les rappeler rétroactivement.
 
-## Qualification et limites
+## Fin d’ingestion
 
-`source-onboard collect` garde son rôle de qualification : collecter et valider une source DRAFT ou PAUSED sans publier. Ses captures n’ont pas de ligne d’admission. Cette étape reste nécessaire pour rétablir une qualification après un échec ou un changement de lecteur. Les pages d’identité et d’accès restent des preuves séparées, sans admission d’ingestion.
+Chaque sortie scellée du manifeste a un devenir nommé par la boucle de publication : publiée, retenue (motif natif ou décision de périmètre), refusée à l’écriture (classe d’erreur seulement, jamais un message pouvant porter une URL ou un paramètre) ou écartée par le filtre sectoriel d’un jobboard. Après le dernier écrivain, l’ingestion enregistre `SourceIngestionCompletion` : une ligne immuable par collecte admise, liée à son batch et à un rapport haché conservé comme bloc RAW, avec les compteurs publiées/retenues/échecs/écartées, le lecteur et une politique versionnée (`native-ingestion-completion/1`).
 
-Les écrivains d’ingestion n’acceptent plus de données sans capture. Une observation historique reste lisible et archivable à froid ; elle ne reçoit aucune provenance fabriquée. Les fonctions de réparation historique conservent leur contrat explicite de plan, preuves et audit.
+SQL refuse ce rapport pour une sonde de qualification, pour une capture sans résultat EXTRACTED et lorsque les compteurs ne couvrent pas exactement toutes les sorties. La ligne prend le verrou partagé de la source comme les autres écrivains ; elle ne peut être ni modifiée ni supprimée. Une répétition du même rapport est idempotente ; un rapport différent pour la même collecte est refusé. Les blocs de rapport sont protégés par la rétention comme les manifestes, et relisibles depuis l’archive froide vérifiée.
 
-La politique technique actuelle refuse aussi un flux non vide composé uniquement de retenues, sans publication qualifiée ; ce lot ne change pas ce critère. Les tests de retrait utilisent un flux mixte réellement validé. Les attestations d’absence, les rapports de run et la publication complète d’un flux restent à lier à leur capture. Le contrôle par écriture bloque une ancienne collecte après un démarrage plus récent ; il ne rend pas atomique la publication de toutes les offres d’un flux.
+Une interruption avant ce rapport laisse une collecte scellée mais sans fin d’ingestion : les offres déjà écrites sont conservées, rien n’est fabriqué, et cette collecte ne peut prouver aucune absence. L’ancien nettoyage de génération (`pipelineVersion` inférieur à la génération du lecteur, fermeture `CLOSED` sur des statistiques en mémoire) a été supprimé avec ses tests ; `PIPELINE_VERSION` reste une provenance d’écriture. Mesuré sur le clone de répétition le 16 septembre 2026, ce nettoyage ne couvrait aucune offre active.
+
+## Preuves d’absence
+
+Le refresh ne lit plus ni `SourceRun` (historique de santé élagué à dix jours) ni le journal `PipelineEvent`. Pour chaque source, il lit sa **capture attestante** (`pipeline/attestingCapture.ts`) : la dernière tentative d’offres de la révision courante, par ordre SQL, qui doit être admise, scellée avec son manifeste et achevée par sa fin d’ingestion, et qui doit encore passer la même porte que la publication (`requireCurrentCaptureRevision`). Une source non ACTIVE, une révision changée, un accès révoqué, une identité remplacée, une qualification périmée ou une tentative plus récente retirent le droit d’attester, en prévisualisation comme sous les verrous d’écriture.
+
+Les faits d’attestation sont dérivés du manifeste scellé et du rapport de fin d’ingestion : complétude et terminaison du parcours, total déclaré, troncature, identifiants canoniques observés, lignes rejetées, échecs d’écriture, retenues, écartées, et la dernière collecte productive précédente de la source. Une première collecte n’a pas de passé et n’atteste rien ; un zéro explicitement déclaré et intégralement parcouru peut attester. Toute disposition doit porter sur un identifiant observé et tout identifiant observé doit avoir un devenir connu ; un rejet ou un échec sans identifiant rend la collecte non probante. Les seuils de couverture et d’effondrement ne servent qu’à refuser.
+
+Une représentation n’est déclarée absente que si son identifiant ne figure pas dans l’ensemble observé de cette capture, et si elle n’a été ni retenue, ni refusée à l’écriture, ni rejetée, ni écartée pendant cette collecte. Le manifeste de refresh, version 4, nomme la capture attestante et l’empreinte de sa preuve ; l’application sous verrou relit la même preuve, et toute preuve changée ou disparue est journalisée comme omission dans `DataCorrection`, avant tout changement de conséquence. Une preuve scellée illisible, y compris une archive froide indisponible, ne provoque aucun repli : la source est non vérifiable.
+
+Les adaptateurs qui n’archivent pas d’identifiants canoniques restent incapables de prouver une absence ; sur le stock actuel, aucune source n’a encore de capture attestante. Une fermeture par absence reste distincte d’une échéance native dépassée, d’un retrait natif capturé et d’un retrait administratif.
 
 ## Retenues et retraits
 
@@ -46,6 +56,6 @@ Les écrivains copient les données appelantes avant leur première attente. Une
 
 Un motif natif et sa date doivent correspondre exactement à la sortie capturée. Une exclusion interne de périmètre garde le RAW intact et exige la décision OUT_OF_SCOPE courante ainsi que sa date. Le contenu exact de la décision appliquée est conservé séparément dans le journal immuable `DataCorrection`, lié à la sortie native, avec les annotations avant/après. Une répétition est idempotente ; une révision ultérieure de la décision ne modifie pas cette preuve. Une défaillance de lecture du registre ne devient plus un périmètre vide. La migration 69 sérialise INSERT, UPDATE et DELETE de `PostingScopeDecision` avec les écritures de la source, même lorsqu’aucune ligne de décision n’existait ; elle ne réécrit aucune donnée historique.
 
-`deactivateAdministrativeSources` est réservé au retrait administratif SOURCE_RETIRED et au nettoyage de génération. Il ne représente pas une observation native ni une autorisation d’ingestion. Les preuves d’absence et ce nettoyage de génération restent à auditer dans le lot suivant.
+`withdrawRetiredSource` est le seul écrivain sans observation native : il retire les attestations d’une source RETIRED, représentations attachées et en quarantaine comprises, sans fermeture employeur. Il ne représente ni une observation native ni une autorisation d’ingestion.
 
 Les contrats d’identité non encore qualifiés restent refusés. Ce document ne certifie ni l’ensemble des sources existantes ni une release Railway différente du lecteur effectivement testé. Le CRON reste une phase distincte.

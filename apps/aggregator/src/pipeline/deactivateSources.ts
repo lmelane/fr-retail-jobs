@@ -16,15 +16,12 @@ import { recordOccupationObservation } from '../occupation/persist.js';
 import { assertSourceRunning } from '../lib/sourceBudget.js';
 import { deactivateJob, type DeactivationDisposition } from './lifecycle.js';
 
-/** Administrative retirement and generation cleanup preserve offer URLs and history.
- * Native observations must use deactivateCapturedPublication instead. */
-export async function deactivateAdministrativeSources(
-  prisma: PrismaClient,
-  sourceWhere: Prisma.JobSourceWhereInput,
-  disposition: { kind: 'CLOSED' } | { kind: 'WITHDRAWN'; reason: 'SOURCE_RETIRED' },
-  jobWhere: Prisma.JobWhereInput = {},
-) {
-  return deactivate(prisma, sourceWhere, disposition, jobWhere);
+/** Administrative retirement withdraws every attestation of a retired source while
+ * preserving offer URLs and history. It never states an employer closure, and it is
+ * the only writer without a native observation: absence is proven by the refresh from
+ * an admitted capture, native withdrawals use deactivateCapturedPublication. */
+export async function withdrawRetiredSource(prisma: PrismaClient, sourceWhere: Prisma.JobSourceWhereInput) {
+  return deactivate(prisma, sourceWhere, { kind: 'WITHDRAWN', reason: 'SOURCE_RETIRED' });
 }
 
 /** Native withdrawal has its own mandatory evidence boundary. The caller cannot
@@ -35,7 +32,7 @@ export async function deactivateCapturedPublication(prisma: PrismaClient, job: P
   if (!disposition || !input.publicationWithdrawnAt) throw new Error('Captured withdrawal requires a disposition and observation time');
   const capture = await readCapturedPublication(prisma, input, objectStoreConfigured() ? objectStoreFromEnv() : undefined);
   return deactivate(prisma, { sourceKey: input.sourceKey, externalId: input.externalId,
-    lastSeenAt: { lt: input.publicationWithdrawnAt } }, disposition, {}, { input, capture });
+    lastSeenAt: { lt: input.publicationWithdrawnAt } }, disposition, { input, capture });
 }
 
 type Withdrawal = { input: PublicationInput; capture: Awaited<ReturnType<typeof readCapturedPublication>> };
@@ -45,10 +42,10 @@ async function requireWithdrawal(tx: Prisma.TransactionClient, withdrawal: Withd
 }
 
 async function deactivate(prisma: PrismaClient, sourceWhere: Prisma.JobSourceWhereInput,
-  disposition: DeactivationDisposition, jobWhere: Prisma.JobWhereInput, withdrawal?: Withdrawal) {
+  disposition: DeactivationDisposition, withdrawal?: Withdrawal) {
   const stats = { sourcesDeactivated: 0, jobsClosed: 0, jobsWithdrawn: 0, jobsKept: 0, urlsReassigned: 0 };
   const planned = await prisma.job.findMany({
-    where: { ...jobWhere, sources: { some: { ...sourceWhere, isActive: true } } },
+    where: { sources: { some: { ...sourceWhere, isActive: true } } },
     select: { id: true, companyId: true },
   });
   for (const plan of planned) {
@@ -61,7 +58,7 @@ async function deactivate(prisma: PrismaClient, sourceWhere: Prisma.JobSourceWhe
       if (withdrawal) await requireWithdrawal(tx, withdrawal);
       assertSourceRunning();
       const job = await tx.job.findFirst({
-        where: { ...jobWhere, id: plan.id, companyId: plan.companyId },
+        where: { id: plan.id, companyId: plan.companyId },
         include: { sources: true }, omit: { searchText: true, raw: true },
       });
       if (!job) return null;
@@ -89,25 +86,23 @@ async function deactivate(prisma: PrismaClient, sourceWhere: Prisma.JobSourceWhe
     }, { maxWait: 10_000, timeout: 30_000 });
     if (delta) for (const key of Object.keys(stats) as Array<keyof typeof stats>) stats[key] += delta[key];
   }
-  // An explicit Job scope cannot include unattached publications. Otherwise a
-  // retired source must drain these observations too, without any Job event.
-  if (!Object.keys(jobWhere).length) {
-    const detached = await prisma.jobSource.findMany({ where: { AND: [sourceWhere, { jobId: null, isActive: true }] }, select: { id: true, sourceKey: true } });
-    const batchId = `quarantine-deactivation:${randomUUID()}`;
-    for (const item of detached) stats.sourcesDeactivated += await prisma.$transaction(async tx => {
-      await lockSourceWrites(tx, item.sourceKey, true);
-      if (withdrawal) await requireWithdrawal(tx, withdrawal);
-      assertSourceRunning();
-      const source = await tx.jobSource.findFirst({ where: { AND: [sourceWhere, { id: item.id, jobId: null, isActive: true }] }, omit: { raw: true } });
-      if (!source) return 0;
-      const before = quarantineSnapshot(source);
-      await tx.jobSource.update({ where: { id: source.id }, data: { isActive: false } });
-      await tx.dataCorrection.create({ data: { batchId, planHash: evidenceHash({ before, disposition }),
-        commitHash: process.env.RAILWAY_GIT_COMMIT_SHA ?? 'LOCAL_WORKTREE', finding: 'QUARANTINE_SOURCE_DEACTIVATION',
-        entityType: 'JobSource', entityId: source.id, before, after: { ...before, isActive: false }, evidence: { disposition } } });
-      assertSourceRunning();
-      return 1;
-    }, { maxWait: 10_000, timeout: 30_000 });
-  }
+  // A retired source or a native withdrawal must drain unattached observations too,
+  // without any Job event: quarantine has its own immutable journal.
+  const detached = await prisma.jobSource.findMany({ where: { AND: [sourceWhere, { jobId: null, isActive: true }] }, select: { id: true, sourceKey: true } });
+  const batchId = `quarantine-deactivation:${randomUUID()}`;
+  for (const item of detached) stats.sourcesDeactivated += await prisma.$transaction(async tx => {
+    await lockSourceWrites(tx, item.sourceKey, true);
+    if (withdrawal) await requireWithdrawal(tx, withdrawal);
+    assertSourceRunning();
+    const source = await tx.jobSource.findFirst({ where: { AND: [sourceWhere, { id: item.id, jobId: null, isActive: true }] }, omit: { raw: true } });
+    if (!source) return 0;
+    const before = quarantineSnapshot(source);
+    await tx.jobSource.update({ where: { id: source.id }, data: { isActive: false } });
+    await tx.dataCorrection.create({ data: { batchId, planHash: evidenceHash({ before, disposition }),
+      commitHash: process.env.RAILWAY_GIT_COMMIT_SHA ?? 'LOCAL_WORKTREE', finding: 'QUARANTINE_SOURCE_DEACTIVATION',
+      entityType: 'JobSource', entityId: source.id, before, after: { ...before, isActive: false }, evidence: { disposition } } });
+    assertSourceRunning();
+    return 1;
+  }, { maxWait: 10_000, timeout: 30_000 });
   return stats;
 }

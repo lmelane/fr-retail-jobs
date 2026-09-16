@@ -23,12 +23,10 @@ import { effectiveSourceConfig } from '../connectors/sourceConfig.js';
 import { upsertDeduplicated } from '../dedup/upsert.js';
 import type { CandidateJob } from '../dedup/match.js';
 import type { NormalizedJob } from '../types.js';
-import { PIPELINE_VERSION } from './version.js';
 import { runGeocode } from './geocodeJobs.js';
-import { purgeStaleForSource } from './purge.js';
-import { isTrustedForAttestation } from './attestation.js';
 import { fetchAtsJobs } from '../ats/index.js';
 import { captureExtraction } from '../capture/batch.js';
+import { recordIngestionCompletion, type OutputFate } from '../capture/completion.js';
 import { validateCapturedSource } from '../connectors/sourceValidation.js';
 import { SourceAdmissionGateError } from '../connectors/sourceAdmission.js';
 import { requireCurrentCaptureRevision } from '../connectors/sourceRevision.js';
@@ -87,6 +85,9 @@ export type IngestStats = {
   declaredTotal?: number;
   /** True when the sweep returned fewer offers than declaredTotal. */
   truncated?: boolean;
+  /** The admitted, sealed collection this run published from, and its immutable end-of-ingestion report. */
+  captureBatchId?: string;
+  completionReportHash?: string;
 };
 
 /**
@@ -264,14 +265,14 @@ async function ingestApiSource(
     await lockSourceWrites(tx, stats.source);
     await requireCurrentCaptureRevision(tx, await tx.captureBatch.findUniqueOrThrow({ where: { id: captureBatchId } }));
   });
-  // One durable source-level event retains the reason behind completeness.
-  // The operational logger stores large proofs in PipelineEvent and prints
-  // only a bounded envelope, preserving the Lot 0 console-rate guarantees.
+  stats.captureBatchId = captureBatchId;
+  // A bounded diagnostic envelope only. The enumeration proof itself lives in the
+  // sealed manifest of the capture; the refresh reads it there, never from this log.
   await log.info('source.enumeration_observed', {
-    sourceKey: stats.source, complete: complete ?? null, declaredTotal: declaredTotal ?? null,
-    fetched: jobs.length, truncated: truncated ?? null,
-    enumeration: enumeration ?? null,
-    evidenceStatus: enumeration ? 'RECORDED' : 'ADAPTER_ENUMERATION_EVIDENCE_NOT_IMPLEMENTED',
+    sourceKey: stats.source, captureBatchId, complete: complete ?? null, declaredTotal: declaredTotal ?? null,
+    fetched: jobs.length, truncated: truncated ?? null, termination: enumeration?.termination ?? null,
+    canonicalContractDeclared: (enumeration?.pageEvidence?.length ?? 0) > 0 && enumeration!.pageEvidence!.every(page => Object.hasOwn(page, 'canonicalIds')),
+    evidenceStatus: enumeration ? 'SEALED_IN_CAPTURE_MANIFEST' : 'ADAPTER_ENUMERATION_EVIDENCE_NOT_IMPLEMENTED',
   });
   if (rejectedRows?.length) {
     // Only rows the adapter could not READ count as collection errors; an explained
@@ -316,11 +317,19 @@ async function ingestApiSource(
   // Reviewed sector-perimeter exclusions (PostingScopeDecision OUT_OF_SCOPE): the posting is still
   // collected and archived, its publication is withheld and its representation withdrawn OUT_OF_SCOPE.
   const scopeExclusions = await loadScopeExclusions(prisma, stats.source);
-  for (const rawJob of jobs) {
+  /**
+   * LE DEVENIR DE CHAQUE SORTIE SCELLÉE. Les sorties sont ordonnées comme le manifeste (ordinal = position) ;
+   * tout ce que la boucle ne publie pas est nommé — retenue, refus d'écriture, filtre sectoriel — puis scellé
+   * dans le rapport de fin d'ingestion. Une interruption avant ce rapport laisse la collecte sans preuve
+   * d'absence : elle ne peut alors rien faire disparaître.
+   */
+  const fates: OutputFate[] = [];
+  for (const [ordinal, rawJob] of jobs.entries()) {
     const job = applyScopeExclusion(employerFromCertifiedScope(rawJob, sourceDef.company, scope), scopeExclusions);
     assertSourceRunning();
     if (job.publicationHold) {
       stats.held = (stats.held ?? 0) + 1;
+      fates.push({ ordinal, externalId: job.externalId, disposition: 'HELD', reason: job.publicationHold });
       if (!publicationDisposition(job.publicationHold)) {
         /**
          * UNE RETENUE EST UN DÉFAUT DE CETTE OFFRE-LÀ, PAS DE L'ÉNUMÉRATION DE LA SOURCE.
@@ -354,6 +363,7 @@ async function ingestApiSource(
      */
     if (isBoard && !classifySector({ company: employer, title: job.title }).inScope) {
       skippedOutOfSector++;
+      fates.push({ ordinal, externalId: job.externalId, disposition: 'SKIPPED_OUT_OF_SECTOR', reason: 'SECTOR_FILTER' });
       continue;
     }
 
@@ -390,30 +400,26 @@ async function ingestApiSource(
     } catch (error) {
       log.assertHealthy();
       stats.errors++;
+      // The sealed fate keeps only the error class: messages may carry URLs or parameters.
+      fates.push({ ordinal, externalId: job.externalId, disposition: 'WRITE_FAILED', reason: error instanceof Error && error.name ? error.name : 'UnknownError' });
       // Journal every failure, with its upstream posting ID. Console repeats
       // are aggregated centrally only AFTER durable recording.
       await log.error('job.write_failed', { sourceKey: stats.source, connectorId: source.kind, jobId: job.externalId, error });
     }
   }
 
+  assertSourceRunning();
+  // The immutable end of this admitted ingestion. A failure here is a run failure:
+  // the offers already written are kept, but this collection proves no absence.
+  const completion = await recordIngestionCompletion(prisma, captureBatchId, fates);
+  stats.completionReportHash = completion.reportHash;
   await log.info('source.ingest_completed', `[ingest] ${stats.source}: ${stats.france} FR / ${stats.inSector} in-sector / ${stats.fetched} fetched -> ` +
       `${stats.created} created, ${stats.merged} merged, ${stats.errors} errors` +
-      (skippedOutOfSector > 0 ? ` (${skippedOutOfSector} hors secteur écartées)` : ''));
+      (skippedOutOfSector > 0 ? ` (${skippedOutOfSector} hors secteur écartées)` : ''),
+    { captureBatchId, completionReportHash: completion.reportHash, published: completion.published, held: completion.held,
+      writeFailed: completion.writeFailed, skipped: completion.skipped });
   assertSourceRunning();
   return stats;
-}
-
-/**
- * Did this source produce enough to justify purging its older-generation rows?
- *
- * A source that wrote nothing (returned an empty array, or every write failed)
- * must NOT trigger a purge: that is exactly the silent-zero failure mode, and
- * purging on it would delete the source's whole footprint. Only a source that
- * actually wrote offers this run has re-stamped them at the current version, so
- * only then is it safe to remove what it no longer lists.
- */
-function producedOutput(stats: IngestStats): boolean {
-  return stats.created + stats.merged + stats.updated > 0;
 }
 
 export type IngestOptions = {
@@ -469,48 +475,6 @@ export async function runIngest(
   };
 
   /**
-   * Purge this source's older-generation rows — but ONLY if the run earned the
-   * right to attest absence.
-   *
-   * Historiquement la seule garde était « la source a-t-elle écrit quelque
-   * chose ? » (`producedOutput`), qui couvre le zéro silencieux mais PAS le run
-   * partiel : `lagardere-travel-retail` écrivait 20 offres en en déclarant 109,
-   * franchissait la garde, et la purge supprimait les 89 autres. La règle du
-   * 2026-09-08 (D51) tranche : seul un run complet et fiable peut faire
-   * disparaître ce qu'il n'a pas revu.
-   */
-  const purgeQuietly = async (stats: IngestStats) => {
-    if (!producedOutput(stats)) return;
-    assertSourceRunning();
-    const previous = await prisma.sourceRun.findFirst({
-      where: { sourceKey: stats.source, jobs: { gt: 0 } },
-      orderBy: { ranAt: 'desc' }, select: { jobs: true },
-    });
-    if (!isTrustedForAttestation({
-      status: previous ? 'OK' : 'NEW',
-      complete: stats.complete,
-      declaredTotal: stats.declaredTotal,
-      fetched: stats.fetched,
-      truncated: stats.truncated,
-      errors: stats.errors,
-    }) || (previous && stats.created + stats.merged + stats.updated < previous.jobs * 0.5)) {
-      await log.warn('source.purge_refused', `[ingest] ${stats.source}: purge REFUSÉE — run non fiable pour attester ` +
-          `(${stats.fetched} collectées${stats.declaredTotal ? ` sur ${stats.declaredTotal} déclarées` : ''}` +
-          `${stats.truncated ? ', tronqué' : ''}). Les offres non revues survivent.`);
-      return;
-    }
-    try {
-      const purged = await purgeStaleForSource(prisma, stats.source, PIPELINE_VERSION);
-      if (purged.jobsClosed > 0 || purged.sourcesDeactivated > 0) {
-        await log.info('source.purge_completed', `[ingest] ${stats.source}: generation cleanup closed ${purged.jobsClosed} stale jobs, ` +
-            `deactivated ${purged.sourcesDeactivated} stale sources`);
-      }
-    } catch (error) {
-      await log.error('source.purge_failed', `[ingest] ${stats.source} purge failed: ${briefError(error)}`, { error });
-    }
-  };
-
-  /**
    * API-backed catalogue feeds run FIRST — they are the bulk of the market and
    * the cheapest to obtain (one request per employer, not one per offer).
    *
@@ -534,9 +498,10 @@ export async function runIngest(
   for (const source of apiSources) {
     try {
       assertSourceRunning();
+      // No closure happens here: the refresh reads the sealed proof of this admitted
+      // collection and decides absence under its own locks and manifest.
       const stats = await log.withContext({ sourceKey: source.key, connectorId: source.kind }, () => ingestApiSource(prisma, source, trust, occupationTaxonomy));
       results.push(stats);
-      await log.withContext({ sourceKey: source.key, connectorId: source.kind }, () => purgeQuietly(stats));
       await geocodeQuietly();
     } catch (error) {
       log.assertHealthy();

@@ -849,7 +849,9 @@ model SourceRun {
    */
   previousJobs     Int?
   /**
-   * Explicit lifecycle evidence. Null denotes an unmeasured legacy run.
+   * Operational summary of the run. Null denotes an unmeasured legacy run. Since lot 5G3C
+   * these columns describe health only: absence evidence is read from the admitted capture,
+   * its sealed manifest and its SourceIngestionCompletion, never from this bounded history.
    */
   fetched          Int?
   accepted         Int?
@@ -1130,6 +1132,7 @@ model RawBlob {
   observations SourceObservation[]
   extractions SourceExtraction[]
   manifests CaptureOutcome[]
+  completions SourceIngestionCompletion[]
 }
 
 /** Hot storage may be removed only after a verified remote archive is recorded. */
@@ -1157,6 +1160,7 @@ enum CapturePurpose {
 /** One bounded capture attempt. Evidence pages never stand for job extractions. */
 model CaptureBatch {
   ingestionAdmission SourceIngestionAdmission?
+  ingestionCompletion SourceIngestionCompletion?
   identityReviews SourceIdentityReview[]
   accessReviews SourceAccessDecision[] @relation("AccessEvidenceJobs")
   accessDecisionId String?
@@ -1218,6 +1222,26 @@ model SourceIngestionAdmission {
   admittedAt DateTime @default(now())
   @@index([identityReviewId])
   @@index([sourceValidationId])
+}
+
+/** Immutable end-of-ingestion record of an admitted, sealed collection: what became of
+ * every extracted output. Absence evidence reads this row and the sealed manifest,
+ * never a health summary or a diagnostic log. SQL refuses it for a qualification
+ * probe, a failed capture or counts that do not cover every output. */
+model SourceIngestionCompletion {
+  batchId String @id
+  batch CaptureBatch @relation(fields: [batchId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  reportHash String
+  report RawBlob @relation(fields: [reportHash], references: [hash], onDelete: Restrict, onUpdate: Restrict)
+  published Int
+  held Int
+  writeFailed Int
+  skipped Int
+  readerRevision String
+  policyVersion String
+  completedAt DateTime @default(now())
+  @@index([reportHash])
+  @@index([completedAt])
 }
 
 /** Every attempt remains distinct, even if response bytes are identical. */

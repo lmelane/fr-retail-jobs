@@ -6,7 +6,6 @@ import { PrismaClient } from '@prisma/client';
 import type { CandidateJob } from '../dedup/match.js';
 import { runRefresh, readRefreshPlan } from './refresh.js';
 import { publicJobWhere } from '@catwalks/db/availability';
-import { clearSourceEvidence } from '../test/sourceEvidence.js';
 import { EXPIRY_READER_VERSION } from '../normalize/expiry.js';
 
 const db = new PrismaClient();
@@ -18,7 +17,6 @@ const candidate = (id: string, raw: unknown, sourceKey = 'expiry-witness'): Cand
   url: `https://example.com/${sourceKey}/${id}`, atsType: 'GENERIC_JSONLD', raw,
 });
 const wipe = async () => {
-  await clearSourceEvidence(db);
   await db.jobSource.deleteMany(); await db.job.deleteMany(); await db.company.deleteMany(); await db.sourceRun.deleteMany();
 };
 beforeEach(wipe);

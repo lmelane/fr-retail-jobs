@@ -545,15 +545,15 @@ describe('native publications without public presentation', () => {
     expect(await db.jobEvent.count({ where: { jobId: good.job.id, type: 'CLOSED' } })).toBe(0);
   });
 
-  it('retires quarantined observations while respecting an explicit Job scope', async () => {
-    const { deactivateAdministrativeSources } = await import('./deactivateSources.js');
+  it('retires quarantined observations of a retired source without touching the surviving publication', async () => {
+    const { withdrawRetiredSource } = await import('./deactivateSources.js');
     const { good, held, request } = await mixed();
     await apply(await planPublicationGroups(db, request));
-    const disposition = { kind: 'WITHDRAWN' as const, reason: 'SOURCE_RETIRED' as const };
-    expect(await deactivateAdministrativeSources(db, { sourceKey: held.source.sourceKey }, disposition, { id: good.job.id })).toMatchObject({ sourcesDeactivated: 0 });
-    expect(await deactivateAdministrativeSources(db, { sourceKey: held.source.sourceKey }, disposition)).toMatchObject({ sourcesDeactivated: 1, jobsClosed: 0, jobsWithdrawn: 0 });
+    expect(await withdrawRetiredSource(db, { sourceKey: held.source.sourceKey })).toMatchObject({ sourcesDeactivated: 1, jobsClosed: 0, jobsWithdrawn: 0 });
+    expect(await withdrawRetiredSource(db, { sourceKey: held.source.sourceKey })).toMatchObject({ sourcesDeactivated: 0 });
     expect((await db.job.findUniqueOrThrow({ where: { id: good.job.id } })).isActive).toBe(true);
     expect((await db.jobSource.findUniqueOrThrow({ where: { id: held.source.id } })).quarantinedAt).not.toBeNull();
+    expect(await db.dataCorrection.count({ where: { entityId: held.source.id, finding: 'QUARANTINE_SOURCE_DEACTIVATION' } })).toBe(1);
   });
 
   it('rebuilds a native deadline for quarantine without renewing its observation', async () => {
@@ -568,27 +568,28 @@ describe('native publications without public presentation', () => {
   });
 
   it.each([false, true])('accepts proven absence of a quarantined publication; rejects a later proof change=%s', async changed => {
-    const { recordSourceEvidence } = await import('../test/sourceEvidence.js');
+    const { attestSyntheticFeed, collectAdmittedWithoutCompletion } = await import('../test/ingestionFixture.js');
     const { readRefreshPlan, createRefreshManifest, runRefresh } = await import('./refresh.js');
     const { held, request } = await mixed();
     await db.jobSource.update({ where: { id: held.source.id }, data: { lastSeenAt: new Date(Date.now() - 72 * 3_600_000) } });
     await apply(await planPublicationGroups(db, request));
-    await recordSourceEvidence(db, held.source.sourceKey);
+    await attestSyntheticFeed(db, held.source.sourceKey, []);
     const manifest = await createRefreshManifest(db, await readRefreshPlan(db, { onlyKeys: [held.source.sourceKey] }));
     expect(manifest.entries[0]).toMatchObject({ jobId: null, state: 'ABSENT_FROM_PROVEN_ENUMERATION' });
-    if (changed) await recordSourceEvidence(db, held.source.sourceKey, { observedIds: [held.source.externalId] });
+    // A newer attempt that observes the publication again, still without a completion, replaces the frozen proof.
+    if (changed) await collectAdmittedWithoutCompletion(db, held.source.sourceKey, [{ id: held.source.externalId, url: held.source.url }]);
     expect(await runRefresh(db, { manifest })).toMatchObject({ closedSources: changed ? 0 : 1, closedJobs: 0 });
     expect((await db.jobSource.findUniqueOrThrow({ where: { id: held.source.id } })).isActive).toBe(changed);
   });
 
   it('cannot let a frozen quarantine refresh close a newly released publication', async () => {
-    const { recordSourceEvidence } = await import('../test/sourceEvidence.js');
+    const { attestSyntheticFeed } = await import('../test/ingestionFixture.js');
     const { readRefreshPlan, createRefreshManifest, runRefresh } = await import('./refresh.js');
     const { upsertDeduplicated } = await import('../dedup/upsert.js');
     const { held, request } = await mixed();
     await db.jobSource.update({ where: { id: held.source.id }, data: { lastSeenAt: new Date(Date.now() - 72 * 3_600_000) } });
     await apply(await planPublicationGroups(db, request));
-    await recordSourceEvidence(db, held.source.sourceKey);
+    await attestSyntheticFeed(db, held.source.sourceKey, []);
     const manifest = await createRefreshManifest(db, await readRefreshPlan(db, { onlyKeys: [held.source.sourceKey] }));
     const released = await upsertDeduplicated(db, await reobserve(held));
     expect(await runRefresh(db, { manifest })).toMatchObject({ closedSources: 0, closedJobs: 0 });

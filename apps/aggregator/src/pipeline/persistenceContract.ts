@@ -16,29 +16,33 @@
  *  · un identifiant PERSISTÉ que la preuve n'a pas observé signifie que les deux chemins ne produisent pas le
  *    même identifiant — il paraîtrait absent au refresh suivant, et serait fermé à tort.
  *
- * TOUT EST CORRÉLÉ AU MÊME `runId`. Une retenue historique n'est pas une retenue de ce cycle : la réutiliser
- * ferait passer pour « vue et retenue » une offre que ce cycle n'a jamais rencontrée.
+ * TOUT EST LU SUR LA MÊME COLLECTE ADMISE (manifeste scellé et rapport de fin d'ingestion, lot 5G3C). Une
+ * retenue historique n'est pas une retenue de cette collecte : la réutiliser ferait passer pour « vue et
+ * retenue » une offre que cette collecte n'a jamais rencontrée.
  */
 
 export type CycleSets = {
   sourceKey: string;
-  runId: string;
+  /** La collecte admise dont proviennent tous les ensembles. */
+  captureBatchId: string;
   /** Les identifiants canoniques archivés par la preuve d'énumération de CE cycle. */
   canonicalObservedIds: readonly string[];
   /** Les `JobSource.externalId` réellement actifs après ce cycle. */
   persistedJobSourceExternalIds: readonly string[];
   /** Retenues de CE cycle — jamais une retenue historique déjà levée. */
   heldIds: readonly string[];
-  /** Échecs d'écriture de CE cycle, lus dans la colonne `PipelineEvent.jobId`. */
+  /** Échecs d'écriture de CETTE collecte, lus dans son rapport de fin d'ingestion. */
   writeFailedIds: readonly string[];
   /** Lignes refusées par l'adaptateur, avec un identifiant exploitable. */
   rejectedIds: readonly string[];
   /** Lignes dont la collecte a échoué (détail illisible, page en erreur). */
   collectionErrorIds: readonly string[];
+  /** Lignes observées puis écartées par le filtre sectoriel d'un jobboard : vues, jamais écrites. */
+  skippedIds?: readonly string[];
   /**
-   * Des événements `job.write_failed` de ce cycle n'ont PAS pu être rattachés à un identifiant.
+   * Des échecs ou rejets de cette collecte n'ont PAS pu être rattachés à un identifiant.
    *
-   * On ne présume alors jamais « zéro échec » : la source devient invérifiable pour ce cycle, car un
+   * On ne présume alors jamais « zéro échec » : la source devient invérifiable pour cette collecte, car un
    * identifiant historique disparu pourrait être l'un de ces échecs anonymes.
    */
   unattributableWriteFailures: number;
@@ -61,7 +65,7 @@ export function persistenceContract(sets: CycleSets): PersistenceVerdict {
   const observed = new Set(sets.canonicalObservedIds);
   const accounted = new Set([
     ...sets.persistedJobSourceExternalIds, ...sets.heldIds, ...sets.writeFailedIds,
-    ...sets.rejectedIds, ...sets.collectionErrorIds,
+    ...sets.rejectedIds, ...sets.collectionErrorIds, ...(sets.skippedIds ?? []),
   ]);
 
   // Sens 1 — tout ce qui a été VU doit avoir une suite connue.

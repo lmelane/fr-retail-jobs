@@ -3,6 +3,7 @@ import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
+import { REFRESH_MANIFEST_VERSION } from './refreshManifest.js';
 
 /**
  * Le chemin est résolu depuis CE FICHIER, jamais depuis le répertoire courant.
@@ -74,12 +75,16 @@ describe('bounded-command — la commande de démarrage d\'une ingestion bornée
 
 /**
  * LA COMMANDE DE REFRESH BORNÉ — elle porte le manifeste, donc la mutation n'a rien à recalculer.
+ *
+ * La version du manifeste vient du PLANIFICATEUR, jamais d'un littéral : ce test acceptait « version 2 » quand
+ * le planificateur produisait la 3 depuis le lot 1, et validait donc une commande qui refusait tout manifeste
+ * réel (mesuré le 16 septembre 2026).
  */
 const REFRESH_SCRIPT = resolve(dirname(fileURLToPath(import.meta.url)), '../../scripts/ops/bounded-refresh-command.py');
 
 describe('bounded-refresh-command — le refresh consomme le manifeste', () => {
   const manifestFile = resolve('/tmp', `p7-manifest-${process.pid}.json`);
-  writeFileSync(manifestFile, JSON.stringify({ version: 2, planHash: 'a'.repeat(64), allowedSourceKeys: ['mecca','beiersdorf'], entries: [{ jobSourceId: 'JS1' }, { jobSourceId: 'JS2' }] }));
+  writeFileSync(manifestFile, JSON.stringify({ version: REFRESH_MANIFEST_VERSION, planHash: 'a'.repeat(64), allowedSourceKeys: ['mecca','beiersdorf'], entries: [{ jobSourceId: 'JS1' }, { jobSourceId: 'JS2' }] }));
   const cmd = execFileSync('python3', [REFRESH_SCRIPT, 'p7-test', 'mecca,beiersdorf', manifestFile],
     { encoding: 'utf8' });
 
@@ -110,12 +115,18 @@ describe('bounded-refresh-command — le refresh consomme le manifeste', () => {
     expect(cmd).toContain('-u BREVO_API_KEY');
     expect(cmd).toContain('-u HEALTHCHECK_PING_URL');
   });
+
+  it('refuse un manifeste d\'une version antérieure : il ne nomme pas sa capture attestante', () => {
+    const stale = resolve('/tmp', `p7-manifest-stale-${process.pid}.json`);
+    writeFileSync(stale, JSON.stringify({ version: REFRESH_MANIFEST_VERSION - 1, planHash: 'a'.repeat(64), allowedSourceKeys: ['mecca'], entries: [] }));
+    expect(() => execFileSync('python3', [REFRESH_SCRIPT, 'p7-test', 'mecca', stale], { encoding: 'utf8', stdio: 'pipe' })).toThrow(/Unsupported refresh manifest/);
+  });
 });
 
 
 it('keeps a large refresh plan out of argv and safely quotes the run name', () => {
   const file = resolve('/tmp', `large-refresh-plan-${process.pid}.json`);
-  writeFileSync(file, JSON.stringify({ version: 2, planHash: 'f'.repeat(64), allowedSourceKeys: ['source'],
+  writeFileSync(file, JSON.stringify({ version: REFRESH_MANIFEST_VERSION, planHash: 'f'.repeat(64), allowedSourceKeys: ['source'],
     entries: Array.from({ length: 1000 }, (_, i) => ({ jobSourceId: String(i), rawPlaceholder: 'x'.repeat(1000) })) }));
   const command = execFileSync('python3', [REFRESH_SCRIPT, 'run"; throw new Error("injected"); //', 'source', file], { encoding: 'utf8' });
   expect(Buffer.byteLength(command)).toBeLessThan(5000);

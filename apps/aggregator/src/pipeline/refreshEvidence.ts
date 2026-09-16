@@ -1,107 +1,68 @@
-import { Prisma } from '@prisma/client';
+import type { Prisma } from '@prisma/client';
+import type { ObjectStore } from '../retention/objectStore.js';
 import { chunk } from '../lib/chunk.js';
-import { evidenceHash } from '../lib/evidenceHash.js';
+import { readAttestingCapture, type CaptureDispositions } from './attestingCapture.js';
 import { identifiersComparable, planRefresh, representationState, sourceEligibility,
-  type EnumerationEvidence, type Representation, type RepresentationState, type SourceRunFacts } from './refreshPlan.js';
+  type Representation, type RepresentationState } from './refreshPlan.js';
 
-const object = (value: unknown): Record<string, unknown> | undefined =>
-  value !== null && typeof value === 'object' && !Array.isArray(value) ? value as Record<string, unknown> : undefined;
+export type SourceEligibilityRow = {
+  source: string; eligible: boolean; reasons: string[]; captureBatchId: string | null; startedAt: Date | null; termination: string | null;
+};
 
-/** Decode only the observed posting IDs. Listing/page IDs are not posting IDs. */
-export function enumerationEvidence(sourceKey: string, runId: string, payload: unknown): EnumerationEvidence {
-  const enumeration = object(object(payload)?.enumeration);
-  const pages = Array.isArray(enumeration?.pageEvidence) ? enumeration.pageEvidence : [];
-  const ids: string[] = [];
-  let declared = pages.length > 0;
-  for (const page of pages) {
-    const values = object(page)?.canonicalIds;
-    if (!Array.isArray(values) || values.some(id => typeof id !== 'string' || !id.trim())) declared = false;
-    else ids.push(...values);
-  }
-  const issues = enumeration?.issues;
-  return { sourceKey, runId,
-    termination: typeof enumeration?.termination === 'string' ? enumeration.termination : null,
-    canonicalSet: [...new Set(ids)], canonicalContractDeclared: declared,
-    canonicalContractBroken: Array.isArray(issues) && issues.includes('CANONICAL_ID_CONTRACT_BROKEN'),
-    canonicalAbsenceProofUsable: enumeration?.canonicalAbsenceProofUsable !== false,
-  };
+/** Every identifier the capture treated must have been observed, and every observed identifier must have a known fate. */
+function dispositionContract(observed: ReadonlySet<string>, dispositions: CaptureDispositions): string[] {
+  const reasons: string[] = [];
+  const disposed = [dispositions.held, dispositions.writeFailed, dispositions.skipped, dispositions.rejected, dispositions.published];
+  if (disposed.some(set => [...set].some(id => !observed.has(id)))) reasons.push('publication traitée mais absente de l’énumération : preuve contradictoire');
+  const accounted = new Set(disposed.flatMap(set => [...set]));
+  const unknown = [...observed].filter(id => !accounted.has(id));
+  if (unknown.length) reasons.push(`${unknown.length} identifiant(s) observé(s) sans devenir connu`);
+  return reasons;
 }
 
-/** The same persisted proof reader is used by preview and by the locked write. */
-export async function readAbsencePlan(db: Prisma.TransactionClient, scope: Prisma.JobSourceWhereInput, cutoff: Date, now: Date) {
+/** The same persisted proof reader is used by preview and by the locked write. Proof is
+ * read from admitted, sealed, completed captures only; health rows and logs never decide. */
+export async function readAbsencePlan(db: Prisma.TransactionClient, scope: Prisma.JobSourceWhereInput, cutoff: Date, now: Date, store?: ObjectStore) {
   const rows = await db.jobSource.findMany({ where: { AND: [scope, { isActive: true }] },
     select: { id: true, jobId: true, sourceKey: true, externalId: true, lastSeenAt: true },
     orderBy: [{ sourceKey: 'asc' }, { externalId: 'asc' }],
   });
   const keys = [...new Set(rows.map(row => row.sourceKey))];
-  const runs = keys.length ? await db.$queryRaw<SourceRunFacts[]>`
-    SELECT DISTINCT ON ("sourceKey") "sourceKey", "runId", status, errors, truncated, complete,
-      "canAttestAbsence", "ranAt" FROM "SourceRun" WHERE "sourceKey" = ANY(${keys})
-    ORDER BY "sourceKey", "ranAt" DESC, id DESC` : [];
-  const runBy = new Map(runs.map(run => [run.sourceKey, run]));
-  const runIds = [...new Set(runs.flatMap(run => run.runId ? [run.runId] : []))];
-  const events = runIds.length ? await db.pipelineEvent.findMany({
-    where: { sourceKey: { in: keys }, runId: { in: runIds }, event: 'source.enumeration_observed', at: { lte: now } },
-    select: { sourceKey: true, runId: true, payload: true }, orderBy: [{ at: 'desc' }, { id: 'desc' }],
-  }) : [];
-  const evidenceBy = new Map<string, EnumerationEvidence>();
-  for (const event of events) {
-    if (!event.sourceKey || !event.runId || event.runId !== runBy.get(event.sourceKey)?.runId || evidenceBy.has(event.sourceKey)) continue;
-    evidenceBy.set(event.sourceKey, enumerationEvidence(event.sourceKey, event.runId, event.payload));
-  }
-  const observedBy = new Map([...evidenceBy].map(([key, evidence]) => [key, new Set(evidence.canonicalSet)]));
-  const dispositions = runIds.length ? await db.pipelineEvent.findMany({
-    where: { sourceKey: { in: keys }, runId: { in: runIds }, event: { in: ['job.write_failed', 'job.publication_held', 'source.rows_rejected'] } },
-    select: { sourceKey: true, runId: true, event: true, jobId: true, payload: true },
-  }) : [];
-  const keyOf = (source: string, id: string) => JSON.stringify([source, id]);
-  const held = new Set<string>(), failed = new Set<string>(), rejected = new Set<string>(), anonymous = new Set<string>(), contradictory = new Set<string>();
-  for (const event of dispositions) {
-    if (!event.sourceKey || event.runId !== runBy.get(event.sourceKey)?.runId) continue;
-    if (event.event === 'source.rows_rejected') {
-      const rows = object(event.payload)?.rejectedRows;
-      if (!Array.isArray(rows)) anonymous.add(event.sourceKey);
-      else for (const row of rows) {
-        const id = object(row)?.canonicalId;
-        if (typeof id === 'string' && id.trim()) {
-          rejected.add(keyOf(event.sourceKey, id));
-          if (!observedBy.get(event.sourceKey)?.has(id)) contradictory.add(event.sourceKey);
-        }
-        else anonymous.add(event.sourceKey);
-      }
-      continue;
-    }
-    if (!event.jobId) anonymous.add(event.sourceKey);
-    else {
-      (event.event === 'job.write_failed' ? failed : held).add(keyOf(event.sourceKey, event.jobId));
-      if (!observedBy.get(event.sourceKey)?.has(event.jobId)) contradictory.add(event.sourceKey);
-    }
-  }
-  const representations: Representation[] = rows.map(row => ({ ...row, jobSourceId: row.id,
-    held: held.has(keyOf(row.sourceKey, row.externalId)), writeFailed: failed.has(keyOf(row.sourceKey, row.externalId)),
-    rejected: rejected.has(keyOf(row.sourceKey, row.externalId)) }));
-  const storedRows = await db.jobSource.findMany({ where: { sourceKey: { in: keys }, isActive: true },
-    select: { sourceKey: true, externalId: true } });
+  const storedRows = keys.length ? await db.jobSource.findMany({ where: { sourceKey: { in: keys }, isActive: true },
+    select: { sourceKey: true, externalId: true } }) : [];
   const storedBy = new Map<string, string[]>();
   for (const row of storedRows) {
     if (!storedBy.has(row.sourceKey)) storedBy.set(row.sourceKey, []);
     storedBy.get(row.sourceKey)!.push(row.externalId);
   }
-  const eligibility = keys.map(source => {
-    const run = runBy.get(source), evidence = evidenceBy.get(source);
-    const result = sourceEligibility(run, evidence);
-    if (run && (run.ranAt < cutoff || run.ranAt > now)) result.reasons.push('preuve trop ancienne ou datée dans le futur');
-    if (anonymous.has(source)) result.reasons.push('échec, retenue ou rejet sans identifiant de publication');
-    if (contradictory.has(source)) result.reasons.push('publication traitée mais absente de l’énumération : preuve contradictoire');
-    const observed = observedBy.get(source) ?? new Set<string>();
+  const captures = new Map<string, Awaited<ReturnType<typeof readAttestingCapture>>>();
+  for (const key of keys) captures.set(key, await readAttestingCapture(db, key, now, store));
+  const observedBy = new Map<string, Set<string>>();
+  const dispositionsBy = new Map<string, CaptureDispositions>();
+  const eligibility: SourceEligibilityRow[] = keys.map(source => {
+    const result = captures.get(source)!;
+    if (!result.ok) return { source, eligible: false, reasons: result.reasons, captureBatchId: result.captureBatchId, startedAt: null, termination: null };
+    const { capture } = result;
+    const verdict = sourceEligibility(capture.facts, capture.evidence);
+    const reasons = [...verdict.reasons];
+    if (capture.startedAt < cutoff || capture.startedAt > now) reasons.push('preuve trop ancienne ou datée dans le futur');
+    if (capture.dispositions.anonymous > 0) reasons.push('échec, retenue ou rejet sans identifiant de publication');
+    const observed = new Set(capture.evidence.canonicalSet);
+    if (capture.evidence.canonicalContractDeclared && !capture.evidence.canonicalContractBroken) reasons.push(...dispositionContract(observed, capture.dispositions));
     const stored = storedBy.get(source) ?? [];
-    if (result.eligible && observed.size && !identifiersComparable(observed, stored)) {
-      result.reasons.push('identifiants observés incomparables avec ceux stockés');
-    }
-    return { source, eligible: result.reasons.length === 0, reasons: result.reasons, runId: run?.runId ?? null,
-      ranAt: run?.ranAt ?? null, termination: evidence?.termination ?? null };
+    const disposed = new Set([...capture.dispositions.held, ...capture.dispositions.writeFailed, ...capture.dispositions.skipped, ...capture.dispositions.rejected]);
+    if (!reasons.length && observed.size && !identifiersComparable(observed, stored, disposed)) reasons.push('identifiants observés incomparables avec ceux stockés');
+    observedBy.set(source, observed);
+    dispositionsBy.set(source, capture.dispositions);
+    return { source, eligible: reasons.length === 0, reasons, captureBatchId: capture.captureBatchId, startedAt: capture.startedAt, termination: capture.evidence.termination };
   });
   const allowed = new Set(eligibility.filter(row => row.eligible).map(row => row.source));
+  const representations: Representation[] = rows.map(row => {
+    const dispositions = dispositionsBy.get(row.sourceKey);
+    return { ...row, jobSourceId: row.id,
+      held: dispositions?.held.has(row.externalId) ?? false, writeFailed: dispositions?.writeFailed.has(row.externalId) ?? false,
+      rejected: dispositions?.rejected.has(row.externalId) ?? false, skipped: dispositions?.skipped.has(row.externalId) ?? false };
+  });
   const states = new Map<string, RepresentationState>();
   for (const rep of representations) {
     states.set(rep.jobSourceId, representationState(rep, observedBy.get(rep.sourceKey) ?? null, allowed.has(rep.sourceKey)));
@@ -118,13 +79,12 @@ export async function readAbsencePlan(db: Prisma.TransactionClient, scope: Prism
   }
   // A re-attestation newer than the proof (or inside the grace window) wins.
   const stale = representations.filter(rep => {
-    const run = runBy.get(rep.sourceKey);
-    return run && rep.lastSeenAt < cutoff && rep.lastSeenAt < run.ranAt;
+    const result = captures.get(rep.sourceKey);
+    return result?.ok && rep.lastSeenAt < cutoff && rep.lastSeenAt < result.capture.startedAt;
   });
   const proofs = new Map(keys.flatMap(key => {
-    const run = runBy.get(key), evidence = evidenceBy.get(key);
-    return run?.runId && evidence ? [[key, { kind: 'ENUMERATION' as const, runId: run.runId,
-      hash: evidenceHash({ run, evidence: { ...evidence, canonicalSet: [...evidence.canonicalSet].sort() } }) }] as const] : [];
+    const result = captures.get(key);
+    return result?.ok ? [[key, { kind: 'ENUMERATION' as const, captureBatchId: result.capture.captureBatchId, hash: result.capture.proofHash }] as const] : [];
   }));
   return { ...planRefresh(stale, states, activeByJob), representations, states, eligibility, proofs };
 }

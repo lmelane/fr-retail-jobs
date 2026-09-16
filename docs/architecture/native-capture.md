@@ -17,6 +17,8 @@ Le navigateur conserve séparément les réponses document/XHR/fetch et le DOM r
 | `RawBlob` / `RawBlobBody` | Identité SHA-256, taille, empreinte et taille gzip ; octets locaux compressés |
 | `SourceExtraction` | Une sortie complète d’offre par collecte et position, conservée avant les transformations communes |
 | `CaptureOutcome` | Résultat immuable : EXTRACTED, SOURCE_EVIDENCE ou FAILED ; manifeste du résultat d’offres (format 2) ou des réponses de page (format 3) |
+| `SourceIngestionAdmission` | Décisions d’identité et de qualification vérifiées avant le transport d’une collecte d’ingestion, immuables |
+| `SourceIngestionCompletion` | Fin immuable d’une collecte admise : devenir de chaque sortie scellée (publiée, retenue, refusée, écartée), rapport haché, lecteur et politique |
 | `SourceObservation` | Sortie RAW de l’adaptateur et disposition interne séparées ; historique antérieur conservé |
 | `RawBlobArchive` | Localisation distante et empreinte gzip vérifiées, immuables |
 
@@ -114,7 +116,7 @@ Cette validation ne certifie ni l’employeur, ni l’autorisation d’accès, n
 - Conservation distante d’au moins **12 mois** ; aucune suppression automatique des preuves référencées. Cette durée minimale n’est pas une promesse de purge à douze mois.
 - Une page de plan contient au plus 1 000 observations et 1 000 blocs ; taille par défaut 250 de chaque. Périmètre de sources et empreinte exigés à l’application.
 - Envoi distant, **relecture complète**, vérification taille + SHA-256 gzip, pointeur immuable, puis retrait des octets locaux. Les lectures décompressent et vérifient également la taille et le SHA-256 natifs.
-- Les références récentes des réponses, provenances de requête, observations, sorties et manifestes protègent les blocs lors du contrôle sous verrou avant purge. Une panne distante laisse les octets disponibles en base. Le même plan peut être repris sans double suppression.
+- Les références récentes des réponses, provenances de requête, observations, sorties, manifestes et rapports de fin d’ingestion protègent les blocs lors du contrôle sous verrou avant purge. Une panne distante laisse les octets disponibles en base. Le même plan peut être repris sans double suppression.
 - Les anciennes lignes `SourceObservation` restent en base avec leur identité et leur contenu ou pointeur ; elles ne sont plus remplacées par une seconde table de références.
 
 Le SDK officiel AWS gère la signature et le transport S3. Le préfixe d’environnement est obligatoire. Les opérations sont bornées en temps et en taille. Le stockage n’expose aucune opération de suppression distante. Les tables d’archive remplacées ne peuvent être supprimées par la migration si elles contiennent un pointeur : leur reprise doit alors précéder la migration.
@@ -157,3 +159,7 @@ Une collecte destinée à l’ingestion conserve une ligne immuable `SourceInges
 ### Frontière de publication obligatoire
 
 Depuis 5G3B3B, l’écrivain d’observation d’ingestion exige les deux pointeurs batch/sortie et vérifie le corps archivé. Les écrivains publics refusent les captures sans révision du registre et les sondes sans admission. Le [contrat d’ingestion](source-ingestion.md) décrit les retenues, les exclusions séparées du RAW et la revalidation transactionnelle des retraits. Les anciennes observations sans capture demeurent lisibles et transférables en archive ; aucun nouveau parcours d’ingestion ne recrée ce format historique.
+
+### Fin d’ingestion et preuve d’absence
+
+Depuis 5G3C, une collecte admise se termine par `SourceIngestionCompletion` : le devenir de chaque sortie du manifeste, scellé dans un rapport haché conservé comme bloc RAW. SQL refuse ce rapport pour une sonde, une capture échouée ou des compteurs qui laissent une sortie sans devenir ; la ligne est immuable. La preuve d’absence du refresh se lit exclusivement sur cette chaîne — capture admise, manifeste scellé, fin d’ingestion, porte de publication courante — jamais sur l’historique de santé `SourceRun` ni sur le journal `PipelineEvent`, qui ne portent plus que des enveloppes bornées de diagnostic. Le [contrat d’ingestion](source-ingestion.md#preuves-dabsence) précise les faits dérivés et les refus.

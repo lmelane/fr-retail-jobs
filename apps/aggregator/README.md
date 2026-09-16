@@ -34,6 +34,8 @@ Le [lot 5G3B1](../../audits/reprise-2026-09-15/lot-5g3b1.md) corrige la lecture 
 
 Le [lot 5G3B2A](../../audits/reprise-2026-09-15/lot-5g3b2a.md) conserve la provenance privée des requêtes effectivement passées au transport : collecteur, négociation de contenu, méthode et redirections. La clé historique de rejeu reste stable ; aucune identité n’est inventée pour les anciennes captures. Une recapture identique rétablit les octets chauds en vérifiant leur identité. La décision d’accès immuable reste distincte.
 
+Les lots [5G3B3A](../../audits/reprise-2026-09-15/lot-5g3b3a.md) et [5G3B3B](../../audits/reprise-2026-09-15/lot-5g3b3b.md) exigent une admission avant réseau pour chaque ingestion et une capture admise pour toute publication ou tout retrait natif. Le [lot 5G3C](../../audits/reprise-2026-09-15/lot-5g3c.md) scelle la fin de chaque ingestion admise (`SourceIngestionCompletion`) et fonde les preuves d’absence du refresh sur cette chaîne — capture admise, manifeste, fin d’ingestion, porte de publication courante — au lieu de l’historique de santé et du journal ; le nettoyage de génération, second moteur de fermeture sans preuve, est supprimé. Sur le stock actuel, aucune source n’a encore de capture attestante : aucune fermeture par absence n’est possible avant la re-qualification et la ré-ingestion admise des sources.
+
 ## Commandes de validation
 
 Depuis la racine du monorepo, après `npm ci --workspaces --include-workspace-root` :

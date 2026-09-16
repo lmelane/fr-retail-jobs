@@ -1,4 +1,4 @@
-import type { PrismaClient } from '@prisma/client';
+import type { Prisma, PrismaClient } from '@prisma/client';
 import type { AdapterResult } from '../types.js';
 import type { ObjectStore } from '../retention/objectStore.js';
 import { digestBytes } from './context.js';
@@ -8,10 +8,13 @@ import { evidenceHash } from '../lib/evidenceHash.js';
 export const MAX_MANIFEST_OUTPUTS = 100_000;
 const selection = { ordinal: true, externalId: true, outputHash: true } as const;
 type Output = { ordinal: number; externalId: string | null; outputHash: string };
-type Manifest = { version: 1; batchId: string; metadata: Omit<AdapterResult, 'jobs'>; outputs: Output[] };
+export type ExtractionManifest = { version: 1; batchId: string; metadata: Omit<AdapterResult, 'jobs'>; outputs: Output[] };
+type Manifest = ExtractionManifest;
+/** Readers work inside lifecycle transactions as well as on a plain client. */
+type ManifestReader = Pick<Prisma.TransactionClient, 'sourceExtraction' | 'captureBatch' | 'captureOutcome' | 'rawBlob'>;
 const object = (value: unknown): value is Record<string, unknown> => !!value && typeof value === 'object' && !Array.isArray(value);
 
-async function orderedOutputs(db: PrismaClient, batchId: string) {
+async function orderedOutputs(db: ManifestReader, batchId: string) {
   const rows = await db.sourceExtraction.findMany({ where: { batchId }, select: selection,
     orderBy: { ordinal: 'asc' }, take: MAX_MANIFEST_OUTPUTS + 1 });
   if (rows.length > MAX_MANIFEST_OUTPUTS || rows.some((row, index) => row.ordinal !== index)) throw new Error('Extraction outputs exceed their budget or are not contiguous');
@@ -30,7 +33,7 @@ export async function persistExtractionManifest(db: PrismaClient, batchId: strin
 
 /** The manifest is evidence of the recorded adapter result, not a certification
  * that the publisher enumeration or parsed publications were correct. */
-export async function readExtractionManifest(db: PrismaClient, batchId: string, store?: ObjectStore): Promise<Manifest> {
+export async function readExtractionManifest(db: ManifestReader, batchId: string, store?: ObjectStore): Promise<Manifest> {
   const batch = await db.captureBatch.findUniqueOrThrow({ where: { id: batchId }, select: { purpose: true } });
   if (batch.purpose !== 'JOBS') throw new Error('Source evidence is not a job extraction manifest');
   const outcome = await db.captureOutcome.findUniqueOrThrow({ where: { batchId } });

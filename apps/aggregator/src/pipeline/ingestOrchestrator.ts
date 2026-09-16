@@ -119,11 +119,11 @@ async function ingestOne(prisma: PrismaClient, key: string, result: Orchestrator
   const started = Date.now();
   try {
     await log.info('source_sync_started', { sourceKey: key });
-    // runIngest with {only} does the source's own purge; geocoding is skipped
-    // here and run ONCE by the CLI after every source — a per-source pass
-    // would run four times over the same cities in parallel. The soft
-    // deadline lets a slow crawl stop gracefully just before the hard
-    // timeout, keeping what it fetched.
+    // runIngest with {only} seals the source's end-of-ingestion report; no
+    // closure happens in this pass. Geocoding is skipped here and run ONCE by
+    // the CLI after every source — a per-source pass would run four times over
+    // the same cities in parallel. The soft deadline lets a slow crawl stop
+    // gracefully just before the hard timeout, keeping what it fetched.
     const stats = await withSourceBudget(
       () => runIngest(prisma, { only: key, skipGeocode: true }),
       PER_SOURCE_TIMEOUT_MS,

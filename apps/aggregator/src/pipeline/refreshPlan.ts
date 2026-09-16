@@ -7,33 +7,42 @@
  * d'absence mais une preuve de non-ré-attestation. Les deux se ressemblent, et une seule autorise à fermer.
  *
  * CE QUE « ABSENT » EXIGE ICI : l'identifiant ne figure PAS dans l'ensemble réellement observé par la dernière
- * énumération PROUVÉE de sa source. Cet ensemble est lu dans la preuve archivée
- * (`PipelineEvent.source.enumeration_observed`, champ `pageEvidence[].canonicalIds`), et il doit appartenir AU MÊME
- * CYCLE que le `SourceRun` retenu — la corrélation se fait par `runId`, jamais par proximité de date.
+ * énumération PROUVÉE de sa source. Cet ensemble est lu dans le manifeste SCELLÉ de la capture attestante
+ * (`pipeline/attestingCapture.ts`, champ `enumeration.pageEvidence[].canonicalIds`), et il appartient par
+ * construction à la même collecte que les faits — jamais à un run voisin, jamais à un journal.
  *
- * Six états, et un seul autorise une fermeture par absence :
- *   · PRESENT_AND_REATTESTED        vu et ré-attesté : rien à faire
- *   · PRESENT_BUT_HELD              vu, mais retenu à la publication : surtout pas « absent »
- *   · PRESENT_BUT_WRITE_FAILED      vu, mais refusé à l'écriture (identité) : surtout pas « absent »
+ * Sept états, et un seul autorise une fermeture par absence :
+ *   · PRESENT_AND_REATTESTED        vue et ré-attestée : rien à faire
+ *   · PRESENT_BUT_HELD              vue, mais retenue à la publication : surtout pas « absent »
+ *   · PRESENT_BUT_WRITE_FAILED      vue, mais refusée à l'écriture (identité) : surtout pas « absent »
+ *   · PRESENT_BUT_REJECTED          vue, mais refusée par l'adaptateur : surtout pas « absent »
+ *   · PRESENT_BUT_SKIPPED           vue, mais écartée par le filtre sectoriel : l'employeur la publie toujours
  *   · ABSENT_FROM_PROVEN_ENUMERATION  le seul qui prouve la disparition
  *   · UNVERIFIABLE                  la source n'archive pas ses identifiants, ou son énumération n'est pas
- *                                   prouvée : on ne peut rien conclure, donc on ne touche à rien
+ *                                   prouvée, ou sa collecte ne peut plus publier : on ne touche à rien
  */
 
-/** Ce que la porte de recevabilité exige du dernier run d'une source. */
-export type SourceRunFacts = {
+/** Les faits d'attestation, dérivés du manifeste scellé et du rapport de fin d'ingestion d'UNE capture. */
+export type AttestationFacts = {
   sourceKey: string;
-  runId: string | null;
-  status: string;
-  errors: number | null;
-  truncated: boolean | null;
+  captureBatchId: string;
+  startedAt: Date;
+  /** Projection de santé pertinente pour le droit d'attester ; voir `attestingCapture.ts`. */
+  status: 'OK' | 'DEGRADED' | 'BROKEN' | 'NEW';
+  /** Échecs d'écriture et lignes illisibles de cette collecte. */
+  errors: number;
+  truncated: boolean;
   complete: boolean | null;
-  canAttestAbsence: boolean | null;
-  ranAt: Date;
+  declaredTotal: number | null;
+  fetched: number;
+  published: number;
+  /** Ce que la dernière collecte PRODUCTIVE précédente de cette source avait publié ; null sans passé. */
+  previous: number | null;
+  canAttestAbsence: boolean;
 };
 
 /**
- * La preuve d'énumération du MÊME cycle, avec les identifiants réellement observés.
+ * La preuve d'énumération de la MÊME collecte, avec les identifiants réellement observés.
  *
  * TROIS NOTIONS SÉPARÉES, et la cardinalité n'en décide AUCUNE. Les confondre créait une contradiction :
  * un board réellement vide, dont la terminaison est démontrée, était traité comme un contrat rompu — alors
@@ -42,7 +51,7 @@ export type SourceRunFacts = {
  */
 export type EnumerationEvidence = {
   sourceKey: string;
-  runId: string | null;
+  captureBatchId: string;
   termination: string | null;
   /** L'ensemble observé. Vide est une VALEUR légitime, pas une indisponibilité. */
   canonicalSet: string[];
@@ -67,18 +76,43 @@ export type EnumerationEvidence = {
   canonicalAbsenceProofUsable?: boolean;
 };
 
+const object = (value: unknown): Record<string, unknown> | undefined =>
+  value !== null && typeof value === 'object' && !Array.isArray(value) ? value as Record<string, unknown> : undefined;
+
+/** Decode only the observed posting IDs from sealed adapter metadata. Listing/page IDs are not posting IDs. */
+export function enumerationEvidence(sourceKey: string, captureBatchId: string, metadata: unknown): EnumerationEvidence {
+  const enumeration = object(object(metadata)?.enumeration);
+  const pages = Array.isArray(enumeration?.pageEvidence) ? enumeration.pageEvidence : [];
+  const ids: string[] = [];
+  let declared = pages.length > 0;
+  for (const page of pages) {
+    const values = object(page)?.canonicalIds;
+    if (!Array.isArray(values) || values.some(id => typeof id !== 'string' || !id.trim())) declared = false;
+    else ids.push(...values);
+  }
+  const issues = enumeration?.issues;
+  return { sourceKey, captureBatchId,
+    termination: typeof enumeration?.termination === 'string' ? enumeration.termination : null,
+    canonicalSet: [...new Set(ids)], canonicalContractDeclared: declared,
+    canonicalContractBroken: Array.isArray(issues) && issues.includes('CANONICAL_ID_CONTRACT_BROKEN'),
+    canonicalAbsenceProofUsable: enumeration?.canonicalAbsenceProofUsable !== false,
+  };
+}
+
 export type Representation = {
   sourceKey: string;
   externalId: string;
   jobId: string | null;
   jobSourceId: string;
   lastSeenAt: Date;
-  /** L'offre a-t-elle été retenue à la publication pendant ce cycle ? */
+  /** L'offre a-t-elle été retenue à la publication pendant cette collecte ? */
   held: boolean;
-  /** L'écriture de cette offre a-t-elle échoué (refus d'identité) pendant ce cycle ? */
+  /** L'écriture de cette offre a-t-elle échoué (refus d'identité) pendant cette collecte ? */
   writeFailed: boolean;
   /** L'adaptateur a-t-il REFUSÉ cette ligne (titre manquant, URL incohérente…) tout en l'observant ? */
   rejected?: boolean;
+  /** Le filtre sectoriel a-t-il écarté cette ligne observée sans l'écrire ? */
+  skipped?: boolean;
 };
 
 export type RepresentationState =
@@ -93,6 +127,7 @@ export type RepresentationState =
    * n'a été écrit. Cet état ne désactive rien, ne ferme rien, et conserve le motif du rejet.
    */
   | 'PRESENT_BUT_REJECTED'
+  | 'PRESENT_BUT_SKIPPED'
   | 'ABSENT_FROM_PROVEN_ENUMERATION'
   | 'UNVERIFIABLE';
 
@@ -107,27 +142,25 @@ export const PROVING_TERMINATIONS: ReadonlySet<string> = new Set([
 /**
  * Une source est-elle autorisée à faire disparaître une offre qu'elle n'a pas revue ?
  *
- * Dérivé des FAITS du dernier run, jamais du statut `ACTIVE` du catalogue : le registre P6 a séparé « au
- * catalogue » de « a démontré son exhaustivité ».
+ * Dérivé des FAITS de sa capture attestante, jamais du statut `ACTIVE` du catalogue ni d'un compteur de santé :
+ * « au catalogue » et « a démontré son exhaustivité » sont deux propriétés distinctes.
  */
-export function sourceEligibility(run: SourceRunFacts | undefined, evidence: EnumerationEvidence | undefined) {
+export function sourceEligibility(facts: AttestationFacts | undefined, evidence: EnumerationEvidence | undefined) {
   const reasons: string[] = [];
-  if (!run) return { eligible: false, reasons: ['aucun run enregistré'] };
-  if (!run.runId) reasons.push('cycle non identifié');
-  if (!['OK', 'DEGRADED'].includes(run.status)) reasons.push(`statut non probant : ${run.status}`);
-  if (run.errors === null) reasons.push('errors non mesuré');
-  if ((run.errors ?? 0) > 0) reasons.push(`errors = ${run.errors}`);
-  if (run.truncated) reasons.push('truncated = true');
-  if (run.complete !== true) reasons.push(`complete = ${run.complete}`);
-  if (run.canAttestAbsence !== true) reasons.push(`canAttestAbsence = ${run.canAttestAbsence}`);
-  if (!evidence) reasons.push('aucune preuve d\'énumération archivée');
+  if (!facts) return { eligible: false, reasons: ['aucune collecte admise, scellée et achevée'] };
+  if (!['OK', 'DEGRADED'].includes(facts.status)) reasons.push(`statut non probant : ${facts.status}`);
+  if (facts.errors > 0) reasons.push(`errors = ${facts.errors}`);
+  if (facts.truncated) reasons.push('truncated = true');
+  if (facts.complete !== true) reasons.push(`complete = ${facts.complete}`);
+  if (facts.canAttestAbsence !== true) reasons.push(`canAttestAbsence = ${facts.canAttestAbsence}`);
+  if (!evidence) reasons.push('aucune preuve d\'énumération scellée');
   else {
-    if (evidence.sourceKey !== run.sourceKey) reasons.push('preuve d’une autre source');
+    if (evidence.sourceKey !== facts.sourceKey) reasons.push('preuve d’une autre source');
     /**
-     * LA CORRÉLATION PAR CYCLE, et elle n'est pas décorative : juxtaposer le dernier `SourceRun` avec une
-     * ANCIENNE preuve d'énumération ferait fermer des offres sur la foi d'un balayage qui n'est pas celui-là.
+     * LA CORRÉLATION PAR COLLECTE, et elle n'est pas décorative : juxtaposer des faits avec une preuve
+     * d'énumération d'une AUTRE capture ferait fermer des offres sur la foi d'un balayage qui n'est pas celui-là.
      */
-    if (evidence.runId !== run.runId) reasons.push(`preuve d'énumération d'un autre cycle (${evidence.runId} ≠ ${run.runId})`);
+    if (evidence.captureBatchId !== facts.captureBatchId) reasons.push(`preuve d'énumération d'une autre collecte (${evidence.captureBatchId} ≠ ${facts.captureBatchId})`);
     if (!evidence.termination) reasons.push('terminaison absente');
     else if (!PROVING_TERMINATIONS.has(evidence.termination)) reasons.push(`terminaison non probante : ${evidence.termination}`);
     /**
@@ -143,7 +176,7 @@ export function sourceEligibility(run: SourceRunFacts | undefined, evidence: Enu
       reasons.push('contrat canonique déclaré mais rompu : la preuve ne décrit pas ce que la source a écrit');
     } else if (evidence.canonicalAbsenceProofUsable === false) {
       reasons.push('des lignes observées n\'ont aucun identifiant canonique : une absence pourrait être l\'une '
-        + 'd\'elles, donc aucune ne peut être prouvée pour ce cycle');
+        + 'd\'elles, donc aucune ne peut être prouvée pour cette collecte');
     }
   }
   return { eligible: reasons.length === 0, reasons };
@@ -177,6 +210,7 @@ export function representationState(
   if (rep.writeFailed) return 'PRESENT_BUT_WRITE_FAILED';
   if (rep.held) return 'PRESENT_BUT_HELD';
   if (rep.rejected) return 'PRESENT_BUT_REJECTED';
+  if (rep.skipped) return 'PRESENT_BUT_SKIPPED';
   if (observed.has(rep.externalId)) return 'PRESENT_AND_REATTESTED';
   return 'ABSENT_FROM_PROVEN_ENUMERATION';
 }

@@ -4,7 +4,7 @@ import { freezeManifest, manifestHash, verifyManifest, compareTouched, type Mani
 const entry = (over: Partial<ManifestEntry> = {}): ManifestEntry => ({
   jobSourceId: 'JS1', sourceKey: 'mecca', externalId: 'X1', jobId: 'J1',
   observedAt: '2026-09-01T00:00:00Z', beforeHash: 'a'.repeat(64),
-  proof: { kind: 'ENUMERATION', runId: 'run-1', hash: 'b'.repeat(64) },
+  proof: { kind: 'ENUMERATION', captureBatchId: 'batch-1', hash: 'b'.repeat(64) },
   state: 'ABSENT_FROM_PROVEN_ENUMERATION', consequence: 'JOB_CANDIDATE_FOR_CLOSURE', ...over,
 });
 
@@ -49,17 +49,19 @@ describe('verifyManifest — trois refus, trois incidents réels', () => {
     expect(r.problems.join(' ')).toMatch(/invalid plan hash/);
   });
 
-  it('refuse un manifeste ancien ou privé de sa preuve', () => {
+  it('refuse un manifeste ancien, corrélé à un run, ou privé de sa preuve', () => {
     const m = freezeManifest(['mecca'], [entry()]);
     expect(verifyManifest({ ...m, version: 1 } as unknown as typeof m).valid).toBe(false);
+    expect(verifyManifest({ ...m, version: 3 } as unknown as typeof m).valid).toBe(false);
     expect(verifyManifest(freezeManifest(['mecca'], [entry({ proof: undefined } as unknown as ManifestEntry)])).valid).toBe(false);
+    expect(verifyManifest(freezeManifest(['mecca'], [entry({ proof: { kind: 'ENUMERATION', runId: 'run-1', hash: 'b'.repeat(64) } as unknown as ManifestEntry['proof'] })])).valid).toBe(false);
   });
 
   it('hashes the source proof, observation time, parent state and limits', () => {
     const original = manifestHash(['mecca'], [entry()]);
     for (const change of [
       { observedAt: '2026-09-02T00:00:00Z' }, { beforeHash: 'c'.repeat(64) },
-      { proof: { kind: 'ENUMERATION' as const, runId: 'run-2', hash: 'b'.repeat(64) } },
+      { proof: { kind: 'ENUMERATION' as const, captureBatchId: 'batch-2', hash: 'b'.repeat(64) } },
     ]) expect(manifestHash(['mecca'], [entry(change)])).not.toBe(original);
     expect(manifestHash(['mecca'], [entry()], { staleHours: 48, maxCloseRatio: 1, minCloseForGuard: 50 })).not.toBe(original);
   });

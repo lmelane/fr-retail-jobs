@@ -11,11 +11,14 @@ import { recordOccupationObservation } from '../occupation/persist.js';
 import { deactivateJob, reactivateJob } from './lifecycle.js';
 import { readAbsencePlan } from './refreshEvidence.js';
 import { availableSourceWhere, sourceIsAvailable } from '@catwalks/db/availability';
+import { objectStoreConfigured, objectStoreFromEnv } from '../retention/objectStore.js';
 import { randomUUID } from 'node:crypto';
 import { quarantineSnapshot, freezeManifest, refreshSnapshot, verifyManifest, REFRESH_LIMITS, type ManifestEntry, type RefreshManifest } from './refreshManifest.js';
 
 /** A fresh, complete enumeration may prove absence; silence alone never does. */
 const STALE_HOURS = Number(process.env.REFRESH_STALE_HOURS ?? REFRESH_LIMITS.staleHours);
+/** Sealed proofs may already live in the verified cold archive; the reader needs the same store as the writers. */
+const proofStore = () => objectStoreConfigured() ? objectStoreFromEnv() : undefined;
 const MAX_CLOSE_RATIO = Number(process.env.REFRESH_MAX_CLOSE_RATIO ?? REFRESH_LIMITS.maxCloseRatio);
 const MIN_CLOSE_FOR_GUARD = Number(process.env.REFRESH_MIN_CLOSE_FOR_GUARD ?? REFRESH_LIMITS.minCloseForGuard);
 
@@ -98,7 +101,7 @@ export async function readRefreshPlan(prisma: PrismaClient, options: RefreshOpti
       ? { sources: { some: sourceScope } } : {}),
   };
 
-  const absencePlan = await readAbsencePlan(prisma, sourceScope, cutoff, asOf);
+  const absencePlan = await readAbsencePlan(prisma, sourceScope, cutoff, asOf, proofStore());
   const unverifiableSources = absencePlan.eligibility.filter(source => !source.eligible).map(source => source.source);
   const expiredSources = await prisma.jobSource.findMany({
     where: { AND: [sourceScope, { isActive: true, expiresAt: { lte: asOf } }] },
@@ -200,6 +203,7 @@ export async function runRefresh(prisma: PrismaClient, options: RefreshOptions =
   options = plan.options;
   const manifest = options.manifest;
   const auditBatchId = `refresh:${manifest?.planHash ?? randomUUID()}`;
+  const store = proofStore();
   const { sourceScope, jobScope, cutoff, staleSources, orphans, revived, unverifiableSources } = plan;
   if (plan.refused) {
     await log.error('refresh.refused', { liveInScope: plan.liveTotal, plannedRemovals: plan.wouldClose.length });
@@ -239,9 +243,10 @@ export async function runRefresh(prisma: PrismaClient, options: RefreshOptions =
         const plannedSourceIds = (manifest?.entries.map(entry => ({ id: entry.jobSourceId, jobId: entry.jobId })) ?? staleSources)
           .filter(source => source.jobId !== null && currentIdSet.has(source.jobId)).map(source => source.id);
         const now = new Date();
-        // Re-read persisted source evidence while ingestion is locked.
+        // Re-read the sealed source evidence under the lifecycle locks; the publication
+        // gate inside it rechecks registry, access, admission and qualification currency.
         const currentPlan = await readAbsencePlan(tx, { AND: [sourceScope,
-          { jobId: { in: currentIds }, id: { in: plannedSourceIds } }] }, cutoff, now);
+          { jobId: { in: currentIds }, id: { in: plannedSourceIds } }] }, cutoff, now, store);
         const expired = await tx.jobSource.findMany({ where: { AND: [sourceScope,
           { jobId: { in: currentIds }, id: { in: plannedSourceIds }, isActive: true, expiresAt: { lte: now } }] },
           select: { id: true, jobId: true, sourceKey: true, externalId: true, lastSeenAt: true, expiresAt: true, expiryEvidence: true } });
@@ -255,7 +260,8 @@ export async function runRefresh(prisma: PrismaClient, options: RefreshOptions =
           const projected = job.sources.map(source => ({ ...source, isActive: source.isActive && !evidence.has(source.id) }));
           const consequence = !job.isActive ? 'JOB_ALREADY_INACTIVE' : selectApplySource(projected, job, now)
             ? 'JOB_KEPT_BY_ANOTHER_SOURCE' : 'JOB_CANDIDATE_FOR_CLOSURE';
-          if (expected.some(entry => entry.consequence !== consequence)) skipped.set(job.id, 'OUTCOME_CHANGED');
+          // The ledger names the root cause: a proof that changed or vanished explains the changed outcome.
+          if (!skipped.has(job.id) && expected.some(entry => entry.consequence !== consequence)) skipped.set(job.id, 'OUTCOME_CHANGED');
         }
         const acceptedIds = currentIds.filter(id => !skipped.has(id));
         const deactivated = await tx.jobSource.updateMany({
@@ -333,7 +339,7 @@ export async function runRefresh(prisma: PrismaClient, options: RefreshOptions =
       let proof: ReturnType<typeof plannedEvidence> extends Map<string, infer T> ? T | undefined : never;
       if (source?.isActive && outcome === 'UNCHANGED') {
         const now = new Date();
-        const absence = await readAbsencePlan(tx, { AND: [sourceScope, { id, jobId: null }] }, cutoff, now);
+        const absence = await readAbsencePlan(tx, { AND: [sourceScope, { id, jobId: null }] }, cutoff, now, store);
         proof = plannedEvidence(absence, source.expiresAt && source.expiresAt <= now ? [source] : []).get(id);
         const expectedProof = expected && (({ beforeHash: _hash, consequence: _outcome, ...value }) => value)(expected);
         if (!proof || expectedProof && evidenceHash(expectedProof) !== evidenceHash(proof)) outcome = 'EVIDENCE_CHANGED';

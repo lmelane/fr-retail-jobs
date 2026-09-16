@@ -1,0 +1,138 @@
+{
+  "mutations": [
+    {
+      "name": "skip-publication-gate",
+      "file": "pipeline/attestingCapture.ts",
+      "witness": "src/pipeline/absenceBoundary.test.ts",
+      "pattern": "skips a frozen deactivation when access-revoked",
+      "rejectedByRegression": true,
+      "restoredSha256": "67644c3515b33813752393605ccc1779f6f9c2f51fb166c21d0fcda7f1a8e752"
+    },
+    {
+      "name": "skip-paused-gate",
+      "file": "pipeline/attestingCapture.ts",
+      "witness": "src/pipeline/absenceBoundary.test.ts",
+      "pattern": "a retired source cannot attest",
+      "rejectedByRegression": true,
+      "restoredSha256": "67644c3515b33813752393605ccc1779f6f9c2f51fb166c21d0fcda7f1a8e752"
+    },
+    {
+      "name": "accept-missing-completion",
+      "file": "pipeline/attestingCapture.ts",
+      "witness": "src/pipeline/lifecycle.operational.test.ts",
+      "pattern": "never completed proves no absence",
+      "rejectedByRegression": true,
+      "restoredSha256": "67644c3515b33813752393605ccc1779f6f9c2f51fb166c21d0fcda7f1a8e752"
+    },
+    {
+      "name": "first-run-attests",
+      "file": "pipeline/attestingCapture.ts",
+      "witness": "src/pipeline/closure-requires-proven.test.ts",
+      "pattern": "sans pass\u00e9, ne ferme rien",
+      "rejectedByRegression": true,
+      "restoredSha256": "67644c3515b33813752393605ccc1779f6f9c2f51fb166c21d0fcda7f1a8e752"
+    },
+    {
+      "name": "ignore-write-failures",
+      "file": "pipeline/attestingCapture.ts",
+      "witness": "src/pipeline/absenceBoundary.test.ts",
+      "pattern": "write failure withholds",
+      "rejectedByRegression": true,
+      "restoredSha256": "67644c3515b33813752393605ccc1779f6f9c2f51fb166c21d0fcda7f1a8e752"
+    },
+    {
+      "name": "unsealed-proof-fallback",
+      "file": "pipeline/attestingCapture.ts",
+      "witness": "src/pipeline/absenceBoundary.test.ts",
+      "pattern": "cold archive",
+      "rejectedByRegression": true,
+      "restoredSha256": "67644c3515b33813752393605ccc1779f6f9c2f51fb166c21d0fcda7f1a8e752"
+    },
+    {
+      "name": "accept-old-manifest-version",
+      "file": "pipeline/refreshManifest.ts",
+      "witness": "src/pipeline/refreshManifest.test.ts",
+      "pattern": "refuse un manifeste ancien",
+      "rejectedByRegression": true,
+      "restoredSha256": "1be0db8a2e2c5adabed073d5cf6d1bc60c372664c30c49f8fe8e83407d90770f"
+    },
+    {
+      "name": "skip-completion-record",
+      "file": "pipeline/ingest.ts",
+      "witness": "src/pipeline/ingestionCompletion.test.ts",
+      "pattern": "seals one completion",
+      "rejectedByRegression": true,
+      "restoredSha256": "dbd189be44306041709b0dd6b95a2352622ed3f80b771fa720f156bc5bbaf87a"
+    },
+    {
+      "name": "hide-write-failure-fate",
+      "file": "pipeline/ingest.ts",
+      "witness": "src/pipeline/ingestionCompletion.test.ts",
+      "pattern": "seals one completion",
+      "rejectedByRegression": true,
+      "restoredSha256": "dbd189be44306041709b0dd6b95a2352622ed3f80b771fa720f156bc5bbaf87a"
+    },
+    {
+      "name": "accept-foreign-fate",
+      "file": "capture/completion.ts",
+      "witness": "src/pipeline/ingestionCompletion.test.ts",
+      "pattern": "does not name the sealed output",
+      "rejectedByRegression": true,
+      "restoredSha256": "24474e4a8e241f818b24f44a06ee793775a5d0520dc64481065427e407540b96"
+    },
+    {
+      "name": "trust-row-over-report",
+      "file": "capture/completion.ts",
+      "witness": "src/pipeline/ingestionCompletion.test.ts",
+      "pattern": "counts diverge from its immutable report",
+      "rejectedByRegression": true,
+      "restoredSha256": "24474e4a8e241f818b24f44a06ee793775a5d0520dc64481065427e407540b96"
+    },
+    {
+      "name": "ashby-without-canonical-contract",
+      "file": "ats/adapters/ashby.ts",
+      "witness": "src/pipeline/refresh.test.ts",
+      "pattern": "silent past the window",
+      "rejectedByRegression": true,
+      "restoredSha256": "a6ef0b49461535650f044e99f58daa42e27d138c743d2f6ce86376ad33f37ba3"
+    },
+    {
+      "name": "overwrite-evidence-skip",
+      "file": "pipeline/refresh.ts",
+      "witness": "src/pipeline/absenceBoundary.test.ts",
+      "pattern": "skips a frozen deactivation when paused",
+      "rejectedByRegression": true,
+      "restoredSha256": "6a4750de833c9d787426cfcbe2ae3195ad9809cc6e3b7bcd810a43f28f9103a2"
+    }
+  ],
+  "sqlMutations": [
+    {
+      "name": "sql-SourceIngestionCompletion_bind-sql",
+      "trigger": "SourceIngestionCompletion_bind",
+      "pattern": "SQL refuses counts",
+      "rejectedByRegression": true
+    },
+    {
+      "name": "sql-SourceIngestionCompletion_bind-qualification",
+      "trigger": "SourceIngestionCompletion_bind",
+      "pattern": "qualification probe, in the application and in SQL",
+      "rejectedByRegression": true
+    },
+    {
+      "name": "sql-SourceIngestionCompletion_immutable-never",
+      "trigger": "SourceIngestionCompletion_immutable",
+      "pattern": "never rewritten or deleted",
+      "rejectedByRegression": true
+    }
+  ],
+  "restoredTests": 79,
+  "restoredSuites": [
+    "src/pipeline/absenceBoundary.test.ts",
+    "src/pipeline/ingestionCompletion.test.ts",
+    "src/pipeline/refresh.test.ts",
+    "src/pipeline/closure-requires-proven.test.ts",
+    "src/pipeline/refreshManifest.test.ts",
+    "src/pipeline/lifecycle.operational.test.ts"
+  ],
+  "productionTouched": false
+}
