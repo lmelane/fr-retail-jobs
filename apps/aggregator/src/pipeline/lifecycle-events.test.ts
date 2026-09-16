@@ -1,12 +1,12 @@
+import { upsertDeduplicated } from '../test/publicationPersistenceFixture.js';
 import { publicationFixture } from '../test/publication-fixture.js';
 import '../test/setup-integration.js';
 import { recordSourceEvidence, clearSourceEvidence } from '../test/sourceEvidence.js';
 import { describe, it, expect, beforeEach, afterAll } from 'vitest';
 import { PrismaClient } from '@prisma/client';
 import { runRefresh } from './refresh.js';
-import { upsertDeduplicated } from '../dedup/upsert.js';
 import { resolveCompany } from '../normalize/company.js';
-import { deactivateSources } from './deactivateSources.js';
+import { deactivateAdministrativeSources } from './deactivateSources.js';
 import type { CandidateJob } from '../dedup/match.js';
 
 /**
@@ -75,13 +75,13 @@ describe('refresh — closedAt, reopenedCount et événements', () => {
     const input = candidate({ sourceKey: 'withdrawal-witness', externalId: 'w1', title: 'Client Advisor' });
     const created = await upsertDeduplicated(prisma, input);
     const original = await prisma.job.findUniqueOrThrow({ where: { id: created.jobId } });
-    await deactivateSources(prisma, { sourceKey: input.sourceKey }, { kind: 'WITHDRAWN', reason: 'SOURCE_RETIRED' });
+    await deactivateAdministrativeSources(prisma, { sourceKey: input.sourceKey }, { kind: 'WITHDRAWN', reason: 'SOURCE_RETIRED' });
     const again = await upsertDeduplicated(prisma, input);
     expect(again.jobId).toBe(created.jobId);
     expect(await prisma.job.findUniqueOrThrow({ where: { id: created.jobId } })).toMatchObject({
       isActive: false, closedAt: null, withdrawalReason: 'SOURCE_RETIRED', reopenedCount: 0, firstSeenAt: original.firstSeenAt,
     });
-    await deactivateSources(prisma, { sourceKey: input.sourceKey }, { kind: 'WITHDRAWN', reason: 'SOURCE_RETIRED' });
+    await deactivateAdministrativeSources(prisma, { sourceKey: input.sourceKey }, { kind: 'WITHDRAWN', reason: 'SOURCE_RETIRED' });
     await prisma.jobSource.updateMany({ where: { jobId: created.jobId }, data: { isActive: true, lastSeenAt: new Date() } });
     expect(await runRefresh(prisma)).toMatchObject({ reopened: 0, republished: 0, closedJobs: 0 });
     expect((await eventsOf(created.jobId)).map(e => e.type)).toEqual(['OPENED', 'WITHDRAWN']);
@@ -94,7 +94,7 @@ describe('refresh — closedAt, reopenedCount et événements', () => {
     const { jobId } = await upsertDeduplicated(prisma, input);
     const closedAt = new Date();
     await prisma.job.update({ where: { id: jobId }, data: { isActive: false, closedAt } });
-    await deactivateSources(prisma, { sourceKey: input.sourceKey }, { kind: 'WITHDRAWN', reason: 'SOURCE_RETIRED' });
+    await deactivateAdministrativeSources(prisma, { sourceKey: input.sourceKey }, { kind: 'WITHDRAWN', reason: 'SOURCE_RETIRED' });
     expect(await prisma.job.findUniqueOrThrow({ where: { id: jobId } })).toMatchObject({ isActive: false, closedAt, withdrawnAt: null });
     expect(await prisma.jobEvent.count({ where: { jobId, type: 'WITHDRAWN' } })).toBe(0);
   });

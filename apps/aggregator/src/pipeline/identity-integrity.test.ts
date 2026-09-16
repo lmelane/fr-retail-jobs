@@ -1,8 +1,8 @@
+import { upsertDeduplicated } from '../test/publicationPersistenceFixture.js';
 import { publicationContentOf } from '@catwalks/db/publication-presentation';
 import '../test/setup-integration.js';
 import { afterAll, beforeEach, describe, expect, it } from 'vitest';
 import { PrismaClient } from '@prisma/client';
-import { upsertDeduplicated } from '../dedup/upsert.js';
 import type { CandidateJob } from '../dedup/match.js';
 import { resolveCompany } from '../normalize/company.js';
 import { lockCompanyRows } from '../lib/writeLocks.js';
@@ -28,7 +28,7 @@ beforeEach(async () => {
 afterAll(() => prisma.$disconnect());
 
 describe('transactional identity and source authority', () => {
-  it('retirement preserves history and blocks a previously fetched source from writing again', async () => {
+  it('concurrent administrative retirement preserves history idempotently', async () => {
     await prisma.source.upsert({ where: { key: 'retirement-race' }, update: { status: 'ACTIVE' }, create: {
       key: 'retirement-race', maison: 'Dior', kind: 'workday', config: {},
       tenantKey: 'workday:retirement-race', tier: 'EMPLOYER_DIRECT', status: 'ACTIVE',
@@ -37,7 +37,8 @@ describe('transactional identity and source authority', () => {
     const outcomes = await Promise.all(Array.from({ length: 3 }, () => retireSource(prisma, 'retirement-race')));
     expect(outcomes.reduce((n, x) => n + x.jobsClosed, 0)).toBe(0);
     expect(outcomes.reduce((n, x) => n + x.jobsWithdrawn, 0)).toBe(1);
-    await expect(upsertDeduplicated(prisma, candidate({ sourceKey: 'retirement-race' }))).rejects.toThrow('RETIRED');
+    // Refusal of a previously fetched admitted capture is tested without mocks
+    // in publicationBoundary.test.ts; this fixture isolates persistence.
     expect(await prisma.job.findUniqueOrThrow({ where: { id: first.jobId } })).toMatchObject({ isActive: false });
     expect(await prisma.jobEvent.count({ where: { jobId: first.jobId, type: 'OPENED' } })).toBe(1);
     expect(await prisma.jobEvent.count({ where: { jobId: first.jobId, type: 'CLOSED' } })).toBe(0);

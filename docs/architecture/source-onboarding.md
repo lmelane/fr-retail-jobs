@@ -111,7 +111,7 @@ Une promotion répétée sur une source déjà ACTIVE vérifie à nouveau les po
 - Le [lecteur de règles](source-access.md) utilise maintenant l’identité réelle CatwalksBot, combine les groupes applicables et borne les comparaisons. Il calcule une observation ; il ne qualifie pas la portée de tout un adaptateur.
 - La porte d’accès exige une décision immuable liée à la révision et aux requêtes HTTP observées. `revisionBound: true` décrit ce contrat, même quand aucune décision n’existe. Le navigateur et les captures historiques sans provenance complète restent non certifiants.
 - Les certifications positives d’identité sont limitées aux trois contrats natifs qualifiés ci-dessus. Les domaines personnalisés, documents de groupe et autres familles exigent un contrat d’inspection adapté avant leur admission ; aucune preuve textuelle ne sert de contournement.
-- Les rôles employeur, groupe et éditeur, la réouverture explicite d’une source retirée, les paramètres privés d’accès et les anciens écrivains sans capture liée au registre restent des travaux distincts.
+- Les rôles employeur, groupe et éditeur, la réouverture explicite d’une source retirée, les paramètres privés d’accès et les preuves d’absence liées aux captures restent des travaux distincts. Les écrivains d’ingestion exigent désormais une capture admise liée au registre, y compris à la frontière transactionnelle des retraits : voir le [contrat d’ingestion](source-ingestion.md).
 - Un certificat calculé avec le lecteur local ne certifie pas une release Railway différente.
 
 `promotionGatesPass` indique que les portes actuelles permettent une transition ; ce champ ne constitue pas une attestation de préparation globale à la production. Les préconditions sont revérifiées lors de l’écriture.

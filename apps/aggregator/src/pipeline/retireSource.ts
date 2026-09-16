@@ -1,5 +1,5 @@
 import type { PrismaClient } from '@prisma/client';
-import { deactivateSources } from './deactivateSources.js';
+import { deactivateAdministrativeSources } from './deactivateSources.js';
 import { lockSourceWrites } from '../lib/writeLocks.js';
 
 export type RetireOptions = { externalIdPrefix?: string };
@@ -12,5 +12,5 @@ export async function retireSource(prisma: PrismaClient, sourceKey: string, opti
     await tx.source.updateMany({ where: { key: sourceKey }, data: { status: 'RETIRED' } });
   }, { maxWait: 10_000, timeout: 30_000 });
   const sourceWhere = { sourceKey, ...(prefix ? { externalId: { startsWith: prefix } } : {}) };
-  return { sourceKey, ...await deactivateSources(prisma, sourceWhere, { kind: 'WITHDRAWN', reason: 'SOURCE_RETIRED' }) };
+  return { sourceKey, ...await deactivateAdministrativeSources(prisma, sourceWhere, { kind: 'WITHDRAWN', reason: 'SOURCE_RETIRED' }) };
 }

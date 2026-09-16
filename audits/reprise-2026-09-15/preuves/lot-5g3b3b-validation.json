@@ -1,0 +1,55 @@
+{
+  "date": "2026-09-16",
+  "unit": 2585,
+  "integration": 761,
+  "api": 259,
+  "apiOptionalSkipped": 2,
+  "python": 11,
+  "testsPassed": 3616,
+  "freshMigrations": 69,
+  "types": "PASS",
+  "apiBuild": "PASS",
+  "appCounterproofs": 18,
+  "sqlCounterproofs": 4,
+  "restoredCounterproofTests": 65,
+  "runtime": {
+    "revision": "local-sha256:2863893eaaf12ec3719287d108d30b0f65b8f4edf88f692879900415f0a47edf",
+    "runtimeFiles": 282,
+    "workingAndVerifiedRuntimeExact": true,
+    "runtimeFileSetsExact": true
+  },
+  "nativeOffersObserved": 80,
+  "nativeColdPublicationRefusals": 80,
+  "nativePublicationRefusalReason": "PORTAL_OWNER_NOT_CERTIFIED",
+  "isolatedSourceActivatedThenPaused": true,
+  "productionSourcesActivated": 0,
+  "offersPublishedInIsolatedDatabase": 0,
+  "offersPublishedInProduction": 0,
+  "stockMigration": {
+    "sources": 536,
+    "accessNotesPreservedExactly": 536,
+    "offersUnchanged": 87607,
+    "representationsUnchanged": 90764,
+    "observationsUnchanged": 141933
+  },
+  "regressions": [
+    "no capture",
+    "unregistered capture",
+    "qualification probe",
+    "mutable caller input",
+    "revocation after archival",
+    "forged lifecycle",
+    "changed scope",
+    "expiry while waiting for locks"
+  ],
+  "productionTouched": false,
+  "gitPush": false,
+  "logsSha256": {
+    "lot5g3b3b-full-validation.log": "59d32ef637ad57e974da1c3a575fc872f5c860af64d9cc5d21493b4fb717c208",
+    "lot5g3b3b-api-build.log": "0df349d295ca78add53282593896ee56b1b3e3c29fef6807126a7f5bb94531d9",
+    "lot5g3b3b-counterproof-restored.log": "d9391796c53b3a456ecf3149d137fbdb52d6d858d6e64fccaa8fb9f3cf7e91d9",
+    "lot5g3b3b-live-s3.log": "2496dcbb32deab9c238a16479f918ce1cbedc16ab13f2926327e9ffbae0f6179",
+    "lot5g3b3b-stock-migrate.log": "70743afc904887b93bc16ab4276634fb3ca5d25501fee34b4336e8ab9515065a",
+    "lot5g3b3b-fresh-migrations.log": "367be2234daadfc369c2b57437e612e98fa2d3f52d2f11052e7c5f14fb7b7619"
+  }
+}

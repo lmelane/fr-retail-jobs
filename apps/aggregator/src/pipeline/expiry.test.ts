@@ -1,8 +1,8 @@
+import { upsertDeduplicated } from '../test/publicationPersistenceFixture.js';
 import { publicationFixture } from '../test/publication-fixture.js';
 import '../test/setup-integration.js';
 import { afterAll, beforeEach, describe, expect, it } from 'vitest';
 import { PrismaClient } from '@prisma/client';
-import { upsertDeduplicated } from '../dedup/upsert.js';
 import type { CandidateJob } from '../dedup/match.js';
 import { runRefresh, readRefreshPlan } from './refresh.js';
 import { publicJobWhere } from '@catwalks/db/availability';

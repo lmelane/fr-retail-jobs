@@ -153,3 +153,7 @@ Le budget mondial doit être recalculé pendant la qualification des sources à 
 ### Admission avant transport
 
 Une collecte destinée à l’ingestion conserve une ligne immuable `SourceIngestionAdmission`, créée atomiquement avec son batch. Elle lie la revue d’identité et la qualification technique ayant permis de démarrer ; le batch lie déjà sa décision d’accès. Le statut expose ces identifiants sans dossier privé. Une sonde de qualification n’a pas d’admission, et SQL interdit de lui en ajouter après sa transaction d’allocation. Les anciennes captures ne reçoivent aucune admission inventée. Le [contrat d’ingestion](source-ingestion.md) décrit la validation du nouveau résultat et les contrôles de publication.
+
+### Frontière de publication obligatoire
+
+Depuis 5G3B3B, l’écrivain d’observation d’ingestion exige les deux pointeurs batch/sortie et vérifie le corps archivé. Les écrivains publics refusent les captures sans révision du registre et les sondes sans admission. Le [contrat d’ingestion](source-ingestion.md) décrit les retenues, les exclusions séparées du RAW et la revalidation transactionnelle des retraits. Les anciennes observations sans capture demeurent lisibles et transférables en archive ; aucun nouveau parcours d’ingestion ne recrée ce format historique.

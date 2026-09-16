@@ -1,8 +1,8 @@
+import { upsertDeduplicated } from '../test/publicationPersistenceFixture.js';
 import '../test/setup-integration.js';
 import { randomUUID } from 'node:crypto';
 import { beforeEach, afterAll, describe, expect, it } from 'vitest';
 import { PrismaClient } from '@prisma/client';
-import { upsertDeduplicated } from '../dedup/upsert.js';
 import { applyPublicationGroups, planPublicationGroups } from '../dedup/repair.js';
 import type { CandidateJob } from '../dedup/match.js';
 import { icimsPublication } from '../test/fixtures/icimsPublication.js';

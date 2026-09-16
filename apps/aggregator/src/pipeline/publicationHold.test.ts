@@ -1,7 +1,7 @@
+import { archivePublicationHold } from '../test/publicationPersistenceFixture.js';
 import { clearOccupationLedger } from '../test/setup-integration.js';
 import { afterAll, describe, expect, it } from 'vitest';
 import { PrismaClient } from '@prisma/client';
-import { archivePublicationHold } from './publicationHold.js';
 import { toCandidate } from './ingest.js';
 import { isTrustedForAttestation } from './attestation.js';
 const db = new PrismaClient();
@@ -22,7 +22,7 @@ it('archives the real azert defect idempotently without public jobs and forbids 
 });
 
 it('withdraws only the confirmed representation, preserves history, and a newer attestation wins', async () => {
-  const { upsertDeduplicated } = await import('../dedup/upsert.js');
+  const { upsertDeduplicated } = await import('../test/publicationPersistenceFixture.js');
   const { resolveCompany } = await import('../normalize/company.js');
   const key = 'jobaffinity-withdrawal-test';
   await db.source.upsert({ where: { key }, update: { status: 'ACTIVE' }, create: { key, maison: 'Intersport', kind: 'jobaffinity-wordpress', tenantKey: key, tier: 'ATS_OFFICIAL', config: {}, status: 'ACTIVE' } });
@@ -47,7 +47,7 @@ it('withdraws only the confirmed representation, preserves history, and a newer 
 });
 
 it('honours native isListed=false as withdrawal, preserves evidence and republishes without a repost', async()=>{
-  const { upsertDeduplicated } = await import('../dedup/upsert.js');
+  const { upsertDeduplicated } = await import('../test/publicationPersistenceFixture.js');
   const { resolveCompany } = await import('../normalize/company.js');
   const key='ashby-unlisted-witness';
   await db.source.upsert({where:{key},update:{status:'ACTIVE'},create:{key,maison:'Polène',kind:'ashby',tenantKey:key,tier:'ATS_OFFICIAL',config:{},status:'ACTIVE'}});
@@ -70,7 +70,7 @@ it('honours native isListed=false as withdrawal, preserves evidence and republis
 });
 
 it('withholds publication on a reviewed OUT_OF_SCOPE decision: withdrawn (never closed), still collected, never re-attested', async () => {
-  const { upsertDeduplicated } = await import('../dedup/upsert.js');
+  const { upsertDeduplicated } = await import('../test/publicationPersistenceFixture.js');
   const { resolveCompany } = await import('../normalize/company.js');
   const { applyScopeExclusion, loadScopeExclusions } = await import('./scopeDecisions.js');
   const key = 'aptar-scope-witness';

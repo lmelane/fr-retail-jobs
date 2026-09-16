@@ -1,7 +1,7 @@
+import { upsertDeduplicated } from '../test/publicationPersistenceFixture.js';
 import '../test/setup-integration.js';
 import { describe, it, expect, beforeEach, afterAll } from 'vitest';
 import { PrismaClient } from '@prisma/client';
-import { upsertDeduplicated } from './upsert.js';
 import { resolveCompany } from '../normalize/company.js';
 import type { CandidateJob } from './match.js';
 

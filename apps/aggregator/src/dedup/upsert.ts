@@ -21,6 +21,7 @@ import { Prisma, type PrismaClient } from '@prisma/client';
 import { selectApplySource, SOURCE_PRIORITY } from '@catwalks/db/publications';
 import { hasRequisitionConflict } from './postingIdentity.js';
 import { blockingKey, provenPublicationGroup, type CandidateJob } from './match.js';
+import { enforcePublicationPolicy } from '../capture/publicationPolicy.js';
 import { archiveAdapterOutput } from '../capture/observations.js';
 import { recordPublicationAttachment, reviewedPublicationGroup } from './decisions.js';
 import { classifySector, sectorForSource, type Sector } from '../normalize/sector.js';
@@ -71,6 +72,7 @@ export async function upsertDeduplicated(
   candidate: CandidateJob & { companyId: string },
   catalogue?: CompiledOccupationTaxonomy,
 ): Promise<UpsertResult> {
+  candidate = structuredClone(candidate);
   const nativeCapture = await archiveAdapterOutput(prisma, candidate);
   const facts = readSourceFacts(candidate.atsType ?? 'GENERIC_JSONLD', candidate.raw);
   candidate = { ...candidate, ...projectSourceFacts(facts), sourceFacts: facts };
@@ -81,9 +83,7 @@ export async function upsertDeduplicated(
       return await prisma.$transaction(async tx => {
         await lockEmployerCatalogue(tx);
         await lockSourceWrites(tx, candidate.sourceKey);
-        if (nativeCapture) await requireCurrentCaptureRevision(tx, nativeCapture.batch);
-        const source = await tx.source.findUnique({ where: { key: candidate.sourceKey }, select: { status: true } });
-        if (source?.status === 'RETIRED') throw new Error(`Source ${candidate.sourceKey} is RETIRED`);
+        await requireCurrentCaptureRevision(tx, nativeCapture.batch);
         // Read identity/observation state only after serializing this upstream
         // posting; another writer may otherwise create it between lookup and lock.
         const entryKey = JSON.stringify(['entry', candidate.sourceKey, candidate.externalId]);
@@ -109,6 +109,8 @@ export async function upsertDeduplicated(
         await lockCompanyRows(tx, [target?.id, current?.job?.companyId].filter((id): id is string => !!id));
         assertSourceRunning();
         const currentTaxonomy = await lockOccupationTaxonomy(tx, taxonomy);
+        await requireCurrentCaptureRevision(tx, nativeCapture.batch);
+        await enforcePublicationPolicy(tx, nativeCapture, candidate, 'PUBLISH');
         const result = await upsertInTransaction(tx, resolved, resolution, currentTaxonomy, nativeCapture);
         assertSourceRunning(); // Throw inside the transaction so cancellation rolls writes back.
         return result;
@@ -238,8 +240,8 @@ async function upsertInTransaction(
     // A historical hold can be lifted only by a new, archived native capture.
     // The same source ID survives; its former group is never assumed correct.
     const source = await prisma.source.findUniqueOrThrow({ where: { key: candidate.sourceKey } });
-    const batch = nativeCapture?.batch;
-    if (!batch || !candidate.captureOutputId || batch.startedAt <= ownEntry.quarantinedAt! ||
+    const batch = nativeCapture.batch;
+    if (!candidate.captureOutputId || batch.startedAt <= ownEntry.quarantinedAt! ||
       candidate.captureOutputId === ownEntry.captureOutputId) throw new Error('QUARANTINE_REQUIRES_NEW_NATIVE_CAPTURE');
     if (batch.configHash !== evidenceHash(source.config) || batch.sourceKind !== KIND_TO_ATS[source.kind] || batch.readerRevision !== captureReaderRevision() ||
       nativeCapture.captured.publicationHold || nativeCapture.captured.publicationWithdrawnAt) throw new Error('QUARANTINE_CAPTURE_NOT_QUALIFIED');

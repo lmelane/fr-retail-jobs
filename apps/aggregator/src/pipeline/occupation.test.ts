@@ -1,3 +1,4 @@
+import { upsertDeduplicated } from "../test/publicationPersistenceFixture.js";
 import "../test/setup-integration.js";
 import { beforeEach, afterAll, describe, it, expect } from "vitest";
 import { PrismaClient } from "@prisma/client";
@@ -7,7 +8,6 @@ import {
   type OccupationManifest,
 } from "@catwalks/db/occupations";
 import seed from "../../../../packages/db/data/occupations-v1.json" with { type: "json" };
-import { upsertDeduplicated } from "../dedup/upsert.js";
 import type { CandidateJob } from "../dedup/match.js";
 import { classifyJobs } from "./classifyJobs.js";
 import { writeOccupationBatch } from "../occupation/batch.js";

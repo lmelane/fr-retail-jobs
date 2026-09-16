@@ -2,9 +2,11 @@ import '../test/setup-integration.js';
 import { afterAll, afterEach, expect, it, vi } from 'vitest';
 import { PrismaClient } from '@prisma/client';
 import { randomUUID } from 'node:crypto';
-import { archiveAdapterOutput, readAdapterObservation } from '../capture/observations.js';
+import { readAdapterObservation } from '../capture/observations.js';
 import { planRetention, applyRetention } from '../retention/retention.js';
 import { storeRawBlob } from '../capture/store.js';
+import { digestBytes } from '../capture/context.js';
+import { PIPELINE_VERSION } from './version.js';
 import { MemoryStore } from '../test/memoryObjectStore.js';
 
 const db = new PrismaClient();
@@ -13,7 +15,8 @@ afterEach(() => vi.restoreAllMocks());
 async function oldObservation() {
   const sourceKey = `retention-${randomUUID()}`;
   const raw = { title: 'Client Advisor', unknownField: randomUUID(), locations: ['Paris', 'Lyon'] };
-  await archiveAdapterOutput(db, { sourceKey, externalId: '1', raw });
+  // Historical rows predate native capture; the live writer no longer creates them.
+  await db.sourceObservation.create({ data: { sourceKey, externalId: '1', raw, contentHash: digestBytes(JSON.stringify(raw)), pipelineVersion: PIPELINE_VERSION } });
   const row = await db.sourceObservation.findFirstOrThrow({ where: { sourceKey } });
   await db.sourceObservation.update({ where: { id: row.id }, data: { observedAt: new Date(Date.now() - 30 * 86_400_000) } });
   return { sourceKey, raw, row };

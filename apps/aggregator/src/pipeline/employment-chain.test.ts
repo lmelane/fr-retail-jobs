@@ -1,8 +1,8 @@
+import { upsertDeduplicated } from "../test/publicationPersistenceFixture.js";
 import "../test/setup-integration.js";
 import { it, expect, beforeEach, afterAll } from "vitest";
 import { PrismaClient } from "@prisma/client";
 import { toCandidate } from "./ingest.js";
-import { upsertDeduplicated } from "../dedup/upsert.js";
 import { resolveCanonicalDimensions } from "../trust/resolve.js";
 import { previewSectors, applySectors } from "../sectors/review.js";
 const p = new PrismaClient();

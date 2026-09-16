@@ -1,8 +1,8 @@
+import { upsertDeduplicated } from '../test/publicationPersistenceFixture.js';
 import '../test/setup-integration.js';
 import { afterAll, beforeEach, describe, expect, it } from 'vitest';
 import { PrismaClient } from '@prisma/client';
 import { createHash } from 'node:crypto';
-import { upsertDeduplicated } from '../dedup/upsert.js';
 import { resolveCompany } from '../normalize/company.js';
 import { normalizedEmployerName } from '../normalize/employerName.js';
 import { buildEmployerRepair, applyEmployerRepair, type EmployerRepairSpec } from '../identity/repair.js';

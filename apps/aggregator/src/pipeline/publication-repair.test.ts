@@ -546,12 +546,12 @@ describe('native publications without public presentation', () => {
   });
 
   it('retires quarantined observations while respecting an explicit Job scope', async () => {
-    const { deactivateSources } = await import('./deactivateSources.js');
+    const { deactivateAdministrativeSources } = await import('./deactivateSources.js');
     const { good, held, request } = await mixed();
     await apply(await planPublicationGroups(db, request));
     const disposition = { kind: 'WITHDRAWN' as const, reason: 'SOURCE_RETIRED' as const };
-    expect(await deactivateSources(db, { sourceKey: held.source.sourceKey }, disposition, { id: good.job.id })).toMatchObject({ sourcesDeactivated: 0 });
-    expect(await deactivateSources(db, { sourceKey: held.source.sourceKey }, disposition)).toMatchObject({ sourcesDeactivated: 1, jobsClosed: 0, jobsWithdrawn: 0 });
+    expect(await deactivateAdministrativeSources(db, { sourceKey: held.source.sourceKey }, disposition, { id: good.job.id })).toMatchObject({ sourcesDeactivated: 0 });
+    expect(await deactivateAdministrativeSources(db, { sourceKey: held.source.sourceKey }, disposition)).toMatchObject({ sourcesDeactivated: 1, jobsClosed: 0, jobsWithdrawn: 0 });
     expect((await db.job.findUniqueOrThrow({ where: { id: good.job.id } })).isActive).toBe(true);
     expect((await db.jobSource.findUniqueOrThrow({ where: { id: held.source.id } })).quarantinedAt).not.toBeNull();
   });

@@ -1,3 +1,8 @@
+import { readCapturedPublication } from '../capture/publication.js';
+import { enforcePublicationPolicy, type PublicationInput } from '../capture/publicationPolicy.js';
+import { requireCurrentCaptureRevision } from '../connectors/sourceRevision.js';
+import { objectStoreConfigured, objectStoreFromEnv } from '../retention/objectStore.js';
+import { publicationDisposition } from './publicationDisposition.js';
 import { lockOccupationTaxonomy } from '@catwalks/db/occupations';
 import { publicationJobPatch } from '../publication/presentation.js';
 import type { Prisma, PrismaClient } from '@prisma/client';
@@ -11,13 +16,36 @@ import { recordOccupationObservation } from '../occupation/persist.js';
 import { assertSourceRunning } from '../lib/sourceBudget.js';
 import { deactivateJob, type DeactivationDisposition } from './lifecycle.js';
 
-/** Close source attestations without deleting offer URLs or their history. */
-export async function deactivateSources(
+/** Administrative retirement and generation cleanup preserve offer URLs and history.
+ * Native observations must use deactivateCapturedPublication instead. */
+export async function deactivateAdministrativeSources(
   prisma: PrismaClient,
   sourceWhere: Prisma.JobSourceWhereInput,
-  disposition: DeactivationDisposition,
+  disposition: { kind: 'CLOSED' } | { kind: 'WITHDRAWN'; reason: 'SOURCE_RETIRED' },
   jobWhere: Prisma.JobWhereInput = {},
 ) {
+  return deactivate(prisma, sourceWhere, disposition, jobWhere);
+}
+
+/** Native withdrawal has its own mandatory evidence boundary. The caller cannot
+ * supply a broader filter or an unrelated disposition. */
+export async function deactivateCapturedPublication(prisma: PrismaClient, job: PublicationInput) {
+  const input = structuredClone(job);
+  const disposition = publicationDisposition(input.publicationHold ?? '');
+  if (!disposition || !input.publicationWithdrawnAt) throw new Error('Captured withdrawal requires a disposition and observation time');
+  const capture = await readCapturedPublication(prisma, input, objectStoreConfigured() ? objectStoreFromEnv() : undefined);
+  return deactivate(prisma, { sourceKey: input.sourceKey, externalId: input.externalId,
+    lastSeenAt: { lt: input.publicationWithdrawnAt } }, disposition, {}, { input, capture });
+}
+
+type Withdrawal = { input: PublicationInput; capture: Awaited<ReturnType<typeof readCapturedPublication>> };
+async function requireWithdrawal(tx: Prisma.TransactionClient, withdrawal: Withdrawal) {
+  await requireCurrentCaptureRevision(tx, withdrawal.capture.batch);
+  await enforcePublicationPolicy(tx, withdrawal.capture, withdrawal.input, 'HOLD');
+}
+
+async function deactivate(prisma: PrismaClient, sourceWhere: Prisma.JobSourceWhereInput,
+  disposition: DeactivationDisposition, jobWhere: Prisma.JobWhereInput, withdrawal?: Withdrawal) {
   const stats = { sourcesDeactivated: 0, jobsClosed: 0, jobsWithdrawn: 0, jobsKept: 0, urlsReassigned: 0 };
   const planned = await prisma.job.findMany({
     where: { ...jobWhere, sources: { some: { ...sourceWhere, isActive: true } } },
@@ -26,7 +54,11 @@ export async function deactivateSources(
   for (const plan of planned) {
     assertSourceRunning();
     const delta = await prisma.$transaction(async tx => {
+      if (withdrawal) {
+        await lockSourceWrites(tx, withdrawal.input.sourceKey);
+      }
       await lockCompanyRows(tx, [plan.companyId]);
+      if (withdrawal) await requireWithdrawal(tx, withdrawal);
       assertSourceRunning();
       const job = await tx.job.findFirst({
         where: { ...jobWhere, id: plan.id, companyId: plan.companyId },
@@ -64,6 +96,7 @@ export async function deactivateSources(
     const batchId = `quarantine-deactivation:${randomUUID()}`;
     for (const item of detached) stats.sourcesDeactivated += await prisma.$transaction(async tx => {
       await lockSourceWrites(tx, item.sourceKey, true);
+      if (withdrawal) await requireWithdrawal(tx, withdrawal);
       assertSourceRunning();
       const source = await tx.jobSource.findFirst({ where: { AND: [sourceWhere, { id: item.id, jobId: null, isActive: true }] }, omit: { raw: true } });
       if (!source) return 0;

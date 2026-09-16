@@ -1,0 +1,8 @@
+{
+  "freshMigrations": 69,
+  "lastMigration": "20260916140000_posting_scope_write_lock",
+  "migrationSqlSha256": "0566ef4a8a71ac4d6d55d9755c557baf5e9c67c606040f8d2b4c47ef6c271dd5",
+  "sameSqlAsFullSuite": true,
+  "scopeWriteGuardEnabled": true,
+  "productionTouched": false
+}

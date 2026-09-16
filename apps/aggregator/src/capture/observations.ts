@@ -10,8 +10,7 @@ export async function archiveAdapterOutput(db: Prisma.TransactionClient, input: 
   sourceKey: string; externalId: string; url?: string; raw?: unknown; captureBatchId?: string; captureOutputId?: string; publicationHold?: string;
 }) {
   if (Boolean(input.captureBatchId) !== Boolean(input.captureOutputId)) throw new Error('Adapter output requires both batch and output provenance');
-  const nativeCapture = input.captureBatchId
-    ? await readCapturedPublication(db, input, objectStoreConfigured() ? objectStoreFromEnv() : undefined) : undefined;
+  const nativeCapture = await readCapturedPublication(db, input, objectStoreConfigured() ? objectStoreFromEnv() : undefined);
   if (input.raw === undefined || input.raw === null) return nativeCapture;
   const contentHash = digestBytes(JSON.stringify(input.raw));
   const annotationHash = input.publicationHold ? digestBytes(JSON.stringify({ publicationHold: input.publicationHold })) : '';

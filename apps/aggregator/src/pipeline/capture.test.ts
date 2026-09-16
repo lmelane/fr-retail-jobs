@@ -24,7 +24,7 @@ afterEach(() => { vi.restoreAllMocks(); vi.unstubAllGlobals(); });
 afterAll(() => db.$disconnect());
 
 describe('native extraction evidence', () => {
-  it('commits exact native bytes before parsing and links the produced publication to its batch', async () => {
+  it('commits exact native bytes before parsing but cannot publish an unregistered probe', async () => {
     const source = key();
     vi.stubGlobal('fetch', vi.fn(async () => new Response(payload, { headers: { 'content-type': 'application/json',
       'set-cookie': 'JSESSIONID=private-session; Path=/', authorization: 'private-header' } })));
@@ -39,8 +39,8 @@ describe('native extraction evidence', () => {
     expect(batch.captures[0].cookieNames).toEqual(['JSESSIONID']);
     const candidate = { ...result.jobs[0], company: source, companyId: source, sourceKey: source,
       sourceTier: 'EMPLOYER_DIRECT' as const, atsType: 'GENERIC_JSONLD' as const, country: 'FR', city: 'Paris' };
-    const inserted = await upsertDeduplicated(db, candidate);
-    expect(await db.jobSource.findFirstOrThrow({ where: { jobId: inserted.jobId } })).toMatchObject({ captureBatchId: batch.id, captureOutputId: result.jobs[0].captureOutputId });
+    await expect(upsertDeduplicated(db, candidate)).rejects.toThrow('registered native capture');
+    expect(await db.jobSource.count({ where: { sourceKey: source } })).toBe(0);
     expect(await db.sourceObservation.findFirstOrThrow({ where: { sourceKey: source } })).toMatchObject({ captureBatchId: batch.id, captureOutputId: result.jobs[0].captureOutputId });
   });
 

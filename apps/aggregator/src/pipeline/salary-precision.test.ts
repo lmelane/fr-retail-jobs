@@ -1,9 +1,9 @@
+import { upsertDeduplicated } from '../test/publicationPersistenceFixture.js';
 import '../test/setup-integration.js';
 import { afterAll, describe, expect, it } from 'vitest';
 import { Prisma, PrismaClient } from '@prisma/client';
 import { randomUUID } from 'node:crypto';
 import { storedAmount, publicAmount } from '@catwalks/db/money';
-import { upsertDeduplicated } from '../dedup/upsert.js';
 
 const db = new PrismaClient();
 afterAll(() => db.$disconnect());
