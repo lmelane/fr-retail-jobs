@@ -177,7 +177,8 @@ Les nouvelles revues d’identité portent explicitement la révision examinée 
 - **5G2A** : inspecter hors réseau les références HTML vers le tenant et le site ATS exacts, avec premiers contrats Ashby/Recruitee/Workday et motifs explicites pour les autres. [Bilan](lot-5g2a.md).
 - **5G2B** : provenance obligatoire de la décision humaine, suppression du dossier textuel comme autorité, projection compacte et conservation historique. Voir le [contrat et les validations](lot-5g2b.md).
 - **5G2C** : étendre les contrats natifs aux autres familles à partir de captures officielles, qualifier les domaines personnalisés et documents de groupe. Un nom, un commentaire ou une sous-chaîne ne suffisent pas.
-- **5G3** : remplacer les champs mutables d’accès par une décision immuable portant sur les requêtes et l’identité de collecteur réellement utilisées ; distinguer employeur, groupe et éditeur.
+- **5G3A** : préserver l’employeur natif explicite, limiter l’inférence depuis le portail aux champs absents et journaliser la revue correspondante. Le lecteur JSON-LD transmet le nom de l’organisation déclarée, sans le remplacer par son éditeur. [Bilan](lot-5g3a.md).
+- **5G3B** : remplacer les champs mutables d’accès par une décision immuable portant sur les requêtes et l’identité de collecteur réellement utilisées. Compléter la représentation des rôles employeur, groupe et éditeur au-delà de leur séparation dans la résolution des offres.
 
 ## Lot 6. Recherche réellement bornée par marché
 

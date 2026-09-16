@@ -28,6 +28,8 @@ Le [lot 4H3](../../audits/reprise-2026-09-15/lot-4h3.md) valide 3 207 tests agr�
 
 Le [lot 5D](../../audits/reprise-2026-09-15/lot-5d.md) remplace le compteur manuel de promotion par une validation native rejouable. Le [lot 5E](../../audits/reprise-2026-09-15/lot-5e.md) lie les revues d’identité à la révision exacte du registre et à un ordre SQL. Les 112 revues historiques du clone sont conservées sans liaison inventée et doivent être réexaminées avant certification. Le [lot 5F](../../audits/reprise-2026-09-15/lot-5f.md) unifie les commandes des sources et supprime les orchestrations anciennes ainsi que la colonne de volume manuel. Les lots [5G2A](../../audits/reprise-2026-09-15/lot-5g2a.md) et [5G2B](../../audits/reprise-2026-09-15/lot-5g2b.md) inspectent les pages natives archivées et rendent cette provenance obligatoire pour toute nouvelle certification. Les contrats positifs couvrent Ashby, Recruitee et les sites Workday qualifiés ; les autres familles, l’accès et le contrôle des ingestions existantes restent ouverts.
 
+Le [lot 5G3A](../../audits/reprise-2026-09-15/lot-5g3a.md) supprime le rattachement automatique de tout nouveau libellé employeur au propriétaire d’un portail SINGLE_BRAND. Les noms natifs gardent leur identité propre à la source ; les alias revus restent applicables. L’inférence d’un employeur absent exige une revue actuelle, dont l’identifiant est conservé. Le lecteur JSON-LD transmet maintenant `hiringOrganization.name` avec sa provenance. Les affectations historiques ne sont pas réécrites par ce lot.
+
 ## Commandes de validation
 
 Depuis la racine du monorepo, après `npm ci --workspaces --include-workspace-root` :

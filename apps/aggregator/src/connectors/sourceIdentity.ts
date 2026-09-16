@@ -154,7 +154,9 @@ export function portalScopeOf(source: RevisionIdentitySource, review: IdentityDe
   return review?.portalScope === 'SINGLE_BRAND' || review?.portalScope === 'MULTI_BRAND' ? review.portalScope : null;
 }
 
-export async function certifiedPortalScope(db: Pick<Prisma.TransactionClient, '$queryRaw'>, sourceKey: string, now = new Date()): Promise<'SINGLE_BRAND' | 'MULTI_BRAND' | null> {
+export type CertifiedPortalIdentity = { scope: 'SINGLE_BRAND' | 'MULTI_BRAND'; ownerName: string; ownerKey: string; sourceRevisionId: string; reviewId: string };
+
+export async function certifiedPortalIdentity(db: Pick<Prisma.TransactionClient, '$queryRaw'>, sourceKey: string, now = new Date()): Promise<CertifiedPortalIdentity | null> {
   // One SQL snapshot; omit the historical body before it reaches the driver.
   const rows = await db.$queryRaw<(Source & { configText: string; reviewText: string | null })[]>`
     SELECT s.*, s.config::text AS "configText",
@@ -172,5 +174,10 @@ export async function certifiedPortalScope(db: Pick<Prisma.TransactionClient, '$
   review.sequence = review.sequence == null ? null : BigInt(review.sequence);
   review.checkedAt = new Date(review.checkedAt);
   review.createdAt = new Date(review.createdAt);
-  return portalScopeOf({ ...source, config: JSON.parse(configText) }, review, now);
+  const scope = portalScopeOf({ ...source, config: JSON.parse(configText) }, review, now);
+  return scope ? { scope, ownerName: source.maison.trim(), ownerKey: review.subjectKey, sourceRevisionId: source.currentRevisionId, reviewId: review.id } : null;
+}
+
+export async function certifiedPortalScope(db: Pick<Prisma.TransactionClient, '$queryRaw'>, sourceKey: string, now = new Date()): Promise<'SINGLE_BRAND' | 'MULTI_BRAND' | null> {
+  return (await certifiedPortalIdentity(db, sourceKey, now))?.scope ?? null;
 }

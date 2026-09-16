@@ -14,6 +14,12 @@ const EMPLOYER_ABSENT_HOLDS = new Set(['WORKDAY_EMPLOYER_ABSENT_IN_DETAIL']);
  */
 export function employerFromCertifiedScope(job: NormalizedJob, ownerLabel: string, scope: 'SINGLE_BRAND' | 'MULTI_BRAND' | null): NormalizedJob {
   if (!job.publicationHold || !EMPLOYER_ABSENT_HOLDS.has(job.publicationHold) || scope !== 'SINGLE_BRAND' || !ownerLabel.trim()) return job;
+  if (job.company?.trim() || job.employerEvidence?.rawName.trim()) return job;
   const { publicationHold: _hold, ...rest } = job;
   return { ...rest, company: undefined, employerEvidence: { rawName: ownerLabel.trim(), path: CERTIFIED_SCOPE_PATH, rule: CERTIFIED_SCOPE_RULE } };
+}
+
+/** Only these explicit pipeline origins identify a registry-derived employer. */
+export function isPortalEmployerOrigin(origin: string | undefined): boolean {
+  return origin === 'SOURCE_CATALOGUE_LABEL' || origin === `${CERTIFIED_SCOPE_PATH}:${CERTIFIED_SCOPE_RULE}`;
 }

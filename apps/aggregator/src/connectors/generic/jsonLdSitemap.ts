@@ -191,6 +191,13 @@ export function normalizeJobPosting(
   const region = text(address?.addressRegion);
   const postalCode = text(address?.postalCode);
   const streetAddress = text(address?.streetAddress);
+  // The posting's organization is distinct from its publisher or source owner.
+  // Keep the exact native label as evidence; unresolved structures must not
+  // silently become a catalogue-owner inference.
+  const organization = node.hiringOrganization;
+  const rawEmployerName = organization && !Array.isArray(organization) && typeof organization.name === 'string'
+    ? organization.name : undefined;
+  const company = text(rawEmployerName);
 
   // addressCountry is either "FR" or { name: "France" }.
   const rawCountry = address?.addressCountry;
@@ -231,6 +238,9 @@ export function normalizeJobPosting(
   return {
     externalId,
     title,
+    company,
+    ...(company ? { employerEvidence: { rawName: rawEmployerName!, path: 'hiringOrganization.name', rule: 'HIRING_ORGANIZATION_LABEL' } }
+      : organization == null ? {} : { publicationHold: 'JSONLD_EMPLOYER_NOT_RESOLVED' }),
     location: [city, region, postalCode].filter(Boolean).join(', ') || streetAddress || undefined,
     city,
     region,

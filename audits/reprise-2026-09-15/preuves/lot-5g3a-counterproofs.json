@@ -1,0 +1,83 @@
+{
+  "mutations": [
+    {
+      "name": "discard-native-jsonld-employer",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "2fc9e68db48e38f3aa146ab820b3915b5b45b26ef34123c9b5bfad24d9317d4c"
+    },
+    {
+      "name": "infer-owner-for-unresolved-jsonld-employer",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "2fc9e68db48e38f3aa146ab820b3915b5b45b26ef34123c9b5bfad24d9317d4c"
+    },
+    {
+      "name": "publisher-as-jsonld-employer",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "2fc9e68db48e38f3aa146ab820b3915b5b45b26ef34123c9b5bfad24d9317d4c"
+    },
+    {
+      "name": "blanket-owner-for-native-label",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "eef22c8956591f0e5d472b048510e79fed6b53a8436751003f06a4a73b734910"
+    },
+    {
+      "name": "overwrite-named-held-posting",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "18da5684fe111ff3656186b740a3b16d7831e4a5df8e253d21e7009bf5ca00ee"
+    },
+    {
+      "name": "multi-brand-owner-inference",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "eef22c8956591f0e5d472b048510e79fed6b53a8436751003f06a4a73b734910"
+    },
+    {
+      "name": "unreviewed-owner-inference",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "eef22c8956591f0e5d472b048510e79fed6b53a8436751003f06a4a73b734910"
+    },
+    {
+      "name": "strip-native-legal-name",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "eef22c8956591f0e5d472b048510e79fed6b53a8436751003f06a4a73b734910"
+    },
+    {
+      "name": "name-heuristic-holds-unknown-native-label",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "eef22c8956591f0e5d472b048510e79fed6b53a8436751003f06a4a73b734910"
+    },
+    {
+      "name": "replace-existing-employer-by-inference",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "eef22c8956591f0e5d472b048510e79fed6b53a8436751003f06a4a73b734910"
+    },
+    {
+      "name": "lose-owner-review-provenance",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "eef22c8956591f0e5d472b048510e79fed6b53a8436751003f06a4a73b734910"
+    },
+    {
+      "name": "registry-alias-bypasses-owner-certification",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "eef22c8956591f0e5d472b048510e79fed6b53a8436751003f06a4a73b734910"
+    },
+    {
+      "name": "lose-inferred-employer-origin",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "18da5684fe111ff3656186b740a3b16d7831e4a5df8e253d21e7009bf5ca00ee"
+    }
+  ],
+  "restoredTests": "passed"
+}

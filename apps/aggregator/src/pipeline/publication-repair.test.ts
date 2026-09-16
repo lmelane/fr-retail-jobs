@@ -295,7 +295,7 @@ describe('native publications without public presentation', () => {
   }
   async function reobserve(held: Awaited<ReturnType<typeof publication>>, options: { hold?: string; config?: Record<string, unknown>; missingDescription?: boolean } = {}) {
     const { toCandidate } = await import('./ingest.js');
-    const raw = { ...(held.source.raw as Record<string, unknown>), ...(options.missingDescription ? {} : { description: 'Native recovered duties' }) };
+    const raw = { ...(held.source.raw as Record<string, unknown>), hiringOrganization: { '@type': 'Organization', name: 'Repair witness' }, ...(options.missingDescription ? {} : { description: 'Native recovered duties' }) };
     vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify(raw))));
     const result = await captureExtraction(db, held.source.sourceKey, options.config ?? {}, undefined, async () => {
       const observed = await fetchJson<typeof raw>(`https://repair.example/reobserve/${held.source.id}`);

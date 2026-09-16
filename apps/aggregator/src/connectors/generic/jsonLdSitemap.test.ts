@@ -51,6 +51,33 @@ describe('normalizeJobPosting — lieu', () => {
   });
 });
 
+describe('native JSON-LD employer', () => {
+  it('preserves the explicit legal name and its RAW provenance independently of publisher', () => {
+    const raw = { title: 'Client advisor', hiringOrganization: { name: '  Retail France S.A.R.L.  ' }, publisher: { name: 'Job board' } };
+    const before = JSON.stringify(raw);
+    const job = normalizeJobPosting(raw, 'https://example.com/job/1')!;
+    expect(job.company).toBe('Retail France S.A.R.L.');
+    expect(job.employerEvidence).toEqual({ rawName: '  Retail France S.A.R.L.  ', path: 'hiringOrganization.name', rule: 'HIRING_ORGANIZATION_LABEL' });
+    expect(job.raw).toBe(raw);
+    expect(JSON.stringify(raw)).toBe(before);
+    expect(job.publicationHold).toBeUndefined();
+  });
+
+  it.each([{}, { name: '' }, { name: '-' }, { name: 42 }, 'Publisher label', [{ name: 'House A' }, { name: 'House B' }]])('holds unresolved declared organizations without substituting a publisher (%j)', hiringOrganization => {
+    const job = normalizeJobPosting({ title: 'Advisor', hiringOrganization, publisher: { name: 'Publisher' } }, 'https://example.com/job/1')!;
+    expect(job.company).toBeUndefined();
+    expect(job.employerEvidence).toBeUndefined();
+    expect(job.publicationHold).toBe('JSONLD_EMPLOYER_NOT_RESOLVED');
+  });
+
+  it('keeps an absent organization absent, without deriving it from publisher', () => {
+    const job = normalizeJobPosting({ title: 'Advisor', publisher: { name: 'Publisher' } }, 'https://example.com/job/1')!;
+    expect(job.company).toBeUndefined();
+    expect(job.employerEvidence).toBeUndefined();
+    expect(job.publicationHold).toBeUndefined();
+  });
+});
+
 describe('fetchSitemapUrls — index mal déclaré', () => {
   /**
    * Selfridges (2026-09-06) : sitemap.xml liste 5 sitemaps enfants mais les
@@ -105,6 +132,8 @@ describe('fetchJobFromPage — la description la plus riche de la page (g6, 2026
     expect(job?.description).toContain('ROLE');
     expect(job?.description).toContain('• ');
     expect(job?.description).not.toMatch(/^Fondée en 1961/);
+    expect(job?.company).toBe('Kering');
+    expect(job?.employerEvidence).toEqual({ rawName: 'Kering', path: 'hiringOrganization.name', rule: 'HIRING_ORGANIZATION_LABEL' });
   });
 
   it('un JSON-LD complet n’est pas évincé par un bloc microdata étranger à l’offre', () => {

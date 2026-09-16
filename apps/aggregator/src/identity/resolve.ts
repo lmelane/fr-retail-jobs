@@ -1,4 +1,5 @@
-import { sourceIdentityHash, certifiedPortalScope } from '../connectors/sourceIdentity.js';
+import { isPortalEmployerOrigin } from './portalEmployer.js';
+import { sourceIdentityHash, certifiedPortalIdentity } from '../connectors/sourceIdentity.js';
 import { EmployerIdentityReviewRequired } from './errors.js';
 import { createHash } from 'node:crypto';
 import { Prisma } from '@prisma/client';
@@ -10,7 +11,7 @@ import { PIPELINE_VERSION } from '../pipeline/version.js';
 type Company = Prisma.CompanyGetPayload<Record<string, never>>;
 export type EmployerResolution = {
   company: Company | null;
-  rule: 'REVIEWED_ALIAS' | 'REVIEWED_MERGE' | 'LEGACY_UNREVIEWED' | 'REVIEW_REQUIRED' | 'GROUP_LABEL_KEPT_HOUSE' | 'CERTIFIED_SINGLE_BRAND_PORTAL';
+  rule: 'REVIEWED_ALIAS' | 'REVIEWED_MERGE' | 'NATIVE_SOURCE_LABEL' | 'LEGACY_UNREVIEWED' | 'REVIEW_REQUIRED' | 'GROUP_LABEL_KEPT_HOUSE' | 'CERTIFIED_SINGLE_BRAND_PORTAL';
   rawEmployerName: string;
   normalizedEmployerName: string;
   aliasId?: string;
@@ -35,6 +36,23 @@ export async function resolveEmployer(tx: Prisma.TransactionClient, candidate: C
   const rawEmployerName = candidate.rawEmployerName ?? candidate.company;
   const normalized = normalizedEmployerName(rawEmployerName);
   if (!normalized) throw new Error(`Empty employer label: ${candidate.sourceKey}/${candidate.externalId}`);
+  // Registry labels are an inference, never a native employer or a label alias.
+  // Read the owner and its certification from the same SQL snapshot.
+  if (isPortalEmployerOrigin(candidate.employerLabelOrigin)) {
+    const identity = await certifiedPortalIdentity(tx, candidate.sourceKey);
+    if (!identity || identity.scope !== 'SINGLE_BRAND' || !identity.ownerName) {
+      throw new EmployerIdentityReviewRequired(candidate.sourceKey, candidate.externalId, rawEmployerName, 'PORTAL_OWNER_NOT_CERTIFIED');
+    }
+    const owner = await tx.company.findUnique({ where: { fashionjobsUrl: `resolved:${identity.ownerKey}` } });
+    const root = owner ? await canonicalEmployer(tx, owner) : null;
+    const entry = await tx.jobSource.findUnique({ where: { sourceKey_externalId: { sourceKey: candidate.sourceKey, externalId: candidate.externalId } },
+      select: { job: { select: { company: true } } } });
+    const previous = entry?.job ? await canonicalEmployer(tx, entry.job.company) : null;
+    // Missing information cannot silently replace an already attributed employer.
+    if (previous && previous.id !== root?.id) throw new EmployerIdentityReviewRequired(candidate.sourceKey, candidate.externalId, rawEmployerName, previous.name);
+    return { company: root, rule: 'CERTIFIED_SINGLE_BRAND_PORTAL', rawEmployerName, normalizedEmployerName: normalized,
+      reviewId: identity.reviewId, ...(!root ? { newKey: identity.ownerKey, newName: identity.ownerName } : {}) };
+  }
   const aliases = await tx.companyAlias.findMany({
     where: { sourceKey: { in: [candidate.sourceKey, '*'] }, normalizedName: normalized, reviewId: { not: null } },
     include: { company: true },
@@ -53,33 +71,6 @@ export async function resolveEmployer(tx: Prisma.TransactionClient, candidate: C
     company: roots[aliases.indexOf(alias)]!, rule: 'REVIEWED_ALIAS', rawEmployerName,
     normalizedEmployerName: normalized, aliasId: alias.id, reviewId: alias.reviewId!,
   };
-  /**
-   * A portal certified SINGLE_BRAND (identity review with `portalScope`, current configuration): every native employer
-   * label read on it is an entity of the owner — legal entities, country branches, shared-services companies (Mango on
-   * 2026-09-10: 50 labels, all Mango entities, 26 of them still displayed as separate employers). Such a label is credited
-   * to the portal owner; the raw label stays in the observation. A reviewed alias above still outranks this rule, and a
-   * MULTI_BRAND or uncertified portal is untouched: there, a new label remains an identity change to review.
-   */
-  if (candidate.rawEmployerName !== undefined && (await certifiedPortalScope(tx, candidate.sourceKey)) === 'SINGLE_BRAND') {
-    // The owner is the Maison CATALOGUED for the source, never the label: Teamtailor publishes the legal entity as the
-    // hiring organisation ("L'IMPERTINENTE - Ysé", 2026-09-10), the candidate's companyId then derives from that label,
-    // and an owner lookup by that key missed — the certified portal created a duplicate employer beside "Ysé".
-    const catalogued = await tx.source.findUnique({ where: { key: candidate.sourceKey }, select: { maison: true } });
-    const ownerIdentity = resolveCompany(catalogued?.maison?.trim() || candidate.company);
-    const owner = await tx.company.findUnique({ where: { fashionjobsUrl: `resolved:${ownerIdentity.companyId}` } });
-    const ownerRoot = owner ? await canonicalEmployer(tx, owner) : null;
-    // A native label that IS a known distinct employer (its own canonical company, not merged into the owner) is a
-    // contradiction of the certified perimeter, never an entity of the owner: it goes to review like on any portal
-    // (2026-09-10: the rule credited any label, including one naming another brand, to the owner).
-    const named = await tx.company.findUnique({ where: { fashionjobsUrl: `resolved:${resolveCompany(rawEmployerName).companyId}` } });
-    const namedRoot = named ? await canonicalEmployer(tx, named) : null;
-    if (namedRoot && namedRoot.id !== ownerRoot?.id) throw new EmployerIdentityReviewRequired(candidate.sourceKey, candidate.externalId, rawEmployerName, ownerRoot?.name ?? ownerIdentity.displayName);
-    if (ownerRoot) return { company: ownerRoot, rule: 'CERTIFIED_SINGLE_BRAND_PORTAL', rawEmployerName, normalizedEmployerName: normalized };
-    // A certified owner that does not exist yet (new actor) is created under its CANONICAL key with the catalogued name:
-    // the certification is the identity review, so a source-scoped key — meant for unreviewed labels — would only
-    // manufacture a second employer the day another source of the same Maison arrives.
-    return { company: null, rule: 'CERTIFIED_SINGLE_BRAND_PORTAL', rawEmployerName, normalizedEmployerName: normalized, newKey: ownerIdentity.companyId, newName: catalogued?.maison?.trim() || ownerIdentity.displayName };
-  }
   const sourceScopedKey = `SOURCE_${createHash('sha256').update(JSON.stringify([candidate.sourceKey, normalized])).digest('hex')}`;
   const scoped = candidate.rawEmployerName === undefined ? null : await tx.company.findUnique({ where: { fashionjobsUrl: `resolved:${sourceScopedKey}` } });
   const company = scoped ?? await tx.company.findUnique({ where: { fashionjobsUrl: `resolved:${candidate.companyId}` } });
@@ -121,13 +112,15 @@ export async function resolveEmployer(tx: Prisma.TransactionClient, candidate: C
     if (!current && target && !await tx.jobSource.findFirst({ where: { sourceKey: candidate.sourceKey, job: { companyId: target.id } }, select: { id: true } })) {
       throw new EmployerIdentityReviewRequired(candidate.sourceKey, candidate.externalId, rawEmployerName, target.name);
     }
-    if (!current && normalized !== normalizedEmployerName(target?.name ?? candidate.company)) {
+    // An unknown native label gets its own source-scoped identity verbatim.
+    // A spelling heuristic in candidate.company is not an identity conflict.
+    if (!current && target && normalized !== normalizedEmployerName(target.name)) {
       throw new EmployerIdentityReviewRequired(candidate.sourceKey, candidate.externalId, rawEmployerName, target?.name ?? candidate.company);
     }
   }
   return {
     company: company ? await canonicalEmployer(tx, company) : null,
-    rule: company?.mergedIntoId ? 'REVIEWED_MERGE' : 'LEGACY_UNREVIEWED',
+    rule: company?.mergedIntoId ? 'REVIEWED_MERGE' : (scoped || !company && candidate.rawEmployerName !== undefined) ? 'NATIVE_SOURCE_LABEL' : 'LEGACY_UNREVIEWED',
     rawEmployerName, normalizedEmployerName: normalized,
     ...(company?.mergedIntoId && company.identityReviewId ? { reviewId: company.identityReviewId } : {}),
     ...(!company && candidate.rawEmployerName !== undefined ? { newKey: sourceScopedKey, newName: rawEmployerName.trim() } : {}),

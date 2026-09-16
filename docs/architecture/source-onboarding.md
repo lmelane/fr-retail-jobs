@@ -86,7 +86,7 @@ La [revue d’identité](../employer-identity.md) contient exclusivement la déc
 }
 ```
 
-Le domaine, son propriétaire et le périmètre éventuel restent à examiner explicitement. `portalScope` vaut `null`, `SINGLE_BRAND` ou `MULTI_BRAND` ; la présence d’un lien ne le détermine pas. Les champs supplémentaires sont refusés, notamment un texte, une empreinte, un rapport d’inspection ou une URL censés remplacer l’archive.
+Le domaine, son propriétaire et le périmètre éventuel restent à examiner explicitement. `portalScope` vaut `null`, `SINGLE_BRAND` ou `MULTI_BRAND` ; la présence d’un lien ne le détermine pas. Les champs supplémentaires sont refusés, notamment un texte, une empreinte, un rapport d’inspection ou une URL censés remplacer l’archive. Un périmètre SINGLE_BRAND peut compléter un employeur absent ; il ne suffit pas à assimiler un nom natif explicite à la marque du portail. Le [contrat d’employeur](../employer-identity.md) distingue ces deux chemins et leur provenance.
 
 Pour `VERIFIED`, la relation doit être `LINK_MATCHED` sous la politique courante et désigner le portail exact. Les verdicts `CONTRADICTED` et `UNRESOLVED` requièrent aussi une capture d’identité complète, récente et liée à la révision, mais pas un lien positif : une réponse 403 peut étayer un refus. Ils exigent `portalScope: null`. Le statement doit expliquer la décision ; un refus HTTP n’est pas automatiquement une contradiction d’employeur.
 

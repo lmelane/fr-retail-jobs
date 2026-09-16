@@ -1,0 +1,17 @@
+[
+  {
+    "rule": "REVIEWED_ALIAS",
+    "labelOrigin": "detail.hiringOrganization.name:HIRING_ORGANIZATION_LABEL",
+    "observations": 1701
+  },
+  {
+    "rule": "CERTIFIED_SINGLE_BRAND_PORTAL",
+    "labelOrigin": "portal.certifiedScope:EMPLOYER_INFERRED_FROM_CERTIFIED_SINGLE_BRAND_PORTAL",
+    "observations": 28
+  },
+  {
+    "rule": "LEGACY_UNREVIEWED",
+    "labelOrigin": "detail.hiringOrganization.name:HIRING_ORGANIZATION_LABEL",
+    "observations": 4
+  }
+]

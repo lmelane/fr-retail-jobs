@@ -235,7 +235,7 @@ model SourceIdentityReview {
   checkedAt      DateTime
   createdAt      DateTime @default(now())
   /**
-   * Reviewed perimeter of the portal for THIS configuration: SINGLE_BRAND (every posting belongs to the certified employer) or MULTI_BRAND. Null = not reviewed.
+   * Reviewed perimeter of this configuration: SINGLE_BRAND may supply a missing employer; explicit native labels require their own identity evidence. MULTI_BRAND cannot supply a posting employer. Null = not reviewed.
    */
   portalScope    String?
   source         Source   @relation(fields: [sourceKey], references: [key], onDelete: Restrict, onUpdate: Restrict)

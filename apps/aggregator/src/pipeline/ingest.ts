@@ -9,7 +9,7 @@ import { assertSourceRunning } from '../lib/sourceBudget.js';
 import type { PrismaClient, AtsType } from '@prisma/client';
 import type { SourceTier } from '@catwalks/db/publications';
 import { certifiedPortalScope } from '../connectors/sourceIdentity.js';
-import { employerFromCertifiedScope } from './certifiedScopeEmployer.js';
+import { employerFromCertifiedScope } from '../identity/portalEmployer.js';
 import { loadActiveSources, type RuntimeSource } from '../connectors/sourceStore.js';
 import { classifySector } from '../normalize/sector.js';
 import { resolveCompany } from '../normalize/company.js';
@@ -178,11 +178,9 @@ export function toCandidate(
     programType: employment.programType,
     engagementType: employment.engagementType,
     isSeasonal: employment.isSeasonal,
-    // The resolved display name, not the raw source string: group ATS feeds
-    // label every posting "<lead brand> +N", and that counter would otherwise
-    // become the stored company name a candidate reads. resolveCompany strips it
-    // and maps known brands to their canonical spelling, so the Company row, the
-    // dedup key and the card all agree on one name.
+    // This spelling key is only a lookup hint. The identity resolver decides
+    // the stored employer from native labels or explicit reviewed relationships;
+    // it preserves unknown native names instead of stripping their legal form.
     ...(() => {
       const identity = resolveCompany(companyName);
       return {
