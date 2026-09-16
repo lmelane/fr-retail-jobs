@@ -165,9 +165,9 @@ Aucun seuil mondial unique ne doit masquer mécaniquement une dimension locale u
 
 ### État actuel vérifié
 
-Les fonctions métier existent dans [sourceCandidate.ts](../../apps/aggregator/src/connectors/sourceCandidate.ts), [sourceStore.ts](../../apps/aggregator/src/connectors/sourceStore.ts), [sourceIdentity.ts](../../apps/aggregator/src/connectors/sourceIdentity.ts) et [candidateChecks.ts](../../apps/aggregator/src/lib/candidateChecks.ts). L’enum contient DRAFT, VALIDATED, ACTIVE, PAUSED et RETIRED ; leur présence ne prouve pas que toutes les étapes sont utilisées.
+Le [parcours maintenu](source-onboarding.md) utilise `source-onboard.mts` : enregistrement DRAFT, profil, revue d’identité, collecte native, revalidation, statut et promotion. Les mutations exigent `--apply`, et la promotion une révision explicite. Les anciennes orchestrations P3/B6, leurs alias et le compteur manuel ont été retirés. La découverte demeure une inspection séparée sans certification.
 
-Les outils se recouvrent : `source-onboard.mts` prépare des dossiers, `onboard-source.mts` rejoue sur clone avec des chemins datés, `register-certify-promote.mts` prend notamment un volume en argument, `coverage/validate-candidate.mts` réalise d’autres contrôles. Le lot sources remplace ces entrées par une seule commande maintenue, avec sous-commandes, en réutilisant les fonctions métier et en supprimant les orchestrations remplacées.
+Les décisions natives et d’identité sont immuables et liées à la révision du registre. Le statut expose séparément la preuve d’accès, encore héritée et non liée à cette révision. L’unification des commandes ne résout pas cette limite, ni la preuve du lien exact portail officiel → site ATS, les rôles d’éditeur ou la garde des ingestions déjà actives.
 
 ### Cible : dossier → preuve → validation → activation
 
@@ -176,7 +176,7 @@ Les outils se recouvrent : `source-onboard.mts` prépare des dossiers, `onboard-
 3. **Capturer** : lire depuis l’environnement d’exécution prévu, dans un périmètre borné, archiver la réponse avant parsing et les preuves d’identité/d’accès. Mesurer première/dernière page, IDs uniques, détail, comptes, limites, durée, coût et erreurs.
 4. **Valider** : rejouer les captures hors réseau avec le même moteur que l’ingestion ; rapprocher IDs source, publications persistées et IDs publics ; vérifier employeur, lieux/pays, candidature externe, dates, champs natifs et exclusions motivées.
 5. **Certifier** : rapport immuable identifié, lié au hash de configuration, au tenant, au commit du collecteur/lecteur, au corpus et à l’instant de contrôle. Verdicts séparés pour identité, accès, complétude et qualité des champs. Toute preuve manquante ou contradiction reste explicite.
-6. **Activer** : transaction DRAFT → VALIDATED → ACTIVE selon les préconditions satisfaites et le même rapport vérifié. L’activation consomme un identifiant de rapport ; aucun nombre d’offres affirmé sur la ligne de commande ne vaut preuve. Un portail réellement vide peut être validé si son identité et son énumération vide sont prouvées.
+6. **Activer** : transaction vers ACTIVE après contrôle des dernières décisions de la révision explicitement sélectionnée. La qualification native est un rapport distinct et ne change pas le statut opérationnel ; le statut historique VALIDATED n’est pas une preuve. L’activation exige la révision attendue ; aucun nombre d’offres affirmé sur la ligne de commande ne vaut preuve. Un portail réellement vide peut être validé si son identité et son énumération vide sont prouvées.
 7. **Surveiller** : chaque run renouvelle son droit d’attester l’absence ; ACTIVE n’accorde pas ce droit à lui seul. Changement de tenant/configuration ou de lecteur touchant les preuves → revalidation. Échec réseau → dégradation/suspension, jamais fermeture employeur inventée.
 
 La validation produit des **ensembles d’identifiants et des raisons d’écart**, pas seulement des totaux égaux. Une source peut être utile à la collecte tout en étant incapable d’attester des absences ; sa politique de vieillissement doit l’indiquer. Le rapport doit permettre de décider sans ouvrir dix scripts ou reconstituer des valeurs à la main.

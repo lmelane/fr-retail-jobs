@@ -152,7 +152,7 @@ Commencer avec PostgreSQL et les composants existants. Une table de tâches dura
 
 ## Lot 5. Certifier les sources et préparer le cycle complet
 
-**5A à 5E validés localement : [manifeste intégral et rejeu strict](lot-5a.md), [configuration stable et budgets séparés](lot-5b.md), [révisions immuables du registre](lot-5c.md), [validation technique native et porte de promotion](lot-5d.md), puis [revues d’identité liées à la révision](lot-5e.md). Le lien officiel vers le portail exact, l’accès, l’absence liée au périmètre et le parcours unique restent à terminer.**
+**5A à 5F validés localement : [manifeste intégral et rejeu strict](lot-5a.md), [configuration stable et budgets séparés](lot-5b.md), [révisions immuables du registre](lot-5c.md), [validation technique native et porte de promotion](lot-5d.md), [revues d’identité liées à la révision](lot-5e.md), puis [parcours unique des sources et retrait des anciennes orchestrations](lot-5f.md). Le lien officiel vers le portail exact, l’accès, les rôles de source et l’absence liée au périmètre restent à terminer.**
 
 [Sous-lot 5D validé localement](lot-5d.md) : décisions techniques immuables issues du rejeu natif, contrôle de promotion sans compteur manuel, zéro natif qualifié et ordre SQL des décisions. Les 3 290 tests, 13 mutations applicatives, cinq contre-épreuves SQL, deux collectes réelles et la validation depuis Railway passent. Le schéma 61 conserve le stock et ses révisions ; une sauvegarde complète est restaurée et contrôlée. Le parcours unique, les preuves d’identité/d’accès, le contrôle des sources actives et l’absence liée au périmètre restent ouverts.
 

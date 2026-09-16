@@ -36,16 +36,16 @@ Les anciennes revues conservent une révision et un ordre inconnus (`NULL`). Ell
 
 `certifiedPortalScope()` lit le registre et sa dernière revue dans une seule requête SQL, puis applique le même validateur strict. Les rapports maintenus utilisent ce contrat ; les composeurs de snapshots refusent de reconstruire une certification depuis un hash seul. `sourceIdentityHash()` reste le fingerprint utilisé par les candidats et alias historiques ; il n’est plus, à lui seul, le périmètre d’autorité d’une revue de portail.
 
-**Limites restantes :** `loadActiveSources()` ne revalide pas encore les dossiers des sources déjà ACTIVE. Le contrôle du dossier ne prouve pas non plus, à lui seul, que la page officielle désigne le tenant et le site ATS configurés. La preuve de cette relation, les rôles employeur/groupe/éditeur et le parcours unique de certification restent à traiter avant release.
+**Limites restantes :** `loadActiveSources()` ne revalide pas encore les dossiers des sources déjà ACTIVE. Le contrôle du dossier ne prouve pas non plus, à lui seul, que la page officielle désigne le tenant et le site ATS configurés. La preuve de cette relation, les rôles employeur/groupe/éditeur et la preuve d’accès restent à traiter avant release.
 
 Depuis la racine, avec des accès explicitement configurés pour l’environnement choisi :
 
 ```sh
-node --import tsx apps/aggregator/src/cli.ts identity-profile SOURCE_KEY
-node --import tsx apps/aggregator/src/cli.ts review-source-identity --record=/chemin/revue.json --artifact=/chemin/preuve.txt
+node --import tsx apps/aggregator/scripts/ops/source-onboard.mts profile SOURCE_KEY
+node --import tsx apps/aggregator/scripts/ops/source-onboard.mts identity /chemin/revue.json --artifact=/chemin/preuve.txt
 ```
 
-Le profil fournit notamment `sourceRevisionId`, à reporter dans le dossier examiné. La seconde commande valide sans enregistrer. Une révision absente ou devenue obsolète est refusée ; la commande ne l’actualise jamais automatiquement. L’enregistrement exige `--apply` ; l’activation est une commande distincte `promote SOURCE_KEY`, après les préconditions et la revue du lot. Aucun de ces exemples ne constitue un feu vert pour une exécution en production.
+Le profil fournit notamment `sourceRevisionId`, à reporter dans le dossier examiné. La seconde commande valide sans enregistrer. Une révision absente ou devenue obsolète est refusée ; la commande ne l’actualise jamais automatiquement. L’enregistrement exige `--apply` ; l’activation est une commande distincte `source-onboard.mts promote SOURCE_KEY --revision=REVISION --apply`, après les préconditions et la revue du lot. Aucun de ces exemples ne constitue un feu vert pour une exécution en production.
 
 ## Résolution effective d’un employeur
 

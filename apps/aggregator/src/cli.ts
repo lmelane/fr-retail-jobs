@@ -21,7 +21,7 @@ const INDEXING_WINDOW_MS = Number(process.env.INDEXING_WINDOW_MS ?? 6 * 60 * 60 
 import { runRefresh, refreshScope } from './pipeline/refresh.js';
 import { parseDay, runSnapshot, type SnapshotStats } from './pipeline/snapshot.js';
 import { retireSource } from './pipeline/retireSource.js';
-import { importSourcesCsv, promoteSource } from './connectors/sourceStore.js';
+import { importSourcesCsv } from './connectors/sourceStore.js';
 import { runGeocode } from './pipeline/geocodeJobs.js';
 import { runStats } from './pipeline/stats.js';
 import { exportCompanies } from './export/companies.js';
@@ -214,29 +214,6 @@ try {
     const stats = await importSourcesCsv(prisma);
     await log.info('command.result', { ok: stats.skippedDuplicateTenant.length === 0, command, ...stats });
     if (stats.skippedDuplicateTenant.length > 0) process.exitCode = 1;
-  } else if (command === 'identity-profile') {
-    const { sourceIdentityHash, sourceSubjectKey, readIdentitySource } = await import('./connectors/sourceIdentity.js');
-    const key = process.argv[3];
-    if (!key || key.startsWith('--')) throw new Error('identity-profile needs a source key');
-    const source = await readIdentitySource(prisma, key);
-    if (!source) throw new Error('Identity profile source does not exist');
-    await log.info('command.result', { sourceRevisionId: source.currentRevisionId, sourceKey: source.key, tenantKey: source.tenantKey, subjectKey: sourceSubjectKey(source), sourceHash: sourceIdentityHash(source) });
-  } else if (command === 'review-source-identity') {
-    const { readFileSync } = await import('node:fs');
-    const { recordSourceIdentityReview } = await import('./connectors/sourceIdentity.js');
-    const arg = (name: string) => process.argv.find(a => a.startsWith(`--${name}=`))?.slice(name.length + 3);
-    const record = arg('record'); const artifact = arg('artifact');
-    if (!record || !artifact) throw new Error('review-source-identity needs --record=<json> --artifact=<archived evidence file> [--apply]');
-    await log.info('command.result', await recordSourceIdentityReview(prisma, JSON.parse(readFileSync(record, 'utf8')), readFileSync(artifact), process.argv.includes('--apply')));
-  } else if (command === 'promote') {
-    /**
-     * DRAFT/VALIDATED/PAUSED -> ACTIVE, guarded: config + dated robots verdict
-     * + reviewed identity and current native validation, including a proven
-     * empty feed. An operator-provided counter cannot authorize activation.
-     */
-    const key = process.argv[3];
-    if (!key || key.startsWith('--')) throw new Error('promote needs the sourceKey to promote');
-    await log.info('command.result', { ok: true, command, ...(await promoteSource(prisma, key)) });
   } else if (command === 'retire-source') {
     /**
      * Cleans up after a catalogue line is removed (a robots-forbidden route, an

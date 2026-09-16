@@ -126,7 +126,7 @@ def certify(source):
 
 def activation(source):
     return {'status': source['status'], 'tier': source.get('tier'), 'lastRunAt': source.get('lastRunAt'), 'lastRunStatus': source.get('lastRunStatus'),
-            'lastRunJobs': source.get('lastRunJobs'), 'verifiedJobCount': source.get('verifiedJobCount'),
+            'lastRunJobs': source.get('lastRunJobs'),
             'robotsVerdict': source.get('robotsVerdict'), 'robotsCheckedAt': source.get('robotsCheckedAt')}
 
 def completeness(source):

@@ -5,8 +5,6 @@ const COMMANDS: Record<string, CommandOptions> = {
   ingest: { values: ['source'], flags: ['no-geocode'] },
   'ingest-all': {}, refresh: {}, 'health-report': {},
   snapshot: { values: ['date','backfill-from'] }, 'import-sources': {},
-  'identity-profile': { positional: 'required' }, promote: { positional: 'required' },
-  'review-source-identity': { values: ['record','artifact'], flags: ['apply'] },
   'retire-source': { positional: 'required', values: ['external-prefix'] },
   'resolve-domains': { values: ['limit'], flags: ['dry-run'] },
   'occupation-review-queue': { values: ['output','limit'] },

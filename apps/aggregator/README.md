@@ -26,7 +26,7 @@ L’architecture cible conserve le RAW avant parsing, puis construit des faits t
 
 Le [lot 4H3](../../audits/reprise-2026-09-15/lot-4h3.md) valide 3 207 tests agrégateur/API et 755 tests du site. Les 55 125 publications reconstructibles ont désormais leur présentation sur le clone ; 294 publications incomplètes restent conservées en quarantaine. Le dernier ID public sans preuve propre devient une fiche retirée, sans fausse fermeture ni redirection supposée. Les formats non qualifiés et la certification des sources restent ouverts. Ces mesures locales ne remplacent pas le tableau initial de production ci-dessus.
 
-Le [lot 5D](../../audits/reprise-2026-09-15/lot-5d.md) remplace le compteur manuel de promotion par une validation native rejouable. Le [lot 5E](../../audits/reprise-2026-09-15/lot-5e.md) lie les revues d’identité à la révision exacte du registre et à un ordre SQL. Les 112 revues historiques du clone sont conservées sans liaison inventée et doivent être réexaminées avant certification. Les preuves officielles de portail, l’accès, le parcours source unique et le contrôle des ingestions existantes restent ouverts.
+Le [lot 5D](../../audits/reprise-2026-09-15/lot-5d.md) remplace le compteur manuel de promotion par une validation native rejouable. Le [lot 5E](../../audits/reprise-2026-09-15/lot-5e.md) lie les revues d’identité à la révision exacte du registre et à un ordre SQL. Les 112 revues historiques du clone sont conservées sans liaison inventée et doivent être réexaminées avant certification. Le [lot 5F](../../audits/reprise-2026-09-15/lot-5f.md) unifie les commandes des sources et supprime les orchestrations anciennes ainsi que la colonne de volume manuel. Les preuves officielles de portail, l’accès et le contrôle des ingestions existantes restent ouverts.
 
 ## Commandes de validation
 
@@ -49,7 +49,7 @@ python3 -B apps/aggregator/scripts/ops/read-crons.py
 
 ## Sources et preuves
 
-Le catalogue opérationnel est la table `Source`. `data/seeds/sources.csv` ne remplace pas l’état de production. Le [parcours cible des sources](../../docs/architecture/production-foundations.md#7-un-seul-parcours-pour-les-nouvelles-sources) précise l’ajout, la validation, les verdicts et la suppression des commandes concurrentes ; cette consolidation reste à implémenter au lot sources.
+Le catalogue opérationnel est la table `Source`. `data/seeds/sources.csv` ne remplace pas l’état de production. Le [parcours maintenu des sources](../../docs/architecture/source-onboarding.md) précise l’ajout, les preuves, la validation native et la promotion sous révision explicite. Les inspections de découverte restent distinctes des décisions de qualification.
 
 - Runtime et tests : `src/`.
 - Commandes maintenues : `scripts/`.

@@ -163,7 +163,6 @@ model Source {
   /**
    * Jobs counted when the source was last verified/promoted.
    */
-  verifiedJobCount Int?
   /**
    * Denormalized last-run summary, so the catalogue is readable in one query.
    */

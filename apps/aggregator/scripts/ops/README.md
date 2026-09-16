@@ -100,20 +100,20 @@ est **rendu** dès qu'il a prouvé ce qu'on lui demandait. Une sauvegarde tronqu
 on ne l'apprend qu'à la restauration.
 
 
-## Integrating a source, and proving it
+## Ajouter et qualifier une source
 
-Les scénarios P3 ci-dessous rejouent sur captures et clones. Ils ne constituent pas encore un parcours unique d’ajout de source : des chemins datés et plusieurs commandes de validation subsistent. Le lot sources doit les remplacer selon le contrat d’architecture, puis supprimer les anciens appelants.
+[`source-onboard.mts`](source-onboard.mts) est l’entrée unique : `register`, `profile`, `identity`, `collect`, `validate`, `status`, `promote`. Le [guide maintenu](../../../../docs/architecture/source-onboarding.md) décrit les entrées, les portes et leurs limites. L’enregistrement et la revue sont des aperçus sans `--apply`. La collecte, la validation et la promotion exigent `--apply` ; la promotion exige aussi la révision explicitement choisie. Aucune étape ne déclenche l’ingestion.
 
-| | |
+[`source-discovery.mts`](source-discovery.mts) conserve `inspect` et `prepare` en lecture seule. Ses rapprochements sont des pistes ; ils ne certifient ni l’identité ni une couverture mondiale. Les anciennes orchestrations P3/B6 et la validation par compteur manuel ont été supprimées.
+
+Outils de diagnostic distincts du parcours de qualification :
+
+| Outil | Rôle |
 |---|---|
-| [`offline-transport.ts`](offline-transport.ts) | Replaces the network transport and **nothing else**: the seam is at `globalThis.fetch`, *under* the adapters, so the ATS adapter, the normalisers, the identity gate, the scope rules, the dedup and the upsert all run for real. An unrecorded request **fails loudly** — returning an empty body would fabricate a source with no postings. |
-| [`record-cassette.mts`](record-cassette.mts) | Online, once per source: runs the real adapter through the production dispatch table and saves every response, robots.txt included. Writes to no database. |
-| [`make-candidate.mts`](make-candidate.mts) | Clone only. Turns an existing source back into a **not-yet-integrated candidate** so onboarding starts from `exists:false`. Orphan Jobs are deactivated, not deleted. |
-| [`onboard-source.mts`](onboard-source.mts) | The full path — `register → validate → certify → promote → ingest` — calling only maintained pipeline functions, with the state **re-read from the database after every transition**. |
-| [`replay-ingest.mts`](replay-ingest.mts) | `ingestAllBySource` itself, offline, on a clone. `--crash-after=N` kills the process after N **committed transactions** (the ingest persists through `$transaction`, not `job.update`) to produce a genuinely partial write. Separates observed identifiers from those actually written. |
-| [`config-change.mts`](config-change.mts) | Changes a real `Source.config` and shows the certification stop applying, because `sourceIdentityHash` binds the review to the configuration. |
-| [`validator-regression.mts`](validator-regression.mts) | Applies an **earlier and a corrected version of a shared control** (`classifyLabel`) to the same archived proofs, and names the certifications that exist only because of the correction. Locked by [`src/ops/validator-regression.test.ts`](../../src/ops/validator-regression.test.ts). |
-| [`onboarding-proof.mts`](onboarding-proof.mts) | The proof, read back from the clone: state transitions, `JobSource` representations as well as `Job` rows, identifiers **observed** vs **created/modified**, and values field by field. |
+| [`offline-transport.ts`](offline-transport.ts) | Transport de fixtures pour les répétitions d’ingestion. Une requête non enregistrée échoue. |
+| [`record-cassette.mts`](record-cassette.mts) | Capture de fixtures locales de diagnostic, sans écriture en base ; ce format ne remplace pas une validation native de format 2. |
+| [`replay-ingest.mts`](replay-ingest.mts) | Répétition d’ingestion sur clone avec interruption contrôlée après transactions validées. |
+| [`validator-regression.mts`](validator-regression.mts) | Comparaison de versions du classement de libellés ; ne délivre pas de certification. |
 
 ### Two distinctions the proofs depend on
 
@@ -130,11 +130,11 @@ Whether anything *changed* is answered by comparing values between two passes, n
 An interruption is only proven if its exit code survives. `cmd | grep | tail` reports the exit code of `tail`;
 the measured crash exits **137** and must be read directly, or captured with `PIPESTATUS`/a temporary file.
 
-## Captures, validation technique et rétention : lots 2 et 5A à 5D
+## Captures, validation technique et rétention
 
 Le [contrat maintenu](../../../../docs/architecture/native-capture.md) décrit les tables, les limites, la configuration privée et les commandes. [`raw-capture.mts`](raw-capture.mts) lit les réponses natives, les sorties par offre et les observations historiques, ou rejoue une extraction hors ligne. Le format 2 exige la consommation de toutes les réponses et la concordance des sorties ordonnées ainsi que des métadonnées complètes du résultat. Les collectes historiques sans manifeste ne peuvent pas produire cette validation. Le budget d’exécution est affiché séparément de l’empreinte de configuration. Les collectes enregistrées portent la révision immuable du registre ; une collecte obsolète reste inspectable mais ne peut pas publier dans une nouvelle configuration. Le rejeu utilise toujours le fichier privé des réglages effectifs. Les limites et l’annulation du transport sont communes aux commandes de validation et de lecture de preuve officielle. [`retention.mts`](retention.mts) prépare et applique un plan borné dont l’empreinte doit être fournie explicitement.
 
-`--collect-source=<clé> --apply --deadline-ms=30000` capture les réglages enregistrés puis les valide hors réseau. `--validate-source=<capture-id> --apply` revalide une collecte scellée, depuis S3 si nécessaire. Ces deux opérations produisent une décision technique immuable et laissent le statut de la source inchangé. Une sortie vide exige son propre protocole natif qualifié. La promotion consomme maintenant ce verdict, jamais le compteur manuel. Les anciennes orchestrations P3/B6 ci-dessus ne fournissent pas encore cette étape et restent à remplacer avant release ; elles ne constituent pas une voie de promotion maintenue.
+`source-onboard.mts collect <clé> --apply --deadline-ms=30000` capture les réglages enregistrés puis les valide hors réseau. `source-onboard.mts validate <capture-id> --apply` revalide une collecte scellée, depuis S3 si nécessaire. Ces deux opérations produisent une décision technique immuable et laissent le statut de la source inchangé. Une sortie vide exige son propre protocole natif qualifié. La promotion consomme maintenant ce verdict, jamais le compteur manuel. Les anciennes orchestrations P3/B6 ci-dessus ne fournissent pas encore cette étape et restent à remplacer avant release ; elles ne constituent pas une voie de promotion maintenue.
 
 Le mécanisme unique déplace les corps vers des blocs S3 vérifiés et conserve les métadonnées en base. Les anciens `retention-observations.mts`, `observationArchive.ts` et `bloc0-snapshot.mts` ont été supprimés. Une migration refuse de supprimer les anciennes tables si elles contiennent encore des références d’archive. Aucun cron n’est activé par ces commandes.
 

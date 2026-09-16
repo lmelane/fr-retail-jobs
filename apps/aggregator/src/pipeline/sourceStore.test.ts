@@ -86,7 +86,6 @@ describe('importSourcesCsv', () => {
     // The CSV has no dated evidence and cannot activate a source.
     const sample = await prisma.source.findFirstOrThrow();
     expect(sample.robotsCheckedAt).toBeNull();
-    expect(sample.verifiedJobCount).toBeNull();
     expect(sample.tier).toBeTruthy();
     expect(sample.status).toBe('DRAFT');
   });
@@ -97,14 +96,14 @@ describe('importSourcesCsv', () => {
     const proof = new Date('2026-09-07T11:12:13Z');
     await prisma.source.update({ where: { id: one.id }, data: {
       status: 'ACTIVE', config: { board: 'corrected-live-board' },
-      robotsCheckedAt: proof, robotsVerdict: 'DISALLOWED', verifiedJobCount: 987,
+      robotsCheckedAt: proof, robotsVerdict: 'DISALLOWED', lastRunJobs: 987,
     } });
     await importSourcesCsv(prisma);
     const after = await prisma.source.findUniqueOrThrow({ where: { id: one.id } });
     expect(after.config).toEqual({ board: 'corrected-live-board' });
     expect(after.robotsCheckedAt).toEqual(proof);
     expect(after.robotsVerdict).toBe('DISALLOWED');
-    expect(after.verifiedJobCount).toBe(987);
+    expect(after.lastRunJobs).toBe(987);
   });
 
   it('does not resurrect a RETIRED source on re-import', async () => {
@@ -135,6 +134,11 @@ describe('loadActiveSources', () => {
 });
 
 describe('promoteSource', () => {
+  const promote = async (key: string) => {
+    const source = await prisma.source.findUniqueOrThrow({ where: { key } });
+    return promoteSource(prisma, key, source.currentRevisionId);
+  };
+
   const draft = (over: Record<string, unknown> = {}) => ({
     key: 'test-draft',
     maison: 'Test Maison',
@@ -145,7 +149,6 @@ describe('promoteSource', () => {
     status: 'DRAFT' as const,
     robotsVerdict: 'ALLOWED',
     robotsCheckedAt: new Date(),
-    verifiedJobCount: 12,
     ...over,
   });
 
@@ -160,7 +163,7 @@ describe('promoteSource', () => {
   }
 
   async function qualifiedDraft() {
-    const source = await prisma.source.create({ data: draft({ verifiedJobCount: 0 }) });
+    const source = await prisma.source.create({ data: draft({ lastRunJobs: 0 }) });
     await identity(source);
     vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify({ jobs: [{ id: 123, title: 'Client Advisor',
       content: 'Own native duties', absolute_url: 'https://job-boards.greenhouse.io/testmaison/jobs/123' }] }))));
@@ -171,12 +174,22 @@ describe('promoteSource', () => {
     return source;
   }
 
-  it('promotes a natively validated DRAFT even when the former manual counter is zero', async () => {
+  it('promotes a natively validated DRAFT even when no previous run reports offers', async () => {
     await qualifiedDraft();
-    const result = await promoteSource(prisma, 'test-draft');
+    const result = await promote('test-draft');
     expect(result).toEqual({ key: 'test-draft', from: 'DRAFT', to: 'ACTIVE' });
     const row = await prisma.source.findUniqueOrThrow({ where: { key: 'test-draft' } });
     expect(row.status).toBe('ACTIVE');
+  });
+
+  it('requires the revision selected by the operator and preserves an already completed activation on retry', async () => {
+    const source = await qualifiedDraft();
+    await expect(promoteSource(prisma, source.key, 'different-revision')).rejects.toMatchObject({ name: 'SourcePromotionGateError', code: 'REVISION_MISMATCH' });
+    expect((await prisma.source.findUniqueOrThrow({ where: { key: source.key } })).status).toBe('DRAFT');
+    await promoteSource(prisma, source.key, source.currentRevisionId);
+    const active = await prisma.source.findUniqueOrThrow({ where: { key: source.key } });
+    expect(await promoteSource(prisma, source.key, source.currentRevisionId)).toEqual({ key: source.key, from: 'ACTIVE', to: 'ACTIVE' });
+    expect(await prisma.source.findUniqueOrThrow({ where: { key: source.key } })).toEqual(active);
   });
 
   it('holds the registry row while checking technical evidence and committing promotion', async () => {
@@ -187,7 +200,7 @@ describe('promoteSource', () => {
     vi.spyOn(certification, 'requireSourceValidation').mockImplementation(async (...args) => {
       locked(); await barrier; return original(...args);
     });
-    const promotion = promoteSource(prisma, source.key);
+    const promotion = promote(source.key);
     await ready;
     try {
       await expect(prisma.$transaction(async tx => {
@@ -200,30 +213,30 @@ describe('promoteSource', () => {
 
   it('refuses technical success without employer evidence (the historic homonym admission path)', async () => {
     await prisma.source.create({ data: draft({ key: 'coast', maison: 'Coast', config: { board: 'coast' }, tenantKey: 'greenhouse:coast' }) });
-    await expect(promoteSource(prisma, 'coast')).rejects.toThrow(/employer identity/);
+    await expect(promote('coast')).rejects.toThrow(/employer identity/);
     expect((await prisma.source.findUniqueOrThrow({ where: { key: 'coast' } })).status).toBe('DRAFT');
   });
 
   it('refuses without a dated robots verdict', async () => {
     await prisma.source.create({ data: draft({ robotsCheckedAt: null }) });
-    await expect(promoteSource(prisma, 'test-draft')).rejects.toThrow(/robots/);
+    await expect(promote('test-draft')).rejects.toThrow(/robots/);
   });
 
-  it('refuses a manual positive count without a validated native capture', async () => {
-    const source = await prisma.source.create({ data: draft({ verifiedJobCount: 9999 }) });
+  it('refuses positive operational statistics without a validated native capture', async () => {
+    const source = await prisma.source.create({ data: draft({ lastRunJobs: 9999 }) });
     await identity(source);
-    await expect(promoteSource(prisma, 'test-draft')).rejects.toMatchObject({ name: 'SourceValidationGateError', code: 'VALIDATION_MISSING' });
+    await expect(promote('test-draft')).rejects.toMatchObject({ name: 'SourceValidationGateError', code: 'VALIDATION_MISSING' });
   });
 
   it.each(['DISALLOWED', 'UNKNOWN', 'ERROR'])('refuses a dated %s robots verdict', async verdict => {
     await prisma.source.create({ data: draft({ robotsVerdict: verdict }) });
-    await expect(promoteSource(prisma, 'test-draft')).rejects.toThrow(/ALLOWED/);
+    await expect(promote('test-draft')).rejects.toThrow(/ALLOWED/);
     expect((await prisma.source.findUniqueOrThrow({ where: { key: 'test-draft' } })).status).toBe('DRAFT');
   });
 
   it('refuses to promote a RETIRED source', async () => {
     await prisma.source.create({ data: draft({ status: 'RETIRED' }) });
-    await expect(promoteSource(prisma, 'test-draft')).rejects.toThrow(/RETIRED/);
+    await expect(promote('test-draft')).rejects.toThrow(/RETIRED/);
   });
 });
 

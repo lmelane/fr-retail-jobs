@@ -14,8 +14,10 @@ describe('native evidence command scope', () => {
   ])('rejects ambiguous, unbounded or unsupported invocation %j', (...args) => {
     expect(() => parseCaptureArguments(args)).toThrow();
   });
-  it('accepts an explicit source capture and an independent archive validation', () => {
-    expect(parseCaptureArguments(['--collect-source=maison', '--apply', '--deadline-ms=30000'])).toMatchObject({ 'collect-source': 'maison', 'deadline-ms': '30000' });
-    expect(parseCaptureArguments(['--validate-source=batch', '--apply'])).toMatchObject({ 'validate-source': 'batch' });
+  it('accepts private evidence reads and offline replay without source mutations', () => {
+    expect(parseCaptureArguments(['--capture=id', '--out=private.bin'])).toEqual({ capture: 'id', out: 'private.bin' });
+    expect(parseCaptureArguments(['--replay=batch', '--config=private.json', '--out=private.json'])).toMatchObject({ replay: 'batch' });
+    expect(() => parseCaptureArguments(['--collect-source=maison', '--apply'])).toThrow();
+    expect(() => parseCaptureArguments(['--validate-source=batch', '--apply'])).toThrow();
   });
 });

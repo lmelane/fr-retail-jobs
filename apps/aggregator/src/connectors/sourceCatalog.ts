@@ -10,7 +10,7 @@ import type { SourceTier } from '@catwalks/db/publications';
  * engineering: adding a house that runs Teamtailor or Phenom is a CSV row, and
  * only a genuinely new ATS needs an adapter.
  *
- * Every row was fetched live with a real job count and a quoted robots verdict.
+ * The seed carries neither a manual volume nor a certification flag.
  */
 
 export type SourceKind =
@@ -39,8 +39,6 @@ export type CatalogSource = {
   /** Shape of a job URL, as observed. Empty when the source is an API. */
   jobUrlPattern: string;
   robotsVerdict: string;
-  /** Jobs seen when the source was verified. */
-  jobCount: number;
 };
 
 const CSV_PATH = fileURLToPath(new URL('../../data/seeds/sources.csv', import.meta.url));
@@ -55,9 +53,13 @@ export function loadSourceCatalog(): CatalogSource[] {
   const lines = readFileSync(CSV_PATH, 'utf8').trim().split('\n');
   const sources: CatalogSource[] = [];
 
+  const columns = ['maison', 'careers_domain', 'kind', 'entry_url', 'job_url_pattern', 'robots_verdict'];
+  if (JSON.stringify(parseCsvLine(lines[0])) !== JSON.stringify(columns)) throw new Error('Source seed header does not match the maintained schema');
   for (const line of lines.slice(1)) {
-    const [maison, careersDomain, kind, entryUrl, jobUrlPattern, robotsVerdict, jobCount] =
-      parseCsvLine(line);
+    const values = parseCsvLine(line);
+    if (values.length !== columns.length) throw new Error('Source seed row has an invalid column count');
+    const [maison, careersDomain, kind, entryUrl, jobUrlPattern, robotsVerdict] =
+      values;
     if (!maison || !entryUrl) continue;
     sources.push({
       maison,
@@ -66,7 +68,6 @@ export function loadSourceCatalog(): CatalogSource[] {
       entryUrl,
       jobUrlPattern: jobUrlPattern ?? '',
       robotsVerdict: robotsVerdict ?? '',
-      jobCount: Number(jobCount) || 0,
     });
   }
 

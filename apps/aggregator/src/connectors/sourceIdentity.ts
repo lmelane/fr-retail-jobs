@@ -20,7 +20,7 @@ export type IdentityReviewDocument = Omit<SourceIdentityReview, 'id' | 'sequence
 type IdentityEvidence = Omit<SourceIdentityReview, 'id' | 'sequence' | 'createdAt'>;
 
 export class SourceIdentityGateError extends Error {
-  constructor(readonly code: 'REVIEW_MISSING' | 'REVISION_MISMATCH' | 'ORDER_UNKNOWN', message: string) {
+  constructor(readonly code: 'REVIEW_MISSING' | 'REVISION_MISMATCH' | 'ORDER_UNKNOWN' | 'EVIDENCE_INVALID', message: string) {
     super(message); this.name = 'SourceIdentityGateError';
   }
 }
@@ -69,19 +69,21 @@ function assertIdentityEvidence(source: RevisionIdentitySource, review: Identity
     throw new SourceIdentityGateError('REVISION_MISMATCH', 'promote: identity evidence does not match the current source revision');
   }
   if (review.sourceKey !== source.key || review.tenantKey !== source.tenantKey || review.subjectKey !== sourceSubjectKey(source) || review.sourceHash !== sourceIdentityHash(source)) {
-    throw new Error(`promote: "${source.key}" identity evidence does not match the current employer/tenant/configuration`);
+    throw new SourceIdentityGateError('EVIDENCE_INVALID', `promote: "${source.key}" identity evidence does not match the current employer/tenant/configuration`);
   }
   const age = now.getTime() - review.checkedAt.getTime();
-  if (!Number.isFinite(age) || age < -300_000 || age > 30 * 86_400_000) throw new Error('promote: identity review must have been checked within 30 days');
-  if (!['OFFICIAL_LINK', 'OFFICIAL_DOMAIN', 'GROUP_DOCUMENT'].includes(review.method)) throw new Error('promote: a name match or slug probe is not identity evidence');
-  if (!/^[a-f0-9]{64}$/.test(review.artifactHash) || !review.reviewer.trim() || review.statement.trim().length < 30) throw new Error('promote: identity evidence needs an archived artifact, statement and reviewer');
-  if (!review.artifactText || createHash('sha256').update(review.artifactText).digest('hex') !== review.artifactHash) throw new Error('promote: archived identity evidence content does not match its hash');
-  const proof = new URL(review.proofUrl); const portal = new URL(review.portalUrl);
+  if (!Number.isFinite(age) || age < -300_000 || age > 30 * 86_400_000) throw new SourceIdentityGateError('EVIDENCE_INVALID', 'promote: identity review must have been checked within 30 days');
+  if (!['OFFICIAL_LINK', 'OFFICIAL_DOMAIN', 'GROUP_DOCUMENT'].includes(review.method)) throw new SourceIdentityGateError('EVIDENCE_INVALID', 'promote: a name match or slug probe is not identity evidence');
+  if (!/^[a-f0-9]{64}$/.test(review.artifactHash) || !review.reviewer.trim() || review.statement.trim().length < 30) throw new SourceIdentityGateError('EVIDENCE_INVALID', 'promote: identity evidence needs an archived artifact, statement and reviewer');
+  if (!review.artifactText || createHash('sha256').update(review.artifactText).digest('hex') !== review.artifactHash) throw new SourceIdentityGateError('EVIDENCE_INVALID', 'promote: archived identity evidence content does not match its hash');
+  let proof: URL, portal: URL;
+  try { proof = new URL(review.proofUrl); portal = new URL(review.portalUrl); }
+  catch { throw new SourceIdentityGateError('EVIDENCE_INVALID', 'promote: invalid identity evidence URLs'); }
   const domain = review.officialDomain.toLowerCase();
-  if (!/^[a-z0-9-]+(?:\.[a-z0-9-]+)+$/.test(domain) || proof.protocol !== 'https:' || portal.protocol !== 'https:' || proof.username || proof.password || portal.username || portal.password) throw new Error('promote: invalid official identity evidence URLs');
+  if (!/^[a-z0-9-]+(?:\.[a-z0-9-]+)+$/.test(domain) || proof.protocol !== 'https:' || portal.protocol !== 'https:' || proof.username || proof.password || portal.username || portal.password) throw new SourceIdentityGateError('EVIDENCE_INVALID', 'promote: invalid official identity evidence URLs');
   const vendorDomains = ['jobaffinity.fr', 'candidater.fr', 'flatchr.io', 'werecruit.io', 'greenhouse.io', 'lever.co', 'smartrecruiters.com', 'teamtailor.com', 'myworkdayjobs.com', 'oraclecloud.com', 'recruitee.com', 'personio.de', 'personio.com', 'workable.com', 'welcometothejungle.com'];
-  if (parse(domain).domain !== domain || vendorDomains.includes(domain)) throw new Error('promote: an ATS vendor or public suffix is not the reviewed official employer domain');
-  if (proof.hostname !== domain && !proof.hostname.endsWith(`.${domain}`)) throw new Error('promote: evidence page must belong to the reviewed official domain');
+  if (parse(domain).domain !== domain || vendorDomains.includes(domain)) throw new SourceIdentityGateError('EVIDENCE_INVALID', 'promote: an ATS vendor or public suffix is not the reviewed official employer domain');
+  if (proof.hostname !== domain && !proof.hostname.endsWith(`.${domain}`)) throw new SourceIdentityGateError('EVIDENCE_INVALID', 'promote: evidence page must belong to the reviewed official domain');
 }
 
 export async function requireSourceIdentity(tx: Prisma.TransactionClient, source: Source): Promise<void> {

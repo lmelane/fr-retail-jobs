@@ -69,7 +69,7 @@ export type OrchestratorResult = {
 export async function allSourceKeys(prisma: PrismaClient): Promise<string[]> {
   const apiKeys = (await loadActiveSources(prisma))
     .filter((source) => KIND_TO_ATS[source.kind])
-    .sort((a, b) => (a.lastRunJobs ?? a.verifiedJobCount ?? 0) - (b.lastRunJobs ?? b.verifiedJobCount ?? 0))
+    .sort((a, b) => (a.lastRunJobs ?? 0) - (b.lastRunJobs ?? 0))
     .map((source) => source.key);
   return onlyRequested([...new Set(apiKeys)]);
 }

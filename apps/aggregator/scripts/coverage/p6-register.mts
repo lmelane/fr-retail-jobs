@@ -177,7 +177,7 @@ try {
     } else if (!access.startsWith('ALLOWED')) {
       decision = 'C_SUSPENDUE';
       blocking = `Verdict d'accès non établi : ${access}.`;
-      nextAction = 'Lire robots.txt à la source et persister le verdict daté (validate-candidate).';
+      nextAction = 'Constituer une preuve d’accès datée pour les cibles configurées ; la collecte native ne remplace pas cette preuve.';
       resolution = 'Un verdict ALLOWED lu et daté.';
     } else if (collection.startsWith('ECHEC_')) {
       decision = 'C_SUSPENDUE';
