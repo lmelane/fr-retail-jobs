@@ -8,7 +8,7 @@ vi.mock('../../lib/http.js', async importOriginal => ({
 }));
 
 import { fetchText, fetchWithRetry } from '../../lib/http.js';
-import { fetchJobFromPage, fetchSitemapUrls, normalizeJobPosting, richestDescription } from './jsonLdSitemap.js';
+import { extractJobPostings, fetchSitemapUrls, normalizeJobPosting, richestDescription } from './jsonLdSitemap.js';
 import { parseSitemapLocations } from './jsonLdSitemap.js';
 
 const mockFetch = vi.mocked(fetchText);
@@ -104,17 +104,24 @@ describe('fetchSitemapUrls — index mal déclaré', () => {
   });
 });
 
-describe('fetchJobFromPage — la description la plus riche de la page (g6, 2026-09-06)', () => {
+describe('la description la plus riche de la page (g6, 2026-09-06)', () => {
   const fixture = (name: string) =>
     readFileSync(new URL(`../../ats/adapters/__fixtures__/${name}`, import.meta.url), 'utf8');
+  /** Page → premier JobPosting → description la plus riche : les trois briques que le générique enchaîne. */
+  const offreDePage = (html: string, url: string) => {
+    const [posting] = extractJobPostings(html);
+    const job = posting ? normalizeJobPosting(posting, url) : null;
+    if (!job) return null;
+    const description = richestDescription(html, job.description);
+    return description === job.description ? job : { ...job, description };
+  };
 
   /**
    * L'Oréal (1 716 offres du sitemap, 0 % de description) : le JSON-LD ne
    * porte que titre + datePosted ; le texte est en microdata sur la même page.
    */
-  it('L’Oréal : replie sur le bloc microdata quand le JSON-LD est vide', async () => {
-    mockFetch.mockResolvedValueOnce(fixture('g6-loreal-jobdetail.html'));
-    const job = await fetchJobFromPage('https://careers.loreal.com/en_US/jobs/JobDetail/x/253106');
+  it('L’Oréal : replie sur le bloc microdata quand le JSON-LD est vide', () => {
+    const job = offreDePage(fixture('g6-loreal-jobdetail.html'), 'https://careers.loreal.com/en_US/jobs/JobDetail/x/253106');
     expect(job?.title).toBe('_SYNERGIE - Skincare expert');
     expect(job?.description!.length).toBeGreaterThan(1500);
     expect(job?.description).toContain('\n');
@@ -125,9 +132,8 @@ describe('fetchJobFromPage — la description la plus riche de la page (g6, 2026
    * Kering (1 427 offres du sitemap, 12 % de description) : le JSON-LD porte
    * le portrait de la Maison (~170 caractères) ; l'offre est dans __NEXT_DATA__.
    */
-  it('Kering : prend le texte du poste dans __NEXT_DATA__, pas le portrait de la Maison', async () => {
-    mockFetch.mockResolvedValueOnce(fixture('g6-kering-jobdetail.html'));
-    const job = await fetchJobFromPage('https://www.kering.com/fr/talent/offres-d-emploi/europe/x/');
+  it('Kering : prend le texte du poste dans __NEXT_DATA__, pas le portrait de la Maison', () => {
+    const job = offreDePage(fixture('g6-kering-jobdetail.html'), 'https://www.kering.com/fr/talent/offres-d-emploi/europe/x/');
     expect(job?.description!.length).toBeGreaterThan(1500);
     expect(job?.description).toContain('ROLE');
     expect(job?.description).toContain('• ');

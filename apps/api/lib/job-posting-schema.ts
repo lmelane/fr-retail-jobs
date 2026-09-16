@@ -496,7 +496,6 @@ export function jobPostingSchema(job: JobRow, now: Date = new Date()): Record<st
   if (markupIneligibility(job, now).length > 0) return null;
   const datePosted = job.postedAt!;
   const employmentTypes = schemaEmploymentTypes(job.employmentTerm, job.workTime, job.programType, job.engagementType);
-  const country = countryCode(job.countryCode);
 
   return {
     '@context': 'https://schema.org',

@@ -2,9 +2,6 @@ import * as cheerio from 'cheerio';
 import { careerCandidates } from './careerLinks.js';
 import type { AtsType } from '@prisma/client';
 import { fetchText } from '../lib/http.js';
-import { canonicalCompanyKey } from '../lib/normalize.js';
-import { isSearchConfigured, searchWeb } from '../discovery/serper.js';
-import { probeAtsBySlug } from '../discovery/atsProbe.js';
 import type { AtsDetection } from '../types.js';
 
 /**
@@ -259,16 +256,6 @@ function detectionFromUrl(rawUrl: string): AtsDetection | null {
   }
   return null;
 }
-
-/**
- * Anchor text/href that marks a link to a careers/jobs page, FR + EN. Kept
- * broad on purpose — a missed keyword (e.g. "rejoindre", "talents")
- * means a whole brand's ATS is never discovered. Measured on Ba&sh: the link was
- * "nous rejoindre" -> talents.ba-sh.com/fr-FR/offres, matched by none of the
- * original keywords.
- */
-const CAREERS_LINK_RE =
-  /career|carri[eè]re|recrut|rejoin|rejoign|talent|jobs?\b|emploi|vacanc|opening|hiring|work-with-us|work with us|join-us|join us|travailler|nous-rejoindre/i;
 
 /** The registrable domain (eTLD+1, approx): "talents.ba-sh.com" -> "ba-sh.com". */
 function registrableDomain(hostname: string): string {
@@ -570,46 +557,6 @@ function guessCareerUrls(rawUrl: string): string[] {
   } catch {
     return [];
   }
-}
-
-function scoreResult(companyName: string, result: { title?: string; link?: string; snippet?: string }): number {
-  if (!result.link) return -999;
-  let score = 0;
-  const text = `${result.title ?? ''} ${result.snippet ?? ''}`.toUpperCase();
-  const companyTokens = canonicalCompanyKey(companyName).split(' ').filter((x) => x.length >= 3);
-  score += companyTokens.filter((t) => text.includes(t)).length * 2;
-  if (/CAREER|CARRIÈRE|CARRIERE|RECRUT|JOBS|EMPLOI/.test(text)) score += 4;
-  try {
-    const host = new URL(result.link).hostname.toLowerCase();
-    if (ATS_HOSTS.some((ats) => host.includes(ats))) score += 6;
-    if (/linkedin|indeed|glassdoor|fashionjobs|welcometothejungle/.test(host)) score -= 8;
-  } catch { score -= 10; }
-  return score;
-}
-
-export async function discoverAts(
-  companyName: string,
-  fashionjobsSlug?: string,
-): Promise<AtsDetection | null> {
-  // Free path first: direct ATS slug probes cost nothing and resolve many companies.
-  const probed = await probeAtsBySlug(companyName, fashionjobsSlug);
-  if (probed) return probed;
-
-  // Paid search is the fallback only, so a missing key degrades coverage rather
-  // than blocking discovery entirely.
-  if (!isSearchConfigured()) return null;
-
-  const results = await searchWeb(`\"${companyName}\" careers recrutement jobs`);
-  const ranked = results
-    .filter((r) => r.link)
-    .map((r) => ({ ...r, score: scoreResult(companyName, r) }))
-    .sort((a, b) => b.score - a.score);
-
-  for (const result of ranked.slice(0, 5)) {
-    const detected = await inspectCareerPage(result.link!);
-    if (detected) return detected;
-  }
-  return null;
 }
 
 export { detectionFromUrl };

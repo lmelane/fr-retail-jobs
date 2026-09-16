@@ -17,7 +17,6 @@ import type { PrismaClient } from "@prisma/client";
 import {
   AI_TITLE_RE,
   comparableTitle,
-  TAXONOMY_VERSION,
 } from "../normalize/taxonomy.js";
 
 /**

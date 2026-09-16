@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { classifyFunction, classifyJob, classifyProgramType, classifySeniority, isAiRelated, JOB_FUNCTIONS, BOOTSTRAP_TAXONOMY } from './taxonomy.js';
+import { classifyJob, classifyProgramType, isAiRelated, BOOTSTRAP_TAXONOMY } from './taxonomy.js';
+
+/** Les deux lectures du classifieur compilé (les enveloppes exportées ont été retirées au lot 12). */
+const classifyFunction = (title: string | null | undefined, department?: string | null) => BOOTSTRAP_TAXONOMY.classify(title, department).jobFunction;
+const classifySeniority = (title: string | null | undefined, department?: string | null) => BOOTSTRAP_TAXONOMY.classify(title, department).seniority;
 import { extractSkills } from './skills.js';
 
 describe('classifyFunction — la famille de métier du secteur, depuis le titre', () => {
@@ -256,10 +260,10 @@ describe('classifyFunction — la famille de métier du secteur, depuis le titre
     expect(classifyFunction(undefined, undefined)).toBeNull();
   });
 
-  it('le référentiel a des clés uniques et une famille chacune', () => {
-    const keys = JOB_FUNCTIONS.map((f) => f.key);
-    expect(new Set(keys).size).toBe(keys.length);
-    expect(JOB_FUNCTIONS.every((f) => BOOTSTRAP_TAXONOMY.groups.has(f.family))).toBe(true);
+  it('chaque famille du référentiel appartient à un groupe connu', () => {
+    const familles = [...BOOTSTRAP_TAXONOMY.families.values()];
+    expect(familles.length).toBeGreaterThan(0);
+    expect(familles.every((f) => f.group !== undefined && BOOTSTRAP_TAXONOMY.groups.has(f.group))).toBe(true);
   });
 });
 

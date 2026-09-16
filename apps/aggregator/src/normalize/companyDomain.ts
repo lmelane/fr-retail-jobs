@@ -252,11 +252,6 @@ export function rankWikidataEntities(entities: readonly WikidataSearchEntity[], 
   return exactOnly.sort((a, b) => b.score - a.score || a.order - b.order).map((row) => row.entity);
 }
 
-/** La première entité de `rankWikidataEntities`, ou null. */
-export function pickWikidataEntity(entities: readonly WikidataSearchEntity[], term: string): WikidataSearchEntity | null {
-  return rankWikidataEntities(entities, term)[0] ?? null;
-}
-
 const RANK_ORDER: Record<string, number> = { preferred: 0, normal: 1 };
 
 /**

@@ -19,7 +19,3 @@ export function publicAmount(value: AmountInput | null): number | null {
   const number = amount.toNumber();
   return Number.isFinite(number) && Math.abs(number) <= Number.MAX_SAFE_INTEGER && amount.equals(new Prisma.Decimal(number)) ? number : null;
 }
-
-export function sameAmount(a: AmountInput | null, b: AmountInput | null): boolean {
-  return a === null || b === null ? a === b : new Prisma.Decimal(a).equals(new Prisma.Decimal(b));
-}

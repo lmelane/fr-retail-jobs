@@ -92,10 +92,6 @@ const API_KINDS = new Set([
   'wttj',
 ]);
 
-export function isApiSource(source: CatalogSource): boolean {
-  return API_KINDS.has(source.kind);
-}
-
 /**
  * Flow-B sources: agencies and boards whose offers are client mandates, not
  * their own hiring. They may be the ONLY source for an exclusive mandate, but

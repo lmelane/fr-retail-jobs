@@ -137,18 +137,3 @@ export function decideMode(e: SourceEvidence): ModeDecision {
   reasons.push('énumération prouvée', 'droit d\'attester une absence accordé');
   return { mode: 'FULL_AUTOMATION', reasons, nextAction: 'aucune — surveiller le prochain cycle' };
 }
-
-/** Les modes qui autorisent une collecte automatique. */
-export function collectsAutomatically(mode: OperationalMode): boolean {
-  return mode !== 'PAUSED_BLOCKED';
-}
-
-/** Les modes qui autorisent la publication d'offres. */
-export function publishes(mode: OperationalMode): boolean {
-  return mode === 'FULL_AUTOMATION' || mode === 'PUBLISH_NO_CLOSE';
-}
-
-/** Le seul mode qui autorise une fermeture sur absence. Lu par le refresh. */
-export function mayCloseOnAbsence(mode: OperationalMode): boolean {
-  return mode === 'FULL_AUTOMATION';
-}

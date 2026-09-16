@@ -1,7 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { EMPLOYMENT_LABELS, LANGUES_LIBELLES, employmentLabel, langueDesLibelles } from '@catwalks/db/presentation';
 import { MARCHES } from '@catwalks/db/marches';
-import { languageLabel } from '../projection';
 import { langueDesLibellesDuPays, perimetreServi } from '../jobs';
 import { resoudrePerimetre } from '../perimetre';
 
@@ -57,9 +56,4 @@ describe('la langue des libellés (lot 8)', () => {
     expect(langueDesLibellesDuPays(null)).toBe('fr');
   });
 
-  it('les noms de langue suivent aussi la langue des libellés', () => {
-    expect(languageLabel('fr')).toBe('Français');
-    expect(languageLabel('fr', 'en')).toBe('French');
-    expect(languageLabel('zz', 'en')).toBe('zz');
-  });
 });

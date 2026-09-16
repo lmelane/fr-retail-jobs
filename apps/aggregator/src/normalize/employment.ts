@@ -235,7 +235,6 @@ const WORK_TIME_INFERRED: ReadonlyArray<readonly [WorkTime, RegExp]> = [
 ];
 
 /** Les deux familles, pour les usages qui ne se soucient pas de la nature. */
-const WORK_TIME_PATTERNS = [...WORK_TIME_EXPLICIT, ...WORK_TIME_INFERRED] as const;
 
 /**
  * NATURE JURIDIQUE. `CONTRACTOR` (valeur schema.org) désigne un independent

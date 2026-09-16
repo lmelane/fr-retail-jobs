@@ -51,16 +51,6 @@ const NOMS = {
   en: { language: nomsIntl('en', 'language'), region: nomsIntl('en', 'region') },
 } as const;
 
-/** « fr » → « Français » / « French », capitalisé ; un code inconnu reste tel quel. */
-export function languageLabel(code: string, langue: LangueLibelles = 'fr'): string {
-  try {
-    const l = NOMS[langue].language?.of(code);
-    return l ? l.charAt(0).toUpperCase() + l.slice(1) : code;
-  } catch {
-    return code;
-  }
-}
-
 /** Le nom d'un pays : la table française vérifiée, ou `Intl` dans la langue des libellés. */
 function nomPays(code: string, langue: LangueLibelles): string {
   if (langue === 'fr') return countryLabel(code);

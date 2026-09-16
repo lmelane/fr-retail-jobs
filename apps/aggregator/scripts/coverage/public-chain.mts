@@ -257,7 +257,6 @@ try {
     SELECT j.id FROM "Job" j WHERE j."isActive"
       AND (SELECT count(*) FROM "JobSource" s WHERE s."jobId" = j.id AND s."isActive") > 1 LIMIT 200`;
   const multiIds = new Set(multi.map((r) => String(r.id)));
-  const worldIds = (results.find((r) => r.journey === 'monde (aucun filtre)')?.identifierGaps ? null : null);
   const world = await apiIds({});
   const duplicates = world.ids.filter((id, i) => world.ids.indexOf(id) !== i);
   const multiSeen = world.ids.filter((id) => multiIds.has(id));

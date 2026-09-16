@@ -78,7 +78,7 @@ export type EnumerationInput = {
  * optimiste couvrirait une troncature.
  */
 export function enumerationVerdict(input: EnumerationInput): EnumerationVerdict {
-  const { declaredTotal, uniqueCollected, truncated, unreadableRows = 0, adapterProvesCompletion } = input;
+  const { declaredTotal, uniqueCollected, truncated, adapterProvesCompletion } = input;
 
   // Une troncature est une preuve directe : le balayage s'est arrêté sur un plafond, la fin n'est pas atteinte.
   if (truncated) return 'REFUTED';

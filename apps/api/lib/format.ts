@@ -36,7 +36,6 @@ import { employmentLabel, type LangueLibelles } from '@catwalks/db/presentation'
  *  - `null` signifie « la source ne le dit pas ». Rien ne s'affiche alors —
  *    l'ancien « UNKNOWN » stocké finissait en pastille littérale à l'écran.
  */
-export { EMPLOYMENT_LABELS } from '@catwalks/db/presentation';
 export type { LangueLibelles } from '@catwalks/db/presentation';
 // Lot 8 : la langue des libellés est celle du marché servi (`langueDesLibelles`), le français par défaut.
 export const employmentTermLabel = (value: string | null | undefined, langue: LangueLibelles = 'fr') => employmentLabel('employmentTerm', value, langue);

@@ -11,8 +11,6 @@
 
 import { knownAlpha2 } from './iso-alpha2';
 
-export type Country = { code: string; label: string };
-
 /** Lowercased raw value -> canonical code. Extend as new sources appear. */
 const ALIASES: Record<string, string> = {
   // France

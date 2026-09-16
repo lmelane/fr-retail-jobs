@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { decideMode, mayCloseOnAbsence, type SourceEvidence } from './operationalMode.js';
+import { decideMode, type SourceEvidence } from './operationalMode.js';
 import { isTrustedForAttestation } from '../pipeline/attestation.js';
 
 /**
@@ -34,27 +34,27 @@ const pipelineMayClose = (e: SourceEvidence) =>
 
 describe('le registre et le pipeline s\'accordent sur le droit de fermer', () => {
   it('énumération prouvée : les DEUX autorisent', () => {
-    expect(mayCloseOnAbsence(decideMode(BASE).mode)).toBe(true);
+    expect((decideMode(BASE).mode === 'FULL_AUTOMATION')).toBe(true);
     expect(pipelineMayClose(BASE)).toBe(true);
   });
 
   it('énumération NON prouvée : les DEUX refusent', () => {
     // Le cas Hugo Boss / Skechers : pagination instable, `complete = false`.
     const e = { ...BASE, lastRunComplete: false };
-    expect(mayCloseOnAbsence(decideMode(e).mode)).toBe(false);
+    expect((decideMode(e).mode === 'FULL_AUTOMATION')).toBe(false);
     expect(pipelineMayClose(e)).toBe(false);
   });
 
   it('`complete` inconnu : les DEUX refusent — une absence d\'information n\'autorise rien', () => {
     const e = { ...BASE, lastRunComplete: null };
-    expect(mayCloseOnAbsence(decideMode(e).mode)).toBe(false);
+    expect((decideMode(e).mode === 'FULL_AUTOMATION')).toBe(false);
     expect(pipelineMayClose(e)).toBe(false);
   });
 
   it('run en échec : les DEUX refusent', () => {
     for (const status of ['BROKEN', 'ERROR', 'TIMEOUT', 'CHALLENGED']) {
       const e = { ...BASE, lastRunStatus: status, lastRunComplete: false };
-      expect(mayCloseOnAbsence(decideMode(e).mode)).toBe(false);
+      expect((decideMode(e).mode === 'FULL_AUTOMATION')).toBe(false);
       expect(pipelineMayClose(e)).toBe(false);
     }
   });
@@ -64,6 +64,6 @@ describe('le registre et le pipeline s\'accordent sur le droit de fermer', () =>
       { ...BASE, identityVerified: false },        // EVIDENCE_ONLY
       { ...BASE, lastRunComplete: false },         // PUBLISH_NO_CLOSE
       { ...BASE, status: 'PAUSED' },               // PAUSED_BLOCKED
-    ]) expect(mayCloseOnAbsence(decideMode(e).mode)).toBe(false);
+    ]) expect((decideMode(e).mode === 'FULL_AUTOMATION')).toBe(false);
   });
 });

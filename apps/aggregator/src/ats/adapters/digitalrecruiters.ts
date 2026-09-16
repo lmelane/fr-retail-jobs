@@ -84,7 +84,6 @@ export function announcementExternalId(diffusions: DrItem[]): string | null {
 export function normalizeAnnouncement(diffusions: DrItem[], domainName: string, locale: string): NormalizedJob | null {
   const primary = diffusions.find(isLocationSpecific) ?? diffusions[0];
   if (!primary?.title) return null;
-  const id = primary.job_ad_id ?? primary.id;
   const path = primary.url ? `/${locale.slice(0, 2)}/annonce/${primary.url}` : '';
   const locations = [...new Set(diffusions.map((d) => d.location).filter((x): x is string => !!x))];
   return {

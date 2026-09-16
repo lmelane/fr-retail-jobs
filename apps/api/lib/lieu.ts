@@ -68,9 +68,4 @@ export function resolveLieu(raw: string | null | undefined): LieuResolu | null {
   return { type: 'ville', cityLoose: texte, libelle: capitaliser(texte) };
 }
 
-/** Le pays est-il un code ISO 3166-1 alpha-2 réellement attribué ? */
-export function paysConnu(code: string): boolean {
-  return CODES_CONNUS.has(code);
-}
-
 export const PAYS_CONNUS: ReadonlySet<string> = CODES_CONNUS;

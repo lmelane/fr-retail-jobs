@@ -1,6 +1,6 @@
 import { archivePublicationHold } from '../test/publicationPersistenceFixture.js';
 import { clearOccupationLedger } from '../test/setup-integration.js';
-import { afterAll, describe, expect, it } from 'vitest';
+import { afterAll, expect, it } from 'vitest';
 import { PrismaClient } from '@prisma/client';
 import { toCandidate } from './ingest.js';
 import { isTrustedForAttestation } from './attestation.js';

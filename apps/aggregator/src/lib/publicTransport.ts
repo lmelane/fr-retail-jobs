@@ -20,11 +20,3 @@ export function publicLookup(resolve: LookupFunction = lookup): LookupFunction {
 
 let dispatcher = new Agent({ connect: { lookup: publicLookup(), timeout: 12_000 } });
 export const publicDispatcher = () => dispatcher;
-
-/** Preserve the optional external resolver without bypassing socket validation. */
-export function usePublicResolver(resolve: LookupFunction): Agent {
-  const previous = dispatcher;
-  dispatcher = new Agent({ connect: { lookup: publicLookup(resolve), timeout: 12_000 } });
-  void previous.close();
-  return dispatcher;
-}

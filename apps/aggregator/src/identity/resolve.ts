@@ -5,7 +5,6 @@ import { createHash } from 'node:crypto';
 import { Prisma } from '@prisma/client';
 import type { CandidateJob } from '../dedup/match.js';
 import { normalizedEmployerName } from '../normalize/employerName.js';
-import { resolveCompany } from '../normalize/company.js';
 import { PIPELINE_VERSION } from '../pipeline/version.js';
 
 type Company = Prisma.CompanyGetPayload<Record<string, never>>;

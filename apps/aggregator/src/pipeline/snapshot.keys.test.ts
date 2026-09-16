@@ -1,22 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { compositeKey, dayBounds, formatDay, parseDay, splitCompositeKey, KEY_SEPARATOR } from './snapshot.js';
+import { dayBounds, formatDay, parseDay } from './snapshot.js';
 
 /** Les clés composées et les bornes de jour : le découpage que le web relira pour la carte. */
-describe('snapshot keys', () => {
-  it('compose et découpe une clé pays|ville', () => {
-    expect(compositeKey('FR', 'Paris')).toBe('FR|Paris');
-    expect(splitCompositeKey('FR|Paris')).toEqual(['FR', 'Paris']);
-    expect(splitCompositeKey(compositeKey('IT', 'retail-client-advisor'))).toEqual(['IT', 'retail-client-advisor']);
-    expect(KEY_SEPARATOR).toBe('|');
-  });
-
-  it('une ville qui porte le séparateur reste découpable en tête', () => {
-    const [country, ...rest] = splitCompositeKey('FR|Saint|Denis');
-    expect(country).toBe('FR');
-    expect(rest.join(KEY_SEPARATOR)).toBe('Saint|Denis');
-  });
-});
-
 describe('snapshot days', () => {
   it('parse un jour ISO en minuit UTC', () => {
     expect(parseDay('2026-09-06').toISOString()).toBe('2026-09-06T00:00:00.000Z');

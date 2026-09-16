@@ -6,7 +6,7 @@ import { lockSourceWrites } from '../lib/writeLocks.js';
 import type { ObjectStore } from '../retention/objectStore.js';
 import { readIdentitySource } from './sourceRegistryRead.js';
 import { inspectSourceAccess, type AccessEvidenceReport } from './sourceAccessEvidence.js';
-import { invalidAccess, parseAccessDocument, SourceAccessGateError, SOURCE_ACCESS_POLICY, type AccessDocument } from './accessScope.js';
+import { invalidAccess, parseAccessDocument, SourceAccessGateError, SOURCE_ACCESS_POLICY } from './accessScope.js';
 
 type Subject = { key: string; currentRevisionId: string };
 const observationKeys = ['ALLOWED', 'DISALLOWED', 'NO_ROBOTS', 'UNREACHABLE'] as const;

@@ -335,14 +335,3 @@ export function richestDescription(html: string, fromJsonLd?: string): string | 
   if (current < USABLE_DESCRIPTION || fromPage.length >= 2 * current) return fromPage;
   return fromJsonLd;
 }
-
-/** Reads one job page and returns its first JobPosting, or null if none. */
-export async function fetchJobFromPage(pageUrl: string): Promise<NormalizedJob | null> {
-  const html = await fetchText(pageUrl, { headers: REQUEST_HEADERS });
-  const [posting] = extractJobPostings(html);
-  if (!posting) return null;
-  const job = normalizeJobPosting(posting, pageUrl);
-  if (!job) return null;
-  const description = richestDescription(html, job.description);
-  return description === job.description ? job : { ...job, description };
-}

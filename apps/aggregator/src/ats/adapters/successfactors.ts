@@ -455,10 +455,6 @@ async function fetchSuccessFactorsInSession(config: Record<string, unknown>): Pr
     enumeration: { method: 'PUBLISHER_HTML_PAGINATION', endpoint: firstUrl, pages, rawCount, termination, issues: [...issues], pageEvidence } });
 }
 
-export async function fetchSuccessFactorsJobs(config: Record<string, unknown>): Promise<NormalizedJob[]> {
-  return (await fetchSuccessFactorsResult(config)).jobs;
-}
-
 /**
  * Microdata, not JSON-LD: the text sits in itemprop="description".
  *

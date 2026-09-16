@@ -53,7 +53,6 @@ describe('parseIcimsListing', () => {
 // jamais un total d'offres — mesuré sur hub-urbn (28 × 50, 1 353 offres) et
 // Aeropostale (« of 1 », 19 cartes) le 2026-09-09.
 // ---------------------------------------------------------------------------
-import { vi } from 'vitest';
 import { parseIcimsPageCount } from './icims.js';
 describe('parseIcimsPageCount', () => {
   it('lit le nombre de pages annoncé dans le bloc de pagination', () => {

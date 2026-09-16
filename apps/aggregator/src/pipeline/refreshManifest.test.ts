@@ -34,7 +34,6 @@ describe('manifestHash — l\'empreinte porte sur le PLAN, pas sur son enrobage'
 });
 
 describe('verifyManifest — trois refus, trois incidents réels', () => {
-  const active = new Set(['JS1', 'JS2']);
 
   it('un manifeste intact dont les lignes sont actives est valide', () => {
     expect(verifyManifest(freezeManifest(['mecca'], [entry()]))).toEqual({ valid: true, problems: [] });

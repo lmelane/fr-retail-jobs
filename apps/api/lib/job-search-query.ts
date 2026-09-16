@@ -79,7 +79,6 @@ export type SearchSummary = {
  * Les valeurs utilisateur restent des paramètres liés ; seuls des fragments
  * fixes deviennent des identifiants.
  */
-export { MAX_TERMES } from './search-plan';
 
 const COLONNE: Record<Exclude<Dimension, 'metier' | 'secteur' | 'maison' | 'ville'>, Prisma.Sql> = {
   pays: Prisma.sql`b."countryCode"`,
@@ -255,11 +254,6 @@ const somme = (parts: Prisma.Sql[]) => (parts.length ? Prisma.sql`(${Prisma.join
  */
 export const COMPTE_PERIMETRE_TTL_MS = 60_000;
 const comptesPerimetre = new Map<string, { valeur: Promise<number>; expire: number }>();
-
-/** Oublie les totaux mémorisés (témoins qui sèment des offres entre deux recherches). */
-export function oublierComptesPerimetre(): void {
-  comptesPerimetre.clear();
-}
 
 function compterPerimetre(paysDuPerimetre: readonly string[], asOf: Date): Promise<number> {
   const cle = [...paysDuPerimetre].sort().join(',');

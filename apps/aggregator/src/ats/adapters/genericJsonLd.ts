@@ -6,7 +6,7 @@ import { createHash } from 'node:crypto';
 import { fetchText } from '../../lib/http.js';
 import { fetchSitemapUrlsDetailed, extractJobPostings, normalizeJobPosting } from '../../connectors/generic/jsonLdSitemap.js';
 import { fetchRssJobs } from '../../connectors/generic/rssFeed.js';
-import { collapseWhitespace, briefError } from '../../lib/normalize.js';
+import { briefError } from '../../lib/normalize.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
 import { CRAWLER_IDENTITY } from '../../lib/crawlerIdentity.js';
 
@@ -29,12 +29,6 @@ export function parseListingCount(html: string, marker?: unknown): number | unde
   const text = html.replace(/<script[\s\S]*?<\/script>|<style[\s\S]*?<\/style>/gi, ' ').replace(/<[^>]+>/g, ' ').replace(/&nbsp;/g, ' ');
   const visible = /(\d{1,3}(?:[\s.,]\d{3})*|\d+)\s*(?:open positions?|open roles?|job openings?|positions?|jobs?|vacancies|vacatures?|offres?(?: d'emploi)?|postes?|stellen(?:angebote)?|résultats?|results?)\b/i.exec(text);
   return visible ? Number(visible[1].replace(/[\s.,]/g, '')) : undefined;
-}
-
-function flattenJsonLd(value: unknown): any[] {
-  if (Array.isArray(value)) return value.flatMap(flattenJsonLd);
-  if (value && typeof value === 'object' && '@graph' in (value as any)) return flattenJsonLd((value as any)['@graph']);
-  return value && typeof value === 'object' ? [value] : [];
 }
 
 /**

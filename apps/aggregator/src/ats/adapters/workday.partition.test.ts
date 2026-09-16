@@ -8,7 +8,6 @@ import { attachWorkdayDescriptions, fetchWorkdayJobs } from './workday.js';
 const fixture = (name: string) => JSON.parse(readFileSync(new URL(`./fixtures/${name}`, import.meta.url), 'utf8'));
 /** Real Tapestry responses of 2026-09-10: site page 1 (total 2 000, facet Brand), page 1 of each Brand value, the full id list per value (2 085 ids). */
 const SITE_P1 = fixture('lot4-tapestry-listing-p1-nofacet.json');
-const BRAND_P1: Record<string, any> = { Coach: fixture('lot4-tapestry-brand-Coach-p1.json'), 'Kate Spade': fixture('lot4-tapestry-brand-Kate_Spade-p1.json'), Tapestry: fixture('lot4-tapestry-brand-Tapestry-p1.json') };
 const BRAND_IDS: Record<string, string[]> = fixture('lot4-tapestry-brand-ids.json');
 const FACET = SITE_P1.facets.find((f: any) => f.facetParameter === 'Brand');
 const idOf = (v: any) => FACET.values.find((x: any) => x.descriptor === v).id;

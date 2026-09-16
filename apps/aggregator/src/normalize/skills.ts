@@ -193,11 +193,6 @@ export const SKILL_DICTIONARY: ReadonlyArray<SkillDefinition> = [
   ...CERTIFICATIONS.map(([name, pattern]) => ({ name, kind: 'certification' as const, pattern })),
 ];
 
-const KIND_OF = new Map(SKILL_DICTIONARY.map((s) => [s.name, s.kind]));
-
-export function skillKind(name: string): SkillKind | undefined {
-  return KIND_OF.get(name);
-}
 
 const MAX_TEXT = 40_000;
 

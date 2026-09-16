@@ -43,7 +43,6 @@ const FRENCH_LCID = 1036;
  */
 const CONTRACT_CATEGORY = /^(cdi|cdd|stage|alternance|apprentissage|int[ée]rim|freelance|vie|v\.i\.e\.?|temps (plein|partiel)|contrat pro\w*|professionnalisation)\b/i;
 /** A category that names a JOB FAMILY: Talentsoft writes it with slashes ("Commerce / Vente / Relations Clients"). */
-const JOB_FAMILY_CATEGORY = /\s\/\s/;
 
 export type RssItem = {
   link?: string;

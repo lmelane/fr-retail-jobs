@@ -31,7 +31,7 @@ Les chemins doivent être fournis sous la forme `pathname + query`, sans origine
 
 La politique locale est plus restrictive que la possibilité d’accès laissée par la RFC pour certaines autres réponses 4xx. Elle ne transforme pas une erreur en lecture favorable. Un hash identifie un contenu ; il ne date pas la lecture et ne prouve pas une autorisation.
 
-La disponibilité de la page publique du robot doit être mesurée séparément. La fonction inutilisée qui prétendait la vérifier a été retirée, ainsi que les commentaires contradictoires 404/200 et le renvoi à une page supprimée de `apps/web`. Les tests de constantes n’affirment plus mesurer sa disponibilité.
+La disponibilité de la page publique du robot doit être mesurée séparément. La fonction inutilisée qui prétendait la vérifier a été retirée, ainsi que les commentaires contradictoires 404/200 et le renvoi à une page de l’ancienne application web, supprimée depuis (D-420 : le service ne sert plus que des routes API). Les tests de constantes n’affirment plus mesurer sa disponibilité.
 
 ## Décision immuable et périmètre
 

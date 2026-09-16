@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import {
-  decideMode, mayCloseOnAbsence, publishes, collectsAutomatically,
+  decideMode,
   OPERATIONAL_MODES, type SourceEvidence,
 } from './operationalMode.js';
 
@@ -27,7 +27,7 @@ describe('mode opérationnel — le cas nominal', () => {
   it('accorde FULL_AUTOMATION quand TOUTES les conditions sont démontrées', () => {
     const d = decideMode(SAINE);
     expect(d.mode).toBe('FULL_AUTOMATION');
-    expect(mayCloseOnAbsence(d.mode)).toBe(true);
+    expect((d.mode === 'FULL_AUTOMATION')).toBe(true);
   });
 
   it('toute décision porte un motif ET une prochaine action — aucune source « à vérifier »', () => {
@@ -59,8 +59,8 @@ describe('mode opérationnel — le droit de fermer ne s\'accorde que sur preuve
     // doivent être publiées ; leur absence d'un passage ne prouve rien.
     const d = decideMode({ ...SAINE, lastRunComplete: false });
     expect(d.mode).toBe('PUBLISH_NO_CLOSE');
-    expect(mayCloseOnAbsence(d.mode)).toBe(false);
-    expect(publishes(d.mode)).toBe(true);
+    expect((d.mode === 'FULL_AUTOMATION')).toBe(false);
+    expect((d.mode === 'FULL_AUTOMATION' || d.mode === 'PUBLISH_NO_CLOSE')).toBe(true);
   });
 
   it('un droit d\'attester refusé retire le droit de fermer', () => {
@@ -82,8 +82,8 @@ describe('mode opérationnel — l\'identité conditionne la publication', () =>
   it('une identité non certifiée interdit de publier : on collecte pour PROUVER', () => {
     const d = decideMode({ ...SAINE, identityVerified: false });
     expect(d.mode).toBe('EVIDENCE_ONLY');
-    expect(publishes(d.mode)).toBe(false);
-    expect(collectsAutomatically(d.mode)).toBe(true);
+    expect((d.mode === 'FULL_AUTOMATION' || d.mode === 'PUBLISH_NO_CLOSE')).toBe(false);
+    expect((d.mode !== 'PAUSED_BLOCKED')).toBe(true);
   });
 
   it('une revue périmée par un changement de configuration ne vaut PAS revue (D59)', () => {
@@ -104,7 +104,7 @@ describe('mode opérationnel — ce qui interdit toute collecte', () => {
     ]) {
       const d = decideMode(c);
       expect(d.mode).toBe('PAUSED_BLOCKED');
-      expect(collectsAutomatically(d.mode)).toBe(false);
+      expect((d.mode !== 'PAUSED_BLOCKED')).toBe(false);
     }
   });
 
@@ -117,7 +117,7 @@ describe('mode opérationnel — un statut de run inconnu n\'autorise rien', () 
   it('ne suppose jamais ce qu\'il ne sait pas lire', () => {
     const d = decideMode({ ...SAINE, lastRunStatus: 'QUELQUE_CHOSE_DE_NOUVEAU' });
     expect(d.mode).toBe('EVIDENCE_ONLY');
-    expect(mayCloseOnAbsence(d.mode)).toBe(false);
+    expect((d.mode === 'FULL_AUTOMATION')).toBe(false);
   });
 
   it('un run absent n\'est pas un run sain', () => {

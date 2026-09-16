@@ -1,6 +1,6 @@
 import bootstrap from '../../../../packages/db/data/occupations-v1.json' with { type: 'json' };
 import { compileOccupationManifest, normalizeOccupationTitle, type CompiledOccupationTaxonomy, type OccupationDecision } from '@catwalks/db/occupations';
-import { readEmployment, type ProgramType } from './employment.js';
+import { type ProgramType } from './employment.js';
 import { extractSkills } from './skills.js';
 
 /** Occupations, families and ranks use an immutable database catalogue.
@@ -8,22 +8,10 @@ import { extractSkills } from './skills.js';
  * pure tests. A new synonym is published as data, not a TAXONOMY_VERSION bump.
  * AI, skills and employment programs retain their separate existing logic. */
 export const TAXONOMY_VERSION = 4;
-export type JobFamily = string;
-export type JobFunction = string;
-export type Seniority = string;
-export type FunctionDefinition = { key: string; label: string; family: string };
 // Bootstrap is a versioned data fixture, used by pure legacy helpers/tests only.
 // Runtime writes pass the active database release explicitly.
 export const BOOTSTRAP_TAXONOMY = compileOccupationManifest(bootstrap);
-export const JOB_FUNCTIONS: ReadonlyArray<FunctionDefinition> = bootstrap.families.map(f => ({ key: f.key, label: f.labels.fr, family: f.group }));
-export const SENIORITY_LABELS: Readonly<Record<string,string>> = Object.fromEntries(bootstrap.seniorities.map(s => [s.key,s.labels.fr]));
 export const comparableTitle = normalizeOccupationTitle;
-export function classifyFunction(title: string | null | undefined, department?: string | null): string | null {
-  return BOOTSTRAP_TAXONOMY.classify(title,department).jobFunction;
-}
-export function familyOf(key: string | null | undefined): string | null {
-  return key ? BOOTSTRAP_TAXONOMY.families.get(key)?.group ?? null : null;
-}
 
 /**
  * Ces trois motifs sont le fruit de mois d'observation réelle (WERKSTUDENT,
@@ -34,9 +22,6 @@ export function familyOf(key: string | null | undefined): string | null {
 const INTERNSHIP_RE = /\bSTAGE\b|STAGIAIRE|STAGAIRE|INTERN(SHIP)?S?\b|TIROCIN|PRACTICAS|PRAKTIK|ESTAGIO|WERKSTUDENT|PLACEMENT (STUDENT|YEAR)|STUDENT PLACEMENT|\bSTUDENT\b|BECARI/;
 const APPRENTICESHIP_RE = /ALTERNAN|APPRENTI|APPRENTICE|APPRENTISSAGE|APPRENDIST|\bLEHRE\b|LEHRSTELLE|LEHRLING|AUSBILDUNG|AUSZUBILDEND|AZUBI|\bELEV\b|WORK[- ]STUDY|DUAL(ES)? (STUD|DEGREE)|CONTRAT (DE )?PRO(FESSIONNALISATION)?\b|LEARNERSHIP/;
 const GRADUATE_RE = /GRADUATE|\bV\.?I\.?E\.?\b(?! )|\bVIE\b (?:\d|-|MISSION|PROGRAM|CONTRACT|[A-Z]{2,}\b)|TRAINEE|JEUNE\S* DIPLOM|EARLY CAREER|ROTATIONAL|NEOLAUREAT|MANAGEMENT TRAINING PROGRAM|\bMTP\b/;
-export function classifySeniority(title: string | null | undefined, department?: string | null): string | null {
-  return BOOTSTRAP_TAXONOMY.classify(title,department).seniority;
-}
 
 /**
  * L'annonce parle-t-elle d'IA ? Sigles en capitales strictes — « AI » et

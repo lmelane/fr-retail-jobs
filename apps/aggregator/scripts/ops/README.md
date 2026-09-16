@@ -146,3 +146,49 @@ Le mécanisme unique déplace les corps vers des blocs S3 vérifiés et conserve
 [`source-facts.mts`](source-facts.mts) prépare un plan borné par source, avec différences et empreintes, puis l’applique sous contrôle de ces preuves. La [documentation des faits](../../../../docs/architecture/source-facts.md) décrit les états, les limites et la pagination. L’ancien `scripts/trust/backfill-workplace.mts` a été supprimé : il choisissait la première interprétation et ne corrigeait pas les valeurs déjà remplies.
 
 Les commandes `apply-domain-sheet` et `separate-fused` sont également retirées. Les [décisions d’identité](../../../../docs/architecture/publication-identity.md) remplacent les fusions par proximité de titre. Les réparations d’employeurs passent par `scripts/identity/cli.mts` et leur plan revu ; la reprise des groupes historiques est en cours dans le lot 4.
+
+## Mesurer ce qu'un cycle a coûté
+
+Lecture seule, sur ce que le run a réellement enregistré ; une grandeur absente est rendue `null` avec son motif, jamais complétée.
+
+| Outil | Question à laquelle il répond |
+|---|---|
+| [`capacity-report.mts`](capacity-report.mts) `--run-id=<id> [--out=…]` | Où sont passés le temps, les requêtes, la mémoire, les connexions et les écritures d'une passe. |
+| [`cycle-resources.mts`](cycle-resources.mts) `--run-id=<id>` | Ce qu'un cycle a coûté par source : bornes, compteurs, erreurs, écritures. |
+| [`cycle-sets.mts`](cycle-sets.mts) `--keys=a,b --out=…` | Les ensembles d'identifiants d'un cycle, par source, pour comparer deux cycles par « lesquelles » et jamais par cardinaux. |
+| [`ingest-facts.mts`](ingest-facts.mts) `--keys=<k1,k2> --phase=before|after …` | Les faits d'une ingestion bornée avant puis après (`--before=<f.json> --since=<iso> --command=<run>`), différence par ensembles d'identifiants, sans fermer aucune offre. |
+| [`storage-snapshot.mts`](storage-snapshot.mts) `[--out=…] [--compare=<avant.json>]` | La taille de ce qu'on garde, table par table, avant et après un corpus. |
+| [`front-probe.mts`](front-probe.mts) `--phase=<avant|pendant|apres>` | Le site public pendant une ingestion : contrôle de non-régression, pas un test de charge. |
+
+Tous s'exécutent sous `db.py readonly` (ou sur le clone) : `db.py readonly npx tsx scripts/ops/<outil> …`.
+
+## Registre, rapports et clés
+
+| Outil | Rôle |
+|---|---|
+| [`source-registry.mts`](source-registry.mts) `[--out=…] [--md=…]` | Le registre opérationnel des sources : une décision par source, aucune par défaut (`decideMode`). |
+| [`operations-report.mts`](operations-report.mts) `[--out=…] [--md=…]` | L'état courant de chaque source en une lecture (accès, mode, dernier run). |
+| [`source-keys.mts`](source-keys.mts) | Les clés du catalogue pour valider une allowlist ; le statut est rendu à côté, jamais comme critère. |
+| [`tenant-key-table.mts`](tenant-key-table.mts) `--runs=<id,…>` | La clé de tenant effectivement utilisée par la porte, source par source. |
+| [`production-counts.mts`](production-counts.mts) | Les six grandeurs qui prouvent qu'une restauration reproduit la production, en une transaction. |
+| [`run-status.mts`](run-status.mts) `--command=<nom>` / [`run-verdict.mts`](run-verdict.mts) | Le statut d'un `PipelineRun` nommé ; le verdict terminal d'un passage borné, lu en base par le runner. |
+| [`public-chain-reconcile.mts`](public-chain-reconcile.mts) `--jobs=<id,…>` | Réconcilie les cinq surfaces publiques par identifiant. |
+| [`publication-groups.mts`](publication-groups.mts) `--request=… [--apply]` | Prévisualise puis applique une partition de publication complète et bornée. |
+| [`purge-preflight-clones.mts`](purge-preflight-clones.mts) `[--keep-latest=2] [--apply]` | Purge les clones de préflight périmés (`db.py clone`). |
+| [`backup.py`](backup.py) `<chemin.dump>` | Sauvegarde logique, sous `db.py production`. |
+
+## Fusionner sans tuer un run
+
+[`safe-merge.sh`](safe-merge.sh) `<PR> [args gh pr merge…]` refuse une fusion pendant un passage borné (un déploiement remplace le conteneur et tue le run : incidents du 09/09 et du 13/09/2026). [`run-merge.sh`](run-merge.sh) `<journal.log> <PR>` l'enveloppe pour que le code de sortie lu soit celui de la fusion, jamais celui d'un `tail`. Témoin : `src/ops/safeMerge.test.ts`.
+
+## Mesures datées, rejouables
+
+Des preuves gravées avec leur lot, pas des procédures courantes : on les rejoue pour re-mesurer, jamais pour opérer.
+
+- [`verif-couverture-registre.mts`](verif-couverture-registre.mts) (`npm run verif:couverture`) et [`verif-couverture-marches.mts`](verif-couverture-marches.mts) : les taux gravés dans `packages/db/marches.ts`, recomptés sur la bonne colonne, en lecture seule stricte.
+- [`verif-catalogue-coherence.mts`](verif-catalogue-coherence.mts) (`npm run verif:catalogue`) : cohérence du catalogue seed `data/seeds/sources.csv`, sans réseau.
+- [`verif-marche-cn.mts`](verif-marche-cn.mts), [`verif-marche-cn-facettes.mts`](verif-marche-cn-facettes.mts), [`verif-marche-cn-discrimination.mts`](verif-marche-cn-discrimination.mts), [`verif-marche-cn-dimension-unique.mts`](verif-marche-cn-dimension-unique.mts) : les mesures du marché Chine (lot 6, 15/09/2026) — ouverture, facettes côté site, pouvoir de discrimination, dimension unique `工作性质`.
+- [`p9-verdict.mts`](p9-verdict.mts) `--keys=a,b [--run-id=…]` : le verdict complet d'une ingestion P9 par source, la chaîne entière sans trou entre deux nombres.
+- [`wave-candidates.mts`](wave-candidates.mts) `--actors=<actors.csv> [--limit=40]` : le vivier d'une vague, construit en sondant les portails (D33 : 45 % des `careers.<domaine>` devinés étaient des NXDOMAIN).
+
+Retirés au lot 12 (16/09/2026), sans remplaçant parce que sans usage : `_ca2.mts`, `_demote.mts`, `p9-ingest-facts.mts`, `p9-set-locale.mts`, `p9-url-proof.mts` (essais et mutations ponctuels de septembre).

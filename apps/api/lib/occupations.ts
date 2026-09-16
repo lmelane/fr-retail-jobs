@@ -1,4 +1,3 @@
-import { publicJobWhere } from '@catwalks/db/availability';
 import { cache } from 'react';
 import { prisma } from '@catwalks/db';
 import {
@@ -36,9 +35,6 @@ export const getOccupationPresentation = cache(async () => {
       key ? (FUNCTION_BY_KEY.get(key)?.family ?? null) : null,
   };
 });
-export type OccupationPresentation = Awaited<
-  ReturnType<typeof getOccupationPresentation>
->;
 
 let lastFailureReport = 0,
   repeatedFailures = 0;
@@ -76,38 +72,3 @@ export const getOptionalOccupationPresentation = cache(async () => {
 export type OptionalOccupationPresentation = Awaited<
   ReturnType<typeof getOptionalOccupationPresentation>
 >;
-
-export const getOccupationMetrics = cache(async () => {
-  const state = await prisma.occupationState.findUniqueOrThrow({
-    where: { id: 'active' },
-  });
-  const rows = await prisma.job.groupBy({
-    by: ['occupationCode', 'occupationStatus'],
-    where: publicJobWhere(),
-    _count: true,
-  });
-  const counts = new Map<string, number>(),
-    statuses: Record<string, number> = {};
-  let total = 0,
-    classified = 0;
-  for (const r of rows) {
-    total += r._count;
-    statuses[r.occupationStatus] =
-      (statuses[r.occupationStatus] ?? 0) + r._count;
-    if (r.occupationCode) {
-      counts.set(
-        r.occupationCode,
-        (counts.get(r.occupationCode) ?? 0) + r._count,
-      );
-      classified += r._count;
-    }
-  }
-  return {
-    ready: !!state.backfilledAt,
-    total,
-    classified,
-    unclassified: total - classified,
-    counts,
-    statuses,
-  };
-});

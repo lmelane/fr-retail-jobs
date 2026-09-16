@@ -335,8 +335,3 @@ async function queryCompanies(filters: CompanyFilters, perimetre: Perimetre): Pr
     filtresRefuses: refus,
   };
 }
-
-/** Le chemin d'une Maison sur le site : dérivé de son nom, sans vérité propre. */
-export function companyPath(name: string): string {
-  return `/emplois/maisons/${companySlug(name)}`;
-}
