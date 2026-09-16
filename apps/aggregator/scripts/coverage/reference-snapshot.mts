@@ -1,4 +1,5 @@
-import { readIdentitySources, identityReviewOrder, assertIdentityReview } from '../../src/connectors/sourceIdentity.js';
+import { identityReviewOrder, assertIdentityReview } from '../../src/connectors/sourceIdentity.js';
+import { readIdentitySources } from '../../src/connectors/sourceRegistryRead.js';
 /**
  * ONE dated reference measurement for LOT 4 — the defect this replaces was two reports of the same afternoon disagreeing
  * (344 uncertified "of 432 active, 88 certified" at 18:19Z vs 90 certified of 433 at 18:46Z) because each took its own snapshot.

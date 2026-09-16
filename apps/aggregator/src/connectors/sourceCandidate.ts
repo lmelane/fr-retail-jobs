@@ -3,7 +3,8 @@ import { KIND_TO_ATS } from '../ats/catalogKinds.js';
 import { lockSourceWrites } from '../lib/writeLocks.js';
 import { captureConfig } from '../capture/config.js';
 import { tenantKeyOf } from './sourceStore.js';
-import { readIdentitySource, sourceIdentityHash } from './sourceIdentity.js';
+import { sourceIdentityHash } from './sourceIdentity.js';
+import { readIdentitySource } from './sourceRegistryRead.js';
 
 export type SourceCandidate = {
   key: string; maison: string; kind: string; config: Record<string, unknown>;

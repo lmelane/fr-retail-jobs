@@ -1,0 +1,77 @@
+{
+  "mutations": [
+    {
+      "name": "historical-text-authority",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "337261c1372ba186a6a1472b8c7687907d32bd168ec39e2fe5e46c57b4e6daf3"
+    },
+    {
+      "name": "obsolete-policy",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "337261c1372ba186a6a1472b8c7687907d32bd168ec39e2fe5e46c57b4e6daf3"
+    },
+    {
+      "name": "capture-rebinding",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "337261c1372ba186a6a1472b8c7687907d32bd168ec39e2fe5e46c57b4e6daf3"
+    },
+    {
+      "name": "native-body-substitution",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "337261c1372ba186a6a1472b8c7687907d32bd168ec39e2fe5e46c57b4e6daf3"
+    },
+    {
+      "name": "stale-native-capture",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "337261c1372ba186a6a1472b8c7687907d32bd168ec39e2fe5e46c57b4e6daf3"
+    },
+    {
+      "name": "wrong-native-board",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "337261c1372ba186a6a1472b8c7687907d32bd168ec39e2fe5e46c57b4e6daf3"
+    },
+    {
+      "name": "ignore-extra-dossier-fields",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "337261c1372ba186a6a1472b8c7687907d32bd168ec39e2fe5e46c57b4e6daf3"
+    },
+    {
+      "name": "mutable-review-input",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "337261c1372ba186a6a1472b8c7687907d32bd168ec39e2fe5e46c57b4e6daf3"
+    },
+    {
+      "name": "retry-reorders-decisions",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "337261c1372ba186a6a1472b8c7687907d32bd168ec39e2fe5e46c57b4e6daf3"
+    },
+    {
+      "name": "skip-locked-revision-check",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "337261c1372ba186a6a1472b8c7687907d32bd168ec39e2fe5e46c57b4e6daf3"
+    },
+    {
+      "name": "resurrect-prior-verification",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "337261c1372ba186a6a1472b8c7687907d32bd168ec39e2fe5e46c57b4e6daf3"
+    },
+    {
+      "name": "legacy-artifact-cli",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "9d67e87f53c0e45b1ec5a3d89589e9174f3fe6571a1f27e54c403e69ff4137ba"
+    }
+  ],
+  "restoredTests": "passed"
+}

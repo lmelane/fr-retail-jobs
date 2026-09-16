@@ -1,4 +1,5 @@
-import { readIdentitySources, assertIdentityReview, identityReviewOrder } from '../../src/connectors/sourceIdentity.js';
+import { assertIdentityReview, identityReviewOrder } from '../../src/connectors/sourceIdentity.js';
+import { readIdentitySources } from '../../src/connectors/sourceRegistryRead.js';
 /**
  * LE REGISTRE OPÉRATIONNEL DES SOURCES — lecture seule, une décision par source, aucune par défaut.
  *

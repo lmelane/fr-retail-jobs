@@ -1,4 +1,5 @@
-import { readIdentitySources, identityReviewOrder, assertIdentityReview, sourceIdentityHash, sourceSubjectKey } from '../../src/connectors/sourceIdentity.js';
+import { identityReviewOrder, assertIdentityReview, sourceIdentityHash, sourceSubjectKey } from '../../src/connectors/sourceIdentity.js';
+import { readIdentitySources } from '../../src/connectors/sourceRegistryRead.js';
 /** Private, repeatable-read inventory. Never prints source configuration or credentials. */
 import { PrismaClient, Prisma } from "@prisma/client";
 import { writeFileSync } from "node:fs";

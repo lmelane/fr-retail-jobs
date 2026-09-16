@@ -1,7 +1,7 @@
 import '../test/setup-integration.js';
 import { PrismaClient } from '@prisma/client';
 import { afterAll, beforeAll, expect, it } from 'vitest';
-import { createHash, randomUUID } from 'node:crypto';
+import { randomUUID } from 'node:crypto';
 import { spawnSync } from 'node:child_process';
 import { mkdtempSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -68,31 +68,28 @@ it('executes the source CLI with independent previews, native evidence, exact pr
  const initial = cli(['status', key]);
  expect(initial).toMatchObject({ status: 'DRAFT', identity: { passed: false, code: 'REVIEW_MISSING' }, native: { passed: false, code: 'VALIDATION_MISSING' }, access: { passed: false, revisionBound: false }, promotionGatesPass: false });
 
- const artifact = `Synthetic test evidence only. Official careers: https://jobs.ashbyhq.com/${key}`;
- const artifactPath = file('artifact.txt'); writeFileSync(artifactPath, artifact, { mode: 0o600 });
- const review = { ...profile, verdict: 'VERIFIED', method: 'OFFICIAL_LINK', officialDomain: 'synthetic-maison.example',
-   proofUrl: 'https://synthetic-maison.example/careers', portalUrl: `https://jobs.ashbyhq.com/${key}`,
+ const page = cli(['evidence', key, '--purpose=identity', `--revision=${draft.currentRevisionId}`,
+   '--url=https://synthetic-maison.example/careers', '--apply'], { evidence: true });
+ expect(page).toMatchObject({ sourceRevisionId: draft.currentRevisionId, purpose: 'SOURCE_IDENTITY', responseCount: 1, lastStatus: 200 });
+ const review = { sourceKey: key, sourceRevisionId: draft.currentRevisionId, captureBatchId: page.captureBatchId,
+   verdict: 'VERIFIED', officialDomain: 'synthetic-maison.example',
    statement: 'Synthetic test only: this fixture is not an actual reviewed employer.',
-   artifactHash: createHash('sha256').update(artifact).digest('hex'), reviewer: 'isolated-cli-integration-test', checkedAt: new Date().toISOString(), portalScope: 'SINGLE_BRAND' };
+   reviewer: 'isolated-cli-integration-test', checkedAt: new Date().toISOString(), portalScope: 'SINGLE_BRAND' };
  const record = json('review.json', review);
- expect(cli(['identity', record, `--artifact=${artifactPath}`])).toMatchObject({ written: 0, isLatestDecision: null });
+ expect(cli(['identity', record])).toMatchObject({ written: 0, isLatestDecision: null });
  expect(await db.sourceIdentityReview.count({ where: { sourceKey: key } })).toBe(0);
- const decision = cli(['identity', record, `--artifact=${artifactPath}`, '--apply']);
+ const decision = cli(['identity', record, '--apply']);
  expect(decision).toMatchObject({ written: 1, isLatestDecision: true });
- expect(cli(['identity', record, `--artifact=${artifactPath}`, '--apply'])).toMatchObject({ reviewId: decision.reviewId, written: 0, isLatestDecision: true });
+ expect(cli(['identity', record, '--apply'])).toMatchObject({ reviewId: decision.reviewId, written: 0, isLatestDecision: true });
  expect(await source()).toEqual(draft);
 
  // Qualification requires real captured bytes, with no caller-supplied volume.
  const validation = cli(['collect', key, '--apply', '--deadline-ms=15000'], { native: true });
  expect(validation).toMatchObject({ verdict: 'VALIDATED', sourceRevisionId: draft.currentRevisionId });
  let transports = readFileSync(calls, 'utf8');
- expect(transports.trim().split('\n')).toHaveLength(1);
+ expect(transports.trim().split('\n')).toHaveLength(2);
  expect(cli(['validate', validation.captureBatchId, '--apply'])).toMatchObject({ verdict: 'VALIDATED', captureBatchId: validation.captureBatchId });
  expect(readFileSync(calls, 'utf8')).toBe(transports);
- const page = cli(['evidence', key, '--purpose=identity', `--revision=${draft.currentRevisionId}`,
-   '--url=https://synthetic-maison.example/careers', '--apply'], { evidence: true });
- expect(page).toMatchObject({
-   sourceRevisionId: draft.currentRevisionId, purpose: 'SOURCE_IDENTITY', responseCount: 1, lastStatus: 200 });
  expect(cli(['relation', key, `--capture=${page.captureBatchId}`, '--official-domain=synthetic-maison.example']))
    .toMatchObject({ verdict: 'LINK_MATCHED', identityApproved: false });
  cli(['relation', key, `--capture=${page.captureBatchId}`, '--official-domain=other.example'], { failure: /PAGE_OUTSIDE_REVIEWED_DOMAIN/ });
@@ -116,9 +113,9 @@ it('executes the source CLI with independent previews, native evidence, exact pr
  expect(cli(['promote', key, `--revision=${draft.currentRevisionId}`, '--apply'])).toEqual({ key, from: 'ACTIVE', to: 'ACTIVE' });
  expect(await source()).toEqual(active);
 
- const contradiction = json('contradiction.json', { ...review, verdict: 'CONTRADICTED' });
- expect(cli(['identity', contradiction, `--artifact=${artifactPath}`, '--apply'])).toMatchObject({ written: 1, isLatestDecision: true });
- expect(cli(['identity', record, `--artifact=${artifactPath}`, '--apply'])).toMatchObject({ written: 0, isLatestDecision: false });
+ const contradiction = json('contradiction.json', { ...review, verdict: 'CONTRADICTED', portalScope: null });
+ expect(cli(['identity', contradiction, '--apply'])).toMatchObject({ written: 1, isLatestDecision: true });
+ expect(cli(['identity', record, '--apply'])).toMatchObject({ written: 0, isLatestDecision: false });
  expect(cli(['status', key])).toMatchObject({ identity: { passed: false }, promotionGatesPass: false });
  cli(['promote', key, `--revision=${draft.currentRevisionId}`, '--apply'], { failure: /REVIEW_MISSING/ });
  expect(await source()).toEqual(active);

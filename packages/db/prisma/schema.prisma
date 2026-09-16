@@ -226,7 +226,11 @@ model SourceIdentityReview {
   portalUrl      String
   statement      String
   artifactHash   String
+  // Historical verbatim evidence only. New reviews reference native capture bytes.
   artifactText   String   @default("")
+  evidenceCaptureBatchId String?
+  evidenceCaptureBatch CaptureBatch? @relation(fields: [evidenceCaptureBatchId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  relationReport Json?
   reviewer       String
   checkedAt      DateTime
   createdAt      DateTime @default(now())
@@ -1157,6 +1161,7 @@ enum CapturePurpose {
 
 /** One bounded capture attempt. Evidence pages never stand for job extractions. */
 model CaptureBatch {
+  identityReviews SourceIdentityReview[]
   id String @id @default(uuid())
   purpose CapturePurpose @default(JOBS)
   /** Null for source evidence and captures predating recorded job-attempt ordering. */

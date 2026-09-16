@@ -1,11 +1,11 @@
 import type { PrismaClient } from '@prisma/client';
 import { loadBuffer } from 'cheerio';
 import { readSourceEvidence } from '../capture/sourceEvidence.js';
-import { digestBytes } from '../capture/context.js';
+import { auditUrl, digestBytes } from '../capture/context.js';
 import { captureReaderRevision } from '../capture/revision.js';
 import { detectChallenge } from '../lib/responseIntegrity.js';
 import type { ObjectStore } from '../retention/objectStore.js';
-import { readIdentitySource } from './sourceIdentity.js';
+import { readIdentitySource } from './sourceRegistryRead.js';
 import { effectiveSourceConfig } from './sourceConfig.js';
 import { belongsToOfficialDomain, configuredPortal, reviewedOfficialDomain } from './sourcePortal.js';
 
@@ -24,22 +24,25 @@ export async function inspectSourceRelation(db: PrismaClient, key: string, optio
   const context = { policy: SOURCE_RELATION_POLICY, sourceKey: key, sourceRevisionId: source.currentRevisionId,
     captureBatchId: options.captureBatchId, officialDomain, evaluatedAt: now.toISOString(), inspectorRevision: captureReaderRevision(),
     identityApproved: false as const, coverageAttested: false as const };
-  const unproven = (reason: string) => ({ ...context, verdict: 'NOT_PROVEN' as const, reason });
+  const invalid = (reason: string) => ({ ...context, archiveVerified: false as const, verdict: 'NOT_PROVEN' as const, reason });
   const batch = await db.captureBatch.findUniqueOrThrow({ where: { id: options.captureBatchId }, include: { outcome: true } });
-  if (batch.purpose !== 'SOURCE_IDENTITY') return unproven('IDENTITY_CAPTURE_REQUIRED');
-  if (batch.sourceKey !== key || batch.sourceRevisionId !== source.currentRevisionId) return unproven('CAPTURE_REVISION_MISMATCH');
-  if (batch.outcome?.status !== 'SOURCE_EVIDENCE') return unproven('CAPTURE_NOT_COMPLETE');
+  if (batch.purpose !== 'SOURCE_IDENTITY') return invalid('IDENTITY_CAPTURE_REQUIRED');
+  if (batch.sourceKey !== key || batch.sourceRevisionId !== source.currentRevisionId) return invalid('CAPTURE_REVISION_MISMATCH');
+  if (batch.outcome?.status !== 'SOURCE_EVIDENCE') return invalid('CAPTURE_NOT_COMPLETE');
   const age = now.getTime() - batch.startedAt.getTime();
-  if (age < -300_000 || age > 30 * 86_400_000) return unproven('CAPTURE_STALE');
-  const portal = configuredPortal(source.kind, effectiveSourceConfig(source.config));
-  if (!portal) return unproven('PORTAL_CONFIGURATION_NOT_QUALIFIED');
+  if (age < -300_000 || age > 30 * 86_400_000) return invalid('CAPTURE_STALE');
   // I/O failures and archive corruption remain operational errors. They must
   // not be hidden as an ordinary absence of a link.
   const evidence = await readSourceEvidence(db, batch.id, store);
+  const response = evidence.responses.at(-1)!;
+  const archived = { ...context, archiveVerified: true as const, captureObservedAt: batch.startedAt.toISOString(), responseId: response.id,
+    bodyHash: response.blobHash!, proofUrl: auditUrl(evidence.finalUrl) };
+  const unproven = (reason: string) => ({ ...archived, verdict: 'NOT_PROVEN' as const, reason });
+  const portal = configuredPortal(source.kind, effectiveSourceConfig(source.config));
+  if (!portal) return unproven('PORTAL_CONFIGURATION_NOT_QUALIFIED');
   if (!belongsToOfficialDomain(evidence.initialUrl, officialDomain) ||
     !belongsToOfficialDomain(evidence.finalUrl, officialDomain) ||
     evidence.responses.some(row => !belongsToOfficialDomain(row.requestUrl, officialDomain))) return unproven('PAGE_OUTSIDE_REVIEWED_DOMAIN');
-  const response = evidence.responses.at(-1)!;
   if (response.status! < 200 || response.status! >= 300) return unproven('HTTP_RESPONSE_NOT_USABLE');
   const headers = response.headers as Record<string, string>;
   const contentType = headers['content-type'] ?? '';
@@ -66,6 +69,5 @@ export async function inspectSourceRelation(db: PrismaClient, key: string, optio
   if (!witness) return unproven('EXACT_PORTAL_REFERENCE_NOT_FOUND');
   const current = await readIdentitySource(db, key);
   if (current?.currentRevisionId !== source.currentRevisionId) return unproven('SOURCE_CHANGED_DURING_INSPECTION');
-  return { ...context, verdict: 'LINK_MATCHED' as const, reason: null, configuredPortal: portal.url,
-    captureObservedAt: batch.startedAt.toISOString(), responseId: response.id, bodyHash: response.blobHash!, witness };
+  return { ...archived, verdict: 'LINK_MATCHED' as const, reason: null, configuredPortal: portal.url, witness };
 }

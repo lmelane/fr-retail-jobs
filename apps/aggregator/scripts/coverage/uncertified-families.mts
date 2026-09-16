@@ -1,4 +1,5 @@
-import { readIdentitySources, identityReviewOrder, assertIdentityReview, sourceSubjectKey } from '../../src/connectors/sourceIdentity.js';
+import { identityReviewOrder, assertIdentityReview, sourceSubjectKey } from '../../src/connectors/sourceIdentity.js';
+import { readIdentitySources } from '../../src/connectors/sourceRegistryRead.js';
 /**
  * The ACTIVE sources not certified under the promotion contract, grouped by TREATMENT FAMILY — what proof already exists, what
  * blocks, what the next action is — from the production database (read-only) and the archived portal research. Counts are per

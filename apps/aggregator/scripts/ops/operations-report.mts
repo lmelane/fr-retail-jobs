@@ -1,4 +1,5 @@
-import { readIdentitySources, assertIdentityReview, identityReviewOrder } from '../../src/connectors/sourceIdentity.js';
+import { assertIdentityReview, identityReviewOrder } from '../../src/connectors/sourceIdentity.js';
+import { readIdentitySources } from '../../src/connectors/sourceRegistryRead.js';
 /**
  * LE RAPPORT D'EXPLOITATION — l'état courant de chaque source, en une lecture.
  *

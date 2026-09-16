@@ -3,7 +3,7 @@ import { randomUUID } from 'node:crypto';
 import { KIND_TO_ATS } from '../ats/catalogKinds.js';
 import { bindSourceRevision } from '../connectors/sourceRevision.js';
 import { effectiveSourceConfig } from '../connectors/sourceConfig.js';
-import { readIdentitySource } from '../connectors/sourceIdentity.js';
+import { readIdentitySource } from '../connectors/sourceRegistryRead.js';
 import { evidenceHash } from '../lib/evidenceHash.js';
 import { assertSourceRunning, sourceSignal, sourceExecutionBudget, withSourceBudget } from '../lib/sourceBudget.js';
 import { assertPublicUrl } from '../lib/ssrf.js';

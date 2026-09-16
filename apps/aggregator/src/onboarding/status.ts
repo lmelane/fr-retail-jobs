@@ -1,5 +1,6 @@
 import type { PrismaClient, SourceValidation } from '@prisma/client';
-import { SourceIdentityGateError, identityReviewOrder, readIdentitySource, requireSourceIdentity, sourceIdentityHash, sourceSubjectKey } from '../connectors/sourceIdentity.js';
+import { SourceIdentityGateError, identityReviewOrder, requireSourceIdentity, sourceIdentityHash, sourceSubjectKey } from '../connectors/sourceIdentity.js';
+import { readIdentitySource } from '../connectors/sourceRegistryRead.js';
 import { SourceValidationGateError, requireSourceValidation } from '../connectors/sourceCertification.js';
 import { isAllowedAccessVerdict } from '../connectors/sourceStore.js';
 

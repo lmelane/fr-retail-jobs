@@ -1,4 +1,5 @@
-import { readIdentitySources, identityReviewOrder } from '../../src/connectors/sourceIdentity.js';
+import { identityReviewOrder } from '../../src/connectors/sourceIdentity.js';
+import { readIdentitySources } from '../../src/connectors/sourceRegistryRead.js';
 /**
  * LE REGISTRE P6 — une ligne par source, une décision par source, une action suivante par source.
  *

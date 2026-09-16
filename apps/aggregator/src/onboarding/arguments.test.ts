@@ -8,7 +8,7 @@ describe('source command boundary', () => {
   it.each([
     [], ['apply', 'old-manifest.json', '--apply'], ['collect', 'source'], ['validate', 'batch'], ['promote', 'source', '--apply'],
     ['promote', 'source', '--revision=current'], ['profile', 'source', '--apply'], ['status', 'source', 'extra'],
-    ['identity', 'record.json'], ['identity', 'record.json', '--artifact='], ['collect', 'source', '--apply=true'],
+    ['identity', 'record.json', '--artifact=proof.txt'], ['identity', 'record.json', '--artifact='], ['collect', 'source', '--apply=true'],
     ['collect', 'source', '--apply', '--verified-jobs=9999'], ['collect', 'source', '--apply', '--apply'],
     ['collect', 'source', '--apply', '--deadline-ms=0'], ['collect', 'source', '--apply', '--deadline-ms=NaN'],
     ['collect', 'source', '--apply', '--deadline-ms=1.5'], ['collect', 'source', '--apply', '--deadline-ms=2147483648'],
@@ -21,7 +21,7 @@ describe('source command boundary', () => {
   ])('rejects ambiguous or incomplete invocation %j', (...args) => { expect(() => parseSourceArguments(args)).toThrow(); });
   it('keeps previews separate from explicit writes', () => {
     expect(parseSourceArguments(['register','candidate.json'])).toMatchObject({ command: 'register', apply: false });
-    expect(parseSourceArguments(['identity','review.json','--artifact=proof.txt'])).toMatchObject({ apply: false });
+    expect(parseSourceArguments(['identity','review.json'])).toMatchObject({ apply: false });
     expect(parseSourceArguments(['collect','source','--apply','--deadline-ms=30000'])).toMatchObject({ apply: true });
     expect(parseSourceArguments(['promote','source','--revision=reviewed','--apply'])).toMatchObject({ options: { revision: 'reviewed' } });
     expect(parseSourceArguments(['evidence','source','--purpose=identity','--url=https://official.example','--revision=reviewed','--apply'])).toMatchObject({ command: 'evidence', apply: true });

@@ -1,6 +1,6 @@
 import { afterEach, expect, it, vi } from 'vitest';
 import type { PrismaClient } from '@prisma/client';
-import * as identity from '../connectors/sourceIdentity.js';
+import * as identity from '../connectors/sourceRegistryRead.js';
 import { sourceStatus } from './status.js';
 
 afterEach(() => vi.restoreAllMocks());

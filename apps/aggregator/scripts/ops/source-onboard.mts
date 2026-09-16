@@ -9,7 +9,7 @@ import { captureSourceForValidation, validateCapturedSource } from '../../src/co
 import { captureSourceEvidence } from '../../src/capture/sourceEvidence.js';
 import { inspectSourceRelation } from '../../src/connectors/sourceRelation.js';
 import { promoteSource } from '../../src/connectors/sourceStore.js';
-import { readInputFile, readInputJson, writePrivateFile } from '../../src/lib/privateFile.js';
+import { readInputJson, writePrivateFile } from '../../src/lib/privateFile.js';
 import { objectStoreConfigured, objectStoreFromEnv } from '../../src/retention/objectStore.js';
 import { closeBrowser } from '../../src/lib/browser.js';
 
@@ -27,8 +27,8 @@ try {
     result = await sourceIdentityProfile(db, target);
   } else if (command === 'identity') {
     const document = readInputJson(target, 2 * 1024 * 1024);
-    const artifact = readInputFile(options.artifact, 2 * 1024 * 1024);
-    result = await recordSourceIdentityReview(db, document as Parameters<typeof recordSourceIdentityReview>[1], artifact, apply);
+    result = await recordSourceIdentityReview(db, document as Parameters<typeof recordSourceIdentityReview>[1], apply,
+      objectStoreConfigured() ? objectStoreFromEnv() : undefined);
   } else if (command === 'evidence') {
     result = await captureSourceEvidence(db, target, { revisionId: options.revision,
       purpose: options.purpose === 'identity' ? 'SOURCE_IDENTITY' : 'SOURCE_ACCESS',

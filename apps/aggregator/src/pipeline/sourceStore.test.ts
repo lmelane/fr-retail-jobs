@@ -1,3 +1,5 @@
+import { captureIdentityFixture } from '../test/sourceIdentityFixture.js';
+import { recordSourceIdentityReview } from '../connectors/sourceIdentity.js';
 import '../test/setup-integration.js';
 import { describe, it, expect, beforeEach, afterAll, afterEach, vi } from 'vitest';
 import { PrismaClient } from '@prisma/client';
@@ -5,7 +7,6 @@ import { captureExtraction } from '../capture/batch.js';
 import { fetchAtsJobs } from '../ats/index.js';
 import { validateCapturedSource } from '../connectors/sourceValidation.js';
 import * as certification from '../connectors/sourceCertification.js';
-import { createHash } from 'node:crypto';
 import {
   importSourcesCsv,
   loadActiveSources,
@@ -14,7 +15,6 @@ import {
 } from '../connectors/sourceStore.js';
 import { retireSource } from './retireSource.js';
 import { loadSourceCatalog } from '../connectors/sourceCatalog.js';
-import { sourceIdentityHash, sourceSubjectKey } from '../connectors/sourceIdentity.js';
 
 /**
  * DEC-3 — the catalogue lives in the Source table, with a lifecycle.
@@ -142,10 +142,10 @@ describe('promoteSource', () => {
   const draft = (over: Record<string, unknown> = {}) => ({
     key: 'test-draft',
     maison: 'Test Maison',
-    kind: 'greenhouse',
+    kind: 'ashby',
     config: { board: 'testmaison' },
     tier: 'ATS_OFFICIAL',
-    tenantKey: 'greenhouse:testmaison',
+    tenantKey: 'ashby:testmaison',
     status: 'DRAFT' as const,
     robotsVerdict: 'ALLOWED',
     robotsCheckedAt: new Date(),
@@ -153,22 +153,16 @@ describe('promoteSource', () => {
   });
 
   async function identity(source: Awaited<ReturnType<typeof prisma.source.create>>) {
-    const artifactText = 'Official careers: https://job-boards.greenhouse.io/testmaison';
-    await prisma.sourceIdentityReview.create({ data: {
-      sourceKey: source.key, sourceRevisionId: source.currentRevisionId, tenantKey: source.tenantKey, subjectKey: sourceSubjectKey(source), sourceHash: sourceIdentityHash(source),
-      verdict: 'VERIFIED', method: 'OFFICIAL_LINK', officialDomain: 'test-maison.example',
-      proofUrl: 'https://test-maison.example/careers', portalUrl: 'https://job-boards.greenhouse.io/testmaison',
-      statement: 'The official employer careers page links to this exact ATS tenant.', artifactHash: createHash('sha256').update(artifactText).digest('hex'), artifactText, reviewer: 'integration-test', checkedAt: new Date(),
-    } });
+    await recordSourceIdentityReview(prisma, await captureIdentityFixture(prisma, source), true);
   }
 
   async function qualifiedDraft() {
     const source = await prisma.source.create({ data: draft({ lastRunJobs: 0 }) });
     await identity(source);
-    vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify({ jobs: [{ id: 123, title: 'Client Advisor',
-      content: 'Own native duties', absolute_url: 'https://job-boards.greenhouse.io/testmaison/jobs/123' }] }))));
-    await captureExtraction(prisma, source.key, { board: 'testmaison' }, undefined, config => fetchAtsJobs('GREENHOUSE', config), 'GREENHOUSE');
-    const batch = await prisma.captureBatch.findFirstOrThrow({ where: { sourceRevisionId: source.currentRevisionId } });
+    vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify({ apiVersion: '1', jobs: [{ id: '123', title: 'Client Advisor', isListed: true,
+      descriptionPlain: 'Own native duties', jobUrl: 'https://jobs.ashbyhq.com/testmaison/123' }] }))));
+    await captureExtraction(prisma, source.key, { board: 'testmaison' }, undefined, config => fetchAtsJobs('ASHBY', config), 'ASHBY');
+    const batch = await prisma.captureBatch.findFirstOrThrow({ where: { sourceRevisionId: source.currentRevisionId, purpose: 'JOBS' } });
     vi.stubGlobal('fetch', vi.fn(async () => { throw new Error('Qualification must stay offline'); }));
     expect(await validateCapturedSource(prisma, batch.id)).toMatchObject({ verdict: 'VALIDATED' });
     return source;
@@ -212,7 +206,7 @@ describe('promoteSource', () => {
   });
 
   it('refuses technical success without employer evidence (the historic homonym admission path)', async () => {
-    await prisma.source.create({ data: draft({ key: 'coast', maison: 'Coast', config: { board: 'coast' }, tenantKey: 'greenhouse:coast' }) });
+    await prisma.source.create({ data: draft({ key: 'coast', maison: 'Coast', config: { board: 'coast' }, tenantKey: 'ashby:coast' }) });
     await expect(promote('coast')).rejects.toThrow(/employer identity/);
     expect((await prisma.source.findUniqueOrThrow({ where: { key: 'coast' } })).status).toBe('DRAFT');
   });

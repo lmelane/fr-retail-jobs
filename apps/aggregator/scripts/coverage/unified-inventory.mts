@@ -1,4 +1,5 @@
-import { readIdentitySources, identityReviewOrder, assertIdentityReview } from '../../src/connectors/sourceIdentity.js';
+import { identityReviewOrder, assertIdentityReview } from '../../src/connectors/sourceIdentity.js';
+import { readIdentitySources } from '../../src/connectors/sourceRegistryRead.js';
 /**
  * ONE tracking inventory for LOT 4, actor by actor and source by source, built read-only from the production database and the
  * existing evidence sets — never a new "master" list typed by hand. Every set keeps its own denominator; an actor appearing in

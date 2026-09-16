@@ -10,13 +10,13 @@ Une source enregistrée est un périmètre de collecte, pas une certification d�
 | `profile CLÉ` | Lit les identifiants exacts à reprendre dans le dossier d’identité | Lecture seule |
 | `evidence CLÉ --purpose=identity\|access --url=URL --revision=RÉVISION` | Archive la page et chaque redirection, sans décision métier | `--apply`, but, URL et révision explicites obligatoires |
 | `relation CLÉ --capture=CAPTURE --official-domain=DOMAINE` | Inspecte les liens de la page archivée vers le portail configuré | Lecture seule ; aucune revue ni activation |
-| `identity revue.json --artifact=preuve.txt` | Vérifie le dossier et ses octets ; enregistre une décision immuable | Aperçu par défaut ; `--apply` pour enregistrer |
+| `identity revue.json` | Relit la capture native, inspecte la relation et enregistre la décision du réviseur | Aperçu par défaut ; `--apply` pour enregistrer |
 | `collect CLÉ --deadline-ms=30000` | Capture avec l’adaptateur réel, archive puis valide hors réseau | `--apply` obligatoire |
 | `validate CAPTURE_ID` | Revalide une collecte scellée, depuis S3 si nécessaire | `--apply` obligatoire |
 | `status CLÉ` | Lit un instantané cohérent des portes et de leurs dernières décisions | Lecture seule |
 | `promote CLÉ --revision=RÉVISION` | Contrôle les portes sous verrou puis active la source | `--apply` et révision explicite obligatoires |
 
-Toutes les commandes acceptent `--out=/chemin/rapport.json` : fichier privé de mode `0600`, sans suivre de lien symbolique. Les options inconnues, dupliquées ou ambiguës sont refusées avant ouverture de la base ou lecture du dossier. Les fichiers d’entrée sont bornés ; JSON et preuves textuelles doivent être en UTF-8 valide. Le statut et les sorties d’opération n’exportent ni configuration privée ni corps d’offre. Les échecs rendent un code de diagnostic connu, sans recopier les exceptions pouvant contenir des paramètres de base, extraits du dossier ou URLs privées.
+Toutes les commandes acceptent `--out=/chemin/rapport.json` : fichier privé de mode `0600`, sans suivre de lien symbolique. Les options inconnues, dupliquées ou ambiguës sont refusées avant ouverture de la base ou lecture du dossier. Les fichiers d’entrée sont bornés ; les dossiers JSON doivent être en UTF-8 valide. Le statut et les sorties d’opération n’exportent ni configuration privée ni corps d’offre. Les échecs rendent un code de diagnostic connu, sans recopier les exceptions pouvant contenir des paramètres de base, extraits du dossier ou URLs privées.
 
 ### Candidat
 
@@ -66,14 +66,38 @@ Le domaine officiel est une donnée explicitement examinée par l’opérateur, 
 
 Le contrat actuel couvre les boards Ashby, les sous-domaines Recruitee et les sites Workday sous `myworkdayjobs.com`. Il reprend les paramètres natifs utilisés par leurs collecteurs. Le tenant, le site et la casse des chemins sont contrôlés ; les mentions textuelles, commentaires, scripts, templates et iframes remplacées par `srcdoc` ne constituent pas des références utilisables. Les paramètres de suivi/langue sont admis ; pour Workday, les facettes `jobFamily` et `locations` à identifiants natifs hexadécimaux, observées dans une page officielle archivée, sont reconnues. Les autres configurations, domaines personnalisés, formats et paramètres non qualifiés restent `NOT_PROVEN`.
 
-**Une référence filtrée vers un portail ne prouve ni sa couverture complète ni l’identité de tous ses employeurs.** Le rapport indique toujours `identityApproved: false` et `coverageAttested: false`. Le rattachement obligatoire de la revue d’identité à cette inspection reste l’étape suivante ; l’ancien dossier textuel n’est pas automatiquement transformé en capture HTTP.
+**Une référence filtrée vers un portail ne prouve ni sa couverture complète ni l’identité de tous ses employeurs.** Le rapport indique toujours `identityApproved: false` et `coverageAttested: false`. La revue d’identité relit obligatoirement cette archive et refait l’inspection. L’ancien dossier textuel n’est pas transformé en capture HTTP et ne peut plus certifier une source.
 
-La [revue d’identité](../employer-identity.md) reprend la révision explicite du profil. Elle ne se rattache jamais automatiquement à une révision plus récente. Répéter le même dossier ne crée pas de décision et ne remplace pas une contradiction ultérieure.
+### Décision d’identité
+
+La [revue d’identité](../employer-identity.md) contient exclusivement la décision humaine et les identifiants de sa source, de sa révision et de sa capture :
+
+```json
+{
+  "sourceKey": "exemple",
+  "sourceRevisionId": "REVISION_EXAMINEE",
+  "captureBatchId": "CAPTURE_IDENTITE",
+  "verdict": "VERIFIED",
+  "officialDomain": "maison.example",
+  "statement": "La page officielle archivée désigne le portail exact examiné pour cette source.",
+  "reviewer": "IDENTIFIANT_DU_REVISEUR",
+  "checkedAt": "DATE_ISO_DE_LA_REVUE",
+  "portalScope": null
+}
+```
+
+Le domaine, son propriétaire et le périmètre éventuel restent à examiner explicitement. `portalScope` vaut `null`, `SINGLE_BRAND` ou `MULTI_BRAND` ; la présence d’un lien ne le détermine pas. Les champs supplémentaires sont refusés, notamment un texte, une empreinte, un rapport d’inspection ou une URL censés remplacer l’archive.
+
+Pour `VERIFIED`, la relation doit être `LINK_MATCHED` sous la politique courante et désigner le portail exact. Les verdicts `CONTRADICTED` et `UNRESOLVED` requièrent aussi une capture d’identité complète, récente et liée à la révision, mais pas un lien positif : une réponse 403 peut étayer un refus. Ils exigent `portalScope: null`. Le statement doit expliquer la décision ; un refus HTTP n’est pas automatiquement une contradiction d’employeur.
+
+L’archive est lue avant l’acquisition des verrous SQL. La révision est ensuite revérifiée sous verrou. Les empreintes, URLs publiques expurgées et références de réponse sont dérivées des octets archivés. SQL impose la liaison à la capture et à sa réponse finale ; le parseur applicatif établit le témoin HTML. Aucune requête de secours vers le portail ne peut remplacer une archive indisponible.
+
+La capture et la décision doivent dater de moins de trente jours ; la décision ne peut pas précéder son observation de plus de cinq minutes de tolérance d’horloge. Le dossier ne se rattache jamais automatiquement à une révision plus récente. Répéter le même dossier ne crée pas de décision et ne remplace pas une contradiction ultérieure, même si l’heure de réinspection change. La politique versionnée détermine l’acceptation de l’inspection ; son empreinte de runtime est conservée pour audit, sans imposer une nouvelle décision humaine à chaque changement de code sans rapport avec cette politique.
 
 La [validation native](native-capture.md) utilise les réponses brutes, le manifeste scellé et le lecteur actuel. Elle produit une décision immuable distincte du statut opérationnel de la source. Un refus technique sort en erreur tout en conservant son rapport. Elle n’enregistre aucune offre publique et ne certifie aucune absence.
 
 ```sh
-node --import tsx apps/aggregator/scripts/ops/source-onboard.mts identity /chemin/revue.json --artifact=/chemin/preuve.txt --apply
+node --import tsx apps/aggregator/scripts/ops/source-onboard.mts identity /chemin/revue.json --apply
 node --import tsx apps/aggregator/scripts/ops/source-onboard.mts collect exemple --apply --deadline-ms=30000
 node --import tsx apps/aggregator/scripts/ops/source-onboard.mts status exemple
 node --import tsx apps/aggregator/scripts/ops/source-onboard.mts promote exemple --revision=REVISION_EXAMINEE --apply
@@ -84,7 +108,7 @@ Une promotion répétée sur une source déjà ACTIVE vérifie à nouveau les po
 ## Limites avant release
 
 - La porte d’accès actuelle lit encore `robotsVerdict` et `robotsCheckedAt`. Le statut indique `revisionBound: false`. Cette preuve mutable doit être remplacée par une décision immuable couvrant les cibles HTTP exactes ; la CLI ne la fabrique pas lors de la collecte.
-- La validation du dossier d’identité ne prouve pas à elle seule que la page officielle désigne le tenant et le site ATS configurés. L’archivage et l’inspection des liens sont disponibles pour les trois contrats qualifiés ci-dessus ; le rattachement obligatoire de la revue à cette capture et l’extension aux autres familles restent à livrer.
+- Les certifications positives d’identité sont limitées aux trois contrats natifs qualifiés ci-dessus. Les domaines personnalisés, documents de groupe et autres familles exigent un contrat d’inspection adapté avant leur admission ; aucune preuve textuelle ne sert de contournement.
 - Les rôles employeur, groupe et éditeur, la réouverture explicite d’une source retirée, les paramètres privés d’accès et les ingestions de sources déjà actives restent des travaux distincts.
 - Un certificat calculé avec le lecteur local ne certifie pas une release Railway différente.
 

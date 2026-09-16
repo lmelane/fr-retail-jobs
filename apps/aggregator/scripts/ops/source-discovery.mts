@@ -1,5 +1,6 @@
 /** Read-only discovery signals. This command neither certifies nor registers a source. */
-import { readIdentitySources, identityReviewOrder, portalScopeOf } from '../../src/connectors/sourceIdentity.js';
+import { identityReviewOrder, portalScopeOf } from '../../src/connectors/sourceIdentity.js';
+import { readIdentitySources } from '../../src/connectors/sourceRegistryRead.js';
 import { fetchFollowingSafely, readBodyBounded } from '../../src/lib/http.js';
 import { sourceSignal, withSourceBudget } from '../../src/lib/sourceBudget.js';
 import { parseCsvLine } from '../../src/lib/csv.js';

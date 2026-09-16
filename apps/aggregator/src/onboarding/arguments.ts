@@ -1,7 +1,7 @@
 const commands = {
   register: { options: ['apply', 'out'], required: [] },
   profile: { options: ['out'], required: [] },
-  identity: { options: ['artifact', 'apply', 'out'], required: ['artifact'] },
+  identity: { options: ['apply', 'out'], required: [] },
   evidence: { options: ['purpose', 'url', 'revision', 'deadline-ms', 'apply', 'out'], required: ['purpose', 'url', 'revision', 'apply'] },
   relation: { options: ['capture', 'official-domain', 'out'], required: ['capture', 'official-domain'] },
   collect: { options: ['apply', 'deadline-ms', 'out'], required: ['apply'] },
