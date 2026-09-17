@@ -45,6 +45,11 @@ export async function persistCapture(db: PrismaClient, batchId: string, record: 
   const blobs = await Promise.all([requestBytes, ...(bytes !== null ? [bytes] : [])].map(async value =>
     ({ hash: digestBytes(value), length: value.byteLength, payload: await gzip(value, { level: 6 }) })));
   await db.$transaction(async tx => {
+    // The batch row is locked before any blob: two captures of one batch that share bytes (identical bodies, as
+    // Workday's parallel page reads produce) otherwise wait on each other between the blob lock and the batch row
+    // (deadlock 40P01 observed on 2026-09-16). Every writer takes the batch first, then blobs in hash order.
+    const [batch] = await tx.$queryRaw<{ id: string }[]>`SELECT id FROM "CaptureBatch" WHERE id=${batchId} FOR UPDATE`;
+    if (!batch) throw new Error('Capture batch required');
     for (const blob of [...new Map(blobs.map(blob => [blob.hash, blob])).values()].sort((a, b) => a.hash.localeCompare(b.hash))) {
       await ensureBlob(tx, blob.hash, blob.length, blob.payload);
     }

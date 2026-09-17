@@ -1,4 +1,5 @@
 import { createHash } from 'node:crypto';
+import { captureObservedAt } from '../../capture/context.js';
 import { fetchText } from '../../lib/http.js';
 import pLimit from 'p-limit';
 import { enrichPostingEvidence, postingEvidenceOptions } from '../../lib/postingEvidence.js';
@@ -141,7 +142,7 @@ export async function fetchIcimsJobs(config: Record<string, unknown>): Promise<A
       seen.add(job.externalId);
       out.push(job);
     }
-    pageEvidence.push({ url, checkedAt: new Date().toISOString(), sha256: createHash('sha256').update(html).digest('hex'), offset: page, pagination: null,
+    pageEvidence.push({ url, checkedAt: captureObservedAt().toISOString(), sha256: createHash('sha256').update(html).digest('hex'), offset: page, pagination: null,
       ids: batch.map((j) => j.externalId), publisherCounter: announced === undefined ? '' : `pages=${announced}`, componentCounters: [`cards=${batch.length}`, `uniqueIds=${seen.size}`] });
 
     // Une page sans offre NOUVELLE termine la lecture : les portails iCIMS

@@ -29,7 +29,7 @@ const PAGE_SIZE = 100;
 /** 200 pages × 100 = 20 000 offres : au-delà du plus gros portail connu (Ulta ~10 000). */
 const MAX_PAGES = 200;
 
-const BROWSER_UA =
+const USER_AGENT =
   CRAWLER_IDENTITY;
 
 export type JibeJob = {
@@ -138,7 +138,7 @@ export function parseJibePage(page: JibePage, origin: string): NormalizedJob[] {
 
 /** Le cookie de session posé par la page de recherche, rejoué sur l'API. */
 async function openSession(origin: string, searchPath: string): Promise<string> {
-  const response = await fetchWithRetry(`${origin}${searchPath}`, { headers: { 'user-agent': BROWSER_UA } });
+  const response = await fetchWithRetry(`${origin}${searchPath}`, { headers: { 'user-agent': USER_AGENT } });
   // Le corps ne sert à rien ; le lire vide la connexion proprement.
   await response.text();
   const cookies = response.headers.getSetCookie?.() ?? [];
@@ -153,7 +153,7 @@ export async function fetchJibeJobs(config: Record<string, unknown>): Promise<Ad
 
   const cookie = await openSession(origin, searchPath);
   const headers: Record<string, string> = {
-    'user-agent': BROWSER_UA,
+    'user-agent': USER_AGENT,
     accept: 'application/json, text/plain, */*',
     referer: `${origin}${searchPath}`,
     ...(cookie ? { cookie } : {}),

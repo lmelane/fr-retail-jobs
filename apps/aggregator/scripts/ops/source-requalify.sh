@@ -8,6 +8,11 @@
 #   source-requalify.sh <clé> --revision=<révision> --official-url=<URL page officielle> --official-domain=<domaine>
 #                       --robots-url=<URL robots.txt> --identity=<dossier identité.json> --access=<dossier accès.json>
 #                       --out-dir=<dossier privé des rapports> [--ingest] [--no-geocode]
+#
+# `--revision` est l'IDENTIFIANT DE RÉVISION DE LA SOURCE (`sourceRevisionId` rendu par `source-onboard.mts profile`),
+# pas l'empreinte du lecteur : celle-ci est calculée par le code au moment de la capture. Avec une autre valeur, le
+# premier pas échoue (`SOURCE_OPERATION_FAILED`). Ne pas terminer la commande par un tube (`| tail`) : il masque le
+# code de sortie du script.
 set -eu
 setopt shwordsplit
 typeset -A opt; key=""

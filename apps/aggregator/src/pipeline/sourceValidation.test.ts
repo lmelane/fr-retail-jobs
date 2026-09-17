@@ -60,6 +60,20 @@ describe('native source validation', () => {
     expect(network).not.toHaveBeenCalled();
   });
 
+  it('accepts an empty Teamtailor JSON Feed only when it is the single, complete feed (no next page)', async () => {
+    // Prémisse : le flux natif est vide ET termine (aucun next_url) ; une page vide qui annonce une suite n'est pas un flux vide.
+    const feed = async (key: string, next?: string) => {
+      keys.push(key); const origin = `https://careers.${key}.example`;
+      await db.source.create({ data: { key, tenantKey: key, maison: key, kind: 'teamtailor', config: { origin }, tier: 'EMPLOYER_DIRECT' } });
+      vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify({ version: 'https://jsonfeed.org/version/1.1', title: key, home_page_url: `${origin}/jobs`,
+        feed_url: `${origin}/jobs.json`, items: [], ...(next ? { next_url: next } : {}) }), { headers: { 'content-type': 'application/feed+json' } })));
+      return captureSourceForValidation(db, key, 30_000);
+    };
+    expect(await feed(`source-validation-${randomUUID()}`)).toMatchObject({ verdict: 'VALIDATED', report: { observed: 0, qualified: 0, nativeEmpty: true } });
+    const continued = await feed(`source-validation-${randomUUID()}`, 'https://careers.other.example/jobs.json?page=2').catch(error => error as Error);
+    expect(continued instanceof Error ? continued.message : JSON.stringify(continued.report)).not.toMatch(/"nativeEmpty":true/);
+  });
+
   it('refuses an empty collector result without a qualified native empty-feed protocol', async () => {
     const key = `source-validation-${randomUUID()}`; keys.push(key);
     await db.source.create({ data: { key, tenantKey: key, maison: key, kind: 'greenhouse', config: { board: key }, tier: 'ATS_OFFICIAL' } });

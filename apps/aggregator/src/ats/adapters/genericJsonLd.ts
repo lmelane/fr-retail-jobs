@@ -48,7 +48,9 @@ export function parseJobPostings(html: string, pageUrl: string): NormalizedJob[]
 /** URL identity is shared by live collection and retained native JSON-LD. */
 export function normalizeGenericPosting(node: Record<string, unknown>, pageUrl: string): NormalizedJob | null {
   const job = normalizeJobPosting(node, pageUrl);
-  return job ? { ...job, externalId: createHash('sha1').update(pageUrl).digest('hex') } : null;
+  // The page URL is the identity (sha1) and may differ from the posting's declared `url`: it is retained beside the
+  // native node (lot F3b) so the retained-publication reader recomputes the same identity offline.
+  return job ? { ...job, externalId: createHash('sha1').update(pageUrl).digest('hex'), raw: { ...node, catwalksPageUrl: pageUrl } } : null;
 }
 
 /** Signatures des pages de challenge (Cloudflare, Akamai, AWS WAF) servies à la place d'une liste. */
@@ -290,8 +292,8 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
       urls.map((url) =>
         limit(async () => {
           try {
-            // A browser UA is required here: several boards serve the sitemap to
-            // anything but 403 the job pages without one.
+            // The job page is read under the crawler identity, like every request of a collection:
+            // the reviewed access scope refuses any other agent.
             const parsed = parseJobPostings(
               await fetchText(url, {
                 headers: {

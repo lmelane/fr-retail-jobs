@@ -20,6 +20,22 @@ it('refuses a compressed sitemap whose decompressed body exceeds the cap', async
   await expect(fetchSitemapUrls('https://example.com/sitemap.xml.gz')).rejects.toThrow();
 });
 
+/**
+ * Le plan de site est demandé sous l'identité du robot, celle que `lib/http` pose quand aucun agent n'est imposé :
+ * un agent de navigateur emprunté rendait la requête étrangère au périmètre d'accès revu (vagues F3b, oska et
+ * bevilles refusées sur la seule requête du sitemap).
+ */
+it('requests a sitemap without imposing a browser user agent, plain or compressed', async () => {
+  mockFetch.mockResolvedValueOnce('<urlset><url><loc>https://example.com/jobs/1</loc></url></urlset>');
+  await expect(fetchSitemapUrls('https://example.com/sitemap.xml')).resolves.toEqual(['https://example.com/jobs/1']);
+  const plainInit = mockFetch.mock.calls[0][1] as RequestInit | undefined;
+  expect(new Headers(plainInit?.headers).get('user-agent')).toBeNull();
+  vi.mocked(fetchWithRetry).mockResolvedValueOnce(new Response(gzipSync('<urlset><url><loc>https://example.com/jobs/2</loc></url></urlset>')));
+  await expect(fetchSitemapUrls('https://example.com/sitemap.xml.gz')).resolves.toEqual(['https://example.com/jobs/2']);
+  const gzInit = vi.mocked(fetchWithRetry).mock.calls.at(-1)?.[1] as RequestInit | undefined;
+  expect(new Headers(gzInit?.headers).get('user-agent')).toBeNull();
+});
+
 describe('normalizeJobPosting — lieu', () => {
   /**
    * Mesuré le 2026-09-06 sur Boots (1 391 offres) : le JSON-LD met « - » en

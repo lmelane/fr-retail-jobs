@@ -28,15 +28,18 @@ export type SourceValidationReport = {
   reasons: Record<string, number>;
 };
 
-/** An empty collector result is never sufficient. This narrowly qualified
- * protocol requires its actual, single, complete native feed to declare zero.
- * Other protocols remain explicit qualification work. */
+/** An empty collector result is never sufficient. Two narrowly qualified
+ * protocols require their actual, single, complete native feed to declare zero:
+ * Ashby's job board API and (lot F3b) a Teamtailor JSON Feed 1.1 without a next
+ * page. Other protocols remain explicit qualification work. */
 async function nativeEmptyFeed(db: PrismaClient, batchId: string, kind: string, store?: ObjectStore) {
-  if (kind !== 'ashby') return false;
+  if (!['ashby', 'teamtailor'].includes(kind)) return false;
   const rows = await db.rawCapture.findMany({ where: { batchId }, take: 2 });
   if (rows.length !== 1 || rows[0].status !== 200 || !rows[0].complete || !rows[0].blobHash) return false;
   const value = JSON.parse((await readRawBlob(db, rows[0].blobHash, store)).toString('utf8'));
-  return value?.apiVersion === '1' && Array.isArray(value.jobs) && value.jobs.length === 0;
+  if (kind === 'ashby') return value?.apiVersion === '1' && Array.isArray(value.jobs) && value.jobs.length === 0;
+  return typeof value?.version === 'string' && /^https:\/\/jsonfeed\.org\/version\/1(?:\.1)?$/.test(value.version) &&
+    Array.isArray(value.items) && value.items.length === 0 && value.next_url == null;
 }
 
 /** Validate a recorded collector with today's reader. No count supplied by an
@@ -80,7 +83,8 @@ export async function validateCapturedSource(db: PrismaClient, batchId: string, 
         else { report.rejected++; reason(recovery.reason); }
       }
       if (!report.observed) {
-        report.nativeEmpty = replayed.complete === true && replayed.declaredTotal === 0 &&
+        // A JSON Feed declares no total: a complete enumeration that read nothing is judged on its single archived response.
+        report.nativeEmpty = replayed.complete === true && (replayed.declaredTotal === 0 || replayed.declaredTotal === undefined && replayed.jobs.length === 0) &&
           await nativeEmptyFeed(db, batch.id, revision.kind, store);
         if (!report.nativeEmpty) reason('EMPTY_FEED_NOT_NATIVELY_PROVEN');
       }

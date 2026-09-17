@@ -22,10 +22,12 @@ import type { NormalizedJob } from '../../types.js';
  * page yields title, datePosted, hiringOrganization, jobLocation with postalCode.
  */
 
-const USER_AGENT =
-  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36';
-
-const REQUEST_HEADERS = { 'user-agent': USER_AGENT };
+/*
+ * Le plan de site est demandé sous l'identité du robot (posée par `lib/http`), comme chaque page d'offre : un agent
+ * de navigateur emprunté ici rendait la requête étrangère au périmètre d'accès revu (`matchingAccessScope` exige
+ * l'identité du robot), et deux sources à sitemap (oska, bevilles) ont été refusées pour cette seule raison lors
+ * des vagues F3b. Un plan de site qui refuse le robot est une réponse honnête (INACCESSIBLE), pas à contourner.
+ */
 
 /**
  * XML character references inside <loc> are part of the document encoding, not
@@ -48,9 +50,9 @@ export function parseSitemapLocations(xml: string): string[] {
 /** Gzipped sitemaps are common at scale; fetchText would hand back binary. */
 async function fetchSitemapXml(sitemapUrl: string): Promise<string> {
   if (!/\.gz(\?|$)/i.test(sitemapUrl)) {
-    return fetchText(sitemapUrl, { headers: REQUEST_HEADERS });
+    return fetchText(sitemapUrl);
   }
-  const response = await fetchWithRetry(sitemapUrl, { headers: REQUEST_HEADERS });
+  const response = await fetchWithRetry(sitemapUrl);
   const buffer = await readBytesBounded(response, sitemapUrl);
   // Some hosts pre-decompress .gz on the wire; only gunzip a real gzip header.
   const isGzip = buffer[0] === 0x1f && buffer[1] === 0x8b;

@@ -1,4 +1,5 @@
 import { createHash } from 'node:crypto';
+import { captureObservedAt } from '../../capture/context.js';
 import { log } from '../../observability/logger.js';
 import pLimit from 'p-limit';
 import { fetchJson, fetchWithRetry } from '../../lib/http.js';
@@ -264,7 +265,7 @@ export async function fetchEightfoldJobs(
       if (declaredTotal === undefined) declaredTotal = count;
       else if (declaredTotal !== count) issues.add('SOURCE_TOTAL_CHANGED');
     }
-    pageEvidence.push({ url, checkedAt: new Date().toISOString(), sha256: createHash('sha256').update(JSON.stringify(response)).digest('hex'), offset: page * PAGE_SIZE, pagination: null,
+    pageEvidence.push({ url, checkedAt: captureObservedAt().toISOString(), sha256: createHash('sha256').update(JSON.stringify(response)).digest('hex'), offset: page * PAGE_SIZE, pagination: null,
       ids: pageIds, publisherCounter: count === undefined ? '' : `count=${count}`, componentCounters: [`positions=${positions.length}`, `uniqueIds=${seen.size}`, `repeated=${repeatedIds}`, `unmapped=${unmapped}`] });
     if (positions.length === 0) { termination = 'EMPTY_PAGE'; break; }
     if (count !== undefined && seen.size >= count) { termination = 'PUBLISHER_TOTAL_REACHED'; break; }

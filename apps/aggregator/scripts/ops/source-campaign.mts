@@ -4,19 +4,29 @@
  * rejoue les étapes maintenues de `source-onboard` avec les mêmes fonctions, séquentiellement, et rend un
  * VERDICT PROUVÉ par source :
  *
- *   QUALIFIEE              identité vérifiée (lien exact de la page officielle vers le portail), collecte native
- *                          validée hors réseau, accès ALLOWED sur les requêtes réellement observées, source ACTIVE
+ *   QUALIFIEE              identité vérifiée (lien exact de la page officielle vers le portail, portail servi sur le
+ *                          domaine officiel, ou portail redirigé par son éditeur vers son hôte canonique sous ce domaine),
+ *                          collecte native validée hors réseau, accès ALLOWED sur les requêtes réellement observées, source ACTIVE
  *   REFUSEE                robots ou périmètre : décision NOT_AUTHORIZED enregistrée, rien ne sera collecté
- *   INACCESSIBLE           le portail ou la page officielle ne répond pas (HTTP, délai, défi anti-robot)
+ *   INACCESSIBLE           le portail ne répond pas (HTTP, délai, défi anti-robot)
  *   RETIREE                source RETIRED dans le registre, non ressuscitée
- *   BLOCAGE_EXTERNE        conflit d'enregistrement ou contrat du portail indisponible pour cette famille
+ *   BLOCAGE_EXTERNE        conflit d'enregistrement, ou pages officielles inaccessibles à la campagne (403/429/5xx,
+ *                          capture impossible) : identité ni prouvée ni contredite
  *   IDENTITE_NON_PROUVEE   aucune page du domaine officiel ne lie exactement le portail : lacune de preuve à instruire
- *   DOMAINE_OFFICIEL_MANQUANT  la Maison n'a pas de domaine officiel résolu : rien à inspecter
+ *   DOMAINE_OFFICIEL_MANQUANT   la Maison n'a pas de domaine officiel résolu (ni dans le registre, ni par son careersDomain)
+ *   DOMAINE_OFFICIEL_DIVERGENT  le domaine officiel du registre n'est pas celui réellement servi (site ou hôte
+ *                          canonique du portail sur un autre domaine d'employeur) : registre à revoir
  *   COLLECTE_NON_VALIDEE   l'adaptateur ou la validation native refuse : défaut de notre contrat, à développer
- *   HORS_PARCOURS          palier ou famille hors du parcours maintenu (éditeurs, cabinets)
+ *   HORS_PARCOURS          palier, famille ou configuration hors du parcours maintenu (éditeurs, cabinets, contrat absent)
  *
- * Le lanceur n'invente aucune décision : les énoncés sont factuels (page, lien, requêtes, robots), le réviseur
- * est nommé, et chaque décision reste liée à la révision de la source et au lecteur courant. Il est rejouable et
+ * Écarts du registre consignés dans `etapes` sans bloquer : `careersDomainDerive` (domaine carrière absent, dérivé de
+ * l'hôte du portail), `domaineOfficiel` (domaine officiel dérivé du careersDomain), `portailCanonique` (hôte
+ * canonique observé hors domaine officiel), `collecteOrigines` (origines réellement interrogées).
+ *
+ * Le lanceur n'invente aucune décision : les énoncés sont factuels (page, lien, requêtes, robots), les périmètres et
+ * surfaces d'accès sont dérivés des requêtes observées par des règles nommées (`accessScopeDerivation`) et l'énoncé dit ce
+ * qu'un préfixe couvre au-delà de l'observé, le réviseur est nommé, et chaque décision reste liée à la révision de la
+ * source et au lecteur courant. Il est rejouable et
  * reprend où il s'est arrêté (`--resume` lit les verdicts déjà rendus). Il s'exécute dans l'environnement voulu
  * (par exemple `npm run stack:exec -- node --import tsx apps/aggregator/scripts/ops/source-campaign.mts …`).
  *
@@ -32,6 +42,8 @@ import { parse as parseDomain } from 'tldts';
 import { parseSourceCandidate, registerSourceCandidate } from '../../src/connectors/sourceCandidate.js';
 import { captureSourceEvidence, readSourceEvidence } from '../../src/capture/sourceEvidence.js';
 import { inspectSourceRelation } from '../../src/connectors/sourceRelation.js';
+import { configuredPortal, reviewedOfficialDomain, type PortalContract } from '../../src/connectors/sourcePortal.js';
+import { effectiveSourceConfig } from '../../src/connectors/sourceConfig.js';
 import { recordSourceIdentityReview } from '../../src/connectors/sourceIdentity.js';
 import { captureSourceForValidation } from '../../src/connectors/sourceValidation.js';
 import { recordSourceAccessDecision } from '../../src/connectors/sourceAccess.js';
@@ -42,23 +54,24 @@ import { objectStoreConfigured, objectStoreFromEnv } from '../../src/retention/o
 import { readRefreshPlan } from '../../src/pipeline/refresh.js';
 import { closeBrowser } from '../../src/lib/browser.js';
 import { auditUrl } from '../../src/capture/context.js';
+import { captureReaderRevision } from '../../src/capture/revision.js';
+import { deriveAccessScopeDocument } from '../../src/connectors/accessScopeDerivation.js';
 
-type Candidat = { key: string; maison: string; kind: string; config: Record<string, unknown>; careersDomain: string; tier: string;
+type Candidat = { key: string; maison: string; kind: string; config: Record<string, unknown>; careersDomain: string | null; tier: string;
   jobUrlPattern?: string | null; domain?: string | null; domainSource?: string | null; lastRunJobs?: number | null };
 type Verdict = { key: string; kind: string; maison: string; verdict: string; raisons: string[]; revision?: string; etapes: Record<string, unknown>;
-  offres?: number; ingestion?: Record<string, unknown>; absence?: Record<string, unknown>; dureeMs: number; evalueLe: string };
+  offres?: number; ingestion?: Record<string, unknown>; absence?: Record<string, unknown>; capacites?: Record<string, string>; readerRevision: string; dureeMs: number; evalueLe: string };
+const READER_REVISION = captureReaderRevision();
 
 const REVIEWER = 'claude-fable-5.1 (campagne F3, pour Loïc)';
-const SURFACE_BY_KIND: Record<string, string> = {
-  teamtailor: 'PUBLIC_ATS_JOB_API', ashby: 'PUBLIC_ATS_JOB_API', recruitee: 'PUBLIC_ATS_JOB_API', workday: 'PUBLIC_ATS_JOB_API',
-  greenhouse: 'PUBLIC_ATS_JOB_API', lever: 'PUBLIC_ATS_JOB_API', personio: 'PUBLIC_XML_OR_RSS', 'smartrecruiters-whitelabel': 'PUBLIC_ATS_JOB_API',
-  successfactors: 'PUBLIC_ATS_JOB_API', digitalrecruiters: 'PUBLIC_ATS_JOB_API', workable: 'PUBLIC_ATS_JOB_API', talentrecruiter: 'PUBLIC_ATS_JOB_API',
-};
+/** La surface d'un périmètre se lit dans les réponses réellement observées (type de contenu, chemin), jamais dans une constante. */
 const CAREER_LINK = /carri|career|recrut|emploi|\bjobs?\b|talent|rejoin|join|work-with|travailler|offres|opportunit/i;
+/** Chemins « carrières » usuels du domaine officiel, essayés en dernier recours pour un portail hébergé chez l'éditeur. */
+const COMMON_CAREER_PATHS = ['/careers', '/carrieres', '/recrutement', '/jobs', '/emploi', '/nous-rejoindre', '/join-us', '/karriere', '/trabaja-con-nosotros', '/lavora-con-noi'];
 const nowMs = () => new Date().toISOString();
 const arg = (name: string) => process.argv.find(v => v.startsWith(`--${name}=`))?.slice(name.length + 3);
 const flag = (name: string) => process.argv.includes(`--${name}`);
-const message = (error: unknown) => (error instanceof Error ? error.message : String(error)).replace(/\s+/g, ' ').slice(0, 400);
+const message = (error: unknown) => (error instanceof Error ? error.message : String(error)).replace(/\s+/g, ' ').replace(/(https?:\/\/[^\s'")?]+)\?[^\s'")]*/g, '$1?…').slice(0, 400);
 const inaccessible = (text: string) => /HTTP (?:4\d\d|5\d\d)|timeout|délai|challenge|défi|ECONN|ENOTFOUND|certificate|TLS|socket/i.test(text);
 
 const candidatesFile = arg('candidates'), outDir = arg('out-dir');
@@ -92,64 +105,86 @@ async function careerLinks(captureBatchId: string, officialDomain: string): Prom
   return found;
 }
 
-async function identite(c: Candidat, revision: string, officialDomain: string, etapes: Record<string, unknown>) {
+type Portal = PortalContract;
+type Identite = { ok: boolean; blocked: boolean; divergentDomain: string | null };
+const registrableOf = (url: string | null | undefined) => { try { return url ? parseDomain(new URL(url).hostname, { allowPrivateDomains: true }).domain ?? null : null; } catch { return null; } };
+
+async function identite(c: Candidat, revision: string, officialDomain: string, domain: string, domainSource: string, portal: Portal, etapes: Record<string, unknown>): Promise<Identite> {
   const tried: Record<string, unknown>[] = [];
-  const pages = [`https://${c.domain}/`, ...(c.domain!.startsWith('www.') ? [] : [`https://www.${c.domain}/`])];
+  let divergentDomain: string | null = null;
+  // Un domaine d'employeur réellement servi, différent du domaine officiel revu (jamais un hôte vendeur) : le registre est à revoir.
+  const employerDomain = (url: string | null | undefined) => { const value = registrableOf(url); if (!value || value === officialDomain) return null; try { return reviewedOfficialDomain(value); } catch { return null; } };
+  // Le portail configuré est archivé en premier : servi sur le domaine officiel, ou redirigé par son éditeur vers son hôte canonique
+  // sous ce domaine, il se prouve par lui-même. Puis la page officielle, `www`, ses liens « carrières », enfin les chemins usuels.
+  const pages = [portal.url, `https://${domain}/`, ...(domain.startsWith('www.') ? [] : [`https://www.${domain}/`])];
   const seen = new Set<string>();
-  for (let i = 0; i < pages.length && i < 6; i++) {
+  for (let i = 0; i < pages.length && i < 10; i++) {
     const url = pages[i]; if (seen.has(url)) continue; seen.add(url);
     let capture: { captureBatchId: string; lastStatus: number | null };
     try { capture = await captureSourceEvidence(db, c.key, { revisionId: revision, purpose: 'SOURCE_IDENTITY', url, deadlineMs: 60_000 }, store) as typeof capture; }
     catch (error) { tried.push({ url, capture: message(error) }); continue; }
-    const relation = await inspectSourceRelation(db, c.key, { captureBatchId: capture.captureBatchId, officialDomain }, store);
-    tried.push({ url, captureBatchId: capture.captureBatchId, status: capture.lastStatus, verdict: relation.verdict, reason: relation.reason ?? null });
+    const relation = await inspectSourceRelation(db, c.key, { captureBatchId: capture.captureBatchId, officialDomain }, store) as
+      Awaited<ReturnType<typeof inspectSourceRelation>> & { proofUrl?: string; canonicalPortal?: string; witness?: { ordinal: number } };
+    const attempt: Record<string, unknown> = { url, captureBatchId: capture.captureBatchId, status: capture.lastStatus, finalUrl: relation.proofUrl ?? null, verdict: relation.verdict, reason: relation.reason ?? null };
+    tried.push(attempt);
     if (relation.verdict === 'LINK_MATCHED') {
+      // Preuve par redirection canonique : l'éditeur sert le même tenant sur l'origine configurée (celle que la collecte lit,
+      // mesuré le 16/09 : Teamtailor réécrit flux et URL d'offres sur l'hôte demandé) et sur son hôte canonique archivé.
+      if ((relation.witness?.ordinal ?? 0) > 0 && relation.canonicalPortal) attempt.canonicalPortal = relation.canonicalPortal;
       etapes.identite = tried;
+      const witness = (relation as { witness?: { element: string; ordinal: number; reference?: string } }).witness;
+      const how = witness?.element === 'document' ? (witness.ordinal > 0 ? `est le portail configuré lui-même, redirigé par son éditeur vers son hôte canonique ${relation.canonicalPortal} sous le domaine officiel (${witness.ordinal} saut(s) archivé(s))` : 'est le portail configuré lui-même, servi sur le domaine officiel')
+        : witness?.element === 'script' ? `charge le script d'embarquement du portail configuré (script n° ${witness.ordinal})`
+        : witness?.reference === 'posting' ? `lie une offre publiée par le portail configuré (lien n° ${witness.ordinal})`
+        : `désigne exactement le portail configuré (lien n° ${witness?.ordinal ?? '?'})`;
       const review = await recordSourceIdentityReview(db, { sourceKey: c.key, sourceRevisionId: revision, captureBatchId: capture.captureBatchId, verdict: 'VERIFIED', officialDomain,
-        statement: `La page officielle archivée ${auditUrl(relation.proofUrl!)} désigne exactement le portail configuré ${relation.configuredPortal} (lien n° ${(relation as { witness?: { ordinal: number } }).witness?.ordinal ?? '?'}). Le rôle exact du portail n'est pas déduit du nom de la Maison : portalScope reste nul.`,
+        statement: `La page archivée ${auditUrl(relation.proofUrl!)} ${how} : ${relation.configuredPortal}. Domaine officiel ${officialDomain} lu dans le registre (provenance : ${domainSource}), jamais déduit par la campagne. Le rôle exact du portail n'est pas déduit du nom de la Maison : portalScope reste nul.`,
         reviewer: REVIEWER, checkedAt: nowMs(), portalScope: null } as Parameters<typeof recordSourceIdentityReview>[1], true, store) as { written?: number; verdict?: string; reason?: string };
       etapes.decisionIdentite = review;
-      return review.written === 1 || (review as { isLatestDecision?: boolean }).isLatestDecision === true;
+      return { ok: review.written === 1 || (review as { isLatestDecision?: boolean }).isLatestDecision === true, blocked: false, divergentDomain: null };
     }
-    if (relation.reason === 'EXACT_PORTAL_REFERENCE_NOT_FOUND' && i === 0) {
+    if (relation.reason === 'PAGE_OUTSIDE_REVIEWED_DOMAIN') {
+      const observed = employerDomain(relation.proofUrl);
+      if (observed) { divergentDomain ??= observed; if (i === 0) etapes.portailCanonique = relation.proofUrl; }
+    }
+    if (relation.reason === 'EXACT_PORTAL_REFERENCE_NOT_FOUND' && !pages.slice(0, i).some(p => p !== portal.url)) {
       for (const link of await careerLinks(capture.captureBatchId, officialDomain)) if (!seen.has(link)) pages.push(link);
     }
+    if (i === pages.length - 1) for (const p of COMMON_CAREER_PATHS) { const u = `https://${domain}${p}`; if (!seen.has(u) && pages.length < 10) pages.push(u); }
   }
   etapes.identite = tried;
-  return false;
+  // Le blocage externe se juge sur les pages de la Maison seulement : la capture du portail (souvent 200 chez le vendeur) n'y compte pas.
+  const official = tried.filter(t => t.url !== portal.url);
+  const anyPage = official.some(t => typeof t.status === 'number' && t.status < 400);
+  const blockedSignals = official.filter(t => t.capture !== undefined || t.status === 403 || t.status === 429 || (typeof t.status === 'number' && t.status >= 500)).length;
+  return { ok: false, blocked: !anyPage && blockedSignals > 0, divergentDomain };
 }
 
-async function acces(c: Candidat, revision: string, jobsCaptureId: string, etapes: Record<string, unknown>) {
-  const rows = await db.rawCapture.findMany({ where: { batchId: jobsCaptureId }, orderBy: { sequence: 'asc' } });
-  const requests: { method: string; url: URL }[] = [];
+/** Les requêtes HTTP réellement observées pendant une capture (chaque saut de chaque réponse), avec le type de contenu servi. */
+async function observedRequests(captureBatchId: string) {
+  const rows = await db.rawCapture.findMany({ where: { batchId: captureBatchId }, orderBy: { sequence: 'asc' } });
+  const requests: { method: string; url: URL; contentType: string }[] = [];
   for (const row of rows) {
     const data = await readRequestData(db, row, store);
     if (!data || data.origin !== 'HTTP_TRANSPORT') throw new Error('ACCESS_JOURNAL: requête sans provenance HTTP native');
-    for (const hop of data.hops) requests.push({ method: hop.request.method, url: new URL(hop.request.url) });
+    for (const hop of data.hops) requests.push({ method: hop.request.method, url: new URL(hop.request.url), contentType: String((hop.responseHeaders as Record<string, string>)['content-type'] ?? '') });
   }
   if (!requests.length) throw new Error('ACCESS_JOURNAL: aucune requête observée');
+  return requests;
+}
+
+async function acces(c: Candidat, revision: string, jobsCaptureId: string, etapes: Record<string, unknown>) {
+  const requests = await observedRequests(jobsCaptureId);
   const origins = [...new Set(requests.map(r => r.url.origin))];
   const robotsCaptureIds: string[] = [];
   for (const origin of origins) {
     const capture = await captureSourceEvidence(db, c.key, { revisionId: revision, purpose: 'SOURCE_ACCESS', url: `${origin}/robots.txt`, deadlineMs: 60_000 }, store) as { captureBatchId: string };
     robotsCaptureIds.push(capture.captureBatchId);
   }
-  const groups = new Map<string, { origin: string; path: string; methods: Set<string>; values: Map<string, Set<string>>; count: number }>();
-  for (const r of requests) {
-    const k = `${r.url.origin}${r.url.pathname}`;
-    const g = groups.get(k) ?? { origin: r.url.origin, path: r.url.pathname, methods: new Set(), values: new Map(), count: 0 };
-    g.methods.add(r.method); g.count++;
-    for (const [key, value] of r.url.searchParams) { if (!g.values.has(key)) g.values.set(key, new Set()); g.values.get(key)!.add(value); }
-    groups.set(k, g);
-  }
-  const scopes = [...groups.values()].map(g => {
-    const fixed: Record<string, string> = {}; const variable: string[] = [];
-    for (const [key, values] of g.values) { if (values.size === 1 && g.count === requests.filter(r => `${r.url.origin}${r.url.pathname}` === `${g.origin}${g.path}` && r.url.searchParams.has(key)).length) fixed[key] = [...values][0]; else variable.push(key); }
-    return { origin: g.origin, path: { kind: 'EXACT' as const, value: g.path }, methods: [...g.methods], query: { fixed, variable }, surface: SURFACE_BY_KIND[c.kind] ?? 'PUBLIC_ATS_HTML' };
-  });
-  const statement = `Périmètre dérivé des ${requests.length} requête(s) HTTP réellement observées pendant la collecte de qualification ${jobsCaptureId} (${scopes.map(s => `${s.methods.join('/')} ${s.origin}${s.path.value}${Object.keys(s.query.fixed).length ? ' ?' + Object.entries(s.query.fixed).map(([k, v]) => `${k}=${v}`).join('&') : ''}${s.query.variable.length ? ` [variables : ${s.query.variable.join(', ')}]` : ''}`).join(' ; ')}). Robots archivé pour chaque origine interrogée ; la décision ne couvre que ce qui a été vu.`;
+  const { scopes, derivation } = deriveAccessScopeDocument(c.kind, requests);
+  const statement = `Périmètre dérivé des ${requests.length} requête(s) HTTP réellement observées, sous l'identité du robot, pendant la collecte de qualification ${jobsCaptureId} : ${derivation.exact} chemin(s) observé(s) déclaré(s) tel(s) quel(s) (EXACT) et ${derivation.prefix} répertoire(s) d'offres observé(s) déclaré(s) par leur préfixe (PREFIX), qui couvre les entrées futures de ce répertoire et rien au-delà${derivation.climbs ? ` ; ${derivation.climbs} remontée(s) d'un répertoire pour tenir dans la liste bornée de 64 périmètres, jamais jusqu'à la racine` : ''}${scopes.some(s => s.query.variable.length) ? ' ; les paramètres variables sont ceux observés avec plusieurs valeurs' : ''}. Méthodes déclarées par périmètre, jamais fusionnées entre un point d'entrée et des pages. Robots archivé pour chaque origine interrogée. Liste : ${scopes.map(s => `${s.methods.join('/')} ${s.origin}${s.path.value}${s.path.kind === 'PREFIX' ? '…' : ''}${Object.keys(s.query.fixed).length ? ' ?' + Object.entries(s.query.fixed).map(([k, v]) => `${k}=${v}`).join('&') : ''}${s.query.variable.length ? ` [variables : ${s.query.variable.join(', ')}]` : ''}`).join(' ; ')}`;
   const document = { sourceKey: c.key, sourceRevisionId: revision, captureBatchId: jobsCaptureId, verdict: 'ALLOWED', robotsCaptureIds, scopes, statement, reviewer: REVIEWER, checkedAt: nowMs() };
-  etapes.acces = { origins, scopes, robotsCaptureIds };
+  etapes.acces = { origins, scopes, robotsCaptureIds, derivation };
   try {
     const decision = await recordSourceAccessDecision(db, document as Parameters<typeof recordSourceAccessDecision>[1], true, store) as { verdict?: string; written?: number; reason?: string };
     etapes.decisionAcces = decision;
@@ -169,43 +204,83 @@ async function acces(c: Candidat, revision: string, jobsCaptureId: string, etape
 
 async function qualifier(c: Candidat): Promise<Verdict> {
   const debut = Date.now(); const etapes: Record<string, unknown> = {}; const raisons: string[] = [];
-  const rendre = (verdict: string, extra: Partial<Verdict> = {}): Verdict => ({ key: c.key, kind: c.kind, maison: c.maison, verdict, raisons, etapes, dureeMs: Date.now() - debut, evalueLe: nowMs(), ...extra });
-  let candidate; try { candidate = parseSourceCandidate({ key: c.key, maison: c.maison, kind: c.kind, config: c.config, careersDomain: c.careersDomain, tier: c.tier, jobUrlPattern: c.jobUrlPattern ?? null }); }
+  const rendre = (verdict: string, extra: Partial<Verdict> = {}): Verdict => ({ key: c.key, kind: c.kind, maison: c.maison, verdict, raisons, etapes, readerRevision: READER_REVISION, dureeMs: Date.now() - debut, evalueLe: nowMs(), ...extra });
+  // La même configuration effective que l'inspecteur de relation : les clés historiques du registre (careers_url, jobs_url…) y sont normalisées.
+  let portal: Portal | null = null; try { portal = configuredPortal(c.kind, effectiveSourceConfig(c.config)); } catch (error) { raisons.push(`contrat de portail : ${message(error)}`); }
+  if (!portal) { if (!raisons.length) raisons.push('contrat de portail : aucun contrat de relation officielle pour cette famille ou cette configuration (sourcePortal.ts)'); return rendre('HORS_PARCOURS'); }
+  etapes.portail = portal.url;
+  // Le domaine carrière est une donnée du registre (il entre dans la clé de tenant) : sans lui, la source reste hors parcours,
+  // l'écart est consigné pour le registre, rien n'est dérivé de l'hôte du portail.
+  if (!c.careersDomain) { raisons.push(`careersDomain absent du registre (portail configuré ${portal.url}) : écart de registre, source hors parcours`); return rendre('HORS_PARCOURS'); }
+  const careersDomain = c.careersDomain;
+  let candidate; try { candidate = parseSourceCandidate({ key: c.key, maison: c.maison, kind: c.kind, config: c.config, careersDomain, tier: c.tier, jobUrlPattern: c.jobUrlPattern ?? null }); }
   catch (error) { raisons.push(message(error)); return rendre('HORS_PARCOURS'); }
   let registration; try { registration = await registerSourceCandidate(db, candidate, true); }
   catch (error) { raisons.push(message(error)); return rendre('BLOCAGE_EXTERNE'); }
   const source = registration.source!; const revision = source.currentRevisionId as string;
   etapes.enregistrement = { created: registration.created, status: source.status, revision };
   if (source.status === 'RETIRED') { raisons.push('source RETIRED dans le registre'); return rendre('RETIREE', { revision }); }
-  if (!c.domain) { raisons.push('domaine officiel de la Maison non résolu'); return rendre('DOMAINE_OFFICIEL_MANQUANT', { revision }); }
-  const registrable = parseDomain(c.domain, { allowPrivateDomains: true }).domain ?? c.domain;
-  let identityOk = false;
-  try { identityOk = await identite(c, revision, registrable, etapes); }
+  const domain = c.domain ?? null;
+  if (!domain) {
+    // Le domaine officiel est une donnée REVUE du registre, jamais déduite par la campagne (une preuve « portail sous
+    // son propre domaine » serait circulaire) : la racine du domaine carrière est seulement SUGGÉRÉE au registre, et
+    // jamais quand ce domaine est l'hôte même d'un portail vendeur (audit F3b).
+    const registrableCareers = parseDomain(careersDomain, { allowPrivateDomains: true }).domain;
+    const portalHost = new URL(portal.url).hostname;
+    const selfHosted = portal.vendorHosted && (careersDomain === portalHost || parseDomain(portalHost, { allowPrivateDomains: true }).domain === registrableCareers);
+    try { if (registrableCareers && !selfHosted) etapes.domaineOfficielSuggere = reviewedOfficialDomain(registrableCareers); } catch { /* hôte vendeur : rien à suggérer */ }
+    raisons.push(`domaine officiel de la Maison non résolu dans le registre${etapes.domaineOfficielSuggere ? ` (suggestion à revoir : ${etapes.domaineOfficielSuggere})` : ''}`); return rendre('DOMAINE_OFFICIEL_MANQUANT', { revision });
+  }
+  const domainSource = c.domainSource ?? 'registre';
+  etapes.domaineOfficiel = { value: domain, source: domainSource };
+  const registrable = parseDomain(domain, { allowPrivateDomains: true }).domain ?? domain;
+  let identity: Identite = { ok: false, blocked: false, divergentDomain: null };
+  try { identity = await identite(c, revision, registrable, domain, domainSource, portal, etapes); }
   catch (error) { raisons.push(`identité : ${message(error)}`); }
-  if (!identityOk) raisons.push('aucune page du domaine officiel ne lie exactement le portail configuré (voir etapes.identite)');
+  // Le motif d'identité est consigné ; quand une étape ultérieure décide du verdict, SON motif passe en tête (unshift).
+  if (!identity.ok) raisons.push(identity.blocked ? 'pages officielles inaccessibles à la campagne (403/429/5xx ou capture impossible) : blocage externe, identité ni prouvée ni contredite'
+    : identity.divergentDomain ? `le portail ou le site officiel du registre est servi sous un autre domaine d'employeur (${identity.divergentDomain}, registre : ${registrable}) : relation à instruire (groupe, distributeur, franchise ou registre)`
+    : 'aucune page du domaine officiel ne lie exactement le portail configuré (voir etapes.identite)');
   let validation; try { validation = await captureSourceForValidation(db, c.key, deadlineMs, store); }
-  catch (error) { const m = message(error); raisons.push(`collecte : ${m}`); return rendre(inaccessible(m) ? 'INACCESSIBLE' : 'COLLECTE_NON_VALIDEE', { revision }); }
+  catch (error) { const m = message(error); raisons.unshift(`collecte : ${m}`); return rendre(inaccessible(m) ? 'INACCESSIBLE' : 'COLLECTE_NON_VALIDEE', { revision }); }
   etapes.collecte = { captureBatchId: validation.captureBatchId, verdict: validation.verdict, report: validation.report };
   const offres = (validation.report as { observed?: number })?.observed;
-  if (validation.verdict !== 'VALIDATED') { raisons.push(`validation native : ${validation.verdict}`); return rendre('COLLECTE_NON_VALIDEE', { revision, offres }); }
+  if (validation.verdict !== 'VALIDATED') { raisons.unshift(`validation native : ${validation.verdict} (${Object.keys((validation.report as { reasons?: Record<string, number> })?.reasons ?? {}).join(', ') || 'sans motif'})`); return rendre('COLLECTE_NON_VALIDEE', { revision, offres }); }
+  try { etapes.collecteOrigines = [...new Set((await observedRequests(validation.captureBatchId)).map(r => r.url.origin))]; }
+  catch (error) { raisons.unshift(`journal de collecte : ${message(error)}`); return rendre('COLLECTE_NON_VALIDEE', { revision, offres }); }
   let access; try { access = await acces(c, revision, validation.captureBatchId, etapes); }
-  catch (error) { const m = message(error); raisons.push(`accès : ${m}`); return rendre(inaccessible(m) ? 'INACCESSIBLE' : 'COLLECTE_NON_VALIDEE', { revision, offres }); }
-  if (!access.allowed) { raisons.push(`accès : ${access.reason}`); return rendre(/not covered|DISALLOWED|robots/i.test(access.reason ?? '') ? 'REFUSEE' : 'COLLECTE_NON_VALIDEE', { revision, offres }); }
-  if (!identityOk) return rendre('IDENTITE_NON_PROUVEE', { revision, offres });
+  catch (error) { const m = message(error); raisons.unshift(`accès : ${m}`); return rendre(inaccessible(m) ? 'INACCESSIBLE' : 'COLLECTE_NON_VALIDEE', { revision, offres }); }
+  if (!access.allowed) { raisons.unshift(`accès : ${access.reason}`); return rendre(/not covered|DISALLOWED|robots/i.test(access.reason ?? '') ? 'REFUSEE' : 'COLLECTE_NON_VALIDEE', { revision, offres }); }
+  if (!identity.ok) return rendre(identity.blocked ? 'BLOCAGE_EXTERNE' : identity.divergentDomain ? 'DOMAINE_OFFICIEL_DIVERGENT' : 'IDENTITE_NON_PROUVEE', { revision, offres });
   const status = await sourceStatus(db, c.key) as { promotionGatesPass?: boolean; status?: string; identity?: unknown; native?: unknown; access?: unknown };
   etapes.portes = { identity: status.identity, native: status.native, access: status.access, promotionGatesPass: status.promotionGatesPass, status: status.status };
   try { etapes.promotion = await promoteSource(db, c.key, revision); }
-  catch (error) { raisons.push(`promotion : ${message(error)}`); return rendre('COLLECTE_NON_VALIDEE', { revision, offres }); }
+  catch (error) { raisons.unshift(`promotion : ${message(error)}`); return rendre('COLLECTE_NON_VALIDEE', { revision, offres }); }
   const result = rendre('QUALIFIEE', { revision, offres });
   if (flag('ingest')) {
-    const run = spawnSync('npx', ['--no-install', 'tsx', 'apps/aggregator/src/cli.ts', 'ingest', `--source=${c.key}`, '--no-geocode'], { encoding: 'utf8' });
-    const line = (run.stdout + run.stderr).split('\n').reverse().find(l => l.includes('"event":"command.result"'));
+    // Tampon de sortie large : le journal d'une ingestion de mille offres dépasse le mégaoctet par défaut de spawnSync,
+    // et un résultat tronqué se lisait « ECHEC » sans motif (adidas, 1 129 offres, campagne du 17/09).
+    const run = spawnSync('npx', ['--no-install', 'tsx', 'apps/aggregator/src/cli.ts', 'ingest', `--source=${c.key}`, '--no-geocode'], { encoding: 'utf8', maxBuffer: 256 * 1024 * 1024 });
+    const output = (run.stdout + run.stderr).split('\n');
+    const line = output.slice().reverse().find(l => l.includes('"event":"command.result"'));
     const data = line ? JSON.parse(line).data : null; const s = data?.sources?.[0];
-    result.ingestion = { exit: run.status, ok: data?.ok ?? null, fetched: s?.fetched, created: s?.created, updated: s?.updated, errors: s?.errors };
+    // Les motifs des refus d'écriture (porte d'identité d'employeur, etc.) sont comptés par nom d'erreur : la capacité de
+    // publication d'une source qualifiée se lit ici, pas dans le seul compte des offres créées.
+    const errorKinds: Record<string, number> = {};
+    for (const l of output) {
+      if (!l.includes('"event":"job.write_failed"') && !l.includes('"event":"source.ingest_failed"')) continue;
+      try { const error = JSON.parse(l).data?.error; const kind = [error?.name, error?.proposedName].filter(Boolean).join(':') || 'inconnu'; errorKinds[kind] = (errorKinds[kind] ?? 0) + 1; } catch { errorKinds.illisible = (errorKinds.illisible ?? 0) + 1; }
+    }
+    result.ingestion = { exit: run.status, ok: data?.ok ?? null, fetched: s?.fetched, created: s?.created, updated: s?.updated, errors: s?.errors, ...(Object.keys(errorKinds).length ? { errorKinds } : {}) };
     const plan = await readRefreshPlan(db, { onlyKeys: [c.key] });
     const e = plan.absencePlan.eligibility.find(x => x.source === c.key);
     result.absence = { eligible: e?.eligible ?? null, reasons: e?.reasons ?? [], termination: e?.termination ?? null, representations: Object.fromEntries([...plan.absencePlan.states.values()].reduce((m, st) => m.set(st, (m.get(st) ?? 0) + 1), new Map<string, number>())) };
   }
+  // QUALIFIEE dit l'identité, la collecte et l'accès prouvés ; la PUBLICATION est une capacité distincte, lue dans l'ingestion.
+  const ing = result.ingestion as { created?: number; updated?: number; errors?: number; exit?: number | null } | undefined;
+  const written = (ing?.created ?? 0) + (ing?.updated ?? 0);
+  result.capacites = { collecte: 'OK', publication: !ing ? 'NON_TESTEE' : ing.errors ? (written ? 'PARTIELLE' : 'REFUSEE') : ing.exit ? 'ECHEC' : written ? 'OK' : 'AUCUNE_OFFRE',
+    absence: result.absence?.eligible === true ? 'ELIGIBLE' : result.absence ? 'NON_ELIGIBLE' : 'NON_TESTEE' };
   return result;
 }
 
@@ -214,7 +289,7 @@ try {
   for (const [i, c] of candidats.entries()) {
     let verdict: Verdict;
     try { verdict = await qualifier(c); }
-    catch (error) { verdict = { key: c.key, kind: c.kind, maison: c.maison, verdict: 'BLOCAGE_EXTERNE', raisons: [`erreur non classée : ${message(error)}`], etapes: {}, dureeMs: 0, evalueLe: nowMs() }; }
+    catch (error) { verdict = { key: c.key, kind: c.kind, maison: c.maison, verdict: 'BLOCAGE_EXTERNE', raisons: [`erreur non classée : ${message(error)}`], etapes: {}, readerRevision: READER_REVISION, dureeMs: 0, evalueLe: nowMs() }; }
     verdicts.push(verdict); save();
     console.log(`${String(i + 1).padStart(3)}/${candidats.length} ${verdict.verdict.padEnd(26)} ${c.key} (${verdict.offres ?? '-'} offres, ${(verdict.dureeMs / 1000).toFixed(1)} s)${verdict.raisons.length ? ' — ' + verdict.raisons[0].slice(0, 160) : ''}`);
   }

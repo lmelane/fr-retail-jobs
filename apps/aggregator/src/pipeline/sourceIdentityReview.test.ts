@@ -85,6 +85,64 @@ describe('identity evidence follows the exact registry revision', () => {
     expect(await certifiedPortalScope(db, s.key)).toBeNull();
   });
 
+  it('records a verification by the portal served under the reviewed official domain (OFFICIAL_DOMAIN, témoin document) and lets the gate through', async () => {
+    // Prémisse : la page archivée est le portail Teamtailor lui-même, rendu côté client, sans lien HTML vers lui ; son hôte est un sous-domaine propre du domaine officiel.
+    const key = `identity-${randomUUID()}`; keys.push(key);
+    const s = await db.source.create({ data: { key, maison: 'Identity witness', kind: 'teamtailor', config: { origin: 'https://careers.identity-witness.example' },
+      tier: 'EMPLOYER_DIRECT', tenantKey: key, status: 'DRAFT', careersDomain: 'careers.identity-witness.example' } });
+    const dossier = await captureIdentityFixture(db, s, { url: 'https://careers.identity-witness.example/', body: '<!doctype html><html><head><title>Careers</title></head><body><div id="app"></div></body></html>' });
+    const written = await recordSourceIdentityReview(db, { ...dossier, portalScope: null }, true);
+    expect(written).toMatchObject({ verdict: 'VERIFIED', written: 1 });
+    const review = await latest(key);
+    expect(review.method).toBe('OFFICIAL_DOMAIN');
+    expect(review.portalUrl).toBe('https://careers.identity-witness.example/');
+    expect((review.relationReport as { witness: { element: string; attribute: string }; policy: string })).toMatchObject({ policy: 'official-html-link/3', witness: { element: 'document', attribute: 'url', ordinal: 0 } });
+    await expect(assertGate(s)).resolves.toBeDefined();
+    // Le même dossier sur un hôte vendeur (hors domaine officiel) n'est pas une preuve.
+    const vendorKey = `identity-${randomUUID()}`; keys.push(vendorKey);
+    const v = await db.source.create({ data: { key: vendorKey, maison: 'Identity witness', kind: 'teamtailor', config: { origin: 'https://identity-witness.teamtailor.com' },
+      tier: 'EMPLOYER_DIRECT', tenantKey: vendorKey, status: 'DRAFT', careersDomain: 'identity-witness.teamtailor.com' } });
+    const vendorDossier = await captureIdentityFixture(db, v, { url: 'https://identity-witness.teamtailor.com/', body: '<html><body><div id="app"></div></body></html>' });
+    await expect(recordSourceIdentityReview(db, { ...vendorDossier, portalScope: null }, true)).rejects.toThrow(/PAGE_OUTSIDE_REVIEWED_DOMAIN/);
+  });
+
+  it('records a verification by the portal\'s canonical redirect to the reviewed official domain (OFFICIAL_DOMAIN, témoin document ordinal 1) and lets the gate through', async () => {
+    // Prémisse : l'origine configurée est l'hôte vendeur, que l'éditeur redirige (301) vers careers.identity-witness.example, sous-domaine du domaine officiel revu.
+    const key = `identity-${randomUUID()}`; keys.push(key);
+    const s = await db.source.create({ data: { key, maison: 'Identity witness', kind: 'teamtailor', config: { origin: 'https://identity-witness.teamtailor.com' },
+      tier: 'EMPLOYER_DIRECT', tenantKey: key, status: 'DRAFT', careersDomain: 'identity-witness.teamtailor.com' } });
+    const dossier = await captureIdentityFixture(db, s, { url: 'https://identity-witness.teamtailor.com/', body: '<html><body><div id="app"></div></body></html>',
+      redirects: { 'https://identity-witness.teamtailor.com/': { status: 301, location: 'https://careers.identity-witness.example/' } } });
+    expect(await recordSourceIdentityReview(db, { ...dossier, portalScope: null }, true)).toMatchObject({ verdict: 'VERIFIED', written: 1 });
+    const review = await latest(key);
+    expect(review).toMatchObject({ method: 'OFFICIAL_DOMAIN', portalUrl: 'https://identity-witness.teamtailor.com/', proofUrl: 'https://careers.identity-witness.example/' });
+    expect(review.relationReport).toMatchObject({ policy: 'official-html-link/3', canonicalPortal: 'https://careers.identity-witness.example/', witness: { element: 'document', attribute: 'url', ordinal: 1 } });
+    await expect(assertGate(s)).resolves.toBeDefined();
+    // SQL : la même ligne est acceptée telle quelle (prémisse), mais pas avec un hôte canonique différent de la page de preuve.
+    const { id: _id, sequence: _sequence, createdAt: _createdAt, ...data } = review;
+    const report = data.relationReport as Record<string, unknown>;
+    type Row = Parameters<typeof db.sourceIdentityReview.create>[0]['data'];
+    await expect(db.sourceIdentityReview.create({ data: data as unknown as Row })).resolves.toBeDefined();
+    await expect(db.sourceIdentityReview.create({ data: { ...data, relationReport: { ...report, canonicalPortal: 'https://careers.other.example/' } } as unknown as Row }))
+      .rejects.toThrow(/Verified identity requires the inspected official link witness or the portal served under the reviewed official domain/);
+  });
+
+  it('records verifications by a posting link and by the Greenhouse embed script (OFFICIAL_LINK) and lets the gate through', async () => {
+    const key = `identity-${randomUUID()}`; keys.push(key);
+    const s = await db.source.create({ data: { key, maison: 'Identity witness', kind: 'greenhouse', config: { board: 'identitywitness' }, tier: 'EMPLOYER_DIRECT', tenantKey: key, status: 'DRAFT', careersDomain: 'boards.greenhouse.io' } });
+    const embed = await captureIdentityFixture(db, s, { body: '<html><body><script src="https://boards.greenhouse.io/embed/job_board/js?for=identitywitness"></script></body></html>' });
+    expect(await recordSourceIdentityReview(db, { ...embed, portalScope: null }, true)).toMatchObject({ verdict: 'VERIFIED', written: 1 });
+    expect(await latest(key)).toMatchObject({ method: 'OFFICIAL_LINK', portalUrl: 'https://boards.greenhouse.io/identitywitness' });
+    expect((await latest(key)).relationReport).toMatchObject({ witness: { element: 'script', attribute: 'src', reference: 'portal' } });
+    await expect(assertGate(s)).resolves.toBeDefined();
+    const postingKey = `identity-${randomUUID()}`; keys.push(postingKey);
+    const p = await db.source.create({ data: { key: postingKey, maison: 'Identity witness', kind: 'greenhouse', config: { board: 'identityposting' }, tier: 'EMPLOYER_DIRECT', tenantKey: postingKey, status: 'DRAFT', careersDomain: 'boards.greenhouse.io' } });
+    const posting = await captureIdentityFixture(db, p, { body: '<html><body><a href="https://job-boards.greenhouse.io/identityposting/jobs/8161056">Vendeur</a></body></html>' });
+    expect(await recordSourceIdentityReview(db, { ...posting, portalScope: null }, true)).toMatchObject({ verdict: 'VERIFIED', written: 1 });
+    expect((await latest(postingKey)).relationReport).toMatchObject({ witness: { element: 'a', attribute: 'href', reference: 'posting' } });
+    await expect(assertGate(p)).resolves.toBeDefined();
+  });
+
   it('allows an explicit contradiction document through the same revision check', async () => {
     const s = await create(); await record(s);
     await recordSourceIdentityReview(db, { ...await document(s), verdict: 'CONTRADICTED', portalScope: null }, true);

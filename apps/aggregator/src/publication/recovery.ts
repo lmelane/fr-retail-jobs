@@ -1,7 +1,7 @@
 import { parseAshbyJob } from '../ats/adapters/ashby.js';
 import { parseLeverJob } from '../ats/adapters/lever.js';
 import { parseJibePage } from '../ats/adapters/jibe.js';
-import { parsePhenomJob } from '../ats/adapters/phenom.js';
+import { parseCareerConnectJob, parsePhenomJob, phenomDialect, type CareerConnectJob } from '../ats/adapters/phenom.js';
 import { parseLvmhHit } from '../ats/adapters/lvmhAlgolia.js';
 import { toNormalized as parseTeamtailorJob } from '../ats/adapters/teamtailor.js';
 import { parseWorkdayPublication } from '../ats/adapters/workday.js';
@@ -10,12 +10,16 @@ import { icimsDetailMatchesListing } from '../identity/icims.js';
 import { parseGreenhouseJob } from '../ats/adapters/greenhouse.js';
 import { parseRecruiteeJob } from '../ats/adapters/recruitee.js';
 import { normalizeGenericPosting } from '../ats/adapters/genericJsonLd.js';
+import { descriptionFromJobAd, parseSmartRecruitersPosting, type PostingDetail, type SmartRecruitersPosting } from '../ats/adapters/smartrecruiters.js';
+import { applySuccessFactorsDetail, brandPropertyOf, normalizeRmkItem, splitSlug, type RetainedSuccessFactorsDetail, type RmkV2Item } from '../ats/adapters/successfactors.js';
+import { normalizeAnnouncement, type DrItem } from '../ats/adapters/digitalrecruiters.js';
+import { personioDetailFromEvidence } from '../ats/adapters/personioDetail.js';
 import { normalizeJobPosting } from '../connectors/generic/jsonLdSitemap.js';
 import { normalizeMagnetOffer } from '../ats/adapters/magnet.js';
 import { parseRitualsHit } from '../ats/adapters/rituals.js';
 import { parseWordpressPost } from '../ats/adapters/wordpress.js';
 import { normalizeGeoDirPost } from '../ats/adapters/geodirectory.js';
-import { talentsoftItemToJob } from '../ats/adapters/talentsoft.js';
+import { type RssItem, listingCardJob, talentsoftItemToJob } from '../ats/adapters/talentsoft.js';
 import { docToJob } from '../ats/adapters/rivoliTypesense.js';
 import { parseWorkableJob } from '../ats/adapters/workable.js';
 import { normalizeListRequisition, mergeDetail } from '../ats/adapters/oraclehcm.js';
@@ -86,10 +90,23 @@ function readRetainedPublication(kind: string, raw: unknown, context: Context, r
         if (!identifier(raw.req_id ?? raw.slug)) return failure('NATIVE_ID_MISSING');
         if (typeof config.origin !== 'string') return failure('RAW_SCHEMA_INVALID');
         job = parseJibePage({ jobs: [{ data: raw }] }, config.origin)[0]; break;
-      case 'phenom':
-        if (!identifier(raw.slug ?? raw.req_id)) return failure('NATIVE_ID_MISSING');
+      case 'phenom': {
         if (typeof config.origin !== 'string') return failure('RAW_SCHEMA_INVALID');
+        // Le dialecte est celui de la configuration, jamais deviné depuis la ligne (lot F3b : Hugo Boss, 671 lignes
+        // CareerConnect refusées NATIVE_ID_MISSING par le seul lecteur `api/jobs`). CareerConnect retient l'entrée de
+        // liste (`jobSeqNo`, teaser) et, quand la fiche l'a fournie, l'évidence JSON-LD appliquée comme le collecteur.
+        let dialect: ReturnType<typeof phenomDialect>;
+        try { dialect = phenomDialect(config); } catch { return failure('READER_UNQUALIFIED'); }
+        if (dialect === 'CAREER_CONNECT_WIDGETS') {
+          if (!identifier(raw.jobSeqNo)) return failure('NATIVE_ID_MISSING');
+          const { postingEvidence, ...entry } = raw;
+          job = parseCareerConnectJob(entry as CareerConnectJob, config.origin, { localePath: typeof config.localePath === 'string' ? config.localePath : undefined });
+          if (job && postingEvidence != null) { job = object(postingEvidence) ? enrichRetainedPostingEvidence(job, postingEvidence) : null; if (!job) return failure('DETAIL_EVIDENCE_UNUSABLE'); }
+          break;
+        }
+        if (!identifier(raw.slug ?? raw.req_id)) return failure('NATIVE_ID_MISSING');
         job = parsePhenomJob(raw, config.origin, config); break;
+      }
       case 'lvmh_algolia':
         if (raw.source === 'oraclehcm') return failure('READER_UNQUALIFIED');
         if (!identifier(raw.objectID ?? raw.atsId)) return failure('NATIVE_ID_MISSING');
@@ -112,10 +129,14 @@ function readRetainedPublication(kind: string, raw: unknown, context: Context, r
       case 'recruitee':
         if (!identifier(raw.id)) return failure('NATIVE_ID_MISSING');
         job = parseRecruiteeJob(raw as Parameters<typeof parseRecruiteeJob>[0], String(config.subdomain ?? '')); break;
-      case 'generic-listing': case 'radancy':
+      case 'generic-listing': case 'generic-jsonld': case 'radancy': {
         if (!jobPosting(raw)) return failure('READER_UNQUALIFIED');
-        if (typeof raw.url !== 'string') return failure('NATIVE_ID_MISSING');
-        job = normalizeGenericPosting(raw, raw.url); break;
+        // The identity is the crawled page, retained as `catwalksPageUrl` since lot F3b; an older RAW without it reads
+        // the posting's own `url`, and a posting declaring no URL was published at the page it was read from.
+        const { catwalksPageUrl, ...node } = raw;
+        const pageUrl = typeof catwalksPageUrl === 'string' ? catwalksPageUrl : typeof raw.url === 'string' ? raw.url : context.url;
+        job = normalizeGenericPosting(node, pageUrl); break;
+      }
       case 'icims': case 'altamira': {
         const evidence = raw.postingEvidence;
         if (raw.source !== kind || !object(evidence) || !object(evidence.jobPosting) ||
@@ -153,9 +174,31 @@ function readRetainedPublication(kind: string, raw: unknown, context: Context, r
       case 'geodirectory':
         if (!identifier(raw.id)) return failure('NATIVE_ID_MISSING');
         job = normalizeGeoDirPost(raw as Parameters<typeof normalizeGeoDirPost>[0]); break;
-      case 'talentsoft':
-        if (typeof raw.link !== 'string') return failure('NATIVE_ID_MISSING');
-        job = talentsoftItemToJob(raw); break;
+      case 'talentsoft': {
+        // Trois formes retenues : un article RSS seul (`link`, gabarit historique et listing illisible) ; depuis le lot F3b,
+        // une carte du listing (`path`, `id`, `title`, `cells`) avec, le cas échéant, l'article RSS apparié (`rss`) et la
+        // description de la fiche (`talentsoftDetail`), appliqués dans l'ordre du collecteur, sans réseau.
+        if (typeof raw.link === 'string') { job = talentsoftItemToJob(raw as RssItem); break; }
+        if (typeof raw.path !== 'string' || !/_\d+\.aspx$/i.test(raw.path)) return failure('NATIVE_ID_MISSING');
+        if (typeof config.origin !== 'string' || !config.origin) return failure('RAW_SCHEMA_INVALID');
+        // Une carte d'avant le lot F3b ne retient que son lien : son identité est là, son contenu natif ne l'est pas.
+        if (typeof raw.title !== 'string' || !Array.isArray(raw.cells) || raw.cells.some(cell => typeof cell !== 'string')) return failure('CONTENT_MISSING');
+        const { rss, talentsoftDetail, ...card } = raw;
+        if (/_(\d+)\.aspx$/i.exec(raw.path)?.[1] !== String(raw.id)) return failure('IDENTITY_MISMATCH');
+        job = listingCardJob({ path: raw.path, id: String(raw.id), title: raw.title, cells: raw.cells as string[] }, config.origin.replace(/\/$/, ''));
+        if (rss != null) {
+          if (!object(rss) || typeof rss.link !== 'string') return failure('DETAIL_EVIDENCE_UNUSABLE');
+          const item = talentsoftItemToJob(rss as RssItem);
+          if (!item || item.externalId !== job.externalId) return failure('DETAIL_IDENTITY_MISMATCH');
+          job = { ...job, ...item, url: job.url, location: item.location ?? job.location, raw: { ...card, rss } };
+        }
+        if (talentsoftDetail != null) {
+          if (!object(talentsoftDetail) || talentsoftDetail.pageUrl !== job.url || typeof talentsoftDetail.htmlSha256 !== 'string' ||
+            !/^[a-f0-9]{64}$/.test(talentsoftDetail.htmlSha256) || typeof talentsoftDetail.description !== 'string') return failure('DETAIL_EVIDENCE_UNUSABLE');
+          if (!job.description && talentsoftDetail.description) job = { ...job, description: talentsoftDetail.description, raw: { ...(job.raw as Record<string, unknown>), talentsoftDetail } };
+        }
+        break;
+      }
       case 'typesense':
         if (typeof raw.url !== 'string') return failure('NATIVE_ID_MISSING');
         job = docToJob(raw as Parameters<typeof docToJob>[0]); break;
@@ -182,13 +225,26 @@ function readRetainedPublication(kind: string, raw: unknown, context: Context, r
         if (raw.published !== true || raw.status !== 'published') return failure('PUBLICATION_HELD');
         if (typeof config.listingUrl !== 'string') return failure('RAW_SCHEMA_INVALID');
         job = parseFlatchrItem(raw, config.listingUrl); break;
-      case 'personio':
+      case 'personio': {
         if (!identifier(raw.id)) return failure('NATIVE_ID_MISSING');
-        // This retained format is the complete XML position. Later native page
-        // enrichments have a separate shape and must not be silently discarded.
-        if (raw.personioDetail != null || raw.postingEvidence != null) return failure('READER_UNQUALIFIED');
         if (typeof config.host !== 'string') return failure('RAW_SCHEMA_INVALID');
-        job = parsePersonioPosition(raw, config.host); break;
+        // The XML position is read first; the retained detail-page evidence (JSON-LD `postingEvidence`, then the Next
+        // flight model `personioDetail`, lot F3b) is applied in the collector's order, never read from a live page.
+        const { personioDetail: detailEvidence, postingEvidence, detailReadError: _readError, ...position } = raw;
+        job = parsePersonioPosition(position, config.host);
+        if (job && postingEvidence != null) { job = object(postingEvidence) ? enrichRetainedPostingEvidence(job, postingEvidence) : null; if (!job) return failure('DETAIL_EVIDENCE_UNUSABLE'); }
+        if (job && detailEvidence != null) {
+          // Only the shape this reader knows (the Next flight read, with its page hash) is applied; any other enrichment shape stays unqualified.
+          if (!object(detailEvidence) || detailEvidence.method !== 'PERSONIO_NEXT_FLIGHT' || typeof detailEvidence.htmlSha256 !== 'string' || !/^[a-f0-9]{64}$/.test(detailEvidence.htmlSha256)) return failure('READER_UNQUALIFIED');
+          const detail = personioDetailFromEvidence(detailEvidence);
+          if (detail) {
+            const employer = job.company ? undefined : detail.employer;
+            job = { ...job, ...(employer ? { company: employer, employerEvidence: { rawName: employer, path: 'raw.personioDetail.careerSiteSettings.company_name', rule: 'EXPLICIT_PERSONIO_PORTAL_EMPLOYER' } } : {}),
+              postedAt: detail.postedAt ?? job.postedAt, description: detail.description ?? job.description, country: job.country ?? detail.country, city: job.city ?? detail.city };
+          }
+        }
+        break;
+      }
       case 'jobylon': {
         if (raw.source !== 'jobylon' || !object(raw.listing) || !identifier(raw.listing.externalId) || typeof raw.listing.path !== 'string') return failure('NATIVE_ID_MISSING');
         if (!object(raw.posting) || !jobPosting(raw.posting)) return failure('CONTENT_MISSING');
@@ -256,6 +312,50 @@ function readRetainedPublication(kind: string, raw: unknown, context: Context, r
         }
         if (raw.mapAddress != null && typeof raw.mapAddress !== 'string') return failure('RAW_SCHEMA_INVALID');
         job = parseTalentRecruiterPosition(raw.position as Parameters<typeof parseTalentRecruiterPosition>[0], config.customer, raw.mapAddress as string | undefined); break;
+      }
+      case 'smartrecruiters-whitelabel': case 'smartrecruiters': {
+        if (!identifier(raw.id)) return failure('NATIVE_ID_MISSING');
+        if (typeof config.company !== 'string' || !config.company) return failure('RAW_SCHEMA_INVALID');
+        // The listing entry names the posting; the advert retained from /postings/{id} (`jobAd`, lot F3b) carries its text.
+        const { jobAd, ...posting } = raw;
+        if (jobAd != null && !object(jobAd)) return failure('DETAIL_EVIDENCE_UNUSABLE');
+        job = parseSmartRecruitersPosting(posting as SmartRecruitersPosting, config.company, typeof config.employerField === 'string' ? config.employerField : undefined);
+        job = { ...job, description: descriptionFromJobAd(jobAd as PostingDetail['jobAd'] | undefined) }; break;
+      }
+      case 'successfactors': {
+        if (typeof config.origin !== 'string' || !config.origin) return failure('RAW_SCHEMA_INVALID');
+        const origin = config.origin.replace(/\/$/, '');
+        const { postingEvidence, detailReadError: _readError, ...rest } = raw;
+        if (raw.source === 'successfactors-rmk-v2') {
+          if (!identifier(raw.id)) return failure('NATIVE_ID_MISSING');
+          if (typeof raw.locale !== 'string') return failure('RAW_SCHEMA_INVALID');
+          job = normalizeRmkItem(rest as RmkV2Item, raw.locale, origin);
+        } else if (raw.source === 'successfactors') {
+          // The HTML listing path (lot F3b): the listing link (id, path, slug) and the microdata detail are retained; an
+          // older RAW without them (slug only) still carries no native identity.
+          if (!identifier(raw.id) || typeof raw.path !== 'string' || typeof raw.slug !== 'string') return failure('NATIVE_ID_MISSING');
+          const { successfactorsDetail, ...listing } = rest;
+          const { city, title } = splitSlug(raw.slug);
+          job = { externalId: String(raw.id), title, location: city, url: new URL(raw.path, origin).toString(), raw: listing };
+          if (successfactorsDetail != null) {
+            if (!object(successfactorsDetail)) return failure('DETAIL_EVIDENCE_UNUSABLE');
+            job = applySuccessFactorsDetail(job, successfactorsDetail as RetainedSuccessFactorsDetail, brandPropertyOf(config));
+          }
+        } else return failure('READER_UNQUALIFIED');
+        if (job && postingEvidence != null) { job = object(postingEvidence) ? enrichRetainedPostingEvidence(job, postingEvidence) : null; if (!job) return failure('DETAIL_EVIDENCE_UNUSABLE'); }
+        break;
+      }
+      case 'digitalrecruiters': {
+        if (!Array.isArray(raw.diffusions) || typeof raw.title !== 'string' || !raw.title.trim()) return failure('NATIVE_ID_MISSING');
+        const domainName = String(config.domainName ?? config.origin ?? '').replace(/^https?:\/\//, '').replace(/\/.*$/, '');
+        if (!domainName) return failure('RAW_SCHEMA_INVALID');
+        // The retained primary diffusion rebuilds the announcement; a locale only names the fallback path of a tenant without careers_site_url.
+        const { postingEvidence, diffusions: _diffusions, locations: _locations, detailReadError: _readError, ...primary } = raw;
+        const locales = [...new Set([config.locale, 'fr_FR', 'en_US'].filter((value): value is string => typeof value === 'string' && !!value))];
+        job = locales.map(locale => normalizeAnnouncement([primary as DrItem], domainName, locale)).find(candidate => !!candidate && new URL(candidate.url).href === new URL(context.url).href) ?? null;
+        if (!job) return failure('IDENTITY_MISMATCH');
+        if (postingEvidence != null) { job = object(postingEvidence) ? enrichRetainedPostingEvidence(job, postingEvidence) : null; if (!job) return failure('DETAIL_EVIDENCE_UNUSABLE'); }
+        break;
       }
       default: return failure('READER_UNQUALIFIED');
     }

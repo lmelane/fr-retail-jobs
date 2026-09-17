@@ -85,7 +85,7 @@ export function assertIdentityReview(source: RevisionIdentitySource, review: Ide
     return invalid('Identity evidence does not match the current employer/tenant/configuration');
   }
   if (!recent(review.checkedAt, now)) return invalid('Identity review must have been checked within 30 days');
-  if (review.method !== 'OFFICIAL_LINK') return invalid('Only an inspected official link can certify identity; a name match or unqualified document cannot');
+  if (!['OFFICIAL_LINK', 'OFFICIAL_DOMAIN'].includes(review.method)) return invalid('Only an inspected official link or a portal served under the reviewed official domain can certify identity; a name match or unqualified document cannot');
   const report = review.relationReport as Record<string, unknown> | null;
   const witness = report?.witness as Record<string, unknown> | undefined;
   const hash = (value: unknown) => typeof value === 'string' && /^[a-f0-9]{64}$/.test(value);
@@ -96,7 +96,8 @@ export function assertIdentityReview(source: RevisionIdentitySource, review: Ide
     typeof report.inspectorRevision !== 'string' || !report.inspectorRevision || typeof report.responseId !== 'string' || !report.responseId ||
     typeof report.captureObservedAt !== 'string' || !recent(report.captureObservedAt, now) ||
     typeof report.evaluatedAt !== 'string' || !recent(report.evaluatedAt, now) ||
-    !witness || !['a', 'iframe'].includes(String(witness.element)) || witness.attribute !== (witness.element === 'a' ? 'href' : 'src') ||
+    !witness || !['a', 'iframe', 'script', 'document'].includes(String(witness.element)) || witness.attribute !== (witness.element === 'a' ? 'href' : witness.element === 'document' ? 'url' : 'src') ||
+    (review.method === 'OFFICIAL_DOMAIN') !== (witness.element === 'document') ||
     !Number.isSafeInteger(witness.ordinal) || Number(witness.ordinal) < 0 || !hash(witness.referenceHash) || !hash(witness.resolvedReferenceHash) ||
     !Array.isArray(witness.queryKeys) || witness.queryKeys.some(key => typeof key !== 'string') ||
     !review.reviewer.trim() || review.statement.trim().length < 30) return invalid('Identity evidence requires an archived, inspected official link of the current policy');
@@ -134,7 +135,7 @@ export async function recordSourceIdentityReview(prisma: PrismaClient, input: Id
     assertRevision(current, document.sourceRevisionId);
     const data = { sourceKey: current.key, sourceRevisionId: current.currentRevisionId, sourceHash: sourceIdentityHash(current),
       tenantKey: current.tenantKey, subjectKey: sourceSubjectKey(current), verdict: document.verdict,
-      method: document.verdict === 'VERIFIED' ? 'OFFICIAL_LINK' : 'ARCHIVED_RESPONSE', officialDomain: document.officialDomain,
+      method: document.verdict !== 'VERIFIED' ? 'ARCHIVED_RESPONSE' : (relation as { witness?: { element?: string } }).witness?.element === 'document' ? 'OFFICIAL_DOMAIN' : 'OFFICIAL_LINK', officialDomain: document.officialDomain,
       proofUrl: relation.proofUrl, portalUrl: relation.verdict === 'LINK_MATCHED' ? relation.configuredPortal : '',
       statement: document.statement, artifactHash: relation.bodyHash, reviewer: document.reviewer,
       checkedAt: new Date(document.checkedAt), portalScope: document.portalScope,

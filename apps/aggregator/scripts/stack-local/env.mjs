@@ -65,7 +65,11 @@ const brevo = (config) => ({
 
 export function envCli(config) {
   return {
-    ...base(), ...NEUTRE, ...brevo(config),
+    // La clé Brevo est vidée pour le CLI : l'alerte de santé de l'agrégateur (`pipeline/alert.ts`) écrit sur l'URL
+    // réelle de Brevo sans lire BREVO_API_URL, et partait vers le vrai service avec la clé synthétique (401 « Key
+    // not found », mesuré le 17/09 pendant la campagne F3). Sans clé, l'alerte est un non-événement documenté ;
+    // la route vers la boîte de réception locale est un changement du lecteur, à faire en F6.
+    ...base(), ...NEUTRE, ...brevo(config), BREVO_API_KEY: '',
     NODE_ENV: 'development',
     DATABASE_URL: catalogueDbUrl(config), DIRECT_URL: catalogueDbUrl(config), PGOPTIONS: '',
     CATALOGUE_FLUX_URL: urls(config).backend, CATALOGUE_FLUX_KEY: config.secrets.fluxKey,

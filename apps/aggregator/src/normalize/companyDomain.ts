@@ -47,7 +47,7 @@ const HOST_RE = /^[a-z0-9-]{1,63}(\.[a-z0-9-]{1,63})+$/;
  * myworkdayjobs.com` → « myworkdayjobs.com » mettrait le logo Workday sur
  * toutes les Maisons Richemont. Donc : aucun domaine, pas un faux.
  */
-const ATS_HOST_SUFFIXES = [
+export const ATS_HOST_SUFFIXES = [
   'myworkdayjobs.com', 'myworkday.com', 'icims.com', 'teamtailor.com', 'oraclecloud.com',
   'taleo.net', 'successfactors.com', 'successfactors.eu', 'sapsf.com', 'sapsf.eu',
   'avature.net', 'lever.co', 'greenhouse.io', 'smartrecruiters.com', 'personio.de',
