@@ -1,14 +1,17 @@
 import { describe, it, expect } from 'vitest';
 import {
   CODES_MARCHE,
+  CODES_MARCHE_LOCALISES,
   DIMENSIONS_FACETTE,
   MARCHES,
+  MARCHES_ROUTABLES,
   PLANCHER_FACETTE_DENSE,
   SEUIL_AFFICHAGE_FACETTE,
   SEUIL_FACETTE_DENSE,
   estCodeMarche,
   facettesDuMarche,
   libelleFacette,
+  localeServie,
   marche,
   type CodeMarche,
   type DimensionFacette,
@@ -209,13 +212,21 @@ describe('D-436 — registre du vocabulaire natif par marché', () => {
      * qu'il attrape une ouverture de marché — exactement ce qu'on lui demande.
      *
      * IL FAUT DONC UN AUTRE CODE RÉEL, ET PAS SEULEMENT DES CHAÎNES ABSURDES.
-     * `JP` le remplace : présent au catalogue, jamais mesuré, jamais ouvert.
      * Sans lui, le cas dégradé ne serait plus exercé que par `ZZ` et des
      * chaînes malformées — or le cas NORMAL en production est un code pays
-     * parfaitement valide qui n'est simplement pas un marché (le catalogue
-     * couvre 119 pays, le registre en sert 12).
+     * parfaitement valide qui n'est simplement pas un marché.
+     *
+     * `JP` A ÉTÉ RETIRÉ À SON TOUR le 2026-09-17, et ce témoin a ROUGI pour la TROISIÈME fois sur
+     * une ouverture de marché — après BE, après CN. Le Japon est entré comme marché ROUTABLE
+     * (552 offres, quatre facettes exploitables, 52 % de preuves pays), avec les 30 autres.
+     *
+     * `BG` le remplace, et c'est le bon successeur : la Bulgarie porte 45 offres publiables —
+     * réelles, servies par le catalogue, mais SOUS le seuil de 50 qui ouvre un marché routable.
+     * Elle exerce donc exactement le cas de production visé : un code pays valide, présent au
+     * catalogue, qui n'est pas un marché. Le jour où son volume passe le seuil, ce témoin rougira
+     * une quatrième fois — et ce sera encore la bonne réponse.
      */
-    for (const inconnu of ['JP', 'ZZ', '', '   ', 'FRANCE', 'us-east']) {
+    for (const inconnu of ['BG', 'ZZ', '', '   ', 'FRANCE', 'us-east']) {
       expect(estCodeMarche(inconnu.toUpperCase()), `« ${inconnu} » doit être hors registre`).toBe(false);
       expect(() => facettesDuMarche(inconnu)).not.toThrow();
       expect(facettesDuMarche(inconnu)).toEqual([]);
@@ -259,8 +270,15 @@ describe('D-436 — registre du vocabulaire natif par marché', () => {
      * `expect(CODES_MARCHE.length).toBe(CODES_MARCHE.length)` serait toujours
      * vrai. C'est le seul endroit du témoin où l'ouverture d'un marché ne peut
      * pas passer inaperçue.
+     *
+     * LES DEUX NOMBRES SONT GRAVÉS SÉPARÉMENT depuis le 2026-09-17, et c'est le point : ouvrir un
+     * marché LOCALISÉ et ouvrir un marché ROUTABLE sont deux décisions différentes, au coût et au
+     * risque différents. Les additionner en un seul total laisserait passer une traduction
+     * supprimée compensée par un pays ouvert.
      */
-    expect(CODES_MARCHE.length, 'la prémisse : douze marchés mesurés').toBe(12);
+    expect(CODES_MARCHE_LOCALISES.length, 'la prémisse : douze marchés localisés').toBe(12);
+    expect(MARCHES_ROUTABLES.length, 'la prémisse : vingt-neuf marchés routables').toBe(29);
+    expect(CODES_MARCHE.length, 'la prémisse : quarante et un marchés au total').toBe(41);
 
     for (const code of CODES_MARCHE) {
       const m = MARCHES[code];
@@ -336,7 +354,20 @@ describe('D-436 — registre du vocabulaire natif par marché', () => {
      * au marché suivant, et c'est exactement le défaut que ce témoin existe
      * pour empêcher ailleurs.
      */
-    const tauxMesures: Readonly<Record<CodeMarche, number>> = {
+    /*
+     * LA TABLE BALAIE LES MARCHÉS LOCALISÉS, ET C'EST LA BONNE POPULATION.
+     *
+     * `CODES_MARCHE` porte depuis le 17/09 les 31 marchés ROUTABLES en plus des 12 localisés. Un
+     * marché routable n'a, par construction, AUCUNE couverture mesurée — sa `couverture` vaut zéro
+     * partout, et c'est ce qui l'empêche d'exposer une facette de dimension non mesurée.
+     *
+     * Balayer les 43 ici aurait exigé de graver « 0 » pour 31 pays, c'est-à-dire de transformer un
+     * témoin de MESURE en témoin de valeur par défaut : il serait passé au vert quel que soit le
+     * chiffre réel des marchés localisés qu'il existe pour garder. La garantie est conservée
+     * intacte sur la population qui porte une mesure, et le témoin suivant garde la seconde
+     * moitié : un routable doit rester à zéro.
+     */
+    const tauxMesures: Readonly<Record<(typeof CODES_MARCHE_LOCALISES)[number], number>> = {
       US: 0.53949,
       FR: 0.48767,
       GB: 0.4118,
@@ -350,7 +381,7 @@ describe('D-436 — registre du vocabulaire natif par marché', () => {
       BE: 0.45902,
       CN: 0.33088,
     };
-    for (const code of CODES_MARCHE) {
+    for (const code of CODES_MARCHE_LOCALISES) {
       expect(marche(code)?.couverture.metier, `${code} métier`).toBeCloseTo(tauxMesures[code], 5);
     }
 
@@ -386,7 +417,16 @@ describe('D-436 — registre du vocabulaire natif par marché', () => {
      */
     expect(DIMENSIONS_FACETTE, 'la prémisse : « metier » est bien une dimension').toContain('metier');
 
-    for (const code of CODES_MARCHE) {
+    /*
+     * LA POPULATION EST CELLE DES MARCHÉS MESURÉS, et le mot « partout » du titre s'entend d'eux.
+     *
+     * Les 31 marchés routables entrés le 2026-09-17 n'ont, par construction, AUCUNE couverture :
+     * leur `couverture.metier` vaut 0 et ils n'exposent aucune facette de dimension. Les inclure
+     * ici ferait rougir un témoin qui a raison, pour une population à laquelle son affirmation ne
+     * s'applique pas — et l'y adapter en baissant l'assertion détruirait la garantie sur les
+     * douze marchés qu'il existe pour garder.
+     */
+    for (const code of CODES_MARCHE_LOCALISES) {
       const taux = MARCHES[code].couverture.metier;
       expect(taux, `la prémisse : ${code} métier est au-dessus du seuil`).toBeGreaterThanOrEqual(
         SEUIL_AFFICHAGE_FACETTE,
@@ -521,7 +561,12 @@ describe('D-436 — registre du vocabulaire natif par marché', () => {
     expect(PLANCHER_FACETTE_DENSE, 'la prémisse : le plancher vaut toujours 77 %').toBe(0.77);
     expect(PLANCHER_FACETTE_DENSE).toBeLessThan(SEUIL_FACETTE_DENSE);
 
-    const meilleureParMarche = CODES_MARCHE.map(
+    /*
+     * LA POPULATION EST CELLE DES MARCHÉS MESURÉS — voir le témoin du métier plus haut. Un marché
+     * routable n'expose aucune facette, donc `Math.max()` de rien rendrait `-Infinity` et la
+     * prémisse ci-dessous rougirait en décrivant une absence de mesure comme une facette creuse.
+     */
+    const meilleureParMarche = CODES_MARCHE_LOCALISES.map(
       (code) =>
         [code, Math.max(...facettesDuMarche(code).map((d) => MARCHES[code].couverture[d]))] as const,
     );
@@ -739,5 +784,185 @@ describe('D-436 — registre du vocabulaire natif par marché', () => {
 
     // 99 offres sur 1 234, soit 8,0 % : sous le seuil, donc rien à exposer.
     expect(99 / MARCHES.AU.offresMesurees).toBeLessThan(SEUIL_AFFICHAGE_FACETTE);
+  });
+});
+
+/**
+ * LES MARCHÉS ROUTABLES — ouvrir un pays sans attendre sa traduction (17/09/2026).
+ *
+ * Ces témoins gardent des CONSÉQUENCES, pas une forme d'objet. Chacune serait « corrigée » de
+ * bonne foi par quelqu'un qui n'a pas la mesure sous les yeux, et chacune a un coût produit
+ * précis si elle tombe.
+ */
+describe('marchés routables — le corpus ouvre le marché, pas la traduction', () => {
+  it('les 41 codes sont réellement présents dans la table', () => {
+    /*
+     * PRÉMISSE DU DÉFAUT — la fusion est écrite avec une assertion `as Record<CodeMarche, Marche>`,
+     * qui fait TAIRE le compilateur si un code manque. Sans ce témoin, oublier un pays rendrait
+     * `MARCHES.XX` `undefined` au rendu, pas à la compilation.
+     */
+    expect(CODES_MARCHE.length, 'douze localisés plus vingt-neuf routables').toBe(41);
+    for (const code of CODES_MARCHE) {
+      expect(MARCHES[code], `MARCHES.${code} absent de la table fusionnée`).toBeDefined();
+      expect(marche(code)?.code, `marche('${code}') ne rend pas le bon marché`).toBe(code);
+    }
+  });
+
+  it('aucun code n’est déclaré deux fois', () => {
+    /*
+     * Un doublon serait SILENCIEUX : la fusion servirait la version localisée et la ligne
+     * routable serait ignorée sans erreur. Le jour où un routable est traduit, il faut le
+     * RETIRER de `MARCHES_ROUTABLES`, pas l'ajouter des deux côtés.
+     */
+    const routables = MARCHES_ROUTABLES.map((m) => m.code);
+    const doublons = routables.filter((c) => (CODES_MARCHE_LOCALISES as readonly string[]).includes(c));
+    expect(doublons, 'un marché traduit doit sortir de la table des routables').toEqual([]);
+    expect(new Set(routables).size, 'un code routable en double').toBe(routables.length);
+  });
+
+  it('un marché routable porte sa locale NATIVE, jamais celle du repli', () => {
+    /*
+     * LA RÈGLE QUE LE CEO A TRANCHÉE, et le mensonge qu'elle empêche : écrire
+     * `localeParDefaut: 'en-GB'` sur la Pologne déclarerait que l'anglais britannique EST la
+     * langue du marché polonais. Ce mensonge se propagerait au `hreflang`, aux métadonnées et au
+     * sélecteur — trois surfaces où il est invisible en revue et visible par le candidat.
+     */
+    expect(marche('PL')?.localeParDefaut, 'la Pologne est un marché PL').toBe('pl-PL');
+    expect(marche('PL')?.localisation).toBe('FALLBACK');
+    expect(marche('PL')?.localeDeRepli, 'le repli vit séparément').toBe('en-GB');
+
+    for (const m of MARCHES_ROUTABLES) {
+      const registre = marche(m.code);
+      expect(registre?.localeParDefaut, `${m.code} doit porter sa locale native`).toBe(m.localeNative);
+      expect(registre?.localeParDefaut, `${m.code} ne doit pas porter la locale de repli`).not.toBe('en-GB');
+      expect(registre?.localisation, `${m.code} n’est pas encore traduit`).toBe('FALLBACK');
+    }
+  });
+
+  it('la locale de repli N’ENTRE PAS dans les locales servies', () => {
+    /*
+     * LE DÉFAUT EXACT, ATTRAPÉ PAR `contrat-marches.test.ts` LE 17/09/2026.
+     *
+     * La première version de `marcheEnRepli` déclarait `locales: ['pl-PL', 'en-GB']`. C'est
+     * `en-GB` servi en Pologne — le même emprunt que D-436 a supprimé en Belgique en le
+     * remplaçant par `en-BE`. `locales` dit ce que le marché sert dans SA langue ; le repli est
+     * un état transitoire de localisation, pas une langue du marché.
+     *
+     * PRÉMISSE — le repli doit bien exister quelque part, sinon ce témoin passerait au vert sur
+     * un registre qui aurait simplement perdu l'information.
+     */
+    for (const m of MARCHES_ROUTABLES) {
+      const registre = marche(m.code);
+      expect(registre?.localeDeRepli, `la prémisse : ${m.code} porte bien un repli`).toBeTruthy();
+      expect(registre?.locales, `${m.code} ne sert que sa locale native`).toEqual([m.localeNative]);
+      expect(registre?.locales, `${m.code} : le repli n’est pas une locale servie`).not.toContain(
+        registre?.localeDeRepli,
+      );
+    }
+  });
+
+  it('un marché localisé n’est jamais marqué en repli', () => {
+    for (const code of CODES_MARCHE_LOCALISES) {
+      expect(marche(code)?.localisation, `${code} est traduit`).toBe('NATIVE');
+      expect(marche(code)?.localeDeRepli, `${code} n’emprunte aucune locale`).toBeUndefined();
+    }
+  });
+
+  it('un marché routable n’expose AUCUNE facette de dimension tant qu’il n’est pas mesuré', () => {
+    /*
+     * La conséquence la plus contre-intuitive, et la plus importante : `couverture` vaut zéro
+     * partout pour un routable. Ce n'est pas « mesuré à zéro », c'est « pas mesuré » — et le
+     * comportement voulu est de ne RIEN exposer plutôt que d'exposer un filtre dont on ignore
+     * s'il masque quatre offres sur cinq.
+     *
+     * Le remplir « pour faire propre » avec les taux d'un marché voisin est exactement le piège
+     * que CA-fr a révélé sur les libellés.
+     */
+    for (const m of MARCHES_ROUTABLES) {
+      expect(facettesDuMarche(m.code), `${m.code} ne doit exposer aucune facette non mesurée`).toEqual([]);
+      for (const d of DIMENSIONS_FACETTE) {
+        expect(marche(m.code)?.couverture[d], `${m.code}.${d} doit rester non mesuré`).toBe(0);
+      }
+    }
+  });
+
+  it('les six pays à code ambigu restent hors du registre', () => {
+    /*
+     * IN · CO · IL · MO · MA · ID portent 1 015 offres et sont ÉCARTÉS : leur code ISO est aussi
+     * une subdivision fédérale des États-Unis, et la part d'offres portant une preuve pays
+     * explicite est trop faible pour trancher (3 % pour l'Inde sur 576 offres ; 0 % pour IL, MO
+     * et MA). Les ouvrir servirait à un candidat indien des offres de l'Indiana.
+     *
+     * L'INDE EST LE CAS À CONNAÎTRE : sa locale `en-IN` est validée et son volume la placerait au
+     * premier rang des routables. Ce témoin ne dit pas « l'Inde n'est pas un marché » — il dit
+     * que la GÉOGRAPHIE bloque, pas la langue. Il rougira le jour où Country Resolution rend ses
+     * preuves, et c'est le signal attendu pour l'ouvrir.
+     */
+    for (const code of ['IN', 'CO', 'IL', 'MO', 'MA', 'ID']) {
+      expect(estCodeMarche(code), `${code} : code ambigu, pays non prouvé`).toBe(false);
+      expect(marche(code), `${code} ne doit pas être servi comme marché`).toBeUndefined();
+    }
+  });
+
+  it('LA LOCALE SERVIE EST L’ANGLAIS, PAS LE FRANÇAIS — le défaut qui touchait 29 marchés', () => {
+    /*
+     * ── LE DÉFAUT EXACT, ET POURQUOI IL ÉTAIT INVISIBLE ──────────────────────────────────────
+     *
+     * `langueDesLibelles` ne connaît que deux catalogues, `fr` et `en` (`packages/db/presentation.ts`).
+     * Recevant `pl-PL`, elle ne trouve pas `pl` et retombe sur SON défaut : `fr`. Un visiteur
+     * polonais aurait donc lu « Temps plein », « Stage », « Pologne » — en FRANÇAIS — sur un
+     * marché dont le repli décidé est l'anglais. Le même défaut sur les vingt-neuf marchés.
+     *
+     * Rien n'aurait rougi : le registre portait bien `localeDeRepli`, mais AUCUN code ne le
+     * lisait. Une garantie sans appelant n'est pas une garantie.
+     *
+     * PRÉMISSE — il faut d'abord établir que la locale NATIVE tombe bien dans le piège, sinon ce
+     * témoin passerait au vert sur un marché dont la langue est servie de toute façon.
+     */
+    /*
+     * Les deux seuls catalogues de libellés sont `fr` et `en` (`packages/db/presentation.ts`) :
+     * la langue d'une locale servie DOIT donc être l'une des deux, sinon la résolution retombe
+     * sur son défaut — le français. Le témoin ne recopie pas cette liste, il l'affirme.
+     *
+     * (`langueDesLibelles` n'est pas importée ici : `presentation.ts` importe un JSON, et le
+     * tirer dans le graphe de compilation de l'agrégateur casse son typecheck. La chaîne
+     * complète, du registre jusqu'au contrat servi, est gardée côté API par
+     * `apps/api/lib/__tests__/libelles-langue-lot8.test.ts`.)
+     */
+    const langueDe = (locale: string | undefined) => locale?.split('-')[0];
+    expect(langueDe('pl-PL'), 'la prémisse : la locale native polonaise porte bien `pl`').toBe('pl');
+
+    for (const m of MARCHES_ROUTABLES) {
+      const servie = localeServie(marche(m.code));
+      expect(servie, `${m.code} : la locale servie est le repli`).toBe('en-GB');
+      expect(
+        langueDe(servie),
+        `${m.code} : le candidat doit lire l’ANGLAIS, jamais sa locale native sans catalogue`,
+      ).toBe('en');
+      expect(langueDe(servie), `${m.code} ne doit pas retomber sur le français`).not.toBe('fr');
+    }
+  });
+
+  it('un marché localisé lit sa propre locale, pas un repli', () => {
+    /*
+     * La moitié symétrique : `localeServie` ne doit PAS dévier un marché traduit. Sans ce
+     * témoin, une implémentation qui renverrait `en-GB` pour tout le monde passerait le témoin
+     * précédent et casserait les douze marchés localisés en silence.
+     */
+    for (const code of CODES_MARCHE_LOCALISES) {
+      expect(localeServie(marche(code)), `${code} sert sa propre locale`).toBe(marche(code)?.localeParDefaut);
+    }
+    expect(localeServie(marche('FR')), 'la France reste sur sa propre locale').toBe('fr-FR');
+    expect(localeServie(undefined), 'aucun marché, aucune locale inventée').toBeUndefined();
+  });
+
+  it('un marché routable borne son périmètre à son seul pays', () => {
+    /*
+     * `pays` est ce que le SQL utilise pour borner les offres. Un routable qui en porterait
+     * plusieurs servirait des offres d'un pays voisin sous le drapeau du sien.
+     */
+    for (const m of MARCHES_ROUTABLES) {
+      expect(marche(m.code)?.pays, `${m.code} doit borner son seul pays`).toEqual([m.code]);
+    }
   });
 });

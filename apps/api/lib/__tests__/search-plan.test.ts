@@ -40,11 +40,18 @@ describe('le périmètre est obligatoire', () => {
   });
 
   it('un pays connu sans marché mesuré est un périmètre d’un seul pays, sans facettes natives', () => {
-    // Prémisse : le Japon est un pays réel du catalogue (548 offres publiables mesurées) sans marché.
-    const jp = resoudrePerimetre('JP');
-    expect(jp).toMatchObject({ code: 'JP', pays: ['JP'], marche: undefined });
-    expect(facettesContrat(jp!).map((f) => f.cle)).toEqual(['secteur', 'ville', 'maison', 'groupe', 'langue']);
-    expect(facettesContrat(jp!).find((f) => f.cle === 'ville')?.libelle).toBe('Ville');
+    /*
+     * Prémisse : la Bulgarie est un pays réel du catalogue (45 offres publiables mesurées le
+     * 17/09/2026) sans marché — SOUS le seuil de 50 qui ouvre un marché routable.
+     *
+     * `JP` tenait ce rôle jusqu'au 17/09 et il est devenu un marché routable (552 offres). Le
+     * remplacer plutôt que supprimer ce témoin : le cas NORMAL en production reste un code pays
+     * parfaitement valide qui n'est simplement pas un marché.
+     */
+    const bg = resoudrePerimetre('BG');
+    expect(bg).toMatchObject({ code: 'BG', pays: ['BG'], marche: undefined });
+    expect(facettesContrat(bg!).map((f) => f.cle)).toEqual(['secteur', 'ville', 'maison', 'groupe', 'langue']);
+    expect(facettesContrat(bg!).find((f) => f.cle === 'ville')?.libelle).toBe('Ville');
   });
 });
 

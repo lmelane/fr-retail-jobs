@@ -44,8 +44,31 @@ describe('la langue des libellés (lot 8)', () => {
       // Prémisse pour DE/IT/ES/NL/CN : leur langue de service n'a pas de catalogue.
       if (langue === 'fr' && !['FR', 'BE', 'CH'].includes(code)) expect(MARCHES[code as keyof typeof MARCHES].localeParDefaut.startsWith('fr')).toBe(false);
     }
-    // Un pays servi seul, sans marché mesuré : français.
-    expect(perimetreServi(resoudrePerimetre('JP')!).langueDesLibelles).toBe('fr');
+    // Un pays servi seul, sans marché du tout : français. `BG` (45 offres) est sous le seuil qui
+    // ouvre un marché routable — `JP` tenait ce rôle jusqu'au 17/09, il est devenu un marché.
+    expect(perimetreServi(resoudrePerimetre('BG')!).langueDesLibelles).toBe('fr');
+  });
+
+  /**
+   * LES MARCHÉS ROUTABLES LISENT L'ANGLAIS, ET C'EST UN CORRECTIF (17/09/2026).
+   *
+   * Vingt-neuf marchés sont entrés au registre avec leur locale NATIVE — `pl-PL`, `ja-JP`,
+   * `ko-KR` — et aucun catalogue d'interface dans cette langue. Servir `localeParDefaut` à
+   * `langueDesLibelles` les faisait tous retomber sur `fr` : un visiteur polonais aurait lu
+   * « Temps plein » et « Stage » en français, alors que le repli décidé est l'anglais.
+   *
+   * `localeServie` répond à la bonne question — dans quelle langue rendre MAINTENANT — et ce
+   * témoin garde la chaîne complète, du registre jusqu'au contrat servi au site.
+   */
+  it('un marché routable est libellé en ANGLAIS, pas dans le français par défaut', () => {
+    // PRÉMISSE : leur locale native n'a aucun catalogue, donc sans correctif ils tomberaient en `fr`.
+    expect(MARCHES.PL.localeParDefaut).toBe('pl-PL');
+    expect(MARCHES.PL.localisation).toBe('FALLBACK');
+
+    for (const code of ['PL', 'JP', 'KR', 'PT', 'BR', 'TH']) {
+      expect(perimetreServi(resoudrePerimetre(code)!).langueDesLibelles, code).toBe('en');
+      expect(langueDesLibellesDuPays(code), `${code} lu comme offre seule`).toBe('en');
+    }
   });
 
   it('une offre lue seule suit le marché de son pays : Autriche → DE → français, Irlande → GB → anglais', () => {

@@ -193,7 +193,101 @@ export const PLANCHER_FACETTE_DENSE = 0.77;
  * de la Chine, qui porte la mesure, la contre-épreuve française et le
  * mécanisme retenu (pas de libellé, donc pas de facette).
  */
-export const CODES_MARCHE = ['US', 'FR', 'GB', 'CA', 'DE', 'IT', 'ES', 'NL', 'AU', 'CH', 'BE', 'CN'] as const;
+export const CODES_MARCHE_LOCALISES = ['US', 'FR', 'GB', 'CA', 'DE', 'IT', 'ES', 'NL', 'AU', 'CH', 'BE', 'CN'] as const;
+
+/**
+ * LES MARCHÉS ROUTABLES — un pays s'ouvre sur son CORPUS, pas sur sa traduction.
+ *
+ * ── LA RÈGLE QUE CETTE TABLE APPLIQUE ─────────────────────────────────────────────────────────
+ *
+ * Trois niveaux, à ne jamais confondre : un pays PRÉSENT porte des offres ; un marché ROUTABLE a
+ * un corpus assez fiable pour être exposé, avec l'interface anglaise en repli ; un marché
+ * LOCALISÉ a en plus sa locale, ses catalogues et ses libellés natifs. Cette table porte le
+ * deuxième niveau ; `MARCHES_LOCALISES` au-dessus porte le troisième.
+ *
+ * Chaque ligne porte la LOCALE NATIVE du pays — `pl-PL`, jamais `en-GB`. Le repli d'interface est
+ * calculé par `marcheEnRepli`, séparément, et `localisation: 'FALLBACK'` le dit. Écrire la locale
+ * de repli ici aurait déclaré que l'anglais EST la langue du marché polonais, et ce mensonge se
+ * serait propagé au `hreflang`, aux métadonnées et au sélecteur.
+ *
+ * ── D'OÙ VIENNENT CES TRENTE ET UNE LIGNES ────────────────────────────────────────────────────
+ *
+ * De la sonde `audits/mesures-d435-d436/marches-routables-2026-09-17.mts`, rejouée en lecture
+ * seule le 2026-09-17 : 107 pays hors des douze localisés portent 9 973 offres actives ; 31
+ * passent les trois critères (volume ≥ 50, intégrité géographique, au moins une facette
+ * exploitable) et totalisent 8 210 offres.
+ *
+ * DEUX DE CES TRENTE ET UN SONT ÉCARTÉS ICI — l'Autriche et l'Irlande, déjà servies par DE et GB
+ * (voir plus bas). Restent 29 marchés et 7 533 offres.
+ *
+ * `offresMesurees` recopie ce comptage-là. C'est un ordre de grandeur daté, pas une vérité
+ * courante : il sert à classer et à documenter, jamais à décider d'un affichage — les facettes se
+ * mesurent, et un marché en repli n'en expose aucune tant qu'elle ne l'est pas.
+ *
+ * ── LES SIX PAYS ABSENTS, ET POURQUOI C'EST LA MÊME RÈGLE ─────────────────────────────────────
+ *
+ * IN · CO · IL · MO · MA · ID portent 1 015 offres et sont ÉCARTÉS : leur code ISO est aussi une
+ * subdivision fédérale (`IN` est l'Indiana, `CO` le Colorado, `ID` l'Idaho…) et la part d'offres
+ * portant une preuve pays explicite est trop faible pour trancher — 3 % pour l'Inde sur 576
+ * offres, 0 % pour IL, MO et MA. Les ouvrir servirait à un candidat indien des offres de
+ * l'Indiana : exactement le défaut mesuré sur le Canada, 200 offres californiennes sur 3 129.
+ *
+ * L'Inde est le cas à connaître : sa locale `en-IN` est validée et son volume la placerait au
+ * premier rang des routables. Ce n'est PAS un doute sur la locale, c'est la géographie qui
+ * bloque. Elle entre dès que le chantier Country Resolution rend ses preuves — sans rien changer
+ * ici qu'une ligne.
+ *
+ * ── AT ET IE SONT ABSENTS POUR UNE RAISON DIFFÉRENTE : ILS SONT DÉJÀ SERVIS ───────────────────
+ *
+ * L'Autriche (395 offres) et l'Irlande (282) passent les trois critères, et pourtant elles ne
+ * sont PAS ici. Le registre les sert déjà : `MARCHES.DE.pays` vaut `['DE', 'AT']` et
+ * `MARCHES.GB.pays` vaut `['GB', 'IE']` — deux périmètres à plusieurs pays, posés avant ce lot.
+ *
+ * Les ouvrir comme marchés propres mettrait un pays dans DEUX marchés : le SQL bornerait les
+ * mêmes offres sous deux drapeaux, le sélecteur proposerait deux entrées à un candidat
+ * autrichien, et `perimetreDeRecherche` devrait choisir. Le témoin « aucun pays n'appartient à
+ * deux marchés » (`apps/api/lib/__tests__/contrat-marches.test.ts`) l'a attrapé, et il a raison.
+ *
+ * Détacher AT de DE et IE de GB est une DÉCISION PRODUIT — elle change ce que voit aujourd'hui un
+ * candidat autrichien sur le marché allemand — et elle appartient au CEO, pas à ce fichier. Les
+ * offres restent atteignables en attendant : elles sont servies par DE et GB.
+ */
+export const MARCHES_ROUTABLES = [
+  { code: 'JP', nom: '日本', localeNative: 'ja-JP', offresMesurees: 552 },
+  { code: 'KR', nom: '대한민국', localeNative: 'ko-KR', offresMesurees: 527 },
+  { code: 'PT', nom: 'Portugal', localeNative: 'pt-PT', offresMesurees: 525 },
+  { code: 'MX', nom: 'México', localeNative: 'es-MX', offresMesurees: 461 },
+  { code: 'SG', nom: 'Singapore', localeNative: 'en-SG', offresMesurees: 435 },
+  { code: 'DK', nom: 'Danmark', localeNative: 'da-DK', offresMesurees: 386 },
+  { code: 'HK', nom: '香港', localeNative: 'zh-HK', offresMesurees: 378 },
+  { code: 'PL', nom: 'Polska', localeNative: 'pl-PL', offresMesurees: 361 },
+  { code: 'SE', nom: 'Sverige', localeNative: 'sv-SE', offresMesurees: 328 },
+  { code: 'CL', nom: 'Chile', localeNative: 'es-CL', offresMesurees: 314 },
+  { code: 'TR', nom: 'Türkiye', localeNative: 'tr-TR', offresMesurees: 307 },
+  { code: 'TH', nom: 'ประเทศไทย', localeNative: 'th-TH', offresMesurees: 276 },
+  { code: 'MY', nom: 'Malaysia', localeNative: 'ms-MY', offresMesurees: 266 },
+  { code: 'AE', nom: 'الإمارات العربية المتحدة', localeNative: 'ar-AE', offresMesurees: 247 },
+  { code: 'NO', nom: 'Norge', localeNative: 'nb-NO', offresMesurees: 239 },
+  { code: 'TW', nom: '臺灣', localeNative: 'zh-TW', offresMesurees: 224 },
+  { code: 'BR', nom: 'Brasil', localeNative: 'pt-BR', offresMesurees: 201 },
+  { code: 'GR', nom: 'Ελλάδα', localeNative: 'el-GR', offresMesurees: 182 },
+  { code: 'ZA', nom: 'South Africa', localeNative: 'en-ZA', offresMesurees: 167 },
+  { code: 'VN', nom: 'Việt Nam', localeNative: 'vi-VN', offresMesurees: 163 },
+  { code: 'CZ', nom: 'Česko', localeNative: 'cs-CZ', offresMesurees: 158 },
+  { code: 'PE', nom: 'Perú', localeNative: 'es-PE', offresMesurees: 154 },
+  { code: 'NZ', nom: 'New Zealand', localeNative: 'en-NZ', offresMesurees: 153 },
+  { code: 'HU', nom: 'Magyarország', localeNative: 'hu-HU', offresMesurees: 123 },
+  { code: 'SA', nom: 'المملكة العربية السعودية', localeNative: 'ar-SA', offresMesurees: 114 },
+  { code: 'RO', nom: 'România', localeNative: 'ro-RO', offresMesurees: 107 },
+  { code: 'PR', nom: 'Puerto Rico', localeNative: 'es-PR', offresMesurees: 72 },
+  { code: 'PH', nom: 'Philippines', localeNative: 'en-PH', offresMesurees: 58 },
+  { code: 'LU', nom: 'Luxembourg', localeNative: 'fr-LU', offresMesurees: 55 },
+] as const;
+
+export const CODES_MARCHE = [
+  ...CODES_MARCHE_LOCALISES,
+  ...MARCHES_ROUTABLES.map((m) => m.code),
+] as const;
 export type CodeMarche = (typeof CODES_MARCHE)[number];
 
 /**
@@ -370,8 +464,43 @@ export type Marche = {
    * Distincte de la langue d'une annonce (`language.ts`) : un candidat français
    * qui visite l'Australie lit « Job type », même si son navigateur est en
    * français. C'est le marché qui impose sa langue, pas le visiteur.
+   *
+   * ⚠️ **Ce champ dit la locale NATIVE du marché, jamais un repli de traduction.**
+   * Un marché polonais a pour locale native `pl-PL`, même tant qu'aucun catalogue
+   * polonais n'existe. Écrire `localeParDefaut: 'en-GB'` sur la Pologne ferait de
+   * l'anglais britannique la langue DU MARCHÉ polonais — un mensonge qui se
+   * propagerait au `hreflang`, aux métadonnées et au sélecteur. Le repli se
+   * déclare dans `localisation`, jamais ici.
    */
   readonly localeParDefaut: string;
+  /**
+   * OÙ EN EST LA LOCALISATION DE CE MARCHÉ — et pourquoi ce champ existe.
+   *
+   * Ouvrir un marché et traduire une interface sont deux travaux INDÉPENDANTS.
+   * Mesuré le 2026-09-17 : 28 pays hors des seize marchés portent 6 606 offres,
+   * un corpus fiable et au moins trois facettes exploitables. Les faire attendre
+   * une traduction polonaise ou thaïe reviendrait à garder 6 606 offres
+   * inatteignables pour une raison qui n'a rien à voir avec leur qualité.
+   *
+   * `NATIVE`   — la locale native est servie, catalogue et libellés compris.
+   * `FALLBACK` — le marché est ouvert, son corpus et ses facettes sont servis,
+   *              mais l'interface emprunte `localeDeRepli` en attendant. La
+   *              locale native reste déclarée dans `localeParDefaut` : c'est la
+   *              cible, et elle ne se perd pas en route.
+   *
+   * Un marché `FALLBACK` n'est pas un marché au rabais : son corpus, son
+   * périmètre et ses facettes sont ceux du pays. Seuls les mots de l'interface
+   * viennent d'ailleurs, et ils le disent.
+   */
+  readonly localisation: 'NATIVE' | 'FALLBACK';
+  /**
+   * La locale empruntée tant que `localisation` vaut `FALLBACK` — et rien d'autre.
+   *
+   * Absente sur un marché `NATIVE` : un marché localisé n'emprunte rien. Le type
+   * ne l'interdit pas formellement, mais un témoin le garde (`contrat-marches`),
+   * parce qu'un repli déclaré sur un marché natif finirait par être servi.
+   */
+  readonly localeDeRepli?: string;
   /** Les facettes propres au site exposées sur ce marché, dans l'ordre du contrat. */
   readonly facettesSite: readonly CleFacetteSite[];
   /** Les libellés natifs des facettes du site, relevés dans la langue de service. */
@@ -411,7 +540,7 @@ export type Marche = {
  * 0.172, parce que c'est ce chiffre-là qui décide que la Suisse n'expose pas de
  * facette de contrat, et qu'un arrondi à 0.2 inverserait la décision.
  */
-export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
+const MARCHES_LOCALISES: Readonly<Record<(typeof CODES_MARCHE_LOCALISES)[number], Marche>> = {
   /**
    * ÉTATS-UNIS — le plus gros marché, et celui SANS facette de contrat.
    *
@@ -452,6 +581,8 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
      */
     locales: ['en-US', 'es-US'],
     localeParDefaut: 'en-US',
+    /** Localisé : catalogue d'interface, libellés de facettes et vocabulaire d'emploi dans sa langue. */
+    localisation: 'NATIVE',
     facettesSite: ['secteur', 'ville', 'maison', 'groupe', 'langue'],
     libellesSite: { pays: 'Country', secteur: 'Sector', ville: 'City', maison: 'Maison', groupe: 'Group', langue: 'Language' },
     libelles: { temps: 'Job type', metier: 'Job category' },
@@ -485,6 +616,8 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
     pays: ['FR'],
     locales: ['fr-FR'],
     localeParDefaut: 'fr-FR',
+    /** Localisé : catalogue d'interface, libellés de facettes et vocabulaire d'emploi dans sa langue. */
+    localisation: 'NATIVE',
     facettesSite: ['secteur', 'ville', 'maison', 'groupe', 'langue'],
     libellesSite: { pays: 'Pays', secteur: 'Secteur', ville: 'Ville', maison: 'Maison', groupe: 'Groupe', langue: 'Langue' },
     libelles: {
@@ -520,6 +653,8 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
     pays: ['GB', 'IE'],
     locales: ['en-GB'],
     localeParDefaut: 'en-GB',
+    /** Localisé : catalogue d'interface, libellés de facettes et vocabulaire d'emploi dans sa langue. */
+    localisation: 'NATIVE',
     /** `pays` : le périmètre couvre deux pays, le candidat peut s'y restreindre. */
     facettesSite: ['secteur', 'ville', 'maison', 'groupe', 'langue', 'pays'],
     libellesSite: { pays: 'Country', secteur: 'Sector', ville: 'City', maison: 'Maison', groupe: 'Group', langue: 'Language' },
@@ -565,6 +700,8 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
      */
     locales: ['en-CA', 'fr-CA'],
     localeParDefaut: 'en-CA',
+    /** Localisé : catalogue d'interface, libellés de facettes et vocabulaire d'emploi dans sa langue. */
+    localisation: 'NATIVE',
     /** `pays` : un marché où le candidat filtre utilement par territoire. */
     facettesSite: ['secteur', 'ville', 'maison', 'groupe', 'langue', 'pays'],
     libellesSite: { pays: 'Pays', secteur: 'Secteur', ville: 'Ville', maison: 'Maison', groupe: 'Groupe', langue: 'Langue' },
@@ -609,6 +746,8 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
     pays: ['DE', 'AT'],
     locales: ['de-DE'],
     localeParDefaut: 'de-DE',
+    /** Localisé : catalogue d'interface, libellés de facettes et vocabulaire d'emploi dans sa langue. */
+    localisation: 'NATIVE',
     /** `pays` : le périmètre couvre deux pays, le candidat peut s'y restreindre. */
     facettesSite: ['secteur', 'ville', 'maison', 'groupe', 'langue', 'pays'],
     libellesSite: { pays: 'Land', secteur: 'Branche', ville: 'Stadt', maison: 'Haus', groupe: 'Gruppe', langue: 'Sprache' },
@@ -639,6 +778,8 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
     pays: ['IT'],
     locales: ['it-IT'],
     localeParDefaut: 'it-IT',
+    /** Localisé : catalogue d'interface, libellés de facettes et vocabulaire d'emploi dans sa langue. */
+    localisation: 'NATIVE',
     facettesSite: ['secteur', 'ville', 'maison', 'groupe', 'langue'],
     libellesSite: { pays: 'Paese', secteur: 'Settore', ville: 'Città', maison: 'Maison', groupe: 'Gruppo', langue: 'Lingua' },
     libelles: {
@@ -663,6 +804,8 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
     pays: ['ES'],
     locales: ['es-ES'],
     localeParDefaut: 'es-ES',
+    /** Localisé : catalogue d'interface, libellés de facettes et vocabulaire d'emploi dans sa langue. */
+    localisation: 'NATIVE',
     facettesSite: ['secteur', 'ville', 'maison', 'groupe', 'langue'],
     libellesSite: { pays: 'País', secteur: 'Sector', ville: 'Ciudad', maison: 'Maison', groupe: 'Grupo', langue: 'Idioma' },
     libelles: {
@@ -710,6 +853,8 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
      */
     locales: ['nl-NL'],
     localeParDefaut: 'nl-NL',
+    /** Localisé : catalogue d'interface, libellés de facettes et vocabulaire d'emploi dans sa langue. */
+    localisation: 'NATIVE',
     facettesSite: ['secteur', 'ville', 'maison', 'groupe', 'langue'],
     libellesSite: { pays: 'Land', secteur: 'Sector', ville: 'Stad', maison: 'Maison', groupe: 'Groep', langue: 'Taal' },
     libelles: {
@@ -748,6 +893,8 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
     pays: ['AU'],
     locales: ['en-AU'],
     localeParDefaut: 'en-AU',
+    /** Localisé : catalogue d'interface, libellés de facettes et vocabulaire d'emploi dans sa langue. */
+    localisation: 'NATIVE',
     facettesSite: ['secteur', 'ville', 'maison', 'groupe', 'langue'],
     libellesSite: { pays: 'Country', secteur: 'Sector', ville: 'City', maison: 'Maison', groupe: 'Group', langue: 'Language' },
     libelles: {
@@ -811,6 +958,8 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
     pays: ['CH'],
     locales: ['fr-CH', 'de-CH', 'it-CH'],
     localeParDefaut: 'fr-CH',
+    /** Localisé : catalogue d'interface, libellés de facettes et vocabulaire d'emploi dans sa langue. */
+    localisation: 'NATIVE',
     facettesSite: ['secteur', 'ville', 'maison', 'groupe', 'langue'],
     libellesSite: { pays: 'Pays', secteur: 'Secteur', ville: 'Ville', maison: 'Maison', groupe: 'Groupe', langue: 'Langue' },
     libelles: {
@@ -908,6 +1057,8 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
      */
     locales: ['fr-BE', 'nl-BE', 'de-BE', 'en-BE'],
     localeParDefaut: 'fr-BE',
+    /** Localisé : catalogue d'interface, libellés de facettes et vocabulaire d'emploi dans sa langue. */
+    localisation: 'NATIVE',
     /** `pays` : un marché où le candidat filtre utilement par territoire. */
     facettesSite: ['secteur', 'ville', 'maison', 'groupe', 'langue', 'pays'],
     libellesSite: {
@@ -1063,6 +1214,8 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
     pays: ['CN'],
     locales: ['zh-CN'],
     localeParDefaut: 'zh-CN',
+    /** Localisé : catalogue d'interface, libellés de facettes et vocabulaire d'emploi dans sa langue. */
+    localisation: 'NATIVE',
     /** `langue` compte plus ici qu'ailleurs : un tiers du catalogue chinois est anglophone. */
     facettesSite: ['secteur', 'ville', 'maison', 'groupe', 'langue'],
     libellesSite: { pays: '国家', secteur: '行业', ville: '城市', maison: '品牌', groupe: '集团', langue: '语言' },
@@ -1084,6 +1237,175 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
     },
   },
 };
+
+/* ────────────────────────────────────────────────────────────────────────────────────────────
+ * LES MARCHÉS ROUTABLES — ouvrir un pays sans attendre sa traduction.
+ * ──────────────────────────────────────────────────────────────────────────────────────────── */
+
+/**
+ * LA FABRIQUE D'UN MARCHÉ EN REPLI DE LOCALISATION.
+ *
+ * ── LE PROBLÈME QU'ELLE RÉSOUT ────────────────────────────────────────────────────────────────
+ *
+ * Un marché localisé coûte **27 lignes** dans la table ci-dessus, dont deux blocs de libellés
+ * qu'il faut faire traduire par un locuteur du marché. C'est le prix juste pour un marché servi
+ * dans sa langue — et un prix absurde pour ouvrir un pays dont on a déjà le corpus.
+ *
+ * Mesuré le 2026-09-17 (`audits/mesures-d435-d436/marches-routables-2026-09-17.mts`) : 28 pays
+ * hors des seize travaillés portent **6 606 offres**, un corpus fiable et au moins trois facettes
+ * exploitables. Les faire attendre une traduction polonaise, thaïe ou vietnamienne garderait ces
+ * offres inatteignables pour une raison étrangère à leur qualité.
+ *
+ * ── CE QU'ELLE PRÉSERVE, ET C'EST LE POINT ────────────────────────────────────────────────────
+ *
+ * `localeParDefaut` porte la locale **NATIVE** du marché — `pl-PL` pour la Pologne — même quand
+ * aucun catalogue polonais n'existe. Le repli vit dans `localeDeRepli`, séparément.
+ *
+ * Écrire `localeParDefaut: 'en-GB'` sur la Pologne aurait été plus court et faux : le registre
+ * aurait déclaré que l'anglais britannique EST la langue du marché polonais, et ce mensonge se
+ * serait propagé au `hreflang`, aux métadonnées et au sélecteur. La cible ne se perd pas en route ;
+ * le jour où le catalogue polonais existe, `localisation` passe à `NATIVE` et le repli disparaît.
+ *
+ * ── LES FACETTES, ET POURQUOI ELLES NE SONT PAS VIDES ─────────────────────────────────────────
+ *
+ * Un marché en repli sert les MÊMES facettes que n'importe quel pays sans registre :
+ * `facettesContrat` les libelle alors avec `LIBELLES_GENERIQUES`, dans la langue du dépôt. Le
+ * candidat polonais filtre donc par métier et par ville comme un candidat français — seuls les
+ * mots du menu viennent d'ailleurs, et `localisation: 'FALLBACK'` le dit.
+ *
+ * Aucune couverture n'est recopiée ici : elle se mesure, et la recopier figerait un chiffre qui
+ * dérive. Un marché en repli n'expose donc pas de facette de dimension tant qu'il n'est pas
+ * mesuré — c'est conservateur, et c'est voulu.
+ */
+/**
+ * Les libellés servis hors marché mesuré : le français source, la langue de ce
+ * dépôt. Un pays sans registre lit ses facettes en français tant que son marché
+ * n'est pas ouvert ; l'ouvrir relève d'une décision, pas d'une traduction.
+ *
+ * ⚠️ DÉCLARÉE ICI, AVANT `marcheEnRepli`, ET L'ORDRE EST UNE CONTRAINTE D'EXÉCUTION.
+ *
+ * Elle vivait plus bas, près de `facettesContrat` qui la consomme. Depuis que `MARCHES` construit
+ * les marchés routables À L'INITIALISATION DU MODULE, `marcheEnRepli` la lit avant sa déclaration
+ * et le `const` lève `ReferenceError: Cannot access 'LIBELLES_GENERIQUES' before initialization` —
+ * au CHARGEMENT, donc sur tout ce qui importe ce module.
+ *
+ * Le typecheck ne voit rien : c'est un ordre d'évaluation, pas un type. Seule l'exécution l'a
+ * montré. Ne pas la redescendre.
+ */
+export const LIBELLES_GENERIQUES: Readonly<Record<CleFacette, string>> = {
+  pays: 'Pays',
+  metier: 'Métier',
+  secteur: 'Secteur',
+  contrat: 'Type de contrat',
+  temps: 'Temps de travail',
+  programme: 'Type de programme',
+  ville: 'Ville',
+  maison: 'Maison',
+  groupe: 'Groupe',
+  langue: 'Langue',
+};
+
+export function marcheEnRepli(params: {
+  code: string;
+  nom: string;
+  localeNative: string;
+  localeDeRepli?: string;
+  offresMesurees: number;
+}): Marche {
+  const repli = params.localeDeRepli ?? 'en-GB';
+  return {
+    code: params.code as CodeMarche,
+    nom: params.nom,
+    pays: [params.code],
+    /*
+     * `locales` NE CONTIENT QUE LA LOCALE NATIVE, et c'est un correctif, pas une omission.
+     *
+     * La première version y ajoutait la locale de repli — `['pl-PL', 'en-GB']`. Le témoin
+     * « aucune locale n'emprunte le pays d'un autre marché » (`contrat-marches.test.ts`) l'a
+     * attrapée, et il avait raison : `en-GB` dans les locales de la Pologne, c'est exactement
+     * `en-GB` servi en Belgique — l'emprunt que D-436 a supprimé le 17/09 en le remplaçant par
+     * `en-BE`. `locales` déclare ce que le marché SERT dans sa propre langue ; y glisser la
+     * locale d'un autre pays remélange les deux axes que la décision sépare.
+     *
+     * Le repli vit dans `localeDeRepli`, et là seulement. Un consommateur qui a besoin de savoir
+     * ce que le visiteur lira AUJOURD'HUI lit `localisation === 'FALLBACK'` puis `localeDeRepli` :
+     * deux champs explicites valent mieux qu'une liste où les deux natures se confondent.
+     */
+    locales: [params.localeNative],
+    localeParDefaut: params.localeNative,
+    localisation: 'FALLBACK',
+    localeDeRepli: repli,
+    /* Les facettes de site sont celles de tout marché ; leurs libellés viennent du générique. */
+    facettesSite: ['secteur', 'ville', 'maison', 'groupe', 'langue'],
+    libellesSite: {
+      pays: LIBELLES_GENERIQUES.pays, secteur: LIBELLES_GENERIQUES.secteur, ville: LIBELLES_GENERIQUES.ville,
+      maison: LIBELLES_GENERIQUES.maison, groupe: LIBELLES_GENERIQUES.groupe, langue: LIBELLES_GENERIQUES.langue,
+    },
+    libelles: {},
+    offresMesurees: params.offresMesurees,
+    /*
+     * Zéro sur TOUTES les dimensions, dérivé de `DIMENSIONS_FACETTE` et non recopié : une liste
+     * saisie à la main ici dériverait le jour où une dimension entre ou sort, et le compilateur
+     * ne le dirait qu'à l'ajout, jamais au retrait.
+     *
+     * Zéro n'est pas une couverture mesurée à zéro : c'est l'ABSENCE de mesure, et elle a la
+     * conséquence voulue — aucune facette de dimension n'est exposée tant qu'un marché en repli
+     * n'est pas mesuré. Conservateur, et non un défaut à corriger.
+     */
+    couverture: Object.fromEntries(DIMENSIONS_FACETTE.map((d) => [d, 0])) as CouvertureMesuree,
+  };
+}
+
+/**
+ * LE REGISTRE COMPLET — les douze marchés localisés, plus les trente et un routables.
+ *
+ * Les deux moitiés ne sont pas interchangeables et la distinction se lit dans `localisation` :
+ * `NATIVE` pour un marché dont l'interface, les libellés de facettes et le vocabulaire d'emploi
+ * existent dans sa langue ; `FALLBACK` pour un marché dont le CORPUS est prêt mais dont
+ * l'interface emprunte l'anglais en attendant. Sa locale native, elle, est déjà déclarée.
+ *
+ * Un marché routable ne se saisit pas à la main : `MARCHES_ROUTABLES` porte trois champs par
+ * pays et `marcheEnRepli` construit le reste. Ajouter la Bulgarie, le jour où son volume le
+ * justifie, coûte UNE ligne de données — pas vingt-sept lignes de registre.
+ *
+ * L'ordre de la fusion compte : un code présent dans les deux moitiés serait servi par la
+ * version LOCALISÉE, parce qu'un marché traduit ne doit jamais régresser en repli. Le témoin
+ * `marches-routables` vérifie qu'aucun code n'est effectivement en double.
+ */
+export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
+  ...Object.fromEntries(
+    MARCHES_ROUTABLES.map((m) => [
+      m.code,
+      marcheEnRepli({ code: m.code, nom: m.nom, localeNative: m.localeNative, offresMesurees: m.offresMesurees }),
+    ]),
+  ),
+  ...MARCHES_LOCALISES,
+} as Readonly<Record<CodeMarche, Marche>>;
+
+/**
+ * LA LOCALE QUE LE VISITEUR LIT AUJOURD'HUI — et pas celle que le marché vise.
+ *
+ * ── LES DEUX QUESTIONS QUE CE MODULE NE DOIT PAS CONFONDRE ────────────────────────────────────
+ *
+ *  · « Quelle est la langue de ce marché ? » → `localeParDefaut`. Pour la Pologne, `pl-PL`.
+ *    C'est la CIBLE, elle part dans le `hreflang`, les métadonnées et le sélecteur.
+ *  · « Dans quelle langue dois-je rendre cette page MAINTENANT ? » → cette fonction. Pour la
+ *    Pologne, `en-GB`, tant qu'aucun catalogue polonais n'existe.
+ *
+ * ── LE DÉFAUT QU'ELLE FERME, MESURÉ LE 17/09/2026 ─────────────────────────────────────────────
+ *
+ * Sans elle, `langueDesLibelles(marche.localeParDefaut)` reçoit `pl-PL`, ne trouve pas `pl` dans
+ * `LANGUES_LIBELLES` (qui ne contient que `fr` et `en`) et retombe sur **`fr`**. Un visiteur
+ * polonais aurait donc lu ses libellés d'offres en FRANÇAIS, alors que le repli décidé est
+ * l'anglais — et ce défaut aurait touché les vingt-neuf marchés routables d'un coup.
+ *
+ * Le registre portait bien `localeDeRepli`, mais AUCUN code ne le lisait : une garantie sans
+ * appelant n'est pas une garantie. C'est cette fonction qui la rend réelle.
+ */
+export function localeServie(m: Marche | undefined): string | undefined {
+  if (!m) return undefined;
+  return m.localisation === 'FALLBACK' ? (m.localeDeRepli ?? m.localeParDefaut) : m.localeParDefaut;
+}
 
 /** Le marché existe-t-il dans le registre ? Sert de garde avant tout accès. */
 export function estCodeMarche(code: string): code is CodeMarche {
@@ -1180,24 +1502,6 @@ export function perimetreDeRecherche(code: string | undefined, paysConnus: Reado
   if (!/^[A-Z]{2}$/.test(normalise) || !paysConnus.has(normalise)) return undefined;
   return { code: normalise, pays: [normalise], marche: undefined };
 }
-
-/**
- * Les libellés servis hors marché mesuré : le français source, la langue de ce
- * dépôt. Un pays sans registre lit ses facettes en français tant que son marché
- * n'est pas ouvert ; l'ouvrir relève d'une décision, pas d'une traduction.
- */
-export const LIBELLES_GENERIQUES: Readonly<Record<CleFacette, string>> = {
-  pays: 'Pays',
-  metier: 'Métier',
-  secteur: 'Secteur',
-  contrat: 'Type de contrat',
-  temps: 'Temps de travail',
-  programme: 'Type de programme',
-  ville: 'Ville',
-  maison: 'Maison',
-  groupe: 'Groupe',
-  langue: 'Langue',
-};
 
 /** Une facette du contrat : sa clé d'URL et son libellé, dans l'ordre d'affichage. */
 export type FacetteContrat = { readonly cle: CleFacette; readonly libelle: string };

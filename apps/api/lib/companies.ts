@@ -2,7 +2,7 @@ import { getSectorPresentation, sectorWhere } from './sectors';
 import { companyIdentityWhere } from './company-identity';
 import { prisma } from '@catwalks/db';
 import { publicJobWhere } from '@catwalks/db/availability';
-import { facettesContrat, type Perimetre } from '@catwalks/db/marches';
+import { facettesContrat, localeServie, type Perimetre } from '@catwalks/db/marches';
 import { Prisma } from '@prisma/client';
 import { DatabaseUnavailableError, MAX_VALUES, perimetreServi, type PerimetreServi } from './jobs';
 import { CURSEUR_MAX, CurseurInvalideError, decoderCurseur, empreinteCriteres, encoderCurseur } from './curseur';
@@ -310,7 +310,9 @@ async function queryCompanies(filters: CompanyFilters, perimetre: Perimetre): Pr
   }
   const nomsPays = (() => {
     try {
-      return new Intl.DisplayNames([perimetre.marche?.localeParDefaut ?? 'fr-FR'], { type: 'region', fallback: 'none' });
+      // La locale SERVIE, pas la locale cible : un marché en repli rend sa page en anglais, noms
+      // de pays compris. Voir `localeServie` dans le registre.
+      return new Intl.DisplayNames([localeServie(perimetre.marche) ?? 'fr-FR'], { type: 'region', fallback: 'none' });
     } catch {
       return null;
     }

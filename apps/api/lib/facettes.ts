@@ -1,5 +1,5 @@
 import { employmentLabel, langueDesLibelles } from '@catwalks/db/presentation';
-import type { CleFacette } from '@catwalks/db/marches';
+import { localeServie, type CleFacette } from '@catwalks/db/marches';
 import type { Facet } from './job-search-query';
 import { getSectorPresentation } from './sectors';
 import type { OptionalOccupationPresentation } from './occupations';
@@ -59,7 +59,15 @@ export async function libellerFacettes(
   brutes: Record<CleFacette, Facet[]>,
   taxonomy: OptionalOccupationPresentation,
 ): Promise<FacetteServie[]> {
-  const locale = plan.perimetre.marche?.localeParDefaut ?? 'fr-FR';
+  /*
+   * LA LOCALE SERVIE, PAS LA LOCALE CIBLE — voir `localeServie` dans le registre.
+   *
+   * Un marché en repli (`pl-PL` visé, `en-GB` servi) doit rendre TOUTE sa page dans la même
+   * langue. Lire `localeParDefaut` ici produirait un mélange : `Intl` sait nommer les pays en
+   * polonais, mais `employmentLabel` n'a pas de catalogue `pl` et retomberait sur le français —
+   * une même barre de filtres moitié polonaise, moitié française.
+   */
+  const locale = localeServie(plan.perimetre.marche) ?? 'fr-FR';
   const langue = langueDesLibelles(locale);
   const pays = nomsIntl(locale, 'region');
   const langues = nomsIntl(locale, 'language');

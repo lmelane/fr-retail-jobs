@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
-  CLES_FACETTE, CODES_MARCHE, CONTRAT_RECHERCHE_VERSION, DIMENSION_PAR_CLE, LIBELLES_GENERIQUES, MARCHES,
+  CLES_FACETTE, CODES_MARCHE, CODES_MARCHE_LOCALISES, CONTRAT_RECHERCHE_VERSION, DIMENSION_PAR_CLE,
+  LIBELLES_GENERIQUES, MARCHES, MARCHES_ROUTABLES,
   facettesContrat, facettesDuMarche, perimetreDeRecherche,
 } from '@catwalks/db/marches';
 
@@ -11,9 +12,19 @@ import {
  * registre cesse de porter l'une de ces promesses.
  */
 describe('le registre décrit chaque marché en entier', () => {
-  it('PRÉMISSE : douze marchés, sans doublon, version de contrat posée', () => {
-    expect(CODES_MARCHE).toHaveLength(12);
-    expect(new Set(CODES_MARCHE).size).toBe(12);
+  /**
+   * ⚠️ LE NOMBRE A CHANGÉ LE 17/09/2026, ET IL SE LIT EN DEUX MOITIÉS.
+   *
+   * Douze marchés LOCALISÉS (interface, libellés et vocabulaire dans leur langue) et vingt-neuf
+   * marchés ROUTABLES (corpus mesuré, interface anglaise en repli, locale native déjà déclarée).
+   * Les deux ouvertures sont des décisions différentes : un seul total les confondrait, et une
+   * traduction supprimée pourrait être compensée par un pays ouvert sans que rien ne rougisse.
+   */
+  it('PRÉMISSE : quarante et un marchés, sans doublon, version de contrat posée', () => {
+    expect(CODES_MARCHE_LOCALISES).toHaveLength(12);
+    expect(MARCHES_ROUTABLES).toHaveLength(29);
+    expect(CODES_MARCHE).toHaveLength(41);
+    expect(new Set(CODES_MARCHE).size, 'aucun code déclaré deux fois').toBe(41);
     expect(CONTRAT_RECHERCHE_VERSION).toBe(1);
   });
 
@@ -110,13 +121,13 @@ describe('le registre décrit chaque marché en entier', () => {
   });
 
   it('un périmètre hors registre n’existe que pour un pays connu, et sans dimension mesurée', () => {
-    const connus = new Set(['JP', 'FR']);
-    expect(perimetreDeRecherche('JP', connus)).toEqual({ code: 'JP', pays: ['JP'], marche: undefined });
-    expect(perimetreDeRecherche('jp', connus)?.code).toBe('JP');
+    const connus = new Set(['BG', 'FR']);
+    expect(perimetreDeRecherche('BG', connus)).toEqual({ code: 'BG', pays: ['BG'], marche: undefined });
+    expect(perimetreDeRecherche('bg', connus)?.code).toBe('BG');
     expect(perimetreDeRecherche('XQ', connus)).toBeUndefined();
     expect(perimetreDeRecherche('', connus)).toBeUndefined();
     expect(perimetreDeRecherche(undefined, connus)).toBeUndefined();
     expect(perimetreDeRecherche(42 as unknown as string, connus)).toBeUndefined();
-    expect(facettesContrat(perimetreDeRecherche('JP', connus)!).map((f) => f.cle)).toEqual(['secteur', 'ville', 'maison', 'groupe', 'langue']);
+    expect(facettesContrat(perimetreDeRecherche('BG', connus)!).map((f) => f.cle)).toEqual(['secteur', 'ville', 'maison', 'groupe', 'langue']);
   });
 });

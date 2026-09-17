@@ -3,7 +3,7 @@ import { publicAmount } from '@catwalks/db/money';
 import { availableSourceWhere, publicJobWhere, publicJobSql, sourceIsAvailable } from '@catwalks/db/availability';
 import { selectApplySource, type ApplySource } from '@catwalks/db/publications';
 import { publicSourceFacts, scalarSourceFacts, type PublicSourceFacts } from '@catwalks/db/source-facts';
-import { MARCHES, type Perimetre } from '@catwalks/db/marches';
+import { MARCHES, localeServie, type Perimetre } from '@catwalks/db/marches';
 import { langueDesLibelles, type LangueLibelles } from '@catwalks/db/presentation';
 import { getOptionalOccupationPresentation, type OptionalOccupationPresentation } from './occupations';
 import { prisma, Prisma, canonicalJobId } from '@catwalks/db';
@@ -262,7 +262,18 @@ export function perimetreServi(perimetre: Perimetre): PerimetreServi {
     mesure: m !== undefined,
     locales: m ? [...m.locales] : ['fr-FR'],
     localeParDefaut: m?.localeParDefaut ?? 'fr-FR',
-    langueDesLibelles: langueDesLibelles(m?.localeParDefaut),
+    /*
+     * LA LANGUE DES LIBELLÉS SUIT LA LOCALE SERVIE, PAS LA LOCALE CIBLE.
+     *
+     * `localeParDefaut` porte la locale NATIVE du marché — `pl-PL` pour la Pologne — et c'est
+     * volontaire : elle part dans le `hreflang` et le sélecteur. Mais la lire ici ferait
+     * retomber `langueDesLibelles` sur `fr`, faute de catalogue polonais : le visiteur polonais
+     * aurait lu ses libellés en FRANÇAIS, alors que le repli décidé est l'anglais.
+     *
+     * `localeServie` répond à l'autre question — dans quelle langue rendre MAINTENANT — et rend
+     * `en-GB` tant que `localisation` vaut `FALLBACK`.
+     */
+    langueDesLibelles: langueDesLibelles(localeServie(m)),
   };
 }
 
@@ -275,7 +286,9 @@ export function langueDesLibellesDuPays(countryCode: string | null | undefined):
   const code = countryCode?.trim().toUpperCase();
   if (!code) return 'fr';
   const marche = Object.values(MARCHES).find((m) => m.pays.includes(code));
-  return langueDesLibelles(marche?.localeParDefaut ?? resoudrePerimetre(code)?.marche?.localeParDefaut);
+  // Même règle qu'au-dessus : la locale SERVIE, jamais la locale cible — sinon un marché en
+  // repli retombe sur le français faute de catalogue dans sa langue native.
+  return langueDesLibelles(localeServie(marche) ?? localeServie(resoudrePerimetre(code)?.marche));
 }
 
 /** Seuls http et https sont des liens de candidature ; tout le reste est neutralisé. */
