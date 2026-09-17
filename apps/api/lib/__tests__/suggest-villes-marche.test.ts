@@ -53,7 +53,7 @@ const SEMIS: readonly Semis[] = [
   { ville: 'Panjin', pays: 'CN', n: 6 },
   { ville: 'Paal', pays: 'BE', n: 7 },
   { ville: 'Paderborn', pays: 'AT', n: 2 },
-  { ville: 'Pakko', pays: 'JP', n: 2 },
+  { ville: 'Pakko', pays: 'BG', n: 2 },
   { ville: 'Levallois', pays: null, n: 3 },
   { ville: 'Levallois', pays: 'FR', n: 1 },
   { ville: 'Bedford', pays: null, n: 3 },
@@ -172,10 +172,15 @@ describe.skipIf(!actif)('suggestCities — cloisonnement par périmètre', () =>
   });
 
   it('un pays sans marché mesuré est servi comme périmètre, jamais fondu dans le monde', async () => {
-    // Prémisse : JP n'est pas un marché du registre.
-    expect(estCodeMarche('JP')).toBe(false);
-    expect(await suggestCities('Pak', P('JP'))).toEqual(['Pakko']);
-    expect(await suggestCities('Pa', P('JP'))).toEqual(['Pakko']);
+    /*
+     * Prémisse : BG n'est pas un marché du registre. `JP` tenait ce rôle jusqu'au 17/09/2026 et
+     * il est devenu un marché routable (552 offres) — le témoin a rougi, ce qui est exactement
+     * son travail. La Bulgarie le remplace : 45 offres publiables, sous le seuil de 50 qui ouvre
+     * un marché, donc un code pays réel que le catalogue sert sans marché mesuré.
+     */
+    expect(estCodeMarche('BG')).toBe(false);
+    expect(await suggestCities('Pak', P('BG'))).toEqual(['Pakko']);
+    expect(await suggestCities('Pa', P('BG'))).toEqual(['Pakko']);
   });
 
   it.each([['CN', 'Panjin'], ['BE', 'Paal']] as const)(
