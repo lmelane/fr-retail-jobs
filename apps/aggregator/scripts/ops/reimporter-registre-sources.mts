@@ -138,11 +138,28 @@ async function main(): Promise<number> {
    */
   console.log(`\nÉCRITURE...`);
   let creees = 0;
-  let revisions = 0;
   await prisma.$transaction(
     async (tx) => {
       for (const s of sources) {
-        const cree = await tx.source.create({
+        /*
+         * LA RÉVISION N'EST PAS CRÉÉE ICI — LE TRIGGER S'EN CHARGE, ET C'EST VOULU.
+         *
+         * `Source_record_revision` (migration 20260916040000) se déclenche BEFORE INSERT : il
+         * construit le document de révision depuis les champs de la source, le hache en SHA-256,
+         * l'insère en version 1 et rattache `currentRevisionId`. C'est la garantie que la
+         * configuration native d'une source est toujours attestée — aucune source ne peut exister
+         * sans sa révision.
+         *
+         * Une première version de ce script créait AUSSI la révision, et la contrainte
+         * `(sourceId, version)` a rejeté le doublon : « Unique constraint failed ». Le bon geste
+         * n'est pas de contourner le trigger, c'est de le laisser faire son travail — la révision
+         * reconstruite est alors calculée sur les champs réellement restaurés, donc exacte par
+         * construction plutôt que recopiée.
+         *
+         * Conséquence assumée : les identifiants de révision changent. Ce sont des identifiants
+         * internes, régénérés, et rien n'y fait référence hors de `Source.currentRevisionId`.
+         */
+        await tx.source.create({
           data: {
             key: s.key, maison: s.maison, tenantKey: s.tenantKey!, kind: s.kind,
             careersDomain: s.careersDomain, jobUrlPattern: s.jobUrlPattern,
@@ -152,20 +169,6 @@ async function main(): Promise<number> {
           select: { id: true },
         });
         creees += 1;
-
-        if (s.revisionId && s.revisionConfig) {
-          const rev = await tx.sourceRevision.create({
-            data: {
-              id: s.revisionId, sourceId: cree.id, sourceKey: s.key,
-              version: s.revisionVersion ?? 1,
-              payload: s.revisionConfig as never,
-              payloadHash: s.revisionHash ?? '',
-            },
-            select: { id: true },
-          });
-          await tx.source.update({ where: { id: cree.id }, data: { currentRevisionId: rev.id } });
-          revisions += 1;
-        }
       }
     },
     { maxWait: 60_000, timeout: 900_000 },
@@ -185,7 +188,7 @@ async function main(): Promise<number> {
       FROM "Source" WHERE status='ACTIVE'`);
 
   console.log(`\n   sources créées    : ${creees}`);
-  console.log(`   révisions créées  : ${revisions}`);
+  console.log(`   révisions posées par le trigger : ${actives.rev}`);
   console.log(`   total en base     : ${apres.n}`);
   console.log(`\n   ACTIVE : ${actives.n} · avec révision : ${actives.rev} · avec config : ${actives.cfg}`);
 
