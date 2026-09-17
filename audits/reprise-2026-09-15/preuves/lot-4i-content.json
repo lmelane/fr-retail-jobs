@@ -1,0 +1,106 @@
+{
+  "readOnly": true,
+  "productionWrites": false,
+  "coverage": "JSON key census, not a proof of full content or publication identity",
+  "rows": [
+    {
+      "kind": "avature",
+      "publications": 2996,
+      "rawMissing": 913,
+      "topLevelBodyOrDetailKey": 0,
+      "nativeSummary": 0,
+      "nativeProfile": 0,
+      "retainedJsonLdDescription": 0
+    },
+    {
+      "kind": "bashtalents",
+      "publications": 66,
+      "rawMissing": 0,
+      "topLevelBodyOrDetailKey": 0,
+      "nativeSummary": 0,
+      "nativeProfile": 0,
+      "retainedJsonLdDescription": 0
+    },
+    {
+      "kind": "digitalrecruiters",
+      "publications": 808,
+      "rawMissing": 0,
+      "topLevelBodyOrDetailKey": 0,
+      "nativeSummary": 0,
+      "nativeProfile": 0,
+      "retainedJsonLdDescription": 0
+    },
+    {
+      "kind": "eightfold",
+      "publications": 2908,
+      "rawMissing": 93,
+      "topLevelBodyOrDetailKey": 0,
+      "nativeSummary": 0,
+      "nativeProfile": 0,
+      "retainedJsonLdDescription": 0
+    },
+    {
+      "kind": "eqwa",
+      "publications": 321,
+      "rawMissing": 0,
+      "topLevelBodyOrDetailKey": 0,
+      "nativeSummary": 0,
+      "nativeProfile": 0,
+      "retainedJsonLdDescription": 0
+    },
+    {
+      "kind": "smartrecruiters-whitelabel",
+      "publications": 6278,
+      "rawMissing": 16,
+      "topLevelBodyOrDetailKey": 0,
+      "nativeSummary": 0,
+      "nativeProfile": 0,
+      "retainedJsonLdDescription": 0
+    },
+    {
+      "kind": "successfactors",
+      "publications": 4480,
+      "rawMissing": 32,
+      "topLevelBodyOrDetailKey": 0,
+      "nativeSummary": 0,
+      "nativeProfile": 0,
+      "retainedJsonLdDescription": 0
+    },
+    {
+      "kind": "swatchgroup",
+      "publications": 307,
+      "rawMissing": 0,
+      "topLevelBodyOrDetailKey": 0,
+      "nativeSummary": 0,
+      "nativeProfile": 0,
+      "retainedJsonLdDescription": 0
+    },
+    {
+      "kind": "taleo",
+      "publications": 76,
+      "rawMissing": 0,
+      "topLevelBodyOrDetailKey": 0,
+      "nativeSummary": 0,
+      "nativeProfile": 0,
+      "retainedJsonLdDescription": 0
+    },
+    {
+      "kind": "wttj",
+      "publications": 811,
+      "rawMissing": 98,
+      "topLevelBodyOrDetailKey": 0,
+      "nativeSummary": 713,
+      "nativeProfile": 116,
+      "retainedJsonLdDescription": 0
+    },
+    {
+      "kind": "wttj-sector",
+      "publications": 2088,
+      "rawMissing": 114,
+      "topLevelBodyOrDetailKey": 0,
+      "nativeSummary": 1973,
+      "nativeProfile": 1045,
+      "retainedJsonLdDescription": 0
+    }
+  ]
+}

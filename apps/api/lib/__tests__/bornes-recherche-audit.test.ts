@@ -66,10 +66,20 @@ describe('bornes de la recherche (audit 14/09/2026)', () => {
      * exige une base, et ce témoin doit tourner partout, y compris là où les
      * tests de base s'auto-ignorent — c'est-à-dire là où le défaut est passé.
      */
+    // Le plan borne les termes (lot 6) ; depuis le lot 7, un terme est UNE condition : le texte indexé, OU une
+    // Maison résolue une fois en identifiants (`maisons_i`) — plus aucune clause par nom développé, donc plus
+    // de LIMIT à porter sur une requête d'alias.
+    const plan = readFileSync(join(process.cwd(), 'lib', 'search-plan.ts'), 'utf8');
+    expect(plan, 'le découpage de q doit être borné').toMatch(/MAX_TERMES\s*=\s*\d+/);
+    expect(plan, 'le slice doit être appliqué au découpage').toMatch(/split\(\/\\s\+\/\)[\s\S]{0,60}slice\(0,\s*MAX_TERMES\)/);
     const src = readFileSync(join(process.cwd(), 'lib', 'job-search-query.ts'), 'utf8');
-    expect(src, 'le découpage de q doit être borné').toMatch(/MAX_TERMES\s*=\s*\d+/);
-    expect(src, 'le slice doit être appliqué au découpage').toMatch(/split\(\/\\s\+\/\)[\s\S]{0,60}slice\(0,\s*MAX_TERMES\)/);
-    // Et la requête d'alias, qui multiplie les clauses par terme, est bornée.
-    expect(src, 'la requête alias doit porter un LIMIT').toMatch(/companyAliasSql\(term, 'contains'\)\} LIMIT \d+/);
+    expect(src, 'les Maisons d’un terme sont résolues en identifiants').toMatch(/AS MATERIALIZED \(\s*SELECT c\.id FROM "Company" c/);
+    // Lot 7 : le texte est un vecteur de mots (index GIN) ; les Maisons résolues restent un tableau d'identifiants (`= ANY`, index sur companyId).
+    expect(src, 'chaque terme lexical est une requête sur les mots OU sur les Maisons résolues, dans UNE condition plein texte').toMatch(/catwalks_requete_terme\(\$\{t\.brut\}, ARRAY\(SELECT id FROM \$\{t\.maisons\}\)\)/);
+    expect(src, 'les termes lexicaux sont ET entre eux dans la même requête').toMatch(/Prisma\.join\(lexicaux\.map\(requeteTerme\), ' && '\)/);
+    expect(src, 'les identifiants résolus sont un tableau, pas une sous-requête par ligne').toMatch(/j\."companyId" = ANY \(ARRAY\(SELECT id FROM \$\{t\.maisons\}\)\)/);
+    // Hors commentaires : le SQL ne compare plus que des colonnes normalisées, par `LIKE` ou par vecteur.
+    expect(src.replace(/\/\*[\s\S]*?\*\/|\/\/.*$/gm, ''), 'plus aucun ILIKE : les colonnes comparées sont normalisées dans la base').not.toMatch(/ILIKE/);
+    expect(src, 'plus de clause par nom développé').not.toMatch(/aliasNames|terms\.map\(\(t\) => Prisma\.sql`j\."searchText" ILIKE/);
   });
 });

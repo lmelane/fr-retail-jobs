@@ -150,29 +150,38 @@ describe("occupation resolution from real multilingual title shapes", () => {
     );
     expect(catalogue.queryOccupations("Client Consultant")).toEqual([]);
   });
+  /**
+   * L'exemple d'ajout doit porter sur un métier ABSENT du référentiel réel — ligne 173 ci-dessous vérifie
+   * précisément que le catalogue courant ne le classe pas. `optical-assistant` servait d'exemple ; il est
+   * devenu un vrai métier le 2026-09-14 (assistants de magasin d'optique chez Boots et Clarkson Eyecare),
+   * et le test s'est mis à échouer sur un doublon de clé — ce qui est le bon comportement.
+   *
+   * *Un exemple de test qui finit par exister pour de vrai n'est plus un exemple : il faut en choisir un
+   * autre, pas retirer le métier.*
+   */
   it("a new occupation and its labels/rules can be added as data alone", () => {
     const updated = structuredClone(seed) as any;
     updated.id = "data-only-test-release";
     updated.occupations.push({
-      key: "optical-assistant",
-      labels: { fr: "Assistant optique", en: "Optical assistant" },
+      key: "eyewear-workshop-technician",
+      labels: { fr: "Technicien atelier lunetterie", en: "Eyewear workshop technician" },
       family: "health-optical-services",
-      aliases: ["Optical Assistant"],
+      aliases: ["Eyewear Workshop Technician"],
     });
     updated.rules.push({
-      id: "optical-assistant-title",
-      occupation: "optical-assistant",
-      all: [{ field: "title", any: ["Optical Assistant"] }],
+      id: "eyewear-workshop-technician-title",
+      occupation: "eyewear-workshop-technician",
+      all: [{ field: "title", any: ["Eyewear Workshop Technician"] }],
       evidence:
         "Real previously unclassified production title; reviewed test of data-only addition.",
     });
     const next = compileOccupationManifest(updated);
-    expect(next.classify("Optical Assistant").occupationCode).toBe(
-      "optical-assistant",
+    expect(next.classify("Eyewear Workshop Technician").occupationCode).toBe(
+      "eyewear-workshop-technician",
     );
-    expect(catalogue.classify("Optical Assistant").occupationCode).toBeNull();
-    expect(next.queryOccupations("Assistant optique")).toEqual([
-      "optical-assistant",
+    expect(catalogue.classify("Eyewear Workshop Technician").occupationCode).toBeNull();
+    expect(next.queryOccupations("Technicien atelier lunetterie")).toEqual([
+      "eyewear-workshop-technician",
     ]);
   });
   it("rule order cannot choose between two conflicting occupations", () => {
@@ -203,9 +212,50 @@ it("separates hands-on beauty services from retail beauty advice", () => {
     const decision = catalogue.classify(title);
     expect(decision.jobFunction).toBe("beauty-services");
     expect(decision.occupationGroup).toBe("services");
-    expect(decision.isRetail).toBe(false);
   }
   const retail = catalogue.classify("Beauty Advisor");
   expect(retail.jobFunction).toBe("beauty-advisor");
-  expect(retail.isRetail).toBe(true);
+  expect(retail.occupationGroup).toBe("retail");
+});
+
+/**
+ * OPTIQUE ET PHARMACIE — le piège du mot isolé, mesuré en production le 2026-09-14.
+ *
+ * `Dispenser` est le titre le plus fréquent des offres non classées (217 chez Boots). Le réflexe est de
+ * l'attacher à l'optique — « dispensing optician », opticien-lunetier. **La mesure dit l'inverse : sur les
+ * 306 offres `Dispenser` / `Trainee Dispenser` / `Relief Dispenser`, 306 descriptions parlent de pharmacie
+ * et ZÉRO d'optique** (« you will be key member of our pharmacy team as you support the pharmacist »).
+ *
+ * Une règle écrite sur le mot seul aurait rangé 306 postes de préparateur en pharmacie dans l'optique.
+ * *Un mot n'est pas un métier : c'est la description qui tranche, et elle se lit avant d'écrire la règle.*
+ */
+describe("optique et pharmacie : le mot seul ne décide pas", () => {
+  it("« Dispenser » et ses variantes sont de la PHARMACIE, pas de l'optique", () => {
+    for (const titre of ["Dispenser", "Trainee Dispenser", "Relief Dispenser"]) {
+      expect(catalogue.classify(titre).occupationCode).toBe("pharmacy-support-worker");
+    }
+  });
+
+  it("l'optique reste distinguée par métier", () => {
+    expect(catalogue.classify("Dispensing Optician").occupationCode).toBe("dispensing-optician");
+    expect(catalogue.classify("Contact Lens Optician").occupationCode).toBe("dispensing-optician");
+    expect(catalogue.classify("Optometric Technician").occupationCode).toBe("optometrist");
+  });
+
+  it("l'assistant de magasin d'optique n'est ni opticien diplômé ni optométriste", () => {
+    for (const titre of ["Optical Assistant", "Retail Assistant (Opticians)"]) {
+      expect(catalogue.classify(titre).occupationCode).toBe("optical-assistant");
+    }
+  });
+
+  it("les deux métiers vivent dans le MÊME groupe — services spécialisés", () => {
+    /**
+     * Décision propriétaire du 2026-09-14 : classer optique ET pharmacie, sous la famille commune
+     * `health-optical-services` (« Santé, pharmacie et optique »), déjà présente au référentiel.
+     * `classify` expose le GROUPE (`services`) ; la famille se lit sur le métier lui-même.
+     */
+    for (const titre of ["Dispenser", "Optical Assistant", "Dispensing Optician"]) {
+      expect(catalogue.classify(titre).occupationGroup).toBe("services");
+    }
+  });
 });

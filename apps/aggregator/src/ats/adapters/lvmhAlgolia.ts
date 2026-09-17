@@ -1,4 +1,5 @@
 import { normalizeLanguage } from '../../normalize/language.js';
+import { lvmhExperienceYears } from '../../normalize/experience.js';
 import { fetchJson, fetchText } from '../../lib/http.js';
 import { htmlToPlainText } from '../../lib/html.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
@@ -68,16 +69,18 @@ type LvmhHit = {
   publicationTimestamp?: number;
   /** "EN", "FR", "ZH-HANS", "IT"… present on 5 490/5 490 hits (l2, 2026-09-06), never mapped before. */
   language?: string;
+  /**
+   * Le libellé D'AFFICHAGE de l'expérience, TRADUIT dans la langue de l'annonce
+   * (« Minimum 3 ans », « Mindestens 3 Jahre », « 3年以上 »… 25 valeurs mesurées
+   * en six langues). NON lu : voir `requiredExperienceFilter`.
+   */
+  requiredExperience?: string;
+  /**
+   * La forme CANONIQUE de l'expérience, indépendante de la langue — celle que
+   * le site utilise pour sa propre facette. 4 valeurs, 5 443 offres.
+   */
+  requiredExperienceFilter?: string;
 };
-
-/**
- * The hit's declared language as ISO-639-1: "ZH-HANS" → "zh", "EN" → "en".
- * "SP" is the index's own spelling of Spanish (11 hits) — not an ISO code.
- */
-/** @deprecated Conservé pour les témoins existants : délègue au module commun. */
-export function lvmhLanguage(raw?: string | null): string | undefined {
-  return normalizeLanguage(raw);
-}
 
 type AlgoliaResponse = {
   hits?: LvmhHit[];
@@ -125,7 +128,7 @@ async function query(key: string, filters: string, page: number): Promise<Algoli
   });
 }
 
-function toNormalized(hit: LvmhHit): NormalizedJob | null {
+export function parseLvmhHit(hit: LvmhHit): NormalizedJob | null {
   if (!hit.name) return null;
 
   // The site renders these four blocks in this order; a candidate reads them
@@ -144,8 +147,10 @@ function toNormalized(hit: LvmhHit): NormalizedJob | null {
     country: hit.country,
     contract: hit.contract,
     workingTime: hit.fullTimePartTime,
-    language: lvmhLanguage(hit.language),
+    language: normalizeLanguage(hit.language),
     department: hit.function,
+    // Lu depuis la forme canonique, jamais depuis le libellé traduit.
+    experienceYears: lvmhExperienceYears(hit.requiredExperienceFilter),
     // The Maison, not the group: "Sephora", not "LVMH".
     company: hit.maison,
     group: hit.businessGroup,
@@ -206,7 +211,7 @@ export async function fetchLvmhJobs(config: Record<string, unknown> = {}): Promi
     const hits = response.hits ?? [];
     let fresh = 0;
     for (const hit of hits) {
-      const job = toNormalized(hit);
+      const job = parseLvmhHit(hit);
       if (!job || seen.has(job.externalId)) continue;
       seen.add(job.externalId);
       jobs.push(job);

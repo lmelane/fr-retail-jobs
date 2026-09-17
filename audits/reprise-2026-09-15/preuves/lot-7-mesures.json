@@ -1,0 +1,517 @@
+{
+  "lot": 7,
+  "date": "2026-09-16",
+  "base": "clone du stock catwalks_rehearsal_20260915 (87 607 offres), PostgreSQL 18 en conteneur local, machine partagée",
+  "methode": "searchSummary (SQL de la recherche) avec le plan exact de getJobs ; une exécution froide puis cinq chaudes par cas ; p50 et max des chaudes ; curseur : trois pages ; concurrence : vingt recherches simultanées (mélange des treize cas)",
+  "etapes": {
+    "avant": {
+      "commit": "37ecc7c",
+      "description": "ILIKE brut, deux passes par terme, 52 clauses par groupe, pagination par décalage",
+      "cas": [
+        {
+          "cas": "FR sans critère",
+          "total": 10969,
+          "totalPerimetre": 10969,
+          "froidMs": 228,
+          "p50Ms": 71,
+          "maxMs": 76
+        },
+        {
+          "cas": "FR q=vendeur",
+          "total": 4067,
+          "totalPerimetre": 10969,
+          "froidMs": 364,
+          "p50Ms": 232,
+          "maxMs": 1798
+        },
+        {
+          "cas": "FR q=école",
+          "total": 1574,
+          "totalPerimetre": 10969,
+          "froidMs": 611,
+          "p50Ms": 278,
+          "maxMs": 561
+        },
+        {
+          "cas": "FR q=ecole",
+          "total": 400,
+          "totalPerimetre": 10969,
+          "froidMs": 520,
+          "p50Ms": 466,
+          "maxMs": 589
+        },
+        {
+          "cas": "FR q=Vendeur Conseil Luxe (3 termes)",
+          "total": 48,
+          "totalPerimetre": 10969,
+          "froidMs": 402,
+          "p50Ms": 273,
+          "maxMs": 279
+        },
+        {
+          "cas": "FR q=l'oréal (apostrophe)",
+          "total": 102,
+          "totalPerimetre": 10969,
+          "froidMs": 9132,
+          "p50Ms": 4530,
+          "maxMs": 4787
+        },
+        {
+          "cas": "FR q=LVMH (groupe)",
+          "total": 1408,
+          "totalPerimetre": 10969,
+          "froidMs": 12481,
+          "p50Ms": 12304,
+          "maxMs": 12484
+        },
+        {
+          "cas": "FR lieu=Paris",
+          "total": 3690,
+          "totalPerimetre": 10969,
+          "froidMs": 52,
+          "p50Ms": 57,
+          "maxMs": 62
+        },
+        {
+          "cas": "FR contrat+temps",
+          "total": 7557,
+          "totalPerimetre": 10969,
+          "froidMs": 61,
+          "p50Ms": 62,
+          "maxMs": 78
+        },
+        {
+          "cas": "US sans critère",
+          "total": 37409,
+          "totalPerimetre": 37409,
+          "froidMs": 855,
+          "p50Ms": 732,
+          "maxMs": 906
+        },
+        {
+          "cas": "US q=store manager",
+          "total": 19629,
+          "totalPerimetre": 37409,
+          "froidMs": 12081,
+          "p50Ms": 9104,
+          "maxMs": 9429
+        },
+        {
+          "cas": "CN q=销售 (sans espace)",
+          "total": 577,
+          "totalPerimetre": 1222,
+          "froidMs": 168,
+          "p50Ms": 59,
+          "maxMs": 67
+        },
+        {
+          "cas": "GB q=sales assistant lieu=London",
+          "total": 437,
+          "totalPerimetre": 3577,
+          "froidMs": 594,
+          "p50Ms": 299,
+          "maxMs": 311
+        }
+      ],
+      "accents": {
+        "ecole": 400,
+        "ecole_acc": 1574
+      },
+      "exempleSearchText": "Stage - Assistant(e) Communication et Evènements - L'École des Arts Joailliers Who are we?\n\nA High Jewelry Maison with a strong heritage who promotes exceptional know-how in an enchanting and creative environment. Our Ma"
+    },
+    "intermediaire": {
+      "description": "normalisation dans la base (migrations 20260916200000/200100), un terme une condition ILIKE, curseur — avant les vecteurs",
+      "cas": [
+        {
+          "cas": "FR sans critère",
+          "total": 10969,
+          "totalPerimetre": 10969,
+          "froidMs": 501,
+          "p50Ms": 219,
+          "maxMs": 321
+        },
+        {
+          "cas": "FR q=vendeur",
+          "total": 4067,
+          "totalPerimetre": 10969,
+          "froidMs": 1432,
+          "p50Ms": 649,
+          "maxMs": 675
+        },
+        {
+          "cas": "FR q=école",
+          "total": 1893,
+          "totalPerimetre": 10969,
+          "froidMs": 680,
+          "p50Ms": 658,
+          "maxMs": 676
+        },
+        {
+          "cas": "FR q=ecole",
+          "total": 1893,
+          "totalPerimetre": 10969,
+          "froidMs": 499,
+          "p50Ms": 513,
+          "maxMs": 521
+        },
+        {
+          "cas": "FR q=Vendeur Conseil Luxe (3 termes)",
+          "total": 48,
+          "totalPerimetre": 10969,
+          "froidMs": 652,
+          "p50Ms": 652,
+          "maxMs": 709
+        },
+        {
+          "cas": "FR q=l'oréal (apostrophe)",
+          "total": 102,
+          "totalPerimetre": 10969,
+          "froidMs": 572,
+          "p50Ms": 583,
+          "maxMs": 594
+        },
+        {
+          "cas": "FR q=LVMH (groupe)",
+          "total": 1406,
+          "totalPerimetre": 10969,
+          "froidMs": 671,
+          "p50Ms": 659,
+          "maxMs": 670
+        },
+        {
+          "cas": "FR lieu=Paris",
+          "total": 3690,
+          "totalPerimetre": 10969,
+          "froidMs": 105,
+          "p50Ms": 96,
+          "maxMs": 112
+        },
+        {
+          "cas": "FR contrat+temps",
+          "total": 7557,
+          "totalPerimetre": 10969,
+          "froidMs": 229,
+          "p50Ms": 235,
+          "maxMs": 242
+        },
+        {
+          "cas": "US sans critère",
+          "total": 37409,
+          "totalPerimetre": 37409,
+          "froidMs": 906,
+          "p50Ms": 451,
+          "maxMs": 784
+        },
+        {
+          "cas": "US q=store manager",
+          "total": 19629,
+          "totalPerimetre": 37409,
+          "froidMs": 5983,
+          "p50Ms": 5293,
+          "maxMs": 6008
+        },
+        {
+          "cas": "CN q=销售 (sans espace)",
+          "total": 577,
+          "totalPerimetre": 1222,
+          "froidMs": 108,
+          "p50Ms": 60,
+          "maxMs": 66
+        },
+        {
+          "cas": "GB q=sales assistant lieu=London",
+          "total": 437,
+          "totalPerimetre": 3577,
+          "froidMs": 495,
+          "p50Ms": 275,
+          "maxMs": 300
+        }
+      ],
+      "curseur": {
+        "pages": 3,
+        "ids": 75,
+        "suite": true
+      },
+      "concurrence": {
+        "requetes": 20,
+        "dureeTotaleMs": 15375,
+        "p50Ms": 5572,
+        "p95Ms": 15373,
+        "maxMs": 15373,
+        "erreurs": 0
+      }
+    },
+    "apres": {
+      "description": "vecteurs de mots (210000/210100), identités dans le vecteur (210200), plans personnalisés (210300)",
+      "cas": [
+        {
+          "cas": "FR sans critère",
+          "total": 10967,
+          "totalPerimetre": 10967,
+          "froidMs": 256,
+          "p50Ms": 86,
+          "maxMs": 90
+        },
+        {
+          "cas": "FR q=vendeur",
+          "total": 4054,
+          "totalPerimetre": 10967,
+          "froidMs": 128,
+          "p50Ms": 52,
+          "maxMs": 56
+        },
+        {
+          "cas": "FR q=école",
+          "total": 1890,
+          "totalPerimetre": 10967,
+          "froidMs": 34,
+          "p50Ms": 26,
+          "maxMs": 27
+        },
+        {
+          "cas": "FR q=ecole",
+          "total": 1890,
+          "totalPerimetre": 10967,
+          "froidMs": 26,
+          "p50Ms": 28,
+          "maxMs": 51
+        },
+        {
+          "cas": "FR q=Vendeur Conseil Luxe (3 termes)",
+          "total": 47,
+          "totalPerimetre": 10967,
+          "froidMs": 40,
+          "p50Ms": 36,
+          "maxMs": 36
+        },
+        {
+          "cas": "FR q=l'oréal (apostrophe)",
+          "total": 102,
+          "totalPerimetre": 10967,
+          "froidMs": 71,
+          "p50Ms": 37,
+          "maxMs": 38
+        },
+        {
+          "cas": "FR q=LVMH (groupe)",
+          "total": 1406,
+          "totalPerimetre": 10967,
+          "froidMs": 35,
+          "p50Ms": 29,
+          "maxMs": 30
+        },
+        {
+          "cas": "FR lieu=Paris",
+          "total": 3688,
+          "totalPerimetre": 10967,
+          "froidMs": 58,
+          "p50Ms": 63,
+          "maxMs": 75
+        },
+        {
+          "cas": "FR contrat+temps",
+          "total": 7555,
+          "totalPerimetre": 10967,
+          "froidMs": 93,
+          "p50Ms": 87,
+          "maxMs": 90
+        },
+        {
+          "cas": "US sans critère",
+          "total": 37404,
+          "totalPerimetre": 37404,
+          "froidMs": 478,
+          "p50Ms": 322,
+          "maxMs": 342
+        },
+        {
+          "cas": "US q=store manager",
+          "total": 19617,
+          "totalPerimetre": 37404,
+          "froidMs": 394,
+          "p50Ms": 208,
+          "maxMs": 212
+        },
+        {
+          "cas": "CN q=销售 (sans espace)",
+          "total": 577,
+          "totalPerimetre": 1222,
+          "froidMs": 160,
+          "p50Ms": 36,
+          "maxMs": 74
+        },
+        {
+          "cas": "GB q=sales assistant lieu=London",
+          "total": 437,
+          "totalPerimetre": 3577,
+          "froidMs": 165,
+          "p50Ms": 66,
+          "maxMs": 75
+        }
+      ],
+      "curseur": {
+        "pages": 3,
+        "ids": 75,
+        "suite": true
+      },
+      "concurrence": {
+        "requetes": 20,
+        "dureeTotaleMs": 1132,
+        "p50Ms": 633,
+        "p95Ms": 1095,
+        "maxMs": 1131,
+        "erreurs": 0
+      }
+    }
+  },
+  "objectifs": {
+    "p50FrMs": 250,
+    "p50UsMs": 500,
+    "maxChaudMs": 1000
+  },
+  "planGenerique": {
+    "methode": "PREPARE de la requête paramétrée telle que Prisma l’envoie, sept EXECUTE, EXPLAIN ANALYZE du premier et du septième (lot7-explain.py --generic)",
+    "avantMigration210300": {
+      "note": "journaux écrasés par la seconde campagne ; valeurs relevées à l’exécution",
+      "FR q=ecole": [
+        31.5,
+        299.4
+      ],
+      "FR q=école": [
+        24.5,
+        298.1
+      ],
+      "US q=store manager": [
+        610.5,
+        4796.2
+      ],
+      "US sans critère": [
+        414.3,
+        442.7
+      ],
+      "plan7e": "Index Scan using Job_isActive_countryCode_idx puis vecteur évalué ligne à ligne (3 886 ms sur US)"
+    },
+    "apresMigration210300": {
+      "FR q=ecole": [
+        30.642,
+        24.406
+      ],
+      "FR q=école": [
+        33.47,
+        24.685
+      ],
+      "US q=store manager": [
+        249.151,
+        216.351
+      ],
+      "US sans critère": [
+        422.764,
+        384.227
+      ]
+    }
+  },
+  "plansSql": {
+    "FR q=ecole": {
+      "executionMs": [
+        113.956
+      ],
+      "planningMs": [
+        35.309
+      ],
+      "gin": true,
+      "seqScanJob": false
+    },
+    "FR q=école": {
+      "executionMs": [
+        25.032
+      ],
+      "planningMs": [
+        10.41
+      ],
+      "gin": true,
+      "seqScanJob": false
+    },
+    "US q=store manager": {
+      "executionMs": [
+        1167.279
+      ],
+      "planningMs": [
+        9.599
+      ],
+      "gin": true,
+      "seqScanJob": false
+    },
+    "US sans critère": {
+      "executionMs": [
+        386.732
+      ],
+      "planningMs": [
+        24.16
+      ],
+      "gin": false,
+      "seqScanJob": true
+    }
+  },
+  "hypothesesMesurees": {
+    "ilikeContreLike": {
+      "requete": "US, deux termes, texte normalisé",
+      "ilikeMs": 5539,
+      "likeMs": 1929
+    },
+    "balayageTexteUs": {
+      "lignes": 38247,
+      "texteMo": 206,
+      "moyenneCaracteres": 5643
+    },
+    "indexTrigramme": {
+      "tailleMo": 479,
+      "partiel": "WHERE isActive",
+      "choisi": false
+    },
+    "vecteurSeul": {
+      "requete": "isActive AND countryCode = US AND searchVector @@ (store:* & manager:*)",
+      "lignes": 19525,
+      "ginMs": [
+        199.5,
+        28.0,
+        29.1,
+        24.7,
+        23.8
+      ]
+    },
+    "orSqlVecteurEtMaison": {
+      "note": "la forme (vecteur OU companyId) faisait choisir un balayage de Job avec @@ par ligne",
+      "ms": [
+        828,
+        635,
+        910
+      ]
+    },
+    "blocsDisque": {
+      "note": "après migration, premier passage US : 26 592 pages lues du disque, 613 ms ; à chaud 208 ms"
+    }
+  },
+  "migrations": {
+    "20260916200100_recherche_normalisee_reprise": {
+      "cloneS": 221
+    },
+    "20260916210100_recherche_vecteur_reprise": {
+      "cloneS": 168,
+      "echecInitial": "cannot CREATE INDEX \"Job\" because it has pending trigger events (déclencheur différé job_redirect_integrity après la reprise) — corrigé par SET CONSTRAINTS ALL IMMEDIATE, marqué annulé puis rejoué"
+    },
+    "20260916210200_recherche_vecteur_identites": {
+      "cloneS": 81
+    },
+    "20260916210300_recherche_plans_personnalises": {
+      "cloneS": 1
+    }
+  },
+  "tailles": {
+    "JobSearchVectorIdxMo": 97,
+    "JobTotalAvantMo": 2178,
+    "JobTotalApresMo": 1985,
+    "baseAvantMo": 7612,
+    "baseApresMo": 7419
+  },
+  "productionTouchee": false
+}

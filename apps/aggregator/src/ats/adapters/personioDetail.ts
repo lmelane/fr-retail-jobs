@@ -100,15 +100,35 @@ export function personioDetail(html: string, externalId: string) {
   if (matches.size !== 1) return { job: null, evidence: { ...baseEvidence,
     reason: matches.size ? 'CONFLICTING_JOB_MODELS' : 'NO_MATCHING_JOB_MODEL' } };
   const { job, settings } = [...matches.values()][0];
+  // Every flight text reference the model uses (labels, names, values) is resolved into the evidence, so the
+  // evidence alone rebuilds the detail (lot F3b); an unresolved reference is recorded, never guessed.
   const unresolved = new Set<string>();
   const resolvedText: Record<string, string> = {};
+  const note = (value: unknown) => {
+    if (typeof value !== 'string' || !/^\$[0-9a-f]+$/i.test(value)) return;
+    const text = records.texts.get(value.slice(1).toLowerCase());
+    if (text === undefined) unresolved.add(value); else resolvedText[value] = text;
+  };
+  if (Array.isArray(job.fields)) for (const field of job.fields) { note(field?.label ?? field?.name); note(field?.value); }
+  const evidence = { ...baseEvidence, position: job, careerSiteSettings: settings, resolvedText,
+    ...(unresolved.size ? { descriptionReadError: 'UNRESOLVED_FLIGHT_TEXT', unresolvedTextReferences: [...unresolved] } : {}) };
+  return { job: personioDetailFromEvidence(evidence), evidence };
+}
+
+export type PersonioDetailEvidence = { position?: unknown; careerSiteSettings?: unknown; resolvedText?: unknown; unresolvedTextReferences?: unknown };
+
+/** The detail read from retained evidence only: the same fields as the live read, from the same model and resolved texts. */
+export function personioDetailFromEvidence(evidence: PersonioDetailEvidence) {
+  const job = evidence.position as any; const settings = evidence.careerSiteSettings as any;
+  if (!job || typeof job !== 'object') return null;
+  const texts = (evidence.resolvedText && typeof evidence.resolvedText === 'object' ? evidence.resolvedText : {}) as Record<string, string>;
+  const unresolved = new Set<string>(Array.isArray(evidence.unresolvedTextReferences) ? evidence.unresolvedTextReferences.map(String) : []);
   const resolveText = (value: unknown): string => {
     if (typeof value !== 'string') return '';
     if (value.startsWith('$$')) return value.slice(1);
     if (/^\$[0-9a-f]+$/i.test(value)) {
-      const text = records.texts.get(value.slice(1).toLowerCase());
-      if (text === undefined) { unresolved.add(value); return ''; }
-      resolvedText[value] = text;
+      const text = texts[value];
+      if (typeof text !== 'string') { unresolved.add(value); return ''; }
       return text;
     }
     return value;
@@ -126,8 +146,6 @@ export function personioDetail(html: string, externalId: string) {
   const country = addresses.length && addresses.every((a: any) => typeof a.country === 'string' && a.country) && countries.size === 1
     ? [...countries][0] as string : undefined;
   const city = addresses.length === 1 && typeof addresses[0].city === 'string' ? addresses[0].city : undefined;
-  return { job: { description, postedAt: date && !Number.isNaN(date.getTime()) ? date : undefined, country, city,
-    employer: typeof settings?.company_name === 'string' && settings.company_name.trim() ? settings.company_name.trim() : undefined },
-    evidence: { ...baseEvidence, position: job, careerSiteSettings: settings, resolvedText,
-      ...(unresolved.size ? { descriptionReadError: 'UNRESOLVED_FLIGHT_TEXT', unresolvedTextReferences: [...unresolved] } : {}) } };
+  return { description, postedAt: date && !Number.isNaN(date.getTime()) ? date : undefined, country, city,
+    employer: typeof settings?.company_name === 'string' && settings.company_name.trim() ? settings.company_name.trim() : undefined };
 }

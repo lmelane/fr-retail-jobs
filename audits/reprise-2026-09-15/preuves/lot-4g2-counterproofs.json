@@ -1,0 +1,41 @@
+{
+  "mutations": [
+    {
+      "name": "unbound-detail",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "9c353e035af9f1869e20b159cd09e29f3a338e3423ba725765c66e39f8320c11"
+    },
+    {
+      "name": "unbound-posting",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "9c353e035af9f1869e20b159cd09e29f3a338e3423ba725765c66e39f8320c11"
+    },
+    {
+      "name": "unbound-site",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "9c353e035af9f1869e20b159cd09e29f3a338e3423ba725765c66e39f8320c11"
+    },
+    {
+      "name": "cross-tenant",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "9c353e035af9f1869e20b159cd09e29f3a338e3423ba725765c66e39f8320c11"
+    },
+    {
+      "name": "guessed-requisition",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "9c353e035af9f1869e20b159cd09e29f3a338e3423ba725765c66e39f8320c11"
+    },
+    {
+      "name": "lookup-without-raw",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "d854a05dd7324a80aafa09cf34d34df674d0c6da195a02bca46d71047e897026"
+    }
+  ],
+  "restoredTests": "passed"
+}

@@ -1,3 +1,6 @@
+import { accessStatus, readLatestSourceAccess } from '../../src/connectors/sourceAccess.js';
+import { identityReviewOrder } from '../../src/connectors/sourceIdentity.js';
+import { readIdentitySources } from '../../src/connectors/sourceRegistryRead.js';
 /**
  * LE REGISTRE P6 — une ligne par source, une décision par source, une action suivante par source.
  *
@@ -62,14 +65,14 @@ try {
       WHERE js."isActive" AND j."isActive" GROUP BY 1
     ), holds AS (
       SELECT "sourceKey", COUNT(DISTINCT "externalId")::int held
-      FROM "SourceObservation" WHERE raw->>'publicationHold' IS NOT NULL GROUP BY 1
+      FROM "SourceObservation" WHERE "publicationHold" IS NOT NULL GROUP BY 1
     ), reviews AS (
       SELECT DISTINCT ON (r."sourceKey") r."sourceKey", r.verdict, r.method, r."portalScope",
              r."officialDomain", r."proofUrl", r."checkedAt", r."sourceHash"
-      FROM "SourceIdentityReview" r ORDER BY r."sourceKey", r."createdAt" DESC, r.id DESC
+      FROM "SourceIdentityReview" r ORDER BY r."sourceKey", r.sequence DESC NULLS LAST, r."createdAt" DESC, r.id DESC
     )
     SELECT s.key, s.maison, s.kind, s.tier, s.status, s."tenantKey", s."careersDomain", s.config,
-           s."robotsVerdict", s."robotsCheckedAt", s.note,
+           s.note,
            s."descriptionRate", s."dateRate", s."countryRate", s."urlRate",
            r.status AS run_status, r."ranAt" AS last_attempt, r.complete, r.truncated, r.errors,
            r."declaredTotal", r.fetched, r.jobs AS run_jobs, r."previousJobs", r."canAttestAbsence",
@@ -91,15 +94,14 @@ try {
 
   /** La certification, jugée par la porte de promotion elle-même — jamais par la seule présence d'une revue. */
   const { assertIdentityReview } = await import('../../src/connectors/sourceIdentity.js');
-  const sources = await p.source.findMany({
-    select: { key: true, maison: true, kind: true, config: true, careersDomain: true, tenantKey: true, tier: true },
-  });
+  const sources = (await readIdentitySources(p));
   const byKey = new Map(sources.map((s) => [s.key, s]));
   const latestReview = new Map<string, any>();
-  for (const r of await p.sourceIdentityReview.findMany({ orderBy: [{ createdAt: 'desc' }, { id: 'desc' }] })) {
+  for (const r of await p.sourceIdentityReview.findMany({ orderBy: identityReviewOrder })) {
     if (!latestReview.has(r.sourceKey)) latestReview.set(r.sourceKey, r);
   }
 
+  const accessOf = await readLatestSourceAccess(p, sources.map(source => source.key));
   const register = rows.map((row) => {
     const issues: string[] = Array.isArray(row.issues) ? row.issues.map(String) : [];
 
@@ -127,27 +129,8 @@ try {
       : row.truncated ? 'TRONQUEE'
       : row.run_status;
 
-    /**
-     * ── Accès ────────────────────────────────────────────────────────────────
-     *
-     * `robotsVerdict` est un texte libre, pas un énuméré : « ALLOWED », mais aussi
-     * « ALLOWED (no robots.txt reachable) » ou « ALLOWED (autorisation propriétaire — …) ». Les traiter
-     * indistinctement était mon erreur de première passe : j'ai d'abord suspendu 49 sources pour « verdict non
-     * établi » alors que leur verdict EST daté — c'est sa NATURE qui diffère.
-     *
-     * Trois natures, et D60 les sépare : un robots.txt **lu** autorise ; un robots.txt **absent ou injoignable**
-     * n'autorise rien par lui-même ; une **autorisation nominative du propriétaire** autorise, et sa trace est
-     * distincte (règle gravée pour ne pas confondre une décision d'exploitation avec une lecture technique).
-     */
-    const verdict: string = row.robotsVerdict ?? '';
-    const access =
-      !verdict ? 'NON_LU'
-      : !row.robotsCheckedAt ? `${verdict.split(' (')[0]}_NON_DATE`
-      : /^ALLOWED$/.test(verdict) ? 'ALLOWED_LU'
-      : /autorisation propriétaire/i.test(verdict) ? 'ALLOWED_AUTORISATION_PROPRIETAIRE'
-      : /no robots\.txt reachable/i.test(verdict) ? 'ROBOTS_ABSENT_OU_INJOIGNABLE'
-      : /^ALLOWED/.test(verdict) ? 'ALLOWED_LU_AVEC_RESERVE'
-      : verdict.split(' (')[0];
+    const currentAccess = source ? accessStatus(source, accessOf.get(row.key) ?? null) : null;
+    const access = currentAccess?.passed ? 'ALLOWED_CURRENT' : currentAccess?.code ?? 'ACCESS_MISSING';
 
     /**
      * LA DÉCISION. L'ordre est celui du risque : ce qui interdit tout traitement d'abord, ce qui autorise
@@ -166,20 +149,11 @@ try {
       blocking = 'Décision produit : FashionJobs ne peut jamais alimenter ni justifier une offre.';
       nextAction = 'Aucune sur le circuit des offres. La découverte de Maisons reste conservée.';
       resolution = 'Aucune — la règle est définitive.';
-    } else if (access === 'ROBOTS_ABSENT_OU_INJOIGNABLE') {
-      /**
-       * D60 : « Un robots.txt absent ou injoignable n'autorise rien. » Ce n'est pas un refus d'accès — c'est une
-       * absence de preuve d'autorisation, qui suspend la publication sans interdire la collecte de preuves.
-       */
-      decision = 'B_COLLECTE_AUTORISEE_PUBLICATION_RETENUE';
-      blocking = 'robots.txt absent ou injoignable : aucune autorisation lue à la source.';
-      nextAction = 'Relire robots.txt ; à défaut, obtenir une autorisation nominative du propriétaire et la tracer.';
-      resolution = 'Un ALLOWED lu et daté, ou une autorisation nominative tracée.';
-    } else if (!access.startsWith('ALLOWED')) {
+    } else if (access !== 'ALLOWED_CURRENT') {
       decision = 'C_SUSPENDUE';
       blocking = `Verdict d'accès non établi : ${access}.`;
-      nextAction = 'Lire robots.txt à la source et persister le verdict daté (validate-candidate).';
-      resolution = 'Un verdict ALLOWED lu et daté.';
+      nextAction = 'Constituer une preuve d’accès datée pour les cibles configurées ; la collecte native ne remplace pas cette preuve.';
+      resolution = 'Une décision d’accès native valide pour la révision courante.';
     } else if (collection.startsWith('ECHEC_')) {
       decision = 'C_SUSPENDUE';
       blocking = `Dernière collecte en échec : ${collection}.`;
@@ -211,7 +185,7 @@ try {
 
     /** Le niveau de preuve, distinct de la décision : il dit sur QUOI la décision repose. */
     const evidenceLevel =
-      certification === 'CERTIFIEE' && enumerationVerdict === 'PROVEN' && access === 'ALLOWED_DATE' ? 'COMPLET'
+      certification === 'CERTIFIEE' && enumerationVerdict === 'PROVEN' && access === 'ALLOWED_CURRENT' ? 'COMPLET'
       : certification === 'CERTIFIEE' ? 'IDENTITE_PROUVEE'
       : row.review_verdict ? 'REVUE_PERIMEE'
       : 'AUCUN';

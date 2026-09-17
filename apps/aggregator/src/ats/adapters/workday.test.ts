@@ -148,7 +148,7 @@ describe('attachWorkdayDescriptions — l2 : détail demandé en en-US, temps de
     mockJson
       .mockResolvedValueOnce({
         total: 1,
-        jobPostings: [{ title: 'Sales Associate', externalPath: '/job/Taipei/Sales-Associate_JR14730', postedOn: 'Posted 30+ Days Ago' }],
+        jobPostings: [{ title: 'Sales Associate', externalPath: new URL(TAPESTRY_DETAIL_EN.jobPostingInfo.externalUrl).pathname.replace('/Tapestry_Careers', ''), postedOn: 'Posted 30+ Days Ago' }],
       } as never)
       .mockResolvedValueOnce(TAPESTRY_DETAIL_EN as never);
 
@@ -174,12 +174,12 @@ describe('attachWorkdayDescriptions — l2 : détail demandé en en-US, temps de
 import { attachWorkdayDescriptions } from './workday.js';
 it('keeps the real Workday legal-entity field and its numeric code as replay evidence', async () => {
   const detail = {
-    jobPostingInfo: { jobDescription: 'Role description', startDate: '2026-09-01' },
+    jobPostingInfo: { externalUrl: 'https://condenast.wd115.myworkdayjobs.com/CondeCareers/job/R-24144', jobDescription: 'Role description', startDate: '2026-09-01' },
     hiringOrganization: { name: '30360 CONDE NAST (INDIA) PVT LTD - 30360' },
   };
   mockJson.mockResolvedValueOnce(detail as never);
-  const [job] = await attachWorkdayDescriptions([{ externalId: 'R-24144', title: 'Senior Manager', url: 'https://condenast.wd115.myworkdayjobs.com/CondeCareers/job/example', raw: { externalPath: '/job/example' } }], 'https://condenast.wd115.myworkdayjobs.com/wday/cxs/condenast/CondeCareers');
-  expect(job.raw).toEqual({ externalPath: '/job/example', detail });
+  const [job] = await attachWorkdayDescriptions([{ externalId: 'R-24144', title: 'Senior Manager', url: 'https://condenast.wd115.myworkdayjobs.com/CondeCareers/job/R-24144', raw: { externalPath: '/job/R-24144' } }], 'https://condenast.wd115.myworkdayjobs.com/wday/cxs/condenast/CondeCareers');
+  expect(job.raw).toEqual({ externalPath: '/job/R-24144', detail });
   expect(job.employerEvidence).toEqual({ rawName: detail.hiringOrganization.name, path: 'detail.hiringOrganization.name', rule: 'LEADING_ENTITY_CODE_REMOVED' });
   expect(job.company).toBe('CONDE NAST (INDIA) PVT LTD - 30360');
 });
@@ -192,8 +192,8 @@ it('preserves a failed detail as a hold instead of substituting the group employ
   expect(job.raw).toMatchObject({ externalPath: '/job/example', detailFailure: { message: 'HTTP 403 from Workday detail' } });
 });
 it('distinguishes a successful detail without any employer field from a fetch failure', async () => {
-  mockJson.mockResolvedValueOnce({ jobPostingInfo: { jobDescription: 'A posting without an employer claim' } } as never);
-  const [job] = await attachWorkdayDescriptions([{ externalId: 'x', title: 'Sales Associate', url: 'https://example.com/job/x', raw: { externalPath: '/job/x' } }], 'https://example.com/wday/cxs/group/jobs');
+  mockJson.mockResolvedValueOnce({ jobPostingInfo: { externalUrl: 'https://example.com/jobs/job/x', jobDescription: 'A posting without an employer claim' } } as never);
+  const [job] = await attachWorkdayDescriptions([{ externalId: 'x', title: 'Sales Associate', url: 'https://example.com/jobs/job/x', raw: { externalPath: '/job/x' } }], 'https://example.com/wday/cxs/group/jobs');
   expect(job.publicationHold).toBe('WORKDAY_EMPLOYER_ABSENT_IN_DETAIL');
 });
 
@@ -207,7 +207,7 @@ it('distinguishes a successful detail without any employer field from a fetch fa
 it('applies the detail facts even when the employer is absent, and keeps the hold', async () => {
   mockJson.mockResolvedValueOnce({
     jobPostingInfo: {
-      jobDescription: '<p>Part-Time Clerk duties</p>',
+      externalUrl: 'https://uniqlo.example/jobs/job/R00000004162321', jobDescription: '<p>Part-Time Clerk duties</p>',
       startDate: '2026-07-29',
       endDate: '2026-10-29',
       country: { descriptor: 'Hong Kong' },
@@ -216,7 +216,7 @@ it('applies the detail facts even when the employer is absent, and keeps the hol
     },
   } as never);
   const [job] = await attachWorkdayDescriptions(
-    [{ externalId: 'R00000004162321', title: 'Part-Time Clerk', url: 'https://uniqlo.example/job/x', raw: { externalPath: '/job/x', postedOn: 'Posted 30+ Days Ago' } }],
+    [{ externalId: 'R00000004162321', title: 'Part-Time Clerk', url: 'https://uniqlo.example/jobs/job/R00000004162321', raw: { externalPath: '/job/R00000004162321', postedOn: 'Posted 30+ Days Ago' } }],
     'https://uniqlo.example/wday/cxs/uniqlo/jobs',
   );
   // The identity guard is untouched: no employer claimed, posting still held.
@@ -232,9 +232,9 @@ it('applies the detail facts even when the employer is absent, and keeps the hol
 });
 
 it('does not invent a date when the employer-less detail has none', async () => {
-  mockJson.mockResolvedValueOnce({ jobPostingInfo: { jobDescription: 'No dates here' } } as never);
+  mockJson.mockResolvedValueOnce({ jobPostingInfo: { externalUrl: 'https://example.com/jobs/job/y', jobDescription: 'No dates here' } } as never);
   const [job] = await attachWorkdayDescriptions(
-    [{ externalId: 'y', title: 'Clerk', url: 'https://example.com/job/y', raw: { externalPath: '/job/y', postedOn: 'Posted 30+ Days Ago' } }],
+    [{ externalId: 'y', title: 'Clerk', url: 'https://example.com/jobs/job/y', raw: { externalPath: '/job/y', postedOn: 'Posted 30+ Days Ago' } }],
     'https://example.com/wday/cxs/group/jobs',
   );
   expect(job.publicationHold).toBe('WORKDAY_EMPLOYER_ABSENT_IN_DETAIL');
@@ -243,11 +243,11 @@ it('does not invent a date when the employer-less detail has none', async () => 
 });
 
 it('holds a replay without a detail path and clears only Workday holds after a successful retry', async () => {
-  const base = { externalId: 'x', title: 'Sales Associate', url: 'https://example.com/job/x' };
+  const base = { externalId: 'x', title: 'Sales Associate', url: 'https://example.com/jobs/job/x' };
   const [missing] = await attachWorkdayDescriptions([base], 'https://example.com/wday/cxs/group/jobs');
   expect(missing.publicationHold).toBe('WORKDAY_DETAIL_PATH_MISSING');
   expect(mockJson).not.toHaveBeenCalled();
-  mockJson.mockResolvedValue({ jobPostingInfo: {}, hiringOrganization: { name: 'Coach Shanghai Limited 2' } } as never);
+  mockJson.mockResolvedValue({ jobPostingInfo: { externalUrl: 'https://example.com/jobs/job/x' }, hiringOrganization: { name: 'Coach Shanghai Limited 2' } } as never);
   const [retried, unrelated] = await attachWorkdayDescriptions([
     { ...base, raw: { externalPath: '/job/x' }, publicationHold: 'WORKDAY_DETAIL_FETCH_FAILED' },
     { ...base, raw: { externalPath: '/job/x' }, publicationHold: 'OTHER_IDENTITY_HOLD' },
@@ -267,17 +267,17 @@ describe('brandFromLogoAlt — the word "logo" belongs to the image, not the emp
   });
   it('never returns an empty brand', () => { expect(brandFromLogoAlt('Logo')).toBeUndefined(); expect(brandFromLogoAlt('  ')).toBeUndefined(); expect(brandFromLogoAlt(undefined)).toBeUndefined(); });
   it('gives the identity gate the same cleaned brand as the company (lot L3 refused "HOKA Logo" while company read "HOKA")', async () => {
-    mockJson.mockResolvedValueOnce({ jobPostingInfo: { jobDescription: 'Role', logoImage: { alt: 'HOKA Logo' } }, hiringOrganization: { name: 'Deckers Outdoor Corporation' } } as never);
-    const [job] = await attachWorkdayDescriptions([{ externalId: 'x', title: 'Sales Associate', url: 'https://example.com/job/x', raw: { externalPath: '/job/x' } }], 'https://example.com/wday/cxs/deckers/jobs');
+    mockJson.mockResolvedValueOnce({ jobPostingInfo: { externalUrl: 'https://example.com/jobs/job/x', jobDescription: 'Role', logoImage: { alt: 'HOKA Logo' } }, hiringOrganization: { name: 'Deckers Outdoor Corporation' } } as never);
+    const [job] = await attachWorkdayDescriptions([{ externalId: 'x', title: 'Sales Associate', url: 'https://example.com/jobs/job/x', raw: { externalPath: '/job/x' } }], 'https://example.com/wday/cxs/deckers/jobs');
     expect(job.company).toBe('HOKA');
     expect(job.employerEvidence).toEqual({ rawName: 'HOKA', path: 'detail.jobPostingInfo.logoImage.alt', rule: 'LOGO_ALT_WORD_REMOVED' });
   });
   it('keeps LOGO_ALT verbatim when the alt is the brand alone, and falls back to the legal entity when the alt is only "Logo"', async () => {
-    mockJson.mockResolvedValueOnce({ jobPostingInfo: { jobDescription: 'Role', logoImage: { alt: 'Panerai' } }, hiringOrganization: { name: 'C170 Officine Panerai' } } as never);
-    const [brand] = await attachWorkdayDescriptions([{ externalId: 'a', title: 'T', url: 'https://example.com/job/a', raw: { externalPath: '/job/a' } }], 'https://example.com/wday/cxs/r/jobs');
+    mockJson.mockResolvedValueOnce({ jobPostingInfo: { externalUrl: 'https://example.com/jobs/job/a', jobDescription: 'Role', logoImage: { alt: 'Panerai' } }, hiringOrganization: { name: 'C170 Officine Panerai' } } as never);
+    const [brand] = await attachWorkdayDescriptions([{ externalId: 'a', title: 'T', url: 'https://example.com/jobs/job/a', raw: { externalPath: '/job/a' } }], 'https://example.com/wday/cxs/r/jobs');
     expect(brand.employerEvidence).toEqual({ rawName: 'Panerai', path: 'detail.jobPostingInfo.logoImage.alt', rule: 'LOGO_ALT' });
-    mockJson.mockResolvedValueOnce({ jobPostingInfo: { jobDescription: 'Role', logoImage: { alt: 'Logo' } }, hiringOrganization: { name: 'C170 Officine Panerai' } } as never);
-    const [legal] = await attachWorkdayDescriptions([{ externalId: 'b', title: 'T', url: 'https://example.com/job/b', raw: { externalPath: '/job/b' } }], 'https://example.com/wday/cxs/r/jobs');
+    mockJson.mockResolvedValueOnce({ jobPostingInfo: { externalUrl: 'https://example.com/jobs/job/b', jobDescription: 'Role', logoImage: { alt: 'Logo' } }, hiringOrganization: { name: 'C170 Officine Panerai' } } as never);
+    const [legal] = await attachWorkdayDescriptions([{ externalId: 'b', title: 'T', url: 'https://example.com/jobs/job/b', raw: { externalPath: '/job/b' } }], 'https://example.com/wday/cxs/r/jobs');
     expect(legal.company).toBe('Officine Panerai');
     expect(legal.employerEvidence).toEqual({ rawName: 'C170 Officine Panerai', path: 'detail.hiringOrganization.name', rule: 'LEADING_ENTITY_CODE_REMOVED' });
   });

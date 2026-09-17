@@ -1,0 +1,30 @@
+[
+  {
+    "name": "scope",
+    "baselineExit": 0,
+    "mutantExit": 1,
+    "restoredExit": 0,
+    "restoredSha256": "55a6117444f856951c2e364f8bab211cf16512d34939f9a5a35457ab6fcd40f8"
+  },
+  {
+    "name": "sql-expiry",
+    "baselineExit": 0,
+    "mutantExit": 1,
+    "restoredExit": 0,
+    "restoredSha256": "0c01faea956a224e4b1765798f29250ce7c847ce67c15d64d82f23ec4e5ee167"
+  },
+  {
+    "name": "apply-owner",
+    "baselineExit": 0,
+    "mutantExit": 1,
+    "restoredExit": 0,
+    "restoredSha256": "0c01faea956a224e4b1765798f29250ce7c847ce67c15d64d82f23ec4e5ee167"
+  },
+  {
+    "name": "frozen-proof",
+    "baselineExit": 0,
+    "mutantExit": 1,
+    "restoredExit": 0,
+    "restoredSha256": "55a6117444f856951c2e364f8bab211cf16512d34939f9a5a35457ab6fcd40f8"
+  }
+]

@@ -1,0 +1,37 @@
+{
+  "readOnly": true,
+  "productionWrites": false,
+  "plans": 559,
+  "originalGroups": 12683,
+  "resultingGroups": 12709,
+  "publications": 12934,
+  "redirects": 0,
+  "lifecycle": {
+    "KEEP": 12709
+  },
+  "fieldChanges": {
+    "clusterKey": 12683,
+    "fingerprint": 12683,
+    "externalId": 231,
+    "countryIntegrity": 21,
+    "city": 3,
+    "workSchedule": 28,
+    "rawSchedule": 28,
+    "lastSeenAt": 12,
+    "validThrough": 81,
+    "language": 11,
+    "workplaceType": 26,
+    "salaryMin": 4,
+    "salaryCurrency": 4,
+    "salaryPeriod": 4,
+    "workTime": 2,
+    "programType": 2
+  },
+  "previouslyRebuiltFieldChanges": {
+    "clusterKey": 12437,
+    "fingerprint": 12437
+  },
+  "splitGroups": 24,
+  "newGroups": 26,
+  "elapsedMs": 74924
+}

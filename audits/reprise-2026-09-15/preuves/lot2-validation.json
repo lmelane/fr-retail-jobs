@@ -1,0 +1,43 @@
+{
+  "date": "2026-09-15",
+  "scope": "local disposable PostgreSQL and isolated Railway object storage",
+  "migrations": 50,
+  "tests": {
+    "aggregatorUnit": 2197,
+    "aggregatorIntegration": 455,
+    "api": 245,
+    "python": 5,
+    "totalPassed": 2902,
+    "optionalCorpusSkipped": 2
+  },
+  "apiBuildExit": 0,
+  "typecheckExit": 0,
+  "schemaDriftExit": 0,
+  "migrationNonemptyArchiveGuard": "refused without pointer loss; empty tables accepted",
+  "cli": {
+    "reportExit": 0,
+    "retentionPreviewExit": 0,
+    "retentionApplyExit": 0,
+    "retentionRetryPurged": 0,
+    "historicalRestoreExit": 0,
+    "nativeReplayExit": 0
+  },
+  "logSha256": {
+    "full-validation": "032f780522be81b01b6328d07a2ab89b36fbd246306e1b98b4592740266cde48",
+    "api-build": "39d773516c3b2383b45f2a494a6361580f57cf6fd175330e3e1b10fb1a08ab5c",
+    "typecheck-final": "db9af7853b7df8f6145570e3173d2186446720434b7044853e240a0e9357355a",
+    "schema-drift": "198913094e3f41610eb893459ab65a3c79991b65d4ef5fcb8c325ebe52ebf1ed",
+    "migration-guard": "739949378608d3e394079b33ebaa015c257d8babc327c8d4884e0c5be79d20cb",
+    "counterproofs-restored": "5b13f11072c0a23c64802120fefd0ef79cde2b592a11618237f7670564bb78af",
+    "live-s3": "ebb3ebfd8045a212e3f6c4b5c361fb0ffc4c0708b45a40434fd2a57540a1e464",
+    "cli-report": "bd66b69e39772970ddb946d24781888a9d4e0a3db2ad303b38deea5569c6b12f",
+    "cli-preview": "4133f1eecfc1763778d52ba4848579161d754d75f9d507774529e2282623aa5b",
+    "cli-apply": "d49386f471879595b6fa5ed20970db246fc48a3dd0f1774cb6ab2c5ee7c9ec7b",
+    "cli-retry": "47f3f2e19adb7a6ac015c23138f2634a7a2507bb6582654a2d2f5f3ea7ece3d2",
+    "cli-read": "b00867e64b458d02e57153f9135c0461b3762d811d9836a14726df2c675e42fd",
+    "cli-replay": "cec568501344e4a687394a93f9f0ae3142fe6d3500e4f1104daf4dc5342de080"
+  },
+  "productionDataWrites": false,
+  "productionDeployments": false,
+  "cronActivation": false
+}

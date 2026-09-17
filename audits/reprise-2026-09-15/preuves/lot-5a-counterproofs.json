@@ -1,0 +1,50 @@
+{
+  "mutations": [
+    {
+      "name": "ignore-result-metadata",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "1555f55e5984e043a1a05b783af7773df056b05f089362ee6ae94b2e0426ca95"
+    },
+    {
+      "name": "ignore-output-content",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "1555f55e5984e043a1a05b783af7773df056b05f089362ee6ae94b2e0426ca95"
+    },
+    {
+      "name": "skip-recorded-pages",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "2d7adc69b5ba7ef701b2169dba2ebdb754ca6a276043ea3161cb79bd0112228d"
+    },
+    {
+      "name": "swallow-replay-failure",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "cd4bb88468fdf856aa63d7d789c9a7f77a5ad91e8ab4be9a024662bf3d0b18da"
+    },
+    {
+      "name": "ignore-recent-manifest",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "130cb878f48a16d6e98bf72f96172606031066b715da78684e25c7f4f242f125"
+    },
+    {
+      "name": "append-after-sealing",
+      "rejectedByRegression": true,
+      "exitCode": 1
+    },
+    {
+      "name": "skip-database-seal",
+      "rejectedByRegression": true,
+      "exitCode": 1
+    },
+    {
+      "name": "stale-snapshot-seal",
+      "rejectedByRegression": true,
+      "exitCode": 1
+    }
+  ],
+  "restoredTests": "passed"
+}

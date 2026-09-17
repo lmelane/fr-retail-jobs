@@ -1,0 +1,7 @@
+{
+  "scope": "Private validation database, including native Workday and iCIMS qualification captures",
+  "bytes": 14645322,
+  "sha256": "a95fa1237db14c5b6fb55c0fd4464909e71d9f255e338e1200837829c54b15f9",
+  "archiveCatalogVerified": true,
+  "productionDatabaseIncluded": false
+}

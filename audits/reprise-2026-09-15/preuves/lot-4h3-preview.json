@@ -1,0 +1,19 @@
+{
+  "readOnly": true,
+  "productionWrites": false,
+  "planHash": "36e6bf47f54b363db297f9fe414076b16f1355a52d2fe32fc33a117d3a6b2f47",
+  "revision": "local-sha256:13c1be0543e157efcd31944e1de4097f9e16b7c7168037cd4ac8ad033b846ea6",
+  "version": 5,
+  "originalJobId": "cmtt7waed07ppmy01bwifnt2z",
+  "newJobId": "75703ef7-ac05-4238-9dab-afb6b3e0823f",
+  "qualifiedPublications": 1,
+  "quarantinedPublications": 1,
+  "withdrawnHistoricalIds": 1,
+  "redirects": 0,
+  "closures": 0,
+  "quarantineReason": "READER_UNQUALIFIED",
+  "nativeExternalIds": {
+    "held": "1367552955",
+    "qualified": "295261"
+  }
+}

@@ -46,16 +46,26 @@ export function cleAttendue(): string | null {
  * `null` = l'appel est autorisé, la route continue.
  * Une `NextResponse` = l'appel est refusé, la route la renvoie telle quelle.
  *
- * Sans `CATALOGUE_API_KEY` configurée, le garde LAISSE PASSER : c'est
- * délibéré. Le jour où la variable manque en production, l'API continue de
- * servir catwalks.io plutôt que de tomber d'un coup ; l'absence se voit dans
- * le journal, pas dans une panne. Poser la variable est l'acte qui arme le
- * garde.
+ * Sans `CATALOGUE_API_KEY` configurée, le garde FERME en production (503,
+ * « non configuré ») : jusqu'au lot 12 il laissait passer pour que le site
+ * survive à une variable oubliée, ce qui faisait d'un oubli de déploiement une
+ * API publique ouverte à tout script (passation §11.1 : « chemin
+ * potentiellement ouvert », à corriger avant release). Hors production
+ * (`next dev`, témoins), l'absence de clé reste tolérée et journalisée pour
+ * que le poste local fonctionne sans secret. Poser la variable est l'acte qui
+ * arme le garde ; en production, l'oublier se voit en 503, jamais en fuite.
  */
 export function refuserSiCleInvalide(request: NextRequest, requestId: string): NextResponse | null {
   const attendue = cleAttendue();
   if (!attendue) {
-    console.info(JSON.stringify({ evenement: 'api.cle', requestId, etat: 'desarme', detail: 'CATALOGUE_API_KEY absente' }));
+    if (process.env.NODE_ENV === 'production') {
+      console.error(JSON.stringify({ evenement: 'api.cle', requestId, etat: 'non_configure', detail: 'CATALOGUE_API_KEY absente en production' }));
+      return NextResponse.json(
+        { error: 'Clé d’accès du catalogue non configurée.', requestId },
+        { status: 503, headers: { 'x-request-id': requestId, 'retry-after': '60' } },
+      );
+    }
+    console.info(JSON.stringify({ evenement: 'api.cle', requestId, etat: 'desarme', detail: 'CATALOGUE_API_KEY absente hors production' }));
     return null;
   }
   const entete = request.headers.get('authorization')?.trim() ?? '';

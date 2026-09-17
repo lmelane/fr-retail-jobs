@@ -1,0 +1,65 @@
+{
+  "mutations": [
+    {
+      "name": "lost-flatchr-profile",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "41b3a8da79fa47053c2ec467292d297bf256ff42269e827a2e25271f17fe8973"
+    },
+    {
+      "name": "company-only-content",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "41b3a8da79fa47053c2ec467292d297bf256ff42269e827a2e25271f17fe8973"
+    },
+    {
+      "name": "foreign-flatchr-tenant",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "41b3a8da79fa47053c2ec467292d297bf256ff42269e827a2e25271f17fe8973"
+    },
+    {
+      "name": "invented-personio-publication",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "d37ab3484662cc6a29f6cd3f1a4207ddda3aa054b2d1c1d7f3ead9694073141e"
+    },
+    {
+      "name": "foreign-funnel-detail",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "52064368f4c71e4f41a7fe360303041542c53a3892d142dda4ab3bc991a395b2"
+    },
+    {
+      "name": "stale-funnel-title",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "52064368f4c71e4f41a7fe360303041542c53a3892d142dda4ab3bc991a395b2"
+    },
+    {
+      "name": "foreign-talentview-detail",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "21b7dbaf091b324dcb6ac49acdebcbc0f9e44acc3105427d23ad1794fd490f7d"
+    },
+    {
+      "name": "published-talentview-draft",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "21b7dbaf091b324dcb6ac49acdebcbc0f9e44acc3105427d23ad1794fd490f7d"
+    },
+    {
+      "name": "contract-as-expiry",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "ba0e88f0e6b7adeed3a96bcc521dfc7404636e805f0af6ecba51027c3dd2fb8b"
+    },
+    {
+      "name": "foreign-funnel-tenant",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "e1dda165597d684cd7a6c3d927f494702270593c201559043c5c2d5a572a2945"
+    }
+  ],
+  "restoredTests": "passed"
+}

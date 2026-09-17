@@ -1,0 +1,18 @@
+{
+  "preview": {
+    "planHash": "16f07857b4cd8fda355b7b98297e62c006a122609fc4b387c98a8395d61031d7",
+    "groups": 1,
+    "redirects": 0
+  },
+  "firstApplication": {
+    "planHash": "16f07857b4cd8fda355b7b98297e62c006a122609fc4b387c98a8395d61031d7",
+    "alreadyApplied": false,
+    "groups": 1,
+    "redirects": 0
+  },
+  "repeat": {
+    "planHash": "16f07857b4cd8fda355b7b98297e62c006a122609fc4b387c98a8395d61031d7",
+    "alreadyApplied": true
+  },
+  "fileMode": "0600"
+}

@@ -5,13 +5,11 @@
  * "US", "États-Unis d'Amérique", "United States", "Italie", "IT"… — so the same
  * country appears under several spellings. This collapses them to one canonical
  * code + French label, so the filter shows "France (2 604)" once, not three
- * rows. France is special-cased on the reliable isFrance flag elsewhere; this
- * map covers display and the non-France codes.
+ * rows. The search itself filters on the ISO-2 `countryCode`; this map covers
+ * display and the non-France codes.
  */
 
-import { knownAlpha2 } from './intelligence/country-ids';
-
-export type Country = { code: string; label: string };
+import { knownAlpha2 } from './iso-alpha2';
 
 /** Lowercased raw value -> canonical code. Extend as new sources appear. */
 const ALIASES: Record<string, string> = {
@@ -130,13 +128,4 @@ export function countryLabel(code: string): string {
   } catch {
     return code;
   }
-}
-
-/** Every raw spelling that maps to a given canonical code — for the SQL filter. */
-export function rawValuesForCode(code: string): string[] {
-  const spellings = Object.entries(ALIASES)
-    .filter(([, c]) => c === code)
-    .map(([raw]) => raw);
-  // Include the code itself in a few cases and the exact stored variants.
-  return [...new Set([code, code.toLowerCase(), ...spellings])];
 }

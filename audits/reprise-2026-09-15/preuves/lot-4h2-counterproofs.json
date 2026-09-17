@@ -1,0 +1,47 @@
+{
+  "mutations": [
+    {
+      "name": "reuse-unproven-public-id",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "37a543b0bc7f1363268adbc397a7382397365b12a47763bdd399940d807f6235"
+    },
+    {
+      "name": "quarantine-complete-publication",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "37a543b0bc7f1363268adbc397a7382397365b12a47763bdd399940d807f6235"
+    },
+    {
+      "name": "reuse-pre-quarantine-capture",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "1194bac40f4ff625e1cead2fb1d5c7da6e3e2cff0b4ab72d6747e253e931db4a"
+    },
+    {
+      "name": "ignore-captured-hold",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "1194bac40f4ff625e1cead2fb1d5c7da6e3e2cff0b4ab72d6747e253e931db4a"
+    },
+    {
+      "name": "invent-native-closure",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "37a543b0bc7f1363268adbc397a7382397365b12a47763bdd399940d807f6235"
+    },
+    {
+      "name": "accept-stale-partition",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "37a543b0bc7f1363268adbc397a7382397365b12a47763bdd399940d807f6235"
+    },
+    {
+      "name": "close-released-publication",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "ae837aa2665ce9fdf61b5a9bc61a4e55723c1d4dcc6996fc9ad3d076c6114767"
+    }
+  ],
+  "restoredTests": "passed"
+}

@@ -1,0 +1,29 @@
+{
+  "archivedBatchId": "bcaf1333-6f2d-4087-801b-2df34638dc89",
+  "coldQualificationExact": true,
+  "existingOutputModeRestricted": "0600",
+  "newLiveCapture": {
+    "id": "9f172daa-5136-4f96-9589-225b82a29f3a",
+    "sequence": "1290",
+    "sourceRevisionId": "c5376f99-6175-4ea8-9290-251cadaa917b",
+    "captureBatchId": "7de45b33-172f-4fc1-8248-3972f9d8f163",
+    "readerRevision": "local-sha256:ee63e60e904072017e6fe232c15c035444b18dc13580b578becfdcc201bf8496",
+    "policyVersion": "source-validation-20260916-v1",
+    "verdict": "VALIDATED",
+    "validatedAt": "2026-09-16T01:34:58.491Z",
+    "report": {
+      "held": 0,
+      "reasons": {},
+      "observed": 80,
+      "rejected": 0,
+      "qualified": 80,
+      "nativeEmpty": false,
+      "replayExact": true,
+      "inputRejected": 0,
+      "enumerationClaim": "COMPLETE",
+      "absenceAttestation": false
+    }
+  },
+  "writesRequireApply": true,
+  "manualCountFlagRejected": true
+}

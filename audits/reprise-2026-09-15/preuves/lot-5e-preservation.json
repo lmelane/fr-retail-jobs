@@ -1,0 +1,448 @@
+{
+  "originalFiles": 86,
+  "unchangedFiles": 84,
+  "exceptions": [
+    {
+      "path": "apps/aggregator/package.json",
+      "reason": "Existing dependency exception; three original user scripts retained unstaged"
+    },
+    {
+      "path": "apps/aggregator/src/pipeline/sourceStore.test.ts",
+      "reason": "Original dynamic catalogue-size patch preserved verbatim and integrated in lot 5D",
+      "originalSha256": "c7a2fbb16bdef5cb1bb076f23bb1f778ebbf1751ab02f6fc2f6b3541c2a714b8",
+      "privateBackup": "backups/reprise-20260916-lot5d/sourceStore.user-original.test.ts"
+    }
+  ],
+  "files": [
+    {
+      "repo": "aggregator",
+      "path": "apps/aggregator/data/seeds/sources.csv",
+      "unchanged": true
+    },
+    {
+      "repo": "aggregator",
+      "path": "apps/aggregator/package.json",
+      "unchanged": false
+    },
+    {
+      "repo": "aggregator",
+      "path": "apps/aggregator/scripts/ops/verif-bash-live.mts",
+      "unchanged": true
+    },
+    {
+      "repo": "aggregator",
+      "path": "apps/aggregator/scripts/ops/verif-ca-californie.mts",
+      "unchanged": true
+    },
+    {
+      "repo": "aggregator",
+      "path": "apps/aggregator/scripts/ops/verif-catalogue-coherence.mts",
+      "unchanged": true
+    },
+    {
+      "repo": "aggregator",
+      "path": "apps/aggregator/scripts/ops/verif-langues-marches.mts",
+      "unchanged": true
+    },
+    {
+      "repo": "aggregator",
+      "path": "apps/aggregator/src/ats/adapters/bashTalents.test.ts",
+      "unchanged": true
+    },
+    {
+      "repo": "aggregator",
+      "path": "apps/aggregator/src/ats/adapters/bashTalents.ts",
+      "unchanged": true
+    },
+    {
+      "repo": "aggregator",
+      "path": "apps/aggregator/src/pipeline/sourceStore.test.ts",
+      "unchanged": false
+    },
+    {
+      "repo": "aggregator",
+      "path": "audits/mesures-d435-d436/d437-couverture-simulee.mjs",
+      "unchanged": true
+    },
+    {
+      "repo": "aggregator",
+      "path": "audits/mesures-d435-d436/d437-echantillon.mjs",
+      "unchanged": true
+    },
+    {
+      "repo": "aggregator",
+      "path": "audits/mesures-d435-d436/d437-enum-cles-raw.mjs",
+      "unchanged": true
+    },
+    {
+      "repo": "aggregator",
+      "path": "audits/mesures-d435-d436/d437-geo-plausibilite.mjs",
+      "unchanged": true
+    },
+    {
+      "repo": "aggregator",
+      "path": "audits/mesures-d435-d436/lot5-cles-raw-par-ats-2026-09-15.sql",
+      "unchanged": true
+    },
+    {
+      "repo": "aggregator",
+      "path": "audits/mesures-d435-d436/lot5-contradiction-seniorite-2026-09-15.sql",
+      "unchanged": true
+    },
+    {
+      "repo": "aggregator",
+      "path": "audits/mesures-d435-d436/lot5-dimensions-par-ats-2026-09-15.sql",
+      "unchanged": true
+    },
+    {
+      "repo": "aggregator",
+      "path": "audits/mesures-d435-d436/lot5-inventaire-2026-09-15.sql",
+      "unchanged": true
+    },
+    {
+      "repo": "aggregator",
+      "path": "audits/mesures-d435-d436/lot5-part-deduction-2026-09-15.sql",
+      "unchanged": true
+    },
+    {
+      "repo": "aggregator",
+      "path": "audits/mesures-d435-d436/lot5-source-vs-colonne-2026-09-15.sql",
+      "unchanged": true
+    },
+    {
+      "repo": "aggregator",
+      "path": "audits/mesures-d435-d436/mesures.sql",
+      "unchanged": true
+    },
+    {
+      "repo": "aggregator",
+      "path": "audits/mesures-d435-d436/q.mjs",
+      "unchanged": true
+    },
+    {
+      "repo": "aggregator",
+      "path": "audits/mesures-d435-d436/verif-ats-us-au-ch.mjs",
+      "unchanged": true
+    },
+    {
+      "repo": "aggregator",
+      "path": "audits/mesures-d435-d436/verif-cles-raw-experience.mjs",
+      "unchanged": true
+    },
+    {
+      "repo": "aggregator",
+      "path": "audits/mesures-d435-d436/verif-familles-vs-metiers.mjs",
+      "unchanged": true
+    },
+    {
+      "repo": "aggregator",
+      "path": "audits/mesures-d435-d436/verif-filtres-universels.mjs",
+      "unchanged": true
+    },
+    {
+      "repo": "aggregator",
+      "path": "audits/mesures-d435-d436/verif-longue-traine.mjs",
+      "unchanged": true
+    },
+    {
+      "repo": "aggregator",
+      "path": "audits/mesures-d435-d436/verif-raw-4-dimensions.mjs",
+      "unchanged": true
+    },
+    {
+      "repo": "aggregator",
+      "path": "audits/mesures-d435-d436/verif-raw-workday-jibe.mjs",
+      "unchanged": true
+    },
+    {
+      "repo": "aggregator",
+      "path": "audits/mesures-d435-d436/verif-salaire-zeros.mjs",
+      "unchanged": true
+    },
+    {
+      "repo": "aggregator",
+      "path": "audits/mesures-d435-d436/verif-seniorite-declaree.mjs",
+      "unchanged": true
+    },
+    {
+      "repo": "aggregator",
+      "path": "audits/mesures-d435-d436/verif-titres-distincts.mjs",
+      "unchanged": true
+    },
+    {
+      "repo": "website",
+      "path": "next.config.mjs",
+      "unchanged": true
+    },
+    {
+      "repo": "website",
+      "path": "src/app/cgu/page.tsx",
+      "unchanged": true
+    },
+    {
+      "repo": "website",
+      "path": "src/app/confidentialite/page.tsx",
+      "unchanged": true
+    },
+    {
+      "repo": "website",
+      "path": "src/app/mentions-legales/page.tsx",
+      "unchanged": true
+    },
+    {
+      "repo": "website",
+      "path": "src/components/legal/AvertissementLegal.tsx",
+      "unchanged": true
+    },
+    {
+      "repo": "website",
+      "path": "src/lib/emplois/__tests__/marches-parite-amont.test.ts",
+      "unchanged": true
+    },
+    {
+      "repo": "website",
+      "path": "src/lib/emplois/__tests__/suggest-villes-marche.test.ts",
+      "unchanged": true
+    },
+    {
+      "repo": "website",
+      "path": "src/lib/langue/__tests__/legal.test.ts",
+      "unchanged": true
+    },
+    {
+      "repo": "website",
+      "path": "src/lib/langue/legal/en.ts",
+      "unchanged": true
+    },
+    {
+      "repo": "website",
+      "path": "src/lib/langue/legal/fr.ts",
+      "unchanged": true
+    },
+    {
+      "repo": "website",
+      "path": "src/lib/langue/legal/index.ts",
+      "unchanged": true
+    },
+    {
+      "repo": "backend",
+      "path": "docs/governance/DECISIONS.md",
+      "unchanged": true
+    },
+    {
+      "repo": "backend",
+      "path": "prisma/migrations/20260914135914_anciens_slugs_d425/migration.sql",
+      "unchanged": true
+    },
+    {
+      "repo": "backend",
+      "path": "prisma/schema.prisma",
+      "unchanged": true
+    },
+    {
+      "repo": "backend",
+      "path": "scripts/rattacher-maisons-d424.mjs",
+      "unchanged": true
+    },
+    {
+      "repo": "media",
+      "path": "PATRON-ARTICLE-EVENEMENTIEL.md",
+      "unchanged": true
+    },
+    {
+      "repo": "media",
+      "path": "newsroom/migrations/025_article_translations.down.sql",
+      "unchanged": true
+    },
+    {
+      "repo": "media",
+      "path": "newsroom/migrations/025_article_translations.up.sql",
+      "unchanged": true
+    },
+    {
+      "repo": "media",
+      "path": "newsroom/package.json",
+      "unchanged": true
+    },
+    {
+      "repo": "media",
+      "path": "newsroom/scripts/etat-avant-025.mjs",
+      "unchanged": true
+    },
+    {
+      "repo": "media",
+      "path": "newsroom/scripts/shadow-search-intent-radar.mjs",
+      "unchanged": true
+    },
+    {
+      "repo": "media",
+      "path": "newsroom/scripts/temoin-pfw-publication-anticipee-2026-09-07.mjs",
+      "unchanged": true
+    },
+    {
+      "repo": "media",
+      "path": "newsroom/src/console-server.mjs",
+      "unchanged": true
+    },
+    {
+      "repo": "media",
+      "path": "newsroom/src/journal-server.mjs",
+      "unchanged": true
+    },
+    {
+      "repo": "media",
+      "path": "newsroom/src/lib/journal-public.mjs",
+      "unchanged": true
+    },
+    {
+      "repo": "media",
+      "path": "newsroom/src/lib/translate-article.mjs",
+      "unchanged": true
+    },
+    {
+      "repo": "media",
+      "path": "newsroom/src/lib/translation-rules.mjs",
+      "unchanged": true
+    },
+    {
+      "repo": "media",
+      "path": "newsroom/src/traduire-stock.mjs",
+      "unchanged": true
+    },
+    {
+      "repo": "media",
+      "path": "newsroom/src/verif-parite-traduction.mjs",
+      "unchanged": true
+    },
+    {
+      "repo": "media",
+      "path": "newsroom/tests/54-traduction-en.test.mjs",
+      "unchanged": true
+    },
+    {
+      "repo": "media",
+      "path": "redactions/2026-09-09-article-diplome-travailler-dans-le-luxe.md",
+      "unchanged": true
+    },
+    {
+      "repo": "media",
+      "path": "redactions/2026-09-09-article-soin-visage-givenchy.md",
+      "unchanged": true
+    },
+    {
+      "repo": "media",
+      "path": "redactions/2026-09-14-article1-calendrier-pfw.md",
+      "unchanged": true
+    },
+    {
+      "repo": "media",
+      "path": "redactions/2026-09-16-article2-maisons-defiles-pfw.md",
+      "unchanged": true
+    },
+    {
+      "repo": "media",
+      "path": "redactions/2026-09-18-article3-donnees-emploi-catwalks.md",
+      "unchanged": true
+    },
+    {
+      "repo": "media",
+      "path": "redactions/article-diplome-luxe-v1-corps.md",
+      "unchanged": true
+    },
+    {
+      "repo": "media",
+      "path": "redactions/article-givenchy-soin-v1-corps.md",
+      "unchanged": true
+    },
+    {
+      "repo": "media",
+      "path": "redactions/article1-v2-corps.md",
+      "unchanged": true
+    },
+    {
+      "repo": "media",
+      "path": "redactions/article1-v3-corps.md",
+      "unchanged": true
+    },
+    {
+      "repo": "media",
+      "path": "redactions/article2-v2-corps.md",
+      "unchanged": true
+    },
+    {
+      "repo": "media",
+      "path": "redactions/article3-v1-corps.md",
+      "unchanged": true
+    },
+    {
+      "repo": "media",
+      "path": "redactions/hero-article3-apercu.png",
+      "unchanged": true
+    },
+    {
+      "repo": "media",
+      "path": "redactions/hero-article3-data-catwalks.svg",
+      "unchanged": true
+    },
+    {
+      "repo": "media",
+      "path": "website/src/app/api/revalidate/route.ts",
+      "unchanged": true
+    },
+    {
+      "repo": "media",
+      "path": "website/src/app/en/business/[slug]/page.tsx",
+      "unchanged": true
+    },
+    {
+      "repo": "media",
+      "path": "website/src/app/en/career/[slug]/page.tsx",
+      "unchanged": true
+    },
+    {
+      "repo": "media",
+      "path": "website/src/app/layout.tsx",
+      "unchanged": true
+    },
+    {
+      "repo": "media",
+      "path": "website/src/app/sitemap.ts",
+      "unchanged": true
+    },
+    {
+      "repo": "media",
+      "path": "website/src/components/ArticlePage.tsx",
+      "unchanged": true
+    },
+    {
+      "repo": "media",
+      "path": "website/src/components/LangueDocument.tsx",
+      "unchanged": true
+    },
+    {
+      "repo": "media",
+      "path": "website/src/lib/article-ou-remplacant.ts",
+      "unchanged": true
+    },
+    {
+      "repo": "media",
+      "path": "website/src/lib/press-api.ts",
+      "unchanged": true
+    },
+    {
+      "repo": "media",
+      "path": "website/src/lib/taxonomy.ts",
+      "unchanged": true
+    },
+    {
+      "repo": "media",
+      "path": "website/src/lib/types.ts",
+      "unchanged": true
+    },
+    {
+      "repo": "media",
+      "path": "website/tests/liens-cibles-vivantes.test.mjs",
+      "unchanged": true
+    }
+  ]
+}

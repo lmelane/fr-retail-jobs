@@ -1,0 +1,92 @@
+{
+  "date": "2026-09-16T04:46:16.343Z",
+  "sourceKey": "robots-live-lever-de9e6ca5-57b6-4f61-8581-a99221d56b27",
+  "sourceStatus": "DRAFT",
+  "sourceUnchanged": true,
+  "identityReviews": 0,
+  "offersPublished": 0,
+  "authorizationGranted": false,
+  "productionTouched": false,
+  "results": [
+    {
+      "receipt": {
+        "captureBatchId": "563abaeb-0ac3-49cb-a554-e344fa00534e",
+        "sourceRevisionId": "5b1a5b77-8ec3-4393-86ac-1a2e3fb8d1d4",
+        "purpose": "SOURCE_ACCESS",
+        "responseCount": 1,
+        "lastStatus": 200,
+        "finalCaptureId": "dc0c6afb-3af5-40ce-b007-4dd83a452f6b"
+      },
+      "readerRevision": "local-sha256:431130d1fdfbaa344714021a4af432a41c782e9bcc0b9854c5095288d31ccc50",
+      "initialUrl": "https://api.lever.co/robots.txt",
+      "finalUrl": "https://api.lever.co/robots.txt",
+      "contentType": "text/plain; charset=UTF-8",
+      "bodyBytes": 38,
+      "bodySha256": "6aa3556bd611889c4480a143bb6186f9d0c5e919c6b4c9901f3a6a8141549a1b",
+      "manifestHash": "4865debd667c4c5c967d612bd5f8ba0e843259b4bde3706e883b73866f51815c",
+      "path": "/v0/postings/arcteryx.com",
+      "sentRequestsObservedAtTransport": [
+        {
+          "url": "https://api.lever.co/robots.txt",
+          "method": "GET",
+          "userAgent": "CatwalksBot/1.0 (+https://catwalks.io/bot)"
+        }
+      ],
+      "crawlerIdentityIndependentlyPersistedInJournal": false,
+      "crawlerIdentity": "CatwalksBot/1.0 (+https://catwalks.io/bot)",
+      "productToken": "CatwalksBot",
+      "observation": {
+        "httpStatus": 200,
+        "sha256": "6aa3556bd611889c4480a143bb6186f9d0c5e919c6b4c9901f3a6a8141549a1b",
+        "bytes": 38,
+        "verdict": "ALLOWED"
+      },
+      "uniqueBlobs": 2,
+      "purged": 2,
+      "hotBodiesRemaining": 0,
+      "portalHttpRequestsDuringColdReading": 0,
+      "coldReads": 2,
+      "coldReadsEqual": true
+    },
+    {
+      "receipt": {
+        "captureBatchId": "db89100a-a9f9-49a3-a58f-3d2328a39d92",
+        "sourceRevisionId": "5b1a5b77-8ec3-4393-86ac-1a2e3fb8d1d4",
+        "purpose": "SOURCE_ACCESS",
+        "responseCount": 1,
+        "lastStatus": 200,
+        "finalCaptureId": "db32dc99-7b72-428d-b9c8-ea6fa39d25f2"
+      },
+      "readerRevision": "local-sha256:431130d1fdfbaa344714021a4af432a41c782e9bcc0b9854c5095288d31ccc50",
+      "initialUrl": "https://jobs.lever.co/robots.txt",
+      "finalUrl": "https://jobs.lever.co/robots.txt",
+      "contentType": "text/plain; charset=UTF-8",
+      "bodyBytes": 38,
+      "bodySha256": "6aa3556bd611889c4480a143bb6186f9d0c5e919c6b4c9901f3a6a8141549a1b",
+      "manifestHash": "b022b383c07849cd59155745f3276d0c9c097a5d6cb15e8f76fcd0285ba863be",
+      "path": "/arcteryx.com",
+      "sentRequestsObservedAtTransport": [
+        {
+          "url": "https://jobs.lever.co/robots.txt",
+          "method": "GET",
+          "userAgent": "CatwalksBot/1.0 (+https://catwalks.io/bot)"
+        }
+      ],
+      "crawlerIdentityIndependentlyPersistedInJournal": false,
+      "crawlerIdentity": "CatwalksBot/1.0 (+https://catwalks.io/bot)",
+      "productToken": "CatwalksBot",
+      "observation": {
+        "httpStatus": 200,
+        "sha256": "6aa3556bd611889c4480a143bb6186f9d0c5e919c6b4c9901f3a6a8141549a1b",
+        "bytes": 38,
+        "verdict": "ALLOWED"
+      },
+      "uniqueBlobs": 2,
+      "purged": 1,
+      "hotBodiesRemaining": 0,
+      "portalHttpRequestsDuringColdReading": 0,
+      "coldReads": 2,
+      "coldReadsEqual": true
+    }
+  ]
+}

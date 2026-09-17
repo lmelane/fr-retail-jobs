@@ -1,0 +1,48 @@
+{
+  "receipt": {
+    "captureBatchId": "b247ce83-576f-4eed-9c0f-fb285ff24202",
+    "sourceRevisionId": "60078b7d-d7f7-4eb4-b9bf-4d0a112f70fa",
+    "purpose": "SOURCE_IDENTITY",
+    "responseCount": 1,
+    "lastStatus": 200,
+    "finalCaptureId": "cef13bd0-4735-4a95-821b-b8343a16914e"
+  },
+  "captureReaderRevision": "local-sha256:16ac652314440c3862c1143720e422f52d7ea18cae2d065a375bb256071c04b3",
+  "bodyBytes": 64432,
+  "manifestHash": "03545959eec24d99d1c84159fae104c61c876315f803f8a68b82748d59e7763a",
+  "uniqueBlobs": 2,
+  "purged": 2,
+  "hotBodiesRemaining": 0,
+  "report": {
+    "policy": "official-html-link/1",
+    "sourceKey": "relation-live-levis-7ddafc18-f495-4fa2-b095-1ea4221d49b2",
+    "sourceRevisionId": "60078b7d-d7f7-4eb4-b9bf-4d0a112f70fa",
+    "captureBatchId": "b247ce83-576f-4eed-9c0f-fb285ff24202",
+    "officialDomain": "levistrauss.com",
+    "evaluatedAt": "2026-09-16T03:23:48.624Z",
+    "inspectorRevision": "local-sha256:deff25a0b04f3d194d8a4af0c2c2a25e940087e94ef75989f6720d560cd32daa",
+    "identityApproved": false,
+    "coverageAttested": false,
+    "verdict": "LINK_MATCHED",
+    "reason": null,
+    "configuredPortal": "https://levistraussandco.wd5.myworkdayjobs.com/External",
+    "captureObservedAt": "2026-09-16T03:17:24.413Z",
+    "responseId": "cef13bd0-4735-4a95-821b-b8343a16914e",
+    "bodyHash": "954688310d25727b3a32190a6c8ab0691b41ed3a0a8c1a585c21cc56462b1785",
+    "witness": {
+      "element": "a",
+      "attribute": "href",
+      "ordinal": 25,
+      "referenceHash": "9acaaf54289b03ae97fbca99fa4d8c6fee466f66ef704c96fef283ca048c5874",
+      "resolvedReferenceHash": "9acaaf54289b03ae97fbca99fa4d8c6fee466f66ef704c96fef283ca048c5874",
+      "queryKeys": [
+        "jobFamily"
+      ]
+    }
+  },
+  "repeatedColdReportEqual": true,
+  "sourceUnchanged": true,
+  "identityReviews": 0,
+  "productionTouched": false,
+  "portalHttpRequestsDuringReinspection": 0
+}

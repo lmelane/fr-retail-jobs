@@ -1,43 +1,48 @@
 /**
- * Offer URLs: /offre/[slug]-[id] (S-01).
+ * Le chemin public d'une offre du catalogue : `/emplois/<slug>-<id>` (lot 9).
  *
- * The slug exists for people and for search engines — the id alone is the
- * identity. Old /offre/[id] URLs keep working through a 301 to the canonical
- * form, and a stale slug (title edited at the source) 301s to the fresh one.
+ * C'est l'adresse de la fiche sur le site candidat (`/emplois/[id]`, lot 6C).
+ * Le slug existe pour les personnes et les moteurs ; l'identifiant seul porte
+ * l'identité — un slug périmé (titre modifié à la source) ou absent résout
+ * encore l'offre, et le site redirige vers la forme canonique.
  *
- * Zero-dependency on purpose: client components (the offer cards) build these
- * links too, so nothing here may touch node built-ins.
+ * UN SEUL ALGORITHME, RECOPIÉ À L'IDENTIQUE DANS LE SITE (`cheminEmploi`,
+ * `src/components/emplois/EmploiCard.tsx`) : le sitemap et le `url` du
+ * balisage sortent d'ici, les liens du site de là-bas, et ils doivent être
+ * les mêmes octets. Le témoin `offer-url.test.ts` fixe les cas qui divergeaient
+ * (NFKD contre NFD pour les ligatures, 80 caractères, tiret final).
+ *
+ * Zéro dépendance, volontairement : le site le recopie tel quel.
  */
 
-const SLUG_MAX = 70;
+const SLUG_MAX = 80;
 
-/** "Chargé(e) de clientèle — CDI" -> "charge-e-de-clientele-cdi". */
+/** « Chargé(e) de clientèle — CDI » → « charge-e-de-clientele-cdi ». */
 export function offerSlug(title: string): string {
   return title
-    .toLowerCase()
     .normalize('NFKD')
     .replace(/[̀-ͯ]/g, '')
+    .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-|-$/g, '')
+    .replace(/^-+|-+$/g, '')
     .slice(0, SLUG_MAX)
-    .replace(/-$/, '');
+    .replace(/-+$/, '');
 }
 
-/** Canonical path for an offer. Falls back to the bare id on an empty slug. */
+/** Le chemin canonique d'une offre ; l'identifiant nu quand le titre ne donne aucun slug. */
 export function offerPath(job: { id: string; title: string }): string {
   const slug = offerSlug(job.title);
-  return slug ? `/offre/${slug}-${job.id}` : `/offre/${job.id}`;
+  return `/emplois/${slug ? `${slug}-` : ''}${job.id}`;
 }
 
 /**
- * Candidate ids for a /offre/[param] value.
+ * Les identifiants candidats d'un paramètre `/emplois/[param]`.
  *
- * The param is either a bare id (old URLs) or slug-id, and an id may itself
- * contain hyphens (the e2e fixtures do; production cuids do not) — so the
- * boundary between slug and id is ambiguous. Tried in order: the raw value
- * (bare ids resolve in one lookup), then each hyphen-suffix from the shortest
- * (a production cuid is always the last segment). Capped: a hostile param must
- * not turn into unbounded lookups.
+ * Le paramètre est soit un identifiant nu, soit `slug-id`, et un identifiant
+ * peut lui-même contenir des tirets (`cw_…` non, les jeux d'essai oui) : la
+ * frontière entre slug et identifiant est ambiguë. Essayés dans l'ordre : la
+ * valeur brute, puis chaque suffixe après un tiret, du plus court au plus long,
+ * borné — un paramètre hostile ne doit pas devenir une série de lectures.
  */
 const MAX_SUFFIX_CANDIDATES = 4;
 

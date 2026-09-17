@@ -1,0 +1,1319 @@
+{
+  "total": 85327,
+  "salary": 3845,
+  "decimals": 1322,
+  "completeSalary": 2206,
+  "multiLocation": 3031,
+  "coordinates": 24884,
+  "cacheBytes": 76355121,
+  "p95CacheBytes": 1313,
+  "maxCacheBytes": 46098,
+  "elapsedMs": 5046,
+  "byKind": {
+    "smartrecruiters-whitelabel": {
+      "salary": {
+        "UNINTERPRETED": 5859,
+        "INPUT_MISSING": 1
+      },
+      "education": {
+        "UNINTERPRETED": 5859,
+        "INPUT_MISSING": 1
+      },
+      "workplace": {
+        "NOT_OBSERVED": 5525,
+        "DECLARED": 334,
+        "INPUT_MISSING": 1
+      },
+      "locations": {
+        "DECLARED": 5859,
+        "INPUT_MISSING": 1
+      }
+    },
+    "teamtailor": {
+      "salary": {
+        "NOT_OBSERVED": 4000,
+        "DECLARED": 1341,
+        "INPUT_MISSING": 14
+      },
+      "education": {
+        "UNINTERPRETED": 5341,
+        "INPUT_MISSING": 14
+      },
+      "workplace": {
+        "NOT_OBSERVED": 5341,
+        "INPUT_MISSING": 14
+      },
+      "locations": {
+        "DECLARED": 5301,
+        "NOT_OBSERVED": 40,
+        "INPUT_MISSING": 14
+      }
+    },
+    "jobylon": {
+      "salary": {
+        "UNINTERPRETED": 31
+      },
+      "education": {
+        "UNINTERPRETED": 31
+      },
+      "workplace": {
+        "UNINTERPRETED": 31
+      },
+      "locations": {
+        "NOT_OBSERVED": 5,
+        "DECLARED": 26
+      }
+    },
+    "workday": {
+      "salary": {
+        "UNINTERPRETED": 19702,
+        "INPUT_MISSING": 9
+      },
+      "education": {
+        "UNINTERPRETED": 19702,
+        "INPUT_MISSING": 9
+      },
+      "workplace": {
+        "NOT_OBSERVED": 17569,
+        "DECLARED": 2092,
+        "UNINTERPRETED": 41,
+        "INPUT_MISSING": 9
+      },
+      "locations": {
+        "DECLARED": 12959,
+        "NOT_OBSERVED": 6743,
+        "INPUT_MISSING": 9
+      }
+    },
+    "successfactors": {
+      "salary": {
+        "UNINTERPRETED": 4221,
+        "INPUT_MISSING": 9
+      },
+      "education": {
+        "UNINTERPRETED": 4221,
+        "INPUT_MISSING": 9
+      },
+      "workplace": {
+        "NOT_OBSERVED": 4070,
+        "INPUT_MISSING": 9,
+        "DECLARED": 151
+      },
+      "locations": {
+        "UNINTERPRETED": 4221,
+        "INPUT_MISSING": 9
+      }
+    },
+    "flatchr": {
+      "salary": {
+        "WITHHELD_BY_SOURCE": 252,
+        "DECLARED": 81,
+        "NOT_OBSERVED": 21
+      },
+      "education": {
+        "DECLARED": 354
+      },
+      "workplace": {
+        "DECLARED": 354
+      },
+      "locations": {
+        "DECLARED": 116,
+        "WITHHELD_BY_SOURCE": 238
+      }
+    },
+    "icims": {
+      "salary": {
+        "DECLARED": 1207,
+        "NOT_OBSERVED": 348,
+        "INPUT_MISSING": 37,
+        "CONFLICT": 1
+      },
+      "education": {
+        "UNINTERPRETED": 1556,
+        "INPUT_MISSING": 37
+      },
+      "workplace": {
+        "NOT_OBSERVED": 1550,
+        "INPUT_MISSING": 37,
+        "DECLARED": 6
+      },
+      "locations": {
+        "DECLARED": 1532,
+        "INPUT_MISSING": 37,
+        "NOT_OBSERVED": 24
+      }
+    },
+    "personio": {
+      "salary": {
+        "NOT_OBSERVED": 183,
+        "DECLARED": 3
+      },
+      "education": {
+        "UNINTERPRETED": 186
+      },
+      "workplace": {
+        "UNINTERPRETED": 186
+      },
+      "locations": {
+        "UNINTERPRETED": 186
+      }
+    },
+    "digitalrecruiters": {
+      "salary": {
+        "UNINTERPRETED": 783
+      },
+      "education": {
+        "UNINTERPRETED": 783
+      },
+      "workplace": {
+        "UNINTERPRETED": 783
+      },
+      "locations": {
+        "DECLARED": 783
+      }
+    },
+    "greenhouse": {
+      "salary": {
+        "UNINTERPRETED": 2545
+      },
+      "education": {
+        "UNINTERPRETED": 2545
+      },
+      "workplace": {
+        "UNINTERPRETED": 2545
+      },
+      "locations": {
+        "DECLARED": 2545
+      }
+    },
+    "generic-listing": {
+      "salary": {
+        "NOT_OBSERVED": 6101,
+        "DECLARED": 132
+      },
+      "education": {
+        "UNINTERPRETED": 6233
+      },
+      "workplace": {
+        "NOT_OBSERVED": 6233
+      },
+      "locations": {
+        "DECLARED": 6218,
+        "NOT_OBSERVED": 15
+      }
+    },
+    "recruitee": {
+      "salary": {
+        "NOT_OBSERVED": 483,
+        "DECLARED": 156
+      },
+      "education": {
+        "DECLARED": 639
+      },
+      "workplace": {
+        "DECLARED": 639
+      },
+      "locations": {
+        "DECLARED": 639
+      }
+    },
+    "lever": {
+      "salary": {
+        "DECLARED": 400,
+        "NOT_OBSERVED": 420
+      },
+      "education": {
+        "UNINTERPRETED": 820
+      },
+      "workplace": {
+        "DECLARED": 820
+      },
+      "locations": {
+        "DECLARED": 820
+      }
+    },
+    "wttj": {
+      "salary": {
+        "INPUT_MISSING": 93,
+        "NOT_OBSERVED": 662,
+        "DECLARED": 11
+      },
+      "education": {
+        "INPUT_MISSING": 93,
+        "DECLARED": 31,
+        "NOT_OBSERVED": 642
+      },
+      "workplace": {
+        "INPUT_MISSING": 93,
+        "DECLARED": 134,
+        "NOT_OBSERVED": 539
+      },
+      "locations": {
+        "INPUT_MISSING": 93,
+        "UNINTERPRETED": 673
+      }
+    },
+    "workable": {
+      "salary": {
+        "UNINTERPRETED": 280
+      },
+      "education": {
+        "NOT_OBSERVED": 235,
+        "DECLARED": 45
+      },
+      "workplace": {
+        "NOT_OBSERVED": 280
+      },
+      "locations": {
+        "DECLARED": 280
+      }
+    },
+    "talentview": {
+      "salary": {
+        "NOT_OBSERVED": 58,
+        "DECLARED": 22
+      },
+      "education": {
+        "NOT_OBSERVED": 80
+      },
+      "workplace": {
+        "NOT_OBSERVED": 45,
+        "DECLARED": 35
+      },
+      "locations": {
+        "UNINTERPRETED": 80
+      }
+    },
+    "talentsoft": {
+      "salary": {
+        "UNINTERPRETED": 353
+      },
+      "education": {
+        "UNINTERPRETED": 353
+      },
+      "workplace": {
+        "UNINTERPRETED": 353
+      },
+      "locations": {
+        "UNINTERPRETED": 353
+      }
+    },
+    "bashtalents": {
+      "salary": {
+        "UNINTERPRETED": 57
+      },
+      "education": {
+        "UNINTERPRETED": 57
+      },
+      "workplace": {
+        "UNINTERPRETED": 57
+      },
+      "locations": {
+        "UNINTERPRETED": 57
+      }
+    },
+    "geodirectory": {
+      "salary": {
+        "UNINTERPRETED": 110
+      },
+      "education": {
+        "UNINTERPRETED": 110
+      },
+      "workplace": {
+        "UNINTERPRETED": 110
+      },
+      "locations": {
+        "DECLARED": 110
+      }
+    },
+    "jobaffinity-wordpress": {
+      "salary": {
+        "UNINTERPRETED": 978
+      },
+      "education": {
+        "UNINTERPRETED": 978
+      },
+      "workplace": {
+        "UNINTERPRETED": 978
+      },
+      "locations": {
+        "DECLARED": 978
+      }
+    },
+    "oraclehcm": {
+      "salary": {
+        "UNINTERPRETED": 1213,
+        "INPUT_MISSING": 2
+      },
+      "education": {
+        "UNINTERPRETED": 1213,
+        "INPUT_MISSING": 2
+      },
+      "workplace": {
+        "UNINTERPRETED": 1213,
+        "INPUT_MISSING": 2
+      },
+      "locations": {
+        "DECLARED": 1201,
+        "NOT_OBSERVED": 12,
+        "INPUT_MISSING": 2
+      }
+    },
+    "taleo": {
+      "salary": {
+        "UNINTERPRETED": 76
+      },
+      "education": {
+        "UNINTERPRETED": 76
+      },
+      "workplace": {
+        "UNINTERPRETED": 76
+      },
+      "locations": {
+        "UNINTERPRETED": 76
+      }
+    },
+    "talentfunnel": {
+      "salary": {
+        "DECLARED": 45,
+        "NOT_OBSERVED": 108
+      },
+      "education": {
+        "UNINTERPRETED": 153
+      },
+      "workplace": {
+        "NOT_OBSERVED": 153
+      },
+      "locations": {
+        "DECLARED": 153
+      }
+    },
+    "magnet": {
+      "salary": {
+        "NOT_OBSERVED": 425,
+        "INPUT_MISSING": 5,
+        "DECLARED": 62
+      },
+      "education": {
+        "UNINTERPRETED": 487,
+        "INPUT_MISSING": 5
+      },
+      "workplace": {
+        "NOT_OBSERVED": 398,
+        "INPUT_MISSING": 5,
+        "DECLARED": 89
+      },
+      "locations": {
+        "DECLARED": 487,
+        "INPUT_MISSING": 5
+      }
+    },
+    "eightfold": {
+      "salary": {
+        "UNINTERPRETED": 2726,
+        "INPUT_MISSING": 50
+      },
+      "education": {
+        "UNINTERPRETED": 2726,
+        "INPUT_MISSING": 50
+      },
+      "workplace": {
+        "DECLARED": 2726,
+        "INPUT_MISSING": 50
+      },
+      "locations": {
+        "DECLARED": 2722,
+        "INPUT_MISSING": 50,
+        "NOT_OBSERVED": 4
+      }
+    },
+    "volcanic": {
+      "salary": {
+        "NOT_OBSERVED": 31
+      },
+      "education": {
+        "UNINTERPRETED": 31
+      },
+      "workplace": {
+        "UNINTERPRETED": 31
+      },
+      "locations": {
+        "UNINTERPRETED": 31
+      }
+    },
+    "phenom": {
+      "salary": {
+        "UNINTERPRETED": 5297,
+        "INPUT_MISSING": 2
+      },
+      "education": {
+        "UNINTERPRETED": 5297,
+        "INPUT_MISSING": 2
+      },
+      "workplace": {
+        "UNINTERPRETED": 5297,
+        "INPUT_MISSING": 2
+      },
+      "locations": {
+        "DECLARED": 5297,
+        "INPUT_MISSING": 2
+      }
+    },
+    "talentrecruiter": {
+      "salary": {
+        "UNINTERPRETED": 17
+      },
+      "education": {
+        "UNINTERPRETED": 17
+      },
+      "workplace": {
+        "UNINTERPRETED": 17
+      },
+      "locations": {
+        "DECLARED": 17
+      }
+    },
+    "easycruit": {
+      "salary": {
+        "UNINTERPRETED": 50
+      },
+      "education": {
+        "UNINTERPRETED": 50
+      },
+      "workplace": {
+        "UNINTERPRETED": 50
+      },
+      "locations": {
+        "UNINTERPRETED": 50
+      }
+    },
+    "avature": {
+      "salary": {
+        "UNINTERPRETED": 2046,
+        "INPUT_MISSING": 862
+      },
+      "education": {
+        "UNINTERPRETED": 2046,
+        "INPUT_MISSING": 862
+      },
+      "workplace": {
+        "UNINTERPRETED": 2046,
+        "INPUT_MISSING": 862
+      },
+      "locations": {
+        "UNINTERPRETED": 2046,
+        "INPUT_MISSING": 862
+      }
+    },
+    "wordpress": {
+      "salary": {
+        "UNINTERPRETED": 478
+      },
+      "education": {
+        "UNINTERPRETED": 478
+      },
+      "workplace": {
+        "UNINTERPRETED": 478
+      },
+      "locations": {
+        "UNINTERPRETED": 478
+      }
+    },
+    "lvmh_algolia": {
+      "salary": {
+        "NOT_OBSERVED": 5686,
+        "DECLARED": 731,
+        "INPUT_MISSING": 16
+      },
+      "education": {
+        "UNINTERPRETED": 6417,
+        "INPUT_MISSING": 16
+      },
+      "workplace": {
+        "UNINTERPRETED": 6417,
+        "INPUT_MISSING": 16
+      },
+      "locations": {
+        "UNINTERPRETED": 6417,
+        "INPUT_MISSING": 16
+      }
+    },
+    "radancy": {
+      "salary": {
+        "NOT_OBSERVED": 53,
+        "INPUT_MISSING": 1
+      },
+      "education": {
+        "UNINTERPRETED": 53,
+        "INPUT_MISSING": 1
+      },
+      "workplace": {
+        "NOT_OBSERVED": 53,
+        "INPUT_MISSING": 1
+      },
+      "locations": {
+        "DECLARED": 53,
+        "INPUT_MISSING": 1
+      }
+    },
+    "eqwa": {
+      "salary": {
+        "UNINTERPRETED": 321
+      },
+      "education": {
+        "UNINTERPRETED": 321
+      },
+      "workplace": {
+        "UNINTERPRETED": 321
+      },
+      "locations": {
+        "UNINTERPRETED": 321
+      }
+    },
+    "ashby": {
+      "salary": {
+        "WITHHELD_BY_SOURCE": 83
+      },
+      "education": {
+        "UNINTERPRETED": 83
+      },
+      "workplace": {
+        "DECLARED": 82,
+        "CONFLICT": 1
+      },
+      "locations": {
+        "DECLARED": 83
+      }
+    },
+    "rituals": {
+      "salary": {
+        "UNINTERPRETED": 1245
+      },
+      "education": {
+        "UNINTERPRETED": 1245
+      },
+      "workplace": {
+        "UNINTERPRETED": 1245
+      },
+      "locations": {
+        "DECLARED": 1245
+      }
+    },
+    "typesense": {
+      "salary": {
+        "UNINTERPRETED": 47
+      },
+      "education": {
+        "UNINTERPRETED": 47
+      },
+      "workplace": {
+        "UNINTERPRETED": 47
+      },
+      "locations": {
+        "UNINTERPRETED": 47
+      }
+    },
+    "harri": {
+      "salary": {
+        "UNINTERPRETED": 36
+      },
+      "education": {
+        "UNINTERPRETED": 36
+      },
+      "workplace": {
+        "UNINTERPRETED": 36
+      },
+      "locations": {
+        "DECLARED": 36
+      }
+    },
+    "swatchgroup": {
+      "salary": {
+        "UNINTERPRETED": 293
+      },
+      "education": {
+        "UNINTERPRETED": 293
+      },
+      "workplace": {
+        "UNINTERPRETED": 293
+      },
+      "locations": {
+        "DECLARED": 287,
+        "NOT_OBSERVED": 6
+      }
+    },
+    "jibe": {
+      "salary": {
+        "NOT_OBSERVED": 10290
+      },
+      "education": {
+        "UNINTERPRETED": 10290
+      },
+      "workplace": {
+        "UNINTERPRETED": 10290
+      },
+      "locations": {
+        "DECLARED": 10290
+      }
+    },
+    "wttj-sector": {
+      "salary": {
+        "NOT_OBSERVED": 1724,
+        "INPUT_MISSING": 53,
+        "DECLARED": 225
+      },
+      "education": {
+        "DECLARED": 381,
+        "NOT_OBSERVED": 1568,
+        "INPUT_MISSING": 53
+      },
+      "workplace": {
+        "DECLARED": 832,
+        "INPUT_MISSING": 53,
+        "NOT_OBSERVED": 1117
+      },
+      "locations": {
+        "UNINTERPRETED": 1949,
+        "INPUT_MISSING": 53
+      }
+    },
+    "altamira": {
+      "salary": {
+        "UNINTERPRETED": 64
+      },
+      "education": {
+        "UNINTERPRETED": 64
+      },
+      "workplace": {
+        "UNINTERPRETED": 64
+      },
+      "locations": {
+        "DECLARED": 56,
+        "NOT_OBSERVED": 8
+      }
+    }
+  },
+  "byStoredMarket": {
+    "US": {
+      "rows": 37327,
+      "locations": 29618,
+      "workplace": 1481,
+      "salary": 2088,
+      "education": 47
+    },
+    "RU": {
+      "rows": 7,
+      "locations": 7
+    },
+    "ZA": {
+      "rows": 167,
+      "locations": 117,
+      "workplace": 43,
+      "salary": 2
+    },
+    "JP": {
+      "rows": 564,
+      "locations": 342,
+      "workplace": 154,
+      "education": 1
+    },
+    "GB": {
+      "rows": 3324,
+      "locations": 2515,
+      "workplace": 696,
+      "salary": 106,
+      "education": 28
+    },
+    "SE": {
+      "rows": 328,
+      "locations": 302,
+      "salary": 2,
+      "education": 2,
+      "workplace": 23
+    },
+    "FR": {
+      "rows": 12087,
+      "locations": 6422,
+      "salary": 821,
+      "education": 749,
+      "workplace": 2118
+    },
+    "CN": {
+      "rows": 1229,
+      "locations": 285,
+      "workplace": 104,
+      "salary": 584
+    },
+    "DE": {
+      "rows": 3091,
+      "locations": 2183,
+      "education": 143,
+      "workplace": 387,
+      "salary": 78
+    },
+    "KR": {
+      "rows": 546,
+      "locations": 315,
+      "workplace": 185
+    },
+    "CA": {
+      "rows": 3169,
+      "locations": 2018,
+      "salary": 144,
+      "education": 11,
+      "workplace": 419
+    },
+    "TW": {
+      "rows": 236,
+      "locations": 132,
+      "workplace": 59
+    },
+    "AU": {
+      "rows": 1262,
+      "locations": 872,
+      "workplace": 143,
+      "salary": 7
+    },
+    "MY": {
+      "rows": 272,
+      "locations": 158,
+      "workplace": 61,
+      "education": 3
+    },
+    "BE": {
+      "rows": 687,
+      "locations": 504,
+      "salary": 26,
+      "education": 34,
+      "workplace": 97
+    },
+    "MX": {
+      "rows": 482,
+      "locations": 302,
+      "workplace": 125,
+      "salary": 18
+    },
+    "BG": {
+      "rows": 45,
+      "locations": 38,
+      "workplace": 2
+    },
+    "TN": {
+      "rows": 33,
+      "locations": 21,
+      "salary": 15,
+      "workplace": 15
+    },
+    "BR": {
+      "rows": 210,
+      "locations": 148,
+      "workplace": 26
+    },
+    "ES": {
+      "rows": 2217,
+      "locations": 1851,
+      "salary": 59,
+      "education": 11,
+      "workplace": 72
+    },
+    "CH": {
+      "rows": 1258,
+      "locations": 681,
+      "workplace": 265,
+      "education": 4,
+      "salary": 6
+    },
+    "IT": {
+      "rows": 2759,
+      "locations": 1928,
+      "education": 71,
+      "workplace": 412,
+      "salary": 77
+    },
+    "GR": {
+      "rows": 185,
+      "locations": 150,
+      "education": 9,
+      "salary": 1,
+      "workplace": 14
+    },
+    "SG": {
+      "rows": 476,
+      "locations": 220,
+      "workplace": 116,
+      "education": 6
+    },
+    "VN": {
+      "rows": 164,
+      "locations": 102,
+      "workplace": 25,
+      "salary": 1,
+      "education": 6
+    },
+    "AE": {
+      "rows": 259,
+      "locations": 187,
+      "workplace": 83,
+      "education": 8
+    },
+    "TR": {
+      "rows": 317,
+      "locations": 231,
+      "workplace": 35
+    },
+    "HK": {
+      "rows": 402,
+      "locations": 220,
+      "workplace": 125
+    },
+    "SK": {
+      "rows": 34,
+      "locations": 32
+    },
+    "NL": {
+      "rows": 1857,
+      "locations": 1555,
+      "workplace": 358,
+      "salary": 37,
+      "education": 280
+    },
+    "PT": {
+      "rows": 528,
+      "workplace": 92,
+      "locations": 467,
+      "salary": 2
+    },
+    "ID": {
+      "rows": 57,
+      "locations": 21,
+      "workplace": 1
+    },
+    "IN": {
+      "rows": 577,
+      "locations": 321,
+      "salary": 1,
+      "education": 10,
+      "workplace": 76
+    },
+    "PL": {
+      "rows": 361,
+      "locations": 268,
+      "workplace": 20,
+      "salary": 20
+    },
+    "CL": {
+      "rows": 315,
+      "locations": 311,
+      "workplace": 14,
+      "salary": 151
+    },
+    "RO": {
+      "rows": 107,
+      "locations": 85,
+      "workplace": 7
+    },
+    "PE": {
+      "rows": 154,
+      "locations": 148,
+      "workplace": 1,
+      "salary": 47
+    },
+    "CO": {
+      "rows": 131,
+      "locations": 64,
+      "workplace": 19,
+      "salary": 17
+    },
+    "HR": {
+      "rows": 41,
+      "locations": 34
+    },
+    "JO": {
+      "rows": 4,
+      "locations": 3
+    },
+    "PH": {
+      "rows": 62,
+      "locations": 33,
+      "workplace": 2
+    },
+    "SA": {
+      "rows": 115,
+      "locations": 94,
+      "workplace": 27
+    },
+    "(unknown stored country)": {
+      "rows": 4889,
+      "locations": 2478,
+      "salary": 29,
+      "workplace": 34
+    },
+    "CZ": {
+      "rows": 159,
+      "locations": 129,
+      "workplace": 38
+    },
+    "KZ": {
+      "rows": 5,
+      "locations": 2
+    },
+    "MA": {
+      "rows": 67,
+      "locations": 42,
+      "salary": 15,
+      "workplace": 15
+    },
+    "AT": {
+      "rows": 397,
+      "locations": 309,
+      "salary": 14,
+      "education": 16,
+      "workplace": 31
+    },
+    "NZ": {
+      "rows": 154,
+      "locations": 96,
+      "workplace": 12,
+      "salary": 3
+    },
+    "IL": {
+      "rows": 102,
+      "locations": 68,
+      "salary": 11,
+      "workplace": 44
+    },
+    "EG": {
+      "rows": 36,
+      "locations": 33
+    },
+    "HU": {
+      "rows": 123,
+      "locations": 113,
+      "workplace": 14
+    },
+    "PK": {
+      "rows": 8,
+      "locations": 1
+    },
+    "TH": {
+      "rows": 286,
+      "locations": 210,
+      "workplace": 34,
+      "education": 5
+    },
+    "IE": {
+      "rows": 283,
+      "locations": 235,
+      "salary": 15,
+      "education": 2,
+      "workplace": 84
+    },
+    "UA": {
+      "rows": 10,
+      "locations": 8
+    },
+    "KH": {
+      "rows": 9,
+      "locations": 7,
+      "workplace": 1
+    },
+    "RS": {
+      "rows": 16,
+      "locations": 13
+    },
+    "LU": {
+      "rows": 55,
+      "locations": 51,
+      "education": 1,
+      "workplace": 2,
+      "salary": 1
+    },
+    "MC": {
+      "rows": 41,
+      "locations": 24,
+      "education": 2,
+      "workplace": 22
+    },
+    "BH": {
+      "rows": 15,
+      "locations": 7
+    },
+    "NO": {
+      "rows": 239,
+      "workplace": 6,
+      "locations": 210
+    },
+    "DK": {
+      "rows": 386,
+      "workplace": 14,
+      "locations": 338,
+      "salary": 4,
+      "education": 1
+    },
+    "MO": {
+      "rows": 82,
+      "locations": 58,
+      "workplace": 1
+    },
+    "MT": {
+      "rows": 2,
+      "locations": 1
+    },
+    "BS": {
+      "rows": 2,
+      "locations": 1
+    },
+    "FI": {
+      "rows": 38,
+      "locations": 31
+    },
+    "NG": {
+      "rows": 1,
+      "locations": 1
+    },
+    "KE": {
+      "rows": 2,
+      "locations": 2
+    },
+    "EC": {
+      "rows": 1,
+      "locations": 1
+    },
+    "AR": {
+      "rows": 38,
+      "locations": 23,
+      "workplace": 13
+    },
+    "LB": {
+      "rows": 2,
+      "workplace": 2,
+      "locations": 2
+    },
+    "JE": {
+      "rows": 3,
+      "locations": 3
+    },
+    "IM": {
+      "rows": 1,
+      "locations": 1
+    },
+    "GG": {
+      "rows": 6,
+      "locations": 6
+    },
+    "PA": {
+      "rows": 39,
+      "locations": 24,
+      "workplace": 9,
+      "salary": 3
+    },
+    "MD": {
+      "rows": 12,
+      "locations": 7
+    },
+    "VA": {
+      "rows": 30,
+      "locations": 21,
+      "salary": 2,
+      "workplace": 2
+    },
+    "GA": {
+      "rows": 27,
+      "locations": 21,
+      "salary": 6,
+      "workplace": 7
+    },
+    "NC": {
+      "rows": 15,
+      "locations": 7
+    },
+    "UY": {
+      "rows": 1,
+      "locations": 1
+    },
+    "LT": {
+      "rows": 35,
+      "locations": 29
+    },
+    "QA": {
+      "rows": 10,
+      "locations": 5,
+      "workplace": 3
+    },
+    "KW": {
+      "rows": 3,
+      "locations": 1
+    },
+    "KY": {
+      "rows": 26,
+      "locations": 11,
+      "workplace": 4,
+      "salary": 3
+    },
+    "MN": {
+      "rows": 12,
+      "locations": 7
+    },
+    "NA": {
+      "rows": 2,
+      "locations": 2
+    },
+    "BL": {
+      "rows": 2
+    },
+    "AW": {
+      "rows": 2
+    },
+    "DO": {
+      "rows": 3,
+      "locations": 1
+    },
+    "PR": {
+      "rows": 72,
+      "locations": 71
+    },
+    "VI": {
+      "rows": 6,
+      "locations": 6
+    },
+    "GU": {
+      "rows": 1,
+      "locations": 1
+    },
+    "AM": {
+      "rows": 1,
+      "locations": 1
+    },
+    "AL": {
+      "rows": 12,
+      "locations": 7
+    },
+    "SC": {
+      "rows": 18,
+      "locations": 4
+    },
+    "LA": {
+      "rows": 3,
+      "locations": 2
+    },
+    "CY": {
+      "rows": 2,
+      "locations": 2
+    },
+    "EE": {
+      "rows": 4,
+      "locations": 2
+    },
+    "LV": {
+      "rows": 15,
+      "locations": 9
+    },
+    "XK": {
+      "rows": 7,
+      "locations": 7
+    },
+    "GE": {
+      "rows": 2,
+      "locations": 2
+    },
+    "BD": {
+      "rows": 5,
+      "locations": 5
+    },
+    "SV": {
+      "rows": 1,
+      "locations": 1
+    },
+    "LS": {
+      "rows": 4,
+      "locations": 4
+    },
+    "SZ": {
+      "rows": 3,
+      "locations": 3
+    },
+    "AZ": {
+      "rows": 8
+    },
+    "NE": {
+      "rows": 6,
+      "locations": 1
+    },
+    "NH": {
+      "rows": 2
+    },
+    "SD": {
+      "rows": 2
+    },
+    "ME": {
+      "rows": 1
+    },
+    "BA": {
+      "rows": 1,
+      "locations": 1
+    },
+    "MV": {
+      "rows": 6
+    },
+    "AD": {
+      "rows": 5,
+      "locations": 5
+    },
+    "SI": {
+      "rows": 9,
+      "locations": 9
+    },
+    "ST": {
+      "rows": 1
+    },
+    "BY": {
+      "rows": 2,
+      "locations": 2
+    },
+    "OM": {
+      "rows": 2
+    },
+    "MF": {
+      "rows": 1,
+      "locations": 1
+    },
+    "MU": {
+      "rows": 1,
+      "locations": 1
+    },
+    "CR": {
+      "rows": 1
+    }
+  },
+  "marketBasis": "Stored job country is a measurement segment, not newly verified source geography",
+  "statusTotals": {
+    "salary": {
+      "UNINTERPRETED": 48828,
+      "INPUT_MISSING": 1154,
+      "NOT_OBSERVED": 30593,
+      "DECLARED": 4416,
+      "WITHHELD_BY_SOURCE": 335,
+      "CONFLICT": 1
+    },
+    "education": {
+      "UNINTERPRETED": 80198,
+      "INPUT_MISSING": 1154,
+      "DECLARED": 1450,
+      "NOT_OBSERVED": 2525
+    },
+    "workplace": {
+      "NOT_OBSERVED": 42873,
+      "DECLARED": 8294,
+      "INPUT_MISSING": 1154,
+      "UNINTERPRETED": 33005,
+      "CONFLICT": 1
+    },
+    "locations": {
+      "DECLARED": 60093,
+      "INPUT_MISSING": 1154,
+      "NOT_OBSERVED": 6857,
+      "UNINTERPRETED": 16985,
+      "WITHHELD_BY_SOURCE": 238
+    }
+  }
+}

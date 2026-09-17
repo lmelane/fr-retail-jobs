@@ -1,0 +1,41 @@
+{
+  "mutations": [
+    {
+      "name": "missing-live-identity-gate",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "3117a508995142e40566abbb85a249410f6466ede995f740541df4911e32e97a"
+    },
+    {
+      "name": "whole-path-case-folding",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "3117a508995142e40566abbb85a249410f6466ede995f740541df4911e32e97a"
+    },
+    {
+      "name": "arbitrary-host-case-folding",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "3117a508995142e40566abbb85a249410f6466ede995f740541df4911e32e97a"
+    },
+    {
+      "name": "rejecting-native-site-case",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "3117a508995142e40566abbb85a249410f6466ede995f740541df4911e32e97a"
+    },
+    {
+      "name": "unbound-external-id",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "3117a508995142e40566abbb85a249410f6466ede995f740541df4911e32e97a"
+    },
+    {
+      "name": "cross-tenant-detail",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "3117a508995142e40566abbb85a249410f6466ede995f740541df4911e32e97a"
+    }
+  ],
+  "restoredTests": "passed"
+}

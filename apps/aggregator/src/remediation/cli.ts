@@ -2,7 +2,6 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { PrismaClient } from '@prisma/client';
 import { applyRepairPlan, digest, type RepairPlan } from './plan.js';
-import { planOracleRepair } from './oracle.js';
 import { planSmcpRepair } from './smcp.js';
 import { planExcludedIdentities } from './identities.js';
 import { planReviewedPortalOwners } from './portalOwner.js';
@@ -13,9 +12,8 @@ const prisma = new PrismaClient();
 const [command, ...args] = process.argv.slice(2);
 const arg = (name: string) => { const i = args.indexOf(name); if (i < 0 || !args[i + 1]) throw new Error(`Missing ${name}`); return args[i + 1]; };
 try {
-  if (command === 'plan-oracle' || command === 'plan-smcp' || command === 'plan-identities' || command === 'plan-homonyms' || command === 'plan-owners' || command === 'plan-portal-owners' || command === 'plan-withdrawals') {
-    const plan = command === 'plan-withdrawals' ? await planAdministrativeWithdrawals(prisma, JSON.parse(readFileSync(arg('--spec'), 'utf8'))) : command === 'plan-portal-owners' ? await planReviewedPortalOwners(prisma, JSON.parse(readFileSync(arg('--spec'), 'utf8'))) : command === 'plan-oracle'
-      ? await planOracleRepair(prisma, JSON.parse(readFileSync(arg('--evidence'), 'utf8')))
+  if (command === 'plan-smcp' || command === 'plan-identities' || command === 'plan-homonyms' || command === 'plan-owners' || command === 'plan-portal-owners' || command === 'plan-withdrawals') {
+    const plan = command === 'plan-withdrawals' ? await planAdministrativeWithdrawals(prisma, JSON.parse(readFileSync(arg('--spec'), 'utf8'))) : command === 'plan-portal-owners' ? await planReviewedPortalOwners(prisma, JSON.parse(readFileSync(arg('--spec'), 'utf8')))
       : command === 'plan-smcp' ? await planSmcpRepair(prisma)
       : command === 'plan-owners' ? await planSourceOwners(prisma)
       : command === 'plan-homonyms' ? await planExcludedIdentities(prisma, JSON.parse(readFileSync(arg('--definitions'), 'utf8')), arg('--batch'))
@@ -34,5 +32,5 @@ try {
       if (dirty) throw new Error('Production repair requires clean committed application code, schema and reference data');
     }
     console.log(JSON.stringify({ batchId: plan.batchId, hash: digest(plan), ...await applyRepairPlan(prisma, plan, arg('--sha'), commit) }, null, 2));
-  } else throw new Error('Use plan-oracle or apply with an explicit reviewed plan/hash/commit');
+  } else throw new Error('Use a supported employer/withdrawal plan or apply with an explicit reviewed plan/hash/commit; publication partitions use publication-groups');
 } finally { await prisma.$disconnect(); }

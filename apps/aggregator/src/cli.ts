@@ -1,4 +1,3 @@
-import { fileURLToPath } from 'node:url';
 import { startObservability } from './observability/runtime.js';
 import { ObservabilityUnavailableError } from './observability/logger.js';
 import { log } from './observability/logger.js';
@@ -20,11 +19,8 @@ import { runEgressProbe } from './pipeline/egressProbe.js';
  */
 const INDEXING_WINDOW_MS = Number(process.env.INDEXING_WINDOW_MS ?? 6 * 60 * 60 * 1000);
 import { runRefresh, refreshScope } from './pipeline/refresh.js';
-import { parseDay, runSnapshot, type SnapshotStats } from './pipeline/snapshot.js';
-import { runReconcile } from './pipeline/reconcile.js';
-import { separateFusedJobs } from './pipeline/separateFused.js';
 import { retireSource } from './pipeline/retireSource.js';
-import { importSourcesCsv, promoteSource } from './connectors/sourceStore.js';
+import { importSourcesCsv } from './connectors/sourceStore.js';
 import { runGeocode } from './pipeline/geocodeJobs.js';
 import { runStats } from './pipeline/stats.js';
 import { exportCompanies } from './export/companies.js';
@@ -33,14 +29,10 @@ import { closeBrowser } from './lib/browser.js';
 import { validateCliArguments } from './lib/cliArguments.js';
 
 /**
- * Three scheduled entry points, each with its own failure domain so one broken
- * job never takes the others down:
+ * Ingestion and lifecycle maintenance have separate entry points:
  *
  *   ingest    (~2h)    new and updated offers; dedup happens at write time
- *   refresh   (daily)  lifecycle — closes offers no source reports any more,
- *                      then takes the day's market snapshot (D38)
- *   reconcile (weekly) retroactive merges after an alias or synonym is added
- *   snapshot  (manual) the market snapshot alone: --date=, --backfill-from=
+ *   refresh   (daily)  lifecycle — closes offers no source reports any more
  *
  * geocode runs after ingest to resolve any new cities for the map.
  */
@@ -157,61 +149,34 @@ try {
     const onlyKeys = refreshScope(catalogue.map((s) => s.key));
     if (onlyKeys) await log.info('refresh.scoped', { sources: onlyKeys.length, keys: onlyKeys.join(',') });
     const refresh = await runRefresh(prisma, onlyKeys ? { onlyKeys } : {});
-    /**
-     * D38 : la photographie du jour se prend APRÈS les fermetures, pour que
-     * `closedJobs` et la durée de publication médiane reflètent ce refresh.
-     * Un échec du snapshot est un incident visible (exit 1) mais ne cache
-     * jamais le résultat du refresh, déjà acquis.
-     */
-    let snapshot: SnapshotStats | null = null;
-    let snapshotError: string | null = null;
-    if (refresh.refused) {
-      // Un refresh refusé laisse des offres périmées « actives » : les
-      // photographier ferait entrer un faux jour dans l'historique (audit I-2).
-      snapshotError = 'refresh refused by the mass-closure guard — no snapshot taken for today';
-    } else {
-      try {
-        // La garde IA par société (audit I-3) tourne chaque nuit, AVANT la
-        // photographie : l'indice IA du jour ne compte pas les textes d'entreprise.
-        const { aiCompanyGuard } = await import('./pipeline/classifyJobs.js');
-        await aiCompanyGuard(prisma);
-        snapshot = await runSnapshot(prisma);
-      } catch (error) {
-        log.assertHealthy();
-        await log.error('snapshot.failed', { error });
-        snapshotError = error instanceof Error ? error.message : String(error);
-      }
-    }
     // Report honestly: a refused mass-closure or a skipped broken source is an
     // incident the scheduler must show, not a silent ok:true.
-    await log.info('refresh.completed', { ok: !refresh.refused && !snapshotError, command, ...refresh, snapshot, snapshotError });
+    await log.info('refresh.completed', { ok: !refresh.refused, command, ...refresh });
     if (refresh.refused) {
       await log.error('command.failed', '[refresh] mass-closure guard refused the run — a source is likely broken');
       process.exitCode = 1;
     }
-    if (refresh.skippedBrokenSources.length > 0) {
-      await log.error('command.failed', `[refresh] left offers of broken sources open: ${refresh.skippedBrokenSources.join(', ')}`);
+    if (refresh.unverifiableSources.length > 0) {
+      await log.error('command.failed', `[refresh] left offers of broken sources open: ${refresh.unverifiableSources.join(', ')}`);
     }
-    if (snapshotError) {
-      await log.error('command.failed', `[snapshot] failed after refresh: ${snapshotError}`);
-      process.exitCode = 1;
-    }
-  } else if (command === 'snapshot') {
+  } else if (command === 'direct-sync') {
     /**
-     * Photographie du marché (D38) pour un jour : `--date=YYYY-MM-DD` (défaut
-     * aujourd'hui UTC), `--backfill-from=YYYY-MM-DD` reconstruit chaque jour
-     * depuis cette date (approximation : voir snapshot.ts). Idempotent.
+     * Lot 6 (D-423) — la copie de lecture des offres Catwalks : consomme le
+     * flux d'outbox du backend depuis le curseur (ou `--depuis=<seq>` pour
+     * rejouer), page par page (`--limite=`, ≤ 500). Idempotent, monotone :
+     * rejouer depuis 0 ne ressuscite rien. `CATALOGUE_FLUX_URL` et
+     * `CATALOGUE_FLUX_KEY` viennent de l'environnement ; sans eux, rien ne
+     * part et la commande échoue explicitement.
      */
+    const { consommerFlux, fluxHttp } = await import('./direct/feed.js');
     const arg = (name: string) => process.argv.find((a) => a.startsWith(`--${name}=`))?.slice(name.length + 3);
-    const date = arg('date');
-    const backfillFrom = arg('backfill-from');
-    const stats = await runSnapshot(prisma, {
-      ...(date ? { date: parseDay(date) } : {}),
-      ...(backfillFrom ? { backfillFrom: parseDay(backfillFrom) } : {}),
-    });
-    await log.info('command.result', { ok: true, command, ...stats });
-  } else if (command === 'reconcile') {
-    await log.info('command.result', { ok: true, command, ...(await runReconcile(prisma)) });
+    const base = process.env.CATALOGUE_FLUX_URL?.trim(), cle = process.env.CATALOGUE_FLUX_KEY?.trim();
+    if (!base || !cle) throw new Error('direct-sync requires CATALOGUE_FLUX_URL and CATALOGUE_FLUX_KEY');
+    const depuis = arg('depuis'), limite = Number(arg('limite') ?? 200);
+    if (depuis !== undefined && !/^\d{1,19}$/.test(depuis)) throw new Error('--depuis must be a sequence number');
+    const stats = await consommerFlux(prisma, fluxHttp(base, cle), { taillePage: limite, ...(depuis !== undefined ? { depuis: BigInt(depuis) } : {}) });
+    await log.info('command.result', { ok: !stats.refus, command, ...stats, dernierSeq: stats.dernierSeq?.toString() ?? null });
+    if (stats.refus) process.exitCode = 1;
   } else if (command === 'import-sources') {
     /**
      * One-shot seed of the Source table (DEC-3) from data/seeds/sources.csv.
@@ -221,27 +186,6 @@ try {
     const stats = await importSourcesCsv(prisma);
     await log.info('command.result', { ok: stats.skippedDuplicateTenant.length === 0, command, ...stats });
     if (stats.skippedDuplicateTenant.length > 0) process.exitCode = 1;
-  } else if (command === 'identity-profile') {
-    const { sourceIdentityHash, sourceSubjectKey } = await import('./connectors/sourceIdentity.js');
-    const key = process.argv[3];
-    if (!key || key.startsWith('--')) throw new Error('identity-profile needs a source key');
-    const source = await prisma.source.findUniqueOrThrow({ where: { key } });
-    await log.info('command.result', { sourceKey: source.key, tenantKey: source.tenantKey, subjectKey: sourceSubjectKey(source), sourceHash: sourceIdentityHash(source) });
-  } else if (command === 'review-source-identity') {
-    const { readFileSync } = await import('node:fs');
-    const { recordSourceIdentityReview } = await import('./connectors/sourceIdentity.js');
-    const arg = (name: string) => process.argv.find(a => a.startsWith(`--${name}=`))?.slice(name.length + 3);
-    const record = arg('record'); const artifact = arg('artifact');
-    if (!record || !artifact) throw new Error('review-source-identity needs --record=<json> --artifact=<archived evidence file> [--apply]');
-    await log.info('command.result', await recordSourceIdentityReview(prisma, JSON.parse(readFileSync(record, 'utf8')), readFileSync(artifact), process.argv.includes('--apply')));
-  } else if (command === 'promote') {
-    /**
-     * DRAFT/VALIDATED/PAUSED -> ACTIVE, guarded: config + dated robots verdict
-     * + at least one proven offer, or the promotion refuses (règles du plan).
-     */
-    const key = process.argv[3];
-    if (!key || key.startsWith('--')) throw new Error('promote needs the sourceKey to promote');
-    await log.info('command.result', { ok: true, command, ...(await promoteSource(prisma, key)) });
   } else if (command === 'retire-source') {
     /**
      * Cleans up after a catalogue line is removed (a robots-forbidden route, an
@@ -255,16 +199,6 @@ try {
     // porte deux (kering : flux Eightfold vivant + sitemap périmée), voir RetireOptions.
     const externalIdPrefix = process.argv.find((a) => a.startsWith('--external-prefix='))?.slice('--external-prefix='.length);
     await log.info('command.result', { ok: true, command, externalIdPrefix, ...(await retireSource(prisma, key, { externalIdPrefix })) });
-  } else if (command === 'separate-fused') {
-    /**
-     * One-shot repair for audit D-01: splits openings a single source published
-     * under distinct ids that the old write path wrongly fused into one Job.
-     * Prints the before/after metric; after the fix ships, fusedAfter must be 0
-     * and STAY 0 — a non-zero value on a later run means the guard regressed.
-     */
-    const stats = await separateFusedJobs(prisma);
-    await log.info('command.result', { ok: stats.fusedAfter === 0, command, ...stats });
-    if (stats.fusedAfter > 0) process.exitCode = 1;
   } else if (command === 'resolve-domains') {
     /**
      * Pose Company.domain (le logo) sur les Maisons actives qui n'en ont pas :
@@ -280,17 +214,6 @@ try {
       dryRun: process.argv.includes('--dry-run'),
     });
     await log.info('command.result', { ok: true, command, ...stats });
-  } else if (command === 'apply-domain-sheet') {
-    /**
-     * Applique le référentiel de domaines établi à la main (D45) :
-     * IDENTIFIÉ pose le domaine, RATTACHÉ fusionne l'entité juridique dans sa
-     * marque mère, À VÉRIFIER ne touche à rien. `--apply` pour écrire.
-     */
-    const { applyDomainSheet } = await import('./pipeline/applyDomainSheet.js');
-    const file = process.argv.find((a) => a.startsWith('--file='))?.slice('--file='.length)
-      ?? fileURLToPath(new URL('../data/imports/maisons-domaines-loic.tsv', import.meta.url));
-    const stats = await applyDomainSheet(prisma, file, { apply: process.argv.includes('--apply') });
-    await log.info('command.result', { ok: true, command, file, ...stats });
   } else if (command === 'occupation-review-queue') {
     const {occupationReviewQueue}=await import('./occupation/inventory.js');
     const {writeFile}=await import('node:fs/promises');
@@ -317,7 +240,7 @@ try {
     await log.info('occupation.catalogue_result',{command,releaseId:receipt.targetRelease,activeJobs:receipt.activeJobs,classifiedActive:receipt.classifiedActive,proofHash:receipt.proofHash,output});
   } else if (command === 'classify-jobs') {
     /**
-     * Rejoue la version active du référentiel métier (métier, séniorité, retail) sur toute la base — actives et fermées — pour les lignes
+     * Rejoue la version active du référentiel métier (métier, séniorité) sur toute la base — actives et fermées — pour les lignes
      * dont la version de taxonomie est en retard. `--all` re-classe tout,
      * `--limit=<n>` borne, `--dry-run` compte sans écrire.
      */

@@ -1,0 +1,10 @@
+{
+  "syntheticWitness": true,
+  "derivedBoardReference": "example.wd3.myworkdayjobs.com",
+  "hasLink": false,
+  "hasConfiguredSite": false,
+  "legacyVerdict": "PROVEN",
+  "observedDefect": "HTML comment accepted as exact portal proof",
+  "legacyCodeCommit": "bc72a7b02a6c76cb8edb134727b53ee04492fa81",
+  "legacyModuleSha256": "088a816957ae6100b691f45a79f4fd24db7cf506c0733ab4a7efa8b19a7b68a9"
+}

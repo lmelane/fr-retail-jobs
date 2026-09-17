@@ -8,7 +8,6 @@ import { attachWorkdayDescriptions, fetchWorkdayJobs } from './workday.js';
 const fixture = (name: string) => JSON.parse(readFileSync(new URL(`./fixtures/${name}`, import.meta.url), 'utf8'));
 /** Real Tapestry responses of 2026-09-10: site page 1 (total 2 000, facet Brand), page 1 of each Brand value, the full id list per value (2 085 ids). */
 const SITE_P1 = fixture('lot4-tapestry-listing-p1-nofacet.json');
-const BRAND_P1: Record<string, any> = { Coach: fixture('lot4-tapestry-brand-Coach-p1.json'), 'Kate Spade': fixture('lot4-tapestry-brand-Kate_Spade-p1.json'), Tapestry: fixture('lot4-tapestry-brand-Tapestry-p1.json') };
 const BRAND_IDS: Record<string, string[]> = fixture('lot4-tapestry-brand-ids.json');
 const FACET = SITE_P1.facets.find((f: any) => f.facetParameter === 'Brand');
 const idOf = (v: any) => FACET.values.find((x: any) => x.descriptor === v).id;
@@ -101,8 +100,8 @@ describe('Workday partition by facet — Tapestry, 2026-09-10 (site total capped
   });
 
   it('keeps the facet attribution through the detail pass: the logo alt and the legal entity stay in the raw, never a second employer claim', async () => {
-    mockJson.mockResolvedValueOnce({ jobPostingInfo: { jobDescription: 'Sell handbags', logoImage: { alt: 'Coach Logo' }, country: { descriptor: 'Japan' } }, hiringOrganization: { name: 'Tapestry Japan, LLC' } } as never);
-    const [job] = await attachWorkdayDescriptions([{ externalId: 'JR1', title: 'Sales Associate', url: 'https://tapestry.wd108.myworkdayjobs.com/Tapestry_Careers/job/x', company: 'Kate Spade', employerEvidence: { rawName: 'Kate Spade', path: 'listing.facets.Brand', rule: 'PARTITION_FACET_VALUE' }, raw: { externalPath: '/job/x', facet: { parameter: 'Brand', value: 'Kate Spade', id: 'k' } } }], 'https://tapestry.wd108.myworkdayjobs.com/wday/cxs/tapestry/Tapestry_Careers');
+    mockJson.mockResolvedValueOnce({ jobPostingInfo: { externalUrl: 'https://tapestry.wd108.myworkdayjobs.com/Tapestry_Careers/job/JR1', jobDescription: 'Sell handbags', logoImage: { alt: 'Coach Logo' }, country: { descriptor: 'Japan' } }, hiringOrganization: { name: 'Tapestry Japan, LLC' } } as never);
+    const [job] = await attachWorkdayDescriptions([{ externalId: 'JR1', title: 'Sales Associate', url: 'https://tapestry.wd108.myworkdayjobs.com/Tapestry_Careers/job/JR1', company: 'Kate Spade', employerEvidence: { rawName: 'Kate Spade', path: 'listing.facets.Brand', rule: 'PARTITION_FACET_VALUE' }, raw: { externalPath: '/job/JR1', facet: { parameter: 'Brand', value: 'Kate Spade', id: 'k' } } }], 'https://tapestry.wd108.myworkdayjobs.com/wday/cxs/tapestry/Tapestry_Careers');
     expect(job.company).toBe('Kate Spade');
     expect(job.employerEvidence).toEqual({ rawName: 'Kate Spade', path: 'listing.facets.Brand', rule: 'PARTITION_FACET_VALUE' });
     expect(job.description).toBe('Sell handbags'); expect(job.country).toBe('Japan');

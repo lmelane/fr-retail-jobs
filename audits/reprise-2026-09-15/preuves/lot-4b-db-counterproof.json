@@ -1,0 +1,6 @@
+{
+  "mutation": "allow a restoration decision from a previous transaction",
+  "rejectedByRegression": true,
+  "restoredTests": "passed",
+  "restoredFunctionSha256": "5656e41fa7b83919ea4f8f3c8959f1da03d45f362e02d71bf66f33114343794e"
+}

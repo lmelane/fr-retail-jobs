@@ -1,0 +1,324 @@
+{
+  "snapshot": "2026-09-15 active publication representations; not a current live enumeration",
+  "total": 85327,
+  "projectionContract": "Current candidate + RAW facts + core presentation; bootstrap taxonomy/default field trust, no database writes",
+  "projectable": 49205,
+  "recoverable": 49205,
+  "kinds": {
+    "smartrecruiters-whitelabel": {
+      "total": 5860,
+      "recoverable": 0,
+      "reasons": {
+        "READER_UNQUALIFIED": 5859,
+        "RAW_MISSING": 1
+      }
+    },
+    "teamtailor": {
+      "total": 5355,
+      "recoverable": 5341,
+      "reasons": {
+        "RAW_MISSING": 14
+      },
+      "projectable": 5341
+    },
+    "jobylon": {
+      "total": 31,
+      "recoverable": 0,
+      "reasons": {
+        "READER_UNQUALIFIED": 31
+      }
+    },
+    "workday": {
+      "total": 19711,
+      "recoverable": 11510,
+      "reasons": {
+        "DETAIL_IDENTITY_MISMATCH": 8152,
+        "PUBLICATION_HELD": 40,
+        "RAW_MISSING": 9
+      },
+      "projectable": 11510
+    },
+    "successfactors": {
+      "total": 4230,
+      "recoverable": 0,
+      "reasons": {
+        "READER_UNQUALIFIED": 4221,
+        "RAW_MISSING": 9
+      }
+    },
+    "flatchr": {
+      "total": 354,
+      "recoverable": 0,
+      "reasons": {
+        "READER_UNQUALIFIED": 354
+      }
+    },
+    "icims": {
+      "total": 1593,
+      "recoverable": 21,
+      "reasons": {
+        "DETAIL_IDENTITY_MISMATCH": 1511,
+        "RAW_MISSING": 37,
+        "DETAIL_EVIDENCE_UNUSABLE": 24
+      },
+      "projectable": 21
+    },
+    "personio": {
+      "total": 186,
+      "recoverable": 0,
+      "reasons": {
+        "READER_UNQUALIFIED": 186
+      }
+    },
+    "digitalrecruiters": {
+      "total": 783,
+      "recoverable": 0,
+      "reasons": {
+        "READER_UNQUALIFIED": 783
+      }
+    },
+    "greenhouse": {
+      "total": 2545,
+      "recoverable": 2545,
+      "reasons": {},
+      "projectable": 2545
+    },
+    "generic-listing": {
+      "total": 6233,
+      "recoverable": 3703,
+      "reasons": {
+        "IDENTITY_MISMATCH": 182,
+        "NATIVE_ID_MISSING": 2348
+      },
+      "projectable": 3703
+    },
+    "recruitee": {
+      "total": 639,
+      "recoverable": 639,
+      "reasons": {},
+      "projectable": 639
+    },
+    "lever": {
+      "total": 820,
+      "recoverable": 818,
+      "reasons": {
+        "CONTENT_MISSING": 2
+      },
+      "projectable": 818
+    },
+    "wttj": {
+      "total": 766,
+      "recoverable": 0,
+      "reasons": {
+        "RAW_MISSING": 93,
+        "READER_UNQUALIFIED": 673
+      }
+    },
+    "workable": {
+      "total": 280,
+      "recoverable": 280,
+      "reasons": {},
+      "projectable": 280
+    },
+    "talentview": {
+      "total": 80,
+      "recoverable": 0,
+      "reasons": {
+        "READER_UNQUALIFIED": 80
+      }
+    },
+    "talentsoft": {
+      "total": 353,
+      "recoverable": 82,
+      "reasons": {
+        "NATIVE_ID_MISSING": 250,
+        "IDENTITY_MISMATCH": 21
+      },
+      "projectable": 82
+    },
+    "bashtalents": {
+      "total": 57,
+      "recoverable": 0,
+      "reasons": {
+        "READER_UNQUALIFIED": 57
+      }
+    },
+    "geodirectory": {
+      "total": 110,
+      "recoverable": 110,
+      "reasons": {},
+      "projectable": 110
+    },
+    "jobaffinity-wordpress": {
+      "total": 978,
+      "recoverable": 978,
+      "reasons": {},
+      "projectable": 978
+    },
+    "oraclehcm": {
+      "total": 1215,
+      "recoverable": 1200,
+      "reasons": {
+        "NATIVE_ID_MISSING": 12,
+        "CONTENT_MISSING": 1,
+        "RAW_MISSING": 2
+      },
+      "projectable": 1200
+    },
+    "taleo": {
+      "total": 76,
+      "recoverable": 0,
+      "reasons": {
+        "READER_UNQUALIFIED": 76
+      }
+    },
+    "talentfunnel": {
+      "total": 153,
+      "recoverable": 0,
+      "reasons": {
+        "READER_UNQUALIFIED": 153
+      }
+    },
+    "magnet": {
+      "total": 492,
+      "recoverable": 487,
+      "reasons": {
+        "RAW_MISSING": 5
+      },
+      "projectable": 487
+    },
+    "eightfold": {
+      "total": 2776,
+      "recoverable": 0,
+      "reasons": {
+        "READER_UNQUALIFIED": 2726,
+        "RAW_MISSING": 50
+      }
+    },
+    "volcanic": {
+      "total": 31,
+      "recoverable": 0,
+      "reasons": {
+        "READER_UNQUALIFIED": 31
+      }
+    },
+    "phenom": {
+      "total": 5299,
+      "recoverable": 2857,
+      "reasons": {
+        "RAW_MISSING": 2,
+        "NATIVE_ID_MISSING": 2440
+      },
+      "projectable": 2857
+    },
+    "talentrecruiter": {
+      "total": 17,
+      "recoverable": 0,
+      "reasons": {
+        "READER_UNQUALIFIED": 17
+      }
+    },
+    "easycruit": {
+      "total": 50,
+      "recoverable": 0,
+      "reasons": {
+        "READER_UNQUALIFIED": 50
+      }
+    },
+    "avature": {
+      "total": 2908,
+      "recoverable": 0,
+      "reasons": {
+        "READER_UNQUALIFIED": 2046,
+        "RAW_MISSING": 862
+      }
+    },
+    "wordpress": {
+      "total": 478,
+      "recoverable": 478,
+      "reasons": {},
+      "projectable": 478
+    },
+    "lvmh_algolia": {
+      "total": 6433,
+      "recoverable": 6415,
+      "reasons": {
+        "RAW_MISSING": 16,
+        "CONTENT_MISSING": 2
+      },
+      "projectable": 6415
+    },
+    "radancy": {
+      "total": 54,
+      "recoverable": 53,
+      "reasons": {
+        "RAW_MISSING": 1
+      },
+      "projectable": 53
+    },
+    "eqwa": {
+      "total": 321,
+      "recoverable": 0,
+      "reasons": {
+        "READER_UNQUALIFIED": 321
+      }
+    },
+    "ashby": {
+      "total": 83,
+      "recoverable": 83,
+      "reasons": {},
+      "projectable": 83
+    },
+    "rituals": {
+      "total": 1245,
+      "recoverable": 1245,
+      "reasons": {},
+      "projectable": 1245
+    },
+    "typesense": {
+      "total": 47,
+      "recoverable": 14,
+      "reasons": {
+        "CONTENT_MISSING": 1,
+        "IDENTITY_MISMATCH": 32
+      },
+      "projectable": 14
+    },
+    "harri": {
+      "total": 36,
+      "recoverable": 0,
+      "reasons": {
+        "READER_UNQUALIFIED": 36
+      }
+    },
+    "swatchgroup": {
+      "total": 293,
+      "recoverable": 0,
+      "reasons": {
+        "READER_UNQUALIFIED": 293
+      }
+    },
+    "jibe": {
+      "total": 10290,
+      "recoverable": 10290,
+      "reasons": {},
+      "projectable": 10290
+    },
+    "wttj-sector": {
+      "total": 2002,
+      "recoverable": 0,
+      "reasons": {
+        "READER_UNQUALIFIED": 1949,
+        "RAW_MISSING": 53
+      }
+    },
+    "altamira": {
+      "total": 64,
+      "recoverable": 56,
+      "reasons": {
+        "DETAIL_EVIDENCE_UNUSABLE": 8
+      },
+      "projectable": 56
+    }
+  }
+}

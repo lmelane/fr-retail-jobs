@@ -11,8 +11,7 @@ describe('sector-perimeter decisions per posting — collection untouched, publi
     const held = applyScopeExclusion(job, exclusions);
     expect(held.publicationHold).toBe(SCOPE_HOLD);
     expect(held.publicationWithdrawnAt).toEqual(decidedAt);
-    expect((held.raw as any).scopeDecision).toEqual({ verdict: 'OUT_OF_SCOPE', ruleVersion: 'aptar-perimeter-v2-20260910', decidedAt: '2026-09-10T12:00:00.000Z' });
-    expect((held.raw as any).id).toBe('1405738533');
+    expect(held.raw).toBe(job.raw);
     expect(publicationDisposition(SCOPE_HOLD)).toEqual({ kind: 'WITHDRAWN', reason: 'OUT_OF_SCOPE' });
   });
 

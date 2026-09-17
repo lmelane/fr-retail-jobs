@@ -1,4 +1,4 @@
-import { employmentLabel } from '@catwalks/db/presentation';
+import { employmentLabel, type LangueLibelles } from '@catwalks/db/presentation';
 
 /*
  * ── CE QUI A ÉTÉ RETIRÉ D'ICI, ET POURQUOI ÇA NE REVIENT PAS (lot 4A) ──────
@@ -36,9 +36,10 @@ import { employmentLabel } from '@catwalks/db/presentation';
  *  - `null` signifie « la source ne le dit pas ». Rien ne s'affiche alors —
  *    l'ancien « UNKNOWN » stocké finissait en pastille littérale à l'écran.
  */
-export { EMPLOYMENT_LABELS } from '@catwalks/db/presentation';
-export const employmentTermLabel = (value: string | null | undefined) => employmentLabel('employmentTerm', value);
-export const workTimeLabel = (value: string | null | undefined) => employmentLabel('workTime', value);
-export const programTypeLabel = (value: string | null | undefined) => employmentLabel('programType', value);
-export const engagementTypeLabel = (value: string | null | undefined) => employmentLabel('engagementType', value);
-export const workplaceTypeLabel = (value: string | null | undefined) => employmentLabel('workplaceType', value);
+export type { LangueLibelles } from '@catwalks/db/presentation';
+// Lot 8 : la langue des libellés est celle du marché servi (`langueDesLibelles`), le français par défaut.
+export const employmentTermLabel = (value: string | null | undefined, langue: LangueLibelles = 'fr') => employmentLabel('employmentTerm', value, langue);
+export const workTimeLabel = (value: string | null | undefined, langue: LangueLibelles = 'fr') => employmentLabel('workTime', value, langue);
+export const programTypeLabel = (value: string | null | undefined, langue: LangueLibelles = 'fr') => employmentLabel('programType', value, langue);
+export const engagementTypeLabel = (value: string | null | undefined, langue: LangueLibelles = 'fr') => employmentLabel('engagementType', value, langue);
+export const workplaceTypeLabel = (value: string | null | undefined, langue: LangueLibelles = 'fr') => employmentLabel('workplaceType', value, langue);

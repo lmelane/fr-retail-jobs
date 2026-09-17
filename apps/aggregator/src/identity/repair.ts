@@ -5,6 +5,8 @@ import { lockCompanyRows, lockSourceWrites, lockEmployerCatalogue } from '../lib
 import { employerAliasKey, normalizedEmployerName } from '../normalize/employerName.js';
 import { digest, json, stable } from '../remediation/plan.js';
 import { validatePostingMerges, type PostingMerge } from './postingRepair.js';
+import { POSTING_IDENTITY_VERSION } from '../dedup/postingIdentity.js';
+import { evidenceHash } from '../lib/evidenceHash.js';
 
 export type EmployerRepairSpec = {
   batchId: string;
@@ -117,17 +119,9 @@ export async function applyEmployerRepair(prisma: PrismaClient, plan: EmployerRe
     const postingMerges = plan.postingMerges ?? [];
     const rawOf = await witnessRaw(tx, postingMerges);
     validatePostingMerges(before.jobs, postingMerges, moves, id => rawOf.get(id));
-    const postingTargets = new Map(postingMerges.map(m => [m.fromId, m.toId]));
-    // A collision must be covered by explicit RAW witnesses. Existing redirects
-    // are historical IDs, not additional canonical postings.
-    const keys = new Map<string, string>();
-    for (const job of before.jobs) {
-      if (job.mergedIntoId) continue;
-      const key = JSON.stringify([moves.get(job.companyId) ?? job.companyId, job.source, job.externalId]);
-      const other = keys.get(key);
-      if (other && (postingTargets.get(other) ?? other) !== (postingTargets.get(job.id) ?? job.id)) throw new Error(`Posting identity collision: ${other}/${job.id}`);
-      keys.set(key, job.id);
-    }
+    // ATS family + externalId is not a publication identity across tenants.
+    // Employer consolidation preserves both records unless native RAW witnesses
+    // explicitly establish a posting equivalence.
     for (const a of plan.aliases) {
       const priors = await tx.companyAlias.findMany({ where: { normalizedName: normalizedEmployerName(a.rawName), ...(a.sourceKey === '*' ? {} : { sourceKey: { in: [a.sourceKey, '*'] } }) } });
       for (const prior of priors) {
@@ -158,12 +152,9 @@ export async function applyEmployerRepair(prisma: PrismaClient, plan: EmployerRe
     for (const job of before.jobs) {
       const companyId = moves.get(job.companyId);
       if (!companyId) continue;
-      const key = companies.get(companyId)!.canonicalKey;
-      // Prefix only: city/title/fingerprint suffix are preserved byte for byte.
-      const rekey = (value: string | null) => value === null ? null : value.includes('|') ? key + value.slice(value.indexOf('|')) : value;
-      const patch = { companyId, clusterKey: rekey(job.clusterKey), fingerprint: rekey(job.fingerprint)! };
+      const patch = { companyId };
       await tx.job.update({ where: { id: job.id }, data: patch });
-      await tx.dataCorrection.create({ data: { batchId: plan.batchId, planHash, commitHash, finding: 'LOT1_EMPLOYER_IDENTITY', entityType: 'Job', entityId: job.id, before: { companyId: job.companyId, clusterKey: job.clusterKey, fingerprint: job.fingerprint }, after: patch, evidence: { reviewId: plan.batchId } } });
+      await tx.dataCorrection.create({ data: { batchId: plan.batchId, planHash, commitHash, finding: 'LOT1_EMPLOYER_IDENTITY', entityType: 'Job', entityId: job.id, before: { companyId: job.companyId, clusterKey: job.clusterKey }, after: patch, evidence: { reviewId: plan.batchId } } });
       await tx.jobEvent.create({ data: { jobId: job.id, type: 'CORRECTED', field: 'companyId', before: job.companyId, after: companyId } });
       movedJobs++;
     }
@@ -174,6 +165,13 @@ export async function applyEmployerRepair(prisma: PrismaClient, plan: EmployerRe
       const to = await tx.job.findUniqueOrThrow({ where: { id: decision.toId }, omit: { searchText: true } });
       for (const source of from.sources) {
         await tx.jobSource.update({ where: { id: source.id }, data: { jobId: to.id } });
+        await tx.publicationIdentityDecision.create({ data: { sourceId: source.id, fromJobId: from.id, toJobId: to.id,
+          action: 'MOVED', readerVersion: POSTING_IDENTITY_VERSION, evidence: json({ rule: 'REVIEWED_RAW_IDENTITY',
+            reviewId: plan.batchId, planHash, issuer: decision.issuer, postingId: decision.postingId,
+            witness: decision.witnesses.find(witness => witness.sourceId === source.id),
+            witnesses: [...new Map(postingMerges.filter(item => item.toId === to.id).flatMap(item => item.witnesses).map(witness => [witness.sourceId, witness])).values()],
+            rawHash: evidenceHash(rawOf.get(source.id) ?? null), captureBatchId: source.captureBatchId, captureOutputId: source.captureOutputId,
+          }) as Prisma.InputJsonValue } });
         await tx.dataCorrection.create({ data: { batchId: plan.batchId, planHash, commitHash, finding: 'LOT1_POSTING_CONSOLIDATION', entityType: 'JobSource', entityId: source.id, before: { jobId: from.id }, after: { jobId: to.id }, evidence: json(decision) as Prisma.InputJsonValue } });
       }
       const patch = {
@@ -247,8 +245,6 @@ export async function applyEmployerRepair(prisma: PrismaClient, plan: EmployerRe
       const toId = moves.get(j.companyId);
       if (!toId) continue;
       j.companyId = toId;
-      const rekey = (v: string | null) => v === null ? null : v.includes('|') ? companies.get(toId)!.canonicalKey + v.slice(v.indexOf('|')) : v;
-      j.clusterKey = rekey(j.clusterKey); j.fingerprint = rekey(j.fingerprint)!;
     }
     for (const d of postingMerges) {
       const from = expected.get(d.fromId)!, to = expected.get(d.toId)!;

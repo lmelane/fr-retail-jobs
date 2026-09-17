@@ -1,0 +1,420 @@
+{
+  "readOnly": true,
+  "productionWrites": false,
+  "reviewedAt": "2026-09-15T22:53:22.745Z",
+  "closures": 23,
+  "allNativeDeadlinesMatchStoredExpiryAndCurrentRaw": true,
+  "rows": [
+    {
+      "jobId": "cmtt8yc123ktymy01hvlx84rn",
+      "planHash": "23cb052f7ebce704d4c2083283d9ccf9e56b374be450059e6e78ce28fadf0a52",
+      "evidence": [
+        {
+          "sourceId": "cmtt8yc123ktzmy0105iz0xvy",
+          "sourceKey": "urbn-hub",
+          "expiresAt": "2026-09-14T04:00:00.000Z",
+          "path": "$.postingEvidence.jobPosting.validThrough",
+          "value": "2026-09-14T04:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "jobId": "cmtufuhkt04g9o10158nv9bjq",
+      "planHash": "23cb052f7ebce704d4c2083283d9ccf9e56b374be450059e6e78ce28fadf0a52",
+      "evidence": [
+        {
+          "sourceId": "cmtufuhku04gao101k0iabvk1",
+          "sourceKey": "urbn-hub",
+          "expiresAt": "2026-09-11T04:00:00.000Z",
+          "path": "$.postingEvidence.jobPosting.validThrough",
+          "value": "2026-09-11T04:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "jobId": "cmtuhz5gi028ap901n3b60ixe",
+      "planHash": "23cb052f7ebce704d4c2083283d9ccf9e56b374be450059e6e78ce28fadf0a52",
+      "evidence": [
+        {
+          "sourceId": "cmtuhz5gj028bp901vqkcpogh",
+          "sourceKey": "urbn-hub",
+          "expiresAt": "2026-09-11T04:00:00.000Z",
+          "path": "$.postingEvidence.jobPosting.validThrough",
+          "value": "2026-09-11T04:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "jobId": "cmtpuclft1rayl35m63rt2sal",
+      "planHash": "231578f60f821bdc18fd33a9cd24d248f34a40ed203e8de06064ac62c8a26cbc",
+      "evidence": [
+        {
+          "sourceId": "cmtpuclft1razl35m35jixzns",
+          "sourceKey": "urbn-stores",
+          "expiresAt": "2026-09-12T04:00:00.000Z",
+          "path": "$.postingEvidence.jobPosting.validThrough",
+          "value": "2026-09-12T04:00:00.000Z"
+        },
+        {
+          "sourceId": "cmtpull142d1el35mk1krxtne",
+          "sourceKey": "urbn-hub",
+          "expiresAt": "2026-09-12T04:00:00.000Z",
+          "path": "$.postingEvidence.jobPosting.validThrough",
+          "value": "2026-09-12T04:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "jobId": "cmtpucr7q1ttml35msx031m6q",
+      "planHash": "7135f00c2d51be30174938e3e9c7165bb9480694896661cfc1b52c17c6dfe1b1",
+      "evidence": [
+        {
+          "sourceId": "cmtpucr7q1ttnl35mr5xehg3c",
+          "sourceKey": "urbn-stores",
+          "expiresAt": "2026-09-12T04:00:00.000Z",
+          "path": "$.postingEvidence.jobPosting.validThrough",
+          "value": "2026-09-12T04:00:00.000Z"
+        },
+        {
+          "sourceId": "cmtpuluw82htfl35mwk9ihirv",
+          "sourceKey": "urbn-hub",
+          "expiresAt": "2026-09-12T04:00:00.000Z",
+          "path": "$.postingEvidence.jobPosting.validThrough",
+          "value": "2026-09-12T04:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "jobId": "cmtpucr951tu6l35mf3pgzmpx",
+      "planHash": "7135f00c2d51be30174938e3e9c7165bb9480694896661cfc1b52c17c6dfe1b1",
+      "evidence": [
+        {
+          "sourceId": "cmtpucr951tu7l35me3m4ttjb",
+          "sourceKey": "urbn-stores",
+          "expiresAt": "2026-09-10T04:00:00.000Z",
+          "path": "$.postingEvidence.jobPosting.validThrough",
+          "value": "2026-09-10T04:00:00.000Z"
+        },
+        {
+          "sourceId": "cmtpuluz72hual35m35pwm5pu",
+          "sourceKey": "urbn-hub",
+          "expiresAt": "2026-09-10T04:00:00.000Z",
+          "path": "$.postingEvidence.jobPosting.validThrough",
+          "value": "2026-09-10T04:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "jobId": "cmtpucrbp1tval35mhuoxr1ll",
+      "planHash": "7135f00c2d51be30174938e3e9c7165bb9480694896661cfc1b52c17c6dfe1b1",
+      "evidence": [
+        {
+          "sourceId": "cmtpucrbp1tvbl35mcs623oih",
+          "sourceKey": "urbn-stores",
+          "expiresAt": "2026-09-11T04:00:00.000Z",
+          "path": "$.postingEvidence.jobPosting.validThrough",
+          "value": "2026-09-11T04:00:00.000Z"
+        },
+        {
+          "sourceId": "cmtpulv4a2hvol35mmd7jl2k8",
+          "sourceKey": "urbn-hub",
+          "expiresAt": "2026-09-11T04:00:00.000Z",
+          "path": "$.postingEvidence.jobPosting.validThrough",
+          "value": "2026-09-11T04:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "jobId": "cmtt8yapx3kiemy01axzcenby",
+      "planHash": "984026ebb3dd3035d6d1f92d9ed0969bf6b07e76b8f21d0729c2bee32aebc876",
+      "evidence": [
+        {
+          "sourceId": "cmtt8iy2e2nd0my01ya83q8bw",
+          "sourceKey": "urbn-stores",
+          "expiresAt": "2026-09-11T04:00:00.000Z",
+          "path": "$.postingEvidence.jobPosting.validThrough",
+          "value": "2026-09-11T04:00:00.000Z"
+        },
+        {
+          "sourceId": "cmtt8yapx3kifmy01hphglakr",
+          "sourceKey": "urbn-hub",
+          "expiresAt": "2026-09-11T04:00:00.000Z",
+          "path": "$.postingEvidence.jobPosting.validThrough",
+          "value": "2026-09-11T04:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "jobId": "cmtuhz9nf02vsp9012uev8alu",
+      "planHash": "2c209e1d67bbcee785eed6a2edab2d32fcb47af85f0936f05debe8dd954ac2a3",
+      "evidence": [
+        {
+          "sourceId": "cmtuhz9nf02vtp901gytkbjv5",
+          "sourceKey": "urbn-hub",
+          "expiresAt": "2026-09-11T04:00:00.000Z",
+          "path": "$.postingEvidence.jobPosting.validThrough",
+          "value": "2026-09-11T04:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "jobId": "cmty796fd03zuo3019lu5az8w",
+      "planHash": "f6a185d7027ebef307d33132c5cc896b6802ff6f2f5dad915a014e5d7e2f84ee",
+      "evidence": [
+        {
+          "sourceId": "cmty796fd03zvo3011vkusvlx",
+          "sourceKey": "urbn-hub",
+          "expiresAt": "2026-09-12T04:00:00.000Z",
+          "path": "$.postingEvidence.jobPosting.validThrough",
+          "value": "2026-09-12T04:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "jobId": "cmtpucl271r4ql35mmsks4pjh",
+      "planHash": "2e15a4df699e6d5e975286ef3d1b0590dd072d8a65560a173f11db488946ae30",
+      "evidence": [
+        {
+          "sourceId": "cmtpucl271r4rl35m583v08uj",
+          "sourceKey": "urbn-stores",
+          "expiresAt": "2026-09-12T04:00:00.000Z",
+          "path": "$.postingEvidence.jobPosting.validThrough",
+          "value": "2026-09-12T04:00:00.000Z"
+        },
+        {
+          "sourceId": "cmtpulkh52cozl35mr7e7g9w0",
+          "sourceKey": "urbn-hub",
+          "expiresAt": "2026-09-12T04:00:00.000Z",
+          "path": "$.postingEvidence.jobPosting.validThrough",
+          "value": "2026-09-12T04:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "jobId": "cmtpucm7z1rnel35mzrmq0923",
+      "planHash": "1f39d82a176d6c9681e170d7cd60247eab69f715413c7853d50029488d829a7c",
+      "evidence": [
+        {
+          "sourceId": "cmtpucm7z1rnfl35m4yych85e",
+          "sourceKey": "urbn-stores",
+          "expiresAt": "2026-09-12T04:00:00.000Z",
+          "path": "$.postingEvidence.jobPosting.validThrough",
+          "value": "2026-09-12T04:00:00.000Z"
+        },
+        {
+          "sourceId": "cmtpulmbm2dull35m2egnjfqo",
+          "sourceKey": "urbn-hub",
+          "expiresAt": "2026-09-12T04:00:00.000Z",
+          "path": "$.postingEvidence.jobPosting.validThrough",
+          "value": "2026-09-12T04:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "jobId": "cmtpucn0n1s0ul35mlk71qonu",
+      "planHash": "99bd83318ae337c1df020f5fc164194696b929d3aefdd7c4aaffbbd534ee82b0",
+      "evidence": [
+        {
+          "sourceId": "cmtpucn0n1s0vl35mkaef9ksy",
+          "sourceKey": "urbn-stores",
+          "expiresAt": "2026-09-14T04:00:00.000Z",
+          "path": "$.postingEvidence.jobPosting.validThrough",
+          "value": "2026-09-14T04:00:00.000Z"
+        },
+        {
+          "sourceId": "cmtpulnk12enil35mt4ku7kkl",
+          "sourceKey": "urbn-hub",
+          "expiresAt": "2026-09-14T04:00:00.000Z",
+          "path": "$.postingEvidence.jobPosting.validThrough",
+          "value": "2026-09-14T04:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "jobId": "cmtpucobk1slal35mx0bhd7cx",
+      "planHash": "b86c792dc2a83bb0bb2f96308fb24750cc35bb87e2c7f16d9148b8cae46ecde9",
+      "evidence": [
+        {
+          "sourceId": "cmtpucobk1slbl35m4z2y8szg",
+          "sourceKey": "urbn-stores",
+          "expiresAt": "2026-09-10T04:00:00.000Z",
+          "path": "$.postingEvidence.jobPosting.validThrough",
+          "value": "2026-09-10T04:00:00.000Z"
+        },
+        {
+          "sourceId": "cmtpulpxe2g2fl35m68n91ofx",
+          "sourceKey": "urbn-hub",
+          "expiresAt": "2026-09-10T04:00:00.000Z",
+          "path": "$.postingEvidence.jobPosting.validThrough",
+          "value": "2026-09-10T04:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "jobId": "cmtrsp6bf1pgapg5mosfkzyum",
+      "planHash": "ef90fd6257f933603e16607766a1ee6016b2adab8c7cfb91b86d5af9d6b1c70f",
+      "evidence": [
+        {
+          "sourceId": "cmtrsp6bf1pgbpg5m4k874cs6",
+          "sourceKey": "urbn-stores",
+          "expiresAt": "2026-09-15T04:00:00.000Z",
+          "path": "$.postingEvidence.jobPosting.validThrough",
+          "value": "2026-09-15T04:00:00.000Z"
+        },
+        {
+          "sourceId": "cmtrsyruu2cfgpg5m9ewbca3g",
+          "sourceKey": "urbn-hub",
+          "expiresAt": "2026-09-15T04:00:00.000Z",
+          "path": "$.postingEvidence.jobPosting.validThrough",
+          "value": "2026-09-15T04:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "jobId": "cmtrsp6vw1pompg5mdmn1kfiw",
+      "planHash": "ef90fd6257f933603e16607766a1ee6016b2adab8c7cfb91b86d5af9d6b1c70f",
+      "evidence": [
+        {
+          "sourceId": "cmtrsp6vw1ponpg5ml8k1h9tm",
+          "sourceKey": "urbn-stores",
+          "expiresAt": "2026-09-11T04:00:00.000Z",
+          "path": "$.postingEvidence.jobPosting.validThrough",
+          "value": "2026-09-11T04:00:00.000Z"
+        },
+        {
+          "sourceId": "cmtrsyssz2d02pg5mzbjd3bwq",
+          "sourceKey": "urbn-hub",
+          "expiresAt": "2026-09-11T04:00:00.000Z",
+          "path": "$.postingEvidence.jobPosting.validThrough",
+          "value": "2026-09-11T04:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "jobId": "cmtt8yi2h3m3pmy01s87uswcy",
+      "planHash": "ef90fd6257f933603e16607766a1ee6016b2adab8c7cfb91b86d5af9d6b1c70f",
+      "evidence": [
+        {
+          "sourceId": "cmtt8j2ou2ojemy01l8iblxsb",
+          "sourceKey": "urbn-stores",
+          "expiresAt": "2026-09-10T04:00:00.000Z",
+          "path": "$.postingEvidence.jobPosting.validThrough",
+          "value": "2026-09-10T04:00:00.000Z"
+        },
+        {
+          "sourceId": "cmtt8yi2h3m3qmy01inh2onf8",
+          "sourceKey": "urbn-hub",
+          "expiresAt": "2026-09-10T04:00:00.000Z",
+          "path": "$.postingEvidence.jobPosting.validThrough",
+          "value": "2026-09-10T04:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "jobId": "cmtufu9qj03e6o101jnh09yjq",
+      "planHash": "ef90fd6257f933603e16607766a1ee6016b2adab8c7cfb91b86d5af9d6b1c70f",
+      "evidence": [
+        {
+          "sourceId": "cmtufu9qk03e7o101hi2mmc1x",
+          "sourceKey": "urbn-hub",
+          "expiresAt": "2026-09-13T04:00:00.000Z",
+          "path": "$.postingEvidence.jobPosting.validThrough",
+          "value": "2026-09-13T04:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "jobId": "cmtpucmhy1rs6l35mij9lbjhg",
+      "planHash": "96250b6ffdfa081553705470f89200a4704819b844bb5211b6587af9de8ad672",
+      "evidence": [
+        {
+          "sourceId": "cmtpucmhy1rs7l35mgmvleeci",
+          "sourceKey": "urbn-stores",
+          "expiresAt": "2026-09-12T04:00:00.000Z",
+          "path": "$.postingEvidence.jobPosting.validThrough",
+          "value": "2026-09-12T04:00:00.000Z"
+        },
+        {
+          "sourceId": "cmtpulmsc2e63l35mfvppgu3l",
+          "sourceKey": "urbn-hub",
+          "expiresAt": "2026-09-12T04:00:00.000Z",
+          "path": "$.postingEvidence.jobPosting.validThrough",
+          "value": "2026-09-12T04:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "jobId": "cmtpuclt81rgml35mjm4sbxjn",
+      "planHash": "b1509cdb0626cfff8a5ab83076a094dec6df2434abf8c5108a5ca1026534afc7",
+      "evidence": [
+        {
+          "sourceId": "cmtpuclt81rgnl35m4qud3nqd",
+          "sourceKey": "urbn-stores",
+          "expiresAt": "2026-09-09T04:00:00.000Z",
+          "path": "$.postingEvidence.jobPosting.validThrough",
+          "value": "2026-09-09T04:00:00.000Z"
+        },
+        {
+          "sourceId": "cmtpullnx2dfol35mhc4t2bho",
+          "sourceKey": "urbn-hub",
+          "expiresAt": "2026-09-09T04:00:00.000Z",
+          "path": "$.postingEvidence.jobPosting.validThrough",
+          "value": "2026-09-09T04:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "jobId": "cmtpucm9p1ro6l35m1pfbh5a5",
+      "planHash": "b1509cdb0626cfff8a5ab83076a094dec6df2434abf8c5108a5ca1026534afc7",
+      "evidence": [
+        {
+          "sourceId": "cmtpucm9p1ro7l35ms2ec9cxg",
+          "sourceKey": "urbn-stores",
+          "expiresAt": "2026-09-09T04:00:00.000Z",
+          "path": "$.postingEvidence.jobPosting.validThrough",
+          "value": "2026-09-09T04:00:00.000Z"
+        },
+        {
+          "sourceId": "cmtpulmei2dwfl35mku937y03",
+          "sourceKey": "urbn-hub",
+          "expiresAt": "2026-09-09T04:00:00.000Z",
+          "path": "$.postingEvidence.jobPosting.validThrough",
+          "value": "2026-09-09T04:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "jobId": "cmtpucoid1soel35m91tyb49o",
+      "planHash": "b1509cdb0626cfff8a5ab83076a094dec6df2434abf8c5108a5ca1026534afc7",
+      "evidence": [
+        {
+          "sourceId": "cmtpucoid1sofl35m0ot2b06y",
+          "sourceKey": "urbn-stores",
+          "expiresAt": "2026-09-09T04:00:00.000Z",
+          "path": "$.postingEvidence.jobPosting.validThrough",
+          "value": "2026-09-09T04:00:00.000Z"
+        },
+        {
+          "sourceId": "cmtpulq8j2g9kl35mdbaqs4fc",
+          "sourceKey": "urbn-hub",
+          "expiresAt": "2026-09-09T04:00:00.000Z",
+          "path": "$.postingEvidence.jobPosting.validThrough",
+          "value": "2026-09-09T04:00:00.000Z"
+        }
+      ]
+    },
+    {
+      "jobId": "cmtt8ykv53modmy01hpll511j",
+      "planHash": "18e66f3ae54f8fb2a75bd219b2d7bc7b2624bde9d4fa90f22bc96d9b35183456",
+      "evidence": [
+        {
+          "sourceId": "cmtt8ykv53moemy01ut6h7yy7",
+          "sourceKey": "urbn-hub",
+          "expiresAt": "2026-09-12T04:00:00.000Z",
+          "path": "$.postingEvidence.jobPosting.validThrough",
+          "value": "2026-09-12T04:00:00.000Z"
+        }
+      ]
+    }
+  ]
+}

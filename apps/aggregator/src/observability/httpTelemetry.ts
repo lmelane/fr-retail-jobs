@@ -6,9 +6,9 @@
  * sur un total : elle se répond **par hôte**, parce que c'est l'hôte qui impose la latence, qui throttle, et
  * qui décide si la porte par hôte (D25) doit ralentir.
  *
- * Ce module s'attache au point de passage UNIQUE de toute requête sortante, `fetchWithRetry`. Le brancher
- * ailleurs — dans un adaptateur, dans un appelant — laisserait passer les requêtes des autres chemins et
- * produirait un compte partiel présenté comme total.
+ * Le transport alimente ces compteurs : `fetchWithRetry` pour les extractions et chaque saut de
+ * `fetchFollowingSafely` pour les captures de pages d'identité ou d'accès sans retry. Les adaptateurs
+ * ne les incrémentent pas eux-mêmes. Les redirections d'extraction restent comptées dans leur tentative.
  *
  * Ce qu'il ne fait pas : estimer. Une taille de corps que le serveur n'annonce pas reste `null`, jamais 0 —
  * « je ne sais pas » et « rien » sont deux informations différentes, et les confondre fausse tout coût/octet.

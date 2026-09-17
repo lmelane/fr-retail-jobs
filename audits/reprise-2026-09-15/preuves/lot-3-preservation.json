@@ -1,0 +1,523 @@
+{
+  "originalFiles": 86,
+  "unchangedFiles": 85,
+  "packageChange": "Vitest 5 and official AWS S3 SDK from previous lots; three original user scripts remain unstaged",
+  "files": [
+    {
+      "repo": "aggregator",
+      "path": "apps/aggregator/data/seeds/sources.csv",
+      "unchanged": true,
+      "sha256": "6e1338b3f2b2adcdca1ae2a1e75276bb5de00f087b890428e38a506ab0ad7ac8"
+    },
+    {
+      "repo": "aggregator",
+      "path": "apps/aggregator/package.json",
+      "unchanged": false,
+      "sha256": "a0e272b2dcbde8c7b3e691d3f79d7bbe016370435cf5f0a9a31ab5d7bc7ce82c"
+    },
+    {
+      "repo": "aggregator",
+      "path": "apps/aggregator/scripts/ops/verif-bash-live.mts",
+      "unchanged": true,
+      "sha256": "05230f9a5d556fda5ec5b919bc4de01c2fabd6d190c1d764a6077870737e83d9"
+    },
+    {
+      "repo": "aggregator",
+      "path": "apps/aggregator/scripts/ops/verif-ca-californie.mts",
+      "unchanged": true,
+      "sha256": "e60246927aa50a0d10d5abc63ca852047c1eb320fe0e5f21b82f1401362a5c82"
+    },
+    {
+      "repo": "aggregator",
+      "path": "apps/aggregator/scripts/ops/verif-catalogue-coherence.mts",
+      "unchanged": true,
+      "sha256": "fc891f7fade3e45dc5fd6b53e1f3e7b21998c955f26a18909921f9cb7f99a2e8"
+    },
+    {
+      "repo": "aggregator",
+      "path": "apps/aggregator/scripts/ops/verif-langues-marches.mts",
+      "unchanged": true,
+      "sha256": "1c454e232edd43bf614c012baee94394676858a46e7e9cf6deb19eafc007c9f0"
+    },
+    {
+      "repo": "aggregator",
+      "path": "apps/aggregator/src/ats/adapters/bashTalents.test.ts",
+      "unchanged": true,
+      "sha256": "adb9d1958df177c755214b5911bfae32dffa730ea4ffa1ee6d8da8c324d1d654"
+    },
+    {
+      "repo": "aggregator",
+      "path": "apps/aggregator/src/ats/adapters/bashTalents.ts",
+      "unchanged": true,
+      "sha256": "cd6d3f05632fa7aa48d6da449777155f75a7bfe38506ec7caf4b64001edc9416"
+    },
+    {
+      "repo": "aggregator",
+      "path": "apps/aggregator/src/pipeline/sourceStore.test.ts",
+      "unchanged": true,
+      "sha256": "c7a2fbb16bdef5cb1bb076f23bb1f778ebbf1751ab02f6fc2f6b3541c2a714b8"
+    },
+    {
+      "repo": "aggregator",
+      "path": "audits/mesures-d435-d436/d437-couverture-simulee.mjs",
+      "unchanged": true,
+      "sha256": "32b62f60749c2b0f7cc7f94ab3ccba509239d95566444d4cac8ce482a191f577"
+    },
+    {
+      "repo": "aggregator",
+      "path": "audits/mesures-d435-d436/d437-echantillon.mjs",
+      "unchanged": true,
+      "sha256": "b4317a30097d599796c0780adeafaae7b9e921910f8195a2a3bf7b2e39054ed5"
+    },
+    {
+      "repo": "aggregator",
+      "path": "audits/mesures-d435-d436/d437-enum-cles-raw.mjs",
+      "unchanged": true,
+      "sha256": "270f2938930ecd59011d251982c084dd220c2b6b9b556c67ae470392e4902215"
+    },
+    {
+      "repo": "aggregator",
+      "path": "audits/mesures-d435-d436/d437-geo-plausibilite.mjs",
+      "unchanged": true,
+      "sha256": "433ac05a7414d7e0f1b31719f3fb0a10981af4df0ed924eb33856672d41bcfa2"
+    },
+    {
+      "repo": "aggregator",
+      "path": "audits/mesures-d435-d436/lot5-cles-raw-par-ats-2026-09-15.sql",
+      "unchanged": true,
+      "sha256": "68dbbf11f5da4f8bb674518b47e15be01326da1bec44eb8a532eb9dfbbadfd6c"
+    },
+    {
+      "repo": "aggregator",
+      "path": "audits/mesures-d435-d436/lot5-contradiction-seniorite-2026-09-15.sql",
+      "unchanged": true,
+      "sha256": "e3bf4edc53f8b1e28a2c65f416b12628cab59af0a4bbddd4db52ae99343e32af"
+    },
+    {
+      "repo": "aggregator",
+      "path": "audits/mesures-d435-d436/lot5-dimensions-par-ats-2026-09-15.sql",
+      "unchanged": true,
+      "sha256": "19cd04a20ea7dbc751d4c30c898560b3456b19c052c7db847915c3a4b2187d4c"
+    },
+    {
+      "repo": "aggregator",
+      "path": "audits/mesures-d435-d436/lot5-inventaire-2026-09-15.sql",
+      "unchanged": true,
+      "sha256": "5ea2bfac7a5a67f458bf9971943a4307dc4ed985c829a98be2c4b53d00353ce7"
+    },
+    {
+      "repo": "aggregator",
+      "path": "audits/mesures-d435-d436/lot5-part-deduction-2026-09-15.sql",
+      "unchanged": true,
+      "sha256": "0e302b817918eb4d1f54158b1053bf8c8984697b382a0119d09b42cc516955d9"
+    },
+    {
+      "repo": "aggregator",
+      "path": "audits/mesures-d435-d436/lot5-source-vs-colonne-2026-09-15.sql",
+      "unchanged": true,
+      "sha256": "e6862341da911769c9d5460372a75bdd461c7169320762c35b3a385262b89ab9"
+    },
+    {
+      "repo": "aggregator",
+      "path": "audits/mesures-d435-d436/mesures.sql",
+      "unchanged": true,
+      "sha256": "ea4a606a42f45a8487038772c3294ac3b9c3e36a0c671a8ec271ae5bc7ebffe0"
+    },
+    {
+      "repo": "aggregator",
+      "path": "audits/mesures-d435-d436/q.mjs",
+      "unchanged": true,
+      "sha256": "db42dc95280efa23d605314c60571fd1992cd7a1b79660a89f3c48658a75752e"
+    },
+    {
+      "repo": "aggregator",
+      "path": "audits/mesures-d435-d436/verif-ats-us-au-ch.mjs",
+      "unchanged": true,
+      "sha256": "94321640954a8f4cf8b13a450e674fedb837a7dfbbd28c5884c26daad1c169c3"
+    },
+    {
+      "repo": "aggregator",
+      "path": "audits/mesures-d435-d436/verif-cles-raw-experience.mjs",
+      "unchanged": true,
+      "sha256": "511f613e7c4f64a2a12f404bce2c169eeb4a85d5ba6f5b40dbacce977bf62aed"
+    },
+    {
+      "repo": "aggregator",
+      "path": "audits/mesures-d435-d436/verif-familles-vs-metiers.mjs",
+      "unchanged": true,
+      "sha256": "4beceb9768523983dadf70e309c611b6aa3a07249e031ab6c98c44b096bfbfb7"
+    },
+    {
+      "repo": "aggregator",
+      "path": "audits/mesures-d435-d436/verif-filtres-universels.mjs",
+      "unchanged": true,
+      "sha256": "f3e20faabb3c7b6da5ea42a32a39ba0c2e3fe222c4b877e35ea5f1c9a8cf9268"
+    },
+    {
+      "repo": "aggregator",
+      "path": "audits/mesures-d435-d436/verif-longue-traine.mjs",
+      "unchanged": true,
+      "sha256": "8e484e83f7305cef46f3c96745e15a13efc616057c983da2cfb82275145771a4"
+    },
+    {
+      "repo": "aggregator",
+      "path": "audits/mesures-d435-d436/verif-raw-4-dimensions.mjs",
+      "unchanged": true,
+      "sha256": "515cd525e24c00c88028cdb02ccac96905b5898d344de00359f12a9720c23bf6"
+    },
+    {
+      "repo": "aggregator",
+      "path": "audits/mesures-d435-d436/verif-raw-workday-jibe.mjs",
+      "unchanged": true,
+      "sha256": "5181c63037fffd69f2d67fc8976f84db5b90fd0591d7575ed3e60453db8f0f43"
+    },
+    {
+      "repo": "aggregator",
+      "path": "audits/mesures-d435-d436/verif-salaire-zeros.mjs",
+      "unchanged": true,
+      "sha256": "5a8cde184a7c7f5c54fce75ba6f7e4de152fe34ae1a370f7130da0c4101d916d"
+    },
+    {
+      "repo": "aggregator",
+      "path": "audits/mesures-d435-d436/verif-seniorite-declaree.mjs",
+      "unchanged": true,
+      "sha256": "317b8d98cadc3078eb62baf16d17767a3f1beb586922c726fc6d54a2b74eef33"
+    },
+    {
+      "repo": "aggregator",
+      "path": "audits/mesures-d435-d436/verif-titres-distincts.mjs",
+      "unchanged": true,
+      "sha256": "03528c0b5d186e6c34d31172ad2aa087c8e373d7e4a601b039536223e9ec33e7"
+    },
+    {
+      "repo": "website",
+      "path": "next.config.mjs",
+      "unchanged": true,
+      "sha256": "85a59cc4d027c47814190748a9042f6c1fc6542e6ab6f9fb0c0d1d6a59d5d52f"
+    },
+    {
+      "repo": "website",
+      "path": "src/app/cgu/page.tsx",
+      "unchanged": true,
+      "sha256": "7c48a49434d7641e9b0b90322f9ef83305a1a29a4d4fa9c9db2717ca72be109a"
+    },
+    {
+      "repo": "website",
+      "path": "src/app/confidentialite/page.tsx",
+      "unchanged": true,
+      "sha256": "e7d14ce9658868ca083ffe74e7a123dd8e892d20e52a9c5d3d59fa2a69e6a521"
+    },
+    {
+      "repo": "website",
+      "path": "src/app/mentions-legales/page.tsx",
+      "unchanged": true,
+      "sha256": "b713c355e9163d631348e47ae019ddd9aedd2787288730940f9f8ac40425e453"
+    },
+    {
+      "repo": "website",
+      "path": "src/components/legal/AvertissementLegal.tsx",
+      "unchanged": true,
+      "sha256": "59002611c2df30e916f318038c96a1975e12a68dfdc89c7361e31dd40109eb01"
+    },
+    {
+      "repo": "website",
+      "path": "src/lib/emplois/__tests__/marches-parite-amont.test.ts",
+      "unchanged": true,
+      "sha256": "d2c2d16c066c774ecb23e8aae9a0c8bcc5c486c7f0d4d144929221aaf192d3a4"
+    },
+    {
+      "repo": "website",
+      "path": "src/lib/emplois/__tests__/suggest-villes-marche.test.ts",
+      "unchanged": true,
+      "sha256": "ab3c08bf663529db9298985f63c0d6d943ded08ba9173ed7b93d19361e8c35a2"
+    },
+    {
+      "repo": "website",
+      "path": "src/lib/langue/__tests__/legal.test.ts",
+      "unchanged": true,
+      "sha256": "709b027dd3e7d37e7338864a38c2b6171f7875d7fd84ba73f0c24c4777a61183"
+    },
+    {
+      "repo": "website",
+      "path": "src/lib/langue/legal/en.ts",
+      "unchanged": true,
+      "sha256": "73feac161b06d644c59bb69004713f0526d897ceecfea6078824dc7c5ca0cba0"
+    },
+    {
+      "repo": "website",
+      "path": "src/lib/langue/legal/fr.ts",
+      "unchanged": true,
+      "sha256": "05512c9045152ec1d3bae77302f932119f4daabeb8f6c568e0513aeb8e5f67e9"
+    },
+    {
+      "repo": "website",
+      "path": "src/lib/langue/legal/index.ts",
+      "unchanged": true,
+      "sha256": "5feeb3ba16fd8e632eb81bad52a69de538866acf6a7a2edf281984e32920d311"
+    },
+    {
+      "repo": "backend",
+      "path": "docs/governance/DECISIONS.md",
+      "unchanged": true,
+      "sha256": "b967df5b92da83712c828da9c492e7985e4273dcf5fb1c12aa59a41eb533b764"
+    },
+    {
+      "repo": "backend",
+      "path": "prisma/migrations/20260914135914_anciens_slugs_d425/migration.sql",
+      "unchanged": true,
+      "sha256": "701673eced48c21ccbda4d74a482787b5f7f1e5630c37c7fca5bb0ba7dbe82cf"
+    },
+    {
+      "repo": "backend",
+      "path": "prisma/schema.prisma",
+      "unchanged": true,
+      "sha256": "716c736246dca5c327d077c84c930161ffbd9ca2237829c9137d81e4eaef647e"
+    },
+    {
+      "repo": "backend",
+      "path": "scripts/rattacher-maisons-d424.mjs",
+      "unchanged": true,
+      "sha256": "a84030e9b089d7074737e501cb327bbe8a6aaefe52ac3d7252b2b3f6f773d544"
+    },
+    {
+      "repo": "media",
+      "path": "PATRON-ARTICLE-EVENEMENTIEL.md",
+      "unchanged": true,
+      "sha256": "dc431c2c77c8afa2191c2de1358a9edc5c51d7b44a7272c02a7ad54e080fdc95"
+    },
+    {
+      "repo": "media",
+      "path": "newsroom/migrations/025_article_translations.down.sql",
+      "unchanged": true,
+      "sha256": "bba15c0133f3801d64a926aecb5505c2d351135f8d37b119a8baa73234789c09"
+    },
+    {
+      "repo": "media",
+      "path": "newsroom/migrations/025_article_translations.up.sql",
+      "unchanged": true,
+      "sha256": "15d8daca72a7f4fd6fb5f3fd51706bb019096d52eb8d477bf58101bf3686b091"
+    },
+    {
+      "repo": "media",
+      "path": "newsroom/package.json",
+      "unchanged": true,
+      "sha256": "7ff3eb382d368538345de6d6c8c236493ac362f654548d4a490f129803c2ca21"
+    },
+    {
+      "repo": "media",
+      "path": "newsroom/scripts/etat-avant-025.mjs",
+      "unchanged": true,
+      "sha256": "2d3a23b6f29ff29b5acaddeb7d94c547a41694238c3669934cb25221342261e8"
+    },
+    {
+      "repo": "media",
+      "path": "newsroom/scripts/shadow-search-intent-radar.mjs",
+      "unchanged": true,
+      "sha256": "c5e7b00eeb624d4bfb04db25f88aa0a0226c5b7a40a48e97106acee8b88ec859"
+    },
+    {
+      "repo": "media",
+      "path": "newsroom/scripts/temoin-pfw-publication-anticipee-2026-09-07.mjs",
+      "unchanged": true,
+      "sha256": "a05b38bb6de998fcfd55f347e4f5230764d83fde1cba9a3a048456cd47e671e6"
+    },
+    {
+      "repo": "media",
+      "path": "newsroom/src/console-server.mjs",
+      "unchanged": true,
+      "sha256": "9610b45e910ce01339cb71bf9ac4f05a35d932e877477c64449ac387528c5b68"
+    },
+    {
+      "repo": "media",
+      "path": "newsroom/src/journal-server.mjs",
+      "unchanged": true,
+      "sha256": "9e543ce0144afdecfe7a93c94cfc713ccbef0cae4b2edce97fde21bb64e9c26c"
+    },
+    {
+      "repo": "media",
+      "path": "newsroom/src/lib/journal-public.mjs",
+      "unchanged": true,
+      "sha256": "a2f6db355c2ef66c1799b912a35d4f88e9b27a3703e9c037db8df97c00934745"
+    },
+    {
+      "repo": "media",
+      "path": "newsroom/src/lib/translate-article.mjs",
+      "unchanged": true,
+      "sha256": "65690f4063c4d8b7199ee98aefc0839405460a312f14f5d2a13b9d6b85b50bee"
+    },
+    {
+      "repo": "media",
+      "path": "newsroom/src/lib/translation-rules.mjs",
+      "unchanged": true,
+      "sha256": "21f83c5a133e1f2cc263d3de78ca24850d9f50fd6d2c8e001481e5e8ea198536"
+    },
+    {
+      "repo": "media",
+      "path": "newsroom/src/traduire-stock.mjs",
+      "unchanged": true,
+      "sha256": "627dce7e4fe48d17646cb927e57e6cb42904ea184a44b231fe16aac8910ab311"
+    },
+    {
+      "repo": "media",
+      "path": "newsroom/src/verif-parite-traduction.mjs",
+      "unchanged": true,
+      "sha256": "034122d508a7dda4737cf1c1b37d930c454d25e6832d591f85a3e5bef34eb5cb"
+    },
+    {
+      "repo": "media",
+      "path": "newsroom/tests/54-traduction-en.test.mjs",
+      "unchanged": true,
+      "sha256": "0fbe2ee743a2ed6fae5680b9d2b058dd44b5e7581afa6131e726204a12d27513"
+    },
+    {
+      "repo": "media",
+      "path": "redactions/2026-09-09-article-diplome-travailler-dans-le-luxe.md",
+      "unchanged": true,
+      "sha256": "7ff792d60adcbc65b51df7ad8fb489384939fa4be04558d70ed584c24de0e905"
+    },
+    {
+      "repo": "media",
+      "path": "redactions/2026-09-09-article-soin-visage-givenchy.md",
+      "unchanged": true,
+      "sha256": "0393681680be827c077f2333047ed0daaafd7dd1c4ef5154036a50cf07ff6a0b"
+    },
+    {
+      "repo": "media",
+      "path": "redactions/2026-09-14-article1-calendrier-pfw.md",
+      "unchanged": true,
+      "sha256": "cbfa71ab11af677747c37a59e92cddd4379315905d8219855c37cf541149e59f"
+    },
+    {
+      "repo": "media",
+      "path": "redactions/2026-09-16-article2-maisons-defiles-pfw.md",
+      "unchanged": true,
+      "sha256": "2880bbab986c11cfb5455af945dcec384274fa547a8db620441a633a6dba6237"
+    },
+    {
+      "repo": "media",
+      "path": "redactions/2026-09-18-article3-donnees-emploi-catwalks.md",
+      "unchanged": true,
+      "sha256": "4f1c37291279076614883054d100ce186b58ddb3bd348922f99d9b9a06eba809"
+    },
+    {
+      "repo": "media",
+      "path": "redactions/article-diplome-luxe-v1-corps.md",
+      "unchanged": true,
+      "sha256": "4768ee4026eaa8f34d263b04d1213bc4f194de447db5a689713685d7a9392c23"
+    },
+    {
+      "repo": "media",
+      "path": "redactions/article-givenchy-soin-v1-corps.md",
+      "unchanged": true,
+      "sha256": "11b7f5df454228b664ac81e7f2e33c00c75a4e9cba73fd679cbcea2ecf2c4f42"
+    },
+    {
+      "repo": "media",
+      "path": "redactions/article1-v2-corps.md",
+      "unchanged": true,
+      "sha256": "a407b3a4c4d681f77fb19640d1354a1ff805e42751d746296b53976c55cd374b"
+    },
+    {
+      "repo": "media",
+      "path": "redactions/article1-v3-corps.md",
+      "unchanged": true,
+      "sha256": "77e141e4a4deed70e000f4d80936a0a2a34a90ef15542455a8fdb6f55fad3431"
+    },
+    {
+      "repo": "media",
+      "path": "redactions/article2-v2-corps.md",
+      "unchanged": true,
+      "sha256": "cea1d15df99dd5c16e680cec5db04e42dfaab7800ccb929c17d008b9bb559679"
+    },
+    {
+      "repo": "media",
+      "path": "redactions/article3-v1-corps.md",
+      "unchanged": true,
+      "sha256": "ccb04b624fa0c587908d37244d82bfc4335873448a6ac89830bbf08eece6e26e"
+    },
+    {
+      "repo": "media",
+      "path": "redactions/hero-article3-apercu.png",
+      "unchanged": true,
+      "sha256": "9e034be08d0fb00159ddfa328f113d89e5b78c17a2f5deaf62154896e55075c3"
+    },
+    {
+      "repo": "media",
+      "path": "redactions/hero-article3-data-catwalks.svg",
+      "unchanged": true,
+      "sha256": "17fa1ddd53ab53e6589cd2605746326b049beccf5c128c0332b4565c04215138"
+    },
+    {
+      "repo": "media",
+      "path": "website/src/app/api/revalidate/route.ts",
+      "unchanged": true,
+      "sha256": "e2c103fe180ba0967c7014c579c2b8965fc23c5224f40ac0522ded215c4c5795"
+    },
+    {
+      "repo": "media",
+      "path": "website/src/app/en/business/[slug]/page.tsx",
+      "unchanged": true,
+      "sha256": "e4a9c93fb7835e894f3fa2edb649c8f994c2087291914df03c5f8519603380a3"
+    },
+    {
+      "repo": "media",
+      "path": "website/src/app/en/career/[slug]/page.tsx",
+      "unchanged": true,
+      "sha256": "4df66d466cc0acf45a55f6346003d208557696be37c3ec6808780d680badb7d2"
+    },
+    {
+      "repo": "media",
+      "path": "website/src/app/layout.tsx",
+      "unchanged": true,
+      "sha256": "621e6109cc4a8931f95e1dbe390794f630dccb5649c10594901e7a9a6db3e32d"
+    },
+    {
+      "repo": "media",
+      "path": "website/src/app/sitemap.ts",
+      "unchanged": true,
+      "sha256": "2f3f7e5e053c67193d9d0bc9da99c15d0db51b0fa5f2369b945457c0cbebf396"
+    },
+    {
+      "repo": "media",
+      "path": "website/src/components/ArticlePage.tsx",
+      "unchanged": true,
+      "sha256": "451664d695b6763882664812936cec30a7010c661610941cb2345308002fd856"
+    },
+    {
+      "repo": "media",
+      "path": "website/src/components/LangueDocument.tsx",
+      "unchanged": true,
+      "sha256": "3059fef08beb55794c04f3041f69da8601c725412396cb5e50bbfce6ca5a6b22"
+    },
+    {
+      "repo": "media",
+      "path": "website/src/lib/article-ou-remplacant.ts",
+      "unchanged": true,
+      "sha256": "6fc70f4895ff4ef3c32385a26168550df208383c9a8726c20de618eb96fa3d72"
+    },
+    {
+      "repo": "media",
+      "path": "website/src/lib/press-api.ts",
+      "unchanged": true,
+      "sha256": "6765a51d1d474937e361f0952add042aa2a58e3eeee4659882f2eefe06c04430"
+    },
+    {
+      "repo": "media",
+      "path": "website/src/lib/taxonomy.ts",
+      "unchanged": true,
+      "sha256": "16056a4f1d6441e9db7b65c767462a70357f3fff4248bf5c7df9270b4814a4f2"
+    },
+    {
+      "repo": "media",
+      "path": "website/src/lib/types.ts",
+      "unchanged": true,
+      "sha256": "949a8818172124147a73a908cfd49a6cc824884c88a9c50066793302ebdf733e"
+    },
+    {
+      "repo": "media",
+      "path": "website/tests/liens-cibles-vivantes.test.mjs",
+      "unchanged": true,
+      "sha256": "8a80d6079d327b6914ca68700c62765c6cfc429fb3f838b715379e63ccfb5244"
+    }
+  ]
+}

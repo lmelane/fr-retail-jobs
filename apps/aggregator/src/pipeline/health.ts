@@ -1,7 +1,7 @@
 import { log } from '../observability/logger.js';
 import type { PrismaClient } from '@prisma/client';
 import type { IngestStats } from './ingest.js';
-import { isTrustedForAttestation } from './attestation.js';
+import { isTrustedForAttestation, isDeclaredEmptyEnumeration } from './attestation.js';
 import { recordSourceRunSummary } from '../connectors/sourceStore.js';
 
 /**
@@ -93,7 +93,7 @@ export async function checkSourceHealth(
       // `complete` est désormais à trois valeurs : on nomme laquelle, au lieu de rendre « inconnu » comme un refus.
       const enumeration = stat.complete === true ? 'énumération prouvée'
         : stat.complete === false ? 'énumération réfutée : aucune attestation d’absence'
-        : 'énumération inconnue : l’attestation dépend du volume de référence';
+        : 'énumération inconnue : aucune attestation d’absence';
       results.push({ ...base, status: jobs > 0 ? 'DEGRADED' : 'BROKEN', note: `${stat.held} annonces non publiables archivées (${stat.heldUnresolved ?? 0} non résolues) ; ${enumeration}` });
       continue;
     }
@@ -101,6 +101,10 @@ export async function checkSourceHealth(
       results.push({ ...base, status: 'DEGRADED',
         note: `troncature : ${stat.fetched} collectées` +
           (stat.declaredTotal == null ? ', total inconnu' : ` sur ${stat.declaredTotal} déclarées`) });
+      continue;
+    }
+    if (jobs === 0 && !stat.rejected && isDeclaredEmptyEnumeration(stat)) {
+      results.push({ ...base, status: 'OK', note: 'éditeur : zéro annoncé, parcours complet sans erreur' });
       continue;
     }
     if (before === null && jobs === 0) {
@@ -265,21 +269,12 @@ async function recordRun(prisma: PrismaClient, results: SourceHealth[], stats: I
           declaredTotal: stat.declaredTotal ?? null,
           truncated: stat.truncated ?? false,
           errors: stat.errors,
-          /**
-           * `previous` est passé à la porte, et non plus seulement vérifié à côté.
-           *
-           * Depuis le 2026-09-11 la porte a besoin de savoir s'il existe un VOLUME DE RÉFÉRENCE : c'est ce qui
-           * autorise une énumération inconnue (149 sources sur 440 ne déclarent aucun total) et ce qui interdit
-           * d'attester quand il n'y a ni total déclaré ni run productif derrière soi. Le garder hors de l'appel
-           * rendait la règle inapplicable et faisait diverger deux endroits qui jugent la même chose.
-           *
-           * La comparaison d'effondrement sur `result.jobs` est CONSERVÉE en plus : elle porte sur ce que le run
-           * a réellement écrit, là où `fetched` compte ce qu'il a lu, et elle a déjà attrapé de vraies pannes.
-           */
-          canAttestAbsence: result.previous !== null && isTrustedForAttestation({
+          // A declared and proven empty listing is not an unexplained loss of
+          // writes. The refresh still requires its archived posting-ID proof.
+          canAttestAbsence: (result.previous !== null || isDeclaredEmptyEnumeration(stat)) && isTrustedForAttestation({
             status: result.status, complete: stat.complete, errors: stat.errors, truncated: stat.truncated,
             declaredTotal: stat.declaredTotal, fetched: stat.fetched, previous: result.previous,
-          }) && !(result.previous != null && result.previous > 0 && result.jobs < result.previous * COLLAPSE_RATIO),
+          }) && (isDeclaredEmptyEnumeration(stat) || !(result.previous != null && result.previous > 0 && result.jobs < result.previous * COLLAPSE_RATIO)),
           // The coverage rates ride along on EVERY run, incident or not: they
           // are the trend the next regression gets caught against. Columns
           // carry the queryable numbers; the note stays human-readable.

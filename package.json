@@ -2,19 +2,31 @@
   "name": "fr-retail-jobs",
   "private": true,
   "version": "0.1.0",
+  "engines": {
+    "node": "^22.12.0 || ^24.0.0 || >=26.0.0"
+  },
   "workspaces": [
     "apps/*",
     "packages/*"
   ],
   "scripts": {
+    "test:local": "node apps/aggregator/scripts/validate-local.mjs",
     "db:generate": "npm run db:generate -w @catwalks/db",
     "db:push": "npm run db:push -w @catwalks/db",
     "ingest": "npm run ingest -w @catwalks/aggregator",
     "refresh": "npm run refresh -w @catwalks/aggregator",
-    "reconcile": "npm run reconcile -w @catwalks/aggregator",
     "api:dev": "npm run dev -w @catwalks/api",
     "api:build": "npm run build -w @catwalks/api",
-    "typecheck": "npm run typecheck -w @catwalks/aggregator && npm run typecheck -w @catwalks/api"
+    "typecheck": "npm run typecheck -w @catwalks/aggregator && npm run typecheck -w @catwalks/api",
+    "stack": "node apps/aggregator/scripts/stack-local/index.mjs",
+    "stack:prepare": "node apps/aggregator/scripts/stack-local/index.mjs prepare",
+    "stack:start": "node apps/aggregator/scripts/stack-local/index.mjs start",
+    "stack:verify": "node apps/aggregator/scripts/stack-local/index.mjs verify",
+    "stack:stop": "node apps/aggregator/scripts/stack-local/index.mjs stop",
+    "stack:reset": "node apps/aggregator/scripts/stack-local/index.mjs reset",
+    "stack:status": "node apps/aggregator/scripts/stack-local/index.mjs status",
+    "stack:sync": "node apps/aggregator/scripts/stack-local/index.mjs sync",
+    "stack:exec": "node apps/aggregator/scripts/stack-local/index.mjs exec"
   },
   "allowScripts": {
     "prisma@6.19.3": true,

@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
-  "id": "catwalks-occupations-20260909-v1",
+  "id": "catwalks-occupations-20260914-v2",
   "review": {
-    "author": "Catwalks lot 2",
-    "at": "2026-09-09T08:42:00.463Z",
-    "basis": "Production corpus 74124 active postings; migrated family heuristics remain explicitly broad evidence, not validated occupations."
+    "author": "LOT 4 / P10",
+    "at": "2026-09-14T14:00:00.000Z",
+    "basis": "Décision propriétaire du 2026-09-14 : l'optique ET la pharmacie entrent au périmètre, sous la famille existante health-optical-services. Les rattachements sont décidés par la MESURE, pas par le mot : sur les 306 offres « Dispenser » / « Trainee Dispenser » / « Relief Dispenser » de Boots, 306 descriptions parlent de pharmacie et 0 d'optique — une règle sur le mot seul aurait rangé 306 préparateurs en pharmacie dans l'optique. Métier ajouté : optical-assistant (assistant de magasin d'optique, ni opticien diplômé ni optométriste). Impact simulé hors ligne sur le corpus actif : 458 offres gagnent un métier précis."
   },
   "groups": [
     {
@@ -1446,7 +1446,9 @@
       "family": "health-optical-services",
       "aliases": [
         "Optometrist",
-        "Optometriste"
+        "Optometriste",
+        "Optometric Technician",
+        "Optometry Technician"
       ]
     },
     {
@@ -1460,7 +1462,11 @@
         "Dispensing Optician",
         "Opticien",
         "Opticienne",
-        "Optometrist Optician"
+        "Optometrist Optician",
+        "Contact Lens Optician",
+        "Mobile Contact Lens Optician",
+        "Optical Technician / Optician",
+        "Optician"
       ]
     },
     {
@@ -1509,7 +1515,12 @@
       "aliases": [
         "Pharmacy Dispenser",
         "Pharmacy Assistant",
-        "Dispensing Assistant"
+        "Dispensing Assistant",
+        "Dispenser",
+        "Trainee Dispenser",
+        "Relief Dispenser",
+        "Mobile Dispenser",
+        "Dispenser - Bank"
       ]
     },
     {
@@ -1578,6 +1589,25 @@
         "Pastry Chef",
         "Pâtissier",
         "Pâtissière"
+      ]
+    },
+    {
+      "key": "optical-assistant",
+      "labels": {
+        "fr": "Assistant d'optique",
+        "en": "Optical assistant"
+      },
+      "family": "health-optical-services",
+      "aliases": [
+        "Optical Assistant",
+        "Retail Assistant (Opticians)",
+        "Optical Retail Assistant",
+        "Opticians Assistant",
+        "Optical Advisor",
+        "Optical Sales Associate",
+        "Optical Team Member",
+        "Assistant d'optique",
+        "Assistante optique"
       ]
     }
   ],
@@ -3086,7 +3116,9 @@
           "field": "title",
           "any": [
             "Optometrist",
-            "Optometriste"
+            "Optometriste",
+            "Optometric Technician",
+            "Optometry Technician"
           ],
           "mode": "phrase"
         }
@@ -3105,7 +3137,10 @@
             "Dispensing Optician",
             "Opticien",
             "Opticienne",
-            "Optometrist Optician"
+            "Optometrist Optician",
+            "Contact Lens Optician",
+            "Mobile Contact Lens Optician",
+            "Optical Technician / Optician"
           ],
           "mode": "phrase"
         }
@@ -3221,7 +3256,11 @@
           "any": [
             "Pharmacy Dispenser",
             "Pharmacy Assistant",
-            "Dispensing Assistant"
+            "Dispensing Assistant",
+            "Dispenser",
+            "Trainee Dispenser",
+            "Relief Dispenser",
+            "Mobile Dispenser"
           ]
         }
       ],
@@ -3484,6 +3523,26 @@
         "skincare"
       ],
       "evidence": "Advertised beauty consulting specialization is explicit in the title."
+    },
+    {
+      "id": "optical-assistant-title",
+      "occupation": "optical-assistant",
+      "all": [
+        {
+          "field": "title",
+          "any": [
+            "Optical Assistant",
+            "Retail Assistant (Opticians)",
+            "Optical Retail Assistant",
+            "Opticians Assistant",
+            "Optical Advisor",
+            "Optical Team Member"
+          ]
+        }
+      ],
+      "exclude": [],
+      "supersedes": [],
+      "evidence": "Titres réels non classés en production (Boots, Clarkson Eyecare) ; l'assistant de magasin d'optique n'est ni opticien diplômé ni optométriste — mesuré le 2026-09-14."
     }
   ],
   "familyContexts": [

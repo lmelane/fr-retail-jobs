@@ -1,0 +1,96 @@
+{
+  "mutations": [
+    {
+      "name": "wrong-format",
+      "baselineGuardHeld": true,
+      "disabledGuardsAcceptedForbiddenWrite": true,
+      "rowsAndDdlRolledBack": true,
+      "sequenceGapsExpected": true
+    },
+    {
+      "name": "caller-job-order",
+      "baselineGuardHeld": true,
+      "disabledGuardsAcceptedForbiddenWrite": true,
+      "rowsAndDdlRolledBack": true,
+      "sequenceGapsExpected": true
+    },
+    {
+      "name": "fake-extraction",
+      "baselineGuardHeld": true,
+      "disabledGuardsAcceptedForbiddenWrite": true,
+      "rowsAndDdlRolledBack": true,
+      "sequenceGapsExpected": true
+    },
+    {
+      "name": "job-as-evidence",
+      "baselineGuardHeld": true,
+      "disabledGuardsAcceptedForbiddenWrite": true,
+      "rowsAndDdlRolledBack": true,
+      "sequenceGapsExpected": true
+    },
+    {
+      "name": "empty-journal",
+      "baselineGuardHeld": true,
+      "disabledGuardsAcceptedForbiddenWrite": true,
+      "rowsAndDdlRolledBack": true,
+      "sequenceGapsExpected": true
+    },
+    {
+      "name": "partial-journal",
+      "baselineGuardHeld": true,
+      "disabledGuardsAcceptedForbiddenWrite": true,
+      "rowsAndDdlRolledBack": true,
+      "sequenceGapsExpected": true
+    },
+    {
+      "name": "gapped-journal",
+      "baselineGuardHeld": true,
+      "disabledGuardsAcceptedForbiddenWrite": true,
+      "rowsAndDdlRolledBack": true,
+      "sequenceGapsExpected": true
+    },
+    {
+      "name": "evidence-with-output",
+      "baselineGuardHeld": true,
+      "disabledGuardsAcceptedForbiddenWrite": true,
+      "rowsAndDdlRolledBack": true,
+      "sequenceGapsExpected": true
+    },
+    {
+      "name": "nonjob-output",
+      "baselineGuardHeld": true,
+      "disabledGuardsAcceptedForbiddenWrite": true,
+      "rowsAndDdlRolledBack": true,
+      "sequenceGapsExpected": true
+    },
+    {
+      "name": "nonjob-validation",
+      "baselineGuardHeld": true,
+      "disabledGuardsAcceptedForbiddenWrite": true,
+      "rowsAndDdlRolledBack": true,
+      "sequenceGapsExpected": true
+    },
+    {
+      "name": "nonjob-observation",
+      "baselineGuardHeld": true,
+      "disabledGuardsAcceptedForbiddenWrite": true,
+      "rowsAndDdlRolledBack": true,
+      "sequenceGapsExpected": true
+    },
+    {
+      "name": "nonjob-publication",
+      "baselineGuardHeld": true,
+      "disabledGuardsAcceptedForbiddenWrite": true,
+      "rowsAndDdlRolledBack": true,
+      "sequenceGapsExpected": true
+    },
+    {
+      "name": "mutable-purpose",
+      "baselineGuardHeld": true,
+      "disabledGuardsAcceptedForbiddenWrite": true,
+      "rowsAndDdlRolledBack": true,
+      "sequenceGapsExpected": true
+    }
+  ],
+  "triggerDefinitionsRestored": true
+}

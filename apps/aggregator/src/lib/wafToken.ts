@@ -1,3 +1,4 @@
+import { noteUnsupportedTransport, replayingResponses, replayWafCookie } from '../capture/context.js';
 import { log } from '../observability/logger.js';
 /**
  * Jetons WAF par origine — la table que `fetchWithRetry` consulte pour joindre
@@ -52,6 +53,7 @@ function originOf(url: string): string {
 
 /** Le cookie amorcé pour l'origine de cette URL, s'il existe. */
 export function getWafCookie(url: string): string | undefined {
+  if (replayingResponses()) return replayWafCookie(url);
   return cookies.get(originOf(url));
 }
 
@@ -77,6 +79,8 @@ async function defaultPrimer(url: string): Promise<string | undefined> {
  * temps. Renvoie le cookie obtenu, ou `undefined` si le WAF n'en a posé aucun.
  */
 export async function primeWafCookie(url: string): Promise<string | undefined> {
+  if (replayingResponses()) return replayWafCookie(url, true);
+  noteUnsupportedTransport();
   const origin = originOf(url);
   const known = cookies.get(origin);
   if (known) return known;

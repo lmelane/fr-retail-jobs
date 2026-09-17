@@ -1,0 +1,7 @@
+{
+  "freshMigrations": 70,
+  "latest": "20260916150000_source_ingestion_completion",
+  "latestSha256": "3953c73f8b586047ceadf3d39bc6d59e8112f3f5ebf0bc83d331c2883c1d32a8",
+  "validationLog": "lot5g3c-full-validation.log",
+  "appliedOnFreshDatabase": true
+}

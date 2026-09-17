@@ -1,0 +1,60 @@
+{
+  "migrationsBefore": 64,
+  "migrationsAfter": 65,
+  "before": {
+    "JobCount": 87607,
+    "JobHash": "6afc4dc4fba09f3488c16e02f11261919c601c94614037e850d74f0ad18f1c33",
+    "JobSourceCount": 90764,
+    "JobSourceHash": "936e607af64c6f3eeb9ba508a09c5cc06a715b49c7e3bb4caee0308dfe062c28",
+    "SourceObservationCount": 141933,
+    "SourceObservationHash": "6f2ffac6d5f396f058f8b177d70da72ff5e128b6f342d7f27e3caf8c6d24f9f2",
+    "SourceCount": 536,
+    "SourceHash": "c9032758cf06a812fcee5ef9a23ff229bd15e732321b0c1b1cd2aa192c097cab",
+    "SourceRevisionCount": 536,
+    "SourceRevisionHash": "df36f450d0f2706dd882302c1f827fb8027f349ee1698cd057ffd89472850882",
+    "SourceIdentityReviewCount": 112,
+    "SourceIdentityReviewHash": "5bd6230b47339d8bca46648a22367c9adbd5e3b1b532bd0b0d9c96c13b1cafd7",
+    "migrations": 64,
+    "captures": 0
+  },
+  "after": {
+    "JobCount": 87607,
+    "JobHash": "6afc4dc4fba09f3488c16e02f11261919c601c94614037e850d74f0ad18f1c33",
+    "JobSourceCount": 90764,
+    "JobSourceHash": "936e607af64c6f3eeb9ba508a09c5cc06a715b49c7e3bb4caee0308dfe062c28",
+    "SourceObservationCount": 141933,
+    "SourceObservationHash": "6f2ffac6d5f396f058f8b177d70da72ff5e128b6f342d7f27e3caf8c6d24f9f2",
+    "SourceCount": 536,
+    "SourceHash": "c9032758cf06a812fcee5ef9a23ff229bd15e732321b0c1b1cd2aa192c097cab",
+    "SourceRevisionCount": 536,
+    "SourceRevisionHash": "df36f450d0f2706dd882302c1f827fb8027f349ee1698cd057ffd89472850882",
+    "SourceIdentityReviewCount": 112,
+    "SourceIdentityReviewHash": "5bd6230b47339d8bca46648a22367c9adbd5e3b1b532bd0b0d9c96c13b1cafd7",
+    "migrations": 65,
+    "captures": 0
+  },
+  "historicalEvidence": {
+    "total": 112,
+    "bound": 0,
+    "captureBound": 0,
+    "projected": 0,
+    "ordered": 0,
+    "immutableTrigger": "O"
+  },
+  "allOldRowsAndColumnsUnchanged": true,
+  "addedColumns": [
+    "SourceIdentityReview.evidenceCaptureBatchId",
+    "SourceIdentityReview.relationReport"
+  ],
+  "historicalRevisionBindingsInvented": 0,
+  "historicalOrdersInvented": 0,
+  "backup": "reprise-20260916-lot5d/after-source-validation-schema60.dump",
+  "restoreRequiresMigrations": [
+    61,
+    62,
+    63,
+    64,
+    65
+  ],
+  "productionTouched": false
+}

@@ -1,0 +1,72 @@
+{
+  "fr_statuses": [
+    {
+      "status": "READY",
+      "count": 8
+    },
+    {
+      "status": "BLOCKED",
+      "count": 206
+    },
+    {
+      "status": "DRAFT",
+      "count": 21
+    },
+    {
+      "status": "REJECTED",
+      "count": 14
+    },
+    {
+      "status": "PUBLISHED",
+      "count": 142
+    }
+  ],
+  "en_statuses": [
+    {
+      "lang": "en",
+      "status": "FAILED",
+      "count": 22
+    },
+    {
+      "lang": "en",
+      "status": "PUBLISHED",
+      "count": 60
+    }
+  ],
+  "parity": [
+    {
+      "translation_status": "FAILED",
+      "count": 22
+    },
+    {
+      "translation_status": "PUBLISHED",
+      "count": 60
+    },
+    {
+      "translation_status": "MISSING",
+      "count": 60
+    }
+  ],
+  "migrations": [
+    {
+      "name": "025_article_translations",
+      "applied_at": "2026-09-15T11:06:14.918166+00:00"
+    },
+    {
+      "name": "024_article_views",
+      "applied_at": "2026-08-06T14:39:24.704789+00:00"
+    },
+    {
+      "name": "023_production_integrity",
+      "applied_at": "2026-08-06T07:58:47.438764+00:00"
+    },
+    {
+      "name": "022_doctrine_business",
+      "applied_at": "2026-08-05T22:30:08.346514+00:00"
+    },
+    {
+      "name": "021_pilot_sector_scope",
+      "applied_at": "2026-08-05T19:13:58.708549+00:00"
+    }
+  ]
+}

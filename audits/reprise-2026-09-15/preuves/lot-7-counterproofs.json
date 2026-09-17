@@ -1,0 +1,120 @@
+{
+  "mutations": [
+    {
+      "name": "query-term-not-normalised",
+      "file": "apps/api/lib/job-search-query.ts",
+      "witness": [
+        "lib/__tests__/pertinence-lot7.test.ts"
+      ],
+      "pattern": "\u00ab \u00e9cole \u00bb, \u00ab ecole \u00bb, \u00ab \u00c9COLE \u00bb",
+      "rejectedByRegression": true,
+      "restoredSha256": "28286bd98d7413b8005cf1dfe59876951c8f079beabf07a8063dfa2c165463f0"
+    },
+    {
+      "name": "no-relevance-score",
+      "file": "apps/api/lib/job-search-query.ts",
+      "witness": [
+        "lib/__tests__/pertinence-lot7.test.ts"
+      ],
+      "pattern": "le score classe le titre",
+      "rejectedByRegression": true,
+      "restoredSha256": "28286bd98d7413b8005cf1dfe59876951c8f079beabf07a8063dfa2c165463f0"
+    },
+    {
+      "name": "title-weight-ignored",
+      "file": "apps/api/lib/job-search-query.ts",
+      "witness": [
+        "lib/__tests__/pertinence-lot7.test.ts"
+      ],
+      "pattern": "le score classe le titre",
+      "rejectedByRegression": true,
+      "restoredSha256": "28286bd98d7413b8005cf1dfe59876951c8f079beabf07a8063dfa2c165463f0"
+    },
+    {
+      "name": "group-not-resolved",
+      "file": "apps/api/lib/job-search-query.ts",
+      "witness": [
+        "lib/__tests__/pertinence-lot7.test.ts"
+      ],
+      "pattern": "une marque ou un groupe du r\u00e9f\u00e9rentiel",
+      "rejectedByRegression": true,
+      "restoredSha256": "28286bd98d7413b8005cf1dfe59876951c8f079beabf07a8063dfa2c165463f0"
+    },
+    {
+      "name": "lexical-term-as-substring",
+      "file": "apps/api/lib/job-search-query.ts",
+      "witness": [
+        "lib/__tests__/pertinence-lot7.test.ts"
+      ],
+      "pattern": "au D\u00c9BUT d\u2019un mot",
+      "rejectedByRegression": true,
+      "restoredSha256": "28286bd98d7413b8005cf1dfe59876951c8f079beabf07a8063dfa2c165463f0"
+    },
+    {
+      "name": "cjk-term-as-words",
+      "file": "apps/api/lib/job-search-query.ts",
+      "witness": [
+        "lib/__tests__/pertinence-lot7.test.ts"
+      ],
+      "pattern": "une requ\u00eate chinoise sans espace",
+      "rejectedByRegression": true,
+      "restoredSha256": "28286bd98d7413b8005cf1dfe59876951c8f079beabf07a8063dfa2c165463f0"
+    },
+    {
+      "name": "cursor-ignored",
+      "file": "apps/api/lib/job-search-query.ts",
+      "witness": [
+        "lib/__tests__/pertinence-lot7.test.ts"
+      ],
+      "pattern": "CURSEUR \u2014 deux pages",
+      "rejectedByRegression": true,
+      "restoredSha256": "28286bd98d7413b8005cf1dfe59876951c8f079beabf07a8063dfa2c165463f0"
+    },
+    {
+      "name": "no-next-detection",
+      "file": "apps/api/lib/job-search-query.ts",
+      "witness": [
+        "lib/__tests__/pertinence-lot7.test.ts"
+      ],
+      "pattern": "CURSEUR \u2014 deux pages",
+      "rejectedByRegression": true,
+      "restoredSha256": "28286bd98d7413b8005cf1dfe59876951c8f079beabf07a8063dfa2c165463f0"
+    },
+    {
+      "name": "cursor-fingerprint-unchecked",
+      "file": "apps/api/lib/curseur.ts",
+      "witness": [
+        "lib/__tests__/pertinence-lot7.test.ts"
+      ],
+      "pattern": "CURSEUR \u2014 un jeton d\u2019autres crit\u00e8res",
+      "rejectedByRegression": true,
+      "restoredSha256": "c4babfc3733bff8cf4de5d80d322d8fcfcf2311bc452556ec54261774f4ff140"
+    },
+    {
+      "name": "directory-cursor-ignored",
+      "file": "apps/api/lib/companies.ts",
+      "witness": [
+        "lib/__tests__/annuaire-curseur-lot7.test.ts"
+      ],
+      "pattern": "PR\u00c9MISSE puis preuve \u2014 45 Maisons",
+      "rejectedByRegression": true,
+      "restoredSha256": "dd9d114fbd16010ea082497ddadf2e699c50890e2bb67b130a8b009e6e7a48a3"
+    },
+    {
+      "name": "wildcard-not-escaped",
+      "file": "apps/api/lib/job-search-query.ts",
+      "witness": [
+        "lib/__tests__/pertinence-lot7.test.ts"
+      ],
+      "pattern": "un joker est litt\u00e9ral",
+      "rejectedByRegression": true,
+      "restoredSha256": "28286bd98d7413b8005cf1dfe59876951c8f079beabf07a8063dfa2c165463f0"
+    }
+  ],
+  "restoredTests": 17,
+  "restoredSuites": [
+    "lib/__tests__/pertinence-lot7.test.ts",
+    "lib/__tests__/annuaire-curseur-lot7.test.ts"
+  ],
+  "productionTouched": false
+}

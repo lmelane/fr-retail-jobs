@@ -1,0 +1,60 @@
+{
+  "mutations": [
+    {
+      "name": "borrowed-secondary-content",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "8e73736840069229a436a8b13824b34ecc7826cf90a0a58fbed05e3df666269e"
+    },
+    {
+      "name": "stale-optional-description",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "8e73736840069229a436a8b13824b34ecc7826cf90a0a58fbed05e3df666269e"
+    },
+    {
+      "name": "refresh-url-only",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "a273887467e1af03d106522f426891787a17740b2d8cab0e5432cfb2cdd3e71b"
+    },
+    {
+      "name": "retirement-url-only",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "a290b7ee813188c929d4acc58999d8965d3c0e3e2ed3165404db6bb97201cec8"
+    },
+    {
+      "name": "mixed-api-content",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "03cb5160e4bc27487365406051760118364ca569530a289f5427ba705410cc3c"
+    },
+    {
+      "name": "unbound-fact-input",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "fddf0271f2668b71a650725e78c26caac41ac3bfc3129e70c87e340150bb9023"
+    },
+    {
+      "name": "unreviewed-projection-change",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "56cb476c45cfc7f19797e15bd7b331182b387e3ce04b9f72dfba4a05f5358fe6"
+    },
+    {
+      "name": "unrepaired-member-cache",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "c80f76eede4e418ce88845f90a28faa63502f74ea8d3cb218b4d998052b0ca71"
+    },
+    {
+      "name": "false-active-probe",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "c126b37c824a59c7d576f730e20591e3ce1fe076d0803dfb39d6ed8783659a4a"
+    }
+  ],
+  "restoredAggregatorTests": "passed",
+  "restoredApiTests": "passed"
+}

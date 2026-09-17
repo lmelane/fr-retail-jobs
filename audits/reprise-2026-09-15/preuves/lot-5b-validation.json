@@ -1,0 +1,33 @@
+{
+  "date": "2026-09-16",
+  "productionWrites": false,
+  "stockCloneWrites": "MIGRATIONS_57_AND_58_ONLY",
+  "captureFormatVersion": 2,
+  "readerRevision": "local-sha256:98a37aebc3b53409fcf2961168a97ac19ee104912b0b0455f8664e6a22c347a2",
+  "unitPassed": 2397,
+  "integrationPassed": 567,
+  "apiPassed": 259,
+  "pythonPassed": 5,
+  "totalPassed": 3228,
+  "optionalApiSkipped": 2,
+  "targetedTestsPassed": 65,
+  "counterproofsRejected": 7,
+  "typecheck": "PASS",
+  "apiBuild": "PASS",
+  "migrations": 58,
+  "migrationFromZero": "PASS",
+  "realNativeJobs": 80,
+  "sourceCertification": "NOT_DELIVERED_IN_THIS_LOT",
+  "logs": {
+    "lot5b-full-validation.log": "7134c719a6d5028cc533cb862a697ce6a28e667466ef311475583266704902a9",
+    "lot5b-api-build.log": "e40776f817013facde14cab1f423cd9b2cebab792d8a51106f2b6ad9a0a3a60b",
+    "lot5b-test-output.log": "7dc2121151c2aaab3493d0426601fa86c490174b66710b967f97d217a91513a7",
+    "lot5b-typecheck-output.log": "38f11d2f5f6bbb339d8011e1d5805718aba8e3e79c98335c261f05885cef1416",
+    "lot5b-counterproof-baseline.log": "3b59c1b924e32a45d0d8f00461314ea092aeb84cc1165609ac3e438b07c18886",
+    "lot5b-counterproof-restored.log": "424df281301151e98658c7cd8d829bda04494d134d3bfed1fdf1b178b5d873a7",
+    "lot5b-live-s3.log": "0539fdd531f16e7cb05e3007caa21e1a5d4cdcc41887b11a07d63f21de35115a",
+    "lot5b-cli.log": "3f0f2390a07d96fa3d85d42362c775502e2e6aca160b96999cb6fb96b4fd0f0e",
+    "lot5b-cli-config-refusal.log": "063c3d7700aab671384660156e8733abfe741859569eb7b225ebfd10b0bd456d",
+    "lot5b-stock-migrate.log": "4734daa4662ec09655d45b1ea38a37b7f176cd9c0bc5732a20fa7f9aac55f899"
+  }
+}

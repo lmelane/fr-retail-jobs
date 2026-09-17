@@ -16,12 +16,14 @@
  *  - Une source peut être DEGRADED (descriptions manquantes) tout en ayant vu
  *    la totalité de son board : elle garde le droit d'attester, sinon plus
  *    aucune offre expirée ne se fermerait.
- *  - Une source peut avoir écrit 20 offres — donc franchir la garde « silent
- *    zero » de la purge — alors qu'elle en déclarait 109 : elle n'a PAS le
+ *  - Une source peut avoir écrit 20 offres — donc franchir une simple garde de
+ *    « zéro silencieux » — alors qu'elle en déclarait 109 : elle n'a PAS le
  *    droit de déclarer les 89 autres disparues (cas `lagardere-travel-retail`).
  *
  * Ce module ne ferme ni n'écrit rien. Il répond à une seule question, et cette
- * réponse est ensuite lue par la purge (ingest) et par la clôture (refresh).
+ * réponse est lue par la clôture (refresh) depuis les faits scellés de la capture
+ * attestante (`attestingCapture.ts`), et par la santé (`health.ts`) à titre
+ * d'indicateur. L'ancienne purge de génération, second lecteur, a été supprimée.
  */
 
 /** L'issue d'une exécution de source, du point de vue du cycle de vie. */
@@ -78,6 +80,11 @@ export type AttestationInput = {
   previous?: number | null;
 };
 
+/** An explicit publisher zero plus completed collection is different from a silent empty response. */
+export function isDeclaredEmptyEnumeration(run: Pick<AttestationInput, 'complete' | 'errors' | 'truncated' | 'declaredTotal' | 'fetched'>): boolean {
+  return run.complete === true && run.errors === 0 && run.truncated !== true && run.declaredTotal === 0 && run.fetched === 0;
+}
+
 /**
  * Ce run a-t-il le droit de faire disparaître des offres qu'il n'a pas revues ?
  *
@@ -126,7 +133,7 @@ export function isTrustedForAttestation(run: AttestationInput): boolean {
    * nul — en plus de cette porte. La garde reste donc entière sur le chemin réel ; seules les lignes archivées
    * sans la colonne cessent d'être lues comme un effondrement inventé.
    */
-  if (run.previous && run.previous > 0 && run.fetched != null) {
+  if (!isDeclaredEmptyEnumeration(run) && run.previous && run.previous > 0 && run.fetched != null) {
     if (run.fetched < run.previous * COLLAPSE_RATIO) return false;
   }
 

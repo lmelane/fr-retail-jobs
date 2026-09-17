@@ -1,0 +1,87 @@
+{
+  "readOnly": true,
+  "productionWrites": false,
+  "reviewedAt": "2026-09-15T22:31:07.990Z",
+  "closures": 6,
+  "allNativeDeadlinesMatchStoredExpiryAndCurrentRaw": true,
+  "rows": [
+    {
+      "jobId": "cmtt7uug700gemy01lg7prwau",
+      "planHash": "e6b32060493baacff2787edb5752e27312e5f5e636c4a264b87c22ac136db02c",
+      "evidence": [
+        {
+          "sourceId": "cmtt7uug700gfmy010fd1xnqu",
+          "sourceKey": "ackermans",
+          "expiresAt": "2026-09-15T21:59:59.000Z",
+          "path": "$._jobposting.validThrough",
+          "value": "2026-09-15T23:59:59+02:00"
+        }
+      ]
+    },
+    {
+      "jobId": "cmtlyfvak016eqf5kolh6bohv",
+      "planHash": "e2e89cebb61cf99c64fcd412ac580f12d577d65a472ace99261ab38c7fc8fa49",
+      "evidence": [
+        {
+          "sourceId": "cmtlyfvak016fqf5kcgtib06w",
+          "sourceKey": "intersport",
+          "expiresAt": "2026-09-15T21:59:59.000Z",
+          "path": "$._jobposting.validThrough",
+          "value": "2026-09-15T23:59:59+02:00"
+        }
+      ]
+    },
+    {
+      "jobId": "cmtlyfvb0016iqf5kfsia5yax",
+      "planHash": "e2e89cebb61cf99c64fcd412ac580f12d577d65a472ace99261ab38c7fc8fa49",
+      "evidence": [
+        {
+          "sourceId": "cmtlyfvb0016jqf5krec3b2eh",
+          "sourceKey": "intersport",
+          "expiresAt": "2026-09-15T21:59:59.000Z",
+          "path": "$._jobposting.validThrough",
+          "value": "2026-09-15T23:59:59+02:00"
+        }
+      ]
+    },
+    {
+      "jobId": "cmtlyhlth03c8qf5kw0c65oe4",
+      "planHash": "43cf1d2bbf44b430146e5aada44415494f6ebca5baf1bedad5cdec13ccc3105c",
+      "evidence": [
+        {
+          "sourceId": "cmtlyhlth03c9qf5kewohbad3",
+          "sourceKey": "mq-marqet",
+          "expiresAt": "2026-09-15T21:59:59.000Z",
+          "path": "$._jobposting.validThrough",
+          "value": "2026-09-15T23:59:59+02:00"
+        }
+      ]
+    },
+    {
+      "jobId": "cmtlyjq8k08nlqf5kct19q1yv",
+      "planHash": "6d6761ed311e3326e9f5cb782a270ae8653979a214690f21276beeeb4eba1bf8",
+      "evidence": [
+        {
+          "sourceId": "cmtlyjq8l08nmqf5kgqoffaje",
+          "sourceKey": "glitter",
+          "expiresAt": "2026-09-15T21:59:59.000Z",
+          "path": "$._jobposting.validThrough",
+          "value": "2026-09-15T23:59:59+02:00"
+        }
+      ]
+    },
+    {
+      "jobId": "cmtlyjqb108odqf5kfxv71h2t",
+      "planHash": "6d6761ed311e3326e9f5cb782a270ae8653979a214690f21276beeeb4eba1bf8",
+      "evidence": [
+        {
+          "sourceId": "cmtlyjqb108oeqf5kmuas8a16",
+          "sourceKey": "glitter",
+          "expiresAt": "2026-09-15T21:59:59.000Z",
+          "path": "$._jobposting.validThrough",
+          "value": "2026-09-15T23:59:59+02:00"
+        }
+      ]
+    }
+  ]
+}

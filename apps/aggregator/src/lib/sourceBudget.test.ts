@@ -1,7 +1,33 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { assertSourceRunning, sourceSignal, withSourceBudget } from './sourceBudget.js';
+import { fetchFollowingSafely, readBodyBounded } from './http.js';
 
 describe('source execution budget', () => {
+  it('aborts a stalled response body and settles transport before returning the timeout', async () => {
+    let cancelled = false;
+    vi.stubGlobal('fetch', vi.fn(async (_url, init: RequestInit) => new Response(new ReadableStream({
+      start(controller) {
+        controller.enqueue(new TextEncoder().encode('partial proof'));
+        init.signal!.addEventListener('abort', () => {
+          cancelled = true; controller.error(init.signal!.reason);
+        }, { once: true });
+      },
+    }))));
+    try {
+      await expect(withSourceBudget(async () => {
+        const response = await fetchFollowingSafely('https://proof.example.com', {}, sourceSignal()!);
+        return readBodyBounded(response, 'https://proof.example.com');
+      }, 10, 'official-proof')).rejects.toThrow('__TIMEOUT__ official-proof');
+      expect(cancelled).toBe(true);
+      expect(sourceSignal()).toBeUndefined();
+    } finally { vi.unstubAllGlobals(); }
+  });
+
+  it.each([{ softTimeoutMs: 0 }, { softTimeoutMs: 1001 }, { softTimeoutMs: 1.5 }])('refuses an invalid cooperative budget %j', async options => {
+    const work = vi.fn(async () => 'never');
+    await expect(withSourceBudget(work, 1000, 'invalid', options)).rejects.toThrow('Invalid source soft timeout');
+    expect(work).not.toHaveBeenCalled();
+  });
   it('cancels sibling work after an ordinary failure, not only after timeouts', async () => {
     let sibling!: Promise<boolean>;
     await expect(withSourceBudget(async () => {

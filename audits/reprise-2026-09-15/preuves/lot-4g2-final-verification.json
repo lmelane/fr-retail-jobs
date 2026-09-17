@@ -1,0 +1,20 @@
+{
+  "environment": "Dedicated full-stock local clone; read only",
+  "productionWrites": false,
+  "partial": false,
+  "plans": 575,
+  "groups": 12490,
+  "presentations": 12934,
+  "rawMirrors": 12490,
+  "closed": 0,
+  "scalarReadRounding": 0,
+  "mismatches": [],
+  "elapsedMs": 25016,
+  "allPlansAndCachesExact": true,
+  "allOwnPublicPresentationsReadable": true,
+  "allNativePublicationJournalFieldsUnchanged": true,
+  "redirectsVerified": 219,
+  "allHistoricalRedirectsResolved": 278,
+  "remainingQualifiedCollisions": 0,
+  "allPassed": true
+}

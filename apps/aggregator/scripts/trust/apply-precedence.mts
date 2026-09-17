@@ -86,7 +86,6 @@ async function main(): Promise<void> {
         decision?.origin === 'NO_STRUCTURED_EVIDENCE' || decision?.origin === 'AMBIGUOUS_STRUCTURED'
           ? decision.origin
           : (decision?.trustLevel ?? 'INSUFFICIENT_EVIDENCE');
-      const titleQuality = decision?.origin === 'TITLE_INFERRED' ? 'TITLE_INFERRED' : 'TITLE_EXPLICIT';
       const current = row[dim];
       if (next && current && next !== current) {
         touched = true;

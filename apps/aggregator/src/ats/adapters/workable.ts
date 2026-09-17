@@ -1,6 +1,7 @@
 import { fetchJson } from '../../lib/http.js';
 import { htmlToPlainText } from '../../lib/html.js';
 import { sourceDelay, assertSourceRunning } from '../../lib/sourceBudget.js';
+import { educationLevel } from '../../normalize/experience.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
 
 /**
@@ -23,6 +24,17 @@ type WorkableJob = {
   application_url?: string;
   description?: string;
   requirements?: string;
+  /**
+   * Le niveau d'études déclaré : « Bachelor's Degree », « Associate Degree »…
+   * 279 offres le portent, dont 210 vides, 45 `null` et 24 « Unspecified » —
+   * ces formes muettes sont écartées par `educationLevel()`.
+   */
+  education?: string;
+  /**
+   * « Associate », « Mid-Senior level », « Entry level » : l'échelle LinkedIn,
+   * donc un RANG, pas une durée. NON lu (voir normalize/experience.ts).
+   */
+  experience?: string;
 };
 
 type WorkableResponse = { jobs?: WorkableJob[] };
@@ -43,24 +55,7 @@ export async function fetchWorkableJobs(config: Record<string, unknown>): Promis
       rejectedRows.push({ reason: 'MISSING_OR_INVALID_ID_OR_TITLE', raw: job }); return false;
     }
     return true;
-  }).map((job) => {
-      const postedAt = job.published_on ? new Date(job.published_on) : undefined;
-      const description = [htmlToPlainText(job.description), htmlToPlainText(job.requirements)]
-        .filter(Boolean)
-        .join('\n\n');
-
-      return {
-        externalId: String(job.shortcode),
-        title: String(job.title),
-        location: [job.city, job.state].filter(Boolean).join(', ') || undefined,
-        country: job.country,
-        contract: job.employment_type,
-        description: description || undefined,
-        url: job.url ?? job.application_url ?? `https://apply.workable.com/${account}/j/${job.shortcode}/`,
-        postedAt: postedAt && !Number.isNaN(postedAt.getTime()) ? postedAt : undefined,
-        raw: job,
-      } satisfies NormalizedJob;
-    });
+  }).map(job => parseWorkableJob(job, account));
 
   // Independent, unfiltered listing used by Workable's own career board.
   // Measured on APM Monaco: 11 cursor pages / 102 IDs, exactly the widget IDs.
@@ -139,4 +134,24 @@ export async function fetchWorkableJobs(config: Record<string, unknown>): Promis
       rawCount: data.jobs.length, termination: terminal,
       documentation: 'https://workable.readme.io/reference/jobs-1' },
   };
+}
+
+export function parseWorkableJob(job: WorkableJob, account: string): NormalizedJob {
+  const postedAt = job.published_on ? new Date(job.published_on) : undefined;
+  const description = [htmlToPlainText(job.description), htmlToPlainText(job.requirements)]
+    .filter(Boolean)
+    .join('\n\n');
+
+  return {
+    externalId: String(job.shortcode),
+    title: String(job.title),
+    location: [job.city, job.state].filter(Boolean).join(', ') || undefined,
+    country: job.country,
+    contract: job.employment_type,
+    educationLevel: educationLevel('WORKABLE', job.education),
+    description: description || undefined,
+    url: job.url ?? job.application_url ?? `https://apply.workable.com/${account}/j/${job.shortcode}/`,
+    postedAt: postedAt && !Number.isNaN(postedAt.getTime()) ? postedAt : undefined,
+    raw: job,
+  } satisfies NormalizedJob;
 }

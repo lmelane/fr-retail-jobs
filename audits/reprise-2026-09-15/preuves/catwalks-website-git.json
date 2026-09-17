@@ -1,0 +1,92 @@
+{
+  "path": "/Users/lmelane/Documents/beauchoix-projects/catwalks-build/catwalks-website",
+  "at": "2026-09-15T13:02:27.653033+00:00",
+  "github": {
+    "exit": 0,
+    "out": "{\"defaultBranchRef\":{\"name\":\"main\"},\"isPrivate\":true,\"nameWithOwner\":\"lmelane/catwalks-front-end\",\"url\":\"https://github.com/lmelane/catwalks-front-end\"}\n",
+    "err": ""
+  },
+  "prs": {
+    "exit": 0,
+    "out": "[]\n",
+    "err": ""
+  },
+  "fetch": {
+    "exit": 0,
+    "out": "",
+    "err": ""
+  },
+  "refs": {
+    "exit": 0,
+    "out": "catwalks-front-end|fea44801dcf7f7f558e7354e48fa23ab3e6f97de||\nfront-f1-sauvegarde|cd25cefe18cd0a553c09bd17a38c0f4bd438c3c6|origin/front-f1-sauvegarde|[ahead 12]\nmain|ef8e1c63b54ed25a973defc9801fe3bc4f9fbc11|origin/main|[behind 1]\nmarches-d433|c56a5f7a5e7bd8dcb30d43a443cc5fe6475dd2a4|origin/marches-d433|[gone]\nretour-avant-front-f1|bccf5412be32ab87b14974a2033c8f0a42a4ed2d|origin/main|\norigin|bccf5412be32ab87b14974a2033c8f0a42a4ed2d||\norigin/front-f1-sauvegarde|ef8e1c63b54ed25a973defc9801fe3bc4f9fbc11||\norigin/main|bccf5412be32ab87b14974a2033c8f0a42a4ed2d||\n",
+    "err": ""
+  },
+  "status": {
+    "exit": 0,
+    "out": "## front-f1-sauvegarde...origin/front-f1-sauvegarde [ahead 12]\n M next.config.mjs\n M src/app/cgu/page.tsx\n M src/app/confidentialite/page.tsx\n M src/app/mentions-legales/page.tsx\n M src/lib/emplois/__tests__/marches-parite-amont.test.ts\n M src/lib/emplois/__tests__/suggest-villes-marche.test.ts\n?? src/components/legal/\n?? src/lib/langue/__tests__/legal.test.ts\n?? src/lib/langue/legal/\n",
+    "err": ""
+  },
+  "unmerged_main": {
+    "exit": 0,
+    "out": "* front-f1-sauvegarde\n  marches-d433\n",
+    "err": ""
+  },
+  "local_only": {
+    "exit": 0,
+    "out": "cd25cef fix(marches): les facettes affichées REFLÈTENT la couverture amont, elles ne la décident plus\nc54b937 feat: libellés de filtres natifs par marché, plus de français en dur\neeccd30 fix(marches): le titre du bloc de temoins nomme aussi la Chine\n375ee61 feat(marches): ouvrir le marche CHINE, sans contrat ni rythme\n0abad0f feat(marches): ouvrir CA, NL et AU — 6 212 offres redeviennent accessibles\n0b55526 feat(suggest): transmettre le marché aux suggestions de ville (D-433)\n3bb8265 fix(langue): la marque non validée reste en français, elle ne part pas traduite\n3660eb0 fix(langue): brancher la composition langue × marché, qui ne tournait jamais\n4138811 chore(langue): retirer next-intl, installé mais jamais importé\n41765cc fix(langue): brancher ce qui doit l'être, documenter ce qui ne doit pas\n3e8bf69 feat(langue): l'axe LANGUE, distinct du marché, sans redirection\na24e472 feat(marches): le sélecteur de marché, avec ses drapeaux (D-433, option A)\n",
+    "err": ""
+  },
+  "unpushed_all": {
+    "exit": 0,
+    "out": "cd25cef fix(marches): les facettes affichées REFLÈTENT la couverture amont, elles ne la décident plus\nc54b937 feat: libellés de filtres natifs par marché, plus de français en dur\neeccd30 fix(marches): le titre du bloc de temoins nomme aussi la Chine\n375ee61 feat(marches): ouvrir le marche CHINE, sans contrat ni rythme\n0abad0f feat(marches): ouvrir CA, NL et AU — 6 212 offres redeviennent accessibles\n0b55526 feat(suggest): transmettre le marché aux suggestions de ville (D-433)\n3bb8265 fix(langue): la marque non validée reste en français, elle ne part pas traduite\n3660eb0 fix(langue): brancher la composition langue × marché, qui ne tournait jamais\n4138811 chore(langue): retirer next-intl, installé mais jamais importé\n41765cc fix(langue): brancher ce qui doit l'être, documenter ce qui ne doit pas\n3e8bf69 feat(langue): l'axe LANGUE, distinct du marché, sans redirection\na24e472 feat(marches): le sélecteur de marché, avec ses drapeaux (D-433, option A)\nc56a5f7 docs(marches): ne pas affirmer l'origine du vide, seulement la couverture\n1b12f0a feat(marches): la couche de marché, sans toucher au catalogue (D-433)\n",
+    "err": ""
+  },
+  "head_vs_main": {
+    "exit": 0,
+    "out": "12\t1\n",
+    "err": ""
+  },
+  "worktrees": {
+    "exit": 0,
+    "out": "worktree /Users/lmelane/Documents/beauchoix-projects/catwalks-build/catwalks-website\nHEAD cd25cefe18cd0a553c09bd17a38c0f4bd438c3c6\nbranch refs/heads/front-f1-sauvegarde\n\n",
+    "err": ""
+  },
+  "commits": {
+    "375ee61": {
+      "refs": {
+        "exit": 0,
+        "out": "* front-f1-sauvegarde\n",
+        "err": ""
+      },
+      "main": {
+        "exit": 1,
+        "out": "",
+        "err": ""
+      }
+    },
+    "cd25cef": {
+      "refs": {
+        "exit": 0,
+        "out": "* front-f1-sauvegarde\n",
+        "err": ""
+      },
+      "main": {
+        "exit": 1,
+        "out": "",
+        "err": ""
+      }
+    },
+    "c54b937": {
+      "refs": {
+        "exit": 0,
+        "out": "* front-f1-sauvegarde\n",
+        "err": ""
+      },
+      "main": {
+        "exit": 1,
+        "out": "",
+        "err": ""
+      }
+    }
+  }
+}

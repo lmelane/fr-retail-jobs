@@ -1,0 +1,47 @@
+{
+  "mutations": [
+    {
+      "name": "mutable-configuration",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "4175293c1ce084e9fff6201ead5dc778a2d61ccf4b981752bf0b42b73317e322"
+    },
+    {
+      "name": "transient-config-controls",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "4175293c1ce084e9fff6201ead5dc778a2d61ccf4b981752bf0b42b73317e322"
+    },
+    {
+      "name": "budget-pollutes-config-hash",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "4f9c4e128558dd7b847fd3c99998c6e6d6fbbe9965ea2e6a20c93863c085c80d"
+    },
+    {
+      "name": "lost-budget-provenance",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "4f9c4e128558dd7b847fd3c99998c6e6d6fbbe9965ea2e6a20c93863c085c80d"
+    },
+    {
+      "name": "expired-deadline-erases-replay",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "e000f3721778a77dcfa485e9e826dbb7b6285f4ff7338d02f04947ed9bb0ad17"
+    },
+    {
+      "name": "ignore-soft-deadline",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "e000f3721778a77dcfa485e9e826dbb7b6285f4ff7338d02f04947ed9bb0ad17"
+    },
+    {
+      "name": "detached-transport",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "e000f3721778a77dcfa485e9e826dbb7b6285f4ff7338d02f04947ed9bb0ad17"
+    }
+  ],
+  "restoredTests": "passed"
+}

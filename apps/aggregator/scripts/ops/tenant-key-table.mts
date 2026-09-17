@@ -7,7 +7,7 @@
  *
  * usage: db.py readonly npx tsx scripts/ops/tenant-key-table.mts --runs=<id,id,…> [--out=<f.json>]
  */
-import { PrismaClient, Prisma } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
 import { writeFileSync } from 'node:fs';
 import { rateLimitKeyFor, observedHost } from '../../src/lib/rateLimitKey.js';
 

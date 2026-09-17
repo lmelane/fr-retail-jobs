@@ -1,0 +1,31 @@
+[
+  {
+    "source": "polene",
+    "batchId": "7a47d963-64e6-4036-b22a-72f2555ad7ee",
+    "sourceRevisionId": "01b4703a-b77f-4519-9eee-613dd901ab45",
+    "sourceRevisionVersion": 1,
+    "sourcePayloadHash": "296c4a331b96af4098917bb27014cffed4899fb0014554643376c9c84026f8e8",
+    "executionBudget": {
+      "startedAt": "2026-09-16T00:44:07.150Z",
+      "timeoutMs": 30000,
+      "softTimeoutMs": 27000
+    },
+    "manifestHash": "79cfc6500d2515d699f6ab6d9df4ee7d378e1329adf4bb790f1d5a2a2c458dfb",
+    "comparison": {
+      "matchesRecordedOutput": true,
+      "matchesRecordedMetadata": true,
+      "exact": true
+    },
+    "kind": "ASHBY",
+    "jobs": 80,
+    "requests": 1,
+    "exactReplay": true,
+    "nativeBytes": 1089894,
+    "nativeGzipBytes": 157250,
+    "outputBytes": 1546510,
+    "outputGzipBytes": 274740,
+    "uniqueBlobs": 82,
+    "purged": 1,
+    "elapsedMs": 21125
+  }
+]

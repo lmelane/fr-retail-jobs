@@ -1,0 +1,83 @@
+{
+  "at": "2026-09-16T04:05:02.002381+00:00",
+  "counts": [
+    {
+      "kind": "fashionjobs",
+      "publications": 866,
+      "organizationType": "object",
+      "nonblankStringNames": 866
+    },
+    {
+      "kind": "generic-listing",
+      "publications": 6243,
+      "organizationType": "object",
+      "nonblankStringNames": 6238
+    },
+    {
+      "kind": "radancy",
+      "publications": 53,
+      "organizationType": "object",
+      "nonblankStringNames": 53
+    }
+  ],
+  "samples": [
+    {
+      "id": "cmtlyg9sm01ndqf5k12ihgolh",
+      "kind": "generic-listing",
+      "sourceKey": "alberto",
+      "externalId": "423b936fa4117e5943367b188d849b50c68bbbee",
+      "nativeEmployer": "ALBERTO"
+    },
+    {
+      "id": "cmtlyg9su01nhqf5kl97kyp29",
+      "kind": "generic-listing",
+      "sourceKey": "alberto",
+      "externalId": "f19e680c4b0e4d0231960aea6e79ec33ce4adff1",
+      "nativeEmployer": "ALBERTO"
+    },
+    {
+      "id": "cmtujue3z000ao501y45j5ceq",
+      "kind": "generic-listing",
+      "sourceKey": "alberto",
+      "externalId": "10740472e52102765bc5cacdfa56ea488273644c",
+      "nativeEmployer": "ALBERTO"
+    },
+    {
+      "id": "cmtujue6e000go5010tf6nq1h",
+      "kind": "generic-listing",
+      "sourceKey": "alberto",
+      "externalId": "bde84cec54a9eaf854aced6b7ce645825e574932",
+      "nativeEmployer": "ALBERTO"
+    },
+    {
+      "id": "cmtlyf4jf00chqf5ktqywxdkv",
+      "kind": "generic-listing",
+      "sourceKey": "attaquer",
+      "externalId": "ad5c5c4b4307885a16ad449d1b5d0c56e820f441",
+      "nativeEmployer": "Attaquer"
+    },
+    {
+      "id": "cmtlyf4js00clqf5k3mnaqdme",
+      "kind": "generic-listing",
+      "sourceKey": "attaquer",
+      "externalId": "27647030a71d9eac43eb40502370ec085f3a2a51",
+      "nativeEmployer": "Attaquer"
+    },
+    {
+      "id": "cmtlyf4k500cpqf5kcnkxuv4n",
+      "kind": "generic-listing",
+      "sourceKey": "attaquer",
+      "externalId": "2f0ec73442d258200177321fb7d12772ed9d6dd7",
+      "nativeEmployer": "Attaquer"
+    },
+    {
+      "id": "cmtpiy9w20jzppf5ltob9dqt5",
+      "kind": "generic-listing",
+      "sourceKey": "beiersdorf",
+      "externalId": "63a46c12f824bd3cbacf86c018f9ad752134a9bb",
+      "nativeEmployer": "Beiersdorf UK Ltd."
+    }
+  ],
+  "database": "catwalks_rehearsal_20260915",
+  "readOnly": "on"
+}

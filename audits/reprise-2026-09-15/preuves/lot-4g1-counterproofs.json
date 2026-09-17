@@ -1,0 +1,59 @@
+{
+  "mutations": [
+    {
+      "name": "rounding-scalar-comparison",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "9c73e4fc56ad72da5c433eba78cd7d83d3c5a9dd84e0e22576caff2025095d4a"
+    },
+    {
+      "name": "rounding-stored-plan-numbers",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "bffc4b5f29c582425658fe4a838adf64f3835fb2bea03c9ed6316dec4f8593d1"
+    },
+    {
+      "name": "rounding-presentation-numbers",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "f55594b63ff0a8f8d544c0f340ae6041ebf1bc9a964918aa14bdfa77be9d8b1a"
+    },
+    {
+      "name": "trusting-the-old-reader",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "f55594b63ff0a8f8d544c0f340ae6041ebf1bc9a964918aa14bdfa77be9d8b1a"
+    },
+    {
+      "name": "prefetching-a-derived-hash",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "f55594b63ff0a8f8d544c0f340ae6041ebf1bc9a964918aa14bdfa77be9d8b1a"
+    },
+    {
+      "name": "ignoring-the-captured-hold",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "f55594b63ff0a8f8d544c0f340ae6041ebf1bc9a964918aa14bdfa77be9d8b1a"
+    },
+    {
+      "name": "ignoring-the-captured-adapter",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "f55594b63ff0a8f8d544c0f340ae6041ebf1bc9a964918aa14bdfa77be9d8b1a"
+    },
+    {
+      "name": "wrong-original-capture-hash",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "f55594b63ff0a8f8d544c0f340ae6041ebf1bc9a964918aa14bdfa77be9d8b1a"
+    },
+    {
+      "name": "losing-concurrent-completion",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "f55594b63ff0a8f8d544c0f340ae6041ebf1bc9a964918aa14bdfa77be9d8b1a"
+    }
+  ],
+  "restoredTests": "passed"
+}

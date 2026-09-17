@@ -4,17 +4,17 @@ import {
   type Representation, type RepresentationState,
 } from './refreshPlan.js';
 
-const run = (over: Partial<Parameters<typeof sourceEligibility>[0] & object> = {}) => ({
-  sourceKey: 's', runId: 'run-1', status: 'OK', errors: 0, truncated: false,
-  complete: true, canAttestAbsence: true, ranAt: new Date('2026-09-12T09:00:00Z'), ...over,
+const run = (over: Partial<NonNullable<Parameters<typeof sourceEligibility>[0]>> = {}) => ({
+  sourceKey: 's', captureBatchId: 'batch-1', startedAt: new Date('2026-09-12T09:00:00Z'), status: 'OK' as const,
+  errors: 0, truncated: false, complete: true, declaredTotal: 2, fetched: 2, published: 2, previous: 2, canAttestAbsence: true, ...over,
 });
-const evidence = (over: Partial<Parameters<typeof sourceEligibility>[1] & object> = {}) => ({
-  sourceKey: 's', runId: 'run-1', termination: 'DECLARED_TOTAL_REACHED',
+const evidence = (over: Partial<NonNullable<Parameters<typeof sourceEligibility>[1]>> = {}) => ({
+  sourceKey: 's', captureBatchId: 'batch-1', termination: 'DECLARED_TOTAL_REACHED',
   canonicalSet: ['a', 'b'], canonicalContractDeclared: true, canonicalContractBroken: false, ...over,
 });
 
-describe('sourceEligibility — dérivée des FAITS du dernier run', () => {
-  it('un run sain avec une terminaison probante et des identifiants archivés est recevable', () => {
+describe('sourceEligibility — dérivée des FAITS scellés de la capture attestante', () => {
+  it('une collecte saine avec une terminaison probante et des identifiants scellés est recevable', () => {
     expect(sourceEligibility(run(), evidence())).toEqual({ eligible: true, reasons: [] });
   });
 
@@ -23,20 +23,26 @@ describe('sourceEligibility — dérivée des FAITS du dernier run', () => {
     [{ truncated: true }, /truncated/],
     [{ complete: false }, /complete = false/],
     [{ canAttestAbsence: false }, /canAttestAbsence = false/],
+    [{ status: 'NEW' as const }, /statut non probant : NEW/],
+    [{ status: 'BROKEN' as const }, /statut non probant : BROKEN/],
   ])('refuse %o', (over, pattern) => {
-    const r = sourceEligibility(run(over as any), evidence());
+    const r = sourceEligibility(run(over), evidence());
     expect(r.eligible).toBe(false);
     expect(r.reasons.join(' ')).toMatch(pattern);
   });
 
+  it('sans capture attestante, rien n\'est recevable', () => {
+    expect(sourceEligibility(undefined, evidence())).toEqual({ eligible: false, reasons: ['aucune collecte admise, scellée et achevée'] });
+  });
+
   /**
-   * LA CORRÉLATION PAR CYCLE. Juxtaposer le dernier `SourceRun` avec une ANCIENNE preuve d'énumération ferait
+   * LA CORRÉLATION PAR COLLECTE. Juxtaposer des faits avec une preuve d'énumération d'une AUTRE capture ferait
    * fermer des offres sur la foi d'un balayage qui n'est pas celui-là.
    */
-  it('refuse une preuve d\'énumération qui n\'appartient pas au même cycle', () => {
-    const r = sourceEligibility(run({ runId: 'run-2' }), evidence({ runId: 'run-1' }));
+  it('refuse une preuve d\'énumération qui n\'appartient pas à la même collecte', () => {
+    const r = sourceEligibility(run({ captureBatchId: 'batch-2' }), evidence({ captureBatchId: 'batch-1' }));
     expect(r.eligible).toBe(false);
-    expect(r.reasons.join(' ')).toMatch(/autre cycle/);
+    expect(r.reasons.join(' ')).toMatch(/autre collecte/);
   });
 
   /** A. Mesuré sur `beiersdorf` : le contrat n'est pas déclaré, donc aucune absence n'y est démontrable. */
@@ -66,6 +72,11 @@ describe('sourceEligibility — dérivée des FAITS du dernier run', () => {
   it('refuse une terminaison non probante', () => {
     expect(sourceEligibility(run(), evidence({ termination: 'INCOMPLETE' })).eligible).toBe(false);
   });
+  it('admet la fin documentée d’un JSON Feed Teamtailor (NEXT_URL_NULL) et refuse son plafond de pages', () => {
+    // Prémisse : la même capture, seule la terminaison change ; rien d'autre ne rend la source éligible.
+    expect(sourceEligibility(run(), evidence({ termination: 'PAGE_BUDGET_REACHED' })).eligible).toBe(false);
+    expect(sourceEligibility(run(), evidence({ termination: 'NEXT_URL_NULL' })).eligible).toBe(true);
+  });
 });
 
 const rep = (over: Partial<Representation> = {}): Representation => ({
@@ -87,6 +98,10 @@ describe('representationState — cinq états, un seul autorise la fermeture', (
 
   it('vue mais REFUSÉE à l\'écriture n\'est jamais absente', () => {
     expect(representationState(rep({ writeFailed: true }), observed, true)).toBe('PRESENT_BUT_WRITE_FAILED');
+  });
+
+  it('vue mais ÉCARTÉE par le filtre sectoriel n\'est jamais absente : l\'employeur la publie toujours', () => {
+    expect(representationState(rep({ skipped: true }), observed, true)).toBe('PRESENT_BUT_SKIPPED');
   });
 
   it('absente de l\'ensemble réellement observé : le seul état qui prouve la disparition', () => {
@@ -146,7 +161,7 @@ describe('planRefresh — la conséquence se calcule APRÈS les seules désactiv
     expect(jobs.get('J1')).toBe('JOB_CANDIDATE_FOR_CLOSURE');
   });
 
-  it.each<RepresentationState>(['PRESENT_BUT_HELD', 'PRESENT_BUT_WRITE_FAILED', 'UNVERIFIABLE'])(
+  it.each<RepresentationState>(['PRESENT_BUT_HELD', 'PRESENT_BUT_WRITE_FAILED', 'PRESENT_BUT_SKIPPED', 'UNVERIFIABLE'])(
     '%s ne produit AUCUNE désactivation',
     (state) => {
       const { deactivations, jobs } = planRefresh([rep()], states({ JS1: state }), new Map([['J1', ['JS1']]]));
@@ -235,9 +250,9 @@ describe('E. board vide prouvé — de sourceEligibility à planRefresh', () => 
 
     // 3. et le plan la désactive, fermant l'offre faute d'autre attestation
     const { deactivations, jobs } = planRefresh([old], new Map([[old.jobSourceId, state]]),
-      new Map([[old.jobId, [old.jobSourceId]]]));
+      new Map([[old.jobId!, [old.jobSourceId]]]));
     expect(deactivations.map((d) => d.jobSourceId)).toEqual(['JS-vieille']);
-    expect(jobs.get(old.jobId)).toBe('JOB_CANDIDATE_FOR_CLOSURE');
+    expect(jobs.get(old.jobId!)).toBe('JOB_CANDIDATE_FOR_CLOSURE');
   });
 
   it('le même board vide, mais contrat NON déclaré : INVÉRIFIABLE et aucune mutation', () => {
@@ -249,7 +264,7 @@ describe('E. board vide prouvé — de sourceEligibility à planRefresh', () => 
     expect(state).toBe('UNVERIFIABLE');
 
     const { deactivations } = planRefresh([old], new Map([[old.jobSourceId, state]]),
-      new Map([[old.jobId, [old.jobSourceId]]]));
+      new Map([[old.jobId!, [old.jobSourceId]]]));
     expect(deactivations).toEqual([]);
   });
 });

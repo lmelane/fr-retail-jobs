@@ -1,111 +1,105 @@
-/**
- * LE MANIFESTE DE REFRESH — la liste EXACTE des lignes que la mutation a le droit de toucher.
- *
- * Sans lui, la prévisualisation et l'exécution feraient deux calculs indépendants, et rien ne garantirait
- * qu'ils portent sur les mêmes lignes : l'état peut bouger entre les deux, et un recalcul silencieux pendant
- * la mutation toucherait des offres que personne n'a vues dans la revue.
- *
- * Le manifeste est donc FIGÉ (la liste), HACHÉ (l'empreinte), RELU avant mutation (l'état n'a pas changé), et
- * la mutation refuse toute ligne qui n'y figure pas.
- *
- * L'empreinte couvre le PLAN, pas son enrobage : les identifiants, leur état observé et la conséquence
- * attendue. Y mêler l'heure de génération rendrait tout manifeste unique et le contrôle inopérant.
- */
-import { createHash } from 'node:crypto';
+import { PRESENTATION_FIELDS } from '@catwalks/db/publication-presentation';
+import { evidenceHash } from '../lib/evidenceHash.js';
+import type { PrismaClient, JobSource } from '@prisma/client';
+import { insertMaintenancePlan } from '../lib/maintenancePlan.js';
 
+export const REFRESH_LIMITS = { staleHours: 48, maxCloseRatio: 0.05, minCloseForGuard: 50 } as const;
+/** Version 4: an absence proof names its admitted capture, never a run correlation. */
+export const REFRESH_MANIFEST_VERSION = 4;
+export type RefreshLimits = { staleHours: number; maxCloseRatio: number; minCloseForGuard: number };
 export type ManifestEntry = {
-  jobSourceId: string;
-  sourceKey: string;
-  externalId: string;
-  jobId: string;
-  /** L'état observé qui justifie la désactivation — toujours `ABSENT_FROM_PROVEN_ENUMERATION`. */
-  state: string;
-  /** Ce que la mutation doit produire : l'offre survit, ou elle ferme. */
-  consequence: 'JOB_KEPT_BY_ANOTHER_SOURCE' | 'JOB_CANDIDATE_FOR_CLOSURE';
+  jobSourceId: string; sourceKey: string; externalId: string; jobId: string | null;
+  observedAt: string; beforeHash: string;
+  state: 'ABSENT_FROM_PROVEN_ENUMERATION' | 'DECLARED_DEADLINE_ELAPSED';
+  proof: { kind: 'ENUMERATION'; captureBatchId: string; hash: string } | { kind: 'DEADLINE'; expiresAt: string; hash: string };
+  consequence: 'JOB_KEPT_BY_ANOTHER_SOURCE' | 'JOB_CANDIDATE_FOR_CLOSURE' | 'JOB_ALREADY_INACTIVE' | 'QUARANTINED_PUBLICATION';
 };
-
 export type RefreshManifest = {
-  /** Les clés autorisées : aucune ligne d'une autre source ne peut entrer. */
-  allowedSourceKeys: string[];
-  entries: ManifestEntry[];
-  planHash: string;
-  createdAt: string;
+  version: typeof REFRESH_MANIFEST_VERSION; mode: 'DEACTIVATE_REPRESENTATIONS'; allowedSourceKeys: string[];
+  entries: ManifestEntry[]; limits: RefreshLimits; planHash: string; createdAt: string;
 };
 
-/**
- * L'empreinte du plan : les entrées TRIÉES, réduites à ce qui décide.
- *
- * Le tri est indispensable — deux plans identiques produits dans un ordre différent doivent donner la même
- * empreinte, sinon le contrôle échouerait sur une différence qui n'en est pas une.
- */
-export function manifestHash(allowedSourceKeys: readonly string[], entries: readonly ManifestEntry[]): string {
-  const canonical = {
-    allowed: [...allowedSourceKeys].sort(),
-    entries: [...entries]
-      .map((e) => [e.jobSourceId, e.sourceKey, e.externalId, e.jobId, e.state, e.consequence])
-      .sort((a, b) => (a[0]! < b[0]! ? -1 : a[0]! > b[0]! ? 1 : 0)),
-  };
-  return createHash('sha256').update(JSON.stringify(canonical)).digest('hex');
+/** A held publication has its own lifecycle, without a fabricated parent Job. */
+export function quarantineSnapshot(source: Omit<JobSource, 'raw'>) {
+  return JSON.parse(JSON.stringify({ id: source.id, jobId: source.jobId,
+    sourceKey: source.sourceKey, externalId: source.externalId, url: source.url,
+    isActive: source.isActive, lastSeenAt: source.lastSeenAt, expiresAt: source.expiresAt,
+    expiryEvidence: source.expiryEvidence, quarantinedAt: source.quarantinedAt, quarantineReason: source.quarantineReason,
+    captureBatchId: source.captureBatchId, captureOutputId: source.captureOutputId }));
 }
 
-export function freezeManifest(allowedSourceKeys: readonly string[], entries: readonly ManifestEntry[]): RefreshManifest {
-  return {
-    allowedSourceKeys: [...allowedSourceKeys].sort(),
-    entries: [...entries].sort((a, b) => (a.jobSourceId < b.jobSourceId ? -1 : a.jobSourceId > b.jobSourceId ? 1 : 0)),
-    planHash: manifestHash(allowedSourceKeys, entries),
-    createdAt: new Date().toISOString(),
-  };
+/** Only state used or changed by refresh; descriptions and raw bodies stay in their own archives. */
+export function refreshSnapshot(job: { id: string; companyId: string; isActive: boolean; mergedIntoId: string | null;
+  closedAt: Date | null; withdrawnAt: Date | null; withdrawalReason: string | null; reopenedCount: number;
+  canonicalSourceKey: string | null; canonicalExternalId: string | null; canonicalTier: string | null; url: string;
+  sources: { id: string; jobId: string | null; sourceKey: string; externalId: string; sourceTier: string; isActive: boolean; lastSeenAt: Date; expiresAt: Date | null; expiryEvidence: unknown; url: string; captureBatchId?: string | null; captureOutputId?: string | null; presentation?: unknown }[] }) {
+  return JSON.parse(JSON.stringify({ id: job.id, companyId: job.companyId, isActive: job.isActive, mergedIntoId: job.mergedIntoId,
+    closedAt: job.closedAt, withdrawnAt: job.withdrawnAt, withdrawalReason: job.withdrawalReason, reopenedCount: job.reopenedCount,
+    contentHash: evidenceHash(Object.fromEntries(PRESENTATION_FIELDS.map(key => [key, (job as unknown as Record<string, unknown>)[key] ?? null]))),
+    canonicalSourceKey: job.canonicalSourceKey, canonicalExternalId: job.canonicalExternalId, canonicalTier: job.canonicalTier, url: job.url,
+    sources: job.sources.map(source => ({ id: source.id, jobId: source.jobId, sourceKey: source.sourceKey, externalId: source.externalId,
+      sourceTier: source.sourceTier, isActive: source.isActive, lastSeenAt: source.lastSeenAt, expiresAt: source.expiresAt,
+      expiryEvidence: source.expiryEvidence, presentationHash: evidenceHash(source.presentation ?? null), captureBatchId: source.captureBatchId ?? null, captureOutputId: source.captureOutputId ?? null, url: source.url })).sort((a, b) => a.id.localeCompare(b.id)),
+  }));
 }
 
-export type ManifestCheck = { valid: boolean; problems: string[] };
-
-/**
- * Le manifeste décrit-il TOUJOURS l'état de la base ?
- *
- * Trois refus, et chacun correspond à un incident réel possible entre la revue et la mutation :
- *  · l'empreinte ne correspond plus au contenu → le manifeste a été modifié après signature ;
- *  · une ligne du manifeste n'est plus active → une autre opération l'a déjà traitée, le plan est périmé ;
- *  · une ligne porte une source hors allowlist → le périmètre a fui.
- *
- * Refuser est le comportement voulu : on rejoue une prévisualisation, on ne « rattrape » pas en mutant.
- */
-export function verifyManifest(
-  manifest: RefreshManifest,
-  currentlyActiveJobSourceIds: ReadonlySet<string>,
-): ManifestCheck {
+export function manifestHash(keys: readonly string[], entries: readonly ManifestEntry[], limits: RefreshLimits = REFRESH_LIMITS): string {
+  return evidenceHash({ version: REFRESH_MANIFEST_VERSION, mode: 'DEACTIVATE_REPRESENTATIONS', allowedSourceKeys: [...keys].sort(),
+    entries: [...entries].sort((a, b) => a.jobSourceId.localeCompare(b.jobSourceId)), limits });
+}
+export function freezeManifest(keys: readonly string[], entries: readonly ManifestEntry[], limits: RefreshLimits = REFRESH_LIMITS): RefreshManifest {
+  return { version: REFRESH_MANIFEST_VERSION, mode: 'DEACTIVATE_REPRESENTATIONS', allowedSourceKeys: [...keys].sort(),
+    entries: [...entries].sort((a, b) => a.jobSourceId.localeCompare(b.jobSourceId)), limits,
+    planHash: manifestHash(keys, entries, limits), createdAt: new Date().toISOString() };
+}
+export function verifyManifest(manifest: RefreshManifest): { valid: boolean; problems: string[] } {
   const problems: string[] = [];
-
-  const recomputed = manifestHash(manifest.allowedSourceKeys, manifest.entries);
-  if (recomputed !== manifest.planHash) {
-    problems.push(`empreinte du plan invalide : ${recomputed.slice(0, 12)} ≠ ${manifest.planHash.slice(0, 12)}`);
-  }
-
-  const allowed = new Set(manifest.allowedSourceKeys);
+  if (manifest.version !== REFRESH_MANIFEST_VERSION || manifest.mode !== 'DEACTIVATE_REPRESENTATIONS' || !Array.isArray(manifest.allowedSourceKeys) ||
+    !Array.isArray(manifest.entries) || !manifest.limits) return { valid: false, problems: ['unsupported refresh manifest'] };
+  const { staleHours, maxCloseRatio, minCloseForGuard } = manifest.limits;
+  if (!Number.isFinite(staleHours) || staleHours <= 0 || !Number.isFinite(maxCloseRatio) || maxCloseRatio < 0 || maxCloseRatio > 1 ||
+    !Number.isInteger(minCloseForGuard) || minCloseForGuard < 1) problems.push('invalid refresh limits');
+  if (manifestHash(manifest.allowedSourceKeys, manifest.entries, manifest.limits) !== manifest.planHash) problems.push('invalid plan hash');
+  const allowed = new Set(manifest.allowedSourceKeys), ids = new Set<string>(), parents = new Map<string, string>();
   for (const entry of manifest.entries) {
-    if (!allowed.has(entry.sourceKey)) {
-      problems.push(`ligne hors allowlist : ${entry.sourceKey} / ${entry.externalId}`);
-    }
-    if (!currentlyActiveJobSourceIds.has(entry.jobSourceId)) {
-      problems.push(`ligne du manifeste déjà inactive : ${entry.jobSourceId} (${entry.sourceKey} / ${entry.externalId})`);
-    }
+    if (!allowed.has(entry.sourceKey)) problems.push(`outside source scope: ${entry.sourceKey}`);
+    if (ids.has(entry.jobSourceId)) problems.push(`duplicate representation: ${entry.jobSourceId}`);
+    ids.add(entry.jobSourceId);
+    if (!entry.jobSourceId || (entry.jobId !== null && (typeof entry.jobId !== 'string' || !entry.jobId)) || !entry.externalId || !Number.isFinite(Date.parse(entry.observedAt)) ||
+      !/^[a-f0-9]{64}$/.test(entry.beforeHash) || !entry.proof || !/^[a-f0-9]{64}$/.test(entry.proof.hash)) problems.push('invalid entry evidence');
+    if (entry.state === 'ABSENT_FROM_PROVEN_ENUMERATION' ? entry.proof?.kind !== 'ENUMERATION' || typeof entry.proof.captureBatchId !== 'string' || !entry.proof.captureBatchId
+      : entry.state === 'DECLARED_DEADLINE_ELAPSED' ? entry.proof?.kind !== 'DEADLINE' || !Number.isFinite(Date.parse(entry.proof.expiresAt)) : true) problems.push('invalid deactivation proof');
+    if (!['JOB_KEPT_BY_ANOTHER_SOURCE', 'JOB_CANDIDATE_FOR_CLOSURE', 'JOB_ALREADY_INACTIVE', 'QUARANTINED_PUBLICATION'].includes(entry.consequence)) problems.push('invalid job consequence');
+    if ((entry.jobId === null) !== (entry.consequence === 'QUARANTINED_PUBLICATION')) problems.push('invalid quarantine consequence');
+    if (entry.jobId === null) continue;
+    const previous = parents.get(entry.jobId);
+    if (previous && previous !== entry.beforeHash) problems.push(`inconsistent job snapshot: ${entry.jobId}`);
+    parents.set(entry.jobId, entry.beforeHash);
   }
-
   return { valid: problems.length === 0, problems };
 }
 
-/**
- * Ce que la mutation a réellement touché correspond-il au manifeste ?
- *
- * Comparé par ENSEMBLES d'identifiants, jamais par cardinal : toucher autant de lignes que prévu mais pas les
- * mêmes serait indétectable sur un total, et c'est précisément le scénario dangereux.
- */
-export function compareTouched(
-  manifest: RefreshManifest,
-  touchedJobSourceIds: readonly string[],
-): { equal: boolean; missing: string[]; unexpected: string[] } {
-  const expected = new Set(manifest.entries.map((e) => e.jobSourceId));
-  const actual = new Set(touchedJobSourceIds);
-  const missing = [...expected].filter((id) => !actual.has(id));
-  const unexpected = [...actual].filter((id) => !expected.has(id));
+export function compareTouched(manifest: RefreshManifest, touched: readonly string[]) {
+  const expected = new Set(manifest.entries.map(entry => entry.jobSourceId)), actual = new Set(touched);
+  const missing = [...expected].filter(id => !actual.has(id)), unexpected = [...actual].filter(id => !expected.has(id));
   return { equal: missing.length === 0 && unexpected.length === 0, missing, unexpected };
+}
+
+export async function storeRefreshManifest(db: PrismaClient, manifest: RefreshManifest, revision: string) {
+  const check = verifyManifest(manifest);
+  if (!check.valid || !/^[a-f0-9]{40}$/.test(revision)) throw new Error(`Invalid maintenance plan: ${check.problems.join('; ')}`);
+  await insertMaintenancePlan(db, { id: manifest.planHash, kind: 'REFRESH_DEACTIVATION', version: REFRESH_MANIFEST_VERSION, revision, body: manifest });
+  await loadRefreshManifest(db, manifest.planHash);
+  return { planHash: manifest.planHash, entries: manifest.entries.length };
+}
+
+/** Earlier stored plans (version 3, run-correlated proofs) remain readable history but can no longer be applied. */
+export async function loadRefreshManifest(db: PrismaClient, planHash: string): Promise<RefreshManifest> {
+  if (!/^[a-f0-9]{64}$/.test(planHash)) throw new Error('Invalid maintenance plan hash');
+  const row = await db.maintenancePlan.findUniqueOrThrow({ where: { id: planHash } });
+  if (row.kind !== 'REFRESH_DEACTIVATION' || row.version !== REFRESH_MANIFEST_VERSION) throw new Error('Unsupported maintenance plan');
+  const manifest = row.body as unknown as RefreshManifest;
+  const check = verifyManifest(manifest);
+  if (!check.valid || manifest.planHash !== planHash) throw new Error(`Stored maintenance plan hash mismatch: ${planHash}`);
+  return manifest;
 }

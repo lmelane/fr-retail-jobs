@@ -1,4 +1,5 @@
 import pLimit from 'p-limit';
+import { captureObservedAt } from '../../capture/context.js';
 import { createHash } from 'node:crypto';
 import * as cheerio from 'cheerio';
 import { fetchJson, fetchText } from '../../lib/http.js';
@@ -426,7 +427,7 @@ async function fetchSuccessFactorsInSession(config: Record<string, unknown>): Pr
     }
     const listing = parseListing(html, origin);
     const $ = cheerio.load(html, { scriptingEnabled: false });
-    pageEvidence.push({ url, checkedAt: new Date().toISOString(), sha256: createHash('sha256').update(html).digest('hex'), offset,
+    pageEvidence.push({ url, checkedAt: captureObservedAt().toISOString(), sha256: createHash('sha256').update(html).digest('hex'), offset,
       pagination, ids: listing.map(job => job.externalId),
       publisherCounter: $('.paginationLabel,#tile-search-results-label').first().text().trim(),
       componentCounters: [...html.matchAll(/\bjobRecords(?:Found|PerPage)\s*:\s*parseInt\(\s*["']\d+["']\s*\)/g)].map(m => m[0]) });
@@ -435,7 +436,8 @@ async function fetchSuccessFactorsInSession(config: Record<string, unknown>): Pr
     for (const job of fresh) {
       seenIds.add(job.externalId);
       const { city, title } = splitSlug(job.slug);
-      jobs.push({ externalId: job.externalId, title, location: city, url: job.url, raw: { slug: job.slug, source: 'successfactors' } });
+      // The listing link is retained whole (id, path, slug, lot F3b): the retained-publication reader rebuilds the URL on the configured origin.
+      jobs.push({ externalId: job.externalId, title, location: city, url: job.url, raw: { slug: job.slug, id: job.externalId, path: new URL(job.url).pathname, source: 'successfactors' } });
     }
     if (pagination && seenIds.size === pagination.total) { termination = 'PUBLISHER_TOTAL_REACHED'; break; }
     if (fresh.length === 0) {
@@ -453,10 +455,6 @@ async function fetchSuccessFactorsInSession(config: Record<string, unknown>): Pr
   if (!complete) issues.add('ENUMERATION_NOT_PROVEN');
   return finish({ jobs, declaredTotal, complete, truncated: !complete,
     enumeration: { method: 'PUBLISHER_HTML_PAGINATION', endpoint: firstUrl, pages, rawCount, termination, issues: [...issues], pageEvidence } });
-}
-
-export async function fetchSuccessFactorsJobs(config: Record<string, unknown>): Promise<NormalizedJob[]> {
-  return (await fetchSuccessFactorsResult(config)).jobs;
 }
 
 /**
@@ -491,6 +489,7 @@ export type SuccessFactorsDetail = {
   postalCode?: string;
   postedAt?: Date;
   validThrough?: Date;
+  validThroughRaw?: string;
   description?: string;
 };
 
@@ -604,6 +603,7 @@ export function parseMicrodataDetail(html: string): SuccessFactorsDetail {
   if (posted && !Number.isNaN(Date.parse(posted))) detail.postedAt = new Date(posted);
   else detail.postedAt = parseSuccessFactorsVisibleDate(html);
   const valid = meta('validThrough');
+  if (valid) detail.validThroughRaw = valid;
   if (valid && !Number.isNaN(Date.parse(valid))) detail.validThrough = new Date(valid);
 
   detail.description = parseMicrodataDescription(html);
@@ -635,6 +635,31 @@ export function employerFromDetail(detail: SuccessFactorsDetail, brandProperty?:
   return { company: detail.company, employerEvidence: detail.employerEvidence };
 }
 
+/** The retained detail (lot F3b): the microdata read, with its dates as ISO text, kept beside the listing link in RAW. */
+export type RetainedSuccessFactorsDetail = Omit<SuccessFactorsDetail, 'postedAt' | 'validThrough'> & { postedAt?: string | null; validThrough?: string | null };
+export function retainedSuccessFactorsDetail(detail: SuccessFactorsDetail): RetainedSuccessFactorsDetail {
+  return { ...detail, postedAt: detail.postedAt?.toISOString() ?? null, validThrough: detail.validThrough?.toISOString() ?? null };
+}
+
+/** The detail page overrides the listing (exact title and address); the same merge serves the live collector and the retained-publication reader. */
+export function applySuccessFactorsDetail(job: NormalizedJob, detail: SuccessFactorsDetail | RetainedSuccessFactorsDetail, brandProperty?: string): NormalizedJob {
+  const employer = employerFromDetail(detail as SuccessFactorsDetail, brandProperty);
+  const date = (value: unknown) => value instanceof Date ? value : typeof value === 'string' ? new Date(value) : undefined;
+  return {
+    ...job,
+    company: employer.company ?? job.company,
+    employerEvidence: employer.employerEvidence ?? job.employerEvidence,
+    title: detail.title ?? job.title,
+    location: detail.location ?? job.location,
+    city: detail.city ?? job.city,
+    country: detail.country ?? job.country,
+    postalCode: detail.postalCode ?? job.postalCode,
+    postedAt: date(detail.postedAt) ?? job.postedAt,
+    validThrough: date(detail.validThrough) ?? job.validThrough,
+    description: detail.description ?? job.description,
+  };
+}
+
 export async function attachSuccessFactorsDescriptions(
   jobs: NormalizedJob[],
   concurrency = 8,
@@ -648,21 +673,11 @@ export async function attachSuccessFactorsDescriptions(
         try {
           const html = await fetchText(job.url, { headers: HEADERS });
           const detail = parseMicrodataDetail(html);
-          const employer = employerFromDetail(detail, brandProperty);
           return {
-            ...job,
-            company: employer.company ?? job.company,
-            employerEvidence: employer.employerEvidence ?? job.employerEvidence,
-            title: detail.title ?? job.title,
-            location: detail.location ?? job.location,
-            city: detail.city ?? job.city,
-            country: detail.country ?? job.country,
-            postalCode: detail.postalCode ?? job.postalCode,
-            postedAt: detail.postedAt ?? job.postedAt,
-            validThrough: detail.validThrough ?? job.validThrough,
-            description: detail.description ?? job.description,
-            raw: { ...(job.raw as object), postingEvidence: {
+            ...applySuccessFactorsDetail(job, detail, brandProperty),
+            raw: { ...(job.raw as object), successfactorsDetail: retainedSuccessFactorsDetail(detail), postingEvidence: {
               ...readPostingEvidence(html, job.url).evidence,
+              microdataValidThrough: detail.validThroughRaw ?? null,
               microdataEmployer: detail.employerEvidence ?? null,
               careersiteProperties: detail.properties ?? null,
               configuredBrandProperty: brandProperty ?? null,

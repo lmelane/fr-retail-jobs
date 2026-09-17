@@ -9,14 +9,15 @@ import type { AdapterResult, NormalizedJob } from '../../types.js';
  * Altamira Recruiting — ATS italien (portail « maison » d'Ermenegildo Zegna
  * Group : Zegna, Thom Browne, TOM FORD Fashion), mesuré le 2026-09-06.
  *
- * Aucune API ni JSON-LD : le portail est un WebForms ASP.NET. La liste est
+ * Le portail est un WebForms ASP.NET. La liste est
  * paginée par `PagerAnnunci=N` (1-based, 10 offres par page) et rend la
  * DERNIÈRE page en boucle au-delà de la fin (page 7 = page 6 sur Zegna) :
  * on s'arrête à la première page sans identifiant nouveau, pas sur une page
  * vide. Chaque ligne porte titre + « Ville , Pays » ; la page détail
  * (`/jobs/job-details?JobID=…&Team=…`) porte les champs dans des cellules
  * `data-title="…"` : Text (description), Brand (la maison), Locations
- * (« Pays/Région/Ville »), Contract type, JOB FUNCTION. Pas de date publiée.
+ * (« Pays/Région/Ville »), Contract type, JOB FUNCTION. Lorsqu'un JobPosting
+ * JSON-LD est présent, son contenu et ses dates complètent ces champs.
  *
  * Le sitemap.xml du portail liste 66 URLs `/jobs/<slug>-<id>.htm` qui
  * répondent toutes 404 : il est périmé, ne pas s'y fier.

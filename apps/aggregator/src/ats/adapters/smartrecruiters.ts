@@ -65,7 +65,7 @@ export function parseSmartRecruitersPosting(job: SmartRecruitersPosting, company
   };
 }
 
-type PostingDetail = {
+export type PostingDetail = {
   jobAd?: {
     sections?: Record<string, { title?: string; text?: string }>;
   };
@@ -75,18 +75,24 @@ type PostingDetail = {
 /**
  * The listing endpoint carries no description; /postings/{id} does, split across
  * named sections. They are concatenated in the order a candidate reads them.
+ * Exported for the retained-publication reader (lot F3b), which rebuilds the text from the retained advert.
  */
-async function fetchDescription(company: string, id: string): Promise<string | undefined> {
+export function descriptionFromJobAd(jobAd: PostingDetail['jobAd'] | undefined): string | undefined {
+  const sections = jobAd?.sections ?? {};
+  const text = ['companyDescription', 'jobDescription', 'qualifications', 'additionalInformation']
+    .map((key) => htmlToPlainText(sections[key]?.text))
+    .filter(Boolean)
+    .join('\n\n');
+  return text || undefined;
+}
+
+/** The advert is retained in RAW (`jobAd`) so the publication can be rebuilt offline from its native input. */
+async function fetchJobAd(company: string, id: string): Promise<PostingDetail['jobAd'] | undefined> {
   try {
     const detail = await fetchJson<PostingDetail>(
       `https://api.smartrecruiters.com/v1/companies/${encodeURIComponent(company)}/postings/${encodeURIComponent(id)}`,
     );
-    const sections = detail.jobAd?.sections ?? {};
-    const text = ['companyDescription', 'jobDescription', 'qualifications', 'additionalInformation']
-      .map((key) => htmlToPlainText(sections[key]?.text))
-      .filter(Boolean)
-      .join('\n\n');
-    return text || undefined;
+    return detail.jobAd && typeof detail.jobAd === 'object' ? detail.jobAd : undefined;
   } catch {
     // A failed detail fetch must not lose the listing entry.
     return undefined;
@@ -113,7 +119,10 @@ export async function fetchSmartRecruitersJobs(config: Record<string, unknown>):
   const limit = pLimit(Number(config.detailConcurrency ?? 4));
   const jobs = await Promise.all(
     out.map((job) =>
-      limit(async () => ({ ...job, description: await fetchDescription(company, job.externalId) })),
+      limit(async () => {
+        const jobAd = await fetchJobAd(company, job.externalId);
+        return { ...job, description: descriptionFromJobAd(jobAd), raw: jobAd ? { ...(job.raw as object), jobAd } : job.raw };
+      }),
     ),
   );
   return { jobs, declaredTotal };

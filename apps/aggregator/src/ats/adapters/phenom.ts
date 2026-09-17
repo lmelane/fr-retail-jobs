@@ -1,9 +1,11 @@
 import { createHash } from 'node:crypto';
+import { captureObservedAt } from '../../capture/context.js';
 import pLimit from 'p-limit';
 import { fetchJson, fetchText, DEFAULT_DETAIL_CONCURRENCY } from '../../lib/http.js';
 import { normalizeLanguage } from '../../normalize/language.js';
 import { htmlToPlainText } from '../../lib/html.js';
 import { extractJobPostings } from '../../connectors/generic/jsonLdSitemap.js';
+import { enrichPostingEvidence } from '../../lib/postingEvidence.js';
 import { employmentTermsFrom } from '../../normalize/employment.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
 import { CRAWLER_IDENTITY } from '../../lib/crawlerIdentity.js';
@@ -202,7 +204,7 @@ export async function fetchPhenomJobs(config: Record<string, unknown>): Promise<
       fresh++;
     }
     const pageTotal = response.totalCount ?? response.count;
-    pageEvidence.push({ url, checkedAt: new Date().toISOString(), sha256: createHash('sha256').update(JSON.stringify(response)).digest('hex'), offset: (page - 1) * PAGE_SIZE, pagination: null,
+    pageEvidence.push({ url, checkedAt: captureObservedAt().toISOString(), sha256: createHash('sha256').update(JSON.stringify(response)).digest('hex'), offset: (page - 1) * PAGE_SIZE, pagination: null,
       ids: pageIds, publisherCounter: pageTotal === undefined ? '' : `total=${pageTotal}`, componentCounters: [`entries=${batch.length}`, `languageVariants=${languageVariants}`, `uniqueIds=${seen.size}`, `repeated=${repeatedIds}`, `withoutData=${withoutData}`] });
 
     const total = response.totalCount ?? response.count;
@@ -237,15 +239,6 @@ export async function fetchPhenomJobs(config: Record<string, unknown>): Promise<
  * Coordinates Phenom already provides, so these rows skip geocoding entirely.
  * Returns null when the payload has none.
  */
-export function phenomCoordinates(raw: unknown): { latitude: number; longitude: number } | null {
-  const data = raw as PhenomJobData | undefined;
-  const latitude = Number(data?.latitude);
-  const longitude = Number(data?.longitude);
-  if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) return null;
-  if (latitude === 0 && longitude === 0) return null;
-  return { latitude, longitude };
-}
-
 /* ────────────────────────────────────────────────────────────────────────────────────────────────────────
  * PHENOM N'EST PAS UNE API UNIFORME — le second dialecte, CareerConnect.
  *
@@ -409,7 +402,7 @@ async function fetchCareerConnectJobs(origin: string, localePath?: string): Prom
       seen.add(job.externalId);
       jobs.push(job);
     }
-    pageEvidence.push({ url: request.url, checkedAt: new Date().toISOString(), offset: from,
+    pageEvidence.push({ url: request.url, checkedAt: captureObservedAt().toISOString(), offset: from,
       sha256: createHash('sha256').update(JSON.stringify(batch)).digest('hex'),
       ids: pageIds, pagination: { start: from, end: from + batch.length, total: declaredTotal ?? -1 },
       publisherCounter: `totalHits=${declaredTotal ?? -1}`,
@@ -469,21 +462,26 @@ async function fetchCareerConnectJobs(origin: string, localePath?: string): Prom
  * Trois refus, et c'est là que réside la sûreté :
  *   · l'identifiant du JSON-LD doit CONCORDER avec l'offre — sans quoi une redirection silencieuse collerait
  *     la description d'une autre offre, exactement le défaut que le gabarit d'URL a déjà produit ;
- *   · pas de JSON-LD ⇒ on garde le teaser, on n'invente rien ;
- *   · plus court que ce qu'on a ⇒ on garde l'existant, un enrichissement ne régresse pas.
+ *   · pas de JSON-LD, ou plusieurs sur la page ⇒ on garde le teaser, on n'invente rien ;
+ *   · une fiche qui se déclare à une autre adresse que l'offre ⇒ on garde le teaser : elle ne serait pas relisible ;
+ *   · plus court que ce qu'on a ⇒ on garde l'existant, sans évidence : un enrichissement ne régresse pas.
+ *
+ * Quand la fiche est admise, son évidence est appliquée et RETENUE dans le RAW (`postingEvidence`, comme
+ * DigitalRecruiters et Personio) : le lecteur de récupération relit l'offre depuis ce qui a été observé, hors réseau,
+ * au lieu d'un teaser qui ne dit pas ce que le collecteur a publié (lot F3b, Hugo Boss).
  */
 export function enrichFromJobPosting(job: NormalizedJob, html: string, expectedId: string): NormalizedJob {
   let postings: ReturnType<typeof extractJobPostings>;
   try { postings = extractJobPostings(html); } catch { return job; }
-
-  for (const node of postings) {
-    const raw = (node as Record<string, unknown>).identifier;
-    const value = raw && typeof raw === 'object' ? String((raw as Record<string, unknown>).value ?? '') : String(raw ?? '');
-    // La concordance d'identifiant est la garde : elle prouve qu'on lit la fiche de CETTE offre.
-    if (!value || !expectedId || value !== expectedId) continue;
-    const description = htmlToPlainText(String((node as Record<string, unknown>).description ?? '')) ?? '';
-    if (description.length <= (job.description?.length ?? 0)) return job;
-    return { ...job, description };
-  }
-  return job;
+  if (postings.length !== 1 || !expectedId) return job;
+  const node = postings[0] as Record<string, unknown>;
+  const raw = node.identifier;
+  const value = raw && typeof raw === 'object' ? String((raw as Record<string, unknown>).value ?? '') : String(raw ?? '');
+  // La concordance d'identifiant est la garde : elle prouve qu'on lit la fiche de CETTE offre.
+  if (!value || value !== expectedId) return job;
+  if (node.url != null) { try { if (typeof node.url !== 'string' || new URL(node.url).href !== job.url) return job; } catch { return job; } }
+  // Un enrichissement ne régresse pas : une fiche dont le texte est plus court que le teaser ne laisse aucune évidence,
+  // et le lecteur, qui relit le RAW tel quel, garde alors le teaser comme le collecteur.
+  const enriched = enrichPostingEvidence(job, html);
+  return (enriched.description?.length ?? 0) < (job.description?.length ?? 0) ? job : enriched;
 }

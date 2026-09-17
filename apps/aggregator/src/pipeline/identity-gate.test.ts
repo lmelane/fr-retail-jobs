@@ -1,19 +1,30 @@
 import '../test/setup-integration.js';
 import { randomUUID } from 'node:crypto';
 import { PrismaClient } from '@prisma/client';
-import { afterAll, beforeEach, expect, it, vi } from 'vitest';
-const certifiedScopes = new Map<string, 'SINGLE_BRAND' | 'MULTI_BRAND'>();
-vi.mock('../connectors/sourceIdentity.js', async (importOriginal) => ({ ...(await importOriginal<typeof import('../connectors/sourceIdentity.js')>()), certifiedPortalScope: async (_p: unknown, key: string) => certifiedScopes.get(key) ?? null }));
+import { afterAll, afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { resolveEmployer, recordEmployerObservation } from '../identity/resolve.js';
 import { EmployerIdentityReviewRequired } from '../identity/errors.js';
 import { normalizedEmployerName } from '../normalize/employerName.js';
 import { resolveCompany } from '../normalize/company.js';
+import { certifiedPortalIdentity, recordSourceIdentityReview, sourceIdentityHash } from '../connectors/sourceIdentity.js';
+import { captureIdentityFixture } from '../test/sourceIdentityFixture.js';
+import { toCandidate } from './ingest.js';
+import { employerFromCertifiedScope } from '../identity/portalEmployer.js';
+import { employerAliasKey } from '../normalize/employerName.js';
 const prisma = new PrismaClient();
 const SOURCE = 'gate-fixture';
+const portalKeys: string[] = [];
+afterEach(() => { vi.restoreAllMocks(); vi.unstubAllGlobals(); });
 // EmployerObservation is append-only (database trigger) and references companies: every fixture entity gets a fresh key
 // and nothing is deleted but the fixture's own jobs.
-beforeEach(async () => { await prisma.job.deleteMany({ where: { sources: { some: { sourceKey: SOURCE } } } }); });
-afterAll(async () => { await prisma.job.deleteMany({ where: { sources: { some: { sourceKey: SOURCE } } } }); await prisma.$disconnect(); });
+beforeEach(async () => { const jobs = await prisma.job.findMany({ where: { sources: { some: { sourceKey: SOURCE } } } });
+  await prisma.jobSource.deleteMany({ where: { jobId: { in: jobs.map(job => job.id) } } });
+  await prisma.job.deleteMany({ where: { id: { in: jobs.map(job => job.id) } } }); });
+afterAll(async () => { const jobs = await prisma.job.findMany({ where: { sources: { some: { sourceKey: SOURCE } } } });
+  await prisma.jobSource.deleteMany({ where: { jobId: { in: jobs.map(job => job.id) } } });
+  await prisma.job.deleteMany({ where: { id: { in: jobs.map(job => job.id) } } }); await prisma.$executeRaw`TRUNCATE "SourceIngestionAdmission", "SourceIdentityReview"`;
+  await prisma.source.deleteMany({ where: { key: { in: portalKeys } } });
+  await prisma.$disconnect(); });
 
 /** Kering, 2026-09-09: 6 postings came back labelled "Kering" because the feed omitted the house that a previous response had attested. */
 async function fixture() {
@@ -22,7 +33,7 @@ async function fixture() {
   const review = await prisma.employerIdentityReview.create({ data: { id: randomUUID(), statement: 'fixture: the house belongs to the group', evidence: [], planHash: 'fixture', reviewedBy: 'integration', reviewedAt: new Date() } });
   const house = await prisma.company.create({ data: { name: `Saint House ${k}`, canonicalKey: `SAINT_HOUSE_${k}`, kind: 'MAISON', fashionjobsUrl: `resolved:SAINT_HOUSE_${k}`, parentGroup: `Actual Group ${k}`, parentGroupId: group.id, identityReviewId: review.id } });
   const other = await prisma.company.create({ data: { name: `Other Brand ${k}`, canonicalKey: `OTHER_BRAND_${k}`, kind: 'BRAND', fashionjobsUrl: `resolved:OTHER_BRAND_${k}` } });
-  const job = await prisma.job.create({ data: { companyId: house.id, externalId: id, source: 'EIGHTFOLD', title: 'Client Advisor', url: `https://careers.example.com/job/${id}`, fingerprint: `SAINT_HOUSE_${k}|${id}`, clusterKey: `SAINT_HOUSE_${k}|${id}`, isActive: true, firstSeenAt: new Date(), lastSeenAt: new Date(),
+  const job = await prisma.job.create({ data: { companyId: house.id, externalId: id, source: 'EIGHTFOLD', title: 'Client Advisor', url: `https://careers.example.com/job/${id}`, clusterKey: `SAINT_HOUSE_${k}|${id}`, isActive: true, firstSeenAt: new Date(), lastSeenAt: new Date(),
     sources: { create: { sourceKey: SOURCE, externalId: id, url: `https://careers.example.com/job/${id}`, sourceTier: 'GROUP_OFFICIAL', isActive: true, firstSeenAt: new Date(), lastSeenAt: new Date(), raw: {} } } } });
   const base = { sourceKey: SOURCE, externalId: id, title: 'Client Advisor', url: `https://careers.example.com/job/${id}`, source: 'EIGHTFOLD' } as any;
   // Previous attested observation: the house.
@@ -68,58 +79,88 @@ it('accepts a new spelling that is exactly the canonical name of the employer al
   await expect(prisma.$transaction(tx => resolveEmployer(tx, { ...withWord, rawEmployerName: `${house.name} Boutique` }))).rejects.toBeInstanceOf(EmployerIdentityReviewRequired);
 });
 
-/** Mango, 2026-09-10: a portal certified SINGLE_BRAND publishes only entities of its owner — a new legal-entity label is the owner, not a new employer.
- * The certification is mocked (SourceIdentityReview is immutable by trigger: a persisted fixture would block the other files' wipe). */
-it('credits any native label of a certified SINGLE_BRAND portal to the portal owner, and keeps the raw label in the observation', async () => {
-  const k = randomUUID().slice(0, 8).toUpperCase(), key = `gate-single-${k.toLowerCase()}`;
-  const owner = await prisma.company.create({ data: { name: `Mango Fixture ${k}`, canonicalKey: `MANGO_FIXTURE_${k}`, kind: 'BRAND', fashionjobsUrl: `resolved:MANGO_FIXTURE_${k}` } });
-  const candidate = { sourceKey: key, externalId: `p-${k}`, title: 'Sales Assistant', url: `https://${key}.wd3.myworkdayjobs.com/Careers/job/x`, source: 'WORKDAY', company: owner.name, companyId: owner.canonicalKey, rawEmployerName: `MANGO NY ${k} LLC`, employerLabelOrigin: 'HIRING_ORGANIZATION_LABEL' } as any;
-  certifiedScopes.set(key, 'SINGLE_BRAND');
-  const resolution = await prisma.$transaction(tx => resolveEmployer(tx, candidate));
-  expect(resolution.company?.id).toBe(owner.id); expect(resolution.rule).toBe('CERTIFIED_SINGLE_BRAND_PORTAL'); expect(resolution.rawEmployerName).toBe(`MANGO NY ${k} LLC`);
-  // Without the certification (MULTI_BRAND or none), the same new label is still an identity change to review.
-  certifiedScopes.set(key, 'MULTI_BRAND');
-  await expect(prisma.$transaction(tx => resolveEmployer(tx, candidate))).rejects.toBeInstanceOf(EmployerIdentityReviewRequired);
-  certifiedScopes.delete(key);
-  await expect(prisma.$transaction(tx => resolveEmployer(tx, candidate))).rejects.toBeInstanceOf(EmployerIdentityReviewRequired);
-  // A native label that IS a known distinct employer contradicts the certified perimeter: review, never absorbed by the owner.
-  const other = await prisma.company.create({ data: { name: `Kate Fixture ${k}`, canonicalKey: `KATE_FIXTURE_${k}`, kind: 'BRAND', fashionjobsUrl: `resolved:KATE_FIXTURE_${k}` } });
-  certifiedScopes.set(key, 'SINGLE_BRAND');
-  await expect(prisma.$transaction(tx => resolveEmployer(tx, { ...candidate, externalId: `p-${k}-2`, rawEmployerName: other.name }))).rejects.toBeInstanceOf(EmployerIdentityReviewRequired);
-  // …while a label whose company was MERGED into the owner (a legal entity) is still the owner.
-  const mergeReview = await prisma.employerIdentityReview.create({ data: { id: randomUUID(), statement: 'fixture: the legal entity is merged into the owner', evidence: [], planHash: 'fixture', reviewedBy: 'integration', reviewedAt: new Date() } });
-  const entity = await prisma.company.create({ data: { name: `Mango Fixture ${k} NY LLC`, canonicalKey: `MANGO_FIXTURE_${k}_NY_LLC`, kind: 'BRAND', fashionjobsUrl: `resolved:MANGO_FIXTURE_${k}_NY_LLC`, mergedIntoId: owner.id, identityReviewId: mergeReview.id } });
-  const merged = await prisma.$transaction(tx => resolveEmployer(tx, { ...candidate, externalId: `p-${k}-3`, rawEmployerName: entity.name }));
-  expect(merged.company?.id).toBe(owner.id); expect(merged.rule).toBe('CERTIFIED_SINGLE_BRAND_PORTAL');
-  certifiedScopes.delete(key);
+async function portalFixture(scope: 'SINGLE_BRAND' | 'MULTI_BRAND' | null = 'SINGLE_BRAND', createOwner = true) {
+  const k = randomUUID().slice(0, 8), key = `portal-native-${k}`; portalKeys.push(key);
+  const name = `Synthetic Portal ${k}`; const ownerKey = resolveCompany(name).companyId;
+  const source = await prisma.source.create({ data: { key, maison: name, kind: 'workday', config: {
+    tenant: key, site: 'External', origin: `https://${key}.wd5.myworkdayjobs.com` }, tier: 'ATS_OFFICIAL', tenantKey: key, status: 'DRAFT' } });
+  const owner = createOwner ? await prisma.company.create({ data: { name, canonicalKey: ownerKey, fashionjobsUrl: `resolved:${ownerKey}` } }) : null;
+  if (scope) await recordSourceIdentityReview(prisma, { ...await captureIdentityFixture(prisma, source), portalScope: scope }, true);
+  const candidate = (rawName?: string) => toCandidate({ externalId: `native-${k}`, title: 'Client Advisor', url: `https://${key}.wd5.myworkdayjobs.com/External/job/1`,
+    company: rawName, raw: { hiringOrganization: rawName ? { name: rawName } : undefined } },
+    { key, company: name, tier: 'ATS_OFFICIAL' }, rawName ?? name, 'WORKDAY');
+  return { key, name, source, owner, ownerKey, candidate };
+}
+
+it('preserves an explicit native employer despite a real SINGLE_BRAND portal review, until a scoped alias proves the relationship', async () => {
+  const f = await portalFixture(); const native = `Legal Entity ${randomUUID().slice(0, 8)} Nederland BV`;
+  expect(await certifiedPortalIdentity(prisma, f.key)).toMatchObject({ scope: 'SINGLE_BRAND', ownerName: f.name, ownerKey: f.ownerKey });
+  const candidate = f.candidate(native), before = JSON.stringify(candidate.raw);
+  const resolved = await prisma.$transaction(tx => resolveEmployer(tx, candidate));
+  expect(resolved).toMatchObject({ rule: 'NATIVE_SOURCE_LABEL', company: null, newName: native, newKey: expect.stringMatching(/^SOURCE_/), rawEmployerName: native });
+  expect(resolved.rule).not.toBe('CERTIFIED_SINGLE_BRAND_PORTAL');
+  expect(JSON.stringify(candidate.raw)).toBe(before);
+  await prisma.$transaction(async tx => {
+    const review = await tx.employerIdentityReview.create({ data: { id: randomUUID(), statement: 'Synthetic source-scoped alias evidence for this exact legal entity', evidence: [], planHash: 'fixture', reviewedBy: 'integration', reviewedAt: new Date() } });
+    await tx.companyAlias.create({ data: { aliasKey: employerAliasKey(f.key, native), displayName: native, normalizedName: normalizedEmployerName(native),
+      companyId: f.owner!.id, sourceKey: f.key, sourceHash: sourceIdentityHash(f.source), reviewId: review.id } });
+    expect(await resolveEmployer(tx, candidate)).toMatchObject({ company: { id: f.owner!.id }, rule: 'REVIEWED_ALIAS', rawEmployerName: native, reviewId: review.id });
+    throw new Error('ROLLBACK_ALIAS_WITNESS');
+  }).catch(error => { expect(error.message).toBe('ROLLBACK_ALIAS_WITNESS'); });
+});
+it('uses the reviewed owner only for a missing employer, and records the source review used', async () => {
+  const f = await portalFixture(), candidate = f.candidate();
+  expect(candidate.employerLabelOrigin).toBe('SOURCE_CATALOGUE_LABEL');
+  const identity = (await certifiedPortalIdentity(prisma, f.key))!;
+  const raw = { detail: { jobPostingInfo: { jobDescription: 'Native duties with no declared employer' } } };
+  const missing = { externalId: 'missing-detail-employer', title: 'Client Advisor', url: `https://${f.key}.wd5.myworkdayjobs.com/External/job/2`,
+    publicationHold: 'WORKDAY_EMPLOYER_ABSENT_IN_DETAIL', raw };
+  const completed = employerFromCertifiedScope(missing, f.name, 'SINGLE_BRAND');
+  const inferred = toCandidate(completed, { key: f.key, company: f.name, tier: 'ATS_OFFICIAL' }, f.name, 'WORKDAY');
+  expect(inferred.employerLabelOrigin).toBe('portal.certifiedScope:EMPLOYER_INFERRED_FROM_CERTIFIED_SINGLE_BRAND_PORTAL');
+  expect(await prisma.$transaction(tx => resolveEmployer(tx, inferred))).toMatchObject({ company: { id: f.owner!.id }, reviewId: identity.reviewId });
+  expect(completed.raw).toBe(raw); expect(raw).not.toHaveProperty('company');
+
+  const resolved = await prisma.$transaction(tx => resolveEmployer(tx, candidate));
+  expect(resolved).toMatchObject({ company: { id: f.owner!.id }, rule: 'CERTIFIED_SINGLE_BRAND_PORTAL', reviewId: identity.reviewId });
+  await recordEmployerObservation(prisma, candidate, f.owner!.id, resolved);
+  expect(await prisma.employerObservation.findFirstOrThrow({ where: { sourceKey: f.key } })).toMatchObject({
+    labelOrigin: 'SOURCE_CATALOGUE_LABEL', rule: 'CERTIFIED_SINGLE_BRAND_PORTAL', reviewId: identity.reviewId });
+});
+it('creates a missing owner under the reviewed identity instead of a source-derived name', async () => {
+  const f = await portalFixture('SINGLE_BRAND', false);
+  expect(await prisma.$transaction(tx => resolveEmployer(tx, f.candidate()))).toMatchObject({ company: null, newKey: f.ownerKey, newName: f.name, rule: 'CERTIFIED_SINGLE_BRAND_PORTAL' });
+});
+it.each(['MULTI_BRAND', null] as const)('does not turn a registry label into an employer under %s', async scope => {
+  const f = await portalFixture(scope);
+  await expect(prisma.$transaction(tx => resolveEmployer(tx, f.candidate()))).rejects.toBeInstanceOf(EmployerIdentityReviewRequired);
+});
+it('holds a missing employer after a registry revision change', async () => {
+  const f = await portalFixture(); await prisma.source.update({ where: { key: f.key }, data: { jobUrlPattern: 'changed' } });
+  await expect(prisma.$transaction(tx => resolveEmployer(tx, f.candidate()))).rejects.toBeInstanceOf(EmployerIdentityReviewRequired);
+});
+it('never replaces the known employer of an existing posting with an inferred portal owner', async () => {
+  const f = await portalFixture(); const previous = await fixture();
+  await prisma.jobSource.create({ data: { sourceKey: f.key, externalId: previous.base.externalId, jobId: previous.job.id,
+    url: `https://${f.key}.wd5.myworkdayjobs.com/External/job/1`, sourceTier: 'ATS_OFFICIAL', raw: {} } });
+  await expect(prisma.$transaction(tx => resolveEmployer(tx, { ...f.candidate(), externalId: previous.base.externalId }))).rejects.toBeInstanceOf(EmployerIdentityReviewRequired);
 });
 
-/** Ysé, 2026-09-10: Teamtailor labels the posting with the legal entity, the candidate's companyId derives from that label, and the certified owner lookup missed → a duplicate employer "L'IMPERTINENTE - Ysé" beside "Ysé". */
-it('on a certified SINGLE_BRAND portal the owner is the catalogued Maison, never the label: found under its canonical key, or created there', async () => {
-  const k = randomUUID().slice(0, 8).toUpperCase(), key = `gate-cat-${k.toLowerCase()}`, keyNew = `gate-new-${k.toLowerCase()}`;
-  await prisma.source.createMany({ data: [
-    { key, maison: `Yse Fixture ${k}`, kind: 'teamtailor', config: { origin: `https://${key}.teamtailor.com` }, tier: 'EMPLOYER_DIRECT', tenantKey: `teamtailor:${key}.teamtailor.com`, status: 'ACTIVE' },
-    { key: keyNew, maison: `Prairie Fixture ${k}`, kind: 'teamtailor', config: { origin: `https://${keyNew}.teamtailor.com` }, tier: 'EMPLOYER_DIRECT', tenantKey: `teamtailor:${keyNew}.teamtailor.com`, status: 'ACTIVE' },
-  ] });
-  try {
-    const owner = await prisma.company.create({ data: { name: `Yse Fixture ${k}`, canonicalKey: `YSE_FIXTURE_${k}`, kind: 'BRAND', fashionjobsUrl: `resolved:YSE_FIXTURE_${k}` } });
-    const label = `L'IMPERTINENTE - Yse Fixture ${k}`;
-    const candidate = { sourceKey: key, externalId: `p-${k}`, title: 'Conseillère de vente', url: `https://${key}.teamtailor.com/jobs/1`, source: 'TEAMTAILOR', company: resolveCompany(label).displayName, companyId: resolveCompany(label).companyId, rawEmployerName: label, employerLabelOrigin: 'jsonld:HIRING_ORGANIZATION' } as any;
-    expect(candidate.companyId).not.toBe(owner.canonicalKey); // the label-derived key is NOT the owner's key — that is the whole point
-    certifiedScopes.set(key, 'SINGLE_BRAND');
-    const found = await prisma.$transaction(tx => resolveEmployer(tx, candidate));
-    expect(found.company?.id).toBe(owner.id); expect(found.rule).toBe('CERTIFIED_SINGLE_BRAND_PORTAL'); expect(found.rawEmployerName).toBe(label);
-    // New actor: the owner does not exist yet → created under the canonical key of the catalogued Maison, with its name — never a source-scoped key.
-    const labelNew = `Prairie Holding ${k} - Prairie Fixture ${k}`;
-    certifiedScopes.set(keyNew, 'SINGLE_BRAND');
-    const created = await prisma.$transaction(tx => resolveEmployer(tx, { ...candidate, sourceKey: keyNew, externalId: `p-${k}-new`, company: resolveCompany(labelNew).displayName, companyId: resolveCompany(labelNew).companyId, rawEmployerName: labelNew }));
-    expect(created.company).toBeNull(); expect(created.rule).toBe('CERTIFIED_SINGLE_BRAND_PORTAL');
-    expect(created.newKey).toBe(`PRAIRIE_FIXTURE_${k}`); expect(created.newName).toBe(`Prairie Fixture ${k}`);
-    // Without the certification the same label is still an identity change to review (unchanged contract).
-    certifiedScopes.delete(keyNew);
-    await expect(prisma.$transaction(tx => resolveEmployer(tx, { ...candidate, sourceKey: keyNew, externalId: `p-${k}-new2`, company: resolveCompany(labelNew).displayName, companyId: resolveCompany(labelNew).companyId, rawEmployerName: labelNew }))).resolves.toMatchObject({ rule: 'LEGACY_UNREVIEWED', newKey: expect.stringMatching(/^SOURCE_/) });
-  } finally {
-    certifiedScopes.delete(key); certifiedScopes.delete(keyNew);
-    await prisma.source.deleteMany({ where: { key: { in: [key, keyNew] } } });
-  }
+it('keeps an unknown native legal name verbatim without requiring a portal-owner certificate', async () => {
+  const f = await portalFixture(null, false), native = `Distinct Entity ${randomUUID().slice(0, 8)} France S.A.R.L.`;
+  const candidate = f.candidate(native);
+  expect(candidate.company).not.toBe(native); // The old spelling heuristic removed legal/country words.
+  const result = await prisma.$transaction(tx => resolveEmployer(tx, candidate));
+  expect(result).toMatchObject({ rule: 'NATIVE_SOURCE_LABEL', company: null, newName: native, newKey: expect.stringMatching(/^SOURCE_/), rawEmployerName: native });
+  expect(result.rule).not.toBe('CERTIFIED_SINGLE_BRAND_PORTAL');
+});
+it('does not use an alias of the registry label as evidence of a missing posting employer', async () => {
+  const f = await portalFixture(null);
+  await prisma.$transaction(async tx => {
+    const review = await tx.employerIdentityReview.create({ data: { id: randomUUID(), statement: 'Synthetic alias of a registry name; no posting employer is attested.', evidence: [], planHash: 'fixture', reviewedBy: 'integration', reviewedAt: new Date() } });
+    await tx.companyAlias.create({ data: { aliasKey: employerAliasKey(f.key, f.name), displayName: f.name, normalizedName: normalizedEmployerName(f.name),
+      companyId: f.owner!.id, sourceKey: f.key, sourceHash: sourceIdentityHash(f.source), reviewId: review.id } });
+    await expect(resolveEmployer(tx, f.candidate())).rejects.toBeInstanceOf(EmployerIdentityReviewRequired);
+    throw new Error('ROLLBACK_ALIAS_WITNESS');
+  }).catch(error => { expect(error.message).toBe('ROLLBACK_ALIAS_WITNESS'); });
 });

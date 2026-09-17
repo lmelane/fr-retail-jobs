@@ -1,0 +1,53 @@
+{
+  "mutations": [
+    {
+      "name": "missing-revision",
+      "baselineGuardHeld": true,
+      "disabledGuardAcceptedForbiddenWrite": true,
+      "rowsAndDdlRolledBack": true,
+      "sequenceGapsExpected": true
+    },
+    {
+      "name": "foreign-revision",
+      "baselineGuardHeld": true,
+      "disabledGuardAcceptedForbiddenWrite": true,
+      "rowsAndDdlRolledBack": true,
+      "sequenceGapsExpected": true
+    },
+    {
+      "name": "obsolete-revision",
+      "baselineGuardHeld": true,
+      "disabledGuardAcceptedForbiddenWrite": true,
+      "rowsAndDdlRolledBack": true,
+      "sequenceGapsExpected": true
+    },
+    {
+      "name": "mutable-revision",
+      "baselineGuardHeld": true,
+      "disabledGuardAcceptedForbiddenWrite": true,
+      "rowsAndDdlRolledBack": true,
+      "sequenceGapsExpected": true
+    },
+    {
+      "name": "mutable-order",
+      "baselineGuardHeld": true,
+      "disabledGuardAcceptedForbiddenWrite": true,
+      "rowsAndDdlRolledBack": true,
+      "sequenceGapsExpected": true
+    },
+    {
+      "name": "deleted-review",
+      "baselineGuardHeld": true,
+      "disabledGuardAcceptedForbiddenWrite": true,
+      "rowsAndDdlRolledBack": true,
+      "sequenceGapsExpected": true
+    },
+    {
+      "name": "caller-order",
+      "baselineGuardHeld": true,
+      "disabledGuardAcceptedForbiddenWrite": true,
+      "rowsAndDdlRolledBack": true,
+      "sequenceGapsExpected": true
+    }
+  ]
+}

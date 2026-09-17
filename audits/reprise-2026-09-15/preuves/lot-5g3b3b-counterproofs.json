@@ -1,0 +1,110 @@
+{
+  "mutations": [
+    {
+      "name": "unregistered-publication",
+      "rejectedByRegression": true,
+      "restoredSha256": "f177f598ad192807bd786be4add1dc4eef35c6e85d08d7f3fc5d83f732828ef4"
+    },
+    {
+      "name": "omit-upsert-admission",
+      "rejectedByRegression": true,
+      "restoredSha256": "d7c0548641a6bf29b046694e57b7a441a917e58206ae3052447113da6a018557"
+    },
+    {
+      "name": "omit-held-archive-admission",
+      "rejectedByRegression": true,
+      "restoredSha256": "0c5c7cf00edddae6a0a5db1c5060fea395c2ac91544087aef7e9d2473a700a76"
+    },
+    {
+      "name": "omit-attached-withdrawal-admission",
+      "rejectedByRegression": true,
+      "restoredSha256": "1f5fee1fcc0e6d40482c8720bd86dfff429c27c3a35cfd0e2b73d32964b62d71"
+    },
+    {
+      "name": "omit-detached-withdrawal-admission",
+      "rejectedByRegression": true,
+      "restoredSha256": "1f5fee1fcc0e6d40482c8720bd86dfff429c27c3a35cfd0e2b73d32964b62d71"
+    },
+    {
+      "name": "mutable-publication-input",
+      "rejectedByRegression": true,
+      "restoredSha256": "d7c0548641a6bf29b046694e57b7a441a917e58206ae3052447113da6a018557"
+    },
+    {
+      "name": "mutable-hold-input",
+      "rejectedByRegression": true,
+      "restoredSha256": "0c5c7cf00edddae6a0a5db1c5060fea395c2ac91544087aef7e9d2473a700a76"
+    },
+    {
+      "name": "forged-withdrawal-reason",
+      "rejectedByRegression": true,
+      "restoredSha256": "8efbc01f0eb3fbea3debf6b07eedc744e5e9e6052e8349907a7535377cbfebdc"
+    },
+    {
+      "name": "forged-withdrawal-time",
+      "rejectedByRegression": true,
+      "restoredSha256": "8efbc01f0eb3fbea3debf6b07eedc744e5e9e6052e8349907a7535377cbfebdc"
+    },
+    {
+      "name": "publish-excluded-posting",
+      "rejectedByRegression": true,
+      "restoredSha256": "8efbc01f0eb3fbea3debf6b07eedc744e5e9e6052e8349907a7535377cbfebdc"
+    },
+    {
+      "name": "ignore-scope-revocation",
+      "rejectedByRegression": true,
+      "restoredSha256": "8efbc01f0eb3fbea3debf6b07eedc744e5e9e6052e8349907a7535377cbfebdc"
+    },
+    {
+      "name": "omit-scope-audit",
+      "rejectedByRegression": true,
+      "restoredSha256": "8efbc01f0eb3fbea3debf6b07eedc744e5e9e6052e8349907a7535377cbfebdc"
+    },
+    {
+      "name": "accept-altered-raw",
+      "rejectedByRegression": true,
+      "restoredSha256": "a0ddfbd1b3856523b4236631b5314582e1bbb8bbf7eeaf7f6f5adafd0fe7aaa4"
+    },
+    {
+      "name": "accept-altered-url",
+      "rejectedByRegression": true,
+      "restoredSha256": "a0ddfbd1b3856523b4236631b5314582e1bbb8bbf7eeaf7f6f5adafd0fe7aaa4"
+    },
+    {
+      "name": "restore-legacy-unbound-writer",
+      "rejectedByRegression": true
+    },
+    {
+      "name": "strip-native-hold",
+      "rejectedByRegression": true
+    },
+    {
+      "name": "stale-while-publishing",
+      "rejectedByRegression": true
+    },
+    {
+      "name": "stale-while-withdrawing",
+      "rejectedByRegression": true
+    }
+  ],
+  "sqlMutations": [
+    {
+      "name": "scope-insert",
+      "rejectedByRegression": true
+    },
+    {
+      "name": "scope-update",
+      "rejectedByRegression": true
+    },
+    {
+      "name": "scope-delete",
+      "rejectedByRegression": true
+    },
+    {
+      "name": "mutable-scope-audit",
+      "rejectedByRegression": true
+    }
+  ],
+  "restoredTests": "passed",
+  "productionTouched": false
+}

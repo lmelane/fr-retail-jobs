@@ -1,0 +1,40 @@
+{
+ "at": "2026-09-15T13:03:30+00:00",
+ "frozenSentinel": "0 0 29 2 *",
+ "services": {
+  "aggregator": {
+   "cronSchedule": "0 0 29 2 *",
+   "startCommand": "sh apps/aggregator/start.sh",
+   "latestDeployment": {
+    "status": "SUCCESS",
+    "createdAt": "2026-09-15T07:16:10.707Z"
+   },
+   "PIPELINE_PAUSED": "1",
+   "PIPELINE_CMD": "ingest-all",
+   "INGEST_ONLY_KEYS": null
+  },
+  "refresh": {
+   "cronSchedule": "0 0 29 2 *",
+   "startCommand": null,
+   "latestDeployment": {
+    "status": "SUCCESS",
+    "createdAt": "2026-09-15T07:16:10.707Z"
+   },
+   "PIPELINE_PAUSED": "1",
+   "PIPELINE_CMD": "refresh",
+   "INGEST_ONLY_KEYS": null
+  },
+  "reconcile": {
+   "cronSchedule": "0 0 29 2 *",
+   "startCommand": null,
+   "latestDeployment": {
+    "status": "SUCCESS",
+    "createdAt": "2026-09-15T07:16:10.707Z"
+   },
+   "PIPELINE_PAUSED": "1",
+   "PIPELINE_CMD": "reconcile",
+   "INGEST_ONLY_KEYS": null
+  }
+ },
+ "problems": []
+}

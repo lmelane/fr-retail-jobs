@@ -14,19 +14,15 @@ export const SCOPE_HOLD = 'SCOPE_OUT_OF_PERIMETER';
 
 export type ScopeExclusion = { externalId: string; ruleVersion: string; decidedAt: Date };
 
-/** Loaded once per source run (never one query per posting). A registry failure excludes nothing. */
+/** Run-level routing hint; the publication writer rechecks the decision. */
 export async function loadScopeExclusions(prisma: PrismaClient, sourceKey: string): Promise<Map<string, ScopeExclusion>> {
-  try {
-    const rows = await prisma.postingScopeDecision.findMany({ where: { sourceKey, verdict: 'OUT_OF_SCOPE' }, select: { externalId: true, ruleVersion: true, decidedAt: true } });
-    return new Map(rows.map((r) => [r.externalId, r]));
-  } catch {
-    return new Map();
-  }
+  const rows = await prisma.postingScopeDecision.findMany({ where: { sourceKey, verdict: 'OUT_OF_SCOPE' }, select: { externalId: true, ruleVersion: true, decidedAt: true } });
+  return new Map(rows.map((r) => [r.externalId, r]));
 }
 
 /** The posting keeps its raw payload and identity; only its publication is withheld, dated by the decision. */
 export function applyScopeExclusion(job: NormalizedJob, exclusions: Map<string, ScopeExclusion>): NormalizedJob {
   const decision = exclusions.get(job.externalId);
   if (!decision || job.publicationHold) return job;
-  return { ...job, publicationHold: SCOPE_HOLD, publicationWithdrawnAt: decision.decidedAt, raw: { ...(job.raw as Record<string, unknown> | undefined), scopeDecision: { verdict: 'OUT_OF_SCOPE', ruleVersion: decision.ruleVersion, decidedAt: decision.decidedAt.toISOString() } } };
+  return { ...job, publicationHold: SCOPE_HOLD, publicationWithdrawnAt: decision.decidedAt };
 }

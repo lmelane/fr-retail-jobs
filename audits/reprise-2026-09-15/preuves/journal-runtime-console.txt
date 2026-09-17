@@ -1,0 +1,4 @@
+f3cc17e97c0f8956b4d0c5d84f92419a8169301e30ea8c14ae3b8a7b57333fdc  src/lib/translate-article.mjs
+21f83c5a133e1f2cc263d3de78ca24850d9f50fd6d2c8e001481e5e8ea198536  src/lib/translation-rules.mjs
+69e5a3406a1bec6c5f672535c0effa44559afe2ed9f8b1a3a160e8f24dac8c8d  src/console-server.mjs
+sha256sum: can't open 'migrations/025_article_translations.up.sql': No such file or directory

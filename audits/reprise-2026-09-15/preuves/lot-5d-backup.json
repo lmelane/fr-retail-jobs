@@ -1,0 +1,12 @@
+{
+  "scope": "Dedicated local full-stock clone at schema 60; immutable source revisions retained",
+  "bytes": 1133726720,
+  "sha256": "ddadd1e51b45515e1134e547a3f737bb2ffbbf75a2f4c757ff23790dc14deca6",
+  "archiveCatalogVerified": true,
+  "productionWrites": false,
+  "schemaMigrations": 60,
+  "elapsedMs": 84462,
+  "restoreRequiresMigrations": [
+    61
+  ]
+}

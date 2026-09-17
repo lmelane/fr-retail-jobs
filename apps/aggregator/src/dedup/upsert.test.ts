@@ -1,10 +1,9 @@
+import { upsertDeduplicated } from '../test/publicationPersistenceFixture.js';
 import '../test/setup-integration.js';
 import { describe, it, expect, beforeEach, afterAll } from 'vitest';
 import { PrismaClient } from '@prisma/client';
-import { upsertDeduplicated } from './upsert.js';
 import { resolveCompany } from '../normalize/company.js';
 import type { CandidateJob } from './match.js';
-import { runReconcile } from '../pipeline/reconcile.js';
 
 /**
  * Integration tests for write-time dedup, focused on the unique-constraint
@@ -27,12 +26,14 @@ async function wipe() {
 function candidate(
   over: Partial<CandidateJob> & { sourceKey: string; externalId: string; company: string; title: string },
 ): CandidateJob & { companyId: string } {
+  const url = over.url ?? `https://x/${over.externalId}`;
+  const raw = url.includes('.oraclecloud.com/') ? { source: 'oraclehcm', site: 'CX', list: { Id: new URL(url).pathname.split('/').at(-1) } } : {};
   return {
     sourceTier: 'EMPLOYER_DIRECT',
     atsType: 'GENERIC_JSONLD',
-    raw: {},
+    raw,
     ...over,
-    url: over.url ?? `https://x/${over.externalId}`,
+    url,
     description: over.description ?? 'desc',
     companyId: resolveCompany(over.company).companyId,
   } as CandidateJob & { companyId: string };
@@ -45,16 +46,15 @@ afterAll(async () => {
 });
 
 describe('upsertDeduplicated — unique-constraint recovery', () => {
-  it('preserves publisher opportunity classification across creation, replay and reconcile', async () => {
+  it('tracks the current publisher opportunity classification and an unknown reobservation', async () => {
     const base = { company: 'Ganni', title: 'Sales Advisor', location: 'Paris', country: 'FR' };
     const first = await upsertDeduplicated(prisma, candidate({ ...base, sourceKey: 'direct', externalId: '1', opportunityType: 'OPEN_APPLICATION' }));
     const second = await upsertDeduplicated(prisma, candidate({ ...base, sourceKey: 'group', externalId: '2', opportunityType: 'JOB_OPENING' }));
     expect(second.jobId).not.toBe(first.jobId);
-    expect((await runReconcile(prisma)).jobsMerged).toBe(0);
     await upsertDeduplicated(prisma, candidate({ ...base, sourceKey: 'direct', externalId: '1' }));
-    expect((await prisma.job.findUniqueOrThrow({ where: { id: first.jobId } })).opportunityType).toBe('OPEN_APPLICATION');
+    expect((await prisma.job.findUniqueOrThrow({ where: { id: first.jobId } })).opportunityType).toBeNull();
     await upsertDeduplicated(prisma, candidate({ ...base, sourceKey: 'direct', externalId: '1', opportunityType: 'JOB_OPENING' }));
-    expect(await prisma.jobEvent.findFirst({ where: { jobId: first.jobId, type: 'CHANGED', field: 'opportunityType' } })).toMatchObject({ before: 'OPEN_APPLICATION', after: 'JOB_OPENING' });
+    expect(await prisma.jobEvent.findFirst({ where: { jobId: first.jobId, type: 'CHANGED', field: 'opportunityType', after: 'JOB_OPENING' } })).toMatchObject({ before: null, after: 'JOB_OPENING' });
   });
   it('keeps real Wailea requisitions 63681 and 63683 separate across LVMH and Oracle', async () => {
     const base = { company: 'Tiffany & Co.', title: 'Client Advisor - Wailea', city: 'Wailea', country: 'US' };
@@ -65,7 +65,6 @@ describe('upsertDeduplicated — unique-constraint recovery', () => {
     const same = await upsertDeduplicated(prisma, candidate({ ...base, sourceKey: 'tiffany-oracle', externalId: '63681', url: url('63681') }));
     expect(same.jobId).toBe(first.jobId);
     expect(await prisma.job.count()).toBe(2);
-    expect((await runReconcile(prisma)).jobsMerged).toBe(0);
     // Restore the historically observed wrong attachment as a regression witness.
     await prisma.jobSource.update({ where: { sourceKey_externalId: { sourceKey: 'tiffany-oracle', externalId: '63683' } }, data: { jobId: first.jobId } });
     await expect(upsertDeduplicated(prisma, candidate({ ...base, sourceKey: 'tiffany-oracle', externalId: '63683', url: url('63683') })))

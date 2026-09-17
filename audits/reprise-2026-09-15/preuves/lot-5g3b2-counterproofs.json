@@ -1,0 +1,104 @@
+{
+  "mutations": [
+    {
+      "name": "unknown-is-public",
+      "rejectedByRegression": true,
+      "restoredSha256": "4b9eb941615a3952564f3251dbf3158472dc2a406f083a69c2b383b8199d0adb"
+    },
+    {
+      "name": "ignore-request-origin",
+      "rejectedByRegression": true,
+      "restoredSha256": "cc679fdcd8d88f410c1cd090d065080e781ee87600f808c98f9e38f430974731"
+    },
+    {
+      "name": "ignore-request-method",
+      "rejectedByRegression": true,
+      "restoredSha256": "cc679fdcd8d88f410c1cd090d065080e781ee87600f808c98f9e38f430974731"
+    },
+    {
+      "name": "ignore-query-tenant",
+      "rejectedByRegression": true,
+      "restoredSha256": "cc679fdcd8d88f410c1cd090d065080e781ee87600f808c98f9e38f430974731"
+    },
+    {
+      "name": "allow-extra-query",
+      "rejectedByRegression": true,
+      "restoredSha256": "cc679fdcd8d88f410c1cd090d065080e781ee87600f808c98f9e38f430974731"
+    },
+    {
+      "name": "accept-ambiguous-overlap",
+      "rejectedByRegression": true,
+      "restoredSha256": "cc679fdcd8d88f410c1cd090d065080e781ee87600f808c98f9e38f430974731"
+    },
+    {
+      "name": "ignore-observed-agent",
+      "rejectedByRegression": true,
+      "restoredSha256": "cc679fdcd8d88f410c1cd090d065080e781ee87600f808c98f9e38f430974731"
+    },
+    {
+      "name": "unknown-browser-coverage",
+      "rejectedByRegression": true,
+      "restoredSha256": "1acbe83bbd4254ac6284829e821b68ec6b0e0a06a1152634db398d99049385de"
+    },
+    {
+      "name": "robots-html-is-rule",
+      "rejectedByRegression": true,
+      "restoredSha256": "1acbe83bbd4254ac6284829e821b68ec6b0e0a06a1152634db398d99049385de"
+    },
+    {
+      "name": "unobserved-method-or-query",
+      "rejectedByRegression": true,
+      "restoredSha256": "1acbe83bbd4254ac6284829e821b68ec6b0e0a06a1152634db398d99049385de"
+    },
+    {
+      "name": "missing-robots-purpose",
+      "rejectedByRegression": true,
+      "restoredSha256": "1acbe83bbd4254ac6284829e821b68ec6b0e0a06a1152634db398d99049385de"
+    },
+    {
+      "name": "latest-positive-only",
+      "rejectedByRegression": true,
+      "restoredSha256": "14785e69aad69d04afe4aebf3537a7139e43b4ae2ac4cd2f7d2b8db985179436"
+    },
+    {
+      "name": "missing-access-preflight",
+      "rejectedByRegression": true,
+      "restoredSha256": "90e1e1efc14e678f43e064ae7b856a6fb69be7e24eae14c23f01a0d427db2897"
+    },
+    {
+      "name": "publish-probe-after-grant",
+      "rejectedByRegression": true,
+      "restoredSha256": "d4ffa2a05b7d3b83c623f666f541ede10bf9c508cca0420c2463eb64a49a64d7"
+    },
+    {
+      "name": "forget-sticky-failure",
+      "rejectedByRegression": true,
+      "restoredSha256": "90e1e1efc14e678f43e064ae7b856a6fb69be7e24eae14c23f01a0d427db2897"
+    },
+    {
+      "name": "erase-earlier-http-receipts",
+      "rejectedByRegression": true,
+      "restoredSha256": "d36946cfa281a53de6458a4b440d3b854da3a951e9165a0b94f4f78f6438a8b2"
+    }
+  ],
+  "sqlMutations": [
+    {
+      "name": "mutable-access-decision",
+      "rejectedByRegression": true
+    },
+    {
+      "name": "unbound-native-access",
+      "rejectedByRegression": true
+    },
+    {
+      "name": "unbound-collection",
+      "rejectedByRegression": true
+    },
+    {
+      "name": "mutable-imported-notes",
+      "rejectedByRegression": true
+    }
+  ],
+  "restoredTests": "passed",
+  "productionTouched": false
+}

@@ -1,0 +1,24 @@
+{
+  "before": {
+    "jobs": 87606,
+    "representations": 90764,
+    "activeRepresentations": 85327,
+    "observations": 140422,
+    "migrationCount": 55,
+    "databaseBytes": 7304795839,
+    "sourceDigest": "264cf85db5ffda5610707dad47301fa857fdedcdda65a63341bed28cc0a4f641",
+    "jobDigest": "05e8b19a50a57849808537163fcbb2450f56e9a805a9e7ff929e066abf593ace",
+    "observationDigest": "2fdb95ef5738e7d7aa67e654f7f852b493738c48664bfd70441ec029ab6d673b"
+  },
+  "after": {
+    "jobs": 87606,
+    "representations": 90764,
+    "activeRepresentations": 85327,
+    "observations": 141933,
+    "migrationCount": 55,
+    "databaseBytes": 7314175679,
+    "sourceDigest": "264cf85db5ffda5610707dad47301fa857fdedcdda65a63341bed28cc0a4f641",
+    "jobDigest": "05e8b19a50a57849808537163fcbb2450f56e9a805a9e7ff929e066abf593ace",
+    "observationDigest": "4f688a3efe6bc1e9e15e9bf32004c85ae89d28b6b28a321a9303aebc4c161d0b"
+  }
+}

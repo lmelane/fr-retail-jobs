@@ -1,0 +1,50 @@
+{
+  "date": "2026-09-16T06:31:26.673Z",
+  "readerRevision": "local-sha256:14538ade0d43b17317a3d76240c25863cb1a748b2fdd518d4de180b80ddeb404",
+  "sourceKey": "admission-live-polene-81fc1384-9146-4e1f-9f9f-63efed8609c4",
+  "sourceRevisionId": "a940c9cc-9938-4370-979a-0cde86706d86",
+  "identityCaptureId": "9fd7eb8a-ef87-4db0-8856-257ecf587e97",
+  "identityReviewId": "identity-review:99f99042b09b687d6f8cdfe9faa59de21c916635a6e62e1d236f4a47a91e9b66",
+  "calibrationCaptureId": "2ff8748a-bb7c-4069-8d02-cc7a29f68738",
+  "calibrationId": "0c2aa319-6bf5-4478-8353-9b4e563d65f1",
+  "robotsCaptureId": "ee8b2aae-781a-491c-a8cd-4665b8e41509",
+  "accessDecisionId": "access-review:f955b00701b51cbeed62f7ef8a6722a989b55027ded4be04c893bdcd81dce3c8",
+  "ingestionCaptureId": "7b2230ad-539d-4b6b-b284-8421e893d6c2",
+  "admission": {
+    "batchId": "7b2230ad-539d-4b6b-b284-8421e893d6c2",
+    "identityReviewId": "identity-review:99f99042b09b687d6f8cdfe9faa59de21c916635a6e62e1d236f4a47a91e9b66",
+    "sourceValidationId": "0c2aa319-6bf5-4478-8353-9b4e563d65f1",
+    "policyVersion": "native-ingestion-admission/1",
+    "admittedAt": "2026-09-16T06:31:24.448Z"
+  },
+  "qualificationOffers": 80,
+  "ingestionOffers": 80,
+  "validationReport": {
+    "held": 0,
+    "reasons": {},
+    "observed": 80,
+    "rejected": 0,
+    "qualified": 80,
+    "nativeEmpty": false,
+    "replayExact": true,
+    "inputRejected": 0,
+    "enumerationClaim": "COMPLETE",
+    "absenceAttestation": false
+  },
+  "allAdmissionDecisionsBound": true,
+  "publicationGatePassed": true,
+  "isolatedSourceActivatedThenPaused": true,
+  "sourceStatus": "PAUSED",
+  "offersPublished": 0,
+  "archivedBlobs": 10,
+  "purged": 10,
+  "hotBodiesRemaining": 0,
+  "coldReads": 2,
+  "coldValidationIds": [
+    "4c1c0240-6f71-49bc-a948-63927810e74a",
+    "22b97687-ac06-4b55-abf6-51920beefa14"
+  ],
+  "portalHttpDuringColdReads": 0,
+  "ownerAuthorizationChanged": false,
+  "productionTouched": false
+}

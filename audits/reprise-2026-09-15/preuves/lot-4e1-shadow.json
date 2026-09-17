@@ -1,0 +1,305 @@
+{
+  "environment": "Dedicated local PostgreSQL; private 2026-09-15 RAW snapshot; no publisher calls or production writes",
+  "families": 31,
+  "publications": 93,
+  "capturesCreated": 0,
+  "reports": [
+    {
+      "kind": "teamtailor",
+      "publications": 2,
+      "publicReadChecks": 2,
+      "mismatches": 0,
+      "repeated": true,
+      "elapsedMs": 159,
+      "planHash": "a538d2877503760470576179f98fde55af72c3246e01f94aafbd9754a04fdb33"
+    },
+    {
+      "kind": "jobylon",
+      "publications": 3,
+      "publicReadChecks": 3,
+      "mismatches": 0,
+      "repeated": true,
+      "elapsedMs": 97,
+      "planHash": "e4885e1599c69549c9de446d0a73e3449923e4e56c3a19cf8bf5943b3e42151f"
+    },
+    {
+      "kind": "workday",
+      "publications": 3,
+      "publicReadChecks": 3,
+      "mismatches": 0,
+      "repeated": true,
+      "elapsedMs": 191,
+      "planHash": "928547806f5a382d88a205d5ed6d5c6ca696119dc68387cbede945c1ca7afd8f"
+    },
+    {
+      "kind": "flatchr",
+      "publications": 3,
+      "publicReadChecks": 3,
+      "mismatches": 0,
+      "repeated": true,
+      "elapsedMs": 127,
+      "planHash": "e58600ae3ab988b8ff7c1a53ae6e6c998507449731ec550c1765ca8d024214aa"
+    },
+    {
+      "kind": "icims",
+      "publications": 3,
+      "publicReadChecks": 3,
+      "mismatches": 0,
+      "repeated": true,
+      "elapsedMs": 92,
+      "planHash": "954928b9249c8305807ae13f776ff99343e873448bcbaccf15aa04e0bc05b817"
+    },
+    {
+      "kind": "greenhouse",
+      "publications": 3,
+      "publicReadChecks": 3,
+      "mismatches": 0,
+      "repeated": true,
+      "elapsedMs": 80,
+      "planHash": "c62e9a399c86ed6182c30460f71181df6cc839ce067b838eecd71f7304ce08ef"
+    },
+    {
+      "kind": "teamtailor",
+      "publications": 1,
+      "publicReadChecks": 1,
+      "mismatches": 0,
+      "repeated": true,
+      "elapsedMs": 53,
+      "planHash": "af12befe6b888926f2b84377a28a2005197994efce074769fd6d9d2c6dcf6913"
+    },
+    {
+      "kind": "generic-listing",
+      "publications": 3,
+      "publicReadChecks": 3,
+      "mismatches": 0,
+      "repeated": true,
+      "elapsedMs": 76,
+      "planHash": "d23b031c7231c5fdb75213ada682fa36c600eb41102457a97697f214067df73e"
+    },
+    {
+      "kind": "personio",
+      "publications": 2,
+      "publicReadChecks": 2,
+      "mismatches": 0,
+      "repeated": true,
+      "elapsedMs": 65,
+      "planHash": "03a4fc1bfed3e315dd3807ea20ab297b8d0155071f4f7051d52c6b598a4e641f"
+    },
+    {
+      "kind": "recruitee",
+      "publications": 3,
+      "publicReadChecks": 3,
+      "mismatches": 0,
+      "repeated": true,
+      "elapsedMs": 102,
+      "planHash": "8aa11e3f5789ff3f68a615950f5c27a5e03bae1d52f1f1e9997e5b1d6ba832d6"
+    },
+    {
+      "kind": "lever",
+      "publications": 3,
+      "publicReadChecks": 3,
+      "mismatches": 0,
+      "repeated": true,
+      "elapsedMs": 93,
+      "planHash": "2ada19648f3b28a1edbcba4ef46a333ebadcf02c702b4bf918f72451a75578df"
+    },
+    {
+      "kind": "workable",
+      "publications": 3,
+      "publicReadChecks": 3,
+      "mismatches": 0,
+      "repeated": true,
+      "elapsedMs": 238,
+      "planHash": "945cca7a57a473be2e06ebc6a3399c727f590c4eb31ddecdee239633a174ce2a"
+    },
+    {
+      "kind": "talentview",
+      "publications": 3,
+      "publicReadChecks": 3,
+      "mismatches": 0,
+      "repeated": true,
+      "elapsedMs": 94,
+      "planHash": "7c13a88d1309e368d38ef1035cd558f7fb05f671bcf136ced47cb4e57389b8c3"
+    },
+    {
+      "kind": "talentsoft",
+      "publications": 3,
+      "publicReadChecks": 3,
+      "mismatches": 0,
+      "repeated": true,
+      "elapsedMs": 80,
+      "planHash": "57c186762eb6368a7b3a9f5e9a6343594d91ce10f477a127b05c203b794dde6a"
+    },
+    {
+      "kind": "geodirectory",
+      "publications": 3,
+      "publicReadChecks": 3,
+      "mismatches": 0,
+      "repeated": true,
+      "elapsedMs": 97,
+      "planHash": "9545a124c1ef850bceb476af477f165594a1a419c1e93901429327d3c5bc93a5"
+    },
+    {
+      "kind": "jobaffinity-wordpress",
+      "publications": 3,
+      "publicReadChecks": 3,
+      "mismatches": 0,
+      "repeated": true,
+      "elapsedMs": 88,
+      "planHash": "b92e338e55b4ebb0b09543d9743475ceee5ff5a4819f38dc12f1c9e894f395fd"
+    },
+    {
+      "kind": "oraclehcm",
+      "publications": 3,
+      "publicReadChecks": 3,
+      "mismatches": 0,
+      "repeated": true,
+      "elapsedMs": 97,
+      "planHash": "ef12baa3245b1ff9ee274c7b137655fd272b841301112b1ad27e194856475f07"
+    },
+    {
+      "kind": "personio",
+      "publications": 1,
+      "publicReadChecks": 1,
+      "mismatches": 0,
+      "repeated": true,
+      "elapsedMs": 41,
+      "planHash": "daee91b6dd96c6a15977cd8c28debddcf83f5e72c9066b65934b7fb33f8bc6b7"
+    },
+    {
+      "kind": "talentfunnel",
+      "publications": 3,
+      "publicReadChecks": 3,
+      "mismatches": 0,
+      "repeated": true,
+      "elapsedMs": 99,
+      "planHash": "5f04b6aa358a034eb2e2ceed3489620c162d077912c08edbcce023760ead2c7f"
+    },
+    {
+      "kind": "magnet",
+      "publications": 3,
+      "publicReadChecks": 3,
+      "mismatches": 0,
+      "repeated": true,
+      "elapsedMs": 82,
+      "planHash": "45dd42c71ce3fb44a876a3fd17fcb84771f5ea182ba10f29d19208d05d860105"
+    },
+    {
+      "kind": "volcanic",
+      "publications": 3,
+      "publicReadChecks": 3,
+      "mismatches": 0,
+      "repeated": true,
+      "elapsedMs": 83,
+      "planHash": "107add1f74be2151c47109c97e6cc42a5e38ef5974ae68cf5ce3c144768bc347"
+    },
+    {
+      "kind": "phenom",
+      "publications": 3,
+      "publicReadChecks": 3,
+      "mismatches": 0,
+      "repeated": true,
+      "elapsedMs": 95,
+      "planHash": "c12c6d6f03c644d7ea8593566de278296a5900dabbd94d9777257127b1ba5c64"
+    },
+    {
+      "kind": "talentrecruiter",
+      "publications": 3,
+      "publicReadChecks": 3,
+      "mismatches": 0,
+      "repeated": true,
+      "elapsedMs": 91,
+      "planHash": "95d058f470bfcf3c3f671767d0e8ad0a55b559ebf17c42e5ae3d183c49157280"
+    },
+    {
+      "kind": "easycruit",
+      "publications": 3,
+      "publicReadChecks": 3,
+      "mismatches": 0,
+      "repeated": true,
+      "elapsedMs": 89,
+      "planHash": "d374e21f79fb3a3c05f2c052c36067500e24a83886fc6a1575e5cbd38443b924"
+    },
+    {
+      "kind": "wordpress",
+      "publications": 3,
+      "publicReadChecks": 3,
+      "mismatches": 0,
+      "repeated": true,
+      "elapsedMs": 99,
+      "planHash": "453543f8159b78b89e1363eafa45b1b34fde3aabb74d08c65675f696aa85e1f6"
+    },
+    {
+      "kind": "lvmh_algolia",
+      "publications": 3,
+      "publicReadChecks": 3,
+      "mismatches": 0,
+      "repeated": true,
+      "elapsedMs": 88,
+      "planHash": "24f46151ca49a8e1a35c8b5c66f7f16aa9390ec45196bbc451d0ffcbabb65920"
+    },
+    {
+      "kind": "radancy",
+      "publications": 3,
+      "publicReadChecks": 3,
+      "mismatches": 0,
+      "repeated": true,
+      "elapsedMs": 103,
+      "planHash": "5d25bf71408343530f827e1da04c6016ad4205c401317bf03e6e3ff3b291a614"
+    },
+    {
+      "kind": "ashby",
+      "publications": 3,
+      "publicReadChecks": 3,
+      "mismatches": 0,
+      "repeated": true,
+      "elapsedMs": 91,
+      "planHash": "ca834045a4fa988ff74c4da8861d1a971c03cd72e8abfd652dc670a2279aa3fb"
+    },
+    {
+      "kind": "rituals",
+      "publications": 3,
+      "publicReadChecks": 3,
+      "mismatches": 0,
+      "repeated": true,
+      "elapsedMs": 91,
+      "planHash": "393a30a0a283f796b93b92cb6ac67c3f28f013929d02f5ae7af86453eb1b49fc"
+    },
+    {
+      "kind": "typesense",
+      "publications": 3,
+      "publicReadChecks": 3,
+      "mismatches": 0,
+      "repeated": true,
+      "elapsedMs": 92,
+      "planHash": "ec4f0402204a79b6f3ded476616cd961b7f321daf6866cc7a135cfca9ed8b5ef"
+    },
+    {
+      "kind": "harri",
+      "publications": 3,
+      "publicReadChecks": 3,
+      "mismatches": 0,
+      "repeated": true,
+      "elapsedMs": 98,
+      "planHash": "dff7285aa589aaa036deef59e4c4f688a2b326a0ab9d0de020ced7ea5dc04726"
+    },
+    {
+      "kind": "jibe",
+      "publications": 3,
+      "publicReadChecks": 3,
+      "mismatches": 0,
+      "repeated": true,
+      "elapsedMs": 122,
+      "planHash": "2b7b7630a0a9ca7be9b7f032e141b1697f151d53eaa23348e074249fa0be14c7"
+    },
+    {
+      "kind": "altamira",
+      "publications": 3,
+      "publicReadChecks": 3,
+      "mismatches": 0,
+      "repeated": true,
+      "elapsedMs": 86,
+      "planHash": "bb41e6fdc398ddccea4fbbc2b6ee52595f81b42283ad22385a248c3cdc07604a"
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+{
+  "date": "2026-09-15",
+  "branch": "codex/production-foundations-20260915",
+  "baseCommit": "9504c9f0bef635f6841e4db5f7c1e7999ac9938f",
+  "validation": {
+    "cleanInstall": true,
+    "unit": 2223,
+    "integration": 397,
+    "api": 242,
+    "corpusTestsSkipped": 2,
+    "railwayOffline": 5,
+    "typecheck": true,
+    "apiBuild": true,
+    "vitest": "5.0.1",
+    "npmAudit": {
+      "info": 0,
+      "low": 0,
+      "moderate": 0,
+      "high": 0,
+      "critical": 0,
+      "total": 0
+    },
+    "dockerContextGuard": true,
+    "runnerSha256": "cb322c78d645e3e9dfaf2c79e012c7e5148a12e976e0005fed77cd1fe7ba0621"
+  },
+  "mutations": {
+    "production": false,
+    "dns": false,
+    "cron": false,
+    "otherRepositories": false
+  },
+  "migrationsOnFreshTestDatabase": 44,
+  "logs": {
+    "lot0-final-install.log": "3ca552612061012a85d38efb120e59c20a23530110640ce50400c1889b5ba672",
+    "lot0-final-validation.log": "aca7b8b01f4d07af95ee95d633124574158e5a2ac347c6b709d75703c5ce5b08",
+    "lot0-api-build.log": "296b01f38b56fe13735ccc4b5022fe40b134aaf7d6da1c8d7f6cbdf2305ad8c1"
+  },
+  "runtimeJournal": {
+    "src/lib/translate-article.mjs": {
+      "runtimeSha256": "f3cc17e97c0f8956b4d0c5d84f92419a8169301e30ea8c14ae3b8a7b57333fdc",
+      "equalLocal": false,
+      "diffLines": 64
+    },
+    "src/lib/translation-rules.mjs": {
+      "runtimeSha256": "21f83c5a133e1f2cc263d3de78ca24850d9f50fd6d2c8e001481e5e8ea198536",
+      "equalLocal": true,
+      "diffLines": 0
+    },
+    "src/console-server.mjs": {
+      "runtimeSha256": "69e5a3406a1bec6c5f672535c0effa44559afe2ed9f8b1a3a160e8f24dac8c8d",
+      "equalLocal": false,
+      "diffLines": 62
+    }
+  }
+}

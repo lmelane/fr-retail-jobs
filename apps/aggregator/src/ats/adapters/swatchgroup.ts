@@ -1,4 +1,5 @@
 import { createHash } from 'node:crypto';
+import { captureObservedAt } from '../../capture/context.js';
 import { log } from '../../observability/logger.js';
 import pLimit from 'p-limit';
 import { fetchText } from '../../lib/http.js';
@@ -276,7 +277,7 @@ export async function fetchSwatchGroupJobs(config: Record<string, unknown>): Pro
       links.push(link);
     }
     pagesRead += 1;
-    pageEvidence.push({ url, checkedAt: new Date().toISOString(), sha256: createHash('sha256').update(html).digest('hex'), offset: page, pagination: null,
+    pageEvidence.push({ url, checkedAt: captureObservedAt().toISOString(), sha256: createHash('sha256').update(html).digest('hex'), offset: page, pagination: null,
       ids: inPage.map((l) => l.split('/').pop() ?? l), publisherCounter: '', componentCounters: [`links=${inPage.length}`, `fresh=${fresh.length}`, `uniqueLinks=${seen.size}`] });
     // Le pager Drupal rend la dernière page en boucle au-delà de la fin :
     // une page sans lien NOUVEAU termine la lecture (comme le générique).

@@ -1,0 +1,102 @@
+{
+  "date": "2026-09-16T13:16:04.026Z",
+  "site": "http://127.0.0.1:3021",
+  "constats": [
+    {
+      "nom": "API : la fiche éligible porte un JobPosting",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "nom": "API : le url du balisage est la fiche du site",
+      "ok": true,
+      "detail": "https://catwalks.io/emplois/conseiller-de-vente-boutique-rivoli-temoin-lot9-eligible"
+    },
+    {
+      "nom": "API : la fiche fermée rend 410, sans balisage, motif nommé",
+      "ok": true,
+      "detail": "410 [\"OFFER_NOT_ACTIVE\",\"VALID_THROUGH_EXPIRED\"]"
+    },
+    {
+      "nom": "API : la candidature spontanée est servie sans balisage (OPEN_APPLICATION)",
+      "ok": true,
+      "detail": "200 [\"OPEN_APPLICATION\"]"
+    },
+    {
+      "nom": "API : un identifiant fusionné résout l’offre canonique",
+      "ok": true,
+      "detail": "temoin-lot9-eligible"
+    },
+    {
+      "nom": "API : le sitemap liste l’éligible et la directe, pas la fermée, la spontanée, la courte ni l’alias",
+      "ok": true,
+      "detail": "/emplois/visual-merchandiser-temoin-cw_temoin-lot9-directe | /emplois/conseiller-de-vente-boutique-rivoli-temoin-lot9-eligible"
+    },
+    {
+      "nom": "API : chaque entrée a un lastmod ISO",
+      "ok": true
+    },
+    {
+      "nom": "site : la fiche rend 200 avec UN JobPosting JSON-LD analysable, sans JavaScript",
+      "ok": true,
+      "detail": "200 1 balise(s) Conseiller de vente — Boutique Rivoli"
+    },
+    {
+      "nom": "site : le balisage correspond au contenu affiché (titre, Maison)",
+      "ok": true
+    },
+    {
+      "nom": "site : la fiche active reste noindex tant que l’indexation n’est pas ouverte",
+      "ok": true
+    },
+    {
+      "nom": "site : le canonical de la fiche est son chemin nu",
+      "ok": true,
+      "detail": "rel=\"canonical\" href=\"https://catwalks.io/emplois/conseiller-de-vente-boutique-rivoli-temoin-lot9-eligible\""
+    },
+    {
+      "nom": "site : la fiche fermée est lisible, noindex, sans balisage",
+      "ok": true,
+      "detail": "200"
+    },
+    {
+      "nom": "site : un identifiant historique redirige de façon permanente (308) vers le chemin canonique, recherche gardée",
+      "ok": true,
+      "detail": "308 /emplois/conseiller-de-vente-boutique-rivoli-temoin-lot9-eligible?marche=FR"
+    },
+    {
+      "nom": "site : un slug périmé redirige (308) vers le chemin canonique",
+      "ok": true,
+      "detail": "308 /emplois/conseiller-de-vente-boutique-rivoli-temoin-lot9-eligible"
+    },
+    {
+      "nom": "site : un identifiant inconnu rend 404",
+      "ok": true,
+      "detail": "404"
+    },
+    {
+      "nom": "site : sitemap-emplois.xml?page=1 est un urlset XML avec les chemins de l’API",
+      "ok": true,
+      "detail": "200"
+    },
+    {
+      "nom": "site : l’index sitemap.xml n’inscrit pas le catalogue tant que EMPLOIS_INDEXABLE n’est pas posé",
+      "ok": true,
+      "detail": "503"
+    },
+    {
+      "nom": "site : une page inexistante du sitemap rend 503 (jamais vide)",
+      "ok": true,
+      "detail": "503"
+    },
+    {
+      "nom": "navigateur : un seul bloc JSON-LD sur la page de l’offre, aucune erreur JavaScript",
+      "ok": true,
+      "detail": "1 bloc(s) "
+    },
+    {
+      "nom": "navigateur : aucun JSON-LD JobPosting sur la liste",
+      "ok": true
+    }
+  ]
+}

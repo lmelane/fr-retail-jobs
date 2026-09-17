@@ -1,0 +1,71 @@
+{
+  "mutations": [
+    {
+      "name": "drop-observed-workday-facets",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "173f02a51cfc854ea98cfad7891053cd63fd61569cc7189f8111359788064718"
+    },
+    {
+      "name": "match-vendor-only",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "173f02a51cfc854ea98cfad7891053cd63fd61569cc7189f8111359788064718"
+    },
+    {
+      "name": "ignore-source-revision",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "0ab4075e17546af79e74ffed82a5843b18aa79294d29356736e92cac700d2245"
+    },
+    {
+      "name": "approve-403-page",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "0ab4075e17546af79e74ffed82a5843b18aa79294d29356736e92cac700d2245"
+    },
+    {
+      "name": "approve-text-artifact",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "0ab4075e17546af79e74ffed82a5843b18aa79294d29356736e92cac700d2245"
+    },
+    {
+      "name": "trust-foreign-domain",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "173f02a51cfc854ea98cfad7891053cd63fd61569cc7189f8111359788064718"
+    },
+    {
+      "name": "legacy-substring-proof",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "0ab4075e17546af79e74ffed82a5843b18aa79294d29356736e92cac700d2245"
+    },
+    {
+      "name": "ignore-srcdoc-override",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "0ab4075e17546af79e74ffed82a5843b18aa79294d29356736e92cac700d2245"
+    },
+    {
+      "name": "ignore-challenge",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "0ab4075e17546af79e74ffed82a5843b18aa79294d29356736e92cac700d2245"
+    },
+    {
+      "name": "ignore-concurrent-source-change",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "0ab4075e17546af79e74ffed82a5843b18aa79294d29356736e92cac700d2245"
+    },
+    {
+      "name": "relation-refusal-exits-success",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "fb09aec4702330f7337e00ca674e7881b7b5290a5bb8ed7e3343a8847645ab9b"
+    }
+  ],
+  "restoredTests": "passed"
+}

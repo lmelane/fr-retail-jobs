@@ -1,11 +1,9 @@
+import { accessStatus, readLatestSourceAccess } from '../../src/connectors/sourceAccess.js';
+import { identityReviewOrder, assertIdentityReview, sourceIdentityHash, sourceSubjectKey } from '../../src/connectors/sourceIdentity.js';
+import { readIdentitySources } from '../../src/connectors/sourceRegistryRead.js';
 /** Private, repeatable-read inventory. Never prints source configuration or credentials. */
 import { PrismaClient, Prisma } from "@prisma/client";
 import { writeFileSync } from "node:fs";
-import {
-  assertIdentityReview,
-  sourceIdentityHash,
-  sourceSubjectKey,
-} from "../../src/connectors/sourceIdentity.js";
 const p = new PrismaClient();
 try {
   const output = process.argv[2];
@@ -16,7 +14,7 @@ try {
       return {
         at: new Date().toISOString(),
         totals:
-          await tx.$queryRaw`SELECT count(*)::int jobs,count(*) FILTER(WHERE "isActive")::int active,count(*) FILTER(WHERE "isActive" AND "isFrance")::int france,md5(string_agg(id,',' ORDER BY id)) ids FROM "Job"`,
+          await tx.$queryRaw`SELECT count(*)::int jobs,count(*) FILTER(WHERE "isActive")::int active,count(*) FILTER(WHERE "isActive" AND "countryCode" = 'FR')::int france,md5(string_agg(id,',' ORDER BY id)) ids FROM "Job"`,
         companies: await tx.company.findMany({
           select: {
             id: true,
@@ -56,27 +54,31 @@ try {
         // verdict instead of re-implementing a subset of the contract.
         sources: await (async () => {
           const latest = new Map<string, Awaited<ReturnType<typeof tx.sourceIdentityReview.findFirst>>>();
-          for (const r of await tx.sourceIdentityReview.findMany({ orderBy: [{ createdAt: "desc" }, { id: "desc" }], distinct: ["sourceKey"] })) latest.set(r.sourceKey, r);
-          return (await tx.source.findMany({ orderBy: { key: "asc" } })).map((source) => {
+          for (const r of await tx.sourceIdentityReview.findMany({ orderBy: identityReviewOrder, distinct: ["sourceKey"] })) latest.set(r.sourceKey, r);
+          const sources = await readIdentitySources(tx);
+          const accessOf = await readLatestSourceAccess(tx, sources.map(source => source.key));
+          return sources.map((source) => {
             const review = latest.get(source.key) ?? null;
             let identityVerdict: { certified: boolean; reason: string | null; reviewId: string | null; portalScope: string | null };
             try { assertIdentityReview(source, review); identityVerdict = { certified: true, reason: null, reviewId: review!.id, portalScope: review!.portalScope ?? null }; }
             catch (e) { identityVerdict = { certified: false, reason: review ? String(e instanceof Error ? e.message : e) : 'NO_REVIEW', reviewId: review?.id ?? null, portalScope: null }; }
-            return { ...source, identityHash: sourceIdentityHash(source), subjectKey: sourceSubjectKey(source), identityVerdict };
+            return { ...source, access: accessStatus(source, accessOf.get(source.key) ?? null), identityHash: sourceIdentityHash(source), subjectKey: sourceSubjectKey(source), identityVerdict };
           });
         })(),
         counts:
-          await tx.$queryRaw`SELECT "companyId",count(*)::int world,count(*) FILTER(WHERE "isFrance")::int france FROM "Job" WHERE "isActive" GROUP BY 1`,
+          await tx.$queryRaw`SELECT "companyId",count(*)::int world,count(*) FILTER(WHERE "countryCode" = 'FR')::int france FROM "Job" WHERE "isActive" GROUP BY 1`,
         sourceCompanies:
-          await tx.$queryRaw`SELECT js."sourceKey",j."companyId",count(*)::int representations,count(*) FILTER(WHERE js."isActive" AND j."isActive")::int active,count(*) FILTER(WHERE js."isActive" AND j."isActive" AND j."isFrance")::int france FROM "JobSource" js JOIN "Job" j ON j.id=js."jobId" GROUP BY 1,2`,
+          await tx.$queryRaw`SELECT js."sourceKey",j."companyId",count(*)::int representations,count(*) FILTER(WHERE js."isActive" AND j."isActive")::int active,count(*) FILTER(WHERE js."isActive" AND j."isActive" AND j."countryCode" = 'FR')::int france FROM "JobSource" js JOIN "Job" j ON j.id=js."jobId" GROUP BY 1,2`,
         latestRuns:
           await tx.$queryRaw`SELECT DISTINCT ON("sourceKey") * FROM "SourceRun" ORDER BY "sourceKey","ranAt" DESC,id DESC`,
         latestIdentityReviews: await tx.sourceIdentityReview.findMany({
-          orderBy: [{ createdAt: "desc" }, { id: "desc" }],
+          orderBy: identityReviewOrder,
           distinct: ["sourceKey"],
           select: {
             id: true,
             sourceKey: true,
+            sourceRevisionId: true,
+            sequence: true,
             subjectKey: true,
             sourceHash: true,
             verdict: true,
@@ -111,7 +113,7 @@ try {
       timeout: 90000,
     },
   );
-  writeFileSync(output, JSON.stringify(data, null, 2), { mode: 0o600 });
+  writeFileSync(output, JSON.stringify(data, (_key, value) => typeof value === 'bigint' ? value.toString() : value, 2), { mode: 0o600 });
   console.log({
     at: data.at,
     totals: data.totals,

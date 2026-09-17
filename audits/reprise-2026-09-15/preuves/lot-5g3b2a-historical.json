@@ -1,0 +1,27 @@
+{
+  "migrationFrom": 65,
+  "migrationTo": 66,
+  "syntheticHistoricalFixture": true,
+  "preMigrationRawCapture": {
+    "id": "historical-response",
+    "format": "HTTP_RESPONSE",
+    "method": "GET",
+    "status": 200,
+    "batchId": "historical-proof",
+    "failure": null,
+    "headers": {},
+    "blobHash": "2c9b40c0d78278614303494b60e849775832ad4afe4ff3f5204c84bc37221566",
+    "complete": true,
+    "sequence": 0,
+    "capturedAt": "2026-09-16T05:08:26.927",
+    "requestUrl": "https://historical-proof.example/jobs",
+    "cookieNames": [],
+    "requestHash": "35899c8c1ad1ae2c25a665ada3ca005bff20c2c722c337d0c2910b3f543d5560"
+  },
+  "oldColumnsUnchanged": true,
+  "historicalProvenanceInvented": false,
+  "historicalRequestDataHash": null,
+  "oldNativeReplayExact": true,
+  "portalRequests": 0,
+  "productionTouched": false
+}

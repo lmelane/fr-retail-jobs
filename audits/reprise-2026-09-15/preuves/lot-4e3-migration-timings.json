@@ -1,0 +1,46 @@
+[
+  {
+    "migration_name": "20260915150000_source_expiry",
+    "seconds": 0.112707
+  },
+  {
+    "migration_name": "20260915153000_maintenance_plan",
+    "seconds": 0.056291
+  },
+  {
+    "migration_name": "20260915170000_native_capture",
+    "seconds": 0.127827
+  },
+  {
+    "migration_name": "20260915180000_observation_blob_retention",
+    "seconds": 0.102566
+  },
+  {
+    "migration_name": "20260915183000_observation_annotations",
+    "seconds": 2.033117
+  },
+  {
+    "migration_name": "20260915190000_per_job_extraction",
+    "seconds": 0.186939
+  },
+  {
+    "migration_name": "20260915200000_salary_decimal",
+    "seconds": 59.805316
+  },
+  {
+    "migration_name": "20260915203000_source_facts",
+    "seconds": 0.046704
+  },
+  {
+    "migration_name": "20260915210000_publication_identity_decisions",
+    "seconds": 0.068494
+  },
+  {
+    "migration_name": "20260915220000_reversible_publication_groups",
+    "seconds": 0.053955
+  },
+  {
+    "migration_name": "20260915230000_publication_presentation",
+    "seconds": 0.089531
+  }
+]

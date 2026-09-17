@@ -71,7 +71,7 @@ export function schemaEmploymentTypes(
  * il écarte les fragments (« Vendeur H/F », « Poste à pourvoir. ») sans écarter une annonce brève légitime.
  * Mesuré : 124 offres actives sans aucune description, 353 sous ce seuil, sur 78 932.
  */
-const MIN_DESCRIPTION_LENGTH = 100;
+export const DESCRIPTION_MINIMALE = 100;
 
 /** Pourquoi une offre visible ne reçoit PAS de balisage. Une raison par condition réellement requise. */
 export type MarkupIneligibility =
@@ -95,7 +95,9 @@ export type MarkupIneligibility =
    */
   | 'AMBIGUOUS_COUNTRY_WITHOUT_INDEPENDENT_PROOF'
   | 'VALID_THROUGH_EXPIRED'  // l'échéance de la source est passée : le poste se présente comme clos
-  | 'NO_APPLY_PATH';         // aucun chemin de candidature exploitable
+  | 'NO_APPLY_PATH'          // aucun chemin de candidature exploitable
+  /** L'offre n'est plus active (fermée, retirée) : la page reste lisible, jamais balisée (lot 9). */
+  | 'OFFER_NOT_ACTIVE';
 
 /**
  * Les codes qui sont À LA FOIS un code pays ISO 3166-1 et une subdivision américaine ou canadienne.
@@ -331,7 +333,7 @@ export function markupIneligibility(job: JobRow, now: Date = new Date()): Markup
   if (job.opportunityType === 'OPEN_APPLICATION') reasons.push('OPEN_APPLICATION');
   if (!job.postedAt || !Number.isFinite(job.postedAt.getTime())) reasons.push('NO_REAL_POSTED_DATE');
   if (!job.title?.trim()) reasons.push('NO_TITLE');
-  if (!job.description || job.description.trim().length < MIN_DESCRIPTION_LENGTH) reasons.push('DESCRIPTION_TOO_THIN');
+  if (!job.description || job.description.trim().length < DESCRIPTION_MINIMALE) reasons.push('DESCRIPTION_TOO_THIN');
   if (!job.company?.trim()) reasons.push('NO_HIRING_ORGANIZATION');
   /**
    * La localisation est jugée par `resolveLocation`, la MÊME fonction que celle qui construit les propriétés du
@@ -346,7 +348,7 @@ export function markupIneligibility(job: JobRow, now: Date = new Date()): Markup
    * date ni l'historique : c'est la date de la source, elle reste telle quelle.
    */
   if (job.validThrough && job.validThrough.getTime() < now.getTime()) reasons.push('VALID_THROUGH_EXPIRED');
-  if (!job.url || !/^https?:\/\//.test(job.url)) reasons.push('NO_APPLY_PATH');
+  if (job.candidature.type === 'AUCUNE') reasons.push('NO_APPLY_PATH');
   return reasons;
 }
 
@@ -494,7 +496,6 @@ export function jobPostingSchema(job: JobRow, now: Date = new Date()): Record<st
   if (markupIneligibility(job, now).length > 0) return null;
   const datePosted = job.postedAt!;
   const employmentTypes = schemaEmploymentTypes(job.employmentTerm, job.workTime, job.programType, job.engagementType);
-  const country = countryCode(job.countryCode);
 
   return {
     '@context': 'https://schema.org',
@@ -507,8 +508,12 @@ export function jobPostingSchema(job: JobRow, now: Date = new Date()): Record<st
     employmentType: employmentTypes.length ? employmentTypes : undefined,
     identifier: { '@type': 'PropertyValue', name: job.company, value: job.id },
     hiringOrganization: { '@type': 'Organization', name: job.company },
-    // The candidate applies at the employer, not on this page (D18).
-    directApply: false,
+    /**
+     * Une offre agrégée se pourvoit chez l'employeur, jamais sur cette page (D18) ; une offre publiée sur
+     * Catwalks se pourvoit ici, sans quitter le site (D-418 §1) — c'est la définition de Google du
+     * « direct apply », et la seule qu'on affirme.
+     */
+    directApply: job.candidature.type === 'CATWALKS',
     url: `${siteUrl()}${offerPath(job)}`,
     ...(job.language ? { inLanguage: job.language } : {}),
     /**
@@ -539,4 +544,19 @@ export function jobPostingSchema(job: JobRow, now: Date = new Date()): Record<st
           }
         : undefined,
   };
+}
+
+/** Ce que la route d'une offre sert au site (lot 9) : le balisage quand la porte l'admet, sinon `null` et les motifs. */
+export type Balisage = { jobPosting: Record<string, unknown> | null; motifs: MarkupIneligibility[] };
+
+/**
+ * LA CHAÎNE BRANCHÉE : éligibilité → balisage, pour UNE offre servie par `/api/offres/[id]`.
+ *
+ * Une offre fermée ou retirée n'est jamais balisée, quel que soit son contenu : Google demande, pour une
+ * offre expirée, un `validThrough` passé, une page en 404/410 ou le retrait du balisage — ici le balisage
+ * disparaît avec le statut, et la fiche du site reste lisible avec son bandeau et `noindex`.
+ */
+export function balisage(job: JobRow, statut: 'active' | 'closed' | 'withdrawn', now: Date = new Date()): Balisage {
+  const motifs = statut === 'active' ? markupIneligibility(job, now) : ['OFFER_NOT_ACTIVE' as const, ...markupIneligibility(job, now)];
+  return { jobPosting: motifs.length ? null : jobPostingSchema(job, now), motifs };
 }

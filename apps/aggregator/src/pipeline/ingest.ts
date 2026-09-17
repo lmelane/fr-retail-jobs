@@ -7,29 +7,30 @@ import { publicationDisposition } from './publicationDisposition.js';
 import { applyScopeExclusion, loadScopeExclusions } from './scopeDecisions.js';
 import { assertSourceRunning } from '../lib/sourceBudget.js';
 import type { PrismaClient, AtsType } from '@prisma/client';
-import type { SourceTier } from '../dedup/match.js';
+import type { SourceTier } from '@catwalks/db/publications';
 import { certifiedPortalScope } from '../connectors/sourceIdentity.js';
-import { employerFromCertifiedScope } from './certifiedScopeEmployer.js';
+import { employerFromCertifiedScope } from '../identity/portalEmployer.js';
 import { loadActiveSources, type RuntimeSource } from '../connectors/sourceStore.js';
 import { classifySector } from '../normalize/sector.js';
 import { resolveCompany } from '../normalize/company.js';
 import { domainFromEmployerSources } from '../normalize/companyDomain.js';
 import { resolveCanonicalDimensions, type TrustContext } from '../trust/resolve.js';
 import { loadTrust } from '../trust/persist.js';
-import { extractSalaryBand } from '../normalize/salary.js';
 import { isFranceJob } from '../lib/france.js';
 import { htmlToPlainText } from '../lib/html.js';
-import { coerceAmount, coerceCoordinate, coerceText, cleanTitle, cleanPlace, plausiblePostedAt, canonicalPeriod, boundedSalary, briefError } from '../lib/normalize.js';
-import { normalizeSourceConfig } from '../connectors/sourceConfig.js';
-import { isRotatingSource, nextPageFor, advanceCursor } from './sourceCursor.js';
+import { cleanTitle, cleanPlace, plausiblePostedAt, briefError } from '../lib/normalize.js';
+import { effectiveSourceConfig } from '../connectors/sourceConfig.js';
 import { upsertDeduplicated } from '../dedup/upsert.js';
 import type { CandidateJob } from '../dedup/match.js';
 import type { NormalizedJob } from '../types.js';
-import { PIPELINE_VERSION } from './version.js';
 import { runGeocode } from './geocodeJobs.js';
-import { purgeStaleForSource } from './purge.js';
-import { isTrustedForAttestation } from './attestation.js';
 import { fetchAtsJobs } from '../ats/index.js';
+import { captureExtraction } from '../capture/batch.js';
+import { recordIngestionCompletion, type OutputFate } from '../capture/completion.js';
+import { validateCapturedSource } from '../connectors/sourceValidation.js';
+import { SourceAdmissionGateError } from '../connectors/sourceAdmission.js';
+import { requireCurrentCaptureRevision } from '../connectors/sourceRevision.js';
+import { lockSourceWrites } from '../lib/writeLocks.js';
 
 /**
  * INGEST — picks up new and updated offers.
@@ -84,6 +85,9 @@ export type IngestStats = {
   declaredTotal?: number;
   /** True when the sweep returned fewer offers than declaredTotal. */
   truncated?: boolean;
+  /** The admitted, sealed collection this run published from, and its immutable end-of-ingestion report. */
+  captureBatchId?: string;
+  completionReportHash?: string;
 };
 
 /**
@@ -152,24 +156,11 @@ export function toCandidate(
     trust,
   );
 
-  // Coerce the structured salary at the boundary: a schema.org feed (Teamtailor)
-  // hands minValue/maxValue over as strings ("75000"), and written through to an
-  // Int? column that crashed job.create and lost the offer. A non-number becomes
-  // undefined, which then lets the text extraction below recover a band.
-  const salaryMin = coerceAmount(job.salaryMin);
-  const salaryMax = coerceAmount(job.salaryMax);
-
-  // Salary from prose when the structured field is empty: Galeries Lafayette
-  // writes the band in the text, and a fiche without it reads half-finished.
-  const salaryFromText =
-    salaryMin === undefined && salaryMax === undefined ? extractSalaryBand(description) : null;
-
   return {
     ...job,
     // Titre nettoyé (entités, espaces parasites : 2 400 offres, audit A1) ; lieu et
     // ville sans balise (« /a> » sur 71 offres L'Oréal) ; date de publication
-    // plausible (5 offres « publiées en 2028 ») ; salaire borné pour les devises
-    // majeures (58 M€/an chez Michael Page).
+    // plausible. Source facts are read once at the shared write boundary.
     rawTitle: job.title,
     rawContract: job.contract,
     rawWorkingTime: job.workingTime,
@@ -179,22 +170,10 @@ export function toCandidate(
     city: cleanPlace(job.city),
     postedAt: plausiblePostedAt(job.postedAt),
     description,
-    ...boundedSalary(salaryMin, salaryMax, job.salaryCurrency),
-    // String columns, coerced at the boundary: TalentView sends NUMERIC ids for
-    // the currency ("1") and remote level, which crashed every write ("Expected
-    // String, provided Int"). Coercing here means no adapter can ever leak the
-    // wrong type into these columns again — the adapter's own mapping is the
-    // readable value, this is the guardrail.
-    salaryCurrency: coerceText(job.salaryCurrency)?.toUpperCase(),
-    salaryPeriod: canonicalPeriod(job.salaryPeriod),
-    workplaceType: employment.workplaceType,
     // Le rythme suit exactement le même chemin que le mode de travail : résolu
     // dans `resolveCanonicalDimensions`, porté ici, écrit par `upsert`.
     workSchedule: employment.workSchedule,
     rawSchedule: employment.rawSchedule,
-    // Float columns: Rituals shipped "52.37" as a string and lost 577 offers.
-    latitude: coerceCoordinate(job.latitude, 90),
-    longitude: coerceCoordinate(job.longitude, 180),
     // Chaque dimension reste VIDE quand la source ne la dit pas : l'absence
     // d'information est un vide, pas une valeur. (L'ancien « UNKNOWN » stocké
     // était truthy, et l'écran affichait « Contrat : UNKNOWN » sur chaque offre
@@ -204,19 +183,9 @@ export function toCandidate(
     programType: employment.programType,
     engagementType: employment.engagementType,
     isSeasonal: employment.isSeasonal,
-    ...(salaryFromText
-      ? {
-          salaryMin: salaryFromText.min,
-          salaryMax: salaryFromText.max,
-          salaryCurrency: 'EUR',
-          salaryPeriod: salaryFromText.period,
-        }
-      : {}),
-    // The resolved display name, not the raw source string: group ATS feeds
-    // label every posting "<lead brand> +N", and that counter would otherwise
-    // become the stored company name a candidate reads. resolveCompany strips it
-    // and maps known brands to their canonical spelling, so the Company row, the
-    // dedup key and the card all agree on one name.
+    // This spelling key is only a lookup hint. The identity resolver decides
+    // the stored employer from native labels or explicit reviewed relationships;
+    // it preserves unknown native names instead of stripping their legal form.
     ...(() => {
       const identity = resolveCompany(companyName);
       return {
@@ -256,7 +225,6 @@ export { KIND_TO_ATS } from '../ats/catalogKinds.js';
 async function ingestApiSource(
   prisma: PrismaClient,
   source: RuntimeSource,
-  deadlineMs?: number,
   /** Verdicts chargés une fois par run — voir `toCandidate`. */
   trust: TrustContext = new Map(),
   catalogue?: CompiledOccupationTaxonomy,
@@ -274,30 +242,7 @@ async function ingestApiSource(
     return stats;
   }
 
-  let config: Record<string, unknown> = {};
-  try {
-    config = JSON.parse(source.entryUrl || '{}');
-  } catch {
-    // Legacy rows keep a plain URL there; adapters that need one read origin.
-    config = { origin: source.entryUrl };
-  }
-
-  // Resolve config-key synonyms before the adapter reads it: a discovery batch
-  // may have written `careers_url` where the Teamtailor adapter expects
-  // `origin`, and the unrecognised key fetched nothing — the live "origin
-  // missing" failures. qualification and ingestion use the same resolver.
-  // The deadline rides along so a slow crawler (FashionJobs) stops gracefully.
-  config = { ...normalizeSourceConfig(config), deadlineMs };
-
-  // A rotating source resumes partway through its listing so it re-sees every
-  // offer within the lifecycle window instead of only ever the newest pages.
-  const rotating = isRotatingSource(stats.source);
-  const progress: { reachedEnd?: boolean; lastPageDone?: number } = {};
-  let startPage = 1;
-  if (rotating) {
-    startPage = await nextPageFor(prisma, stats.source);
-    config = { ...config, startPage, progress };
-  }
+  const config = effectiveSourceConfig(source.config);
 
   const occupationTaxonomy = catalogue ?? await loadOccupationTaxonomy(prisma);
   stats.occupationReleaseId = occupationTaxonomy.manifest.id;
@@ -310,16 +255,24 @@ async function ingestApiSource(
    * endroits opposés, et les confondre enverrait optimiser la mauvaise moitié.
    */
   const fetchStartedAt = Date.now();
-  const { jobs, declaredTotal, truncated, complete, enumeration, rejectedRows } = await fetchAtsJobs(type as never, config);
+  const { captureBatchId, jobs, declaredTotal, truncated, complete, enumeration, rejectedRows } = await captureExtraction(
+    prisma, stats.source, config, log.runId(), settings => fetchAtsJobs(type as never, settings), type, { revisionId: source.revisionId, requireActive: true });
   stats.fetchMs = Date.now() - fetchStartedAt;
-  // One durable source-level event retains the reason behind completeness.
-  // The operational logger stores large proofs in PipelineEvent and prints
-  // only a bounded envelope, preserving the Lot 0 console-rate guarantees.
+  const validation = await validateCapturedSource(prisma, captureBatchId);
+  if (validation.verdict !== 'VALIDATED') throw new SourceAdmissionGateError('CAPTURE_NOT_VALIDATED', 'Ingestion requires a qualified native result');
+  // Also checks empty feeds: no per-job writer will run for them.
+  await prisma.$transaction(async tx => {
+    await lockSourceWrites(tx, stats.source);
+    await requireCurrentCaptureRevision(tx, await tx.captureBatch.findUniqueOrThrow({ where: { id: captureBatchId } }));
+  });
+  stats.captureBatchId = captureBatchId;
+  // A bounded diagnostic envelope only. The enumeration proof itself lives in the
+  // sealed manifest of the capture; the refresh reads it there, never from this log.
   await log.info('source.enumeration_observed', {
-    sourceKey: stats.source, complete: complete ?? null, declaredTotal: declaredTotal ?? null,
-    fetched: jobs.length, truncated: truncated ?? null,
-    enumeration: enumeration ?? null,
-    evidenceStatus: enumeration ? 'RECORDED' : 'ADAPTER_ENUMERATION_EVIDENCE_NOT_IMPLEMENTED',
+    sourceKey: stats.source, captureBatchId, complete: complete ?? null, declaredTotal: declaredTotal ?? null,
+    fetched: jobs.length, truncated: truncated ?? null, termination: enumeration?.termination ?? null,
+    canonicalContractDeclared: (enumeration?.pageEvidence?.length ?? 0) > 0 && enumeration!.pageEvidence!.every(page => Object.hasOwn(page, 'canonicalIds')),
+    evidenceStatus: enumeration ? 'SEALED_IN_CAPTURE_MANIFEST' : 'ADAPTER_ENUMERATION_EVIDENCE_NOT_IMPLEMENTED',
   });
   if (rejectedRows?.length) {
     // Only rows the adapter could not READ count as collection errors; an explained
@@ -364,11 +317,19 @@ async function ingestApiSource(
   // Reviewed sector-perimeter exclusions (PostingScopeDecision OUT_OF_SCOPE): the posting is still
   // collected and archived, its publication is withheld and its representation withdrawn OUT_OF_SCOPE.
   const scopeExclusions = await loadScopeExclusions(prisma, stats.source);
-  for (const rawJob of jobs) {
+  /**
+   * LE DEVENIR DE CHAQUE SORTIE SCELLÉE. Les sorties sont ordonnées comme le manifeste (ordinal = position) ;
+   * tout ce que la boucle ne publie pas est nommé — retenue, refus d'écriture, filtre sectoriel — puis scellé
+   * dans le rapport de fin d'ingestion. Une interruption avant ce rapport laisse la collecte sans preuve
+   * d'absence : elle ne peut alors rien faire disparaître.
+   */
+  const fates: OutputFate[] = [];
+  for (const [ordinal, rawJob] of jobs.entries()) {
     const job = applyScopeExclusion(employerFromCertifiedScope(rawJob, sourceDef.company, scope), scopeExclusions);
     assertSourceRunning();
     if (job.publicationHold) {
       stats.held = (stats.held ?? 0) + 1;
+      fates.push({ ordinal, externalId: job.externalId, disposition: 'HELD', reason: job.publicationHold });
       if (!publicationDisposition(job.publicationHold)) {
         /**
          * UNE RETENUE EST UN DÉFAUT DE CETTE OFFRE-LÀ, PAS DE L'ÉNUMÉRATION DE LA SOURCE.
@@ -402,6 +363,7 @@ async function ingestApiSource(
      */
     if (isBoard && !classifySector({ company: employer, title: job.title }).inScope) {
       skippedOutOfSector++;
+      fates.push({ ordinal, externalId: job.externalId, disposition: 'SKIPPED_OUT_OF_SECTOR', reason: 'SECTOR_FILTER' });
       continue;
     }
 
@@ -438,41 +400,26 @@ async function ingestApiSource(
     } catch (error) {
       log.assertHealthy();
       stats.errors++;
+      // The sealed fate keeps only the error class: messages may carry URLs or parameters.
+      fates.push({ ordinal, externalId: job.externalId, disposition: 'WRITE_FAILED', reason: error instanceof Error && error.name ? error.name : 'UnknownError' });
       // Journal every failure, with its upstream posting ID. Console repeats
       // are aggregated centrally only AFTER durable recording.
       await log.error('job.write_failed', { sourceKey: stats.source, connectorId: source.kind, jobId: job.externalId, error });
     }
   }
 
+  assertSourceRunning();
+  // The immutable end of this admitted ingestion. A failure here is a run failure:
+  // the offers already written are kept, but this collection proves no absence.
+  const completion = await recordIngestionCompletion(prisma, captureBatchId, fates);
+  stats.completionReportHash = completion.reportHash;
   await log.info('source.ingest_completed', `[ingest] ${stats.source}: ${stats.france} FR / ${stats.inSector} in-sector / ${stats.fetched} fetched -> ` +
       `${stats.created} created, ${stats.merged} merged, ${stats.errors} errors` +
-      (skippedOutOfSector > 0 ? ` (${skippedOutOfSector} hors secteur écartées)` : ''));
+      (skippedOutOfSector > 0 ? ` (${skippedOutOfSector} hors secteur écartées)` : ''),
+    { captureBatchId, completionReportHash: completion.reportHash, published: completion.published, held: completion.held,
+      writeFailed: completion.writeFailed, skipped: completion.skipped });
   assertSourceRunning();
-  // Commit progress only after all accepted postings have been persisted.
-  if (rotating && stats.errors === 0) {
-    const next = await advanceCursor(
-      prisma,
-      stats.source,
-      startPage,
-      progress.reachedEnd === true,
-      progress.lastPageDone,
-    );
-    await log.info('source.cursor_advanced', `[ingest] ${stats.source}: rotating crawl page ${startPage} → next run resumes at ${next}`);
-  }
   return stats;
-}
-
-/**
- * Did this source produce enough to justify purging its older-generation rows?
- *
- * A source that wrote nothing (returned an empty array, or every write failed)
- * must NOT trigger a purge: that is exactly the silent-zero failure mode, and
- * purging on it would delete the source's whole footprint. Only a source that
- * actually wrote offers this run has re-stamped them at the current version, so
- * only then is it safe to remove what it no longer lists.
- */
-function producedOutput(stats: IngestStats): boolean {
-  return stats.created + stats.merged + stats.updated > 0;
 }
 
 export type IngestOptions = {
@@ -482,16 +429,6 @@ export type IngestOptions = {
    * always finishes before the platform kills it. Absent = run every source.
    */
   only?: string;
-  /**
-   * A soft wall-clock deadline (epoch ms) for a slow crawl. The giants —
-   * FashionJobs behind Cloudflare, Decathlon at crawl-delay 10s — cannot finish
-   * inside the orchestrator's hard timeout AND cannot be sped up without
-   * breaking robots.txt. So they stop THEMSELVES a little before it, keeping
-   * every page already fetched (the listing is date-sorted and the database
-   * accumulates across runs) — a graceful "continue next run" instead of the
-   * hard timeout that discards the in-flight work.
-   */
-  deadlineMs?: number;
   /**
    * Leave geocoding to the caller. The orchestrator runs sources in parallel
    * and the CLI geocodes once at the end; a pass after every source would
@@ -538,48 +475,6 @@ export async function runIngest(
   };
 
   /**
-   * Purge this source's older-generation rows — but ONLY if the run earned the
-   * right to attest absence.
-   *
-   * Historiquement la seule garde était « la source a-t-elle écrit quelque
-   * chose ? » (`producedOutput`), qui couvre le zéro silencieux mais PAS le run
-   * partiel : `lagardere-travel-retail` écrivait 20 offres en en déclarant 109,
-   * franchissait la garde, et la purge supprimait les 89 autres. La règle du
-   * 2026-09-08 (D51) tranche : seul un run complet et fiable peut faire
-   * disparaître ce qu'il n'a pas revu.
-   */
-  const purgeQuietly = async (stats: IngestStats) => {
-    if (!producedOutput(stats)) return;
-    assertSourceRunning();
-    const previous = await prisma.sourceRun.findFirst({
-      where: { sourceKey: stats.source, jobs: { gt: 0 } },
-      orderBy: { ranAt: 'desc' }, select: { jobs: true },
-    });
-    if (!isTrustedForAttestation({
-      status: previous ? 'OK' : 'NEW',
-      complete: stats.complete,
-      declaredTotal: stats.declaredTotal,
-      fetched: stats.fetched,
-      truncated: stats.truncated,
-      errors: stats.errors,
-    }) || (previous && stats.created + stats.merged + stats.updated < previous.jobs * 0.5)) {
-      await log.warn('source.purge_refused', `[ingest] ${stats.source}: purge REFUSÉE — run non fiable pour attester ` +
-          `(${stats.fetched} collectées${stats.declaredTotal ? ` sur ${stats.declaredTotal} déclarées` : ''}` +
-          `${stats.truncated ? ', tronqué' : ''}). Les offres non revues survivent.`);
-      return;
-    }
-    try {
-      const purged = await purgeStaleForSource(prisma, stats.source, PIPELINE_VERSION);
-      if (purged.jobsClosed > 0 || purged.sourcesDeactivated > 0) {
-        await log.info('source.purge_completed', `[ingest] ${stats.source}: generation cleanup closed ${purged.jobsClosed} stale jobs, ` +
-            `deactivated ${purged.sourcesDeactivated} stale sources`);
-      }
-    } catch (error) {
-      await log.error('source.purge_failed', `[ingest] ${stats.source} purge failed: ${briefError(error)}`, { error });
-    }
-  };
-
-  /**
    * API-backed catalogue feeds run FIRST — they are the bulk of the market and
    * the cheapest to obtain (one request per employer, not one per offer).
    *
@@ -603,9 +498,10 @@ export async function runIngest(
   for (const source of apiSources) {
     try {
       assertSourceRunning();
-      const stats = await log.withContext({ sourceKey: source.key, connectorId: source.kind }, () => ingestApiSource(prisma, source, options.deadlineMs, trust, occupationTaxonomy));
+      // No closure happens here: the refresh reads the sealed proof of this admitted
+      // collection and decides absence under its own locks and manifest.
+      const stats = await log.withContext({ sourceKey: source.key, connectorId: source.kind }, () => ingestApiSource(prisma, source, trust, occupationTaxonomy));
       results.push(stats);
-      await log.withContext({ sourceKey: source.key, connectorId: source.kind }, () => purgeQuietly(stats));
       await geocodeQuietly();
     } catch (error) {
       log.assertHealthy();

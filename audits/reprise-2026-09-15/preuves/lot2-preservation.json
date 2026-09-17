@@ -1,0 +1,13 @@
+{
+  "originalFiles": 86,
+  "unchangedOriginalFiles": 85,
+  "modifiedOriginalFiles": [
+    {
+      "repo": "aggregator",
+      "path": "apps/aggregator/package.json",
+      "change": "Vitest 5.0.1 and official S3 SDK 3.1132.0; original scripts and other fields retained"
+    }
+  ],
+  "otherRepositories": "unchanged",
+  "localCheckpointOnly": true
+}

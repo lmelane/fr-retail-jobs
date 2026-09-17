@@ -8,15 +8,18 @@ import { PIPELINE_VERSION } from '../pipeline/version.js';
 import { smartRecruitersEmployer, type SmartRecruitersPosting } from '../ats/adapters/smartrecruiters.js';
 import { resolveCompany } from '../normalize/company.js';
 import { leverEmployer, type LeverJob } from '../ats/adapters/lever.js';
+import { SOURCE_PRIORITY, type SourceTier } from '@catwalks/db/publications';
 
 export type Entity = 'Job' | 'JobSource' | 'Company' | 'Source';
+const scalarFields = new Map(Prisma.dmmf.datamodel.models.map(model => [model.name,
+  new Set(model.fields.filter(field => field.kind !== 'object' && !field.isId).map(field => field.name))]));
 export type Row = Record<string, unknown>;
 export type Operation = { entity: Entity; id: string; before: Row | null; patch: Row; reason: string; evidence?: Row };
 export type RepairPlan = {
   version: 1; batchId: string; finding: string; createdAt: string;
   sourceKeys: string[]; companyIds: string[]; operations: Operation[];
   reviewDocument?: { statement: string; evidence: Array<{ url: string; artifactText: string; sha256: string; explanation: string }>; reviewedBy: string; reviewedAt: string };
-  evidence: Row; invariants: ('oracle' | 'lifecycle' | 'smcp' | 'excluded-identities' | 'source-owners' | 'france-filter')[];
+  evidence: Row; invariants: ('oracle' | 'lifecycle' | 'smcp' | 'excluded-identities' | 'source-owners')[];
   excludedSourceKeys?: string[];
   /** `postingOwners`: reviewed per-posting employers (externalId → canonical key) on a shared portal; every other posting belongs to the owner. */
   ownerRules?: { sourceKey: string; name: string; canonicalKey?: string; departmentMap?: Record<string, string>; includeInactive?: boolean; postingOwners?: Record<string, string> }[];
@@ -61,16 +64,6 @@ async function write(tx: Prisma.TransactionClient, op: Operation) {
 
 export async function verifyRepair(prisma: Prisma.TransactionClient, invariants: RepairPlan['invariants'], excludedSourceKeys = ['via', 'ashoka'], ownerRules: RepairPlan['ownerRules'] = []) {
   const result: Record<string, number> = {};
-  if (invariants.includes('france-filter')) {
-    // Check the whole active population, including rows outside the repair.
-    // Unknown geography is not converted into a country assertion.
-    const bad = await prisma.job.findFirst({ where: { isActive: true, OR: [
-      { countryCode: 'FR', isFrance: false },
-      { countryCode: { not: null, notIn: ['FR'] }, isFrance: true },
-    ] }, select: { id: true, countryCode: true, isFrance: true } });
-    if (bad) throw new Error(`France filter invariant failed: ${bad.id} (${bad.countryCode}/${bad.isFrance})`);
-    result.franceFilterContradictions = 0;
-  }
   if (invariants.includes('source-owners')) {
     if (!ownerRules.length) throw new Error('Source owner invariant needs reviewed rules');
     for (const rule of ownerRules) {
@@ -78,6 +71,7 @@ export async function verifyRepair(prisma: Prisma.TransactionClient, invariants:
       for (const source of sources) {
         const name = leverEmployer((source.raw ?? {}) as LeverJob, rule.departmentMap) ?? rule.name;
         const expected = rule.postingOwners?.[source.externalId] ?? rule.canonicalKey ?? resolveCompany(name).companyId;
+        if (!source.job) continue; // Only attached groups have a current employer.
         if (source.job.company.canonicalKey !== expected) throw new Error(`Source owner invariant failed: ${source.id}`);
       }
     }
@@ -87,6 +81,7 @@ export async function verifyRepair(prisma: Prisma.TransactionClient, invariants:
     const sources = await prisma.jobSource.findMany({ where: { sourceKey: 'sandro', isActive: true, job: { isActive: true } }, select: { id: true, raw: true, job: { select: { company: { select: { canonicalKey: true } } } } } });
     for (const source of sources) {
       const brand = smartRecruitersEmployer((source.raw ?? {}) as SmartRecruitersPosting, 'Brands') ?? 'SMCP';
+      if (!source.job) throw new Error('Active employer invariant lost its Job');
       if (source.job.company.canonicalKey !== resolveCompany(brand).companyId) throw new Error(`SMCP brand invariant failed: ${source.id}`);
     }
     result.smcpBrandContradictions = 0;
@@ -128,6 +123,17 @@ export async function applyRepairPlan(prisma: PrismaClient, plan: RepairPlan, ex
   if (hash !== expectedHash) throw new Error('Plan hash mismatch');
   if (plan.version !== 1 || !plan.operations.length) throw new Error('Empty or unsupported plan');
   if (new Set(plan.operations.map(o => `${o.entity}:${o.id}`)).size !== plan.operations.length) throw new Error('Duplicate operation');
+  for (const op of plan.operations) {
+    if (Object.keys(op.patch).some(key => !scalarFields.get(op.entity)?.has(key))) {
+      throw new Error('Nested or identity repair mutations are forbidden');
+    }
+    if (op.entity === 'JobSource' && (Object.keys(op.patch).some(key => !['sourceTier', 'isActive'].includes(key)) ||
+      'isActive' in op.patch && op.patch.isActive !== false ||
+      'sourceTier' in op.patch && !SOURCE_PRIORITY.includes(op.patch.sourceTier as SourceTier)) ||
+      op.entity === 'Job' && 'mergedIntoId' in op.patch) {
+      throw new Error('Publication content and membership require native ingestion or publication-groups');
+    }
+  }
   return prisma.$transaction(async tx => {
     await tx.$queryRaw`SELECT 1 FROM pg_advisory_xact_lock(hashtextextended(${`repair:${plan.batchId}`}, 0))`;
     for (const key of [...new Set(plan.sourceKeys)].sort()) await lockSourceWrites(tx, key, true);
@@ -152,12 +158,12 @@ export async function applyRepairPlan(prisma: PrismaClient, plan: RepairPlan, ex
     for(const op of plan.operations){
       if(op.entity==='Job' && op.before?.occupationReleaseId &&
         ['title','department','rawTitle'].some(k=>k in op.patch && digest(op.patch[k])!==digest(op.before![k])) &&
-        !('occupationEvidence' in op.patch))throw new Error(`Occupation projection missing from reviewed plan: ${op.id}; regenerate the plan with canonicalJobContent`);
+        !('occupationEvidence' in op.patch))throw new Error(`Occupation projection missing from reviewed plan: ${op.id}; regenerate the plan with publicationJobContent`);
     }
     // Thousands of identity-only corrections share this exact text-field shape.
     // Batch them after creating their target Companies; all before-images were
     // already checked and the entire transaction still rolls back on failure.
-    const identityOnly = plan.operations.filter(o => o.entity === 'Job' && Object.keys(o.patch).sort().join(',') === 'clusterKey,companyId,fingerprint' && Object.values(o.patch).every(v => typeof v === 'string'));
+    const identityOnly = plan.operations.filter(o => o.entity === 'Job' && Object.keys(o.patch).sort().join(',') === 'clusterKey,companyId' && Object.values(o.patch).every(v => typeof v === 'string'));
     const identityIds = new Set(identityOnly.map(o => o.id));
     if (plan.reviewDocument) {
       const doc = plan.reviewDocument;
@@ -171,15 +177,14 @@ export async function applyRepairPlan(prisma: PrismaClient, plan: RepairPlan, ex
     for (const op of plan.operations) if (op.entity !== 'Job' || !identityIds.has(op.id)) await write(tx, op);
     for (let offset = 0; offset < identityOnly.length; offset += 500) {
       const updates = JSON.stringify(identityOnly.slice(offset, offset + 500).map(o => ({ id: o.id, ...o.patch })));
-      const n = await tx.$executeRaw`UPDATE "Job" j SET "companyId"=v."companyId", "clusterKey"=v."clusterKey", fingerprint=v.fingerprint, "updatedAt"=NOW()
-        FROM jsonb_to_recordset(${updates}::jsonb) AS v(id text, "companyId" text, "clusterKey" text, fingerprint text) WHERE j.id=v.id`;
+      const n = await tx.$executeRaw`UPDATE "Job" j SET "companyId"=v."companyId", "clusterKey"=v."clusterKey", "updatedAt"=NOW()
+        FROM jsonb_to_recordset(${updates}::jsonb) AS v(id text, "companyId" text, "clusterKey" text) WHERE j.id=v.id`;
       if (n !== Math.min(500, identityOnly.length - offset)) throw new Error('Identity correction target disappeared');
     }
     for (const observation of plan.observations ?? []) {
       const contentHash = createHash('sha256').update(JSON.stringify(observation.raw)).digest('hex');
-      await tx.sourceObservation.upsert({
-        where: { sourceKey_externalId_contentHash: { sourceKey: observation.sourceKey, externalId: observation.externalId, contentHash } },
-        create: { ...observation, observedAt: new Date(observation.observedAt), contentHash, pipelineVersion: PIPELINE_VERSION }, update: {},
+      await tx.sourceObservation.createMany({
+        data: [{ ...observation, observedAt: new Date(observation.observedAt), contentHash, pipelineVersion: PIPELINE_VERSION }], skipDuplicates: true,
       });
     }
     const records: Prisma.DataCorrectionCreateManyInput[] = [];

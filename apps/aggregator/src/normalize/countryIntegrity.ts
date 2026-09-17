@@ -49,11 +49,6 @@ const AMBIGUOUS_CODES: ReadonlySet<string> = new Set([
   'NL', 'PE', 'SK', 'NU',
 ]);
 
-/** Le verdict est-il dans la liste positive ? Utilisé par les invariants et les tests. */
-export function isProvingVerdict(v: string | null | undefined): v is ProvingVerdict {
-  return v != null && (COUNTRY_INTEGRITY_PROVING as readonly string[]).includes(v);
-}
-
 /**
  * Le verdict à PERSISTER pour cette résolution géographique.
  *

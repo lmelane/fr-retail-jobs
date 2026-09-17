@@ -8,7 +8,7 @@ vi.mock('../../lib/http.js', async importOriginal => ({
 }));
 
 import { fetchText, fetchWithRetry } from '../../lib/http.js';
-import { fetchJobFromPage, fetchSitemapUrls, normalizeJobPosting, richestDescription } from './jsonLdSitemap.js';
+import { extractJobPostings, fetchSitemapUrls, normalizeJobPosting, richestDescription } from './jsonLdSitemap.js';
 import { parseSitemapLocations } from './jsonLdSitemap.js';
 
 const mockFetch = vi.mocked(fetchText);
@@ -18,6 +18,22 @@ it('refuses a compressed sitemap whose decompressed body exceeds the cap', async
   const compressed = gzipSync(Buffer.alloc(20_000_001, 65));
   vi.mocked(fetchWithRetry).mockResolvedValueOnce(new Response(compressed));
   await expect(fetchSitemapUrls('https://example.com/sitemap.xml.gz')).rejects.toThrow();
+});
+
+/**
+ * Le plan de site est demandé sous l'identité du robot, celle que `lib/http` pose quand aucun agent n'est imposé :
+ * un agent de navigateur emprunté rendait la requête étrangère au périmètre d'accès revu (vagues F3b, oska et
+ * bevilles refusées sur la seule requête du sitemap).
+ */
+it('requests a sitemap without imposing a browser user agent, plain or compressed', async () => {
+  mockFetch.mockResolvedValueOnce('<urlset><url><loc>https://example.com/jobs/1</loc></url></urlset>');
+  await expect(fetchSitemapUrls('https://example.com/sitemap.xml')).resolves.toEqual(['https://example.com/jobs/1']);
+  const plainInit = mockFetch.mock.calls[0][1] as RequestInit | undefined;
+  expect(new Headers(plainInit?.headers).get('user-agent')).toBeNull();
+  vi.mocked(fetchWithRetry).mockResolvedValueOnce(new Response(gzipSync('<urlset><url><loc>https://example.com/jobs/2</loc></url></urlset>')));
+  await expect(fetchSitemapUrls('https://example.com/sitemap.xml.gz')).resolves.toEqual(['https://example.com/jobs/2']);
+  const gzInit = vi.mocked(fetchWithRetry).mock.calls.at(-1)?.[1] as RequestInit | undefined;
+  expect(new Headers(gzInit?.headers).get('user-agent')).toBeNull();
 });
 
 describe('normalizeJobPosting — lieu', () => {
@@ -51,6 +67,33 @@ describe('normalizeJobPosting — lieu', () => {
   });
 });
 
+describe('native JSON-LD employer', () => {
+  it('preserves the explicit legal name and its RAW provenance independently of publisher', () => {
+    const raw = { title: 'Client advisor', hiringOrganization: { name: '  Retail France S.A.R.L.  ' }, publisher: { name: 'Job board' } };
+    const before = JSON.stringify(raw);
+    const job = normalizeJobPosting(raw, 'https://example.com/job/1')!;
+    expect(job.company).toBe('Retail France S.A.R.L.');
+    expect(job.employerEvidence).toEqual({ rawName: '  Retail France S.A.R.L.  ', path: 'hiringOrganization.name', rule: 'HIRING_ORGANIZATION_LABEL' });
+    expect(job.raw).toBe(raw);
+    expect(JSON.stringify(raw)).toBe(before);
+    expect(job.publicationHold).toBeUndefined();
+  });
+
+  it.each([{}, { name: '' }, { name: '-' }, { name: 42 }, 'Publisher label', [{ name: 'House A' }, { name: 'House B' }]])('holds unresolved declared organizations without substituting a publisher (%j)', hiringOrganization => {
+    const job = normalizeJobPosting({ title: 'Advisor', hiringOrganization, publisher: { name: 'Publisher' } }, 'https://example.com/job/1')!;
+    expect(job.company).toBeUndefined();
+    expect(job.employerEvidence).toBeUndefined();
+    expect(job.publicationHold).toBe('JSONLD_EMPLOYER_NOT_RESOLVED');
+  });
+
+  it('keeps an absent organization absent, without deriving it from publisher', () => {
+    const job = normalizeJobPosting({ title: 'Advisor', publisher: { name: 'Publisher' } }, 'https://example.com/job/1')!;
+    expect(job.company).toBeUndefined();
+    expect(job.employerEvidence).toBeUndefined();
+    expect(job.publicationHold).toBeUndefined();
+  });
+});
+
 describe('fetchSitemapUrls — index mal déclaré', () => {
   /**
    * Selfridges (2026-09-06) : sitemap.xml liste 5 sitemaps enfants mais les
@@ -77,17 +120,24 @@ describe('fetchSitemapUrls — index mal déclaré', () => {
   });
 });
 
-describe('fetchJobFromPage — la description la plus riche de la page (g6, 2026-09-06)', () => {
+describe('la description la plus riche de la page (g6, 2026-09-06)', () => {
   const fixture = (name: string) =>
     readFileSync(new URL(`../../ats/adapters/__fixtures__/${name}`, import.meta.url), 'utf8');
+  /** Page → premier JobPosting → description la plus riche : les trois briques que le générique enchaîne. */
+  const offreDePage = (html: string, url: string) => {
+    const [posting] = extractJobPostings(html);
+    const job = posting ? normalizeJobPosting(posting, url) : null;
+    if (!job) return null;
+    const description = richestDescription(html, job.description);
+    return description === job.description ? job : { ...job, description };
+  };
 
   /**
    * L'Oréal (1 716 offres du sitemap, 0 % de description) : le JSON-LD ne
    * porte que titre + datePosted ; le texte est en microdata sur la même page.
    */
-  it('L’Oréal : replie sur le bloc microdata quand le JSON-LD est vide', async () => {
-    mockFetch.mockResolvedValueOnce(fixture('g6-loreal-jobdetail.html'));
-    const job = await fetchJobFromPage('https://careers.loreal.com/en_US/jobs/JobDetail/x/253106');
+  it('L’Oréal : replie sur le bloc microdata quand le JSON-LD est vide', () => {
+    const job = offreDePage(fixture('g6-loreal-jobdetail.html'), 'https://careers.loreal.com/en_US/jobs/JobDetail/x/253106');
     expect(job?.title).toBe('_SYNERGIE - Skincare expert');
     expect(job?.description!.length).toBeGreaterThan(1500);
     expect(job?.description).toContain('\n');
@@ -98,13 +148,14 @@ describe('fetchJobFromPage — la description la plus riche de la page (g6, 2026
    * Kering (1 427 offres du sitemap, 12 % de description) : le JSON-LD porte
    * le portrait de la Maison (~170 caractères) ; l'offre est dans __NEXT_DATA__.
    */
-  it('Kering : prend le texte du poste dans __NEXT_DATA__, pas le portrait de la Maison', async () => {
-    mockFetch.mockResolvedValueOnce(fixture('g6-kering-jobdetail.html'));
-    const job = await fetchJobFromPage('https://www.kering.com/fr/talent/offres-d-emploi/europe/x/');
+  it('Kering : prend le texte du poste dans __NEXT_DATA__, pas le portrait de la Maison', () => {
+    const job = offreDePage(fixture('g6-kering-jobdetail.html'), 'https://www.kering.com/fr/talent/offres-d-emploi/europe/x/');
     expect(job?.description!.length).toBeGreaterThan(1500);
     expect(job?.description).toContain('ROLE');
     expect(job?.description).toContain('• ');
     expect(job?.description).not.toMatch(/^Fondée en 1961/);
+    expect(job?.company).toBe('Kering');
+    expect(job?.employerEvidence).toEqual({ rawName: 'Kering', path: 'hiringOrganization.name', rule: 'HIRING_ORGANIZATION_LABEL' });
   });
 
   it('un JSON-LD complet n’est pas évincé par un bloc microdata étranger à l’offre', () => {

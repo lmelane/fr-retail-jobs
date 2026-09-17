@@ -1,0 +1,39 @@
+{
+  "readOnly": true,
+  "productionWrites": false,
+  "plans": 263,
+  "originalGroups": 4823,
+  "resultingGroups": 4823,
+  "publications": 4846,
+  "redirects": 0,
+  "lifecycle": {
+    "KEEP": 4817,
+    "CLOSE": 6
+  },
+  "fieldChanges": {
+    "clusterKey": 4823,
+    "fingerprint": 4823,
+    "isActive": 6,
+    "countryIntegrity": 22,
+    "inseeCode": 19,
+    "latitude": 19,
+    "longitude": 19,
+    "salaryMin": 17,
+    "description": 4,
+    "employmentEvidence": 5,
+    "workTime": 1,
+    "canonicalSourceKey": 1,
+    "canonicalExternalId": 1,
+    "occupationEvidence": 5,
+    "rawTitle": 5,
+    "postalCode": 5
+  },
+  "previouslyRebuiltFieldChanges": {
+    "clusterKey": 4800,
+    "fingerprint": 4800,
+    "isActive": 6
+  },
+  "splitGroups": 0,
+  "newGroups": 0,
+  "elapsedMs": 29886
+}

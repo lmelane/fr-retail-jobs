@@ -1,0 +1,237 @@
+{
+  "mutations": [
+    {
+      "name": "drop-union",
+      "file": "apps/api/lib/job-search-query.ts",
+      "workspace": "api",
+      "witness": [
+        "lib/__tests__/origines-directes.test.ts"
+      ],
+      "pattern": "rend ses deux origines",
+      "mustFail": "rend ses deux origines",
+      "rejectedByRegression": true,
+      "restoredSha256": "bd26a27f11f3fb3f32e783c2a274b4e56a9b4665759f17faad873eccba7afa09"
+    },
+    {
+      "name": "direct-not-first",
+      "file": "apps/api/lib/job-search-query.ts",
+      "workspace": "api",
+      "witness": [
+        "lib/__tests__/origines-directes.test.ts"
+      ],
+      "pattern": "rend ses deux origines",
+      "mustFail": "rend ses deux origines",
+      "rejectedByRegression": true,
+      "restoredSha256": "bd26a27f11f3fb3f32e783c2a274b4e56a9b4665759f17faad873eccba7afa09"
+    },
+    {
+      "name": "direct-without-country-in-market",
+      "file": "apps/api/lib/job-search-query.ts",
+      "workspace": "api",
+      "witness": [
+        "lib/__tests__/origines-directes.test.ts"
+      ],
+      "pattern": "retir\u00e9e, \u00e9chue ou sans pays",
+      "mustFail": "retir\u00e9e, \u00e9chue ou sans pays",
+      "rejectedByRegression": true,
+      "restoredSha256": "bd26a27f11f3fb3f32e783c2a274b4e56a9b4665759f17faad873eccba7afa09"
+    },
+    {
+      "name": "serve-retired-direct",
+      "file": "apps/api/lib/direct-offers.ts",
+      "workspace": "api",
+      "witness": [
+        "lib/__tests__/origines-directes.test.ts"
+      ],
+      "pattern": "retir\u00e9e, \u00e9chue ou sans pays",
+      "mustFail": "retir\u00e9e, \u00e9chue ou sans pays",
+      "rejectedByRegression": true,
+      "restoredSha256": "97ed0dea25be1ee3da31daceb8c75a29f93f88314cf5ae77713d0ea44673ff63"
+    },
+    {
+      "name": "serve-expired-direct",
+      "file": "apps/api/lib/direct-offers.ts",
+      "workspace": "api",
+      "witness": [
+        "lib/__tests__/origines-directes.test.ts"
+      ],
+      "pattern": "retir\u00e9e, \u00e9chue ou sans pays",
+      "mustFail": "retir\u00e9e, \u00e9chue ou sans pays",
+      "rejectedByRegression": true,
+      "restoredSha256": "97ed0dea25be1ee3da31daceb8c75a29f93f88314cf5ae77713d0ea44673ff63"
+    },
+    {
+      "name": "candidature-deduced-from-url",
+      "file": "apps/api/lib/direct-offers.ts",
+      "workspace": "api",
+      "witness": [
+        "lib/__tests__/origines-directes.test.ts"
+      ],
+      "pattern": "chaque ligne dit son action de candidature",
+      "mustFail": "chaque ligne dit son action de candidature",
+      "rejectedByRegression": true,
+      "restoredSha256": "97ed0dea25be1ee3da31daceb8c75a29f93f88314cf5ae77713d0ea44673ff63"
+    },
+    {
+      "name": "exclude-unknowns-both-origins",
+      "file": "apps/api/lib/job-search-query.ts",
+      "workspace": "api",
+      "witness": [
+        "lib/__tests__/origines-directes.test.ts"
+      ],
+      "pattern": "un contrat s\u00e9lectionn\u00e9 garde les non renseign\u00e9es",
+      "mustFail": "un contrat s\u00e9lectionn\u00e9 garde les non renseign\u00e9es",
+      "rejectedByRegression": true,
+      "restoredSha256": "bd26a27f11f3fb3f32e783c2a274b4e56a9b4665759f17faad873eccba7afa09"
+    },
+    {
+      "name": "status-ignores-direct-space",
+      "file": "apps/api/lib/jobs.ts",
+      "workspace": "api",
+      "witness": [
+        "lib/__tests__/origines-directes.test.ts"
+      ],
+      "pattern": "la fiche et le statut connaissent",
+      "mustFail": "la fiche et le statut connaissent",
+      "rejectedByRegression": true,
+      "restoredSha256": "25e231a17d207e2820b746cb2653ee8fbd1d50d386e09abd044b758888a4a9a4"
+    },
+    {
+      "name": "aside-ignores-direct",
+      "file": "apps/api/lib/jobs.ts",
+      "workspace": "api",
+      "witness": [
+        "lib/__tests__/origines-directes.test.ts"
+      ],
+      "pattern": "les similaires d\u2019une offre directe",
+      "mustFail": "les similaires d\u2019une offre directe",
+      "rejectedByRegression": true,
+      "restoredSha256": "25e231a17d207e2820b746cb2653ee8fbd1d50d386e09abd044b758888a4a9a4"
+    },
+    {
+      "name": "title-suggestions-ignore-direct",
+      "file": "apps/api/lib/suggestions.ts",
+      "workspace": "api",
+      "witness": [
+        "lib/__tests__/origines-directes.test.ts"
+      ],
+      "pattern": "les suggestions couvrent les deux origines",
+      "mustFail": "les suggestions couvrent les deux origines",
+      "rejectedByRegression": true,
+      "restoredSha256": "e079bdf96faabbdc1be9503b6d2dbc09f57af9dbb8ead0de7751632a66cad39e"
+    },
+    {
+      "name": "marches-ignore-direct",
+      "file": "apps/api/lib/marches-catalogue.ts",
+      "workspace": "api",
+      "witness": [
+        "lib/__tests__/origines-directes.test.ts"
+      ],
+      "pattern": "le contrat des march\u00e9s compte",
+      "mustFail": "le contrat des march\u00e9s compte",
+      "rejectedByRegression": true,
+      "restoredSha256": "f55a9f4420b64f6207130cbf244f31a36e8451391c14b69619045624e41942df"
+    },
+    {
+      "name": "directory-double-row",
+      "file": "apps/api/lib/companies.ts",
+      "workspace": "api",
+      "witness": [
+        "lib/__tests__/origines-directes.test.ts"
+      ],
+      "pattern": "l\u2019annuaire : une Maison connue fusionne",
+      "mustFail": "l\u2019annuaire : une Maison connue fusionne",
+      "rejectedByRegression": true,
+      "restoredSha256": "2c094bbb207c00b9e93fc26a133959c01831f01a4bc130ac7e41b38e3f9e65dd"
+    },
+    {
+      "name": "stale-version-applied",
+      "file": "apps/aggregator/src/direct/feed.ts",
+      "workspace": "aggregator",
+      "witness": [
+        "src/direct/feed.test.ts"
+      ],
+      "pattern": null,
+      "mustFail": "une version plus ancienne arriv\u00e9e apr\u00e8s",
+      "rejectedByRegression": true,
+      "restoredSha256": "a1afcb259d3305f3a5f58fe87f4bd69db81009b468d5caab2e5679f3a0eb3576"
+    },
+    {
+      "name": "retire-ignored",
+      "file": "apps/aggregator/src/direct/feed.ts",
+      "workspace": "aggregator",
+      "witness": [
+        "src/direct/feed.test.ts"
+      ],
+      "pattern": null,
+      "mustFail": "RETIRE rend l\u2019offre in\u00e9ligible",
+      "rejectedByRegression": true,
+      "restoredSha256": "a1afcb259d3305f3a5f58fe87f4bd69db81009b468d5caab2e5679f3a0eb3576"
+    },
+    {
+      "name": "replay-not-idempotent",
+      "file": "apps/aggregator/src/direct/feed.ts",
+      "workspace": "aggregator",
+      "witness": [
+        "src/direct/feed.test.ts"
+      ],
+      "pattern": null,
+      "mustFail": "rejouer depuis z\u00e9ro",
+      "rejectedByRegression": true,
+      "restoredSha256": "a1afcb259d3305f3a5f58fe87f4bd69db81009b468d5caab2e5679f3a0eb3576"
+    },
+    {
+      "name": "refusal-not-recorded",
+      "file": "apps/aggregator/src/direct/feed.ts",
+      "workspace": "aggregator",
+      "witness": [
+        "src/direct/feed.test.ts"
+      ],
+      "pattern": null,
+      "mustFail": "un contrat d\u2019une autre version refuse tout le flux",
+      "rejectedByRegression": true,
+      "restoredSha256": "a1afcb259d3305f3a5f58fe87f4bd69db81009b468d5caab2e5679f3a0eb3576"
+    },
+    {
+      "name": "contract-version-unchecked",
+      "file": "apps/aggregator/src/direct/contrat.ts",
+      "workspace": "aggregator",
+      "witness": [
+        "src/direct/contrat.test.ts"
+      ],
+      "pattern": "refuse une version de contrat inconnue",
+      "mustFail": "refuse une version de contrat inconnue",
+      "rejectedByRegression": true,
+      "restoredSha256": "98b5a71bb338ac3f70faa617c7fc5d1a5f6e91a435475a1f0623b97ecb671548"
+    },
+    {
+      "name": "luxe-becomes-sector",
+      "file": "apps/aggregator/src/direct/vocabulaire.ts",
+      "workspace": "aggregator",
+      "witness": [
+        "src/direct/vocabulaire.test.ts"
+      ],
+      "pattern": "Luxe",
+      "mustFail": "Luxe",
+      "rejectedByRegression": true,
+      "restoredSha256": "c214ee09ba5d0f053e51199af8df5f54d4f7d13e1c3e7521dc61203bf3f7c972"
+    }
+  ],
+  "restoredTests": {
+    "api": 30,
+    "aggregator": 28
+  },
+  "restoredSuites": {
+    "api": [
+      "lib/__tests__/origines-directes.test.ts",
+      "lib/__tests__/perimetre-marche.test.ts"
+    ],
+    "aggregator": [
+      "src/direct/feed.test.ts",
+      "src/direct/contrat.test.ts",
+      "src/direct/vocabulaire.test.ts",
+      "src/direct/projection.test.ts"
+    ]
+  },
+  "productionTouched": false
+}

@@ -6,7 +6,7 @@ import { persistenceContract, type CycleSets } from './persistenceContract.js';
  * « sortie de l'adaptateur ↔ preuve », celui-là « preuve ↔ ce qui existe réellement en base ».
  */
 const sets = (over: Partial<CycleSets> = {}): CycleSets => ({
-  sourceKey: 's', runId: 'run-1',
+  sourceKey: 's', captureBatchId: 'batch-1',
   canonicalObservedIds: ['a', 'b'],
   persistedJobSourceExternalIds: ['a', 'b'],
   heldIds: [], writeFailedIds: [], rejectedIds: [], collectionErrorIds: [],
@@ -25,6 +25,7 @@ describe('persistenceContract — l\'égalité des ensembles, par identifiant', 
     ['writeFailedIds', 'échec d\'écriture'],
     ['rejectedIds', 'rejet'],
     ['collectionErrorIds', 'erreur de collecte'],
+    ['skippedIds', 'filtre sectoriel'],
   ])('une offre observée mais non persistée est couverte par sa disposition (%s)', (field) => {
     const r = persistenceContract(sets({
       canonicalObservedIds: ['a', 'b', 'c'], persistedJobSourceExternalIds: ['a', 'b'], [field]: ['c'],

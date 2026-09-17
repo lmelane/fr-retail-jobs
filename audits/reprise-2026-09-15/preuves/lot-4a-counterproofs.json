@@ -1,0 +1,54 @@
+{
+  "mutations": [
+    {
+      "name": "unqualified-application",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "f167bfe7c021f695cb937917bd5564cc94861711a5af4a64f971508c1911da38"
+    },
+    {
+      "name": "uncorroborated-raw",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "f167bfe7c021f695cb937917bd5564cc94861711a5af4a64f971508c1911da38"
+    },
+    {
+      "name": "same-feed-different-ids",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "f167bfe7c021f695cb937917bd5564cc94861711a5af4a64f971508c1911da38"
+    },
+    {
+      "name": "unproven-group-member",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "f167bfe7c021f695cb937917bd5564cc94861711a5af4a64f971508c1911da38"
+    },
+    {
+      "name": "changed-group-identity",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "a5f370a29261fddcd01c0156fb9ffeca2ac8ab8b66695cd1a542623b274e5455"
+    },
+    {
+      "name": "missing-group-journal",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "a5f370a29261fddcd01c0156fb9ffeca2ac8ab8b66695cd1a542623b274e5455"
+    },
+    {
+      "name": "changed-captured-input",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "8ab4ff2e58079251f43d101ed4bb4e3ed23eaf45daf7c9e8e5b1ea65334b4030"
+    },
+    {
+      "name": "missing-manual-member-witness",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "fe32cb6e62c2367d73bfd1f3d2c5e8ce57904ff7d02e2f25f4635bc64023e25c"
+    }
+  ],
+  "restoredAggregatorTests": "passed",
+  "restoredApiTests": "passed"
+}

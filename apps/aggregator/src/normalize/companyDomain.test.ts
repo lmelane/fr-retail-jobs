@@ -5,7 +5,7 @@ import {
   domainFromEmployerSources,
   hostFromOfficialWebsite,
   nameMatchesDomain,
-  pickWikidataEntity,
+  rankWikidataEntities,
   resolveCompanyDomain,
   resolveViaWikidata,
   rootDomainOf,
@@ -191,7 +191,10 @@ describe('wikidataSearchTerms — le nom tel qu’une encyclopédie le connaît'
   });
 });
 
-describe('pickWikidataEntity — l’entité qui est la Maison, pas son homonyme', () => {
+/** Le premier du classement, ou null : ce que faisait `pickWikidataEntity` (retiré au lot 12). */
+const pickWikidataEntity = (entities: Parameters<typeof rankWikidataEntities>[0], term: string) => rankWikidataEntities(entities, term)[0] ?? null;
+
+describe('classement Wikidata — l’entité qui est la Maison, pas son homonyme', () => {
   it('Dior : la maison de mode, pas le nom de famille ni la chanson', () => {
     const picked = pickWikidataEntity(fixture<WikidataSearchResponse>('search-dior-fr').search, 'Dior');
     expect(picked?.id).toBe('Q542767');

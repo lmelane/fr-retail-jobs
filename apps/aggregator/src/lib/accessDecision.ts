@@ -63,7 +63,7 @@ export type AccessDecisionRecord = {
 
 /** Une surface d'offres publiques, par opposition aux données privées ou internes. */
 export function isPublicJobSurface(surface: AccessSurface): boolean {
-  return surface !== 'PRIVATE_OR_INTERNAL';
+  return ACCESS_SURFACES.includes(surface) && surface !== 'PRIVATE_OR_INTERNAL';
 }
 
 /**

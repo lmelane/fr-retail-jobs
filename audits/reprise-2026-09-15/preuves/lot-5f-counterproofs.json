@@ -1,0 +1,71 @@
+{
+  "mutations": [
+    {
+      "name": "expose-private-exception",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "f81820f4e02ec0d3ec5b2f79808a88482198f4682fe180deafc47d9b4f6e4bd5"
+    },
+    {
+      "name": "register-preview-writes",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "5f5d8fc44343d885d84cf64855ea08b4671262a7e1868aa1c5f8cba96c746d23"
+    },
+    {
+      "name": "identity-preview-writes",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "5f5d8fc44343d885d84cf64855ea08b4671262a7e1868aa1c5f8cba96c746d23"
+    },
+    {
+      "name": "technical-rejection-exits-success",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "5f5d8fc44343d885d84cf64855ea08b4671262a7e1868aa1c5f8cba96c746d23"
+    },
+    {
+      "name": "ignore-explicit-revision",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "1080f08f33bf3013033f81e24899f33290b0e612ada3b693441b19f429c316e1"
+    },
+    {
+      "name": "rewrite-active-on-retry",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "1080f08f33bf3013033f81e24899f33290b0e612ada3b693441b19f429c316e1"
+    },
+    {
+      "name": "allow-unknown-options",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "ad39f6fb8734fcfe5baed9e94d7c465a61c9e6865b60ed7e74115d95587516e0"
+    },
+    {
+      "name": "hide-database-outage",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "120b2a0217342a4a860367f36d4deb2906024f27d02ddc95d938c167b6a70ace"
+    },
+    {
+      "name": "follow-output-symlink",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "44248f26144bf4bcf8423d22f12979e94b76d0062f71842a09557f7e67a7ac1a"
+    },
+    {
+      "name": "block-on-discovery-hints",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "9232cbebbb09f70fc528a59def5ff7c7b368fc42e4a8e858f2bf53d093515720"
+    },
+    {
+      "name": "accept-fabricated-candidate-evidence",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "ac341206b69a81fcbab7646e882f12fabad37714c9d536e8de2174c9532956eb"
+    }
+  ],
+  "restoredTests": "passed"
+}

@@ -1,0 +1,98 @@
+{
+  "version": "posting-identity-20260915-v1",
+  "existingMultiSourceGroups": 1888,
+  "existingGroupsWithPairwiseProof": 455,
+  "existingGroupsRequiringReview": 1433,
+  "representationsInUnprovenGroups": 2874,
+  "qualifiedApplicationsAcrossSources": 461,
+  "applicationsWithoutCompleteRawIdentityProof": 2,
+  "qualifiedApplicationsWithSameFeedIdConflict": 0,
+  "qualifiedApplicationAcrossSeparateJobs": 4,
+  "measuredFrom": {
+    "representations": 85327,
+    "jobs": 83431,
+    "multiSourceGroups": 1888,
+    "multiSourceRepresentations": 3784,
+    "qualifiedIdentityGroups": 2200,
+    "multipleSourcesSameIdentity": 461,
+    "exactPairsSeparateJobs": 4
+  },
+  "proofsOnlyCover": "Oracle HCM and JobAffinity with corroborating native RAW fields; employer identity still requires verification before historical repair",
+  "examples": [
+    {
+      "lookupKey": "[\"application\",\"posting-identity-20260915-v1\",\"oraclehcm:eljs.fa.us2.oraclecloud.com:CX\",\"63733\"]",
+      "publications": [
+        {
+          "sourceKey": "lvmh",
+          "externalId": "63733",
+          "url": "https://eljs.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX/job/63733"
+        },
+        {
+          "sourceKey": "tiffany-oracle",
+          "externalId": "63733",
+          "url": "https://eljs.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX/job/63733"
+        }
+      ]
+    },
+    {
+      "lookupKey": "[\"application\",\"posting-identity-20260915-v1\",\"oraclehcm:eljs.fa.us2.oraclecloud.com:CX\",\"63732\"]",
+      "publications": [
+        {
+          "sourceKey": "lvmh",
+          "externalId": "63732",
+          "url": "https://eljs.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX/job/63732"
+        },
+        {
+          "sourceKey": "tiffany-oracle",
+          "externalId": "63732",
+          "url": "https://eljs.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX/job/63732"
+        }
+      ]
+    },
+    {
+      "lookupKey": "[\"application\",\"posting-identity-20260915-v1\",\"oraclehcm:eljs.fa.us2.oraclecloud.com:CX\",\"63730\"]",
+      "publications": [
+        {
+          "sourceKey": "lvmh",
+          "externalId": "63730",
+          "url": "https://eljs.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX/job/63730"
+        },
+        {
+          "sourceKey": "tiffany-oracle",
+          "externalId": "63730",
+          "url": "https://eljs.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX/job/63730"
+        }
+      ]
+    },
+    {
+      "lookupKey": "[\"application\",\"posting-identity-20260915-v1\",\"jobaffinity:jobaffinity.fr\",\"v9f3i6k3c5c8z2z9ly\"]",
+      "publications": [
+        {
+          "sourceKey": "blackstore",
+          "externalId": "v9f3i6k3c5c8z2z9ly",
+          "url": "https://jobaffinity.fr/apply/v9f3i6k3c5c8z2z9ly"
+        },
+        {
+          "sourceKey": "intersport-france",
+          "externalId": "v9f3i6k3c5c8z2z9ly",
+          "url": "https://jobaffinity.fr/apply/v9f3i6k3c5c8z2z9ly"
+        }
+      ]
+    },
+    {
+      "lookupKey": "[\"application\",\"posting-identity-20260915-v1\",\"jobaffinity:jobaffinity.fr\",\"1lq6rb4p7b21zh7ygm\"]",
+      "publications": [
+        {
+          "sourceKey": "blackstore",
+          "externalId": "1lq6rb4p7b21zh7ygm",
+          "url": "https://jobaffinity.fr/apply/1lq6rb4p7b21zh7ygm"
+        },
+        {
+          "sourceKey": "intersport-france",
+          "externalId": "1lq6rb4p7b21zh7ygm",
+          "url": "https://jobaffinity.fr/apply/1lq6rb4p7b21zh7ygm"
+        }
+      ]
+    }
+  ]
+}

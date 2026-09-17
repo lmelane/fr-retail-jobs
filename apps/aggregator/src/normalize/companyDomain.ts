@@ -47,7 +47,7 @@ const HOST_RE = /^[a-z0-9-]{1,63}(\.[a-z0-9-]{1,63})+$/;
  * myworkdayjobs.com` → « myworkdayjobs.com » mettrait le logo Workday sur
  * toutes les Maisons Richemont. Donc : aucun domaine, pas un faux.
  */
-const ATS_HOST_SUFFIXES = [
+export const ATS_HOST_SUFFIXES = [
   'myworkdayjobs.com', 'myworkday.com', 'icims.com', 'teamtailor.com', 'oraclecloud.com',
   'taleo.net', 'successfactors.com', 'successfactors.eu', 'sapsf.com', 'sapsf.eu',
   'avature.net', 'lever.co', 'greenhouse.io', 'smartrecruiters.com', 'personio.de',
@@ -250,11 +250,6 @@ export function rankWikidataEntities(entities: readonly WikidataSearchEntity[], 
     .filter((row) => row.score > 0);
   const exactOnly = scored.some((row) => row.exact) ? scored.filter((row) => row.exact) : scored;
   return exactOnly.sort((a, b) => b.score - a.score || a.order - b.order).map((row) => row.entity);
-}
-
-/** La première entité de `rankWikidataEntities`, ou null. */
-export function pickWikidataEntity(entities: readonly WikidataSearchEntity[], term: string): WikidataSearchEntity | null {
-  return rankWikidataEntities(entities, term)[0] ?? null;
 }
 
 const RANK_ORDER: Record<string, number> = { preferred: 0, normal: 1 };

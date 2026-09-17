@@ -1,5 +1,8 @@
-import { describe, expect, it } from 'vitest';
-import { parseVolcanicPage } from './volcanic.js';
+import { describe, expect, it, vi, beforeEach } from 'vitest';
+vi.mock('../../lib/http.js', () => ({fetchJson:vi.fn(),fetchText:vi.fn()}));
+import {fetchJson,fetchText} from '../../lib/http.js';
+beforeEach(() => vi.resetAllMocks());
+import { parseVolcanicPage, fetchVolcanicJobs } from './volcanic.js';
 
 /** Une entrée telle que careers.fenwick.co.uk/api/v1/jobs.json la rend (capturée le 2026-09-06, description abrégée). */
 const PAGE = {
@@ -46,7 +49,7 @@ describe('parseVolcanicPage', () => {
     expect(job.url).toBe('https://www.careers.fenwick.co.uk/job/team-leader-womenswear-6017991');
   });
 
-  it("laisse la date vide quand la plateforme ne la publie pas (Fenwick : start_date null sur 31/31)", () => {
+  it("laisse les dates inconnues quand la liste ne les déclare pas", () => {
     const [job] = parseVolcanicPage(PAGE, 'https://x');
     expect(job.postedAt).toBeUndefined();
   });
@@ -55,4 +58,17 @@ describe('parseVolcanicPage', () => {
     const page = { jobs: [{ id: 1, job_title: 'Sans slug' }, { cached_slug: 'a', job_title: 'Sans id' }, { id: 2, cached_slug: 'b' }] };
     expect(parseVolcanicPage(page, 'https://x')).toHaveLength(0);
   });
+});
+
+it('reads the real detail JobPosting with an unquoted type and keeps its dates in RAW', async () => {
+  const url='https://www.careers.fenwick.co.uk/job/team-leader-womenswear-6017991';
+  vi.mocked(fetchJson).mockResolvedValue({...PAGE,page_count:1,total_count:1});
+  const posting={'@type':'JobPosting',title:'Team Leader - Womenswear',description:'Complete source description',url,datePosted:'2026-09-04T14:07:48.268Z',validThrough:'2026-10-31T22:59:00.000Z'};
+  vi.mocked(fetchText).mockResolvedValue(`<script type=application/ld+json>${JSON.stringify(posting)}</script>`);
+  const r=await fetchVolcanicJobs({origin:'https://www.careers.fenwick.co.uk'});
+  expect(r.jobs[0]).toMatchObject({postedAt:new Date(posting.datePosted),validThrough:new Date(posting.validThrough),raw:{postingEvidence:{jobPostingCount:1,jobPosting:posting}}});
+});
+it('does not interpret unqualified list start/end dates as publication dates', () => {
+  const [job]=parseVolcanicPage({jobs:[{...PAGE.jobs[0],start_date:'2024-01-01',end_date:'2024-02-01'}]},'https://www.careers.fenwick.co.uk');
+  expect(job.postedAt).toBeUndefined();expect(job.validThrough).toBeUndefined();
 });

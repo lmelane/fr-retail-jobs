@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 const now = new Date('2026-09-08T12:00:00Z');
 const old = new Date('2026-09-01T12:00:00Z');
 beforeEach(async () => {
-  await prisma.job.deleteMany();
+  await prisma.jobSource.deleteMany(); await prisma.job.deleteMany();
   await prisma.company.deleteMany();
   await prisma.sourceRun.deleteMany();
 });
@@ -17,8 +17,7 @@ describe('operational source exposure', () => {
   it('protects fresh alternatives and counts distinct worldwide risks without adding overlapping sources', async () => {
     const company = await prisma.company.create({ data: { name: 'Audit', canonicalKey: 'audit-report', fashionjobsUrl: 'resolved:audit-report' } });
     const job = (id: string, sources: Array<[string, Date]>, expired = false) => prisma.job.create({ data: {
-      companyId: company.id, externalId: id, source: 'WORKDAY', title: id, fingerprint: id,
-      url: `https://example.com/${id}`, isActive: true, validThrough: expired ? old : null,
+      companyId: company.id, externalId: id, source: 'WORKDAY', title: id, url: `https://example.com/${id}`, isActive: true, validThrough: expired ? old : null,
       sources: { create: sources.map(([sourceKey, lastSeenAt]) => ({ sourceKey, externalId: id,
         sourceTier: 'EMPLOYER_DIRECT', url: `https://example.com/${id}`, lastSeenAt, isActive: true })) },
     } });

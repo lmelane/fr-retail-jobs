@@ -1,4 +1,5 @@
 import { XMLParser } from 'fast-xml-parser';
+import { captureObservedAt } from '../../capture/context.js';
 import { createHash } from 'node:crypto';
 import pLimit from 'p-limit';
 import { fetchText } from '../../lib/http.js';
@@ -43,7 +44,6 @@ const FRENCH_LCID = 1036;
  */
 const CONTRACT_CATEGORY = /^(cdi|cdd|stage|alternance|apprentissage|int[ée]rim|freelance|vie|v\.i\.e\.?|temps (plein|partiel)|contrat pro\w*|professionnalisation)\b/i;
 /** A category that names a JOB FAMILY: Talentsoft writes it with slashes ("Commerce / Vente / Relations Clients"). */
-const JOB_FAMILY_CATEGORY = /\s\/\s/;
 
 export type RssItem = {
   link?: string;
@@ -168,27 +168,42 @@ export function listingCards(html: string, origin: string): NormalizedJob[] {
       .map((cell) => htmlToPlainText(cell)?.trim() ?? '')
       .filter(Boolean);
 
-    const date = cells.find((v) => /^\d{2}\/\d{2}\/\d{4}$/.test(v));
-    // Same sorting rule as the RSS path: a contract word is a contract wherever it sits, and never the place.
-    const place = cells
-      .filter((v) => !/^r[ée]f\b/i.test(v) && !/^\d{2}\/\d{2}\/\d{4}$/.test(v) && !CONTRACT_CATEGORY.test(v))
-      .pop();
-    const postedAt = date
-      ? new Date(`${date.slice(6, 10)}-${date.slice(3, 5)}-${date.slice(0, 2)}T00:00:00Z`)
-      : undefined;
-    jobs.push({
-      externalId: id,
-      // Le HTML servi porte des entités (« A&#233;roport de Nice ») : un
-      // candidat ne doit jamais lire du code source dans un intitulé.
-      title: htmlToPlainText(title)?.trim() ?? title.trim(),
-      location: place || undefined,
-      url: `${origin}${path}`,
-      postedAt,
-      raw: { path },
-    });
+    jobs.push(listingCardJob({ path, id, title, cells }, origin));
   }
   return jobs;
 }
+
+/** Une carte du listing telle que servie : lien, identifiant du lien, titre brut, cellules (réf / date / lieu) déjà en texte. */
+export type ListingCard = { path: string; id: string; title: string; cells: string[] };
+
+/**
+ * L'offre d'une carte, et la carte RETENUE telle quelle dans le RAW (lot F3b) : le lecteur de récupération relit la
+ * ligne avec cette même fonction, hors réseau. Avant, seul `path` était retenu et sept sources Talentsoft (Balmain,
+ * Longchamp, Printemps, Lagardère, Chantelle : 329 offres) restaient illisibles, refusées NATIVE_ID_MISSING.
+ */
+export function listingCardJob(card: ListingCard, origin: string): NormalizedJob {
+  const date = card.cells.find((v) => /^\d{2}\/\d{2}\/\d{4}$/.test(v));
+  // Same sorting rule as the RSS path: a contract word is a contract wherever it sits, and never the place.
+  const place = card.cells
+    .filter((v) => !/^r[ée]f\b/i.test(v) && !/^\d{2}\/\d{2}\/\d{4}$/.test(v) && !CONTRACT_CATEGORY.test(v))
+    .pop();
+  const postedAt = date
+    ? new Date(`${date.slice(6, 10)}-${date.slice(3, 5)}-${date.slice(0, 2)}T00:00:00Z`)
+    : undefined;
+  return {
+    externalId: card.id,
+    // Le HTML servi porte des entités (« A&#233;roport de Nice ») : un
+    // candidat ne doit jamais lire du code source dans un intitulé.
+    title: htmlToPlainText(card.title)?.trim() ?? card.title.trim(),
+    location: place || undefined,
+    url: `${origin}${card.path}`,
+    postedAt,
+    raw: { path: card.path, id: card.id, title: card.title, cells: card.cells },
+  };
+}
+
+/** La description d'une fiche, retenue avec la page qui la porte : le lecteur la réapplique sans réseau. */
+export type TalentsoftDetail = { pageUrl: string; htmlSha256: string; description: string };
 
 /** "Description du poste" section text of a detail page; empty when absent. */
 export function talentsoftDetailDescription(html: string): string {
@@ -249,7 +264,7 @@ export async function fetchTalentsoftJobs(config: Record<string, unknown>): Prom
     const all = listingCards(html, origin);
     rawCount += all.length;
     const cards = all.filter((job) => !seenListing.has(job.externalId));
-    pageEvidence.push({ url, checkedAt: new Date().toISOString(), sha256: createHash('sha256').update(html).digest('hex'), offset: (page - 1) * 10,
+    pageEvidence.push({ url, checkedAt: captureObservedAt().toISOString(), sha256: createHash('sha256').update(html).digest('hex'), offset: (page - 1) * 10,
       pagination: declaredTotal === undefined ? null : { start: (page - 1) * 10, end: (page - 1) * 10 + all.length, total: declaredTotal },
       ids: all.map((j) => j.externalId), publisherCounter: announced ? announced[0] : '', componentCounters: [`listingIds=${seenListing.size + cards.length}`] });
     // The board serves its first page again past the last one (page 12 of 11
@@ -300,8 +315,10 @@ export async function fetchTalentsoftJobs(config: Record<string, unknown>): Prom
         limit(async () => {
           if (job.description) return;
           try {
-            const description = talentsoftDetailDescription(await fetchText(job.url));
-            if (description) jobs[index] = { ...jobs[index], description };
+            const html = await fetchText(job.url);
+            const description = talentsoftDetailDescription(html);
+            const talentsoftDetail: TalentsoftDetail = { pageUrl: job.url, htmlSha256: createHash('sha256').update(html).digest('hex'), description };
+            if (description) jobs[index] = { ...jobs[index], description, raw: { ...(jobs[index].raw as Record<string, unknown>), talentsoftDetail } };
           } catch {
             // A failed detail fetch must not lose the listing entry.
           }

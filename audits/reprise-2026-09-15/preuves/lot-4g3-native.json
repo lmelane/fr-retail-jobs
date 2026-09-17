@@ -1,0 +1,72 @@
+[
+  {
+    "key": "bzb",
+    "batchId": "894d4c0d-e45e-42f3-864b-33e5b7f69ef4",
+    "readerRevision": "local-sha256:b470d7f1d193e1afc09ae966615a749b8e1b2fd98e27ad15ebdcc44befe6bb17",
+    "requestedOrigin": "https://bzb.teamtailor.com",
+    "feedUrl": "https://bzb.teamtailor.com/jobs.json",
+    "homePageUrl": "https://bzb.teamtailor.com/jobs",
+    "items": 13,
+    "nextUrl": null,
+    "exactReplay": true,
+    "requests": 1,
+    "nativeBytes": 125413,
+    "sample": [
+      {
+        "id": "68264a3e-8a35-40a7-9a4a-0830b00e87a8",
+        "url": "https://bzb.teamtailor.com/jobs/8360799-vendeur-h-f-cdi-35h",
+        "identifier": {
+          "@type": "PropertyValue",
+          "name": "BZB",
+          "value": 8360799
+        },
+        "issuer": "https://recrutement.b-z-b.com"
+      },
+      {
+        "id": "a75a7f9a-4510-4946-be50-66f7c6da109c",
+        "url": "https://bzb.teamtailor.com/jobs/8341991-vendeur-h-f-cdi-25h",
+        "identifier": {
+          "@type": "PropertyValue",
+          "name": "BZB",
+          "value": 8341991
+        },
+        "issuer": "https://recrutement.b-z-b.com"
+      }
+    ]
+  },
+  {
+    "key": "bizzbee",
+    "batchId": "e8a7e532-ccf6-4757-882c-2ac8759fd06f",
+    "readerRevision": "local-sha256:b470d7f1d193e1afc09ae966615a749b8e1b2fd98e27ad15ebdcc44befe6bb17",
+    "requestedOrigin": "https://recrutement.b-z-b.com",
+    "feedUrl": "https://recrutement.b-z-b.com/jobs.json",
+    "homePageUrl": "https://recrutement.b-z-b.com/jobs",
+    "items": 13,
+    "nextUrl": null,
+    "exactReplay": true,
+    "requests": 1,
+    "nativeBytes": 125458,
+    "sample": [
+      {
+        "id": "68264a3e-8a35-40a7-9a4a-0830b00e87a8",
+        "url": "https://recrutement.b-z-b.com/jobs/8360799-vendeur-h-f-cdi-35h",
+        "identifier": {
+          "@type": "PropertyValue",
+          "name": "BZB",
+          "value": 8360799
+        },
+        "issuer": "https://recrutement.b-z-b.com"
+      },
+      {
+        "id": "a75a7f9a-4510-4946-be50-66f7c6da109c",
+        "url": "https://recrutement.b-z-b.com/jobs/8341991-vendeur-h-f-cdi-25h",
+        "identifier": {
+          "@type": "PropertyValue",
+          "name": "BZB",
+          "value": 8341991
+        },
+        "issuer": "https://recrutement.b-z-b.com"
+      }
+    ]
+  }
+]

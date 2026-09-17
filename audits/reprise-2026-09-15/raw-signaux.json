@@ -1,0 +1,285 @@
+{
+  "method": "Conservative typed selectors; salary tuple keeps currency and period; geo pairs named lat/lon excluding similarJobs/derivedInfo. Numeric plausibility does NOT certify address precision. Additional coordinate encodings remain in path inventory. Signals are not projected promises. Column-null comparison uses linked Job, not necessarily owner. Education excludes form flags; workplace false flags alone do not prove onsite.",
+  "representations": 85327,
+  "byKind": {
+    "smartrecruiters-whitelabel": {
+      "geo_named_valid_pair": 3308,
+      "representations": 5860,
+      "geo_named_valid_pair_public_column_null": 3275,
+      "workplace_explicit_signal": 334,
+      "workplace_explicit_signal_public_column_null": 276,
+      "geo_zero_pair": 2
+    },
+    "teamtailor": {
+      "representations": 5355,
+      "salary_positive_amount": 1341,
+      "salary_amount_currency": 1249,
+      "salary_amount_currency_period": 1249,
+      "salary_has_decimals": 445,
+      "salary_positive_amount_public_column_null": 858
+    },
+    "jobylon": {
+      "representations": 31
+    },
+    "workday": {
+      "representations": 19711,
+      "workplace_explicit_signal": 2133,
+      "workplace_explicit_signal_public_column_null": 310
+    },
+    "successfactors": {
+      "representations": 4230
+    },
+    "flatchr": {
+      "education_declared_value": 354,
+      "representations": 354,
+      "education_declared_value_public_column_null": 354
+    },
+    "icims": {
+      "salary_positive_amount": 1208,
+      "salary_amount_currency": 1208,
+      "representations": 1593,
+      "salary_positive_amount_public_column_null": 1208,
+      "salary_has_decimals": 618
+    },
+    "personio": {
+      "representations": 186,
+      "salary_positive_amount": 3,
+      "salary_has_decimals": 1,
+      "salary_amount_currency_period": 3,
+      "salary_amount_currency": 3,
+      "salary_positive_amount_public_column_null": 2
+    },
+    "digitalrecruiters": {
+      "representations": 783
+    },
+    "greenhouse": {
+      "representations": 2545
+    },
+    "generic-listing": {
+      "representations": 6233,
+      "geo_named_valid_pair": 1672,
+      "geo_named_valid_pair_public_column_null": 1672,
+      "salary_positive_amount": 132,
+      "salary_has_decimals": 78,
+      "salary_amount_currency": 132
+    },
+    "recruitee": {
+      "education_declared_value": 639,
+      "representations": 639,
+      "workplace_explicit_signal": 639,
+      "education_declared_value_public_column_null": 639,
+      "salary_positive_amount": 156,
+      "salary_amount_currency_period": 129,
+      "salary_amount_currency": 156,
+      "salary_positive_amount_public_column_null": 156,
+      "hybrid_owned_persisted_onsite": 46,
+      "hybrid_remote_false": 47,
+      "salary_has_decimals": 31
+    },
+    "lever": {
+      "salary_positive_amount": 400,
+      "salary_amount_currency_period": 400,
+      "salary_amount_currency": 400,
+      "representations": 820,
+      "workplace_explicit_signal": 820,
+      "salary_positive_amount_public_column_null": 400,
+      "salary_has_decimals": 91
+    },
+    "wttj": {
+      "representations": 766,
+      "geo_named_valid_pair": 673,
+      "education_declared_value": 31,
+      "education_declared_value_public_column_null": 31,
+      "geo_named_valid_pair_public_column_null": 398,
+      "salary_positive_amount": 11,
+      "salary_amount_currency_period": 11,
+      "salary_amount_currency": 11
+    },
+    "workable": {
+      "representations": 280,
+      "education_declared_value": 45,
+      "education_declared_value_public_column_null": 45
+    },
+    "talentview": {
+      "geo_named_valid_pair": 80,
+      "representations": 80,
+      "geo_named_valid_pair_public_column_null": 62
+    },
+    "talentsoft": {
+      "representations": 353
+    },
+    "bashtalents": {
+      "representations": 57
+    },
+    "geodirectory": {
+      "geo_named_valid_pair": 110,
+      "representations": 110
+    },
+    "jobaffinity-wordpress": {
+      "geo_named_valid_pair": 978,
+      "representations": 978,
+      "geo_named_valid_pair_public_column_null": 7
+    },
+    "oraclehcm": {
+      "geo_named_valid_pair": 1190,
+      "representations": 1215,
+      "geo_multiple_distinct_pairs": 1176,
+      "geo_named_valid_pair_public_column_null": 353
+    },
+    "taleo": {
+      "representations": 76
+    },
+    "talentfunnel": {
+      "representations": 153
+    },
+    "magnet": {
+      "representations": 492,
+      "salary_positive_amount": 62,
+      "salary_amount_currency": 62,
+      "salary_amount_currency_period": 62,
+      "salary_positive_amount_public_column_null": 62,
+      "salary_has_decimals": 27
+    },
+    "eightfold": {
+      "representations": 2776,
+      "workplace_explicit_signal": 2726,
+      "workplace_explicit_signal_public_column_null": 2685
+    },
+    "volcanic": {
+      "representations": 31
+    },
+    "phenom": {
+      "geo_named_valid_pair": 5295,
+      "representations": 5299,
+      "geo_zero_pair": 2,
+      "geo_multiple_distinct_pairs": 36
+    },
+    "talentrecruiter": {
+      "representations": 17
+    },
+    "easycruit": {
+      "representations": 50
+    },
+    "avature": {
+      "representations": 2908
+    },
+    "wordpress": {
+      "representations": 478
+    },
+    "lvmh_algolia": {
+      "representations": 6433,
+      "workplace_explicit_signal": 4117,
+      "workplace_explicit_signal_public_column_null": 4057,
+      "salary_positive_amount": 160,
+      "salary_amount_currency_period": 38,
+      "salary_amount_currency": 38,
+      "salary_positive_amount_public_column_null": 160
+    },
+    "radancy": {
+      "representations": 54
+    },
+    "eqwa": {
+      "representations": 321
+    },
+    "ashby": {
+      "representations": 83,
+      "workplace_explicit_signal": 83
+    },
+    "rituals": {
+      "geo_named_valid_pair": 1245,
+      "representations": 1245
+    },
+    "typesense": {
+      "representations": 47
+    },
+    "harri": {
+      "geo_named_valid_pair": 36,
+      "representations": 36
+    },
+    "swatchgroup": {
+      "representations": 293
+    },
+    "jibe": {
+      "geo_named_valid_pair": 10290,
+      "representations": 10290,
+      "geo_multiple_distinct_pairs": 1
+    },
+    "wttj-sector": {
+      "geo_named_valid_pair": 1932,
+      "education_declared_value": 381,
+      "representations": 2002,
+      "education_declared_value_public_column_null": 381,
+      "geo_named_valid_pair_public_column_null": 1280,
+      "salary_positive_amount": 225,
+      "salary_amount_currency_period": 225,
+      "salary_amount_currency": 225,
+      "geo_multiple_distinct_pairs": 5,
+      "salary_positive_amount_public_column_null": 39
+    },
+    "altamira": {
+      "representations": 64
+    }
+  },
+  "uniqueLinkedJobs": {
+    "geo_named_valid_pair": 26153,
+    "representations": 83431,
+    "workplace_explicit_signal": 10627,
+    "education_declared_value": 1426,
+    "salary_positive_amount": 3684,
+    "salary_amount_currency": 3470,
+    "salary_has_decimals": 1291,
+    "salary_amount_currency_period": 2103,
+    "hybrid_owned_persisted_onsite": 46,
+    "hybrid_remote_false": 47,
+    "geo_multiple_distinct_pairs": 1218,
+    "geo_zero_pair": 4
+  },
+  "geoPaths": {
+    "smartrecruiters-whitelabel": {
+      "geo:/location": 3308
+    },
+    "wttj": {
+      "geo:/_geoloc/*": 673
+    },
+    "talentview": {
+      "geo:/detail/address": 80,
+      "geo:/address": 80
+    },
+    "geodirectory": {
+      "geo:": 110
+    },
+    "jobaffinity-wordpress": {
+      "geo:/board/row/attrs": 978
+    },
+    "oraclehcm": {
+      "geo:/detail/workLocation/*": 1179,
+      "geo:/detail/primaryLocationCoordinates/*": 1187,
+      "geo:/list/secondaryLocations/*": 8,
+      "geo:/detail/secondaryLocations/*": 8,
+      "geo:/detail/otherWorkLocations/*": 11
+    },
+    "generic-listing": {
+      "geo:/jobLocation/geo": 1668,
+      "geo:/jobLocation": 4
+    },
+    "phenom": {
+      "geo:": 5295,
+      "geo:/additional_locations/*": 2,
+      "geo:/multi_location_array/*/latlong": 2469
+    },
+    "rituals": {
+      "geo:/lonLat": 1245
+    },
+    "harri": {
+      "geo:/detail/JobLocation/*/Location": 36,
+      "geo:/listing/locations/*": 36
+    },
+    "jibe": {
+      "geo:": 10290,
+      "geo:/additional_locations/*": 1
+    },
+    "wttj-sector": {
+      "geo:/_geoloc/*": 1939
+    }
+  }
+}

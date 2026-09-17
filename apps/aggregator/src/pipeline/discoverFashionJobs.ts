@@ -1,11 +1,9 @@
 import { PrismaClient } from '@prisma/client';
-import { fetchFashionJobsCompanies } from '../connectors/fashionjobs/companyDirectory.js';
 import { canonicalCompanyKey } from '../lib/normalize.js';
 import { lockEmployerCatalogue, lockSourceWrites } from '../lib/writeLocks.js';
 import { canonicalEmployer, recordEmployerObservation } from '../identity/resolve.js';
 import { normalizedEmployerName } from '../normalize/employerName.js';
 import type { DiscoveredCompany } from '../types.js';
-import { log } from '../observability/logger.js';
 
 /** A directory observes labels; only a reviewed decision edits an identity. */
 export async function recordDiscoveredEmployer(prisma: PrismaClient, company: DiscoveredCompany) {
@@ -40,14 +38,4 @@ export async function recordDiscoveredEmployer(prisma: PrismaClient, company: Di
     });
     return { id: root.id, needsReview };
   });
-}
-
-export async function discoverFashionJobsCompanies(prisma: PrismaClient) {
-  const companies = await fetchFashionJobsCompanies();
-  let reviewRequired = 0;
-  for (const company of companies) {
-    if ((await recordDiscoveredEmployer(prisma, company)).needsReview) reviewRequired++;
-  }
-  await log.info('employer.directory_observed', { companies: companies.length, reviewRequired, evidence: 'EmployerObservation', sourceKey: 'fashionjobs-directory' });
-  return companies.length;
 }

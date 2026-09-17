@@ -12,3 +12,13 @@ const dispositions: Readonly<Record<string, DeactivationDisposition>> = {
 export function publicationDisposition(reason: string): DeactivationDisposition | undefined {
   return Object.hasOwn(dispositions, reason) ? dispositions[reason] : undefined;
 }
+
+/** Only explicit native evidence can lift a publisher's earlier unlisting. */
+export function explicitlyListed(kind: string | undefined, raw: unknown): boolean {
+  if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return false;
+  const value = raw as Record<string, unknown>;
+  if (kind === 'ASHBY') return value.isListed === true;
+  if (kind !== 'HARRI' || !value.detail || typeof value.detail !== 'object' || Array.isArray(value.detail)) return false;
+  const detail = value.detail as Record<string, unknown>;
+  return detail.status === 'PUBLISHED' && detail.access_mode !== 'PRIVATE' && detail.post_type !== 'PRIVATE' && detail.deleted !== true;
+}

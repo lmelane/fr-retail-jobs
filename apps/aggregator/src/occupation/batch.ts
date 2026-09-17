@@ -2,7 +2,6 @@ import { randomUUID } from "node:crypto";
 import { Prisma } from "@prisma/client";
 import { occupationManifestHash } from "@catwalks/db/occupations";
 import { occupationState } from "./persist.js";
-import { TAXONOMY_VERSION } from "../normalize/taxonomy.js";
 
 export type OccupationChange = {
   before: Record<string, any> & { id: string; updatedAt: Date };
@@ -35,13 +34,12 @@ export async function writeOccupationBatch(
       AS c(id text,"observedAt" timestamptz,input jsonb,before jsonb,decision jsonb,"observationId" text,"inputHash" text)
     ), changed AS (
       UPDATE "Job" j SET
-        "jobFunction"=c.decision->>'jobFunction',"occupationGroup"=c.decision->>'occupationGroup',
+        "jobFunction"=c.decision->>'jobFunction',
         "occupationCode"=c.decision->>'occupationCode',"rawTitle"=c.decision->>'rawTitle',
         "normalizedTitle"=c.decision->>'normalizedTitle',"occupationStatus"=c.decision->>'occupationStatus',
         "occupationEvidence"=c.decision->'occupationEvidence',
-        "occupationSpecializations"=ARRAY(SELECT jsonb_array_elements_text(c.decision->'occupationSpecializations')),
         "occupationReleaseId"=c.decision->>'occupationReleaseId',seniority=c.decision->>'seniority',
-        "isRetail"=(c.decision->>'isRetail')::boolean,"taxonomyVersion"=${TAXONOMY_VERSION},"updatedAt"=statement_timestamp()
+        "updatedAt"=statement_timestamp()
       FROM proposals c
       WHERE j.id=c.id AND j."updatedAt"=c."observedAt" AT TIME ZONE 'UTC' AND j."mergedIntoId" IS NULL
         AND ROW(j.title,j.department,j."rawTitle",j."canonicalSourceKey",j."canonicalExternalId",j."jobFunction",j.seniority,j."occupationCode",j."occupationReleaseId")

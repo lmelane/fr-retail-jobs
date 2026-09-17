@@ -1,0 +1,59 @@
+{
+  "mutations": [
+    {
+      "name": "quoted-only-jsonld",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "ac14373dbdd511d4fe8e6613e78d1275a2db97fa171913c356a1d0615a0371e3"
+    },
+    {
+      "name": "inert-template-as-publication",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "ac14373dbdd511d4fe8e6613e78d1275a2db97fa171913c356a1d0615a0371e3"
+    },
+    {
+      "name": "data-type-as-jsonld",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "ac14373dbdd511d4fe8e6613e78d1275a2db97fa171913c356a1d0615a0371e3"
+    },
+    {
+      "name": "lost-greenhouse-deadline",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "04cf6123538eac094759918fdefb5df6145a0c9c1467814914b22543565678a6"
+    },
+    {
+      "name": "lost-easycruit-deadline",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "04cf6123538eac094759918fdefb5df6145a0c9c1467814914b22543565678a6"
+    },
+    {
+      "name": "lost-talentview-deadline",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "04cf6123538eac094759918fdefb5df6145a0c9c1467814914b22543565678a6"
+    },
+    {
+      "name": "unqualified-volcanic-deadline",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "04cf6123538eac094759918fdefb5df6145a0c9c1467814914b22543565678a6"
+    },
+    {
+      "name": "unqualified-volcanic-date",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "5bb19b7243f6bb5618ea4f1a66cfd669468a7e388f7d9a1a0e960adf16d9c1bd"
+    },
+    {
+      "name": "lost-retained-volcanic-detail",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "088d922ee0740be802a07062011bceb17e1ea8d6210eff7d5042accf3c365cab"
+    }
+  ],
+  "restoredTests": "passed"
+}

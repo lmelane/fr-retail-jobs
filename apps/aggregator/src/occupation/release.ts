@@ -67,15 +67,12 @@ async function replay(tx: Prisma.TransactionClient, raw: unknown) {
         canonicalSourceKey: true,
         canonicalExternalId: true,
         jobFunction: true,
-        occupationGroup: true,
         occupationCode: true,
         normalizedTitle: true,
         occupationStatus: true,
         occupationEvidence: true,
-        occupationSpecializations: true,
         occupationReleaseId: true,
         seniority: true,
-        isRetail: true,
       },
     });
     if (!rows.length) break;

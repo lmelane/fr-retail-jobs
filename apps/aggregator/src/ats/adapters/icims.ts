@@ -1,9 +1,11 @@
 import { createHash } from 'node:crypto';
+import { captureObservedAt } from '../../capture/context.js';
 import { fetchText } from '../../lib/http.js';
 import pLimit from 'p-limit';
 import { enrichPostingEvidence, postingEvidenceOptions } from '../../lib/postingEvidence.js';
 import { htmlToPlainText } from '../../lib/html.js';
 import { crashPointReached, CRASH_POINTS } from '../../lib/crashInjection.js';
+import { icimsDetailOrigins, icimsPostingURL, icimsDetailMatchesListing } from '../../identity/icims.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
 
 /**
@@ -97,9 +99,18 @@ export function parseIcimsPageCount(html: string): number | undefined {
   return match ? Number(match[1]) : undefined;
 }
 
+/** A fetched page must describe this exact publication before any of its
+ * content or employer fields can replace the native listing. */
+export function mergeIcimsDetail(job: NormalizedJob, html: string, config: Record<string, unknown>): NormalizedJob {
+  const enriched = enrichPostingEvidence(job, html, postingEvidenceOptions(config));
+  return icimsDetailMatchesListing(enriched, config) ? enriched : {
+    ...job, raw: enriched.raw, publicationHold: 'ICIMS_DETAIL_IDENTITY_MISMATCH',
+  };
+}
+
 export async function fetchIcimsJobs(config: Record<string, unknown>): Promise<AdapterResult> {
   const origin = String(config.origin ?? '').replace(/\/$/, '');
-  if (!origin) throw new Error('iCIMS origin missing');
+  const detailOrigins = icimsDetailOrigins(config);
 
   const out: NormalizedJob[] = [];
   const seen = new Set<string>();
@@ -131,7 +142,7 @@ export async function fetchIcimsJobs(config: Record<string, unknown>): Promise<A
       seen.add(job.externalId);
       out.push(job);
     }
-    pageEvidence.push({ url, checkedAt: new Date().toISOString(), sha256: createHash('sha256').update(html).digest('hex'), offset: page, pagination: null,
+    pageEvidence.push({ url, checkedAt: captureObservedAt().toISOString(), sha256: createHash('sha256').update(html).digest('hex'), offset: page, pagination: null,
       ids: batch.map((j) => j.externalId), publisherCounter: announced === undefined ? '' : `pages=${announced}`, componentCounters: [`cards=${batch.length}`, `uniqueIds=${seen.size}`] });
 
     // Une page sans offre NOUVELLE termine la lecture : les portails iCIMS
@@ -144,16 +155,19 @@ export async function fetchIcimsJobs(config: Record<string, unknown>): Promise<A
   if (!complete) issues.add('ENUMERATION_NOT_PROVEN');
 
   const limit = pLimit(Math.max(1, Math.min(4, Number(config.detailConcurrency) || 2)));
-  const evidenceOptions = postingEvidenceOptions(config);
   const jobs = await Promise.all(out.map(job => limit(async () => {
+    const page = icimsPostingURL(job.url);
+    if (!page || page.id !== job.externalId || !detailOrigins.has(page.url.origin)) {
+      return { ...job, publicationHold: 'ICIMS_DETAIL_ORIGIN_UNQUALIFIED' };
+    }
     // POINT D'INJECTION du scénario B : le pool de détails est intégralement consommé AVANT toute
     // persistance, c'est donc ici — et nulle part ailleurs — qu'une interruption se distingue d'une écriture
     // partielle. Inerte sauf `P8_CRASH_AT=DURING_DETAIL_POOL` ; voir `lib/crashInjection.ts`.
     if (crashPointReached(CRASH_POINTS.DURING_DETAIL_POOL)) {
       process.kill(process.pid, 'SIGKILL');
     }
-    try { return enrichPostingEvidence(job, await fetchText(job.url), evidenceOptions); }
-    catch (error) { return { ...job, raw: { ...(job.raw as object), detailReadError: String(error) } }; }
+    try { return mergeIcimsDetail(job, await fetchText(job.url), config); }
+    catch (error) { return { ...job, publicationHold: 'ICIMS_DETAIL_FETCH_FAILED', raw: { ...(job.raw as object), detailReadError: String(error) } }; }
   })));
   return { jobs, complete, truncated: termination === 'PAGE_BUDGET_EXHAUSTED' || (declaredPages !== undefined && pagesRead < declaredPages),
     enumeration: { method: 'PUBLISHER_PAGE_COUNT_HTML_PAGINATION', endpoint: `${origin}/jobs/search?ss=1&in_iframe=1`, pages: pagesRead, rawCount, termination, issues: [...issues],

@@ -23,7 +23,7 @@
  * usage: gate.mts <log-dir> --name=<mutation> [--phase=clone|production]
  * exit 0 = the chain may continue · exit 1 = blocked, with the reason named.
  */
-import { readFileSync, existsSync, readdirSync } from 'node:fs';
+import { readFileSync, existsSync } from 'node:fs';
 
 const logDir = process.argv[2];
 if (!logDir) { console.error('usage: gate.mts <log-dir> --name=<mutation> [--phase=...]'); process.exit(2); }

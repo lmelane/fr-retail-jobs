@@ -77,7 +77,7 @@ try {
     const holds: any[] = await tx.$queryRaw(Prisma.sql`
       SELECT o."sourceKey", count(*)::int AS held
       FROM "SourceObservation" o
-      WHERE o.raw ? 'publicationHold' AND o."sourceKey" = ANY(${keys})
+      WHERE o."publicationHold" IS NOT NULL AND o."sourceKey" = ANY(${keys})
         AND NOT EXISTS (SELECT 1 FROM "JobSource" js
                         WHERE js."sourceKey" = o."sourceKey" AND js."externalId" = o."externalId" AND js."isActive")
       GROUP BY 1 ORDER BY 1`);

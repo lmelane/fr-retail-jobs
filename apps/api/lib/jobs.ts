@@ -1,45 +1,35 @@
-import { resolveLieu } from './lieu';
-import { getSectorPresentation, sectorWhere } from './sectors';
+import { publicationContentOf, type PresentationSource } from '@catwalks/db/publication-presentation';
+import { publicAmount } from '@catwalks/db/money';
+import { availableSourceWhere, publicJobWhere, publicJobSql, sourceIsAvailable } from '@catwalks/db/availability';
+import { selectApplySource, type ApplySource } from '@catwalks/db/publications';
+import { publicSourceFacts, scalarSourceFacts, type PublicSourceFacts } from '@catwalks/db/source-facts';
+import { MARCHES, type Perimetre } from '@catwalks/db/marches';
+import { langueDesLibelles, type LangueLibelles } from '@catwalks/db/presentation';
 import { getOptionalOccupationPresentation, type OptionalOccupationPresentation } from './occupations';
-import { companyIdentityWhere } from './company-identity';
-import { unstable_cache } from 'next/cache';
-import { prisma, canonicalJobId } from '@catwalks/db';
-import { expandCompanyTerm } from './groups';
-import { countryCode, rawValuesForCode } from './countries';
-import { searchSummary } from './job-search-query';
+import { prisma, Prisma, canonicalJobId } from '@catwalks/db';
+import { ARITE_CLE_RECHERCHE, searchSummary, type CleRecherche } from './job-search-query';
+import { CURSEUR_MAX, decoderCurseur, empreinteCriteres, encoderCurseur } from './curseur';
+import { directPubliable, directPubliableSql, directToRow, estIdDirect, idDirect, statutDirect } from './direct-offers';
 import { offerIdCandidates } from './offer-url';
-import { facettesServies } from './facettes-marche';
-
-/**
- * Prisma condition for a Pays filter code.
- *
- * France is matched on the isFrance flag. Any other code matches the spellings
- * that normalize to it, case-insensitively — a safety net for legacy rows: the
- * column is 100% ISO-2 as of 2026-09-08 (measured: 66 882 rows, 0 free-form),
- * but a spelling that has not been re-attested yet must still be reachable.
- */
-function countryCondition(code: string | undefined) {
-  if (!code) return {};
-  if (code === 'FR') return { isFrance: true };
-  // `in` has no case-insensitive mode in Prisma, and the stored values vary in
-  // case ("Italie"/"IT"/"it"), so match each spelling with equals-insensitive.
-  const spellings = rawValuesForCode(code);
-  return { OR: spellings.map((value) => ({ countryCode: { equals: value, mode: 'insensitive' as const } })) };
-}
+import { libellerFacettes, type FacetteServie } from './facettes';
+import { exigerPerimetre, resoudrePerimetre } from './perimetre';
+import { DIMENSIONS, DIMENSIONS_TOLERANTES, planifierRecherche, type CriteresRecherche, type Dimension, type DimensionTolerante, type FiltreRefuse, type Selections } from './search-plan';
+import type { LieuResolu } from './lieu';
 
 /** Sector keys are data, not an application enum. Unknown keys stay bound
  * parameters and match zero; dropping them would silently widen the search. */
-export function validSector(value: string | undefined): string | undefined {
-  return value || undefined;
-}
+const publicSources = () => ({
+  select: { sourceKey: true, externalId: true, sourceTier: true, isActive: true, url: true, expiresAt: true, sourceFacts: true, presentation: true, captureBatchId: true, captureOutputId: true } as const,
+  where: availableSourceWhere(),
+});
 
 /**
- * Job queries for the list and the map.
+ * Job queries for the list and the offer pages.
  *
  * There is NO demo fallback (decision D1): a jobboard must never show invented
  * offers. When the database is unavailable, these throw DatabaseUnavailableError
- * and the page renders a clean error state — never six fictional rows passed off
- * as real listings.
+ * and the caller renders a clean error state — never six fictional rows passed
+ * off as real listings.
  */
 
 /** Thrown when the database cannot answer, so the UI shows an error, not fake data. */
@@ -52,104 +42,43 @@ export class DatabaseUnavailableError extends Error {
 }
 
 /**
- * Filters mirror the aggregator's own model, so the UI exposes the whole
- * pipeline rather than a subset of it:
- *  - sector / maison / group  -> the reference list
- *  - employmentTerm           -> la taxonomie mondiale de la relation d'emploi
- *  - city                     -> the collapsed location (Paris 8 -> PARIS)
- *  - source                   -> which connector saw the offer
- */
-/**
- * D-426 — les dimensions à facettes portent PLUSIEURS valeurs (pluriel dans le
- * nom, `in` en SQL). Le pluriel n'est pas cosmétique : il rend impossible de
- * réintroduire une égalité simple par distraction, parce que le type ne
- * compile plus.
+ * Les critères d'une recherche, tels que l'URL les porte (lot 6).
  *
- * Restent au singulier, et c'est volontaire : `q` (une recherche), `ville` et
- * `fonction` (valeurs d'autocomplétion uniques), `lieu` (une intention de
- * lieu, D-418 §3), `source` (usage interne).
+ * Le vocabulaire est celui du contrat de facettes (`CLES_FACETTE`), en
+ * français parce que l'URL est visible par le candidat : `contrat`, `temps`,
+ * `programme`, `metier`, `secteur`, `ville`, `maison`, `groupe`, `langue`,
+ * `pays`. Chaque dimension porte plusieurs valeurs (D-426). `marche` est le
+ * périmètre demandé ; il est OBLIGATOIRE au moment de chercher, et sa
+ * validation vit dans `exigerPerimetre`, une seule fois. `apres` est le
+ * curseur de la page suivante (lot 7), tel que la réponse précédente l'a
+ * rendu dans `suivant`.
  */
-export type JobFilters = {
-  q?: string;
-  occupations?: string[];
-  jobFunction?: string;
-  sectors?: string[];
-  employmentTerms?: string[];
-  workTimes?: string[];
-  programTypes?: string[];
-  engagementTypes?: string[];
-  city?: string;
-  /**
-   * Ville en correspondance LARGE (égalité, préfixe, ou présence dans
-   * `location`), issue du champ « lieu » résolu par `resolveLieu` (D-418 §3).
-   * `city`, lui, reste l'égalité stricte de la facette et de l'autocomplétion.
-   */
-  cityLoose?: string;
-  /** « lieu » résolu en télétravail (D-418 §3) : `workplaceType = REMOTE`. */
-  remote?: boolean;
-  /** Ce que le moteur a compris du champ « lieu », pour l'afficher tel quel. */
-  lieuResolu?: { type: 'pays' | 'ville' | 'teletravail'; libelle: string };
-  groups?: string[];
-  maisons?: string[];
-  source?: string;
-  /** Codes pays canoniques (FR, IT, US…) ; `undefined` = tous les pays. */
-  countries?: string[];
-  /** Langues de l'offre (ISO-639-1), facette « Langue » (D-419 §3). */
-  languages?: string[];
-  /**
-   * D-419 §2 — le pays du visiteur : ses offres d'abord, puis le reste du
-   * monde, chaque groupe du plus récent au plus ancien. Jamais un filtre.
-   */
-  priorityCountry?: string;
-  /**
-   * Le MARCHÉ servi (code pays ISO-2), qui décide QUELLES FACETTES ont du sens.
-   *
-   * Ce n'est PAS un filtre, et la distinction est le cœur du lot : `countries`
-   * restreint les offres rendues, `marche` ne restreint que les filtres
-   * PROPOSÉS. Un candidat sur le marché américain voit les mêmes offres qu'
-   * avant ; il ne se voit simplement plus offrir « Type de contrat », que
-   * 80,8 % des offres américaines laissent vide (mesuré le 2026-09-15, 36 942
-   * offres actives US — l'emploi y est *at-will*, 12 503 descriptions le
-   * déclarent).
-   *
-   * Absent ou inconnu du registre = aucune restriction : voir `facettesMarche`.
-   */
-  marche?: string;
-  /** 1-based, like the URL the user can share. */
-  page?: number;
-};
+export type JobFilters = CriteresRecherche & { marche?: string; apres?: string };
 
-/**
- * URL query params -> JobFilters, the one mapping both the server-rendered
- * page and the infinite-scroll API route parse against.
- *
- * Shared here rather than duplicated: the two callers read the same URL keys
- * (French, because the URL is user-visible — `ville`, `contrat`, `secteur`…),
- * and a mapping that drifts between them would make page 1 (server-rendered)
- * and page 2+ (fetched client-side) silently disagree on what a filter means.
- */
 /**
  * D-426 — plafond du nombre de valeurs par filtre.
  *
  * Sans lui, `?pays=` répété mille fois construirait une clause SQL de mille
- * termes depuis une simple URL publique. 12 dépasse largement l'usage réel
- * (119 pays au catalogue, mais personne n'en coche douze à la main) et reste
- * le MÊME plafond que celui du site, pour qu'une URL acceptée par l'un ne
- * soit pas tronquée en silence par l'autre.
+ * termes depuis une simple URL publique. 12 dépasse largement l'usage réel et
+ * reste le MÊME plafond que celui du site, pour qu'une URL acceptée par l'un
+ * ne soit pas tronquée en silence par l'autre.
  */
 export const MAX_VALUES = 12;
 
+/** Offers per page. */
+export const PAGE_SIZE = 25;
+
+/**
+ * URL query params -> JobFilters, the one mapping every consumer parses
+ * against. Les clés techniques historiques (`employmentTerm`, `workTime`,
+ * `programType`, `market`) restent LUES pour les liens déjà partagés ; rien ne
+ * les émet plus.
+ */
 export function parseFilters(params: Record<string, string | string[] | undefined>): JobFilters {
   const one = (key: string) => {
     const value = params[key];
     return (Array.isArray(value) ? value[0] : value)?.trim().slice(0, 200) || undefined;
   };
-
-  /**
-   * TOUTES les valeurs d'une clé (D-426), dédoublonnées, chacune bornée en
-   * longueur comme `one`, l'ensemble borné en nombre. Accepte les deux formes :
-   * `?pays=FR` (liens déjà partagés) et `?pays=FR&pays=IT`.
-   */
   const many = (key: string): string[] | undefined => {
     const value = params[key];
     if (value === undefined) return undefined;
@@ -162,73 +91,36 @@ export function parseFilters(params: Record<string, string | string[] | undefine
     }
     return vues.size ? [...vues] : undefined;
   };
+  const filtres: Selections = {};
+  // `monde` désignait « tous les pays » avant le lot 6 ; dans un périmètre, il
+  // ne restreint rien et disparaît sans devenir un pays fantôme.
+  const pays = many('pays')?.filter((v) => v !== 'monde').map((v) => v.toUpperCase());
+  if (pays?.length) filtres.pays = pays;
+  const lire = (cle: Dimension, ...alias: string[]) => {
+    const valeurs = many(cle) ?? alias.map(many).find(Boolean);
+    if (valeurs?.length) filtres[cle] = valeurs;
+  };
+  lire('metier');
+  lire('secteur');
+  lire('contrat', 'employmentTerm');
+  lire('temps', 'workTime');
+  lire('programme', 'programType');
+  lire('ville');
+  lire('maison');
+  lire('groupe');
+  const langues = normalizedLanguages(many('langue'));
+  if (langues) filtres.langue = langues;
 
-  const page = Number(one('page'));
-
-  // World by default (revises D12, decided 2026-09-02): with no `pays` in the URL
-  // the board shows every country, so the ~26k world offers a candidate expects
-  // are reachable from the search box, not hidden behind a filter they never
-  // open. `pays=<code>` (e.g. FR, IT) narrows to that country; `pays=monde` is
-  // still accepted as an explicit "all countries" for shared/legacy links.
-  // D-426 : plusieurs pays possibles. `monde` reste le « tous pays » explicite,
-  // et il est RETIRÉ de la liste plutôt que traité comme un code : cumulé par
-  // erreur avec un vrai code, il ne doit pas produire un pays fantôme.
-  const paysBruts = many('pays')?.filter((v) => v !== 'monde');
-  const paysExplicite = paysBruts?.length ? paysBruts : undefined;
-
-  // `lieu` (D-418 §3) : ce qu'une personne tape — ville, pays, code. Résolu
-  // ici, côté moteur. Un `pays` ou une `ville` explicites gardent la main :
-  // ce sont les facettes, plus précises qu'une saisie libre.
-  const lieu = resolveLieu(one('lieu'));
-  const countries = paysExplicite ?? (lieu?.type === 'pays' ? [lieu.country] : undefined);
-  const cityLoose = one('ville') === undefined && lieu?.type === 'ville' ? lieu.cityLoose : undefined;
-  const remote = lieu?.type === 'teletravail' ? true : undefined;
-  const lieuResolu = lieu ? { type: lieu.type, libelle: lieu.libelle } : undefined;
+  const apres = params.apres;
+  const jeton = (Array.isArray(apres) ? apres[0] : apres)?.trim().slice(0, CURSEUR_MAX + 1) || undefined;
 
   return {
     q: one('q'),
-    // D-426 : les dimensions à facettes sont multi-valeurs (`in` SQL) ; `ville`
-    // et `fonction` restent mono — ce sont des valeurs d'autocomplétion uniques.
-    occupations: many('metier'),
-    jobFunction: one('fonction'),
-    city: one('ville'),
-    cityLoose,
-    remote,
-    lieuResolu,
-    /**
-     * Le paramètre technique porte le nom de la DIMENSION, pas un mot français :
-     * la base est mondiale, et « contrat » y désignait une grille juridique qui
-     * n'existe plus. L'ancien `?contrat=` reste accepté en lecture — des liens
-     * partagés existent — mais rien ne l'émet plus. Aucune URL indexée n'est en
-     * jeu : ni le sitemap ni un canonical ne l'ont jamais référencé (vérifié).
-     *
-     * L'interface, elle, continue d'écrire « Contrat » et « CDI » : c'est la
-     * couche de localisation, pas le modèle.
-     */
-    employmentTerms: many('employmentTerm') ?? many('contrat'),
-    workTimes: many('workTime'),
-    programTypes: many('programType'),
-    engagementTypes: many('engagementType'),
-    sectors: many('secteur'),
-    maisons: many('maison'),
-    groups: many('groupe'),
-    source: one('source'),
-    countries,
-    languages: normalizedLanguages(many('langue')),
-    priorityCountry: normalizedPriority(one('prioritePays')),
-    /*
-     * `marche` (fr) et `market` (en) désignent la MÊME chose : le site est
-     * mondial et ses deux façades appellent la même API. Accepter une seule
-     * des deux clés produirait un marché muet sur l'autre façade — c'est-à-
-     * dire la dégradation sûre, donc un défaut parfaitement silencieux.
-     *
-     * Aucune validation contre la liste des marchés ici : `facetteServie`
-     * traite un code inconnu comme une absence de marché, et c'est le seul
-     * endroit où cette règle doit vivre. La valider deux fois, c'est se donner
-     * deux occasions d'en changer une seule.
-     */
+    lieu: one('lieu'),
+    filtres,
+    prioritePays: normalizedPriority(one('prioritePays')),
     marche: one('marche') ?? one('market'),
-    page: normalizedPage(page),
+    apres: jeton,
   };
 }
 
@@ -241,17 +133,29 @@ function normalizedLanguages(vs: string[] | undefined): string[] | undefined {
 function normalizedPriority(v: string | undefined): string | undefined {
   return v && /^[a-z]{2}$/i.test(v) ? v.toUpperCase() : undefined;
 }
+/** D'où vient l'offre : publiée sur Catwalks par une Maison, ou agrégée depuis une source. */
+export type Origine = 'CATWALKS' | 'AGREGEE';
 
-/** Offers per page. */
-export const PAGE_SIZE = 25;
-/** A bounded offset until the public API adopts cursor pagination. */
-export const MAX_PAGE = 10_000;
-function normalizedPage(page: number | undefined): number {
-  return Number.isSafeInteger(page) && page! > 0 ? Math.min(page!, MAX_PAGE) : 1;
-}
+/**
+ * L'ACTION DE CANDIDATURE, explicite dans le contrat (passation §2.3) : jamais
+ * déduite d'un domaine ni d'une forme d'identifiant. `CATWALKS` ouvre le
+ * parcours de candidature du site ; `EXTERNE` sort vers l'employeur, en
+ * http(s) seulement ; `AUCUNE` quand la source n'a donné aucun lien exploitable.
+ */
+export type ActionCandidature =
+  | { type: 'CATWALKS'; offreId: string; slug: string; url: string }
+  | { type: 'EXTERNE'; url: string }
+  | { type: 'AUCUNE' };
+
+/** D-435 — une ligne confirme la recherche, ou reste non confirmée sur des dimensions nommées. */
+export type Correspondance =
+  | { statut: 'CONFIRMEE' }
+  | { statut: 'NON_CONFIRMEE'; dimensions: Dimension[] };
 
 export type JobRow = {
   id: string;
+  origine: Origine;
+  candidature: ActionCandidature;
   title: string;
   company: string;
   /** The Maison's own domain (`sephora.com`) for its logo; null when no source names it. */
@@ -266,7 +170,6 @@ export type JobRow = {
   isSeasonal: boolean | null;
   sector: string | null;
   sectorCodes?: string[];
-  url: string;
   postedAt: Date | null;
   withdrawnAt?: Date | null;
   opportunityType?: 'JOB_OPENING' | 'OPEN_APPLICATION' | null;
@@ -279,10 +182,8 @@ export type JobRow = {
   description: string | null;
   /** Employer-side apply URL of the highest-ranked source. */
   applyUrl: string;
-
-  // Everything else the adapters normalize. Coverage varies by source — an
-  // absent field means "this source does not publish it", never "not fetched" —
-  // so the detail view renders only what is present.
+  /** Complete optional facts of the selected available publication, with explicit coverage status. */
+  sourceFacts?: PublicSourceFacts | null;
   postalCode: string | null;
   department: string | null;
   /** Métier et séniorité (taxonomie D38) : ce qui distingue deux offres d'une même Maison dans la liste. */
@@ -302,344 +203,187 @@ export type JobRow = {
   salaryCurrency: string | null;
   salaryPeriod: string | null;
   validThrough: Date | null;
-  /** Code pays ISO-2 tel que stocke ; libelle via lib/countries. */
+  /** Code pays ISO-2 tel que stocké ; libellé via lib/countries. */
   countryCode: string | null;
   /**
-   * La PROVENANCE du pays, telle que l'ingestion l'a établie — le verdict qui autorise (ou non) le balisage
-   * sous un code ambigu (`CA`, `IN`, `DE`…). Liste positive fermée : `RAW_COUNTRY_CODE`, `RAW_COUNTRY`,
-   * `VERIFIED`. `null` = aucune preuve, et le balisage exige alors une autre preuve indépendante ou refuse.
-   *
-   * Porté explicitement par la ligne : `markupIneligibility` le lisait via un accès élargi
-   * (`job as { countryIntegrity?: string }`), qui compile même si la colonne n'est jamais sélectionnée — le
-   * champ aurait pu rester absent sans qu'aucun type ne s'en plaigne.
+   * La PROVENANCE du pays, telle que l'ingestion l'a établie — le verdict qui
+   * autorise (ou non) le balisage sous un code ambigu (`CA`, `IN`, `DE`…).
+   * Liste positive fermée : `RAW_COUNTRY_CODE`, `RAW_COUNTRY`, `VERIFIED`.
    */
   countryIntegrity: string | null;
   /** ISO-639-1 language of the posting text, when detected at ingest. */
   language: string | null;
   /** Our first sighting, separate from the employer's publication date. */
   firstSeenAt: Date;
+  /** Posée par la recherche seulement : absente sur une fiche ou une offre similaire. */
+  correspondance?: Correspondance;
+};
+
+/** Le périmètre servi, tel que la réponse le décrit au site. */
+export type PerimetreServi = {
+  code: string;
+  nom: string;
+  pays: string[];
+  /** `true` pour un marché mesuré du registre ; `false` pour un pays servi seul, sans facettes natives. */
+  mesure: boolean;
+  locales: string[];
+  localeParDefaut: string;
+  /** La langue des libellés d'emploi, de pays et de langue servis (lot 8) : celle du marché si un catalogue existe, sinon `fr`. */
+  langueDesLibelles: LangueLibelles;
 };
 
 export type JobsResult = {
   occupationEnrichmentAvailable?: boolean;
   /** One page of results, not the whole match set. */
   jobs: JobRow[];
-  /** Every row matching the filters, across all pages. */
+  /** Every row matching the search inside the perimeter, confirmed or not. */
   total: number;
-  /** Every live offer stored (world), ignoring filters. */
-  totalInDatabase: number;
-  /** 1-based page these jobs come from. */
-  page: number;
-  pageCount: number;
-  /**
-   * Les facettes RETENUES pour le marché servi.
-   *
-   * `contracts` est devenu OPTIONNEL avec le lot « facettes natives » : sur le
-   * marché américain il est absent de la réponse, parce que la durée de contrat
-   * n'y est publiée que sur 19,2 % des offres (mesuré le 2026-09-15). Une clé
-   * ABSENTE dit « pas de facette sur ce marché » ; un tableau VIDE dit « facette
-   * légitime, mais aucune valeur pour cette recherche ». Le front doit pouvoir
-   * les distinguer — d'où l'optionnalité plutôt qu'un tableau vide.
-   */
-  facets: {
-    sectors: { value: string; count: number; label?: string }[];
-    contracts?: { value: string; count: number }[];
-    workTimes?: { value: string; count: number }[];
-    programs?: { value: string; count: number }[];
-    engagements?: { value: string; count: number }[];
-    cities: { value: string; count: number }[];
-    groups: { value: string; count: number }[];
-    maisons: { value: string; count: number }[];
-    sources: { value: string; count: number }[];
-    /** Country facet values are canonical codes (FR, IT…); the UI labels them. */
-    countries: { value: string; count: number }[];
-    occupations?: { value: string; label: string; count: number }[];
-    /** ISO-639-1 ; libellé français posé par la projection liste (D-419 §3). */
-    languages?: { value: string; count: number }[];
-  };
+  /** Rows whose every filtered tolerant dimension is declared (D-435). */
+  totalConfirmes: number;
+  /** Every live offer of the perimeter, ignoring the search. */
+  totalPerimetre: number;
+  /** Le curseur de la page suivante (lot 7), ou `null` quand cette page est la dernière. */
+  suivant: string | null;
+  perimetre: PerimetreServi;
+  /** Le contrat de facettes du périmètre, dans l'ordre d'affichage, options comptées et libellées. */
+  facettes: FacetteServie[];
+  /** Les filtres et le lieu que ce périmètre ne peut pas honorer, nommés ; les résultats sont calculés sans eux. */
+  filtresRefuses: FiltreRefuse[];
+  /** Ce que le moteur a compris du champ « lieu », même refusé. */
+  lieu: { type: LieuResolu['type']; libelle: string } | null;
 };
 
-/**
- * Filters as a database query.
- *
- * Everything the user can narrow by has to run in SQL. Loading a capped slice
- * and filtering it in memory meant a search only ever saw the newest 500 of
- * ~32,000 offers: filtering for Marseille returned "no results" while Marseille
- * jobs sat unread at row 900.
- */
-/**
- * Un critère de facette qui CONSERVE les offres dont la valeur est inconnue.
- *
- * Rend soit `{}` (pas de filtre demandé), soit un `OR` à deux branches :
- *   - la valeur fait partie des valeurs cochées  → correspondance confirmée ;
- *   - la valeur est NULL                         → non précisée, conservée.
- *
- * Une valeur RENSEIGNÉE mais absente des valeurs cochées reste exclue : c'est
- * l'incompatibilité connue, et elle doit continuer d'exclure.
- *
- * Le `OR` est BORNÉ à cette dimension. Placé au niveau de la requête, il
- * annulerait les autres critères — dont le pays.
- */
-function critereTolerantAuxInconnus(
-  colonne: 'language' | 'employmentTerm' | 'workTime' | 'programType' | 'engagementType',
-  valeurs: string[] | undefined,
-): Array<Record<string, unknown>> {
-  if (!valeurs?.length) return [];
-  return [{ OR: [{ [colonne]: { in: valeurs } }, { [colonne]: null }] }];
-}
-
-export function whereClause(filters: JobFilters) {
-  const terms = (filters.q ?? '').trim().split(/\s+/).filter(Boolean);
-
-  // Maison, Secteur and Groupe all constrain the joined Company, so they MUST
-  // share ONE `company` object. Three separate `company:` spreads collided —
-  // duplicate keys in an object literal keep only the last, so combining them
-  // silently dropped all but Groupe. Merge them into a single relation filter.
-  /*
-   * D-426 — chaque dimension devient un `OR` de ses valeurs, et PLUSIEURS
-   * dimensions coexistent maintenant sur la même relation `company`.
-   *
-   * Le piège est documenté juste au-dessus et il empire ici : deux clés `OR`
-   * dans un même objet littéral, la seconde écrase la première en silence, et
-   * le filtre disparaît sans erreur. `companyIdentityWhere` rend déjà un `OR`.
-   * D'où `AND: [...]` — chaque dimension apporte son propre bloc, aucune ne
-   * peut plus en écraser une autre.
-   */
-  const sectors = filters.sectors?.map(validSector).filter((s): s is string => Boolean(s)) ?? [];
-  const companyAnd = [
-    ...(filters.maisons?.length ? [{ OR: filters.maisons.map((m) => companyIdentityWhere(m)) }] : []),
-    ...(sectors.length ? [{ OR: sectors.map((s) => sectorWhere(s)) }] : []),
-    ...(filters.groups?.length ? [{ parentGroup: { in: filters.groups } }] : []),
-  ];
-  const company = companyAnd.length ? { AND: companyAnd } : {};
-
+export function perimetreServi(perimetre: Perimetre): PerimetreServi {
+  const m = perimetre.marche;
   return {
-    isActive: true,
-    // No forced isFrance (decision D10): the board shows every country, and the
-    // Pays filter narrows it. France uses the reliable isFrance flag; other
-    // countries match the raw `country` spellings that map to their code.
-    /*
-     * D-426 — `AND` explicite plutôt que des clés `OR` concurrentes.
-     *
-     * `countryCondition` rend un `OR` (les orthographes d'un pays), `cityLoose`
-     * aussi (égalité / préfixe / location), et chaque dimension multi-valeurs
-     * en ajoute un. Posés comme clés d'un même objet littéral, tous sauf le
-     * dernier disparaîtraient SANS ERREUR — une recherche filtrée sur deux pays
-     * ET une ville aurait rendu la ville seule, donc des offres hors périmètre
-     * présentées comme conformes. C'est exactement le mode de panne que le
-     * commentaire de `company` décrit plus haut, à plus grande échelle.
-     */
-    AND: [
-      /*
-       * La recherche texte vit ICI, dans le MÊME `AND` que les filtres.
-       * Elle avait sa propre clé `AND` au niveau de l'objet : deux clés `AND`
-       * dans un littéral, et la seconde efface la première. Les filtres D-426
-       * auraient donc été supprimés par toute recherche portant un mot-clé —
-       * cocher deux pays puis taper « vendeuse » aurait rendu le monde entier.
-       *
-       * Chaque terme doit apparaître dans AU MOINS UN champ : « vendeuse paris »
-       * exige les deux mots, pas dans la même colonne.
-       */
-      ...terms.map((term) => ({
-        OR: [
-          { title: { contains: term, mode: 'insensitive' as const } },
-          { description: { contains: term, mode: 'insensitive' as const } },
-          { city: { contains: term, mode: 'insensitive' as const } },
-          { location: { contains: term, mode: 'insensitive' as const } },
-          { department: { contains: term, mode: 'insensitive' as const } },
-          { employmentTerm: { contains: term, mode: 'insensitive' as const } },
-          // A brand and its parent are the same search. "sandro" has to
-          // reach offers a group portal filed under "SMCP", and "smcp" has
-          // to reach every brand beneath it.
-          ...expandCompanyTerm(term).flatMap((name) => [
-            { company: companyIdentityWhere(name, 'contains') },
-            { company: { parentGroup: { contains: name, mode: 'insensitive' as const } } },
-          ]),
-        ],
-      })),
-      ...(filters.countries?.length
-        ? [{ OR: filters.countries.map((c) => countryCondition(c)) }]
-        : []),
-      ...(filters.occupations?.length
-        ? [
-            {
-              OR: filters.occupations.map((o) => ({
-                // « Métier à préciser » (D-419 §4) reste sélectionnable : c'est
-                // l'absence de code, pas une valeur.
-                occupationCode: o === 'unclassified' ? null : o,
-              })),
-            },
-          ]
-        : []),
-      // Même règle large que `searchSummary` : égalité, préfixe, ou présence
-      // dans `location` — les deux chemins ne doivent jamais diverger.
-      ...(filters.cityLoose
-        ? [
-            {
-              OR: [
-                { city: { equals: filters.cityLoose, mode: 'insensitive' as const } },
-                { city: { startsWith: filters.cityLoose, mode: 'insensitive' as const } },
-                { location: { contains: filters.cityLoose, mode: 'insensitive' as const } },
-              ],
-            },
-          ]
-        : []),
-      /*
-       * LES CRITÈRES DE FACETTE VIVENT DANS CE MÊME `AND`, et c'est
-       * impératif : deux clés `AND` dans un littéral s'écrasent, exactement
-       * comme le décrit le commentaire d'ouverture de ce bloc. Une version
-       * intermédiaire de ce correctif en avait créé un SECOND — elle aurait
-       * supprimé la recherche texte et les filtres ci-dessus.
-       *
-       * Même piège pour `OR` : plusieurs clés `OR` au même niveau ne
-       * survivent pas. Chaque dimension apporte donc son propre objet
-       * `{ OR: [...] }` dans ce tableau, où ils s'additionnent.
-       */
-      ...critereTolerantAuxInconnus('language', filters.languages),
-      ...critereTolerantAuxInconnus('employmentTerm', filters.employmentTerms),
-      ...critereTolerantAuxInconnus('workTime', filters.workTimes),
-      ...critereTolerantAuxInconnus('programType', filters.programTypes),
-      ...critereTolerantAuxInconnus('engagementType', filters.engagementTypes),
-    ],
-    ...(filters.jobFunction ? { jobFunction: filters.jobFunction } : {}),
-    // Case-insensitive: the facet value is canonical ("Paris") but the column
-    // holds mixed spellings ("PARIS", "Paris"), so an exact match dropped half.
-    ...(filters.city ? { city: { equals: filters.city, mode: 'insensitive' as const } } : {}),
-    ...(filters.remote ? { workplaceType: 'REMOTE' } : {}),
-    // `in` : union des valeurs d'une même dimension (cocher CDI ET CDD montre
-    // les deux), intersection entre dimensions différentes.
-    /*
-     * ── LES CRITÈRES INCONNUS NE FONT PLUS DISPARAÎTRE UNE OFFRE ──────────
-     *
-     * RÈGLE PRODUIT (CEO) : « une information inconnue reste accessible ; une
-     * incompatibilité connue reste excluante ; une inconnue n'est jamais
-     * comptée comme une confirmation. »
-     *
-     * LE DÉFAUT. `{ in: [...] }` sur une colonne nullable n'est jamais VRAI
-     * quand la valeur est NULL — c'est le comportement normal de SQL, pas une
-     * anomalie de PostgreSQL. L'offre sortait donc du résultat, du compteur et
-     * de la pagination, sans que rien ne le signale.
-     *
-     * MESURÉ EN PRODUCTION le 14/09/2026, recherche « France + CDI + temps
-     * partiel » sur 11 026 offres actives françaises :
-     *
-     *     1 016  les deux critères renseignés et correspondants
-     *       161  temps partiel OK, contrat inconnu      ← exclues
-     *     1 636  CDI OK, temps de travail inconnu       ← exclues
-     *     1 334  les deux inconnus                      ← exclues
-     *     5 453  temps PLEIN — incompatibilité connue   ← exclues à juste titre
-     *
-     * On masquait donc trois fois plus d'offres qu'on n'en montrait. Ces
-     * 3 131 offres ne sont PAS « compatibles » : elles ne présentent aucune
-     * incompatibilité connue sur ces colonnes, et leur correspondance reste
-     * NON CONFIRMÉE. C'est pourquoi elles restent accessibles sans jamais
-     * être présentées ni comptées comme des correspondances certaines.
-     *
-     * CRITÈRE PAR CRITÈRE, JAMAIS GLOBALEMENT. Un `OR <colonne> IS NULL`
-     * appliqué à la requête entière annulerait les autres contraintes — le
-     * périmètre géographique compris. Chaque dimension porte donc son propre
-     * `OR`, à l'intérieur du `AND` qui relie les dimensions entre elles.
-     */
-    ...(Object.keys(company).length ? { company } : {}),
-    ...(filters.source ? { sources: { some: { sourceKey: filters.source, isActive: true } } } : {}),
+    code: perimetre.code,
+    nom: m?.nom ?? perimetre.code,
+    pays: [...perimetre.pays],
+    mesure: m !== undefined,
+    locales: m ? [...m.locales] : ['fr-FR'],
+    localeParDefaut: m?.localeParDefaut ?? 'fr-FR',
+    langueDesLibelles: langueDesLibelles(m?.localeParDefaut),
   };
 }
 
-type WhereClause = ReturnType<typeof whereClause>;
-
 /**
- * A city name canonicalized for display and matching: trimmed, and Title Cased
- * so "PARIS", "paris" and "Paris" collapse to one "Paris". The raw column still
- * holds the source spelling (some are ALL CAPS, some not); grouping on the raw
- * value split one city into several facet rows and a filter click missed half
- * the offers. This merges them.
+ * La langue des libellés d'une offre lue seule : celle du marché qui sert son
+ * pays (une offre irlandaise appartient au marché GB, une autrichienne au
+ * marché DE), sinon celle d'un pays servi seul, c'est-à-dire le français (lot 8).
  */
-export function canonicalCity(raw: string): string {
-  return raw
-    .trim()
-    .toLocaleLowerCase('fr-FR')
-    .replace(/(^|[\s'’-])([a-zà-ÿ])/g, (_, sep, ch) => sep + ch.toLocaleUpperCase('fr-FR'));
+export function langueDesLibellesDuPays(countryCode: string | null | undefined): LangueLibelles {
+  const code = countryCode?.trim().toUpperCase();
+  if (!code) return 'fr';
+  const marche = Object.values(MARCHES).find((m) => m.pays.includes(code));
+  return langueDesLibelles(marche?.localeParDefaut ?? resoudrePerimetre(code)?.marche?.localeParDefaut);
+}
+
+/** Seuls http et https sont des liens de candidature ; tout le reste est neutralisé. */
+export function actionExterne(url: string | null | undefined): ActionCandidature {
+  if (!url) return { type: 'AUCUNE' };
+  try {
+    const u = new URL(url);
+    return u.protocol === 'https:' || u.protocol === 'http:' ? { type: 'EXTERNE', url: u.toString() } : { type: 'AUCUNE' };
+  } catch {
+    return { type: 'AUCUNE' };
+  }
 }
 
 function toRow(row: {
-  id: string; title: string; company: { name: string; sector: string | null; parentGroup: string | null; domain: string | null };
-  city: string | null; location: string | null; employmentTerm: string | null; url: string;
-  programType: string | null; engagementType: string | null; isSeasonal: boolean | null;
-  postedAt: Date | null; latitude: number | null; longitude: number | null;
-  withdrawnAt?: Date | null;
-  opportunityType?: 'JOB_OPENING' | 'OPEN_APPLICATION' | null;
-  sources: { sourceKey: string }[]; description: string | null; postalCode: string | null;
-  department: string | null; workTime: string | null; workplaceType: string | null;
-  experienceYears: number | null; educationLevel: string | null; salaryMin: number | null;
-  salaryMax: number | null; salaryCurrency: string | null; salaryPeriod: string | null;
-  validThrough: Date | null; countryCode: string | null; countryIntegrity: string | null; language: string | null; firstSeenAt: Date;
-  jobFunction: string | null; seniority: string | null;
-  occupationCode?: string | null; occupationStatus?: string;
-}, taxonomy: OptionalOccupationPresentation): JobRow {
+  id: string; url: string; firstSeenAt: Date; withdrawnAt?: Date | null;
+  canonicalSourceKey?: string | null; canonicalExternalId?: string | null;
+  company: { name: string; sector: string | null; parentGroup: string | null; domain: string | null; sectorCodes?: string[] };
+  sources: Array<ApplySource & PresentationSource>;
+}, taxonomy: OptionalOccupationPresentation, historical = false, at = new Date()): JobRow {
+  const live = row.sources.filter(source => sourceIsAvailable(source, at));
+  const publication = selectApplySource(live, row, at) ?? (historical ? row.sources.find(source => source.url === row.url) : undefined);
+  const content = publication && publicationContentOf(publication);
+  if (!content) throw new Error(`PUBLICATION_PRESENTATION_REBUILD_REQUIRED job=${row.id}`);
+  const occupation = taxonomy.available ? taxonomy.taxonomy.classify(content.title, content.department) : null;
+  const applyUrl = publication.url;
+  const sourceFacts = publicSourceFacts(publication?.sourceFacts);
+  const scalars = scalarSourceFacts(sourceFacts);
+  const min = publicAmount(scalars.salaryMin), max = publicAmount(scalars.salaryMax);
+  const completeSalary = !!scalars.salaryCurrency && !!scalars.salaryPeriod &&
+    (scalars.salaryMin === null || min !== null) && (scalars.salaryMax === null || max !== null);
   return {
     id: row.id,
-    title: row.title,
+    origine: 'AGREGEE',
+    candidature: actionExterne(applyUrl),
+    title: content.title,
     company: row.company.name,
     companyDomain: row.company.domain,
     group: row.company.parentGroup,
-    city: row.city,
-    location: row.location,
-    employmentTerm: row.employmentTerm,
-    programType: row.programType,
-    engagementType: row.engagementType,
-    isSeasonal: row.isSeasonal,
+    city: content.city,
+    location: content.location,
+    employmentTerm: content.employmentTerm,
+    programType: content.programType,
+    engagementType: content.engagementType,
+    isSeasonal: content.isSeasonal,
     sector: row.company.sector,
-    sectorCodes: (row.company as {sectorCodes?:string[]}).sectorCodes??[],
-    url: row.url,
-    postedAt: row.postedAt,
+    sectorCodes: row.company.sectorCodes ?? [],
+    postedAt: content.postedAt,
     withdrawnAt: row.withdrawnAt ?? null,
-    opportunityType: row.opportunityType ?? null,
-    latitude: row.latitude,
-    longitude: row.longitude,
-    sourceCount: row.sources.length,
-    sources: row.sources.map((source) => source.sourceKey),
-    description: row.description,
-    applyUrl: row.url,
-    postalCode: row.postalCode,
-    department: row.department,
-    jobFunction: row.jobFunction,
-    seniorityLabel: row.seniority?taxonomy.seniorityLabel(row.seniority):null,
-    occupationCode: row.occupationCode??null,
-    occupationLabel: taxonomy.occupationLabel(row.occupationCode),
-    occupationFamilyLabel: taxonomy.functionLabel(row.jobFunction),
-    occupationStatus: row.occupationStatus,
-    seniority: row.seniority,
-    workTime: row.workTime,
-    workplaceType: row.workplaceType,
-    experienceYears: row.experienceYears,
-    educationLevel: row.educationLevel,
-    salaryMin: row.salaryMin,
-    salaryMax: row.salaryMax,
-    salaryCurrency: row.salaryCurrency,
-    salaryPeriod: row.salaryPeriod,
-    validThrough: row.validThrough,
-    countryCode: row.countryCode,
-    countryIntegrity: row.countryIntegrity,
-    language: row.language,
+    opportunityType: content.opportunityType ?? null,
+    latitude: scalars.latitude,
+    longitude: scalars.longitude,
+    sourceCount: live.length,
+    sources: live.map((source) => source.sourceKey),
+    description: content.description,
+    applyUrl,
+    sourceFacts,
+    postalCode: scalars.postalCode,
+    department: content.department,
+    jobFunction: occupation?.jobFunction ?? null,
+    seniorityLabel: occupation?.seniority ? taxonomy.seniorityLabel(occupation.seniority) : null,
+    occupationCode: occupation?.occupationCode ?? null,
+    occupationLabel: taxonomy.occupationLabel(occupation?.occupationCode),
+    occupationFamilyLabel: taxonomy.functionLabel(occupation?.jobFunction),
+    occupationStatus: occupation?.occupationStatus ?? 'UNAVAILABLE',
+    seniority: occupation?.seniority ?? null,
+    workTime: content.workTime,
+    workplaceType: scalars.workplaceType,
+    experienceYears: content.experienceYears,
+    educationLevel: scalars.educationLevel,
+    salaryMin: completeSalary ? min : null,
+    salaryMax: completeSalary ? max : null,
+    salaryCurrency: completeSalary ? scalars.salaryCurrency : null,
+    salaryPeriod: completeSalary ? scalars.salaryPeriod : null,
+    validThrough: publication?.expiresAt ?? null,
+    countryCode: content.countryCode,
+    countryIntegrity: content.countryIntegrity,
+    language: content.language,
     firstSeenAt: row.firstSeenAt,
   };
 }
 
+/** La colonne d'une ligne qui porte chaque dimension tolérante. */
+const CHAMP_TOLERANT: Record<DimensionTolerante, (row: JobRow) => string | null> = {
+  contrat: (row) => row.employmentTerm,
+  temps: (row) => row.workTime,
+  programme: (row) => row.programType,
+  langue: (row) => row.language,
+};
+
 /**
- * One offer by id, for its own URL.
- *
- * Returns null when the offer does not exist or is closed. Throws
- * DatabaseUnavailableError when the database itself cannot answer — the two are
- * different: a missing offer is a 404, an unreachable database is a 503.
+ * D-435 — une offre non renseignée sur une dimension filtrée reste servie,
+ * jamais présentée comme une correspondance confirmée : la ligne nomme les
+ * dimensions qu'elle laisse ouvertes.
  */
-/**
- * An offer lookup that distinguishes the three cases the offer page needs:
- *   - 'active'  -> render it,
- *   - 'closed'  -> the offer existed and was closed (expired/filled): the page
- *                  returns 410 Gone so Google de-indexes it fast (D22 — a 404 is
- *                  retried for weeks, a 410 is dropped),
- *   - 'missing' -> the id never existed: a plain 404.
- */
+export function correspondance(row: JobRow, selections: Selections): Correspondance {
+  const ouvertes = DIMENSIONS_TOLERANTES.filter((d) => selections[d]?.length && CHAMP_TOLERANT[d](row) === null);
+  return ouvertes.length ? { statut: 'NON_CONFIRMEE', dimensions: ouvertes } : { statut: 'CONFIRMEE' };
+}
+
+/** A public withdrawal never asserts that the employer closed its vacancy. */
+function publicOfferState(row: { isActive: boolean; withdrawnAt: Date | null; closedAt: Date | null;
+  sources: Array<ApplySource>; canonicalSourceKey?: string | null; canonicalExternalId?: string | null; url: string }, at: Date) {
+  if (row.withdrawnAt) return 'withdrawn' as const;
+  if (row.isActive && selectApplySource(row.sources, row, at)) return 'active' as const;
+  const expired = row.sources.length > 0 && row.sources.every(source => source.expiresAt && source.expiresAt <= at);
+  return row.closedAt || expired ? 'closed' as const : 'withdrawn' as const;
+}
+
 export async function getJobStatus(
   id: string,
 ): Promise<
@@ -647,10 +391,18 @@ export async function getJobStatus(
   // A closed offer still carries its content: the page shows it with an
   // "expirée" banner (§4.13) while the middleware serves 410 for SEO (D22).
   | { status: 'closed'; job: JobRow }
+  | { status: 'withdrawn'; canonicalId: string; job: JobRow | null }
   | { status: 'missing' }
 > {
   if (!process.env.DATABASE_URL) throw new DatabaseUnavailableError();
   try {
+    // Une offre directe : son espace d'identifiants est le sien ; retirée par
+    // le backend ou échue, elle est « fermée » — jamais « retirée » au sens
+    // d'un retrait de catalogue, puisque c'est l'employeur lui-même qui parle.
+    if (estIdDirect(id)) {
+      const direct = await prisma.directOffer.findUnique({ where: { id: idDirect(id) } });
+      return direct ? { status: statutDirect(direct), job: directToRow(direct) } : { status: 'missing' };
+    }
     const canonicalId = await canonicalJobId(prisma, id);
     if (!canonicalId) return { status: 'missing' };
     const row = await prisma.job.findUnique({
@@ -658,38 +410,47 @@ export async function getJobStatus(
       omit: { raw: true, searchText: true },
       include: {
         company: true,
-        sources: { select: { sourceKey: true }, where: { isActive: true } },
+        sources: { select: publicSources().select },
       },
     });
     if (!row) return { status: 'missing' };
-    const taxonomy=await getOptionalOccupationPresentation();
-    if (!row.isActive) return { status: 'closed', job: toRow(row, taxonomy) };
-    return { status: 'active', job: toRow(row, taxonomy) };
+    const at = new Date(), status = publicOfferState(row, at);
+    if (status === 'withdrawn') {
+      const owner = selectApplySource(row.sources, row, at) ?? row.sources.find(source => source.url === row.url);
+      const presentable = row.withdrawalReason !== 'PUBLICATION_UNVERIFIED' && owner && publicationContentOf(owner);
+      return { status, canonicalId, job: presentable ? toRow(row, await getOptionalOccupationPresentation(), true, at) : null };
+    }
+    return { status, job: toRow(row, await getOptionalOccupationPresentation(), status === 'closed', at) };
   } catch (error) {
     throw new DatabaseUnavailableError(error);
   }
 }
 
-export async function getJob(id: string): Promise<JobRow | null> {
-  const result = await getJobStatus(id);
-  return result.status === 'active' ? result.job : null;
-}
-
 /**
- * The lightweight status the middleware probe needs — existence + isActive only,
- * no joins. The page's own render does the full fetch; this must not repeat the
- * expensive company/sources join just to decide 200 vs 410 vs 404.
+ * The status probe requires one usable publication and returns no listing payload.
  */
-export async function getOfferState(param: string): Promise<'active' | 'closed' | 'missing'> {
+export async function getOfferState(param: string): Promise<'active' | 'closed' | 'withdrawn' | 'missing'> {
   if (!process.env.DATABASE_URL) throw new DatabaseUnavailableError();
   try {
     // The param may be a bare id or slug-id (S-01) — try each candidate, so
     // the middleware's 410 decision works on both URL shapes.
     for (const id of offerIdCandidates(param)) {
+      if (estIdDirect(id)) {
+        const direct = await prisma.directOffer.findUnique({ where: { id: idDirect(id) }, select: { eligible: true, validThrough: true } });
+        if (direct) return statutDirect(direct);
+        continue;
+      }
       const canonicalId = await canonicalJobId(prisma, id);
       if (!canonicalId) continue;
-      const row = await prisma.job.findUnique({ where: { id: canonicalId }, select: { isActive: true } });
-      if (row) return row.isActive ? 'active' : 'closed';
+      const row = await prisma.job.findUnique({ where: { id: canonicalId }, select: { isActive: true, withdrawnAt: true, closedAt: true,
+        canonicalSourceKey: true, canonicalExternalId: true, url: true, sources: { select: publicSources().select } } });
+      if (row) {
+        const at = new Date(), status = publicOfferState(row, at);
+        if (status !== 'active') return status;
+        const owner = selectApplySource(row.sources, row, at)!;
+        if (!publicationContentOf(owner)) throw new Error(`PUBLICATION_PRESENTATION_REBUILD_REQUIRED job=${canonicalId}`);
+        return 'active';
+      }
     }
     return 'missing';
   } catch (error) {
@@ -706,6 +467,7 @@ export async function resolveOfferParam(
   param: string,
 ): Promise<
   | { status: 'active' | 'closed'; job: JobRow; matchedId: string }
+  | { status: 'withdrawn'; canonicalId: string; job: JobRow | null; matchedId: string }
   | { status: 'missing' }
 > {
   for (const id of offerIdCandidates(param)) {
@@ -715,12 +477,6 @@ export async function resolveOfferParam(
   return { status: 'missing' };
 }
 
-/**
- * Offers a candidate reading THIS offer would plausibly want next (S-01):
- * the same Maison first, then the same sector — active only, never itself.
- * Server-rendered as links on the offer page, they are also real crawl paths
- * between offers, which the sitemap-less crawl requirement leans on.
- */
 /**
  * Le bloc Maison de la colonne latérale d'une offre (DA §5.3) : combien
  * d'offres ouvertes, dans combien de villes et de pays.
@@ -733,23 +489,32 @@ export type CompanyAside = { openJobs: number; cities: number; countries: number
 export async function getCompanyAside(companyName: string): Promise<CompanyAside | null> {
   if (!process.env.DATABASE_URL) throw new DatabaseUnavailableError();
   try {
+    const at = new Date();
     const company = await prisma.company.findFirst({
       where: { name: companyName },
       select: { id: true, domain: true, sector: true, sectorCodes: true, parentGroup: true },
     });
-    if (!company) return null;
+    // Une Maison qui publie sur Catwalks compte ses offres directes avec ses
+    // offres agrégées ; une Maison connue par ses seules offres directes a
+    // aussi son bloc, sans domaine ni groupe (le registre ne la connaît pas).
     const [agg] = await prisma.$queryRaw<{ jobs: bigint; cities: bigint; countries: bigint }[]>`
       SELECT count(*)::bigint AS jobs,
              count(DISTINCT lower(city))::bigint AS cities,
              count(DISTINCT "countryCode")::bigint AS countries
-      FROM "Job" WHERE "companyId" = ${company.id} AND "isActive"`;
+      FROM (
+        SELECT j.city, j."countryCode" FROM "Job" j WHERE j."companyId" = ${company?.id ?? ''} AND ${publicJobSql(Prisma.sql`j`, at)}
+        UNION ALL
+        SELECT d.city, d."countryCode" FROM "DirectOffer" d WHERE d.company = ${companyName} AND ${directPubliableSql(Prisma.sql`d`, at)}
+      ) offres`;
+    const openJobs = Number(agg?.jobs ?? 0);
+    if (!company && openJobs === 0) return null;
     return {
-      openJobs: Number(agg?.jobs ?? 0),
+      openJobs,
       cities: Number(agg?.cities ?? 0),
       countries: Number(agg?.countries ?? 0),
-      domain: company.domain,
-      sector: company.sector,
-      group: company.parentGroup,
+      domain: company?.domain ?? null,
+      sector: company?.sector ?? null,
+      group: company?.parentGroup ?? null,
     };
   } catch (error) {
     if (error instanceof DatabaseUnavailableError) throw error;
@@ -761,308 +526,125 @@ export async function getSimilarJobs(job: JobRow, limit = 6): Promise<JobRow[]> 
   if (!process.env.DATABASE_URL) throw new DatabaseUnavailableError();
   try {
     const base = {
-      isActive: true,
+      ...publicJobWhere(),
       id: { not: job.id },
     };
     const include = {
       company: true,
-      sources: { select: { sourceKey: true as const }, where: { isActive: true } },
+      sources: publicSources(),
     };
     // Audit UX 14/09 (M5) : une offre à Bordeaux proposait Glasgow et
     // Limerick. Même Maison ET même pays d'abord ; le pays seul ensuite.
     const memePays = job.countryCode ? { countryCode: job.countryCode } : {};
+    const taxonomy = await getOptionalOccupationPresentation();
+    const ordre: Prisma.JobOrderByWithRelationInput[] = [{ postedAt: { sort: 'desc', nulls: 'last' } }, { id: 'asc' }];
+    // D-419 §1 : les offres Catwalks de la même Maison, dans le même pays, ouvrent la liste.
+    const directes = (await prisma.directOffer.findMany({
+      where: { ...directPubliable(), ...memePays, company: job.company, ...(job.origine === 'CATWALKS' ? { id: { not: idDirect(job.id) } } : {}) },
+      // `postedAt` d'une offre directe est toujours renseigné : tri simple.
+      orderBy: [{ postedAt: 'desc' }, { id: 'asc' }],
+      take: limit,
+    })).map(directToRow);
+    if (directes.length >= limit) return directes;
     const sameMaison = await prisma.job.findMany({
       where: { ...base, ...memePays, company: { name: job.company } },
       include,
       omit: { raw: true, searchText: true },
-      orderBy: [{ postedAt: { sort: 'desc', nulls: 'last' } }, { id: 'asc' }],
-      take: limit,
+      orderBy: [...ordre],
+      take: limit - directes.length,
     });
-    const taxonomy=await getOptionalOccupationPresentation();
-    if (sameMaison.length >= limit) return sameMaison.map(row=>toRow(row,taxonomy));
+    const memeMaison = [...directes, ...sameMaison.map((row) => toRow(row, taxonomy))];
+    if (memeMaison.length >= limit) return memeMaison;
 
-    const sectorCodes = job.sectorCodes??[];
+    const sectorCodes = job.sectorCodes ?? [];
     const fill = sectorCodes.length
       ? await prisma.job.findMany({
           where: {
             ...base,
-            company: { sectorCodes:{hasSome:sectorCodes}, name: { not: job.company } },
+            ...memePays,
+            company: { sectorCodes: { hasSome: sectorCodes }, name: { not: job.company } },
             ...(job.city ? { city: { equals: job.city, mode: 'insensitive' as const } } : {}),
           },
           include,
           omit: { raw: true, searchText: true },
-          orderBy: [{ postedAt: { sort: 'desc', nulls: 'last' } }, { id: 'asc' }],
-          take: limit - sameMaison.length,
+          orderBy: [...ordre],
+          take: limit - memeMaison.length,
         })
       : [];
-    return [...sameMaison, ...fill].map(row=>toRow(row,taxonomy));
+    return [...memeMaison, ...fill.map((row) => toRow(row, taxonomy))];
   } catch (error) {
     throw new DatabaseUnavailableError(error);
   }
 }
 
-export async function getJobs(filters: JobFilters = {}): Promise<JobsResult> {
+/**
+ * LA RECHERCHE (lot 6) : un périmètre obligatoire, un plan, une requête.
+ *
+ * `exigerPerimetre` lève `PerimetreRequisError` sur un marché absent ou
+ * inconnu — la route en fait un 400, jamais une liste mondiale. Le plan
+ * décide des filtres honorés et refusés ; le SQL les applique ; les facettes
+ * sont libellées depuis le registre et le vocabulaire unique.
+ */
+/**
+ * L'empreinte d'un plan : ce qui, changé, rendrait un curseur vide de sens —
+ * le périmètre, les termes, le lieu honoré, les sélections, le pays prioritaire.
+ */
+function empreintePlan(plan: ReturnType<typeof planifierRecherche>): string {
+  return empreinteCriteres({
+    perimetre: plan.perimetre.code, termes: plan.termes, lieu: plan.lieu ?? null,
+    selections: Object.fromEntries(DIMENSIONS.flatMap((d) => (plan.selections[d]?.length ? [[d, [...plan.selections[d]!].sort()]] : []))),
+    prioritePays: plan.prioritePays ?? null, source: plan.source ?? null,
+  });
+}
+
+export async function getJobs(filters: JobFilters): Promise<JobsResult> {
+  const perimetre = exigerPerimetre(filters.marche);
   if (!process.env.DATABASE_URL) throw new DatabaseUnavailableError();
 
-  const page = normalizedPage(filters.page);
+  const plan = planifierRecherche(perimetre, filters);
+  const empreinte = empreintePlan(plan);
+  // Un curseur d'autres critères est refusé AVANT toute requête (400 CURSEUR_INVALIDE).
+  const curseur = filters.apres ? (decoderCurseur(filters.apres, empreinte, ARITE_CLE_RECHERCHE) as CleRecherche) : null;
   try {
-    const taxonomy=await getOptionalOccupationPresentation();
-    const summary = await searchSummary(filters, page, PAGE_SIZE, taxonomy);
-    const rows = await prisma.job.findMany({
-      where: { id: { in: summary.ids }, isActive: true },
-      omit: { raw: true, searchText: true },
-      include: { company: true, sources: { select: { sourceKey: true }, where: { isActive: true } } },
+    const taxonomy = await getOptionalOccupationPresentation();
+    const summary = await searchSummary(plan, curseur, PAGE_SIZE, taxonomy);
+    // La page mêle les deux origines dans l'ordre du SQL ; chaque origine est
+    // relue dans sa table, et la ligne servie a la même forme pour les deux.
+    const idsDirects = summary.ids.filter(estIdDirect).map(idDirect);
+    const [rows, directes] = await Promise.all([
+      prisma.job.findMany({
+        where: { ...publicJobWhere(), id: { in: summary.ids.filter((id) => !estIdDirect(id)) } },
+        omit: { raw: true, searchText: true },
+        include: { company: true, sources: publicSources() },
+      }),
+      idsDirects.length ? prisma.directOffer.findMany({ where: { id: { in: idsDirects } } }) : [],
+    ]);
+    const byId = new Map<string, JobRow>([
+      ...rows.map((row): [string, JobRow] => [row.id, toRow(row, taxonomy)]),
+      ...directes.map((d): [string, JobRow] => {
+        const ligne = directToRow(d);
+        return [ligne.id, ligne];
+      }),
+    ]);
+    const jobs = summary.ids.flatMap((id) => {
+      const ligne = byId.get(id);
+      return ligne ? [{ ...ligne, correspondance: correspondance(ligne, plan.selections) }] : [];
     });
-    const byId = new Map(rows.map(row => [row.id, row]));
-    const countries = new Map<string, number>();
-    for (const facet of summary.rawCountries) {
-      const code = countryCode(facet.value);
-      if (code && code !== 'FR') countries.set(code, (countries.get(code) ?? 0) + facet.count);
-    }
     return {
-      jobs: summary.ids.flatMap(id => { const row = byId.get(id); return row ? [toRow(row, taxonomy)] : []; }),
+      jobs,
       occupationEnrichmentAvailable: taxonomy.available,
-      total: summary.total, totalInDatabase: summary.totalInDatabase, page,
-      pageCount: Math.max(1, Math.ceil(summary.total / PAGE_SIZE)),
-      /*
-       * LE MARCHÉ FILTRE LES FACETTES SERVIES, JAMAIS LES OFFRES RENDUES.
-       *
-       * Le tri arrive ICI, au moment de l'assemblage, et non dans le SQL de
-       * `searchSummary` : les comptes restent calculés en une passe pour tout
-       * le monde. C'est délibéré — le coût d'une facette calculée puis écartée
-       * est nul (même requête d'agrégation), alors qu'une requête qui varie
-       * selon le marché deviendrait dix plans d'exécution à surveiller au lieu
-       * d'un, pour aucun gain mesuré.
-       *
-       * `facettesServies` retire les clés non retenues sans muter l'objet.
-       */
-      facets: facettesServies({
-        occupations: summary.occupations.map(f=>({...f,label:f.value==='unclassified'?'Métier à préciser':taxonomy.occupationLabel(f.value)??'Libellé indisponible'})),
-        sectors: (await getSectorPresentation()).sectors.map(s=>({value:s.code,label:s.label,count:summary.sectors.find(f=>f.value===s.code)?.count??0})).concat(summary.sectors.filter(f=>f.value==='unclassified').map(f=>({...f,label:'Secteur à vérifier'}))), contracts: summary.contracts,
-      workTimes: summary.workTimes, programs: summary.programs, engagements: summary.engagements,
-        cities: summary.cities.map(f => ({ ...f, value: canonicalCity(f.value) })),
-        groups: summary.groups, maisons: summary.maisons, sources: summary.sources,
-        languages: summary.languages ?? [],
-        countries: [
-          ...(summary.franceCount ? [{ value: 'FR', count: summary.franceCount }] : []),
-          ...[...countries].map(([value, count]) => ({ value, count })).sort((a,b) => b.count-a.count),
-        ],
-      }, filters.marche),
+      total: summary.total,
+      totalConfirmes: summary.totalConfirmes,
+      totalPerimetre: summary.totalPerimetre,
+      suivant: summary.suivant ? encoderCurseur(empreinte, summary.suivant) : null,
+      perimetre: perimetreServi(perimetre),
+      facettes: await libellerFacettes(plan, summary.facettes, taxonomy),
+      filtresRefuses: plan.refus,
+      lieu: plan.lieuCompris ?? null,
     };
   } catch (error) {
     throw new DatabaseUnavailableError(error);
   }
 }
 
-/**
- * Autocomplete for the search bar, from OUR data — the suggestions are real
- * cities and real job titles the board actually holds, so a click always leads
- * to results, unlike a generic canned list.
- *
- * WORLD-scoped like the board's default (decision D19, which revises D12):
- * typing "Milan" or "London" must suggest those cities — the ~26k world offers
- * are reachable from the bar. No isFrance filter here, on purpose.
- */
-const SUGGEST_LIMIT = 8;
-
-export async function suggestCities(query: string): Promise<string[]> {
-  if (!process.env.DATABASE_URL) return [];
-  const q = query.trim();
-  if (q.length < 2) return [];
-  try {
-    const rows = await prisma.job.groupBy({
-      by: ['city'],
-      where: {
-        isActive: true,
-        // World, not FR-only (revises D12): the board defaults to every country,
-        // so typing "Milan" must surface Milan — otherwise the world offers are
-        // unreachable from the search box. Ordered by frequency, so the busiest
-        // cities (Paris, London…) still lead.
-        city: { startsWith: q, mode: 'insensitive' },
-      },
-      _count: { _all: true },
-      orderBy: { _count: { city: 'desc' } },
-      // Plus large que la limite : la colonne mélange les casses (« Paris » /
-      // « PARIS » sont des groupes distincts) — on déduplique ensuite.
-      take: SUGGEST_LIMIT * 3,
-    });
-    // Dédup insensible à la casse : on garde la graphie du groupe le plus
-    // fréquent (les lignes arrivent triées par volume desc). Sans ça le
-    // panneau montrait « Paris » ET « PARIS » — vu en prod.
-    const seen = new Set<string>();
-    const cities: string[] = [];
-    for (const row of rows) {
-      if (!row.city) continue;
-      const key = row.city.toLowerCase();
-      if (seen.has(key)) continue;
-      seen.add(key);
-      cities.push(row.city);
-      if (cities.length >= SUGGEST_LIMIT) break;
-    }
-    return cities;
-  } catch {
-    return [];
-  }
-}
-
-/**
- * Reduces a raw offer title to a searchable role keyword. Raw titles carry the
- * whole posting — "Conseiller de vente 35h - Paris - CDI H/F" — and clicking
- * one dropped that entire string into the search box, so the next search matched
- * almost nothing. This keeps the ROLE and drops the noise a candidate would
- * never type: reference codes, the contract, hours, the city, the H/F marker.
- */
-export function roleKeyword(title: string): string {
-  let role = title
-    // Cut everything after the first " - " / " – " / " | " / " / " separator:
-    // the role leads, the qualifiers (city, contract, hours) follow it.
-    .split(/\s[-–|/]\s/)[0]
-    // Drop a leading contract/reference prefix ("CDI - …", "2026-2825 - …").
-    .replace(/^(CDI|CDD|STAGE|ALTERNANCE|INTERIM|VIE|FREELANCE|\d[\d-]*)\s*[-–]\s*/i, '')
-    // Strip trailing H/F, F/H, (H/F), hours like "35h", and stray separators.
-    .replace(/\(?\b[hf](?:\s*\/\s*[hf])?\b\)?/gi, '')
-    .replace(/\b\d{2,}\s*h\b/gi, '')
-    .replace(/[\s,–-]+$/g, '')
-    .trim();
-  return role;
-}
-
-export async function suggestTitles(query: string): Promise<string[]> {
-  if (!process.env.DATABASE_URL) return [];
-  const q = query.trim();
-  if (q.length < 2) return [];
-  try {
-    // Pull more raw titles than we need, reduce each to its role keyword, then
-    // dedupe — several postings collapse to the same clean role.
-    const rows = await prisma.job.groupBy({
-      by: ['title'],
-      where: {
-        isActive: true,
-        // World, not FR-only (revises D12): titles are suggested from the whole
-        // active catalogue, matching the board's world-by-default scope.
-        title: { contains: q, mode: 'insensitive' },
-      },
-      _count: { _all: true },
-      orderBy: { _count: { title: 'desc' } },
-      take: 40,
-    });
-    const seen = new Set<string>();
-    const roles: string[] = [];
-    for (const row of rows) {
-      if (!row.title) continue;
-      const role = roleKeyword(row.title);
-      const key = role.toLowerCase();
-      // Keep only roles that still contain what the candidate typed, so a title
-      // matched on a trailing city does not surface an unrelated-looking role.
-      if (role.length < 2 || seen.has(key) || !key.includes(q.toLowerCase())) continue;
-      seen.add(key);
-      roles.push(role);
-      if (roles.length >= SUGGEST_LIMIT) break;
-    }
-    return roles;
-  } catch {
-    return [];
-  }
-}
-
-/**
- * Every indexable URL's data for the sitemap — every active offer by id
- * (world, revises D12: the board defaults to all countries, so the sitemap
- * exposes the same set), and the Maisons that have at least one, by slug. Kept
- * lean (id + updatedAt only) so the ~26k-entry sitemap stays a single cheap
- * query per type.
- */
-/**
- * Sitemap chunké (S-03, remonté au lot 2) : le monofichier à 34 k lignes en
- * force-dynamic répondait en timeout depuis l'extérieur — Google ne voyait
- * RIEN. L'index liste des chunks de 5 000 URLs, chacun paginé en base par
- * curseur d'id (stable), lastmod = updatedAt.
- */
-export const SITEMAP_CHUNK_SIZE = 5000;
-
-export async function sitemapOfferCount(): Promise<number> {
-  if (!process.env.DATABASE_URL) return 0;
-  return prisma.job.count({ where: { isActive: true } });
-}
-
-export async function sitemapOffersChunk(
-  chunk: number,
-): Promise<{ id: string; title: string; updatedAt: Date }[]> {
-  if (!process.env.DATABASE_URL) return [];
-  const offers = await prisma.job.findMany({
-    where: { isActive: true },
-    // title rides along so the sitemap lists the canonical slug URLs (S-01).
-    select: { id: true, title: true, updatedAt: true },
-    orderBy: { id: 'asc' },
-    skip: chunk * SITEMAP_CHUNK_SIZE,
-    take: SITEMAP_CHUNK_SIZE,
-  });
-  return offers;
-}
-
-export async function sitemapCompanies(): Promise<{ name: string; updatedAt: Date }[]> {
-  if (!process.env.DATABASE_URL) return [];
-  const rows = await prisma.company.findMany({
-    where: { jobs: { some: { isActive: true } } },
-    select: { name: true, lastSeenAt: true },
-  });
-  return rows.map((c) => ({ name: c.name, updatedAt: c.lastSeenAt ?? new Date() }));
-}
-
-/**
- * Headline counts for the landing — the aggregator's proof (real numbers, not
- * invented copy): live offers, Maisons, and distinct countries covered. Returns
- * zeros when the database is unavailable, so the landing renders without them
- * rather than failing (the landing has value without a count).
- */
-export async function landingStats(): Promise<{
-  offers: number;
-  companies: number;
-  countries: number;
-  /** Maisons whose FIRST live offer appeared within 7 days — the "+X cette semaine" (DEC-1). */
-  newCompaniesThisWeek: number;
-}> {
-  if (!process.env.DATABASE_URL) return { offers: 0, companies: 0, countries: 0, newCompaniesThisWeek: 0 };
-  try {
-    const weekAgo = new Date(Date.now() - 7 * 86_400_000);
-    const [offers, companies, countryRows, newRows, oldest] = await Promise.all([
-      prisma.job.count({ where: { isActive: true } }),
-      prisma.company.count({ where: { jobs: { some: { isActive: true } } } }),
-      prisma.job.findMany({
-        where: { isActive: true, countryCode: { not: null } },
-        select: { countryCode: true },
-        distinct: ['countryCode'],
-      }),
-      // A Maison is "new this week" when it has live offers now and had NONE
-      // older than a week — its first sighting is recent, not just one more
-      // posting from a long-covered house.
-      prisma.company.count({
-        where: {
-          jobs: { some: { isActive: true } },
-          NOT: { jobs: { some: { firstSeenAt: { lt: weekAgo } } } },
-        },
-      }),
-      prisma.job.findFirst({ orderBy: { firstSeenAt: 'asc' }, select: { firstSeenAt: true } }),
-    ]);
-    // Raw country spellings collapse to canonical codes (IT/Italy/it -> IT).
-    const codes = new Set(countryRows.map((r) => countryCode(r.countryCode)).filter(Boolean));
-    // « +810 cette semaine » sur 810 Maisons après un fresh start se lit comme
-    // un bug : tant que la base n'a pas 7 jours d'historique, le delta est un
-    // artefact — masqué (0), il réapparaît de lui-même à J+7.
-    const hasWeekOfHistory = oldest !== null && oldest.firstSeenAt < weekAgo;
-    return {
-      offers,
-      companies,
-      countries: codes.size,
-      newCompaniesThisWeek: hasWeekOfHistory ? newRows : 0,
-    };
-  } catch {
-    return { offers: 0, companies: 0, countries: 0, newCompaniesThisWeek: 0 };
-  }
-}
-
-/**
- * `landingStats` est appelé par le layout ET le footer de CHAQUE page : dix
- * requêtes par vue, cache chaud compris (audit I-5). Mémorisé 10 minutes.
- */
-export const landingStatsCached = unstable_cache(landingStats, ['landing-stats'], { revalidate: 600, tags: ['landing'] });
+export { DIMENSIONS };

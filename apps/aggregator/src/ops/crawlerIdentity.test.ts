@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { readFileSync, readdirSync, existsSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { CRAWLER_IDENTITY, BOT_INFO_URL } from '../lib/crawlerIdentity.js';
@@ -23,32 +23,8 @@ describe('identité du crawler (D62)', () => {
     expect(BOT_INFO_URL).toMatch(/^https:\/\/[^/]+\/bot$/);
   });
 
-  /**
-   * L'URL d'information nomme l'OPÉRATEUR, et son contenu doit exister quelque part dans le dépôt.
-   *
-   * D62 en fait un préalable bloquant : tant que la page n'est pas servie, l'identité annoncée ne mène
-   * nulle part. Elle a rendu 404 pendant que le User-Agent la portait déjà sur chaque requête sortante,
-   * et aucun test ne l'a signalé — ils affirmaient la chaîne littérale, jamais la propriété.
-   *
-   * Ce test verrouille les deux moitiés vérifiables hors ligne : l'URL désigne bien Catwalks (pas le
-   * produit), et le contenu à publier est rédigé. Que le domaine la serve se mesure en ligne
-   * (`botInfoUrlIsServed`), pas ici.
-   */
-  it('nomme l\'opérateur, et le contenu à publier est rédigé', () => {
+  it('nomme le domaine de l’opérateur sans prétendre vérifier sa disponibilité', () => {
     expect(BOT_INFO_URL).toBe('https://catwalks.io/bot');
-    /*
-     * D-420 (14/09/2026) — la page vivait dans `apps/web`, le rendu Mode
-     * Careers, supprimé. Elle n'a pas disparu : elle est servie par
-     * catwalks.io, LE domaine que `BOT_INFO_URL` annonce (vérifié en
-     * production : 200). Le préalable de D62 est donc mieux rempli qu'avant,
-     * puisque la page est enfin sur le domaine qu'elle prétend désigner.
-     *
-     * Ce dépôt ne peut plus vérifier son existence sur disque : elle est dans
-     * un AUTRE dépôt. Ce qui reste vérifiable ici — et qui était le vrai objet
-     * du témoin — c'est que l'URL annoncée désigne l'OPÉRATEUR (catwalks.io),
-     * jamais un tiers dont on emprunterait l'identité (D62). Que le domaine la
-     * serve se mesure en ligne, par `botInfoUrlIsServed`.
-     */
     expect(new URL(BOT_INFO_URL).hostname).toBe('catwalks.io');
   });
 

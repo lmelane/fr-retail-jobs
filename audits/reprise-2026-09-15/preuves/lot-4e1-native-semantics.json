@@ -1,0 +1,20 @@
+{
+  "snapshot": "2026-09-15 retained RAW",
+  "newDeadlinePaths": {
+    "GREENHOUSE.application_deadline": 1,
+    "EASYCRUIT.detail.@_date_end": 50,
+    "TALENTVIEW.detail.date_end": 7
+  },
+  "easycruitListDetailEndDatesAgree": 50,
+  "talentView": {
+    "bundleUrl": "https://baccarat.talentview.io/assets/index-2301c0ef.js",
+    "sha256": "8cb48b69fa5ce8cf9e2bd83314620e2d031b4ee6661395e4e2bbe2d8564ea2e1",
+    "mapping": "campaign.date_end -> JobPosting.validThrough",
+    "separateField": "job_start"
+  },
+  "references": [
+    "https://docs.greenhouse.io/job-board.html",
+    "https://community.visma.com/t5/Kennisbank-Youforce-Werving/Opbouw-XML-datafeed/ta-p/650525",
+    "https://html.spec.whatwg.org/multipage/syntax.html#attributes-2"
+  ]
+}

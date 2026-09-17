@@ -23,13 +23,14 @@ export async function planExcludedIdentities(prisma: PrismaClient, definitions =
     for (const entry of entries) {
       const { job, ...before } = entry;
       if (entry.isActive) operations.push({ entity: 'JobSource', id: entry.id, before: json(before), patch: { isActive: false }, reason: 'Exclude the unrelated source from the sector; no employer closure inferred' });
+      if (!job) continue; // Quarantined publication has no employer presentation to mutate.
       if (handledJobs.has(job.id)) continue;
       handledJobs.add(job.id);
       if (job.sources.some(s => s.sourceKey !== source.key && s.isActive)) throw new Error(`Other active employer evidence needs review: ${job.id}`);
       const { sources: _sources, company, ...jobBefore } = job;
       if (job.isActive) operations.push({ entity: 'Job', id: job.id, before: json(jobBefore), patch: { isActive: false, closedAt: null, withdrawnAt: at, withdrawalReason: 'OUT_OF_SCOPE' }, reason: 'Excluded from the sector catalogue; correction event, not employer CLOSED event' });
       if (!companyIds.has(company.id)) {
-        const foreignJob = await prisma.job.findFirst({ where: { companyId: company.id, isActive: true, id: { notIn: entries.map(e => e.jobId) } }, select: { id: true } });
+        const foreignJob = await prisma.job.findFirst({ where: { companyId: company.id, isActive: true, id: { notIn: entries.flatMap(e => e.jobId ? [e.jobId] : []) } }, select: { id: true } });
         if (foreignJob) throw new Error(`Employer identity also owns an unreviewed active job: ${company.id}/${foreignJob.id}`);
         companyIds.add(company.id);
         operations.push({ entity: 'Company', id: company.id, before: json(company), patch: {

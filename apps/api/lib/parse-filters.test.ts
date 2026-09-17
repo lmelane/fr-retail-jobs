@@ -1,51 +1,51 @@
 import { describe, expect, it } from 'vitest';
-import { parseFilters, MAX_PAGE } from './jobs';
+import { parseFilters } from './jobs';
+import { CURSEUR_MAX } from './curseur';
 
 /**
- * LE PARAMÈTRE TECHNIQUE porte le nom de la DIMENSION, pas un mot français.
- *
- * `?contrat=` datait du modèle franco-centré, où la colonne s'appelait
- * `contract` et stockait « CDI ». La base est mondiale depuis le 2026-09-08 :
- * l'URL technique suit. Vérifié avant de renommer — ni le sitemap ni aucun
- * canonical ne référençaient ce paramètre, donc aucune URL indexée n'était en
- * jeu.
- *
- * L'ancien nom reste LU (des liens partagés existent) mais rien ne l'émet plus.
- * L'interface, elle, continue d'afficher « Contrat » et « CDI » : c'est la
- * couche de localisation, pas le modèle.
+ * LES CLÉS D'URL SONT CELLES DU CONTRAT DE FACETTES (lot 6) : `contrat`,
+ * `temps`, `programme`… — le vocabulaire visible par le candidat, en français
+ * parce que l'URL l'est. Les clés techniques du modèle mondial
+ * (`employmentTerm`, `workTime`, `programType`), émises par le site entre le
+ * 2026-09-08 et le lot 6, restent LUES : des liens partagés existent.
+ * La pagination est un curseur `apres` (lot 7) ; `page` n'existe plus.
  */
-describe('parseFilters — le paramètre de durée d’emploi', () => {
-  it.each(['1.5', '-1', 'Infinity', 'NaN', '9007199254740993'])('normalizes invalid page %s', page => {
-    expect(parseFilters({ page }).page).toBe(1);
+describe('parseFilters — bornes et clés du contrat', () => {
+  it('lit le curseur `apres` tel quel, borné en longueur ; `page` n’est plus lu', () => {
+    expect(parseFilters({ apres: ' abc_-123 ' }).apres).toBe('abc_-123');
+    expect(parseFilters({ apres: '' }).apres).toBeUndefined();
+    expect(parseFilters({ page: '3' })).not.toHaveProperty('page');
+    // Un jeton trop long est tronqué à CURSEUR_MAX + 1 : c'est le décodeur qui le refuse, pas le parseur qui le devine.
+    expect(parseFilters({ apres: 'a'.repeat(5000) }).apres).toHaveLength(CURSEUR_MAX + 1);
   });
-  it('bounds oversized offsets and search text', () => {
-    expect(parseFilters({ page: '999999', q: 'a'.repeat(5000) })).toMatchObject({ page: MAX_PAGE, q: 'a'.repeat(200) });
+  it('bounds search text', () => {
+    expect(parseFilters({ q: 'a'.repeat(5000) })).toMatchObject({ q: 'a'.repeat(200) });
   });
   // parseFilters reçoit les searchParams de Next (un objet), pas une URLSearchParams.
   const filters = (qs: string) =>
     parseFilters(Object.fromEntries(new URLSearchParams(qs).entries()));
 
-  it('lit le paramètre canonique', () => {
-    expect(filters('employmentTerm=PERMANENT').employmentTerms).toEqual(['PERMANENT']);
+  it('lit la clé du contrat', () => {
+    expect(filters('contrat=PERMANENT').filtres.contrat).toEqual(['PERMANENT']);
   });
 
-  it('accepte encore l’ancien ?contrat= — les liens partagés continuent de marcher', () => {
-    expect(filters('contrat=FIXED_TERM').employmentTerms).toEqual(['FIXED_TERM']);
+  it('accepte encore l’ancienne clé technique — les liens partagés continuent de marcher', () => {
+    expect(filters('employmentTerm=FIXED_TERM').filtres.contrat).toEqual(['FIXED_TERM']);
   });
 
-  it('le paramètre canonique l’emporte quand les deux sont présents', () => {
-    expect(filters('contrat=FIXED_TERM&employmentTerm=PERMANENT').employmentTerms).toEqual(['PERMANENT']);
+  it('la clé du contrat l’emporte quand les deux sont présentes', () => {
+    expect(filters('contrat=FIXED_TERM&employmentTerm=PERMANENT').filtres.contrat).toEqual(['FIXED_TERM']);
   });
 
-  it('rend undefined quand aucun n’est fourni', () => {
-    expect(filters('ville=Paris').employmentTerms).toBeUndefined();
+  it('rend undefined quand aucune n’est fournie', () => {
+    expect(filters('ville=Paris').filtres.contrat).toBeUndefined();
   });
 
-  /** Les autres paramètres restent en français : ils n'ont jamais désigné une taxonomie. */
-  it('ne touche pas aux autres paramètres visibles', () => {
-    const f = filters('ville=Paris&secteur=LUXURY&pays=FR');
-    expect(f.city).toBe('Paris');
-    expect(f.sectors).toEqual(['LUXURY']);
-    expect(f.countries).toEqual(['FR']);
+  it('lit les autres dimensions sous leur clé visible, et le marché', () => {
+    const f = filters('ville=Paris&secteur=LUXURY&pays=fr&marche=FR');
+    expect(f.filtres.ville).toEqual(['Paris']);
+    expect(f.filtres.secteur).toEqual(['LUXURY']);
+    expect(f.filtres.pays).toEqual(['FR']);
+    expect(f.marche).toBe('FR');
   });
 });

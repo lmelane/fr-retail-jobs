@@ -1,0 +1,73 @@
+{
+  "mutations": [
+    {
+      "name": "foreign-source-capture",
+      "originalRejected": true,
+      "mutatedGuardWouldAccept": true,
+      "rolledBack": true
+    },
+    {
+      "name": "wrong-purpose",
+      "originalRejected": true,
+      "mutatedGuardWouldAccept": true,
+      "rolledBack": true
+    },
+    {
+      "name": "manual-body",
+      "originalRejected": true,
+      "mutatedGuardWouldAccept": true,
+      "rolledBack": true
+    },
+    {
+      "name": "substituted-body-hash",
+      "originalRejected": true,
+      "mutatedGuardWouldAccept": true,
+      "rolledBack": true
+    },
+    {
+      "name": "substituted-proof-url",
+      "originalRejected": true,
+      "mutatedGuardWouldAccept": true,
+      "rolledBack": true
+    },
+    {
+      "name": "wrong-response",
+      "originalRejected": true,
+      "mutatedGuardWouldAccept": true,
+      "rolledBack": true
+    },
+    {
+      "name": "old-policy",
+      "originalRejected": true,
+      "mutatedGuardWouldAccept": true,
+      "rolledBack": true
+    },
+    {
+      "name": "changed-observation-date",
+      "originalRejected": true,
+      "mutatedGuardWouldAccept": true,
+      "rolledBack": true
+    },
+    {
+      "name": "approve-403",
+      "originalRejected": true,
+      "mutatedGuardWouldAccept": true,
+      "rolledBack": true
+    },
+    {
+      "name": "approve-plain-text",
+      "originalRejected": true,
+      "mutatedGuardWouldAccept": true,
+      "rolledBack": true
+    },
+    {
+      "name": "negative-perimeter",
+      "originalRejected": true,
+      "mutatedGuardWouldAccept": true,
+      "rolledBack": true
+    }
+  ],
+  "restoredFunctionSha256": "26b967db506894b2ae044ee6146fcbb67aa69ccad9492991fe7f4d1a5f6d94a0",
+  "historicalTextRetained": true,
+  "productionTouched": false
+}

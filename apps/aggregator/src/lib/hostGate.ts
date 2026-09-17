@@ -23,6 +23,8 @@ type HostState = {
   active: number;
   /** Earliest time (ms) the next request to this host may start. */
   nextAllowedAt: number;
+  /** A later refusal also postpones callers that already reserved a slot. */
+  cooldownUntil: number;
   /** Current minimum gap between requests to this host (grows on throttle). */
   gapMs: number;
   /** Waiters parked until a slot frees up. */
@@ -40,7 +42,7 @@ const hosts = new Map<string, HostState>();
 function stateFor(host: string): HostState {
   let state = hosts.get(host);
   if (!state) {
-    state = { active: 0, nextAllowedAt: 0, gapMs: BASE_GAP_MS, queue: [] };
+    state = { active: 0, nextAllowedAt: 0, cooldownUntil: 0, gapMs: BASE_GAP_MS, queue: [] };
     hosts.set(host, state);
   }
   return state;
@@ -91,10 +93,15 @@ export async function withHostGate<T>(url: string, task: () => Promise<T>): Prom
 
   try {
     // Honour the per-host gap so bursts to one host are spaced out.
-    const now = Date.now();
-    const wait = Math.max(0, state.nextAllowedAt - now);
-    state.nextAllowedAt = Math.max(now, state.nextAllowedAt) + state.gapMs;
-    if (wait > 0) await sourceDelay(wait);
+    const reserve = () => {
+      const start = Math.max(Date.now(), state.nextAllowedAt, state.cooldownUntil);
+      state.nextAllowedAt = start + state.gapMs;
+      return start;
+    };
+    await waitUntil(reserve());
+    // A refusal can arrive while this caller waits for its previously reserved
+    // slot. Reserve again so existing waiters respect both cooldown and pacing.
+    while (Date.now() < state.cooldownUntil) await waitUntil(reserve());
     assertSourceRunning();
     return await task();
   } finally {
@@ -102,6 +109,13 @@ export async function withHostGate<T>(url: string, task: () => Promise<T>): Prom
     const next = state.queue.shift();
     if (next) next();
   }
+}
+
+async function waitUntil(at: number): Promise<void> {
+  let remaining: number;
+  // Node clamps timers above 2^31-1 ms to 1 ms. Chunk the wait instead of
+  // accidentally turning a long server cooldown into an immediate request.
+  while ((remaining = at - Date.now()) > 0) await sourceDelay(Math.min(remaining, 2_147_483_647));
 }
 
 /**
@@ -124,8 +138,9 @@ export function reportThrottle(url: string, retryAfterMs?: number | null): void 
    */
   const jitter = Math.floor(Math.random() * 250);
   const asked = typeof retryAfterMs === 'number' && Number.isFinite(retryAfterMs) && retryAfterMs > 0
-    ? Math.min(retryAfterMs, MAX_GAP_MS) : 0;
+    ? retryAfterMs : 0;
   const until = Date.now() + Math.max(state.gapMs, asked) + jitter;
+  state.cooldownUntil = Math.max(state.cooldownUntil, until);
   state.nextAllowedAt = Math.max(state.nextAllowedAt, until);
 }
 

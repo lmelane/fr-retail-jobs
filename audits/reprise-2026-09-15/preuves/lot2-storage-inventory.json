@@ -1,0 +1,44 @@
+{
+  "guard": {
+    "read_only": "on",
+    "default_read_only": "on",
+    "database": "railway",
+    "at": "2026-09-15T15:13:49.177Z"
+  },
+  "elapsedMs": 27,
+  "rows": [
+    [
+      {
+        "table_name": "Job",
+        "total_bytes": 1847853056,
+        "estimated_rows": 87580
+      },
+      {
+        "table_name": "JobSource",
+        "total_bytes": 506699776,
+        "estimated_rows": 90765
+      },
+      {
+        "table_name": "SourceObservation",
+        "total_bytes": 631504896,
+        "estimated_rows": 142783
+      },
+      {
+        "table_name": "ObservationArchiveRef",
+        "total_bytes": 40960,
+        "estimated_rows": 0
+      },
+      {
+        "table_name": "ObservationArchiveManifest",
+        "total_bytes": 32768,
+        "estimated_rows": 0
+      }
+    ],
+    [
+      {
+        "archive_count": 0,
+        "archived_rows": 0
+      }
+    ]
+  ]
+}

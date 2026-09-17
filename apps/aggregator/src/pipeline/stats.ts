@@ -10,8 +10,8 @@ import type { PrismaClient } from '@prisma/client';
 export async function runStats(prisma: PrismaClient) {
   const [jobsTotal, franceActive, geocoded, companies, withSources] = await Promise.all([
     prisma.job.count(),
-    prisma.job.count({ where: { isFrance: true, isActive: true } }),
-    prisma.job.count({ where: { isFrance: true, isActive: true, latitude: { not: null } } }),
+    prisma.job.count({ where: { countryCode: 'FR', isActive: true } }),
+    prisma.job.count({ where: { countryCode: 'FR', isActive: true, latitude: { not: null } } }),
     prisma.company.count(),
     prisma.jobSource.count(),
   ]);

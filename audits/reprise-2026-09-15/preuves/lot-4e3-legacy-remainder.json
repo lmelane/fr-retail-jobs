@@ -1,0 +1,18 @@
+{
+  "unregisteredSources": [
+    {
+      "sourceKey": "iwc-schaffhausen-3",
+      "representations": 441,
+      "active": 0
+    }
+  ],
+  "jobsWithoutRepresentation": {
+    "total": 60,
+    "active": 0,
+    "redirects": 59,
+    "withdrawn": 36,
+    "closed": 2
+  },
+  "newExpiryRows": 0,
+  "maintenancePlans": 0
+}

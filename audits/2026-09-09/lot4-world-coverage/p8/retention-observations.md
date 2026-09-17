@@ -1,3 +1,5 @@
+> Document historique du 9 septembre 2026. L’implémentation décrite a été remplacée au lot 2 du 15 septembre. Voir le [contrat maintenu de capture et rétention](../../../../docs/architecture/native-capture.md). Les noms de tables et commandes ci-dessous ne sont plus utilisables ; ce document conserve les résultats de l’audit ancien.
+
 # P8 · addendum — la rétention des observations, implémentée et validée
 
 > Décision propriétaire du 2026-09-13. Politique appliquée dans le dépôt maintenu, validée sur le clone

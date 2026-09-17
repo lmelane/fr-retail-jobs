@@ -1,3 +1,4 @@
+import { captureObservedAt } from '../../capture/context.js';
 import { fetchJson } from '../../lib/http.js';
 import { htmlToPlainText } from '../../lib/html.js';
 import type { NormalizedJob } from '../../types.js';
@@ -100,7 +101,7 @@ function nameOf(value: { name?: string } | string | undefined): string | undefin
 
 /** base64 of the current instant, in the exact shape the API expects. */
 function timestampPassword(): string {
-  const iso = new Date().toISOString();
+  const iso = captureObservedAt().toISOString();
   return Buffer.from(iso).toString('base64');
 }
 

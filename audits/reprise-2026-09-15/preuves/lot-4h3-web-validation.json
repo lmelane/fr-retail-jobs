@@ -1,0 +1,36 @@
+{
+  "productionWrites": false,
+  "siteDeployment": false,
+  "testsPassed": 755,
+  "build": "PASS",
+  "visualCheck": {
+    "tool": "Codex browser",
+    "data": "Explicit local HTTP fixture, not production",
+    "desktop": true,
+    "mobileWidth": 390,
+    "mobileScrollWidth": 390,
+    "headingCount": 1,
+    "applyActionPresent": false,
+    "returnUrl": "/emplois?marche=FR",
+    "returnNavigationVerified": true,
+    "robots": "noindex, nofollow",
+    "browserViewportRestored": true
+  },
+  "files": {
+    "src/app/emplois/PageEmplois.tsx": "bac0c232be5d02bc90384d878824d1e7bfda0d8fb4eb857e4041b11a9f0aaf35",
+    "src/app/emplois/[id]/page.tsx": "ac15c661325de8fe8b90c0db24df2ac3150218613b63ff4b73e13a8b00e8fa54",
+    "src/components/emplois/FicheEmploi.tsx": "351a1ee519d42664d02271cc7b364390a8c5395cf74eb6f74dafdf7860ccabc6",
+    "src/components/emplois/VoletOffres.tsx": "da0b3f0fcd96ea44020e445853ac5340e65fcadb69a35ca5a0904f2643965304",
+    "src/components/emplois/__tests__/fiche-emploi-d418.test.ts": "d16d40c034b196907a29fb2d98dcb05f51b5e2ed9af4d28d4381592e12036c78",
+    "src/components/emplois/__tests__/page-retrait.test.tsx": "88e80b5b5007e972c03063836e12a6e9a6fc2e0974374467eb8cec1df56ba634",
+    "src/lib/emplois/__tests__/api-d417.test.ts": "d4cdc03de36dc26204db90c2b47b5ea82616b73fede190f6eed4cd188c4081ab",
+    "src/lib/emplois/api.ts": "542edd6f6f0ace04d9fdf0d1ad0713cd8955ab11b09d91d49b76383ecb7e247b"
+  },
+  "knownReleaseWork": [
+    "Country-scoped search and suggestions",
+    "Complete interface translations",
+    "Public HTML 410 at cutover; detail API already returns 410"
+  ],
+  "localCommit": "bbedeeeb405ca790813e7025f1be64a80a64ca42",
+  "branch": "front-f1-sauvegarde"
+}

@@ -1,4 +1,5 @@
 import { gunzipSync } from 'node:zlib';
+import { load } from 'cheerio';
 import { fetchText, fetchWithRetry, readBytesBounded } from '../../lib/http.js';
 import { htmlToPlainText } from '../../lib/html.js';
 import type { NormalizedJob } from '../../types.js';
@@ -21,10 +22,12 @@ import type { NormalizedJob } from '../../types.js';
  * page yields title, datePosted, hiringOrganization, jobLocation with postalCode.
  */
 
-const USER_AGENT =
-  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36';
-
-const REQUEST_HEADERS = { 'user-agent': USER_AGENT };
+/*
+ * Le plan de site est demandé sous l'identité du robot (posée par `lib/http`), comme chaque page d'offre : un agent
+ * de navigateur emprunté ici rendait la requête étrangère au périmètre d'accès revu (`matchingAccessScope` exige
+ * l'identité du robot), et deux sources à sitemap (oska, bevilles) ont été refusées pour cette seule raison lors
+ * des vagues F3b. Un plan de site qui refuse le robot est une réponse honnête (INACCESSIBLE), pas à contourner.
+ */
 
 /**
  * XML character references inside <loc> are part of the document encoding, not
@@ -47,9 +50,9 @@ export function parseSitemapLocations(xml: string): string[] {
 /** Gzipped sitemaps are common at scale; fetchText would hand back binary. */
 async function fetchSitemapXml(sitemapUrl: string): Promise<string> {
   if (!/\.gz(\?|$)/i.test(sitemapUrl)) {
-    return fetchText(sitemapUrl, { headers: REQUEST_HEADERS });
+    return fetchText(sitemapUrl);
   }
-  const response = await fetchWithRetry(sitemapUrl, { headers: REQUEST_HEADERS });
+  const response = await fetchWithRetry(sitemapUrl);
   const buffer = await readBytesBounded(response, sitemapUrl);
   // Some hosts pre-decompress .gz on the wire; only gunzip a real gzip header.
   const isGzip = buffer[0] === 0x1f && buffer[1] === 0x8b;
@@ -121,24 +124,27 @@ function hasType(node: JsonLdNode, type: string): boolean {
 }
 
 export function extractJobPostings(html: string): JsonLdNode[] {
-  const blocks = [
-    ...html.matchAll(
-      /<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi,
-    ),
-  ];
-
+  // HTML permits unquoted attributes and whitespace around '='. A DOM parser
+  // also keeps commented tags and attribute values out of the document scripts.
+  const $ = load(html);
+  // Template content is a detached document fragment in the HTML tree; checking
+  // a script's ancestors alone does not reliably identify that inert content.
+  $('template,noscript').remove();
   const found: JsonLdNode[] = [];
-  for (const block of blocks) {
+  for (const script of $('script').toArray()) {
+    const element = $(script);
+    if (element.attr('type')?.trim().split(';')[0].toLowerCase() !== 'application/ld+json') continue;
+    const block = element.text().trim();
     let parsed: unknown;
     try {
-      parsed = JSON.parse(block[1].trim());
+      parsed = JSON.parse(block);
     } catch {
       // Some CMSs emit raw control characters inside JSON strings — Michael
       // Page's Drupal puts literal newlines in every description — which is
       // invalid JSON that still carries a complete JobPosting. Space the
       // control characters out and retry before giving up on the block.
       try {
-        parsed = JSON.parse(block[1].trim().replace(/[\u0000-\u001f]+/g, ' '));
+        parsed = JSON.parse(block.replace(/[\u0000-\u001f]+/g, ' '));
       } catch {
         // A single malformed block must not discard the rest of the page.
         continue;
@@ -187,6 +193,13 @@ export function normalizeJobPosting(
   const region = text(address?.addressRegion);
   const postalCode = text(address?.postalCode);
   const streetAddress = text(address?.streetAddress);
+  // The posting's organization is distinct from its publisher or source owner.
+  // Keep the exact native label as evidence; unresolved structures must not
+  // silently become a catalogue-owner inference.
+  const organization = node.hiringOrganization;
+  const rawEmployerName = organization && !Array.isArray(organization) && typeof organization.name === 'string'
+    ? organization.name : undefined;
+  const company = text(rawEmployerName);
 
   // addressCountry is either "FR" or { name: "France" }.
   const rawCountry = address?.addressCountry;
@@ -227,6 +240,9 @@ export function normalizeJobPosting(
   return {
     externalId,
     title,
+    company,
+    ...(company ? { employerEvidence: { rawName: rawEmployerName!, path: 'hiringOrganization.name', rule: 'HIRING_ORGANIZATION_LABEL' } }
+      : organization == null ? {} : { publicationHold: 'JSONLD_EMPLOYER_NOT_RESOLVED' }),
     location: [city, region, postalCode].filter(Boolean).join(', ') || streetAddress || undefined,
     city,
     region,
@@ -320,15 +336,4 @@ export function richestDescription(html: string, fromJsonLd?: string): string | 
   const current = fromJsonLd?.length ?? 0;
   if (current < USABLE_DESCRIPTION || fromPage.length >= 2 * current) return fromPage;
   return fromJsonLd;
-}
-
-/** Reads one job page and returns its first JobPosting, or null if none. */
-export async function fetchJobFromPage(pageUrl: string): Promise<NormalizedJob | null> {
-  const html = await fetchText(pageUrl, { headers: REQUEST_HEADERS });
-  const [posting] = extractJobPostings(html);
-  if (!posting) return null;
-  const job = normalizeJobPosting(posting, pageUrl);
-  if (!job) return null;
-  const description = richestDescription(html, job.description);
-  return description === job.description ? job : { ...job, description };
 }

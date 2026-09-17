@@ -155,15 +155,6 @@ model Source {
    * shared-tenant duplicates are how one group feed got catalogued twice.
    */
   tenantKey        String       @unique
-  robotsVerdict    String?
-  /**
-   * When the robots verdict was last read at the source — a verdict ages.
-   */
-  robotsCheckedAt  DateTime?
-  /**
-   * Jobs counted when the source was last verified/promoted.
-   */
-  verifiedJobCount Int?
   /**
    * Denormalized last-run summary, so the catalogue is readable in one query.
    */
@@ -181,17 +172,43 @@ model Source {
   createdAt        DateTime     @default(now())
   updatedAt        DateTime     @updatedAt
 
+  currentRevisionId String @default(dbgenerated("(gen_random_uuid())::text"))
+  currentRevision SourceRevision @relation("CurrentSourceRevision", fields: [currentRevisionId], references: [id], onDelete: Restrict, onUpdate: Restrict)
   identityReviews SourceIdentityReview[]
 
   @@index([status])
   @@index([kind])
 }
 
+/** Each configuration transition gets a new identity, including A -> B -> A.
+ * History is self-contained and survives removal of an unreviewed draft. */
+model SourceRevision {
+  id String @id
+  sourceId String
+  sourceKey String
+  version Int
+  payload Json
+  payloadHash String
+  observedAt DateTime @default(now())
+  currentSources Source[] @relation("CurrentSourceRevision")
+  captures CaptureBatch[]
+  validations SourceValidation[]
+  accessDecisions SourceAccessDecision[]
+  identityReviews SourceIdentityReview[]
+  @@unique([sourceId, version])
+  @@index([sourceKey, observedAt])
+}
+
 /**
  * Append-only identity decisions. A working feed is not an employer proof.
  */
 model SourceIdentityReview {
+  ingestionAdmissions SourceIngestionAdmission[]
   id             String   @id @default(cuid())
+  // Historical reviews remain unbound and unordered. The insert trigger assigns new sequence values under the source lock.
+  sourceRevisionId String?
+  sourceRevision SourceRevision? @relation(fields: [sourceRevisionId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  sequence       BigInt?  @unique
   sourceKey      String
   tenantKey      String
   subjectKey     String
@@ -203,17 +220,21 @@ model SourceIdentityReview {
   portalUrl      String
   statement      String
   artifactHash   String
+  // Historical verbatim evidence only. New reviews reference native capture bytes.
   artifactText   String   @default("")
+  evidenceCaptureBatchId String?
+  evidenceCaptureBatch CaptureBatch? @relation(fields: [evidenceCaptureBatchId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  relationReport Json?
   reviewer       String
   checkedAt      DateTime
   createdAt      DateTime @default(now())
   /**
-   * Reviewed perimeter of the portal for THIS configuration: SINGLE_BRAND (every posting belongs to the certified employer) or MULTI_BRAND. Null = not reviewed.
+   * Reviewed perimeter of this configuration: SINGLE_BRAND may supply a missing employer; explicit native labels require their own identity evidence. MULTI_BRAND cannot supply a posting employer. Null = not reviewed.
    */
   portalScope    String?
   source         Source   @relation(fields: [sourceKey], references: [key], onDelete: Restrict, onUpdate: Restrict)
 
-  @@index([sourceKey, createdAt])
+  @@index([sourceKey, sequence])
 }
 
 model Company {
@@ -228,7 +249,7 @@ model Company {
   sectorCodes           String[]                @default([])
   sectorEvidence        Json?
   sectorReviewId        String?
-  sectorReview          SectorReview?           @relation(fields: [sectorReviewId], references: [id], onDelete: Restrict)
+  sectorReview          SectorReview?           @relation(fields: [sectorReviewId], references: [id], onDelete: Restrict, onUpdate: NoAction)
   /**
    * Parent group, from the 728-house reference list: Sandro and Maje both sit
    * under SMCP, Dior under LVMH.
@@ -267,13 +288,10 @@ model Company {
   fashionjobsOfferCount Int?
   careersUrl            String?
   atsType               AtsType                 @default(UNKNOWN)
-  atsConfig             Json?
   discoveryStatus       DiscoveryStatus         @default(PENDING)
   discoveryNote         String?
   firstSeenAt           DateTime                @default(now())
   lastSeenAt            DateTime                @default(now())
-  lastAtsDiscoveryAt    DateTime?
-  lastJobSyncAt         DateTime?
   createdAt             DateTime                @default(now())
   updatedAt             DateTime                @updatedAt
   jobs                  Job[]
@@ -282,6 +300,7 @@ model Company {
   @@index([parentGroupId])
   @@index([mergedIntoId])
   @@index([sector])
+  @@index([sectorCodes], type: Gin)
   @@index([canonicalKey])
   @@index([discoveryStatus])
   @@index([atsType])
@@ -349,17 +368,17 @@ model EmployerObservation {
 }
 
 /**
- * Where a canonical Job was seen. One row per (job, source).
- * This is the whole point of the aggregator: the same opening reaches us from the
- * Maison's careers site, the group portal and a jobboard, and Catwalks keeps ONE
- * Job carrying N JobSource rows — never three listings.
- * A lower-priority source stays attached even when it is not canonical: it is what
- * detects an edit or a closure when the canonical source is slow to update.
+ * Native publication, identified by sourceKey / externalId. Job is its current
+ * optional presentation group. Quarantine preserves evidence without inventing
+ * public content. RAW, capture references and lifecycle belong to this row.
  */
 model JobSource {
   id          String    @id @default(cuid())
-  jobId       String
-  job         Job       @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  jobId       String?
+  job         Job?      @relation(fields: [jobId], references: [id], onDelete: Restrict)
+  /** An unattached publication is held for evidence review, not declared closed. */
+  quarantinedAt DateTime?
+  quarantineReason String?
   /**
    * Registry key: 'richemont', 'wttj', 'fashionjobs'…
    */
@@ -381,11 +400,27 @@ model JobSource {
   firstSeenAt DateTime  @default(now())
   lastSeenAt  DateTime  @default(now())
   isActive    Boolean   @default(true)
+  /** Deadline declared by this publication, with its original field and reader version. */
+  expiresAt   DateTime?
+  expiryEvidence Json?
+  /** Versioned, replaceable facts read from this publication's current RAW. */
+  sourceFacts Json?
+  /** Complete presentation of this publication; rebuilt from its own observation. */
+  presentation Json?
   raw         Json?
 
   @@unique([sourceKey, externalId])
   @@index([jobId])
   @@index([sourceKey, isActive])
+  @@index([isActive, expiresAt])
+  /** Complete native inputs for the latest extraction; null marks historical/unrecorded inputs. */
+  captureBatchId String?
+  captureBatch CaptureBatch? @relation(fields: [captureBatchId], references: [id], onDelete: Restrict)
+  captureOutputId String?
+  captureOutput SourceExtraction? @relation(fields: [captureOutputId, captureBatchId], references: [id, batchId], onDelete: Restrict)
+  @@index([captureOutputId, captureBatchId])
+  @@index([captureBatchId])
+
 }
 
 enum OpportunityType {
@@ -395,10 +430,10 @@ enum OpportunityType {
 
 model Job {
   id               String           @id @default(cuid())
-  // An absorbed posting retains its ID, content and history. It can never reopen;
-  // its source representations and public URL resolve to the canonical posting.
+  // An absorbed presentation retains its ID and history. Restoration requires
+  // a compensating publication decision in the same database transaction.
   mergedIntoId     String?
-  mergedInto       Job?             @relation("JobRedirect", fields: [mergedIntoId], references: [id], onDelete: NoAction)
+  mergedInto       Job?             @relation("JobRedirect", fields: [mergedIntoId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   mergedJobs       Job[]            @relation("JobRedirect")
   companyId        String
   company          Company          @relation(fields: [companyId], references: [id], onDelete: Cascade)
@@ -426,11 +461,10 @@ model Job {
    * certain. Il disparaît de lui-même dès qu'une preuve apparaît.
    */
   countryIntegrity String?
-  isFrance         Boolean          @default(false)
 
-  // Geo, for the Leaflet map. Sources give a city and usually a postcode but
-  // never coordinates, so these are resolved via the French government's
-  // Adresse API (api-adresse.data.gouv.fr — free, no key, 50 req/s/IP).
+  // Geographic projection. Native location evidence is retained per publication.
+  // Second-level subdivisions and national identifiers (INSEE) left `Job` in lot F1
+  // (2026-09-16): no source supplied them; the geocoding cache keeps its own key.
   city       String?
   /**
    * La première subdivision administrative du pays : California, Île-de-France,
@@ -441,44 +475,12 @@ model Job {
    * deux niveaux conceptuels.
    */
   adminArea1 String?
-  /**
-   * Le second niveau (comté, département). Nullable et VOLONTAIREMENT vide :
-   * aucune source du catalogue ne le fournit aujourd'hui, et on ne remplit pas
-   * artificiellement une colonne pour la justifier.
-   */
-  adminArea2 String?
   postalCode String?
-  /**
-   * Code commune INSEE — identifiant national français, conservé parce qu'il
-   * est une clé de jointure stable (contrairement à un nom de ville), mais qui
-   * n'est PAS une primitive mondiale : 2 750 des 2 770 offres qui le portent
-   * sont françaises. Les futurs identifiants nationaux le rejoindront dans une
-   * structure `locationIdentifiers` plutôt qu'en ajoutant une colonne par pays.
-   */
-  inseeCode  String?
   latitude   Float?
   longitude  Float?
 
-  /**
-   * LES CINQ DIMENSIONS D'EMPLOI — mondiales, indépendantes et CUMULABLES.
-   * Elles remplacent `contract` + `workingTime`, qui mélangeaient quatre
-   * concepts dans un champ unique et imposaient une grille juridique FRANÇAISE
-   * (CDI/CDD/STAGE) à un catalogue mondial : un « Permanent » britannique n'est
-   * pas un CDI, et un `CONTRACTOR` américain n'est pas un freelance.
-   * Deux mesures ont imposé la séparation (2026-09-08) :
-   * · `employment_type_code` sert « parttime_fixed_term » (225 offres) —
-   * DEUX dimensions dans une seule valeur, dont une était forcément écrasée ;
-   * · 2 359 offres Sephora sont « CDD » ET « Seasonal » : les deux sont vraies
-   * en même temps, donc `isSeasonal` ne peut pas être une valeur de durée.
-   * Règle : « le faible volume décide si on EXPOSE une dimension, pas si on
-   * POLLUE la taxonomie canonique. » `engagementType` (0,3 % des offres) reste
-   * une colonne nullable propre, sans index ni facette.
-   * « CDI » n'est plus une valeur : c'est le LIBELLÉ français de PERMANENT,
-   * produit par la couche de localisation du site.
-   */
-  /**
-   * /** DURÉE : PERMANENT | FIXED_TERM | TEMPORARY. null = la source ne le dit pas.
-   */
+  /** Replaceable search dimensions with employmentEvidence; native labels stay in rawContract / rawWorkingTime. */
+  /** Native contract label from the selected publication. */
   rawContract        String?
   rawWorkingTime     String?
   /**
@@ -500,22 +502,9 @@ model Job {
    * de freelance, ce qui reviendrait à inventer une donnée.
    */
   engagementType     String?
-  /**
-   * Poste saisonnier — caractéristique INDÉPENDANTE de la durée : 2 414 offres
-   * sont à la fois FIXED_TERM et saisonnières.
-   */
+  /** Positive seasonal evidence; null means not established, not a negative claim. */
   isSeasonal         Boolean?
-  /**
-   * Le MODE DE TRAVAIL, en taxonomie mondiale : ONSITE | HYBRID | REMOTE.
-   * `null` = les sources ne le publient pas — jamais « sur site » par défaut.
-   * A remplacé `remote`, qui portait le vocabulaire PROPRIÉTAIRE de Welcome to
-   * the Jungle (`punctual`, `fulltime`, `unknown`) directement dans le modèle
-   * mondial, et stockait « unknown » comme une VALEUR sur 648 offres.
-   * ONSITE se définit comme « poste principalement rattaché au site, même si un
-   * télétravail occasionnel est autorisé » — c'est pourquoi le `punctual` de
-   * WTTJ (« télétravail ponctuel autorisé ») y tombe sans prétendre que le
-   * télétravail est interdit. La valeur brute reste traçable dans `raw`.
-   */
+  /** Scalar projection of the selected publication workplace facts. Native modes and absence reasons remain in JobSource.sourceFacts. */
   workplaceType      String?
   /**
    * Le RYTHME DE TRAVAIL : FLEXIBLE_AVAILABILITY | EVENINGS_WEEKENDS | NIGHT_SHIFT.
@@ -539,8 +528,8 @@ model Job {
 
   // Compensation, when the source publishes it (Pinpoint, WTTJ, TalentView,
   // Teamtailor). Stored as a band because that is how postings state it.
-  salaryMin      Int?
-  salaryMax      Int?
+  salaryMin      Decimal? @db.Decimal(24, 6)
+  salaryMax      Decimal? @db.Decimal(24, 6)
   salaryCurrency String?
   salaryPeriod   String?
 
@@ -596,13 +585,11 @@ model Job {
   /**
    * Versioned enrichment; original title and unresolved offers are preserved.
    */
-  occupationGroup           String?
   occupationCode            String?
   rawTitle                  String?
   normalizedTitle           String?
   occupationStatus          String                  @default("PENDING")
   occupationEvidence        Json?
-  occupationSpecializations String[]                @default([])
   occupationReleaseId       String?
   occupationRelease         OccupationRelease?      @relation(fields: [occupationReleaseId], references: [id], onDelete: Restrict)
   occupationObservations    OccupationObservation[]
@@ -610,38 +597,11 @@ model Job {
    * INTERNSHIP | APPRENTICESHIP | GRADUATE | JUNIOR | MID | SENIOR | MANAGER | DIRECTOR | EXECUTIVE
    */
   seniority                 String?
-  /**
-   * Métier de boutique (conseil, direction de boutique, VM, opérations) — le Retail Hiring Index.
-   */
-  isRetail                  Boolean?
-  /**
-   * L'annonce parle d'IA / machine learning — l'AI Hiring Index.
-   */
-  isAiRelated               Boolean                 @default(false)
-  /**
-   * Compétences, outils, langues, concepts extraits du texte (dictionnaire canonique).
-   */
-  skills                    String[]                @default([])
-  taxonomyVersion           Int                     @default(0)
-  fingerprint               String
 
-  /**
-   * Generation of the pipeline that wrote this row.
-   * Rows written by an older pipeline cannot be repaired in place — offers
-   * ingested before the adapters fetched descriptions have none to restore,
-   * and sectors written before classification all read UNKNOWN. Each ingest
-   * deletes rows below the current generation and refetches them from source,
-   * so a schema-level fix ships as a version bump instead of a manual purge
-   * someone must remember to run.
-   */
+  /** Writer generation. It is not evidence of employer closure; lifecycle operations require their own proof. */
   pipelineVersion Int @default(0)
 
-  /**
-   * Blocking key of the dedup cluster: resolvedCompanyId|CITY.
-   * Indexed because every write does a cluster lookup before inserting — that
-   * lookup is what keeps duplicates out of the database in the first place,
-   * rather than cleaning them up afterwards.
-   */
+  /** Indexed native application identity, or sourceKey / externalId. This key alone never proves a duplicate. */
   clusterKey    String?
   /**
    * Tier of the source that owns Job.url, so a better source can take over.
@@ -652,9 +612,16 @@ model Job {
   canonicalSourceKey  String?
   canonicalExternalId String?
   /**
-   * Maintained by database triggers, including company renames. Partial GIN index in SQL migration.
+   * Maintained by database triggers, including company renames (normalised text, lot 7).
    */
   searchText          String      @default("")
+  /**
+   * Lot 7 : le vecteur des mots du texte indexé (filtre, index GIN partiel en SQL) et le vecteur
+   * pondéré du titre (A) et de la Maison (B) (classement), maintenus par les mêmes déclencheurs
+   * que searchText. Prisma ne lit ni n'écrit ces colonnes.
+   */
+  searchVector        Unsupported("tsvector")?
+  titleVector         Unsupported("tsvector")?
   events              JobEvent[]
 
   raw       Json?
@@ -665,13 +632,10 @@ model Job {
   @@index([mergedIntoId])
   @@index([clusterKey])
   @@index([department])
+  @@index([adminArea1])
   @@index([employmentTerm])
   @@index([workTime])
-  @@index([isFrance, isActive])
-  @@index([fingerprint])
   @@index([companyId, isActive])
-  // Serves the map: only located, live French jobs are ever plotted.
-  @@index([isFrance, isActive, latitude, longitude])
   // Intelligence : agrégats par pays / métier / séniorité, et les fenêtres J-7 / J-30.
   @@index([isActive, countryCode])
   @@index([isActive, jobFunction])
@@ -693,6 +657,21 @@ model Job {
 /**
  * Append-only correction evidence; no cascading FK can erase this history.
  */
+model PublicationIdentityDecision {
+  id            String   @id @default(uuid())
+  sourceId      String
+  fromJobId     String?
+  toJobId       String?
+  action        String
+  readerVersion String
+  evidence      Json
+  createdAt     DateTime @default(now())
+  transactionId BigInt? @default(dbgenerated("txid_current()"))
+
+  @@index([sourceId, createdAt])
+  @@index([toJobId, createdAt])
+}
+
 model DataCorrection {
   id         String   @id @default(cuid())
   batchId    String
@@ -709,6 +688,19 @@ model DataCorrection {
   @@unique([batchId, entityType, entityId])
   @@index([entityType, entityId])
   @@index([createdAt, id])
+}
+
+/** Immutable, content-addressed maintenance input. Workers load the reviewed
+ * plan by hash instead of embedding a large payload in a process command. */
+model MaintenancePlan {
+  id        String   @id
+  kind      String
+  version   Int
+  revision  String
+  body      Json
+  createdAt DateTime @default(now())
+
+  @@index([kind, createdAt])
 }
 
 model JobEvent {
@@ -739,6 +731,10 @@ model JobEvent {
  * Les comparaisons J-7 / J-30 / M-12 lisent cette table, jamais Job — les
  * offres se ferment et se suppriment, la photographie reste.
  */
+/// Lot F1 (2026-09-16) : la photographie quotidienne n'a plus d'écrivain
+/// (`pipeline/snapshot.ts` retiré avec les colonnes isRetail/isAiRelated) ni de
+/// lecteur. Les 17 670 lignes sont conservées ; la suppression de la table est
+/// une carte de décision (lignes `live` non reconstructibles).
 model MarketSnapshot {
   id                 String   @id @default(cuid())
   date               DateTime @db.Date
@@ -800,8 +796,6 @@ model GeoCache {
   resolved   Boolean  @default(false)
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
-
-  @@index([resolved])
 }
 
 /**
@@ -828,7 +822,9 @@ model SourceRun {
    */
   previousJobs     Int?
   /**
-   * Explicit lifecycle evidence. Null denotes an unmeasured legacy run.
+   * Operational summary of the run. Null denotes an unmeasured legacy run. Since lot 5G3C
+   * these columns describe health only: absence evidence is read from the admitted capture,
+   * its sealed manifest and its SourceIngestionCompletion, never from this bounded history.
    */
   fetched          Int?
   accepted         Int?
@@ -852,27 +848,6 @@ model SourceRun {
   @@index([runId])
   @@index([sourceKey, ranAt])
   @@index([status, ranAt])
-}
-
-/**
- * Where a rotating crawl should resume next run.
- * A source too large and too slow to sweep inside one run (FashionJobs behind
- * Cloudflare, ~282 listing pages) advances through its listing across runs
- * instead of always re-reading the first pages: each run crawls a window from
- * `nextPage`, then stores where it stopped, wrapping back to page 1 at the end.
- * The cron fires several times a day, so a full rotation completes well within
- * the 48h lifecycle window — every offer is re-seen in time, and none is closed
- * as stale while it is still listed.
- */
-model SourceCursor {
-  sourceKey String   @id
-  /**
-   * The listing page the next run should start from (1-based).
-   */
-  nextPage  Int      @default(1)
-  updatedAt DateTime @updatedAt
-
-  @@map("SourceCursor")
 }
 
 /**
@@ -963,84 +938,30 @@ model SourceObservation {
   sourceKey       String
   externalId      String
   contentHash     String
-  raw             Json
+  /** Derived adapter payload; internal disposition is stored separately below. */
+  raw             Json?
+  publicationHold String?
+  annotationHash String @default("")
   pipelineVersion Int
   observedAt      DateTime @default(now())
 
-  @@unique([sourceKey, externalId, contentHash])
+  @@unique([sourceKey, externalId, contentHash, annotationHash])
   @@index([sourceKey, observedAt])
   /**
    * Balayage de rétention par date : sans lui, la sélection des lignes éligibles scanne toute la table.
    */
   @@index([observedAt])
-}
+  /** This JSON is adapter output; native response bytes live in the capture batch. */
+  captureBatchId String?
+  captureBatch CaptureBatch? @relation(fields: [captureBatchId], references: [id], onDelete: Restrict)
+  captureOutputId String?
+  captureOutput SourceExtraction? @relation(fields: [captureOutputId, captureBatchId], references: [id, batchId], onDelete: Restrict)
+  @@index([captureOutputId, captureBatchId])
 
-/**
- * LA MÉTADONNÉE D'AUDIT QUI SURVIT À LA PURGE — décision propriétaire du 2026-09-13.
- * Une `SourceObservation` archivée puis supprimée du chaud laisse ici tout ce qui permet de PROUVER qu'elle a
- * existé et de la retrouver : identité de l'offre, instant d'observation, empreinte du contenu, et le pointeur
- * vers l'archive avec son sha256.
- * Sans cette table, une purge rendrait une preuve de P1 à P7 irrécupérable *en silence* — rien en base ne
- * dirait qu'une observation a manqué. Ce n'est donc pas un journal d'exploitation : c'est la continuité de la
- * chaîne de preuve, et elle n'est jamais purgée.
- */
-model ObservationArchiveRef {
-  id                   String   @id @default(cuid())
-  sourceKey            String
-  externalId           String
-  /**
-   * Le run qui a produit l'observation ; `null` pour les lignes antérieures à sa traçabilité.
-   */
-  runId                String?
-  observedAt           DateTime
-  contentHash          String
-  /**
-   * Ce que la chaîne a fait de cette observation : ARCHIVED_AND_PURGED aujourd'hui, extensible.
-   */
-  disposition          String
-  /**
-   * L'ensemble canonique auquel l'observation se rattache (preuve d'absence P7).
-   */
-  canonicalSetRef      String?
-  /**
-   * Où retrouver les octets.
-   */
-  archiveUri           String
-  archiveSha256        String
-  archiveFormatVersion Int
-  archivedAt           DateTime @default(now())
+  rawBlobHash String?
+  rawBlob RawBlob? @relation(fields: [rawBlobHash], references: [hash], onDelete: Restrict)
+  @@index([rawBlobHash])
 
-  @@unique([sourceKey, externalId, contentHash])
-  @@index([archiveUri])
-  @@index([observedAt])
-}
-
-/**
- * LE MANIFESTE D'UNE ARCHIVE, IMMUABLE. Une ligne par partition (date × runId × sourceKey).
- * Il porte ce qu'on peut affirmer d'une archive SANS la relire entièrement : combien de lignes, quelle
- * période, quelle taille, quelle empreinte, quel format. La purge refuse de supprimer tant que ces valeurs ne
- * concordent pas avec le lot réel — un manifeste peut annoncer le bon compte et couvrir une autre période.
- */
-model ObservationArchiveManifest {
-  id            String    @id @default(cuid())
-  day           String
-  runId         String
-  sourceKey     String
-  rowCount      Int
-  periodStart   DateTime
-  periodEnd     DateTime
-  sizeBytes     BigInt
-  sha256        String
-  formatVersion Int
-  archiveUri    String
-  /**
-   * Étapes franchies et verdict, pour qu'un refus se rapporte au lieu de se deviner.
-   */
-  verifiedAt    DateTime?
-  createdAt     DateTime  @default(now())
-
-  @@unique([day, runId, sourceKey])
-  @@index([createdAt])
 }
 
 /**
@@ -1168,4 +1089,303 @@ model SectorReview {
   companies Company[]
 
   @@index([createdAt, id])
+}
+
+/** Immutable content-addressed bytes. References distinguish native inputs and derived outputs. */
+model RawBlob {
+  hash String @id
+  byteLength Int
+  gzipHash String
+  gzipLength Int
+  createdAt DateTime @default(now())
+  body RawBlobBody?
+  archive RawBlobArchive?
+  captures RawCapture[] @relation("CapturedResponse")
+  requestCaptures RawCapture[] @relation("CapturedRequestData")
+  observations SourceObservation[]
+  extractions SourceExtraction[]
+  manifests CaptureOutcome[]
+  completions SourceIngestionCompletion[]
+}
+
+/** Hot storage may be removed only after a verified remote archive is recorded. */
+model RawBlobBody {
+  hash String @id
+  blob RawBlob @relation(fields: [hash], references: [hash], onDelete: Restrict)
+  gzip Bytes
+}
+
+model RawBlobArchive {
+  hash String @id
+  blob RawBlob @relation(fields: [hash], references: [hash], onDelete: Restrict)
+  objectKey String
+  uri String
+  gzipHash String
+  verifiedAt DateTime @default(now())
+}
+
+enum CapturePurpose {
+  JOBS
+  SOURCE_IDENTITY
+  SOURCE_ACCESS
+}
+
+/** One bounded capture attempt. Evidence pages never stand for job extractions. */
+model CaptureBatch {
+  ingestionAdmission SourceIngestionAdmission?
+  ingestionCompletion SourceIngestionCompletion?
+  identityReviews SourceIdentityReview[]
+  accessReviews SourceAccessDecision[] @relation("AccessEvidenceJobs")
+  accessDecisionId String?
+  accessDecision SourceAccessDecision? @relation("CollectionAccess", fields: [accessDecisionId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  id String @id @default(uuid())
+  purpose CapturePurpose @default(JOBS)
+  /** Null for source evidence and captures predating recorded job-attempt ordering. */
+  attemptOrdinal BigInt? @unique @default(autoincrement())
+  sourceKey String
+  runId String?
+  configHash String
+  executionBudget Json?
+  sourceRevisionId String?
+  sourceRevision SourceRevision? @relation(fields: [sourceRevisionId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  readerRevision String
+  sourceKind String?
+  formatVersion Int @default(2)
+  startedAt DateTime @default(now())
+  captures RawCapture[]
+  extractions SourceExtraction[]
+  outcome CaptureOutcome?
+  sources JobSource[]
+  observations SourceObservation[]
+  validations SourceValidation[]
+  @@index([accessDecisionId])
+  @@index([sourceKey, startedAt])
+  @@index([sourceRevisionId, purpose, attemptOrdinal])
+  @@index([runId])
+}
+
+/** Technical qualification derived from a recorded extraction and exact replay.
+ * Identity and access are separate promotion requirements. */
+model SourceValidation {
+  ingestionAdmissions SourceIngestionAdmission[]
+  id String @id @default(uuid())
+  sequence BigInt @unique @default(autoincrement())
+  sourceRevisionId String
+  sourceRevision SourceRevision @relation(fields: [sourceRevisionId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  captureBatchId String
+  captureBatch CaptureBatch @relation(fields: [captureBatchId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  readerRevision String
+  policyVersion String
+  verdict String
+  report Json
+  validatedAt DateTime @default(now())
+  @@index([sourceRevisionId, sequence])
+  @@index([captureBatchId])
+}
+
+/** Decisions checked atomically before starting an ingestion. No historical backfill. */
+model SourceIngestionAdmission {
+  batchId String @id
+  batch CaptureBatch @relation(fields: [batchId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  identityReviewId String
+  identityReview SourceIdentityReview @relation(fields: [identityReviewId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  sourceValidationId String
+  sourceValidation SourceValidation @relation(fields: [sourceValidationId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  policyVersion String
+  admittedAt DateTime @default(now())
+  @@index([identityReviewId])
+  @@index([sourceValidationId])
+}
+
+/** Immutable end-of-ingestion record of an admitted, sealed collection: what became of
+ * every extracted output. Absence evidence reads this row and the sealed manifest,
+ * never a health summary or a diagnostic log. SQL refuses it for a qualification
+ * probe, a failed capture or counts that do not cover every output. */
+model SourceIngestionCompletion {
+  batchId String @id
+  batch CaptureBatch @relation(fields: [batchId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  reportHash String
+  report RawBlob @relation(fields: [reportHash], references: [hash], onDelete: Restrict, onUpdate: Restrict)
+  published Int
+  held Int
+  writeFailed Int
+  skipped Int
+  readerRevision String
+  policyVersion String
+  completedAt DateTime @default(now())
+  @@index([reportHash])
+  @@index([completedAt])
+}
+
+/** Every attempt remains distinct, even if response bytes are identical. */
+model RawCapture {
+  id String @id @default(uuid())
+  batchId String
+  batch CaptureBatch @relation(fields: [batchId], references: [id], onDelete: Restrict)
+  sequence Int
+  requestHash String
+  /** Private native request envelope; null for captures predating this evidence. */
+  requestDataHash String?
+  requestData RawBlob? @relation("CapturedRequestData", fields: [requestDataHash], references: [hash], onDelete: Restrict, onUpdate: Restrict)
+  requestUrl String
+  method String
+  format String
+  status Int?
+  headers Json
+  cookieNames Json
+  complete Boolean
+  failure String?
+  blobHash String?
+  blob RawBlob? @relation("CapturedResponse", fields: [blobHash], references: [hash], onDelete: Restrict)
+  capturedAt DateTime @default(now())
+  @@unique([batchId, sequence])
+  @@index([blobHash])
+  @@index([requestDataHash])
+}
+
+/** Immutable outcome; a batch without one was interrupted and remains replayable. */
+model CaptureOutcome {
+  /** Null historical coverage is unknown. Browser bootstrap is explicitly unsupported. */
+  transportCoverage String?
+  batchId String @id
+  batch CaptureBatch @relation(fields: [batchId], references: [id], onDelete: Restrict)
+  status String
+  extractedCount Int
+  outputHash String?
+  manifestHash String?
+  manifest RawBlob? @relation(fields: [manifestHash], references: [hash], onDelete: Restrict, onUpdate: Restrict)
+  failure String?
+  completedAt DateTime @default(now())
+  @@index([manifestHash, completedAt])
+}
+
+/** One immutable adapter output per job per batch, including identical re-attestations. */
+model SourceExtraction {
+  id String @id @default(uuid())
+  batchId String
+  batch CaptureBatch @relation(fields: [batchId], references: [id], onDelete: Restrict)
+  ordinal Int
+  externalId String?
+  outputHash String
+  output RawBlob @relation(fields: [outputHash], references: [hash], onDelete: Restrict)
+  capturedAt DateTime @default(now())
+  sources JobSource[]
+  observations SourceObservation[]
+  @@unique([id, batchId])
+  @@unique([batchId, ordinal])
+  @@index([outputHash])
+}
+
+/** Imported source notes, preserved verbatim and never treated as current evidence. */
+model SourceAccessArchive {
+  sourceKey String @id
+  sourceId String
+  verdict String?
+  checkedAt DateTime?
+  archivedAt DateTime @default(now())
+}
+
+/** Reviewed scope plus independently inspected native observations. Append only;
+ * sequence is allocated under the source lock, never supplied by the operator. */
+model SourceAccessDecision {
+  id String @id
+  sequence BigInt @unique @default(autoincrement())
+  sourceKey String
+  sourceRevisionId String
+  sourceRevision SourceRevision @relation(fields: [sourceRevisionId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  captureBatchId String?
+  captureBatch CaptureBatch? @relation("AccessEvidenceJobs", fields: [captureBatchId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  collections CaptureBatch[] @relation("CollectionAccess")
+  verdict String
+  policyVersion String
+  readerRevision String
+  document Json
+  report Json?
+  checkedAt DateTime
+  validUntil DateTime?
+  createdAt DateTime @default(now())
+  @@index([sourceKey, sequence])
+  @@index([sourceRevisionId, sequence])
+  @@index([captureBatchId])
+}
+
+/**
+ * Lot 6 (D-423) — the read copy of a Catwalks direct offer. Neon stays the
+ * truth; this row is a projection of the last version received from the
+ * backend outbox feed, kept whole in `payload` (hashed) as its provenance.
+ * Columns mirror the aggregated `Job` vocabulary so one SQL serves both
+ * origins; they are rebuilt from the payload at every version, never edited.
+ * `eligible = false` keeps the last projection of a withdrawn offer for its page.
+ */
+model DirectOffer {
+  /** The backend job id; public id is `cw_<id>` — a distinct identifier space. */
+  id                    String    @id
+  version               BigInt
+  appliedSeq            BigInt
+  eligible              Boolean
+  payloadHash           String
+  payload               Json
+  correspondanceVersion Int
+  slug                  String
+  anciensSlugs          String[]  @default([])
+  title                 String
+  company               String
+  maisonSlug            String?
+  countryCode           String?
+  city                  String?
+  postalCode            String?
+  location              String
+  latitude              Float?
+  longitude             Float?
+  employmentTerm        String?
+  workTime              String?
+  programType           String?
+  engagementType        String?
+  workplaceType         String?
+  sectorCodes           String[]  @default([])
+  occupationLabel       String?
+  language              String?
+  description           String
+  salaryMin             Decimal?  @db.Decimal(24, 6)
+  salaryMax             Decimal?  @db.Decimal(24, 6)
+  salaryCurrency        String?
+  salaryPeriod          String?
+  visuel                String?
+  applyUrl              String
+  postedAt              DateTime
+  validThrough          DateTime?
+  modifiedAt            DateTime
+  searchText            String    @default("")
+  /** Lot 7 : mêmes vecteurs que Job, maintenus par le déclencheur qui normalise searchText. */
+  searchVector          Unsupported("tsvector")?
+  titleVector           Unsupported("tsvector")?
+  receivedAt            DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([eligible, countryCode])
+  @@index([slug])
+  @@index([company])
+}
+
+/** Append-only trace of every feed event read, with its effect; immutable in SQL. */
+model DirectOfferEvent {
+  seq         BigInt   @id
+  offerId     String
+  version     BigInt
+  evenement   String
+  payloadHash String?
+  effet       String
+  appliedAt   DateTime @default(now())
+
+  @@index([offerId])
+}
+
+/** Where the feed consumer stopped, and the last refusal it met. */
+model DirectFeedCursor {
+  id              String    @id
+  lastSeq         BigInt
+  contractVersion Int
+  lastReadAt      DateTime
+  lastError       String?
+  updatedAt       DateTime  @updatedAt
 }

@@ -1,0 +1,71 @@
+{
+  "mutations": [
+    {
+      "name": "unbound-retained-deadline",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "1bc78158339126b4b85d666c07a52a2b11b0d8d9ec4733abc2a3e602b4465c12"
+    },
+    {
+      "name": "fallback-after-bad-capture",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "1bc78158339126b4b85d666c07a52a2b11b0d8d9ec4733abc2a3e602b4465c12"
+    },
+    {
+      "name": "missing-content-as-invalid-identity",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "1d976fb4f39754889c0d834e483fee7d4f08f902b58299eaa990df4989635314"
+    },
+    {
+      "name": "unchecked-matching-cache",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "7e05f1ae9bbc03d576795211a76529e043ed8573c440fa151ec95e13c8da48e3"
+    },
+    {
+      "name": "wrong-captured-adapter",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "1bc78158339126b4b85d666c07a52a2b11b0d8d9ec4733abc2a3e602b4465c12"
+    },
+    {
+      "name": "held-captured-publication",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "1bc78158339126b4b85d666c07a52a2b11b0d8d9ec4733abc2a3e602b4465c12"
+    },
+    {
+      "name": "unbounded-capture",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "1bc78158339126b4b85d666c07a52a2b11b0d8d9ec4733abc2a3e602b4465c12"
+    },
+    {
+      "name": "archive-io-under-write-locks",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "7e05f1ae9bbc03d576795211a76529e043ed8573c440fa151ec95e13c8da48e3"
+    },
+    {
+      "name": "forged-publication-proof",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "7e05f1ae9bbc03d576795211a76529e043ed8573c440fa151ec95e13c8da48e3"
+    },
+    {
+      "name": "trusted-old-reader-id",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "1bc78158339126b4b85d666c07a52a2b11b0d8d9ec4733abc2a3e602b4465c12"
+    },
+    {
+      "name": "lost-concurrent-completion",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "7e05f1ae9bbc03d576795211a76529e043ed8573c440fa151ec95e13c8da48e3"
+    }
+  ],
+  "restoredTests": "passed"
+}

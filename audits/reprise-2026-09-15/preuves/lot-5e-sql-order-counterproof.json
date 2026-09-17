@@ -1,0 +1,8 @@
+{
+  "name": "sequence-before-source-lock",
+  "rejectedByConcurrentRegression": true,
+  "restoredTests": "passed",
+  "functionDefinitionRestoredExactly": true,
+  "definitionSha256": "93d883553db763015d0d80e3a6acc4ee26f21d6a2d765753ad10a046ad8f3b42",
+  "scratchOnly": true
+}

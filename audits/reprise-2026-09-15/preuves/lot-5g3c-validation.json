@@ -1,0 +1,58 @@
+{
+  "date": "2026-09-16",
+  "unit": 2585,
+  "integration": 780,
+  "api": 259,
+  "apiOptionalSkipped": 2,
+  "python": 15,
+  "testsPassed": 3639,
+  "freshMigrations": 70,
+  "types": "PASS",
+  "apiBuild": "PASS",
+  "appCounterproofs": 13,
+  "sqlCounterproofs": 3,
+  "restoredCounterproofTests": 79,
+  "runtime": {
+    "revision": "local-sha256:96f1fb000735f51f68d7262c5e1b7b51f816e4d159925e4bcc3c91788422e388",
+    "runtimeFiles": 283,
+    "workingAndVerifiedRuntimeExact": true,
+    "runtimeFileSetsExact": true
+  },
+  "stockMigration": {
+    "Job": 87607,
+    "JobSource": 90764,
+    "SourceObservation": 141933,
+    "Source": 536,
+    "SourceRevision": 536,
+    "SourceIdentityReview": 112,
+    "PostingScopeDecision": 224
+  },
+  "absenceInventory": "lot-5g3c-absence-inventory-clone.json",
+  "regressions": [
+    "publication gate skipped for absence",
+    "paused source attesting",
+    "missing completion accepted",
+    "first run attesting",
+    "write failures ignored",
+    "unreadable sealed proof falling through",
+    "old manifest version accepted",
+    "completion not recorded",
+    "write-failure fate hidden",
+    "foreign fate accepted",
+    "row trusted over its report",
+    "Ashby canonical contract dropped",
+    "evidence skip overwritten",
+    "SQL completion binding disabled",
+    "SQL completion immutability disabled"
+  ],
+  "productionTouched": false,
+  "gitPush": false,
+  "logsSha256": {
+    "lot5g3c-full-validation.log": "cd0e78b27c6a144e311ac5b9cd058914f665c80d7d684e465ca97b4e4cb263a8",
+    "lot5g3c-api-build.log": "823c1b88d23de428f9e263f728208b4fa4680cb3465e48a2805bed8bd294293e",
+    "lot5g3c-counterproof-restored.log": "2e3a228bc2bbb3a643b846749e8c100f43cbfbaf77eb8f8bd9523869c3e71df2",
+    "lot5g3c-stock-migrate.log": "0db7f7112d46228a71dbded2c6220300b063e847c3543f9e1d5d6af45fc686c2",
+    "lot5g3c-target-integration.log": "2b6d69839a89d0ee9461186033ce07564d464bc704829bc1218288d375a8a7ad",
+    "lot5g3c-target-unit.log": "0f8b3e235ca3cd40132c481a1103e72704c6a008a7050bfedc794486574cc02b"
+  }
+}

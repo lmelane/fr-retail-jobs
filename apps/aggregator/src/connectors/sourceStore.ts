@@ -1,5 +1,7 @@
 import type { Prisma, PrismaClient, Source, SourceStatus } from '@prisma/client';
 import { loadSourceCatalog, tierFor, sourceKeyFor, type CatalogSource } from './sourceCatalog.js';
+import { requireSourceAccess } from './sourceAccess.js';
+import { requireSourceValidation } from './sourceCertification.js';
 import { requireSourceIdentity } from './sourceIdentity.js';
 import { lockSourceWrites } from '../lib/writeLocks.js';
 
@@ -10,15 +12,14 @@ import { lockSourceWrites } from '../lib/writeLocks.js';
  * Why a table: a CSV line has no lifecycle. Removing one left its offers
  * orphaned forever (the « Cartier +3 » incident, D27), promotion was a hand
  * edit with no guard, and per-source quality lived in a note string nobody
- * could query. The table carries status, a dated robots verdict, the last run
+ * could query. The table carries status, the last run
  * and field-coverage rates as columns.
  */
 
-/** The shape the ingest pipeline consumes — CatalogSource plus its identity. */
-export type RuntimeSource = CatalogSource & {
-  key: string;
-  tier: string;
-  status: SourceStatus;
+/** Registry settings and their exact immutable revision consumed by ingestion. */
+export type RuntimeSource = Pick<Source, 'key' | 'maison' | 'kind' | 'careersDomain' | 'tier' | 'status' | 'lastRunJobs'> & {
+  config: Record<string, unknown>;
+  revisionId: string;
 };
 
 /**
@@ -95,30 +96,6 @@ export function tenantKeyOf(kind: string, entryUrl: string, careersDomain?: stri
   return `${kind}:${normalized}`;
 }
 
-/** Source row -> the CatalogSource shape every consumer already reads. */
-function toRuntime(row: Source): RuntimeSource {
-  const config = row.config as Record<string, unknown>;
-  // Symmetric with the import: `{url}` rows were plain-URL CSV lines (sitemap
-  // sources read entryUrl directly as a URL); everything else is JSON config.
-  const keys = Object.keys(config ?? {});
-  const entryUrl =
-    keys.length === 1 && keys[0] === 'url' && typeof config.url === 'string'
-      ? config.url
-      : JSON.stringify(config ?? {});
-  return {
-    maison: row.maison,
-    careersDomain: row.careersDomain ?? '',
-    kind: row.kind,
-    entryUrl,
-    jobUrlPattern: row.jobUrlPattern ?? '',
-    robotsVerdict: row.robotsVerdict ?? '',
-    jobCount: row.verifiedJobCount ?? 0,
-    key: row.key,
-    tier: row.tier,
-    status: row.status,
-  };
-}
-
 /**
  * Every ACTIVE source — what the ingest runs.
  *
@@ -127,14 +104,16 @@ function toRuntime(row: Source): RuntimeSource {
  * chantier exists to kill. The fix is one command: `import-sources`.
  */
 export async function loadActiveSources(prisma: PrismaClient): Promise<RuntimeSource[]> {
-  const total = await prisma.source.count();
-  if (total === 0) {
-    throw new Error(
-      'Source table is empty — the catalogue has not been imported. Run: npm run import-sources -w @catwalks/aggregator',
-    );
-  }
-  const rows = await prisma.source.findMany({ where: { status: 'ACTIVE' }, orderBy: { key: 'asc' } });
-  return rows.map(toRuntime);
+  return prisma.$transaction(async tx => {
+    if (await tx.source.count() === 0) throw new Error(
+      'Source table is empty — the catalogue has not been imported. Run: npm run import-sources -w @catwalks/aggregator');
+    // JSONB text avoids the driver's lossy JSON-number conversion and keeps
+    // the loaded settings and revision in one coherent database snapshot.
+    const rows = await tx.$queryRaw<(Omit<RuntimeSource, 'config'> & { configText: string })[]>`
+      SELECT key, maison, kind, "careersDomain", tier, status, "lastRunJobs", "currentRevisionId" AS "revisionId",
+        config::text AS "configText" FROM "Source" WHERE status='ACTIVE' ORDER BY key`;
+    return rows.map(({ configText, ...row }) => ({ ...row, config: JSON.parse(configText) as Record<string, unknown> }));
+  }, { isolationLevel: 'RepeatableRead' });
 }
 
 export type ImportStats = {
@@ -184,9 +163,6 @@ export async function importSourcesCsv(prisma: PrismaClient): Promise<ImportStat
       jobUrlPattern: source.jobUrlPattern || null,
       tier: tierFor(source),
       tenantKey,
-      robotsVerdict: source.robotsVerdict || null,
-      robotsCheckedAt: null,
-      verifiedJobCount: null,
     };
     await prisma.source.create({ data: { ...data, key, status: 'DRAFT' } });
     stats.imported++;
@@ -201,52 +177,39 @@ export type PromoteResult = {
   to: 'ACTIVE';
 };
 
-/**
- * DRAFT/VALIDATED/PAUSED -> ACTIVE, with the guards a hand-edited CSV never
- * had (règles permanentes du plan) : a promoted source must have a config, a
- * DATED robots verdict, and at least one really-parsed offer behind its count.
- */
-/**
- * An access verdict allows collection when robots.txt allows it (`ALLOWED`) or
- * when the owner recorded a nominal authorization on the row, e.g.
- * `ALLOWED (autorisation propriétaire — URBN (autorisation obtenue par Loïc), 2026-09-05)`:
- * hub-urbn.icims.com publishes `Disallow: /` and the source was activated on that
- * authorization. The note is part of the verdict and stays on the row; a bare
- * `ALLOWED (…)` without the word "autorisation" is not a verdict we recognize.
- */
-export function isAllowedAccessVerdict(verdict: string | null | undefined): boolean {
-  const value = (verdict ?? '').trim();
-  if (value.toUpperCase() === 'ALLOWED') return true;
-  return /^ALLOWED \((?=.*autorisation)[^)]*(\([^)]*\)[^)]*)*\)$/i.test(value);
+/** Promotion consumes current independent native, identity and access decisions. */
+export class SourcePromotionGateError extends Error {
+  constructor(readonly code: 'SOURCE_MISSING' | 'REVISION_MISMATCH' | 'RETIRED' | 'CONFIG_EMPTY' | 'CONCURRENT_CHANGE', message: string) {
+    super(message); this.name = 'SourcePromotionGateError';
+  }
 }
 
-export async function promoteSource(prisma: PrismaClient, key: string): Promise<PromoteResult> {
+export async function promoteSource(prisma: PrismaClient, key: string, expectedRevisionId: string): Promise<PromoteResult> {
   return prisma.$transaction(async tx => {
     await lockSourceWrites(tx, key, true);
-    const row = await tx.source.findUnique({ where: { key } });
-    if (!row) throw new Error(`promote: no source with key "${key}"`);
-    if (row.status === 'ACTIVE') throw new Error(`promote: "${key}" is already ACTIVE`);
+    // A direct configuration update must also wait; advisory lifecycle locks
+    // alone cannot serialize every SQL writer of this registry row.
+    const [stored] = await tx.$queryRaw<(Source & { configText: string })[]>`
+      SELECT *, config::text AS "configText" FROM "Source" WHERE key=${key} FOR UPDATE`;
+    const row = stored ? { ...stored, config: JSON.parse(stored.configText) } : undefined;
+    if (!row) throw new SourcePromotionGateError('SOURCE_MISSING', `promote: no source with key "${key}"`);
+    if (!expectedRevisionId || row.currentRevisionId !== expectedRevisionId) {
+      throw new SourcePromotionGateError('REVISION_MISMATCH', 'Promotion requires the exact reviewed source revision');
+    }
     if (row.status === 'RETIRED') {
-      throw new Error(`promote: "${key}" is RETIRED — re-validate it as a new source instead`);
+      throw new SourcePromotionGateError('RETIRED', `promote: "${key}" is RETIRED; reopening requires a separate reviewed registry transition`);
     }
     const config = row.config as Record<string, unknown> | null;
     if (!config || Object.keys(config).length === 0) {
-      throw new Error(`promote: "${key}" has no adapter config`);
+      throw new SourcePromotionGateError('CONFIG_EMPTY', `promote: "${key}" has no adapter config`);
     }
-    if (!row.robotsVerdict || !row.robotsCheckedAt) {
-      throw new Error(`promote: "${key}" has no dated robots verdict — read robots.txt at the source first`);
-    }
-    if (!isAllowedAccessVerdict(row.robotsVerdict)) {
-      throw new Error(`promote: "${key}" needs an ALLOWED robots verdict, got "${row.robotsVerdict}"`);
-    }
-    if (!row.verifiedJobCount || row.verifiedJobCount < 1) {
-      throw new Error(`promote: "${key}" has no proven offer (verifiedJobCount) — run the volume validation first`);
-    }
-
     const from = row.status;
     await requireSourceIdentity(tx, row);
-    const changed = await tx.source.updateMany({ where: { key, updatedAt: row.updatedAt, status: from }, data: { status: 'ACTIVE' } });
-    if (changed.count !== 1) throw new Error('promote: source changed while its identity was checked');
+    await requireSourceValidation(tx, row.currentRevisionId);
+    await requireSourceAccess(tx, row);
+    if (from === 'ACTIVE') return { key, from, to: 'ACTIVE' };
+    const changed = await tx.source.updateMany({ where: { key, currentRevisionId: row.currentRevisionId, status: from }, data: { status: 'ACTIVE' } });
+    if (changed.count !== 1) throw new SourcePromotionGateError('CONCURRENT_CHANGE', 'promote: source changed while its identity was checked');
     return { key, from, to: 'ACTIVE' };
   });
 }

@@ -1,0 +1,25 @@
+{
+  "snapshot": "2026-09-15, read-only retained RAW; counts do not imply current availability or production closures",
+  "facts": {
+    "flatchr": {
+      "rows": 354,
+      "contractEndPresent": 150,
+      "contractEndBeforeSnapshotDate": 43
+    },
+    "personio": {
+      "rows": 186,
+      "emptyJobDescriptions": 10
+    },
+    "talentview": {
+      "rows": 80,
+      "detailIdentityAndPublishedStateMatch": 80
+    },
+    "talentfunnel": {
+      "rows": 153,
+      "sameDetailIdentityTenantAndActiveState": 151,
+      "missingDetail": 2
+    }
+  },
+  "flatchrReference": "https://developers.flatchr.io/en/docs/Schemas/vacancy",
+  "sourceExpiryColumns": "Introduced by local undeployed migration 20260915150000_source_expiry; no production cache correction performed"
+}

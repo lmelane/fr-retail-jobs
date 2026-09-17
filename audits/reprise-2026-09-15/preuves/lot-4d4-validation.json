@@ -1,0 +1,37 @@
+{
+  "date": "2026-09-15",
+  "environment": "Dedicated local PostgreSQL 18; private RAW snapshot; no production writes or publisher calls",
+  "migrations": 55,
+  "tests": {
+    "aggregatorUnit": 2269,
+    "aggregatorIntegration": 459,
+    "api": 254,
+    "apiOptionalSkipped": 2,
+    "python": 5,
+    "totalPassed": 2987
+  },
+  "typecheck": "PASS",
+  "apiBuild": "PASS",
+  "schemaDrift": false,
+  "counterproofs": 10,
+  "corpusRepresentations": 85327,
+  "recoverable": 50128,
+  "projectable": 50128,
+  "realPublicationsRebuilt": 93,
+  "families": 31,
+  "publicReads": 93,
+  "rebuildMismatches": 0,
+  "newCaptures": 0,
+  "reapplication": "IDEMPOTENT",
+  "logs": {
+    "lot4d4-full-validation.log": "b4cfd415126adbced8342a8a2d24c11df32562855bf296b3e3747751ac979e6c",
+    "lot4d4-api-build.log": "bc23a78083756caa095743649c108aeb09cd15733e512182318fbbdd63fec035",
+    "lot4d4-typecheck-output.log": "38f11d2f5f6bbb339d8011e1d5805718aba8e3e79c98335c261f05885cef1416",
+    "lot4d4-test-output.log": "caba0459e9462158a2be51c427490436cc0d60373a7d2af5fe5001dcf0352669",
+    "lot4d4-shadow.log": "7b5dacde2cb54389bef7989baf1bf5a52d56098fb6cdda2ed97aecfcfd17c7ba",
+    "lot4d4-corpus.log": "07b08164da3d348f5e721b0bb13b7544434b5a63e980f7f3e6b9774292753a7f",
+    "lot4d4-cli-smoke.log": "1abdd09de9b0d34144e89317151d0370b701742a053bb99800884e2e4fd469a3",
+    "lot4d4-schema-drift.log": "198913094e3f41610eb893459ab65a3c79991b65d4ef5fcb8c325ebe52ebf1ed",
+    "lot4d4-counterproof-restored.log": "0af3cf13dc1f5bbcb815f9d14dfc2eff748c317fb538a9b3f544eed726465e44"
+  }
+}

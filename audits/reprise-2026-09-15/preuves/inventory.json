@@ -1,0 +1,68 @@
+{
+  "guard": {
+    "read_only": "on",
+    "default_read_only": "on",
+    "database": "railway",
+    "at": "2026-09-15T13:03:56.609Z"
+  },
+  "elapsedMs": 291,
+  "rows": [
+    {
+      "metric": "database",
+      "value": {
+        "size": 3701880511,
+        "version": "PostgreSQL 18.6 (Debian 18.6-1.pgdg13+2) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit"
+      }
+    },
+    {
+      "metric": "runs_7d",
+      "value": {
+        "OK": 387,
+        "NEW": 33,
+        "BROKEN": 5,
+        "DEGRADED": 302
+      }
+    },
+    {
+      "metric": "sources",
+      "value": {
+        "ACTIVE": 437,
+        "PAUSED": 7,
+        "RETIRED": 92
+      }
+    },
+    {
+      "metric": "observations",
+      "value": {
+        "total": 137324,
+        "latest": "2026-09-14T11:12:15.813",
+        "sourceKeys": 459
+      }
+    },
+    {
+      "metric": "jobSources",
+      "value": {
+        "raw": 88913,
+        "total": 90764,
+        "active": 85327,
+        "sourceKeys": 489
+      }
+    },
+    {
+      "metric": "jobs",
+      "value": {
+        "total": 87580,
+        "active": 83431,
+        "closed": 2783,
+        "merged": 59,
+        "public": 83431,
+        "withdrawn": 1344,
+        "latestSeen": "2026-09-14T11:18:41.493",
+        "active_no_raw": 1002,
+        "oldestActiveSeen": "2026-09-04T17:41:55.684",
+        "activeSeenBefore48h": 61241,
+        "activePastValidThrough": 443
+      }
+    }
+  ]
+}

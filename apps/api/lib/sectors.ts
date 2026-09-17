@@ -1,5 +1,5 @@
 import { cache } from "react";
-import { prisma, Prisma } from "@catwalks/db";
+import { prisma } from "@catwalks/db";
 export const UNCLASSIFIED_SECTOR = "unclassified";
 export type SectorView = { code: string; slug: string; label: string };
 export const getSectorPresentation = cache(async () => {
@@ -30,10 +30,4 @@ export function sectorWhere(code: string) {
   return code === UNCLASSIFIED_SECTOR
     ? { sectorCodes: { isEmpty: true } }
     : { sectorCodes: { has: code } };
-}
-export const sectorJoin = Prisma.sql`CROSS JOIN LATERAL unnest(CASE WHEN cardinality(c."sectorCodes")=0 THEN ARRAY['unclassified'] ELSE c."sectorCodes" END) AS business_sector(code)`;
-export function sectorSql(code: string) {
-  return code === UNCLASSIFIED_SECTOR
-    ? Prisma.sql`cardinality(c."sectorCodes")=0`
-    : Prisma.sql`c."sectorCodes" @> ARRAY[${code}]::text[]`;
 }

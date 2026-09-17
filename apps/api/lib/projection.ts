@@ -6,17 +6,25 @@ import {
   programTypeLabel,
   workTimeLabel,
   workplaceTypeLabel,
+  type LangueLibelles,
 } from './format';
 
 /**
- * Projections JSON de l'API de lecture (F1, phase 1).
+ * Projections JSON de l'API de lecture (F1, phase 1 ; lot 6).
  *
  * Mesuré le 14/09/2026 : une page de 25 offres pesait 173 Ko parce que chaque
  * ligne embarquait sa `description` complète, qu'aucune liste n'affiche. La
- * projection « liste » la retire. Les deux projections AJOUTENT les libellés
- * d'affichage des dimensions d'emploi (« CDI » pour `PERMANENT`) et des pays,
- * calculés ici avec le vocabulaire unique de `@catwalks/db/presentation` et
- * `lib/countries` : un front ne recopie jamais ces tables.
+ * projection « liste » la retire — c'est la seule forme que `/api/jobs` sert.
+ * Les deux projections AJOUTENT les libellés d'affichage des dimensions
+ * d'emploi (« CDI » pour `PERMANENT`) et des pays, calculés ici avec le
+ * vocabulaire unique de `@catwalks/db/presentation` et `lib/countries` : un
+ * front ne recopie jamais ces tables. Les facettes arrivent déjà libellées
+ * depuis le contrat (`lib/facettes.ts`) ; rien n'est réécrit ici.
+ *
+ * Lot 8 : les libellés d'emploi, de pays et de langue suivent la LANGUE DES
+ * LIBELLÉS du périmètre servi (`perimetre.langueDesLibelles` : la langue de
+ * service du marché quand un catalogue existe, sinon le français) ; une fiche
+ * lue par son identifiant suit le marché du pays de l'offre.
  */
 type Libelles = {
   employmentTermLabel: string | null;
@@ -29,134 +37,58 @@ type Libelles = {
 
 export type JobListe = Omit<JobRow, 'description'> & Libelles;
 export type JobFiche = JobRow & Libelles;
+export type JobsResultListe = Omit<JobsResult, 'jobs'> & { jobs: JobListe[] };
 
-type FacetteLibellee = { value: string; count: number; label: string };
-/**
- * Les facettes libellées CONSERVENT l'absence décidée par le marché.
- *
- * `contracts` et consorts sont optionnelles ici comme dans `JobsResult` : une
- * facette que le marché ne justifie pas est ABSENTE de la réponse, jamais
- * réduite à `[]`. Les remettre à `[]` au moment de poser les libellés
- * annulerait le lot « facettes natives » sur le seul chemin qui compte — c'est
- * `projeterListe` que sert `/api/jobs`, donc le front ne verrait jamais la
- * distinction que l'API prend soin de produire en amont.
- *
- * Rappel du contrat : clé absente = « pas de facette sur ce marché » ; tableau
- * vide = « facette légitime, aucune valeur pour cette recherche ».
- */
-export type JobsResultListe = Omit<JobsResult, 'jobs' | 'facets'> & {
-  jobs: JobListe[];
-  facets: JobsResult['facets'] & {
-    contracts?: FacetteLibellee[];
-    workTimes?: FacetteLibellee[];
-    programs?: FacetteLibellee[];
-    engagements?: FacetteLibellee[];
-    countries: FacetteLibellee[];
-    languages?: FacetteLibellee[];
-  };
-};
-
-const LANGUES_FR = typeof Intl !== 'undefined' && 'DisplayNames' in Intl ? new Intl.DisplayNames(['fr'], { type: 'language', fallback: 'none' }) : null;
-/** « fr » → « Français », capitalisé ; un code inconnu reste tel quel. */
-export function languageLabel(code: string): string {
+function nomsIntl(langue: LangueLibelles, type: 'language' | 'region'): Intl.DisplayNames | null {
   try {
-    const l = LANGUES_FR?.of(code);
-    return l ? l.charAt(0).toUpperCase() + l.slice(1) : code;
+    return typeof Intl !== 'undefined' && 'DisplayNames' in Intl ? new Intl.DisplayNames([langue], { type, fallback: 'none' }) : null;
   } catch {
-    return code;
+    return null;
+  }
+}
+const NOMS = {
+  fr: { language: nomsIntl('fr', 'language'), region: nomsIntl('fr', 'region') },
+  en: { language: nomsIntl('en', 'language'), region: nomsIntl('en', 'region') },
+} as const;
+
+/** Le nom d'un pays : la table française vérifiée, ou `Intl` dans la langue des libellés. */
+function nomPays(code: string, langue: LangueLibelles): string {
+  if (langue === 'fr') return countryLabel(code);
+  try {
+    const nom = NOMS[langue].region?.of(code.toUpperCase());
+    return nom && nom !== code ? nom : countryLabel(code);
+  } catch {
+    return countryLabel(code);
   }
 }
 
-function libelles(job: JobRow): Libelles {
+function libelles(job: JobRow, langue: LangueLibelles): Libelles {
   return {
-    employmentTermLabel: employmentTermLabel(job.employmentTerm),
-    workTimeLabel: workTimeLabel(job.workTime),
-    programTypeLabel: programTypeLabel(job.programType),
-    engagementTypeLabel: engagementTypeLabel(job.engagementType),
-    workplaceTypeLabel: workplaceTypeLabel(job.workplaceType),
-    countryLabel: job.countryCode ? countryLabel(job.countryCode) : null,
+    employmentTermLabel: employmentTermLabel(job.employmentTerm, langue),
+    workTimeLabel: workTimeLabel(job.workTime, langue),
+    programTypeLabel: programTypeLabel(job.programType, langue),
+    engagementTypeLabel: engagementTypeLabel(job.engagementType, langue),
+    workplaceTypeLabel: workplaceTypeLabel(job.workplaceType, langue),
+    countryLabel: job.countryCode ? nomPays(job.countryCode, langue) : null,
   };
 }
 
-/** Une ligne de liste : sans description, avec ses libellés. */
-export function projeterLigne(job: JobRow): JobListe {
+/** Une ligne de liste : sans description, avec ses libellés dans la langue demandée. */
+export function projeterLigne(job: JobRow, langue: LangueLibelles = 'fr'): JobListe {
   const { description: _description, ...reste } = job;
-  return { ...reste, ...libelles(job) };
+  return { ...reste, ...libelles(job, langue) };
 }
 
-export function projeterLignes(jobs: JobRow[]): JobListe[] {
-  return jobs.map(projeterLigne);
+export function projeterLignes(jobs: JobRow[], langue: LangueLibelles = 'fr'): JobListe[] {
+  return jobs.map((job) => projeterLigne(job, langue));
 }
 
 /** Une fiche : la ligne complète, description comprise, avec ses libellés. */
-export function projeterFiche(job: JobRow): JobFiche {
-  return { ...job, ...libelles(job) };
+export function projeterFiche(job: JobRow, langue: LangueLibelles = 'fr'): JobFiche {
+  return { ...job, ...libelles(job, langue) };
 }
 
-/**
- * Pose les libellés SANS jamais inventer une facette absente.
- *
- * Le `?? []` d'origine transformait « facette non servie sur ce marché » en
- * « facette vide » — deux messages opposés pour le front, confondus au dernier
- * moment. Une surcharge garde la garantie côté appelant : une facette
- * obligatoire en entrée reste obligatoire en sortie.
- */
-function libellerFacette(
-  facette: { value: string; count: number }[],
-  libelle: (value: string) => string | null,
-): FacetteLibellee[];
-function libellerFacette(
-  facette: { value: string; count: number }[] | undefined,
-  libelle: (value: string) => string | null,
-): FacetteLibellee[] | undefined;
-function libellerFacette(
-  facette: { value: string; count: number }[] | undefined,
-  libelle: (value: string) => string | null,
-): FacetteLibellee[] | undefined {
-  // `undefined` traverse intact ; `[]` reste `[]`. La distinction est le contrat.
-  return facette?.map((f) => ({ ...f, label: libelle(f.value) ?? f.value }));
-}
-
-/** `{ cle: valeur }` si la facette existe, `{}` sinon — pour un spread qui n'invente pas de clé. */
-function siPresente<K extends string>(cle: K, valeur: FacetteLibellee[] | undefined) {
-  return (valeur === undefined ? {} : { [cle]: valeur }) as { [P in K]?: FacetteLibellee[] };
-}
-
+/** La liste servie : chaque ligne libellée dans la langue des libellés du périmètre. */
 export function projeterListe(result: JobsResult): JobsResultListe {
-  /*
-   * Les facettes à libeller sont SORTIES du spread, pas simplement réécrites
-   * par-dessus. Laissées dedans, elles y apporteraient leur type NON libellé
-   * (`{value,count}` sans `label`) ; un spread suivi de clés optionnelles ne
-   * remplace pas ce type aux yeux du compilateur, il l'unit. La destructuration
-   * rend l'intention explicite et garde le typage juste sans aucun `as`.
-   */
-  const { contracts, workTimes, programs, engagements, countries, languages, ...autresFacettes } = result.facets;
-  return {
-    ...result,
-    jobs: projeterLignes(result.jobs),
-    /*
-     * SPREAD CONDITIONNEL, et ce n'est pas une coquetterie.
-     *
-     * Écrire `contracts: libellerFacette(...)` recrée la CLÉ avec la valeur
-     * `undefined`. `JSON.stringify` l'omet, donc la réponse HTTP paraît
-     * correcte — mais tout code qui teste `'contracts' in facets` (côté rendu
-     * serveur, où l'objet ne passe par aucune sérialisation) la verrait
-     * PRÉSENTE. Le contrat « absente ≠ vide » se serait alors tenu sur un
-     * chemin et pas sur l'autre : exactement le genre d'écart qu'aucun
-     * typecheck ne signale.
-     *
-     * Le spread conditionnel n'ajoute la clé que si la facette existe.
-     */
-    facets: {
-      ...autresFacettes,
-      ...siPresente('contracts', libellerFacette(contracts, employmentTermLabel)),
-      ...siPresente('workTimes', libellerFacette(workTimes, workTimeLabel)),
-      ...siPresente('programs', libellerFacette(programs, programTypeLabel)),
-      ...siPresente('engagements', libellerFacette(engagements, engagementTypeLabel)),
-      // `countries` n'est jamais conditionnelle : un pays est un pays sur tous
-      // les marchés, et le registre n'a aucune mesure la concernant.
-      countries: libellerFacette(countries, (code) => countryLabel(code)),
-      ...siPresente('languages', libellerFacette(languages, languageLabel)),
-    },
-  };
+  return { ...result, jobs: projeterLignes(result.jobs, result.perimetre.langueDesLibelles) };
 }

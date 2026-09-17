@@ -51,8 +51,8 @@ describe('Workday brand from the tenant store code in locationsText — Saks, 20
   });
 
   it('keeps the banner through the detail pass: the legal entity "060 SAKS & CO LLC" stays in the raw', async () => {
-    mockJson.mockResolvedValueOnce({ jobPostingInfo: { jobDescription: 'Sell', location: 'NM_0114_Houston' }, hiringOrganization: { name: '060 SAKS & CO LLC' } } as never);
-    const [job] = await attachWorkdayDescriptions([{ externalId: 'R-109041', title: 'Seasonal Selling Associate (FOH)', url: 'https://saks.wd1.myworkdayjobs.com/careers_at_saks/job/x', company: 'Neiman Marcus', employerEvidence: { rawName: 'Neiman Marcus', path: 'listing.locationsText.prefix', rule: 'LOCATION_CODE_PREFIX' }, raw: { externalPath: '/job/x', locationsText: 'NM_0114_Houston', locationPrefix: 'NM' } }], 'https://saks.wd1.myworkdayjobs.com/wday/cxs/saks/careers_at_saks');
+    mockJson.mockResolvedValueOnce({ jobPostingInfo: { externalUrl: 'https://saks.wd1.myworkdayjobs.com/careers_at_saks/job/R-109041', jobDescription: 'Sell', location: 'NM_0114_Houston' }, hiringOrganization: { name: '060 SAKS & CO LLC' } } as never);
+    const [job] = await attachWorkdayDescriptions([{ externalId: 'R-109041', title: 'Seasonal Selling Associate (FOH)', url: 'https://saks.wd1.myworkdayjobs.com/careers_at_saks/job/R-109041', company: 'Neiman Marcus', employerEvidence: { rawName: 'Neiman Marcus', path: 'listing.locationsText.prefix', rule: 'LOCATION_CODE_PREFIX' }, raw: { externalPath: '/job/R-109041', locationsText: 'NM_0114_Houston', locationPrefix: 'NM' } }], 'https://saks.wd1.myworkdayjobs.com/wday/cxs/saks/careers_at_saks');
     expect(job.company).toBe('Neiman Marcus');
     expect(job.employerEvidence?.rule).toBe('LOCATION_CODE_PREFIX');
     expect((job.raw as any).detail.hiringOrganization.name).toBe('060 SAKS & CO LLC');

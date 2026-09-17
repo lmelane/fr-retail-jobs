@@ -1,0 +1,12 @@
+{
+  "syntheticWitness": true,
+  "sourceKey": "identity-cli-01b15468-fe33-439e-a574-402de5109c41",
+  "profileIncludesRevision": true,
+  "previewWritesNoReview": true,
+  "applyRecordsBoundReview": true,
+  "obsoleteDossierRejected": true,
+  "urlPatternInvalidatesReviewDespiteUnchangedHash": true,
+  "explicitNewReviewAccepted": true,
+  "sourceStatus": "DRAFT",
+  "noNetwork": true
+}

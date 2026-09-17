@@ -4,6 +4,7 @@ import { enrichPostingEvidence } from '../../lib/postingEvidence.js';
 import { assertSourceRunning } from '../../lib/sourceBudget.js';
 import { XMLParser, XMLValidator } from 'fast-xml-parser';
 import { fetchText } from '../../lib/http.js';
+import { personioExperienceYears } from '../../normalize/experience.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
 
 /**
@@ -43,21 +44,11 @@ export async function fetchPersonioJobs(config: Record<string, unknown>): Promis
   const rejectedRows: NonNullable<AdapterResult['rejectedRows']> = [];
   const jobs: NormalizedJob[] = [];
   for (const raw of list) {
-    if (!/^[0-9]+$/.test(String(raw.id ?? '')) || typeof raw.name !== 'string' || !raw.name.trim()) {
+    const job = parsePersonioPosition(raw, host);
+    if (!job) {
       rejectedRows.push({ reason: 'MISSING_OR_INVALID_ID_OR_TITLE', raw }); continue;
     }
-    jobs.push({
-      externalId: String(raw.id), title: raw.name,
-      // Department is a business unit, not a geographic component.
-      location: raw.office ? String(raw.office) : undefined,
-      contract: raw.employmentType ? String(raw.employmentType) : undefined,
-      ...(typeof raw.subcompany === 'string' && raw.subcompany.trim() ? { company: raw.subcompany.trim(),
-        employerEvidence: { rawName: raw.subcompany, path: 'raw.subcompany', rule: 'EXPLICIT_PERSONIO_LEGAL_ENTITY' } } : {}),
-      description: descriptionOf(raw), url: `https://${host}/job/${raw.id}`,
-      // XML createdAt is creation, not an asserted publication. Read datePosted
-      // from the actual single JobPosting instead; preserve createdAt in RAW.
-      raw,
-    });
+    jobs.push(job);
   }
   const limit = pLimit(2);
   const enriched = await Promise.all(jobs.map(job=>limit(async()=>{
@@ -84,5 +75,27 @@ export async function fetchPersonioJobs(config: Record<string, unknown>): Promis
     complete: rejectedRows.length === 0 && new Set(jobs.map(job=>job.externalId)).size === list.length,
     enumeration: { method: 'DOCUMENTED_COMPLETE_XML_FEED', endpoint, pages: 1, rawCount: list.length,
       termination: 'FULL_RESPONSE', documentation: 'https://developer.personio.de/v1.0/reference/get_xml' },
+  };
+}
+
+/** Native XML position, before optional page enrichment. */
+export function parsePersonioPosition(raw: any, host: string): NormalizedJob | null {
+  if (!/^[0-9]+$/.test(String(raw?.id ?? '')) || typeof raw.name !== 'string' || !raw.name.trim()) return null;
+  return {
+    externalId: String(raw.id), title: raw.name,
+    // Department is a business unit, not a geographic component.
+    location: raw.office ? String(raw.office) : undefined,
+    contract: raw.employmentType ? String(raw.employmentType) : undefined,
+    // `yearsOfExperience` est un INTERVALLE D'ANNÉES explicite (`2-5`, `gt-15`) :
+    // on en prend la borne basse, l'exigence minimale. À ne pas confondre avec
+    // `raw.seniority` (`experienced`, `entry-level`…), qui est un rang sans durée
+    // et n'est pas lu.
+    experienceYears: personioExperienceYears(raw.yearsOfExperience),
+    ...(typeof raw.subcompany === 'string' && raw.subcompany.trim() ? { company: raw.subcompany.trim(),
+      employerEvidence: { rawName: raw.subcompany, path: 'raw.subcompany', rule: 'EXPLICIT_PERSONIO_LEGAL_ENTITY' } } : {}),
+    description: descriptionOf(raw), url: `https://${host}/job/${raw.id}`,
+    // XML createdAt is creation, not an asserted publication. Read datePosted
+    // from the actual single JobPosting instead; preserve createdAt in RAW.
+    raw,
   };
 }

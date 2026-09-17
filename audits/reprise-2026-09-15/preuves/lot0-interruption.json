@@ -1,0 +1,5 @@
+{
+  "interruptedAfterDatabaseReady": true,
+  "exit": 1,
+  "containerRemoved": true
+}

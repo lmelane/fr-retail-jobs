@@ -1,0 +1,50 @@
+[
+  {
+    "name": "authoritative_refresh_drops_experience_education_coordinates",
+    "input": {
+      "experienceYears": 5,
+      "educationLevel": "SOURCE:degree",
+      "latitude": 42.36,
+      "longitude": -71.06,
+      "postalCode": "02108",
+      "department": "Retail"
+    },
+    "actual": {}
+  },
+  {
+    "name": "explicit_no_remote_misread",
+    "actual": {
+      "type": "REMOTE",
+      "evidence": "EXPLICIT"
+    }
+  },
+  {
+    "name": "hybrid_flags_misread",
+    "actual": {
+      "decisions": {
+        "employmentTerm": {
+          "origin": "NO_STRUCTURED_EVIDENCE"
+        },
+        "workTime": {
+          "origin": "NO_STRUCTURED_EVIDENCE"
+        },
+        "programType": {
+          "origin": "NO_STRUCTURED_EVIDENCE"
+        },
+        "engagementType": {
+          "origin": "NO_STRUCTURED_EVIDENCE"
+        }
+      },
+      "workplaceType": "ONSITE"
+    }
+  },
+  {
+    "name": "salary_coercion_preserves_decimal_hypothesis_refuted",
+    "input": 12.31,
+    "actual": 12.31
+  },
+  {
+    "name": "distinct_roles_same_city_fuzzy_merge",
+    "actual": true
+  }
+]

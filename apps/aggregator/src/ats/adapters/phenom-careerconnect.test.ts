@@ -147,9 +147,41 @@ describe('enrichissement par le JSON-LD de la fiche', () => {
     expect(out.description).toBe(base.description);
   });
 
-  it('ne remplace jamais par PLUS COURT — un teaser vaut mieux qu\'une regression', () => {
+  it('retient l\'évidence de la fiche admise dans le RAW, comme DigitalRecruiters et Personio, pour que le lecteur la relise hors réseau', () => {
+    // Lot F3b : le teaser seul ne dit pas ce que le collecteur a publié ; l'évidence (page, empreinte, JSON-LD) est retenue.
     const base = parseCareerConnectJob(jobs[0], 'https://careers.hugoboss.com', { localePath: 'global/en' })!;
+    const long = 'Description de la fiche. '.repeat(60);
+    // Prémisse : la fiche est plus riche que le teaser, l'enrichissement a donc lieu.
+    expect(long.length).toBeGreaterThan(base.description!.length);
+    const out = enrichFromJobPosting(base, page(String(jobs[0].jobId), long), String(jobs[0].jobId));
+    expect(out.description).toBe(long.trim());
+    expect(out.raw).toMatchObject({ jobSeqNo: jobs[0].jobSeqNo, postingEvidence: { pageUrl: base.url, jobPostingCount: 1, geographyConflict: false, employerFromJobPosting: false } });
+    expect((out.raw as { postingEvidence: { htmlSha256: string } }).postingEvidence.htmlSha256).toMatch(/^[a-f0-9]{64}$/);
+    // Une fiche refusée (identifiant discordant, aucun JSON-LD) ne laisse AUCUNE évidence : rien à relire, rien d'inventé.
+    expect((enrichFromJobPosting(base, page('999999', 'autre'), String(jobs[0].jobId)).raw as Record<string, unknown>).postingEvidence).toBeUndefined();
+    expect((enrichFromJobPosting(base, '<html></html>', String(jobs[0].jobId)).raw as Record<string, unknown>).postingEvidence).toBeUndefined();
+  });
+
+  it('ne remplace jamais par PLUS COURT, et ne retient alors aucune évidence : un teaser vaut mieux qu\'une régression', () => {
+    const base = parseCareerConnectJob(jobs[0], 'https://careers.hugoboss.com', { localePath: 'global/en' })!;
+    // Prémisse : le teaser est plus long que le texte de la fiche.
+    expect(base.description!.length).toBeGreaterThan('court'.length);
     const out = enrichFromJobPosting(base, page(String(jobs[0].jobId), 'court'), String(jobs[0].jobId));
     expect(out.description).toBe(base.description);
+    expect((out.raw as Record<string, unknown>).postingEvidence).toBeUndefined();
+  });
+
+  it('garde le teaser, sans évidence, quand la fiche se déclare à une AUTRE adresse que l\'offre : elle ne serait pas relisible', () => {
+    const base = parseCareerConnectJob(jobs[0], 'https://careers.hugoboss.com', { localePath: 'global/en' })!;
+    const text = 'Texte complet de la fiche. '.repeat(60);
+    // Prémisse : la fiche est plus riche que le teaser ; seule son adresse décide.
+    expect(text.length).toBeGreaterThan(base.description!.length);
+    const elsewhere = `<html><script type="application/ld+json">${JSON.stringify({ '@type': 'JobPosting', title: 'T', description: text,
+      url: 'https://careers.hugoboss.com/global/en/job/999999/ailleurs', identifier: { '@type': 'PropertyValue', value: String(jobs[0].jobId) } })}</script></html>`;
+    const out = enrichFromJobPosting(base, elsewhere, String(jobs[0].jobId));
+    expect(out.description).toBe(base.description);
+    expect((out.raw as Record<string, unknown>).postingEvidence).toBeUndefined();
+    const here = elsewhere.replace('https://careers.hugoboss.com/global/en/job/999999/ailleurs', base.url);
+    expect(enrichFromJobPosting(base, here, String(jobs[0].jobId)).description).toBe(text.trim());
   });
 });

@@ -79,8 +79,8 @@ try {
         -- Les retenues SANS disposition sont celles qui posaient complete = false pour toute la source.
         SELECT "sourceKey", COUNT(DISTINCT "externalId")::int held
         FROM "SourceObservation"
-        WHERE raw->>'publicationHold' IS NOT NULL
-          AND raw->>'publicationHold' NOT IN ('APPLICATION_HTTP_404','APPLICATION_HTTP_410',
+        WHERE "publicationHold" IS NOT NULL
+          AND "publicationHold" NOT IN ('APPLICATION_HTTP_404','APPLICATION_HTTP_410',
                                               'APPLICATION_EXPLICITLY_CLOSED','SOURCE_UNLISTED','SCOPE_OUT_OF_PERIMETER')
         GROUP BY 1
       )

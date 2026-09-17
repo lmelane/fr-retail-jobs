@@ -65,7 +65,7 @@ export async function fetchPinpointJobs(config: Record<string, unknown>): Promis
         department: job.department,
         salaryMin: job.minimum_salary,
         salaryMax: job.maximum_salary,
-        // country_id is an ISO-2 code; isFrance handles both that and the name.
+        // country_id is an ISO-2 code; country normalization handles both that and the name.
         country: job.country_id,
         contract: job.type,
         description: htmlToPlainText(job.description),

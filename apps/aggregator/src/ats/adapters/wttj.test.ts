@@ -66,3 +66,35 @@ describe('descriptionFromApi', () => {
     expect(descriptionFromApi(undefined)).toBeUndefined();
   });
 });
+
+/**
+ * LE NIVEAU D'ÉTUDES — 272 offres WTTJ le déclaraient, aucune ne l'écrivait
+ * (`educationLevel` valait 0/87 580 en base le 2026-09-15).
+ *
+ * Le hit de référence (Diptyque, 2026-09-06) ne porte PAS `education_level` :
+ * le fournir explicitement, et l'affirmer, est ce qui rend ces témoins capables
+ * d'échouer.
+ */
+describe('fetchWttjJobs — niveau d’études déclaré', () => {
+  it('conserve le libellé natif français, préfixé de son référentiel', async () => {
+    const base = FIXTURE.algoliaResponse;
+    const hits = base.hits.map((h: Record<string, unknown>) => ({ ...h, education_level: 'bac_5' }));
+    // PRÉMISSE : le champ source est bien présent sur le hit exercé.
+    expect(hits[0].education_level).toBe('bac_5');
+    mockJson
+      .mockResolvedValueOnce({ ...base, hits })
+      .mockResolvedValueOnce(FIXTURE.apiResponse);
+    const { jobs } = await fetchWttjJobs({ slug: 'diptyque-paris' });
+    // `bac_5` reste `bac_5` : il n'est PAS traduit en « Master's Degree », qui
+    // serait une équivalence inter-pays que personne n'a validée.
+    expect(jobs[0].educationLevel).toBe('WTTJ:bac_5');
+  });
+
+  it('n’invente aucun niveau quand la source se tait', async () => {
+    mockJson
+      .mockResolvedValueOnce(FIXTURE.algoliaResponse)
+      .mockResolvedValueOnce(FIXTURE.apiResponse);
+    const { jobs } = await fetchWttjJobs({ slug: 'diptyque-paris' });
+    expect(jobs[0].educationLevel).toBeUndefined();
+  });
+});

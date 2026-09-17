@@ -1,11 +1,15 @@
 /**
- * Generation of the ingest pipeline.
+ * Generation of the ingest writer, stamped on every row it produces
+ * (`Job.pipelineVersion`, `SourceObservation.pipelineVersion`, employer observations).
  *
- * Bump this when rows written by earlier code cannot be repaired in place, and
- * the next scheduled ingest deletes every older-generation row and refetches
- * it from source. The fix then ships with the deploy — no one has to remember
- * to run a purge, and a forgotten manual step cannot leave half the base
- * stale.
+ * It is provenance: which reader generation wrote a row. Since lot 5G3C it is no
+ * longer a closure mechanism. The former generation purge closed every offer of a
+ * source that a run had not rewritten, on the strength of in-memory statistics and
+ * the source's own volume history; measured on the rehearsal clone on 2026-09-16 it
+ * covered zero active offers, and a bump of this constant would have turned it into
+ * a mass employer-closure without any native proof. Absence is now proven by the
+ * refresh from an admitted, sealed, completed capture (`pipeline/attestingCapture.ts`).
+ * Bumping this constant changes nothing but the stamp.
  *
  * History:
  *   0  implicit — rows from before versioning existed: no descriptions
@@ -35,17 +39,12 @@
  *      word boundaries with foreign-place signals ("Venice", "Varennes" were
  *      French); location no longer yields "ARRONDISSEMENT"/"REMOTE -" as a city;
  *      sector rejects ambiguous tokens; Job.source stores the real ATS; HTML is
- *      cleaned once at ingest for every source. Older rows re-fetch cleanly as
- *      each source's next run stamps generation 6.
- */
-/**
+ *      cleaned once at ingest for every source.
  *   7  2026-09-03 — attribution par MARQUE sur les flux de groupe (audit A-01,
  *      D11) : Workday lit logoImage.alt / hiringOrganization, Eightfold lit
  *      efcustomTextBrand (et sa description, perdue par un champ snake_case
  *      obsolète), WTTJ lit organization.name, Magnet lit brand. Richemont ne
  *      passe plus que par la route autorisée par robots (broadbean_external) ;
- *      la ligne « Cartier +3 » (route Disallow) est supprimée. Les lignes
- *      étiquetées à la marque de tête (« Cartier », « Dr. Jart+ »…) se
- *      réécrivent à la vraie Maison au run suivant.
+ *      la ligne « Cartier +3 » (route Disallow) est supprimée.
  */
 export const PIPELINE_VERSION = 7;

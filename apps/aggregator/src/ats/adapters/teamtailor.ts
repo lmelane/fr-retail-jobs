@@ -1,3 +1,5 @@
+import { createHash } from 'node:crypto';
+import { captureObservedAt } from '../../capture/context.js';
 import { fetchJson } from '../../lib/http.js';
 import { htmlToPlainText } from '../../lib/html.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
@@ -131,6 +133,21 @@ export async function fetchTeamtailorJobs(
   const jobs: NormalizedJob[] = [];
   const ids = new Set<string>();
   const visited = new Set<string>();
+  const endpoint = `${origin}/jobs.json`;
+  /**
+   * La preuve d'énumération, page par page (lot F3, 2026-09-16). `canonicalIds` sont les `externalId` produits
+   * par `toNormalized` — le seul ensemble comparable à `JobSource.externalId`, donc le seul par lequel une
+   * absence puisse être prouvée. Une ligne sans identifiant fait échouer la page (ci-dessous), jamais une
+   * preuve partielle : quand la preuve existe, elle nomme tout ce qui a été vu.
+   */
+  const observedAt = captureObservedAt().toISOString();
+  const pageEvidence: NonNullable<NonNullable<AdapterResult['enumeration']>['pageEvidence']> = [];
+  const enumeration = (termination: string, traversalComplete: boolean): NonNullable<AdapterResult['enumeration']> => ({
+    method: 'DOCUMENTED_JSON_FEED', endpoint, pages: pageEvidence.length, rawCount: jobs.length, termination,
+    documentation: 'https://www.jsonfeed.org/version/1.1/',
+    canonicalAbsenceProofUsable: true, enumerationTraversalComplete: traversalComplete,
+    ...(traversalComplete ? {} : { blockers: [termination] }), pageEvidence,
+  });
   let url = `${origin}/jobs.json?per_page=${PAGE_SIZE}`;
   for (let page = 0; page < maxPages; page++) {
     const current = new URL(url);
@@ -144,6 +161,7 @@ export async function fetchTeamtailorJobs(
     if (typeof feed.feed_url !== 'string') throw new Error('Teamtailor feed identity missing');
     const identity = new URL(feed.feed_url, origin);
     if (identity.origin !== base.origin || identity.pathname !== '/jobs.json') throw new Error('Teamtailor foreign feed identity');
+    const pageIds: string[] = [];
     for (const item of feed.items) {
       if (!item || !['string', 'number'].includes(typeof item.id) || !String(item.id).trim()) throw new Error('Teamtailor missing item identity');
       const job = toNormalized(item, jobOrigin);
@@ -151,8 +169,12 @@ export async function fetchTeamtailorJobs(
       if (ids.has(job.externalId)) throw new Error('Teamtailor duplicate item across pages');
       ids.add(job.externalId);
       jobs.push(job);
+      pageIds.push(job.externalId);
     }
-    if (feed.next_url === undefined || feed.next_url === null) return { jobs, complete: true, truncated: false };
+    pageEvidence.push({ url, checkedAt: observedAt, sha256: createHash('sha256').update(JSON.stringify(feed)).digest('hex'),
+      offset: jobs.length - pageIds.length, pagination: null, ids: pageIds, canonicalIds: pageIds,
+      publisherCounter: String(feed.items.length), componentCounters: [] });
+    if (feed.next_url === undefined || feed.next_url === null) return { jobs, complete: true, truncated: false, enumeration: enumeration('NEXT_URL_NULL', true) };
     if (typeof feed.next_url !== 'string' || !feed.next_url.trim()) throw new Error('Teamtailor invalid next_url');
     if (!feed.items.length) throw new Error('Teamtailor empty page with continuation');
     const next = new URL(feed.next_url, url);
@@ -164,5 +186,5 @@ export async function fetchTeamtailorJobs(
   }
   // There is still a continuation: persist partial observations if desired,
   // but never use them as evidence that an unseen job disappeared.
-  return { jobs, complete: false, truncated: true };
+  return { jobs, complete: false, truncated: true, enumeration: enumeration('PAGE_BUDGET_REACHED', false) };
 }

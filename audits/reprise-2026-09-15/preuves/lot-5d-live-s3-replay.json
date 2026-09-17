@@ -1,0 +1,62 @@
+{
+  "source": "polene",
+  "sourceKey": "capture-live-polene-9a12bc77-1dc8-401d-b878-c30207a9d87a",
+  "batchId": "bcaf1333-6f2d-4087-801b-2df34638dc89",
+  "sourceRevisionId": "c5376f99-6175-4ea8-9290-251cadaa917b",
+  "sourcePayloadHash": "8fd1b74058bb52437897f2fc65438a443ac2e7895c0ce565cdb9d1b53f66874c",
+  "attemptOrdinal": "701",
+  "manifestHash": "e4cb6bdc1a2ba35bd2035e9e64681b6828359036c5d12d1a1662d97cc60eed9b",
+  "executionBudget": {
+    "startedAt": "2026-09-16T01:34:33.768Z",
+    "timeoutMs": 30000,
+    "softTimeoutMs": 27000
+  },
+  "jobs": 80,
+  "requests": 1,
+  "nativeBytes": 1089894,
+  "nativeGzipBytes": 157250,
+  "uniqueBlobs": 82,
+  "purged": 1,
+  "hotValidation": {
+    "id": "f3c0eebe-c91b-4a19-9960-900a4b6e5b10",
+    "sequence": "1287",
+    "verdict": "VALIDATED",
+    "readerRevision": "local-sha256:ee63e60e904072017e6fe232c15c035444b18dc13580b578becfdcc201bf8496",
+    "policyVersion": "source-validation-20260916-v1",
+    "validatedAt": "2026-09-16T01:34:34.559Z",
+    "report": {
+      "held": 0,
+      "reasons": {},
+      "observed": 80,
+      "rejected": 0,
+      "qualified": 80,
+      "nativeEmpty": false,
+      "replayExact": true,
+      "inputRejected": 0,
+      "enumerationClaim": "COMPLETE",
+      "absenceAttestation": false
+    }
+  },
+  "coldValidation": {
+    "id": "6e5afe87-994c-47e1-a6c1-7ddc59ab173b",
+    "sequence": "1288",
+    "verdict": "VALIDATED",
+    "readerRevision": "local-sha256:ee63e60e904072017e6fe232c15c035444b18dc13580b578becfdcc201bf8496",
+    "policyVersion": "source-validation-20260916-v1",
+    "validatedAt": "2026-09-16T01:34:56.124Z",
+    "report": {
+      "held": 0,
+      "reasons": {},
+      "observed": 80,
+      "rejected": 0,
+      "qualified": 80,
+      "nativeEmpty": false,
+      "replayExact": true,
+      "inputRejected": 0,
+      "enumerationClaim": "COMPLETE",
+      "absenceAttestation": false
+    }
+  },
+  "sourceStillDraft": true,
+  "elapsedMs": 22361
+}

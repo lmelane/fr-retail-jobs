@@ -1,0 +1,20 @@
+{
+  "productionWrites": false,
+  "readerRevision": "local-sha256:13c1be0543e157efcd31944e1de4097f9e16b7c7168037cd4ac8ad033b846ea6",
+  "planHash": "36e6bf47f54b363db297f9fe414076b16f1355a52d2fe32fc33a117d3a6b2f47",
+  "plans": 1,
+  "presentations": 1,
+  "quarantined": 1,
+  "withdrawnHistoricalIds": 1,
+  "newGroups": 1,
+  "redirects": 0,
+  "closures": 0,
+  "repeated": 1,
+  "membershipDecisions": 2,
+  "withdrawalEvents": 1,
+  "nativeEvidenceClocksActivityAndObservationsUnchanged": true,
+  "outsideJobsAndPublicationsUnchanged": true,
+  "originalPublicIdentityAndUnqualifiedContentPreservedPrivately": true,
+  "elapsedMs": 86062,
+  "initiallyAlreadyApplied": false
+}

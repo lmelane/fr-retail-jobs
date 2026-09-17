@@ -1,0 +1,47 @@
+[
+  {
+    "source": "polene",
+    "batchId": "2fe7351b-5a48-481a-afc5-dc33de30cae9",
+    "kind": "ASHBY",
+    "jobs": 79,
+    "requests": 1,
+    "exactReplay": true,
+    "nativeBytes": 1078743,
+    "nativeGzipBytes": 155089,
+    "outputBytes": 1530752,
+    "outputGzipBytes": 271765,
+    "uniqueBlobs": 80,
+    "purged": 80,
+    "elapsedMs": 17491
+  },
+  {
+    "source": "amiri",
+    "batchId": "a5755721-56b0-4e7e-9779-105018f74d8f",
+    "kind": "LEVER",
+    "jobs": 39,
+    "requests": 1,
+    "exactReplay": true,
+    "nativeBytes": 318544,
+    "nativeGzipBytes": 36377,
+    "outputBytes": 356832,
+    "outputGzipBytes": 94708,
+    "uniqueBlobs": 40,
+    "purged": 40,
+    "elapsedMs": 12283
+  },
+  {
+    "source": "globus",
+    "batchId": "8489fc56-b889-44f2-8af7-170ce4029ed7",
+    "kind": "HTML_ENTITY_ONLY",
+    "jobs": 0,
+    "requests": 1,
+    "exactReplay": true,
+    "nativeBytes": 46885,
+    "nativeGzipBytes": 9406,
+    "outputBytes": 0,
+    "outputGzipBytes": 0,
+    "uniqueBlobs": 1,
+    "purged": 1,
+    "elapsedMs": 580
+  }
+]

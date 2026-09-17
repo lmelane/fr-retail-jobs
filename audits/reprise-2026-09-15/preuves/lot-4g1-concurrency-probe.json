@@ -1,0 +1,10 @@
+{
+  "companyConcurrency": 3,
+  "outcome": "RETRY_BUDGET_EXHAUSTED",
+  "databaseCode": "40001",
+  "operation": "Immutable correction journal insertion",
+  "confirmedCompletedPlans": 6,
+  "confirmedGroups": 150,
+  "completedPlansRetainedForReplay": true,
+  "productionWrites": false
+}

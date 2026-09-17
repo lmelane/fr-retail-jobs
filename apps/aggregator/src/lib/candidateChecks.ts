@@ -1,9 +1,7 @@
 /**
- * The three checks a source candidate passes before promotion, shared by the validation tool and the retrospective
- * controls: (1) the host + first path the ADAPTER really requests, per kind; (2) an EXPLICIT robots.txt verdict
- * (RFC 9309 §2.3.1 — the HTTP status decides the branch, nothing is assumed); (3) the classification of every native
- * employer label the board publishes against the catalogued Maison (the perimeter evidence a SINGLE_BRAND
- * certification must be consistent with).
+ * Exploratory diagnostics for source reports: a candidate request target,
+ * observed robots rules, and employer-label similarities. They do not certify
+ * a source, prove complete transport coverage or establish employer identity.
  */
 import { createHash } from 'node:crypto';
 import { robotsVerdictFor } from './robotsVerdict.js';
@@ -46,16 +44,18 @@ export type RobotsVerdict = 'ALLOWED' | 'DISALLOWED' | 'NO_ROBOTS' | 'UNREACHABL
 export type RobotsReading = { verdict: RobotsVerdict; httpStatus: number | null; sha256: string | null; bytes: number; error?: string };
 
 /**
- * Explicit access verdict from one robots.txt response: 2xx → the `User-agent: *` rules decide on the request path
- * (ALLOWED / DISALLOWED); 404 / 410 → NO_ROBOTS (the RFC allows access, the catalogue keeps it distinct from a READ
- * ALLOWED); anything else (401 / 403 / 429 / 5xx, network error, timeout) → UNREACHABLE (the RFC says assume disallow).
- * Only a read ALLOWED is promotable; an absent or unreachable file never is.
+ * One technical observation for CatwalksBot on the requested path and query.
+ * 404/410 stay NO_ROBOTS; other unsuccessful responses remain UNREACHABLE.
+ * This local policy is stricter than RFC 9309's optional access on other 4xx.
+ * It is not the authorization decision and does not certify a whole adapter.
  */
 export function robotsReading(response: { status: number; text: string } | { error: string }, path: string): RobotsReading {
   if ('error' in response) return { verdict: 'UNREACHABLE', httpStatus: null, sha256: null, bytes: 0, error: response.error };
   if (response.status === 404 || response.status === 410) return { verdict: 'NO_ROBOTS', httpStatus: response.status, sha256: null, bytes: 0 };
   if (response.status < 200 || response.status >= 300) return { verdict: 'UNREACHABLE', httpStatus: response.status, sha256: null, bytes: 0, error: `HTTP ${response.status}` };
-  return { verdict: robotsVerdictFor(response.text, path) as RobotsVerdict, httpStatus: response.status, sha256: createHash('sha256').update(response.text).digest('hex'), bytes: Buffer.byteLength(response.text) };
+  const evidence = { httpStatus: response.status, sha256: createHash('sha256').update(response.text).digest('hex'), bytes: Buffer.byteLength(response.text) };
+  try { return { ...evidence, verdict: robotsVerdictFor(response.text, path) }; }
+  catch { return { ...evidence, verdict: 'UNREACHABLE', error: 'ROBOTS_RULES_NOT_EVALUATED' }; }
 }
 
 export async function readRobots(origin: string, path: string, fetchImpl: typeof fetch = fetch): Promise<RobotsReading> {

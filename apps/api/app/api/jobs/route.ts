@@ -2,25 +2,27 @@ import { NextRequest, NextResponse } from 'next/server';
 import { randomUUID } from 'node:crypto';
 import { DatabaseUnavailableError, getJobs, parseFilters } from '@/lib/jobs';
 import { projeterListe } from '@/lib/projection';
+import { PerimetreRequisError } from '@/lib/perimetre';
+import { CurseurInvalideError } from '@/lib/curseur';
 import { refuserSiCleInvalide } from '@/lib/cle-api';
 import { paramsMultiples } from '@/lib/params-multiples';
 
 /**
- * Page 2+ of the offer list, for infinite scroll — et, depuis F1 (D-417),
- * la recherche que consomme catwalks.io côté serveur.
+ * LA RECHERCHE, servie à catwalks.io (D-417, lot 6).
  *
- * Page 1 is server-rendered by app/page.tsx (SEO, first paint); this route
- * exists only so the candidate scrolling down never triggers a full page
- * reload. It reads the SAME URL keys as the server render — via the shared
- * parseFilters — so a search filtered by ville/secteur/contrat… continues
- * identically past page 1 instead of silently resetting.
+ * Une seule projection — la liste, sans description (173 Ko par page mesurés
+ * le 14/09/2026 avant de la retirer) — et un seul contrat d'URL, lu par
+ * `parseFilters` pour toutes les pages : la page 1 rendue par le site et les
+ * pages suivantes du chargement continu ne peuvent pas diverger.
  *
- * F1, phase 1 et 2 :
- *  - `champs=liste` rend la projection sans description, avec les libellés
- *    d'affichage (`lib/projection.ts`) ;
- *  - `x-request-id` : repris de l'appelant s'il le fournit (catwalks.io le
- *    génère), sinon créé ici ; renvoyé en en-tête, présent dans la ligne de
- *    journal et dans le corps des erreurs techniques.
+ * Le périmètre est OBLIGATOIRE : sans `marche` valide, la réponse est un 400
+ * qui nomme le motif et les marchés ouverts — jamais une liste mondiale. Un
+ * filtre que le marché ne sert pas n'est ni honoré ni ignoré : il est nommé
+ * dans `filtresRefuses`, et les résultats sont calculés sans lui.
+ *
+ * `x-request-id` : repris de l'appelant s'il le fournit (catwalks.io le
+ * génère), sinon créé ici ; renvoyé en en-tête, présent dans la ligne de
+ * journal et dans le corps des erreurs techniques.
  */
 export const dynamic = 'force-dynamic';
 
@@ -39,27 +41,28 @@ export async function GET(request: NextRequest) {
   const refus = refuserSiCleInvalide(request, requestId);
   if (refus) return refus;
   const debut = Date.now();
+  const entetes = { 'x-request-id': requestId };
   // D-426 : PAS `Object.fromEntries` — il ne garde qu'une valeur par clé et
   // annulerait le multi-valeurs avant même d'atteindre le parseur.
-  const params = paramsMultiples(request.nextUrl.searchParams);
-  const filters = parseFilters(params);
-  const liste = request.nextUrl.searchParams.get('champs') === 'liste';
+  const filters = parseFilters(paramsMultiples(request.nextUrl.searchParams));
 
   try {
     const result = await getJobs(filters);
-    // Le lieu tel que le moteur l'a compris (audit UX H3) : le front l'affiche
-    // à la place de la saisie brute.
-    const corps = liste ? { ...projeterListe(result), lieu: filters.lieuResolu ?? null } : result;
-    journaliser({ requestId, statut: 200, dureeMs: Date.now() - debut, total: result.total, page: result.page, resultats: result.jobs.length, liste });
-    return NextResponse.json(corps, { headers: { 'x-request-id': requestId } });
+    journaliser({ requestId, statut: 200, dureeMs: Date.now() - debut, marche: result.perimetre.code, total: result.total,
+      totalConfirmes: result.totalConfirmes, suite: result.suivant !== null, resultats: result.jobs.length, refus: result.filtresRefuses.length });
+    return NextResponse.json(projeterListe(result), { headers: entetes });
   } catch (error) {
+    if (error instanceof PerimetreRequisError || error instanceof CurseurInvalideError) {
+      journaliser({ requestId, statut: 400, dureeMs: Date.now() - debut, erreur: error.code });
+      return NextResponse.json(error.corps(requestId), { status: 400, headers: entetes });
+    }
     // Same contract as the page: a database outage is a 503 with a clear
     // message, never a silently empty list passed off as "no results".
     if (error instanceof DatabaseUnavailableError) {
       journaliser({ requestId, statut: 503, dureeMs: Date.now() - debut, erreur: 'base indisponible' });
       return NextResponse.json(
         { error: 'La base de données des offres est indisponible.', requestId },
-        { status: 503, headers: { 'x-request-id': requestId } },
+        { status: 503, headers: entetes },
       );
     }
     journaliser({ requestId, statut: 500, dureeMs: Date.now() - debut, erreur: error instanceof Error ? error.name : 'inconnue' });

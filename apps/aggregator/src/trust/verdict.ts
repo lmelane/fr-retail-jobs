@@ -11,7 +11,6 @@
  */
 
 import type { Observation } from './contradictions.js';
-export { EVALUATOR_VERSION } from './contradictions.js';
 
 export const TRUST_LEVELS = ['TRUSTED', 'DEGRADED', 'UNTRUSTED', 'INSUFFICIENT_EVIDENCE'] as const;
 export type TrustLevel = (typeof TRUST_LEVELS)[number];

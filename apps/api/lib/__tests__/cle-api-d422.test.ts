@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import type { NextRequest } from 'next/server';
@@ -40,10 +40,24 @@ describe('le garde de clé (D-422)', () => {
     expect(r!.headers.get('www-authenticate')).toBe('Bearer');
   });
 
-  it("sans CATALOGUE_API_KEY, le garde est désarmé : le site continue d'être servi", () => {
-    // Délibéré : une variable oubliée ne doit pas éteindre le catalogue.
+  it('sans CATALOGUE_API_KEY hors production, le garde est désarmé et le dit (poste local, témoins)', () => {
     expect(cleAttendue()).toBeNull();
+    expect(process.env.NODE_ENV).not.toBe('production');
     expect(refuserSiCleInvalide(requete(), 'r')).toBeNull();
+  });
+
+  it('sans CATALOGUE_API_KEY EN PRODUCTION, le garde ferme : 503 « non configuré », jamais une API ouverte (passation §11.1)', async () => {
+    vi.stubEnv('NODE_ENV', 'production');
+    try {
+      expect(cleAttendue()).toBeNull();
+      const r = refuserSiCleInvalide(requete('Bearer nimporte'), 'r');
+      expect(r).not.toBeNull();
+      expect(r!.status).toBe(503);
+      expect(r!.headers.get('retry-after')).toBe('60');
+      expect(await r!.json()).toMatchObject({ error: 'Clé d’accès du catalogue non configurée.' });
+    } finally {
+      vi.unstubAllEnvs();
+    }
   });
 
   it('une clé plus courte ou plus longue est refusée (comparaison à temps constant)', () => {
@@ -58,7 +72,7 @@ describe('le garde de clé (D-422)', () => {
  * ouverte, et personne ne le verrait. Il ÉCHOUE si une route oublie le garde.
  */
 describe('aucune route ne peut oublier le garde', () => {
-  it('les 6 routes protégées appellent refuserSiCleInvalide, /api/health non (D-422 §3)', () => {
+  it('les 8 routes protégées appellent refuserSiCleInvalide, /api/health non (D-422 §3)', () => {
     const racine = join(__dirname, '..', '..', 'app', 'api');
     const routes: string[] = [];
     const parcourir = (dossier: string) => {
@@ -70,8 +84,8 @@ describe('aucune route ne peut oublier le garde', () => {
     };
     parcourir(racine);
 
-    // Prémisse : il y a bien 7 routes, sinon ce témoin ne teste rien.
-    expect(routes).toHaveLength(7);
+    // Prémisse : il y a bien 9 routes (dont `/api/marches`, lot 6, et `/api/sitemap/emplois`, lot 9), sinon ce témoin ne teste rien.
+    expect(routes).toHaveLength(9);
 
     for (const chemin of routes) {
       const source = readFileSync(chemin, 'utf8');

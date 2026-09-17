@@ -1,0 +1,30 @@
+{
+  "guards": [
+    {
+      "guard": "capture-before-parse",
+      "negativeExit": 1,
+      "restoredSha256": "4b90194fdf51c64b17253776260a8fa633ebf0e6511c2a3cbea4d55ff7d40b5b"
+    },
+    {
+      "guard": "verify-remote-before-purge",
+      "negativeExit": 1,
+      "restoredSha256": "5f4ff603d40f65f2aaad132fb10c9f9e17c83d7d6f30889356354a30442bc713"
+    },
+    {
+      "guard": "poison-partial-extraction",
+      "negativeExit": 1,
+      "restoredSha256": "cca95f03f179d1be8d09d3af9307b7a127b00ca2c5295eb1c512da90456a093c"
+    },
+    {
+      "guard": "output-batch-link",
+      "negativeExit": 1,
+      "restoredSha256": "bcf23ffff71a48060b969bfc992fec4b198c70389fd2ef0fdbec721ef75a9e65"
+    },
+    {
+      "guard": "recent-output-protection",
+      "negativeExit": 1,
+      "restoredSha256": "5f4ff603d40f65f2aaad132fb10c9f9e17c83d7d6f30889356354a30442bc713"
+    }
+  ],
+  "restoredSuiteExit": 0
+}

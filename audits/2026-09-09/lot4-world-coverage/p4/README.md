@@ -1,3 +1,5 @@
+> **Archive de preuve datée.** Les chemins de cycle de vie cités ici ont été remplacés au lot 1 du 15 septembre 2026. Ce document conserve les constats de son audit ; utiliser la [documentation d’exploitation maintenue](../../../../apps/aggregator/scripts/ops/README.md) pour les commandes actuelles.
+
 # P4 — fraîcheur, fermetures, retraits, réouvertures, invérifiables
 
 Mesures du 2026-09-11, production en **lecture seule**, une transaction `RepeatableRead` dont le niveau est

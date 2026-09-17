@@ -1,10 +1,8 @@
 import pLimit from 'p-limit';
+import { captureObservedAt } from '../../capture/context.js';
 import { createHash } from 'node:crypto';
 import { fetchJson, fetchText } from '../../lib/http.js';
-import {
-  extractJobPostings,
-  normalizeJobPosting,
-} from '../../connectors/generic/jsonLdSitemap.js';
+import { enrichPostingEvidence } from '../../lib/postingEvidence.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
 import { CRAWLER_IDENTITY } from '../../lib/crawlerIdentity.js';
 
@@ -84,7 +82,6 @@ export function announcementExternalId(diffusions: DrItem[]): string | null {
 export function normalizeAnnouncement(diffusions: DrItem[], domainName: string, locale: string): NormalizedJob | null {
   const primary = diffusions.find(isLocationSpecific) ?? diffusions[0];
   if (!primary?.title) return null;
-  const id = primary.job_ad_id ?? primary.id;
   const path = primary.url ? `/${locale.slice(0, 2)}/annonce/${primary.url}` : '';
   const locations = [...new Set(diffusions.map((d) => d.location).filter((x): x is string => !!x))];
   return {
@@ -118,19 +115,9 @@ async function attachDescriptions(
       limit(async () => {
         try {
           const html = await fetchText(job.url, { headers: { 'user-agent': USER_AGENT } });
-          const [posting] = extractJobPostings(html);
-          if (!posting) return job;
-          const detail = normalizeJobPosting(posting, job.url);
-          if (!detail) return job;
-
-          return {
-            ...job,
-            description: detail.description ?? job.description,
-            // The detail page also carries what the listing lacks entirely.
-            country: detail.country ?? job.country,
-            location: detail.location ?? job.location,
-            postedAt: detail.postedAt ?? job.postedAt,
-          };
+          // The detail page's single JobPosting (description, country, location, date) is applied AND retained in
+          // RAW (`postingEvidence`, lot F3b): the retained publication is rebuilt offline by the same reader.
+          return enrichPostingEvidence(job, html);
         } catch {
           // A failed detail fetch must not lose the listing entry.
           return job;
@@ -220,7 +207,7 @@ async function fetchAllPages(domainName: string, locale: string): Promise<Adapte
      * `ids` porte les DIFFUSIONS, l'unité que le publieur pagine. `canonicalIds` porte les ANNONCES, l'unité
      * que la base stocke — et c'est le seul ensemble auquel une absence puisse être comparée.
      */
-    pageEvidence.push({ url, checkedAt: new Date().toISOString(), sha256: createHash('sha256').update(JSON.stringify(response)).digest('hex'), offset: (page - 1) * PAGE_SIZE,
+    pageEvidence.push({ url, checkedAt: captureObservedAt().toISOString(), sha256: createHash('sha256').update(JSON.stringify(response)).digest('hex'), offset: (page - 1) * PAGE_SIZE,
       pagination: declaredTotal === undefined ? null : { start: (page - 1) * PAGE_SIZE, end: (page - 1) * PAGE_SIZE + items.length, total: declaredTotal },
       ids, canonicalIds: [...new Set(pageAnnouncements)],
       publisherCounter: typeof response.count === 'number' ? String(response.count) : '', componentCounters: [`diffusions=${diffusionIds.size}`, `announcements=${byAnnouncement.size}`] });

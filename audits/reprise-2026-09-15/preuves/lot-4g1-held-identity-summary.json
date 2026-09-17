@@ -1,0 +1,58 @@
+{
+  "richemont + richemont-workday": {
+    "groups": 229,
+    "sameUrl": 0,
+    "sameExternalId": 0,
+    "kinds": [
+      "workday"
+    ]
+  },
+  "chico-s + knitwell-us-corporate + knitwell-us-retail": {
+    "groups": 5,
+    "sameUrl": 0,
+    "sameExternalId": 0,
+    "kinds": [
+      "workday"
+    ]
+  },
+  "bizzbee + bzb": {
+    "groups": 23,
+    "sameUrl": 0,
+    "sameExternalId": 23,
+    "kinds": [
+      "teamtailor"
+    ]
+  },
+  "gu-us-headquarters + gu-us-retail": {
+    "groups": 1,
+    "sameUrl": 0,
+    "sameExternalId": 0,
+    "kinds": [
+      "workday"
+    ]
+  },
+  "knitwell-us-corporate + knitwell-us-retail": {
+    "groups": 9,
+    "sameUrl": 0,
+    "sameExternalId": 0,
+    "kinds": [
+      "workday"
+    ]
+  },
+  "capri-jimmy-choo + capri-michael-kors": {
+    "groups": 1,
+    "sameUrl": 0,
+    "sameExternalId": 0,
+    "kinds": [
+      "workday"
+    ]
+  },
+  "gu-us-retail + uniqlo-us-retail": {
+    "groups": 1,
+    "sameUrl": 0,
+    "sameExternalId": 0,
+    "kinds": [
+      "workday"
+    ]
+  }
+}

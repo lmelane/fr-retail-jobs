@@ -36,16 +36,13 @@ export function classifyOccupationContent(
 }
 export const OCCUPATION_FIELDS = [
   "jobFunction",
-  "occupationGroup",
   "occupationCode",
   "rawTitle",
   "normalizedTitle",
   "occupationStatus",
   "occupationEvidence",
-  "occupationSpecializations",
   "occupationReleaseId",
   "seniority",
-  "isRetail",
 ] as const;
 export function occupationState(row: Record<string, any>) {
   return Object.fromEntries(OCCUPATION_FIELDS.map((k) => [k, row[k] ?? null]));

@@ -1,0 +1,30 @@
+{
+  "readOnly": true,
+  "productionWrites": false,
+  "nativeBatchId": "c275a4ae-4500-499a-94d9-ea3b71ff17fc",
+  "detailOrigins": [
+    "https://homeoffice-eu-urbn.icims.com",
+    "https://homeoffice-na-urbn.icims.com",
+    "https://menusandvenues-na-urbn.icims.com",
+    "https://stores-eu-urbn.icims.com",
+    "https://stores-na-urbn.icims.com",
+    "https://supplychain-eu-urbn.icims.com",
+    "https://supplychain-na-urbn.icims.com"
+  ],
+  "groups": 1593,
+  "publications": 2564,
+  "eligibleGroups": 1530,
+  "eligiblePublications": 2462,
+  "newlyRecoverable": 1511,
+  "previouslyRecoverable": 953,
+  "recoveryRegressions": 0,
+  "splitGroups": 39,
+  "qualifiedRegionalIdentities": 2464,
+  "blockReasons": {
+    "fashionjobs:READER_UNQUALIFIED": 1,
+    "icims:DETAIL_EVIDENCE_UNUSABLE": 62,
+    "icims:RAW_MISSING": 37
+  },
+  "expiryCacheChanges": 1511,
+  "mixedGroupsNowRecoverable": 932
+}

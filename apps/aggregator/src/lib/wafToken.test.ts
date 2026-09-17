@@ -1,6 +1,6 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi, type Mock } from 'vitest';
 import { fetchWithRetry, fetchText, WafChallengeError } from './http.js';
-import { clearWafTokens, setWafPrimer } from './wafToken.js';
+import { clearWafTokens, setWafPrimer, type WafPrimer } from './wafToken.js';
 
 /**
  * L'amorçage WAF vu depuis fetchWithRetry, réseau mocké : le navigateur n'est
@@ -24,13 +24,13 @@ function sentHeaders(mock: ReturnType<typeof vi.fn>, call: number): Record<strin
 }
 
 let fetchMock: ReturnType<typeof vi.fn>;
-let primer: ReturnType<typeof vi.fn>;
+let primer: Mock<WafPrimer>;
 
 beforeEach(() => {
   clearWafTokens();
   fetchMock = vi.fn();
   vi.stubGlobal('fetch', fetchMock);
-  primer = vi.fn(async () => 'aws-waf-token=jeton-test');
+  primer = vi.fn<WafPrimer>(async () => 'aws-waf-token=jeton-test');
   setWafPrimer(primer);
   vi.spyOn(console, 'error').mockImplementation(() => {});
 });

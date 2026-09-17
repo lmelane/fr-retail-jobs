@@ -1,4 +1,6 @@
-import { describe, it, expect, afterEach } from 'vitest';
+import { describe, it, expect, afterEach, vi } from 'vitest';
+import { fetchIcimsJobs } from '../ats/adapters/icims.js';
+import * as http from '../lib/http.js';
 import { readFileSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -26,7 +28,7 @@ import { crashPointReached, resetCrashInjection, CRASH_POINTS } from '../lib/cra
  */
 // L'ordre compte : on efface l'environnement AVANT de réinitialiser. L'inverse relit une valeur invalide et
 // fait échouer le nettoyage lui-même — ce qui est d'ailleurs la preuve que le refus fonctionne.
-afterEach(() => { delete process.env.P8_CRASH_AT; delete process.env.P8_CRASH_AFTER; resetCrashInjection(); });
+afterEach(() => { delete process.env.P8_CRASH_AT; delete process.env.P8_CRASH_AFTER; resetCrashInjection(); vi.restoreAllMocks(); });
 
 describe('injection d\'interruption — inerte par défaut, déterministe une fois armée', () => {
   it('sans variable, ne se déclenche JAMAIS — quel que soit le nombre de passages', () => {
@@ -82,18 +84,15 @@ describe('injection d\'interruption — inerte par défaut, déterministe une fo
     expect(Object.values(CRASH_POINTS)).toContain('BEFORE_PERSIST');
   });
 
-  it('DURING_DETAIL_POOL est CÂBLÉ dans le pool d\'iCIMS, et avant la lecture du détail', () => {
-    // La preuve qui compte : le point est appelé DANS le pool, pas seulement défini. Deux tentatives
-    // précédentes ont échoué parce que les sources exercées (Teamtailor, Recruitee) n'ont AUCUN pool de
-    // détails — une injection définie mais jamais atteinte aurait produit un run nominal pris pour une preuve.
-    const src = readFileSync(resolve(dirname(fileURLToPath(import.meta.url)), '../ats/adapters/icims.ts'), 'utf8');
-    expect(src).toContain('crashPointReached(CRASH_POINTS.DURING_DETAIL_POOL)');
-    // …et placé AVANT le `fetchText` du détail : après, il n'exercerait plus le pool mais son épilogue.
-    const inject = src.indexOf('crashPointReached(CRASH_POINTS.DURING_DETAIL_POOL)');
-    const detailFetch = src.indexOf('enrichPostingEvidence(job, await fetchText(job.url)');
-    expect(inject).toBeGreaterThan(-1);
-    expect(detailFetch).toBeGreaterThan(-1);
-    expect(inject).toBeLessThan(detailFetch);
+  it('DURING_DETAIL_POOL interrompt iCIMS avant la première lecture de détail', async () => {
+    process.env.P8_CRASH_AT = CRASH_POINTS.DURING_DETAIL_POOL;
+    resetCrashInjection();
+    const fetch = vi.spyOn(http, 'fetchText').mockResolvedValue('<div>Page 1 of 1</div><li class="iCIMS_JobCardItem"><a href="https://brand.icims.com/jobs/42/advisor/job"><h3>Advisor</h3></a></li>');
+    const kill = vi.spyOn(process, 'kill').mockImplementation(() => { throw new Error('SIMULATED_PROCESS_TERMINATION'); });
+    await expect(fetchIcimsJobs({ origin: 'https://brand.icims.com' })).rejects.toThrow('SIMULATED_PROCESS_TERMINATION');
+    expect(kill).toHaveBeenCalledWith(process.pid, 'SIGKILL');
+    expect(fetch).toHaveBeenCalledTimes(1);
+    expect(fetch).toHaveBeenCalledWith('https://brand.icims.com/jobs/search?ss=1&in_iframe=1&pr=0');
   });
 
   it('le pool d\'iCIMS est bien un pool BORNÉ : le scénario B a un sens sur cette source', () => {

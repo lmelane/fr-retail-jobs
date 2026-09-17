@@ -1,0 +1,115 @@
+{
+  "environment": "Dedicated full-stock local clone",
+  "cleanPlans": 10,
+  "isolatedPlans": 14,
+  "qualifiedTargets": 159,
+  "unresolvedReviews": 3051,
+  "written": 159,
+  "repeated": 24,
+  "plans": [
+    {
+      "hash": "28b2a0a0410b711ebf362cd950747bec8d86e8ca918b502cca3656d625b27186",
+      "entries": 3
+    },
+    {
+      "hash": "6ab92c5542790bbd9b105411c712a94a7525069ebb6d8413bb1851bd3d5fc684",
+      "entries": 32
+    },
+    {
+      "hash": "6e45d45bd3a5fe363686b402c380db395f1316ec4e2f01cf523bf002d61ae0ec",
+      "entries": 4
+    },
+    {
+      "hash": "92da676bb30a2e47ab6ca6309eee37d430ec6c286041a132a5760ffb41ec17d7",
+      "entries": 11
+    },
+    {
+      "hash": "9f9a72e74f5ac2f18dd3191c7a5d02d17538fc82e31423e6f321f22daf6dddcc",
+      "entries": 28
+    },
+    {
+      "hash": "d608984ba847fb00aa229b4724ded9c544ba72bc8e5401775e4dbc74941735c0",
+      "entries": 31
+    },
+    {
+      "hash": "dff7cf00531a766299cd968588363363a6a3d736cbcec8adbe114e27d310dd17",
+      "entries": 10
+    },
+    {
+      "hash": "e571c636a6d08181a733eb99a27321719e36974a7066de1ff65808d8273480aa",
+      "entries": 6
+    },
+    {
+      "hash": "f6cf6a20c37e24c0483597bc8fa1113fe0d77cda768c605fd3f96a17146908ac",
+      "entries": 19
+    },
+    {
+      "hash": "fb6e4f3af68534ee0bf9e3649305b9d166e1700844bc56a4fdf50bf8b8c51190",
+      "entries": 1
+    },
+    {
+      "hash": "732771e3e69805bfe059fe9a16e14c3d3e26b8c841e4d1049970dff9c9c49b8e",
+      "entries": 1
+    },
+    {
+      "hash": "3ee6b4da869fa679142866c9a9f80bd91812d09ef939a6216d923627583f8c8b",
+      "entries": 1
+    },
+    {
+      "hash": "1cc98963f93ac1789f22024d7f3c58ec577d15e0e589121d80608c8b28aed729",
+      "entries": 1
+    },
+    {
+      "hash": "e16e60817d914e2690c6441745eeeb256c315ceaca2bbd418d0e65ae4f4b98e7",
+      "entries": 1
+    },
+    {
+      "hash": "d09070e94d2f2ce1f31aea88cdbbedf97cb0dd2ab1f566c12f416e5a35d1c217",
+      "entries": 1
+    },
+    {
+      "hash": "d53c95fa8ed0259210a53a5ab32c8de139382dbb8840111afb41088be35e1070",
+      "entries": 1
+    },
+    {
+      "hash": "5bc093d9cb03b7fb47516488ba3244ed30bff4b99fb36592812e49afe6976438",
+      "entries": 1
+    },
+    {
+      "hash": "e130b8a50e0500812cb1a47e0432097b69e33388e1e64e9a3b630fe3d86628a7",
+      "entries": 1
+    },
+    {
+      "hash": "2616ad4a89008b6cba867609ab89b9608f57f1affa5b3e9b765a1af2628b64ce",
+      "entries": 1
+    },
+    {
+      "hash": "bfa5aa6990f4ced5e105084e5ea85c0f29e4a8fe974ba15c63f528b3a1f1a580",
+      "entries": 1
+    },
+    {
+      "hash": "221624ddff074e409a83a06403948434cfb055e7f01817761eb3c6995e8eb386",
+      "entries": 1
+    },
+    {
+      "hash": "6e422b4d531a59f7b6cd751d8e98f5b7fc96a1954cb9671826b99d2dbf9ac86d",
+      "entries": 1
+    },
+    {
+      "hash": "043650d6e7454dc323ec3b0c783acb4a3c78b69ed9b20fa7713b834e193a29ea",
+      "entries": 1
+    },
+    {
+      "hash": "e3e0d778f2d370b14bb512215d37962b6ec337a93b37622b34e9d09cb6abba3b",
+      "entries": 1
+    }
+  ],
+  "elapsedMs": 16070,
+  "rawAndIdentityUnchanged": true,
+  "jobProjectionUnchanged": true,
+  "attestationsUnchanged": true,
+  "noUnqualifiedWrites": true,
+  "capturesCreated": 0,
+  "lifecycleEventsCreated": 0,
+  "newObservations": 159
+}

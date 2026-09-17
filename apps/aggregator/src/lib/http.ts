@@ -10,6 +10,9 @@ import { detectChallenge } from './responseIntegrity.js';
 import { publicDispatcher } from './publicTransport.js';
 import { sessionHeaders, rememberSessionCookies } from './httpSession.js';
 import { recordAttempt, recordResponse, recordFailure } from '../observability/httpTelemetry.js';
+import { assertCaptureHealthy, assertRequestAccess, auditUrl, describeRequest, capturingResponses, captureResponse, replayResponse, CaptureUnavailableError, OfflineReplayError } from '../capture/context.js';
+
+import { observedHop, type RequestDescription, type TransportHop } from '../capture/requestData.js';
 
 export { WafChallengeError } from './wafToken.js';
 export { detectChallenge, type ChallengeVendor } from './responseIntegrity.js';
@@ -55,6 +58,13 @@ const maxBodyBytes = Number(process.env.HTTP_MAX_BODY_BYTES ?? 20_000_000);
  */
 export const DEFAULT_DETAIL_CONCURRENCY = 4;
 
+export class IncompleteBodyError extends Error {
+  constructor(cause: unknown, readonly prefix: Buffer) {
+    super(cause instanceof Error ? cause.message : 'Incomplete response body', { cause });
+    this.name = 'IncompleteBodyError';
+  }
+}
+
 /** Reads a body with a hard time budget and a size cap. */
 export async function readBytesBounded(response: Response, url: string): Promise<Buffer> {
   const body = response.body;
@@ -83,13 +93,16 @@ export async function readBytesBounded(response: Response, url: string): Promise
         }),
       ]).finally(() => clearTimeout(timer!));
       if (chunk.done) break;
+      if (size + chunk.value.byteLength > maxBodyBytes) {
+        chunks.push(Buffer.from(chunk.value.subarray(0, Math.max(0, maxBodyBytes - size))));
+        throw new Error(`body over ${maxBodyBytes} bytes for ${url}`);
+      }
       size += chunk.value.byteLength;
-      if (size > maxBodyBytes) throw new Error(`body over ${maxBodyBytes} bytes for ${url}`);
       chunks.push(Buffer.from(chunk.value));
     }
   } catch (error) {
     reader.cancel().catch(() => {});
-    throw error;
+    throw new IncompleteBodyError(error, Buffer.concat(chunks));
   }
   return Buffer.concat(chunks);
 }
@@ -111,6 +124,11 @@ export async function fetchFollowingSafely(
   url: string,
   init: RequestInit,
   signal: AbortSignal,
+  /** Source-evidence mode archives every hop and paces each host separately.
+   * The observer must leave the original body available (read a bounded clone). */
+  captureHop?: (url: string, response: Response | null, failure: unknown, request: RequestDescription) => Promise<void>,
+  // Ordinary extractions already own the host slot; observing must not acquire it twice.
+  paceHops = true,
 ): Promise<Response> {
   let current = url;
   let request: RequestInit = { ...init, headers: new Headers(init.headers) };
@@ -119,10 +137,57 @@ export async function fetchFollowingSafely(
     assertPublicUrl(current);
     const options: RequestInit = { ...request, headers: Object.fromEntries(await sessionHeaders(current, request.headers ?? {})),
       signal, redirect: 'manual' };
+    // Make representation/identity headers explicit so the recorded boundary is reproducible.
+    const sentHeaders = new Headers(options.headers);
+    if (!sentHeaders.has('user-agent')) sentHeaders.set('user-agent', userAgent);
+    if (!sentHeaders.has('accept')) sentHeaders.set('accept', '*/*');
+    if (!sentHeaders.has('accept-language')) sentHeaders.set('accept-language', '*');
+    if (!sentHeaders.has('content-type')) {
+      if (typeof options.body === 'string') sentHeaders.set('content-type', 'text/plain;charset=UTF-8');
+      else if (options.body instanceof URLSearchParams) sentHeaders.set('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
+    }
+    options.headers = Object.fromEntries(sentHeaders);
+    let native: RequestDescription | undefined;
+    const dispatch = () => {
+      // A cancelled queue is not a transport attempt. Snapshot only at fetch.
+      const target = new URL(current); target.hash = '';
+      const description = describeRequest({ url: target.toString(), method: options.method, body: options.body, headers: options.headers, format: 'HTTP_RESPONSE' });
+      assertRequestAccess(description);
+      if (captureHop) native = description;
+      return fetch(current, options);
+    };
     // Node's fetch and installed undici share the dispatcher protocol, but
     // their separately versioned TypeScript declarations are not assignable.
     Object.assign(options, { dispatcher: publicDispatcher() });
-    const response = await fetch(current, options);
+    let response: Response;
+    try { response = captureHop && paceHops ? await withHostGate(current, async () => {
+      signal.throwIfAborted();
+      log.count('http.attempts'); recordAttempt(current, false); noteRequest(rateLimitKeyFor(current));
+      const started = Date.now();
+      let observed: Response;
+      try { observed = await dispatch(); }
+      catch (error) { recordFailure(current, signal.aborted ? 'timeout' : 'error'); throw error; }
+      log.count('http.responses');
+      recordResponse(current, observed.status, Date.now() - started, observed.headers.get('content-length'));
+      if (observed.ok) reportSuccess(current);
+      else if ([403, 405, 429, 500, 502, 503, 504].includes(observed.status)) {
+        const raw = observed.headers.get('retry-after');
+        const seconds = Number(raw); const date = raw ? Date.parse(raw) : NaN;
+        const askedMs = Number.isFinite(seconds) && seconds > 0 ? seconds * 1000
+          : Number.isFinite(date) ? Math.max(0, date - Date.now()) : null;
+        reportThrottle(current, askedMs);
+        if (observed.status === 429) record429({ rateLimitKey: rateLimitKeyFor(current),
+          host: new URL(current).hostname, sourceKey: process.env.CURRENT_SOURCE_KEY ?? null,
+          url: auditUrl(current), attempt: 1, retryAfterRaw: raw, appliedDelayMs: 0, activeConcurrency: 0 });
+      }
+      // Evidence captures archive the refusal and stop; they never retry it.
+      return observed;
+    }) : await dispatch(); }
+    catch (error) { if (captureHop && native) await captureHop(current, null, error, native); throw error; }
+    if (captureHop) {
+      try { await captureHop(current, response, undefined, native!); }
+      catch (error) { await response.body?.cancel().catch(() => undefined); throw error; }
+    }
     await rememberSessionCookies(current, response.headers);
 
     // 3xx with a Location -> validate and follow it ourselves.
@@ -145,7 +210,7 @@ export async function fetchFollowingSafely(
         }
         request = { ...request, headers: safe };
       }
-      if (response.status === 303 && request.method !== 'HEAD' ||
+      if (response.status === 303 && request.method?.toUpperCase() !== 'HEAD' ||
           [301, 302].includes(response.status) && request.method?.toUpperCase() === 'POST') {
         const headers = new Headers(request.headers);
         for (const key of ['content-type', 'content-length', 'transfer-encoding']) headers.delete(key);
@@ -177,6 +242,9 @@ export async function fetchWithRetry(url: string, init: RequestInit = {}, attemp
     const controller = new AbortController();
     let timer: ReturnType<typeof setTimeout> | undefined;
     let startedAt = 0;
+    let attemptCaptured = false;
+    const hops: TransportHop[] = [];
+    const transport = { origin: 'HTTP_TRANSPORT' as const, hops };
     try {
       // Every request passes through the per-host gate — the global politeness
       // that stops us throttling a shared host (ELC, Richemont, Beaumanoir…) in
@@ -184,7 +252,7 @@ export async function fetchWithRetry(url: string, init: RequestInit = {}, attemp
       // F-01: the timeout clock starts AFTER the gate grants the slot — time
       // spent queued behind a backed-off host is not the request's fault, and
       // starting the timer early expired requests before they even began.
-      const response = await withHostGate(url, () => {
+      let response = await withHostGate(url, async () => {
         assertSourceRunning();
         log.count('http.attempts');
         if (i > 0) log.count('http.retries');
@@ -196,6 +264,8 @@ export async function fetchWithRetry(url: string, init: RequestInit = {}, attemp
         noteRequest(rateLimitKeyFor(url));
         startedAt = Date.now();
         timer = setTimeout(() => controller.abort(), timeoutMs);
+        const replayed = await replayResponse({ url, method: init.method, body: init.body, headers: init.headers, format: 'HTTP_RESPONSE' });
+        if (replayed) return replayed;
         return fetchFollowingSafely(
           url,
           {
@@ -207,8 +277,28 @@ export async function fetchWithRetry(url: string, init: RequestInit = {}, attemp
             }),
           },
           AbortSignal.any([controller.signal, ...[sourceSignal(), init.signal].filter((s): s is AbortSignal => !!s)]),
+          capturingResponses() ? async (_url, response, failure, native) => { hops.push(observedHop(native, response, failure)); } : undefined,
+          false,
         );
       });
+      if (capturingResponses()) {
+        let bytes: Buffer;
+        try { bytes = await readBytesBounded(response, url); }
+        catch (error) {
+          await captureResponse({ url, method: init.method, body: init.body, headers: init.headers, format: 'HTTP_RESPONSE', transport },
+            { status: response.status, headers: response.headers, bytes: error instanceof IncompleteBodyError ? error.prefix : null,
+              complete: false, failure: error instanceof Error ? error.name : 'ReadError' });
+          attemptCaptured = true;
+          throw error;
+        }
+        await captureResponse({ url, method: init.method, body: init.body, headers: init.headers, format: 'HTTP_RESPONSE', transport },
+          { status: response.status, headers: response.headers, bytes, complete: true });
+        attemptCaptured = true;
+        const buffered = new Response([204, 205, 304].includes(response.status) ? null : bytes,
+          { status: response.status, statusText: response.statusText, headers: response.headers });
+        Object.defineProperty(buffered, 'url', { value: response.url || url });
+        response = buffered;
+      }
       log.count('http.responses');
       // `headers` peut manquer sur une réponse simulée : la télémétrie ne doit JAMAIS faire échouer une
       // requête réelle pour une grandeur accessoire. Sans en-tête, la taille est simplement inconnue.
@@ -282,12 +372,17 @@ export async function fetchWithRetry(url: string, init: RequestInit = {}, attemp
         continue;
       }
     } catch (error) {
+      if (capturingResponses() && !attemptCaptured && !(error instanceof CaptureUnavailableError)) {
+        await captureResponse({ url, method: init.method, body: init.body, headers: init.headers, format: 'HTTP_RESPONSE', transport },
+          { bytes: null, complete: false, failure: error instanceof Error ? error.name : 'NetworkError' });
+      }
+      assertCaptureHealthy();
       assertSourceRunning();
       init.signal?.throwIfAborted();
       // A blocked URL will never become fetchable — do not waste retries on it.
       // L'arrêt d'un passage de MESURE est délibéré : le re-tenter reviendrait à ignorer la décision d'arrêt
       // — et à continuer de solliciter un portail qui vient de nous refuser.
-      if (error instanceof BenchmarkStoppedOn429Error) { if (timer) clearTimeout(timer); throw error; }
+      if (error instanceof BenchmarkStoppedOn429Error || error instanceof CaptureUnavailableError || error instanceof OfflineReplayError) { if (timer) clearTimeout(timer); throw error; }
       if (error instanceof BlockedUrlError || error instanceof WafChallengeError || error instanceof HttpStatusError) {
         if (timer) clearTimeout(timer);
         throw error;

@@ -1,0 +1,15 @@
+{
+  "productionWrites": false,
+  "readOnly": true,
+  "planHash": "36e6bf47f54b363db297f9fe414076b16f1355a52d2fe32fc33a117d3a6b2f47",
+  "oldPublicId": "cmtt7waed07ppmy01bwifnt2z",
+  "newPublicId": "75703ef7-ac05-4238-9dab-afb6b3e0823f",
+  "oldStatus": "withdrawn",
+  "oldPublicContent": null,
+  "newStatus": "active",
+  "newContentAndApplicationFromQualifiedNativePublication": true,
+  "rawPublicationIdentityDecisionsVerified": 2,
+  "allPlansAndCachesExact": true,
+  "correctionJournalComplete": true,
+  "mismatches": []
+}

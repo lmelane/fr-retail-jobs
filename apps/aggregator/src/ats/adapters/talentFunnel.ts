@@ -64,6 +64,7 @@ type Remuneration = {
 
 type Vacancy = {
   id?: string;
+  tenant?: string;
   vacancyId?: string;
   jobTitle?: string;
   category?: string;
@@ -80,6 +81,9 @@ type Vacancy = {
 type SearchResponse = { results?: Vacancy[]; totalResults?: number; start?: number; limit?: number };
 
 type VacancyDetail = {
+  id?: string;
+  tenant?: string;
+  status?: string;
   validFrom?: string;
   positionProfile?: {
     title?: string;
@@ -137,6 +141,7 @@ export function parseTalentFunnelVacancy(
 ): NormalizedJob | null {
   const id = vacancy.id ?? vacancy.vacancyId;
   if (!id || !vacancy.jobTitle) return null;
+  if (detail && (detail.id !== id || !vacancy.tenant || detail.tenant !== vacancy.tenant)) throw new Error('TALENT_FUNNEL_DETAIL_IDENTITY_MISMATCH');
 
   const profile = detail?.positionProfile;
   const location = profile?.location ?? vacancy.location;
@@ -144,7 +149,7 @@ export function parseTalentFunnelVacancy(
 
   return {
     externalId: id,
-    title: vacancy.jobTitle.trim(),
+    title: profile?.title?.trim() || vacancy.jobTitle.trim(),
     location: [location?.city, location?.country].filter(Boolean).join(', ') || undefined,
     city: location?.city,
     postalCode: location?.postCode,
@@ -159,6 +164,7 @@ export function parseTalentFunnelVacancy(
     url: `${origin}/job/${id}`,
     postedAt: isoDate(detail?.validFrom ?? vacancy.validFrom),
     validThrough: isoDate(vacancy.validTo),
+    ...(detail && detail.status !== 'ACTIVE' ? { publicationHold: 'UNRECOGNISED_PUBLICATION_STATE' } : {}),
     raw: { vacancy, detail },
   };
 }

@@ -1,0 +1,59 @@
+{
+  "mutations": [
+    {
+      "name": "reinsert-identical-dossier",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "38aa0535ed89899235e221f536d0d96a0047adabef58a779412e54aea7b63804"
+    },
+    {
+      "name": "ignore-revision",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "38aa0535ed89899235e221f536d0d96a0047adabef58a779412e54aea7b63804"
+    },
+    {
+      "name": "ignore-historical-order",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "38aa0535ed89899235e221f536d0d96a0047adabef58a779412e54aea7b63804"
+    },
+    {
+      "name": "decision-clock-order",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "38aa0535ed89899235e221f536d0d96a0047adabef58a779412e54aea7b63804"
+    },
+    {
+      "name": "perimeter-clock-order",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "38aa0535ed89899235e221f536d0d96a0047adabef58a779412e54aea7b63804"
+    },
+    {
+      "name": "perimeter-without-strict-validation",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "38aa0535ed89899235e221f536d0d96a0047adabef58a779412e54aea7b63804"
+    },
+    {
+      "name": "unlocked-review-writer",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "38aa0535ed89899235e221f536d0d96a0047adabef58a779412e54aea7b63804"
+    },
+    {
+      "name": "auto-bind-old-dossier",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "38aa0535ed89899235e221f536d0d96a0047adabef58a779412e54aea7b63804"
+    },
+    {
+      "name": "ignore-newer-contradiction",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "38aa0535ed89899235e221f536d0d96a0047adabef58a779412e54aea7b63804"
+    }
+  ],
+  "restoredTests": "passed"
+}

@@ -1,0 +1,204 @@
+{
+  "readOnly": true,
+  "applied": false,
+  "eligibleJobs": 51661,
+  "eligibleRepresentations": 52390,
+  "companies": 464,
+  "attempts": 3081,
+  "plannedJobs": 51392,
+  "plannedRepresentations": 51847,
+  "planCount": 2446,
+  "blockedJobs": 269,
+  "blockReasons": {
+    "Requested grouping lacks pairwise native identity evidence": 269
+  },
+  "lifecycle": {
+    "KEEP": 51201,
+    "CLOSE": 191
+  },
+  "fieldChanges": {
+    "title": 27,
+    "inseeCode": 1210,
+    "language": 7232,
+    "canonicalSourceKey": 2059,
+    "canonicalExternalId": 2059,
+    "salaryMin": 1929,
+    "workTime": 134,
+    "description": 2170,
+    "postalCode": 8717,
+    "employmentTerm": 1363,
+    "workplaceType": 1762,
+    "validThrough": 1328,
+    "salaryPeriod": 2464,
+    "postedAt": 2704,
+    "salaryCurrency": 2570,
+    "countryCode": 1117,
+    "city": 1197,
+    "programType": 197,
+    "isActive": 191,
+    "educationLevel": 1037,
+    "salaryMax": 932,
+    "adminArea1": 523,
+    "experienceYears": 5530
+  },
+  "samples": {
+    "canonicalSourceKey": [
+      {
+        "jobId": "cmtk21dww090knv2bkldm28v0",
+        "before": null,
+        "after": "galeries-lafayette"
+      },
+      {
+        "jobId": "cmtrsgzzx0nzapg5mu2h4gf5b",
+        "before": null,
+        "after": "galeries-lafayette"
+      },
+      {
+        "jobId": "cmtp6jv5q2v4mqq4zgi3ce4rm",
+        "before": null,
+        "after": "pandora-talenthub"
+      },
+      {
+        "jobId": "cmtpkc2z340yupf5lcdf8ryjw",
+        "before": null,
+        "after": "pandora-talenthub"
+      },
+      {
+        "jobId": "cmtpkc3ia413lpf5l8qsmx9a4",
+        "before": null,
+        "after": "pandora-talenthub"
+      },
+      {
+        "jobId": "cmtpkc3mf414ipf5lzaqdxdfz",
+        "before": null,
+        "after": "pandora-talenthub"
+      },
+      {
+        "jobId": "cmtpkc3vv416gpf5ljpoqahrb",
+        "before": null,
+        "after": "pandora-talenthub"
+      },
+      {
+        "jobId": "cmtpkc41t417opf5l5d9a6bgr",
+        "before": null,
+        "after": "pandora-talenthub"
+      },
+      {
+        "jobId": "cmtpkc43a417zpf5lgj9qsgvr",
+        "before": null,
+        "after": "pandora-talenthub"
+      },
+      {
+        "jobId": "cmtpkc453418hpf5lsr57zm6c",
+        "before": null,
+        "after": "pandora-talenthub"
+      }
+    ],
+    "countryCode": [
+      {
+        "jobId": "cmtpkc8xf42eppf5lj60bpgcs",
+        "before": "NE",
+        "after": null
+      },
+      {
+        "jobId": "cmtpkccqs437ppf5ljk11ozcp",
+        "before": "DE",
+        "after": null
+      },
+      {
+        "jobId": "cmtpkccxx438ppf5l2ywak16b",
+        "before": "NL",
+        "after": null
+      },
+      {
+        "jobId": "cmtpkcdli43ctpf5lg3sgdxzs",
+        "before": "NL",
+        "after": null
+      },
+      {
+        "jobId": "cmtpkcefq43i9pf5l7hgl9clz",
+        "before": "NL",
+        "after": null
+      },
+      {
+        "jobId": "cmtpkcehu43ippf5l4vlgvh3j",
+        "before": "NL",
+        "after": null
+      },
+      {
+        "jobId": "cmtpkcek143j5pf5lb7bvi8dc",
+        "before": "NL",
+        "after": null
+      },
+      {
+        "jobId": "cmtpkcekz43jdpf5l47rxrhb3",
+        "before": "NL",
+        "after": null
+      },
+      {
+        "jobId": "cmtpkcelj43jhpf5lnyjdqfgm",
+        "before": "NL",
+        "after": null
+      },
+      {
+        "jobId": "cmtpkcem343jlpf5l7a7erekp",
+        "before": "NL",
+        "after": null
+      }
+    ],
+    "isActive": [
+      {
+        "jobId": "cmtt995yk4h4ymy01bj4xogga",
+        "before": true,
+        "after": false
+      },
+      {
+        "jobId": "cmtk26gf70hurnv2bzln4us92",
+        "before": true,
+        "after": false
+      },
+      {
+        "jobId": "cmtk26gfs0huvnv2bhej3g3px",
+        "before": true,
+        "after": false
+      },
+      {
+        "jobId": "cmtk26ggf0huznv2b5tyt1hf5",
+        "before": true,
+        "after": false
+      },
+      {
+        "jobId": "cmtk26gh00hv3nv2b039r5a0v",
+        "before": true,
+        "after": false
+      },
+      {
+        "jobId": "cmtk26ghk0hv7nv2bfswn44mg",
+        "before": true,
+        "after": false
+      },
+      {
+        "jobId": "cmtk26gi40hvbnv2bwj6k9a9j",
+        "before": true,
+        "after": false
+      },
+      {
+        "jobId": "cmtk26gin0hvfnv2b3bnluzgp",
+        "before": true,
+        "after": false
+      },
+      {
+        "jobId": "cmtk26guy0hxonv2ba97lanl3",
+        "before": true,
+        "after": false
+      },
+      {
+        "jobId": "cmtk26gvi0hxsnv2bohttge10",
+        "before": true,
+        "after": false
+      }
+    ]
+  },
+  "estimatedPlanBytes": 890639127,
+  "elapsedMs": 250565
+}

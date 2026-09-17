@@ -1,0 +1,22 @@
+{
+  "mutations": [
+    {
+      "name": "mutable-revision-record",
+      "baselineGuardHeld": true,
+      "disabledGuardAcceptedForbiddenWrite": true,
+      "allMutationsRolledBack": true
+    },
+    {
+      "name": "unrecorded-config-change",
+      "baselineGuardHeld": true,
+      "disabledGuardAcceptedForbiddenWrite": true,
+      "allMutationsRolledBack": true
+    },
+    {
+      "name": "foreign-capture-binding",
+      "baselineGuardHeld": true,
+      "disabledGuardAcceptedForbiddenWrite": true,
+      "allMutationsRolledBack": true
+    }
+  ]
+}

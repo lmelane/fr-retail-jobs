@@ -1,0 +1,35 @@
+{
+  "mutations": [
+    {
+      "name": "reuse-withdrawn-public-id",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "7e6c969b151b57d720a03373e3d333cafb5a5378c759d7e765e0831183eb7e48"
+    },
+    {
+      "name": "withdraw-qualified-anchor",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "7e6c969b151b57d720a03373e3d333cafb5a5378c759d7e765e0831183eb7e48"
+    },
+    {
+      "name": "invent-closure-event",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "7e6c969b151b57d720a03373e3d333cafb5a5378c759d7e765e0831183eb7e48"
+    },
+    {
+      "name": "lose-public-withdrawal",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "7e6c969b151b57d720a03373e3d333cafb5a5378c759d7e765e0831183eb7e48"
+    },
+    {
+      "name": "accept-stale-partition",
+      "rejectedByRegression": true,
+      "exitCode": 1,
+      "restoredSha256": "7e6c969b151b57d720a03373e3d333cafb5a5378c759d7e765e0831183eb7e48"
+    }
+  ],
+  "restoredTests": "passed"
+}

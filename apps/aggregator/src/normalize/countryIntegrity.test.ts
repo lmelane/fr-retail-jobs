@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { countryIntegrityOf, isProvingVerdict, COUNTRY_INTEGRITY_PROVING } from './countryIntegrity.js';
+import { countryIntegrityOf, COUNTRY_INTEGRITY_PROVING } from './countryIntegrity.js';
 import { resolveGeography } from './geography.js';
 
 /**
@@ -17,7 +17,7 @@ describe('countryIntegrityOf — la liste positive est fermée', () => {
 
   it.each(['AMBIGUOUS', 'UNVERIFIED', 'POSTAL_FORMAT_COMPATIBLE', 'SOMETHING_NEW', '', null, undefined])(
     'un verdict hors liste (%s) ne prouve rien',
-    (v) => expect(isProvingVerdict(v as string)).toBe(false),
+    (v) => expect((COUNTRY_INTEGRITY_PROVING as readonly string[]).includes(v as string)).toBe(false),
   );
 });
 

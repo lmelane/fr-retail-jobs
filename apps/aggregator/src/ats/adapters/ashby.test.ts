@@ -8,8 +8,10 @@ describe('Ashby documented complete feed',()=>{
  beforeEach(()=>vi.resetAllMocks());
  it('keeps RAW, source publication date, workplace and department with a full-feed receipt',async()=>{
   fetch.mockResolvedValue({apiVersion:'1',jobs:[row]});const result=await fetchAshbyJobs({board:'polene-paris'});
-  expect(result).toMatchObject({complete:true,declaredTotal:1,enumeration:{method:'DOCUMENTED_COMPLETE_PUBLIC_FEED',rawCount:1}});
+  expect(result).toMatchObject({complete:true,declaredTotal:1,enumeration:{method:'DOCUMENTED_COMPLETE_PUBLIC_FEED',rawCount:1,termination:'FULL_RESPONSE',canonicalAbsenceProofUsable:true}});
   expect(result.jobs[0]).toMatchObject({raw:row,remote:'Hybrid',department:'Retail',postedAt:new Date(row.publishedAt),city:'Paris',country:'FRA'});
+  // The sealed enumeration names every observed posting with the same identity as its published externalId.
+  expect(result.enumeration?.pageEvidence).toEqual([expect.objectContaining({offset:0,pagination:null,ids:[row.id],canonicalIds:[row.id],publisherCounter:'1'})]);
  });
  it('does not drop unlisted posts or misclassify them as closed/internal',async()=>{
   fetch.mockResolvedValue({apiVersion:'1',jobs:[{...row,isListed:false}]});const result=await fetchAshbyJobs({board:'polene-paris'});
@@ -23,6 +25,9 @@ describe('Ashby documented complete feed',()=>{
   const broken=[{title:'Repeated title',isListed:true},{id:'missing-flag',title:'Client Advisor'},{id:'empty-title',title:'',isListed:true}];
   fetch.mockResolvedValue({apiVersion:'1',jobs:[row,...broken]});const result=await fetchAshbyJobs({board:'polene-paris'});
   expect(result.complete).toBe(false);expect(result.jobs).toHaveLength(1);expect(result.rejectedRows?.map(r=>r.raw)).toEqual(broken);
+  // A named rejection keeps its identity; a row without id or URL is anonymous and forbids any absence claim.
+  expect(result.rejectedRows?.map(r=>r.canonicalId)).toEqual([undefined,'missing-flag','empty-title']);
+  expect(result.enumeration).toMatchObject({canonicalAbsenceProofUsable:false,pageEvidence:[expect.objectContaining({canonicalIds:[row.id,'missing-flag','empty-title']})]});
  });
  it('allows a documented empty board and a durable URL ID, without inventing a missing date',async()=>{
   fetch.mockResolvedValueOnce({apiVersion:'1',jobs:[]});expect((await fetchAshbyJobs({board:'polene-paris'})).complete).toBe(true);

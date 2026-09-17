@@ -1,22 +1,12 @@
+import { upsertDeduplicated } from '../test/publicationPersistenceFixture.js';
 import '../test/setup-integration.js';
 import { describe, it, expect, beforeEach, afterAll } from 'vitest';
 import { PrismaClient } from '@prisma/client';
-import { upsertDeduplicated } from '../dedup/upsert.js';
 import { resolveCompany } from '../normalize/company.js';
 import type { CandidateJob } from '../dedup/match.js';
 
-/**
- * J2 — the collision cases that decide whether 1 323→789 sources can coexist
- * without duplicating openings (validated with Loïc, 2026-09-03).
- *
- * The single real risk at hundreds of sources is the SAME opening arriving
- * through two channels: the Maison's own ATS (flow A) and a jobboard (flow B),
- * or a group feed and the brand's feed. The database must hold ONE canonical
- * job with N JobSources, and the employer's own posting must own the apply URL.
- *
- * Lacoste is the measured real case: discovery found it on DigitalRecruiters
- * (careers.lacoste.com, flow A) AND on WTTJ (flow B).
- */
+/** Synthetic collision witnesses. Similar titles do not establish that two
+ * publishers describe the same opening; qualified native IDs are tested separately. */
 
 const prisma = new PrismaClient();
 
@@ -77,7 +67,7 @@ describe('audit — distinct postings survive write-time matching', () => {
 });
 
 describe('J2 — flow A vs flow B on the same Maison (Lacoste)', () => {
-  it('merges the WTTJ copy into the employer posting: 1 job, 2 sources, employer URL kept', async () => {
+  it('keeps the WTTJ and employer publications separate without application identity proof', async () => {
     const fromEmployer = candidate({ sourceKey: 'lacoste' });
     const fromBoard = candidate({
       sourceKey: 'wttj',
@@ -91,17 +81,16 @@ describe('J2 — flow A vs flow B on the same Maison (Lacoste)', () => {
     const second = await upsertDeduplicated(prisma, fromBoard);
 
     expect(first.outcome).toBe('CREATED');
-    expect(second.outcome).toBe('MERGED');
-    expect(second.jobId).toBe(first.jobId);
-    expect(second.promoted).toBe(false);
+    expect(second.outcome).toBe('CREATED');
+    expect(second.jobId).not.toBe(first.jobId);
 
     const jobs = await prisma.job.findMany({ include: { sources: true } });
-    expect(jobs).toHaveLength(1);
-    expect(jobs[0].sources).toHaveLength(2);
-    expect(jobs[0].url).toBe('https://careers.lacoste.com/fr/annonce/a-1');
+    expect(jobs).toHaveLength(2);
+    expect(jobs.every(job => job.sources.length === 1)).toBe(true);
+    expect(jobs.find(job => job.id === first.jobId)?.url).toBe(fromEmployer.url);
   });
 
-  it('promotes the employer URL when the jobboard copy arrived first', async () => {
+  it('also preserves both publications when the jobboard arrived first', async () => {
     const fromBoard = candidate({
       sourceKey: 'wttj',
       externalId: 'wttj-77',
@@ -114,13 +103,13 @@ describe('J2 — flow A vs flow B on the same Maison (Lacoste)', () => {
     await upsertDeduplicated(prisma, fromBoard);
     const second = await upsertDeduplicated(prisma, fromEmployer);
 
-    expect(second.outcome).toBe('MERGED');
-    expect(second.promoted).toBe(true);
+    expect(second.outcome).toBe('CREATED');
 
-    const job = await prisma.job.findFirstOrThrow({ include: { sources: true } });
+    const job = await prisma.job.findUniqueOrThrow({ where: { id: second.jobId }, include: { sources: true } });
     expect(job.url).toBe('https://careers.lacoste.com/fr/annonce/a-1');
     expect(job.canonicalTier).toBe('EMPLOYER_DIRECT');
-    expect(job.sources).toHaveLength(2);
+    expect(job.sources).toHaveLength(1);
+    expect(await prisma.job.count()).toBe(2);
   });
 });
 
@@ -131,7 +120,7 @@ describe('J2 — group feed vs brand feed (LVMH / Louis Vuitton)', () => {
     );
   });
 
-  it('merges a group-feed posting with the brand-feed posting of the same opening', async () => {
+  it('does not merge translated titles from a group and brand without native proof', async () => {
     const fromGroup = candidate({
       sourceKey: 'lvmh',
       company: 'Louis Vuitton',
@@ -154,15 +143,12 @@ describe('J2 — group feed vs brand feed (LVMH / Louis Vuitton)', () => {
     const first = await upsertDeduplicated(prisma, fromGroup);
     const second = await upsertDeduplicated(prisma, fromBrand);
 
-    // Same city, same company identity, FR/EN titles for one sales role: one
-    // opening, and the brand's own posting takes the canonical URL.
-    expect(second.jobId).toBe(first.jobId);
-    expect(second.promoted).toBe(true);
+    expect(second.jobId).not.toBe(first.jobId);
 
     const jobs = await prisma.job.findMany({ include: { sources: true } });
-    expect(jobs).toHaveLength(1);
-    expect(jobs[0].url).toBe('https://jobs.louisvuitton.com/wd-42');
-    expect(jobs[0].sources.map((s) => s.sourceKey).sort()).toEqual(['louis-vuitton', 'lvmh']);
+    expect(jobs).toHaveLength(2);
+    expect(jobs.every(job => job.sources.length === 1)).toBe(true);
+    expect(jobs.map(job => job.url).sort()).toEqual([fromBrand.url, fromGroup.url].sort());
   });
 
   it('never fuses two ids of the SAME source, even with near-identical titles (audit D-01)', async () => {

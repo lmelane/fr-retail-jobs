@@ -1,0 +1,47 @@
+{
+  "environment": "Dedicated local PostgreSQL; archive GET from isolated Railway test bucket",
+  "reports": [
+    {
+      "brand": "Polène",
+      "kind": "ashby",
+      "batchId": "2fe7351b-5a48-481a-afc5-dc33de30cae9",
+      "publications": 79,
+      "groupsAfter": 79,
+      "mismatches": 0,
+      "applied": {
+        "planHash": "92d76cdfbc93edf47888836b439d89b8f2839edef3fea5bc3bb85d95b3f09535",
+        "alreadyApplied": false,
+        "groups": 79,
+        "redirects": 0
+      },
+      "repeated": {
+        "planHash": "92d76cdfbc93edf47888836b439d89b8f2839edef3fea5bc3bb85d95b3f09535",
+        "alreadyApplied": true
+      },
+      "elapsedMs": 14132,
+      "decisions": 78,
+      "planHash": "92d76cdfbc93edf47888836b439d89b8f2839edef3fea5bc3bb85d95b3f09535"
+    },
+    {
+      "brand": "Amiri",
+      "kind": "lever",
+      "batchId": "a5755721-56b0-4e7e-9779-105018f74d8f",
+      "publications": 39,
+      "groupsAfter": 39,
+      "mismatches": 0,
+      "applied": {
+        "planHash": "e275c0a8b34164cac66acd54ff9bebf1a4f0aef41da7b696b4e215bddecc0e1e",
+        "alreadyApplied": false,
+        "groups": 39,
+        "redirects": 0
+      },
+      "repeated": {
+        "planHash": "e275c0a8b34164cac66acd54ff9bebf1a4f0aef41da7b696b4e215bddecc0e1e",
+        "alreadyApplied": true
+      },
+      "elapsedMs": 7232,
+      "decisions": 38,
+      "planHash": "e275c0a8b34164cac66acd54ff9bebf1a4f0aef41da7b696b4e215bddecc0e1e"
+    }
+  ]
+}

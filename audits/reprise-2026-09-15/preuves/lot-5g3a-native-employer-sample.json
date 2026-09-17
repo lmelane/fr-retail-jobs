@@ -1,0 +1,74 @@
+[
+  {
+    "id": "cmtn8950i201cqq5lc79y17c7",
+    "sourceKey": "mango",
+    "externalId": "SALES-ASSISTANT--16-hours---Maastricht-_JR141448-1",
+    "displayedEmployer": "Mango",
+    "nativeHiringOrganization": "MANGO Nederland BV",
+    "nativeLogoAlt": null,
+    "isActive": true
+  },
+  {
+    "id": "cmtn89511201kqq5lds82njl1",
+    "sourceKey": "mango",
+    "externalId": "SALES-ASSISTANT--25-hours---Gent-_JR141461-1",
+    "displayedEmployer": "Mango",
+    "nativeHiringOrganization": "MNG MANGO BELGIQUE S.P.R.L",
+    "nativeLogoAlt": null,
+    "isActive": true
+  },
+  {
+    "id": "cmtn8951e201sqq5lwnntlfal",
+    "sourceKey": "mango",
+    "externalId": "VISUAL-MERCHANDISER_JR141458",
+    "displayedEmployer": "Mango",
+    "nativeHiringOrganization": "MANGO MNG, S.A.",
+    "nativeLogoAlt": null,
+    "isActive": true
+  },
+  {
+    "id": "cmtn8951s2020qq5lgdgi87cc",
+    "sourceKey": "mango",
+    "externalId": "VENDEUR-EUSE-POLYVALENT-E----CDI-24H_JR141437",
+    "displayedEmployer": "Mango",
+    "nativeHiringOrganization": "MANGO FRANCE, S.A.R.L.",
+    "nativeLogoAlt": null,
+    "isActive": true
+  },
+  {
+    "id": "cmtn8951z2024qq5lbh8kqy3k",
+    "sourceKey": "mango",
+    "externalId": "VENDEUR-EUSE-POLYVALENT----CDI-28H_JR141442-1",
+    "displayedEmployer": "Mango",
+    "nativeHiringOrganization": "MANGO FRANCE, S.A.R.L.",
+    "nativeLogoAlt": null,
+    "isActive": true
+  },
+  {
+    "id": "cmtn895242028qq5l2rum2j73",
+    "sourceKey": "mango",
+    "externalId": "STOCK-ASSISTANT--12-Hours--Battersea-Power-St-WN-_JR141411-2",
+    "displayedEmployer": "Mango",
+    "nativeHiringOrganization": "MNG-MANGO U.K. LIMITED",
+    "nativeLogoAlt": null,
+    "isActive": true
+  },
+  {
+    "id": "cmtn8952b202cqq5l0jahr4gn",
+    "sourceKey": "mango",
+    "externalId": "STOCK-ASSISTANT--16-Hours--Battersea-Power-St-WN-_JR141410-1",
+    "displayedEmployer": "Mango",
+    "nativeHiringOrganization": "MNG-MANGO U.K. LIMITED",
+    "nativeLogoAlt": null,
+    "isActive": true
+  },
+  {
+    "id": "cmtn8952j202gqq5lrm9fnb8y",
+    "sourceKey": "mango",
+    "externalId": "MULTIFUNCTIONAL-SALES-ASSOCIATE--12-Hours--Battersea-Power-St-WN-_JR141409-1",
+    "displayedEmployer": "Mango",
+    "nativeHiringOrganization": "MNG-MANGO U.K. LIMITED",
+    "nativeLogoAlt": null,
+    "isActive": true
+  }
+]

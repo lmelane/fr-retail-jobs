@@ -1,0 +1,29 @@
+{
+  "readOnly": true,
+  "productionWrites": false,
+  "groups": 269,
+  "nativeComparison": {
+    "workdaySameTenantReqAllMembers": 222,
+    "workdayDistinctComponents": 272,
+    "workdayDistinctNativeReq": 24,
+    "teamtailorDomainAliasesToQualify": 23
+  },
+  "missingAnchor": [
+    {
+      "jobId": "cmtlyiihi05wjqf5k8j5znb8h",
+      "members": [
+        {
+          "sourceKey": "bzb",
+          "active": false,
+          "expiresAt": null
+        },
+        {
+          "sourceKey": "bizzbee",
+          "active": false,
+          "expiresAt": null
+        }
+      ]
+    }
+  ],
+  "qualifiedForAutomaticRepair": false
+}

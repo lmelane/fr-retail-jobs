@@ -3,6 +3,8 @@ import { freezeManifest, manifestHash, verifyManifest, compareTouched, type Mani
 
 const entry = (over: Partial<ManifestEntry> = {}): ManifestEntry => ({
   jobSourceId: 'JS1', sourceKey: 'mecca', externalId: 'X1', jobId: 'J1',
+  observedAt: '2026-09-01T00:00:00Z', beforeHash: 'a'.repeat(64),
+  proof: { kind: 'ENUMERATION', captureBatchId: 'batch-1', hash: 'b'.repeat(64) },
   state: 'ABSENT_FROM_PROVEN_ENUMERATION', consequence: 'JOB_CANDIDATE_FOR_CLOSURE', ...over,
 });
 
@@ -32,35 +34,43 @@ describe('manifestHash — l\'empreinte porte sur le PLAN, pas sur son enrobage'
 });
 
 describe('verifyManifest — trois refus, trois incidents réels', () => {
-  const active = new Set(['JS1', 'JS2']);
 
   it('un manifeste intact dont les lignes sont actives est valide', () => {
-    expect(verifyManifest(freezeManifest(['mecca'], [entry()]), active)).toEqual({ valid: true, problems: [] });
+    expect(verifyManifest(freezeManifest(['mecca'], [entry()]))).toEqual({ valid: true, problems: [] });
   });
 
   /** Le manifeste a été modifié après signature : on refuse, on ne « rattrape » pas. */
   it('refuse une empreinte qui ne correspond plus au contenu', () => {
     const m = freezeManifest(['mecca'], [entry()]);
     const falsified = { ...m, entries: [...m.entries, entry({ jobSourceId: 'JS2', externalId: 'ajoutée' })] };
-    const r = verifyManifest(falsified, active);
+    const r = verifyManifest(falsified);
     expect(r.valid).toBe(false);
-    expect(r.problems.join(' ')).toMatch(/empreinte du plan invalide/);
+    expect(r.problems.join(' ')).toMatch(/invalid plan hash/);
   });
 
-  /** L'ÉTAT A CHANGÉ depuis la revue : une autre opération a déjà traité la ligne. */
-  it('refuse une ligne déjà inactive : le plan est périmé', () => {
-    const m = freezeManifest(['mecca'], [entry({ jobSourceId: 'JS-disparue' })]);
-    const r = verifyManifest(m, active);
-    expect(r.valid).toBe(false);
-    expect(r.problems.join(' ')).toMatch(/déjà inactive/);
+  it('refuse un manifeste ancien, corrélé à un run, ou privé de sa preuve', () => {
+    const m = freezeManifest(['mecca'], [entry()]);
+    expect(verifyManifest({ ...m, version: 1 } as unknown as typeof m).valid).toBe(false);
+    expect(verifyManifest({ ...m, version: 3 } as unknown as typeof m).valid).toBe(false);
+    expect(verifyManifest(freezeManifest(['mecca'], [entry({ proof: undefined } as unknown as ManifestEntry)])).valid).toBe(false);
+    expect(verifyManifest(freezeManifest(['mecca'], [entry({ proof: { kind: 'ENUMERATION', runId: 'run-1', hash: 'b'.repeat(64) } as unknown as ManifestEntry['proof'] })])).valid).toBe(false);
+  });
+
+  it('hashes the source proof, observation time, parent state and limits', () => {
+    const original = manifestHash(['mecca'], [entry()]);
+    for (const change of [
+      { observedAt: '2026-09-02T00:00:00Z' }, { beforeHash: 'c'.repeat(64) },
+      { proof: { kind: 'ENUMERATION' as const, captureBatchId: 'batch-2', hash: 'b'.repeat(64) } },
+    ]) expect(manifestHash(['mecca'], [entry(change)])).not.toBe(original);
+    expect(manifestHash(['mecca'], [entry()], { staleHours: 48, maxCloseRatio: 1, minCloseForGuard: 50 })).not.toBe(original);
   });
 
   it('refuse une ligne dont la source est hors allowlist', () => {
     const m = freezeManifest(['mecca'], [entry({ sourceKey: 'intruse' })]);
     // L'empreinte reste cohérente : c'est bien le PÉRIMÈTRE qui est violé, pas la signature.
-    const r = verifyManifest(m, active);
+    const r = verifyManifest(m);
     expect(r.valid).toBe(false);
-    expect(r.problems.join(' ')).toMatch(/hors allowlist : intruse/);
+    expect(r.problems.join(' ')).toMatch(/outside source scope: intruse/);
   });
 });
 

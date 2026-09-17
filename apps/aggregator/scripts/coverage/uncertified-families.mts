@@ -1,3 +1,5 @@
+import { identityReviewOrder, assertIdentityReview, sourceSubjectKey } from '../../src/connectors/sourceIdentity.js';
+import { readIdentitySources } from '../../src/connectors/sourceRegistryRead.js';
 /**
  * The ACTIVE sources not certified under the promotion contract, grouped by TREATMENT FAMILY — what proof already exists, what
  * blocks, what the next action is — from the production database (read-only) and the archived portal research. Counts are per
@@ -28,7 +30,6 @@
 import { PrismaClient } from '@prisma/client';
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { parse } from 'tldts';
-import { assertIdentityReview, sourceSubjectKey } from '../../src/connectors/sourceIdentity.js';
 import { resolveCompany } from '../../src/normalize/company.js';
 
 const out = process.argv[2]; if (!out) { console.error('usage: uncertified-families.mts <output-dir>'); process.exit(2); }
@@ -98,9 +99,9 @@ const p = new PrismaClient({ log: [] });
 try {
   const db: any = await p.$transaction(async (tx) => {
     await tx.$executeRaw`SET TRANSACTION READ ONLY`;
-    const sources = await tx.source.findMany({ where: { status: 'ACTIVE' } });
+    const sources = (await readIdentitySources(tx)).filter(source => source.status === 'ACTIVE');
     // Same order as requireSourceIdentity: the latest decision per source is the one that counts.
-    const reviews = await tx.sourceIdentityReview.findMany({ orderBy: [{ createdAt: 'desc' }, { id: 'desc' }] });
+    const reviews = await tx.sourceIdentityReview.findMany({ orderBy: identityReviewOrder });
     const companies: any[] = await tx.$queryRaw`SELECT id, name, "canonicalKey", domain, "mergedIntoId", "fashionjobsUrl" FROM "Company"`;
     const feeds: any[] = await tx.$queryRaw`SELECT js."sourceKey", j."companyId", COUNT(*)::int n FROM "JobSource" js JOIN "Job" j ON j.id=js."jobId" WHERE js."isActive" AND j."isActive" GROUP BY 1,2`;
     const feeders: any[] = await tx.$queryRaw`SELECT j."companyId", COUNT(DISTINCT js."sourceKey")::int n FROM "JobSource" js JOIN "Job" j ON j.id=js."jobId" WHERE js."isActive" AND j."isActive" GROUP BY 1`;
@@ -160,10 +161,10 @@ try {
   }
 
   const families: Record<string, { label: string; blocker: string; next: string }> = {
-    G_GROUP_PORTAL: { label: 'Portail de groupe (plusieurs sociétés canoniques nourries, ou tier GROUP_OFFICIAL)', blocker: 'aucun technique : il faut une certification MULTI_BRAND et un alias revu par libellé (la porte refuse chaque libellé sans alias)', next: 'comme Saks / KnitWell : `b6-aliases.mts <clone|production> <clés>` (libellé → Maison, page officielle archivée) puis `b6-certify-existing.sh <nom> <clés>` avec périmètre MULTI_BRAND' },
+    G_GROUP_PORTAL: { label: 'Portail de groupe (plusieurs sociétés canoniques nourries, ou tier GROUP_OFFICIAL)', blocker: 'aucun technique : il faut une certification MULTI_BRAND et un alias revu par libellé (la porte refuse chaque libellé sans alias)', next: 'Revoir chaque libellé via record-employer-alias.mts ; dossier MULTI_BRAND lié à la révision via source-onboard.mts identity, puis collecte native' },
     A_HOMONYM_SUSPECT: { label: 'Homonymie suspecte (société nourrie ≠ Maison cataloguée et ni fusionnée ni alias revu ; ou nourrie par cette seule source sans domaine ni lien officiel vérifié)', blocker: 'l\'identité peut être fausse (cas loft, vitamin-a, one) : rien ne se certifie avant l\'audit', next: 'audit hors ligne sur les indices (pays, titres, hôte) ; mauvais tenant → `retire-source <clé>` (D27) ; même employeur → alias/fusion revus puis B ou C' },
-    B_OFFICIAL_DOMAIN_PORTAL: { label: 'Portail hébergé sur le domaine officiel de la Maison (domaine enregistrable identique, hôte non mutualisé)', blocker: 'aucun', next: '`b6-certify-existing.sh <nom> <clés>` par lots de 10–15 (méthode OFFICIAL_DOMAIN : page du portail hébergée), libellés lus à la validation' },
-    C_RECIPROCAL_LINK_VERIFIED: { label: 'Lien réciproque archivé DEPUIS une page du domaine officiel vers le portail du tenant', blocker: 'aucun', next: '`b6-certify-existing.sh <nom> <clés>` par lots (méthode OFFICIAL_LINK depuis la page archivée ; dump, clone, validation réelle, certification)' },
+    B_OFFICIAL_DOMAIN_PORTAL: { label: 'Portail hébergé sur le domaine officiel de la Maison (domaine enregistrable identique, hôte non mutualisé)', blocker: 'aucun', next: 'Examiner le portail officiel exact, enregistrer le dossier lié à la révision via source-onboard.mts identity, puis collect et status' },
+    C_RECIPROCAL_LINK_VERIFIED: { label: 'Lien réciproque archivé DEPUIS une page du domaine officiel vers le portail du tenant', blocker: 'aucun', next: 'Examiner le lien officiel exact, enregistrer le dossier lié à la révision via source-onboard.mts identity, puis collect et status' },
     D_BOARD_OR_AGENCY: { label: 'Jobboard, balayage sectoriel ou cabinet', blocker: 'décision : identité de board, pas de portail employeur', next: 'décision Loïc sur le flux B ; identité de board documentée' },
     E_RESEARCH_NEEDED: { label: 'Aucune provenance officielle vérifiée (ni domaine, ni lien depuis le domaine officiel)', blocker: 'recherche à mener ; les liens archivés depuis d\'autres pages sont des pistes, pas des preuves', next: '`research-portals.mts <input.json> <dossier>` ciblé sur la Maison (pistes : colonne unverifiedLinks), puis C ; sinon documenter le blocage daté' },
   };
@@ -204,7 +205,7 @@ try {
     `- ${gMaisonAbsent.length} portails de groupe dont AUCUNE société nourrie n'est la Maison cataloguée ni un alias revu : l'homonymie n'y est pas exclue, elle est simplement dominée par la règle G${gMaisonAbsent.length ? ` — ${gMaisonAbsent.map((r) => r.key).join(', ')}` : ''}.`,
     `- ${zeroActive.length} sources sans offre active (aucun indice de société possible)${zeroActive.length ? ` — ${zeroActive.map((r) => r.key).join(', ')}` : ''} ; ${noHost.length} sources sans hôte lisible dans la configuration${noHost.length ? ` — ${noHost.map((r) => r.key).join(', ')}` : ''}.`,
     `- Les liens archivés viennent de \`${RESEARCH}\` (${linksToLocator.size} tenants cibles) : une Maison jamais recherchée n'y a pas de lien, ce qui la range en E sans préjuger de son site.`,
-    '- Le pré-tri ne lit ni robots.txt ni les libellés natifs : B et C restent soumis à la validation réelle de `b6-certify-existing.sh` (accès ALLOWED lu, board exact, périmètre).',
+    '- Le pré-tri ne lit ni robots.txt ni les libellés natifs : B et C restent des pistes : revue du portail exact, preuve d’accès et validation native séparées via source-onboard.mts. La seule famille attribuée ici ne certifie rien.',
   ].join('\n');
   writeFileSync(`${out}/uncertified-families.md`, md + '\n');
   console.log(JSON.stringify({ uncertified: rows.length, active: db.sources.length, certified: certifiedCount, families: Object.fromEntries(order.map((f) => [f, { sources: byFamily[f]!.length, postings: sum(byFamily[f]!) }])), homonymByReason: aByReason, limits: { noMaisonCompany: noMaisonCompany.length, gMinorSecondary: gMinor.length, gMaisonAbsent: gMaisonAbsent.length, zeroActive: zeroActive.length, noHost: noHost.map((r) => r.key) } }, null, 1));

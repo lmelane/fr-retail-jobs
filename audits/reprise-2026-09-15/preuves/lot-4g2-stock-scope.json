@@ -1,0 +1,23 @@
+{
+  "readOnly": true,
+  "productionWrites": false,
+  "workdayGroups": 19910,
+  "workdayPublications": 20168,
+  "qualifiedRequisitions": 12977,
+  "eligibleGroups": 12683,
+  "eligiblePublications": 12934,
+  "splitGroups": 24,
+  "newGroups": 26,
+  "unchangedGroups": 0,
+  "blockedGroups": 7227,
+  "blockReasons": {
+    "workday:DETAIL_IDENTITY_MISMATCH": 7172,
+    "NO_QUALIFIED_REQUISITION": 7184,
+    "MISSING_ORIGINAL_OWNER": 905,
+    "workday:RAW_MISSING": 16,
+    "workday:PUBLICATION_HELD": 40,
+    "fashionjobs:READER_UNQUALIFIED": 3
+  },
+  "keyChanges": 12683,
+  "unqualifiedWorkdayPublications": 7191
+}

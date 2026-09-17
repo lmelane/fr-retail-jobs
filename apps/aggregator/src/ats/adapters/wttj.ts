@@ -1,6 +1,7 @@
 import pLimit from 'p-limit';
 import { fetchJson, fetchText } from '../../lib/http.js';
 import { htmlToPlainText } from '../../lib/html.js';
+import { educationLevel } from '../../normalize/experience.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
 import { CRAWLER_IDENTITY } from '../../lib/crawlerIdentity.js';
 
@@ -95,6 +96,12 @@ type WttjHit = {
   salary_period?: string;
   remote?: string;
   experience_level_minimum?: number;
+  /**
+   * Le niveau d'études déclaré, référentiel FRANÇAIS : `bac_5`, `bac_3`, `cap`,
+   * `no_diploma`… Conservé dans son libellé natif — un `bac_5` n'est pas un
+   * « Master's Degree » américain, et les ranger sur une même échelle mentirait.
+   */
+  education_level?: string;
   description?: string;
   profile?: string | null;
   /** ~400–550 caractères de résumé : le seul texte que l'index porte encore. */
@@ -210,6 +217,7 @@ function toNormalized(hit: WttjHit, organizationSlug: string): NormalizedJob | n
     // WTTJ publishes what most sources never do.
     remote: hit.remote,
     experienceYears: hit.experience_level_minimum,
+    educationLevel: educationLevel('WTTJ', hit.education_level),
     salaryMin: hit.salary_minimum,
     salaryMax: hit.salary_maximum,
     salaryCurrency: hit.salary_currency,

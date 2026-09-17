@@ -1,0 +1,27 @@
+{
+  "readOnly": true,
+  "productionWrites": false,
+  "plans": 16,
+  "originalGroups": 436,
+  "resultingGroups": 217,
+  "publications": 438,
+  "redirects": 219,
+  "lifecycle": {
+    "KEEP": 217
+  },
+  "fieldChanges": {
+    "lastSeenAt": 205,
+    "externalId": 193,
+    "employmentEvidence": 193,
+    "url": 193,
+    "canonicalTier": 193,
+    "canonicalSourceKey": 193,
+    "canonicalExternalId": 193,
+    "occupationEvidence": 193,
+    "postedAt": 12,
+    "description": 1,
+    "location": 1
+  },
+  "survivorRule": "Prefer an active page, then a page existing before the Workday separation, earliest firstSeenAt and lexical id",
+  "elapsedMs": 1745
+}

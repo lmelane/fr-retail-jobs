@@ -1,3 +1,5 @@
+> Archive historique. Depuis le lot 4H2 (2026-09-16), les trois scripts P9 de réparation/idempotence cités ici sont supprimés : ils modifiaient la projection Job sans capture/journal, ou déduisaient une fermeture du seul état courant. Utiliser la collecte capturée, `publication-groups.mts` et le couple `refresh-preview.mts` / `refresh-audit.mts`. Les mesures ci-dessous décrivent uniquement le contrôle du 9 septembre.
+
 # P9 · contrôles terminaux — méthode et mesures
 
 > En cours de constitution. Chaque nombre est lu là où il est écrit ; aucun n'est déduit d'un autre.

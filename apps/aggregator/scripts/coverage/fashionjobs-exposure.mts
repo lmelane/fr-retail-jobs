@@ -33,7 +33,7 @@ try {
      * collecting any more, so it cannot vouch for a posting still being open) and that is NOT fashionjobs itself.
      */
     const rows: any[] = await tx.$queryRaw`
-      SELECT j.id, c.name AS company, LEFT(j.title, 90) AS title, j.city, j."countryCode", j."isFrance",
+      SELECT j.id, c.name AS company, LEFT(j.title, 90) AS title, j.city, j."countryCode", (j."countryCode" = 'FR') AS "isFrance",
              j."firstSeenAt", j."lastSeenAt", j."postedAt", js."externalId",
              (SELECT string_agg(DISTINCT js2."sourceKey" || ':' || s2.status, ', ')
               FROM "JobSource" js2 JOIN "Source" s2 ON s2.key = js2."sourceKey"

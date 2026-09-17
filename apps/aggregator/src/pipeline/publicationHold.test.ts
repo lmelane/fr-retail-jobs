@@ -1,7 +1,7 @@
+import { archivePublicationHold } from '../test/publicationPersistenceFixture.js';
 import { clearOccupationLedger } from '../test/setup-integration.js';
-import { afterAll, describe, expect, it } from 'vitest';
+import { afterAll, expect, it } from 'vitest';
 import { PrismaClient } from '@prisma/client';
-import { archivePublicationHold } from './publicationHold.js';
 import { toCandidate } from './ingest.js';
 import { isTrustedForAttestation } from './attestation.js';
 const db = new PrismaClient();
@@ -13,6 +13,7 @@ it('archives the real azert defect idempotently without public jobs and forbids 
   const before = [await db.job.count(), await db.jobEvent.count()];
   await archivePublicationHold(db, key, job); await archivePublicationHold(db, key, job);
   expect(await db.sourceObservation.count({ where: { sourceKey: key } })).toBe(1);
+  expect(await db.sourceObservation.findFirstOrThrow({ where: { sourceKey: key } })).toMatchObject({ raw: job.raw, publicationHold: job.publicationHold });
   expect([await db.job.count(), await db.jobEvent.count()]).toEqual(before);
   expect(() => toCandidate(job, { key, company: 'Intersport', tier: 'ATS_OFFICIAL' }, 'Intersport', 'JOBAFFINITY_WORDPRESS')).toThrow('held');
   expect(isTrustedForAttestation({ status: 'DEGRADED', complete: false, fetched: 993, declaredTotal: 993 })).toBe(false);
@@ -21,7 +22,7 @@ it('archives the real azert defect idempotently without public jobs and forbids 
 });
 
 it('withdraws only the confirmed representation, preserves history, and a newer attestation wins', async () => {
-  const { upsertDeduplicated } = await import('../dedup/upsert.js');
+  const { upsertDeduplicated } = await import('../test/publicationPersistenceFixture.js');
   const { resolveCompany } = await import('../normalize/company.js');
   const key = 'jobaffinity-withdrawal-test';
   await db.source.upsert({ where: { key }, update: { status: 'ACTIVE' }, create: { key, maison: 'Intersport', kind: 'jobaffinity-wordpress', tenantKey: key, tier: 'ATS_OFFICIAL', config: {}, status: 'ACTIVE' } });
@@ -46,7 +47,7 @@ it('withdraws only the confirmed representation, preserves history, and a newer 
 });
 
 it('honours native isListed=false as withdrawal, preserves evidence and republishes without a repost', async()=>{
-  const { upsertDeduplicated } = await import('../dedup/upsert.js');
+  const { upsertDeduplicated } = await import('../test/publicationPersistenceFixture.js');
   const { resolveCompany } = await import('../normalize/company.js');
   const key='ashby-unlisted-witness';
   await db.source.upsert({where:{key},update:{status:'ACTIVE'},create:{key,maison:'Polène',kind:'ashby',tenantKey:key,tier:'ATS_OFFICIAL',config:{},status:'ACTIVE'}});
@@ -59,6 +60,8 @@ it('honours native isListed=false as withdrawal, preserves evidence and republis
   expect(await db.jobEvent.count({where:{jobId,type:'CLOSED'}})).toBe(0);
   expect(await db.jobEvent.count({where:{jobId,type:'WITHDRAWN'}})).toBe(1);
   expect(await db.sourceObservation.count({where:{sourceKey:key}})).toBe(2);
+  await upsertDeduplicated(db,{...input,raw:{detailReadError:'timeout'}});
+  expect(await db.job.findUniqueOrThrow({where:{id:jobId}})).toMatchObject({isActive:false,withdrawalReason:'SOURCE_UNLISTED'});
   await upsertDeduplicated(db,input);
   expect(await db.job.findUniqueOrThrow({where:{id:jobId}})).toMatchObject({isActive:true,withdrawnAt:null,withdrawalReason:null,reopenedCount:0});
   expect(await db.jobEvent.count({where:{jobId,type:'REPUBLISHED'}})).toBe(1);
@@ -67,13 +70,13 @@ it('honours native isListed=false as withdrawal, preserves evidence and republis
 });
 
 it('withholds publication on a reviewed OUT_OF_SCOPE decision: withdrawn (never closed), still collected, never re-attested', async () => {
-  const { upsertDeduplicated } = await import('../dedup/upsert.js');
+  const { upsertDeduplicated } = await import('../test/publicationPersistenceFixture.js');
   const { resolveCompany } = await import('../normalize/company.js');
   const { applyScopeExclusion, loadScopeExclusions } = await import('./scopeDecisions.js');
   const key = 'aptar-scope-witness';
   // Self-healing: an interrupted earlier run must not block this one.
   await db.postingScopeDecision.deleteMany({ where: { sourceKey: key } });
-  for (const js of await db.jobSource.findMany({ where: { sourceKey: key } })) { await db.jobSource.delete({ where: { id: js.id } }); await db.job.delete({ where: { id: js.jobId } }).catch(() => undefined); }
+  for (const js of await db.jobSource.findMany({ where: { sourceKey: key } })) { await db.jobSource.delete({ where: { id: js.id } }); js.jobId && await db.job.delete({ where: { id: js.jobId } }).catch(() => undefined); }
   await db.sourceObservation.deleteMany({ where: { sourceKey: key } });
   await db.source.upsert({ where: { key }, update: { status: 'ACTIVE' }, create: { key, maison: 'Aptar Group', kind: 'successfactors', tenantKey: key, tier: 'ATS_OFFICIAL', config: {}, status: 'ACTIVE' } });
   const input = { company: 'Aptar Group', companyId: resolveCompany('Aptar Group').companyId, sourceKey: key, externalId: '1405738533', sourceTier: 'ATS_OFFICIAL' as const, atsType: 'SUCCESSFACTORS' as const, title: 'Account Manager', url: 'https://jobs.aptar.com/job/Congers-Account-Manager-NY-10920/1405738533/', raw: { id: '1405738533' } };
@@ -90,7 +93,7 @@ it('withholds publication on a reviewed OUT_OF_SCOPE decision: withdrawn (never 
   expect(await db.jobEvent.count({ where: { jobId, type: 'CLOSED' } })).toBe(0);
   expect(await db.jobEvent.count({ where: { jobId, type: 'WITHDRAWN' } })).toBe(1);
   // The raw payload is collected and archived under the hold (next to the observation the upsert already kept).
-  expect(await db.sourceObservation.count({ where: { sourceKey: key, externalId: '1405738533', raw: { path: ['publicationHold'], equals: 'SCOPE_OUT_OF_PERIMETER' } } })).toBe(1);
+  expect(await db.sourceObservation.count({ where: { sourceKey: key, externalId: '1405738533', publicationHold: 'SCOPE_OUT_OF_PERIMETER' } })).toBe(1);
   // The ingest never re-attests a held posting: the candidate path refuses it, so no later run can re-open the job.
   expect(() => toCandidate(held, { key, company: 'Aptar Group', tier: 'ATS_OFFICIAL' }, 'Aptar Group', 'SUCCESSFACTORS')).toThrow('held');
   await clearOccupationLedger();

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { jobPostingSchema, markupIneligibility, schemaEmploymentTypes, COUNTRY_INTEGRITY_PROVING } from './job-posting-schema';
+import { balisage, jobPostingSchema, markupIneligibility, schemaEmploymentTypes, COUNTRY_INTEGRITY_PROVING } from './job-posting-schema';
 import type { JobRow } from './jobs';
 
 /**
@@ -10,11 +10,11 @@ import type { JobRow } from './jobs';
  */
 
 const base: JobRow = {
-  id: 'ck123', title: 'Vendeur', company: 'Cartier', companyDomain: 'cartier.com', group: 'Richemont',
+  id: 'ck123', origine: 'AGREGEE', candidature: { type: 'EXTERNE', url: 'https://x/1' }, title: 'Vendeur', company: 'Cartier', companyDomain: 'cartier.com', group: 'Richemont',
   city: 'PARIS', location: 'Paris, France', employmentTerm: 'PERMANENT', sector: 'LUXURY',
   // Aucune preuve de provenance par défaut : c'est l'état conservateur, et celui de la production.
   countryIntegrity: null,
-  url: 'https://x/1', postedAt: new Date('2026-08-20T00:00:00Z'), latitude: null, longitude: null,
+  postedAt: new Date('2026-08-20T00:00:00Z'), latitude: null, longitude: null,
   sourceCount: 1, sources: ['cartier'],
   // Une description RÉELLE : depuis le 2026-09-11 un fragment ne suffit plus à mériter un balisage
   // (`DESCRIPTION_TOO_THIN`). Le décor doit donc porter une annonce plausible, pas le mot « desc ».
@@ -233,7 +233,7 @@ describe('éligibilité au balisage — quatre scénarios de réception', () => 
     expect(markupIneligibility(base, NOW)).toEqual([]);
     expect(markupIneligibility({ ...base, postedAt: null } as JobRow, NOW)).toEqual(['NO_REAL_POSTED_DATE']);
     expect(markupIneligibility({ ...base, company: '' } as JobRow, NOW)).toEqual(['NO_HIRING_ORGANIZATION']);
-    expect(markupIneligibility({ ...base, url: 'mailto:rh@example.com' } as JobRow, NOW)).toEqual(['NO_APPLY_PATH']);
+    expect(markupIneligibility({ ...base, candidature: { type: 'AUCUNE' } }, NOW)).toEqual(['NO_APPLY_PATH']);
     // Plusieurs défauts → plusieurs motifs, chacun nommé.
     expect(markupIneligibility({ ...base, postedAt: null, description: '' } as JobRow, NOW))
       .toEqual(['NO_REAL_POSTED_DATE', 'DESCRIPTION_TOO_THIN']);
@@ -539,5 +539,48 @@ describe('countryIntegrity — lignes réelles issues de l\'ingestion du clone',
 
   it('un pays NON ambigu n\'a jamais eu besoin d\'un verdict', () => {
     expect(markupIneligibility({ ...base, countryCode: 'FR', countryIntegrity: null }, NOW)).toEqual([]);
+  });
+});
+
+/**
+ * LOT 9 — LA CHAÎNE BRANCHÉE : ce que la route d'une offre sert au site.
+ */
+describe('balisage (lot 9)', () => {
+  const ligne = (surcharges: Partial<JobRow>): JobRow => ({ ...base, ...surcharges });
+  const eligible = (): JobRow => ligne({
+    postedAt: new Date('2026-09-01T00:00:00Z'), description: 'd'.repeat(200), countryCode: 'FR', city: 'Paris', countryIntegrity: 'RAW_COUNTRY',
+    validThrough: null, candidature: { type: 'EXTERNE', url: 'https://x/1' },
+  });
+
+  it('une offre active éligible reçoit son JobPosting, pointé sur la fiche du site, sans candidature directe', () => {
+    const b = balisage(eligible(), 'active', new Date('2026-09-16T00:00:00Z'));
+    expect(b.motifs).toEqual([]);
+    expect(b.jobPosting).toMatchObject({ '@type': 'JobPosting', title: 'Vendeur', directApply: false });
+    expect(b.jobPosting?.url).toBe('https://catwalks.io/emplois/vendeur-ck123');
+    expect(b.jobPosting?.identifier).toEqual({ '@type': 'PropertyValue', name: 'Cartier', value: 'ck123' });
+  });
+
+  it('une offre publiée sur Catwalks se pourvoit ici : directApply vrai, identifiant cw_', () => {
+    const directe = ligne({ ...eligible(), id: 'cw_cm1', origine: 'CATWALKS', candidature: { type: 'CATWALKS', offreId: 'cm1', slug: 'vendeur', url: 'https://catwalks.io/offres/vendeur' } });
+    const b = balisage(directe, 'active', new Date('2026-09-16T00:00:00Z'));
+    expect(b.jobPosting).toMatchObject({ directApply: true, url: 'https://catwalks.io/emplois/vendeur-cw_cm1' });
+  });
+
+  it('une offre fermée ou retirée n’est JAMAIS balisée, même éligible par son contenu ; le motif est nommé', () => {
+    // Prémisse : par son contenu, cette offre serait balisée.
+    expect(markupIneligibility(eligible(), new Date('2026-09-16T00:00:00Z'))).toEqual([]);
+    for (const statut of ['closed', 'withdrawn'] as const) {
+      const b = balisage(eligible(), statut, new Date('2026-09-16T00:00:00Z'));
+      expect(b.jobPosting).toBeNull();
+      expect(b.motifs).toEqual(['OFFER_NOT_ACTIVE']);
+    }
+  });
+
+  it('une offre active inéligible rend null avec ses motifs, sans jamais inventer de date, de pays ni de description', () => {
+    const b = balisage(ligne({ ...eligible(), postedAt: null, description: 'court', countryCode: null, city: null, location: null }), 'active');
+    expect(b.jobPosting).toBeNull();
+    expect(b.motifs).toEqual(expect.arrayContaining(['NO_REAL_POSTED_DATE', 'DESCRIPTION_TOO_THIN', 'NO_USABLE_LOCATION']));
+    const echue = balisage(ligne({ ...eligible(), validThrough: new Date('2026-09-01T00:00:00Z') }), 'active', new Date('2026-09-16T00:00:00Z'));
+    expect(echue.motifs).toEqual(['VALID_THROUGH_EXPIRED']);
   });
 });

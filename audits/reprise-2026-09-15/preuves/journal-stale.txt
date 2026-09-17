@@ -1,0 +1,2 @@
+{"at" : "2026-09-15T13:15:39.674333+00:00", "read_only" : "on", "default_read_only" : "on"}
+{"published_fr" : 142, "published_en" : 60, "stale_published_en" : 0, "published_en_with_failure" : 0, "last_translation_update" : "2026-09-15T11:29:38.529269+00:00"}

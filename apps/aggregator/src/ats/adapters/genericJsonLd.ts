@@ -1,3 +1,4 @@
+import { sourceDeadlineReached } from '../../lib/sourceBudget.js';
 import { log } from '../../observability/logger.js';
 import * as cheerio from 'cheerio';
 import pLimit from 'p-limit';
@@ -5,7 +6,7 @@ import { createHash } from 'node:crypto';
 import { fetchText } from '../../lib/http.js';
 import { fetchSitemapUrlsDetailed, extractJobPostings, normalizeJobPosting } from '../../connectors/generic/jsonLdSitemap.js';
 import { fetchRssJobs } from '../../connectors/generic/rssFeed.js';
-import { collapseWhitespace, briefError } from '../../lib/normalize.js';
+import { briefError } from '../../lib/normalize.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
 import { CRAWLER_IDENTITY } from '../../lib/crawlerIdentity.js';
 
@@ -30,12 +31,6 @@ export function parseListingCount(html: string, marker?: unknown): number | unde
   return visible ? Number(visible[1].replace(/[\s.,]/g, '')) : undefined;
 }
 
-function flattenJsonLd(value: unknown): any[] {
-  if (Array.isArray(value)) return value.flatMap(flattenJsonLd);
-  if (value && typeof value === 'object' && '@graph' in (value as any)) return flattenJsonLd((value as any)['@graph']);
-  return value && typeof value === 'object' ? [value] : [];
-}
-
 /**
  * Exported so the identity rule can be tested without fetching a live board.
  *
@@ -46,14 +41,16 @@ function flattenJsonLd(value: unknown): any[] {
  * silently parsed nothing on those pages. One parser, one set of lessons.
  */
 export function parseJobPostings(html: string, pageUrl: string): NormalizedJob[] {
-  return extractJobPostings(html)
-    .map((node) => normalizeJobPosting(node, pageUrl))
-    .filter((job): job is NormalizedJob => job !== null)
-    .map((job) => ({
-      ...job,
-      // Stable, compact identity for the (source, externalId) unique key.
-      externalId: createHash('sha1').update(pageUrl).digest('hex'),
-    }));
+  return extractJobPostings(html).map(node => normalizeGenericPosting(node, pageUrl))
+    .filter((job): job is NormalizedJob => job !== null);
+}
+
+/** URL identity is shared by live collection and retained native JSON-LD. */
+export function normalizeGenericPosting(node: Record<string, unknown>, pageUrl: string): NormalizedJob | null {
+  const job = normalizeJobPosting(node, pageUrl);
+  // The page URL is the identity (sha1) and may differ from the posting's declared `url`: it is retained beside the
+  // native node (lot F3b) so the retained-publication reader recomputes the same identity offline.
+  return job ? { ...job, externalId: createHash('sha1').update(pageUrl).digest('hex'), raw: { ...node, catwalksPageUrl: pageUrl } } : null;
 }
 
 /** Signatures des pages de challenge (Cloudflare, Akamai, AWS WAF) servies à la place d'une liste. */
@@ -96,8 +93,6 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
   // A soft wall-clock budget, honoured by both phases below: a big listing
   // (Michael Page ~3800 offers) can overrun the run's timeout, so it stops
   // gracefully with what it has rather than being cut mid-flight.
-  const deadlineMs = Number(config.deadlineMs) || 0;
-  const pastDeadline = () => deadlineMs > 0 && Date.now() >= deadlineMs;
   if (listingPagedUrl && linkPattern) {
     const pageParam = String(config.pageParam ?? 'page');
     // The pattern comes from a CSV column — data, not code. Escaped so a
@@ -128,7 +123,7 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
     let publisherCount: number | undefined;
     let previousPageSha = '';
     for (let page = 0; page < Number(config.maxPages ?? 400); page++) {
-      if (pastDeadline()) { termination = 'DEADLINE'; break; }
+      if (sourceDeadlineReached()) { termination = 'DEADLINE'; break; }
       const sep = listingPagedUrl.includes('?') ? '&' : '?';
       // The end of a paginated listing is signalled one of two ways, and both
       // mean "stop here with what we have", not "fail the source": Michael Page
@@ -213,7 +208,7 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
     // F-06: a paginated listing that yields ZERO offer links is a broken
     // linkPattern or a moved listing — not an employer with no openings. The
     // silent [] passed for health until the refresh emptied the source 48h on.
-    if (seen.size === 0 && !pastDeadline()) {
+    if (seen.size === 0 && !sourceDeadlineReached()) {
       throw new Error(`generic-listing ${listingPagedUrl}: no offer link matched "${linkPattern}" — pattern or listing broken`);
     }
 
@@ -224,7 +219,7 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
         limit(async () => {
           // Stop starting new detail fetches past the budget; what was already
           // fetched stays, the rest is picked up next run.
-          if (pastDeadline()) { detailFailures++; return []; }
+          if (sourceDeadlineReached()) { detailFailures++; return []; }
           try {
             const parsed = parseJobPostings(
               await fetchText(url, {
@@ -253,7 +248,7 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
      * 0 errors » : la source passait BROKEN sans qu'une ligne dise pourquoi. Un
      * échec total est une panne à nommer, pas un employeur sans poste.
      */
-    if (seen.size > 0 && jobs.length === 0 && !pastDeadline()) {
+    if (seen.size > 0 && jobs.length === 0 && !sourceDeadlineReached()) {
       throw new Error(
         `generic-listing ${listingPagedUrl}: ${seen.size} lien${seen.size > 1 ? 's' : ''} d'offre, ` +
           `0 offre lue, ${detailFailures} échec${detailFailures > 1 ? 's' : ''} de détail — ` +
@@ -297,8 +292,8 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
       urls.map((url) =>
         limit(async () => {
           try {
-            // A browser UA is required here: several boards serve the sitemap to
-            // anything but 403 the job pages without one.
+            // The job page is read under the crawler identity, like every request of a collection:
+            // the reviewed access scope refuses any other agent.
             const parsed = parseJobPostings(
               await fetchText(url, {
                 headers: {

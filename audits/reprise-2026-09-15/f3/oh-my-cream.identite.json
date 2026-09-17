@@ -1,0 +1,11 @@
+{
+  "sourceKey": "oh-my-cream",
+  "sourceRevisionId": "5b240977-10a6-4be2-a756-a1205736f44e",
+  "captureBatchId": "d15ff7a5-325f-486d-99d5-9e409300dcb1",
+  "verdict": "VERIFIED",
+  "officialDomain": "ohmycream.com",
+  "statement": "La page officielle archivée https://www.ohmycream.com/ (pied de page, lien « Recrutement ») désigne exactement le portail Teamtailor configuré https://careers.ohmycream.com/, domaine personnalisé de la Maison. Le rôle exact du portail (employeur seul ou plusieurs marques) n'est pas déduit du seul nom : portalScope reste nul jusqu'à examen des offres.",
+  "reviewer": "claude-fable-5.1 (lot F3, pour Loïc)",
+  "checkedAt": "2026-09-16T23:35:08.183Z",
+  "portalScope": null
+}

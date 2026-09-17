@@ -1,46 +1,57 @@
-import {getSectorPresentation,sectorWhere,type SectorView} from './sectors';
+import { getSectorPresentation, sectorWhere } from './sectors';
 import { companyIdentityWhere } from './company-identity';
 import { prisma } from '@catwalks/db';
+import { publicJobWhere } from '@catwalks/db/availability';
+import { facettesContrat, type Perimetre } from '@catwalks/db/marches';
 import { Prisma } from '@prisma/client';
-import { DatabaseUnavailableError, validSector, MAX_VALUES } from './jobs';
+import { DatabaseUnavailableError, MAX_VALUES, perimetreServi, type PerimetreServi } from './jobs';
+import { CURSEUR_MAX, CurseurInvalideError, decoderCurseur, empreinteCriteres, encoderCurseur } from './curseur';
+import { PREFIXE_DIRECT, directPubliable, directPubliableSql } from './direct-offers';
 import { expandCompanyTerm } from './groups';
-import { countryCode, rawValuesForCode } from './countries';
+import { echapperLike } from './like';
+import { exigerPerimetre } from './perimetre';
+import type { FacetteServie } from './facettes';
+import type { FiltreRefuse } from './search-plan';
 import { companySlug } from './company-slug';
 
 export { companySlug } from './company-slug';
 
 /**
- * Employers, ranked by how many live offers they hold.
+ * Employers, ranked by how many live offers they hold IN THE PERIMETER.
  *
  * The counterpart to the offer list: the same data read by employer rather than
- * by posting, which is the question "who is hiring right now" instead of "what
- * can I apply to". Both views share the map, so a Maison's footprint is visible
- * the same way a search's is.
+ * by posting — "who is hiring right now" instead of "what can I apply to". Both
+ * views are bounded by the same perimeter (lot 6): a Maison without a live
+ * offer in the market answers no question a candidate of that market is asking.
+ *
+ * Deux origines (D-423) : une Maison qui publie sur Catwalks est un employeur
+ * de l'annuaire au même titre. Quand le registre la connaît (même nom), ses
+ * offres directes s'ajoutent à ses offres agrégées sous UNE ligne ; sinon elle
+ * a sa ligne à elle, sans domaine ni groupe, identifiée dans l'espace `cw_`.
  */
-
 export type CompanyRow = {
   id: string;
   name: string;
-  sector: string | null;
-  sectors?: SectorView[];
-  /** Parent group (LVMH, Kering…), when the Maison belongs to one — for the
-      "Secteur · Groupe" caption. Null for standalone Maisons and cabinets. */
+  /** Sector labels of the reviewed classification, for the "Secteur · Groupe" caption. */
+  sectors: { code: string; slug: string; label: string }[];
+  /** Parent group (LVMH, Kering…), when the Maison belongs to one. */
   group: string | null;
   /** The Maison's own domain, for its logo; null when no source names it (monogram). */
   domain: string | null;
   jobCount: number;
-  /** Cities where this employer currently has openings, busiest first. */
-  cities: { city: string; count: number; latitude: number | null; longitude: number | null }[];
+  /** Cities where this employer currently has openings in the perimeter, busiest first. */
+  cities: { city: string; count: number }[];
 };
 
 export type CompaniesResult = {
   companies: CompanyRow[];
   total: number;
-  page: number;
-  pageCount: number;
-  sectors: { value: string; count: number; label?: string }[];
-  /** Offers per country code (FR, US, IT…), for the world map. */
-  countries: { code: string; count: number }[];
+  /** Le curseur de la page suivante (lot 7), ou `null` quand cette page est la dernière. */
+  suivant: string | null;
+  perimetre: PerimetreServi;
+  /** `secteur`, et `pays` quand le marché l'expose : mêmes clés, mêmes libellés que la recherche. */
+  facettes: FacetteServie[];
+  filtresRefuses: FiltreRefuse[];
 };
 
 export const COMPANY_PAGE_SIZE = 40;
@@ -48,35 +59,24 @@ export const COMPANY_PAGE_SIZE = 40;
 /** D-426 — secteur et pays portent PLUSIEURS valeurs, comme sur la liste d'offres. */
 export type CompanyFilters = {
   q?: string;
-  sectors?: string[];
-  /** Codes pays canoniques (FR, IT…) ; `undefined` = tous les pays. */
-  countries?: string[];
-  page?: number;
+  secteur?: string[];
+  pays?: string[];
+  /** Le curseur de la page suivante, tel que la réponse précédente l'a rendu dans `suivant`. */
+  apres?: string;
+  marche?: string;
 };
 
 /**
- * The URL keys are French because the URL is user-visible. Shared by the
- * server-rendered page and the /api/companies route so infinite scroll and the
- * first render can never disagree on what a filter means — the same fix the
- * offer list needed.
+ * The URL keys are French because the URL is user-visible. Shared by every
+ * consumer of `/api/companies`, with the same bounds as `parseFilters`.
  */
 export function parseCompanyFilters(
   params: Record<string, string | string[] | undefined>,
 ): CompanyFilters {
-  // Borne de longueur MIROIR de `parseFilters` (jobs.ts) : l'annuaire n'avait
-  // pas la sienne, et un appel direct à l'API (hors site, qui tronque déjà à
-  // 120) pouvait pousser une chaîne sans limite dans un `contains` SQL.
-  // Audit sécurité du 14/09/2026, défense en profondeur.
   const one = (key: string) => {
     const value = params[key];
     return (Array.isArray(value) ? value[0] : value)?.trim().slice(0, 200) || undefined;
   };
-  /**
-   * D-426 — toutes les valeurs d'une clé, dédoublonnées, chacune bornée en
-   * longueur, l'ensemble borné en nombre. Miroir exact de `many` dans jobs.ts :
-   * deux plafonds différents feraient qu'une URL acceptée par la liste d'offres
-   * serait tronquée en silence par l'annuaire.
-   */
   const many = (key: string): string[] | undefined => {
     const value = params[key];
     if (value === undefined) return undefined;
@@ -90,81 +90,79 @@ export function parseCompanyFilters(
     return vues.size ? [...vues] : undefined;
   };
 
-  const page = Number(one('page'));
-
-  // World by default (revises D12), same as the offer list: no `pays` means every
-  // country, `pays=<code>` narrows to one. `pays=monde` is still accepted as an
-  // explicit "all countries" for shared/legacy links.
-  const paysBruts = many('pays')?.filter((v) => v !== 'monde');
+  const pays = many('pays')?.filter((v) => v !== 'monde').map((v) => v.toUpperCase());
+  const apres = params.apres;
+  const jeton = (Array.isArray(apres) ? apres[0] : apres)?.trim().slice(0, CURSEUR_MAX + 1) || undefined;
 
   return {
     q: one('q'),
-    sectors: many('secteur'),
-    countries: paysBruts?.length ? paysBruts : undefined,
-    page: Number.isFinite(page) && page > 0 ? page : 1,
+    secteur: many('secteur'),
+    pays: pays?.length ? pays : undefined,
+    apres: jeton,
+    marche: one('marche') ?? one('market'),
   };
 }
 
 export async function getCompanies(filters: CompanyFilters = {}): Promise<CompaniesResult> {
+  const perimetre = exigerPerimetre(filters.marche);
   // Same contract as getJobs (decision D1): no database, no invented data — the
   // page renders the error state rather than crashing unhandled.
   if (!process.env.DATABASE_URL) throw new DatabaseUnavailableError();
   try {
-    return await queryCompanies(filters);
+    return await queryCompanies(filters, perimetre);
   } catch (error) {
-    if (error instanceof DatabaseUnavailableError) throw error;
+    // Un curseur refusé (lot 7) est une erreur du client, jamais une base indisponible.
+    if (error instanceof DatabaseUnavailableError || error instanceof CurseurInvalideError) throw error;
     throw new DatabaseUnavailableError(error);
   }
 }
 
-/**
- * Autocomplete for the Entreprises search box — real Maison names, most active
- * first (like Indeed's directory, which surfaces the biggest employers). A
- * suggestion always leads to a Maison that exists and is hiring.
- */
-export async function suggestCompanies(query: string): Promise<string[]> {
-  if (!process.env.DATABASE_URL) return [];
-  const q = query.trim();
-  if (q.length < 2) return [];
-  try {
-    const rows = await prisma.company.findMany({
-      where: {
-        ...companyIdentityWhere(q, 'contains'),
-        jobs: { some: { isActive: true } },
-      },
-      select: { name: true, _count: { select: { jobs: { where: { isActive: true } } } } },
-      take: 40,
-    });
-    return rows
-      .sort((a, b) => b._count.jobs - a._count.jobs)
-      .slice(0, 8)
-      .map((r) => r.name);
-  } catch {
-    return [];
-  }
+/** Une ligne de l'annuaire avant lecture des détails : l'employeur, ses volumes par origine. */
+type Entree = {
+  /** Company id when the registry knows the Maison, else `cw_<nom>`. */
+  cle: string;
+  companyId: string | null;
+  /** Noms sous lesquels ses offres directes sont publiées (le nom de Maison du backend). */
+  nomsDirects: string[];
+  count: number;
+};
+
+/** L'empreinte des critères de l'annuaire : ce qui, changé, rendrait un curseur vide de sens. */
+function empreinteAnnuaire(perimetre: Perimetre, filters: CompanyFilters): string {
+  return empreinteCriteres({ perimetre: perimetre.code, q: filters.q?.trim() ?? '', secteur: [...(filters.secteur ?? [])].sort(), pays: [...(filters.pays ?? [])].sort() });
 }
 
-async function queryCompanies(filters: CompanyFilters): Promise<CompaniesResult> {
-  const page = Math.max(1, filters.page ?? 1);
-  const presentation=await getSectorPresentation();
+async function queryCompanies(filters: CompanyFilters, perimetre: Perimetre): Promise<CompaniesResult> {
+  const empreinte = empreinteAnnuaire(perimetre, filters);
+  // Lot 7 — la clé ordonnée de la dernière ligne servie : (offres, clé de ligne) ; refusée si elle vient d'autres critères.
+  const curseur = filters.apres ? decoderCurseur(filters.apres, empreinte, 2) : null;
+  if (curseur && (typeof curseur[0] !== 'number' || typeof curseur[1] !== 'string')) throw new CurseurInvalideError('clé');
+  const presentation = await getSectorPresentation();
+  const contrat = facettesContrat(perimetre);
+  const refus: FiltreRefuse[] = [];
 
-  // Only employers with a live French offer: a company row with nothing open
-  // answers no question a candidate is asking.
-  //
+  /*
+   * Le pays est une facette DANS le périmètre : une valeur hors périmètre est
+   * refusée explicitement, jamais honorée ni ignorée en silence (lot 6).
+   */
+  let pays: readonly string[] = perimetre.pays;
+  if (filters.pays?.length) {
+    const dedans = filters.pays.filter((p) => perimetre.pays.includes(p));
+    const dehors = filters.pays.filter((p) => !perimetre.pays.includes(p));
+    // Même règle que `planifierRecherche` : hors périmètre → refus ; dans le
+    // périmètre → filtre seulement si le marché sert la facette, sinon sans effet.
+    if (dehors.length) refus.push({ cle: 'pays', valeurs: dehors, motif: 'PAYS_HORS_MARCHE' });
+    if (dedans.length && contrat.some((f) => f.cle === 'pays')) pays = dedans;
+  }
+
   // Sector and search both constrain the joined Company, so they share ONE
   // `company` object — two separate spreads collided and dropped the sector.
   // Search matches the employer name OR its parent group (and group synonyms),
-  // so "SMCP" on /entreprises reaches Sandro and Maje like it does on /.
-  /*
-   * D-426 — `AND` explicite : `sectorWhere` rend un `OR` et la recherche texte
-   * aussi. Posés comme deux clés d'un même objet, le second effaçait le premier
-   * SANS erreur — chercher « Dior » en ayant coché un secteur aurait ignoré le
-   * secteur. Le même mode de panne est documenté dans `whereClause` (jobs.ts).
-   */
-  const sectors = filters.sectors?.map(validSector).filter((s): s is string => Boolean(s)) ?? [];
+  // so "SMCP" reaches Sandro and Maje like it does on the offer list.
+  const secteurs = filters.secteur ?? [];
   const query = filters.q?.trim();
   const companyAnd = [
-    ...(sectors.length ? [{ OR: sectors.map((s) => sectorWhere(s)) }] : []),
+    ...(secteurs.length ? [{ OR: secteurs.map((s) => sectorWhere(s)) }] : []),
     ...(query
       ? [
           {
@@ -177,202 +175,163 @@ async function queryCompanies(filters: CompanyFilters): Promise<CompaniesResult>
       : []),
   ];
   const company = companyAnd.length ? { AND: companyAnd } : {};
-  // D10: employers from every country, not France-only. A Pays filter narrows
-  // it; France uses the reliable flag, other countries their raw spellings.
-  // D-426 : union des pays cochés.
-  const countryWhere: Prisma.JobWhereInput = !filters.countries?.length
-    ? {}
-    : {
-        OR: filters.countries.flatMap<Prisma.JobWhereInput>((code) =>
-          code === 'FR'
-            ? [{ isFrance: true }]
-            : rawValuesForCode(code).map((v) => ({ countryCode: { equals: v, mode: 'insensitive' as const } })),
-        ),
-      };
-  const jobWhere = {
-    isActive: true,
-    ...countryWhere,
+  const at = new Date();
+  const jobWhere: Prisma.JobWhereInput = {
+    ...publicJobWhere(at),
+    countryCode: { in: [...pays] },
     ...(Object.keys(company).length ? { company } : {}),
   };
+  // Les mêmes filtres sur l'origine directe : secteur par ses codes, recherche sur son nom de Maison.
+  const directAnd: Prisma.DirectOfferWhereInput[] = [
+    ...(secteurs.length ? [{ OR: secteurs.map((s) => sectorWhere(s)) }] : []),
+    ...(query ? [{ OR: expandCompanyTerm(query).map((name) => ({ company: { contains: name, mode: 'insensitive' as const } })) }] : []),
+  ];
+  const directWhere: Prisma.DirectOfferWhereInput = { ...directPubliable(at), countryCode: { in: [...pays] }, ...(directAnd.length ? { AND: directAnd } : {}) };
 
-  const grouped = await prisma.job.groupBy({
-    by: ['companyId'],
-    where: jobWhere,
-    _count: true,
-    orderBy: { _count: { companyId: 'desc' } },
-  });
+  const [grouped, directGrouped] = await Promise.all([
+    prisma.job.groupBy({ by: ['companyId'], where: jobWhere, _count: true, orderBy: { _count: { companyId: 'desc' } } }),
+    prisma.directOffer.groupBy({ by: ['company'], where: directWhere, _count: true, orderBy: { _count: { company: 'desc' } } }),
+  ]);
+  // Une Maison directe que le registre connaît par son nom rejoint sa ligne agrégée.
+  const connues = directGrouped.length
+    ? await prisma.company.findMany({ where: { name: { in: directGrouped.map((r) => r.company) }, mergedIntoId: null }, select: { id: true, name: true } })
+    : [];
+  const idParNom = new Map(connues.map((c) => [c.name, c.id]));
+  const parCle = new Map<string, Entree>(grouped.map((row) => [row.companyId, { cle: row.companyId, companyId: row.companyId, nomsDirects: [], count: row._count }]));
+  for (const row of directGrouped) {
+    const companyId = idParNom.get(row.company) ?? null;
+    const cle = companyId ?? `${PREFIXE_DIRECT}${row.company}`;
+    const avant = parCle.get(cle) ?? { cle, companyId, nomsDirects: [], count: 0 };
+    parCle.set(cle, { ...avant, nomsDirects: [...avant.nomsDirects, row.company], count: avant.count + row._count });
+  }
+  const entrees = [...parCle.values()].sort((a, b) => b.count - a.count || a.cle.localeCompare(b.cle));
 
-  const pageIds = grouped
-    .slice((page - 1) * COMPANY_PAGE_SIZE, page * COMPANY_PAGE_SIZE)
-    .map((row) => row.companyId);
+  // Lot 7 — la page reprend APRÈS la clé du curseur (offres décroissantes, clé croissante), jamais à un décalage.
+  const apresCurseur = curseur
+    ? entrees.filter((e) => e.count < (curseur[0] as number) || (e.count === curseur[0] && e.cle.localeCompare(curseur[1] as string) > 0))
+    : entrees;
+  const pageEntrees = apresCurseur.slice(0, COMPANY_PAGE_SIZE);
+  const derniere = pageEntrees[pageEntrees.length - 1];
+  const suivant = apresCurseur.length > COMPANY_PAGE_SIZE && derniere ? encoderCurseur(empreinte, [derniere.count, derniere.cle]) : null;
+  const pageIds = pageEntrees.flatMap((e) => (e.companyId ? [e.companyId] : []));
+  const pageNoms = pageEntrees.flatMap((e) => e.nomsDirects);
 
-  const [companies, cityRows] = await Promise.all([
+  const [companies, cityRows, directCityRows, directSecteurs] = await Promise.all([
     prisma.company.findMany({
       where: { id: { in: pageIds } },
-      select: { id: true, name: true, sector: true, sectorCodes:true, parentGroup: true, domain: true },
+      select: { id: true, name: true, sectorCodes: true, parentGroup: true, domain: true },
     }),
     // One grouped query for every city of every company on this page, rather
     // than a query per company.
     prisma.job.groupBy({
-      by: ['companyId', 'city', 'latitude', 'longitude'],
-      where: { ...jobWhere, companyId: { in: pageIds } },
+      by: ['companyId', 'city'],
+      where: { ...jobWhere, companyId: { in: pageIds }, city: { not: null } },
       _count: true,
     }),
+    pageNoms.length
+      ? prisma.directOffer.groupBy({ by: ['company', 'city'], where: { ...directWhere, company: { in: pageNoms }, city: { not: null } }, _count: true })
+      : [],
+    pageNoms.length
+      ? prisma.directOffer.findMany({ where: { ...directWhere, company: { in: pageNoms } }, select: { company: true, sectorCodes: true }, distinct: ['company', 'sectorCodes'] })
+      : [],
   ]);
 
   const byCompany = new Map(companies.map((company) => [company.id, company]));
-  const citiesByCompany = new Map<string, CompanyRow['cities']>();
-  for (const row of cityRows) {
-    if (!row.city) continue;
-    const list = citiesByCompany.get(row.companyId) ?? [];
-    list.push({
-      city: row.city,
-      count: row._count,
-      latitude: row.latitude,
-      longitude: row.longitude,
-    });
-    citiesByCompany.set(row.companyId, list);
+  const cleDuNom = (nom: string) => idParNom.get(nom) ?? `${PREFIXE_DIRECT}${nom}`;
+  const villes = new Map<string, Map<string, number>>();
+  const ajouterVille = (cle: string, city: string | null, n: number) => {
+    if (!city) return;
+    const liste = villes.get(cle) ?? new Map<string, number>();
+    liste.set(city, (liste.get(city) ?? 0) + n);
+    villes.set(cle, liste);
+  };
+  for (const row of cityRows) ajouterVille(row.companyId, row.city, row._count);
+  for (const row of directCityRows) ajouterVille(cleDuNom(row.company), row.city, row._count);
+  const codesDirects = new Map<string, Set<string>>();
+  for (const o of directSecteurs) {
+    const codes = codesDirects.get(cleDuNom(o.company)) ?? new Set<string>();
+    for (const code of o.sectorCodes) codes.add(code);
+    codesDirects.set(cleDuNom(o.company), codes);
   }
 
-  const rows: CompanyRow[] = grouped
-    .slice((page - 1) * COMPANY_PAGE_SIZE, page * COMPANY_PAGE_SIZE)
-    .map((row) => {
-      const company = byCompany.get(row.companyId);
+  const rows: CompanyRow[] = pageEntrees
+    .map((entree): CompanyRow => {
+      const company = entree.companyId ? byCompany.get(entree.companyId) : undefined;
+      const codes = new Set([...(company?.sectorCodes ?? []), ...(codesDirects.get(entree.cle) ?? [])]);
       return {
-        id: row.companyId,
-        name: company?.name ?? '—',
-        sector: company?.sector ?? null,
-        sectors:presentation.sectors.filter(s=>company?.sectorCodes.includes(s.code)),
+        id: entree.companyId ?? `${PREFIXE_DIRECT}${companySlug(entree.nomsDirects[0])}`,
+        name: company?.name ?? entree.nomsDirects[0] ?? '—',
+        sectors: presentation.sectors.filter((s) => codes.has(s.code)),
         group: company?.parentGroup ?? null,
         domain: company?.domain ?? null,
-        jobCount: row._count,
-        cities: (citiesByCompany.get(row.companyId) ?? []).sort((a, b) => b.count - a.count),
+        jobCount: entree.count,
+        cities: [...(villes.get(entree.cle) ?? [])].map(([city, count]) => ({ city, count })).sort((a, b) => b.count - a.count || a.city.localeCompare(b.city)),
       };
     })
     // groupBy cannot order by the joined name, so ties are settled here.
     .sort((a, b) => b.jobCount - a.jobCount || a.name.localeCompare(b.name, 'fr'));
 
-  const sectorRows = await prisma.job.groupBy({
-    by: ['companyId'],
-    where: jobWhere,
-    _count: true,
-  });
+  /*
+   * Les facettes de l'annuaire suivent le contrat de la recherche : les comptes
+   * de `secteur` excluent la sélection de secteur, ceux de `pays` excluent la
+   * sélection de pays (D-426, union dans une dimension) — deux origines.
+   */
+  const sansSecteur: Prisma.JobWhereInput = { ...publicJobWhere(at), countryCode: { in: [...pays] },
+    ...(query ? { company: { AND: companyAnd.slice(secteurs.length ? 1 : 0) } } : {}) };
+  const sansPays: Prisma.JobWhereInput = { ...publicJobWhere(at), countryCode: { in: [...perimetre.pays] },
+    ...(Object.keys(company).length ? { company } : {}) };
+  const directSansPays: Prisma.DirectOfferWhereInput = { ...directPubliable(at), countryCode: { in: [...perimetre.pays] },
+    ...(directAnd.length ? { AND: directAnd } : {}) };
+  const [sectorRows, countryRows, directCountryRows, directSectorRows] = await Promise.all([
+    prisma.job.groupBy({ by: ['companyId'], where: sansSecteur, _count: true }),
+    prisma.job.groupBy({ by: ['countryCode'], where: { ...sansPays, countryCode: { in: [...perimetre.pays] } }, _count: true }),
+    prisma.directOffer.groupBy({ by: ['countryCode'], where: directSansPays, _count: true }),
+    prisma.$queryRaw<{ code: string; n: number }[]>(Prisma.sql`
+      SELECT code, count(*)::int AS n FROM "DirectOffer" d
+      CROSS JOIN LATERAL unnest(CASE WHEN cardinality(d."sectorCodes") = 0 THEN ARRAY['unclassified'] ELSE d."sectorCodes" END) code
+      WHERE ${directPubliableSql(Prisma.sql`d`, at)} AND d."countryCode" IN (${Prisma.join(pays.map((p) => Prisma.sql`${p}`))})
+        ${query ? Prisma.sql`AND (${Prisma.join(expandCompanyTerm(query).map((name) => Prisma.sql`d.company ILIKE ${`%${echapperLike(name)}%`}`), ' OR ')})` : Prisma.empty}
+      GROUP BY code`),
+  ]);
   const sectorCompanies = await prisma.company.findMany({
     where: { id: { in: sectorRows.map((row) => row.companyId) } },
-    select: { id: true, sector: true, sectorCodes:true },
+    select: { id: true, sectorCodes: true },
   });
   const sectorById = new Map(sectorCompanies.map((company) => [company.id, company.sectorCodes]));
   const sectorCounts = new Map<string, number>();
   for (const row of sectorRows) {
-    const codes=sectorById.get(row.companyId)??[];
-    for(const sector of codes.length?codes:['unclassified']) sectorCounts.set(sector,(sectorCounts.get(sector)??0)+row._count);
+    const codes = sectorById.get(row.companyId) ?? [];
+    for (const sector of codes.length ? codes : ['unclassified']) sectorCounts.set(sector, (sectorCounts.get(sector) ?? 0) + row._count);
   }
+  for (const row of directSectorRows) sectorCounts.set(row.code, (sectorCounts.get(row.code) ?? 0) + row.n);
+  const paysCounts = new Map<string, number>();
+  for (const row of [...countryRows, ...directCountryRows]) {
+    if (row.countryCode) paysCounts.set(row.countryCode, (paysCounts.get(row.countryCode) ?? 0) + row._count);
+  }
+  const nomsPays = (() => {
+    try {
+      return new Intl.DisplayNames([perimetre.marche?.localeParDefaut ?? 'fr-FR'], { type: 'region', fallback: 'none' });
+    } catch {
+      return null;
+    }
+  })();
 
-  // Offers per country, WORLD-WIDE (not France-only), for the world map. France
-  // is counted on its reliable flag; other countries fold their raw spellings
-  // into one code.
-  const [rawCountries, franceJobs] = await Promise.all([
-    prisma.job.groupBy({ by: ['countryCode'], where: { isActive: true }, _count: true }),
-    prisma.job.count({ where: { isActive: true, isFrance: true } }),
-  ]);
-  const countryCounts = new Map<string, number>();
-  for (const row of rawCountries) {
-    const code = countryCode(row.countryCode);
-    if (!code || code === 'FR') continue;
-    countryCounts.set(code, (countryCounts.get(code) ?? 0) + row._count);
-  }
-  const countries = [
-    ...(franceJobs > 0 ? [{ code: 'FR', count: franceJobs }] : []),
-    ...[...countryCounts.entries()]
-      .map(([code, count]) => ({ code, count }))
-      .sort((a, b) => b.count - a.count),
-  ];
+  const facettes: FacetteServie[] = contrat.flatMap(({ cle, libelle }): FacetteServie[] => {
+    if (cle === 'secteur') return [{ cle, libelle, options: [...sectorCounts.entries()]
+      .map(([value, count]) => ({ value, count, label: presentation.labels[value] ?? 'Secteur à vérifier' }))
+      .filter((o) => o.count > 0).sort((a, b) => b.count - a.count || a.value.localeCompare(b.value)) }];
+    if (cle === 'pays') return [{ cle, libelle, options: [...paysCounts.entries()]
+      .map(([value, count]) => ({ value, count, label: nomsPays?.of(value) ?? value }))
+      .sort((a, b) => b.count - a.count || a.value.localeCompare(b.value)) }];
+    return [];
+  });
 
   return {
     companies: rows,
-    total: grouped.length,
-    page,
-    pageCount: Math.max(1, Math.ceil(grouped.length / COMPANY_PAGE_SIZE)),
-    sectors: [...presentation.sectors.map(s=>({value:s.code,label:s.label,count:sectorCounts.get(s.code)??0})),{value:'unclassified',label:'Secteur à vérifier',count:sectorCounts.get('unclassified')??0}],
-    countries,
+    total: entrees.length,
+    suivant,
+    perimetre: perimetreServi(perimetre),
+    facettes,
+    filtresRefuses: refus,
   };
-}
-
-export type CompanyProfile = {
-  name: string;
-  sector: string | null;
-  sectors?: SectorView[];
-  parentGroup: string | null;
-  /** The Maison's own domain, for its logo; null when no source names it. */
-  domain: string | null;
-  careersUrl: string | null;
-  jobCount: number;
-  cities: { city: string; count: number }[];
-  contracts: { value: string; count: number }[];
-};
-
-/**
- * One Maison's profile for its dedicated page (decision D15) — what we actually
- * hold: sector, parent group, live-offer count, the cities and contract types
- * it hires in. No reviews/salaries/executives (Indeed's proprietary data we do
- * not have). The offer list itself is fetched separately by the page.
- */
-export async function getCompanyBySlug(slug: string): Promise<CompanyProfile | null> {
-  if (!process.env.DATABASE_URL) throw new DatabaseUnavailableError();
-  try {
-    // Match by slug over the display name — several rows can share a name only
-    // after a bad ingest, so take the one with the most live offers.
-    const candidates = await prisma.company.findMany({
-      select: { id: true, name: true, sector: true, sectorCodes:true, parentGroup: true, domain: true, careersUrl: true, mergedIntoId: true },
-    });
-    let match = candidates
-      .filter((c) => companySlug(c.name) === slug)
-      .sort((a, b) => a.name.localeCompare(b.name))[0];
-    if (!match) return null;
-    const byId = new Map(candidates.map(c => [c.id, c]));
-    const visited = new Set<string>();
-    while (match.mergedIntoId) {
-      if (visited.has(match.id)) throw new Error('Employer redirect cycle');
-      visited.add(match.id);
-      const target = byId.get(match.mergedIntoId);
-      if (!target) throw new Error('Missing canonical employer');
-      match = target;
-    }
-
-    // World-scoped (revises D12): a Maison recruits across countries, and the
-    // board now defaults to every country, so the header count and city/contract
-    // facets must match the world set the offer list shows.
-    const where = { companyId: match.id, isActive: true } as const;
-    const [jobCount, cityGroups, contractGroups] = await Promise.all([
-      prisma.job.count({ where }),
-      prisma.job.groupBy({
-        by: ['city'],
-        where: { ...where, city: { not: null } },
-        _count: true,
-        orderBy: { _count: { city: 'desc' } },
-        take: 12,
-      }),
-      prisma.job.groupBy({
-        by: ['employmentTerm'],
-        where: { ...where, employmentTerm: { not: null } },
-        _count: true,
-        orderBy: { _count: { employmentTerm: 'desc' } },
-      }),
-    ]);
-
-    return {
-      name: match.name,
-      sector: match.sector,
-      sectors:(await getSectorPresentation()).sectors.filter(s=>match.sectorCodes.includes(s.code)),
-      parentGroup: match.parentGroup,
-      domain: match.domain,
-      careersUrl: match.careersUrl,
-      jobCount,
-      cities: cityGroups.map((g) => ({ city: g.city as string, count: g._count })),
-      contracts: contractGroups.map((g) => ({ value: g.employmentTerm as string, count: g._count })),
-    };
-  } catch (error) {
-    if (error instanceof DatabaseUnavailableError) throw error;
-    throw new DatabaseUnavailableError(error);
-  }
 }

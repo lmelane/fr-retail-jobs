@@ -45,43 +45,13 @@ function detailHeaders(slug: string) {
 }
 
 type CampaignDetail = {
+  id?: number | string;
+  slug?: string;
+  is_draft?: boolean;
+  is_online?: boolean;
   description?: string;
   profile?: string;
-  salary_min?: number;
-  salary_max?: number;
-  // TalentView sends NUMERIC ids here, not text — "1" is EUR for the currency,
-  // and remote_level is a code too. The DB columns are String, so an un-mapped
-  // number crashed every write ("Expected String or Null, provided Int").
-  salary_currency?: number | string;
-  remote_level?: number | string;
-  experience_level?: number | string;
 };
-
-/** TalentView currency IDs → ISO codes; unknown ids yield no currency. */
-const TALENTVIEW_CURRENCIES: Record<string, string> = {
-  '1': 'EUR',
-};
-
-/** TalentView remote-level IDs → a human label; unknown ids yield nothing. */
-const TALENTVIEW_REMOTE: Record<string, string> = {
-  '1': 'Sur site',
-  '2': 'Télétravail partiel',
-  '3': 'Télétravail',
-};
-
-function talentviewCurrency(value: number | string | undefined): string | undefined {
-  if (value === undefined || value === null) return undefined;
-  // Already an ISO-ish code (letters): keep it. A numeric id: map it.
-  if (typeof value === 'string' && /[a-z]/i.test(value)) return value;
-  return TALENTVIEW_CURRENCIES[String(value)];
-}
-
-function talentviewRemote(value: number | string | undefined): string | undefined {
-  if (value === undefined || value === null) return undefined;
-  if (typeof value === 'string' && /[a-z]/i.test(value)) return value;
-  return TALENTVIEW_REMOTE[String(value)];
-}
-
 
 type Website = { id?: number; locale?: string; website_type?: string };
 
@@ -100,7 +70,7 @@ type Campaign = {
   entity?: { name?: string };
 };
 
-function toNormalized(campaign: Campaign, slug: string): NormalizedJob | null {
+export function parseTalentViewCampaign(campaign: Campaign, slug: string): NormalizedJob | null {
   if (!campaign.name) return null;
 
   const address = campaign.address;
@@ -179,7 +149,7 @@ export async function fetchTalentViewJobs(
             (campaign.id != null && !(typeof campaign.id === 'number' && Number.isSafeInteger(campaign.id) && campaign.id > 0 || typeof campaign.id === 'string' && campaign.id.trim().length > 0))) {
           throw new Error(`TalentView "${slug}": invalid campaign on page ${page}`);
         }
-        const job = toNormalized(campaign, slug)!;
+        const job = parseTalentViewCampaign(campaign, slug)!;
         if (websiteIdsSeen.has(job.externalId)) { truncated = true; continue; }
         websiteIdsSeen.add(job.externalId);
         fresh++;
@@ -205,31 +175,35 @@ export async function fetchTalentViewJobs(
       limit(async () => {
         const campaignSlug = (job.raw as Campaign | undefined)?.slug;
         if (!campaignSlug) return job;
+        let detail: CampaignDetail;
         try {
-          const detail = await fetchJson<CampaignDetail>(
+          detail = await fetchJson<CampaignDetail>(
             `${API}/companies/${encodeURIComponent(slug)}/campaigns/${encodeURIComponent(campaignSlug)}`,
             { headers: detailHeaders(slug) },
           );
-          const description = [htmlToPlainText(detail.description), htmlToPlainText(detail.profile)]
-            .filter(Boolean)
-            .join('\n\n');
-          // The detail payload also carries salary, remote and experience —
-          // fields the listing omits entirely.
-          return {
-            ...job,
-            ...(description ? { description } : {}),
-            salaryMin: detail.salary_min,
-            salaryMax: detail.salary_max,
-            salaryCurrency: talentviewCurrency(detail.salary_currency),
-            remote: talentviewRemote(detail.remote_level),
-            raw: { ...(job.raw as object), detail },
-          };
         } catch {
           // A failed detail fetch must not lose the listing entry.
           return job;
         }
+        return mergeTalentViewDetail(job, detail);
       }),
     ),
   );
   return { ...result, jobs: withDetails };
+}
+
+/** The detail body is kept in RAW as well as the readable presentation. */
+export function mergeTalentViewDetail(job: NormalizedJob, detail: CampaignDetail): NormalizedJob {
+  const campaign = job.raw as Campaign;
+  if (detail.id == null || String(detail.id) !== job.externalId || !campaign?.slug || detail.slug !== campaign.slug) throw new Error('TALENTVIEW_DETAIL_IDENTITY_MISMATCH');
+  const description = [htmlToPlainText(detail.description), htmlToPlainText(detail.profile)]
+    .filter(Boolean)
+    .join('\n\n');
+  // Source-specific facts are read from the retained detail at the shared write boundary.
+  return {
+    ...job,
+    ...(description ? { description } : {}),
+    ...(detail.is_draft !== false || detail.is_online !== true ? { publicationHold: 'SOURCE_PUBLICATION_NOT_CONFIRMED' } : {}),
+    raw: { ...(job.raw as object), detail },
+  };
 }

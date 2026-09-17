@@ -1,0 +1,44 @@
+{
+  "date": "2026-09-15",
+  "environment": "Dedicated local PostgreSQL 18; private RAW snapshot; no production writes or publisher calls",
+  "migrations": 55,
+  "tests": {
+    "aggregatorUnit": 2236,
+    "aggregatorIntegration": 458,
+    "api": 254,
+    "apiOptionalSkipped": 2,
+    "python": 5,
+    "totalPassed": 2953
+  },
+  "typecheck": "PASS",
+  "apiBuild": "PASS",
+  "schemaDrift": false,
+  "counterproofs": 11,
+  "sourceDateChanges": {
+    "wordpressUtcRows": 478,
+    "recruiteePublicationRows": 639,
+    "recruiteeMeaningfulRequirements": 528
+  },
+  "corpusRepresentations": 85327,
+  "recoverable": 49205,
+  "projectable": 49205,
+  "realPublicationsRebuilt": 66,
+  "families": 22,
+  "publicReads": 66,
+  "rebuildMismatches": 0,
+  "newCaptures": 0,
+  "reapplication": "IDEMPOTENT",
+  "logs": {
+    "lot4d2-full-validation.log": "12f393a2b15a4dbc3fa9ffaee185b4e013d897b72086690ecc3c69991c6e71f5",
+    "lot4d2-api-build.log": "f63c040b03788cdf3e68bfb7253edb8c6d386192da844f33f935e87e21dd7045",
+    "lot4d2-typecheck-output.log": "38f11d2f5f6bbb339d8011e1d5805718aba8e3e79c98335c261f05885cef1416",
+    "lot4d2-test-output.log": "406ce35b7c226a0a3eed9ea8f69f596c92ddccc2841e34d4dbaaba6b9de1c1e8",
+    "lot4d2-shadow.log": "8b410afe07444eb71f9a7be6d99d2f0011cac5dc96e3a6a2640909d499166756",
+    "lot4d2-corpus.log": "79d4d4dc3531528885b88e040cebcd75c9e5735239c7989d64d14aae2a49d094",
+    "lot4d2-cli-smoke.log": "0c526ae44d6e62da4b718fd966f7f6b519327ff6875f60da88723a41922ee1e3",
+    "lot4d2-schema-drift.log": "198913094e3f41610eb893459ab65a3c79991b65d4ef5fcb8c325ebe52ebf1ed",
+    "lot4d2-counterproof-restored.log": "66ea57746f7f7a32a14a24c6f60d232bf22feeaedea91d764689d309c64c9808",
+    "lot4d2-full-validation-expiry-version.log": "c76d1b78b2dc5bb760fd25f0578c3a9909439e54f7ac4b843c9d86df017f39c1",
+    "lot4d2-dates-content.log": "0e5472695e2a11955273ed7f6c1a0a788f8c6b8852e30aba2a06db19d979871a"
+  }
+}

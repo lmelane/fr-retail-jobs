@@ -13,6 +13,8 @@ usage: deploy-guard.py [--allow-running <pipelineRunId>]...
 exit 0 = safe to deploy; exit 1 = refuse.
 """
 import json
+from pathlib import Path
+from railway_api import api
 import subprocess
 import sys
 
@@ -22,15 +24,10 @@ NORMAL_COMMAND = 'sh apps/aggregator/start.sh'
 
 allowed = {a for flag, a in zip(sys.argv, sys.argv[1:]) if flag == '--allow-running'}
 
-r = subprocess.run(
-    ['python3', 'backups/observability-20260909/railway-api.py'],
-    input=json.dumps({
-        'query': 'query($env:String!,$service:String!){serviceInstance(environmentId:$env,serviceId:$service){startCommand latestDeployment{id status}}}',
-        'variables': {'env': ENV, 'service': SERVICE},
-    }),
-    text=True, capture_output=True, check=True,
-)
-si = json.loads(r.stdout)['serviceInstance']
+si = api(
+    'query($env:String!,$service:String!){serviceInstance(environmentId:$env,serviceId:$service){startCommand latestDeployment{id status}}}',
+    {'env': ENV, 'service': SERVICE},
+)['serviceInstance']
 cmd = si['startCommand'] or ''
 problems = []
 if 'INGEST_ONLY_KEYS=' in cmd or cmd != NORMAL_COMMAND:
@@ -39,7 +36,7 @@ if si['latestDeployment']['status'] not in ('SUCCESS', 'REMOVED', 'CRASHED', 'FA
     problems.append(f"aggregator latest deployment {si['latestDeployment']['status']}")
 
 q = subprocess.run(
-    ['python3', 'backups/remediation-20260908/run.py', 'readonly', 'npx', 'tsx', 'apps/aggregator/scripts/ops/running-pipeline-runs.mts'],
+    ['python3', str(Path(__file__).with_name('db.py')), 'readonly', 'npx', 'tsx', 'apps/aggregator/scripts/ops/running-pipeline-runs.mts'],
     text=True, capture_output=True,
 )
 running = [l for l in q.stdout.splitlines() if l.startswith('RUNNING ')]

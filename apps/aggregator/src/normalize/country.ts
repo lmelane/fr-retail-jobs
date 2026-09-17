@@ -237,7 +237,6 @@ export function countryFromLocation(location?: string | null): string | undefine
    *  - le libellé ne porte pas DÉJÀ une subdivision non américaine, laquelle
    *    prouverait que le dernier segment est un pays (voir plus bas).
    */
-  const dernier = segments[segments.length - 1]?.toUpperCase() ?? '';
   const avantDernier = segments[segments.length - 2] ?? '';
 
   /*

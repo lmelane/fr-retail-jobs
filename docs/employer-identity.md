@@ -1,6 +1,8 @@
 # Identité des employeurs et des sources
 
-Relecture du code : **10 septembre 2026**, révision `6ac43ec` et modifications locales de nettoyage. Documentation technique liée au [README de l’agrégateur](../apps/aggregator/README.md), qui reste l’unique état de pilotage. Les nombres de sources certifiées, alias et offres doivent provenir de mesures datées ; ils ne sont pas figés ici.
+Relecture des portes de certification : **16 septembre 2026**, lot 5G3A. Documentation technique liée au [README de l’agrégateur](../apps/aggregator/README.md), qui reste l’unique état de pilotage. Les nombres de sources certifiées, alias et offres doivent provenir de mesures datées ; ils ne sont pas figés ici.
+
+La section sur les publications a été actualisée le **15 septembre 2026** : identité native immuable, rapprochements prouvés et retrait des anciennes commandes de fusion. Le [contrat de publication](architecture/publication-identity.md) décrit le code courant et les limites de la reprise.
 
 ## Objets à ne pas confondre
 
@@ -12,7 +14,7 @@ Relecture du code : **10 septembre 2026**, révision `6ac43ec` et modifications 
 | Source carrière | `Source.key`, configuration et `tenantKey` ; un groupe peut publier plusieurs Maisons sur un même portail |
 | ATS | Protocole et adaptateur ; son nom ne prouve pas l’identité de l’employeur |
 | Offre native | Représentation `JobSource` identifiée par source et identifiant externe |
-| Offre canonique | `Job`, distinct de ses représentations et de l’identité de l’employeur |
+| Groupe de présentation | `Job`, distinct de ses publications natives et de l’identité de l’employeur |
 
 L’objectif est une attribution fidèle à l’organisation réelle. Deux noms proches, un domaine partagé ou un ATS commun ne suffisent pas à fusionner des sociétés. Une entité juridique différente ne signifie pas automatiquement une marque publique différente. Garder les libellés natifs permet de préserver ces distinctions.
 
@@ -23,21 +25,27 @@ L’objectif est une attribution fidèle à l’organisation réelle. Deux noms 
 Dans [sourceIdentity.ts](../apps/aggregator/src/connectors/sourceIdentity.ts) :
 
 - `sourceIdentityHash()` lie clé, propriétaire déclaré, kind, configuration, domaine carrière, tenant et tier.
-- `requireSourceIdentity()` sélectionne la dernière revue, y compris une contradiction, puis appelle `assertIdentityReview()`.
-- Le validateur strict exige VERIFIED, le bon sujet/source/tenant/hash, une vérification datant de moins de 30 jours, une méthode admise, un auteur, une déclaration et un artefact dont le contenu correspond au SHA-256. Les URLs et le domaine officiel sont également contrôlés.
+- `requireSourceIdentity()` sélectionne la dernière revue par ordre SQL, y compris une contradiction, puis appelle `assertIdentityReview()`. Les dates du dossier ne départagent pas les nouvelles décisions.
+- Le validateur strict exige VERIFIED, la révision courante du registre, un ordre de décision enregistré, le bon sujet/source/tenant/hash, une vérification datant de moins de 30 jours, un auteur, une déclaration et une inspection positive de la capture native sous la politique courante. La réponse, son empreinte, le domaine officiel et le portail exact sont contrôlés ; un texte fourni par l’opérateur ne certifie plus le portail.
 - Ces validations contrôlent la cohérence du dossier. Elles ne remplacent pas l’examen de la preuve officielle ni une observation actuelle du portail.
-- La promotion vérifie aussi la configuration, le verdict d’accès daté et au moins une offre réellement vérifiée. Un portail sans offre peut être documenté sans activation.
+- La promotion exige aussi la [validation technique native](architecture/native-capture.md) de la révision courante, avec le lecteur et la politique actuels. Le compteur manuel ne l’autorise plus. Un flux vide peut être admis lorsque son protocole natif est qualifié ; il ne devient pas une preuve d’absence pour fermer des offres.
 
-**Dette ouverte :** `certifiedPortalScope()` vérifie la dernière revue VERIFIED et son hash mais ne réexécute pas le validateur strict complet. `loadActiveSources()` ne revalide pas les dossiers des sources déjà ACTIVE. Ne pas documenter ces deux chemins comme apportant la même garantie que la promotion.
+**Contrat du lot 5G2B :** les nouvelles revues portent `sourceRevisionId`, fourni explicitement dans le dossier. L’écrivain lit et vérifie l’archive hors verrou, puis verrouille la source, relit la configuration SQL et valide à nouveau cette révision. Toute nouvelle décision référence une capture `SOURCE_IDENTITY` complète de cette même révision ; les champs HTTP et le rapport sont dérivés, sans fichier texte de remplacement. Le trigger SQL refuse toute révision manquante, étrangère ou remplacée ; il attribue l’ordre de décision après acquisition du verrou de source. Une valeur d’ordre fournie par l’appelant ne peut pas réordonner les preuves. Les revues restent immuables en SQL.
+
+Les revues historiques gardent leurs champs et leur texte exacts ; les plus anciennes ont aussi une révision et un ordre inconnus (`NULL`). Leur liaison à une capture reste inconnue. Elles restent consultables mais ne certifient plus le registre actuel. Aucune migration ne leur invente une liaison. Un changement de `jobUrlPattern` ou un retour A → B → A impose une nouvelle revue, même lorsque l’ancien hash se retrouve identique. Les gaps de séquence sont normaux après annulation et ne représentent pas un nombre de revues. Une répétition du même dossier conserve le même identifiant et n’ajoute pas de décision : elle ne peut pas remplacer une contradiction enregistrée depuis. Le résultat précise si cette revue est encore la dernière décision ; une nouvelle revue exige un dossier explicitement renouvelé.
+
+`certifiedPortalIdentity()` lit le registre et sa dernière revue dans une seule requête SQL, sans charger le texte historique, puis applique le même validateur strict. Il restitue ensemble le propriétaire revu, sa clé, la révision et la revue qui autorise le périmètre ; `certifiedPortalScope()` en expose uniquement le périmètre. Les nouvelles revues ne dupliquent aucun corps HTML : elles pointent vers les captures immuables existantes. Les rapports maintenus utilisent ce contrat ; les composeurs de snapshots refusent de reconstruire une certification depuis un hash seul. `sourceIdentityHash()` reste le fingerprint utilisé par les candidats et alias historiques ; il n’est plus, à lui seul, le périmètre d’autorité d’une revue de portail.
+
+**Limites restantes :** `loadActiveSources()` ne revalide pas encore les dossiers des sources déjà ACTIVE. L’inspection obligatoire couvre actuellement Ashby, Recruitee et les sites Workday qualifiés. Les autres familles, les domaines personnalisés, les rôles employeur/groupe/éditeur et la preuve d’accès restent à traiter avant release. Un lien ne prouve pas l’exhaustivité du flux ni le propriétaire du domaine déclaré par le réviseur.
 
 Depuis la racine, avec des accès explicitement configurés pour l’environnement choisi :
 
 ```sh
-node --import tsx apps/aggregator/src/cli.ts identity-profile SOURCE_KEY
-node --import tsx apps/aggregator/src/cli.ts review-source-identity --record=/chemin/revue.json --artifact=/chemin/preuve.txt
+node --import tsx apps/aggregator/scripts/ops/source-onboard.mts profile SOURCE_KEY
+node --import tsx apps/aggregator/scripts/ops/source-onboard.mts identity /chemin/revue.json
 ```
 
-La seconde commande valide sans enregistrer. L’enregistrement exige `--apply` ; l’activation est une commande distincte `promote SOURCE_KEY`, après les préconditions et la revue du lot. Aucun de ces exemples ne constitue un feu vert pour une exécution en production.
+Le profil fournit notamment `sourceRevisionId`, à reporter avec l’identifiant de capture dans le [dossier strict](architecture/source-onboarding.md). Les verdicts négatifs conservent aussi une capture réelle, mais n’exigent pas de lien positif et ne peuvent attribuer aucun périmètre. La seconde commande valide sans enregistrer. Une révision absente ou devenue obsolète est refusée ; la commande ne l’actualise jamais automatiquement. L’enregistrement exige `--apply` ; l’activation est une commande distincte `source-onboard.mts promote SOURCE_KEY --revision=REVISION --apply`, après les préconditions et la revue du lot. Aucun de ces exemples ne constitue un feu vert pour une exécution en production.
 
 ## Résolution effective d’un employeur
 
@@ -47,18 +55,23 @@ Le pipeline conserve `rawEmployerName`, son origine et le RAW. [normalizedEmploy
 
 | Règle | Comportement du code relu |
 |---|---|
-| `REVIEWED_ALIAS` | Alias revu dans la portée exacte de la source et lié à son hash. Les conflits de racines ou une liaison modifiée déclenchent une revue. Un alias global ne suffit pas à autoriser l’ingestion. |
-| `CERTIFIED_SINGLE_BRAND_PORTAL` | Sans alias prioritaire, un libellé natif peut être rattaché au propriétaire trouvé pour le portail SINGLE_BRAND. **Le chemin actuel couvre aussi des libellés explicites nouveaux, pas seulement un champ employeur absent : limite à corriger.** |
+| `REVIEWED_ALIAS` | Pour un libellé déclaré par l’offre, alias revu dans la portée exacte de la source et lié à son hash. Les conflits de racines ou une liaison modifiée déclenchent une revue. Un alias global ne suffit pas à autoriser l’ingestion. |
+| `CERTIFIED_SINGLE_BRAND_PORTAL` | Un employeur absent peut être complété par le propriétaire du portail actuellement certifié SINGLE_BRAND. Les origines `SOURCE_CATALOGUE_LABEL` et `portal.certifiedScope:EMPLOYER_INFERRED_FROM_CERTIFIED_SINGLE_BRAND_PORTAL` imposent ce contrôle avant toute recherche d’alias. La revue du portail est journalisée. Une absence ne peut remplacer l’employeur déjà attribué à une publication. |
+| `NATIVE_SOURCE_LABEL` | Un nouveau libellé natif sans identité cible connue reçoit une identité propre à la source, avec son nom exact après retrait des espaces périphériques. Les suffixes juridiques et pays ne sont pas effacés. Cela ne certifie ni la société ni son lien avec une marque. |
 | `GROUP_LABEL_KEPT_HOUSE` | Une offre déjà connue peut garder sa Maison quand le libellé devient celui de son groupe enregistré. L’omission est tracée ; ce n’est pas une autorisation générale de deviner une Maison depuis un groupe. |
 | Convergence de libellé | Un nouveau libellé égal au nom canonique de l’employeur déjà attribué peut converger sans être traité comme un changement d’identité. L’ancien document affirmait à tort que toute variation exigeait une nouvelle revue. |
 | `REVIEWED_MERGE` / `LEGACY_UNREVIEWED` | Les affectations historiques et redirections restent utilisables sous leurs contrôles. `LEGACY_UNREVIEWED` n’est pas un niveau de confiance attesté. |
 | `REVIEW_REQUIRED` | Un conflit non résolu peut lever `EmployerIdentityReviewRequired`. Les preuves de refus sont conservées ; le refus doit rester visible dans la mesure d’ingestion. |
 
+Le périmètre SINGLE_BRAND ne rattache plus automatiquement un employeur explicitement nommé au propriétaire du portail. Un alias revu reste utilisable pour relier une entité juridique à une marque. Un conflit avec une identité déjà connue exige une revue ; ce lot ne purge ni ne réattribue les affectations historiques.
+
 Lorsqu’une nouvelle identité non aliasée est admissible, sa clé peut être construite à partir de la source et du libellé normalisé. Ce mécanisme évite une fusion implicite d’homonymes entre sources ; il ne certifie pas cette identité.
 
 [recordEmployerObservation](../apps/aggregator/src/identity/resolve.ts) enregistre libellé brut, origine, forme normalisée, employeur canonique, règle, IDs de revue/alias et hash RAW. Le hash d’observation permet un rejeu sans créer une nouvelle preuve identique. Une valeur canonique ancienne ne doit pas servir à reconstruire artificiellement un RAW manquant.
 
-Pour Workday, les erreurs de détail et l’absence d’employeur ont des retenues distinctes. Le [pipeline](../apps/aggregator/src/pipeline/ingest.ts) peut lever la retenue spécifique d’employeur absent lorsqu’un périmètre SINGLE_BRAND est disponible. Les autres retenues ne deviennent pas des offres publiables du seul fait de cette exception. La limite du validateur de périmètre ci-dessus s’applique aussi à ce chemin.
+Pour Workday, les erreurs de détail et l’absence d’employeur ont des retenues distinctes. Le [pipeline](../apps/aggregator/src/pipeline/ingest.ts) peut lever la retenue spécifique d’employeur absent lorsqu’un périmètre SINGLE_BRAND est disponible. Un nom natif présent empêche de lever cette retenue contradictoire. Le module commun est [portalEmployer.ts](../apps/aggregator/src/identity/portalEmployer.ts) ; l’ancien chemin de pipeline est supprimé, sans alias de compatibilité. Les autres retenues ne deviennent pas des offres publiables du seul fait de cette exception. La liaison à la révision et les limites de preuve officielle décrites ci-dessus s’appliquent aussi à ce chemin.
+
+Le [lecteur JSON-LD](../apps/aggregator/src/connectors/generic/jsonLdSitemap.ts) transmet désormais `hiringOrganization.name` et sa provenance, conservés exactement dans le RAW. Il ne substitue pas `publisher`. Une organisation déclarée mais non résolue (nom vide, valeur invalide ou tableau non qualifié) porte `JSONLD_EMPLOYER_NOT_RESOLVED` ; elle ne devient pas une absence autorisant l’inférence depuis le catalogue. Les tableaux d’organisations et références par `@id` nécessitent encore un contrat natif qualifié.
 
 ## Réparer sans effacer l’historique
 
@@ -85,7 +98,7 @@ Le paramètre de commit est contrôlé et enregistré par le code ; fournir un h
 
 ## Fusions, parentés et limites du modèle
 
-Une fusion d’employeurs conserve les anciens IDs et redirections. Elle n’autorise pas une consolidation de postings : une collision doit être justifiée par `postingMerges` et des témoins du même émetteur/requisition, ou l’opération échoue. `Job.mergedIntoId` conserve l’offre absorbée et son ancienne URL ; une fusion ne doit pas inventer une fermeture employeur.
+Une fusion d’employeurs conserve les anciens IDs et redirections. Elle conserve aussi les publications distinctes partageant un identifiant dans deux tenants ; la famille d’ATS n’est pas un espace d’identité global. Une consolidation exige une décision `postingMerges` et un témoin RAW du même émetteur/réquisition pour chaque publication impliquée. Elle est journalisée dans `PublicationIdentityDecision`. `Job.mergedIntoId` conserve l’offre absorbée et son ancienne URL ; une fusion ne doit pas inventer une fermeture employeur.
 
 Le modèle actuel représente un parent **groupe** canonique. Il ne représente pas toute hiérarchie arbitraire marque → sous-marque → concept commercial. Une relation non représentable doit rester explicitement documentée ; ne pas fusionner les entités pour contourner cette limite.
 

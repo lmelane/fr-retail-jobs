@@ -1,0 +1,24 @@
+{
+  "date": "2026-09-15",
+  "environment": "Dedicated local PostgreSQL 18; production unchanged",
+  "migrations": 53,
+  "tests": {
+    "aggregatorUnit": 2152,
+    "aggregatorIntegration": 455,
+    "api": 249,
+    "apiOptionalSkipped": 2,
+    "python": 5,
+    "totalPassed": 2861
+  },
+  "typecheck": "PASS",
+  "apiBuild": "PASS",
+  "schemaDrift": false,
+  "counterproofs": 8,
+  "logs": {
+    "lot4-full-validation.log": "ba50ed65db8880fc373b9f3149bf232b95f847e9a5c7a7dc434b5578513a8cb5",
+    "lot4-api-build.log": "79d8ea5dd07f98d5c2f6b5fd1ef3de91555ef5a1ab99ba832a92de28f6477afd",
+    "lot4-final-targeted.log": "5016cacf945138e6111e43db5d8224ca189e32a57f1572f8548d697a52cc5849",
+    "lot4-final-typecheck.log": "38f11d2f5f6bbb339d8011e1d5805718aba8e3e79c98335c261f05885cef1416",
+    "lot4-schema-drift.log": "198913094e3f41610eb893459ab65a3c79991b65d4ef5fcb8c325ebe52ebf1ed"
+  }
+}

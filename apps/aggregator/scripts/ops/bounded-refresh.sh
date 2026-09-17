@@ -49,10 +49,8 @@ echo "$(date -u +%H:%M:%S) préflight OK · INGEST_ONLY_KEYS absent"
 
 # ── prévisualisation → manifeste figé ────────────────────────────────────────────────────────────────────
 python3 "$OPS/db.py" readonly npx tsx "$OPS/refresh-preview.mts" --keys="$KEYS" \
-  --out="$LOG/preview.json" > "$LOG/preview.log" 2>&1
-python3 "$OPS/db.py" readonly npx tsx "$OPS/freeze-manifest.mts" --preview="$LOG/preview.json" \
-  --out="$LOG/manifest.json" > "$LOG/manifest.log" 2>&1 || {
-  echo "MANIFESTE REFUSÉ"; cat "$LOG/manifest.log"; exit 5; }
+  --out="$LOG/preview.json" --manifest-out="$LOG/manifest.json" > "$LOG/preview.log" 2>&1 || {
+  echo "MANIFESTE REFUSÉ"; cat "$LOG/preview.log"; exit 5; }
 PLAN_HASH=$(python3 -c "import json;print(json.load(open('$LOG/manifest.json'))['planHash'])")
 ENTRIES=$(python3 -c "import json;print(len(json.load(open('$LOG/manifest.json'))['entries']))")
 echo "$(date -u +%H:%M:%S) manifeste figé : $ENTRIES ligne(s), empreinte ${PLAN_HASH}"
@@ -66,6 +64,10 @@ fi
 STARTED=$(date -u +%Y-%m-%dT%H:%M:%SZ)
 python3 "$OPS/db.py" readonly npx tsx "$OPS/ingest-facts.mts" --keys="$KEYS" --phase=before \
   --out="$LOG/before.json" > "$LOG/before.log" 2>&1
+
+# Archive durable du plan : la commande ne transporte que son empreinte.
+python3 "$OPS/db.py" production npx tsx "$OPS/refresh-manifest.mts" \
+  --file="$LOG/manifest.json" --revision="$COMMIT" > "$LOG/manifest-store.json"
 
 # ── commande bornée : le refresh consomme le manifeste ───────────────────────────────────────────────────
 BOUNDED=$(python3 "$OPS/bounded-refresh-command.py" "$RUN_NAME" "$KEYS" "$LOG/manifest.json")

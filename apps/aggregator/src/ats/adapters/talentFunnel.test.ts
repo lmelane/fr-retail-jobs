@@ -32,8 +32,9 @@ const LISTED = {
   validTo: '9999-12-31',
 };
 
-/** GET /js/vacancy/{id} : le texte complet vit dans positionProfile. */
+/** Same-identity detail fixture: native content fragments model a title/location update. */
 const DETAIL = {
+  id: LISTED.id, tenant: TENANT, status: 'ACTIVE',
   validFrom: '2026-09-04',
   positionProfile: {
     title: 'Part Time Sales Associate - North Star',
@@ -76,6 +77,7 @@ describe('parseTalentFunnelVacancy', () => {
 
   it('prend la description, le contrat et le salaire horaire dans le détail', () => {
     const job = parseTalentFunnelVacancy(LISTED, ORIGIN, DETAIL)!;
+    expect(job.title).toBe(DETAIL.positionProfile.title);
     expect(job.description).toContain("it's a global icon");
     expect(job.description).toContain('WHERE YOU CONTRIBUTE');
     expect(job.description).not.toContain('<p>');
@@ -119,4 +121,11 @@ describe('fetchTalentFunnelJobs', () => {
   it('refuse de tourner sans tenant', async () => {
     await expect(fetchTalentFunnelJobs({ origin: ORIGIN })).rejects.toThrow(/tenant/);
   });
+});
+
+it('refuses a detail without the same native ID and tenant, and holds non-active states', () => {
+  for (const detail of [{ ...DETAIL, id: 'another-job' }, { ...DETAIL, tenant: 'another-tenant' }, { ...DETAIL, id: undefined }]) {
+    expect(() => parseTalentFunnelVacancy(LISTED, ORIGIN, detail)).toThrow('DETAIL_IDENTITY_MISMATCH');
+  }
+  expect(parseTalentFunnelVacancy(LISTED, ORIGIN, { ...DETAIL, status: 'ARCHIVED' })?.publicationHold).toBeTruthy();
 });

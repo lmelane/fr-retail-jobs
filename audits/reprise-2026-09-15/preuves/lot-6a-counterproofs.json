@@ -1,0 +1,110 @@
+{
+  "mutations": [
+    {
+      "name": "drop-perimeter-scope",
+      "file": "apps/api/lib/job-search-query.ts",
+      "witness": "lib/__tests__/perimetre-marche.test.ts",
+      "pattern": "CONTRE-\u00c9PREUVE DU D\u00c9FAUT HISTORIQUE",
+      "rejectedByRegression": true,
+      "restoredSha256": "7a041358007406d88ce199651d9bd12d5bd81f02c7d7b7dd4e62a3d4d4f22f75"
+    },
+    {
+      "name": "default-perimeter-on-missing",
+      "file": "apps/api/lib/perimetre.ts",
+      "witness": "lib/__tests__/perimetre-marche.test.ts",
+      "pattern": "sans march\u00e9, ou avec un code inconnu",
+      "rejectedByRegression": true,
+      "restoredSha256": "d0204f7407c87f13019c1818671fa35a3fa58a832cea56e83745010a10fa56dc"
+    },
+    {
+      "name": "default-perimeter-on-unknown",
+      "file": "apps/api/lib/perimetre.ts",
+      "witness": "lib/__tests__/search-plan.test.ts",
+      "pattern": "un march\u00e9 absent, vide ou mal form\u00e9 est refus\u00e9",
+      "rejectedByRegression": true,
+      "restoredSha256": "d0204f7407c87f13019c1818671fa35a3fa58a832cea56e83745010a10fa56dc"
+    },
+    {
+      "name": "exclude-unknowns",
+      "file": "apps/api/lib/job-search-query.ts",
+      "witness": "lib/__tests__/perimetre-marche.test.ts",
+      "pattern": "D-435",
+      "rejectedByRegression": true,
+      "restoredSha256": "7a041358007406d88ce199651d9bd12d5bd81f02c7d7b7dd4e62a3d4d4f22f75"
+    },
+    {
+      "name": "facet-counts-own-selection",
+      "file": "apps/api/lib/job-search-query.ts",
+      "witness": "lib/__tests__/perimetre-marche.test.ts",
+      "pattern": "chaque facette exclut sa propre s\u00e9lection",
+      "rejectedByRegression": true,
+      "restoredSha256": "7a041358007406d88ce199651d9bd12d5bd81f02c7d7b7dd4e62a3d4d4f22f75"
+    },
+    {
+      "name": "accept-country-outside-perimeter",
+      "file": "apps/api/lib/search-plan.ts",
+      "witness": "lib/__tests__/perimetre-marche.test.ts",
+      "pattern": "France tap\u00e9e dans le contexte am\u00e9ricain",
+      "rejectedByRegression": true,
+      "restoredSha256": "759942589e426b3d30b6ad2a0630ba4bfb878d659a4cb51105fed31e7cd41ce7"
+    },
+    {
+      "name": "honour-unserved-facet",
+      "file": "apps/api/lib/search-plan.ts",
+      "witness": "lib/__tests__/perimetre-marche.test.ts",
+      "pattern": "un filtre que le march\u00e9 ne sert pas est refus\u00e9",
+      "rejectedByRegression": true,
+      "restoredSha256": "759942589e426b3d30b6ad2a0630ba4bfb878d659a4cb51105fed31e7cd41ce7"
+    },
+    {
+      "name": "unbounded-title-suggestions",
+      "file": "apps/api/lib/suggestions.ts",
+      "witness": "lib/__tests__/perimetre-marche.test.ts",
+      "pattern": "la recherche texte et les suggestions vivent dans le p\u00e9rim\u00e8tre",
+      "rejectedByRegression": true,
+      "restoredSha256": "8122bba55201b31fb2d6c46a247bab04bce3e303e1a777ddc4f583ef13bce0bd"
+    },
+    {
+      "name": "unbounded-city-suggestions",
+      "file": "apps/api/lib/suggestions.ts",
+      "witness": "lib/__tests__/suggest-villes-marche.test.ts",
+      "pattern": "march\u00e9 FR \u2014 une ville purement am\u00e9ricaine est absente",
+      "rejectedByRegression": true,
+      "restoredSha256": "8122bba55201b31fb2d6c46a247bab04bce3e303e1a777ddc4f583ef13bce0bd"
+    },
+    {
+      "name": "registry-drops-austria",
+      "file": "packages/db/marches.ts",
+      "witness": "lib/__tests__/contrat-marches.test.ts",
+      "pattern": "exactement DE",
+      "rejectedByRegression": true,
+      "restoredSha256": "8efc07464c7dc29adf9ff92c3cad764fa27e0d5cf8cb4b2b0c3ae3f0fdc51fca"
+    },
+    {
+      "name": "postal-code-as-city",
+      "file": "apps/api/lib/lieu.ts",
+      "witness": "lib/__tests__/perimetre-marche.test.ts",
+      "pattern": "un code postal reste une cha\u00eene",
+      "rejectedByRegression": true,
+      "restoredSha256": "50407d51ed7976488b4005d16b29baa1e4bd8635ea4eea39e91af0b7996d104a"
+    },
+    {
+      "name": "unordered-confirmation",
+      "file": "apps/api/lib/job-search-query.ts",
+      "witness": "lib/__tests__/perimetre-marche.test.ts",
+      "pattern": "D-435",
+      "rejectedByRegression": true,
+      "restoredSha256": "7a041358007406d88ce199651d9bd12d5bd81f02c7d7b7dd4e62a3d4d4f22f75"
+    }
+  ],
+  "restoredTests": 70,
+  "restoredSuites": [
+    "lib/__tests__/perimetre-marche.test.ts",
+    "lib/__tests__/search-plan.test.ts",
+    "lib/__tests__/suggest-villes-marche.test.ts",
+    "lib/__tests__/contrat-marches.test.ts",
+    "lib/jobs-database.test.ts",
+    "lib/expiry-database.test.ts"
+  ],
+  "productionTouched": false
+}

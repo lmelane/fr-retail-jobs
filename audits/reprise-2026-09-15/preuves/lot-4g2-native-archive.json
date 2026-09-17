@@ -1,0 +1,9 @@
+{
+  "environment": "Isolated Railway validation bucket and local scratch capture database",
+  "productionWrites": false,
+  "batches": 3,
+  "nativeResponses": 12,
+  "archivedBodies": 12,
+  "bytes": 57363,
+  "allArchivedHashesVerified": true
+}

@@ -1,0 +1,21 @@
+{
+  "environment": "Dedicated full-stock local clone",
+  "productionWrites": false,
+  "plans": 559,
+  "groups": 12709,
+  "presentations": 12934,
+  "repeated": 559,
+  "lifecycle": {
+    "KEEP": 12709
+  },
+  "newGroups": 26,
+  "movedPublications": 26,
+  "initiallyAlreadyApplied": 0,
+  "elapsedMs": 381850,
+  "nativeEvidenceAndAttestationsUnchanged": true,
+  "observationsUnchanged": true,
+  "outsideJobsAndPublicationsUnchanged": true,
+  "oldJobIdentitiesAndRedirectsUnchanged": true,
+  "eventsCreated": 0,
+  "membershipDecisionsCreated": 26
+}

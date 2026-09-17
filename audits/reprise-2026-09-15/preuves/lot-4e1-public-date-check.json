@@ -1,0 +1,40 @@
+[
+  {
+    "name": "harri",
+    "url": "https://harri.com/Saltrock-Careers-Exeter/job/2812433",
+    "finalUrl": "https://harri.com/Saltrock-Careers-Exeter/job/2812433",
+    "status": 200,
+    "sha256": "96f9d92a396f846877e9703244649861720d2e2b9f857c26dee5608ee121c94a",
+    "bytes": 66748,
+    "dates": {
+      "datePosted": [
+        "Tue, 08 Sep 2026 20:16:26 GMT"
+      ],
+      "validThrough": [
+        "Thu, 08 Oct 2026 23:59:59 GMT"
+      ],
+      "publish_date": [],
+      "end_date": [],
+      "start_date": []
+    }
+  },
+  {
+    "name": "volcanic",
+    "url": "https://www.careers.fenwick.co.uk/job/team-leader-womenswear-6017991",
+    "finalUrl": "https://www.careers.fenwick.co.uk/job/team-leader-womenswear-6017991",
+    "status": 200,
+    "sha256": "f213fb2e9040647fbd1dcc8b3ae2cf6c8994a2ce2502a98c02825f6e1a691f7d",
+    "bytes": 708177,
+    "dates": {
+      "datePosted": [
+        "2026-09-04T14:07:48.268Z"
+      ],
+      "validThrough": [
+        "2026-10-31T22:59:00.000Z"
+      ],
+      "publish_date": [],
+      "end_date": [],
+      "start_date": []
+    }
+  }
+]

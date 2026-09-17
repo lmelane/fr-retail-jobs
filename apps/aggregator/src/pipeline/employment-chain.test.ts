@@ -1,8 +1,8 @@
+import { upsertDeduplicated } from "../test/publicationPersistenceFixture.js";
 import "../test/setup-integration.js";
 import { it, expect, beforeEach, afterAll } from "vitest";
 import { PrismaClient } from "@prisma/client";
 import { toCandidate } from "./ingest.js";
-import { upsertDeduplicated } from "../dedup/upsert.js";
 import { resolveCanonicalDimensions } from "../trust/resolve.js";
 import { previewSectors, applySectors } from "../sectors/review.js";
 const p = new PrismaClient();
@@ -23,10 +23,11 @@ it("captures adapter inputs, preserves reviewed sectors and clears a proven conf
     company: "Employment Fixture",
     tier: "ATS_OFFICIAL" as const,
   };
-  const raw = { name: "Analyst", contractFilter: "Permanent Job" };
+  const raw = { name: "Analyst", maison: "Employment Fixture", contractFilter: "Permanent Job" };
   const original = toCandidate(
     {
       externalId: "real-path-shape",
+      company: raw.maison,
       title: raw.name,
       url: "https://example.com/job",
       raw,
@@ -79,6 +80,7 @@ it("captures adapter inputs, preserves reviewed sectors and clears a proven conf
   const next = toCandidate(
     {
       externalId: "real-path-shape",
+      company: raw.maison,
       title,
       url: "https://example.com/job",
       raw: { ...raw, name: title },

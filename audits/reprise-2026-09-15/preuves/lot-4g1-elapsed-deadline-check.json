@@ -1,0 +1,24 @@
+{
+  "readOnly": true,
+  "productionWrites": false,
+  "reviewedAt": "2026-09-15T21:40:53.227Z",
+  "planIndex": 666,
+  "previousPlanHash": "b25b157b289ca708c9ec0f499dfef735b51dc0d52b4b0b40c99d176e4caf9a26",
+  "currentPlanHash": "c3667176b7954bad1fce17db1a014de09c904a79f5291512648d99feea0fc8ce",
+  "onlyDifferenceIsNativeDeadlinePassage": true,
+  "changes": [
+    {
+      "jobId": "cmtt7uwoi00oamy010mcnt57i",
+      "previous": "KEEP",
+      "current": "CLOSE",
+      "deadlines": [
+        {
+          "sourceId": "cmtt7uwoi00obmy01blg6904f",
+          "sourceKey": "luhta",
+          "expiresAt": "2026-09-15T20:59:59.000Z",
+          "nativeValue": "2026-09-15T23:59:59+03:00"
+        }
+      ]
+    }
+  ]
+}

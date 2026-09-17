@@ -1,3 +1,5 @@
+> **Archive de preuve datée.** Les chemins de cycle de vie cités ici ont été remplacés au lot 1 du 15 septembre 2026. Ce document conserve les constats de son audit ; utiliser la [documentation d’exploitation maintenue](../../../../apps/aggregator/scripts/ops/README.md) pour les commandes actuelles.
+
 # P7 — bilan final des deux cycles bornés
 
 > Exécuté le 2026-09-12. Chaque chiffre est une mesure, jamais une estimation. Crons gelés d'un bout à l'autre.

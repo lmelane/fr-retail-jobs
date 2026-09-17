@@ -1,3 +1,4 @@
+import { captureObservedAt } from '../../capture/context.js';
 import { createHash } from 'node:crypto';
 import * as cheerio from 'cheerio';
 import pLimit from 'p-limit';
@@ -77,7 +78,7 @@ export async function fetchHarriJobs(config: Record<string, unknown>): Promise<A
       if (listings.has(row.id)) issues.push(`REPEATED_POSTING_ID:${row.id}`);
       else listings.set(row.id, row);
     }
-    pageEvidence.push({ url: SEARCH, checkedAt: new Date().toISOString(), sha256: createHash('sha256').update(JSON.stringify(data)).digest('hex'), offset: start,
+    pageEvidence.push({ url: SEARCH, checkedAt: captureObservedAt().toISOString(), sha256: createHash('sha256').update(JSON.stringify(data)).digest('hex'), offset: start,
       pagination: { start: start + 1, end: start + rows.length, total: expected }, ids,
       publisherCounter: String(expected), componentCounters: [JSON.stringify(body)] });
     if (issues.length || rejectedRows.length) break;
@@ -90,7 +91,7 @@ export async function fetchHarriJobs(config: Record<string, unknown>): Promise<A
   const jobs = await Promise.all([...listings.values()].map(listing => limit(async (): Promise<NormalizedJob> => {
     const detailUrl = `${API}/core-reader/api/v1/profile/job/${listing.id}`;
     let detail: Detail | undefined, detailReadError: string | undefined;
-    const observedAt = new Date();
+    const observedAt = captureObservedAt();
     try {
       const result = await fetchJson<{ data?: { job?: Detail } }>(detailUrl);
       if (result.data?.job?.id !== listing.id) throw new Error('HARRI_DETAIL_ID_MISMATCH');
@@ -100,28 +101,38 @@ export async function fetchHarriJobs(config: Record<string, unknown>): Promise<A
       const fields: Array<keyof Detail> = ['id','alias_position','title','description','publish_date','end_date','status','deleted','access_mode','post_type','experience_from','language','Position','Timing','JobLocation'];
       detail = Object.fromEntries(fields.filter(k => native[k] !== undefined).map(k => [k, native[k]])) as Detail;
     } catch (error) { assertSourceRunning(); detailReadError = String(error).slice(0,500); issues.push(`DETAIL_READ_FAILED:${listing.id}`); }
-    const primary = detail?.JobLocation?.[0]?.Location, location = listing.locations?.[0];
-    const employer = mode === 'PORTAL_OWNER' ? profile.name : listing.brand!.name!;
-    const unlisted = detail && (detail.access_mode === 'PRIVATE' || detail.post_type === 'PRIVATE' || detail.deleted === true || detail.status === 'UNPUBLISHED');
-    const closed = detail && ['CLOSED','EXPIRED'].includes(detail.status ?? '');
-    const unresolvedState = detail && !unlisted && !closed && detail.status !== 'PUBLISHED';
-    if (unresolvedState) issues.push(`UNRECOGNISED_PUBLICATION_STATE:${listing.id}`);
-    const publicationHold = unlisted ? 'SOURCE_UNLISTED' : closed ? 'APPLICATION_EXPLICITLY_CLOSED' : unresolvedState ? 'UNRECOGNISED_PUBLICATION_STATE' : undefined;
-    return { externalId: String(listing.id), title: detail?.alias_position || detail?.title || listing.aliasPosition || listing.position!.name!,
-      company: employer, employerEvidence: { rawName: employer, path: mode === 'PORTAL_OWNER' ? 'portal.name' : 'listing.brand.name', rule: mode === 'PORTAL_OWNER' ? 'REVIEWED_PORTAL_OWNER_SCOPE' : 'NATIVE_POSTING_BRAND' },
-      location: primary?.formatted_address ?? location?.formatted_address, city: primary?.city?.name ?? location?.city,
-      region: primary?.state?.name ?? location?.state, country: primary?.country?.name ?? location?.country,
-      postalCode: primary?.postal_code, latitude: primary?.latitude ?? location?.latitude, longitude: primary?.longitude ?? location?.longitude,
-      workingTime: detail?.Timing?.map(t => t.name ?? t.code).filter(Boolean).join(' / ') || undefined,
-      department: detail?.Position?.position_type?.name, experienceYears: detail?.experience_from,
-      description: detail?.description ? htmlToPlainText(detail.description) : undefined, language: detail?.language || undefined,
-      postedAt: date(detail?.publish_date) ?? date(listing.publishTime), validThrough: date(detail?.end_date),
-      url: `https://harri.com/${encodeURIComponent(listing.brand!.slug!)}/job/${listing.id}`,
-      ...(publicationHold ? { publicationHold, ...(!unresolvedState ? { publicationWithdrawnAt: observedAt } : {}) } : {}),
-      raw: { listing, detail, detailReadError, detailUrl, portal: { id: profile.id, name: profile.name, slug: profile.slug, url: profile.url }, portalEvidence },
-    };
+    const job = parseHarriPublication(listing, detail, profile, String(mode), observedAt);
+    if (job.publicationHold === 'UNRECOGNISED_PUBLICATION_STATE') issues.push(`UNRECOGNISED_PUBLICATION_STATE:${listing.id}`);
+    return {...job,raw:{...(job.raw as object),detailReadError,portalEvidence}};
   })));
   return { jobs, declaredTotal: total, complete: terminated && issues.length === 0 && rejectedRows.length === 0, rejectedRows,
     enumeration: { method: 'NATIVE_OFFSET_AND_UNIQUE_IDS', endpoint: SEARCH, pages: pageEvidence.length, rawCount,
       termination: terminated ? 'DECLARED_TOTAL_REACHED' : 'INCOMPLETE', issues, pageEvidence } };
+}
+
+/** Pure native listing/detail reader. The caller establishes the portal scope. */
+export function parseHarriPublication(listing: Listing, detail: Detail | undefined, profile: Profile, mode: string, observedAt: Date): NormalizedJob {
+  if (!listing || !Number.isSafeInteger(listing.id) || listing.id<=0 || !listing.brand?.slug || !listing.brand.name || !(listing.aliasPosition || listing.position?.name)) throw Error('HARRI_INVALID_LISTING');
+  if (!profile || !Number.isSafeInteger(profile.id) || profile.id<=0 || !profile.name || !profile.slug || !['POSTING_BRAND','PORTAL_OWNER'].includes(mode)) throw Error('HARRI_INVALID_PORTAL_SCOPE');
+  if (detail && detail.id!==listing.id) throw Error('HARRI_DETAIL_ID_MISMATCH');
+  const detailUrl=`${API}/core-reader/api/v1/profile/job/${listing.id}`;
+  const primary = detail?.JobLocation?.[0]?.Location, location = listing.locations?.[0];
+  const employer = mode === 'PORTAL_OWNER' ? profile.name : listing.brand!.name!;
+  const unlisted = detail && (detail.access_mode === 'PRIVATE' || detail.post_type === 'PRIVATE' || detail.deleted === true || detail.status === 'UNPUBLISHED');
+  const closed = detail && ['CLOSED','EXPIRED'].includes(detail.status ?? '');
+  const unresolvedState = detail && !unlisted && !closed && detail.status !== 'PUBLISHED';
+  const publicationHold = unlisted ? 'SOURCE_UNLISTED' : closed ? 'APPLICATION_EXPLICITLY_CLOSED' : unresolvedState ? 'UNRECOGNISED_PUBLICATION_STATE' : undefined;
+  return { externalId: String(listing.id), title: detail?.alias_position || detail?.title || listing.aliasPosition || listing.position!.name!,
+    company: employer, employerEvidence: { rawName: employer, path: mode === 'PORTAL_OWNER' ? 'portal.name' : 'listing.brand.name', rule: mode === 'PORTAL_OWNER' ? 'REVIEWED_PORTAL_OWNER_SCOPE' : 'NATIVE_POSTING_BRAND' },
+    location: primary?.formatted_address ?? location?.formatted_address, city: primary?.city?.name ?? location?.city,
+    region: primary?.state?.name ?? location?.state, country: primary?.country?.name ?? location?.country,
+    postalCode: primary?.postal_code, latitude: primary?.latitude ?? location?.latitude, longitude: primary?.longitude ?? location?.longitude,
+    workingTime: detail?.Timing?.map(t => t.name ?? t.code).filter(Boolean).join(' / ') || undefined,
+    department: detail?.Position?.position_type?.name, experienceYears: detail?.experience_from,
+    description: detail?.description ? htmlToPlainText(detail.description) : undefined, language: detail?.language || undefined,
+    postedAt: date(detail?.publish_date) ?? date(listing.publishTime), validThrough: date(detail?.end_date),
+    url: `https://harri.com/${encodeURIComponent(listing.brand!.slug!)}/job/${listing.id}`,
+    ...(publicationHold ? { publicationHold, ...(!unresolvedState ? { publicationWithdrawnAt: observedAt } : {}) } : {}),
+    raw: { listing, detail, detailUrl, portal: { id: profile.id, name: profile.name, slug: profile.slug, url: profile.url } },
+  };
 }

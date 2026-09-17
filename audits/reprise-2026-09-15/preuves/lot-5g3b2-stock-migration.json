@@ -1,0 +1,66 @@
+{
+  "migrationsBefore": 66,
+  "migrationsAfter": 67,
+  "before": {
+    "JobCount": 87607,
+    "JobHash": "6afc4dc4fba09f3488c16e02f11261919c601c94614037e850d74f0ad18f1c33",
+    "JobSourceCount": 90764,
+    "JobSourceHash": "936e607af64c6f3eeb9ba508a09c5cc06a715b49c7e3bb4caee0308dfe062c28",
+    "SourceObservationCount": 141933,
+    "SourceObservationHash": "6f2ffac6d5f396f058f8b177d70da72ff5e128b6f342d7f27e3caf8c6d24f9f2",
+    "SourceCount": 536,
+    "SourceHash": "ea558483700de40710e4d39e8cd308e8bed581fb758e474926d808efd9f50c63",
+    "SourceRevisionCount": 536,
+    "SourceRevisionHash": "df36f450d0f2706dd882302c1f827fb8027f349ee1698cd057ffd89472850882",
+    "SourceIdentityReviewCount": 112,
+    "SourceIdentityReviewHash": "c538f399bc3edef3d8ac6a598ac12e4f3d768a41dfe6dff9f078ce06eded671b",
+    "migrations": 66,
+    "captures": 0
+  },
+  "after": {
+    "JobCount": 87607,
+    "JobHash": "6afc4dc4fba09f3488c16e02f11261919c601c94614037e850d74f0ad18f1c33",
+    "JobSourceCount": 90764,
+    "JobSourceHash": "936e607af64c6f3eeb9ba508a09c5cc06a715b49c7e3bb4caee0308dfe062c28",
+    "SourceObservationCount": 141933,
+    "SourceObservationHash": "6f2ffac6d5f396f058f8b177d70da72ff5e128b6f342d7f27e3caf8c6d24f9f2",
+    "SourceCount": 536,
+    "SourceHash": "ea558483700de40710e4d39e8cd308e8bed581fb758e474926d808efd9f50c63",
+    "SourceRevisionCount": 536,
+    "SourceRevisionHash": "df36f450d0f2706dd882302c1f827fb8027f349ee1698cd057ffd89472850882",
+    "SourceIdentityReviewCount": 112,
+    "SourceIdentityReviewHash": "c538f399bc3edef3d8ac6a598ac12e4f3d768a41dfe6dff9f078ce06eded671b",
+    "migrations": 67,
+    "captures": 0
+  },
+  "accessNotesBefore": {
+    "count": 536,
+    "hash": "8e30389180ad75467597f7a1a584d332bf65722728e15e3449637156d78f54bc"
+  },
+  "accessArchiveAfter": {
+    "count": 536,
+    "hash": "8e30389180ad75467597f7a1a584d332bf65722728e15e3449637156d78f54bc"
+  },
+  "historicalAccessNotesPreservedExactly": true,
+  "newSchema": {
+    "accessDecisions": 0,
+    "archivedNotes": 536,
+    "droppedColumns": true,
+    "enabledGuards": 4
+  },
+  "allRetainedOldRowsAndColumnsUnchanged": true,
+  "sourcesActivated": 0,
+  "accessDecisionsFabricated": 0,
+  "backup": "reprise-20260916-lot5d/after-source-validation-schema60.dump",
+  "restoreRequiresMigrations": [
+    61,
+    62,
+    63,
+    64,
+    65,
+    66,
+    67
+  ],
+  "fullRestoreRepeated": false,
+  "productionTouched": false
+}

@@ -1,0 +1,43 @@
+{
+  "date": "2026-09-15",
+  "environment": "Dedicated local PostgreSQL 18; private RAW snapshot and bounded public Fenwick capture; no production writes",
+  "migrations": 55,
+  "tests": {
+    "aggregatorUnit": 2287,
+    "aggregatorIntegration": 463,
+    "api": 254,
+    "apiOptionalSkipped": 2,
+    "python": 5,
+    "totalPassed": 3009
+  },
+  "typecheck": "PASS",
+  "apiBuild": "PASS",
+  "schemaDrift": false,
+  "counterproofs": 9,
+  "corpusRepresentations": 85327,
+  "recoverable": 50128,
+  "projectable": 50128,
+  "realPublicationsRebuilt": 93,
+  "families": 31,
+  "publicReads": 93,
+  "rebuildMismatches": 0,
+  "shadowNewCaptures": 0,
+  "nativeValidationBatches": 1,
+  "nativeValidationJobs": 34,
+  "reapplication": "IDEMPOTENT",
+  "logs": {
+    "lot4e1-full-validation.log": "43dceb8e8cee14e0fb5f2c370073b78a73128a13c35511e8f55fe7a97b2f0afc",
+    "lot4e1-api-build.log": "910882035a665da41e2b7192a25127b974dc1784992413eb5ad24a5c80f107eb",
+    "lot4e1-typecheck-output.log": "38f11d2f5f6bbb339d8011e1d5805718aba8e3e79c98335c261f05885cef1416",
+    "lot4e1-test-output.log": "421f1566e2920a210716ba76b27cb244c84561702371a6dcd9be78668c150b3d",
+    "lot4e1-shadow.log": "4a61ab721000accee45d4413cf72c63304ff3ec72583f500f2e37eefea792cd3",
+    "lot4e1-corpus.log": "07b08164da3d348f5e721b0bb13b7544434b5a63e980f7f3e6b9774292753a7f",
+    "lot4e1-cli-smoke.log": "e4f6ac0211abbed2db5e77735ec20a544322ba1838bab69cbd99e05acb8c3729",
+    "lot4e1-schema-drift.log": "198913094e3f41610eb893459ab65a3c79991b65d4ef5fcb8c325ebe52ebf1ed",
+    "lot4e1-counterproof-restored.log": "eabde0b5c19299516b0fcf52660c61a957876ce4d16d2adce37e06b62e26f41e",
+    "lot4e1-live.log": "117c2cb69a72468e15e1a534c862ef25ed5ae93c590c4fde57ffc2d7f86d57ab",
+    "lot4e1-html-benchmark.log": "743c04af8623f6b7663963b9673d0fc3f2fbb20e95a06c617ed31db73723465b",
+    "lot4e1-deadline-inventory.log": "a90401f969d802679b870057a6142e9651fb463afbbeb9cb208c3d394f15f2f5",
+    "lot4e1-test-output-template-failure.log": "38019decafd3c9cac085bdb76e1543bccb4eb47512c3829b97827688b13a6fe1"
+  }
+}

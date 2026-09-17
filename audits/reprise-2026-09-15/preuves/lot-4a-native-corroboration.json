@@ -1,0 +1,47 @@
+{
+  "representations": 922,
+  "withMatchingRawTokenOrUrl": 920,
+  "paths": [
+    {
+      "kind": "jobaffinity-wordpress",
+      "path": "/board/row/attrs/data-applyurl",
+      "count": 76
+    },
+    {
+      "kind": "jobaffinity-wordpress",
+      "path": "/applicationEvidence/url",
+      "count": 76
+    },
+    {
+      "kind": "lvmh_algolia",
+      "path": "/link",
+      "count": 423
+    },
+    {
+      "kind": "lvmh_algolia",
+      "path": "/atsId",
+      "count": 423
+    },
+    {
+      "kind": "lvmh_algolia",
+      "path": "/objectID",
+      "count": 423
+    },
+    {
+      "kind": "lvmh_algolia",
+      "path": "/_highlightResult/atsId/value",
+      "count": 423
+    },
+    {
+      "kind": "oraclehcm",
+      "path": "/list/Id",
+      "count": 421
+    },
+    {
+      "kind": "oraclehcm",
+      "path": "/detail/Id",
+      "count": 421
+    }
+  ],
+  "scope": "Offline corroboration of URL identities in existing RAW; no new network attestation, no recursive runtime identity inference"
+}

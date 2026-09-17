@@ -9,6 +9,7 @@ vi.mock('../../lib/http.js', () => ({
 
 import { fetchJson } from '../../lib/http.js';
 import { fetchTalentViewJobs } from './talentview.js';
+import { readSourceFacts } from '../../facts/index.js';
 
 const mockJson = vi.mocked(fetchJson);
 
@@ -19,36 +20,35 @@ beforeEach(() => mockJson.mockReset());
  * provided Int" that failed every TalentView write (Jules, Promod, Baccarat).
  * TalentView sends numeric IDs where the columns are strings.
  */
-describe('TalentView numeric-id fields map to strings', () => {
-  it('maps currency id 1 → EUR and remote id 1 → a label, never leaking a number', async () => {
+describe('TalentView native evidence reaches the qualified readers', () => {
+  it('preserves currency 1 and remote 1, which the publisher defines as EUR and occasional remote', async () => {
     // The adapter calls fetchJson three times: websites, campaigns, then detail.
     mockJson
       .mockResolvedValueOnce([{ id: 3038 }] as never) // websites
       .mockResolvedValueOnce([{ id: 42, name: 'Vendeur', slug: 'vendeur', address: { city: 'Paris' } }] as never) // campaigns
-      .mockResolvedValueOnce({ salary_min: 26500, salary_max: 28000, salary_currency: 1, remote_level: 1 } as never); // detail
+      .mockResolvedValueOnce({ id: 42, slug: 'vendeur', is_draft: false, is_online: true, salary_min: 26500, salary_max: 28000, salary_currency: 1, remote_level: 1 } as never); // detail
 
     const { jobs } = await fetchTalentViewJobs({ slug: 'baccarat' });
 
     expect(jobs).toHaveLength(1);
     const job = jobs[0];
-    // The crash was a number in a String column — assert the types are strings.
-    expect(job.salaryCurrency).toBe('EUR');
-    expect(typeof job.remote).toBe('string');
-    expect(job.remote).not.toMatch(/^\d+$/); // never the raw id "1"
-    // The real salary numbers survive.
-    expect(job.salaryMin).toBe(26500);
-    expect(job.salaryMax).toBe(28000);
+    const facts = readSourceFacts('talentview', job.raw);
+    expect(facts.salary.value?.bands[0]).toMatchObject({ min: '26500', max: '28000', currency: 'EUR', period: null });
+    expect(facts.workplace.value?.modes).toEqual(['OCCASIONAL_REMOTE']);
+
   });
 
   it('drops an unknown numeric currency id rather than storing a bare number', async () => {
     mockJson
       .mockResolvedValueOnce([{ id: 1 }] as never)
       .mockResolvedValueOnce([{ id: 7, name: 'Stage', slug: 'stage' }] as never)
-      .mockResolvedValueOnce({ salary_currency: 999, remote_level: 999 } as never);
+      .mockResolvedValueOnce({ id: 7, slug: 'stage', is_draft: false, is_online: true, salary_min: 100, salary_currency: 999, remote_level: 999 } as never);
 
     const { jobs: [job] } = await fetchTalentViewJobs({ slug: 'x' });
-    expect(job.salaryCurrency).toBeUndefined();
-    expect(job.remote).toBeUndefined();
+    const facts = readSourceFacts('talentview', job.raw);
+    expect(facts.salary.value?.bands[0].currency).toBeNull();
+    expect(facts.salary.issues).toContain('UNINTERPRETED_CURRENCY');
+    expect(facts.workplace.status).toBe('UNINTERPRETED');
   });
 });
 
@@ -102,8 +102,30 @@ describe('TalentView public pagination, real Sud Express payloads', () => {
 it('preserves an entity label without turning a business unit into a company', async () => {
   mockJson.mockResolvedValueOnce([{ id: 3038 }])
     .mockResolvedValueOnce([{ id: 42, name: 'Vendeur', slug: 'vendeur', entity: { id: 598, name: 'Promod - magasin' } }])
-    .mockResolvedValueOnce({});
+    .mockResolvedValueOnce({ id: 42, slug: 'vendeur', is_draft: false, is_online: true });
   const { jobs: [job] } = await fetchTalentViewJobs({ slug: 'promodjob' });
   expect(job.company).toBeUndefined();
   expect(job.employerEvidence).toEqual({ rawName: 'Promod - magasin', path: 'entity.name', rule: 'ENTITY_LABEL_REQUIRES_IDENTITY_RESOLUTION' });
+});
+
+describe('TalentView detail identity and visibility', () => {
+  const list = { id: 42, name: 'Advisor', slug: 'advisor' };
+  const detail = { id: 42, slug: 'advisor', is_draft: false, is_online: true, description: '<p>Own duties</p>', profile: '<p>Own requirements</p>' };
+  it('reads both native sections through the live collector', async () => {
+    mockJson.mockResolvedValueOnce([{ id: 1 }]).mockResolvedValueOnce([list]).mockResolvedValueOnce(detail);
+    const { jobs: [job] } = await fetchTalentViewJobs({ slug: 'brand' });
+    expect(job.description).toBe('Own duties\n\nOwn requirements');
+    expect(job.raw).toEqual({ ...list, detail });
+    expect(job.publicationHold).toBeUndefined();
+  });
+  it.each([{ ...detail, id: 43 }, { ...detail, slug: 'other' }, { ...detail, id: undefined }])('refuses an unrelated detail instead of accepting it as listing content', async input => {
+    mockJson.mockResolvedValueOnce([{ id: 1 }]).mockResolvedValueOnce([list]).mockResolvedValueOnce(input);
+    await expect(fetchTalentViewJobs({ slug: 'brand' })).rejects.toThrow('DETAIL_IDENTITY_MISMATCH');
+  });
+  it.each([{ ...detail, is_draft: true }, { ...detail, is_online: false }, { ...detail, is_online: undefined }])('holds draft, offline or unknown states', async input => {
+    mockJson.mockResolvedValueOnce([{ id: 1 }]).mockResolvedValueOnce([list]).mockResolvedValueOnce(input);
+    const { jobs: [job] } = await fetchTalentViewJobs({ slug: 'brand' });
+    expect(job.publicationHold).toBeTruthy();
+    expect(job.raw).toEqual({ ...list, detail: input });
+  });
 });

@@ -1,5 +1,6 @@
 /** One catalogue-to-adapter registry shared by ingestion and qualification. */
-export const KIND_TO_ATS: Record<string, string> = {
+import type { AtsType } from '@prisma/client';
+export const KIND_TO_ATS: Record<string, AtsType> = {
   harri: "HARRI",
   talentrecruiter: "TALENT_RECRUITER",
   easycruit: "EASYCRUIT",

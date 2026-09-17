@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 vi.mock('../../lib/http.js', () => ({ fetchJson: vi.fn() }));
 import { fetchJson } from '../../lib/http.js';
-import { fetchGreenhouseJobs, greenhouseCountry } from './greenhouse.js';
+import { fetchGreenhouseJobs, greenhouseCountry, parseGreenhouseJob } from './greenhouse.js';
 
 const network = vi.mocked(fetchJson);
 // Real response of boards-api.greenhouse.io/v1/boards/onrunning/jobs?content=true, 2026-09-10 (4 postings, content shortened).
@@ -26,5 +26,15 @@ describe('Greenhouse country', () => {
     expect(jobs).toHaveLength(4);
     expect(jobs.map((j) => [j.location, j.country])).toEqual([['London', 'GB'], ['Melbourne', undefined], ['Paris', undefined], ['Amsterdam', undefined]]);
     expect(jobs[0]!.externalId).toBe(String(sample.jobs[0].id));
+  });
+});
+
+describe('Greenhouse publication time', () => {
+  const raw = { id: 1, title: 'Advisor', absolute_url: 'https://jobs.example/1', updated_at: '2026-09-15T14:00:00Z' };
+  it('uses first publication even when an edit is more recent', () => {
+    expect(parseGreenhouseJob({ ...raw, first_published: '2024-01-01T12:00:00Z' }).postedAt?.toISOString()).toBe('2024-01-01T12:00:00.000Z');
+  });
+  it.each([undefined, '', '2026-02-30T12:00:00Z', '2026-09-15T12:00:00'])('does not fall back to updated_at: %s', first_published => {
+    expect(parseGreenhouseJob({ ...raw, first_published }).postedAt).toBeUndefined();
   });
 });

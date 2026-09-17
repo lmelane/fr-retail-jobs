@@ -1,5 +1,5 @@
 """Five separate proof dimensions per ACTIVE source, from archived evidence only (no network, no ingestion):
- 1. identity      — portal identity certified for the CURRENT configuration (SourceIdentityReview VERIFIED, hash = current)
+ 1. identity      — portal identity certified for the CURRENT configuration (SourceIdentityReview bound to the exact revision, ordered and strictly validated)
  2. enumeration   — exhaustive enumeration demonstrated by the adapter (complete, not truncated) on the latest receipt for the current config
  3. collection    — complete collection: enumeration proven AND zero gap (a rejected row stays in the gap even when its cause is known)
  4. details       — every collected posting carries description, date, location and country (receipt quality counters)
@@ -59,13 +59,13 @@ rows = []
 for key, s in sorted(sources.items()):
     if s['status'] != 'ACTIVE': continue
     rev = reviews.get(key)
-    # Identity: the strict verdict computed by the snapshot (assertIdentityReview — verdict, hash, subject, tenant, age,
-    # method, artifact, official proof page). Older snapshots without it fall back to verdict + hash, flagged as such.
+    # Only a strict verdict linked to the exact revision and recorded decision order can certify.
     iv = s.get('identityVerdict')
-    if iv is not None:
+    current_identity = bool(rev and s.get('currentRevisionId') and rev.get('sourceRevisionId') == s['currentRevisionId'] and rev.get('sequence') is not None)
+    if iv is not None and current_identity:
         identity = 'CERTIFIED_CURRENT' if iv.get('certified') else ('LEGACY_UNCERTIFIED' if iv.get('reason') == 'NO_REVIEW' else 'REVIEW_NOT_VALID:' + str(iv.get('reason'))[:60])
     else:
-        identity = ('CERTIFIED_CURRENT_HASH_ONLY' if rev and rev.get('verdict') == 'VERIFIED' and rev.get('sourceHash') == s.get('identityHash') else ('CERTIFIED_STALE_CONFIG' if rev and rev.get('verdict') == 'VERIFIED' else 'LEGACY_UNCERTIFIED'))
+        identity = 'REVIEW_NOT_VALID' if rev else 'LEGACY_UNCERTIFIED'
     entry = receipts.get(key)
     r = entry[1] if entry else None
     receipt_for_current = bool(entry and entry[0][0] == 1)
@@ -75,8 +75,7 @@ for key, s in sorted(sources.items()):
     # `Source.updatedAt` moves at every run (statistics are written on the row), so "run after the last update" almost never
     # holds. A production run taken AFTER the certification of the CURRENT configuration (review hash = current hash) ran under
     # that configuration by construction: it is the receipt for it (Tapestry after partitionFacet, Saks after brandFromLocationPrefix).
-    iv0 = s.get('identityVerdict') or {}
-    certified_at = (rev or {}).get('checkedAt') if iv0.get('certified') else None
+    certified_at = (rev or {}).get('checkedAt') if identity == 'CERTIFIED_CURRENT' else None
     if not receipt_for_current and run0 and run0.get('ranAt') and run0.get('complete') is not None and (run0['ranAt'] >= (s.get('updatedAt') or '') or (certified_at and run0['ranAt'] >= certified_at)):
         r = {'complete': run0.get('complete'), 'truncated': run0.get('truncated'), 'fetched': run0.get('fetched'), 'uniqueIds': run0.get('fetched'), 'declaredTotal': run0.get('declaredTotal'), 'rejectedRows': None,
              'enumeration': {'issues': ['PRODUCTION_RUN_RECEIPT'] + ([] if run0.get('complete') else ['ENUMERATION_NOT_PROVEN'])}, 'quality': None, 'revision': 'production-run', 'finishedAt': run0['ranAt'], 'productionRun': True}

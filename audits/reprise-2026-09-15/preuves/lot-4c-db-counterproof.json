@@ -1,0 +1,6 @@
+{
+  "mutation": "retain a stale presentation after changing its RAW",
+  "rejectedByRegression": true,
+  "restoredTests": "passed",
+  "restoredFunctionSha256": "e33a9777a1de08de58880adab7644462505beb6f0b1df7e7c731d24098fdf38e"
+}

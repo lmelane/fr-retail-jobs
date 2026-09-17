@@ -10,14 +10,6 @@ export function companyIdentityWhere(value: string, match: 'equals' | 'contains'
   ] };
 }
 
-/** Equivalent SQL selector for the indexed results/aggregation query. */
-export function companyIdentitySql(value: string, match: 'equals' | 'contains' = 'equals'): Prisma.Sql {
-  const test = (column: Prisma.Sql) => match === 'equals'
-    ? Prisma.sql`lower(${column}) = lower(${value})`
-    : Prisma.sql`${column} ILIKE ${`%${value}%`}`;
-  return Prisma.sql`(${test(Prisma.sql`c.name`)} OR ${companyAliasSql(value, match)})`;
-}
-
 export function companyAliasSql(value: string, match: 'equals' | 'contains' = 'equals'): Prisma.Sql {
   const test = (column: Prisma.Sql) => match === 'equals'
     ? Prisma.sql`lower(${column}) = lower(${value})`

@@ -12,7 +12,7 @@ purpose:
                             (official link/domain); research yields candidates
   4. portalResearch       — progress of the dated research passes, failures, unvisited URLs
   5. sourceCertification  — is the CURRENT source configuration covered by a verified
-                            review (hash + subject + age), superseded, contradicted, legacy
+                            review (revision + ordered decision + strict snapshot verdict), superseded, contradicted, legacy
   6. activation           — catalogue status and last run, distinct from certification
   7. feedCompleteness     — did the latest native receipt/run enumerate the CONFIGURED
                             feed completely; a complete feed proves nothing about
@@ -104,29 +104,30 @@ for root in a.probes:
 def certify(source):
     rev = reviews.get(source['key'])
     iv = source.get('identityVerdict')
+    current = bool(rev and source.get('currentRevisionId') and rev.get('sourceRevisionId') == source['currentRevisionId'] and rev.get('sequence') is not None)
     if iv is not None and rev:
-        # Strict verdict computed by the snapshot with the promotion-gate validator; the fields below stay for the record.
-        strict = 'CERTIFIED_CURRENT' if iv.get('certified') else ('VERIFIED_FOR_SUPERSEDED_CONFIGURATION' if 'configuration' in str(iv.get('reason')) else 'VERIFIED_EXPIRED' if 'within 30 days' in str(iv.get('reason')) else 'REVIEW_NOT_VALID')
-        return {'verdict': strict, 'configurationCurrent': rev['sourceHash'] == source['identityHash'] and rev['subjectKey'] == source['subjectKey'], 'ageDays': age_days(rev['checkedAt']),
-                'review': {k: rev[k] for k in ['id', 'verdict', 'method', 'officialDomain', 'proofUrl', 'portalUrl', 'artifactHash', 'checkedAt', 'reviewer'] if k in rev},
-                'reason': None if strict == 'CERTIFIED_CURRENT' else f'Strict validator: {iv.get("reason")}'}
+        # Consume the strict decision only with its exact revision and recorded order. Old snapshots cannot certify.
+        strict = 'CERTIFIED_CURRENT' if iv.get('certified') and current else ('VERIFIED_FOR_SUPERSEDED_CONFIGURATION' if not current or any(x in str(iv.get('reason')) for x in ('configuration', 'source revision')) else 'VERIFIED_EXPIRED' if 'within 30 days' in str(iv.get('reason')) else 'REVIEW_NOT_VALID')
+        return {'verdict': strict, 'configurationCurrent': current, 'ageDays': age_days(rev['checkedAt']),
+                'review': {k: rev[k] for k in ['id', 'sourceRevisionId', 'sequence', 'verdict', 'method', 'officialDomain', 'proofUrl', 'portalUrl', 'artifactHash', 'checkedAt', 'reviewer'] if k in rev},
+                'reason': None if strict == 'CERTIFIED_CURRENT' else f'Strict validator: {iv.get("reason")}; exact revision and decision order: {current}'}
     if not rev:
         return {'verdict': 'RETIRED_UNCERTIFIED' if source['status'] == 'RETIRED' else 'LEGACY_UNCERTIFIED',
                 'review': None, 'reason': 'No SourceIdentityReview recorded for this source; it predates the review gate.'}
-    current = rev['sourceHash'] == source['identityHash'] and rev['subjectKey'] == source['subjectKey']
+    current = bool(source.get('currentRevisionId')) and rev.get('sourceRevisionId') == source['currentRevisionId'] and rev['sourceHash'] == source['identityHash'] and rev['subjectKey'] == source['subjectKey']
     age = age_days(rev['checkedAt'])
     if rev['verdict'] != 'VERIFIED': verdict = rev['verdict']                       # CONTRADICTED / UNRESOLVED win
     elif not current: verdict = 'VERIFIED_FOR_SUPERSEDED_CONFIGURATION'
     elif age is not None and age > REVIEW_MAX_AGE_DAYS: verdict = 'VERIFIED_EXPIRED'
-    else: verdict = 'CERTIFIED_CURRENT'
+    else: verdict = 'REVIEW_NOT_VALID'  # No strict verdict in this old snapshot: do not reconstruct certification.
     return {'verdict': verdict, 'configurationCurrent': current, 'ageDays': age,
             'review': {k: rev[k] for k in ['id', 'verdict', 'method', 'officialDomain', 'proofUrl', 'portalUrl', 'artifactHash', 'checkedAt', 'reviewer'] if k in rev},
-            'reason': None if verdict == 'CERTIFIED_CURRENT' else f'Latest review {rev["verdict"]} ({rev["method"]}) checked {rev["checkedAt"][:10]}; configuration current: {current}.'}
+            'reason': f'No strict certification verdict in this snapshot. Latest review {rev["verdict"]} ({rev["method"]}) checked {rev["checkedAt"][:10]}; configuration current: {current}.'}
 
 def activation(source):
     return {'status': source['status'], 'tier': source.get('tier'), 'lastRunAt': source.get('lastRunAt'), 'lastRunStatus': source.get('lastRunStatus'),
-            'lastRunJobs': source.get('lastRunJobs'), 'verifiedJobCount': source.get('verifiedJobCount'),
-            'robotsVerdict': source.get('robotsVerdict'), 'robotsCheckedAt': source.get('robotsCheckedAt')}
+            'lastRunJobs': source.get('lastRunJobs'),
+            'access': source.get('access', {'passed': False, 'code': 'ACCESS_NOT_IN_SNAPSHOT'})}
 
 def completeness(source):
     key = source['key']; rc = receipts.get(key); run = latest_runs.get(key)

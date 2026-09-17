@@ -1,0 +1,16 @@
+{
+  "productionWrites": false,
+  "plans": 16,
+  "repeated": 16,
+  "groups": 217,
+  "publications": 438,
+  "redirects": 219,
+  "movedPublications": 219,
+  "initiallyAlreadyApplied": 0,
+  "elapsedMs": 68126,
+  "allPublicationFieldsExceptMembershipUnchanged": true,
+  "observationsUnchanged": true,
+  "outsideJobsAndMembershipUnchanged": true,
+  "jobIdsEmployersAndFirstSeenUnchanged": true,
+  "eventsCreated": 219
+}

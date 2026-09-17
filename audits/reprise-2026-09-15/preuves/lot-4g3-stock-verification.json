@@ -1,0 +1,16 @@
+{
+  "environment": "Dedicated full-stock local clone; read only",
+  "productionWrites": false,
+  "partial": false,
+  "plans": 263,
+  "groups": 4823,
+  "presentations": 4846,
+  "rawMirrors": 4823,
+  "closed": 6,
+  "scalarReadRounding": 0,
+  "mismatches": [],
+  "elapsedMs": 8620,
+  "allPlansAndCachesExact": true,
+  "allOwnPublicPresentationsReadable": true,
+  "allNativePublicationJournalFieldsUnchanged": true
+}
