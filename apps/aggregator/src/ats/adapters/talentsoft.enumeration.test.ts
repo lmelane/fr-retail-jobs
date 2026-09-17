@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 vi.mock('../../lib/http.js', () => ({ fetchText: vi.fn() }));
 import { fetchText } from '../../lib/http.js';
 import { externalIdFromLink, fetchTalentsoftJobs } from './talentsoft.js';
+import { normalizeAdapterResult } from '../index.js';
 
 /**
  * Lagardère (lagardere-recrute.talent-soft.com, mesuré le 2026-09-09) : le
@@ -70,5 +71,85 @@ describe('fetchTalentsoftJobs — énumération prouvée et RSS hors board', () 
     const r = await fetchTalentsoftJobs({ origin, withDescriptions: false });
     expect(r.jobs.map((j) => j.externalId).sort()).toEqual(['1', '2', '77']);
     expect(r.complete).toBe(false); expect(r.enumeration?.issues).toContain('RSS_ITEM_ABSENT_FROM_LISTING');
+  });
+});
+
+/**
+ * LE CONTRAT DES IDENTIFIANTS CANONIQUES.
+ *
+ * DEUX chemins produisent des offres — le listing HTML et le flux RSS — donc DEUX familles de pages de preuve.
+ * Un contrat partiel n'est pas un contrat : si le flux se taisait, une offre qu'il porte seul (listing
+ * illisible, ou carte absente) n'apparaîtrait dans aucun `canonicalIds` et paraîtrait disparue au refresh.
+ * Le témoin passe au rouge si `canonicalIds` est retiré de l'un ou l'autre chemin.
+ */
+describe('TalentSoft — contrat des identifiants canoniques', () => {
+  it('déclare canonicalIds sur le flux RSS ET sur chaque page de listing', async () => {
+    const ids = Array.from({ length: 23 }, (_, i) => 1000 + i);
+    vi.mocked(fetchText).mockImplementation(async (url) => {
+      const u = String(url);
+      if (u.includes('offerRss')) return rss(ids.slice(0, 3).map((id) => ({ id, link: `https://www.group.com/postuler/offre-2026-${id}-502` })));
+      const page = Number(/page=(\d+)/.exec(u)?.[1] ?? 1);
+      const slice = ids.slice((page - 1) * 10, page * 10);
+      return listing(23, slice.length ? page : 1, slice.length ? slice : ids.slice(0, 10));
+    });
+    const r = await fetchTalentsoftJobs({ origin, withDescriptions: false });
+
+    const evidence = r.enumeration!.pageEvidence!;
+    expect(evidence).toHaveLength(4);                        // 1 flux RSS + 3 pages de listing
+    for (const pe of evidence) expect(Object.hasOwn(pe, 'canonicalIds')).toBe(true);
+    // Le flux nomme les trois items par leur référence « 2026-<n> », pas par leur lien hors board.
+    expect(evidence[0].canonicalIds).toEqual(['1000', '1001', '1002']);
+    expect(r.enumeration!.canonicalAbsenceProofUsable).toBe(true);
+
+    const canonical = new Set(evidence.flatMap((pe) => pe.canonicalIds ?? []));
+    expect([...canonical].sort()).toEqual(r.jobs.map((j) => j.externalId).sort());
+    const n = normalizeAdapterResult(r);
+    expect(n.enumeration?.canonicalIdViolations).toBeUndefined();
+    expect(n.enumeration?.issues ?? []).not.toContain('CANONICAL_ID_CONTRACT_BROKEN');
+  });
+
+  it('une offre portée par le SEUL flux RSS figure dans la preuve du flux', async () => {
+    vi.mocked(fetchText).mockImplementation(async (url) => {
+      const u = String(url);
+      if (u.includes('offerRss')) return rss([{ id: 77, link: `${origin}/offre-de-emploi/detailoffre.aspx?idOffre=77` }]);
+      return listing(2, 1, [1, 2]);
+    });
+    const r = await fetchTalentsoftJobs({ origin, withDescriptions: false });
+
+    expect(r.jobs.map((j) => j.externalId).sort()).toEqual(['1', '2', '77']);
+    expect(r.enumeration!.pageEvidence![0].canonicalIds).toEqual(['77']);
+    // Sans la page du flux, « 77 » serait écrite hors de toute preuve.
+    expect(normalizeAdapterResult(r).enumeration?.canonicalIdViolations).toBeUndefined();
+  });
+
+  it('un item RSS hors board reste une DISPOSITION nommée, pas un trou dans la preuve du flux', async () => {
+    vi.mocked(fetchText).mockImplementation(async (url) => {
+      const u = String(url);
+      if (u.includes('offerRss')) return rss([{ id: 9999, link: 'https://www.group.com/postuler/offre-2026-9999-1' }]);
+      return listing(12, 1, [1, 2, 3]);
+    });
+    const r = await fetchTalentsoftJobs({ origin, withDescriptions: false });
+
+    expect(r.enumeration!.pageEvidence![0].canonicalIds).toEqual(['9999']);
+    expect(r.rejectedRows?.map((row) => [row.reason, row.canonicalId]))
+      .toEqual([['RSS_ITEM_LINK_OFF_BOARD_AND_ABSENT_FROM_LISTING', '9999']]);
+    expect(normalizeAdapterResult(r).enumeration?.canonicalIdViolations).toBeUndefined();
+  });
+
+  it("un item RSS sans identifiant natif n'est jamais publié sous un identifiant d'URL", async () => {
+    vi.mocked(fetchText).mockImplementation(async (url) => {
+      const u = String(url);
+      // Lien sur le board, mais sans idOffre, sans _<n>.aspx et sans référence « <année>-<n> ».
+      if (u.includes('offerRss')) return `<?xml version="1.0"?><rss><channel><item><title>Conseiller H/F</title><link>${origin}/nous-rejoindre/spontanee</link></item></channel></rss>`;
+      return listing(2, 1, [1, 2]);
+    });
+    const r = await fetchTalentsoftJobs({ origin, withDescriptions: false });
+
+    // Publier cette offre lui donnerait un identifiant dérivé de son URL, absent de tout canonicalIds.
+    expect(r.jobs.map((j) => j.externalId).sort()).toEqual(['1', '2']);
+    expect(r.rejectedRows?.map((row) => row.reason)).toEqual(['RSS_ITEM_WITHOUT_NATIVE_ID']);
+    expect(r.enumeration!.canonicalAbsenceProofUsable).toBe(false);
+    expect(r.enumeration!.pageEvidence![0].canonicalIds).toEqual([]);
+    expect(normalizeAdapterResult(r).enumeration?.canonicalIdViolations).toBeUndefined();
   });
 });

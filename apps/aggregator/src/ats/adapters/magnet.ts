@@ -1,7 +1,8 @@
+import { createHash } from 'node:crypto';
 import { captureObservedAt } from '../../capture/context.js';
 import { fetchJson } from '../../lib/http.js';
 import { htmlToPlainText } from '../../lib/html.js';
-import type { NormalizedJob } from '../../types.js';
+import type { AdapterResult, NormalizedJob } from '../../types.js';
 import { CRAWLER_IDENTITY } from '../../lib/crawlerIdentity.js';
 
 /**
@@ -86,6 +87,19 @@ type OffersResponse = {
   data?: { total?: number; list?: MagnetOffer[] };
 };
 
+
+/**
+ * L'identifiant CANONIQUE d'une offre Magnet — `id`, à défaut `reference`, et RIEN D'AUTRE.
+ *
+ * `normalizeMagnetOffer` retombe en dernier recours sur le TITRE. Un titre n'est pas une identité : deux
+ * « Conseiller de vente F/H » partagent le même, et un titre réécrit change l'identifiant sans que
+ * l'offre ait bougé. Une telle ligne est donc ANONYME pour la preuve d'absence — elle est observée et
+ * publiée normalement, mais elle interdit de déclarer un identifiant historique disparu.
+ */
+export function magnetCanonicalId(offer: MagnetOffer): string | null {
+  const id = offer.id ?? offer.reference;
+  return id === undefined || id === null || String(id).trim() === '' ? null : String(id);
+}
 
 /** Magnet writes coordinates as a single "lat,lon" string. */
 function parseCoordinates(value?: string): { latitude?: number; longitude?: number } {
@@ -172,7 +186,7 @@ export function normalizeMagnetOffer(offer: MagnetOffer, origin: string): Normal
  * `config.siteKey` is the site's public key (32 hex chars, from its own login
  * call); `config.origin` is the careers host used as Referer.
  */
-export async function fetchMagnetJobs(config: Record<string, unknown>): Promise<NormalizedJob[]> {
+export async function fetchMagnetJobs(config: Record<string, unknown>): Promise<AdapterResult> {
   const siteKey = String(config.siteKey ?? '');
   const origin = String(config.origin ?? '').replace(/\/$/, '');
   if (!siteKey) throw new Error('Magnet siteKey missing');
@@ -187,22 +201,48 @@ export async function fetchMagnetJobs(config: Record<string, unknown>): Promise<
 
   const jobs: NormalizedJob[] = [];
   const seen = new Set<string>();
+  const pageEvidence: NonNullable<NonNullable<AdapterResult['enumeration']>['pageEvidence']> = [];
+  const endpoint = `${API}/job-offers`;
+  let declaredTotal: number | undefined;
+  let rawCount = 0, anonymousRows = 0;
+  let termination = 'PAGE_BUDGET_EXHAUSTED';
 
   for (let page = 0; page < MAX_PAGES; page++) {
-    const response = await fetchJson<OffersResponse>(`${API}/job-offers`, {
-      method: 'POST',
-      headers,
-      body: JSON.stringify({
-        ...EMPTY_FILTERS,
-        limit: PAGE_SIZE,
-        offset: page * PAGE_SIZE,
-        sort: { date: 'desc' },
-      }),
-    });
+    const offset = page * PAGE_SIZE;
+    const body = JSON.stringify({ ...EMPTY_FILTERS, limit: PAGE_SIZE, offset, sort: { date: 'desc' } });
+    const response = await fetchJson<OffersResponse>(endpoint, { method: 'POST', headers, body });
 
     const list = response.data?.list ?? [];
-    let fresh = 0;
+    rawCount += list.length;
+    const total = response.data?.total;
+    if (total !== undefined) declaredTotal = total;
 
+    /**
+     * LE CONTRAT DES IDENTIFIANTS CANONIQUES.
+     *
+     * L'identifiant entre dans la preuve AVANT toute validation : une offre dotée d'un `id` a été
+     * OBSERVÉE même si `normalizeMagnetOffer` la refuse ensuite faute de titre ou de lien de
+     * candidature, et l'omettre ferait paraître ABSENTE au refresh suivant une JobSource historique
+     * portant ce même identifiant.
+     *
+     * Ce que la preuve archive est exactement ce que l'adaptateur ÉCRIT en `externalId` — repli sur le
+     * titre compris, sans quoi l'offre publiée manquerait à sa propre preuve. Mais un identifiant issu du
+     * titre n'est pas une identité : il rend l'attestation d'absence inexploitable pour ce cycle.
+     */
+    const ids: string[] = [];
+    for (const offer of list) {
+      const canonical = magnetCanonicalId(offer);
+      if (!canonical) anonymousRows++;
+      const id = canonical ?? normalizeMagnetOffer(offer, origin)?.externalId;
+      if (id) ids.push(id);
+    }
+    pageEvidence.push({ url: endpoint, checkedAt: captureObservedAt().toISOString(),
+      sha256: createHash('sha256').update(JSON.stringify(response)).digest('hex'), offset,
+      pagination: total === undefined ? null : { start: offset + 1, end: offset + list.length, total },
+      ids, canonicalIds: ids, publisherCounter: total === undefined ? '' : String(total),
+      componentCounters: [`rows=${list.length}`, `limit=${PAGE_SIZE}`] });
+
+    let fresh = 0;
     for (const offer of list) {
       const job = normalizeMagnetOffer(offer, origin);
       if (!job || seen.has(job.externalId)) continue;
@@ -211,10 +251,24 @@ export async function fetchMagnetJobs(config: Record<string, unknown>): Promise<
       fresh++;
     }
 
-    if (list.length < PAGE_SIZE || fresh === 0) break;
-    const total = response.data?.total;
-    if (total !== undefined && jobs.length >= total) break;
+    if (list.length < PAGE_SIZE || fresh === 0) { termination = list.length < PAGE_SIZE ? 'SHORT_PAGE' : 'NO_FRESH_ROWS'; break; }
+    if (total !== undefined && jobs.length >= total) { termination = 'DECLARED_TOTAL_REACHED'; break; }
   }
 
-  return jobs;
+  /**
+   * Une offre VUE dont l'identifiant est connu mais qui n'a pas été publiée (titre ou lien de
+   * candidature manquant, identifiant déjà rencontré) est nommée ici comme DISPOSITION : sans cela elle
+   * resterait un trou dans la preuve, et son offre historique paraîtrait disparue.
+   */
+  const published = new Set(jobs.map((job) => job.externalId));
+  const rejectedRows: NonNullable<AdapterResult['rejectedRows']> = [
+    ...new Set(pageEvidence.flatMap((pe) => pe.canonicalIds ?? [])),
+  ].filter((id) => !published.has(id)).map((id) => ({ reason: 'MISSING_TITLE_APPLY_LINK_OR_REPEATED_ID', raw: { id }, canonicalId: id }));
+
+  return { jobs, declaredTotal, rejectedRows,
+    enumeration: { method: 'AUTHENTICATED_PUBLIC_HANDSHAKE_OFFSET_PAGINATION', endpoint,
+      pages: pageEvidence.length, rawCount, termination,
+      // Une offre sans `id` ni `reference` n'est nommée que par son titre : ce n'est pas une identité,
+      // donc aucun identifiant historique ne peut être déclaré absent pour ce cycle.
+      canonicalAbsenceProofUsable: anonymousRows === 0, pageEvidence } };
 }

@@ -1,5 +1,8 @@
-import { describe, expect, it } from 'vitest';
-import { parseTaleoDescription, parseTaleoListing } from './taleo.js';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+vi.mock('../../lib/http.js', async (orig) => ({ ...(await orig<Record<string, unknown>>()), fetchText: vi.fn(), fetchWithRetry: vi.fn() }));
+import { fetchText, fetchWithRetry } from '../../lib/http.js';
+import { parseTaleoDescription, parseTaleoListing, fetchTaleoJobs } from './taleo.js';
+import { normalizeAdapterResult } from '../index.js';
 
 /** Une ligne de résultats telle que lde.tbe.taleo.net la rend (Brown Thomas Arnotts, 2026-09-06). */
 const ROW = `
@@ -84,5 +87,46 @@ describe('parseTaleoDetail — l2 : date de publication et texte', () => {
   it('rend une date absente sur une réquisition retirée', () => {
     expect(parseTaleoDetail(GONE).postedAt).toBeUndefined();
     expect(parseTaleoDetail(GONE).description).toBeUndefined();
+  });
+});
+
+/**
+ * LE CONTRAT DES IDENTIFIANTS CANONIQUES.
+ *
+ * `rid` est l'identifiant natif de la réquisition TBE, et le même chemin d'identité que `externalId`. La preuve
+ * d'énumération le déclare sur CHAQUE page servie — un contrat partiel n'est pas un contrat — sans quoi la
+ * source ne peut démontrer aucune absence. Le témoin passe au rouge si `canonicalIds` est retiré.
+ */
+describe('Taleo TBE — contrat des identifiants canoniques', () => {
+  beforeEach(() => vi.resetAllMocks());
+
+  const page = (html: string) => ({ text: async () => html, headers: { get: () => 'JSESSIONID=abc; Path=/' } }) as unknown as Response;
+
+  it('déclare canonicalIds sur chaque page, exactement les rid observés', async () => {
+    vi.mocked(fetchWithRetry).mockResolvedValue(page(ROW + ROW_2));
+    // Page 2 : le portail re-sert la première page passé la dernière, donc aucune ligne neuve.
+    vi.mocked(fetchText).mockResolvedValue(ROW);
+    const r = await fetchTaleoJobs({ origin: 'https://lde.tbe.taleo.net/lde02', org: 'ARNOTTS', cws: 79, withDescriptions: false });
+
+    const pages = r.enumeration!.pageEvidence!;
+    expect(pages).toHaveLength(2);
+    for (const pe of pages) expect(Object.hasOwn(pe, 'canonicalIds')).toBe(true);
+    expect(pages.map(pe => pe.canonicalIds)).toEqual([['7770', '7795'], ['7770']]);
+    expect(r.jobs.map(j => j.externalId)).toEqual(['7770', '7795']);
+
+    const n = normalizeAdapterResult(r);
+    expect(n.enumeration?.canonicalIdViolations).toBeUndefined();
+    expect(n.enumeration?.issues ?? []).not.toContain('CANONICAL_ID_CONTRACT_BROKEN');
+  });
+
+  it('couvre les DEUX sections : aucune page muette quand plusieurs cws sont lues', async () => {
+    vi.mocked(fetchWithRetry).mockResolvedValueOnce(page(ROW)).mockResolvedValueOnce(page(ROW_2));
+    vi.mocked(fetchText).mockResolvedValue('\n');  // page d'un octet : fin de section
+    const r = await fetchTaleoJobs({ origin: 'https://lde.tbe.taleo.net/lde02', org: 'ARNOTTS', cws: [79, 70], withDescriptions: false });
+
+    const pages = r.enumeration!.pageEvidence!;
+    expect(pages.every(pe => Object.hasOwn(pe, 'canonicalIds'))).toBe(true);
+    expect(pages.flatMap(pe => pe.canonicalIds ?? [])).toEqual(['7770', '7795']);
+    expect(normalizeAdapterResult(r).enumeration?.canonicalIdViolations).toBeUndefined();
   });
 });

@@ -1,3 +1,5 @@
+import { createHash } from 'node:crypto';
+import { captureObservedAt } from '../../capture/context.js';
 import { extractJobPostings } from '../../connectors/generic/jsonLdSitemap.js';
 import { log } from '../../observability/logger.js';
 import pLimit from 'p-limit';
@@ -118,12 +120,28 @@ export function parseJobylonPublication(listing: JobylonListing, node: Record<st
   };
 }
 
+/**
+ * Les identifiants tels que le littéral les DÉCLARE, avant toute validation de chemin ou de titre.
+ *
+ * Une ligne `{ id: '379770', … }` a été OBSERVÉE même si elle est ensuite écartée faute de chemin :
+ * l'omettre de la preuve ferait paraître ABSENTE, au refresh suivant, une JobSource historique portant ce
+ * même identifiant. Exporté pour être éprouvé sans réseau.
+ */
+export function jobylonObservedIds(html: string): string[] {
+  const start = html.indexOf("JBL.embed_v2['jobs']");
+  if (start < 0) return [];
+  return [...new Set([...html.slice(start).matchAll(JOB_START)].map(match => match[1]))];
+}
+
 export async function fetchJobylonJobs(config: Record<string, unknown>): Promise<AdapterResult> {
   const companyId = String(config.companyId ?? '');
   if (!companyId) throw new Error('Jobylon companyId missing');
 
   const embedUrl = `${EMBED_BASE}/${encodeURIComponent(companyId)}/embed/v2/?target=jobylon-jobs-widget&page_size=100`;
-  const listing = parseJobylonEmbed(await fetchText(embedUrl));
+  const embedHtml = await fetchText(embedUrl);
+  const observedAt = captureObservedAt();
+  const canonicalIds = jobylonObservedIds(embedHtml);
+  const listing = parseJobylonEmbed(embedHtml);
   if (listing.length === 0) {
     // Un widget sans littéral est un identifiant faux ou un format qui a bougé,
     // pas un employeur sans poste (F-06) : le dire plutôt que rendre [] en silence.
@@ -147,5 +165,39 @@ export async function fetchJobylonJobs(config: Record<string, unknown>): Promise
     ),
   );
 
-  return { jobs, declaredTotal: listing.length };
+  /**
+   * LE CONTRAT DES IDENTIFIANTS CANONIQUES.
+   *
+   * `listing.externalId` — l'`id` du littéral — est repris tel quel en `externalId` par
+   * `parseJobylonPublication` : c'est le SEUL ensemble comparable à la base. Une ligne observée que
+   * `parseJobylonEmbed` a écartée (chemin ou titre manquant) est nommée ici comme DISPOSITION, jamais
+   * laissée en trou : sinon elle rendrait son offre historique faussement absente.
+   */
+  const published = new Set(jobs.map(job => job.externalId));
+  const rejectedRows: NonNullable<AdapterResult['rejectedRows']> = canonicalIds
+    .filter(id => !published.has(id))
+    .map(id => ({ reason: 'MISSING_PATH_OR_TITLE_IN_EMBED', raw: { id }, canonicalId: id }));
+
+  return { jobs, declaredTotal: listing.length, rejectedRows,
+    enumeration: { method: 'CLIENT_SIDE_EMBED_LITERAL', endpoint: embedUrl, pages: 1, rawCount: canonicalIds.length,
+      /**
+       * PAS `FULL_RESPONSE`, qui EST probante (`pipeline/refreshPlan.ts`) et autoriserait à fermer.
+       *
+       * Le seul argument pour « tout le littéral est là » est une mesure sur UN locataire de 27 offres
+       * (`page_size` 10 et 100 rendaient le même contenu, en-tête de ce fichier). Rien n'établit le
+       * comportement au-delà : un locataire dont le widget plafonnerait verrait ses offres au-delà du
+       * plafond déclarées absentes, donc FERMÉES alors qu'elles sont ouvertes.
+       *
+       * Le contrôle de troncature ne rattraperait pas l'erreur : `declaredTotal` vaut `listing.length`,
+       * c'est-à-dire ce qu'on a lu — un rapport lu/annoncé toujours égal à 1.
+       *
+       * Le contrat canonique reste déclaré : les identifiants sont bien natifs et la preuve est exacte.
+       * Seule la FIN du parcours n'est pas démontrée, et c'est elle qui autorise une fermeture.
+       */
+      termination: 'CLIENT_SIDE_LITERAL_READ',
+      // Le littéral ne produit une ligne QUE sur un `id:` : aucune ligne anonyme n'y est observable.
+      canonicalAbsenceProofUsable: true,
+      pageEvidence: [{ url: embedUrl, checkedAt: observedAt.toISOString(),
+        sha256: createHash('sha256').update(embedHtml).digest('hex'), offset: 0, pagination: null,
+        ids: canonicalIds, canonicalIds, publisherCounter: String(canonicalIds.length), componentCounters: [] }] } };
 }

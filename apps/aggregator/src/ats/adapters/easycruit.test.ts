@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 vi.mock('../../lib/http.js',()=>({fetchText:vi.fn()}));
 import {fetchText} from '../../lib/http.js';
 import {fetchEasycruitJobs} from './easycruit.js';
+import {normalizeAdapterResult} from '../index.js';
 const host='example.easycruit.com',origin=`https://${host}`;
 const version=(language='en',title='Sales advisor',countries=['France'])=>`<Version language="${language}"><Title>${title}</Title><AlternativeCompanyName>Example</AlternativeCompanyName><Location>Paris</Location><Description><![CDATA[<p>A real position.</p>]]></Description><Region>${countries.map(name=>`<Country name="${name}"/>`).join('')}</Region><Categories><Item type="duration">Permanent</Item><Item type="extent">Full-time</Item></Categories></Version>`;
 const vacancy=(id='101',versions=version())=>`<Vacancy id="${id}" date_start="2026-08-01" date_end="2026-10-31" date_modified="2026-09-01"><Versions>${versions}</Versions><Departments><Department id="5"><Name>Corporate Sweden</Name><VacancyURL>${origin}/vacancy/${id}/5</VacancyURL><ContactPersons>Unneeded contact</ContactPersons></Department></Departments></Vacancy>`;
@@ -43,5 +44,62 @@ describe('EasyCruit public XML protocol',()=>{
  it('refuses invalid tenant settings before any network access',async()=>{
   for(const bad of ['localhost','www.easycruit.com','example.easycruit.com.evil.test','https://example.easycruit.com'])await expect(fetchEasycruitJobs({host:bad})).rejects.toThrow('EASYCRUIT_INVALID');
   expect(fetchText).not.toHaveBeenCalled();
+ });
+});
+
+/**
+ * LE CONTRAT DES IDENTIFIANTS CANONIQUES — témoin.
+ *
+ * Il ÉCHOUE si `canonicalIds` est retiré de la preuve (contrat absent, plus aucune absence démontrable) et il
+ * échoue si un rejet perd son `canonicalId` : `normalizeAdapterResult` voit alors un identifiant observé sans
+ * disposition et réfute la preuve.
+ */
+describe('EasyCruit — contrat des identifiants canoniques',()=>{
+ it('déclare exactement les @id natifs observés, et ils sont ceux des offres produites',async()=>{
+  vi.mocked(fetchText).mockImplementation(async url=>String(url).endsWith('list.xml')?feed(vacancy('101')+vacancy('202')):String(url).endsWith('.xml')?vacancy(String(url).includes('/202.')?'202':'101'):'<html/>');
+  const r=await fetchEasycruitJobs({host});
+  const page=r.enumeration?.pageEvidence?.[0];
+  expect(page).toBeDefined();
+  // La propriété DOIT être déclarée : sans elle, aucune absence n'est démontrable sur cette source.
+  expect(Object.hasOwn(page!,'canonicalIds')).toBe(true);
+  expect([...page!.canonicalIds!].sort()).toEqual(['101','202']);
+  // Même vocabulaire des deux côtés : la preuve et les offres produites.
+  expect([...page!.canonicalIds!].sort()).toEqual(r.jobs.map(j=>j.externalId).sort());
+  expect(r.enumeration?.canonicalAbsenceProofUsable).toBe(true);
+ });
+
+ it('un @id vu puis rejeté reste dans la preuve, nommé comme disposition',async()=>{
+  // 303 : `@id` exploitable mais URL native hors tenant — vu, rejeté, jamais un trou.
+  const foreign=vacancy('303').replaceAll(`${origin}/vacancy/303/5`,'https://another.easycruit.com/vacancy/303/5');
+  vi.mocked(fetchText).mockImplementation(async url=>String(url).endsWith('list.xml')?feed(vacancy('101')+foreign):String(url).endsWith('.xml')?vacancy('101'):'<html/>');
+  const r=await fetchEasycruitJobs({host});
+  expect(r.jobs.map(j=>j.externalId)).toEqual(['101']);
+  expect([...r.enumeration!.pageEvidence![0].canonicalIds!].sort()).toEqual(['101','303']);
+  // Sans ce `canonicalId`, « 303 » serait un identifiant observé sans disposition : contrat ROMPU.
+  expect(r.rejectedRows?.map(row=>row.canonicalId)).toContain('303');
+ });
+
+ it('un doublon natif est déclaré une seule fois et disposé sur le même identifiant',async()=>{
+  vi.mocked(fetchText).mockImplementation(async url=>String(url).endsWith('list.xml')?feed(vacancy()+vacancy()):String(url).endsWith('.xml')?vacancy():'<html/>');
+  const r=await fetchEasycruitJobs({host});
+  expect(r.enumeration?.pageEvidence?.[0].canonicalIds).toEqual(['101']);
+  expect(r.rejectedRows?.[0]).toMatchObject({reason:'DUPLICATE_NATIVE_ID',canonicalId:'101'});
+ });
+
+ it('une ligne sans @id exploitable est comptée, jamais inventée, et retire le droit d\'attester',async()=>{
+  vi.mocked(fetchText).mockImplementation(async url=>String(url).endsWith('list.xml')?feed(vacancy('101')+'<Vacancy><Versions/></Vacancy>'):String(url).endsWith('.xml')?vacancy('101'):'<html/>');
+  const r=await fetchEasycruitJobs({host});
+  expect(r.enumeration?.pageEvidence?.[0].canonicalIds).toEqual(['101']);
+  expect(r.enumeration?.canonicalAbsenceProofUsable).toBe(false);
+  expect(r.enumeration?.pageEvidence?.[0].componentCounters).toContain('anonymousRows=1');
+ });
+
+ /** Le contrat tel que la chaîne le juge réellement : la preuve doit survivre à `normalizeAdapterResult`. */
+ it('le contrat passe la vérification centrale : aucune violation, preuve conservée',async()=>{
+  const foreign=vacancy('303').replaceAll(`${origin}/vacancy/303/5`,'https://another.easycruit.com/vacancy/303/5');
+  vi.mocked(fetchText).mockImplementation(async url=>String(url).endsWith('list.xml')?feed(vacancy('101')+foreign):String(url).endsWith('.xml')?vacancy('101'):'<html/>');
+  const r=normalizeAdapterResult(await fetchEasycruitJobs({host}));
+  expect(r.enumeration?.canonicalIdViolations).toBeUndefined();
+  expect(r.enumeration?.issues ?? []).not.toContain('CANONICAL_ID_CONTRACT_BROKEN');
  });
 });

@@ -10,6 +10,7 @@ vi.mock('../../lib/http.js', () => ({
 import { fetchJson } from '../../lib/http.js';
 import { fetchTalentViewJobs } from './talentview.js';
 import { readSourceFacts } from '../../facts/index.js';
+import { normalizeAdapterResult } from '../index.js';
 
 const mockJson = vi.mocked(fetchJson);
 
@@ -127,5 +128,59 @@ describe('TalentView detail identity and visibility', () => {
     const { jobs: [job] } = await fetchTalentViewJobs({ slug: 'brand' });
     expect(job.publicationHold).toBeTruthy();
     expect(job.raw).toEqual({ ...list, detail: input });
+  });
+});
+
+/**
+ * LE CONTRAT DES IDENTIFIANTS CANONIQUES.
+ *
+ * `campaign.id` est l'identifiant natif de TalentView, et le chemin exact de `externalId`. La preuve le
+ * déclare sur CHAQUE page de CHAQUE site public — une seule page muette et le contrat devient PARTIEL, ce que
+ * le normaliseur refuse. Le témoin passe au rouge si `canonicalIds` est retiré.
+ */
+describe('TalentView — contrat des identifiants canoniques', () => {
+  it('déclare canonicalIds sur les sept pages, exactement les campaign.id écrits', async () => {
+    mockJson.mockResolvedValueOnce([{ id: 11 }]);
+    for (const page of pages) mockJson.mockResolvedValueOnce(page.jobs);
+    const r = await fetchTalentViewJobs({ slug: 'sud-express', withDescriptions: false });
+
+    const evidence = r.enumeration!.pageEvidence!;
+    expect(evidence).toHaveLength(7);
+    for (const pe of evidence) expect(Object.hasOwn(pe, 'canonicalIds')).toBe(true);
+    expect(r.enumeration!.canonicalAbsenceProofUsable).toBe(true);
+
+    const canonical = new Set(evidence.flatMap(pe => pe.canonicalIds ?? []));
+    expect(canonical.size).toBe(68);
+    expect([...canonical].sort()).toEqual(r.jobs.map(j => j.externalId).sort());
+
+    const n = normalizeAdapterResult(r);
+    expect(n.enumeration?.canonicalIdViolations).toBeUndefined();
+    expect(n.enumeration?.issues ?? []).not.toContain('CANONICAL_ID_CONTRACT_BROKEN');
+  });
+
+  it('une campagne servie par DEUX sites locale figure dans la preuve des deux', async () => {
+    mockJson.mockResolvedValueOnce([{ id: 11, locale: 'fr' }, { id: 12, locale: 'en' }])
+      .mockResolvedValueOnce(pages[6].jobs).mockResolvedValueOnce([pages[6].jobs[0], pages[0].jobs[0]]);
+    const r = await fetchTalentViewJobs({ slug: 'sud-express', withDescriptions: false });
+
+    const evidence = r.enumeration!.pageEvidence!;
+    expect(evidence).toHaveLength(2);
+    const partagee = String(pages[6].jobs[0].id);
+    // Vue sur les deux sites : la retirer de la seconde page la rendrait muette sur une offre bien servie.
+    expect(evidence[0].canonicalIds).toContain(partagee);
+    expect(evidence[1].canonicalIds).toContain(partagee);
+    expect(new Set(evidence.flatMap(pe => pe.canonicalIds ?? [])).size).toBe(r.jobs.length);
+    expect(normalizeAdapterResult(r).enumeration?.canonicalIdViolations).toBeUndefined();
+  });
+
+  it("une offre RETENUE (brouillon) reste une disposition nommée, pas un trou", async () => {
+    const list = { id: 42, name: 'Advisor', slug: 'advisor' };
+    mockJson.mockResolvedValueOnce([{ id: 1 }]).mockResolvedValueOnce([list])
+      .mockResolvedValueOnce({ id: 42, slug: 'advisor', is_draft: true, is_online: true });
+    const r = await fetchTalentViewJobs({ slug: 'brand' });
+
+    expect(r.jobs[0].publicationHold).toBeTruthy();
+    expect(r.enumeration!.pageEvidence![0].canonicalIds).toEqual(['42']);
+    expect(normalizeAdapterResult(r).enumeration?.canonicalIdViolations).toBeUndefined();
   });
 });

@@ -4,6 +4,7 @@ vi.mock('../../lib/http.js', () => ({ fetchText: vi.fn(), DEFAULT_DETAIL_CONCURR
 
 import { fetchText } from '../../lib/http.js';
 import { fetchBashTalentsJobs, parseBashDetail, parseBashListing } from './bashTalents.js';
+import { normalizeAdapterResult } from '../index.js';
 
 const mockText = vi.mocked(fetchText);
 beforeEach(() => mockText.mockReset());
@@ -98,6 +99,51 @@ describe('parseBashListing', () => {
 
   it('déduplique deux cartes du même identifiant', () => {
     expect(parseBashListing(LISTING + LISTING).jobs).toHaveLength(2);
+  });
+});
+
+/**
+ * LE CONTRAT DES IDENTIFIANTS CANONIQUES.
+ *
+ * `BASH_xxx` est l'identifiant NATIF servi par le portail dans `attr-href`, et le même chemin d'identité que
+ * `externalId`. Sans la propriété `canonicalIds` sur la preuve, cette source ne peut démontrer aucune absence
+ * (`UNVERIFIABLE`). Le listing étant rendu en UN seul document, il n'y a qu'une page de preuve : pas de page
+ * muette possible, donc pas de contrat partiel.
+ */
+describe('Ba&sh — contrat des identifiants canoniques', () => {
+  it('déclare canonicalIds, exactement les BASH_xxx servis par le listing', async () => {
+    mockText.mockResolvedValue(LISTING);
+    const r = await fetchBashTalentsJobs({ withDescriptions: false });
+
+    const pages = r.enumeration!.pageEvidence!;
+    expect(pages).toHaveLength(1);
+    expect(Object.hasOwn(pages[0], 'canonicalIds')).toBe(true);
+    expect(pages[0].canonicalIds).toEqual(['BASH_CE23B0', 'BASH_001CA6']);
+    expect(pages[0].canonicalIds).toEqual(r.jobs.map(j => j.externalId));
+    expect(r.enumeration!.canonicalAbsenceProofUsable).toBe(true);
+
+    const n = normalizeAdapterResult(r);
+    expect(n.enumeration?.canonicalIdViolations).toBeUndefined();
+    expect(n.enumeration?.issues ?? []).not.toContain('CANONICAL_ID_CONTRACT_BROKEN');
+  });
+
+  it('une carte vue puis écartée faute de titre reste une DISPOSITION nommée', async () => {
+    const sansTitre = LISTING.replace('<p class="title-default" itemprop="title">assistant·e digital marketing f/h</p>', '');
+    mockText.mockResolvedValue(sansTitre);
+    const r = await fetchBashTalentsJobs({ withDescriptions: false });
+
+    expect(r.jobs.map(j => j.externalId)).toEqual(['BASH_CE23B0']);
+    // Observée dans la preuve MALGRÉ le rejet : sans cela elle paraîtrait disparue au refresh suivant.
+    expect(r.enumeration!.pageEvidence![0].canonicalIds).toEqual(['BASH_CE23B0', 'BASH_001CA6']);
+    expect(r.rejectedRows?.map(row => row.canonicalId)).toEqual(['BASH_001CA6']);
+    expect(normalizeAdapterResult(r).enumeration?.canonicalIdViolations).toBeUndefined();
+  });
+
+  it("une carte dont le lien ne porte pas de BASH_xxx interdit l'attestation d'absence", async () => {
+    mockText.mockResolvedValue(LISTING.replace('https://talents.ba-sh.com/fr-FR/offre/BASH_001CA6', 'https://talents.ba-sh.com/fr-FR/page/autre'));
+    const r = await fetchBashTalentsJobs({ withDescriptions: false });
+    expect(r.enumeration!.canonicalAbsenceProofUsable).toBe(false);
+    expect(r.enumeration!.pageEvidence![0].canonicalIds).toEqual(['BASH_CE23B0']);
   });
 });
 

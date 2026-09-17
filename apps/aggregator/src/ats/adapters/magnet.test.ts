@@ -38,7 +38,7 @@ describe('fetchMagnetJobs apply URL', () => {
       },
     ]);
 
-    const jobs = await fetchMagnetJobs(config);
+    const { jobs } = await fetchMagnetJobs(config);
 
     expect(jobs).toHaveLength(1);
     expect(jobs[0].url).toBe('https://api.magnet.work/v2/redirect/job-offer/eram/99070-hZ72pk');
@@ -50,14 +50,66 @@ describe('fetchMagnetJobs apply URL', () => {
       { id: 'x', title: 'Vendeur', link: 'https://api.magnet.work/v2/redirect/job-offer/eram/abc' },
     ]);
 
-    const jobs = await fetchMagnetJobs(config);
+    const { jobs } = await fetchMagnetJobs(config);
     expect(jobs[0].url).toBe('https://api.magnet.work/v2/redirect/job-offer/eram/abc');
   });
 
   it('skips an offer with no usable link rather than storing a dead /offre/{id}', async () => {
     mockLoginThenOffers([{ id: '10955-deadbeef', title: 'Ghost, no link' }]);
 
-    const jobs = await fetchMagnetJobs(config);
+    const { jobs } = await fetchMagnetJobs(config);
     expect(jobs).toHaveLength(0);
+  });
+});
+
+/**
+ * LE CONTRAT CANONIQUE — `id` (à défaut `reference`) EST l'`externalId` écrit.
+ *
+ * Retirer `canonicalIds` de la preuve fait tomber ces témoins : sans la propriété,
+ * `normalizeAdapterResult` classe la source « contrat non implémenté » et aucune absence n'y est
+ * démontrable (`UNVERIFIABLE` à la prévisualisation).
+ */
+import { magnetCanonicalId } from './magnet.js';
+
+describe('fetchMagnetJobs — identifiants canoniques', () => {
+  const config = { siteKey: '61ffe84ad14ba0fdbb448d2d388ac4e3', origin: 'https://recrutement.groupe-eram.com' };
+  const offer = (over: Record<string, unknown>) => ({
+    id: 'x', title: 'Conseiller de vente F/H',
+    apply_link: 'https://api.magnet.work/v2/redirect/job-offer/eram/x', ...over,
+  });
+
+  it('déclare canonicalIds sur la page de preuve, identiques aux externalId produits', async () => {
+    const offers = [offer({ id: 'MG-1' }), offer({ id: 'MG-2' })];
+    // PRÉMISSE : les deux offres portent bien un id natif distinct.
+    expect(offers.map(magnetCanonicalId)).toEqual(['MG-1', 'MG-2']);
+    mockLoginThenOffers(offers);
+    const r = await fetchMagnetJobs(config);
+    expect(r.enumeration!.pageEvidence!.every((pe) => Object.hasOwn(pe, 'canonicalIds'))).toBe(true);
+    const canonical = r.enumeration!.pageEvidence!.flatMap((pe) => pe.canonicalIds ?? []);
+    expect([...canonical].sort()).toEqual(r.jobs.map((j) => j.externalId).sort());
+    expect(r.enumeration?.canonicalAbsenceProofUsable).toBe(true);
+  });
+
+  it('une offre VUE mais sans lien garde son identifiant : disposition, pas trou', async () => {
+    mockLoginThenOffers([offer({ id: 'MG-1' }), { id: 'MG-ORPHELINE', title: 'Ghost, no link' }]);
+    const r = await fetchMagnetJobs(config);
+    const canonical = r.enumeration!.pageEvidence!.flatMap((pe) => pe.canonicalIds ?? []);
+    expect(canonical).toContain('MG-ORPHELINE');                          // observée
+    expect(r.jobs.map((j) => j.externalId)).not.toContain('MG-ORPHELINE'); // non produite
+    expect(r.rejectedRows?.find((x) => (x as { canonicalId?: string }).canonicalId === 'MG-ORPHELINE')?.reason)
+      .toBe('MISSING_TITLE_APPLY_LINK_OR_REPEATED_ID');
+  });
+
+  /** Un titre n'est pas une identité : l'offre est publiée, mais aucune absence n'est attestable. */
+  it("une offre identifiée par son SEUL titre interdit toute preuve d'absence", async () => {
+    const anonymous = offer({ id: undefined, reference: undefined });
+    // PRÉMISSE : cette offre n'a AUCUN identifiant natif — seul son titre la nomme.
+    expect(magnetCanonicalId(anonymous)).toBeNull();
+    mockLoginThenOffers([offer({ id: 'MG-1' }), anonymous]);
+    const r = await fetchMagnetJobs(config);
+    expect(r.enumeration?.canonicalAbsenceProofUsable).toBe(false);
+    const canonical = r.enumeration!.pageEvidence!.flatMap((pe) => pe.canonicalIds ?? []);
+    expect(r.jobs.map((j) => j.externalId)).toContain('Conseiller de vente F/H');
+    expect(canonical).toContain('Conseiller de vente F/H');
   });
 });

@@ -65,6 +65,18 @@ export type RssItem = {
  *    link made 20 RSS items look like 20 extra postings with dead URLs.
  */
 export function externalIdFromLink(link: string, title?: string): string {
+  return talentsoftCanonicalId(link, title) ?? link;
+}
+
+/**
+ * L'identifiant NATIF de l'offre, ou `null` quand la source n'en sert aucun.
+ *
+ * Les trois formes ci-dessus sont toutes des identifiants que TALENTSOFT publie : le paramètre `idOffre`, le
+ * suffixe `_<n>.aspx` du lien de carte, et la référence « <année>-<n> » que le tenant imprime dans le titre et
+ * dans l'URL du groupe. Le dernier repli de `externalIdFromLink` — le LIEN ENTIER — n'en est pas un : c'est une
+ * URL, et le contrat interdit d'en dériver un identifiant canonique. Une ligne qui en arrive là est ANONYME.
+ */
+export function talentsoftCanonicalId(link: string, title?: string): string | null {
   try {
     const url = new URL(link);
     const param = url.searchParams.get('idOffre');
@@ -73,7 +85,7 @@ export function externalIdFromLink(link: string, title?: string): string {
     if (path) return path[1];
   } catch { /* fall through to the reference */ }
   const reference = /\b\d{4}-(\d{3,})\b/.exec(`${title ?? ''} ${link}`);
-  return reference ? reference[1] : link;
+  return reference ? reference[1] : null;
 }
 
 export function talentsoftItemToJob(item: RssItem): NormalizedJob | null {
@@ -216,15 +228,29 @@ export async function fetchTalentsoftJobs(config: Record<string, unknown>): Prom
   if (!origin) throw new Error('TalentSoft origin missing');
 
   // 1. RSS — clean contract/pubDate/description for the 20 newest.
-  const xml = await fetchText(`${origin}/handlers/offerRss.ashx?LCID=${FRENCH_LCID}`);
+  const rssUrl = `${origin}/handlers/offerRss.ashx?LCID=${FRENCH_LCID}`;
+  const xml = await fetchText(rssUrl);
   const parser = new XMLParser({ ignoreAttributes: false, textNodeName: '#text' });
   const data = parser.parse(xml);
   const items = data?.rss?.channel?.item ?? [];
   const list: RssItem[] = Array.isArray(items) ? items : [items];
   const byId = new Map<string, NormalizedJob>();
+  /**
+   * Les identifiants NATIFS servis par le flux RSS, pour la preuve de CETTE page.
+   *
+   * Un item RSS peut devenir une offre à lui seul (lien sur le board, carte absente du listing) : sans page de
+   * preuve pour le flux, cette offre n'apparaîtrait dans AUCUN `canonicalIds` et paraîtrait disparue au refresh
+   * suivant. Un item dont le lien ne livre aucun identifiant natif est compté ANONYME, jamais inventé.
+   */
+  const rssCanonicalIds: string[] = [];
+  let anonymousRows = 0;
   for (const item of list) {
     const job = talentsoftItemToJob(item);
-    if (job && !byId.has(job.externalId)) byId.set(job.externalId, job);
+    if (!job) continue;
+    const canonical = talentsoftCanonicalId(item.link?.trim() ?? '', item.title?.trim());
+    if (canonical) { if (!rssCanonicalIds.includes(canonical)) rssCanonicalIds.push(canonical); }
+    else anonymousRows++;
+    if (!byId.has(job.externalId)) byId.set(job.externalId, job);
   }
 
   // 2. The FULL listing, page by page, until the announced total is covered.
@@ -264,9 +290,15 @@ export async function fetchTalentsoftJobs(config: Record<string, unknown>): Prom
     const all = listingCards(html, origin);
     rawCount += all.length;
     const cards = all.filter((job) => !seenListing.has(job.externalId));
+    /**
+     * `CARD_RE` EXIGE le suffixe `_(\d+).aspx` : l'identifiant d'une carte est donc toujours l'identifiant
+     * NATIF de l'offre, le même que `NormalizedJob.externalId` (`listingCardJob`). Aucune carte anonyme n'est
+     * possible par ce chemin — ce que la page sert est exactement ce qu'elle nomme.
+     */
+    const pageIds = all.map((j) => j.externalId);
     pageEvidence.push({ url, checkedAt: captureObservedAt().toISOString(), sha256: createHash('sha256').update(html).digest('hex'), offset: (page - 1) * 10,
       pagination: declaredTotal === undefined ? null : { start: (page - 1) * 10, end: (page - 1) * 10 + all.length, total: declaredTotal },
-      ids: all.map((j) => j.externalId), publisherCounter: announced ? announced[0] : '', componentCounters: [`listingIds=${seenListing.size + cards.length}`] });
+      ids: pageIds, canonicalIds: pageIds, publisherCounter: announced ? announced[0] : '', componentCounters: [`listingIds=${seenListing.size + cards.length}`] });
     // The board serves its first page again past the last one (page 12 of 11
     // answers "page 1"): a page without a new card is the end, not an error.
     if (cards.length === 0) { termination = all.length ? 'REPEATED_PAGE' : 'EMPTY_PAGE'; break; }
@@ -300,9 +332,21 @@ export async function fetchTalentsoftJobs(config: Record<string, unknown>): Prom
     if (seenListing.has(id)) continue;
     let onBoard = false;
     try { onBoard = new URL(job.url).hostname === originHost; } catch { /* off board */ }
+    /**
+     * UN ITEM SANS IDENTIFIANT NATIF NE DEVIENT PAS UNE OFFRE.
+     *
+     * Quand le lien ne livre ni `idOffre`, ni `_<n>.aspx`, ni référence « <année>-<n> », `externalIdFromLink`
+     * se rabat sur LE LIEN ENTIER. Publier cette offre lui donnerait un identifiant dérivé d'une URL, absent
+     * de tout `canonicalIds` — donc une offre écrite hors de sa propre preuve, exactement ce que le contrat
+     * interdit. Elle est retenue comme ligne rejetée, et l'attestation d'absence est déjà refusée pour ce
+     * cycle (`canonicalAbsenceProofUsable`).
+     */
+    if (!rssCanonicalIds.includes(id)) { rejectedRows.push({ reason: 'RSS_ITEM_WITHOUT_NATIVE_ID', raw: job.raw }); continue; }
     if (onBoard && fromListing.length === 0) jobs.push(job);                       // listing unreadable: the RSS still carries the board
     else if (onBoard) { jobs.push(job); issues.add('RSS_ITEM_ABSENT_FROM_LISTING'); }
-    else rejectedRows.push({ reason: 'RSS_ITEM_LINK_OFF_BOARD_AND_ABSENT_FROM_LISTING', raw: job.raw });
+    // Un item écarté dont l'identifiant natif est connu est une DISPOSITION nommée, jamais un trou : sans lui,
+    // l'identifiant figurerait dans la preuve du flux sans offre ni disposition, et romprait le contrat.
+    else rejectedRows.push({ reason: 'RSS_ITEM_LINK_OFF_BOARD_AND_ABSENT_FROM_LISTING', raw: job.raw, canonicalId: id });
   }
   const complete = declaredTotal !== undefined && seenListing.size === declaredTotal && !truncated && issues.size === 0;
   if (!complete) issues.add('ENUMERATION_NOT_PROVEN');
@@ -327,8 +371,24 @@ export async function fetchTalentsoftJobs(config: Record<string, unknown>): Prom
     );
   }
 
+  /**
+   * LE CONTRAT DES IDENTIFIANTS CANONIQUES, sur les DEUX chemins qui produisent des offres.
+   *
+   * Le listing énumère, mais le flux RSS peut produire une offre à lui seul : un item dont le lien est sur le
+   * board et dont aucune carte ne parle (mesuré le 2026-09-09 sur un tenant au listing illisible — les 20 items
+   * du flux étaient alors les SEULES offres). Le flux porte donc sa propre page de preuve, sans quoi ces
+   * offres n'apparaîtraient dans aucun `canonicalIds` et paraîtraient disparues au refresh suivant.
+   *
+   * Un contrat partiel n'étant pas un contrat, les deux chemins déclarent — jamais l'un sans l'autre.
+   */
+  const rssEvidence = { url: rssUrl, checkedAt: captureObservedAt().toISOString(),
+    sha256: createHash('sha256').update(xml).digest('hex'), offset: 0, pagination: null,
+    ids: rssCanonicalIds, canonicalIds: rssCanonicalIds, publisherCounter: String(list.length),
+    componentCounters: [`rssItems=${list.length}`, `anonymous=${anonymousRows}`] };
   return { jobs, declaredTotal, truncated, complete, rejectedRows,
     enumeration: { method: 'ANNOUNCED_TOTAL_HTML_PAGINATION_WITH_RSS_ENRICHMENT', endpoint: listingEndpoint, pages, rawCount, termination, issues: [...issues],
       scopes: [{ scope: 'listing', declaredTotal: declaredTotal ?? -1, uniqueIds: seenListing.size, pages, complete }, { scope: 'rss', declaredTotal: byId.size, uniqueIds: byId.size, pages: 1, complete: true }],
-      pageEvidence } };
+      // Un item RSS dont le lien ne livre aucun identifiant natif a été vu sans pouvoir être nommé.
+      canonicalAbsenceProofUsable: anonymousRows === 0,
+      pageEvidence: [rssEvidence, ...pageEvidence] } };
 }

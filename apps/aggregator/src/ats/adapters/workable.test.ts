@@ -3,6 +3,7 @@ vi.mock('../../lib/http.js',()=>({fetchJson:vi.fn()}));
 vi.mock('../../lib/sourceBudget.js',()=>({sourceDelay:vi.fn(),assertSourceRunning:vi.fn()}));
 import { fetchJson } from '../../lib/http.js';
 import { fetchWorkableJobs } from './workable.js';
+import { normalizeAdapterResult } from '../index.js';
 const fetch=vi.mocked(fetchJson);
 const row={shortcode:'A',title:'Advisor',description:'Real description',published_on:'2026-09-01'};
 describe('Workable independent enumeration',()=>{
@@ -42,5 +43,64 @@ describe('Workable independent enumeration',()=>{
  });
  it('rejects error-shaped widget responses instead of inventing zero jobs',async()=>{
   fetch.mockResolvedValueOnce({error:'bad gateway'});await expect(fetchWorkableJobs({account:'brand'})).rejects.toThrow('INVALID_WIDGET');
+ });
+});
+
+/**
+ * LE CONTRAT DES IDENTIFIANTS CANONIQUES.
+ *
+ * `shortcode` est l'identifiant natif de Workable — la même valeur alimente `externalId` et les deux
+ * endpoints. DEUX chemins produisent des offres (widget et listing curseur) : la preuve porte donc une page
+ * pour le widget et une par page de listing. Une seule page muette et le contrat devient PARTIEL, ce que le
+ * normaliseur refuse. Le témoin passe au rouge si `canonicalIds` est retiré d'un des deux chemins.
+ */
+describe('Workable — contrat des identifiants canoniques',()=>{
+ beforeEach(()=>vi.resetAllMocks());
+
+ it('déclare canonicalIds sur le widget ET sur chaque page de listing',async()=>{
+  fetch.mockResolvedValueOnce({jobs:[row,{...row,shortcode:'B'}]})
+    .mockResolvedValueOnce({total:2,results:[row],nextPage:'next'})
+    .mockResolvedValueOnce({total:2,results:[{...row,shortcode:'B'}]});
+  const r=await fetchWorkableJobs({account:'brand'});
+
+  const pages=r.enumeration!.pageEvidence!;
+  expect(pages).toHaveLength(3);                       // 1 widget + 2 pages de listing
+  for(const pe of pages) expect(Object.hasOwn(pe,'canonicalIds')).toBe(true);
+  expect(pages.map(pe=>pe.canonicalIds)).toEqual([['A','B'],['A'],['B']]);
+  expect(r.enumeration!.canonicalAbsenceProofUsable).toBe(true);
+
+  const canonical=new Set(pages.flatMap(pe=>pe.canonicalIds??[]));
+  expect([...canonical].sort()).toEqual(r.jobs.map(j=>j.externalId).sort());
+  const n=normalizeAdapterResult(r);
+  expect(n.enumeration?.canonicalIdViolations).toBeUndefined();
+  expect(n.enumeration?.issues??[]).not.toContain('CANONICAL_ID_CONTRACT_BROKEN');
+ });
+
+ it("une offre absente du widget reste couverte par la preuve du listing",async()=>{
+  fetch.mockResolvedValueOnce({jobs:[]}).mockResolvedValueOnce({total:1,results:[{...row,published:'2026-09-01'}]});
+  const r=await fetchWorkableJobs({account:'brand'});
+  expect(r.jobs.map(j=>j.externalId)).toEqual(['A']);
+  // Le widget n'a rien vu ; c'est le listing qui nomme l'offre. Contrat intact malgré le chemin unique.
+  expect(r.enumeration!.pageEvidence!.map(pe=>pe.canonicalIds)).toEqual([[],['A']]);
+  expect(normalizeAdapterResult(r).enumeration?.canonicalIdViolations).toBeUndefined();
+ });
+
+ it("une offre du widget reste couverte quand le listing ÉCHOUE entièrement",async()=>{
+  fetch.mockResolvedValueOnce({jobs:[row]}).mockRejectedValueOnce(new Error('403'));
+  const r=await fetchWorkableJobs({account:'brand'});
+  // Sans page de preuve pour le widget, cette offre n'apparaîtrait nulle part et paraîtrait disparue.
+  expect(r.enumeration!.pageEvidence!.map(pe=>pe.canonicalIds)).toEqual([['A']]);
+  expect(normalizeAdapterResult(r).enumeration?.canonicalIdViolations).toBeUndefined();
+ });
+
+ it("une ligne sans shortcode interdit l'attestation d'absence, et son rejet garde son identité",async()=>{
+  fetch.mockResolvedValueOnce({jobs:[row,{title:'Sans code'},{shortcode:'C',title:''}]})
+    .mockResolvedValueOnce({total:1,results:[row]});
+  const r=await fetchWorkableJobs({account:'brand'});
+  expect(r.enumeration!.canonicalAbsenceProofUsable).toBe(false);
+  expect(r.enumeration!.pageEvidence![0].canonicalIds).toEqual(['A','C']);
+  // « C » a été vue puis rejetée : une DISPOSITION nommée, pas un trou.
+  expect(r.rejectedRows?.map(row=>row.canonicalId)).toEqual([undefined,'C']);
+  expect(normalizeAdapterResult(r).enumeration?.canonicalIdViolations).toBeUndefined();
  });
 });

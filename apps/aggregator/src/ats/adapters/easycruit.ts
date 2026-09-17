@@ -42,12 +42,36 @@ export async function fetchEasycruitJobs(config: Record<string, unknown>): Promi
   const xml=await fetchText(endpoint),list=parse(xml,'VacancyList'),vacancies=array<Xml>(list.Vacancy);
   const rejectedRows: NonNullable<AdapterResult['rejectedRows']>=[],issues:string[]=[],seen=new Set<string>();
   const entries:Array<{raw:Xml;id:string;url:string;version:Xml}>=[];
+  /**
+   * LE CONTRAT DES IDENTIFIANTS CANONIQUES, déclaré ici.
+   *
+   * `Vacancy/@id` est l'identifiant NATIF du flux et alimente à la fois cette preuve et
+   * `NormalizedJob.externalId` (`parseEasycruitVacancy`) : c'est donc le seul ensemble comparable à la base.
+   *
+   * L'IDENTIFIANT ENTRE DANS LA PREUVE AVANT LES VALIDATIONS — la leçon TalentRecruiter. Une ligne dotée d'un
+   * `@id` exploitable a été OBSERVÉE quoi qu'il advienne ensuite : titre manquant, URL hors tenant, doublon.
+   * La valider d'abord la faisait sortir de la boucle sans figurer dans `canonicalIds` ; une JobSource
+   * historique portant ce même identifiant aurait alors paru ABSENTE, donc fermée, alors que la source la
+   * publie toujours. Le rejet devient une DISPOSITION nommée, jamais un trou dans la preuve.
+   *
+   * Un doublon est déclaré UNE SEULE FOIS : l'ensemble observé est un ensemble, et sa seconde occurrence est
+   * disposée sur le même identifiant.
+   */
+  const canonicalIds:string[]=[];
+  const observed=new Set<string>();
+  let anonymousRows=0;
   for (const row of vacancies) {
     const id=text(row?.['@_id']),version=row&&versionOf(row,language),url=id&&vacancyUrl(row,origin,id);
-    if (!id || !/^[1-9][0-9]*$/.test(id) || !version || !text(version.Title) || !url) {
-      rejectedRows.push({reason:'INVALID_ID_TITLE_OR_NATIVE_VACANCY_URL',raw:row});continue;
+    // Un `@id` de la forme attendue NOMME la ligne, même si tout le reste est invalide.
+    const canonicalId=id&&/^[1-9][0-9]*$/.test(id)?id:undefined;
+    if (canonicalId) {if (!observed.has(canonicalId)) {observed.add(canonicalId);canonicalIds.push(canonicalId);}}
+    // Une ligne SANS identifiant exploitable a été vue sans pouvoir être nommée : aucune absence
+    // historique n'est démontrable pour ce cycle.
+    else anonymousRows++;
+    if (!id || !canonicalId || !version || !text(version.Title) || !url) {
+      rejectedRows.push({reason:'INVALID_ID_TITLE_OR_NATIVE_VACANCY_URL',raw:row,...(canonicalId?{canonicalId}:{})});continue;
     }
-    if (seen.has(id)) {rejectedRows.push({reason:'DUPLICATE_NATIVE_ID',raw:publicVacancy(row)});continue;}
+    if (seen.has(id)) {rejectedRows.push({reason:'DUPLICATE_NATIVE_ID',raw:publicVacancy(row),canonicalId});continue;}
     seen.add(id);entries.push({raw:publicVacancy(row),id,url,version});
   }
   const limit=pLimit(2);
@@ -67,8 +91,12 @@ export async function fetchEasycruitJobs(config: Record<string, unknown>): Promi
   })));
   return {jobs,rejectedRows,complete:enumerationComplete(true,issues,rejectedRows),
     enumeration:{method:'DOCUMENTED_COMPLETE_XML_FEED_AND_DETAILS',endpoint,documentation:DOCUMENTATION,pages:1,rawCount:vacancies.length,
-      termination:'FULL_XML_DOCUMENT',blockers:enumerationBlockers(issues),issues,pageEvidence:[{url:endpoint,checkedAt:new Date().toISOString(),sha256:createHash('sha256').update(xml).digest('hex'),offset:0,
-        ids:[...seen],pagination:null,publisherCounter:'NOT_PUBLISHED',componentCounters:[`xmlVacancies=${vacancies.length}`,`uniqueIds=${seen.size}`]}]}};
+      termination:'FULL_XML_DOCUMENT',blockers:enumerationBlockers(issues),issues,
+      // Une ligne vue sans `@id` exploitable interdit de déclarer un identifiant historique absent.
+      canonicalAbsenceProofUsable:anonymousRows===0,
+      pageEvidence:[{url:endpoint,checkedAt:new Date().toISOString(),sha256:createHash('sha256').update(xml).digest('hex'),offset:0,
+        ids:[...seen],canonicalIds,pagination:null,publisherCounter:'NOT_PUBLISHED',
+        componentCounters:[`xmlVacancies=${vacancies.length}`,`uniqueIds=${seen.size}`,`canonicalIds=${canonicalIds.length}`,`anonymousRows=${anonymousRows}`]}]}};
 }
 
 function easycruitContext(config: Record<string, unknown>) {

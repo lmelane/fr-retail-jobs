@@ -1,3 +1,5 @@
+import { createHash } from 'node:crypto';
+import { captureObservedAt } from '../../capture/context.js';
 import { normalizeLanguage } from '../../normalize/language.js';
 import { lvmhExperienceYears } from '../../normalize/experience.js';
 import { fetchJson, fetchText } from '../../lib/http.js';
@@ -128,6 +130,20 @@ async function query(key: string, filters: string, page: number): Promise<Algoli
   });
 }
 
+/**
+ * L'identifiant CANONIQUE d'un hit — `objectID`, à défaut `atsId`, et RIEN D'AUTRE.
+ *
+ * `parseLvmhHit` retombe en dernier recours sur `hit.name`, c'est-à-dire sur le TITRE. Un titre n'est pas
+ * une identité : deux « Conseiller de vente » partagent le même, et un titre réécrit par la Maison change
+ * l'identifiant sans que l'offre ait bougé. Une telle ligne est donc ANONYME pour la preuve d'absence —
+ * elle est observée et publiée normalement, mais elle interdit de déclarer un identifiant historique
+ * disparu, puisqu'il pourrait être celle-là.
+ */
+export function lvmhCanonicalId(hit: LvmhHit): string | null {
+  const id = hit.objectID ?? hit.atsId;
+  return id === undefined || id === null || String(id).trim() === '' ? null : String(id);
+}
+
 export function parseLvmhHit(hit: LvmhHit): NormalizedJob | null {
   if (!hit.name) return null;
 
@@ -183,7 +199,10 @@ export async function fetchLvmhJobs(config: Record<string, unknown> = {}): Promi
   let key = String(config.apiKey ?? FALLBACK_KEY);
   const jobs: NormalizedJob[] = [];
   const seen = new Set<string>();
+  const pageEvidence: NonNullable<NonNullable<AdapterResult['enumeration']>['pageEvidence']> = [];
   let declaredTotal: number | undefined;
+  let rawCount = 0, anonymousRows = 0;
+  let termination = 'PAGE_BUDGET_EXHAUSTED';
 
   for (let page = 0; page < MAX_PAGES; page++) {
     let response = await query(key, filters, page);
@@ -209,6 +228,33 @@ export async function fetchLvmhJobs(config: Record<string, unknown> = {}): Promi
     }
 
     const hits = response.hits ?? [];
+    rawCount += hits.length;
+    /**
+     * LE CONTRAT DES IDENTIFIANTS CANONIQUES.
+     *
+     * L'identifiant entre dans la preuve AVANT toute validation : un hit doté d'un `objectID` a été
+     * OBSERVÉ même si `parseLvmhHit` le refuse ensuite faute de `name`, et l'omettre ferait paraître
+     * ABSENTE au refresh suivant une JobSource historique portant ce même identifiant.
+     *
+     * Ce que la preuve archive est exactement ce que l'adaptateur ÉCRIT en `externalId` — y compris le
+     * repli sur le titre, sans quoi l'offre publiée manquerait à sa propre preuve. Mais un identifiant
+     * issu du titre n'est pas une identité : il rend l'attestation d'absence inexploitable pour ce cycle.
+     */
+    const ids: string[] = [];
+    for (const hit of hits) {
+      const canonical = lvmhCanonicalId(hit);
+      const written = parseLvmhHit(hit)?.externalId;
+      if (!canonical) anonymousRows++;
+      const id = canonical ?? written;
+      if (id) ids.push(id);
+    }
+    pageEvidence.push({ url: `${HOST}/1/indexes/${INDEX}/query`, checkedAt: captureObservedAt().toISOString(),
+      sha256: createHash('sha256').update(JSON.stringify(response)).digest('hex'), offset: page * PAGE_SIZE,
+      pagination: response.nbHits === undefined ? null
+        : { start: page * PAGE_SIZE + 1, end: page * PAGE_SIZE + hits.length, total: response.nbHits },
+      ids, canonicalIds: ids, publisherCounter: response.nbHits === undefined ? '' : String(response.nbHits),
+      componentCounters: [`filters=${filters}`, `hitsPerPage=${PAGE_SIZE}`, `page=${page}`] });
+
     let fresh = 0;
     for (const hit of hits) {
       const job = parseLvmhHit(hit);
@@ -219,9 +265,23 @@ export async function fetchLvmhJobs(config: Record<string, unknown> = {}): Promi
     }
 
     if (response.nbHits !== undefined) declaredTotal = response.nbHits;
-    if (hits.length < PAGE_SIZE || fresh === 0) break;
-    if (response.nbHits !== undefined && jobs.length >= response.nbHits) break;
+    if (hits.length < PAGE_SIZE || fresh === 0) { termination = hits.length < PAGE_SIZE ? 'SHORT_PAGE' : 'NO_FRESH_HITS'; break; }
+    if (response.nbHits !== undefined && jobs.length >= response.nbHits) { termination = 'DECLARED_TOTAL_REACHED'; break; }
   }
 
-  return { jobs, declaredTotal };
+  /**
+   * Un hit VU dont l'identifiant est connu mais qui n'a pas été publié (pas de `name`, ou identifiant
+   * déjà rencontré) est nommé ici comme DISPOSITION : sans cela il resterait un trou dans la preuve.
+   */
+  const published = new Set(jobs.map((job) => job.externalId));
+  const rejectedRows: NonNullable<AdapterResult['rejectedRows']> = [
+    ...new Set(pageEvidence.flatMap((pe) => pe.canonicalIds ?? [])),
+  ].filter((id) => !published.has(id)).map((id) => ({ reason: 'MISSING_NAME_OR_REPEATED_ID', raw: { objectID: id }, canonicalId: id }));
+
+  return { jobs, declaredTotal, rejectedRows,
+    enumeration: { method: 'PUBLIC_ALGOLIA_INDEX_PAGINATION', endpoint: `${HOST}/1/indexes/${INDEX}/query`,
+      pages: pageEvidence.length, rawCount, termination,
+      // Un hit sans `objectID` ni `atsId` n'est identifié que par son titre : ce n'est pas une identité,
+      // donc aucun identifiant historique ne peut être déclaré absent pour ce cycle.
+      canonicalAbsenceProofUsable: anonymousRows === 0, pageEvidence } };
 }

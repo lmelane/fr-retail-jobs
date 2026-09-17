@@ -147,6 +147,37 @@ export const PROVING_TERMINATIONS: ReadonlySet<string> = new Set([
 ]);
 
 /**
+ * LES FAMILLES QUI DÉCLARENT LE CONTRAT SANS POUVOIR FERMER — à lire avant d'en conclure quoi que ce soit.
+ *
+ * Déclarer `canonicalIds` ne suffit PAS à fermer une offre : il faut aussi que la source démontre la FIN de
+ * son parcours, par une terminaison de l'ensemble ci-dessus. Les deux conditions sont indépendantes, et le
+ * code d'un adaptateur qui remplit la première a toutes les apparences d'un adaptateur habilité.
+ *
+ * Relevé le 2026-09-17, après l'extension du contrat à 28 familles : six d'entre elles ont un contrat exact
+ * et une terminaison nominale ABSENTE de cet ensemble. Leur contrat est donc inerte — du garde-fou sans
+ * appelant, pas une capacité de fermeture.
+ *
+ *   oraclehcm    NO_FRESH_ROWS_OR_TOTAL_REACHED
+ *   wordpress    DECLARED_PAGE_COUNT_REACHED
+ *   workable     CURSOR_EXHAUSTED
+ *   talentview   SHORT_PAGE_PER_WEBSITE
+ *   taleo        NO_FRESH_ROW                    (assumé en commentaire dans l'adaptateur)
+ *   volcanic     PAGE_COUNT_REACHED
+ *   wttjSector   EVERY_ORGANIZATION_READ
+ *
+ * Ce n'est pas un défaut à corriger ici : promouvoir une terminaison, c'est décider qu'elle DÉMONTRE la fin
+ * du parcours — un arbitrage sur ce qui fait preuve, qui appartient au propriétaire et passe par une décision
+ * écrite. L'ajouter à cet ensemble sans cette démonstration ouvrirait la fermeture d'offres ouvertes.
+ *
+ * Le témoin `refreshPlan.test.ts` garde cette liste : si une de ces terminaisons entrait ici sans que ce
+ * commentaire suive, il passerait au rouge.
+ */
+export const DECLARED_BUT_NOT_PROVING = Object.freeze([
+  'NO_FRESH_ROWS_OR_TOTAL_REACHED', 'DECLARED_PAGE_COUNT_REACHED', 'CURSOR_EXHAUSTED',
+  'SHORT_PAGE_PER_WEBSITE', 'NO_FRESH_ROW', 'PAGE_COUNT_REACHED', 'EVERY_ORGANIZATION_READ',
+] as const);
+
+/**
  * Une source est-elle autorisée à faire disparaître une offre qu'elle n'a pas revue ?
  *
  * Dérivé des FAITS de sa capture attestante, jamais du statut `ACTIVE` du catalogue ni d'un compteur de santé :

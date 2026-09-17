@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { fetchJson, fetchText } from '../../lib/http.js';
 import pLimit from 'p-limit';
 import { enrichPostingEvidence } from '../../lib/postingEvidence.js';
@@ -48,14 +49,47 @@ function asNumber(value: unknown): number | undefined {
   return Number.isFinite(n) && n > 0 ? n : undefined;
 }
 
-/** Les offres d'une page `/api/v1/jobs.json`. Exporté pour être testé sans réseau. */
-export function parseVolcanicPage(page: VolcanicPage, origin: string): NormalizedJob[] {
+/**
+ * L'identifiant CANONIQUE d'une ligne Volcanic : `job.id`, le même chemin d'identité que
+ * `NormalizedJob.externalId` ci-dessous. Null quand la ligne ne porte aucun `id` exploitable — elle a alors
+ * été vue sans pouvoir être nommée, et aucun identifiant historique ne peut être déclaré absent.
+ */
+export function volcanicCanonicalId(job: VolcanicJob): string | null {
+  const id = String(job.id ?? '').trim();
+  return id || null;
+}
+
+/**
+ * Les lignes d'une page, TRIÉES : celles qui deviennent des offres, et celles qui ont été vues puis écartées.
+ *
+ * Une ligne écartée (sans titre, sans slug) doit rester une DISPOSITION nommée : le contrat des identifiants
+ * canoniques est bidirectionnel, et un identifiant observé sans offre ni disposition le rompt.
+ */
+export function sortVolcanicPage(page: VolcanicPage, origin: string): {
+  jobs: NormalizedJob[];
+  rejectedRows: NonNullable<AdapterResult['rejectedRows']>;
+  canonicalIds: string[];
+  anonymousRows: number;
+} {
   const jobs: NormalizedJob[] = [];
+  const rejectedRows: NonNullable<AdapterResult['rejectedRows']> = [];
+  const canonicalIds: string[] = [];
+  let anonymousRows = 0;
   for (const job of page.jobs ?? []) {
-    const externalId = String(job.id ?? '').trim();
+    /**
+     * L'IDENTIFIANT ENTRE DANS LA PREUVE AVANT LES VALIDATIONS : une ligne dotée d'un `id` a été OBSERVÉE,
+     * quoi qu'il advienne de son titre ou de son slug. La valider d'abord la sortirait de `canonicalIds`, et
+     * une JobSource historique portant ce même identifiant paraîtrait ABSENTE.
+     */
+    const canonicalId = volcanicCanonicalId(job);
+    if (canonicalId) canonicalIds.push(canonicalId); else anonymousRows++;
+    const externalId = canonicalId ?? '';
     const title = String(job.job_title ?? job.title ?? '').trim();
-    if (!externalId || !title) continue;
-    if (!job.cached_slug) continue; // sans slug, pas de page publique à proposer au candidat
+    if (!externalId || !title || !job.cached_slug) {
+      // sans slug, pas de page publique à proposer au candidat ; sans titre ni id, rien à publier.
+      rejectedRows.push({ reason: 'MISSING_ID_TITLE_OR_SLUG', raw: job, ...(canonicalId ? { canonicalId } : {}) });
+      continue;
+    }
 
     const description = htmlToPlainText(job.description) || job.clean_description?.trim() || undefined;
 
@@ -74,7 +108,12 @@ export function parseVolcanicPage(page: VolcanicPage, origin: string): Normalize
       raw: job,
     });
   }
-  return jobs;
+  return { jobs, rejectedRows, canonicalIds, anonymousRows };
+}
+
+/** Les offres d'une page `/api/v1/jobs.json`. Exporté pour être testé sans réseau. */
+export function parseVolcanicPage(page: VolcanicPage, origin: string): NormalizedJob[] {
+  return sortVolcanicPage(page, origin).jobs;
 }
 
 export async function fetchVolcanicJobs(config: Record<string, unknown>): Promise<AdapterResult> {
@@ -83,19 +122,44 @@ export async function fetchVolcanicJobs(config: Record<string, unknown>): Promis
 
   const out: NormalizedJob[] = [];
   const seen = new Set<string>();
+  const rejectedRows: NonNullable<AdapterResult['rejectedRows']> = [];
+  const pageEvidence: NonNullable<NonNullable<AdapterResult['enumeration']>['pageEvidence']> = [];
   let declaredTotal: number | undefined;
+  let anonymousRows = 0;
+  let pages = 0, rawCount = 0, termination = 'PAGE_BUDGET_EXHAUSTED';
 
   for (let page = 1; page <= MAX_PAGES; page += 1) {
-    const data = await fetchJson<VolcanicPage>(`${origin}/api/v1/jobs.json?page=${page}`);
+    const url = `${origin}/api/v1/jobs.json?page=${page}`;
+    const data = await fetchJson<VolcanicPage>(url);
     if (typeof data.total_count === 'number') declaredTotal = data.total_count;
+    pages++;
+    const rows = data.jobs ?? [];
+    rawCount += rows.length;
 
-    const fresh = parseVolcanicPage(data, origin).filter((job) => !seen.has(job.externalId));
+    const sorted = sortVolcanicPage(data, origin);
+    anonymousRows += sorted.anonymousRows;
+    rejectedRows.push(...sorted.rejectedRows);
+    /**
+     * `canonicalIds` déclare ce que CETTE page a réellement servi : `job.id`, le même chemin d'identité que
+     * `externalId`. Une ligne déjà vue sur une page précédente reste dans la preuve de la page qui la sert —
+     * le contrat compare des ensembles, et retirer un identifiant dupliqué ferait mentir la page.
+     */
+    pageEvidence.push({ url, checkedAt: new Date().toISOString(),
+      sha256: createHash('sha256').update(JSON.stringify(data)).digest('hex'),
+      offset: out.length,
+      pagination: declaredTotal === undefined ? null
+        : { start: out.length, end: out.length + sorted.jobs.length, total: declaredTotal },
+      ids: sorted.canonicalIds, canonicalIds: sorted.canonicalIds,
+      publisherCounter: String(data.total_count ?? ''),
+      componentCounters: [`page=${data.current_page ?? page}`, `pageCount=${data.page_count ?? ''}`, `rows=${rows.length}`] });
+
+    const fresh = sorted.jobs.filter((job) => !seen.has(job.externalId));
     for (const job of fresh) {
       seen.add(job.externalId);
       out.push(job);
     }
-    if (fresh.length === 0) break;
-    if (typeof data.page_count === 'number' && page >= data.page_count) break;
+    if (fresh.length === 0) { termination = rows.length ? 'REPEATED_PAGE' : 'EMPTY_PAGE'; break; }
+    if (typeof data.page_count === 'number' && page >= data.page_count) { termination = 'PAGE_COUNT_REACHED'; break; }
   }
 
   const limit = pLimit(Math.max(1, Math.min(4, Number(config.detailConcurrency) || 2)));
@@ -106,6 +170,13 @@ export async function fetchVolcanicJobs(config: Record<string, unknown>): Promis
   return {
     jobs,
     declaredTotal,
+    rejectedRows,
     truncated: declaredTotal !== undefined && out.length < declaredTotal,
+    enumeration: { method: 'DECLARED_TOTAL_JSON_PAGINATION', endpoint: `${origin}/api/v1/jobs.json`,
+      pages, rawCount, termination,
+      // Une ligne sans `id` a été vue sans pouvoir être nommée : aucun identifiant historique ne peut être
+      // déclaré absent pour ce cycle.
+      canonicalAbsenceProofUsable: anonymousRows === 0,
+      pageEvidence },
   };
 }

@@ -1,3 +1,5 @@
+import { createHash } from 'node:crypto';
+import { captureObservedAt } from '../../capture/context.js';
 import { fetchJson } from '../../lib/http.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
 
@@ -125,7 +127,7 @@ export function parseRitualsHit(
   };
 }
 
-async function readLocale(origin: string, language: string): Promise<{ sources: RitualsSource[]; total?: number }> {
+async function readLocale(origin: string, language: string): Promise<{ sources: RitualsSource[]; total?: number; endpoint: string; payload: unknown }> {
   const endpoint = `${origin}/api/v1/jobs/`;
   const request = (page: number) =>
     fetchJson<RitualsResponse>(endpoint, {
@@ -137,6 +139,9 @@ async function readLocale(origin: string, language: string): Promise<{ sources: 
   const first = await request(1);
   const total = first.hits?.total?.value;
   let hits = first.hits?.hits ?? [];
+  // La réponse RETENUE est celle dont les hits sont scellés dans la preuve : son empreinte doit porter sur ce
+  // qui a été réellement lu, pas sur la première page quand une seconde l'a remplacée.
+  let payload: unknown = first;
 
   // Une seule requête dimensionnée au total : la pagination cumulative rend
   // tout d'un coup, et une lecture page à page ne ferait que répéter le début.
@@ -147,12 +152,13 @@ async function readLocale(origin: string, language: string): Promise<{ sources: 
       const batch = response.hits?.hits ?? [];
       if (batch.length <= hits.length) break; // plus de croissance : on s'arrête
       hits = batch;
+      payload = response;
       if (hits.length >= total) break;
       page += 1;
     }
   }
 
-  return { sources: hits.map((hit) => hit._source).filter((s): s is RitualsSource => Boolean(s)), total };
+  return { sources: hits.map((hit) => hit._source).filter((s): s is RitualsSource => Boolean(s)), total, endpoint, payload };
 }
 
 export async function fetchRitualsJobs(config: Record<string, unknown> = {}): Promise<AdapterResult> {
@@ -164,23 +170,46 @@ export async function fetchRitualsJobs(config: Record<string, unknown> = {}): Pr
       : DEFAULT_LANGUAGES;
 
   const jobs: NormalizedJob[] = [];
+  const rejectedRows: NonNullable<AdapterResult['rejectedRows']> = [];
   const seen = new Set<string>();
   const scopes: NonNullable<NonNullable<AdapterResult['enumeration']>['scopes']> = [];
+  const pageEvidence: NonNullable<NonNullable<AdapterResult['enumeration']>['pageEvidence']> = [];
+  /** Un hit qu'aucun `jobAdId` ne nomme : compté, jamais inventé — il interdit de déclarer une absence. */
+  let anonymousRows = 0;
   let representations = 0;
   let truncated = false;
 
   for (const language of languages) {
-    const { sources, total } = await readLocale(origin, language);
+    const { sources, total, endpoint, payload } = await readLocale(origin, language);
     if (total !== undefined) representations += total;
     const localeComplete = total !== undefined && sources.length >= total;
     if (!localeComplete) truncated = true;
     const before = seen.size;
+    /**
+     * LE CONTRAT DES IDENTIFIANTS CANONIQUES, une page de preuve par locale.
+     *
+     * `jobAdId` est l'identifiant NATIF servi par l'index, et `parseRitualsHit` le publie tel quel comme
+     * `externalId` : les deux ensembles sont comparables à la base. Chaque locale sert le MÊME catalogue dans
+     * sa langue, donc un même identifiant est légitimement observé dans plusieurs pages — il n'est écrit
+     * qu'une fois, et reste couvert par la première locale qui l'a publié.
+     */
+    const localeCanonicalIds: string[] = [];
     for (const source of sources) {
+      const canonicalId = typeof source.jobAdId === 'string' && source.jobAdId.trim() ? source.jobAdId : null;
+      if (canonicalId) localeCanonicalIds.push(canonicalId); else anonymousRows++;
       const job = parseRitualsHit(source, origin, language);
-      if (!job || seen.has(job.externalId)) continue;
+      // Un hit vu puis écarté faute de titre porte sa cause et son identifiant : sans cette disposition, son
+      // identifiant observé resterait orphelin dans la preuve et le contrat tomberait.
+      if (!job) { rejectedRows.push({ reason: `MISSING_JOB_AD_ID_OR_TITLE:${language}`, raw: source, ...(canonicalId ? { canonicalId } : {}) }); continue; }
+      if (seen.has(job.externalId)) continue;
       seen.add(job.externalId);
       jobs.push(job);
     }
+    pageEvidence.push({ url: endpoint, checkedAt: captureObservedAt().toISOString(),
+      sha256: createHash('sha256').update(JSON.stringify(payload)).digest('hex'),
+      offset: 0, pagination: null, ids: localeCanonicalIds, canonicalIds: localeCanonicalIds,
+      publisherCounter: total === undefined ? '' : `total=${total}`,
+      componentCounters: [`locale=${language}`, `hits=${sources.length}`, `anonymous=${anonymousRows}`] });
     scopes.push({ scope: `locale:${language}`, declaredTotal: total ?? -1, uniqueIds: seen.size - before, pages: 1, complete: localeComplete });
   }
   /**
@@ -192,7 +221,9 @@ export async function fetchRitualsJobs(config: Record<string, unknown> = {}): Pr
    * lue en entier (elle est alors prouvée), la somme sinon.
    */
   const complete = !truncated && scopes.every((s) => s.complete);
-  return { jobs, declaredTotal: complete ? seen.size : representations, truncated, complete,
+  return { jobs, declaredTotal: complete ? seen.size : representations, truncated, complete, rejectedRows,
     enumeration: { method: 'ELASTIC_TOTAL_PER_LOCALE_UNION', endpoint: `${origin}`, pages: scopes.length, rawCount: representations, termination: complete ? 'ALL_LOCALES_COMPLETE' : 'LOCALE_INCOMPLETE', issues: complete ? [] : ['ENUMERATION_NOT_PROVEN'],
+      // Un hit sans `jobAdId` ne peut pas être nommé : aucun identifiant historique ne peut alors être déclaré absent.
+      canonicalAbsenceProofUsable: anonymousRows === 0, pageEvidence,
       scopes: [...scopes, { scope: 'union', declaredTotal: representations, uniqueIds: seen.size, pages: scopes.length, complete }] } };
 }

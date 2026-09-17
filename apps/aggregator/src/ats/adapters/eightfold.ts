@@ -155,6 +155,18 @@ async function openSession(origin: string): Promise<string> {
   }
 }
 
+/**
+ * LE MÊME CHEMIN D'IDENTITÉ que l'`externalId` publié par `toNormalized`, extrait pour être lisible AVANT la
+ * validation du titre. `name` est volontairement exclu du repli : un intitulé n'est pas un identifiant
+ * canonique, et une position sans `id` ni `displayJobId` ne peut nommer aucune absence historique.
+ * `null` quand la ligne ne peut pas être nommée.
+ */
+function eightfoldCanonicalId(position: EightfoldPosition): string | null {
+  const raw = position?.id ?? position?.displayJobId;
+  if (typeof raw === 'number' && Number.isFinite(raw)) return String(raw);
+  return typeof raw === 'string' && raw.trim() ? raw : null;
+}
+
 function toNormalized(position: EightfoldPosition, origin: string): NormalizedJob | null {
   if (!position.name) return null;
 
@@ -239,6 +251,24 @@ export async function fetchEightfoldJobs(
    */
   const pageEvidence: NonNullable<NonNullable<AdapterResult['enumeration']>['pageEvidence']> = [];
   const issues = new Set<string>();
+  /**
+   * LE CONTRAT DES IDENTIFIANTS CANONIQUES.
+   *
+   * `String(position.id)` est l'identifiant NATIF du portail et alimente à la fois cette preuve et
+   * `NormalizedJob.externalId` (`toNormalized`) : c'est le seul ensemble comparable à la base.
+   *
+   * L'IDENTIFIANT ENTRE DANS LA PREUVE AVANT LA VALIDATION — la leçon TalentRecruiter. Une position dotée
+   * d'un `id` a été OBSERVÉE même si le mappeur la refuse (pas de `name`). La refuser d'abord la faisait
+   * sortir sans figurer dans `canonicalIds` ; une JobSource historique portant ce même identifiant aurait
+   * alors paru ABSENTE, donc fermée, alors que le portail la publie toujours. Le refus devient une
+   * DISPOSITION nommée dans `rejectedRows`, jamais un trou dans la preuve.
+   *
+   * Une position SANS `id` exploitable ne peut être ni nommée ni disposée : elle est comptée et signalée
+   * (`canonicalAbsenceProofUsable`), jamais inventée.
+   */
+  const rejectedRows: NonNullable<AdapterResult['rejectedRows']> = [];
+  const observed = new Set<string>();
+  let anonymousRows = 0;
   let pagesRead = 0, rawCount = 0, repeatedIds = 0, unmapped = 0, termination = 'PAGE_BUDGET_EXHAUSTED';
 
   for (let page = 0; page < MAX_PAGES; page++) {
@@ -249,10 +279,24 @@ export async function fetchEightfoldJobs(
     pagesRead += 1; rawCount += positions.length;
     let fresh = 0;
     const pageIds: string[] = [];
+    const pageCanonicalIds: string[] = [];
 
     for (const position of positions) {
+      /**
+       * Le MÊME chemin d'identité que `toNormalized`, lu avant la validation. Une position déjà déclarée sur
+       * une page précédente n'est pas redéclarée : l'ensemble observé est un ensemble.
+       */
+      const canonicalId = eightfoldCanonicalId(position);
+      if (canonicalId) { if (!observed.has(canonicalId)) { observed.add(canonicalId); pageCanonicalIds.push(canonicalId); } }
+      else anonymousRows += 1;
+
       const job = toNormalized(position, origin);
-      if (!job) { unmapped += 1; continue; }
+      if (!job) {
+        unmapped += 1;
+        // Un identifiant exploitable fait du refus une DISPOSITION nommée, jamais un trou dans la preuve.
+        rejectedRows.push({ reason: 'POSITION_WITHOUT_TITLE', raw: position, ...(canonicalId ? { canonicalId } : {}) });
+        continue;
+      }
       pageIds.push(job.externalId);
       if (seen.has(job.externalId)) { repeatedIds += 1; continue; }
       seen.add(job.externalId);
@@ -266,7 +310,8 @@ export async function fetchEightfoldJobs(
       else if (declaredTotal !== count) issues.add('SOURCE_TOTAL_CHANGED');
     }
     pageEvidence.push({ url, checkedAt: captureObservedAt().toISOString(), sha256: createHash('sha256').update(JSON.stringify(response)).digest('hex'), offset: page * PAGE_SIZE, pagination: null,
-      ids: pageIds, publisherCounter: count === undefined ? '' : `count=${count}`, componentCounters: [`positions=${positions.length}`, `uniqueIds=${seen.size}`, `repeated=${repeatedIds}`, `unmapped=${unmapped}`] });
+      ids: pageIds, canonicalIds: pageCanonicalIds, publisherCounter: count === undefined ? '' : `count=${count}`,
+      componentCounters: [`positions=${positions.length}`, `uniqueIds=${seen.size}`, `repeated=${repeatedIds}`, `unmapped=${unmapped}`, `canonicalIds=${observed.size}`, `anonymousRows=${anonymousRows}`] });
     if (positions.length === 0) { termination = 'EMPTY_PAGE'; break; }
     if (count !== undefined && seen.size >= count) { termination = 'PUBLISHER_TOTAL_REACHED'; break; }
     if (fresh === 0) { termination = 'REPEATED_PAGE'; break; }
@@ -275,13 +320,16 @@ export async function fetchEightfoldJobs(
   }
   if (repeatedIds) issues.add('REPEATED_IDS_ACROSS_PAGES');
   if (unmapped) issues.add('POSITIONS_WITHOUT_ID_OR_TITLE');
+  if (anonymousRows) issues.add('ROW_WITHOUT_CANONICAL_ID');
   const complete = declaredTotal !== undefined && seen.size === declaredTotal && termination !== 'PAGE_BUDGET_EXHAUSTED' && !issues.has('SOURCE_TOTAL_CHANGED');
   if (!complete) issues.add('ENUMERATION_NOT_PROVEN');
   const truncated = termination === 'PAGE_BUDGET_EXHAUSTED' || (declaredTotal !== undefined && rawCount < declaredTotal);
   const enumeration: AdapterResult['enumeration'] = { method: 'PUBLISHER_COUNT_JSON_PAGINATION', endpoint: `${origin}/api/pcsx/search?domain=${domain}`, pages: pagesRead, rawCount, termination, issues: [...issues],
+    // Une position vue sans `id` ni `displayJobId` interdit de déclarer un identifiant historique absent.
+    canonicalAbsenceProofUsable: anonymousRows === 0,
     scopes: [{ scope: 'positions', declaredTotal: declaredTotal ?? -1, uniqueIds: seen.size, pages: pagesRead, complete }], pageEvidence };
 
-  if (config.withDescriptions === false) return { jobs, declaredTotal, complete, truncated, enumeration };
+  if (config.withDescriptions === false) return { jobs, declaredTotal, complete, truncated, enumeration, ...(rejectedRows.length ? { rejectedRows } : {}) };
 
   // Descriptions come from a per-position endpoint; the listing has none.
   const limit = pLimit(Number(config.detailConcurrency ?? 4));
@@ -310,5 +358,5 @@ export async function fetchEightfoldJobs(
       }),
     ),
   );
-  return { jobs: withDescriptions, declaredTotal, complete, truncated, enumeration };
+  return { jobs: withDescriptions, declaredTotal, complete, truncated, enumeration, ...(rejectedRows.length ? { rejectedRows } : {}) };
 }

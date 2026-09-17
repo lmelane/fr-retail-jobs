@@ -4,6 +4,7 @@ vi.mock('../../lib/http.js', () => ({ fetchJson: vi.fn(), DEFAULT_DETAIL_CONCURR
 
 import { fetchJson } from '../../lib/http.js';
 import { fetchTalentFunnelJobs, parseTalentFunnelVacancy } from './talentFunnel.js';
+import { normalizeAdapterResult } from '../index.js';
 
 const mockJson = vi.mocked(fetchJson);
 beforeEach(() => mockJson.mockReset());
@@ -120,6 +121,56 @@ describe('fetchTalentFunnelJobs', () => {
 
   it('refuse de tourner sans tenant', async () => {
     await expect(fetchTalentFunnelJobs({ origin: ORIGIN })).rejects.toThrow(/tenant/);
+  });
+});
+
+/**
+ * LE CONTRAT DES IDENTIFIANTS CANONIQUES (lot 5G3C, suite).
+ *
+ * `id ?? vacancyId` est l'identifiant NATIF de la recherche, publié tel quel comme `externalId`. Le contrat
+ * n'est jugé que dans `normalizeAdapterResult` ; retirer `canonicalIds` de l'adaptateur fait ÉCHOUER ces
+ * témoins (vérifié par retrait puis restauration).
+ */
+describe('talentFunnel — contrat des identifiants canoniques', () => {
+  it('déclare les identifiants natifs observés sur TOUTES les pages, et couvre les offres écrites', async () => {
+    const second = { ...LISTED, id: 'second-vacancy', vacancyId: 'second-vacancy', jobTitle: 'Sales Associate' };
+    mockJson
+      .mockResolvedValueOnce({ results: [LISTED, second], totalResults: 2 } as never)
+      .mockResolvedValue(undefined as never); // détails injoignables : sans effet sur la preuve
+
+    const r = await fetchTalentFunnelJobs({ origin: ORIGIN, tenant: TENANT, withDescriptions: false });
+    const pages = r.enumeration!.pageEvidence!;
+
+    expect(pages.length).toBeGreaterThan(0);
+    // Une seule page muette vaudrait contrat ROMPU : `every`, jamais `some`.
+    expect(pages.every((p) => Object.hasOwn(p, 'canonicalIds'))).toBe(true);
+    expect(pages.flatMap((p) => p.canonicalIds ?? [])).toEqual([LISTED.id, 'second-vacancy']);
+    expect(pages.flatMap((p) => p.canonicalIds ?? []).sort()).toEqual(r.jobs.map((j) => j.externalId).sort());
+    expect(r.enumeration!.canonicalAbsenceProofUsable).toBe(true);
+
+    const normalized = normalizeAdapterResult(r);
+    expect(normalized.enumeration?.issues ?? []).not.toContain('CANONICAL_ID_CONTRACT_BROKEN');
+    expect(normalized.enumeration?.canonicalIdViolations).toBeUndefined();
+  });
+
+  it('une vacancy vue puis écartée faute d’intitulé garde son identifiant comme DISPOSITION', async () => {
+    const untitled = { ...LISTED, id: 'sans-titre', vacancyId: 'sans-titre', jobTitle: undefined as unknown as string };
+    mockJson.mockResolvedValueOnce({ results: [LISTED, untitled], totalResults: 2 } as never);
+
+    const r = await fetchTalentFunnelJobs({ origin: ORIGIN, tenant: TENANT, withDescriptions: false });
+    expect(r.enumeration!.pageEvidence!.flatMap((p) => p.canonicalIds ?? [])).toEqual([LISTED.id, 'sans-titre']);
+    expect(r.rejectedRows?.map((row) => row.canonicalId)).toEqual(['sans-titre']);
+    // Sans cette disposition, « sans-titre » serait un identifiant observé orphelin et le contrat tomberait.
+    expect(normalizeAdapterResult(r).enumeration?.canonicalIdViolations).toBeUndefined();
+  });
+
+  it('une vacancy sans identifiant natif est ANONYME : comptée, jamais nommée', async () => {
+    const anonymous = { ...LISTED, id: undefined as unknown as string, vacancyId: undefined as unknown as string };
+    mockJson.mockResolvedValueOnce({ results: [LISTED, anonymous], totalResults: 2 } as never);
+
+    const r = await fetchTalentFunnelJobs({ origin: ORIGIN, tenant: TENANT, withDescriptions: false });
+    expect(r.enumeration!.pageEvidence!.flatMap((p) => p.canonicalIds ?? [])).toEqual([LISTED.id]);
+    expect(r.enumeration!.canonicalAbsenceProofUsable).toBe(false);
   });
 });
 

@@ -56,7 +56,7 @@ export async function fetchHarriJobs(config: Record<string, unknown>): Promise<A
   const rejectedRows: NonNullable<AdapterResult['rejectedRows']> = [];
   const pageEvidence: NonNullable<NonNullable<AdapterResult['enumeration']>['pageEvidence']> = [];
   const issues: string[] = [];
-  let total: number | undefined, rawCount = 0, start = 0, terminated = false;
+  let total: number | undefined, rawCount = 0, start = 0, terminated = false, anonymousRows = 0;
   for (let page = 0; page < maxPages; page++) {
     assertSourceRunning();
     const body = { size: 30, start, source: 'web', brand_level_ids: [brandId], sort: ['publish_date'], sort_type: 'desc', flow: 'CAREER_PORTAL' };
@@ -71,15 +71,34 @@ export async function fetchHarriJobs(config: Record<string, unknown>): Promise<A
     rawCount += rows.length;
     const ids: string[] = [];
     for (const row of rows) {
-      if (!row || !Number.isSafeInteger(row.id) || row.id <= 0 || !(row.aliasPosition || row.position?.name) || !row.brand?.slug || !row.brand?.name) {
-        rejectedRows.push({ reason: 'MISSING_POSTING_ID_TITLE_OR_EMPLOYER', raw: row }); continue;
+      /**
+       * L'IDENTIFIANT ENTRE DANS LA PREUVE AVANT LES VALIDATIONS.
+       *
+       * `String(row.id)` EST l'identifiant canonique de Harri : c'est exactement ce que
+       * `parseHarriPublication` écrit en `externalId`. Une ligne dotée d'un `id` exploitable a donc été
+       * OBSERVÉE, quel que soit son sort ensuite — titre manquant, enseigne absente. La valider d'abord la
+       * faisait sortir de la boucle sans figurer dans `canonicalIds`, et une JobSource historique portant ce
+       * même identifiant aurait alors paru ABSENTE au refresh suivant.
+       */
+      const identifiable = !!row && Number.isSafeInteger(row.id) && row.id > 0;
+      if (identifiable) ids.push(String(row.id));
+      if (!identifiable || !(row.aliasPosition || row.position?.name) || !row.brand?.slug || !row.brand?.name) {
+        // Un identifiant exploitable fait du rejet une DISPOSITION nommée, jamais un trou dans la preuve.
+        rejectedRows.push({ reason: 'MISSING_POSTING_ID_TITLE_OR_EMPLOYER', raw: row, ...(identifiable ? { canonicalId: String(row.id) } : {}) });
+        // Une ligne sans identifiant exploitable ne peut être ni observée ni disposée : aucune absence
+        // n'est démontrable pour ce cycle, car un identifiant disparu pourrait être celle-là.
+        if (!identifiable) anonymousRows++;
+        continue;
       }
-      ids.push(String(row.id));
       if (listings.has(row.id)) issues.push(`REPEATED_POSTING_ID:${row.id}`);
       else listings.set(row.id, row);
     }
+    /**
+     * `ids` EST déjà l'identifiant canonique : on le DÉCLARE, on ne le recalcule pas. Sans la propriété
+     * `canonicalIds`, aucune absence n'est démontrable sur cette source.
+     */
     pageEvidence.push({ url: SEARCH, checkedAt: captureObservedAt().toISOString(), sha256: createHash('sha256').update(JSON.stringify(data)).digest('hex'), offset: start,
-      pagination: { start: start + 1, end: start + rows.length, total: expected }, ids,
+      pagination: { start: start + 1, end: start + rows.length, total: expected }, ids, canonicalIds: ids,
       publisherCounter: String(expected), componentCounters: [JSON.stringify(body)] });
     if (issues.length || rejectedRows.length) break;
     if (listings.size === total) { terminated = true; break; }
@@ -107,7 +126,10 @@ export async function fetchHarriJobs(config: Record<string, unknown>): Promise<A
   })));
   return { jobs, declaredTotal: total, complete: terminated && issues.length === 0 && rejectedRows.length === 0, rejectedRows,
     enumeration: { method: 'NATIVE_OFFSET_AND_UNIQUE_IDS', endpoint: SEARCH, pages: pageEvidence.length, rawCount,
-      termination: terminated ? 'DECLARED_TOTAL_REACHED' : 'INCOMPLETE', issues, pageEvidence } };
+      termination: terminated ? 'DECLARED_TOTAL_REACHED' : 'INCOMPLETE', issues,
+      // Une ligne sans `id` a été vue mais ne peut être nommée : aucun identifiant historique ne peut alors
+      // être déclaré absent, puisqu'il pourrait être celle-là.
+      canonicalAbsenceProofUsable: anonymousRows === 0, pageEvidence } };
 }
 
 /** Pure native listing/detail reader. The caller establishes the portal scope. */

@@ -1,4 +1,6 @@
+import { createHash } from 'node:crypto';
 import pLimit from 'p-limit';
+import { captureObservedAt } from '../../capture/context.js';
 import { fetchJson, DEFAULT_DETAIL_CONCURRENCY } from '../../lib/http.js';
 import { htmlToPlainText } from '../../lib/html.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
@@ -165,15 +167,40 @@ export async function fetchOracleHcmJobs(config: Record<string, unknown>): Promi
 
   const jobs: NormalizedJob[] = [];
   const seen = new Set<string>();
+  const pageEvidence: NonNullable<NonNullable<AdapterResult['enumeration']>['pageEvidence']> = [];
   let declaredTotal: number | undefined;
   let truncated = false;
+  let rawCount = 0;
+  let anonymousRows = 0;
+  let pagesRead = 0;
 
   for (let page = 0; page < MAX_PAGES; page += 1) {
     const offset = page * PAGE_SIZE;
-    const body = await fetchJson<ListResponse>(listUrl(origin, site, offset));
+    const url = listUrl(origin, site, offset);
+    const body = await fetchJson<ListResponse>(url);
     const item = body.items?.[0];
     const batch = item?.requisitionList ?? [];
     if (typeof item?.TotalJobsCount === 'number') declaredTotal = item.TotalJobsCount;
+    pagesRead += 1;
+    rawCount += batch.length;
+
+    /**
+     * LE CONTRAT DES IDENTIFIANTS CANONIQUES.
+     *
+     * `String(req.Id)` EST l'identifiant canonique d'Oracle HCM : `normalizeListRequisition` l'écrit tel
+     * quel en `externalId`, et le détail est refusé s'il ne porte pas le même `Id`. Il est collecté AVANT
+     * la déduplication — une ligne servie deux fois reste une ligne VUE, et la preuve doit la nommer.
+     *
+     * Une ligne SANS `Id` est écartée en silence par le filtre ci-dessous : elle a été vue mais ne peut
+     * être nommée, donc aucun identifiant historique ne peut être déclaré absent pour ce cycle.
+     */
+    const ids = batch.flatMap((req) => (req?.Id ? [String(req.Id)] : []));
+    anonymousRows += batch.length - ids.length;
+    pageEvidence.push({ url, checkedAt: captureObservedAt().toISOString(),
+      sha256: createHash('sha256').update(JSON.stringify(body)).digest('hex'), offset,
+      pagination: declaredTotal === undefined ? null : { start: offset + 1, end: offset + batch.length, total: declaredTotal },
+      ids, canonicalIds: ids, publisherCounter: declaredTotal === undefined ? '' : String(declaredTotal),
+      componentCounters: [`rows=${batch.length}`, `limit=${PAGE_SIZE}`] });
 
     const fresh = batch.filter((req) => req?.Id && !seen.has(String(req.Id)));
     for (const req of fresh) {
@@ -189,7 +216,16 @@ export async function fetchOracleHcmJobs(config: Record<string, unknown>): Promi
     if (page === MAX_PAGES - 1) truncated = true;
   }
 
-  if (config.withDescriptions === false) return { jobs, declaredTotal, truncated };
+  const enumeration: AdapterResult['enumeration'] = {
+    method: 'PUBLISHER_TOTAL_AND_OFFSET_PAGINATION',
+    endpoint: `${origin}/hcmRestApi/resources/latest/recruitingCEJobRequisitions`,
+    pages: pagesRead, rawCount, termination: truncated ? 'PAGE_BUDGET_EXHAUSTED' : 'NO_FRESH_ROWS_OR_TOTAL_REACHED',
+    // Une réquisition sans `Id` a été vue mais ne peut être nommée : un identifiant historique disparu
+    // pourrait être celle-là, donc aucune absence n'est démontrable pour ce cycle.
+    canonicalAbsenceProofUsable: anonymousRows === 0, pageEvidence,
+  };
+
+  if (config.withDescriptions === false) return { jobs, declaredTotal, truncated, enumeration };
 
   const limit = pLimit(Number(config.detailConcurrency ?? DEFAULT_DETAIL_CONCURRENCY));
   const enriched = await Promise.all(
@@ -206,5 +242,5 @@ export async function fetchOracleHcmJobs(config: Record<string, unknown>): Promi
     ),
   );
 
-  return { jobs: enriched, declaredTotal, truncated };
+  return { jobs: enriched, declaredTotal, truncated, enumeration };
 }

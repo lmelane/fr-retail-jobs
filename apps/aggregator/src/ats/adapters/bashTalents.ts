@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import pLimit from 'p-limit';
 import { log } from '../../observability/logger.js';
 import { DEFAULT_DETAIL_CONCURRENCY, fetchText } from '../../lib/http.js';
@@ -145,16 +146,39 @@ function parseDayMonthYear(value: string | undefined): Date | undefined {
   return intacte ? date : undefined;
 }
 
-/** Les offres du listing. Exporté pour être testé sans réseau. */
-export function parseBashListing(html: string): { jobs: NormalizedJob[]; declaredTotal?: number } {
+/**
+ * Les offres du listing. Exporté pour être testé sans réseau.
+ *
+ * `canonicalIds` liste les identifiants NATIFS réellement servis par la page — `BASH_xxx`, extrait de
+ * `attr-href` par `FIELD.id`, le même chemin d'identité que `NormalizedJob.externalId`. Une carte dont le lien
+ * ne porte aucun `BASH_xxx` est ANONYME : elle a été vue sans pouvoir être nommée, et interdit alors toute
+ * attestation d'absence pour ce cycle (`anonymousRows`).
+ */
+export function parseBashListing(html: string): {
+  jobs: NormalizedJob[];
+  declaredTotal?: number;
+  canonicalIds: string[];
+  rejectedRows: NonNullable<AdapterResult['rejectedRows']>;
+  anonymousRows: number;
+} {
   const jobs: NormalizedJob[] = [];
   const seen = new Set<string>();
+  const canonicalIds: string[] = [];
+  const rejectedRows: NonNullable<AdapterResult['rejectedRows']> = [];
+  let anonymousRows = 0;
   const declaredTotal = html.match(FIELD.total)?.[1];
 
   for (const block of html.split(CARD_SPLIT).slice(1)) {
     const link = block.match(FIELD.id);
     const title = decode(block.match(FIELD.title)?.[1]);
-    if (!link || !title) continue;
+    /**
+     * L'IDENTIFIANT ENTRE DANS LA PREUVE AVANT LA VALIDATION DU TITRE : une carte dotée d'un `BASH_xxx` a été
+     * OBSERVÉE, titre ou pas. L'écarter d'abord la sortirait de `canonicalIds`, et une JobSource historique
+     * portant ce même identifiant paraîtrait ABSENTE au refresh suivant, donc serait fermée à tort.
+     */
+    if (!link) { anonymousRows++; continue; }
+    if (!seen.has(link[2])) canonicalIds.push(link[2]);
+    if (!title) { rejectedRows.push({ reason: 'MISSING_TITLE', raw: { path: link[1], id: link[2] }, canonicalId: link[2] }); continue; }
     const externalId = link[2];
     if (seen.has(externalId)) continue;
     seen.add(externalId);
@@ -178,7 +202,7 @@ export function parseBashListing(html: string): { jobs: NormalizedJob[]; declare
     });
   }
 
-  return { jobs, declaredTotal: declaredTotal ? Number(declaredTotal) : undefined };
+  return { jobs, declaredTotal: declaredTotal ? Number(declaredTotal) : undefined, canonicalIds, rejectedRows, anonymousRows };
 }
 
 /** Description complète (poste + profil), date de publication réelle et expérience d'une fiche. */
@@ -198,8 +222,9 @@ export async function fetchBashTalentsJobs(config: Record<string, unknown> = {})
   const locale = String(config.locale ?? DEFAULT_LOCALE);
   const withDescriptions = config.withDescriptions !== false;
 
-  const listing = await fetchText(`${origin}/${locale}/offres`);
-  const { jobs: listed, declaredTotal } = parseBashListing(listing);
+  const listingUrl = `${origin}/${locale}/offres`;
+  const listing = await fetchText(listingUrl);
+  const { jobs: listed, declaredTotal, canonicalIds, rejectedRows, anonymousRows } = parseBashListing(listing);
 
   const limit = pLimit(Number(config.detailConcurrency ?? DEFAULT_DETAIL_CONCURRENCY));
   let detailFailures = 0;
@@ -253,5 +278,23 @@ export async function fetchBashTalentsJobs(config: Record<string, unknown> = {})
     );
   }
 
-  return { jobs, declaredTotal, truncated: declaredTotal !== undefined && jobs.length < declaredTotal };
+  return { jobs, declaredTotal, rejectedRows,
+    truncated: declaredTotal !== undefined && jobs.length < declaredTotal,
+    /**
+     * LE CONTRAT DES IDENTIFIANTS CANONIQUES — une seule page, donc une seule preuve, et elle DÉCLARE.
+     *
+     * Le listing `/fr-FR/offres` est rendu serveur en un seul document : il n'y a pas de pagination, donc pas
+     * de page muette possible. `canonicalIds` porte les `BASH_xxx` réellement servis par ce document.
+     */
+    enumeration: { method: 'SERVER_RENDERED_FULL_LISTING', endpoint: listingUrl, pages: 1,
+      rawCount: canonicalIds.length + anonymousRows, termination: 'FULL_RESPONSE',
+      // Une carte dont le lien ne porte pas de `BASH_xxx` a été vue sans pouvoir être nommée.
+      canonicalAbsenceProofUsable: anonymousRows === 0,
+      pageEvidence: [{ url: listingUrl, checkedAt: new Date().toISOString(),
+        sha256: createHash('sha256').update(listing).digest('hex'), offset: 0,
+        pagination: declaredTotal === undefined ? null : { start: 0, end: listed.length, total: declaredTotal },
+        ids: canonicalIds, canonicalIds,
+        publisherCounter: declaredTotal === undefined ? '' : String(declaredTotal),
+        componentCounters: [`cards=${canonicalIds.length + anonymousRows}`, `anonymous=${anonymousRows}`] }] },
+  };
 }
