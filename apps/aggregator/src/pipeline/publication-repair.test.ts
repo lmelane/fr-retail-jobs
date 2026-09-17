@@ -211,11 +211,18 @@ describe('reviewed publication partitions', () => {
     await expect(mergePlan(a, b)).rejects.toThrow('Conflicting opportunity types');
   });
 
+  /*
+   * 60 s, et non les 5 s par défaut : ce témoin ÉCRIT 32 Mo en base pour éprouver le plafond d'entrée, et
+   * cette écriture seule dépasse le délai standard sur une machine partagée (intégration continue du 17/09,
+   * seul rouge sur 773 témoins ; le fichier passe 48/48 en local). Le délai porte sur l'écriture du jeu
+   * d'essai, jamais sur la garde mesurée : `mergePlan` doit toujours refuser, et un `input budget` qui
+   * cesserait de lever ferait échouer ce témoin quel que soit le temps accordé.
+   */
   it('bounds native payload size before loading a repair component', async () => {
     const a = await publication(), b = await publication();
     await db.job.update({ where: { id: a.job.id }, data: { description: 'x'.repeat(32_000_001) } });
     await expect(mergePlan(a, b)).rejects.toThrow('input budget');
-  });
+  }, 60_000);
 
   it.each(['raw', 'configuration', 'owner'] as const)('refuses changed %s after preview without moving publications', async field => {
     const a = await publication(), b = await publication(); const plan = await mergePlan(a, b);
