@@ -441,7 +441,16 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
     code: 'US',
     nom: 'United States',
     pays: ['US'],
-    locales: ['en-US'],
+    /**
+     * `es-US` ajouté le 2026-09-17 (D-436). Relevé sur la page publique « Country and language »
+     * d'Indeed le même jour : les États-Unis y sont proposés en DEUX langues — « United States
+     * (English) » et « Estados Unidos (español) ». Ce n'est pas une déduction depuis la
+     * démographie : c'est la locale que l'éditeur de référence expose.
+     *
+     * Rien à traduire : `es-US` partage le catalogue `es`, déjà livré au lot F5b. Une locale
+     * régionale n'est pas un catalogue — voir le bloc `locales` du type.
+     */
+    locales: ['en-US', 'es-US'],
     localeParDefaut: 'en-US',
     facettesSite: ['secteur', 'ville', 'maison', 'groupe', 'langue'],
     libellesSite: { pays: 'Country', secteur: 'Sector', ville: 'City', maison: 'Maison', groupe: 'Group', langue: 'Language' },
@@ -682,8 +691,24 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
     code: 'NL',
     nom: 'Nederland',
     pays: ['NL'],
-    /** 1 033 offres en néerlandais, 561 en anglais (15/09/2026) : `en-GB` servi aussi. */
-    locales: ['nl-NL', 'en-GB'],
+    /**
+     * UNE SEULE LOCALE — `en-GB` retiré le 2026-09-17 (D-436), et le motif du retrait vaut
+     * au-delà de ce marché.
+     *
+     * L'ancien commentaire justifiait `en-GB` ainsi : « 1 033 offres en néerlandais, 561 en
+     * anglais ». C'est un raisonnement faux, et le CEO l'a tranché : **la langue des OFFRES d'un
+     * marché ne dit rien de la langue d'INTERFACE que ce marché doit servir**. Les annonces
+     * restent dans leur langue native quelle que soit la locale ; un Néerlandais lisant son
+     * interface en néerlandais voit ses 561 offres anglaises, en anglais. Les deux notions sont
+     * indépendantes, et les confondre conduit à ouvrir des locales que rien ne demande.
+     *
+     * Relevé sur la page publique « Country and language » d'Indeed le 17/09 : les Pays-Bas n'y
+     * sont proposés qu'en néerlandais — « Nederland (Nederlands) ».
+     *
+     * Si l'anglais devait être servi ici un jour, la forme serait `en-NL`, jamais `en-GB` : une
+     * locale d'interface est localisée à son pays (cf. `en-BE` et `en-CH` chez Indeed).
+     */
+    locales: ['nl-NL'],
     localeParDefaut: 'nl-NL',
     facettesSite: ['secteur', 'ville', 'maison', 'groupe', 'langue'],
     libellesSite: { pays: 'Land', secteur: 'Sector', ville: 'Stad', maison: 'Maison', groupe: 'Groep', langue: 'Taal' },
@@ -863,7 +888,25 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
     code: 'BE',
     nom: 'Belgique · België',
     pays: ['BE'],
-    locales: ['fr-BE', 'nl-BE', 'en-GB'],
+    /**
+     * QUATRE LOCALES, corrigées le 2026-09-17 (D-436).
+     *
+     * `de-BE` ajouté : l'allemand est la troisième langue officielle belge, et Indeed le déclare
+     * (`de_BE`, documentation éditeur des locales supportées, relevée le 17/09).
+     *
+     * `en-GB` REMPLACÉ par `en-BE`, et c'est une correction de fond, pas de forme. Servir
+     * l'anglais BRITANNIQUE à un candidat belge était une approximation : Indeed déclare `en_BE`,
+     * comme il déclare `en_CH` pour la Suisse — l'anglais proposé en langue supplémentaire est
+     * toujours localisé au pays, jamais emprunté au marché britannique.
+     *
+     * Le marché reste BE dans les quatre cas : une locale n'est pas un marché. `en-BE` ne
+     * transforme pas la Belgique en Royaume-Uni, pas plus que `fr-CH` ne fait de la Suisse la
+     * France.
+     *
+     * Aucun catalogue à produire : `fr-BE` → `fr`, `nl-BE` → `nl`, `de-BE` → `de`, `en-BE` → `en`,
+     * tous livrés au lot F5b.
+     */
+    locales: ['fr-BE', 'nl-BE', 'de-BE', 'en-BE'],
     localeParDefaut: 'fr-BE',
     /** `pays` : un marché où le candidat filtre utilement par territoire. */
     facettesSite: ['secteur', 'ville', 'maison', 'groupe', 'langue', 'pays'],

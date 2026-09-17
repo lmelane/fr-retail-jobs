@@ -39,10 +39,41 @@ describe('le registre décrit chaque marché en entier', () => {
   it('les langues attendues : le Canada en anglais d’abord, la Belgique et la Suisse plurilingues, la Chine en zh-CN', () => {
     expect(MARCHES.CA.localeParDefaut).toBe('en-CA');
     expect(MARCHES.CA.locales).toContain('fr-CA');
-    expect(MARCHES.BE.locales).toEqual(['fr-BE', 'nl-BE', 'en-GB']);
+    // D-436 (17/09/2026), relevé chez Indeed : `de_BE` déclaré, et l'anglais supplémentaire est
+    // localisé au pays (`en_BE`), jamais emprunté au marché britannique.
+    expect(MARCHES.BE.locales).toEqual(['fr-BE', 'nl-BE', 'de-BE', 'en-BE']);
     expect(MARCHES.CH.locales).toEqual(['fr-CH', 'de-CH', 'it-CH']);
     expect(MARCHES.CN.localeParDefaut).toBe('zh-CN');
-    expect(MARCHES.NL.locales).toEqual(['nl-NL', 'en-GB']);
+    // `es-US` : les États-Unis sont proposés en deux langues sur la page publique d'Indeed.
+    expect(MARCHES.US.locales).toEqual(['en-US', 'es-US']);
+    // `en-GB` retiré : la langue des OFFRES d'un marché ne dit rien de sa langue d'INTERFACE.
+    expect(MARCHES.NL.locales).toEqual(['nl-NL']);
+  });
+
+  /**
+   * L'INVARIANT QUE D-436 POSE, et qui vaut pour tout marché à venir.
+   *
+   * Une locale d'interface est localisée à SON pays. Emprunter la locale d'un autre marché —
+   * `en-GB` servi en Belgique, comme le registre le faisait avant le 17/09 — mélange les deux
+   * axes que la décision sépare : le pays porte le marché, la locale porte l'interface.
+   *
+   * Ce témoin passe au rouge si quelqu'un réintroduit une locale dont le suffixe de pays ne
+   * correspond ni au code du marché, ni à l'un des pays qu'il sert (`DE` sert DE et AT, `GB`
+   * sert GB et IE).
+   */
+  it('aucune locale n’emprunte le pays d’un autre marché', () => {
+    for (const code of CODES_MARCHE) {
+      const marche = MARCHES[code];
+      const paysServis = new Set<string>([marche.code, ...marche.pays]);
+      for (const locale of marche.locales) {
+        const paysDeLaLocale = locale.split('-')[1];
+        expect(paysDeLaLocale, `${code} déclare ${locale}, dont le pays est étranger au marché`).toBeDefined();
+        expect(paysServis.has(paysDeLaLocale!), `${code} déclare ${locale} : locale empruntée à un autre marché`).toBe(true);
+      }
+      // PRÉMISSE : sans locale déclarée, le témoin ne vérifierait rien.
+      expect(marche.locales.length, `${code} ne déclare aucune locale`).toBeGreaterThan(0);
+      expect(marche.locales).toContain(marche.localeParDefaut);
+    }
   });
 
   it('chaque facette servie porte un libellé, natif sur un marché, générique hors marché', () => {
