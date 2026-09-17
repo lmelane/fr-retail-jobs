@@ -43,7 +43,7 @@ const GRAINES: readonly Graine[] = [
   { id: 'shanghai', maison: AUTRE, pays: 'CN', ville: 'Shanghai', titre: '销售顾问', langue: 'zh', contrat: 'PERMANENT', temps: 'FULL_TIME' },
   { id: 'vienne', maison: AUTRE, pays: 'AT', ville: 'Wien', contrat: 'PERMANENT', temps: 'FULL_TIME' },
   { id: 'dublin', maison: AUTRE, pays: 'IE', ville: 'Dublin', contrat: 'PERMANENT', temps: 'FULL_TIME' },
-  { id: 'tokyo', maison: AUTRE, pays: 'JP', ville: 'Tokyo', titre: 'Store Manager Ginza', contrat: 'PERMANENT', temps: 'FULL_TIME' },
+  { id: 'sofia', maison: AUTRE, pays: 'BG', ville: 'Sofia', titre: 'Store Manager Vitosha', contrat: 'PERMANENT', temps: 'FULL_TIME' },
   { id: 'nulle-part', maison: AUTRE, pays: null, ville: 'Nulle Part', remote: true, contrat: 'PERMANENT', temps: 'FULL_TIME' },
 ];
 const jobId = (g: Graine) => `${M}-${g.id}`;
@@ -86,7 +86,7 @@ describe.skipIf(!enabled)('la recherche est bornée par le périmètre (lot 6)',
 
   it('PRÉMISSE — le semis est mondial : l’autre Maison recrute dans sept pays et une fois sans pays', async () => {
     const monde = await prisma.job.groupBy({ by: ['countryCode'], where: { companyId: companyId(AUTRE), isActive: true }, _count: true });
-    expect(monde.map((r) => r.countryCode).sort()).toEqual([null, 'AT', 'BE', 'CN', 'IE', 'JP', 'US'].sort());
+    expect(monde.map((r) => r.countryCode).sort()).toEqual([null, 'AT', 'BE', 'BG', 'CN', 'IE', 'US'].sort());
     expect(await prisma.job.count({ where: { companyId: companyId(AUTRE), isActive: true } })).toBe(9);
   });
 
@@ -137,15 +137,20 @@ describe.skipIf(!enabled)('la recherche est bornée par le périmètre (lot 6)',
   });
 
   it('un pays sans marché mesuré est un périmètre servi seul, sans facettes natives — le stock hors marchés n’est pas invisible', async () => {
-    const jp = await chercher('JP', {}, AUTRE_SEULE);
-    expect(ids(jp)).toEqual(['tokyo']);
-    expect(jp.perimetre).toMatchObject({ code: 'JP', mesure: false, pays: ['JP'] });
-    expect(jp.facettes.map((f) => f.cle)).toEqual(['secteur', 'ville', 'maison', 'groupe', 'langue']);
-    expect(jp.totalPerimetre).toBeGreaterThanOrEqual(1);
+    /*
+     * `BG` a remplacé `JP` le 17/09/2026 : le Japon est devenu un marché routable (552 offres) et
+     * ce témoin a rougi — c'est son travail. La Bulgarie porte 45 offres publiables, sous le seuil
+     * de 50 : un code pays réel, servi par le catalogue, sans marché mesuré.
+     */
+    const bg = await chercher('BG', {}, AUTRE_SEULE);
+    expect(ids(bg)).toEqual(['sofia']);
+    expect(bg.perimetre).toMatchObject({ code: 'BG', mesure: false, pays: ['BG'] });
+    expect(bg.facettes.map((f) => f.cle)).toEqual(['secteur', 'ville', 'maison', 'groupe', 'langue']);
+    expect(bg.totalPerimetre).toBeGreaterThanOrEqual(1);
   });
 
   it('une offre sans pays n’appartient à aucun périmètre, mais reste servie par son identifiant', async () => {
-    for (const marche of ['FR', 'US', 'BE', 'JP']) expect(ids(await chercher(marche, {}, AUTRE_SEULE))).not.toContain('nulle-part');
+    for (const marche of ['FR', 'US', 'BE', 'BG']) expect(ids(await chercher(marche, {}, AUTRE_SEULE))).not.toContain('nulle-part');
     expect((await getJobStatus(`${M}-nulle-part`)).status).toBe('active');
   });
 
@@ -253,11 +258,11 @@ describe.skipIf(!enabled)('la recherche est bornée par le périmètre (lot 6)',
   it('la recherche texte et les suggestions vivent dans le périmètre', async () => {
     expect((await chercher('FR', { q: 'Conseiller' }, MAISON_SEULE)).total).toBe(5);
     expect((await chercher('FR', { q: 'Ginza' })).total).toBe(0);
-    expect((await chercher('JP', { q: 'Ginza' })).total).toBe(1);
-    expect(await suggestTitles('Store Manager', exigerPerimetre('JP'))).toEqual(['Store Manager Ginza']);
+    expect((await chercher('BG', { q: 'Vitosha' })).total).toBe(1);
+    expect(await suggestTitles('Store Manager', exigerPerimetre('BG'))).toEqual(['Store Manager Vitosha']);
     expect(await suggestTitles('Store Manager', exigerPerimetre('FR'))).toEqual([]);
     expect(await suggestCompanies('Périmètre Témoin', exigerPerimetre('FR'))).toEqual([MAISON]);
-    expect(await suggestCompanies('Périmètre Témoin', exigerPerimetre('JP'))).toEqual([]);
+    expect(await suggestCompanies('Périmètre Témoin', exigerPerimetre('BG'))).toEqual([]);
     expect(await suggestCompanies('Périmètre', exigerPerimetre('US'))).toEqual(expect.arrayContaining([MAISON, AUTRE]));
   });
 
@@ -277,12 +282,18 @@ describe.skipIf(!enabled)('la recherche est bornée par le périmètre (lot 6)',
   it('le contrat des marchés compte le catalogue par périmètre, hors marchés et sans pays', async () => {
     const contrat = await contratMarches();
     expect(contrat.version).toBe(1);
-    expect(contrat.marches.map((m) => m.code)).toHaveLength(12);
+    /*
+     * 41 marchés depuis le 17/09/2026 : les 12 LOCALISÉS (interface et libellés dans leur langue)
+     * plus les 29 ROUTABLES (corpus mesuré, interface anglaise en repli). Le nombre est gravé
+     * plutôt que dérivé du registre : un `toHaveLength(CODES_MARCHE.length)` serait toujours vrai
+     * et laisserait une ouverture de marché passer inaperçue.
+     */
+    expect(contrat.marches.map((m) => m.code)).toHaveLength(41);
     const compte = async (pays: string[]) => prisma.job.count({ where: { isActive: true, mergedIntoId: null, countryCode: { in: pays }, sources: { some: { isActive: true, OR: [{ expiresAt: null }, { expiresAt: { gt: new Date() } }] } } } });
     expect(contrat.marches.find((m) => m.code === 'DE')?.offresPubliables).toBe(await compte(['DE', 'AT']));
     expect(contrat.marches.find((m) => m.code === 'FR')?.offresPubliables).toBe(await compte(['FR']));
     expect(contrat.marches.find((m) => m.code === 'FR')?.facettes.map((f) => f.cle)).toContain('contrat');
-    expect(contrat.catalogue.autresPays.find((p) => p.code === 'JP')?.offresPubliables).toBe(await compte(['JP']));
+    expect(contrat.catalogue.autresPays.find((p) => p.code === 'BG')?.offresPubliables).toBe(await compte(['BG']));
     expect(contrat.catalogue.autresPays.some((p) => p.code === 'AT')).toBe(false);
     expect(contrat.catalogue.sansPays).toBeGreaterThanOrEqual(1);
     expect(contrat.catalogue.offresPubliables).toBeGreaterThanOrEqual(GRAINES.length);

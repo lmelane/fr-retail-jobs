@@ -8,7 +8,15 @@ const repo = fileURLToPath(new URL('../../../', import.meta.url));
 const repositoryEntries = new Set(['.git', '.github', '.gitignore', '.gitattributes', '.dockerignore',
   '.claude', '.codex', '.vscode', '.idea', '.editorconfig', '.openai', '.env', '.env.example',
   'README.md', 'CLAUDE.md', 'AGENTS.md', 'LICENSE', 'LICENSE.md', 'NOTICE',
-  'package.json', 'package-lock.json', 'apps', 'packages', 'docs', 'audits', 'backups', 'node_modules']);
+  'package.json', 'package-lock.json', 'apps', 'packages', 'docs', 'audits', 'backups', 'node_modules',
+  /*
+   * Sorties LOCALES, toutes ignorées par git : la stack de développement, les manifestes
+   * d'instantané de `corpus-reference.mts`, et le bac à sable de session. Elles n'atteignent
+   * jamais le dépôt — les déclarer ici évite que le garde rougisse sur la machine d'un
+   * développeur pour des dossiers qu'il a lui-même produits, et que ce bruit finisse par faire
+   * ignorer le garde entier.
+   */
+  '.stack-local', '.corpus', 'scratchpad']);
 for (const entry of readdirSync(repo)) {
   if (!repositoryEntries.has(entry) && !entry.startsWith('.env.'))
     errors.push(`Unclassified repository root entry: ${entry}; put reports in audits/, private outputs in backups/, or explicitly review new infrastructure files`);
@@ -33,8 +41,14 @@ for (const path of walk(join(app, 'src'))) {
 for (const path of walk(join(app, 'scripts'))) {
   if (path.endsWith('.pyc') || path.endsWith('.DS_Store')) errors.push(`Generated file in scripts/: ${relative(app,path)}`);
 }
+/*
+ * Les référentiels que le code LIT RÉELLEMENT. `seeds/sources.csv` a quitté cette liste le
+ * 2026-09-17 avec le fichier : il portait 83 lignes quand la table `Source` en portait 536, et sa
+ * commande `import-sources` aurait recréé de faux DRAFT après un reset. Chaque entrée restante a
+ * au moins un appelant vérifié — le garde exige ce qui existe, jamais ce qui a été supprimé.
+ */
 for (const entry of ['reference/maisons.csv', 'reference/country-labels.json', 'reference/UNICODE-LICENSE.txt',
-  'reference/villes-exonymes.csv', 'reference/villes-non-lieux.csv', 'reference/discovery-career-signals.json', 'seeds/sources.csv']) {
+  'reference/villes-exonymes.csv', 'reference/villes-non-lieux.csv', 'reference/discovery-career-signals.json']) {
   try { if (!statSync(join(app, 'data', entry)).isFile()) throw Error(); }
   catch { errors.push(`Required reference missing: ${entry}`); }
 }
