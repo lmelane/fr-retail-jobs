@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import pLimit from 'p-limit';
 import { fetchJson } from '../../lib/http.js';
 import { htmlToPlainText } from '../../lib/html.js';
@@ -130,8 +131,10 @@ export async function fetchTalentViewJobs(
   // Every public website is enumerated; a website locale is not a country filter.
   const jobs: NormalizedJob[] = [];
   const globalIds = new Set<string>();
+  const pageEvidence: NonNullable<NonNullable<AdapterResult['enumeration']>['pageEvidence']> = [];
   let truncated = false;
   let complete = true;
+  let rawCount = 0;
   for (const websiteId of websiteIds) {
     const websiteIdsSeen = new Set<string>();
     let terminal = false;
@@ -142,7 +145,9 @@ export async function fetchTalentViewJobs(
       url.searchParams.set('offset_start', String(page));
       const campaigns = await fetchJson<Campaign[]>(url.toString(), { headers: HEADERS });
       if (!Array.isArray(campaigns)) throw new Error(`TalentView "${slug}": malformed campaigns page ${page}`);
+      rawCount += campaigns.length;
       let fresh = 0;
+      const pageIds: string[] = [];
       for (const campaign of campaigns) {
         if (!campaign || typeof campaign.name !== 'string' || !campaign.name.trim() ||
             typeof campaign.slug !== 'string' || !campaign.slug.trim() ||
@@ -150,6 +155,17 @@ export async function fetchTalentViewJobs(
           throw new Error(`TalentView "${slug}": invalid campaign on page ${page}`);
         }
         const job = parseTalentViewCampaign(campaign, slug)!;
+        /**
+         * L'identifiant CANONIQUE : `campaign.id`, et `campaign.slug` quand l'API n'en sert pas — exactement
+         * le chemin de `parseTalentViewCampaign`, donc de `NormalizedJob.externalId`. Les deux sont NATIFS et
+         * servis par la source ; aucun n'est dérivé de l'URL ni du titre.
+         *
+         * Il entre dans la preuve de SA page avant toute déduplication : une campagne servie par deux sites
+         * locale a bien été vue sur chacun, et retirer l'identifiant de la seconde page la rendrait muette.
+         * `campaign.name` ne peut pas servir de repli ici — toute campagne sans `slug` fait échouer la page
+         * au-dessus, donc ce cas n'atteint jamais ce point.
+         */
+        if (!pageIds.includes(job.externalId)) pageIds.push(job.externalId);
         if (websiteIdsSeen.has(job.externalId)) { truncated = true; continue; }
         websiteIdsSeen.add(job.externalId);
         fresh++;
@@ -159,12 +175,29 @@ export async function fetchTalentViewJobs(
           jobs.push(job);
         }
       }
+      pageEvidence.push({ url: url.toString(), checkedAt: new Date().toISOString(),
+        sha256: createHash('sha256').update(JSON.stringify(campaigns)).digest('hex'),
+        offset: (page - 1) * 10, pagination: null,
+        ids: pageIds, canonicalIds: pageIds, publisherCounter: '',
+        componentCounters: [`website=${websiteId}`, `rows=${campaigns.length}`] });
       if (campaigns.length < 10) { terminal = true; break; }
       if (fresh === 0) { truncated = true; break; }
     }
     if (!terminal) { complete = false; truncated = true; }
   }
-  const result = { jobs, truncated, complete: complete && !truncated };
+  /**
+   * LE CONTRAT DES IDENTIFIANTS CANONIQUES. Toute campagne servie porte un identifiant exploitable — une
+   * campagne sans `slug` ni `name` fait ÉCHOUER la page entière plutôt que d'être ignorée, donc il n'existe
+   * ici ni ligne anonyme ni ligne rejetée : ce que la preuve nomme est exactement ce qui a été servi.
+   */
+  const enumeration: AdapterResult['enumeration'] = {
+    method: 'PUBLIC_WEBSITE_CAMPAIGN_PAGINATION',
+    endpoint: `${API}/companies/${encodeURIComponent(slug)}/campaigns`,
+    pages: pageEvidence.length, rawCount,
+    termination: complete && !truncated ? 'SHORT_PAGE_PER_WEBSITE' : 'INCOMPLETE_TRAVERSAL',
+    canonicalAbsenceProofUsable: true, pageEvidence,
+  };
+  const result = { jobs, truncated, complete: complete && !truncated, enumeration };
   if (config.withDescriptions === false) return result;
 
   // The listing carries no text; /campaigns/{slug} does. Keyed by SLUG — the id

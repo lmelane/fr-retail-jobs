@@ -1,3 +1,5 @@
+import { createHash } from 'node:crypto';
+import { captureObservedAt } from '../../capture/context.js';
 import { fetchWithRetry, fetchJson } from '../../lib/http.js';
 import { htmlToPlainText } from '../../lib/html.js';
 import { employmentTermsFrom } from '../../normalize/employment.js';
@@ -88,13 +90,25 @@ function asNumber(value: unknown): number | undefined {
   return Number.isFinite(n) ? n : undefined;
 }
 
+/**
+ * L'identifiant CANONIQUE d'une entrée Jibe — exactement ce que `parseJibePage` écrit en `externalId`.
+ *
+ * Une seule implémentation pour les deux chemins : si la preuve d'énumération et l'offre publiée
+ * dérivaient l'identité séparément, elles finiraient par diverger et les deux ensembles ne seraient plus
+ * comparables — alors qu'une absence ne se prouve qu'en les comparant.
+ */
+export function jibeCanonicalId(job: JibeJob | undefined): string | null {
+  const id = String(job?.req_id ?? job?.slug ?? '').trim();
+  return id || null;
+}
+
 /** Les offres d'une page `/api/jobs`. Exporté pour être testé sans réseau. */
 export function parseJibePage(page: JibePage, origin: string): NormalizedJob[] {
   const jobs: NormalizedJob[] = [];
   for (const entry of page.jobs ?? []) {
     const job = entry?.data;
     if (!job) continue;
-    const externalId = String(job.req_id ?? job.slug ?? '').trim();
+    const externalId = jibeCanonicalId(job);
     const title = String(job.title ?? '').trim();
     // Sans identifiant ni titre, l'offre n'est ni stable ni lisible.
     if (!externalId || !title) continue;
@@ -161,14 +175,40 @@ export async function fetchJibeJobs(config: Record<string, unknown>): Promise<Ad
 
   const out: NormalizedJob[] = [];
   const seen = new Set<string>();
+  const pageEvidence: NonNullable<NonNullable<AdapterResult['enumeration']>['pageEvidence']> = [];
   let declaredTotal: number | undefined;
+  let rawCount = 0, anonymousRows = 0;
+  let termination = 'PAGE_BUDGET_EXHAUSTED';
 
   for (let page = 1; page <= MAX_PAGES; page += 1) {
     const url = `${origin}/api/jobs?page=${page}&limit=${pageSize}&sortBy=relevance&descending=false&internal=false`;
     const data = await fetchJson<JibePage>(url, { headers });
     if (typeof data.totalCount === 'number') declaredTotal = data.totalCount;
 
+    /**
+     * LE CONTRAT DES IDENTIFIANTS CANONIQUES.
+     *
+     * L'identifiant est lu par `jibeCanonicalId`, le MÊME chemin que `externalId` — pas une seconde
+     * dérivation qui pourrait diverger. Il entre dans la preuve AVANT le filtre sur le titre : une entrée
+     * dotée d'un `req_id` a été OBSERVÉE, et l'omettre ferait paraître ABSENTE, au refresh suivant, une
+     * JobSource historique portant ce même identifiant.
+     */
+    const rows = data.jobs ?? [];
+    rawCount += rows.length;
+    const ids: string[] = [];
+    for (const entry of rows) {
+      const id = jibeCanonicalId(entry?.data);
+      if (id) ids.push(id); else anonymousRows++;
+    }
+
     const batch = parseJibePage(data, origin);
+    pageEvidence.push({ url, checkedAt: captureObservedAt().toISOString(),
+      sha256: createHash('sha256').update(JSON.stringify(data)).digest('hex'), offset: (page - 1) * pageSize,
+      pagination: declaredTotal === undefined ? null
+        : { start: (page - 1) * pageSize + 1, end: (page - 1) * pageSize + rows.length, total: declaredTotal },
+      ids, canonicalIds: ids, publisherCounter: declaredTotal === undefined ? '' : String(declaredTotal),
+      componentCounters: [`rows=${rows.length}`, `parsed=${batch.length}`] });
+
     const fresh = batch.filter((job) => !seen.has(job.externalId));
     for (const job of fresh) {
       seen.add(job.externalId);
@@ -176,8 +216,8 @@ export async function fetchJibeJobs(config: Record<string, unknown>): Promise<Ad
     }
     // Une page sans offre NOUVELLE termine la lecture (page vide en fin de
     // liste, ou un pager qui rejoue la dernière page).
-    if (fresh.length === 0) break;
-    if (declaredTotal !== undefined && out.length >= declaredTotal) break;
+    if (fresh.length === 0) { termination = rows.length ? 'REPEATED_OR_UNUSABLE_PAGE' : 'EMPTY_PAGE'; break; }
+    if (declaredTotal !== undefined && out.length >= declaredTotal) { termination = 'DECLARED_TOTAL_REACHED'; break; }
   }
 
   // F-06 : une première page vide sur un portail qui annonce des offres est
@@ -186,9 +226,25 @@ export async function fetchJibeJobs(config: Record<string, unknown>): Promise<Ad
     throw new Error(`jibe ${origin}: totalCount=${declaredTotal} but 0 job returned — session cookie missing?`);
   }
 
+  /**
+   * Une entrée VUE dont l'identifiant est connu mais qui n'a pas été publiée (titre manquant, doublon
+   * d'identifiant au sein d'une même page) est nommée ici comme DISPOSITION : sans cela elle resterait un
+   * trou dans la preuve, et son offre historique paraîtrait disparue.
+   */
+  const published = new Set(out.map((job) => job.externalId));
+  const rejectedRows: NonNullable<AdapterResult['rejectedRows']> = [
+    ...new Set(pageEvidence.flatMap((pe) => pe.canonicalIds ?? [])),
+  ].filter((id) => !published.has(id)).map((id) => ({ reason: 'MISSING_TITLE_OR_REPEATED_ID', raw: { id }, canonicalId: id }));
+
   return {
     jobs: out,
     declaredTotal,
+    rejectedRows,
     truncated: declaredTotal !== undefined && out.length < declaredTotal,
+    enumeration: { method: 'SESSION_COOKIE_JSON_API', endpoint: `${origin}/api/jobs`, pages: pageEvidence.length,
+      rawCount, termination,
+      // Une entrée sans `req_id` ni `slug` a été vue mais ne peut être nommée : aucun identifiant
+      // historique ne peut alors être déclaré absent, puisqu'il pourrait être celle-là.
+      canonicalAbsenceProofUsable: anonymousRows === 0, pageEvidence },
   };
 }

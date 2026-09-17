@@ -1,6 +1,6 @@
 import pLimit from 'p-limit';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
-import { fetchWttjJobs, wttjSearch } from './wttj.js';
+import { APP_ID, INDEX, fetchWttjJobs, wttjSearch } from './wttj.js';
 
 /**
  * Welcome to the Jungle — tout un SECTEUR, pas une société.
@@ -144,11 +144,29 @@ export async function fetchWttjSectorJobs(config: Record<string, unknown>): Prom
 
   const seen = new Set<string>();
   const jobs: NormalizedJob[] = [];
+  const rejectedRows: NonNullable<AdapterResult['rejectedRows']> = [];
+  const pageEvidence: NonNullable<NonNullable<AdapterResult['enumeration']>['pageEvidence']> = [];
   let declaredTotal = 0;
   let truncated = false;
+  let pages = 0, rawCount = 0, absenceProofUsable = true;
   for (const result of perOrganization) {
     declaredTotal += result.declaredTotal ?? result.jobs.length;
     if (result.declaredTotal !== undefined && result.jobs.length < result.declaredTotal) truncated = true;
+    /**
+     * LE CONTRAT DES IDENTIFIANTS CANONIQUES, HÉRITÉ DE `fetchWttjJobs`.
+     *
+     * Le balayage sectoriel ne lit rien lui-même : il lit chaque organisation par l'adaptateur `wttj`, avec le
+     * même `externalId` (`reference`, sinon `slug`). Ses preuves sont donc CELLES de ces lectures, reprises
+     * telles quelles — les recopier serait fabriquer une preuve que ce module n'a pas produite. Une seule
+     * organisation sans preuve rendrait le contrat PARTIEL pour tout le secteur, et le normaliseur le
+     * refuserait : le contrat tient ici parce qu'il tient à chaque lecture.
+     */
+    pageEvidence.push(...(result.enumeration?.pageEvidence ?? []));
+    rejectedRows.push(...(result.rejectedRows ?? []));
+    pages += result.enumeration?.pages ?? 0;
+    rawCount += result.enumeration?.rawCount ?? 0;
+    // Une organisation dont un hit est anonyme retire le droit d'attester pour le SECTEUR entier.
+    if (result.enumeration?.canonicalAbsenceProofUsable === false) absenceProofUsable = false;
     for (const job of result.jobs) {
       // Une organisation n'est lue qu'une fois ; la garde protège d'un slug
       // passé deux fois par la config (`organizations` + facette).
@@ -157,5 +175,15 @@ export async function fetchWttjSectorJobs(config: Record<string, unknown>): Prom
       jobs.push(job);
     }
   }
-  return { jobs, declaredTotal, truncated };
+  return { jobs, declaredTotal, truncated, rejectedRows,
+    enumeration: { method: 'FACETED_ORGANIZATION_SWEEP_OF_ALGOLIA_INDEX',
+      endpoint: `https://${APP_ID}-dsn.algolia.net/1/indexes/${INDEX}/query`,
+      pages, rawCount, termination: truncated ? 'ORGANIZATION_SHORT_OF_DECLARED_TOTAL' : 'EVERY_ORGANIZATION_READ',
+      canonicalAbsenceProofUsable: absenceProofUsable,
+      scopes: organizations.map((slug, i) => ({ scope: slug,
+        declaredTotal: perOrganization[i].declaredTotal ?? -1,
+        uniqueIds: perOrganization[i].jobs.length,
+        pages: perOrganization[i].enumeration?.pages ?? 0,
+        complete: perOrganization[i].complete === true })),
+      pageEvidence } };
 }

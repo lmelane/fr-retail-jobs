@@ -5,6 +5,7 @@ vi.mock('../../lib/http.js', () => ({ fetchJson: vi.fn(), fetchText: vi.fn() }))
 
 import { fetchJson } from '../../lib/http.js';
 import { DEFAULT_SECTORS, fetchWttjSectorJobs, listOrganizations } from './wttjSector.js';
+import { normalizeAdapterResult } from '../index.js';
 
 const mockJson = vi.mocked(fetchJson);
 beforeEach(() => mockJson.mockReset());
@@ -100,6 +101,56 @@ describe('fetchWttjSectorJobs — un secteur = ses organisations, lues une à un
       .mockResolvedValueOnce({ message: 'Invalid Application-ID or API key', status: 403 });
 
     await expect(fetchWttjSectorJobs({ withDescriptions: false })).rejects.toThrow(/WTTJ refused the query/);
+  });
+});
+
+/**
+ * LE CONTRAT DES IDENTIFIANTS CANONIQUES, HÉRITÉ.
+ *
+ * Le balayage sectoriel ne lit rien lui-même : il lit chaque organisation par `fetchWttjJobs`. Ses preuves
+ * sont donc CELLES de ces lectures, reprises telles quelles — jamais recopiées ni fabriquées ici. Une seule
+ * organisation muette rendrait le contrat PARTIEL pour tout le secteur. Le témoin passe au rouge si les
+ * preuves des organisations ne sont plus reprises.
+ */
+describe('WTTJ sectoriel — contrat des identifiants canoniques', () => {
+  it('reprend la preuve de CHAQUE organisation lue, aucune muette', async () => {
+    mockJson
+      .mockResolvedValueOnce(FIXTURE.facetResponse)
+      .mockResolvedValueOnce({ hits: [], nbHits: 0 })         // diptyque-paris : board réellement vide
+      .mockResolvedValueOnce(FIXTURE.hermesPage)
+      .mockResolvedValueOnce(FIXTURE.ritzPage);
+
+    const r = await fetchWttjSectorJobs({ withDescriptions: false });
+
+    const pages = r.enumeration!.pageEvidence!;
+    expect(pages).toHaveLength(3);                            // une par organisation lue
+    for (const pe of pages) expect(Object.hasOwn(pe, 'canonicalIds')).toBe(true);
+    // Le board vide déclare une preuve VIDE, ce qui n'est pas une absence de contrat.
+    expect(pages[0].canonicalIds).toEqual([]);
+    expect(pages[1].canonicalIds).toEqual([FIXTURE.hermesPage.hits[0].reference]);
+    expect(pages[2].canonicalIds).toEqual([FIXTURE.ritzPage.hits[0].reference]);
+    expect(r.enumeration!.canonicalAbsenceProofUsable).toBe(true);
+
+    const canonical = new Set(pages.flatMap(pe => pe.canonicalIds ?? []));
+    expect([...canonical].sort()).toEqual(r.jobs.map(j => j.externalId).sort());
+    const n = normalizeAdapterResult(r);
+    expect(n.enumeration?.canonicalIdViolations).toBeUndefined();
+    expect(n.enumeration?.issues ?? []).not.toContain('CANONICAL_ID_CONTRACT_BROKEN');
+  });
+
+  it("un hit anonyme dans UNE organisation retire le droit d'attester pour tout le secteur", async () => {
+    const anonyme = { ...FIXTURE.hermesPage.hits[0], reference: undefined, slug: undefined };
+    expect(anonyme.name).toBeTruthy();   // PRÉMISSE : sans le garde, il serait publié sous son titre.
+    mockJson
+      .mockResolvedValueOnce(FIXTURE.facetResponse)
+      .mockResolvedValueOnce({ hits: [], nbHits: 0 })
+      .mockResolvedValueOnce({ ...FIXTURE.hermesPage, hits: [anonyme] })
+      .mockResolvedValueOnce(FIXTURE.ritzPage);
+
+    const r = await fetchWttjSectorJobs({ withDescriptions: false });
+    expect(r.enumeration!.canonicalAbsenceProofUsable).toBe(false);
+    expect(r.rejectedRows?.map(row => row.reason)).toEqual(['HIT_WITHOUT_NATIVE_ID']);
+    expect(normalizeAdapterResult(r).enumeration?.canonicalIdViolations).toBeUndefined();
   });
 });
 

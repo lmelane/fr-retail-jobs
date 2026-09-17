@@ -1,5 +1,5 @@
 import type { Prisma, PrismaClient, Source, SourceStatus } from '@prisma/client';
-import { loadSourceCatalog, tierFor, sourceKeyFor, type CatalogSource } from './sourceCatalog.js';
+import { tierFor, sourceKeyFor, type CatalogSource } from './sourceCatalog.js';
 import { requireSourceAccess } from './sourceAccess.js';
 import { requireSourceValidation } from './sourceCertification.js';
 import { requireSourceIdentity } from './sourceIdentity.js';
@@ -101,12 +101,12 @@ export function tenantKeyOf(kind: string, entryUrl: string, careersDomain?: stri
  *
  * REFUSES to answer on an empty catalogue: an unseeded environment silently
  * ingesting zero sources is exactly the quiet-zero failure mode this whole
- * chantier exists to kill. The fix is one command: `import-sources`.
+ * chantier exists to kill. Le registre se restaure par `reimporter-registre-sources.mts`.
  */
 export async function loadActiveSources(prisma: PrismaClient): Promise<RuntimeSource[]> {
   return prisma.$transaction(async tx => {
     if (await tx.source.count() === 0) throw new Error(
-      'Source table is empty — the catalogue has not been imported. Run: npm run import-sources -w @catwalks/aggregator');
+      'Source table is empty — le registre n’a pas été réimporté. Lancer : npx tsx scripts/ops/reimporter-registre-sources.mts <registre.json> --ecrire');
     // JSONB text avoids the driver's lossy JSON-number conversion and keeps
     // the loaded settings and revision in one coherent database snapshot.
     const rows = await tx.$queryRaw<(Omit<RuntimeSource, 'config'> & { configText: string })[]>`
@@ -116,60 +116,18 @@ export async function loadActiveSources(prisma: PrismaClient): Promise<RuntimeSo
   }, { isolationLevel: 'RepeatableRead' });
 }
 
-export type ImportStats = {
-  imported: number;
-  updated: number;
-  skippedDuplicateTenant: string[];
-};
-
 /**
- * One-shot import of data/seeds/sources.csv into the Source table.
+ * ⚠️ `importSourcesCsv` A ÉTÉ SUPPRIMÉE LE 2026-09-17 — ne pas la recréer.
  *
- * Seed only: existing operational rows remain authoritative and are never
- * overwritten by an undated CSV. New rows arrive DRAFT without fabricated
- * validation evidence and must pass the normal promotion gate.
- * A second maison mapping to an already-imported tenant is REFUSED and
- * reported, not silently merged: that conflict is a human arbitration.
+ * Elle réensemençait la table depuis `data/seeds/sources.csv`. Mesuré avant suppression : ce CSV
+ * portait 83 lignes quand la table en portait 536, sans statut, sans révision, avec des
+ * configurations périmées. Sur une base vide il aurait recréé 83 sources en DRAFT sans rapport
+ * avec le registre réel, en conflit de `tenantKey` avec les vraies.
+ *
+ * Le réensemencement passe par l'export du registre lui-même — `exporter-registre-sources.mts`
+ * puis `reimporter-registre-sources.mts` (voir `scripts/ops/`). Il restaure les 536 sources avec
+ * leur `config`, leur révision courante et leur statut réel, sans en inventer aucun.
  */
-export async function importSourcesCsv(prisma: PrismaClient): Promise<ImportStats> {
-  const stats: ImportStats = { imported: 0, updated: 0, skippedDuplicateTenant: [] };
-
-  for (const source of loadSourceCatalog()) {
-    const key = sourceKeyFor(source);
-    // CSV imports must never replace live configuration or dated evidence.
-    if (await prisma.source.findUnique({ where: { key } })) continue;
-    const tenantKey = tenantKeyOf(source.kind, source.entryUrl, source.careersDomain, source.maison);
-    let config: Record<string, unknown>;
-    try {
-      config = JSON.parse(source.entryUrl || '{}');
-    } catch {
-      config = { url: source.entryUrl };
-    }
-
-    // A different key already holding this tenant means two catalogue lines
-    // point at one board — the exact duplication the unique constraint exists
-    // to stop. Surface it; a human decides which line survives.
-    const holder = await prisma.source.findUnique({ where: { tenantKey } });
-    if (holder && holder.key !== key) {
-      stats.skippedDuplicateTenant.push(`${key} -> tenant already held by ${holder.key}`);
-      continue;
-    }
-
-    const data = {
-      maison: source.maison,
-      careersDomain: source.careersDomain || null,
-      kind: source.kind,
-      config: config as Prisma.InputJsonValue,
-      jobUrlPattern: source.jobUrlPattern || null,
-      tier: tierFor(source),
-      tenantKey,
-    };
-    await prisma.source.create({ data: { ...data, key, status: 'DRAFT' } });
-    stats.imported++;
-  }
-
-  return stats;
-}
 
 export type PromoteResult = {
   key: string;

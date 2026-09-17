@@ -5,6 +5,7 @@ vi.mock('../../lib/http.js', () => ({ fetchJson: vi.fn(), fetchText: vi.fn() }))
 
 import { fetchJson } from '../../lib/http.js';
 import { descriptionFromApi, fetchWttjJobs } from './wttj.js';
+import { normalizeAdapterResult } from '../index.js';
 
 const mockJson = vi.mocked(fetchJson);
 beforeEach(() => mockJson.mockReset());
@@ -96,5 +97,53 @@ describe('fetchWttjJobs — niveau d’études déclaré', () => {
       .mockResolvedValueOnce(FIXTURE.apiResponse);
     const { jobs } = await fetchWttjJobs({ slug: 'diptyque-paris' });
     expect(jobs[0].educationLevel).toBeUndefined();
+  });
+});
+
+/**
+ * LE CONTRAT DES IDENTIFIANTS CANONIQUES.
+ *
+ * `reference`, sinon `slug` : deux champs NATIFS de l'index Algolia, et le chemin exact de `externalId`.
+ * `name` est le TITRE — l'ancien dernier repli de `externalId` — et le contrat interdit d'en faire un
+ * identifiant. Le témoin passe au rouge si `canonicalIds` est retiré de la preuve.
+ */
+describe('WTTJ — contrat des identifiants canoniques', () => {
+  it('déclare canonicalIds, exactement les reference observées', async () => {
+    mockJson.mockResolvedValueOnce(FIXTURE.algoliaResponse).mockResolvedValueOnce(FIXTURE.apiResponse);
+    const r = await fetchWttjJobs({ slug: 'diptyque-paris' });
+
+    const pages = r.enumeration!.pageEvidence!;
+    expect(pages).toHaveLength(1);
+    expect(Object.hasOwn(pages[0], 'canonicalIds')).toBe(true);
+    expect(pages[0].canonicalIds).toEqual([FIXTURE.algoliaResponse.hits[0].reference]);
+    expect(pages[0].canonicalIds).toEqual(r.jobs.map(j => j.externalId));
+    expect(r.enumeration!.canonicalAbsenceProofUsable).toBe(true);
+
+    const n = normalizeAdapterResult(r);
+    expect(n.enumeration?.canonicalIdViolations).toBeUndefined();
+    expect(n.enumeration?.issues ?? []).not.toContain('CANONICAL_ID_CONTRACT_BROKEN');
+  });
+
+  it('se rabat sur le slug natif quand la reference manque, jamais sur le titre', async () => {
+    const hit = { ...FIXTURE.algoliaResponse.hits[0], reference: undefined };
+    mockJson.mockResolvedValueOnce({ ...FIXTURE.algoliaResponse, hits: [hit] });
+    const r = await fetchWttjJobs({ slug: 'diptyque-paris', withDescriptions: false });
+    expect(r.jobs[0].externalId).toBe(hit.slug);
+    expect(r.enumeration!.pageEvidence![0].canonicalIds).toEqual([hit.slug]);
+    expect(normalizeAdapterResult(r).enumeration?.canonicalIdViolations).toBeUndefined();
+  });
+
+  it("un hit sans reference NI slug n'est jamais publié sous son titre", async () => {
+    const anonyme = { ...FIXTURE.algoliaResponse.hits[0], reference: undefined, slug: undefined };
+    // PRÉMISSE : le hit porte bien un nom, donc l'ancien repli aurait produit une offre titrée.
+    expect(anonyme.name).toBeTruthy();
+    mockJson.mockResolvedValueOnce({ ...FIXTURE.algoliaResponse, hits: [anonyme] });
+    const r = await fetchWttjJobs({ slug: 'diptyque-paris', withDescriptions: false });
+
+    expect(r.jobs).toHaveLength(0);
+    expect(r.rejectedRows?.map(row => row.reason)).toEqual(['HIT_WITHOUT_NATIVE_ID']);
+    expect(r.enumeration!.canonicalAbsenceProofUsable).toBe(false);
+    expect(r.enumeration!.pageEvidence![0].canonicalIds).toEqual([]);
+    expect(normalizeAdapterResult(r).enumeration?.canonicalIdViolations).toBeUndefined();
   });
 });

@@ -1,4 +1,6 @@
+import { createHash } from 'node:crypto';
 import pLimit from 'p-limit';
+import { captureObservedAt } from '../../capture/context.js';
 import { DEFAULT_DETAIL_CONCURRENCY, fetchJson } from '../../lib/http.js';
 import { htmlToPlainText } from '../../lib/html.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
@@ -178,9 +180,14 @@ export async function fetchTalentFunnelJobs(config: Record<string, unknown>): Pr
   const headers = { tenant, 'content-type': 'application/json' };
 
   const vacancies: Vacancy[] = [];
+  const pageEvidence: NonNullable<NonNullable<AdapterResult['enumeration']>['pageEvidence']> = [];
+  /** Une vacancy qu'aucun `id` ni `vacancyId` ne nomme : comptée, jamais inventée. */
+  let anonymousRows = 0;
   let declaredTotal: number | undefined;
+  let pages = 0, termination = 'PAGE_BUDGET_EXHAUSTED';
+  const searchUrl = `${api}/js/search/vacancy`;
   for (let page = 0; page < MAX_PAGES; page += 1) {
-    const response = await fetchJson<SearchResponse>(`${api}/js/search/vacancy`, {
+    const response = await fetchJson<SearchResponse>(searchUrl, {
       method: 'POST',
       headers,
       body: JSON.stringify({
@@ -192,13 +199,34 @@ export async function fetchTalentFunnelJobs(config: Record<string, unknown>): Pr
     });
     const batch = response.results ?? [];
     vacancies.push(...batch);
+    pages += 1;
     if (response.totalResults !== undefined) declaredTotal = response.totalResults;
-    if (batch.length < PAGE_SIZE) break;
-    if (declaredTotal !== undefined && vacancies.length >= declaredTotal) break;
+    /**
+     * LE CONTRAT DES IDENTIFIANTS CANONIQUES, page par page.
+     *
+     * `id ?? vacancyId` est l'identifiant NATIF servi par la recherche, et `parseTalentFunnelVacancy` le publie
+     * tel quel comme `externalId` : c'est le seul ensemble comparable à la base, donc le seul par lequel une
+     * absence puisse être prouvée. Aucun repli sur l'URL ni sur le titre — une ligne innommable est ANONYME.
+     */
+    const pageCanonicalIds: string[] = [];
+    for (const vacancy of batch) {
+      const id = vacancy.id ?? vacancy.vacancyId;
+      if (typeof id === 'string' && id.trim()) pageCanonicalIds.push(id); else anonymousRows++;
+    }
+    pageEvidence.push({ url: searchUrl, checkedAt: captureObservedAt().toISOString(),
+      sha256: createHash('sha256').update(JSON.stringify(response)).digest('hex'),
+      offset: page * PAGE_SIZE,
+      pagination: { start: page * PAGE_SIZE, end: page * PAGE_SIZE + batch.length, total: declaredTotal ?? -1 },
+      ids: pageCanonicalIds, canonicalIds: pageCanonicalIds,
+      publisherCounter: declaredTotal === undefined ? '' : `totalResults=${declaredTotal}`,
+      componentCounters: [`returned=${batch.length}`, `anonymous=${anonymousRows}`] });
+    if (batch.length < PAGE_SIZE) { termination = 'SHORT_PAGE'; break; }
+    if (declaredTotal !== undefined && vacancies.length >= declaredTotal) { termination = 'PUBLISHER_TOTAL_REACHED'; break; }
   }
 
   const limit = pLimit(Number(config.detailConcurrency ?? DEFAULT_DETAIL_CONCURRENCY));
   const seen = new Set<string>();
+  const rejectedRows: NonNullable<AdapterResult['rejectedRows']> = [];
   const jobs = (
     await Promise.all(
       vacancies.map((vacancy) =>
@@ -215,11 +243,22 @@ export async function fetchTalentFunnelJobs(config: Record<string, unknown>): Pr
               // titre, lieu, date et URL.
             }
           }
-          return parseTalentFunnelVacancy(vacancy, origin, detail);
+          const job = parseTalentFunnelVacancy(vacancy, origin, detail);
+          /**
+           * Une vacancy VUE puis écartée faute d'intitulé est une DISPOSITION nommée, avec son identifiant
+           * natif : sans elle, cet identifiant resterait observé sans offre ni motif, et le contrat tomberait —
+           * à juste titre, puisque rien ne dirait ce qu'il est devenu.
+           */
+          if (!job) rejectedRows.push({ reason: 'MISSING_JOB_TITLE', raw: vacancy, canonicalId: id });
+          return job;
         }),
       ),
     )
   ).filter((job): job is NormalizedJob => job !== null);
 
-  return { jobs, declaredTotal, truncated: declaredTotal !== undefined && jobs.length < declaredTotal };
+  return { jobs, declaredTotal, rejectedRows, truncated: declaredTotal !== undefined && jobs.length < declaredTotal,
+    enumeration: { method: 'PUBLISHER_TOTAL_RESULTS_JSON_PAGINATION', endpoint: searchUrl,
+      pages, rawCount: vacancies.length, termination,
+      // Une vacancy sans identifiant natif ne peut pas être nommée : aucune absence ne peut alors être déclarée.
+      canonicalAbsenceProofUsable: anonymousRows === 0, pageEvidence } };
 }

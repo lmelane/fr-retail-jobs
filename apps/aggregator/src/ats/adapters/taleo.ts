@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import pLimit from 'p-limit';
 import { fetchText, fetchWithRetry, DEFAULT_DETAIL_CONCURRENCY } from '../../lib/http.js';
 import { htmlToPlainText } from '../../lib/html.js';
@@ -108,24 +109,31 @@ function sessionCookie(response: Response): string | undefined {
   return raw.match(/JSESSIONID=[^;]+/)?.[0];
 }
 
-async function readSection(origin: string, org: string, cws: string): Promise<NormalizedJob[]> {
+/** Une page de résultats lue, avec la preuve de ce qu'elle a servi. */
+type SectionPage = { url: string; html: string; jobs: NormalizedJob[] };
+
+async function readSection(origin: string, org: string, cws: string): Promise<SectionPage[]> {
   const base = `${origin}/ats/careers/v2/searchResults?org=${encodeURIComponent(org)}&cws=${encodeURIComponent(cws)}`;
   const first = await fetchWithRetry(base);
   const cookie = sessionCookie(first);
-  const jobs = parseTaleoListing(await first.text());
-  const seen = new Set(jobs.map((job) => job.externalId));
+  const html = await first.text();
+  const read: SectionPage[] = [{ url: base, html, jobs: parseTaleoListing(html) }];
+  const seen = new Set(read[0].jobs.map((job) => job.externalId));
 
   for (let page = 1; page < MAX_PAGES && cookie; page += 1) {
     const url = `${base}&next&rowFrom=${page * PAGE_SIZE}&act=null&sortColumn=null&sortOrder=null`;
-    const html = await fetchText(url, { headers: { cookie } });
-    const fresh = parseTaleoListing(html).filter((job) => !seen.has(job.externalId));
+    const body = await fetchText(url, { headers: { cookie } });
+    const rows = parseTaleoListing(body);
+    const fresh = rows.filter((job) => !seen.has(job.externalId));
+    /**
+     * La page est retenue comme PREUVE même quand elle ne rend rien de neuf : elle a bien été servie, et sa
+     * répétition (le portail re-sert la première page passé la dernière) fait partie de ce qui a été observé.
+     */
+    read.push({ url, html: body, jobs: rows });
     if (fresh.length === 0) break;
-    for (const job of fresh) {
-      seen.add(job.externalId);
-      jobs.push(job);
-    }
+    for (const job of fresh) seen.add(job.externalId);
   }
-  return jobs;
+  return read;
 }
 
 export async function fetchTaleoJobs(config: Record<string, unknown>): Promise<AdapterResult> {
@@ -136,15 +144,43 @@ export async function fetchTaleoJobs(config: Record<string, unknown>): Promise<A
 
   const jobs: NormalizedJob[] = [];
   const seen = new Set<string>();
+  const pageEvidence: NonNullable<NonNullable<AdapterResult['enumeration']>['pageEvidence']> = [];
+  let rawCount = 0;
   for (const cws of sections) {
-    for (const job of await readSection(origin, org, cws)) {
-      if (seen.has(job.externalId)) continue;
-      seen.add(job.externalId);
-      jobs.push(job);
+    for (const read of await readSection(origin, org, cws)) {
+      rawCount += read.jobs.length;
+      /**
+       * `rid` EST l'identifiant canonique de TBE : la même valeur alimente cette preuve et
+       * `NormalizedJob.externalId` (`parseTaleoListing`). Le motif de ligne EXIGE un `rid` numérique et un
+       * titre — une ligne sans l'un des deux n'est pas reconnue comme ligne du tout, donc aucune ligne
+       * anonyme ni aucun rejet ne peut exister ici : ce que la page sert est exactement ce qu'elle nomme.
+       */
+      const ids = read.jobs.map((job) => job.externalId);
+      pageEvidence.push({ url: read.url, checkedAt: new Date().toISOString(),
+        sha256: createHash('sha256').update(read.html).digest('hex'),
+        offset: pageEvidence.length * PAGE_SIZE, pagination: null,
+        ids, canonicalIds: ids, publisherCounter: '',
+        componentCounters: [`cws=${cws}`, `rows=${read.jobs.length}`] });
+      for (const job of read.jobs) {
+        if (seen.has(job.externalId)) continue;
+        seen.add(job.externalId);
+        jobs.push(job);
+      }
     }
   }
 
-  if (config.withDescriptions === false) return { jobs };
+  /**
+   * TBE n'annonce AUCUN total : ni compteur de résultats, ni nombre de pages. La terminaison est donc
+   * empirique — la page qui ne rend plus rien de neuf — et le parcours n'est jamais PROUVÉ complet.
+   * Le contrat canonique, lui, est indépendant : il dit que ce qui est écrit a été vu, pas que tout a été vu.
+   */
+  const enumeration: AdapterResult['enumeration'] = {
+    method: 'SESSION_PAGINATED_HTML_SECTIONS', endpoint: `${origin}/ats/careers/v2/searchResults?org=${encodeURIComponent(org)}`,
+    pages: pageEvidence.length, rawCount, termination: 'NO_FRESH_ROW',
+    canonicalAbsenceProofUsable: true, pageEvidence,
+  };
+
+  if (config.withDescriptions === false) return { jobs, enumeration };
 
   const limit = pLimit(Number(config.detailConcurrency ?? DEFAULT_DETAIL_CONCURRENCY));
   const enriched = await Promise.all(
@@ -162,5 +198,5 @@ export async function fetchTaleoJobs(config: Record<string, unknown>): Promise<A
       }),
     ),
   );
-  return { jobs: enriched };
+  return { jobs: enriched, enumeration };
 }

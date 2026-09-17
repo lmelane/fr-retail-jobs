@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import pLimit from 'p-limit';
 import { fetchJson, fetchText } from '../../lib/http.js';
 import { htmlToPlainText } from '../../lib/html.js';
@@ -22,7 +23,7 @@ import { CRAWLER_IDENTITY } from '../../lib/crawlerIdentity.js';
  * This replaces fetching 1294 individual pages with one query per employer.
  */
 
-const APP_ID = 'CSEKHVMS53';
+export const APP_ID = 'CSEKHVMS53';
 /**
  * Public, client-side search key — the one the website itself ships.
  *
@@ -36,7 +37,7 @@ const APP_ID = 'CSEKHVMS53';
  * discovery batches before anyone noticed the key had changed.
  */
 let searchKey = '4bd8f6215d0cc52b26430765769e65a0';
-const INDEX = 'wttj_jobs_production_fr';
+export const INDEX = 'wttj_jobs_production_fr';
 
 /** Any company page carries the current credentials in its inlined config. */
 const KEY_SOURCE = 'https://www.welcometothejungle.com/fr/companies/lacoste/jobs';
@@ -82,7 +83,7 @@ async function refreshSearchKey(): Promise<boolean> {
 
 type WttjOffice = { city?: string; country?: string; zip_code?: string };
 
-type WttjHit = {
+export type WttjHit = {
   slug?: string;
   reference?: string;
   name?: string;
@@ -195,6 +196,20 @@ async function attachWttjDescriptions(
   );
 }
 
+/**
+ * L'identifiant CANONIQUE d'un hit WTTJ : `reference`, sinon `slug` — les deux NATIFS, servis par l'index.
+ *
+ * `hit.name` est le TITRE de l'offre : `toNormalized` s'en sert en dernier repli, mais un titre n'est pas un
+ * identifiant. Un hit qui n'a ni `reference` ni `slug` est donc ANONYME — il a été vu sans pouvoir être nommé,
+ * et aucun identifiant historique ne peut être déclaré absent tant qu'il est là.
+ */
+export function wttjCanonicalId(hit: WttjHit): string | null {
+  const reference = typeof hit.reference === 'string' ? hit.reference.trim() : '';
+  if (reference) return reference;
+  const slug = typeof hit.slug === 'string' ? hit.slug.trim() : '';
+  return slug || null;
+}
+
 function toNormalized(hit: WttjHit, organizationSlug: string): NormalizedJob | null {
   if (!hit.name) return null;
 
@@ -207,7 +222,8 @@ function toNormalized(hit: WttjHit, organizationSlug: string): NormalizedJob | n
     '';
 
   return {
-    externalId: String(hit.reference ?? hit.slug ?? hit.name),
+    // Le même chemin d'identité que `wttjCanonicalId` — et l'appelant refuse déjà un hit qui n'en a pas.
+    externalId: wttjCanonicalId(hit) ?? String(hit.name),
     title: hit.name,
     location: [office?.city, office?.zip_code].filter(Boolean).join(', ') || undefined,
     country: office?.country,
@@ -241,7 +257,11 @@ export async function fetchWttjJobs(config: Record<string, unknown>): Promise<Ad
   if (!slug) throw new Error('WTTJ organization slug missing');
 
   const jobs: NormalizedJob[] = [];
+  const rejectedRows: NonNullable<AdapterResult['rejectedRows']> = [];
+  const pageEvidence: NonNullable<NonNullable<AdapterResult['enumeration']>['pageEvidence']> = [];
   let declaredTotal: number | undefined;
+  let anonymousRows = 0;
+  let pages = 0, rawCount = 0, termination = 'SHORT_PAGE';
 
   for (let page = 0; ; page++) {
     // A rotated key is refreshed once and a persistent refusal throws (see
@@ -258,24 +278,61 @@ export async function fetchWttjJobs(config: Record<string, unknown>): Promise<Ad
     });
 
     const hits = response.hits ?? [];
+    pages++; rawCount += hits.length;
+    const pageIds: string[] = [];
     for (const hit of hits) {
+      /**
+       * L'IDENTIFIANT ENTRE DANS LA PREUVE AVANT LA VALIDATION DU TITRE : un hit doté d'une `reference` ou
+       * d'un `slug` a été OBSERVÉ, nom ou pas. L'écarter d'abord le sortirait de `canonicalIds`, et une
+       * JobSource historique portant ce même identifiant paraîtrait ABSENTE au refresh suivant.
+       */
+      const canonicalId = wttjCanonicalId(hit);
+      if (canonicalId) { if (!pageIds.includes(canonicalId)) pageIds.push(canonicalId); }
+      else anonymousRows++;
       const job = toNormalized(hit, slug);
-      if (job) jobs.push(job);
+      /**
+       * UN HIT SANS IDENTIFIANT NATIF NE DEVIENT PAS UNE OFFRE : `toNormalized` se rabattrait sur `hit.name`,
+       * donc sur le TITRE, et publierait une offre absente de toute preuve — ce que le contrat interdit.
+       */
+      if (!job) { rejectedRows.push({ reason: 'MISSING_TITLE', raw: hit, ...(canonicalId ? { canonicalId } : {}) }); continue; }
+      if (!canonicalId) { rejectedRows.push({ reason: 'HIT_WITHOUT_NATIVE_ID', raw: hit }); continue; }
+      jobs.push(job);
     }
+    pageEvidence.push({ url: `https://${APP_ID}-dsn.algolia.net/1/indexes/${INDEX}/query`,
+      checkedAt: new Date().toISOString(),
+      sha256: createHash('sha256').update(JSON.stringify(response)).digest('hex'),
+      offset: page * PAGE_SIZE,
+      pagination: response.nbHits === undefined ? null
+        : { start: page * PAGE_SIZE, end: page * PAGE_SIZE + hits.length, total: response.nbHits },
+      ids: pageIds, canonicalIds: pageIds, publisherCounter: String(response.nbHits ?? ''),
+      componentCounters: [`page=${page}`, `hits=${hits.length}`, `filter=organization.slug:"${slug}"`] });
 
     if (response.nbHits !== undefined) declaredTotal = response.nbHits;
     // A short page is the last one; nbHits also bounds the loop.
     if (hits.length < PAGE_SIZE) break;
-    if (response.nbHits !== undefined && jobs.length >= response.nbHits) break;
+    if (response.nbHits !== undefined && jobs.length >= response.nbHits) { termination = 'DECLARED_TOTAL_REACHED'; break; }
   }
 
-  if (config.withDescriptions === false) return { jobs, declaredTotal };
+  /**
+   * LE CONTRAT DES IDENTIFIANTS CANONIQUES — `reference`, sinon `slug`, tous deux servis par l'index Algolia.
+   * Chaque page de recherche porte sa propre preuve ; un contrat partiel n'étant pas un contrat, aucune page
+   * n'est muette.
+   */
+  const enumeration: AdapterResult['enumeration'] = {
+    method: 'ALGOLIA_ORGANIZATION_FILTER_PAGINATION', endpoint: `https://${APP_ID}-dsn.algolia.net/1/indexes/${INDEX}/query`,
+    pages, rawCount, termination,
+    // Un hit sans `reference` ni `slug` a été vu sans pouvoir être nommé.
+    canonicalAbsenceProofUsable: anonymousRows === 0,
+    pageEvidence,
+  };
+
+  if (config.withDescriptions === false) return { jobs, declaredTotal, rejectedRows, enumeration };
   // Un hit qui porte encore `description` (ancienne forme de l'index) suffit ;
   // un résumé, quelle que soit sa longueur, n'est pas l'offre.
   const complete = jobs.every((job) => typeof (job.raw as WttjHit).description === 'string');
-  if (complete) return { jobs, declaredTotal };
+  if (complete) return { jobs, declaredTotal, rejectedRows, enumeration };
   return {
     jobs: await attachWttjDescriptions(jobs, slug, Number(config.detailConcurrency ?? 4)),
-    declaredTotal,
+    declaredTotal, rejectedRows, enumeration,
   };
 }

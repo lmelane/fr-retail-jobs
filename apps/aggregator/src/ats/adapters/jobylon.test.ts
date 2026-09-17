@@ -1,5 +1,8 @@
-import { describe, expect, it } from 'vitest';
-import { mergeJobylonJob, parseJobylonEmbed } from './jobylon.js';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+vi.mock('../../lib/http.js', () => ({ fetchText: vi.fn() }));
+import { fetchText } from '../../lib/http.js';
+import { fetchJobylonJobs, jobylonObservedIds, mergeJobylonJob, parseJobylonEmbed } from './jobylon.js';
+import { PROVING_TERMINATIONS } from '../../pipeline/refreshPlan.js';
 
 /** Extrait du littéral `cdn.jobylon.com/jobs/companies/2631/embed/v2/` (Acne Studios, capturé le 2026-09-06). */
 const EMBED = `
@@ -84,5 +87,62 @@ describe('mergeJobylonJob', () => {
     expect(job.country).toBe('Japan');
     expect(job.location).toBe('Japan');
     expect(job.description).toBeUndefined();
+  });
+});
+
+/**
+ * LE CONTRAT CANONIQUE — l'`id` du littéral EST l'`externalId` écrit.
+ *
+ * Retirer `canonicalIds` de la preuve fait tomber ces témoins : sans la propriété,
+ * `normalizeAdapterResult` classe la source « contrat non implémenté » et aucune absence n'y est
+ * démontrable.
+ */
+describe('Jobylon — identifiants canoniques', () => {
+  const text = vi.mocked(fetchText);
+  beforeEach(() => vi.resetAllMocks());
+
+  it('déclare canonicalIds, identiques aux externalId produits', async () => {
+    text.mockImplementation(async (url: string) => (url.includes('cdn.jobylon.com') ? EMBED : DETAIL));
+    const r = await fetchJobylonJobs({ companyId: '2631', concurrency: 1 });
+    // PRÉMISSE : le littéral porte bien deux offres distinctes plus un doublon.
+    expect(jobylonObservedIds(EMBED)).toEqual(['379770', '380001']);
+    expect(r.enumeration!.pageEvidence!.every((pe) => Object.hasOwn(pe, 'canonicalIds'))).toBe(true);
+    const canonical = r.enumeration!.pageEvidence!.flatMap((pe) => pe.canonicalIds ?? []);
+    expect([...canonical].sort()).toEqual(r.jobs.map((j) => j.externalId).sort());
+    expect(r.enumeration?.canonicalAbsenceProofUsable).toBe(true);
+  });
+
+  /**
+   * Le contrat canonique NE DOIT PAS entraîner une terminaison probante ici.
+   *
+   * Le littéral est lu d'un coup, mais rien ne démontre qu'il porte TOUTES les offres d'un locataire :
+   * la seule mesure connue porte sur un locataire de 27 offres. Une terminaison de
+   * `PROVING_TERMINATIONS` autoriserait à fermer ce qui dépasserait un éventuel plafond — des offres
+   * ouvertes disparaîtraient du catalogue. Et le garde-fou de troncature ne rattraperait rien :
+   * `declaredTotal` vaut ce qu'on a lu, donc le rapport lu/annoncé est toujours 1.
+   *
+   * Ce témoin passe au rouge si quelqu'un remet `FULL_RESPONSE` — la valeur que ce lot a d'abord posée.
+   */
+  it("ne déclare pas une fin de parcours probante : la complétude du littéral n'est pas démontrée", async () => {
+    text.mockImplementation(async (url: string) => (url.includes('cdn.jobylon.com') ? EMBED : DETAIL));
+    const r = await fetchJobylonJobs({ companyId: '2631', concurrency: 1 });
+    // PRÉMISSE : sans cette égalité, le témoin ne testerait pas la terminaison réellement émise.
+    expect(r.enumeration?.termination).toBe('CLIENT_SIDE_LITERAL_READ');
+    expect(PROVING_TERMINATIONS.has(r.enumeration!.termination!)).toBe(false);
+    // Le contrat, lui, reste déclaré : c'est la FIN du parcours qui n'est pas prouvée, pas l'identité.
+    expect(r.enumeration!.pageEvidence!.every((pe) => Object.hasOwn(pe, 'canonicalIds'))).toBe(true);
+  });
+
+  it("une ligne VUE mais sans chemin garde son identifiant : disposition, pas trou", async () => {
+    const embed = EMBED.replace(/^\];$/m, "    { id: '999999', title: 'Sans chemin', },\n];");
+    text.mockImplementation(async (url: string) => (url.includes('cdn.jobylon.com') ? embed : DETAIL));
+    const r = await fetchJobylonJobs({ companyId: '2631', concurrency: 1 });
+    // PRÉMISSE : la ligne orpheline est bien OBSERVÉE dans le littéral, mais non produite.
+    expect(jobylonObservedIds(embed)).toContain('999999');
+    expect(r.jobs.map((j) => j.externalId)).not.toContain('999999');
+    const canonical = r.enumeration!.pageEvidence!.flatMap((pe) => pe.canonicalIds ?? []);
+    expect(canonical).toContain('999999');
+    expect(r.rejectedRows?.find((x) => (x as { canonicalId?: string }).canonicalId === '999999')?.reason)
+      .toBe('MISSING_PATH_OR_TITLE_IN_EMBED');
   });
 });

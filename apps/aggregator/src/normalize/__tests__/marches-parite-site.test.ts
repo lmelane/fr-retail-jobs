@@ -60,7 +60,13 @@ describe('parité des registres de marchés — amont ↔ site', () => {
    * listes triées garde ce qui compte — QUELS marchés — sans imposer une
    * convention d'écriture à l'autre dépôt.
    */
-  const ATTENDUS = ['AU', 'BE', 'CA', 'CH', 'CN', 'DE', 'ES', 'FR', 'GB', 'IT', 'NL', 'US'] as const;
+  const ATTENDUS = [
+    'AE', 'AU', 'BE', 'BR', 'CA', 'CH', 'CL', 'CN', 'CZ', 'DE',
+    'DK', 'ES', 'FR', 'GB', 'GR', 'HK', 'HU', 'IT', 'JP', 'KR',
+    'LU', 'MX', 'MY', 'NL', 'NO', 'NZ', 'PE', 'PH', 'PL', 'PR',
+    'PT', 'RO', 'SA', 'SE', 'SG', 'TH', 'TR', 'TW', 'US', 'VN',
+    'ZA',
+  ] as const;
 
   it('PRÉMISSE : la liste de référence n’est pas vide et ne contient pas de doublon', () => {
     /*
@@ -68,7 +74,7 @@ describe('parité des registres de marchés — amont ↔ site', () => {
      * comparaison contre un registre lui aussi vidé — le témoin graverait la
      * panne au lieu de la détecter.
      */
-    expect(ATTENDUS.length).toBe(12);
+    expect(ATTENDUS.length).toBe(41);
     expect(new Set(ATTENDUS).size, 'aucun doublon dans la référence').toBe(ATTENDUS.length);
   });
 
@@ -83,6 +89,21 @@ describe('parité des registres de marchés — amont ↔ site', () => {
      *
      * Ne faire que le premier rétablit le vert en recréant exactement le
      * défaut de 6 212 offres que ce fichier existe pour empêcher.
+     *
+     * ⚠️ LE GESTE 2 N'A PLUS D'OBJET AU 17/09/2026, ET C'EST VÉRIFIÉ, PAS SUPPOSÉ.
+     *
+     * `catwalks-website/src/lib/emplois/marche.ts` ne porte plus AUCUNE liste de marchés — il
+     * n'y reste que les constantes de cookie ; le site lit désormais le registre par le contrat
+     * (`GET /api/marches`), comme le lot 6 l'a posé. Le témoin jumeau nommé ci-dessus n'existe
+     * plus non plus. Relu à l'instant dans les deux dépôts, pas dans un souvenir.
+     *
+     * Ce qui change la NATURE de ce témoin : la divergence de deux registres tenus à la main ne
+     * peut plus se produire, puisqu'il n'y en a plus qu'un. Il garde désormais autre chose, et
+     * c'est toujours utile — que l'ouverture d'un marché reste un geste EXPLICITE, impossible à
+     * commettre en passant, puisqu'elle oblige à venir écrire le code ici.
+     *
+     * La liste est passée de 12 à 41 le 17/09/2026 : les douze marchés localisés, plus les
+     * vingt-neuf marchés routables ouverts sur leur corpus.
      */
     expect([...CODES_MARCHE].sort()).toEqual([...ATTENDUS].sort());
   });

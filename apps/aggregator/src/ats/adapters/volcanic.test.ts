@@ -3,6 +3,7 @@ vi.mock('../../lib/http.js', () => ({fetchJson:vi.fn(),fetchText:vi.fn()}));
 import {fetchJson,fetchText} from '../../lib/http.js';
 beforeEach(() => vi.resetAllMocks());
 import { parseVolcanicPage, fetchVolcanicJobs } from './volcanic.js';
+import { normalizeAdapterResult } from '../index.js';
 
 /** Une entrée telle que careers.fenwick.co.uk/api/v1/jobs.json la rend (capturée le 2026-09-06, description abrégée). */
 const PAGE = {
@@ -71,4 +72,56 @@ it('reads the real detail JobPosting with an unquoted type and keeps its dates i
 it('does not interpret unqualified list start/end dates as publication dates', () => {
   const [job]=parseVolcanicPage({jobs:[{...PAGE.jobs[0],start_date:'2024-01-01',end_date:'2024-02-01'}]},'https://www.careers.fenwick.co.uk');
   expect(job.postedAt).toBeUndefined();expect(job.validThrough).toBeUndefined();
+});
+
+/**
+ * LE CONTRAT DES IDENTIFIANTS CANONIQUES.
+ *
+ * `job.id` est le chemin d'identité de `externalId` : la preuve d'énumération le déclare pour que la source
+ * puisse un jour prouver une absence. Sans la propriété `canonicalIds`, aucune absence n'y est démontrable
+ * (`UNVERIFIABLE` à la prévisualisation) — et le témoin qui suit passe au rouge si elle est retirée.
+ */
+describe('Volcanic — contrat des identifiants canoniques', () => {
+  it('déclare canonicalIds sur CHAQUE page, exactement les job.id observés', async () => {
+    const second = {...PAGE, current_page:2, jobs:[{...PAGE.jobs[0], id:6017992, cached_slug:'autre-6017992'}]};
+    vi.mocked(fetchJson).mockResolvedValueOnce(PAGE).mockResolvedValueOnce(second);
+    vi.mocked(fetchText).mockResolvedValue('<html></html>');
+    const r = await fetchVolcanicJobs({origin:'https://www.careers.fenwick.co.uk'});
+
+    const pages = r.enumeration!.pageEvidence!;
+    expect(pages).toHaveLength(2);
+    // Un contrat PARTIEL n'est pas un contrat : chaque page doit porter la propriété.
+    for (const pe of pages) expect(Object.hasOwn(pe, 'canonicalIds')).toBe(true);
+    expect(pages.map(pe => pe.canonicalIds)).toEqual([['6017991'], ['6017992']]);
+    expect(r.enumeration!.canonicalAbsenceProofUsable).toBe(true);
+
+    // Le contrat vérifié par le normaliseur : toute offre produite figure dans la preuve, et réciproquement.
+    const canonical = pages.flatMap(pe => pe.canonicalIds ?? []);
+    expect([...canonical].sort()).toEqual(r.jobs.map(j => j.externalId).sort());
+    const n = normalizeAdapterResult(r);
+    expect(n.enumeration?.canonicalIdViolations).toBeUndefined();
+    expect(n.enumeration?.issues ?? []).not.toContain('CANONICAL_ID_CONTRACT_BROKEN');
+  });
+
+  it('une ligne vue puis écartée reste une DISPOSITION nommée, pas un trou dans la preuve', async () => {
+    const withBadRow = {...PAGE, page_count:1, total_count:2,
+      jobs:[PAGE.jobs[0], {id:6017993, job_title:'Sans slug'}]};
+    vi.mocked(fetchJson).mockResolvedValue(withBadRow);
+    vi.mocked(fetchText).mockResolvedValue('<html></html>');
+    const r = await fetchVolcanicJobs({origin:'https://www.careers.fenwick.co.uk'});
+
+    expect(r.jobs).toHaveLength(1);
+    expect(r.enumeration!.pageEvidence![0].canonicalIds).toEqual(['6017991', '6017993']);
+    expect(r.rejectedRows?.map(row => row.canonicalId)).toEqual(['6017993']);
+    // Observée + disposée = contrat intact malgré la ligne écartée.
+    expect(normalizeAdapterResult(r).enumeration?.canonicalIdViolations).toBeUndefined();
+  });
+
+  it("une ligne SANS id est anonyme : elle interdit toute attestation d'absence", async () => {
+    vi.mocked(fetchJson).mockResolvedValue({...PAGE, page_count:1, jobs:[PAGE.jobs[0], {job_title:'Sans id', cached_slug:'x'}]});
+    vi.mocked(fetchText).mockResolvedValue('<html></html>');
+    const r = await fetchVolcanicJobs({origin:'https://www.careers.fenwick.co.uk'});
+    expect(r.enumeration!.canonicalAbsenceProofUsable).toBe(false);
+    expect(r.enumeration!.pageEvidence![0].canonicalIds).toEqual(['6017991']);
+  });
 });

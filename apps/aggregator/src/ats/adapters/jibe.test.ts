@@ -91,3 +91,56 @@ describe('parseJibePage — l2 : contrat et temps depuis les tags', () => {
     expect(job.workingTime).toBeUndefined();
   });
 });
+
+// ---------------------------------------------------------------------------
+// LE CONTRAT CANONIQUE — `req_id` (à défaut `slug`) EST l'`externalId` écrit.
+//
+// Retirer `canonicalIds` de la preuve fait tomber ces témoins : sans la propriété,
+// `normalizeAdapterResult` classe la source « contrat non implémenté » et aucune absence n'y est
+// démontrable (`UNVERIFIABLE` à la prévisualisation).
+// ---------------------------------------------------------------------------
+import { vi, beforeEach } from 'vitest';
+vi.mock('../../lib/http.js', () => ({
+  fetchJson: vi.fn(),
+  fetchWithRetry: vi.fn(async () => ({ text: async () => '', headers: new Headers() })),
+}));
+import { fetchJson } from '../../lib/http.js';
+import { fetchJibeJobs, jibeCanonicalId } from './jibe.js';
+
+const api = vi.mocked(fetchJson);
+const entry = (over: Record<string, unknown>) => ({ data: { ...PAGE.jobs[0].data, ...over } });
+
+describe('Jibe — identifiants canoniques', () => {
+  beforeEach(() => api.mockReset());
+
+  it('déclare canonicalIds sur CHAQUE page de preuve, identiques aux externalId produits', async () => {
+    api.mockResolvedValueOnce({ totalCount: 2, jobs: [entry({ req_id: 'A', slug: 'a' })] } as never)
+       .mockResolvedValueOnce({ totalCount: 2, jobs: [entry({ req_id: 'B', slug: 'b' })] } as never);
+    const r = await fetchJibeJobs({ origin: 'https://careers.ulta.com', pageSize: 1 });
+    // PRÉMISSE : deux pages de preuve, sans quoi ce témoin n'exercerait pas la règle « tout ou rien ».
+    expect(r.enumeration?.pageEvidence).toHaveLength(2);
+    expect(r.enumeration!.pageEvidence!.every((pe) => Object.hasOwn(pe, 'canonicalIds'))).toBe(true);
+    const canonical = r.enumeration!.pageEvidence!.flatMap((pe) => pe.canonicalIds ?? []);
+    expect([...canonical].sort()).toEqual(r.jobs.map((j) => j.externalId).sort());
+    expect(r.enumeration?.canonicalAbsenceProofUsable).toBe(true);
+  });
+
+  it("une entrée VUE mais sans titre garde son identifiant : disposition, pas trou", async () => {
+    api.mockResolvedValue({ totalCount: 1, jobs: [entry({ req_id: 'A' }), entry({ req_id: 'ORPHELINE', title: '' })] } as never);
+    const r = await fetchJibeJobs({ origin: 'https://careers.ulta.com' });
+    // PRÉMISSE : l'entrée orpheline porte bien un identifiant exploitable, mais aucun titre.
+    expect(jibeCanonicalId({ req_id: 'ORPHELINE', title: '' } as never)).toBe('ORPHELINE');
+    const canonical = r.enumeration!.pageEvidence!.flatMap((pe) => pe.canonicalIds ?? []);
+    expect(canonical).toContain('ORPHELINE');                           // observée
+    expect(r.jobs.map((j) => j.externalId)).not.toContain('ORPHELINE'); // non produite
+    expect(r.rejectedRows?.find((x) => (x as { canonicalId?: string }).canonicalId === 'ORPHELINE')?.reason)
+      .toBe('MISSING_TITLE_OR_REPEATED_ID');
+  });
+
+  it("une entrée SANS req_id ni slug interdit toute preuve d'absence", async () => {
+    api.mockResolvedValue({ totalCount: 1, jobs: [entry({ req_id: 'A' }), entry({ req_id: undefined, slug: undefined })] } as never);
+    const r = await fetchJibeJobs({ origin: 'https://careers.ulta.com' });
+    expect(r.enumeration!.pageEvidence!.flatMap((pe) => pe.canonicalIds ?? [])).toEqual(['A']);
+    expect(r.enumeration?.canonicalAbsenceProofUsable).toBe(false);
+  });
+});

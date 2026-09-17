@@ -4,6 +4,7 @@ vi.mock('../../lib/http.js', () => ({ fetchJson: vi.fn() }));
 
 import { fetchJson } from '../../lib/http.js';
 import { fetchRitualsJobs, parseRitualsHit, slugify } from './rituals.js';
+import { normalizeAdapterResult } from '../index.js';
 
 const mockJson = vi.mocked(fetchJson);
 beforeEach(() => mockJson.mockReset());
@@ -89,6 +90,55 @@ describe('fetchRitualsJobs — pagination cumulative', () => {
     const { jobs } = await fetchRitualsJobs({});
     expect(mockJson).toHaveBeenCalledTimes(1);
     expect(jobs).toHaveLength(1);
+  });
+
+  /**
+   * LE CONTRAT DES IDENTIFIANTS CANONIQUES (lot 5G3C, suite).
+   *
+   * `jobAdId` est l'identifiant NATIF de l'index, publié tel quel comme `externalId`. Le contrat n'est jugé
+   * que dans `normalizeAdapterResult` ; retirer `canonicalIds` de l'adaptateur fait ÉCHOUER ces témoins
+   * (vérifié par retrait puis restauration).
+   */
+  it('déclare les jobAdId observés, sur TOUTES les pages de locale, et couvre les offres écrites', async () => {
+    mockJson
+      .mockResolvedValueOnce(hits([SOURCE], 1) as never)
+      .mockResolvedValueOnce(hits([{ ...SOURCE, jobAdId: 'de-1', language: 'de-DE' }], 1) as never);
+
+    const r = await fetchRitualsJobs({ languages: ['fr-FR', 'de-DE'] });
+    const pages = r.enumeration!.pageEvidence!;
+
+    expect(pages).toHaveLength(2);
+    // Une seule page muette vaudrait contrat ROMPU : `every`, jamais `some`.
+    expect(pages.every((p) => Object.hasOwn(p, 'canonicalIds'))).toBe(true);
+    expect(pages.map((p) => p.canonicalIds)).toEqual([[SOURCE.jobAdId], ['de-1']]);
+    expect(pages.flatMap((p) => p.canonicalIds ?? []).sort()).toEqual(r.jobs.map((j) => j.externalId).sort());
+    expect(r.enumeration!.canonicalAbsenceProofUsable).toBe(true);
+
+    const normalized = normalizeAdapterResult(r);
+    expect(normalized.enumeration?.issues ?? []).not.toContain('CANONICAL_ID_CONTRACT_BROKEN');
+    expect(normalized.enumeration?.canonicalIdViolations).toBeUndefined();
+  });
+
+  it('un même jobAdId servi dans deux locales est observé deux fois et écrit une seule : contrat tenu', async () => {
+    // Chaque locale sert le MÊME catalogue : l'identifiant revient légitimement, il n'est pas un doublon de pagination.
+    mockJson
+      .mockResolvedValueOnce(hits([SOURCE], 1) as never)
+      .mockResolvedValueOnce(hits([{ ...SOURCE, language: 'de-DE' }], 1) as never);
+
+    const r = await fetchRitualsJobs({ languages: ['fr-FR', 'de-DE'] });
+    expect(r.enumeration!.pageEvidence!.map((p) => p.canonicalIds)).toEqual([[SOURCE.jobAdId], [SOURCE.jobAdId]]);
+    expect(r.jobs).toHaveLength(1);
+    expect(normalizeAdapterResult(r).enumeration?.canonicalIdViolations).toBeUndefined();
+  });
+
+  it('un hit sans jobAdId est ANONYME : compté, jamais nommé, et il interdit la preuve d’absence', async () => {
+    mockJson.mockResolvedValueOnce(hits([SOURCE, { ...SOURCE, jobAdId: undefined } as never], 2) as never);
+    const r = await fetchRitualsJobs({ language: 'fr-FR' });
+
+    expect(r.enumeration!.pageEvidence![0].canonicalIds).toEqual([SOURCE.jobAdId]);
+    expect(r.enumeration!.canonicalAbsenceProofUsable).toBe(false);
+    // La ligne écartée existe et porte sa cause, sans identifiant inventé.
+    expect(r.rejectedRows?.map((row) => row.canonicalId)).toEqual([undefined]);
   });
 
   it('additionne les locales et signale une lecture incomplète', async () => {

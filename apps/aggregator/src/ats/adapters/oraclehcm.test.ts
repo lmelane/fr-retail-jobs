@@ -97,3 +97,45 @@ describe('mergeDetail', () => {
     expect(job.postedAt?.toISOString().slice(0, 10)).toBe('2026-09-04');
   });
 });
+
+// ---------------------------------------------------------------------------
+// LE CONTRAT CANONIQUE — `String(req.Id)` de la liste EST l'`externalId` écrit.
+//
+// Retirer `canonicalIds` de la preuve fait tomber ces témoins : sans la propriété,
+// `normalizeAdapterResult` classe la source « contrat non implémenté » et aucune absence n'y est
+// démontrable (`UNVERIFIABLE` à la prévisualisation).
+// ---------------------------------------------------------------------------
+import { vi, beforeEach } from 'vitest';
+vi.mock('../../lib/http.js', () => ({ fetchJson: vi.fn(), DEFAULT_DETAIL_CONCURRENCY: 4 }));
+import { fetchJson } from '../../lib/http.js';
+import { fetchOracleHcmJobs } from './oraclehcm.js';
+
+const api = vi.mocked(fetchJson);
+const listPage = (ids: string[], total: number) =>
+  ({ items: [{ TotalJobsCount: total, requisitionList: ids.map((Id) => ({ ...LIST_ROW, Id })) }] });
+
+describe('Oracle HCM — identifiants canoniques', () => {
+  beforeEach(() => api.mockReset());
+
+  it('déclare canonicalIds sur CHAQUE page de preuve, identiques aux externalId produits', async () => {
+    const first = Array.from({ length: 200 }, (_, i) => `REQ_${i}`);
+    api.mockResolvedValueOnce(listPage(first, 202) as never)
+       .mockResolvedValueOnce(listPage(['REQ_200', 'REQ_201'], 202) as never);
+    const r = await fetchOracleHcmJobs({ origin: ORIGIN, siteNumber: 'CX_1002', withDescriptions: false });
+    // PRÉMISSE : deux pages de preuve, sans quoi ce témoin n'exercerait pas la règle « tout ou rien ».
+    expect(r.enumeration?.pageEvidence).toHaveLength(2);
+    expect(r.enumeration!.pageEvidence!.every((pe) => Object.hasOwn(pe, 'canonicalIds'))).toBe(true);
+    const canonical = r.enumeration!.pageEvidence!.flatMap((pe) => pe.canonicalIds ?? []);
+    expect([...canonical].sort()).toEqual(r.jobs.map((j) => j.externalId).sort());
+    expect(r.enumeration?.canonicalAbsenceProofUsable).toBe(true);
+  });
+
+  it("une réquisition SANS Id interdit toute preuve d'absence, sans inventer d'identifiant", async () => {
+    api.mockResolvedValueOnce({ items: [{ TotalJobsCount: 2,
+      requisitionList: [{ ...LIST_ROW, Id: 'REQ_1' }, { ...LIST_ROW, Id: undefined }] }] } as never);
+    const r = await fetchOracleHcmJobs({ origin: ORIGIN, siteNumber: 'CX_1002', withDescriptions: false });
+    const canonical = r.enumeration!.pageEvidence!.flatMap((pe) => pe.canonicalIds ?? []);
+    expect(canonical).toEqual(['REQ_1']);
+    expect(r.enumeration?.canonicalAbsenceProofUsable).toBe(false);
+  });
+});

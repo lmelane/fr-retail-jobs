@@ -8,7 +8,6 @@
     "ingest-all": "tsx src/cli.ts ingest-all",
     "refresh": "tsx src/cli.ts refresh",
     "geocode": "tsx src/cli.ts geocode",
-    "import-sources": "tsx src/cli.ts import-sources",
     "stats": "tsx src/cli.ts stats",
     "health:report": "tsx src/cli.ts health-report",
     "export:companies": "tsx src/cli.ts export-companies",
@@ -17,6 +16,8 @@
     "test:integration": "vitest run src/pipeline src/dedup",
     "test": "npm run test:unit && npm run test:integration",
     "check:layout": "node scripts/check-layout.mjs",
+    "verif:couverture": "tsx scripts/ops/verif-couverture-registre.mts",
+    "verif:bash-live": "tsx scripts/ops/verif-bash-live.mts",
     "build:local": "node scripts/build-local.mjs"
   },
   "dependencies": {

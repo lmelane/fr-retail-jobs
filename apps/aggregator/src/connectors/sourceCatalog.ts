@@ -1,16 +1,14 @@
-import { parseCsvLine } from '../lib/csv.js';
-import { readFileSync } from 'node:fs';
-import { fileURLToPath } from 'node:url';
 import type { SourceTier } from '@catwalks/db/publications';
 
 /**
- * Explicit import seed loaded from data/seeds/sources.csv; not the active catalogue.
+ * LES RÈGLES DE CATALOGAGE D'UNE SOURCE — son palier et sa clé stable.
  *
- * Kept as data rather than code because the list grows by discovery, not by
- * engineering: adding a house that runs Teamtailor or Phenom is a CSV row, and
- * only a genuinely new ATS needs an adapter.
+ * Ce module portait aussi le chargement du seed CSV ; il a été supprimé le 2026-09-17 (voir le
+ * bloc plus bas). Ce qui reste décrit une source INDÉPENDAMMENT de son origine : le palier qui
+ * arbitre une déduplication, et la clé qui la nomme de façon stable dans `JobSource.sourceKey`.
  *
- * The seed carries neither a manual volume nor a certification flag.
+ * Ces deux règles sont lues par `sourceStore.ts` et par le flux de candidature de sources — elles
+ * n'ont jamais dépendu du CSV.
  */
 
 export type SourceKind =
@@ -40,38 +38,26 @@ export type CatalogSource = {
   jobUrlPattern: string;
 };
 
-const CSV_PATH = fileURLToPath(new URL('../../data/seeds/sources.csv', import.meta.url));
-
-
-
-let cache: CatalogSource[] | null = null;
-
-export function loadSourceCatalog(): CatalogSource[] {
-  if (cache) return cache;
-
-  const lines = readFileSync(CSV_PATH, 'utf8').trim().split('\n');
-  const sources: CatalogSource[] = [];
-
-  const columns = ['maison', 'careers_domain', 'kind', 'entry_url', 'job_url_pattern'];
-  if (JSON.stringify(parseCsvLine(lines[0])) !== JSON.stringify(columns)) throw new Error('Source seed header does not match the maintained schema');
-  for (const line of lines.slice(1)) {
-    const values = parseCsvLine(line);
-    if (values.length !== columns.length) throw new Error('Source seed row has an invalid column count');
-    const [maison, careersDomain, kind, entryUrl, jobUrlPattern] =
-      values;
-    if (!maison || !entryUrl) continue;
-    sources.push({
-      maison,
-      careersDomain,
-      kind,
-      entryUrl,
-      jobUrlPattern: jobUrlPattern ?? '',
-    });
-  }
-
-  cache = sources;
-  return sources;
-}
+/**
+ * ⚠️ LE SEED CSV A ÉTÉ SUPPRIMÉ LE 2026-09-17, ET IL NE FAUT PAS LE RECRÉER.
+ *
+ * `data/seeds/sources.csv` portait 83 lignes quand la table en portait 536, sans statut, sans
+ * révision, et avec des configurations périmées. Il était le chemin officiel de réensemencement
+ * (`npm run import-sources`) — donc un piège : sur une base vide, il aurait recréé 83 sources en
+ * DRAFT qui n'ont plus rien à voir avec le registre réel, et elles seraient entrées en conflit de
+ * `tenantKey` avec les vraies.
+ *
+ * Le réensemencement passe désormais par l'export du registre lui-même :
+ *
+ *   python3 apps/aggregator/scripts/ops/db.py readonly npx tsx \
+ *     apps/aggregator/scripts/ops/exporter-registre-sources.mts <fichier.json>
+ *   python3 apps/aggregator/scripts/ops/db.py production npx tsx \
+ *     apps/aggregator/scripts/ops/reimporter-registre-sources.mts <fichier.json> --ecrire
+ *
+ * Ce qui reste ci-dessous — `tierFor` et `sourceKeyFor` — n'a jamais dépendu du CSV : ce sont des
+ * règles métier (palier de déduplication, clé stable) lues par `sourceStore.ts` et le flux de
+ * candidature de sources. Elles restent.
+ */
 
 /**
  * Which ATS families answer through an API — one request per employer, with the

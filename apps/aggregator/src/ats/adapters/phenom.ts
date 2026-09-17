@@ -103,6 +103,17 @@ type PhenomResponse = {
 };
 
 
+/**
+ * L'identifiant CANONIQUE d'une entrée `/api/jobs` : le chemin d'identité de `externalId`, arrêté avant le
+ * repli sur le titre. Un titre n'est pas un identifiant natif — deux postes homonymes le partagent, et il
+ * change quand l'éditeur réécrit l'intitulé. Une ligne qu'aucun `slug` ni `req_id` ne nomme est ANONYME :
+ * elle est comptée, jamais inventée (modèle Ashby).
+ */
+function phenomCanonicalId(data: PhenomJobData): string | null {
+  const id = data.slug ?? data.req_id;
+  return typeof id === 'string' && id.trim() ? id : null;
+}
+
 /** One `/api/jobs` entry → one posting. Exported for tests (no network). */
 export function parsePhenomJob(data: PhenomJobData, origin: string, config: Record<string, unknown> = {}): NormalizedJob | null {
   if (!data.title) return null;
@@ -163,10 +174,13 @@ export async function fetchPhenomJobs(config: Record<string, unknown>): Promise<
   }
 
   const jobs: NormalizedJob[] = [];
+  const rejectedRows: NonNullable<AdapterResult['rejectedRows']> = [];
   const seen = new Set<string>();
   let declaredTotal: number | undefined;
   const issues = new Set<string>();
   let pages = 0, rawCount = 0, withoutData = 0, repeatedIds = 0, languageVariants = 0, termination = 'PAGE_BUDGET_EXHAUSTED';
+  /** Lignes servies qu'aucun `slug` ni `req_id` ne nomme : aucun identifiant historique ne peut être déclaré absent. */
+  let anonymousRows = 0;
   const languageOf = new Map<string, string>();
   const pageEvidence: NonNullable<NonNullable<AdapterResult['enumeration']>['pageEvidence']> = [];
 
@@ -178,11 +192,27 @@ export async function fetchPhenomJobs(config: Record<string, unknown>): Promise<
     pages++; rawCount += batch.length;
     let fresh = 0;
     const pageIds: string[] = [];
+    /**
+     * LE CONTRAT DES IDENTIFIANTS CANONIQUES, page par page.
+     *
+     * Ce sont les identifiants natifs RÉELLEMENT observés dans la réponse — le même chemin d'identité que
+     * `externalId`, sans le repli sur le titre. Sans eux la source ne prouve aucune absence ; avec un
+     * identifiant fabriqué elle en prouverait une FAUSSE, ce qui est pire.
+     */
+    const pageCanonicalIds: string[] = [];
 
     for (const entry of batch) {
-      if (!entry.data) { withoutData++; continue; }
+      // Une entrée sans `data` ne porte aucun identifiant lisible : elle est vue, comptée, et jamais nommée.
+      if (!entry.data) { withoutData++; anonymousRows++; continue; }
+      const canonicalId = phenomCanonicalId(entry.data);
+      if (canonicalId) pageCanonicalIds.push(canonicalId); else anonymousRows++;
       const job = parsePhenomJob(entry.data, origin, config);
-      if (!job) continue;
+      /**
+       * Une ligne VUE puis écartée faute de titre est une DISPOSITION nommée, jamais un trou silencieux : sans
+       * elle, son identifiant canonique resterait observé sans offre ni motif, et le contrat tomberait à juste
+       * titre. Elle ne portait aucun nom avant ce lot — la ligne disparaissait du décompte.
+       */
+      if (!job) { rejectedRows.push({ reason: 'MISSING_TITLE', raw: entry.data, ...(canonicalId ? { canonicalId } : {}) }); continue; }
       pageIds.push(job.externalId);
       // Foot Locker, 2026-09-09 : 2 850 entrées servies pour 2 850 annoncées,
       // 2 839 identifiants distincts — 11 offres revenaient sur deux pages
@@ -205,7 +235,7 @@ export async function fetchPhenomJobs(config: Record<string, unknown>): Promise<
     }
     const pageTotal = response.totalCount ?? response.count;
     pageEvidence.push({ url, checkedAt: captureObservedAt().toISOString(), sha256: createHash('sha256').update(JSON.stringify(response)).digest('hex'), offset: (page - 1) * PAGE_SIZE, pagination: null,
-      ids: pageIds, publisherCounter: pageTotal === undefined ? '' : `total=${pageTotal}`, componentCounters: [`entries=${batch.length}`, `languageVariants=${languageVariants}`, `uniqueIds=${seen.size}`, `repeated=${repeatedIds}`, `withoutData=${withoutData}`] });
+      ids: pageIds, canonicalIds: pageCanonicalIds, publisherCounter: pageTotal === undefined ? '' : `total=${pageTotal}`, componentCounters: [`entries=${batch.length}`, `languageVariants=${languageVariants}`, `uniqueIds=${seen.size}`, `repeated=${repeatedIds}`, `withoutData=${withoutData}`, `anonymous=${anonymousRows}`] });
 
     const total = response.totalCount ?? response.count;
     if (total !== undefined) {
@@ -230,8 +260,10 @@ export async function fetchPhenomJobs(config: Record<string, unknown>): Promise<
   // Proven when every announced entry is accounted for: a distinct requisition, or a language variant of one already kept.
   const complete = declaredTotal !== undefined && jobs.length + languageVariants === declaredTotal && repeatedIds === 0 && !issues.has('SOURCE_TOTAL_CHANGED') && termination !== 'PAGE_BUDGET_EXHAUSTED';
   if (!complete) issues.add('ENUMERATION_NOT_PROVEN');
-  return { jobs, declaredTotal, complete, truncated: termination === 'PAGE_BUDGET_EXHAUSTED' || (declaredTotal !== undefined && jobs.length + languageVariants < declaredTotal),
+  return { jobs, declaredTotal, complete, rejectedRows, truncated: termination === 'PAGE_BUDGET_EXHAUSTED' || (declaredTotal !== undefined && jobs.length + languageVariants < declaredTotal),
     enumeration: { method: 'PUBLISHER_TOTAL_COUNT_JSON_PAGINATION', endpoint: `${origin}/api/jobs`, pages, rawCount, termination, issues: [...issues],
+      // Une ligne vue sans `slug` ni `req_id` ne peut pas être nommée : aucun identifiant historique ne peut alors être déclaré absent.
+      canonicalAbsenceProofUsable: anonymousRows === 0,
       pageEvidence, scopes: [{ scope: 'jobs', declaredTotal: declaredTotal ?? -1, uniqueIds: jobs.length, pages, complete }, { scope: 'languageVariants', declaredTotal: languageVariants, uniqueIds: languageVariants, pages, complete: true }, { scope: 'entriesWithoutData', declaredTotal: withoutData, uniqueIds: withoutData, pages, complete: true }] } };
 }
 
@@ -363,12 +395,13 @@ export function parseCareerConnectJob(
  */
 async function fetchCareerConnectJobs(origin: string, localePath?: string): Promise<AdapterResult> {
   const jobs: NormalizedJob[] = [];
+  const rejectedRows: NonNullable<AdapterResult['rejectedRows']> = [];
   const seen = new Set<string>();
   const issues = new Set<string>();
   const pageEvidence: NonNullable<NonNullable<AdapterResult['enumeration']>['pageEvidence']> = [];
   const size = 100;
   let declaredTotal: number | undefined;
-  let pages = 0, rawCount = 0, repeatedIds = 0, termination = 'PAGE_BUDGET_EXHAUSTED';
+  let pages = 0, rawCount = 0, repeatedIds = 0, anonymousRows = 0, termination = 'PAGE_BUDGET_EXHAUSTED';
 
   /**
    * Le curseur avance de ce que la page a RÉELLEMENT rendu, jamais de `size`.
@@ -391,10 +424,20 @@ async function fetchCareerConnectJobs(origin: string, localePath?: string): Prom
     const batch = refine.data?.jobs ?? [];
     pages++; rawCount += batch.length;
     const pageIds: string[] = [];
+    /**
+     * L'identifiant CANONIQUE CareerConnect est `jobSeqNo`, celui que l'éditeur expose et que
+     * `parseCareerConnectJob` publie tel quel. Aucun repli : une ligne sans `jobSeqNo` est ANONYME, comptée et
+     * rejetée par son motif — jamais nommée par un identifiant fabriqué.
+     */
+    const pageCanonicalIds: string[] = [];
 
     for (const entry of batch) {
+      const canonicalId = entry.jobSeqNo ? String(entry.jobSeqNo) : null;
+      if (canonicalId) pageCanonicalIds.push(canonicalId); else anonymousRows++;
       const job = parseCareerConnectJob(entry, origin, { localePath });
-      if (!job) continue;
+      // Une ligne écartée porte sa cause et son identifiant quand il existe : sans disposition nommée, son
+      // identifiant observé resterait orphelin dans la preuve et le contrat tomberait.
+      if (!job) { rejectedRows.push({ reason: 'MISSING_JOB_SEQ_NO_OR_TITLE', raw: entry, ...(canonicalId ? { canonicalId } : {}) }); continue; }
       pageIds.push(job.externalId);
       // Un identifiant déjà vu est COMPTÉ et nommé, jamais écrasé en silence : c'est ce compte qui refuse la
       // preuve d'exhaustivité quand la pagination est instable.
@@ -404,9 +447,9 @@ async function fetchCareerConnectJobs(origin: string, localePath?: string): Prom
     }
     pageEvidence.push({ url: request.url, checkedAt: captureObservedAt().toISOString(), offset: from,
       sha256: createHash('sha256').update(JSON.stringify(batch)).digest('hex'),
-      ids: pageIds, pagination: { start: from, end: from + batch.length, total: declaredTotal ?? -1 },
+      ids: pageIds, canonicalIds: pageCanonicalIds, pagination: { start: from, end: from + batch.length, total: declaredTotal ?? -1 },
       publisherCounter: `totalHits=${declaredTotal ?? -1}`,
-      componentCounters: [`returned=${batch.length}`, `unique=${pageIds.length}`] });
+      componentCounters: [`returned=${batch.length}`, `unique=${pageIds.length}`, `anonymous=${anonymousRows}`] });
 
     from += batch.length;
     if (batch.length === 0) { termination = 'EMPTY_PAGE'; break; }
@@ -437,11 +480,13 @@ async function fetchCareerConnectJobs(origin: string, localePath?: string): Prom
   if (!complete) issues.add('ENUMERATION_NOT_PROVEN');
 
   return {
-    jobs, complete,
+    jobs, complete, rejectedRows,
     truncated: termination === 'PAGE_BUDGET_EXHAUSTED',
     enumeration: {
       method: 'PUBLISHER_TOTAL_HITS_WIDGETS', endpoint: `${origin}/widgets`,
       pages, rawCount, termination, issues: [...issues],
+      // Une ligne servie sans `jobSeqNo` reste innommable : elle interdit de déclarer une absence.
+      canonicalAbsenceProofUsable: anonymousRows === 0,
       scopes: [{ scope: 'global', declaredTotal: declaredTotal ?? -1, uniqueIds: seen.size, pages, complete }],
       pageEvidence,
     },

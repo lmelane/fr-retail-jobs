@@ -1,3 +1,5 @@
+import { createHash } from 'node:crypto';
+import { captureObservedAt } from '../../capture/context.js';
 import { sourceDeadlineReached } from '../../lib/sourceBudget.js';
 import { fetchJson } from '../../lib/http.js';
 import { htmlToPlainText } from '../../lib/html.js';
@@ -29,12 +31,16 @@ export async function fetchLeverJobs(config: Record<string, unknown>): Promise<A
   const origin = region === 'eu' ? 'https://api.eu.lever.co' : 'https://api.lever.co';
   const jobs: LeverJob[] = [];
   const seen = new Set<string>();
-  let complete = false;
+  const pageEvidence: NonNullable<NonNullable<AdapterResult['enumeration']>['pageEvidence']> = [];
+  const endpoint = `${origin}/v0/postings/${encodeURIComponent(site)}?mode=json`;
+  let complete = false, rawCount = 0;
   for (let page = 0; page < maxPages; page++) {
     if (sourceDeadlineReached()) break;
+    const offset = page * pageSize;
+    const url = `${origin}/v0/postings/${encodeURIComponent(site)}?mode=json&skip=${offset}&limit=${pageSize}`;
     let rows: LeverJob[];
     try {
-      rows = await fetchJson<LeverJob[]>(`${origin}/v0/postings/${encodeURIComponent(site)}?mode=json&skip=${page * pageSize}&limit=${pageSize}`);
+      rows = await fetchJson<LeverJob[]>(url);
       if (!Array.isArray(rows) || rows.some(row => !row.id || !row.text || !row.hostedUrl)) {
         throw new Error('Invalid Lever postings response');
       }
@@ -42,6 +48,21 @@ export async function fetchLeverJobs(config: Record<string, unknown>): Promise<A
       if (jobs.length === 0) throw error;
       break; // Preserve collected postings, but never attest absence after a failed page.
     }
+    rawCount += rows.length;
+    /**
+     * LE CONTRAT DES IDENTIFIANTS CANONIQUES.
+     *
+     * `row.id` EST l'identifiant canonique de Lever : `parseLeverJob` l'écrit tel quel en `externalId`.
+     * Il est DÉCLARÉ ici plutôt que recalculé, et sur CHAQUE page — un contrat partiel n'est pas un
+     * contrat : les offres d'une page muette paraîtraient disparues au refresh suivant.
+     *
+     * La validation ci-dessus refuse déjà toute ligne sans `id` : aucune ligne anonyme ne peut donc
+     * entrer dans un résultat publié, et la preuve nomme bien tout ce qui a été observé.
+     */
+    const ids = rows.map(row => row.id);
+    pageEvidence.push({ url, checkedAt: captureObservedAt().toISOString(),
+      sha256: createHash('sha256').update(JSON.stringify(rows)).digest('hex'), offset, pagination: null,
+      ids, canonicalIds: ids, publisherCounter: '', componentCounters: [`rows=${rows.length}`, `limit=${pageSize}`] });
     let repeated = false;
     for (const row of rows) {
       if (seen.has(row.id)) { repeated = true; continue; }
@@ -52,7 +73,12 @@ export async function fetchLeverJobs(config: Record<string, unknown>): Promise<A
     if (rows.length < pageSize) { complete = true; break; }
   }
   const normalized = jobs.map(job => parseLeverJob(job, config));
-  return { jobs: normalized, complete, truncated: !complete };
+  return { jobs: normalized, complete, truncated: !complete,
+    enumeration: { method: 'DOCUMENTED_PUBLIC_POSTINGS_API', endpoint, pages: pageEvidence.length, rawCount,
+      termination: complete ? 'SHORT_PAGE' : 'INCOMPLETE',
+      documentation: 'https://github.com/lever/postings-api#get-a-list-of-job-postings',
+      // Toute ligne servie sans `id` fait échouer la page entière : aucune ligne anonyme n'est retenue.
+      canonicalAbsenceProofUsable: true, pageEvidence } };
 }
 
 export function parseLeverJob(job: LeverJob, config: Record<string, unknown>): NormalizedJob {

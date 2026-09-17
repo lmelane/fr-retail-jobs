@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { fetchJson } from '../../lib/http.js';
 import { htmlToPlainText } from '../../lib/html.js';
 import { sourceDelay, assertSourceRunning } from '../../lib/sourceBudget.js';
@@ -50,9 +51,19 @@ export async function fetchWorkableJobs(config: Record<string, unknown>): Promis
 
   if (!Array.isArray(data.jobs)) throw new Error('WORKABLE_INVALID_WIDGET: jobs array missing');
   const rejectedRows: NonNullable<AdapterResult['rejectedRows']> = [];
+  /**
+   * `shortcode` EST l'identifiant canonique de Workable : la même valeur alimente `NormalizedJob.externalId`
+   * et les deux endpoints (widget et listing). Il entre dans la preuve AVANT la validation du titre — une
+   * ligne dotée d'un shortcode a été OBSERVÉE, et l'écarter d'abord la ferait paraître absente au refresh.
+   */
+  const widgetCanonicalIds: string[] = [];
+  let widgetAnonymousRows = 0;
   const jobs: NormalizedJob[] = data.jobs.filter(job => {
-    if (!job || typeof job.title !== 'string' || !job.title.trim() || typeof job.shortcode !== 'string' || !job.shortcode) {
-      rejectedRows.push({ reason: 'MISSING_OR_INVALID_ID_OR_TITLE', raw: job }); return false;
+    const shortcode = typeof job?.shortcode === 'string' && job.shortcode ? job.shortcode : null;
+    if (shortcode) { if (!widgetCanonicalIds.includes(shortcode)) widgetCanonicalIds.push(shortcode); }
+    else widgetAnonymousRows++;
+    if (!job || typeof job.title !== 'string' || !job.title.trim() || !shortcode) {
+      rejectedRows.push({ reason: 'MISSING_OR_INVALID_ID_OR_TITLE', raw: job, ...(shortcode ? { canonicalId: shortcode } : {}) }); return false;
     }
     return true;
   }).map(job => parseWorkableJob(job, account));
@@ -62,6 +73,8 @@ export async function fetchWorkableJobs(config: Record<string, unknown>): Promis
   const endpoint = `https://apply.workable.com/api/v3/accounts/${encodeURIComponent(account)}/jobs`;
   const listed = new Map<string, any>();
   const cursors = new Set<string>();
+  const pageEvidence: NonNullable<NonNullable<AdapterResult['enumeration']>['pageEvidence']> = [];
+  let listingAnonymousRows = 0;
   let token: string | undefined;
   let declaredTotal: number | undefined;
   let pages = 0;
@@ -79,13 +92,23 @@ export async function fetchWorkableJobs(config: Record<string, unknown>): Promis
       if (!Array.isArray(page.results) || !Number.isSafeInteger(page.total) || page.total < 0) throw new Error('WORKABLE_INVALID_LISTING');
       if (declaredTotal !== undefined && declaredTotal !== page.total) stableTotal = false;
       declaredTotal = page.total;
+      const pageIds: string[] = [];
       for (const row of page.results) {
-        if (!row || typeof row.shortcode !== 'string' || !row.shortcode || typeof row.title !== 'string' || !row.title.trim()) {
-          rejectedRows.push({ reason: 'INVALID_LISTING_ROW', raw: row }); continue;
+        const shortcode = typeof row?.shortcode === 'string' && row.shortcode ? row.shortcode : null;
+        // L'identifiant entre dans la preuve de SA page avant toute validation : il a été servi là.
+        if (shortcode) { if (!pageIds.includes(shortcode)) pageIds.push(shortcode); }
+        else listingAnonymousRows++;
+        if (!row || !shortcode || typeof row.title !== 'string' || !row.title.trim()) {
+          rejectedRows.push({ reason: 'INVALID_LISTING_ROW', raw: row, ...(shortcode ? { canonicalId: shortcode } : {}) }); continue;
         }
         if (listed.has(row.shortcode)) stableTotal = false;
         listed.set(row.shortcode, row);
       }
+      pageEvidence.push({ url: endpoint, checkedAt: new Date().toISOString(),
+        sha256: createHash('sha256').update(JSON.stringify(page)).digest('hex'),
+        offset: pageEvidence.length, pagination: null,
+        ids: pageIds, canonicalIds: pageIds, publisherCounter: String(page.total),
+        componentCounters: [`cursor=${token ?? 'FIRST'}`, `rows=${page.results.length}`] });
       if (!page.nextPage) { terminal = 'CURSOR_EXHAUSTED'; break; }
       if (typeof page.nextPage !== 'string' || cursors.has(page.nextPage)) { terminal = 'REPEATED_OR_INVALID_CURSOR'; break; }
       cursors.add(page.nextPage); token = page.nextPage;
@@ -128,11 +151,25 @@ export async function fetchWorkableJobs(config: Record<string, unknown>): Promis
     } };
   });
   const sameIds = widgetIds.size === listed.size && [...widgetIds].every(id=>listed.has(id));
+  /**
+   * LE CONTRAT DES IDENTIFIANTS CANONIQUES, sur les DEUX chemins qui produisent des offres.
+   *
+   * Une offre peut venir du widget seul (listing en échec), du listing seul (absente du widget), ou des deux.
+   * La preuve doit donc porter une page pour le widget ET une par page de listing — un contrat partiel n'est
+   * pas un contrat, et une offre produite par un chemin muet paraîtrait absente au refresh suivant.
+   */
+  const widgetEvidence = { url: `https://apply.workable.com/api/v1/widget/accounts/${encodeURIComponent(account)}?details=true`,
+    checkedAt: new Date().toISOString(), sha256: createHash('sha256').update(JSON.stringify(data)).digest('hex'),
+    offset: 0, pagination: null, ids: widgetCanonicalIds, canonicalIds: widgetCanonicalIds,
+    publisherCounter: String(data.jobs.length), componentCounters: [`widgetRows=${data.jobs.length}`] };
   return { jobs: uniqueJobs, declaredTotal, rejectedRows,
     complete: terminal === 'CURSOR_EXHAUSTED' && stableTotal && sameIds && listed.size === declaredTotal && rejectedRows.length === 0 && !conflictingRepresentations,
     enumeration: { method: 'WIDGET_CROSSCHECKED_WITH_CURSOR_LISTING', endpoint, pages,
       rawCount: data.jobs.length, termination: terminal,
-      documentation: 'https://workable.readme.io/reference/jobs-1' },
+      documentation: 'https://workable.readme.io/reference/jobs-1',
+      // Une ligne sans `shortcode`, d'un côté ou de l'autre, a été vue sans pouvoir être nommée.
+      canonicalAbsenceProofUsable: widgetAnonymousRows === 0 && listingAnonymousRows === 0,
+      pageEvidence: [widgetEvidence, ...pageEvidence] },
   };
 }
 

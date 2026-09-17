@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
-  CLES_FACETTE, CODES_MARCHE, CONTRAT_RECHERCHE_VERSION, DIMENSION_PAR_CLE, LIBELLES_GENERIQUES, MARCHES,
+  CLES_FACETTE, CODES_MARCHE, CODES_MARCHE_LOCALISES, CONTRAT_RECHERCHE_VERSION, DIMENSION_PAR_CLE,
+  LIBELLES_GENERIQUES, MARCHES, MARCHES_ROUTABLES,
   facettesContrat, facettesDuMarche, perimetreDeRecherche,
 } from '@catwalks/db/marches';
 
@@ -11,9 +12,19 @@ import {
  * registre cesse de porter l'une de ces promesses.
  */
 describe('le registre décrit chaque marché en entier', () => {
-  it('PRÉMISSE : douze marchés, sans doublon, version de contrat posée', () => {
-    expect(CODES_MARCHE).toHaveLength(12);
-    expect(new Set(CODES_MARCHE).size).toBe(12);
+  /**
+   * ⚠️ LE NOMBRE A CHANGÉ LE 17/09/2026, ET IL SE LIT EN DEUX MOITIÉS.
+   *
+   * Douze marchés LOCALISÉS (interface, libellés et vocabulaire dans leur langue) et vingt-neuf
+   * marchés ROUTABLES (corpus mesuré, interface anglaise en repli, locale native déjà déclarée).
+   * Les deux ouvertures sont des décisions différentes : un seul total les confondrait, et une
+   * traduction supprimée pourrait être compensée par un pays ouvert sans que rien ne rougisse.
+   */
+  it('PRÉMISSE : quarante et un marchés, sans doublon, version de contrat posée', () => {
+    expect(CODES_MARCHE_LOCALISES).toHaveLength(12);
+    expect(MARCHES_ROUTABLES).toHaveLength(29);
+    expect(CODES_MARCHE).toHaveLength(41);
+    expect(new Set(CODES_MARCHE).size, 'aucun code déclaré deux fois').toBe(41);
     expect(CONTRAT_RECHERCHE_VERSION).toBe(1);
   });
 
@@ -39,10 +50,41 @@ describe('le registre décrit chaque marché en entier', () => {
   it('les langues attendues : le Canada en anglais d’abord, la Belgique et la Suisse plurilingues, la Chine en zh-CN', () => {
     expect(MARCHES.CA.localeParDefaut).toBe('en-CA');
     expect(MARCHES.CA.locales).toContain('fr-CA');
-    expect(MARCHES.BE.locales).toEqual(['fr-BE', 'nl-BE', 'en-GB']);
+    // D-436 (17/09/2026), relevé chez Indeed : `de_BE` déclaré, et l'anglais supplémentaire est
+    // localisé au pays (`en_BE`), jamais emprunté au marché britannique.
+    expect(MARCHES.BE.locales).toEqual(['fr-BE', 'nl-BE', 'de-BE', 'en-BE']);
     expect(MARCHES.CH.locales).toEqual(['fr-CH', 'de-CH', 'it-CH']);
     expect(MARCHES.CN.localeParDefaut).toBe('zh-CN');
-    expect(MARCHES.NL.locales).toEqual(['nl-NL', 'en-GB']);
+    // `es-US` : les États-Unis sont proposés en deux langues sur la page publique d'Indeed.
+    expect(MARCHES.US.locales).toEqual(['en-US', 'es-US']);
+    // `en-GB` retiré : la langue des OFFRES d'un marché ne dit rien de sa langue d'INTERFACE.
+    expect(MARCHES.NL.locales).toEqual(['nl-NL']);
+  });
+
+  /**
+   * L'INVARIANT QUE D-436 POSE, et qui vaut pour tout marché à venir.
+   *
+   * Une locale d'interface est localisée à SON pays. Emprunter la locale d'un autre marché —
+   * `en-GB` servi en Belgique, comme le registre le faisait avant le 17/09 — mélange les deux
+   * axes que la décision sépare : le pays porte le marché, la locale porte l'interface.
+   *
+   * Ce témoin passe au rouge si quelqu'un réintroduit une locale dont le suffixe de pays ne
+   * correspond ni au code du marché, ni à l'un des pays qu'il sert (`DE` sert DE et AT, `GB`
+   * sert GB et IE).
+   */
+  it('aucune locale n’emprunte le pays d’un autre marché', () => {
+    for (const code of CODES_MARCHE) {
+      const marche = MARCHES[code];
+      const paysServis = new Set<string>([marche.code, ...marche.pays]);
+      for (const locale of marche.locales) {
+        const paysDeLaLocale = locale.split('-')[1];
+        expect(paysDeLaLocale, `${code} déclare ${locale}, dont le pays est étranger au marché`).toBeDefined();
+        expect(paysServis.has(paysDeLaLocale!), `${code} déclare ${locale} : locale empruntée à un autre marché`).toBe(true);
+      }
+      // PRÉMISSE : sans locale déclarée, le témoin ne vérifierait rien.
+      expect(marche.locales.length, `${code} ne déclare aucune locale`).toBeGreaterThan(0);
+      expect(marche.locales).toContain(marche.localeParDefaut);
+    }
   });
 
   it('chaque facette servie porte un libellé, natif sur un marché, générique hors marché', () => {
@@ -79,13 +121,13 @@ describe('le registre décrit chaque marché en entier', () => {
   });
 
   it('un périmètre hors registre n’existe que pour un pays connu, et sans dimension mesurée', () => {
-    const connus = new Set(['JP', 'FR']);
-    expect(perimetreDeRecherche('JP', connus)).toEqual({ code: 'JP', pays: ['JP'], marche: undefined });
-    expect(perimetreDeRecherche('jp', connus)?.code).toBe('JP');
+    const connus = new Set(['BG', 'FR']);
+    expect(perimetreDeRecherche('BG', connus)).toEqual({ code: 'BG', pays: ['BG'], marche: undefined });
+    expect(perimetreDeRecherche('bg', connus)?.code).toBe('BG');
     expect(perimetreDeRecherche('XQ', connus)).toBeUndefined();
     expect(perimetreDeRecherche('', connus)).toBeUndefined();
     expect(perimetreDeRecherche(undefined, connus)).toBeUndefined();
     expect(perimetreDeRecherche(42 as unknown as string, connus)).toBeUndefined();
-    expect(facettesContrat(perimetreDeRecherche('JP', connus)!).map((f) => f.cle)).toEqual(['secteur', 'ville', 'maison', 'groupe', 'langue']);
+    expect(facettesContrat(perimetreDeRecherche('BG', connus)!).map((f) => f.cle)).toEqual(['secteur', 'ville', 'maison', 'groupe', 'langue']);
   });
 });

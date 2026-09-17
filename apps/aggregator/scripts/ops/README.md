@@ -188,7 +188,6 @@ Tous s'exécutent sous `db.py readonly` (ou sur le clone) : `db.py readonly npx 
 Des preuves gravées avec leur lot, pas des procédures courantes : on les rejoue pour re-mesurer, jamais pour opérer.
 
 - [`verif-couverture-registre.mts`](verif-couverture-registre.mts) (`npm run verif:couverture`) et [`verif-couverture-marches.mts`](verif-couverture-marches.mts) : les taux gravés dans `packages/db/marches.ts`, recomptés sur la bonne colonne, en lecture seule stricte.
-- [`verif-catalogue-coherence.mts`](verif-catalogue-coherence.mts) (`npm run verif:catalogue`) : cohérence du catalogue seed `data/seeds/sources.csv`, sans réseau.
 - [`verif-marche-cn.mts`](verif-marche-cn.mts), [`verif-marche-cn-facettes.mts`](verif-marche-cn-facettes.mts), [`verif-marche-cn-discrimination.mts`](verif-marche-cn-discrimination.mts), [`verif-marche-cn-dimension-unique.mts`](verif-marche-cn-dimension-unique.mts) : les mesures du marché Chine (lot 6, 15/09/2026) — ouverture, facettes côté site, pouvoir de discrimination, dimension unique `工作性质`.
 - [`p9-verdict.mts`](p9-verdict.mts) `--keys=a,b [--run-id=…]` : le verdict complet d'une ingestion P9 par source, la chaîne entière sans trou entre deux nombres.
 - [`wave-candidates.mts`](wave-candidates.mts) `--actors=<actors.csv> [--limit=40]` : le vivier d'une vague, construit en sondant les portails (D33 : 45 % des `careers.<domaine>` devinés étaient des NXDOMAIN).

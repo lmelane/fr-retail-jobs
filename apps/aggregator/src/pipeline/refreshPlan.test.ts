@@ -1,6 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import {
   sourceEligibility, representationState, planRefresh, identifiersComparable,
+  PROVING_TERMINATIONS, DECLARED_BUT_NOT_PROVING,
   type Representation, type RepresentationState,
 } from './refreshPlan.js';
 
@@ -319,5 +320,32 @@ describe('canonicalAbsenceProofUsable — deux propriétés distinctes', () => {
 
   it('un adaptateur qui ne se prononce pas ne se voit rien présumer de défavorable', () => {
     expect(sourceEligibility(run(), evidence({ canonicalAbsenceProofUsable: undefined })).eligible).toBe(true);
+  });
+});
+
+/**
+ * Le contrat canonique et la preuve de FIN DE PARCOURS sont deux conditions indépendantes, et l'audit du
+ * 2026-09-17 a montré qu'on les confond : six familles ont reçu un contrat exact en croyant gagner le droit
+ * de fermer, alors que leur terminaison n'est pas probante. Leur travail est inerte.
+ *
+ * Ces témoins gardent l'écart lui-même. Le second passe au rouge si une de ces terminaisons est promue sans
+ * que la liste documentaire de `refreshPlan.ts` soit mise à jour — le motif « le code avance, le document
+ * reste en arrière » que les audits de ce projet trouvent en premier.
+ */
+describe('contrat déclaré ≠ droit de fermer', () => {
+  it('une terminaison non probante refuse la fermeture, contrat canonique parfait ou non', () => {
+    for (const termination of DECLARED_BUT_NOT_PROVING) {
+      const r = sourceEligibility(run(), evidence({
+        termination, canonicalContractDeclared: true, canonicalContractBroken: false,
+        canonicalAbsenceProofUsable: true,
+      }));
+      expect(r.eligible, `${termination} ne doit pas autoriser une fermeture`).toBe(false);
+      expect(r.reasons.join(' ')).toMatch(/terminaison non probante/);
+    }
+  });
+
+  it('les deux ensembles restent disjoints : une promotion se fait en connaissance de cause', () => {
+    const promues = DECLARED_BUT_NOT_PROVING.filter((t) => PROVING_TERMINATIONS.has(t));
+    expect(promues, 'promue sans mise à jour du relevé de refreshPlan.ts').toEqual([]);
   });
 });

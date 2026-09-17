@@ -56,6 +56,27 @@ describe('Lever — real Arc\'teryx postings (api.lever.co, 2026-09-10)', () => 
     ]);
     expect(jobs[0]!.raw).toMatchObject({ country: 'CA', workplaceType: 'hybrid' });
   });
+  it('declares canonicalIds on EVERY evidence page, identical to the written externalIds', async () => {
+    network.mockResolvedValueOnce(page(0, 100)).mockResolvedValueOnce(page(100, 2));
+    const r = await fetchLeverJobs({ site: 'acme' });
+    // PRÉMISSE : deux pages de preuve, sans quoi ce témoin n'exercerait pas la règle « tout ou rien ».
+    expect(r.enumeration?.pageEvidence).toHaveLength(2);
+    expect(r.enumeration!.pageEvidence!.every((pe) => Object.hasOwn(pe, 'canonicalIds'))).toBe(true);
+    const canonical = r.enumeration!.pageEvidence!.flatMap((pe) => pe.canonicalIds ?? []);
+    expect([...canonical].sort()).toEqual(r.jobs.map((j) => j.externalId).sort());
+    expect(r.enumeration?.canonicalAbsenceProofUsable).toBe(true);
+    expect(r.complete).toBe(true);
+  });
+
+  it('never publishes a posting the enumeration proof does not name, even after a failed page', async () => {
+    network.mockResolvedValueOnce(page(0, 100)).mockRejectedValueOnce(new Error('503'));
+    const r = await fetchLeverJobs({ site: 'acme' });
+    const canonical = new Set(r.enumeration!.pageEvidence!.flatMap((pe) => pe.canonicalIds ?? []));
+    expect(r.jobs.every((j) => canonical.has(j.externalId))).toBe(true);
+    expect(r.enumeration!.pageEvidence!.every((pe) => Object.hasOwn(pe, 'canonicalIds'))).toBe(true);
+    expect(r.complete).toBe(false);
+  });
+
   it('leaves country and workplace empty when the API does not state them, never guessed from the location', async () => {
     network.mockResolvedValueOnce([{ id: 'x', text: 'Job', hostedUrl: 'https://jobs.lever.co/acme/x', workplaceType: 'unspecified', categories: { location: 'Paris' } }]);
     const { jobs } = await fetchLeverJobs({ site: 'acme' });

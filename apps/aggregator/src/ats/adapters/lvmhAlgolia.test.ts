@@ -71,3 +71,50 @@ describe('fetchLvmhJobs — expérience déclarée', () => {
     expect(jobs[0].experienceYears).toBeUndefined();
   });
 });
+
+/**
+ * LE CONTRAT CANONIQUE — `objectID` (à défaut `atsId`) EST l'`externalId` écrit.
+ *
+ * Retirer `canonicalIds` de la preuve fait tomber ces témoins : sans la propriété,
+ * `normalizeAdapterResult` classe la source « contrat non implémenté » et aucune absence n'y est
+ * démontrable (`UNVERIFIABLE` à la prévisualisation).
+ */
+import { lvmhCanonicalId } from './lvmhAlgolia.js';
+
+describe('fetchLvmhJobs — identifiants canoniques', () => {
+  it('déclare canonicalIds sur la page de preuve, identiques aux externalId produits', async () => {
+    const hits = [{ ...HIT, objectID: 'LV-1' }, { ...HIT, objectID: 'LV-2' }];
+    // PRÉMISSE : les deux hits portent bien un objectID distinct.
+    expect(hits.map(lvmhCanonicalId)).toEqual(['LV-1', 'LV-2']);
+    mockJson.mockResolvedValueOnce({ hits, nbHits: 2 } as never);
+    const r = await fetchLvmhJobs({ country: null });
+    expect(r.enumeration!.pageEvidence!.every((pe) => Object.hasOwn(pe, 'canonicalIds'))).toBe(true);
+    const canonical = r.enumeration!.pageEvidence!.flatMap((pe) => pe.canonicalIds ?? []);
+    expect([...canonical].sort()).toEqual(r.jobs.map((j) => j.externalId).sort());
+    expect(r.enumeration?.canonicalAbsenceProofUsable).toBe(true);
+  });
+
+  it('un hit VU mais sans nom garde son identifiant : disposition, pas trou', async () => {
+    mockJson.mockResolvedValueOnce({ hits: [{ ...HIT, objectID: 'LV-1' }, { objectID: 'LV-ORPHELINE' }], nbHits: 2 } as never);
+    const r = await fetchLvmhJobs({ country: null });
+    const canonical = r.enumeration!.pageEvidence!.flatMap((pe) => pe.canonicalIds ?? []);
+    expect(canonical).toContain('LV-ORPHELINE');                         // observé
+    expect(r.jobs.map((j) => j.externalId)).not.toContain('LV-ORPHELINE'); // non produit
+    expect(r.rejectedRows?.find((x) => (x as { canonicalId?: string }).canonicalId === 'LV-ORPHELINE')?.reason)
+      .toBe('MISSING_NAME_OR_REPEATED_ID');
+  });
+
+  /** Un titre n'est pas une identité : il est publié, mais il interdit d'attester une absence. */
+  it("un hit identifié par son SEUL titre interdit toute preuve d'absence", async () => {
+    const anonymous = { ...HIT, objectID: undefined, atsId: undefined, name: 'Conseiller de vente' };
+    // PRÉMISSE : ce hit n'a AUCUN identifiant natif — seul son titre le nomme.
+    expect(lvmhCanonicalId(anonymous)).toBeNull();
+    mockJson.mockResolvedValueOnce({ hits: [{ ...HIT, objectID: 'LV-1' }, anonymous], nbHits: 2 } as never);
+    const r = await fetchLvmhJobs({ country: null });
+    expect(r.enumeration?.canonicalAbsenceProofUsable).toBe(false);
+    // L'offre reste publiée et nommée dans sa propre preuve : seule l'attestation d'absence est refusée.
+    const canonical = r.enumeration!.pageEvidence!.flatMap((pe) => pe.canonicalIds ?? []);
+    expect(r.jobs.map((j) => j.externalId)).toContain('Conseiller de vente');
+    expect(canonical).toContain('Conseiller de vente');
+  });
+});

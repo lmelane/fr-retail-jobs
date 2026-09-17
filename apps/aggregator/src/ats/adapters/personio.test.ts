@@ -38,3 +38,41 @@ describe('Personio official XML and job detail evidence',()=>{
   expect(r.jobs[0]).toMatchObject({company:'Pina Earth',employerEvidence:{rule:'EXPLICIT_PERSONIO_PORTAL_EMPLOYER'}});
  });
 });
+
+/**
+ * LE CONTRAT CANONIQUE — `String(raw.id)` du flux XML EST l'`externalId` écrit.
+ *
+ * Retirer `canonicalIds` de la preuve fait tomber ces témoins : sans la propriété,
+ * `normalizeAdapterResult` classe la source « contrat non implémenté » et aucune absence n'y est
+ * démontrable (`UNVERIFIABLE` à la prévisualisation).
+ */
+describe('Personio — identifiants canoniques',()=>{
+ beforeEach(()=>vi.resetAllMocks());
+ const two='<workzag-jobs><position><id>42</id><name>Advisor</name></position><position><id>77</id><name>Vendeur</name></position></workzag-jobs>';
+ it('déclare canonicalIds sur la page de preuve, identiques aux externalId produits',async()=>{
+  fetch.mockResolvedValueOnce(two).mockRejectedValue(new Error('detail hors sujet'));
+  const r=await fetchPersonioJobs({host:'a.jobs.personio.de'});
+  // PRÉMISSE : le flux porte bien deux positions identifiées, sans quoi le témoin n'exercerait rien.
+  expect(r.jobs.map(j=>j.externalId)).toEqual(['42','77']);
+  expect(r.enumeration!.pageEvidence!.every(pe=>Object.hasOwn(pe,'canonicalIds'))).toBe(true);
+  const canonical=r.enumeration!.pageEvidence!.flatMap(pe=>pe.canonicalIds??[]);
+  expect([...canonical].sort()).toEqual(r.jobs.map(j=>j.externalId).sort());
+  expect(r.enumeration?.canonicalAbsenceProofUsable).toBe(true);
+ });
+ it('une position VUE puis rejetée garde son identifiant : disposition, pas trou',async()=>{
+  fetch.mockResolvedValueOnce('<workzag-jobs><position><id>42</id><name>Advisor</name></position><position><id>99</id><name></name></position></workzag-jobs>')
+   .mockRejectedValue(new Error('detail hors sujet'));
+  const r=await fetchPersonioJobs({host:'a.jobs.personio.de'});
+  const canonical=r.enumeration!.pageEvidence!.flatMap(pe=>pe.canonicalIds??[]);
+  expect(canonical).toContain('99');                                  // observée
+  expect(r.jobs.map(j=>j.externalId)).not.toContain('99');            // non produite
+  expect(r.rejectedRows?.find(x=>(x as any).canonicalId==='99')?.reason).toBe('MISSING_OR_INVALID_ID_OR_TITLE');
+  expect(r.enumeration?.canonicalAbsenceProofUsable).toBe(true);
+ });
+ it('une position SANS id interdit toute preuve d\'absence, sans inventer d\'identifiant',async()=>{
+  fetch.mockResolvedValueOnce('<workzag-jobs><position><name>Sans identifiant</name></position></workzag-jobs>');
+  const r=await fetchPersonioJobs({host:'a.jobs.personio.de'});
+  expect(r.enumeration!.pageEvidence!.flatMap(pe=>pe.canonicalIds??[])).toEqual([]);
+  expect(r.enumeration?.canonicalAbsenceProofUsable).toBe(false);
+ });
+});

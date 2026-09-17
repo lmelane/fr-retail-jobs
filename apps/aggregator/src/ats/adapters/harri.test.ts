@@ -46,6 +46,45 @@ describe('Harri native career portal protocol',()=>{
   vi.resetAllMocks();fetch.mockResolvedValueOnce(profile).mockResolvedValueOnce({status:'ERROR'});await expect(fetchHarriJobs(config)).rejects.toThrow('INVALID_LISTING_RESPONSE');
  });
 });
+/**
+ * LE CONTRAT CANONIQUE — `String(listing.id)` alimente à la fois la preuve et `externalId`.
+ *
+ * Retirer `canonicalIds` de la preuve fait tomber ces témoins : sans la propriété, `normalizeAdapterResult`
+ * classe la source « contrat non implémenté » et aucune absence n'y est démontrable.
+ */
+describe('Harri — identifiants canoniques',()=>{
+ beforeEach(()=>vi.resetAllMocks());
+ it('déclare canonicalIds sur TOUTES les pages, identiques aux externalId produits',async()=>{
+  const rows=Array.from({length:31},(_,i)=>listing(2812433+i));api([feed(rows.slice(0,30),31),feed(rows.slice(30),31)]);
+  const r=await fetchHarriJobs(config);
+  // PRÉMISSE : deux pages de preuve, sans quoi ce témoin n'exercerait pas la règle « tout ou rien ».
+  expect(r.enumeration?.pageEvidence).toHaveLength(2);
+  expect(r.enumeration!.pageEvidence!.every(pe=>Object.hasOwn(pe,'canonicalIds'))).toBe(true);
+  const canonical=r.enumeration!.pageEvidence!.flatMap(pe=>pe.canonicalIds??[]);
+  expect([...canonical].sort()).toEqual(r.jobs.map(j=>j.externalId).sort());
+  expect(r.enumeration?.canonicalIdViolations).toBeUndefined();
+  expect(r.enumeration?.canonicalAbsenceProofUsable).toBe(true);
+  expect(r.complete).toBe(true);
+ });
+ it('une ligne VUE puis rejetée garde son identifiant : disposition, pas trou',async()=>{
+  api([feed([listing(2812433),{...listing(999),aliasPosition:undefined,position:undefined} as any],2)]);
+  const r=await fetchHarriJobs(config);
+  const canonical=r.enumeration!.pageEvidence!.flatMap(pe=>pe.canonicalIds??[]);
+  expect(canonical).toContain('999');                                   // observée
+  expect(r.jobs.map(j=>j.externalId)).not.toContain('999');             // non produite
+  expect(r.rejectedRows?.find(x=>(x as any).canonicalId==='999')?.reason).toBe('MISSING_POSTING_ID_TITLE_OR_EMPLOYER');
+  expect(r.enumeration?.canonicalIdViolations).toBeUndefined();         // contrat satisfait
+  expect(r.enumeration?.canonicalAbsenceProofUsable).toBe(true);
+ });
+ it('une ligne SANS id exploitable interdit toute preuve d\'absence, sans inventer d\'identifiant',async()=>{
+  api([feed([listing(2812433),{brand:{name:'X',slug:'x'},aliasPosition:'Sans id'} as any],2)]);
+  const r=await fetchHarriJobs(config);
+  const canonical=r.enumeration!.pageEvidence!.flatMap(pe=>pe.canonicalIds??[]);
+  expect(canonical).toEqual(['2812433']);
+  expect(r.enumeration?.canonicalAbsenceProofUsable).toBe(false);
+  expect(r.rejectedRows?.some(x=>(x as any).canonicalId===undefined)).toBe(true);
+ });
+});
 it('rejects contradictory explicit configuration before making requests',async()=>{
  await expect(fetchHarriJobs({...config,brandId:0})).rejects.toThrow('INVALID_BRAND_ID');
  await expect(fetchHarriJobs({...config,portalUrl:'https://harri.com/different'})).rejects.toThrow('SLUG_CONFLICT');

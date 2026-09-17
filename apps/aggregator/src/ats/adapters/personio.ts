@@ -1,4 +1,6 @@
+import { createHash } from 'node:crypto';
 import pLimit from 'p-limit';
+import { captureObservedAt } from '../../capture/context.js';
 import {personioDetail} from './personioDetail.js';
 import { enrichPostingEvidence } from '../../lib/postingEvidence.js';
 import { assertSourceRunning } from '../../lib/sourceBudget.js';
@@ -40,13 +42,28 @@ export async function fetchPersonioJobs(config: Record<string, unknown>): Promis
   const host = String(config.host ?? '');
   if (!host) throw new Error('Personio host missing');
   const endpoint = `https://${host}/xml`;
-  const list = parsePositions(await fetchText(endpoint));
+  const document = await fetchText(endpoint);
+  const observedAt = captureObservedAt();
+  const list = parsePositions(document);
   const rejectedRows: NonNullable<AdapterResult['rejectedRows']> = [];
   const jobs: NormalizedJob[] = [];
+  /**
+   * LE CONTRAT DES IDENTIFIANTS CANONIQUES.
+   *
+   * `String(raw.id)` EST l'identifiant canonique de Personio : c'est exactement ce que
+   * `parsePersonioPosition` écrit en `externalId` et ce que la base stocke. On le collecte AVANT la
+   * validation du titre — une position dotée d'un `id` numérique a été OBSERVÉE, quoi qu'il advienne
+   * ensuite, et une JobSource historique portant ce même identifiant paraîtrait sinon ABSENTE au refresh.
+   */
+  const canonicalIds: string[] = [];
+  let anonymousRows = 0;
   for (const raw of list) {
+    const identifiable = /^[0-9]+$/.test(String(raw?.id ?? ''));
+    if (identifiable) canonicalIds.push(String(raw.id)); else anonymousRows++;
     const job = parsePersonioPosition(raw, host);
     if (!job) {
-      rejectedRows.push({ reason: 'MISSING_OR_INVALID_ID_OR_TITLE', raw }); continue;
+      // Un identifiant exploitable fait du rejet une DISPOSITION nommée, jamais un trou dans la preuve.
+      rejectedRows.push({ reason: 'MISSING_OR_INVALID_ID_OR_TITLE', raw, ...(identifiable ? { canonicalId: String(raw.id) } : {}) }); continue;
     }
     jobs.push(job);
   }
@@ -74,7 +91,13 @@ export async function fetchPersonioJobs(config: Record<string, unknown>): Promis
     jobs: enriched, rejectedRows,
     complete: rejectedRows.length === 0 && new Set(jobs.map(job=>job.externalId)).size === list.length,
     enumeration: { method: 'DOCUMENTED_COMPLETE_XML_FEED', endpoint, pages: 1, rawCount: list.length,
-      termination: 'FULL_RESPONSE', documentation: 'https://developer.personio.de/v1.0/reference/get_xml' },
+      termination: 'FULL_RESPONSE', documentation: 'https://developer.personio.de/v1.0/reference/get_xml',
+      // Une position sans `id` numérique a été vue mais ne peut être nommée : aucun identifiant historique
+      // ne peut alors être déclaré absent, puisqu'il pourrait être celle-là.
+      canonicalAbsenceProofUsable: anonymousRows === 0,
+      pageEvidence: [{ url: endpoint, checkedAt: observedAt.toISOString(),
+        sha256: createHash('sha256').update(document).digest('hex'), offset: 0, pagination: null,
+        ids: canonicalIds, canonicalIds, publisherCounter: String(list.length), componentCounters: [] }] },
   };
 }
 

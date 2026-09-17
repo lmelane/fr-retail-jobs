@@ -20,7 +20,6 @@ import { runEgressProbe } from './pipeline/egressProbe.js';
 const INDEXING_WINDOW_MS = Number(process.env.INDEXING_WINDOW_MS ?? 6 * 60 * 60 * 1000);
 import { runRefresh, refreshScope } from './pipeline/refresh.js';
 import { retireSource } from './pipeline/retireSource.js';
-import { importSourcesCsv } from './connectors/sourceStore.js';
 import { runGeocode } from './pipeline/geocodeJobs.js';
 import { runStats } from './pipeline/stats.js';
 import { exportCompanies } from './export/companies.js';
@@ -177,15 +176,6 @@ try {
     const stats = await consommerFlux(prisma, fluxHttp(base, cle), { taillePage: limite, ...(depuis !== undefined ? { depuis: BigInt(depuis) } : {}) });
     await log.info('command.result', { ok: !stats.refus, command, ...stats, dernierSeq: stats.dernierSeq?.toString() ?? null });
     if (stats.refus) process.exitCode = 1;
-  } else if (command === 'import-sources') {
-    /**
-     * One-shot seed of the Source table (DEC-3) from data/seeds/sources.csv.
-     * Idempotent: re-running updates, never duplicates. After this, the CSV is
-     * dead weight — every runtime consumer reads the table.
-     */
-    const stats = await importSourcesCsv(prisma);
-    await log.info('command.result', { ok: stats.skippedDuplicateTenant.length === 0, command, ...stats });
-    if (stats.skippedDuplicateTenant.length > 0) process.exitCode = 1;
   } else if (command === 'retire-source') {
     /**
      * Cleans up after a catalogue line is removed (a robots-forbidden route, an
@@ -268,7 +258,7 @@ try {
      * ATS discovery over a roster of Maisons (decision, 2026-09-02): open each
      * Maison's site in a browser, detect its ATS (following the careers link one
      * hop), and write source candidates to the explicit output directory for HUMAN
-     * REVIEW — never straight into sources.csv. Resumable: a re-run skips what is
+     * REVIEW — jamais directement dans le registre. Reprenable : un nouveau passage saute ce qui est
      * already processed. `--input=<nom,url.csv>` (required), `--limit=<n>` caps
      * this run, `--fresh` restarts from scratch, `--concurrency=<n>`.
      */

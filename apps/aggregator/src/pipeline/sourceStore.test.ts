@@ -5,18 +5,17 @@ import { recordSourceIdentityReview } from '../connectors/sourceIdentity.js';
 import '../test/setup-integration.js';
 import { describe, it, expect, beforeEach, afterAll, afterEach, vi } from 'vitest';
 import { PrismaClient } from '@prisma/client';
+import { tierFor } from '../connectors/sourceCatalog.js';
 import { captureExtraction } from '../capture/batch.js';
 import { fetchAtsJobs } from '../ats/index.js';
 import { validateCapturedSource } from '../connectors/sourceValidation.js';
 import * as certification from '../connectors/sourceCertification.js';
 import {
-  importSourcesCsv,
   loadActiveSources,
   promoteSource,
   tenantKeyOf,
 } from '../connectors/sourceStore.js';
 import { retireSource } from './retireSource.js';
-import { loadSourceCatalog } from '../connectors/sourceCatalog.js';
 
 /**
  * DEC-3 — the catalogue lives in the Source table, with a lifecycle.
@@ -64,65 +63,56 @@ describe('tenantKeyOf', () => {
   });
 });
 
-describe('importSourcesCsv', () => {
-  it('seeds drafts without invented proof and is idempotent', async () => {
-    const first = await importSourcesCsv(prisma);
-    // EVERY catalogue row must land, so the count is derived from the seed instead of frozen: a hard-coded
-    // number turns each new source into a failing test that says nothing about the property under test.
-    // What matters is that no row is silently dropped — the tenant consolidation (D-28) removed the 17
-    // duplicate rows that re-fetched the same group feed, and FashionJobs left the seed entirely (owner
-    // decision 2026-09-11: discovery-only, never a posting source — the seed is re-imported at every boot,
-    // so leaving the row there would have rewritten its config back into the catalogue).
-    const catalogued = loadSourceCatalog().length;
-    expect(catalogued).toBeGreaterThan(0);
-    expect(first.imported).toBe(catalogued);
-    expect(first.skippedDuplicateTenant).toEqual([]);
-
-    const again = await importSourcesCsv(prisma);
-    expect(again.imported).toBe(0);
-    expect(again.updated).toBe(0);
-    expect(await prisma.source.count()).toBe(first.imported);
-
-    const rows = await loadActiveSources(prisma);
-    expect(rows.length).toBe(0);
-    // The CSV has no dated evidence and cannot activate a source.
-    const sample = await prisma.source.findFirstOrThrow();
-    expect(await prisma.sourceAccessDecision.count({ where: { sourceKey: sample.key } })).toBe(0);
-    expect(sample.tier).toBeTruthy();
-    expect(sample.status).toBe('DRAFT');
-  });
-
-  it('preserves operational configuration and real dated evidence on re-import', async () => {
-    await importSourcesCsv(prisma);
-    const one = await prisma.source.findFirstOrThrow();
-    await prisma.source.update({ where: { id: one.id }, data: {
-      status: 'ACTIVE', config: { board: 'corrected-live-board' },
-      lastRunJobs: 987,
-    } });
-    await importSourcesCsv(prisma);
-    const after = await prisma.source.findUniqueOrThrow({ where: { id: one.id } });
-    expect(after.config).toEqual({ board: 'corrected-live-board' });
-    expect(after.lastRunJobs).toBe(987);
-  });
-
-  it('does not resurrect a RETIRED source on re-import', async () => {
-    await importSourcesCsv(prisma);
-    const one = await prisma.source.findFirstOrThrow();
-    await prisma.source.update({ where: { id: one.id }, data: { status: 'RETIRED' } });
-
-    await importSourcesCsv(prisma);
-    const after = await prisma.source.findUniqueOrThrow({ where: { id: one.id } });
-    expect(after.status).toBe('RETIRED');
-  });
-});
+/**
+ * LE SEED CSV A ÉTÉ SUPPRIMÉ — LA GARANTIE QU'IL PORTAIT, NON.
+ *
+ * `importSourcesCsv` réensemençait la table depuis `data/seeds/sources.csv`. Supprimée le
+ * 2026-09-17 : le CSV portait 83 lignes quand la table en portait 536, sans statut, sans
+ * révision. Sur une base vide il aurait recréé 83 DRAFT périmées, en conflit de `tenantKey` avec
+ * les vraies sources.
+ *
+ * Les témoins qui vivaient ici gardaient DEUX propriétés, et elles valent toujours — c'est
+ * pourquoi ce bloc les reformule au lieu de disparaître avec le CSV :
+ *
+ *  1. un seed n'active JAMAIS une source : il crée du DRAFT, et la promotion exige une preuve
+ *     native datée. `promoteSource` (testé plus bas) porte cette garantie.
+ *  2. le catalogue vide doit REFUSER de répondre plutôt que d'ingérer zéro source en silence —
+ *     le mode de panne « zéro tranquille » que tout ce chantier existe pour tuer.
+ *
+ * La seconde est vérifiée ici, sur le message que le nouveau chemin doit nommer.
+ */
 
 describe('loadActiveSources', () => {
   it('refuses an empty catalogue instead of silently running zero sources', async () => {
-    await expect(loadActiveSources(prisma)).rejects.toThrow(/import-sources/);
+    /*
+     * PRÉMISSE — la table doit être vide, sinon `loadActiveSources` répondrait normalement et ce
+     * témoin passerait au vert sans exercer le cas dégradé.
+     */
+    expect(await prisma.source.count()).toBe(0);
+    await expect(loadActiveSources(prisma)).rejects.toThrow(/registre/i);
+    /*
+     * Et il ne doit PLUS renvoyer vers `import-sources` : la commande a été supprimée le
+     * 2026-09-17 avec son CSV. Envoyer un opérateur vers une commande inexistante lui coûte une
+     * enquête au pire moment — quand le catalogue est vide.
+     */
+    await expect(loadActiveSources(prisma)).rejects.not.toThrow(/import-sources/);
   });
 
   it('returns only ACTIVE rows', async () => {
-    await importSourcesCsv(prisma);
+    /*
+     * Les lignes sont créées ICI plutôt que semées depuis un CSV supprimé. Le témoin garde la même
+     * propriété — une source non ACTIVE n'est jamais servie à la collecte — sans dépendre d'un
+     * fichier dont le contenu dérivait de la table qu'il prétendait ensemencer.
+     */
+    for (const n of [1, 2, 3]) {
+      await prisma.source.create({ data: {
+        key: `temoin-${n}`, maison: `Témoin ${n}`, kind: 'ashby',
+        tenantKey: `ashby:temoin-${n}`, config: { board: `temoin${n}` }, status: 'DRAFT',
+        // `tier` vient de la règle métier, pas d'une valeur choisie ici : un palier inventé
+        // ferait passer ce témoin sur une source que la déduplication classerait autrement.
+        tier: tierFor({ maison: `Témoin ${n}`, kind: 'ashby' } as never),
+      } });
+    }
     const one = await prisma.source.findFirstOrThrow();
     await prisma.source.updateMany({ data: { status: 'ACTIVE' } });
     await prisma.source.update({ where: { id: one.id }, data: { status: 'PAUSED' } });
