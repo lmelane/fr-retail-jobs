@@ -2,6 +2,22 @@
 
 Collecte des offres du luxe, de la mode, de la beauté et du retail. Les publications originales sont la référence ; interprétations, rapprochements et traductions doivent rester traçables et recalculables.
 
+## Dépôt et branches
+
+- Dépôt GitHub : [lmelane/fr-retail-jobs](https://github.com/lmelane/fr-retail-jobs).
+- Dossier de référence sur le poste de Loïc : `/Users/lmelane/Downloads/catwalks-job-aggregator`.
+- `main` est réservée à la version livrée et vérifiée en production.
+- `development` porte le travail en cours ; les pushes sur cette branche sont autorisés.
+- La promotion de `development` vers `main` intervient après validation de la release. Un push de développement ne vaut pas autorisation de mise en production.
+
+Aucun push sur `main` ni déploiement du site, backend, back-office ou média sans validation explicite de Loïc. L’agrégateur peut être promu sur `main` lorsque ses contrôles de release, ses migrations et son retour arrière ont été vérifiés.
+
+### Transition des copies de travail
+
+Les checkouts actuellement utilisés par Claude sont conservés tant que son travail est actif. Leur branche locale peut donc encore porter un ancien nom, y compris `main` : cela ne vaut ni validation ni autorisation de production. `development` distante reçoit les commits validés. La branche locale sera réalignée après coordination, sans perdre de fichiers modifiés ou non suivis. Le SHA réellement déployé doit être vérifié avant d’affirmer que `main` lui correspond.
+
+Les règles de travail figurent dans [CLAUDE.md](CLAUDE.md). Préserver le travail unique avant toute suppression de branche ou de clone ; une copie utilisée par un processus actif reste en place jusqu’à coordination.
+
 ## Documentation maintenue
 
 - [Architecture et contrats produit](docs/architecture/production-foundations.md) : deux origines d’offres, pays/langue, recherche et parcours de validation des sources.
