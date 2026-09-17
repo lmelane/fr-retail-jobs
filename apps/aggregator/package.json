@@ -17,6 +17,9 @@
     "test:integration": "vitest run src/pipeline src/dedup",
     "test": "npm run test:unit && npm run test:integration",
     "check:layout": "node scripts/check-layout.mjs",
+    "verif:catalogue": "tsx scripts/ops/verif-catalogue-coherence.mts",
+    "verif:couverture": "tsx scripts/ops/verif-couverture-registre.mts",
+    "verif:bash-live": "tsx scripts/ops/verif-bash-live.mts",
     "build:local": "node scripts/build-local.mjs"
   },
   "dependencies": {

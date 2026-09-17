@@ -1,4 +1,5 @@
 import pLimit from 'p-limit';
+import { log } from '../../observability/logger.js';
 import { DEFAULT_DETAIL_CONCURRENCY, fetchText } from '../../lib/http.js';
 import { htmlToPlainText } from '../../lib/html.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
@@ -50,6 +51,38 @@ const DETAIL = {
   description: /<div class="[^"]*cms-content"[^>]*itemprop="description"[^>]*>([\s\S]*?)<\/div>\s*(?:<hr|<p class="title-default"|<\/section)/i,
   profile: /Profil recherch[ée]<\/p>\s*<div class="[^"]*cms-content"[^>]*>([\s\S]*?)<\/div>\s*(?:<hr|<p class="title-default"|<\/section|<div class="text-center)/i,
   experience: /itemprop="experienceRequirements"[^>]*>\s*([^<]{1,80}?)\s*</i,
+  /**
+   * « Date de publication » de la fiche — la SEULE vraie.
+   *
+   * Le listing sert `datePosted` = la date du JOUR sur les 50 offres à la fois
+   * (un horodatage de rafraîchissement), quand les fiches portent des dates
+   * échelonnées.
+   *
+   * Mesuré contre la source le 2026-09-17 (`npm run verif:bash-live`) :
+   * 50/50 offres datées, 7 dates distinctes. Avant ce correctif : une seule.
+   *
+   * Ce que ça coûtait, et ce n'est PAS un défaut d'affichage : R-83 / D-415
+   * classe le matching candidat « du plus récent au plus ancien, au jour
+   * calendaire parisien près », les préférences de R-82 ne départageant qu'à
+   * jour égal. Une source dont les 50 offres portent le même jour neutralise
+   * donc le critère PRINCIPAL de son propre tier — le classement retombe sur
+   * les critères secondaires. La date n'est plus montrée au candidat depuis
+   * D-415 (elle ne survit qu'en JSON-LD, flux et sitemap) : l'erreur était
+   * invisible à l'écran tout en pilotant l'ordre des offres.
+   *
+   * Portée, en revanche, bornée côté rapprochement : `dedup/match.ts`
+   * n'applique aucune contrainte de date — vérifié le 2026-09-17, `postedAt`
+   * n'y est pas lu — donc corriger cette date ne peut ni créer ni supprimer un
+   * doublon.
+   *
+   * ANCRÉE sur le libellé « Date de publication », et non sur le seul attribut
+   * `itemprop`. Les quatre fiches mesurées le 2026-09-17 n'en portent qu'une
+   * occurrence, mais `String.match` sans drapeau global rend la PREMIÈRE du
+   * document : le jour où le portail ajoute un bloc « offres similaires » en
+   * microdonnées `JobPosting` — le listing en sert déjà — une date étrangère
+   * passerait devant, silencieusement et sans faire rougir un témoin.
+   */
+  posted: /Date de publication[^<]*<\/b>\s*<span[^>]*itemprop="datePosted"[^>]*>\s*(\d{2}\/\d{2}\/\d{4})\s*</i,
 };
 
 /**
@@ -89,10 +122,27 @@ function decode(value: string | undefined): string | undefined {
   return text || undefined;
 }
 
+/**
+ * Une date « jj/mm/aaaa », ou `undefined` si le portail n'en sert pas une vraie.
+ *
+ * `Date.UTC` ne REFUSE pas un champ hors bornes, il le reporte : le 31/06 (juin
+ * compte 30 jours) devient le 1er juillet, le 29/02/2026 (année non bissextile)
+ * devient le 1er mars, le 00/00 recule à novembre de l'année précédente. Chacune
+ * de ces valeurs a l'air d'une date normale une fois en base, et `plausiblePostedAt`
+ * ne la rattrape pas : il n'écarte que `NaN` et le futur lointain.
+ *
+ * Le lot corrige une date fausse ; la laisser revenir par ce chemin le viderait de
+ * son sens. D'où l'aller-retour : on ne garde la date que si elle se relit à
+ * l'identique, seule manière de distinguer un report silencieux d'une vraie date.
+ */
 function parseDayMonthYear(value: string | undefined): Date | undefined {
   const match = value?.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
   if (!match) return undefined;
-  return new Date(Date.UTC(Number(match[3]), Number(match[2]) - 1, Number(match[1])));
+  const [jour, mois, annee] = [Number(match[1]), Number(match[2]), Number(match[3])];
+  const date = new Date(Date.UTC(annee, mois - 1, jour));
+  const intacte =
+    date.getUTCDate() === jour && date.getUTCMonth() === mois - 1 && date.getUTCFullYear() === annee;
+  return intacte ? date : undefined;
 }
 
 /** Les offres du listing. Exporté pour être testé sans réseau. */
@@ -131,14 +181,15 @@ export function parseBashListing(html: string): { jobs: NormalizedJob[]; declare
   return { jobs, declaredTotal: declaredTotal ? Number(declaredTotal) : undefined };
 }
 
-/** Description complète (poste + profil) d'une page de détail. */
-export function parseBashDetail(html: string): { description?: string; experience?: string } {
+/** Description complète (poste + profil), date de publication réelle et expérience d'une fiche. */
+export function parseBashDetail(html: string): { description?: string; experience?: string; postedAt?: Date } {
   const parts = [html.match(DETAIL.description)?.[1], html.match(DETAIL.profile)?.[1]]
     .map((part) => plain(part))
     .filter(Boolean);
   return {
     description: parts.join('\n\n') || undefined,
     experience: decode(html.match(DETAIL.experience)?.[1]),
+    postedAt: parseDayMonthYear(html.match(DETAIL.posted)?.[1]),
   };
 }
 
@@ -151,27 +202,56 @@ export async function fetchBashTalentsJobs(config: Record<string, unknown> = {})
   const { jobs: listed, declaredTotal } = parseBashListing(listing);
 
   const limit = pLimit(Number(config.detailConcurrency ?? DEFAULT_DETAIL_CONCURRENCY));
+  let detailFailures = 0;
   const jobs = withDescriptions
     ? await Promise.all(
         listed.map((job) =>
           limit(async (): Promise<NormalizedJob> => {
             try {
               const detail = parseBashDetail(await fetchText(job.url));
-              // Le listing ne porte la description que sur 3 offres sur 50 :
-              // le détail prime dès qu'il en a une.
+              // Le listing ne porte la description que sur 3 offres sur 50, et
+              // sa date est celle du jour sur les 50 : le détail prime sur les
+              // deux dès qu'il les a.
               return {
                 ...job,
                 description: detail.description ?? job.description,
+                postedAt: detail.postedAt ?? job.postedAt,
                 raw: { ...(job.raw as object), experience: detail.experience },
               };
             } catch {
-              // Sans détail, l'offre garde titre, lieu, contrat, date et URL.
-              return job;
+              // Sans détail, l'offre garde titre, lieu, contrat et URL, et reste
+              // servie : un incident réseau ne doit pas retirer du catalogue un
+              // poste réellement ouvert.
+              //
+              // Mais elle part SANS DATE, plutôt qu'avec celle du listing. Cette
+              // dernière vaut « aujourd'hui » pour les 50 offres à la fois : la
+              // garder ferait annoncer « publiée aujourd'hui » sur une offre de
+              // trois semaines, et surtout l'écrirait PAR-DESSUS la vraie date
+              // déjà en base — `upsert.ts` pose `postedAt: candidate.postedAt ??
+              // null` sans condition, donc chaque échec de fiche rajeunirait
+              // l'offre. Une absence, elle, n'écrase rien de faux : la fiche
+              // n'affiche alors aucune date (`dateRelative` rend une chaîne vide)
+              // et le classement relègue l'offre au lieu de la faire remonter.
+              //
+              // Le référencement ne paie pas ce choix : le sitemap exige AUSSI
+              // 100 caractères de description (`sitemap-emplois.ts`), et 49 de ces
+              // 50 offres n'en ont aucune au listing — elles en sont déjà exclues.
+              detailFailures += 1;
+              return { ...job, postedAt: undefined };
             }
           }),
         ),
       )
     : listed;
+
+  // Un détail qui tombe en masse (ralentissement, limitation de débit sur 50
+  // requêtes en rafale) est un incident de collecte, pas un run normal.
+  if (detailFailures > 0) {
+    await log.warn(
+      'adapter.incomplete',
+      `[bashTalents] ${detailFailures}/${listed.length} detail pages unreachable; those offers ship without description nor real posting date`,
+    );
+  }
 
   return { jobs, declaredTotal, truncated: declaredTotal !== undefined && jobs.length < declaredTotal };
 }
