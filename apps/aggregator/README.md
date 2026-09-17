@@ -70,7 +70,7 @@ Un refus de contrat ou une panne du flux se lit sur `DirectFeedCursor.lastError`
 
 ## Sources et preuves
 
-Le catalogue opérationnel est la table `Source`. `data/seeds/sources.csv` ne remplace pas l’état de production. Le [parcours maintenu des sources](../../docs/architecture/source-onboarding.md) précise l’ajout, les preuves, la validation native et la promotion sous révision explicite. Les inspections de découverte restent distinctes des décisions de qualification.
+Le catalogue opérationnel est la table `Source`, et il est la SEULE source de vérité : le seed `data/seeds/sources.csv` et sa commande `import-sources` ont été supprimés le 2026-09-17 (83 lignes contre 536 en base). La restauration passe par `scripts/ops/exporter-registre-sources.mts` puis `reimporter-registre-sources.mts`. Le [parcours maintenu des sources](../../docs/architecture/source-onboarding.md) précise l’ajout, les preuves, la validation native et la promotion sous révision explicite. Les inspections de découverte restent distinctes des décisions de qualification.
 
 - Runtime et tests : `src/`.
 - Commandes maintenues : `scripts/`.
