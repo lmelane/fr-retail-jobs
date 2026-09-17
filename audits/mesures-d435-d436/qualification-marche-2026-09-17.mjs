@@ -35,6 +35,7 @@
  * Avec des codes : ces pays-là, marchés supportés compris.
  */
 import { PrismaClient } from '@prisma/client';
+import { EXPRESSION_FACETTE } from '@catwalks/db/colonnes-facette';
 
 /** Le volume à partir duquel un pays MÉRITE d'être qualifié. Il ne promeut rien à lui seul. */
 const SEUIL_QUALIFICATION = 500;
@@ -48,30 +49,51 @@ const SEUIL_COUVERTURE = 0.2;
 const PART_DOMINANTE_MAXIMALE = 0.9;
 
 /**
- * Les dimensions candidates, et la colonne qui les porte.
+ * Les dimensions candidates, et l'expression qui les porte.
  *
- * Reprises telles quelles de `facettes-par-marche-2026-09-15.mjs` — un second relevé qui
- * nommerait ses colonnes autrement produirait deux vérités sur la même donnée. Les noms sont
- * ceux du schéma : `jobFunction` et `seniority`, pas les intitulés d'interface.
+ * ── D'OÙ VIENNENT CES EXPRESSIONS, ET POURQUOI PLUS D'UNE LISTE ÉCRITE ICI ────────────────────
+ *
+ * Les dimensions RÉELLEMENT SERVIES au candidat sont importées de `@catwalks/db/colonnes-facette`,
+ * la déclaration unique. Elles ne sont plus recopiées : cette sonde a mesuré `jobFunction` du
+ * 15 au 17/09/2026 alors que la facette agrège `occupationCode` — 42 points d'écart, et la
+ * décision d'ouvrir 29 marchés prise sur ce chiffre. La Pologne annoncée « métier exposable »
+ * tombe à 20,2 % sur la colonne servie, le Danemark à 17,6 %, la Thaïlande à 16,7 %.
+ *
+ * ── LES DIMENSIONS D'OBSERVATION, DÉCLARÉES ICI ET SEULEMENT ICI ──────────────────────────────
+ *
+ * `engagement`, `modeDeTravail` et `salaire` ne sont servies par AUCUNE facette aujourd'hui. Les
+ * mesurer reste utile — c'est ce qui dira le jour venu si une nouvelle facette est possible — mais
+ * elles ne peuvent pas venir de `colonnes-facette`, qui décrit ce qui EST servi. Elles sont donc
+ * déclarées localement, et le tableau le signale par un `·` devant leur nom : le lecteur voit
+ * immédiatement qu'un verdict « exposable » sur ces lignes-là ne décrit aucune facette existante.
+ *
+ * `seniorite` a été RETIRÉE : la dimension a quitté les facettes le 15/09/2026 (99,97 % de la
+ * donnée est déduite par expression régulière sur l'intitulé, et elle contredit la source dans
+ * 80 % des cas confrontables). La mesurer ici décrirait une facette qui n'existe plus.
  */
-const DIMENSIONS = {
-  metier: 'jobFunction',
-  seniorite: 'seniority',
+const DIMENSIONS_SERVIES = {
+  metier: EXPRESSION_FACETTE.metier,
   /*
    * `contrat` a été omis d'une première version de cette liste, et la sonde a rendu quatre
    * qualifications sans lui — alors qu'il est renseigné de 31 à 38 % sur les quatre pays, très
    * au-dessus du seuil. Une sonde incomplète ne se voit pas : elle rend un tableau qui a l'air
    * complet. C'est la comparaison avec le relevé de référence qui l'a attrapée.
    */
-  contrat: 'employmentTerm',
-  temps: 'workTime',
-  programme: 'programType',
-  engagement: 'engagementType',
-  modeDeTravail: 'workplaceType',
-  salaire: 'salaryMin',
-  langue: 'language',
-  ville: 'city',
+  contrat: EXPRESSION_FACETTE.contrat,
+  temps: EXPRESSION_FACETTE.temps,
+  programme: EXPRESSION_FACETTE.programme,
+  langue: EXPRESSION_FACETTE.langue,
+  ville: EXPRESSION_FACETTE.ville,
 };
+
+/** Mesurées pour observer, jamais servies : aucune facette ne les expose aujourd'hui. */
+const DIMENSIONS_OBSERVEES = {
+  engagement: '"engagementType"',
+  modeDeTravail: '"workplaceType"',
+  salaire: '"salaryMin"',
+};
+
+const DIMENSIONS = { ...DIMENSIONS_SERVIES, ...DIMENSIONS_OBSERVEES };
 
 const db = new PrismaClient();
 const pct = (n) => `${(n * 100).toFixed(1)} %`;
@@ -96,10 +118,18 @@ try {
     console.log('   dimension        couverture   valeurs   dominante        verdict');
     console.log('   ' + '─'.repeat(72));
 
-    for (const [nom, colonne] of Object.entries(DIMENSIONS)) {
+    for (const [nom, expression] of Object.entries(DIMENSIONS)) {
+      /*
+       * `<> ''` REPRODUIT L'EXCLUSION DE LA FACETTE, et ce n'est pas une précaution théorique :
+       * `count(colonne)` compte la chaîne vide, la facette servie l'exclut. Mesuré le 17/09/2026 :
+       * zéro chaîne vide sur les six dimensions servies, donc l'écart est nul AUJOURD'HUI. La
+       * règle est reprise quand même, pour que l'apparition d'une chaîne vide ne creuse pas un
+       * écart silencieux entre ce qu'on mesure et ce que le candidat voit.
+       */
+      const rempli = `${expression} IS NOT NULL AND (${expression})::text <> ''`;
       const [r] = await db.$queryRawUnsafe(`
-        SELECT count(*) FILTER (WHERE "${colonne}" IS NOT NULL)::int AS remplies,
-               count(DISTINCT "${colonne}")::int AS distinctes
+        SELECT count(*) FILTER (WHERE ${rempli})::int AS remplies,
+               count(DISTINCT ${expression}) FILTER (WHERE ${rempli})::int AS distinctes
           FROM "Job" WHERE "isActive" AND "countryCode" = $1`, pays);
 
       const couverture = offres ? r.remplies / offres : 0;
@@ -107,8 +137,8 @@ try {
       if (r.remplies > 0) {
         const [d] = await db.$queryRawUnsafe(`
           SELECT count(*)::int AS n FROM "Job"
-           WHERE "isActive" AND "countryCode" = $1 AND "${colonne}" IS NOT NULL
-           GROUP BY "${colonne}" ORDER BY count(*) DESC LIMIT 1`, pays);
+           WHERE "isActive" AND "countryCode" = $1 AND ${rempli}
+           GROUP BY ${expression} ORDER BY count(*) DESC LIMIT 1`, pays);
         partDominante = d ? d.n / r.remplies : null;
       }
 
@@ -118,7 +148,13 @@ try {
         : !diverse ? (r.distinctes <= 1 ? 'une seule valeur' : 'valeurs trop uniformes')
         : 'exposable';
 
-      console.log(`   ${nom.padEnd(16)} ${pct(couverture).padStart(9)} ${String(r.distinctes).padStart(9)}`
+      /*
+       * Le `·` marque une dimension qu'AUCUNE facette n'expose. Sans lui, un verdict « exposable »
+       * sur `salaire` ou `modeDeTravail` se lit comme un filtre existant — alors qu'il décrit une
+       * possibilité, pas l'état du produit.
+       */
+      const servie = nom in DIMENSIONS_SERVIES;
+      console.log(`   ${(servie ? '  ' : '· ') + nom.padEnd(14)} ${pct(couverture).padStart(9)} ${String(r.distinctes).padStart(9)}`
         + `   ${(partDominante === null ? '—' : pct(partDominante)).padStart(9)}        ${verdict}`);
     }
 

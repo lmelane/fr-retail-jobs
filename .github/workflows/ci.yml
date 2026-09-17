@@ -49,6 +49,15 @@ jobs:
         run: npm run test:integration -w @catwalks/aggregator
       - name: Outils Railway (hors ligne)
         run: python3 -B -m unittest discover -s apps/aggregator/scripts/ops/tests
+      # Le garde de couverture, en mode reproductible : il s'exécute contre le Postgres de
+      # service (migré, VIDE), jamais contre la production. Il vérifie donc la MÉCANIQUE — la
+      # requête tourne contre le schéma réel, l'expression mesurée est valide, le registre est
+      # lisible — et dit explicitement qu'aucun chiffre n'a été comparé.
+      # La comparaison registre ↔ base exige la production en lecture seule et reste manuelle :
+      #   python3 apps/aggregator/scripts/ops/db.py readonly npx tsx \
+      #     apps/aggregator/scripts/ops/verif-couverture-registre.mts
+      - name: Garde de couverture (mécanique, base vide)
+        run: npm run verif:couverture -w @catwalks/aggregator -- --ci
 
   api:
     runs-on: ubuntu-latest

@@ -9,6 +9,7 @@
     "./occupations": "./occupations.ts",
     "./presentation": "./presentation.ts",
     "./marches": "./marches.ts",
+    "./colonnes-facette": "./colonnes-facette.ts",
     "./availability": "./availability.ts",
     "./publications": "./publications.ts",
     "./money": "./money.ts",

@@ -70,3 +70,9 @@ __pycache__/
 
 # Stack locale : configuration privée, secrets de test, PID, journaux, boîte de réception, preuves.
 .stack-local/
+
+# Corpus de référence : manifestes d'instantané produits par `corpus-reference.mts`.
+# Ils portent la répartition par source et par employeur de tout le catalogue — de la donnée
+# métier, pas du code. Le SCRIPT est versionné (il est la façon de les rejouer), sa SORTIE non.
+.corpus/
+.corpus-*/

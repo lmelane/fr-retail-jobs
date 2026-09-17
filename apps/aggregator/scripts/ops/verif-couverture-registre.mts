@@ -52,10 +52,38 @@
  * aurait été détecté sur les DOUZE marchés, pas sur un seul.
  */
 import { PrismaClient } from '@prisma/client';
-import { CODES_MARCHE, MARCHES, SEUIL_AFFICHAGE_FACETTE } from '@catwalks/db/marches';
+import { CODES_MARCHE_LOCALISES, MARCHES, SEUIL_AFFICHAGE_FACETTE } from '@catwalks/db/marches';
+import { EXPRESSION_FACETTE, POPULATION_MESUREE } from '@catwalks/db/colonnes-facette';
 
 /** L'écart toléré, en proportion (0.03 = 3 points de pourcentage). */
 const TOLERANCE = 0.03;
+
+/**
+ * LA POPULATION COMPARÉE : les marchés LOCALISÉS, et eux seuls.
+ *
+ * Le registre est passé de 12 à 41 marchés le 17/09/2026. Les 29 nouveaux sont ROUTABLES : leur
+ * couverture est gravée à 0 DÉLIBÉRÉMENT — un marché en repli n'expose aucune facette de
+ * dimension tant qu'il n'est pas mesuré, et c'est conservateur, pas un défaut.
+ *
+ * Balayer les 41 faisait donc rougir ce garde sur 29 écarts attendus, noyant les vrais. Il compare
+ * désormais la population qui porte une mesure. Le jour où un routable est mesuré et promu, il
+ * entre dans `CODES_MARCHE_LOCALISES` et ce garde le prend en compte automatiquement.
+ */
+const MARCHES_COMPARES = CODES_MARCHE_LOCALISES;
+
+/**
+ * `--ci` : le mode reproductible, sans accès à la production.
+ *
+ * Le CI dispose d'un Postgres de service vide, migré mais sans corpus. Le garde ne peut alors RIEN
+ * prouver sur les chiffres — et c'est exactement ce que sa prémisse détecte. En mode CI, il
+ * vérifie ce qui est vérifiable HORS DONNÉES : que la requête tourne, que la population et
+ * l'expression mesurée sont bien celles de la facette servie, et que le registre est lisible.
+ * Il sort alors 0 en DISANT qu'aucune comparaison de chiffres n'a eu lieu.
+ *
+ * Sans ce mode, l'alternative était de brancher le CI sur la production — ce qui est exclu — ou de
+ * laisser le garde hors du CI, ce qui l'a rendu invisible pendant deux jours.
+ */
+const MODE_CI = process.argv.includes('--ci');
 
 const url = process.env.DB_URL ?? process.env.DATABASE_URL;
 if (!url) {
@@ -81,15 +109,23 @@ async function main(): Promise<number> {
    * colonne-là transforme un « ça ne colle plus » en « quelqu'un a re-mesuré
    * sur jobFunction ».
    */
+  /*
+   * L'EXPRESSION VIENT DE `colonnes-facette`, elle n'est plus écrite ici.
+   *
+   * Ce garde avait raison sur la colonne quand les deux sondes avaient tort — et rien ne
+   * garantissait qu'il le reste. Il lit désormais la même déclaration qu'elles : trois outils, une
+   * seule source. `<> ''` reproduit l'exclusion de la facette servie, que `count()` ignore.
+   */
+  const metier = EXPRESSION_FACETTE.metier;
   const lignes = await prisma.$queryRawUnsafe<Ligne[]>(`
     SELECT
       upper("countryCode") AS marche,
       count(*)::int AS actives,
-      (count(*) FILTER (WHERE "occupationCode" IS NOT NULL))::float / count(*) AS metier,
+      (count(*) FILTER (WHERE ${metier} IS NOT NULL AND (${metier})::text <> ''))::float / count(*) AS metier,
       (count(*) FILTER (WHERE "jobFunction" IS NOT NULL))::float / count(*) AS jobfunction
-    FROM "Job"
-    WHERE "isActive"
-      AND upper("countryCode") IN (${CODES_MARCHE.map(
+    FROM "${POPULATION_MESUREE.table}"
+    WHERE ${POPULATION_MESUREE.filtre}
+      AND upper("countryCode") IN (${MARCHES_COMPARES.map(
         (c) => `'${c}'`,
       ).join(',')})
     GROUP BY 1
@@ -103,10 +139,33 @@ async function main(): Promise<number> {
    * ci-dessous ne s'exécuterait jamais et ce script sortirait 0 en ayant tout
    * validé. C'est le mode de panne classique d'un garde branché sur des données.
    */
-  if (mesure.size !== CODES_MARCHE.length) {
+  /*
+   * MODE CI — la base est migrée mais VIDE, et c'est normal.
+   *
+   * Ce qui est vérifié ici n'est pas un chiffre, c'est la MÉCANIQUE : la requête s'exécute contre
+   * le schéma réel (donc les colonnes existent et l'expression est valide), le registre est
+   * lisible, et la population interrogée est bien celle de la facette. Une colonne renommée ou une
+   * expression invalide fait échouer la requête plus haut — c'est ce que le CI attrape.
+   *
+   * Le message dit explicitement qu'aucun chiffre n'a été comparé. Un garde qui tairait cette
+   * limite serait pire que pas de garde : il ferait croire à une vérification qui n'a pas eu lieu.
+   */
+  if (MODE_CI && mesure.size === 0) {
+    console.log('✔ MODE CI — la requête de mesure s’exécute contre le schéma réel.');
+    console.log(`   population : "${POPULATION_MESUREE.table}" WHERE ${POPULATION_MESUREE.filtre}`);
+    console.log(`   expression mesurée pour « metier » : ${EXPRESSION_FACETTE.metier}`);
+    console.log(`   registre lisible : ${MARCHES_COMPARES.length} marchés localisés.`);
+    console.log('\n   AUCUN CHIFFRE N’A ÉTÉ COMPARÉ : le corpus est vide (base de CI).');
+    console.log('   La comparaison registre ↔ base exige la production, en lecture seule :');
+    console.log('     python3 apps/aggregator/scripts/ops/db.py readonly npx tsx \\');
+    console.log('       apps/aggregator/scripts/ops/verif-couverture-registre.mts');
+    return 0;
+  }
+
+  if (mesure.size !== MARCHES_COMPARES.length) {
     console.error(
-      `PRÉMISSE ROUGE : ${mesure.size} marchés mesurés sur ${CODES_MARCHE.length} attendus.`,
-      `Manquants : ${CODES_MARCHE.filter((c) => !mesure.has(c)).join(', ') || '(aucun)'}.`,
+      `PRÉMISSE ROUGE : ${mesure.size} marchés mesurés sur ${MARCHES_COMPARES.length} attendus.`,
+      `Manquants : ${MARCHES_COMPARES.filter((c) => !mesure.has(c)).join(', ') || '(aucun)'}.`,
       '\nLa base interrogée ne porte pas le catalogue attendu — le témoin ne peut RIEN prouver.',
     );
     return 2;
@@ -115,7 +174,7 @@ async function main(): Promise<number> {
   const ecarts: string[] = [];
   const suspicions: string[] = [];
 
-  for (const code of CODES_MARCHE) {
+  for (const code of MARCHES_COMPARES) {
     const reel = mesure.get(code)!;
     const grave = MARCHES[code].couverture.metier;
     const ecart = Math.abs(reel.metier - grave);
@@ -154,7 +213,7 @@ async function main(): Promise<number> {
 
   if (!ecarts.length) {
     console.log(
-      `✅ Couverture métier du registre conforme à la base, sur ${CODES_MARCHE.length} marchés ` +
+      `✅ Couverture métier du registre conforme à la base, sur ${MARCHES_COMPARES.length} marchés ` +
         `(colonne occupationCode, tolérance ${(TOLERANCE * 100).toFixed(0)} pts).`,
     );
     return 0;

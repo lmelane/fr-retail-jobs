@@ -51,6 +51,7 @@
  *     audits/mesures-d435-d436/marches-routables-2026-09-17.mts [seuil]
  */
 import { PrismaClient } from '@prisma/client';
+import { EXPRESSION_FACETTE } from '@catwalks/db/colonnes-facette';
 
 /** Sous ce volume, une page de marché serait trop maigre pour retenir un candidat. */
 const SEUIL_ROUTABLE = Number(process.argv[2] ?? 50);
@@ -62,10 +63,22 @@ const AMBIGUS = new Set(['AL', 'AR', 'CA', 'CO', 'CT', 'DE', 'GA', 'ID', 'IL', '
   'SD', 'TN', 'VA', 'VT', 'WA', 'WI', 'WY', 'NL', 'PE', 'SK', 'NU']);
 /** Les langues dont le site possède un catalogue d'interface complet, au 2026-09-17. */
 const LANGUES_SERVIES = new Set(['fr', 'en', 'de', 'it', 'es', 'nl', 'zh-CN']);
-/** Les dimensions candidates à devenir une facette, et leur colonne — mêmes noms que les autres sondes. */
+/**
+ * Les dimensions candidates à devenir une facette, et l'expression qui les porte.
+ *
+ * IMPORTÉES, PLUS RECOPIÉES. Cette sonde a mesuré `jobFunction` du 15 au 17/09/2026 alors que la
+ * facette agrège `occupationCode` — 42 points d'écart, et c'est elle qui a servi à qualifier les
+ * 29 marchés routables. Sur la colonne réellement servie, trois d'entre eux tombent sous le seuil
+ * de 20 % (DK 17,6 %, TH 16,7 %, VN 19,6 %).
+ *
+ * `seniorite` a été retirée : la dimension a quitté les facettes le 15/09 (99,97 % déduite par
+ * expression régulière). La mesurer ici décrirait une facette qui n'existe plus.
+ */
 const DIMENSIONS: Record<string, string> = {
-  metier: 'jobFunction', seniorite: 'seniority', contrat: 'employmentTerm',
-  temps: 'workTime', ville: 'city',
+  metier: EXPRESSION_FACETTE.metier,
+  contrat: EXPRESSION_FACETTE.contrat,
+  temps: EXPRESSION_FACETTE.temps,
+  ville: EXPRESSION_FACETTE.ville,
 };
 const SEUIL_COUVERTURE = 0.2;
 const PART_DOMINANTE_MAX = 0.9;
@@ -106,14 +119,27 @@ try {
     if (p.offres < SEUIL_ROUTABLE) { bloques.push({ p, motif: `volume (${p.offres})` }); continue; }
 
     const facettes: string[] = [];
-    for (const [nom, colonne] of Object.entries(DIMENSIONS)) {
+    for (const [nom, expression] of Object.entries(DIMENSIONS)) {
+      /*
+       * UNE SEULE PASSE, SUR UNE EXPRESSION, PAS SUR UN NOM DE COLONNE.
+       *
+       * L'ancienne forme interpolait `"${colonne}"` entre guillemets et préfixait `j2.` dans la
+       * sous-requête : deux hypothèses qui tombent dès qu'une dimension est une EXPRESSION.
+       * `ville` agrège `lower(trim(city))` — `j2."lower(trim(city))"` n'existe pas.
+       *
+       * La forme ci-dessous calcule l'expression une fois dans une CTE, puis compte dessus. Elle
+       * accepte donc n'importe quelle expression, et `<> ''` reproduit l'exclusion de la facette
+       * servie (`count()` compterait la chaîne vide, la facette non).
+       */
       const [r] = await db.$queryRawUnsafe<Array<{ remplies: number; distinctes: number; dominante: number }>>(`
-        SELECT count("${colonne}")::int AS remplies, count(DISTINCT "${colonne}")::int AS distinctes,
-               coalesce(max(n), 0)::int AS dominante
-          FROM "Job", LATERAL (SELECT count(*) AS n FROM "Job" j2
-            WHERE j2."isActive" AND j2."countryCode" = $1 AND j2."${colonne}" IS NOT NULL
-            GROUP BY j2."${colonne}" ORDER BY count(*) DESC LIMIT 1) d
-         WHERE "isActive" AND "countryCode" = $1`, p.code);
+        WITH valeurs AS (
+          SELECT (${expression})::text AS v FROM "Job"
+           WHERE "isActive" AND "countryCode" = $1
+             AND ${expression} IS NOT NULL AND (${expression})::text <> ''
+        )
+        SELECT count(*)::int AS remplies, count(DISTINCT v)::int AS distinctes,
+               coalesce((SELECT count(*) FROM valeurs GROUP BY v ORDER BY count(*) DESC LIMIT 1), 0)::int AS dominante
+          FROM valeurs`, p.code);
       const couverture = p.offres ? r.remplies / p.offres : 0;
       const dominante = r.remplies ? r.dominante / r.remplies : 1;
       if (couverture >= SEUIL_COUVERTURE && r.distinctes > 1 && dominante <= PART_DOMINANTE_MAX) facettes.push(nom);
