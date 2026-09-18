@@ -121,6 +121,25 @@ it('matches a Personio host and its listing paths, never a job page or another h
   for (const url of ['https://maison.jobs.personio.de/', 'https://maison.jobs.personio.de/search', 'https://maison.jobs.personio.de/jobs/']) expect(host.matches(url)).toBe(true);
   for (const url of ['https://maison.jobs.personio.de/job/123456', 'https://other.jobs.personio.de/', 'https://maison.jobs.personio.com/', 'https://maison.jobs.personio.de/?department=1']) expect(host.matches(url)).toBe(false);
 });
+/*
+ * Mesuré le 18/09/2026 sur `aeyde` : la page carrières officielle (www.aeyde.com/pages/careers) lie
+ * `https://aeyde.jobs.personio.de/?language=en#`. Le tenant, l'hôte et le chemin sont exacts, mais
+ * `language` ne figurait pas parmi les clés d'affichage tolérées (`lang`, `locale`) — le lien était
+ * refusé et la campagne rendait IDENTITE_NON_PROUVEE alors que la preuve était sous nos yeux.
+ *
+ * PRÉMISSE DU TÉMOIN, vérifiée en premier : sans le paramètre, le même lien est déjà reconnu. Sinon
+ * ce témoin passerait au vert pour une raison étrangère au défaut qu'il doit garder.
+ */
+it('tolerates a Personio display-language parameter without accepting a subset filter', () => {
+  const host = configuredPortal('personio', { host: 'maison.jobs.personio.de' })!;
+  expect(host.matches('https://maison.jobs.personio.de/')).toBe(true);
+  for (const url of ['https://maison.jobs.personio.de/?language=en', 'https://maison.jobs.personio.de/?language=de']) expect(host.matches(url)).toBe(true);
+  // `language` choisit la langue d'affichage du MÊME tenant. Un filtre qui sélectionne un
+  // sous-ensemble d'offres reste refusé : un lien vers une partie du portail n'atteste pas le portail.
+  for (const url of ['https://maison.jobs.personio.de/?department=1', 'https://maison.jobs.personio.de/?language=en&department=1']) expect(host.matches(url)).toBe(false);
+  // La tolérance ne franchit jamais la frontière de tenant.
+  expect(host.matches('https://other.jobs.personio.de/?language=en')).toBe(false);
+});
 it('matches a Workable account on the apply host or its own subdomain, never a posting', () => {
   const account = configuredPortal('workable', { account: 'maison' })!;
   expect(account.url).toBe('https://apply.workable.com/maison/');

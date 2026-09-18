@@ -50,7 +50,10 @@ const teamtailorListingFilter = /^(?:query|split_view|remote|department_id|locat
 function referenceUrl(value: string, kind: string): URL | null {
   const url = publicHttps(value);
   if (!url || url.hash || [...url.searchParams.entries()].some(([key, value]) => {
-    if (['lang', 'locale', 'source', 'ref'].includes(key) || /^utm_[a-z_]+$/.test(key)) return false;
+    // `language` est le nom que Personio emploie pour sa langue d'affichage (mesuré le 18/09/2026 sur
+    // la page carrières officielle d'aeyde : `…jobs.personio.de/?language=en`). Comme `lang` et
+    // `locale`, il change la langue du MÊME tenant, jamais le tenant ni le sous-ensemble d'offres.
+    if (['lang', 'language', 'locale', 'source', 'ref'].includes(key) || /^utm_[a-z_]+$/.test(key)) return false;
     // These native Workday facets are observed on the archived LS&Co. official
     // page. They select a subset within the named site, never another tenant.
     // A matching reference does not attest the selected subset's completeness.
