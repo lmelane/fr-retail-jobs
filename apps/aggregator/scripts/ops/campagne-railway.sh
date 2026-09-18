@@ -30,8 +30,14 @@
 #
 # ── USAGE ───────────────────────────────────────────────────────────────────────────────────────
 #
-#   CAMPAGNE_KEYS="cle1,cle2"   les sources à qualifier ; vide = toutes les candidates
-#   CAMPAGNE_INGEST=1           enchaîne une ingestion après qualification (défaut : non)
+#   INGEST_ONLY_KEYS="cle1,cle2"  les sources à qualifier ; vide = toutes les candidates.
+#                                 CE NOM N'EST PAS UN CHOIX : `railway-service.py execute` refuse
+#                                 de lancer une exécution dont la commande déployée ne porte pas
+#                                 exactement l'allowlist attendue sous `INGEST_ONLY_KEYS=` ou
+#                                 `REFRESH_ONLY_KEYS=`. C'est la garde qui empêche qu'un `execute`
+#                                 lancé après un redéploiement automatique relance le pipeline
+#                                 COMPLET. Utiliser un autre nom la ferait refuser — elle l'a fait.
+#   CAMPAGNE_INGEST=1             enchaîne une ingestion après qualification (défaut : non)
 set -eu
 
 SORTIE=/tmp/campagne
@@ -40,11 +46,11 @@ mkdir -p "$SORTIE"
 echo "[campagne] production des candidats depuis le registre"
 node --import tsx apps/aggregator/scripts/ops/campagne-candidats.mts "$SORTIE/candidats.json"
 
-echo "[campagne] qualification${CAMPAGNE_KEYS:+ — clés : $CAMPAGNE_KEYS}"
+echo "[campagne] qualification${INGEST_ONLY_KEYS:+ — clés : $INGEST_ONLY_KEYS}"
 node --import tsx apps/aggregator/scripts/ops/source-campaign.mts \
   --candidates="$SORTIE/candidats.json" \
   --out-dir="$SORTIE/out" \
-  ${CAMPAGNE_KEYS:+--keys="$CAMPAGNE_KEYS"} \
+  ${INGEST_ONLY_KEYS:+--keys="$INGEST_ONLY_KEYS"} \
   ${CAMPAGNE_INGEST:+--ingest}
 
 echo "[campagne] verdicts :"
