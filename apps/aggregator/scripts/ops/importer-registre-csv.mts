@@ -108,6 +108,8 @@ if (!ECRIRE) {
 }
 
 let nScope = 0, nRetrait = 0, nDomaine = 0;
+/* Les lignes relues qu'aucune Maison ne reçoit : elles doivent apparaître, pas disparaître. */
+const sansCorrespondance: string[] = [];
 await prisma.$transaction(async (tx) => {
   for (const s of scopes) {
     nScope += await tx.$executeRawUnsafe(`UPDATE "Source" SET "portalScope" = $1 WHERE key = $2`, s.valeur, s.key);
@@ -118,16 +120,39 @@ await prisma.$transaction(async (tx) => {
       `UPDATE "Source" SET status = 'RETIRED' WHERE key = $1 AND status <> 'RETIRED'`, r.key);
   }
   for (const [maison, domaine] of domaines) {
-    // Le domaine ne s'écrit que s'il MANQUE : une valeur déjà posée par un humain prime sur l'import.
-    nDomaine += await tx.$executeRawUnsafe(
+    /*
+     * LE NOM DE LA SOURCE N'EST PAS LE NOM DE LA MAISON.
+     *
+     * Défaut mesuré le 18/09/2026 : la première version cherchait `Company.name = Source.maison`,
+     * exactement. Or le registre libelle ses sources « L'Oréal (toutes Maisons) », « Deckers (UGG,
+     * HOKA) », « Avolta (Dufry) » — le suffixe décrit le PÉRIMÈTRE de la source, pas la Maison, qui
+     * s'appelle « L'Oréal ». Aucune correspondance, aucune écriture, et surtout AUCUNE ERREUR : 30
+     * domaines relus à la main ont été silencieusement ignorés, dont Kering, L'Oréal et LVMH.
+     *
+     * On rapproche donc sur la racine du libellé — ce qui précède la première parenthèse — en
+     * neutralisant casse, accents et ponctuation. C'est la même normalisation que celle qui a servi
+     * à MESURER l'écart, pas une heuristique inventée pour l'occasion.
+     *
+     * Le domaine ne s'écrit toujours que s'il MANQUE : une valeur déjà posée prime sur l'import.
+     */
+    const ecrites = await tx.$executeRawUnsafe(
       `UPDATE "Company" SET domain = $1, "domainSource" = 'registre-relu-2026-09-18'
-        WHERE name = $2 AND (domain IS NULL OR domain = '')`, domaine, maison);
+        WHERE (domain IS NULL OR domain = '')
+          AND lower(regexp_replace(name, '[^a-z0-9]', '', 'gi'))
+            = lower(regexp_replace(split_part($2, '(', 1), '[^a-z0-9]', '', 'gi'))`, domaine, maison);
+    nDomaine += ecrites;
+    // Une ligne relue qui ne trouve aucune Maison doit être DITE, jamais avalée.
+    if (!ecrites) sansCorrespondance.push(`${maison} → ${domaine}`);
   }
 }, { maxWait: 30_000, timeout: 600_000 });
 
 console.log(`\n   ${nScope} portalScope écrits`);
 console.log(`   ${nRetrait} source(s) retirée(s)`);
 console.log(`   ${nDomaine} domaine(s) officiel(s) écrit(s) sur des Maisons qui n'en avaient pas`);
+if (sansCorrespondance.length) {
+  console.log(`\n   ${sansCorrespondance.length} domaine(s) relu(s) SANS Maison correspondante — rien écrit pour eux :`);
+  for (const m of sansCorrespondance.slice(0, 30)) console.log(`      ${m}`);
+}
 console.log(`\n✔ Aucune identité créée : seule une capture archivée peut prouver une identité.\n`);
 
 await prisma.$disconnect();

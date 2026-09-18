@@ -25,6 +25,7 @@
  * qui définit les candidats.
  */
 import { PrismaClient } from '@prisma/client';
+import { sourceSubjectKey } from '../../src/connectors/sourceIdentity.js';
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 
@@ -62,6 +63,49 @@ async function main(): Promise<number> {
    * silencieusement, puisque `undefined` ne filtre rien.
    */
   const candidats = lignes.map((l) => Object.values(l)[0]);
+
+  /*
+   * ── TROISIÈME VOIE : LA CLÉ CANONIQUE DE LA MAISON ──────────────────────────────────────────
+   *
+   * Les deux voies du SQL — par les offres, puis par nom EXACT — laissent 34 sources ACTIVE sans
+   * domaine officiel. Mesuré le 18/09/2026 : ce n'est toujours pas une donnée absente. La source se
+   * libelle « Clarins », la Maison s'appelle « Groupe Clarins » et porte `groupeclarins.com` ; un
+   * seul mot d'écart casse l'égalité. Idem « L'Oréal (toutes Maisons) » → « L'Oréal », « Deckers
+   * (UGG, HOKA) » → « Deckers ».
+   *
+   * Le SQL a raison de refuser un rapprochement flou : il attribuerait le domaine d'une Maison à
+   * une autre. Mais il existe un lien EXACT que le système emploie déjà partout ailleurs — la clé
+   * canonique. `sourceSubjectKey` la dérive du libellé de la source exactement comme
+   * `Company.canonicalKey` la porte : « Clarins » et « Groupe Clarins » rendent tous deux CLARINS.
+   *
+   * On n'invente donc aucune correspondance : on lit celle que `resolveCompany` établit déjà, et
+   * qui sert à attribuer les employeurs. Cette voie ne s'applique QU'AUX candidats que les deux
+   * précédentes n'ont pas servis — l'observation prime toujours sur l'identité dérivée.
+   */
+  const sansDomaine = (candidats as Array<{ key: string; maison: string; domain: string | null; domainSource: string | null }>)
+    .filter((c) => !c.domain);
+  if (sansDomaine.length) {
+    const parCle = new Map<string, string>();
+    for (const c of sansDomaine) {
+      try { parCle.set(c.key, sourceSubjectKey({ maison: c.maison } as never)); } catch { /* libellé inexploitable */ }
+    }
+    const cles = [...new Set(parCle.values())];
+    if (cles.length) {
+      const maisons = await prisma.$queryRawUnsafe<Array<{ canonicalKey: string; domain: string }>>(
+        `SELECT DISTINCT ON ("canonicalKey") "canonicalKey", domain FROM "Company"
+          WHERE "canonicalKey" = ANY($1::text[]) AND domain IS NOT NULL ORDER BY "canonicalKey", id`, cles);
+      const domaineParCle = new Map(maisons.map((m) => [m.canonicalKey, m.domain]));
+      let repares = 0;
+      for (const c of sansDomaine) {
+        const domaine = domaineParCle.get(parCle.get(c.key) ?? '');
+        if (!domaine) continue;
+        c.domain = domaine;
+        c.domainSource = 'canonical-key';
+        repares++;
+      }
+      if (repares) console.log(`   ${repares} domaine(s) officiel(s) résolu(s) par la clé canonique de la Maison`);
+    }
+  }
 
   const premier = candidats[0] as { key?: string } | undefined;
   if (!candidats.length || !premier?.key) {
