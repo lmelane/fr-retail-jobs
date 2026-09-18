@@ -168,7 +168,31 @@ async function identite(c: Candidat, revision: string, officialDomain: string, d
     if (relation.reason === 'EXACT_PORTAL_REFERENCE_NOT_FOUND' && !pages.slice(0, i).some(p => p !== portal.url)) {
       for (const link of await careerLinks(capture.captureBatchId, officialDomain)) if (!seen.has(link)) pages.push(link);
     }
-    if (i === pages.length - 1) for (const p of COMMON_CAREER_PATHS) { const u = `https://${domain}${p}`; if (!seen.has(u) && pages.length < 10) pages.push(u); }
+    /*
+     * LES CHEMINS USUELS S'ESSAIENT SUR L'HÔTE QUI RÉPOND, PAS SEULEMENT SUR L'APEX.
+     *
+     * Mesuré le 18/09/2026 sur `club-monaco` : `clubmonaco.com/careers` rend 403 (l'apex est
+     * derrière un pare-feu applicatif) tandis que `www.clubmonaco.com/careers` rend 200 et porte le
+     * lien vers `job-boards.greenhouse.io/clubmonaco` — le lien que le contrat reconnaît déjà. La
+     * campagne concluait IDENTITE_NON_PROUVEE alors que la preuve était servie une variante d'hôte
+     * plus loin.
+     *
+     * On dérive donc les hôtes depuis les pages d'accueil DÉJÀ TENTÉES dont le statut est exploitable
+     * (< 400) : si `www` a répondu et pas l'apex, les chemins partent sur `www`. Aucun hôte nouveau
+     * n'est inventé — ce sont ceux que la campagne a elle-même construits et interrogés.
+     */
+    if (i === pages.length - 1) {
+      const racines = tried
+        .filter(t => typeof t.status === 'number' && (t.status as number) < 400 && typeof t.url === 'string' && new URL(t.url as string).pathname === '/')
+        .map(t => new URL(t.url as string).origin);
+      const origines = [...new Set([...racines, `https://${domain}`])];
+      for (const origine of origines) {
+        for (const p of COMMON_CAREER_PATHS) {
+          const u = `${origine}${p}`;
+          if (!seen.has(u) && pages.length < 10) pages.push(u);
+        }
+      }
+    }
   }
   etapes.identite = tried;
   // Le blocage externe se juge sur les pages de la Maison seulement : la capture du portail (souvent 200 chez le vendeur) n'y compte pas.
