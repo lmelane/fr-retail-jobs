@@ -293,7 +293,28 @@ async function qualifier(c: Candidat): Promise<Verdict> {
   let access; try { access = await acces(c, revision, validation.captureBatchId, etapes); }
   catch (error) { const m = message(error); raisons.unshift(`accès : ${m}`); return rendre(inaccessible(m) ? 'INACCESSIBLE' : 'COLLECTE_NON_VALIDEE', { revision, offres }); }
   if (!access.allowed) { raisons.unshift(`accès : ${access.reason}`); return rendre(/not covered|DISALLOWED|robots/i.test(access.reason ?? '') ? 'REFUSEE' : 'COLLECTE_NON_VALIDEE', { revision, offres }); }
-  if (!identity.ok) return rendre(identity.blocked ? 'BLOCAGE_EXTERNE' : identity.divergentDomain ? 'DOMAINE_OFFICIEL_DIVERGENT' : 'IDENTITE_NON_PROUVEE', { revision, offres });
+  /*
+   * L'IDENTITÉ NE BLOQUE PLUS LA QUALIFICATION (lot F5, 18/09/2026).
+   *
+   * Le registre relu porte la Maison, l'ATS, le domaine officiel et le périmètre du portail : la
+   * campagne n'a plus à retrouver une preuve que le registre donne déjà. Le pipeline a cessé de
+   * l'exiger (code et déclencheur SQL) ; ce garde-fou-ci était le dernier à l'imposer, et il a
+   * refusé `boggi-milano` le 18/09 avec 101 offres extraites et 0 publiée.
+   *
+   * CE QUI EST CONSERVÉ, et qui bloque toujours :
+   *   · DOMAINE_OFFICIEL_DIVERGENT — le portail est servi sous un AUTRE domaine d'employeur que
+   *     celui du registre. Ce n'est pas une lacune de preuve, c'est une CONTRADICTION mesurée :
+   *     collecter reviendrait à publier les offres d'une Maison sous le nom d'une autre
+   *     (`julie-grace` → ellijewelry.com, mesuré le 18/09). Le registre est à corriger d'abord.
+   *   · BLOCAGE_EXTERNE — les pages officielles sont inaccessibles (403/429/5xx). On ne peut
+   *     rien affirmer, ni dans un sens ni dans l'autre ; la source reste identifiable comme telle.
+   *
+   * Une simple absence de lien ne bloque plus : elle est consignée dans `etapes.identite` pour
+   * instruction, et la qualification se poursuit sur la foi du registre.
+   */
+  if (!identity.ok && identity.divergentDomain) return rendre('DOMAINE_OFFICIEL_DIVERGENT', { revision, offres });
+  if (!identity.ok && identity.blocked) return rendre('BLOCAGE_EXTERNE', { revision, offres });
+  if (!identity.ok) etapes.identiteNonProuvee = { note: 'aucun lien officiel trouvé ; identité portée par le registre relu (lot F5)' };
   const status = await sourceStatus(db, c.key) as { promotionGatesPass?: boolean; status?: string; identity?: unknown; native?: unknown; access?: unknown };
   etapes.portes = { identity: status.identity, native: status.native, access: status.access, promotionGatesPass: status.promotionGatesPass, status: status.status };
   try { etapes.promotion = await promoteSource(db, c.key, revision); }
