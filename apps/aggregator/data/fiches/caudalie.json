@@ -1,0 +1,11 @@
+{
+  "key": "caudalie",
+  "maison": "Caudalie",
+  "tenantKey": "caudalie.career",
+  "kind": "generic-listing",
+  "tier": "EMPLOYER_DIRECT",
+  "careersDomain": "caudalie.career",
+  "jobUrlPattern": "https://caudalie.career/apply/offer/{id}",
+  "config": { "startUrl": "https://caudalie.career/home/our-job-offers" },
+  "note": "Fournie par le CEO le 18/09/2026. Portail propriétaire servi sur son propre domaine (cookies rgisanonymous/rguserid/rguuid, PHPSESSIDcareer, nginx) — aucune famille ATS connue du catalogue. MESURÉ le 18/09 : robots.txt Allow /, caudalie.com lie https://caudalie.career/ (preuve d'identité possible), et une offre isolée se lit en HTML pur (GPFEUU, HTTP 200, titre reel). MAIS la page de liste ne contient AUCUNE offre : le HTML porte le gabarit non rendu href=\"…/apply/offer/{{slug}}\", les offres etant injectees en JavaScript. 13 routes testees (/jobs Pinpoint, /api/offers, /home/offers, /ajax/offers, ?ajax=1, sitemaps) : aucune ne renvoie d'offres ; /sitemap.xml rend 500 et les variantes qui repondent 200 servent l'accueil. Identifiants opaques (GPFEUU), non deductibles. DRAFT tant que la decouverte de la liste n'est pas prouvee : reste a tester le rendu navigateur depuis Railway."
+}
