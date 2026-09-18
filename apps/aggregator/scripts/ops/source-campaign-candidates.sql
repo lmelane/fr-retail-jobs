@@ -48,5 +48,16 @@ FROM "Source" s
 WHERE s.status = 'ACTIVE'
   AND s.kind IN ('teamtailor', 'ashby', 'recruitee', 'workday', 'greenhouse', 'smartrecruiters-whitelabel', 'smartrecruiters',
                  'successfactors', 'lever', 'personio', 'workable', 'talentsoft', 'digitalrecruiters', 'flatchr', 'talentview',
-                 'phenom', 'jibe', 'generic-listing', 'generic-jsonld', 'lvmh_algolia')
+                 'phenom', 'jibe', 'generic-listing', 'generic-jsonld', 'lvmh_algolia',
+                 -- Lot F7 (18/09/2026) : les familles dont le contrat de portail vient d'être écrit.
+                 -- Sans elles, 30 sources ACTIVE restaient hors campagne — L'Oréal, Kering, Estée
+                 -- Lauder, Tiffany, Ralph Lauren, Zegna, URBN, Dr. Martens, GANNI, Acne Studios,
+                 -- Swatch Group. Leurs adaptateurs existaient et fonctionnaient ; seule la
+                 -- déclaration qui permet de reconnaître leur portail manquait.
+                 -- `wttj-sector` reste volontairement dehors : agrégateur sectoriel sans Maison
+                 -- propre, il n'a pas de portail d'employeur à prouver.
+                 'altamira', 'avature', 'bashtalents', 'easycruit', 'eightfold', 'eqwa',
+                 'geodirectory', 'harri', 'icims', 'jobaffinity-wordpress', 'jobylon', 'magnet',
+                 'oraclehcm', 'radancy', 'rituals', 'swatchgroup', 'talentfunnel',
+                 'talentrecruiter', 'taleo', 'typesense', 'volcanic', 'wordpress', 'wttj')
 ORDER BY s.kind, s.key;

@@ -85,6 +85,23 @@ const never: PathPredicate = () => false;
  * employer owning the declared official domain nor the feed's completeness.
  * An official page that lists the board's own postings designates that board
  * (`matchesPosting`); coverage is never attested by either reference. */
+
+/**
+ * Les familles dont le portail EST une origine dédiée, déclarée par la configuration de la source.
+ * Écrites au lot F7 (18/09/2026) : sans contrat, la campagne écartait ces 30 sources ACTIVE avant
+ * toute tentative — L'Oréal, Kering, Estée Lauder, Tiffany, Ralph Lauren entre autres.
+ *
+ * Y entrer une famille suppose de l'avoir VÉRIFIÉE : son portail doit tenir sur une origine que la
+ * configuration porte déjà. Une famille dont le portail se déduit autrement (un identifiant de
+ * locataire, un slug) a besoin de son propre contrat, pas de celui-ci.
+ */
+const PORTAILS_PAR_ORIGINE = new Set([
+  'altamira', 'avature', 'bashtalents', 'easycruit', 'eightfold', 'eqwa', 'geodirectory',
+  'harri', 'icims', 'jobaffinity-wordpress', 'jobylon', 'magnet', 'oraclehcm', 'radancy',
+  'swatchgroup', 'talentfunnel', 'talentrecruiter', 'taleo', 'typesense', 'volcanic',
+  'wordpress',
+]);
+
 export function configuredPortal(kind: string, config: Record<string, unknown>): PortalContract | null {
   let url: URL; let paths: PathPredicate; let postings: PathPredicate = never; let hosts: Set<string> | undefined;
   if (kind === 'ashby') {
@@ -174,6 +191,76 @@ export function configuredPortal(kind: string, config: Record<string, unknown>):
       const reference = referenceUrl(candidate.toString(), kind);
       return !!reference && reference.origin === base.origin && reference.pathname.replace(/\/$/, '') === listingPath.replace(/\/$/, '');
     } };
+  } else if (PORTAILS_PAR_ORIGINE.has(kind)) {
+    /*
+     * LES FAMILLES DONT LE PORTAIL EST UNE ORIGINE (lot F7, 18/09/2026).
+     *
+     * Le lot F3b du 16/09 a écrit les contrats de douze familles. Les vingt-quatre autres sont
+     * restées sans contrat — et la campagne écarte toute source dont la famille n'en a pas, avant
+     * même d'essayer. Mesuré le 18/09 : 30 sources ACTIVE hors collecte, dont L'Oréal, Kering,
+     * Estée Lauder, Tiffany, Ralph Lauren, Zegna, URBN, Dr. Martens, GANNI, Acne Studios et Swatch
+     * Group — les plus gros employeurs du catalogue.
+     *
+     * Leurs ADAPTATEURS existent et fonctionnent : ces sources collectaient avant. Ce qui manquait
+     * est la déclaration qui permet de reconnaître leur portail dans une page officielle.
+     *
+     * Ces familles ont en commun de servir leur portail sur une ORIGINE dédiée, déjà portée par la
+     * configuration (`origin`, `portalUrl`, `listingUrl` ou `host`). Le contrat est donc le même :
+     * l'origine configurée est le portail, sa racine et ses chemins de listing sont le listing, et
+     * tout chemin plus profond est une offre. On ne devine aucun hôte : on lit celui que la source
+     * déclare, exactement comme `originPortal` le fait pour la collecte.
+     *
+     * Ce que ce contrat N'ATTESTE PAS, comme tous les autres : ni la propriété du domaine officiel,
+     * ni la complétude du flux. Il répond à une seule question — cette URL est-elle le portail
+     * configuré de cette source.
+     */
+    const brut = typeof config.portalUrl === 'string' && config.portalUrl
+      ? config.portalUrl
+      : typeof config.listingUrl === 'string' && config.listingUrl
+        ? config.listingUrl
+        : typeof config.host === 'string' && config.host
+          ? `https://${String(config.host).replace(/^https?:\/\//, '')}`
+          : originPortal(config, kind);
+    const base = publicHttps(brut);
+    if (!base || base.username || base.password || base.hash) return null;
+    url = new URL(base.origin + (base.pathname === '/' ? '/' : base.pathname));
+    const racine = base.pathname.replace(/\/+$/, '');
+    // Le listing : la racine de l'origine, le chemin configuré lui-même, et les chemins d'entrée
+    // usuels de ces portails. Une page plus profonde est une offre, jamais le listing.
+    paths = path => {
+      const p = path.replace(/\/+$/, '');
+      return p === '' || p === racine || /^\/(?:jobs|vacancies|careers|carrieres|offres|search|list|positions|opportunities)$/i.test(p);
+    };
+    postings = path => {
+      const p = path.replace(/\/+$/, '');
+      return p !== '' && p !== racine && !paths(path, base);
+    };
+  } else if (kind === 'rituals') {
+    /*
+     * Rituals sert son portail sur `careers.rituals.com`, et sa configuration ne porte que les
+     * langues : l'origine est celle que l'adaptateur emploie par défaut (`rituals.ts:31`). On la
+     * déclare ici telle quelle plutôt que de la deviner — une source dont la config nommerait une
+     * autre origine la verrait respectée.
+     */
+    const base = publicHttps(typeof config.origin === 'string' && config.origin ? config.origin : 'https://careers.rituals.com');
+    if (!base || base.username || base.password || base.hash) return null;
+    url = new URL(base.origin + '/');
+    paths = path => { const p = path.replace(/\/+$/, ''); return p === '' || /^\/(?:jobs|vacancies|careers|search)$/i.test(p); };
+    postings = path => { const p = path.replace(/\/+$/, ''); return p !== '' && !paths(path, base); };
+  } else if (kind === 'jobylon') {
+    // Jobylon n'expose qu'un identifiant numérique de société : le portail est sa page chez l'éditeur.
+    const societe = String(config.companyId ?? '');
+    if (!/^\d{1,12}$/.test(societe)) return null;
+    url = new URL(`https://emp.jobylon.com/companies/${societe}/`);
+    paths = path => path.replace(/\/+$/, '') === `/companies/${societe}`;
+    postings = path => new RegExp(`^/jobs/\\d+(?:-[^/]*)?/?$`).test(path);
+  } else if (kind === 'wttj') {
+    // Welcome to the Jungle : le slug nomme l'organisation, servie sur le domaine de l'éditeur.
+    const slug = String(config.slug ?? '');
+    if (!/^[a-z0-9-]+$/i.test(slug)) return null;
+    url = new URL(`https://www.welcometothejungle.com/fr/companies/${slug.toLowerCase()}/jobs`);
+    paths = path => new RegExp(`^/(?:[a-z]{2}/)?companies/${escape(slug)}(?:/jobs)?/?$`, 'i').test(path);
+    postings = path => new RegExp(`^/(?:[a-z]{2}/)?companies/${escape(slug)}/jobs/[^/]+/?$`, 'i').test(path);
   } else if (kind === 'lvmh_algolia') {
     url = new URL('https://www.lvmh.com/');
     paths = path => path === '/' || /^\/(?:[a-z]{2}\/)?(?:join-us|rejoignez-nous)(?:\/our-job-offers|\/nos-offres-d-emploi)?\/?$/i.test(path);
