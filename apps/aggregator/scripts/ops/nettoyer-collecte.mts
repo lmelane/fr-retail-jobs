@@ -56,6 +56,18 @@ const TABLES = [
   'CaptureOutcome',
   'RawCapture',
   'CaptureBatch',
+  /*
+   * `RawBlobBody` AVANT `RawBlob`, et surtout : JAMAIS L'UN SANS L'AUTRE.
+   *
+   * Défaut mesuré le 18/09/2026 — la première version de ce script vidait `RawBlob` et oubliait
+   * `RawBlobBody`, où vivent réellement les octets. Résultat : 3 134 corps orphelins, et TOUTE
+   * capture ultérieure échouait. `store.ts:23` lit `RawBlob`, ne trouve rien, et `store.ts:25`
+   * crée le blob AVEC son corps imbriqué — dont la ligne existe déjà : P2002 sur la clé `hash`.
+   *
+   * L'erreur remontait masquée en « Native response capture unavailable », et elle a bloqué la
+   * campagne Railway de 11:58 sur les 12 sources. Le symptôme était à trois niveaux de l'origine.
+   */
+  'RawBlobBody',
   'RawBlob',
 ] as const;
 
@@ -141,6 +153,23 @@ if (gardeApres.Source !== garde.Source || gardeApres.Company !== garde.Company) 
   await prisma.$disconnect();
   process.exit(1);
 }
+
+/*
+ * TÉMOIN DE COHÉRENCE — il doit ÉCHOUER si le défaut du 18/09 revient.
+ *
+ * Un corps sans son blob ne se voit pas : les compteurs sont à zéro, le registre est intact, tout
+ * paraît propre. Le défaut n'apparaît qu'à la PROCHAINE capture, sous un message qui ne le nomme
+ * pas. Ce contrôle le rend visible ici, pendant qu'on regarde.
+ */
+const [orphelins] = await prisma.$queryRawUnsafe<Array<{ n: number }>>(
+  `SELECT count(*)::int AS n FROM "RawBlobBody" y WHERE NOT EXISTS (SELECT 1 FROM "RawBlob" b WHERE b.hash = y.hash)`);
+if (orphelins.n > 0) {
+  console.error(`\n⚠ ARRÊT : ${orphelins.n} corps de blob sans leur RawBlob. Toute capture ultérieure échouerait`);
+  console.error(`   sur une violation d'unicité, masquée en « Native response capture unavailable ».`);
+  await prisma.$disconnect();
+  process.exit(1);
+}
+console.log(`   0 corps de blob orphelin (vérifié)`);
 
 console.log('\n✔ Catalogue vide, registre intact.\n');
 await prisma.$disconnect();
