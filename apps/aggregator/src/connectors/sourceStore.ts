@@ -2,7 +2,6 @@ import type { Prisma, PrismaClient, Source, SourceStatus } from '@prisma/client'
 import { tierFor, sourceKeyFor, type CatalogSource } from './sourceCatalog.js';
 import { requireSourceAccess } from './sourceAccess.js';
 import { requireSourceValidation } from './sourceCertification.js';
-import { requireSourceIdentity } from './sourceIdentity.js';
 import { lockSourceWrites } from '../lib/writeLocks.js';
 
 /**
@@ -162,7 +161,12 @@ export async function promoteSource(prisma: PrismaClient, key: string, expectedR
       throw new SourcePromotionGateError('CONFIG_EMPTY', `promote: "${key}" has no adapter config`);
     }
     const from = row.status;
-    await requireSourceIdentity(tx, row);
+    /*
+     * Lot F5 (18/09/2026) : la promotion n'exige plus de revue d'identité par capture. Le registre
+     * relu porte la Maison, l'ATS, le palier, le domaine officiel et le périmètre du portail — la
+     * revue ne faisait que les recopier. Restent les deux contrôles qui MESURENT quelque chose :
+     * la collecte est-elle validée hors réseau, et le robots.txt nous autorise-t-il.
+     */
     await requireSourceValidation(tx, row.currentRevisionId);
     await requireSourceAccess(tx, row);
     if (from === 'ACTIVE') return { key, from, to: 'ACTIVE' };

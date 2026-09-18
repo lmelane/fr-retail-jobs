@@ -1193,8 +1193,10 @@ model SourceValidation {
 model SourceIngestionAdmission {
   batchId String @id
   batch CaptureBatch @relation(fields: [batchId], references: [id], onDelete: Restrict, onUpdate: Restrict)
-  identityReviewId String
-  identityReview SourceIdentityReview @relation(fields: [identityReviewId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  /** Historical identity review. Optional since lot F5 (2026-09-18): the reviewed registry is the
+   * authority on a source's identity. Null = admission grounded on the registry alone. */
+  identityReviewId String?
+  identityReview SourceIdentityReview? @relation(fields: [identityReviewId], references: [id], onDelete: Restrict, onUpdate: Restrict)
   sourceValidationId String
   sourceValidation SourceValidation @relation(fields: [sourceValidationId], references: [id], onDelete: Restrict, onUpdate: Restrict)
   policyVersion String

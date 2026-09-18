@@ -156,28 +156,40 @@ export function portalScopeOf(source: RevisionIdentitySource, review: IdentityDe
   return review?.portalScope === 'SINGLE_BRAND' || review?.portalScope === 'MULTI_BRAND' ? review.portalScope : null;
 }
 
-export type CertifiedPortalIdentity = { scope: 'SINGLE_BRAND' | 'MULTI_BRAND'; ownerName: string; ownerKey: string; sourceRevisionId: string; reviewId: string };
+export type CertifiedPortalIdentity = { scope: 'SINGLE_BRAND' | 'MULTI_BRAND'; ownerName: string; ownerKey: string; sourceRevisionId: string; reviewId: string | null };
 
-export async function certifiedPortalIdentity(db: Pick<Prisma.TransactionClient, '$queryRaw'>, sourceKey: string, now = new Date()): Promise<CertifiedPortalIdentity | null> {
-  // One SQL snapshot; omit the historical body before it reaches the driver.
-  const rows = await db.$queryRaw<(Source & { configText: string; reviewText: string | null })[]>`
-    SELECT s.*, s.config::text AS "configText",
-      CASE WHEN r.id IS NOT NULL THEN (to_jsonb(r) || jsonb_build_object('sequence',r.sequence::text))::text END AS "reviewText"
-    FROM "Source" s LEFT JOIN LATERAL (
-      SELECT id, "sourceKey", "sourceRevisionId", sequence, "tenantKey", "subjectKey", "sourceHash", verdict, method,
-        "officialDomain", "proofUrl", "portalUrl", statement, "artifactHash", reviewer, "checkedAt", "createdAt", "portalScope",
-        "evidenceCaptureBatchId", "relationReport"
-      FROM "SourceIdentityReview" WHERE "sourceKey"=s.key
-      ORDER BY sequence DESC NULLS LAST, "createdAt" DESC, id DESC LIMIT 1
-    ) r ON true WHERE s.key=${sourceKey}`;
-  if (!rows[0] || !rows[0].reviewText) return null;
-  const { configText, reviewText, ...source } = rows[0];
-  const review = JSON.parse(reviewText);
-  review.sequence = review.sequence == null ? null : BigInt(review.sequence);
-  review.checkedAt = new Date(review.checkedAt);
-  review.createdAt = new Date(review.createdAt);
-  const scope = portalScopeOf({ ...source, config: JSON.parse(configText) }, review, now);
-  return scope ? { scope, ownerName: source.maison.trim(), ownerKey: review.subjectKey, sourceRevisionId: source.currentRevisionId, reviewId: review.id } : null;
+/**
+ * QUI RECRUTE, D'APRÈS LE REGISTRE (lot F5, 18/09/2026).
+ *
+ * Les trois informations rendues ici viennent toutes de `Source`, et c'était DÉJÀ le cas avant ce
+ * lot : `ownerName` était `source.maison`, `ownerKey` en était dérivé par `sourceSubjectKey`, et
+ * seul `scope` transitait par la revue d'identité. Depuis le lot F4 le périmètre est une colonne du
+ * registre, relue à la main. La revue ne faisait donc plus que recopier le registre, au prix d'une
+ * capture réseau par source.
+ *
+ * Et elle se trompait. Mesuré sur le lot Railway du 18/09 (20 sources) : 12 IDENTITE_NON_PROUVEE
+ * dont au moins 3 faux refus — `club-monaco` (apex 403, `www` 200), `bellroy` et `figs` (lien exact
+ * présent mais dans un <script>, écarté par principe). Au même moment, les 50 boards Greenhouse du
+ * registre relu concordaient à 49/50 avec l'API du fournisseur, l'unique écart étant une maison
+ * mère documentée comme telle. La vérification automatique était redondante ET moins fiable.
+ *
+ * `reviewId` vaut donc NULL : l'identité s'appuie sur le registre, pas sur une revue.
+ *
+ * CE QUE CETTE FONCTION NE FAIT TOUJOURS PAS : autoriser une collecte (robots.txt, inchangé et
+ * indépendant), ni attester une couverture. Elle répond à une seule question — sous quel employeur
+ * publier une offre qui n'en porte aucun.
+ */
+export async function certifiedPortalIdentity(db: Pick<Prisma.TransactionClient, '$queryRaw'>, sourceKey: string, _now = new Date()): Promise<CertifiedPortalIdentity | null> {
+  const rows = await db.$queryRaw<Array<Pick<Source, 'key' | 'maison' | 'currentRevisionId' | 'portalScope'>>>`
+    SELECT key, maison, "currentRevisionId", "portalScope" FROM "Source" WHERE key=${sourceKey}`;
+  const source = rows[0];
+  if (!source?.currentRevisionId || !source.maison?.trim()) return null;
+  // Le périmètre est revalidé ici : la colonne porte une CHECK en base, mais une lecture qui
+  // accepterait n'importe quelle chaîne ferait dépendre l'attribution d'employeur d'une faute de frappe.
+  const scope = source.portalScope === 'SINGLE_BRAND' || source.portalScope === 'MULTI_BRAND' ? source.portalScope : null;
+  if (!scope) return null;
+  return { scope, ownerName: source.maison.trim(), ownerKey: sourceSubjectKey(source),
+    sourceRevisionId: source.currentRevisionId, reviewId: null };
 }
 
 export async function certifiedPortalScope(db: Pick<Prisma.TransactionClient, '$queryRaw'>, sourceKey: string, now = new Date()): Promise<'SINGLE_BRAND' | 'MULTI_BRAND' | null> {

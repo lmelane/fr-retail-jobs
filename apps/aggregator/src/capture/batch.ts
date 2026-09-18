@@ -33,8 +33,10 @@ export async function captureExtraction(db: PrismaClient, sourceKey: string, con
     const qualifications = access ? await ingestionQualifications(tx, sourceKey) : null;
     const batch = await tx.captureBatch.create({ data: { id: randomUUID(), sourceKey, runId, sourceRevisionId, accessDecisionId: access?.decision.id,
       configHash: evidenceHash(settings), executionBudget: sourceExecutionBudget(), sourceKind, formatVersion: 2, readerRevision: captureReaderRevision() } });
+    // `identityReviewId` est facultatif depuis F5 : l'identité vient du registre, et c'est la
+    // révision de la source — portée par le lot lui-même — qui détecte un changement en cours de collecte.
     if (qualifications) await tx.sourceIngestionAdmission.create({ data: { batchId: batch.id,
-      identityReviewId: qualifications.identity.id, sourceValidationId: qualifications.validation.id,
+      identityReviewId: null, sourceValidationId: qualifications.validation.id,
       policyVersion: SOURCE_ADMISSION_POLICY } });
     return { batch, access };
   });

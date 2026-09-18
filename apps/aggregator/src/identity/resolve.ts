@@ -50,7 +50,9 @@ export async function resolveEmployer(tx: Prisma.TransactionClient, candidate: C
     // Missing information cannot silently replace an already attributed employer.
     if (previous && previous.id !== root?.id) throw new EmployerIdentityReviewRequired(candidate.sourceKey, candidate.externalId, rawEmployerName, previous.name);
     return { company: root, rule: 'CERTIFIED_SINGLE_BRAND_PORTAL', rawEmployerName, normalizedEmployerName: normalized,
-      reviewId: identity.reviewId, ...(!root ? { newKey: identity.ownerKey, newName: identity.ownerName } : {}) };
+      // `reviewId` est nul quand l'employeur vient du registre relu (F5) : la traçabilité passe
+      // alors par la révision de la source, portée par l'admission du lot.
+      reviewId: identity.reviewId ?? undefined, ...(!root ? { newKey: identity.ownerKey, newName: identity.ownerName } : {}) };
   }
   const aliases = await tx.companyAlias.findMany({
     where: { sourceKey: { in: [candidate.sourceKey, '*'] }, normalizedName: normalized, reviewId: { not: null } },
