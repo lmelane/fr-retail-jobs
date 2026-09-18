@@ -37,6 +37,9 @@ maison_par_nom AS (
 SELECT json_build_object(
   'key', s.key, 'maison', s.maison, 'kind', s.kind, 'config', s.config, 'careersDomain', s."careersDomain", 'tier', s.tier,
   'jobUrlPattern', s."jobUrlPattern",
+  -- Périmètre relu du portail (lot F4). NULL tant qu'aucun humain ne l'a tranché : la campagne
+  -- écrira alors NULL comme avant, et l'ingestion refusera une source sans employeur natif.
+  'portalScope', s."portalScope",
   'domain', coalesce(m.domain, n.domain), 'domainSource', coalesce(m."domainSource", n."domainSource"),
   'lastRunJobs', s."lastRunJobs", 'lastRunStatus', s."lastRunStatus")
 FROM "Source" s

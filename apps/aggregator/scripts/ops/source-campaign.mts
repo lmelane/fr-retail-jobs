@@ -58,7 +58,8 @@ import { captureReaderRevision } from '../../src/capture/revision.js';
 import { deriveAccessScopeDocument } from '../../src/connectors/accessScopeDerivation.js';
 
 type Candidat = { key: string; maison: string; kind: string; config: Record<string, unknown>; careersDomain: string | null; tier: string;
-  jobUrlPattern?: string | null; domain?: string | null; domainSource?: string | null; lastRunJobs?: number | null };
+  jobUrlPattern?: string | null; domain?: string | null; domainSource?: string | null; lastRunJobs?: number | null;
+  portalScope?: 'SINGLE_BRAND' | 'MULTI_BRAND' | null };
 type Verdict = { key: string; kind: string; maison: string; verdict: string; raisons: string[]; revision?: string; etapes: Record<string, unknown>;
   offres?: number; ingestion?: Record<string, unknown>; absence?: Record<string, unknown>; capacites?: Record<string, string>; readerRevision: string; dureeMs: number; evalueLe: string };
 const READER_REVISION = captureReaderRevision();
@@ -112,6 +113,21 @@ const registrableOf = (url: string | null | undefined) => { try { return url ? p
 async function identite(c: Candidat, revision: string, officialDomain: string, domain: string, domainSource: string, portal: Portal, etapes: Record<string, unknown>): Promise<Identite> {
   const tried: Record<string, unknown>[] = [];
   let divergentDomain: string | null = null;
+  /*
+   * PÉRIMÈTRE DU PORTAIL — lu, jamais déduit (lot F4, 18/09/2026).
+   *
+   * La campagne n'a aucun moyen de savoir si un portail sert une seule Maison ou plusieurs : le
+   * déduire du nom serait une invention, et c'est pourquoi ce champ était NULL en dur. Il est
+   * désormais porté par le registre (`Source.portalScope`), où il n'entre que par une relecture
+   * humaine tracée.
+   *
+   * On REVALIDE la valeur ici plutôt que de faire confiance au candidat : ce fichier est produit
+   * par une requête, mais rien n'empêcherait un export bricolé d'y glisser autre chose. Une valeur
+   * inattendue redevient NULL — la source sera qualifiée, et l'ingestion la refusera comme avant.
+   * Ce champ ne dispense d'AUCUNE preuve : la revue exige toujours sa capture archivée.
+   */
+  const perimetre = c.portalScope === 'SINGLE_BRAND' || c.portalScope === 'MULTI_BRAND' ? c.portalScope : null;
+  if (c.portalScope && !perimetre) etapes.portalScopeIgnore = { valeur: c.portalScope, raison: 'valeur hors domaine métier' };
   // Un domaine d'employeur réellement servi, différent du domaine officiel revu (jamais un hôte vendeur) : le registre est à revoir.
   const employerDomain = (url: string | null | undefined) => { const value = registrableOf(url); if (!value || value === officialDomain) return null; try { return reviewedOfficialDomain(value); } catch { return null; } };
   // Le portail configuré est archivé en premier : servi sur le domaine officiel, ou redirigé par son éditeur vers son hôte canonique
@@ -138,8 +154,10 @@ async function identite(c: Candidat, revision: string, officialDomain: string, d
         : witness?.reference === 'posting' ? `lie une offre publiée par le portail configuré (lien n° ${witness.ordinal})`
         : `désigne exactement le portail configuré (lien n° ${witness?.ordinal ?? '?'})`;
       const review = await recordSourceIdentityReview(db, { sourceKey: c.key, sourceRevisionId: revision, captureBatchId: capture.captureBatchId, verdict: 'VERIFIED', officialDomain,
-        statement: `La page archivée ${auditUrl(relation.proofUrl!)} ${how} : ${relation.configuredPortal}. Domaine officiel ${officialDomain} lu dans le registre (provenance : ${domainSource}), jamais déduit par la campagne. Le rôle exact du portail n'est pas déduit du nom de la Maison : portalScope reste nul.`,
-        reviewer: REVIEWER, checkedAt: nowMs(), portalScope: null } as Parameters<typeof recordSourceIdentityReview>[1], true, store) as { written?: number; verdict?: string; reason?: string };
+        statement: `La page archivée ${auditUrl(relation.proofUrl!)} ${how} : ${relation.configuredPortal}. Domaine officiel ${officialDomain} lu dans le registre (provenance : ${domainSource}), jamais déduit par la campagne. ${perimetre
+          ? `Périmètre du portail ${perimetre} : décision relue par un humain et portée par le registre (Source.portalScope), jamais déduite du nom de la Maison ni de cette capture.`
+          : `Le rôle exact du portail n'est pas déduit du nom de la Maison : portalScope reste nul.`}`,
+        reviewer: REVIEWER, checkedAt: nowMs(), portalScope: perimetre } as Parameters<typeof recordSourceIdentityReview>[1], true, store) as { written?: number; verdict?: string; reason?: string };
       etapes.decisionIdentite = review;
       return { ok: review.written === 1 || (review as { isLatestDecision?: boolean }).isLatestDecision === true, blocked: false, divergentDomain: null };
     }

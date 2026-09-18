@@ -146,6 +146,12 @@ model Source {
   jobUrlPattern    String?
   status           SourceStatus @default(DRAFT)
   /**
+   * Reviewed portal perimeter: SINGLE_BRAND (publishes only for this house) or MULTI_BRAND. Null = not reviewed.
+   * A traced human decision the campaign reads to fill the identity review it writes — never a substitute
+   * for proof: the review still requires its archived capture, inspected link and hash.
+   */
+  portalScope      String?
+  /**
    * Dedup tier: EMPLOYER_DIRECT | GROUP_OFFICIAL | ATS_OFFICIAL | SPECIALIST_JOBBOARD | AGGREGATOR
    */
   tier             String
