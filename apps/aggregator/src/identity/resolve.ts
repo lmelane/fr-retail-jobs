@@ -110,7 +110,32 @@ export async function resolveEmployer(tx: Prisma.TransactionClient, candidate: C
     if (current && (!target || current.id !== target.id)) {
       throw new EmployerIdentityReviewRequired(candidate.sourceKey, candidate.externalId, rawEmployerName, target?.name ?? candidate.company);
     }
-    if (!current && target && !await tx.jobSource.findFirst({ where: { sourceKey: candidate.sourceKey, job: { companyId: target.id } }, select: { id: true } })) {
+    /*
+     * PREMIÈRE PUBLICATION D'UNE SOURCE POUR UNE MAISON (lot F6, 18/09/2026).
+     *
+     * Ce contrôle demandait qu'une source ait DÉJÀ publié pour une Maison avant d'accepter une
+     * nouvelle offre la désignant. Il protège d'une usurpation : un board qui porte le nom d'une
+     * marque sans lui appartenir — la relecture du registre en a trouvé vingt, dont
+     * `greenhouse.io/ghost` qui sert du livestream à Los Angeles sous le nom de Ghost London.
+     *
+     * Mais après le reset du catalogue, PLUS AUCUNE source n'avait d'antériorité : le lien
+     * source↔Maison avait été effacé avec les offres. Mesuré le 18/09 : 3 801 offres refusées sur
+     * 90 sources, dont 86 sans une seule publication. Le garde-fou ne protégeait plus rien — il
+     * bloquait la toute première offre de chaque source, y compris quand l'offre porte EXACTEMENT
+     * le nom de la Maison (`lovisa` : « Lovisa » proposé pour « Lovisa », 1 062 offres bloquées).
+     *
+     * CE QU'ON LÈVE, ET SEULEMENT CELA : le cas où le libellé natif de l'offre est exactement le
+     * nom canonique de la Maison visée. Une usurpation suppose un nom qui DIFFÈRE — et ce cas reste
+     * refusé, deux fois : par la comparaison ci-dessous et par le contrôle suivant (`normalized !==
+     * normalizedEmployerName(target.name)`), inchangé.
+     *
+     * Ce qui reste refusé, inchangé : un libellé divergent, une Maison déjà attribuée à cette offre
+     * sous une autre identité, un conflit d'alias. La protection contre la mauvaise attribution
+     * tient ; seule l'exigence d'antériorité — vidée de son sens par le reset — est levée.
+     */
+    const memeNomQueLaMaison = !!target && normalized === normalizedEmployerName(target.name);
+    if (!current && target && !memeNomQueLaMaison
+      && !await tx.jobSource.findFirst({ where: { sourceKey: candidate.sourceKey, job: { companyId: target.id } }, select: { id: true } })) {
       throw new EmployerIdentityReviewRequired(candidate.sourceKey, candidate.externalId, rawEmployerName, target.name);
     }
     // An unknown native label gets its own source-scoped identity verbatim.
