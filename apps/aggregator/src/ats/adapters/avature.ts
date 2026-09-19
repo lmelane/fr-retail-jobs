@@ -546,9 +546,26 @@ export async function fetchAvatureJobs(config: Record<string, unknown>): Promise
             const full = parseMicrodataDescription(html);
             // The card dates most offers; the fiche dates the rest (l2).
             const postedAt = job.postedAt ?? postedAtFromJsonLd(html);
-            return full && full.length > (job.description?.length ?? 0)
-              ? { ...job, description: full, postedAt }
-              : { ...job, postedAt };
+            /*
+             * LE TEXTE DE LA FICHE ENTRE DANS LE RAW (19/09/2026, second tour).
+             *
+             * Le premier correctif n'avait traité que le mode « portail ». Mesuré sur le test de
+             * L'Oréal : 1 693 offres, verdict CONTENT_MISSING — le rejeu lisait enfin le RAW
+             * (progrès réel sur READER_UNQUALIFIED) mais n'y trouvait que l'extrait de carte,
+             * ~290 caractères, jamais la description complète lue ici.
+             *
+             * Les deux modes d'Avature servent les deux plus gros tenants — `listingUrl` pour
+             * L'Oréal, `lists` pour Ralph Lauren : corriger l'un sans l'autre ne débloque rien.
+             */
+            const description = full && full.length > (job.description?.length ?? 0) ? full : job.description;
+            return {
+              ...job, description, postedAt,
+              raw: {
+                ...(job.raw as Record<string, unknown>),
+                description,
+                postedAt: postedAt?.toISOString(),
+              },
+            };
           } catch {
             // A failed detail fetch must not lose the listing entry.
             return job;
