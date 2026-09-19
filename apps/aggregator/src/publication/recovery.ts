@@ -33,6 +33,8 @@ import { parseVolcanicPage } from '../ats/adapters/volcanic.js';
 import { parseEasycruitVacancy } from '../ats/adapters/easycruit.js';
 import { parseHarriPublication } from '../ats/adapters/harri.js';
 import { parseTalentRecruiterPosition } from '../ats/adapters/talentRecruiter.js';
+import { toNormalized as toEightfoldJob } from '../ats/adapters/eightfold.js';
+import { eqwaRowToJob, type EqwaListingJob } from '../ats/adapters/eqwa.js';
 import { enrichRetainedPostingEvidence } from '../lib/postingEvidence.js';
 import { htmlToPlainText } from '../lib/html.js';
 import { evidenceHash } from '../lib/evidenceHash.js';
@@ -355,6 +357,102 @@ function readRetainedPublication(kind: string, raw: unknown, context: Context, r
         job = locales.map(locale => normalizeAnnouncement([primary as DrItem], domainName, locale)).find(candidate => !!candidate && new URL(candidate.url).href === new URL(context.url).href) ?? null;
         if (!job) return failure('IDENTITY_MISMATCH');
         if (postingEvidence != null) { job = object(postingEvidence) ? enrichRetainedPostingEvidence(job, postingEvidence) : null; if (!job) return failure('DETAIL_EVIDENCE_UNUSABLE'); }
+        break;
+      }
+      /*
+       * DEUX FAMILLES QUE LE REJEU IGNORAIT (19/09/2026).
+       *
+       * `eightfold` et `eqwa` conservent leur entrée native ENTIÈRE dans `raw` — la position
+       * Eightfold, la ligne de tableau Eqwa. Elles étaient pourtant absentes de ce `switch` et
+       * tombaient donc dans `default`, c'est-à-dire READER_UNQUALIFIED : « je ne sais pas lire ce
+       * format », alors que l'adaptateur du collecteur, lui, sait parfaitement le lire.
+       *
+       * Conséquence mesurée : Kering 1 035 offres et Nocibé 288 offres capturées, conservées, et
+       * refusées à la validation sur NO_QUALIFIED_PUBLICATION — aucune n'ayant pu être relue.
+       *
+       * Les deux branches appellent le lecteur DU COLLECTEUR, jamais une relecture réécrite ici :
+       * un second lecteur dériverait du premier sans que rien ne le signale.
+       *
+       * Ne sont PAS traités ici, faute de matière : `avature` conserve `{source, url}` et
+       * `swatchgroup` `{legalEntity, logo, applyUrl, jsonLd}` — ni titre ni lieu, donc rien à
+       * relire. Ces deux-là demandent de changer ce que l'adaptateur RETIENT, ce qui touche au
+       * contrat de preuve et relève d'une décision du propriétaire.
+       */
+      case 'eightfold': {
+        if (!identifier(raw.id ?? raw.displayJobId ?? raw.name)) return failure('NATIVE_ID_MISSING');
+        const origin = String(config.origin ?? '').replace(/\/$/, '');
+        if (!origin) return failure('RAW_SCHEMA_INVALID');
+        /*
+         * La fiche de détail est conservée à part (`eightfoldDetail`, 19/09/2026) : la position
+         * de liste ne porte AUCUNE description. On la retire avant de relire la position, puis on
+         * en tire la description avec le même lecteur que le collecteur.
+         *
+         * Un RAW d'avant ce changement n'a pas cette clé : l'offre se relit alors sans
+         * description et le contrôle de contenu la refusera en CONTENT_MISSING — un verdict juste,
+         * qui dit qu'il faut recollecter, et non « je ne sais pas lire ce format ».
+         */
+        const { eightfoldDetail, ...position } = raw;
+        job = toEightfoldJob(position as Parameters<typeof toEightfoldJob>[0], origin);
+        if (job && object(eightfoldDetail)) {
+          const texte = eightfoldDetail.jobDescription ?? eightfoldDetail.job_description;
+          if (typeof texte === 'string') job = { ...job, description: htmlToPlainText(texte) };
+        }
+        break;
+      }
+      case 'avature': {
+        /*
+         * Les champs lus sont conservés depuis le 19/09/2026 (`avature.ts`) : intitulé, lieu,
+         * lien, description, et la fiche de détail sous `avaturePortalDetail` pour le mode
+         * portail. Un RAW antérieur ne porte que `{source, url}` : il manque alors l'intitulé, et
+         * le contrôle commun rendra RAW_SCHEMA_INVALID — ce qui dit « il faut recollecter », et
+         * non « je ne sais pas lire ce format ».
+         */
+        if (typeof raw.title !== 'string' || !raw.title.trim() || !identifier(raw.externalId)) return failure('NATIVE_ID_MISSING');
+        const detail = object(raw.avaturePortalDetail) ? raw.avaturePortalDetail : undefined;
+        const date = raw.postedAt ?? detail?.postedAt;
+        const quand = typeof date === 'string' || date instanceof Date ? new Date(date) : undefined;
+        job = {
+          externalId: String(raw.externalId),
+          title: raw.title,
+          url: typeof raw.url === 'string' ? raw.url : context.url,
+          location: typeof detail?.rawLocation === 'string' ? detail.rawLocation : typeof raw.location === 'string' ? raw.location : undefined,
+          city: typeof detail?.city === 'string' ? detail.city : undefined,
+          region: typeof detail?.region === 'string' ? detail.region : undefined,
+          description: typeof detail?.description === 'string' ? detail.description : typeof raw.description === 'string' ? raw.description : undefined,
+          ...(quand && !Number.isNaN(quand.getTime()) ? { postedAt: quand } : {}),
+          raw,
+        };
+        break;
+      }
+      case 'swatchgroup': {
+        // Idem : les champs lus sont conservés depuis le 19/09/2026 (`swatchgroup.ts`).
+        if (typeof raw.title !== 'string' || !raw.title.trim() || typeof raw.url !== 'string') return failure('NATIVE_ID_MISSING');
+        const quand = typeof raw.postedAt === 'string' ? new Date(raw.postedAt) : undefined;
+        job = {
+          externalId: context.externalId,
+          title: raw.title,
+          url: raw.url,
+          location: typeof raw.location === 'string' ? raw.location : undefined,
+          city: typeof raw.city === 'string' ? raw.city : undefined,
+          region: typeof raw.region === 'string' ? raw.region : undefined,
+          postalCode: typeof raw.postalCode === 'string' ? raw.postalCode : undefined,
+          country: typeof raw.country === 'string' ? raw.country : undefined,
+          contract: typeof raw.contract === 'string' ? raw.contract : undefined,
+          language: typeof raw.language === 'string' ? raw.language : undefined,
+          company: typeof raw.company === 'string' ? raw.company : undefined,
+          description: typeof raw.description === 'string' ? raw.description : undefined,
+          ...(quand && !Number.isNaN(quand.getTime()) ? { postedAt: quand } : {}),
+          raw,
+        };
+        break;
+      }
+      case 'eqwa': {
+        if (!identifier(raw.externalId) || typeof raw.title !== 'string' || !raw.title.trim()) return failure('NATIVE_ID_MISSING');
+        // `postedAt` revient du stockage en chaîne ISO : le lecteur attend une Date.
+        const { postedAt, ...reste } = raw;
+        const date = typeof postedAt === 'string' || postedAt instanceof Date ? new Date(postedAt) : undefined;
+        job = eqwaRowToJob({ ...(reste as EqwaListingJob), ...(date && !Number.isNaN(date.getTime()) ? { postedAt: date } : {}) },
+          typeof raw.description === 'string' ? raw.description : undefined);
         break;
       }
       default: return failure('READER_UNQUALIFIED');

@@ -80,18 +80,14 @@ export function parseEqwaDetail(html: string): { description?: string; location?
   return { description: description || undefined, location: location || undefined };
 }
 
-/** `config.origin` : le portail, ex. "https://recrutement-nocibe.fr". */
-export async function fetchEqwaJobs(config: Record<string, unknown>): Promise<AdapterResult> {
-  const origin = String(config.origin ?? '').replace(/\/$/, '');
-  if (!origin) throw new Error('Eqwa origin required');
-
-  const html = await fetchText(`${origin}/front-jobs.html`, { headers: HEADERS });
-  const listing = parseEqwaListing(html, origin);
-  // F-06 : un tableau vide sur une source cataloguée, c'est le gabarit qui a
-  // changé, pas un employeur sans poste.
-  if (listing.length === 0) throw new Error(`eqwa ${origin}: aucune ligne d'offre dans front-jobs.html`);
-
-  const toJob = (row: EqwaListingJob, description?: string): NormalizedJob => ({
+/**
+ * Une ligne de liste devient une offre. Pure, et EXPORTÉE pour le rejeu
+ * (`publication/recovery.ts`) : le `raw` conservé EST cette ligne, donc rejouer revient à
+ * rappeler ce lecteur-ci. Le sortir de `fetchEqwaJobs` évite qu'un second lecteur, écrit pour le
+ * rejeu, dérive de celui du collecteur.
+ */
+export function eqwaRowToJob(row: EqwaListingJob, description?: string): NormalizedJob {
+  return {
     externalId: row.externalId,
     title: row.title,
     location: [row.city, row.postalCode, row.region].filter(Boolean).join(', ') || undefined,
@@ -103,19 +99,31 @@ export async function fetchEqwaJobs(config: Record<string, unknown>): Promise<Ad
     postedAt: row.postedAt,
     description,
     raw: row,
-  });
+  };
+}
 
-  if (config.withDescriptions === false) return { jobs: listing.map((row) => toJob(row)) };
+/** `config.origin` : le portail, ex. "https://recrutement-nocibe.fr". */
+export async function fetchEqwaJobs(config: Record<string, unknown>): Promise<AdapterResult> {
+  const origin = String(config.origin ?? '').replace(/\/$/, '');
+  if (!origin) throw new Error('Eqwa origin required');
+
+  const html = await fetchText(`${origin}/front-jobs.html`, { headers: HEADERS });
+  const listing = parseEqwaListing(html, origin);
+  // F-06 : un tableau vide sur une source cataloguée, c'est le gabarit qui a
+  // changé, pas un employeur sans poste.
+  if (listing.length === 0) throw new Error(`eqwa ${origin}: aucune ligne d'offre dans front-jobs.html`);
+
+  if (config.withDescriptions === false) return { jobs: listing.map((row) => eqwaRowToJob(row)) };
 
   const limit = pLimit(Number(config.detailConcurrency ?? DEFAULT_DETAIL_CONCURRENCY));
   const jobs = await Promise.all(
     listing.map((row) =>
       limit(async () => {
         try {
-          return toJob(row, parseEqwaDetail(await fetchText(row.url, { headers: HEADERS })).description);
+          return eqwaRowToJob(row, parseEqwaDetail(await fetchText(row.url, { headers: HEADERS })).description);
         } catch {
           // Une fiche indisponible garde l'offre (titre, lieu, lien) sans description.
-          return toJob(row);
+          return eqwaRowToJob(row);
         }
       }),
     ),

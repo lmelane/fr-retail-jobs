@@ -83,7 +83,14 @@ export function parseAvatureJob(html: string, url: string): NormalizedJob | null
     description,
     url,
     postedAt: postedAt && !Number.isNaN(postedAt.getTime()) ? postedAt : undefined,
-    raw: { source: 'avature', url },
+    // Les champs LUS entrent dans le raw (19/09/2026) : `{source, url}` ne permettait aucun
+    // rejeu, et l'offre était refusée READER_UNQUALIFIED. Voir `parseAvaturePortalListing`.
+    raw: {
+      source: 'avature',
+      externalId: url.match(/\/(\d+)\/?$/)?.[1] ?? url,
+      title, location, description, url,
+      postedAt: postedAt && !Number.isNaN(postedAt.getTime()) ? postedAt.toISOString() : undefined,
+    },
   };
 }
 
@@ -224,7 +231,14 @@ export function parseAvatureListing(html: string): NormalizedJob[] {
       description: excerpt.join(' ').slice(0, 4000) || undefined,
       url,
       postedAt,
-      raw: { source: 'avature' },
+      // Idem : sans ces champs, le rejeu n'a rien à relire (voir `parseAvaturePortalListing`).
+      raw: {
+        source: 'avature',
+        externalId: url.match(/\/(\d+)\/?$/)?.[1] ?? url,
+        title, location, url,
+        description: excerpt.join(' ').slice(0, 4000) || undefined,
+        postedAt: postedAt?.toISOString(),
+      },
     });
   }
 
@@ -298,8 +312,24 @@ export function parseAvaturePortalListing(html: string): { jobs: NormalizedJob[]
       location: decode(card.match(PORTAL_CARD_FIELD.location)?.[1] ?? '') || undefined,
       url: decode(href),
       description: htmlToPlainText(card.match(PORTAL_CARD_FIELD.excerpt)?.[1]) || undefined,
+      /*
+       * LA CARTE ENTIÈRE ENTRE DANS LE RAW (19/09/2026).
+       *
+       * `raw` ne portait que `{source, reference, department}` : ni intitulé, ni lieu, ni lien.
+       * Le rejeu (`publication/recovery.ts`) n'avait donc RIEN à relire, et rendait
+       * READER_UNQUALIFIED. Mesuré : L'Oréal 1 701 offres et Ralph Lauren 1 131, capturées,
+       * conservées, et republiables par aucun chemin — l'adaptateur lisait la page puis la jetait.
+       *
+       * On conserve les champs LUS, pas la page : le HTML complet vit déjà dans `RawBlob`
+       * (177 937 captures), le dupliquer ici doublerait le stockage sans rien prouver de plus.
+       */
       raw: {
         source: 'avature-portal',
+        externalId,
+        title,
+        url: decode(href),
+        location: decode(card.match(PORTAL_CARD_FIELD.location)?.[1] ?? '') || undefined,
+        description: htmlToPlainText(card.match(PORTAL_CARD_FIELD.excerpt)?.[1]) || undefined,
         reference: decode(card.match(PORTAL_CARD_FIELD.reference)?.[1] ?? '') || undefined,
         department: decode(card.match(PORTAL_CARD_FIELD.department)?.[1] ?? '') || undefined,
       },
@@ -413,6 +443,9 @@ async function fetchAvaturePortalJobs(origin: string, lists: string[], config: R
             location: detail.rawLocation ?? job.location,
             region: detail.region ?? job.region,
             postedAt: detail.postedAt ?? job.postedAt,
+            // Les champs du détail, conservés comme ceux de la carte : sans eux le rejeu
+            // reconstruirait une offre amputée de sa description et de sa ville.
+            raw: { ...(job.raw as Record<string, unknown>), avaturePortalDetail: detail },
           };
         } catch {
           // Un détail injoignable ne doit pas faire perdre l'offre de liste.

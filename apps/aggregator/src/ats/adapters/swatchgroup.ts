@@ -252,7 +252,28 @@ export function parseSwatchJobPage(html: string, url: string): NormalizedJob | n
     postedAt: posting?.postedAt,
     validThrough: posting?.validThrough,
     description: description || undefined,
-    raw: { source: 'swatchgroup', legalEntity: raw?.hiringOrganization?.name, logo, applyUrl, jsonLd: posting?.raw },
+    /*
+     * LES CHAMPS LUS ENTRENT DANS LE RAW (19/09/2026).
+     *
+     * `raw` ne portait que l'entité juridique, le logo, le lien de candidature et le JSON-LD —
+     * ni intitulé, ni lieu, qui viennent du HTML de la page. Le rejeu
+     * (`publication/recovery.ts`) n'avait donc rien à relire : 307 offres capturées et
+     * conservées, refusées à la publication.
+     *
+     * La page complète vit déjà dans `RawBlob` ; on conserve ici ce que le lecteur en a tiré.
+     */
+    raw: {
+      source: 'swatchgroup',
+      title, url, language: lang,
+      location: loc.location ?? posting?.region ?? undefined,
+      city: loc.city, region: loc.region, postalCode: loc.postalCode, country: loc.country,
+      contract: posting?.contract,
+      company: resolveBrand(logo, title),
+      description: description || undefined,
+      postedAt: posting?.postedAt?.toISOString(),
+      validThrough: posting?.validThrough?.toISOString(),
+      legalEntity: raw?.hiringOrganization?.name, logo, applyUrl, jsonLd: posting?.raw,
+    },
   };
 }
 

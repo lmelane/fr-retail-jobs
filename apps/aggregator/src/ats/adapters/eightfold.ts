@@ -167,7 +167,12 @@ function eightfoldCanonicalId(position: EightfoldPosition): string | null {
   return typeof raw === 'string' && raw.trim() ? raw : null;
 }
 
-function toNormalized(position: EightfoldPosition, origin: string): NormalizedJob | null {
+/**
+ * Exportée pour le REJEU (`publication/recovery.ts`), qui doit reconstruire une offre à partir du
+ * seul `raw` conservé — ici la position Eightfold entière. Le rejeu emprunte ainsi exactement le
+ * lecteur du collecteur, au lieu d'en réécrire un qui dériverait.
+ */
+export function toNormalized(position: EightfoldPosition, origin: string): NormalizedJob | null {
   if (!position.name) return null;
 
   const place = placeFromEightfold(position);
@@ -350,6 +355,19 @@ export async function fetchEightfoldJobs(
             // "Fulltime-Regular" carries both; the boundary splits contract from time.
             contract: terms ?? job.contract,
             workingTime: terms && readEmployment(terms) !== null ? terms : job.workingTime,
+            /*
+             * LA FICHE DE DÉTAIL ENTRE DANS LE RAW (19/09/2026).
+             *
+             * `raw` était figé sur la position de LISTE, qui ne porte aucune description : le
+             * rejeu (`publication/recovery.ts`) reconstruisait donc une offre muette, refusée en
+             * CONTENT_MISSING. Mesuré sur Kering : 1 035 offres capturées, conservées, et
+             * republiables par aucun chemin — le détail était lu, utilisé, puis jeté.
+             *
+             * On conserve la réponse de détail TELLE QUELLE, sous une clé qui dit d'où elle vient.
+             * Le rejeu en relit la description avec le même lecteur que le collecteur ; rien n'est
+             * reconstitué de mémoire, et la preuve native reste la capture.
+             */
+            raw: { ...(job.raw as Record<string, unknown>), eightfoldDetail: detail.data },
           };
         } catch {
           // A failed detail fetch must not lose the listing entry.
