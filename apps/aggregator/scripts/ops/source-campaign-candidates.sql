@@ -40,6 +40,9 @@ SELECT json_build_object(
   -- Périmètre relu du portail (lot F4). NULL tant qu'aucun humain ne l'a tranché : la campagne
   -- écrira alors NULL comme avant, et l'ingestion refusera une source sans employeur natif.
   'portalScope', s."portalScope",
+  -- La note porte les décisions relues à la main, dont `domaine-accepte:<domaine>` (lot F8) : la
+  -- campagne s'en sert pour reconnaître un domaine divergent qu'un humain a vérifié.
+  'note', s.note,
   'domain', coalesce(m.domain, n.domain), 'domainSource', coalesce(m."domainSource", n."domainSource"),
   'lastRunJobs', s."lastRunJobs", 'lastRunStatus', s."lastRunStatus")
 FROM "Source" s

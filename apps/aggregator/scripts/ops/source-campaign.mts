@@ -59,7 +59,7 @@ import { deriveAccessScopeDocument } from '../../src/connectors/accessScopeDeriv
 
 type Candidat = { key: string; maison: string; kind: string; config: Record<string, unknown>; careersDomain: string | null; tier: string;
   jobUrlPattern?: string | null; domain?: string | null; domainSource?: string | null; lastRunJobs?: number | null;
-  portalScope?: 'SINGLE_BRAND' | 'MULTI_BRAND' | null };
+  portalScope?: 'SINGLE_BRAND' | 'MULTI_BRAND' | null; note?: string | null };
 type Verdict = { key: string; kind: string; maison: string; verdict: string; raisons: string[]; revision?: string; etapes: Record<string, unknown>;
   offres?: number; ingestion?: Record<string, unknown>; absence?: Record<string, unknown>; capacites?: Record<string, string>; readerRevision: string; dureeMs: number; evalueLe: string };
 const READER_REVISION = captureReaderRevision();
@@ -87,14 +87,18 @@ const verdictsFile = path.join(outDir, 'verdicts.json');
  * (Nordstrom, 663 requêtes pour 1 333 offres ; phenom, 539 en moyenne). À ce rythme, deux minutes
  * ne laissent pas finir une énumération, et la collecte est coupée alors qu'elle se déroulait bien.
  *
- * Le délai passe à 15 minutes. Ce n'est pas un contournement de garde-fou : la validation native,
+ * Le délai passe à 30 minutes. Mesuré le 19/09 sur les gros groupes : L'Oréal met 649 s, Kering
+ * 401 s — 15 minutes les couvraient de justesse, et perdre une collecte de 6 000 offres à trente
+ * secondes près serait absurde. Le coût est nul quand une source finit vite.
+ *
+ * Ce n'est pas un contournement de garde-fou : la validation native,
  * l'énumération complète et les décisions d'accès restent exigées à l'identique — on laisse
  * simplement à une source volumineuse le temps d'être lue entièrement, plutôt que de la déclarer
  * inaccessible à mi-parcours.
  *
  * `--deadline-ms` reste disponible pour borner une campagne de contrôle.
  */
-const deadlineMs = Number(arg('deadline-ms') ?? 900_000);
+const deadlineMs = Number(arg('deadline-ms') ?? 1_800_000);
 let candidats = JSON.parse(readFileSync(candidatesFile, 'utf8')) as Candidat[];
 if (arg('keys')) { const keys = new Set(arg('keys')!.split(',')); candidats = candidats.filter(c => keys.has(c.key)); }
 const previous: Verdict[] = flag('resume') && existsSync(verdictsFile) ? JSON.parse(readFileSync(verdictsFile, 'utf8')) : [];
@@ -327,7 +331,28 @@ async function qualifier(c: Candidat): Promise<Verdict> {
    * Une simple absence de lien ne bloque plus : elle est consignée dans `etapes.identite` pour
    * instruction, et la qualification se poursuit sur la foi du registre.
    */
-  if (!identity.ok && identity.divergentDomain) return rendre('DOMAINE_OFFICIEL_DIVERGENT', { revision, offres });
+  /*
+   * UN DOMAINE DIVERGENT PEUT AVOIR ÉTÉ ACCEPTÉ PAR UN HUMAIN (lot F8, 19/09/2026).
+   *
+   * `DOMAINE_OFFICIEL_DIVERGENT` dit que le portail est servi sous un autre domaine d'employeur que
+   * celui du registre, et la campagne a raison de ne pas trancher seule : accepter n'importe quel
+   * domaine servi reviendrait à publier les offres d'une Maison sous le nom d'une autre.
+   *
+   * Mais la plupart de ces écarts sont légitimes, et seul un humain peut le dire. Sur les 19 cas
+   * relus le 19/09 : variantes d'extension (`nikin.com` / `nikin.ch`), domaines carrières dédiés
+   * (`carrieres-rolex.com`), hébergeurs RH (`molton-brown.voyse.io`), société mère (Elli est la
+   * marque cœur de JULIE & GRACE GmbH). 17 acceptés, 1 conservé au registre, 1 retiré — un
+   * distributeur tiers qui n'était pas la Maison.
+   *
+   * La décision est inscrite dans la note de la source (`domaine-accepte:<domaine>`) parce que
+   * `Company.domain` n'en porte qu'un : le domaine de la Maison reste la référence, celui-ci dit
+   * « ce domaine-là est aussi le sien, vérifié à la main ». On le lit ici, et rien n'est deviné :
+   * un domaine absent de la note bloque comme avant.
+   */
+  const domaineAccepte = typeof c.note === 'string'
+    && c.note.includes(`domaine-accepte:${identity.divergentDomain}`);
+  if (!identity.ok && identity.divergentDomain && !domaineAccepte) return rendre('DOMAINE_OFFICIEL_DIVERGENT', { revision, offres });
+  if (domaineAccepte) etapes.domaineAccepte = { domaine: identity.divergentDomain, source: 'note du registre, relu à la main' };
   if (!identity.ok && identity.blocked) return rendre('BLOCAGE_EXTERNE', { revision, offres });
   if (!identity.ok) etapes.identiteNonProuvee = { note: 'aucun lien officiel trouvé ; identité portée par le registre relu (lot F5)' };
   const status = await sourceStatus(db, c.key) as { promotionGatesPass?: boolean; status?: string; identity?: unknown; native?: unknown; access?: unknown };
