@@ -7,13 +7,13 @@ import { compareExtractionResult, readExtractionManifest } from '../capture/mani
 import { captureReaderRevision } from '../capture/revision.js';
 import { captureConfig } from '../capture/config.js';
 import { readRawBlob } from '../capture/store.js';
-import { recoverRetainedPublication } from '../publication/recovery.js';
+import { recoverRetainedPublication, PER_PUBLICATION_REASONS } from '../publication/recovery.js';
 import { evidenceHash } from '../lib/evidenceHash.js';
 import { effectiveSourceConfig } from './sourceConfig.js';
 import { lockSourceWrites } from '../lib/writeLocks.js';
 import { withSourceBudget } from '../lib/sourceBudget.js';
 
-import { SOURCE_VALIDATION_POLICY } from './sourceCertification.js';
+import { SOURCE_VALIDATION_POLICY, VALIDATION_UNQUALIFIED_ALLOWANCE, unqualifiedAllowanceFor } from './sourceCertification.js';
 type RevisionPayload = { version: number; key: string; kind: string; config: Record<string, unknown> };
 export type SourceValidationReport = {
   replayExact: boolean;
@@ -26,6 +26,12 @@ export type SourceValidationReport = {
   inputRejected: number;
   nativeEmpty: boolean;
   reasons: Record<string, number>;
+  /**
+   * Le seuil appliqué à ce lot (politique v2) : la règle en vigueur, et le plafond qu'elle a
+   * produit ici. Consigné pour qu'un verdict reste relisible après coup — sans lui, on ne
+   * saurait pas si une source a été validée AVEC des offres tolérées, ni combien.
+   */
+  allowance?: { floor: number; ratio: number; count: number; applied: number };
 };
 
 /** An empty collector result is never sufficient. Two narrowly qualified
@@ -95,7 +101,33 @@ export async function validateCapturedSource(db: PrismaClient, batchId: string, 
     // request credentials or source configuration into qualification reports.
     reason('REPLAY_OR_NATIVE_READING_FAILED');
   }
-  const verdict = report.replayExact && report.rejected === 0 && Object.keys(report.reasons).length === 0 &&
+  /*
+   * LE SEUIL DE TOLÉRANCE (décision du propriétaire, 19/09/2026 — politique v2).
+   *
+   * Jusqu'ici, UNE offre non relisible faisait échouer la source entière. Mesuré sur 10 sources :
+   * 5 004 offres relisibles bloquées par 11 annonces publiées sans description — H&M 1 805/1 806,
+   * L'Oréal 1 692/1 693, Bloomingdale's 793/794. Une annonce sans description est un cas réel
+   * chez l'éditeur, pas un défaut de notre lecture.
+   *
+   * CE QUE LE SEUIL TOLÈRE, ET RIEN D'AUTRE : les offres refusées UNE PAR UNE par le rejeu
+   * (`report.rejected`). Tous les autres motifs — rejeu divergent, énumération incomplète,
+   * identifiants dupliqués, lignes natives refusées, flux vide non prouvé — restent bloquants,
+   * parce qu'ils portent sur le LOT et non sur une annonce : ils disent que la collecte elle-même
+   * n'est pas fiable.
+   *
+   * Les deux conditions s'appliquent ENSEMBLE (`VALIDATION_UNQUALIFIED_ALLOWANCE`) : un
+   * pourcentage seul laisserait perdre 100 offres sur 10 000, une valeur absolue seule laisserait
+   * perdre 2 offres sur 20.
+   *
+   * Une offre tolérée n'est JAMAIS publiée : elle reste refusée. Le seuil décide seulement si la
+   * SOURCE reste validée, et le rapport garde le compte exact — une dégradation reste lisible.
+   */
+  const motifsParOffre = new Set<string>(PER_PUBLICATION_REASONS);
+  const motifsDuLot = Object.keys(report.reasons).filter(nom => !motifsParOffre.has(nom));
+  const plafond = unqualifiedAllowanceFor(report.observed);
+  report.allowance = { ...VALIDATION_UNQUALIFIED_ALLOWANCE, applied: plafond };
+
+  const verdict = report.replayExact && report.rejected <= plafond && motifsDuLot.length === 0 &&
     (report.qualified > 0 || report.nativeEmpty) ? 'VALIDATED' : 'REJECTED';
   return db.$transaction(async tx => {
     // Serialize completed decisions with promotion. The append sequence, not a

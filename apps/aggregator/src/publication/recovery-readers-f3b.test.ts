@@ -48,6 +48,43 @@ describe('retained publications of the families qualified in lot F3b', () => {
     expect(read('successfactors', enriched, 'https://careers.maison.example/job/own-title/124-fr_FR', '123', config)).toMatchObject({ reason: 'IDENTITY_MISMATCH' });
   });
 
+  /*
+   * LE DIALECTE RMK DOIT APPLIQUER `successfactorsDetail`, PAS SEULEMENT `postingEvidence`.
+   *
+   * Les deux dialectes retiennent cette fiche, et le collecteur la fusionne de la même façon
+   * (« the same merge serves the live collector and the retained-publication reader »). Mais
+   * seule la branche HTML l'appliquait au rejeu : le dialecte RMK reconstruisait l'offre depuis
+   * la seule entrée de liste, qui ne porte aucune description.
+   *
+   * Mesuré le 19/09/2026 : `douglas-sf` 311 offres, `breitling-sf` 46, `goyard-successfactors`
+   * 20 — RAW portant `successfactorsDetail`, offres collectées avec leur description, et rejeu
+   * refusé CONTENT_MISSING sur la totalité. Après correctif : 311/311, 46/46, 20/20.
+   */
+  it('applique la fiche de détail retenue au dialecte RMK, pas seulement au dialecte HTML', () => {
+    const config = { origin: 'https://careers.maison.example' };
+    const url = 'https://careers.maison.example/job/own-title/123-fr_FR';
+    const item = { id: 123, unifiedStandardTitle: 'Own title', urlTitle: 'own-title', jobLocationShort: ['Paris, FR'],
+      locale: 'fr_FR', source: 'successfactors-rmk-v2',
+      rmkDateEvidence: { field: 'unifiedStandardStart', rawValue: null, locale: 'fr_FR', parserVersion: 'rmk-locale-calendar-v1', parsedValue: null } };
+
+    // PRÉMISSE : sans la fiche, le rejeu refuse bien pour contenu manquant — c'est le défaut
+    // que ce témoin exerce. Si cette ligne passait au vert, il ne testerait rien.
+    expect(read('successfactors', item, url, '123', config)).toMatchObject({ reason: 'CONTENT_MISSING' });
+
+    const avecFiche = { ...item, successfactorsDetail: {
+      description: 'Vous pilotez la stratégie de marque.', postedAt: '2026-09-01T00:00:00.000Z', validThrough: null } };
+    const resultat = read('successfactors', avecFiche, url, '123', config);
+    expect(resultat.status).toBe('RECOVERABLE');
+    if (resultat.status === 'RECOVERABLE') {
+      expect(resultat.job.description).toBe('Vous pilotez la stratégie de marque.');
+      expect(resultat.job.postedAt?.toISOString()).toBe('2026-09-01T00:00:00.000Z');
+    }
+
+    // Une fiche illisible reste refusée : on ne devine jamais un contenu absent.
+    expect(read('successfactors', { ...item, successfactorsDetail: 'forgé' }, url, '123', config))
+      .toMatchObject({ reason: 'DETAIL_EVIDENCE_UNUSABLE' });
+  });
+
   it('rebuilds a SuccessFactors HTML-path posting from its retained listing link and microdata detail, and refuses the older slug-only RAW', () => {
     const config = { origin: 'https://careers.maison.example' }; const url = 'https://careers.maison.example/job/Paris/Own-title/123456/';
     const listing = { slug: 'Paris-Own-title', id: '123456', path: '/job/Paris/Own-title/123456/', source: 'successfactors' };
