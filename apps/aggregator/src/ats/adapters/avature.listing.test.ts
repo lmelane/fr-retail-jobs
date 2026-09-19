@@ -116,3 +116,39 @@ describe('L’Oréal observed AJAX pagination and termination', () => {
     expect(result.complete).toBe(false);
   });
 });
+
+/**
+ * LE RAW DOIT PORTER LA DESCRIPTION DE LA FICHE (19/09/2026, second tour).
+ *
+ * Le premier correctif n'avait traité que le mode « portail ». Le test réel sur L'Oréal a rendu
+ * CONTENT_MISSING sur 1 693 offres : le rejeu lisait enfin le RAW — progrès sur
+ * READER_UNQUALIFIED — mais n'y trouvait que l'extrait de carte (~290 caractères), la fusion de
+ * détail mettant à jour `job.description` sans toucher `job.raw`.
+ *
+ * Les deux plus gros tenants Avature sont en mode liste (L'Oréal `listingUrl`, Ralph Lauren
+ * `lists`) : sans ce témoin, le défaut serait revenu sans que rien ne le signale.
+ */
+describe('fetchAvatureJobs (mode liste) — le RAW conserve de quoi se relire', () => {
+  it('met la description de la fiche dans le raw, pas seulement dans l\'offre', async () => {
+    mockText
+      .mockResolvedValueOnce(CARD)
+      .mockResolvedValueOnce('<html></html>')
+      .mockResolvedValueOnce(DETAIL);
+
+    const { jobs } = await fetchAvatureJobs({
+      listingUrl: 'https://careers.loreal.com/en_US/jobs/SearchJobs/?jobOffset=0',
+      origin: 'https://careers.loreal.com',
+    });
+
+    expect(jobs).toHaveLength(1);
+    const raw = jobs[0].raw as Record<string, unknown>;
+
+    // PRÉMISSE : la fiche apporte bien un texte PLUS LONG que l'extrait de carte — sinon le
+    // témoin n'exerce pas la fusion qu'il prétend vérifier et passerait au vert pour rien.
+    expect(jobs[0].description?.length ?? 0).toBeGreaterThan(290);
+
+    expect(raw.description).toBe(jobs[0].description);
+    expect(raw.title).toBe(jobs[0].title);
+    expect(raw.url).toBe(jobs[0].url);
+  });
+});
