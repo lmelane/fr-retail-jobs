@@ -79,7 +79,22 @@ const candidatesFile = arg('candidates'), outDir = arg('out-dir');
 if (!candidatesFile || !outDir) throw new Error('usage: source-campaign.mts --candidates=<export.json> --out-dir=<dossier privé> [--keys=] [--limit=] [--ingest] [--resume]');
 mkdirSync(outDir, { recursive: true, mode: 0o700 });
 const verdictsFile = path.join(outDir, 'verdicts.json');
-const deadlineMs = Number(arg('deadline-ms') ?? 120_000);
+/*
+ * DÉLAI DE COLLECTE — 120 s ne suffisait pas aux gros catalogues.
+ *
+ * Mesuré le 19/09/2026 : `adidas`, `nordstrom` et `boots` ont rendu `__TIMEOUT__` à 121 s. La cause
+ * n'est pas la lenteur d'un serveur mais le NOMBRE DE REQUÊTES : workday en demande une par offre
+ * (Nordstrom, 663 requêtes pour 1 333 offres ; phenom, 539 en moyenne). À ce rythme, deux minutes
+ * ne laissent pas finir une énumération, et la collecte est coupée alors qu'elle se déroulait bien.
+ *
+ * Le délai passe à 15 minutes. Ce n'est pas un contournement de garde-fou : la validation native,
+ * l'énumération complète et les décisions d'accès restent exigées à l'identique — on laisse
+ * simplement à une source volumineuse le temps d'être lue entièrement, plutôt que de la déclarer
+ * inaccessible à mi-parcours.
+ *
+ * `--deadline-ms` reste disponible pour borner une campagne de contrôle.
+ */
+const deadlineMs = Number(arg('deadline-ms') ?? 900_000);
 let candidats = JSON.parse(readFileSync(candidatesFile, 'utf8')) as Candidat[];
 if (arg('keys')) { const keys = new Set(arg('keys')!.split(',')); candidats = candidats.filter(c => keys.has(c.key)); }
 const previous: Verdict[] = flag('resume') && existsSync(verdictsFile) ? JSON.parse(readFileSync(verdictsFile, 'utf8')) : [];
