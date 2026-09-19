@@ -15,7 +15,7 @@
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient({ datasources: { db: { url: process.env.DB_URL ?? process.env.DATABASE_URL } } });
-const q = <T>(s: string) => prisma.$queryRawUnsafe<T[]>(s);
+const q = <T,>(s: string) => prisma.$queryRawUnsafe<T[]>(s);
 
 console.log('\n── refus d\'identité employeur, par jour et par heure ──\n');
 const parHeure = await q<{ quand: string; n: bigint; sources: bigint }>(`

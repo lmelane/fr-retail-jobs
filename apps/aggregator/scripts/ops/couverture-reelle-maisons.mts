@@ -35,7 +35,7 @@ import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 
 const LEDGER = 'audits/2026-09-09/fashionjobs-portals/ledger.json';
 const prisma = new PrismaClient({ datasources: { db: { url: process.env.DB_URL ?? process.env.DATABASE_URL } } });
-const q = <T>(s: string) => prisma.$queryRawUnsafe<T[]>(s);
+const q = <T,>(s: string) => prisma.$queryRawUnsafe<T[]>(s);
 
 const racine = (s: string) =>
   s.replace(/\s*\([^)]*\)\s*$/, '').normalize('NFD').replace(/[̀-ͯ]/g, '')

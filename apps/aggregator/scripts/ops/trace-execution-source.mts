@@ -28,7 +28,7 @@ if (!cles.length) { console.error('Usage : trace-execution-source.mts <clé>…'
 const url = process.env.DB_URL ?? process.env.DATABASE_URL;
 if (!url) { console.error('DB_URL manquante.'); process.exit(1); }
 const prisma = new PrismaClient({ datasources: { db: { url } } });
-const q = <T>(s: string, ...p: unknown[]) => prisma.$queryRawUnsafe<T[]>(s, ...p);
+const q = <T,>(s: string, ...p: unknown[]) => prisma.$queryRawUnsafe<T[]>(s, ...p);
 
 /* Les colonnes varient selon les lots ; on lit le schéma plutôt que de le supposer. */
 const colonnes = async (table: string) =>

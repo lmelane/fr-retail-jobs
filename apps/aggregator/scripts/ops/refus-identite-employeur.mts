@@ -27,7 +27,7 @@ const heures = Number(process.argv[2] ?? 24);
 const url = process.env.DB_URL ?? process.env.DATABASE_URL;
 if (!url) { console.error('DB_URL manquante.'); process.exit(1); }
 const prisma = new PrismaClient({ datasources: { db: { url } } });
-const q = <T>(s: string, ...p: unknown[]) => prisma.$queryRawUnsafe<T[]>(s, ...p);
+const q = <T,>(s: string, ...p: unknown[]) => prisma.$queryRawUnsafe<T[]>(s, ...p);
 
 /*
  * Le message a la forme :

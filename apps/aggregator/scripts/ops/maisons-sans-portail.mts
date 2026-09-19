@@ -32,7 +32,7 @@ import { writeFileSync } from 'node:fs';
 const url = process.env.DB_URL ?? process.env.DATABASE_URL;
 if (!url) { console.error('DB_URL (ou DATABASE_URL) manquante.'); process.exit(1); }
 const prisma = new PrismaClient({ datasources: { db: { url } } });
-const q = <T>(s: string) => prisma.$queryRawUnsafe<T[]>(s);
+const q = <T,>(s: string) => prisma.$queryRawUnsafe<T[]>(s);
 
 /*
  * La racine d'un libellé : ce qui reste une fois retiré un suffixe entre parenthèses et

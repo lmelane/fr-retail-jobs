@@ -27,7 +27,7 @@ import { PrismaClient } from '@prisma/client';
 const url = process.env.DB_URL ?? process.env.DATABASE_URL;
 if (!url) { console.error('DB_URL manquante.'); process.exit(1); }
 const prisma = new PrismaClient({ datasources: { db: { url } } });
-const q = <T>(s: string) => prisma.$queryRawUnsafe<T[]>(s);
+const q = <T,>(s: string) => prisma.$queryRawUnsafe<T[]>(s);
 
 const ligne = (l: string, v: bigint | number, marque = '') =>
   console.log(`   ${l.padEnd(52)} ${String(v).padStart(8)}  ${marque}`);

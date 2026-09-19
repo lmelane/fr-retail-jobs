@@ -14,7 +14,7 @@ import { PrismaClient } from '@prisma/client';
 import { existsSync, readFileSync } from 'node:fs';
 
 const prisma = new PrismaClient({ datasources: { db: { url: process.env.DB_URL ?? process.env.DATABASE_URL } } });
-const q = <T>(s: string) => prisma.$queryRawUnsafe<T[]>(s);
+const q = <T,>(s: string) => prisma.$queryRawUnsafe<T[]>(s);
 
 /* Preuve 1 : les Maisons réellement servies par chaque source, mesurées sur les offres. */
 const parSource = await q<{ sourceKey: string; maisons: bigint; offres: bigint }>(`

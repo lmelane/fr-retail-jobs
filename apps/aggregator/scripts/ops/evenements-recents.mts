@@ -14,7 +14,7 @@ const minutes = Number(process.argv[2] ?? 30);
 const url = process.env.DB_URL ?? process.env.DATABASE_URL;
 if (!url) { console.error('DB_URL manquante.'); process.exit(1); }
 const prisma = new PrismaClient({ datasources: { db: { url } } });
-const q = <T>(s: string, ...p: unknown[]) => prisma.$queryRawUnsafe<T[]>(s, ...p);
+const q = <T,>(s: string, ...p: unknown[]) => prisma.$queryRawUnsafe<T[]>(s, ...p);
 
 const cols = (await q<{ column_name: string }>(
   `SELECT column_name FROM information_schema.columns
