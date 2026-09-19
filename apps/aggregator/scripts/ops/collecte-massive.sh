@@ -43,9 +43,18 @@ while [ "$I" -le "$TOTAL" ]; do
   echo "════ vague $I/$TOTAL · $KIND · $N source(s) · $(date +%H:%M:%S)"
 
   CMD="env -u BREVO_API_KEY -u GOOGLE_INDEXING_CREDENTIALS -u HEALTHCHECK_PING_URL EGRESS_PROBE=0 INGEST_ONLY_KEYS=$KEYS CAMPAGNE_INGEST=1 sh apps/aggregator/scripts/ops/campagne-railway.sh"
-  DEPLOY_COMMIT="$DEPLOY_COMMIT" python3 "$RACINE/apps/aggregator/scripts/ops/railway-service.py" \
-    set-command aggregator "$CMD" > "$SORTIE/vague-$I-deploy.json" 2>&1 || {
-      echo "  ⚠ set-command a échoué — arrêt"; exit 1; }
+  # L'API Railway coupe parfois une requête sans raison durable (« Railway response unavailable or
+  # invalid », vague 5 du 18/09/2026 à 22:47). Une coupure réseau n'est pas un défaut de la chaîne :
+  # on réessaie trois fois avant de conclure. Un échec persistant, lui, arrête bien la collecte.
+  T=0
+  while [ "$T" -lt 3 ]; do
+    if DEPLOY_COMMIT="$DEPLOY_COMMIT" python3 "$RACINE/apps/aggregator/scripts/ops/railway-service.py" \
+      set-command aggregator "$CMD" > "$SORTIE/vague-$I-deploy.json" 2>&1; then break; fi
+    T=$((T+1))
+    echo "  set-command a échoué (tentative $T/3), nouvelle tentative dans 30 s"
+    sleep 30
+  done
+  [ "$T" -lt 3 ] || { echo "  ⚠ set-command a échoué 3 fois — arrêt"; exit 1; }
 
   # Le redéploiement doit être SUCCESS avant l'exécution : `execute` refuse sinon, et cette
   # garde est précisément ce qui empêche de lancer le pipeline complet par accident.
@@ -58,9 +67,17 @@ while [ "$I" -le "$TOTAL" ]; do
   done
   [ "$S" = "SUCCESS" ] || { echo "  ⚠ déploiement $S — arrêt"; exit 1; }
 
-  DEPLOY_COMMIT="$DEPLOY_COMMIT" INGEST_KEYS="$KEYS" \
-    python3 "$RACINE/apps/aggregator/scripts/ops/railway-service.py" execute aggregator \
-    > "$SORTIE/vague-$I-exec.json" 2>&1 || { echo "  ⚠ execute a échoué — arrêt"; exit 1; }
+  # Même traitement pour l'exécution : une coupure réseau ne doit pas arrêter 17 vagues.
+  T=0
+  while [ "$T" -lt 3 ]; do
+    if DEPLOY_COMMIT="$DEPLOY_COMMIT" INGEST_KEYS="$KEYS" \
+      python3 "$RACINE/apps/aggregator/scripts/ops/railway-service.py" execute aggregator \
+      > "$SORTIE/vague-$I-exec.json" 2>&1; then break; fi
+    T=$((T+1))
+    echo "  execute a échoué (tentative $T/3), nouvelle tentative dans 30 s"
+    sleep 30
+  done
+  [ "$T" -lt 3 ] || { echo "  ⚠ execute a échoué 3 fois — arrêt"; exit 1; }
   echo "  lancée"
 
   # Stabilisation : on attend que le nombre d'offres cesse de bouger deux relevés de suite.
