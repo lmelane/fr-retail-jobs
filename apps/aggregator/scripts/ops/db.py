@@ -7,8 +7,9 @@ local targets, backups/remediation-20260908/postgres-access.json for production)
 
 Targets:
   production  the production database through its TCP proxy — writes allowed
-  readonly    the same database with default_transaction_read_only and a statement timeout: a read that cannot
-              write even by mistake, which is what every measurement should use
+  readonly    the same database, the same superuser role, with default_transaction_read_only and a statement
+              timeout set through PGOPTIONS. This is a GUARDRAIL, NOT A GUARANTEE: it applies to libpq clients
+              (psql) only, and the underlying role is a superuser no GRANT constrains. See the comment below.
   clone       the restored copy used for rehearsals (never production)
   test        the integration-test database (the suite refuses any name without "test")
 
@@ -45,7 +46,20 @@ env = os.environ.copy()
 env['DATABASE_URL'] = url
 env['DIRECT_URL'] = url
 if target == 'readonly':
-    # Enforced by the server, not by discipline: a measurement cannot write even if the script is wrong.
+    # ATTENTION — CETTE CIBLE NE GARANTIT PAS LA LECTURE SEULE (constat du 2026-09-20).
+    #
+    # Trois raisons, chacune vérifiée:
+    #   1. PGOPTIONS est lu par libpq (psql), PAS par le moteur Rust de Prisma. Les 143 scripts
+    #      d'audit qui passent par Prisma n'en recoivent rien: un CREATE TEMP TABLE a REUSSI.
+    #   2. default_transaction_read_only est un REGLAGE PAR DEFAUT, pas un privilege: toute
+    #      session peut le remettre a off.
+    #   3. 'readonly' et 'production' lisent le MEME fichier d'identifiants, donc le meme role
+    #      `postgres` — un SUPERUTILISATEUR, qu'aucun GRANT ne contraint.
+    #
+    # Cette cible reste utile comme garde-fou pour les clients libpq et pour le delai maximal,
+    # mais un accès d'audit aux droits reellement limites a la lecture reste A CREER par une
+    # intervention autorisee. Tant qu'il n'existe pas, aucune execution ici ne doit etre
+    # presentee comme "incapable d'ecrire".
     env['PGOPTIONS'] = '-c default_transaction_read_only=on -c statement_timeout=25000'
 
 sys.exit(subprocess.run(sys.argv[2:], env=env, cwd=ROOT).returncode)
