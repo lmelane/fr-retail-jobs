@@ -41,8 +41,18 @@ import { evidenceHash } from '../lib/evidenceHash.js';
 import type { NormalizedJob } from '../types.js';
 
 type Context = { externalId: string; url: string; observedAt: Date; config: Record<string, unknown> };
-type Reason = 'RAW_MISSING' | 'READER_UNQUALIFIED' | 'NATIVE_ID_MISSING' | 'CONTENT_MISSING' |
-  'RAW_SCHEMA_INVALID' | 'IDENTITY_MISMATCH' | 'DETAIL_IDENTITY_MISMATCH' | 'DETAIL_EVIDENCE_UNUSABLE' | 'PUBLICATION_HELD';
+/**
+ * Les motifs de refus qui portent sur UNE publication, jamais sur le lot.
+ *
+ * Exportée pour que `sourceValidation` sache lesquels son seuil de tolérance peut couvrir
+ * (politique v2, 19/09/2026) : une annonce sans description est un cas réel chez l'éditeur, un
+ * rejeu divergent ou une énumération incomplète disent que la COLLECTE n'est pas fiable — et
+ * ceux-là restent bloquants. Une liste recopiée à la main divergerait de celle-ci sans que rien
+ * ne le signale.
+ */
+export const PER_PUBLICATION_REASONS = ['RAW_MISSING', 'READER_UNQUALIFIED', 'NATIVE_ID_MISSING', 'CONTENT_MISSING',
+  'RAW_SCHEMA_INVALID', 'IDENTITY_MISMATCH', 'DETAIL_IDENTITY_MISMATCH', 'DETAIL_EVIDENCE_UNUSABLE', 'PUBLICATION_HELD'] as const;
+type Reason = (typeof PER_PUBLICATION_REASONS)[number];
 export type Recovery = { status: 'RECOVERABLE'; job: NormalizedJob; rawHash: string; outputHash: string } |
   { status: 'RECOLLECT_OR_REVIEW'; reason: Reason };
 const object = (value: unknown): value is Record<string, any> => !!value && typeof value === 'object' && !Array.isArray(value);
@@ -331,7 +341,25 @@ function readRetainedPublication(kind: string, raw: unknown, context: Context, r
         if (raw.source === 'successfactors-rmk-v2') {
           if (!identifier(raw.id)) return failure('NATIVE_ID_MISSING');
           if (typeof raw.locale !== 'string') return failure('RAW_SCHEMA_INVALID');
-          job = normalizeRmkItem(rest as RmkV2Item, raw.locale, origin);
+          /*
+           * LA FICHE DE DÉTAIL S'APPLIQUE AUSSI AU DIALECTE RMK (19/09/2026).
+           *
+           * `successfactorsDetail` est retenu par les DEUX dialectes — le collecteur le fusionne
+           * de la même façon (`applySuccessFactorsDetail`, « the same merge serves the live
+           * collector and the retained-publication reader »). Mais seule la branche HTML
+           * l'appliquait ici : le dialecte RMK reconstruisait l'offre depuis la seule entrée de
+           * liste, qui ne porte aucune description.
+           *
+           * Mesuré sur `douglas-sf` : 311 offres, RAW portant `successfactorsDetail`, offre
+           * collectée avec 1 687 caractères de description — et rejeu refusé CONTENT_MISSING.
+           * Même cas sur `breitling-sf` et `goyard-successfactors`.
+           */
+          const { successfactorsDetail, ...rmk } = rest;
+          job = normalizeRmkItem(rmk as RmkV2Item, raw.locale, origin);
+          if (job && successfactorsDetail != null) {
+            if (!object(successfactorsDetail)) return failure('DETAIL_EVIDENCE_UNUSABLE');
+            job = applySuccessFactorsDetail(job, successfactorsDetail as RetainedSuccessFactorsDetail, brandPropertyOf(config));
+          }
         } else if (raw.source === 'successfactors') {
           // The HTML listing path (lot F3b): the listing link (id, path, slug) and the microdata detail are retained; an
           // older RAW without them (slug only) still carries no native identity.

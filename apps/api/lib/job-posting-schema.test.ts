@@ -62,11 +62,23 @@ describe('jobPostingSchema', () => {
   });
 
   it('prefers the source datePosted and a still-future validThrough', () => {
+    /*
+     * LE « MAINTENANT » EST FOURNI, IL N'EST PAS CELUI DE LA MACHINE.
+     *
+     * Ce témoin laissait `jobPostingSchema` lire l'horloge réelle tout en codant
+     * `validThrough: 2026-09-20` en dur. Le 20/09/2026 cette date est devenue passée : le schéma
+     * a jugé l'offre expirée (VALID_THROUGH_EXPIRED), rendu `null`, et le témoin a échoué sur
+     * « Cannot read properties of null » — sans qu'aucune ligne de production n'ait changé.
+     *
+     * Les deux témoins d'échéance voisins passent déjà un `now` explicite en second argument :
+     * ils ne peuvent pas pourrir avec le temps. Celui-ci fait désormais pareil, plutôt que de
+     * calculer des dates relatives qui rendraient l'assertion moins lisible.
+     */
     const schema = jobPostingSchema({
       ...base,
       postedAt: new Date('2026-09-02T00:00:00Z'),
       validThrough: new Date('2026-09-20T00:00:00Z'),
-    })!;
+    }, new Date('2026-09-11T00:00:00Z'))!;
     expect(schema.datePosted).toBe('2026-09-02T00:00:00.000Z');
     expect(schema.validThrough).toBe('2026-09-20T00:00:00.000Z');
   });
