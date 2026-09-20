@@ -330,18 +330,46 @@ const COMPOSITE_TOKENS: ReadonlyArray<readonly [RegExp, Employment]> = [
  * `WORK_TIME_EXPLICIT`, qui s'applique aux titres et aux descriptions — texte libre où le faux
  * positif est garanti.
  *
- * Deux bornes, cumulatives :
+ * TROIS bornes, cumulatives :
  *   1. elles ne valent QUE dans `decomposeCompositeCode`, c'est-à-dire dans un champ de CODE dédié ;
  *   2. elles ne comptent que si un AUTRE token d'emploi est reconnu dans la même valeur. Une
- *      valeur réduite à « PT » ne prouve rien et reste ignorée.
+ *      valeur réduite à « PT » ne prouve rien et reste ignorée ;
+ *   3. la valeur doit avoir la FORME d'un code : peu de tokens, aucun chiffre, aucun mot
+ *      descriptif. C'est la borne qui manquait.
  *
- * La condition 2 est ce qui distingue « PT Temp/Seasonal » (un code d'emploi) de « PT » (deux
- * lettres qui peuvent tout dire).
+ * ── POURQUOI LA BORNE 3 A ÉTÉ AJOUTÉE (2026-09-20, second tour) ────────────────────────────────
+ *
+ * Les bornes 1 et 2 ne suffisaient pas, et le contre-exemple est net :
+ *
+ *     tags3: ["Seasonal Associate 5 FT display"]
+ *       →  {"isSeasonal": true, "workTime": "FULL_TIME"}      ← un rythme INVENTÉ
+ *
+ * `tags3` est bien dans `EMPLOYMENT_RAW_KEYS` (borne 1 franchie), `Seasonal` y est reconnu
+ * (borne 2 franchie), et pourtant `FT` y désigne des PIEDS. Ni le nom du champ ni la présence
+ * d'un autre token d'emploi ne prouvent que la valeur EST un code de temps de travail : seule sa
+ * FORME le prouve.
+ *
+ * `PT Temp/Seasonal` : 3 tokens, aucun chiffre → un code.
+ * `Seasonal Associate 5 FT display` : 5 tokens, un chiffre → une phrase descriptive.
  */
 const ABREVIATIONS_RYTHME: ReadonlyArray<readonly [RegExp, WorkTime]> = [
   [/\bFT\b/, 'FULL_TIME'],
   [/\bPT\b/, 'PART_TIME'],
 ];
+
+/** Au-delà, la valeur est une phrase, pas un code. Mesuré : les codes réels tiennent en 3 tokens. */
+const MAX_TOKENS_CODE = 4;
+
+/**
+ * La valeur a-t-elle la forme d'un CODE d'emploi, et non celle d'une phrase ?
+ *
+ * Un chiffre est le signe le plus fiable d'une description (« 5 FT display », « 21h »,
+ * « ST1500 ») : aucun code d'emploi observé n'en contient. La longueur complète le test.
+ */
+function ressembleAUnCode(value: string): boolean {
+  const tokens = value.split(/\s+/).filter(Boolean);
+  return tokens.length <= MAX_TOKENS_CODE && !/\d/.test(value);
+}
 
 export function decomposeCompositeCode(raw?: string | null): Employment {
   if (!raw) return {};
@@ -366,7 +394,8 @@ export function decomposeCompositeCode(raw?: string | null): Employment {
    * chose : c'est la preuve qu'on lit bien un code d'emploi, et non une chaîne quelconque où ces
    * deux lettres apparaissent. Elle ne peut jamais écraser un rythme déjà établi en toutes lettres.
    */
-  if (!out.workTime && (out.employmentTerm || out.programType || out.engagementType || out.isSeasonal)) {
+  if (!out.workTime && ressembleAUnCode(value)
+      && (out.employmentTerm || out.programType || out.engagementType || out.isSeasonal)) {
     for (const [pattern, rythme] of ABREVIATIONS_RYTHME) {
       if (pattern.test(value)) { out.workTime = rythme; break; }
     }

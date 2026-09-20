@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { parseLeverJob } from '../../ats/adapters/lever.js';
 import { resolveCanonicalDimensions } from '../../trust/resolve.js';
+import { decomposeCompositeCode } from '../employment.js';
 import { EMPLOYMENT_RAW_KEYS } from '../employment-evidence.js';
 
 /**
@@ -142,6 +143,38 @@ describe('L2 — parcours réel Lever → résolution canonique', () => {
       const texteLibre = ['description', 'title', 'name', 'body', 'content', 'jobDescription', 'summary', 'text'];
       for (const cle of EMPLOYMENT_RAW_KEYS)
         expect(texteLibre, `clé de texte libre dans EMPLOYMENT_RAW_KEYS : ${cle}`).not.toContain(cle);
+    });
+
+    it('un tag descriptif mêlant un mot reconnu et une abréviation ambiguë n\'invente rien', () => {
+      /*
+       * LE CAS LIMITE QUI A CASSÉ LA PREMIÈRE BORNE (2026-09-20).
+       *
+       * « Seasonal Associate 5 FT display » réunit tout ce qu'il faut pour tromper le décodeur :
+       * le champ `tags3` EST dans `EMPLOYMENT_RAW_KEYS`, donc la valeur passe bien par
+       * `readValue` ; `Seasonal` y est reconnu, ce qui « autorisait » l'abréviation ; et `FT`
+       * y désigne des PIEDS, pas un temps plein.
+       *
+       * Résultat mesuré avant correctif : {"isSeasonal":true,"workTime":"FULL_TIME"} — un rythme
+       * inventé à partir d'une mesure de longueur.
+       *
+       * La leçon : ni le nom du champ, ni la présence d'un autre token d'emploi ne prouvent que
+       * la valeur EST un code de temps de travail. Seule la FORME de la valeur le prouve.
+       */
+      const canonique = resolveCanonicalDimensions({
+        sourceKey: 'jibe:demo', title: 'Beauty Advisor', description: undefined,
+        contract: undefined, workingTime: undefined,
+        raw: { tags3: ['Seasonal Associate 5 FT display'] },
+      } as never);
+
+      // PRÉMISSE : la saisonnalité EST bien lue — c'est ce qui rendait l'abréviation éligible.
+      expect(canonique.isSeasonal).toBe(true);
+
+      expect(canonique.workTime, 'rythme inventé depuis « 5 FT display »').toBeUndefined();
+    });
+
+    it('la longueur en pieds ne devient jamais un rythme', () => {
+      for (const v of ['5 FT display', '6 FT counter Seasonal', 'Seasonal 10 FT window'])
+        expect(decomposeCompositeCode(v).workTime, v).toBeUndefined();
     });
 
     it('une valeur de tag non liée à l\'emploi ne produit aucun rythme', () => {
