@@ -316,10 +316,11 @@ export type CodeMarche = (typeof CODES_MARCHE)[number];
  * La facette réellement servie au candidat lit `occupationCode` — vérifié dans
  * le code, pas déduit : `job-search-query.ts:167` agrège
  * `COALESCE("occupationCode",'unclassified')` en facette `occupations`, que
- * `facettes-marche.ts:116` mappe sur la dimension `metier`. `jobFunction` n'est
- * JAMAIS agrégé en facette : il n'est qu'un critère de filtrage interne
- * (`job-search-query.ts:47`, paramètre `?fonction=`) et un libellé de famille
- * sur la fiche (`jobs.ts:616`).
+ * `EXPRESSION_FACETTE` (`packages/db/colonnes-facette.ts`) mappe sur la dimension
+ * `metier`. `jobFunction` n'est JAMAIS agrégé en facette, et il n'est PLUS
+ * filtrable du tout : aucun paramètre `?fonction=` n'existe dans l'API — vérifié
+ * le 2026-09-20, `parseFilters` (`apps/api/lib/jobs.ts`) ne le lit pas. Il n'est
+ * plus qu'un libellé de famille sur la fiche.
  *
  * Les deux colonnes ne disent d'ailleurs pas la même chose : `jobFunction` est
  * la FAMILLE (27 valeurs, dérivée du code — `occupation-engine.ts:494`),
@@ -359,7 +360,7 @@ export type CodeMarche = (typeof CODES_MARCHE)[number];
  * ⚠️ LE REGISTRE DÉCRIVAIT DÉJÀ UNE CIBLE COMME UN ÉTAT EXISTANT. `seniorite`
  * portait douze libellés natifs relevés (`经验`, `Erfahrungslevel`…) et un taux
  * par marché, alors qu'elle n'était servie NULLE PART : absente de
- * `CORRESPONDANCE_FACETTE`, de `JobsResult['facets']` et de `CleFiltre` côté
+ * `EXPRESSION_FACETTE`, de `JobsResult['facets']` et de `CleFiltre` côté
  * site. Aucun candidat n'a jamais vu ce filtre. Le retrait ne supprime donc
  * aucune fonctionnalité — il aligne le registre sur la réalité.
  *
@@ -1157,7 +1158,7 @@ const MARCHES_LOCALISES: Readonly<Record<(typeof CODES_MARCHE_LOCALISES)[number]
    * ── CE QUI EST GRAVÉ ICI : LE MÉTIER, ET LUI SEUL ───────────────────────
    *
    * `metier` — 33,088 %, et c'est l'UNIQUE facette du marché chinois. Elle est
-   * réellement servie : `CORRESPONDANCE_FACETTE` la mappe vers `occupations`,
+   * réellement servie : `EXPRESSION_FACETTE` la mappe vers `occupations`,
    * que `job-search-query.ts:167` agrège depuis `occupationCode`.
    *
    * ⚠️ 88,807 % ÉTAIT LE TAUX DE `jobFunction`, pas celui de la facette servie.
@@ -1357,7 +1358,11 @@ export function marcheEnRepli(params: {
 }
 
 /**
- * LE REGISTRE COMPLET — les douze marchés localisés, plus les trente et un routables.
+ * LE REGISTRE COMPLET — les douze marchés localisés, plus les VINGT-NEUF routables.
+ *
+ * Vingt-neuf, pas trente et un : AT et IE sont servis DANS les périmètres de DE et GB
+ * (`pays: ['DE','AT']`, `pays: ['GB','IE']`) et n'ont donc pas d'entrée propre. Le total
+ * est 41 marchés, recompté le 2026-09-20 depuis les tables elles-mêmes.
  *
  * Les deux moitiés ne sont pas interchangeables et la distinction se lit dans `localisation` :
  * `NATIVE` pour un marché dont l'interface, les libellés de facettes et le vocabulaire d'emploi
