@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { parseSmartRecruitersPosting, type SmartRecruitersPosting } from '../../ats/adapters/smartrecruiters.js';
+import { parseRecruiteeJob } from '../../ats/adapters/recruitee.js';
 import { lvmhExperienceYears, personioExperienceYears } from '../experience.js';
 
 /**
@@ -44,6 +45,18 @@ function offreAvecRang(rang: string): SmartRecruitersPosting {
   } as unknown as SmartRecruitersPosting;
 }
 
+/** Une offre Recruitee minimale, portant le rang de séniorité natif de la source. */
+function offreRecruitee(rang: string) {
+  return {
+    id: 4242,
+    title: 'Client Advisor',
+    city: 'Paris',
+    country: 'fr',
+    created_at: '2026-09-01T00:00:00Z',
+    experience_code: rang,
+  } as never;
+}
+
 describe('L4 — rang de séniorité vs durée', () => {
   describe('ACCEPTATION — aucune conversion arbitraire d\'un rang en années', () => {
     it('les rangs SmartRecruiters ne produisent AUCUNE année', () => {
@@ -58,10 +71,22 @@ describe('L4 — rang de séniorité vs durée', () => {
       }
     });
 
-    it('les rangs Recruitee ne produisent AUCUNE année', () => {
+    it('une offre Recruitee portant `experience_code` n\'écrit pas d\'années', () => {
+      /*
+       * LE TÉMOIN CORRIGÉ. La version précédente s'appelait « les rangs Recruitee » mais
+       * n'appelait que `lvmhExperienceYears` et `personioExperienceYears` : elle ne traversait
+       * JAMAIS l'adaptateur Recruitee, donc elle ne gardait rien de ce chemin. C'est exactement
+       * le défaut que ce lot corrige ailleurs — un témoin qui n'atteint pas le code qu'il
+       * prétend garder.
+       */
       for (const rang of ['entry_level', 'mid_level', 'experienced', 'manager', 'student_school']) {
-        expect(lvmhExperienceYears(rang), `lvmh/${rang}`).toBeUndefined();
-        expect(personioExperienceYears(rang), `personio/${rang}`).toBeUndefined();
+        const job = parseRecruiteeJob(offreRecruitee(rang), 'demo-maison');
+
+        expect(job.experienceYears, `experienceYears pour ${rang}`).toBeUndefined();
+
+        // PRÉMISSE : le rang a bien atteint l'adaptateur et survit dans le RAW. Sans elle, le
+        // témoin passerait au vert même si `experience_code` n'était jamais transmis.
+        expect(JSON.stringify(job.raw), `rang absent du raw pour ${rang}`).toContain(rang);
       }
     });
 
