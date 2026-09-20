@@ -318,6 +318,31 @@ const COMPOSITE_TOKENS: ReadonlyArray<readonly [RegExp, Employment]> = [
   [/\bCONTRACTOR\b/, { engagementType: 'INDEPENDENT_CONTRACTOR' }],
 ];
 
+/**
+ * LES ABRÉVIATIONS DE RYTHME, RECONNUES SOUS CONDITION STRICTE (L2, 2026-09-20).
+ *
+ * `PT` / `FT` nomment bien un rythme dans les codes d'emploi de certaines sources — mesuré sur
+ * Lever `commitment` : `PT Temp/Seasonal` (89 offres), `FT Temp/Seasonal` (18). Sans elles, le
+ * rythme de ces offres était PERDU alors que la valeur le disait.
+ *
+ * Mais hors contexte, ces deux lettres sont tout sauf un rythme : « 5 FT » (feet), « FT 500 »,
+ * « PT Barnum », « PT » pour Portugal ou Physical Therapy. Elles ne sont donc JAMAIS ajoutées à
+ * `WORK_TIME_EXPLICIT`, qui s'applique aux titres et aux descriptions — texte libre où le faux
+ * positif est garanti.
+ *
+ * Deux bornes, cumulatives :
+ *   1. elles ne valent QUE dans `decomposeCompositeCode`, c'est-à-dire dans un champ de CODE dédié ;
+ *   2. elles ne comptent que si un AUTRE token d'emploi est reconnu dans la même valeur. Une
+ *      valeur réduite à « PT » ne prouve rien et reste ignorée.
+ *
+ * La condition 2 est ce qui distingue « PT Temp/Seasonal » (un code d'emploi) de « PT » (deux
+ * lettres qui peuvent tout dire).
+ */
+const ABREVIATIONS_RYTHME: ReadonlyArray<readonly [RegExp, WorkTime]> = [
+  [/\bFT\b/, 'FULL_TIME'],
+  [/\bPT\b/, 'PART_TIME'],
+];
+
 export function decomposeCompositeCode(raw?: string | null): Employment {
   if (!raw) return {};
   // Les séparateurs deviennent des espaces pour que `\b` voie chaque token :
@@ -334,6 +359,17 @@ export function decomposeCompositeCode(raw?: string | null): Employment {
     if (dims.programType && !out.programType) out.programType = dims.programType;
     if (dims.engagementType && !out.engagementType) out.engagementType = dims.engagementType;
     if (dims.isSeasonal && !out.isSeasonal) out.isSeasonal = true;
+  }
+
+  /*
+   * L'abréviation n'est lue qu'APRÈS la boucle, et seulement si celle-ci a déjà reconnu quelque
+   * chose : c'est la preuve qu'on lit bien un code d'emploi, et non une chaîne quelconque où ces
+   * deux lettres apparaissent. Elle ne peut jamais écraser un rythme déjà établi en toutes lettres.
+   */
+  if (!out.workTime && (out.employmentTerm || out.programType || out.engagementType || out.isSeasonal)) {
+    for (const [pattern, rythme] of ABREVIATIONS_RYTHME) {
+      if (pattern.test(value)) { out.workTime = rythme; break; }
+    }
   }
   return out;
 }
