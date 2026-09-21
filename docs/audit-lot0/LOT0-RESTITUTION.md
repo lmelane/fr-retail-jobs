@@ -67,7 +67,13 @@ Toujours unique par paire : `@@unique([sourceKey, externalId])` sur `JobSource`
 différentes.
 
 **Le ratio « 242 775 captures vs 72 907 externalId distincts = 3,33× » est RETIRÉ** : calculé sans
-ce contexte, il ne mesure rien. À recompter par paire.
+ce contexte, il ne mesure rien.
+
+**Il ne doit pas être réintroduit comme une moyenne de recollecte.** Deux raisons distinctes, et
+aucune n'est tranchée : son NUMÉRATEUR agrège `CaptureOutcome.extractedCount`, qui est un compte
+PAR LOT de collecte — sommer des lots ne produit pas un nombre d'offres ; son DÉNOMINATEUR compte
+des `externalId` sans leur `sourceKey`, donc confond des offres de sources différentes. Les deux
+populations doivent être réconciliées avant tout chiffre.
 
 ### 1.4 Le lecteur jugeait par chemin, la production juge par dimension — CONFIRMÉ
 

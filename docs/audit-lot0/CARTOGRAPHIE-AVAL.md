@@ -52,14 +52,24 @@ n'est pas servie sur le marché courant : `motif: 'FACETTE_NON_SERVIE'`, remont�
 | **seniorite** | `seniority` (indexé) | non filtrable (retourné) | aucun — **retirée par décision** | (c) |
 | **salaire** | `salaryMin/Max` + devise + période | non filtrable (retourné sous garde) | aucun | (c) |
 | **departement** | `department` (indexé) | non filtrable — **entrée de la classification métier** | aucun | (c) |
-| **secteur** (`jobFunction`) | `jobFunction` (indexé) | **plus filtrable du tout** | aucun | (c) |
+| **famille de métier** (`jobFunction`) | `jobFunction` (indexé) | **plus filtrable du tout** | aucun | (c) |
+| **métier** (`occupationCode`) | `occupationCode` | agrégé en facette `occupations` | dimension `metier`, selon couverture | **(a)** |
+| **secteur** (`Company.sectorCodes`) | `Company.sectorCodes` — **pas une colonne de `Job`** | `?secteur=` | les 41 marchés (facette de site) | **(a)** |
 | **region** | `adminArea1` (indexé) | repli interne de `?lieu=ville` — **jamais retourné** | aucun | (c) |
 | **etudes** | `educationLevel` | non filtrable — **valeur non canonique** (`RECRUITEE:bachelor_degree`) | aucun | (c) |
 | **nature** | `engagementType` | non filtrable (retourné) | aucun — **exclue par décision** | (c) |
 | **rythme** | `workSchedule` | **ZÉRO occurrence dans toute l'API** | aucun | **(c) extrême** |
 
-*Note — la facette `?secteur=` existe bien, mais elle porte sur `Company.sectorCodes`, pas sur
-`Job.jobFunction`. Deux notions distinctes qu'il ne faut pas confondre.*
+**TROIS NOTIONS DISTINCTES, à ne jamais confondre** — elles vivent sur deux tables différentes :
+
+| Notion | Colonne | Ce qu'elle dit | Exposée ? |
+|---|---|---|---|
+| **métier** | `Job.occupationCode` | le POSTE (« conseiller de vente ») | oui, facette `metier` via `occupations` |
+| **famille de métier** | `Job.jobFunction` | la FAMILLE du poste (« retail ») | non — libellé de fiche seulement |
+| **secteur** | `Company.sectorCodes` | l'activité de la MAISON (« beauté ») | oui, facette de site, 41 marchés |
+
+Les confondre a déjà produit un faux positif d'audit : `businessGroup` LVMH avait été comparé à
+`jobFunction` alors qu'il alimente le **secteur**, au niveau Maison.
 
 **Aucune dimension de classe (d)** : les quinze ont une colonne canonique.
 
@@ -69,7 +79,11 @@ n'est pas servie sur le marché courant : `motif: 'FACETTE_NON_SERVIE'`, remont�
 
 ### 3.1 `workSchedule` — une chaîne ouverte à l'entrée, fermée à la sortie
 
-**Le cas le plus net, et un défaut au sens du `CLAUDE.md`** (« ce qui entre doit pouvoir sortir »).
+**Le cas le plus net.** Attention toutefois à la qualification : une donnée non exposée est une
+**capacité à examiner**, pas automatiquement une panne. Ici l'anomalie n'est pas l'absence de
+filtre — c'est que la dimension ne sorte **pas du tout**, pas même en lecture, alors que toute la
+chaîne amont existe. C'est cette asymétrie qui justifie l'examen, et le volume reste à mesurer
+avant d'en faire un lot.
 
 - colonne canonique `workSchedule` + `rawSchedule` (`schema.prisma:526,531`) ;
 - trois valeurs : `FLEXIBLE_AVAILABILITY` · `EVENINGS_WEEKENDS` · `NIGHT_SHIFT` ;
@@ -116,8 +130,20 @@ systématiquement.
 `JP KR PT MX SG DK HK PL SE CL TR TH MY AE NO TW BR GR ZA VN CZ PE NZ HU SA RO PR PH LU`
 
 Ils n'exposent que les 5 facettes de site (`secteur`, `ville`, `maison`, `groupe`, `langue`).
-**Les colonnes sont remplies et le SQL est prêt — seule la MESURE manque pour lever le seuil.**
-C'est un gisement distinct : il ne demande aucun développement, seulement des couvertures à jour.
+
+**La mesure seule ne suffit PAS.** Le verrou a deux conditions, et `marcheEnRepli` les fait échouer
+toutes les deux : `couverture` à zéro **et** `libelles: {}`. Lever un marché exige donc TROIS
+choses, dans cet ordre :
+
+1. **mesurer** la couverture réelle par dimension sur ce pays — sur le corpus, pas sur le registre ;
+2. **rédiger les libellés** dans la ou les langues du marché : sans libellé, une couverture de
+   100 % n'expose rien (c'est le cas actuel de la Chine, `contrat` à 0,471 et `temps` à 0,819 pour
+   zéro facette) ;
+3. **remplacer l'entrée `marcheEnRepli`** par un marché déclaré portant `libelles` et `couverture`.
+
+**Tests de validation par marché**, à exiger avant de lever : `facettesDuMarche(code)` rend les
+dimensions attendues · un filtre sur chacune n'est pas refusé en `FACETTE_NON_SERVIE` · une requête
+sur chaque facette rend un décompte non nul · les libellés sont dans la locale du marché.
 
 ---
 

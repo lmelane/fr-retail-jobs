@@ -1,148 +1,233 @@
 /**
- * CONSTITUTION DU CORPUS DE RÉFÉRENCE — une copie datée, cohérente et rejouable.
+ * CONSTITUTION DU CORPUS DE RÉFÉRENCE — un INSTANTANÉ cohérent, daté et rejouable.
  *
  *   AUDIT_DATABASE_URL='postgresql://catwalks_audit:...' \
  *     npx tsx apps/aggregator/scripts/ops/audit-corpus.mts
  *
- * ── POURQUOI UN CORPUS PLUTÔT QUE DES LECTURES RÉPÉTÉES ────────────────────────────────────────
+ * ── POURQUOI UNE TRANSACTION, ET NON UN HORODATAGE ─────────────────────────────────────────────
  *
- * Chaque rejeu d'analyse sur la production coûte des lectures, ne rend pas deux fois le même
- * résultat (le catalogue bouge), et rend les comparaisons avant/après impossibles à interpréter :
- * on ne sait jamais si un écart vient du correctif ou du corpus. Un corpus daté fige la
- * population, et toute analyse ultérieure porte alors sur les MÊMES données.
+ * La première version notait `now()` au départ et lisait table après table. Ça ne fige RIEN : une
+ * ligne modifiée pendant l'export est lue dans son état NOUVEAU, et une ligne déjà exportée dans
+ * son état ANCIEN. Le corpus mélange alors deux états du monde, et ses liens peuvent pointer vers
+ * des lignes qui n'ont jamais coexisté. Un horodatage, une borne d'identifiants ou un filtre sur
+ * `createdAt` ne corrigent aucun de ces cas : ils ne disent rien des MODIFICATIONS.
  *
- * ── CE QU'IL CONSERVE, ET POURQUOI ─────────────────────────────────────────────────────────────
+ * La seule garantie réelle est une transaction `REPEATABLE READ` : toutes les requêtes y voient le
+ * MÊME instantané, pris à la première d'entre elles. `now()` y est également figé, ce qui rend le
+ * calcul d'expiration (`publiable`) cohérent avec les lignes lues — un `now()` qui avancerait
+ * pendant l'export ferait expirer des publications en cours de lecture.
  *
- * La chaîne complète, avec ses liens — un RAW sans sa source ni son offre ne permet de mesurer
- * aucune canonisation :
+ * ── COMPLÉTUDE : TOUT OU RIEN ──────────────────────────────────────────────────────────────────
  *
- *   Source ──< JobSource (publication, `jobId` NULLABLE) ──> Job (offre canonique)
- *                    │
- *                    └── `raw` : la charge utile native de l'offre
+ * Le manifeste est écrit EN DERNIER, et un export interrompu n'en produit aucun. Un corpus sans
+ * `manifeste.json` est incomplet par construction : aucune analyse ne doit l'utiliser.
  *
- * `JobSource.jobId` étant nullable, les publications SANS offre canonique sont conservées : c'est
- * exactement la population « RAW présent, aucune offre publiée » à instruire.
+ * ── CE QU'IL EXPORTE, ET POURQUOI ──────────────────────────────────────────────────────────────
  *
- * ── CE QU'IL NE FAIT PAS ───────────────────────────────────────────────────────────────────────
+ *   Source ──< CaptureBatch ──< RawCapture ──> RawBlob (métadonnées)
+ *                    │              └──< SourceExtraction ──< JobSource ──> Job ──> Company
+ *                    └── CaptureOutcome
  *
- * Aucune écriture en production. Aucun identifiant n'est écrit dans le corpus ni dans les
- * rapports : `AUDIT_DATABASE_URL` reste dans l'environnement, jamais dans un fichier du dépôt.
- * Le corpus lui-même est écrit hors dépôt (`backups/`, ignoré par git) parce qu'il contient des
- * données d'offres.
+ * `CaptureBatch.sourceKey` relie les captures à leur source SANS passer par `JobSource` : c'est ce
+ * qui rend visible une source qui a capturé des données mais n'a jamais rien publié. Se fier à
+ * `JobSource.jobId IS NULL` manquerait ce cas — une telle source n'a AUCUNE ligne `JobSource`.
+ *
+ * Les CORPS (`RawBlobBody.gzip`) ne sont pas exportés : ce sont des `Bytes` gzip, plusieurs Go.
+ * Leurs métadonnées (hash, tailles) le sont, ce qui rend chaque corps récupérable à la demande par
+ * son hash, sans dupliquer le volume.
  */
-import { PrismaClient } from '@prisma/client';
-import { createWriteStream, mkdirSync } from 'node:fs';
+import { PrismaClient, Prisma } from '@prisma/client';
+import { createWriteStream, mkdirSync, writeFileSync, rmSync } from 'node:fs';
 import { execSync } from 'node:child_process';
+import { ouvrirAccesAudit } from './audit-acces.ts';
 
-const url = process.env.AUDIT_DATABASE_URL;
-if (!url) {
-  console.error('AUDIT_DATABASE_URL absente. Ce script ne se rabat sur aucun autre accès.');
-  process.exit(2);
-}
-if (/(^|:\/\/)postgres:/.test(url)) {
-  console.error('GARDE-FOU : le rôle `postgres` est refusé. Le compte d\'audit est exigé.');
-  process.exit(2);
-}
+/*
+ * LE CONTRÔLE D'ACCÈS N'EST PAS CONTOURNABLE EN LANÇANT CE SCRIPT DIRECTEMENT : il est exécuté
+ * ICI, à l'ouverture, et `ouvrirAccesAudit` refuse de rendre un client si les huit contrôles ne
+ * passent pas. Refuser le seul nom « postgres » ne prouvait rien — un autre compte peut être
+ * superutilisateur, hériter d'un rôle, ou écrire via PUBLIC.
+ */
+const { prisma, profil } = await ouvrirAccesAudit();
+console.log(`\n═══ CORPUS DE RÉFÉRENCE ═══\n  rôle : ${profil.role} (privilèges vérifiés)\n`);
 
-const prisma = new PrismaClient({ datasources: { db: { url } } });
-const q = <T,>(sql: string, ...p: unknown[]) => prisma.$queryRawUnsafe<T[]>(sql, ...p);
+const revision = execSync('git rev-parse --short HEAD').toString().trim();
+const branche = execSync('git rev-parse --abbrev-ref HEAD').toString().trim();
 
-/* Le corpus est identifié par l'INSTANT DE DÉBUT, figé une fois : toutes les tables sont lues
- * avec la même borne, sinon les liens entre elles seraient incohérents. */
-const [{ now }] = await q<{ now: Date }>('SELECT now() AS now');
-const horodatage = now.toISOString().replace(/[:.]/g, '-').slice(0, 19);
+/** Une table à exporter : son nom de fichier et la requête qui la lit, ordonnée par clé stable. */
+type Table = { nom: string; sql: string; cle: string };
+
+const TABLES: Table[] = [
+  // LE RÉFÉRENTIEL — toutes les sources, y compris celles qui ne publient rien.
+  { nom: 'sources', cle: 'id', sql:
+    `SELECT t.id, t.key, t.kind::text AS kind, t.status::text AS status, t.company,
+            t."countryCode", t."createdAt", t."updatedAt"
+       FROM "Source" t` },
+
+  // LES LOTS DE COLLECTE — le pivot qui relie les captures à leur source SANS JobSource.
+  { nom: 'lots-collecte', cle: 'id', sql:
+    `SELECT t.id, t."sourceKey", t.purpose::text AS purpose, t."runId", t."configHash",
+            t."readerRevision", t."sourceKind", t."formatVersion", t."startedAt",
+            t."sourceRevisionId", t."accessDecisionId"
+       FROM "CaptureBatch" t` },
+
+  // LE VERDICT DE CHAQUE LOT — `extractedCount` est PAR LOT, jamais par offre.
+  { nom: 'resultats-collecte', cle: 'batchId', sql:
+    `SELECT t."batchId", t.status, t."extractedCount", t."outputHash", t."manifestHash",
+            t."transportCoverage", t.failure, t."completedAt"
+       FROM "CaptureOutcome" t` },
+
+  // LES CAPTURES NATIVES — sans les corps (Bytes gzip, plusieurs Go), avec leurs hash.
+  { nom: 'captures', cle: 'id', sql:
+    `SELECT t.id, t."batchId", t.sequence, t."requestUrl", t.method, t.format, t.status,
+            t.complete, t.failure, t."blobHash", t."requestDataHash", t."capturedAt"
+       FROM "RawCapture" t` },
+
+  // LES MÉTADONNÉES DES CORPS — rendent chaque corps récupérable par son hash, sans le dupliquer.
+  { nom: 'corps-metadonnees', cle: 'hash', sql:
+    `SELECT t.hash, t."byteLength", t."gzipHash", t."gzipLength", t."createdAt",
+            (b.hash IS NOT NULL) AS corps_en_base, (a.hash IS NOT NULL) AS corps_archive
+       FROM "RawBlob" t
+       LEFT JOIN "RawBlobBody" b ON b.hash = t.hash
+       LEFT JOIN "RawBlobArchive" a ON a.hash = t.hash` },
+
+  // LES SORTIES D'ADAPTATEUR — une par offre et par lot.
+  { nom: 'extractions', cle: 'id', sql:
+    `SELECT t.id, t."batchId", t.ordinal, t."externalId", t."outputHash", t."capturedAt"
+       FROM "SourceExtraction" t` },
+
+  // LES PUBLICATIONS, avec leur RAW natif. `jobId` nullable conservé tel quel.
+  { nom: 'publications', cle: 'id', sql:
+    `SELECT t.id, t."sourceKey", t."externalId", t."jobId", t."batchId", t."extractionId",
+            t."isActive", t."expiresAt", t."sourceTier"::text AS "sourceTier", t.url, t.raw,
+            t."createdAt", t."updatedAt"
+       FROM "JobSource" t` },
+
+  // LES OFFRES CANONIQUES — avec LES DEUX prédicats de population, calculés dans l'instantané.
+  { nom: 'offres', cle: 'id', sql:
+    `SELECT t.id, t.source::text AS source, t."companyId", t.title,
+            t."countryCode", t.city, t."adminArea1", t.latitude, t.longitude,
+            t."isActive", t."mergedIntoId",
+            (t."isActive" AND t."mergedIntoId" IS NULL AND EXISTS (
+               SELECT 1 FROM "JobSource" s WHERE s."jobId" = t.id AND s."isActive"
+                 AND (s."expiresAt" IS NULL OR s."expiresAt" > now()))) AS publiable,
+            t."workplaceType", t."employmentTerm", t."workTime", t."programType", t."isSeasonal",
+            t."experienceYears", t.seniority, t."salaryMin", t."salaryMax", t."salaryCurrency",
+            t."salaryPeriod", t.department, t."jobFunction", t."occupationCode", t.language,
+            t."educationLevel", t."workSchedule", t."rawSchedule", t."engagementType",
+            t."rawContract", t."rawWorkingTime", t."createdAt", t."updatedAt"
+       FROM "Job" t` },
+
+  // LES MAISONS — `sectorCodes` porte le SECTEUR, distinct du métier et de la famille de métier.
+  { nom: 'maisons', cle: 'id', sql:
+    `SELECT t.id, t.name, t.sector::text AS sector, t."sectorCodes", t."parentGroup",
+            t."createdAt", t."updatedAt"
+       FROM "Company" t` },
+
+  // LES OFFRES DIRECTES — le catalogue public en comprend deux origines.
+  { nom: 'offres-directes', cle: 'id', sql:
+    `SELECT t.id, t.eligible, t."validThrough", t."countryCode", t.city,
+            t."workplaceType", t."employmentTerm", t."workTime", t."programType",
+            t."isSeasonal", t.department, t.seniority, t."experienceYears", t."educationLevel",
+            t."createdAt", t."updatedAt"
+       FROM "DirectOffer" t` },
+];
+
+const horodatage = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
 const dossier = `backups/corpus-${horodatage}`;
 mkdirSync(dossier, { recursive: true });
 
-/** La révision du code qui LIT le corpus — à ne pas confondre avec celle qui a produit les données. */
-const revisionLocale = execSync('git rev-parse --short HEAD').toString().trim();
-const brancheLocale = execSync('git rev-parse --abbrev-ref HEAD').toString().trim();
+const compte: Record<string, number> = {};
+let instantane = '';
+let horlogeInstantane = '';
 
-console.log(`\n═══ CORPUS DE RÉFÉRENCE ═══\n  instant : ${now.toISOString()}\n  dossier : ${dossier}`);
-console.log(`  code local : ${brancheLocale} @ ${revisionLocale}\n`);
+try {
+  /*
+   * L'INSTANTANÉ. Tout l'export vit dans UNE transaction REPEATABLE READ : chaque requête y voit
+   * le même état, et `now()` y est figé. Le délai est large parce qu'un export complet est long —
+   * mais il reste borné : une transaction qui traîne indéfiniment gênerait le nettoyage du
+   * serveur (`VACUUM`), et c'est une nuisance qu'un audit n'a pas le droit de causer.
+   */
+  await prisma.$transaction(async (tx) => {
+    const [{ txid, maintenant }] = await tx.$queryRawUnsafe<Array<{ txid: string; maintenant: Date }>>(
+      'SELECT txid_current()::text AS txid, now() AS maintenant');
+    instantane = txid;
+    horlogeInstantane = maintenant.toISOString();
+    console.log(`  instantané : transaction ${txid}, horloge figée à ${horlogeInstantane}\n`);
 
-/**
- * Écrit une table en JSONL par pages, sans jamais charger l'ensemble en mémoire.
- * Le curseur porte sur une colonne stable et unique, jamais sur OFFSET : un OFFSET sur une table
- * qui bouge saute ou duplique des lignes.
- */
-async function exporter(nom: string, sql: string, cle = 'id'): Promise<number> {
-  const flux = createWriteStream(`${dossier}/${nom}.jsonl`, { encoding: 'utf8' });
-  let curseur: string | null = null;
-  let total = 0;
-  for (;;) {
-    const page: Record<string, unknown>[] = await q(
-      `${sql} ${curseur ? `AND t."${cle}" > $1` : ''} ORDER BY t."${cle}" LIMIT 2000`,
-      ...(curseur ? [curseur] : []),
-    );
-    if (!page.length) break;
-    for (const ligne of page) flux.write(`${JSON.stringify(ligne)}\n`);
-    curseur = String(page[page.length - 1][cle]);
-    total += page.length;
-    if (total % 20000 === 0) console.log(`    … ${nom} : ${total}`);
-  }
-  await new Promise<void>((r) => flux.end(r));
-  console.log(`  ✓ ${nom.padEnd(16)} ${total}`);
-  return total;
+    for (const table of TABLES) {
+      const chemin = `${dossier}/${table.nom}.jsonl`;
+      const flux = createWriteStream(chemin, { encoding: 'utf8' });
+      let curseur: string | null = null;
+      let total = 0;
+
+      /*
+       * Pagination par CURSEUR sur clé stable, jamais OFFSET. Dans l'instantané, l'ordre est
+       * stable et aucune ligne n'apparaît ni ne disparaît — le curseur garantit en plus qu'aucune
+       * page n'est relue si la requête est redécoupée.
+       */
+      for (;;) {
+        const page: Record<string, unknown>[] = await tx.$queryRawUnsafe(
+          `${table.sql} ${curseur ? `WHERE t."${table.cle}" > $1` : ''}` +
+          ` ORDER BY t."${table.cle}" LIMIT 2000`,
+          ...(curseur ? [curseur] : []),
+        );
+        if (!page.length) break;
+        for (const ligne of page) flux.write(`${JSON.stringify(ligne, remplacant)}\n`);
+        curseur = String(page[page.length - 1][table.cle]);
+        total += page.length;
+      }
+      await new Promise<void>((r) => flux.end(r));
+      compte[table.nom] = total;
+      console.log(`  ✓ ${table.nom.padEnd(22)} ${total}`);
+    }
+  }, { isolationLevel: Prisma.TransactionIsolationLevel.RepeatableRead, timeout: 3_600_000, maxWait: 30_000 });
+} catch (e) {
+  /*
+   * UN EXPORT INTERROMPU N'EST JAMAIS DÉCLARÉ COMPLET. Le dossier est supprimé : un corpus
+   * partiel laissé sur le disque finirait par être analysé comme s'il était entier, et l'écart
+   * serait indétectable — les fichiers ont la même forme, seuls les volumes diffèrent.
+   */
+  rmSync(dossier, { recursive: true, force: true });
+  console.error(`\n✗ EXPORT INTERROMPU — le dossier ${dossier} a été supprimé.`);
+  console.error(`  Aucun corpus partiel n'est conservé : il serait indistinguable d'un corpus complet.`);
+  console.error(`  Cause : ${String(e)}`);
+  await prisma.$disconnect();
+  process.exit(1);
 }
 
-const compte: Record<string, number> = {};
+/** `BigInt` et `Decimal` ne sont pas sérialisables en JSON : on les rend en texte, sans perte. */
+function remplacant(_cle: string, valeur: unknown): unknown {
+  if (typeof valeur === 'bigint') return valeur.toString();
+  if (valeur && typeof valeur === 'object' && 'toFixed' in valeur && typeof (valeur as { toFixed: unknown }).toFixed === 'function')
+    return String(valeur);
+  return valeur;
+}
 
-// Les sources : le référentiel, y compris celles qui ne publient rien.
-compte.sources = await exporter('sources',
-  `SELECT t.id, t.key, t.kind::text AS kind, t.status::text AS status, t.company, t."countryCode",
-          t."createdAt", t."updatedAt"
-     FROM "Source" t WHERE true`);
-
-/* Les publications AVEC leur RAW. `jobId` nullable est conservé tel quel : une publication sans
- * offre canonique est le cas le plus intéressant à instruire, pas une anomalie à filtrer. */
-compte.publications = await exporter('publications',
-  `SELECT t.id, t."sourceKey", t."externalId", t."jobId", t."isActive", t."expiresAt",
-          t."sourceTier"::text AS "sourceTier", t.url, t.raw, t."createdAt", t."updatedAt"
-     FROM "JobSource" t WHERE true`);
-
-/* Les offres canoniques, avec LES DEUX prédicats de population : `isActive` (le modèle) et
- * `publiable` (ce que le produit expose). Les calculer ici évite de les redériver à chaque
- * analyse, et rend l'écart mesurable sans relire la production. */
-compte.offres = await exporter('offres',
-  `SELECT t.id, t.source::text AS source, t."countryCode", t.city, t."adminArea1",
-          t."isActive", t."mergedIntoId",
-          (t."isActive" AND t."mergedIntoId" IS NULL AND EXISTS (
-             SELECT 1 FROM "JobSource" s WHERE s."jobId" = t.id AND s."isActive"
-               AND (s."expiresAt" IS NULL OR s."expiresAt" > now()))) AS publiable,
-          t."workplaceType"::text AS "workplaceType", t."employmentTerm"::text AS "employmentTerm",
-          t."workTime"::text AS "workTime", t."programType"::text AS "programType",
-          t."isSeasonal", t."experienceYears", t.seniority::text AS seniority,
-          t."salaryMin", t."salaryMax", t.department, t."jobFunction", t.language,
-          t."educationLevel"::text AS "educationLevel", t."workSchedule"::text AS "workSchedule",
-          t."engagementType"::text AS "engagementType",
-          t.title, t."companyId", t."createdAt", t."updatedAt"
-     FROM "Job" t WHERE true`);
-
-/* Le manifeste : ce qui rend le corpus rejouable et comparable. Sans lui, un corpus est un tas
- * de fichiers dont on ne sait ni quand ni contre quel code il a été produit. */
-const [{ version }] = await q<{ version: string }>('SELECT version()');
-const [{ role }] = await q<{ role: string }>('SELECT current_user AS role');
-const manifeste = {
-  instant: now.toISOString(),
-  dossier,
-  role,                       // le rôle d'audit — jamais l'URL ni le mot de passe
+/*
+ * LE MANIFESTE EST ÉCRIT EN DERNIER. Sa présence EST la preuve de complétude : un corpus sans
+ * manifeste a été interrompu, et aucune analyse ne doit l'utiliser.
+ */
+const [{ version }] = await prisma.$queryRawUnsafe<Array<{ version: string }>>('SELECT version()');
+writeFileSync(`${dossier}/manifeste.json`, `${JSON.stringify({
+  complet: true,
+  instantane: { transaction: instantane, horlogeFigee: horlogeInstantane, isolation: 'REPEATABLE READ' },
+  role: profil.role,                         // jamais l'URL ni le mot de passe
   serveur: version.split(' ').slice(0, 2).join(' '),
-  codeLocal: { branche: brancheLocale, revision: revisionLocale },
+  codeLocal: { branche, revision },
   codeDeploye: process.env.AUDIT_REVISION_DEPLOYEE ?? 'NON RENSEIGNÉ',
   compte,
-  avertissement:
-    'Le code LOCAL n\'est pas celui qui a produit ces données. Les offres ont été canonisées par ' +
-    'le code DÉPLOYÉ au moment de leur collecte : toute comparaison avant/après doit porter sur ' +
-    'les mêmes données, en distinguant les deux révisions.',
-};
-const { writeFileSync } = await import('node:fs');
-writeFileSync(`${dossier}/manifeste.json`, `${JSON.stringify(manifeste, null, 2)}\n`, 'utf8');
+  avertissements: [
+    'Les corps des captures (RawBlobBody.gzip) ne sont PAS dans ce corpus : seules leurs ' +
+    'métadonnées le sont. Un corps se récupère par son hash, à la demande.',
+    'Le code LOCAL n\'est pas celui qui a canonisé ces données : elles l\'ont été par le code ' +
+    'DÉPLOYÉ au moment de leur collecte. Toute comparaison avant/après doit distinguer les deux.',
+    'CaptureOutcome.extractedCount est PAR LOT, jamais par offre : le sommer compte chaque offre ' +
+    'autant de fois qu\'elle a été recollectée.',
+  ],
+}, null, 2)}\n`, 'utf8');
 
-console.log(`\n  ✓ manifeste.json`);
-console.log(`\n  Code déployé : ${manifeste.codeDeploye}`);
-if (manifeste.codeDeploye === 'NON RENSEIGNÉ')
-  console.log('    (renseigner AUDIT_REVISION_DEPLOYEE pour tracer la comparaison avant/après)');
-console.log(`\n═══ CORPUS CONSTITUÉ ═══\n`);
+console.log(`\n  ✓ manifeste.json — corpus COMPLET`);
+console.log(`  code déployé : ${process.env.AUDIT_REVISION_DEPLOYEE ?? 'NON RENSEIGNÉ (poser AUDIT_REVISION_DEPLOYEE)'}`);
+console.log(`\n═══ ${dossier} ═══\n`);
 
 await prisma.$disconnect();
