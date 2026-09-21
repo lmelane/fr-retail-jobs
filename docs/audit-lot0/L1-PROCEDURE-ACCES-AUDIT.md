@@ -150,6 +150,41 @@ SELECT r.rolname AS role_herite, m.admin_option
  WHERE m.member = (SELECT oid FROM pg_roles WHERE rolname = current_user);
 ```
 
+### RÉSULTAT MESURÉ DU §2 SEUL — C5 ÉCHOUE, ET C'EST ATTENDU
+
+**Mesuré le 2026-09-21 sur base jetable, en n'exécutant QUE les ordres autorisés du §2** (sans
+aucun `REVOKE` sur `PUBLIC`) :
+
+```
+✓ C1 ✓ C2 ✓ C3 ✓ C4   ✗ C5 base=false schema=false temporaire=TRUE   ✓ C6 ✓ C7 ✓ C8
+```
+
+`TEMPORARY` est accordé à `PUBLIC` par défaut sur toute base PostgreSQL. **L'intervention
+autorisée ne peut pas le retirer** — ce serait une modification de droit partagé, hors périmètre.
+
+**Ce que cela permet, et ne permet pas — mesuré, pas supposé :**
+
+| Tentative | Résultat |
+|---|---|
+| `CREATE TEMP TABLE` sous le réglage du rôle | **REFUSÉ** — « cannot execute CREATE TABLE in a read-only transaction » |
+| `SET default_transaction_read_only = off` puis `CREATE TEMP TABLE` + `INSERT` | **RÉUSSI** — le réglage est contournable par la session |
+| `INSERT` sur une table applicative, même après ce contournement | **REFUSÉ** — `permission denied for table "Source"` |
+
+**La conclusion est nette : les données métier sont protégées par un PRIVILÈGE (`GRANT SELECT`
+seul), qui n'est pas contournable. Le `default_transaction_read_only` n'est qu'une ceinture
+supplémentaire, et elle, l'est.** Le risque résiduel de `TEMPORARY` se limite donc à créer des
+tables temporaires dans la session — ce qui ne touche aucune donnée métier et disparaît à la
+déconnexion.
+
+**Décision à prendre, hors du périmètre autorisé** : soit on accepte C5 en échec en actant ce
+risque résiduel mesuré, soit on autorise séparément `REVOKE TEMPORARY ON DATABASE railway FROM
+PUBLIC` — qui affecte **tous** les rôles de la base, y compris applicatifs, et exige donc un
+inventaire préalable de leurs usages.
+
+**En l'état, l'outillage REFUSE de démarrer** (`ouvrirAccesAudit` lève sur tout contrôle en
+échec). Pour travailler avec C5 en échec, il faudra une levée explicite, tracée — pas un
+contournement silencieux.
+
 **Critère d'acceptation** — les huit doivent passer :
 
 | Contrôle | Attendu |

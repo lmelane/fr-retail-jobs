@@ -59,8 +59,9 @@ type Table = { nom: string; sql: string; cle: string };
 const TABLES: Table[] = [
   // LE RÉFÉRENTIEL — toutes les sources, y compris celles qui ne publient rien.
   { nom: 'sources', cle: 'id', sql:
-    `SELECT t.id, t.key, t.kind::text AS kind, t.status::text AS status, t.company,
-            t."countryCode", t."createdAt", t."updatedAt"
+    `SELECT t.id, t.key, t.maison, t.kind::text AS kind, t.status::text AS status, t.tier,
+            t."tenantKey", t."portalScope"::text AS "portalScope", t."careersDomain",
+            t."lastRunAt", t."lastRunStatus", t."lastRunJobs", t."createdAt", t."updatedAt"
        FROM "Source" t` },
 
   // LES LOTS DE COLLECTE — le pivot qui relie les captures à leur source SANS JobSource.
@@ -78,8 +79,8 @@ const TABLES: Table[] = [
 
   // LES CAPTURES NATIVES — sans les corps (Bytes gzip, plusieurs Go), avec leurs hash.
   { nom: 'captures', cle: 'id', sql:
-    `SELECT t.id, t."batchId", t.sequence, t."requestUrl", t.method, t.format, t.status,
-            t.complete, t.failure, t."blobHash", t."requestDataHash", t."capturedAt"
+    `SELECT t.id, t."batchId", t.sequence, t."requestHash", t."requestUrl", t.method, t.format,
+            t.status, t.complete, t.failure, t."blobHash", t."requestDataHash", t."capturedAt"
        FROM "RawCapture" t` },
 
   // LES MÉTADONNÉES DES CORPS — rendent chaque corps récupérable par son hash, sans le dupliquer.
@@ -97,9 +98,9 @@ const TABLES: Table[] = [
 
   // LES PUBLICATIONS, avec leur RAW natif. `jobId` nullable conservé tel quel.
   { nom: 'publications', cle: 'id', sql:
-    `SELECT t.id, t."sourceKey", t."externalId", t."jobId", t."batchId", t."extractionId",
-            t."isActive", t."expiresAt", t."sourceTier"::text AS "sourceTier", t.url, t.raw,
-            t."createdAt", t."updatedAt"
+    `SELECT t.id, t."sourceKey", t."externalId", t."jobId", t."captureBatchId", t."captureOutputId",
+            t."isActive", t."expiresAt", t."sourceTier", t.url, t.title, t.raw,
+            t."quarantinedAt", t."quarantineReason", t."firstSeenAt", t."lastSeenAt"
        FROM "JobSource" t` },
 
   // LES OFFRES CANONIQUES — avec LES DEUX prédicats de population, calculés dans l'instantané.
@@ -114,21 +115,24 @@ const TABLES: Table[] = [
             t."experienceYears", t.seniority, t."salaryMin", t."salaryMax", t."salaryCurrency",
             t."salaryPeriod", t.department, t."jobFunction", t."occupationCode", t.language,
             t."educationLevel", t."workSchedule", t."rawSchedule", t."engagementType",
-            t."rawContract", t."rawWorkingTime", t."createdAt", t."updatedAt"
+            t."rawContract", t."rawWorkingTime", t."countryIntegrity", t."opportunityType",
+            t."createdAt", t."updatedAt"
        FROM "Job" t` },
 
   // LES MAISONS — `sectorCodes` porte le SECTEUR, distinct du métier et de la famille de métier.
   { nom: 'maisons', cle: 'id', sql:
-    `SELECT t.id, t.name, t.sector::text AS sector, t."sectorCodes", t."parentGroup",
+    `SELECT t.id, t.name, t."canonicalKey", t.sector::text AS sector, t."sectorCodes",
+            t."parentGroup", t."parentGroupId", t."atsType"::text AS "atsType",
             t."createdAt", t."updatedAt"
        FROM "Company" t` },
 
   // LES OFFRES DIRECTES — le catalogue public en comprend deux origines.
   { nom: 'offres-directes', cle: 'id', sql:
-    `SELECT t.id, t.eligible, t."validThrough", t."countryCode", t.city,
-            t."workplaceType", t."employmentTerm", t."workTime", t."programType",
-            t."isSeasonal", t.department, t.seniority, t."experienceYears", t."educationLevel",
-            t."createdAt", t."updatedAt"
+    `SELECT t.id, t.slug, t.title, t.company, t.eligible, t."validThrough", t."countryCode",
+            t.city, t."workplaceType", t."employmentTerm", t."workTime", t."programType",
+            t."engagementType", t."sectorCodes", t."occupationLabel", t.language,
+            t."salaryMin", t."salaryMax", t."salaryCurrency", t."salaryPeriod",
+            t."postedAt", t."receivedAt", t."updatedAt"
        FROM "DirectOffer" t` },
 ];
 

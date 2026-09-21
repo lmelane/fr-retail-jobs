@@ -54,12 +54,29 @@ export async function verifierPrivileges(prisma: PrismaClient): Promise<ProfilAu
   noter('C3 couverture de lecture', lecture.lisibles === lecture.total,
     `${lecture.lisibles}/${lecture.total}`, 'lisibles = total');
 
-  const [params] = await q<{ ro: string; st: string; it: string }>(
+  /*
+   * C4 vérifie les TROIS paramètres, pas seulement le premier.
+   *
+   * La version précédente affichait les délais mais ne testait que `read_only` : un rôle sans
+   * `statement_timeout` passait au vert alors qu'une requête d'audit pouvait tenir la base
+   * indéfiniment. Un contrôle qui MONTRE une valeur sans la vérifier donne la même confiance
+   * qu'un contrôle qui la vérifie — c'est pire que de ne pas l'afficher.
+   *
+   * Les délais sont lus en millisecondes (`setting` de `pg_settings`), parce que
+   * `current_setting` rend une forme abrégée variable (« 1min », « 60s ») impossible à comparer.
+   */
+  const [params] = await q<{ ro: string; st: string; it: string; stMs: string; itMs: string }>(
     `SELECT current_setting('default_transaction_read_only') AS ro,
             current_setting('statement_timeout') AS st,
-            current_setting('idle_in_transaction_session_timeout') AS it`);
-  noter('C4 lecture seule par défaut', params.ro === 'on',
-    `read_only=${params.ro} statement=${params.st} idle=${params.it}`, 'read_only = on');
+            current_setting('idle_in_transaction_session_timeout') AS it,
+            (SELECT setting FROM pg_settings WHERE name = 'statement_timeout') AS "stMs",
+            (SELECT setting FROM pg_settings WHERE name = 'idle_in_transaction_session_timeout') AS "itMs"`);
+  const statementMs = Number(params.stMs);
+  const idleMs = Number(params.itMs);
+  const delaisPoses = statementMs > 0 && idleMs > 0;
+  noter('C4 lecture seule et délais', params.ro === 'on' && delaisPoses,
+    `read_only=${params.ro} statement=${params.st} idle=${params.it}`,
+    'read_only = on, et les deux délais posés (non nuls)');
 
   const [creation] = await q<{ base: boolean; sch: boolean; tmp: boolean }>(
     `SELECT has_database_privilege(current_user, current_database(), 'CREATE') AS base,
