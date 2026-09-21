@@ -132,6 +132,8 @@ export async function fetchTeamtailorJobs(
   const jobOrigin = typeof config.jobOrigin === 'string' ? config.jobOrigin : undefined;
   const jobs: NormalizedJob[] = [];
   const ids = new Set<string>();
+  /** La charge utile déjà vue pour chaque identifiant : distingue un recouvrement d'une contradiction. */
+  const vus = new Map<string, string>();
   const visited = new Set<string>();
   const endpoint = `${origin}/jobs.json`;
   /**
@@ -166,7 +168,24 @@ export async function fetchTeamtailorJobs(
       if (!item || !['string', 'number'].includes(typeof item.id) || !String(item.id).trim()) throw new Error('Teamtailor missing item identity');
       const job = toNormalized(item, jobOrigin);
       if (!job || !job.title.trim() || !/^https?:\/\//.test(job.url)) throw new Error('Teamtailor invalid job entry');
-      if (ids.has(job.externalId)) throw new Error('Teamtailor duplicate item across pages');
+      /*
+       * UN RECOUVREMENT DE PAGINATION N'EST PAS UNE CONTRADICTION.
+       *
+       * Mesuré sur galeries-lafayette le 2026-09-21 : deux pages (100 + 59 items), `next_url`
+       * s'arrête normalement, aucune boucle — et 2 identifiants sur 157 servis deux fois, aux
+       * charges utiles STRICTEMENT IDENTIQUES. C'est ce que produit un flux qui bouge entre deux
+       * requêtes. Refuser la collecte entière coûtait 157 offres pour 2 doublons inoffensifs.
+       *
+       * Ce qui reste refusé : deux versions DIFFÉRENTES d'un même identifiant. La preuve
+       * d'énumération sert à attester une absence, et deux titres pour un identifiant la rendent
+       * indécidable — on ne sait plus lequel fait foi.
+       */
+      const deja = vus.get(job.externalId);
+      if (deja !== undefined) {
+        if (deja !== JSON.stringify(item)) throw new Error('Teamtailor duplicate item across pages');
+        continue; // Même offre, même contenu : déjà comptée, et la page ne la renomme pas.
+      }
+      vus.set(job.externalId, JSON.stringify(item));
       ids.add(job.externalId);
       jobs.push(job);
       pageIds.push(job.externalId);

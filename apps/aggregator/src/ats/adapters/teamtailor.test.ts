@@ -58,8 +58,18 @@ describe('Teamtailor enumeration evidence', () => {
       await expect(fetchTeamtailorJobs({origin})).rejects.toThrow('shape');
     }
   });
-  it('refuses duplicate pages even if they provide a next link', async () => {
-    vi.mocked(fetchJson).mockResolvedValueOnce(page([captured.items[0]],captured.next_url)).mockResolvedValueOnce(page([captured.items[0]],origin+'/jobs.json?page=3'));
+  it('refuses a CONTRADICTORY duplicate across pages', async () => {
+    /*
+     * Ce témoin exigeait le refus de TOUT identifiant répété. Mesuré sur galeries-lafayette le
+     * 2026-09-21 : 2 identifiants sur 157 sont servis deux fois avec une charge utile STRICTEMENT
+     * IDENTIQUE — un recouvrement de pagination, et le refus coûtait 157 offres.
+     *
+     * Le refus porte désormais sur ce qui compromet réellement la preuve d'absence : deux
+     * versions DIFFÉRENTES d'un même identifiant, où l'on ne sait plus laquelle fait foi. Le cas
+     * identique est couvert par `__tests__/teamtailor-recouvrement.test.ts`.
+     */
+    const divergent = {...captured.items[0], title:'Autre intitulé'};
+    vi.mocked(fetchJson).mockResolvedValueOnce(page([captured.items[0]],captured.next_url)).mockResolvedValueOnce(page([divergent],origin+'/jobs.json?page=3'));
     await expect(fetchTeamtailorJobs({origin})).rejects.toThrow('duplicate');
   });
   it('detects URL cycles before another fetch', async () => {
