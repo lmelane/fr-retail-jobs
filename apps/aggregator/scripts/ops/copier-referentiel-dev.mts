@@ -39,6 +39,27 @@ const revuesSecteur = await lire<any>(
 for (const r of revuesSecteur) await dev.sectorReview.upsert({ where: { id: r.id }, update: {}, create: r });
 console.log(`  revues secteur ${revuesSecteur.length}`);
 
+/*
+ * `Company.identityReviewId` référence une revue d'identité, et la clé étrangère exige sa
+ * présence. On copie celles qui EXISTENT ; les autres sont mises à `null` sur la copie.
+ *
+ * CONSTAT SUR LA PRODUCTION (2026-09-21) : trois Maisons — Intersport, Blackstore, Exemplar
+ * Luxury Group — portent un `identityReviewId` (`lot1-migrate-r…`, `20260910-LOT4-…`) qui ne
+ * correspond à AUCUNE ligne, ni dans `EmployerIdentityReview` ni dans `SourceIdentityReview`.
+ * Des références de migration devenues orphelines. La contrainte ne s'en plaint pas en
+ * production — elle n'y est pas vérifiée rétroactivement — mais elle bloque toute copie.
+ *
+ * On ne corrige RIEN en production : on neutralise la référence sur la copie, et on le dit.
+ */
+const revuesIdentite = await lire<any>(
+  `SELECT * FROM "EmployerIdentityReview" WHERE id = ANY($1::text[])`,
+  [...new Set(maisons.map((m: any) => m.identityReviewId).filter(Boolean))]);
+for (const r of revuesIdentite) await dev.employerIdentityReview.upsert({ where: { id: r.id }, update: {}, create: r });
+const connues = new Set(revuesIdentite.map((r: any) => r.id));
+const orphelines = maisons.filter((m: any) => m.identityReviewId && !connues.has(m.identityReviewId));
+for (const m of orphelines) m.identityReviewId = null;
+console.log(`  revues identité ${revuesIdentite.length}${orphelines.length ? ` (${orphelines.length} référence(s) orpheline(s) neutralisée(s) sur la copie)` : ''}`);
+
 for (const m of maisons) {
   await dev.company.upsert({ where: { id: m.id }, update: {}, create: m });
 }
