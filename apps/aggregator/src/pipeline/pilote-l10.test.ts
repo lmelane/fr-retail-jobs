@@ -23,6 +23,15 @@ import type { CandidateJob } from '../dedup/match.js';
  * `writeFailed = 0` NE SUFFIT PAS : déplacer les annonces vers `held` ou `skipped` ne récupère
  * rien. Le pilote exige que les cas prouvés PUBLIENT, et que le cas ambigu soit refusé AVEC son
  * motif détaillé — celui que le lot de traçabilité vient de rendre visible.
+ *
+ * ── CE QUE CE PILOTE NE PROUVE PAS ─────────────────────────────────────────────────────────────
+ *
+ * `publicationPersistenceFixture` MOCKE `requireCurrentCaptureRevision` : la porte d'admission —
+ * révision de source, décision d'accès, admission du lot — n'est donc PAS exercée ici.
+ *
+ * Ce pilote démontre la résolution d'identité, la persistance, la canonisation et la
+ * déduplication. **Il ne vaut pas preuve pour L11**, qui porte précisément sur cette porte : seul
+ * un run du véritable orchestrateur d'ingestion peut l'établir.
  */
 const db = new PrismaClient();
 beforeEach(async () => { await db.jobSource.deleteMany(); await db.job.deleteMany(); await db.company.deleteMany(); });
