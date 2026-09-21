@@ -78,12 +78,37 @@ export async function verifierPrivileges(prisma: PrismaClient): Promise<ProfilAu
     `read_only=${params.ro} statement=${params.st} idle=${params.it}`,
     'read_only = on, et les deux délais posés (non nuls)');
 
+  /*
+   * C5 EST SCINDÉ EN DEUX CONTRÔLES DISTINCTS, et c'est une décision de sécurité, pas de confort.
+   *
+   * Les trois privilèges de création ne portent pas le même risque :
+   *
+   *  · CREATE sur la BASE et sur le SCHÉMA permettent de créer des objets PERMANENTS — un schéma,
+   *    une table, une vue qui survivent à la session. Ils restent BLOQUANTS, sans exception.
+   *
+   *  · TEMPORARY ne permet que des objets de session, détruits à la déconnexion. Il est accordé à
+   *    `PUBLIC` par défaut sur toute base PostgreSQL, et le retirer modifierait un droit PARTAGÉ
+   *    affectant tous les rôles applicatifs — hors du périmètre autorisé.
+   *
+   * Les fusionner faisait échouer l'ensemble pour le seul privilège dont le risque est borné, et
+   * aurait poussé à désactiver C5 EN BLOC — ce qui aurait silencieusement autorisé la création
+   * d'objets permanents. La séparation rend l'exception visible et limitée à ce qu'elle couvre.
+   */
   const [creation] = await q<{ base: boolean; sch: boolean; tmp: boolean }>(
     `SELECT has_database_privilege(current_user, current_database(), 'CREATE') AS base,
             has_schema_privilege(current_user, 'public', 'CREATE') AS sch,
             has_database_privilege(current_user, current_database(), 'TEMPORARY') AS tmp`);
-  noter('C5 droits de création', !creation.base && !creation.sch && !creation.tmp,
-    `base=${creation.base} schema=${creation.sch} temporaire=${creation.tmp}`, 'tous false');
+
+  noter('C5 création d\'objets PERMANENTS', !creation.base && !creation.sch,
+    `base=${creation.base} schema=${creation.sch}`, 'les deux false — BLOQUANT');
+
+  /*
+   * C5bis n'est JAMAIS bloquant : il consigne l'état d'une exception accordée le 2026-09-21.
+   * Le risque résiduel est réel et nommé dans le rapport, pas minimisé.
+   */
+  noter('C5bis TEMPORARY (exception accordée)', true,
+    creation.tmp ? 'présent — exception documentée, risque résiduel consigné' : 'absent',
+    'consigné, non bloquant');
 
   const publics = await q<{ relname: string }>(
     `SELECT c.relname FROM pg_class c JOIN pg_namespace n ON n.oid = c.relnamespace

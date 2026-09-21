@@ -36,6 +36,7 @@ import { readFileSync, writeFileSync, mkdirSync, existsSync } from 'node:fs';
 import { gzipSync } from 'node:zlib';
 import { ouvrirAccesAudit } from './audit-acces.ts';
 import { readRawBlob } from '../../src/capture/store.js';
+import { objectStoreConfigured, objectStoreFromEnv } from '../../src/retention/objectStore.js';
 
 const dossier = process.argv[2];
 if (!dossier || !existsSync(`${dossier}/manifeste.json`)) {
@@ -48,7 +49,32 @@ if (!dossier || !existsSync(`${dossier}/manifeste.json`)) {
 }
 
 const { prisma, profil } = await ouvrirAccesAudit();
-console.log(`\n═══ CORPS DE CAPTURE ═══\n  rôle : ${profil.role}\n  corpus : ${dossier}\n`);
+console.log(`\n═══ CORPS DE CAPTURE ═══\n  rôle : ${profil.role}\n  corpus : ${dossier}`);
+
+/*
+ * L'ACCÈS AU STOCKAGE OBJET EST ÉPROUVÉ, PAS SUPPOSÉ.
+ *
+ * Un corps purgé de la base n'est lisible que par son archive. Or la présence d'une ligne
+ * `RawBlobArchive` prouve seulement qu'une archive a été ENREGISTRÉE un jour — pas qu'elle est
+ * joignable aujourd'hui, ni que ce processus a le droit de la lire. Traiter ce référencement
+ * comme une preuve de disponibilité ferait passer des corps inaccessibles pour récupérés.
+ *
+ * On construit donc le store s'il est configuré, et on le DIT quand il ne l'est pas : les corps
+ * archivés seront alors comptés MANQUANTS, ce qui est la vérité.
+ */
+let store: ReturnType<typeof objectStoreFromEnv> | undefined;
+let etatStockage: string;
+if (!objectStoreConfigured()) {
+  etatStockage = 'NON CONFIGURÉ — les corps purgés de la base seront comptés MANQUANTS';
+} else {
+  try {
+    store = objectStoreFromEnv();
+    etatStockage = 'configuré';
+  } catch (e) {
+    etatStockage = `configuration REFUSÉE : ${String(e).slice(0, 120)}`;
+  }
+}
+console.log(`  stockage objet : ${etatStockage}\n`);
 
 /** Les empreintes à récupérer, lues depuis les métadonnées déjà exportées. */
 type Meta = { hash: string; byteLength: number; corps_en_base: boolean; corps_archive: boolean };
@@ -73,11 +99,11 @@ for (const [i, meta] of metas.entries()) {
 
   try {
     /*
-     * Sans `store`, `readRawBlob` lève pour un corps purgé de la base : c'est le comportement
-     * VOULU ici. Un corps archivé hors de portée est un corps MANQUANT du corpus, et le dire
-     * vaut mieux que de laisser croire qu'il a été récupéré.
+     * `readRawBlob` lit la base en priorité, puis l'archive via `store`. Sans store joignable,
+     * il lève pour un corps purgé — comportement VOULU : un corps hors de portée est MANQUANT,
+     * et le dire vaut mieux que de laisser croire qu'il a été récupéré.
      */
-    const octets = await readRawBlob(prisma, meta.hash);
+    const octets = await readRawBlob(prisma, meta.hash, store);
     mkdirSync(`${dossierCorps}/${meta.hash.slice(0, 2)}`, { recursive: true });
     const compresse = gzipSync(octets);
     writeFileSync(chemin, compresse);
@@ -104,6 +130,7 @@ for (const [i, meta] of metas.entries()) {
  */
 const manifeste = JSON.parse(readFileSync(`${dossier}/manifeste.json`, 'utf8')) as Record<string, unknown>;
 manifeste.corps = {
+  stockageObjet: etatStockage,
   metadonneesExportees: resultat.metadonneesExportees,
   disponibles: resultat.disponibles,
   manquants: resultat.manquants.length,

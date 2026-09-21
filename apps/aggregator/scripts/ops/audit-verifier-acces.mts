@@ -41,8 +41,27 @@ for (const c of profil.controles)
 const echecs = profil.controles.filter((c) => !c.ok);
 if (echecs.length) {
   console.log(`\n✗ ${echecs.length} contrôle(s) en échec — aucune mesure ne doit démarrer.`);
+  console.log('  L\'exception TEMPORARY ne couvre AUCUN autre échec.');
   console.log('  Ne pas contourner, ne pas se rabattre sur `postgres`.');
   process.exit(1);
+}
+
+/*
+ * LE RISQUE RÉSIDUEL EST IMPRIMÉ À CHAQUE CONTRÔLE, pas rangé dans un document que personne ne
+ * relit. Présenter cet accès comme une impossibilité absolue d'écrire serait faux, et c'est
+ * exactement le genre d'affirmation qui a déjà coûté cher ici.
+ */
+const tmp = profil.controles.find((c) => c.nom.startsWith('C5bis'));
+if (tmp?.observe.startsWith('présent')) {
+  console.log('\n⚠ EXCEPTION TEMPORARY — accordée le 2026-09-21, risque résiduel :');
+  console.log('   · une session peut exécuter `SET default_transaction_read_only = off`, puis');
+  console.log('     créer des tables temporaires et y écrire. Mesuré, pas supposé.');
+  console.log('   · ces objets consomment des RESSOURCES SERVEUR — mémoire de travail, espace');
+  console.log('     disque temporaire — et peuvent gêner la production si le volume est important.');
+  console.log('   · ils disparaissent à la déconnexion et ne touchent AUCUNE donnée métier :');
+  console.log('     l\'écriture applicative reste refusée par privilège (`permission denied`).');
+  console.log('\n   Cet accès n\'est donc PAS une garantie absolue d\'impossibilité d\'écrire.');
+  console.log('   Ce qui est garanti : les données métier sont protégées par un PRIVILÈGE.');
 }
 
 // Preuve que l'ouverture normale — celle qu'utilisent les scripts de mesure — passe aussi.
