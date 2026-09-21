@@ -64,19 +64,19 @@ console.log(`  sources        ${sources.length}`);
 const revDev = await dev.sourceRevision.count();
 console.log(`  révisions      ${revDev} (créées par le trigger, non copiées)`);
 
-/* Les lots de capture qui portent les preuves d'accès — sans leurs captures ni leurs sorties :
- * la nouvelle collecte produira les siennes. */
-const lots = await lire<any>(
-  `SELECT b.* FROM "CaptureBatch" b
-    WHERE b.id IN (SELECT "captureBatchId" FROM "SourceAccessDecision"
-                    WHERE "sourceKey" = ANY($1::text[]) AND "captureBatchId" IS NOT NULL)`, cles);
-for (const b of lots) await dev.captureBatch.upsert({ where: { id: b.id }, update: {}, create: b });
-console.log(`  lots de preuve ${lots.length}`);
-
-const decisions = await lire<any>(
-  `SELECT * FROM "SourceAccessDecision" WHERE "sourceKey" = ANY($1::text[])`, cles);
-for (const d of decisions) await dev.sourceAccessDecision.upsert({ where: { id: d.id }, update: {}, create: d });
-console.log(`  décisions      ${decisions.length}`);
+/*
+ * LES LOTS DE PREUVE ET LES DÉCISIONS D'ACCÈS NE SE COPIENT PAS.
+ *
+ * Un lot de capture porte la révision de source qui gouvernait sa collecte, et un trigger refuse
+ * de l'enregistrer sous une révision qui n'est plus courante (« Capture revision is not the
+ * current source configuration »). Comme les révisions sont RECRÉÉES ici par
+ * `Source_record_revision`, les identifiants diffèrent : rattacher ces preuves serait
+ * précisément le rattachement artificiel qu'on s'interdit.
+ *
+ * La campagne de qualification (`source-campaign.mts`) produit de NOUVELLES décisions d'accès,
+ * adossées à de nouvelles captures, sur les révisions de development. C'est le parcours normal,
+ * et il a été éprouvé : 4 décisions ALLOWED produites sur 5 sources au premier run.
+ */
 
 /* Le référentiel des métiers : la classification en dépend. */
 const occ = await lire<{ n: bigint }>(`SELECT count(*) AS n FROM "OccupationRelease"`);
