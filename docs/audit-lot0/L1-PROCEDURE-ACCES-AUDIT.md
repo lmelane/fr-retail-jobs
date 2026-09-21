@@ -176,14 +176,45 @@ supplémentaire, et elle, l'est.** Le risque résiduel de `TEMPORARY` se limite 
 tables temporaires dans la session — ce qui ne touche aucune donnée métier et disparaît à la
 déconnexion.
 
-**Décision à prendre, hors du périmètre autorisé** : soit on accepte C5 en échec en actant ce
-risque résiduel mesuré, soit on autorise séparément `REVOKE TEMPORARY ON DATABASE railway FROM
-PUBLIC` — qui affecte **tous** les rôles de la base, y compris applicatifs, et exige donc un
-inventaire préalable de leurs usages.
+### DÉCISION DU 2026-09-21 — exception accordée, limitée au seul privilège TEMPORARY
 
-**En l'état, l'outillage REFUSE de démarrer** (`ouvrirAccesAudit` lève sur tout contrôle en
-échec). Pour travailler avec C5 en échec, il faudra une levée explicite, tracée — pas un
-contournement silencieux.
+Le CEO a tranché : **le compte d'audit conserve `TEMPORARY`**, hérité de `PUBLIC`.
+
+**Aucun `REVOKE` sur `PUBLIC` ne sera exécuté.** Le contrôle a donc été scindé en deux, pour que
+l'exception ne déborde pas :
+
+| Contrôle | Portée | Statut |
+|---|---|---|
+| **C5** | `CREATE` sur la base et sur le schéma — objets **PERMANENTS**, qui survivent à la session | **BLOQUANT, sans exception** |
+| **C5bis** | `TEMPORARY` — objets de session, détruits à la déconnexion | **consigné, jamais bloquant** |
+
+Les fusionner aurait fait échouer l'ensemble pour le seul privilège dont le risque est borné, et
+poussé à désactiver C5 en bloc — donc à autoriser silencieusement la création d'objets permanents.
+
+**Éprouvé sur base jetable** : avec les seuls ordres autorisés du §2, les contrôles passent ; en
+accordant `CREATE` sur le schéma, C5 bloque (code 1) **alors que l'exception TEMPORARY reste
+accordée**. Elle ne couvre rien d'autre.
+
+**L'exception ne couvre AUCUN autre échec.** Tous les autres contrôles restent bloquants :
+privilèges d'écriture applicatifs (C2), attributs du rôle (C1), héritage et élévation (C7, C8),
+droits de lecture (C3), paramètres de session (C4). Une **erreur d'inspection** n'est jamais
+assimilée à un succès : `ouvrirAccesAudit` lève et ferme la connexion.
+
+### RISQUE RÉSIDUEL — énoncé honnêtement
+
+**Cet accès n'est pas une garantie absolue d'impossibilité d'écrire.** Ce qui est garanti :
+
+- **les données métier sont protégées par un PRIVILÈGE** (`GRANT SELECT` seul), qui n'est pas
+  contournable — mesuré : `permission denied for table "Source"` même après avoir levé la lecture
+  seule ;
+- **ce qui reste possible** : une session peut exécuter `SET default_transaction_read_only = off`,
+  puis créer des tables temporaires et y écrire.
+
+**Conséquence opérationnelle à ne pas minimiser** : ces objets consomment des **ressources
+serveur** — mémoire de travail et espace disque temporaire. Un volume important pourrait gêner la
+production, même sans toucher une seule donnée métier. Ils disparaissent à la déconnexion.
+
+Ce risque est **imprimé à chaque exécution** du contrôle d'accès, pas seulement écrit ici.
 
 **Critère d'acceptation** — les huit doivent passer :
 
