@@ -40,7 +40,7 @@ export async function resolveEmployer(tx: Prisma.TransactionClient, candidate: C
   if (isPortalEmployerOrigin(candidate.employerLabelOrigin)) {
     const identity = await certifiedPortalIdentity(tx, candidate.sourceKey);
     if (!identity || identity.scope !== 'SINGLE_BRAND' || !identity.ownerName) {
-      throw new EmployerIdentityReviewRequired(candidate.sourceKey, candidate.externalId, rawEmployerName, 'PORTAL_OWNER_NOT_CERTIFIED');
+      throw new EmployerIdentityReviewRequired(candidate.sourceKey, candidate.externalId, rawEmployerName, 'PORTAL_OWNER_NOT_CERTIFIED', 'PORTAL_OWNER_NOT_CERTIFIED');
     }
     const owner = await tx.company.findUnique({ where: { fashionjobsUrl: `resolved:${identity.ownerKey}` } });
     const root = owner ? await canonicalEmployer(tx, owner) : null;
@@ -48,7 +48,7 @@ export async function resolveEmployer(tx: Prisma.TransactionClient, candidate: C
       select: { job: { select: { company: true } } } });
     const previous = entry?.job ? await canonicalEmployer(tx, entry.job.company) : null;
     // Missing information cannot silently replace an already attributed employer.
-    if (previous && previous.id !== root?.id) throw new EmployerIdentityReviewRequired(candidate.sourceKey, candidate.externalId, rawEmployerName, previous.name);
+    if (previous && previous.id !== root?.id) throw new EmployerIdentityReviewRequired(candidate.sourceKey, candidate.externalId, rawEmployerName, previous.name, 'PORTAL_OWNER_REPLACES_EMPLOYER');
     return { company: root, rule: 'CERTIFIED_SINGLE_BRAND_PORTAL', rawEmployerName, normalizedEmployerName: normalized,
       // `reviewId` est nul quand l'employeur vient du registre relu (F5) : la traçabilité passe
       // alors par la révision de la source, portée par l'admission du lot.
@@ -60,12 +60,12 @@ export async function resolveEmployer(tx: Prisma.TransactionClient, candidate: C
   });
   // A local and global decision may coexist only if they lead to the same root.
   const roots = await Promise.all(aliases.map(a => canonicalEmployer(tx, a.company)));
-  if (new Set(roots.map(c => c.id)).size > 1) throw new EmployerIdentityReviewRequired(candidate.sourceKey, candidate.externalId, rawEmployerName, `CONFLICT: ${roots.map(c => c.id).join(',')}`);
+  if (new Set(roots.map(c => c.id)).size > 1) throw new EmployerIdentityReviewRequired(candidate.sourceKey, candidate.externalId, rawEmployerName, `CONFLICT: ${roots.map(c => c.id).join(',')}`, 'ALIAS_CONFLICT');
   const alias = aliases.find(a => a.sourceKey === candidate.sourceKey) ?? aliases[0];
   if (alias) {
     const source = await tx.source.findUnique({ where: { key: candidate.sourceKey } });
     if (alias.sourceKey !== candidate.sourceKey || alias.sourceHash !== (source ? sourceIdentityHash(source) : 'UNCATALOGUED')) {
-      throw new EmployerIdentityReviewRequired(candidate.sourceKey, candidate.externalId, rawEmployerName, 'ALIAS_SOURCE_OR_TENANT_CHANGED');
+      throw new EmployerIdentityReviewRequired(candidate.sourceKey, candidate.externalId, rawEmployerName, 'ALIAS_SOURCE_OR_TENANT_CHANGED', 'ALIAS_SOURCE_OR_TENANT_CHANGED');
     }
   }
   if (alias) return {
@@ -104,11 +104,11 @@ export async function resolveEmployer(tx: Prisma.TransactionClient, candidate: C
       // previous observation carried the image's word, the company never did).
       const convergesOnCurrent = normalized === normalizedEmployerName(current.name);
       if (previous && previous.normalizedEmployerName !== normalized && !convergesOnCurrent) {
-        throw new EmployerIdentityReviewRequired(candidate.sourceKey, candidate.externalId, rawEmployerName, current.name);
+        throw new EmployerIdentityReviewRequired(candidate.sourceKey, candidate.externalId, rawEmployerName, current.name, 'EMPLOYER_SPELLING_DIVERGED');
       }
     }
     if (current && (!target || current.id !== target.id)) {
-      throw new EmployerIdentityReviewRequired(candidate.sourceKey, candidate.externalId, rawEmployerName, target?.name ?? candidate.company);
+      throw new EmployerIdentityReviewRequired(candidate.sourceKey, candidate.externalId, rawEmployerName, target?.name ?? candidate.company, 'EMPLOYER_TARGET_MISMATCH');
     }
     /*
      * PREMIÈRE PUBLICATION D'UNE SOURCE POUR UNE MAISON (lot F6, 18/09/2026).
@@ -136,12 +136,12 @@ export async function resolveEmployer(tx: Prisma.TransactionClient, candidate: C
     const memeNomQueLaMaison = !!target && normalized === normalizedEmployerName(target.name);
     if (!current && target && !memeNomQueLaMaison
       && !await tx.jobSource.findFirst({ where: { sourceKey: candidate.sourceKey, job: { companyId: target.id } }, select: { id: true } })) {
-      throw new EmployerIdentityReviewRequired(candidate.sourceKey, candidate.externalId, rawEmployerName, target.name);
+      throw new EmployerIdentityReviewRequired(candidate.sourceKey, candidate.externalId, rawEmployerName, target.name, 'SOURCE_NEVER_PUBLISHED_FOR_HOUSE');
     }
     // An unknown native label gets its own source-scoped identity verbatim.
     // A spelling heuristic in candidate.company is not an identity conflict.
     if (!current && target && normalized !== normalizedEmployerName(target.name)) {
-      throw new EmployerIdentityReviewRequired(candidate.sourceKey, candidate.externalId, rawEmployerName, target?.name ?? candidate.company);
+      throw new EmployerIdentityReviewRequired(candidate.sourceKey, candidate.externalId, rawEmployerName, target?.name ?? candidate.company, 'EMPLOYER_TARGET_MISMATCH');
     }
   }
   return {

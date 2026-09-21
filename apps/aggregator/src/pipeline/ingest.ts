@@ -400,8 +400,15 @@ async function ingestApiSource(
     } catch (error) {
       log.assertHealthy();
       stats.errors++;
-      // The sealed fate keeps only the error class: messages may carry URLs or parameters.
-      fates.push({ ordinal, externalId: job.externalId, disposition: 'WRITE_FAILED', reason: error instanceof Error && error.name ? error.name : 'UnknownError' });
+      /*
+       * Le fate scellé ne garde qu'un CODE BORNÉ : les messages peuvent porter des URLs ou des
+       * paramètres. La classe seule ne suffisait pourtant pas — `EmployerIdentityReviewRequired`
+       * a six causes distinctes, et le rapport les rendait indiscernables (9 386 occurrences sous
+       * un seul libellé le 2026-09-21, dont 27 sources bloquées par une simple configuration
+       * absente). Les erreurs qui portent un `motif` de leur liste fermée l'exposent donc ici,
+       * qualifié par la classe pour rester lisible sans ambiguïté.
+       */
+      fates.push({ ordinal, externalId: job.externalId, disposition: 'WRITE_FAILED', reason: fateReason(error) });
       // Journal every failure, with its upstream posting ID. Console repeats
       // are aggregated centrally only AFTER durable recording.
       await log.error('job.write_failed', { sourceKey: stats.source, connectorId: source.kind, jobId: job.externalId, error });
@@ -516,4 +523,20 @@ export async function runIngest(
   }
 
   return results;
+}
+
+/**
+ * Le code borné qui entre dans le rapport scellé.
+ *
+ * Une erreur qui porte un `motif` de sa liste fermée le rend visible, préfixé de sa classe pour
+ * qu'un code ne soit jamais confondu avec un autre domaine d'erreur. Toute autre erreur garde son
+ * seul nom de classe : un message peut porter une URL ou un paramètre, et le rapport est scellé.
+ */
+function fateReason(error: unknown): string {
+  if (!(error instanceof Error)) return 'UnknownError';
+  const motif = (error as { motif?: unknown }).motif;
+  if (error.name && typeof motif === 'string' && /^[A-Z][A-Z0-9_]{3,48}$/.test(motif)) {
+    return `${error.name}:${motif}`;
+  }
+  return error.name || 'UnknownError';
 }
