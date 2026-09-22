@@ -1,5 +1,7 @@
 # Canari Oh My Cream — STOP avant livraison, 22 septembre 2026
 
+> Constat historique de la première tentative. La stratégie de restauration a ensuite été modifiée explicitement par Loïc. L’état courant, la restauration achevée et l’unique ingestion Railway figurent dans le [bilan final](restorability-canary-final.md). Les affirmations « aucun déploiement » ci-dessous décrivent seulement cette première tentative.
+
 ## Décision
 
 Le GO explicite de Loïc autorisait une seule exécution Railway, après sauvegarde **et restauration prouvée**. Ce prérequis échoue : le dump de production contient des références d’identité orphelines. Le canari est arrêté à l’étape 1. **Aucune mutation Railway, aucun push `main`, aucune migration, aucune collecte et aucun ping externe n’ont été exécutés.** L’ancien override n’a donc pas encore été remplacé.

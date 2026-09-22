@@ -1,13 +1,13 @@
 # Agrégateur Catwalks — état vérifié et exploitation
 
-État d’exploitation relu le **22 septembre 2026** : le canari attend la validation de la **restauration opérationnelle sans réparation de données**. Les huit FK historiques restent explicitement `NOT VALID` sur la copie restaurée, les 37 autres sont validées ; comptes et hashes sont figés. Voir le [runbook](../../docs/architecture/canary-operations.md#restauration-du-stock-historique-sans-data-repair). Les validations locales PR-1, `/emplois` V1 et Golden Path restent acquises. `/offres` et matching restent gelés.
+État d’exploitation vérifié le **22 septembre 2026 à 22:05 UTC** : **restaurabilité validée**, sans modifier les 613 lignes historiques. La copie comporte 37 FK VALID et exactement 8 NOT VALID, toutes actives. Une ingestion Railway Oh My Cream est terminée : 23 mises à jour, aucune création ni fusion. **La conformité stricte du canari n’est pas validée** : une ancienne sonde HTTP vers Dolce & Gabbana a également tourné, sans ingestion ni capture de cette source. La sonde est désactivée et le retour en pause est prouvé. Voir le [bilan final](../../audits/2026-09-22/restorability-canary-final.md). `/offres` et matching restent gelés.
 
 ## Développement et production
 
 - `development` porte le travail validé ; `main` représente la production.
-- Révision fonctionnelle PR-1 validée : `9445599`, tests locaux et CI verts.
-- Dernière lecture Railway : API, aggregator, refresh et reconcile sont toujours sur `0f22b49e`. Les trois workers sont en pause, calendriers gelés.
-- L’override agrégateur utilise encore l’ancien lanceur de campagne. Il faut le remplacer sous pause dans l’ordre du [runbook canari](../../docs/architecture/canary-operations.md), après GO explicite. Aucun push `main`, migration ou déploiement n’est autorisé par le verdict technique seul.
+- `main` et les quatre services Railway : `72300c97586955536ee1f89b0a9b7b0273fbf8a9`, après le GO explicite du canari borné ; CI verte et 86 migrations appliquées.
+- Les trois workers restent `PIPELINE_PAUSED=1`, calendriers inchangés. L’agrégateur est revenu à `sh apps/aggregator/start.sh`, avec `EGRESS_PROBE=0`. Son exécution sous pause confirme `workStarted:false`, puis un conteneur arrêté.
+- L’autorisation d’une ingestion a été consommée. Aucun second essai, autre source ou CRON n’est lancé par ce bilan. Le site public, backend, back-office et média ne sont pas déployés.
 
 Les anciens chiffres de stock et bilans source par source restent dans les [audits datés](../../audits/reprise-2026-09-15/README.md). Ils ne représentent pas le catalogue courant. Aucun audit supplémentaire des offres n’est requis pour PR-1.
 

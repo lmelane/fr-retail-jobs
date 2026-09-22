@@ -52,15 +52,17 @@ node --import tsx apps/aggregator/scripts/ops/worker-status.mts --preflight --ex
 
 Ce mode exige `PIPELINE_PAUSED=1`, le SHA de processus attendu et un heartbeat configuré avant tout accès réseau. Il lit le statut dans une transaction READ ONLY, refuse un run récemment observé vivant, exerce le vrai worker sous pause et exige son événement `workStarted:false`. Il vérifie ensuite l'acquittement HTTP du heartbeat et écrit une preuve synchrone unique `worker.paused_preflight`. Il ne crée aucun `PipelineRun`, aucune capture et aucune ingestion. Son ping est explicite ; la simple lecture de statut sans options ne le déclenche pas.
 
+Les journaux Railway structurés peuvent avoir un champ `message` vide : lire aussi `attributes { key value }` et décoder les valeurs JSON pour retrouver `event`, `workStarted` et le résultat du heartbeat. L’absence de texte dans `message` seul ne prouve pas une absence de signal.
+
 ## Plan Railway à appliquer seulement après GO
 
 1. Figer le SHA candidat validé et le SHA actuellement déployé. Sauvegarder la base et vérifier la restauration opérationnelle décrite ci-dessous. Vérifier les canaux d'alerte depuis le futur environnement (l'émission réelle reste une étape du canari autorisé).
-2. Tous les workers restent `PIPELINE_PAUSED=1`, calendriers gelés. Remplacer l'override de campagne de l'agrégateur par `sh apps/aggregator/start.sh` ; aucune référence à un fichier supprimé ne doit subsister dans le manifeste Railway.
+2. Tous les workers restent `PIPELINE_PAUSED=1`, calendriers gelés. Remplacer l'override de campagne de l'agrégateur par `sh apps/aggregator/start.sh` ; aucune référence à un fichier supprimé ne doit subsister dans le manifeste Railway. Fixer explicitement `EGRESS_PROBE=0` dans l’environnement du service canari et vérifier sa prise en compte au déploiement : l’ancienne sonde vise un hôte indépendant de la source sélectionnée. Ne pas compter sur un ancien préfixe inline qui disparaît avec l’override. Cette vérification de configuration s’ajoute au preflight ; ce dernier ne vérifie pas cette variable.
 3. Livrer le candidat, appliquer les migrations **une seule fois par l'étape de release API**, puis vérifier `/api/health`, lecture authentifiée et statut des services. Le worker refuse les migrations en attente ; il ne les applique pas.
 4. Pour le seul service autorisé, préparer la commande `source-add` ci-dessus, périmètre d'une seule source. Conserver les secrets d'alerte, vérifier les variables présentes sans les afficher, garder les autres services en pause. Retirer la pause du seul service canari et exécuter **une fois**, sous surveillance. La méthode de déploiement Railway peut démarrer le conteneur immédiatement : le dégel lui-même est une action d'exécution soumise au GO.
 5. Vérifier verdict, admissions/fins, captures liées, doublons, lecture API et `/emplois`. Restaurer la pause et la commande normale, confirmer les calendriers et l'absence de processus actif. Aucun refresh ni clôture automatique dans ce premier canari.
 
-`railway-service.py` refuse une commande bornée/exécution si la pause distante n'est pas exactement `0`, avant mutation. La restauration de la commande normale reste possible en pause. Aucun de ces changements n'est appliqué par PR-1. L'état déployé peut donc encore porter l'ancien override jusqu'au GO.
+`railway-service.py` refuse une commande bornée/exécution si la pause distante n'est pas exactement `0`, avant mutation. La restauration de la commande normale reste possible en pause. Le [bilan du 22 septembre](../../audits/2026-09-22/restorability-canary-final.md) atteste la livraison autorisée et le retour à la commande normale. Il distingue l’ingestion réussie de l’écart HTTP hors périmètre ; il n’autorise pas une seconde ingestion.
 
 ## Restauration du stock historique, sans data repair
 
