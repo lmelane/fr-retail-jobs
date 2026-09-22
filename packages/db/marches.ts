@@ -593,7 +593,7 @@ const MARCHES_LOCALISES: Readonly<Record<(typeof CODES_MARCHE_LOCALISES)[number]
     localeParDefaut: 'en-US',
     /** Localisé : catalogue d'interface, libellés de facettes et vocabulaire d'emploi dans sa langue. */
     localisation: 'NATIVE',
-    facettesSite: ['secteur', 'ville', 'maison', 'groupe', 'langue'],
+    facettesSite: ['secteur', 'ville', 'maison', 'langue'],
     libellesSite: { pays: 'Country', secteur: 'Sector', ville: 'City', maison: 'Maison', groupe: 'Group', langue: 'Language' },
     libelles: { temps: 'Job type', metier: 'Job category' },
     offresMesurees: 36_942,
@@ -816,7 +816,7 @@ const MARCHES_LOCALISES: Readonly<Record<(typeof CODES_MARCHE_LOCALISES)[number]
     localeParDefaut: 'es-ES',
     /** Localisé : catalogue d'interface, libellés de facettes et vocabulaire d'emploi dans sa langue. */
     localisation: 'NATIVE',
-    facettesSite: ['secteur', 'ville', 'maison', 'groupe', 'langue'],
+    facettesSite: ['secteur', 'ville', 'maison', 'langue'],
     libellesSite: { pays: 'País', secteur: 'Sector', ville: 'Ciudad', maison: 'Maison', groupe: 'Grupo', langue: 'Idioma' },
     libelles: {
       contrat: 'Tipo de empleo',
@@ -865,7 +865,7 @@ const MARCHES_LOCALISES: Readonly<Record<(typeof CODES_MARCHE_LOCALISES)[number]
     localeParDefaut: 'nl-NL',
     /** Localisé : catalogue d'interface, libellés de facettes et vocabulaire d'emploi dans sa langue. */
     localisation: 'NATIVE',
-    facettesSite: ['secteur', 'ville', 'maison', 'groupe', 'langue'],
+    facettesSite: ['secteur', 'ville', 'maison', 'langue'],
     libellesSite: { pays: 'Land', secteur: 'Sector', ville: 'Stad', maison: 'Maison', groupe: 'Groep', langue: 'Taal' },
     libelles: {
       contrat: 'Dienstverband',

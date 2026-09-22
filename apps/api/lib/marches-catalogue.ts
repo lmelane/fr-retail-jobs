@@ -1,6 +1,6 @@
 import { unstable_cache } from 'next/cache';
 import { publicJobSql } from '@catwalks/db/availability';
-import { CODES_MARCHE, CONTRAT_RECHERCHE_VERSION, MARCHES, facettesContrat, type FacetteContrat } from '@catwalks/db/marches';
+import { CODES_MARCHE, CONTRAT_RECHERCHE_VERSION, MARCHES, filtresDuMarche, type FiltreMarche } from '@catwalks/db/marches';
 import { prisma, Prisma } from '@catwalks/db';
 import { DatabaseUnavailableError, perimetreServi, type PerimetreServi } from './jobs';
 import { directPubliableSql } from './direct-offers';
@@ -17,7 +17,12 @@ import { resoudrePerimetre } from './perimetre';
  * gravée (D-429 : la promesse du produit est un chiffre réel), mémorisée deux
  * minutes parce qu'elle sert chaque rendu du sélecteur.
  */
-export type MarcheServi = PerimetreServi & { facettes: readonly FacetteContrat[]; offresPubliables: number };
+/*
+ * Les facettes du marché portent leur TYPE D'INTERACTION : le site rend ce que le registre décide,
+ * il ne refait aucune règle de seuil ni de cardinalité. Deux registres qui décident la même chose
+ * finissent par diverger — c'est ce qui a rendu 6 212 offres inaccessibles le 15/09/2026.
+ */
+export type MarcheServi = PerimetreServi & { facettes: readonly FiltreMarche[]; offresPubliables: number };
 
 export type ContratMarches = {
   version: number;
@@ -65,7 +70,7 @@ async function contratMarches(): Promise<ContratMarches> {
     for (const p of MARCHES[code].pays) couverts.add(p);
     return {
       ...perimetreServi(perimetre),
-      facettes: facettesContrat(perimetre),
+      facettes: filtresDuMarche(perimetre),
       offresPubliables: MARCHES[code].pays.reduce((n, p) => n + (comptes.parPays.get(p) ?? 0), 0),
     };
   });
