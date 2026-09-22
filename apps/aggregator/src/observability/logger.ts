@@ -1,3 +1,4 @@
+import { writeSync } from 'node:fs';
 import { AsyncLocalStorage } from 'node:async_hooks';
 import { createHash, randomUUID } from 'node:crypto';
 import { setTimeout as sleep } from 'node:timers/promises';
@@ -158,3 +159,9 @@ export const log = {
   assertHealthy: () => current.assertHealthy(),
   flush: (sourceKey?: string) => current.flush(sourceKey),
 };
+
+/** Startup control state before a DB logger exists. Synchronous so exit cannot
+ * truncate the pause record; payloads use the same secret redaction as all logs. */
+export function writeStartupState(event: string, state: Record<string, unknown>): void {
+  writeSync(1, JSON.stringify({ event, ...redact(state) as Record<string, unknown>, at: new Date().toISOString() }) + '\n');
+}

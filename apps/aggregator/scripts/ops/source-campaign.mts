@@ -32,8 +32,8 @@ import { campaignArguments, selectCandidates } from '../../src/onboarding/campai
  * ne remplace jamais une qualification courante. Il s’exécute dans l’environnement voulu
  * (par exemple `npm run stack:exec -- node --import tsx apps/aggregator/scripts/ops/source-campaign.mts …`).
  *
- * usage: source-campaign.mts --candidates=<export.json> --out-dir=<dossier privé> [--keys=k1,k2] [--limit=n]
- *        [--ingest] [--deadline-ms=120000] [--reviewer=IDENTIFIANT]
+ * usage: source-campaign.mts --candidates=<export.json> --out-dir=<dossier privé> --keys=k1,k2 --reviewer=IDENTIFIANT [--limit=n]
+ *        [--ingest] [--deadline-ms=1800000]
  */
 import { PrismaClient } from '@prisma/client';
 import { spawn } from 'node:child_process';

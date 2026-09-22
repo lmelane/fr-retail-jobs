@@ -1,3 +1,4 @@
+import { writeStartupState } from '../observability/logger.js';
 /** One pause policy for every operational entry point and collection boundary.
  * A process receives its environment at startup: changing Railway variables must
  * also stop/restart an already running process. There is no command-level bypass. */
@@ -18,7 +19,6 @@ export function assertPipelineRunning(): void {
 /** Intentional pause is observable and successful, never reported as an ingestion. */
 export function exitIfPipelinePaused(command: string): void {
   if (!pipelinePaused()) return;
-  console.log(JSON.stringify({ event: 'pipeline.paused', state: 'PAUSED', command, workStarted: false,
-    pid: process.pid, at: new Date().toISOString() }));
+  writeStartupState('pipeline.paused', { state: 'PAUSED', command, workStarted: false, pid: process.pid });
   process.exit(0);
 }

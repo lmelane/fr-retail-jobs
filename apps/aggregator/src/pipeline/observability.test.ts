@@ -53,6 +53,9 @@ it('persists process liveness while running and stops heartbeats after terminati
   try {
     const run = await startObservability(prisma, 'integration-observability-alive'); ids.push(run.runId);
     await vi.advanceTimersByTimeAsync(30_000);
+    await vi.waitFor(async () => {
+      expect(await prisma.pipelineEvent.count({ where: { runId: run.runId, event: 'run.alive' } })).toBe(1);
+    });
     await run.logger.flush();
     const alive = await prisma.pipelineEvent.findMany({ where: { runId: run.runId, event: 'run.alive' } });
     expect(alive).toHaveLength(1);
