@@ -31,7 +31,7 @@
  * (par exemple `npm run stack:exec -- node --import tsx apps/aggregator/scripts/ops/source-campaign.mts …`).
  *
  * usage: source-campaign.mts --candidates=<export.json> --out-dir=<dossier privé> [--keys=k1,k2] [--limit=n]
- *        [--ingest] [--resume] [--deadline-ms=120000]
+ *        [--ingest] [--resume] [--deadline-ms=120000] [--reviewer=IDENTIFIANT]
  */
 import { PrismaClient } from '@prisma/client';
 import { spawnSync } from 'node:child_process';

@@ -107,7 +107,7 @@ try {
   run('lecture-api',['--import','tsx','--input-type=module','--eval',`
     import assert from 'node:assert/strict';
     import {prisma} from './packages/db/index.ts';
-    import {getJobs} from './apps/api/lib/jobs.ts';
+    import {getJobs,parseFilters} from './apps/api/lib/jobs.ts';
     import {publicJobWhere} from './packages/db/availability.ts';
     import {readRefreshPlan} from './apps/aggregator/src/pipeline/refresh.ts';
     import {writePrivateFile} from './apps/aggregator/src/lib/privateFile.ts';
@@ -118,7 +118,7 @@ try {
       for(const market of [...new Set(rows.flatMap(r=>r.countryCode?[r.countryCode]:[]))]) {
         const expected=rows.filter(r=>r.countryCode===market).map(r=>r.id).sort();
         const ids=[];let apres;
-        do { const page=await getJobs({marche:market,apres});assert.equal(page.total,expected.length);ids.push(...page.jobs.map(j=>j.id));apres=page.suivant??undefined;assert(ids.length<=expected.length); } while(apres);
+        do { const page=await getJobs(parseFilters({marche:market,apres}));assert.equal(page.total,expected.length);ids.push(...page.jobs.map(j=>j.id));apres=page.suivant??undefined;assert(ids.length<=expected.length); } while(apres);
         assert.deepEqual(ids.sort(),expected);markets.push({market,total:ids.length});
       }
       const plan=await readRefreshPlan(prisma,{onlyKeys:[sourceKey]});
