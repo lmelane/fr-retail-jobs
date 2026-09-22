@@ -1,3 +1,4 @@
+import { assertPipelineRunning } from '../lib/pipelinePause.js';
 import { KIND_TO_ATS } from '../ats/catalogKinds.js';
 import { splitRejectedRows } from './rejectedRows.js';
 import { loadOccupationTaxonomy, type CompiledOccupationTaxonomy } from '@catwalks/db/occupations';
@@ -448,6 +449,7 @@ export async function runIngest(
   prisma: PrismaClient,
   options: IngestOptions = {},
 ): Promise<IngestStats[]> {
+  assertPipelineRunning();
   // The catalogue now lives in the Source table (DEC-3); one read serves both
   // the sitemap and the API phases. Refuses to run on an unseeded base.
   const catalog = await loadActiveSources(prisma);

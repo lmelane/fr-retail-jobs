@@ -10,6 +10,8 @@ Ce que la commande garantit :
     lignes à fermer, il applique celles qui ont été revues ;
   · `runRefresh` appelé directement — pas de snapshot, pas de geocode, pas d'ingestion : un refresh et rien
     d'autre ;
+  · `PIPELINE_PAUSED` vérifié avant la base et l'observabilité ; les canaux d'alerte restent disponibles,
+    le heartbeat annonce le résultat terminal et seule l'indexation Google est désactivée ;
   · un `PipelineRun` nommé, ouvert et FERMÉ dans tous les cas, y compris en erreur.
 
 usage: bounded-refresh-command.py <run-name> <keys,comma> <manifest.json>
@@ -26,17 +28,23 @@ SCRIPT = (
     'import {{log}} from "./apps/aggregator/src/observability/logger.ts"; '
     'import {{loadRefreshManifest}} from "./apps/aggregator/src/pipeline/refreshManifest.ts"; '
     'import {{runRefresh}} from "./apps/aggregator/src/pipeline/refresh.ts"; '
+    'import {{exitIfPipelinePaused}} from "./apps/aggregator/src/lib/pipelinePause.ts"; '
+    'import {{pingHeartbeat}} from "./apps/aggregator/src/pipeline/heartbeat.ts"; '
+    'exitIfPipelinePaused({run_name}); '
     'const p=new PrismaClient({{log:[]}}); '
-    'const run=await startObservability(p,{run_name}); '
+    'let run; let ok=false; '
     'const keys={keys}; '
     'try {{'
+    'run=await startObservability(p,{run_name}); '
     'const manifest=await loadRefreshManifest(p,{plan_hash}); '
     'const result=await runRefresh(p,{{onlyKeys:keys,manifest}}); if(result.refused)process.exitCode=1;  '
     'await log.info("refresh.completed",{{...result,manifestSize:manifest.entries.length}}); '
-    'await run.finish(result.refused?"COMPLETED_WITH_ERRORS":"COMPLETED");'
+    'await run.finish(result.refused?"COMPLETED_WITH_ERRORS":"COMPLETED"); ok=!result.refused;'
     '}} catch(error) {{'
-    'process.exitCode=1; await log.error("command.failed",{{error}}); await run.finish("FAILED");'
-    '}} finally {{await p.$disconnect();}}'
+    'process.exitCode=1; await log.error("command.failed",{{error}}); if(run)await run.finish("FAILED");'
+    '}} finally {{try {{const heartbeat=await pingHeartbeat(ok); '
+    'await log.info("heartbeat.completed",{{ok,heartbeat}}); '
+    '}} finally {{await p.$disconnect();}}}}'
 )
 
 
@@ -52,6 +60,8 @@ def bounded_refresh_command(run_name: str, keys: str, manifest_path: str) -> str
     if not re.fullmatch(r'[a-f0-9]{64}', manifest.get('planHash', '')):
         raise ValueError('Invalid manifest hash')
     requested = [k.strip() for k in keys.split(',') if k.strip()]
+    if not requested or any(not key.strip() for key in keys.split(',')):
+        raise ValueError('At least one non-empty source key is required')
     if sorted(requested) != sorted(manifest['allowedSourceKeys']):
         raise ValueError('Manifest source scope mismatch')
     body = SCRIPT.format(
@@ -60,7 +70,7 @@ def bounded_refresh_command(run_name: str, keys: str, manifest_path: str) -> str
         keys=json.dumps([k.strip() for k in keys.split(',') if k.strip()]),
     )
     return (
-        'env -u BREVO_API_KEY -u GOOGLE_INDEXING_CREDENTIALS -u HEALTHCHECK_PING_URL '
+        'env -u GOOGLE_INDEXING_CREDENTIALS '
         f'EGRESS_PROBE=0 REFRESH_ONLY_KEYS={shlex.quote(keys)} '
         'node --import tsx --input-type=module -e ' + shlex.quote(body)
     )

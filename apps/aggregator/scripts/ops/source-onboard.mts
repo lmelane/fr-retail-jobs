@@ -1,3 +1,4 @@
+import { exitIfPipelinePaused } from '../../src/lib/pipelinePause.js';
 /** One entry point for candidate registration and independent, reviewable qualification steps. */
 import { PrismaClient } from '@prisma/client';
 import { sourceFailure } from '../../src/onboarding/failure.js';
@@ -15,6 +16,7 @@ import { objectStoreConfigured, objectStoreFromEnv } from '../../src/retention/o
 import { closeBrowser } from '../../src/lib/browser.js';
 
 const { command, target, options, apply } = parseSourceArguments(process.argv.slice(2));
+if (apply) exitIfPipelinePaused(`source-onboard:${command}`);
 const db = new PrismaClient({ errorFormat: 'minimal', log: [] });
 try {
   let result: unknown;

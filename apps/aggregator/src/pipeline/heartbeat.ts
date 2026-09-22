@@ -21,8 +21,8 @@ export async function pingHeartbeat(ok: boolean): Promise<'pinged' | 'skipped' |
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     return 'pinged';
   } catch (error) {
-    // The heartbeat must never take the run down with it — but a pinger that
-    // cannot be reached is itself worth a log line.
+    // Return an explicit failure. Operational entrypoints refuse a healthy
+    // completion when a configured monitor cannot be reached.
     await log.error('heartbeat.failed', `[heartbeat] ping failed: ${error instanceof Error ? error.message : String(error)}`, { error });
     return 'failed';
   }

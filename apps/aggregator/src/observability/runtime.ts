@@ -26,12 +26,18 @@ export async function startObservability(prisma: PrismaClient, command: string) 
   // Failure here aborts startup, before any business work. No false healthy run.
   await prisma.pipelineRun.create({ data: { id: runId, command, revision: process.env.RAILWAY_GIT_COMMIT_SHA ?? null } });
   installLogger(logger);
-  await logger.emit('info', 'run.started', { command, deploymentId: process.env.RAILWAY_DEPLOYMENT_ID, logSpacingMs: 25, debugEnabled: !(process.env.NODE_ENV === 'production' || process.env.RAILWAY_DEPLOYMENT_ID) });
+  await logger.emit('info', 'run.started', { command, state: 'RUNNING', pid: process.pid, deploymentId: process.env.RAILWAY_DEPLOYMENT_ID, logSpacingMs: 25, debugEnabled: !(process.env.NODE_ENV === 'production' || process.env.RAILWAY_DEPLOYMENT_ID) });
+  const alive = setInterval(() => {
+    // Logger remembers persistence failures; the normal finalizer then refuses success.
+    void logger.emit('info', 'run.alive', { command, state: 'RUNNING', pid: process.pid }).catch(() => undefined);
+  }, 30_000);
+  alive.unref();
 
   let closed = false;
   const close = async (status: RunStatus | 'INTERRUPTED', extra: Record<string, unknown> = {}) => {
     if (closed) return false;
     closed = true;
+    clearInterval(alive);
     await logger.flush();
     if (status !== 'INTERRUPTED') logger.assertHealthy();
     await logger.emit(status === 'FAILED' || status === 'INTERRUPTED' ? 'error' : 'info', status === 'INTERRUPTED' ? 'run.interrupted' : 'run.completed', { command, status, ...extra, ...logger.metrics });

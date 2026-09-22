@@ -1,3 +1,4 @@
+import { exitIfPipelinePaused } from './lib/pipelinePause.js';
 import { startObservability } from './observability/runtime.js';
 import { ObservabilityUnavailableError } from './observability/logger.js';
 import { log } from './observability/logger.js';
@@ -39,6 +40,7 @@ import { validateCliArguments } from './lib/cliArguments.js';
 const command = process.argv[2] ?? 'ingest';
 try { validateCliArguments(command, process.argv.slice(3)); }
 catch (error) { await log.error('command.invalid_arguments', { message: error instanceof Error ? error.message : 'Invalid arguments', workStarted: false }); process.exit(2); }
+if (!['health-report', 'stats', 'export-companies', 'occupation-review-queue'].includes(command)) exitIfPipelinePaused(command);
 const prisma = new PrismaClient({ errorFormat: 'minimal', log: [] });
 
 // Sonde d'egress AVANT tout (hostGate, ingest, DB) — no-op sans EGRESS_PROBE=1.
@@ -127,12 +129,12 @@ try {
     // DEC-4: tell the external pinger this run happened (no-op unconfigured).
     // A completed run with source failures remains a failure signal. The
     // summary distinguishes source incidents from an interrupted process.
-    const heartbeat = await pingHeartbeat(orchestration.failed === 0 && orchestration.timedOut === 0);
+    // The common finalizer reports the terminal outcome for every operational command.
 
     // SourceRun already persists each incident. Dumping hundreds of nested
     // records exceeded Railway's 500-lines/s limit and hid the final outcome.
     await log.info('ingest.completed', { command,
-      ...summarizeOrchestration(orchestration), geo, alerted, indexing, heartbeat });
+      ...summarizeOrchestration(orchestration), geo, alerted, indexing });
     if (orchestration.failed > 0 || orchestration.timedOut > 0) {
       await log.error('command.failed', `[orchestrator] ${orchestration.failed} failed, ${orchestration.timedOut} timed out: ${orchestration.failures.join(', ')}`);
       process.exitCode = 1;
@@ -295,6 +297,11 @@ try {
   try {
     try { await closeBrowser(); }
     catch (error) { fatalFailure = true; process.exitCode = 1; await log.error('browser.cleanup_failed', { error }); }
+    if (observation && !['health-report', 'stats', 'export-companies', 'occupation-review-queue'].includes(command)) {
+      const heartbeat = await pingHeartbeat(!fatalFailure && !process.exitCode);
+      await log.info('pipeline.heartbeat', { heartbeat, command });
+      if (heartbeat === 'failed') process.exitCode = 1;
+    }
     await observation?.finish(fatalFailure ? 'FAILED' : process.exitCode ? 'COMPLETED_WITH_ERRORS' : 'COMPLETED');
   } catch (error) {
     process.exitCode = 1;

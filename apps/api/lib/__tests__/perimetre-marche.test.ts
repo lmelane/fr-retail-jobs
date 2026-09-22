@@ -127,13 +127,13 @@ describe.skipIf(!enabled)('la recherche est bornée par le périmètre (lot 6)',
     const gb = await chercher('GB', {}, AUTRE_SEULE);
     expect(gb.perimetre.langueDesLibelles).toBe('en');
     expect(projeterListe(gb).jobs[0]).toMatchObject({ employmentTermLabel: 'Permanent', workTimeLabel: 'Full-time', countryLabel: 'Ireland' });
-    // Français nommément : le marché belge (fr-BE), et l'allemand dont la langue n'a pas de catalogue.
+    // Chaque marché suit désormais son catalogue de langue réellement servi.
     const be = await chercher('BE', {}, AUTRE_SEULE);
     expect(be.perimetre.langueDesLibelles).toBe('fr');
     expect(projeterListe(be).jobs.map((j) => j.employmentTermLabel).sort()).toEqual(['CDD', 'CDI']);
     const de = await chercher('DE', {}, AUTRE_SEULE);
-    expect(de.perimetre).toMatchObject({ localeParDefaut: 'de-DE', langueDesLibelles: 'fr' });
-    expect(projeterListe(de).jobs[0].countryLabel).toBe('Autriche');
+    expect(de.perimetre).toMatchObject({ localeParDefaut: 'de-DE', langueDesLibelles: 'de' });
+    expect(projeterListe(de).jobs[0].countryLabel).toBe('Österreich');
   });
 
   it('un pays sans marché mesuré est un périmètre servi seul, sans facettes natives — le stock hors marchés n’est pas invisible', async () => {

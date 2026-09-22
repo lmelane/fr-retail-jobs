@@ -1,3 +1,4 @@
+import { assertPipelineRunning } from '../lib/pipelinePause.js';
 import type { PrismaClient, AtsType } from '@prisma/client';
 import { bindSourceRevision, type SourceBinding } from '../connectors/sourceRevision.js';
 import { randomUUID } from 'node:crypto';
@@ -18,6 +19,7 @@ import { lockSourceWrites } from '../lib/writeLocks.js';
 
 export async function captureExtraction(db: PrismaClient, sourceKey: string, config: Record<string, unknown>,
   runId: string | undefined, work: (config: Record<string, unknown>) => Promise<AdapterResult>, sourceKind?: AtsType, binding?: SourceBinding): Promise<AdapterResult & { captureBatchId: string }> {
+  assertPipelineRunning();
   const settings = captureConfig(config);
   const expected = binding ? Object.freeze({ ...binding }) : undefined;
   const { batch, access } = await db.$transaction(async tx => {

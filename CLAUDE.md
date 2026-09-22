@@ -10,6 +10,7 @@ Le produit est un agrégateur mondial du luxe, de la mode, de la beauté et du r
 - [Capture native et rétention](docs/architecture/native-capture.md).
 - [Faits issus des publications](docs/architecture/source-facts.md).
 - [Plan de reprise et validations](audits/reprise-2026-09-15/plan.md).
+- [Exploitation canari et retour arrière](docs/architecture/canary-operations.md) : worker unique, pause autoritaire, nouvelle source et répétition locale.
 - [`/emplois` multilingue](docs/architecture/emplois-e2e.md) et [Golden Path nouvelle source](docs/architecture/golden-source.md).
 
 Le code, les réponses brutes et les mesures datées doivent être vérifiés avant toute conclusion. L’ancien journal mêlait des constats historiques à des règles devenues contradictoires ; son historique reste dans Git.
@@ -26,7 +27,7 @@ La phase avance par lots validés et audités. Le CRON, le matching et la nouvel
 - `development` porte le travail en cours ; les pushes sur cette branche sont autorisés.
 - La promotion de `development` vers `main` intervient après validation de la release. Un push de développement ne vaut pas autorisation de mise en production.
 
-Les pushes sur `development` sont autorisés dans les cinq dépôts. Aucun push sur `main` ni déploiement du site, backend, back-office ou média sans validation explicite de Loïc. L’agrégateur peut être promu sur `main` lorsque ses contrôles de release, ses migrations et son retour arrière ont été vérifiés.
+Les pushes sur `development` sont autorisés dans les cinq dépôts. Aucun push sur `main` ni déploiement du site, backend, back-office ou média sans validation explicite de Loïc. L’agrégateur exige lui aussi le GO explicite de Loïc avant tout push sur `main`, déploiement, migration ou collecte de production. Un GO technique canari ne vaut pas cette autorisation.
 
 ### Transition des copies de travail
 

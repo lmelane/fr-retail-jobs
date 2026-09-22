@@ -49,6 +49,10 @@ class BoundedRefreshCommandTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             MODULE.bounded_refresh_command('run', 'mecca,autre', self.write(manifest(MODULE.REFRESH_MANIFEST_VERSION)))
 
+    def test_refuses_an_empty_scope_even_when_the_manifest_is_empty(self):
+        with self.assertRaises(ValueError):
+            MODULE.bounded_refresh_command('run', '', self.write(manifest(MODULE.REFRESH_MANIFEST_VERSION, keys=())))
+
 
 if __name__ == '__main__':
     unittest.main()

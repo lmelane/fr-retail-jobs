@@ -1,3 +1,4 @@
+import { assertPipelineRunning } from './pipelinePause.js';
 import type { Browser, BrowserContext, Response as BrowserResponse } from 'playwright';
 import { assertSourceRunning, sourceSignal } from './sourceBudget.js';
 import { createPublicBrowserProxy } from './browserProxy.js';
@@ -115,6 +116,7 @@ const wafTokens = new Map<string, Promise<string | undefined>>();
  */
 export function primeWafToken(url: string): Promise<string | undefined> {
   if (replayingResponses()) return Promise.resolve('aws-waf-token=archive-replay');
+  assertPipelineRunning();
   const key = new URL(url).origin;
   let pending = wafTokens.get(key);
   if (!pending) {
@@ -135,6 +137,7 @@ export function primeWafToken(url: string): Promise<string | undefined> {
  * 2026-09-06). Le jeton reste mémorisé par origine.
  */
 async function primeWafTokenOnce(origin: string, url: string): Promise<string | undefined> {
+  assertPipelineRunning();
   assertPublicUrl(url);
   return withHostGate(origin, async () => {
     const browser = await getBrowser();
@@ -194,6 +197,7 @@ async function primeWafTokenOnce(origin: string, url: string): Promise<string | 
 export async function fetchRenderedHtml(url: string): Promise<string> {
   const replayed = await replayResponse({ url, format: 'RENDERED_DOM' });
   if (replayed) return replayed.text();
+  assertPipelineRunning();
   // Same SSRF guard as the plain-HTTP path: the browser must not be pointed at
   // an internal target either. Chromium follows redirects itself, so we also
   // check the URL it actually landed on after navigation.

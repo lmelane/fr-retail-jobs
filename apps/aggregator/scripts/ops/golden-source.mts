@@ -1,6 +1,7 @@
 /** Une source neuve dans une base Docker neuve, via les commandes d’onboarding maintenues.
  * Usage via stack:exec : --candidate=/fichier.json --out-dir=/dossier/prive --reviewer=identifiant
  * Aucune base existante n’est effacée ; les captures restent dans un préfixe MinIO dédié. */
+import { exitIfPipelinePaused } from '../../src/lib/pipelinePause.js';
 import { PrismaClient } from '@prisma/client';
 import { spawnSync } from 'node:child_process';
 import { mkdirSync, openSync, closeSync, readFileSync, existsSync } from 'node:fs';
@@ -11,6 +12,7 @@ import { publicJobWhere } from '../../../../packages/db/availability.js';
 import { writePrivateFile, readInputJson } from '../../src/lib/privateFile.js';
 import { parseSourceCandidate } from '../../src/connectors/sourceCandidate.js';
 
+exitIfPipelinePaused('golden-source');
 const root = fileURLToPath(new URL('../../../../', import.meta.url));
 const options = new Map<string, string>();
 for (const arg of process.argv.slice(2)) {
@@ -57,9 +59,14 @@ const db=new PrismaClient({datasources:{db:{url:url.href}},errorFormat:'minimal'
 function requireFact(fact:unknown,message:string):asserts fact {if(!fact)throw new Error(message);}
 try {
   requireFact(await db.source.count()===0 && await db.job.count()===0,'La base de départ doit être vide');
-  const candidates=resolve(directory,'candidate.json');writePrivateFile(candidates,JSON.stringify([input],null,2)+'\n');
-  run('qualification',['--import','tsx','apps/aggregator/scripts/ops/source-campaign.mts',`--candidates=${candidates}`,`--out-dir=${directory}/campaign`,`--keys=${input.key}`,'--limit=1','--deadline-ms=120000',`--reviewer=${reviewer}`,'--ingest']);
-  const verdicts=JSON.parse(readFileSync(resolve(directory,'campaign/verdicts.json'),'utf8'));
+  const settings = Object.entries(registrationInput.config).map(([name,value]) => {
+    if (!['string','number','boolean'].includes(typeof value)) throw new Error('Operational Golden Path needs scalar source settings');
+    return `--setting=${name}=${value}`;
+  });
+  run('qualification',['--import','tsx','apps/aggregator/src/worker.ts','source-add',`--key=${key}`,`--name=${maison}`,`--kind=${kind}`,
+    `--careers-url=https://${careersDomain}/`,`--official-domain=${input.domain}`,`--tier=${tier}`,`--reviewer=${reviewer}`,
+    `--out-dir=${directory}/source-add`,...settings]);
+  const verdicts=JSON.parse(readFileSync(resolve(directory,'source-add/campaign/verdicts.json'),'utf8'));
   const v=verdicts[0];
   requireFact(verdicts.length===1 && v?.verdict==='QUALIFIEE','La source n’est pas qualifiée : lire le verdict privé');
   requireFact(v.etapes.enregistrement.created===true,'La source doit réellement être créée');
@@ -88,7 +95,7 @@ try {
   run('idempotence',['--import','tsx','apps/aggregator/scripts/ops/source-onboard.mts','register',candidate,'--apply',`--out=${registration}`]);
   const again=JSON.parse(readFileSync(registration,'utf8'));
   requireFact(again.created===false && again.sourceRevisionId===source.currentRevisionId && await db.source.count()===1 && await db.job.count()===publicJobs.length,'Réenregistrement non idempotent');
-  run('seconde-ingestion',['--import','tsx','apps/aggregator/src/cli.ts','ingest',`--source=${key}`,'--no-geocode']);
+  run('seconde-ingestion',['--import','tsx','apps/aggregator/src/worker.ts','ingest',`--source=${key}`,'--no-geocode']);
   const result=readFileSync(resolve(directory,'seconde-ingestion.log'),'utf8').split('\n').flatMap(line=>{try {const x=JSON.parse(line);return x.event==='command.result'?[x.data]:[];}catch{return [];}}).at(-1);
   const second=result?.sources?.[0];
   requireFact(result?.ok===true && result.sources.length===1 && second.created===0 && second.updated===publicJobs.length && second.errors===0,'Seconde ingestion non idempotente : examiner le journal et une éventuelle évolution réelle du portail');
@@ -114,6 +121,7 @@ try {
     import {writePrivateFile} from './apps/aggregator/src/lib/privateFile.ts';
     const [sourceKey,out]=process.argv.slice(1);
     try {
+      assert.equal(await prisma.directOffer.count(),0, 'DIRECT_OFFERS hors canari');
       const rows=await prisma.job.findMany({where:publicJobWhere(),select:{id:true,countryCode:true}});
       const markets=[];
       for(const market of [...new Set(rows.flatMap(r=>r.countryCode?[r.countryCode]:[]))]) {
@@ -130,7 +138,7 @@ try {
     } finally {await prisma.$disconnect();}
   `,String(key),resolve(directory,'readback.json')]);
   const readback=JSON.parse(readFileSync(resolve(directory,'readback.json'),'utf8'));
-  const proof={verdict:'PASS',database,sourceKey:key,sourceRevisionId:source.currentRevisionId,readerRevision:v.readerRevision,created:true,identity:identity.verdict,access:access.verdict,nativeReplayExact:true,ingestion:v.ingestion,secondIngestion:second,completions:finalCompletions,publicJobs:publicJobs.length,pays:[...new Set(publicJobs.map(j=>j.countryCode))],captureLinked:true,registrationIdempotent:true,ingestionIdempotent:true,firstAbsence:v.absence,readback,reviewer,at:new Date().toISOString()};
+  const proof={operationalEntrypoint:'worker source-add',directOffers:'hors canari',verdict:'PASS',database,sourceKey:key,sourceRevisionId:source.currentRevisionId,readerRevision:v.readerRevision,created:true,identity:identity.verdict,access:access.verdict,nativeReplayExact:true,ingestion:v.ingestion,secondIngestion:second,completions:finalCompletions,publicJobs:publicJobs.length,pays:[...new Set(publicJobs.map(j=>j.countryCode))],captureLinked:true,registrationIdempotent:true,ingestionIdempotent:true,firstAbsence:v.absence,readback,reviewer,at:new Date().toISOString()};
   writePrivateFile(resolve(directory,'proof.json'),JSON.stringify(proof,null,2)+'\n');
   console.log(JSON.stringify({verdict:'PASS',database,publicJobs:publicJobs.length,proof:resolve(directory,'proof.json')}));
 } finally {await db.$disconnect();}

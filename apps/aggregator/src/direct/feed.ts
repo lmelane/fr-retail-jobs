@@ -1,3 +1,4 @@
+import { assertPipelineRunning } from '../lib/pipelinePause.js';
 import type { PrismaClient } from '@prisma/client';
 import { CATALOGUE_CONTRAT_VERSION, ContratInvalideError, lireFlux, type EvenementCatalogue, type FluxCatalogue } from './contrat.js';
 import { projeterOffreDirecte } from './projection.js';
@@ -52,6 +53,7 @@ export function fluxHttp(base: string, cle: string, fetchImpl: typeof fetch = fe
   const racine = base.replace(/\/+$/, '');
   return {
     async lire(depuis, limite) {
+      assertPipelineRunning();
       let reponse: Response;
       try {
         reponse = await fetchImpl(`${racine}/api/catalogue/flux?depuis=${depuis}&limite=${limite}`, {
@@ -101,6 +103,7 @@ export async function consommerFlux(
   source: SourceFlux,
   options: { taillePage?: number; depuis?: bigint; pagesMax?: number } = {},
 ): Promise<StatsFlux> {
+  assertPipelineRunning();
   const taillePage = Math.min(Math.max(options.taillePage ?? 200, 1), 500);
   const curseur = await db.directFeedCursor.findUnique({ where: { id: CURSEUR_CATWALKS } });
   let depuis = options.depuis ?? curseur?.lastSeq ?? BigInt(0);

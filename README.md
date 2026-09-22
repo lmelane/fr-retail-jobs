@@ -10,7 +10,7 @@ Collecte des offres du luxe, de la mode, de la beauté et du retail. Les publica
 - `development` porte le travail en cours ; les pushes sur cette branche sont autorisés.
 - La promotion de `development` vers `main` intervient après validation de la release. Un push de développement ne vaut pas autorisation de mise en production.
 
-Aucun push sur `main` ni déploiement du site, backend, back-office ou média sans validation explicite de Loïc. L’agrégateur peut être promu sur `main` lorsque ses contrôles de release, ses migrations et son retour arrière ont été vérifiés.
+Aucun push sur `main` ni déploiement du site, backend, back-office ou média sans validation explicite de Loïc. L’agrégateur exige lui aussi le GO explicite de Loïc avant tout push sur `main`, déploiement, migration ou collecte de production. Un GO technique canari ne vaut pas cette autorisation.
 
 ### Transition des copies de travail
 
@@ -24,6 +24,7 @@ Les règles de travail figurent dans [CLAUDE.md](CLAUDE.md). Préserver le trava
 - [Recherche bornée par marché](docs/architecture/recherche-marche.md) : périmètre obligatoire, champ lieu, filtres refusés explicitement, inconnues non confirmées, contrat de facettes et `GET /api/marches`.
 - [Parcours unique des sources](docs/architecture/source-onboarding.md) : découverte, enregistrement, captures HTTP des preuves, collecte native et activation.
 - [Validation multilingue `/emplois`](docs/architecture/emplois-e2e.md) : chaîne locale de répétition et tests navigateur.
+- [Exploitation canari et retour arrière](docs/architecture/canary-operations.md) : worker unique, pause autoritaire, nouvelle source et répétition locale.
 - [Golden Path nouvelle source](docs/architecture/golden-source.md) : base neuve, qualification, deux ingestions, rejeu et lecture API.
 - [État vérifié et exploitation](apps/aggregator/README.md).
 - [Stack locale complète](docs/stack-locale.md) : catalogue, API, backend et site de test sur ce poste (`npm run stack:prepare`, `stack:start`, `stack:verify`, `stack:stop`, `stack:reset`), données synthétiques isolées, aucune écriture de production.

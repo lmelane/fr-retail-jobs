@@ -1,3 +1,4 @@
+import { assertPipelineRunning } from '../lib/pipelinePause.js';
 import { canonicalIdContract } from './canonicalIdContract.js';
 import { fetchJobaffinityWordpressJobs } from './adapters/jobaffinityWordpress.js';
 import { fetchFlatchrJobs } from './adapters/flatchr.js';
@@ -58,6 +59,7 @@ function toResult(value: NormalizedJob[] | AdapterResult): AdapterResult {
 }
 
 export async function fetchAtsJobs(type: AtsType, config: Record<string, unknown>): Promise<AdapterResult> {
+  assertPipelineRunning();
   const result = await dispatch(type, config);
   return normalizeAdapterResult(result);
 }

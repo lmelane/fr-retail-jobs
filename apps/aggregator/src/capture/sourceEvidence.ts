@@ -1,3 +1,4 @@
+import { assertPipelineRunning } from '../lib/pipelinePause.js';
 import { Prisma, type PrismaClient } from '@prisma/client';
 import { randomUUID } from 'node:crypto';
 import { KIND_TO_ATS } from '../ats/catalogKinds.js';
@@ -82,6 +83,7 @@ export async function captureSourceEvidence(db: PrismaClient, sourceKey: string,
   options = Object.freeze({ ...options });
   if (!['SOURCE_IDENTITY', 'SOURCE_ACCESS'].includes(options.purpose) || !options.revisionId ||
     !Number.isSafeInteger(options.deadlineMs) || options.deadlineMs < 1 || options.deadlineMs > 2_147_483_647) throw new Error('Invalid source evidence capture request');
+  assertPipelineRunning();
   const initialUrl = evidenceUrl(options.url);
   const source = await readIdentitySource(db, sourceKey);
   if (!source) throw new Error('Registered source required for evidence capture');

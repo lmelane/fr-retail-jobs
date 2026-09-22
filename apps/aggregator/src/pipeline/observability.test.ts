@@ -1,5 +1,5 @@
 import '../test/setup-integration.js';
-import { afterAll, expect, it } from 'vitest';
+import { afterAll, expect, it, vi } from 'vitest';
 import { PrismaClient } from '@prisma/client';
 import { startObservability } from '../observability/runtime.js';
 import { installLogger, log, OperationalLogger } from '../observability/logger.js';
@@ -46,4 +46,19 @@ it('closes a run as INTERRUPTED when the container is stopped, once, and never a
   // A later finish() does not reopen or overwrite the interruption.
   await run.finish('COMPLETED');
   expect((await prisma.pipelineRun.findUniqueOrThrow({ where: { id: run.runId } })).status).toBe('INTERRUPTED');
+});
+
+it('persists process liveness while running and stops heartbeats after termination', async () => {
+  vi.useFakeTimers({ toFake: ['setInterval', 'clearInterval'] });
+  try {
+    const run = await startObservability(prisma, 'integration-observability-alive'); ids.push(run.runId);
+    await vi.advanceTimersByTimeAsync(30_000);
+    await run.logger.flush();
+    const alive = await prisma.pipelineEvent.findMany({ where: { runId: run.runId, event: 'run.alive' } });
+    expect(alive).toHaveLength(1);
+    expect(alive[0].payload).toMatchObject({ state: 'RUNNING', pid: process.pid });
+    await run.finish('COMPLETED');
+    await vi.advanceTimersByTimeAsync(60_000);
+    expect(await prisma.pipelineEvent.count({ where: { runId: run.runId, event: 'run.alive' } })).toBe(1);
+  } finally { vi.useRealTimers(); }
 });

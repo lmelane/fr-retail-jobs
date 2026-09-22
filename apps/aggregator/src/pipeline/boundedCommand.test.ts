@@ -3,6 +3,7 @@ import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { writeFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
+import { runInNewContext } from 'node:vm';
 import { REFRESH_MANIFEST_VERSION } from './refreshManifest.js';
 
 /**
@@ -34,9 +35,9 @@ describe('bounded-command — la commande de démarrage d\'une ingestion bornée
     expect(cmd).toContain(`INGEST_ONLY_KEYS=${keys} `);
   });
 
-  it('retire les canaux d\'alerte de l\'exécution : ils sont testés au préflight, pas émis par un run partiel', () => {
-    expect(cmd).toContain('-u BREVO_API_KEY');
-    expect(cmd).toContain('-u HEALTHCHECK_PING_URL');
+  it('conserve les canaux d\'alerte et désactive seulement l\'indexation Google', () => {
+    expect(cmd).not.toContain('-u BREVO_API_KEY');
+    expect(cmd).not.toContain('-u HEALTHCHECK_PING_URL');
     expect(cmd).toContain('-u GOOGLE_INDEXING_CREDENTIALS');
   });
 
@@ -111,15 +112,96 @@ describe('bounded-refresh-command — le refresh consomme le manifeste', () => {
     expect(cmd).toContain('catch(error)');
   });
 
-  it('retire les canaux d\'alerte de l\'exécution', () => {
-    expect(cmd).toContain('-u BREVO_API_KEY');
-    expect(cmd).toContain('-u HEALTHCHECK_PING_URL');
+  it('conserve les canaux d\'alerte et désactive seulement l\'indexation Google', () => {
+    expect(cmd).not.toContain('-u BREVO_API_KEY');
+    expect(cmd).not.toContain('-u HEALTHCHECK_PING_URL');
+    expect(cmd).toContain('-u GOOGLE_INDEXING_CREDENTIALS');
   });
 
   it('refuse un manifeste d\'une version antérieure : il ne nomme pas sa capture attestante', () => {
     const stale = resolve('/tmp', `p7-manifest-stale-${process.pid}.json`);
     writeFileSync(stale, JSON.stringify({ version: REFRESH_MANIFEST_VERSION - 1, planHash: 'a'.repeat(64), allowedSourceKeys: ['mecca'], entries: [] }));
     expect(() => execFileSync('python3', [REFRESH_SCRIPT, 'p7-test', 'mecca', stale], { encoding: 'utf8', stdio: 'pipe' })).toThrow(/Unsupported refresh manifest/);
+  });
+});
+
+function commandArgs(command: string): string[] {
+  return JSON.parse(execFileSync('python3', ['-c', 'import json,shlex,sys;print(json.dumps(shlex.split(sys.stdin.read())))'],
+    { input: command, encoding: 'utf8' })) as string[];
+}
+
+/** Execute the generated control flow with inert boundaries: no Prisma, transport or heartbeat network. */
+async function executeGenerated(command: string, mode: 'success' | 'partial' | 'throw' | 'startup-error' | 'paused') {
+  const events: string[] = [];
+  const processState = { exitCode: 0 };
+  const paused = new Error('paused');
+  const body = commandArgs(command).at(-1)!.replace(/import \{[^}]+\} from "[^"]+"; /g, '');
+  const result = { failed: mode === 'partial' ? 1 : 0, timedOut: 0, refused: mode === 'partial' ? 1 : 0 };
+  const operation = async () => {
+    events.push('operation');
+    if (mode === 'throw') throw new Error('operation failed');
+    return result;
+  };
+  try {
+    await runInNewContext(`(async () => { ${body} })()`, {
+      process: processState,
+      exitIfPipelinePaused: () => { events.push('pause-check'); if (mode === 'paused') throw paused; },
+      PrismaClient: class { constructor() { events.push('database'); } async $disconnect() { events.push('disconnect'); } },
+      startObservability: async () => {
+        events.push('start');
+        if (mode === 'startup-error') throw new Error('observability failed');
+        return { finish: async (status: string) => { events.push(`finish:${status}`); } };
+      },
+      ingestAllBySource: operation, runRefresh: operation,
+      loadRefreshManifest: async () => { events.push('manifest'); return { entries: [] }; },
+      pingHeartbeat: async (ok: boolean) => { events.push(`heartbeat:${ok}`); return 'pinged'; },
+      log: { info: async (event: string) => { events.push(`log:${event}`); }, error: async () => {} },
+      closeBrowser: async () => { events.push('close-browser'); },
+    });
+  } catch (error) { if (error !== paused) throw error; }
+  return { events, exitCode: processState.exitCode };
+}
+
+describe.each(['ingest', 'refresh'] as const)('bounded %s — pause et résultat observé', kind => {
+  function command(keys = 'mecca', runName = 'bounded-test') {
+    if (kind === 'ingest') return build(runName, keys);
+    const file = resolve('/tmp', `bounded-control-${process.pid}.json`);
+    writeFileSync(file, JSON.stringify({ version: REFRESH_MANIFEST_VERSION, planHash: 'a'.repeat(64), allowedSourceKeys: keys ? keys.split(',') : [], entries: [] }));
+    return execFileSync('python3', [REFRESH_SCRIPT, runName, keys, file], { encoding: 'utf8', stdio: 'pipe' });
+  }
+
+  it('arrête une pause avant Prisma, observabilité, manifeste, collecte et heartbeat', async () => {
+    expect((await executeGenerated(command(), 'paused')).events).toEqual(['pause-check']);
+  });
+
+  it.each(['success', 'partial', 'throw'] as const)('rapporte exactement une fois le résultat terminal %s', async mode => {
+    const { events, exitCode } = await executeGenerated(command(), mode);
+    const ok = mode === 'success';
+    const finish = mode === 'throw' ? 'FAILED' : ok ? 'COMPLETED' : 'COMPLETED_WITH_ERRORS';
+    expect(exitCode).toBe(ok ? 0 : 1);
+    expect(events.filter(event => event.startsWith('heartbeat:'))).toEqual([`heartbeat:${ok}`]);
+    expect(events.indexOf(`finish:${finish}`)).toBeLessThan(events.indexOf(`heartbeat:${ok}`));
+    expect(events).toContain('log:heartbeat.completed');
+    expect(events.at(-1)).toBe('disconnect');
+  });
+
+  it('signale aussi un échec de démarrage sans lancer le travail', async () => {
+    const { events, exitCode } = await executeGenerated(command(), 'startup-error');
+    expect(exitCode).toBe(1);
+    expect(events).not.toContain('operation');
+    expect(events).toContain('heartbeat:false');
+    expect(events.at(-1)).toBe('disconnect');
+  });
+
+  it('refuse une allowlist vide qui élargirait le passage à tout le registre', () => {
+    expect(() => command('')).toThrow();
+  });
+
+  it('préserve les clés et le nom de run comme données shell et JavaScript', () => {
+    const keys = 'source;echo unsafe';
+    const args = commandArgs(command(keys, 'run"; throw new Error("injected"); //'));
+    expect(args).toContain(`${kind === 'ingest' ? 'INGEST' : 'REFRESH'}_ONLY_KEYS=${keys}`);
+    expect(execFileSync('node', ['--check', '--input-type=module'], { input: args.at(-1)!, encoding: 'utf8' })).toBe('');
   });
 });
 

@@ -8,9 +8,9 @@ cassée qui se déploie quand même produirait un conteneur qui échoue APRÈS a
 Ce que la commande garantit, et qui n'est pas cosmétique :
   · `INGEST_ONLY_KEYS=<clés>` — le périmètre, porté par la commande elle-même, donc visible dans le manifeste
     du déploiement, donc vérifiable par la garde d'exécution avant tout lancement ;
-  · `env -u BREVO_API_KEY -u HEALTHCHECK_PING_URL -u GOOGLE_INDEXING_CREDENTIALS` — les canaux d'alerte sont
-    retirés de l'exécution : ils ont été TESTÉS au préflight, et un digest émis par un run de 9 sources
-    annoncerait faussement l'état des 431 autres. L'indexation Google est retirée pour la même raison ;
+  · `PIPELINE_PAUSED` est vérifié avant la base et l'observabilité, comme pour toute collecte ;
+  · les canaux d'alerte restent disponibles. Le heartbeat annonce le résultat terminal de ce passage ;
+    aucun digest global n'est calculé. Seule l'indexation Google est désactivée ;
   · `ingestAllBySource` appelé directement — le même point d'entrée que la production, sans le refresh, sans
     le snapshot, sans le geocode final : une ingestion, et rien d'autre ;
   · un `PipelineRun` nommé, ouvert et FERMÉ dans tous les cas, y compris en erreur — sans quoi la garde de
@@ -29,6 +29,7 @@ Ce que la commande garantit, et qui n'est pas cosmétique :
 
 usage: bounded-command.py <run-name> <keys,comma> [concurrence] [--stop-on-first-429]
 """
+import json
 import shlex
 import sys
 
@@ -43,15 +44,22 @@ SCRIPT = (
     'import {{log}} from "./apps/aggregator/src/observability/logger.ts"; '
     'import {{ingestAllBySource}} from "./apps/aggregator/src/pipeline/ingestOrchestrator.ts"; '
     'import {{closeBrowser}} from "./apps/aggregator/src/lib/browser.ts"; '
+    'import {{exitIfPipelinePaused}} from "./apps/aggregator/src/lib/pipelinePause.ts"; '
+    'import {{pingHeartbeat}} from "./apps/aggregator/src/pipeline/heartbeat.ts"; '
+    'exitIfPipelinePaused({run_name}); '
     'const p=new PrismaClient({{log:[]}}); '
-    'const run=await startObservability(p,"{run_name}"); '
+    'let run; let ok=false; '
     'try {{'
+    'run=await startObservability(p,{run_name}); '
     'const result=await ingestAllBySource(p); '
     'await log.info("ingest.completed",result); '
-    'await run.finish(result.failed||result.timedOut?"COMPLETED_WITH_ERRORS":"COMPLETED");'
+    'const failed=Boolean(result.failed||result.timedOut); if(failed)process.exitCode=1; '
+    'await run.finish(failed?"COMPLETED_WITH_ERRORS":"COMPLETED"); ok=!failed;'
     '}} catch(error) {{'
-    'process.exitCode=1; await log.error("command.failed",{{error}}); await run.finish("FAILED");'
-    '}} finally {{await closeBrowser(); await p.$disconnect();}}'
+    'process.exitCode=1; await log.error("command.failed",{{error}}); if(run)await run.finish("FAILED");'
+    '}} finally {{try {{const heartbeat=await pingHeartbeat(ok); '
+    'await log.info("heartbeat.completed",{{ok,heartbeat}}); '
+    '}} finally {{try {{await closeBrowser();}} finally {{await p.$disconnect();}}}}}}'
 )
 
 
@@ -74,10 +82,12 @@ def concurrency_clause(concurrency: str | None) -> str:
 
 def bounded_command(run_name: str, keys: str, concurrency: str | None = None,
                     stop_on_first_429: bool = False) -> str:
-    body = SCRIPT.format(run_name=run_name)
+    if not keys.strip() or any(not key.strip() for key in keys.split(',')):
+        raise ValueError('At least one non-empty source key is required')
+    body = SCRIPT.format(run_name=json.dumps(run_name))
     return (
-        'env -u BREVO_API_KEY -u GOOGLE_INDEXING_CREDENTIALS -u HEALTHCHECK_PING_URL '
-        f'EGRESS_PROBE=0 INGEST_ONLY_KEYS={keys} ' + concurrency_clause(concurrency) +
+        'env -u GOOGLE_INDEXING_CREDENTIALS '
+        f'EGRESS_PROBE=0 INGEST_ONLY_KEYS={shlex.quote(keys)} ' + concurrency_clause(concurrency) +
         ('P8_STOP_ON_FIRST_429=1 ' if stop_on_first_429 else '') +
         'node --import tsx --input-type=module -e ' + shlex.quote(body)
     )

@@ -14,8 +14,8 @@
 #     → contrôle final : crons gelés, aucune variable de périmètre résiduelle
 #
 # Ce qui n'est JAMAIS fait ici : aucun refresh, aucun dégel de cron, aucune pose de REFRESH_ONLY_KEYS.
-# `PIPELINE_PAUSED` n'est pas touché : la commande bornée n'est pas le point d'entrée du cron, elle appelle
-# directement l'orchestrateur — la pause ne la concerne pas et reste donc en place pour les crons.
+# PIPELINE_PAUSED est autoritaire aussi pour les commandes bornées. Ce script ne la désactive pas ;
+# le dégel du seul service de canari exige une autorisation distincte et un calendrier toujours gelé.
 #
 # usage: bounded-ingest.sh <commit-sha40> <keys,comma> [--concurrency=<n>] [--skip-backup --dump=<path>]
 #

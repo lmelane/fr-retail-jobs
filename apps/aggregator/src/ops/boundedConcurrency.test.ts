@@ -88,11 +88,12 @@ describe('commande bornée — la concurrence est portée par la commande', () =
     expect(src).toContain("process.env.P8_STOP_ON_FIRST_429 === '1'");
   });
 
-  it('les canaux d\'alerte restent retirés, quelle que soit la concurrence', () => {
+  it('les canaux d\'alerte restent disponibles, quelle que soit la concurrence', () => {
     const cmd = build('run-b', KEYS, '6');
-    for (const v of ['BREVO_API_KEY', 'GOOGLE_INDEXING_CREDENTIALS', 'HEALTHCHECK_PING_URL']) {
-      expect(cmd).toContain(`-u ${v}`);
+    for (const v of ['BREVO_API_KEY', 'HEALTHCHECK_PING_URL']) {
+      expect(cmd).not.toContain(`-u ${v}`);
     }
+    expect(cmd).toContain('-u GOOGLE_INDEXING_CREDENTIALS');
   });
 
   it('l\'orchestrateur lit bien CETTE variable — le nom n\'est pas recopié de mémoire', () => {

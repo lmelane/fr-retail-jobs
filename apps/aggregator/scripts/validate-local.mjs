@@ -84,6 +84,7 @@ try {
     ['prisma', 'generate', '--schema', 'packages/db/prisma/schema.prisma'],
     ['prisma', 'migrate', 'deploy', '--schema', 'packages/db/prisma/schema.prisma'],
   ]) await run('npx', ['--no-install', ...args], { env });
+  await run(process.execPath, ['--test', 'apps/aggregator/scripts/ops/tests/pipeline-pause.test.mjs']);
   for (const args of [
     ['run', 'check:layout', '-w', '@catwalks/aggregator'], ['run', 'typecheck'],
     ['run', 'test', '-w', '@catwalks/aggregator'], ['run', 'test', '-w', '@catwalks/api'],

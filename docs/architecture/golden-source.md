@@ -40,7 +40,7 @@ Le lanceur refuse toute base parente autre que `catwalks_stack_catalogue` sur lo
 ## Ce que PASS prouve
 
 1. Toutes les migrations s’appliquent sur une base vide, sans semer une source fictive.
-2. Le candidat est réellement créé, puis qualifié par `source-campaign` et les fonctions de `source-onboard` : identité VERIFIED, accès ALLOWED, collecte native et rejeu exact.
+2. Le candidat est réellement créé via `worker source-add` (définition typée générée par le témoin), puis qualifié par `source-campaign` et les fonctions de `source-onboard` : identité VERIFIED, accès ALLOWED, collecte native et rejeu exact.
 3. Une première ingestion publie toutes ses sorties : admission, fin immuable, zéro retenue/échec/exclusion, et liens offre → capture → sortie.
 4. Le rejeu hors réseau de cette ingestion est validé.
 5. Réenregistrer le même candidat conserve sa source et sa révision.
@@ -52,7 +52,9 @@ Le test d’idempotence suppose un portail stable entre ses deux collectes rappr
 
 ## Lecture et limites
 
-`proof.json` contient le lecteur, les identifiants d’admission/fin, les compteurs, la lecture API et le verdict d’absence. `environment.json` identifie la base et le préfixe d’archive sans mot de passe. Chaque étape conserve son journal ; une erreur interrompt le parcours et laisse les preuves inspectables. Après conservation du bilan, supprimer uniquement les bases temporaires identifiées de cette exécution, jamais une base existante de la stack ou de répétition.
+`proof.json` contient le lecteur, les identifiants d’admission/fin, les compteurs, la lecture API et le verdict d’absence. Le JSON candidat est une fixture du témoin ; en exploitation, utiliser la commande typée [source-add](canary-operations.md), sans fabriquer de fichier.
+
+`environment.json` identifie la base et le préfixe d’archive sans mot de passe. Chaque étape conserve son journal ; une erreur interrompt le parcours et laisse les preuves inspectables. Après conservation du bilan, supprimer uniquement les bases temporaires identifiées de cette exécution, jamais une base existante de la stack ou de répétition.
 
 Une première collecte ne prouve aucune absence. Une seconde collecte complète peut devenir attestante sans constater de disparition. Le témoin ne force pas une fermeture et ne simule pas une disparition sur le portail réel. Un pays absent du RAW reste inconnu : l’annonce n’entre pas artificiellement dans un marché localisé.
 

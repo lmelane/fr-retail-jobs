@@ -1,3 +1,5 @@
+import { exitIfPipelinePaused } from '../../src/lib/pipelinePause.js';
+import { campaignArguments, selectCandidates } from '../../src/onboarding/campaignArguments.js';
 /**
  * Campagne de qualification par vague (lot F3). Pour chaque candidat d'un export privé du registre
  * (clé, Maison, famille, configuration, domaine carrière, palier, domaine officiel de la Maison), le lanceur
@@ -26,15 +28,18 @@
  * Le lanceur n'invente aucune décision : les énoncés sont factuels (page, lien, requêtes, robots), les périmètres et
  * surfaces d'accès sont dérivés des requêtes observées par des règles nommées (`accessScopeDerivation`) et l'énoncé dit ce
  * qu'un préfixe couvre au-delà de l'observé, le réviseur est nommé, et chaque décision reste liée à la révision de la
- * source et au lecteur courant. Il est rejouable et
- * reprend où il s'est arrêté (`--resume` lit les verdicts déjà rendus). Il s'exécute dans l'environnement voulu
+ * source et au lecteur courant. Chaque lancement réévalue ses candidats ; un ancien verdict
+ * ne remplace jamais une qualification courante. Il s’exécute dans l’environnement voulu
  * (par exemple `npm run stack:exec -- node --import tsx apps/aggregator/scripts/ops/source-campaign.mts …`).
  *
  * usage: source-campaign.mts --candidates=<export.json> --out-dir=<dossier privé> [--keys=k1,k2] [--limit=n]
- *        [--ingest] [--resume] [--deadline-ms=120000] [--reviewer=IDENTIFIANT]
+ *        [--ingest] [--deadline-ms=120000] [--reviewer=IDENTIFIANT]
  */
 import { PrismaClient } from '@prisma/client';
-import { spawnSync } from 'node:child_process';
+import { spawn } from 'node:child_process';
+import { startObservability } from '../../src/observability/runtime.js';
+import { log } from '../../src/observability/logger.js';
+import { pingHeartbeat } from '../../src/pipeline/heartbeat.js';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { loadBuffer } from 'cheerio';
@@ -62,54 +67,30 @@ type Candidat = { key: string; maison: string; kind: string; config: Record<stri
   portalScope?: 'SINGLE_BRAND' | 'MULTI_BRAND' | null; note?: string | null };
 type Verdict = { key: string; kind: string; maison: string; verdict: string; raisons: string[]; revision?: string; etapes: Record<string, unknown>;
   offres?: number; ingestion?: Record<string, unknown>; absence?: Record<string, unknown>; capacites?: Record<string, string>; readerRevision: string; dureeMs: number; evalueLe: string };
+exitIfPipelinePaused('source-campaign');
 const READER_REVISION = captureReaderRevision();
 
-const REVIEWER = process.argv.find(v => v.startsWith('--reviewer='))?.slice('--reviewer='.length).trim() || 'source-campaign';
+const options = campaignArguments(process.argv.slice(2));
+const REVIEWER = options.reviewer;
 if (REVIEWER.length > 160 || /[\r\n]/.test(REVIEWER)) throw new Error('Réviseur invalide');
 /** La surface d'un périmètre se lit dans les réponses réellement observées (type de contenu, chemin), jamais dans une constante. */
 const CAREER_LINK = /carri|career|recrut|emploi|\bjobs?\b|talent|rejoin|join|work-with|travailler|offres|opportunit/i;
 /** Chemins « carrières » usuels du domaine officiel, essayés en dernier recours pour un portail hébergé chez l'éditeur. */
 const COMMON_CAREER_PATHS = ['/careers', '/carrieres', '/recrutement', '/jobs', '/emploi', '/nous-rejoindre', '/join-us', '/karriere', '/trabaja-con-nosotros', '/lavora-con-noi'];
 const nowMs = () => new Date().toISOString();
-const arg = (name: string) => process.argv.find(v => v.startsWith(`--${name}=`))?.slice(name.length + 3);
-const flag = (name: string) => process.argv.includes(`--${name}`);
 const message = (error: unknown) => (error instanceof Error ? error.message : String(error)).replace(/\s+/g, ' ').replace(/(https?:\/\/[^\s'")?]+)\?[^\s'")]*/g, '$1?…').slice(0, 400);
 const inaccessible = (text: string) => /HTTP (?:4\d\d|5\d\d)|timeout|délai|challenge|défi|ECONN|ENOTFOUND|certificate|TLS|socket/i.test(text);
 
-const candidatesFile = arg('candidates'), outDir = arg('out-dir');
-if (!candidatesFile || !outDir) throw new Error('usage: source-campaign.mts --candidates=<export.json> --out-dir=<dossier privé> [--keys=] [--limit=] [--ingest] [--resume]');
-mkdirSync(outDir, { recursive: true, mode: 0o700 });
+const candidatesFile = options.candidates, outDir = options.outDir;
 const verdictsFile = path.join(outDir, 'verdicts.json');
-/*
- * DÉLAI DE COLLECTE — 120 s ne suffisait pas aux gros catalogues.
- *
- * Mesuré le 19/09/2026 : `adidas`, `nordstrom` et `boots` ont rendu `__TIMEOUT__` à 121 s. La cause
- * n'est pas la lenteur d'un serveur mais le NOMBRE DE REQUÊTES : workday en demande une par offre
- * (Nordstrom, 663 requêtes pour 1 333 offres ; phenom, 539 en moyenne). À ce rythme, deux minutes
- * ne laissent pas finir une énumération, et la collecte est coupée alors qu'elle se déroulait bien.
- *
- * Le délai passe à 30 minutes. Mesuré le 19/09 sur les gros groupes : L'Oréal met 649 s, Kering
- * 401 s — 15 minutes les couvraient de justesse, et perdre une collecte de 6 000 offres à trente
- * secondes près serait absurde. Le coût est nul quand une source finit vite.
- *
- * Ce n'est pas un contournement de garde-fou : la validation native,
- * l'énumération complète et les décisions d'accès restent exigées à l'identique — on laisse
- * simplement à une source volumineuse le temps d'être lue entièrement, plutôt que de la déclarer
- * inaccessible à mi-parcours.
- *
- * `--deadline-ms` reste disponible pour borner une campagne de contrôle.
- */
-const deadlineMs = Number(arg('deadline-ms') ?? 1_800_000);
-let candidats = JSON.parse(readFileSync(candidatesFile, 'utf8')) as Candidat[];
-if (arg('keys')) { const keys = new Set(arg('keys')!.split(',')); candidats = candidats.filter(c => keys.has(c.key)); }
-const previous: Verdict[] = flag('resume') && existsSync(verdictsFile) ? JSON.parse(readFileSync(verdictsFile, 'utf8')) : [];
-const done = new Set(previous.map(v => v.key));
-if (flag('resume')) candidats = candidats.filter(c => !done.has(c.key));
-if (arg('limit')) candidats = candidats.slice(0, Number(arg('limit')));
+if (existsSync(outDir)) throw new Error('Campaign output directory must be new');
+const candidats = selectCandidates(JSON.parse(readFileSync(candidatesFile, 'utf8')) as Candidat[], options);
+const deadlineMs = options.deadlineMs;
+mkdirSync(outDir, { recursive: true, mode: 0o700 });
 
 const db = new PrismaClient({ errorFormat: 'minimal', log: [] });
 const store = objectStoreConfigured() ? objectStoreFromEnv() : undefined;
-const verdicts: Verdict[] = [...previous];
+const verdicts: Verdict[] = [];
 const save = () => { writeFileSync(verdictsFile, JSON.stringify(verdicts, null, 1) + '\n', { mode: 0o600 }); };
 
 /** Les liens « carrières » de la page archivée, sur le domaine officiel seulement, dans l'ordre du document. */
@@ -281,6 +262,7 @@ async function qualifier(c: Candidat): Promise<Verdict> {
   catch (error) { raisons.push(message(error)); return rendre('BLOCAGE_EXTERNE'); }
   const source = registration.source!; const revision = source.currentRevisionId as string;
   etapes.enregistrement = { created: registration.created, status: source.status, revision };
+  if (source.status === 'PAUSED') { raisons.push('source PAUSED : reprise explicite requise'); return rendre('REFUSEE', { revision }); }
   if (source.status === 'RETIRED') { raisons.push('source RETIRED dans le registre'); return rendre('RETIREE', { revision }); }
   const domain = c.domain ?? null;
   if (!domain) {
@@ -361,11 +343,9 @@ async function qualifier(c: Candidat): Promise<Verdict> {
   try { etapes.promotion = await promoteSource(db, c.key, revision); }
   catch (error) { raisons.unshift(`promotion : ${message(error)}`); return rendre('COLLECTE_NON_VALIDEE', { revision, offres }); }
   const result = rendre('QUALIFIEE', { revision, offres });
-  if (flag('ingest')) {
-    // Tampon de sortie large : le journal d'une ingestion de mille offres dépasse le mégaoctet par défaut de spawnSync,
-    // et un résultat tronqué se lisait « ECHEC » sans motif (adidas, 1 129 offres, campagne du 17/09).
-    const run = spawnSync('npx', ['--no-install', 'tsx', 'apps/aggregator/src/cli.ts', 'ingest', `--source=${c.key}`, '--no-geocode'], { encoding: 'utf8', maxBuffer: 256 * 1024 * 1024 });
-    const output = (run.stdout + run.stderr).split('\n');
+  if (options.ingest) {
+    const run = await ingestChild(c.key);
+    const output = run.output.split('\n');
     const line = output.slice().reverse().find(l => l.includes('"event":"command.result"'));
     const data = line ? JSON.parse(line).data : null; const s = data?.sources?.[0];
     // Les motifs des refus d'écriture (porte d'identité d'employeur, etc.) sont comptés par nom d'erreur : la capacité de
@@ -395,18 +375,54 @@ async function qualifier(c: Candidat): Promise<Verdict> {
   return result;
 }
 
-console.log(`campagne : ${candidats.length} candidat(s), ${previous.length} verdict(s) déjà rendu(s)`);
+/** The child runs the normal ingestion CLI, preserves its logs and receives stop signals. */
+async function ingestChild(key: string): Promise<{ status: number; output: string }> {
+  return new Promise((resolve, reject) => {
+    const child = spawn(process.execPath, ['--import', 'tsx', 'apps/aggregator/src/cli.ts', 'ingest', `--source=${key}`, '--no-geocode'], { stdio: ['ignore', 'pipe', 'pipe'], env: process.env });
+    let output = '', oversized = false;
+    const forward = (signal: NodeJS.Signals) => { child.kill(signal); };
+    process.prependListener('SIGINT', forward); process.prependListener('SIGTERM', forward);
+    const detach = () => { process.off('SIGINT', forward); process.off('SIGTERM', forward); };
+    const receive = (data: Buffer) => {
+      if (oversized) return;
+      output += data.toString();
+      if (Buffer.byteLength(output) > 256 * 1024 * 1024) { oversized = true; child.kill('SIGTERM'); return; }
+      process.stdout.write(data);
+    };
+    child.stdout.on('data', receive); child.stderr.on('data', receive);
+    child.once('error', error => { detach(); reject(error); });
+    child.once('close', code => { detach(); resolve({ status: oversized ? 1 : code ?? 1, output }); });
+  });
+}
+
+let observation: Awaited<ReturnType<typeof startObservability>> | undefined;
+let failed = false;
 try {
-  for (const [i, c] of candidats.entries()) {
+  if (!candidats.length) throw new Error('No candidate selected; no campaign started');
+  observation = await startObservability(db, 'source-campaign');
+  for (const c of candidats) {
     let verdict: Verdict;
     try { verdict = await qualifier(c); }
     catch (error) { verdict = { key: c.key, kind: c.kind, maison: c.maison, verdict: 'BLOCAGE_EXTERNE', raisons: [`erreur non classée : ${message(error)}`], etapes: {}, readerRevision: READER_REVISION, dureeMs: 0, evalueLe: nowMs() }; }
     verdicts.push(verdict); save();
-    console.log(`${String(i + 1).padStart(3)}/${candidats.length} ${verdict.verdict.padEnd(26)} ${c.key} (${verdict.offres ?? '-'} offres, ${(verdict.dureeMs / 1000).toFixed(1)} s)${verdict.raisons.length ? ' — ' + verdict.raisons[0].slice(0, 160) : ''}`);
+    const ingestion = verdict.ingestion as { exit?: number; ok?: boolean; errors?: number } | undefined;
+    const ok = verdict.verdict === 'QUALIFIEE' && (!options.ingest || (ingestion?.exit === 0 && ingestion.ok === true && ingestion.errors === 0));
+    failed ||= !ok;
+    await log.withContext({ sourceKey: c.key }, () => log.info('source.qualification.result', { ...verdict, ok }));
   }
+  await log.info('campaign.result', { ok: !failed, count: candidats.length, readerRevision: READER_REVISION });
+} catch (error) {
+  failed = true;
+  await log.error('campaign.failed', { error });
 } finally {
-  await closeBrowser().catch(() => {}); await db.$disconnect();
+  try {
+    if (observation) {
+      const heartbeat = await pingHeartbeat(!failed);
+      await log.info('campaign.heartbeat', { heartbeat, ok: !failed });
+      // A configured but unreachable monitor is an operational failure, not silent success.
+      failed ||= heartbeat === 'failed';
+      await observation.finish(failed ? 'FAILED' : 'COMPLETED');
+    }
+  } finally { await closeBrowser().catch(() => {}); await db.$disconnect(); }
+  if (failed) process.exitCode = 1;
 }
-const totals: Record<string, number> = {};
-for (const v of verdicts) totals[v.verdict] = (totals[v.verdict] ?? 0) + 1;
-console.log('bilan :', JSON.stringify(totals), '→', verdictsFile);

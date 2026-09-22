@@ -1,3 +1,4 @@
+import { assertPipelineRunning } from '../lib/pipelinePause.js';
 import { lockOccupationTaxonomy } from '@catwalks/db/occupations';
 import { publicationJobPatch } from '../publication/presentation.js';
 import { evidenceHash } from '../lib/evidenceHash.js';
@@ -199,6 +200,7 @@ function canRefreshReactivate(job: { closedAt: Date | null; withdrawnAt: Date | 
 }
 
 export async function runRefresh(prisma: PrismaClient, options: RefreshOptions = {}): Promise<RefreshStats> {
+  assertPipelineRunning();
   const plan = await readRefreshPlan(prisma, options);
   options = plan.options;
   const manifest = options.manifest;

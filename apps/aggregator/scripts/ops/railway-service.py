@@ -98,6 +98,12 @@ def variable_names(service):
     return sorted(v.keys())
 
 
+def require_remote_pipeline_running(service):
+    """A bounded command cannot start while paused; the remote value is authoritative."""
+    if variables(service).get('PIPELINE_PAUSED') != '0':
+        raise RuntimeError('refus : PIPELINE_PAUSED distant doit être exactement 0 avant un lancement borné')
+
+
 def set_command(service, command):
     """Pose la commande de démarrage puis redéploie le commit attendu. Les deux, jamais l'une sans l'autre."""
     if service != 'aggregator':
@@ -106,6 +112,11 @@ def set_command(service, command):
     if not re.fullmatch(r'[0-9a-f]{40}', commit):
         raise RuntimeError('DEPLOY_COMMIT doit être un SHA complet de 40 caractères')
     s = SERVICES[service]
+    # Restoring the normal launcher is always permitted: that launcher respects the pause itself.
+    # A paused bounded launcher exits before creating a PipelineRun, so the shell runner could otherwise
+    # wait forever for a terminal run and leave its start-command override installed.
+    if command != s['normalCommand']:
+        require_remote_pipeline_running(service)
     api('mutation($env:String!,$service:String!,$input:ServiceInstanceUpdateInput!)'
         '{serviceInstanceUpdate(environmentId:$env,serviceId:$service,input:$input)}',
         {'env': ENV, 'service': s['id'], 'input': {'startCommand': command}})
@@ -127,6 +138,7 @@ def execute(service):
     commit = os.environ['DEPLOY_COMMIT']
     expected_keys = os.environ['INGEST_KEYS']
     s = SERVICES[service]
+    require_remote_pipeline_running(service)
     st = status(service)
     manifest = st['manifestCommand']
     if st['status'] != 'SUCCESS':

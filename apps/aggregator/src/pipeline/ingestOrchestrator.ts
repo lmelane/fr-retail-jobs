@@ -1,3 +1,4 @@
+import { assertPipelineRunning } from '../lib/pipelinePause.js';
 import { log } from '../observability/logger.js';
 import { withSourceBudget } from '../lib/sourceBudget.js';
 import type { PrismaClient } from '@prisma/client';
@@ -93,6 +94,7 @@ export function onlyRequested(keys: string[], raw = process.env.INGEST_ONLY_KEYS
 }
 
 export async function ingestAllBySource(prisma: PrismaClient): Promise<OrchestratorResult> {
+  assertPipelineRunning();
   const keys = await allSourceKeys(prisma);
   await log.info('run.sources_selected', { sources: keys.length, sourceKeys: keys, concurrency: SOURCE_CONCURRENCY, timeoutMs: PER_SOURCE_TIMEOUT_MS });
 

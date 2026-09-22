@@ -65,6 +65,88 @@ class RailwayServiceTests(unittest.TestCase):
             api.assert_not_called()
 
 
+class RailwayPauseGuardTests(unittest.TestCase):
+    commit = 'a' * 40
+    command = 'env INGEST_ONLY_KEYS=mecca node bounded-ingest'
+
+    def setUp(self):
+        self.calls = []
+        self.remote_pause = '0'
+        self.environ = patch.dict(os.environ, {
+            'DEPLOY_COMMIT': self.commit, 'INGEST_KEYS': 'mecca', 'PIPELINE_PAUSED': '0',
+        })
+        self.environ.start()
+        self.addCleanup(self.environ.stop)
+        self.api = patch.object(railway, 'api', side_effect=self.call)
+        self.api.start()
+        self.addCleanup(self.api.stop)
+
+    def call(self, query, variables):
+        self.calls.append(query)
+        if 'variables(' in query:
+            return {'variables': {'PIPELINE_PAUSED': self.remote_pause}}
+        if query.startswith('mutation'):
+            return {'ok': True}
+        return {'serviceInstance': {'startCommand': self.command, 'latestDeployment': {
+            'id': 'bounded-deployment', 'status': 'SUCCESS', 'meta': {
+                'commitHash': self.commit, 'serviceManifest': {'deploy': {'startCommand': self.command}},
+            },
+        }}}
+
+    def test_paused_missing_or_invalid_remote_value_refuses_all_bounded_mutations(self):
+        for value in ('1', None, '', 'false', ' 0', 0, False):
+            for action in ('set-command', 'execute'):
+                with self.subTest(value=value, action=action):
+                    self.calls.clear()
+                    self.remote_pause = value
+                    with self.assertRaisesRegex(RuntimeError, 'PIPELINE_PAUSED distant'):
+                        if action == 'set-command':
+                            railway.set_command('aggregator', self.command)
+                        else:
+                            railway.execute('aggregator')
+                    self.assertTrue(any('variables(' in query for query in self.calls))
+                    self.assertFalse(any(query.startswith('mutation') for query in self.calls))
+
+    def test_remote_zero_allows_bounded_mutations_after_reading_pause(self):
+        for action, expected_mutations in [('set-command', 2), ('execute', 1)]:
+            with self.subTest(action=action):
+                self.calls.clear()
+                if action == 'set-command':
+                    railway.set_command('aggregator', self.command)
+                else:
+                    railway.execute('aggregator')
+                self.assertIn('variables(', self.calls[0])
+                self.assertEqual(sum(query.startswith('mutation') for query in self.calls), expected_mutations)
+
+    def test_restore_normal_command_remains_possible_while_paused(self):
+        self.remote_pause = '1'
+        railway.set_command('aggregator', railway.SERVICES['aggregator']['normalCommand'])
+        self.assertEqual(sum(query.startswith('mutation') for query in self.calls), 2)
+
+    def test_similar_normal_command_does_not_bypass_the_pause(self):
+        self.remote_pause = '1'
+        for command in [railway.SERVICES['aggregator']['normalCommand'] + ' ', '', 'sh other-script.sh']:
+            with self.subTest(command=command):
+                with self.assertRaisesRegex(RuntimeError, 'PIPELINE_PAUSED distant'):
+                    railway.set_command('aggregator', command)
+        self.assertFalse(any(query.startswith('mutation') for query in self.calls))
+
+    def test_status_and_variable_reads_remain_available_while_paused(self):
+        self.remote_pause = '1'
+        self.assertEqual(railway.status('aggregator')['status'], 'SUCCESS')
+        self.assertEqual(railway.variables('aggregator')['PIPELINE_PAUSED'], '1')
+        self.assertEqual(railway.variable_names('aggregator'), ['PIPELINE_PAUSED'])
+        self.assertFalse(any(query.startswith('mutation') for query in self.calls))
+
+    def test_failed_remote_read_never_falls_back_to_local_environment(self):
+        with patch.object(railway, 'api', side_effect=RuntimeError('remote read unavailable')) as api:
+            for action in (lambda: railway.set_command('aggregator', self.command),
+                           lambda: railway.execute('aggregator')):
+                with self.assertRaisesRegex(RuntimeError, 'remote read unavailable'):
+                    action()
+            self.assertTrue(all(not call.args[0].startswith('mutation') for call in api.call_args_list))
+
+
 class RailwayTransportTests(unittest.TestCase):
     def test_transport_returns_only_data_and_sends_parameters_without_shell(self):
         response = MagicMock()

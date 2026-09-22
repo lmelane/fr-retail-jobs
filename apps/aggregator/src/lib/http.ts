@@ -1,3 +1,4 @@
+import { assertPipelineRunning } from './pipelinePause.js';
 import { log } from '../observability/logger.js';
 import { assertSourceRunning, sourceSignal, sourceDelay } from './sourceBudget.js';
 import { assertPublicUrl, isPublicHttpUrl, BlockedUrlError } from './ssrf.js';
@@ -130,6 +131,7 @@ export async function fetchFollowingSafely(
   // Ordinary extractions already own the host slot; observing must not acquire it twice.
   paceHops = true,
 ): Promise<Response> {
+  assertPipelineRunning();
   let current = url;
   let request: RequestInit = { ...init, headers: new Headers(init.headers) };
   for (let hop = 0; hop <= MAX_REDIRECTS; hop++) {

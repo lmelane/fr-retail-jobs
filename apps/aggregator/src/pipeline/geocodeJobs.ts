@@ -1,3 +1,4 @@
+import { assertPipelineRunning } from '../lib/pipelinePause.js';
 import type { PrismaClient } from '@prisma/client';
 import { geocodeMany, geoCacheKey } from '../geo/geocode.js';
 
@@ -21,6 +22,7 @@ export type GeocodeStats = {
 };
 
 export async function runGeocode(prisma: PrismaClient): Promise<GeocodeStats> {
+  assertPipelineRunning();
   const pending = await prisma.job.findMany({
     where: { countryCode: 'FR', isActive: true, latitude: null, location: { not: null } },
     select: { id: true, location: true },

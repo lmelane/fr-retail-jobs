@@ -38,6 +38,8 @@ jobs:
       - name: Audit des dépendances (high/critical)
         run: npm audit --audit-level=high
       - run: npx prisma generate --schema packages/db/prisma/schema.prisma
+      - name: Pause des entrypoints réels (sans base ni réseau)
+        run: node --test apps/aggregator/scripts/ops/tests/pipeline-pause.test.mjs
       - run: npx prisma migrate deploy --schema packages/db/prisma/schema.prisma
       - name: Application layout
         run: npm run check:layout -w @catwalks/aggregator
