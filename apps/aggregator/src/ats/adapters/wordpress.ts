@@ -4,6 +4,7 @@ import { htmlToPlainText } from '../../lib/html.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
 import { CRAWLER_IDENTITY } from '../../lib/crawlerIdentity.js';
 import { publisherInstant } from '../../lib/publisherInstant.js';
+import { captureObservedAt } from '../../capture/context.js';
 
 /**
  * WordPress REST — recruitment sites that publish offers as ordinary posts.
@@ -96,7 +97,7 @@ export async function fetchWordpressJobs(config: Record<string, unknown>): Promi
     const total = Number(response.headers.get('x-wp-total'));
     if (Number.isFinite(total) && total >= 0) declaredTotal = total;
     const totalPages = Number(response.headers.get('x-wp-totalpages'));
-    pageEvidence.push({ url, checkedAt: new Date().toISOString(),
+    pageEvidence.push({ url, checkedAt: captureObservedAt().toISOString(),
       sha256: createHash('sha256').update(text).digest('hex'),
       offset: (page - 1) * PAGE_SIZE,
       pagination: declaredTotal === undefined ? null

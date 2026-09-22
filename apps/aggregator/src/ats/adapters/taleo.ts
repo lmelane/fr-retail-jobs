@@ -3,6 +3,7 @@ import pLimit from 'p-limit';
 import { fetchText, fetchWithRetry, DEFAULT_DETAIL_CONCURRENCY } from '../../lib/http.js';
 import { htmlToPlainText } from '../../lib/html.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
+import { captureObservedAt } from '../../capture/context.js';
 
 /**
  * Taleo Business Edition (TBE) — portails `{pod}.tbe.taleo.net/{pod}02/ats/careers/v2/`.
@@ -156,7 +157,7 @@ export async function fetchTaleoJobs(config: Record<string, unknown>): Promise<A
        * anonyme ni aucun rejet ne peut exister ici : ce que la page sert est exactement ce qu'elle nomme.
        */
       const ids = read.jobs.map((job) => job.externalId);
-      pageEvidence.push({ url: read.url, checkedAt: new Date().toISOString(),
+      pageEvidence.push({ url: read.url, checkedAt: captureObservedAt().toISOString(),
         sha256: createHash('sha256').update(read.html).digest('hex'),
         offset: pageEvidence.length * PAGE_SIZE, pagination: null,
         ids, canonicalIds: ids, publisherCounter: '',

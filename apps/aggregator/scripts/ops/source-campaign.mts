@@ -372,7 +372,14 @@ async function qualifier(c: Candidat): Promise<Verdict> {
     const errorKinds: Record<string, number> = {};
     for (const l of output) {
       if (!l.includes('"event":"job.write_failed"') && !l.includes('"event":"source.ingest_failed"')) continue;
-      try { const error = JSON.parse(l).data?.error; const kind = [error?.name, error?.proposedName].filter(Boolean).join(':') || 'inconnu'; errorKinds[kind] = (errorKinds[kind] ?? 0) + 1; } catch { errorKinds.illisible = (errorKinds.illisible ?? 0) + 1; }
+      /*
+       * LE MOTIF, JAMAIS LA RAISON SOCIALE. `proposedName` porte le nom réel de l'employeur
+       * (`previous.name`, `current.name`) : il n'a pas sa place dans un rapport relu ailleurs, et
+       * il ne DISCRIMINE rien — sept causes distinctes se confondaient sous un même nom de Maison,
+       * ce qui rendait le tableau des refus illisible (mesuré le 2026-09-21 : 1 198 refus rangés
+       * sous 17 noms de Maison, au lieu de leurs motifs réels).
+       */
+      try { const error = JSON.parse(l).data?.error; const kind = [error?.name, error?.motif].filter(Boolean).join(':') || 'inconnu'; errorKinds[kind] = (errorKinds[kind] ?? 0) + 1; } catch { errorKinds.illisible = (errorKinds.illisible ?? 0) + 1; }
     }
     result.ingestion = { exit: run.status, ok: data?.ok ?? null, fetched: s?.fetched, created: s?.created, updated: s?.updated, errors: s?.errors, ...(Object.keys(errorKinds).length ? { errorKinds } : {}) };
     const plan = await readRefreshPlan(db, { onlyKeys: [c.key] });

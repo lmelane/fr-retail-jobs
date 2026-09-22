@@ -4,6 +4,7 @@ import { fetchJson } from '../../lib/http.js';
 import { htmlToPlainText } from '../../lib/html.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
 import { CRAWLER_IDENTITY } from '../../lib/crawlerIdentity.js';
+import { captureObservedAt } from '../../capture/context.js';
 
 /**
  * TalentView career sites (Tape à l'œil and others).
@@ -175,7 +176,7 @@ export async function fetchTalentViewJobs(
           jobs.push(job);
         }
       }
-      pageEvidence.push({ url: url.toString(), checkedAt: new Date().toISOString(),
+      pageEvidence.push({ url: url.toString(), checkedAt: captureObservedAt().toISOString(),
         sha256: createHash('sha256').update(JSON.stringify(campaigns)).digest('hex'),
         offset: (page - 1) * 10, pagination: null,
         ids: pageIds, canonicalIds: pageIds, publisherCounter: '',

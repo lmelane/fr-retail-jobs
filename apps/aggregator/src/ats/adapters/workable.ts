@@ -4,6 +4,7 @@ import { htmlToPlainText } from '../../lib/html.js';
 import { sourceDelay, assertSourceRunning } from '../../lib/sourceBudget.js';
 import { educationLevel } from '../../normalize/experience.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
+import { captureObservedAt } from '../../capture/context.js';
 
 /**
  * Workable public job board widget API.
@@ -104,7 +105,7 @@ export async function fetchWorkableJobs(config: Record<string, unknown>): Promis
         if (listed.has(row.shortcode)) stableTotal = false;
         listed.set(row.shortcode, row);
       }
-      pageEvidence.push({ url: endpoint, checkedAt: new Date().toISOString(),
+      pageEvidence.push({ url: endpoint, checkedAt: captureObservedAt().toISOString(),
         sha256: createHash('sha256').update(JSON.stringify(page)).digest('hex'),
         offset: pageEvidence.length, pagination: null,
         ids: pageIds, canonicalIds: pageIds, publisherCounter: String(page.total),
@@ -159,7 +160,7 @@ export async function fetchWorkableJobs(config: Record<string, unknown>): Promis
    * pas un contrat, et une offre produite par un chemin muet paraîtrait absente au refresh suivant.
    */
   const widgetEvidence = { url: `https://apply.workable.com/api/v1/widget/accounts/${encodeURIComponent(account)}?details=true`,
-    checkedAt: new Date().toISOString(), sha256: createHash('sha256').update(JSON.stringify(data)).digest('hex'),
+    checkedAt: captureObservedAt().toISOString(), sha256: createHash('sha256').update(JSON.stringify(data)).digest('hex'),
     offset: 0, pagination: null, ids: widgetCanonicalIds, canonicalIds: widgetCanonicalIds,
     publisherCounter: String(data.jobs.length), componentCounters: [`widgetRows=${data.jobs.length}`] };
   return { jobs: uniqueJobs, declaredTotal, rejectedRows,

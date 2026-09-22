@@ -4,6 +4,7 @@ import pLimit from 'p-limit';
 import { enrichPostingEvidence } from '../../lib/postingEvidence.js';
 import { htmlToPlainText } from '../../lib/html.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
+import { captureObservedAt } from '../../capture/context.js';
 
 /**
  * Volcanic — sites carrière hébergés (`careers.<marque>`, empreinte
@@ -144,7 +145,7 @@ export async function fetchVolcanicJobs(config: Record<string, unknown>): Promis
      * `externalId`. Une ligne déjà vue sur une page précédente reste dans la preuve de la page qui la sert —
      * le contrat compare des ensembles, et retirer un identifiant dupliqué ferait mentir la page.
      */
-    pageEvidence.push({ url, checkedAt: new Date().toISOString(),
+    pageEvidence.push({ url, checkedAt: captureObservedAt().toISOString(),
       sha256: createHash('sha256').update(JSON.stringify(data)).digest('hex'),
       offset: out.length,
       pagination: declaredTotal === undefined ? null

@@ -7,6 +7,7 @@ import { htmlToPlainText } from '../../lib/html.js';
 import { enrichPostingEvidence } from '../../lib/postingEvidence.js';
 import { assertSourceRunning } from '../../lib/sourceBudget.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
+import { captureObservedAt } from '../../capture/context.js';
 
 const DOCUMENTATION = 'https://community.visma.com/t5/Kennisbank-Youforce-Werving/Opbouw-XML-datafeed/tac-p/660657/highlight/true';
 type Xml = Record<string, any>;
@@ -94,7 +95,7 @@ export async function fetchEasycruitJobs(config: Record<string, unknown>): Promi
       termination:'FULL_XML_DOCUMENT',blockers:enumerationBlockers(issues),issues,
       // Une ligne vue sans `@id` exploitable interdit de déclarer un identifiant historique absent.
       canonicalAbsenceProofUsable:anonymousRows===0,
-      pageEvidence:[{url:endpoint,checkedAt:new Date().toISOString(),sha256:createHash('sha256').update(xml).digest('hex'),offset:0,
+      pageEvidence:[{url:endpoint,checkedAt:captureObservedAt().toISOString(),sha256:createHash('sha256').update(xml).digest('hex'),offset:0,
         ids:[...seen],canonicalIds,pagination:null,publisherCounter:'NOT_PUBLISHED',
         componentCounters:[`xmlVacancies=${vacancies.length}`,`uniqueIds=${seen.size}`,`canonicalIds=${canonicalIds.length}`,`anonymousRows=${anonymousRows}`]}]}};
 }

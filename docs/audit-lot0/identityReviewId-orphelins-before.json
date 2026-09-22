@@ -1,0 +1,1116 @@
+{
+  "objet": "Etat AVANT neutralisation des references identityReviewId orphelines",
+  "avertissement": "Trace d'audit du nettoyage. NE RECONSTITUE PAS les EmployerIdentityReview disparues.",
+  "date": "2026-09-22",
+  "commit": "78a5a6b3f8a5c39d9cf64d889e1fc97870496e60",
+  "base": "production (railway), lecture seule via catwalks_audit",
+  "requete": "SELECT c.id, c.name, c.\"identityReviewId\", c.\"mergedIntoId\",\n       (SELECT count(*) FROM \"Job\" j WHERE j.\"companyId\" = c.id) AS jobs,\n       (SELECT count(*) FROM \"Job\" j WHERE j.\"companyId\" = c.id AND j.\"isActive\" AND j.\"mergedIntoId\" IS NULL) AS jobs_actifs\n  FROM \"Company\" c\n WHERE c.\"identityReviewId\" IS NOT NULL\n   AND NOT EXISTS (SELECT 1 FROM \"EmployerIdentityReview\" r WHERE r.id = c.\"identityReviewId\")\n ORDER BY c.name",
+  "nombre_attendu": 136,
+  "nombre_mesure": 136,
+  "companies": [
+    {
+      "id": "cmtt3jq6q00003nx9kegbxkdh",
+      "name": "Adopt Parfums",
+      "identityReviewId": "lot1-migrate-reviewed-legacy-aliases-20260909-v1",
+      "mergedIntoId": null,
+      "jobs": 129,
+      "jobsActifs": 129
+    },
+    {
+      "id": "cr655b6e40636c40426a08b97c",
+      "name": "Anthropologie",
+      "identityReviewId": "20260909-LOT4-URBN-SUBLABEL-ALIASES-v2",
+      "mergedIntoId": null,
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cr5537a7fe130986710832d6a4",
+      "name": "Anthro Weddings",
+      "identityReviewId": "20260909-LOT4-PORTAL-OWNER-URBN-SUBLABELS-v2",
+      "mergedIntoId": null,
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cra1253949509f937aa859b890",
+      "name": "Aptar Group",
+      "identityReviewId": "20260909-LOT4-PORTAL-OWNERS-OTB-APTAR-v1",
+      "mergedIntoId": null,
+      "jobs": 221,
+      "jobsActifs": 221
+    },
+    {
+      "id": "cmtk1xdjg0176nv2b70ayaadr",
+      "name": "Aubade",
+      "identityReviewId": "lot1-promod-aubade-20260909-v1",
+      "mergedIntoId": null,
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtlyiz3m076kqf5kegty1y42",
+      "name": "Aubade Paris",
+      "identityReviewId": "lot1-promod-aubade-20260909-v1",
+      "mergedIntoId": "cmtk1xdjg0176nv2b70ayaadr",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cr3a14f8ab245fd4f80eb4766c",
+      "name": "Bergdorf Goodman",
+      "identityReviewId": "20260910-LOT4-PORTAL-OWNER-SAKS-v1",
+      "mergedIntoId": null,
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtn5a7sg053rqq5ltoj3513x",
+      "name": "Bizzbee",
+      "identityReviewId": "lot1-bzb-business-rebrand-postings-20260909-v1",
+      "mergedIntoId": "cmtlyiig305w5qf5kntqzz9kw",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtt64q3n00073nkj2m32mmvb",
+      "name": "Blackstore",
+      "identityReviewId": "lot1-migrate-reviewed-legacy-aliases-20260909-v1",
+      "mergedIntoId": null,
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cr422272cdccc34762d392a034",
+      "name": "Brave Kid",
+      "identityReviewId": "20260909-LOT4-PORTAL-OWNERS-OTB-APTAR-v1",
+      "mergedIntoId": null,
+      "jobs": 1,
+      "jobsActifs": 1
+    },
+    {
+      "id": "cmtlyiig305w5qf5kntqzz9kw",
+      "name": "BZB",
+      "identityReviewId": "lot1-bzb-business-rebrand-postings-20260909-v1",
+      "mergedIntoId": null,
+      "jobs": 14,
+      "jobsActifs": 14
+    },
+    {
+      "id": "cr5c9308138c86e24341e51b89",
+      "name": "Claudie Pierlot",
+      "identityReviewId": "lot1-smcp-parent-relations-20260909-v1",
+      "mergedIntoId": null,
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtpuwrrk3kpdl35mc7vg5ben",
+      "name": "Coach",
+      "identityReviewId": "20260910-LOT4-TAPESTRY-BRAND-FACET-ALIASES-v6",
+      "mergedIntoId": null,
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtrtc5oj3nbhpg5mdg9l4gze",
+      "name": "Coach Consulting Dongguan",
+      "identityReviewId": "20260910-LOT4-COACH-ENTITY-SHELLS-v7",
+      "mergedIntoId": "cmtpuwrrk3kpdl35mc7vg5ben",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtp6ox0y2vn1qq4zlamx8wkr",
+      "name": "Coach Consulting Dongguan Co. Ltd",
+      "identityReviewId": "20260910-LOT4-COACH-ENTITY-SHELLS-v7",
+      "mergedIntoId": "cmtpuwrrk3kpdl35mc7vg5ben",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtrtc43r3mvcpg5mmvi7euyk",
+      "name": "Coach Hong Kong Limited - Macau Branch",
+      "identityReviewId": "20260910-LOT4-COACH-ENTITY-SHELLS-v7",
+      "mergedIntoId": "cmtpuwrrk3kpdl35mc7vg5ben",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtrtc42p3muspg5me6xho7w7",
+      "name": "Coach Korea",
+      "identityReviewId": "20260910-LOT4-COACH-ENTITY-SHELLS-v7",
+      "mergedIntoId": "cmtpuwrrk3kpdl35mc7vg5ben",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtp6ow4s2v8xqq4zzbsp0n0s",
+      "name": "Coach Korea Limited",
+      "identityReviewId": "20260910-LOT4-COACH-ENTITY-SHELLS-v7",
+      "mergedIntoId": "cmtpuwrrk3kpdl35mc7vg5ben",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtrtcg0g3q1mpg5ma1thlkre",
+      "name": "Coach Leatherware India Private",
+      "identityReviewId": "20260910-LOT4-COACH-ENTITY-SHELLS-v7",
+      "mergedIntoId": "cmtpuwrrk3kpdl35mc7vg5ben",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtp6p68t2zb9qq4z8jn0lycn",
+      "name": "Coach Leatherware India Private Limited",
+      "identityReviewId": "20260910-LOT4-COACH-ENTITY-SHELLS-v7",
+      "mergedIntoId": "cmtpuwrrk3kpdl35mc7vg5ben",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtrtc42y3muxpg5m9l8kw13k",
+      "name": "Coach Malaysia SDN. BHD.",
+      "identityReviewId": "20260910-LOT4-COACH-ENTITY-SHELLS-v7",
+      "mergedIntoId": "cmtpuwrrk3kpdl35mc7vg5ben",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtrtc88u3o02pg5mr37q4bxh",
+      "name": "Coach Management (Shanghai)",
+      "identityReviewId": "20260910-LOT4-COACH-ENTITY-SHELLS-v7",
+      "mergedIntoId": "cmtpuwrrk3kpdl35mc7vg5ben",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtp6oz632wl9qq4zsz0dggzv",
+      "name": "Coach Management (Shanghai) Co., Ltd.",
+      "identityReviewId": "20260910-LOT4-COACH-ENTITY-SHELLS-v7",
+      "mergedIntoId": "cmtpuwrrk3kpdl35mc7vg5ben",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtrtc51h3n56pg5m8p0d64pm",
+      "name": "Coach Netherlands B.V. - Taiwan Branch",
+      "identityReviewId": "20260910-LOT4-COACH-ENTITY-SHELLS-v7",
+      "mergedIntoId": "cmtpuwrrk3kpdl35mc7vg5ben",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtrtchsy3qjjpg5mt5rzti8m",
+      "name": "Coach New Zealand",
+      "identityReviewId": "20260910-LOT4-COACH-ENTITY-SHELLS-v7",
+      "mergedIntoId": "cmtpuwrrk3kpdl35mc7vg5ben",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtrtc89b3o06pg5m2v23wlhu",
+      "name": "Coach Operations Singapore Pte.",
+      "identityReviewId": "20260910-LOT4-COACH-ENTITY-SHELLS-v7",
+      "mergedIntoId": "cmtpuwrrk3kpdl35mc7vg5ben",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtp6oz6j2wlhqq4ztr2fc5wy",
+      "name": "Coach Operations Singapore Pte. Ltd.",
+      "identityReviewId": "20260910-LOT4-COACH-ENTITY-SHELLS-v7",
+      "mergedIntoId": "cmtpuwrrk3kpdl35mc7vg5ben",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtrtc42d3munpg5m0viy8ppz",
+      "name": "Coach Shanghai",
+      "identityReviewId": "20260910-LOT4-LEGAL-ENTITY-ALIASES-v3",
+      "mergedIntoId": "cmtpuwrrk3kpdl35mc7vg5ben",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtp6owzw2vmhqq4zese328w5",
+      "name": "Coach Shanghai Limited",
+      "identityReviewId": "20260910-LOT4-COACH-ENTITY-SHELLS-v7",
+      "mergedIntoId": "cmtpuwrrk3kpdl35mc7vg5ben",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtrtc75n3nq0pg5mg4zsn7lt",
+      "name": "Coach Shanghai Limited 2",
+      "identityReviewId": "20260910-LOT4-COACH-ENTITY-SHELLS-v7",
+      "mergedIntoId": "cmtpuwrrk3kpdl35mc7vg5ben",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtrtc8iy3o2rpg5mvevbehnf",
+      "name": "Coach Singapore Pte.",
+      "identityReviewId": "20260910-LOT4-COACH-ENTITY-SHELLS-v7",
+      "mergedIntoId": "cmtpuwrrk3kpdl35mc7vg5ben",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtp6oyd32w8tqq4zgp987m5d",
+      "name": "Coach Stores Australie",
+      "identityReviewId": "20260910-LOT4-COACH-ENTITY-SHELLS-v7",
+      "mergedIntoId": "cmtpuwrrk3kpdl35mc7vg5ben",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtrtc5n63nb3pg5m9ld4fz8i",
+      "name": "Coach Stores Austria",
+      "identityReviewId": "20260910-LOT4-COACH-ENTITY-SHELLS-v7",
+      "mergedIntoId": "cmtpuwrrk3kpdl35mc7vg5ben",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtp6ox042vmlqq4zgxd783di",
+      "name": "Coach Stores Austria GmbH",
+      "identityReviewId": "20260910-LOT4-COACH-ENTITY-SHELLS-v7",
+      "mergedIntoId": "cmtpuwrrk3kpdl35mc7vg5ben",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtp6owv12vk5qq4zttxl2gmk",
+      "name": "Coach Stores France SARL",
+      "identityReviewId": "20260910-LOT4-COACH-ENTITY-SHELLS-v7",
+      "mergedIntoId": "cmtpuwrrk3kpdl35mc7vg5ben",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtp6owj02vetqq4z1pvty6mn",
+      "name": "Coach Stores Germany GmbH",
+      "identityReviewId": "20260910-LOT4-COACH-ENTITY-SHELLS-v7",
+      "mergedIntoId": "cmtpuwrrk3kpdl35mc7vg5ben",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtrtc4bz3my9pg5mapcjg5qx",
+      "name": "Coach Stores Ireland",
+      "identityReviewId": "20260910-LOT4-COACH-ENTITY-SHELLS-v7",
+      "mergedIntoId": "cmtpuwrrk3kpdl35mc7vg5ben",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtp6owfa2vdhqq4z8vgmi5ry",
+      "name": "Coach Stores Ireland Limited",
+      "identityReviewId": "20260910-LOT4-COACH-ENTITY-SHELLS-v7",
+      "mergedIntoId": "cmtpuwrrk3kpdl35mc7vg5ben",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtp6ow3y2v8hqq4z1robd01e",
+      "name": "Coach Stores Limited",
+      "identityReviewId": "20260910-LOT4-COACH-ENTITY-SHELLS-v7",
+      "mergedIntoId": "cmtpuwrrk3kpdl35mc7vg5ben",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtrtc4p13n1npg5mydxlcbjg",
+      "name": "Coach Stores Puerto Rico",
+      "identityReviewId": "20260910-LOT4-COACH-ENTITY-SHELLS-v7",
+      "mergedIntoId": "cmtpuwrrk3kpdl35mc7vg5ben",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtp6ow5v2v9hqq4zvwrjcbuw",
+      "name": "Coach Stores Puerto Rico, Inc.",
+      "identityReviewId": "20260910-LOT4-COACH-ENTITY-SHELLS-v7",
+      "mergedIntoId": "cmtpuwrrk3kpdl35mc7vg5ben",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtrtcapf3oo6pg5mf3dj74b7",
+      "name": "Coach Vietnam Company",
+      "identityReviewId": "20260910-LOT4-COACH-ENTITY-SHELLS-v7",
+      "mergedIntoId": "cmtpuwrrk3kpdl35mc7vg5ben",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtp6p1ds2xhdqq4zma61q3i2",
+      "name": "Coach Vietnam Company Limited",
+      "identityReviewId": "20260910-LOT4-COACH-ENTITY-SHELLS-v7",
+      "mergedIntoId": "cmtpuwrrk3kpdl35mc7vg5ben",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "crdc20b76fad2447c3096c7e2b",
+      "name": "Coty",
+      "identityReviewId": "20260909-LOT4-PORTAL-OWNERS-v1",
+      "mergedIntoId": null,
+      "jobs": 160,
+      "jobsActifs": 160
+    },
+    {
+      "id": "cmtkdvupo1rshnf2b5mz54rmt",
+      "name": "CREATIONS FUSALP",
+      "identityReviewId": "lot1-fusalp-legal-commercial-20260909-v1",
+      "mergedIntoId": "cmtlyicya05h8qf5kra05oe95",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cr73ef5b87fa07d0af0b1d74b9",
+      "name": "Diesel",
+      "identityReviewId": "20260909-LOT4-PORTAL-OWNERS-OTB-APTAR-v1",
+      "mergedIntoId": null,
+      "jobs": 94,
+      "jobsActifs": 94
+    },
+    {
+      "id": "cmtlyk0vv09n7qf5k812hyz8w",
+      "name": "Eurofragance",
+      "identityReviewId": "20260910-LOT4-LEGAL-ENTITY-ALIASES-v3",
+      "mergedIntoId": null,
+      "jobs": 39,
+      "jobsActifs": 39
+    },
+    {
+      "id": "cr617777556b5e9c4ea9729cb9",
+      "name": "Exemplar Luxury Group",
+      "identityReviewId": "20260910-LOT4-PORTAL-OWNER-SAKS-v1",
+      "mergedIntoId": null,
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cr9b98334f7d83dfa1519910b7",
+      "name": "FP Movement",
+      "identityReviewId": "20260909-LOT4-PORTAL-OWNER-URBN-SUBLABELS-v2",
+      "mergedIntoId": null,
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cr327a650529449cec822a02ef",
+      "name": "Free People",
+      "identityReviewId": "20260909-LOT4-URBN-SUBLABEL-ALIASES-v2",
+      "mergedIntoId": null,
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cr57e9ef0f339cdfa95081d842",
+      "name": "Fursac",
+      "identityReviewId": "lot1-smcp-parent-relations-20260909-v1",
+      "mergedIntoId": null,
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtlyicya05h8qf5kra05oe95",
+      "name": "Fusalp",
+      "identityReviewId": "lot1-fusalp-legal-commercial-20260909-v1",
+      "mergedIntoId": null,
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtlygvke02kaqf5kzt18xou4",
+      "name": "GANNI",
+      "identityReviewId": "20260909-LOT4-GANNI-TR-IDENTITY-v1",
+      "mergedIntoId": null,
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtpyux0801di3ncqqxwcy7ut",
+      "name": "Groupe Rocher",
+      "identityReviewId": "20260910-LOT4-PORTAL-OWNERS-SHISEIDO-ROCHER-v1",
+      "mergedIntoId": null,
+      "jobs": 64,
+      "jobsActifs": 64
+    },
+    {
+      "id": "cr4ac21bf25d9ff0e94be7a61e",
+      "name": "Hades Resources GmbH",
+      "identityReviewId": "20260909-LOT4-PERSONIO-HOMONYMS-v1",
+      "mergedIntoId": null,
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtlyfvaf016cqf5k6yvon72v",
+      "name": "Intersport",
+      "identityReviewId": "lot1-migrate-reviewed-legacy-aliases-20260909-v1",
+      "mergedIntoId": null,
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cr1848dd5739195c10387b8d71",
+      "name": "Jil Sander",
+      "identityReviewId": "20260909-LOT4-PORTAL-OWNERS-OTB-APTAR-v1",
+      "mergedIntoId": null,
+      "jobs": 10,
+      "jobsActifs": 10
+    },
+    {
+      "id": "cmtvbixfg0alfpd01s6cm9cbp",
+      "name": "Kate Spade",
+      "identityReviewId": "20260910-LOT4-TAPESTRY-BRAND-FACET-ALIASES-v6",
+      "mergedIntoId": null,
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "crfaba8a12691a26781521c93f",
+      "name": "KENT Europe GmbH",
+      "identityReviewId": "20260909-LOT4-PERSONIO-HOMONYMS-v1",
+      "mergedIntoId": null,
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtjwa11205v4ld2b4be98q45",
+      "name": "Kering",
+      "identityReviewId": "20260910-LOT4-KERING-CORPORATE-v1",
+      "mergedIntoId": null,
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtpukup029apl35mgtskxs6a",
+      "name": "Kering Corporate",
+      "identityReviewId": "20260910-LOT4-KERING-CORPORATE-v1",
+      "mergedIntoId": "cmtjwa11205v4ld2b4be98q45",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtpu023j04jil35mg4a1g7vf",
+      "name": "Lagardère Travel",
+      "identityReviewId": "20260910-LOT4-LAGARDERE-TRAVEL-RETAIL-v1",
+      "mergedIntoId": "cmtkdvxv61strnf2blvpva5y3",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtvk3jhg007zph017g7qkdld",
+      "name": "La Prairie",
+      "identityReviewId": "20260910-LOT4-B6-ATTRIBUTION-REPAIR-v1",
+      "mergedIntoId": "cmtvl2kfo0003ms6vao28txjf",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtvk3hi6000nph01rfv32av1",
+      "name": "L'IMPERTINENTE - Ysé",
+      "identityReviewId": "20260910-LOT4-B6-ATTRIBUTION-REPAIR-v1",
+      "mergedIntoId": "cmtpz68jo05bk3ncq0uqw5phj",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtlyg3ew01h7qf5ky32oq9vd",
+      "name": "Lindex",
+      "identityReviewId": "20260909-LOT4-LINDEX-EASYCRUIT-IDENTITY-v1",
+      "mergedIntoId": null,
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtp1xiqw03ngqq4zikinuk6e",
+      "name": "L’Occitane",
+      "identityReviewId": "20260910-LOT4-PERIMETER-IDENTITIES-v1",
+      "mergedIntoId": null,
+      "jobs": 27,
+      "jobsActifs": 27
+    },
+    {
+      "id": "cr01bba755d51739d8d51417ae",
+      "name": "Maeve",
+      "identityReviewId": "20260909-LOT4-PORTAL-OWNER-URBN-SUBLABELS-v2",
+      "mergedIntoId": null,
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtk1y3xj02mznv2bpqzs2233",
+      "name": "Maison Margiela",
+      "identityReviewId": "20260909-LOT4-PORTAL-OWNERS-OTB-APTAR-v1",
+      "mergedIntoId": null,
+      "jobs": 33,
+      "jobsActifs": 33
+    },
+    {
+      "id": "cmtkf06ej0lqap22bicqm90nc",
+      "name": "Maje",
+      "identityReviewId": "lot1-smcp-parent-relations-20260909-v1",
+      "mergedIntoId": null,
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtrt7meu2xurpg5mtvjhy3qx",
+      "name": "MANGO BULGARIA EOOD",
+      "identityReviewId": "20260910-LOT4-MANGO-SINGLE-BRAND-ENTITIES-v1",
+      "mergedIntoId": "cmtn89596205lqq5l0deggb1g",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtrt7itx2wkkpg5mvv7wmscl",
+      "name": "MANGO BULGARIA EOOD (EUR)",
+      "identityReviewId": "20260910-LOT4-MANGO-SINGLE-BRAND-ENTITIES-v1",
+      "mergedIntoId": "cmtn89596205lqq5l0deggb1g",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtrt7l6d2xevpg5mh376rjbq",
+      "name": "MANGO (CZ) s.r.o.",
+      "identityReviewId": "20260910-LOT4-MANGO-SINGLE-BRAND-ENTITIES-v1",
+      "mergedIntoId": "cmtn89596205lqq5l0deggb1g",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtrt7lc42xh9pg5myoiuwl6c",
+      "name": "MANGO DANMARK APS",
+      "identityReviewId": "20260910-LOT4-MANGO-SINGLE-BRAND-ENTITIES-v1",
+      "mergedIntoId": "cmtn89596205lqq5l0deggb1g",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtrt7g1q2vkkpg5mmuudj73w",
+      "name": "MANGO GARMENTS HELLAS E.P.E.",
+      "identityReviewId": "20260910-LOT4-MANGO-SINGLE-BRAND-ENTITIES-v1",
+      "mergedIntoId": "cmtn89596205lqq5l0deggb1g",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtrt7j6r2wpjpg5mwnnw7tu5",
+      "name": "MANGO GARMENTS ROM.",
+      "identityReviewId": "20260910-LOT4-MANGO-SINGLE-BRAND-ENTITIES-v1",
+      "mergedIntoId": "cmtn89596205lqq5l0deggb1g",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtrt7bkt2u47pg5m6fetpinr",
+      "name": "MANGO HUNGARY Kft.",
+      "identityReviewId": "20260910-LOT4-MANGO-SINGLE-BRAND-ENTITIES-v1",
+      "mergedIntoId": "cmtn89596205lqq5l0deggb1g",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtrt7b6f2u21pg5mzt1x4v3i",
+      "name": "Mango Korea",
+      "identityReviewId": "20260910-LOT4-MANGO-SINGLE-BRAND-ENTITIES-v1",
+      "mergedIntoId": "cmtn89596205lqq5l0deggb1g",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtrt7fv12vi4pg5mfh4l5etv",
+      "name": "MANGO LUXEMBOURG S.à.r.l.",
+      "identityReviewId": "20260910-LOT4-MANGO-SINGLE-BRAND-ENTITIES-v1",
+      "mergedIntoId": "cmtn89596205lqq5l0deggb1g",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtrt7arx2tvrpg5mrjlm1or7",
+      "name": "MANGO MERITXELL, S.L.U",
+      "identityReviewId": "20260910-LOT4-MANGO-SINGLE-BRAND-ENTITIES-v1",
+      "mergedIntoId": "cmtn89596205lqq5l0deggb1g",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtrt7ar82tvhpg5md2ogtmho",
+      "name": "MANGO MNG",
+      "identityReviewId": "20260910-LOT4-MANGO-SINGLE-BRAND-ENTITIES-v1",
+      "mergedIntoId": "cmtn89596205lqq5l0deggb1g",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtn8951b201pqq5lkkbmq6gw",
+      "name": "MANGO MNG, S.A.",
+      "identityReviewId": "20260910-LOT4-MANGO-SINGLE-BRAND-ENTITIES-v1",
+      "mergedIntoId": "cmtn89596205lqq5l0deggb1g",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtrt7dq42uqtpg5mzoe5op3j",
+      "name": "MANGO MODA D.O.O.",
+      "identityReviewId": "20260910-LOT4-MANGO-SINGLE-BRAND-ENTITIES-v1",
+      "mergedIntoId": "cmtn89596205lqq5l0deggb1g",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtrt7dda2umfpg5mslyds62z",
+      "name": "MANGONOR Comércio de Vestuário",
+      "identityReviewId": "20260910-LOT4-MANGO-SINGLE-BRAND-ENTITIES-v1",
+      "mergedIntoId": "cmtn89596205lqq5l0deggb1g",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtrt7lgl2xj6pg5m5azkzdpu",
+      "name": "MANGO NORGE A.S.",
+      "identityReviewId": "20260910-LOT4-MANGO-SINGLE-BRAND-ENTITIES-v1",
+      "mergedIntoId": "cmtn89596205lqq5l0deggb1g",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtrt7giq2vr1pg5m1hz6detx",
+      "name": "MANGO NY",
+      "identityReviewId": "20260910-LOT4-MANGO-SINGLE-BRAND-ENTITIES-v1",
+      "mergedIntoId": "cmtn89596205lqq5l0deggb1g",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtrt7cgi2ubxpg5m7jwdt3sj",
+      "name": "MANGO ÖSTERRREICH HANDELS.",
+      "identityReviewId": "20260910-LOT4-MANGO-SINGLE-BRAND-ENTITIES-v1",
+      "mergedIntoId": "cmtn89596205lqq5l0deggb1g",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtrt7bzr2u6jpg5mdve0o1du",
+      "name": "MANGO Polska Sp.z.o.o.",
+      "identityReviewId": "20260910-LOT4-MANGO-SINGLE-BRAND-ENTITIES-v1",
+      "mergedIntoId": "cmtn89596205lqq5l0deggb1g",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtrt7mw22y09pg5m3gytueys",
+      "name": "MANGO SL D.O.O.",
+      "identityReviewId": "20260910-LOT4-MANGO-SINGLE-BRAND-ENTITIES-v1",
+      "mergedIntoId": "cmtn89596205lqq5l0deggb1g",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtrt7m602xrtpg5mh8ep2dtu",
+      "name": "MANGO SLOVENSKO, s.r.o.",
+      "identityReviewId": "20260910-LOT4-MANGO-SINGLE-BRAND-ENTITIES-v1",
+      "mergedIntoId": "cmtn89596205lqq5l0deggb1g",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtrt7jpc2wvmpg5m7hob93d8",
+      "name": "MANGO SVERIGE",
+      "identityReviewId": "20260910-LOT4-MANGO-SINGLE-BRAND-ENTITIES-v1",
+      "mergedIntoId": "cmtn89596205lqq5l0deggb1g",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtrt7avz2txepg5m3r70jyih",
+      "name": "MANGO TR TEKSTIL TICARET LTD.S",
+      "identityReviewId": "20260910-LOT4-MANGO-SINGLE-BRAND-ENTITIES-v1",
+      "mergedIntoId": "cmtn89596205lqq5l0deggb1g",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtrt7jrc2wwdpg5m1wm8vi25",
+      "name": "MANGO UKRAINE TOV",
+      "identityReviewId": "20260910-LOT4-MANGO-SINGLE-BRAND-ENTITIES-v1",
+      "mergedIntoId": "cmtn89596205lqq5l0deggb1g",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cradb6c50fa312cf6c94ddf97b",
+      "name": "Marni",
+      "identityReviewId": "20260909-LOT4-PORTAL-OWNERS-OTB-APTAR-v1",
+      "mergedIntoId": null,
+      "jobs": 14,
+      "jobsActifs": 14
+    },
+    {
+      "id": "cra46f9cb71eb5000cad1424ff",
+      "name": "Mateo Estate GmbH",
+      "identityReviewId": "20260909-LOT4-PERSONIO-HOMONYMS-v1",
+      "mergedIntoId": null,
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtpu4rhw0tagl35mz8iyzlg0",
+      "name": "MECCA Brands",
+      "identityReviewId": "20260910-LOT4-LEGAL-ENTITY-ALIASES-v3",
+      "mergedIntoId": "cmtp2dsp50rjpqq4zsv7dmc4t",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtp2ds300r9hqq4zn8py7bll",
+      "name": "MECCA Brands NZ Pty Ltd",
+      "identityReviewId": "20260912-P7-MECCA-BRANDS-NZ-PTY-LTD",
+      "mergedIntoId": "cmtp2dsp50rjpqq4zsv7dmc4t",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "crba5319aa0213b50e13f2122c",
+      "name": "Menus and Venues",
+      "identityReviewId": "20260909-LOT4-PORTAL-OWNER-URBN-HUB-v1",
+      "mergedIntoId": null,
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtrt7axo2ty8pg5mmptjtt0t",
+      "name": "MNG-MANGO",
+      "identityReviewId": "20260910-LOT4-MANGO-SINGLE-BRAND-ENTITIES-v1",
+      "mergedIntoId": "cmtn89596205lqq5l0deggb1g",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtrt7aqv2tvcpg5mcq3nesft",
+      "name": "MNG MANGO BELGIQUE S.P.R.L",
+      "identityReviewId": "20260910-LOT4-MANGO-SINGLE-BRAND-ENTITIES-v1",
+      "mergedIntoId": "cmtn89596205lqq5l0deggb1g",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtrt7b142tzkpg5mdxmwoi0s",
+      "name": "MNG MANGO IRELAND",
+      "identityReviewId": "20260910-LOT4-MANGO-SINGLE-BRAND-ENTITIES-v1",
+      "mergedIntoId": "cmtn89596205lqq5l0deggb1g",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cr957f902abe3206942a9194e1",
+      "name": "Neiman Marcus",
+      "identityReviewId": "20260910-LOT4-PORTAL-OWNER-SAKS-v1",
+      "mergedIntoId": null,
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "crd8b9169bcbc38f1c16255968",
+      "name": "Nuuly",
+      "identityReviewId": "20260909-LOT4-PORTAL-OWNER-URBN-HUB-v1",
+      "mergedIntoId": null,
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtvk3nm80173ph01rpjmpjax",
+      "name": "On",
+      "identityReviewId": "20260910-LOT4-B6-ATTRIBUTION-REPAIR-v1",
+      "mergedIntoId": "cmtvl2kcc0001ms6vz44jmwuk",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cr75ef4ef7165a11af577c8cd9",
+      "name": "OTB",
+      "identityReviewId": "20260909-LOT4-PORTAL-OWNERS-OTB-APTAR-v1",
+      "mergedIntoId": null,
+      "jobs": 16,
+      "jobsActifs": 16
+    },
+    {
+      "id": "cr53adb0728e2cecda90dfe606",
+      "name": "Pina Technologies GmbH",
+      "identityReviewId": "20260909-LOT4-PERSONIO-HOMONYMS-v1",
+      "mergedIntoId": null,
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtk1x1ns0072nv2bytyhwuta",
+      "name": "Promod",
+      "identityReviewId": "lot1-promod-aubade-20260909-v1",
+      "mergedIntoId": null,
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtpkx0bb59q9pf5le0vx07cg",
+      "name": "PROMOD - MAGASIN",
+      "identityReviewId": "lot1-promod-aubade-20260909-v1",
+      "mergedIntoId": "cmtk1x1ns0072nv2bytyhwuta",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtlyh20a032mqf5kbcvcruas",
+      "name": "Puig",
+      "identityReviewId": "20260909-LOT4-PORTAL-OWNERS-v1",
+      "mergedIntoId": null,
+      "jobs": 222,
+      "jobsActifs": 222
+    },
+    {
+      "id": "cr5a4778ec71807661c42b93cc",
+      "name": "Reclectic",
+      "identityReviewId": "20260910-LOT4-PORTAL-OWNER-URBN-RECLECTIC-v3",
+      "mergedIntoId": null,
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtt3jqm9000a3nx9yknve29r",
+      "name": "RIU Paris",
+      "identityReviewId": "lot1-migrate-reviewed-legacy-aliases-20260909-v1",
+      "mergedIntoId": null,
+      "jobs": 19,
+      "jobsActifs": 19
+    },
+    {
+      "id": "cmtp40fms1pr7qq4zp29qlmwk",
+      "name": "Saks Fifth Avenue",
+      "identityReviewId": "20260910-LOT4-PORTAL-OWNER-SAKS-v1",
+      "mergedIntoId": null,
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cr97d3bb8020ae3d11dca848c7",
+      "name": "Saks OFF 5TH",
+      "identityReviewId": "20260910-LOT4-PORTAL-OWNER-SAKS-v1",
+      "mergedIntoId": null,
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtlyfaei00hnqf5kon4uijpz",
+      "name": "Saltrock",
+      "identityReviewId": "20260909-LOT4-SALTROCK-HARRI-IDENTITY-v1",
+      "mergedIntoId": null,
+      "jobs": 27,
+      "jobsActifs": 27
+    },
+    {
+      "id": "cr76ab25338280de02db704afa",
+      "name": "SaltRock GmbH",
+      "identityReviewId": "20260909-LOT4-SALTROCK-HOMONYM-v1",
+      "mergedIntoId": null,
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cr2109923f11bd8a8aa8495dd2",
+      "name": "Samson & Partner",
+      "identityReviewId": "20260909-LOT4-PERSONIO-HOMONYMS-v1",
+      "mergedIntoId": null,
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtk29nb80m1dnv2bg5xl385h",
+      "name": "Sandro",
+      "identityReviewId": "lot1-smcp-parent-relations-20260909-v1",
+      "mergedIntoId": null,
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtpkwydu59jupf5lu9u2aoxk",
+      "name": "Shiseido",
+      "identityReviewId": "20260910-LOT4-PORTAL-OWNERS-SHISEIDO-ROCHER-v1",
+      "mergedIntoId": null,
+      "jobs": 163,
+      "jobsActifs": 163
+    },
+    {
+      "id": "cr993d310d11251f8159af0361",
+      "name": "Staff International",
+      "identityReviewId": "20260909-LOT4-PORTAL-OWNERS-OTB-APTAR-v1",
+      "mergedIntoId": null,
+      "jobs": 4,
+      "jobsActifs": 4
+    },
+    {
+      "id": "cmtp6p1s52xnlqq4zm1zqljup",
+      "name": "Tapestry",
+      "identityReviewId": "20260910-LOT4-TAPESTRY-BRAND-FACET-ALIASES-v6",
+      "mergedIntoId": null,
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cr885cb8c56387e5d08ce5a70d",
+      "name": "Terrain",
+      "identityReviewId": "20260909-LOT4-PORTAL-OWNER-URBN-HUB-v1",
+      "mergedIntoId": null,
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtt3jqra000i3nx9khntpmay",
+      "name": "Toscane",
+      "identityReviewId": "lot1-migrate-reviewed-legacy-aliases-20260909-v1",
+      "mergedIntoId": null,
+      "jobs": 24,
+      "jobsActifs": 24
+    },
+    {
+      "id": "cr89c23cf8b2391023a90ebe34",
+      "name": "Tricoci",
+      "identityReviewId": "20260910-LOT4-PORTAL-OWNER-TRICOCI-v1",
+      "mergedIntoId": null,
+      "jobs": 56,
+      "jobsActifs": 56
+    },
+    {
+      "id": "cmtpkdkdi474apf5l272m6owb",
+      "name": "Ulta Beauty, Inc.",
+      "identityReviewId": "p2-ulta-legal-form-2026-09-10",
+      "mergedIntoId": "cmtpuyimv3pbul35m36fwuuzo",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtn5a6a304zqqq5llvh08n5h",
+      "name": "UNIQLO EUROPE LIMITED",
+      "identityReviewId": "20260910-LOT4-UNIQLO-ENTITIES-v1",
+      "mergedIntoId": "cmtptzpyj02cil35mltt03knh",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtrscts20265pg5m5l37wirn",
+      "name": "UNIQLO EUROPE LIMITED BELGIAN BRANCH",
+      "identityReviewId": "20260910-LOT4-UNIQLO-ENTITIES-v1",
+      "mergedIntoId": "cmtptzpyj02cil35mltt03knh",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtrsctuv027dpg5m30dgnhu1",
+      "name": "UNIQLO EUROPE LIMITED DENMARK BRANCH",
+      "identityReviewId": "20260910-LOT4-UNIQLO-ENTITIES-v1",
+      "mergedIntoId": "cmtptzpyj02cil35mltt03knh",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtrsctqp025gpg5mms0umgrp",
+      "name": "UNIQLO EUROPE LIMITED FRENCH BRANCH",
+      "identityReviewId": "20260910-LOT4-UNIQLO-ENTITIES-v1",
+      "mergedIntoId": "cmtptzpyj02cil35mltt03knh",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtrsctrp025wpg5md12ddu6y",
+      "name": "UNIQLO EUROPE LIMITED GERMAN BRANCH",
+      "identityReviewId": "20260910-LOT4-UNIQLO-ENTITIES-v1",
+      "mergedIntoId": "cmtptzpyj02cil35mltt03knh",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtrsctsg026cpg5m5gqwsv0r",
+      "name": "UNIQLO EUROPE LIMITED ITALIAN BRANCH",
+      "identityReviewId": "20260910-LOT4-UNIQLO-ENTITIES-v1",
+      "mergedIntoId": "cmtptzpyj02cil35mltt03knh",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtrsctsr026jpg5mdx8mldgl",
+      "name": "UNIQLO EUROPE LIMITED NETHERLANDS BRANCH",
+      "identityReviewId": "20260910-LOT4-UNIQLO-ENTITIES-v1",
+      "mergedIntoId": "cmtptzpyj02cil35mltt03knh",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtrsctug0278pg5mlzn6i9g5",
+      "name": "UNIQLO EUROPE LIMITED POLISH BRANCH",
+      "identityReviewId": "20260910-LOT4-UNIQLO-ENTITIES-v1",
+      "mergedIntoId": "cmtptzpyj02cil35mltt03knh",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtrscttd026rpg5mfewq8f5u",
+      "name": "UNIQLO EUROPE LIMITED SPANISH BRANCH",
+      "identityReviewId": "20260910-LOT4-UNIQLO-ENTITIES-v1",
+      "mergedIntoId": "cmtptzpyj02cil35mltt03knh",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtrscttq026ypg5m0ogy3mh9",
+      "name": "UNIQLO EUROPE LIMITED SWEDISH BRANCH",
+      "identityReviewId": "20260910-LOT4-UNIQLO-ENTITIES-v1",
+      "mergedIntoId": "cmtptzpyj02cil35mltt03knh",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtrsctu20274pg5mi66obabt",
+      "name": "UNIQLO EUROPE LTD. LUXEMBOURG BRANCH",
+      "identityReviewId": "20260910-LOT4-UNIQLO-ENTITIES-v1",
+      "mergedIntoId": "cmtptzpyj02cil35mltt03knh",
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cr88d105073d8cbab03ce8e3ad",
+      "name": "Urban Outfitters",
+      "identityReviewId": "20260909-LOT4-PORTAL-OWNER-URBN-HUB-v1",
+      "mergedIntoId": null,
+      "jobs": 0,
+      "jobsActifs": 0
+    },
+    {
+      "id": "cmtpkx0dp59qspf5lz9252szw",
+      "name": "URBN",
+      "identityReviewId": "20260910-LOT4-URBN-RECLECTIC-ALIAS-v3",
+      "mergedIntoId": null,
+      "jobs": 0,
+      "jobsActifs": 0
+    }
+  ],
+  "correction": {
+    "date": "2026-09-22",
+    "applique": 33,
+    "non_applique": 103,
+    "motif_non_applique": "CHECK Company_identity_relationship_review : (mergedIntoId IS NULL AND parentGroupId IS NULL) OR identityReviewId IS NOT NULL. Une Maison fusionnee ou rattachee a un groupe DOIT porter une reference de revue : passer ces 103 a NULL supprimerait le garde-fou interdisant une fusion d'identite sans trace de revue. Arbitrage CEO requis, aucune ecriture faite sur ces lignes.",
+    "controles_post": {
+      "orphelins_libres_restants": 0,
+      "orphelins_sous_contrainte_restants": 103,
+      "companies": 1696,
+      "jobs": 34883,
+      "jobs_actifs": 34883,
+      "companies_fusionnees": 79,
+      "fk_presente_et_valid": true,
+      "copie_dev_debloquee": "Intersport, Blackstore, Exemplar Luxury Group : identityReviewId NULL"
+    }
+  }
+}

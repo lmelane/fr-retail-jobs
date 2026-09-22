@@ -137,6 +137,13 @@ export type RmkV2Item = {
   custFullTimePartTime?: string[] | string;
   /** Douglas: ["Hybrid"]. */
   custOnsiteRemote?: string[] | string;
+  /**
+   * Les champs PROPRES AU TENANT, que RMK sert sous des noms qu'il choisit
+   * (`sfstd_…`, `cust…`). Un seul est lu, et seulement quand la configuration le nomme
+   * (`brandProperty`) : Douglas sert `sfstd_marketingBrand_obj` = ["DOUGLAS"] / ["NOCIBE"].
+   * Les déclarer ici évite un cast à chaque lecture, tout en gardant les champs connus typés.
+   */
+  [champTenant: string]: unknown;
 };
 
 /** First non-empty value of an RMK field, which may be a string or a list. */
@@ -237,8 +244,16 @@ export function rmkJobUrl(origin: string, item: RmkV2Item, locale: string): stri
   return `${origin}${brand}/job/${slug}/${item.id}-${locale}`;
 }
 
-/** One listing entry → one posting. Pure; returns null when the entry cannot be linked. */
-export function normalizeRmkItem(item: RmkV2Item, locale: string, origin: string): NormalizedJob | null {
+/**
+ * One listing entry → one posting. Pure; returns null when the entry cannot be linked.
+ *
+ * `brandProperty` (opt-in, par tenant) nomme le champ de LISTE qui porte la marque employeuse.
+ * Douglas sert `sfstd_marketingBrand_obj` — `["DOUGLAS"]` / `["NOCIBE"]` — à côté de
+ * `custFullTimePartTime`, déjà lu ici. Sans ce champ, l'étiquette vient du registre et la règle
+ * d'identité refuse de l'attribuer sur un portail non certifié (`PORTAL_OWNER_NOT_CERTIFIED`).
+ * Aucune marque n'est devinée : un tenant qui ne déclare rien garde le comportement d'avant.
+ */
+export function normalizeRmkItem(item: RmkV2Item, locale: string, origin: string, brandProperty?: string): NormalizedJob | null {
   const url = rmkJobUrl(origin, item, locale);
   const title = item.unifiedStandardTitle?.replace(/\s+/g, ' ').trim();
   if (!url || !title) return null;
@@ -247,6 +262,9 @@ export function normalizeRmkItem(item: RmkV2Item, locale: string, origin: string
   const places = (item.jobLocationShort ?? []).map(parseRmkLocation).filter((p) => p.location);
   const primary = places[0] ?? {};
   const location = places.length > 1 ? places.map((p) => p.location).join(' / ') : primary.location;
+  /* Une marque VIDE ne vaut pas preuve : elle passerait le contrôle d'identité en portant une
+   * chaîne sans contenu. On ne retient que ce que la source nomme réellement. */
+  const marque = brandProperty ? firstRmk(item[brandProperty] as string[] | string | undefined)?.trim() : undefined;
   return {
     externalId: String(item.id),
     title,
@@ -256,6 +274,7 @@ export function normalizeRmkItem(item: RmkV2Item, locale: string, origin: string
     contract: firstRmk(item.unifiedStandardEmploymentType),
     workingTime: firstRmk(item.custFullTimePartTime),
     remote: firstRmk(item.custOnsiteRemote),
+    ...(marque ? { employerEvidence: { rawName: marque, path: `listing.${brandProperty}`, rule: 'CONFIGURED_BRAND_PROPERTY' } } : {}),
     url,
     postedAt: parseRmkDate(item.unifiedStandardStart, locale),
     raw: { ...item, locale, source: 'successfactors-rmk-v2', rmkDateEvidence: {
@@ -317,7 +336,7 @@ async function postRmkPage(origin: string, locale: string, page: number): Promis
  * id, kept in the first (preferred) locale it appears in. Completion is checked
  * per locale; translated postings are deduplicated in the union.
  */
-export async function fetchRmkV2Jobs(origin: string, locales: string[]): Promise<AdapterResult> {
+export async function fetchRmkV2Jobs(origin: string, locales: string[], brandProperty?: string): Promise<AdapterResult> {
   const byId = new Map<string, NormalizedJob>();
   const scopes: NonNullable<NonNullable<AdapterResult['enumeration']>['scopes']> = [];
   const rejectedRows: NonNullable<AdapterResult['rejectedRows']> = [];
@@ -338,7 +357,7 @@ export async function fetchRmkV2Jobs(origin: string, locales: string[]): Promise
         else if (total !== result.totalJobs) { changed = true; issues.add(`SOURCE_TOTAL_CHANGED:${locale}`); }
         pages++; scopePages++; rawCount += records.length;
         for (const row of records) {
-          const job = row.response ? normalizeRmkItem(row.response, locale, origin) : null;
+          const job = row.response ? normalizeRmkItem(row.response, locale, origin, brandProperty) : null;
           if (!job) { rejectedRows.push({ reason: `INVALID_RMK_ROW:${locale}`, raw: row }); continue; }
           perLocale.add(job.externalId);
           if (!byId.has(job.externalId)) byId.set(job.externalId, job);
@@ -400,7 +419,7 @@ async function fetchSuccessFactorsInSession(config: Record<string, unknown>): Pr
     jobs: config.withDescriptions === false ? result.jobs : await attachSuccessFactorsDescriptions(result.jobs, Number(config.detailConcurrency ?? 4), brandProperty) });
   const rmk = async (html: string): Promise<AdapterResult> => {
     const discovery = await discoverRmkLocales(origin, html);
-    const result = await fetchRmkV2Jobs(origin, discovery.locales);
+    const result = await fetchRmkV2Jobs(origin, discovery.locales, brandProperty);
     return finish({ ...result, complete: result.complete && discovery.issues.length === 0,
       truncated: result.truncated || discovery.issues.length > 0,
       enumeration: { ...result.enumeration!, issues: [...(result.enumeration?.issues ?? []), ...discovery.issues] } });

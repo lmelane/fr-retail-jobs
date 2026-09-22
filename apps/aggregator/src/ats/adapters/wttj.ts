@@ -5,6 +5,7 @@ import { htmlToPlainText } from '../../lib/html.js';
 import { educationLevel } from '../../normalize/experience.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
 import { CRAWLER_IDENTITY } from '../../lib/crawlerIdentity.js';
+import { captureObservedAt } from '../../capture/context.js';
 
 /**
  * Welcome to the Jungle — its own search API, not a generic jobboard scrape.
@@ -299,7 +300,7 @@ export async function fetchWttjJobs(config: Record<string, unknown>): Promise<Ad
       jobs.push(job);
     }
     pageEvidence.push({ url: `https://${APP_ID}-dsn.algolia.net/1/indexes/${INDEX}/query`,
-      checkedAt: new Date().toISOString(),
+      checkedAt: captureObservedAt().toISOString(),
       sha256: createHash('sha256').update(JSON.stringify(response)).digest('hex'),
       offset: page * PAGE_SIZE,
       pagination: response.nbHits === undefined ? null

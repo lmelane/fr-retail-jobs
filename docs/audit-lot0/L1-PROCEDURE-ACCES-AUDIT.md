@@ -1,7 +1,32 @@
 # L1 — accès d'audit en lecture seule : procédure de provisionnement et de vérification
 
-**Statut : PROCÉDURE PRÉPARÉE, NON EXÉCUTÉE.** Aucun rôle de production n'a été créé ni modifié.
-L'exécution du §2 requiert une autorisation explicite portant sur cette opération.
+**Statut : EXÉCUTÉE ET VÉRIFIÉE EN PRODUCTION (2026-09-22).**
+
+Le rôle `catwalks_audit` existe et sert désormais toute lecture de production. État mesuré, pas
+déclaré :
+
+| contrôle | valeur observée |
+|---|---|
+| attributs du rôle | `rolsuper=f` · `rolcreatedb=f` · `rolcreaterole=f` · `rolbypassrls=f` |
+| réglages du rôle | `default_transaction_read_only=on` · `statement_timeout=60s` · `idle_in_transaction_session_timeout=30s` |
+| privilèges effectifs | **43 tables lisibles, 0 inscriptible** |
+| verrou éprouvé | `CREATE TABLE` → `cannot execute CREATE TABLE in a read-only transaction`, **sans rien demander** |
+| lecture témoin | 537 sources lues sous `current_user = catwalks_audit` |
+
+Le mot de passe a été **rotaté le 2026-09-22** et vit hors dépôt : `~/.catwalks/audit-access.json`
+(permissions `600`). L'URL s'assemble avec `scripts/ops/mesures/url-audit.sh`, qui refuse tout
+fichier ne portant pas le rôle `catwalks_audit`.
+
+> **INTERDIT : auditer avec `postgres`.** Il est SUPERUTILISATEUR. Le 2026-09-21, un
+> `CREATE TEMP TABLE` est passé en production **malgré** `SET ROLE catwalks_audit` **et**
+> `default_transaction_read_only = on` : aucun `GRANT` ne contraint un superutilisateur, et un
+> réglage de session se remet à `off`. `BEGIN READ ONLY` bloque bien l'écriture, mais reste une
+> discipline d'appel — le rayon d'action en cas d'erreur humaine demeure total. `catwalks_audit`
+> porte la protection dans le compte lui-même. Aucune connexion superutilisateur pour un audit
+> applicatif, sans exception.
+
+L'historique ci-dessous décrit la procédure telle qu'elle a été conçue puis appliquée ; elle reste
+la référence pour un nouveau provisionnement ou une rotation.
 
 ## 1. Pourquoi cet accès est nécessaire
 

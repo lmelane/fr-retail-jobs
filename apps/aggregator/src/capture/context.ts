@@ -33,7 +33,27 @@ export class CaptureUnavailableError extends Error {
   constructor(cause: unknown) { super('Native response capture unavailable; extraction stopped', { cause }); this.name = 'CaptureUnavailableError'; }
 }
 export const withCaptureContext = <T>(context: CaptureContext, work: () => Promise<T>) => contexts.run(context, work);
-/** Stable extraction reference time; native receipts retain their own precise timestamps. */
+/**
+ * Stable extraction reference time; native receipts retain their own precise timestamps.
+ *
+ * DEUX HORODATAGES, DEUX RÔLES — à ne jamais confondre ni faire converger :
+ *
+ *   `pageEvidence.checkedAt`  → CETTE référence, stable pour tout le lot (`batch.startedAt`).
+ *                               Capture et rejeu la reposent à l'identique, donc un même lot
+ *                               logique produit les mêmes métadonnées : c'est ce qui rend le
+ *                               manifeste rejouable.
+ *   `RawCapture.capturedAt`   → l'heure PRÉCISE de réception de chaque réponse native, archivée
+ *                               par requête. C'est la seule réponse à « à quelle heure exacte
+ *                               cette page a-t-elle été reçue ? ».
+ *
+ * Un adaptateur ne reconstruit JAMAIS `checkedAt` depuis `capturedAt` : ce serait dupliquer la
+ * vérité temporelle dans une seconde couche, au prix d'un couplage au transport et de deux
+ * horodatages prétendant à la même preuve à quelques millisecondes près.
+ *
+ * Mesuré le 2026-09-21 : neuf adaptateurs horodataient leur preuve avec `new Date()`, l'heure du
+ * REJEU. Les métadonnées divergeaient donc toujours et la source tombait en
+ * `REPLAY_RESULT_CHANGED` — onze sources, 14 706 annonces, alors que la donnée était intacte.
+ */
 export const captureObservedAt = () => new Date(contexts.getStore()?.observedAt ?? Date.now());
 export const capturingResponses = () => Boolean(contexts.getStore()?.write);
 export const replayingResponses = () => Boolean(contexts.getStore()?.replay);

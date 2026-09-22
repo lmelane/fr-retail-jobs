@@ -4,6 +4,7 @@ import { log } from '../../observability/logger.js';
 import { DEFAULT_DETAIL_CONCURRENCY, fetchText } from '../../lib/http.js';
 import { htmlToPlainText } from '../../lib/html.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
+import { captureObservedAt } from '../../capture/context.js';
 
 /**
  * Ba&sh — portail maison `talents.ba-sh.com` (PHP « FRONTOFFICE », jQuery).
@@ -290,7 +291,7 @@ export async function fetchBashTalentsJobs(config: Record<string, unknown> = {})
       rawCount: canonicalIds.length + anonymousRows, termination: 'FULL_RESPONSE',
       // Une carte dont le lien ne porte pas de `BASH_xxx` a été vue sans pouvoir être nommée.
       canonicalAbsenceProofUsable: anonymousRows === 0,
-      pageEvidence: [{ url: listingUrl, checkedAt: new Date().toISOString(),
+      pageEvidence: [{ url: listingUrl, checkedAt: captureObservedAt().toISOString(),
         sha256: createHash('sha256').update(listing).digest('hex'), offset: 0,
         pagination: declaredTotal === undefined ? null : { start: 0, end: listed.length, total: declaredTotal },
         ids: canonicalIds, canonicalIds,

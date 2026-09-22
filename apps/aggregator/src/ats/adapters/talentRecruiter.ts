@@ -7,6 +7,7 @@ import { htmlToPlainText } from '../../lib/html.js';
 import { assertSourceRunning } from '../../lib/sourceBudget.js';
 import { normalizeCountry } from '../../normalize/country.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
+import { captureObservedAt } from '../../capture/context.js';
 
 const API = 'https://recruiter-api.hr-manager.net/jobportal.svc';
 const DOCUMENTATION = 'https://gradegroup.atlassian.net/wiki/spaces/DOCS/pages/2062844104/TR+Job+Portal+API+public';
@@ -97,7 +98,7 @@ export async function fetchTalentRecruiterJobs(config: Record<string, unknown>):
      * démontrable sur cette source. Les deux offres sans description restent dedans : elles ont été VUES, et
      * un défaut de contenu n'est pas une disparition.
      */
-    pageEvidence.push({url,checkedAt:new Date().toISOString(),sha256:createHash('sha256').update(JSON.stringify(data)).digest('hex'),offset:skip,ids,canonicalIds:ids,
+    pageEvidence.push({url,checkedAt:captureObservedAt().toISOString(),sha256:createHash('sha256').update(JSON.stringify(data)).digest('hex'),offset:skip,ids,canonicalIds:ids,
       pagination:{start:skip+1,end:skip+data.Items.length,total:data.PositionCountSearch},publisherCounter:String(data.PositionCountCustomer),
       componentCounters:[`customer=${data.PositionCountCustomer}`,`search=${data.PositionCountSearch}`,`list=${data.PositionCountList}`,`skipped=${data.PositionCountSkipped}`]});
     if (issues.length || rejectedRows.length) break;
