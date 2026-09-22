@@ -40,6 +40,14 @@ DECLARE
   trouvees   integer;
   actuel     text;
 BEGIN
+  -- Une installation neuve n’a pas de registre importé. L’absence de Douglas est
+  -- un cas sans mise à jour, pas une erreur de schéma. Une source présente mais
+  -- divergente reste refusée par les contrôles suivants.
+  IF NOT EXISTS (SELECT 1 FROM "Source" WHERE key = 'douglas-sf') THEN
+    RAISE NOTICE 'Douglas brandProperty: source absente, aucune configuration à modifier';
+    RETURN;
+  END IF;
+
   -- 1. La source existe EXACTEMENT une fois, avec le bon connecteur et la bonne origine.
   SELECT count(*) INTO trouvees
     FROM "Source"
