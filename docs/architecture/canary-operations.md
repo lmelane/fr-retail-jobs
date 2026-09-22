@@ -44,6 +44,14 @@ npm run stack:exec -- node --import tsx apps/aggregator/scripts/ops/worker-statu
 
 Cette lecture seule expose pause, dernière exécution, dernier échec et dernière collecte. Un run RUNNING sans signal récent est `UNVERIFIED` : une ligne abandonnée ne prouve pas qu'un processus vit. Une base indisponible fait échouer la commande ; l'absence de signal reste observable côté plateforme et moniteur externe.
 
+Pour le contrôle avant dégel, utiliser une invocation versionnée, sans commande shell composée :
+
+```sh
+node --import tsx apps/aggregator/scripts/ops/worker-status.mts --preflight --expected-revision=SHA_LIVRE_40_CARACTERES
+```
+
+Ce mode exige `PIPELINE_PAUSED=1`, le SHA de processus attendu et un heartbeat configuré avant tout accès réseau. Il lit le statut dans une transaction READ ONLY, refuse un run récemment observé vivant, exerce le vrai worker sous pause et exige son événement `workStarted:false`. Il vérifie ensuite l'acquittement HTTP du heartbeat et écrit une preuve synchrone unique `worker.paused_preflight`. Il ne crée aucun `PipelineRun`, aucune capture et aucune ingestion. Son ping est explicite ; la simple lecture de statut sans options ne le déclenche pas.
+
 ## Plan Railway à appliquer seulement après GO
 
 1. Figer le SHA candidat validé et le SHA actuellement déployé. Sauvegarder la base et vérifier la restauration opérationnelle décrite ci-dessous. Vérifier les canaux d'alerte depuis le futur environnement (l'émission réelle reste une étape du canari autorisé).
