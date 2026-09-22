@@ -1,5 +1,5 @@
 import { employmentLabel, langueDesLibelles } from '@catwalks/db/presentation';
-import { localeServie, type CleFacette } from '@catwalks/db/marches';
+import { filtresDuMarche, localeServie, TYPE_FILTRE_PAR_DEFAUT, type CleFacette, type TypeFiltre } from '@catwalks/db/marches';
 import type { Facet } from './job-search-query';
 import { getSectorPresentation } from './sectors';
 import type { OptionalOccupationPresentation } from './occupations';
@@ -7,7 +7,13 @@ import type { PlanRecherche } from './search-plan';
 
 export type OptionFacette = { value: string; label: string; count: number };
 /** Une facette telle que l'API la sert : sa clé d'URL, son libellé natif, ses options comptées. */
-export type FacetteServie = { cle: CleFacette; libelle: string; options: OptionFacette[] };
+/**
+ * Une facette servie au front : sa clé, son libellé natif, son TYPE D'INTERACTION et ses options.
+ *
+ * `type` dit au front ce qu'il doit RENDRE — liste à cocher, autocomplétion ou interrupteur — et
+ * lui évite de refaire une règle de seuil ou de cardinalité que le registre a déjà tranchée.
+ */
+export type FacetteServie = { cle: CleFacette; libelle: string; type: TypeFiltre; options: OptionFacette[] };
 
 /**
  * A city name canonicalized for display: trimmed and Title Cased so "PARIS",
@@ -84,9 +90,12 @@ export async function libellerFacettes(
     groupe: (v) => v,
     langue: langues,
   };
+  /* Le type vient du registre, jamais d'un calcul local : une ville se cherche partout. */
+  const types = new Map(filtresDuMarche(plan.perimetre).map((f) => [f.cle, f.type]));
   return plan.facettes.map(({ cle, libelle: nom }) => ({
     cle,
     libelle: nom,
+    type: types.get(cle) ?? TYPE_FILTRE_PAR_DEFAUT[cle],
     options: (brutes[cle] ?? []).filter((f) => f.count > 0).map((f) => ({ value: f.value, label: libelle[cle](f.value), count: f.count })),
   }));
 }

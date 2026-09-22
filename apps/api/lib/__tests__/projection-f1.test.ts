@@ -17,7 +17,7 @@ const ligne = (surcharges: Partial<JobRow>): JobRow => ({
 const resultat = (jobs: JobRow[]): JobsResult => ({
   jobs, total: jobs.length, totalConfirmes: jobs.length, totalPerimetre: 10, suivant: null,
   perimetre: { code: 'FR', nom: 'France', pays: ['FR'], mesure: true, locales: ['fr-FR'], localeParDefaut: 'fr-FR', langueDesLibelles: 'fr' },
-  facettes: [{ cle: 'contrat', libelle: 'Type de contrat', options: [{ value: 'PERMANENT', label: 'CDI', count: 3 }] }],
+  facettes: [{ cle: 'contrat', type: 'FACETTE' as const, libelle: 'Type de contrat', options: [{ value: 'PERMANENT', label: 'CDI', count: 3 }] }],
   filtresRefuses: [],
   lieu: null,
 });

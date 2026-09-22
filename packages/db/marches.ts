@@ -502,6 +502,15 @@ export type Marche = {
    * parce qu'un repli déclaré sur un marché natif finirait par être servi.
    */
   readonly localeDeRepli?: string;
+  /**
+   * La SURCHARGE du type d'interaction, quand un marché exige autre chose que la nature de la clé.
+   *
+   * Absente partout aujourd'hui, et c'est voulu : le type vient de `TYPE_FILTRE_PAR_DEFAUT`, qui
+   * dit qu'une ville se cherche et qu'un métier se coche — indépendamment du volume. Ce champ
+   * existe pour le jour où un marché démentirait cette nature, pas pour dupliquer dix décisions
+   * sur quarante et un marchés.
+   */
+  readonly typesFiltres?: Readonly<Partial<Record<CleFacette, TypeFiltre>>>;
   /** Les facettes propres au site exposées sur ce marché, dans l'ordre du contrat. */
   readonly facettesSite: readonly CleFacetteSite[];
   /** Les libellés natifs des facettes du site, relevés dans la langue de service. */
@@ -1464,6 +1473,74 @@ export function marche(code: string): Marche | undefined {
  * lu sur un chemin de rendu, et un pays hors périmètre doit dégrader l'écran en
  * catalogue sans facettes, pas le faire tomber.
  */
+/**
+ * LE TYPE D'INTERACTION D'UN FILTRE — ce que le front doit RENDRE, pas ce qu'il doit décider.
+ *
+ *   FACETTE    une liste de valeurs à cocher ;
+ *   RECHERCHE  une autocomplétion — trop de valeurs pour une liste, ou une nature de champ libre ;
+ *   TOGGLE     un booléen, qui filtre par présence de la propriété.
+ */
+export type TypeFiltre = 'FACETTE' | 'RECHERCHE' | 'TOGGLE';
+
+/**
+ * Le type d'interaction PAR NATURE DE CLÉ, jamais par volume.
+ *
+ * ── POURQUOI PAS UN SEUIL DE CARDINALITÉ (arbitrage du 2026-09-22) ────────────────────────────
+ *
+ * L'analyse avait proposé de basculer FACETTE → RECHERCHE au-delà de 60 valeurs. Le seuil est un
+ * bon outil d'audit et une mauvaise règle produit : il suffirait qu'un marché passe de 59 à 61
+ * Maisons pour que son interface change de nature toute seule. La mesure sert à DÉCIDER, pas à
+ * recalculer l'UX à chaque variation du catalogue.
+ *
+ * Une ville est un champ de recherche partout, y compris au Danemark où quatre Maisons seulement
+ * sont servies : une autocomplétion y reste parfaitement utilisable, et l'expérience est la même
+ * d'un marché à l'autre. C'est cette cohérence qu'on préfère.
+ *
+ * Un marché qui exigerait réellement une autre interaction l'écrit dans `typesFiltres` ; aucun
+ * n'en a le besoin aujourd'hui.
+ */
+export const TYPE_FILTRE_PAR_DEFAUT: Readonly<Record<CleFacette, TypeFiltre>> = {
+  pays: 'FACETTE',
+  metier: 'FACETTE',
+  secteur: 'FACETTE',
+  contrat: 'FACETTE',
+  temps: 'FACETTE',
+  programme: 'FACETTE',
+  langue: 'FACETTE',
+  /* Par NATURE : une ville se cherche, elle ne se coche pas. */
+  ville: 'RECHERCHE',
+  /* Idem — et cela vaut du Danemark (4 Maisons) aux États-Unis (162). */
+  maison: 'RECHERCHE',
+  groupe: 'FACETTE',
+};
+
+/** Un filtre servi par un marché : sa clé, son type d'interaction, son libellé natif. */
+export type FiltreMarche = {
+  readonly cle: CleFacette;
+  readonly type: TypeFiltre;
+  readonly libelle: string;
+};
+
+/**
+ * LES FILTRES EXPOSÉS PAR UN MARCHÉ — le contrat que le front rend sans rien recalculer.
+ *
+ * Deux décisions distinctes, et c'est ce qui rend le contrat maintenable :
+ *
+ *   L'EXPOSITION est propre au MARCHÉ. `facettesContrat` la calcule déjà : une dimension mesurée
+ *     n'apparaît que si sa couverture atteint le seuil ET qu'un libellé natif existe ; une facette
+ *     du site n'apparaît que si le marché la déclare.
+ *   LE TYPE est propre à la CLÉ, avec surcharge par marché si un jour l'un d'eux l'exige.
+ *
+ * Le front n'a donc aucune règle de seuil ni de cardinalité à refaire : il reçoit la liste de ce
+ * qu'il doit afficher, et comment.
+ */
+export function filtresDuMarche(perimetre: Perimetre): readonly FiltreMarche[] {
+  const surcharges = perimetre.marche?.typesFiltres;
+  return facettesContrat(perimetre).map(({ cle, libelle }) => ({
+    cle, libelle, type: surcharges?.[cle] ?? TYPE_FILTRE_PAR_DEFAUT[cle],
+  }));
+}
+
 export function facettesDuMarche(code: string): readonly DimensionFacette[] {
   const m = marche(code);
   if (!m) return [];

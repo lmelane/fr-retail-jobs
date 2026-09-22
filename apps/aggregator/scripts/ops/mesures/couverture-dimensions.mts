@@ -42,7 +42,7 @@ const DIMENSIONS: ReadonlyArray<readonly [string, string]> = [
   ['langue', 'language'],
   ['teletravail', 'workplaceType'],
   ['engagement', 'engagementType'],
-  ['groupe', 'groupeId'],
+  ['groupe', 'groupeNom'],
 ];
 
 const colonnes = DIMENSIONS.map(([nom, col]) =>
@@ -52,9 +52,10 @@ const colonnes = DIMENSIONS.map(([nom, col]) =>
 
 const lignes = await prisma.$queryRawUnsafe<Array<Record<string, unknown>>>(`
   WITH publiables AS (
-    /* Le groupe ne vit pas sur Job mais sur Company.parentGroupId : on le joint, plutot que de
-     * le declarer non mesurable — la relation canonique existe. */
-    SELECT j.*, c."parentGroupId" AS "groupeId",
+    /* Le groupe ne vit pas sur Job mais sur Company. On lit parentGroup (le NOM, 19 valeurs sur
+     * le corpus) et non parentGroupId (une seule valeur) : c est le nom que l API interroge
+     * (job-search-query.ts, companies.ts), donc la colonne qui gouverne reellement la facette. */
+    SELECT j.*, c."parentGroup" AS "groupeNom",
            (j."countryIntegrity" IN ('RAW_COUNTRY_CODE','RAW_COUNTRY','VERIFIED')) AS prouve
       FROM "Job" j LEFT JOIN "Company" c ON c.id = j."companyId"
      WHERE j."isActive" AND j."mergedIntoId" IS NULL

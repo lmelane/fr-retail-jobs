@@ -2,7 +2,7 @@ import { getSectorPresentation, sectorWhere } from './sectors';
 import { companyIdentityWhere } from './company-identity';
 import { prisma } from '@catwalks/db';
 import { publicJobWhere } from '@catwalks/db/availability';
-import { facettesContrat, localeServie, type Perimetre } from '@catwalks/db/marches';
+import { facettesContrat, filtresDuMarche, localeServie, TYPE_FILTRE_PAR_DEFAUT, type Perimetre } from '@catwalks/db/marches';
 import { Prisma } from '@prisma/client';
 import { DatabaseUnavailableError, MAX_VALUES, perimetreServi, type PerimetreServi } from './jobs';
 import { CURSEUR_MAX, CurseurInvalideError, decoderCurseur, empreinteCriteres, encoderCurseur } from './curseur';
@@ -318,11 +318,14 @@ async function queryCompanies(filters: CompanyFilters, perimetre: Perimetre): Pr
     }
   })();
 
+  /* Le type d'interaction vient du registre, comme pour la recherche d'offres. */
+  const typesFiltre = new Map(filtresDuMarche(perimetre).map((f) => [f.cle, f.type]));
   const facettes: FacetteServie[] = contrat.flatMap(({ cle, libelle }): FacetteServie[] => {
-    if (cle === 'secteur') return [{ cle, libelle, options: [...sectorCounts.entries()]
+    const type = typesFiltre.get(cle) ?? TYPE_FILTRE_PAR_DEFAUT[cle];
+    if (cle === 'secteur') return [{ cle, libelle, type, options: [...sectorCounts.entries()]
       .map(([value, count]) => ({ value, count, label: presentation.labels[value] ?? 'Secteur à vérifier' }))
       .filter((o) => o.count > 0).sort((a, b) => b.count - a.count || a.value.localeCompare(b.value)) }];
-    if (cle === 'pays') return [{ cle, libelle, options: [...paysCounts.entries()]
+    if (cle === 'pays') return [{ cle, libelle, type, options: [...paysCounts.entries()]
       .map(([value, count]) => ({ value, count, label: nomsPays?.of(value) ?? value }))
       .sort((a, b) => b.count - a.count || a.value.localeCompare(b.value)) }];
     return [];
