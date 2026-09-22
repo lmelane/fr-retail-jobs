@@ -23,6 +23,8 @@ Les règles de travail figurent dans [CLAUDE.md](CLAUDE.md). Préserver le trava
 - [Architecture et contrats produit](docs/architecture/production-foundations.md) : deux origines d’offres, pays/langue, recherche et parcours de validation des sources.
 - [Recherche bornée par marché](docs/architecture/recherche-marche.md) : périmètre obligatoire, champ lieu, filtres refusés explicitement, inconnues non confirmées, contrat de facettes et `GET /api/marches`.
 - [Parcours unique des sources](docs/architecture/source-onboarding.md) : découverte, enregistrement, captures HTTP des preuves, collecte native et activation.
+- [Validation multilingue `/emplois`](docs/architecture/emplois-e2e.md) : chaîne locale de répétition et tests navigateur.
+- [Golden Path nouvelle source](docs/architecture/golden-source.md) : base neuve, qualification, deux ingestions, rejeu et lecture API.
 - [État vérifié et exploitation](apps/aggregator/README.md).
 - [Stack locale complète](docs/stack-locale.md) : catalogue, API, backend et site de test sur ce poste (`npm run stack:prepare`, `stack:start`, `stack:verify`, `stack:stop`, `stack:reset`), données synthétiques isolées, aucune écriture de production.
 - [Faits issus du RAW](docs/architecture/source-facts.md) : rémunérations exactes, diplômes natifs, modes de travail et localisations.

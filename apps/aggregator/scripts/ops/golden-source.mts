@@ -108,6 +108,7 @@ try {
     import assert from 'node:assert/strict';
     import {prisma} from './packages/db/index.ts';
     import {getJobs,parseFilters} from './apps/api/lib/jobs.ts';
+    import {exigerPerimetre} from './apps/api/lib/perimetre.ts';
     import {publicJobWhere} from './packages/db/availability.ts';
     import {readRefreshPlan} from './apps/aggregator/src/pipeline/refresh.ts';
     import {writePrivateFile} from './apps/aggregator/src/lib/privateFile.ts';
@@ -116,7 +117,8 @@ try {
       const rows=await prisma.job.findMany({where:publicJobWhere(),select:{id:true,countryCode:true}});
       const markets=[];
       for(const market of [...new Set(rows.flatMap(r=>r.countryCode?[r.countryCode]:[]))]) {
-        const expected=rows.filter(r=>r.countryCode===market).map(r=>r.id).sort();
+        const countries=exigerPerimetre(market).pays;
+        const expected=rows.filter(r=>countries.includes(r.countryCode)).map(r=>r.id).sort();
         const ids=[];let apres;
         do { const page=await getJobs(parseFilters({marche:market,apres}));assert.equal(page.total,expected.length);ids.push(...page.jobs.map(j=>j.id));apres=page.suivant??undefined;assert(ids.length<=expected.length); } while(apres);
         assert.deepEqual(ids.sort(),expected);markets.push({market,total:ids.length});
