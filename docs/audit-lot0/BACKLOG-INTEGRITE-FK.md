@@ -117,3 +117,61 @@ Comportement prouvé sur le clone, transactions annulées :
 
 **Historique toléré, nouvelle violation refusée** : exactement le comportement attendu pour une
 répétition qui doit mesurer un delta sans hériter de la dette.
+
+---
+
+# Annexe — 12 offres dont le pays stocké contredit le pays natif
+
+**Anomalie historique distincte, hors du lot géographique du 2026-09-22.** Découverte par le
+preflight de ce lot, prouvée préexistante en débranchant le correctif.
+
+| source | transition | offres | libellé natif |
+|---|---|---:|---|
+| `ulta-jibe` | PR → US | 11 | `country = "United States"` |
+| `foot-locker-france` | US → GB | 1 | `country = "United Kingdom"`, lieu `Slough/Berkshire, UK, SL1 1BX` |
+
+Dans les deux cas la source publie un champ pays explicite, reconnu par la table `COUNTRY_NAMES`
+**depuis toujours** — `United States` et `United Kingdom` n'ont rien à voir avec l'élargissement
+CLDR du lot GEO. Vérifié en débranchant le correctif : les 12 subsistent à l'identique.
+
+Le cas `foot-locker-france` est le plus net : la base porte `US` avec un verdict `RAW_COUNTRY`
+déjà positif, alors que le lieu est `Slough/Berkshire, UK` et que la source dit
+`United Kingdom`. **La donnée stockée est fausse et sa preuve l'atteste à tort.**
+
+Ces valeurs seront corrigées mécaniquement au prochain rerun de ces sources, par le pipeline
+officiel, avec ou sans le lot GEO. Elles sont signalées ici pour qu'un lot intitulé « preuve
+géographique » ne soit pas crédité — ni accusé — d'un changement de pays qu'il ne cause pas.
+
+`ulta-jibe` n'est pas dans le périmètre du rerun GEO : ses 11 offres resteront en l'état.
+
+---
+
+# Annexe — 692 offres LVMH hors du gain géographique
+
+**Constat du lot GEO (2026-09-22). Blocker d'identité, pas un défaut géographique.**
+
+`lvmh` porte 692 offres dont le pays natif est explicite — `Chinese Mainland` ×578,
+`Hong Kong SAR` ×38, `French Overseas Departments and Territories` ×19 — et que le correctif
+géographique sait désormais résoudre.
+
+Elles n'en ont pourtant pas bénéficié : la campagne s'arrête sur `DOMAINE_OFFICIEL_DIVERGENT`
+(portail servi sous `lvmh.com`, registre `sephora.com`) et `ingestion = null`. La collecte a
+ramené 6 193 offres, aucune n'a été ingérée. **Le correctif ne pouvait donc pas s'appliquer.**
+
+C'est un blocker d'identité préexistant, sans rapport avec la géographie. Il n'est pas rouvert.
+
+# Annexe — 480 offres Foot Locker : refus conforme, pas un défaut
+
+`foot-locker-france` fournit les DEUX champs :
+
+    country      = "Germany"     ← un nom, qui prouverait le pays
+    country_code = "DE"          ← un code ambigu (Delaware / Allemagne)
+
+`phenom.ts:133` transmet `data.country_code ?? data.country` : le normaliseur reçoit donc `DE`,
+et `countryIntegrity.ts` refuse de le considérer comme preuve. **Ce refus est conforme à la
+doctrine** — un code à deux lettres ne prouve rien de plus que le suffixe d'un libellé de lieu.
+
+Ces offres relèvent de `WEAK_GEO_SIGNAL`, pas de `PROVENANCE_LOST` : elles avaient été mal
+classées par un preflight qui lisait le RAW sans tracer ce que l'adaptateur en fait. Aucune
+correction n'est engagée : préférer le nom au code sur cette famille serait un changement de
+doctrine, pas un correctif.

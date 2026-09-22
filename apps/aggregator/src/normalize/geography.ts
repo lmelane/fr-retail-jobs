@@ -18,6 +18,9 @@
  * géographie complète inventée.**
  */
 
+import countryLabels from '../../data/reference/country-labels.json' with { type: 'json' };
+import { LABEL_TO_ISO } from './countryLabels.js';
+
 /** D'où vient le pays — la provenance, conservée pour l'audit. */
 export type GeoMethod =
   | 'RAW_COUNTRY_CODE'
@@ -280,6 +283,35 @@ function countryFromName(token: string): string | undefined {
   return COUNTRY_NAMES[upper(token)];
 }
 
+/**
+ * Le pays d'un LIBELLÉ CLDR — réservé au champ pays natif, jamais au parsing d'un lieu.
+ *
+ * Les données viennent du même référentiel gelé que `country.ts` (`country-labels.json`, CLDR 48,
+ * 38 langues), lu directement : `country.ts` importe déjà `geography.js`, donc l'importer en
+ * retour créerait un cycle. On ne duplique aucun dictionnaire — on lit la même source.
+ *
+ * Un libellé qui désigne plusieurs pays rend `undefined` : le référentiel conserve tous les
+ * candidats plutôt que d'en élire un, et on ne tranche pas à sa place.
+ */
+function countryFromCldrLabel(token: string): string | undefined {
+  const cle = token.trim().toLowerCase().normalize('NFC');
+  /* La table manuelle d'abord : elle porte les formulations que CLDR ne connaît pas — « Chinese
+   * Mainland » n'est pas un libellé CLDR, c'est la façon dont LVMH nomme le territoire. */
+  const manuel = LABEL_TO_ISO[cle];
+  if (manuel) return manuel;
+  /*
+   * JAMAIS UN CODE À DEUX LETTRES DANS CLDR. Ce référentiel indexe des NOMS, et certains noms
+   * courts entrent en collision avec des codes ISO : mesuré le 2026-09-22, `"ru"` y résout vers
+   * **GB** (une abréviation de libellé), pas vers la Russie. Interroger CLDR avec un code
+   * transformait donc des offres russes en britanniques. Les codes restent traités en aval, par
+   * la branche `/^[A-Z]{2}$/` qui les valide comme codes ISO — et que `countryIntegrityOf`
+   * refuse de considérer comme preuve quand ils sont ambigus.
+   */
+  if (/^[a-z]{2}$/.test(cle)) return undefined;
+  const candidats = (countryLabels.labels as Record<string, string[]>)[cle];
+  return candidats?.length === 1 ? candidats[0] : undefined;
+}
+
 /** Les tables de subdivisions dont on dispose, indexées par pays. */
 const SUBDIVISIONS: Record<string, Record<string, string>> = {
   US: US_STATES,
@@ -346,7 +378,25 @@ export function resolveGeography(input: GeographyInput): ResolvedGeography {
     out.sourcePath = 'country_code';
     out.confidence = 1;
   } else if (input.rawCountry) {
-    const fromName = countryFromName(input.rawCountry);
+    /*
+     * LE CHAMP PAYS NATIF LIT LE DICTIONNAIRE CANONIQUE, pas la table locale.
+     *
+     * `COUNTRY_NAMES` est volontairement réduite parce qu'elle sert AUSSI à lire les suffixes de
+     * libellés de lieu, où l'ambiguïté est le risque principal. Mais ici la source a publié un
+     * champ dont le pays est l'unique objet : lui refuser les 6 232 libellés CLDR de
+     * `country-labels.json` faisait perdre toute preuve aux sources qui nomment leur pays dans
+     * leur langue — mesuré le 2026-09-22 : 1 410 offres, dont 578 sur le seul « Chinese
+     * Mainland » de LVMH, alors que `Germany` passait pour la seule raison qu'il figurait dans
+     * les deux tables.
+     *
+     * L'élargissement s'arrête à cette branche. Le parsing de `location` garde `countryFromName`
+     * inchangé : y faire entrer ces libellés rendrait « Los Angeles, CA » résoluble en Canada,
+     * soit l'inférence que `countryIntegrity.ts` existe pour interdire.
+     *
+     * La table CLDR est elle-même défensive : un libellé qui désigne PLUSIEURS pays y est retenu
+     * comme plusieurs candidats et ne résout rien, plutôt que d'en choisir un arbitrairement.
+     */
+    const fromName = countryFromName(input.rawCountry) ?? countryFromCldrLabel(input.rawCountry);
     const asCode = input.rawCountry.trim().toUpperCase();
     const code = fromName ?? (/^[A-Z]{2}$/.test(asCode) ? CODE_ALIASES[asCode] ?? asCode : undefined);
     if (code) {
