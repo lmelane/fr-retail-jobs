@@ -1,5 +1,7 @@
 # PR-1 — préparation technique du canari, 22 septembre 2026
 
+> **État opérationnel après GO utilisateur, 22 septembre : STOP avant livraison.** La restauration de la sauvegarde Railway échoue sur des références d’identité orphelines. [Rapport du canari Oh My Cream](canary-oh-my-cream.md). Les validations locales ci-dessous restent acquises ; elles ne valent pas restauration du stock réel. Aucune production modifiée.
+
 **GO TECHNIQUE CANARI, limité à l’agrégateur et `/emplois`.** Ce verdict clôture les corrections locales de PR-1. Il ne constitue ni une validation de production globale, ni une autorisation de déploiement. `main` et la production sont intactes. Le remplacement de la commande Railway, la livraison et la collecte réelle Railway attendent le GO explicite de Loïc.
 
 Ce bilan remplace, pour le périmètre canari, le [NO-GO précédent](production-readiness.md). `/emplois` V1 et Golden Path restent acquis ; aucune nouvelle campagne d’audit des données.
