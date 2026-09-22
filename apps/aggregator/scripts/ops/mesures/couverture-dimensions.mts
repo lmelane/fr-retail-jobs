@@ -1,5 +1,11 @@
 /**
- * COUVERTURE DES DIMENSIONS PAR MARCHÉ — lecture seule sur le corpus figé (40 091).
+ * COUVERTURE DES DIMENSIONS PAR MARCHÉ — lecture seule sur CORPUS_ANALYTIQUE_V1_POST_GEO.
+ *
+ * Deux repères distincts, à ne jamais confondre :
+ *   CATALOGUE_CONSOLIDE_V1          40 068 — la baseline FIGÉE, qui ne change plus ;
+ *   CORPUS_ANALYTIQUE_V1_POST_GEO   40 091 — le corpus d'analyse, après le lot géographique
+ *                                   (+23 offres apparues lors des collectes live de ce lot).
+ * Une baseline freeze ne se renomme pas après coup : elle vaut ce qu'elle valait.
  *
  * Pour chaque couple `Marché × Dimension` : combien d'offres portent la valeur, quelle part du
  * marché, et combien de valeurs DISTINCTES. Les trois comptent ensemble — une dimension remplie à
@@ -36,6 +42,7 @@ const DIMENSIONS: ReadonlyArray<readonly [string, string]> = [
   ['langue', 'language'],
   ['teletravail', 'workplaceType'],
   ['engagement', 'engagementType'],
+  ['groupe', 'groupeId'],
 ];
 
 const colonnes = DIMENSIONS.map(([nom, col]) =>
@@ -45,8 +52,11 @@ const colonnes = DIMENSIONS.map(([nom, col]) =>
 
 const lignes = await prisma.$queryRawUnsafe<Array<Record<string, unknown>>>(`
   WITH publiables AS (
-    SELECT j.*, (j."countryIntegrity" IN ('RAW_COUNTRY_CODE','RAW_COUNTRY','VERIFIED')) AS prouve
-      FROM "Job" j
+    /* Le groupe ne vit pas sur Job mais sur Company.parentGroupId : on le joint, plutot que de
+     * le declarer non mesurable — la relation canonique existe. */
+    SELECT j.*, c."parentGroupId" AS "groupeId",
+           (j."countryIntegrity" IN ('RAW_COUNTRY_CODE','RAW_COUNTRY','VERIFIED')) AS prouve
+      FROM "Job" j LEFT JOIN "Company" c ON c.id = j."companyId"
      WHERE j."isActive" AND j."mergedIntoId" IS NULL
        AND EXISTS (SELECT 1 FROM "JobSource" js WHERE js."jobId" = j.id AND js."isActive"
                      AND (js."expiresAt" IS NULL OR js."expiresAt" > now())))
@@ -90,7 +100,8 @@ const sansPays = num(parPays.get('(aucun)'), 'total');
 const horsRegistre = corpus - routees - sansPays;
 console.log(`# Couverture des dimensions — ${routees} offres routées sur ${marches.length} marchés\n`);
 /* L'écart au corpus figé se décompose intégralement : rien ne disparaît en silence. */
-console.log(`Corpus figé **${corpus}** = ${routees} routées + ${horsRegistre} hors registre + ${sansPays} sans pays.\n`);
+console.log(`\`CORPUS_ANALYTIQUE_V1_POST_GEO\` **${corpus}** = ${routees} routées + ${horsRegistre} hors registre + ${sansPays} sans pays.`);
+console.log(`\nBaseline figée \`CATALOGUE_CONSOLIDE_V1\` = **40 068**, inchangée : les +23 viennent des collectes live du lot géographique, et une baseline freeze ne change pas de valeur après coup.\n`);
 console.log(`Couverture sur tout le corpus routé, puis sur le sous-ensemble à pays PROUVÉ.\n`);
 console.log(`| Marché | Offres | Dimension | Renseigné | Couv. | Couv. (pays prouvé) | Valeurs distinctes |`);
 console.log(`|---|---:|---|---:|---:|---:|---:|`);
@@ -116,21 +127,49 @@ for (const m of marches) {
  * champ de recherche, pas une facette à cocher — exposé à part, jamais en liste de cases.
  */
 const SEUIL = 0.2;
-const CARDINALITE_MIN = 2;
 const CARDINALITE_FACETTE_MAX = 60;
+/*
+ * TOUTES LES DIMENSIONS NE SONT PAS DES LISTES DE CASES À COCHER. Une première version écartait
+ * `saisonnier` au motif qu'il ne porte qu'UNE valeur (`true`) — or c'est précisément la forme
+ * d'un TOGGLE : « Saisonnier uniquement ». La cardinalité 1 disqualifie une facette, pas un
+ * booléen. Et une forte cardinalité ne disqualifie pas non plus `maison` : elle en fait une
+ * recherche par autocomplétion, pas un filtre à supprimer.
+ */
+const BOOLEENNES = new Set(['saisonnier']);
 
 console.log(`\n# Matrice des filtres V1\n`);
-console.log(`| Marché | Dimension | Couverture | Cardinalité | Exposé | Motif |`);
-console.log(`|---|---|---:|---:|:---:|---|`);
+console.log(`| Marché | Dimension | Couverture | Cardinalité | Type UI | Exposé | Motif |`);
+console.log(`|---|---|---:|---:|:---:|:---:|---|`);
 for (const m of marches) {
   for (const [nom] of DIMENSIONS) {
     const e = m.dims.get(nom)!;
     const couv = e.n / m.total;
-    let expose = 'OUI', motif = '';
-    if (e.d < CARDINALITE_MIN) { expose = 'NON'; motif = 'une seule valeur : ne filtre rien'; }
-    else if (couv < SEUIL) { expose = 'NON'; motif = `couverture ${Math.round(couv * 100)}% sous le seuil de ${SEUIL * 100}%`; }
-    else if (e.d > CARDINALITE_FACETTE_MAX) { expose = 'RECHERCHE'; motif = `${e.d} valeurs : champ de recherche, pas une facette`; }
-    else motif = `couverture et cardinalité suffisantes`;
-    console.log(`| ${m.localise ? `**${m.code}**` : m.code} | ${nom} | ${pct(e.n, m.total)}% | ${e.d} | ${expose} | ${motif} |`);
+    let type = 'FACETTE', expose = 'OUI', motif = 'couverture et cardinalité suffisantes';
+    if (BOOLEENNES.has(nom)) {
+      /* Un booléen filtre par PRÉSENCE : la seule question est d'avoir assez d'offres à montrer. */
+      type = 'TOGGLE';
+      if (e.n === 0) { expose = 'NON'; motif = 'aucune offre ne porte la propriété'; }
+      else motif = `${e.n} offre(s) portent la propriété : toggle « ${nom} uniquement »`;
+    } else if (e.n === 0) { type = 'NON'; expose = 'NON'; motif = 'jamais renseigné'; }
+    else if (e.d < 2) { type = 'NON'; expose = 'NON'; motif = 'une seule valeur : ne filtre rien'; }
+    else if (couv < SEUIL) { type = 'NON'; expose = 'NON'; motif = `couverture ${Math.round(couv * 100)}% sous le seuil de ${SEUIL * 100}%`; }
+    else if (e.d > CARDINALITE_FACETTE_MAX) { type = 'RECHERCHE'; motif = `${e.d} valeurs : recherche par autocomplétion`; }
+    console.log(`| ${m.localise ? `**${m.code}**` : m.code} | ${nom} | ${pct(e.n, m.total)}% | ${e.d} | ${type} | ${expose} | ${motif} |`);
   }
+}
+
+/* ── LE RÉSUMÉ PAR MARCHÉ : ce que le candidat verra réellement ─────────────────────────────── */
+console.log(`\n# Filtres disponibles par marché\n`);
+console.log(`| Marché | Offres | Facettes | Recherche | Toggles |`);
+console.log(`|---|---:|---|---|---|`);
+for (const m of marches) {
+  const par: Record<string, string[]> = { FACETTE: [], RECHERCHE: [], TOGGLE: [] };
+  for (const [nom] of DIMENSIONS) {
+    const e = m.dims.get(nom)!;
+    const couv = e.n / m.total;
+    if (BOOLEENNES.has(nom)) { if (e.n > 0) par.TOGGLE.push(nom); continue; }
+    if (e.n === 0 || e.d < 2 || couv < SEUIL) continue;
+    par[e.d > CARDINALITE_FACETTE_MAX ? 'RECHERCHE' : 'FACETTE'].push(nom);
+  }
+  console.log(`| ${m.localise ? `**${m.code}**` : m.code} | ${m.total} | ${par.FACETTE.join(' · ') || '—'} | ${par.RECHERCHE.join(' · ') || '—'} | ${par.TOGGLE.join(' · ') || '—'} |`);
 }

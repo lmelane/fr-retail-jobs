@@ -1,5 +1,8 @@
 /**
- * CARTOGRAPHIE FINALE DES MARCHÉS — les 41, sur le corpus figé. Lecture seule.
+ * CARTOGRAPHIE FINALE DES MARCHÉS — les 41, sur CORPUS_ANALYTIQUE_V1_POST_GEO (40 091).
+ *
+ * À distinguer de `CATALOGUE_CONSOLIDE_V1` (40 068), la baseline figée avant le lot géographique :
+ * les +23 viennent des collectes live de ce lot, et une baseline freeze ne change pas de valeur.
  *
  * Le mapping vient du registre (`MARCHES[*].pays`), jamais d'une égalité `marketCode =
  * countryCode` : `GB` sert aussi l'Irlande, `DE` sert aussi l'Autriche.
