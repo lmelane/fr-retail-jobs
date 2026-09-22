@@ -25,29 +25,27 @@ npx tsx scripts/ops/publication-groups.mts --apply --plan=plan.json --hash=<empr
 
 Chaque publication doit apparaître une seule fois dans la répartition complète des groupes nommés. Le plan version 3 reconstruit le contenu avec le lecteur RAW actuel, y compris lorsqu’une sortie archivée est référencée. Il vérifie séparément la provenance de cette capture et garde son empreinte distincte de celle du contenu reconstruit. Un RAW insuffisant demande une recollecte ou une qualification ; l’outil ne copie pas le contenu de l’ancien groupe. Une restauration conserve les événements antérieurs et ajoute une décision compensatrice. Une répétition du plan ne répète pas les mutations.
 
-## Restauration et intégrité globale, sur clone local uniquement
+## Restauration opérationnelle sans réparation de données
 
-[`restore-integrity-repair.py`](restore-integrity-repair.py) : dump hashé → pre-data → data → inventaire exhaustif des FK → plan hashé et règles NULL explicites → réparation atomique si aucun blocage → post-data complet → vérification des FK/checks/triggers. Aucun mode production. Un exit **2** signale un blocage sémantique avant toute réparation ; **1** une erreur ; **0** une reconstruction structurelle complète. API, `/emplois`, Golden Path et fresh install produit restent à valider après ce prérequis : l’outil ne leur attribue jamais un PASS implicite.
+[`restore-operational.py`](restore-operational.py) restaure un dump hashé dans une **base Docker locale neuve**, sans nullification, suppression ni création d’objet métier. La [politique versionnée](restore-operational-policy.json) fixe les 45 FK et les populations/hashes exacts : les 8 FK historiques sont recréées `NOT VALID`, les 37 autres normalement. Toute différence de schéma/population ou toute erreur post-data échoue ; la liste ne s’élargit jamais automatiquement.
 
 ```sh
-python3 -B apps/aggregator/scripts/ops/restore-integrity-repair.py \
+python3 -B apps/aggregator/scripts/ops/restore-operational.py \
   --dump /chemin/prive/production.dump --dump-sha256 SHA256_DU_DUMP \
-  --container catwalks-consolide-rehearsal --database restore_integrity_essai \
+  --container catwalks-consolide-rehearsal --database restore_operational_essai \
   --out-dir /chemin/prive/nouvel-essai
 ```
 
-Remplacer `essai` par un identifiant en minuscules. Le conteneur PostgreSQL doit être local et déjà disponible ; la base et le dossier de résultat doivent être nouveaux. `--pg-restore` permet de préciser le binaire PostgreSQL compatible installé sur l’hôte. La base intermédiaire reste identifiée en cas d’échec pour inspection, jamais utilisée comme clone validé.
+`NOT VALID` conserve les anciennes lignes et active les contrôles des nouvelles écritures. L’outil vérifie les triggers et le rôle de réplication, tente des nouvelles insertions orphelines en transactions annulées et exerce chaque définition FK avec les vrais parents dans un schéma témoin annulé. Certains triggers métier refusent avant la FK : leur erreur exacte est conservée séparément du témoin RI `23503`. Aucune désactivation de trigger. Les empreintes de **toutes les lignes de toutes les tables et des séquences** doivent rester identiques.
 
-Les règles explicites autorisent uniquement les alias à revue orpheline : un alias sans revue n’est plus une preuve de résolution. `Company.identityReviewId` est bloqué car NULL ne neutralise pas la fusion et viole le CHECK des relations. Toute autre sémantique inconnue et toute FK non nullable orpheline bloquent **l’ensemble**, sans réparation partielle.
-
-Les tests hors ligne sont inclus dans la commande unittest ci-dessus. Les témoins PostgreSQL isolés :
+Un exit 0 certifie cette restauration structurelle explicite ; API, `/emplois` et Golden Path doivent ensuite passer avant le canari. Le résultat distingue les 37 VALID des 8 NOT VALID. Le `repair` précédent est retiré : aucun mode de nullification n’est conservé. L’ancien script `nettoyer-collecte.mts`, sans appelant actuel et lié à un reset antérieur, est supprimé ; un témoin interdit son retour et les mécanismes de désactivation d’intégrité dans les entrypoints.
 
 ```sh
 INTEGRITY_TEST_CONTAINER=catwalks-consolide-rehearsal python3 -B -m unittest discover \
-  -s apps/aggregator/scripts/ops/tests -p 'test_restore_integrity_repair.py'
+  -s apps/aggregator/scripts/ops/tests -p 'test_restore_operational.py'
 ```
 
-[Résultat du dump réel du 22 septembre : NO-GO](../../../../audits/2026-09-22/restore-integrity-repair.md). Le script historique `nettoyer-collecte.mts` contient encore un contournement d’intégrité ; il ne fait pas partie de cette procédure et ne doit pas être utilisé pour lever ce blocage.
+La base et le dossier de résultat doivent être nouveaux. `--pg-restore` désigne le binaire PostgreSQL compatible installé sur l’hôte. Cette procédure ne possède aucun mode production et n’autorise aucun nettoyage historique.
 
 ## Mutating production
 

@@ -46,13 +46,21 @@ Cette lecture seule expose pause, dernière exécution, dernier échec et derni�
 
 ## Plan Railway à appliquer seulement après GO
 
-1. Figer le SHA candidat validé et le SHA actuellement déployé. Sauvegarder la base et vérifier la restauration. Vérifier les canaux d'alerte depuis le futur environnement (l'émission réelle reste une étape du canari autorisé).
+1. Figer le SHA candidat validé et le SHA actuellement déployé. Sauvegarder la base et vérifier la restauration opérationnelle décrite ci-dessous. Vérifier les canaux d'alerte depuis le futur environnement (l'émission réelle reste une étape du canari autorisé).
 2. Tous les workers restent `PIPELINE_PAUSED=1`, calendriers gelés. Remplacer l'override de campagne de l'agrégateur par `sh apps/aggregator/start.sh` ; aucune référence à un fichier supprimé ne doit subsister dans le manifeste Railway.
 3. Livrer le candidat, appliquer les migrations **une seule fois par l'étape de release API**, puis vérifier `/api/health`, lecture authentifiée et statut des services. Le worker refuse les migrations en attente ; il ne les applique pas.
 4. Pour le seul service autorisé, préparer la commande `source-add` ci-dessus, périmètre d'une seule source. Conserver les secrets d'alerte, vérifier les variables présentes sans les afficher, garder les autres services en pause. Retirer la pause du seul service canari et exécuter **une fois**, sous surveillance. La méthode de déploiement Railway peut démarrer le conteneur immédiatement : le dégel lui-même est une action d'exécution soumise au GO.
 5. Vérifier verdict, admissions/fins, captures liées, doublons, lecture API et `/emplois`. Restaurer la pause et la commande normale, confirmer les calendriers et l'absence de processus actif. Aucun refresh ni clôture automatique dans ce premier canari.
 
 `railway-service.py` refuse une commande bornée/exécution si la pause distante n'est pas exactement `0`, avant mutation. La restauration de la commande normale reste possible en pause. Aucun de ces changements n'est appliqué par PR-1. L'état déployé peut donc encore porter l'ancien override jusqu'au GO.
+
+## Restauration du stock historique, sans data repair
+
+Décision explicite de Loïc du 22 septembre 2026 : les 754 violations historiques sur 613 lignes ne sont pas réparées pendant le canari. [`restore-operational.py`](../../apps/aggregator/scripts/ops/restore-operational.py) applique une [liste figée](../../apps/aggregator/scripts/ops/restore-operational-policy.json) de huit FK, avec comptes et hashes exacts. Le dump est restauré en pre-data, data et post-data normal, sauf ces huit FK explicitement recréées `NOT VALID`. Les 37 autres doivent être VALID. Une population différente, une FK supplémentaire en violation ou une erreur post-data bloque la restauration.
+
+Les huit FK restent actives pour les nouvelles écritures. Aucun trigger n’est désactivé, aucune référence nullifiée, aucun parent inventé. Le résultat expose les huit contraintes non validées et les témoins d’écriture refusée ; il ne prétend jamais que la dette a disparu. Les données complètes et séquences doivent être identiques avant/après reconstruction. Cette tolérance historique limitée remplace, pour la restauration du stock, l’ancien critère irréalisable de zéro orphelin sans changement des données.
+
+Une restauration verte est suivie des contrôles API, `/emplois` et Golden Path avant reprise du canari autorisé. Aucun changement des huit contraintes ni des données historiques n’est appliqué directement sur Railway par cette procédure. L’ancien outil de réparation et le lanceur de purge qui désactivait l’intégrité sont retirés.
 
 ## Périmètres volontairement séparés
 

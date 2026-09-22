@@ -1,10 +1,13 @@
 # Restore integrity repair — 22 septembre 2026
 
+> **Rapport historique.** Loïc a ensuite abandonné la réparation des 613 lignes. La stratégie courante est la [restauration opérationnelle sans data repair](../../docs/architecture/canary-operations.md#restauration-du-stock-historique-sans-data-repair), avec huit FK NOT VALID explicitement bornées. Le tooling de repair et l’ancien script de purge ont été retirés.
+
+
 **NO-GO REPAIR PRODUCTION.** Une seule restauration `pre-data` + `data` du dump réel, puis inventaire complet avant toute décision. Aucune recherche historique. Aucun repair partiel, aucun objet métier supprimé, aucune revue créée. L’outil s’arrête avec le code **2**, avant les UPDATE et la restauration post-data.
 
 ## Procédure versionnée et résultat
 
-[`restore-integrity-repair.py`](../../apps/aggregator/scripts/ops/restore-integrity-repair.py) restaure exclusivement vers une **nouvelle base Docker locale** nommée `restore_integrity_*`. Une base existante est refusée. Le dump doit correspondre au SHA-256 fourni. Le script extrait toutes les FK du post-data, y compris les composites ; une syntaxe inconnue n’est jamais omise silencieusement. Il mesure chaque population, la nullabilité de chaque colonne et le hash SHA-256 des clés primaires et références ciblées. `MATCH SIMPLE` et `MATCH FULL` gardent leurs règles SQL distinctes.
+[`restore-integrity-repair.py` à la révision auditée](https://github.com/lmelane/fr-retail-jobs/blob/17b7025a55f0d4e514e7d33544b15cfd48190098/apps/aggregator/scripts/ops/restore-integrity-repair.py) restaure exclusivement vers une **nouvelle base Docker locale** nommée `restore_integrity_*`. Une base existante est refusée. Le dump doit correspondre au SHA-256 fourni. Le script extrait toutes les FK du post-data, y compris les composites ; une syntaxe inconnue n’est jamais omise silencieusement. Il mesure chaque population, la nullabilité de chaque colonne et le hash SHA-256 des clés primaires et références ciblées. `MATCH SIMPLE` et `MATCH FULL` gardent leurs règles SQL distinctes.
 
 Le plan contient aussi les FK sans violation. Si tout est explicitement réparable, une transaction verrouille enfants et parents, revérifie **tous** les comptes et hashes avant le premier UPDATE, puis refait la recherche globale d’orphelins avant commit. Un changement d’ID à compte identique ou une nouvelle violation dans une population auparavant vide fait échouer la transaction. Il n’existe ni option force, ni mode production, ni création de parent, ni désactivation d’intégrité. Le post-data complet et les FK/checks/triggers sont vérifiés avant un exit 0. Un PASS structurel ne prétend pas valider l’API ou l’interface : ces validations sont explicitement séparées dans le résultat.
 

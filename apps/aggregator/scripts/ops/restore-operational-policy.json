@@ -1,0 +1,1272 @@
+{
+  "version": 1,
+  "approvedStrategy": "preserve-all-rows; exactly-eight-historical-fks-not-valid",
+  "constraints": [
+    {
+      "table": [
+        "public",
+        "CaptureBatch"
+      ],
+      "name": "CaptureBatch_accessDecisionId_fkey",
+      "columns": [
+        "accessDecisionId"
+      ],
+      "parent": [
+        "public",
+        "SourceAccessDecision"
+      ],
+      "references": [
+        "id"
+      ],
+      "match": "SIMPLE",
+      "primaryKey": [
+        "id"
+      ],
+      "nullable": [
+        true
+      ],
+      "population": {
+        "count": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      }
+    },
+    {
+      "table": [
+        "public",
+        "CaptureBatch"
+      ],
+      "name": "CaptureBatch_sourceRevisionId_fkey",
+      "columns": [
+        "sourceRevisionId"
+      ],
+      "parent": [
+        "public",
+        "SourceRevision"
+      ],
+      "references": [
+        "id"
+      ],
+      "match": "SIMPLE",
+      "primaryKey": [
+        "id"
+      ],
+      "nullable": [
+        true
+      ],
+      "population": {
+        "count": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      }
+    },
+    {
+      "table": [
+        "public",
+        "CaptureOutcome"
+      ],
+      "name": "CaptureOutcome_batchId_fkey",
+      "columns": [
+        "batchId"
+      ],
+      "parent": [
+        "public",
+        "CaptureBatch"
+      ],
+      "references": [
+        "id"
+      ],
+      "match": "SIMPLE",
+      "primaryKey": [
+        "batchId"
+      ],
+      "nullable": [
+        false
+      ],
+      "population": {
+        "count": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      }
+    },
+    {
+      "table": [
+        "public",
+        "CaptureOutcome"
+      ],
+      "name": "CaptureOutcome_manifestHash_fkey",
+      "columns": [
+        "manifestHash"
+      ],
+      "parent": [
+        "public",
+        "RawBlob"
+      ],
+      "references": [
+        "hash"
+      ],
+      "match": "SIMPLE",
+      "primaryKey": [
+        "batchId"
+      ],
+      "nullable": [
+        true
+      ],
+      "population": {
+        "count": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      }
+    },
+    {
+      "table": [
+        "public",
+        "Company"
+      ],
+      "name": "Company_identityReviewId_fkey",
+      "columns": [
+        "identityReviewId"
+      ],
+      "parent": [
+        "public",
+        "EmployerIdentityReview"
+      ],
+      "references": [
+        "id"
+      ],
+      "match": "SIMPLE",
+      "primaryKey": [
+        "id"
+      ],
+      "nullable": [
+        true
+      ],
+      "population": {
+        "count": 103,
+        "sha256": "f92a0a6f07d79e82e51ef67b411a11074905350e8302e657991f8d8dd52d055b"
+      }
+    },
+    {
+      "table": [
+        "public",
+        "Company"
+      ],
+      "name": "Company_mergedIntoId_fkey",
+      "columns": [
+        "mergedIntoId"
+      ],
+      "parent": [
+        "public",
+        "Company"
+      ],
+      "references": [
+        "id"
+      ],
+      "match": "SIMPLE",
+      "primaryKey": [
+        "id"
+      ],
+      "nullable": [
+        true
+      ],
+      "population": {
+        "count": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      }
+    },
+    {
+      "table": [
+        "public",
+        "Company"
+      ],
+      "name": "Company_parentGroupId_fkey",
+      "columns": [
+        "parentGroupId"
+      ],
+      "parent": [
+        "public",
+        "Company"
+      ],
+      "references": [
+        "id"
+      ],
+      "match": "SIMPLE",
+      "primaryKey": [
+        "id"
+      ],
+      "nullable": [
+        true
+      ],
+      "population": {
+        "count": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      }
+    },
+    {
+      "table": [
+        "public",
+        "Company"
+      ],
+      "name": "Company_sectorReviewId_fkey",
+      "columns": [
+        "sectorReviewId"
+      ],
+      "parent": [
+        "public",
+        "SectorReview"
+      ],
+      "references": [
+        "id"
+      ],
+      "match": "SIMPLE",
+      "primaryKey": [
+        "id"
+      ],
+      "nullable": [
+        true
+      ],
+      "population": {
+        "count": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      }
+    },
+    {
+      "table": [
+        "public",
+        "CompanyAlias"
+      ],
+      "name": "CompanyAlias_companyId_fkey",
+      "columns": [
+        "companyId"
+      ],
+      "parent": [
+        "public",
+        "Company"
+      ],
+      "references": [
+        "id"
+      ],
+      "match": "SIMPLE",
+      "primaryKey": [
+        "id"
+      ],
+      "nullable": [
+        false
+      ],
+      "population": {
+        "count": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      }
+    },
+    {
+      "table": [
+        "public",
+        "CompanyAlias"
+      ],
+      "name": "CompanyAlias_reviewId_fkey",
+      "columns": [
+        "reviewId"
+      ],
+      "parent": [
+        "public",
+        "EmployerIdentityReview"
+      ],
+      "references": [
+        "id"
+      ],
+      "match": "SIMPLE",
+      "primaryKey": [
+        "id"
+      ],
+      "nullable": [
+        true
+      ],
+      "population": {
+        "count": 239,
+        "sha256": "4ecc1ec7ac6d7830810e2876af5ce4354579f52bf910effaf9898234acbe0a13"
+      }
+    },
+    {
+      "table": [
+        "public",
+        "Job"
+      ],
+      "name": "Job_companyId_fkey",
+      "columns": [
+        "companyId"
+      ],
+      "parent": [
+        "public",
+        "Company"
+      ],
+      "references": [
+        "id"
+      ],
+      "match": "SIMPLE",
+      "primaryKey": [
+        "id"
+      ],
+      "nullable": [
+        false
+      ],
+      "population": {
+        "count": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      }
+    },
+    {
+      "table": [
+        "public",
+        "Job"
+      ],
+      "name": "Job_mergedIntoId_fkey",
+      "columns": [
+        "mergedIntoId"
+      ],
+      "parent": [
+        "public",
+        "Job"
+      ],
+      "references": [
+        "id"
+      ],
+      "match": "SIMPLE",
+      "primaryKey": [
+        "id"
+      ],
+      "nullable": [
+        true
+      ],
+      "population": {
+        "count": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      }
+    },
+    {
+      "table": [
+        "public",
+        "Job"
+      ],
+      "name": "Job_occupationReleaseId_fkey",
+      "columns": [
+        "occupationReleaseId"
+      ],
+      "parent": [
+        "public",
+        "OccupationRelease"
+      ],
+      "references": [
+        "id"
+      ],
+      "match": "SIMPLE",
+      "primaryKey": [
+        "id"
+      ],
+      "nullable": [
+        true
+      ],
+      "population": {
+        "count": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      }
+    },
+    {
+      "table": [
+        "public",
+        "JobEvent"
+      ],
+      "name": "JobEvent_jobId_fkey",
+      "columns": [
+        "jobId"
+      ],
+      "parent": [
+        "public",
+        "Job"
+      ],
+      "references": [
+        "id"
+      ],
+      "match": "SIMPLE",
+      "primaryKey": [
+        "id"
+      ],
+      "nullable": [
+        false
+      ],
+      "population": {
+        "count": 65,
+        "sha256": "3e5588ec2187266d2a5b9bf653c1e5785bae8fa6129bdd8f17e266f964344b9d"
+      }
+    },
+    {
+      "table": [
+        "public",
+        "JobSource"
+      ],
+      "name": "JobSource_captureBatchId_fkey",
+      "columns": [
+        "captureBatchId"
+      ],
+      "parent": [
+        "public",
+        "CaptureBatch"
+      ],
+      "references": [
+        "id"
+      ],
+      "match": "SIMPLE",
+      "primaryKey": [
+        "id"
+      ],
+      "nullable": [
+        true
+      ],
+      "population": {
+        "count": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      }
+    },
+    {
+      "table": [
+        "public",
+        "JobSource"
+      ],
+      "name": "JobSource_captureOutputId_captureBatchId_fkey",
+      "columns": [
+        "captureOutputId",
+        "captureBatchId"
+      ],
+      "parent": [
+        "public",
+        "SourceExtraction"
+      ],
+      "references": [
+        "id",
+        "batchId"
+      ],
+      "match": "SIMPLE",
+      "primaryKey": [
+        "id"
+      ],
+      "nullable": [
+        true,
+        true
+      ],
+      "population": {
+        "count": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      }
+    },
+    {
+      "table": [
+        "public",
+        "JobSource"
+      ],
+      "name": "JobSource_jobId_fkey",
+      "columns": [
+        "jobId"
+      ],
+      "parent": [
+        "public",
+        "Job"
+      ],
+      "references": [
+        "id"
+      ],
+      "match": "SIMPLE",
+      "primaryKey": [
+        "id"
+      ],
+      "nullable": [
+        true
+      ],
+      "population": {
+        "count": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      }
+    },
+    {
+      "table": [
+        "public",
+        "OccupationObservation"
+      ],
+      "name": "OccupationObservation_jobId_fkey",
+      "columns": [
+        "jobId"
+      ],
+      "parent": [
+        "public",
+        "Job"
+      ],
+      "references": [
+        "id"
+      ],
+      "match": "SIMPLE",
+      "primaryKey": [
+        "id"
+      ],
+      "nullable": [
+        false
+      ],
+      "population": {
+        "count": 65,
+        "sha256": "47ded8f2f71da2df99b3ebf30d777aaaeef9b1509fd606abb4a1c92ac4907a1a"
+      }
+    },
+    {
+      "table": [
+        "public",
+        "OccupationObservation"
+      ],
+      "name": "OccupationObservation_releaseId_fkey",
+      "columns": [
+        "releaseId"
+      ],
+      "parent": [
+        "public",
+        "OccupationRelease"
+      ],
+      "references": [
+        "id"
+      ],
+      "match": "SIMPLE",
+      "primaryKey": [
+        "id"
+      ],
+      "nullable": [
+        false
+      ],
+      "population": {
+        "count": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      }
+    },
+    {
+      "table": [
+        "public",
+        "OccupationState"
+      ],
+      "name": "OccupationState_releaseId_fkey",
+      "columns": [
+        "releaseId"
+      ],
+      "parent": [
+        "public",
+        "OccupationRelease"
+      ],
+      "references": [
+        "id"
+      ],
+      "match": "SIMPLE",
+      "primaryKey": [
+        "id"
+      ],
+      "nullable": [
+        false
+      ],
+      "population": {
+        "count": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      }
+    },
+    {
+      "table": [
+        "public",
+        "PipelineEvent"
+      ],
+      "name": "PipelineEvent_runId_fkey",
+      "columns": [
+        "runId"
+      ],
+      "parent": [
+        "public",
+        "PipelineRun"
+      ],
+      "references": [
+        "id"
+      ],
+      "match": "SIMPLE",
+      "primaryKey": [
+        "id"
+      ],
+      "nullable": [
+        false
+      ],
+      "population": {
+        "count": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      }
+    },
+    {
+      "table": [
+        "public",
+        "RawBlobArchive"
+      ],
+      "name": "RawBlobArchive_hash_fkey",
+      "columns": [
+        "hash"
+      ],
+      "parent": [
+        "public",
+        "RawBlob"
+      ],
+      "references": [
+        "hash"
+      ],
+      "match": "SIMPLE",
+      "primaryKey": [
+        "hash"
+      ],
+      "nullable": [
+        false
+      ],
+      "population": {
+        "count": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      }
+    },
+    {
+      "table": [
+        "public",
+        "RawBlobBody"
+      ],
+      "name": "RawBlobBody_hash_fkey",
+      "columns": [
+        "hash"
+      ],
+      "parent": [
+        "public",
+        "RawBlob"
+      ],
+      "references": [
+        "hash"
+      ],
+      "match": "SIMPLE",
+      "primaryKey": [
+        "hash"
+      ],
+      "nullable": [
+        false
+      ],
+      "population": {
+        "count": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      }
+    },
+    {
+      "table": [
+        "public",
+        "RawCapture"
+      ],
+      "name": "RawCapture_batchId_fkey",
+      "columns": [
+        "batchId"
+      ],
+      "parent": [
+        "public",
+        "CaptureBatch"
+      ],
+      "references": [
+        "id"
+      ],
+      "match": "SIMPLE",
+      "primaryKey": [
+        "id"
+      ],
+      "nullable": [
+        false
+      ],
+      "population": {
+        "count": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      }
+    },
+    {
+      "table": [
+        "public",
+        "RawCapture"
+      ],
+      "name": "RawCapture_blobHash_fkey",
+      "columns": [
+        "blobHash"
+      ],
+      "parent": [
+        "public",
+        "RawBlob"
+      ],
+      "references": [
+        "hash"
+      ],
+      "match": "SIMPLE",
+      "primaryKey": [
+        "id"
+      ],
+      "nullable": [
+        true
+      ],
+      "population": {
+        "count": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      }
+    },
+    {
+      "table": [
+        "public",
+        "RawCapture"
+      ],
+      "name": "RawCapture_requestDataHash_fkey",
+      "columns": [
+        "requestDataHash"
+      ],
+      "parent": [
+        "public",
+        "RawBlob"
+      ],
+      "references": [
+        "hash"
+      ],
+      "match": "SIMPLE",
+      "primaryKey": [
+        "id"
+      ],
+      "nullable": [
+        true
+      ],
+      "population": {
+        "count": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      }
+    },
+    {
+      "table": [
+        "public",
+        "Source"
+      ],
+      "name": "Source_currentRevisionId_fkey",
+      "columns": [
+        "currentRevisionId"
+      ],
+      "parent": [
+        "public",
+        "SourceRevision"
+      ],
+      "references": [
+        "id"
+      ],
+      "match": "SIMPLE",
+      "primaryKey": [
+        "id"
+      ],
+      "nullable": [
+        false
+      ],
+      "population": {
+        "count": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      }
+    },
+    {
+      "table": [
+        "public",
+        "SourceAccessDecision"
+      ],
+      "name": "SourceAccessDecision_captureBatchId_fkey",
+      "columns": [
+        "captureBatchId"
+      ],
+      "parent": [
+        "public",
+        "CaptureBatch"
+      ],
+      "references": [
+        "id"
+      ],
+      "match": "SIMPLE",
+      "primaryKey": [
+        "id"
+      ],
+      "nullable": [
+        true
+      ],
+      "population": {
+        "count": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      }
+    },
+    {
+      "table": [
+        "public",
+        "SourceAccessDecision"
+      ],
+      "name": "SourceAccessDecision_sourceRevisionId_fkey",
+      "columns": [
+        "sourceRevisionId"
+      ],
+      "parent": [
+        "public",
+        "SourceRevision"
+      ],
+      "references": [
+        "id"
+      ],
+      "match": "SIMPLE",
+      "primaryKey": [
+        "id"
+      ],
+      "nullable": [
+        false
+      ],
+      "population": {
+        "count": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      }
+    },
+    {
+      "table": [
+        "public",
+        "SourceExtraction"
+      ],
+      "name": "SourceExtraction_batchId_fkey",
+      "columns": [
+        "batchId"
+      ],
+      "parent": [
+        "public",
+        "CaptureBatch"
+      ],
+      "references": [
+        "id"
+      ],
+      "match": "SIMPLE",
+      "primaryKey": [
+        "id"
+      ],
+      "nullable": [
+        false
+      ],
+      "population": {
+        "count": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      }
+    },
+    {
+      "table": [
+        "public",
+        "SourceExtraction"
+      ],
+      "name": "SourceExtraction_outputHash_fkey",
+      "columns": [
+        "outputHash"
+      ],
+      "parent": [
+        "public",
+        "RawBlob"
+      ],
+      "references": [
+        "hash"
+      ],
+      "match": "SIMPLE",
+      "primaryKey": [
+        "id"
+      ],
+      "nullable": [
+        false
+      ],
+      "population": {
+        "count": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      }
+    },
+    {
+      "table": [
+        "public",
+        "SourceFieldTrustObservation"
+      ],
+      "name": "SourceFieldTrustObservation_trustId_fkey",
+      "columns": [
+        "trustId"
+      ],
+      "parent": [
+        "public",
+        "SourceFieldTrust"
+      ],
+      "references": [
+        "id"
+      ],
+      "match": "SIMPLE",
+      "primaryKey": [
+        "id"
+      ],
+      "nullable": [
+        false
+      ],
+      "population": {
+        "count": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      }
+    },
+    {
+      "table": [
+        "public",
+        "SourceIdentityReview"
+      ],
+      "name": "SourceIdentityReview_evidenceCaptureBatchId_fkey",
+      "columns": [
+        "evidenceCaptureBatchId"
+      ],
+      "parent": [
+        "public",
+        "CaptureBatch"
+      ],
+      "references": [
+        "id"
+      ],
+      "match": "SIMPLE",
+      "primaryKey": [
+        "id"
+      ],
+      "nullable": [
+        true
+      ],
+      "population": {
+        "count": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      }
+    },
+    {
+      "table": [
+        "public",
+        "SourceIdentityReview"
+      ],
+      "name": "SourceIdentityReview_sourceKey_fkey",
+      "columns": [
+        "sourceKey"
+      ],
+      "parent": [
+        "public",
+        "Source"
+      ],
+      "references": [
+        "key"
+      ],
+      "match": "SIMPLE",
+      "primaryKey": [
+        "id"
+      ],
+      "nullable": [
+        false
+      ],
+      "population": {
+        "count": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      }
+    },
+    {
+      "table": [
+        "public",
+        "SourceIdentityReview"
+      ],
+      "name": "SourceIdentityReview_sourceRevisionId_fkey",
+      "columns": [
+        "sourceRevisionId"
+      ],
+      "parent": [
+        "public",
+        "SourceRevision"
+      ],
+      "references": [
+        "id"
+      ],
+      "match": "SIMPLE",
+      "primaryKey": [
+        "id"
+      ],
+      "nullable": [
+        true
+      ],
+      "population": {
+        "count": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      }
+    },
+    {
+      "table": [
+        "public",
+        "SourceIngestionAdmission"
+      ],
+      "name": "SourceIngestionAdmission_batchId_fkey",
+      "columns": [
+        "batchId"
+      ],
+      "parent": [
+        "public",
+        "CaptureBatch"
+      ],
+      "references": [
+        "id"
+      ],
+      "match": "SIMPLE",
+      "primaryKey": [
+        "batchId"
+      ],
+      "nullable": [
+        false
+      ],
+      "population": {
+        "count": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      }
+    },
+    {
+      "table": [
+        "public",
+        "SourceIngestionAdmission"
+      ],
+      "name": "SourceIngestionAdmission_identityReviewId_fkey",
+      "columns": [
+        "identityReviewId"
+      ],
+      "parent": [
+        "public",
+        "SourceIdentityReview"
+      ],
+      "references": [
+        "id"
+      ],
+      "match": "SIMPLE",
+      "primaryKey": [
+        "batchId"
+      ],
+      "nullable": [
+        true
+      ],
+      "population": {
+        "count": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      }
+    },
+    {
+      "table": [
+        "public",
+        "SourceIngestionAdmission"
+      ],
+      "name": "SourceIngestionAdmission_sourceValidationId_fkey",
+      "columns": [
+        "sourceValidationId"
+      ],
+      "parent": [
+        "public",
+        "SourceValidation"
+      ],
+      "references": [
+        "id"
+      ],
+      "match": "SIMPLE",
+      "primaryKey": [
+        "batchId"
+      ],
+      "nullable": [
+        false
+      ],
+      "population": {
+        "count": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      }
+    },
+    {
+      "table": [
+        "public",
+        "SourceIngestionCompletion"
+      ],
+      "name": "SourceIngestionCompletion_batchId_fkey",
+      "columns": [
+        "batchId"
+      ],
+      "parent": [
+        "public",
+        "CaptureBatch"
+      ],
+      "references": [
+        "id"
+      ],
+      "match": "SIMPLE",
+      "primaryKey": [
+        "batchId"
+      ],
+      "nullable": [
+        false
+      ],
+      "population": {
+        "count": 14,
+        "sha256": "9cca663b676261fec3087361c6ae7e461ee308519008d297c4e07353bfde6f90"
+      }
+    },
+    {
+      "table": [
+        "public",
+        "SourceIngestionCompletion"
+      ],
+      "name": "SourceIngestionCompletion_reportHash_fkey",
+      "columns": [
+        "reportHash"
+      ],
+      "parent": [
+        "public",
+        "RawBlob"
+      ],
+      "references": [
+        "hash"
+      ],
+      "match": "SIMPLE",
+      "primaryKey": [
+        "batchId"
+      ],
+      "nullable": [
+        false
+      ],
+      "population": {
+        "count": 14,
+        "sha256": "b7f3cebaa0b55df9a09bd44ec14f70647078b048ae21d9bc50d5c173408572e5"
+      }
+    },
+    {
+      "table": [
+        "public",
+        "SourceObservation"
+      ],
+      "name": "SourceObservation_captureBatchId_fkey",
+      "columns": [
+        "captureBatchId"
+      ],
+      "parent": [
+        "public",
+        "CaptureBatch"
+      ],
+      "references": [
+        "id"
+      ],
+      "match": "SIMPLE",
+      "primaryKey": [
+        "id"
+      ],
+      "nullable": [
+        true
+      ],
+      "population": {
+        "count": 127,
+        "sha256": "594814f2411cc6337b9c9a1b3939877c55bede2aab9e67b86a9cf5c6aa2a869b"
+      }
+    },
+    {
+      "table": [
+        "public",
+        "SourceObservation"
+      ],
+      "name": "SourceObservation_captureOutputId_captureBatchId_fkey",
+      "columns": [
+        "captureOutputId",
+        "captureBatchId"
+      ],
+      "parent": [
+        "public",
+        "SourceExtraction"
+      ],
+      "references": [
+        "id",
+        "batchId"
+      ],
+      "match": "SIMPLE",
+      "primaryKey": [
+        "id"
+      ],
+      "nullable": [
+        true,
+        true
+      ],
+      "population": {
+        "count": 127,
+        "sha256": "f3268fdff2be73a98658f9e0a5494bd27fc1659a571234c606d04b86c5972fc3"
+      }
+    },
+    {
+      "table": [
+        "public",
+        "SourceObservation"
+      ],
+      "name": "SourceObservation_rawBlobHash_fkey",
+      "columns": [
+        "rawBlobHash"
+      ],
+      "parent": [
+        "public",
+        "RawBlob"
+      ],
+      "references": [
+        "hash"
+      ],
+      "match": "SIMPLE",
+      "primaryKey": [
+        "id"
+      ],
+      "nullable": [
+        true
+      ],
+      "population": {
+        "count": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      }
+    },
+    {
+      "table": [
+        "public",
+        "SourceValidation"
+      ],
+      "name": "SourceValidation_captureBatchId_fkey",
+      "columns": [
+        "captureBatchId"
+      ],
+      "parent": [
+        "public",
+        "CaptureBatch"
+      ],
+      "references": [
+        "id"
+      ],
+      "match": "SIMPLE",
+      "primaryKey": [
+        "id"
+      ],
+      "nullable": [
+        false
+      ],
+      "population": {
+        "count": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      }
+    },
+    {
+      "table": [
+        "public",
+        "SourceValidation"
+      ],
+      "name": "SourceValidation_sourceRevisionId_fkey",
+      "columns": [
+        "sourceRevisionId"
+      ],
+      "parent": [
+        "public",
+        "SourceRevision"
+      ],
+      "references": [
+        "id"
+      ],
+      "match": "SIMPLE",
+      "primaryKey": [
+        "id"
+      ],
+      "nullable": [
+        false
+      ],
+      "population": {
+        "count": 0,
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+      }
+    }
+  ]
+}
