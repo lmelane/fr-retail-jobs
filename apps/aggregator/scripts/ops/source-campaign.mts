@@ -64,7 +64,8 @@ type Verdict = { key: string; kind: string; maison: string; verdict: string; rai
   offres?: number; ingestion?: Record<string, unknown>; absence?: Record<string, unknown>; capacites?: Record<string, string>; readerRevision: string; dureeMs: number; evalueLe: string };
 const READER_REVISION = captureReaderRevision();
 
-const REVIEWER = 'claude-fable-5.1 (campagne F3, pour Loïc)';
+const REVIEWER = process.argv.find(v => v.startsWith('--reviewer='))?.slice('--reviewer='.length).trim() || 'source-campaign';
+if (REVIEWER.length > 160 || /[\r\n]/.test(REVIEWER)) throw new Error('Réviseur invalide');
 /** La surface d'un périmètre se lit dans les réponses réellement observées (type de contenu, chemin), jamais dans une constante. */
 const CAREER_LINK = /carri|career|recrut|emploi|\bjobs?\b|talent|rejoin|join|work-with|travailler|offres|opportunit/i;
 /** Chemins « carrières » usuels du domaine officiel, essayés en dernier recours pour un portail hébergé chez l'éditeur. */
@@ -174,7 +175,7 @@ async function identite(c: Candidat, revision: string, officialDomain: string, d
         : `désigne exactement le portail configuré (lien n° ${witness?.ordinal ?? '?'})`;
       const review = await recordSourceIdentityReview(db, { sourceKey: c.key, sourceRevisionId: revision, captureBatchId: capture.captureBatchId, verdict: 'VERIFIED', officialDomain,
         statement: `La page archivée ${auditUrl(relation.proofUrl!)} ${how} : ${relation.configuredPortal}. Domaine officiel ${officialDomain} lu dans le registre (provenance : ${domainSource}), jamais déduit par la campagne. ${perimetre
-          ? `Périmètre du portail ${perimetre} : décision relue par un humain et portée par le registre (Source.portalScope), jamais déduite du nom de la Maison ni de cette capture.`
+          ? `Périmètre du portail ${perimetre} : périmètre déclaré par le réviseur dans le dossier candidat, jamais déduite du nom de la Maison ni de cette capture.`
           : `Le rôle exact du portail n'est pas déduit du nom de la Maison : portalScope reste nul.`}`,
         reviewer: REVIEWER, checkedAt: nowMs(), portalScope: perimetre } as Parameters<typeof recordSourceIdentityReview>[1], true, store) as { written?: number; verdict?: string; reason?: string };
       etapes.decisionIdentite = review;
