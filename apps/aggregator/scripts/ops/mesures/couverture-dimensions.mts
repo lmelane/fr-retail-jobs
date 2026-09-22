@@ -76,7 +76,7 @@ const codes = [...new Set<string>([...CODES_MARCHE_LOCALISES, ...MARCHES_ROUTABL
 type Marche = { code: string; localise: boolean; total: number; totalProuve: number; dims: Map<string, { n: number; d: number; p: number }> };
 const marches: Marche[] = [];
 for (const code of codes) {
-  const membres: readonly string[] = MARCHES[code as never]?.pays ?? [code];
+  const membres: readonly string[] = MARCHES[code as keyof typeof MARCHES]?.pays ?? [code];
   const dims = new Map<string, { n: number; d: number; p: number }>();
   let total = 0, totalProuve = 0;
   for (const p of membres) {
@@ -93,7 +93,7 @@ for (const code of codes) {
       dims.set(nom, e);
     }
   }
-  if (total > 0) marches.push({ code, localise: CODES_MARCHE_LOCALISES.includes(code as never), total, totalProuve, dims });
+  if (total > 0) marches.push({ code, localise: (CODES_MARCHE_LOCALISES as readonly string[]).includes(code), total, totalProuve, dims });
 }
 marches.sort((a, b) => b.total - a.total);
 

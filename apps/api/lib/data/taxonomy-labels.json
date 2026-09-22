@@ -1,0 +1,776 @@
+{
+  "occupations": {
+    "sales-advisor": {
+      "sourceEn": "Sales advisor",
+      "labels": {
+        "de": "Verkaufsberatung",
+        "it": "Consulente di vendita",
+        "nl": "Verkoopadviseur",
+        "es": "Asesor de ventas",
+        "zh": "销售顾问"
+      }
+    },
+    "beauty-consultant": {
+      "sourceEn": "Beauty advisor",
+      "labels": {
+        "de": "Beauty-Beratung",
+        "it": "Consulente di bellezza",
+        "nl": "Beautyadviseur",
+        "es": "Asesor de belleza",
+        "zh": "美容顾问"
+      }
+    },
+    "hairdresser": {
+      "sourceEn": "Hairdresser",
+      "labels": {
+        "de": "Friseur",
+        "it": "Parrucchiere",
+        "nl": "Kapper",
+        "es": "Peluquero",
+        "zh": "美发师"
+      }
+    },
+    "beauty-therapist": {
+      "sourceEn": "Beauty therapist",
+      "labels": {
+        "de": "Kosmetikfachkraft",
+        "it": "Estetista",
+        "nl": "Schoonheidsspecialist",
+        "es": "Esteticista",
+        "zh": "美容师"
+      }
+    },
+    "makeup-artist": {
+      "sourceEn": "Makeup artist",
+      "labels": {
+        "de": "Make-up Artist",
+        "it": "Truccatore",
+        "nl": "Visagist",
+        "es": "Maquillador",
+        "zh": "化妆师"
+      }
+    },
+    "brow-specialist": {
+      "sourceEn": "Brow specialist",
+      "labels": {
+        "de": "Augenbrauenstyling",
+        "it": "Specialista sopracciglia",
+        "nl": "Wenkbrauwspecialist",
+        "es": "Especialista en cejas",
+        "zh": "眉型设计师"
+      }
+    },
+    "cashier": {
+      "sourceEn": "Cashier",
+      "labels": {
+        "de": "Kassenkraft",
+        "it": "Addetto alla cassa",
+        "nl": "Kassamedewerker",
+        "es": "Cajero",
+        "zh": "收银员"
+      }
+    },
+    "store-manager": {
+      "sourceEn": "Store manager",
+      "labels": {
+        "de": "Filialleitung",
+        "it": "Responsabile di negozio",
+        "nl": "Winkelmanager",
+        "es": "Responsable de tienda",
+        "zh": "店长"
+      }
+    },
+    "assistant-store-manager": {
+      "sourceEn": "Assistant store manager",
+      "labels": {
+        "de": "Stellvertretende Filialleitung",
+        "it": "Vice responsabile di negozio",
+        "nl": "Assistent-winkelmanager",
+        "es": "Subresponsable de tienda",
+        "zh": "副店长"
+      }
+    },
+    "regional-retail-manager": {
+      "sourceEn": "Regional retail manager",
+      "labels": {
+        "de": "Regionale Vertriebsleitung",
+        "it": "Responsabile retail regionale",
+        "nl": "Regionaal retailmanager",
+        "es": "Responsable regional de retail",
+        "zh": "区域零售经理"
+      }
+    },
+    "visual-merchandiser": {
+      "sourceEn": "Visual merchandiser",
+      "labels": {
+        "de": "Visual Merchandiser",
+        "it": "Visual merchandiser",
+        "nl": "Visual merchandiser",
+        "es": "Visual merchandiser",
+        "zh": "视觉陈列师"
+      }
+    },
+    "stock-associate": {
+      "sourceEn": "Retail stock associate",
+      "labels": {
+        "de": "Lagerkraft im Einzelhandel",
+        "it": "Addetto al magazzino di negozio",
+        "nl": "Voorraadmedewerker winkel",
+        "es": "Personal de almacén de tienda",
+        "zh": "门店库存专员"
+      }
+    },
+    "warehouse-operative": {
+      "sourceEn": "Warehouse operative",
+      "labels": {
+        "de": "Lagerfachkraft",
+        "it": "Magazziniere",
+        "nl": "Magazijnmedewerker",
+        "es": "Operario de almacén",
+        "zh": "仓库操作员"
+      }
+    },
+    "logistics-manager": {
+      "sourceEn": "Logistics manager",
+      "labels": {
+        "de": "Logistikleitung",
+        "it": "Responsabile logistica",
+        "nl": "Logistiek manager",
+        "es": "Responsable de logística",
+        "zh": "物流经理"
+      }
+    },
+    "customer-service-advisor": {
+      "sourceEn": "Customer service advisor",
+      "labels": {
+        "de": "Kundenberatung",
+        "it": "Addetto al servizio clienti",
+        "nl": "Klantenserviceadviseur",
+        "es": "Asesor de atención al cliente",
+        "zh": "客户服务顾问"
+      }
+    },
+    "watchmaker": {
+      "sourceEn": "Watchmaker",
+      "labels": {
+        "de": "Uhrmacher",
+        "it": "Orologiaio",
+        "nl": "Horlogemaker",
+        "es": "Relojero",
+        "zh": "制表师"
+      }
+    },
+    "jeweller": {
+      "sourceEn": "Jeweller",
+      "labels": {
+        "de": "Goldschmied",
+        "it": "Orafo",
+        "nl": "Juwelier",
+        "es": "Joyero",
+        "zh": "珠宝工匠"
+      }
+    },
+    "leather-craftsperson": {
+      "sourceEn": "Leather craftsperson",
+      "labels": {
+        "de": "Lederhandwerker",
+        "it": "Artigiano della pelle",
+        "nl": "Leerbewerker",
+        "es": "Artesano del cuero",
+        "zh": "皮革工匠"
+      }
+    },
+    "seamster": {
+      "sourceEn": "Seamster",
+      "labels": {
+        "de": "Schneider",
+        "it": "Sarto",
+        "nl": "Kleermaker",
+        "es": "Sastre",
+        "zh": "裁缝"
+      }
+    },
+    "fashion-designer": {
+      "sourceEn": "Fashion designer",
+      "labels": {
+        "de": "Modedesigner",
+        "it": "Stilista",
+        "nl": "Modeontwerper",
+        "es": "Diseñador de moda",
+        "zh": "时装设计师"
+      }
+    },
+    "graphic-designer": {
+      "sourceEn": "Graphic designer",
+      "labels": {
+        "de": "Grafikdesigner",
+        "it": "Graphic designer",
+        "nl": "Grafisch ontwerper",
+        "es": "Diseñador gráfico",
+        "zh": "平面设计师"
+      }
+    },
+    "buyer": {
+      "sourceEn": "Buyer",
+      "labels": {
+        "de": "Einkäufer",
+        "it": "Buyer",
+        "nl": "Inkoper",
+        "es": "Comprador",
+        "zh": "采购员"
+      }
+    },
+    "merchandise-planner": {
+      "sourceEn": "Merchandise planner",
+      "labels": {
+        "de": "Warenplaner",
+        "it": "Pianificatore assortimenti",
+        "nl": "Assortimentsplanner",
+        "es": "Planificador de surtido",
+        "zh": "商品规划师"
+      }
+    },
+    "accountant": {
+      "sourceEn": "Accountant",
+      "labels": {
+        "de": "Buchhalter",
+        "it": "Contabile",
+        "nl": "Boekhouder",
+        "es": "Contable",
+        "zh": "会计"
+      }
+    },
+    "financial-controller": {
+      "sourceEn": "Financial controller",
+      "labels": {
+        "de": "Controller",
+        "it": "Controller finanziario",
+        "nl": "Financieel controller",
+        "es": "Controller financiero",
+        "zh": "财务控制专员"
+      }
+    },
+    "financial-analyst": {
+      "sourceEn": "Financial analyst",
+      "labels": {
+        "de": "Finanzanalyst",
+        "it": "Analista finanziario",
+        "nl": "Financieel analist",
+        "es": "Analista financiero",
+        "zh": "财务分析师"
+      }
+    },
+    "recruiter": {
+      "sourceEn": "Recruiter",
+      "labels": {
+        "de": "Recruiter",
+        "it": "Recruiter",
+        "nl": "Recruiter",
+        "es": "Técnico de selección",
+        "zh": "招聘专员"
+      }
+    },
+    "hr-business-partner": {
+      "sourceEn": "HR business partner",
+      "labels": {
+        "de": "HR Business Partner",
+        "it": "HR business partner",
+        "nl": "HR-businesspartner",
+        "es": "HR business partner",
+        "zh": "人力资源业务伙伴"
+      }
+    },
+    "payroll-specialist": {
+      "sourceEn": "Payroll specialist",
+      "labels": {
+        "de": "Entgeltabrechnung",
+        "it": "Addetto paghe",
+        "nl": "Salarisadministrateur",
+        "es": "Especialista en nóminas",
+        "zh": "薪酬专员"
+      }
+    },
+    "software-engineer": {
+      "sourceEn": "Software engineer",
+      "labels": {
+        "de": "Softwareentwickler",
+        "it": "Sviluppatore software",
+        "nl": "Softwareontwikkelaar",
+        "es": "Desarrollador de software",
+        "zh": "软件工程师"
+      }
+    },
+    "data-analyst": {
+      "sourceEn": "Data analyst",
+      "labels": {
+        "de": "Datenanalyst",
+        "it": "Analista dati",
+        "nl": "Data-analist",
+        "es": "Analista de datos",
+        "zh": "数据分析师"
+      }
+    },
+    "data-scientist": {
+      "sourceEn": "Data scientist",
+      "labels": {
+        "de": "Data Scientist",
+        "it": "Data scientist",
+        "nl": "Data scientist",
+        "es": "Científico de datos",
+        "zh": "数据科学家"
+      }
+    },
+    "data-engineer": {
+      "sourceEn": "Data engineer",
+      "labels": {
+        "de": "Data Engineer",
+        "it": "Data engineer",
+        "nl": "Data engineer",
+        "es": "Ingeniero de datos",
+        "zh": "数据工程师"
+      }
+    },
+    "legal-counsel": {
+      "sourceEn": "Legal counsel",
+      "labels": {
+        "de": "Rechtsberater",
+        "it": "Consulente legale",
+        "nl": "Juridisch adviseur",
+        "es": "Asesor jurídico",
+        "zh": "法律顾问"
+      }
+    },
+    "sustainability-specialist": {
+      "sourceEn": "Sustainability specialist",
+      "labels": {
+        "de": "Nachhaltigkeitsfachkraft",
+        "it": "Specialista sostenibilità",
+        "nl": "Duurzaamheidsspecialist",
+        "es": "Especialista en sostenibilidad",
+        "zh": "可持续发展专员"
+      }
+    },
+    "marketing-manager": {
+      "sourceEn": "Marketing manager",
+      "labels": {
+        "de": "Marketingleitung",
+        "it": "Responsabile marketing",
+        "nl": "Marketingmanager",
+        "es": "Responsable de marketing",
+        "zh": "市场营销经理"
+      }
+    },
+    "community-manager": {
+      "sourceEn": "Community manager",
+      "labels": {
+        "de": "Community Manager",
+        "it": "Community manager",
+        "nl": "Communitymanager",
+        "es": "Community manager",
+        "zh": "社群经理"
+      }
+    },
+    "crm-manager": {
+      "sourceEn": "CRM manager",
+      "labels": {
+        "de": "CRM-Leitung",
+        "it": "Responsabile CRM",
+        "nl": "CRM-manager",
+        "es": "Responsable de CRM",
+        "zh": "客户关系管理经理"
+      }
+    },
+    "ecommerce-manager": {
+      "sourceEn": "E-commerce manager",
+      "labels": {
+        "de": "E-Commerce-Leitung",
+        "it": "Responsabile e-commerce",
+        "nl": "E-commercemanager",
+        "es": "Responsable de comercio electrónico",
+        "zh": "电子商务经理"
+      }
+    },
+    "key-account-manager": {
+      "sourceEn": "Key account manager",
+      "labels": {
+        "de": "Key Account Manager",
+        "it": "Key account manager",
+        "nl": "Keyaccountmanager",
+        "es": "Responsable de grandes cuentas",
+        "zh": "大客户经理"
+      }
+    },
+    "product-developer": {
+      "sourceEn": "Product developer",
+      "labels": {
+        "de": "Produktentwickler",
+        "it": "Sviluppatore prodotto",
+        "nl": "Productontwikkelaar",
+        "es": "Desarrollador de producto",
+        "zh": "产品开发专员"
+      }
+    },
+    "quality-technician": {
+      "sourceEn": "Quality technician",
+      "labels": {
+        "de": "Qualitätstechniker",
+        "it": "Tecnico qualità",
+        "nl": "Kwaliteitstechnicus",
+        "es": "Técnico de calidad",
+        "zh": "质量技术员"
+      }
+    },
+    "barista": {
+      "sourceEn": "Barista",
+      "labels": {
+        "de": "Barista",
+        "it": "Barista",
+        "nl": "Barista",
+        "es": "Barista",
+        "zh": "咖啡师"
+      }
+    },
+    "cook": {
+      "sourceEn": "Cook",
+      "labels": {
+        "de": "Koch",
+        "it": "Cuoco",
+        "nl": "Kok",
+        "es": "Cocinero",
+        "zh": "厨师"
+      }
+    },
+    "waiter": {
+      "sourceEn": "Waiter",
+      "labels": {
+        "de": "Servicekraft",
+        "it": "Cameriere",
+        "nl": "Bedieningsmedewerker",
+        "es": "Camarero",
+        "zh": "餐厅服务员"
+      }
+    },
+    "receptionist": {
+      "sourceEn": "Receptionist",
+      "labels": {
+        "de": "Empfangskraft",
+        "it": "Receptionist",
+        "nl": "Receptionist",
+        "es": "Recepcionista",
+        "zh": "接待员"
+      }
+    },
+    "executive-assistant": {
+      "sourceEn": "Executive assistant",
+      "labels": {
+        "de": "Assistenz der Geschäftsleitung",
+        "it": "Assistente di direzione",
+        "nl": "Directieassistent",
+        "es": "Asistente de dirección",
+        "zh": "行政助理"
+      }
+    },
+    "pharmacist": {
+      "sourceEn": "Pharmacist",
+      "labels": {
+        "de": "Apotheker",
+        "it": "Farmacista",
+        "nl": "Apotheker",
+        "es": "Farmacéutico",
+        "zh": "药剂师"
+      }
+    },
+    "pharmacy-technician": {
+      "sourceEn": "Pharmacy technician",
+      "labels": {
+        "de": "Pharmazeutisch-technische Fachkraft",
+        "it": "Tecnico di farmacia",
+        "nl": "Farmaceutisch-technisch medewerker",
+        "es": "Técnico de farmacia",
+        "zh": "药房技术员"
+      }
+    },
+    "optometrist": {
+      "sourceEn": "Optometrist",
+      "labels": {
+        "de": "Optometrist",
+        "it": "Optometrista",
+        "nl": "Optometrist",
+        "es": "Optometrista",
+        "zh": "验光师"
+      }
+    },
+    "dispensing-optician": {
+      "sourceEn": "Dispensing optician",
+      "labels": {
+        "de": "Augenoptiker",
+        "it": "Ottico",
+        "nl": "Opticien",
+        "es": "Óptico",
+        "zh": "配镜师"
+      }
+    },
+    "hearing-aid-specialist": {
+      "sourceEn": "Hearing aid specialist",
+      "labels": {
+        "de": "Hörakustiker",
+        "it": "Audioprotesista",
+        "nl": "Audicien",
+        "es": "Especialista en audioprótesis",
+        "zh": "助听器验配师"
+      }
+    },
+    "demand-planner": {
+      "sourceEn": "Demand planner",
+      "labels": {
+        "de": "Bedarfsplaner",
+        "it": "Pianificatore della domanda",
+        "nl": "Vraagplanner",
+        "es": "Planificador de demanda",
+        "zh": "需求计划员"
+      }
+    },
+    "paralegal": {
+      "sourceEn": "Paralegal",
+      "labels": {
+        "de": "Juristische Assistenz",
+        "it": "Assistente legale",
+        "nl": "Juridisch assistent",
+        "es": "Asistente jurídico",
+        "zh": "法律助理"
+      }
+    },
+    "pharmacy-support-worker": {
+      "sourceEn": "Pharmacy support worker",
+      "labels": {
+        "de": "Apothekenassistenz",
+        "it": "Assistente di farmacia",
+        "nl": "Apotheekmedewerker",
+        "es": "Auxiliar de farmacia",
+        "zh": "药房助理"
+      }
+    },
+    "machine-learning-engineer": {
+      "sourceEn": "Machine learning engineer",
+      "labels": {
+        "de": "Machine Learning Engineer",
+        "it": "Machine learning engineer",
+        "nl": "Machinelearning-engineer",
+        "es": "Ingeniero de aprendizaje automático",
+        "zh": "机器学习工程师"
+      }
+    },
+    "analytics-engineer": {
+      "sourceEn": "Analytics engineer",
+      "labels": {
+        "de": "Analytics Engineer",
+        "it": "Analytics engineer",
+        "nl": "Analytics engineer",
+        "es": "Ingeniero de analítica",
+        "zh": "数据分析工程师"
+      }
+    },
+    "motion-designer": {
+      "sourceEn": "Motion designer",
+      "labels": {
+        "de": "Motion Designer",
+        "it": "Motion designer",
+        "nl": "Motion designer",
+        "es": "Diseñador de motion graphics",
+        "zh": "动态视觉设计师"
+      }
+    },
+    "lash-technician": {
+      "sourceEn": "Lash technician",
+      "labels": {
+        "de": "Wimpernstyling",
+        "it": "Specialista ciglia",
+        "nl": "Wimperspecialist",
+        "es": "Especialista en pestañas",
+        "zh": "美睫师"
+      }
+    },
+    "social-media-manager": {
+      "sourceEn": "Social media manager",
+      "labels": {
+        "de": "Social Media Manager",
+        "it": "Social media manager",
+        "nl": "Socialmediamanager",
+        "es": "Responsable de redes sociales",
+        "zh": "社交媒体经理"
+      }
+    },
+    "pastry-chef": {
+      "sourceEn": "Pastry chef",
+      "labels": {
+        "de": "Konditor",
+        "it": "Pasticciere",
+        "nl": "Banketbakker",
+        "es": "Pastelero",
+        "zh": "糕点师"
+      }
+    },
+    "optical-assistant": {
+      "sourceEn": "Optical assistant",
+      "labels": {
+        "de": "Assistenz im Optikgeschäft",
+        "it": "Assistente in negozio di ottica",
+        "nl": "Optiekassistent",
+        "es": "Auxiliar de óptica",
+        "zh": "眼镜店助理"
+      }
+    }
+  },
+  "sectors": {
+    "FASHION": {
+      "sourceEn": "Clothing and fashion collections",
+      "labels": {
+        "de": "Mode",
+        "it": "Moda",
+        "nl": "Mode",
+        "es": "Moda",
+        "zh": "时尚"
+      }
+    },
+    "LEATHER_GOODS": {
+      "sourceEn": "Leather goods and saddlery",
+      "labels": {
+        "de": "Lederwaren",
+        "it": "Pelletteria",
+        "nl": "Lederwaren",
+        "es": "Marroquinería",
+        "zh": "皮具"
+      }
+    },
+    "FOOTWEAR": {
+      "sourceEn": "Footwear",
+      "labels": {
+        "de": "Schuhe",
+        "it": "Calzature",
+        "nl": "Schoenen",
+        "es": "Calzado",
+        "zh": "鞋履"
+      }
+    },
+    "JEWELRY": {
+      "sourceEn": "Jewelry",
+      "labels": {
+        "de": "Schmuck",
+        "it": "Gioielleria",
+        "nl": "Juwelen",
+        "es": "Joyería",
+        "zh": "珠宝"
+      }
+    },
+    "WATCHMAKING": {
+      "sourceEn": "Watches and watchmaking",
+      "labels": {
+        "de": "Uhren",
+        "it": "Orologeria",
+        "nl": "Horloges",
+        "es": "Relojería",
+        "zh": "钟表"
+      }
+    },
+    "BEAUTY": {
+      "sourceEn": "Cosmetics, makeup and skin or hair care",
+      "labels": {
+        "de": "Beauty",
+        "it": "Bellezza",
+        "nl": "Beauty",
+        "es": "Belleza",
+        "zh": "美容"
+      }
+    },
+    "FRAGRANCE": {
+      "sourceEn": "Perfumes and fragrances",
+      "labels": {
+        "de": "Parfümerie",
+        "it": "Profumeria",
+        "nl": "Parfumerie",
+        "es": "Perfumería",
+        "zh": "香水"
+      }
+    },
+    "EYEWEAR": {
+      "sourceEn": "Eyewear",
+      "labels": {
+        "de": "Brillen",
+        "it": "Occhialeria",
+        "nl": "Brillen",
+        "es": "Óptica",
+        "zh": "眼镜"
+      }
+    },
+    "HOME_LIFESTYLE": {
+      "sourceEn": "Homeware, furniture and lifestyle objects",
+      "labels": {
+        "de": "Wohnen und Lifestyle",
+        "it": "Casa e lifestyle",
+        "nl": "Wonen en lifestyle",
+        "es": "Hogar y estilo de vida",
+        "zh": "家居与生活方式"
+      }
+    },
+    "WINES_SPIRITS": {
+      "sourceEn": "Wine, champagne and spirits",
+      "labels": {
+        "de": "Weine und Spirituosen",
+        "it": "Vini e liquori",
+        "nl": "Wijn en sterke drank",
+        "es": "Vinos y licores",
+        "zh": "葡萄酒与烈酒"
+      }
+    },
+    "HOSPITALITY": {
+      "sourceEn": "Luxury hospitality and travel",
+      "labels": {
+        "de": "Hotellerie und Gastronomie",
+        "it": "Ospitalità",
+        "nl": "Gastvrijheid",
+        "es": "Hostelería",
+        "zh": "酒店餐饮"
+      }
+    },
+    "LUXURY_MOBILITY": {
+      "sourceEn": "Luxury automobiles and mobility",
+      "labels": {
+        "de": "Luxusautomobile und Mobilität",
+        "it": "Auto e mobilità di lusso",
+        "nl": "Luxeauto’s en mobiliteit",
+        "es": "Automoción y movilidad de lujo",
+        "zh": "豪华汽车与出行"
+      }
+    },
+    "ART_DESIGN": {
+      "sourceEn": "Art and design",
+      "labels": {
+        "de": "Kunst und Design",
+        "it": "Arte e design",
+        "nl": "Kunst en design",
+        "es": "Arte y diseño",
+        "zh": "艺术与设计"
+      }
+    },
+    "RETAIL": {
+      "sourceEn": "Retail distribution as an employer activity",
+      "labels": {
+        "de": "Einzelhandel",
+        "it": "Retail",
+        "nl": "Retail",
+        "es": "Retail",
+        "zh": "零售"
+      }
+    },
+    "LUXURY_TECH_SERVICES": {
+      "sourceEn": "Technology and services specialized in this vertical",
+      "labels": {
+        "de": "Technologie und Dienstleistungen im Luxussegment",
+        "it": "Tecnologia e servizi per il lusso",
+        "nl": "Technologie en diensten voor de luxesector",
+        "es": "Tecnología y servicios para el lujo",
+        "zh": "奢侈品科技与服务"
+      }
+    }
+  }
+}

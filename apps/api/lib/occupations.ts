@@ -1,3 +1,5 @@
+import { libelleConcept } from './taxonomy-labels';
+import type { LangueLibelles } from '@catwalks/db/presentation';
 import { cache } from 'react';
 import { prisma } from '@catwalks/db';
 import {
@@ -6,7 +8,7 @@ import {
 } from '@catwalks/db/occupations';
 
 /** Request-local consistency, immutable release cache shared with the pipeline. */
-export const getOccupationPresentation = cache(async () => {
+export const getOccupationPresentation = cache(async (langue: LangueLibelles = 'fr') => {
   const taxonomy = await loadOccupationTaxonomy(prisma);
   const JOB_FUNCTIONS = [...taxonomy.families.values()].map((d) => ({
     key: d.key,
@@ -30,7 +32,7 @@ export const getOccupationPresentation = cache(async () => {
     functionLabel: (key: string | null | undefined) =>
       key ? (FUNCTION_BY_KEY.get(key)?.label ?? 'Non classé') : 'Non classé',
     occupationLabel: (key: string | null | undefined) =>
-      key ? occupationLabel(taxonomy.occupations.get(key)) : null,
+      key && taxonomy.occupations.has(key) ? libelleConcept('occupations', key, taxonomy.occupations.get(key)!.labels, langue) : null,
     familyOf: (key: string | null | undefined) =>
       key ? (FUNCTION_BY_KEY.get(key)?.family ?? null) : null,
   };
@@ -40,9 +42,9 @@ let lastFailureReport = 0,
   repeatedFailures = 0;
 /** Optional enrichment must not remove otherwise readable offers. Expose the
  * degradation to the response/UI and log a bounded diagnostic, never fake keys. */
-export const getOptionalOccupationPresentation = cache(async () => {
+export const getOptionalOccupationPresentation = cache(async (langue: LangueLibelles = 'fr') => {
   try {
-    return await getOccupationPresentation();
+    return await getOccupationPresentation(langue);
   } catch (error) {
     repeatedFailures++;
     if (Date.now() - lastFailureReport > 60_000) {

@@ -1,5 +1,7 @@
+import { libelleInconnu } from './taxonomy-labels';
+import { localeAffichage, nomFacette } from './presentation-locale';
 import { employmentLabel, langueDesLibelles } from '@catwalks/db/presentation';
-import { filtresDuMarche, localeServie, TYPE_FILTRE_PAR_DEFAUT, type CleFacette, type TypeFiltre } from '@catwalks/db/marches';
+import { filtresDuMarche, TYPE_FILTRE_PAR_DEFAUT, type CleFacette, type TypeFiltre } from '@catwalks/db/marches';
 import type { Facet } from './job-search-query';
 import { getSectorPresentation } from './sectors';
 import type { OptionalOccupationPresentation } from './occupations';
@@ -64,6 +66,7 @@ export async function libellerFacettes(
   plan: PlanRecherche,
   brutes: Record<CleFacette, Facet[]>,
   taxonomy: OptionalOccupationPresentation,
+  demandeLocale?: string,
 ): Promise<FacetteServie[]> {
   /*
    * LA LOCALE SERVIE, PAS LA LOCALE CIBLE — voir `localeServie` dans le registre.
@@ -73,15 +76,15 @@ export async function libellerFacettes(
    * polonais, mais `employmentLabel` n'a pas de catalogue `pl` et retomberait sur le français —
    * une même barre de filtres moitié polonaise, moitié française.
    */
-  const locale = localeServie(plan.perimetre.marche) ?? 'fr-FR';
+  const locale = localeAffichage(demandeLocale, plan.perimetre);
   const langue = langueDesLibelles(locale);
   const pays = nomsIntl(locale, 'region');
   const langues = nomsIntl(locale, 'language');
-  const secteurs = (await getSectorPresentation()).labels;
+  const secteurs = (await getSectorPresentation(langue)).labels;
   const libelle: Record<CleFacette, (value: string) => string> = {
     pays,
-    metier: (v) => v === 'unclassified' ? 'Métier à préciser' : taxonomy.occupationLabel(v) ?? 'Libellé indisponible',
-    secteur: (v) => secteurs[v] ?? 'Secteur à vérifier',
+    metier: (v) => v === 'unclassified' ? libelleInconnu(langue, 'metier') : taxonomy.occupationLabel(v) ?? libelleInconnu(langue, 'libelle'),
+    secteur: (v) => secteurs[v] ?? libelleInconnu(langue, 'secteur'),
     contrat: (v) => employmentLabel('employmentTerm', v, langue) ?? v,
     temps: (v) => employmentLabel('workTime', v, langue) ?? v,
     programme: (v) => employmentLabel('programType', v, langue) ?? v,
@@ -94,7 +97,7 @@ export async function libellerFacettes(
   const types = new Map(filtresDuMarche(plan.perimetre).map((f) => [f.cle, f.type]));
   return plan.facettes.map(({ cle, libelle: nom }) => ({
     cle,
-    libelle: nom,
+    libelle: nomFacette(cle, nom, plan.perimetre, locale),
     type: types.get(cle) ?? TYPE_FILTRE_PAR_DEFAUT[cle],
     options: (brutes[cle] ?? []).filter((f) => f.count > 0).map((f) => ({ value: f.value, label: libelle[cle](f.value), count: f.count })),
   }));

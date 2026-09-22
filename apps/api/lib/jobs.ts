@@ -11,6 +11,7 @@ import { ARITE_CLE_RECHERCHE, searchSummary, type CleRecherche } from './job-sea
 import { CURSEUR_MAX, decoderCurseur, empreinteCriteres, encoderCurseur } from './curseur';
 import { directPubliable, directPubliableSql, directToRow, estIdDirect, idDirect, statutDirect } from './direct-offers';
 import { offerIdCandidates } from './offer-url';
+import { localeAffichage } from './presentation-locale';
 import { libellerFacettes, type FacetteServie } from './facettes';
 import { exigerPerimetre, resoudrePerimetre } from './perimetre';
 import { DIMENSIONS, DIMENSIONS_TOLERANTES, planifierRecherche, type CriteresRecherche, type Dimension, type DimensionTolerante, type FiltreRefuse, type Selections } from './search-plan';
@@ -53,7 +54,7 @@ export class DatabaseUnavailableError extends Error {
  * curseur de la page suivante (lot 7), tel que la réponse précédente l'a
  * rendu dans `suivant`.
  */
-export type JobFilters = CriteresRecherche & { marche?: string; apres?: string };
+export type JobFilters = CriteresRecherche & { marche?: string; apres?: string; locale?: string };
 
 /**
  * D-426 — plafond du nombre de valeurs par filtre.
@@ -121,6 +122,7 @@ export function parseFilters(params: Record<string, string | string[] | undefine
     prioritePays: normalizedPriority(one('prioritePays')),
     marche: one('marche') ?? one('market'),
     apres: jeton,
+    locale: one('locale'),
   };
 }
 
@@ -253,7 +255,7 @@ export type JobsResult = {
   lieu: { type: LieuResolu['type']; libelle: string } | null;
 };
 
-export function perimetreServi(perimetre: Perimetre): PerimetreServi {
+export function perimetreServi(perimetre: Perimetre, locale?: string): PerimetreServi {
   const m = perimetre.marche;
   return {
     code: perimetre.code,
@@ -262,18 +264,8 @@ export function perimetreServi(perimetre: Perimetre): PerimetreServi {
     mesure: m !== undefined,
     locales: m ? [...m.locales] : ['fr-FR'],
     localeParDefaut: m?.localeParDefaut ?? 'fr-FR',
-    /*
-     * LA LANGUE DES LIBELLÉS SUIT LA LOCALE SERVIE, PAS LA LOCALE CIBLE.
-     *
-     * `localeParDefaut` porte la locale NATIVE du marché — `pl-PL` pour la Pologne — et c'est
-     * volontaire : elle part dans le `hreflang` et le sélecteur. Mais la lire ici ferait
-     * retomber `langueDesLibelles` sur `fr`, faute de catalogue polonais : le visiteur polonais
-     * aurait lu ses libellés en FRANÇAIS, alors que le repli décidé est l'anglais.
-     *
-     * `localeServie` répond à l'autre question — dans quelle langue rendre MAINTENANT — et rend
-     * `en-GB` tant que `localisation` vaut `FALLBACK`.
-     */
-    langueDesLibelles: langueDesLibelles(localeServie(m)),
+    // La locale explicite ne change que la présentation ; sinon, repli prévu par le marché.
+    langueDesLibelles: langueDesLibelles(localeAffichage(locale, perimetre)),
   };
 }
 
@@ -399,6 +391,7 @@ function publicOfferState(row: { isActive: boolean; withdrawnAt: Date | null; cl
 
 export async function getJobStatus(
   id: string,
+  langue: LangueLibelles = 'fr',
 ): Promise<
   | { status: 'active'; job: JobRow }
   // A closed offer still carries its content: the page shows it with an
@@ -431,9 +424,9 @@ export async function getJobStatus(
     if (status === 'withdrawn') {
       const owner = selectApplySource(row.sources, row, at) ?? row.sources.find(source => source.url === row.url);
       const presentable = row.withdrawalReason !== 'PUBLICATION_UNVERIFIED' && owner && publicationContentOf(owner);
-      return { status, canonicalId, job: presentable ? toRow(row, await getOptionalOccupationPresentation(), true, at) : null };
+      return { status, canonicalId, job: presentable ? toRow(row, await getOptionalOccupationPresentation(langue), true, at) : null };
     }
-    return { status, job: toRow(row, await getOptionalOccupationPresentation(), status === 'closed', at) };
+    return { status, job: toRow(row, await getOptionalOccupationPresentation(langue), status === 'closed', at) };
   } catch (error) {
     throw new DatabaseUnavailableError(error);
   }
@@ -478,13 +471,14 @@ export async function getOfferState(param: string): Promise<'active' | 'closed' 
  */
 export async function resolveOfferParam(
   param: string,
+  langue?: LangueLibelles,
 ): Promise<
   | { status: 'active' | 'closed'; job: JobRow; matchedId: string }
   | { status: 'withdrawn'; canonicalId: string; job: JobRow | null; matchedId: string }
   | { status: 'missing' }
 > {
   for (const id of offerIdCandidates(param)) {
-    const state = await getJobStatus(id);
+    const state = await getJobStatus(id, langue);
     if (state.status !== 'missing') return { ...state, matchedId: id };
   }
   return { status: 'missing' };
@@ -535,7 +529,7 @@ export async function getCompanyAside(companyName: string): Promise<CompanyAside
   }
 }
 
-export async function getSimilarJobs(job: JobRow, limit = 6): Promise<JobRow[]> {
+export async function getSimilarJobs(job: JobRow, limit = 6, langue: LangueLibelles = 'fr'): Promise<JobRow[]> {
   if (!process.env.DATABASE_URL) throw new DatabaseUnavailableError();
   try {
     const base = {
@@ -549,7 +543,7 @@ export async function getSimilarJobs(job: JobRow, limit = 6): Promise<JobRow[]> 
     // Audit UX 14/09 (M5) : une offre à Bordeaux proposait Glasgow et
     // Limerick. Même Maison ET même pays d'abord ; le pays seul ensuite.
     const memePays = job.countryCode ? { countryCode: job.countryCode } : {};
-    const taxonomy = await getOptionalOccupationPresentation();
+    const taxonomy = await getOptionalOccupationPresentation(langue);
     const ordre: Prisma.JobOrderByWithRelationInput[] = [{ postedAt: { sort: 'desc', nulls: 'last' } }, { id: 'asc' }];
     // D-419 §1 : les offres Catwalks de la même Maison, dans le même pays, ouvrent la liste.
     const directes = (await prisma.directOffer.findMany({
@@ -619,7 +613,7 @@ export async function getJobs(filters: JobFilters): Promise<JobsResult> {
   // Un curseur d'autres critères est refusé AVANT toute requête (400 CURSEUR_INVALIDE).
   const curseur = filters.apres ? (decoderCurseur(filters.apres, empreinte, ARITE_CLE_RECHERCHE) as CleRecherche) : null;
   try {
-    const taxonomy = await getOptionalOccupationPresentation();
+    const taxonomy = await getOptionalOccupationPresentation(langueDesLibelles(localeAffichage(filters.locale, perimetre)));
     const summary = await searchSummary(plan, curseur, PAGE_SIZE, taxonomy);
     // La page mêle les deux origines dans l'ordre du SQL ; chaque origine est
     // relue dans sa table, et la ligne servie a la même forme pour les deux.
@@ -650,8 +644,8 @@ export async function getJobs(filters: JobFilters): Promise<JobsResult> {
       totalConfirmes: summary.totalConfirmes,
       totalPerimetre: summary.totalPerimetre,
       suivant: summary.suivant ? encoderCurseur(empreinte, summary.suivant) : null,
-      perimetre: perimetreServi(perimetre),
-      facettes: await libellerFacettes(plan, summary.facettes, taxonomy),
+      perimetre: perimetreServi(perimetre, filters.locale),
+      facettes: await libellerFacettes(plan, summary.facettes, taxonomy, filters.locale),
       filtresRefuses: plan.refus,
       lieu: plan.lieuCompris ?? null,
     };

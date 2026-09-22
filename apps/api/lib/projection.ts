@@ -46,16 +46,11 @@ function nomsIntl(langue: LangueLibelles, type: 'language' | 'region'): Intl.Dis
     return null;
   }
 }
-const NOMS = {
-  fr: { language: nomsIntl('fr', 'language'), region: nomsIntl('fr', 'region') },
-  en: { language: nomsIntl('en', 'language'), region: nomsIntl('en', 'region') },
-} as const;
-
 /** Le nom d'un pays : la table française vérifiée, ou `Intl` dans la langue des libellés. */
 function nomPays(code: string, langue: LangueLibelles): string {
   if (langue === 'fr') return countryLabel(code);
   try {
-    const nom = NOMS[langue].region?.of(code.toUpperCase());
+    const nom = nomsIntl(langue, 'region')?.of(code.toUpperCase());
     return nom && nom !== code ? nom : countryLabel(code);
   } catch {
     return countryLabel(code);

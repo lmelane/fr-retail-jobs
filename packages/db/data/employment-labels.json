@@ -1,16 +1,191 @@
 {
   "fr": {
-    "employmentTerm": {"PERMANENT":"CDI","FIXED_TERM":"CDD","TEMPORARY":"Intérim / Temporaire"},
-    "workTime": {"FULL_TIME":"Temps plein","PART_TIME":"Temps partiel"},
-    "programType": {"INTERNSHIP":"Stage","APPRENTICESHIP":"Alternance","GRADUATE_PROGRAM":"Programme jeunes diplômés","VIE":"V.I.E"},
-    "engagementType": {"EMPLOYEE":"Salariat","FREELANCE":"Freelance","INDEPENDENT_CONTRACTOR":"Indépendant"},
-    "workplaceType": {"ONSITE":"Sur site","HYBRID":"Hybride","REMOTE":"Télétravail"}
+    "employmentTerm": {
+      "PERMANENT": "CDI",
+      "FIXED_TERM": "CDD",
+      "TEMPORARY": "Intérim / Temporaire"
+    },
+    "workTime": {
+      "FULL_TIME": "Temps plein",
+      "PART_TIME": "Temps partiel"
+    },
+    "programType": {
+      "INTERNSHIP": "Stage",
+      "APPRENTICESHIP": "Alternance",
+      "GRADUATE_PROGRAM": "Programme jeunes diplômés",
+      "VIE": "V.I.E"
+    },
+    "engagementType": {
+      "EMPLOYEE": "Salariat",
+      "FREELANCE": "Freelance",
+      "INDEPENDENT_CONTRACTOR": "Indépendant"
+    },
+    "workplaceType": {
+      "ONSITE": "Sur site",
+      "HYBRID": "Hybride",
+      "REMOTE": "Télétravail"
+    }
   },
   "en": {
-    "employmentTerm": {"PERMANENT":"Permanent","FIXED_TERM":"Fixed-term","TEMPORARY":"Temporary"},
-    "workTime": {"FULL_TIME":"Full-time","PART_TIME":"Part-time"},
-    "programType": {"INTERNSHIP":"Internship","APPRENTICESHIP":"Apprenticeship","GRADUATE_PROGRAM":"Graduate programme","VIE":"V.I.E"},
-    "engagementType": {"EMPLOYEE":"Employee","FREELANCE":"Freelance","INDEPENDENT_CONTRACTOR":"Independent contractor"},
-    "workplaceType": {"ONSITE":"On-site","HYBRID":"Hybrid","REMOTE":"Remote"}
+    "employmentTerm": {
+      "PERMANENT": "Permanent",
+      "FIXED_TERM": "Fixed-term",
+      "TEMPORARY": "Temporary"
+    },
+    "workTime": {
+      "FULL_TIME": "Full-time",
+      "PART_TIME": "Part-time"
+    },
+    "programType": {
+      "INTERNSHIP": "Internship",
+      "APPRENTICESHIP": "Apprenticeship",
+      "GRADUATE_PROGRAM": "Graduate programme",
+      "VIE": "V.I.E"
+    },
+    "engagementType": {
+      "EMPLOYEE": "Employee",
+      "FREELANCE": "Freelance",
+      "INDEPENDENT_CONTRACTOR": "Independent contractor"
+    },
+    "workplaceType": {
+      "ONSITE": "On-site",
+      "HYBRID": "Hybrid",
+      "REMOTE": "Remote"
+    }
+  },
+  "de": {
+    "employmentTerm": {
+      "PERMANENT": "Unbefristet",
+      "FIXED_TERM": "Befristet",
+      "TEMPORARY": "Zeitarbeit"
+    },
+    "workTime": {
+      "FULL_TIME": "Vollzeit",
+      "PART_TIME": "Teilzeit"
+    },
+    "programType": {
+      "INTERNSHIP": "Praktikum",
+      "APPRENTICESHIP": "Ausbildung",
+      "GRADUATE_PROGRAM": "Absolventenprogramm",
+      "VIE": "V.I.E"
+    },
+    "engagementType": {
+      "EMPLOYEE": "Angestellt",
+      "FREELANCE": "Freiberuflich",
+      "INDEPENDENT_CONTRACTOR": "Selbstständig"
+    },
+    "workplaceType": {
+      "ONSITE": "Vor Ort",
+      "HYBRID": "Hybrid",
+      "REMOTE": "Remote"
+    }
+  },
+  "it": {
+    "employmentTerm": {
+      "PERMANENT": "Tempo indeterminato",
+      "FIXED_TERM": "Tempo determinato",
+      "TEMPORARY": "Lavoro temporaneo"
+    },
+    "workTime": {
+      "FULL_TIME": "Tempo pieno",
+      "PART_TIME": "Tempo parziale"
+    },
+    "programType": {
+      "INTERNSHIP": "Tirocinio",
+      "APPRENTICESHIP": "Apprendistato",
+      "GRADUATE_PROGRAM": "Programma per neolaureati",
+      "VIE": "V.I.E"
+    },
+    "engagementType": {
+      "EMPLOYEE": "Dipendente",
+      "FREELANCE": "Freelance",
+      "INDEPENDENT_CONTRACTOR": "Lavoratore autonomo"
+    },
+    "workplaceType": {
+      "ONSITE": "In sede",
+      "HYBRID": "Ibrido",
+      "REMOTE": "Da remoto"
+    }
+  },
+  "nl": {
+    "employmentTerm": {
+      "PERMANENT": "Vast",
+      "FIXED_TERM": "Bepaalde tijd",
+      "TEMPORARY": "Tijdelijk"
+    },
+    "workTime": {
+      "FULL_TIME": "Voltijds",
+      "PART_TIME": "Deeltijds"
+    },
+    "programType": {
+      "INTERNSHIP": "Stage",
+      "APPRENTICESHIP": "Leerwerktraject",
+      "GRADUATE_PROGRAM": "Traineeprogramma",
+      "VIE": "V.I.E"
+    },
+    "engagementType": {
+      "EMPLOYEE": "Werknemer",
+      "FREELANCE": "Freelance",
+      "INDEPENDENT_CONTRACTOR": "Zelfstandig"
+    },
+    "workplaceType": {
+      "ONSITE": "Op locatie",
+      "HYBRID": "Hybride",
+      "REMOTE": "Op afstand"
+    }
+  },
+  "es": {
+    "employmentTerm": {
+      "PERMANENT": "Indefinido",
+      "FIXED_TERM": "Duración determinada",
+      "TEMPORARY": "Temporal"
+    },
+    "workTime": {
+      "FULL_TIME": "Jornada completa",
+      "PART_TIME": "Jornada parcial"
+    },
+    "programType": {
+      "INTERNSHIP": "Prácticas",
+      "APPRENTICESHIP": "Aprendizaje",
+      "GRADUATE_PROGRAM": "Programa para graduados",
+      "VIE": "V.I.E"
+    },
+    "engagementType": {
+      "EMPLOYEE": "Empleado",
+      "FREELANCE": "Freelance",
+      "INDEPENDENT_CONTRACTOR": "Autónomo"
+    },
+    "workplaceType": {
+      "ONSITE": "Presencial",
+      "HYBRID": "Híbrido",
+      "REMOTE": "En remoto"
+    }
+  },
+  "zh": {
+    "employmentTerm": {
+      "PERMANENT": "无固定期限",
+      "FIXED_TERM": "固定期限",
+      "TEMPORARY": "临时"
+    },
+    "workTime": {
+      "FULL_TIME": "全职",
+      "PART_TIME": "兼职"
+    },
+    "programType": {
+      "INTERNSHIP": "实习",
+      "APPRENTICESHIP": "学徒",
+      "GRADUATE_PROGRAM": "毕业生项目",
+      "VIE": "V.I.E"
+    },
+    "engagementType": {
+      "EMPLOYEE": "雇员",
+      "FREELANCE": "自由职业",
+      "INDEPENDENT_CONTRACTOR": "独立承包人"
+    },
+    "workplaceType": {
+      "ONSITE": "现场办公",
+      "HYBRID": "混合办公",
+      "REMOTE": "远程办公"
+    }
   }
 }

@@ -45,7 +45,7 @@ const HORS_MATRICE = new Set(['pays', 'secteur']);
  * (`saisonnier`, `teletravail`, `engagement`) est hors V1 par DÉCISION, pas par oubli. */
 const CLES_DU_CONTRAT = new Set<string>(CLES_FACETTE);
 const codes = [...new Set<string>([...CODES_MARCHE_LOCALISES, ...MARCHES_ROUTABLES.map(r => r.code as string)])];
-const paysConnus = new Set<string>(codes.flatMap(c => (MARCHES[c as never]?.pays ?? [c]) as string[]));
+const paysConnus = new Set<string>(codes.flatMap(c => (MARCHES[c as keyof typeof MARCHES]?.pays ?? [c]) as string[]));
 
 console.log(`# Parité contrat runtime ↔ MATRICE-FILTRES-V1\n`);
 console.log(`| Marché | Clé | Attendu | Runtime | Résultat |`);

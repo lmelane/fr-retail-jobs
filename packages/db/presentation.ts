@@ -1,17 +1,7 @@
 import employment from "./data/employment-labels.json";
 
-/**
- * Les libellés d'affichage des dimensions d'emploi, par LANGUE (lot 8).
- *
- * `fr` est la source ; `en` est une traduction d'interface du vocabulaire
- * commun de l'API, au même standard que le catalogue anglais du site. Les
- * valeurs internes (`PERMANENT`, `FULL_TIME`…) ne deviennent jamais des
- * énumérations françaises, et « CDI » n'est qu'une traduction d'affichage,
- * pas une équivalence juridique. Aucun libellé natif d'un autre marché n'est
- * inventé ici : un marché dont la langue n'a pas de catalogue reçoit le
- * français, et la réponse le dit (`perimetre.langueDesLibelles`).
- */
-export const LANGUES_LIBELLES = ["fr", "en"] as const;
+/** Libellés d'interface uniquement : aucune traduction du contenu source ni mutation des valeurs. */
+export const LANGUES_LIBELLES = ["fr", "en", "de", "it", "nl", "es", "zh"] as const;
 export type LangueLibelles = (typeof LANGUES_LIBELLES)[number];
 export type DimensionEmploi = keyof (typeof employment)["fr"];
 

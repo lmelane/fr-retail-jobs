@@ -55,7 +55,7 @@ const marches: Ligne[] = [];
 const codes = [...new Set<string>([...CODES_MARCHE_LOCALISES, ...MARCHES_ROUTABLES.map(r => r.code as string)])];
 for (const code of codes) {
   const m = { code };
-  const membres = MARCHES[m.code as never]?.pays ?? [m.code];
+  const membres = MARCHES[m.code as keyof typeof MARCHES]?.pays ?? [m.code];
   const offres = membres.reduce((s: number, p: string) => s + n(parPays.get(p)?.offres), 0);
   const prouve = membres.reduce((s: number, p: string) => s + n(parPays.get(p)?.prouvees), 0);
   const sources = new Set(membres.flatMap((p: string) => (parPays.get(p)?.sources ?? '').split(',').filter(Boolean)));
@@ -68,7 +68,7 @@ console.log(`# Cartographie finale des marchés — ${total} offres publiables u
 console.log(`| Marché | Pays membres | Locales produit | Offres | Prouvé | % | Sans preuve | Sources | Langues annonces |`);
 console.log(`|---|---|---|---:|---:|---:|---:|---:|---|`);
 for (const m of marches) {
-  const loc = localises.has(m.code) ? (MARCHES[m.code as never]?.locales ?? []).join(' ') : `*(${MARCHES_ROUTABLES.find(r => r.code === m.code)?.localeNative ?? '—'})*`;
+  const loc = localises.has(m.code) ? (MARCHES[m.code as keyof typeof MARCHES]?.locales ?? []).join(' ') : `*(${MARCHES_ROUTABLES.find(r => r.code === m.code)?.localeNative ?? '—'})*`;
   console.log(`| ${localises.has(m.code) ? `**${m.code}**` : m.code} | ${m.membres.join('+')} | ${loc} | ${m.offres} | ${m.prouve} | ${pct(m.prouve, m.offres)} | ${m.sansPreuve} | ${m.sources} | ${m.langues.join(',') || '—'} |`);
 }
 
@@ -80,7 +80,7 @@ console.log(`|---|---:|---:|---:|`);
 console.log(`| marchés LOCALISÉS (interface traduite) | ${localises.size} | ${volumeLocalise} | ${pct(volumeLocalise, total)} |`);
 console.log(`| marchés ROUTABLES (interface en repli) | ${marches.length - localises.size} | ${volumeRoutable} | ${pct(volumeRoutable, total)} |`);
 
-const connus = new Set<string>(codes.flatMap(c => (MARCHES[c as never]?.pays ?? [c]) as string[]));
+const connus = new Set<string>(codes.flatMap(c => (MARCHES[c as keyof typeof MARCHES]?.pays ?? [c]) as string[]));
 const hors = lignes.filter(l => l.pays && !connus.has(l.pays)).sort((a, b) => n(b.offres) - n(a.offres));
 const volumeHors = hors.reduce((s, l) => s + n(l.offres), 0);
 const sansPays = n(parPays.get('(aucun)')?.offres);

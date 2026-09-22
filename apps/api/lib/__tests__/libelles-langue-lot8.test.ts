@@ -10,10 +10,10 @@ import { resoudrePerimetre } from '../perimetre';
  * Aucun libellé natif n'est inventé pour un marché sans catalogue.
  */
 describe('la langue des libellés (lot 8)', () => {
-  it('PRÉMISSE — deux catalogues existent et divergent ; chaque valeur française a son anglais', () => {
-    expect(LANGUES_LIBELLES).toEqual(['fr', 'en']);
-    for (const dimension of Object.keys(EMPLOYMENT_LABELS.fr) as Array<keyof typeof EMPLOYMENT_LABELS.fr>) {
-      expect(Object.keys(EMPLOYMENT_LABELS.en[dimension]).sort(), dimension).toEqual(Object.keys(EMPLOYMENT_LABELS.fr[dimension]).sort());
+  it('PRÉMISSE — les catalogues existent et divergent ; chaque valeur française a ses traductions', () => {
+    expect(LANGUES_LIBELLES).toEqual(['fr', 'en', 'de', 'it', 'nl', 'es', 'zh']);
+    for (const langue of LANGUES_LIBELLES) for (const dimension of Object.keys(EMPLOYMENT_LABELS.fr) as Array<keyof typeof EMPLOYMENT_LABELS.fr>) {
+      expect(Object.keys(EMPLOYMENT_LABELS[langue][dimension]).sort(), dimension).toEqual(Object.keys(EMPLOYMENT_LABELS.fr[dimension]).sort());
     }
     expect(EMPLOYMENT_LABELS.en.employmentTerm.PERMANENT).not.toBe(EMPLOYMENT_LABELS.fr.employmentTerm.PERMANENT);
   });
@@ -22,8 +22,8 @@ describe('la langue des libellés (lot 8)', () => {
     expect(langueDesLibelles('en-US')).toBe('en');
     expect(langueDesLibelles('en-GB')).toBe('en');
     expect(langueDesLibelles('fr-CA')).toBe('fr');
-    expect(langueDesLibelles('de-DE')).toBe('fr');
-    expect(langueDesLibelles('zh-CN')).toBe('fr');
+    expect(langueDesLibelles('de-DE')).toBe('de');
+    expect(langueDesLibelles('zh-CN')).toBe('zh');
     expect(langueDesLibelles(undefined)).toBe('fr');
     expect(langueDesLibelles('EN')).toBe('en');
   });
@@ -37,8 +37,8 @@ describe('la langue des libellés (lot 8)', () => {
     expect(employmentLabel('workTime', 'INCONNU', 'en')).toBe('Valeur à vérifier');
   });
 
-  it('chaque marché du registre sait dans quelle langue il est libellé : anglophones en anglais, francophones en français, les autres en français nommément', () => {
-    const attendu: Record<string, 'fr' | 'en'> = { US: 'en', GB: 'en', AU: 'en', CA: 'en', FR: 'fr', BE: 'fr', CH: 'fr', DE: 'fr', IT: 'fr', ES: 'fr', NL: 'fr', CN: 'fr' };
+  it('chaque marché du registre sait dans quelle langue il est libellé : anglophones en anglais, francophones en français, les autres dans leur langue servie', () => {
+    const attendu: Record<string, string> = { US: 'en', GB: 'en', AU: 'en', CA: 'en', FR: 'fr', BE: 'fr', CH: 'fr', DE: 'de', IT: 'it', ES: 'es', NL: 'nl', CN: 'zh' };
     for (const [code, langue] of Object.entries(attendu)) {
       expect(perimetreServi(resoudrePerimetre(code)!).langueDesLibelles, code).toBe(langue);
       // Prémisse pour DE/IT/ES/NL/CN : leur langue de service n'a pas de catalogue.
@@ -71,10 +71,10 @@ describe('la langue des libellés (lot 8)', () => {
     }
   });
 
-  it('une offre lue seule suit le marché de son pays : Autriche → DE → français, Irlande → GB → anglais', () => {
+  it('une offre lue seule suit le marché de son pays : Autriche → DE → allemand, Irlande → GB → anglais', () => {
     expect(langueDesLibellesDuPays('US')).toBe('en');
     expect(langueDesLibellesDuPays('IE')).toBe('en');
-    expect(langueDesLibellesDuPays('AT')).toBe('fr');
+    expect(langueDesLibellesDuPays('AT')).toBe('de');
     expect(langueDesLibellesDuPays('FR')).toBe('fr');
     expect(langueDesLibellesDuPays(null)).toBe('fr');
   });

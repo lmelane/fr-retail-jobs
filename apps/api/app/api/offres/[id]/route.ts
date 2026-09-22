@@ -1,3 +1,5 @@
+import { langueDesLibelles } from '@catwalks/db/presentation';
+import { localeAffichage } from '@/lib/presentation-locale';
 import { NextRequest, NextResponse } from 'next/server';
 import { randomUUID } from 'node:crypto';
 import {
@@ -35,7 +37,9 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
   const entetes = { 'x-request-id': requestId };
 
   try {
-    const resolu = await resolveOfferParam(id.slice(0, 200));
+    const demandee = request.nextUrl.searchParams.get('locale');
+    const langueDemandee = demandee ? langueDesLibelles(localeAffichage(demandee)) : undefined;
+    const resolu = await resolveOfferParam(id.slice(0, 200), langueDemandee);
     if (resolu.status === 'missing') {
       journaliser({ requestId, statut: 404, dureeMs: Date.now() - debut });
       return NextResponse.json({ status: 'missing', requestId }, { status: 404, headers: entetes });
@@ -48,9 +52,9 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     // Audit UX 14/09 (H1) : les similaires servent SURTOUT sur une offre
     // fermée, c'est la seule issue du candidat ; calculées quel que soit le statut.
     const job = resolu.job!;
-    const [similaires, maison] = await Promise.all([getSimilarJobs(job, 6), getCompanyAside(job.company)]);
+    const [similaires, maison] = await Promise.all([getSimilarJobs(job, 6, langueDemandee), getCompanyAside(job.company)]);
     // Lot 8 : une offre lue seule est libellée dans la langue du marché de son pays.
-    const langue = langueDesLibellesDuPays(job.countryCode);
+    const langue = langueDemandee ?? langueDesLibellesDuPays(job.countryCode);
     const corps = {
       status: resolu.status,
       /** Chemin canonique de la source (`/offre/slug-id`) ; le front en dérive le sien. */
