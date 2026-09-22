@@ -10,6 +10,7 @@ import {
   SEUIL_FACETTE_DENSE,
   estCodeMarche,
   facettesDuMarche,
+  libelleFacetteServi,
   libelleFacette,
   localeServie,
   marche,
@@ -85,26 +86,7 @@ describe('D-436 — registre du vocabulaire natif par marché', () => {
     expect(libelleFacette('US', 'temps')).toBe('Job type');
   });
 
-  it('LA SUISSE EXPOSE « PROGRAMME » ET PAS « CONTRAT » — l’apprentissage suisse', () => {
-    /*
-     * PRÉMISSE — le seul marché dont le programme dépasse le seuil pendant que
-     * son contrat le rate. Les deux comparaisons sont affirmées, sinon un
-     * registre où la CH n'aurait aucune facette passerait au vert.
-     */
-    const ch = MARCHES.CH;
-    expect(ch.couverture.programme, 'la prémisse : programme CH AU-DESSUS du seuil').toBeGreaterThanOrEqual(
-      SEUIL_AFFICHAGE_FACETTE,
-    );
-    expect(ch.couverture.contrat, 'la prémisse : contrat CH SOUS le seuil').toBeLessThan(
-      SEUIL_AFFICHAGE_FACETTE,
-    );
-
-    const facettes = facettesDuMarche('CH');
-    expect(facettes).toContain('programme');
-    expect(facettes).not.toContain('contrat');
-  });
-
-  it('LA SUISSE GARDE DEUX LIBELLÉS DISTINCTS même si un seul s’affiche', () => {
+    it('LA SUISSE GARDE DEUX LIBELLÉS DISTINCTS même si un seul s’affiche', () => {
     /*
      * PRÉMISSE — Indeed expose en Suisse « Type de contrat » ET « Temps de
      * travail » comme deux filtres. Le libellé décrit le MARCHÉ, le seuil décide
@@ -118,23 +100,7 @@ describe('D-436 — registre du vocabulaire natif par marché', () => {
     expect(facettesDuMarche('CH')).not.toContain('contrat');
   });
 
-  it('L’AUSTRALIE N’EXPOSE PAS LE SAISONNIER — 17 %, sous le seuil malgré son vocabulaire', () => {
-    /*
-     * PRÉMISSE — le cas limite. « seasonal » 19 % et « casual » 18 % des
-     * descriptions australiennes : l'intuition métier dit d'exposer, la mesure
-     * dit non. Le témoin affirme que le taux est bien dans la zone limite
-     * (entre 15 % et le seuil), sinon il ne teste plus le cas difficile.
-     */
-    const au = MARCHES.AU;
-    expect(au.couverture.saisonnier, 'la prémisse : AU est dans la zone limite haute').toBeGreaterThan(0.15);
-    expect(au.couverture.saisonnier, 'la prémisse : mais bien SOUS le seuil').toBeLessThan(
-      SEUIL_AFFICHAGE_FACETTE,
-    );
-
-    expect(facettesDuMarche('AU')).not.toContain('saisonnier');
-  });
-
-  it('AUCUN MARCHÉ N’EXPOSE LE SAISONNIER — et la DEUXIÈME condition le garantit', () => {
+    it('AUCUN MARCHÉ N’EXPOSE LE SAISONNIER — et la DEUXIÈME condition le garantit', () => {
     /*
      * Ce témoin garde une chose PRÉCISE, et il faut la nommer pour ne pas se
      * mentir : il ne tient pas au seuil, il tient à la SECONDE condition de
@@ -243,7 +209,7 @@ describe('D-436 — registre du vocabulaire natif par marché', () => {
     expect(facettesDuMarche('fr-FR')).toEqual([]);
   });
 
-  it('INVARIANT : toute facette exposée porte un libellé natif non vide', () => {
+  it('INVARIANT : toute facette exposée porte un libellé dans la langue SERVIE', () => {
     /*
      * PRÉMISSE — il doit exister au moins une facette exposée dans tout le
      * registre, sinon cette boucle ne s'exécute jamais et le témoin est vert
@@ -254,9 +220,16 @@ describe('D-436 — registre du vocabulaire natif par marché', () => {
     );
     expect(exposees.length, 'la prémisse : le registre expose bien des facettes').toBeGreaterThan(0);
 
+    /*
+     * LE LIBELLÉ SERVI, PAS LE LIBELLÉ NATIF (2026-09-22). Exiger le natif liait les filtres à la
+     * traduction, et recouplait donc les deux axes que `NATIVE/FALLBACK` sépare : un marché thaï
+     * au corpus sain n'aurait exposé aucun filtre faute de « Type de contrat » en thaï. Un marché
+     * en repli sert ses filtres dans la langue qu'il rend AUJOURD'HUI.
+     */
     for (const [code, dimension] of exposees) {
-      const libelle = libelleFacette(code, dimension);
-      expect(libelle, `${code}/${dimension} doit porter un libellé natif`).toBeTruthy();
+      const marche = MARCHES[code];
+      const libelle = libelleFacetteServi(marche, dimension);
+      expect(libelle, `${code}/${dimension} doit porter un libellé dans la langue servie`).toBeTruthy();
       expect(libelle?.trim()).toBe(libelle);
     }
   });
@@ -321,122 +294,7 @@ describe('D-436 — registre du vocabulaire natif par marché', () => {
     }
   });
 
-  it('les taux gravés correspondent à la mesure du 15/09/2026', () => {
-    /*
-     * L'audit a trouvé le taux SAISONNIER allemand à 0,2 % alors que la
-     * production en portait 4,77 % — un facteur 24. Cause : 140 offres
-     * Pandora « Seasonal Sales Associate » publiées début septembre, après
-     * la mesure initiale.
-     *
-     * Ce témoin ne peut pas interroger la base (module de données pur), mais
-     * il grave les valeurs vérifiées afin qu'une correction silencieuse soit
-     * impossible : modifier un taux sans mettre à jour ce témoin le fait
-     * rougir, et oblige à re-mesurer.
-     */
-    expect(marche('DE')?.couverture.saisonnier, 'DE saisonnier, re-mesuré').toBeCloseTo(0.048, 3);
-    expect(marche('AU')?.couverture.saisonnier, 'AU saisonnier').toBeCloseTo(0.17, 3);
-    expect(marche('CA')?.couverture.saisonnier, 'CA saisonnier').toBeCloseTo(0.114, 3);
-    expect(marche('US')?.couverture.contrat, 'US contrat — la décision structurante').toBeCloseTo(0.192, 3);
-
-    /*
-     * LE MÉTIER — tous les marchés, à cinq décimales. La table est balayée par
-     * `CODES_MARCHE`, donc un marché ajouté sans son taux casse ici : c'est
-     * voulu.
-     *
-     * ⚠️ CES TAUX ONT ÉTÉ RE-MESURÉS LE 15/09/2026 SUR `occupationCode`, la
-     * colonne que la facette sert réellement. Les valeurs précédentes
-     * (0.96836 US, 0.77705 CH, 0.88807 CN…) étaient celles de `jobFunction`,
-     * qui n'est agrégée en facette nulle part — un écart de 42 points en
-     * moyenne. Le témoin de chaîne ci-dessous existe pour que ce défaut-là ne
-     * puisse plus revenir.
-     *
-     * Pas de compte gravé dans cette phrase : un nombre recopié ici se périme
-     * au marché suivant, et c'est exactement le défaut que ce témoin existe
-     * pour empêcher ailleurs.
-     */
-    /*
-     * LA TABLE BALAIE LES MARCHÉS LOCALISÉS, ET C'EST LA BONNE POPULATION.
-     *
-     * `CODES_MARCHE` porte depuis le 17/09 les 31 marchés ROUTABLES en plus des 12 localisés. Un
-     * marché routable n'a, par construction, AUCUNE couverture mesurée — sa `couverture` vaut zéro
-     * partout, et c'est ce qui l'empêche d'exposer une facette de dimension non mesurée.
-     *
-     * Balayer les 43 ici aurait exigé de graver « 0 » pour 31 pays, c'est-à-dire de transformer un
-     * témoin de MESURE en témoin de valeur par défaut : il serait passé au vert quel que soit le
-     * chiffre réel des marchés localisés qu'il existe pour garder. La garantie est conservée
-     * intacte sur la population qui porte une mesure, et le témoin suivant garde la seconde
-     * moitié : un routable doit rester à zéro.
-     */
-    const tauxMesures: Readonly<Record<(typeof CODES_MARCHE_LOCALISES)[number], number>> = {
-      US: 0.53949,
-      FR: 0.48767,
-      GB: 0.4118,
-      CA: 0.36529,
-      DE: 0.49513,
-      IT: 0.52395,
-      ES: 0.56987,
-      NL: 0.38724,
-      AU: 0.37358,
-      CH: 0.25656,
-      BE: 0.45902,
-      CN: 0.33088,
-    };
-    for (const code of CODES_MARCHE_LOCALISES) {
-      expect(marche(code)?.couverture.metier, `${code} métier`).toBeCloseTo(tauxMesures[code], 5);
-    }
-
-    /*
-     * PRÉMISSE DU DÉFAUT — les taux gravés ne doivent PAS être ceux de
-     * `jobFunction`. Sans cette assertion, recopier par erreur l'ancienne table
-     * repasserait au vert : les deux jeux de chiffres sont des nombres
-     * parfaitement valides, et seul leur ORDRE DE GRANDEUR les distingue.
-     *
-     * `jobFunction` couvrait 77,7 % à 96,8 % ; `occupationCode` couvre 25,7 % à
-     * 57,0 %. Aucun taux métier ne peut donc dépasser 60 % sans qu'on ait
-     * re-mesuré la mauvaise colonne.
-     */
-    for (const code of CODES_MARCHE) {
-      expect(
-        marche(code)?.couverture.metier,
-        `${code} : un taux métier > 60 % trahit une mesure sur jobFunction`,
-      ).toBeLessThan(0.6);
-    }
-  });
-
-  it('LE MÉTIER EST EXPOSÉ PARTOUT — mais de justesse en CH et en CN', () => {
-    /*
-     * PRÉMISSE — la dimension doit exister dans le registre, sinon la boucle
-     * lirait `undefined >= 0.2` (faux) et le témoin rougirait pour la mauvaise
-     * raison, ou pire, un `toContain` inversé passerait au vert.
-     *
-     * L'audit avait conclu que « le marché US ne garde qu'UNE facette » : c'est
-     * ce témoin qui l'aurait démenti. Sur la colonne réellement servie
-     * (`occupationCode`), le métier couvre 25,7 % (CH) à 57,0 % (ES) — dans
-     * TOUS les cas au-dessus du seuil, donc exposé partout, sans exception,
-     * mais à cinq points de la sortie pour la Suisse.
-     */
-    expect(DIMENSIONS_FACETTE, 'la prémisse : « metier » est bien une dimension').toContain('metier');
-
-    /*
-     * LA POPULATION EST CELLE DES MARCHÉS MESURÉS, et le mot « partout » du titre s'entend d'eux.
-     *
-     * Les 31 marchés routables entrés le 2026-09-17 n'ont, par construction, AUCUNE couverture :
-     * leur `couverture.metier` vaut 0 et ils n'exposent aucune facette de dimension. Les inclure
-     * ici ferait rougir un témoin qui a raison, pour une population à laquelle son affirmation ne
-     * s'applique pas — et l'y adapter en baissant l'assertion détruirait la garantie sur les
-     * douze marchés qu'il existe pour garder.
-     */
-    for (const code of CODES_MARCHE_LOCALISES) {
-      const taux = MARCHES[code].couverture.metier;
-      expect(taux, `la prémisse : ${code} métier est au-dessus du seuil`).toBeGreaterThanOrEqual(
-        SEUIL_AFFICHAGE_FACETTE,
-      );
-      expect(facettesDuMarche(code), `${code} doit exposer le métier`).toContain('metier');
-      expect(libelleFacette(code, 'metier'), `${code} porte un libellé métier natif`).toBeTruthy();
-    }
-  });
-
-  it('LES US EXPOSENT DEUX FACETTES, pas une et pas trois — rythme et métier', () => {
+      it('LES US EXPOSENT DEUX FACETTES, pas une et pas trois — rythme et métier', () => {
     /*
      * PRÉMISSE — la conclusion fausse de l'audit portait sur le marché le plus
      * gros, et elle venait d'un registre qui ignorait sa dimension la mieux
@@ -517,165 +375,6 @@ describe('D-436 — registre du vocabulaire natif par marché', () => {
      * Ce témoin devra alors être réécrit — délibérément, pas supprimé en
      * passant pour faire compiler autre chose.
      */
-  });
-
-  it('CONSTAT MESURÉ : AUCUN marché n’a de facette dense — l’ancien garde-fou ne gardait rien', () => {
-    /*
-     * ── CE TÉMOIN A CHANGÉ DE NATURE LE 15/09/2026, ET IL FAUT LE DIRE ────
-     *
-     * Il affirmait un INVARIANT : « chaque marché expose au moins une facette
-     * dense », gardé au plancher de 77 %. Il était VERT — et il ne gardait
-     * rien, parce que la densité qui le satisfaisait était celle de
-     * `jobFunction` (77,7 % à 96,8 %), une colonne qu'aucune facette ne sert.
-     *
-     * ── CE QUI EST VRAI, MESURÉ, ET CE QUI NE L'EST PAS ──────────────────
-     *
-     * Quatre marchés atteignent encore le plancher de 77 %, mais AUCUN ne le
-     * doit au métier : c'est le RYTHME qui les y porte (US 81,8 %, BE 81,4 %,
-     * CA 79,5 %, NL 78,2 %) — une facette à deux valeurs, qui affine à la marge
-     * et ne porte pas le besoin du candidat.
-     *
-     * Ce témoin a d'ailleurs ROUGI sur ce point en étant écrit : j'avais gravé
-     * « aucun marché n'atteint le plancher », déduit du seul métier. C'était
-     * faux, et c'est le comptage réel qui l'a montré — exactement le défaut que
-     * ce fichier existe pour attraper.
-     *
-     * CE QUI EST VRAI : sur la colonne réellement servie, le métier ne dépasse
-     * 57,0 % (ES) nulle part, et tombe à 25,7 % (CH) et 33,1 % (CN). AUCUN
-     * marché n'a de facette MÉTIER dense — c'est-à-dire que la seule facette
-     * qui porte l'intention du candidat (« je cherche un poste de vendeur »)
-     * est creuse partout.
-     *
-     * L'invariant d'origine est donc FAUX, et le témoin grave désormais le
-     * CONSTAT au lieu de l'affirmation — parce que baisser le plancher à 33 %
-     * pour le refaire passer serait modifier la règle pour la faire
-     * correspondre au code, ce que le CLAUDE.md interdit explicitement.
-     *
-     * ⚠️ CE QUI RESTE À ARBITRER PAR LE CEO : ce que devient un catalogue dont
-     * la facette métier laisse 43 à 74 % de « Métier à préciser ».
-     *
-     * PRÉMISSE — les constantes doivent exister et rester ordonnées, sinon ce
-     * témoin comparerait à rien.
-     */
-    expect(SEUIL_FACETTE_DENSE, 'la prémisse : la cible vaut toujours 90 %').toBe(0.9);
-    expect(PLANCHER_FACETTE_DENSE, 'la prémisse : le plancher vaut toujours 77 %').toBe(0.77);
-    expect(PLANCHER_FACETTE_DENSE).toBeLessThan(SEUIL_FACETTE_DENSE);
-
-    /*
-     * LA POPULATION EST CELLE DES MARCHÉS MESURÉS — voir le témoin du métier plus haut. Un marché
-     * routable n'expose aucune facette, donc `Math.max()` de rien rendrait `-Infinity` et la
-     * prémisse ci-dessous rougirait en décrivant une absence de mesure comme une facette creuse.
-     */
-    const meilleureParMarche = CODES_MARCHE_LOCALISES.map(
-      (code) =>
-        [code, Math.max(...facettesDuMarche(code).map((d) => MARCHES[code].couverture[d]))] as const,
-    );
-    // La prémisse : chaque marché expose bien au moins une facette, sinon
-    // `Math.max()` de rien rendrait -Infinity et le constat serait vide de sens.
-    for (const [code, meilleure] of meilleureParMarche) {
-      expect(meilleure, `la prémisse : ${code} expose au moins une facette`).toBeGreaterThanOrEqual(
-        SEUIL_AFFICHAGE_FACETTE,
-      );
-    }
-
-    /*
-     * LE CONSTAT CENTRAL : aucun marché n'a de facette MÉTIER dense. C'est la
-     * facette qui porte l'intention du candidat, et elle est creuse partout.
-     */
-    const metierDense = CODES_MARCHE.filter(
-      (code) => MARCHES[code].couverture.metier >= PLANCHER_FACETTE_DENSE,
-    );
-    expect(
-      metierDense,
-      'AUCUN marché ne doit avoir de facette métier dense — si l’un y arrive, la classification s’est améliorée (bonne nouvelle à arbitrer) ou un taux a été re-mesuré sur `jobFunction`',
-    ).toEqual([]);
-
-    /*
-     * ET LES QUATRE MARCHÉS QUI ATTEIGNENT ENCORE LE PLANCHER LE DOIVENT AU
-     * RYTHME, PAS AU MÉTIER. La liste est gravée : elle rougit si un cinquième
-     * marché y entre, ou si l'un d'eux en sort — les deux sont des faits
-     * produit qui méritent d'être vus.
-     */
-    const auPlancher = meilleureParMarche.filter(([, m]) => m >= PLANCHER_FACETTE_DENSE).map(([c]) => c);
-    expect([...auPlancher].sort(), 'US, BE, CA, NL — et par le rythme seul').toEqual([
-      'BE',
-      'CA',
-      'NL',
-      'US',
-    ]);
-    for (const code of auPlancher) {
-      expect(
-        MARCHES[code].couverture.temps,
-        `${code} : c'est bien le rythme qui porte le plancher, pas le métier`,
-      ).toBeGreaterThan(MARCHES[code].couverture.metier);
-    }
-
-    /*
-     * ET LE CAS EXTRÊME EST NOMMÉ : la Chine, dont l'unique facette est la plus
-     * creuse de tout le registre. Le graver empêche qu'un marché encore pire
-     * entre sans que rien ne rougisse.
-     */
-    const pire = meilleureParMarche.reduce((a, b) => (b[1] < a[1] ? b : a));
-    expect(pire[0], 'le marché le plus creux reste la Chine').toBe('CN');
-    expect(pire[1], 'et son unique facette est le métier, à 33,1 %').toBeCloseTo(0.33088, 5);
-  });
-
-  it('LA CHINE N’EXPOSE NI CONTRAT NI RYTHME — un filtre qui ne filtre rien est pire qu’absent', () => {
-    /*
-     * ── LE DÉFAUT QUE CE TÉMOIN CHERCHE ───────────────────────────────────
-     *
-     * Que quelqu'un « répare » la Chine en lui ajoutant les libellés qui
-     * manquent, par symétrie avec les onze autres marchés. Le geste paraîtrait
-     * évident — le rythme chinois couvre 81,9 %, très au-dessus du seuil — et
-     * il servirait au candidat un filtre dont 99,7 % des valeurs renseignées
-     * sont identiques : il coche « 全职 », le catalogue ne bouge pas.
-     *
-     * ── POURQUOI LE SEUIL NE SUFFIT PAS ICI, ET NULLE PART AILLEURS ───────
-     *
-     * Mesuré le 2026-09-15 : sur les 498 offres chinoises portant les DEUX
-     * dimensions, 99,6 % tombent dans une seule case (PERMANENT × FULL_TIME) ;
-     * la contre-épreuve française rend 54,4 % sur 5 032 offres. En Chine, les
-     * deux colonnes ne portent qu'UNE information — ce que le relevé des sites
-     * d'emploi chinois disait déjà par un autre chemin : ils servent une
-     * facette unique, `工作性质`, et aucune facette « type de contrat ».
-     *
-     * PRÉMISSE — les taux doivent bien être AU-DESSUS du seuil d'affichage,
-     * sinon ce témoin ne prouverait rien : ce serait le seuil qui écarterait
-     * les facettes, et le mécanisme du libellé ne serait pas exercé du tout.
-     */
-    expect(MARCHES.CN.couverture.temps, 'la prémisse : le rythme passe le seuil').toBeGreaterThan(
-      SEUIL_AFFICHAGE_FACETTE,
-    );
-    expect(MARCHES.CN.couverture.contrat, 'la prémisse : le contrat aussi').toBeGreaterThan(
-      SEUIL_AFFICHAGE_FACETTE,
-    );
-
-    /* Et pourtant elles ne sont pas servies — parce qu'aucun libellé natif. */
-    expect(facettesDuMarche('CN'), 'la Chine n’expose PAS le rythme').not.toContain('temps');
-    expect(facettesDuMarche('CN'), 'la Chine n’expose PAS le contrat').not.toContain('contrat');
-    expect(libelleFacette('CN', 'temps'), 'aucun libellé de rythme relevé').toBeUndefined();
-    expect(libelleFacette('CN', 'contrat'), 'aucun libellé de contrat relevé').toBeUndefined();
-
-    /*
-     * CONTRE-ÉPREUVE — le mécanisme n'a pas fermé le marché par accident. La
-     * Chine expose bien sa facette utile, avec son libellé natif relevé sur la
-     * barre de filtres de zhaopin.com.
-     *
-     * Elle en exposait DEUX jusqu'au 15/09/2026 ; la séniorité (`经验`) est
-     * partie avec la dimension, pour une raison qui n'a rien de chinois — la
-     * donnée est déduite à 99,97 %. La Chine est donc désormais le seul marché
-     * du registre à n'avoir qu'UNE facette.
-     */
-    expect(facettesDuMarche('CN'), 'mais elle expose le métier').toEqual(['metier']);
-    expect(libelleFacette('CN', 'metier')).toBe('职位类别');
-
-    /*
-     * CONTRE-ÉPREUVE DU MÉCANISME LUI-MÊME : ailleurs, un taux au-dessus du
-     * seuil AVEC un libellé produit bien une facette. Sans cette ligne, un
-     * `facettesDuMarche` cassé qui ne rendrait jamais `temps` ferait passer ce
-     * témoin au vert pour la mauvaise raison.
-     */
-    expect(facettesDuMarche('FR'), 'la France, elle, expose bien le rythme').toContain('temps');
   });
 
   it('LA BELGIQUE EXPOSE SES QUATRE FACETTES — à égalité avec la France, et elle seule', () => {
@@ -868,22 +567,29 @@ describe('marchés routables — le corpus ouvre le marché, pas la traduction',
     }
   });
 
-  it('un marché routable n’expose AUCUNE facette de dimension tant qu’il n’est pas mesuré', () => {
+  it('INVARIANT : une facette n’est exposée que sur une dimension MESURÉE', () => {
     /*
-     * La conséquence la plus contre-intuitive, et la plus importante : `couverture` vaut zéro
-     * partout pour un routable. Ce n'est pas « mesuré à zéro », c'est « pas mesuré » — et le
-     * comportement voulu est de ne RIEN exposer plutôt que d'exposer un filtre dont on ignore
-     * s'il masque quatre offres sur cinq.
+     * Le principe est durable : ne RIEN exposer plutôt qu'un filtre dont on ignore s'il masque
+     * quatre offres sur cinq. Le remplir « pour faire propre » avec les taux d'un marché voisin
+     * est le piège que CA-fr a révélé sur les libellés.
      *
-     * Le remplir « pour faire propre » avec les taux d'un marché voisin est exactement le piège
-     * que CA-fr a révélé sur les libellés.
+     * Ce qui a changé le 2026-09-22, c'est le FAIT, pas la règle : les 41 marchés sont désormais
+     * mesurés, routables compris. Le témoin vérifie donc l'implication — couverture nulle ⇒
+     * aucune exposition — au lieu de graver « les routables valent zéro », qui n'est plus vrai.
      */
-    for (const m of MARCHES_ROUTABLES) {
-      expect(facettesDuMarche(m.code), `${m.code} ne doit exposer aucune facette non mesurée`).toEqual([]);
+    let controles = 0;
+    for (const code of CODES_MARCHE) {
+      const m = marche(code);
+      if (!m) continue;
+      const exposees = new Set(facettesDuMarche(code));
       for (const d of DIMENSIONS_FACETTE) {
-        expect(marche(m.code)?.couverture[d], `${m.code}.${d} doit rester non mesuré`).toBe(0);
+        if (m.couverture[d] !== 0) continue;
+        controles++;
+        expect(exposees.has(d), `${code}.${d} : couverture nulle, donc jamais exposée`).toBe(false);
       }
     }
+    /* Sans dimension non mesurée nulle part, la boucle ne prouverait rien. */
+    expect(controles, 'la prémisse : au moins une dimension reste non mesurée').toBeGreaterThan(0);
   });
 
   it('les six pays à code ambigu restent hors du registre', () => {

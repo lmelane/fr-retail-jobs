@@ -253,35 +253,35 @@ export const CODES_MARCHE_LOCALISES = ['US', 'FR', 'GB', 'CA', 'DE', 'IT', 'ES',
  * offres restent atteignables en attendant : elles sont servies par DE et GB.
  */
 export const MARCHES_ROUTABLES = [
-  { code: 'JP', nom: '日本', localeNative: 'ja-JP', offresMesurees: 552 },
-  { code: 'KR', nom: '대한민국', localeNative: 'ko-KR', offresMesurees: 527 },
-  { code: 'PT', nom: 'Portugal', localeNative: 'pt-PT', offresMesurees: 525 },
-  { code: 'MX', nom: 'México', localeNative: 'es-MX', offresMesurees: 461 },
-  { code: 'SG', nom: 'Singapore', localeNative: 'en-SG', offresMesurees: 435 },
-  { code: 'DK', nom: 'Danmark', localeNative: 'da-DK', offresMesurees: 386 },
-  { code: 'HK', nom: '香港', localeNative: 'zh-HK', offresMesurees: 378 },
-  { code: 'PL', nom: 'Polska', localeNative: 'pl-PL', offresMesurees: 361 },
-  { code: 'SE', nom: 'Sverige', localeNative: 'sv-SE', offresMesurees: 328 },
-  { code: 'CL', nom: 'Chile', localeNative: 'es-CL', offresMesurees: 314 },
-  { code: 'TR', nom: 'Türkiye', localeNative: 'tr-TR', offresMesurees: 307 },
-  { code: 'TH', nom: 'ประเทศไทย', localeNative: 'th-TH', offresMesurees: 276 },
-  { code: 'MY', nom: 'Malaysia', localeNative: 'ms-MY', offresMesurees: 266 },
-  { code: 'AE', nom: 'الإمارات العربية المتحدة', localeNative: 'ar-AE', offresMesurees: 247 },
-  { code: 'NO', nom: 'Norge', localeNative: 'nb-NO', offresMesurees: 239 },
-  { code: 'TW', nom: '臺灣', localeNative: 'zh-TW', offresMesurees: 224 },
-  { code: 'BR', nom: 'Brasil', localeNative: 'pt-BR', offresMesurees: 201 },
-  { code: 'GR', nom: 'Ελλάδα', localeNative: 'el-GR', offresMesurees: 182 },
-  { code: 'ZA', nom: 'South Africa', localeNative: 'en-ZA', offresMesurees: 167 },
-  { code: 'VN', nom: 'Việt Nam', localeNative: 'vi-VN', offresMesurees: 163 },
-  { code: 'CZ', nom: 'Česko', localeNative: 'cs-CZ', offresMesurees: 158 },
-  { code: 'PE', nom: 'Perú', localeNative: 'es-PE', offresMesurees: 154 },
-  { code: 'NZ', nom: 'New Zealand', localeNative: 'en-NZ', offresMesurees: 153 },
-  { code: 'HU', nom: 'Magyarország', localeNative: 'hu-HU', offresMesurees: 123 },
-  { code: 'SA', nom: 'المملكة العربية السعودية', localeNative: 'ar-SA', offresMesurees: 114 },
-  { code: 'RO', nom: 'România', localeNative: 'ro-RO', offresMesurees: 107 },
-  { code: 'PR', nom: 'Puerto Rico', localeNative: 'es-PR', offresMesurees: 72 },
-  { code: 'PH', nom: 'Philippines', localeNative: 'en-PH', offresMesurees: 58 },
-  { code: 'LU', nom: 'Luxembourg', localeNative: 'fr-LU', offresMesurees: 55 },
+  { code: 'JP', nom: '日本', localeNative: 'ja-JP', offresMesurees: 552, couverture: { contrat: 0.3632, temps: 0.7547, programme: 0.0236, saisonnier: 0, metier: 0.2594 }, cardinalite: { contrat: 3, temps: 2, programme: 1, saisonnier: 0, metier: 13 }, facettesSite: ['secteur', 'ville', 'maison', 'groupe', 'langue'] },
+  { code: 'KR', nom: '대한민국', localeNative: 'ko-KR', offresMesurees: 527, couverture: { contrat: 0.3586, temps: 0.9343, programme: 0.0152, saisonnier: 0, metier: 0.3485 }, cardinalite: { contrat: 2, temps: 2, programme: 1, saisonnier: 0, metier: 10 }, facettesSite: ['secteur', 'ville', 'maison', 'groupe'] },
+  { code: 'PT', nom: 'Portugal', localeNative: 'pt-PT', offresMesurees: 525, couverture: { contrat: 0.375, temps: 0.8, programme: 0.0393, saisonnier: 0, metier: 0.225 }, cardinalite: { contrat: 3, temps: 2, programme: 3, saisonnier: 0, metier: 12 }, facettesSite: ['secteur', 'ville', 'maison', 'groupe', 'langue'] },
+  { code: 'MX', nom: 'México', localeNative: 'es-MX', offresMesurees: 461, couverture: { contrat: 0.4663, temps: 0.6114, programme: 0.0104, saisonnier: 0, metier: 0.4404 }, cardinalite: { contrat: 2, temps: 2, programme: 1, saisonnier: 0, metier: 8 }, facettesSite: ['secteur', 'ville', 'maison', 'groupe', 'langue'] },
+  { code: 'SG', nom: 'Singapore', localeNative: 'en-SG', offresMesurees: 435, couverture: { contrat: 0.4144, temps: 0.8694, programme: 0.3063, saisonnier: 0, metier: 0.2523 }, cardinalite: { contrat: 2, temps: 2, programme: 1, saisonnier: 0, metier: 20 }, facettesSite: ['secteur', 'maison', 'groupe'] },
+  { code: 'DK', nom: 'Danmark', localeNative: 'da-DK', offresMesurees: 386, couverture: { contrat: 0.0593, temps: 0.072, programme: 0.0212, saisonnier: 0, metier: 0.1356 }, cardinalite: { contrat: 2, temps: 2, programme: 1, saisonnier: 0, metier: 9 }, facettesSite: ['secteur', 'ville', 'maison', 'langue'] },
+  { code: 'HK', nom: '香港', localeNative: 'zh-HK', offresMesurees: 378, couverture: { contrat: 0.3182, temps: 0.7348, programme: 0.0455, saisonnier: 0, metier: 0.2879 }, cardinalite: { contrat: 3, temps: 2, programme: 2, saisonnier: 0, metier: 11 }, facettesSite: ['secteur', 'ville', 'maison', 'groupe'] },
+  { code: 'PL', nom: 'Polska', localeNative: 'pl-PL', offresMesurees: 361, couverture: { contrat: 0.2193, temps: 0.614, programme: 0.0351, saisonnier: 0.0088, metier: 0.0877 }, cardinalite: { contrat: 2, temps: 2, programme: 1, saisonnier: 1, metier: 6 }, facettesSite: ['secteur', 'ville', 'maison', 'groupe', 'langue'] },
+  { code: 'SE', nom: 'Sverige', localeNative: 'sv-SE', offresMesurees: 328, couverture: { contrat: 0.127, temps: 0.2381, programme: 0.0476, saisonnier: 0, metier: 0.2381 }, cardinalite: { contrat: 3, temps: 2, programme: 1, saisonnier: 0, metier: 8 }, facettesSite: ['secteur', 'ville', 'maison'] },
+  { code: 'CL', nom: 'Chile', localeNative: 'es-CL', offresMesurees: 314, couverture: { contrat: 0.0064, temps: 0.0385, programme: 0.0064, saisonnier: 0, metier: 0.8462 }, cardinalite: { contrat: 1, temps: 2, programme: 1, saisonnier: 0, metier: 2 }, facettesSite: ['secteur', 'ville', 'maison', 'langue'] },
+  { code: 'TR', nom: 'Türkiye', localeNative: 'tr-TR', offresMesurees: 307, couverture: { contrat: 0.2667, temps: 0.4667, programme: 0, saisonnier: 0, metier: 0.3 }, cardinalite: { contrat: 1, temps: 1, programme: 0, saisonnier: 0, metier: 6 }, facettesSite: ['secteur', 'ville', 'maison', 'groupe', 'langue'] },
+  { code: 'TH', nom: 'ประเทศไทย', localeNative: 'th-TH', offresMesurees: 276, couverture: { contrat: 0.4048, temps: 0.9286, programme: 0.0238, saisonnier: 0, metier: 0.3571 }, cardinalite: { contrat: 1, temps: 1, programme: 1, saisonnier: 0, metier: 5 }, facettesSite: ['secteur', 'ville', 'maison', 'groupe'] },
+  { code: 'MY', nom: 'Malaysia', localeNative: 'ms-MY', offresMesurees: 266, couverture: { contrat: 0.2683, temps: 0.8415, programme: 0.1341, saisonnier: 0, metier: 0.2805 }, cardinalite: { contrat: 2, temps: 2, programme: 1, saisonnier: 0, metier: 7 }, facettesSite: ['secteur', 'ville', 'maison', 'groupe'] },
+  { code: 'AE', nom: 'الإمارات العربية المتحدة', localeNative: 'ar-AE', offresMesurees: 247, couverture: { contrat: 0.25, temps: 0.5585, programme: 0.0957, saisonnier: 0, metier: 0.2713 }, cardinalite: { contrat: 2, temps: 2, programme: 3, saisonnier: 0, metier: 14 }, facettesSite: ['secteur', 'ville', 'maison', 'groupe', 'langue'] },
+  { code: 'NO', nom: 'Norge', localeNative: 'nb-NO', offresMesurees: 239, couverture: { contrat: 0.0577, temps: 0.1058, programme: 0, saisonnier: 0.0192, metier: 0.0865 }, cardinalite: { contrat: 2, temps: 2, programme: 0, saisonnier: 1, metier: 2 }, facettesSite: ['secteur', 'ville', 'maison'] },
+  { code: 'TW', nom: '臺灣', localeNative: 'zh-TW', offresMesurees: 224, couverture: { contrat: 0.2642, temps: 0.8113, programme: 0, saisonnier: 0, metier: 0.3585 }, cardinalite: { contrat: 1, temps: 1, programme: 0, saisonnier: 0, metier: 8 }, facettesSite: ['secteur', 'ville', 'maison', 'groupe'] },
+  { code: 'BR', nom: 'Brasil', localeNative: 'pt-BR', offresMesurees: 201, couverture: { contrat: 0.5882, temps: 0.5735, programme: 0.0147, saisonnier: 0, metier: 0.1765 }, cardinalite: { contrat: 1, temps: 2, programme: 1, saisonnier: 0, metier: 2 }, facettesSite: ['secteur', 'ville', 'maison', 'groupe', 'langue'] },
+  { code: 'GR', nom: 'Ελλάδα', localeNative: 'el-GR', offresMesurees: 182, couverture: { contrat: 0.1368, temps: 0.4017, programme: 0, saisonnier: 0, metier: 0.6239 }, cardinalite: { contrat: 2, temps: 2, programme: 0, saisonnier: 0, metier: 3 }, facettesSite: ['secteur', 'ville', 'maison', 'langue'] },
+  { code: 'ZA', nom: 'South Africa', localeNative: 'en-ZA', offresMesurees: 167, couverture: { contrat: 0.087, temps: 0.6522, programme: 0, saisonnier: 0, metier: 0.1739 }, cardinalite: { contrat: 2, temps: 2, programme: 0, saisonnier: 0, metier: 3 }, facettesSite: ['secteur', 'ville', 'maison'] },
+  { code: 'VN', nom: 'Việt Nam', localeNative: 'vi-VN', offresMesurees: 163, couverture: { contrat: 0.24, temps: 0.58, programme: 0, saisonnier: 0, metier: 0.14 }, cardinalite: { contrat: 1, temps: 1, programme: 0, saisonnier: 0, metier: 6 }, facettesSite: ['secteur', 'ville', 'maison', 'groupe', 'langue'] },
+  { code: 'CZ', nom: 'Česko', localeNative: 'cs-CZ', offresMesurees: 158, couverture: { contrat: 0.1176, temps: 0.5294, programme: 0, saisonnier: 0, metier: 0.1765 }, cardinalite: { contrat: 1, temps: 2, programme: 0, saisonnier: 0, metier: 2 }, facettesSite: ['secteur', 'ville', 'maison', 'langue'] },
+  { code: 'PE', nom: 'Perú', localeNative: 'es-PE', offresMesurees: 154, couverture: { contrat: 0, temps: 0.5294, programme: 0.0196, saisonnier: 0, metier: 0.7843 }, cardinalite: { contrat: 0, temps: 2, programme: 1, saisonnier: 0, metier: 2 }, facettesSite: ['secteur', 'ville', 'maison', 'langue'] },
+  { code: 'NZ', nom: 'New Zealand', localeNative: 'en-NZ', offresMesurees: 153, couverture: { contrat: 0.1443, temps: 0.4948, programme: 0.1237, saisonnier: 0.2887, metier: 0.2371 }, cardinalite: { contrat: 2, temps: 2, programme: 1, saisonnier: 1, metier: 5 }, facettesSite: ['secteur', 'ville', 'maison', 'groupe'] },
+  { code: 'HU', nom: 'Magyarország', localeNative: 'hu-HU', offresMesurees: 123, couverture: { contrat: 0.2381, temps: 0.7619, programme: 0, saisonnier: 0, metier: 0.3333 }, cardinalite: { contrat: 2, temps: 2, programme: 0, saisonnier: 0, metier: 6 }, facettesSite: ['secteur', 'maison', 'groupe', 'langue'] },
+  { code: 'SA', nom: 'المملكة العربية السعودية', localeNative: 'ar-SA', offresMesurees: 114, couverture: { contrat: 0.2537, temps: 0.4776, programme: 0.0896, saisonnier: 0, metier: 0.2985 }, cardinalite: { contrat: 2, temps: 2, programme: 1, saisonnier: 0, metier: 5 }, facettesSite: ['secteur', 'ville', 'maison', 'groupe'] },
+  { code: 'RO', nom: 'România', localeNative: 'ro-RO', offresMesurees: 107, couverture: { contrat: 0.5263, temps: 0.6316, programme: 0, saisonnier: 0, metier: 0.5526 }, cardinalite: { contrat: 1, temps: 2, programme: 0, saisonnier: 0, metier: 5 }, facettesSite: ['secteur', 'ville', 'maison', 'groupe', 'langue'] },
+  { code: 'PR', nom: 'Puerto Rico', localeNative: 'es-PR', offresMesurees: 72, couverture: { contrat: 0.7097, temps: 0.8871, programme: 0, saisonnier: 0.0484, metier: 0.2097 }, cardinalite: { contrat: 2, temps: 1, programme: 0, saisonnier: 1, metier: 4 }, facettesSite: ['secteur', 'ville', 'maison', 'langue'] },
+  { code: 'PH', nom: 'Philippines', localeNative: 'en-PH', offresMesurees: 58, couverture: { contrat: 0.5455, temps: 1, programme: 0, saisonnier: 0, metier: 0.4545 }, cardinalite: { contrat: 1, temps: 1, programme: 0, saisonnier: 0, metier: 3 }, facettesSite: ['secteur', 'ville', 'maison'] },
+  { code: 'LU', nom: 'Luxembourg', localeNative: 'fr-LU', offresMesurees: 55, couverture: { contrat: 0.8333, temps: 0.9167, programme: 0.0417, saisonnier: 0.0417, metier: 0.4583 }, cardinalite: { contrat: 2, temps: 2, programme: 1, saisonnier: 1, metier: 3 }, facettesSite: ['secteur', 'ville', 'maison', 'groupe', 'langue'] },
 ] as const;
 
 export const CODES_MARCHE = [
@@ -412,6 +412,20 @@ export type DimensionFacette = (typeof DIMENSIONS_FACETTE)[number];
 export type CouvertureMesuree = Readonly<Record<DimensionFacette, number>>;
 
 /**
+ * Le nombre de VALEURS DISTINCTES d'une dimension sur ce marché.
+ *
+ * Mesure à part entière, jamais encodée dans la couverture. Une dimension peut être remplie à
+ * 93 % et ne porter qu'UNE valeur : elle est alors parfaitement renseignée et ne filtre rien.
+ * Écrire `couverture: 0` pour exprimer cela ferait mentir le registre — six mois plus tard, on y
+ * lirait « aucune information » là où l'information est complète.
+ *
+ * Le seuil `>= 2` n'est pas un réglage : c'est une propriété logique. Une facette à une seule
+ * valeur ne partitionne rien.
+ */
+export type CardinaliteMesuree = Readonly<Record<DimensionFacette, number>>;
+export const CARDINALITE_MINIMALE = 2;
+
+/**
  * ── LE CONTRAT DE RECHERCHE PARTAGÉ (lot 6) ───────────────────────────────
  *
  * Ce registre est la SEULE description des marchés lue par l'API et, à
@@ -512,6 +526,8 @@ export type Marche = {
    */
   readonly typesFiltres?: Readonly<Partial<Record<CleFacette, TypeFiltre>>>;
   /** Les facettes propres au site exposées sur ce marché, dans l'ordre du contrat. */
+  /** Les valeurs distinctes par dimension — voir `CardinaliteMesuree`. Absente = non mesurée. */
+  readonly cardinalite?: CardinaliteMesuree;
   readonly facettesSite: readonly CleFacetteSite[];
   /** Les libellés natifs des facettes du site, relevés dans la langue de service. */
   readonly libellesSite: Readonly<Record<CleFacetteSite, string>>;
@@ -597,13 +613,8 @@ const MARCHES_LOCALISES: Readonly<Record<(typeof CODES_MARCHE_LOCALISES)[number]
     libellesSite: { pays: 'Country', secteur: 'Sector', ville: 'City', maison: 'Maison', groupe: 'Group', langue: 'Language' },
     libelles: { temps: 'Job type', metier: 'Job category' },
     offresMesurees: 36_942,
-    couverture: {
-      contrat: 0.192,
-      temps: 0.818,
-      programme: 0.003,
-      saisonnier: 0.061,
-      metier: 0.53949,
-    },
+    couverture: { contrat: 0.1793, temps: 0.8582, programme: 0.0034, saisonnier: 0.0776, metier: 0.5991 },
+    cardinalite: { contrat: 3, temps: 2, programme: 4, saisonnier: 1, metier: 47 },
   },
 
   /**
@@ -637,13 +648,8 @@ const MARCHES_LOCALISES: Readonly<Record<(typeof CODES_MARCHE_LOCALISES)[number]
       metier: 'Métier',
     },
     offresMesurees: 11_026,
-    couverture: {
-      contrat: 0.692,
-      temps: 0.643,
-      programme: 0.222,
-      saisonnier: 0.002,
-      metier: 0.48767,
-    },
+    couverture: { contrat: 0.6146, temps: 0.7383, programme: 0.3041, saisonnier: 0.0023, metier: 0.4176 },
+    cardinalite: { contrat: 3, temps: 2, programme: 3, saisonnier: 1, metier: 40 },
   },
 
   /**
@@ -674,13 +680,8 @@ const MARCHES_LOCALISES: Readonly<Record<(typeof CODES_MARCHE_LOCALISES)[number]
       metier: 'Job category',
     },
     offresMesurees: 3_305,
-    couverture: {
-      contrat: 0.389,
-      temps: 0.646,
-      programme: 0.006,
-      saisonnier: 0.029,
-      metier: 0.4118,
-    },
+    couverture: { contrat: 0.3186, temps: 0.4619, programme: 0.0143, saisonnier: 0.0342, metier: 0.3806 },
+    cardinalite: { contrat: 6, temps: 4, programme: 3, saisonnier: 1, metier: 42 },
   },
 
   /**
@@ -721,13 +722,8 @@ const MARCHES_LOCALISES: Readonly<Record<(typeof CODES_MARCHE_LOCALISES)[number]
       metier: 'Domaine',
     },
     offresMesurees: 3_129,
-    couverture: {
-      contrat: 0.349,
-      temps: 0.795,
-      programme: 0.012,
-      saisonnier: 0.114,
-      metier: 0.36529,
-    },
+    couverture: { contrat: 0.4123, temps: 0.7879, programme: 0.023, saisonnier: 0.2305, metier: 0.405 },
+    cardinalite: { contrat: 2, temps: 2, programme: 1, saisonnier: 1, metier: 18 },
   },
 
   /**
@@ -767,13 +763,8 @@ const MARCHES_LOCALISES: Readonly<Record<(typeof CODES_MARCHE_LOCALISES)[number]
       metier: 'Berufsfeld',
     },
     offresMesurees: 3_080,
-    couverture: {
-      contrat: 0.325,
-      temps: 0.749,
-      programme: 0.08,
-      saisonnier: 0.048,
-      metier: 0.49513,
-    },
+    couverture: { contrat: 0.5601, temps: 0.6976, programme: 0.0974, saisonnier: 0.0091, metier: 0.4663 },
+    cardinalite: { contrat: 5, temps: 4, programme: 4, saisonnier: 2, metier: 30 },
   },
 
   /**
@@ -798,13 +789,8 @@ const MARCHES_LOCALISES: Readonly<Record<(typeof CODES_MARCHE_LOCALISES)[number]
       metier: 'Categoria',
     },
     offresMesurees: 2_693,
-    couverture: {
-      contrat: 0.453,
-      temps: 0.68,
-      programme: 0.162,
-      saisonnier: 0.004,
-      metier: 0.52395,
-    },
+    couverture: { contrat: 0.4809, temps: 0.7462, programme: 0.1506, saisonnier: 0.0046, metier: 0.5879 },
+    cardinalite: { contrat: 2, temps: 2, programme: 3, saisonnier: 1, metier: 19 },
   },
 
   /** ESPAGNE — « Tipo de empleo » ; « contrato indefinido » 9 % des descriptions. */
@@ -824,13 +810,8 @@ const MARCHES_LOCALISES: Readonly<Record<(typeof CODES_MARCHE_LOCALISES)[number]
       metier: 'Categoría',
     },
     offresMesurees: 2_197,
-    couverture: {
-      contrat: 0.477,
-      temps: 0.665,
-      programme: 0.053,
-      saisonnier: 0.0,
-      metier: 0.56987,
-    },
+    couverture: { contrat: 0.2775, temps: 0.4275, programme: 0.0779, saisonnier: 0, metier: 0.4012 },
+    cardinalite: { contrat: 3, temps: 2, programme: 3, saisonnier: 0, metier: 23 },
   },
 
   /**
@@ -873,13 +854,8 @@ const MARCHES_LOCALISES: Readonly<Record<(typeof CODES_MARCHE_LOCALISES)[number]
       metier: 'Vakgebied',
     },
     offresMesurees: 1_849,
-    couverture: {
-      contrat: 0.361,
-      temps: 0.782,
-      programme: 0.025,
-      saisonnier: 0.002,
-      metier: 0.38724,
-    },
+    couverture: { contrat: 0.5374, temps: 0.6811, programme: 0.0654, saisonnier: 0.0023, metier: 0.3294 },
+    cardinalite: { contrat: 2, temps: 2, programme: 1, saisonnier: 1, metier: 26 },
   },
 
   /**
@@ -905,7 +881,7 @@ const MARCHES_LOCALISES: Readonly<Record<(typeof CODES_MARCHE_LOCALISES)[number]
     localeParDefaut: 'en-AU',
     /** Localisé : catalogue d'interface, libellés de facettes et vocabulaire d'emploi dans sa langue. */
     localisation: 'NATIVE',
-    facettesSite: ['secteur', 'ville', 'maison', 'groupe', 'langue'],
+    facettesSite: ['secteur', 'ville', 'maison', 'groupe'],
     libellesSite: { pays: 'Country', secteur: 'Sector', ville: 'City', maison: 'Maison', groupe: 'Group', langue: 'Language' },
     libelles: {
       contrat: 'Job type',
@@ -913,13 +889,8 @@ const MARCHES_LOCALISES: Readonly<Record<(typeof CODES_MARCHE_LOCALISES)[number]
       metier: 'Job category',
     },
     offresMesurees: 1_234,
-    couverture: {
-      contrat: 0.362,
-      temps: 0.657,
-      programme: 0.007,
-      saisonnier: 0.17,
-      metier: 0.37358,
-    },
+    couverture: { contrat: 0.1512, temps: 0.5321, programme: 0.117, saisonnier: 0.2967, metier: 0.1912 },
+    cardinalite: { contrat: 2, temps: 2, programme: 2, saisonnier: 1, metier: 13 },
   },
 
   /**
@@ -979,13 +950,8 @@ const MARCHES_LOCALISES: Readonly<Record<(typeof CODES_MARCHE_LOCALISES)[number]
       metier: 'Métier',
     },
     offresMesurees: 1_220,
-    couverture: {
-      contrat: 0.172,
-      temps: 0.491,
-      programme: 0.263,
-      saisonnier: 0.008,
-      metier: 0.25656,
-    },
+    couverture: { contrat: 0.1854, temps: 0.6312, programme: 0.1953, saisonnier: 0.0059, metier: 0.2406 },
+    cardinalite: { contrat: 3, temps: 2, programme: 2, saisonnier: 1, metier: 18 },
   },
 
   /**
@@ -1086,13 +1052,8 @@ const MARCHES_LOCALISES: Readonly<Record<(typeof CODES_MARCHE_LOCALISES)[number]
       metier: 'Métier · Vakgebied',
     },
     offresMesurees: 671,
-    couverture: {
-      contrat: 0.4307,
-      temps: 0.81371,
-      programme: 0.22355,
-      saisonnier: 0.02683,
-      metier: 0.45902,
-    },
+    couverture: { contrat: 0.4811, temps: 0.805, programme: 0.2704, saisonnier: 0.0063, metier: 0.3962 },
+    cardinalite: { contrat: 2, temps: 2, programme: 2, saisonnier: 1, metier: 12 },
   },
 
   /**
@@ -1236,15 +1197,17 @@ const MARCHES_LOCALISES: Readonly<Record<(typeof CODES_MARCHE_LOCALISES)[number]
      */
     libelles: {
       metier: '职位类别',
+      /*
+       * Ajouté le 2026-09-22 : la dimension est couverte à 54 % avec deux valeurs distinctes, donc
+       * exploitable — seul son libellé natif manquait. Le marché reste NATIVE : il est localisé en
+       * `zh-CN`, et le passer en FALLBACK pour un libellé absent aurait déclaré que l'anglais est
+       * la langue du marché chinois.
+       */
+      contrat: '雇佣类型',
     },
     offresMesurees: 1_224,
-    couverture: {
-      contrat: 0.47141,
-      temps: 0.81944,
-      programme: 0.17075,
-      saisonnier: 0,
-      metier: 0.33088,
-    },
+    couverture: { contrat: 0.5431, temps: 0.9502, programme: 0.2017, saisonnier: 0, metier: 0.3135 },
+    cardinalite: { contrat: 2, temps: 1, programme: 1, saisonnier: 0, metier: 14 },
   },
 };
 
@@ -1321,6 +1284,12 @@ export function marcheEnRepli(params: {
   localeNative: string;
   localeDeRepli?: string;
   offresMesurees: number;
+  /** Les couvertures MESURÉES, quand elles existent. Voir le bloc `couverture` plus bas. */
+  couverture?: CouvertureMesuree;
+  /** Les valeurs distinctes par dimension — une facette à une seule valeur ne filtre rien. */
+  cardinalite?: CardinaliteMesuree;
+  /** Les facettes de site que la décision V1 retient pour ce marché. */
+  facettesSite?: readonly CleFacetteSite[];
 }): Marche {
   const repli = params.localeDeRepli ?? 'en-GB';
   return {
@@ -1345,8 +1314,14 @@ export function marcheEnRepli(params: {
     localeParDefaut: params.localeNative,
     localisation: 'FALLBACK',
     localeDeRepli: repli,
-    /* Les facettes de site sont celles de tout marché ; leurs libellés viennent du générique. */
-    facettesSite: ['secteur', 'ville', 'maison', 'groupe', 'langue'],
+    /*
+     * Les facettes de site que la mesure retient pour CE marché.
+     *
+     * La liste complète était servie à tous les marchés en repli, faute de mesure — `groupe` s'y
+     * trouvait donc même là où sa couverture le disqualifie. Les 41 marchés sont mesurés depuis
+     * le 2026-09-22 ; ce que la mesure décide prime sur l'ancien défaut.
+     */
+    facettesSite: params.facettesSite ?? ['secteur', 'ville', 'maison', 'groupe', 'langue'],
     libellesSite: {
       pays: LIBELLES_GENERIQUES.pays, secteur: LIBELLES_GENERIQUES.secteur, ville: LIBELLES_GENERIQUES.ville,
       maison: LIBELLES_GENERIQUES.maison, groupe: LIBELLES_GENERIQUES.groupe, langue: LIBELLES_GENERIQUES.langue,
@@ -1358,11 +1333,14 @@ export function marcheEnRepli(params: {
      * saisie à la main ici dériverait le jour où une dimension entre ou sort, et le compilateur
      * ne le dirait qu'à l'ajout, jamais au retrait.
      *
-     * Zéro n'est pas une couverture mesurée à zéro : c'est l'ABSENCE de mesure, et elle a la
-     * conséquence voulue — aucune facette de dimension n'est exposée tant qu'un marché en repli
-     * n'est pas mesuré. Conservateur, et non un défaut à corriger.
+     * Zéro n'est pas une couverture mesurée à zéro : c'est l'ABSENCE de mesure. C'était le cas de
+     * TOUS les marchés en repli jusqu'au 2026-09-22, d'où ce repli conservateur.
+     *
+     * Les 41 marchés ont depuis été mesurés sur `CORPUS_ANALYTIQUE_V1_POST_GEO`. Quand une mesure
+     * est fournie, elle prime ; le repli à zéro ne sert plus qu'à un marché ouvert sans mesure.
      */
-    couverture: Object.fromEntries(DIMENSIONS_FACETTE.map((d) => [d, 0])) as CouvertureMesuree,
+    couverture: params.couverture ?? (Object.fromEntries(DIMENSIONS_FACETTE.map((d) => [d, 0])) as CouvertureMesuree),
+    cardinalite: params.cardinalite,
   };
 }
 
@@ -1390,7 +1368,8 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
   ...Object.fromEntries(
     MARCHES_ROUTABLES.map((m) => [
       m.code,
-      marcheEnRepli({ code: m.code, nom: m.nom, localeNative: m.localeNative, offresMesurees: m.offresMesurees }),
+      marcheEnRepli({ code: m.code, nom: m.nom, localeNative: m.localeNative, offresMesurees: m.offresMesurees,
+        couverture: m.couverture, cardinalite: m.cardinalite, facettesSite: m.facettesSite }),
     ]),
   ),
   ...MARCHES_LOCALISES,
@@ -1541,11 +1520,47 @@ export function filtresDuMarche(perimetre: Perimetre): readonly FiltreMarche[] {
   }));
 }
 
+/**
+ * Le libellé d'une dimension dans la langue RÉELLEMENT SERVIE par ce marché.
+ *
+ * ── LA DETTE QUE CE HELPER SUPPRIME (arbitrage du 2026-09-22) ─────────────────────────────────
+ *
+ * `facettesDuMarche` exigeait un libellé NATIF. La règle était bonne tant qu'un marché en repli
+ * n'avait jamais été mesuré : sans mesure, rien à exposer de toute façon. Depuis la mesure des 41
+ * marchés, elle produit l'inverse de ce que `NATIVE/FALLBACK` promet — un marché thaï au corpus
+ * sain n'exposerait aucun filtre tant que « Type de contrat » n'existe pas en thaï.
+ *
+ * Or c'est précisément ce que le modèle sépare : l'interface emprunte `localeDeRepli` en
+ * attendant sa traduction, le corpus n'attend pas. Lier les filtres à la traduction native
+ * recouple les deux axes que la décision a séparés.
+ *
+ * Une seule source par locale : les marchés en repli sur `en-GB` lisent le catalogue de GB,
+ * jamais vingt-neuf copies de « Job type ».
+ */
+export function libelleFacetteServi(marche: Marche, dimension: DimensionFacette): string | undefined {
+  const natif = marche.libelles[dimension];
+  if (natif !== undefined) return natif;
+  if (marche.localisation !== 'FALLBACK' || !marche.localeDeRepli) return undefined;
+  const porteur = Object.values(MARCHES).find(
+    (m) => m.localisation === 'NATIVE' && m.localeParDefaut === marche.localeDeRepli,
+  );
+  return porteur?.libelles[dimension] ?? LIBELLES_GENERIQUES[dimension as CleFacette];
+}
+
 export function facettesDuMarche(code: string): readonly DimensionFacette[] {
   const m = marche(code);
   if (!m) return [];
+  /*
+   * TROIS CONDITIONS, chacune mesurant une chose distincte :
+   *   la COUVERTURE — assez d'offres portent la valeur pour que le filtre serve ;
+   *   la CARDINALITÉ — au moins deux valeurs, sans quoi la facette ne partitionne rien ;
+   *   le LIBELLÉ SERVI — dans la langue que ce marché rend aujourd'hui, native ou de repli.
+   */
   return DIMENSIONS_FACETTE.filter(
-    (dimension) => m.couverture[dimension] >= SEUIL_AFFICHAGE_FACETTE && m.libelles[dimension] !== undefined,
+    (dimension) =>
+      m.couverture[dimension] >= SEUIL_AFFICHAGE_FACETTE &&
+      (m.cardinalite?.[dimension] ?? CARDINALITE_MINIMALE) >= CARDINALITE_MINIMALE &&
+      libelleFacetteServi(m, dimension) !== undefined,
   );
 }
 
@@ -1605,7 +1620,7 @@ export function facettesContrat(perimetre: Perimetre): readonly FacetteContrat[]
     const dimension = DIMENSION_PAR_CLE[cle];
     if (dimension) {
       if (!m || !dimensions.has(dimension)) return [];
-      return [{ cle, libelle: m.libelles[dimension] ?? LIBELLES_GENERIQUES[cle] }];
+      return [{ cle, libelle: libelleFacetteServi(m, dimension) ?? LIBELLES_GENERIQUES[cle] }];
     }
     const siteCle = cle as CleFacetteSite;
     if (!site.has(siteCle)) return [];

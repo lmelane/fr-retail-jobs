@@ -1,0 +1,3000 @@
+{
+ "corpus": "CORPUS_ANALYTIQUE_V1_POST_GEO",
+ "offresPubliables": 40091,
+ "seuilAffichage": 0.2,
+ "marches": {
+  "US": {
+   "localise": true,
+   "total": 22190,
+   "totalProuve": 22093,
+   "dimensions": {
+    "metier": {
+     "renseigne": 13295,
+     "couverture": 0.5991437584497521,
+     "cardinalite": 47,
+     "renseigneSurPaysProuve": 13260
+    },
+    "contrat": {
+     "renseigne": 3979,
+     "couverture": 0.17931500675980172,
+     "cardinalite": 3,
+     "renseigneSurPaysProuve": 3979
+    },
+    "temps": {
+     "renseigne": 19043,
+     "couverture": 0.8581793600721046,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 19012
+    },
+    "programme": {
+     "renseigne": 75,
+     "couverture": 0.0033799008562415502,
+     "cardinalite": 4,
+     "renseigneSurPaysProuve": 75
+    },
+    "saisonnier": {
+     "renseigne": 1723,
+     "couverture": 0.07764758900405588,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 1719
+    },
+    "ville": {
+     "renseigne": 19129,
+     "couverture": 0.8620549797205949,
+     "cardinalite": 1625,
+     "renseigneSurPaysProuve": 19035
+    },
+    "maison": {
+     "renseigne": 22190,
+     "couverture": 1,
+     "cardinalite": 162,
+     "renseigneSurPaysProuve": 22093
+    },
+    "langue": {
+     "renseigne": 22190,
+     "couverture": 1,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 22093
+    },
+    "teletravail": {
+     "renseigne": 679,
+     "couverture": 0.0305993690851735,
+     "cardinalite": 3,
+     "renseigneSurPaysProuve": 679
+    },
+    "engagement": {
+     "renseigne": 5,
+     "couverture": 0.0002253267237494367,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 4
+    },
+    "groupe": {
+     "renseigne": 3404,
+     "couverture": 0.1534024335286165,
+     "cardinalite": 7,
+     "renseigneSurPaysProuve": 3404
+    }
+   }
+  },
+  "FR": {
+   "localise": true,
+   "total": 4772,
+   "totalProuve": 4706,
+   "dimensions": {
+    "metier": {
+     "renseigne": 1993,
+     "couverture": 0.41764459346186084,
+     "cardinalite": 40,
+     "renseigneSurPaysProuve": 1972
+    },
+    "contrat": {
+     "renseigne": 2933,
+     "couverture": 0.6146269907795474,
+     "cardinalite": 3,
+     "renseigneSurPaysProuve": 2889
+    },
+    "temps": {
+     "renseigne": 3523,
+     "couverture": 0.7382648784576697,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 3502
+    },
+    "programme": {
+     "renseigne": 1451,
+     "couverture": 0.3040653813914501,
+     "cardinalite": 3,
+     "renseigneSurPaysProuve": 1437
+    },
+    "saisonnier": {
+     "renseigne": 11,
+     "couverture": 0.0023051131601005866,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 11
+    },
+    "ville": {
+     "renseigne": 4751,
+     "couverture": 0.9955993294216261,
+     "cardinalite": 542,
+     "renseigneSurPaysProuve": 4687
+    },
+    "maison": {
+     "renseigne": 4772,
+     "couverture": 1,
+     "cardinalite": 140,
+     "renseigneSurPaysProuve": 4706
+    },
+    "langue": {
+     "renseigne": 4668,
+     "couverture": 0.9782062028499581,
+     "cardinalite": 5,
+     "renseigneSurPaysProuve": 4608
+    },
+    "teletravail": {
+     "renseigne": 719,
+     "couverture": 0.15067057837384745,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 718
+    },
+    "engagement": {
+     "renseigne": 2,
+     "couverture": 0.00041911148365465214,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 2
+    },
+    "groupe": {
+     "renseigne": 2388,
+     "couverture": 0.5004191114836547,
+     "cardinalite": 15,
+     "renseigneSurPaysProuve": 2365
+    }
+   }
+  },
+  "GB": {
+   "localise": true,
+   "total": 1403,
+   "totalProuve": 1397,
+   "dimensions": {
+    "metier": {
+     "renseigne": 534,
+     "couverture": 0.3806129722024234,
+     "cardinalite": 42,
+     "renseigneSurPaysProuve": 534
+    },
+    "contrat": {
+     "renseigne": 447,
+     "couverture": 0.31860299358517463,
+     "cardinalite": 6,
+     "renseigneSurPaysProuve": 446
+    },
+    "temps": {
+     "renseigne": 648,
+     "couverture": 0.46186742694226657,
+     "cardinalite": 4,
+     "renseigneSurPaysProuve": 648
+    },
+    "programme": {
+     "renseigne": 20,
+     "couverture": 0.014255167498218105,
+     "cardinalite": 3,
+     "renseigneSurPaysProuve": 20
+    },
+    "saisonnier": {
+     "renseigne": 48,
+     "couverture": 0.03421240199572345,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 48
+    },
+    "ville": {
+     "renseigne": 1376,
+     "couverture": 0.9807555238774056,
+     "cardinalite": 249,
+     "renseigneSurPaysProuve": 1371
+    },
+    "maison": {
+     "renseigne": 1403,
+     "couverture": 1,
+     "cardinalite": 135,
+     "renseigneSurPaysProuve": 1397
+    },
+    "langue": {
+     "renseigne": 1399,
+     "couverture": 0.9971489665003563,
+     "cardinalite": 4,
+     "renseigneSurPaysProuve": 1393
+    },
+    "teletravail": {
+     "renseigne": 221,
+     "couverture": 0.15751960085531005,
+     "cardinalite": 4,
+     "renseigneSurPaysProuve": 221
+    },
+    "engagement": {
+     "renseigne": 2,
+     "couverture": 0.0014255167498218105,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 2
+    },
+    "groupe": {
+     "renseigne": 285,
+     "couverture": 0.203136136849608,
+     "cardinalite": 14,
+     "renseigneSurPaysProuve": 285
+    }
+   }
+  },
+  "IT": {
+   "localise": true,
+   "total": 1308,
+   "totalProuve": 1307,
+   "dimensions": {
+    "metier": {
+     "renseigne": 769,
+     "couverture": 0.5879204892966361,
+     "cardinalite": 19,
+     "renseigneSurPaysProuve": 769
+    },
+    "contrat": {
+     "renseigne": 629,
+     "couverture": 0.4808868501529052,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 629
+    },
+    "temps": {
+     "renseigne": 976,
+     "couverture": 0.746177370030581,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 976
+    },
+    "programme": {
+     "renseigne": 197,
+     "couverture": 0.15061162079510704,
+     "cardinalite": 3,
+     "renseigneSurPaysProuve": 197
+    },
+    "saisonnier": {
+     "renseigne": 6,
+     "couverture": 0.0045871559633027525,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 6
+    },
+    "ville": {
+     "renseigne": 1257,
+     "couverture": 0.9610091743119266,
+     "cardinalite": 249,
+     "renseigneSurPaysProuve": 1257
+    },
+    "maison": {
+     "renseigne": 1308,
+     "couverture": 1,
+     "cardinalite": 63,
+     "renseigneSurPaysProuve": 1307
+    },
+    "langue": {
+     "renseigne": 1291,
+     "couverture": 0.9870030581039755,
+     "cardinalite": 3,
+     "renseigneSurPaysProuve": 1290
+    },
+    "teletravail": {
+     "renseigne": 127,
+     "couverture": 0.09709480122324159,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 127
+    },
+    "engagement": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "groupe": {
+     "renseigne": 845,
+     "couverture": 0.6460244648318043,
+     "cardinalite": 8,
+     "renseigneSurPaysProuve": 845
+    }
+   }
+  },
+  "DE": {
+   "localise": true,
+   "total": 1098,
+   "totalProuve": 493,
+   "dimensions": {
+    "metier": {
+     "renseigne": 512,
+     "couverture": 0.4663023679417122,
+     "cardinalite": 30,
+     "renseigneSurPaysProuve": 252
+    },
+    "contrat": {
+     "renseigne": 615,
+     "couverture": 0.5601092896174863,
+     "cardinalite": 5,
+     "renseigneSurPaysProuve": 335
+    },
+    "temps": {
+     "renseigne": 766,
+     "couverture": 0.697632058287796,
+     "cardinalite": 4,
+     "renseigneSurPaysProuve": 407
+    },
+    "programme": {
+     "renseigne": 107,
+     "couverture": 0.09744990892531877,
+     "cardinalite": 4,
+     "renseigneSurPaysProuve": 61
+    },
+    "saisonnier": {
+     "renseigne": 10,
+     "couverture": 0.009107468123861567,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 8
+    },
+    "ville": {
+     "renseigne": 1079,
+     "couverture": 0.982695810564663,
+     "cardinalite": 144,
+     "renseigneSurPaysProuve": 485
+    },
+    "maison": {
+     "renseigne": 1098,
+     "couverture": 1,
+     "cardinalite": 113,
+     "renseigneSurPaysProuve": 493
+    },
+    "langue": {
+     "renseigne": 1081,
+     "couverture": 0.9845173041894353,
+     "cardinalite": 6,
+     "renseigneSurPaysProuve": 484
+    },
+    "teletravail": {
+     "renseigne": 198,
+     "couverture": 0.18032786885245902,
+     "cardinalite": 4,
+     "renseigneSurPaysProuve": 189
+    },
+    "engagement": {
+     "renseigne": 1,
+     "couverture": 0.0009107468123861566,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 0
+    },
+    "groupe": {
+     "renseigne": 461,
+     "couverture": 0.4198542805100182,
+     "cardinalite": 13,
+     "renseigneSurPaysProuve": 212
+    }
+   }
+  },
+  "CA": {
+   "localise": true,
+   "total": 1089,
+   "totalProuve": 540,
+   "dimensions": {
+    "metier": {
+     "renseigne": 441,
+     "couverture": 0.4049586776859504,
+     "cardinalite": 18,
+     "renseigneSurPaysProuve": 183
+    },
+    "contrat": {
+     "renseigne": 449,
+     "couverture": 0.4123048668503214,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 255
+    },
+    "temps": {
+     "renseigne": 858,
+     "couverture": 0.7878787878787878,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 531
+    },
+    "programme": {
+     "renseigne": 25,
+     "couverture": 0.02295684113865932,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 25
+    },
+    "saisonnier": {
+     "renseigne": 251,
+     "couverture": 0.23048668503213957,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 191
+    },
+    "ville": {
+     "renseigne": 1047,
+     "couverture": 0.9614325068870524,
+     "cardinalite": 135,
+     "renseigneSurPaysProuve": 502
+    },
+    "maison": {
+     "renseigne": 1089,
+     "couverture": 1,
+     "cardinalite": 45,
+     "renseigneSurPaysProuve": 540
+    },
+    "langue": {
+     "renseigne": 1081,
+     "couverture": 0.992653810835629,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 537
+    },
+    "teletravail": {
+     "renseigne": 146,
+     "couverture": 0.13406795224977044,
+     "cardinalite": 3,
+     "renseigneSurPaysProuve": 24
+    },
+    "engagement": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "groupe": {
+     "renseigne": 545,
+     "couverture": 0.5004591368227732,
+     "cardinalite": 5,
+     "renseigneSurPaysProuve": 430
+    }
+   }
+  },
+  "ES": {
+   "localise": true,
+   "total": 1027,
+   "totalProuve": 1019,
+   "dimensions": {
+    "metier": {
+     "renseigne": 412,
+     "couverture": 0.4011684518013632,
+     "cardinalite": 23,
+     "renseigneSurPaysProuve": 409
+    },
+    "contrat": {
+     "renseigne": 285,
+     "couverture": 0.2775073028237585,
+     "cardinalite": 3,
+     "renseigneSurPaysProuve": 284
+    },
+    "temps": {
+     "renseigne": 439,
+     "couverture": 0.42745861733203505,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 439
+    },
+    "programme": {
+     "renseigne": 80,
+     "couverture": 0.07789678675754626,
+     "cardinalite": 3,
+     "renseigneSurPaysProuve": 80
+    },
+    "saisonnier": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "ville": {
+     "renseigne": 1009,
+     "couverture": 0.9824732229795521,
+     "cardinalite": 186,
+     "renseigneSurPaysProuve": 1009
+    },
+    "maison": {
+     "renseigne": 1027,
+     "couverture": 1,
+     "cardinalite": 67,
+     "renseigneSurPaysProuve": 1019
+    },
+    "langue": {
+     "renseigne": 1021,
+     "couverture": 0.994157740993184,
+     "cardinalite": 3,
+     "renseigneSurPaysProuve": 1013
+    },
+    "teletravail": {
+     "renseigne": 26,
+     "couverture": 0.02531645569620253,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 26
+    },
+    "engagement": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "groupe": {
+     "renseigne": 164,
+     "couverture": 0.1596884128529698,
+     "cardinalite": 6,
+     "renseigneSurPaysProuve": 164
+    }
+   }
+  },
+  "NL": {
+   "localise": true,
+   "total": 856,
+   "totalProuve": 281,
+   "dimensions": {
+    "metier": {
+     "renseigne": 282,
+     "couverture": 0.3294392523364486,
+     "cardinalite": 26,
+     "renseigneSurPaysProuve": 86
+    },
+    "contrat": {
+     "renseigne": 460,
+     "couverture": 0.5373831775700935,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 221
+    },
+    "temps": {
+     "renseigne": 583,
+     "couverture": 0.6810747663551402,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 260
+    },
+    "programme": {
+     "renseigne": 56,
+     "couverture": 0.06542056074766354,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 25
+    },
+    "saisonnier": {
+     "renseigne": 2,
+     "couverture": 0.002336448598130841,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 1
+    },
+    "ville": {
+     "renseigne": 784,
+     "couverture": 0.9158878504672897,
+     "cardinalite": 89,
+     "renseigneSurPaysProuve": 281
+    },
+    "maison": {
+     "renseigne": 856,
+     "couverture": 1,
+     "cardinalite": 52,
+     "renseigneSurPaysProuve": 281
+    },
+    "langue": {
+     "renseigne": 851,
+     "couverture": 0.9941588785046729,
+     "cardinalite": 3,
+     "renseigneSurPaysProuve": 281
+    },
+    "teletravail": {
+     "renseigne": 244,
+     "couverture": 0.2850467289719626,
+     "cardinalite": 3,
+     "renseigneSurPaysProuve": 204
+    },
+    "engagement": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "groupe": {
+     "renseigne": 164,
+     "couverture": 0.19158878504672897,
+     "cardinalite": 5,
+     "renseigneSurPaysProuve": 47
+    }
+   }
+  },
+  "CN": {
+   "localise": true,
+   "total": 823,
+   "totalProuve": 241,
+   "dimensions": {
+    "metier": {
+     "renseigne": 258,
+     "couverture": 0.3134872417982989,
+     "cardinalite": 14,
+     "renseigneSurPaysProuve": 19
+    },
+    "contrat": {
+     "renseigne": 447,
+     "couverture": 0.543134872417983,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 2
+    },
+    "temps": {
+     "renseigne": 782,
+     "couverture": 0.9501822600243013,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 203
+    },
+    "programme": {
+     "renseigne": 166,
+     "couverture": 0.20170109356014582,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 34
+    },
+    "saisonnier": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "ville": {
+     "renseigne": 795,
+     "couverture": 0.9659781287970839,
+     "cardinalite": 76,
+     "renseigneSurPaysProuve": 225
+    },
+    "maison": {
+     "renseigne": 823,
+     "couverture": 1,
+     "cardinalite": 52,
+     "renseigneSurPaysProuve": 241
+    },
+    "langue": {
+     "renseigne": 786,
+     "couverture": 0.9550425273390036,
+     "cardinalite": 3,
+     "renseigneSurPaysProuve": 204
+    },
+    "teletravail": {
+     "renseigne": 10,
+     "couverture": 0.012150668286755772,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 6
+    },
+    "engagement": {
+     "renseigne": 12,
+     "couverture": 0.014580801944106925,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 0
+    },
+    "groupe": {
+     "renseigne": 611,
+     "couverture": 0.7424058323207776,
+     "cardinalite": 4,
+     "renseigneSurPaysProuve": 36
+    }
+   }
+  },
+  "AU": {
+   "localise": true,
+   "total": 701,
+   "totalProuve": 699,
+   "dimensions": {
+    "metier": {
+     "renseigne": 134,
+     "couverture": 0.19115549215406563,
+     "cardinalite": 13,
+     "renseigneSurPaysProuve": 133
+    },
+    "contrat": {
+     "renseigne": 106,
+     "couverture": 0.15121255349500715,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 106
+    },
+    "temps": {
+     "renseigne": 373,
+     "couverture": 0.5320970042796006,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 373
+    },
+    "programme": {
+     "renseigne": 82,
+     "couverture": 0.11697574893009986,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 82
+    },
+    "saisonnier": {
+     "renseigne": 208,
+     "couverture": 0.2967189728958631,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 208
+    },
+    "ville": {
+     "renseigne": 600,
+     "couverture": 0.8559201141226819,
+     "cardinalite": 186,
+     "renseigneSurPaysProuve": 600
+    },
+    "maison": {
+     "renseigne": 701,
+     "couverture": 1,
+     "cardinalite": 32,
+     "renseigneSurPaysProuve": 699
+    },
+    "langue": {
+     "renseigne": 701,
+     "couverture": 1,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 699
+    },
+    "teletravail": {
+     "renseigne": 45,
+     "couverture": 0.06419400855920114,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 45
+    },
+    "engagement": {
+     "renseigne": 1,
+     "couverture": 0.0014265335235378032,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 1
+    },
+    "groupe": {
+     "renseigne": 235,
+     "couverture": 0.33523537803138376,
+     "cardinalite": 5,
+     "renseigneSurPaysProuve": 235
+    }
+   }
+  },
+  "CH": {
+   "localise": true,
+   "total": 507,
+   "totalProuve": 406,
+   "dimensions": {
+    "metier": {
+     "renseigne": 122,
+     "couverture": 0.2406311637080868,
+     "cardinalite": 18,
+     "renseigneSurPaysProuve": 108
+    },
+    "contrat": {
+     "renseigne": 94,
+     "couverture": 0.1854043392504931,
+     "cardinalite": 3,
+     "renseigneSurPaysProuve": 89
+    },
+    "temps": {
+     "renseigne": 320,
+     "couverture": 0.631163708086785,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 319
+    },
+    "programme": {
+     "renseigne": 99,
+     "couverture": 0.1952662721893491,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 97
+    },
+    "saisonnier": {
+     "renseigne": 3,
+     "couverture": 0.005917159763313609,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 3
+    },
+    "ville": {
+     "renseigne": 380,
+     "couverture": 0.7495069033530573,
+     "cardinalite": 44,
+     "renseigneSurPaysProuve": 378
+    },
+    "maison": {
+     "renseigne": 507,
+     "couverture": 1,
+     "cardinalite": 52,
+     "renseigneSurPaysProuve": 406
+    },
+    "langue": {
+     "renseigne": 468,
+     "couverture": 0.9230769230769231,
+     "cardinalite": 3,
+     "renseigneSurPaysProuve": 376
+    },
+    "teletravail": {
+     "renseigne": 204,
+     "couverture": 0.40236686390532544,
+     "cardinalite": 3,
+     "renseigneSurPaysProuve": 202
+    },
+    "engagement": {
+     "renseigne": 1,
+     "couverture": 0.0019723865877712033,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 0
+    },
+    "groupe": {
+     "renseigne": 264,
+     "couverture": 0.5207100591715976,
+     "cardinalite": 6,
+     "renseigneSurPaysProuve": 264
+    }
+   }
+  },
+  "BE": {
+   "localise": true,
+   "total": 318,
+   "totalProuve": 301,
+   "dimensions": {
+    "metier": {
+     "renseigne": 126,
+     "couverture": 0.39622641509433965,
+     "cardinalite": 12,
+     "renseigneSurPaysProuve": 122
+    },
+    "contrat": {
+     "renseigne": 153,
+     "couverture": 0.4811320754716981,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 147
+    },
+    "temps": {
+     "renseigne": 256,
+     "couverture": 0.8050314465408805,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 251
+    },
+    "programme": {
+     "renseigne": 86,
+     "couverture": 0.27044025157232704,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 86
+    },
+    "saisonnier": {
+     "renseigne": 2,
+     "couverture": 0.006289308176100629,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 2
+    },
+    "ville": {
+     "renseigne": 305,
+     "couverture": 0.9591194968553459,
+     "cardinalite": 38,
+     "renseigneSurPaysProuve": 300
+    },
+    "maison": {
+     "renseigne": 318,
+     "couverture": 1,
+     "cardinalite": 45,
+     "renseigneSurPaysProuve": 301
+    },
+    "langue": {
+     "renseigne": 306,
+     "couverture": 0.9622641509433962,
+     "cardinalite": 3,
+     "renseigneSurPaysProuve": 290
+    },
+    "teletravail": {
+     "renseigne": 55,
+     "couverture": 0.17295597484276728,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 50
+    },
+    "engagement": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "groupe": {
+     "renseigne": 173,
+     "couverture": 0.5440251572327044,
+     "cardinalite": 7,
+     "renseigneSurPaysProuve": 173
+    }
+   }
+  },
+  "PT": {
+   "localise": false,
+   "total": 280,
+   "totalProuve": 280,
+   "dimensions": {
+    "metier": {
+     "renseigne": 63,
+     "couverture": 0.225,
+     "cardinalite": 12,
+     "renseigneSurPaysProuve": 63
+    },
+    "contrat": {
+     "renseigne": 105,
+     "couverture": 0.375,
+     "cardinalite": 3,
+     "renseigneSurPaysProuve": 105
+    },
+    "temps": {
+     "renseigne": 224,
+     "couverture": 0.8,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 224
+    },
+    "programme": {
+     "renseigne": 11,
+     "couverture": 0.039285714285714285,
+     "cardinalite": 3,
+     "renseigneSurPaysProuve": 11
+    },
+    "saisonnier": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "ville": {
+     "renseigne": 280,
+     "couverture": 1,
+     "cardinalite": 61,
+     "renseigneSurPaysProuve": 280
+    },
+    "maison": {
+     "renseigne": 280,
+     "couverture": 1,
+     "cardinalite": 23,
+     "renseigneSurPaysProuve": 280
+    },
+    "langue": {
+     "renseigne": 279,
+     "couverture": 0.9964285714285714,
+     "cardinalite": 3,
+     "renseigneSurPaysProuve": 279
+    },
+    "teletravail": {
+     "renseigne": 75,
+     "couverture": 0.26785714285714285,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 75
+    },
+    "engagement": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "groupe": {
+     "renseigne": 61,
+     "couverture": 0.21785714285714286,
+     "cardinalite": 4,
+     "renseigneSurPaysProuve": 61
+    }
+   }
+  },
+  "DK": {
+   "localise": false,
+   "total": 236,
+   "totalProuve": 236,
+   "dimensions": {
+    "metier": {
+     "renseigne": 32,
+     "couverture": 0.13559322033898305,
+     "cardinalite": 9,
+     "renseigneSurPaysProuve": 32
+    },
+    "contrat": {
+     "renseigne": 14,
+     "couverture": 0.059322033898305086,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 14
+    },
+    "temps": {
+     "renseigne": 17,
+     "couverture": 0.07203389830508475,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 17
+    },
+    "programme": {
+     "renseigne": 5,
+     "couverture": 0.0211864406779661,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 5
+    },
+    "saisonnier": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "ville": {
+     "renseigne": 235,
+     "couverture": 0.9957627118644068,
+     "cardinalite": 67,
+     "renseigneSurPaysProuve": 235
+    },
+    "maison": {
+     "renseigne": 236,
+     "couverture": 1,
+     "cardinalite": 14,
+     "renseigneSurPaysProuve": 236
+    },
+    "langue": {
+     "renseigne": 98,
+     "couverture": 0.4152542372881356,
+     "cardinalite": 3,
+     "renseigneSurPaysProuve": 98
+    },
+    "teletravail": {
+     "renseigne": 1,
+     "couverture": 0.00423728813559322,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 1
+    },
+    "engagement": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "groupe": {
+     "renseigne": 13,
+     "couverture": 0.05508474576271186,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 13
+    }
+   }
+  },
+  "SG": {
+   "localise": false,
+   "total": 222,
+   "totalProuve": 221,
+   "dimensions": {
+    "metier": {
+     "renseigne": 56,
+     "couverture": 0.25225225225225223,
+     "cardinalite": 20,
+     "renseigneSurPaysProuve": 56
+    },
+    "contrat": {
+     "renseigne": 92,
+     "couverture": 0.4144144144144144,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 92
+    },
+    "temps": {
+     "renseigne": 193,
+     "couverture": 0.8693693693693694,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 193
+    },
+    "programme": {
+     "renseigne": 68,
+     "couverture": 0.3063063063063063,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 68
+    },
+    "saisonnier": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "ville": {
+     "renseigne": 213,
+     "couverture": 0.9594594594594594,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 213
+    },
+    "maison": {
+     "renseigne": 222,
+     "couverture": 1,
+     "cardinalite": 40,
+     "renseigneSurPaysProuve": 221
+    },
+    "langue": {
+     "renseigne": 222,
+     "couverture": 1,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 221
+    },
+    "teletravail": {
+     "renseigne": 52,
+     "couverture": 0.23423423423423423,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 52
+    },
+    "engagement": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "groupe": {
+     "renseigne": 170,
+     "couverture": 0.7657657657657657,
+     "cardinalite": 5,
+     "renseigneSurPaysProuve": 170
+    }
+   }
+  },
+  "JP": {
+   "localise": false,
+   "total": 212,
+   "totalProuve": 205,
+   "dimensions": {
+    "metier": {
+     "renseigne": 55,
+     "couverture": 0.25943396226415094,
+     "cardinalite": 13,
+     "renseigneSurPaysProuve": 51
+    },
+    "contrat": {
+     "renseigne": 77,
+     "couverture": 0.3632075471698113,
+     "cardinalite": 3,
+     "renseigneSurPaysProuve": 76
+    },
+    "temps": {
+     "renseigne": 160,
+     "couverture": 0.7547169811320755,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 160
+    },
+    "programme": {
+     "renseigne": 5,
+     "couverture": 0.02358490566037736,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 5
+    },
+    "saisonnier": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "ville": {
+     "renseigne": 196,
+     "couverture": 0.9245283018867925,
+     "cardinalite": 16,
+     "renseigneSurPaysProuve": 191
+    },
+    "maison": {
+     "renseigne": 212,
+     "couverture": 1,
+     "cardinalite": 41,
+     "renseigneSurPaysProuve": 205
+    },
+    "langue": {
+     "renseigne": 206,
+     "couverture": 0.9716981132075472,
+     "cardinalite": 3,
+     "renseigneSurPaysProuve": 200
+    },
+    "teletravail": {
+     "renseigne": 98,
+     "couverture": 0.46226415094339623,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 98
+    },
+    "engagement": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "groupe": {
+     "renseigne": 154,
+     "couverture": 0.7264150943396226,
+     "cardinalite": 3,
+     "renseigneSurPaysProuve": 150
+    }
+   }
+  },
+  "KR": {
+   "localise": false,
+   "total": 198,
+   "totalProuve": 74,
+   "dimensions": {
+    "metier": {
+     "renseigne": 69,
+     "couverture": 0.3484848484848485,
+     "cardinalite": 10,
+     "renseigneSurPaysProuve": 12
+    },
+    "contrat": {
+     "renseigne": 71,
+     "couverture": 0.35858585858585856,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 51
+    },
+    "temps": {
+     "renseigne": 185,
+     "couverture": 0.9343434343434344,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 61
+    },
+    "programme": {
+     "renseigne": 3,
+     "couverture": 0.015151515151515152,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 3
+    },
+    "saisonnier": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "ville": {
+     "renseigne": 189,
+     "couverture": 0.9545454545454546,
+     "cardinalite": 9,
+     "renseigneSurPaysProuve": 73
+    },
+    "maison": {
+     "renseigne": 198,
+     "couverture": 1,
+     "cardinalite": 29,
+     "renseigneSurPaysProuve": 74
+    },
+    "langue": {
+     "renseigne": 184,
+     "couverture": 0.9292929292929293,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 70
+    },
+    "teletravail": {
+     "renseigne": 99,
+     "couverture": 0.5,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 9
+    },
+    "engagement": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "groupe": {
+     "renseigne": 158,
+     "couverture": 0.797979797979798,
+     "cardinalite": 4,
+     "renseigneSurPaysProuve": 54
+    }
+   }
+  },
+  "MX": {
+   "localise": false,
+   "total": 193,
+   "totalProuve": 190,
+   "dimensions": {
+    "metier": {
+     "renseigne": 85,
+     "couverture": 0.44041450777202074,
+     "cardinalite": 8,
+     "renseigneSurPaysProuve": 83
+    },
+    "contrat": {
+     "renseigne": 90,
+     "couverture": 0.46632124352331605,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 90
+    },
+    "temps": {
+     "renseigne": 118,
+     "couverture": 0.6113989637305699,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 118
+    },
+    "programme": {
+     "renseigne": 2,
+     "couverture": 0.010362694300518135,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 2
+    },
+    "saisonnier": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "ville": {
+     "renseigne": 175,
+     "couverture": 0.9067357512953368,
+     "cardinalite": 51,
+     "renseigneSurPaysProuve": 175
+    },
+    "maison": {
+     "renseigne": 193,
+     "couverture": 1,
+     "cardinalite": 35,
+     "renseigneSurPaysProuve": 190
+    },
+    "langue": {
+     "renseigne": 187,
+     "couverture": 0.9689119170984456,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 184
+    },
+    "teletravail": {
+     "renseigne": 18,
+     "couverture": 0.09326424870466321,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 18
+    },
+    "engagement": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "groupe": {
+     "renseigne": 48,
+     "couverture": 0.24870466321243523,
+     "cardinalite": 4,
+     "renseigneSurPaysProuve": 48
+    }
+   }
+  },
+  "AE": {
+   "localise": false,
+   "total": 188,
+   "totalProuve": 188,
+   "dimensions": {
+    "metier": {
+     "renseigne": 51,
+     "couverture": 0.2712765957446808,
+     "cardinalite": 14,
+     "renseigneSurPaysProuve": 51
+    },
+    "contrat": {
+     "renseigne": 47,
+     "couverture": 0.25,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 47
+    },
+    "temps": {
+     "renseigne": 105,
+     "couverture": 0.5585106382978723,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 105
+    },
+    "programme": {
+     "renseigne": 18,
+     "couverture": 0.09574468085106383,
+     "cardinalite": 3,
+     "renseigneSurPaysProuve": 18
+    },
+    "saisonnier": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "ville": {
+     "renseigne": 185,
+     "couverture": 0.9840425531914894,
+     "cardinalite": 3,
+     "renseigneSurPaysProuve": 185
+    },
+    "maison": {
+     "renseigne": 188,
+     "couverture": 1,
+     "cardinalite": 32,
+     "renseigneSurPaysProuve": 188
+    },
+    "langue": {
+     "renseigne": 188,
+     "couverture": 1,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 188
+    },
+    "teletravail": {
+     "renseigne": 45,
+     "couverture": 0.2393617021276596,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 45
+    },
+    "engagement": {
+     "renseigne": 1,
+     "couverture": 0.005319148936170213,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 1
+    },
+    "groupe": {
+     "renseigne": 86,
+     "couverture": 0.4574468085106383,
+     "cardinalite": 3,
+     "renseigneSurPaysProuve": 86
+    }
+   }
+  },
+  "CL": {
+   "localise": false,
+   "total": 156,
+   "totalProuve": 156,
+   "dimensions": {
+    "metier": {
+     "renseigne": 132,
+     "couverture": 0.8461538461538461,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 132
+    },
+    "contrat": {
+     "renseigne": 1,
+     "couverture": 0.00641025641025641,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 1
+    },
+    "temps": {
+     "renseigne": 6,
+     "couverture": 0.038461538461538464,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 6
+    },
+    "programme": {
+     "renseigne": 1,
+     "couverture": 0.00641025641025641,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 1
+    },
+    "saisonnier": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "ville": {
+     "renseigne": 146,
+     "couverture": 0.9358974358974359,
+     "cardinalite": 37,
+     "renseigneSurPaysProuve": 146
+    },
+    "maison": {
+     "renseigne": 156,
+     "couverture": 1,
+     "cardinalite": 3,
+     "renseigneSurPaysProuve": 156
+    },
+    "langue": {
+     "renseigne": 156,
+     "couverture": 1,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 156
+    },
+    "teletravail": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "engagement": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "groupe": {
+     "renseigne": 1,
+     "couverture": 0.00641025641025641,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 1
+    }
+   }
+  },
+  "HK": {
+   "localise": false,
+   "total": 132,
+   "totalProuve": 44,
+   "dimensions": {
+    "metier": {
+     "renseigne": 38,
+     "couverture": 0.2878787878787879,
+     "cardinalite": 11,
+     "renseigneSurPaysProuve": 12
+    },
+    "contrat": {
+     "renseigne": 42,
+     "couverture": 0.3181818181818182,
+     "cardinalite": 3,
+     "renseigneSurPaysProuve": 9
+    },
+    "temps": {
+     "renseigne": 97,
+     "couverture": 0.7348484848484849,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 13
+    },
+    "programme": {
+     "renseigne": 6,
+     "couverture": 0.045454545454545456,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 0
+    },
+    "saisonnier": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "ville": {
+     "renseigne": 130,
+     "couverture": 0.9848484848484849,
+     "cardinalite": 11,
+     "renseigneSurPaysProuve": 44
+    },
+    "maison": {
+     "renseigne": 132,
+     "couverture": 1,
+     "cardinalite": 35,
+     "renseigneSurPaysProuve": 44
+    },
+    "langue": {
+     "renseigne": 123,
+     "couverture": 0.9318181818181818,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 35
+    },
+    "teletravail": {
+     "renseigne": 49,
+     "couverture": 0.3712121212121212,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 3
+    },
+    "engagement": {
+     "renseigne": 1,
+     "couverture": 0.007575757575757576,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 1
+    },
+    "groupe": {
+     "renseigne": 80,
+     "couverture": 0.6060606060606061,
+     "cardinalite": 3,
+     "renseigneSurPaysProuve": 4
+    }
+   }
+  },
+  "SE": {
+   "localise": false,
+   "total": 126,
+   "totalProuve": 125,
+   "dimensions": {
+    "metier": {
+     "renseigne": 30,
+     "couverture": 0.23809523809523808,
+     "cardinalite": 8,
+     "renseigneSurPaysProuve": 30
+    },
+    "contrat": {
+     "renseigne": 16,
+     "couverture": 0.12698412698412698,
+     "cardinalite": 3,
+     "renseigneSurPaysProuve": 16
+    },
+    "temps": {
+     "renseigne": 30,
+     "couverture": 0.23809523809523808,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 30
+    },
+    "programme": {
+     "renseigne": 6,
+     "couverture": 0.047619047619047616,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 6
+    },
+    "saisonnier": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "ville": {
+     "renseigne": 123,
+     "couverture": 0.9761904761904762,
+     "cardinalite": 39,
+     "renseigneSurPaysProuve": 123
+    },
+    "maison": {
+     "renseigne": 126,
+     "couverture": 1,
+     "cardinalite": 32,
+     "renseigneSurPaysProuve": 125
+    },
+    "langue": {
+     "renseigne": 61,
+     "couverture": 0.48412698412698413,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 60
+    },
+    "teletravail": {
+     "renseigne": 1,
+     "couverture": 0.007936507936507936,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 1
+    },
+    "engagement": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "groupe": {
+     "renseigne": 3,
+     "couverture": 0.023809523809523808,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 3
+    }
+   }
+  },
+  "GR": {
+   "localise": false,
+   "total": 117,
+   "totalProuve": 116,
+   "dimensions": {
+    "metier": {
+     "renseigne": 73,
+     "couverture": 0.6239316239316239,
+     "cardinalite": 3,
+     "renseigneSurPaysProuve": 73
+    },
+    "contrat": {
+     "renseigne": 16,
+     "couverture": 0.13675213675213677,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 16
+    },
+    "temps": {
+     "renseigne": 47,
+     "couverture": 0.4017094017094017,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 47
+    },
+    "programme": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "saisonnier": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "ville": {
+     "renseigne": 114,
+     "couverture": 0.9743589743589743,
+     "cardinalite": 28,
+     "renseigneSurPaysProuve": 114
+    },
+    "maison": {
+     "renseigne": 117,
+     "couverture": 1,
+     "cardinalite": 9,
+     "renseigneSurPaysProuve": 116
+    },
+    "langue": {
+     "renseigne": 96,
+     "couverture": 0.8205128205128205,
+     "cardinalite": 4,
+     "renseigneSurPaysProuve": 95
+    },
+    "teletravail": {
+     "renseigne": 5,
+     "couverture": 0.042735042735042736,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 5
+    },
+    "engagement": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "groupe": {
+     "renseigne": 16,
+     "couverture": 0.13675213675213677,
+     "cardinalite": 3,
+     "renseigneSurPaysProuve": 16
+    }
+   }
+  },
+  "PL": {
+   "localise": false,
+   "total": 114,
+   "totalProuve": 103,
+   "dimensions": {
+    "metier": {
+     "renseigne": 10,
+     "couverture": 0.08771929824561403,
+     "cardinalite": 6,
+     "renseigneSurPaysProuve": 9
+    },
+    "contrat": {
+     "renseigne": 25,
+     "couverture": 0.21929824561403508,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 14
+    },
+    "temps": {
+     "renseigne": 70,
+     "couverture": 0.6140350877192983,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 59
+    },
+    "programme": {
+     "renseigne": 4,
+     "couverture": 0.03508771929824561,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 4
+    },
+    "saisonnier": {
+     "renseigne": 1,
+     "couverture": 0.008771929824561403,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 1
+    },
+    "ville": {
+     "renseigne": 110,
+     "couverture": 0.9649122807017544,
+     "cardinalite": 34,
+     "renseigneSurPaysProuve": 99
+    },
+    "maison": {
+     "renseigne": 114,
+     "couverture": 1,
+     "cardinalite": 17,
+     "renseigneSurPaysProuve": 103
+    },
+    "langue": {
+     "renseigne": 104,
+     "couverture": 0.9122807017543859,
+     "cardinalite": 4,
+     "renseigneSurPaysProuve": 93
+    },
+    "teletravail": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "engagement": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "groupe": {
+     "renseigne": 29,
+     "couverture": 0.2543859649122807,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 18
+    }
+   }
+  },
+  "NO": {
+   "localise": false,
+   "total": 104,
+   "totalProuve": 103,
+   "dimensions": {
+    "metier": {
+     "renseigne": 9,
+     "couverture": 0.08653846153846154,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 8
+    },
+    "contrat": {
+     "renseigne": 6,
+     "couverture": 0.057692307692307696,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 6
+    },
+    "temps": {
+     "renseigne": 11,
+     "couverture": 0.10576923076923077,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 11
+    },
+    "programme": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "saisonnier": {
+     "renseigne": 2,
+     "couverture": 0.019230769230769232,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 2
+    },
+    "ville": {
+     "renseigne": 103,
+     "couverture": 0.9903846153846154,
+     "cardinalite": 51,
+     "renseigneSurPaysProuve": 103
+    },
+    "maison": {
+     "renseigne": 104,
+     "couverture": 1,
+     "cardinalite": 15,
+     "renseigneSurPaysProuve": 103
+    },
+    "langue": {
+     "renseigne": 19,
+     "couverture": 0.18269230769230768,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 18
+    },
+    "teletravail": {
+     "renseigne": 2,
+     "couverture": 0.019230769230769232,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 2
+    },
+    "engagement": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "groupe": {
+     "renseigne": 4,
+     "couverture": 0.038461538461538464,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 4
+    }
+   }
+  },
+  "NZ": {
+   "localise": false,
+   "total": 97,
+   "totalProuve": 96,
+   "dimensions": {
+    "metier": {
+     "renseigne": 23,
+     "couverture": 0.23711340206185566,
+     "cardinalite": 5,
+     "renseigneSurPaysProuve": 23
+    },
+    "contrat": {
+     "renseigne": 14,
+     "couverture": 0.14432989690721648,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 14
+    },
+    "temps": {
+     "renseigne": 48,
+     "couverture": 0.4948453608247423,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 48
+    },
+    "programme": {
+     "renseigne": 12,
+     "couverture": 0.12371134020618557,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 12
+    },
+    "saisonnier": {
+     "renseigne": 28,
+     "couverture": 0.28865979381443296,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 28
+    },
+    "ville": {
+     "renseigne": 79,
+     "couverture": 0.8144329896907216,
+     "cardinalite": 30,
+     "renseigneSurPaysProuve": 79
+    },
+    "maison": {
+     "renseigne": 97,
+     "couverture": 1,
+     "cardinalite": 13,
+     "renseigneSurPaysProuve": 96
+    },
+    "langue": {
+     "renseigne": 97,
+     "couverture": 1,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 96
+    },
+    "teletravail": {
+     "renseigne": 1,
+     "couverture": 0.010309278350515464,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 1
+    },
+    "engagement": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "groupe": {
+     "renseigne": 21,
+     "couverture": 0.21649484536082475,
+     "cardinalite": 3,
+     "renseigneSurPaysProuve": 21
+    }
+   }
+  },
+  "MY": {
+   "localise": false,
+   "total": 82,
+   "totalProuve": 82,
+   "dimensions": {
+    "metier": {
+     "renseigne": 23,
+     "couverture": 0.2804878048780488,
+     "cardinalite": 7,
+     "renseigneSurPaysProuve": 23
+    },
+    "contrat": {
+     "renseigne": 22,
+     "couverture": 0.2682926829268293,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 22
+    },
+    "temps": {
+     "renseigne": 69,
+     "couverture": 0.8414634146341463,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 69
+    },
+    "programme": {
+     "renseigne": 11,
+     "couverture": 0.13414634146341464,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 11
+    },
+    "saisonnier": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "ville": {
+     "renseigne": 77,
+     "couverture": 0.9390243902439024,
+     "cardinalite": 17,
+     "renseigneSurPaysProuve": 77
+    },
+    "maison": {
+     "renseigne": 82,
+     "couverture": 1,
+     "cardinalite": 18,
+     "renseigneSurPaysProuve": 82
+    },
+    "langue": {
+     "renseigne": 82,
+     "couverture": 1,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 82
+    },
+    "teletravail": {
+     "renseigne": 10,
+     "couverture": 0.12195121951219512,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 10
+    },
+    "engagement": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "groupe": {
+     "renseigne": 35,
+     "couverture": 0.4268292682926829,
+     "cardinalite": 3,
+     "renseigneSurPaysProuve": 35
+    }
+   }
+  },
+  "BR": {
+   "localise": false,
+   "total": 68,
+   "totalProuve": 67,
+   "dimensions": {
+    "metier": {
+     "renseigne": 12,
+     "couverture": 0.17647058823529413,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 12
+    },
+    "contrat": {
+     "renseigne": 40,
+     "couverture": 0.5882352941176471,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 40
+    },
+    "temps": {
+     "renseigne": 39,
+     "couverture": 0.5735294117647058,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 39
+    },
+    "programme": {
+     "renseigne": 1,
+     "couverture": 0.014705882352941176,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 1
+    },
+    "saisonnier": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "ville": {
+     "renseigne": 52,
+     "couverture": 0.7647058823529411,
+     "cardinalite": 13,
+     "renseigneSurPaysProuve": 52
+    },
+    "maison": {
+     "renseigne": 68,
+     "couverture": 1,
+     "cardinalite": 13,
+     "renseigneSurPaysProuve": 67
+    },
+    "langue": {
+     "renseigne": 68,
+     "couverture": 1,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 67
+    },
+    "teletravail": {
+     "renseigne": 2,
+     "couverture": 0.029411764705882353,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 2
+    },
+    "engagement": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "groupe": {
+     "renseigne": 37,
+     "couverture": 0.5441176470588235,
+     "cardinalite": 3,
+     "renseigneSurPaysProuve": 37
+    }
+   }
+  },
+  "SA": {
+   "localise": false,
+   "total": 67,
+   "totalProuve": 67,
+   "dimensions": {
+    "metier": {
+     "renseigne": 20,
+     "couverture": 0.29850746268656714,
+     "cardinalite": 5,
+     "renseigneSurPaysProuve": 20
+    },
+    "contrat": {
+     "renseigne": 17,
+     "couverture": 0.2537313432835821,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 17
+    },
+    "temps": {
+     "renseigne": 32,
+     "couverture": 0.47761194029850745,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 32
+    },
+    "programme": {
+     "renseigne": 6,
+     "couverture": 0.08955223880597014,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 6
+    },
+    "saisonnier": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "ville": {
+     "renseigne": 66,
+     "couverture": 0.9850746268656716,
+     "cardinalite": 4,
+     "renseigneSurPaysProuve": 66
+    },
+    "maison": {
+     "renseigne": 67,
+     "couverture": 1,
+     "cardinalite": 16,
+     "renseigneSurPaysProuve": 67
+    },
+    "langue": {
+     "renseigne": 62,
+     "couverture": 0.9253731343283582,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 62
+    },
+    "teletravail": {
+     "renseigne": 16,
+     "couverture": 0.23880597014925373,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 16
+    },
+    "engagement": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "groupe": {
+     "renseigne": 32,
+     "couverture": 0.47761194029850745,
+     "cardinalite": 3,
+     "renseigneSurPaysProuve": 32
+    }
+   }
+  },
+  "PR": {
+   "localise": false,
+   "total": 62,
+   "totalProuve": 62,
+   "dimensions": {
+    "metier": {
+     "renseigne": 13,
+     "couverture": 0.20967741935483872,
+     "cardinalite": 4,
+     "renseigneSurPaysProuve": 13
+    },
+    "contrat": {
+     "renseigne": 44,
+     "couverture": 0.7096774193548387,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 44
+    },
+    "temps": {
+     "renseigne": 55,
+     "couverture": 0.8870967741935484,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 55
+    },
+    "programme": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "saisonnier": {
+     "renseigne": 3,
+     "couverture": 0.04838709677419355,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 3
+    },
+    "ville": {
+     "renseigne": 62,
+     "couverture": 1,
+     "cardinalite": 21,
+     "renseigneSurPaysProuve": 62
+    },
+    "maison": {
+     "renseigne": 62,
+     "couverture": 1,
+     "cardinalite": 6,
+     "renseigneSurPaysProuve": 62
+    },
+    "langue": {
+     "renseigne": 62,
+     "couverture": 1,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 62
+    },
+    "teletravail": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "engagement": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "groupe": {
+     "renseigne": 18,
+     "couverture": 0.2903225806451613,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 18
+    }
+   }
+  },
+  "TW": {
+   "localise": false,
+   "total": 53,
+   "totalProuve": 21,
+   "dimensions": {
+    "metier": {
+     "renseigne": 19,
+     "couverture": 0.3584905660377358,
+     "cardinalite": 8,
+     "renseigneSurPaysProuve": 4
+    },
+    "contrat": {
+     "renseigne": 14,
+     "couverture": 0.2641509433962264,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 1
+    },
+    "temps": {
+     "renseigne": 43,
+     "couverture": 0.8113207547169812,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 11
+    },
+    "programme": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "saisonnier": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "ville": {
+     "renseigne": 51,
+     "couverture": 0.9622641509433962,
+     "cardinalite": 5,
+     "renseigneSurPaysProuve": 19
+    },
+    "maison": {
+     "renseigne": 53,
+     "couverture": 1,
+     "cardinalite": 17,
+     "renseigneSurPaysProuve": 21
+    },
+    "langue": {
+     "renseigne": 53,
+     "couverture": 1,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 21
+    },
+    "teletravail": {
+     "renseigne": 20,
+     "couverture": 0.37735849056603776,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 1
+    },
+    "engagement": {
+     "renseigne": 4,
+     "couverture": 0.07547169811320754,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 0
+    },
+    "groupe": {
+     "renseigne": 39,
+     "couverture": 0.7358490566037735,
+     "cardinalite": 4,
+     "renseigneSurPaysProuve": 10
+    }
+   }
+  },
+  "PE": {
+   "localise": false,
+   "total": 51,
+   "totalProuve": 2,
+   "dimensions": {
+    "metier": {
+     "renseigne": 40,
+     "couverture": 0.7843137254901961,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 0
+    },
+    "contrat": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "temps": {
+     "renseigne": 27,
+     "couverture": 0.5294117647058824,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 2
+    },
+    "programme": {
+     "renseigne": 1,
+     "couverture": 0.0196078431372549,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 1
+    },
+    "saisonnier": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "ville": {
+     "renseigne": 47,
+     "couverture": 0.9215686274509803,
+     "cardinalite": 23,
+     "renseigneSurPaysProuve": 2
+    },
+    "maison": {
+     "renseigne": 51,
+     "couverture": 1,
+     "cardinalite": 3,
+     "renseigneSurPaysProuve": 2
+    },
+    "langue": {
+     "renseigne": 51,
+     "couverture": 1,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 2
+    },
+    "teletravail": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "engagement": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "groupe": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    }
+   }
+  },
+  "VN": {
+   "localise": false,
+   "total": 50,
+   "totalProuve": 48,
+   "dimensions": {
+    "metier": {
+     "renseigne": 7,
+     "couverture": 0.14,
+     "cardinalite": 6,
+     "renseigneSurPaysProuve": 7
+    },
+    "contrat": {
+     "renseigne": 12,
+     "couverture": 0.24,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 11
+    },
+    "temps": {
+     "renseigne": 29,
+     "couverture": 0.58,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 28
+    },
+    "programme": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "saisonnier": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "ville": {
+     "renseigne": 36,
+     "couverture": 0.72,
+     "cardinalite": 8,
+     "renseigneSurPaysProuve": 36
+    },
+    "maison": {
+     "renseigne": 50,
+     "couverture": 1,
+     "cardinalite": 14,
+     "renseigneSurPaysProuve": 48
+    },
+    "langue": {
+     "renseigne": 43,
+     "couverture": 0.86,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 41
+    },
+    "teletravail": {
+     "renseigne": 8,
+     "couverture": 0.16,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 8
+    },
+    "engagement": {
+     "renseigne": 2,
+     "couverture": 0.04,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 2
+    },
+    "groupe": {
+     "renseigne": 14,
+     "couverture": 0.28,
+     "cardinalite": 4,
+     "renseigneSurPaysProuve": 13
+    }
+   }
+  },
+  "TH": {
+   "localise": false,
+   "total": 42,
+   "totalProuve": 42,
+   "dimensions": {
+    "metier": {
+     "renseigne": 15,
+     "couverture": 0.35714285714285715,
+     "cardinalite": 5,
+     "renseigneSurPaysProuve": 15
+    },
+    "contrat": {
+     "renseigne": 17,
+     "couverture": 0.40476190476190477,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 17
+    },
+    "temps": {
+     "renseigne": 39,
+     "couverture": 0.9285714285714286,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 39
+    },
+    "programme": {
+     "renseigne": 1,
+     "couverture": 0.023809523809523808,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 1
+    },
+    "saisonnier": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "ville": {
+     "renseigne": 42,
+     "couverture": 1,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 42
+    },
+    "maison": {
+     "renseigne": 42,
+     "couverture": 1,
+     "cardinalite": 13,
+     "renseigneSurPaysProuve": 42
+    },
+    "langue": {
+     "renseigne": 42,
+     "couverture": 1,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 42
+    },
+    "teletravail": {
+     "renseigne": 15,
+     "couverture": 0.35714285714285715,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 15
+    },
+    "engagement": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "groupe": {
+     "renseigne": 34,
+     "couverture": 0.8095238095238095,
+     "cardinalite": 3,
+     "renseigneSurPaysProuve": 34
+    }
+   }
+  },
+  "RO": {
+   "localise": false,
+   "total": 38,
+   "totalProuve": 38,
+   "dimensions": {
+    "metier": {
+     "renseigne": 21,
+     "couverture": 0.5526315789473685,
+     "cardinalite": 5,
+     "renseigneSurPaysProuve": 21
+    },
+    "contrat": {
+     "renseigne": 20,
+     "couverture": 0.5263157894736842,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 20
+    },
+    "temps": {
+     "renseigne": 24,
+     "couverture": 0.631578947368421,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 24
+    },
+    "programme": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "saisonnier": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "ville": {
+     "renseigne": 38,
+     "couverture": 1,
+     "cardinalite": 16,
+     "renseigneSurPaysProuve": 38
+    },
+    "maison": {
+     "renseigne": 38,
+     "couverture": 1,
+     "cardinalite": 7,
+     "renseigneSurPaysProuve": 38
+    },
+    "langue": {
+     "renseigne": 25,
+     "couverture": 0.6578947368421053,
+     "cardinalite": 4,
+     "renseigneSurPaysProuve": 25
+    },
+    "teletravail": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "engagement": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "groupe": {
+     "renseigne": 8,
+     "couverture": 0.21052631578947367,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 8
+    }
+   }
+  },
+  "TR": {
+   "localise": false,
+   "total": 30,
+   "totalProuve": 20,
+   "dimensions": {
+    "metier": {
+     "renseigne": 9,
+     "couverture": 0.3,
+     "cardinalite": 6,
+     "renseigneSurPaysProuve": 7
+    },
+    "contrat": {
+     "renseigne": 8,
+     "couverture": 0.26666666666666666,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 8
+    },
+    "temps": {
+     "renseigne": 14,
+     "couverture": 0.4666666666666667,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 14
+    },
+    "programme": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "saisonnier": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "ville": {
+     "renseigne": 15,
+     "couverture": 0.5,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 15
+    },
+    "maison": {
+     "renseigne": 30,
+     "couverture": 1,
+     "cardinalite": 11,
+     "renseigneSurPaysProuve": 20
+    },
+    "langue": {
+     "renseigne": 27,
+     "couverture": 0.9,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 20
+    },
+    "teletravail": {
+     "renseigne": 3,
+     "couverture": 0.1,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 3
+    },
+    "engagement": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "groupe": {
+     "renseigne": 14,
+     "couverture": 0.4666666666666667,
+     "cardinalite": 3,
+     "renseigneSurPaysProuve": 14
+    }
+   }
+  },
+  "LU": {
+   "localise": false,
+   "total": 24,
+   "totalProuve": 23,
+   "dimensions": {
+    "metier": {
+     "renseigne": 11,
+     "couverture": 0.4583333333333333,
+     "cardinalite": 3,
+     "renseigneSurPaysProuve": 10
+    },
+    "contrat": {
+     "renseigne": 20,
+     "couverture": 0.8333333333333334,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 19
+    },
+    "temps": {
+     "renseigne": 22,
+     "couverture": 0.9166666666666666,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 21
+    },
+    "programme": {
+     "renseigne": 1,
+     "couverture": 0.041666666666666664,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 1
+    },
+    "saisonnier": {
+     "renseigne": 1,
+     "couverture": 0.041666666666666664,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 1
+    },
+    "ville": {
+     "renseigne": 24,
+     "couverture": 1,
+     "cardinalite": 7,
+     "renseigneSurPaysProuve": 23
+    },
+    "maison": {
+     "renseigne": 24,
+     "couverture": 1,
+     "cardinalite": 9,
+     "renseigneSurPaysProuve": 23
+    },
+    "langue": {
+     "renseigne": 24,
+     "couverture": 1,
+     "cardinalite": 3,
+     "renseigneSurPaysProuve": 23
+    },
+    "teletravail": {
+     "renseigne": 2,
+     "couverture": 0.08333333333333333,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 1
+    },
+    "engagement": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "groupe": {
+     "renseigne": 16,
+     "couverture": 0.6666666666666666,
+     "cardinalite": 3,
+     "renseigneSurPaysProuve": 16
+    }
+   }
+  },
+  "ZA": {
+   "localise": false,
+   "total": 23,
+   "totalProuve": 23,
+   "dimensions": {
+    "metier": {
+     "renseigne": 4,
+     "couverture": 0.17391304347826086,
+     "cardinalite": 3,
+     "renseigneSurPaysProuve": 4
+    },
+    "contrat": {
+     "renseigne": 2,
+     "couverture": 0.08695652173913043,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 2
+    },
+    "temps": {
+     "renseigne": 15,
+     "couverture": 0.6521739130434783,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 15
+    },
+    "programme": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "saisonnier": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "ville": {
+     "renseigne": 21,
+     "couverture": 0.9130434782608695,
+     "cardinalite": 10,
+     "renseigneSurPaysProuve": 21
+    },
+    "maison": {
+     "renseigne": 23,
+     "couverture": 1,
+     "cardinalite": 6,
+     "renseigneSurPaysProuve": 23
+    },
+    "langue": {
+     "renseigne": 23,
+     "couverture": 1,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 23
+    },
+    "teletravail": {
+     "renseigne": 1,
+     "couverture": 0.043478260869565216,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 1
+    },
+    "engagement": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "groupe": {
+     "renseigne": 2,
+     "couverture": 0.08695652173913043,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 2
+    }
+   }
+  },
+  "HU": {
+   "localise": false,
+   "total": 21,
+   "totalProuve": 21,
+   "dimensions": {
+    "metier": {
+     "renseigne": 7,
+     "couverture": 0.3333333333333333,
+     "cardinalite": 6,
+     "renseigneSurPaysProuve": 7
+    },
+    "contrat": {
+     "renseigne": 5,
+     "couverture": 0.23809523809523808,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 5
+    },
+    "temps": {
+     "renseigne": 16,
+     "couverture": 0.7619047619047619,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 16
+    },
+    "programme": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "saisonnier": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "ville": {
+     "renseigne": 21,
+     "couverture": 1,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 21
+    },
+    "maison": {
+     "renseigne": 21,
+     "couverture": 1,
+     "cardinalite": 7,
+     "renseigneSurPaysProuve": 21
+    },
+    "langue": {
+     "renseigne": 21,
+     "couverture": 1,
+     "cardinalite": 3,
+     "renseigneSurPaysProuve": 21
+    },
+    "teletravail": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "engagement": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "groupe": {
+     "renseigne": 7,
+     "couverture": 0.3333333333333333,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 7
+    }
+   }
+  },
+  "CZ": {
+   "localise": false,
+   "total": 17,
+   "totalProuve": 15,
+   "dimensions": {
+    "metier": {
+     "renseigne": 3,
+     "couverture": 0.17647058823529413,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 2
+    },
+    "contrat": {
+     "renseigne": 2,
+     "couverture": 0.11764705882352941,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 2
+    },
+    "temps": {
+     "renseigne": 9,
+     "couverture": 0.5294117647058824,
+     "cardinalite": 2,
+     "renseigneSurPaysProuve": 7
+    },
+    "programme": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "saisonnier": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "ville": {
+     "renseigne": 17,
+     "couverture": 1,
+     "cardinalite": 4,
+     "renseigneSurPaysProuve": 15
+    },
+    "maison": {
+     "renseigne": 17,
+     "couverture": 1,
+     "cardinalite": 6,
+     "renseigneSurPaysProuve": 15
+    },
+    "langue": {
+     "renseigne": 17,
+     "couverture": 1,
+     "cardinalite": 5,
+     "renseigneSurPaysProuve": 15
+    },
+    "teletravail": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "engagement": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "groupe": {
+     "renseigne": 1,
+     "couverture": 0.058823529411764705,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 1
+    }
+   }
+  },
+  "PH": {
+   "localise": false,
+   "total": 11,
+   "totalProuve": 11,
+   "dimensions": {
+    "metier": {
+     "renseigne": 5,
+     "couverture": 0.45454545454545453,
+     "cardinalite": 3,
+     "renseigneSurPaysProuve": 5
+    },
+    "contrat": {
+     "renseigne": 6,
+     "couverture": 0.5454545454545454,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 6
+    },
+    "temps": {
+     "renseigne": 11,
+     "couverture": 1,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 11
+    },
+    "programme": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "saisonnier": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "ville": {
+     "renseigne": 7,
+     "couverture": 0.6363636363636364,
+     "cardinalite": 3,
+     "renseigneSurPaysProuve": 7
+    },
+    "maison": {
+     "renseigne": 11,
+     "couverture": 1,
+     "cardinalite": 5,
+     "renseigneSurPaysProuve": 11
+    },
+    "langue": {
+     "renseigne": 11,
+     "couverture": 1,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 11
+    },
+    "teletravail": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "engagement": {
+     "renseigne": 0,
+     "couverture": 0,
+     "cardinalite": 0,
+     "renseigneSurPaysProuve": 0
+    },
+    "groupe": {
+     "renseigne": 6,
+     "couverture": 0.5454545454545454,
+     "cardinalite": 1,
+     "renseigneSurPaysProuve": 6
+    }
+   }
+  }
+ }
+}

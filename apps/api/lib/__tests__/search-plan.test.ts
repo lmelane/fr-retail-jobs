@@ -70,11 +70,21 @@ describe('les facettes du contrat suivent le registre', () => {
     // Deux pays dans le périmètre : le candidat peut s'y restreindre.
     expect(facettesContrat(exigerPerimetre('DE')).map((f) => f.cle)).toContain('pays');
   });
-  it('la Chine ne sert que le métier parmi les dimensions mesurées, en chinois', () => {
+  it('INVARIANT : un marché NATIVE sert ses facettes dans SA langue, jamais en repli', () => {
+    /*
+     * Ce que ce témoin garde est durable : la Chine est localisée en `zh-CN`, donc tout ce qu'elle
+     * expose doit être écrit en chinois. La LISTE des facettes, elle, suit les mesures et change
+     * d'une version du registre à l'autre — la graver ici reviendrait à re-dater le témoin à
+     * chaque nouvelle mesure, ce qui vient d'arriver avec `contrat` (54 %, libellé ajouté).
+     */
     const cn = facettesContrat(exigerPerimetre('CN'));
-    expect(cn.map((f) => f.cle)).toEqual(['metier', 'secteur', 'ville', 'maison', 'groupe', 'langue']);
+    expect(cn.length, 'la prémisse : la Chine expose bien des facettes').toBeGreaterThan(0);
     expect(cn.find((f) => f.cle === 'metier')?.libelle).toBe('职位类别');
     expect(cn.find((f) => f.cle === 'ville')?.libelle).toBe('城市');
+    /* Aucun libellé servi ne doit être du latin : ce serait un repli non déclaré. */
+    for (const f of cn) {
+      expect(/[\u4e00-\u9fff]/.test(f.libelle), `CN/${f.cle} « ${f.libelle} » doit être en chinois`).toBe(true);
+    }
   });
 });
 

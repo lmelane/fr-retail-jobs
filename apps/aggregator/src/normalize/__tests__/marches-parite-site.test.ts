@@ -6,6 +6,7 @@ import {
   SEUIL_AFFICHAGE_FACETTE,
   facettesDuMarche,
   libelleFacette,
+  libelleFacetteServi,
 } from '@catwalks/db/marches';
 
 /**
@@ -173,9 +174,14 @@ describe('parité des registres de marchés — amont ↔ site', () => {
           MARCHES[code].couverture[dimension],
           `${code}.${dimension} est exposée : sa couverture doit tenir le seuil`,
         ).toBeGreaterThanOrEqual(SEUIL_AFFICHAGE_FACETTE);
+        /*
+         * LE LIBELLÉ SERVI, PAS LE NATIF (2026-09-22). Exiger le natif liait l'exposition d'un
+         * filtre à sa traduction, et recouplait donc les deux axes que `NATIVE/FALLBACK` sépare.
+         * Un marché en repli rend ses filtres dans la langue qu'il sert aujourd'hui.
+         */
         expect(
-          libelleFacette(code, dimension),
-          `${code}.${dimension} est exposée : elle doit porter un libellé natif`,
+          libelleFacetteServi(MARCHES[code], dimension),
+          `${code}.${dimension} est exposée : elle doit porter un libellé servi`,
         ).toBeDefined();
       }
     }
@@ -188,12 +194,14 @@ describe('parité des registres de marchés — amont ↔ site', () => {
      * 2026-09-15 côté site (`Programmart`, `Tipo di programma`, `Tipo de
      * programa` sont restés après le retrait de la facette).
      *
-     * ⚠ EXCEPTION VOULUE, et c'est pourquoi ce témoin ne boucle pas aveuglément :
-     * la Suisse GARDE « Type de contrat » alors que la facette n'est pas
-     * exposée (17,2 %). C'est délibéré — le libellé décrit le MARCHÉ, le seuil
-     * décide de l'AFFICHAGE, et les séparer évite d'avoir à retraduire le jour
-     * où la couverture monte. Le témoin grave donc l'écart CONNU, et rougit
-     * si un écart INCONNU apparaît.
+     * ⚠ EXCEPTIONS VOULUES, et c'est pourquoi ce témoin ne boucle pas aveuglément :
+     * un libellé décrit le MARCHÉ, le seuil décide de l'AFFICHAGE. Les séparer
+     * évite d'avoir à retraduire le jour où la couverture repasse au-dessus.
+     * Le témoin grave donc les écarts CONNUS et rougit sur un écart INCONNU.
+     *
+     * Les quatre dormants actuels sont des dimensions passées SOUS le seuil à la
+     * mesure du 2026-09-22 — 18,5 % et 19,5 % pour la Suisse, 15,1 % et 19,1 %
+     * pour l'Australie. Leurs libellés natifs restent, prêts à resservir.
      */
     const dormants = CODES_MARCHE.flatMap((code) =>
       DIMENSIONS_FACETTE.filter(
@@ -202,7 +210,7 @@ describe('parité des registres de marchés — amont ↔ site', () => {
     ).sort();
 
     expect(dormants, 'les seuls libellés dormants sont ceux que le registre assume').toEqual([
-      'CH.contrat',
+      'AU.contrat', 'AU.metier', 'CH.contrat', 'CH.programme',
     ]);
   });
 });

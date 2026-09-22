@@ -24,6 +24,7 @@
  * expose le candidat à un résultat faux ; le second chiffre permet de le voir.
  */
 import { PrismaClient } from '@prisma/client';
+import { writeFileSync } from 'node:fs';
 import { CODES_MARCHE_LOCALISES, MARCHES, MARCHES_ROUTABLES } from '../../../../../packages/db/marches.js';
 
 const url = process.env.DATABASE_URL ?? '';
@@ -68,7 +69,8 @@ await prisma.$disconnect();
 
 const parPays = new Map(lignes.map(l => [String(l.pays ?? '(aucun)'), l]));
 const num = (l: Record<string, unknown> | undefined, k: string) => Number(l?.[k] ?? 0);
-const pct = (a: number, b: number) => (b ? Math.round((100 * a) / b) : 0);
+/* Une décimale : `19,5 %` ne doit pas s'afficher `20 %` à côté d'un seuil de 20 %. */
+const pct = (a: number, b: number) => (b ? Number(((100 * a) / b).toFixed(1)) : 0);
 
 const codes = [...new Set<string>([...CODES_MARCHE_LOCALISES, ...MARCHES_ROUTABLES.map(r => r.code as string)])];
 type Marche = { code: string; localise: boolean; total: number; totalProuve: number; dims: Map<string, { n: number; d: number; p: number }> };
@@ -158,6 +160,36 @@ for (const m of marches) {
     console.log(`| ${m.localise ? `**${m.code}**` : m.code} | ${nom} | ${pct(e.n, m.total)}% | ${e.d} | ${type} | ${expose} | ${motif} |`);
   }
 }
+
+/*
+ * ── L'ARTEFACT MACHINE ────────────────────────────────────────────────────────────────────────
+ *
+ * Le Markdown est un rapport HUMAIN : il arrondit. `19,53 %` s'y affiche `20 %`, et regraver cet
+ * affichage dans le registre changerait la vérité — c'est exactement ce qui a failli faire
+ * basculer `CH/programme` du mauvais côté du seuil.
+ *
+ * Ce fichier porte les valeurs EXACTES, et c'est lui que la configuration et le test de parité
+ * consomment. Le Markdown reste lisible ; il ne sert jamais de source de données.
+ */
+const artefact = {
+  corpus: 'CORPUS_ANALYTIQUE_V1_POST_GEO',
+  offresPubliables: corpus,
+  seuilAffichage: SEUIL,
+  marches: Object.fromEntries(marches.map((m) => [m.code, {
+    localise: m.localise,
+    total: m.total,
+    totalProuve: m.totalProuve,
+    dimensions: Object.fromEntries([...m.dims].map(([nom, e]) => [nom, {
+      renseigne: e.n,
+      /* La couverture BRUTE, non arrondie : c'est elle qui décide. */
+      couverture: m.total ? e.n / m.total : 0,
+      cardinalite: e.d,
+      renseigneSurPaysProuve: e.p,
+    }])),
+  }])),
+};
+writeFileSync(new URL('../../../../../docs/audit-lot0/MATRICE-FILTRES-V1.json', import.meta.url),
+  JSON.stringify(artefact, null, 1));
 
 /* ── LE RÉSUMÉ PAR MARCHÉ : ce que le candidat verra réellement ─────────────────────────────── */
 console.log(`\n# Filtres disponibles par marché\n`);
