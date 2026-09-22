@@ -1,46 +1,35 @@
 # Agrégateur Catwalks — état vérifié et exploitation
 
-État relu le **16 septembre 2026**. Les anciennes conclusions du 10 septembre ont été remplacées ; leur historique reste dans Git. La référence d’architecture est [production-foundations.md](../../docs/architecture/production-foundations.md).
+État d’exploitation relu le **22 septembre 2026**. Le [bilan PR-1](../../audits/2026-09-22/pr1-canary-readiness.md) donne un **GO technique pour un canari borné**, sans autoriser de livraison. `/emplois` V1 et le Golden Path local sont validés. `/offres`, matching, marchés, GEO et filtres restent gelés.
 
-## État mesuré
+## Développement et production
 
-L’[audit de reprise](../../audits/reprise-2026-09-15/rapport.md) contient les requêtes, horodatages, résultats et limites de chaque mesure. Ces volumes ne sont pas des constantes du produit.
+- `development` porte le travail validé ; `main` représente la production.
+- Révision fonctionnelle PR-1 validée : `9445599`, tests locaux et CI verts.
+- Dernière lecture Railway : API, aggregator, refresh et reconcile sont toujours sur `0f22b49e`. Les trois workers sont en pause, calendriers gelés.
+- L’override agrégateur utilise encore l’ancien lanceur de campagne. Il faut le remplacer sous pause dans l’ordre du [runbook canari](../../docs/architecture/canary-operations.md), après GO explicite. Aucun push `main`, migration ou déploiement n’est autorisé par le verdict technique seul.
 
-| Mesure au moment de l’audit | Valeur |
-|---|---:|
-| Offres conservées / publiques | 87 580 / 83 431 |
-| Représentations actives `JobSource` | 85 327 |
-| Sources ACTIVE / PAUSED / RETIRED | 437 / 7 / 92 |
-| Familles de collecteurs enregistrées | 43 |
-| Chemins et types RAW recensés | 3 538 |
+Les anciens chiffres de stock et bilans source par source restent dans les [audits datés](../../audits/reprise-2026-09-15/README.md). Ils ne représentent pas le catalogue courant. Aucun audit supplémentaire des offres n’est requis pour PR-1.
 
-La disponibilité publique, la fraîcheur, la complétude de collecte et la certification d’identité sont des mesures différentes. `Source.status=ACTIVE` ne certifie ni une source ni le droit de fermer une annonce absente d’un run.
+## Une chaîne opérationnelle
 
-## Priorités et lots
+`sh apps/aggregator/start.sh` appelle le worker commun. Il respecte `PIPELINE_PAUSED`, vérifie les migrations sans les appliquer et lance le CLI. Les valeurs autorisées de pause sont `0`, `1` ou variable absente ; toute autre valeur est refusée. Un processus déjà démarré doit être arrêté/redémarré pour recevoir une nouvelle variable distante.
 
-Le [plan courant](../../audits/reprise-2026-09-15/plan.md) porte les dépendances et critères de sortie. Les défauts établis comprennent le périmètre de refresh, l’expiration, la perte de champs à la réattestation, les salaires décimaux, les négations du télétravail, les rapprochements trop permissifs et le cloisonnement des résultats par pays.
+Le runner général ne prend que les sources ACTIVE. Pour une nouvelle source, utiliser **`start.sh source-add`**, avec définition publique, clé et réviseur explicites. Le programme crée DRAFT, réutilise les captures/preuves/portes de qualification existantes, active puis ingère par le CLI normal. Il ne réactive pas PAUSED/RETIRED et ne remplace pas une configuration divergente. Exemple complet : [runbook](../../docs/architecture/canary-operations.md#une-nouvelle-source-sans-modification-manuelle-de-la-base).
 
-Les lots 0 à 3 corrigent localement la validation, la disponibilité, la capture native et les [faits RAW avec réattestation](../../docs/architecture/source-facts.md). Les [résultats du lot 3](../../audits/reprise-2026-09-15/lot-3.md) distinguent les lectures qualifiées, les absences et les formats encore non interprétés. Ces validations ne constituent pas une bascule du stock de production.
+La table `Source` est le registre opérationnel ; le RAW archivé reste la référence du contenu publié. Les observations, faits dérivés et projections restent distincts. Un statut ACTIVE ne suffit pas à prouver une qualification ni une absence. Les captures, admissions et fins immuables fondent le cycle de vie, jamais un simple `lastSeenAt` ou un journal d’exécution.
 
-L’architecture cible conserve le RAW avant parsing, puis construit des faits traçables et une projection de recherche commune aux offres directes et externes. Les notions locales ne doivent pas être forcées dans un vocabulaire mondial unique.
+La restauration du registre passe par `scripts/ops/exporter-registre-sources.mts` puis `reimporter-registre-sources.mts`. Aucun seed historique ni enregistrement SQL parallèle.
 
-Le [lot 4H3](../../audits/reprise-2026-09-15/lot-4h3.md) valide 3 207 tests agrégateur/API et 755 tests du site. Les 55 125 publications reconstructibles ont désormais leur présentation sur le clone ; 294 publications incomplètes restent conservées en quarantaine. Le dernier ID public sans preuve propre devient une fiche retirée, sans fausse fermeture ni redirection supposée. Les formats non qualifiés et la certification des sources restent ouverts. Ces mesures locales ne remplacent pas le tableau initial de production ci-dessus.
+## Surveillance et reprise
 
-Le [lot 5D](../../audits/reprise-2026-09-15/lot-5d.md) remplace le compteur manuel de promotion par une validation native rejouable. Le [lot 5E](../../audits/reprise-2026-09-15/lot-5e.md) lie les revues d’identité à la révision exacte du registre et à un ordre SQL. Les 112 revues historiques du clone sont conservées sans liaison inventée et doivent être réexaminées avant certification. Le [lot 5F](../../audits/reprise-2026-09-15/lot-5f.md) unifie les commandes des sources et supprime les orchestrations anciennes ainsi que la colonne de volume manuel. Les lots [5G2A](../../audits/reprise-2026-09-15/lot-5g2a.md) et [5G2B](../../audits/reprise-2026-09-15/lot-5g2b.md) inspectent les pages natives archivées et rendent cette provenance obligatoire pour toute nouvelle certification. Les contrats positifs couvrent Ashby, Recruitee et les sites Workday qualifiés ; les autres familles, l’accès et le contrôle des ingestions existantes restent ouverts.
+Les runs, décisions de qualification, résultats de collecte et erreurs sont persistés. Le signal `run.alive` revient toutes les 30 secondes. `worker-status.mts` rend une lecture seule des derniers runs, captures et erreurs ; un RUNNING ancien sans signal récent reste UNVERIFIED. Les commandes maintenues conservent Brevo et heartbeat.
 
-Le [lot 5G3A](../../audits/reprise-2026-09-15/lot-5g3a.md) supprime le rattachement automatique de tout nouveau libellé employeur au propriétaire d’un portail SINGLE_BRAND. Les noms natifs gardent leur identité propre à la source ; les alias revus restent applicables. L’inférence d’un employeur absent exige une revue actuelle, dont l’identifiant est conservé. Le lecteur JSON-LD transmet maintenant `hiringOrganization.name` avec sa provenance. Les affectations historiques ne sont pas réécrites par ce lot.
+Le retour arrière PR-1 a été exécuté sur base locale dédiée : ancienne API à 85 migrations → candidate à 86 → 23 offres réellement collectées → ancienne API, résultats et fiche identiques. La base reste forward-compatible ; aucun downgrade Prisma ni effacement du ledger. Toute reprise de collecte après rollback exige les preuves du lecteur courant.
 
-Le [lot 5G3B1](../../audits/reprise-2026-09-15/lot-5g3b1.md) corrige la lecture des règles robots pour CatwalksBot, les groupes répétés et les chemins encodés. Les comparaisons sont bornées ; une évaluation interrompue garde une observation non résolue. La [décision d’accès immuable](../../docs/architecture/source-access.md) et son application à toutes les requêtes restent à construire.
+## Validation locale
 
-Le [lot 5G3B2A](../../audits/reprise-2026-09-15/lot-5g3b2a.md) conserve la provenance privée des requêtes effectivement passées au transport : collecteur, négociation de contenu, méthode et redirections. La clé historique de rejeu reste stable ; aucune identité n’est inventée pour les anciennes captures. Une recapture identique rétablit les octets chauds en vérifiant leur identité. La décision d’accès immuable reste distincte.
-
-Les lots [5G3B3A](../../audits/reprise-2026-09-15/lot-5g3b3a.md) et [5G3B3B](../../audits/reprise-2026-09-15/lot-5g3b3b.md) exigent une admission avant réseau pour chaque ingestion et une capture admise pour toute publication ou tout retrait natif. Le [lot 5G3C](../../audits/reprise-2026-09-15/lot-5g3c.md) scelle la fin de chaque ingestion admise (`SourceIngestionCompletion`) et fonde les preuves d’absence du refresh sur cette chaîne — capture admise, manifeste, fin d’ingestion, porte de publication courante — au lieu de l’historique de santé et du journal ; le nettoyage de génération, second moteur de fermeture sans preuve, est supprimé. Sur le stock actuel, aucune source n’a encore de capture attestante : aucune fermeture par absence n’est possible avant la re-qualification et la ré-ingestion admise des sources.
-
-Les lots [6](../../audits/reprise-2026-09-15/lot-6.md) (recherche bornée par marché, deux origines dans une même recherche), [7](../../audits/reprise-2026-09-15/lot-7.md) (mots normalisés dans la base, pertinence, curseur), [8](../../audits/reprise-2026-09-15/lot-8.md) (libellés dans la langue du marché) et [9](../../audits/reprise-2026-09-15/lot-9.md) (balisage JobPosting servi par la fiche, chemin canonique, sitemap du stock éligible) portent sur l’API du catalogue et, en local seulement, sur le site candidat ; rien de ces lots n’est déployé ni indexé. Le [lot 12](../../audits/reprise-2026-09-15/lot-12.md) retire le code sans appelant des trois espaces de travail (relevé rejouable : `npx tsx audits/reprise-2026-09-15/scripts/exports-morts.mts`) et les vestiges d’interface de l’API.
-
-## Commandes de validation
-
-Depuis la racine du monorepo, après `npm ci --workspaces --include-workspace-root` :
+Depuis la racine d’un checkout propre, après `npm ci --workspaces --include-workspace-root` :
 
 ```sh
 npm run test:local
@@ -48,38 +37,30 @@ npm run api:build
 npm run build:local -w @catwalks/aggregator
 ```
 
-`test:local` possède sa base jetable et exécute les migrations puis les suites. Les tests d’intégration écrivent dans leur base : ne jamais leur fournir une base métier ou le corpus conservé comme preuve. `build:local` contrôle l’espace hôte/Docker avant de construire l’image ; il ne déploie pas.
+`test:local` crée sa propre base jetable, applique les migrations et lance types, unitaires, intégration, API et tests d’exploitation. Ne jamais fournir une base métier aux suites d’intégration. Le build Docker est distinct du build API et ne déploie rien.
 
-Les [outils d’exploitation](scripts/ops/README.md) décrivent les contrôles maintenus. Les données d’accès restent hors Git. Le transport Railway versionné utilise `CATWALKS_RAILWAY_TOKEN` ou la connexion CLI locale. Exemple de lecture :
+Le [Golden Path](../../docs/architecture/golden-source.md) teste une nouvelle source, deux ingestions, les rejeux et la lecture API. Le [témoin de rollback](../../docs/architecture/canary-operations.md#répétition-du-retour-arrière) installe deux archives Git et démarre réellement leurs API, dans un environnement local dédié.
+
+Lectures de production, sans mutation :
 
 ```sh
 python3 -B apps/aggregator/scripts/ops/railway-service.py status api
 python3 -B apps/aggregator/scripts/ops/read-crons.py
 ```
 
-## Offres directes (D-423)
+Les [outils d’exploitation](scripts/ops/README.md) décrivent les contrôles maintenus. Le transport Railway utilise `CATWALKS_RAILWAY_TOKEN` ou la connexion CLI locale ; les valeurs des secrets restent privées.
 
-Les offres publiées sur Catwalks entrent dans le catalogue par le flux d’outbox du backend, consommé par la commande `direct-sync` (`src/direct/`). Elle exige `CATALOGUE_FLUX_URL` et `CATALOGUE_FLUX_KEY`, reprend au curseur (`DirectFeedCursor`) et rejoue sans effet une page déjà lue ; `--depuis=<séquence>` force une relecture, `--limite=` borne la page (500 au plus). Le contrat lu est le [contrat de recherche](../../docs/architecture/recherche-marche.md#deux-origines-une-recherche-d-418-d-419-d-423).
+## Dépendances hors canari
 
-```sh
-npx tsx src/cli.ts direct-sync --limite=200
-npx tsx src/cli.ts direct-sync --depuis=0
-```
+**DIRECT_OFFERS = hors canari.** Le consommateur existant `direct-sync` exige `CATALOGUE_FLUX_URL` et `CATALOGUE_FLUX_KEY`, reprend au curseur et signale les refus sur `DirectFeedCursor.lastError`. Son déploiement est séparé ; ni le backend des candidatures ni `/offres` ne sont modifiés. Le Golden Path vérifie `/emplois` avec zéro offre directe.
 
-Un refus de contrat ou une panne du flux se lit sur `DirectFeedCursor.lastError` ; le curseur n’avance jamais sur un refus.
+**S3 = non bloquant canari.** Les RAW chauds sont durables dans PostgreSQL ; la répétition de rollback fonctionne sans stockage objet. Stockage froid et politique de rétention restent au backlog Production Hardening avant purge ou production globale.
 
-## Sources et preuves
+## Repères
 
-Le catalogue opérationnel est la table `Source`, et il est la SEULE source de vérité : le seed `data/seeds/sources.csv` et sa commande `import-sources` ont été supprimés le 2026-09-17 (83 lignes contre 536 en base). La restauration passe par `scripts/ops/exporter-registre-sources.mts` puis `reimporter-registre-sources.mts`. Le [parcours maintenu des sources](../../docs/architecture/source-onboarding.md) précise l’ajout, les preuves, la validation native et la promotion sous révision explicite. Les inspections de découverte restent distinctes des décisions de qualification.
-
-- Runtime et tests : `src/`.
-- Commandes maintenues : `scripts/`.
-- Références et entrées explicites : `data/`.
-- Mesures datées : `audits/` à la racine.
-- RAW volumineux, dumps et secrets : stockage privé, jamais dans les images publiques.
-
-## Déploiement
-
-L’audit a identifié la révision `dd3e24d` sur les services agrégateur, API, refresh et reconcile. Les trois workers étaient gelés (`PIPELINE_PAUSED=1`, sentinelle de calendrier) ; le statut courant doit être relu avant chaque opération. Aucun succès du service API ne prouve celui du worker, ni inversement.
-
-`start.sh` vérifie les migrations et respecte la pause. Les migrations se répètent sur clone avant release ; aucun DDL dans un cron. La livraison requiert révision exacte, migrations, reprise des données et vérification des parcours. Les crons restent gelés durant cette phase ; leur activation est un chantier ultérieur.
+- [Architecture et contrats](../../docs/architecture/production-foundations.md).
+- [Parcours des sources](../../docs/architecture/source-onboarding.md).
+- [Capture native](../../docs/architecture/native-capture.md) et [faits RAW](../../docs/architecture/source-facts.md).
+- [Contrat de recherche](../../docs/architecture/recherche-marche.md) et [E2E `/emplois`](../../docs/architecture/emplois-e2e.md).
+- Runtime/tests : `src/` ; outils : `scripts/` ; référentiels : `data/` ; mesures : `audits/` à la racine.
+- RAW volumineux, dumps et secrets : stockage privé, jamais dans Git.

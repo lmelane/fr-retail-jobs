@@ -1,6 +1,8 @@
 # Préparation au déploiement — constat du 22 septembre 2026
 
-**NO-GO technique.** Rapport de préparation uniquement : aucune migration, collecte, modification de configuration, livraison, fusion ou écriture en production. Aucun bloc fonctionnel gelé n’est rouvert.
+**Constat initial, avant correctifs PR-1.** Le [bilan PR-1](pr1-canary-readiness.md) fait foi pour le canari borné ; le flux direct est désormais explicitement hors de son périmètre.
+
+**NO-GO technique au moment de ce constat.** Rapport de préparation uniquement : aucune migration, collecte, modification de configuration, livraison, fusion ou écriture en production. Aucun bloc fonctionnel gelé n’est rouvert.
 
 ## État
 
