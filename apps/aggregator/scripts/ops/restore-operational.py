@@ -217,7 +217,7 @@ def fingerprints(clone):
           SELECT encode(sha256(convert_to(to_jsonb(t)::text,'UTF8')),'hex') h FROM {table_sql(t)} t) rows;''')
     sequences = clone.json("SELECT COALESCE(json_agg(json_build_array(schemaname,sequencename) ORDER BY schemaname,sequencename),'[]') FROM pg_sequences WHERE schemaname='public';")
     for seq in sequences:
-        out['sequence:' + '.'.join(seq)] = clone.json(f'SELECT row_to_json(s) FROM {table_sql(seq)} s;')
+        out['sequence:' + '.'.join(seq)] = clone.json(f"SELECT json_build_object('last_value',last_value,'log_cnt',log_cnt,'is_called',is_called) FROM {table_sql(seq)};")
     return out
 
 
@@ -245,7 +245,6 @@ def rejection_witnesses(clone, fks, policy):
         if f['name'] not in debt_names(policy):
             continue
         child = table_sql(f['table'])
-        row = clone.json(f'SELECT to_jsonb(c) FROM {child} c WHERE {orphan_where(f)} LIMIT 1;')
         # Read historical rows; never update them. New IDs only, transactions always rolled back.
         import uuid
         fresh = 'restore-probe-' + uuid.uuid4().hex
@@ -256,9 +255,11 @@ def rejection_witnesses(clone, fks, policy):
         if f['table'][1] == 'CompanyAlias':
             patch.update(aliasKey=fresh, normalizedName=fresh)
         # All supplied values remain local and transient. No surrogate parent is created.
-        row.update(patch)
         cols = clone.json('SELECT json_agg(attname ORDER BY attnum) FROM pg_attribute WHERE attrelid=' + literal(child) + "::regclass AND attnum>0 AND NOT attisdropped AND attgenerated='';")
-        insert = f'INSERT INTO {child} ({",".join(qi(c) for c in cols)}) SELECT {",".join(qi(c) for c in cols)} FROM jsonb_populate_record(NULL::{child}, {literal(json.dumps(row))}::jsonb)'
+        # Copy original typed values directly: JSON null must not become SQL NULL.
+        patch_record = f'jsonb_populate_record(NULL::{child}, {literal(json.dumps(patch))}::jsonb)'
+        values = ','.join(f'({patch_record}).{qi(c)}' if c in patch else 'c.'+qi(c) for c in cols)
+        insert = f'INSERT INTO {child} ({",".join(qi(c) for c in cols)}) SELECT {values} FROM {child} c WHERE {orphan_where(f)} LIMIT 1'
         sql = f'''BEGIN;
 CREATE TEMP TABLE witness_result(state text, constraint_name text, message text) ON COMMIT DROP;
 DO $witness$ DECLARE s text; n text; m text; BEGIN
@@ -305,6 +306,34 @@ SELECT row_to_json(r) FROM ri_result r; ROLLBACK;'''
     return results
 
 
+
+def complete_restore(clone, dump, pg_restore, out, policy, fks, toc_path):
+    report = {}
+    clone.sql('ANALYZE;')
+    entries = inventory(clone,fks)
+    write(out/'inventory-before.json',entries)
+    assert_policy(entries,policy)
+    before = fingerprints(clone)
+    write(out/'data-before.json',before)
+    normal = out/'normal-post-data.sql'
+    subprocess.run([pg_restore,'--section=post-data','--use-list='+str(toc_path),'--file='+str(normal),str(dump)],check=True,capture_output=True)
+    # Exact normal post-data, only the eight explicit TOC entries omitted. Every error is fatal.
+    with normal.open('rb') as stream, (out/'post-data.log').open('wb') as log:
+        run = subprocess.run(clone.command('psql','-X','-v','ON_ERROR_STOP=1','-d',clone.database),stdin=stream,stdout=log,stderr=log)
+    if run.returncode: raise ValueError('Normal post-data failed')
+    debt_sql = '\n'.join(f['ddl'].removesuffix(';').removesuffix(' NOT VALID')+' NOT VALID;' for f in fks if f['name'] in debt_names(policy))
+    (out/'historical-foreign-keys.sql').write_text(debt_sql)
+    clone.sql('BEGIN;\n'+debt_sql+'\nCOMMIT;')
+    report['constraints'] = validate_final(clone,fks,policy)
+    report['newWrites'] = rejection_witnesses(clone,fks,policy)
+    after = fingerprints(clone)
+    write(out/'data-after.json',after)
+    if before != after: raise ValueError('Data or sequence changed during reconstruction/probes')
+    report.update(status='PASS',restoreComplete=True,dataIdentical=True,dataLoss=0,inventedData=0,
+                  tables=len([k for k in before if not k.startswith('sequence:')]))
+    return report
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--dump', type=Path, required=True)
@@ -336,28 +365,7 @@ def main():
         report.update(database=args.database,dumpSha256=digest)
         for section in ['pre-data','data']:
             clone.restore(args.dump,section,args.out_dir/(section+'.log'))
-        clone.sql('ANALYZE;')
-        entries = inventory(clone,fks)
-        write(args.out_dir/'inventory-before.json',entries)
-        assert_policy(entries,policy)
-        before = fingerprints(clone)
-        write(args.out_dir/'data-before.json',before)
-        normal = args.out_dir/'normal-post-data.sql'
-        subprocess.run([args.pg_restore,'--section=post-data','--use-list='+str(toc_path),'--file='+str(normal),str(args.dump)],check=True,capture_output=True)
-        # Exact normal post-data, only the eight explicit TOC entries omitted. Every error is fatal.
-        with normal.open('rb') as stream, (args.out_dir/'post-data.log').open('wb') as log:
-            run = subprocess.run(clone.command('psql','-X','-v','ON_ERROR_STOP=1','-d',clone.database),stdin=stream,stdout=log,stderr=log)
-        if run.returncode: raise ValueError('Normal post-data failed')
-        debt_sql = '\n'.join(f['ddl'].removesuffix(';').removesuffix(' NOT VALID')+' NOT VALID;' for f in fks if f['name'] in debt_names(policy))
-        (args.out_dir/'historical-foreign-keys.sql').write_text(debt_sql)
-        clone.sql('BEGIN;\n'+debt_sql+'\nCOMMIT;')
-        report['constraints'] = validate_final(clone,fks,policy)
-        report['newWrites'] = rejection_witnesses(clone,fks,policy)
-        after = fingerprints(clone)
-        write(args.out_dir/'data-after.json',after)
-        if before != after: raise ValueError('Data or sequence changed during reconstruction/probes')
-        report.update(status='PASS',restoreComplete=True,dataIdentical=True,dataLoss=0,inventedData=0,
-                      tables=len([k for k in before if not k.startswith('sequence:')]))
+        report.update(complete_restore(clone,args.dump,args.pg_restore,args.out_dir,policy,fks,toc_path))
         return 0
     except Exception as error:
         report['error'] = str(error)

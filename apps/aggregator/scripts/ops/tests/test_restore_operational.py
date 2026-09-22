@@ -74,6 +74,8 @@ class DatabaseTests(unittest.TestCase):
 
     def setUp(self):
         self.db.sql('DROP SCHEMA public CASCADE; CREATE SCHEMA public; CREATE TABLE "EmployerIdentityReview"(id text PRIMARY KEY); CREATE TABLE "CompanyAlias"(id text PRIMARY KEY,"reviewId" text, "aliasKey" text, "normalizedName" text); INSERT INTO "CompanyAlias" VALUES (\'a\',\'missing\',\'alias\',\'name\');')
+        self.db.sql("CREATE SEQUENCE witness_seq; SELECT setval('witness_seq',42,true);")
+        self.db.sql("ALTER TABLE \"CompanyAlias\" ADD COLUMN payload jsonb NOT NULL DEFAULT 'null'::jsonb;")
         self.fks=m.parse_schema(DDL);self.entries=m.inventory(self.db,self.fks)
         self.policy={'constraints':[{k:e[k] for k in m.POLICY_FIELDS} for e in self.entries]}
 
