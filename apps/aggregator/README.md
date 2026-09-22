@@ -1,6 +1,6 @@
 # Agrégateur Catwalks — état vérifié et exploitation
 
-État d’exploitation relu le **22 septembre 2026**. Le [bilan PR-1](../../audits/2026-09-22/pr1-canary-readiness.md) donne un **GO technique pour un canari borné**, sans autoriser de livraison. `/emplois` V1 et le Golden Path local sont validés. `/offres`, matching, marchés, GEO et filtres restent gelés.
+État d’exploitation relu le **22 septembre 2026** : **canari arrêté avant livraison et NO-GO repair production**. L’[inventaire global du dump](../../audits/2026-09-22/restore-integrity-repair.md) trouve 8 FK en violation, dont 7 non réparables par la nullification autorisée. Les validations locales du [bilan PR-1](../../audits/2026-09-22/pr1-canary-readiness.md) restent acquises. `/emplois` V1 et le Golden Path local sont validés. `/offres`, matching, marchés, GEO et filtres restent gelés.
 
 ## Développement et production
 
