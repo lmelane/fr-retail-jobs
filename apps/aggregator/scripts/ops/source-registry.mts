@@ -1,4 +1,4 @@
-import { assertIdentityReview, identityReviewOrder } from '../../src/connectors/sourceIdentity.js';
+import { identityReviewOrder } from '../../src/connectors/sourceIdentity.js';
 import { readIdentitySources } from '../../src/connectors/sourceRegistryRead.js';
 /**
  * LE REGISTRE OPÉRATIONNEL DES SOURCES — lecture seule, une décision par source, aucune par défaut.
@@ -18,7 +18,7 @@ import { readIdentitySources } from '../../src/connectors/sourceRegistryRead.js'
 import { PrismaClient } from '@prisma/client';
 import { writeFileSync } from 'node:fs';
 import { accessStatus, readLatestSourceAccess } from '../../src/connectors/sourceAccess.js';
-import { decideMode, type SourceEvidence, type OperationalMode } from '../../src/registry/operationalMode.js';
+import { readOperationalMode, type OperationalMode } from '../../src/registry/operationalMode.js';
 
 const arg = (n: string) => process.argv.find((a) => a.startsWith(`--${n}=`))?.slice(n.length + 3);
 const outJson = arg('out');
@@ -58,29 +58,12 @@ const rows = await p.$transaction(async (tx) => {
      JOIN "Job" j ON j.id = js."jobId" WHERE js."isActive" AND j."isActive" GROUP BY 1`);
   const countriesOf = new Map(countries.map((r) => [r.sourceKey, Number(r.n)]));
 
-  return sources.map((s) => {
+  return await Promise.all(sources.map(async (s) => {
     const rev = reviewOf.get(s.key);
     const access = accessStatus(s, accessOf.get(s.key) ?? null);
-    let certified = false;
-    try { assertIdentityReview(s, rev ?? null); certified = true; } catch { /* Unproven evidence cannot authorize a mode. */ }
     const run = runOf.get(s.key);
     const cfg = (s.config ?? {}) as Record<string, unknown>;
-
-    const evidence: SourceEvidence = {
-      key: s.key, status: s.status,
-      hasConfig: Object.keys(cfg).length > 0,
-      identityVerified: certified,
-      // Le même validateur strict que la promotion contrôle révision, ordre et contenu.
-      identityHashMatchesConfig: certified,
-      accessAllowed: access.passed,
-      tenantKey: s.tenantKey ?? null,
-      lastRunStatus: run?.status ?? null,
-      lastRunComplete: run?.complete ?? null,
-      lastRunCanAttestAbsence: run?.canAttestAbsence ?? null,
-      lastRunAt: run?.ranAt ?? null,
-      blockedReason: null,
-    };
-    const decision = decideMode(evidence);
+    const decision = await readOperationalMode(tx, s);
 
     return {
       sourceKey: s.key, maison: s.maison, ats: s.kind,
@@ -88,7 +71,7 @@ const rows = await p.$transaction(async (tx) => {
       tenant: s.tenantKey, careersDomain: s.careersDomain, tier: s.tier,
       statutCatalogue: s.status,
       identite: rev ? { verdict: rev.verdict, methode: rev.method, le: rev.checkedAt,
-                        couvreLaConfig: evidence.identityHashMatchesConfig } : null,
+                        couvreLaConfig: rev.sourceRevisionId === s.currentRevisionId } : null,
       acces: access,
       dernierRun: run ? { statut: run.status, le: run.ranAt, servies: run.fetched,
                           annonce: run.declaredTotal, complete: run.complete,
@@ -99,8 +82,8 @@ const rows = await p.$transaction(async (tx) => {
       motifs: decision.reasons,
       prochaineAction: decision.nextAction,
     };
-  });
-});
+  }));
+}, { timeout: 180_000 });
 await p.$disconnect();
 
 // Un périmètre d'exécution se DÉRIVE du registre : c'est ce qui empêche une liste recopiée de diverger.

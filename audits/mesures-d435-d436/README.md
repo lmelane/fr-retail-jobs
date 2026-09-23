@@ -1,36 +1,30 @@
 # Mesures D-435 / D-436 — dimensions du catalogue
 
-Sondes rejouables, en LECTURE SEULE, écrites pendant les mesures des 14 et
-15/09/2026. Elles vivent ici et non dans `/tmp` : un chiffre qu'on ne peut pas
-recompter n'est pas une preuve.
+Ce répertoire conserve les sondes et constats historiques des mesures de septembre 2026.
+Les dates des fichiers définissent leur contexte ; leurs résultats ne décrivent pas à eux seuls
+le catalogue actuel.
 
-## Comment les exécuter
+## Relecture et nouvelle exécution
 
-Par le lanceur borné, jamais en pointant une base à la main :
+Les sondes suivies et les fichiers `.sql` restent disponibles pour relire la méthode. Avant
+une nouvelle mesure, vérifier leur compatibilité avec le schéma et la population visée, puis
+utiliser un accès explicitement limité à la lecture.
 
-```
-python3 apps/aggregator/scripts/ops/db.py readonly node audits/mesures-d435-d436/<fichier>.mjs
-```
+L'ancienne commande `db.py readonly node …` ne garantit pas cette limitation avec Prisma :
+`PGOPTIONS` ne contraint pas son moteur, et la cible historique utilise un rôle superutilisateur.
+Elle ne doit donc plus être présentée ici comme une procédure de lecture seule sûre. Le
+[constat du LOT 0](../../docs/audit-lot0/LOT0-RESTITUTION.md#11-la-protection-en-lecture-seule-nexistait-pas--confirmé)
+conserve la preuve et ses limites.
 
-Les `.sql` se lisent avec le même lanceur. Aucune de ces sondes n'écrit : les
-mots-clés d'écriture y sont absents, et la connexion passe par une transaction
-en lecture seule.
-
-## Cinq sondes volontairement absentes du dépôt
+## Six brouillons retirés du checkout le 23 septembre 2026
 
 `q.mjs`, `d437-echantillon.mjs`, `d437-couverture-simulee.mjs`,
-`d437-enum-cles-raw.mjs` et `d437-geo-plausibilite.mjs` restent NON SUIVIES.
+`d437-enum-cles-raw.mjs`, `d437-geo-plausibilite.mjs` et
+`export-filtres-2026-09-17.mjs` étaient non suivis et sans consommateur applicatif.
+Leur archive privée a été comparée octet pour octet avant retrait ; les constats historiques
+JSON restent conservés.
 
-Elles construisent leur URL de connexion avec l'hôte, le port et le nom de la
-base **écrits en dur** — seul le mot de passe vient de l'environnement. Publier
-ces fichiers exposerait l'adresse d'une base de production, de façon
-irréversible : un dépôt garde ce qu'on y grave, même après suppression.
-
-Ce n'est pas une critique de leur contenu. `q.mjs` est même mieux protégé que la
-moyenne : il REFUSE tout mot-clé d'écriture avant d'ouvrir la connexion et force
-`default_transaction_read_only`. C'est l'adresse qui ne doit pas être publiée,
-pas la sonde.
-
-Pour les verser au dépôt, remplacer l'URL littérale par la connexion héritée de
-l'environnement — la forme qu'emploient déjà les dix-sept sondes présentes ici,
-qui instancient `PrismaClient` sans lui passer d'adresse.
+Archive locale privée : `~/.catwalks/postrun-cleanup-20260923/untracked-before-cleanup.tar.gz`.
+Dans le même répertoire, `drafts-final-removal-manifest.json` et `drafts-removal-receipt.json`
+conservent les chemins et empreintes SHA-256. Ces brouillons restent consultables dans l'archive
+pour vérifier leur provenance ; ils ne sont plus des sondes à lancer depuis ce dépôt.

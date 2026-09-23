@@ -1,8 +1,9 @@
 /**
  * LES MARCHÉS SUR LE CATALOGUE CONSOLIDÉ — registre confronté au réel.
  *
- * `audit-step2-marches.mts` cartographie les marchés sur les offres ACTIVES. Ce script mesure le
- * périmètre du catalogue consolidé — les offres PUBLIABLES — et confronte le résultat au registre
+ * La sonde historique `audit-step2-marches.mts` mesurait les offres ACTIVES ; elle a été archivée
+ * hors checkout le 2026-09-23 (provenance : docs/audit-lot0/LOT0-REGISTRE-DES-SORTIES.md).
+ * Ce script mesure les offres PUBLIABLES et confronte le résultat au registre
  * `packages/db/marches.ts`, dont les `offresMesurees` datent du 2026-09-15.
  *
  * Trois questions, et trois seulement :

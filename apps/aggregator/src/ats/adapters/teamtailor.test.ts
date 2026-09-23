@@ -52,7 +52,7 @@ describe('Teamtailor enumeration evidence', () => {
   });
   it('distinguishes an explicit empty feed from malformed JSON', async () => {
     vi.mocked(fetchJson).mockResolvedValueOnce(page([]));
-    expect(await fetchTeamtailorJobs({origin})).toMatchObject({jobs:[],complete:true,truncated:false});
+    expect(await fetchTeamtailorJobs({origin})).toMatchObject({jobs:[],complete:true,truncated:false,declaredTotal:0});
     for(const response of [{}, {items:[]}, {...page([]),items:null}]){
       vi.mocked(fetchJson).mockResolvedValueOnce(response);
       await expect(fetchTeamtailorJobs({origin})).rejects.toThrow('shape');

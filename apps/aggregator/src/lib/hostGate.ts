@@ -17,6 +17,7 @@
 
 import { assertSourceRunning, sourceDelay, sourceSignal } from './sourceBudget.js';
 import { rateLimitKeyFor } from './rateLimitKey.js';
+import { replayingResponses } from '../capture/context.js';
 
 type HostState = {
   /** Requests in flight to this host right now. */
@@ -68,6 +69,7 @@ function hostOf(url: string): string {
  */
 export async function withHostGate<T>(url: string, task: () => Promise<T>): Promise<T> {
   assertSourceRunning();
+  if (replayingResponses()) return task();
   const host = hostOf(url);
   const state = stateFor(host);
 
@@ -123,6 +125,7 @@ async function waitUntil(at: number): Promise<void> {
  * requests to it slow down. Called by fetchWithRetry on a soft-block status.
  */
 export function reportThrottle(url: string, retryAfterMs?: number | null): void {
+  if (replayingResponses()) return;
   const state = stateFor(hostOf(url));
   state.gapMs = Math.min(MAX_GAP_MS, Math.max(state.gapMs, BASE_GAP_MS) * 2);
   /**
@@ -151,6 +154,7 @@ export function cooldownRemainingMs(url: string): number {
 
 /** Report a clean success: let the host's gap decay back toward the base. */
 export function reportSuccess(url: string): void {
+  if (replayingResponses()) return;
   const state = stateFor(hostOf(url));
   if (state.gapMs > BASE_GAP_MS) {
     state.gapMs = Math.max(BASE_GAP_MS, Math.round(state.gapMs * GAP_DECAY));

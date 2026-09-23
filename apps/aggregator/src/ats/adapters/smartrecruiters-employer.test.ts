@@ -14,3 +14,10 @@ it('does not guess a brand for absent or contradictory evidence', () => {
   expect(smartRecruitersEmployer({ ...posting, customField: [] }, 'Brands')).toBeUndefined();
   expect(smartRecruitersEmployer({ ...posting, customField: [...posting.customField, { fieldLabel: 'Brands', valueLabel: 'Sandro' }] }, 'Brands')).toBeUndefined();
 });
+
+it('preserves the employer named by the native posting when no brand field is configured', () => {
+  const native = { ...posting, company: { identifier: 'HMGroup', name: 'H&M Group' } };
+  expect(parseSmartRecruitersPosting(native, 'HMGroup').company).toBe('H&M Group');
+  expect(parseSmartRecruitersPosting(native, 'HMGroup', 'Brands').company).toBe('Maje');
+  expect(smartRecruitersEmployer({ ...native, customField: [] }, 'Brands')).toBeUndefined();
+});

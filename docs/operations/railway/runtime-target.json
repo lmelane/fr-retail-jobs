@@ -13,17 +13,16 @@
     "protectedVolumeIds": [
       "32f92d01-d465-42e6-8fab-79e17d0a4d3f"
     ],
-    "productionDatabaseChanges": "FORBIDDEN: schema, data repair, roles, credentials, service, image, volume and settings",
+    "productionDatabaseChanges": "Versioned non-destructive migrations through main and CI only; no reset, historical repair, roles, credentials, service, image, volume or settings changes",
     "excluded": [
       "/offres",
       "matching",
       "Direct Offers",
       "historical-data repair",
       "markets",
-      "filters",
-      "source qualification campaign"
+      "filters"
     ],
-    "productionIngestionException": "Authorized normal ingestion of ACTIVE sources or one explicitly selected source; existing admission, GEO and ingestion rules unchanged; no historical repair",
+    "productionIngestionException": "Authorized ACTIVE ingestion and targeted source replays; native evidence, access admission and GEO remain authoritative; no historical repair",
     "provisioning": "Railway CLI 5.59.0, exact service/environment selectors and JSON comparisons; no generic infrastructure framework"
   },
   "services": [
@@ -82,7 +81,7 @@
         "CATALOGUE_API_KEY": "existing production key; isolated validation key"
       },
       "runtimeExternalBusinessHosts": [],
-      "schemaReadiness": "Read-only built-in migration names/checksums; no schema changes in this reset",
+      "schemaReadiness": "Read-only built-in migration names/checksums; migrations are applied separately through the release workflow",
       "publicBuildInputs": {
         "NEXT_PUBLIC_SITE_URL": "https://catwalks.io"
       }
@@ -147,7 +146,7 @@
         "hc-ping.com",
         "api.brevo.com"
       ],
-      "automaticExecution": "Enable Railway cron only after the authorized full production run is healthy",
+      "automaticExecution": "Daily schedule authorized; existing access admission and pause remain authoritative",
       "concurrencyPolicy": "One worker instance; NEVER restart; do not manually launch or redeploy during a run",
       "pauseProof": {
         "event": "pipeline.paused",
@@ -157,9 +156,16 @@
       "executionModes": {
         "paused": "PIPELINE_PAUSED=1: exit without operational side effects",
         "normal": "sh apps/aggregator/start.sh (or ingest-all): every ACTIVE source selected by the existing orchestrator",
-        "targeted": "sh apps/aggregator/start.sh ingest --source=<key> [--no-geocode]"
+        "targeted": "sh apps/aggregator/start.sh ingest --source=<key> [--no-geocode]",
+        "scheduled": "sh apps/aggregator/start.sh scheduled: one full run at 18:00 Europe/Paris; the other UTC launch exits before DB/network"
       },
-      "businessEgress": "Existing source access scopes and public-URL/redirect guards; no permanent source allowlist in the runtime"
+      "businessEgress": "Existing source access scopes and public-URL/redirect guards; no permanent source allowlist in the runtime",
+      "dailySchedule": {
+        "cronSchedule": "0 16,17 * * *",
+        "startCommand": "sh apps/aggregator/start.sh scheduled",
+        "timeZone": "Europe/Paris",
+        "localHour": 18
+      }
     }
   ],
   "profiles": [

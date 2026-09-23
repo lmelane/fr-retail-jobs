@@ -1,20 +1,10 @@
 import type { Prisma } from '@prisma/client';
 import { captureReaderRevision } from '../capture/revision.js';
 
-/*
- * v2 (19/09/2026) — LA TOLÉRANCE ZÉRO EST REMPLACÉE PAR UN SEUIL NOMMÉ.
- *
- * La v1 exigeait que 100 % des offres d'un lot soient relisibles : UNE annonce publiée sans
- * description — ce qui existe et reste légitime — faisait échouer la source entière.
- *
- * Mesuré sur 10 sources : 5 004 offres relisibles bloquées par 11 annonces. H&M 1 805/1 806,
- * L'Oréal 1 692/1 693, Bloomingdale's 793/794.
- *
- * La version CHANGE avec la règle, et c'est essentiel : `requireSourceValidation` refuse une
- * validation dont la `policyVersion` diffère. Garder « v1 » ferait accepter, sous la nouvelle
- * règle, des verdicts rendus sous l'ancienne.
- */
-export const SOURCE_VALIDATION_POLICY = 'source-validation-20260919-v2';
+/** v3 separates partial publication from absence attestation, accounts for
+ * malformed native rows with the existing allowance, and certifies Greenhouse's
+ * explicit zero-total response. The SQL admission contract uses this version. */
+export const SOURCE_VALIDATION_POLICY = 'source-validation-20260923-v3';
 
 /**
  * Combien d'offres non qualifiées un lot tolère — décision du propriétaire, 19/09/2026.

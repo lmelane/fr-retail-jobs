@@ -21,7 +21,7 @@ describe('Greenhouse country', () => {
   });
   it('maps the real On board: the London posting gets GB, the three address-less offices stay empty', async () => {
     network.mockResolvedValueOnce(sample);
-    const jobs = await fetchGreenhouseJobs({ board: 'onrunning' });
+    const { jobs } = await fetchGreenhouseJobs({ board: 'onrunning' });
     expect(network.mock.calls[0][0]).toBe('https://boards-api.greenhouse.io/v1/boards/onrunning/jobs?content=true');
     expect(jobs).toHaveLength(4);
     expect(jobs.map((j) => [j.location, j.country])).toEqual([['London', 'GB'], ['Melbourne', undefined], ['Paris', undefined], ['Amsterdam', undefined]]);
@@ -37,4 +37,11 @@ describe('Greenhouse publication time', () => {
   it.each([undefined, '', '2026-02-30T12:00:00Z', '2026-09-15T12:00:00'])('does not fall back to updated_at: %s', first_published => {
     expect(parseGreenhouseJob({ ...raw, first_published }).postedAt).toBeUndefined();
   });
+});
+
+it('keeps the publisher zero counter and rejects a contradictory positive total', async () => {
+  network.mockResolvedValueOnce({ jobs: [], meta: { total: 0 } });
+  expect(await fetchGreenhouseJobs({ board: 'witness' })).toMatchObject({ jobs: [], complete: true, declaredTotal: 0 });
+  network.mockResolvedValueOnce({ jobs: [], meta: { total: 2 } });
+  expect(await fetchGreenhouseJobs({ board: 'witness' })).toMatchObject({ jobs: [], complete: false, declaredTotal: 2 });
 });

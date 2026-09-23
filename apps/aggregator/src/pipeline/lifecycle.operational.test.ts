@@ -1,6 +1,6 @@
 import { publicationFixture } from '../test/publication-fixture.js';
 import '../test/setup-integration.js';
-import { attestSyntheticFeed, collectAdmittedWithoutCompletion, ingestSyntheticFeed, releaseQualifiedSources, resolvedCompany } from '../test/ingestionFixture.js';
+import { attestSyntheticFeed, collectAdmittedWithoutCompletion, ingestSyntheticFeed, qualifiedSource, releaseQualifiedSources, resolvedCompany } from '../test/ingestionFixture.js';
 import { describe, it, expect, beforeEach, afterAll, afterEach, vi } from 'vitest';
 import { PrismaClient } from '@prisma/client';
 import { runRefresh, readRefreshPlan } from './refresh.js';
@@ -196,5 +196,26 @@ describe('OP7 — a mass outage would close most of the base', () => {
     // 60 >= 50 (floor) and 60/60 > 0.5 (ratio) -> refused.
     expect(refresh.refused).toBe(true);
     expect(await prisma.job.count({ where: { isActive: true } })).toBe(60);
+  });
+});
+
+
+describe('partial publication never certifies absence', () => {
+  it('publishes the qualified subset but preserves an old offer absent from the partial feed', async () => {
+    const key = 'partial-proof-witness';
+    await qualifiedSource(prisma, key);
+    await prisma.source.update({ where: { key }, data: { portalScope: 'SINGLE_BRAND' } });
+    const c = await resolvedCompany(prisma, key);
+    const old = await job({ companyId: c.id, ext: 'older-posting', sourceKey: key, hoursAgo: 72 });
+    const result = await ingestSyntheticFeed(prisma, key, [
+      { id: 'one' }, { id: 'two' }, { id: 'three' }, { id: 'four' }, { id: 'unreadable', title: null },
+    ]);
+    expect(result.created).toBe(4);
+    const batch = await prisma.captureBatch.findFirstOrThrow({ where: { sourceKey: key, purpose: 'JOBS' }, orderBy: { attemptOrdinal: 'desc' } });
+    expect(await prisma.sourceValidation.findFirstOrThrow({ where: { captureBatchId: batch.id }, orderBy: { sequence: 'desc' } })).toMatchObject({ verdict: 'VALIDATED' });
+    const plan = await readRefreshPlan(prisma, { onlyKeys: [key] });
+    expect(plan.absencePlan.eligibility.find(row => row.source === key)?.eligible).toBe(false);
+    expect(await runRefresh(prisma, { onlyKeys: [key] })).toMatchObject({ closedJobs: 0 });
+    expect(await prisma.job.findUniqueOrThrow({ where: { id: old.id } })).toMatchObject({ isActive: true });
   });
 });

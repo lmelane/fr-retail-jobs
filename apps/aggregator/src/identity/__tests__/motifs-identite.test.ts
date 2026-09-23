@@ -58,8 +58,8 @@ describe('motifs d\'identité employeur', () => {
     });
   });
 
-  describe('les sept causes sont distinctes', () => {
-    it('chaque point de levée a son propre code', () => {
+  describe('les motifs actuels et historiques restent lisibles', () => {
+    it('conserve les codes des reçus historiques', () => {
       /*
        * Les SEPT causes réelles de `resolve.ts`, dans l'ordre du fichier. Les confondre revenait
        * à traiter une configuration absente comme un arbitrage d'identité.

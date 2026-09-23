@@ -20,6 +20,7 @@ export type SmartRecruitersPosting = {
   /** Declared language ("hu", "en-GB") — ignored before l2, so a Hungarian H&M posting was detected as `pt`. */
   language?: { code?: string };
   department?: { label?: string };
+  company?: { identifier?: string; name?: string };
   customField?: { fieldLabel?: string; valueLabel?: string }[];
 };
 type Page = { content: SmartRecruitersPosting[]; totalFound?: number };
@@ -37,7 +38,9 @@ const CONTRACT_BY_ID: Record<string, string> = {
 
 /** One listing entry → one posting (no description: /postings/{id} carries it). Exported for tests. */
 export function smartRecruitersEmployer(job: SmartRecruitersPosting, field?: string): string | undefined {
-  if (!field) return undefined;
+  // This is the employer declared by the publication, including a group when
+  // the publisher provides no brand. The tenant slug is never an employer.
+  if (!field) return job.company?.name?.trim() || undefined;
   const names = [...new Set((job.customField ?? []).filter(f => f.fieldLabel === field).map(f => f.valueLabel?.trim()).filter((s): s is string => !!s))];
   return names.length === 1 ? names[0] : undefined;
 }
@@ -50,7 +53,7 @@ export function parseSmartRecruitersPosting(job: SmartRecruitersPosting, company
     externalId: job.id,
     title: job.name,
     // Opt-in field whose employer meaning was verified for this tenant.
-    // Missing/contradictory values retain the source's GROUP fallback.
+    // Otherwise retain the publication's own company name, without guessing a brand.
     company: smartRecruitersEmployer(job, employerField),
     location,
     country: job.location?.country,

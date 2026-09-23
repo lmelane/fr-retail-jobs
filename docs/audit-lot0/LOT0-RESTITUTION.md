@@ -4,6 +4,12 @@
 Ce document est le **seul livrable de référence** du LOT 0. Les sorties CSV et leur statut sont
 décrits dans [LOT0-REGISTRE-DES-SORTIES.md](LOT0-REGISTRE-DES-SORTIES.md).
 
+**Note d'archivage du 23 septembre 2026 :** les statuts et constats ci-dessous décrivent le
+20 septembre. Les producteurs `lot0-*` non suivis ont depuis été retirés du checkout après
+archivage privé vérifié. Les références à leur code restent des preuves historiques ; elles ne
+sont plus des instructions d'exécution. Le [registre des sorties](LOT0-REGISTRE-DES-SORTIES.md#statut-historique-et-archive-des-producteurs)
+indique où retrouver leurs versions archivées. Les constats JSON sont conservés.
+
 Statuts employés, à distinguer partout : **CONFIRMÉ** (prouvé par lecture de code ou exécution) ·
 **À INSTRUIRE** (hypothèse étayée, non tranchée) · **NON MESURÉ** (nommé et chiffré comme tel).
 

@@ -130,3 +130,15 @@ describe('Taleo TBE — contrat des identifiants canoniques', () => {
     expect(normalizeAdapterResult(r).enumeration?.canonicalIdViolations).toBeUndefined();
   });
 });
+
+it('retains native HTML fragments that reproduce the publication and reject another detail URL', async () => {
+  const { recoverRetainedPublication } = await import('../../publication/recovery.js');
+  vi.mocked(fetchWithRetry).mockResolvedValue(new Response(ROW));
+  vi.mocked(fetchText).mockImplementation(async url => String(url).includes('viewRequisition') ? DETAIL : ROW);
+  const config={origin:'https://lde.tbe.taleo.net/lde02', org:'ARNOTTS',cws:79};
+  const {jobs}=await fetchTaleoJobs(config);const job=jobs[0];
+  const context={externalId:job.externalId,url:job.url,observedAt:new Date('2026-09-23T10:00:00Z'),config};
+  expect(recoverRetainedPublication('taleo',JSON.parse(JSON.stringify(job.raw)),context).status).toBe('RECOVERABLE');
+  expect(recoverRetainedPublication('taleo',{...job.raw as object,detailUrl:'https://wrong.example/job'},context))
+    .toMatchObject({status:'RECOLLECT_OR_REVIEW',reason:'DETAIL_IDENTITY_MISMATCH'});
+});

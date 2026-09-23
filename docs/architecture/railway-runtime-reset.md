@@ -1,6 +1,6 @@
 # Reset du runtime Railway — réalisation
 
-**Exploitation normale depuis le 23 septembre 2026.** Worker `653920c` livré : 384 ACTIVE tentées, 255 réussies, 35 partielles et 94 échouées individuellement. Run `COMPLETED_WITH_ERRORS` en 1 h 54 min, sans timeout ni échec de persistance ; 11 791 créations, 20 883 mises à jour, 63 rapprochements. Le blocage des 346 preuves périmées et 38 manquantes est résolu par leur qualification réelle dans le run. CRON d’ingestion toutes les quatre heures UTC (`0 */4 * * *`), profil `production`, `PIPELINE_PAUSED=0`, même image et restart `NEVER`. Les incidents de source restent signalés ; ce GO d’exploitation ne les déclare pas résolus. Voir le [bilan du run complet](../../audits/2026-09-23/normal-production-run.json).
+**État courant : [bilan post-RUN](../../audits/2026-09-23/post-run.md).** Deux runtimes, PostgreSQL conservé. Cible : un RUN quotidien à 18 h Europe/Paris ; validation ciblée des correctifs du RUN initial. Les sections R1–R5 ci-dessous documentent la transition déjà exécutée, pas un protocole à recommencer.
 
 **23 septembre 2026 — R1 à R4 PASS ; bascule publique R5 PASS.** Les deux nouveaux runtimes de production utilisaient alors les mêmes images que le clone. Le canari production unique `3caa7db0-242d-435e-8581-a840b23c16b8` est `COMPLETED` : 23 mises à jour, 0 création/fusion/erreur, 27 blobs vérifiés, egress métier limité à `careers.ohmycream.com`, heartbeat reçu, `/emplois` affiche les 21 offres FR. Le worker a chargé de nouveau `production-paused`, sans travail ni appel métier. PostgreSQL et son volume sont conservés. Voir les reçus [R2](../../audits/2026-09-23/runtime-reset-r2.json), [R3](../../audits/2026-09-23/runtime-reset-r3.json), [R4](../../audits/2026-09-23/runtime-reset-r4.json) et [R5](../../audits/2026-09-23/runtime-reset-r5.json).
 
@@ -50,7 +50,7 @@ Les deux runtimes : une réplique, région `europe-west4-drams3a`, aucun volume,
 - Service Postgres : `b5c68d1c-6988-4f15-8d85-afe684109cea`.
 - Volume : `32f92d01-d465-42e6-8fab-79e17d0a4d3f`, montage `/var/lib/postgresql/data`.
 
-Aucune rotation de credentials DB, création de rôle, migration, réparation, purge ou reconstruction de la production dans ce lot. Les ingestions autorisées conservent leurs écritures normales, captures et traces. Aucune réparation historique n'est incluse.
+Le reset runtime n’a pas modifié PostgreSQL. La mission post-RUN autorise maintenant les migrations non destructives nécessaires, après tests/main/CI ; aucune rotation de credentials DB, création de rôle, réparation historique, purge ou reconstruction. Les ingestions autorisées conservent leurs écritures normales, captures et traces. Aucune réparation historique n'est incluse.
 
 ### Variables et secrets attendus
 
@@ -82,7 +82,7 @@ sh apps/aggregator/start.sh ingest --source=oh-my-cream --no-geocode
 
 Chaque lancement génère son UUID, transmis au CLI et persisté dans PipelineRun. Un lancement ciblé peut fournir `CATWALKS_RUN_ID` et une échéance `CATWALKS_RUN_DEADLINE` (15 minutes maximum) ; ces valeurs ne restent pas dans une configuration CRON. Le mode normal n'hérite pas de la fenêtre canari de 15 minutes : l'orchestrateur conserve ses budgets par source. Aucun changement des règles d'admission, GEO ou ingestion. Les permissions hôte/chemin/méthode de chaque source et les contrôles SSRF/redirections existants continuent de s'appliquer. Oh My Cream n'est plus inscrit dans le contrat permanent du worker.
 
-Un refus d'admission est un échec réel de source, jamais une réussite vide. Depuis `653920c`, le run normal entretient les preuves d'accès `ACCESS_STALE` / `ACCESS_MISSING` après autorisation d'exécution : il réutilise la qualification de `source-add` (capture native, validation par rejeu, robots, décision persistée), puis repasse l'admission normale. Une preuve valide n'est pas renouvelée ; un refus explicite reste bloquant pour sa source. Le renouvellement partage le budget et l'identifiant du run, respecte la pause et ne remplace pas une décision concurrente. L'identité du lecteur reste celle de l'image ; un nouveau SHA peut rendre les preuves antérieures périmées. Les commandes de maintenance locales (dont `source-add`) restent disponibles ; elles ne deviennent pas des modes du worker de production.
+Un refus d'admission est un échec réel de source, jamais une réussite vide. Depuis `653920c`, le run normal entretient les preuves d'accès `ACCESS_STALE` / `ACCESS_MISSING` après autorisation d'exécution : il réutilise la qualification de `source-add` (capture native, validation par rejeu, robots, décision persistée), puis repasse l'admission normale. Une décision d’accès valide n'est pas renouvelée ; sa qualification native, valable 24 heures, l’est si nécessaire ; un refus explicite reste bloquant pour sa source. Le renouvellement partage le budget et l'identifiant du run, respecte la pause et ne remplace pas une décision concurrente. L'identité du lecteur reste celle de l'image ; un nouveau SHA peut rendre les preuves antérieures périmées. Les commandes de maintenance locales (dont `source-add`) restent disponibles ; elles ne deviennent pas des modes du worker de production.
 
 ## 3. Configuration versionnée et effectivement chargée
 
@@ -164,3 +164,7 @@ La clôture requiert un rapport court : diff cible/effectif/processus nul hors v
 ### Suivi du canari — décision du propriétaire
 
 Aucun nouveau dashboard, outil de surveillance ou moniteur. Utiliser les logs live Railway du service et du digest attendus, le module Healthchecks existant (`/start`, succès ou `/fail`), les événements `run.alive`/statuts DB et les captures RAW, puis `/emplois`. Le retour du worker sous pause est contrôlé séparément. Pour chaque image, utiliser son propre contrat embarqué et le reçu `runtime-release.json` : l’API reste sur le contrat R5, le worker sur le contrat générique. Le reçu résout explicitement la pause et le CRON autorisés en production. Ne pas appliquer le contrat de l’une à l’autre ni reconstruire une image pour une simple mise à jour documentaire.
+
+## Exploitation quotidienne après l’audit post-RUN
+
+`scheduled` filtre les déclenchements UTC `0 16,17 * * *` sur 18 h Europe/Paris. Le contrôle se fait après la pause et avant toute activité opérationnelle. Il n’introduit ni service ni variable. Le RUN inclut le refresh existant après collecte et géocodage ; les admissions, la preuve d’absence et le garde de fermeture massive restent requis. Le profil `production`, une réplique et restart `NEVER` sont conservés. L’URL de ping Healthchecks et Brevo restent les mécanismes existants ; la réception des alertes et le calendrier du check sont des réglages du compte à distinguer du fonctionnement des pings.

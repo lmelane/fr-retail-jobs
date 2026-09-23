@@ -1,0 +1,3411 @@
+{
+  "runId": "ca946bd4-c8ba-40f7-ab8f-ddc1a3095bb1",
+  "observedAt": "2026-09-23T09:59:59.838Z",
+  "sourceRunStatus": {
+    "OK": 255,
+    "BROKEN": 60,
+    "ERROR": 34,
+    "DEGRADED": 35
+  },
+  "eventCounts": {
+    "job.write_failed": 9028,
+    "source.failed": 34,
+    "source.ingest_failed": 4
+  },
+  "writeFailureMotifs": {
+    "PORTAL_OWNER_NOT_CERTIFIED": 5677,
+    "SOURCE_NEVER_PUBLISHED_FOR_HOUSE": 2846,
+    "EMPLOYER_TARGET_MISMATCH": 504,
+    "EMPLOYER_SPELLING_DIVERGED": 1
+  },
+  "scope": "All 129 non-OK SourceRun rows; classifications may overlap. Corrections not yet declared validated in production.",
+  "incidents": [
+    {
+      "sourceKey": "abercrombie",
+      "status": "BROKEN",
+      "jobs": 0,
+      "errors": {
+        "PORTAL_OWNER_NOT_CERTIFIED": 8
+      },
+      "productionNote": "8 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "DATA",
+          "cause": "NATIVE_EMPLOYER_OR_REVIEWED_PORTAL_SCOPE_MISSING",
+          "action": "SmartRecruiters reads native company.name; other sources require explicit portal evidence or remain individually blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "adidas",
+      "status": "ERROR",
+      "jobs": 0,
+      "errors": {
+        "source.failed": 1
+      },
+      "productionNote": "Access qualification requires validated native evidence: REJECTED",
+      "rejectedValidations": [
+        {
+          "captureBatchId": "84b39057-0802-442f-acb9-1cbe580caee7",
+          "reasons": {
+            "REPLAY_OR_NATIVE_READING_FAILED": 1
+          },
+          "observed": 1242,
+          "held": 0
+        }
+      ],
+      "causes": [
+        {
+          "class": "AGREGATEUR",
+          "cause": "NONDETERMINISTIC_REPLAY",
+          "action": "Recorded transport errors retain name and remain retryable; skip live host telemetry/waits offline; sort metadata; UTC native floating dates; omit stack from Workday outputs."
+        }
+      ]
+    },
+    {
+      "sourceKey": "aeropostale",
+      "status": "BROKEN",
+      "jobs": 0,
+      "errors": {
+        "PORTAL_OWNER_NOT_CERTIFIED": 18
+      },
+      "productionNote": "18 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "DATA",
+          "cause": "NATIVE_EMPLOYER_OR_REVIEWED_PORTAL_SCOPE_MISSING",
+          "action": "SmartRecruiters reads native company.name; other sources require explicit portal evidence or remain individually blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "aeyde",
+      "status": "BROKEN",
+      "jobs": 0,
+      "errors": {
+        "SOURCE_NEVER_PUBLISHED_FOR_HOUSE": 8
+      },
+      "productionNote": "8 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "DISPLAY_NAME_USED_AS_EMPLOYER_IDENTITY",
+          "action": "Keep native source-scoped identity; preserve an existing publication with identical native employer; true identity changes still blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "annoushka",
+      "status": "BROKEN",
+      "jobs": 0,
+      "errors": {
+        "SOURCE_NEVER_PUBLISHED_FOR_HOUSE": 3
+      },
+      "productionNote": "3 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "DISPLAY_NAME_USED_AS_EMPLOYER_IDENTITY",
+          "action": "Keep native source-scoped identity; preserve an existing publication with identical native employer; true identity changes still blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "aritzia",
+      "status": "DEGRADED",
+      "jobs": 218,
+      "errors": {
+        "SOURCE_NEVER_PUBLISHED_FOR_HOUSE": 319
+      },
+      "productionNote": "319 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "DISPLAY_NAME_USED_AS_EMPLOYER_IDENTITY",
+          "action": "Keep native source-scoped identity; preserve an existing publication with identical native employer; true identity changes still blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "asos",
+      "status": "BROKEN",
+      "jobs": 0,
+      "errors": {
+        "PORTAL_OWNER_NOT_CERTIFIED": 65
+      },
+      "productionNote": "65 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "ADAPTER",
+          "cause": "NATIVE_EMPLOYER_OR_REVIEWED_PORTAL_SCOPE_MISSING",
+          "action": "SmartRecruiters reads native company.name; other sources require explicit portal evidence or remain individually blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "attaquer",
+      "status": "ERROR",
+      "jobs": 0,
+      "errors": {
+        "source.failed": 1
+      },
+      "productionNote": "Access qualification requires validated native evidence: REJECTED",
+      "rejectedValidations": [
+        {
+          "captureBatchId": "5331d4ab-7b61-44dd-b1ea-661ce3883d6a",
+          "reasons": {
+            "ENUMERATION_INCOMPLETE": 1
+          },
+          "observed": 3,
+          "held": 0
+        }
+      ],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "PUBLICATION_AND_ABSENCE_CONFLATED",
+          "action": "Individually qualified subset may publish with unchanged bounded allowance. Partial capture never authorizes absence closure."
+        }
+      ]
+    },
+    {
+      "sourceKey": "bash-talents",
+      "status": "ERROR",
+      "jobs": 0,
+      "errors": {
+        "source.failed": 1
+      },
+      "productionNote": "Access qualification requires validated native evidence: REJECTED",
+      "rejectedValidations": [
+        {
+          "captureBatchId": "de078b8c-7622-4904-8ffc-ff054a58ef51",
+          "reasons": {
+            "READER_UNQUALIFIED": 50,
+            "NO_QUALIFIED_PUBLICATION": 1
+          },
+          "observed": 50,
+          "held": 0
+        }
+      ],
+      "causes": [
+        {
+          "class": "ADAPTER",
+          "cause": "RETAINED_NATIVE_CONTENT_UNREADABLE",
+          "action": "Share live/recovery readers; retain native detail for WTTJ, Bash, Taleo and EQWA."
+        }
+      ]
+    },
+    {
+      "sourceKey": "beauty-success-geodir",
+      "status": "BROKEN",
+      "jobs": 0,
+      "errors": {
+        "PORTAL_OWNER_NOT_CERTIFIED": 89
+      },
+      "productionNote": "89 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "DATA",
+          "cause": "NATIVE_EMPLOYER_OR_REVIEWED_PORTAL_SCOPE_MISSING",
+          "action": "SmartRecruiters reads native company.name; other sources require explicit portal evidence or remain individually blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "beiersdorf",
+      "status": "DEGRADED",
+      "jobs": 93,
+      "errors": {
+        "SOURCE_NEVER_PUBLISHED_FOR_HOUSE": 67
+      },
+      "productionNote": "67 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "DISPLAY_NAME_USED_AS_EMPLOYER_IDENTITY",
+          "action": "Keep native source-scoped identity; preserve an existing publication with identical native employer; true identity changes still blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "bernadette",
+      "status": "ERROR",
+      "jobs": 0,
+      "errors": {
+        "source.failed": 1
+      },
+      "productionNote": "Access qualification requires validated native evidence: REJECTED",
+      "rejectedValidations": [
+        {
+          "captureBatchId": "31d95a91-4085-4ef7-b172-dd6f3aa1f762",
+          "reasons": {
+            "EMPTY_FEED_NOT_NATIVELY_PROVEN": 1
+          },
+          "observed": 0,
+          "held": 0
+        }
+      ],
+      "causes": [
+        {
+          "class": "ADAPTER",
+          "cause": "EXPLICIT_NATIVE_ZERO_NOT_RECOGNIZED",
+          "action": "Greenhouse meta.total=0 and terminal Teamtailor empty feed recognized; empty collector alone remains insufficient."
+        }
+      ]
+    },
+    {
+      "sourceKey": "blackstore",
+      "status": "DEGRADED",
+      "jobs": 52,
+      "errors": {},
+      "productionNote": "6 annonces non publiables archivées (0 non résolues) ; énumération prouvée · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "DATA",
+          "cause": "NATIVE_VOLUME_OR_PUBLICATION_QUALITY",
+          "action": "Source-specific degradation retained; On has 122 native placeholder descriptions. Withdrawn/held publication state remains authoritative."
+        }
+      ]
+    },
+    {
+      "sourceKey": "bloomingdales-oracle",
+      "status": "BROKEN",
+      "jobs": 0,
+      "errors": {
+        "PORTAL_OWNER_NOT_CERTIFIED": 1014
+      },
+      "productionNote": "1014 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "DATA",
+          "cause": "NATIVE_EMPLOYER_OR_REVIEWED_PORTAL_SCOPE_MISSING",
+          "action": "SmartRecruiters reads native company.name; other sources require explicit portal evidence or remain individually blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "boots",
+      "status": "ERROR",
+      "jobs": 0,
+      "errors": {
+        "source.failed": 1
+      },
+      "productionNote": "Access qualification requires validated native evidence: REJECTED",
+      "rejectedValidations": [
+        {
+          "captureBatchId": "d91620bb-1d91-4eca-bb01-0b74a7511ff8",
+          "reasons": {
+            "REPLAY_RESULT_CHANGED": 1
+          },
+          "observed": 1436,
+          "held": 0
+        }
+      ],
+      "causes": [
+        {
+          "class": "AGREGATEUR",
+          "cause": "NONDETERMINISTIC_REPLAY",
+          "action": "Recorded transport errors retain name and remain retryable; skip live host telemetry/waits offline; sort metadata; UTC native floating dates; omit stack from Workday outputs."
+        }
+      ]
+    },
+    {
+      "sourceKey": "breitling-sf",
+      "status": "BROKEN",
+      "jobs": 0,
+      "errors": {
+        "PORTAL_OWNER_NOT_CERTIFIED": 46
+      },
+      "productionNote": "46 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "DATA",
+          "cause": "NATIVE_EMPLOYER_OR_REVIEWED_PORTAL_SCOPE_MISSING",
+          "action": "SmartRecruiters reads native company.name; other sources require explicit portal evidence or remain individually blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "browns",
+      "status": "DEGRADED",
+      "jobs": 45,
+      "errors": {
+        "PORTAL_OWNER_NOT_CERTIFIED": 1
+      },
+      "productionNote": "1 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "DATA",
+          "cause": "NATIVE_EMPLOYER_OR_REVIEWED_PORTAL_SCOPE_MISSING",
+          "action": "SmartRecruiters reads native company.name; other sources require explicit portal evidence or remain individually blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "brown-thomas-taleo",
+      "status": "ERROR",
+      "jobs": 0,
+      "errors": {
+        "source.failed": 1
+      },
+      "productionNote": "Access qualification requires validated native evidence: REJECTED",
+      "rejectedValidations": [
+        {
+          "captureBatchId": "829457ca-0c7a-4f6f-824a-76e87df0a0ac",
+          "reasons": {
+            "READER_UNQUALIFIED": 75,
+            "NO_QUALIFIED_PUBLICATION": 1
+          },
+          "observed": 75,
+          "held": 0
+        }
+      ],
+      "causes": [
+        {
+          "class": "ADAPTER",
+          "cause": "RETAINED_NATIVE_CONTENT_UNREADABLE",
+          "action": "Share live/recovery readers; retain native detail for WTTJ, Bash, Taleo and EQWA."
+        }
+      ]
+    },
+    {
+      "sourceKey": "brunello-cucinelli",
+      "status": "DEGRADED",
+      "jobs": 16,
+      "errors": {
+        "EMPLOYER_TARGET_MISMATCH": 23,
+        "SOURCE_NEVER_PUBLISHED_FOR_HOUSE": 7
+      },
+      "productionNote": "30 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "DISPLAY_NAME_USED_AS_EMPLOYER_IDENTITY",
+          "action": "Keep native source-scoped identity; preserve an existing publication with identical native employer; true identity changes still blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "buff",
+      "status": "BROKEN",
+      "jobs": 0,
+      "errors": {
+        "SOURCE_NEVER_PUBLISHED_FOR_HOUSE": 4
+      },
+      "productionNote": "4 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "DISPLAY_NAME_USED_AS_EMPLOYER_IDENTITY",
+          "action": "Keep native source-scoped identity; preserve an existing publication with identical native employer; true identity changes still blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "canada-goose",
+      "status": "DEGRADED",
+      "jobs": 8,
+      "errors": {
+        "SOURCE_NEVER_PUBLISHED_FOR_HOUSE": 66
+      },
+      "productionNote": "66 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "DISPLAY_NAME_USED_AS_EMPLOYER_IDENTITY",
+          "action": "Keep native source-scoped identity; preserve an existing publication with identical native employer; true identity changes still blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "capri-jimmy-choo",
+      "status": "DEGRADED",
+      "jobs": 4,
+      "errors": {
+        "SOURCE_NEVER_PUBLISHED_FOR_HOUSE": 44
+      },
+      "productionNote": "44 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "DISPLAY_NAME_USED_AS_EMPLOYER_IDENTITY",
+          "action": "Keep native source-scoped identity; preserve an existing publication with identical native employer; true identity changes still blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "status": "DEGRADED",
+      "jobs": 339,
+      "errors": {
+        "SOURCE_NEVER_PUBLISHED_FOR_HOUSE": 123,
+        "EMPLOYER_TARGET_MISMATCH": 39
+      },
+      "productionNote": "162 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "DISPLAY_NAME_USED_AS_EMPLOYER_IDENTITY",
+          "action": "Keep native source-scoped identity; preserve an existing publication with identical native employer; true identity changes still blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "claires-workday",
+      "status": "DEGRADED",
+      "jobs": 11,
+      "errors": {
+        "SOURCE_NEVER_PUBLISHED_FOR_HOUSE": 1
+      },
+      "productionNote": "1 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "DISPLAY_NAME_USED_AS_EMPLOYER_IDENTITY",
+          "action": "Keep native source-scoped identity; preserve an existing publication with identical native employer; true identity changes still blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "clarins",
+      "status": "BROKEN",
+      "jobs": 0,
+      "errors": {
+        "SOURCE_NEVER_PUBLISHED_FOR_HOUSE": 91
+      },
+      "productionNote": "91 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "DISPLAY_NAME_USED_AS_EMPLOYER_IDENTITY",
+          "action": "Keep native source-scoped identity; preserve an existing publication with identical native employer; true identity changes still blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "conde-nast-france",
+      "status": "DEGRADED",
+      "jobs": 24,
+      "errors": {
+        "SOURCE_NEVER_PUBLISHED_FOR_HOUSE": 113
+      },
+      "productionNote": "113 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "DISPLAY_NAME_USED_AS_EMPLOYER_IDENTITY",
+          "action": "Keep native source-scoped identity; preserve an existing publication with identical native employer; true identity changes still blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "cove",
+      "status": "BROKEN",
+      "jobs": 0,
+      "errors": {},
+      "productionNote": "returned nothing again — never produced since it was catalogued",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "ADAPTER",
+          "cause": "EXPLICIT_NATIVE_ZERO_NOT_RECOGNIZED",
+          "action": "Greenhouse meta.total=0 and terminal Teamtailor empty feed recognized; empty collector alone remains insufficient."
+        }
+      ]
+    },
+    {
+      "sourceKey": "crocs",
+      "status": "BROKEN",
+      "jobs": 0,
+      "errors": {
+        "SOURCE_NEVER_PUBLISHED_FOR_HOUSE": 490
+      },
+      "productionNote": "490 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "DISPLAY_NAME_USED_AS_EMPLOYER_IDENTITY",
+          "action": "Keep native source-scoped identity; preserve an existing publication with identical native employer; true identity changes still blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "cuyana",
+      "status": "ERROR",
+      "jobs": 0,
+      "errors": {
+        "source.failed": 1
+      },
+      "productionNote": "Access qualification requires validated native evidence: REJECTED",
+      "rejectedValidations": [
+        {
+          "captureBatchId": "53aade63-5cda-448f-b156-3cc415843ec4",
+          "reasons": {
+            "EMPTY_FEED_NOT_NATIVELY_PROVEN": 1
+          },
+          "observed": 0,
+          "held": 0
+        }
+      ],
+      "causes": [
+        {
+          "class": "ADAPTER",
+          "cause": "EXPLICIT_NATIVE_ZERO_NOT_RECOGNIZED",
+          "action": "Greenhouse meta.total=0 and terminal Teamtailor empty feed recognized; empty collector alone remains insufficient."
+        }
+      ]
+    },
+    {
+      "sourceKey": "decjuba",
+      "status": "BROKEN",
+      "jobs": 0,
+      "errors": {
+        "source.ingest_failed": 1
+      },
+      "productionNote": "1 erreurs de collecte ou d’écriture : Ingestion requires a qualified native result",
+      "rejectedValidations": [
+        {
+          "captureBatchId": "5a3dbb7d-1a33-4e25-976a-cb810f6a016f",
+          "reasons": {
+            "REPLAY_OR_NATIVE_READING_FAILED": 1
+          },
+          "observed": 162,
+          "held": 0
+        }
+      ],
+      "causes": [
+        {
+          "class": "AGREGATEUR",
+          "cause": "NONDETERMINISTIC_REPLAY",
+          "action": "Recorded transport errors retain name and remain retryable; skip live host telemetry/waits offline; sort metadata; UTC native floating dates; omit stack from Workday outputs."
+        }
+      ]
+    },
+    {
+      "sourceKey": "dolce-gabbana",
+      "status": "BROKEN",
+      "jobs": 0,
+      "errors": {
+        "SOURCE_NEVER_PUBLISHED_FOR_HOUSE": 98
+      },
+      "productionNote": "98 erreurs de collecte ou d’écriture · desc 99% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "DISPLAY_NAME_USED_AS_EMPLOYER_IDENTITY",
+          "action": "Keep native source-scoped identity; preserve an existing publication with identical native employer; true identity changes still blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "dr-martens-tf",
+      "status": "BROKEN",
+      "jobs": 0,
+      "errors": {
+        "PORTAL_OWNER_NOT_CERTIFIED": 202
+      },
+      "productionNote": "202 erreurs de collecte ou d’écriture · desc 99% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "DATA",
+          "cause": "NATIVE_EMPLOYER_OR_REVIEWED_PORTAL_SCOPE_MISSING",
+          "action": "SmartRecruiters reads native company.name; other sources require explicit portal evidence or remain individually blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "dr-pierre-ricaud",
+      "status": "DEGRADED",
+      "jobs": 65,
+      "errors": {
+        "PORTAL_OWNER_NOT_CERTIFIED": 1
+      },
+      "productionNote": "1 erreurs de collecte ou d’écriture · desc 98% date 98% pays 98% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "DATA",
+          "cause": "NATIVE_EMPLOYER_OR_REVIEWED_PORTAL_SCOPE_MISSING",
+          "action": "SmartRecruiters reads native company.name; other sources require explicit portal evidence or remain individually blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "element-6",
+      "status": "DEGRADED",
+      "jobs": 333,
+      "errors": {
+        "EMPLOYER_TARGET_MISMATCH": 8
+      },
+      "productionNote": "8 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "DISPLAY_NAME_USED_AS_EMPLOYER_IDENTITY",
+          "action": "Keep native source-scoped identity; preserve an existing publication with identical native employer; true identity changes still blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "end-clothing",
+      "status": "ERROR",
+      "jobs": 0,
+      "errors": {
+        "source.failed": 1
+      },
+      "productionNote": "Access qualification requires validated native evidence: REJECTED",
+      "rejectedValidations": [
+        {
+          "captureBatchId": "62b0c5a9-afd3-4507-82d3-ce64f07b55af",
+          "reasons": {
+            "REJECTED_NATIVE_ROWS": 1
+          },
+          "observed": 20,
+          "held": 0
+        }
+      ],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "PUBLICATION_AND_ABSENCE_CONFLATED",
+          "action": "Individually qualified subset may publish with unchanged bounded allowance. Partial capture never authorizes absence closure."
+        }
+      ]
+    },
+    {
+      "sourceKey": "eram-3",
+      "status": "DEGRADED",
+      "jobs": 70,
+      "errors": {
+        "EMPLOYER_TARGET_MISMATCH": 14
+      },
+      "productionNote": "14 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "DISPLAY_NAME_USED_AS_EMPLOYER_IDENTITY",
+          "action": "Keep native source-scoped identity; preserve an existing publication with identical native employer; true identity changes still blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "escada-parfums-16",
+      "status": "BROKEN",
+      "jobs": 0,
+      "errors": {
+        "source.ingest_failed": 1
+      },
+      "productionNote": "1 erreurs de collecte ou d’écriture : Ingestion requires a qualified native result",
+      "rejectedValidations": [
+        {
+          "captureBatchId": "8b301f3c-a271-4f12-b3f4-eea8148a7863",
+          "reasons": {
+            "REPLAY_OR_NATIVE_READING_FAILED": 1
+          },
+          "observed": 170,
+          "held": 0
+        }
+      ],
+      "causes": [
+        {
+          "class": "AGREGATEUR",
+          "cause": "NONDETERMINISTIC_REPLAY",
+          "action": "Recorded transport errors retain name and remain retryable; skip live host telemetry/waits offline; sort metadata; UTC native floating dates; omit stack from Workday outputs."
+        }
+      ]
+    },
+    {
+      "sourceKey": "essilorluxottica",
+      "status": "BROKEN",
+      "jobs": 0,
+      "errors": {
+        "PORTAL_OWNER_NOT_CERTIFIED": 7
+      },
+      "productionNote": "7 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "DATA",
+          "cause": "NATIVE_EMPLOYER_OR_REVIEWED_PORTAL_SCOPE_MISSING",
+          "action": "SmartRecruiters reads native company.name; other sources require explicit portal evidence or remain individually blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "estee-lauder-companies",
+      "status": "ERROR",
+      "jobs": 0,
+      "errors": {
+        "source.failed": 1
+      },
+      "productionNote": "Access qualification requires validated native evidence: REJECTED",
+      "rejectedValidations": [
+        {
+          "captureBatchId": "5a588d99-044a-4caf-ba92-df7580fdfb12",
+          "reasons": {
+            "CONTENT_MISSING": 19,
+            "ENUMERATION_INCOMPLETE": 1
+          },
+          "observed": 1744,
+          "held": 0
+        }
+      ],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "PUBLICATION_AND_ABSENCE_CONFLATED",
+          "action": "Individually qualified subset may publish with unchanged bounded allowance. Partial capture never authorizes absence closure."
+        },
+        {
+          "class": "DATA",
+          "cause": "CONTENT_MISSING",
+          "action": "Native content/identity remains unqualified; preserve history and per-publication gate. No invented data."
+        }
+      ]
+    },
+    {
+      "sourceKey": "etam",
+      "status": "DEGRADED",
+      "jobs": 248,
+      "errors": {
+        "EMPLOYER_TARGET_MISMATCH": 15,
+        "SOURCE_NEVER_PUBLISHED_FOR_HOUSE": 1
+      },
+      "productionNote": "16 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "DISPLAY_NAME_USED_AS_EMPLOYER_IDENTITY",
+          "action": "Keep native source-scoped identity; preserve an existing publication with identical native employer; true identity changes still blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "everything-but-water",
+      "status": "BROKEN",
+      "jobs": 0,
+      "errors": {
+        "SOURCE_NEVER_PUBLISHED_FOR_HOUSE": 51
+      },
+      "productionNote": "51 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "DISPLAY_NAME_USED_AS_EMPLOYER_IDENTITY",
+          "action": "Keep native source-scoped identity; preserve an existing publication with identical native employer; true identity changes still blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "fenwick-volcanic",
+      "status": "BROKEN",
+      "jobs": 0,
+      "errors": {
+        "PORTAL_OWNER_NOT_CERTIFIED": 37
+      },
+      "productionNote": "37 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "DATA",
+          "cause": "NATIVE_EMPLOYER_OR_REVIEWED_PORTAL_SCOPE_MISSING",
+          "action": "SmartRecruiters reads native company.name; other sources require explicit portal evidence or remain individually blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "foot-locker-france",
+      "status": "DEGRADED",
+      "jobs": 2984,
+      "errors": {
+        "EMPLOYER_TARGET_MISMATCH": 14
+      },
+      "productionNote": "14 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "DISPLAY_NAME_USED_AS_EMPLOYER_IDENTITY",
+          "action": "Keep native source-scoped identity; preserve an existing publication with identical native employer; true identity changes still blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "fred-perry",
+      "status": "BROKEN",
+      "jobs": 0,
+      "errors": {
+        "SOURCE_NEVER_PUBLISHED_FOR_HOUSE": 14
+      },
+      "productionNote": "14 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "DISPLAY_NAME_USED_AS_EMPLOYER_IDENTITY",
+          "action": "Keep native source-scoped identity; preserve an existing publication with identical native employer; true identity changes still blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "galeries-lafayette",
+      "status": "BROKEN",
+      "jobs": 0,
+      "errors": {
+        "SOURCE_NEVER_PUBLISHED_FOR_HOUSE": 147
+      },
+      "productionNote": "147 erreurs de collecte ou d’écriture · desc 100% date 100% pays 97% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "DISPLAY_NAME_USED_AS_EMPLOYER_IDENTITY",
+          "action": "Keep native source-scoped identity; preserve an existing publication with identical native employer; true identity changes still blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "goyard-successfactors",
+      "status": "BROKEN",
+      "jobs": 0,
+      "errors": {
+        "PORTAL_OWNER_NOT_CERTIFIED": 21
+      },
+      "productionNote": "21 erreurs de collecte ou d’écriture · desc 100% date 100% pays 38% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "DATA",
+          "cause": "NATIVE_EMPLOYER_OR_REVIEWED_PORTAL_SCOPE_MISSING",
+          "action": "SmartRecruiters reads native company.name; other sources require explicit portal evidence or remain individually blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "groundies",
+      "status": "BROKEN",
+      "jobs": 0,
+      "errors": {
+        "SOURCE_NEVER_PUBLISHED_FOR_HOUSE": 1
+      },
+      "productionNote": "1 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "DISPLAY_NAME_USED_AS_EMPLOYER_IDENTITY",
+          "action": "Keep native source-scoped identity; preserve an existing publication with identical native employer; true identity changes still blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "groupe-chantelle",
+      "status": "BROKEN",
+      "jobs": 0,
+      "errors": {
+        "PORTAL_OWNER_NOT_CERTIFIED": 37
+      },
+      "productionNote": "37 erreurs de collecte ou d’écriture · desc 100% date 100% pays 0% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "DATA",
+          "cause": "NATIVE_EMPLOYER_OR_REVIEWED_PORTAL_SCOPE_MISSING",
+          "action": "SmartRecruiters reads native company.name; other sources require explicit portal evidence or remain individually blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "groupe-printemps",
+      "status": "BROKEN",
+      "jobs": 0,
+      "errors": {
+        "PORTAL_OWNER_NOT_CERTIFIED": 101
+      },
+      "productionNote": "101 erreurs de collecte ou d’écriture · desc 100% date 100% pays 0% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "DATA",
+          "cause": "NATIVE_EMPLOYER_OR_REVIEWED_PORTAL_SCOPE_MISSING",
+          "action": "SmartRecruiters reads native company.name; other sources require explicit portal evidence or remain individually blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "gu-us-headquarters",
+      "status": "BROKEN",
+      "jobs": 0,
+      "errors": {
+        "SOURCE_NEVER_PUBLISHED_FOR_HOUSE": 2
+      },
+      "productionNote": "2 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "DISPLAY_NAME_USED_AS_EMPLOYER_IDENTITY",
+          "action": "Keep native source-scoped identity; preserve an existing publication with identical native employer; true identity changes still blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "gu-us-retail",
+      "status": "BROKEN",
+      "jobs": 0,
+      "errors": {
+        "SOURCE_NEVER_PUBLISHED_FOR_HOUSE": 5
+      },
+      "productionNote": "5 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "DISPLAY_NAME_USED_AS_EMPLOYER_IDENTITY",
+          "action": "Keep native source-scoped identity; preserve an existing publication with identical native employer; true identity changes still blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "hans-anders",
+      "status": "BROKEN",
+      "jobs": 0,
+      "errors": {
+        "SOURCE_NEVER_PUBLISHED_FOR_HOUSE": 140
+      },
+      "productionNote": "140 erreurs de collecte ou d’écriture · desc 100% date 100% pays 99% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "DISPLAY_NAME_USED_AS_EMPLOYER_IDENTITY",
+          "action": "Keep native source-scoped identity; preserve an existing publication with identical native employer; true identity changes still blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "hm-group",
+      "status": "BROKEN",
+      "jobs": 0,
+      "errors": {
+        "PORTAL_OWNER_NOT_CERTIFIED": 1830
+      },
+      "productionNote": "1830 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "ADAPTER",
+          "cause": "NATIVE_EMPLOYER_OR_REVIEWED_PORTAL_SCOPE_MISSING",
+          "action": "SmartRecruiters reads native company.name; other sources require explicit portal evidence or remain individually blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "hot-topic",
+      "status": "BROKEN",
+      "jobs": 0,
+      "errors": {
+        "PORTAL_OWNER_NOT_CERTIFIED": 20
+      },
+      "productionNote": "20 erreurs de collecte ou d’écriture · desc 100% date 100% pays 70% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "DATA",
+          "cause": "NATIVE_EMPLOYER_OR_REVIEWED_PORTAL_SCOPE_MISSING",
+          "action": "SmartRecruiters reads native company.name; other sources require explicit portal evidence or remain individually blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "hugo-boss-phenom",
+      "status": "ERROR",
+      "jobs": 0,
+      "errors": {
+        "source.failed": 1
+      },
+      "productionNote": "Access qualification requires validated native evidence: REJECTED",
+      "rejectedValidations": [
+        {
+          "captureBatchId": "8ca2de8a-a00b-4dc1-b308-c04b66fd27f5",
+          "reasons": {
+            "ENUMERATION_INCOMPLETE": 1
+          },
+          "observed": 537,
+          "held": 0
+        }
+      ],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "PUBLICATION_AND_ABSENCE_CONFLATED",
+          "action": "Individually qualified subset may publish with unchanged bounded allowance. Partial capture never authorizes absence closure."
+        }
+      ]
+    },
+    {
+      "sourceKey": "ilia",
+      "status": "DEGRADED",
+      "jobs": 4,
+      "errors": {},
+      "productionNote": "56% fewer offers than the previous run · desc 100% date 100% pays 50% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "SOURCE EXTERNE",
+          "cause": "NATIVE_VOLUME_OR_PUBLICATION_QUALITY",
+          "action": "Source-specific degradation retained; On has 122 native placeholder descriptions. Withdrawn/held publication state remains authoritative."
+        }
+      ]
+    },
+    {
+      "sourceKey": "indiska",
+      "status": "DEGRADED",
+      "jobs": 1,
+      "errors": {},
+      "productionNote": "75% fewer offers than the previous run · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "SOURCE EXTERNE",
+          "cause": "NATIVE_VOLUME_OR_PUBLICATION_QUALITY",
+          "action": "Source-specific degradation retained; On has 122 native placeholder descriptions. Withdrawn/held publication state remains authoritative."
+        }
+      ]
+    },
+    {
+      "sourceKey": "intersport-france",
+      "status": "DEGRADED",
+      "jobs": 917,
+      "errors": {},
+      "productionNote": "65 annonces non publiables archivées (13 non résolues) ; énumération prouvée · desc 100% date 100% pays 99% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "DATA",
+          "cause": "NATIVE_VOLUME_OR_PUBLICATION_QUALITY",
+          "action": "Source-specific degradation retained; On has 122 native placeholder descriptions. Withdrawn/held publication state remains authoritative."
+        }
+      ]
+    },
+    {
+      "sourceKey": "jansport",
+      "status": "BROKEN",
+      "jobs": 0,
+      "errors": {
+        "SOURCE_NEVER_PUBLISHED_FOR_HOUSE": 2
+      },
+      "productionNote": "2 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "DISPLAY_NAME_USED_AS_EMPLOYER_IDENTITY",
+          "action": "Keep native source-scoped identity; preserve an existing publication with identical native employer; true identity changes still blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "julie-grace",
+      "status": "BROKEN",
+      "jobs": 0,
+      "errors": {
+        "SOURCE_NEVER_PUBLISHED_FOR_HOUSE": 4
+      },
+      "productionNote": "4 erreurs de collecte ou d’écriture · desc 75% date 75% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "DISPLAY_NAME_USED_AS_EMPLOYER_IDENTITY",
+          "action": "Keep native source-scoped identity; preserve an existing publication with identical native employer; true identity changes still blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "kastner-ohler",
+      "status": "ERROR",
+      "jobs": 0,
+      "errors": {
+        "source.failed": 1
+      },
+      "productionNote": "Access qualification requires validated native evidence: REJECTED",
+      "rejectedValidations": [
+        {
+          "captureBatchId": "556aaf06-b658-4679-bfb4-371386cdfc5a",
+          "reasons": {
+            "ENUMERATION_INCOMPLETE": 1
+          },
+          "observed": 6,
+          "held": 0
+        }
+      ],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "PUBLICATION_AND_ABSENCE_CONFLATED",
+          "action": "Individually qualified subset may publish with unchanged bounded allowance. Partial capture never authorizes absence closure."
+        }
+      ]
+    },
+    {
+      "sourceKey": "kering",
+      "status": "ERROR",
+      "jobs": 0,
+      "errors": {
+        "source.failed": 1
+      },
+      "productionNote": "Access qualification requires validated native evidence: REJECTED",
+      "rejectedValidations": [
+        {
+          "captureBatchId": "6a9f10c6-df45-4f65-909a-4e3e4e90498d",
+          "reasons": {
+            "CONTENT_MISSING": 7,
+            "ENUMERATION_INCOMPLETE": 1
+          },
+          "observed": 1041,
+          "held": 0
+        }
+      ],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "PUBLICATION_AND_ABSENCE_CONFLATED",
+          "action": "Individually qualified subset may publish with unchanged bounded allowance. Partial capture never authorizes absence closure."
+        },
+        {
+          "class": "DATA",
+          "cause": "CONTENT_MISSING",
+          "action": "Native content/identity remains unqualified; preserve history and per-publication gate. No invented data."
+        }
+      ]
+    },
+    {
+      "sourceKey": "la-fee-maraboutee",
+      "status": "BROKEN",
+      "jobs": 0,
+      "errors": {
+        "SOURCE_NEVER_PUBLISHED_FOR_HOUSE": 20
+      },
+      "productionNote": "20 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "DISPLAY_NAME_USED_AS_EMPLOYER_IDENTITY",
+          "action": "Keep native source-scoped identity; preserve an existing publication with identical native employer; true identity changes still blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "lagardere-duty-free",
+      "status": "BROKEN",
+      "jobs": 0,
+      "errors": {
+        "PORTAL_OWNER_NOT_CERTIFIED": 9
+      },
+      "productionNote": "9 erreurs de collecte ou d’écriture · desc 100% date 100% pays 0% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "DATA",
+          "cause": "NATIVE_EMPLOYER_OR_REVIEWED_PORTAL_SCOPE_MISSING",
+          "action": "SmartRecruiters reads native company.name; other sources require explicit portal evidence or remain individually blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "lagardere-travel-retail",
+      "status": "BROKEN",
+      "jobs": 0,
+      "errors": {
+        "PORTAL_OWNER_NOT_CERTIFIED": 109
+      },
+      "productionNote": "109 erreurs de collecte ou d’écriture · desc 100% date 100% pays 0% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "DATA",
+          "cause": "NATIVE_EMPLOYER_OR_REVIEWED_PORTAL_SCOPE_MISSING",
+          "action": "SmartRecruiters reads native company.name; other sources require explicit portal evidence or remain individually blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "lagardere-travel-retail-de",
+      "status": "BROKEN",
+      "jobs": 0,
+      "errors": {
+        "PORTAL_OWNER_NOT_CERTIFIED": 10
+      },
+      "productionNote": "10 erreurs de collecte ou d’écriture · desc 100% date 100% pays 0% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "DATA",
+          "cause": "NATIVE_EMPLOYER_OR_REVIEWED_PORTAL_SCOPE_MISSING",
+          "action": "SmartRecruiters reads native company.name; other sources require explicit portal evidence or remain individually blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "la-redoute-talentview",
+      "status": "DEGRADED",
+      "jobs": 4,
+      "errors": {
+        "EMPLOYER_TARGET_MISMATCH": 1
+      },
+      "productionNote": "1 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "DISPLAY_NAME_USED_AS_EMPLOYER_IDENTITY",
+          "action": "Keep native source-scoped identity; preserve an existing publication with identical native employer; true identity changes still blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "levis",
+      "status": "ERROR",
+      "jobs": 0,
+      "errors": {
+        "source.failed": 1
+      },
+      "productionNote": "Access qualification requires validated native evidence: REJECTED",
+      "rejectedValidations": [
+        {
+          "captureBatchId": "ccdfb6d9-b5b5-41de-b892-96587b53eff0",
+          "reasons": {
+            "REJECTED_NATIVE_ROWS": 1
+          },
+          "observed": 1262,
+          "held": 1260
+        }
+      ],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "PUBLICATION_AND_ABSENCE_CONFLATED",
+          "action": "Individually qualified subset may publish with unchanged bounded allowance. Partial capture never authorizes absence closure."
+        }
+      ]
+    },
+    {
+      "sourceKey": "lexington",
+      "status": "BROKEN",
+      "jobs": 0,
+      "errors": {},
+      "productionNote": "returned nothing again — never produced since it was catalogued",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "ADAPTER",
+          "cause": "EXPLICIT_NATIVE_ZERO_NOT_RECOGNIZED",
+          "action": "Greenhouse meta.total=0 and terminal Teamtailor empty feed recognized; empty collector alone remains insufficient."
+        }
+      ]
+    },
+    {
+      "sourceKey": "lindex-easycruit",
+      "status": "ERROR",
+      "jobs": 0,
+      "errors": {
+        "source.failed": 1
+      },
+      "productionNote": "Access qualification refused: Robots response contains an HTML or challenge document",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "SOURCE EXTERNE",
+          "cause": "ROBOTS_CHALLENGE",
+          "action": "Keep source-specific failure; never disable TLS, override denial or treat failed response as empty."
+        }
+      ]
+    },
+    {
+      "sourceKey": "loplabbet",
+      "status": "BROKEN",
+      "jobs": 0,
+      "errors": {},
+      "productionNote": "returned nothing, held 1 offers on the last productive run",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "ADAPTER",
+          "cause": "EXPLICIT_NATIVE_ZERO_NOT_RECOGNIZED",
+          "action": "Greenhouse meta.total=0 and terminal Teamtailor empty feed recognized; empty collector alone remains insufficient."
+        }
+      ]
+    },
+    {
+      "sourceKey": "l-oreal-professionnel",
+      "status": "BROKEN",
+      "jobs": 0,
+      "errors": {
+        "source.ingest_failed": 1
+      },
+      "productionNote": "1 erreurs de collecte ou d’écriture : HTTP 406 for https://careers.loreal.com/en_US/jobs/SearchJobs/?jobOffset=0",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "SOURCE EXTERNE",
+          "cause": "HTTP_406",
+          "action": "Keep source-specific failure; never disable TLS, override denial or treat failed response as empty."
+        }
+      ]
+    },
+    {
+      "sourceKey": "lucy-yak",
+      "status": "BROKEN",
+      "jobs": 0,
+      "errors": {
+        "SOURCE_NEVER_PUBLISHED_FOR_HOUSE": 2
+      },
+      "productionNote": "2 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "DISPLAY_NAME_USED_AS_EMPLOYER_IDENTITY",
+          "action": "Keep native source-scoped identity; preserve an existing publication with identical native employer; true identity changes still blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "lumentee",
+      "status": "ERROR",
+      "jobs": 0,
+      "errors": {
+        "source.failed": 1
+      },
+      "productionNote": "Access qualification requires validated native evidence: REJECTED",
+      "rejectedValidations": [
+        {
+          "captureBatchId": "1fb0a915-132d-478f-9cde-fd21ce1c2643",
+          "reasons": {
+            "ENUMERATION_INCOMPLETE": 1
+          },
+          "observed": 5,
+          "held": 0
+        }
+      ],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "PUBLICATION_AND_ABSENCE_CONFLATED",
+          "action": "Individually qualified subset may publish with unchanged bounded allowance. Partial capture never authorizes absence closure."
+        }
+      ]
+    },
+    {
+      "sourceKey": "luxe-talent",
+      "status": "BROKEN",
+      "jobs": 0,
+      "errors": {
+        "PORTAL_OWNER_NOT_CERTIFIED": 478
+      },
+      "productionNote": "478 erreurs de collecte ou d’écriture · desc 100% date 100% pays 0% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "DATA",
+          "cause": "NATIVE_EMPLOYER_OR_REVIEWED_PORTAL_SCOPE_MISSING",
+          "action": "SmartRecruiters reads native company.name; other sources require explicit portal evidence or remain individually blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "lvmh",
+      "status": "DEGRADED",
+      "jobs": 6171,
+      "errors": {
+        "PORTAL_OWNER_NOT_CERTIFIED": 30,
+        "SOURCE_NEVER_PUBLISHED_FOR_HOUSE": 3
+      },
+      "productionNote": "33 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "DISPLAY_NAME_USED_AS_EMPLOYER_IDENTITY",
+          "action": "Keep native source-scoped identity; preserve an existing publication with identical native employer; true identity changes still blocked."
+        },
+        {
+          "class": "DATA",
+          "cause": "NATIVE_EMPLOYER_OR_REVIEWED_PORTAL_SCOPE_MISSING",
+          "action": "SmartRecruiters reads native company.name; other sources require explicit portal evidence or remain individually blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "madame-figaro",
+      "status": "ERROR",
+      "jobs": 0,
+      "errors": {
+        "source.failed": 1
+      },
+      "productionNote": "Access qualification requires validated native evidence: REJECTED",
+      "rejectedValidations": [
+        {
+          "captureBatchId": "c2006543-5eba-46da-8ab5-932a8c4bde46",
+          "reasons": {
+            "READER_UNQUALIFIED": 11,
+            "NO_QUALIFIED_PUBLICATION": 1
+          },
+          "observed": 11,
+          "held": 0
+        }
+      ],
+      "causes": [
+        {
+          "class": "ADAPTER",
+          "cause": "RETAINED_NATIVE_CONTENT_UNREADABLE",
+          "action": "Share live/recovery readers; retain native detail for WTTJ, Bash, Taleo and EQWA."
+        }
+      ]
+    },
+    {
+      "sourceKey": "madewell",
+      "status": "BROKEN",
+      "jobs": 0,
+      "errors": {
+        "SOURCE_NEVER_PUBLISHED_FOR_HOUSE": 337
+      },
+      "productionNote": "337 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "DISPLAY_NAME_USED_AS_EMPLOYER_IDENTITY",
+          "action": "Keep native source-scoped identity; preserve an existing publication with identical native employer; true identity changes still blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "mango",
+      "status": "DEGRADED",
+      "jobs": 1619,
+      "errors": {},
+      "productionNote": "27 annonces non publiables archivées (27 non résolues) ; énumération prouvée · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "DATA",
+          "cause": "NATIVE_VOLUME_OR_PUBLICATION_QUALITY",
+          "action": "Source-specific degradation retained; On has 122 native placeholder descriptions. Withdrawn/held publication state remains authoritative."
+        }
+      ]
+    },
+    {
+      "sourceKey": "marc-o-polo",
+      "status": "ERROR",
+      "jobs": 0,
+      "errors": {
+        "source.failed": 1
+      },
+      "productionNote": "Access qualification requires validated native evidence: REJECTED",
+      "rejectedValidations": [
+        {
+          "captureBatchId": "76f7e81b-0387-48e8-80d8-da83ba86b40e",
+          "reasons": {
+            "ENUMERATION_INCOMPLETE": 1
+          },
+          "observed": 15,
+          "held": 0
+        }
+      ],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "PUBLICATION_AND_ABSENCE_CONFLATED",
+          "action": "Individually qualified subset may publish with unchanged bounded allowance. Partial capture never authorizes absence closure."
+        }
+      ]
+    },
+    {
+      "sourceKey": "margaret-howell",
+      "status": "BROKEN",
+      "jobs": 0,
+      "errors": {
+        "SOURCE_NEVER_PUBLISHED_FOR_HOUSE": 1
+      },
+      "productionNote": "1 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "DISPLAY_NAME_USED_AS_EMPLOYER_IDENTITY",
+          "action": "Keep native source-scoped identity; preserve an existing publication with identical native employer; true identity changes still blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "mecca",
+      "status": "DEGRADED",
+      "jobs": 158,
+      "errors": {},
+      "productionNote": "7 annonces non publiables archivées (7 non résolues) ; énumération prouvée · desc 100% date 100% pays 94% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "DATA",
+          "cause": "NATIVE_VOLUME_OR_PUBLICATION_QUALITY",
+          "action": "Source-specific degradation retained; On has 122 native placeholder descriptions. Withdrawn/held publication state remains authoritative."
+        }
+      ]
+    },
+    {
+      "sourceKey": "movado",
+      "status": "BROKEN",
+      "jobs": 0,
+      "errors": {
+        "SOURCE_NEVER_PUBLISHED_FOR_HOUSE": 130
+      },
+      "productionNote": "130 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "DISPLAY_NAME_USED_AS_EMPLOYER_IDENTITY",
+          "action": "Keep native source-scoped identity; preserve an existing publication with identical native employer; true identity changes still blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "mq-marqet",
+      "status": "BROKEN",
+      "jobs": 0,
+      "errors": {
+        "SOURCE_NEVER_PUBLISHED_FOR_HOUSE": 6
+      },
+      "productionNote": "6 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "DISPLAY_NAME_USED_AS_EMPLOYER_IDENTITY",
+          "action": "Keep native source-scoped identity; preserve an existing publication with identical native employer; true identity changes still blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "nars",
+      "status": "ERROR",
+      "jobs": 0,
+      "errors": {
+        "source.failed": 1
+      },
+      "productionNote": "Access qualification requires validated native evidence: REJECTED",
+      "rejectedValidations": [
+        {
+          "captureBatchId": "8246cff9-c6f7-4c58-8152-aee8f2947d55",
+          "reasons": {
+            "REPLAY_RESULT_CHANGED": 1
+          },
+          "observed": 38,
+          "held": 0
+        }
+      ],
+      "causes": [
+        {
+          "class": "AGREGATEUR",
+          "cause": "NONDETERMINISTIC_REPLAY",
+          "action": "Recorded transport errors retain name and remain retryable; skip live host telemetry/waits offline; sort metadata; UTC native floating dates; omit stack from Workday outputs."
+        }
+      ]
+    },
+    {
+      "sourceKey": "new-balance",
+      "status": "DEGRADED",
+      "jobs": 18,
+      "errors": {
+        "SOURCE_NEVER_PUBLISHED_FOR_HOUSE": 35,
+        "EMPLOYER_TARGET_MISMATCH": 45
+      },
+      "productionNote": "80 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "DISPLAY_NAME_USED_AS_EMPLOYER_IDENTITY",
+          "action": "Keep native source-scoped identity; preserve an existing publication with identical native employer; true identity changes still blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "nike",
+      "status": "DEGRADED",
+      "jobs": 572,
+      "errors": {
+        "EMPLOYER_TARGET_MISMATCH": 203,
+        "SOURCE_NEVER_PUBLISHED_FOR_HOUSE": 54
+      },
+      "productionNote": "257 erreurs de collecte ou d’écriture · desc 99% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "DISPLAY_NAME_USED_AS_EMPLOYER_IDENTITY",
+          "action": "Keep native source-scoped identity; preserve an existing publication with identical native employer; true identity changes still blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "nocibe-eqwa",
+      "status": "ERROR",
+      "jobs": 0,
+      "errors": {
+        "source.failed": 1
+      },
+      "productionNote": "Access qualification requires validated native evidence: REJECTED",
+      "rejectedValidations": [
+        {
+          "captureBatchId": "0b696753-15bf-419e-92a5-ef7e2e3e2535",
+          "reasons": {
+            "CONTENT_MISSING": 274,
+            "NO_QUALIFIED_PUBLICATION": 1
+          },
+          "observed": 274,
+          "held": 0
+        }
+      ],
+      "causes": [
+        {
+          "class": "ADAPTER",
+          "cause": "RETAINED_NATIVE_CONTENT_UNREADABLE",
+          "action": "Share live/recovery readers; retain native detail for WTTJ, Bash, Taleo and EQWA."
+        }
+      ]
+    },
+    {
+      "sourceKey": "nordstrom",
+      "status": "DEGRADED",
+      "jobs": 1307,
+      "errors": {},
+      "productionNote": "1 annonces non publiables archivées (1 non résolues) ; énumération prouvée · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "DATA",
+          "cause": "NATIVE_VOLUME_OR_PUBLICATION_QUALITY",
+          "action": "Source-specific degradation retained; On has 122 native placeholder descriptions. Withdrawn/held publication state remains authoritative."
+        }
+      ]
+    },
+    {
+      "sourceKey": "normal",
+      "status": "DEGRADED",
+      "jobs": 436,
+      "errors": {
+        "EMPLOYER_TARGET_MISMATCH": 18
+      },
+      "productionNote": "18 erreurs de collecte ou d’écriture · desc 99% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "DISPLAY_NAME_USED_AS_EMPLOYER_IDENTITY",
+          "action": "Keep native source-scoped identity; preserve an existing publication with identical native employer; true identity changes still blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "on-running",
+      "status": "DEGRADED",
+      "jobs": 254,
+      "errors": {},
+      "productionNote": "descriptions manquantes sur 48% des offres · desc 52% date 100% pays 26% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "SOURCE EXTERNE",
+          "cause": "NATIVE_VOLUME_OR_PUBLICATION_QUALITY",
+          "action": "Source-specific degradation retained; On has 122 native placeholder descriptions. Withdrawn/held publication state remains authoritative."
+        }
+      ]
+    },
+    {
+      "sourceKey": "pandora-talenthub",
+      "status": "ERROR",
+      "jobs": 0,
+      "errors": {
+        "source.failed": 1
+      },
+      "productionNote": "Access qualification requires validated native evidence: REJECTED",
+      "rejectedValidations": [
+        {
+          "captureBatchId": "f1dd9f2a-e9c5-4543-990c-8dbfcc7233da",
+          "reasons": {
+            "ENUMERATION_INCOMPLETE": 1
+          },
+          "observed": 920,
+          "held": 0
+        }
+      ],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "PUBLICATION_AND_ABSENCE_CONFLATED",
+          "action": "Individually qualified subset may publish with unchanged bounded allowance. Partial capture never authorizes absence closure."
+        }
+      ]
+    },
+    {
+      "sourceKey": "parfums-chanel",
+      "status": "ERROR",
+      "jobs": 0,
+      "errors": {
+        "source.failed": 1
+      },
+      "productionNote": "Access qualification requires validated native evidence: REJECTED",
+      "rejectedValidations": [
+        {
+          "captureBatchId": "71ed0eb7-9c93-4491-8693-20c30539a62f",
+          "reasons": {
+            "REPLAY_RESULT_CHANGED": 1
+          },
+          "observed": 1154,
+          "held": 0
+        }
+      ],
+      "causes": [
+        {
+          "class": "AGREGATEUR",
+          "cause": "NONDETERMINISTIC_REPLAY",
+          "action": "Recorded transport errors retain name and remain retryable; skip live host telemetry/waits offline; sort metadata; UTC native floating dates; omit stack from Workday outputs."
+        }
+      ]
+    },
+    {
+      "sourceKey": "patek-philippe",
+      "status": "BROKEN",
+      "jobs": 0,
+      "errors": {
+        "SOURCE_NEVER_PUBLISHED_FOR_HOUSE": 14
+      },
+      "productionNote": "14 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "DISPLAY_NAME_USED_AS_EMPLOYER_IDENTITY",
+          "action": "Keep native source-scoped identity; preserve an existing publication with identical native employer; true identity changes still blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "pegador",
+      "status": "BROKEN",
+      "jobs": 0,
+      "errors": {
+        "SOURCE_NEVER_PUBLISHED_FOR_HOUSE": 11
+      },
+      "productionNote": "11 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "DISPLAY_NAME_USED_AS_EMPLOYER_IDENTITY",
+          "action": "Keep native source-scoped identity; preserve an existing publication with identical native employer; true identity changes still blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "penningtons",
+      "status": "BROKEN",
+      "jobs": 0,
+      "errors": {
+        "PORTAL_OWNER_NOT_CERTIFIED": 316
+      },
+      "productionNote": "316 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "ADAPTER",
+          "cause": "NATIVE_EMPLOYER_OR_REVIEWED_PORTAL_SCOPE_MISSING",
+          "action": "SmartRecruiters reads native company.name; other sources require explicit portal evidence or remain individually blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "pepco",
+      "status": "BROKEN",
+      "jobs": 0,
+      "errors": {
+        "SOURCE_NEVER_PUBLISHED_FOR_HOUSE": 56
+      },
+      "productionNote": "56 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "DISPLAY_NAME_USED_AS_EMPLOYER_IDENTITY",
+          "action": "Keep native source-scoped identity; preserve an existing publication with identical native employer; true identity changes still blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "pvh",
+      "status": "ERROR",
+      "jobs": 0,
+      "errors": {
+        "source.failed": 1
+      },
+      "productionNote": "Access qualification requires validated native evidence: REJECTED",
+      "rejectedValidations": [
+        {
+          "captureBatchId": "75dfc9c1-5c4f-4227-b487-d98fb74b2ec7",
+          "reasons": {
+            "REPLAY_RESULT_CHANGED": 1
+          },
+          "observed": 1596,
+          "held": 0
+        }
+      ],
+      "causes": [
+        {
+          "class": "AGREGATEUR",
+          "cause": "NONDETERMINISTIC_REPLAY",
+          "action": "Recorded transport errors retain name and remain retryable; skip live host telemetry/waits offline; sort metadata; UTC native floating dates; omit stack from Workday outputs."
+        }
+      ]
+    },
+    {
+      "sourceKey": "ralph-lauren-avature",
+      "status": "ERROR",
+      "jobs": 0,
+      "errors": {
+        "source.failed": 1
+      },
+      "productionNote": "fetch failed",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "SOURCE EXTERNE",
+          "cause": "TLS_CERTIFICATE_CHAIN",
+          "action": "Keep source-specific failure; never disable TLS, override denial or treat failed response as empty."
+        }
+      ]
+    },
+    {
+      "sourceKey": "richemont-workday",
+      "status": "ERROR",
+      "jobs": 0,
+      "errors": {
+        "source.failed": 1
+      },
+      "productionNote": "Access qualification requires validated native evidence: REJECTED",
+      "rejectedValidations": [
+        {
+          "captureBatchId": "9f6ae575-911c-4727-96f7-568303fad3e1",
+          "reasons": {
+            "REJECTED_NATIVE_ROWS": 1
+          },
+          "observed": 1436,
+          "held": 0
+        }
+      ],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "PUBLICATION_AND_ABSENCE_CONFLATED",
+          "action": "Individually qualified subset may publish with unchanged bounded allowance. Partial capture never authorizes absence closure."
+        }
+      ]
+    },
+    {
+      "sourceKey": "rituals",
+      "status": "BROKEN",
+      "jobs": 0,
+      "errors": {
+        "PORTAL_OWNER_NOT_CERTIFIED": 767
+      },
+      "productionNote": "767 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "DATA",
+          "cause": "NATIVE_EMPLOYER_OR_REVIEWED_PORTAL_SCOPE_MISSING",
+          "action": "SmartRecruiters reads native company.name; other sources require explicit portal evidence or remain individually blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "rivoli-typesense",
+      "status": "ERROR",
+      "jobs": 0,
+      "errors": {
+        "source.failed": 1
+      },
+      "productionNote": "Access qualification requires validated native evidence: REJECTED",
+      "rejectedValidations": [
+        {
+          "captureBatchId": "eba4cf3d-b6cb-4436-ac07-67f46672184d",
+          "reasons": {
+            "CONTENT_MISSING": 1,
+            "IDENTITY_MISMATCH": 27
+          },
+          "observed": 46,
+          "held": 0
+        }
+      ],
+      "causes": [
+        {
+          "class": "DATA",
+          "cause": "IDENTITY_MISMATCH",
+          "action": "Native content/identity remains unqualified; preserve history and per-publication gate. No invented data."
+        },
+        {
+          "class": "DATA",
+          "cause": "CONTENT_MISSING",
+          "action": "Native content/identity remains unqualified; preserve history and per-publication gate. No invented data."
+        }
+      ]
+    },
+    {
+      "sourceKey": "rolex",
+      "status": "BROKEN",
+      "jobs": 0,
+      "errors": {
+        "SOURCE_NEVER_PUBLISHED_FOR_HOUSE": 218
+      },
+      "productionNote": "218 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "DISPLAY_NAME_USED_AS_EMPLOYER_IDENTITY",
+          "action": "Keep native source-scoped identity; preserve an existing publication with identical native employer; true identity changes still blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "saks",
+      "status": "BROKEN",
+      "jobs": 0,
+      "errors": {
+        "source.ingest_failed": 1
+      },
+      "productionNote": "1 erreurs de collecte ou d’écriture : Ingestion requires a qualified native result",
+      "rejectedValidations": [
+        {
+          "captureBatchId": "750c9374-ae9e-47cc-97e0-ecfce77c8453",
+          "reasons": {
+            "REPLAY_RESULT_CHANGED": 1
+          },
+          "observed": 807,
+          "held": 0
+        }
+      ],
+      "causes": [
+        {
+          "class": "AGREGATEUR",
+          "cause": "NONDETERMINISTIC_REPLAY",
+          "action": "Recorded transport errors retain name and remain retryable; skip live host telemetry/waits offline; sort metadata; UTC native floating dates; omit stack from Workday outputs."
+        }
+      ]
+    },
+    {
+      "sourceKey": "skechers-phenom",
+      "status": "ERROR",
+      "jobs": 0,
+      "errors": {
+        "source.failed": 1
+      },
+      "productionNote": "Access qualification requires validated native evidence: REJECTED",
+      "rejectedValidations": [
+        {
+          "captureBatchId": "83a7da8b-1b89-4e0f-8cce-9c573bd67080",
+          "reasons": {
+            "ENUMERATION_INCOMPLETE": 1
+          },
+          "observed": 1526,
+          "held": 0
+        }
+      ],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "PUBLICATION_AND_ABSENCE_CONFLATED",
+          "action": "Individually qualified subset may publish with unchanged bounded allowance. Partial capture never authorizes absence closure."
+        }
+      ]
+    },
+    {
+      "sourceKey": "stanley-stella",
+      "status": "DEGRADED",
+      "jobs": 8,
+      "errors": {
+        "SOURCE_NEVER_PUBLISHED_FOR_HOUSE": 2
+      },
+      "productionNote": "2 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "DISPLAY_NAME_USED_AS_EMPLOYER_IDENTITY",
+          "action": "Keep native source-scoped identity; preserve an existing publication with identical native employer; true identity changes still blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "stella-mccartney",
+      "status": "DEGRADED",
+      "jobs": 1,
+      "errors": {
+        "EMPLOYER_TARGET_MISMATCH": 26,
+        "SOURCE_NEVER_PUBLISHED_FOR_HOUSE": 7
+      },
+      "productionNote": "33 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "DISPLAY_NAME_USED_AS_EMPLOYER_IDENTITY",
+          "action": "Keep native source-scoped identity; preserve an existing publication with identical native employer; true identity changes still blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "swarovski",
+      "status": "ERROR",
+      "jobs": 0,
+      "errors": {
+        "source.failed": 1
+      },
+      "productionNote": "Access qualification requires validated native evidence: REJECTED",
+      "rejectedValidations": [
+        {
+          "captureBatchId": "a0bce856-2b22-47f6-a15f-22533e00c27e",
+          "reasons": {
+            "REJECTED_NATIVE_ROWS": 1
+          },
+          "observed": 571,
+          "held": 29
+        }
+      ],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "PUBLICATION_AND_ABSENCE_CONFLATED",
+          "action": "Individually qualified subset may publish with unchanged bounded allowance. Partial capture never authorizes absence closure."
+        }
+      ]
+    },
+    {
+      "sourceKey": "swatch-group",
+      "status": "ERROR",
+      "jobs": 0,
+      "errors": {
+        "source.failed": 1
+      },
+      "productionNote": "Access qualification requires validated native evidence: REJECTED",
+      "rejectedValidations": [
+        {
+          "captureBatchId": "3a6d6e10-8d94-4ae8-8f6f-32d02256368b",
+          "reasons": {
+            "ENUMERATION_INCOMPLETE": 1
+          },
+          "observed": 297,
+          "held": 0
+        }
+      ],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "PUBLICATION_AND_ABSENCE_CONFLATED",
+          "action": "Individually qualified subset may publish with unchanged bounded allowance. Partial capture never authorizes absence closure."
+        }
+      ]
+    },
+    {
+      "sourceKey": "tapestry",
+      "status": "ERROR",
+      "jobs": 0,
+      "errors": {
+        "source.failed": 1
+      },
+      "productionNote": "Access qualification requires validated native evidence: REJECTED",
+      "rejectedValidations": [
+        {
+          "captureBatchId": "d6064f19-c6ff-4f38-9c9d-0d19c6c27cc6",
+          "reasons": {
+            "ENUMERATION_INCOMPLETE": 1
+          },
+          "observed": 2268,
+          "held": 4
+        }
+      ],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "PUBLICATION_AND_ABSENCE_CONFLATED",
+          "action": "Individually qualified subset may publish with unchanged bounded allowance. Partial capture never authorizes absence closure."
+        }
+      ]
+    },
+    {
+      "sourceKey": "theory-us-retail",
+      "status": "DEGRADED",
+      "jobs": 5,
+      "errors": {
+        "SOURCE_NEVER_PUBLISHED_FOR_HOUSE": 1
+      },
+      "productionNote": "1 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "DISPLAY_NAME_USED_AS_EMPLOYER_IDENTITY",
+          "action": "Keep native source-scoped identity; preserve an existing publication with identical native employer; true identity changes still blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "therealreal",
+      "status": "DEGRADED",
+      "jobs": 117,
+      "errors": {},
+      "productionNote": "1 annonces non publiables archivées (1 non résolues) ; énumération prouvée · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "DATA",
+          "cause": "NATIVE_VOLUME_OR_PUBLICATION_QUALITY",
+          "action": "Source-specific degradation retained; On has 122 native placeholder descriptions. Withdrawn/held publication state remains authoritative."
+        }
+      ]
+    },
+    {
+      "sourceKey": "thomas-sabo",
+      "status": "DEGRADED",
+      "jobs": 40,
+      "errors": {
+        "EMPLOYER_SPELLING_DIVERGED": 1
+      },
+      "productionNote": "1 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "DATA",
+          "cause": "EXISTING_EMPLOYER_LABEL_CHANGED",
+          "action": "Keep review gate; punctuation similarity is not a reviewed alias."
+        }
+      ]
+    },
+    {
+      "sourceKey": "tiffany-oracle",
+      "status": "BROKEN",
+      "jobs": 0,
+      "errors": {
+        "PORTAL_OWNER_NOT_CERTIFIED": 460
+      },
+      "productionNote": "460 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "DATA",
+          "cause": "NATIVE_EMPLOYER_OR_REVIEWED_PORTAL_SCOPE_MISSING",
+          "action": "SmartRecruiters reads native company.name; other sources require explicit portal evidence or remain individually blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "toteme",
+      "status": "BROKEN",
+      "jobs": 0,
+      "errors": {
+        "SOURCE_NEVER_PUBLISHED_FOR_HOUSE": 19
+      },
+      "productionNote": "19 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "DISPLAY_NAME_USED_AS_EMPLOYER_IDENTITY",
+          "action": "Keep native source-scoped identity; preserve an existing publication with identical native employer; true identity changes still blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "tropicfeel",
+      "status": "BROKEN",
+      "jobs": 0,
+      "errors": {},
+      "productionNote": "returned nothing again — never produced since it was catalogued",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "ADAPTER",
+          "cause": "EXPLICIT_NATIVE_ZERO_NOT_RECOGNIZED",
+          "action": "Greenhouse meta.total=0 and terminal Teamtailor empty feed recognized; empty collector alone remains insufficient."
+        }
+      ]
+    },
+    {
+      "sourceKey": "ulta-jibe",
+      "status": "ERROR",
+      "jobs": 0,
+      "errors": {
+        "source.failed": 1
+      },
+      "productionNote": "Access qualification requires validated native evidence: REJECTED",
+      "rejectedValidations": [
+        {
+          "captureBatchId": "30d9b497-c74a-44e8-9e5f-64560cc3de78",
+          "reasons": {
+            "ENUMERATION_INCOMPLETE": 1
+          },
+          "observed": 9970,
+          "held": 0
+        }
+      ],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "PUBLICATION_AND_ABSENCE_CONFLATED",
+          "action": "Individually qualified subset may publish with unchanged bounded allowance. Partial capture never authorizes absence closure."
+        }
+      ]
+    },
+    {
+      "sourceKey": "uniqlo-au-graduates",
+      "status": "BROKEN",
+      "jobs": 0,
+      "errors": {
+        "SOURCE_NEVER_PUBLISHED_FOR_HOUSE": 2
+      },
+      "productionNote": "2 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "DISPLAY_NAME_USED_AS_EMPLOYER_IDENTITY",
+          "action": "Keep native source-scoped identity; preserve an existing publication with identical native employer; true identity changes still blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "uniqlo-au-stores",
+      "status": "BROKEN",
+      "jobs": 0,
+      "errors": {
+        "SOURCE_NEVER_PUBLISHED_FOR_HOUSE": 71
+      },
+      "productionNote": "71 erreurs de collecte ou d’écriture · desc 97% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "DISPLAY_NAME_USED_AS_EMPLOYER_IDENTITY",
+          "action": "Keep native source-scoped identity; preserve an existing publication with identical native employer; true identity changes still blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "uniqlo-graduates",
+      "status": "BROKEN",
+      "jobs": 0,
+      "errors": {
+        "SOURCE_NEVER_PUBLISHED_FOR_HOUSE": 11
+      },
+      "productionNote": "11 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "DISPLAY_NAME_USED_AS_EMPLOYER_IDENTITY",
+          "action": "Keep native source-scoped identity; preserve an existing publication with identical native employer; true identity changes still blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "uniqlo-headquarters",
+      "status": "BROKEN",
+      "jobs": 0,
+      "errors": {
+        "SOURCE_NEVER_PUBLISHED_FOR_HOUSE": 16
+      },
+      "productionNote": "16 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "DISPLAY_NAME_USED_AS_EMPLOYER_IDENTITY",
+          "action": "Keep native source-scoped identity; preserve an existing publication with identical native employer; true identity changes still blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "uniqlo-hkm-headquarters",
+      "status": "BROKEN",
+      "jobs": 0,
+      "errors": {
+        "SOURCE_NEVER_PUBLISHED_FOR_HOUSE": 4
+      },
+      "productionNote": "4 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "DISPLAY_NAME_USED_AS_EMPLOYER_IDENTITY",
+          "action": "Keep native source-scoped identity; preserve an existing publication with identical native employer; true identity changes still blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "uniqlo-stores",
+      "status": "DEGRADED",
+      "jobs": 19,
+      "errors": {
+        "SOURCE_NEVER_PUBLISHED_FOR_HOUSE": 11,
+        "EMPLOYER_TARGET_MISMATCH": 74
+      },
+      "productionNote": "85 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "DISPLAY_NAME_USED_AS_EMPLOYER_IDENTITY",
+          "action": "Keep native source-scoped identity; preserve an existing publication with identical native employer; true identity changes still blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "urbn-hub",
+      "status": "ERROR",
+      "jobs": 0,
+      "errors": {
+        "source.failed": 1
+      },
+      "productionNote": "Access qualification requires validated native evidence: REJECTED",
+      "rejectedValidations": [
+        {
+          "captureBatchId": "dbf34f4e-cc2d-44c9-b09d-4aa53de57ac6",
+          "reasons": {
+            "NO_QUALIFIED_PUBLICATION": 1
+          },
+          "observed": 1475,
+          "held": 1475
+        }
+      ],
+      "causes": [
+        {
+          "class": "DATA",
+          "cause": "HUB_DETAIL_ORIGINS_MISSING",
+          "action": "Bind seven exact origins seen in native hub listing; retain explicit-origin identity and access qualification."
+        }
+      ]
+    },
+    {
+      "sourceKey": "valentino",
+      "status": "DEGRADED",
+      "jobs": 65,
+      "errors": {
+        "PORTAL_OWNER_NOT_CERTIFIED": 1
+      },
+      "productionNote": "1 erreurs de collecte ou d’écriture · desc 98% date 98% pays 98% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "DATA",
+          "cause": "NATIVE_EMPLOYER_OR_REVIEWED_PORTAL_SCOPE_MISSING",
+          "action": "SmartRecruiters reads native company.name; other sources require explicit portal evidence or remain individually blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "versace",
+      "status": "DEGRADED",
+      "jobs": 14,
+      "errors": {
+        "SOURCE_NEVER_PUBLISHED_FOR_HOUSE": 14,
+        "EMPLOYER_TARGET_MISMATCH": 24
+      },
+      "productionNote": "38 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+      "rejectedValidations": [],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "DISPLAY_NAME_USED_AS_EMPLOYER_IDENTITY",
+          "action": "Keep native source-scoped identity; preserve an existing publication with identical native employer; true identity changes still blocked."
+        }
+      ]
+    },
+    {
+      "sourceKey": "vf-corporation",
+      "status": "ERROR",
+      "jobs": 0,
+      "errors": {
+        "source.failed": 1
+      },
+      "productionNote": "Access qualification requires validated native evidence: REJECTED",
+      "rejectedValidations": [
+        {
+          "captureBatchId": "0b415191-3999-4c91-b99d-b438cc7e95a7",
+          "reasons": {
+            "REJECTED_NATIVE_ROWS": 1
+          },
+          "observed": 1420,
+          "held": 549
+        }
+      ],
+      "causes": [
+        {
+          "class": "ARCHITECTURE",
+          "cause": "PUBLICATION_AND_ABSENCE_CONFLATED",
+          "action": "Individually qualified subset may publish with unchanged bounded allowance. Partial capture never authorizes absence closure."
+        }
+      ]
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "status": "ERROR",
+      "jobs": 0,
+      "errors": {
+        "source.failed": 1
+      },
+      "productionNote": "Access qualification requires validated native evidence: REJECTED",
+      "rejectedValidations": [
+        {
+          "captureBatchId": "7b3fffec-b0e4-4ae2-aa3f-6b7393caf11e",
+          "reasons": {
+            "READER_UNQUALIFIED": 2074,
+            "NO_QUALIFIED_PUBLICATION": 1
+          },
+          "observed": 2074,
+          "held": 0
+        }
+      ],
+      "causes": [
+        {
+          "class": "ADAPTER",
+          "cause": "RETAINED_NATIVE_CONTENT_UNREADABLE",
+          "action": "Share live/recovery readers; retain native detail for WTTJ, Bash, Taleo and EQWA."
+        }
+      ]
+    },
+    {
+      "sourceKey": "zegna-altamira",
+      "status": "ERROR",
+      "jobs": 0,
+      "errors": {
+        "source.failed": 1
+      },
+      "productionNote": "Access qualification requires validated native evidence: REJECTED",
+      "rejectedValidations": [
+        {
+          "captureBatchId": "def31185-4b06-4bd4-9e73-91efe04c70e3",
+          "reasons": {
+            "DETAIL_EVIDENCE_UNUSABLE": 5
+          },
+          "observed": 63,
+          "held": 0
+        }
+      ],
+      "causes": [
+        {
+          "class": "DATA",
+          "cause": "DETAIL_EVIDENCE_UNUSABLE",
+          "action": "Native content/identity remains unqualified; preserve history and per-publication gate. No invented data."
+        }
+      ]
+    }
+  ],
+  "additionalStructuralFindings": [
+    "Native qualification expires after 24h but access after 30d: renew native qualification independently inside authorized run.",
+    "Existing refresh was no longer executed by the normal worker: call it after daily ingestion, ACTIVE scope, existing absence and mass-closure gates.",
+    "Operational report had parallel legacy gates: reuse actual access, validation, sealed ingestion and absence readers."
+  ],
+  "dedup": {
+    "summary": {
+      "decisions": 63,
+      "passed": 63,
+      "failed": [],
+      "checkedAt": "2026-09-23T10:25:03.960Z"
+    },
+    "results": [
+      {
+        "id": "ac183ed1-256b-454e-8254-50a5ed7a38b0",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmu9p449b00expkguft7qrxcx",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_REQUISITION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "c60804d1-a782-4959-b99c-299f1549eb90",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmu8bqciy00dllgbvfkdpuqkt",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_REQUISITION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "f4289edd-c341-4ebb-a3a7-d67486bad004",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmu8bqck500dslgbv7g5yyazq",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_REQUISITION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "c38f3cb0-eb3c-4806-9ab3-e2335538d87d",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmu8bqcyn00fqlgbva50emwc6",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_REQUISITION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "7f7af589-1733-4d24-9cbd-4e8beae12d68",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmudt6xx80787oa343s2nvz7y",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_APPLICATION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "d192af85-8d10-44f7-b862-00bbd04ab0d0",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmudt6xyo078eoa34tksvar3w",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_APPLICATION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "3f6b71dc-d5fe-4772-89ab-57d4ae47e896",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmudt6y45078zoa3429haojub",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_APPLICATION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "4ca34e25-0d75-421c-8e1b-9eaf044ea9ce",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmudt6y6e0796oa347fmof1t9",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_APPLICATION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "36e43f87-a55d-416d-85a3-c867f262a00e",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmudt6ybz079loa3452sdns01",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_APPLICATION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "b246bf21-3135-4599-89a2-0002f3b88634",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmudt6ydk079soa34mv45een6",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_APPLICATION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "ddaf9b10-840b-48a5-ab8a-7c2664e7d62d",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmudt6yfc079zoa34arm20ilv",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_APPLICATION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "59b52a93-43e6-4f6b-95d8-114a554777f3",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmudt6yhd07a6oa34hb6q73uk",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_APPLICATION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "f8141910-9854-44dd-8344-3e8e43e4b907",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmudt6yjv07adoa340j4yjvcw",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_APPLICATION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "dd6f4c05-252e-4662-95dc-955045af45c5",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmudt6ylk07akoa34mdrsxx1s",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_APPLICATION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "a0fa136c-ce37-4a92-987c-0f179f380be9",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmudt6ynf07aroa34b11lfrg3",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_APPLICATION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "c7d50aed-3cf0-4e47-aecd-68dfc31dd031",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmudt6ypr07ayoa34u5kzqobi",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_APPLICATION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "cb4fbd53-0947-4c5f-b807-9aaaeb685015",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmudt6yt107bcoa342v83s2ai",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_APPLICATION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "60534b06-bed7-4c3a-b626-a0dd05f8af64",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmudt6z1007byoa341s95nel6",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_APPLICATION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "7a2aa28d-a3fe-4219-90fe-cb343b782e98",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmudt6z3807c5oa34jsymo2kf",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_APPLICATION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "86936700-a675-4afc-804a-cb22ffed014d",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmudt6z4n07ccoa34ylg33u4r",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_APPLICATION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "b96d946e-acf8-476d-ad76-0b3265c8a695",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmudt6z6s07cjoa34p19y3tpz",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_APPLICATION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "c48be08b-b700-4b11-86cc-a52d4ce6de8f",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmudt6z9707cqoa3457tw5uk8",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_APPLICATION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "1b64427e-788e-40a2-bca2-43475b2f173e",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmudt6zbf07cxoa34pwt8jumv",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_APPLICATION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "a57855e1-006a-44db-b364-75e12ed058fc",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmudt6zds07d4oa349jzkyc7g",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_APPLICATION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "185d3395-1d93-44b3-9c7e-6818f875d1b4",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmudt6zg607dboa34s98ty7i0",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_APPLICATION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "6bdfbe05-7b3c-47d0-b3ee-8a4923b501a1",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmudt6ziu07dioa34fyjaluvm",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_APPLICATION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "a299c33b-1ba7-4921-bcf3-e94ab53e6602",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmudt6zl607dpoa34si4b86yq",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_APPLICATION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "6428cbfa-af53-4c90-80d3-8d03ef332b5b",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmudt6znk07dwoa34yon1u9hs",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_APPLICATION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "b396b8a4-be1f-4ca2-aafe-e5925073348a",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmudt6zpl07e3oa34mltcuqa3",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_APPLICATION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "65271771-761b-4580-9929-2937ebed7bbb",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmudt6zr907eaoa34j9hbn29r",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_APPLICATION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "25f35265-783f-48bf-b9d8-de8d399165ea",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmudt6zsu07ehoa34ls4dhg5c",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_APPLICATION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "1d3f5c59-e842-400f-81eb-2c7c66ad0bf5",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmudt6zui07eooa34jh0cd18i",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_APPLICATION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "7afb60c5-ad6d-4ead-8dc8-95fcd323282f",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmudt6zwn07evoa34tx0stthh",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_APPLICATION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "b2b9a28a-8578-4069-97da-f1fa4731cf6d",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmudt6zyg07f2oa349f6g8fzd",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_APPLICATION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "6a3805a3-219b-452c-9df3-0c1818597c05",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmudt700007f9oa34hyjuqe54",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_APPLICATION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "161fbea6-f8fd-4b44-87b6-5838e59c8388",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmudt703s07fnoa34h9ioro6f",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_APPLICATION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "2c179f30-aefa-4265-86c3-7a707d85f1aa",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmudt707g07g1oa34rm0wen8p",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_APPLICATION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "984ece72-7782-43d9-a900-056fb7bd0877",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmudt709b07g8oa347v2fqpl6",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_APPLICATION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "d53c5c58-a8b8-4f06-8bbe-6f5632af81ae",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmudt70ao07gfoa3416okpc8x",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_APPLICATION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "24556af0-6e19-4e88-b6f7-ff58d1b0657c",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmudt70cc07gmoa34oaylffwe",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_APPLICATION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "1db63f0b-0ab2-4942-ad81-9f17c98e776b",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmudt70f507gtoa34jd1tcy35",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_APPLICATION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "55f26c44-349b-4bdf-8d2e-a9f63adc88d4",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmudt70h307h0oa34og0uw7kf",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_APPLICATION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "60db7a7b-7de6-4976-9a8a-f7312811b6ab",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmudt70lk07heoa343ycmisf5",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_APPLICATION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "d44cf9fd-05c8-4d29-a07f-7f1ac087508f",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmudt70oa07hloa34f8m2eej1",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_APPLICATION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "d7893efb-2739-4f7a-94e4-ee4a18cbe8b3",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmudt70rc07htoa34l8k3m8ph",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_APPLICATION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "3d33a961-9829-4ba0-ae27-d128fc403253",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmudtg1zk0emkoa34qgvaaxnj",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_REQUISITION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "83624def-e70c-43c5-92e5-496dac136997",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmudtg22b0emroa34dgal9vhc",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_REQUISITION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "fe61499a-407f-405d-9868-b3f2956ae1f9",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmudtg1zk0emkoa34qgvaaxnj",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_REQUISITION_ID"
+          },
+          {
+            "id": "cmudua7ly1kjmoa348omdkgj2",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_REQUISITION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "69b3ba43-bd0c-4b85-89a8-fdcf85754feb",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmudtg22b0emroa34dgal9vhc",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_REQUISITION_ID"
+          },
+          {
+            "id": "cmudua7o11kjqoa341blvff8e",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_REQUISITION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "ff04c6a6-1c59-42d3-96c8-0e8ec853ea9b",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmudtg25l0emyoa34z0aouazi",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_REQUISITION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "92f3554c-6cb0-4501-8c02-52e6f1337498",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmu8bqbhk008clgbvvpypgve1",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_REQUISITION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "c5162dcd-69c5-4832-8fc7-ebbcfea686c2",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmu8bq9v6000qlgbvk3wbtypw",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_REQUISITION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "c26d507c-46b6-4762-bf6b-8cee222199b1",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmu8bq9wi000xlgbv2bqx5ynr",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_REQUISITION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "ae646060-f41f-403c-a336-aa3bea66d143",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmu8bqbbo007klgbv9kanf6we",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_REQUISITION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "1656cca4-dc40-4c07-8fd0-5c21b8d5d7a8",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmu8bqbd5007rlgbvn5eporzw",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_REQUISITION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "4379742f-ea33-46ad-bcf8-d50311571f61",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmu8bqbeu007ylgbvg7x866vt",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_REQUISITION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "3f262e66-38f7-4446-852f-f99d3532da34",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmu8bqbg80085lgbvdcxdl5b6",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_REQUISITION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "3040a8a7-f495-42e0-9407-41b7d056e2f0",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmu8bqcgb00d7lgbviov1p05h",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_REQUISITION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "fccabd77-df1e-4293-9690-66e6d8ee0299",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmudtg2ri0eo9oa34aick0c74",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_REQUISITION_ID"
+          },
+          {
+            "id": "cmu8bqciy00dllgbvfkdpuqkt",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_REQUISITION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "e6ff44d3-976e-4786-a559-99aba3ec8054",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmu8bqck500dslgbv7g5yyazq",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_REQUISITION_ID"
+          },
+          {
+            "id": "cmudtg2u90eodoa34wxlp0b1y",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_REQUISITION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "909b9dd6-79f9-4f57-bdf0-15c523a49f9a",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmu8bqcsg00erlgbvqdjf4qm8",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_REQUISITION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "e5ec2d7a-3838-4ea1-bafb-0492fa46199f",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmu9fyjar03l2ofadk3t46f3p",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_REQUISITION_ID"
+          }
+        ],
+        "passed": true
+      },
+      {
+        "id": "8e06f3a1-a60c-4bdc-94ce-37f3754c0d86",
+        "subjectRawBound": true,
+        "peers": [
+          {
+            "id": "cmu9fyvhs050jofadgpa4tfye",
+            "rawBound": true,
+            "proofMatches": true,
+            "rule": "QUALIFIED_REQUISITION_ID"
+          }
+        ],
+        "passed": true
+      }
+    ]
+  },
+  "nativeUrnbOrigins": [
+    "homeoffice-eu-urbn.icims.com",
+    "homeoffice-na-urbn.icims.com",
+    "menusandvenues-na-urbn.icims.com",
+    "stores-eu-urbn.icims.com",
+    "stores-na-urbn.icims.com",
+    "supplychain-eu-urbn.icims.com",
+    "supplychain-na-urbn.icims.com"
+  ],
+  "onRunningNativePlaceholderDescriptions": 122
+}

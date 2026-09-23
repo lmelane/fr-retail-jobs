@@ -185,7 +185,7 @@ Tous s'exécutent sous `db.py readonly` (ou sur le clone) : `db.py readonly npx 
 
 | Outil | Rôle |
 |---|---|
-| [`source-registry.mts`](source-registry.mts) `[--out=…] [--md=…]` | Le registre opérationnel des sources : une décision par source, aucune par défaut (`decideMode`). |
+| [`source-registry.mts`](source-registry.mts) `[--out=…] [--md=…]` | Le registre opérationnel des sources : une décision par source, dérivée des contrôles réels d’accès, qualification native, ingestion scellée et absence (`readOperationalMode`). |
 | [`operations-report.mts`](operations-report.mts) `[--out=…] [--md=…]` | L'état courant de chaque source en une lecture (accès, mode, dernier run). |
 | [`source-keys.mts`](source-keys.mts) | Les clés du catalogue pour valider une allowlist ; le statut est rendu à côté, jamais comme critère. |
 | [`tenant-key-table.mts`](tenant-key-table.mts) `--runs=<id,…>` | La clé de tenant effectivement utilisée par la porte, source par source. |

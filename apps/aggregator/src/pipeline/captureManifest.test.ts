@@ -106,7 +106,7 @@ describe('complete extraction result evidence', () => {
     const incomplete = await openBatch();
     await persistCapture(db, incomplete.id, receipt(false));
     const swallowed = async () => { try { await fetchJson(url); } catch { /* Deliberate. */ } return result; };
-    await expect(replayExtraction(db, incomplete.id, swallowed)).rejects.toThrow('incomplete');
+    await expect(replayExtraction(db, incomplete.id, swallowed)).rejects.toThrow('absent');
     const { batch } = await capture(); const store = new MemoryStore();
     await archiveRawBlob(db, batch.captures[0].blobHash!, store);
     vi.spyOn(store, 'get').mockResolvedValue(Buffer.from('corrupt'));

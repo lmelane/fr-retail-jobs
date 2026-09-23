@@ -10,6 +10,7 @@ import { icimsDetailMatchesListing } from '../identity/icims.js';
 import { parseGreenhouseJob } from '../ats/adapters/greenhouse.js';
 import { parseRecruiteeJob } from '../ats/adapters/recruitee.js';
 import { normalizeGenericPosting } from '../ats/adapters/genericJsonLd.js';
+import { readCaudalieRaw } from '../ats/adapters/caudalie.js';
 import { descriptionFromJobAd, parseSmartRecruitersPosting, type PostingDetail, type SmartRecruitersPosting } from '../ats/adapters/smartrecruiters.js';
 import { applySuccessFactorsDetail, brandPropertyOf, normalizeRmkItem, splitSlug, type RetainedSuccessFactorsDetail, type RmkV2Item } from '../ats/adapters/successfactors.js';
 import { normalizeAnnouncement, type DrItem } from '../ats/adapters/digitalrecruiters.js';
@@ -34,7 +35,10 @@ import { parseEasycruitVacancy } from '../ats/adapters/easycruit.js';
 import { parseHarriPublication } from '../ats/adapters/harri.js';
 import { parseTalentRecruiterPosition } from '../ats/adapters/talentRecruiter.js';
 import { toNormalized as toEightfoldJob } from '../ats/adapters/eightfold.js';
-import { eqwaRowToJob, type EqwaListingJob } from '../ats/adapters/eqwa.js';
+import { parseBashListing, parseBashDetail } from '../ats/adapters/bashTalents.js';
+import { parseTaleoListing, parseTaleoDetail } from '../ats/adapters/taleo.js';
+import { parseWttjHit, wttjCanonicalId, descriptionFromApi, type WttjHit } from '../ats/adapters/wttj.js';
+import { parseEqwaDetail, eqwaRowToJob, type EqwaListingJob } from '../ats/adapters/eqwa.js';
 import { enrichRetainedPostingEvidence } from '../lib/postingEvidence.js';
 import { htmlToPlainText } from '../lib/html.js';
 import { evidenceHash } from '../lib/evidenceHash.js';
@@ -45,10 +49,9 @@ type Context = { externalId: string; url: string; observedAt: Date; config: Reco
  * Les motifs de refus qui portent sur UNE publication, jamais sur le lot.
  *
  * Exportée pour que `sourceValidation` sache lesquels son seuil de tolérance peut couvrir
- * (politique v2, 19/09/2026) : une annonce sans description est un cas réel chez l'éditeur, un
- * rejeu divergent ou une énumération incomplète disent que la COLLECTE n'est pas fiable — et
- * ceux-là restent bloquants. Une liste recopiée à la main divergerait de celle-ci sans que rien
- * ne le signale.
+ * Une annonce refusée reste non publiable. La politique de qualification décide si le
+ * sous-ensemble fiable peut être publié ; seule la preuve d'énumération peut autoriser
+ * des fermetures. Cette liste est partagée avec le validateur.
  */
 export const PER_PUBLICATION_REASONS = ['RAW_MISSING', 'READER_UNQUALIFIED', 'NATIVE_ID_MISSING', 'CONTENT_MISSING',
   'RAW_SCHEMA_INVALID', 'IDENTITY_MISMATCH', 'DETAIL_IDENTITY_MISMATCH', 'DETAIL_EVIDENCE_UNUSABLE', 'PUBLICATION_HELD'] as const;
@@ -92,6 +95,40 @@ function readRetainedPublication(kind: string, raw: unknown, context: Context, r
   let job: NormalizedJob | null | undefined;
   try {
     switch (kind) {
+      case 'wttj': case 'wttj-sector': {
+        if (!wttjCanonicalId(raw as WttjHit)) return failure('NATIVE_ID_MISSING');
+        const slug = typeof config.slug === 'string' ? config.slug : raw.organization?.slug;
+        if (typeof slug !== 'string' || !slug) return failure('RAW_SCHEMA_INVALID');
+        job = parseWttjHit(raw as WttjHit, slug);
+        if (job && raw.detail !== undefined) {
+          const expected = `https://api.welcometothejungle.com/api/v1/organizations/${raw.organization?.slug ?? slug}/jobs/${raw.slug}`;
+          if (!object(raw.detail) || raw.detailUrl !== expected ||
+            raw.detail.reference && raw.reference && raw.detail.reference !== raw.reference ||
+            raw.detail.slug && raw.detail.slug !== raw.slug) return failure('DETAIL_IDENTITY_MISMATCH');
+          const full = descriptionFromApi(raw.detail);
+          if (full && full.length > (job.description?.length ?? 0)) job.description = full;
+        }
+        break;
+      }
+      case 'bashtalents': case 'taleo': {
+        if (kind === 'bashtalents') {
+          if (raw.source !== 'bash-talents' || typeof raw.listingBlock !== 'string') return failure('RAW_SCHEMA_INVALID');
+          const rows = parseBashListing('<div class="job-wrapper" attr-href="' + raw.listingBlock).jobs;
+          if (rows.length !== 1) return failure('RAW_SCHEMA_INVALID');
+          job = rows[0];
+        } else {
+          if (raw.source !== 'taleo-tbe' || typeof raw.listingHtml !== 'string') return failure('RAW_SCHEMA_INVALID');
+          const rows = parseTaleoListing(raw.listingHtml);
+          if (rows.length !== 1) return failure('RAW_SCHEMA_INVALID');
+          job = rows[0];
+        }
+        if (typeof raw.detailHtml === 'string') {
+          if (raw.detailUrl !== job.url) return failure('DETAIL_IDENTITY_MISMATCH');
+          const detail = kind === 'bashtalents' ? parseBashDetail(raw.detailHtml) : parseTaleoDetail(raw.detailHtml);
+          job = { ...job, description: detail.description ?? job.description, postedAt: detail.postedAt ?? job.postedAt };
+        }
+        break;
+      }
       case 'ashby':
         if (!identifier(raw.id ?? raw.jobUrl)) return failure('NATIVE_ID_MISSING');
         job = parseAshbyJob(raw, String(config.board ?? config.slug ?? ''), context.observedAt); break;
@@ -142,6 +179,9 @@ function readRetainedPublication(kind: string, raw: unknown, context: Context, r
         if (!identifier(raw.id)) return failure('NATIVE_ID_MISSING');
         job = parseRecruiteeJob(raw as Parameters<typeof parseRecruiteeJob>[0], String(config.subdomain ?? '')); break;
       case 'generic-listing': case 'generic-jsonld': case 'radancy': {
+        if (config.reader === 'caudalie-ajax' && raw.source === 'caudalie-ajax-v1') {
+          job = readCaudalieRaw(raw); break;
+        }
         if (!jobPosting(raw)) return failure('READER_UNQUALIFIED');
         // The identity is the crawled page, retained as `catwalksPageUrl` since lot F3b; an older RAW without it reads
         // the posting's own `url`, and a posting declaring no URL was published at the page it was read from.
@@ -480,7 +520,8 @@ function readRetainedPublication(kind: string, raw: unknown, context: Context, r
         const { postedAt, ...reste } = raw;
         const date = typeof postedAt === 'string' || postedAt instanceof Date ? new Date(postedAt) : undefined;
         job = eqwaRowToJob({ ...(reste as EqwaListingJob), ...(date && !Number.isNaN(date.getTime()) ? { postedAt: date } : {}) },
-          typeof raw.description === 'string' ? raw.description : undefined);
+          typeof raw.detailHtml === 'string' && raw.detailUrl === raw.url ? parseEqwaDetail(raw.detailHtml).description : undefined);
+        if (raw.detailHtml !== undefined && raw.detailUrl !== raw.url) return failure('DETAIL_IDENTITY_MISMATCH');
         break;
       }
       default: return failure('READER_UNQUALIFIED');

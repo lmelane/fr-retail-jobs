@@ -11,6 +11,7 @@ import { log } from '../observability/logger.js';
 import { captureReaderRevision } from '../capture/revision.js';
 import { captureSourceForValidation } from './sourceValidation.js';
 import { SourceAccessGateError } from './accessScope.js';
+import { requireSourceValidation, SourceValidationGateError } from './sourceCertification.js';
 import { SourceAdmissionGateError } from './sourceAdmission.js';
 
 const message = (error: unknown) => (error instanceof Error ? error.message : String(error)).replace(/\s+/g, ' ').replace(/(https?:\/\/[^\s'")?]+)\?[^\s'")]*/g, '$1?…').slice(0, 400);
@@ -74,6 +75,16 @@ export async function maintainSourceAccess(db: PrismaClient, sourceKey: string, 
   let reason: string;
   try {
     const { decision } = assertSourceAccess(source, previous);
+    // Access grants live up to 30 days; native qualification lasts 24 hours.
+    // A daily run must renew the latter without replacing a still-valid grant.
+    try { await requireSourceValidation(db, source.currentRevisionId); }
+    catch (error) {
+      if (!(error instanceof SourceValidationGateError)) throw error;
+      await log.info('source.native_qualification_started', { sourceKey, reason: error.code });
+      const validation = await captureSourceForValidation(db, sourceKey, timeoutMs, store);
+      if (validation.verdict !== 'VALIDATED') throw new SourceAdmissionGateError('CAPTURE_NOT_VALIDATED', `Native qualification failed: ${validation.verdict}`);
+      await log.info('source.native_qualification_completed', { sourceKey, captureBatchId: validation.captureBatchId });
+    }
     return { renewed: false, decisionId: decision.id };
   } catch (error) {
     if (!(error instanceof SourceAccessGateError) || !['ACCESS_STALE', 'ACCESS_MISSING'].includes(error.code)) throw error;

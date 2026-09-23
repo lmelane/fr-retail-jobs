@@ -71,7 +71,7 @@ export function parseTaleoListing(html: string): NormalizedJob[] {
       title: decode(title),
       location: decode(location) || undefined,
       url: decode(href),
-      raw: { source: 'taleo-tbe' },
+      raw: { source: 'taleo-tbe', listingHtml: row[0] },
     });
   }
   return jobs;
@@ -188,9 +188,10 @@ export async function fetchTaleoJobs(config: Record<string, unknown>): Promise<A
     jobs.map((job) =>
       limit(async () => {
         try {
-          const detail = parseTaleoDetail(await fetchText(job.url));
+          const detailHtml = await fetchText(job.url);
+          const detail = parseTaleoDetail(detailHtml);
           return detail.description
-            ? { ...job, description: detail.description, postedAt: detail.postedAt ?? job.postedAt }
+            ? { ...job, description: detail.description, postedAt: detail.postedAt ?? job.postedAt, raw: { ...(job.raw as object), detailHtml, detailUrl: job.url } }
             : job;
         } catch {
           // Un détail injoignable ne doit pas faire perdre l'offre de liste.

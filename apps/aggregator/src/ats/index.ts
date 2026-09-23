@@ -188,7 +188,7 @@ export function normalizeAdapterResult(result: NormalizedJob[] | AdapterResult):
  */
 export const ADAPTERS: Record<string, (config: Record<string, unknown>) => Promise<NormalizedJob[] | AdapterResult>> = {
   // Greenhouse documents this endpoint as the complete public job board.
-  GREENHOUSE: async config => ({ jobs: await fetchGreenhouseJobs(config), complete: true }),
+  GREENHOUSE: fetchGreenhouseJobs,
   LEVER: fetchLeverJobs,
   SMARTRECRUITERS: fetchSmartRecruitersJobs,
   RECRUITEE: fetchRecruiteeJobs,

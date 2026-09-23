@@ -61,9 +61,9 @@ export async function readLatestSourceAccess(db: Prisma.TransactionClient, sourc
   return new Map(rows.map(row => [row.sourceKey, row]));
 }
 
-export function accessStatus(source: Subject, decision: SourceAccessDecision | null) {
+export function accessStatus(source: Subject, decision: SourceAccessDecision | null, now = new Date()) {
   try {
-    const valid = assertSourceAccess(source, decision);
+    const valid = assertSourceAccess(source, decision, now);
     const report = valid.decision.report as AccessEvidenceReport;
     return { passed: true, code: null as string | null, decisionId: decision!.id, revisionBound: true,
       validUntil: decision!.validUntil, observations: report.observations };

@@ -1,6 +1,6 @@
 import { fetchJson } from '../../lib/http.js';
 import { countryFromLocation } from '../../normalize/country.js';
-import type { NormalizedJob } from '../../types.js';
+import type { AdapterResult, NormalizedJob } from '../../types.js';
 import { publisherInstant } from '../../lib/publisherInstant.js';
 
 type GreenhouseOffice = { id?: number; name?: string; location?: string | null };
@@ -9,7 +9,7 @@ type GreenhouseJob = {
   /** Present with `?content=true`: the hiring office(s); `location` is a free address ("London, England, United Kingdom", "Förrlibuckstrasse 190, 8005 Zürich, Switzerland") or null. */
   offices?: GreenhouseOffice[];
 };
-type GreenhouseResponse = { jobs: GreenhouseJob[] };
+type GreenhouseResponse = { jobs: GreenhouseJob[]; meta?: { total?: number } };
 
 /**
  * The country of a Greenhouse posting. `location.name` is a bare city ("Zurich", "Shanghai": 0 % of On's 309 postings carried
@@ -24,11 +24,15 @@ export function greenhouseCountry(job: Pick<GreenhouseJob, 'offices' | 'location
   return countryFromLocation(job.location?.name);
 }
 
-export async function fetchGreenhouseJobs(config: Record<string, unknown>): Promise<NormalizedJob[]> {
+export async function fetchGreenhouseJobs(config: Record<string, unknown>): Promise<AdapterResult> {
   const board = String(config.board ?? '');
   if (!board) throw new Error('Greenhouse board missing');
   const data = await fetchJson<GreenhouseResponse>(`https://boards-api.greenhouse.io/v1/boards/${encodeURIComponent(board)}/jobs?content=true`);
-  return data.jobs.map(parseGreenhouseJob);
+  if (!Array.isArray(data?.jobs)) throw new Error('Greenhouse jobs array missing');
+  const total = data.meta?.total;
+  if (total !== undefined && (!Number.isSafeInteger(total) || total < 0)) throw new Error('Greenhouse invalid native total');
+  return { jobs: data.jobs.map(parseGreenhouseJob), complete: total === undefined || total === data.jobs.length,
+    ...(total !== undefined ? { declaredTotal: total } : {}) };
 }
 
 export function parseGreenhouseJob(job: GreenhouseJob): NormalizedJob {

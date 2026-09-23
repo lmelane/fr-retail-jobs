@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { validateRuntime, contractSha256, target, assertBusinessUrl, workerArguments } from './index.mjs';
+import { validateRuntime, contractSha256, target, assertBusinessUrl, workerArguments, scheduledRunDue } from './index.mjs';
 
 const built = { gitSha: 'a'.repeat(40), contractSha256 };
 const now = Date.now();
@@ -79,4 +79,19 @@ test('runtime egress follows pause; source access and SSRF remain in the HTTP la
     for (const [key, value] of [['CATWALKS_RUNTIME_PROFILE', before.profile], ['PIPELINE_PAUSED', before.pause]])
       if (value === undefined) delete process.env[key]; else process.env[key] = value;
   }
+});
+
+// Spring and autumn clock changes never shift the requested local run hour.
+for (const day of ['2026-03-28','2026-03-29','2026-09-23','2026-10-24','2026-10-25','2026-12-01']) {
+  test(`exactly one daily Paris run on ${day}`, () => {
+    const due = [16,17].filter(hour => scheduledRunDue(new Date(`${day}T${hour}:00:00Z`)));
+    assert.equal(due.length, 1);
+    const winter = ['2026-03-28','2026-10-25','2026-12-01'].includes(day);
+    assert.equal(due[0], winter ? 17 : 16);
+    assert.ok(scheduledRunDue(new Date(`${day}T${due[0]}:09:00Z`)));
+  });
+}
+test('scheduled invocation uses the normal worker and rejects extra arguments', () => {
+  assert.deepEqual(workerArguments(['scheduled']), ['ingest-all']);
+  assert.throws(() => workerArguments(['scheduled', '--source=one']), /argv/);
 });

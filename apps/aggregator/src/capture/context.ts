@@ -29,6 +29,11 @@ const contexts = new AsyncLocalStorage<CaptureContext>();
 export class OfflineReplayError extends Error {
   constructor(message: string) { super(message); this.name = 'OfflineReplayError'; }
 }
+/** A recorded failed attempt is data, not a missing/corrupt archive. The normal
+ * retry loop must consume the next recorded attempt without live HTTP. */
+export class RecordedTransportError extends Error {
+  constructor(name: string) { super('Recorded transport attempt failed'); this.name = name; }
+}
 export class CaptureUnavailableError extends Error {
   constructor(cause: unknown) { super('Native response capture unavailable; extraction stopped', { cause }); this.name = 'CaptureUnavailableError'; }
 }
@@ -149,7 +154,10 @@ export async function replayResponse(request: CaptureRequest): Promise<Response 
   if (!replay) return undefined;
   try {
     const record = await replay(requestFingerprint(request));
-    if (!record.complete || record.status === null || record.bytes === null) throw new OfflineReplayError(`Recorded incomplete response: ${record.failure ?? 'unknown'}`);
+    if (!record.complete || record.status === null || record.bytes === null) {
+      if (record.failure) throw new RecordedTransportError(record.failure);
+      throw new OfflineReplayError('Incomplete recorded response without a failure reason');
+    }
     const headers = new Headers(record.headers);
     for (const name of record.cookieNames) headers.append('set-cookie', `${name}=archive-replay; Path=/`);
     const response = new Response([204, 205, 304].includes(record.status) ? null : Buffer.from(record.bytes),
@@ -157,6 +165,7 @@ export async function replayResponse(request: CaptureRequest): Promise<Response 
     Object.defineProperty(response, 'url', { value: request.url });
     return response;
   } catch (cause) {
+    if (cause instanceof RecordedTransportError) throw cause;
     const failure = cause instanceof OfflineReplayError ? cause : new OfflineReplayError('Recorded response could not be verified');
     contexts.getStore()!.failure = failure;
     throw failure;

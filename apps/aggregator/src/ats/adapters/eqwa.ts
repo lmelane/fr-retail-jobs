@@ -120,7 +120,8 @@ export async function fetchEqwaJobs(config: Record<string, unknown>): Promise<Ad
     listing.map((row) =>
       limit(async () => {
         try {
-          return eqwaRowToJob(row, parseEqwaDetail(await fetchText(row.url, { headers: HEADERS })).description);
+          const detailHtml = await fetchText(row.url, { headers: HEADERS });
+          return { ...eqwaRowToJob(row, parseEqwaDetail(detailHtml).description), raw: { ...row, detailHtml, detailUrl: row.url } };
         } catch {
           // Une fiche indisponible garde l'offre (titre, lieu, lien) sans description.
           return eqwaRowToJob(row);

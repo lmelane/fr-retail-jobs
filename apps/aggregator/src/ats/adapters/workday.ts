@@ -479,10 +479,11 @@ export async function attachWorkdayDescriptions(
           // A failed detail is not evidence that the listing belongs to the
           // GROUP printed in the catalogue. Keep the listing and the exact
           // diagnostic as a publication hold; it cannot attest absence.
+          // A stack contains execution paths and timing, not publisher data.
           return { ...job, publicationHold: 'WORKDAY_DETAIL_FETCH_FAILED', raw: {
             ...(job.raw as Record<string, unknown>), detailFailure: error instanceof Error
-              ? { name: error.name, message: error.message, stack: error.stack }
-              : { message: String(error) },
+              ? { name: error.name }
+              : { name: 'UnknownError' },
           } };
         }
       }),

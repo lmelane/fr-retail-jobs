@@ -57,11 +57,14 @@ describe('Employer identity evidence and conservation', () => {
       expect(normalizedEmployerName(name)).toBe(name.normalize('NFKC').toLowerCase());
     }
   });
-  it('rejects a new inferred suffix merge and archives its evidence without creating a job', async () => {
+  it('publishes a native legal entity separately from an unproved historical suffix alias', async () => {
     await company('Coach Shanghai');
-    await expect(upsertDeduplicated(p, posting('Coach Shanghai Limited'))).rejects.toThrow('needs evidence');
-    expect(await p.job.count()).toBe(0);
-    expect(await p.employerObservation.findFirst({ where: { rule: 'REVIEW_REQUIRED' } })).toMatchObject({ rawEmployerName: 'Coach Shanghai Limited', canonicalEmployerId: null });
+    const result = await upsertDeduplicated(p, posting('Coach Shanghai Limited'));
+    expect(await p.job.count()).toBe(1);
+    const written = await p.job.findUniqueOrThrow({ where: { id: result.jobId }, include: { company: true } });
+    expect(written.company.name).toBe('Coach Shanghai Limited');
+    expect(written.company.canonicalKey).toMatch(/^SOURCE_/);
+    expect(await p.company.count()).toBe(2);
     expect(await p.sourceObservation.findFirst({ where: { sourceKey: 'promod', externalId: 'real-input-1' } })).not.toBeNull();
   });
   it('new source-scoped identities remain stable on replay', async () => {
@@ -87,8 +90,9 @@ describe('Employer identity evidence and conservation', () => {
   it('does not apply a scoped alias to another source merely sharing its name', async () => {
     const { b, plan } = await pair(); await applyEmployerRepair(p, plan, digest(plan), 'abcdef0123456789');
     // The old ID is redirected because that catalog identity was proved; a
-    // different unreviewed spelling is refused, not treated as an alias.
-    await expect(upsertDeduplicated(p, posting('Promod France', 'other', 'other-source'))).rejects.toThrow('needs evidence');
+    // different native spelling stays separate, without inheriting this alias.
+    const separate = await upsertDeduplicated(p, posting('Promod France', 'other', 'other-source'));
+    expect((await p.job.findUniqueOrThrow({ where: { id: separate.jobId } })).companyId).not.toBe(b.id);
     expect(await p.job.count({ where: { companyId: b.id } })).toBe(1);
   });
   it('blocks stale plans and rolls back an invalid evidence change', async () => {
@@ -236,4 +240,15 @@ describe('superseding a reviewed alias', () => {
     expect((correction?.before as any).companyId).toBe(parent.id);
     expect(await applyEmployerRepair(p, plan2, digest(plan2), 'abcdef0123456789')).toMatchObject({ alreadyApplied: true });
   });
+});
+
+it('keeps the production legal label Gianni Versace S.r.l. without inventing an equivalence', async () => {
+  const historical = await company('Gianni Versace');
+  const input = posting('Gianni Versace S.r.l.', 'Seamstress-Tailor_R_784015', 'versace');
+  const first = await upsertDeduplicated(p, input);
+  const repeated = await upsertDeduplicated(p, input);
+  const job = await p.job.findUniqueOrThrow({ where: { id: first.jobId }, include: { company: true } });
+  expect(job.companyId).not.toBe(historical.id);
+  expect(job.company.name).toBe('Gianni Versace S.r.l.');
+  expect(repeated.jobId).toBe(first.jobId);
 });

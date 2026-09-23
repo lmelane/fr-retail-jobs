@@ -74,7 +74,13 @@ export async function resolveEmployer(tx: Prisma.TransactionClient, candidate: C
   };
   const sourceScopedKey = `SOURCE_${createHash('sha256').update(JSON.stringify([candidate.sourceKey, normalized])).digest('hex')}`;
   const scoped = candidate.rawEmployerName === undefined ? null : await tx.company.findUnique({ where: { fashionjobsUrl: `resolved:${sourceScopedKey}` } });
-  const company = scoped ?? await tx.company.findUnique({ where: { fashionjobsUrl: `resolved:${candidate.companyId}` } });
+  const proposed = scoped ?? await tx.company.findUnique({ where: { fashionjobsUrl: `resolved:${candidate.companyId}` } });
+  const proposedRoot = proposed ? await canonicalEmployer(tx, proposed) : null;
+  // A display-name heuristic is neither an alias nor evidence of an identity
+  // conflict. Preserve a new native legal entity instead of rejecting it or
+  // merging it into the similarly named historical Maison.
+  const company = candidate.rawEmployerName === undefined || scoped ||
+    proposedRoot && normalizedEmployerName(proposedRoot.name) === normalized ? proposedRoot : null;
   // A historical assignment is not proof for a NEW spelling or a new posting.
   // Existing postings may be re-attested, but identity changes require a review.
   if (candidate.rawEmployerName !== undefined) {
@@ -99,6 +105,11 @@ export async function resolveEmployer(tx: Prisma.TransactionClient, candidate: C
         where: { sourceKey: candidate.sourceKey, externalId: candidate.externalId, canonicalEmployerId: { not: null } },
         orderBy: [{ observedAt: 'desc' }, { id: 'desc' }], select: { normalizedEmployerName: true },
       });
+      // Re-attesting the same source/publication/employer observation does not
+      // move the publication, even if an old display-name heuristic differs.
+      if (previous?.normalizedEmployerName === normalized) {
+        return { company: current, rule: 'NATIVE_SOURCE_LABEL', rawEmployerName, normalizedEmployerName: normalized };
+      }
       // A new spelling that IS the canonical name of the employer already holding the posting is a
       // convergence, not an identity change (Workday logo alt "UGG Logo" → "UGG" on 2026-09-10: the
       // previous observation carried the image's word, the company never did).
@@ -110,45 +121,12 @@ export async function resolveEmployer(tx: Prisma.TransactionClient, candidate: C
     if (current && (!target || current.id !== target.id)) {
       throw new EmployerIdentityReviewRequired(candidate.sourceKey, candidate.externalId, rawEmployerName, target?.name ?? candidate.company, 'EMPLOYER_TARGET_MISMATCH');
     }
-    /*
-     * PREMIÈRE PUBLICATION D'UNE SOURCE POUR UNE MAISON (lot F6, 18/09/2026).
-     *
-     * Ce contrôle demandait qu'une source ait DÉJÀ publié pour une Maison avant d'accepter une
-     * nouvelle offre la désignant. Il protège d'une usurpation : un board qui porte le nom d'une
-     * marque sans lui appartenir — la relecture du registre en a trouvé vingt, dont
-     * `greenhouse.io/ghost` qui sert du livestream à Los Angeles sous le nom de Ghost London.
-     *
-     * Mais après le reset du catalogue, PLUS AUCUNE source n'avait d'antériorité : le lien
-     * source↔Maison avait été effacé avec les offres. Mesuré le 18/09 : 3 801 offres refusées sur
-     * 90 sources, dont 86 sans une seule publication. Le garde-fou ne protégeait plus rien — il
-     * bloquait la toute première offre de chaque source, y compris quand l'offre porte EXACTEMENT
-     * le nom de la Maison (`lovisa` : « Lovisa » proposé pour « Lovisa », 1 062 offres bloquées).
-     *
-     * CE QU'ON LÈVE, ET SEULEMENT CELA : le cas où le libellé natif de l'offre est exactement le
-     * nom canonique de la Maison visée. Une usurpation suppose un nom qui DIFFÈRE — et ce cas reste
-     * refusé, deux fois : par la comparaison ci-dessous et par le contrôle suivant (`normalized !==
-     * normalizedEmployerName(target.name)`), inchangé.
-     *
-     * Ce qui reste refusé, inchangé : un libellé divergent, une Maison déjà attribuée à cette offre
-     * sous une autre identité, un conflit d'alias. La protection contre la mauvaise attribution
-     * tient ; seule l'exigence d'antériorité — vidée de son sens par le reset — est levée.
-     */
-    const memeNomQueLaMaison = !!target && normalized === normalizedEmployerName(target.name);
-    if (!current && target && !memeNomQueLaMaison
-      && !await tx.jobSource.findFirst({ where: { sourceKey: candidate.sourceKey, job: { companyId: target.id } }, select: { id: true } })) {
-      throw new EmployerIdentityReviewRequired(candidate.sourceKey, candidate.externalId, rawEmployerName, target.name, 'SOURCE_NEVER_PUBLISHED_FOR_HOUSE');
-    }
-    // An unknown native label gets its own source-scoped identity verbatim.
-    // A spelling heuristic in candidate.company is not an identity conflict.
-    if (!current && target && normalized !== normalizedEmployerName(target.name)) {
-      throw new EmployerIdentityReviewRequired(candidate.sourceKey, candidate.externalId, rawEmployerName, target?.name ?? candidate.company, 'EMPLOYER_TARGET_MISMATCH');
-    }
   }
   return {
-    company: company ? await canonicalEmployer(tx, company) : null,
-    rule: company?.mergedIntoId ? 'REVIEWED_MERGE' : (scoped || !company && candidate.rawEmployerName !== undefined) ? 'NATIVE_SOURCE_LABEL' : 'LEGACY_UNREVIEWED',
+    company,
+    rule: company && proposed?.mergedIntoId ? 'REVIEWED_MERGE' : (scoped || !company && candidate.rawEmployerName !== undefined) ? 'NATIVE_SOURCE_LABEL' : 'LEGACY_UNREVIEWED',
     rawEmployerName, normalizedEmployerName: normalized,
-    ...(company?.mergedIntoId && company.identityReviewId ? { reviewId: company.identityReviewId } : {}),
+    ...(company && proposed?.mergedIntoId && proposed.identityReviewId ? { reviewId: proposed.identityReviewId } : {}),
     ...(!company && candidate.rawEmployerName !== undefined ? { newKey: sourceScopedKey, newName: rawEmployerName.trim() } : {}),
   };
 }

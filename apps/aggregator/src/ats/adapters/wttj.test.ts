@@ -147,3 +147,16 @@ describe('WTTJ — contrat des identifiants canoniques', () => {
     expect(normalizeAdapterResult(r).enumeration?.canonicalIdViolations).toBeUndefined();
   });
 });
+
+it.each(['wttj', 'wttj-sector'])('reconstructs the full production-format API description for %s', async kind => {
+  const { recoverRetainedPublication } = await import('../../publication/recovery.js');
+  mockJson.mockResolvedValueOnce(FIXTURE.algoliaResponse).mockResolvedValueOnce(FIXTURE.apiResponse);
+  const config = { slug: 'diptyque-paris' };
+  const {jobs} = await fetchWttjJobs(config); const job = jobs[0];
+  const context = {externalId: job.externalId, url: job.url, observedAt: new Date('2026-09-23T10:00:00Z'), config};
+  const restored = recoverRetainedPublication(kind, JSON.parse(JSON.stringify(job.raw)), context);
+  expect(restored.status).toBe('RECOVERABLE');
+  if(restored.status === 'RECOVERABLE') expect(restored.job.description).toBe(job.description);
+  expect(recoverRetainedPublication(kind, {...job.raw as object, detailUrl: 'https://wrong.example/job'}, context))
+    .toMatchObject({status: 'RECOLLECT_OR_REVIEW', reason: 'DETAIL_IDENTITY_MISMATCH'});
+});

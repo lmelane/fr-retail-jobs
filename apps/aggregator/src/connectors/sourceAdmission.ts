@@ -17,8 +17,8 @@ export async function ingestionQualifications(tx: Prisma.TransactionClient, sour
   /*
    * L'IDENTITÉ VIENT DU REGISTRE (lot F5, 18/09/2026). Plus de revue par capture : `Source.maison`
    * dit qui recrute, `Source.portalScope` dit si le portail ne sert qu'une Maison. L'admission
-   * retient la RÉVISION du registre — qui change dès qu'une de ces colonnes change, donc protège
-   * mieux qu'une revue valable 30 jours.
+   * retient la révision d'identité/configuration. portalScope est lu séparément au moment de
+   * publier : sa correction n'invalide pas les captures HTTP de la même source.
    */
   const validation = await requireSourceValidation(tx, source.currentRevisionId);
   return { validation };

@@ -69,7 +69,8 @@ describe('rejeu des publications retenues', () => {
       region: 'Hauts-de-France',
       city: 'Lille',
       postalCode: '59000',
-      description: 'Vous accompagnez nos clients en parfumerie.',
+      detailHtml: '<div class="job-detail-desc">Vous accompagnez nos clients en parfumerie.</div>',
+      detailUrl: 'https://recrutement-nocibe.fr/front-jobs-detail.html?id_job=807',
     };
     const contexte = {
       externalId: '807',

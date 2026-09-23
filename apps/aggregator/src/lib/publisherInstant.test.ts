@@ -15,3 +15,17 @@ describe('explicit publisher instants', () => {
       expect(publisherInstant(input)).toBeUndefined();
     });
 });
+
+import { publisherDate } from './publisherInstant.js';
+it('reads a publisher calendar date identically across machine timezones', () => {
+  const before = process.env.TZ;
+  try {
+    for (const tz of ['UTC', 'Europe/Paris', 'America/New_York']) {
+      process.env.TZ = tz;
+      expect(publisherDate('2026-09-15T00:00:00')?.toISOString()).toBe('2026-09-15T00:00:00.000Z');
+      expect(publisherDate('2026-09-15')?.toISOString()).toBe('2026-09-15T00:00:00.000Z');
+      expect(publisherDate('2026-09-15T00:00:00-04:00')?.toISOString()).toBe('2026-09-15T04:00:00.000Z');
+      expect(publisherDate('2026-02-31')).toBeUndefined();
+    }
+  } finally { if (before === undefined) delete process.env.TZ; else process.env.TZ = before; }
+});

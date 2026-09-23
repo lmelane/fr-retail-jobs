@@ -5,7 +5,7 @@ import { log } from './observability/logger.js';
 import { summarizeOrchestration } from './lib/runSummary.js';
 import { PrismaClient } from '@prisma/client';
 import { runIngest } from './pipeline/ingest.js';
-import { ingestAllBySource } from './pipeline/ingestOrchestrator.js';
+import { ingestAllBySource, runQualifiedIngest } from './pipeline/ingestOrchestrator.js';
 import { checkSourceHealth } from './pipeline/health.js';
 import { sendHealthAlert } from './pipeline/alert.js';
 import { submitOfferChanges } from './pipeline/googleIndexing.js';
@@ -61,7 +61,7 @@ try {
     // skipGeocode passé AUSSI à runIngest : sans lui, une passe de géocodage
     // suivait chaque source (7 775 offres en attente = minutes) même avec le
     // flag, qui ne sautait que la passe finale.
-    const stats = await runIngest(prisma, { ...(only ? { only } : {}), skipGeocode });
+    const stats = only ? await runQualifiedIngest(prisma, only, skipGeocode) : await runIngest(prisma, { skipGeocode });
     const geo = skipGeocode
       ? { pending: 0, lookedUp: 0, jobsLocated: 0, remaining: 0 }
       : await runGeocode(prisma);
@@ -99,6 +99,16 @@ try {
      */
     const orchestration = await ingestAllBySource(prisma);
     const geo = await runGeocode(prisma);
+    // The daily worker owns lifecycle maintenance too. A failed/partial source
+    // cannot attest absence: the existing refresh proof reader and mass-closure
+    // guard remain authoritative. Paused sources retain their publications.
+    const activeSources = await prisma.source.findMany({ where: { status: 'ACTIVE' }, select: { key: true } });
+    const refresh = await runRefresh(prisma, { onlyKeys: activeSources.map(source => source.key) });
+    await log.info('refresh.completed', { command, ...refresh });
+    if (refresh.refused) {
+      await log.error('command.failed', '[refresh] mass-closure guard refused lifecycle maintenance');
+      process.exitCode = 1;
+    }
     // One health digest per run: email the operator every degraded/broken source
     // so the catalogue stays clean (a source dying silently is the enemy).
     const alerted = await sendHealthAlert({
@@ -131,7 +141,7 @@ try {
     // SourceRun already persists each incident. Dumping hundreds of nested
     // records exceeded Railway's 500-lines/s limit and hid the final outcome.
     await log.info('ingest.completed', { command,
-      ...summarizeOrchestration(orchestration), geo, alerted, indexing });
+      ...summarizeOrchestration(orchestration), geo, refresh, alerted, indexing });
     if (orchestration.failed > 0 || orchestration.timedOut > 0) {
       await log.error('command.failed', `[orchestrator] ${orchestration.failed} failed, ${orchestration.timedOut} timed out: ${orchestration.failures.join(', ')}`);
       process.exitCode = 1;

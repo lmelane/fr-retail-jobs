@@ -7,7 +7,7 @@ Le produit est un agrégateur mondial du luxe, de la mode, de la beauté et du r
 - [README du projet](README.md).
 - [Exploitation et état vérifié](apps/aggregator/README.md).
 - [Canari validé le 23 septembre 2026](audits/2026-09-23/canary-delta-oh-my-cream.md) : delta egress PASS ; restaurabilité acquise, état final en pause. Le reset et le run complet ont depuis été réalisés ; l’état courant figure dans le bilan d’exploitation ci-dessous. Les preuves acquises ne sont pas à rejouer sans changement qui les invalide.
-- [Runtime Railway](docs/architecture/railway-runtime-reset.md) : nouvelle API publique, anciens services retirés, worker `653920c` en exploitation normale toutes les quatre heures UTC. Les 384 ACTIVE ont été tentées : 255 réussies, 35 partielles, 94 échouées individuellement ; aucun blocage systémique d’accès ni échec de persistance. Voir le [bilan](audits/2026-09-23/normal-production-run.json).
+- [Runtime Railway](docs/architecture/railway-runtime-reset.md) : nouvelle API publique, anciens services retirés, le [bilan post-RUN](audits/2026-09-23/post-run.md) distingue la version livrée, les corrections et leur validation. La cible est un RUN quotidien à 18 h Europe/Paris, avec changement d’heure pris en charge.
 - [Architecture produit](docs/architecture/production-foundations.md).
 - [Capture native et rétention](docs/architecture/native-capture.md).
 - [Faits issus des publications](docs/architecture/source-facts.md).
@@ -19,9 +19,9 @@ Le code, les réponses brutes et les mesures datées doivent être vérifiés av
 
 Le RAW est la référence. Les interprétations restent séparées, versionnées et rejouables. Aucun métier, diplôme ou contrat universel ne doit devenir une condition de publication. Les offres Catwalks et externes gardent leurs parcours de candidature distincts.
 
-Périmètre courant : exploitation normale de l’agrégateur autorisée après R5 et le run complet des ACTIVE. Le worker entretient ses preuves d’accès via la qualification existante. Aucun reset, effacement ou changement du schéma de production ; les écritures normales d’ingestion et de géocodage restent autorisées. `/emplois`, marchés/filtres et Direct Offers ne sont pas refondus dans ce lot. `/offres`, moteur de matching et onboarding candidat restent gelés, y compris leur dette encore utilisée.
+Périmètre courant : audit et correction post-RUN, depuis les RAW, SourceRun et logs de production. Le worker entretient accès et qualification native par les mécanismes existants. Les migrations non destructives nécessaires au correctif passent par development → main → CI → Railway ; aucun reset ni réparation des données historiques. Les validations de production restent ciblées, sans nouveau RUN complet. `/emplois`, marchés/filtres et Direct Offers ne sont pas refondus dans ce lot. `/offres`, moteur de matching et onboarding candidat restent gelés, y compris leur dette encore utilisée.
 
-Les évolutions restent validées par des tests ciblés. Le CRON d’ingestion normal est actif ; les incidents de sources doivent être traités individuellement. Le matching, l’onboarding et la nouvelle promesse de `/offres` restent des chantiers distincts et gelés. Ne pas relancer les protocoles déjà acquis sans changement qui les invalide.
+Les évolutions restent validées par des tests ciblés. La cible CRON est 18 h Europe/Paris, une fois par jour ; vérifier le reçu effectif avant d’affirmer qu’elle est livrée. Les incidents de sources sont isolés. Le matching, l’onboarding et la nouvelle promesse de `/offres` restent des chantiers distincts et gelés. Ne pas relancer les protocoles déjà acquis sans changement qui les invalide.
 
 ## Branches et coordination
 
@@ -29,7 +29,7 @@ Les évolutions restent validées par des tests ciblés. Le CRON d’ingestion n
 - `development` porte le travail en cours ; les pushes sur cette branche sont autorisés.
 - La promotion de `development` vers `main` intervient après validation de la release. Un push de développement ne vaut pas autorisation de mise en production.
 
-Les pushes sur `development` sont autorisés dans les cinq dépôts. Aucun push sur `main` ni déploiement du site, backend, back-office ou média sans validation explicite de Loïc. Le GO de Loïc couvre la livraison et l’exploitation normale de l’agrégateur décrites dans le bilan courant, y compris sa promotion vers `main`. Il ne vaut pas autorisation d’une migration, d’une réparation historique ou d’un déploiement des autres produits.
+Les pushes sur `development` sont autorisés dans les cinq dépôts. Aucun push sur `main` ni déploiement du site, backend, back-office ou média sans validation explicite de Loïc. Le GO de Loïc couvre la livraison et l’exploitation normale de l’agrégateur décrites dans le bilan courant, y compris sa promotion vers `main`. La mission post-RUN autorise les correctifs génériques, leurs migrations non destructives versionnées, la CI et la livraison de l’agrégateur. Aucun reset, réparation historique ou déploiement des autres produits n’est inclus.
 
 ### Transition des copies de travail
 

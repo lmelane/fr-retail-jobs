@@ -4,15 +4,19 @@ import { fileURLToPath } from 'node:url';
 import { pingHeartbeat } from './pipeline/heartbeat.js';
 import { log } from './observability/logger.js';
 import { exitIfPipelinePaused } from './lib/pipelinePause.js';
-import { attestRuntime, workerArguments } from '@catwalks/runtime';
+import { attestRuntime, workerArguments, scheduledRunDue } from '@catwalks/runtime';
 
 const root = fileURLToPath(new URL('../../../', import.meta.url));
 const attestation = attestRuntime('worker', process.argv.slice(2));
 if (!['0', '1'].includes(process.env.PIPELINE_PAUSED ?? '')) throw new Error('PIPELINE_PAUSED must be 0 or 1 (explicit worker setting required)');
 exitIfPipelinePaused(process.argv[2] ?? 'ingest-all');
 const argv = process.argv.slice(2);
+if (argv[0] === 'scheduled' && !scheduledRunDue()) {
+  console.log(JSON.stringify({ event: 'worker.schedule_skipped', timeZone: 'Europe/Paris', requiredHour: 18 }));
+  process.exit(0);
+}
 // Preserve the existing local maintenance CLI; deployed ingestion stays normal or source-scoped.
-const [command, ...args] = !attestation && argv.length && !argv[0].startsWith('--source=') ? argv : workerArguments(argv);
+const [command, ...args] = !attestation && argv.length && argv[0] !== 'scheduled' && !argv[0].startsWith('--source=') ? argv : workerArguments(argv);
 if (!['ingest-all', 'ingest', 'refresh', 'health-report', 'direct-sync', 'source-add'].includes(command)) throw new Error('Unsupported worker command');
 console.log(JSON.stringify({ event: 'worker.started', state: 'RUNNING', command, pid: process.pid, at: new Date().toISOString() }));
 async function child(argv: string[]): Promise<number> {

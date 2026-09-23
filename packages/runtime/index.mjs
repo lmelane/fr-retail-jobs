@@ -12,6 +12,7 @@ const uuid = value => typeof value === 'string' && /^[0-9a-f]{8}-(?:[0-9a-f]{4}-
 
 /** Execution scope is an argument, never a release-specific source allowlist. */
 export function workerArguments(argv) {
+  if (argv.length === 1 && argv[0] === 'scheduled') return ['ingest-all'];
   if (argv.length === 0 || (argv.length === 1 && argv[0] === 'ingest-all')) return ['ingest-all'];
   const args = argv[0]?.startsWith('--source=') ? ['ingest', ...argv] : argv;
   if (args[0] !== 'ingest') fail('unsupported worker argv');
@@ -19,6 +20,12 @@ export function workerArguments(argv) {
   if (sources.length !== 1 || args.slice(1).some(a => a !== sources[0] && a !== '--no-geocode') ||
       new Set(args).size !== args.length) fail('targeted argv requires exactly one source');
   return args;
+}
+
+/** Railway cron is UTC-only. Both UTC candidates launch; exactly one enters
+ * the pipeline at 18:00 Europe/Paris, including the DST transition dates. */
+export function scheduledRunDue(now = new Date()) {
+  return new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Paris', hour: '2-digit', hourCycle: 'h23' }).format(now) === '18';
 }
 
 /** Pure validation, shared only by the catalogue API and ingestion worker. */

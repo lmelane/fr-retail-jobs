@@ -193,7 +193,11 @@ export async function fetchTeamtailorJobs(
     pageEvidence.push({ url, checkedAt: observedAt, sha256: createHash('sha256').update(JSON.stringify(feed)).digest('hex'),
       offset: jobs.length - pageIds.length, pagination: null, ids: pageIds, canonicalIds: pageIds,
       publisherCounter: String(feed.items.length), componentCounters: [] });
-    if (feed.next_url === undefined || feed.next_url === null) return { jobs, complete: true, truncated: false, enumeration: enumeration('NEXT_URL_NULL', true) };
+    if (feed.next_url === undefined || feed.next_url === null) return { jobs, complete: true, truncated: false,
+      // A valid single empty feed with no continuation explicitly declares zero.
+      // Positive boards still do not acquire an invented global publisher total.
+      ...(jobs.length === 0 && pageEvidence.length === 1 ? { declaredTotal: 0 } : {}),
+      enumeration: enumeration('NEXT_URL_NULL', true) };
     if (typeof feed.next_url !== 'string' || !feed.next_url.trim()) throw new Error('Teamtailor invalid next_url');
     if (!feed.items.length) throw new Error('Teamtailor empty page with continuation');
     const next = new URL(feed.next_url, url);

@@ -2,6 +2,7 @@ export const target: any;
 export const contractSha256: string;
 export const release: { gitSha: string; contractSha256: string } | null;
 export function workerArguments(argv: string[]): string[];
+export function scheduledRunDue(now?: Date): boolean;
 export function assertBusinessUrl(value: string): void;
 export function validateRuntime(role: 'api' | 'worker', argv: string[], env: NodeJS.ProcessEnv,
   built: { gitSha: string; contractSha256: string } | null, now?: number): {

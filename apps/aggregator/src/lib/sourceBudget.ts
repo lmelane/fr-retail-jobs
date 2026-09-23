@@ -18,7 +18,7 @@ export function sourceExecutionBudget() {
     ...(budget.softTimeoutMs === undefined ? {} : { softTimeoutMs: budget.softTimeoutMs }) } : undefined;
 }
 export const assertSourceRunning = () => { log.assertHealthy(); assertCaptureHealthy(); sourceSignal()?.throwIfAborted(); };
-export const sourceDelay = (ms: number) => delay(ms, undefined, { signal: sourceSignal() });
+export const sourceDelay = (ms: number) => replayingResponses() ? Promise.resolve() : delay(ms, undefined, { signal: sourceSignal() });
 
 /** Cancel cooperatively and wait for settlement before releasing the worker. */
 export async function withSourceBudget<T>(work: () => Promise<T>, ms: number, label: string,

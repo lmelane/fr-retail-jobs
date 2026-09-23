@@ -25,6 +25,7 @@ export type SourceValidationReport = {
   held: number;
   rejected: number;
   inputRejected: number;
+  inputUnqualified?: number;
   nativeEmpty: boolean;
   reasons: Record<string, number>;
   /**
@@ -35,15 +36,15 @@ export type SourceValidationReport = {
   allowance?: { floor: number; ratio: number; count: number; applied: number };
 };
 
-/** An empty collector result is never sufficient. Two narrowly qualified
- * protocols require their actual, single, complete native feed to declare zero:
- * Ashby's job board API and (lot F3b) a Teamtailor JSON Feed 1.1 without a next
- * page. Other protocols remain explicit qualification work. */
+/** An empty collector is insufficient: require one complete native response
+ * with the protocol's explicit end/zero marker. Greenhouse additionally requires
+ * meta.total=0, as observed in the production RAW on 2026-09-23. */
 async function nativeEmptyFeed(db: PrismaClient, batchId: string, kind: string, store?: ObjectStore) {
-  if (!['ashby', 'teamtailor'].includes(kind)) return false;
+  if (!['ashby', 'teamtailor', 'greenhouse'].includes(kind)) return false;
   const rows = await db.rawCapture.findMany({ where: { batchId }, take: 2 });
   if (rows.length !== 1 || rows[0].status !== 200 || !rows[0].complete || !rows[0].blobHash) return false;
   const value = JSON.parse((await readRawBlob(db, rows[0].blobHash, store)).toString('utf8'));
+  if (kind === 'greenhouse') return Array.isArray(value?.jobs) && value.jobs.length === 0 && value.meta?.total === 0;
   if (kind === 'ashby') return value?.apiVersion === '1' && Array.isArray(value.jobs) && value.jobs.length === 0;
   return typeof value?.version === 'string' && /^https:\/\/jsonfeed\.org\/version\/1(?:\.1)?$/.test(value.version) &&
     Array.isArray(value.items) && value.items.length === 0 && value.next_url == null;
@@ -81,6 +82,9 @@ export async function validateCapturedSource(db: PrismaClient, batchId: string, 
       if (new Set(replayed.jobs.map(job => job.externalId)).size !== replayed.jobs.length) reason('DUPLICATE_PUBLICATION_IDS');
       report.inputRejected = replayed.rejectedRows?.length ?? 0;
       if (report.inputRejected) report.reasons.REJECTED_NATIVE_ROWS = report.inputRejected;
+      // A sitemap includes navigation and editorial pages. Keep their evidence,
+      // but do not count a page without JobPosting as a malformed publication.
+      report.inputUnqualified = (replayed.rejectedRows ?? []).filter(row => row.reason !== 'LISTED_PAGE_WITHOUT_JOBPOSTING').length;
       for (const job of replayed.jobs) {
         if (job.publicationHold || job.publicationWithdrawnAt) { report.held++; continue; }
         const recovery = recoverRetainedPublication(revision.kind, job.raw, {
@@ -102,33 +106,17 @@ export async function validateCapturedSource(db: PrismaClient, batchId: string, 
     // request credentials or source configuration into qualification reports.
     reason('REPLAY_OR_NATIVE_READING_FAILED');
   }
-  /*
-   * LE SEUIL DE TOLÉRANCE (décision du propriétaire, 19/09/2026 — politique v2).
-   *
-   * Jusqu'ici, UNE offre non relisible faisait échouer la source entière. Mesuré sur 10 sources :
-   * 5 004 offres relisibles bloquées par 11 annonces publiées sans description — H&M 1 805/1 806,
-   * L'Oréal 1 692/1 693, Bloomingdale's 793/794. Une annonce sans description est un cas réel
-   * chez l'éditeur, pas un défaut de notre lecture.
-   *
-   * CE QUE LE SEUIL TOLÈRE, ET RIEN D'AUTRE : les offres refusées UNE PAR UNE par le rejeu
-   * (`report.rejected`). Tous les autres motifs — rejeu divergent, énumération incomplète,
-   * identifiants dupliqués, lignes natives refusées, flux vide non prouvé — restent bloquants,
-   * parce qu'ils portent sur le LOT et non sur une annonce : ils disent que la collecte elle-même
-   * n'est pas fiable.
-   *
-   * Les deux conditions s'appliquent ENSEMBLE (`VALIDATION_UNQUALIFIED_ALLOWANCE`) : un
-   * pourcentage seul laisserait perdre 100 offres sur 10 000, une valeur absolue seule laisserait
-   * perdre 2 offres sur 20.
-   *
-   * Une offre tolérée n'est JAMAIS publiée : elle reste refusée. Le seuil décide seulement si la
-   * SOURCE reste validée, et le rapport garde le compte exact — une dégradation reste lisible.
-   */
-  const motifsParOffre = new Set<string>(PER_PUBLICATION_REASONS);
-  const motifsDuLot = Object.keys(report.reasons).filter(nom => !motifsParOffre.has(nom));
-  const plafond = unqualifiedAllowanceFor(report.observed);
-  report.allowance = { ...VALIDATION_UNQUALIFIED_ALLOWANCE, applied: plafond };
-
-  const verdict = report.replayExact && report.rejected <= plafond && motifsDuLot.length === 0 &&
+  // Publication and disappearance are separate permissions. A partial
+  // enumeration can publish individually qualified offers but can NEVER attest
+  // absence: refresh independently checks the sealed enumeration/completion.
+  // Native malformed rows share the existing per-publication allowance. They
+  // remain named and cannot be silently counted as published.
+  const perPublication = new Set<string>([...PER_PUBLICATION_REASONS, 'ENUMERATION_INCOMPLETE', 'REJECTED_NATIVE_ROWS']);
+  const batchReasons = Object.keys(report.reasons).filter(name => !perPublication.has(name));
+  const unqualified = report.rejected + (report.inputUnqualified ?? 0);
+  const allowance = unqualifiedAllowanceFor(report.observed + (report.inputUnqualified ?? 0));
+  report.allowance = { ...VALIDATION_UNQUALIFIED_ALLOWANCE, applied: allowance };
+  const verdict = report.replayExact && unqualified <= allowance && batchReasons.length === 0 &&
     (report.qualified > 0 || report.nativeEmpty) ? 'VALIDATED' : 'REJECTED';
   return db.$transaction(async tx => {
     // Serialize completed decisions with promotion. The append sequence, not a

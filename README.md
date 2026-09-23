@@ -10,7 +10,7 @@ Collecte des offres du luxe, de la mode, de la beauté et du retail. Les publica
 - `development` porte le travail en cours ; les pushes sur cette branche sont autorisés.
 - La promotion de `development` vers `main` intervient après validation de la release. Un push de développement ne vaut pas autorisation de mise en production.
 
-Aucun push sur `main` ni déploiement du site, backend, back-office ou média sans validation explicite de Loïc. Le GO de Loïc couvre la livraison et l’exploitation normale de l’agrégateur décrites dans le bilan courant, y compris sa promotion vers `main`. Il ne vaut pas autorisation d’une migration, d’une réparation historique ou d’un déploiement des autres produits.
+Aucun push sur `main` ni déploiement du site, backend, back-office ou média sans validation explicite de Loïc. Le GO de Loïc couvre la livraison et l’exploitation normale de l’agrégateur décrites dans le bilan courant, y compris sa promotion vers `main`. La mission post-RUN autorise les correctifs génériques, leurs migrations non destructives versionnées, la CI et la livraison de l’agrégateur. Aucun reset, réparation historique ou déploiement des autres produits n’est inclus.
 
 ### Transition des copies de travail
 
@@ -25,7 +25,7 @@ Les règles de travail figurent dans [CLAUDE.md](CLAUDE.md). Préserver le trava
 - [Parcours unique des sources](docs/architecture/source-onboarding.md) : découverte, enregistrement, captures HTTP des preuves, collecte native et activation.
 - [Validation multilingue `/emplois`](docs/architecture/emplois-e2e.md) : chaîne locale de répétition et tests navigateur.
 - [Bilan PR-1 : préparation au canari](audits/2026-09-22/pr1-canary-readiness.md).
-- [Runtime Railway](docs/architecture/railway-runtime-reset.md) : nouvelle API publique, anciens services retirés, worker `653920c` en exploitation normale toutes les quatre heures UTC. Les 384 ACTIVE ont été tentées : 255 réussies, 35 partielles, 94 échouées individuellement ; aucun blocage systémique d’accès ni échec de persistance. Voir le [bilan](audits/2026-09-23/normal-production-run.json).
+- [Runtime Railway](docs/architecture/railway-runtime-reset.md) : nouvelle API publique, anciens services retirés, le [bilan post-RUN](audits/2026-09-23/post-run.md) distingue la version livrée, les corrections et leur validation. La cible est un RUN quotidien à 18 h Europe/Paris, avec changement d’heure pris en charge.
 - [Canari Railway validé — delta egress](audits/2026-09-23/canary-delta-oh-my-cream.md) : quatre contrôles PASS, une ingestion Oh My Cream, workers revenus en pause ; [restaurabilité déjà acquise](audits/2026-09-22/restorability-canary-final.md).
 - [Exploitation canari et retour arrière](docs/architecture/canary-operations.md) : worker unique, pause autoritaire, nouvelle source et répétition locale.
 - [Golden Path nouvelle source](docs/architecture/golden-source.md) : base neuve, qualification, deux ingestions, rejeu et lecture API.

@@ -74,6 +74,13 @@ describe('native source validation', () => {
     expect(continued instanceof Error ? continued.message : JSON.stringify(continued.report)).not.toMatch(/"nativeEmpty":true/);
   });
 
+  it('accepts the complete Greenhouse zero-total response captured in production', async () => {
+    const key = `source-validation-${randomUUID()}`; keys.push(key);
+    await db.source.create({ data: { key, tenantKey: key, maison: key, kind: 'greenhouse', config: { board: key }, tier: 'ATS_OFFICIAL' } });
+    vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify({ jobs: [], meta: { total: 0 } }))));
+    expect(await captureSourceForValidation(db, key, 30_000)).toMatchObject({ verdict: 'VALIDATED', report: { nativeEmpty: true, absenceAttestation: false } });
+  });
+
   it('refuses an empty collector result without a qualified native empty-feed protocol', async () => {
     const key = `source-validation-${randomUUID()}`; keys.push(key);
     await db.source.create({ data: { key, tenantKey: key, maison: key, kind: 'greenhouse', config: { board: key }, tier: 'ATS_OFFICIAL' } });
@@ -99,13 +106,13 @@ describe('native source validation', () => {
     expect(network).not.toHaveBeenCalled();
   });
 
-  it('does not hide unreadable native rows behind the successfully parsed subset', async () => {
+  it('records malformed native rows while allowing the individually qualified subset', async () => {
     const { batch } = await capture([nativeJob, { ...nativeJob, title: undefined }]);
-    expect(await validateCapturedSource(db, batch.id)).toMatchObject({ verdict: 'REJECTED',
+    expect(await validateCapturedSource(db, batch.id)).toMatchObject({ verdict: 'VALIDATED',
       report: { qualified: 1, inputRejected: 1, reasons: { REJECTED_NATIVE_ROWS: 1 } } });
   });
 
-  it.each(['truncated', 'duplicate'] as const)('rejects an exactly replayable but %s source result', async mode => {
+  it.each(['truncated', 'duplicate'] as const)('separates partial publication from ambiguous duplicate IDs: %s', async mode => {
     const key = `validation-${randomUUID()}`; keys.push(key);
     const config = mode === 'truncated' ? { site: key, maxPages: 1 } : { board: key };
     const kind = mode === 'truncated' ? 'lever' : 'greenhouse';
@@ -118,8 +125,8 @@ describe('native source validation', () => {
     await captureExtraction(db, key, config, undefined, settings => fetchAtsJobs(ats, settings), ats);
     const batch = await db.captureBatch.findFirstOrThrow({ where: { sourceKey: key } });
     const network = vi.fn(async () => { throw new Error('Offline only'); }); vi.stubGlobal('fetch', network);
-    expect(await validateCapturedSource(db, batch.id)).toMatchObject({ verdict: 'REJECTED', report: {
-      replayExact: true, reasons: { [mode === 'truncated' ? 'ENUMERATION_INCOMPLETE' : 'DUPLICATE_PUBLICATION_IDS']: 1 },
+    expect(await validateCapturedSource(db, batch.id)).toMatchObject({ verdict: mode === 'truncated' ? 'VALIDATED' : 'REJECTED', report: {
+      absenceAttestation: false, replayExact: true, reasons: { [mode === 'truncated' ? 'ENUMERATION_INCOMPLETE' : 'DUPLICATE_PUBLICATION_IDS']: 1 },
     } });
     expect(network).not.toHaveBeenCalled();
   });

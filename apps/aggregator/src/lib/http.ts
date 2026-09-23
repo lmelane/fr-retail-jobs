@@ -12,7 +12,7 @@ import { detectChallenge } from './responseIntegrity.js';
 import { publicDispatcher } from './publicTransport.js';
 import { sessionHeaders, rememberSessionCookies } from './httpSession.js';
 import { recordAttempt, recordResponse, recordFailure } from '../observability/httpTelemetry.js';
-import { assertCaptureHealthy, assertRequestAccess, auditUrl, describeRequest, capturingResponses, captureResponse, replayResponse, CaptureUnavailableError, OfflineReplayError } from '../capture/context.js';
+import { assertCaptureHealthy, assertRequestAccess, auditUrl, describeRequest, capturingResponses, replayingResponses, captureResponse, replayResponse, CaptureUnavailableError, OfflineReplayError } from '../capture/context.js';
 
 import { observedHop, type RequestDescription, type TransportHop } from '../capture/requestData.js';
 
@@ -234,6 +234,7 @@ export type HttpRetryPolicy = { additionalTransientStatuses?: readonly number[] 
 
 export async function fetchWithRetry(url: string, init: RequestInit = {}, attempts = 3, policy: HttpRetryPolicy = {}): Promise<Response> {
   let lastError: unknown;
+  const replaying = replayingResponses();
   /**
    * Challenge WAF (202 vide + `x-amzn-waf-action: challenge`) : on amorce le
    * jeton de l'origine — une fois — et on accorde UNE re-tentative de plus
@@ -258,14 +259,13 @@ export async function fetchWithRetry(url: string, init: RequestInit = {}, attemp
       // starting the timer early expired requests before they even began.
       let response = await withHostGate(url, async () => {
         assertSourceRunning();
-        log.count('http.attempts');
-        if (i > 0) log.count('http.retries');
-        // Télémétrie PAR HÔTE : posée au point de passage unique de toute requête sortante, pour que le
-        // compte soit total et non celui d'un chemin particulier.
-        recordAttempt(url, i > 0);
-        // La pression par clé de tenant, alimentée par les VRAIES tentatives : c'est elle qui situe la limite
-        // quand un 429 tombe.
-        noteRequest(rateLimitKeyFor(url));
+        // Offline qualification consumes receipts, not live host capacity.
+        if (!replaying) {
+          log.count('http.attempts');
+          if (i > 0) log.count('http.retries');
+          recordAttempt(url, i > 0);
+          noteRequest(rateLimitKeyFor(url));
+        }
         startedAt = Date.now();
         timer = setTimeout(() => controller.abort(), timeoutMs);
         const replayed = await replayResponse({ url, method: init.method, body: init.body, headers: init.headers, format: 'HTTP_RESPONSE' });
@@ -303,10 +303,10 @@ export async function fetchWithRetry(url: string, init: RequestInit = {}, attemp
         Object.defineProperty(buffered, 'url', { value: response.url || url });
         response = buffered;
       }
-      log.count('http.responses');
+      if (!replaying) log.count('http.responses');
       // `headers` peut manquer sur une réponse simulée : la télémétrie ne doit JAMAIS faire échouer une
       // requête réelle pour une grandeur accessoire. Sans en-tête, la taille est simplement inconnue.
-      recordResponse(url, response.status, Date.now() - startedAt, response.headers?.get('content-length') ?? null);
+      if (!replaying) recordResponse(url, response.status, Date.now() - startedAt, response.headers?.get('content-length') ?? null);
       if (isWafChallenge(response)) {
         await response.body?.cancel();
         if (timer) clearTimeout(timer);
@@ -363,7 +363,7 @@ export async function fetchWithRetry(url: string, init: RequestInit = {}, attemp
         const waitMs = Math.min(askedMs > 0 ? askedMs : 20_000 * (i + 1), 90_000);
         // Le cooldown est posé sur la CLÉ DE TENANT : toutes ses sources attendent, pas seulement ce worker.
         reportThrottle(url, askedMs > 0 ? askedMs : null);
-        const { shouldStop, hit } = record429({
+        const signal = replaying ? null : record429({
           rateLimitKey: rateLimitKeyFor(url), host: (() => { try { return new URL(url).hostname; } catch { return url; } })(),
           sourceKey: process.env.CURRENT_SOURCE_KEY ?? null, url: url.slice(0, 200),
           attempt: i + 1, retryAfterRaw: raw, appliedDelayMs: waitMs, activeConcurrency: 0,
@@ -371,7 +371,7 @@ export async function fetchWithRetry(url: string, init: RequestInit = {}, attemp
         if (timer) clearTimeout(timer);
         // Un passage de MESURE s'arrête ici : continuer à pousser après avoir trouvé la limite n'apprend rien
         // et sollicite un portail tiers pour rien.
-        if (shouldStop) throw new BenchmarkStoppedOn429Error(hit);
+        if (signal?.shouldStop) throw new BenchmarkStoppedOn429Error(signal.hit);
         await sourceDelay(waitMs);
         continue;
       }
@@ -394,7 +394,7 @@ export async function fetchWithRetry(url: string, init: RequestInit = {}, attemp
       lastError = error;
       // Un abandon par le contrôleur de délai est un TIMEOUT ; le reste est une erreur réseau. Les confondre
       // masquerait le seul symptôme qui distingue un hôte lent d'un hôte cassé.
-      recordFailure(url, controller.signal.aborted ? 'timeout' : 'error');
+      if (!replaying) recordFailure(url, controller.signal.aborted ? 'timeout' : 'error');
     } finally {
       if (timer) clearTimeout(timer);
     }

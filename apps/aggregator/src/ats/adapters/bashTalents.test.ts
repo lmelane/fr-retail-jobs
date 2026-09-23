@@ -267,3 +267,15 @@ describe('fetchBashTalentsJobs', () => {
     expect(jobs).toHaveLength(2);
   });
 });
+
+it('keeps the native listing fragment and detail usable by the retained reader', async () => {
+  const { recoverRetainedPublication } = await import('../../publication/recovery.js');
+  mockText.mockImplementation(async url => String(url).endsWith('/offres') ? LISTING : DETAIL);
+  const {jobs} = await fetchBashTalentsJobs({});
+  for(const job of jobs){
+    const recovered = recoverRetainedPublication('bashtalents', JSON.parse(JSON.stringify(job.raw)),
+      {externalId: job.externalId, url:job.url, observedAt:new Date('2026-09-23T10:00:00Z'), config:{}});
+    expect(recovered.status).toBe('RECOVERABLE');
+    if(recovered.status==='RECOVERABLE') expect(recovered.job.description).toBe(job.description);
+  }
+});

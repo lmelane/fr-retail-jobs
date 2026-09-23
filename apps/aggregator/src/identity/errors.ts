@@ -31,11 +31,7 @@ export const MOTIFS_IDENTITE = [
   'EMPLOYER_SPELLING_DIVERGED',
   /** L'employeur courant de la publication n'est pas celui que la candidate désigne. */
   'EMPLOYER_TARGET_MISMATCH',
-  /**
-   * Première publication de cette source pour cette Maison, sous un libellé qui n'est pas son nom.
-   * Protège d'une usurpation : un board portant le nom d'une marque sans lui appartenir — la
-   * relecture du registre en a trouvé vingt (lot F6, 18/09/2026).
-   */
+  /** Historical receipt code: new native labels now remain source-scoped without an inferred merge. */
   'SOURCE_NEVER_PUBLISHED_FOR_HOUSE',
 ] as const;
 

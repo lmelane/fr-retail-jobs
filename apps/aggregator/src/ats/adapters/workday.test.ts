@@ -189,7 +189,7 @@ it('preserves a failed detail as a hold instead of substituting the group employ
   const [job] = await attachWorkdayDescriptions([{ externalId: 'JR12800', title: 'Sales Associate', url: 'https://tapestry.wd108.myworkdayjobs.com/Tapestry_Careers/job/example', raw: { externalPath: '/job/example' } }], 'https://tapestry.wd108.myworkdayjobs.com/wday/cxs/tapestry/Tapestry_Careers');
   expect(job.company).toBeUndefined();
   expect(job.publicationHold).toBe('WORKDAY_DETAIL_FETCH_FAILED');
-  expect(job.raw).toMatchObject({ externalPath: '/job/example', detailFailure: { message: 'HTTP 403 from Workday detail' } });
+  expect(job.raw).toMatchObject({ externalPath: '/job/example', detailFailure: { name: 'Error' } });
 });
 it('distinguishes a successful detail without any employer field from a fetch failure', async () => {
   mockJson.mockResolvedValueOnce({ jobPostingInfo: { externalUrl: 'https://example.com/jobs/job/x', jobDescription: 'A posting without an employer claim' } } as never);

@@ -4,6 +4,7 @@ import { PrismaClient, type Source } from '@prisma/client';
 import { randomUUID } from 'node:crypto';
 import { maintainSourceAccess } from '../connectors/sourceAccessQualification.js';
 import { recordSourceAccessDecision, requireSourceAccess } from '../connectors/sourceAccess.js';
+import * as certification from '../connectors/sourceCertification.js';
 import * as revision from '../capture/revision.js';
 import { captureExtraction } from '../capture/batch.js';
 import { fetchAtsJobs } from '../ats/index.js';
@@ -73,6 +74,20 @@ describe('normal run maintains its access prerequisite through the Golden Path',
     expect(transport).not.toHaveBeenCalled();
     expect(await db.sourceAccessDecision.count({ where: { sourceKey: source.key } })).toBe(1);
     await collect(source); expect(transport).toHaveBeenCalledTimes(1);
+  });
+
+  it('renews expired native qualification while retaining a valid access grant', async () => {
+    const source = await create(); const transport = native();
+    const first = await maintain(source); transport.mockClear();
+    await expect(certification.requireSourceValidation(db, source.currentRevisionId, new Date(Date.now() + 25 * 3600_000)))
+      .rejects.toMatchObject({ code: 'CAPTURE_STALE' });
+    vi.spyOn(certification, 'requireSourceValidation').mockRejectedValueOnce(
+      new certification.SourceValidationGateError('CAPTURE_STALE', '24-hour native qualification expired'));
+    expect(await maintain(source)).toEqual({ renewed: false, decisionId: first.decisionId });
+    expect(transport).toHaveBeenCalledTimes(1); // Native evidence; no redundant robots request.
+    expect(await db.sourceAccessDecision.count({ where: { sourceKey: source.key } })).toBe(1);
+    expect(await db.sourceValidation.count({ where: { sourceRevisionId: source.currentRevisionId } })).toBe(2);
+    await collect(source);
   });
 
   it('renews stale reader evidence through capture/replay/robots without rewriting history', async () => {

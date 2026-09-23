@@ -127,15 +127,7 @@ async function ingestOne(prisma: PrismaClient, key: string, result: Orchestrator
     // the CLI after every source — a per-source pass would run four times over
     // the same cities in parallel. The soft deadline lets a slow crawl stop
     // gracefully just before the hard timeout, keeping what it fetched.
-    const stats = await withSourceBudget(
-      async () => {
-        await maintainSourceAccess(prisma, key, PER_SOURCE_TIMEOUT_MS);
-        return runIngest(prisma, { only: key, skipGeocode: true });
-      },
-      PER_SOURCE_TIMEOUT_MS,
-      key,
-      { softTimeoutMs: Math.floor(PER_SOURCE_TIMEOUT_MS - Math.min(SOFT_DEADLINE_MARGIN_MS, PER_SOURCE_TIMEOUT_MS / 10)) },
-    );
+    const stats = await runQualifiedIngest(prisma, key);
     // Record this source's health so a source that stops producing becomes a
     // detectable incident (BROKEN) on its next run — one SourceRun per source.
     // Collect any incident so the run can send ONE digest at the end.
@@ -194,4 +186,13 @@ async function ingestOne(prisma: PrismaClient, key: string, result: Orchestrator
   } finally {
     await log.flush(key);
   }
+}
+
+/** Normal and explicitly scoped runs maintain the same admission prerequisite. */
+export function runQualifiedIngest(prisma: PrismaClient, key: string, skipGeocode = true) {
+  return withSourceBudget(async () => {
+    await maintainSourceAccess(prisma, key, PER_SOURCE_TIMEOUT_MS);
+    return runIngest(prisma, { only: key, skipGeocode });
+  }, PER_SOURCE_TIMEOUT_MS, key,
+  { softTimeoutMs: Math.floor(PER_SOURCE_TIMEOUT_MS - Math.min(SOFT_DEADLINE_MARGIN_MS, PER_SOURCE_TIMEOUT_MS / 10)) });
 }

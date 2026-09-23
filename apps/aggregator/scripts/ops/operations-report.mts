@@ -1,4 +1,3 @@
-import { assertIdentityReview, identityReviewOrder } from '../../src/connectors/sourceIdentity.js';
 import { readIdentitySources } from '../../src/connectors/sourceRegistryRead.js';
 /**
  * LE RAPPORT D'EXPLOITATION — l'état courant de chaque source, en une lecture.
@@ -18,7 +17,7 @@ import { readIdentitySources } from '../../src/connectors/sourceRegistryRead.js'
  */
 import { Prisma, PrismaClient } from '@prisma/client';
 import { writeFileSync } from 'node:fs';
-import { decideMode, type SourceEvidence } from '../../src/registry/operationalMode.js';
+import { readOperationalMode } from '../../src/registry/operationalMode.js';
 import { accessStatus, readLatestSourceAccess } from '../../src/connectors/sourceAccess.js';
 import { publicJobSql } from '@catwalks/db/availability';
 import { objectStoreConfigured } from '../../src/retention/objectStore.js';
@@ -39,8 +38,6 @@ const report = await p.$transaction(async (tx) => {
 
   const sources = (await readIdentitySources(tx)).filter(source => ['ACTIVE', 'PAUSED'].includes(source.status));
 
-  const reviews = await tx.sourceIdentityReview.findMany({ orderBy: identityReviewOrder, distinct: ['sourceKey'] });
-  const reviewOf = new Map(reviews.map((r) => [r.sourceKey, r]));
   const accessOf = await readLatestSourceAccess(tx, sources.map(source => source.key));
 
   /** Les DEUX derniers runs : la variation de volume n'existe pas sans un précédent. */
@@ -83,26 +80,14 @@ const report = await p.$transaction(async (tx) => {
   const archives = await tx.$queryRawUnsafe<Row[]>(
     `SELECT COUNT(*)::int pointeurs, COUNT(DISTINCT uri)::int archives FROM "RawBlobArchive"`);
 
-  const lignes = sources.map((s) => {
-    const rev = reviewOf.get(s.key);
+  const lignes = await Promise.all(sources.map(async (s) => {
     const access = accessStatus(s, accessOf.get(s.key) ?? null);
-    let certified = false;
-    try { assertIdentityReview(s, rev ?? null); certified = true; } catch { /* Unproven evidence cannot authorize a mode. */ }
     const [dernier, precedent] = runsOf.get(s.key) ?? [];
-    const cfg = (s.config ?? {}) as Record<string, unknown>;
-    const ev: SourceEvidence = {
-      key: s.key, status: s.status, hasConfig: Object.keys(cfg).length > 0,
-      identityVerified: certified,
-      identityHashMatchesConfig: certified,
-      accessAllowed: access.passed,
-      tenantKey: s.tenantKey ?? null,
-      lastRunStatus: dernier?.status ?? null, lastRunComplete: dernier?.complete ?? null,
-      lastRunCanAttestAbsence: dernier?.canAttestAbsence ?? null, lastRunAt: dernier?.ranAt ?? null,
-    };
+    const decision = await readOperationalMode(tx, s);
     const volumeAvant = precedent ? Number(precedent.jobs) : null;
     const volumeActuel = dernier ? Number(dernier.jobs) : null;
     return {
-      access, source: s.key, maison: s.maison, mode: decideMode(ev).mode,
+      access, source: s.key, maison: s.maison, mode: decision.mode,
       dernierRun: dernier?.ranAt ?? null, dernierStatut: dernier?.status ?? null,
       // Un silence n'est pas un échec, et aucune alerte ne se déclenche dessus : il faut donc le MESURER.
       heuresDepuisDernierRun: dernier ? Math.round((Date.now() - new Date(dernier.ranAt).getTime()) / 36e5) : null,
@@ -115,7 +100,7 @@ const report = await p.$transaction(async (tx) => {
       echecsEcriture: evOf(s.key, 'job.write_failed'),
       fermetures: closedOf.get(s.key) ?? 0,
     };
-  });
+  }));
 
   return {
     at: new Date().toISOString(), fenetreHeures: sinceHours,
@@ -139,7 +124,7 @@ const report = await p.$transaction(async (tx) => {
     },
     lignes,
   };
-});
+}, { timeout: 180_000 });
 await p.$disconnect();
 
 if (outJson) writeFileSync(outJson, JSON.stringify(report, null, 1));

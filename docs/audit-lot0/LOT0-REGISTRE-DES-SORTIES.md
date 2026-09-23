@@ -5,8 +5,20 @@ mesures ont coexisté sous des noms proches (`lot0-chaine-complete.csv` / `lot0-
 avec des lecteurs et des taxonomies différents : sans lui, un chiffre cité ne dit pas de quelle
 version il vient.
 
-**Aucun fichier n'est supprimé.** Un fichier périmé reste lisible, et conserve sa valeur d'archive
-là où il est la seule mesure d'un axe.
+## Statut historique et archive des producteurs
+
+Ce registre décrit l'audit du 20 septembre 2026, pas l'état actuel de la production. Les sorties
+et constats historiques sont conservés. Le 23 septembre, les brouillons non suivis cités ici
+(`lot0-*.mts`, `lot0-v2-chemins.ts`) ont été retirés du checkout après vérification de leur
+archive privée ; leurs noms et numéros de ligne ci-dessous désignent cette version archivée.
+Ils ne constituent plus des commandes de mesure disponibles dans le dépôt.
+
+Archive locale privée : `~/.catwalks/postrun-cleanup-20260923/untracked-before-cleanup.tar.gz`.
+Le manifeste `drafts-final-removal-manifest.json` et le reçu `drafts-removal-receipt.json`, dans
+le même répertoire, identifient les fichiers et leurs empreintes SHA-256. Ils permettent de
+retrouver les producteurs pour relire les preuves, sans réintroduire les brouillons dans le
+checkout actif. Une nouvelle mesure doit valider son lecteur, sa population et son accès aux
+données ; les anciennes instructions d'exécution ne sont pas une procédure de production.
 
 ## Réserve qui porte sur TOUTES les sorties ci-dessous
 
@@ -24,7 +36,7 @@ publications ont expiré — que le produit n'affiche jamais.
 **Conséquence : aucune couverture issue de ces fichiers ne doit être citée comme un taux du
 catalogue exposé.** L'écart n'est pas chiffré (accès production suspendu le 2026-09-20).
 
-## Sorties courantes
+## Sorties de référence de cet audit historique
 
 | Question | Fichier | Producteur | Lecteurs |
 |---|---|---|---|
@@ -36,8 +48,8 @@ catalogue exposé.** L'écart n'est pas chiffré (accès production suspendu le 
 ### Réserve propre à `lot0-v2-chaine.csv`
 
 `lot0-v2-chemins.ts` a été modifié **après** la production du CSV. Le fichier ne reflète donc pas
-nécessairement les chemins déclarés aujourd'hui : **à rejouer avant toute conclusion sur les
-verdicts**, une fois l'accès d'audit sécurisé.
+nécessairement les derniers chemins de son producteur archivé : **une nouvelle mesure validée
+est nécessaire avant toute conclusion actuelle sur les verdicts**.
 
 Deux verdicts de ce fichier sont contestés et en cours de requalification — ce sont les deux
 premiers postes de « perte » :

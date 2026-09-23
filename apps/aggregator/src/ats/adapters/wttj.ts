@@ -187,7 +187,8 @@ async function attachWttjDescriptions(
             `${JOB_API}/${hit.organization?.slug ?? organizationSlug}/jobs/${hit.slug}`,
           );
           const full = descriptionFromApi(response.job);
-          return full && full.length > (job.description?.length ?? 0) ? { ...job, description: full } : job;
+          return response.job ? { ...job, ...(full && full.length > (job.description?.length ?? 0) ? { description: full } : {}),
+            raw: { ...hit, detail: response.job, detailUrl: `${JOB_API}/${hit.organization?.slug ?? organizationSlug}/jobs/${hit.slug}` } } : job;
         } catch {
           // Un détail injoignable ne doit pas faire perdre l'offre : le résumé reste.
           return job;
@@ -211,7 +212,7 @@ export function wttjCanonicalId(hit: WttjHit): string | null {
   return slug || null;
 }
 
-function toNormalized(hit: WttjHit, organizationSlug: string): NormalizedJob | null {
+export function parseWttjHit(hit: WttjHit, organizationSlug: string): NormalizedJob | null {
   if (!hit.name) return null;
 
   const office = hit.offices?.[0];
@@ -290,7 +291,7 @@ export async function fetchWttjJobs(config: Record<string, unknown>): Promise<Ad
       const canonicalId = wttjCanonicalId(hit);
       if (canonicalId) { if (!pageIds.includes(canonicalId)) pageIds.push(canonicalId); }
       else anonymousRows++;
-      const job = toNormalized(hit, slug);
+      const job = parseWttjHit(hit, slug);
       /**
        * UN HIT SANS IDENTIFIANT NATIF NE DEVIENT PAS UNE OFFRE : `toNormalized` se rabattrait sur `hit.name`,
        * donc sur le TITRE, et publierait une offre absente de toute preuve — ce que le contrat interdit.

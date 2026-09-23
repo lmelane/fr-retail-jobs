@@ -1,0 +1,548 @@
+{
+  "status": "PREPARED_NOT_APPLIED",
+  "preserveStatuses": true,
+  "entries": [
+    {
+      "key": "cotton-on",
+      "expectedRevision": "d69f7e11-5eea-4240-b101-bd12d14d62de",
+      "expectedStatus": "PAUSED",
+      "patch": {
+        "kind": "oraclehcm",
+        "config": {
+          "origin": "https://ekxm.fa.ap1.oraclecloud.com",
+          "siteNumber": "CX",
+          "lang": "en"
+        }
+      },
+      "evidence": [
+        {
+          "sourceKey": "cotton-on",
+          "url": "https://careers.smartrecruiters.com/cottonon",
+          "finalUrl": "https://careers.smartrecruiters.com/cottonon",
+          "observedAt": "2026-09-23T10:17:04.422981+00:00",
+          "httpStatus": 200,
+          "title": "Careers at Cotton On",
+          "sha256": "8a03db87b4cd4b950dc44bdea156bf6db0da5fe0ffaa4cd581b73e2cc0c044fc",
+          "file": "pages/cotton-on.html.gz",
+          "truncated": false
+        },
+        {
+          "sourceKey": "official-cotton-on",
+          "url": "https://cottonongroup.com/careers/",
+          "finalUrl": "https://cottonongroup.com/join-the-team/",
+          "observedAt": "2026-09-23T10:18:31.674580+00:00",
+          "httpStatus": 200,
+          "title": "Join our world - Cotton on Group",
+          "sha256": "fbce54f018569b2fdaf0722146bc6cff89becdc696ea0a09f7f36c560eac9967",
+          "file": "pages/official-cotton-on.html.gz",
+          "truncated": false
+        }
+      ],
+      "reason": "Le site officiel Cotton On pointe Oracle HCM ekxm.fa.ap1.oraclecloud.com, site CX. Le vieux board SmartRecruiters ne présente que trois liens et ne constitue pas la référence actuelle prouvée par la marque."
+    },
+    {
+      "key": "de-beers-london",
+      "expectedRevision": "1006ad9b-8121-458e-85d3-53dc9f2363d7",
+      "expectedStatus": "PAUSED",
+      "patch": {
+        "portalScope": "MULTI_BRAND"
+      },
+      "evidence": [
+        {
+          "sourceKey": "de-beers-london",
+          "url": "https://careers.smartrecruiters.com/AngloAmericanDeBeersGroup",
+          "finalUrl": "https://careers.smartrecruiters.com/AngloAmericanDeBeersGroup",
+          "observedAt": "2026-09-23T10:17:04.433834+00:00",
+          "httpStatus": 200,
+          "title": "Careers at Anglo American / De Beers Group",
+          "sha256": "0e99243aed6d84b2cfda91158209e892fef61e420e9a903b47d62548303df311",
+          "file": "pages/de-beers-london.html.gz",
+          "truncated": false
+        }
+      ],
+      "reason": "Le tenant configuré est Anglo American / De Beers Group : il liste aussi extraction minière et industrie. Des fiches officielles portent bien De Beers London et des postes retail."
+    },
+    {
+      "key": "fastrack",
+      "expectedRevision": "c19620dc-f309-42df-8e0f-33e2e77cab75",
+      "expectedStatus": "PAUSED",
+      "patch": {
+        "careersDomain": "careers.titan.in"
+      },
+      "evidence": [
+        {
+          "sourceKey": "fastrack",
+          "url": "https://careers.titan.in",
+          "finalUrl": "https://careers.titan.in/in/en",
+          "observedAt": "2026-09-23T10:17:05.875523+00:00",
+          "httpStatus": 200,
+          "title": "Careers at Titan | Titan jobs",
+          "sha256": "eebc720ad69e988722699d903c22ff9edef81195d193f5f6319267b3764ae854",
+          "file": "pages/fastrack.html.gz",
+          "truncated": false
+        }
+      ],
+      "reason": "La configuration vise déjà careers.titan.in (Phenom), alors que careersDomain est encore fastrack.teamtailor.com. Le portail actuel est celui du groupe Titan, pas uniquement Fastrack."
+    },
+    {
+      "key": "ghost",
+      "expectedRevision": "bd53a04a-b4b8-48a1-9956-1fc60512c737",
+      "expectedStatus": "PAUSED",
+      "patch": {
+        "careersDomain": "www.ghostfashion.com"
+      },
+      "evidence": [
+        {
+          "sourceKey": "ghost",
+          "url": "https://www.ghostfashion.com/careers",
+          "finalUrl": "https://www.ghostfashion.com/careers",
+          "observedAt": "2026-09-23T10:17:06.785399+00:00",
+          "httpStatus": 200,
+          "title": "Careers with Ghost | Careers | Ghost London",
+          "sha256": "e07189c8b82d7b083a2bda4a67d9cc6e049c68d50c442b827e79beff134c07c9",
+          "file": "pages/ghost.html.gz",
+          "truncated": false
+        }
+      ],
+      "reason": "Le startUrl configuré est la page carrières officielle Ghost London, mais careersDomain garde boards.greenhouse.io."
+    },
+    {
+      "key": "marella",
+      "expectedRevision": "1b084379-430d-4726-9bbc-6f7f3c0e5aea",
+      "expectedStatus": "PAUSED",
+      "patch": {
+        "portalScope": "MULTI_BRAND"
+      },
+      "evidence": [
+        {
+          "sourceKey": "marella",
+          "url": "https://careers.smartrecruiters.com/MaxMaraFashionGroup",
+          "finalUrl": "https://careers.smartrecruiters.com/MaxMaraFashionGroup",
+          "observedAt": "2026-09-23T10:17:08.576981+00:00",
+          "httpStatus": 200,
+          "title": "Careers at Max Mara Fashion Group",
+          "sha256": "46c129c1dd3551626ccbcc90a0a73d2fa51de9549ff2a610ba7badef7773d457",
+          "file": "pages/marella.html.gz",
+          "truncated": false
+        },
+        {
+          "sourceKey": "official-maxmara",
+          "url": "https://www.maxmarafashiongroup.com/",
+          "finalUrl": "https://www.maxmarafashiongroup.com/",
+          "observedAt": "2026-09-23T10:18:33.043582+00:00",
+          "httpStatus": 200,
+          "title": "Sito ufficiale Max Mara Fashion Group",
+          "sha256": "b565a23eaa80975c8a0c4ced48170dbd737d74f785fbc9579ae73ed2790489fc",
+          "file": "pages/official-maxmara.html.gz",
+          "truncated": false
+        }
+      ],
+      "reason": "Le board configuré est Max Mara Fashion Group ; il liste Marella, Max Mara, Max&Co et Pennyblack. Ce n’est pas un board Marella exclusif."
+    },
+    {
+      "key": "markham",
+      "expectedRevision": "39c524d5-3f2d-40c4-947f-3b6cdd02178c",
+      "expectedStatus": "PAUSED",
+      "patch": {
+        "kind": "oraclehcm",
+        "config": {
+          "origin": "https://fa-expc-saasfaprod1.fa.ocs.oraclecloud.com",
+          "siteNumber": "CX_1",
+          "lang": "en"
+        },
+        "careersDomain": "fa-expc-saasfaprod1.fa.ocs.oraclecloud.com",
+        "portalScope": "MULTI_BRAND"
+      },
+      "evidence": [
+        {
+          "sourceKey": "markham",
+          "url": "https://fa-expc-saasfaprod1.fa.ocs.oraclecloud.com",
+          "observedAt": "2026-09-23T10:17:08.783462+00:00",
+          "httpStatus": 302,
+          "error": "HTTPError: HTTP Error 302: The HTTP server returned a redirect error that would lead to an infinite loop.\nThe last 30x error message was:\nMoved Temporarily"
+        },
+        {
+          "sourceKey": "official-markham-jobs",
+          "url": "https://tfglimited.co.za/careers/opportunities/",
+          "finalUrl": "https://tfglimited.co.za/careers/opportunities/",
+          "observedAt": "2026-09-23T10:20:26.114597+00:00",
+          "httpStatus": 200,
+          "title": "Opportunities - TFG Limited",
+          "sha256": "92b49bd8544c2584dd13f634343cb89a9aa615a5fcb81f97ca5f8d70b0406f03",
+          "file": "pages/official-markham-jobs.html.gz",
+          "truncated": false
+        }
+      ],
+      "reason": "TFG officiel lie le tenant Oracle déjà configuré, site CX_1. Le kind PROD oracle_hcm n’est pas dans KIND_TO_ATS (le kind maintenu est oraclehcm), et careersDomain vaut encore jobs.lever.co."
+    },
+    {
+      "key": "minimalist",
+      "expectedRevision": "67f64928-4ab2-4f6e-a283-ab13baa64d62",
+      "expectedStatus": "PAUSED",
+      "patch": {
+        "careersDomain": "beminimalist.co"
+      },
+      "evidence": [
+        {
+          "sourceKey": "minimalist",
+          "url": "https://beminimalist.co/pages/about",
+          "finalUrl": "https://beminimalist.co/pages/about",
+          "observedAt": "2026-09-23T10:17:09.348466+00:00",
+          "httpStatus": 200,
+          "title": "About – Minimalist\n",
+          "sha256": "c9bb70b629aff7ad93acaa2e9f1df5d013b9d884a7e351babf84d07099d2acc1",
+          "file": "pages/minimalist.html.gz",
+          "truncated": false
+        }
+      ],
+      "reason": "La page officielle beminimalist.co/pages/about inclut une rubrique carrières et un formulaire Zoho Recruit ; le domaine enregistré minimalist.recruitee.com est ancien."
+    },
+    {
+      "key": "nimble",
+      "expectedRevision": "6315b0c6-8e18-407d-b23c-9261246412f7",
+      "expectedStatus": "PAUSED",
+      "patch": {
+        "careersDomain": "nimbleactivewear.com"
+      },
+      "evidence": [
+        {
+          "sourceKey": "nimble",
+          "url": "https://nimbleactivewear.com/pages/careers",
+          "finalUrl": "https://nimbleactivewear.com/pages/careers",
+          "observedAt": "2026-09-23T10:17:10.559032+00:00",
+          "httpStatus": 200,
+          "title": "Careers | Women's Activewear | Nimble Activewear",
+          "sha256": "0797e29b46f2b8319591ad9078dd9603fb3938c19110adaef6b4d9886ce3c336",
+          "file": "pages/nimble.html.gz",
+          "truncated": false
+        }
+      ],
+      "reason": "Le startUrl est la page officielle carrières Nimble Activewear ; le domaine enregistré nimble.recruitee.com n’est pas le domaine effectivement lu."
+    },
+    {
+      "key": "orchestra",
+      "expectedRevision": "58b83d14-638a-46c4-b2bd-106499fabad0",
+      "expectedStatus": "PAUSED",
+      "patch": {
+        "careersDomain": "recrutement.orchestra-premaman.com"
+      },
+      "evidence": [
+        {
+          "sourceKey": "orchestra",
+          "url": "https://recrutement.orchestra-premaman.com",
+          "finalUrl": "https://recrutement.orchestra-premaman.com",
+          "observedAt": "2026-09-23T10:17:12.150096+00:00",
+          "httpStatus": 200,
+          "title": "\n      Recrutement Orchestra-Prémaman : Site Carrière & Offres d'Emploi - Orchestra\n    ",
+          "sha256": "bbb0d7b6cc6f9ba3904ba14561bc4e168d58993fbba6997c3f63f8cc2453a796",
+          "file": "pages/orchestra.html.gz",
+          "truncated": false
+        }
+      ],
+      "reason": "La configuration pointe bien le portail Teamtailor Orchestra-Prémaman ; careersDomain conserve à tort boards.greenhouse.io."
+    },
+    {
+      "key": "picard",
+      "expectedRevision": "286bf490-de09-4938-8a49-2aaec2bacc25",
+      "expectedStatus": "PAUSED",
+      "patch": {
+        "careersDomain": "picard-fashion.com"
+      },
+      "evidence": [
+        {
+          "sourceKey": "picard",
+          "url": "https://picard-fashion.com/blogs/karriere",
+          "finalUrl": "https://picard-fashion.com/blogs/karriere",
+          "observedAt": "2026-09-23T10:17:12.917559+00:00",
+          "httpStatus": 200,
+          "title": "Karriere",
+          "sha256": "b6358b0b117b31c8d1bc7b49c868f1507395fa4a94c4a4aca6000d6fcb967a00",
+          "file": "pages/picard.html.gz",
+          "truncated": false
+        }
+      ],
+      "reason": "Le site picard-fashion.com publie plusieurs pages carrières natives ; il s’agit de la marque de maroquinerie PICARD, pas du distributeur alimentaire. Le domaine Recruitee enregistré est périmé."
+    },
+    {
+      "key": "rotate",
+      "expectedRevision": "2150c6d4-0fb2-48d5-be2f-9116e318e6aa",
+      "expectedStatus": "PAUSED",
+      "patch": {
+        "careersDomain": "www.rotatebirgerchristensen.com"
+      },
+      "evidence": [
+        {
+          "sourceKey": "rotate",
+          "url": "https://www.rotatebirgerchristensen.com/career",
+          "finalUrl": "https://www.rotatebirgerchristensen.com/career",
+          "observedAt": "2026-09-23T10:17:15.350314+00:00",
+          "httpStatus": 200,
+          "title": "Career | ROTATE Birger Christensen",
+          "sha256": "02f130abea5a160d027a99cafecbeb575ea8ab45ef06d5ead82f925165ff7e21",
+          "file": "pages/rotate.html.gz",
+          "truncated": false
+        }
+      ],
+      "reason": "La page officielle ROTATE affiche plusieurs intitulés de stages ; l’ancien domaine Recruitee n’est plus celui du startUrl lu."
+    },
+    {
+      "key": "sandro",
+      "expectedRevision": "fba4ace6-e51a-43e6-95b3-a01a4b71e16c",
+      "expectedStatus": "PAUSED",
+      "patch": {
+        "portalScope": "MULTI_BRAND"
+      },
+      "evidence": [
+        {
+          "sourceKey": "sandro",
+          "url": "https://careers.smartrecruiters.com/SMCP",
+          "finalUrl": "https://careers.smartrecruiters.com/SMCP",
+          "observedAt": "2026-09-23T10:17:16.113827+00:00",
+          "httpStatus": 200,
+          "title": "Carrières chez SMCP",
+          "sha256": "803c4f33edc243c3c1d08d6aecae95731838d6155f26112bb6744da3dc6ab567",
+          "file": "pages/sandro.html.gz",
+          "truncated": false
+        }
+      ],
+      "reason": "La source key sandro cible le board global SMCP ; la Maison enregistrée mentionne déjà toutes les Maisons. Le site propose des sections Sandro/Maje/Claudie Pierlot/Fursac."
+    },
+    {
+      "key": "showroomprive",
+      "expectedRevision": "e10f3a08-5584-4e95-b87f-2594a84804d0",
+      "expectedStatus": "PAUSED",
+      "patch": {
+        "kind": "teamtailor",
+        "config": {
+          "origin": "https://talents.showroomprivegroup.com"
+        }
+      },
+      "evidence": [
+        {
+          "sourceKey": "showroomprive",
+          "url": "https://talents.showroomprivegroup.com/",
+          "finalUrl": "https://talents.showroomprivegroup.com/",
+          "observedAt": "2026-09-23T10:17:17.974241+00:00",
+          "httpStatus": 200,
+          "title": "\n      Talents - Showroomprive.com\n    ",
+          "sha256": "a7d36036e265ccf55dc1394b4f5af989b7835517751fc9fd7759ea3f7469a27e",
+          "file": "pages/showroomprive.html.gz",
+          "truncated": false
+        }
+      ],
+      "reason": "Le portail Teamtailor talents.showroomprivegroup.com se présente comme Showroomprive.com et pointe le groupe."
+    },
+    {
+      "key": "sioux",
+      "expectedRevision": "ea80e325-5ddb-423b-8a2c-b08b4c750315",
+      "expectedStatus": "PAUSED",
+      "patch": {
+        "careersDomain": "www.sioux.de"
+      },
+      "evidence": [
+        {
+          "sourceKey": "sioux",
+          "url": "https://www.sioux.de/pages/stellenangebote",
+          "finalUrl": "https://www.sioux.de/pages/stellenangebote",
+          "observedAt": "2026-09-23T10:17:18.314539+00:00",
+          "httpStatus": 200,
+          "title": "Stellenangebote\n | Sioux Online Shop\n",
+          "sha256": "7c0a3e768756cb88a20fe27d3d01fa949860c888b9dbc2fb820f24d27473a7f9",
+          "file": "pages/sioux.html.gz",
+          "truncated": false
+        }
+      ],
+      "reason": "Le startUrl est la page emplois officielle du chausseur Sioux, tandis que careersDomain reste sioux.recruitee.com."
+    },
+    {
+      "key": "soeur",
+      "expectedRevision": "8044029a-96df-41cf-83cf-b9f4c75627a4",
+      "expectedStatus": "PAUSED",
+      "patch": {
+        "kind": "teamtailor",
+        "config": {
+          "origin": "https://soeur-1711354805.teamtailor.com"
+        }
+      },
+      "evidence": [
+        {
+          "sourceKey": "soeur",
+          "url": "https://soeur-1711354805.teamtailor.com/",
+          "finalUrl": "https://soeur-1711354805.teamtailor.com/",
+          "observedAt": "2026-09-23T10:17:18.714720+00:00",
+          "httpStatus": 200,
+          "title": "\n      Accueil site carrière - Soeur\n    ",
+          "sha256": "5f3610a5aaa235b5b2fa13dc039274a82353c154ade9c8f6e4b1c8a4edb8a32f",
+          "file": "pages/soeur.html.gz",
+          "truncated": false
+        }
+      ],
+      "reason": "Le portail Teamtailor se présente comme Soeur, expose des postes et lie soeur.fr."
+    },
+    {
+      "key": "rituals",
+      "expectedRevision": "c8d4236e-08d3-47ec-ba10-0b7922637700",
+      "expectedStatus": "ACTIVE",
+      "patch": {
+        "portalScope": "SINGLE_BRAND"
+      },
+      "evidence": [
+        {
+          "url": "https://careers.rituals.com/en-NL/",
+          "finalUrl": "https://careers.rituals.com/en-NL/",
+          "httpStatus": 200,
+          "title": "Work with heart & soul at Rituals (NL) - Rituals",
+          "observedAt": "2026-09-23T10:27:09.257992+00:00",
+          "sha256": "f0cbaba79a44d34edf78ab0f38067974aeb868a79d0648a3bff5219119635c7e",
+          "file": "pages/active-rituals.html.gz"
+        }
+      ],
+      "reason": "Le portail se présente comme la seule marque Rituals. Aucune vitrine de groupe multi-marques observée dans cette lecture. SINGLE_BRAND décrit la marque du portail, pas nécessairement une seule entité juridique."
+    },
+    {
+      "key": "dr-martens-tf",
+      "expectedRevision": "040b8b81-b60a-4299-a3d2-e3283fe91faa",
+      "expectedStatus": "ACTIVE",
+      "patch": {
+        "portalScope": "SINGLE_BRAND"
+      },
+      "evidence": [
+        {
+          "url": "https://jobs.drmartens.com",
+          "finalUrl": "https://jobs.drmartens.com",
+          "httpStatus": 200,
+          "title": "Careers Site",
+          "observedAt": "2026-09-23T10:27:09.258814+00:00",
+          "sha256": "1e97305dc2f330e88e10c5c0a092535f9c941c6b9c5c69baf03204c26d8bedd7",
+          "file": "pages/active-dr-martens-tf.html.gz"
+        }
+      ],
+      "reason": "Le portail se présente comme la seule marque Dr. Martens. Aucune vitrine de groupe multi-marques observée dans cette lecture. SINGLE_BRAND décrit la marque du portail, pas nécessairement une seule entité juridique."
+    },
+    {
+      "key": "beauty-success-geodir",
+      "expectedRevision": "f3a3e53e-0168-4681-8cbe-4ceaab583785",
+      "expectedStatus": "ACTIVE",
+      "patch": {
+        "portalScope": "MULTI_BRAND"
+      },
+      "evidence": [
+        {
+          "url": "https://recrutement.beautysuccess.fr",
+          "finalUrl": null,
+          "httpStatus": 403,
+          "title": null,
+          "observedAt": "2026-09-23T10:27:09.440067+00:00",
+          "sha256": null,
+          "file": null
+        }
+      ],
+      "reason": "Ne pas définir SINGLE_BRAND : le site officiel expose aussi des postes ENSEIGNE JFG et JFG CLINIC, et des partenaires franchisés. Il s’agit au minimum d’un périmètre multi-enseignes/opérateurs."
+    },
+    {
+      "key": "breitling-sf",
+      "expectedRevision": "56902c3e-d1d0-4aef-a320-ba7dadafdccc",
+      "expectedStatus": "ACTIVE",
+      "patch": {
+        "portalScope": "SINGLE_BRAND"
+      },
+      "evidence": [
+        {
+          "url": "https://careers.breitling.com",
+          "finalUrl": "https://careers.breitling.com",
+          "httpStatus": 200,
+          "title": "Careers homepage",
+          "observedAt": "2026-09-23T10:27:09.475448+00:00",
+          "sha256": "ffd97d51aca5cfdb36412c720cc8e978301b55ff0288d861a63e558de375aa66",
+          "file": "pages/active-breitling-sf.html.gz"
+        }
+      ],
+      "reason": "Le portail se présente comme la seule marque Breitling. Aucune vitrine de groupe multi-marques observée dans cette lecture. SINGLE_BRAND décrit la marque du portail, pas nécessairement une seule entité juridique."
+    },
+    {
+      "key": "fenwick-volcanic",
+      "expectedRevision": "f3d28692-3a1c-4cab-ad77-4bc38105ccfb",
+      "expectedStatus": "ACTIVE",
+      "patch": {
+        "portalScope": "SINGLE_BRAND"
+      },
+      "evidence": [
+        {
+          "url": "https://www.careers.fenwick.co.uk",
+          "finalUrl": "https://www.careers.fenwick.co.uk",
+          "httpStatus": 200,
+          "title": "Homepage · Fenwick",
+          "observedAt": "2026-09-23T10:27:09.506891+00:00",
+          "sha256": "e278aa49244788b84c874d262d8ee3ade88352284903494b708b080ada919c8c",
+          "file": "pages/active-fenwick-volcanic.html.gz"
+        }
+      ],
+      "reason": "Le portail se présente comme la seule marque Fenwick. Aucune vitrine de groupe multi-marques observée dans cette lecture. SINGLE_BRAND décrit la marque du portail, pas nécessairement une seule entité juridique."
+    },
+    {
+      "key": "goyard-successfactors",
+      "expectedRevision": "4f0dc404-8c85-4561-99a8-a763d98fd4f2",
+      "expectedStatus": "ACTIVE",
+      "patch": {
+        "portalScope": "SINGLE_BRAND"
+      },
+      "evidence": [
+        {
+          "url": "https://careers.goyard.com",
+          "finalUrl": "https://careers.goyard.com",
+          "httpStatus": 200,
+          "title": "",
+          "observedAt": "2026-09-23T10:27:09.837167+00:00",
+          "sha256": "989c09610cdccab8523828695ef384bcee395d168ab4d52b8bafd690fd78abfb",
+          "file": "pages/active-goyard-successfactors.html.gz"
+        }
+      ],
+      "reason": "Le portail se présente comme la seule marque Goyard. Aucune vitrine de groupe multi-marques observée dans cette lecture. SINGLE_BRAND décrit la marque du portail, pas nécessairement une seule entité juridique."
+    },
+    {
+      "key": "urbn-hub",
+      "expectedRevision": "cdde33df-944b-4a39-858e-3e632e0c89d0",
+      "expectedStatus": "ACTIVE",
+      "patch": {
+        "config": {
+          "origin": "https://hub-urbn.icims.com",
+          "employerFromJobPosting": true,
+          "detailOrigins": [
+            "https://homeoffice-eu-urbn.icims.com",
+            "https://homeoffice-na-urbn.icims.com",
+            "https://menusandvenues-na-urbn.icims.com",
+            "https://stores-eu-urbn.icims.com",
+            "https://stores-na-urbn.icims.com",
+            "https://supplychain-eu-urbn.icims.com",
+            "https://supplychain-na-urbn.icims.com"
+          ]
+        }
+      },
+      "evidence": [
+        {
+          "captureBatchId": "dbf34f4e-cc2d-44c9-b09d-4aa53de57ac6"
+        }
+      ],
+      "reason": "Exact regional detail origins in 1475 native hub links"
+    },
+    {
+      "key": "caudalie",
+      "expectedRevision": "898dbf88-1f4a-4ce6-9c6e-2a94e5e2443e",
+      "expectedStatus": "DRAFT",
+      "patch": {
+        "config": {
+          "startUrl": "https://caudalie.career/home/our-job-offers",
+          "reader": "caudalie-ajax"
+        },
+        "portalScope": "SINGLE_BRAND"
+      },
+      "evidence": [
+        {
+          "url": "https://fr.caudalie.com",
+          "portal": "https://caudalie.career"
+        }
+      ],
+      "reason": "Official fr.caudalie.com links caudalie.career; same-host native AJAX and details"
+    }
+  ]
+}

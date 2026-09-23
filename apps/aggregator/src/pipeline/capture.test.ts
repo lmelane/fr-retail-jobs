@@ -8,6 +8,7 @@ import { archiveAdapterOutput } from '../capture/observations.js';
 import { type CaptureRecord, digestBytes, captureResponse, withCaptureContext } from '../capture/context.js';
 import { archiveRawBlob, readRawBlob } from '../capture/store.js';
 import { fetchJson, fetchText } from '../lib/http.js';
+import { snapshotHosts } from '../observability/httpTelemetry.js';
 import { MemoryStore } from '../test/memoryObjectStore.js';
 import { upsertDeduplicated } from '../dedup/upsert.js';
 
@@ -24,6 +25,25 @@ afterEach(() => { vi.restoreAllMocks(); vi.unstubAllGlobals(); });
 afterAll(() => db.$disconnect());
 
 describe('native extraction evidence', () => {
+  it('replays a failed transport attempt followed by success without poisoning the archive', async () => {
+    const source = key();
+    const network = vi.fn().mockRejectedValueOnce(new DOMException('Native request timed out', 'AbortError'))
+      .mockImplementation(async () => new Response(payload));
+    vi.stubGlobal('fetch', network);
+    const live = await captureExtraction(db, source, {}, undefined, read);
+    const batch = await latest(source);
+    expect(batch.captures).toHaveLength(2);
+    expect(batch.captures[0]).toMatchObject({ complete: false, failure: 'AbortError' });
+    network.mockImplementation(async () => { throw new Error('Live HTTP forbidden'); });
+    const liveTelemetry = snapshotHosts();
+    const replay = await replayExtraction(db, batch.id, read);
+    expect(snapshotHosts()).toEqual(liveTelemetry);
+    expect(replay.jobs).toEqual(live.jobs.map(({captureBatchId, captureOutputId, ...job}) => job));
+    expect(network).toHaveBeenCalledTimes(2);
+    await expect(replayExtraction(db, batch.id, () => fetchJson('https://not-recorded.example/jobs'))).rejects.toThrow('absent');
+    expect(network).toHaveBeenCalledTimes(2);
+  });
+
   it('commits exact native bytes before parsing but cannot publish an unregistered probe', async () => {
     const source = key();
     vi.stubGlobal('fetch', vi.fn(async () => new Response(payload, { headers: { 'content-type': 'application/json',
@@ -181,7 +201,7 @@ describe('native extraction evidence', () => {
       expect(capture.complete).toBe(false);
       expect(await readRawBlob(db, capture.blobHash!)).toEqual(prefix);
     }
-    await expect(replayExtraction(db, batch.id, read)).rejects.toThrow('incomplete');
+    await expect(replayExtraction(db, batch.id, read)).rejects.toThrow('Recorded transport attempt failed');
   });
 
   it('removes hot bytes only after a verified remote read, and can replay from the archive', async () => {

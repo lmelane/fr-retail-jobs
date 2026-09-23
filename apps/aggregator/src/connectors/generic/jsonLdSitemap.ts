@@ -2,6 +2,7 @@ import { gunzipSync } from 'node:zlib';
 import { load } from 'cheerio';
 import { fetchText, fetchWithRetry, readBytesBounded } from '../../lib/http.js';
 import { htmlToPlainText } from '../../lib/html.js';
+import { publisherDate } from '../../lib/publisherInstant.js';
 import type { NormalizedJob } from '../../types.js';
 
 /**
@@ -221,7 +222,7 @@ export function normalizeJobPosting(
    */
   const externalId = pageUrl;
 
-  const postedAt = node.datePosted ? new Date(String(node.datePosted)) : undefined;
+  const postedAt = publisherDate(node.datePosted);
   const validThrough = node.validThrough ? new Date(String(node.validThrough)) : undefined;
 
   /**

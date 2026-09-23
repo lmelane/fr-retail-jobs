@@ -9,6 +9,7 @@ import { fetchRssJobs } from '../../connectors/generic/rssFeed.js';
 import { briefError } from '../../lib/normalize.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
 import { CRAWLER_IDENTITY } from '../../lib/crawlerIdentity.js';
+import { fetchCaudalieJobs } from './caudalie.js';
 
 /**
  * The publisher's own count of listed postings, read on a listing page: a data
@@ -57,6 +58,7 @@ export function normalizeGenericPosting(node: Record<string, unknown>, pageUrl: 
 const CHALLENGE_PAGE = /just a moment|cf-chl|cf_chl|challenge-platform|_Incapsula_|aws-waf|awswaf|Access Denied|Attention Required/i;
 
 export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): Promise<AdapterResult> {
+  if (config.reader === 'caudalie-ajax') return fetchCaudalieJobs(config);
   /**
    * An RSS/Atom careers feed, when the site publishes one — the cheapest generic
    * path (no page crawl at all). Many small brands and TalentSoft/WordPress sites
@@ -307,7 +309,7 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
             return parsed;
           } catch (error) {
             fetchFailures++;
-            rejectedRows.push({ reason: 'LISTED_PAGE_FETCH_FAILED', raw: { url, error: String(error).slice(0, 200) } });
+            rejectedRows.push({ reason: 'LISTED_PAGE_FETCH_FAILED', raw: { url, error: error instanceof Error ? error.name : 'UnknownError' } });
             return [];
           }
         }),
@@ -322,6 +324,9 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
     });
     const complete = sitemap.failedShards.length === 0 && fetchFailures === 0;
     const issues = [...(sitemap.failedShards.length ? [`UNREACHABLE_SHARDS=${sitemap.failedShards.length}`] : []), ...(fetchFailures ? [`PAGE_FETCH_FAILURES=${fetchFailures}`] : []), ...(complete ? [] : ['ENUMERATION_NOT_PROVEN'])];
+    // Parallel detail requests settle in a different order offline. Keep the
+    // evidence order tied to its source URL, not response timing.
+    rejectedRows.sort((a, b) => String((a.raw as { url: string }).url).localeCompare(String((b.raw as { url: string }).url), 'en'));
     return { jobs, declaredTotal: urls.length, complete, truncated: !complete, rejectedRows,
       enumeration: { method: sitemap.isIndex ? 'SITEMAP_INDEX_WITH_DETAIL_READ' : 'SITEMAP_URLSET_WITH_DETAIL_READ', endpoint: sitemapUrl, pages: sitemap.shards.length, rawCount: sitemap.urls.length, termination: complete ? 'ALL_LISTED_PAGES_READ' : 'LISTED_PAGES_MISSING', issues,
         scopes: [{ scope: 'shards', declaredTotal: sitemap.shards.length, uniqueIds: sitemap.shards.length - sitemap.failedShards.length, pages: sitemap.shards.length, complete: sitemap.failedShards.length === 0 },

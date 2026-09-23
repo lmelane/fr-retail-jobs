@@ -190,6 +190,7 @@ export function parseBashListing(html: string): {
     jobs.push({
       externalId,
       title,
+      company: decode(block.match(/itemprop="hiringOrganization"[^>]*>[\s\S]*?itemprop="name"[^>]*>([^<]*)/i)?.[1]),
       location: location || undefined,
       city,
       region,
@@ -199,7 +200,7 @@ export function parseBashListing(html: string): {
       description: plain(block.match(FIELD.description)?.[1]),
       url: link[1],
       postedAt: parseDayMonthYear(block.match(FIELD.posted)?.[1]),
-      raw: { source: 'bash-talents' },
+      raw: { source: 'bash-talents', listingBlock: block },
     });
   }
 
@@ -234,7 +235,8 @@ export async function fetchBashTalentsJobs(config: Record<string, unknown> = {})
         listed.map((job) =>
           limit(async (): Promise<NormalizedJob> => {
             try {
-              const detail = parseBashDetail(await fetchText(job.url));
+              const detailHtml = await fetchText(job.url);
+              const detail = parseBashDetail(detailHtml);
               // Le listing ne porte la description que sur 3 offres sur 50, et
               // sa date est celle du jour sur les 50 : le détail prime sur les
               // deux dès qu'il les a.
@@ -242,7 +244,7 @@ export async function fetchBashTalentsJobs(config: Record<string, unknown> = {})
                 ...job,
                 description: detail.description ?? job.description,
                 postedAt: detail.postedAt ?? job.postedAt,
-                raw: { ...(job.raw as object), experience: detail.experience },
+                raw: { ...(job.raw as object), detailHtml, detailUrl: job.url, experience: detail.experience },
               };
             } catch {
               // Sans détail, l'offre garde titre, lieu, contrat et URL, et reste

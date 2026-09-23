@@ -32,6 +32,8 @@
  */
 import { PrismaClient } from '@prisma/client';
 import { readFileSync } from 'node:fs';
+import { parseSourceCandidate } from '../../src/connectors/sourceCandidate.js';
+import { tenantKeyOf } from '../../src/connectors/sourceStore.js';
 
 const ECRIRE = process.argv.includes('--ecrire');
 const fichier = process.argv.slice(2).find((a) => !a.startsWith('-'));
@@ -57,6 +59,7 @@ const csv = lignes.slice(1).map((l) => {
 function configPour(ats: string, portail: string): Record<string, unknown> | null {
   let u: URL;
   try { u = new URL(portail); } catch { return null; }
+  if (u.protocol !== 'https:' || u.username || u.password) return null;
   switch (ats) {
     case 'generic-listing':
     case 'generic-jsonld':
@@ -66,29 +69,37 @@ function configPour(ats: string, portail: string): Record<string, unknown> | nul
     case 'personio':
       return { host: u.hostname };
     case 'phenom':
-      return { origin: u.origin, localePath: u.pathname.replace(/\/+$/, '') || undefined };
-    case 'oracle_hcm':
-    case 'oraclehcm':
-      return { origin: u.origin };
+      return { origin: u.origin, ...(u.pathname.replace(/\/+$/, '') ? { localePath: u.pathname.replace(/\/+$/, '') } : {}) };
+    case 'oraclehcm': {
+      const path = /^\/hcmUI\/CandidateExperience\/([a-z-]+)\/sites\/([A-Za-z0-9_-]+)(?:\/|$)/.exec(u.pathname);
+      return path ? { origin: u.origin, lang: path[1], siteNumber: path[2] } : null;
+    }
     default:
       return null;
   }
 }
 
-type Correction = { key: string; maison: string; avant: string; apres: string; portail: string; config: Record<string, unknown> };
+type Correction = { key: string; maison: string; avant: string; apres: string; portail: string; config: Record<string, unknown>; careersDomain: string; tenantKey: string; revisionId: string | null };
 const corrections: Correction[] = [];
 const refus: string[] = [];
 
-const base = new Map((await prisma.$queryRawUnsafe<Array<{ key: string; kind: string; maison: string; config: unknown }>>(
-  `SELECT key, kind, maison, config FROM "Source"`)).map((s) => [s.key, s]));
+const base = new Map((await prisma.$queryRawUnsafe<Array<{ key: string; kind: string; maison: string; config: unknown; tier: 'EMPLOYER_DIRECT' | 'GROUP_OFFICIAL' | 'ATS_OFFICIAL'; currentRevisionId: string | null }>>(
+  `SELECT key, kind, maison, config, tier, "currentRevisionId" FROM "Source"`)).map((s) => [s.key, s]));
 
 for (const r of csv) {
   const s = base.get(r.cle);
-  if (!s || !r.ats || r.ats === s.kind) continue;
+  const kind = r.ats === 'oracle_hcm' ? 'oraclehcm' : r.ats;
+  if (!s || !kind || kind === s.kind) continue;
   if (!r.portail_url) { refus.push(`${r.cle} : ATS relu « ${r.ats} » mais aucun portail_url`); continue; }
-  const config = configPour(r.ats, r.portail_url);
+  const config = configPour(kind, r.portail_url);
   if (!config) { refus.push(`${r.cle} : famille « ${r.ats} » sans forme de configuration connue — à traiter à la main`); continue; }
-  corrections.push({ key: r.cle, maison: s.maison, avant: s.kind, apres: r.ats, portail: r.portail_url, config });
+  try {
+    const careersDomain = new URL(r.portail_url).hostname;
+    const candidate = parseSourceCandidate({ key: s.key, maison: s.maison, kind, config, careersDomain, tier: s.tier });
+    corrections.push({ key: r.cle, maison: s.maison, avant: s.kind, apres: candidate.kind, portail: r.portail_url,
+      config: candidate.config, careersDomain, tenantKey: tenantKeyOf(kind, JSON.stringify(candidate.config), careersDomain, s.maison),
+      revisionId: s.currentRevisionId });
+  } catch { refus.push(`${r.cle} : configuration refusée par le contrat des candidats`); }
 }
 
 console.log(`\nCORRECTIONS D'ATS ET DE PORTAIL — ${corrections.length} source(s)\n`);
@@ -97,7 +108,7 @@ for (const c of corrections) {
   console.log(`   ${' '.repeat(26)} config : ${JSON.stringify(c.config)}`);
 }
 if (refus.length) {
-  console.log(`\n   ${refus.length} REFUS (rien ne sera écrit) :`);
+  console.log(`\n   ${refus.length} REFUS (ces sources ne seront pas écrites) :`);
   for (const m of refus) console.log(`      ${m}`);
 }
 
@@ -112,8 +123,8 @@ for (const c of corrections) {
   // Une écriture par source, hors transaction : le déclencheur de révision prend un verrou sur la
   // ligne, et grouper les écritures ferait attendre inutilement les suivantes.
   ecrites += await prisma.$executeRawUnsafe(
-    `UPDATE "Source" SET kind = $1, config = $2::jsonb WHERE key = $3 AND kind = $4`,
-    c.apres, JSON.stringify(c.config), c.key, c.avant);
+    `UPDATE "Source" SET kind = $1, config = $2::jsonb, "careersDomain" = $5, "tenantKey" = $6 WHERE key = $3 AND kind = $4 AND "currentRevisionId" IS NOT DISTINCT FROM $7::text`,
+    c.apres, JSON.stringify(c.config), c.key, c.avant, c.careersDomain, c.tenantKey, c.revisionId);
 }
 console.log(`\n   ${ecrites} source(s) corrigée(s)`);
 console.log(`   Une nouvelle révision a été créée pour chacune : changer l'ATS change ce qu'elles collectent.\n`);
