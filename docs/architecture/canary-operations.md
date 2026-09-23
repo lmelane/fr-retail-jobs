@@ -4,7 +4,7 @@ Ce runbook prépare une livraison ; il ne l'autorise pas. `main`, les déploieme
 
 ## Commande et pause uniques
 
-Le démarrage Docker normal est `sh apps/aggregator/start.sh`. Il appelle `src/worker.ts`, qui vérifie les migrations **sans les appliquer**, puis appelle le CLI ou l'ajout explicite de source. Le runner normal garde son filtre ACTIVE. `reconcile` n'est pas une commande reconnue et son ancien service reste en pause.
+Le démarrage Docker normal est `sh apps/aggregator/start.sh`. Il appelle `src/worker.ts`, qui vérifie les migrations **sans les appliquer**, puis appelle le CLI ou l'ajout explicite de source. Le runner normal garde son filtre ACTIVE. `reconcile` n'est pas une commande reconnue ; les anciens services ont été supprimés après R5.
 
 `PIPELINE_PAUSED=1` arrête les lanceurs avant le travail avec un événement JSON `pipeline.paused`, `workStarted:false`, code 0. Les fonctions de collecte importées refusent également les effets métier. Seuls `0` et l'absence de variable permettent le lancement ; toute autre valeur échoue. La pause n'est pas contournée par une campagne ni par les commandes bornées. Les commandes de lecture restent disponibles.
 
@@ -23,9 +23,21 @@ sh apps/aggregator/start.sh source-add \
   --reviewer=IDENTIFIANT_DU_REVISEUR
 ```
 
-En local, préfixer par `npm run stack:exec --`. Le réviseur est explicite ; les captures et les lecteurs existants vérifient les déclarations. Le programme fabrique son dossier privé de preuves, enregistre DRAFT + révision, capture et valide le RAW, vérifie l'accès et l'identité, applique les portes d'activation existantes puis ingère via le CLI normal. Aucune nouvelle règle d'identité ou de publication. Une qualification refusée ou une ingestion partielle rend un code d'échec et un verdict persistant. PAUSED/RETIRED ne sont jamais réactivées par ce chemin.
+En local, préfixer par `npm run stack:exec --`. Le réviseur est explicite ; les captures et les lecteurs existants vérifient les déclarations. Le programme fabrique son dossier privé de preuves, enregistre DRAFT + révision, capture et valide le RAW, vérifie l'accès et l'identité, applique les portes d'activation existantes puis ingère via le CLI normal. Aucune nouvelle règle d'identité ou de publication. Une qualification refusée ou une ingestion partielle rend un code d'échec et un verdict persistant. Une définition publique ne réactive pas une source PAUSED ou RETIRED.
 
 Une nouvelle définition ne remplace jamais une configuration existante divergente : une revue explicite est nécessaire. Les paramètres sont scalaires et publics ; aucun secret n'est accepté dans les noms de paramètres. Les configurations avancées restent dans le parcours de revue existant. `--out-dir` peut conserver les fichiers dans un dossier neuf ; les décisions, captures et événements durables restent en base.
+
+### Requalifier une configuration déjà revue dans le registre
+
+Après une correction de configuration, le registre met automatiquement une source ACTIVE en PAUSED. Pour requalifier une seule révision explicitement revue, y compris ses paramètres structurés :
+
+```sh
+sh apps/aggregator/start.sh source-add \
+  --key=CLE_SOURCE --registered-revision=UUID_REVISION_REVUE \
+  --official-domain=DOMAINE_OFFICIEL --reviewer=IDENTIFIANT_DU_REVISEUR
+```
+
+Cette forme lit la définition exacte en base ; aucun remplacement inline n'est accepté. Une révision différente ou une source RETIRED est refusée. La pause globale reste autoritaire. La reprise de qualification ne donne ni accès ni activation : le même Golden Path doit produire les preuves natives et une décision ALLOWED avant la promotion atomique, puis l'ingestion normale. Le RUN quotidien ne réactive jamais les sources PAUSED.
 
 `source-campaign.mts` est le moteur commun de qualification, pas un second moteur d'ingestion. Il exige des clés explicites, un réviseur et un dossier neuf ; options inconnues, vides, dupliquées ou sources absentes sont refusées. Il ne saute aucun candidat sur la foi d'un ancien fichier de verdict. Les anciens scripts de campagne massive/requalification/enregistrement concurrent ont été retirés.
 
@@ -56,9 +68,9 @@ Les journaux Railway structurés peuvent avoir un champ `message` vide : lire au
 
 ## Railway : plan courant et preuve historique
 
-Le [reset du runtime Railway](railway-runtime-reset.md) remplace le nettoyage incrémental des variables et commandes. La cible prévoit deux nouveaux runtimes, aucun CRON, aucun hook de migration automatique et une comparaison cible/déploiement/processus. PostgreSQL reste intégralement conservé. Ce plan n'est pas encore appliqué ; ne pas copier la configuration historique ci-dessus comme cible.
+Le [reset du runtime Railway](railway-runtime-reset.md) remplace le nettoyage incrémental des variables et commandes. Les deux runtimes sont livrés depuis R5 ; PostgreSQL reste intégralement conservé. La configuration actuelle est décrite dans le reçu de release et l'audit post-RUN, avec comparaison cible/déploiement/processus et sans hook de migration automatique. Les sections de canari ci-dessus ne constituent pas le calendrier de production.
 
-Le [bilan du 22 septembre](../../audits/2026-09-22/restorability-canary-final.md) atteste la livraison autorisée. Son écart HTTP hors périmètre a été clos par la [validation différentielle du 23 septembre](../../audits/2026-09-23/canary-delta-oh-my-cream.md), au même SHA `72300c9`. Ce canari reste PASS. Les commandes et preuves précédentes décrivent ce runtime existant ; la future candidate doit apporter sa propre attestation sans rejouer les validations produit non affectées.
+Le [bilan du 22 septembre](../../audits/2026-09-22/restorability-canary-final.md) atteste la livraison autorisée. Son écart HTTP hors périmètre a été clos par la [validation différentielle du 23 septembre](../../audits/2026-09-23/canary-delta-oh-my-cream.md), au même SHA `72300c9`. Ce canari reste PASS. Les commandes et preuves précédentes décrivent ce runtime existant ; chaque nouvelle release apporte sa propre attestation sans rejouer les validations produit non affectées.
 
 Les futures migrations seront une opération de release distincte, jamais une conséquence d'un démarrage d'API/worker. Aucune migration n'est prévue pour le reset.
 

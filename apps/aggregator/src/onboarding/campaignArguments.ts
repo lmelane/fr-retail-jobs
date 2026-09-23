@@ -2,7 +2,7 @@
 export function campaignArguments(args: string[]) {
   const values = new Map<string, string>();
   for (const arg of args) {
-    const match = /^--(candidates|out-dir|keys|limit|deadline-ms|reviewer)=(.+)$/.exec(arg);
+    const match = /^--(candidates|out-dir|keys|limit|deadline-ms|reviewer|resume-revision)=(.+)$/.exec(arg);
     const name = match?.[1] ?? (arg === '--ingest' ? 'ingest' : undefined);
     if (!name || values.has(name)) throw new Error('Unknown, duplicate or empty campaign option');
     values.set(name, match?.[2].trim() ?? 'true');
@@ -18,7 +18,10 @@ export function campaignArguments(args: string[]) {
   if (keys.some(k => !/^[a-z0-9][a-z0-9-]*$/.test(k)) || new Set(keys).size !== keys.length) throw new Error('Explicit unique source keys required');
   const reviewer = values.get('reviewer')!;
   if (reviewer.length > 160 || /[\r\n]/.test(reviewer)) throw new Error('Invalid reviewer');
-  return { candidates: values.get('candidates')!, outDir: values.get('out-dir')!, reviewer, keys,
+  const resumeRevision = values.get('resume-revision');
+  if (resumeRevision && (keys.length !== 1 || !/^[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}$/i.test(resumeRevision)))
+    throw new Error('Resumption requires one source and its exact reviewed revision');
+  return { resumeRevision, candidates: values.get('candidates')!, outDir: values.get('out-dir')!, reviewer, keys,
     limit: positive('limit', keys.length), deadlineMs: positive('deadline-ms', 1_800_000), ingest: values.has('ingest') };
 }
 
@@ -27,4 +30,12 @@ export function selectCandidates<T extends { key: string }>(candidates: T[], opt
     || new Set(candidates.map(c => c.key)).size !== candidates.length) throw new Error('Invalid or duplicate candidate list');
   if (options.keys.some(k => !candidates.some(c => c.key === k))) throw new Error('Requested source missing from candidates');
   return options.keys.slice(0, options.limit).map(key => candidates.find(c => c.key === key)!);
+}
+
+/** Resuming qualification grants no access or activation; promotion still consumes fresh proofs. */
+export function sourceQualificationRefusal(status: string, revision: string, resumeRevision?: string): string | null {
+  if (resumeRevision && resumeRevision !== revision) return 'reviewed revision changed';
+  if (status === 'RETIRED') return 'source RETIRED';
+  if (status === 'PAUSED' && resumeRevision !== revision) return 'source PAUSED: explicit reviewed resumption required';
+  return null;
 }

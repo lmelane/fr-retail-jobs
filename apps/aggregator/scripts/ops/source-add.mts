@@ -5,21 +5,30 @@ import { resolve, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawn } from 'node:child_process';
 import { exitIfPipelinePaused } from '../../src/lib/pipelinePause.js';
-import { sourceLaunchArguments } from '../../src/onboarding/launch.js';
+import { PrismaClient } from '@prisma/client';
+import { sourceLaunchArguments, registeredSourceCandidate } from '../../src/onboarding/launch.js';
 import { writePrivateFile } from '../../src/lib/privateFile.js';
 
 exitIfPipelinePaused('source-add');
 const input = sourceLaunchArguments(process.argv.slice(2));
+let candidate: ReturnType<typeof registeredSourceCandidate> | typeof input.candidate = input.candidate;
+if (input.registered) {
+  const db = new PrismaClient();
+  try { candidate = registeredSourceCandidate(input.registered, await db.source.findUniqueOrThrow({ where: { key: input.registered.key } }), input.reviewer); }
+  finally { await db.$disconnect(); }
+}
+if (!candidate) throw new Error('Source definition required');
+const sourceKey = candidate.key;
 const out = input.outDir ? resolve(input.outDir) : mkdtempSync(join(tmpdir(), 'catwalks-source-'));
 if (input.outDir) {
   if (existsSync(out)) throw new Error('Source report directory must be new');
   mkdirSync(out, { recursive: true, mode: 0o700 });
 }
 const file = join(out, 'candidate.json');
-writePrivateFile(file, JSON.stringify([input.candidate]) + '\n');
+writePrivateFile(file, JSON.stringify([candidate]) + '\n');
 const child = spawn(process.execPath, ['--import', 'tsx', 'apps/aggregator/scripts/ops/source-campaign.mts',
-  `--candidates=${file}`, `--out-dir=${out}/campaign`, `--keys=${input.candidate.key}`, '--limit=1',
-  `--reviewer=${input.reviewer}`, '--ingest'], {
+  `--candidates=${file}`, `--out-dir=${out}/campaign`, `--keys=${candidate.key}`, '--limit=1',
+  `--reviewer=${input.reviewer}`, '--ingest', ...(input.registered ? [`--resume-revision=${input.registered.revision}`] : [])], {
   cwd: fileURLToPath(new URL('../../../../', import.meta.url)), env: process.env, stdio: 'inherit',
 });
 const stop = (signal: NodeJS.Signals) => { child.kill(signal); };
@@ -28,6 +37,6 @@ child.once('error', () => { console.error(JSON.stringify({ event: 'source.add.fa
 child.once('exit', (code, signal) => {
   process.off('SIGTERM', stop); process.off('SIGINT', stop);
   process.exitCode = code ?? (signal === 'SIGINT' ? 130 : 143);
-  console.log(JSON.stringify({ event: 'source.add.finished', sourceKey: input.candidate.key,
+  console.log(JSON.stringify({ event: 'source.add.finished', sourceKey,
     state: process.exitCode ? 'FAILED' : 'COMPLETED', exitCode: process.exitCode, reports: out }));
 });

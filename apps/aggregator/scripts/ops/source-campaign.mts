@@ -1,5 +1,5 @@
 import { exitIfPipelinePaused } from '../../src/lib/pipelinePause.js';
-import { campaignArguments, selectCandidates } from '../../src/onboarding/campaignArguments.js';
+import { campaignArguments, selectCandidates, sourceQualificationRefusal } from '../../src/onboarding/campaignArguments.js';
 /**
  * Campagne de qualification par vague (lot F3). Pour chaque candidat d'un export privé du registre
  * (clé, Maison, famille, configuration, domaine carrière, palier, domaine officiel de la Maison), le lanceur
@@ -219,8 +219,8 @@ async function qualifier(c: Candidat): Promise<Verdict> {
   catch (error) { raisons.push(message(error)); return rendre('BLOCAGE_EXTERNE'); }
   const source = registration.source!; const revision = source.currentRevisionId as string;
   etapes.enregistrement = { created: registration.created, status: source.status, revision };
-  if (source.status === 'PAUSED') { raisons.push('source PAUSED : reprise explicite requise'); return rendre('REFUSEE', { revision }); }
-  if (source.status === 'RETIRED') { raisons.push('source RETIRED dans le registre'); return rendre('RETIREE', { revision }); }
+  const refusal = sourceQualificationRefusal(source.status, revision, options.resumeRevision);
+  if (refusal) { raisons.push(refusal); return rendre(source.status === 'RETIRED' ? 'RETIREE' : 'REFUSEE', { revision }); }
   const domain = c.domain ?? null;
   if (!domain) {
     // Le domaine officiel est une donnée REVUE du registre, jamais déduite par la campagne (une preuve « portail sous

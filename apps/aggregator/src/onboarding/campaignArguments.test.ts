@@ -17,3 +17,16 @@ describe('bounded campaign definition', () => {
     expect(() => campaignArguments(base.filter(x => !x.startsWith('--keys=')))).toThrow();
   });
 });
+
+it('requires the exact revision to resume qualification of a single paused source', async () => {
+  const { sourceQualificationRefusal } = await import('./campaignArguments.js');
+  const revision = 'f35d1b6e-f09e-4608-b38f-cb1526afe802';
+  const single = ['--candidates=input', '--out-dir=proof', '--keys=one', '--reviewer=test', `--resume-revision=${revision}`];
+  expect(campaignArguments(single).resumeRevision).toBe(revision);
+  expect(() => campaignArguments([...base, `--resume-revision=${revision}`])).toThrow();
+  expect(sourceQualificationRefusal('PAUSED', revision)).toContain('PAUSED');
+  expect(sourceQualificationRefusal('PAUSED', revision, 'changed')).toContain('changed');
+  expect(sourceQualificationRefusal('RETIRED', revision, revision)).toContain('RETIRED');
+  expect(sourceQualificationRefusal('PAUSED', revision, revision)).toBeNull();
+  expect(sourceQualificationRefusal('ACTIVE', revision)).toBeNull();
+});
