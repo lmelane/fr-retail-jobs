@@ -1,0 +1,71 @@
+{
+  "at": "2026-09-23T04:42:39.035858+00:00",
+  "verdict": "CANARI_VALIDATED",
+  "validation": "Differential only; acquired proofs not rerun",
+  "revision": "72300c97586955536ee1f89b0a9b7b0273fbf8a9",
+  "source": "oh-my-cream",
+  "runId": "1cdba5b9-403d-4f1c-a8a7-0491fe25bc61",
+  "runStatus": "COMPLETED",
+  "businessEgressOutsideOhMyCream": 0,
+  "businessDomains": [
+    "careers.ohmycream.com"
+  ],
+  "created": 0,
+  "updated": 23,
+  "merged": 0,
+  "errors": 0,
+  "rawBlobsVerified": 27,
+  "emploisFr": 21,
+  "workersPaused": 3,
+  "cronUnchanged": true,
+  "otherDeploymentsUnchanged": true,
+  "ingestionDeployment": "f9648403-58bd-4e8d-a357-22ce4275f572",
+  "finalPauseDeployment": "3a1197ab-7954-47d3-a850-60d2130b8ab3",
+  "evidenceRoot": "~/.catwalks/canary-delta-20260923",
+  "evidence": [
+    {
+      "path": "state-before.json",
+      "sha256": "a90542c8bb46b893fe484ef161c6dc80592a7476ff5a67420c3ad34446f96108"
+    },
+    {
+      "path": "baseline.json",
+      "sha256": "de9ed60f9455161ddb65b767d815c1ad9fce4a42978a255bc7a77409c19ebbe3"
+    },
+    {
+      "path": "boundary.json",
+      "sha256": "5f44836e76a2f9eb930541f4ff47a806b880a4cd6c1456b12f5807c205c58cb9"
+    },
+    {
+      "path": "execution.json",
+      "sha256": "080bda63a4af59f9f7752b7b570e714b7ec35a2039c48412f59f3d605ab9485f"
+    },
+    {
+      "path": "ingest-deployment.json",
+      "sha256": "3ca8da6b042edee98e645bb63a94f8141dc7a80d02dcb68b83552a91e4f86022"
+    },
+    {
+      "path": "platform-run.json",
+      "sha256": "c45f8f80c37a4e47f9a5129bb0bc3d38de7106cde02b230b5e3982d32c867f4e"
+    },
+    {
+      "path": "pipeline-proof.json",
+      "sha256": "9351a51511557234eaf449524def9a75558616b45a5fcc7a15651dc890d26b80"
+    },
+    {
+      "path": "emplois-proof.json",
+      "sha256": "cbbe61e66d34fc0f9760a9f48244128715281bf3e2155a3e9a8c71e2257cfb3f"
+    },
+    {
+      "path": "pause-deployment.json",
+      "sha256": "85db3a8da631db8250c6cf83764f21bce53143a8b5cd7f151686a39ee1b280d4"
+    },
+    {
+      "path": "pause-proof.json",
+      "sha256": "0133b6e954d66ab88292c6ad78d18b8482c80fb459682e893ab5827480839284"
+    },
+    {
+      "path": "pause-platform.json",
+      "sha256": "691e7965ef672525540711e16d129a89092f9c610c3d94ce8b30c042e625427b"
+    }
+  ]
+}

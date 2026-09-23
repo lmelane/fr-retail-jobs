@@ -25,7 +25,7 @@ Les règles de travail figurent dans [CLAUDE.md](CLAUDE.md). Préserver le trava
 - [Parcours unique des sources](docs/architecture/source-onboarding.md) : découverte, enregistrement, captures HTTP des preuves, collecte native et activation.
 - [Validation multilingue `/emplois`](docs/architecture/emplois-e2e.md) : chaîne locale de répétition et tests navigateur.
 - [Bilan PR-1 : préparation au canari](audits/2026-09-22/pr1-canary-readiness.md).
-- [Résultat de restauration et canari Railway](audits/2026-09-22/restorability-canary-final.md) : restauration PASS sans réparation ; ingestion Oh My Cream réussie, conformité stricte non validée à cause d’une sonde HTTP hors périmètre ; workers revenus en pause.
+- [Canari Railway validé — delta egress](audits/2026-09-23/canary-delta-oh-my-cream.md) : quatre contrôles PASS, une ingestion Oh My Cream, workers revenus en pause ; [restaurabilité déjà acquise](audits/2026-09-22/restorability-canary-final.md).
 - [Exploitation canari et retour arrière](docs/architecture/canary-operations.md) : worker unique, pause autoritaire, nouvelle source et répétition locale.
 - [Golden Path nouvelle source](docs/architecture/golden-source.md) : base neuve, qualification, deux ingestions, rejeu et lecture API.
 - [État vérifié et exploitation](apps/aggregator/README.md).

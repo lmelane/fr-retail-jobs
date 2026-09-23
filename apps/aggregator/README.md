@@ -1,13 +1,13 @@
 # Agrégateur Catwalks — état vérifié et exploitation
 
-État d’exploitation vérifié le **22 septembre 2026 à 22:05 UTC** : **restaurabilité validée**, sans modifier les 613 lignes historiques. La copie comporte 37 FK VALID et exactement 8 NOT VALID, toutes actives. Une ingestion Railway Oh My Cream est terminée : 23 mises à jour, aucune création ni fusion. **La conformité stricte du canari n’est pas validée** : une ancienne sonde HTTP vers Dolce & Gabbana a également tourné, sans ingestion ni capture de cette source. La sonde est désactivée et le retour en pause est prouvé. Voir le [bilan final](../../audits/2026-09-22/restorability-canary-final.md). `/offres` et matching restent gelés.
+État d’exploitation vérifié le **23 septembre 2026** : **CANARI VALIDÉ** après la seule validation différentielle de l’egress. Une ingestion Oh My Cream : 23 mises à jour, 0 création, 0 fusion, 0 erreur ; seul hôte métier observé `careers.ohmycream.com`. `/emplois` et le retour en pause sont confirmés. La restaurabilité reste acquise sans modifier les 613 lignes historiques. Voir le [bilan du delta](../../audits/2026-09-23/canary-delta-oh-my-cream.md). Passage au ramp-up contrôlé ; `/offres` et matching restent gelés.
 
 ## Développement et production
 
 - `development` porte le travail validé ; `main` représente la production.
 - `main` et les quatre services Railway : `72300c97586955536ee1f89b0a9b7b0273fbf8a9`, après le GO explicite du canari borné ; CI verte et 86 migrations appliquées.
 - Les trois workers restent `PIPELINE_PAUSED=1`, calendriers inchangés. L’agrégateur est revenu à `sh apps/aggregator/start.sh`, avec `EGRESS_PROBE=0`. Son exécution sous pause confirme `workStarted:false`, puis un conteneur arrêté.
-- L’autorisation d’une ingestion a été consommée. Aucun second essai, autre source ou CRON n’est lancé par ce bilan. Le site public, backend, back-office et média ne sont pas déployés.
+- Le delta autorisé comprend une seule ingestion et se termine en pause. Le ramp-up commence par trois sources qualifiées, une par une ; les CRON restent gelés. Le site public, backend, back-office et média ne sont pas déployés.
 
 Les anciens chiffres de stock et bilans source par source restent dans les [audits datés](../../audits/reprise-2026-09-15/README.md). Ils ne représentent pas le catalogue courant. Aucun audit supplémentaire des offres n’est requis pour PR-1.
 

@@ -6,7 +6,7 @@ Le produit est un agrégateur mondial du luxe, de la mode, de la beauté et du r
 
 - [README du projet](README.md).
 - [Exploitation et état vérifié](apps/aggregator/README.md).
-- [Restauration et canari du 22 septembre 2026](audits/2026-09-22/restorability-canary-final.md) : résultat final, périmètre de preuve et état de pause. L’unique ingestion autorisée a été exécutée ; le bilan n’autorise pas une nouvelle collecte.
+- [Canari validé le 23 septembre 2026](audits/2026-09-23/canary-delta-oh-my-cream.md) : delta egress PASS ; restaurabilité acquise, état final en pause et passage au ramp-up contrôlé. Les preuves acquises ne sont pas à rejouer sans changement qui les invalide.
 - [Architecture produit](docs/architecture/production-foundations.md).
 - [Capture native et rétention](docs/architecture/native-capture.md).
 - [Faits issus des publications](docs/architecture/source-facts.md).

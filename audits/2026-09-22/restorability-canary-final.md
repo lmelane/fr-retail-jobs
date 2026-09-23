@@ -1,5 +1,7 @@
 # Restaurabilité et canari Oh My Cream — résultat final
 
+> Mise à jour du 23 septembre : la [validation différentielle](../2026-09-23/canary-delta-oh-my-cream.md) clôt l’écart d’egress et valide le canari. Le présent rapport conserve le constat historique du 22 septembre.
+
 Contrôles du **22 septembre 2026 UTC** (23 septembre sur le poste en Europe/Paris). **RESTAURABILITÉ VALIDÉE**. L’ingestion fonctionne ; la conformité stricte du canari est **NON VALIDÉE** à cause d’une sonde HTTP hors périmètre. Les workers sont revenus en pause. Aucun GO global ni seconde ingestion.
 
 ## Restauration : PASS
