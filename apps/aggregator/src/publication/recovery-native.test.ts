@@ -3,6 +3,39 @@ import { recoverRetainedPublication } from './recovery.js';
 const observedAt = new Date('2024-02-20T12:00:00Z');
 const read = (kind: string, raw: unknown, url: string, externalId: string, config: Record<string, unknown>) => recoverRetainedPublication(kind, raw, { url, externalId, config, observedAt });
 afterEach(() => vi.unstubAllGlobals());
+
+describe.each(['wttj', 'wttj-sector'])('%s detail UUID binding', kind => {
+  // Shape observed in production capture 44cf8c4d-779c-4ac7-8cfb-26823fb1c8ab.
+  const reference = '05dc95fa-cee4-45e9-bc99-1ef84c0deb8f';
+  const slug = 'journaliste-mode-stage-h-f_paris_GF_NMmqARV';
+  const url = `https://www.welcometothejungle.com/fr/companies/groupe-figaro/jobs/${slug}`;
+  const raw = { reference, slug, name: 'Journaliste Mode Stage - H/F',
+    organization: { slug: 'groupe-figaro', name: 'Groupe Figaro' }, summary: 'Short summary',
+    detailUrl: `https://api.welcometothejungle.com/api/v1/organizations/groupe-figaro/jobs/${slug}`,
+    detail: { slug, wttj_reference: reference, reference: 'GF_NMmqARV', description: '<p>Native full description and requirements.</p>' } };
+  const recover = (value: unknown) => read(kind, value, url, reference, {});
+  it('binds the native UUID while retaining the independent business reference', () => {
+    vi.stubGlobal('fetch', vi.fn(() => { throw new Error('No network'); }));
+    expect(recover(raw)).toMatchObject({ status: 'RECOVERABLE', job: { externalId: reference,
+      description: 'Native full description and requirements.', raw } });
+    expect(fetch).not.toHaveBeenCalled();
+  });
+  it('does not fall back to a matching short reference when the UUID conflicts', () => {
+    expect(recover({ ...raw, detail: { ...raw.detail, wttj_reference: 'foreign-uuid', reference } }))
+      .toMatchObject({ reason: 'DETAIL_IDENTITY_MISMATCH' });
+  });
+  it('still rejects a foreign detail slug or endpoint', () => {
+    for (const changed of [{ ...raw, detail: { ...raw.detail, slug: 'other-job' } },
+      { ...raw, detailUrl: raw.detailUrl.replace('groupe-figaro', 'foreign-tenant') }]) {
+      expect(recover(changed)).toMatchObject({ reason: 'DETAIL_IDENTITY_MISMATCH' });
+    }
+  });
+  it('supports an older detail reference without erasing identity checks', () => {
+    const detail = { slug: raw.detail.slug, reference: raw.detail.reference, description: raw.detail.description };
+    expect(recover({ ...raw, detail: { ...detail, reference } })).toMatchObject({ status: 'RECOVERABLE' });
+    expect(recover({ ...raw, detail })).toMatchObject({ reason: 'DETAIL_IDENTITY_MISMATCH' });
+  });
+});
 const inputs = [
   { kind: 'flatchr', externalId: 'company1:vacancy1', url: 'https://careers.flatchr.io/fr/company/brand/vacancy/advisor', config: { listingUrl: 'https://careers.flatchr.io/fr/company/brand' },
     raw: { id: 'publication1', published: true, status: 'published', vacancy: { id: 'vacancy1', slug: 'advisor', title: 'Own title', company: { id: 'company1', slug: 'brand', name: 'Brand' }, description: '<p>Own description</p>', mission: '<p>Own duties</p>', profile: '<p>Own requirements</p>' } } },

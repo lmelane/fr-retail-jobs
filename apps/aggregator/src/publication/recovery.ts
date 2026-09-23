@@ -102,8 +102,11 @@ function readRetainedPublication(kind: string, raw: unknown, context: Context, r
         job = parseWttjHit(raw as WttjHit, slug);
         if (job && raw.detail !== undefined) {
           const expected = `https://api.welcometothejungle.com/api/v1/organizations/${raw.organization?.slug ?? slug}/jobs/${raw.slug}`;
+          // The search UUID is detail.wttj_reference; detail.reference is a
+          // distinct short business reference in current native responses.
+          const detailReference = raw.detail?.wttj_reference ?? raw.detail?.reference;
           if (!object(raw.detail) || raw.detailUrl !== expected ||
-            raw.detail.reference && raw.reference && raw.detail.reference !== raw.reference ||
+            detailReference != null && raw.reference && detailReference !== raw.reference ||
             raw.detail.slug && raw.detail.slug !== raw.slug) return failure('DETAIL_IDENTITY_MISMATCH');
           const full = descriptionFromApi(raw.detail);
           if (full && full.length > (job.description?.length ?? 0)) job.description = full;
