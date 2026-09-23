@@ -20,6 +20,7 @@ Les règles de travail figurent dans [CLAUDE.md](CLAUDE.md). Préserver le trava
 
 ## Documentation maintenue
 
+- [Qualification des sources du 23 septembre](audits/2026-09-23/source-qualification.md) : résultats production, couverture multilingue, limites Aesop/L’Oréal et recouvrement SAP/LVMH.
 - [Architecture et contrats produit](docs/architecture/production-foundations.md) : deux origines d’offres, pays/langue, recherche et parcours de validation des sources.
 - [Recherche bornée par marché](docs/architecture/recherche-marche.md) : périmètre obligatoire, champ lieu, filtres refusés explicitement, inconnues non confirmées, contrat de facettes et `GET /api/marches`.
 - [Parcours unique des sources](docs/architecture/source-onboarding.md) : découverte, enregistrement, captures HTTP des preuves, collecte native et activation.

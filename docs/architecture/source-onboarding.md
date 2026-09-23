@@ -2,6 +2,8 @@
 
 Une source enregistrée est un périmètre de collecte, pas une certification d’employeur. Le point d’entrée maintenu est [source-onboard.mts](../../apps/aggregator/scripts/ops/source-onboard.mts). Les commandes ci-dessous se lancent depuis la racine, avec les accès de l’environnement choisi déjà configurés. Les secrets et captures restent hors Git.
 
+Une Maison peut publier sur plusieurs portails ; un portail peut réunir plusieurs Maisons. Qualifier chaque canal complémentaire et réutiliser une source déjà enregistrée lorsqu'un nouveau lien n'est qu'un filtre de son catalogue. Conserver l'employeur déclaré par chaque offre, même lorsqu'elle concerne une autre marque. Les compteurs de canaux ne s'additionnent pas en un total de postes uniques : leur rapprochement exige les [preuves d'identité de publication](publication-identity.md), jamais la seule ressemblance du titre ou du lieu.
+
 ## Contrat des étapes
 
 | Commande | Effet | Condition d’écriture |

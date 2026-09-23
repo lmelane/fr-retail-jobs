@@ -1,6 +1,6 @@
 # Agrégateur Catwalks — état vérifié et exploitation
 
-**État vérifié le 23 septembre 2026.** Le RUN quotidien de 18 h Paris a parcouru 409 sources : 349 OK, 33 partielles, 27 en échec de santé, sans timeout ni échec de persistance. Les correctifs suivants (`3581d05`) sont livrés sur l’API et le worker et vérifiés par replays ciblés ; le [bilan post-RUN](../../audits/2026-09-23/post-run.md) distingue résultats, incidents restants et données historiques gelées. Le CRON normal est rétabli une fois par jour à 18 h Europe/Paris. Les quatre anciens runtimes sont supprimés ; PostgreSQL et son volume sont conservés. Le site, backend, back-office et média ne sont pas déployés.
+**État vérifié le 23 septembre 2026.** Le code `92c2bb1` est livré sur l'API et le worker. Les [qualifications ciblées](../../audits/2026-09-23/source-qualification.md) ont publié Nocibé, Monoprix/Naturalia, Bonsoirs, Puma, Gemmyo, Luxury of Retail et élargi Sephora à ses langues publiées. L'Oréal est qualifiée mais sa publication échoue sur HTTP 406 ; Aesop Workday reste non activée et les recouvrements entre canaux ne sont pas réconciliés. Le [bilan post-RUN](../../audits/2026-09-23/post-run.md) conserve les résultats du passage quotidien précédent. Le CRON normal est rétabli et attesté une fois par jour à 18 h Europe/Paris. Registre : 415 ACTIVE, 11 PAUSED, 116 RETIRED. Les quatre anciens runtimes sont supprimés ; PostgreSQL et son volume sont conservés. Le site, backend, back-office et média ne sont pas déployés.
 
 ## Une chaîne opérationnelle
 

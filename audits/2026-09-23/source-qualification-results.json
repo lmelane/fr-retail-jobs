@@ -1,0 +1,2566 @@
+{
+  "observedAt": "2026-09-23T21:34:51.264Z",
+  "productionCodeSha": "92c2bb16913f82875b86ee6cb1bf9a5290a7bb72",
+  "scope": "Targeted source-add qualifications and ingestions only; no global run or historical repair",
+  "runs": [
+    {
+      "id": "57a9ef9f-0bf6-48a7-b99a-55ee2f3ce8f1",
+      "command": "source-campaign",
+      "revision": "421b0a2b56b1ca44d32727f8a8563cbfa2bc0ad5",
+      "startedAt": "2026-09-23T20:24:22.281Z",
+      "finishedAt": "2026-09-23T20:25:38.913Z",
+      "status": "COMPLETED",
+      "captures": 3,
+      "raw": 280,
+      "extractions": 274,
+      "aliveEvents": 2,
+      "captureSources": [
+        {
+          "_count": 3,
+          "sourceKey": "nocibe-eqwa"
+        }
+      ],
+      "persistenceFailures": 0,
+      "httpByHost": [
+        {
+          "host": "recrutement-nocibe.fr",
+          "maxMs": 884,
+          "p50Ms": 63,
+          "p95Ms": 88,
+          "errors": 0,
+          "retries": 0,
+          "attempts": 280,
+          "statuses": {
+            "200": 277,
+            "301": 1,
+            "302": 2
+          },
+          "timeouts": 0,
+          "responses": 280,
+          "bytesDeclared": 0,
+          "requestsPerSecond": 3.66,
+          "responsesWithoutLength": 278
+        }
+      ],
+      "durationSeconds": 76.632,
+      "errorEvents": []
+    },
+    {
+      "id": "d80599e8-1ec1-4cb1-8ca7-ea31b940d481",
+      "command": "ingest",
+      "revision": "421b0a2b56b1ca44d32727f8a8563cbfa2bc0ad5",
+      "startedAt": "2026-09-23T20:24:54.479Z",
+      "finishedAt": "2026-09-23T20:25:38.621Z",
+      "status": "COMPLETED",
+      "captures": 1,
+      "raw": 275,
+      "extractions": 274,
+      "aliveEvents": 1,
+      "captureSources": [
+        {
+          "_count": 1,
+          "sourceKey": "nocibe-eqwa"
+        }
+      ],
+      "persistenceFailures": 0,
+      "httpByHost": [
+        {
+          "host": "recrutement-nocibe.fr",
+          "maxMs": 474,
+          "p50Ms": 60,
+          "p95Ms": 71,
+          "errors": 0,
+          "retries": 0,
+          "attempts": 275,
+          "statuses": {
+            "200": 275
+          },
+          "timeouts": 0,
+          "responses": 275,
+          "bytesDeclared": null,
+          "requestsPerSecond": 6.24,
+          "responsesWithoutLength": 275
+        }
+      ],
+      "durationSeconds": 44.142,
+      "errorEvents": []
+    },
+    {
+      "id": "165cdcf7-e9e0-4300-8dd7-9d4be4127a45",
+      "command": "source-campaign",
+      "revision": "421b0a2b56b1ca44d32727f8a8563cbfa2bc0ad5",
+      "startedAt": "2026-09-23T20:26:47.466Z",
+      "finishedAt": "2026-09-23T20:36:09.981Z",
+      "status": "FAILED",
+      "captures": 3,
+      "raw": 1972,
+      "extractions": 1894,
+      "aliveEvents": 18,
+      "captureSources": [
+        {
+          "_count": 3,
+          "sourceKey": "sephora-france"
+        }
+      ],
+      "persistenceFailures": 0,
+      "httpByHost": [
+        {
+          "host": "jobs.sephora.com",
+          "maxMs": 964,
+          "p50Ms": 116,
+          "p95Ms": 141,
+          "errors": 0,
+          "retries": 0,
+          "attempts": 1972,
+          "statuses": {
+            "200": 1972
+          },
+          "timeouts": 0,
+          "responses": 1972,
+          "bytesDeclared": 371832392,
+          "requestsPerSecond": 3.51,
+          "responsesWithoutLength": 79
+        }
+      ],
+      "durationSeconds": 562.515,
+      "errorEvents": [
+        {
+          "event": "run.completed",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "2f7c84a0-217f-4f9d-bb70-8b4be8dd13e3",
+      "command": "ingest",
+      "revision": "421b0a2b56b1ca44d32727f8a8563cbfa2bc0ad5",
+      "startedAt": "2026-09-23T20:30:46.129Z",
+      "finishedAt": "2026-09-23T20:36:09.448Z",
+      "status": "COMPLETED",
+      "captures": 1,
+      "raw": 1971,
+      "extractions": 1894,
+      "aliveEvents": 10,
+      "captureSources": [
+        {
+          "_count": 1,
+          "sourceKey": "sephora-france"
+        }
+      ],
+      "persistenceFailures": 0,
+      "httpByHost": [
+        {
+          "host": "jobs.sephora.com",
+          "maxMs": 2233,
+          "p50Ms": 113,
+          "p95Ms": 145,
+          "errors": 0,
+          "retries": 0,
+          "attempts": 1971,
+          "statuses": {
+            "200": 1971
+          },
+          "timeouts": 0,
+          "responses": 1971,
+          "bytesDeclared": 371638680,
+          "requestsPerSecond": 6.1,
+          "responsesWithoutLength": 80
+        }
+      ],
+      "durationSeconds": 323.319,
+      "errorEvents": [
+        {
+          "event": "source.listing_truncated",
+          "count": 1
+        },
+        {
+          "event": "job.write_failed",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "id": "41c1bc38-757b-4071-bbbc-ac83a968d1d3",
+      "command": "source-campaign",
+      "revision": "421b0a2b56b1ca44d32727f8a8563cbfa2bc0ad5",
+      "startedAt": "2026-09-23T20:36:59.347Z",
+      "finishedAt": "2026-09-23T20:42:14.474Z",
+      "status": "COMPLETED",
+      "captures": 5,
+      "raw": 751,
+      "extractions": 738,
+      "aliveEvents": 10,
+      "captureSources": [
+        {
+          "_count": 5,
+          "sourceKey": "monoprix"
+        }
+      ],
+      "persistenceFailures": 0,
+      "httpByHost": [
+        {
+          "host": "recrutement.monoprix.fr",
+          "maxMs": 403,
+          "p50Ms": 274,
+          "p95Ms": 328,
+          "errors": 0,
+          "retries": 0,
+          "attempts": 698,
+          "statuses": {
+            "200": 697,
+            "302": 1
+          },
+          "timeouts": 0,
+          "responses": 698,
+          "bytesDeclared": null,
+          "requestsPerSecond": 2.22,
+          "responsesWithoutLength": 698
+        },
+        {
+          "host": "nousrejoindre.naturalia.fr",
+          "maxMs": 972,
+          "p50Ms": 231,
+          "p95Ms": 320,
+          "errors": 0,
+          "retries": 0,
+          "attempts": 44,
+          "statuses": {
+            "200": 44
+          },
+          "timeouts": 0,
+          "responses": 44,
+          "bytesDeclared": null,
+          "requestsPerSecond": 0.14,
+          "responsesWithoutLength": 44
+        },
+        {
+          "host": "api.digitalrecruiters.com",
+          "maxMs": 484,
+          "p50Ms": 386,
+          "p95Ms": 484,
+          "errors": 0,
+          "retries": 0,
+          "attempts": 9,
+          "statuses": {
+            "200": 8,
+            "404": 1
+          },
+          "timeouts": 0,
+          "responses": 9,
+          "bytesDeclared": 40,
+          "requestsPerSecond": 0.03,
+          "responsesWithoutLength": 8
+        }
+      ],
+      "durationSeconds": 315.127,
+      "errorEvents": []
+    },
+    {
+      "id": "319eeb4d-ee3b-4e06-9ab1-b9ee53b9ae5a",
+      "command": "ingest",
+      "revision": "421b0a2b56b1ca44d32727f8a8563cbfa2bc0ad5",
+      "startedAt": "2026-09-23T20:38:48.742Z",
+      "finishedAt": "2026-09-23T20:42:13.949Z",
+      "status": "COMPLETED",
+      "captures": 1,
+      "raw": 746,
+      "extractions": 738,
+      "aliveEvents": 6,
+      "captureSources": [
+        {
+          "_count": 1,
+          "sourceKey": "monoprix"
+        }
+      ],
+      "persistenceFailures": 0,
+      "httpByHost": [
+        {
+          "host": "recrutement.monoprix.fr",
+          "maxMs": 467,
+          "p50Ms": 261,
+          "p95Ms": 313,
+          "errors": 0,
+          "retries": 0,
+          "attempts": 695,
+          "statuses": {
+            "200": 695
+          },
+          "timeouts": 0,
+          "responses": 695,
+          "bytesDeclared": null,
+          "requestsPerSecond": 3.39,
+          "responsesWithoutLength": 695
+        },
+        {
+          "host": "nousrejoindre.naturalia.fr",
+          "maxMs": 449,
+          "p50Ms": 261,
+          "p95Ms": 337,
+          "errors": 0,
+          "retries": 0,
+          "attempts": 43,
+          "statuses": {
+            "200": 43
+          },
+          "timeouts": 0,
+          "responses": 43,
+          "bytesDeclared": null,
+          "requestsPerSecond": 0.21,
+          "responsesWithoutLength": 43
+        },
+        {
+          "host": "api.digitalrecruiters.com",
+          "maxMs": 441,
+          "p50Ms": 371,
+          "p95Ms": 441,
+          "errors": 0,
+          "retries": 0,
+          "attempts": 8,
+          "statuses": {
+            "200": 8
+          },
+          "timeouts": 0,
+          "responses": 8,
+          "bytesDeclared": null,
+          "requestsPerSecond": 0.04,
+          "responsesWithoutLength": 8
+        }
+      ],
+      "durationSeconds": 205.207,
+      "errorEvents": []
+    },
+    {
+      "id": "dafb0d87-72f5-467f-91d9-0ba3ec86e403",
+      "command": "source-campaign",
+      "revision": "421b0a2b56b1ca44d32727f8a8563cbfa2bc0ad5",
+      "startedAt": "2026-09-23T20:42:53.613Z",
+      "finishedAt": "2026-09-23T20:42:57.944Z",
+      "status": "COMPLETED",
+      "captures": 5,
+      "raw": 9,
+      "extractions": 1,
+      "aliveEvents": 0,
+      "captureSources": [
+        {
+          "_count": 5,
+          "sourceKey": "bonsoirs"
+        }
+      ],
+      "persistenceFailures": 0,
+      "httpByHost": [
+        {
+          "host": "www.bonsoirs.com",
+          "maxMs": 113,
+          "p50Ms": 97,
+          "p95Ms": 113,
+          "errors": 0,
+          "retries": 0,
+          "attempts": 2,
+          "statuses": {
+            "200": 1,
+            "307": 1
+          },
+          "timeouts": 0,
+          "responses": 2,
+          "bytesDeclared": null,
+          "requestsPerSecond": 0.47,
+          "responsesWithoutLength": 2
+        },
+        {
+          "host": "csekhvms53-dsn.algolia.net",
+          "maxMs": 86,
+          "p50Ms": 9,
+          "p95Ms": 86,
+          "errors": 0,
+          "retries": 0,
+          "attempts": 2,
+          "statuses": {
+            "200": 1,
+            "301": 1
+          },
+          "timeouts": 0,
+          "responses": 2,
+          "bytesDeclared": 162,
+          "requestsPerSecond": 0.47,
+          "responsesWithoutLength": 1
+        },
+        {
+          "host": "api.welcometothejungle.com",
+          "maxMs": 192,
+          "p50Ms": 27,
+          "p95Ms": 192,
+          "errors": 0,
+          "retries": 0,
+          "attempts": 2,
+          "statuses": {
+            "200": 1,
+            "404": 1
+          },
+          "timeouts": 0,
+          "responses": 2,
+          "bytesDeclared": 14,
+          "requestsPerSecond": 0.47,
+          "responsesWithoutLength": 1
+        },
+        {
+          "host": "www.welcometothejungle.com",
+          "maxMs": 61,
+          "p50Ms": 61,
+          "p95Ms": 61,
+          "errors": 0,
+          "retries": 0,
+          "attempts": 1,
+          "statuses": {
+            "403": 1
+          },
+          "timeouts": 0,
+          "responses": 1,
+          "bytesDeclared": 919,
+          "requestsPerSecond": 0.23,
+          "responsesWithoutLength": 0
+        },
+        {
+          "host": "bonsoirs.com",
+          "maxMs": 76,
+          "p50Ms": 76,
+          "p95Ms": 76,
+          "errors": 0,
+          "retries": 0,
+          "attempts": 1,
+          "statuses": {
+            "308": 1
+          },
+          "timeouts": 0,
+          "responses": 1,
+          "bytesDeclared": null,
+          "requestsPerSecond": 0.23,
+          "responsesWithoutLength": 1
+        },
+        {
+          "host": "algolia.net",
+          "maxMs": 41,
+          "p50Ms": 41,
+          "p95Ms": 41,
+          "errors": 0,
+          "retries": 0,
+          "attempts": 1,
+          "statuses": {
+            "404": 1
+          },
+          "timeouts": 0,
+          "responses": 1,
+          "bytesDeclared": 164,
+          "requestsPerSecond": 0.23,
+          "responsesWithoutLength": 0
+        }
+      ],
+      "durationSeconds": 4.331,
+      "errorEvents": []
+    },
+    {
+      "id": "cd71a9f7-d391-440c-826c-cc4f48d1b07e",
+      "command": "ingest",
+      "revision": "421b0a2b56b1ca44d32727f8a8563cbfa2bc0ad5",
+      "startedAt": "2026-09-23T20:42:56.568Z",
+      "finishedAt": "2026-09-23T20:42:57.670Z",
+      "status": "COMPLETED",
+      "captures": 1,
+      "raw": 2,
+      "extractions": 1,
+      "aliveEvents": 0,
+      "captureSources": [
+        {
+          "_count": 1,
+          "sourceKey": "bonsoirs"
+        }
+      ],
+      "persistenceFailures": 0,
+      "httpByHost": [
+        {
+          "host": "csekhvms53-dsn.algolia.net",
+          "maxMs": 98,
+          "p50Ms": 98,
+          "p95Ms": 98,
+          "errors": 0,
+          "retries": 0,
+          "attempts": 1,
+          "statuses": {
+            "200": 1
+          },
+          "timeouts": 0,
+          "responses": 1,
+          "bytesDeclared": null,
+          "requestsPerSecond": 0.95,
+          "responsesWithoutLength": 1
+        },
+        {
+          "host": "api.welcometothejungle.com",
+          "maxMs": 206,
+          "p50Ms": 206,
+          "p95Ms": 206,
+          "errors": 0,
+          "retries": 0,
+          "attempts": 1,
+          "statuses": {
+            "200": 1
+          },
+          "timeouts": 0,
+          "responses": 1,
+          "bytesDeclared": null,
+          "requestsPerSecond": 0.95,
+          "responsesWithoutLength": 1
+        }
+      ],
+      "durationSeconds": 1.102,
+      "errorEvents": []
+    },
+    {
+      "id": "918a1e8e-e86f-4934-8d4d-c990b4214156",
+      "command": "source-campaign",
+      "revision": "421b0a2b56b1ca44d32727f8a8563cbfa2bc0ad5",
+      "startedAt": "2026-09-23T20:43:35.671Z",
+      "finishedAt": "2026-09-23T20:50:18.391Z",
+      "status": "COMPLETED",
+      "captures": 12,
+      "raw": 720,
+      "extractions": 652,
+      "aliveEvents": 13,
+      "captureSources": [
+        {
+          "_count": 12,
+          "sourceKey": "puma"
+        }
+      ],
+      "persistenceFailures": 0,
+      "httpByHost": [
+        {
+          "host": "puma.wd502.myworkdayjobs.com",
+          "maxMs": 804,
+          "p50Ms": 247,
+          "p95Ms": 473,
+          "errors": 0,
+          "retries": 8,
+          "attempts": 695,
+          "statuses": {
+            "200": 687,
+            "429": 8
+          },
+          "timeouts": 0,
+          "responses": 695,
+          "bytesDeclared": 230991,
+          "requestsPerSecond": 1.73,
+          "responsesWithoutLength": 687
+        },
+        {
+          "host": "eu.puma.com",
+          "maxMs": 71,
+          "p50Ms": 6,
+          "p95Ms": 71,
+          "errors": 0,
+          "retries": 0,
+          "attempts": 16,
+          "statuses": {
+            "200": 8,
+            "301": 8
+          },
+          "timeouts": 0,
+          "responses": 16,
+          "bytesDeclared": 1028648,
+          "requestsPerSecond": 0.04,
+          "responsesWithoutLength": 0
+        },
+        {
+          "host": "puma.com",
+          "maxMs": 24,
+          "p50Ms": 11,
+          "p95Ms": 24,
+          "errors": 0,
+          "retries": 0,
+          "attempts": 7,
+          "statuses": {
+            "301": 7
+          },
+          "timeouts": 0,
+          "responses": 7,
+          "bytesDeclared": 0,
+          "requestsPerSecond": 0.02,
+          "responsesWithoutLength": 0
+        },
+        {
+          "host": "www.puma.com",
+          "maxMs": 31,
+          "p50Ms": 31,
+          "p95Ms": 31,
+          "errors": 0,
+          "retries": 0,
+          "attempts": 1,
+          "statuses": {
+            "301": 1
+          },
+          "timeouts": 0,
+          "responses": 1,
+          "bytesDeclared": 0,
+          "requestsPerSecond": 0,
+          "responsesWithoutLength": 0
+        },
+        {
+          "host": "about.puma.com",
+          "maxMs": 769,
+          "p50Ms": 769,
+          "p95Ms": 769,
+          "errors": 0,
+          "retries": 0,
+          "attempts": 1,
+          "statuses": {
+            "200": 1
+          },
+          "timeouts": 0,
+          "responses": 1,
+          "bytesDeclared": null,
+          "requestsPerSecond": 0,
+          "responsesWithoutLength": 1
+        }
+      ],
+      "durationSeconds": 402.72,
+      "errorEvents": []
+    },
+    {
+      "id": "03b69cde-54f7-4862-81a8-f9bc680b61c6",
+      "command": "ingest",
+      "revision": "421b0a2b56b1ca44d32727f8a8563cbfa2bc0ad5",
+      "startedAt": "2026-09-23T20:46:24.770Z",
+      "finishedAt": "2026-09-23T20:50:17.924Z",
+      "status": "COMPLETED",
+      "captures": 1,
+      "raw": 693,
+      "extractions": 652,
+      "aliveEvents": 7,
+      "captureSources": [
+        {
+          "_count": 1,
+          "sourceKey": "puma"
+        }
+      ],
+      "persistenceFailures": 0,
+      "httpByHost": [
+        {
+          "host": "puma.wd502.myworkdayjobs.com",
+          "maxMs": 1290,
+          "p50Ms": 226,
+          "p95Ms": 353,
+          "errors": 0,
+          "retries": 8,
+          "attempts": 693,
+          "statuses": {
+            "200": 685,
+            "429": 8
+          },
+          "timeouts": 0,
+          "responses": 693,
+          "bytesDeclared": 230961,
+          "requestsPerSecond": 2.97,
+          "responsesWithoutLength": 685
+        }
+      ],
+      "durationSeconds": 233.154,
+      "errorEvents": []
+    },
+    {
+      "id": "a60ee5ba-ab6a-401c-a52a-0ff7370ffa52",
+      "command": "source-campaign",
+      "revision": "421b0a2b56b1ca44d32727f8a8563cbfa2bc0ad5",
+      "startedAt": "2026-09-23T20:51:07.902Z",
+      "finishedAt": "2026-09-23T20:51:16.861Z",
+      "status": "COMPLETED",
+      "captures": 6,
+      "raw": 16,
+      "extractions": 6,
+      "aliveEvents": 0,
+      "captureSources": [
+        {
+          "_count": 6,
+          "sourceKey": "gemmyo"
+        }
+      ],
+      "persistenceFailures": 0,
+      "httpByHost": [
+        {
+          "host": "join.com",
+          "maxMs": 703,
+          "p50Ms": 64,
+          "p95Ms": 703,
+          "errors": 0,
+          "retries": 0,
+          "attempts": 12,
+          "statuses": {
+            "200": 12
+          },
+          "timeouts": 0,
+          "responses": 12,
+          "bytesDeclared": null,
+          "requestsPerSecond": 1.35,
+          "responsesWithoutLength": 12
+        },
+        {
+          "host": "www.gemmyo.com",
+          "maxMs": 80,
+          "p50Ms": 18,
+          "p95Ms": 80,
+          "errors": 0,
+          "retries": 0,
+          "attempts": 3,
+          "statuses": {
+            "200": 3
+          },
+          "timeouts": 0,
+          "responses": 3,
+          "bytesDeclared": 285052,
+          "requestsPerSecond": 0.34,
+          "responsesWithoutLength": 0
+        },
+        {
+          "host": "gemmyo.com",
+          "maxMs": 79,
+          "p50Ms": 79,
+          "p95Ms": 79,
+          "errors": 0,
+          "retries": 0,
+          "attempts": 1,
+          "statuses": {
+            "301": 1
+          },
+          "timeouts": 0,
+          "responses": 1,
+          "bytesDeclared": 271,
+          "requestsPerSecond": 0.11,
+          "responsesWithoutLength": 0
+        }
+      ],
+      "durationSeconds": 8.959,
+      "errorEvents": []
+    },
+    {
+      "id": "8384cfba-4404-494f-878e-be82788330d7",
+      "command": "ingest",
+      "revision": "421b0a2b56b1ca44d32727f8a8563cbfa2bc0ad5",
+      "startedAt": "2026-09-23T20:51:12.441Z",
+      "finishedAt": "2026-09-23T20:51:16.647Z",
+      "status": "COMPLETED",
+      "captures": 1,
+      "raw": 10,
+      "extractions": 6,
+      "aliveEvents": 0,
+      "captureSources": [
+        {
+          "_count": 1,
+          "sourceKey": "gemmyo"
+        }
+      ],
+      "persistenceFailures": 0,
+      "httpByHost": [
+        {
+          "host": "join.com",
+          "maxMs": 1074,
+          "p50Ms": 67,
+          "p95Ms": 1074,
+          "errors": 0,
+          "retries": 0,
+          "attempts": 10,
+          "statuses": {
+            "200": 10
+          },
+          "timeouts": 0,
+          "responses": 10,
+          "bytesDeclared": null,
+          "requestsPerSecond": 2.4,
+          "responsesWithoutLength": 10
+        }
+      ],
+      "durationSeconds": 4.206,
+      "errorEvents": [
+        {
+          "event": "source.listing_truncated",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "606e3d2a-8859-4223-9a9b-6202fb702f1c",
+      "command": "source-campaign",
+      "revision": "421b0a2b56b1ca44d32727f8a8563cbfa2bc0ad5",
+      "startedAt": "2026-09-23T20:51:49.567Z",
+      "finishedAt": "2026-09-23T20:51:57.031Z",
+      "status": "COMPLETED",
+      "captures": 4,
+      "raw": 24,
+      "extractions": 19,
+      "aliveEvents": 0,
+      "captureSources": [
+        {
+          "_count": 4,
+          "sourceKey": "luxury-of-retail"
+        }
+      ],
+      "persistenceFailures": 0,
+      "httpByHost": [
+        {
+          "host": "talents.luxuryofretail.com",
+          "maxMs": 295,
+          "p50Ms": 203,
+          "p95Ms": 291,
+          "errors": 0,
+          "retries": 0,
+          "attempts": 22,
+          "statuses": {
+            "200": 21,
+            "302": 1
+          },
+          "timeouts": 0,
+          "responses": 22,
+          "bytesDeclared": null,
+          "requestsPerSecond": 2.96,
+          "responsesWithoutLength": 22
+        },
+        {
+          "host": "api.digitalrecruiters.com",
+          "maxMs": 240,
+          "p50Ms": 12,
+          "p95Ms": 240,
+          "errors": 0,
+          "retries": 0,
+          "attempts": 2,
+          "statuses": {
+            "200": 1,
+            "404": 1
+          },
+          "timeouts": 0,
+          "responses": 2,
+          "bytesDeclared": 40,
+          "requestsPerSecond": 0.27,
+          "responsesWithoutLength": 1
+        }
+      ],
+      "durationSeconds": 7.464,
+      "errorEvents": []
+    },
+    {
+      "id": "d551c0f3-4d74-4a33-bb31-2da342f0a511",
+      "command": "ingest",
+      "revision": "421b0a2b56b1ca44d32727f8a8563cbfa2bc0ad5",
+      "startedAt": "2026-09-23T20:51:53.494Z",
+      "finishedAt": "2026-09-23T20:51:56.783Z",
+      "status": "COMPLETED",
+      "captures": 1,
+      "raw": 20,
+      "extractions": 19,
+      "aliveEvents": 0,
+      "captureSources": [
+        {
+          "_count": 1,
+          "sourceKey": "luxury-of-retail"
+        }
+      ],
+      "persistenceFailures": 0,
+      "httpByHost": [
+        {
+          "host": "talents.luxuryofretail.com",
+          "maxMs": 64,
+          "p50Ms": 31,
+          "p95Ms": 64,
+          "errors": 0,
+          "retries": 0,
+          "attempts": 19,
+          "statuses": {
+            "200": 19
+          },
+          "timeouts": 0,
+          "responses": 19,
+          "bytesDeclared": null,
+          "requestsPerSecond": 5.86,
+          "responsesWithoutLength": 19
+        },
+        {
+          "host": "api.digitalrecruiters.com",
+          "maxMs": 195,
+          "p50Ms": 195,
+          "p95Ms": 195,
+          "errors": 0,
+          "retries": 0,
+          "attempts": 1,
+          "statuses": {
+            "200": 1
+          },
+          "timeouts": 0,
+          "responses": 1,
+          "bytesDeclared": null,
+          "requestsPerSecond": 0.31,
+          "responsesWithoutLength": 1
+        }
+      ],
+      "durationSeconds": 3.289,
+      "errorEvents": []
+    },
+    {
+      "id": "10eafa85-88c2-484f-9a06-d6fbf060fec7",
+      "command": "source-campaign",
+      "revision": "92c2bb16913f82875b86ee6cb1bf9a5290a7bb72",
+      "startedAt": "2026-09-23T21:09:52.613Z",
+      "finishedAt": "2026-09-23T21:21:26.357Z",
+      "status": "FAILED",
+      "captures": 3,
+      "raw": 2380,
+      "extractions": 2274,
+      "aliveEvents": 23,
+      "captureSources": [
+        {
+          "_count": 3,
+          "sourceKey": "sephora-france"
+        }
+      ],
+      "persistenceFailures": 0,
+      "httpByHost": [
+        {
+          "host": "jobs.sephora.com",
+          "maxMs": 2243,
+          "p50Ms": 124,
+          "p95Ms": 156,
+          "errors": 0,
+          "retries": 0,
+          "attempts": 2380,
+          "statuses": {
+            "200": 2380
+          },
+          "timeouts": 0,
+          "responses": 2380,
+          "bytesDeclared": 445918366,
+          "requestsPerSecond": 3.43,
+          "responsesWithoutLength": 117
+        }
+      ],
+      "durationSeconds": 693.744,
+      "errorEvents": [
+        {
+          "event": "run.completed",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "41b1b04b-418c-4f53-baa9-97a3bc170d7f",
+      "command": "ingest",
+      "revision": "92c2bb16913f82875b86ee6cb1bf9a5290a7bb72",
+      "startedAt": "2026-09-23T21:14:45.795Z",
+      "finishedAt": "2026-09-23T21:21:25.812Z",
+      "status": "COMPLETED",
+      "captures": 1,
+      "raw": 2379,
+      "extractions": 2276,
+      "aliveEvents": 13,
+      "captureSources": [
+        {
+          "_count": 1,
+          "sourceKey": "sephora-france"
+        }
+      ],
+      "persistenceFailures": 0,
+      "httpByHost": [
+        {
+          "host": "jobs.sephora.com",
+          "maxMs": 312,
+          "p50Ms": 123,
+          "p95Ms": 154,
+          "errors": 0,
+          "retries": 0,
+          "attempts": 2379,
+          "statuses": {
+            "200": 2379
+          },
+          "timeouts": 0,
+          "responses": 2379,
+          "bytesDeclared": 446141946,
+          "requestsPerSecond": 5.95,
+          "responsesWithoutLength": 116
+        }
+      ],
+      "durationSeconds": 400.017,
+      "errorEvents": [
+        {
+          "event": "job.write_failed",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "id": "7e9523ce-ee79-40cb-8d67-c0a9f06a4cf2",
+      "command": "source-campaign",
+      "revision": "92c2bb16913f82875b86ee6cb1bf9a5290a7bb72",
+      "startedAt": "2026-09-23T21:22:36.928Z",
+      "finishedAt": "2026-09-23T21:32:43.007Z",
+      "status": "FAILED",
+      "captures": 3,
+      "raw": 1754,
+      "extractions": 1667,
+      "aliveEvents": 20,
+      "captureSources": [
+        {
+          "_count": 3,
+          "sourceKey": "l-oreal-professionnel"
+        }
+      ],
+      "persistenceFailures": 0,
+      "httpByHost": [
+        {
+          "host": "careers.loreal.com",
+          "maxMs": 2076,
+          "p50Ms": 970,
+          "p95Ms": 1580,
+          "errors": 0,
+          "retries": 0,
+          "attempts": 1754,
+          "statuses": {
+            "200": 1753,
+            "406": 1
+          },
+          "timeouts": 0,
+          "responses": 1754,
+          "bytesDeclared": null,
+          "requestsPerSecond": 2.89,
+          "responsesWithoutLength": 1754
+        }
+      ],
+      "durationSeconds": 606.079,
+      "errorEvents": [
+        {
+          "event": "run.completed",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "id": "310e7987-eeef-43ee-bc15-9c3392a07b2f",
+      "command": "ingest",
+      "revision": "92c2bb16913f82875b86ee6cb1bf9a5290a7bb72",
+      "startedAt": "2026-09-23T21:32:40.553Z",
+      "finishedAt": "2026-09-23T21:32:42.816Z",
+      "status": "COMPLETED_WITH_ERRORS",
+      "captures": 1,
+      "raw": 3,
+      "extractions": 0,
+      "aliveEvents": 0,
+      "captureSources": [
+        {
+          "_count": 1,
+          "sourceKey": "l-oreal-professionnel"
+        }
+      ],
+      "persistenceFailures": 0,
+      "httpByHost": [
+        {
+          "host": "careers.loreal.com",
+          "maxMs": 102,
+          "p50Ms": 43,
+          "p95Ms": 102,
+          "errors": 0,
+          "retries": 2,
+          "attempts": 3,
+          "statuses": {
+            "406": 3
+          },
+          "timeouts": 0,
+          "responses": 3,
+          "bytesDeclared": null,
+          "requestsPerSecond": 1.35,
+          "responsesWithoutLength": 3
+        }
+      ],
+      "durationSeconds": 2.263,
+      "errorEvents": [
+        {
+          "event": "source.ingest_failed",
+          "count": 1
+        },
+        {
+          "event": "command.failed",
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "ingestions": [
+    {
+      "id": "d80599e8-1ec1-4cb1-8ca7-ea31b940d481",
+      "command": "ingest",
+      "revision": "421b0a2b56b1ca44d32727f8a8563cbfa2bc0ad5",
+      "startedAt": "2026-09-23T20:24:54.479Z",
+      "finishedAt": "2026-09-23T20:25:38.621Z",
+      "status": "COMPLETED",
+      "captures": 1,
+      "raw": 275,
+      "extractions": 274,
+      "aliveEvents": 1,
+      "captureSources": [
+        {
+          "_count": 1,
+          "sourceKey": "nocibe-eqwa"
+        }
+      ],
+      "persistenceFailures": 0,
+      "httpByHost": [
+        {
+          "host": "recrutement-nocibe.fr",
+          "maxMs": 474,
+          "p50Ms": 60,
+          "p95Ms": 71,
+          "errors": 0,
+          "retries": 0,
+          "attempts": 275,
+          "statuses": {
+            "200": 275
+          },
+          "timeouts": 0,
+          "responses": 275,
+          "bytesDeclared": null,
+          "requestsPerSecond": 6.24,
+          "responsesWithoutLength": 275
+        }
+      ],
+      "durationSeconds": 44.142,
+      "errorEvents": [],
+      "errors": 0,
+      "france": 230,
+      "merged": 0,
+      "source": "nocibe-eqwa",
+      "created": 274,
+      "fetchMs": 23223,
+      "fetched": 274,
+      "updated": 0,
+      "withUrl": 274,
+      "complete": null,
+      "inSector": 274,
+      "upsertMs": 18667,
+      "withDate": 274,
+      "truncated": false,
+      "withCountry": 0,
+      "declaredTotal": null,
+      "captureBatchId": "6d644130-a2dc-4df2-bda2-5c83c8c46cfe",
+      "withDescription": 274,
+      "occupationReleases": {
+        "catwalks-occupations-20260909-v1": 274
+      },
+      "occupationStatuses": {
+        "NO_RULE": 1,
+        "CLASSIFIED": 220,
+        "FAMILY_ONLY": 53
+      },
+      "occupationReleaseId": "catwalks-occupations-20260909-v1",
+      "completionReportHash": "1ca374011d9498141dd0cf43cb33214aa7cdaf9e21f9e68b0f7645ef3b2180e3",
+      "sourceHealth": {
+        "runId": "d80599e8-1ec1-4cb1-8ca7-ea31b940d481",
+        "id": "cmuejypbl01haox6fvi66c1un",
+        "sourceKey": "nocibe-eqwa",
+        "status": "OK",
+        "jobs": 274,
+        "previousJobs": 0,
+        "fetched": 274,
+        "accepted": 274,
+        "declaredTotal": null,
+        "truncated": false,
+        "errors": 0,
+        "canAttestAbsence": false,
+        "complete": null,
+        "note": "desc 100% date 100% pays 0% url 100%",
+        "descriptionRate": 1,
+        "dateRate": 1,
+        "countryRate": 0,
+        "urlRate": 1,
+        "ranAt": "2026-09-23T20:25:38.481Z"
+      },
+      "completion": {
+        "batchId": "6d644130-a2dc-4df2-bda2-5c83c8c46cfe",
+        "reportHash": "1ca374011d9498141dd0cf43cb33214aa7cdaf9e21f9e68b0f7645ef3b2180e3",
+        "published": 274,
+        "held": 0,
+        "writeFailed": 0,
+        "skipped": 0,
+        "readerRevision": "git:421b0a2b56b1ca44d32727f8a8563cbfa2bc0ad5",
+        "policyVersion": "native-ingestion-completion/1",
+        "completedAt": "2026-09-23T20:25:38.482Z"
+      }
+    },
+    {
+      "id": "2f7c84a0-217f-4f9d-bb70-8b4be8dd13e3",
+      "command": "ingest",
+      "revision": "421b0a2b56b1ca44d32727f8a8563cbfa2bc0ad5",
+      "startedAt": "2026-09-23T20:30:46.129Z",
+      "finishedAt": "2026-09-23T20:36:09.448Z",
+      "status": "COMPLETED",
+      "captures": 1,
+      "raw": 1971,
+      "extractions": 1894,
+      "aliveEvents": 10,
+      "captureSources": [
+        {
+          "_count": 1,
+          "sourceKey": "sephora-france"
+        }
+      ],
+      "persistenceFailures": 0,
+      "httpByHost": [
+        {
+          "host": "jobs.sephora.com",
+          "maxMs": 2233,
+          "p50Ms": 113,
+          "p95Ms": 145,
+          "errors": 0,
+          "retries": 0,
+          "attempts": 1971,
+          "statuses": {
+            "200": 1971
+          },
+          "timeouts": 0,
+          "responses": 1971,
+          "bytesDeclared": 371638680,
+          "requestsPerSecond": 6.1,
+          "responsesWithoutLength": 80
+        }
+      ],
+      "durationSeconds": 323.319,
+      "errorEvents": [
+        {
+          "event": "source.listing_truncated",
+          "count": 1
+        },
+        {
+          "event": "job.write_failed",
+          "count": 2
+        }
+      ],
+      "errors": 2,
+      "france": 21,
+      "merged": 0,
+      "source": "sephora-france",
+      "created": 1871,
+      "fetchMs": 172098,
+      "fetched": 1894,
+      "updated": 21,
+      "withUrl": 1894,
+      "complete": false,
+      "inSector": 1894,
+      "upsertMs": 96013,
+      "withDate": 1892,
+      "truncated": true,
+      "withCountry": 1891,
+      "declaredTotal": 1897,
+      "captureBatchId": "92cb6e02-c371-4e46-82cb-7fd7187e4cc3",
+      "withDescription": 1892,
+      "occupationReleases": {
+        "catwalks-occupations-20260909-v1": 1892
+      },
+      "occupationStatuses": {
+        "NO_RULE": 84,
+        "AMBIGUOUS": 3,
+        "CLASSIFIED": 631,
+        "FAMILY_ONLY": 1174
+      },
+      "occupationReleaseId": "catwalks-occupations-20260909-v1",
+      "completionReportHash": "97ae11a37fe168f3094b17bc976f1a4f74e55e88177f8f44df97b1ceeff76771",
+      "sourceHealth": {
+        "runId": "2f7c84a0-217f-4f9d-bb70-8b4be8dd13e3",
+        "id": "cmuekc7z10a69o26fi4v5qnru",
+        "sourceKey": "sephora-france",
+        "status": "DEGRADED",
+        "jobs": 1892,
+        "previousJobs": 21,
+        "fetched": 1894,
+        "accepted": 1894,
+        "declaredTotal": 1897,
+        "truncated": true,
+        "errors": 2,
+        "canAttestAbsence": false,
+        "complete": false,
+        "note": "2 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+        "descriptionRate": 0.999,
+        "dateRate": 0.999,
+        "countryRate": 0.998,
+        "urlRate": 1,
+        "ranAt": "2026-09-23T20:36:09.180Z"
+      },
+      "completion": {
+        "batchId": "92cb6e02-c371-4e46-82cb-7fd7187e4cc3",
+        "reportHash": "97ae11a37fe168f3094b17bc976f1a4f74e55e88177f8f44df97b1ceeff76771",
+        "published": 1892,
+        "held": 0,
+        "writeFailed": 2,
+        "skipped": 0,
+        "readerRevision": "git:421b0a2b56b1ca44d32727f8a8563cbfa2bc0ad5",
+        "policyVersion": "native-ingestion-completion/1",
+        "completedAt": "2026-09-23T20:36:09.176Z"
+      }
+    },
+    {
+      "id": "319eeb4d-ee3b-4e06-9ab1-b9ee53b9ae5a",
+      "command": "ingest",
+      "revision": "421b0a2b56b1ca44d32727f8a8563cbfa2bc0ad5",
+      "startedAt": "2026-09-23T20:38:48.742Z",
+      "finishedAt": "2026-09-23T20:42:13.949Z",
+      "status": "COMPLETED",
+      "captures": 1,
+      "raw": 746,
+      "extractions": 738,
+      "aliveEvents": 6,
+      "captureSources": [
+        {
+          "_count": 1,
+          "sourceKey": "monoprix"
+        }
+      ],
+      "persistenceFailures": 0,
+      "httpByHost": [
+        {
+          "host": "recrutement.monoprix.fr",
+          "maxMs": 467,
+          "p50Ms": 261,
+          "p95Ms": 313,
+          "errors": 0,
+          "retries": 0,
+          "attempts": 695,
+          "statuses": {
+            "200": 695
+          },
+          "timeouts": 0,
+          "responses": 695,
+          "bytesDeclared": null,
+          "requestsPerSecond": 3.39,
+          "responsesWithoutLength": 695
+        },
+        {
+          "host": "nousrejoindre.naturalia.fr",
+          "maxMs": 449,
+          "p50Ms": 261,
+          "p95Ms": 337,
+          "errors": 0,
+          "retries": 0,
+          "attempts": 43,
+          "statuses": {
+            "200": 43
+          },
+          "timeouts": 0,
+          "responses": 43,
+          "bytesDeclared": null,
+          "requestsPerSecond": 0.21,
+          "responsesWithoutLength": 43
+        },
+        {
+          "host": "api.digitalrecruiters.com",
+          "maxMs": 441,
+          "p50Ms": 371,
+          "p95Ms": 441,
+          "errors": 0,
+          "retries": 0,
+          "attempts": 8,
+          "statuses": {
+            "200": 8
+          },
+          "timeouts": 0,
+          "responses": 8,
+          "bytesDeclared": null,
+          "requestsPerSecond": 0.04,
+          "responsesWithoutLength": 8
+        }
+      ],
+      "durationSeconds": 205.207,
+      "errorEvents": [],
+      "errors": 0,
+      "france": 738,
+      "merged": 0,
+      "source": "monoprix",
+      "created": 738,
+      "fetchMs": 71648,
+      "fetched": 738,
+      "updated": 0,
+      "withUrl": 738,
+      "complete": true,
+      "inSector": 738,
+      "upsertMs": 122881,
+      "withDate": 738,
+      "truncated": false,
+      "withCountry": 738,
+      "declaredTotal": 746,
+      "captureBatchId": "58dab44b-2b9e-4bf2-bcb2-777e2405b4a7",
+      "withDescription": 738,
+      "occupationReleases": {
+        "catwalks-occupations-20260909-v1": 738
+      },
+      "occupationStatuses": {
+        "NO_RULE": 75,
+        "CLASSIFIED": 61,
+        "FAMILY_ONLY": 602
+      },
+      "occupationReleaseId": "catwalks-occupations-20260909-v1",
+      "completionReportHash": "116f552cc17f018e95c1a94a0012b0c11fd98258aeaa10d7c8411ed7267ff5c2",
+      "sourceHealth": {
+        "runId": "319eeb4d-ee3b-4e06-9ab1-b9ee53b9ae5a",
+        "id": "cmuekk1b903zjna5nosm4lhae",
+        "sourceKey": "monoprix",
+        "status": "NEW",
+        "jobs": 738,
+        "previousJobs": null,
+        "fetched": 738,
+        "accepted": 738,
+        "declaredTotal": 746,
+        "truncated": false,
+        "errors": 0,
+        "canAttestAbsence": false,
+        "complete": true,
+        "note": "desc 100% date 100% pays 100% url 100%",
+        "descriptionRate": 1,
+        "dateRate": 1,
+        "countryRate": 1,
+        "urlRate": 1,
+        "ranAt": "2026-09-23T20:42:13.797Z"
+      },
+      "completion": {
+        "batchId": "58dab44b-2b9e-4bf2-bcb2-777e2405b4a7",
+        "reportHash": "116f552cc17f018e95c1a94a0012b0c11fd98258aeaa10d7c8411ed7267ff5c2",
+        "published": 738,
+        "held": 0,
+        "writeFailed": 0,
+        "skipped": 0,
+        "readerRevision": "git:421b0a2b56b1ca44d32727f8a8563cbfa2bc0ad5",
+        "policyVersion": "native-ingestion-completion/1",
+        "completedAt": "2026-09-23T20:42:13.781Z"
+      }
+    },
+    {
+      "id": "cd71a9f7-d391-440c-826c-cc4f48d1b07e",
+      "command": "ingest",
+      "revision": "421b0a2b56b1ca44d32727f8a8563cbfa2bc0ad5",
+      "startedAt": "2026-09-23T20:42:56.568Z",
+      "finishedAt": "2026-09-23T20:42:57.670Z",
+      "status": "COMPLETED",
+      "captures": 1,
+      "raw": 2,
+      "extractions": 1,
+      "aliveEvents": 0,
+      "captureSources": [
+        {
+          "_count": 1,
+          "sourceKey": "bonsoirs"
+        }
+      ],
+      "persistenceFailures": 0,
+      "httpByHost": [
+        {
+          "host": "csekhvms53-dsn.algolia.net",
+          "maxMs": 98,
+          "p50Ms": 98,
+          "p95Ms": 98,
+          "errors": 0,
+          "retries": 0,
+          "attempts": 1,
+          "statuses": {
+            "200": 1
+          },
+          "timeouts": 0,
+          "responses": 1,
+          "bytesDeclared": null,
+          "requestsPerSecond": 0.95,
+          "responsesWithoutLength": 1
+        },
+        {
+          "host": "api.welcometothejungle.com",
+          "maxMs": 206,
+          "p50Ms": 206,
+          "p95Ms": 206,
+          "errors": 0,
+          "retries": 0,
+          "attempts": 1,
+          "statuses": {
+            "200": 1
+          },
+          "timeouts": 0,
+          "responses": 1,
+          "bytesDeclared": null,
+          "requestsPerSecond": 0.95,
+          "responsesWithoutLength": 1
+        }
+      ],
+      "durationSeconds": 1.102,
+      "errorEvents": [],
+      "errors": 0,
+      "france": 1,
+      "merged": 0,
+      "source": "bonsoirs",
+      "created": 1,
+      "fetchMs": 416,
+      "fetched": 1,
+      "updated": 0,
+      "withUrl": 1,
+      "complete": null,
+      "inSector": 1,
+      "upsertMs": 222,
+      "withDate": 1,
+      "truncated": false,
+      "withCountry": 1,
+      "declaredTotal": 1,
+      "captureBatchId": "57fec0fa-38e2-4630-9e29-eec51a874009",
+      "withDescription": 1,
+      "occupationReleases": {
+        "catwalks-occupations-20260909-v1": 1
+      },
+      "occupationStatuses": {
+        "FAMILY_ONLY": 1
+      },
+      "occupationReleaseId": "catwalks-occupations-20260909-v1",
+      "completionReportHash": "95c61df546323e7fae840292a7249f09582fe88f560f5e866ee62f5ed9b5c63f",
+      "sourceHealth": {
+        "runId": "cd71a9f7-d391-440c-826c-cc4f48d1b07e",
+        "id": "cmuekkz270008p85nu3d3oeha",
+        "sourceKey": "bonsoirs",
+        "status": "NEW",
+        "jobs": 1,
+        "previousJobs": null,
+        "fetched": 1,
+        "accepted": 1,
+        "declaredTotal": 1,
+        "truncated": false,
+        "errors": 0,
+        "canAttestAbsence": false,
+        "complete": null,
+        "note": "desc 100% date 100% pays 100% url 100%",
+        "descriptionRate": 1,
+        "dateRate": 1,
+        "countryRate": 1,
+        "urlRate": 1,
+        "ranAt": "2026-09-23T20:42:57.534Z"
+      },
+      "completion": {
+        "batchId": "57fec0fa-38e2-4630-9e29-eec51a874009",
+        "reportHash": "95c61df546323e7fae840292a7249f09582fe88f560f5e866ee62f5ed9b5c63f",
+        "published": 1,
+        "held": 0,
+        "writeFailed": 0,
+        "skipped": 0,
+        "readerRevision": "git:421b0a2b56b1ca44d32727f8a8563cbfa2bc0ad5",
+        "policyVersion": "native-ingestion-completion/1",
+        "completedAt": "2026-09-23T20:42:57.525Z"
+      }
+    },
+    {
+      "id": "03b69cde-54f7-4862-81a8-f9bc680b61c6",
+      "command": "ingest",
+      "revision": "421b0a2b56b1ca44d32727f8a8563cbfa2bc0ad5",
+      "startedAt": "2026-09-23T20:46:24.770Z",
+      "finishedAt": "2026-09-23T20:50:17.924Z",
+      "status": "COMPLETED",
+      "captures": 1,
+      "raw": 693,
+      "extractions": 652,
+      "aliveEvents": 7,
+      "captureSources": [
+        {
+          "_count": 1,
+          "sourceKey": "puma"
+        }
+      ],
+      "persistenceFailures": 0,
+      "httpByHost": [
+        {
+          "host": "puma.wd502.myworkdayjobs.com",
+          "maxMs": 1290,
+          "p50Ms": 226,
+          "p95Ms": 353,
+          "errors": 0,
+          "retries": 8,
+          "attempts": 693,
+          "statuses": {
+            "200": 685,
+            "429": 8
+          },
+          "timeouts": 0,
+          "responses": 693,
+          "bytesDeclared": 230961,
+          "requestsPerSecond": 2.97,
+          "responsesWithoutLength": 685
+        }
+      ],
+      "durationSeconds": 233.154,
+      "errorEvents": [],
+      "held": 11,
+      "errors": 0,
+      "france": 5,
+      "merged": 0,
+      "source": "puma",
+      "created": 641,
+      "fetchMs": 120821,
+      "fetched": 652,
+      "updated": 0,
+      "withUrl": 641,
+      "complete": true,
+      "inSector": 641,
+      "upsertMs": 104418,
+      "withDate": 641,
+      "truncated": false,
+      "withCountry": 641,
+      "declaredTotal": 652,
+      "captureBatchId": "6d7157cf-7e9c-4e62-a2cd-27db253300df",
+      "heldUnresolved": 11,
+      "withDescription": 641,
+      "occupationReleases": {
+        "catwalks-occupations-20260909-v1": 641
+      },
+      "occupationStatuses": {
+        "NO_RULE": 47,
+        "CLASSIFIED": 265,
+        "FAMILY_ONLY": 329
+      },
+      "occupationReleaseId": "catwalks-occupations-20260909-v1",
+      "completionReportHash": "d9586d063458bdb523957e1ac5881ac98f4fcf9e41ba6f347957b481680f43db",
+      "sourceHealth": {
+        "runId": "03b69cde-54f7-4862-81a8-f9bc680b61c6",
+        "id": "cmuekuelz03idmr5okiqmg14e",
+        "sourceKey": "puma",
+        "status": "DEGRADED",
+        "jobs": 641,
+        "previousJobs": null,
+        "fetched": 652,
+        "accepted": 641,
+        "declaredTotal": 652,
+        "truncated": false,
+        "errors": 0,
+        "canAttestAbsence": false,
+        "complete": true,
+        "note": "11 annonces non publiables archivées (11 non résolues) ; énumération prouvée · desc 100% date 100% pays 100% url 100%",
+        "descriptionRate": 1,
+        "dateRate": 1,
+        "countryRate": 1,
+        "urlRate": 1,
+        "ranAt": "2026-09-23T20:50:17.590Z"
+      },
+      "completion": {
+        "batchId": "6d7157cf-7e9c-4e62-a2cd-27db253300df",
+        "reportHash": "d9586d063458bdb523957e1ac5881ac98f4fcf9e41ba6f347957b481680f43db",
+        "published": 641,
+        "held": 11,
+        "writeFailed": 0,
+        "skipped": 0,
+        "readerRevision": "git:421b0a2b56b1ca44d32727f8a8563cbfa2bc0ad5",
+        "policyVersion": "native-ingestion-completion/1",
+        "completedAt": "2026-09-23T20:50:17.565Z"
+      }
+    },
+    {
+      "id": "8384cfba-4404-494f-878e-be82788330d7",
+      "command": "ingest",
+      "revision": "421b0a2b56b1ca44d32727f8a8563cbfa2bc0ad5",
+      "startedAt": "2026-09-23T20:51:12.441Z",
+      "finishedAt": "2026-09-23T20:51:16.647Z",
+      "status": "COMPLETED",
+      "captures": 1,
+      "raw": 10,
+      "extractions": 6,
+      "aliveEvents": 0,
+      "captureSources": [
+        {
+          "_count": 1,
+          "sourceKey": "gemmyo"
+        }
+      ],
+      "persistenceFailures": 0,
+      "httpByHost": [
+        {
+          "host": "join.com",
+          "maxMs": 1074,
+          "p50Ms": 67,
+          "p95Ms": 1074,
+          "errors": 0,
+          "retries": 0,
+          "attempts": 10,
+          "statuses": {
+            "200": 10
+          },
+          "timeouts": 0,
+          "responses": 10,
+          "bytesDeclared": null,
+          "requestsPerSecond": 2.4,
+          "responsesWithoutLength": 10
+        }
+      ],
+      "durationSeconds": 4.206,
+      "errorEvents": [
+        {
+          "event": "source.listing_truncated",
+          "count": 1
+        }
+      ],
+      "errors": 0,
+      "france": 5,
+      "merged": 0,
+      "source": "gemmyo",
+      "created": 6,
+      "fetchMs": 3258,
+      "fetched": 6,
+      "updated": 0,
+      "withUrl": 6,
+      "complete": false,
+      "inSector": 6,
+      "upsertMs": 403,
+      "withDate": 6,
+      "truncated": true,
+      "withCountry": 6,
+      "declaredTotal": 7,
+      "captureBatchId": "598a0d13-ec7b-4799-b11d-acf6619f2a4f",
+      "withDescription": 6,
+      "occupationReleases": {
+        "catwalks-occupations-20260909-v1": 6
+      },
+      "occupationStatuses": {
+        "CLASSIFIED": 2,
+        "FAMILY_ONLY": 4
+      },
+      "occupationReleaseId": "catwalks-occupations-20260909-v1",
+      "completionReportHash": "d929efde6574e2bb7ad701d9e766135ba4b3b457800a1bc5ffcf361b650678c9",
+      "sourceHealth": {
+        "runId": "8384cfba-4404-494f-878e-be82788330d7",
+        "id": "cmuekvo0s0017nw5o05di5i5n",
+        "sourceKey": "gemmyo",
+        "status": "DEGRADED",
+        "jobs": 6,
+        "previousJobs": null,
+        "fetched": 6,
+        "accepted": 6,
+        "declaredTotal": 7,
+        "truncated": true,
+        "errors": 0,
+        "canAttestAbsence": false,
+        "complete": false,
+        "note": "troncature : 6 collectées sur 7 déclarées · desc 100% date 100% pays 100% url 100%",
+        "descriptionRate": 1,
+        "dateRate": 1,
+        "countryRate": 1,
+        "urlRate": 1,
+        "ranAt": "2026-09-23T20:51:16.444Z"
+      },
+      "completion": {
+        "batchId": "598a0d13-ec7b-4799-b11d-acf6619f2a4f",
+        "reportHash": "d929efde6574e2bb7ad701d9e766135ba4b3b457800a1bc5ffcf361b650678c9",
+        "published": 6,
+        "held": 0,
+        "writeFailed": 0,
+        "skipped": 0,
+        "readerRevision": "git:421b0a2b56b1ca44d32727f8a8563cbfa2bc0ad5",
+        "policyVersion": "native-ingestion-completion/1",
+        "completedAt": "2026-09-23T20:51:16.438Z"
+      }
+    },
+    {
+      "id": "d551c0f3-4d74-4a33-bb31-2da342f0a511",
+      "command": "ingest",
+      "revision": "421b0a2b56b1ca44d32727f8a8563cbfa2bc0ad5",
+      "startedAt": "2026-09-23T20:51:53.494Z",
+      "finishedAt": "2026-09-23T20:51:56.783Z",
+      "status": "COMPLETED",
+      "captures": 1,
+      "raw": 20,
+      "extractions": 19,
+      "aliveEvents": 0,
+      "captureSources": [
+        {
+          "_count": 1,
+          "sourceKey": "luxury-of-retail"
+        }
+      ],
+      "persistenceFailures": 0,
+      "httpByHost": [
+        {
+          "host": "talents.luxuryofretail.com",
+          "maxMs": 64,
+          "p50Ms": 31,
+          "p95Ms": 64,
+          "errors": 0,
+          "retries": 0,
+          "attempts": 19,
+          "statuses": {
+            "200": 19
+          },
+          "timeouts": 0,
+          "responses": 19,
+          "bytesDeclared": null,
+          "requestsPerSecond": 5.86,
+          "responsesWithoutLength": 19
+        },
+        {
+          "host": "api.digitalrecruiters.com",
+          "maxMs": 195,
+          "p50Ms": 195,
+          "p95Ms": 195,
+          "errors": 0,
+          "retries": 0,
+          "attempts": 1,
+          "statuses": {
+            "200": 1
+          },
+          "timeouts": 0,
+          "responses": 1,
+          "bytesDeclared": null,
+          "requestsPerSecond": 0.31,
+          "responsesWithoutLength": 1
+        }
+      ],
+      "durationSeconds": 3.289,
+      "errorEvents": [],
+      "errors": 0,
+      "france": 19,
+      "merged": 0,
+      "source": "luxury-of-retail",
+      "created": 19,
+      "fetchMs": 1778,
+      "fetched": 19,
+      "updated": 0,
+      "withUrl": 19,
+      "complete": true,
+      "inSector": 19,
+      "upsertMs": 1063,
+      "withDate": 19,
+      "truncated": false,
+      "withCountry": 19,
+      "declaredTotal": 19,
+      "captureBatchId": "49dab695-6d5f-41fb-9ee5-5d5c2029dacb",
+      "withDescription": 19,
+      "occupationReleases": {
+        "catwalks-occupations-20260909-v1": 19
+      },
+      "occupationStatuses": {
+        "CLASSIFIED": 15,
+        "FAMILY_ONLY": 4
+      },
+      "occupationReleaseId": "catwalks-occupations-20260909-v1",
+      "completionReportHash": "2fe068343237a4f637b85f0d9f7f827c914e1a077c0d0ed3a5cc7eb658eba6ee",
+      "sourceHealth": {
+        "runId": "d551c0f3-4d74-4a33-bb31-2da342f0a511",
+        "id": "cmuekwj1p003ql65np133yqk8",
+        "sourceKey": "luxury-of-retail",
+        "status": "NEW",
+        "jobs": 19,
+        "previousJobs": null,
+        "fetched": 19,
+        "accepted": 19,
+        "declaredTotal": 19,
+        "truncated": false,
+        "errors": 0,
+        "canAttestAbsence": false,
+        "complete": true,
+        "note": "desc 100% date 100% pays 100% url 100%",
+        "descriptionRate": 1,
+        "dateRate": 1,
+        "countryRate": 1,
+        "urlRate": 1,
+        "ranAt": "2026-09-23T20:51:56.653Z"
+      },
+      "completion": {
+        "batchId": "49dab695-6d5f-41fb-9ee5-5d5c2029dacb",
+        "reportHash": "2fe068343237a4f637b85f0d9f7f827c914e1a077c0d0ed3a5cc7eb658eba6ee",
+        "published": 19,
+        "held": 0,
+        "writeFailed": 0,
+        "skipped": 0,
+        "readerRevision": "git:421b0a2b56b1ca44d32727f8a8563cbfa2bc0ad5",
+        "policyVersion": "native-ingestion-completion/1",
+        "completedAt": "2026-09-23T20:51:56.646Z"
+      }
+    },
+    {
+      "id": "41b1b04b-418c-4f53-baa9-97a3bc170d7f",
+      "command": "ingest",
+      "revision": "92c2bb16913f82875b86ee6cb1bf9a5290a7bb72",
+      "startedAt": "2026-09-23T21:14:45.795Z",
+      "finishedAt": "2026-09-23T21:21:25.812Z",
+      "status": "COMPLETED",
+      "captures": 1,
+      "raw": 2379,
+      "extractions": 2276,
+      "aliveEvents": 13,
+      "captureSources": [
+        {
+          "_count": 1,
+          "sourceKey": "sephora-france"
+        }
+      ],
+      "persistenceFailures": 0,
+      "httpByHost": [
+        {
+          "host": "jobs.sephora.com",
+          "maxMs": 312,
+          "p50Ms": 123,
+          "p95Ms": 154,
+          "errors": 0,
+          "retries": 0,
+          "attempts": 2379,
+          "statuses": {
+            "200": 2379
+          },
+          "timeouts": 0,
+          "responses": 2379,
+          "bytesDeclared": 446141946,
+          "requestsPerSecond": 5.95,
+          "responsesWithoutLength": 116
+        }
+      ],
+      "durationSeconds": 400.017,
+      "errorEvents": [
+        {
+          "event": "job.write_failed",
+          "count": 2
+        }
+      ],
+      "errors": 2,
+      "france": 170,
+      "merged": 0,
+      "source": "sephora-france",
+      "created": 383,
+      "fetchMs": 205047,
+      "fetched": 2276,
+      "updated": 1891,
+      "withUrl": 2276,
+      "complete": true,
+      "inSector": 2276,
+      "upsertMs": 127750,
+      "withDate": 2274,
+      "truncated": false,
+      "withCountry": 2270,
+      "declaredTotal": null,
+      "captureBatchId": "60f4e6ff-4330-4aea-8662-f6c4ce6d35d8",
+      "withDescription": 2274,
+      "occupationReleases": {
+        "catwalks-occupations-20260909-v1": 2274
+      },
+      "occupationStatuses": {
+        "NO_RULE": 128,
+        "AMBIGUOUS": 3,
+        "CLASSIFIED": 872,
+        "FAMILY_ONLY": 1271
+      },
+      "occupationReleaseId": "catwalks-occupations-20260909-v1",
+      "completionReportHash": "352c7e30d426643abc601c88d4709f527cb9ed09aa1a4e111a9edf204b75afbb",
+      "sourceHealth": {
+        "runId": "41b1b04b-418c-4f53-baa9-97a3bc170d7f",
+        "id": "cmuelyfxo07wpr66f9vzmrpyi",
+        "sourceKey": "sephora-france",
+        "status": "DEGRADED",
+        "jobs": 2274,
+        "previousJobs": 1892,
+        "fetched": 2276,
+        "accepted": 2276,
+        "declaredTotal": null,
+        "truncated": false,
+        "errors": 2,
+        "canAttestAbsence": false,
+        "complete": true,
+        "note": "2 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+        "descriptionRate": 0.999,
+        "dateRate": 0.999,
+        "countryRate": 0.997,
+        "urlRate": 1,
+        "ranAt": "2026-09-23T21:21:25.547Z"
+      },
+      "completion": {
+        "batchId": "60f4e6ff-4330-4aea-8662-f6c4ce6d35d8",
+        "reportHash": "352c7e30d426643abc601c88d4709f527cb9ed09aa1a4e111a9edf204b75afbb",
+        "published": 2274,
+        "held": 0,
+        "writeFailed": 2,
+        "skipped": 0,
+        "readerRevision": "git:92c2bb16913f82875b86ee6cb1bf9a5290a7bb72",
+        "policyVersion": "native-ingestion-completion/1",
+        "completedAt": "2026-09-23T21:21:25.538Z"
+      }
+    },
+    {
+      "id": "310e7987-eeef-43ee-bc15-9c3392a07b2f",
+      "command": "ingest",
+      "revision": "92c2bb16913f82875b86ee6cb1bf9a5290a7bb72",
+      "startedAt": "2026-09-23T21:32:40.553Z",
+      "finishedAt": "2026-09-23T21:32:42.816Z",
+      "status": "COMPLETED_WITH_ERRORS",
+      "captures": 1,
+      "raw": 3,
+      "extractions": 0,
+      "aliveEvents": 0,
+      "captureSources": [
+        {
+          "_count": 1,
+          "sourceKey": "l-oreal-professionnel"
+        }
+      ],
+      "persistenceFailures": 0,
+      "httpByHost": [
+        {
+          "host": "careers.loreal.com",
+          "maxMs": 102,
+          "p50Ms": 43,
+          "p95Ms": 102,
+          "errors": 0,
+          "retries": 2,
+          "attempts": 3,
+          "statuses": {
+            "406": 3
+          },
+          "timeouts": 0,
+          "responses": 3,
+          "bytesDeclared": null,
+          "requestsPerSecond": 1.35,
+          "responsesWithoutLength": 3
+        }
+      ],
+      "durationSeconds": 2.263,
+      "errorEvents": [
+        {
+          "event": "source.ingest_failed",
+          "count": 1
+        },
+        {
+          "event": "command.failed",
+          "count": 1
+        }
+      ],
+      "errors": 1,
+      "france": 0,
+      "merged": 0,
+      "source": "l-oreal-professionnel",
+      "created": 0,
+      "fetched": 0,
+      "updated": 0,
+      "withUrl": 0,
+      "inSector": 0,
+      "withDate": 0,
+      "errorNote": "HTTP 406 for https://careers.loreal.com/en_US/jobs/SearchJobs/?jobOffset=0",
+      "withCountry": 0,
+      "withDescription": 0,
+      "sourceHealth": {
+        "runId": "310e7987-eeef-43ee-bc15-9c3392a07b2f",
+        "id": "cmuemcybi0000l16i9r0okfwq",
+        "sourceKey": "l-oreal-professionnel",
+        "status": "BROKEN",
+        "jobs": 0,
+        "previousJobs": 0,
+        "fetched": 0,
+        "accepted": 0,
+        "declaredTotal": null,
+        "truncated": false,
+        "errors": 1,
+        "canAttestAbsence": false,
+        "complete": null,
+        "note": "1 erreurs de collecte ou d’écriture : HTTP 406 for https://careers.loreal.com/en_US/jobs/SearchJobs/?jobOffset=0",
+        "descriptionRate": null,
+        "dateRate": null,
+        "countryRate": null,
+        "urlRate": null,
+        "ranAt": "2026-09-23T21:32:42.558Z"
+      },
+      "completion": null
+    }
+  ],
+  "totals": {
+    "captures": 53,
+    "raw": 14005,
+    "extractions": 13385
+  },
+  "writeTotals": {
+    "fetched": 5860,
+    "created": 3933,
+    "updated": 1912,
+    "errors": 5,
+    "merged": 0,
+    "held": 11
+  },
+  "latestIngestionBySource": {
+    "nocibe-eqwa": "d80599e8-1ec1-4cb1-8ca7-ea31b940d481",
+    "sephora-france": "41b1b04b-418c-4f53-baa9-97a3bc170d7f",
+    "monoprix": "319eeb4d-ee3b-4e06-9ab1-b9ee53b9ae5a",
+    "bonsoirs": "cd71a9f7-d391-440c-826c-cc4f48d1b07e",
+    "puma": "03b69cde-54f7-4862-81a8-f9bc680b61c6",
+    "gemmyo": "8384cfba-4404-494f-878e-be82788330d7",
+    "luxury-of-retail": "d551c0f3-4d74-4a33-bb31-2da342f0a511",
+    "l-oreal-professionnel": "310e7987-eeef-43ee-bc15-9c3392a07b2f"
+  },
+  "registry": [
+    {
+      "_count": 415,
+      "status": "ACTIVE"
+    },
+    {
+      "_count": 11,
+      "status": "PAUSED"
+    },
+    {
+      "_count": 116,
+      "status": "RETIRED"
+    }
+  ],
+  "sourceState": [
+    {
+      "key": "monoprix",
+      "status": "ACTIVE",
+      "maison": "Monoprix",
+      "kind": "digitalrecruiters",
+      "config": {
+        "domainName": "recrutement.monoprix.fr",
+        "employerFromJobPosting": true
+      },
+      "currentRevisionId": "6b4f69a9-76db-4721-9645-5dc828b575c6",
+      "portalScope": null
+    },
+    {
+      "key": "bonsoirs",
+      "status": "ACTIVE",
+      "maison": "Bonsoirs",
+      "kind": "wttj",
+      "config": {
+        "slug": "bonsoirs"
+      },
+      "currentRevisionId": "0c2e5825-c4a1-455d-8b88-5479d0e2e4c6",
+      "portalScope": null
+    },
+    {
+      "key": "gemmyo",
+      "status": "ACTIVE",
+      "maison": "Gemmyo",
+      "kind": "generic-listing",
+      "config": {
+        "maxPages": 3,
+        "pageStart": 1,
+        "listingUrl": "https://join.com/companies/gemmyo",
+        "linkPattern": "/companies/gemmyo/",
+        "countPattern": "\"total\":"
+      },
+      "currentRevisionId": "c8c52636-09e2-40d5-8f66-84c21f3271a0",
+      "portalScope": null
+    },
+    {
+      "key": "puma",
+      "status": "ACTIVE",
+      "maison": "Puma",
+      "kind": "workday",
+      "config": {
+        "site": "Jobs_at_Puma",
+        "origin": "https://puma.wd502.myworkdayjobs.com",
+        "tenant": "puma"
+      },
+      "currentRevisionId": "d6c290ed-827e-40b0-9f61-c36945c8122e",
+      "portalScope": null
+    },
+    {
+      "key": "luxury-of-retail",
+      "status": "ACTIVE",
+      "maison": "Luxury of Retail",
+      "kind": "digitalrecruiters",
+      "config": {
+        "domainName": "talents.luxuryofretail.com",
+        "employerFromJobPosting": true
+      },
+      "currentRevisionId": "983a863d-4ad0-45fb-9017-b71a5491b91a",
+      "portalScope": null
+    },
+    {
+      "key": "l-oreal-professionnel",
+      "status": "ACTIVE",
+      "maison": "L'Oréal (toutes Maisons)",
+      "kind": "avature",
+      "config": {
+        "origin": "https://careers.loreal.com",
+        "listingUrl": "https://careers.loreal.com/en_US/jobs/SearchJobs/?jobOffset=0",
+        "employerFromDataLayer": true
+      },
+      "currentRevisionId": "0b1877d4-d30c-4380-8be7-b9910679b51f",
+      "portalScope": null
+    },
+    {
+      "key": "sephora-france",
+      "status": "ACTIVE",
+      "maison": "Sephora",
+      "kind": "successfactors",
+      "config": {
+        "origin": "https://jobs.sephora.com",
+        "allLocales": true
+      },
+      "currentRevisionId": "2e3db9bd-275b-4981-b4b7-3dfe51ba0249",
+      "portalScope": null
+    },
+    {
+      "key": "nocibe-eqwa",
+      "status": "ACTIVE",
+      "maison": "Nocibé",
+      "kind": "eqwa",
+      "config": {
+        "origin": "https://recrutement-nocibe.fr"
+      },
+      "currentRevisionId": "80f85f93-0ded-4c82-a96f-d80fcb69d1a8",
+      "portalScope": "SINGLE_BRAND"
+    }
+  ],
+  "activePublicationsBySourceCountry": [
+    {
+      "source": "bonsoirs",
+      "country": "FR",
+      "count": 1
+    },
+    {
+      "source": "gemmyo",
+      "country": "FR",
+      "count": 5
+    },
+    {
+      "source": "gemmyo",
+      "country": "JP",
+      "count": 1
+    },
+    {
+      "source": "luxury-of-retail",
+      "country": "FR",
+      "count": 19
+    },
+    {
+      "source": "monoprix",
+      "country": "FR",
+      "count": 738
+    },
+    {
+      "source": "nocibe-eqwa",
+      "country": null,
+      "count": 44
+    },
+    {
+      "source": "nocibe-eqwa",
+      "country": "FR",
+      "count": 230
+    },
+    {
+      "source": "puma",
+      "country": "AE",
+      "count": 2
+    },
+    {
+      "source": "puma",
+      "country": "AR",
+      "count": 2
+    },
+    {
+      "source": "puma",
+      "country": "AT",
+      "count": 2
+    },
+    {
+      "source": "puma",
+      "country": "AU",
+      "count": 32
+    },
+    {
+      "source": "puma",
+      "country": "BR",
+      "count": 2
+    },
+    {
+      "source": "puma",
+      "country": "CA",
+      "count": 28
+    },
+    {
+      "source": "puma",
+      "country": "CH",
+      "count": 2
+    },
+    {
+      "source": "puma",
+      "country": "CL",
+      "count": 11
+    },
+    {
+      "source": "puma",
+      "country": "CN",
+      "count": 17
+    },
+    {
+      "source": "puma",
+      "country": "CZ",
+      "count": 2
+    },
+    {
+      "source": "puma",
+      "country": "DE",
+      "count": 106
+    },
+    {
+      "source": "puma",
+      "country": "DK",
+      "count": 2
+    },
+    {
+      "source": "puma",
+      "country": "ES",
+      "count": 13
+    },
+    {
+      "source": "puma",
+      "country": "FR",
+      "count": 5
+    },
+    {
+      "source": "puma",
+      "country": "GB",
+      "count": 9
+    },
+    {
+      "source": "puma",
+      "country": "HK",
+      "count": 2
+    },
+    {
+      "source": "puma",
+      "country": "ID",
+      "count": 2
+    },
+    {
+      "source": "puma",
+      "country": "IE",
+      "count": 1
+    },
+    {
+      "source": "puma",
+      "country": "IN",
+      "count": 59
+    },
+    {
+      "source": "puma",
+      "country": "IT",
+      "count": 15
+    },
+    {
+      "source": "puma",
+      "country": "JP",
+      "count": 22
+    },
+    {
+      "source": "puma",
+      "country": "KR",
+      "count": 3
+    },
+    {
+      "source": "puma",
+      "country": "MX",
+      "count": 19
+    },
+    {
+      "source": "puma",
+      "country": "MY",
+      "count": 5
+    },
+    {
+      "source": "puma",
+      "country": "NL",
+      "count": 3
+    },
+    {
+      "source": "puma",
+      "country": "NZ",
+      "count": 10
+    },
+    {
+      "source": "puma",
+      "country": "PE",
+      "count": 6
+    },
+    {
+      "source": "puma",
+      "country": "PH",
+      "count": 18
+    },
+    {
+      "source": "puma",
+      "country": "PL",
+      "count": 2
+    },
+    {
+      "source": "puma",
+      "country": "PT",
+      "count": 2
+    },
+    {
+      "source": "puma",
+      "country": "SE",
+      "count": 2
+    },
+    {
+      "source": "puma",
+      "country": "SG",
+      "count": 8
+    },
+    {
+      "source": "puma",
+      "country": "TH",
+      "count": 1
+    },
+    {
+      "source": "puma",
+      "country": "UA",
+      "count": 1
+    },
+    {
+      "source": "puma",
+      "country": "US",
+      "count": 213
+    },
+    {
+      "source": "puma",
+      "country": "VN",
+      "count": 12
+    },
+    {
+      "source": "sephora-france",
+      "country": null,
+      "count": 2
+    },
+    {
+      "source": "sephora-france",
+      "country": "AE",
+      "count": 3
+    },
+    {
+      "source": "sephora-france",
+      "country": "AU",
+      "count": 47
+    },
+    {
+      "source": "sephora-france",
+      "country": "BE",
+      "count": 8
+    },
+    {
+      "source": "sephora-france",
+      "country": "BR",
+      "count": 16
+    },
+    {
+      "source": "sephora-france",
+      "country": "CA",
+      "count": 322
+    },
+    {
+      "source": "sephora-france",
+      "country": "CH",
+      "count": 6
+    },
+    {
+      "source": "sephora-france",
+      "country": "DE",
+      "count": 30
+    },
+    {
+      "source": "sephora-france",
+      "country": "DK",
+      "count": 3
+    },
+    {
+      "source": "sephora-france",
+      "country": "ES",
+      "count": 14
+    },
+    {
+      "source": "sephora-france",
+      "country": "FR",
+      "count": 170
+    },
+    {
+      "source": "sephora-france",
+      "country": "GB",
+      "count": 29
+    },
+    {
+      "source": "sephora-france",
+      "country": "HR",
+      "count": 2
+    },
+    {
+      "source": "sephora-france",
+      "country": "IT",
+      "count": 166
+    },
+    {
+      "source": "sephora-france",
+      "country": "JE",
+      "count": 1
+    },
+    {
+      "source": "sephora-france",
+      "country": "KW",
+      "count": 2
+    },
+    {
+      "source": "sephora-france",
+      "country": "LU",
+      "count": 1
+    },
+    {
+      "source": "sephora-france",
+      "country": "MX",
+      "count": 3
+    },
+    {
+      "source": "sephora-france",
+      "country": "MY",
+      "count": 10
+    },
+    {
+      "source": "sephora-france",
+      "country": "NZ",
+      "count": 8
+    },
+    {
+      "source": "sephora-france",
+      "country": "PH",
+      "count": 1
+    },
+    {
+      "source": "sephora-france",
+      "country": "PL",
+      "count": 8
+    },
+    {
+      "source": "sephora-france",
+      "country": "QA",
+      "count": 4
+    },
+    {
+      "source": "sephora-france",
+      "country": "RO",
+      "count": 7
+    },
+    {
+      "source": "sephora-france",
+      "country": "SE",
+      "count": 1
+    },
+    {
+      "source": "sephora-france",
+      "country": "SG",
+      "count": 13
+    },
+    {
+      "source": "sephora-france",
+      "country": "TH",
+      "count": 1
+    },
+    {
+      "source": "sephora-france",
+      "country": "TR",
+      "count": 2
+    },
+    {
+      "source": "sephora-france",
+      "country": "US",
+      "count": 1395
+    }
+  ],
+  "aesopLoreal": [],
+  "activePublicationsMissingCapture": 0,
+  "openRuns": []
+}

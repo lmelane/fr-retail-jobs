@@ -1,16 +1,16 @@
 {
-  "observedAt": "2026-09-23T19:02:38.501358+00:00",
-  "productionCodeSha": "3581d05557b4e283074811f4ab53796ef2fbcfe9",
+  "observedAt": "2026-09-23T21:37:08.504840+00:00",
+  "productionCodeSha": "92c2bb16913f82875b86ee6cb1bf9a5290a7bb72",
   "targetContractSha256": "85eb5ad68621ab7d8b4d04fe7e3d4778141635255aab25038907c0d03ea8119f",
   "registryVisibility": "public",
   "registryCredentialsRequired": false,
   "images": [
     {
-      "gitSha": "3581d05557b4e283074811f4ab53796ef2fbcfe9",
+      "gitSha": "92c2bb16913f82875b86ee6cb1bf9a5290a7bb72",
       "contractSha256": "85eb5ad68621ab7d8b4d04fe7e3d4778141635255aab25038907c0d03ea8119f",
       "service": "catwalks-catalogue-api",
-      "image": "ghcr.io/lmelane/catwalks-catalogue-api@sha256:2f112e8abcac0f0c4f935ac91a979bac5fcee1e44167910c55eddbf174d2687e",
-      "imageId": "sha256:15123b604a0d954d2e50c6e3549ed983b5afa58ac8abd1afb0754ab853a6afc3",
+      "image": "ghcr.io/lmelane/catwalks-catalogue-api@sha256:5ed1b6029169f85719b1d3d7848bbb0679263687c1e8fa612418db557bc1d8c9",
+      "imageId": "sha256:90dd7d767cd8a8fb234837c2c3b8df65fcbeabde74539e24ee0b722f4a55a868",
       "imageEnvironment": [
         "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
         "NODE_VERSION=22.23.2",
@@ -27,15 +27,15 @@
         "status": "PASS",
         "network": "none",
         "role": "api",
-        "gitSha": "3581d05557b4e283074811f4ab53796ef2fbcfe9"
+        "gitSha": "92c2bb16913f82875b86ee6cb1bf9a5290a7bb72"
       }
     },
     {
-      "gitSha": "3581d05557b4e283074811f4ab53796ef2fbcfe9",
+      "gitSha": "92c2bb16913f82875b86ee6cb1bf9a5290a7bb72",
       "contractSha256": "85eb5ad68621ab7d8b4d04fe7e3d4778141635255aab25038907c0d03ea8119f",
       "service": "catwalks-ingestion-worker",
-      "image": "ghcr.io/lmelane/catwalks-ingestion-worker@sha256:158c4750368776e32b83163e9e642464eae74f30ca18a134b1f7d04f473e3d00",
-      "imageId": "sha256:fde3cced2a692d27d31ea56b131a1007d096743fac7ebbec60e585102c8e40a3",
+      "image": "ghcr.io/lmelane/catwalks-ingestion-worker@sha256:f5a7c458496a8cd4387ab6111544ebef4c19bbe6dfa842d14146a30b61a369e9",
+      "imageId": "sha256:db0334fd99431a302f1c843b80045bcd8390f67352ac6606f02635b16f57ebe3",
       "imageEnvironment": [
         "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
         "LANG=C.UTF-8",
@@ -52,48 +52,38 @@
         "status": "PASS",
         "network": "none",
         "role": "worker",
-        "gitSha": "3581d05557b4e283074811f4ab53796ef2fbcfe9"
+        "gitSha": "92c2bb16913f82875b86ee6cb1bf9a5290a7bb72"
       }
     }
   ],
-  "reason": "Post-RUN generic fixes delivered on both runtimes; native evidence, source identity and access guards preserved. Documentation/proof-only commits after this code SHA do not rebuild or restart images.",
+  "reason": "Source qualification and multilingual SAP/native Avature coverage fixes delivered on both runtimes. Daily schedule restored and process-attested; L’Oréal publication remains blocked by HTTP 406. Documentation-only commits do not rebuild images.",
   "ci": {
-    "development": 35892261037,
-    "main": 35895189990,
+    "development": 35919428187,
+    "main": 35920144449,
     "status": "SUCCESS"
   },
   "services": [
     {
       "serviceId": "9c50b8a9-5651-478f-b0d1-5bc02d2c138f",
       "name": "catwalks-catalogue-api",
-      "deploymentId": "94d39c69-c980-4da0-a2b3-a85eb9e6c8a6",
+      "deploymentId": "01bbcaef-9f78-4674-96f0-081651787027",
       "deploymentStatus": "SUCCESS",
-      "image": "ghcr.io/lmelane/catwalks-catalogue-api@sha256:2f112e8abcac0f0c4f935ac91a979bac5fcee1e44167910c55eddbf174d2687e",
+      "image": "ghcr.io/lmelane/catwalks-catalogue-api@sha256:5ed1b6029169f85719b1d3d7848bbb0679263687c1e8fa612418db557bc1d8c9",
       "deploy": {
-        "region": null,
-        "runtime": "V2",
-        "numReplicas": 1,
-        "cronSchedule": null,
         "startCommand": "node apps/api/runtime/start.mjs",
-        "limitOverride": null,
-        "overlapSeconds": 0,
-        "drainingSeconds": 10,
         "healthcheckPath": "/api/health",
-        "preDeployCommand": null,
-        "sleepApplication": false,
+        "healthcheckTimeout": 120,
+        "restartPolicyMaxRetries": 3,
         "useLegacyStacker": false,
         "ipv6EgressEnabled": false,
+        "runtime": "V2",
         "multiRegionConfig": {
           "europe-west4-drams3a": {
             "numReplicas": 1
           }
         },
-        "requiredMountPath": null,
-        "restartPolicyType": "ON_FAILURE",
-        "healthcheckTimeout": 120,
-        "registryCredentials": null,
-        "preDeployTimeoutSeconds": null,
-        "restartPolicyMaxRetries": 3
+        "drainingSeconds": 10,
+        "overlapSeconds": 0
       },
       "customVariableNames": [
         "CATALOGUE_API_KEY",
@@ -105,11 +95,7 @@
         "PORT"
       ],
       "process": {
-        "at": "2026-09-23T17:46:10.969Z",
-        "role": "api",
-        "gitSha": "3581d05557b4e283074811f4ab53796ef2fbcfe9",
-        "contractSha256": "85eb5ad68621ab7d8b4d04fe7e3d4778141635255aab25038907c0d03ea8119f",
-        "profile": "production-paused",
+        "at": "2026-09-23T21:04:54.261Z",
         "argv": [],
         "values": {
           "CATWALKS_RUNTIME_PROFILE": "production-paused",
@@ -118,17 +104,21 @@
           "NODE_ENV": "production",
           "PORT": "8080"
         },
-        "secretNames": [
-          "DATABASE_URL",
-          "CATALOGUE_API_KEY"
-        ],
+        "profile": "production-paused",
+        "gitSha": "92c2bb16913f82875b86ee6cb1bf9a5290a7bb72",
+        "pid": 1,
+        "role": "api",
         "privateConfigurationNames": [],
         "database": {
           "database": "railway",
           "hostname": "postgres.railway.internal"
         },
-        "node": "v22.23.2",
-        "pid": 1
+        "secretNames": [
+          "DATABASE_URL",
+          "CATALOGUE_API_KEY"
+        ],
+        "contractSha256": "85eb5ad68621ab7d8b4d04fe7e3d4778141635255aab25038907c0d03ea8119f",
+        "node": "v22.23.2"
       },
       "secretValuesPublished": false,
       "targetEffectiveProcessMatch": true
@@ -136,34 +126,23 @@
     {
       "serviceId": "210322c3-51b7-42c3-a93d-f50f64d44d19",
       "name": "catwalks-ingestion-worker",
-      "deploymentId": "562e871c-6922-42e8-80a7-34abe538a4dd",
+      "deploymentId": "08431f37-3c8e-4725-92a9-a0a0bf333568",
       "deploymentStatus": "SUCCESS",
-      "image": "ghcr.io/lmelane/catwalks-ingestion-worker@sha256:158c4750368776e32b83163e9e642464eae74f30ca18a134b1f7d04f473e3d00",
+      "image": "ghcr.io/lmelane/catwalks-ingestion-worker@sha256:f5a7c458496a8cd4387ab6111544ebef4c19bbe6dfa842d14146a30b61a369e9",
       "deploy": {
-        "region": null,
-        "runtime": "V2",
-        "numReplicas": 1,
-        "cronSchedule": "0 16,17 * * *",
         "startCommand": "sh apps/aggregator/start.sh scheduled",
-        "limitOverride": null,
-        "overlapSeconds": 0,
-        "drainingSeconds": 10,
-        "healthcheckPath": null,
-        "preDeployCommand": null,
-        "sleepApplication": false,
+        "restartPolicyType": "NEVER",
         "useLegacyStacker": false,
         "ipv6EgressEnabled": false,
+        "cronSchedule": "0 16,17 * * *",
+        "runtime": "V2",
         "multiRegionConfig": {
           "europe-west4-drams3a": {
             "numReplicas": 1
           }
         },
-        "requiredMountPath": null,
-        "restartPolicyType": "NEVER",
-        "healthcheckTimeout": null,
-        "registryCredentials": null,
-        "preDeployTimeoutSeconds": null,
-        "restartPolicyMaxRetries": null
+        "drainingSeconds": 10,
+        "overlapSeconds": 0
       },
       "customVariableNames": [
         "ALERT_EMAIL",
@@ -177,25 +156,15 @@
         "PIPELINE_PAUSED"
       ],
       "process": {
-        "at": "2026-09-23T19:02:18.671Z",
-        "role": "worker",
-        "gitSha": "3581d05557b4e283074811f4ab53796ef2fbcfe9",
-        "contractSha256": "85eb5ad68621ab7d8b4d04fe7e3d4778141635255aab25038907c0d03ea8119f",
+        "gitSha": "92c2bb16913f82875b86ee6cb1bf9a5290a7bb72",
+        "pid": 1,
         "profile": "production",
-        "argv": [
-          "scheduled"
-        ],
-        "values": {
-          "BREVO_SENDER_NAME": "Catwalks",
-          "CATWALKS_RUNTIME_PROFILE": "production",
-          "NODE_ENV": "production",
-          "PIPELINE_PAUSED": "0"
-        },
         "secretNames": [
           "DATABASE_URL",
           "HEALTHCHECK_PING_URL",
           "BREVO_API_KEY"
         ],
+        "contractSha256": "85eb5ad68621ab7d8b4d04fe7e3d4778141635255aab25038907c0d03ea8119f",
         "privateConfigurationNames": [
           "BREVO_SENDER_EMAIL",
           "ALERT_EMAIL"
@@ -204,8 +173,18 @@
           "database": "railway",
           "hostname": "postgres.railway.internal"
         },
+        "at": "2026-09-23T21:36:28.759Z",
+        "role": "worker",
         "node": "v24.18.1",
-        "pid": 1
+        "argv": [
+          "scheduled"
+        ],
+        "values": {
+          "BREVO_SENDER_NAME": "Catwalks",
+          "CATWALKS_RUNTIME_PROFILE": "production",
+          "NODE_ENV": "production",
+          "PIPELINE_PAUSED": "0"
+        }
       },
       "secretValuesPublished": false,
       "targetEffectiveProcessMatch": true
@@ -217,16 +196,16 @@
     "localHour": 18,
     "actualRunsPerDay": 1,
     "initialOffScheduleStart": {
-      "timeZone": "Europe/Paris",
-      "timestamp": "2026-09-23T19:02:18.742996618Z",
-      "message": "",
-      "requiredHour": 18,
+      "timestamp": "2026-09-23T21:36:29.732066862Z",
       "level": "info",
-      "event": "worker.schedule_skipped"
+      "event": "worker.schedule_skipped",
+      "requiredHour": 18,
+      "message": "",
+      "timeZone": "Europe/Paris"
     },
     "nextScheduledRun": "2026-09-24T16:00:00Z",
     "priorDailyRunId": "8b13d1f0-ced1-4380-8ad5-89e33a74587d",
-    "newCodeValidatedBy": "targeted production replays"
+    "newCodeValidatedBy": "Targeted source-add qualifications and ingestions; result distinctions in source-qualification.md"
   },
   "database": {
     "serviceId": "b5c68d1c-6988-4f15-8d85-afe684109cea",
@@ -239,7 +218,7 @@
   },
   "registry": [
     {
-      "_count": 410,
+      "_count": 415,
       "status": "ACTIVE"
     },
     {
@@ -252,7 +231,7 @@
     }
   ],
   "httpSmoke": {
-    "at": "2026-09-23T19:00:25.421820+00:00",
+    "at": "2026-09-23T21:35:37.125027+00:00",
     "health": {
       "status": 200
     },
@@ -265,7 +244,7 @@
     },
     "FR": {
       "status": 200,
-      "total": 10418,
+      "total": 11565,
       "perimetre": {
         "code": "FR",
         "nom": "France",
@@ -283,12 +262,13 @@
       "countries": [
         "FR"
       ],
+      "publicationPresent": true,
       "marketBound": true,
       "sampleId": "cmue51vd109beo234uuge7daw"
     },
     "US": {
       "status": 200,
-      "total": 33997,
+      "total": 35605,
       "perimetre": {
         "code": "US",
         "nom": "United States",
@@ -307,11 +287,12 @@
       "countries": [
         "US"
       ],
+      "publicationPresent": true,
       "marketBound": true
     },
     "FR_filters": {
       "status": 200,
-      "total": 3508,
+      "total": 3755,
       "perimetre": {
         "code": "FR",
         "nom": "France",
@@ -329,11 +310,12 @@
       "countries": [
         "FR"
       ],
+      "publicationPresent": true,
       "marketBound": true
     },
-    "Caudalie_FR": {
+    "Nocibe_FR": {
       "status": 200,
-      "total": 14,
+      "total": 255,
       "perimetre": {
         "code": "FR",
         "nom": "France",
@@ -347,19 +329,264 @@
         "localeParDefaut": "fr-FR",
         "langueDesLibelles": "fr"
       },
-      "returned": 14,
+      "returned": 25,
       "countries": [
         "FR"
       ],
-      "marketBound": true,
-      "nativeScopeCorrect": true
+      "publicationPresent": true,
+      "marketBound": true
+    },
+    "Sephora_US": {
+      "status": 200,
+      "total": 2951,
+      "perimetre": {
+        "code": "US",
+        "nom": "United States",
+        "pays": [
+          "US"
+        ],
+        "mesure": true,
+        "locales": [
+          "en-US",
+          "es-US"
+        ],
+        "localeParDefaut": "en-US",
+        "langueDesLibelles": "en"
+      },
+      "returned": 25,
+      "countries": [
+        "US"
+      ],
+      "publicationPresent": true,
+      "marketBound": true
+    },
+    "Sephora_FR": {
+      "status": 200,
+      "total": 386,
+      "perimetre": {
+        "code": "FR",
+        "nom": "France",
+        "pays": [
+          "FR"
+        ],
+        "mesure": true,
+        "locales": [
+          "fr-FR"
+        ],
+        "localeParDefaut": "fr-FR",
+        "langueDesLibelles": "fr"
+      },
+      "returned": 25,
+      "countries": [
+        "FR"
+      ],
+      "publicationPresent": true,
+      "marketBound": true
+    },
+    "Aesop_US": {
+      "status": 200,
+      "total": 0,
+      "perimetre": {
+        "code": "US",
+        "nom": "United States",
+        "pays": [
+          "US"
+        ],
+        "mesure": true,
+        "locales": [
+          "en-US",
+          "es-US"
+        ],
+        "localeParDefaut": "en-US",
+        "langueDesLibelles": "en"
+      },
+      "returned": 0,
+      "countries": [],
+      "publicationPresent": false,
+      "marketBound": true
+    },
+    "Aesop_FR": {
+      "status": 200,
+      "total": 17,
+      "perimetre": {
+        "code": "FR",
+        "nom": "France",
+        "pays": [
+          "FR"
+        ],
+        "mesure": true,
+        "locales": [
+          "fr-FR"
+        ],
+        "localeParDefaut": "fr-FR",
+        "langueDesLibelles": "fr"
+      },
+      "returned": 17,
+      "countries": [
+        "FR"
+      ],
+      "publicationPresent": true,
+      "marketBound": true
+    },
+    "Monoprix_FR": {
+      "status": 200,
+      "total": 696,
+      "perimetre": {
+        "code": "FR",
+        "nom": "France",
+        "pays": [
+          "FR"
+        ],
+        "mesure": true,
+        "locales": [
+          "fr-FR"
+        ],
+        "localeParDefaut": "fr-FR",
+        "langueDesLibelles": "fr"
+      },
+      "returned": 25,
+      "countries": [
+        "FR"
+      ],
+      "publicationPresent": true,
+      "marketBound": true
+    },
+    "Naturalia_FR": {
+      "status": 200,
+      "total": 45,
+      "perimetre": {
+        "code": "FR",
+        "nom": "France",
+        "pays": [
+          "FR"
+        ],
+        "mesure": true,
+        "locales": [
+          "fr-FR"
+        ],
+        "localeParDefaut": "fr-FR",
+        "langueDesLibelles": "fr"
+      },
+      "returned": 25,
+      "countries": [
+        "FR"
+      ],
+      "publicationPresent": true,
+      "marketBound": true
+    },
+    "Bonsoirs_FR": {
+      "status": 200,
+      "total": 1,
+      "perimetre": {
+        "code": "FR",
+        "nom": "France",
+        "pays": [
+          "FR"
+        ],
+        "mesure": true,
+        "locales": [
+          "fr-FR"
+        ],
+        "localeParDefaut": "fr-FR",
+        "langueDesLibelles": "fr"
+      },
+      "returned": 1,
+      "countries": [
+        "FR"
+      ],
+      "publicationPresent": true,
+      "marketBound": true
+    },
+    "Puma_US": {
+      "status": 200,
+      "total": 222,
+      "perimetre": {
+        "code": "US",
+        "nom": "United States",
+        "pays": [
+          "US"
+        ],
+        "mesure": true,
+        "locales": [
+          "en-US",
+          "es-US"
+        ],
+        "localeParDefaut": "en-US",
+        "langueDesLibelles": "en"
+      },
+      "returned": 25,
+      "countries": [
+        "US"
+      ],
+      "publicationPresent": true,
+      "marketBound": true
+    },
+    "Gemmyo_FR": {
+      "status": 200,
+      "total": 5,
+      "perimetre": {
+        "code": "FR",
+        "nom": "France",
+        "pays": [
+          "FR"
+        ],
+        "mesure": true,
+        "locales": [
+          "fr-FR"
+        ],
+        "localeParDefaut": "fr-FR",
+        "langueDesLibelles": "fr"
+      },
+      "returned": 5,
+      "countries": [
+        "FR"
+      ],
+      "publicationPresent": true,
+      "marketBound": true
     },
     "markets": {
       "status": 200
     },
+    "sourceAvailability": {
+      "Nocibe_FR": true,
+      "Sephora_US": true,
+      "Sephora_FR": true,
+      "Aesop_US": false,
+      "Aesop_FR": true,
+      "Monoprix_FR": true,
+      "Naturalia_FR": true,
+      "Bonsoirs_FR": true,
+      "Puma_US": true,
+      "Gemmyo_FR": true
+    },
     "pass": true
   },
-  "productionOutcome": "../../../audits/2026-09-23/post-run.md",
-  "targetedReplays": "../../../audits/2026-09-23/post-run-followup-results.json",
-  "environmentInventory": "../../../audits/2026-09-23/post-run-environment.json"
+  "productionOutcome": "../../../audits/2026-09-23/source-qualification.md",
+  "targetedReplays": "../../../audits/2026-09-23/source-qualification-results.json",
+  "environmentInventory": "../../../audits/2026-09-23/post-run-environment.json",
+  "sourceQualification": {
+    "report": "../../../audits/2026-09-23/source-qualification.md",
+    "results": "../../../audits/2026-09-23/source-qualification-results.json",
+    "captures": {
+      "captures": 53,
+      "raw": 14005,
+      "extractions": 13385
+    },
+    "writes": {
+      "fetched": 5860,
+      "created": 3933,
+      "updated": 1912,
+      "errors": 5,
+      "merged": 0,
+      "held": 11
+    },
+    "limitations": [
+      "L’Oréal HTTP 406 after qualification: no new publication",
+      "Aesop Workday provenance challenge: not activated",
+      "SAP/LVMH duplicate publication identity not reconciled",
+      "Two Sephora pages missing native employer; eleven Puma records held",
+      "Gemmyo incomplete enumeration; Nocibé/Bonsoirs completeness unknown"
+    ]
+  },
+  "priorDailyOutcome": "../../../audits/2026-09-23/post-run.md"
 }
