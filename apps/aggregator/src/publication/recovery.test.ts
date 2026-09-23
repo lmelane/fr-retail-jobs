@@ -4,6 +4,7 @@ import { recoverRetainedPublication, retainedPublicationIdentity } from './recov
 import { evidenceHash } from '../lib/evidenceHash.js';
 import { readFileSync } from 'node:fs';
 import { parseFeed } from '../connectors/generic/rssFeed.js';
+import workdayAbsent from '../ats/adapters/fixtures/workday-native-employer-absent.json' with { type: 'json' };
 
 const url = 'https://jobs.example.com/role-1';
 const at = new Date('2024-02-20T12:00:00Z');
@@ -12,6 +13,22 @@ const read = (raw: unknown, extra = {}) => recoverRetainedPublication('lever', r
 afterEach(() => { vi.useRealTimers(); vi.unstubAllGlobals(); });
 
 describe('retained publication recovery', () => {
+  it('applies a reviewed portal without bypassing native identity, content or other holds', () => {
+    const raw = workdayAbsent.raw;
+    const context = { externalId: raw.externalPath.split('/').pop()!, url: raw.detail.jobPostingInfo.externalUrl,
+      observedAt: at, config: { origin: 'https://cc.wd3.myworkdayjobs.com', tenant: 'cc', site: 'ChanelCareers' } };
+    const readWorkday = (value: unknown, extra = {}) => recoverRetainedPublication('workday', value, { ...context, ...extra });
+    expect(readWorkday(raw)).toMatchObject({ reason: 'PUBLICATION_HELD' });
+    expect(readWorkday(raw, { certifiedPortal: { scope: 'MULTI_BRAND', ownerName: 'CHANEL' } })).toMatchObject({ reason: 'PUBLICATION_HELD' });
+    const certifiedPortal = { scope: 'SINGLE_BRAND' as const, ownerName: 'CHANEL' };
+    expect(readWorkday(raw, { certifiedPortal })).toMatchObject({ status: 'RECOVERABLE', job: {
+      employerEvidence: { path: 'portal.certifiedScope', rawName: 'CHANEL' }, raw } });
+    const changed = (patch: object) => ({ ...raw, detail: { ...raw.detail, jobPostingInfo: { ...raw.detail.jobPostingInfo, ...patch } } });
+    expect(readWorkday(changed({ jobDescription: '' }), { certifiedPortal })).toMatchObject({ reason: 'CONTENT_MISSING' });
+    expect(readWorkday(changed({ externalUrl: context.url + '-different' }), { certifiedPortal })).toMatchObject({ reason: 'DETAIL_IDENTITY_MISMATCH' });
+    expect(readWorkday({ ...raw, detail: {} }, { certifiedPortal })).toMatchObject({ status: 'RECOLLECT_OR_REVIEW' });
+  });
+
   it('reconstructs a complete native careers Atom item beyond the former 2000-character truncation', () => {
     const entry = readFileSync(new URL('../connectors/generic/fixtures/picard-atom-entry.xml', import.meta.url), 'utf8');
     const [job] = parseFeed(entry);

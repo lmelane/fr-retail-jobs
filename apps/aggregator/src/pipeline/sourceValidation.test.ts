@@ -10,6 +10,7 @@ import { archiveRawBlob } from '../capture/store.js';
 import { MemoryStore } from '../test/memoryObjectStore.js';
 import alberto from '../ats/adapters/__fixtures__/alberto-sitemap-postings.json' with { type: 'json' };
 import rivoli from '../ats/adapters/fixtures/rivoli-native-detail.json' with { type: 'json' };
+import workdayAbsent from '../ats/adapters/fixtures/workday-native-employer-absent.json' with { type: 'json' };
 import { readFileSync } from 'node:fs';
 
 const db = new PrismaClient(); const keys: string[] = [];
@@ -33,6 +34,40 @@ afterEach(() => { vi.unstubAllGlobals(); vi.restoreAllMocks(); });
 afterAll(async () => { await db.source.deleteMany({ where: { key: { in: keys } } }); await db.$disconnect(); });
 
 describe('native source validation', () => {
+  it.each([null, 'MULTI_BRAND', 'SINGLE_BRAND'] as const)('uses the existing registry employer rule at qualification only for scope %s', async portalScope => {
+    const key = `source-validation-${randomUUID()}`; keys.push(key);
+    const config = { origin: 'https://cc.wd3.myworkdayjobs.com', tenant: 'cc', site: 'ChanelCareers' };
+    const source = await db.source.create({ data: { key, tenantKey: key, maison: 'CHANEL', kind: 'workday', config, portalScope, tier: 'ATS_OFFICIAL' } });
+    const { detail, ...listing } = workdayAbsent.raw;
+    vi.stubGlobal('fetch', vi.fn(async input => {
+      const url = String(input);
+      if (url.endsWith('/jobs')) return new Response(JSON.stringify({ total: 1, jobPostings: [listing] }));
+      if (url.endsWith(listing.externalPath)) return new Response(JSON.stringify(detail));
+      throw new Error('Unexpected Workday fixture URL');
+    }));
+    const result = await captureSourceForValidation(db, key, 30_000);
+    expect(result).toMatchObject({ verdict: portalScope === 'SINGLE_BRAND' ? 'VALIDATED' : 'REJECTED', report: {
+      replayExact: true, observed: 1, qualified: portalScope === 'SINGLE_BRAND' ? 1 : 0,
+      held: portalScope === 'SINGLE_BRAND' ? 0 : 1, absenceAttestation: false } });
+    if (portalScope === 'SINGLE_BRAND') expect(result.report).toMatchObject({ registryEmployer: {
+      scope: 'SINGLE_BRAND', ownerName: 'CHANEL', sourceRevisionId: source.currentRevisionId, reviewId: null } });
+    else expect(result.report).not.toHaveProperty('registryEmployer');
+    // The archived adapter output still states that the native employer is missing.
+    const output = await db.sourceExtraction.findFirstOrThrow({ where: { batchId: result.captureBatchId } });
+    const { readRawBlob } = await import('../capture/store.js');
+    expect(JSON.parse((await readRawBlob(db, output.outputHash)).toString('utf8'))).toMatchObject({ publicationHold: 'WORKDAY_EMPLOYER_ABSENT_IN_DETAIL' });
+    if (portalScope === 'SINGLE_BRAND') {
+      const transaction = db.$transaction.bind(db);
+      const spy = vi.spyOn(db, '$transaction').mockImplementationOnce((async (action: any, options: any) => {
+        await db.source.update({ where: { key }, data: { portalScope: 'MULTI_BRAND' } });
+        return transaction(action, options);
+      }) as typeof db.$transaction);
+      await expect(validateCapturedSource(db, result.captureBatchId)).rejects.toThrow('Reviewed portal identity changed');
+      spy.mockRestore();
+      expect(await db.sourceValidation.count({ where: { captureBatchId: result.captureBatchId } })).toBe(1);
+    }
+  });
+
   it('qualifies a native Typesense translated posting with the exact retained detail', async () => {
     const key = `source-validation-${randomUUID()}`; keys.push(key);
     const config = { origin: 'https://www.rivoligroup.com', typesenseOrigin: 'https://typesense.rivoligroup.com', apiKey: 'fixture-public-search-key' };

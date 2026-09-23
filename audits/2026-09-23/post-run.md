@@ -176,3 +176,11 @@ Le RUN `8b13d1f0-ced1-4380-8ad5-89e33a74587d` a démarré automatiquement à 16:
 - **Adidas / portails de groupe** : distinguer le registre non renseigné d'un portail multimarque. Aucun `SINGLE_BRAND` automatique pour éliminer les refus.
 
 Validation locale complémentaire : 62 tests lecteurs/recovery et 66 tests capture/replay/qualification/rejets sur PostgreSQL jetable, types application/scripts verts. Ces correctifs ne sont pas encore déployés ; leur validation opérationnelle reste ciblée, après fin du RUN et passage development → main → CI.
+
+### Qualification et périmètre employeur, 16:56 UTC
+
+La capture Chanel contient 1 156 publications Workday sans employeur natif. La règle existante autorise leur publication sous un portail explicitement revu `SINGLE_BRAND`, mais la qualification refusait ces publications avant que cette règle puisse être appliquée. La qualification et la relecture utilisent désormais cette même règle, uniquement avec le registre courant de la révision capturée. Le rapport conserve cette provenance distincte ; le RAW et la sortie native restent inchangés. Une modification du registre pendant la validation fait échouer la décision. Un portail non revu ou multimarque, une identité de détail incohérente ou une description vide restent refusés.
+
+Validation : 39 tests unitaires recovery/portail et 70 tests d'intégration capture/replay/qualification/rejets sur base jetable, types application/scripts verts. Le déploiement reste à effectuer après le RUN en cours.
+
+Revue des autres portails groupe : le détail Talentsoft de Chantelle expose une enseigne native (Darjeeling) ignorée lorsque le RSS fournit déjà une description ; c'est une limite de couverture du lecteur, pas une preuve d'absence d'employeur chez l'éditeur. Le champ `reseau` de Beauty Success distingue réseau intégré/franchisé et ne nomme pas l'employeur ; les départements Lever de Hot Topic sont fonctionnels. Les portails Printemps et Lagardère demandent également une preuve d'entité à l'annonce. Aucun de ces groupes n'est transformé arbitrairement en portail mono-marque pour éliminer un refus.

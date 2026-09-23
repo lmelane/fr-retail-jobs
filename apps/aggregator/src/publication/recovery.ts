@@ -44,8 +44,11 @@ import { enrichRetainedPostingEvidence } from '../lib/postingEvidence.js';
 import { htmlToPlainText } from '../lib/html.js';
 import { evidenceHash } from '../lib/evidenceHash.js';
 import type { NormalizedJob } from '../types.js';
+import { employerFromCertifiedScope } from '../identity/portalEmployer.js';
 
-type Context = { externalId: string; url: string; observedAt: Date; config: Record<string, unknown> };
+type Context = { externalId: string; url: string; observedAt: Date; config: Record<string, unknown>;
+  /** Trusted registry context, never a field inferred from the publication or its settings. */
+  certifiedPortal?: { ownerName: string; scope: 'SINGLE_BRAND' | 'MULTI_BRAND' } };
 /**
  * Les motifs de refus qui portent sur UNE publication, jamais sur le lot.
  *
@@ -552,6 +555,7 @@ function readRetainedPublication(kind: string, raw: unknown, context: Context, r
     const url = new URL(job.url);
     if (job.externalId !== context.externalId || url.href !== new URL(context.url).href ||
       !['https:', 'http:'].includes(url.protocol) || url.username || url.password) return failure('IDENTITY_MISMATCH');
+    if (context.certifiedPortal) job = employerFromCertifiedScope(job, context.certifiedPortal.ownerName, context.certifiedPortal.scope);
     if (job.publicationHold || job.publicationWithdrawnAt) return failure('PUBLICATION_HELD');
     if (requireContent && (typeof job.description !== 'string' || !htmlToPlainText(job.description)?.trim())) return failure('CONTENT_MISSING');
     for (const date of [job.postedAt, job.validThrough]) if (date && !Number.isFinite(date.getTime())) return failure('RAW_SCHEMA_INVALID');

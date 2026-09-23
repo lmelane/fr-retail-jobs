@@ -13,6 +13,8 @@ import { evidenceHash } from '../lib/evidenceHash.js';
 import { effectiveSourceConfig } from './sourceConfig.js';
 import { lockSourceWrites } from '../lib/writeLocks.js';
 import { withSourceBudget } from '../lib/sourceBudget.js';
+import { certifiedPortalIdentity, type CertifiedPortalIdentity } from './sourceIdentity.js';
+import { employerFromCertifiedScope } from '../identity/portalEmployer.js';
 
 import { SOURCE_VALIDATION_POLICY, VALIDATION_UNQUALIFIED_ALLOWANCE, unqualifiedAllowanceFor } from './sourceCertification.js';
 type RevisionPayload = { version: number; key: string; kind: string; config: Record<string, unknown> };
@@ -27,6 +29,8 @@ export type SourceValidationReport = {
   inputRejected: number;
   inputUnqualified?: number;
   nativeEmpty: boolean;
+  /** Only when the already-reviewed portal rule resolves an absent native employer. */
+  registryEmployer?: CertifiedPortalIdentity;
   reasons: Record<string, number>;
   /**
    * Le seuil appliqué à ce lot (politique v2) : la règle en vigueur, et le plafond qu'elle a
@@ -69,6 +73,8 @@ export async function validateCapturedSource(db: PrismaClient, batchId: string, 
     qualified: 0, held: 0, rejected: 0, inputRejected: 0, nativeEmpty: false, reasons: {} };
   const reason = (name: string) => { report.reasons[name] = (report.reasons[name] ?? 0) + 1; };
   const readerRevision = captureReaderRevision();
+  const identity = await certifiedPortalIdentity(db, batch.sourceKey);
+  const portal = identity?.sourceRevisionId === batch.sourceRevisionId ? identity : null;
   // replayExtraction enforces every recorded request, response and output;
   // the normal transport cannot fall back to a live request on a missing page.
   try {
@@ -87,9 +93,13 @@ export async function validateCapturedSource(db: PrismaClient, batchId: string, 
       report.inputUnqualified = (replayed.rejectedRows ?? []).filter(row =>
         !['LISTED_PAGE_WITHOUT_JOBPOSTING', 'LISTED_POSTING_PREVIEW'].includes(row.reason)).length;
       for (const job of replayed.jobs) {
-        if (job.publicationHold || job.publicationWithdrawnAt) { report.held++; continue; }
+        const eligible = portal ? employerFromCertifiedScope(job, portal.ownerName, portal.scope) : job;
+        if (eligible.publicationHold || eligible.publicationWithdrawnAt) { report.held++; continue; }
+        const registryResolved = !!job.publicationHold && !eligible.publicationHold;
+        if (registryResolved) report.registryEmployer = portal!;
         const recovery = recoverRetainedPublication(revision.kind, job.raw, {
           externalId: job.externalId, url: job.url, observedAt: batch.startedAt, config,
+          ...(registryResolved ? { certifiedPortal: portal! } : {}),
         });
         if (recovery.status === 'RECOVERABLE') report.qualified++;
         else { report.rejected++; reason(recovery.reason); }
@@ -124,6 +134,9 @@ export async function validateCapturedSource(db: PrismaClient, batchId: string, 
     // millisecond timestamp or UUID order, identifies the latest decision.
     await lockSourceWrites(tx, batch.sourceKey, true);
     await tx.$queryRaw`SELECT id FROM "Source" WHERE key=${batch.sourceKey} FOR UPDATE`;
+    if (report.registryEmployer && evidenceHash(await certifiedPortalIdentity(tx, batch.sourceKey)) !== evidenceHash(report.registryEmployer)) {
+      throw new Error('Reviewed portal identity changed during native validation');
+    }
     return tx.sourceValidation.create({ data: { sourceRevisionId: batch.sourceRevisionId!, captureBatchId: batch.id,
       readerRevision, policyVersion: SOURCE_VALIDATION_POLICY, verdict, report: report as unknown as Prisma.InputJsonValue } });
   });
