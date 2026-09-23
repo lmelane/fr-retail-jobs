@@ -31,12 +31,12 @@ const HEADERS = { 'user-agent': USER_AGENT };
  * strings are read; no script is evaluated. A group portal's page-wide brand
  * (e.g. "OA") is deliberately distinct from its per-job `jobBrand`.
  */
-export function avatureJobData(script: string, externalId: string): { jobBrand: string } | null {
-  const matches: Array<{ jobBrand: string }> = [];
+export function avatureJobData(script: string, externalId: string): { jobBrand: string; jobCountry?: string } | null {
+  const matches: Array<{ jobBrand: string; jobCountry?: string }> = [];
   for (const block of script.matchAll(/\bdataLayer\.push\s*\(\s*\{([\s\S]*?)\}\s*\)/g)) {
     const fields: Record<string, string> = {};
     let invalid = false;
-    for (const field of block[1].matchAll(/(?:^|,)\s*(pageCategory|jobIDATS|jobBrand)\s*:\s*("(?:\\.|[^"\\])*")\s*(?=,|$)/g)) {
+    for (const field of block[1].matchAll(/(?:^|,)\s*(pageCategory|jobIDATS|jobBrand|jobCountry)\s*:\s*("(?:\\.|[^"\\])*")\s*(?=,|$)/g)) {
       try {
         if (field[1] in fields) invalid = true;
         fields[field[1]] = JSON.parse(field[2]);
@@ -46,7 +46,7 @@ export function avatureJobData(script: string, externalId: string): { jobBrand: 
     // Observed publisher placeholders describe an unassigned/multi-brand role,
     // not an employer named "N/A" or "Multi Brand". Preserve the raw witness.
     if (!invalid && fields.pageCategory === 'job detail page' && fields.jobIDATS === externalId && brand && !/^(?:N\/A|Multi Brand)$/i.test(brand)) {
-      matches.push({ jobBrand: brand });
+      matches.push({ jobBrand: brand, ...(fields.jobCountry?.trim() ? { jobCountry: fields.jobCountry.trim() } : {}) });
     }
   }
   return matches.length === 1 ? matches[0] : null;
@@ -54,7 +54,7 @@ export function avatureJobData(script: string, externalId: string): { jobBrand: 
 
 export function applyAvatureJobData(job: NormalizedJob, script: string): NormalizedJob {
   const data = avatureJobData(script, job.externalId);
-  return { ...job, ...(data ? { company: data.jobBrand, employerEvidence: {
+  return { ...job, ...(data ? { company: data.jobBrand, country: job.country ?? data.jobCountry, employerEvidence: {
     rawName: data.jobBrand, path: 'dataLayer.jobBrand', rule: 'EXPLICIT_JOB_BRAND',
   } } : {}), raw: { ...(job.raw as Record<string, unknown>), avatureJobData: script } };
 }

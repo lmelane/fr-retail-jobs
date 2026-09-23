@@ -16,7 +16,7 @@ const job = { externalId: '241889', title: 'Visual Merchandiser, Aesop',
     description: 'Native description of the Visual Merchandiser role. '.repeat(20) } };
 describe('Avature native per-job brand', () => {
   it('reads jobBrand bound to jobIDATS, without substituting the site or division brand', () => {
-    expect(avatureJobData(script, '241889')).toEqual({ jobBrand: 'Aesop' });
+    expect(avatureJobData(script, '241889')).toEqual({ jobBrand: 'Aesop', jobCountry: 'Taiwan Region' });
     expect(applyAvatureJobData(job, script)).toMatchObject({ company: 'Aesop',
       employerEvidence: { rawName: 'Aesop', path: 'dataLayer.jobBrand', rule: 'EXPLICIT_JOB_BRAND' } });
   });
@@ -28,7 +28,7 @@ describe('Avature native per-job brand', () => {
     expect(avatureJobData(script.replace('"Aesop",', 'getBrand(),'), '241889')).toBeNull();
     expect(avatureJobData(script.replace('jobBrand: "Aesop"', 'jobBrand: "N/A"'), '241889')).toBeNull();
     expect(avatureJobData(script.replace('jobBrand: "Aesop"', 'jobBrand: "Multi Brand"'), '241889')).toBeNull();
-    expect(avatureJobData(script.replace('jobBrand: "Aesop"', 'jobBrand: "L&#039;Oréal Paris"'), '241889')).toEqual({ jobBrand: "L'Oréal Paris" });
+    expect(avatureJobData(script.replace('jobBrand: "Aesop"', 'jobBrand: "L&#039;Oréal Paris"'), '241889')).toEqual({ jobBrand: "L'Oréal Paris", jobCountry: "Taiwan Region" });
   });
   it('reconstructs the employer from the retained native metadata only with the reviewed option', () => {
     const observed = applyAvatureJobData(job, script);
@@ -36,7 +36,7 @@ describe('Avature native per-job brand', () => {
       config: { employerFromDataLayer: true } };
     const recovered = recoverRetainedPublication('avature', observed.raw, context);
     expect(recovered.status).toBe('RECOVERABLE');
-    if (recovered.status === 'RECOVERABLE') expect(recovered.job).toMatchObject({ company: 'Aesop', employerEvidence: observed.employerEvidence });
+    if (recovered.status === 'RECOVERABLE') expect(recovered.job).toMatchObject({ company: 'Aesop', country: 'Taiwan Region', employerEvidence: observed.employerEvidence });
     const disabled = recoverRetainedPublication('avature', observed.raw, { ...context, config: {} });
     if (disabled.status === 'RECOVERABLE') expect(disabled.job.company).toBeUndefined();
     const wrong = recoverRetainedPublication('avature', { ...(observed.raw as object), avatureJobData: script.replace('241889', '999') }, context);

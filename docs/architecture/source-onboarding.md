@@ -117,7 +117,7 @@ Une promotion répétée sur une source déjà ACTIVE vérifie à nouveau les po
 
 ### Marque native des offres Avature
 
-Le réglage revu `employerFromDataLayer=true` lit le champ public `jobBrand` dans les métadonnées de la fiche, uniquement si `jobIDATS` correspond à l’identifiant natif de cette offre et si la page est déclarée `job detail page`. Il ne lit ni la marque générique du site ni une mention dans le titre. Le script source est retenu dans le RAW et relu sans exécution de JavaScript. Une valeur absente, ambiguë ou liée à une autre offre ne donne aucun employeur ; les gardes d’identité existants restent applicables, y compris aux attributions historiques.
+Le réglage revu `employerFromDataLayer=true` lit le champ public `jobBrand` dans les métadonnées de la fiche, uniquement si `jobIDATS` correspond à l’identifiant natif de cette offre et si la page est déclarée `job detail page`. Le pays explicitement publié dans le même objet (`jobCountry`) est conservé et confié au résolveur existant, sans règle GEO supplémentaire. Il ne lit ni la marque générique du site ni une mention dans le titre. Le script source est retenu dans le RAW et relu sans exécution de JavaScript. Une valeur absente, ambiguë ou liée à une autre offre ne donne aucun employeur ; les gardes d’identité existants restent applicables, y compris aux attributions historiques.
 
 ### Portails SAP HTML multilingues
 
