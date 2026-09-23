@@ -20,9 +20,13 @@ Le code, les réponses brutes et les mesures datées doivent être vérifiés av
 
 Le RAW est la référence. Les interprétations restent séparées, versionnées et rejouables. Aucun métier, diplôme ou contrat universel ne doit devenir une condition de publication. Les offres Catwalks et externes gardent leurs parcours de candidature distincts.
 
-Périmètre courant : audit et correction post-RUN, depuis les RAW, SourceRun et logs de production. Le worker entretient accès et qualification native par les mécanismes existants. Les migrations non destructives nécessaires au correctif passent par development → main → CI → Railway ; aucun reset ni réparation des données historiques. Les validations de production restent ciblées, sans nouveau RUN complet. `/emplois`, marchés/filtres et Direct Offers ne sont pas refondus dans ce lot. `/offres`, moteur de matching et onboarding candidat restent gelés, y compris leur dette encore utilisée.
+Lot livré : audit et correction post-RUN, depuis les RAW, SourceRun et logs de production. Le worker entretient accès et qualification native par les mécanismes existants. Les migrations non destructives nécessaires au correctif passent par development → main → CI → Railway ; aucun reset ni réparation des données historiques. Les validations de production restent ciblées, sans nouveau RUN complet. `/emplois`, marchés/filtres et Direct Offers ne sont pas refondus dans ce lot. `/offres`, moteur de matching et onboarding candidat restent gelés, y compris leur dette encore utilisée.
 
 Les évolutions restent validées par des tests ciblés. Le CRON chargé est 18 h Europe/Paris, une fois par jour ; son reçu est dans `docs/operations/railway/runtime-release.json`. Le code de production est `92c2bb1` ; les commits de documentation et preuves suivants ne reconstruisent pas les images. Les incidents de sources sont isolés. Le matching, l’onboarding et la nouvelle promesse de `/offres` restent des chantiers distincts et gelés. Ne pas relancer les protocoles déjà acquis sans changement qui les invalide.
+
+## Chantier de conception en cours
+
+La [recherche métier, mot-clé ou Maison](docs/architecture/recherche-semantique.md) fait l'objet d'une exploration aval de la collecte. Constats et prototype de décomposition en lecture seule sont documentés ; Elasticsearch est le candidat prioritaire d'un benchmark contre PostgreSQL enrichi, pas un moteur déjà choisi, testé ou déployé. La recherche doit conserver les offres sans code métier, préserver les intitulés originaux et respecter le marché actif. Le retrait du filtre Métier de l'interface est la direction produit, non une modification déjà réalisée. Toute correction UI utilise le skill Catwalks. `/offres`, matching, onboarding et circuit Direct Offers restent gelés ; aucun déploiement du site n'est autorisé par cette seule conception.
 
 ## Branches et coordination
 
