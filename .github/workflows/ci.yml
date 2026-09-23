@@ -125,7 +125,7 @@ jobs:
             root: /repo
     steps:
       - uses: actions/checkout@v4
-      - name: Authenticate private registry
+      - name: Authenticate registry publisher
         env:
           REGISTRY_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: printf '%s' "$REGISTRY_TOKEN" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
@@ -139,9 +139,9 @@ jobs:
           set -euo pipefail
           image="ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/${RUNTIME_NAME}:${GITHUB_SHA}"
           package_path="users/$GITHUB_REPOSITORY_OWNER/packages/container/$RUNTIME_NAME"
-          # Refuse an existing public package before publishing another version.
+          # Public runtime packages are explicitly approved by the owner.
           if gh api "$package_path" > package.json.tmp 2> package-error.txt; then
-            python3 -c 'import json; assert json.load(open("package.json.tmp"))["visibility"] == "private", "Runtime package is not private"'
+            python3 -c 'import json; assert json.load(open("package.json.tmp"))["visibility"] == "public", "Runtime package visibility differs from approved public target"'
           elif ! grep -q 'HTTP 404' package-error.txt; then
             cat package-error.txt >&2
             exit 1
@@ -161,9 +161,9 @@ jobs:
               -f "$DOCKERFILE" -t "$image" .
             docker push "$image"
           fi
-          # Never infer privacy from Docker login or the publisher token's scopes.
+          # Verify actual visibility; login only authorizes publication.
           gh api "$package_path" > package.json.tmp
-          python3 -c 'import json; assert json.load(open("package.json.tmp"))["visibility"] == "private", "Published runtime package is not private"'
+          python3 -c 'import json; assert json.load(open("package.json.tmp"))["visibility"] == "public", "Published runtime package visibility differs from approved public target"'
           docker run --rm --network=none --entrypoint cat "$image" "$RUNTIME_ROOT/packages/runtime/release.json" > embedded-release.json
           docker image inspect "$image" > image-inspect.json
           python3 - <<'PY'

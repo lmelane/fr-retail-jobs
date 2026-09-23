@@ -1,5 +1,7 @@
 # Runtime reset — contrôle R1, 23 septembre 2026
 
+> Mise à jour : Loïc accepte explicitement les images publiques. **R1 PASS** ; les constats ci-dessous conservent la trace de la décision initiale. Les images et leur contrat embarqué restent inchangés. `docs/operations/railway/runtime-release.json` lie les digests à cette exception approuvée sur la seule visibilité. Aucun PAT requis ; aucun nouvel outil de suivi. R2 commence sur le clone isolé, production inchangée.
+
 Candidate **`c3613a1d7b2a3c709f68fb18801eed3277a2302b`** sur `development`.
 Contrat SHA-256 : `ba9fbd873305c50357c93c2cc3662af88d64d5f62b025ed7065e4883f3770bbf`.
 

@@ -2,7 +2,7 @@
 
 **23 septembre 2026 — R1 en cours ; GO conditionnel R1 → R5 reçu.** La décision courante remplace le passage immédiat au ramp-up : reconstruire l'exécution Railway, conserver PostgreSQL intégralement. Le canari `72300c9` reste historiquement validé. Aucun service n'a été créé, modifié, redémarré ou supprimé pour établir ce plan ; aucune requête SQL de production n'a été exécutée.
 
-**Contrôle R1 :** code, CI et démarrage des deux images `c3613a1` PASS ; visibilité du registre **FAIL** (packages publiés en `public`, cible `private`). R2 n'est pas commencé. Voir le [reçu et les prérequis ouverts](../../audits/2026-09-23/runtime-reset-r1.md). Le pipeline refuse désormais une nouvelle publication dans ces packages tant qu'ils sont publics. Aucun changement de visibilité du dépôt GitHub n'est autorisé implicitement.
+**Contrôle R1 : PASS après accord explicite de Loïc sur les images publiques.** Les deux images `c3613a1` sont conservées sans rebuild. Le [reçu de release](../operations/railway/runtime-release.json) fixe les digests et documente les deux seuls écarts approuvés avec le contrat embarqué : la visibilité du registre, sans changement de commande, variables, garde ou données. R2 démarre sur le clone Railway isolé. Voir le [reçu R1](../../audits/2026-09-23/runtime-reset-r1.md).
 
 La [cible structurée](../operations/railway/runtime-target.json) décrit le résultat attendu. Elle n'est pas encore un fichier exécutable de provisionnement. Le [relevé réel](../../audits/2026-09-23/railway-runtime-inventory.json) contient les identifiants, déploiements, décisions pour les **33 affectations de variables** des quatre services et empreintes des sauvegardes privées. Ne pas confondre configuration proposée, configuration distante et environnement effectivement chargé dans un processus.
 
@@ -18,11 +18,11 @@ Le projet possède cinq services en production : PostgreSQL et quatre runtimes. 
 | `PIPELINE_CMD=reconcile`, commande absente du worker courant | Ne pas recréer ce service ; aucun nouveau moteur de réconciliation |
 | Les trois CRON valent `0 0 29 2 *` : prochain déclenchement le 29 février 2028 | `cronSchedule: null`, aucun calendrier de substitution |
 | `EGRESS_PROBE=0` sur l'agrégateur, mais code et appel de la sonde toujours présents | Retirer sonde, appel et variable ; variable explicitement interdite |
-| L'API lance `startPipelineDeadman()`, sans tenir compte de la pause | Remplacer cette surveillance par un moniteur indépendant connaissant les fenêtres d'exécution ; retirer le timer et ses secrets de l'API |
+| L'API lance `startPipelineDeadman()`, sans tenir compte de la pause | Retirer le timer et ses secrets de l'API ; suivre les mécanismes existants Railway, Healthchecks et PipelineRun/PipelineEvent |
 | L'API applique automatiquement `prisma migrate deploy` en pré-déploiement | Aucun hook de migration dans les services cibles ; readiness en lecture seule |
 | `Mode Careers` comme expéditeur, `https://modecareers.com` comme URL site de l'API | Identité opérationnelle Catwalks ; URL `https://catwalks.io`, déjà utilisée comme fallback par le code. Aucun changement du domaine du front ni des marchés |
 | Domaines publics sur les trois workers, build déterminé par variable, source Git `main` avec autodeploy | Aucun domaine worker ; images immuables, livraison explicite ; configuration de build versionnée |
-| Heartbeat configuré seulement sur l'agrégateur ; absence de configuration tolérée par le code | Heartbeat obligatoire pour le nouveau worker et contrôle indépendant, erreur observable si absent |
+| Heartbeat configuré seulement sur l'agrégateur ; absence de configuration tolérée par le code | Heartbeat obligatoire pour le nouveau worker, erreur observable si absent |
 
 Le plan de contrôle ne donne pas ici un nombre exploitable de changements en attente (`unmergedChangesCount: null`). Une relecture fraîche et le contrôle d'absence de changements concurrents seront obligatoires avant toute application.
 
@@ -81,7 +81,7 @@ Contrôler les hôtes **avant** le transport, y compris les redirections ; prouv
 
 L'outillage utilise **Railway CLI 5.59.0**, figée dans les commandes (`npm exec --yes --package @railway/cli@5.59.0 -- railway`). Sorties JSON, sélecteurs exacts de projet/environnement/service, mutations ciblées uniquement sur les deux runtimes autorisés et le clone. Les opérations non exposées par une commande dédiée passent par `railway api` et des variables JSON via stdin. Aucun framework IaC générique, aucune importation globale ni gestion de Postgres production. Le contrat JSON reste la source des réglages.
 
-Avant chaque mutation : vérifier le projet/environnement, l'état courant et un diff sans aucune action sur Postgres/volume de production. Une suppression ne peut viser que les quatre anciens IDs explicitement listés, après validation finale. Les images sont publiées privées par le job CI `runtime-images`, déclenché explicitement sur `development` par le marqueur de commit `[runtime-images]`, après les contrôles CI. Un tag SHA déjà publié est réutilisé ; les reçus embarqués et les digests sont vérifiés. Aucun autodeploy Railway. Un PAT classique GHCR `read:packages`, transmis à Railway comme credential de registre, est nécessaire au pull privé ; ce secret ne fait pas partie de l'environnement applicatif.
+Avant chaque mutation : vérifier le projet/environnement, l'état courant et un diff sans aucune action sur Postgres/volume de production. Une suppression ne peut viser que les quatre anciens IDs explicitement listés, après validation finale. Les images sont publiées publiques, sur décision explicite de Loïc, par le job CI `runtime-images`, déclenché explicitement sur `development` par le marqueur de commit `[runtime-images]`, après les contrôles CI. Un tag SHA déjà publié est réutilisé ; les reçus embarqués et les digests sont vérifiés. Aucun autodeploy Railway. Le pull public par digest ne nécessite aucune credential de registre. Ne pas demander de PAT pour ce lot.
 
 L'égalité demandée repose sur **trois preuves** :
 
@@ -153,3 +153,7 @@ Avant retrait : l'ancienne API sert encore de repli pour le domaine, les anciens
 Après retrait : recréer le dernier runtime approuvé depuis ses images et son contrat, sous pause. Les anciens exports restent des preuves et une aide à reconstruire les références nécessaires ; **ne jamais les réappliquer en bloc**, ce qui réintroduirait les commandes dangereuses et pourrait gérer la DB. La capacité de récupérer les images/contrats approuvés et de restaurer le routage doit être confirmée avant décommissionnement.
 
 La clôture requiert un rapport court : diff cible/effectif/processus nul hors valeurs secrètes et identifiants générés classifiés, canari PASS, moniteur PASS, services retirés listés, PostgreSQL/volume inchangés et reprise du ramp-up possible. Tant que ces preuves n'existent pas, le présent document reste un plan.
+
+### Suivi du canari — décision du propriétaire
+
+Aucun nouveau dashboard, outil de surveillance ou moniteur. Utiliser les logs live Railway du service et du digest attendus, le module Healthchecks existant (`/start`, succès ou `/fail`), les événements `run.alive`/statuts DB et les captures RAW, puis `/emplois`. Le retour du worker sous pause est contrôlé séparément. Pour cette release immuable, comparer les champs opérationnels au contrat embarqué `ba9fbd…` ; la seule différence autorisée entre celui-ci et la cible actuelle concerne les deux champs `sourceMode`, explicitement décrits dans `runtime-release.json`. Aucun autre écart n’est accepté.

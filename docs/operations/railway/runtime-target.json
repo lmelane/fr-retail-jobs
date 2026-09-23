@@ -44,7 +44,7 @@
       "volumes": [],
       "githubAutodeploy": false,
       "imageAutoUpdate": false,
-      "sourceMode": "private_oci_image_pinned_by_digest",
+      "sourceMode": "public_oci_image_pinned_by_digest",
       "requiredReleaseBindings": [
         "gitSha",
         "imageDigest",
@@ -104,7 +104,7 @@
       "volumes": [],
       "githubAutodeploy": false,
       "imageAutoUpdate": false,
-      "sourceMode": "private_oci_image_pinned_by_digest",
+      "sourceMode": "public_oci_image_pinned_by_digest",
       "requiredReleaseBindings": [
         "gitSha",
         "imageDigest",

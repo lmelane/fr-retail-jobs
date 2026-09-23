@@ -1,0 +1,72 @@
+{
+  "gitSha": "c3613a1d7b2a3c709f68fb18801eed3277a2302b",
+  "embeddedContractSha256": "ba9fbd873305c50357c93c2cc3662af88d64d5f62b025ed7065e4883f3770bbf",
+  "targetContractSha256": "83ada49118e6fd31a0dcc19ad183806c40cbef430d21d18565c2ccb3e6554983",
+  "registryVisibility": "public",
+  "registryCredentialsRequired": false,
+  "approvedTargetDifferences": [
+    {
+      "path": "/services/0/sourceMode",
+      "embedded": "private_oci_image_pinned_by_digest",
+      "target": "public_oci_image_pinned_by_digest"
+    },
+    {
+      "path": "/services/1/sourceMode",
+      "embedded": "private_oci_image_pinned_by_digest",
+      "target": "public_oci_image_pinned_by_digest"
+    }
+  ],
+  "reason": "Explicit user approval of public images after R1; reuse the two already-built images. Visibility is registry metadata, not a change to entrypoint guards.",
+  "images": [
+    {
+      "gitSha": "c3613a1d7b2a3c709f68fb18801eed3277a2302b",
+      "contractSha256": "ba9fbd873305c50357c93c2cc3662af88d64d5f62b025ed7065e4883f3770bbf",
+      "service": "catwalks-catalogue-api",
+      "image": "ghcr.io/lmelane/catwalks-catalogue-api@sha256:3457d652ade426fda8459a189e0eee2ee46d482bc2887cfc6f9fa274edf7b1a0",
+      "imageId": "sha256:cd2f8e639e0c56dd5d6bdea819c9401126fa07e89a6ade1e1b79fd87a0523db1",
+      "imageEnvironment": [
+        "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+        "NODE_VERSION=22.23.2",
+        "YARN_VERSION=1.22.22",
+        "NODE_ENV=production"
+      ],
+      "profiles": [
+        "validation-paused",
+        "validation-ohmycream",
+        "production-paused",
+        "production-ohmycream"
+      ],
+      "offlineEntrypoint": {
+        "status": "PASS",
+        "network": "none",
+        "role": "api",
+        "gitSha": "c3613a1d7b2a3c709f68fb18801eed3277a2302b"
+      }
+    },
+    {
+      "gitSha": "c3613a1d7b2a3c709f68fb18801eed3277a2302b",
+      "contractSha256": "ba9fbd873305c50357c93c2cc3662af88d64d5f62b025ed7065e4883f3770bbf",
+      "service": "catwalks-ingestion-worker",
+      "image": "ghcr.io/lmelane/catwalks-ingestion-worker@sha256:55a9e6d008b21f8060a10b6f2bf1fd0d49d0dd81ece757bedb9e687ac174a240",
+      "imageId": "sha256:0222288de847b0104f54a5662810b3ad5f7d69141a7b0cdbd71c8c499d4ed14f",
+      "imageEnvironment": [
+        "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+        "LANG=C.UTF-8",
+        "LC_ALL=C.UTF-8",
+        "PLAYWRIGHT_BROWSERS_PATH=/ms-playwright"
+      ],
+      "profiles": [
+        "validation-paused",
+        "validation-ohmycream",
+        "production-paused",
+        "production-ohmycream"
+      ],
+      "offlineEntrypoint": {
+        "status": "PASS",
+        "network": "none",
+        "role": "worker",
+        "gitSha": "c3613a1d7b2a3c709f68fb18801eed3277a2302b"
+      }
+    }
+  ]
+}
