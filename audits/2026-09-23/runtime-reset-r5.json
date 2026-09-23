@@ -1,0 +1,62 @@
+{
+  "at": "2026-09-23T06:56:29.803148+00:00",
+  "status": "PASS",
+  "scope": "R5 public API domain transfer and requested smoke tests only",
+  "domain": "agregator.catwalks.io",
+  "railwayDomainId": "25e88c66-199d-4cbe-b865-f768433d07ec",
+  "oldCname": "4j23i5c2.up.railway.app",
+  "newCname": "4b8h83cv.up.railway.app",
+  "cloudflareRecordId": "780584596ea75ab2ff6060ae395a9da5",
+  "dnsOnly": true,
+  "ttl": "Auto",
+  "dnsPropagated": true,
+  "tls": "VALID",
+  "apiServiceId": "9c50b8a9-5651-478f-b0d1-5bc02d2c138f",
+  "apiDeploymentId": "0d62ade6-efc0-45cc-a3a6-1c69a0864199",
+  "gitSha": "c3613a1d7b2a3c709f68fb18801eed3277a2302b",
+  "apiImage": "ghcr.io/lmelane/catwalks-catalogue-api@sha256:3457d652ade426fda8459a189e0eee2ee46d482bc2887cfc6f9fa274edf7b1a0",
+  "smoke": {
+    "health": 200,
+    "unauthenticated": 401,
+    "authenticatedFR": 200,
+    "FR": {
+      "status": "PASS",
+      "total": 4440,
+      "onlyCountry": "FR"
+    },
+    "US": {
+      "status": "PASS",
+      "total": 18287,
+      "onlyCountry": "US"
+    },
+    "filter": {
+      "status": "PASS",
+      "maison": "Oh My Cream",
+      "total": 21,
+      "filtresRefuses": []
+    },
+    "detail": {
+      "status": 200,
+      "id": "cmu7ffv0j0003nldff97cc9e9"
+    },
+    "browser": {
+      "status": "PASS",
+      "frontend": "existing local website preview, no frontend deployment or code change",
+      "api": "https://agregator.catwalks.io",
+      "FR": "4440 offres",
+      "US": "18287 openings; US/EN context; Beauty Advisor detail",
+      "maisonFilter": "Oh My Cream 21; Aix-en-Provence detail and external apply URL"
+    }
+  },
+  "rollbackNecessary": false,
+  "worker": {
+    "status": "PAUSED",
+    "deploymentId": "182d3ae8-f4a5-4076-823f-1ad4fcd709a1",
+    "profile": "production-paused",
+    "cron": null,
+    "launchedDuringR5": false
+  },
+  "oldServices": "Retained as rollback, old workers paused; retirement was not performed during this domain-only GO",
+  "productionDatabaseTouched": false,
+  "offresMatchingChanged": false
+}
