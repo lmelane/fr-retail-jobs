@@ -2,7 +2,7 @@
 
 ## État de livraison
 
-**Livraison initiale validée, clôture du catalogue encore en cours.** Le code `1db582d` a passé ses replays ciblés. Ce bilan ne vaut pas qualification des 153 dossiers non opérationnels examinés. Le 23 septembre à 12:59 UTC, le CRON quotidien est temporairement suspendu sous pause pour les replays complémentaires autorisés, puis sera rétabli à 18 h Europe/Paris. Aucun nouveau RUN complet lancé pour cet audit.
+**Correctifs livrés et mesures immédiates terminées.** Code de production `a532165`, API et worker sur leurs images immuables attestées, CI verte. 39 sources rejouées explicitement avant le RUN quotidien : 24 réussies, 3 partielles, 12 bloquées individuellement. Ce bilan ne prétend pas que toutes les sources ACTIVE ont été rejouées ou sont sans erreur. Aucun nouveau RUN global n’a été lancé pour l’audit. Le calendrier quotidien est rétabli à **18 h Europe/Paris** ; [configuration effectivement chargée](../../docs/operations/railway/runtime-release.json).
 
 Source de vérité : RUN production `ca946bd4-c8ba-40f7-ab8f-ddc1a3095bb1`, image worker `653920c`, RAW et captures immuables. Du 07:51:28 au 09:45:28 UTC : 384 ACTIVE, 255 OK, 35 DEGRADED, 60 BROKEN, 34 ERROR. 1 098 captures (734 JOBS, 364 SOURCE_ACCESS), 74 818 réponses RAW, 120 421 extractions comprenant qualification et ingestion ; 11 791 créations, 20 883 mises à jour, 63 rapprochements. Aucun timeout ni échec de persistance.
 
@@ -29,7 +29,7 @@ La tolérance v3 ne publie jamais une annonce refusée, ne supprime pas le contr
 
 ## Catalogue
 
-[153 sources hors exploitation examinées une par une](post-run-source-review.json) : au début de cet audit, 43 PAUSED, 109 RETIRED, 1 DRAFT. Ce relevé daté précède les corrections et qualifications ; le registre final compte **385 ACTIVE, 43 PAUSED, 109 RETIRED, zéro DRAFT**. Caudalie et URBN sont ACTIVE après leurs qualifications explicites ; les autres pauses/retraits documentés sont conservés. Réponses publiques archivées, URL/date/empreinte et incertitudes présentes par source. 41 retraits d’homonymes, 4 démonstrations et 2 doublons confirmés sont conservés ; aucune suppression physique d’historique. Les 32 sources WTTJ retirées ne sont pas réputées couvertes tant que le flux sectoriel n’en fournit pas la preuve.
+[153 sources hors exploitation examinées une par une](post-run-source-review.json) : au début de cet audit, 43 PAUSED, 109 RETIRED, 1 DRAFT. Ce relevé daté précède les corrections et qualifications ; le premier relevé après corrections comptait **385 ACTIVE, 43 PAUSED, 109 RETIRED, zéro DRAFT**. Le registre mesuré après les qualifications complémentaires compte **409 ACTIVE, 12 PAUSED, 116 RETIRED**. Caudalie et URBN sont ACTIVE après leurs qualifications explicites ; les décisions complémentaires et leur effet réel figurent dans `followUp` de la revue du catalogue. Réponses publiques archivées, URL/date/empreinte et incertitudes présentes par source. 41 retraits d’homonymes, 4 démonstrations et 2 doublons confirmés sont conservés ; aucune suppression physique d’historique. Le complément WTTJ ci-dessous mesure les organisations réellement présentes et les publications liées à leur capture, sans extrapoler les absences ni la couverture future.
 
 [Plan de corrections du registre](post-run-registry-plan.json) : compare chaque révision avant écriture, préserve les statuts et ne crée aucune décision d’accès. Les 24 corrections ont été appliquées par comparaison atomique des révisions. La DB a automatiquement mis URBN en pause lors du changement de configuration ; les 23 autres statuts sont conservés. Les candidats réparables passent ensuite par les outils de qualification existants. Caudalie a un lecteur explicite de son AJAX public et de ses fiches HTML, avec RAW natif, sans pays/date/employeur inventés.
 
@@ -41,7 +41,7 @@ Limite vérifiée sur deux publications Etam/Undiz : UUID et identifiant Teamtai
 
 L’API écarte déjà les expirations natives échues. 129 publications ACTIVE étaient expirées dans le registre ; 40 publications appartenaient à des sources PAUSED. Le RUN quotidien appelle désormais le refresh existant sur ACTIVE : expiration, fermeture explicite et absence restent distinctes, avec ingestion scellée et garde de fermeture massive. Un échec ou une capture partielle ne ferme pas les offres précédentes. PAUSED conserve le corpus ; RETIRED ne portait aucune publication active dans ce relevé.
 
-### Limites observées pendant les replays
+### Incidents de la première série de replays (historique)
 
 - Brown Thomas / Taleo : les 79 contenus de détail passent désormais la qualification ; les 79 publications restent refusées faute d’identité employeur certifiée (`PORTAL_OWNER_NOT_CERTIFIED`). Ne pas assimiler un portail de groupe/concessions à une marque unique.
 - Nocibé / EQWA : 274 extractions qualifiées, puis refus d’accès individuel : la réponse `robots.txt` est une page HTML, sans preuve de permission exploitable. Aucun contournement.
@@ -51,7 +51,7 @@ L’API écarte déjà les expirations natives échues. 129 publications ACTIVE 
 
 Caudalie : le premier contrôle produit après 45 créations a révélé que la zone native « Europe (sauf France) » devenait faussement France/Sauf. Correction limitée au lecteur : seules les 14 lignes de zone « France » transmettent ce lieu ; les 31 macro-régions restent intégralement dans le RAW, sans pays ni ville inventés. Les 45 RAW de production sont relus hors réseau, descriptions inchangées. Le replay normal `307b28a2-7f2a-42d6-a469-eb4ea62ed91d` a mis à jour les 45 publications, zéro création/fusion/erreur. La DB confirme 14 FR, 31 pays NULL et zéro ville « Sauf » ; `/emplois` affiche les 14 FR et la fiche native avec son lien de candidature externe. Aucune réparation SQL ni réécriture de l’historique.
 
-## Replays ciblés en production
+## Première série de replays en production (historique)
 
 Le [relevé des exécutions](post-run-replays.json) conserve chaque tentative, y compris celles corrigées ensuite. Il distingue les captures de qualification des écritures d’ingestion ; ses totaux ne constituent pas un second RUN global. Dernière tentative des **12 sources : 9 COMPLETED, 1 COMPLETED_WITH_ERRORS (Brown Thomas), 2 FAILED (Nocibé et NARS)**. Les deux zéros natifs attestés sont inclus dans les 9 réussites. Ce sous-ensemble ne mesure pas le taux de réussite des 385 ACTIVE du prochain RUN.
 
@@ -80,24 +80,75 @@ CRON chargé : **18 h Europe/Paris une fois par jour**, été/hiver. Railway dé
 
 ## Validation technique
 
-- CI du code livré : **2 858 tests unitaires agrégateur**, 260 tests API ; types, build et audit des dépendances verts.
+- CI de la première livraison : **2 858 tests unitaires agrégateur**, 260 tests API ; types, build et audit des dépendances verts.
 - Intégration sur base de tests jetable : **575 tests**, dont identité légale, qualification quotidienne, accès refusé, lecture réelle du mode opérationnel et absence impossible sur collecte partielle.
 - Tests ciblés : 23 cas Caudalie (dont macro-régions), 22 cas de lancement/reprise, 41 cas de révision et accès sur base de tests jetable. Relecture hors réseau des 12 RAW WTTJ et 45 RAW Caudalie de production, empreintes vérifiées.
 - Contrat runtime/DST et pause des entrypoints : 41 cas, dont 40 PASS et une variante non applicable ignorée ; aucun accès métier sous pause.
 - Preuves de production : 63 rapprochements reconstruits, erreurs/captures réelles conservées. Les anciens exports ne sont jamais réécrits pour obtenir un PASS.
 
-La livraison initiale s’appuie sur les replays ciblés, les lectures API authentifiées, le contrôle produit local et le reçu du calendrier effectif. La clôture de mission exige encore les qualifications du catalogue corrigé et le traitement des trois investigations ouvertes. Le premier RUN quotidien complet après ces corrections est prévu à 18 h : il ne doit pas être présenté comme déjà observé. `/offres`, matching, Direct Offers, onboarding, marchés et filtres sont inchangés.
+La première livraison s’appuyait sur les replays ciblés, les lectures API et le contrôle produit local. La mesure complémentaire ci-dessous couvre les corrections et qualifications suivantes. Le RUN quotidien complet ne doit pas être présenté comme déjà observé. `/offres`, matching, Direct Offers, onboarding, marchés et filtres sont inchangés.
 
-## Complément immédiat avant le RUN quotidien
+## Mesure immédiate avant le RUN quotidien
 
-À la demande de Loïc, les mesures complémentaires partent de la production à **12:59:04 UTC** : 385 ACTIVE, 43 PAUSED, 109 RETIRED, aucun RUN ouvert ; santé enregistrée des ACTIVE : 264 OK, 34 DEGRADED, 87 BROKEN. Ces états agrègent des exécutions datées différentes ; ils ne constituent pas un nouveau RUN.
+Départ du complément : **12:59:04 UTC**, registre 385 ACTIVE / 43 PAUSED / 109 RETIRED, aucun RUN ouvert. Les états de santé alors enregistrés (264 OK, 34 DEGRADED, 87 BROKEN parmi les ACTIVE) venaient de dates différentes ; ils ne constituent pas un nouveau RUN.
 
-Deux défauts locaux sont confirmés dans les RAW :
+La [mesure complète](post-run-immediate-results.json) conserve toutes les tentatives, captures, RAW, extractions, erreurs et preuves d’ingestion. `latestBySource` isole la dernière tentative ; `total` conserve aussi les échecs antérieurs aux corrections.
 
-- Taleo : sur 79 publications de la capture `171319d5-466e-4284-bb50-7b41d188c774`, 67 portent un `JobPosting.hiringOrganization` exploitable ; le lecteur perdait ce champ. Le correctif ne reprend que le JSON-LD de la même URL et réquisition, partagé entre collecte et relecture. Les 12 autres identités restent non prouvées. Les 79 descriptions sont inchangées au replay hors réseau.
-- Radancy : le sitemap de la capture `7c9f0016-c5fa-4369-b46d-1d3b08cb62d4` contient 38 chemins `/job/` et 84 pages de navigation. Le lecteur sitemap réutilise le filtre de chemin littéral déjà disponible pour les listings. La sélection doit être enregistrée dans la révision NARS avant requalification ; la garde HTTP reste inchangée.
-- Nocibé : capture d’accès `81abadd7-e757-4fc2-b4cc-4b8a8ac1e4bf` : `/robots.txt` → 301 `/` → 302 `/front-jobs.html` → 200 HTML « Liste des offres @ Nocibé ». C’est une redirection vers le portail, sans robots exploitable, pas une panne du lecteur EQWA ni une preuve de refus anti-bot. Aucun droit n’est déduit de cette réponse.
+| Mesure | Dernière tentative des 39 sources | Toutes les tentatives du complément |
+|---|---:|---:|
+| Captures | 199 | 265 |
+| RAW | 9593 | 15710 |
+| Extractions | 9279 | 15529 |
+| Créations | 2073 | 4222 |
+| Mises à jour | 2148 | 2148 |
+| Fusions | 0 | 0 |
+| Erreurs d’écriture | 193 | 1169 |
 
-Tests ciblés du correctif : 66 tests, typecheck agrégateur, et relecture des 79 RAW Taleo avec vérification des empreintes, sans réseau. Publication CI et replays en production à compléter avant de déclarer ces correctifs livrés.
+Dernières tentatives : **24 PASS, 3 partielles, 12 bloquées**. Durée cumulée des qualifications et ingestions DB : **2455.3 secondes**, hors attente Railway entre déploiements de configuration. Les refus avant ingestion restent comptés séparément des erreurs d’écriture. Aucun taux de réussite global des ACTIVE n’est déduit de cet échantillon ciblé.
 
-Le replay immédiat WTTJ `990f4ff1-6d2c-4bfd-81b0-9ac8c4207928` révèle un défaut de représentation : le lecteur conserve `experience_level_minimum: 0.5`, mais `Job.experienceYears` est entier. La publication refuse cette valeur native valide. La correction élargit ce seul champ aux fractions et conserve ses anciennes bornes numériques ; aucun arrondi ni remplacement de la donnée native. Une migration non destructive est nécessaire avant livraison des deux runtimes. Tests ciblés sur base jetable : 34 PASS, création et mise à jour des valeurs 0.5 puis 1.25 dans la publication et dans Job ; typechecks API/agrégateur verts. Les preuves de livraison et de replay seront ajoutées après leur exécution.
+La fenêtre de la première à la dernière exécution mesure **6504.8 secondes**, reprises et attentes de configuration comprises. Les 193 erreurs restantes se répartissent entre Brown Thomas (12 identités non prouvées) et TFG (181 employeurs non certifiés). Les **74 runs** possèdent leurs compteurs de fin persistés : zéro échec de persistance, zéro run ouvert à la sortie. Les qualifications refusées sont des résultats de source, pas des erreurs d’écriture de l’observabilité.
+
+### Défauts corrigés et validés
+
+- **Taleo / Brown Thomas** : le lecteur perdait le `JobPosting.hiringOrganization` natif. Lecture désormais partagée entre réseau et replay, limitée au JSON-LD de la même URL/réquisition : 67 créations sur 79 offres ; 12 identités toujours non prouvées. Descriptions inchangées sur les 79 RAW. Aucune marque unique attribuée artificiellement au portail de groupe/concessions.
+- **Radancy / Shiseido Americas** : 38 fiches `/job/`, 84 liens de navigation écartés par le filtre de chemin existant. Révision qualifiée, 38 créations, zéro erreur. La clé historique `nars` demeure stable ; le libellé décrit maintenant le groupe réellement collecté. Garde HTTP inchangé.
+- **Expérience fractionnaire** : WTTJ fournit nativement `0.5` année sur 144 offres. Migration `20260923133000_fractional_experience` : `Job.experienceYears` devient décimal, bornes antérieures conservées. Les **50 724 lignes et 6 087 valeurs renseignées** ont exactement la même empreinte ordonnée avant/après (`fd25cad1213d980225ff447b5794ac46`). Aucune réparation historique ni arrondi. Le retour arrière doit conserver le champ décimal et un runtime compatible ; ne pas réutiliser directement une ancienne image au modèle entier après publication des fractions. 34 tests ciblés sur base jetable, création/mise à jour 0.5 puis 1.25, types API/agrégateur verts. 88 migrations appliquées en production.
+- **Identités déjà revues** : les alias exacts Showroomprive.com, Promod, Promod - magasin et les quatre marques SMCP sont renouvelés par le mécanisme existant, avec les mêmes identifiants et sociétés cibles. Chaque libellé est prouvé dans le RAW natif courant. Zéro fusion de sociétés, zéro déplacement de publication. Les portails dédiés Polène, APIVITA, APM Monaco, AMI, AMIRI, Iris van Herpen, Siebel et YAYA portent leur portée mono-marque seulement après lecture de leur preuve officielle.
+
+WTTJ après correction : **2 074 offres natives publiées depuis la capture**, dont **144/144 valeurs d’expérience à 0.5 préservées** ; 147 créations, 1 927 mises à jour, zéro erreur/fusion. Une fiche publique authentifiée restitue bien 0.5. La lecture des identifiants WTTJ communs aux canaux encore ACTIVE ne trouve aucun recouvrement au moment de la mesure ; elle ne prouve pas l’absence de doublons portant des identifiants différents.
+
+### Décisions de catalogue
+
+La revue initiale des 153 sources est conservée comme photographie datée ; chaque entrée porte maintenant un `followUp` et le registre effectif. Les qualifications utilisent le Golden Path existant, sans passage forcé en ACTIVE. NYX est repris sur le portail officiel de CSP Cosmetics après revue de cette relation ; son verdict d’ingestion figure dans le relevé.
+
+Le flux sectoriel WTTJ est confronté aux **39 canaux individuels** de la revue : identifiants natifs et publications de la même capture, sans déduction par titre. Les homonymes Bedrock (streaming), FRAME (conseil) et CORUM (finance) restent retirés. Un canal non observé n’est pas déclaré vide. Les retraits de collecteurs doublons ne prouvent jamais la fermeture d’un employeur ; aucune publication historique n’est supprimée. URBN est couvert par son hub à sept canaux, dont 960 offres natives du canal stores-na lors de la mesure.
+
+Les autres identités non établies restent explicitement hors ingestion. Egon Zehnder est retiré comme cabinet de recrutement multisectoriel sans canal sectoriel qualifié ni publication. Les refus individuels restants ne sont pas qualifiés de panne systémique.
+
+Sept collecteurs WTTJ individuels sans publication historique sont retirés après preuve de présence dans le flux sectoriel : A.P.C., Clarins, le canal L’Oréal anciennement libellé Helena Rubinstein, Hermès, Monsieur TSHIRT, Pied de Biche et Sessùn. Zéro offre fermée ou supprimée par ces retraits. Les libellés des portails groupe sont corrigés en TFG, Max Mara Fashion Group, Anglo American / De Beers Group et Titan ; leurs clés restent stables. Max Mara est requalifié après le changement de révision ; De Beers et Titan restent en pause avec leur incident individuel.
+
+### Sources encore partielles ou bloquées
+
+- **brown-thomas-taleo — PARTIAL** : 12 erreurs de collecte ou d’écriture · desc 100% date 81% pays 0% url 100%
+- **cotton-on — BLOCKED** : validation native : REJECTED (CONTENT_MISSING); le portail ou le site officiel du registre est servi sous un autre domaine d'employeur (cottonongroup.com.au, registre : cottonongroup.com) : relation à instruire (groupe, distributeur, franchise ou registre)
+- **de-beers-london — BLOCKED** : pages officielles inaccessibles à la campagne (403/429/5xx ou capture impossible) : blocage externe, identité ni prouvée ni contredite
+- **dim — BLOCKED** : pages officielles inaccessibles à la campagne (403/429/5xx ou capture impossible) : blocage externe, identité ni prouvée ni contredite
+- **douglas-sf — PARTIAL** : troncature : 306 collectées, total inconnu · desc 100% date 100% pays 100% url 100%
+- **fastrack — BLOCKED** : collecte : HTTP 500 for https://careers.titan.in/api/jobs?…
+- **ghost — BLOCKED** : validation native : REJECTED (ENUMERATION_INCOMPLETE, EMPTY_FEED_NOT_NATIVELY_PROVEN)
+- **markham — BLOCKED** : 181 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%
+- **minimalist — BLOCKED** : validation native : REJECTED (ENUMERATION_INCOMPLETE, EMPTY_FEED_NOT_NATIVELY_PROVEN)
+- **nimble — BLOCKED** : validation native : REJECTED (ENUMERATION_INCOMPLETE, EMPTY_FEED_NOT_NATIVELY_PROVEN)
+- **picard — BLOCKED** : validation native : REJECTED (ENUMERATION_INCOMPLETE, EMPTY_FEED_NOT_NATIVELY_PROVEN)
+- **rotate — BLOCKED** : validation native : REJECTED (ENUMERATION_INCOMPLETE, EMPTY_FEED_NOT_NATIVELY_PROVEN)
+- **sioux — BLOCKED** : validation native : REJECTED (ENUMERATION_INCOMPLETE, EMPTY_FEED_NOT_NATIVELY_PROVEN)
+- **alberto — PARTIAL** : 2 annonces non publiables archivées (2 non résolues) ; énumération prouvée · desc 0% date 100% pays 100% url 100%
+- **oniverse — BLOCKED** : validation native : REJECTED (CONTENT_MISSING, REJECTED_NATIVE_ROWS, ENUMERATION_INCOMPLETE)
+
+TFG (clé stable `markham`) : 181/181 réponses natives sans LegalEmployer, BusinessUnit ni Organization nommés ; les textes décrivent plusieurs marques. Le libellé et le niveau du registre sont corrigés en groupe TFG, puis ce canal est remis en PAUSED. Zéro publication historique, zéro retrait d’offre. Aucun employeur déduit du texte libre.
+
+Nocibé reste un incident d’accès externe déjà diagnostiqué : capture `81abadd7-e757-4fc2-b4cc-4b8a8ac1e4bf`, `/robots.txt` → 301 `/` → 302 `/front-jobs.html` → HTML de listing. Ce n’est ni un robots exploitable ni une preuve de challenge anti-bot ; aucune permission inventée. Cotton On expose neuf détails dont description, responsabilités, qualifications et résumé sont réellement vides ; empreintes des neuf extractions vérifiées. Le plafond de rejet n’est pas modifié pour les faire passer.
+
+### État de sortie
+
+API et worker exécutent `a532165`, via les digests CI immuables ; configuration cible, Railway et processus comparés hors secrets. PostgreSQL, son service et son volume sont préservés. Le worker normal est programmé à 18 h Europe/Paris ; lancement de configuration hors créneau attesté sans ingestion globale. Healthcheck, authentification, FR, US, filtre Paris, Caudalie FR et fiche offre vérifiés. Les données natives incomplètes et les identités non établies restent des incidents isolés et visibles ; aucune preuve acquise n’est effacée pour produire un PASS.

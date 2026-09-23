@@ -1,0 +1,6507 @@
+{
+  "observedAt": "2026-09-23T15:05:53.915Z",
+  "scope": "Mesure immédiate en production après 12:59 UTC, sans attendre le RUN quotidien. Qualifications et replays explicites uniquement ; aucun nouveau RUN global. Qualification et ingestion sont des runs distincts. Toutes les tentatives restent présentes.",
+  "runs": [
+    {
+      "runId": "73b8a5d5-6730-423c-8f08-850eb4449e56",
+      "command": "ingest",
+      "revision": "94c463d26cf7fb1828eee05cac357b3e3658958d",
+      "startedAt": "2026-09-23T13:17:01.884Z",
+      "finishedAt": "2026-09-23T13:17:40.454Z",
+      "durationSeconds": 38.57,
+      "status": "COMPLETED",
+      "sources": [
+        "brown-thomas-taleo"
+      ],
+      "captures": 3,
+      "raw": 233,
+      "extractions": 158,
+      "aliveEvents": 1,
+      "sealedCompletions": 1,
+      "heartbeat": [
+        "pinged"
+      ],
+      "errorEvents": 12,
+      "qualification": [],
+      "runObservability": [
+        {
+          "status": "COMPLETED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 233,
+            "http.responses": 233
+          }
+        }
+      ],
+      "sourceRuns": [
+        {
+          "runId": "73b8a5d5-6730-423c-8f08-850eb4449e56",
+          "id": "cmue4obub00dpnu34mvifvqkq",
+          "sourceKey": "brown-thomas-taleo",
+          "status": "DEGRADED",
+          "jobs": 67,
+          "previousJobs": 0,
+          "fetched": 79,
+          "accepted": 79,
+          "declaredTotal": null,
+          "truncated": false,
+          "errors": 12,
+          "canAttestAbsence": false,
+          "complete": null,
+          "note": "12 erreurs de collecte ou d’écriture · desc 100% date 81% pays 0% url 100%",
+          "descriptionRate": 1,
+          "dateRate": 0.81,
+          "countryRate": 0,
+          "urlRate": 1,
+          "ranAt": "2026-09-23T13:17:40.210Z"
+        }
+      ],
+      "completionProofs": [
+        {
+          "batchId": "b639a554-e704-4d06-b622-b20df88d071c",
+          "reportHash": "97d71e5803700d4806fe8d614e242f2740d80b031b93ed5760eedec4898c2ae3",
+          "published": 67,
+          "held": 0,
+          "writeFailed": 12,
+          "skipped": 0,
+          "readerRevision": "git:94c463d26cf7fb1828eee05cac357b3e3658958d",
+          "policyVersion": "native-ingestion-completion/1",
+          "completedAt": "2026-09-23T13:17:40.187Z"
+        }
+      ],
+      "results": [
+        {
+          "source": "brown-thomas-taleo",
+          "fetched": 79,
+          "created": 67,
+          "updated": 0,
+          "merged": 0,
+          "errors": 12,
+          "held": null,
+          "heldUnresolved": null,
+          "rejected": null,
+          "rejectedReasons": null,
+          "france": 0,
+          "complete": null,
+          "truncated": false,
+          "captureBatchId": "b639a554-e704-4d06-b622-b20df88d071c",
+          "completionReportHash": "97d71e5803700d4806fe8d614e242f2740d80b031b93ed5760eedec4898c2ae3"
+        }
+      ]
+    },
+    {
+      "runId": "055273b5-6aef-463f-b80d-953eeed37bf1",
+      "command": "source-campaign",
+      "revision": "94c463d26cf7fb1828eee05cac357b3e3658958d",
+      "startedAt": "2026-09-23T13:18:32.078Z",
+      "finishedAt": "2026-09-23T13:18:44.260Z",
+      "durationSeconds": 12.182,
+      "status": "COMPLETED",
+      "sources": [
+        "nars"
+      ],
+      "captures": 3,
+      "raw": 41,
+      "extractions": 38,
+      "aliveEvents": 0,
+      "sealedCompletions": 0,
+      "heartbeat": [],
+      "errorEvents": 0,
+      "qualification": [
+        {
+          "key": "nars",
+          "verdict": "QUALIFIEE",
+          "raisons": [],
+          "revision": "3ead7eaf-1386-40e9-be6c-1dd8f4837532"
+        }
+      ],
+      "runObservability": [
+        {
+          "status": "COMPLETED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 41,
+            "http.responses": 41
+          }
+        }
+      ],
+      "sourceRuns": [],
+      "completionProofs": [],
+      "results": []
+    },
+    {
+      "runId": "f24c0fcf-8cb6-4daf-b6ad-b90470a59ce8",
+      "command": "ingest",
+      "revision": "94c463d26cf7fb1828eee05cac357b3e3658958d",
+      "startedAt": "2026-09-23T13:18:37.016Z",
+      "finishedAt": "2026-09-23T13:18:44.016Z",
+      "durationSeconds": 7.0,
+      "status": "COMPLETED",
+      "sources": [
+        "nars"
+      ],
+      "captures": 1,
+      "raw": 39,
+      "extractions": 38,
+      "aliveEvents": 0,
+      "sealedCompletions": 1,
+      "heartbeat": [
+        "pinged"
+      ],
+      "errorEvents": 0,
+      "qualification": [],
+      "runObservability": [
+        {
+          "status": "COMPLETED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 39,
+            "http.responses": 39
+          }
+        }
+      ],
+      "sourceRuns": [
+        {
+          "runId": "f24c0fcf-8cb6-4daf-b6ad-b90470a59ce8",
+          "id": "cmue4poyx007ftb6flzj8ff83",
+          "sourceKey": "nars",
+          "status": "OK",
+          "jobs": 38,
+          "previousJobs": 0,
+          "fetched": 38,
+          "accepted": 38,
+          "declaredTotal": 38,
+          "truncated": false,
+          "errors": 0,
+          "canAttestAbsence": true,
+          "complete": true,
+          "note": "desc 100% date 0% pays 100% url 100%",
+          "descriptionRate": 1,
+          "dateRate": 0,
+          "countryRate": 1,
+          "urlRate": 1,
+          "ranAt": "2026-09-23T13:18:43.880Z"
+        }
+      ],
+      "completionProofs": [
+        {
+          "batchId": "c2e51009-94fc-4efd-b757-fb28c6e9b7b0",
+          "reportHash": "75b26b7373424a684ff703d75948236a9dfb07d7d9315cce3a45f5802028c5fe",
+          "published": 38,
+          "held": 0,
+          "writeFailed": 0,
+          "skipped": 0,
+          "readerRevision": "git:94c463d26cf7fb1828eee05cac357b3e3658958d",
+          "policyVersion": "native-ingestion-completion/1",
+          "completedAt": "2026-09-23T13:18:43.877Z"
+        }
+      ],
+      "results": [
+        {
+          "source": "nars",
+          "fetched": 38,
+          "created": 38,
+          "updated": 0,
+          "merged": 0,
+          "errors": 0,
+          "held": null,
+          "heldUnresolved": null,
+          "rejected": null,
+          "rejectedReasons": null,
+          "france": 0,
+          "complete": true,
+          "truncated": false,
+          "captureBatchId": "c2e51009-94fc-4efd-b757-fb28c6e9b7b0",
+          "completionReportHash": "75b26b7373424a684ff703d75948236a9dfb07d7d9315cce3a45f5802028c5fe"
+        }
+      ]
+    },
+    {
+      "runId": "990f4ff1-6d2c-4bfd-81b0-9ac8c4207928",
+      "command": "ingest",
+      "revision": "94c463d26cf7fb1828eee05cac357b3e3658958d",
+      "startedAt": "2026-09-23T13:19:30.760Z",
+      "finishedAt": "2026-09-23T13:28:31.753Z",
+      "durationSeconds": 540.993,
+      "status": "COMPLETED",
+      "sources": [
+        "wttj-sector"
+      ],
+      "captures": 4,
+      "raw": 4395,
+      "extractions": 4144,
+      "aliveEvents": 18,
+      "sealedCompletions": 1,
+      "heartbeat": [
+        "pinged"
+      ],
+      "errorEvents": 144,
+      "qualification": [],
+      "runObservability": [
+        {
+          "status": "COMPLETED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 4395,
+            "http.redirects": 1,
+            "http.responses": 4395
+          }
+        }
+      ],
+      "sourceRuns": [
+        {
+          "runId": "990f4ff1-6d2c-4bfd-81b0-9ac8c4207928",
+          "id": "cmue52ac10anco234ml27x6wy",
+          "sourceKey": "wttj-sector",
+          "status": "DEGRADED",
+          "jobs": 1928,
+          "previousJobs": 0,
+          "fetched": 2072,
+          "accepted": 2072,
+          "declaredTotal": 2072,
+          "truncated": false,
+          "errors": 144,
+          "canAttestAbsence": false,
+          "complete": null,
+          "note": "144 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+          "descriptionRate": 1,
+          "dateRate": 1,
+          "countryRate": 1,
+          "urlRate": 1,
+          "ranAt": "2026-09-23T13:28:31.440Z"
+        }
+      ],
+      "completionProofs": [
+        {
+          "batchId": "0fbb08a2-b72d-4f92-b3f5-3586215ca4f8",
+          "reportHash": "c623380b1ccd5dc3cc4934f13cf5ee5bdf6f077a6c29bfd22610a0e1d7e415ee",
+          "published": 1928,
+          "held": 0,
+          "writeFailed": 144,
+          "skipped": 0,
+          "readerRevision": "git:94c463d26cf7fb1828eee05cac357b3e3658958d",
+          "policyVersion": "native-ingestion-completion/1",
+          "completedAt": "2026-09-23T13:28:31.429Z"
+        }
+      ],
+      "results": [
+        {
+          "source": "wttj-sector",
+          "fetched": 2072,
+          "created": 1928,
+          "updated": 0,
+          "merged": 0,
+          "errors": 144,
+          "held": null,
+          "heldUnresolved": null,
+          "rejected": null,
+          "rejectedReasons": null,
+          "france": 1736,
+          "complete": null,
+          "truncated": false,
+          "captureBatchId": "0fbb08a2-b72d-4f92-b3f5-3586215ca4f8",
+          "completionReportHash": "c623380b1ccd5dc3cc4934f13cf5ee5bdf6f077a6c29bfd22610a0e1d7e415ee"
+        }
+      ]
+    },
+    {
+      "runId": "dc1ac301-3999-4be3-a06d-a2c99fedb5a0",
+      "command": "source-campaign",
+      "revision": "94c463d26cf7fb1828eee05cac357b3e3658958d",
+      "startedAt": "2026-09-23T13:29:11.553Z",
+      "finishedAt": "2026-09-23T13:29:17.657Z",
+      "durationSeconds": 6.104,
+      "status": "COMPLETED",
+      "sources": [
+        "soeur"
+      ],
+      "captures": 4,
+      "raw": 5,
+      "extractions": 53,
+      "aliveEvents": 0,
+      "sealedCompletions": 0,
+      "heartbeat": [],
+      "errorEvents": 0,
+      "qualification": [
+        {
+          "key": "soeur",
+          "verdict": "QUALIFIEE",
+          "raisons": [],
+          "revision": "a543029c-3e98-4bf5-a957-f6526006083b"
+        }
+      ],
+      "runObservability": [
+        {
+          "status": "COMPLETED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 5,
+            "http.redirects": 1,
+            "http.responses": 5
+          }
+        }
+      ],
+      "sourceRuns": [],
+      "completionProofs": [],
+      "results": []
+    },
+    {
+      "runId": "ce0b894a-21b9-4f3c-ad61-af6d4af91bd2",
+      "command": "ingest",
+      "revision": "94c463d26cf7fb1828eee05cac357b3e3658958d",
+      "startedAt": "2026-09-23T13:29:14.080Z",
+      "finishedAt": "2026-09-23T13:29:17.446Z",
+      "durationSeconds": 3.366,
+      "status": "COMPLETED",
+      "sources": [
+        "soeur"
+      ],
+      "captures": 1,
+      "raw": 1,
+      "extractions": 53,
+      "aliveEvents": 0,
+      "sealedCompletions": 1,
+      "heartbeat": [
+        "pinged"
+      ],
+      "errorEvents": 0,
+      "qualification": [],
+      "runObservability": [
+        {
+          "status": "COMPLETED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 1,
+            "http.responses": 1
+          }
+        }
+      ],
+      "sourceRuns": [
+        {
+          "runId": "ce0b894a-21b9-4f3c-ad61-af6d4af91bd2",
+          "id": "cmue539q900abo46e37egu8a5",
+          "sourceKey": "soeur",
+          "status": "NEW",
+          "jobs": 53,
+          "previousJobs": null,
+          "fetched": 53,
+          "accepted": 53,
+          "declaredTotal": null,
+          "truncated": false,
+          "errors": 0,
+          "canAttestAbsence": false,
+          "complete": true,
+          "note": "desc 100% date 100% pays 100% url 100%",
+          "descriptionRate": 1,
+          "dateRate": 1,
+          "countryRate": 1,
+          "urlRate": 1,
+          "ranAt": "2026-09-23T13:29:17.312Z"
+        }
+      ],
+      "completionProofs": [
+        {
+          "batchId": "1b19842d-793c-4c2e-b606-844d095fb130",
+          "reportHash": "4ebc16450d3a4d2108bb864fa7108d9490953643f603ce7e7bc3d0fbc861f3ae",
+          "published": 53,
+          "held": 0,
+          "writeFailed": 0,
+          "skipped": 0,
+          "readerRevision": "git:94c463d26cf7fb1828eee05cac357b3e3658958d",
+          "policyVersion": "native-ingestion-completion/1",
+          "completedAt": "2026-09-23T13:29:17.306Z"
+        }
+      ],
+      "results": [
+        {
+          "source": "soeur",
+          "fetched": 53,
+          "created": 53,
+          "updated": 0,
+          "merged": 0,
+          "errors": 0,
+          "held": null,
+          "heldUnresolved": null,
+          "rejected": null,
+          "rejectedReasons": null,
+          "france": 42,
+          "complete": true,
+          "truncated": false,
+          "captureBatchId": "1b19842d-793c-4c2e-b606-844d095fb130",
+          "completionReportHash": "4ebc16450d3a4d2108bb864fa7108d9490953643f603ce7e7bc3d0fbc861f3ae"
+        }
+      ]
+    },
+    {
+      "runId": "53c765d1-3da9-42c9-9a7e-7192cf6552c2",
+      "command": "source-campaign",
+      "revision": "94c463d26cf7fb1828eee05cac357b3e3658958d",
+      "startedAt": "2026-09-23T13:30:05.444Z",
+      "finishedAt": "2026-09-23T13:30:09.179Z",
+      "durationSeconds": 3.735,
+      "status": "FAILED",
+      "sources": [
+        "showroomprive"
+      ],
+      "captures": 3,
+      "raw": 3,
+      "extractions": 28,
+      "aliveEvents": 0,
+      "sealedCompletions": 0,
+      "heartbeat": [],
+      "errorEvents": 1,
+      "qualification": [
+        {
+          "key": "showroomprive",
+          "verdict": "QUALIFIEE",
+          "raisons": [],
+          "revision": "3cd5f88c-2e0f-480c-91c7-e6ac337b49ef"
+        }
+      ],
+      "runObservability": [
+        {
+          "status": "FAILED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 3,
+            "http.responses": 3
+          }
+        }
+      ],
+      "sourceRuns": [],
+      "completionProofs": [],
+      "results": []
+    },
+    {
+      "runId": "0a25ae40-393e-434f-bf0b-765decc9c56a",
+      "command": "ingest",
+      "revision": "94c463d26cf7fb1828eee05cac357b3e3658958d",
+      "startedAt": "2026-09-23T13:30:07.577Z",
+      "finishedAt": "2026-09-23T13:30:08.980Z",
+      "durationSeconds": 1.403,
+      "status": "COMPLETED_WITH_ERRORS",
+      "sources": [
+        "showroomprive"
+      ],
+      "captures": 1,
+      "raw": 1,
+      "extractions": 28,
+      "aliveEvents": 0,
+      "sealedCompletions": 1,
+      "heartbeat": [
+        "pinged"
+      ],
+      "errorEvents": 29,
+      "qualification": [],
+      "runObservability": [
+        {
+          "status": "COMPLETED_WITH_ERRORS",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 1,
+            "http.responses": 1
+          }
+        }
+      ],
+      "sourceRuns": [
+        {
+          "runId": "0a25ae40-393e-434f-bf0b-765decc9c56a",
+          "id": "cmue54deo001kn66f8tebj4gr",
+          "sourceKey": "showroomprive",
+          "status": "BROKEN",
+          "jobs": 0,
+          "previousJobs": null,
+          "fetched": 28,
+          "accepted": 28,
+          "declaredTotal": null,
+          "truncated": false,
+          "errors": 28,
+          "canAttestAbsence": false,
+          "complete": true,
+          "note": "28 erreurs de collecte ou d’écriture · desc 100% date 100% pays 96% url 100%",
+          "descriptionRate": 1,
+          "dateRate": 1,
+          "countryRate": 0.964,
+          "urlRate": 1,
+          "ranAt": "2026-09-23T13:30:08.736Z"
+        }
+      ],
+      "completionProofs": [
+        {
+          "batchId": "f1c8a155-3200-441e-b047-cd4c130f8617",
+          "reportHash": "4ea060a49ea8b6a433995f2b6bb28c2d65dfcd90e8530965fb31a8a59067cb20",
+          "published": 0,
+          "held": 0,
+          "writeFailed": 28,
+          "skipped": 0,
+          "readerRevision": "git:94c463d26cf7fb1828eee05cac357b3e3658958d",
+          "policyVersion": "native-ingestion-completion/1",
+          "completedAt": "2026-09-23T13:30:08.728Z"
+        }
+      ],
+      "results": [
+        {
+          "source": "showroomprive",
+          "fetched": 28,
+          "created": 0,
+          "updated": 0,
+          "merged": 0,
+          "errors": 28,
+          "held": null,
+          "heldUnresolved": null,
+          "rejected": null,
+          "rejectedReasons": null,
+          "france": 27,
+          "complete": true,
+          "truncated": false,
+          "captureBatchId": "f1c8a155-3200-441e-b047-cd4c130f8617",
+          "completionReportHash": "4ea060a49ea8b6a433995f2b6bb28c2d65dfcd90e8530965fb31a8a59067cb20"
+        }
+      ]
+    },
+    {
+      "runId": "ea471e9a-764f-4e24-816d-c4b118203b6c",
+      "command": "source-campaign",
+      "revision": "94c463d26cf7fb1828eee05cac357b3e3658958d",
+      "startedAt": "2026-09-23T13:31:04.479Z",
+      "finishedAt": "2026-09-23T13:31:11.737Z",
+      "durationSeconds": 7.258,
+      "status": "COMPLETED",
+      "sources": [
+        "orchestra"
+      ],
+      "captures": 3,
+      "raw": 3,
+      "extractions": 83,
+      "aliveEvents": 0,
+      "sealedCompletions": 0,
+      "heartbeat": [],
+      "errorEvents": 0,
+      "qualification": [
+        {
+          "key": "orchestra",
+          "verdict": "QUALIFIEE",
+          "raisons": [],
+          "revision": "7a894fa2-65ab-4736-a6c6-ffe8ed8c18a8"
+        }
+      ],
+      "runObservability": [
+        {
+          "status": "COMPLETED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 3,
+            "http.responses": 3
+          }
+        }
+      ],
+      "sourceRuns": [],
+      "completionProofs": [],
+      "results": []
+    },
+    {
+      "runId": "b63f5f9d-a01b-4eea-9d6e-abb5ad01f676",
+      "command": "ingest",
+      "revision": "94c463d26cf7fb1828eee05cac357b3e3658958d",
+      "startedAt": "2026-09-23T13:31:06.867Z",
+      "finishedAt": "2026-09-23T13:31:11.520Z",
+      "durationSeconds": 4.653,
+      "status": "COMPLETED",
+      "sources": [
+        "orchestra"
+      ],
+      "captures": 1,
+      "raw": 1,
+      "extractions": 83,
+      "aliveEvents": 0,
+      "sealedCompletions": 1,
+      "heartbeat": [
+        "pinged"
+      ],
+      "errorEvents": 0,
+      "qualification": [],
+      "runObservability": [
+        {
+          "status": "COMPLETED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 1,
+            "http.responses": 1
+          }
+        }
+      ],
+      "sourceRuns": [
+        {
+          "runId": "b63f5f9d-a01b-4eea-9d6e-abb5ad01f676",
+          "id": "cmue55pr600g5o46d4q42rpwi",
+          "sourceKey": "orchestra",
+          "status": "NEW",
+          "jobs": 83,
+          "previousJobs": null,
+          "fetched": 83,
+          "accepted": 83,
+          "declaredTotal": null,
+          "truncated": false,
+          "errors": 0,
+          "canAttestAbsence": false,
+          "complete": true,
+          "note": "desc 100% date 100% pays 100% url 100%",
+          "descriptionRate": 1,
+          "dateRate": 1,
+          "countryRate": 1,
+          "urlRate": 1,
+          "ranAt": "2026-09-23T13:31:11.393Z"
+        }
+      ],
+      "completionProofs": [
+        {
+          "batchId": "d860ee3c-be5d-4f8f-b518-0d4896045221",
+          "reportHash": "25e92985700b8cb3ae5c2ee69f48fe90457ca3a4204726d987e65f4941fc45c8",
+          "published": 83,
+          "held": 0,
+          "writeFailed": 0,
+          "skipped": 0,
+          "readerRevision": "git:94c463d26cf7fb1828eee05cac357b3e3658958d",
+          "policyVersion": "native-ingestion-completion/1",
+          "completedAt": "2026-09-23T13:31:11.385Z"
+        }
+      ],
+      "results": [
+        {
+          "source": "orchestra",
+          "fetched": 83,
+          "created": 83,
+          "updated": 0,
+          "merged": 0,
+          "errors": 0,
+          "held": null,
+          "heldUnresolved": null,
+          "rejected": null,
+          "rejectedReasons": null,
+          "france": 83,
+          "complete": true,
+          "truncated": false,
+          "captureBatchId": "d860ee3c-be5d-4f8f-b518-0d4896045221",
+          "completionReportHash": "25e92985700b8cb3ae5c2ee69f48fe90457ca3a4204726d987e65f4941fc45c8"
+        }
+      ]
+    },
+    {
+      "runId": "16c8ef39-68bc-4383-a022-249d9a98d059",
+      "command": "source-campaign",
+      "revision": "94c463d26cf7fb1828eee05cac357b3e3658958d",
+      "startedAt": "2026-09-23T13:31:58.300Z",
+      "finishedAt": "2026-09-23T13:32:02.905Z",
+      "durationSeconds": 4.605,
+      "status": "COMPLETED",
+      "sources": [
+        "ami-paris"
+      ],
+      "captures": 4,
+      "raw": 5,
+      "extractions": 21,
+      "aliveEvents": 0,
+      "sealedCompletions": 0,
+      "heartbeat": [],
+      "errorEvents": 0,
+      "qualification": [
+        {
+          "key": "ami-paris",
+          "verdict": "QUALIFIEE",
+          "raisons": [],
+          "revision": "070d09a3-4422-4e8c-addd-ef17d887bbb2"
+        }
+      ],
+      "runObservability": [
+        {
+          "status": "COMPLETED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 5,
+            "http.redirects": 1,
+            "http.responses": 5
+          }
+        }
+      ],
+      "sourceRuns": [],
+      "completionProofs": [],
+      "results": []
+    },
+    {
+      "runId": "42a88344-771a-4360-a91c-6df1462718c1",
+      "command": "ingest",
+      "revision": "94c463d26cf7fb1828eee05cac357b3e3658958d",
+      "startedAt": "2026-09-23T13:32:00.901Z",
+      "finishedAt": "2026-09-23T13:32:02.683Z",
+      "durationSeconds": 1.782,
+      "status": "COMPLETED",
+      "sources": [
+        "ami-paris"
+      ],
+      "captures": 1,
+      "raw": 1,
+      "extractions": 21,
+      "aliveEvents": 0,
+      "sealedCompletions": 1,
+      "heartbeat": [
+        "pinged"
+      ],
+      "errorEvents": 0,
+      "qualification": [],
+      "runObservability": [
+        {
+          "status": "COMPLETED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 1,
+            "http.responses": 1
+          }
+        }
+      ],
+      "sourceRuns": [
+        {
+          "runId": "42a88344-771a-4360-a91c-6df1462718c1",
+          "id": "cmue56t7x0043qi6enzae3hbz",
+          "sourceKey": "ami-paris",
+          "status": "NEW",
+          "jobs": 21,
+          "previousJobs": null,
+          "fetched": 21,
+          "accepted": 21,
+          "declaredTotal": null,
+          "truncated": false,
+          "errors": 0,
+          "canAttestAbsence": false,
+          "complete": true,
+          "note": "desc 100% date 100% pays 100% url 100%",
+          "descriptionRate": 1,
+          "dateRate": 1,
+          "countryRate": 1,
+          "urlRate": 1,
+          "ranAt": "2026-09-23T13:32:02.541Z"
+        }
+      ],
+      "completionProofs": [
+        {
+          "batchId": "6416d086-ecd6-46af-b332-94e16c624bf7",
+          "reportHash": "f3acdfda8eb80494455f599ac676d51c4ff9f338bb9748cb3b59a071d9db2b55",
+          "published": 21,
+          "held": 0,
+          "writeFailed": 0,
+          "skipped": 0,
+          "readerRevision": "git:94c463d26cf7fb1828eee05cac357b3e3658958d",
+          "policyVersion": "native-ingestion-completion/1",
+          "completedAt": "2026-09-23T13:32:02.507Z"
+        }
+      ],
+      "results": [
+        {
+          "source": "ami-paris",
+          "fetched": 21,
+          "created": 21,
+          "updated": 0,
+          "merged": 0,
+          "errors": 0,
+          "held": null,
+          "heldUnresolved": null,
+          "rejected": null,
+          "rejectedReasons": null,
+          "france": 17,
+          "complete": true,
+          "truncated": false,
+          "captureBatchId": "6416d086-ecd6-46af-b332-94e16c624bf7",
+          "completionReportHash": "f3acdfda8eb80494455f599ac676d51c4ff9f338bb9748cb3b59a071d9db2b55"
+        }
+      ]
+    },
+    {
+      "runId": "df845c2e-dfbb-4df1-ac5e-9266affb2dab",
+      "command": "source-campaign",
+      "revision": "94c463d26cf7fb1828eee05cac357b3e3658958d",
+      "startedAt": "2026-09-23T13:32:31.016Z",
+      "finishedAt": "2026-09-23T13:32:39.893Z",
+      "durationSeconds": 8.877,
+      "status": "COMPLETED",
+      "sources": [
+        "amiri"
+      ],
+      "captures": 4,
+      "raw": 5,
+      "extractions": 38,
+      "aliveEvents": 0,
+      "sealedCompletions": 0,
+      "heartbeat": [],
+      "errorEvents": 0,
+      "qualification": [
+        {
+          "key": "amiri",
+          "verdict": "QUALIFIEE",
+          "raisons": [],
+          "revision": "ecb1cc91-3c5b-4190-b344-eaa3c820009c"
+        }
+      ],
+      "runObservability": [
+        {
+          "status": "COMPLETED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 5,
+            "http.redirects": 1,
+            "http.responses": 5
+          }
+        }
+      ],
+      "sourceRuns": [],
+      "completionProofs": [],
+      "results": []
+    },
+    {
+      "runId": "1b29bb60-0551-4ff5-b8ba-1359439fa66d",
+      "command": "ingest",
+      "revision": "94c463d26cf7fb1828eee05cac357b3e3658958d",
+      "startedAt": "2026-09-23T13:32:35.868Z",
+      "finishedAt": "2026-09-23T13:32:39.676Z",
+      "durationSeconds": 3.808,
+      "status": "COMPLETED",
+      "sources": [
+        "amiri"
+      ],
+      "captures": 1,
+      "raw": 1,
+      "extractions": 38,
+      "aliveEvents": 0,
+      "sealedCompletions": 1,
+      "heartbeat": [
+        "pinged"
+      ],
+      "errorEvents": 0,
+      "qualification": [],
+      "runObservability": [
+        {
+          "status": "COMPLETED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 1,
+            "http.responses": 1
+          }
+        }
+      ],
+      "sourceRuns": [
+        {
+          "runId": "1b29bb60-0551-4ff5-b8ba-1359439fa66d",
+          "id": "cmue57lrv007es46f5foz99hy",
+          "sourceKey": "amiri",
+          "status": "NEW",
+          "jobs": 38,
+          "previousJobs": null,
+          "fetched": 38,
+          "accepted": 38,
+          "declaredTotal": null,
+          "truncated": false,
+          "errors": 0,
+          "canAttestAbsence": false,
+          "complete": true,
+          "note": "desc 100% date 100% pays 100% url 100%",
+          "descriptionRate": 1,
+          "dateRate": 1,
+          "countryRate": 1,
+          "urlRate": 1,
+          "ranAt": "2026-09-23T13:32:39.546Z"
+        }
+      ],
+      "completionProofs": [
+        {
+          "batchId": "8c979fdb-710a-43bb-9f36-c0b41d824dda",
+          "reportHash": "ca2dce7e96de7774521b60bc8c3a004d03caacc8b11767837042651444801815",
+          "published": 38,
+          "held": 0,
+          "writeFailed": 0,
+          "skipped": 0,
+          "readerRevision": "git:94c463d26cf7fb1828eee05cac357b3e3658958d",
+          "policyVersion": "native-ingestion-completion/1",
+          "completedAt": "2026-09-23T13:32:39.541Z"
+        }
+      ],
+      "results": [
+        {
+          "source": "amiri",
+          "fetched": 38,
+          "created": 38,
+          "updated": 0,
+          "merged": 0,
+          "errors": 0,
+          "held": null,
+          "heldUnresolved": null,
+          "rejected": null,
+          "rejectedReasons": null,
+          "france": 0,
+          "complete": true,
+          "truncated": false,
+          "captureBatchId": "8c979fdb-710a-43bb-9f36-c0b41d824dda",
+          "completionReportHash": "ca2dce7e96de7774521b60bc8c3a004d03caacc8b11767837042651444801815"
+        }
+      ]
+    },
+    {
+      "runId": "ae059a9d-9290-4432-8c73-eb3d9397b26d",
+      "command": "source-campaign",
+      "revision": "94c463d26cf7fb1828eee05cac357b3e3658958d",
+      "startedAt": "2026-09-23T13:33:18.742Z",
+      "finishedAt": "2026-09-23T13:33:22.772Z",
+      "durationSeconds": 4.03,
+      "status": "COMPLETED",
+      "sources": [
+        "iris-van-herpen"
+      ],
+      "captures": 12,
+      "raw": 19,
+      "extractions": 7,
+      "aliveEvents": 0,
+      "sealedCompletions": 0,
+      "heartbeat": [],
+      "errorEvents": 0,
+      "qualification": [
+        {
+          "key": "iris-van-herpen",
+          "verdict": "QUALIFIEE",
+          "raisons": [
+            "aucune page du domaine officiel ne lie exactement le portail configuré (voir etapes.identite)"
+          ],
+          "revision": "36c01772-db53-480f-acb3-e4cb6c037992"
+        }
+      ],
+      "runObservability": [
+        {
+          "status": "COMPLETED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 19,
+            "http.redirects": 7,
+            "http.responses": 19
+          }
+        }
+      ],
+      "sourceRuns": [],
+      "completionProofs": [],
+      "results": []
+    },
+    {
+      "runId": "fc6a5d64-d949-439c-bdf9-65dbf8619c55",
+      "command": "ingest",
+      "revision": "94c463d26cf7fb1828eee05cac357b3e3658958d",
+      "startedAt": "2026-09-23T13:33:21.671Z",
+      "finishedAt": "2026-09-23T13:33:22.552Z",
+      "durationSeconds": 0.881,
+      "status": "COMPLETED",
+      "sources": [
+        "iris-van-herpen"
+      ],
+      "captures": 1,
+      "raw": 1,
+      "extractions": 7,
+      "aliveEvents": 0,
+      "sealedCompletions": 1,
+      "heartbeat": [
+        "pinged"
+      ],
+      "errorEvents": 0,
+      "qualification": [],
+      "runObservability": [
+        {
+          "status": "COMPLETED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 1,
+            "http.responses": 1
+          }
+        }
+      ],
+      "sourceRuns": [
+        {
+          "runId": "fc6a5d64-d949-439c-bdf9-65dbf8619c55",
+          "id": "cmue58iuv001dqz6g4q4zwqja",
+          "sourceKey": "iris-van-herpen",
+          "status": "NEW",
+          "jobs": 7,
+          "previousJobs": null,
+          "fetched": 7,
+          "accepted": 7,
+          "declaredTotal": null,
+          "truncated": false,
+          "errors": 0,
+          "canAttestAbsence": false,
+          "complete": true,
+          "note": "desc 100% date 100% pays 100% url 100%",
+          "descriptionRate": 1,
+          "dateRate": 1,
+          "countryRate": 1,
+          "urlRate": 1,
+          "ranAt": "2026-09-23T13:33:22.422Z"
+        }
+      ],
+      "completionProofs": [
+        {
+          "batchId": "2bb850de-c359-4a13-824b-bead7160faf3",
+          "reportHash": "1b4c36d82a51f96b6e3905913f947a7542586d77e531e62878202aa48c904b00",
+          "published": 7,
+          "held": 0,
+          "writeFailed": 0,
+          "skipped": 0,
+          "readerRevision": "git:94c463d26cf7fb1828eee05cac357b3e3658958d",
+          "policyVersion": "native-ingestion-completion/1",
+          "completedAt": "2026-09-23T13:33:22.412Z"
+        }
+      ],
+      "results": [
+        {
+          "source": "iris-van-herpen",
+          "fetched": 7,
+          "created": 7,
+          "updated": 0,
+          "merged": 0,
+          "errors": 0,
+          "held": null,
+          "heldUnresolved": null,
+          "rejected": null,
+          "rejectedReasons": null,
+          "france": 0,
+          "complete": true,
+          "truncated": false,
+          "captureBatchId": "2bb850de-c359-4a13-824b-bead7160faf3",
+          "completionReportHash": "1b4c36d82a51f96b6e3905913f947a7542586d77e531e62878202aa48c904b00"
+        }
+      ]
+    },
+    {
+      "runId": "07b66a34-69e5-48bc-92d4-0258264a1f8b",
+      "command": "source-campaign",
+      "revision": "94c463d26cf7fb1828eee05cac357b3e3658958d",
+      "startedAt": "2026-09-23T13:33:41.757Z",
+      "finishedAt": "2026-09-23T13:33:49.578Z",
+      "durationSeconds": 7.821,
+      "status": "FAILED",
+      "sources": [
+        "polene"
+      ],
+      "captures": 6,
+      "raw": 7,
+      "extractions": 84,
+      "aliveEvents": 0,
+      "sealedCompletions": 0,
+      "heartbeat": [],
+      "errorEvents": 1,
+      "qualification": [
+        {
+          "key": "polene",
+          "verdict": "QUALIFIEE",
+          "raisons": [],
+          "revision": "32fc9897-b4c7-436f-9866-3ef7b43b8a70"
+        }
+      ],
+      "runObservability": [
+        {
+          "status": "FAILED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 7,
+            "http.redirects": 1,
+            "http.responses": 7
+          }
+        }
+      ],
+      "sourceRuns": [],
+      "completionProofs": [],
+      "results": []
+    },
+    {
+      "runId": "4782f059-2310-4684-bf70-fd3eee733e8a",
+      "command": "ingest",
+      "revision": "94c463d26cf7fb1828eee05cac357b3e3658958d",
+      "startedAt": "2026-09-23T13:33:46.330Z",
+      "finishedAt": "2026-09-23T13:33:49.388Z",
+      "durationSeconds": 3.058,
+      "status": "COMPLETED_WITH_ERRORS",
+      "sources": [
+        "polene"
+      ],
+      "captures": 1,
+      "raw": 1,
+      "extractions": 84,
+      "aliveEvents": 0,
+      "sealedCompletions": 1,
+      "heartbeat": [
+        "pinged"
+      ],
+      "errorEvents": 85,
+      "qualification": [],
+      "runObservability": [
+        {
+          "status": "COMPLETED_WITH_ERRORS",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 1,
+            "http.responses": 1
+          }
+        }
+      ],
+      "sourceRuns": [
+        {
+          "runId": "4782f059-2310-4684-bf70-fd3eee733e8a",
+          "id": "cmue593hp004oqq6d3trm02sy",
+          "sourceKey": "polene",
+          "status": "BROKEN",
+          "jobs": 0,
+          "previousJobs": null,
+          "fetched": 84,
+          "accepted": 84,
+          "declaredTotal": 84,
+          "truncated": false,
+          "errors": 84,
+          "canAttestAbsence": false,
+          "complete": true,
+          "note": "84 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+          "descriptionRate": 1,
+          "dateRate": 1,
+          "countryRate": 1,
+          "urlRate": 1,
+          "ranAt": "2026-09-23T13:33:49.164Z"
+        }
+      ],
+      "completionProofs": [
+        {
+          "batchId": "6dbcbc25-1923-4c16-9ffe-e9d316a51a21",
+          "reportHash": "abde9fc50e55e2a8458e463973a271046c228de417d00994578209abb5c95013",
+          "published": 0,
+          "held": 0,
+          "writeFailed": 84,
+          "skipped": 0,
+          "readerRevision": "git:94c463d26cf7fb1828eee05cac357b3e3658958d",
+          "policyVersion": "native-ingestion-completion/1",
+          "completedAt": "2026-09-23T13:33:49.157Z"
+        }
+      ],
+      "results": [
+        {
+          "source": "polene",
+          "fetched": 84,
+          "created": 0,
+          "updated": 0,
+          "merged": 0,
+          "errors": 84,
+          "held": null,
+          "heldUnresolved": null,
+          "rejected": null,
+          "rejectedReasons": null,
+          "france": 48,
+          "complete": true,
+          "truncated": false,
+          "captureBatchId": "6dbcbc25-1923-4c16-9ffe-e9d316a51a21",
+          "completionReportHash": "abde9fc50e55e2a8458e463973a271046c228de417d00994578209abb5c95013"
+        }
+      ]
+    },
+    {
+      "runId": "3ad7d562-35d3-42ab-a074-f77330ed1e5e",
+      "command": "source-campaign",
+      "revision": "94c463d26cf7fb1828eee05cac357b3e3658958d",
+      "startedAt": "2026-09-23T13:34:09.643Z",
+      "finishedAt": "2026-09-23T13:34:18.292Z",
+      "durationSeconds": 8.649,
+      "status": "COMPLETED",
+      "sources": [
+        "baccarat"
+      ],
+      "captures": 12,
+      "raw": 37,
+      "extractions": 17,
+      "aliveEvents": 0,
+      "sealedCompletions": 0,
+      "heartbeat": [],
+      "errorEvents": 0,
+      "qualification": [
+        {
+          "key": "baccarat",
+          "verdict": "QUALIFIEE",
+          "raisons": [
+            "aucune page du domaine officiel ne lie exactement le portail configuré (voir etapes.identite)"
+          ],
+          "revision": "e29a2a3b-bfbc-45e7-aad3-9d5f148920f0"
+        }
+      ],
+      "runObservability": [
+        {
+          "status": "COMPLETED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 37,
+            "http.redirects": 5,
+            "http.responses": 37
+          }
+        }
+      ],
+      "sourceRuns": [],
+      "completionProofs": [],
+      "results": []
+    },
+    {
+      "runId": "ce94bb49-38ae-4661-9722-985b787214a0",
+      "command": "ingest",
+      "revision": "94c463d26cf7fb1828eee05cac357b3e3658958d",
+      "startedAt": "2026-09-23T13:34:15.011Z",
+      "finishedAt": "2026-09-23T13:34:18.079Z",
+      "durationSeconds": 3.068,
+      "status": "COMPLETED",
+      "sources": [
+        "baccarat"
+      ],
+      "captures": 1,
+      "raw": 21,
+      "extractions": 17,
+      "aliveEvents": 0,
+      "sealedCompletions": 1,
+      "heartbeat": [
+        "pinged"
+      ],
+      "errorEvents": 0,
+      "qualification": [],
+      "runObservability": [
+        {
+          "status": "COMPLETED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 21,
+            "http.responses": 21
+          }
+        }
+      ],
+      "sourceRuns": [
+        {
+          "runId": "ce94bb49-38ae-4661-9722-985b787214a0",
+          "id": "cmue59pp6003bmp6ekd6rbgw2",
+          "sourceKey": "baccarat",
+          "status": "NEW",
+          "jobs": 17,
+          "previousJobs": null,
+          "fetched": 17,
+          "accepted": 17,
+          "declaredTotal": null,
+          "truncated": false,
+          "errors": 0,
+          "canAttestAbsence": false,
+          "complete": true,
+          "note": "desc 100% date 100% pays 100% url 100%",
+          "descriptionRate": 1,
+          "dateRate": 1,
+          "countryRate": 1,
+          "urlRate": 1,
+          "ranAt": "2026-09-23T13:34:17.945Z"
+        }
+      ],
+      "completionProofs": [
+        {
+          "batchId": "02951c3c-5f8f-4e1b-8ba9-9db9ae4acd6b",
+          "reportHash": "25ec006b9da17cb9e71886dad0efafccc94351c707a6c65f71e88419fac2a21c",
+          "published": 17,
+          "held": 0,
+          "writeFailed": 0,
+          "skipped": 0,
+          "readerRevision": "git:94c463d26cf7fb1828eee05cac357b3e3658958d",
+          "policyVersion": "native-ingestion-completion/1",
+          "completedAt": "2026-09-23T13:34:17.941Z"
+        }
+      ],
+      "results": [
+        {
+          "source": "baccarat",
+          "fetched": 17,
+          "created": 17,
+          "updated": 0,
+          "merged": 0,
+          "errors": 0,
+          "held": null,
+          "heldUnresolved": null,
+          "rejected": null,
+          "rejectedReasons": null,
+          "france": 17,
+          "complete": true,
+          "truncated": false,
+          "captureBatchId": "02951c3c-5f8f-4e1b-8ba9-9db9ae4acd6b",
+          "completionReportHash": "25ec006b9da17cb9e71886dad0efafccc94351c707a6c65f71e88419fac2a21c"
+        }
+      ]
+    },
+    {
+      "runId": "9b57958c-ba63-4748-b680-b97defc616ab",
+      "command": "source-campaign",
+      "revision": "94c463d26cf7fb1828eee05cac357b3e3658958d",
+      "startedAt": "2026-09-23T13:34:46.135Z",
+      "finishedAt": "2026-09-23T13:35:08.623Z",
+      "durationSeconds": 22.488,
+      "status": "COMPLETED",
+      "sources": [
+        "jules"
+      ],
+      "captures": 12,
+      "raw": 94,
+      "extractions": 73,
+      "aliveEvents": 0,
+      "sealedCompletions": 0,
+      "heartbeat": [],
+      "errorEvents": 0,
+      "qualification": [
+        {
+          "key": "jules",
+          "verdict": "QUALIFIEE",
+          "raisons": [
+            "aucune page du domaine officiel ne lie exactement le portail configuré (voir etapes.identite)"
+          ],
+          "revision": "ba7a04c9-2c16-4893-8f7b-7f129da5584c"
+        }
+      ],
+      "runObservability": [
+        {
+          "status": "COMPLETED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 94,
+            "http.redirects": 1,
+            "http.responses": 94
+          }
+        }
+      ],
+      "sourceRuns": [],
+      "completionProofs": [],
+      "results": []
+    },
+    {
+      "runId": "468a94ec-2e33-4890-8768-cad51d7b680c",
+      "command": "ingest",
+      "revision": "94c463d26cf7fb1828eee05cac357b3e3658958d",
+      "startedAt": "2026-09-23T13:34:56.689Z",
+      "finishedAt": "2026-09-23T13:35:08.366Z",
+      "durationSeconds": 11.677,
+      "status": "COMPLETED",
+      "sources": [
+        "jules"
+      ],
+      "captures": 1,
+      "raw": 82,
+      "extractions": 73,
+      "aliveEvents": 0,
+      "sealedCompletions": 1,
+      "heartbeat": [
+        "pinged"
+      ],
+      "errorEvents": 0,
+      "qualification": [],
+      "runObservability": [
+        {
+          "status": "COMPLETED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 82,
+            "http.responses": 82
+          }
+        }
+      ],
+      "sourceRuns": [
+        {
+          "runId": "468a94ec-2e33-4890-8768-cad51d7b680c",
+          "id": "cmue5asi000e7ld6dcrrl9l1e",
+          "sourceKey": "jules",
+          "status": "NEW",
+          "jobs": 73,
+          "previousJobs": null,
+          "fetched": 73,
+          "accepted": 73,
+          "declaredTotal": null,
+          "truncated": false,
+          "errors": 0,
+          "canAttestAbsence": false,
+          "complete": true,
+          "note": "desc 100% date 100% pays 100% url 100%",
+          "descriptionRate": 1,
+          "dateRate": 1,
+          "countryRate": 1,
+          "urlRate": 1,
+          "ranAt": "2026-09-23T13:35:08.232Z"
+        }
+      ],
+      "completionProofs": [
+        {
+          "batchId": "19259c5b-8bef-4d7e-a42b-61d677da1bbc",
+          "reportHash": "426e6219e942ef5c9edcceaa5d4a95183c2e9242e09eecdbe7ddb0a176055413",
+          "published": 73,
+          "held": 0,
+          "writeFailed": 0,
+          "skipped": 0,
+          "readerRevision": "git:94c463d26cf7fb1828eee05cac357b3e3658958d",
+          "policyVersion": "native-ingestion-completion/1",
+          "completedAt": "2026-09-23T13:35:08.213Z"
+        }
+      ],
+      "results": [
+        {
+          "source": "jules",
+          "fetched": 73,
+          "created": 73,
+          "updated": 0,
+          "merged": 0,
+          "errors": 0,
+          "held": null,
+          "heldUnresolved": null,
+          "rejected": null,
+          "rejectedReasons": null,
+          "france": 69,
+          "complete": true,
+          "truncated": false,
+          "captureBatchId": "19259c5b-8bef-4d7e-a42b-61d677da1bbc",
+          "completionReportHash": "426e6219e942ef5c9edcceaa5d4a95183c2e9242e09eecdbe7ddb0a176055413"
+        }
+      ]
+    },
+    {
+      "runId": "7ed2c97e-6df9-4bd9-8824-2c5b2a23c109",
+      "command": "source-campaign",
+      "revision": "94c463d26cf7fb1828eee05cac357b3e3658958d",
+      "startedAt": "2026-09-23T13:36:08.128Z",
+      "finishedAt": "2026-09-23T13:36:22.420Z",
+      "durationSeconds": 14.292,
+      "status": "FAILED",
+      "sources": [
+        "promod"
+      ],
+      "captures": 4,
+      "raw": 62,
+      "extractions": 50,
+      "aliveEvents": 0,
+      "sealedCompletions": 0,
+      "heartbeat": [],
+      "errorEvents": 1,
+      "qualification": [
+        {
+          "key": "promod",
+          "verdict": "QUALIFIEE",
+          "raisons": [],
+          "revision": "7a56275f-973d-47a6-9adb-1064062c6099"
+        }
+      ],
+      "runObservability": [
+        {
+          "status": "FAILED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 62,
+            "http.redirects": 2,
+            "http.responses": 62
+          }
+        }
+      ],
+      "sourceRuns": [],
+      "completionProofs": [],
+      "results": []
+    },
+    {
+      "runId": "773b58cc-4816-452d-9d0c-d14e9fe1018b",
+      "command": "ingest",
+      "revision": "94c463d26cf7fb1828eee05cac357b3e3658958d",
+      "startedAt": "2026-09-23T13:36:15.297Z",
+      "finishedAt": "2026-09-23T13:36:22.215Z",
+      "durationSeconds": 6.918,
+      "status": "COMPLETED_WITH_ERRORS",
+      "sources": [
+        "promod"
+      ],
+      "captures": 1,
+      "raw": 57,
+      "extractions": 50,
+      "aliveEvents": 0,
+      "sealedCompletions": 1,
+      "heartbeat": [
+        "pinged"
+      ],
+      "errorEvents": 51,
+      "qualification": [],
+      "runObservability": [
+        {
+          "status": "COMPLETED_WITH_ERRORS",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 57,
+            "http.responses": 57
+          }
+        }
+      ],
+      "sourceRuns": [
+        {
+          "runId": "773b58cc-4816-452d-9d0c-d14e9fe1018b",
+          "id": "cmue5cddz002spb6fu75dsxvk",
+          "sourceKey": "promod",
+          "status": "BROKEN",
+          "jobs": 0,
+          "previousJobs": null,
+          "fetched": 50,
+          "accepted": 50,
+          "declaredTotal": null,
+          "truncated": false,
+          "errors": 50,
+          "canAttestAbsence": false,
+          "complete": true,
+          "note": "50 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+          "descriptionRate": 1,
+          "dateRate": 1,
+          "countryRate": 1,
+          "urlRate": 1,
+          "ranAt": "2026-09-23T13:36:21.958Z"
+        }
+      ],
+      "completionProofs": [
+        {
+          "batchId": "7cf1aa3f-a8b7-4c71-b607-20fb5b108109",
+          "reportHash": "29dfd3e9671dccad4be018cf58f86b2dbb2b1ab1dfc875fa774b8c9ff3064d8c",
+          "published": 0,
+          "held": 0,
+          "writeFailed": 50,
+          "skipped": 0,
+          "readerRevision": "git:94c463d26cf7fb1828eee05cac357b3e3658958d",
+          "policyVersion": "native-ingestion-completion/1",
+          "completedAt": "2026-09-23T13:36:21.949Z"
+        }
+      ],
+      "results": [
+        {
+          "source": "promod",
+          "fetched": 50,
+          "created": 0,
+          "updated": 0,
+          "merged": 0,
+          "errors": 50,
+          "held": null,
+          "heldUnresolved": null,
+          "rejected": null,
+          "rejectedReasons": null,
+          "france": 48,
+          "complete": true,
+          "truncated": false,
+          "captureBatchId": "7cf1aa3f-a8b7-4c71-b607-20fb5b108109",
+          "completionReportHash": "29dfd3e9671dccad4be018cf58f86b2dbb2b1ab1dfc875fa774b8c9ff3064d8c"
+        }
+      ]
+    },
+    {
+      "runId": "8f1cab90-23ca-4b87-91a1-8b73fd955adc",
+      "command": "source-campaign",
+      "revision": "94c463d26cf7fb1828eee05cac357b3e3658958d",
+      "startedAt": "2026-09-23T13:37:37.159Z",
+      "finishedAt": "2026-09-23T13:38:16.351Z",
+      "durationSeconds": 39.192,
+      "status": "FAILED",
+      "sources": [
+        "apivita"
+      ],
+      "captures": 12,
+      "raw": 21,
+      "extractions": 9,
+      "aliveEvents": 1,
+      "sealedCompletions": 0,
+      "heartbeat": [],
+      "errorEvents": 1,
+      "qualification": [
+        {
+          "key": "apivita",
+          "verdict": "QUALIFIEE",
+          "raisons": [
+            "aucune page du domaine officiel ne lie exactement le portail configuré (voir etapes.identite)"
+          ],
+          "revision": "42daaf19-c7c6-434d-a05d-fb3b7363568b"
+        }
+      ],
+      "runObservability": [
+        {
+          "status": "FAILED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 21,
+            "http.redirects": 8,
+            "http.responses": 21
+          }
+        }
+      ],
+      "sourceRuns": [],
+      "completionProofs": [],
+      "results": []
+    },
+    {
+      "runId": "330e7fc4-c3dc-483f-b797-e37cbbd0d0ad",
+      "command": "ingest",
+      "revision": "94c463d26cf7fb1828eee05cac357b3e3658958d",
+      "startedAt": "2026-09-23T13:38:13.787Z",
+      "finishedAt": "2026-09-23T13:38:16.157Z",
+      "durationSeconds": 2.37,
+      "status": "COMPLETED_WITH_ERRORS",
+      "sources": [
+        "apivita"
+      ],
+      "captures": 1,
+      "raw": 2,
+      "extractions": 9,
+      "aliveEvents": 0,
+      "sealedCompletions": 1,
+      "heartbeat": [
+        "pinged"
+      ],
+      "errorEvents": 10,
+      "qualification": [],
+      "runObservability": [
+        {
+          "status": "COMPLETED_WITH_ERRORS",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 2,
+            "http.responses": 2
+          }
+        }
+      ],
+      "sourceRuns": [
+        {
+          "runId": "330e7fc4-c3dc-483f-b797-e37cbbd0d0ad",
+          "id": "cmue5etac000iqu6fsajf0ewm",
+          "sourceKey": "apivita",
+          "status": "BROKEN",
+          "jobs": 0,
+          "previousJobs": null,
+          "fetched": 9,
+          "accepted": 9,
+          "declaredTotal": 9,
+          "truncated": false,
+          "errors": 9,
+          "canAttestAbsence": false,
+          "complete": true,
+          "note": "9 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+          "descriptionRate": 1,
+          "dateRate": 1,
+          "countryRate": 1,
+          "urlRate": 1,
+          "ranAt": "2026-09-23T13:38:15.875Z"
+        }
+      ],
+      "completionProofs": [
+        {
+          "batchId": "98f0bf66-598e-46ed-8e08-d3f410437e82",
+          "reportHash": "3e3de585a1873ae83e5ac211b8c6733acfc77feefe134ddd03123f2160ae3974",
+          "published": 0,
+          "held": 0,
+          "writeFailed": 9,
+          "skipped": 0,
+          "readerRevision": "git:94c463d26cf7fb1828eee05cac357b3e3658958d",
+          "policyVersion": "native-ingestion-completion/1",
+          "completedAt": "2026-09-23T13:38:15.872Z"
+        }
+      ],
+      "results": [
+        {
+          "source": "apivita",
+          "fetched": 9,
+          "created": 0,
+          "updated": 0,
+          "merged": 0,
+          "errors": 9,
+          "held": null,
+          "heldUnresolved": null,
+          "rejected": null,
+          "rejectedReasons": null,
+          "france": 0,
+          "complete": true,
+          "truncated": false,
+          "captureBatchId": "98f0bf66-598e-46ed-8e08-d3f410437e82",
+          "completionReportHash": "3e3de585a1873ae83e5ac211b8c6733acfc77feefe134ddd03123f2160ae3974"
+        }
+      ]
+    },
+    {
+      "runId": "0dcd2dd4-a346-462e-9890-84add2184cab",
+      "command": "source-campaign",
+      "revision": "94c463d26cf7fb1828eee05cac357b3e3658958d",
+      "startedAt": "2026-09-23T13:39:15.956Z",
+      "finishedAt": "2026-09-23T13:40:13.109Z",
+      "durationSeconds": 57.153,
+      "status": "FAILED",
+      "sources": [
+        "apm-monaco"
+      ],
+      "captures": 12,
+      "raw": 35,
+      "extractions": 149,
+      "aliveEvents": 1,
+      "sealedCompletions": 0,
+      "heartbeat": [],
+      "errorEvents": 1,
+      "qualification": [
+        {
+          "key": "apm-monaco",
+          "verdict": "QUALIFIEE",
+          "raisons": [
+            "aucune page du domaine officiel ne lie exactement le portail configuré (voir etapes.identite)"
+          ],
+          "revision": "595405f4-3151-4abe-abd4-8e413571db98"
+        }
+      ],
+      "runObservability": [
+        {
+          "status": "FAILED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 35,
+            "http.redirects": 8,
+            "http.responses": 35
+          }
+        }
+      ],
+      "sourceRuns": [],
+      "completionProofs": [],
+      "results": []
+    },
+    {
+      "runId": "09f5b4e7-7b1f-466e-a58f-1e862fe7fc02",
+      "command": "ingest",
+      "revision": "94c463d26cf7fb1828eee05cac357b3e3658958d",
+      "startedAt": "2026-09-23T13:39:45.678Z",
+      "finishedAt": "2026-09-23T13:40:12.896Z",
+      "durationSeconds": 27.218,
+      "status": "COMPLETED_WITH_ERRORS",
+      "sources": [
+        "apm-monaco"
+      ],
+      "captures": 1,
+      "raw": 16,
+      "extractions": 149,
+      "aliveEvents": 0,
+      "sealedCompletions": 1,
+      "heartbeat": [
+        "pinged"
+      ],
+      "errorEvents": 150,
+      "qualification": [],
+      "runObservability": [
+        {
+          "status": "COMPLETED_WITH_ERRORS",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 16,
+            "http.responses": 16
+          }
+        }
+      ],
+      "sourceRuns": [
+        {
+          "runId": "09f5b4e7-7b1f-466e-a58f-1e862fe7fc02",
+          "id": "cmue5hbds008ala6e7wmslc98",
+          "sourceKey": "apm-monaco",
+          "status": "BROKEN",
+          "jobs": 0,
+          "previousJobs": null,
+          "fetched": 149,
+          "accepted": 149,
+          "declaredTotal": 149,
+          "truncated": false,
+          "errors": 149,
+          "canAttestAbsence": false,
+          "complete": true,
+          "note": "149 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+          "descriptionRate": 1,
+          "dateRate": 1,
+          "countryRate": 1,
+          "urlRate": 1,
+          "ranAt": "2026-09-23T13:40:12.639Z"
+        }
+      ],
+      "completionProofs": [
+        {
+          "batchId": "3c7df080-6075-4bc8-9712-881c0c7f1a41",
+          "reportHash": "1aa85c0cfaf17940c1c812535c80b110702d28233bc573f642f66cfc357854bc",
+          "published": 0,
+          "held": 0,
+          "writeFailed": 149,
+          "skipped": 0,
+          "readerRevision": "git:94c463d26cf7fb1828eee05cac357b3e3658958d",
+          "policyVersion": "native-ingestion-completion/1",
+          "completedAt": "2026-09-23T13:40:12.627Z"
+        }
+      ],
+      "results": [
+        {
+          "source": "apm-monaco",
+          "fetched": 149,
+          "created": 0,
+          "updated": 0,
+          "merged": 0,
+          "errors": 149,
+          "held": null,
+          "heldUnresolved": null,
+          "rejected": null,
+          "rejectedReasons": null,
+          "france": 70,
+          "complete": true,
+          "truncated": false,
+          "captureBatchId": "3c7df080-6075-4bc8-9712-881c0c7f1a41",
+          "completionReportHash": "1aa85c0cfaf17940c1c812535c80b110702d28233bc573f642f66cfc357854bc"
+        }
+      ]
+    },
+    {
+      "runId": "c03e9a68-5401-4ddd-be72-5efc24e88002",
+      "command": "source-campaign",
+      "revision": "94c463d26cf7fb1828eee05cac357b3e3658958d",
+      "startedAt": "2026-09-23T13:41:08.385Z",
+      "finishedAt": "2026-09-23T13:41:26.741Z",
+      "durationSeconds": 18.356,
+      "status": "COMPLETED",
+      "sources": [
+        "bevilles-jewellers"
+      ],
+      "captures": 3,
+      "raw": 26,
+      "extractions": 22,
+      "aliveEvents": 0,
+      "sealedCompletions": 0,
+      "heartbeat": [],
+      "errorEvents": 0,
+      "qualification": [
+        {
+          "key": "bevilles-jewellers",
+          "verdict": "QUALIFIEE",
+          "raisons": [],
+          "revision": "cd35c4a6-2214-489a-8679-a256b9165467"
+        }
+      ],
+      "runObservability": [
+        {
+          "status": "COMPLETED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 26,
+            "http.redirects": 1,
+            "http.responses": 26
+          }
+        }
+      ],
+      "sourceRuns": [],
+      "completionProofs": [],
+      "results": []
+    },
+    {
+      "runId": "03db592f-5eab-412d-9ebf-83137c8dcff2",
+      "command": "ingest",
+      "revision": "94c463d26cf7fb1828eee05cac357b3e3658958d",
+      "startedAt": "2026-09-23T13:41:17.712Z",
+      "finishedAt": "2026-09-23T13:41:26.412Z",
+      "durationSeconds": 8.7,
+      "status": "COMPLETED",
+      "sources": [
+        "bevilles-jewellers"
+      ],
+      "captures": 1,
+      "raw": 23,
+      "extractions": 22,
+      "aliveEvents": 0,
+      "sealedCompletions": 1,
+      "heartbeat": [
+        "pinged"
+      ],
+      "errorEvents": 0,
+      "qualification": [],
+      "runObservability": [
+        {
+          "status": "COMPLETED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 23,
+            "http.responses": 23
+          }
+        }
+      ],
+      "sourceRuns": [
+        {
+          "runId": "03db592f-5eab-412d-9ebf-83137c8dcff2",
+          "id": "cmue5iw6z004bpe6damgen2cz",
+          "sourceKey": "bevilles-jewellers",
+          "status": "NEW",
+          "jobs": 22,
+          "previousJobs": null,
+          "fetched": 22,
+          "accepted": 22,
+          "declaredTotal": 22,
+          "truncated": false,
+          "errors": 0,
+          "canAttestAbsence": false,
+          "complete": true,
+          "note": "desc 100% date 100% pays 100% url 100%",
+          "descriptionRate": 1,
+          "dateRate": 1,
+          "countryRate": 1,
+          "urlRate": 1,
+          "ranAt": "2026-09-23T13:41:26.266Z"
+        }
+      ],
+      "completionProofs": [
+        {
+          "batchId": "0c44f62d-47fd-491e-ad4c-3568a69a249b",
+          "reportHash": "503d090b83a8a7357e93fc5d005b520495e9aed2d9a2aa11e5f6a039476d217d",
+          "published": 22,
+          "held": 0,
+          "writeFailed": 0,
+          "skipped": 0,
+          "readerRevision": "git:94c463d26cf7fb1828eee05cac357b3e3658958d",
+          "policyVersion": "native-ingestion-completion/1",
+          "completedAt": "2026-09-23T13:41:26.253Z"
+        }
+      ],
+      "results": [
+        {
+          "source": "bevilles-jewellers",
+          "fetched": 22,
+          "created": 22,
+          "updated": 0,
+          "merged": 0,
+          "errors": 0,
+          "held": null,
+          "heldUnresolved": null,
+          "rejected": null,
+          "rejectedReasons": null,
+          "france": 0,
+          "complete": true,
+          "truncated": false,
+          "captureBatchId": "0c44f62d-47fd-491e-ad4c-3568a69a249b",
+          "completionReportHash": "503d090b83a8a7357e93fc5d005b520495e9aed2d9a2aa11e5f6a039476d217d"
+        }
+      ]
+    },
+    {
+      "runId": "45791aab-c634-451d-b7ad-0a0933f0523c",
+      "command": "source-campaign",
+      "revision": "94c463d26cf7fb1828eee05cac357b3e3658958d",
+      "startedAt": "2026-09-23T13:42:14.857Z",
+      "finishedAt": "2026-09-23T13:43:37.385Z",
+      "durationSeconds": 82.528,
+      "status": "FAILED",
+      "sources": [
+        "cotton-on"
+      ],
+      "captures": 11,
+      "raw": 485,
+      "extractions": 464,
+      "aliveEvents": 2,
+      "sealedCompletions": 0,
+      "heartbeat": [],
+      "errorEvents": 1,
+      "qualification": [
+        {
+          "key": "cotton-on",
+          "verdict": "COLLECTE_NON_VALIDEE",
+          "raisons": [
+            "validation native : REJECTED (CONTENT_MISSING)",
+            "le portail ou le site officiel du registre est servi sous un autre domaine d'employeur (cottonongroup.com.au, registre : cottonongroup.com) : relation à instruire (groupe, distributeur, franchise ou registre)"
+          ],
+          "revision": "07d1da9e-6695-43eb-a182-a6dd576e05a6"
+        }
+      ],
+      "runObservability": [
+        {
+          "status": "FAILED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 485,
+            "http.redirects": 8,
+            "http.responses": 485
+          }
+        }
+      ],
+      "sourceRuns": [],
+      "completionProofs": [],
+      "results": []
+    },
+    {
+      "runId": "5471532c-72c1-41dd-ae15-bb50e01945f1",
+      "command": "ingest",
+      "revision": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "startedAt": "2026-09-23T13:56:04.228Z",
+      "finishedAt": "2026-09-23T14:05:54.294Z",
+      "durationSeconds": 590.066,
+      "status": "COMPLETED",
+      "sources": [
+        "wttj-sector"
+      ],
+      "captures": 4,
+      "raw": 4399,
+      "extractions": 4148,
+      "aliveEvents": 19,
+      "sealedCompletions": 1,
+      "heartbeat": [
+        "pinged"
+      ],
+      "errorEvents": 0,
+      "qualification": [],
+      "runObservability": [
+        {
+          "status": "COMPLETED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 4399,
+            "http.redirects": 1,
+            "http.responses": 4399
+          }
+        }
+      ],
+      "sourceRuns": [
+        {
+          "runId": "5471532c-72c1-41dd-ae15-bb50e01945f1",
+          "id": "cmue6ectm06qqmd34f52f0t45",
+          "sourceKey": "wttj-sector",
+          "status": "OK",
+          "jobs": 2074,
+          "previousJobs": 1928,
+          "fetched": 2074,
+          "accepted": 2074,
+          "declaredTotal": 2074,
+          "truncated": false,
+          "errors": 0,
+          "canAttestAbsence": false,
+          "complete": null,
+          "note": "desc 100% date 100% pays 100% url 100%",
+          "descriptionRate": 1,
+          "dateRate": 1,
+          "countryRate": 1,
+          "urlRate": 1,
+          "ranAt": "2026-09-23T14:05:54.153Z"
+        }
+      ],
+      "completionProofs": [
+        {
+          "batchId": "56e3abec-5d5a-4d2b-b9d6-1a5a8553c0a5",
+          "reportHash": "08e57e2d62dd15c5ed481786d4ce43201a4d697af2abfc1e873accf6a236bda7",
+          "published": 2074,
+          "held": 0,
+          "writeFailed": 0,
+          "skipped": 0,
+          "readerRevision": "git:a5321650adbbd49843a30be60aae7de8ed869d8a",
+          "policyVersion": "native-ingestion-completion/1",
+          "completedAt": "2026-09-23T14:05:54.139Z"
+        }
+      ],
+      "results": [
+        {
+          "source": "wttj-sector",
+          "fetched": 2074,
+          "created": 147,
+          "updated": 1927,
+          "merged": 0,
+          "errors": 0,
+          "held": null,
+          "heldUnresolved": null,
+          "rejected": null,
+          "rejectedReasons": null,
+          "france": 1738,
+          "complete": null,
+          "truncated": false,
+          "captureBatchId": "56e3abec-5d5a-4d2b-b9d6-1a5a8553c0a5",
+          "completionReportHash": "08e57e2d62dd15c5ed481786d4ce43201a4d697af2abfc1e873accf6a236bda7"
+        }
+      ]
+    },
+    {
+      "runId": "2b41390b-f913-4d32-81d6-e9c0d9066e66",
+      "command": "ingest",
+      "revision": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "startedAt": "2026-09-23T14:06:41.678Z",
+      "finishedAt": "2026-09-23T14:06:44.228Z",
+      "durationSeconds": 2.55,
+      "status": "COMPLETED",
+      "sources": [
+        "showroomprive"
+      ],
+      "captures": 3,
+      "raw": 3,
+      "extractions": 56,
+      "aliveEvents": 0,
+      "sealedCompletions": 1,
+      "heartbeat": [
+        "pinged"
+      ],
+      "errorEvents": 0,
+      "qualification": [],
+      "runObservability": [
+        {
+          "status": "COMPLETED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 3,
+            "http.responses": 3
+          }
+        }
+      ],
+      "sourceRuns": [
+        {
+          "runId": "2b41390b-f913-4d32-81d6-e9c0d9066e66",
+          "id": "cmue6ffcx005gpb34x3byilzs",
+          "sourceKey": "showroomprive",
+          "status": "OK",
+          "jobs": 28,
+          "previousJobs": 0,
+          "fetched": 28,
+          "accepted": 28,
+          "declaredTotal": null,
+          "truncated": false,
+          "errors": 0,
+          "canAttestAbsence": true,
+          "complete": true,
+          "note": "desc 100% date 100% pays 96% url 100%",
+          "descriptionRate": 1,
+          "dateRate": 1,
+          "countryRate": 0.964,
+          "urlRate": 1,
+          "ranAt": "2026-09-23T14:06:44.096Z"
+        }
+      ],
+      "completionProofs": [
+        {
+          "batchId": "5385eaa1-4275-4796-aada-11807c5a4a82",
+          "reportHash": "66a07b2d668ab9797c45bf86a60550ddb340a8d86ec4720bc0a502c4b3a6f3de",
+          "published": 28,
+          "held": 0,
+          "writeFailed": 0,
+          "skipped": 0,
+          "readerRevision": "git:a5321650adbbd49843a30be60aae7de8ed869d8a",
+          "policyVersion": "native-ingestion-completion/1",
+          "completedAt": "2026-09-23T14:06:44.088Z"
+        }
+      ],
+      "results": [
+        {
+          "source": "showroomprive",
+          "fetched": 28,
+          "created": 28,
+          "updated": 0,
+          "merged": 0,
+          "errors": 0,
+          "held": null,
+          "heldUnresolved": null,
+          "rejected": null,
+          "rejectedReasons": null,
+          "france": 27,
+          "complete": true,
+          "truncated": false,
+          "captureBatchId": "5385eaa1-4275-4796-aada-11807c5a4a82",
+          "completionReportHash": "66a07b2d668ab9797c45bf86a60550ddb340a8d86ec4720bc0a502c4b3a6f3de"
+        }
+      ]
+    },
+    {
+      "runId": "398fea25-32b6-44ec-b72e-b9ac235a687a",
+      "command": "ingest",
+      "revision": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "startedAt": "2026-09-23T14:07:23.563Z",
+      "finishedAt": "2026-09-23T14:07:39.492Z",
+      "durationSeconds": 15.929,
+      "status": "COMPLETED",
+      "sources": [
+        "promod"
+      ],
+      "captures": 3,
+      "raw": 115,
+      "extractions": 100,
+      "aliveEvents": 0,
+      "sealedCompletions": 1,
+      "heartbeat": [
+        "pinged"
+      ],
+      "errorEvents": 0,
+      "qualification": [],
+      "runObservability": [
+        {
+          "status": "COMPLETED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 115,
+            "http.responses": 115
+          }
+        }
+      ],
+      "sourceRuns": [
+        {
+          "runId": "398fea25-32b6-44ec-b72e-b9ac235a687a",
+          "id": "cmue6gm07009qpn33m2o7a76f",
+          "sourceKey": "promod",
+          "status": "OK",
+          "jobs": 50,
+          "previousJobs": 0,
+          "fetched": 50,
+          "accepted": 50,
+          "declaredTotal": null,
+          "truncated": false,
+          "errors": 0,
+          "canAttestAbsence": true,
+          "complete": true,
+          "note": "desc 100% date 100% pays 100% url 100%",
+          "descriptionRate": 1,
+          "dateRate": 1,
+          "countryRate": 1,
+          "urlRate": 1,
+          "ranAt": "2026-09-23T14:07:39.365Z"
+        }
+      ],
+      "completionProofs": [
+        {
+          "batchId": "fef436c5-55b9-42cd-b965-10379678424b",
+          "reportHash": "0efbeada854378589f3a9f426b23b62025916c31d41bdc314c6d877bfea80c08",
+          "published": 50,
+          "held": 0,
+          "writeFailed": 0,
+          "skipped": 0,
+          "readerRevision": "git:a5321650adbbd49843a30be60aae7de8ed869d8a",
+          "policyVersion": "native-ingestion-completion/1",
+          "completedAt": "2026-09-23T14:07:39.353Z"
+        }
+      ],
+      "results": [
+        {
+          "source": "promod",
+          "fetched": 50,
+          "created": 50,
+          "updated": 0,
+          "merged": 0,
+          "errors": 0,
+          "held": null,
+          "heldUnresolved": null,
+          "rejected": null,
+          "rejectedReasons": null,
+          "france": 48,
+          "complete": true,
+          "truncated": false,
+          "captureBatchId": "fef436c5-55b9-42cd-b965-10379678424b",
+          "completionReportHash": "0efbeada854378589f3a9f426b23b62025916c31d41bdc314c6d877bfea80c08"
+        }
+      ]
+    },
+    {
+      "runId": "913f166a-3a1b-4a47-bdbe-7911d4a59df3",
+      "command": "ingest",
+      "revision": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "startedAt": "2026-09-23T14:08:24.972Z",
+      "finishedAt": "2026-09-23T14:08:31.913Z",
+      "durationSeconds": 6.941,
+      "status": "COMPLETED",
+      "sources": [
+        "polene"
+      ],
+      "captures": 3,
+      "raw": 3,
+      "extractions": 168,
+      "aliveEvents": 0,
+      "sealedCompletions": 1,
+      "heartbeat": [
+        "pinged"
+      ],
+      "errorEvents": 0,
+      "qualification": [],
+      "runObservability": [
+        {
+          "status": "COMPLETED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 3,
+            "http.responses": 3
+          }
+        }
+      ],
+      "sourceRuns": [
+        {
+          "runId": "913f166a-3a1b-4a47-bdbe-7911d4a59df3",
+          "id": "cmue6hqd100gcpc34e989nhr2",
+          "sourceKey": "polene",
+          "status": "OK",
+          "jobs": 84,
+          "previousJobs": 0,
+          "fetched": 84,
+          "accepted": 84,
+          "declaredTotal": 84,
+          "truncated": false,
+          "errors": 0,
+          "canAttestAbsence": true,
+          "complete": true,
+          "note": "desc 100% date 100% pays 100% url 100%",
+          "descriptionRate": 1,
+          "dateRate": 1,
+          "countryRate": 1,
+          "urlRate": 1,
+          "ranAt": "2026-09-23T14:08:31.669Z"
+        }
+      ],
+      "completionProofs": [
+        {
+          "batchId": "31dd2667-7779-4f77-ba9e-3f923f8cb3d1",
+          "reportHash": "651c0d41e0292854b1fbd9a6d5e5d4f1a96d7c83b68d970f702a2ad40d574b80",
+          "published": 84,
+          "held": 0,
+          "writeFailed": 0,
+          "skipped": 0,
+          "readerRevision": "git:a5321650adbbd49843a30be60aae7de8ed869d8a",
+          "policyVersion": "native-ingestion-completion/1",
+          "completedAt": "2026-09-23T14:08:31.656Z"
+        }
+      ],
+      "results": [
+        {
+          "source": "polene",
+          "fetched": 84,
+          "created": 84,
+          "updated": 0,
+          "merged": 0,
+          "errors": 0,
+          "held": null,
+          "heldUnresolved": null,
+          "rejected": null,
+          "rejectedReasons": null,
+          "france": 48,
+          "complete": true,
+          "truncated": false,
+          "captureBatchId": "31dd2667-7779-4f77-ba9e-3f923f8cb3d1",
+          "completionReportHash": "651c0d41e0292854b1fbd9a6d5e5d4f1a96d7c83b68d970f702a2ad40d574b80"
+        }
+      ]
+    },
+    {
+      "runId": "51bdac11-76de-4c80-801d-1f3555797409",
+      "command": "ingest",
+      "revision": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "startedAt": "2026-09-23T14:09:26.178Z",
+      "finishedAt": "2026-09-23T14:09:31.147Z",
+      "durationSeconds": 4.969,
+      "status": "COMPLETED",
+      "sources": [
+        "apivita"
+      ],
+      "captures": 3,
+      "raw": 5,
+      "extractions": 18,
+      "aliveEvents": 0,
+      "sealedCompletions": 1,
+      "heartbeat": [
+        "pinged"
+      ],
+      "errorEvents": 0,
+      "qualification": [],
+      "runObservability": [
+        {
+          "status": "COMPLETED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 5,
+            "http.responses": 5
+          }
+        }
+      ],
+      "sourceRuns": [
+        {
+          "runId": "51bdac11-76de-4c80-801d-1f3555797409",
+          "id": "cmue6j05o001rpl349qp8rny6",
+          "sourceKey": "apivita",
+          "status": "OK",
+          "jobs": 9,
+          "previousJobs": 0,
+          "fetched": 9,
+          "accepted": 9,
+          "declaredTotal": 9,
+          "truncated": false,
+          "errors": 0,
+          "canAttestAbsence": true,
+          "complete": true,
+          "note": "desc 100% date 100% pays 100% url 100%",
+          "descriptionRate": 1,
+          "dateRate": 1,
+          "countryRate": 1,
+          "urlRate": 1,
+          "ranAt": "2026-09-23T14:09:31.019Z"
+        }
+      ],
+      "completionProofs": [
+        {
+          "batchId": "fce7cde2-d34d-4b66-867e-b4df00465380",
+          "reportHash": "93c40316f9a0e7e1e4cba8466a7e13a59a8ac1833a3da979f7b04c8b98dfb566",
+          "published": 9,
+          "held": 0,
+          "writeFailed": 0,
+          "skipped": 0,
+          "readerRevision": "git:a5321650adbbd49843a30be60aae7de8ed869d8a",
+          "policyVersion": "native-ingestion-completion/1",
+          "completedAt": "2026-09-23T14:09:31.014Z"
+        }
+      ],
+      "results": [
+        {
+          "source": "apivita",
+          "fetched": 9,
+          "created": 9,
+          "updated": 0,
+          "merged": 0,
+          "errors": 0,
+          "held": null,
+          "heldUnresolved": null,
+          "rejected": null,
+          "rejectedReasons": null,
+          "france": 0,
+          "complete": true,
+          "truncated": false,
+          "captureBatchId": "fce7cde2-d34d-4b66-867e-b4df00465380",
+          "completionReportHash": "93c40316f9a0e7e1e4cba8466a7e13a59a8ac1833a3da979f7b04c8b98dfb566"
+        }
+      ]
+    },
+    {
+      "runId": "5141fb6a-1f11-41ab-a106-4b107b2cce35",
+      "command": "ingest",
+      "revision": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "startedAt": "2026-09-23T14:10:56.714Z",
+      "finishedAt": "2026-09-23T14:12:42.196Z",
+      "durationSeconds": 105.482,
+      "status": "COMPLETED",
+      "sources": [
+        "apm-monaco"
+      ],
+      "captures": 3,
+      "raw": 33,
+      "extractions": 298,
+      "aliveEvents": 3,
+      "sealedCompletions": 1,
+      "heartbeat": [
+        "pinged"
+      ],
+      "errorEvents": 0,
+      "qualification": [],
+      "runObservability": [
+        {
+          "status": "COMPLETED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 33,
+            "http.responses": 33
+          }
+        }
+      ],
+      "sourceRuns": [
+        {
+          "runId": "5141fb6a-1f11-41ab-a106-4b107b2cce35",
+          "id": "cmue6n3hi00szkd33blzpl7b5",
+          "sourceKey": "apm-monaco",
+          "status": "OK",
+          "jobs": 149,
+          "previousJobs": 0,
+          "fetched": 149,
+          "accepted": 149,
+          "declaredTotal": 149,
+          "truncated": false,
+          "errors": 0,
+          "canAttestAbsence": true,
+          "complete": true,
+          "note": "desc 100% date 100% pays 100% url 100%",
+          "descriptionRate": 1,
+          "dateRate": 1,
+          "countryRate": 1,
+          "urlRate": 1,
+          "ranAt": "2026-09-23T14:12:41.956Z"
+        }
+      ],
+      "completionProofs": [
+        {
+          "batchId": "7217caf7-e54e-4e4c-8e8e-1c9d21b19e77",
+          "reportHash": "0776367ae7e1ca08faa248fc5a4722ccfd310c100f5d0523e6a1a4f9b25ea9fe",
+          "published": 149,
+          "held": 0,
+          "writeFailed": 0,
+          "skipped": 0,
+          "readerRevision": "git:a5321650adbbd49843a30be60aae7de8ed869d8a",
+          "policyVersion": "native-ingestion-completion/1",
+          "completedAt": "2026-09-23T14:12:41.910Z"
+        }
+      ],
+      "results": [
+        {
+          "source": "apm-monaco",
+          "fetched": 149,
+          "created": 149,
+          "updated": 0,
+          "merged": 0,
+          "errors": 0,
+          "held": null,
+          "heldUnresolved": null,
+          "rejected": null,
+          "rejectedReasons": null,
+          "france": 70,
+          "complete": true,
+          "truncated": false,
+          "captureBatchId": "7217caf7-e54e-4e4c-8e8e-1c9d21b19e77",
+          "completionReportHash": "0776367ae7e1ca08faa248fc5a4722ccfd310c100f5d0523e6a1a4f9b25ea9fe"
+        }
+      ]
+    },
+    {
+      "runId": "fb3eb979-6031-429b-a616-3f51334f3d03",
+      "command": "source-campaign",
+      "revision": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "startedAt": "2026-09-23T14:13:47.289Z",
+      "finishedAt": "2026-09-23T14:14:27.201Z",
+      "durationSeconds": 39.912,
+      "status": "FAILED",
+      "sources": [
+        "de-beers-london"
+      ],
+      "captures": 12,
+      "raw": 133,
+      "extractions": 112,
+      "aliveEvents": 1,
+      "sealedCompletions": 0,
+      "heartbeat": [],
+      "errorEvents": 1,
+      "qualification": [
+        {
+          "key": "de-beers-london",
+          "verdict": "BLOCAGE_EXTERNE",
+          "raisons": [
+            "pages officielles inaccessibles à la campagne (403/429/5xx ou capture impossible) : blocage externe, identité ni prouvée ni contredite"
+          ],
+          "revision": "1006ad9b-8121-458e-85d3-53dc9f2363d7"
+        }
+      ],
+      "runObservability": [
+        {
+          "status": "FAILED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 133,
+            "http.redirects": 8,
+            "http.responses": 133
+          }
+        }
+      ],
+      "sourceRuns": [],
+      "completionProofs": [],
+      "results": []
+    },
+    {
+      "runId": "b9fddf4b-a99b-4231-9e19-7779e74ff418",
+      "command": "source-campaign",
+      "revision": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "startedAt": "2026-09-23T14:15:03.681Z",
+      "finishedAt": "2026-09-23T14:15:05.499Z",
+      "durationSeconds": 1.818,
+      "status": "FAILED",
+      "sources": [
+        "dim"
+      ],
+      "captures": 5,
+      "raw": 6,
+      "extractions": 41,
+      "aliveEvents": 0,
+      "sealedCompletions": 0,
+      "heartbeat": [],
+      "errorEvents": 1,
+      "qualification": [
+        {
+          "key": "dim",
+          "verdict": "BLOCAGE_EXTERNE",
+          "raisons": [
+            "pages officielles inaccessibles à la campagne (403/429/5xx ou capture impossible) : blocage externe, identité ni prouvée ni contredite"
+          ],
+          "revision": "efba6ba6-50f1-42af-9a2a-02e35a2c7231"
+        }
+      ],
+      "runObservability": [
+        {
+          "status": "FAILED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 6,
+            "http.redirects": 1,
+            "http.responses": 4
+          }
+        }
+      ],
+      "sourceRuns": [],
+      "completionProofs": [],
+      "results": []
+    },
+    {
+      "runId": "88632eb0-0b65-4012-a89a-ed4b21f63489",
+      "command": "source-campaign",
+      "revision": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "startedAt": "2026-09-23T14:15:46.326Z",
+      "finishedAt": "2026-09-23T14:18:17.870Z",
+      "durationSeconds": 151.544,
+      "status": "COMPLETED",
+      "sources": [
+        "douglas-sf"
+      ],
+      "captures": 3,
+      "raw": 439,
+      "extractions": 312,
+      "aliveEvents": 5,
+      "sealedCompletions": 0,
+      "heartbeat": [],
+      "errorEvents": 0,
+      "qualification": [
+        {
+          "key": "douglas-sf",
+          "verdict": "QUALIFIEE",
+          "raisons": [],
+          "revision": "cf0b7d36-e143-429a-bef7-388d7b402414"
+        }
+      ],
+      "runObservability": [
+        {
+          "status": "COMPLETED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 439,
+            "http.responses": 439
+          }
+        }
+      ],
+      "sourceRuns": [],
+      "completionProofs": [],
+      "results": []
+    },
+    {
+      "runId": "1939afe4-2a76-4445-8d9a-db93b3f62d2a",
+      "command": "ingest",
+      "revision": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "startedAt": "2026-09-23T14:16:59.295Z",
+      "finishedAt": "2026-09-23T14:18:17.550Z",
+      "durationSeconds": 78.255,
+      "status": "COMPLETED",
+      "sources": [
+        "douglas-sf"
+      ],
+      "captures": 1,
+      "raw": 413,
+      "extractions": 306,
+      "aliveEvents": 2,
+      "sealedCompletions": 1,
+      "heartbeat": [
+        "pinged"
+      ],
+      "errorEvents": 1,
+      "qualification": [],
+      "runObservability": [
+        {
+          "status": "COMPLETED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 413,
+            "http.responses": 413
+          }
+        }
+      ],
+      "sourceRuns": [
+        {
+          "runId": "1939afe4-2a76-4445-8d9a-db93b3f62d2a",
+          "id": "cmue6ua8x01njti6fdn7fsl2b",
+          "sourceKey": "douglas-sf",
+          "status": "DEGRADED",
+          "jobs": 306,
+          "previousJobs": 0,
+          "fetched": 306,
+          "accepted": 306,
+          "declaredTotal": null,
+          "truncated": true,
+          "errors": 0,
+          "canAttestAbsence": false,
+          "complete": false,
+          "note": "troncature : 306 collectées, total inconnu · desc 100% date 100% pays 100% url 100%",
+          "descriptionRate": 1,
+          "dateRate": 1,
+          "countryRate": 1,
+          "urlRate": 1,
+          "ranAt": "2026-09-23T14:18:17.312Z"
+        }
+      ],
+      "completionProofs": [
+        {
+          "batchId": "fea7e3b4-ee64-44e8-9f58-24fb9c4d95ce",
+          "reportHash": "37f8bb89de854d9c4fd150216d0a0ba82ad2b40ca04a9a75d3a4b10a0f5a09df",
+          "published": 306,
+          "held": 0,
+          "writeFailed": 0,
+          "skipped": 0,
+          "readerRevision": "git:a5321650adbbd49843a30be60aae7de8ed869d8a",
+          "policyVersion": "native-ingestion-completion/1",
+          "completedAt": "2026-09-23T14:18:17.299Z"
+        }
+      ],
+      "results": [
+        {
+          "source": "douglas-sf",
+          "fetched": 306,
+          "created": 306,
+          "updated": 0,
+          "merged": 0,
+          "errors": 0,
+          "held": null,
+          "heldUnresolved": null,
+          "rejected": null,
+          "rejectedReasons": null,
+          "france": 0,
+          "complete": false,
+          "truncated": true,
+          "captureBatchId": "fea7e3b4-ee64-44e8-9f58-24fb9c4d95ce",
+          "completionReportHash": "37f8bb89de854d9c4fd150216d0a0ba82ad2b40ca04a9a75d3a4b10a0f5a09df"
+        }
+      ]
+    },
+    {
+      "runId": "2bda9c4c-eca4-497e-b9b8-d756e7c197f3",
+      "command": "source-campaign",
+      "revision": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "startedAt": "2026-09-23T14:19:02.436Z",
+      "finishedAt": "2026-09-23T14:19:06.772Z",
+      "durationSeconds": 4.336,
+      "status": "FAILED",
+      "sources": [
+        "fastrack"
+      ],
+      "captures": 2,
+      "raw": 5,
+      "extractions": 0,
+      "aliveEvents": 0,
+      "sealedCompletions": 0,
+      "heartbeat": [],
+      "errorEvents": 1,
+      "qualification": [
+        {
+          "key": "fastrack",
+          "verdict": "INACCESSIBLE",
+          "raisons": [
+            "collecte : HTTP 500 for https://careers.titan.in/api/jobs?…"
+          ],
+          "revision": "5dd6aceb-0c65-4f44-9f59-fe4ca47472e5"
+        }
+      ],
+      "runObservability": [
+        {
+          "status": "FAILED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.retries": 2,
+            "http.attempts": 5,
+            "http.redirects": 1,
+            "http.responses": 5
+          }
+        }
+      ],
+      "sourceRuns": [],
+      "completionProofs": [],
+      "results": []
+    },
+    {
+      "runId": "8d24e350-7685-44ef-9875-23d7cad4b918",
+      "command": "source-campaign",
+      "revision": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "startedAt": "2026-09-23T14:19:51.316Z",
+      "finishedAt": "2026-09-23T14:19:52.557Z",
+      "durationSeconds": 1.241,
+      "status": "FAILED",
+      "sources": [
+        "ghost"
+      ],
+      "captures": 2,
+      "raw": 3,
+      "extractions": 0,
+      "aliveEvents": 0,
+      "sealedCompletions": 0,
+      "heartbeat": [],
+      "errorEvents": 1,
+      "qualification": [
+        {
+          "key": "ghost",
+          "verdict": "COLLECTE_NON_VALIDEE",
+          "raisons": [
+            "validation native : REJECTED (ENUMERATION_INCOMPLETE, EMPTY_FEED_NOT_NATIVELY_PROVEN)"
+          ],
+          "revision": "eaedf779-8e01-411d-a69a-f693552263a3"
+        }
+      ],
+      "runObservability": [
+        {
+          "status": "FAILED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 3,
+            "http.responses": 3
+          }
+        }
+      ],
+      "sourceRuns": [],
+      "completionProofs": [],
+      "results": []
+    },
+    {
+      "runId": "28f44eb4-4b32-4899-9f18-b3c6fb9ba599",
+      "command": "source-campaign",
+      "revision": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "startedAt": "2026-09-23T14:20:39.588Z",
+      "finishedAt": "2026-09-23T14:21:30.968Z",
+      "durationSeconds": 51.38,
+      "status": "COMPLETED",
+      "sources": [
+        "marella"
+      ],
+      "captures": 6,
+      "raw": 198,
+      "extractions": 190,
+      "aliveEvents": 1,
+      "sealedCompletions": 0,
+      "heartbeat": [],
+      "errorEvents": 0,
+      "qualification": [
+        {
+          "key": "marella",
+          "verdict": "QUALIFIEE",
+          "raisons": [],
+          "revision": "1b084379-430d-4726-9bbc-6f7f3c0e5aea"
+        }
+      ],
+      "runObservability": [
+        {
+          "status": "COMPLETED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 198,
+            "http.redirects": 1,
+            "http.responses": 198
+          }
+        }
+      ],
+      "sourceRuns": [],
+      "completionProofs": [],
+      "results": []
+    },
+    {
+      "runId": "2ace1a1c-6198-48c6-914b-183eb85ea3f4",
+      "command": "ingest",
+      "revision": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "startedAt": "2026-09-23T14:21:00.891Z",
+      "finishedAt": "2026-09-23T14:21:30.731Z",
+      "durationSeconds": 29.84,
+      "status": "COMPLETED",
+      "sources": [
+        "marella"
+      ],
+      "captures": 1,
+      "raw": 192,
+      "extractions": 190,
+      "aliveEvents": 0,
+      "sealedCompletions": 1,
+      "heartbeat": [
+        "pinged"
+      ],
+      "errorEvents": 0,
+      "qualification": [],
+      "runObservability": [
+        {
+          "status": "COMPLETED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 192,
+            "http.responses": 192
+          }
+        }
+      ],
+      "sourceRuns": [
+        {
+          "runId": "2ace1a1c-6198-48c6-914b-183eb85ea3f4",
+          "id": "cmue6yfdt010zl46eggjen3u7",
+          "sourceKey": "marella",
+          "status": "NEW",
+          "jobs": 190,
+          "previousJobs": null,
+          "fetched": 190,
+          "accepted": 190,
+          "declaredTotal": 190,
+          "truncated": false,
+          "errors": 0,
+          "canAttestAbsence": false,
+          "complete": null,
+          "note": "desc 100% date 100% pays 100% url 100%",
+          "descriptionRate": 1,
+          "dateRate": 1,
+          "countryRate": 1,
+          "urlRate": 1,
+          "ranAt": "2026-09-23T14:21:30.592Z"
+        }
+      ],
+      "completionProofs": [
+        {
+          "batchId": "0fb7bb8a-17b3-4e94-9c1c-9a75bfae11b6",
+          "reportHash": "9dd32fcbfcedcb01c4d24f86833bb706ed2639e4a2489ab232d05042aa1a9690",
+          "published": 190,
+          "held": 0,
+          "writeFailed": 0,
+          "skipped": 0,
+          "readerRevision": "git:a5321650adbbd49843a30be60aae7de8ed869d8a",
+          "policyVersion": "native-ingestion-completion/1",
+          "completedAt": "2026-09-23T14:21:30.578Z"
+        }
+      ],
+      "results": [
+        {
+          "source": "marella",
+          "fetched": 190,
+          "created": 190,
+          "updated": 0,
+          "merged": 0,
+          "errors": 0,
+          "held": null,
+          "heldUnresolved": null,
+          "rejected": null,
+          "rejectedReasons": null,
+          "france": 4,
+          "complete": null,
+          "truncated": false,
+          "captureBatchId": "0fb7bb8a-17b3-4e94-9c1c-9a75bfae11b6",
+          "completionReportHash": "9dd32fcbfcedcb01c4d24f86833bb706ed2639e4a2489ab232d05042aa1a9690"
+        }
+      ]
+    },
+    {
+      "runId": "5171a47e-63e3-471d-b654-1ea208963e97",
+      "command": "source-campaign",
+      "revision": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "startedAt": "2026-09-23T14:22:23.744Z",
+      "finishedAt": "2026-09-23T14:23:15.208Z",
+      "durationSeconds": 51.464,
+      "status": "FAILED",
+      "sources": [
+        "markham"
+      ],
+      "captures": 4,
+      "raw": 190,
+      "extractions": 181,
+      "aliveEvents": 1,
+      "sealedCompletions": 0,
+      "heartbeat": [],
+      "errorEvents": 1,
+      "qualification": [
+        {
+          "key": "markham",
+          "verdict": "QUALIFIEE",
+          "raisons": [],
+          "revision": "aaa12bdb-b9ea-49d3-b1a8-2a01e0ef1eb8"
+        }
+      ],
+      "runObservability": [
+        {
+          "status": "FAILED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 190,
+            "http.redirects": 6,
+            "http.responses": 190
+          }
+        }
+      ],
+      "sourceRuns": [],
+      "completionProofs": [],
+      "results": []
+    },
+    {
+      "runId": "6482dc20-efc1-4a4d-87aa-fd523ccd1c4c",
+      "command": "ingest",
+      "revision": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "startedAt": "2026-09-23T14:22:50.069Z",
+      "finishedAt": "2026-09-23T14:23:14.975Z",
+      "durationSeconds": 24.906,
+      "status": "COMPLETED_WITH_ERRORS",
+      "sources": [
+        "markham"
+      ],
+      "captures": 1,
+      "raw": 182,
+      "extractions": 181,
+      "aliveEvents": 0,
+      "sealedCompletions": 1,
+      "heartbeat": [
+        "pinged"
+      ],
+      "errorEvents": 182,
+      "qualification": [],
+      "runObservability": [
+        {
+          "status": "COMPLETED_WITH_ERRORS",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 182,
+            "http.responses": 182
+          }
+        }
+      ],
+      "sourceRuns": [
+        {
+          "runId": "6482dc20-efc1-4a4d-87aa-fd523ccd1c4c",
+          "id": "cmue70nq200a2ld6fnvfsw1qj",
+          "sourceKey": "markham",
+          "status": "BROKEN",
+          "jobs": 0,
+          "previousJobs": null,
+          "fetched": 181,
+          "accepted": 181,
+          "declaredTotal": 181,
+          "truncated": false,
+          "errors": 181,
+          "canAttestAbsence": false,
+          "complete": null,
+          "note": "181 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+          "descriptionRate": 1,
+          "dateRate": 1,
+          "countryRate": 1,
+          "urlRate": 1,
+          "ranAt": "2026-09-23T14:23:14.714Z"
+        }
+      ],
+      "completionProofs": [
+        {
+          "batchId": "b73e2062-61f7-49d3-8f9f-162151298cee",
+          "reportHash": "69e79cc9ae9c82ad0ce7884d95a4d0d4947da087c791080d2a5efda13eac9461",
+          "published": 0,
+          "held": 0,
+          "writeFailed": 181,
+          "skipped": 0,
+          "readerRevision": "git:a5321650adbbd49843a30be60aae7de8ed869d8a",
+          "policyVersion": "native-ingestion-completion/1",
+          "completedAt": "2026-09-23T14:23:14.694Z"
+        }
+      ],
+      "results": [
+        {
+          "source": "markham",
+          "fetched": 181,
+          "created": 0,
+          "updated": 0,
+          "merged": 0,
+          "errors": 181,
+          "held": null,
+          "heldUnresolved": null,
+          "rejected": null,
+          "rejectedReasons": null,
+          "france": 0,
+          "complete": null,
+          "truncated": false,
+          "captureBatchId": "b73e2062-61f7-49d3-8f9f-162151298cee",
+          "completionReportHash": "69e79cc9ae9c82ad0ce7884d95a4d0d4947da087c791080d2a5efda13eac9461"
+        }
+      ]
+    },
+    {
+      "runId": "ae70d516-8363-4c9d-b969-0a51e8480ee7",
+      "command": "source-campaign",
+      "revision": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "startedAt": "2026-09-23T14:24:13.327Z",
+      "finishedAt": "2026-09-23T14:24:15.005Z",
+      "durationSeconds": 1.678,
+      "status": "FAILED",
+      "sources": [
+        "minimalist"
+      ],
+      "captures": 2,
+      "raw": 2,
+      "extractions": 0,
+      "aliveEvents": 0,
+      "sealedCompletions": 0,
+      "heartbeat": [],
+      "errorEvents": 1,
+      "qualification": [
+        {
+          "key": "minimalist",
+          "verdict": "COLLECTE_NON_VALIDEE",
+          "raisons": [
+            "validation native : REJECTED (ENUMERATION_INCOMPLETE, EMPTY_FEED_NOT_NATIVELY_PROVEN)"
+          ],
+          "revision": "a27bd072-a3c6-4a80-97d1-331df1a14c2a"
+        }
+      ],
+      "runObservability": [
+        {
+          "status": "FAILED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 2,
+            "http.responses": 2
+          }
+        }
+      ],
+      "sourceRuns": [],
+      "completionProofs": [],
+      "results": []
+    },
+    {
+      "runId": "8fc34c3a-e1a4-4a82-9fcc-1ac089099579",
+      "command": "source-campaign",
+      "revision": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "startedAt": "2026-09-23T14:24:54.551Z",
+      "finishedAt": "2026-09-23T14:24:57.501Z",
+      "durationSeconds": 2.95,
+      "status": "FAILED",
+      "sources": [
+        "nimble"
+      ],
+      "captures": 2,
+      "raw": 5,
+      "extractions": 0,
+      "aliveEvents": 0,
+      "sealedCompletions": 0,
+      "heartbeat": [],
+      "errorEvents": 1,
+      "qualification": [
+        {
+          "key": "nimble",
+          "verdict": "COLLECTE_NON_VALIDEE",
+          "raisons": [
+            "validation native : REJECTED (ENUMERATION_INCOMPLETE, EMPTY_FEED_NOT_NATIVELY_PROVEN)"
+          ],
+          "revision": "971056f2-88d3-4363-8883-515b06d684df"
+        }
+      ],
+      "runObservability": [
+        {
+          "status": "FAILED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 5,
+            "http.responses": 5
+          }
+        }
+      ],
+      "sourceRuns": [],
+      "completionProofs": [],
+      "results": []
+    },
+    {
+      "runId": "927b0a92-a379-4b00-8e45-d0571728ae8d",
+      "command": "source-campaign",
+      "revision": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "startedAt": "2026-09-23T14:25:41.838Z",
+      "finishedAt": "2026-09-23T14:25:57.857Z",
+      "durationSeconds": 16.019,
+      "status": "COMPLETED",
+      "sources": [
+        "oska"
+      ],
+      "captures": 3,
+      "raw": 33,
+      "extractions": 30,
+      "aliveEvents": 0,
+      "sealedCompletions": 0,
+      "heartbeat": [],
+      "errorEvents": 0,
+      "qualification": [
+        {
+          "key": "oska",
+          "verdict": "QUALIFIEE",
+          "raisons": [],
+          "revision": "1765899a-c8fc-4368-9806-82c51ab16819"
+        }
+      ],
+      "runObservability": [
+        {
+          "status": "COMPLETED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 33,
+            "http.responses": 33
+          }
+        }
+      ],
+      "sourceRuns": [],
+      "completionProofs": [],
+      "results": []
+    },
+    {
+      "runId": "c7021443-e2a3-4a8b-9359-5eea4525ff0f",
+      "command": "ingest",
+      "revision": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "startedAt": "2026-09-23T14:25:52.264Z",
+      "finishedAt": "2026-09-23T14:25:57.609Z",
+      "durationSeconds": 5.345,
+      "status": "COMPLETED",
+      "sources": [
+        "oska"
+      ],
+      "captures": 1,
+      "raw": 31,
+      "extractions": 30,
+      "aliveEvents": 0,
+      "sealedCompletions": 1,
+      "heartbeat": [
+        "pinged"
+      ],
+      "errorEvents": 0,
+      "qualification": [],
+      "runObservability": [
+        {
+          "status": "COMPLETED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 31,
+            "http.responses": 31
+          }
+        }
+      ],
+      "sourceRuns": [
+        {
+          "runId": "c7021443-e2a3-4a8b-9359-5eea4525ff0f",
+          "id": "cmue745b5005upj6dx1b49dgd",
+          "sourceKey": "oska",
+          "status": "NEW",
+          "jobs": 30,
+          "previousJobs": null,
+          "fetched": 30,
+          "accepted": 30,
+          "declaredTotal": 30,
+          "truncated": false,
+          "errors": 0,
+          "canAttestAbsence": false,
+          "complete": true,
+          "note": "desc 100% date 100% pays 100% url 100%",
+          "descriptionRate": 1,
+          "dateRate": 1,
+          "countryRate": 1,
+          "urlRate": 1,
+          "ranAt": "2026-09-23T14:25:57.472Z"
+        }
+      ],
+      "completionProofs": [
+        {
+          "batchId": "5f8297df-d026-4f6f-b318-907b00e6b690",
+          "reportHash": "2e112c070f2ec1e55a207e7ce5b3886e112841266c41654d3e6c5e143bbff194",
+          "published": 30,
+          "held": 0,
+          "writeFailed": 0,
+          "skipped": 0,
+          "readerRevision": "git:a5321650adbbd49843a30be60aae7de8ed869d8a",
+          "policyVersion": "native-ingestion-completion/1",
+          "completedAt": "2026-09-23T14:25:57.467Z"
+        }
+      ],
+      "results": [
+        {
+          "source": "oska",
+          "fetched": 30,
+          "created": 30,
+          "updated": 0,
+          "merged": 0,
+          "errors": 0,
+          "held": null,
+          "heldUnresolved": null,
+          "rejected": null,
+          "rejectedReasons": null,
+          "france": 15,
+          "complete": true,
+          "truncated": false,
+          "captureBatchId": "5f8297df-d026-4f6f-b318-907b00e6b690",
+          "completionReportHash": "2e112c070f2ec1e55a207e7ce5b3886e112841266c41654d3e6c5e143bbff194"
+        }
+      ]
+    },
+    {
+      "runId": "e918ae70-4104-4da6-8bd7-967ee67c81b4",
+      "command": "source-campaign",
+      "revision": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "startedAt": "2026-09-23T14:26:41.726Z",
+      "finishedAt": "2026-09-23T14:26:55.936Z",
+      "durationSeconds": 14.21,
+      "status": "COMPLETED",
+      "sources": [
+        "petit-bateau"
+      ],
+      "captures": 7,
+      "raw": 50,
+      "extractions": 42,
+      "aliveEvents": 0,
+      "sealedCompletions": 0,
+      "heartbeat": [],
+      "errorEvents": 0,
+      "qualification": [
+        {
+          "key": "petit-bateau",
+          "verdict": "QUALIFIEE",
+          "raisons": [],
+          "revision": "439eface-350b-4a97-98ad-c97cfdf2e8ac"
+        }
+      ],
+      "runObservability": [
+        {
+          "status": "COMPLETED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 50,
+            "http.redirects": 1,
+            "http.responses": 49
+          }
+        }
+      ],
+      "sourceRuns": [],
+      "completionProofs": [],
+      "results": []
+    },
+    {
+      "runId": "0a3d64a8-560d-4230-970b-3ca5dd0a0c2e",
+      "command": "ingest",
+      "revision": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "startedAt": "2026-09-23T14:26:48.819Z",
+      "finishedAt": "2026-09-23T14:26:55.716Z",
+      "durationSeconds": 6.897,
+      "status": "COMPLETED",
+      "sources": [
+        "petit-bateau"
+      ],
+      "captures": 1,
+      "raw": 43,
+      "extractions": 42,
+      "aliveEvents": 0,
+      "sealedCompletions": 1,
+      "heartbeat": [
+        "pinged"
+      ],
+      "errorEvents": 0,
+      "qualification": [],
+      "runObservability": [
+        {
+          "status": "COMPLETED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 43,
+            "http.responses": 43
+          }
+        }
+      ],
+      "sourceRuns": [
+        {
+          "runId": "0a3d64a8-560d-4230-970b-3ca5dd0a0c2e",
+          "id": "cmue75e570086mz6fdfvginva",
+          "sourceKey": "petit-bateau",
+          "status": "NEW",
+          "jobs": 42,
+          "previousJobs": null,
+          "fetched": 42,
+          "accepted": 42,
+          "declaredTotal": 42,
+          "truncated": false,
+          "errors": 0,
+          "canAttestAbsence": false,
+          "complete": null,
+          "note": "desc 100% date 100% pays 100% url 100%",
+          "descriptionRate": 1,
+          "dateRate": 1,
+          "countryRate": 1,
+          "urlRate": 1,
+          "ranAt": "2026-09-23T14:26:55.578Z"
+        }
+      ],
+      "completionProofs": [
+        {
+          "batchId": "e01911b6-5adc-4d8c-a696-d14212cf0cb7",
+          "reportHash": "3d2e0467211cf2d32b40902e7771b116b28d5f001e9bb99f3f0f6f1552158d80",
+          "published": 42,
+          "held": 0,
+          "writeFailed": 0,
+          "skipped": 0,
+          "readerRevision": "git:a5321650adbbd49843a30be60aae7de8ed869d8a",
+          "policyVersion": "native-ingestion-completion/1",
+          "completedAt": "2026-09-23T14:26:55.572Z"
+        }
+      ],
+      "results": [
+        {
+          "source": "petit-bateau",
+          "fetched": 42,
+          "created": 42,
+          "updated": 0,
+          "merged": 0,
+          "errors": 0,
+          "held": null,
+          "heldUnresolved": null,
+          "rejected": null,
+          "rejectedReasons": null,
+          "france": 35,
+          "complete": null,
+          "truncated": false,
+          "captureBatchId": "e01911b6-5adc-4d8c-a696-d14212cf0cb7",
+          "completionReportHash": "3d2e0467211cf2d32b40902e7771b116b28d5f001e9bb99f3f0f6f1552158d80"
+        }
+      ]
+    },
+    {
+      "runId": "eaa4ebdd-18fa-4956-8c24-4708122abc5f",
+      "command": "source-campaign",
+      "revision": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "startedAt": "2026-09-23T14:27:31.066Z",
+      "finishedAt": "2026-09-23T14:27:32.740Z",
+      "durationSeconds": 1.674,
+      "status": "FAILED",
+      "sources": [
+        "picard"
+      ],
+      "captures": 2,
+      "raw": 2,
+      "extractions": 0,
+      "aliveEvents": 0,
+      "sealedCompletions": 0,
+      "heartbeat": [],
+      "errorEvents": 1,
+      "qualification": [
+        {
+          "key": "picard",
+          "verdict": "COLLECTE_NON_VALIDEE",
+          "raisons": [
+            "validation native : REJECTED (ENUMERATION_INCOMPLETE, EMPTY_FEED_NOT_NATIVELY_PROVEN)"
+          ],
+          "revision": "4744009c-6ae2-4df5-9a06-2a8a60400eaa"
+        }
+      ],
+      "runObservability": [
+        {
+          "status": "FAILED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 2,
+            "http.responses": 2
+          }
+        }
+      ],
+      "sourceRuns": [],
+      "completionProofs": [],
+      "results": []
+    },
+    {
+      "runId": "e3849533-6852-4c03-93e3-3b995ef4d9c7",
+      "command": "source-campaign",
+      "revision": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "startedAt": "2026-09-23T14:28:16.706Z",
+      "finishedAt": "2026-09-23T14:41:24.761Z",
+      "durationSeconds": 788.055,
+      "status": "COMPLETED",
+      "sources": [
+        "psycho-bunny"
+      ],
+      "captures": 3,
+      "raw": 154,
+      "extractions": 148,
+      "aliveEvents": 26,
+      "sealedCompletions": 0,
+      "heartbeat": [],
+      "errorEvents": 0,
+      "qualification": [
+        {
+          "key": "psycho-bunny",
+          "verdict": "QUALIFIEE",
+          "raisons": [],
+          "revision": "d489563b-370b-4b5f-a06a-abdf47a656d7"
+        }
+      ],
+      "runObservability": [
+        {
+          "status": "COMPLETED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.retries": 3,
+            "http.attempts": 154,
+            "http.responses": 153
+          }
+        }
+      ],
+      "sourceRuns": [],
+      "completionProofs": [],
+      "results": []
+    },
+    {
+      "runId": "0762a824-0e21-4fa1-adab-371c68e4944d",
+      "command": "ingest",
+      "revision": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "startedAt": "2026-09-23T14:34:58.215Z",
+      "finishedAt": "2026-09-23T14:41:24.334Z",
+      "durationSeconds": 386.119,
+      "status": "COMPLETED",
+      "sources": [
+        "psycho-bunny"
+      ],
+      "captures": 1,
+      "raw": 150,
+      "extractions": 148,
+      "aliveEvents": 12,
+      "sealedCompletions": 1,
+      "heartbeat": [
+        "pinged"
+      ],
+      "errorEvents": 0,
+      "qualification": [],
+      "runObservability": [
+        {
+          "status": "COMPLETED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.retries": 1,
+            "http.attempts": 150,
+            "http.responses": 150
+          }
+        }
+      ],
+      "sourceRuns": [
+        {
+          "runId": "0762a824-0e21-4fa1-adab-371c68e4944d",
+          "id": "cmue7o0cv00ssph6i76zxlwm4",
+          "sourceKey": "psycho-bunny",
+          "status": "NEW",
+          "jobs": 148,
+          "previousJobs": null,
+          "fetched": 148,
+          "accepted": 148,
+          "declaredTotal": 148,
+          "truncated": false,
+          "errors": 0,
+          "canAttestAbsence": false,
+          "complete": true,
+          "note": "desc 100% date 100% pays 100% url 100%",
+          "descriptionRate": 1,
+          "dateRate": 1,
+          "countryRate": 1,
+          "urlRate": 1,
+          "ranAt": "2026-09-23T14:41:24.174Z"
+        }
+      ],
+      "completionProofs": [
+        {
+          "batchId": "b0e1697f-5783-49a3-adc0-fdf3c8d5b2cd",
+          "reportHash": "b4d538d109663cc5790879a34f46fc857ef3fec3a4e44ddde6e272e0f27e4b47",
+          "published": 148,
+          "held": 0,
+          "writeFailed": 0,
+          "skipped": 0,
+          "readerRevision": "git:a5321650adbbd49843a30be60aae7de8ed869d8a",
+          "policyVersion": "native-ingestion-completion/1",
+          "completedAt": "2026-09-23T14:41:24.155Z"
+        }
+      ],
+      "results": [
+        {
+          "source": "psycho-bunny",
+          "fetched": 148,
+          "created": 148,
+          "updated": 0,
+          "merged": 0,
+          "errors": 0,
+          "held": null,
+          "heldUnresolved": null,
+          "rejected": null,
+          "rejectedReasons": null,
+          "france": 0,
+          "complete": true,
+          "truncated": false,
+          "captureBatchId": "b0e1697f-5783-49a3-adc0-fdf3c8d5b2cd",
+          "completionReportHash": "b4d538d109663cc5790879a34f46fc857ef3fec3a4e44ddde6e272e0f27e4b47"
+        }
+      ]
+    },
+    {
+      "runId": "c379db58-1f73-4f5f-a1ac-4e93f03739f6",
+      "command": "source-campaign",
+      "revision": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "startedAt": "2026-09-23T14:44:34.383Z",
+      "finishedAt": "2026-09-23T14:44:36.048Z",
+      "durationSeconds": 1.665,
+      "status": "FAILED",
+      "sources": [
+        "rotate"
+      ],
+      "captures": 2,
+      "raw": 3,
+      "extractions": 0,
+      "aliveEvents": 0,
+      "sealedCompletions": 0,
+      "heartbeat": [],
+      "errorEvents": 1,
+      "qualification": [
+        {
+          "key": "rotate",
+          "verdict": "COLLECTE_NON_VALIDEE",
+          "raisons": [
+            "validation native : REJECTED (ENUMERATION_INCOMPLETE, EMPTY_FEED_NOT_NATIVELY_PROVEN)"
+          ],
+          "revision": "4eeef934-b191-4df2-9b45-48741b4a4611"
+        }
+      ],
+      "runObservability": [
+        {
+          "status": "FAILED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 3,
+            "http.responses": 3
+          }
+        }
+      ],
+      "sourceRuns": [],
+      "completionProofs": [],
+      "results": []
+    },
+    {
+      "runId": "f2a477a2-32a4-4b58-a7ec-707b151164bd",
+      "command": "source-campaign",
+      "revision": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "startedAt": "2026-09-23T14:45:28.840Z",
+      "finishedAt": "2026-09-23T14:47:50.712Z",
+      "durationSeconds": 141.872,
+      "status": "FAILED",
+      "sources": [
+        "sandro"
+      ],
+      "captures": 12,
+      "raw": 578,
+      "extractions": 543,
+      "aliveEvents": 4,
+      "sealedCompletions": 0,
+      "heartbeat": [],
+      "errorEvents": 1,
+      "qualification": [
+        {
+          "key": "sandro",
+          "verdict": "QUALIFIEE",
+          "raisons": [
+            "aucune page du domaine officiel ne lie exactement le portail configuré (voir etapes.identite)"
+          ],
+          "revision": "fba4ace6-e51a-43e6-95b3-a01a4b71e16c"
+        }
+      ],
+      "runObservability": [
+        {
+          "status": "FAILED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 578,
+            "http.redirects": 18,
+            "http.responses": 578
+          }
+        }
+      ],
+      "sourceRuns": [],
+      "completionProofs": [],
+      "results": []
+    },
+    {
+      "runId": "40ea773a-9bf7-47b1-a979-8b70e533c2df",
+      "command": "ingest",
+      "revision": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "startedAt": "2026-09-23T14:46:35.687Z",
+      "finishedAt": "2026-09-23T14:47:50.460Z",
+      "durationSeconds": 74.773,
+      "status": "COMPLETED",
+      "sources": [
+        "sandro"
+      ],
+      "captures": 1,
+      "raw": 549,
+      "extractions": 543,
+      "aliveEvents": 2,
+      "sealedCompletions": 1,
+      "heartbeat": [
+        "pinged"
+      ],
+      "errorEvents": 512,
+      "qualification": [],
+      "runObservability": [
+        {
+          "status": "COMPLETED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 549,
+            "http.responses": 549
+          }
+        }
+      ],
+      "sourceRuns": [
+        {
+          "runId": "40ea773a-9bf7-47b1-a979-8b70e533c2df",
+          "id": "cmue7wa7400yhqf6ebzcv2zn5",
+          "sourceKey": "sandro",
+          "status": "DEGRADED",
+          "jobs": 31,
+          "previousJobs": null,
+          "fetched": 543,
+          "accepted": 543,
+          "declaredTotal": 543,
+          "truncated": false,
+          "errors": 512,
+          "canAttestAbsence": false,
+          "complete": null,
+          "note": "512 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+          "descriptionRate": 1,
+          "dateRate": 1,
+          "countryRate": 1,
+          "urlRate": 1,
+          "ranAt": "2026-09-23T14:47:50.175Z"
+        }
+      ],
+      "completionProofs": [
+        {
+          "batchId": "4a1d98b0-6ff6-4632-be3c-dcca2e8749a4",
+          "reportHash": "6518d33931738bf0b1046cbe70b8768df867bc7b7a8199dde0c5bb1994853bcd",
+          "published": 31,
+          "held": 0,
+          "writeFailed": 512,
+          "skipped": 0,
+          "readerRevision": "git:a5321650adbbd49843a30be60aae7de8ed869d8a",
+          "policyVersion": "native-ingestion-completion/1",
+          "completedAt": "2026-09-23T14:47:50.169Z"
+        }
+      ],
+      "results": [
+        {
+          "source": "sandro",
+          "fetched": 543,
+          "created": 31,
+          "updated": 0,
+          "merged": 0,
+          "errors": 512,
+          "held": null,
+          "heldUnresolved": null,
+          "rejected": null,
+          "rejectedReasons": null,
+          "france": 241,
+          "complete": null,
+          "truncated": false,
+          "captureBatchId": "4a1d98b0-6ff6-4632-be3c-dcca2e8749a4",
+          "completionReportHash": "6518d33931738bf0b1046cbe70b8768df867bc7b7a8199dde0c5bb1994853bcd"
+        }
+      ]
+    },
+    {
+      "runId": "149d621f-f940-44d5-a94d-bed470d8219d",
+      "command": "source-campaign",
+      "revision": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "startedAt": "2026-09-23T14:48:27.776Z",
+      "finishedAt": "2026-09-23T14:48:28.823Z",
+      "durationSeconds": 1.047,
+      "status": "FAILED",
+      "sources": [
+        "sioux"
+      ],
+      "captures": 2,
+      "raw": 2,
+      "extractions": 0,
+      "aliveEvents": 0,
+      "sealedCompletions": 0,
+      "heartbeat": [],
+      "errorEvents": 1,
+      "qualification": [
+        {
+          "key": "sioux",
+          "verdict": "COLLECTE_NON_VALIDEE",
+          "raisons": [
+            "validation native : REJECTED (ENUMERATION_INCOMPLETE, EMPTY_FEED_NOT_NATIVELY_PROVEN)"
+          ],
+          "revision": "17436def-b126-41d9-a7ff-c226a279a2bf"
+        }
+      ],
+      "runObservability": [
+        {
+          "status": "FAILED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 2,
+            "http.responses": 2
+          }
+        }
+      ],
+      "sourceRuns": [],
+      "completionProofs": [],
+      "results": []
+    },
+    {
+      "runId": "8e3f9a9c-0b84-46ba-bd18-8684a234f6bf",
+      "command": "source-campaign",
+      "revision": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "startedAt": "2026-09-23T14:49:09.996Z",
+      "finishedAt": "2026-09-23T14:49:14.202Z",
+      "durationSeconds": 4.206,
+      "status": "COMPLETED",
+      "sources": [
+        "siebel-juweliers"
+      ],
+      "captures": 3,
+      "raw": 5,
+      "extractions": 21,
+      "aliveEvents": 0,
+      "sealedCompletions": 0,
+      "heartbeat": [],
+      "errorEvents": 0,
+      "qualification": [
+        {
+          "key": "siebel-juweliers",
+          "verdict": "QUALIFIEE",
+          "raisons": [],
+          "revision": "34bd4edb-ed11-446d-9975-aa797ee0cb2a"
+        }
+      ],
+      "runObservability": [
+        {
+          "status": "COMPLETED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 5,
+            "http.redirects": 2,
+            "http.responses": 5
+          }
+        }
+      ],
+      "sourceRuns": [],
+      "completionProofs": [],
+      "results": []
+    },
+    {
+      "runId": "7936469c-c1f3-4900-b15b-d78290ecb307",
+      "command": "ingest",
+      "revision": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "startedAt": "2026-09-23T14:49:11.782Z",
+      "finishedAt": "2026-09-23T14:49:13.943Z",
+      "durationSeconds": 2.161,
+      "status": "COMPLETED",
+      "sources": [
+        "siebel-juweliers"
+      ],
+      "captures": 1,
+      "raw": 1,
+      "extractions": 21,
+      "aliveEvents": 0,
+      "sealedCompletions": 1,
+      "heartbeat": [
+        "pinged"
+      ],
+      "errorEvents": 0,
+      "qualification": [],
+      "runObservability": [
+        {
+          "status": "COMPLETED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 1,
+            "http.responses": 1
+          }
+        }
+      ],
+      "sourceRuns": [
+        {
+          "runId": "7936469c-c1f3-4900-b15b-d78290ecb307",
+          "id": "cmue7y2qe0043oa6ffw0z7sdw",
+          "sourceKey": "siebel-juweliers",
+          "status": "NEW",
+          "jobs": 21,
+          "previousJobs": null,
+          "fetched": 21,
+          "accepted": 21,
+          "declaredTotal": null,
+          "truncated": false,
+          "errors": 0,
+          "canAttestAbsence": false,
+          "complete": true,
+          "note": "desc 100% date 100% pays 100% url 100%",
+          "descriptionRate": 1,
+          "dateRate": 1,
+          "countryRate": 1,
+          "urlRate": 1,
+          "ranAt": "2026-09-23T14:49:13.813Z"
+        }
+      ],
+      "completionProofs": [
+        {
+          "batchId": "e4f48684-2ab6-42a3-831b-25589d489712",
+          "reportHash": "705551f3872432f31b2d900d6104bb1a8c474e7f5ed337a05b261af7ca5d7841",
+          "published": 21,
+          "held": 0,
+          "writeFailed": 0,
+          "skipped": 0,
+          "readerRevision": "git:a5321650adbbd49843a30be60aae7de8ed869d8a",
+          "policyVersion": "native-ingestion-completion/1",
+          "completedAt": "2026-09-23T14:49:13.806Z"
+        }
+      ],
+      "results": [
+        {
+          "source": "siebel-juweliers",
+          "fetched": 21,
+          "created": 21,
+          "updated": 0,
+          "merged": 0,
+          "errors": 0,
+          "held": null,
+          "heldUnresolved": null,
+          "rejected": null,
+          "rejectedReasons": null,
+          "france": 0,
+          "complete": true,
+          "truncated": false,
+          "captureBatchId": "e4f48684-2ab6-42a3-831b-25589d489712",
+          "completionReportHash": "705551f3872432f31b2d900d6104bb1a8c474e7f5ed337a05b261af7ca5d7841"
+        }
+      ]
+    },
+    {
+      "runId": "947e84cd-3326-4a8a-aa33-c034f906065e",
+      "command": "source-campaign",
+      "revision": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "startedAt": "2026-09-23T14:50:01.180Z",
+      "finishedAt": "2026-09-23T14:50:05.588Z",
+      "durationSeconds": 4.408,
+      "status": "COMPLETED",
+      "sources": [
+        "yaya"
+      ],
+      "captures": 3,
+      "raw": 5,
+      "extractions": 23,
+      "aliveEvents": 0,
+      "sealedCompletions": 0,
+      "heartbeat": [],
+      "errorEvents": 0,
+      "qualification": [
+        {
+          "key": "yaya",
+          "verdict": "QUALIFIEE",
+          "raisons": [],
+          "revision": "1692fd15-0efd-4b33-b888-777a19a4217b"
+        }
+      ],
+      "runObservability": [
+        {
+          "status": "COMPLETED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 5,
+            "http.redirects": 2,
+            "http.responses": 5
+          }
+        }
+      ],
+      "sourceRuns": [],
+      "completionProofs": [],
+      "results": []
+    },
+    {
+      "runId": "ad36832a-9d5b-4b0d-a259-24ce7234ae7e",
+      "command": "ingest",
+      "revision": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "startedAt": "2026-09-23T14:50:02.895Z",
+      "finishedAt": "2026-09-23T14:50:05.369Z",
+      "durationSeconds": 2.474,
+      "status": "COMPLETED",
+      "sources": [
+        "yaya"
+      ],
+      "captures": 1,
+      "raw": 1,
+      "extractions": 23,
+      "aliveEvents": 0,
+      "sealedCompletions": 1,
+      "heartbeat": [
+        "pinged"
+      ],
+      "errorEvents": 0,
+      "qualification": [],
+      "runObservability": [
+        {
+          "status": "COMPLETED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 1,
+            "http.responses": 1
+          }
+        }
+      ],
+      "sourceRuns": [
+        {
+          "runId": "ad36832a-9d5b-4b0d-a259-24ce7234ae7e",
+          "id": "cmue7z6er004hm86douxnfbhp",
+          "sourceKey": "yaya",
+          "status": "NEW",
+          "jobs": 23,
+          "previousJobs": null,
+          "fetched": 23,
+          "accepted": 23,
+          "declaredTotal": null,
+          "truncated": false,
+          "errors": 0,
+          "canAttestAbsence": false,
+          "complete": true,
+          "note": "desc 100% date 100% pays 100% url 100%",
+          "descriptionRate": 1,
+          "dateRate": 1,
+          "countryRate": 1,
+          "urlRate": 1,
+          "ranAt": "2026-09-23T14:50:05.235Z"
+        }
+      ],
+      "completionProofs": [
+        {
+          "batchId": "1fc7932d-805e-4cf2-a0f8-ee207ce4929b",
+          "reportHash": "da2cbc0c4830d688a757c43b06314c918601820406f8f381988d46d2e0fc4c80",
+          "published": 23,
+          "held": 0,
+          "writeFailed": 0,
+          "skipped": 0,
+          "readerRevision": "git:a5321650adbbd49843a30be60aae7de8ed869d8a",
+          "policyVersion": "native-ingestion-completion/1",
+          "completedAt": "2026-09-23T14:50:05.229Z"
+        }
+      ],
+      "results": [
+        {
+          "source": "yaya",
+          "fetched": 23,
+          "created": 23,
+          "updated": 0,
+          "merged": 0,
+          "errors": 0,
+          "held": null,
+          "heldUnresolved": null,
+          "rejected": null,
+          "rejectedReasons": null,
+          "france": 0,
+          "complete": true,
+          "truncated": false,
+          "captureBatchId": "1fc7932d-805e-4cf2-a0f8-ee207ce4929b",
+          "completionReportHash": "da2cbc0c4830d688a757c43b06314c918601820406f8f381988d46d2e0fc4c80"
+        }
+      ]
+    },
+    {
+      "runId": "0dd3095c-a744-4bf4-8cb7-ad931b4db37f",
+      "command": "source-campaign",
+      "revision": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "startedAt": "2026-09-23T14:51:16.237Z",
+      "finishedAt": "2026-09-23T14:51:33.426Z",
+      "durationSeconds": 17.189,
+      "status": "COMPLETED",
+      "sources": [
+        "alberto"
+      ],
+      "captures": 3,
+      "raw": 83,
+      "extractions": 6,
+      "aliveEvents": 0,
+      "sealedCompletions": 0,
+      "heartbeat": [],
+      "errorEvents": 0,
+      "qualification": [
+        {
+          "key": "alberto",
+          "verdict": "QUALIFIEE",
+          "raisons": [],
+          "revision": "27103de6-6119-4822-8b1b-4389955dcdb2"
+        }
+      ],
+      "runObservability": [
+        {
+          "status": "COMPLETED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 83,
+            "http.responses": 83
+          }
+        }
+      ],
+      "sourceRuns": [],
+      "completionProofs": [],
+      "results": []
+    },
+    {
+      "runId": "ec361cfa-0f1f-4c1f-9555-4141b427441a",
+      "command": "ingest",
+      "revision": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "startedAt": "2026-09-23T14:51:25.223Z",
+      "finishedAt": "2026-09-23T14:51:33.168Z",
+      "durationSeconds": 7.945,
+      "status": "COMPLETED",
+      "sources": [
+        "alberto"
+      ],
+      "captures": 1,
+      "raw": 81,
+      "extractions": 6,
+      "aliveEvents": 0,
+      "sealedCompletions": 1,
+      "heartbeat": [
+        "pinged"
+      ],
+      "errorEvents": 0,
+      "qualification": [],
+      "runObservability": [
+        {
+          "status": "COMPLETED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 81,
+            "http.responses": 81
+          }
+        }
+      ],
+      "sourceRuns": [
+        {
+          "runId": "ec361cfa-0f1f-4c1f-9555-4141b427441a",
+          "id": "cmue8121h000uqo6ffa8qxa8d",
+          "sourceKey": "alberto",
+          "status": "DEGRADED",
+          "jobs": 4,
+          "previousJobs": null,
+          "fetched": 6,
+          "accepted": 4,
+          "declaredTotal": 80,
+          "truncated": false,
+          "errors": 0,
+          "canAttestAbsence": false,
+          "complete": true,
+          "note": "2 annonces non publiables archivées (2 non résolues) ; énumération prouvée · desc 0% date 100% pays 100% url 100%",
+          "descriptionRate": 0,
+          "dateRate": 1,
+          "countryRate": 1,
+          "urlRate": 1,
+          "ranAt": "2026-09-23T14:51:32.885Z"
+        }
+      ],
+      "completionProofs": [
+        {
+          "batchId": "fb8275a0-9ca8-4921-b952-1d51794120fe",
+          "reportHash": "fee8ebb18b77a1c206de0506831734fd3ca70fc1a61c0095c2c47ab805efe4ce",
+          "published": 4,
+          "held": 2,
+          "writeFailed": 0,
+          "skipped": 0,
+          "readerRevision": "git:a5321650adbbd49843a30be60aae7de8ed869d8a",
+          "policyVersion": "native-ingestion-completion/1",
+          "completedAt": "2026-09-23T14:51:32.879Z"
+        }
+      ],
+      "results": [
+        {
+          "source": "alberto",
+          "fetched": 6,
+          "created": 4,
+          "updated": 0,
+          "merged": 0,
+          "errors": 0,
+          "held": 2,
+          "heldUnresolved": 2,
+          "rejected": 74,
+          "rejectedReasons": {
+            "LISTED_PAGE_WITHOUT_JOBPOSTING": 74
+          },
+          "france": 0,
+          "complete": true,
+          "truncated": false,
+          "captureBatchId": "fb8275a0-9ca8-4921-b952-1d51794120fe",
+          "completionReportHash": "fee8ebb18b77a1c206de0506831734fd3ca70fc1a61c0095c2c47ab805efe4ce"
+        }
+      ]
+    },
+    {
+      "runId": "9aac26ab-0b82-4fe1-adc8-81cdf1980c40",
+      "command": "source-campaign",
+      "revision": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "startedAt": "2026-09-23T14:52:36.052Z",
+      "finishedAt": "2026-09-23T14:56:31.663Z",
+      "durationSeconds": 235.611,
+      "status": "FAILED",
+      "sources": [
+        "oniverse"
+      ],
+      "captures": 7,
+      "raw": 748,
+      "extractions": 367,
+      "aliveEvents": 7,
+      "sealedCompletions": 0,
+      "heartbeat": [],
+      "errorEvents": 1,
+      "qualification": [
+        {
+          "key": "oniverse",
+          "verdict": "COLLECTE_NON_VALIDEE",
+          "raisons": [
+            "validation native : REJECTED (CONTENT_MISSING, REJECTED_NATIVE_ROWS, ENUMERATION_INCOMPLETE)"
+          ],
+          "revision": "acbf1594-9937-4013-b2b0-c53f47860463"
+        }
+      ],
+      "runObservability": [
+        {
+          "status": "FAILED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.retries": 4,
+            "http.attempts": 748,
+            "http.redirects": 736,
+            "http.responses": 742
+          }
+        }
+      ],
+      "sourceRuns": [],
+      "completionProofs": [],
+      "results": []
+    },
+    {
+      "runId": "36b7b777-49ad-45d1-9bb7-6cd1051ea3dd",
+      "command": "source-campaign",
+      "revision": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "startedAt": "2026-09-23T14:57:44.816Z",
+      "finishedAt": "2026-09-23T14:58:13.456Z",
+      "durationSeconds": 28.64,
+      "status": "COMPLETED",
+      "sources": [
+        "audemars-piguet"
+      ],
+      "captures": 12,
+      "raw": 111,
+      "extractions": 87,
+      "aliveEvents": 0,
+      "sealedCompletions": 0,
+      "heartbeat": [],
+      "errorEvents": 0,
+      "qualification": [
+        {
+          "key": "audemars-piguet",
+          "verdict": "QUALIFIEE",
+          "raisons": [
+            "aucune page du domaine officiel ne lie exactement le portail configuré (voir etapes.identite)"
+          ],
+          "revision": "f60f0343-0a73-4e8b-b529-c2a76e910e33"
+        }
+      ],
+      "runObservability": [
+        {
+          "status": "COMPLETED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 111,
+            "http.redirects": 12,
+            "http.responses": 111
+          }
+        }
+      ],
+      "sourceRuns": [],
+      "completionProofs": [],
+      "results": []
+    },
+    {
+      "runId": "824882a8-6548-47b4-a475-dec0f842bcd9",
+      "command": "ingest",
+      "revision": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "startedAt": "2026-09-23T14:57:57.937Z",
+      "finishedAt": "2026-09-23T14:58:13.191Z",
+      "durationSeconds": 15.254,
+      "status": "COMPLETED",
+      "sources": [
+        "audemars-piguet"
+      ],
+      "captures": 1,
+      "raw": 88,
+      "extractions": 87,
+      "aliveEvents": 0,
+      "sealedCompletions": 1,
+      "heartbeat": [
+        "pinged"
+      ],
+      "errorEvents": 0,
+      "qualification": [],
+      "runObservability": [
+        {
+          "status": "COMPLETED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 88,
+            "http.responses": 88
+          }
+        }
+      ],
+      "sourceRuns": [
+        {
+          "runId": "824882a8-6548-47b4-a475-dec0f842bcd9",
+          "id": "cmue89mta00gxo66huw8ktk9z",
+          "sourceKey": "audemars-piguet",
+          "status": "NEW",
+          "jobs": 87,
+          "previousJobs": null,
+          "fetched": 87,
+          "accepted": 87,
+          "declaredTotal": 87,
+          "truncated": false,
+          "errors": 0,
+          "canAttestAbsence": false,
+          "complete": null,
+          "note": "desc 100% date 100% pays 100% url 100%",
+          "descriptionRate": 1,
+          "dateRate": 1,
+          "countryRate": 1,
+          "urlRate": 1,
+          "ranAt": "2026-09-23T14:58:13.054Z"
+        }
+      ],
+      "completionProofs": [
+        {
+          "batchId": "8236df50-cd62-45e8-99b8-888214854866",
+          "reportHash": "8395ad3cb01db3d47b6a5286a111c086a84181413a52f8befce1b00a4bcef504",
+          "published": 87,
+          "held": 0,
+          "writeFailed": 0,
+          "skipped": 0,
+          "readerRevision": "git:a5321650adbbd49843a30be60aae7de8ed869d8a",
+          "policyVersion": "native-ingestion-completion/1",
+          "completedAt": "2026-09-23T14:58:13.052Z"
+        }
+      ],
+      "results": [
+        {
+          "source": "audemars-piguet",
+          "fetched": 87,
+          "created": 87,
+          "updated": 0,
+          "merged": 0,
+          "errors": 0,
+          "held": null,
+          "heldUnresolved": null,
+          "rejected": null,
+          "rejectedReasons": null,
+          "france": 2,
+          "complete": null,
+          "truncated": false,
+          "captureBatchId": "8236df50-cd62-45e8-99b8-888214854866",
+          "completionReportHash": "8395ad3cb01db3d47b6a5286a111c086a84181413a52f8befce1b00a4bcef504"
+        }
+      ]
+    },
+    {
+      "runId": "1f34f2da-4515-4bc5-827b-9d3c1c90701a",
+      "command": "source-campaign",
+      "revision": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "startedAt": "2026-09-23T14:59:18.951Z",
+      "finishedAt": "2026-09-23T14:59:27.942Z",
+      "durationSeconds": 8.991,
+      "status": "COMPLETED",
+      "sources": [
+        "nyx-professional-makeup"
+      ],
+      "captures": 3,
+      "raw": 3,
+      "extractions": 14,
+      "aliveEvents": 0,
+      "sealedCompletions": 0,
+      "heartbeat": [],
+      "errorEvents": 0,
+      "qualification": [
+        {
+          "key": "nyx-professional-makeup",
+          "verdict": "QUALIFIEE",
+          "raisons": [],
+          "revision": "67649db1-0e41-4567-be55-32de541feff0"
+        }
+      ],
+      "runObservability": [
+        {
+          "status": "COMPLETED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 3,
+            "http.responses": 3
+          }
+        }
+      ],
+      "sourceRuns": [],
+      "completionProofs": [],
+      "results": []
+    },
+    {
+      "runId": "37b86158-e737-46a5-bf89-66bc9941bd80",
+      "command": "ingest",
+      "revision": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "startedAt": "2026-09-23T14:59:25.981Z",
+      "finishedAt": "2026-09-23T14:59:27.630Z",
+      "durationSeconds": 1.649,
+      "status": "COMPLETED",
+      "sources": [
+        "nyx-professional-makeup"
+      ],
+      "captures": 1,
+      "raw": 1,
+      "extractions": 14,
+      "aliveEvents": 0,
+      "sealedCompletions": 1,
+      "heartbeat": [
+        "pinged"
+      ],
+      "errorEvents": 0,
+      "qualification": [],
+      "runObservability": [
+        {
+          "status": "COMPLETED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 1,
+            "http.responses": 1
+          }
+        }
+      ],
+      "sourceRuns": [
+        {
+          "runId": "37b86158-e737-46a5-bf89-66bc9941bd80",
+          "id": "cmue8b893002qpf6dohnwsaqz",
+          "sourceKey": "nyx-professional-makeup",
+          "status": "NEW",
+          "jobs": 14,
+          "previousJobs": null,
+          "fetched": 14,
+          "accepted": 14,
+          "declaredTotal": null,
+          "truncated": false,
+          "errors": 0,
+          "canAttestAbsence": false,
+          "complete": true,
+          "note": "desc 100% date 100% pays 100% url 100%",
+          "descriptionRate": 1,
+          "dateRate": 1,
+          "countryRate": 1,
+          "urlRate": 1,
+          "ranAt": "2026-09-23T14:59:27.495Z"
+        }
+      ],
+      "completionProofs": [
+        {
+          "batchId": "503065d5-d437-4684-9565-78a13cae79eb",
+          "reportHash": "81a3377ffcd5b3be050efecc293fc5022469f86b478421a990b9146f28042720",
+          "published": 14,
+          "held": 0,
+          "writeFailed": 0,
+          "skipped": 0,
+          "readerRevision": "git:a5321650adbbd49843a30be60aae7de8ed869d8a",
+          "policyVersion": "native-ingestion-completion/1",
+          "completedAt": "2026-09-23T14:59:27.471Z"
+        }
+      ],
+      "results": [
+        {
+          "source": "nyx-professional-makeup",
+          "fetched": 14,
+          "created": 14,
+          "updated": 0,
+          "merged": 0,
+          "errors": 0,
+          "held": null,
+          "heldUnresolved": null,
+          "rejected": null,
+          "rejectedReasons": null,
+          "france": 14,
+          "complete": true,
+          "truncated": false,
+          "captureBatchId": "503065d5-d437-4684-9565-78a13cae79eb",
+          "completionReportHash": "81a3377ffcd5b3be050efecc293fc5022469f86b478421a990b9146f28042720"
+        }
+      ]
+    },
+    {
+      "runId": "6d76cc17-c52d-4d63-8537-368fd8f90095",
+      "command": "ingest",
+      "revision": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "startedAt": "2026-09-23T15:00:47.170Z",
+      "finishedAt": "2026-09-23T15:02:12.633Z",
+      "durationSeconds": 85.463,
+      "status": "COMPLETED",
+      "sources": [
+        "sandro"
+      ],
+      "captures": 1,
+      "raw": 549,
+      "extractions": 543,
+      "aliveEvents": 2,
+      "sealedCompletions": 1,
+      "heartbeat": [
+        "pinged"
+      ],
+      "errorEvents": 0,
+      "qualification": [],
+      "runObservability": [
+        {
+          "status": "COMPLETED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 549,
+            "http.responses": 549
+          }
+        }
+      ],
+      "sourceRuns": [
+        {
+          "runId": "6d76cc17-c52d-4d63-8537-368fd8f90095",
+          "id": "cmue8erk502v0qy34etx2je4f",
+          "sourceKey": "sandro",
+          "status": "OK",
+          "jobs": 543,
+          "previousJobs": 31,
+          "fetched": 543,
+          "accepted": 543,
+          "declaredTotal": 543,
+          "truncated": false,
+          "errors": 0,
+          "canAttestAbsence": false,
+          "complete": null,
+          "note": "desc 100% date 100% pays 100% url 100%",
+          "descriptionRate": 1,
+          "dateRate": 1,
+          "countryRate": 1,
+          "urlRate": 1,
+          "ranAt": "2026-09-23T15:02:12.484Z"
+        }
+      ],
+      "completionProofs": [
+        {
+          "batchId": "b4660652-71b2-4bb4-91f5-40e96682d386",
+          "reportHash": "ab70fe3e97f137e1e9fdf6d158900c6547716d82a56d40926a9d59acc452ba32",
+          "published": 543,
+          "held": 0,
+          "writeFailed": 0,
+          "skipped": 0,
+          "readerRevision": "git:a5321650adbbd49843a30be60aae7de8ed869d8a",
+          "policyVersion": "native-ingestion-completion/1",
+          "completedAt": "2026-09-23T15:02:12.477Z"
+        }
+      ],
+      "results": [
+        {
+          "source": "sandro",
+          "fetched": 543,
+          "created": 512,
+          "updated": 31,
+          "merged": 0,
+          "errors": 0,
+          "held": null,
+          "heldUnresolved": null,
+          "rejected": null,
+          "rejectedReasons": null,
+          "france": 241,
+          "complete": null,
+          "truncated": false,
+          "captureBatchId": "b4660652-71b2-4bb4-91f5-40e96682d386",
+          "completionReportHash": "ab70fe3e97f137e1e9fdf6d158900c6547716d82a56d40926a9d59acc452ba32"
+        }
+      ]
+    },
+    {
+      "runId": "5d50d90b-6858-42a1-97e2-148c15e0121f",
+      "command": "source-campaign",
+      "revision": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "startedAt": "2026-09-23T15:04:33.074Z",
+      "finishedAt": "2026-09-23T15:05:26.689Z",
+      "durationSeconds": 53.615,
+      "status": "COMPLETED",
+      "sources": [
+        "marella"
+      ],
+      "captures": 6,
+      "raw": 198,
+      "extractions": 190,
+      "aliveEvents": 1,
+      "sealedCompletions": 0,
+      "heartbeat": [],
+      "errorEvents": 0,
+      "qualification": [
+        {
+          "key": "marella",
+          "verdict": "QUALIFIEE",
+          "raisons": [],
+          "revision": "72bbc8f1-f854-4f7b-8d56-96029e9a2cae"
+        }
+      ],
+      "runObservability": [
+        {
+          "status": "COMPLETED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 198,
+            "http.redirects": 1,
+            "http.responses": 198
+          }
+        }
+      ],
+      "sourceRuns": [],
+      "completionProofs": [],
+      "results": []
+    },
+    {
+      "runId": "7c777bbc-f46c-42aa-bbbe-cbe3883d9236",
+      "command": "ingest",
+      "revision": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "startedAt": "2026-09-23T15:04:54.892Z",
+      "finishedAt": "2026-09-23T15:05:26.392Z",
+      "durationSeconds": 31.5,
+      "status": "COMPLETED",
+      "sources": [
+        "marella"
+      ],
+      "captures": 1,
+      "raw": 192,
+      "extractions": 190,
+      "aliveEvents": 1,
+      "sealedCompletions": 1,
+      "heartbeat": [
+        "pinged"
+      ],
+      "errorEvents": 0,
+      "qualification": [],
+      "runObservability": [
+        {
+          "status": "COMPLETED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 192,
+            "http.responses": 192
+          }
+        }
+      ],
+      "sourceRuns": [
+        {
+          "runId": "7c777bbc-f46c-42aa-bbbe-cbe3883d9236",
+          "id": "cmue8ix2l00l4k36fzdlq94ll",
+          "sourceKey": "marella",
+          "status": "OK",
+          "jobs": 190,
+          "previousJobs": 190,
+          "fetched": 190,
+          "accepted": 190,
+          "declaredTotal": 190,
+          "truncated": false,
+          "errors": 0,
+          "canAttestAbsence": false,
+          "complete": null,
+          "note": "desc 100% date 100% pays 100% url 100%",
+          "descriptionRate": 1,
+          "dateRate": 1,
+          "countryRate": 1,
+          "urlRate": 1,
+          "ranAt": "2026-09-23T15:05:26.253Z"
+        }
+      ],
+      "completionProofs": [
+        {
+          "batchId": "2ef25d7e-7d61-46bf-8902-d618ea3ba316",
+          "reportHash": "44a036c1e0357a7a0e8cce587bf2bb370ac64fe913e066308d4bebc6dfa289ca",
+          "published": 190,
+          "held": 0,
+          "writeFailed": 0,
+          "skipped": 0,
+          "readerRevision": "git:a5321650adbbd49843a30be60aae7de8ed869d8a",
+          "policyVersion": "native-ingestion-completion/1",
+          "completedAt": "2026-09-23T15:05:26.238Z"
+        }
+      ],
+      "results": [
+        {
+          "source": "marella",
+          "fetched": 190,
+          "created": 0,
+          "updated": 190,
+          "merged": 0,
+          "errors": 0,
+          "held": null,
+          "heldUnresolved": null,
+          "rejected": null,
+          "rejectedReasons": null,
+          "france": 4,
+          "complete": null,
+          "truncated": false,
+          "captureBatchId": "2ef25d7e-7d61-46bf-8902-d618ea3ba316",
+          "completionReportHash": "44a036c1e0357a7a0e8cce587bf2bb370ac64fe913e066308d4bebc6dfa289ca"
+        }
+      ]
+    }
+  ],
+  "total": {
+    "captures": 265,
+    "raw": 15710,
+    "extractions": 15529,
+    "fetched": 7541,
+    "created": 4222,
+    "updated": 2148,
+    "merged": 0,
+    "errors": 1169
+  },
+  "operationWindow": {
+    "firstRunStartedAt": "2026-09-23T13:17:01.884000+00:00",
+    "lastRunFinishedAt": "2026-09-23T15:05:26.689000+00:00",
+    "wallSeconds": 6504.805,
+    "includes": "Configuration restarts, code correction, migration pause and all targeted attempts; no global run."
+  },
+  "latestBySource": [
+    {
+      "sourceKey": "brown-thomas-taleo",
+      "outcome": "PARTIAL",
+      "deploymentId": "8583d380-d10d-4381-ae14-1681a09fa62a",
+      "codeSha": "94c463d26cf7fb1828eee05cac357b3e3658958d",
+      "registryStatus": "ACTIVE",
+      "currentRevisionId": "5e32c488-151c-43d0-82f2-43d9f7a25311",
+      "runs": [
+        "73b8a5d5-6730-423c-8f08-850eb4449e56"
+      ],
+      "durationSeconds": 38.57,
+      "captures": 3,
+      "raw": 233,
+      "extractions": 158,
+      "result": {
+        "fetched": 79,
+        "created": 67,
+        "updated": 0,
+        "merged": 0,
+        "errors": 12,
+        "held": null,
+        "heldUnresolved": null,
+        "rejected": null,
+        "rejectedReasons": null,
+        "complete": null,
+        "truncated": false,
+        "captureBatchId": "b639a554-e704-4d06-b622-b20df88d071c",
+        "completionReportHash": "97d71e5803700d4806fe8d614e242f2740d80b031b93ed5760eedec4898c2ae3"
+      },
+      "health": {
+        "ok": 0,
+        "broken": 0,
+        "degraded": 1,
+        "checkedAt": "2026-09-23T13:17:40.233Z",
+        "incidents": [
+          {
+            "jobs": 67,
+            "note": "12 erreurs de collecte ou d’écriture",
+            "rates": {
+              "url": 1,
+              "date": 0.81,
+              "country": 0,
+              "description": 1
+            },
+            "source": "brown-thomas-taleo",
+            "status": "DEGRADED",
+            "coverage": "desc 100% date 81% pays 0% url 100%",
+            "previous": 0
+          }
+        ]
+      },
+      "qualificationReasons": [],
+      "sourceRunNotes": [
+        "12 erreurs de collecte ou d’écriture · desc 100% date 81% pays 0% url 100%"
+      ],
+      "qualificationVerdict": null
+    },
+    {
+      "sourceKey": "nars",
+      "outcome": "PASS",
+      "deploymentId": "973f7e47-a231-46ca-8a36-316ed897f55f",
+      "codeSha": "94c463d26cf7fb1828eee05cac357b3e3658958d",
+      "registryStatus": "ACTIVE",
+      "currentRevisionId": "3ead7eaf-1386-40e9-be6c-1dd8f4837532",
+      "runs": [
+        "055273b5-6aef-463f-b80d-953eeed37bf1",
+        "f24c0fcf-8cb6-4daf-b6ad-b90470a59ce8"
+      ],
+      "durationSeconds": 12.182,
+      "captures": 4,
+      "raw": 80,
+      "extractions": 76,
+      "result": {
+        "fetched": 38,
+        "created": 38,
+        "updated": 0,
+        "merged": 0,
+        "errors": 0,
+        "held": null,
+        "heldUnresolved": null,
+        "rejected": null,
+        "rejectedReasons": null,
+        "complete": true,
+        "truncated": false,
+        "captureBatchId": "c2e51009-94fc-4efd-b757-fb28c6e9b7b0",
+        "completionReportHash": "75b26b7373424a684ff703d75948236a9dfb07d7d9315cce3a45f5802028c5fe"
+      },
+      "health": {
+        "ok": 1,
+        "broken": 0,
+        "degraded": 0,
+        "checkedAt": "2026-09-23T13:18:43.887Z",
+        "incidents": []
+      },
+      "qualificationReasons": [],
+      "sourceRunNotes": [
+        "desc 100% date 0% pays 100% url 100%"
+      ],
+      "qualificationVerdict": "QUALIFIEE"
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "outcome": "PASS",
+      "deploymentId": "bfbebb47-e3e1-4256-a908-829908769c55",
+      "codeSha": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "registryStatus": "ACTIVE",
+      "currentRevisionId": "b6cecc93-94ea-4230-9c42-4c3fca68a729",
+      "runs": [
+        "5471532c-72c1-41dd-ae15-bb50e01945f1"
+      ],
+      "durationSeconds": 590.066,
+      "captures": 4,
+      "raw": 4399,
+      "extractions": 4148,
+      "result": {
+        "fetched": 2074,
+        "created": 147,
+        "updated": 1927,
+        "merged": 0,
+        "errors": 0,
+        "held": null,
+        "heldUnresolved": null,
+        "rejected": null,
+        "rejectedReasons": null,
+        "complete": null,
+        "truncated": false,
+        "captureBatchId": "56e3abec-5d5a-4d2b-b9d6-1a5a8553c0a5",
+        "completionReportHash": "08e57e2d62dd15c5ed481786d4ce43201a4d697af2abfc1e873accf6a236bda7"
+      },
+      "health": {
+        "ok": 1,
+        "broken": 0,
+        "degraded": 0,
+        "checkedAt": "2026-09-23T14:05:54.174Z",
+        "incidents": []
+      },
+      "qualificationReasons": [],
+      "sourceRunNotes": [
+        "desc 100% date 100% pays 100% url 100%"
+      ],
+      "qualificationVerdict": null
+    },
+    {
+      "sourceKey": "soeur",
+      "outcome": "PASS",
+      "deploymentId": "86cf55c9-daa4-4d6c-be56-ce6c0998fcde",
+      "codeSha": "94c463d26cf7fb1828eee05cac357b3e3658958d",
+      "registryStatus": "ACTIVE",
+      "currentRevisionId": "a543029c-3e98-4bf5-a957-f6526006083b",
+      "runs": [
+        "dc1ac301-3999-4be3-a06d-a2c99fedb5a0",
+        "ce0b894a-21b9-4f3c-ad61-af6d4af91bd2"
+      ],
+      "durationSeconds": 6.104,
+      "captures": 5,
+      "raw": 6,
+      "extractions": 106,
+      "result": {
+        "fetched": 53,
+        "created": 53,
+        "updated": 0,
+        "merged": 0,
+        "errors": 0,
+        "held": null,
+        "heldUnresolved": null,
+        "rejected": null,
+        "rejectedReasons": null,
+        "complete": true,
+        "truncated": false,
+        "captureBatchId": "1b19842d-793c-4c2e-b606-844d095fb130",
+        "completionReportHash": "4ebc16450d3a4d2108bb864fa7108d9490953643f603ce7e7bc3d0fbc861f3ae"
+      },
+      "health": {
+        "ok": 0,
+        "broken": 0,
+        "degraded": 0,
+        "checkedAt": "2026-09-23T13:29:17.319Z",
+        "incidents": []
+      },
+      "qualificationReasons": [],
+      "sourceRunNotes": [
+        "desc 100% date 100% pays 100% url 100%"
+      ],
+      "qualificationVerdict": "QUALIFIEE"
+    },
+    {
+      "sourceKey": "showroomprive",
+      "outcome": "PASS",
+      "deploymentId": "977c2d99-ce81-4958-9d39-7b8175ba674e",
+      "codeSha": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "registryStatus": "ACTIVE",
+      "currentRevisionId": "3cd5f88c-2e0f-480c-91c7-e6ac337b49ef",
+      "runs": [
+        "2b41390b-f913-4d32-81d6-e9c0d9066e66"
+      ],
+      "durationSeconds": 2.55,
+      "captures": 3,
+      "raw": 3,
+      "extractions": 56,
+      "result": {
+        "fetched": 28,
+        "created": 28,
+        "updated": 0,
+        "merged": 0,
+        "errors": 0,
+        "held": null,
+        "heldUnresolved": null,
+        "rejected": null,
+        "rejectedReasons": null,
+        "complete": true,
+        "truncated": false,
+        "captureBatchId": "5385eaa1-4275-4796-aada-11807c5a4a82",
+        "completionReportHash": "66a07b2d668ab9797c45bf86a60550ddb340a8d86ec4720bc0a502c4b3a6f3de"
+      },
+      "health": {
+        "ok": 1,
+        "broken": 0,
+        "degraded": 0,
+        "checkedAt": "2026-09-23T14:06:44.117Z",
+        "incidents": []
+      },
+      "qualificationReasons": [],
+      "sourceRunNotes": [
+        "desc 100% date 100% pays 96% url 100%"
+      ],
+      "qualificationVerdict": null
+    },
+    {
+      "sourceKey": "orchestra",
+      "outcome": "PASS",
+      "deploymentId": "e767380c-3ded-425d-94c8-7e0f04c47174",
+      "codeSha": "94c463d26cf7fb1828eee05cac357b3e3658958d",
+      "registryStatus": "ACTIVE",
+      "currentRevisionId": "7a894fa2-65ab-4736-a6c6-ffe8ed8c18a8",
+      "runs": [
+        "ea471e9a-764f-4e24-816d-c4b118203b6c",
+        "b63f5f9d-a01b-4eea-9d6e-abb5ad01f676"
+      ],
+      "durationSeconds": 7.258,
+      "captures": 4,
+      "raw": 4,
+      "extractions": 166,
+      "result": {
+        "fetched": 83,
+        "created": 83,
+        "updated": 0,
+        "merged": 0,
+        "errors": 0,
+        "held": null,
+        "heldUnresolved": null,
+        "rejected": null,
+        "rejectedReasons": null,
+        "complete": true,
+        "truncated": false,
+        "captureBatchId": "d860ee3c-be5d-4f8f-b518-0d4896045221",
+        "completionReportHash": "25e92985700b8cb3ae5c2ee69f48fe90457ca3a4204726d987e65f4941fc45c8"
+      },
+      "health": {
+        "ok": 0,
+        "broken": 0,
+        "degraded": 0,
+        "checkedAt": "2026-09-23T13:31:11.400Z",
+        "incidents": []
+      },
+      "qualificationReasons": [],
+      "sourceRunNotes": [
+        "desc 100% date 100% pays 100% url 100%"
+      ],
+      "qualificationVerdict": "QUALIFIEE"
+    },
+    {
+      "sourceKey": "ami-paris",
+      "outcome": "PASS",
+      "deploymentId": "058a9928-8cbd-4fa6-b5b5-d8561123cf83",
+      "codeSha": "94c463d26cf7fb1828eee05cac357b3e3658958d",
+      "registryStatus": "ACTIVE",
+      "currentRevisionId": "070d09a3-4422-4e8c-addd-ef17d887bbb2",
+      "runs": [
+        "16c8ef39-68bc-4383-a022-249d9a98d059",
+        "42a88344-771a-4360-a91c-6df1462718c1"
+      ],
+      "durationSeconds": 4.605,
+      "captures": 5,
+      "raw": 6,
+      "extractions": 42,
+      "result": {
+        "fetched": 21,
+        "created": 21,
+        "updated": 0,
+        "merged": 0,
+        "errors": 0,
+        "held": null,
+        "heldUnresolved": null,
+        "rejected": null,
+        "rejectedReasons": null,
+        "complete": true,
+        "truncated": false,
+        "captureBatchId": "6416d086-ecd6-46af-b332-94e16c624bf7",
+        "completionReportHash": "f3acdfda8eb80494455f599ac676d51c4ff9f338bb9748cb3b59a071d9db2b55"
+      },
+      "health": {
+        "ok": 0,
+        "broken": 0,
+        "degraded": 0,
+        "checkedAt": "2026-09-23T13:32:02.548Z",
+        "incidents": []
+      },
+      "qualificationReasons": [],
+      "sourceRunNotes": [
+        "desc 100% date 100% pays 100% url 100%"
+      ],
+      "qualificationVerdict": "QUALIFIEE"
+    },
+    {
+      "sourceKey": "amiri",
+      "outcome": "PASS",
+      "deploymentId": "177f0a68-b0db-4c45-8851-b4b81bbb1d6f",
+      "codeSha": "94c463d26cf7fb1828eee05cac357b3e3658958d",
+      "registryStatus": "ACTIVE",
+      "currentRevisionId": "ecb1cc91-3c5b-4190-b344-eaa3c820009c",
+      "runs": [
+        "df845c2e-dfbb-4df1-ac5e-9266affb2dab",
+        "1b29bb60-0551-4ff5-b8ba-1359439fa66d"
+      ],
+      "durationSeconds": 8.877,
+      "captures": 5,
+      "raw": 6,
+      "extractions": 76,
+      "result": {
+        "fetched": 38,
+        "created": 38,
+        "updated": 0,
+        "merged": 0,
+        "errors": 0,
+        "held": null,
+        "heldUnresolved": null,
+        "rejected": null,
+        "rejectedReasons": null,
+        "complete": true,
+        "truncated": false,
+        "captureBatchId": "8c979fdb-710a-43bb-9f36-c0b41d824dda",
+        "completionReportHash": "ca2dce7e96de7774521b60bc8c3a004d03caacc8b11767837042651444801815"
+      },
+      "health": {
+        "ok": 0,
+        "broken": 0,
+        "degraded": 0,
+        "checkedAt": "2026-09-23T13:32:39.553Z",
+        "incidents": []
+      },
+      "qualificationReasons": [],
+      "sourceRunNotes": [
+        "desc 100% date 100% pays 100% url 100%"
+      ],
+      "qualificationVerdict": "QUALIFIEE"
+    },
+    {
+      "sourceKey": "iris-van-herpen",
+      "outcome": "PASS",
+      "deploymentId": "f26e1ea0-68bb-4da9-aed1-1ec6751d62b1",
+      "codeSha": "94c463d26cf7fb1828eee05cac357b3e3658958d",
+      "registryStatus": "ACTIVE",
+      "currentRevisionId": "36c01772-db53-480f-acb3-e4cb6c037992",
+      "runs": [
+        "ae059a9d-9290-4432-8c73-eb3d9397b26d",
+        "fc6a5d64-d949-439c-bdf9-65dbf8619c55"
+      ],
+      "durationSeconds": 4.03,
+      "captures": 13,
+      "raw": 20,
+      "extractions": 14,
+      "result": {
+        "fetched": 7,
+        "created": 7,
+        "updated": 0,
+        "merged": 0,
+        "errors": 0,
+        "held": null,
+        "heldUnresolved": null,
+        "rejected": null,
+        "rejectedReasons": null,
+        "complete": true,
+        "truncated": false,
+        "captureBatchId": "2bb850de-c359-4a13-824b-bead7160faf3",
+        "completionReportHash": "1b4c36d82a51f96b6e3905913f947a7542586d77e531e62878202aa48c904b00"
+      },
+      "health": {
+        "ok": 0,
+        "broken": 0,
+        "degraded": 0,
+        "checkedAt": "2026-09-23T13:33:22.431Z",
+        "incidents": []
+      },
+      "qualificationReasons": [
+        "aucune page du domaine officiel ne lie exactement le portail configuré (voir etapes.identite)"
+      ],
+      "sourceRunNotes": [
+        "desc 100% date 100% pays 100% url 100%"
+      ],
+      "qualificationVerdict": "QUALIFIEE"
+    },
+    {
+      "sourceKey": "polene",
+      "outcome": "PASS",
+      "deploymentId": "e1a51d37-c24b-46ab-b147-b8f383625dc1",
+      "codeSha": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "registryStatus": "ACTIVE",
+      "currentRevisionId": "32fc9897-b4c7-436f-9866-3ef7b43b8a70",
+      "runs": [
+        "913f166a-3a1b-4a47-bdbe-7911d4a59df3"
+      ],
+      "durationSeconds": 6.941,
+      "captures": 3,
+      "raw": 3,
+      "extractions": 168,
+      "result": {
+        "fetched": 84,
+        "created": 84,
+        "updated": 0,
+        "merged": 0,
+        "errors": 0,
+        "held": null,
+        "heldUnresolved": null,
+        "rejected": null,
+        "rejectedReasons": null,
+        "complete": true,
+        "truncated": false,
+        "captureBatchId": "31dd2667-7779-4f77-ba9e-3f923f8cb3d1",
+        "completionReportHash": "651c0d41e0292854b1fbd9a6d5e5d4f1a96d7c83b68d970f702a2ad40d574b80"
+      },
+      "health": {
+        "ok": 1,
+        "broken": 0,
+        "degraded": 0,
+        "checkedAt": "2026-09-23T14:08:31.679Z",
+        "incidents": []
+      },
+      "qualificationReasons": [],
+      "sourceRunNotes": [
+        "desc 100% date 100% pays 100% url 100%"
+      ],
+      "qualificationVerdict": null
+    },
+    {
+      "sourceKey": "baccarat",
+      "outcome": "PASS",
+      "deploymentId": "a14b7784-82b7-4381-b344-bbb7f629ef84",
+      "codeSha": "94c463d26cf7fb1828eee05cac357b3e3658958d",
+      "registryStatus": "ACTIVE",
+      "currentRevisionId": "e29a2a3b-bfbc-45e7-aad3-9d5f148920f0",
+      "runs": [
+        "3ad7d562-35d3-42ab-a074-f77330ed1e5e",
+        "ce94bb49-38ae-4661-9722-985b787214a0"
+      ],
+      "durationSeconds": 8.649,
+      "captures": 13,
+      "raw": 58,
+      "extractions": 34,
+      "result": {
+        "fetched": 17,
+        "created": 17,
+        "updated": 0,
+        "merged": 0,
+        "errors": 0,
+        "held": null,
+        "heldUnresolved": null,
+        "rejected": null,
+        "rejectedReasons": null,
+        "complete": true,
+        "truncated": false,
+        "captureBatchId": "02951c3c-5f8f-4e1b-8ba9-9db9ae4acd6b",
+        "completionReportHash": "25ec006b9da17cb9e71886dad0efafccc94351c707a6c65f71e88419fac2a21c"
+      },
+      "health": {
+        "ok": 0,
+        "broken": 0,
+        "degraded": 0,
+        "checkedAt": "2026-09-23T13:34:17.952Z",
+        "incidents": []
+      },
+      "qualificationReasons": [
+        "aucune page du domaine officiel ne lie exactement le portail configuré (voir etapes.identite)"
+      ],
+      "sourceRunNotes": [
+        "desc 100% date 100% pays 100% url 100%"
+      ],
+      "qualificationVerdict": "QUALIFIEE"
+    },
+    {
+      "sourceKey": "jules",
+      "outcome": "PASS",
+      "deploymentId": "5a9c8ceb-a98d-4d5d-bd08-8dcb8ceade46",
+      "codeSha": "94c463d26cf7fb1828eee05cac357b3e3658958d",
+      "registryStatus": "ACTIVE",
+      "currentRevisionId": "ba7a04c9-2c16-4893-8f7b-7f129da5584c",
+      "runs": [
+        "9b57958c-ba63-4748-b680-b97defc616ab",
+        "468a94ec-2e33-4890-8768-cad51d7b680c"
+      ],
+      "durationSeconds": 22.488,
+      "captures": 13,
+      "raw": 176,
+      "extractions": 146,
+      "result": {
+        "fetched": 73,
+        "created": 73,
+        "updated": 0,
+        "merged": 0,
+        "errors": 0,
+        "held": null,
+        "heldUnresolved": null,
+        "rejected": null,
+        "rejectedReasons": null,
+        "complete": true,
+        "truncated": false,
+        "captureBatchId": "19259c5b-8bef-4d7e-a42b-61d677da1bbc",
+        "completionReportHash": "426e6219e942ef5c9edcceaa5d4a95183c2e9242e09eecdbe7ddb0a176055413"
+      },
+      "health": {
+        "ok": 0,
+        "broken": 0,
+        "degraded": 0,
+        "checkedAt": "2026-09-23T13:35:08.240Z",
+        "incidents": []
+      },
+      "qualificationReasons": [
+        "aucune page du domaine officiel ne lie exactement le portail configuré (voir etapes.identite)"
+      ],
+      "sourceRunNotes": [
+        "desc 100% date 100% pays 100% url 100%"
+      ],
+      "qualificationVerdict": "QUALIFIEE"
+    },
+    {
+      "sourceKey": "promod",
+      "outcome": "PASS",
+      "deploymentId": "695516cd-b329-4ce8-a67d-2c2ea5b67e19",
+      "codeSha": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "registryStatus": "ACTIVE",
+      "currentRevisionId": "7a56275f-973d-47a6-9adb-1064062c6099",
+      "runs": [
+        "398fea25-32b6-44ec-b72e-b9ac235a687a"
+      ],
+      "durationSeconds": 15.929,
+      "captures": 3,
+      "raw": 115,
+      "extractions": 100,
+      "result": {
+        "fetched": 50,
+        "created": 50,
+        "updated": 0,
+        "merged": 0,
+        "errors": 0,
+        "held": null,
+        "heldUnresolved": null,
+        "rejected": null,
+        "rejectedReasons": null,
+        "complete": true,
+        "truncated": false,
+        "captureBatchId": "fef436c5-55b9-42cd-b965-10379678424b",
+        "completionReportHash": "0efbeada854378589f3a9f426b23b62025916c31d41bdc314c6d877bfea80c08"
+      },
+      "health": {
+        "ok": 1,
+        "broken": 0,
+        "degraded": 0,
+        "checkedAt": "2026-09-23T14:07:39.380Z",
+        "incidents": []
+      },
+      "qualificationReasons": [],
+      "sourceRunNotes": [
+        "desc 100% date 100% pays 100% url 100%"
+      ],
+      "qualificationVerdict": null
+    },
+    {
+      "sourceKey": "apivita",
+      "outcome": "PASS",
+      "deploymentId": "9ddbd4b6-32ac-45ea-8572-f2a90a45e4b5",
+      "codeSha": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "registryStatus": "ACTIVE",
+      "currentRevisionId": "42daaf19-c7c6-434d-a05d-fb3b7363568b",
+      "runs": [
+        "51bdac11-76de-4c80-801d-1f3555797409"
+      ],
+      "durationSeconds": 4.969,
+      "captures": 3,
+      "raw": 5,
+      "extractions": 18,
+      "result": {
+        "fetched": 9,
+        "created": 9,
+        "updated": 0,
+        "merged": 0,
+        "errors": 0,
+        "held": null,
+        "heldUnresolved": null,
+        "rejected": null,
+        "rejectedReasons": null,
+        "complete": true,
+        "truncated": false,
+        "captureBatchId": "fce7cde2-d34d-4b66-867e-b4df00465380",
+        "completionReportHash": "93c40316f9a0e7e1e4cba8466a7e13a59a8ac1833a3da979f7b04c8b98dfb566"
+      },
+      "health": {
+        "ok": 1,
+        "broken": 0,
+        "degraded": 0,
+        "checkedAt": "2026-09-23T14:09:31.032Z",
+        "incidents": []
+      },
+      "qualificationReasons": [],
+      "sourceRunNotes": [
+        "desc 100% date 100% pays 100% url 100%"
+      ],
+      "qualificationVerdict": null
+    },
+    {
+      "sourceKey": "apm-monaco",
+      "outcome": "PASS",
+      "deploymentId": "33d2b36c-f6ec-4361-9e26-ec609ddb975d",
+      "codeSha": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "registryStatus": "ACTIVE",
+      "currentRevisionId": "595405f4-3151-4abe-abd4-8e413571db98",
+      "runs": [
+        "5141fb6a-1f11-41ab-a106-4b107b2cce35"
+      ],
+      "durationSeconds": 105.482,
+      "captures": 3,
+      "raw": 33,
+      "extractions": 298,
+      "result": {
+        "fetched": 149,
+        "created": 149,
+        "updated": 0,
+        "merged": 0,
+        "errors": 0,
+        "held": null,
+        "heldUnresolved": null,
+        "rejected": null,
+        "rejectedReasons": null,
+        "complete": true,
+        "truncated": false,
+        "captureBatchId": "7217caf7-e54e-4e4c-8e8e-1c9d21b19e77",
+        "completionReportHash": "0776367ae7e1ca08faa248fc5a4722ccfd310c100f5d0523e6a1a4f9b25ea9fe"
+      },
+      "health": {
+        "ok": 1,
+        "broken": 0,
+        "degraded": 0,
+        "checkedAt": "2026-09-23T14:12:42.008Z",
+        "incidents": []
+      },
+      "qualificationReasons": [],
+      "sourceRunNotes": [
+        "desc 100% date 100% pays 100% url 100%"
+      ],
+      "qualificationVerdict": null
+    },
+    {
+      "sourceKey": "bevilles-jewellers",
+      "outcome": "PASS",
+      "deploymentId": "24759cb8-dd81-46a8-b953-a84dfe3c9395",
+      "codeSha": "94c463d26cf7fb1828eee05cac357b3e3658958d",
+      "registryStatus": "ACTIVE",
+      "currentRevisionId": "cd35c4a6-2214-489a-8679-a256b9165467",
+      "runs": [
+        "c03e9a68-5401-4ddd-be72-5efc24e88002",
+        "03db592f-5eab-412d-9ebf-83137c8dcff2"
+      ],
+      "durationSeconds": 18.356,
+      "captures": 4,
+      "raw": 49,
+      "extractions": 44,
+      "result": {
+        "fetched": 22,
+        "created": 22,
+        "updated": 0,
+        "merged": 0,
+        "errors": 0,
+        "held": null,
+        "heldUnresolved": null,
+        "rejected": null,
+        "rejectedReasons": null,
+        "complete": true,
+        "truncated": false,
+        "captureBatchId": "0c44f62d-47fd-491e-ad4c-3568a69a249b",
+        "completionReportHash": "503d090b83a8a7357e93fc5d005b520495e9aed2d9a2aa11e5f6a039476d217d"
+      },
+      "health": {
+        "ok": 0,
+        "broken": 0,
+        "degraded": 0,
+        "checkedAt": "2026-09-23T13:41:26.277Z",
+        "incidents": []
+      },
+      "qualificationReasons": [],
+      "sourceRunNotes": [
+        "desc 100% date 100% pays 100% url 100%"
+      ],
+      "qualificationVerdict": "QUALIFIEE"
+    },
+    {
+      "sourceKey": "cotton-on",
+      "outcome": "BLOCKED",
+      "deploymentId": "eef8f389-43d8-44bb-adba-21932ff6ee68",
+      "codeSha": "94c463d26cf7fb1828eee05cac357b3e3658958d",
+      "registryStatus": "PAUSED",
+      "currentRevisionId": "07d1da9e-6695-43eb-a182-a6dd576e05a6",
+      "runs": [
+        "45791aab-c634-451d-b7ad-0a0933f0523c"
+      ],
+      "durationSeconds": 82.528,
+      "captures": 11,
+      "raw": 485,
+      "extractions": 464,
+      "result": null,
+      "health": {},
+      "qualificationReasons": [
+        "validation native : REJECTED (CONTENT_MISSING)",
+        "le portail ou le site officiel du registre est servi sous un autre domaine d'employeur (cottonongroup.com.au, registre : cottonongroup.com) : relation à instruire (groupe, distributeur, franchise ou registre)"
+      ],
+      "sourceRunNotes": [],
+      "qualificationVerdict": "COLLECTE_NON_VALIDEE"
+    },
+    {
+      "sourceKey": "de-beers-london",
+      "outcome": "BLOCKED",
+      "deploymentId": "6defa26d-ff7d-49e1-9e34-9b9b5a9e0b00",
+      "codeSha": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "registryStatus": "PAUSED",
+      "currentRevisionId": "44a7ede1-a0fc-4698-9894-e37ef5d82dec",
+      "runs": [
+        "fb3eb979-6031-429b-a616-3f51334f3d03"
+      ],
+      "durationSeconds": 39.912,
+      "captures": 12,
+      "raw": 133,
+      "extractions": 112,
+      "result": null,
+      "health": {},
+      "qualificationReasons": [
+        "pages officielles inaccessibles à la campagne (403/429/5xx ou capture impossible) : blocage externe, identité ni prouvée ni contredite"
+      ],
+      "sourceRunNotes": [],
+      "qualificationVerdict": "BLOCAGE_EXTERNE"
+    },
+    {
+      "sourceKey": "dim",
+      "outcome": "BLOCKED",
+      "deploymentId": "c8cb309d-efd3-47fd-9639-cfb8898e5dbe",
+      "codeSha": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "registryStatus": "PAUSED",
+      "currentRevisionId": "efba6ba6-50f1-42af-9a2a-02e35a2c7231",
+      "runs": [
+        "b9fddf4b-a99b-4231-9e19-7779e74ff418"
+      ],
+      "durationSeconds": 1.818,
+      "captures": 5,
+      "raw": 6,
+      "extractions": 41,
+      "result": null,
+      "health": {},
+      "qualificationReasons": [
+        "pages officielles inaccessibles à la campagne (403/429/5xx ou capture impossible) : blocage externe, identité ni prouvée ni contredite"
+      ],
+      "sourceRunNotes": [],
+      "qualificationVerdict": "BLOCAGE_EXTERNE"
+    },
+    {
+      "sourceKey": "douglas-sf",
+      "outcome": "PARTIAL",
+      "deploymentId": "50a33784-96e1-49f8-9981-294ca1eb05cd",
+      "codeSha": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "registryStatus": "ACTIVE",
+      "currentRevisionId": "cf0b7d36-e143-429a-bef7-388d7b402414",
+      "runs": [
+        "88632eb0-0b65-4012-a89a-ed4b21f63489",
+        "1939afe4-2a76-4445-8d9a-db93b3f62d2a"
+      ],
+      "durationSeconds": 151.544,
+      "captures": 4,
+      "raw": 852,
+      "extractions": 618,
+      "result": {
+        "fetched": 306,
+        "created": 306,
+        "updated": 0,
+        "merged": 0,
+        "errors": 0,
+        "held": null,
+        "heldUnresolved": null,
+        "rejected": null,
+        "rejectedReasons": null,
+        "complete": false,
+        "truncated": true,
+        "captureBatchId": "fea7e3b4-ee64-44e8-9f58-24fb9c4d95ce",
+        "completionReportHash": "37f8bb89de854d9c4fd150216d0a0ba82ad2b40ca04a9a75d3a4b10a0f5a09df"
+      },
+      "health": {
+        "ok": 0,
+        "broken": 0,
+        "degraded": 1,
+        "checkedAt": "2026-09-23T14:18:17.331Z",
+        "incidents": [
+          {
+            "jobs": 306,
+            "note": "troncature : 306 collectées, total inconnu",
+            "rates": {
+              "url": 1,
+              "date": 1,
+              "country": 1,
+              "description": 1
+            },
+            "source": "douglas-sf",
+            "status": "DEGRADED",
+            "coverage": "desc 100% date 100% pays 100% url 100%",
+            "previous": 0
+          }
+        ]
+      },
+      "qualificationReasons": [],
+      "sourceRunNotes": [
+        "troncature : 306 collectées, total inconnu · desc 100% date 100% pays 100% url 100%"
+      ],
+      "qualificationVerdict": "QUALIFIEE"
+    },
+    {
+      "sourceKey": "fastrack",
+      "outcome": "BLOCKED",
+      "deploymentId": "c83f9a62-2d1d-4d83-a8af-40aa4f3b0da4",
+      "codeSha": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "registryStatus": "PAUSED",
+      "currentRevisionId": "dab04332-eb07-4498-b6ed-8acca9c62736",
+      "runs": [
+        "2bda9c4c-eca4-497e-b9b8-d756e7c197f3"
+      ],
+      "durationSeconds": 4.336,
+      "captures": 2,
+      "raw": 5,
+      "extractions": 0,
+      "result": null,
+      "health": {},
+      "qualificationReasons": [
+        "collecte : HTTP 500 for https://careers.titan.in/api/jobs?…"
+      ],
+      "sourceRunNotes": [],
+      "qualificationVerdict": "INACCESSIBLE"
+    },
+    {
+      "sourceKey": "ghost",
+      "outcome": "BLOCKED",
+      "deploymentId": "13990dd0-22f0-41ad-a7fb-6abb046065fb",
+      "codeSha": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "registryStatus": "PAUSED",
+      "currentRevisionId": "eaedf779-8e01-411d-a69a-f693552263a3",
+      "runs": [
+        "8d24e350-7685-44ef-9875-23d7cad4b918"
+      ],
+      "durationSeconds": 1.241,
+      "captures": 2,
+      "raw": 3,
+      "extractions": 0,
+      "result": null,
+      "health": {},
+      "qualificationReasons": [
+        "validation native : REJECTED (ENUMERATION_INCOMPLETE, EMPTY_FEED_NOT_NATIVELY_PROVEN)"
+      ],
+      "sourceRunNotes": [],
+      "qualificationVerdict": "COLLECTE_NON_VALIDEE"
+    },
+    {
+      "sourceKey": "marella",
+      "outcome": "PASS",
+      "deploymentId": "8e803d2d-4cff-4398-9437-4ef834e17eaf",
+      "codeSha": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "registryStatus": "ACTIVE",
+      "currentRevisionId": "72bbc8f1-f854-4f7b-8d56-96029e9a2cae",
+      "runs": [
+        "5d50d90b-6858-42a1-97e2-148c15e0121f",
+        "7c777bbc-f46c-42aa-bbbe-cbe3883d9236"
+      ],
+      "durationSeconds": 53.615,
+      "captures": 7,
+      "raw": 390,
+      "extractions": 380,
+      "result": {
+        "fetched": 190,
+        "created": 0,
+        "updated": 190,
+        "merged": 0,
+        "errors": 0,
+        "held": null,
+        "heldUnresolved": null,
+        "rejected": null,
+        "rejectedReasons": null,
+        "complete": null,
+        "truncated": false,
+        "captureBatchId": "2ef25d7e-7d61-46bf-8902-d618ea3ba316",
+        "completionReportHash": "44a036c1e0357a7a0e8cce587bf2bb370ac64fe913e066308d4bebc6dfa289ca"
+      },
+      "health": {
+        "ok": 1,
+        "broken": 0,
+        "degraded": 0,
+        "checkedAt": "2026-09-23T15:05:26.261Z",
+        "incidents": []
+      },
+      "qualificationReasons": [],
+      "sourceRunNotes": [
+        "desc 100% date 100% pays 100% url 100%"
+      ],
+      "qualificationVerdict": "QUALIFIEE"
+    },
+    {
+      "sourceKey": "markham",
+      "outcome": "BLOCKED",
+      "deploymentId": "bd5b4304-472a-4e66-943f-dd54013ae854",
+      "codeSha": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "registryStatus": "PAUSED",
+      "currentRevisionId": "efe81032-e274-4511-9187-5c0e817c3032",
+      "runs": [
+        "5171a47e-63e3-471d-b654-1ea208963e97",
+        "6482dc20-efc1-4a4d-87aa-fd523ccd1c4c"
+      ],
+      "durationSeconds": 51.464,
+      "captures": 5,
+      "raw": 372,
+      "extractions": 362,
+      "result": {
+        "fetched": 181,
+        "created": 0,
+        "updated": 0,
+        "merged": 0,
+        "errors": 181,
+        "held": null,
+        "heldUnresolved": null,
+        "rejected": null,
+        "rejectedReasons": null,
+        "complete": null,
+        "truncated": false,
+        "captureBatchId": "b73e2062-61f7-49d3-8f9f-162151298cee",
+        "completionReportHash": "69e79cc9ae9c82ad0ce7884d95a4d0d4947da087c791080d2a5efda13eac9461"
+      },
+      "health": {
+        "ok": 0,
+        "broken": 1,
+        "degraded": 0,
+        "checkedAt": "2026-09-23T14:23:14.726Z",
+        "incidents": [
+          {
+            "jobs": 0,
+            "note": "181 erreurs de collecte ou d’écriture",
+            "rates": {
+              "url": 1,
+              "date": 1,
+              "country": 1,
+              "description": 1
+            },
+            "source": "markham",
+            "status": "BROKEN",
+            "coverage": "desc 100% date 100% pays 100% url 100%",
+            "previous": null
+          }
+        ]
+      },
+      "qualificationReasons": [],
+      "sourceRunNotes": [
+        "181 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%"
+      ],
+      "qualificationVerdict": "QUALIFIEE"
+    },
+    {
+      "sourceKey": "minimalist",
+      "outcome": "BLOCKED",
+      "deploymentId": "7e9be334-7f4f-49dc-a64a-eb263090cb20",
+      "codeSha": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "registryStatus": "PAUSED",
+      "currentRevisionId": "a27bd072-a3c6-4a80-97d1-331df1a14c2a",
+      "runs": [
+        "ae70d516-8363-4c9d-b969-0a51e8480ee7"
+      ],
+      "durationSeconds": 1.678,
+      "captures": 2,
+      "raw": 2,
+      "extractions": 0,
+      "result": null,
+      "health": {},
+      "qualificationReasons": [
+        "validation native : REJECTED (ENUMERATION_INCOMPLETE, EMPTY_FEED_NOT_NATIVELY_PROVEN)"
+      ],
+      "sourceRunNotes": [],
+      "qualificationVerdict": "COLLECTE_NON_VALIDEE"
+    },
+    {
+      "sourceKey": "nimble",
+      "outcome": "BLOCKED",
+      "deploymentId": "152270ba-f285-4ad5-ad87-b6b4de82eaa1",
+      "codeSha": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "registryStatus": "PAUSED",
+      "currentRevisionId": "971056f2-88d3-4363-8883-515b06d684df",
+      "runs": [
+        "8fc34c3a-e1a4-4a82-9fcc-1ac089099579"
+      ],
+      "durationSeconds": 2.95,
+      "captures": 2,
+      "raw": 5,
+      "extractions": 0,
+      "result": null,
+      "health": {},
+      "qualificationReasons": [
+        "validation native : REJECTED (ENUMERATION_INCOMPLETE, EMPTY_FEED_NOT_NATIVELY_PROVEN)"
+      ],
+      "sourceRunNotes": [],
+      "qualificationVerdict": "COLLECTE_NON_VALIDEE"
+    },
+    {
+      "sourceKey": "oska",
+      "outcome": "PASS",
+      "deploymentId": "6207635a-4476-4fac-b8ed-bc0f2d2b56bb",
+      "codeSha": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "registryStatus": "ACTIVE",
+      "currentRevisionId": "1765899a-c8fc-4368-9806-82c51ab16819",
+      "runs": [
+        "927b0a92-a379-4b00-8e45-d0571728ae8d",
+        "c7021443-e2a3-4a8b-9359-5eea4525ff0f"
+      ],
+      "durationSeconds": 16.019,
+      "captures": 4,
+      "raw": 64,
+      "extractions": 60,
+      "result": {
+        "fetched": 30,
+        "created": 30,
+        "updated": 0,
+        "merged": 0,
+        "errors": 0,
+        "held": null,
+        "heldUnresolved": null,
+        "rejected": null,
+        "rejectedReasons": null,
+        "complete": true,
+        "truncated": false,
+        "captureBatchId": "5f8297df-d026-4f6f-b318-907b00e6b690",
+        "completionReportHash": "2e112c070f2ec1e55a207e7ce5b3886e112841266c41654d3e6c5e143bbff194"
+      },
+      "health": {
+        "ok": 0,
+        "broken": 0,
+        "degraded": 0,
+        "checkedAt": "2026-09-23T14:25:57.484Z",
+        "incidents": []
+      },
+      "qualificationReasons": [],
+      "sourceRunNotes": [
+        "desc 100% date 100% pays 100% url 100%"
+      ],
+      "qualificationVerdict": "QUALIFIEE"
+    },
+    {
+      "sourceKey": "petit-bateau",
+      "outcome": "PASS",
+      "deploymentId": "e4829c68-bb64-4934-b207-38d44bd53920",
+      "codeSha": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "registryStatus": "ACTIVE",
+      "currentRevisionId": "439eface-350b-4a97-98ad-c97cfdf2e8ac",
+      "runs": [
+        "e918ae70-4104-4da6-8bd7-967ee67c81b4",
+        "0a3d64a8-560d-4230-970b-3ca5dd0a0c2e"
+      ],
+      "durationSeconds": 14.21,
+      "captures": 8,
+      "raw": 93,
+      "extractions": 84,
+      "result": {
+        "fetched": 42,
+        "created": 42,
+        "updated": 0,
+        "merged": 0,
+        "errors": 0,
+        "held": null,
+        "heldUnresolved": null,
+        "rejected": null,
+        "rejectedReasons": null,
+        "complete": null,
+        "truncated": false,
+        "captureBatchId": "e01911b6-5adc-4d8c-a696-d14212cf0cb7",
+        "completionReportHash": "3d2e0467211cf2d32b40902e7771b116b28d5f001e9bb99f3f0f6f1552158d80"
+      },
+      "health": {
+        "ok": 0,
+        "broken": 0,
+        "degraded": 0,
+        "checkedAt": "2026-09-23T14:26:55.590Z",
+        "incidents": []
+      },
+      "qualificationReasons": [],
+      "sourceRunNotes": [
+        "desc 100% date 100% pays 100% url 100%"
+      ],
+      "qualificationVerdict": "QUALIFIEE"
+    },
+    {
+      "sourceKey": "picard",
+      "outcome": "BLOCKED",
+      "deploymentId": "53e120eb-6c01-44aa-946d-e2947ebb0e4d",
+      "codeSha": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "registryStatus": "PAUSED",
+      "currentRevisionId": "4744009c-6ae2-4df5-9a06-2a8a60400eaa",
+      "runs": [
+        "eaa4ebdd-18fa-4956-8c24-4708122abc5f"
+      ],
+      "durationSeconds": 1.674,
+      "captures": 2,
+      "raw": 2,
+      "extractions": 0,
+      "result": null,
+      "health": {},
+      "qualificationReasons": [
+        "validation native : REJECTED (ENUMERATION_INCOMPLETE, EMPTY_FEED_NOT_NATIVELY_PROVEN)"
+      ],
+      "sourceRunNotes": [],
+      "qualificationVerdict": "COLLECTE_NON_VALIDEE"
+    },
+    {
+      "sourceKey": "psycho-bunny",
+      "outcome": "PASS",
+      "deploymentId": "ab84eed9-b6d9-49c6-a7b9-24c029565b47",
+      "codeSha": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "registryStatus": "ACTIVE",
+      "currentRevisionId": "d489563b-370b-4b5f-a06a-abdf47a656d7",
+      "runs": [
+        "e3849533-6852-4c03-93e3-3b995ef4d9c7",
+        "0762a824-0e21-4fa1-adab-371c68e4944d"
+      ],
+      "durationSeconds": 788.055,
+      "captures": 4,
+      "raw": 304,
+      "extractions": 296,
+      "result": {
+        "fetched": 148,
+        "created": 148,
+        "updated": 0,
+        "merged": 0,
+        "errors": 0,
+        "held": null,
+        "heldUnresolved": null,
+        "rejected": null,
+        "rejectedReasons": null,
+        "complete": true,
+        "truncated": false,
+        "captureBatchId": "b0e1697f-5783-49a3-adc0-fdf3c8d5b2cd",
+        "completionReportHash": "b4d538d109663cc5790879a34f46fc857ef3fec3a4e44ddde6e272e0f27e4b47"
+      },
+      "health": {
+        "ok": 0,
+        "broken": 0,
+        "degraded": 0,
+        "checkedAt": "2026-09-23T14:41:24.198Z",
+        "incidents": []
+      },
+      "qualificationReasons": [],
+      "sourceRunNotes": [
+        "desc 100% date 100% pays 100% url 100%"
+      ],
+      "qualificationVerdict": "QUALIFIEE"
+    },
+    {
+      "sourceKey": "rotate",
+      "outcome": "BLOCKED",
+      "deploymentId": "97ff48c4-aec8-471c-8487-da0346a0f601",
+      "codeSha": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "registryStatus": "PAUSED",
+      "currentRevisionId": "4eeef934-b191-4df2-9b45-48741b4a4611",
+      "runs": [
+        "c379db58-1f73-4f5f-a1ac-4e93f03739f6"
+      ],
+      "durationSeconds": 1.665,
+      "captures": 2,
+      "raw": 3,
+      "extractions": 0,
+      "result": null,
+      "health": {},
+      "qualificationReasons": [
+        "validation native : REJECTED (ENUMERATION_INCOMPLETE, EMPTY_FEED_NOT_NATIVELY_PROVEN)"
+      ],
+      "sourceRunNotes": [],
+      "qualificationVerdict": "COLLECTE_NON_VALIDEE"
+    },
+    {
+      "sourceKey": "sandro",
+      "outcome": "PASS",
+      "deploymentId": "4c2c7378-3781-4c34-9c6b-a50b137fabce",
+      "codeSha": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "registryStatus": "ACTIVE",
+      "currentRevisionId": "fba4ace6-e51a-43e6-95b3-a01a4b71e16c",
+      "runs": [
+        "6d76cc17-c52d-4d63-8537-368fd8f90095"
+      ],
+      "durationSeconds": 85.463,
+      "captures": 1,
+      "raw": 549,
+      "extractions": 543,
+      "result": {
+        "fetched": 543,
+        "created": 512,
+        "updated": 31,
+        "merged": 0,
+        "errors": 0,
+        "held": null,
+        "heldUnresolved": null,
+        "rejected": null,
+        "rejectedReasons": null,
+        "complete": null,
+        "truncated": false,
+        "captureBatchId": "b4660652-71b2-4bb4-91f5-40e96682d386",
+        "completionReportHash": "ab70fe3e97f137e1e9fdf6d158900c6547716d82a56d40926a9d59acc452ba32"
+      },
+      "health": {
+        "ok": 1,
+        "broken": 0,
+        "degraded": 0,
+        "checkedAt": "2026-09-23T15:02:12.493Z",
+        "incidents": []
+      },
+      "qualificationReasons": [],
+      "sourceRunNotes": [
+        "desc 100% date 100% pays 100% url 100%"
+      ],
+      "qualificationVerdict": null
+    },
+    {
+      "sourceKey": "sioux",
+      "outcome": "BLOCKED",
+      "deploymentId": "00eaba62-efd6-4fd2-8bfe-cd08c86af7f5",
+      "codeSha": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "registryStatus": "PAUSED",
+      "currentRevisionId": "17436def-b126-41d9-a7ff-c226a279a2bf",
+      "runs": [
+        "149d621f-f940-44d5-a94d-bed470d8219d"
+      ],
+      "durationSeconds": 1.047,
+      "captures": 2,
+      "raw": 2,
+      "extractions": 0,
+      "result": null,
+      "health": {},
+      "qualificationReasons": [
+        "validation native : REJECTED (ENUMERATION_INCOMPLETE, EMPTY_FEED_NOT_NATIVELY_PROVEN)"
+      ],
+      "sourceRunNotes": [],
+      "qualificationVerdict": "COLLECTE_NON_VALIDEE"
+    },
+    {
+      "sourceKey": "siebel-juweliers",
+      "outcome": "PASS",
+      "deploymentId": "620f1541-686e-4494-895d-b7a1d25e1e91",
+      "codeSha": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "registryStatus": "ACTIVE",
+      "currentRevisionId": "34bd4edb-ed11-446d-9975-aa797ee0cb2a",
+      "runs": [
+        "8e3f9a9c-0b84-46ba-bd18-8684a234f6bf",
+        "7936469c-c1f3-4900-b15b-d78290ecb307"
+      ],
+      "durationSeconds": 4.206,
+      "captures": 4,
+      "raw": 6,
+      "extractions": 42,
+      "result": {
+        "fetched": 21,
+        "created": 21,
+        "updated": 0,
+        "merged": 0,
+        "errors": 0,
+        "held": null,
+        "heldUnresolved": null,
+        "rejected": null,
+        "rejectedReasons": null,
+        "complete": true,
+        "truncated": false,
+        "captureBatchId": "e4f48684-2ab6-42a3-831b-25589d489712",
+        "completionReportHash": "705551f3872432f31b2d900d6104bb1a8c474e7f5ed337a05b261af7ca5d7841"
+      },
+      "health": {
+        "ok": 0,
+        "broken": 0,
+        "degraded": 0,
+        "checkedAt": "2026-09-23T14:49:13.822Z",
+        "incidents": []
+      },
+      "qualificationReasons": [],
+      "sourceRunNotes": [
+        "desc 100% date 100% pays 100% url 100%"
+      ],
+      "qualificationVerdict": "QUALIFIEE"
+    },
+    {
+      "sourceKey": "yaya",
+      "outcome": "PASS",
+      "deploymentId": "49776f76-9f68-4fb9-bd8e-27d38894f058",
+      "codeSha": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "registryStatus": "ACTIVE",
+      "currentRevisionId": "1692fd15-0efd-4b33-b888-777a19a4217b",
+      "runs": [
+        "947e84cd-3326-4a8a-aa33-c034f906065e",
+        "ad36832a-9d5b-4b0d-a259-24ce7234ae7e"
+      ],
+      "durationSeconds": 4.408,
+      "captures": 4,
+      "raw": 6,
+      "extractions": 46,
+      "result": {
+        "fetched": 23,
+        "created": 23,
+        "updated": 0,
+        "merged": 0,
+        "errors": 0,
+        "held": null,
+        "heldUnresolved": null,
+        "rejected": null,
+        "rejectedReasons": null,
+        "complete": true,
+        "truncated": false,
+        "captureBatchId": "1fc7932d-805e-4cf2-a0f8-ee207ce4929b",
+        "completionReportHash": "da2cbc0c4830d688a757c43b06314c918601820406f8f381988d46d2e0fc4c80"
+      },
+      "health": {
+        "ok": 0,
+        "broken": 0,
+        "degraded": 0,
+        "checkedAt": "2026-09-23T14:50:05.246Z",
+        "incidents": []
+      },
+      "qualificationReasons": [],
+      "sourceRunNotes": [
+        "desc 100% date 100% pays 100% url 100%"
+      ],
+      "qualificationVerdict": "QUALIFIEE"
+    },
+    {
+      "sourceKey": "alberto",
+      "outcome": "PARTIAL",
+      "deploymentId": "9094082c-c526-4d47-888f-9edb1b0198df",
+      "codeSha": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "registryStatus": "ACTIVE",
+      "currentRevisionId": "27103de6-6119-4822-8b1b-4389955dcdb2",
+      "runs": [
+        "0dd3095c-a744-4bf4-8cb7-ad931b4db37f",
+        "ec361cfa-0f1f-4c1f-9555-4141b427441a"
+      ],
+      "durationSeconds": 17.189,
+      "captures": 4,
+      "raw": 164,
+      "extractions": 12,
+      "result": {
+        "fetched": 6,
+        "created": 4,
+        "updated": 0,
+        "merged": 0,
+        "errors": 0,
+        "held": 2,
+        "heldUnresolved": 2,
+        "rejected": 74,
+        "rejectedReasons": {
+          "LISTED_PAGE_WITHOUT_JOBPOSTING": 74
+        },
+        "complete": true,
+        "truncated": false,
+        "captureBatchId": "fb8275a0-9ca8-4921-b952-1d51794120fe",
+        "completionReportHash": "fee8ebb18b77a1c206de0506831734fd3ca70fc1a61c0095c2c47ab805efe4ce"
+      },
+      "health": {
+        "ok": 0,
+        "broken": 0,
+        "degraded": 1,
+        "checkedAt": "2026-09-23T14:51:32.895Z",
+        "incidents": [
+          {
+            "jobs": 4,
+            "note": "2 annonces non publiables archivées (2 non résolues) ; énumération prouvée",
+            "rates": {
+              "url": 1,
+              "date": 1,
+              "country": 1,
+              "description": 0
+            },
+            "source": "alberto",
+            "status": "DEGRADED",
+            "coverage": "desc 0% date 100% pays 100% url 100%",
+            "previous": null
+          }
+        ]
+      },
+      "qualificationReasons": [],
+      "sourceRunNotes": [
+        "2 annonces non publiables archivées (2 non résolues) ; énumération prouvée · desc 0% date 100% pays 100% url 100%"
+      ],
+      "qualificationVerdict": "QUALIFIEE"
+    },
+    {
+      "sourceKey": "oniverse",
+      "outcome": "BLOCKED",
+      "deploymentId": "173ffaa6-fbcf-452e-824b-8c99b607b1ec",
+      "codeSha": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "registryStatus": "PAUSED",
+      "currentRevisionId": "acbf1594-9937-4013-b2b0-c53f47860463",
+      "runs": [
+        "9aac26ab-0b82-4fe1-adc8-81cdf1980c40"
+      ],
+      "durationSeconds": 235.611,
+      "captures": 7,
+      "raw": 748,
+      "extractions": 367,
+      "result": null,
+      "health": {},
+      "qualificationReasons": [
+        "validation native : REJECTED (CONTENT_MISSING, REJECTED_NATIVE_ROWS, ENUMERATION_INCOMPLETE)"
+      ],
+      "sourceRunNotes": [],
+      "qualificationVerdict": "COLLECTE_NON_VALIDEE"
+    },
+    {
+      "sourceKey": "audemars-piguet",
+      "outcome": "PASS",
+      "deploymentId": "a120ceb2-4ebf-4b08-8e70-edf86ddd38c6",
+      "codeSha": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "registryStatus": "ACTIVE",
+      "currentRevisionId": "f60f0343-0a73-4e8b-b529-c2a76e910e33",
+      "runs": [
+        "36b7b777-49ad-45d1-9bb7-6cd1051ea3dd",
+        "824882a8-6548-47b4-a475-dec0f842bcd9"
+      ],
+      "durationSeconds": 28.64,
+      "captures": 13,
+      "raw": 199,
+      "extractions": 174,
+      "result": {
+        "fetched": 87,
+        "created": 87,
+        "updated": 0,
+        "merged": 0,
+        "errors": 0,
+        "held": null,
+        "heldUnresolved": null,
+        "rejected": null,
+        "rejectedReasons": null,
+        "complete": null,
+        "truncated": false,
+        "captureBatchId": "8236df50-cd62-45e8-99b8-888214854866",
+        "completionReportHash": "8395ad3cb01db3d47b6a5286a111c086a84181413a52f8befce1b00a4bcef504"
+      },
+      "health": {
+        "ok": 0,
+        "broken": 0,
+        "degraded": 0,
+        "checkedAt": "2026-09-23T14:58:13.067Z",
+        "incidents": []
+      },
+      "qualificationReasons": [
+        "aucune page du domaine officiel ne lie exactement le portail configuré (voir etapes.identite)"
+      ],
+      "sourceRunNotes": [
+        "desc 100% date 100% pays 100% url 100%"
+      ],
+      "qualificationVerdict": "QUALIFIEE"
+    },
+    {
+      "sourceKey": "nyx-professional-makeup",
+      "outcome": "PASS",
+      "deploymentId": "b2cc1301-0c31-47b9-bb0b-b03ac7646da1",
+      "codeSha": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "registryStatus": "ACTIVE",
+      "currentRevisionId": "67649db1-0e41-4567-be55-32de541feff0",
+      "runs": [
+        "1f34f2da-4515-4bc5-827b-9d3c1c90701a",
+        "37b86158-e737-46a5-bf89-66bc9941bd80"
+      ],
+      "durationSeconds": 8.991,
+      "captures": 4,
+      "raw": 4,
+      "extractions": 28,
+      "result": {
+        "fetched": 14,
+        "created": 14,
+        "updated": 0,
+        "merged": 0,
+        "errors": 0,
+        "held": null,
+        "heldUnresolved": null,
+        "rejected": null,
+        "rejectedReasons": null,
+        "complete": true,
+        "truncated": false,
+        "captureBatchId": "503065d5-d437-4684-9565-78a13cae79eb",
+        "completionReportHash": "81a3377ffcd5b3be050efecc293fc5022469f86b478421a990b9146f28042720"
+      },
+      "health": {
+        "ok": 0,
+        "broken": 0,
+        "degraded": 0,
+        "checkedAt": "2026-09-23T14:59:27.503Z",
+        "incidents": []
+      },
+      "qualificationReasons": [],
+      "sourceRunNotes": [
+        "desc 100% date 100% pays 100% url 100%"
+      ],
+      "qualificationVerdict": "QUALIFIEE"
+    }
+  ],
+  "latestSummary": {
+    "attemptedSources": 39,
+    "outcomes": {
+      "PARTIAL": 3,
+      "PASS": 24,
+      "BLOCKED": 12
+    },
+    "captures": 199,
+    "raw": 9593,
+    "extractions": 9279,
+    "fetched": 4416,
+    "created": 2073,
+    "updated": 2148,
+    "merged": 0,
+    "errors": 193,
+    "durationMeaning": "Somme des durées murales DB de la dernière tentative de chaque source, du début à la fin ; les ingestions enfants incluses dans leur qualification parent ne sont pas comptées deux fois. Hors attente de déploiement. Les totaux de toutes les tentatives restent dans total.",
+    "durationSeconds": 2455.32,
+    "fullCatalogueSuccessRateMeasured": false
+  },
+  "pipelineObservability": {
+    "completedRuns": 74,
+    "runsWithCompletionCounters": 74,
+    "persistenceFailures": 0,
+    "openRuns": 0,
+    "qualificationRejections": 11,
+    "limitation": "A rejected qualification is an individual source outcome, not evidence of a systemic persistence failure."
+  },
+  "nativeIdOverlapCheck": {
+    "observedAt": "2026-09-23T14:29:49.715Z",
+    "scope": "Active wttj-sector publications versus other active WTTJ URLs with the same externalId",
+    "overlaps": 0,
+    "distinctJobIds": 0,
+    "limitation": "Does not compare different provider identifiers or prove absence of every possible duplicate."
+  },
+  "productProof": {
+    "observedAt": "2026-09-23T14:22:38.773823+00:00",
+    "url": "http://localhost:3022/emplois?marche=FR&q=Caudalie",
+    "method": "Existing browser tab reloaded, accessibility tree read. No application submitted.",
+    "market": "FR",
+    "caudalieResults": 14,
+    "marketTotalAtObservation": 8864,
+    "detail": "CDI - PRATICIEN(NE)S SOINS SPA, PARIS",
+    "externalApplicationUrl": "https://caudalie.career/apply/offer/XNX7G8",
+    "nativeDescriptionVisible": true,
+    "pass": true
+  },
+  "fractionApiProof": {
+    "at": "2026-09-23T14:07:22.091429+00:00",
+    "status": 200,
+    "jobId": "cmue6a5gc0003md346ain9n6t",
+    "experienceYears": 0.5,
+    "nativeValuePreserved": true
+  },
+  "schemaChange": {
+    "migration": "20260923133000_fractional_experience",
+    "field": "Job.experienceYears",
+    "from": "integer",
+    "to": "double precision",
+    "existingBoundsPreserved": true,
+    "beforeAt": "2026-09-23T13:45:23.890Z",
+    "afterAt": "2026-09-23T13:47:18.797Z",
+    "before": {
+      "rows": 50724,
+      "populated": 6087,
+      "minimum": 0,
+      "maximum": 15,
+      "fingerprint": "fd25cad1213d980225ff447b5794ac46"
+    },
+    "after": {
+      "rows": 50724,
+      "populated": 6087,
+      "minimum": 0,
+      "maximum": 15,
+      "fingerprint": "fd25cad1213d980225ff447b5794ac46"
+    },
+    "orderedIdValueFingerprintUnchanged": true,
+    "historicalValueRepair": false,
+    "rollbackConstraint": "Fractional native values are now valid production data. Preserve the Float schema and compatible runtime; do not cast the column back to integer or reuse an older integer-model image without a compatibility check."
+  },
+  "nativeContentIncident": {
+    "sourceKey": "cotton-on",
+    "at": "2026-09-23T13:56:12.953Z",
+    "captureBatchId": "1e4a7ed3-ffb7-4451-b00f-73cf946c1245",
+    "observed": 464,
+    "missingContent": 9,
+    "classification": "SOURCE_EXTERNAL_DATA",
+    "description": "Neuf détails Oracle HCM ont leurs quatre champs natifs de description, responsabilités, qualifications et résumé vides. Aucun contenu inventé ni seuil modifié.",
+    "witnesses": [
+      {
+        "externalId": "58491",
+        "extractionId": "b0fca986-2ad2-4e6f-821a-5a5d0615aba2",
+        "outputHash": "07be91d7eec5ce1da2f4eb3ce53793bca214ab790e727b1f83822f0ffabd6b74"
+      },
+      {
+        "externalId": "AUSPEAKREQ2754",
+        "extractionId": "0f65f94b-fc4c-4dc7-a9b1-516445d141fd",
+        "outputHash": "54e5a986721daa43a16d1d27e347af154ac099e4c5b66224fb55cc94254fb91d"
+      },
+      {
+        "externalId": "58408",
+        "extractionId": "93177566-e7c8-4970-9d1a-26658d95eeca",
+        "outputHash": "c599b489962844d10ee30392708b73576ac536711f4f34c8bca897dda77f37ee"
+      },
+      {
+        "externalId": "56139",
+        "extractionId": "ae2d2234-afd4-4e6c-bcd4-bf5e76d1dc57",
+        "outputHash": "417b3f4568cd0b01a389ccef12e1c030c8b6d494947468c371b6d961408e26aa"
+      },
+      {
+        "externalId": "56319",
+        "extractionId": "5399a010-6a55-48d4-be57-1b1571f71072",
+        "outputHash": "b0288dffe9d60e0757b25b962ea9db2b70eeb5350f8e1a3d85fed36bd31cd461"
+      },
+      {
+        "externalId": "56570",
+        "extractionId": "299e3359-6eff-42f5-8e02-0ea8273ffd8c",
+        "outputHash": "019b862b7da6c5bd33c649063ac28625db0f244b8bebf0fc7de2473b142af7d9"
+      },
+      {
+        "externalId": "57232",
+        "extractionId": "a2a61b61-c922-49c4-9a5e-bd5034781aad",
+        "outputHash": "e2fc86e6c32095be33f461af8ca061c03c93095549eecc5d55a2f1b9bb11eb38"
+      },
+      {
+        "externalId": "57634",
+        "extractionId": "b3d27f94-f567-4e74-9cd4-352fe580e151",
+        "outputHash": "587d1d9f55d959bc87d771e385839980c76e93322e98816cf7fac49bc77fc6bb"
+      },
+      {
+        "externalId": "AUSPEAKREQ4066",
+        "extractionId": "aa169c1b-78df-46eb-a0f2-98e55a7b2e5d",
+        "outputHash": "e897b9b6e056a3ac989f32777d6f832150707536f96a026bd3d457dbfd16629e"
+      }
+    ]
+  },
+  "renewedExistingAliases": {
+    "verifiedAt": "2026-09-23T14:53:54.632Z",
+    "companyMerges": 0,
+    "publicationMoves": 0,
+    "aliases": [
+      {
+        "id": "cmttr9bf3003a3n5tpnmzui98",
+        "sourceKey": "sandro",
+        "displayName": "Sandro",
+        "companyId": "cmtk29nb80m1dnv2bg5xl385h",
+        "sourceHash": "c851ba6b7caa5c52198a86f5fe598e73332248e44b088b8473b6576f1034b522",
+        "reviewId": "20260923-SMCP-NATIVE-ALIAS-REVIEW-v1"
+      },
+      {
+        "id": "cmttr9bg6003c3n5twglo6gov",
+        "sourceKey": "sandro",
+        "displayName": "Maje",
+        "companyId": "cmtkf06ej0lqap22bicqm90nc",
+        "sourceHash": "c851ba6b7caa5c52198a86f5fe598e73332248e44b088b8473b6576f1034b522",
+        "reviewId": "20260923-SMCP-NATIVE-ALIAS-REVIEW-v1"
+      },
+      {
+        "id": "cmtv63qbq00hc3nrk673wwsca",
+        "sourceKey": "showroomprive",
+        "displayName": "Showroomprive.com",
+        "companyId": "cmtke394t01kilp2bpousq8lf",
+        "sourceHash": "facb77563bece46c52bd42f7b2a51191eb28d683d28c87b7f85fb5aab0ab6d5b",
+        "reviewId": "20260923-SHOWROOM-NATIVE-ALIAS-REVIEW-v1"
+      },
+      {
+        "id": "cmttr99tn002q3n5tpcz9qs4k",
+        "sourceKey": "promod",
+        "displayName": "Promod",
+        "companyId": "cmtk1x1ns0072nv2bytyhwuta",
+        "sourceHash": "9fb81ce29bed89f02c13ba3e1bb5ac5693d06e2f7d5eed7634b99a101491dfcb",
+        "reviewId": "20260923-PROMOD-NATIVE-ALIAS-REVIEW-v1"
+      },
+      {
+        "id": "cmttr99v8002s3n5trycor9x8",
+        "sourceKey": "promod",
+        "displayName": "PROMOD - MAGASIN",
+        "companyId": "cmtk1x1ns0072nv2bytyhwuta",
+        "sourceHash": "9fb81ce29bed89f02c13ba3e1bb5ac5693d06e2f7d5eed7634b99a101491dfcb",
+        "reviewId": "20260923-PROMOD-NATIVE-ALIAS-REVIEW-v1"
+      },
+      {
+        "id": "cmttr9bh9003e3n5t9hssmyrp",
+        "sourceKey": "sandro",
+        "displayName": "Claudie Pierlot",
+        "companyId": "cr5c9308138c86e24341e51b89",
+        "sourceHash": "c851ba6b7caa5c52198a86f5fe598e73332248e44b088b8473b6576f1034b522",
+        "reviewId": "20260923-SMCP-NATIVE-ALIAS-REVIEW-v1"
+      },
+      {
+        "id": "cmttr9bic003g3n5tvohyx88l",
+        "sourceKey": "sandro",
+        "displayName": "Fursac",
+        "companyId": "cr57e9ef0f339cdfa95081d842",
+        "sourceHash": "c851ba6b7caa5c52198a86f5fe598e73332248e44b088b8473b6576f1034b522",
+        "reviewId": "20260923-SMCP-NATIVE-ALIAS-REVIEW-v1"
+      }
+    ],
+    "nativeWitnesses": [
+      {
+        "sourceKey": "sandro",
+        "captureBatchId": "4a1d98b0-6ff6-4632-be3c-dcca2e8749a4",
+        "reviewId": "20260923-SMCP-NATIVE-ALIAS-REVIEW-v1",
+        "nativeEmployers": {
+          "Maje": 230,
+          "Claudie Pierlot": 102,
+          "Sandro": 128,
+          "Fursac": 52
+        },
+        "nativeField": "customField Brands; company identifier SMCP",
+        "planHash": "1d0c1645e24e3066aa38dd7c922d483494d540206a6e3390cd003cc2215b49d4"
+      },
+      {
+        "sourceKey": "showroomprive",
+        "captureBatchId": "f1c8a155-3200-441e-b047-cd4c130f8617",
+        "reviewId": "20260923-SHOWROOM-NATIVE-ALIAS-REVIEW-v1",
+        "nativeEmployer": "Showroomprive.com",
+        "observed": 28
+      },
+      {
+        "sourceKey": "promod",
+        "captureBatchId": "7cf1aa3f-a8b7-4c71-b607-20fb5b108109",
+        "reviewId": "20260923-PROMOD-NATIVE-ALIAS-REVIEW-v1",
+        "nativeEmployers": {
+          "Promod - magasin": 34,
+          "Promod": 16
+        }
+      }
+    ]
+  },
+  "registrySnapshot": {
+    "observedAt": "2026-09-23T15:09:11.192Z",
+    "statuses": [
+      {
+        "_count": 409,
+        "status": "ACTIVE"
+      },
+      {
+        "_count": 12,
+        "status": "PAUSED"
+      },
+      {
+        "_count": 116,
+        "status": "RETIRED"
+      }
+    ],
+    "recordedActiveHealth": {
+      "OK": 273,
+      "BROKEN": 84,
+      "DEGRADED": 37,
+      "NEW": 15
+    },
+    "meaning": "Persisted lastRunStatus values have different observation dates and are not the outcome of a new complete run. Source qualification does not always update this cached health field."
+  }
+}

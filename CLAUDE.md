@@ -21,7 +21,7 @@ Le RAW est la référence. Les interprétations restent séparées, versionnées
 
 Périmètre courant : audit et correction post-RUN, depuis les RAW, SourceRun et logs de production. Le worker entretient accès et qualification native par les mécanismes existants. Les migrations non destructives nécessaires au correctif passent par development → main → CI → Railway ; aucun reset ni réparation des données historiques. Les validations de production restent ciblées, sans nouveau RUN complet. `/emplois`, marchés/filtres et Direct Offers ne sont pas refondus dans ce lot. `/offres`, moteur de matching et onboarding candidat restent gelés, y compris leur dette encore utilisée.
 
-Les évolutions restent validées par des tests ciblés. Le CRON chargé est 18 h Europe/Paris, une fois par jour ; son reçu est dans `docs/operations/railway/runtime-release.json`. Le code de production est `1db582d` ; les commits de documentation et preuves suivants ne reconstruisent pas les images. Les incidents de sources sont isolés. Le matching, l’onboarding et la nouvelle promesse de `/offres` restent des chantiers distincts et gelés. Ne pas relancer les protocoles déjà acquis sans changement qui les invalide.
+Les évolutions restent validées par des tests ciblés. Le CRON chargé est 18 h Europe/Paris, une fois par jour ; son reçu est dans `docs/operations/railway/runtime-release.json`. Le code de production est `a532165` ; les commits de documentation et preuves suivants ne reconstruisent pas les images. Les incidents de sources sont isolés. Le matching, l’onboarding et la nouvelle promesse de `/offres` restent des chantiers distincts et gelés. Ne pas relancer les protocoles déjà acquis sans changement qui les invalide.
 
 ## Branches et coordination
 
