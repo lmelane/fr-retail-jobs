@@ -67,11 +67,25 @@ describe('Caudalie native listing and retained HTML', () => {
       expect(result.status).toBe('RECOVERABLE');
       if (result.status === 'RECOVERABLE') expect(result.job.description).toBe(job.description);
     }
-    expect(live.jobs[0]).toMatchObject({ externalId: 'BWZRMW', location: 'Europe (except France)', contract: 'Indefinite-term contract' });
+    expect(live.jobs[0]).toMatchObject({ externalId: 'BWZRMW', location: undefined, contract: 'Indefinite-term contract' });
     for (const field of ['country', 'city', 'postedAt', 'company', 'workingTime']) expect(live.jobs[0]).not.toHaveProperty(field);
     expect(live.jobs[0].description).toContain('Native description & responsibilities.');
     expect(live.jobs[0].description).not.toContain('APPLICATION CONSENT');
     expect((live.jobs[0].raw as any).detailHtml).toContain('APPLICATION CONSENT');
+  });
+
+  it.each(['Europe (sauf France)', 'Europe (except France)', 'Amériques', 'Asie / Pacifique', 'Unknown zone'])('does not turn the native zone %s into a geographic point or country', async location => {
+    const { resolveGeography } = await import('../../normalize/geography.js');
+    const raw = { source: 'caudalie-ajax-v1', listing: { ...offer, location }, pageUrl: `${origin}/apply/offer/${offer.slug}`, detailHtml: page() };
+    const job = readCaudalieRaw(raw)!;
+    expect(job.location).toBeUndefined();
+    expect(job.raw).toEqual(raw);
+    expect(resolveGeography({ location: job.location, rawCountry: job.country, city: job.city }).countryCode).toBeUndefined();
+  });
+
+  it('retains the native France zone, which denotes one explicit country', () => {
+    const job = readCaudalieRaw({ source: 'caudalie-ajax-v1', listing: { ...offer, location: 'France' }, pageUrl: `${origin}/apply/offer/${offer.slug}`, detailHtml: page() });
+    expect(job?.location).toBe('France');
   });
 
   it.each([null, {}, { status: 'error', code: 200, results: [] }, { status: 'success', code: 500, results: [] },

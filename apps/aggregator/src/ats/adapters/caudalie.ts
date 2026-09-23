@@ -57,7 +57,11 @@ export function readCaudalieRaw(value: unknown): NormalizedJob | null {
     title: text(heading.text()),
     url: raw.pageUrl,
     description,
-    location: typeof raw.listing.location === 'string' ? raw.listing.location : undefined,
+    // This field is the portal's zone filter: France, Europe (sauf France),
+    // Amériques, Asie / Pacifique. Only France denotes one country. Feeding
+    // an exclusion label to the place resolver would falsely publish it in FR.
+    // Keep every original zone in raw.listing, including unknown future zones.
+    location: raw.listing.location === 'France' ? 'France' : undefined,
     contract: typeof raw.listing.contract_type === 'string' ? raw.listing.contract_type : undefined,
     // The list's macroregion is not a country. No publication date or structured
     // legal employer is published here; the certified portal policy owns fallback.
