@@ -1,0 +1,156 @@
+{
+  "captureBatchId": "fb8275a0-9ca8-4921-b952-1d51794120fe",
+  "note": "JobPosting blocks extracted unchanged from production RAW; full HTML remains in the capture.",
+  "pages": [
+    {
+      "pageUrl": "https://www.alberto-pants.com/en/jobs-and-careers/",
+      "rawSha256": "f153140aa092f16075a645e122d1c9531e11baa3634ffb8be7adcff590a78e93",
+      "postings": [
+        {
+          "@context": "https://schema.org",
+          "@type": "JobPosting",
+          "title": "WERKSTUDENT / AUSHILFE VERSAND UND LAGER M/W/D",
+          "datePosted": "2026-06-29",
+          "hiringOrganization": {
+            "@type": "Organization",
+            "@id": "https://www.alberto-pants.com/#organization"
+          },
+          "jobLocation": {
+            "@type": "Place",
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "Rheydter Straße 19-31",
+              "postalCode": "41065",
+              "addressLocality": "Mönchengladbach",
+              "addressRegion": "NRW",
+              "addressCountry": "DE"
+            }
+          },
+          "employmentType": "PART_TIME",
+          "url": "https://www.alberto-pants.com/en/jobs-and-careers/werkstudent-aushilfe-versand-lager/",
+          "applicationContact": {
+            "@type": "ContactPoint",
+            "email": "jobs@alberto-pants.com"
+          },
+          "description": "Werde Teil unseres Teams! Wir suchen eine/n Werkstudent/in bzw. Aushilfe (m/w/d) für Versand und Lager in Mönchengladbach.",
+          "responsibilities": "Kommissionieren und Scannen von Fertigteilen, Wareneingang von angelieferten Fertigteilen, Verpacken von Fertigteilen in Kartons, Lagerpflege und Wiedereinräumen von retournierter Ware, Einsortieren von Ware im Kundenlager",
+          "qualifications": "Pünktlichkeit, Zuverlässigkeit, Leistungsbereitschaft und Teamfähigkeit setzen wir voraus",
+          "benefits": "Ein familiengeführtes Traditionsunternehmen mit moderner Unternehmenskultur, Leidenschaft, Wertschätzung sowie nachhaltiges Denken und Handeln"
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "JobPosting",
+          "title": "MITARBEITER/IN VERSAND UND LAGER M/W/D - FACHLAGERIST/IN",
+          "datePosted": "2025-09-10",
+          "hiringOrganization": {
+            "@type": "Organization",
+            "@id": "https://www.alberto-pants.com/#organization"
+          },
+          "jobLocation": {
+            "@type": "Place",
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "Rheydter Straße 19-31",
+              "postalCode": "41065",
+              "addressLocality": "Mönchengladbach",
+              "addressRegion": "NRW",
+              "addressCountry": "DE"
+            }
+          },
+          "employmentType": "FULL_TIME",
+          "url": "https://www.alberto-pants.com/en/jobs-and-careers/mitarbeiter-versand-lager/",
+          "applicationContact": {
+            "@type": "ContactPoint",
+            "email": "jobs@alberto-pants.com"
+          },
+          "description": "Werde Teil unseres Teams! Wir suchen eine/n Mitarbeiter/in Versand und Lager (m/w/d) als Fachlagerist/in in Mönchengladbach.",
+          "responsibilities": "Kommissionieren und Scannen von Fertigteilen, Wareneingang von angelieferten Fertigteilen, Verpacken von Fertigteilen in Kartons, Lagerpflege und Wiedereinräumen von retournierter Ware, Bestandzählungen im Lager, Einsortieren von Ware im Kundenlager",
+          "qualifications": "Abgeschlossene Ausbildung als Fachkraft für Lagerlogistik oder vergleichbare Qualifikation, Gute PC-Kenntnisse, Erfahrung im Umgang mit Handhubwagen, PKW-Führerschein wünschenswert, aber nicht zwingend erforderlich, Pünktlichkeit, Zuverlässigkeit, Leistungsbereitschaft und Teamfähigkeit setzen wir voraus",
+          "benefits": "Ein familiengeführtes Traditionsunternehmen mit moderner Unternehmenskultur, Leidenschaft, Wertschätzung sowie nachhaltiges Denken und Handeln, Fitnesskooperationen mit Return Sport & Wellness und Urban Sports Club, Personalrabatt, Verpflegung, Firmenevents"
+        }
+      ]
+    },
+    {
+      "pageUrl": "https://www.alberto-pants.com/en/jobs-and-careers/mitarbeiter-versand-lager/",
+      "rawSha256": "ffc2cb4e44b2418ba7533cc86e923e11688bbc8345ae5baf4ac8fc8a62206d68",
+      "postings": [
+        {
+          "@context": "https://schema.org",
+          "@type": "JobPosting",
+          "title": "MITARBEITER/IN VERSAND UND LAGER M/W/D - FACHLAGERIST/IN",
+          "datePosted": "2025-09-10",
+          "hiringOrganization": {
+            "@type": "Organization",
+            "@id": "https://www.alberto-pants.com/#organization",
+            "name": "ALBERTO",
+            "description": "ALBERTO  –  Pants  We  Love.  Ein  Claim  wie  eine  Verheißung  und  doch  viel  mehr!  Keine  leere  Worthülse,  sondern  gelebter  Teil  der  Firmenphilosophie.  In  den  Kreativstudios  von  ALBERTO  wird  seit  nunmehr  über 100  Jahren  mit  Design  und  Materialien  gespielt,  an  Schnitten,  Formen  und  Funktionen  getüftelt.  Das  Ergebnis  aus  so  viel  Erfahrung:  die  perfekte  Symbiose  aus  Kreativität  und  Perfektionismus.  Ein  junger,  modischer  Twist aus Experimentellem und höchstem Fashion-Know-how.\n\nALBERTO  ist  mit  mehr  als  2.500  Fachhandelskund*innen,  einem  Verkaufsumfang  von  über  1,4  Mio.  Hosen  pro  Jahr  und  48  Mio.  €  Jahresumsatz  im Segment der modischen Lieblingshose weltweit im Markt positioniert. Wir beschäftigen am Standort Mönchengladbach 120 Mitarbeiter*innen – weltweit arbeiten 1.300 Menschen für uns.",
+            "url": "https://www.alberto-pants.com/",
+            "logo": "https://www.alberto-pants.com/img/logo_Alberto.svg"
+          },
+          "jobLocation": {
+            "@type": "Place",
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "Rheydter Straße 19-31",
+              "postalCode": "41065",
+              "addressLocality": "Mönchengladbach",
+              "addressRegion": "NRW",
+              "addressCountry": "DE"
+            }
+          },
+          "employmentType": "FULL_TIME",
+          "url": "https://www.alberto-pants.com/en/jobs-and-careers/mitarbeiter-versand-lager/",
+          "applicationContact": {
+            "@type": "ContactPoint",
+            "email": "jobs@alberto-pants.com"
+          },
+          "description": "Werde Teil unseres Teams! Wir suchen eine/n Mitarbeiter/in Versand und Lager (m/w/d) als Fachlagerist/in in Mönchengladbach.",
+          "responsibilities": "Kommissionieren und Scannen von Fertigteilen, Wareneingang von angelieferten Fertigteilen, Verpacken von Fertigteilen in Kartons, Lagerpflege und Wiedereinräumen von retournierter Ware, Bestandzählungen im Lager, Einsortieren von Ware im Kundenlager",
+          "qualifications": "Abgeschlossene Ausbildung als Fachkraft für Lagerlogistik oder vergleichbare Qualifikation, Gute PC-Kenntnisse, Erfahrung im Umgang mit Handhubwagen, PKW-Führerschein wünschenswert, aber nicht zwingend erforderlich, Pünktlichkeit, Zuverlässigkeit, Leistungsbereitschaft und Teamfähigkeit setzen wir voraus",
+          "benefits": "Ein familiengeführtes Traditionsunternehmen mit moderner Unternehmenskultur, Leidenschaft, Wertschätzung sowie nachhaltiges Denken und Handeln, Fitnesskooperationen mit Return Sport & Wellness und Urban Sports Club, Personalrabatt, Verpflegung, Firmenevents"
+        }
+      ]
+    },
+    {
+      "pageUrl": "https://www.alberto-pants.com/en/jobs-and-careers/werkstudent-aushilfe-versand-lager/",
+      "rawSha256": "973fc6f3d46a4fefb0b6d239c7cf28c78879ee3303f0800d12855dfbb763710e",
+      "postings": [
+        {
+          "@context": "https://schema.org",
+          "@type": "JobPosting",
+          "title": "WERKSTUDENT / AUSHILFE VERSAND UND LAGER M/W/D",
+          "datePosted": "2026-06-29",
+          "hiringOrganization": {
+            "@type": "Organization",
+            "@id": "https://www.alberto-pants.com/#organization",
+            "name": "ALBERTO",
+            "description": "ALBERTO  –  Pants  We  Love.  Ein  Claim  wie  eine  Verheißung  und  doch  viel  mehr!  Keine  leere  Worthülse,  sondern  gelebter  Teil  der  Firmenphilosophie.  In  den  Kreativstudios  von  ALBERTO  wird  seit  nunmehr  über 100  Jahren  mit  Design  und  Materialien  gespielt,  an  Schnitten,  Formen  und  Funktionen  getüftelt.  Das  Ergebnis  aus  so  viel  Erfahrung:  die  perfekte  Symbiose  aus  Kreativität  und  Perfektionismus.  Ein  junger,  modischer  Twist aus Experimentellem und höchstem Fashion-Know-how.\n\nALBERTO  ist  mit  mehr  als  2.500  Fachhandelskund*innen,  einem  Verkaufsumfang  von  über  1,4  Mio.  Hosen  pro  Jahr  und  48  Mio.  €  Jahresumsatz  im Segment der modischen Lieblingshose weltweit im Markt positioniert. Wir beschäftigen am Standort Mönchengladbach 120 Mitarbeiter*innen – weltweit arbeiten 1.300 Menschen für uns.",
+            "url": "https://www.alberto-pants.com/",
+            "logo": "https://www.alberto-pants.com/img/logo_Alberto.svg"
+          },
+          "jobLocation": {
+            "@type": "Place",
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "Rheydter Straße 19-31",
+              "postalCode": "41065",
+              "addressLocality": "Mönchengladbach",
+              "addressRegion": "NRW",
+              "addressCountry": "DE"
+            }
+          },
+          "employmentType": "PART_TIME",
+          "url": "https://www.alberto-pants.com/en/jobs-and-careers/werkstudent-aushilfe-versand-lager/",
+          "applicationContact": {
+            "@type": "ContactPoint",
+            "email": "jobs@alberto-pants.com"
+          },
+          "description": "Werde Teil unseres Teams! Wir suchen eine/n Werkstudent/in bzw. Aushilfe (m/w/d) für Versand und Lager in Mönchengladbach.",
+          "responsibilities": "Kommissionieren und Scannen von Fertigteilen, Wareneingang von angelieferten Fertigteilen, Verpacken von Fertigteilen in Kartons, Lagerpflege und Wiedereinräumen von retournierter Ware, Einsortieren von Ware im Kundenlager",
+          "qualifications": "Pünktlichkeit, Zuverlässigkeit, Leistungsbereitschaft und Teamfähigkeit setzen wir voraus",
+          "benefits": "Ein familiengeführtes Traditionsunternehmen mit moderner Unternehmenskultur, Leidenschaft, Wertschätzung sowie nachhaltiges Denken und Handeln"
+        }
+      ]
+    }
+  ]
+}

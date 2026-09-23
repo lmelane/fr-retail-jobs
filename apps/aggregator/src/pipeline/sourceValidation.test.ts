@@ -8,6 +8,8 @@ import { captureSourceForValidation, validateCapturedSource } from '../connector
 import { requireSourceValidation, SOURCE_VALIDATION_MAX_AGE_MS } from '../connectors/sourceCertification.js';
 import { archiveRawBlob } from '../capture/store.js';
 import { MemoryStore } from '../test/memoryObjectStore.js';
+import alberto from '../ats/adapters/__fixtures__/alberto-sitemap-postings.json' with { type: 'json' };
+import { readFileSync } from 'node:fs';
 
 const db = new PrismaClient(); const keys: string[] = [];
 const nativeJob = { id: 'native-1', title: 'Client Advisor', isListed: true, descriptionPlain: 'Native responsibilities',
@@ -30,6 +32,33 @@ afterEach(() => { vi.unstubAllGlobals(); vi.restoreAllMocks(); });
 afterAll(async () => { await db.source.deleteMany({ where: { key: { in: keys } } }); await db.$disconnect(); });
 
 describe('native source validation', () => {
+  it('qualifies a retained careers feed without claiming complete enumeration or absence', async () => {
+    const key = `source-validation-${randomUUID()}`; keys.push(key);
+    const feedUrl = `https://careers.example/${key}.atom`;
+    const entry = readFileSync(new URL('../connectors/generic/fixtures/picard-atom-entry.xml', import.meta.url), 'utf8');
+    await db.source.create({ data: { key, tenantKey: key, maison: 'Picard', kind: 'generic-listing', config: { feedUrl }, tier: 'EMPLOYER_DIRECT' } });
+    vi.stubGlobal('fetch', vi.fn(async () => new Response(`<feed xmlns="http://www.w3.org/2005/Atom">${entry}</feed>`)));
+    expect(await captureSourceForValidation(db, key, 30_000)).toMatchObject({ verdict: 'VALIDATED', report: {
+      replayExact: true, observed: 1, qualified: 1, enumerationClaim: 'INCOMPLETE', absenceAttestation: false,
+      reasons: { ENUMERATION_INCOMPLETE: 1 } } });
+  });
+
+  it('replays a sitemap with native listing previews without counting them as missing publications', async () => {
+    const key = `source-validation-${randomUUID()}`; keys.push(key);
+    const sitemapUrl = `https://www.alberto-pants.com/${key}.xml`;
+    await db.source.create({ data: { key, tenantKey: key, maison: 'ALBERTO', kind: 'generic-listing', config: { sitemapUrl }, tier: 'EMPLOYER_DIRECT' } });
+    vi.stubGlobal('fetch', vi.fn(async input => {
+      const url = String(input);
+      if (url === sitemapUrl) return new Response(`<urlset>${alberto.pages.map(page => `<url><loc>${page.pageUrl}</loc></url>`).join('')}</urlset>`);
+      const page = alberto.pages.find(page => page.pageUrl === url);
+      if (!page) throw new Error('Unexpected fixture URL');
+      return new Response(page.postings.map(node => `<script type="application/ld+json">${JSON.stringify(node)}</script>`).join(''));
+    }));
+    const validation = await captureSourceForValidation(db, key, 30_000);
+    expect(validation).toMatchObject({ verdict: 'VALIDATED', report: { replayExact: true, observed: 2, qualified: 2,
+      held: 0, inputRejected: 2, inputUnqualified: 0, enumerationClaim: 'COMPLETE' } });
+  });
+
   it('collects registered settings and keeps the batch receipt even for an empty native feed', async () => {
     const key = `source-validation-${randomUUID()}`; keys.push(key);
     const source = await db.source.create({ data: { key, tenantKey: key, maison: key, kind: 'ashby', config: { board: key }, tier: 'ATS_OFFICIAL' } });

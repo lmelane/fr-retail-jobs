@@ -50,7 +50,7 @@ function parseDate(value?: string): Date | undefined {
 /** Parse an RSS 2.0 or Atom feed into normalized jobs. Pure — no I/O. */
 export function parseFeed(xml: string): NormalizedJob[] {
   // RSS uses <item>, Atom uses <entry>.
-  const blocks = xml.match(/<(item|entry)[\s\S]*?<\/(item|entry)>/gi) ?? [];
+  const blocks = xml.match(/<(item|entry)\b[\s\S]*?<\/\1>/gi) ?? [];
   const jobs: NormalizedJob[] = [];
   for (const block of blocks) {
     const title = tag(block, 'title');
@@ -69,7 +69,10 @@ export function parseFeed(xml: string): NormalizedJob[] {
       location,
       description: descriptionHtml ? htmlToPlainText(descriptionHtml) : undefined,
       postedAt,
-      raw: { feedItem: block.slice(0, 2000) },
+      // The publication must remain independently readable from its retained
+      // native item. Truncating XML loses the closing element and often most
+      // of the description (observed on Picard's public careers Atom feed).
+      raw: { feedItem: block },
     });
   }
   return jobs;

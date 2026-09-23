@@ -322,12 +322,23 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
       ),
     );
 
-    const seen = new Set<string>();
-    const jobs = pages.flat().filter((job) => {
-      if (seen.has(job.externalId)) return false;
-      seen.add(job.externalId);
-      return true;
-    });
+    const detailPostings = new Map(urls.map((url, index) => [url, pages[index]]));
+    const jobs = pages.flatMap((postings, index) => postings.filter(job => {
+      const pageUrl = urls[index];
+      const node = job.raw as Record<string, unknown>;
+      // A sitemap can list both a board and its detail pages. Only discard a
+      // preview when its explicit native URL leads to a successfully parsed
+      // detail in this SAME capture. A missing/failed detail keeps the preview
+      // and its evidence; title similarity alone never merges publications.
+      if (typeof node.url !== 'string' || node.url === pageUrl) return true;
+      const detail = detailPostings.get(node.url)?.find(candidate =>
+        candidate.url === node.url && candidate.title === job.title && !candidate.publicationHold);
+      if (!detail) return true;
+      rejectedRows.push({ reason: 'LISTED_POSTING_PREVIEW', raw: { url: pageUrl, posting: node, detailUrl: node.url, detailExternalId: detail.externalId } });
+      return false;
+    }));
+    // Do not silently keep the first of several postings sharing one page ID.
+    // Qualification reports DUPLICATE_PUBLICATION_IDS for an ambiguous board.
     const complete = sitemap.failedShards.length === 0 && fetchFailures === 0;
     const issues = [...(sitemap.failedShards.length ? [`UNREACHABLE_SHARDS=${sitemap.failedShards.length}`] : []), ...(fetchFailures ? [`PAGE_FETCH_FAILURES=${fetchFailures}`] : []), ...(complete ? [] : ['ENUMERATION_NOT_PROVEN'])];
     // Parallel detail requests settle in a different order offline. Keep the

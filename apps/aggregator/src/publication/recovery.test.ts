@@ -2,6 +2,8 @@ import { createHash } from 'node:crypto';
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import { recoverRetainedPublication, retainedPublicationIdentity } from './recovery.js';
 import { evidenceHash } from '../lib/evidenceHash.js';
+import { readFileSync } from 'node:fs';
+import { parseFeed } from '../connectors/generic/rssFeed.js';
 
 const url = 'https://jobs.example.com/role-1';
 const at = new Date('2024-02-20T12:00:00Z');
@@ -10,6 +12,22 @@ const read = (raw: unknown, extra = {}) => recoverRetainedPublication('lever', r
 afterEach(() => { vi.useRealTimers(); vi.unstubAllGlobals(); });
 
 describe('retained publication recovery', () => {
+  it('reconstructs a complete native careers Atom item beyond the former 2000-character truncation', () => {
+    const entry = readFileSync(new URL('../connectors/generic/fixtures/picard-atom-entry.xml', import.meta.url), 'utf8');
+    const [job] = parseFeed(entry);
+    expect(entry.length).toBeGreaterThan(2000);
+    expect(job.raw).toEqual({ feedItem: entry });
+    const context = { externalId: job.externalId, url: job.url, observedAt: at, config: { feedUrl: 'https://picard-fashion.com/blogs/karriere.atom' } };
+    expect(recoverRetainedPublication('generic-listing', job.raw, context)).toMatchObject({ status: 'RECOVERABLE', job });
+    expect(recoverRetainedPublication('generic-listing', job.raw, { ...context, externalId: 'other' })).toMatchObject({ reason: 'IDENTITY_MISMATCH' });
+    for (const malformed of [entry.slice(0, 2000), entry + entry, entry.replace('</entry>', '</item>')]) {
+      expect(recoverRetainedPublication('generic-listing', { feedItem: malformed }, context)).toMatchObject({ reason: 'RAW_SCHEMA_INVALID' });
+    }
+    expect(recoverRetainedPublication('generic-listing', job.raw, { ...context, config: {} })).toMatchObject({ reason: 'READER_UNQUALIFIED' });
+    expect(job.country).toBeUndefined();
+    expect(job.company).toBeUndefined();
+  });
+
   it('can verify a native identity without claiming that missing content is publishable', () => {
     const raw = { ...lever, descriptionPlain: undefined };
     const context = { externalId: 'role-1', url, observedAt: at, config: {} };

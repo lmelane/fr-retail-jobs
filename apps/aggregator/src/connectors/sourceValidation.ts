@@ -82,9 +82,10 @@ export async function validateCapturedSource(db: PrismaClient, batchId: string, 
       if (new Set(replayed.jobs.map(job => job.externalId)).size !== replayed.jobs.length) reason('DUPLICATE_PUBLICATION_IDS');
       report.inputRejected = replayed.rejectedRows?.length ?? 0;
       if (report.inputRejected) report.reasons.REJECTED_NATIVE_ROWS = report.inputRejected;
-      // A sitemap includes navigation and editorial pages. Keep their evidence,
-      // but do not count a page without JobPosting as a malformed publication.
-      report.inputUnqualified = (replayed.rejectedRows ?? []).filter(row => row.reason !== 'LISTED_PAGE_WITHOUT_JOBPOSTING').length;
+      // Navigation pages and previews already read from their native detail URL
+      // are retained evidence, not malformed or missing publications.
+      report.inputUnqualified = (replayed.rejectedRows ?? []).filter(row =>
+        !['LISTED_PAGE_WITHOUT_JOBPOSTING', 'LISTED_POSTING_PREVIEW'].includes(row.reason)).length;
       for (const job of replayed.jobs) {
         if (job.publicationHold || job.publicationWithdrawnAt) { report.held++; continue; }
         const recovery = recoverRetainedPublication(revision.kind, job.raw, {

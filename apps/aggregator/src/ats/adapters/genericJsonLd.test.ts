@@ -9,6 +9,8 @@ vi.mock('../../lib/http.js', () => ({
 
 import { fetchText } from '../../lib/http.js';
 import { fetchGenericJsonLdJobs } from './genericJsonLd.js';
+import { createHash } from 'node:crypto';
+import alberto from './__fixtures__/alberto-sitemap-postings.json' with { type: 'json' };
 
 const mockFetch = vi.mocked(fetchText);
 
@@ -34,7 +36,53 @@ const config = {
   pageParam: 'page',
 };
 
-beforeEach(() => mockFetch.mockReset());
+beforeEach(() => { mockFetch.mockReset(); });
+
+describe('sitemap listing previews and detail identities', () => {
+  const sitemapUrl = 'https://www.alberto-pants.com/sitemap-0.xml';
+  const xml = `<urlset>${alberto.pages.map(page => `<url><loc>${page.pageUrl}</loc></url>`).join('')}</urlset>`;
+  const nativePage = (index: number) => alberto.pages[index].postings.map(node =>
+    `<script type="application/ld+json">${JSON.stringify(node)}</script>`).join('');
+
+  it('retains both native detail IDs and records both listing previews without publishing duplicates', async () => {
+    mockFetch.mockImplementation(async url => String(url) === sitemapUrl ? xml : nativePage(alberto.pages.findIndex(page => page.pageUrl === String(url))));
+    const result = await fetchGenericJsonLdJobs({ sitemapUrl });
+    expect(result.jobs).toHaveLength(2);
+    expect(result.jobs.map(job => job.externalId)).toEqual(alberto.pages.slice(1).map(page => createHash('sha1').update(page.pageUrl).digest('hex')));
+    expect(result.jobs.every(job => job.company === 'ALBERTO' && !job.publicationHold)).toBe(true);
+    expect(result.rejectedRows).toHaveLength(2);
+    expect(result.rejectedRows?.every(row => row.reason === 'LISTED_POSTING_PREVIEW')).toBe(true);
+    expect(result.complete).toBe(true);
+  });
+
+  it('preserves a preview when its referenced detail fails, and cannot attest completeness', async () => {
+    mockFetch.mockImplementation(async url => {
+      if (String(url) === sitemapUrl) return xml;
+      const index = alberto.pages.findIndex(page => page.pageUrl === String(url));
+      if (index === 1) throw new Error('HTTP 503');
+      return nativePage(index);
+    });
+    const result = await fetchGenericJsonLdJobs({ sitemapUrl });
+    expect(result.jobs).toHaveLength(2);
+    expect(result.jobs.filter(job => job.publicationHold)).toHaveLength(1);
+    expect(result.rejectedRows?.map(row => row.reason).sort()).toEqual(['LISTED_PAGE_FETCH_FAILED', 'LISTED_POSTING_PREVIEW']);
+    expect(result.complete).toBe(false);
+  });
+
+  it('does not collapse similar titles without the explicit native link and matching detail', async () => {
+    mockFetch.mockImplementation(async url => {
+      if (String(url) === sitemapUrl) return xml;
+      const index = alberto.pages.findIndex(page => page.pageUrl === String(url));
+      if (index) return nativePage(index);
+      return alberto.pages[0].postings.map(node => `<script type="application/ld+json">${JSON.stringify({ ...node, url: 'https://other.example/job' })}</script>`).join('');
+    });
+    const result = await fetchGenericJsonLdJobs({ sitemapUrl });
+    expect(result.jobs).toHaveLength(4);
+    expect(new Set(result.jobs.map(job => job.externalId)).size).toBe(3);
+    // Both ambiguous native nodes survive for DUPLICATE_PUBLICATION_IDS validation.
+    expect(result.rejectedRows).toEqual([]);
+  });
+});
 
 describe('mixed sitemap with reviewed job paths', () => {
   const sitemapUrl = 'https://careers.example/sitemap.xml';

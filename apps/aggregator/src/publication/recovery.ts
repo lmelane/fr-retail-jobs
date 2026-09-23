@@ -16,6 +16,7 @@ import { applySuccessFactorsDetail, brandPropertyOf, normalizeRmkItem, splitSlug
 import { normalizeAnnouncement, type DrItem } from '../ats/adapters/digitalrecruiters.js';
 import { personioDetailFromEvidence } from '../ats/adapters/personioDetail.js';
 import { normalizeJobPosting } from '../connectors/generic/jsonLdSitemap.js';
+import { parseFeed } from '../connectors/generic/rssFeed.js';
 import { normalizeMagnetOffer } from '../ats/adapters/magnet.js';
 import { parseRitualsHit } from '../ats/adapters/rituals.js';
 import { parseWordpressPost } from '../ats/adapters/wordpress.js';
@@ -187,6 +188,11 @@ function readRetainedPublication(kind: string, raw: unknown, context: Context, r
       case 'generic-listing': case 'generic-jsonld': case 'radancy': {
         if (config.reader === 'caudalie-ajax' && raw.source === 'caudalie-ajax-v1') {
           job = readCaudalieRaw(raw); break;
+        }
+        if (typeof config.feedUrl === 'string' && typeof raw.feedItem === 'string') {
+          const items = parseFeed(raw.feedItem);
+          if (items.length !== 1 || (items[0].raw as { feedItem: string }).feedItem !== raw.feedItem) return failure('RAW_SCHEMA_INVALID');
+          job = items[0]; break;
         }
         if (!jobPosting(raw)) return failure('READER_UNQUALIFIED');
         // The identity is the crawled page, retained as `catwalksPageUrl` since lot F3b; an older RAW without it reads
