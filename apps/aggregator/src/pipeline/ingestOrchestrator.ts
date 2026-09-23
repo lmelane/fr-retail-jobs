@@ -3,7 +3,7 @@ import { log } from '../observability/logger.js';
 import { withSourceBudget } from '../lib/sourceBudget.js';
 import type { PrismaClient } from '@prisma/client';
 import pLimit from 'p-limit';
-import { loadActiveSources } from '../connectors/sourceStore.js';
+import { loadActiveSources, recordSourceRunSummary } from '../connectors/sourceStore.js';
 import { runIngest, KIND_TO_ATS } from './ingest.js';
 import { checkSourceHealth, type SourceHealth } from './health.js';
 import { briefError } from '../lib/normalize.js';
@@ -167,12 +167,16 @@ async function ingestOne(prisma: PrismaClient, key: string, result: Orchestrator
     // ERROR — so the refresh knows its offers were NOT re-attested this run
     // and leaves them open. Without this row the refresh saw only silence,
     // which is indistinguishable from "the source listed nothing".
-    await prisma.sourceRun
-      .create({
+    const status = timedOut ? 'TIMEOUT' : challenged ? 'CHALLENGED' : 'ERROR';
+    // Keep the catalogue's last-run summary in the same transaction as the
+    // failed attempt. Otherwise a refused admission leaves yesterday's OK
+    // count/rates visible even though SourceRun records today's error.
+    await prisma.$transaction(async tx => {
+      await tx.sourceRun.create({
         data: {
           sourceKey: key,
           ...(log.runId() ? { runId: log.runId() } : {}),
-          status: timedOut ? 'TIMEOUT' : challenged ? 'CHALLENGED' : 'ERROR',
+          status,
           jobs: 0,
           canAttestAbsence: false,
           note: timedOut
@@ -181,8 +185,12 @@ async function ingestOne(prisma: PrismaClient, key: string, result: Orchestrator
               ? `anti-bot ${(error as WafChallengeError).vendor} : page d'attente servie, aucune offre lue`
               : briefError(error),
         },
-      })
-      .catch(async (e) => await log.error('source.record_failed', `[orchestrator] ${key}: failed to record run — ${briefError(e)}`, { error: e }));
+      });
+      await recordSourceRunSummary(tx, key, { status, jobs: 0 });
+    }).catch(async (error) => {
+      await log.error('source.record_failed', `[orchestrator] ${key}: failed to record run — ${briefError(error)}`, { error });
+      throw error;
+    });
   } finally {
     await log.flush(key);
   }

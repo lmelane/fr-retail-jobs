@@ -15,7 +15,9 @@ import { runIngest } from './ingest.js';
 // Keep native qualification, archive, replay, decisions, admission and SQL real.
 // Only downstream publication is replaced in the orchestration-isolation witness.
 vi.mock('./ingest.js', () => ({ KIND_TO_ATS: { ashby: 'ASHBY' }, runIngest: vi.fn(async () => []) }));
-vi.mock('../connectors/sourceStore.js', () => ({ loadActiveSources: vi.fn() }));
+vi.mock('../connectors/sourceStore.js', async importOriginal => ({
+  ...await importOriginal<typeof import('../connectors/sourceStore.js')>(), loadActiveSources: vi.fn(),
+}));
 vi.mock('./health.js', () => ({ checkSourceHealth: vi.fn(async () => ({ incidents: [], broken: 0, degraded: 0 })) }));
 
 const db = new PrismaClient();
@@ -132,6 +134,11 @@ describe('normal run maintains its access prerequisite through the Golden Path',
 
   it('isolates a refused source and continues the normal run on other ACTIVE sources', async () => {
     const blocked = await create(); await deny(blocked); const allowed = await create(); const transport = native();
+    const previous = new Date('2026-01-01T00:00:00Z');
+    await db.source.update({ where: { key: blocked.key }, data: {
+      lastRunAt: previous, lastRunStatus: 'OK', lastRunJobs: 42,
+      descriptionRate: 1, dateRate: 1, countryRate: 1, urlRate: 1,
+    } });
     vi.mocked(loadActiveSources).mockResolvedValue([blocked, allowed].map(source => ({ ...source,
       config: source.config as Record<string, unknown>, revisionId: source.currentRevisionId })));
     const result = await ingestAllBySource(db);
@@ -139,6 +146,10 @@ describe('normal run maintains its access prerequisite through the Golden Path',
     expect(runIngest).toHaveBeenCalledExactlyOnceWith(db, { only: allowed.key, skipGeocode: true });
     expect(transport).toHaveBeenCalledTimes(2);
     expect(await db.sourceRun.findFirst({ where: { sourceKey: blocked.key } })).toMatchObject({ status: 'ERROR', canAttestAbsence: false });
+    const summary = await db.source.findUniqueOrThrow({ where: { key: blocked.key } });
+    expect(summary).toMatchObject({ status: 'ACTIVE', lastRunStatus: 'ERROR', lastRunJobs: 0,
+      descriptionRate: null, dateRate: null, countryRate: null, urlRate: null });
+    expect(summary.lastRunAt!.getTime()).toBeGreaterThan(previous.getTime());
     await expect(requireSourceAccess(db, allowed)).resolves.toMatchObject({ decision: { verdict: 'ALLOWED' } });
   });
 });

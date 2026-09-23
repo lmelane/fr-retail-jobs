@@ -183,7 +183,7 @@ export async function promoteSource(prisma: PrismaClient, key: string, expectedR
  * predate the table.
  */
 export async function recordSourceRunSummary(
-  prisma: PrismaClient,
+  prisma: Pick<PrismaClient, 'source'>,
   key: string,
   summary: {
     status: string;
