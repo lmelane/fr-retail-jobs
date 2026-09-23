@@ -17,6 +17,11 @@ function fixture() {
 }
 
 describe('one publication presentation', () => {
+  it('preserves native fractional experience without rounding it to a year', () => {
+    const candidate = { ...fixture(), experienceYears: 0.5 };
+    const presentation = publicationPresentation(candidate, publicationJobContent(candidate, BOOTSTRAP_TAXONOMY));
+    expect(publicationContentOf({ ...candidate, presentation })?.experienceYears).toBe(0.5);
+  });
   it('hydrates dates and exact amounts while retaining absent optional fields', () => {
     const content = publicationContentOf(fixture());
     expect(content).toMatchObject({ title: 'Sales Advisor', description: 'Publication text', countryCode: null,
@@ -29,7 +34,8 @@ describe('one publication presentation', () => {
   });
   it.each([
     ['title', null], ['title', ''], ['source', 'INVENTED'], ['postedAt', '2026-02-31'],
-    ['salaryMin', '12.1234567'], ['salaryMin', 12.31], ['experienceYears', 1e15], ['latitude', 'north'],
+    ['salaryMin', '12.1234567'], ['salaryMin', 12.31], ['experienceYears', 1e15],
+    ['experienceYears', Infinity], ['experienceYears', NaN], ['latitude', 'north'],
   ])('rejects malformed %s content', (key, value) => {
     const source = fixture(), cache = JSON.parse(JSON.stringify(source.presentation));
     cache.values[key] = value;

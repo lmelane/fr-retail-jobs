@@ -529,7 +529,8 @@ model Job {
    * valeur canonique, relisible sans repasser par le normaliseur.
    */
   rawSchedule        String?
-  experienceYears    Int?
+  /** Native requirements can express fractions, e.g. six months as 0.5 years. */
+  experienceYears    Float?
   educationLevel     String?
 
   // Compensation, when the source publishes it (Pinpoint, WTTJ, TalentView,

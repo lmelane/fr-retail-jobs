@@ -46,6 +46,21 @@ afterAll(async () => {
 });
 
 describe('upsertDeduplicated — unique-constraint recovery', () => {
+  it('stores and updates fractional native experience in the job and its publication', async () => {
+    const posting = candidate({ sourceKey: 'fractional-experience', externalId: 'half-year', company: 'A.P.C.',
+      title: 'Assistant chef de produit', experienceYears: 0.5 });
+    const first = await upsertDeduplicated(prisma, posting);
+    expect(first.outcome).toBe('CREATED');
+    expect((await prisma.job.findUniqueOrThrow({ where: { id: first.jobId } })).experienceYears).toBe(0.5);
+    const updated = await upsertDeduplicated(prisma, { ...posting, experienceYears: 1.25 });
+    expect(updated.jobId).toBe(first.jobId);
+    expect((await prisma.job.findUniqueOrThrow({ where: { id: first.jobId } })).experienceYears).toBe(1.25);
+    const source = await prisma.jobSource.findUniqueOrThrow({ where: {
+      sourceKey_externalId: { sourceKey: posting.sourceKey, externalId: posting.externalId },
+    } });
+    expect(source.presentation).toMatchObject({ values: { experienceYears: 1.25 } });
+    expect(await prisma.job.count()).toBe(1);
+  });
   it('tracks the current publisher opportunity classification and an unknown reobservation', async () => {
     const base = { company: 'Ganni', title: 'Sales Advisor', location: 'Paris', country: 'FR' };
     const first = await upsertDeduplicated(prisma, candidate({ ...base, sourceKey: 'direct', externalId: '1', opportunityType: 'OPEN_APPLICATION' }));

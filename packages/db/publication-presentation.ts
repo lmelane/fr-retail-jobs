@@ -60,7 +60,8 @@ export function publicationContentOf(source: PresentationSource): PublicationCon
       result[key] = value;
     } else if (field.type === 'Int' || field.type === 'Float') {
       if (typeof value !== 'number' || !Number.isFinite(value) ||
-        field.type === 'Int' && (!Number.isInteger(value) || value < -2147483648 || value > 2147483647)) return null;
+        field.type === 'Int' && !Number.isInteger(value) ||
+        (field.type === 'Int' || key === 'experienceYears') && (value < -2147483648 || value > 2147483647)) return null;
       result[key] = value;
     } else if (field.type === 'Json') {
       result[key] = value;
