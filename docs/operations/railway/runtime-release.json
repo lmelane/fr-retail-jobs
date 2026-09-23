@@ -68,5 +68,21 @@
         "gitSha": "c3613a1d7b2a3c709f68fb18801eed3277a2302b"
       }
     }
-  ]
+  ],
+  "resolvedExecutionSettings": {
+    "overlapSeconds": 0,
+    "drainingSeconds": 10,
+    "reason": "Explicit release settings for both runtimes: no overlap with a previous deployment, 10 seconds for graceful termination. Identical in validation and production.",
+    "platformDefaults": {
+      "runtime": "V2",
+      "useLegacyStacker": false,
+      "ipv6EgressEnabled": false,
+      "buildEnvironment": "V3",
+      "builder": "RAILPACK"
+    },
+    "inactiveSettings": {
+      "build": "Image source: no Railway build is executed; builder/buildEnvironment are inactive platform metadata.",
+      "workerRestartRetries": "NEVER policy: Railway normalizes retry count 0 to null; no retry is scheduled."
+    }
+  }
 }

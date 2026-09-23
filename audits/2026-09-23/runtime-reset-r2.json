@@ -1,0 +1,144 @@
+{
+  "at": "2026-09-23T06:17:43.644840+00:00",
+  "status": "PASS",
+  "environment": {
+    "id": "a0dc6f7a-2e1e-4b09-af07-9fd873ed0d85",
+    "name": "runtime-validation-20260923"
+  },
+  "gitSha": "c3613a1d7b2a3c709f68fb18801eed3277a2302b",
+  "embeddedContractSha256": "ba9fbd873305c50357c93c2cc3662af88d64d5f62b025ed7065e4883f3770bbf",
+  "restore": {
+    "origin": "validated restore_operational_20260922 on local catwalks-consolide-rehearsal",
+    "bytes": 2998136313,
+    "sha256": "8d02a093cf12cdaeec3f19eb3d558b1044855d93d30a2c91e51b79521e4ad27e",
+    "seconds": 46,
+    "productionDatabaseAccess": false
+  },
+  "restoreResult": {
+    "exitCode": 0,
+    "migrations": 86,
+    "sources": 537,
+    "pipelineRuns": 932
+  },
+  "runtimes": {
+    "api": {
+      "id": "9c50b8a9-5651-478f-b0d1-5bc02d2c138f",
+      "name": "catwalks-catalogue-api",
+      "deploymentId": "72fa2e96-2a58-4040-8f67-c69cdbb852f4",
+      "image": "ghcr.io/lmelane/catwalks-catalogue-api@sha256:3457d652ade426fda8459a189e0eee2ee46d482bc2887cfc6f9fa274edf7b1a0",
+      "status": "SUCCESS",
+      "profile": "validation-paused",
+      "attestationPid": 1,
+      "targetRailwayProcess": "PASS",
+      "cron": null,
+      "automaticMigration": false,
+      "customEnvironmentNames": [
+        "CATALOGUE_API_KEY",
+        "CATWALKS_RUNTIME_PROFILE",
+        "DATABASE_URL",
+        "HOSTNAME",
+        "NEXT_PUBLIC_SITE_URL",
+        "NODE_ENV",
+        "PORT"
+      ],
+      "attestationSha256": "27cabffafcc6953b7bab5933df131e6e77f86e393c0e49da642d0791f7eec09c"
+    },
+    "worker": {
+      "id": "210322c3-51b7-42c3-a93d-f50f64d44d19",
+      "name": "catwalks-ingestion-worker",
+      "deploymentId": "961994c1-0196-41e5-b0e9-f9d932963f12",
+      "image": "ghcr.io/lmelane/catwalks-ingestion-worker@sha256:55a9e6d008b21f8060a10b6f2bf1fd0d49d0dd81ece757bedb9e687ac174a240",
+      "status": "SUCCESS",
+      "profile": "validation-paused",
+      "attestationPid": 1,
+      "targetRailwayProcess": "PASS",
+      "cron": null,
+      "automaticMigration": false,
+      "customEnvironmentNames": [
+        "ALERT_EMAIL",
+        "BREVO_API_KEY",
+        "BREVO_SENDER_EMAIL",
+        "BREVO_SENDER_NAME",
+        "CATWALKS_RUNTIME_PROFILE",
+        "DATABASE_URL",
+        "HEALTHCHECK_PING_URL",
+        "NODE_ENV",
+        "PIPELINE_PAUSED"
+      ],
+      "attestationSha256": "ffe2e1d64097bfd878b825633221d87913ce3a3c561f57a75843daf99e594f7e",
+      "pauseProof": {
+        "timestamp": "2026-09-23T06:06:08.259644510Z",
+        "level": "info",
+        "message": "",
+        "workStarted": false,
+        "businessRequests": 0,
+        "command": "paused",
+        "state": "PAUSED",
+        "event": "pipeline.paused",
+        "at": "2026-09-23T06:06:08.090Z",
+        "pid": 1
+      },
+      "returnPausedDeploymentId": "25adb9f2-3316-48b4-98bf-5e55747e4fe0",
+      "finalProfile": "validation-paused"
+    }
+  },
+  "production": {
+    "configurationUnchanged": true,
+    "deploymentIdsUnchanged": true,
+    "postgresAndVolumeUnchanged": true,
+    "mutationPerformed": false
+  },
+  "canary": {
+    "started": true,
+    "source": "oh-my-cream",
+    "run": {
+      "id": "18ae83b6-e100-4f76-ab1f-f5b75933d630",
+      "status": "COMPLETED",
+      "startedAt": "2026-09-23T06:23:45.189Z",
+      "finishedAt": "2026-09-23T06:23:47.630Z",
+      "revision": "c3613a1d7b2a3c709f68fb18801eed3277a2302b"
+    },
+    "captureBatchId": "eb8d5e2e-805f-437e-8478-17d111ece043",
+    "outputs": 23,
+    "rawBlobsVerified": 27,
+    "businessHosts": [
+      "careers.ohmycream.com"
+    ],
+    "businessEgressOutsideScope": 0,
+    "errors": 0,
+    "created": 0,
+    "merged": 0,
+    "updated": 23,
+    "heartbeat": "pipeline.heartbeat: pinged; /start acknowledged before schema readiness; run shorter than 30-second run.alive interval",
+    "publicationIdsAndJobMappingsUnchanged": true,
+    "runCountDelta": 1,
+    "qualificationMutationPerformed": true,
+    "qualificationApproval": "Explicit user approval on 2026-09-23, Oh My Cream only on clone and production",
+    "localQualificationInterruption": {
+      "batchId": "05261bfc-7ac2-4db7-a71b-dabd2ba8ca49",
+      "outcome": "FAILED",
+      "failure": "LocalOperatorProcessExit137",
+      "rawCaptures": 0,
+      "ingestionRunCreated": false,
+      "resolved": "Same immutable image; local operator uses the same esbuild version 0.28.2 compiled for native ARM, avoiding local AMD64 emulation failure. No Railway runtime change."
+    }
+  },
+  "api": {
+    "health": 200,
+    "withoutKey": 401,
+    "invalidKey": 401,
+    "authenticatedSearch": 200,
+    "frOhMyCreamJobs": 21,
+    "validationDomain": "catwalks-catalogue-api-runtime-validation-20260923.up.railway.app"
+  },
+  "tracking": "Existing Railway logs, Healthchecks and pipeline records only; no monitoring tool added.",
+  "product": {
+    "status": "PASS",
+    "url": "http://localhost:3023/emplois?marche=FR&q=Oh%20My%20Cream",
+    "observedWith": "Codex in-app browser, existing website preview connected to validation API",
+    "frJobs": 21,
+    "detailVisible": true,
+    "applyHost": "careers.ohmycream.com",
+    "frontendChanged": false
+  }
+}

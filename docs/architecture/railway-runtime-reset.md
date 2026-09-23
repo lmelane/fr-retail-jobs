@@ -1,8 +1,8 @@
 # Reset du runtime Railway — réalisation
 
-**23 septembre 2026 — R1 en cours ; GO conditionnel R1 → R5 reçu.** La décision courante remplace le passage immédiat au ramp-up : reconstruire l'exécution Railway, conserver PostgreSQL intégralement. Le canari `72300c9` reste historiquement validé. Aucun service n'a été créé, modifié, redémarré ou supprimé pour établir ce plan ; aucune requête SQL de production n'a été exécutée.
+**23 septembre 2026 — R1 et R2 PASS ; R3 autorisé par le GO conditionnel.** Le clone est restauré (86 migrations) ; API et worker conformes au contrat. Après renouvellement explicitement autorisé des seules preuves Oh My Cream, le canari est `COMPLETED` : 23 mises à jour, 0 création/fusion/erreur, 27 blobs vérifiés, egress métier limité à `careers.ohmycream.com`, heartbeat reçu, `/emplois` affiche les 21 offres FR et le worker est revenu sous pause. Les configurations et déploiements de production sont encore inchangés. Voir le [reçu R2](../../audits/2026-09-23/runtime-reset-r2.json).
 
-**Contrôle R1 : PASS après accord explicite de Loïc sur les images publiques.** Les deux images `c3613a1` sont conservées sans rebuild. Le [reçu de release](../operations/railway/runtime-release.json) fixe les digests et documente les deux seuls écarts approuvés avec le contrat embarqué : la visibilité du registre, sans changement de commande, variables, garde ou données. R2 démarre sur le clone Railway isolé. Voir le [reçu R1](../../audits/2026-09-23/runtime-reset-r1.md).
+**Contrôle R1 : PASS après accord explicite de Loïc sur les images publiques.** Les deux images `c3613a1` sont conservées sans rebuild. Le [reçu de release](../operations/railway/runtime-release.json) fixe les digests et documente les deux seuls écarts approuvés avec le contrat embarqué : la visibilité du registre, sans changement de commande, variables, garde ou données. R2 utilise le clone Railway isolé. Voir le [reçu R1](../../audits/2026-09-23/runtime-reset-r1.md).
 
 La [cible structurée](../operations/railway/runtime-target.json) décrit le résultat attendu. Elle n'est pas encore un fichier exécutable de provisionnement. Le [relevé réel](../../audits/2026-09-23/railway-runtime-inventory.json) contient les identifiants, déploiements, décisions pour les **33 affectations de variables** des quatre services et empreintes des sauvegardes privées. Ne pas confondre configuration proposée, configuration distante et environnement effectivement chargé dans un processus.
 
@@ -152,7 +152,7 @@ Avant retrait : l'ancienne API sert encore de repli pour le domaine, les anciens
 
 Après retrait : recréer le dernier runtime approuvé depuis ses images et son contrat, sous pause. Les anciens exports restent des preuves et une aide à reconstruire les références nécessaires ; **ne jamais les réappliquer en bloc**, ce qui réintroduirait les commandes dangereuses et pourrait gérer la DB. La capacité de récupérer les images/contrats approuvés et de restaurer le routage doit être confirmée avant décommissionnement.
 
-La clôture requiert un rapport court : diff cible/effectif/processus nul hors valeurs secrètes et identifiants générés classifiés, canari PASS, moniteur PASS, services retirés listés, PostgreSQL/volume inchangés et reprise du ramp-up possible. Tant que ces preuves n'existent pas, le présent document reste un plan.
+La clôture requiert un rapport court : diff cible/effectif/processus nul hors valeurs secrètes et identifiants générés classifiés, canari PASS, suivi existant attesté, services retirés listés, PostgreSQL/volume inchangés et reprise du ramp-up possible. Tant que ces preuves n'existent pas, le présent document reste un plan.
 
 ### Suivi du canari — décision du propriétaire
 
