@@ -86,6 +86,17 @@ describe('countryFromLocation', () => {
     expect(countryFromLocation('Columbus, US-OH')).toBe('US');
   });
 
+  it('ne transforme pas les villes abrégées St-Lo et St-Pie en São Tomé-et-Príncipe', () => {
+    for (const location of ['ST-LO, 50000, Normandie', 'St-Lo', 'St-Pie, Québec'])
+      expect(countryFromLocation(location)).toBeUndefined();
+    expect(countryFromLocation('ST-LO, France')).toBe('FR');
+    expect(normalizeCountry('ST')).toBe('ST');
+    expect(countryFromLocation('ST')).toBe('ST');
+    expect(countryFromLocation('São Tomé & Príncipe')).toBe('ST');
+    expect(countryFromLocation('US-OH')).toBe('US');
+    expect(countryFromLocation('DE-BY')).toBe('DE');
+  });
+
   it('ne devine jamais', () => {
     expect(countryFromLocation('Remote')).toBeUndefined();
     expect(countryFromLocation('Boutique Champs-Élysées')).toBeUndefined();

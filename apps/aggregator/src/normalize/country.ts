@@ -335,6 +335,9 @@ export function countryFromLocation(location?: string | null): string | undefine
     }
     const prefixed = segment.match(/^([A-Za-z]{2})-([A-Za-z0-9]{1,3})$/);
     if (prefixed) {
+      // A city abbreviation such as ST-LO or St-Pie is not a country witness.
+      // Leave it unresolved; a separate country field/name can still prove ST.
+      if (prefixed[1].toUpperCase() === 'ST' && /^[A-Za-z]{2,}$/.test(prefixed[2])) continue;
       const code = normalizeCountry(prefixed[1]);
       if (code) {
         /*
@@ -360,8 +363,8 @@ export function countryFromLocation(location?: string | null): string | undefine
          * ── LA RÈGLE RETENUE, ET SA LIMITE ASSUMÉE ────────────────────────
          *
          * ISO 3166-2 écrit `PAYS-SUBDIVISION`. Le préfixe porte donc le pays,
-         * sans exception : c'est une convention publiée, pas une statistique
-         * sur nos données.
+         * lorsque le segment désigne effectivement un code, sans collision
+         * avec un nom de ville comme l'abréviation ST-LO contrôlée ci-dessus.
          *
          * « KY-US » n'est PAS traité ici. Le lire comme « Kentucky,
          * États-Unis » supposerait un format inversé que rien n'atteste dans
