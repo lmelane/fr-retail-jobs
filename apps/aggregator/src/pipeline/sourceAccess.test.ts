@@ -103,14 +103,13 @@ describe('immutable native access decisions', () => {
     const proof = await captureSourceEvidence(db, source.key, { revisionId: source.currentRevisionId, purpose: 'SOURCE_ACCESS', url: origin + '/robots.txt', deadlineMs: 15000 });
     await expect(recordSourceAccessDecision(db, { ...document, robotsCaptureIds: [proof.captureBatchId] }, true)).rejects.toThrow();
   });
-  it('retains missing robots but blocks unresolved HTTP responses without an authorization', async () => {
+  it('retains missing and unavailable robots as distinct observations under the existing owner authorization', async () => {
     const { source, document } = await prepared();
     for (const [status, observation] of [[404, 'NO_ROBOTS'], [403, 'UNREACHABLE']] as const) {
       vi.stubGlobal('fetch', vi.fn(async () => new Response('Native response', { status })));
       const proof = await captureSourceEvidence(db, source.key, { revisionId: source.currentRevisionId, purpose: 'SOURCE_ACCESS', url: origin + '/robots.txt', deadlineMs: 15000 });
       const inspect = recordSourceAccessDecision(db, { ...document, robotsCaptureIds: [proof.captureBatchId] });
-      if (observation === 'NO_ROBOTS') expect(await inspect).toMatchObject({ observations: { NO_ROBOTS: 1 } });
-      else await expect(inspect).rejects.toThrow('unresolved');
+      expect(await inspect).toMatchObject({ verdict: 'ALLOWED', observations: { [observation]: 1, ALLOWED: 0 } });
     }
   });
   it.each(['User-agent: *\nDisallow: /', '<html><title>Jobs</title><body>Open vacancies</body></html>'])('follows five robots redirects and binds the result to the original origin', async body => {

@@ -6,6 +6,11 @@ import { detectChallenge } from './responseIntegrity.js';
 export function readRobotsResponse(status: number, headers: Record<string, unknown>, body: Buffer) {
   const contentType = String(headers['content-type'] ?? '');
   if ([404, 410].includes(status)) return { kind: 'NO_ROBOTS' as const, text: null, nonStandard: false };
+  // Preserve the existing policy for an unavailable robots endpoint. A 4xx on
+  // robots is neither an empty ruleset nor proof that the public jobs require
+  // authentication. Authorization still comes from the reviewed job surface.
+  if (status >= 400 && status < 500 && status !== 429)
+    return { kind: 'UNREACHABLE' as const, text: null, nonStandard: false };
   if (status < 200 || status >= 300) throw new Error(`Robots temporarily unreachable: HTTP ${status}`);
   if (body.length > 512_000) throw new Error('Robots document exceeds parsing limit');
   const text = new TextDecoder('utf-8', { fatal: true }).decode(body);

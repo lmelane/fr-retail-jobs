@@ -21,7 +21,10 @@ describe('non-standard robots responses', () => {
   it.each([404, 410])('recognizes missing robots (%s)', status => {
     expect(read('Not found', status)).toMatchObject({ kind: 'NO_ROBOTS', text: null });
   });
-  it.each([401, 403, 429, 500, 503])('never treats HTTP %s as an empty ruleset', status => {
+  it.each([401, 403, 406])('preserves the unavailable observation for HTTP %s without inventing rules', status => {
+    expect(read('Error', status)).toMatchObject({ kind: 'UNREACHABLE', text: null });
+  });
+  it.each([429, 500, 503])('blocks temporary failure HTTP %s', status => {
     expect(() => read('Error', status)).toThrow('unreachable');
   });
   it.each(['<html><title>Just a moment...</title></html>', '<html><title>Sign in</title><body>Account</body></html>',
