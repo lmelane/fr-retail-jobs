@@ -1,0 +1,37 @@
+{
+  "status": "PASS",
+  "gitSha": "c3613a1d7b2a3c709f68fb18801eed3277a2302b",
+  "productionPostgresAndVolumeUnchanged": true,
+  "oldRuntimesUnchanged": true,
+  "domainTransferred": false,
+  "runtimes": {
+    "api": {
+      "id": "9c50b8a9-5651-478f-b0d1-5bc02d2c138f",
+      "deploymentId": "0d62ade6-efc0-45cc-a3a6-1c69a0864199",
+      "image": "ghcr.io/lmelane/catwalks-catalogue-api@sha256:3457d652ade426fda8459a189e0eee2ee46d482bc2887cfc6f9fa274edf7b1a0",
+      "profile": "production-paused",
+      "targetRailwayProcess": "PASS",
+      "cron": null,
+      "autodeploy": false,
+      "automaticMigration": false
+    },
+    "worker": {
+      "id": "210322c3-51b7-42c3-a93d-f50f64d44d19",
+      "deploymentId": "901d96d5-c5d8-4484-9643-3b8ad82c2498",
+      "image": "ghcr.io/lmelane/catwalks-ingestion-worker@sha256:55a9e6d008b21f8060a10b6f2bf1fd0d49d0dd81ece757bedb9e687ac174a240",
+      "profile": "production-paused",
+      "targetRailwayProcess": "PASS",
+      "cron": null,
+      "autodeploy": false,
+      "automaticMigration": false
+    }
+  },
+  "api": {
+    "domain": "catwalks-catalogue-api-production.up.railway.app",
+    "health": 200,
+    "unauthenticated": 401,
+    "wrongKey": 401,
+    "authenticated": 200,
+    "omcFrance": 21
+  }
+}
