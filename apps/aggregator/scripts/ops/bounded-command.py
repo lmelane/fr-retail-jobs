@@ -87,7 +87,7 @@ def bounded_command(run_name: str, keys: str, concurrency: str | None = None,
     body = SCRIPT.format(run_name=json.dumps(run_name))
     return (
         'env -u GOOGLE_INDEXING_CREDENTIALS '
-        f'EGRESS_PROBE=0 INGEST_ONLY_KEYS={shlex.quote(keys)} ' + concurrency_clause(concurrency) +
+        f'INGEST_ONLY_KEYS={shlex.quote(keys)} ' + concurrency_clause(concurrency) +
         ('P8_STOP_ON_FIRST_429=1 ' if stop_on_first_429 else '') +
         'node --import tsx --input-type=module -e ' + shlex.quote(body)
     )

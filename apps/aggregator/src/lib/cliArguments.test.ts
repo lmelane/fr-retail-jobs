@@ -17,7 +17,7 @@ it('preserves valid operational commands and rejects ambiguous values', () => {
 });
 it('fails the actual CLI before observability, database or egress initialization', () => {
   const result=spawnSync(process.execPath,['--import','tsx',fileURLToPath(new URL('../cli.ts',import.meta.url)),'ingest-all','--only=ganni-talentrecruiter'],
-    { encoding:'utf8', timeout:10000, env:{...process.env,DATABASE_URL:'postgresql://invalid:invalid@127.0.0.1:1/invalid',EGRESS_PROBE:'1'} });
+    { encoding:'utf8', timeout:10000, env:{...process.env,DATABASE_URL:'postgresql://invalid:invalid@127.0.0.1:1/invalid'} });
   expect(result.status).toBe(2); expect(result.stderr).toBe('');
   const records=result.stdout.trim().split('\n').map(line=>JSON.parse(line));
   expect(records).toHaveLength(1); expect(records[0]).toMatchObject({event:'command.invalid_arguments',durable:false,data:{workStarted:false}});

@@ -10,7 +10,6 @@ import { checkSourceHealth } from './pipeline/health.js';
 import { sendHealthAlert } from './pipeline/alert.js';
 import { submitOfferChanges } from './pipeline/googleIndexing.js';
 import { pingHeartbeat } from './pipeline/heartbeat.js';
-import { runEgressProbe } from './pipeline/egressProbe.js';
 
 /**
  * How far back to look for offers created/closed by THIS run, when notifying
@@ -43,13 +42,11 @@ catch (error) { await log.error('command.invalid_arguments', { message: error in
 if (!['health-report', 'stats', 'export-companies', 'occupation-review-queue'].includes(command)) exitIfPipelinePaused(command);
 const prisma = new PrismaClient({ errorFormat: 'minimal', log: [] });
 
-// Sonde d'egress AVANT tout (hostGate, ingest, DB) — no-op sans EGRESS_PROBE=1.
 let fatalFailure = false;
 let observation: Awaited<ReturnType<typeof startObservability>> | undefined;
 
 try {
   observation = await startObservability(prisma, command);
-  await runEgressProbe();
   if (command === 'health-report') {
     const { buildHealthReport } = await import('./pipeline/healthReport.js');
     await log.info('health.report', await buildHealthReport(prisma));

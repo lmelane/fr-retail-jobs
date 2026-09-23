@@ -8,7 +8,7 @@ def one(s):
  key=s['key'];assert all(c.isalnum() or c in '-_' for c in key);receipt=root/f'{key}.receipt.json'
  if receipt.exists() and not a.retry and json.load(open(receipt)).get('snapshotHash')==snapshot_hash:return {'sourceKey':key,'status':'RESUMED_PREVIOUS_RECEIPT'}
  if s['kind']=='fashionjobs':return {'sourceKey':key,'status':'DISCOVERY_ONLY'}
- env={k:v for k,v in os.environ.items() if k not in ['DATABASE_URL','DIRECT_URL','BREVO_API_KEY','GOOGLE_INDEXING_CREDENTIALS','HEALTHCHECK_PING_URL']};env.update({'EGRESS_PROBE':'0','LOG_LEVEL':'warn'})
+ env={k:v for k,v in os.environ.items() if k not in ['DATABASE_URL','DIRECT_URL','BREVO_API_KEY','GOOGLE_INDEXING_CREDENTIALS','HEALTHCHECK_PING_URL']};env.update({'LOG_LEVEL':'warn'})
  with open(root/f'{key}.log','w') as log:
   child=subprocess.Popen(['node','--import','tsx','apps/aggregator/scripts/coverage/probe-worker.mts',a.snapshot,key,str(root)],stdout=log,stderr=log,env=env,start_new_session=True)
   try:code=child.wait(timeout=a.timeout)

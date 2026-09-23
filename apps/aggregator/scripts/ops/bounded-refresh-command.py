@@ -71,7 +71,7 @@ def bounded_refresh_command(run_name: str, keys: str, manifest_path: str) -> str
     )
     return (
         'env -u GOOGLE_INDEXING_CREDENTIALS '
-        f'EGRESS_PROBE=0 REFRESH_ONLY_KEYS={shlex.quote(keys)} '
+        f'REFRESH_ONLY_KEYS={shlex.quote(keys)} '
         'node --import tsx --input-type=module -e ' + shlex.quote(body)
     )
 

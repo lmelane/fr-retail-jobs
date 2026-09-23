@@ -1,24 +1,19 @@
 {
   "formatVersion": 1,
-  "status": "PROPOSED_NOT_APPLIED_NOT_YET_EXECUTABLE",
+  "status": "R1_CANDIDATE",
   "date": "2026-09-23",
   "baselineGitSha": "72300c97586955536ee1f89b0a9b7b0273fbf8a9",
-  "candidateGitSha": null,
-  "candidateImageDigests": null,
-  "implementationRequired": true,
+  "implementationRequired": false,
   "deploymentBlockedUntil": [
-    "runtime guards and probe removal implemented",
-    "external monitoring configuration and alert delivery verified",
-    "IaC CLI/SDK pinned and partial-only plan proven against validation environment",
-    "exact release SHA and both image digests fixed",
-    "platform-generated env names and defaults observed and classified",
-    "clone validation complete",
-    "production cutover authorized after review of this target"
+    "R1 minimal candidate and images pass",
+    "R2 clone gates pass",
+    "R3 target/deployment/process match",
+    "R4 production canary passes before domain transfer",
+    "R5 public endpoint verification passes before retirement"
   ],
   "scope": {
     "productionProjectId": "0eae47d0-598d-4cf0-bb3f-b38921eafa7e",
     "productionEnvironmentId": "e66b019c-d280-41dc-85d8-25ed86bdd101",
-    "iacPartial": "catwalks-runtime",
     "protectedServiceIds": [
       "b5c68d1c-6988-4f15-8d85-afe684109cea"
     ],
@@ -36,7 +31,8 @@
       "scheduled campaigns",
       "source qualification campaign"
     ],
-    "productionIngestionException": "Only the later expressly authorized bounded Oh My Cream canary; ordinary traceable ingestion writes, no historical repair"
+    "productionIngestionException": "Only the later expressly authorized bounded Oh My Cream canary; ordinary traceable ingestion writes, no historical repair",
+    "provisioning": "Railway CLI 5.59.0, exact service/environment selectors and JSON comparisons; no generic infrastructure framework"
   },
   "services": [
     {
@@ -48,12 +44,11 @@
       "volumes": [],
       "githubAutodeploy": false,
       "imageAutoUpdate": false,
-      "sourceMode": "immutable_oci_image_digest",
+      "sourceMode": "private_oci_image_pinned_by_digest",
       "requiredReleaseBindings": [
         "gitSha",
         "imageDigest",
-        "contractSha256",
-        "platformInjectedEnvironmentManifest"
+        "contractSha256"
       ],
       "buildCommandOverride": null,
       "railwayConfigFile": null,
@@ -64,7 +59,7 @@
       "name": "catwalks-catalogue-api",
       "dockerfile": "apps/api/Dockerfile",
       "startCommand": "node apps/api/runtime/start.mjs",
-      "entrypointStatus": "TO_IMPLEMENT: validate profile and process environment, then start existing standalone server",
+      "entrypointStatus": "IMPLEMENTED",
       "workingDirectory": "/app",
       "restartPolicy": {
         "type": "ON_FAILURE",
@@ -75,12 +70,11 @@
         "timeoutSeconds": 120
       },
       "pipelinePaused": "NOT_APPLICABLE: HTTP reader, no ingestion or background deadman",
-      "heartbeat": "External HTTP availability check; no source-age timer inside API",
+      "heartbeat": "Railway healthcheck and external HTTP gate; no background timer",
       "publicDomain": "agregator.catwalks.io",
       "publicPort": 8080,
       "dependencies": [
-        "same-environment PostgreSQL",
-        "external availability monitor"
+        "same-environment PostgreSQL"
       ],
       "environment": {
         "NODE_ENV": "production",
@@ -110,12 +104,11 @@
       "volumes": [],
       "githubAutodeploy": false,
       "imageAutoUpdate": false,
-      "sourceMode": "immutable_oci_image_digest",
+      "sourceMode": "private_oci_image_pinned_by_digest",
       "requiredReleaseBindings": [
         "gitSha",
         "imageDigest",
-        "contractSha256",
-        "platformInjectedEnvironmentManifest"
+        "contractSha256"
       ],
       "buildCommandOverride": null,
       "railwayConfigFile": null,
@@ -126,7 +119,7 @@
       "name": "catwalks-ingestion-worker",
       "dockerfile": "apps/aggregator/Dockerfile",
       "startCommand": "sh apps/aggregator/start.sh",
-      "entrypointStatus": "TO_HARDEN: explicit pause required; no default ingest-all; validate argv and loaded environment against profile",
+      "entrypointStatus": "IMPLEMENTED",
       "workingDirectory": "/repo",
       "restartPolicy": {
         "type": "NEVER",
@@ -137,7 +130,7 @@
       "publicDomain": null,
       "dependencies": [
         "same-environment PostgreSQL",
-        "Healthchecks check dedicated to environment",
+        "Existing Healthchecks Ping URL",
         "Brevo verified sender and alert recipient"
       ],
       "environment": {
@@ -154,7 +147,7 @@
       },
       "secretBindings": {
         "DATABASE_URL": "same-environment database URL; production binding preserved",
-        "HEALTHCHECK_PING_URL": "environment-specific monitor check",
+        "HEALTHCHECK_PING_URL": "Existing check; identical endpoint for sequential validation and production, per user decision",
         "BREVO_API_KEY": "operational alert transport"
       },
       "operationalEgress": [
@@ -238,17 +231,6 @@
       "maximumDurationSeconds": 900
     }
   ],
-  "forbiddenRuntimeVariables": [
-    "EGRESS_PROBE",
-    "RAILWAY_RUN_COMMAND",
-    "RAILWAY_DOCKERFILE_PATH",
-    "PIPELINE_CMD",
-    "PIPELINE_DEADMAN_HOURS",
-    "INGEST_ONLY_KEYS",
-    "REFRESH_ONLY_KEYS",
-    "P8_CRASH_AT",
-    "P8_CRASH_AFTER"
-  ],
   "decommissionAfterCanary": [
     {
       "id": "85d0e5ba-992a-467e-9ddd-0dc25be1d74c",
@@ -273,5 +255,67 @@
     "PID 1 startup attestation of actual argv, environment and compiled contract"
   ],
   "secretComparison": "Names, provenance, scope, presence and functional authentication; never secret values in public proof",
-  "controlPlaneSnapshot": "../../../audits/2026-09-23/railway-runtime-inventory.json"
+  "controlPlaneSnapshot": "../../../audits/2026-09-23/railway-runtime-inventory.json",
+  "processPolicy": {
+    "platformGeneratedNames": [
+      "RAILWAY_ENVIRONMENT",
+      "RAILWAY_ENVIRONMENT_ID",
+      "RAILWAY_ENVIRONMENT_NAME",
+      "RAILWAY_PRIVATE_DOMAIN",
+      "RAILWAY_PROJECT_ID",
+      "RAILWAY_PROJECT_NAME",
+      "RAILWAY_PUBLIC_DOMAIN",
+      "RAILWAY_SERVICE_ID",
+      "RAILWAY_SERVICE_NAME",
+      "RAILWAY_REPLICA_ID",
+      "RAILWAY_DEPLOYMENT_ID",
+      "RAILWAY_SNAPSHOT_ID",
+      "RAILWAY_GIT_COMMIT_SHA",
+      "RAILWAY_GIT_BRANCH",
+      "RAILWAY_GIT_AUTHOR",
+      "RAILWAY_GIT_REPO_NAME",
+      "RAILWAY_GIT_REPO_OWNER",
+      "RAILWAY_GIT_COMMIT_MESSAGE",
+      "RAILWAY_BETA_ENABLE_RUNTIME_V2",
+      "RAILWAY_REPLICA_REGION",
+      "RAILWAY_STATIC_URL",
+      "PORT"
+    ],
+    "imageAndOsNames": [
+      "PATH",
+      "HOME",
+      "PWD",
+      "OLDPWD",
+      "SHLVL",
+      "_",
+      "LANG",
+      "LC_ALL",
+      "NODE_VERSION",
+      "YARN_VERSION",
+      "PLAYWRIGHT_BROWSERS_PATH",
+      "DEBIAN_FRONTEND",
+      "TERM",
+      "HOSTNAME"
+    ],
+    "databaseTargets": {
+      "production": {
+        "hostname": "postgres.railway.internal",
+        "database": "railway"
+      },
+      "validation": {
+        "hostname": "catwalks-runtime-clone.railway.internal",
+        "database": "railway"
+      }
+    },
+    "runEnvironmentNames": [
+      "CATWALKS_RUN_ID",
+      "CATWALKS_RUN_DEADLINE"
+    ],
+    "monitoring": "Existing Ping URL shared intentionally for this sequential validation; management API not required; alert delivery is user-confirmed and does not block builds",
+    "generatedServiceDomainVariables": {
+      "pattern": "^RAILWAY_SERVICE_[A-Z0-9_]+_URL$",
+      "provenance": "Railway injects the project service domains; compare against service/domain inventory and reject any user-defined variable in this namespace"
+    }
+  },
+  "releaseReceipt": "CI runtime-image-<service> artifact: immutable image digest, embedded source SHA and contract hash; same image used in both environments"
 }

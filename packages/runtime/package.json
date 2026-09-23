@@ -1,0 +1,15 @@
+{
+  "name": "@catwalks/runtime",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "import": "./index.mjs"
+    }
+  },
+  "scripts": {
+    "test": "node --test test.mjs"
+  }
+}

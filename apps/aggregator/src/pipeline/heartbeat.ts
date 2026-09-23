@@ -1,29 +1,23 @@
 import { log } from '../observability/logger.js';
-/**
- * External dead-man's-switch ping (DEC-4).
- *
- * The Brevo digest and the web-side deadman both live INSIDE our
- * infrastructure: a migration that blocks all three crons, a Railway outage,
- * or a dead database silences them too — the exact failure they exist to
- * report. An external pinger (healthchecks.io) inverts the direction: the
- * ingest SAYS "I ran", and the third party alerts when it stops saying it.
- *
- * No-op until HEALTHCHECK_PING_URL is configured (the check's ping URL, e.g.
- * https://hc-ping.com/<uuid>). `/fail` is appended on a failed run so the
- * check trips immediately instead of waiting for the grace period.
- */
-export async function pingHeartbeat(ok: boolean): Promise<'pinged' | 'skipped' | 'failed'> {
+/** Uses the existing check. No management API or change to alert integrations.
+ * Never include the credential-bearing ping URL in logs, including on errors. */
+export async function pingHeartbeat(ok: boolean | 'start'): Promise<'pinged' | 'skipped' | 'failed'> {
   const url = process.env.HEALTHCHECK_PING_URL;
   if (!url) return 'skipped';
   try {
-    const target = ok ? url : `${url.replace(/\/$/, '')}/fail`;
-    const response = await fetch(target, { method: 'GET', signal: AbortSignal.timeout(10_000) });
+    const base = new URL(url);
+    const localWitness = !process.env.RAILWAY_PROJECT_ID && !process.env.CATWALKS_RUNTIME_PROFILE &&
+      base.protocol === 'http:' && ['127.0.0.1', 'localhost'].includes(base.hostname);
+    if ((!localWitness && (base.protocol !== 'https:' || base.hostname !== 'hc-ping.com' || base.port)) || base.username || base.password || base.search || base.hash)
+      throw new Error('Invalid heartbeat endpoint');
+    const target = `${url.replace(/\/$/, '')}${ok === 'start' ? '/start' : ok ? '' : '/fail'}`;
+    const response = await fetch(target, { method: 'GET', redirect: 'error', signal: AbortSignal.timeout(10_000) });
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
     return 'pinged';
-  } catch (error) {
+  } catch {
     // Return an explicit failure. Operational entrypoints refuse a healthy
     // completion when a configured monitor cannot be reached.
-    await log.error('heartbeat.failed', `[heartbeat] ping failed: ${error instanceof Error ? error.message : String(error)}`, { error });
+    await log.error('heartbeat.failed', { signal: ok === 'start' ? 'start' : ok ? 'success' : 'fail', reason: 'Ping not acknowledged' });
     return 'failed';
   }
 }

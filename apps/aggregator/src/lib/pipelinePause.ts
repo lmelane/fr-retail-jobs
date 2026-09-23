@@ -19,6 +19,6 @@ export function assertPipelineRunning(): void {
 /** Intentional pause is observable and successful, never reported as an ingestion. */
 export function exitIfPipelinePaused(command: string): void {
   if (!pipelinePaused()) return;
-  writeStartupState('pipeline.paused', { state: 'PAUSED', command, workStarted: false, pid: process.pid });
+  writeStartupState('pipeline.paused', { state: 'PAUSED', command, workStarted: false, businessRequests: 0, pid: process.pid });
   process.exit(0);
 }

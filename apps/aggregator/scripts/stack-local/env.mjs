@@ -78,7 +78,6 @@ export function envCli(config) {
     OBSERVATION_ARCHIVE_S3_SECRET_ACCESS_KEY: config.secrets.minioPassword, OBSERVATION_ARCHIVE_S3_PREFIX: 'stack-local',
     OBSERVATION_ARCHIVE_S3_FORCE_PATH_STYLE: 'true',
     SITE_URL: urls(config).website, NEXT_PUBLIC_SITE_URL: urls(config).website,
-    EGRESS_PROBE: '0',
   };
 }
 

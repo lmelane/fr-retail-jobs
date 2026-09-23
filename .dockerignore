@@ -9,8 +9,6 @@ build/
 *.csv
 *.html
 *.xml
-!apps/web/app/sitemap.xml/
-!apps/web/app/sitemap.xml/**
 *.log
 .DS_Store
 **/.next/

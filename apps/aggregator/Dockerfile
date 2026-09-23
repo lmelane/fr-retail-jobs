@@ -3,10 +3,16 @@ FROM mcr.microsoft.com/playwright:v1.62.1-noble
 WORKDIR /repo
 COPY package.json package-lock.json* ./
 COPY packages/db/package.json packages/db/
+COPY packages/runtime/package.json packages/runtime/
 COPY apps/aggregator/package.json apps/aggregator/
 COPY apps/api/package.json apps/api/
 RUN npm ci --workspaces --include-workspace-root
 COPY packages/db packages/db
+COPY packages/runtime packages/runtime
+COPY docs/operations/railway/runtime-target.json docs/operations/railway/runtime-target.json
+ARG CATWALKS_BUILD_SHA
+ARG RAILWAY_GIT_COMMIT_SHA
+RUN node packages/runtime/seal.mjs
 # Includes data/reference/maisons.csv — the 713-house reference list the sector filter
 # reads at runtime. Without it every classification throws ENOENT.
 COPY apps/aggregator apps/aggregator

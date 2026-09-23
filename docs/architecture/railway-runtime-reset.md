@@ -1,6 +1,6 @@
-# Reset du runtime Railway — cible proposée
+# Reset du runtime Railway — réalisation
 
-**23 septembre 2026 — PLAN, NON APPLIQUÉ.** La décision courante remplace le passage immédiat au ramp-up : reconstruire l'exécution Railway, conserver PostgreSQL intégralement. Le canari `72300c9` reste historiquement validé. Aucun service n'a été créé, modifié, redémarré ou supprimé pour établir ce plan ; aucune requête SQL de production n'a été exécutée.
+**23 septembre 2026 — R1 en cours ; GO conditionnel R1 → R5 reçu.** La décision courante remplace le passage immédiat au ramp-up : reconstruire l'exécution Railway, conserver PostgreSQL intégralement. Le canari `72300c9` reste historiquement validé. Aucun service n'a été créé, modifié, redémarré ou supprimé pour établir ce plan ; aucune requête SQL de production n'a été exécutée.
 
 La [cible structurée](../operations/railway/runtime-target.json) décrit le résultat attendu. Elle n'est pas encore un fichier exécutable de provisionnement. Le [relevé réel](../../audits/2026-09-23/railway-runtime-inventory.json) contient les identifiants, déploiements, décisions pour les **33 affectations de variables** des quatre services et empreintes des sauvegardes privées. Ne pas confondre configuration proposée, configuration distante et environnement effectivement chargé dans un processus.
 
@@ -28,8 +28,8 @@ Le plan de contrôle ne donne pas ici un nombre exploitable de changements en at
 
 | Service cible | Commande | Pause / CRON | Santé / redémarrage | Dépendances |
 |---|---|---|---|---|
-| `catwalks-catalogue-api` | `node apps/api/runtime/start.mjs` **à implémenter** : contrôle de configuration puis serveur standalone existant | Pas de collecte ; aucun CRON | `/api/health`, 120 s ; `ON_FAILURE`, 3 reprises ; sonde HTTP externe | PostgreSQL privé, clé catalogue |
-| `catwalks-ingestion-worker` | `sh apps/aggregator/start.sh`, entrée existante **à durcir** | `PIPELINE_PAUSED=1`, CRON absent | événement de pause, signaux de run et heartbeat indépendant ; `NEVER` | PostgreSQL privé, Healthchecks, Brevo |
+| `catwalks-catalogue-api` | `node apps/api/runtime/start.mjs` : contrôle de configuration puis serveur standalone existant | Pas de collecte ; aucun CRON | `/api/health`, 120 s ; `ON_FAILURE`, 3 reprises ; sonde HTTP externe | PostgreSQL privé, clé catalogue |
+| `catwalks-ingestion-worker` | `sh apps/aggregator/start.sh`, entrée durcie | `PIPELINE_PAUSED=1`, CRON absent | événement de pause, signaux de run et heartbeat indépendant ; `NEVER` | PostgreSQL privé, Healthchecks, Brevo |
 | **Postgres existant** | Configuration inchangée | Inchangé | Inchangé | **Service, volume, image, schéma, données et accès conservés** |
 
 Les deux runtimes : une réplique, région `europe-west4-drams3a`, aucun volume, aucun pré-déploiement, pas de mise en sommeil ni d'autodeploy Git/image. L'API conserve le domaine public **`agregator.catwalks.io`**, port 8080, et la clé catalogue existante. Le worker n'expose aucun port public. Son arrêt après une exécution est normal : pas de processus permanent artificiel ni de redémarrage automatique qui rejouerait une ingestion.
@@ -49,7 +49,7 @@ Aucune rotation de credentials DB, création de rôle, migration, réparation, p
 | API | `NODE_ENV=production`, `HOSTNAME=0.0.0.0`, `PORT=8080`, `NEXT_PUBLIC_SITE_URL=https://catwalks.io`, `CATWALKS_RUNTIME_PROFILE` | `DATABASE_URL`, `CATALOGUE_API_KEY` |
 | Worker | `NODE_ENV=production`, `PIPELINE_PAUSED=1`, `BREVO_SENDER_NAME=Catwalks`, `CATWALKS_RUNTIME_PROFILE` | `DATABASE_URL`, `HEALTHCHECK_PING_URL`, `BREVO_API_KEY` ; références privées explicites `BREVO_SENDER_EMAIL`, `ALERT_EMAIL` |
 
-`CATWALKS_RUNTIME_PROFILE` sélectionne l'un des profils versionnés, jamais un script arbitraire. Les références privées sont injectées sans exposer leurs valeurs dans Git ou les journaux. Le domaine et le check de validation sont indépendants de la production ; aucune credential de DB de production sur le clone. Le partage de credentials d'alerte éventuel doit être explicite, avec checks et destinataires de test identifiés.
+`CATWALKS_RUNTIME_PROFILE` sélectionne l'un des profils versionnés, jamais un script arbitraire. Les références privées sont injectées sans exposer leurs valeurs dans Git ou les journaux. Le domaine de validation et les accès DB sont indépendants de la production. Le check Healthchecks existant est partagé explicitement pour les essais séquentiels, sur décision de Loïc ; aucune credential de DB de production sur le clone. Le partage de credentials d'alerte éventuel doit être explicite, avec checks et destinataires de test identifiés.
 
 `NEXT_PUBLIC_SITE_URL` doit aussi être fixé et vérifié **au build Next.js**, car une valeur publique peut être incorporée dans les bundles : une variable changée au runtime ne prouve pas que le rendu a changé. Aucun secret DB ou catalogue dans les arguments de build.
 
@@ -77,11 +77,9 @@ Contrôler les hôtes **avant** le transport, y compris les redirections ; prouv
 
 ## 3. Configuration versionnée et effectivement chargée
 
-Utiliser le mécanisme Railway **Infrastructure as Code** avec un périmètre nommé `catwalks-runtime`, propriétaire des deux nouveaux runtimes seulement. Ne pas importer aveuglément l'état actuel comme cible, ni déclarer/recréer Postgres. Un plan global de projet peut supprimer les ressources omises ; le périmètre nommé laisse les ressources non gérées hors de sa portée. [Documentation Railway](https://docs.railway.com/infrastructure-as-code#multi-repo-projects).
+L'outillage utilise **Railway CLI 5.59.0**, figée dans les commandes (`npm exec --yes --package @railway/cli@5.59.0 -- railway`). Sorties JSON, sélecteurs exacts de projet/environnement/service, mutations ciblées uniquement sur les deux runtimes autorisés et le clone. Les opérations non exposées par une commande dédiée passent par `railway api` et des variables JSON via stdin. Aucun framework IaC générique, aucune importation globale ni gestion de Postgres production. Le contrat JSON reste la source des réglages.
 
-La CLI installée `4.30.5` ne propose pas `config`. Il reste à figer une version CLI/SDK compatible dans l'outillage du dépôt et à valider le plan sur l'environnement de test. Aucun upgrade global ni `apply` n'a été lancé. Les nouveaux fichiers `railway.toml`/`railway.json` ne sont pas la cible : Railway déprécie ce mécanisme pour les nouveaux services. [Référence officielle](https://docs.railway.com/config-as-code/reference).
-
-Le JSON proposé est le contrat sémantique. L'adaptateur `.railway/railway.ts` devra le consommer, sans seconde liste de variables maintenue manuellement. Les valeurs non résolues bloquent l'application ; elles ne sont pas complétées par des defaults implicites. Avant chaque mutation : vérifier le projet/environnement, l'empreinte d'état courant et un diff sans aucune action sur Postgres/volume. Une suppression ne peut viser que les quatre anciens IDs explicitement listés, après validation finale.
+Avant chaque mutation : vérifier le projet/environnement, l'état courant et un diff sans aucune action sur Postgres/volume de production. Une suppression ne peut viser que les quatre anciens IDs explicitement listés, après validation finale. Les images sont publiées privées par le job CI `runtime-images`, déclenché explicitement sur `development` par le marqueur de commit `[runtime-images]`, après les contrôles CI. Un tag SHA déjà publié est réutilisé ; les reçus embarqués et les digests sont vérifiés. Aucun autodeploy Railway. Un PAT classique GHCR `read:packages`, transmis à Railway comme credential de registre, est nécessaire au pull privé ; ce secret ne fait pas partie de l'environnement applicatif.
 
 L'égalité demandée repose sur **trois preuves** :
 
@@ -97,11 +95,11 @@ Une clé secrète présente n'est pas nécessairement la bonne : tester l'authen
 
 - API : healthcheck Railway et disponibilité HTTP surveillée depuis l'extérieur. Aucun minuteur qui déduit une panne d'une absence volontaire de collecte.
 - Worker : `pipeline.paused`/`workStarted:false`, démarrage, `run.alive` toutes les 30 secondes, statut terminal et captures/fins attestées. Les logs seuls ne remplacent pas les preuves en DB.
-- Moniteur externe Healthchecks : signal de début, succès/échec, alerte sur dépassement de fenêtre même si le worker est tué. Il est armé pour l'exécution autorisée ; en pause durable aucun CRON ou délai quotidien implicite ne réclame une collecte.
+- Healthchecks : utiliser uniquement la Ping URL existante, `/start`, `/fail` et succès. Aucune API de gestion, changement de compte ou d'intégration dans ce lot.
 - Le retour en pause est une preuve distincte d'une ingestion réussie. Ne pas envoyer un heartbeat « succès métier » pour masquer une ingestion en échec.
-- Vérifier configuration **et réception** d'une alerte de test contrôlée avant retrait de l'ancien dispositif. La seule réponse HTTP d'une URL de ping ne démontre pas que l'alerte arrivera. Paramètres du moniteur à exporter et comparer eux aussi ; aucune nouvelle automatisation périodique dans ce lot.
+- Test contrôlé réalisé le 23 septembre : les trois pings ont été acceptés, sans exposer l'URL. La réception de l'alerte reste une confirmation utilisateur séparée. Une réponse HTTP n'est pas une preuve de livraison de l'alerte. Si elle n'arrive pas, classer « configuration Healthchecks à revoir » sans bloquer la construction des runtimes.
 
-L'accès d'administration du moniteur et la configuration de ses canaux n'ont pas été vérifiés pendant cet inventaire Railway. Leur vérification appartient à l'implémentation ; une URL de ping ne donne pas cet accès. Ne pas déclarer l'observabilité PASS si cette preuve manque.
+Le timeout local borne le canari à quinze minutes. Sans accès à la configuration du check, ne pas prétendre avoir vérifié son délai d'alerte en cas d'arrêt brutal ni son comportement pendant une longue pause. La vérification HTTP de la nouvelle API fait partie des gates R2/R3/R5 ; aucun moniteur externe d'API supplémentaire n'est provisionné ici.
 
 ## 5. Séquence de réalisation et critères d'arrêt
 
@@ -119,7 +117,7 @@ Tester les changements réels : variable parasite refusée, pause absente refus�
 
 Créer un environnement de validation vide à partir de la cible ; ne pas dupliquer la production et ses variables. Y créer une DB clone distincte et restaurer le dump opérationnel déjà éprouvé par la procédure maintenue, sans monter le volume de production. La politique existante des huit FK historiques `NOT VALID` reste inchangée ; pas de réparation. Cette importation fournit la DB de test Railway, elle ne recommence pas le chantier historique de restaurabilité.
 
-Démarrer les nouveaux services sous pause. Exiger santé API, bon rattachement DB, attestation complète, absence de CRON, pause, heartbeat et moniteur externe vérifiés. Exécuter une ingestion bornée Oh My Cream via le chemin existant, puis revenir sous pause. Cela suffit ici au témoin métier demandé ; ne pas rejouer tout le Golden Path déjà acquis. Vérifier egress, COMPLETED, zéro erreur, absence de fusion inattendue, captures/RAW et lecture `/emplois` via l'API de test. Arrêt du lot si un champ de configuration reste inexpliqué.
+Démarrer les nouveaux services sous pause. Exiger santé API, bon rattachement DB, attestation complète, absence de CRON, pause, heartbeat et moniteur externe vérifiés. Exécuter une ingestion bornée Oh My Cream via le chemin existant, puis revenir sous pause. Cela suffit ici au témoin métier demandé ; ne pas rejouer tout le Golden Path déjà acquis. Vérifier egress, COMPLETED, zéro erreur, absence de fusion inattendue, captures/RAW et lecture `/emplois` via l'API de test. Tout écart réel de configuration déployée bloque le passage au lot suivant. Les typos, fixtures, assertions obsolètes et commandes locales incorrectes sont corrigées puis retestées sans demander un GO.
 
 ### R3 — nouveaux services de production, tous les workers sous pause
 

@@ -40,6 +40,8 @@ jobs:
       - run: npx prisma generate --schema packages/db/prisma/schema.prisma
       - name: Pause des entrypoints réels (sans base ni réseau)
         run: node --test apps/aggregator/scripts/ops/tests/pipeline-pause.test.mjs
+      - name: Contrat des deux runtimes
+        run: node --test packages/runtime/test.mjs
       - run: npx prisma migrate deploy --schema packages/db/prisma/schema.prisma
       - name: Application layout
         run: npm run check:layout -w @catwalks/aggregator
@@ -99,3 +101,76 @@ jobs:
       # les PAGES de Mode Careers, supprimées avec le rendu. Ils ne sont pas
       # abandonnés : leurs équivalents vivent désormais sur catwalks.io, qui
       # porte ces parcours. Ce service n'a plus de page à parcourir.
+
+  runtime-images:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/development' && contains(github.event.head_commit.message, '[runtime-images]')
+    needs: [aggregator, api]
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    concurrency:
+      group: runtime-image-${{ github.sha }}-${{ matrix.name }}
+      cancel-in-progress: false
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: catwalks-catalogue-api
+            dockerfile: apps/api/Dockerfile
+            root: /app
+          - name: catwalks-ingestion-worker
+            dockerfile: apps/aggregator/Dockerfile
+            root: /repo
+    steps:
+      - uses: actions/checkout@v4
+      - name: Authenticate private registry
+        env:
+          REGISTRY_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: printf '%s' "$REGISTRY_TOKEN" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
+      - name: Build once, publish immutable image and verify embedded release
+        env:
+          RUNTIME_NAME: ${{ matrix.name }}
+          DOCKERFILE: ${{ matrix.dockerfile }}
+          RUNTIME_ROOT: ${{ matrix.root }}
+        run: |
+          set -euo pipefail
+          image="ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/${RUNTIME_NAME}:${GITHUB_SHA}"
+          manifest_error=$(mktemp)
+          if docker manifest inspect "$image" >/dev/null 2>"$manifest_error"; then
+            docker pull "$image"
+          else
+            # A registry/auth/network failure does not authorize another build.
+            if ! grep -Eqi 'manifest unknown|no such manifest|MANIFEST_UNKNOWN' "$manifest_error"; then
+              cat "$manifest_error" >&2
+              exit 1
+            fi
+            docker build --platform linux/amd64 --build-arg "CATWALKS_BUILD_SHA=$GITHUB_SHA" \
+              --label "org.opencontainers.image.source=https://github.com/$GITHUB_REPOSITORY" \
+              --label "org.opencontainers.image.revision=$GITHUB_SHA" \
+              -f "$DOCKERFILE" -t "$image" .
+            docker push "$image"
+          fi
+          docker run --rm --network=none --entrypoint cat "$image" "$RUNTIME_ROOT/packages/runtime/release.json" > embedded-release.json
+          docker image inspect "$image" > image-inspect.json
+          python3 - <<'PY'
+          import hashlib, json, os, pathlib
+          receipt = json.loads(pathlib.Path('embedded-release.json').read_text())
+          assert receipt['gitSha'] == os.environ['GITHUB_SHA']
+          assert receipt['contractSha256'] == hashlib.sha256(pathlib.Path('docs/operations/railway/runtime-target.json').read_bytes()).hexdigest()
+          image = json.loads(pathlib.Path('image-inspect.json').read_text())[0]
+          assert image['Architecture'] == 'amd64'
+          assert len(image['RepoDigests']) == 1
+          receipt.update(service=os.environ['RUNTIME_NAME'], image=image['RepoDigests'][0], imageId=image['Id'],
+                         imageEnvironment=image['Config']['Env'], profiles=['validation-paused','validation-ohmycream','production-paused','production-ohmycream'])
+          pathlib.Path('runtime-image.json').write_text(json.dumps(receipt, indent=2) + '\n')
+          print(json.dumps(receipt))
+          PY
+      - name: Start the exact image offline (no database or external access)
+        run: node packages/runtime/verify-image.mjs runtime-image.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: runtime-image-${{ matrix.name }}
+          path: runtime-image.json
+          retention-days: 90

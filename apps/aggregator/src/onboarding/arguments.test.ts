@@ -30,7 +30,7 @@ describe('source command boundary', () => {
   it('rejects the actual command before database initialization or reading its target file', () => {
     const result = spawnSync(process.execPath, ['--import','tsx',fileURLToPath(new URL('../../scripts/ops/source-onboard.mts', import.meta.url)),
       'register','nonexistent.json','--verified-jobs=9999'], { encoding:'utf8', timeout:10000,
-      env: { ...process.env, DATABASE_URL: 'postgresql://invalid:invalid@127.0.0.1:1/invalid', EGRESS_PROBE:'1' } });
+      env: { ...process.env, DATABASE_URL: 'postgresql://invalid:invalid@127.0.0.1:1/invalid' } });
     expect(result.status).not.toBe(0);
     expect(result.stderr).toContain('Unknown or duplicate source option');
     expect(result.stderr).not.toContain('ENOENT');

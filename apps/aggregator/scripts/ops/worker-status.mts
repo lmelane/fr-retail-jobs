@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url';
 import { pipelinePaused } from '../../src/lib/pipelinePause.js';
 import { pingHeartbeat } from '../../src/pipeline/heartbeat.js';
 import { writeStartupState } from '../../src/observability/logger.js';
+import { release } from '@catwalks/runtime';
 const args = process.argv.slice(2);
 const preflight = args[0] === '--preflight';
 const expected = args[1]?.match(/^--expected-revision=([a-f0-9]{40})$/)?.[1];
@@ -12,7 +13,7 @@ let db: PrismaClient | undefined;
 try {
   if (args.length && (!preflight || args.length !== 2 || !expected)) throw new Error('Expected --preflight --expected-revision=<40-character SHA>');
   if (preflight && !pipelinePaused()) throw new Error('Preflight requires PIPELINE_PAUSED=1');
-  if (preflight && process.env.RAILWAY_GIT_COMMIT_SHA !== expected) throw new Error('Preflight deployed revision mismatch');
+  if (preflight && (release?.gitSha ?? process.env.RAILWAY_GIT_COMMIT_SHA) !== expected) throw new Error('Preflight deployed revision mismatch');
   if (preflight && !process.env.HEALTHCHECK_PING_URL) throw new Error('Preflight requires configured heartbeat');
   db = new PrismaClient({ errorFormat: 'minimal', log: [] });
   const aliveSince = new Date(Date.now() - 90_000);
@@ -40,7 +41,10 @@ try {
     const worker = spawnSync(process.execPath, ['--import', 'tsx', fileURLToPath(new URL('../../src/worker.ts', import.meta.url))],
       { env: process.env, encoding: 'utf8', timeout: 10_000 });
     if (worker.error || worker.status !== 0) throw new Error('Paused worker failed');
-    const pause = JSON.parse(worker.stdout.trim());
+    const events = worker.stdout.trim().split('\n').map(line => JSON.parse(line));
+    const pauses = events.filter(event => event.event === 'pipeline.paused');
+    if (pauses.length !== 1) throw new Error('Worker must attest exactly one pause');
+    const pause = pauses[0];
     if (pause.event !== 'pipeline.paused' || pause.workStarted !== false || pause.state !== 'PAUSED') throw new Error('Worker did not attest its pause');
     const heartbeat = await pingHeartbeat(true);
     if (heartbeat !== 'pinged') throw new Error('Preflight heartbeat not acknowledged');

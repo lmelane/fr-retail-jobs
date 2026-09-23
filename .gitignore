@@ -76,3 +76,6 @@ __pycache__/
 # métier, pas du code. Le SCRIPT est versionné (il est la façon de les rejouer), sa SORTIE non.
 .corpus/
 .corpus-*/
+
+# Embedded only by an image build from a fixed source revision.
+packages/runtime/release.json

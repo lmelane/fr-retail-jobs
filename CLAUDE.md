@@ -7,7 +7,7 @@ Le produit est un agrégateur mondial du luxe, de la mode, de la beauté et du r
 - [README du projet](README.md).
 - [Exploitation et état vérifié](apps/aggregator/README.md).
 - [Canari validé le 23 septembre 2026](audits/2026-09-23/canary-delta-oh-my-cream.md) : delta egress PASS ; restaurabilité acquise, état final en pause. Le ramp-up attend désormais le reset du runtime demandé ensuite. Les preuves acquises ne sont pas à rejouer sans changement qui les invalide.
-- [Reset du runtime Railway — plan courant](docs/architecture/railway-runtime-reset.md) : deux nouveaux runtimes, configuration attestée, DB de production conservée ; plan non appliqué.
+- [Reset du runtime Railway](docs/architecture/railway-runtime-reset.md) : GO conditionnel R1 → R5 reçu ; candidate minimale en validation, deux nouveaux runtimes avec configuration attestée, DB de production conservée. Corriger les erreurs locales et retester sans nouvelle autorisation ; arrêter uniquement sur un véritable blocage externe ou un écart de sécurité/données/configuration déployée.
 - [Architecture produit](docs/architecture/production-foundations.md).
 - [Capture native et rétention](docs/architecture/native-capture.md).
 - [Faits issus des publications](docs/architecture/source-facts.md).

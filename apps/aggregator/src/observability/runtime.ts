@@ -1,4 +1,5 @@
 import { randomUUID } from 'node:crypto';
+import { release } from '@catwalks/runtime';
 import type { PrismaClient, Prisma } from '@prisma/client';
 import { OperationalLogger, installLogger, redact } from './logger.js';
 import { startResourceSampling } from './resources.js';
@@ -17,14 +18,15 @@ export type RunStatus = 'COMPLETED' | 'COMPLETED_WITH_ERRORS' | 'FAILED';
 const STOP_SIGNALS = ['SIGTERM', 'SIGINT'] as const;
 
 export async function startObservability(prisma: PrismaClient, command: string) {
-  const runId = randomUUID();
+  const runId = process.env.CATWALKS_RUNTIME_PROFILE ? process.env.CATWALKS_RUN_ID : randomUUID();
+  if (!runId || !/^[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}$/i.test(runId)) throw new Error('Runtime requires a unique run ID');
   const logger = new OperationalLogger({ runId, production: process.env.NODE_ENV === 'production' || Boolean(process.env.RAILWAY_DEPLOYMENT_ID),
     persist: async record => {
       await prisma.pipelineEvent.create({ data: { ...record, payload: record.payload as Prisma.InputJsonValue } });
     },
   });
   // Failure here aborts startup, before any business work. No false healthy run.
-  await prisma.pipelineRun.create({ data: { id: runId, command, revision: process.env.RAILWAY_GIT_COMMIT_SHA ?? null } });
+  await prisma.pipelineRun.create({ data: { id: runId, command, revision: release?.gitSha ?? process.env.RAILWAY_GIT_COMMIT_SHA ?? null } });
   installLogger(logger);
   await logger.emit('info', 'run.started', { command, state: 'RUNNING', pid: process.pid, deploymentId: process.env.RAILWAY_DEPLOYMENT_ID, logSpacingMs: 25, debugEnabled: !(process.env.NODE_ENV === 'production' || process.env.RAILWAY_DEPLOYMENT_ID) });
   const alive = setInterval(() => {

@@ -1,6 +1,8 @@
 /** Local Docker build with explicit disk headroom checks; never prunes data or starts the application. */
 import { execFileSync, spawnSync } from 'node:child_process';
-import { statfsSync } from 'node:fs';
+import { statfsSync, mkdtempSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const repo = fileURLToPath(new URL('../../../', import.meta.url));
@@ -39,10 +41,18 @@ try {
   if (hostFreeGiB < minimumHostGiB || dockerFreeGiB < minimumDockerGiB)
     throw Error('Insufficient build headroom. Increase Docker capacity or review unused images; no volume, container or cache was deleted.');
   if (!args.includes('--check')) {
-    const build = spawnSync('docker', ['build', '-f', 'apps/aggregator/Dockerfile',
-      '-t', 'catwalks-aggregator:local', '.'], { cwd: repo, stdio: 'inherit' });
-    if (build.error) throw build.error;
-    process.exitCode = build.status ?? 1;
+    const revision = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: repo, encoding: 'utf8' }).trim();
+    if (execFileSync('git', ['status', '--porcelain=v1', '--untracked-files=no'], { cwd: repo, encoding: 'utf8' }).trim())
+      throw Error('Commit tracked changes before building an image with an embedded source revision');
+    const directory = mkdtempSync(join(tmpdir(), 'catwalks-image-source-'));
+    try {
+      const archive = execFileSync('git', ['archive', revision], { cwd: repo, maxBuffer: 128 * 1024 * 1024 });
+      execFileSync('tar', ['-xf', '-', '-C', directory], { input: archive });
+      const build = spawnSync('docker', ['build', '--build-arg', `CATWALKS_BUILD_SHA=${revision}`, '-f', 'apps/aggregator/Dockerfile',
+        '-t', 'catwalks-aggregator:local', '.'], { cwd: directory, stdio: 'inherit' });
+      if (build.error) throw build.error;
+      process.exitCode = build.status ?? 1;
+    } finally { rmSync(directory, { recursive: true, force: true }); }
   }
 } catch (error) {
   console.error(error instanceof Error ? error.message : String(error));

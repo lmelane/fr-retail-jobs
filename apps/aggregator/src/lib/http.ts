@@ -1,4 +1,5 @@
 import { assertPipelineRunning } from './pipelinePause.js';
+import { assertBusinessUrl } from '@catwalks/runtime';
 import { log } from '../observability/logger.js';
 import { assertSourceRunning, sourceSignal, sourceDelay } from './sourceBudget.js';
 import { assertPublicUrl, isPublicHttpUrl, BlockedUrlError } from './ssrf.js';
@@ -136,6 +137,7 @@ export async function fetchFollowingSafely(
   let request: RequestInit = { ...init, headers: new Headers(init.headers) };
   for (let hop = 0; hop <= MAX_REDIRECTS; hop++) {
     signal.throwIfAborted();
+    assertBusinessUrl(current);
     assertPublicUrl(current);
     const options: RequestInit = { ...request, headers: Object.fromEntries(await sessionHeaders(current, request.headers ?? {})),
       signal, redirect: 'manual' };

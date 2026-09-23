@@ -67,7 +67,6 @@ try {
   }
 
   process.env.INGEST_ONLY_KEYS = keys.join(',');
-  process.env.EGRESS_PROBE = '0';
   const { ingestAllBySource } = await import('../../src/pipeline/ingestOrchestrator.js');
   /** Read from the DATABASE clock, not the process clock: `updatedAt` is stamped by the server. */
   const [{ now: startedAt }]: any[] = await p.$queryRaw`SELECT now() AS now`;

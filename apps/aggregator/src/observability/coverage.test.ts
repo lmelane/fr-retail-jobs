@@ -29,7 +29,7 @@ it('prevents raw console output and unawaited diagnostics in scheduled worker de
     }
     walk(source);
   }
-  for (const file of ['pipeline/ingestOrchestrator.ts','pipeline/refresh.ts','pipeline/reconcile.ts','pipeline/geocodeJobs.ts','pipeline/classifyJobs.ts','pipeline/healthReport.ts','pipeline/alert.ts','pipeline/googleIndexing.ts','pipeline/heartbeat.ts','pipeline/egressProbe.ts']) visit(resolve(root, file));
+  for (const file of ['pipeline/ingestOrchestrator.ts','pipeline/refresh.ts','pipeline/reconcile.ts','pipeline/geocodeJobs.ts','pipeline/classifyJobs.ts','pipeline/healthReport.ts','pipeline/alert.ts','pipeline/googleIndexing.ts','pipeline/heartbeat.ts']) visit(resolve(root, file));
   visit(resolve(root, 'cli.ts'), false);
   expect(seen.size).toBeGreaterThan(70);
   expect(violations).toEqual([]);
