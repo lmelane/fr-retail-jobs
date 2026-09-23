@@ -63,19 +63,38 @@ export function parseVacancyPage(html: string): { title?: string; description?: 
   return { title: title || undefined, description: htmlToPlainText(body ?? '') || undefined };
 }
 
-export function docToJob(doc: VacancyDoc, override: { title?: string; description?: string; url?: string } = {}): NormalizedJob {
+export function docToJob(doc: VacancyDoc): NormalizedJob {
   const stamp = Number(doc.public_date_time_stamp);
   const postedAt = Number.isFinite(stamp) && stamp > 0 ? new Date(stamp * 1000) : undefined;
   return {
     externalId: vacancySlug(doc.url).toLowerCase(),
-    title: override.title ?? doc.title,
+    title: doc.title,
     location: (doc.job_location ?? []).join(', ') || undefined,
     department: doc.department || undefined,
-    description: override.description ?? htmlToPlainText(doc.page_index_content ?? '') ?? undefined,
-    url: override.url ?? doc.url,
+    description: htmlToPlainText(doc.page_index_content ?? '') ?? undefined,
+    url: doc.url,
     postedAt,
     raw: doc,
   };
+}
+
+/** Bind the alternate-language detail to the same native slug and origin.
+ * A 200 landing page is not a posting; require its own canonical URL and body.
+ * The retained HTML is consumed identically by collection and offline replay. */
+export function applyVacancyDetail(doc: VacancyDoc, origin: string, detail: { pageUrl: string; html: string }): NormalizedJob | null {
+  try {
+    const native = new URL(doc.url), base = new URL(origin);
+    if (native.origin !== base.origin || base.protocol !== 'https:' || base.username || base.password || native.username || native.password ||
+      !/^\/(?:ar\/)?careers\/vacancies\/[^/]+\/?$/.test(native.pathname) || native.search || native.hash) return null;
+    const expected = `${base.origin}/careers/vacancies/${vacancySlug(doc.url)}`;
+    if (detail.pageUrl !== expected || typeof detail.html !== 'string') return null;
+    const $ = cheerio.load(detail.html);
+    const canonicals = $('link[rel="canonical"]').map((_, node) => $(node).attr('href')).get();
+    if (canonicals.length !== 1 || new URL(canonicals[0], expected).href !== expected) return null;
+    const page = parseVacancyPage(detail.html);
+    if (!page.title || !page.description) return null;
+    return { ...docToJob(doc), ...page, url: expected, raw: { ...doc, vacancyDetail: detail } };
+  } catch { return null; }
 }
 
 /**
@@ -110,8 +129,8 @@ export async function fetchRivoliTypesenseJobs(config: Record<string, unknown>):
         if (doc.page_locale === PREFERRED_LOCALE) return docToJob(doc);
         const englishUrl = `${origin}/careers/vacancies/${vacancySlug(doc.url)}`;
         try {
-          const page = parseVacancyPage(await fetchText(englishUrl, { headers: { 'user-agent': USER_AGENT } }));
-          return docToJob(doc, { ...page, url: englishUrl });
+          const html = await fetchText(englishUrl, { headers: { 'user-agent': USER_AGENT } });
+          return applyVacancyDetail(doc, origin, { pageUrl: englishUrl, html }) ?? docToJob(doc);
         } catch {
           // Pas de page anglaise (404 mesuré sur 6 offres) : l'offre reste dans sa langue.
           return docToJob(doc);

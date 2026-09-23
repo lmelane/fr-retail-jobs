@@ -3,6 +3,8 @@ import { readFileSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseCareerConnectJob, careerConnectRequest, phenomDialect, enrichFromJobPosting } from './phenom.js';
+import nativeEmployers from './fixtures/phenom-native-employers.json' with { type: 'json' };
+import { recoverRetainedPublication } from '../../publication/recovery.js';
 
 /**
  * PHENOM N'EST PAS UNE API UNIFORME — deux dialectes, choisis par CONFIGURATION.
@@ -62,6 +64,21 @@ describe('requête CareerConnect', () => {
 });
 
 describe('normalisation d\'une offre CareerConnect réelle', () => {
+  it('preserves each native legal employer and reproduces it in offline recovery', () => {
+    const origin = 'https://careers.hugoboss.com', localePath = 'global/en';
+    expect(new Set(nativeEmployers.jobs.map(job => job.companyName)).size).toBe(3);
+    for (const raw of nativeEmployers.jobs) {
+      const job = parseCareerConnectJob(raw, origin, { localePath })!;
+      expect(job.company).toBe(raw.companyName);
+      expect(job.employerEvidence).toMatchObject({ rawName: raw.companyName, path: 'companyName' });
+      expect(recoverRetainedPublication('phenom', raw, { externalId: job.externalId, url: job.url,
+        observedAt: new Date('2026-09-23'), config: { origin, localePath, dialect: 'CAREER_CONNECT_WIDGETS' } }))
+        .toMatchObject({ status: 'RECOVERABLE', job });
+    }
+    for (const companyName of [undefined, '', '  ', 123, { name: 'Other' }]) {
+      expect(parseCareerConnectJob({ ...jobs[0], companyName }, origin, { localePath })!.company).toBeUndefined();
+    }
+  });
   it('lit les trois offres de la fixture', () => {
     expect(jobs).toHaveLength(3);
     expect(payload.refineSearch.totalHits).toBe(784);

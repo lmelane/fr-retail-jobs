@@ -9,6 +9,7 @@ import { requireSourceValidation, SOURCE_VALIDATION_MAX_AGE_MS } from '../connec
 import { archiveRawBlob } from '../capture/store.js';
 import { MemoryStore } from '../test/memoryObjectStore.js';
 import alberto from '../ats/adapters/__fixtures__/alberto-sitemap-postings.json' with { type: 'json' };
+import rivoli from '../ats/adapters/fixtures/rivoli-native-detail.json' with { type: 'json' };
 import { readFileSync } from 'node:fs';
 
 const db = new PrismaClient(); const keys: string[] = [];
@@ -32,6 +33,19 @@ afterEach(() => { vi.unstubAllGlobals(); vi.restoreAllMocks(); });
 afterAll(async () => { await db.source.deleteMany({ where: { key: { in: keys } } }); await db.$disconnect(); });
 
 describe('native source validation', () => {
+  it('qualifies a native Typesense translated posting with the exact retained detail', async () => {
+    const key = `source-validation-${randomUUID()}`; keys.push(key);
+    const config = { origin: 'https://www.rivoligroup.com', typesenseOrigin: 'https://typesense.rivoligroup.com', apiKey: 'fixture-public-search-key' };
+    await db.source.create({ data: { key, tenantKey: key, maison: 'Rivoli Group', kind: 'typesense', config, tier: 'EMPLOYER_DIRECT' } });
+    vi.stubGlobal('fetch', vi.fn(async input => {
+      const url = String(input);
+      if (url.startsWith(config.typesenseOrigin + '/collections/vacancy/')) return new Response(JSON.stringify({ found: 1, hits: [{ document: rivoli.document }] }));
+      if (url === rivoli.detail.pageUrl) return new Response(rivoli.detail.html);
+      throw new Error('Unexpected fixture URL');
+    }));
+    expect(await captureSourceForValidation(db, key, 30_000)).toMatchObject({ verdict: 'VALIDATED', report: {
+      replayExact: true, observed: 1, qualified: 1, rejected: 0, absenceAttestation: false } });
+  });
   it('qualifies a retained careers feed without claiming complete enumeration or absence', async () => {
     const key = `source-validation-${randomUUID()}`; keys.push(key);
     const feedUrl = `https://careers.example/${key}.atom`;

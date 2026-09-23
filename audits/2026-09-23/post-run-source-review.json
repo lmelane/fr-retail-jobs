@@ -365,6 +365,17 @@
             "2 annonces non publiables archivées (2 non résolues) ; énumération prouvée · desc 0% date 100% pays 100% url 100%"
           ],
           "qualificationVerdict": "QUALIFIEE"
+        },
+        "diagnosis": {
+          "observedAt": "2026-09-23T16:33:00Z",
+          "classification": "ADAPTER",
+          "code": "LISTING_PREVIEWS_DUPLICATE_DETAIL",
+          "conclusion": "Les deux listes répètent les fiches du sitemap. Correctif générique testé ; conserver les quatre identifiants de fiche, archiver les aperçus écartés. Livraison et replay ciblé à faire.",
+          "productionMutation": false,
+          "captureBatchId": "fb8275a0-9ca8-4921-b952-1d51794120fe",
+          "nativeResponseHashes": [
+            "0f7d7c3db07f34919359b624babfc0f8633eba1be6f3d34a7328cf44180de90d"
+          ]
         }
       }
     },
@@ -3950,6 +3961,13 @@
           ],
           "sourceRunNotes": [],
           "qualificationVerdict": "BLOCAGE_EXTERNE"
+        },
+        "diagnosis": {
+          "observedAt": "2026-09-23T16:33:00Z",
+          "classification": "REGISTRY",
+          "code": "OFFICIAL_DOMAIN_PROOF_UNRESOLVED",
+          "conclusion": "Le reçu Railway contient déjà 41 extractions qualifiées et accès ALLOWED. L’échec concerne la preuve d’identité sur dimbrandsinternational.com, inaccessible. Le board DIM est public ; dim.com nomme DIM France/DBI, mais aucun lien officiel exact vers le board n’a encore été archivé.",
+          "productionMutation": false
         }
       }
     },
@@ -4297,6 +4315,17 @@
             "troncature : 306 collectées, total inconnu · desc 100% date 100% pays 100% url 100%"
           ],
           "qualificationVerdict": "QUALIFIEE"
+        },
+        "diagnosis": {
+          "observedAt": "2026-09-23T16:33:00Z",
+          "classification": "SOURCE_EXTERNAL",
+          "code": "UNSTABLE_PAGINATION",
+          "conclusion": "de_DE : 308 annoncées ; trois parcours de 31 pages, union 288 puis 302 puis 302. 924 lignes natives, six identifiants manquants. Publication partielle conservée, aucune absence attestée.",
+          "productionMutation": false,
+          "captureBatchId": "fea7e3b4-ee64-44e8-9f58-24fb9c4d95ce",
+          "nativeResponseHashes": [
+            "a37cd8c541b85349f92c42c3a26791a620366d84a76edb3bb79eb4496216b116"
+          ]
         }
       }
     },
@@ -5738,6 +5767,17 @@
           ],
           "sourceRunNotes": [],
           "qualificationVerdict": "COLLECTE_NON_VALIDEE"
+        },
+        "diagnosis": {
+          "observedAt": "2026-09-23T16:33:00Z",
+          "classification": "ADAPTER",
+          "code": "NATIVE_NO_OPENINGS_WITHOUT_QUALIFIED_HTML_ZERO",
+          "conclusion": "La page annonce explicitement aucune ouverture. Ce lecteur ne qualifie pas un zéro HTML ; pas une panne silencieuse ni une preuve de fermeture des anciens postes.",
+          "productionMutation": false,
+          "captureBatchId": "7361d905-8b5a-44d4-8df1-b1356719dba2",
+          "nativeResponseHashes": [
+            "2d8b32d65950b742d08d05cbbdababc92eacccd920087a0851d691ea0f07c538"
+          ]
         }
       }
     },
@@ -9138,6 +9178,17 @@
           ],
           "sourceRunNotes": [],
           "qualificationVerdict": "COLLECTE_NON_VALIDEE"
+        },
+        "diagnosis": {
+          "observedAt": "2026-09-23T16:33:00Z",
+          "classification": "SOURCE_EXTERNAL",
+          "code": "NO_ENUMERATED_JOBS_ON_REVIEWED_PAGE",
+          "conclusion": "Rubrique carrières et candidature spontanée sur la page de présentation ; aucune liste structurée identifiée. Pas de zéro natif attesté.",
+          "productionMutation": false,
+          "captureBatchId": "3227ccd6-2112-440f-90f5-0bfeffbd6d2d",
+          "nativeResponseHashes": [
+            "b25f063ebf5b42463b9b6fb15207f4194042875c2055ae472acc6c001ac73898"
+          ]
         }
       }
     },
@@ -9592,6 +9643,17 @@
           ],
           "sourceRunNotes": [],
           "qualificationVerdict": "COLLECTE_NON_VALIDEE"
+        },
+        "diagnosis": {
+          "observedAt": "2026-09-23T16:33:00Z",
+          "classification": "ADAPTER",
+          "code": "PLAIN_HTML_POSTING_UNSUPPORTED",
+          "conclusion": "La liste native lie /pages/product-developer. Offre réelle en HTML, sans JobPosting récupéré. Limite de couverture documentée ; pas de source vide ni de nouveau lecteur particulier.",
+          "productionMutation": false,
+          "captureBatchId": "cb49f215-b32c-4528-b903-ce5b86a5c3a0",
+          "nativeResponseHashes": [
+            "1324c9f14a56d700650a974089f2143f4283213bf17baa0fc243586b76222ae9"
+          ]
         }
       }
     },
@@ -10110,6 +10172,17 @@
           ],
           "sourceRunNotes": [],
           "qualificationVerdict": "COLLECTE_NON_VALIDEE"
+        },
+        "diagnosis": {
+          "observedAt": "2026-09-23T16:33:00Z",
+          "classification": "SOURCE_EXTERNAL",
+          "code": "STALE_SITEMAP_AND_EMPTY_NATIVE_CONTENT",
+          "conclusion": "734 URL distinctes, 146 HTTP 404 ; 16 descriptions nativement vides sur des entrées portant des noms de pays. Aucun texte de poste visible perdu par le lecteur. Pause conservée.",
+          "productionMutation": false,
+          "captureBatchId": "d6033526-8a05-4530-9013-9a02db12bd0e",
+          "nativeResponseHashes": [
+            "91226e74224551ad1a285f69f2a626ee321207ebd29781e93a9967208cf87085"
+          ]
         }
       }
     },
@@ -10731,6 +10804,17 @@
           ],
           "sourceRunNotes": [],
           "qualificationVerdict": "COLLECTE_NON_VALIDEE"
+        },
+        "diagnosis": {
+          "observedAt": "2026-09-23T16:33:00Z",
+          "classification": "ADAPTER",
+          "code": "RSS_NATIVE_RETENTION_AND_REPLAY",
+          "conclusion": "Le RAW HTML publie /blogs/karriere.atom. Flux officiel avec six annonces ; le lecteur RSS existant tronquait le RAW et la relecture ignorait son format. Correctif testé ; qualification Railway après livraison.",
+          "productionMutation": false,
+          "captureBatchId": "1d071191-ccd2-481f-94b3-7ee8aeacb725",
+          "nativeResponseHashes": [
+            "a339ba782ab9c8361535a885901d0bece19b8f9342bde42cc277286112e41eb3"
+          ]
         }
       }
     },
@@ -11751,6 +11835,17 @@
           ],
           "sourceRunNotes": [],
           "qualificationVerdict": "COLLECTE_NON_VALIDEE"
+        },
+        "diagnosis": {
+          "observedAt": "2026-09-23T16:33:00Z",
+          "classification": "ADAPTER",
+          "code": "PLAIN_HTML_POSTING_UNSUPPORTED",
+          "conclusion": "La page carrière contient E-Commerce Intern. HTML sans JobPosting récupéré ; garder le diagnostic de lecteur non compatible.",
+          "productionMutation": false,
+          "captureBatchId": "d0687162-e3c2-4455-80c5-4c0418098ca1",
+          "nativeResponseHashes": [
+            "663241a4dc3d43d48b8e0a08322dd0af2acd1ad55b647d3b18a927d726c375c7"
+          ]
         }
       }
     },
@@ -12801,6 +12896,17 @@
           ],
           "sourceRunNotes": [],
           "qualificationVerdict": "COLLECTE_NON_VALIDEE"
+        },
+        "diagnosis": {
+          "observedAt": "2026-09-23T16:33:00Z",
+          "classification": "ADAPTER",
+          "code": "NATIVE_NO_OPENINGS_WITHOUT_QUALIFIED_HTML_ZERO",
+          "conclusion": "La page annonce explicitement aucune ouverture. Ce lecteur ne qualifie pas un zéro HTML ; pas une panne silencieuse ni une preuve de fermeture des anciens postes.",
+          "productionMutation": false,
+          "captureBatchId": "ac3a7bba-9b17-4e62-8375-c65b31f4c730",
+          "nativeResponseHashes": [
+            "6853e2b51a8d84295ff17780f2677e4f5656c85b4a18b7fec26045992aabc475"
+          ]
         }
       }
     },
@@ -14923,6 +15029,30 @@
       "Les retraits de canaux ne prouvent aucune fermeture employeur.",
       "Les identités non établies restent hors ingestion sans réaffectation par ressemblance.",
       "Aucune suppression historique, fusion de sociétés ou réparation SQL des offres."
-    ]
+    ],
+    "continuation": {
+      "observedAt": "2026-09-23T16:33:00Z",
+      "codeSha": "87e98097b70d8984de6e34ee21e64defb7ed12a1",
+      "deployed": false,
+      "dailyRunId": "8b13d1f0-ced1-4380-8ad5-89e33a74587d",
+      "dailyRunStatus": "RUNNING",
+      "next": "Après fin du RUN quotidien et CI verte : livraison sous pause, replay ALBERTO ; configuration Picard revue vers son Atom puis source-add. Registre historique et données conservés.",
+      "additionalFindings": [
+        {
+          "sourceKey": "hugo-boss-phenom",
+          "captureBatchId": "be4faa69-8e4b-4305-b07c-f72f72243929",
+          "classification": "ADAPTER",
+          "code": "NATIVE_COMPANY_NAME_IGNORED",
+          "conclusion": "Le champ companyName natif est présent et concorde avec hiringOrganization dans les trois détails inspectés. Lecture partagée collecteur/replay corrigée, entités légales conservées sans fusion."
+        },
+        {
+          "sourceKey": "rivoli-typesense",
+          "captureBatchId": "cbcea1d7-ee65-4b23-bcf2-ea62e07be927",
+          "classification": "ADAPTER",
+          "code": "TRANSLATED_DETAIL_NOT_RETAINED",
+          "conclusion": "27 IDENTITY_MISMATCH : URL anglaise appliquée par le collecteur, document arabe seul retenu. Le détail est maintenant conservé et relu, avec origine, slug et URL canonique concordants. Identité employeur reste indépendante."
+        }
+      ]
+    }
   }
 }

@@ -22,7 +22,7 @@ import { parseRitualsHit } from '../ats/adapters/rituals.js';
 import { parseWordpressPost } from '../ats/adapters/wordpress.js';
 import { normalizeGeoDirPost } from '../ats/adapters/geodirectory.js';
 import { type RssItem, listingCardJob, talentsoftItemToJob } from '../ats/adapters/talentsoft.js';
-import { docToJob } from '../ats/adapters/rivoliTypesense.js';
+import { applyVacancyDetail, docToJob } from '../ats/adapters/rivoliTypesense.js';
 import { parseWorkableJob } from '../ats/adapters/workable.js';
 import { normalizeListRequisition, mergeDetail } from '../ats/adapters/oraclehcm.js';
 import { normalizeJobaffinityPost, applyJobaffinityEvidence } from '../ats/adapters/jobaffinityWordpress.js';
@@ -263,9 +263,19 @@ function readRetainedPublication(kind: string, raw: unknown, context: Context, r
         }
         break;
       }
-      case 'typesense':
+      case 'typesense': {
         if (typeof raw.url !== 'string') return failure('NATIVE_ID_MISSING');
-        job = docToJob(raw as Parameters<typeof docToJob>[0]); break;
+        const { vacancyDetail, ...document } = raw;
+        job = docToJob(document as Parameters<typeof docToJob>[0]);
+        if (vacancyDetail != null) {
+          if (!object(vacancyDetail) || typeof vacancyDetail.pageUrl !== 'string' || typeof vacancyDetail.html !== 'string' ||
+            typeof config.origin !== 'string') return failure('DETAIL_EVIDENCE_UNUSABLE');
+          job = applyVacancyDetail(document as Parameters<typeof docToJob>[0], config.origin,
+            { pageUrl: vacancyDetail.pageUrl, html: vacancyDetail.html });
+          if (!job) return failure('DETAIL_IDENTITY_MISMATCH');
+        }
+        break;
+      }
       case 'workable':
         if (!identifier(raw.shortcode)) return failure('NATIVE_ID_MISSING');
         job = parseWorkableJob(raw, String(config.account ?? config.slug ?? '')); break;

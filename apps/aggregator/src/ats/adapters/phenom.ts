@@ -320,6 +320,7 @@ export function careerConnectRequest(origin: string, page: { from: number; size:
 /** Une offre du dialecte CareerConnect. Les champs sont ceux réellement servis (fixture Hugo Boss, 2026-09-14). */
 export type CareerConnectJob = {
   jobSeqNo?: string; jobId?: string | number; title?: string; category?: string;
+  companyName?: string;
   country?: string; state?: string; city?: string; cityState?: string;
   dateCreated?: string; postedDate?: string; descriptionTeaser?: string;
   latitude?: string | number; longitude?: string | number; hiringType?: string; type?: string;
@@ -367,6 +368,12 @@ export function parseCareerConnectJob(
     longitude: num(data.longitude),
     description: htmlToPlainText(data.descriptionTeaser),
     department: data.category,
+    // Native per-publication employer, also present in the detail JobPosting.
+    // Keep legal entities verbatim; never replace them with the registry label.
+    ...(typeof data.companyName === 'string' && data.companyName.trim() ? {
+      company: data.companyName.trim(),
+      employerEvidence: { rawName: data.companyName.trim(), path: 'companyName', rule: 'EXPLICIT_JOBPOSTING_EMPLOYER' },
+    } : {}),
     /**
      * L'URL publique EXIGE le préfixe de locale du portail.
      *

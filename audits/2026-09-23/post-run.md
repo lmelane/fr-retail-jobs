@@ -165,3 +165,14 @@ API et worker exécutent `a532165`, via les digests CI immuables ; configuration
 - **Nimble / ROTATE** : offres visibles en HTML (Product Developer / E-Commerce Intern), sans publication JSON-LD récupérée. Limite du lecteur, pas un catalogue vide. Aucun adapter particulier ajouté pour forcer la couverture.
 - **Minimalist** : rubrique Careers avec candidature spontanée, sans liste structurée identifiée ; pas de zéro natif attesté ni remplacement par un homonyme.
 - **Picard** : le HTML RAW publie le lien Atom `https://picard-fashion.com/blogs/karriere.atom`. Lecture publique complémentaire du 16:22 UTC : six annonces intégrales, empreinte `47e37f8204c274a970531720d5d607c073b2b71bf882e606ba854bba1268b045`. Le lecteur RSS existant tronquait le RAW à 2000 caractères et la relecture ne reconnaissait pas ce format. Correctif partagé, sans nouvelle famille d'adapter ; qualification Railway à effectuer après livraison. Cette lecture locale ne vaut pas preuve d'exploitation Railway.
+
+### Défauts confirmés par le RUN quotidien en cours, 16:40 UTC
+
+Le RUN `8b13d1f0-ced1-4380-8ad5-89e33a74587d` a démarré automatiquement à 16:01:58 UTC, soit 18:01 Paris, sur `a532165`. À 16:40:18 : 72 sources terminées, quatre en cours ; 204 captures, 37 361 RAW, 37 195 extractions. Ces mesures sont intermédiaires. Le worker et le registre ne sont pas modifiés pendant son exécution.
+
+- **Phenom CareerConnect** : 780 refus employeur Hugo Boss. Le RAW courant porte `companyName` par annonce ; les trois entrées inspectées nomment respectivement les entités mexicaine, britannique et américaine, identiques au JobPosting de chaque fiche. Le champ était ignoré. Le lecteur partagé le conserve désormais avec sa provenance ; aucun nom de maison, alias ou rapprochement n'est inventé.
+- **Typesense / Rivoli** : 27 `IDENTITY_MISMATCH` dans la capture `cbcea1d7-ee65-4b23-bcf2-ea62e07be927`. Le collecteur appliquait la fiche anglaise mais ne retenait que le document arabe. Le détail HTML est maintenant conservé et relu, sous contrôle de l'origine, du slug et du lien canonique. Une page vide ou redirigée vers un accueil reste inutilisable. La qualification native n'accorde pas une identité employeur absente.
+- **Aéropostale / iCIMS** : les trois RAW inspectés portent déjà `hiringOrganization.name = Aeropostale`. L'option existante `employerFromJobPosting` n'est pas déclarée dans cette source ; préparer une révision relue, sans changer le garde-fou global ni le registre pendant le RUN.
+- **Adidas / portails de groupe** : distinguer le registre non renseigné d'un portail multimarque. Aucun `SINGLE_BRAND` automatique pour éliminer les refus.
+
+Validation locale complémentaire : 62 tests lecteurs/recovery et 66 tests capture/replay/qualification/rejets sur PostgreSQL jetable, types application/scripts verts. Ces correctifs ne sont pas encore déployés ; leur validation opérationnelle reste ciblée, après fin du RUN et passage development → main → CI.

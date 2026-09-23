@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { docToJob, mergeVacancyLocales, parseVacancyPage, vacancySlug, type VacancyDoc } from './rivoliTypesense.js';
+import { applyVacancyDetail, docToJob, mergeVacancyLocales, parseVacancyPage, vacancySlug, type VacancyDoc } from './rivoliTypesense.js';
+import native from './fixtures/rivoli-native-detail.json' with { type: 'json' };
+import { recoverRetainedPublication } from '../../publication/recovery.js';
 
 /** Trois documents tels que typesense.rivoligroup.com/collections/vacancy les sert (capturés le 2026-09-06, tronqués). */
 const EN: VacancyDoc = {
@@ -63,10 +65,31 @@ describe('docToJob', () => {
     expect(job.postedAt?.toISOString().slice(0, 10)).toBe('2026-08-23');
   });
 
-  it('applique le titre, la description et l’URL de la page anglaise quand on les a', () => {
-    const job = docToJob(AR_SAME, { title: 'Senior Manager - Brands', description: 'Long text', url: 'https://www.rivoligroup.com/careers/vacancies/x' });
-    expect(job.title).toBe('Senior Manager - Brands');
-    expect(job.url).toBe('https://www.rivoligroup.com/careers/vacancies/x');
+  it('retains and replays the native translated detail, with stable publication identity', () => {
+    const origin = 'https://www.rivoligroup.com';
+    const job = applyVacancyDetail(native.document, origin, native.detail)!;
+    expect(job).not.toBeNull();
+    expect(job.externalId).toBe(docToJob(native.document).externalId);
+    expect(job.url).toBe(native.detail.pageUrl);
+    expect(job.title).toBe('POS Administrator');
+    expect(job.description!.length).toBeGreaterThan(300);
+    expect(job.raw).toEqual({ ...native.document, vacancyDetail: native.detail });
+    const context = { externalId: job.externalId, url: job.url, observedAt: new Date('2026-09-23'), config: { origin } };
+    expect(recoverRetainedPublication('typesense', job.raw, context)).toMatchObject({ status: 'RECOVERABLE', job });
+    expect(recoverRetainedPublication('typesense', native.document, context)).toMatchObject({ reason: 'IDENTITY_MISMATCH' });
+    expect(recoverRetainedPublication('typesense', job.raw, { ...context, config: { origin: 'https://other.example' } })).toMatchObject({ reason: 'DETAIL_IDENTITY_MISMATCH' });
+  });
+
+  it('rejects unrelated, ambiguous, empty and landing-page detail evidence', () => {
+    const origin = 'https://www.rivoligroup.com';
+    for (const detail of [
+      { ...native.detail, pageUrl: native.detail.pageUrl + '-other' },
+      { ...native.detail, html: native.detail.html.replace('rel="canonical"', 'rel="alternate"') },
+      { ...native.detail, html: native.detail.html.replace(native.detail.pageUrl, origin + '/careers') },
+      { ...native.detail, html: native.detail.html + `<link rel="canonical" href="${native.detail.pageUrl}">` },
+      { ...native.detail, html: `<link rel="canonical" href="${native.detail.pageUrl}"><main><h1>Careers</h1></main>` },
+    ]) expect(applyVacancyDetail(native.document, origin, detail)).toBeNull();
+    expect(applyVacancyDetail({ ...native.document, url: native.document.url.replace(origin, 'https://other.example') }, origin, native.detail)).toBeNull();
   });
 });
 

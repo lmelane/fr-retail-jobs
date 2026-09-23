@@ -1,0 +1,248 @@
+{
+  "provenance": {
+    "captureBatchId": "be4faa69-8e4b-4305-b07c-f72f72243929",
+    "responseSha256": "04ab0e107cc7911cbe490c56722b7c373c1981a6a3d8c1f6ae3eccd828a9e255",
+    "selection": "First three native widget entries, unmodified."
+  },
+  "jobs": [
+    {
+      "subCategory": "Retail HUGO",
+      "ml_skills": [
+        "liderazgo de equipos",
+        "comunicación",
+        "servicio al cliente",
+        "análisis de ventas",
+        "gestión de inventario",
+        "estrategias de ventas",
+        "conocimiento de moda",
+        "trabajo bajo presión",
+        "orientación a resultados",
+        "motivación de equipo",
+        "control de productos",
+        "análisis de desempeño",
+        "atencion al cliente",
+        "control de inventario",
+        "visual merchandising",
+        "manejo de incidencias de personal",
+        "seguimiento de objetivos",
+        "toma de decisiones",
+        "manejo de kpis",
+        "operacion de tienda"
+      ],
+      "companyName": "HUGO BOSS México S.A. de C.V.",
+      "workExperience": "Professional",
+      "type": "External",
+      "descriptionTeaser": "¡Únete a HUGO BOSS como Subgerente y forma parte de un equipo apasionado! Buscamos un líder motivado para supervisar ventas, brindar un excelente servicio al cliente y contribuir a estrategias de ventas. Ofrecemos un entorno inclusivo y oportunidades de crecimiento profesional.",
+      "experienceRequired": "Professional",
+      "state": "MX-CMX",
+      "siteType": "external",
+      "multi_category": [
+        "Retail Store"
+      ],
+      "reqId": "143471",
+      "grade": "P4",
+      "city": "Mexico City",
+      "latitude": "19.44068",
+      "multi_location": [
+        "Mexico City, MX-CMX, Mexico"
+      ],
+      "address": "Antara Fashion Hall, Avenida Ejercito Nacional no. 843, Granada, Ciudad de México",
+      "ml_job_parser": {
+        "descriptionTeaser": "¡Únete a HUGO BOSS como Subgerente y forma parte de un equipo apasionado! Buscamos un líder motivado para supervisar ventas, brindar un excelente servicio al cliente y contribuir a estrategias de ventas. Ofrecemos un entorno inclusivo y oportunidades de crecimiento profesional.",
+        "descriptionTeaser_first200": "HUGO BOSS es una de las empresas líderes en moda y estilo de vida en el segmento premium con más de 17.000 empleados en todo el mundo. Pese a ser muy versátiles, nos une un objetivo común: We love ...",
+        "descriptionTeaser_keyword": "HUGO BOSS es una de las empresas líderes en moda y estilo de vida en el segmento premium con más de 17.000 empleados en todo el mundo. Pese a ser muy versátiles, nos une un objetivo común: We love fas...",
+        "descriptionTeaser_ats": "HUGO BOSS es una de las empresas líderes en moda y estilo de vida en el segmento premium con más de 17.000 empleados en todo el mundo. Pese a ser muy versátiles, nos une un objetivo común: We love fas"
+      },
+      "externalApply": false,
+      "cityState": "Mexico City, MX-CMX",
+      "country": "Mexico",
+      "visibilityType": "External",
+      "longitude": "-99.19638",
+      "hiringType": "Full-time",
+      "jobId": "143471",
+      "locale": "en_GLOBAL",
+      "title": "Subgerente - BOSS Antara",
+      "jobSeqNo": "HUBOGLOBAL143471EXTERNALENGLOBAL",
+      "postedDate": "2026-08-24T19:20:09.000+0000",
+      "dateCreated": "2026-04-08T17:55:47.454+0000",
+      "cityStateCountry": "Mexico City, MX-CMX, Mexico",
+      "jobVisibility": [
+        "external",
+        "internal"
+      ],
+      "location": "Mexico City, MX-CMX, Mexico",
+      "category": "Retail Store",
+      "isMultiLocation": false,
+      "multi_location_array": [
+        {
+          "latlong": {
+            "lon": -99.19638,
+            "lat": 19.44068
+          },
+          "location": "Mexico City, MX-CMX, Mexico"
+        }
+      ],
+      "isMultiCategory": false,
+      "multi_category_array": [
+        {
+          "category": "Retail Store"
+        }
+      ],
+      "badge": ""
+    },
+    {
+      "subCategory": "Retail BOSS",
+      "ml_skills": [
+        "customer service",
+        "crm data management",
+        "retail operations",
+        "stock management",
+        "loss prevention",
+        "complaint handling",
+        "return handling",
+        "business systems",
+        "commercial acumen",
+        "brand knowledge",
+        "interpersonal skills",
+        "communication skills",
+        "quality management",
+        "transaction processing",
+        "adaptability",
+        "training participation"
+      ],
+      "companyName": "HUGO BOSS UK Ltd.",
+      "workExperience": "Entry Position",
+      "type": "External",
+      "descriptionTeaser": "Seeking a Sales Associate to deliver customer service excellence and build a loyal customer base at Hugo Boss. Responsible for CRM data management and supporting commercial success. Ideal for candidates with retail or customer service experience and a passion for premium fashion.",
+      "experienceRequired": "Entry Position",
+      "state": "GB-LND",
+      "siteType": "external",
+      "multi_category": [
+        "Retail Store"
+      ],
+      "reqId": "144706",
+      "grade": "P4",
+      "city": "London",
+      "latitude": "51.50853",
+      "multi_location": [
+        "London, GB-LND, United Kingdom"
+      ],
+      "address": "Regent Street",
+      "ml_job_parser": {
+        "descriptionTeaser": "Seeking a Sales Associate to deliver customer service excellence and build a loyal customer base at Hugo Boss. Responsible for CRM data management and supporting commercial success. Ideal for candidates with retail or customer service experience and a passion for premium fashion.",
+        "descriptionTeaser_ats": "HUGO BOSS is one of the leading fashion and lifestyle companies in the premium segment with over 19,000 employees worldwide. As versatile as we are, we are united by a common goal: We love fashion, we",
+        "descriptionTeaser_first200": "HUGO BOSS is one of the leading fashion and lifestyle companies in the premium segment with over 19,000 employees worldwide. As versatile as we are, we are united by a common goal: We love fashion,...",
+        "descriptionTeaser_keyword": "HUGO BOSS is one of the leading fashion and lifestyle companies in the premium segment with over 19,000 employees worldwide. As versatile as we are, we are united by a common goal: We love fashion, we..."
+      },
+      "externalApply": false,
+      "cityState": "London, GB-LND",
+      "country": "United Kingdom",
+      "visibilityType": "External",
+      "longitude": "-0.12574",
+      "hiringType": "Part-time",
+      "jobId": "144706",
+      "locale": "en_GLOBAL",
+      "title": "Sales Associate - Regent Street (Part Time - 24 and 16 Hours)",
+      "jobSeqNo": "HUBOGLOBAL144706EXTERNALENGLOBAL",
+      "postedDate": "2026-08-27T13:05:19.000+0000",
+      "dateCreated": "2026-08-21T08:56:12.458+0000",
+      "cityStateCountry": "London, GB-LND, United Kingdom",
+      "jobVisibility": [
+        "external",
+        "internal"
+      ],
+      "location": "London, GB-LND, United Kingdom",
+      "category": "Retail Store",
+      "isMultiLocation": false,
+      "multi_location_array": [
+        {
+          "latlong": {
+            "lon": -0.12574,
+            "lat": 51.50853
+          },
+          "location": "London, GB-LND, United Kingdom"
+        }
+      ],
+      "isMultiCategory": false,
+      "multi_category_array": [
+        {
+          "category": "Retail Store"
+        }
+      ],
+      "badge": ""
+    },
+    {
+      "subCategory": "Retail BOSS",
+      "ml_skills": [
+        "selling services",
+        "pos registers",
+        "customer service",
+        "relationship selling",
+        "sales transactions",
+        "merchandising",
+        "product knowledge",
+        "problem solving"
+      ],
+      "companyName": "HUGO BOSS Retail, Inc.",
+      "workExperience": "Entry Position",
+      "type": "External",
+      "descriptionTeaser": "Convey a positive impression of HUGO BOSS to the marketplace by delivering an exceptional shopping experience, showcasing the brand through exciting merchandise presentations and executing operational...",
+      "experienceRequired": "Entry Position",
+      "state": "US-GA",
+      "siteType": "external",
+      "multi_category": [
+        "Retail Store"
+      ],
+      "reqId": "141483",
+      "grade": "P2",
+      "city": "Atlanta",
+      "latitude": "33.749",
+      "multi_location": [
+        "Atlanta, US-GA, United States"
+      ],
+      "address": "3500 Peachtree Road",
+      "ml_job_parser": {
+        "descriptionTeaser": "Convey a positive impression of HUGO BOSS to the marketplace by delivering an exceptional shopping experience, showcasing the brand through exciting merchandise presentations and executing operational...",
+        "descriptionTeaser_first200": "HUGO BOSS is one of the leading fashion and lifestyle companies in the premium segment with over 17,000 employees worldwide. As versatile as we are, we are united by a common goal: We love fashion,...",
+        "descriptionTeaser_keyword": "HUGO BOSS is one of the leading fashion and lifestyle companies in the premium segment with over 17,000 employees worldwide. As versatile as we are, we are united by a common goal: We love fashion, we...",
+        "descriptionTeaser_ats": ""
+      },
+      "externalApply": false,
+      "cityState": "Atlanta, US-GA",
+      "country": "United States",
+      "visibilityType": "External",
+      "longitude": "-84.38798",
+      "hiringType": "Full-time",
+      "jobId": "141483",
+      "locale": "en_GLOBAL",
+      "title": "Full Time Sales Associate - BOSS Store, Atlanta Phipps Plaza",
+      "jobSeqNo": "HUBOGLOBAL141483EXTERNALENGLOBAL",
+      "postedDate": "2025-08-26T22:18:22.000+0000",
+      "dateCreated": "2025-08-26T22:47:00.152+0000",
+      "cityStateCountry": "Atlanta, US-GA, United States",
+      "jobVisibility": [
+        "external",
+        "internal"
+      ],
+      "location": "Atlanta, US-GA, United States",
+      "category": "Retail Store",
+      "isMultiLocation": false,
+      "multi_location_array": [
+        {
+          "latlong": {
+            "lon": -84.38798,
+            "lat": 33.749
+          },
+          "location": "Atlanta, US-GA, United States"
+        }
+      ],
+      "isMultiCategory": false,
+      "multi_category_array": [
+        {
+          "category": "Retail Store"
+        }
+      ],
+      "badge": ""
+    }
+  ]
+}
