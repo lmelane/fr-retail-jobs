@@ -401,8 +401,34 @@ export function parseSuccessFactorsPagination(html: string, offset = 0): { start
     }
   }
   const valid = values.filter(v => Object.values(v).every(Number.isSafeInteger) && v.start >= 0 && v.end >= v.start && v.total >= v.end);
+  // SAP's native empty-result component has no pagination label. Require its
+  // explicit zero count and the search form; an empty/challenge page is not zero.
+  if (!values.length && offset === 0 && $('#noresults #attention').length &&
+      $('#noresults-message').text().match(/\d+/g)?.join('') === '0' &&
+      $('form[name="keywordsearch"]').length && !parseListing(html, 'https://unused.invalid').length) {
+    return { start: 0, end: 0, total: 0 };
+  }
   if (!valid.length || new Set(valid.map(v => JSON.stringify(v))).size !== 1) return null;
   return valid[0];
+}
+
+/** A worldwide HTML board can publish a different corpus in every locale.
+ * Discover only same-site links within the configured portal, never guess a
+ * language or expand a country/brand source into a sibling portal.
+ */
+export function parsePublishedHtmlLocales(html: string, origin: string): string[] {
+  const $ = cheerio.load(html, { scriptingEnabled: false });
+  const base = new URL(origin), prefix = base.pathname.replace(/\/$/, '');
+  const locales = new Set<string>();
+  $('a[href]').each((_, node) => {
+    try {
+      const url = new URL($(node).attr('href')!, `${origin}/`);
+      const locale = url.searchParams.get('locale');
+      if (url.origin === base.origin && (!prefix || url.pathname === prefix || url.pathname.startsWith(`${prefix}/`)) &&
+          locale && /^[a-z]{2}_[A-Z]{2}$/.test(locale)) locales.add(locale);
+    } catch { /* Non-URL navigation is not a locale declaration. */ }
+  });
+  return [...locales];
 }
 
 /** One implementation serves both the dispatcher and legacy array consumers. */
@@ -424,19 +450,61 @@ async function fetchSuccessFactorsInSession(config: Record<string, unknown>): Pr
       truncated: result.truncated || discovery.issues.length > 0,
       enumeration: { ...result.enumeration!, issues: [...(result.enumeration?.issues ?? []), ...discovery.issues] } });
   };
-  const jobs: NormalizedJob[] = [];
-  const seenIds = new Set<string>();
   const firstUrl = `${origin}/search/?createNewAlert=false&q=&locationsearch=&startrow=0`;
   const firstHtml = await fetchText(firstUrl, { headers: HEADERS });
   if (config.rmk === true || /rmk-jobs-search/.test(firstHtml)) {
     return rmk(firstHtml);
   }
+  if (config.allLocales === true) {
+    let home = '';
+    const issues = new Set<string>();
+    try { home = await fetchText(`${origin}/`, { headers: HEADERS }); }
+    catch (error) { assertSourceRunning(); issues.add(`LOCALE_DISCOVERY_HOME_FAILED:${String(error).slice(0, 300)}`); }
+    const locales = parsePublishedHtmlLocales(`${firstHtml}\n${home}`, origin);
+    if (!locales.length) issues.add('NO_PUBLISHED_HTML_LOCALE_SET');
+    const byId = new Map<string, NormalizedJob>();
+    const scopes: NonNullable<NonNullable<AdapterResult['enumeration']>['scopes']> = [];
+    const evidence: NonNullable<NonNullable<AdapterResult['enumeration']>['pageEvidence']> = [];
+    let pages = 0, rawCount = 0;
+    for (const locale of locales.length ? locales : [undefined]) {
+      try {
+        const url = new URL(firstUrl);
+        if (locale) url.searchParams.set('locale', locale);
+        const html = locale ? await fetchText(url.href, { headers: HEADERS }) : firstHtml;
+        const result = await fetchHtmlJobs(origin, url.href, html);
+        for (const job of result.jobs) if (!byId.has(job.externalId)) byId.set(job.externalId, job);
+        pages += result.enumeration!.pages; rawCount += result.enumeration!.rawCount;
+        evidence.push(...(result.enumeration!.pageEvidence ?? []));
+        if (result.declaredTotal !== undefined) scopes.push({ scope: locale ?? 'default', declaredTotal: result.declaredTotal,
+          uniqueIds: result.jobs.length, pages: result.enumeration!.pages, complete: result.complete === true });
+        if (!result.complete) issues.add(`HTML_LOCALE_INCOMPLETE:${locale ?? 'default'}`);
+        for (const issue of result.enumeration!.issues ?? []) issues.add(`${locale ?? 'default'}:${issue}`);
+      } catch (error) {
+        assertSourceRunning(); issues.add(`HTML_LOCALE_FAILED:${locale}:${String(error).slice(0, 300)}`);
+      }
+    }
+    const complete = issues.size === 0 && scopes.length === locales.length;
+    return finish({ jobs: [...byId.values()], complete, truncated: !complete,
+      enumeration: { method: 'PUBLISHER_HTML_PER_LOCALE_TOTALS', endpoint: firstUrl, pages, rawCount,
+        termination: complete ? 'ALL_LOCALE_TOTALS_REACHED' : 'INCOMPLETE_LOCALE_ENUMERATION',
+        scopes, pageEvidence: evidence, issues: [...issues] } });
+  }
+  const result = await fetchHtmlJobs(origin, firstUrl, firstHtml);
+  if (!result.jobs.length && result.declaredTotal === undefined) return rmk(firstHtml);
+  return finish(result);
+}
+
+async function fetchHtmlJobs(origin: string, firstUrl: string, firstHtml: string): Promise<AdapterResult> {
+  const jobs: NormalizedJob[] = [];
+  const seenIds = new Set<string>();
   let offset = 0, pages = 0, rawCount = 0, declaredTotal: number | undefined;
   let termination = 'PAGE_BUDGET_EXHAUSTED';
   const issues = new Set<string>();
   const pageEvidence: NonNullable<NonNullable<AdapterResult['enumeration']>['pageEvidence']> = [];
   for (let page = 0; page < MAX_PAGES; page++) {
-    const url = page === 0 ? firstUrl : `${origin}/search/?createNewAlert=false&q=&locationsearch=&startrow=${offset}`;
+    const pageUrl = new URL(firstUrl);
+    pageUrl.searchParams.set('startrow', String(offset));
+    const url = page === 0 ? firstUrl : pageUrl.href;
     const html = page === 0 ? firstHtml : await fetchText(url, { headers: HEADERS });
     pages++;
     const pagination = parseSuccessFactorsPagination(html, offset);
@@ -460,10 +528,6 @@ async function fetchSuccessFactorsInSession(config: Record<string, unknown>): Pr
     }
     if (pagination && seenIds.size === pagination.total) { termination = 'PUBLISHER_TOTAL_REACHED'; break; }
     if (fresh.length === 0) {
-      if (page === 0 && !pagination) {
-        // Endpoint failures remain failures, never a silently empty HTML board.
-        return rmk(html);
-      }
       termination = listing.length ? 'REPEATED_PAGE' : 'EMPTY_PAGE'; break;
     }
     const next = pagination ? pagination.end : offset + listing.length;
@@ -472,8 +536,8 @@ async function fetchSuccessFactorsInSession(config: Record<string, unknown>): Pr
   }
   const complete = declaredTotal !== undefined && jobs.length === declaredTotal && issues.size === 0;
   if (!complete) issues.add('ENUMERATION_NOT_PROVEN');
-  return finish({ jobs, declaredTotal, complete, truncated: !complete,
-    enumeration: { method: 'PUBLISHER_HTML_PAGINATION', endpoint: firstUrl, pages, rawCount, termination, issues: [...issues], pageEvidence } });
+  return { jobs, declaredTotal, complete, truncated: !complete,
+    enumeration: { method: 'PUBLISHER_HTML_PAGINATION', endpoint: firstUrl, pages, rawCount, termination, issues: [...issues], pageEvidence } };
 }
 
 /**

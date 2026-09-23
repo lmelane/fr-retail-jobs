@@ -115,6 +115,10 @@ node --import tsx apps/aggregator/scripts/ops/source-onboard.mts promote exemple
 
 Une promotion répétée sur une source déjà ACTIVE vérifie à nouveau les portes, puis retourne le statut sans réécrire la ligne. Une révision différente ou une preuve obligatoire expirée reste un refus. Depuis F5, l’identité opérationnelle repose sur la révision du registre ; la revue d’identité par capture est facultative pour la promotion et l’admission. La validation native et la décision d’accès restent obligatoires. La promotion ne déclenche aucune ingestion. Chaque démarrage revérifie ces conditions et conserve ses décisions dans une [admission immuable](source-ingestion.md). Le nouveau résultat doit ensuite réussir sa propre validation hors réseau avant publication.
 
+### Portails SAP HTML multilingues
+
+Pour un portail mondial dont chaque langue expose un corpus différent, le réglage revu `allLocales=true` parcourt les locales publiées dans les liens de recherche et d’accueil du portail configuré. Il conserve ce périmètre : une origine de marque/pays ne découvre pas les portails frères. Chaque locale conserve son compteur, sa pagination et ses identifiants ; l’union est dédoublonnée par identifiant natif. Les compteurs de langues ne sont jamais additionnés pour affirmer un total unique. Une langue inaccessible, un compteur instable ou une découverte incomplète empêche l’attestation d’absence, tout en conservant les offres des langues lues. Ce réglage ne prouve pas la couverture d’autres canaux externes de l’employeur.
+
 ## Limites avant release
 
 - Le [lecteur de règles](source-access.md) utilise maintenant l’identité réelle CatwalksBot, combine les groupes applicables et borne les comparaisons. Il calcule une observation ; il ne qualifie pas la portée de tout un adaptateur.
