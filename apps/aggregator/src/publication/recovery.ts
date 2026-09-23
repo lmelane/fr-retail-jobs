@@ -1,4 +1,5 @@
 import { parseAshbyJob } from '../ats/adapters/ashby.js';
+import { applyAvatureJobData } from '../ats/adapters/avature.js';
 import { parseLeverJob } from '../ats/adapters/lever.js';
 import { parseJibePage } from '../ats/adapters/jibe.js';
 import { parseCareerConnectJob, parsePhenomJob, phenomDialect, type CareerConnectJob } from '../ats/adapters/phenom.js';
@@ -515,6 +516,9 @@ function readRetainedPublication(kind: string, raw: unknown, context: Context, r
           ...(quand && !Number.isNaN(quand.getTime()) ? { postedAt: quand } : {}),
           raw,
         };
+        if (context.config.employerFromDataLayer === true && typeof raw.avatureJobData === 'string') {
+          job = applyAvatureJobData(job, raw.avatureJobData);
+        }
         break;
       }
       case 'swatchgroup': {

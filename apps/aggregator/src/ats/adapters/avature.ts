@@ -1,4 +1,5 @@
 import pLimit from 'p-limit';
+import * as cheerio from 'cheerio';
 import { fetchText } from '../../lib/http.js';
 import { htmlToPlainText } from '../../lib/html.js';
 import { fetchSitemapUrls } from '../../connectors/generic/jsonLdSitemap.js';
@@ -25,6 +26,35 @@ const USER_AGENT =
   CRAWLER_IDENTITY;
 
 const HEADERS = { 'user-agent': USER_AGENT };
+
+/** Public Avature job metadata, bound to the actual detail ID. Only literal
+ * strings are read; no script is evaluated. A group portal's page-wide brand
+ * (e.g. "OA") is deliberately distinct from its per-job `jobBrand`.
+ */
+export function avatureJobData(script: string, externalId: string): { jobBrand: string } | null {
+  const matches: Array<{ jobBrand: string }> = [];
+  for (const block of script.matchAll(/\bdataLayer\.push\s*\(\s*\{([\s\S]*?)\}\s*\)/g)) {
+    const fields: Record<string, string> = {};
+    let invalid = false;
+    for (const field of block[1].matchAll(/(?:^|,)\s*(pageCategory|jobIDATS|jobBrand)\s*:\s*("(?:\\.|[^"\\])*")\s*(?=,|$)/g)) {
+      try {
+        if (field[1] in fields) invalid = true;
+        fields[field[1]] = JSON.parse(field[2]);
+      } catch { invalid = true; }
+    }
+    if (!invalid && fields.pageCategory === 'job detail page' && fields.jobIDATS === externalId && fields.jobBrand?.trim()) {
+      matches.push({ jobBrand: fields.jobBrand.trim() });
+    }
+  }
+  return matches.length === 1 ? matches[0] : null;
+}
+
+export function applyAvatureJobData(job: NormalizedJob, script: string): NormalizedJob {
+  const data = avatureJobData(script, job.externalId);
+  return { ...job, ...(data ? { company: data.jobBrand, employerEvidence: {
+    rawName: data.jobBrand, path: 'dataLayer.jobBrand', rule: 'EXPLICIT_JOB_BRAND',
+  } } : {}), raw: { ...(job.raw as Record<string, unknown>), avatureJobData: script } };
+}
 
 /** Only JobDetail URLs are offers; the sitemap also lists utility routes. */
 const JOB_URL = /\/jobs\/JobDetail\//;
@@ -558,7 +588,7 @@ export async function fetchAvatureJobs(config: Record<string, unknown>): Promise
              * L'Oréal, `lists` pour Ralph Lauren : corriger l'un sans l'autre ne débloque rien.
              */
             const description = full && full.length > (job.description?.length ?? 0) ? full : job.description;
-            return {
+            const enriched: NormalizedJob = {
               ...job, description, postedAt,
               raw: {
                 ...(job.raw as Record<string, unknown>),
@@ -566,6 +596,11 @@ export async function fetchAvatureJobs(config: Record<string, unknown>): Promise
                 postedAt: postedAt?.toISOString(),
               },
             };
+            if (config.employerFromDataLayer !== true) return enriched;
+            const $ = cheerio.load(html, { scriptingEnabled: false });
+            const script = $('script').map((_, node) => $(node).html() ?? '').get()
+              .filter(value => /\bdataLayer\.push\s*\(/.test(value)).join('\n');
+            return applyAvatureJobData(enriched, script);
           } catch {
             // A failed detail fetch must not lose the listing entry.
             return job;

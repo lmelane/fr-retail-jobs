@@ -115,6 +115,10 @@ node --import tsx apps/aggregator/scripts/ops/source-onboard.mts promote exemple
 
 Une promotion répétée sur une source déjà ACTIVE vérifie à nouveau les portes, puis retourne le statut sans réécrire la ligne. Une révision différente ou une preuve obligatoire expirée reste un refus. Depuis F5, l’identité opérationnelle repose sur la révision du registre ; la revue d’identité par capture est facultative pour la promotion et l’admission. La validation native et la décision d’accès restent obligatoires. La promotion ne déclenche aucune ingestion. Chaque démarrage revérifie ces conditions et conserve ses décisions dans une [admission immuable](source-ingestion.md). Le nouveau résultat doit ensuite réussir sa propre validation hors réseau avant publication.
 
+### Marque native des offres Avature
+
+Le réglage revu `employerFromDataLayer=true` lit le champ public `jobBrand` dans les métadonnées de la fiche, uniquement si `jobIDATS` correspond à l’identifiant natif de cette offre et si la page est déclarée `job detail page`. Il ne lit ni la marque générique du site ni une mention dans le titre. Le script source est retenu dans le RAW et relu sans exécution de JavaScript. Une valeur absente, ambiguë ou liée à une autre offre ne donne aucun employeur ; les gardes d’identité existants restent applicables, y compris aux attributions historiques.
+
 ### Portails SAP HTML multilingues
 
 Pour un portail mondial dont chaque langue expose un corpus différent, le réglage revu `allLocales=true` parcourt les locales publiées dans les liens de recherche et d’accueil du portail configuré. Il conserve ce périmètre : une origine de marque/pays ne découvre pas les portails frères. Chaque locale conserve son compteur, sa pagination et ses identifiants ; l’union est dédoublonnée par identifiant natif. Les compteurs de langues ne sont jamais additionnés pour affirmer un total unique. Une langue inaccessible, un compteur instable ou une découverte incomplète empêche l’attestation d’absence, tout en conservant les offres des langues lues. Ce réglage ne prouve pas la couverture d’autres canaux externes de l’employeur.
