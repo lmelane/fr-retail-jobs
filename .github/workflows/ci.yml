@@ -131,12 +131,21 @@ jobs:
         run: printf '%s' "$REGISTRY_TOKEN" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
       - name: Build once, publish immutable image and verify embedded release
         env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           RUNTIME_NAME: ${{ matrix.name }}
           DOCKERFILE: ${{ matrix.dockerfile }}
           RUNTIME_ROOT: ${{ matrix.root }}
         run: |
           set -euo pipefail
           image="ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/${RUNTIME_NAME}:${GITHUB_SHA}"
+          package_path="users/$GITHUB_REPOSITORY_OWNER/packages/container/$RUNTIME_NAME"
+          # Refuse an existing public package before publishing another version.
+          if gh api "$package_path" > package.json.tmp 2> package-error.txt; then
+            python3 -c 'import json; assert json.load(open("package.json.tmp"))["visibility"] == "private", "Runtime package is not private"'
+          elif ! grep -q 'HTTP 404' package-error.txt; then
+            cat package-error.txt >&2
+            exit 1
+          fi
           manifest_error=$(mktemp)
           if docker manifest inspect "$image" >/dev/null 2>"$manifest_error"; then
             docker pull "$image"
@@ -152,6 +161,9 @@ jobs:
               -f "$DOCKERFILE" -t "$image" .
             docker push "$image"
           fi
+          # Never infer privacy from Docker login or the publisher token's scopes.
+          gh api "$package_path" > package.json.tmp
+          python3 -c 'import json; assert json.load(open("package.json.tmp"))["visibility"] == "private", "Published runtime package is not private"'
           docker run --rm --network=none --entrypoint cat "$image" "$RUNTIME_ROOT/packages/runtime/release.json" > embedded-release.json
           docker image inspect "$image" > image-inspect.json
           python3 - <<'PY'

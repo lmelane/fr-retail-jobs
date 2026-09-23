@@ -2,6 +2,8 @@
 
 **23 septembre 2026 — R1 en cours ; GO conditionnel R1 → R5 reçu.** La décision courante remplace le passage immédiat au ramp-up : reconstruire l'exécution Railway, conserver PostgreSQL intégralement. Le canari `72300c9` reste historiquement validé. Aucun service n'a été créé, modifié, redémarré ou supprimé pour établir ce plan ; aucune requête SQL de production n'a été exécutée.
 
+**Contrôle R1 :** code, CI et démarrage des deux images `c3613a1` PASS ; visibilité du registre **FAIL** (packages publiés en `public`, cible `private`). R2 n'est pas commencé. Voir le [reçu et les prérequis ouverts](../../audits/2026-09-23/runtime-reset-r1.md). Le pipeline refuse désormais une nouvelle publication dans ces packages tant qu'ils sont publics. Aucun changement de visibilité du dépôt GitHub n'est autorisé implicitement.
+
 La [cible structurée](../operations/railway/runtime-target.json) décrit le résultat attendu. Elle n'est pas encore un fichier exécutable de provisionnement. Le [relevé réel](../../audits/2026-09-23/railway-runtime-inventory.json) contient les identifiants, déploiements, décisions pour les **33 affectations de variables** des quatre services et empreintes des sauvegardes privées. Ne pas confondre configuration proposée, configuration distante et environnement effectivement chargé dans un processus.
 
 ## 1. État sauvegardé et dérives constatées
