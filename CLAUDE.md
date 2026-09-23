@@ -7,7 +7,7 @@ Le produit est un agrégateur mondial du luxe, de la mode, de la beauté et du r
 - [README du projet](README.md).
 - [Exploitation et état vérifié](apps/aggregator/README.md).
 - [Canari validé le 23 septembre 2026](audits/2026-09-23/canary-delta-oh-my-cream.md) : delta egress PASS ; restaurabilité acquise, état final en pause. Le ramp-up attend désormais le reset du runtime demandé ensuite. Les preuves acquises ne sont pas à rejouer sans changement qui les invalide.
-- [Runtime Railway](docs/architecture/railway-runtime-reset.md) : R5 validé, nouvelle API publique ; les quatre anciens services sont supprimés. Le worker générique accepte la pause, une source explicite ou toutes les ACTIVE. Le run complet est autorisé ; le CRON dépend de son résultat.
+- [Runtime Railway](docs/architecture/railway-runtime-reset.md) : R5 validé, nouvelle API publique ; les quatre anciens services sont supprimés. Le worker générique accepte la pause, une source explicite ou toutes les ACTIVE. Run complet effectué : 384 refus d’admission, aucun succès ; worker en pause, NO-GO CRON. Voir le [bilan](audits/2026-09-23/normal-production-run.json).
 - [Architecture produit](docs/architecture/production-foundations.md).
 - [Capture native et rétention](docs/architecture/native-capture.md).
 - [Faits issus des publications](docs/architecture/source-facts.md).

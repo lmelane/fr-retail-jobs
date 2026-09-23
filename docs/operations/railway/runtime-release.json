@@ -1,22 +1,9 @@
 {
-  "gitSha": "c3613a1d7b2a3c709f68fb18801eed3277a2302b",
-  "embeddedContractSha256": "ba9fbd873305c50357c93c2cc3662af88d64d5f62b025ed7065e4883f3770bbf",
-  "targetContractSha256": "83ada49118e6fd31a0dcc19ad183806c40cbef430d21d18565c2ccb3e6554983",
+  "productionCodeSha": "19d9f1c436cef7efec744e666090dd8b625933cb",
+  "apiRetainsValidatedR5Image": true,
+  "targetContractSha256": "27350975fedfa8fee3fb6f9df0e5f53c11e74ce91bbb0a1bc551e66fc15e2163",
   "registryVisibility": "public",
   "registryCredentialsRequired": false,
-  "approvedTargetDifferences": [
-    {
-      "path": "/services/0/sourceMode",
-      "embedded": "private_oci_image_pinned_by_digest",
-      "target": "public_oci_image_pinned_by_digest"
-    },
-    {
-      "path": "/services/1/sourceMode",
-      "embedded": "private_oci_image_pinned_by_digest",
-      "target": "public_oci_image_pinned_by_digest"
-    }
-  ],
-  "reason": "Explicit user approval of public images after R1; reuse the two already-built images. Visibility is registry metadata, not a change to entrypoint guards.",
   "images": [
     {
       "gitSha": "c3613a1d7b2a3c709f68fb18801eed3277a2302b",
@@ -44,11 +31,11 @@
       }
     },
     {
-      "gitSha": "c3613a1d7b2a3c709f68fb18801eed3277a2302b",
-      "contractSha256": "ba9fbd873305c50357c93c2cc3662af88d64d5f62b025ed7065e4883f3770bbf",
+      "gitSha": "19d9f1c436cef7efec744e666090dd8b625933cb",
+      "contractSha256": "27350975fedfa8fee3fb6f9df0e5f53c11e74ce91bbb0a1bc551e66fc15e2163",
       "service": "catwalks-ingestion-worker",
-      "image": "ghcr.io/lmelane/catwalks-ingestion-worker@sha256:55a9e6d008b21f8060a10b6f2bf1fd0d49d0dd81ece757bedb9e687ac174a240",
-      "imageId": "sha256:0222288de847b0104f54a5662810b3ad5f7d69141a7b0cdbd71c8c499d4ed14f",
+      "image": "ghcr.io/lmelane/catwalks-ingestion-worker@sha256:0a78a04f91da020024eef206fb8e2e004087428fb0290653473b0966a85d424e",
+      "imageId": "sha256:fddfa2f7ac6d101f2cf97a3d136e6105cf26c16227dae328859e51a69763c1e2",
       "imageEnvironment": [
         "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
         "LANG=C.UTF-8",
@@ -57,18 +44,19 @@
       ],
       "profiles": [
         "validation-paused",
-        "validation-ohmycream",
+        "validation",
         "production-paused",
-        "production-ohmycream"
+        "production"
       ],
       "offlineEntrypoint": {
         "status": "PASS",
         "network": "none",
         "role": "worker",
-        "gitSha": "c3613a1d7b2a3c709f68fb18801eed3277a2302b"
+        "gitSha": "19d9f1c436cef7efec744e666090dd8b625933cb"
       }
     }
   ],
+  "reason": "Worker-only minimal generic execution change after R5. Public API remains on its validated R5 image and embedded contract; each service records its actual source SHA and contract hash.",
   "resolvedExecutionSettings": {
     "overlapSeconds": 0,
     "drainingSeconds": 10,
@@ -84,5 +72,6 @@
       "build": "Image source: no Railway build is executed; builder/buildEnvironment are inactive platform metadata.",
       "workerRestartRetries": "NEVER policy: Railway normalizes retry count 0 to null; no retry is scheduled."
     }
-  }
+  },
+  "productionOutcome": "../../../audits/2026-09-23/normal-production-run.json"
 }

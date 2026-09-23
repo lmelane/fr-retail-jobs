@@ -25,7 +25,7 @@ Les règles de travail figurent dans [CLAUDE.md](CLAUDE.md). Préserver le trava
 - [Parcours unique des sources](docs/architecture/source-onboarding.md) : découverte, enregistrement, captures HTTP des preuves, collecte native et activation.
 - [Validation multilingue `/emplois`](docs/architecture/emplois-e2e.md) : chaîne locale de répétition et tests navigateur.
 - [Bilan PR-1 : préparation au canari](audits/2026-09-22/pr1-canary-readiness.md).
-- [Runtime Railway](docs/architecture/railway-runtime-reset.md) : R5 validé, nouvelle API publique ; les quatre anciens services sont supprimés. Le worker générique accepte la pause, une source explicite ou toutes les ACTIVE. Le run complet est autorisé ; le CRON dépend de son résultat.
+- [Runtime Railway](docs/architecture/railway-runtime-reset.md) : R5 validé, nouvelle API publique ; les quatre anciens services sont supprimés. Le worker générique accepte la pause, une source explicite ou toutes les ACTIVE. Run complet effectué : 384 refus d’admission, aucun succès ; worker en pause, NO-GO CRON. Voir le [bilan](audits/2026-09-23/normal-production-run.json).
 - [Canari Railway validé — delta egress](audits/2026-09-23/canary-delta-oh-my-cream.md) : quatre contrôles PASS, une ingestion Oh My Cream, workers revenus en pause ; [restaurabilité déjà acquise](audits/2026-09-22/restorability-canary-final.md).
 - [Exploitation canari et retour arrière](docs/architecture/canary-operations.md) : worker unique, pause autoritaire, nouvelle source et répétition locale.
 - [Golden Path nouvelle source](docs/architecture/golden-source.md) : base neuve, qualification, deux ingestions, rejeu et lecture API.

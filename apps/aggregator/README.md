@@ -1,15 +1,6 @@
 # Agrégateur Catwalks — état vérifié et exploitation
 
-État d’exploitation vérifié le **23 septembre 2026** : **CANARI VALIDÉ** après la seule validation différentielle de l’egress. Une ingestion Oh My Cream : 23 mises à jour, 0 création, 0 fusion, 0 erreur ; seul hôte métier observé `careers.ohmycream.com`. `/emplois` et le retour en pause sont confirmés. La restaurabilité reste acquise sans modifier les 613 lignes historiques. Voir le [bilan du delta](../../audits/2026-09-23/canary-delta-oh-my-cream.md). Le passage au ramp-up est désormais précédé du [reset du runtime Railway](../../docs/architecture/railway-runtime-reset.md), demandé ensuite : plan proposé, pas encore appliqué ; DB de production conservée. `/offres` et matching restent gelés.
-
-## Développement et production
-
-- `development` porte le travail validé ; `main` représente la production.
-- `main` et les quatre services Railway : `72300c97586955536ee1f89b0a9b7b0273fbf8a9`, après le GO explicite du canari borné ; CI verte et 86 migrations appliquées.
-- Les trois workers restent `PIPELINE_PAUSED=1`, anciens calendriers encore fixés au 29 février 2028 ; leur suppression réelle est prévue par le reset. L’agrégateur est revenu à `sh apps/aggregator/start.sh`, avec `EGRESS_PROBE=0`. Son exécution sous pause confirme `workStarted:false`, puis un conteneur arrêté.
-- Le delta autorisé comprend une seule ingestion et se termine en pause. Le run complet des sources ACTIVE est autorisé après correction minimale du worker générique ; le CRON reste conditionné au résultat. Le site public, backend, back-office et média ne sont pas déployés.
-
-Les anciens chiffres de stock et bilans source par source restent dans les [audits datés](../../audits/reprise-2026-09-15/README.md). Ils ne représentent pas le catalogue courant. Aucun audit supplémentaire des offres n’est requis pour PR-1.
+**Run normal du 23 septembre : NO-GO CRON.** Worker `19d9f1c` livré, 384 ACTIVE tentées : 0 réussite, 384 refus d’admission (346 `ACCESS_STALE`, 38 `ACCESS_MISSING`). `COMPLETED_WITH_ERRORS` en 165,765 s ; aucune capture/extraction ni création/mise à jour d’ingestion. L’étape GEO normale a géolocalisé 3 762 offres. Worker revenu en pause, CRON absent ; API publique et configuration PostgreSQL conservées. Voir le [bilan source par source](../../audits/2026-09-23/normal-production-run.json) et les [images réellement déployées](../../docs/operations/railway/runtime-release.json). Les quatre anciens runtimes sont supprimés ; le site, backend, back-office et média ne sont pas déployés.
 
 ## Une chaîne opérationnelle
 
