@@ -3,6 +3,7 @@ import { readNdjson } from './ndjson';
 import { createHash } from 'node:crypto';
 import { once } from 'node:events';
 import { join } from 'node:path';
+import { SEARCH_VOCABULARY_VERSION } from '../../lib/search-vocabulary';
 import { snapshotModel, type SnapshotMetadata } from './model';
 
 async function main() {
@@ -28,7 +29,7 @@ async function main() {
   if (count !== expected.counts.aggregate + expected.counts.direct) throw new Error('Projection count mismatch');
   const projectionHash = createHash('sha256');
   for await (const chunk of createReadStream(output)) projectionHash.update(chunk);
-  writeFileSync(output + '.metadata.json', JSON.stringify({ ...metadata, snapshotSha256: expected.sha256,
+  writeFileSync(output + '.metadata.json', JSON.stringify({ ...metadata, searchVocabularyVersion: SEARCH_VOCABULARY_VERSION, snapshotSha256: expected.sha256,
     projectionSha256: projectionHash.digest('hex') }), { mode: 0o600, flag: 'wx' });
   console.log(JSON.stringify({ prepared: count, snapshot: expected.sha256, projection: output }));
 }

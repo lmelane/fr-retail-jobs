@@ -37,13 +37,14 @@ with documents.open('rb') as source:
     sql("COPY benchmark_document_input FROM STDIN WITH (FORMAT csv, DELIMITER E'\\x01', QUOTE E'\\x02')", source)
 sql('''CREATE TABLE benchmark_document AS SELECT doc->>'id' AS id, (doc->>'origin')::int AS origin,
  doc->>'country' AS country, doc->>'city' AS city, doc->>'title' AS title, doc->>'company' AS company,
- doc->>'body' AS body,
+ doc->>'body' AS body, doc->>'duties' AS duties,
  ARRAY(SELECT jsonb_array_elements_text(doc->'roles')) AS roles,
  ARRAY(SELECT jsonb_array_elements_text(doc->'families')) AS families,
  ARRAY(SELECT jsonb_array_elements_text(doc->'sectors')) AS sectors,
  ARRAY(SELECT jsonb_array_elements_text(doc->'companyKeys')) AS "companyKeys",
  (doc->>'postedAt')::float8 AS "postedAt", (doc->>'firstSeenAt')::float8 AS "firstSeenAt",
  setweight(to_tsvector('simple', doc->>'title'),'A') || setweight(to_tsvector('simple', doc->>'company'),'B')
+ || setweight(to_tsvector('simple',coalesce(doc->>'duties','')),'C')
  || setweight(to_tsvector('simple',doc->>'body'),'D')
  || to_tsvector('simple', coalesce((SELECT string_agg('cwi' || md5(kind || ':' || value), ' ')
      FROM (SELECT 'role' AS kind, jsonb_array_elements_text(doc->'roles') AS value
@@ -67,7 +68,7 @@ elastic('/' + index, {
                  'analysis': {'analyzer': {'catwalks': {'type': 'custom', 'tokenizer': 'standard', 'filter': ['lowercase', 'asciifolding']}}}},
     'mappings': {'dynamic': 'strict', 'properties': {
         **{k: {'type': 'keyword'} for k in ['id','country','city','roles','families','sectors','companyKeys','occupationCode','employmentTerm','workTime','programType','language']},
-        **{k: {'type': 'text', 'analyzer': 'catwalks'} for k in ['title','company','body']},
+        **{k: {'type': 'text', 'analyzer': 'catwalks'} for k in ['title','company','body','duties']},
         'origin': {'type': 'integer'}, 'postedAt': {'type': 'double'}, 'firstSeenAt': {'type': 'double'},
     }},
 }, method='PUT')
@@ -93,5 +94,6 @@ assert elastic('/' + index + '/_count')['count'] == count == int(sql('SELECT cou
 receipt = {'count': count, 'postgresIndexSeconds': pg_seconds, 'elasticIndexSeconds': time.monotonic() - start,
     'postgresBytes': int(sql("SELECT pg_total_relation_size('benchmark_document')")),
     'elastic': elastic('/' + index + '/_stats/store')['indices'][index]['total']['store']}
+sql('DROP TABLE benchmark_document_input')
 Path(str(documents) + '.index.json').write_text(json.dumps(receipt, indent=2))
 print(json.dumps(receipt))

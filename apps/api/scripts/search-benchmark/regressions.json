@@ -1,0 +1,89 @@
+{
+  "schemaVersion": 1,
+  "snapshotSha256": "d549eef3720fa98970be96294781ad578fea821b73945f821bd9a7ae400854bd",
+  "cases": [
+    {
+      "intentionId": "composed-gucci",
+      "present": false,
+      "ids": [
+        "cmuebvplw1dxxoi35kdkhp71r"
+      ],
+      "basis": "Gucci est seulement un repère pour trouver un ascenseur."
+    },
+    {
+      "intentionId": "composed-nocibe",
+      "present": true,
+      "ids": [
+        "cmu8cgi0c004kmn6mnry83396"
+      ],
+      "basis": "La Prairie recrute explicitement pour ses points de vente Nocibé."
+    },
+    {
+      "intentionId": "role-seamster",
+      "present": false,
+      "ids": [
+        "cmu8ca7520368mn48t54sv25g"
+      ],
+      "basis": "La mention de couturier concerne le fondateur Dior, pas les missions de vente."
+    },
+    {
+      "intentionId": "role-recruiter",
+      "present": false,
+      "ids": [
+        "cmue51u7h0973o234j0v99o4h"
+      ],
+      "basis": "Le recruiter décrit le processus de candidature à un poste ingénieur."
+    },
+    {
+      "intentionId": "role-controller",
+      "present": false,
+      "ids": [
+        "cmu9fjqjs00b6of8lsr5tdrq2"
+      ],
+      "basis": "Financial control est une responsabilité de manager de boutique, pas son métier."
+    },
+    {
+      "intentionId": "family-health-optical-services",
+      "present": true,
+      "ids": [
+        "cmu6yam7f00p6n2eknlntprxj",
+        "cmu6ya1h3007vn2ekbd8q7y37",
+        "cmu6ya1q90082n2ekjsqjya2j",
+        "cmu6ya25s008gn2ek30v4rbtx",
+        "cmu6yamea00pdn2ekonxunq89",
+        "cmu6yalhf00oln2ek57tzwsho",
+        "cmu6ya2jn008un2ekokpzkl6n",
+        "cmu6yaiy800mnn2ekr60ou5j0",
+        "cmu6yaj5e00mun2eklvxcm0kj",
+        "cmu6yajcy00n1n2ekgulj0rth",
+        "cmu6yakcp00ntn2ekpod7h38k",
+        "cmu6yak3b00nmn2ekpt6a516e",
+        "cmu6ya2cl008nn2ekbmp9m7ov",
+        "cmu6yaknq00o0n2ekr103neua",
+        "cmu6yakvo00o7n2ekjq3pa1z7",
+        "cmu6yajld00n8n2ekzpnzfsem",
+        "cmu6ya167007on2ekrs4wnz0a",
+        "cmu6yal4j00oen2ek0xpz95wx",
+        "cmu6yamlk00pkn2ekl9eju1ku",
+        "cmu6yalzf00ozn2ek0httm6lg"
+      ],
+      "basis": "Intention large : au moins un optométriste natif confirmé dans les cent premiers ; ne pas imposer le rang d’une offre arbitraire."
+    },
+    {
+      "intentionId": "composed-typology",
+      "present": true,
+      "ids": [
+        "cmu6xmc9p0003pobi6l2ndet9"
+      ],
+      "basis": "Échantillon natif indépendant des résultats : Financial Control Intern [Internship - 6 mois]"
+    },
+    {
+      "intentionId": "composed-shinola",
+      "present": true,
+      "ids": [
+        "cmu6yoib80021o8uinclf1jty"
+      ],
+      "basis": "Échantillon natif indépendant des résultats : Shinola Watch Technician (Artisan) - New York - Tribeca"
+    }
+  ]
+}

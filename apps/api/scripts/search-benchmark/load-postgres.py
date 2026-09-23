@@ -49,5 +49,6 @@ sql('CREATE INDEX direct_search_benchmark_gin ON "DirectOffer" USING gin ("searc
 sql('ANALYZE')
 assert int(sql('SELECT count(*) FROM "Job"')) == manifest['counts']['aggregate']
 assert int(sql('SELECT count(*) FROM "DirectOffer"')) == manifest['counts']['direct']
+sql('DROP TABLE search_snapshot')
 print(json.dumps({'loaded': True, 'database': access['PGDATABASE'], 'sha256': manifest['sha256'],
                   'counts': manifest['counts']}))

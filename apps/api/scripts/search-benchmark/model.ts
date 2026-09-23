@@ -1,4 +1,6 @@
-import { createIntentResolver, searchWords, type SearchConcept, type SearchCompany } from '../../lib/search-intent';
+import { createIntentResolver, searchWords, type SearchCompany } from '../../lib/search-intent';
+import { searchEvidence } from '../../lib/search-evidence';
+import { searchConcepts } from '../../lib/search-vocabulary';
 import type { OccupationManifest } from '../../../../packages/db/occupation-engine';
 
 export type Company = { id: string; name: string; parentGroup: string | null; parentGroupId: string | null; mergedIntoId: string | null; sectorCodes: string[] };
@@ -18,7 +20,7 @@ export type NativeJob = {
 };
 export type SearchDocument = {
   id: string; origin: number; country: string | null; city: string;
-  title: string; company: string; body: string;
+  title: string; company: string; body: string; duties: string;
   roles: string[]; families: string[]; sectors: string[]; companyKeys: string[];
   postedAt: number; firstSeenAt: number;
   occupationCode: string | null; employmentTerm: string | null; workTime: string | null;
@@ -27,12 +29,8 @@ export type SearchDocument = {
 const normalized = (s: string | null | undefined) => searchWords(s ?? '').join(' ');
 
 export function snapshotModel(metadata: SnapshotMetadata) {
-  const concepts: SearchConcept[] = [];
-  for (const o of metadata.occupationRelease.manifest.occupations) concepts.push({
-    key: o.key, kind: 'role', aliases: [...new Set([...Object.values(o.labels), ...(o.aliases ?? [])])],
-  });
-  for (const f of metadata.occupationRelease.manifest.families) concepts.push({ key: f.key, kind: 'family', aliases: Object.values(f.labels) });
-  for (const s of metadata.sectorConcepts) concepts.push({ key: s.code, kind: 'sector', aliases: Object.values(s.labels) });
+  const concepts = searchConcepts(metadata.occupationRelease.manifest, metadata.sectorConcepts);
+  const roleFamilies = new Map(metadata.occupationRelease.manifest.occupations.map(o => [o.key, o.family]));
   const companies = new Map(metadata.companies.map(c => [c.id, c]));
   const names: SearchCompany[] = metadata.companies.filter(c => !c.mergedIntoId).map(c => ({
     id: c.id, names: [c.name, ...metadata.aliases.filter(a => a.companyId === c.id && a.reviewId).map(a => a.displayName),
@@ -49,15 +47,17 @@ export function snapshotModel(metadata: SnapshotMetadata) {
     document(j: NativeJob, direct = false): SearchDocument {
       const c = j.companyId ? companies.get(j.companyId) : undefined;
       const titleConcepts = resolver.titleConcepts(j.rawTitle || j.title);
+      const evidence = searchEvidence(j.description);
       // A title's explicit role takes precedence over contradictory historical
       // classification. Missing codes never suppress title/text retrieval.
       const roles = titleConcepts.roles.length ? titleConcepts.roles : j.occupationCode ? [j.occupationCode] : [];
       const parent = c?.parentGroupId || (c?.parentGroup && names.find(n => n.names.some(x => normalized(x) === normalized(c.parentGroup)))?.id);
       return {
         id: direct ? `cw_${j.id}` : j.id, origin: direct ? 0 : 1, country: j.countryCode,
-        city: normalized(j.city), title: normalized(j.rawTitle || j.title), company: normalized(c?.name || j.company),
+        city: normalized(j.city), title: normalized(j.rawTitle || j.title), company: normalized([c?.name || j.company, evidence.affiliations].filter(Boolean).join(' ')), duties: normalized(evidence.duties),
         body: normalized([j.description?.replace(/<[^>]*>/g, ' '), j.department, j.city, j.location, j.employmentTerm].filter(Boolean).join(' ')),
-        roles, families: [...new Set([...titleConcepts.families, ...(j.jobFunction ? [j.jobFunction] : [])])],
+        roles, families: [...new Set([...roles.map(r => roleFamilies.get(r)).filter((f): f is string => !!f),
+          ...(j.jobFunction ? [j.jobFunction] : titleConcepts.families)])],
         sectors: c?.sectorCodes ?? j.sectorCodes ?? [], companyKeys: [c?.id, parent].filter((x): x is string => !!x),
         postedAt: j.postedAt ? Date.parse(j.postedAt) : -1e15,
         firstSeenAt: Date.parse(j.firstSeenAt || j.receivedAt || metadata.asOf),

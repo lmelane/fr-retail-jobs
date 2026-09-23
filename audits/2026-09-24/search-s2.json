@@ -1,0 +1,332 @@
+{
+  "snapshotSha256": "d549eef3720fa98970be96294781ad578fea821b73945f821bd9a7ae400854bd",
+  "projectionSha256": "82e2e41bc3065a734f7f8b5ef063fbcdf8888b0fcc82de7a5b3a79c01907a76c",
+  "supplementaryJudgments": "judgments-s2.json",
+  "intentions": 115,
+  "variants": 234,
+  "measurementRows": 702,
+  "engines": {
+    "baseline": {
+      "queries": 234,
+      "zeroResultQueries": 52,
+      "zeroDespiteKnownPositive": 37,
+      "knownPositiveZeroQueries": [
+        {
+          "intentionId": "role-product",
+          "q": "développeur produit"
+        },
+        {
+          "intentionId": "role-waiter",
+          "q": "serveuse"
+        },
+        {
+          "intentionId": "role-waiter",
+          "q": "waiter"
+        },
+        {
+          "intentionId": "role-pastry",
+          "q": "pastry chef"
+        },
+        {
+          "intentionId": "family-supply-chain-logistics",
+          "q": "supply chain logistique"
+        },
+        {
+          "intentionId": "family-admin-facilities",
+          "q": "administration services généraux"
+        },
+        {
+          "intentionId": "family-health-optical-services",
+          "q": "santé pharmacie optique"
+        },
+        {
+          "intentionId": "family-health-optical-services",
+          "q": "health pharmacy optical"
+        },
+        {
+          "intentionId": "family-beauty-services",
+          "q": "coiffure prestations beauté"
+        },
+        {
+          "intentionId": "composed-chanel-fr",
+          "q": "sales advisor Chanel"
+        },
+        {
+          "intentionId": "composed-chanel-fr",
+          "q": "vendeuse Chanel"
+        },
+        {
+          "intentionId": "composed-chanel-fr",
+          "q": "sales advsior Chanel"
+        },
+        {
+          "intentionId": "composed-chanel-us",
+          "q": "conseiller de vente Chanel"
+        },
+        {
+          "intentionId": "composed-nocibe",
+          "q": "conseillère beauté Nocibé"
+        },
+        {
+          "intentionId": "composed-aesop",
+          "q": "sales advisor Aesop"
+        },
+        {
+          "intentionId": "composed-louis-vuitton",
+          "q": "conseiller de vente Louis Vuitton"
+        },
+        {
+          "intentionId": "composed-hermes",
+          "q": "leather craftsperson Hermes"
+        },
+        {
+          "intentionId": "composed-gucci",
+          "q": "vendeuse Gucci"
+        },
+        {
+          "intentionId": "composed-uniqlo",
+          "q": "vendeuse Uniqlo"
+        },
+        {
+          "intentionId": "composed-uniqlo",
+          "q": "sales advisor Uniqlo"
+        },
+        {
+          "intentionId": "composed-oh-my-cream",
+          "q": "conseillère beauté Oh My Cream"
+        },
+        {
+          "intentionId": "composed-oh-my-cream",
+          "q": "beauty advisor Oh My Cream"
+        },
+        {
+          "intentionId": "composed-normal",
+          "q": "payroll specialist Normal"
+        },
+        {
+          "intentionId": "composed-on",
+          "q": "développeur produit On"
+        },
+        {
+          "intentionId": "composed-typology",
+          "q": "contrôleur de gestion Typology"
+        },
+        {
+          "intentionId": "composed-typology",
+          "q": "financial controller Typology"
+        },
+        {
+          "intentionId": "composed-beaumanoir",
+          "q": "développement durable Groupe Beaumanoir"
+        },
+        {
+          "intentionId": "composed-beaumanoir",
+          "q": "sustainability Groupe Beaumanoir"
+        },
+        {
+          "intentionId": "composed-shinola",
+          "q": "watchmaker Shinola"
+        },
+        {
+          "intentionId": "composed-shinola",
+          "q": "horloger Shinola"
+        },
+        {
+          "intentionId": "composed-figs",
+          "q": "ingénieur analytics FIGS"
+        },
+        {
+          "intentionId": "composed-everlane",
+          "q": "graphiste Everlane"
+        },
+        {
+          "intentionId": "composed-boggi",
+          "q": "stockiste Boggi Milano"
+        },
+        {
+          "intentionId": "composed-longchamp",
+          "q": "conseillère de vente Longchamp"
+        },
+        {
+          "intentionId": "composed-longchamp",
+          "q": "sales advisor Longchamp"
+        },
+        {
+          "intentionId": "edge-negation",
+          "q": "sales advisor sans Chanel"
+        },
+        {
+          "intentionId": "edge-negation",
+          "q": "conseillère de vente without Chanel"
+        }
+      ],
+      "p50Ms": 11.317000000000007,
+      "p95Ms": 31.52349999999933,
+      "maxMs": 250.03712499999892,
+      "outsideIndexedMarket": 0,
+      "macroVariantJaccard20": 0.3540903602743593,
+      "bothEmptyVariantPairsExcluded": 19,
+      "top20JudgmentCoverage": 0.9986206896551724,
+      "precisionQueries": 215,
+      "precisionAtAvailable20": 0.5711594209544026,
+      "strictPrecisionAtAvailable20": 0.5176304635117365,
+      "ndcgAt20": 0.5943344068164582,
+      "pooledRecallAt20": 0.41457707960560364,
+      "pooledRecallAt100": 0.5403192982725494,
+      "pooledUnclassifiedRecallAt100": 0.43727576284308434,
+      "pairedComparison": {
+        "queries": 193,
+        "precisionAtAvailable20": 0.581861531115008,
+        "strictPrecisionAtAvailable20": 0.5268940396633334,
+        "ndcgAt20": 0.594129306547907,
+        "pooledRecallAt20": 0.41509397864666747,
+        "pooledRecallAt100": 0.5306361237776009
+      },
+      "bySplit": {
+        "development": {
+          "pairedQueries": 166,
+          "precisionAtAvailable20": 0.5876056911805168,
+          "strictPrecisionAtAvailable20": 0.5299824585335048,
+          "ndcgAt20": 0.6033219927534608,
+          "pooledRecallAt20": 0.43794282413827046,
+          "pooledRecallAt100": 0.5617889299627764
+        },
+        "holdout": {
+          "pairedQueries": 27,
+          "precisionAtAvailable20": 0.5465455840455841,
+          "strictPrecisionAtAvailable20": 0.5079059829059829,
+          "ndcgAt20": 0.5376113098767246,
+          "pooledRecallAt20": 0.27461589155014526,
+          "pooledRecallAt100": 0.3391040561205966
+        }
+      }
+    },
+    "elastic": {
+      "queries": 234,
+      "zeroResultQueries": 18,
+      "zeroDespiteKnownPositive": 0,
+      "knownPositiveZeroQueries": [],
+      "p50Ms": 5.567916000000878,
+      "p95Ms": 41.72691699999996,
+      "maxMs": 108.21450000000004,
+      "outsideIndexedMarket": 0,
+      "macroVariantJaccard20": 0.9284763978160204,
+      "bothEmptyVariantPairsExcluded": 9,
+      "top20JudgmentCoverage": 0.9974093264248705,
+      "precisionQueries": 210,
+      "precisionAtAvailable20": 0.8869441008726723,
+      "strictPrecisionAtAvailable20": 0.8360545935545936,
+      "ndcgAt20": 0.8629431481264253,
+      "pooledRecallAt20": 0.5969756335963303,
+      "pooledRecallAt100": 0.740261023125158,
+      "pooledUnclassifiedRecallAt100": 0.5144577621494257,
+      "pairedComparison": {
+        "queries": 193,
+        "precisionAtAvailable20": 0.8940842548355502,
+        "strictPrecisionAtAvailable20": 0.8436345318469671,
+        "ndcgAt20": 0.861304026408393,
+        "pooledRecallAt20": 0.6042148353234079,
+        "pooledRecallAt100": 0.7421222059276803
+      },
+      "bySplit": {
+        "development": {
+          "pairedQueries": 166,
+          "precisionAtAvailable20": 0.8819774770075974,
+          "strictPrecisionAtAvailable20": 0.8281413532919557,
+          "ndcgAt20": 0.8470939400547985,
+          "pooledRecallAt20": 0.6051778346528931,
+          "pooledRecallAt100": 0.7427889451247189
+        },
+        "holdout": {
+          "pairedQueries": 27,
+          "precisionAtAvailable20": 0.9685185185185186,
+          "strictPrecisionAtAvailable20": 0.9388888888888889,
+          "ndcgAt20": 0.9486697425082702,
+          "pooledRecallAt20": 0.5982941727791661,
+          "pooledRecallAt100": 0.7380229945681096
+        }
+      }
+    },
+    "postgres": {
+      "queries": 234,
+      "zeroResultQueries": 18,
+      "zeroDespiteKnownPositive": 0,
+      "knownPositiveZeroQueries": [],
+      "p50Ms": 3.372624999999971,
+      "p95Ms": 59.80666599999995,
+      "maxMs": 233.62979199999972,
+      "outsideIndexedMarket": 0,
+      "macroVariantJaccard20": 0.9285573086546914,
+      "bothEmptyVariantPairsExcluded": 9,
+      "top20JudgmentCoverage": 0.979598445595855,
+      "precisionQueries": 201,
+      "precisionAtAvailable20": 0.8846182148420955,
+      "strictPrecisionAtAvailable20": 0.8341863912759435,
+      "ndcgAt20": 0.8527508110708351,
+      "pooledRecallAt20": 0.5928240252378681,
+      "pooledRecallAt100": 0.7336827942844107,
+      "pooledUnclassifiedRecallAt100": 0.49729719117857496,
+      "pairedComparison": {
+        "queries": 193,
+        "precisionAtAvailable20": 0.8938251874780372,
+        "strictPrecisionAtAvailable20": 0.8423391950594024,
+        "ndcgAt20": 0.8512178433283348,
+        "pooledRecallAt20": 0.6032671021866355,
+        "pooledRecallAt100": 0.7349675874022608
+      },
+      "bySplit": {
+        "development": {
+          "pairedQueries": 166,
+          "precisionAtAvailable20": 0.8807726577304891,
+          "strictPrecisionAtAvailable20": 0.8245268954606304,
+          "ndcgAt20": 0.8342284932888374,
+          "pooledRecallAt20": 0.6036228378611352,
+          "pooledRecallAt100": 0.735869092619893
+        },
+        "holdout": {
+          "pairedQueries": 27,
+          "precisionAtAvailable20": 0.9740740740740741,
+          "strictPrecisionAtAvailable20": 0.9518518518518518,
+          "ndcgAt20": 0.9556708843119115,
+          "pooledRecallAt20": 0.6010799865582296,
+          "pooledRecallAt100": 0.729424999767929
+        }
+      }
+    }
+  },
+  "comparisonLimits": [
+    "Single-agent engine-blind native-content labels; no independent human validation.",
+    "Baseline times include facet/count SQL; candidates retrieve IDs+total only.",
+    "One local measured pass, concurrency one: NOT production API p95/SLO.",
+    "Recall uses pooled annotated documents plus nine native-content anchors, not all relevant market offers.",
+    "Market guard checks indexed country, not correctness of source geography.",
+    "Snapshot has no public DirectOffer: real two-origin behaviour is not measured here."
+  ],
+  "measurementSha256": "670df686195558a04cdaa6e022be57c245dfaa99e693794ebc653c53655cfa11",
+  "prototype": "S2 shared native vocabulary and scoped role/company evidence; no public route integration",
+  "searchVocabularyVersion": "20260924-v1",
+  "regressions": {
+    "checks": 36,
+    "passed": true
+  },
+  "indexBuild": {
+    "count": 73833,
+    "postgresIndexSeconds": 50.48639862507116,
+    "elasticIndexSeconds": 18.873545375070535,
+    "postgresBytes": 948985856,
+    "elastic": {
+      "size_in_bytes": 306319398,
+      "total_data_set_size_in_bytes": 306319398,
+      "reserved_in_bytes": 0
+    }
+  },
+  "environment": {
+    "postgres": "18.6 native macOS arm64",
+    "elasticsearch": "9.5.4 native macOS arm64",
+    "elasticHeapMiB": 512,
+    "postgresSharedBuffersMiB": 256,
+    "hostMemoryGiB": 24,
+    "concurrency": 1,
+    "passes": 1
+  }
+}

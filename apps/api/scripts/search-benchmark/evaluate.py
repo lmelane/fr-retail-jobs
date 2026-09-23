@@ -1,6 +1,6 @@
 """Evaluate a frozen run against versioned native-content judgments.
 
-Usage: python3 -B evaluate.py documents.ndjson measurements.ndjson
+Usage: python3 -B evaluate.py documents.ndjson measurements.ndjson [supplementary-judgments.json]
 Unknown judgments stay unknown. Empty results with known positives score zero.
 """
 import hashlib
@@ -38,7 +38,7 @@ def quality(ids, grades):
             'pooledRecallAt100': len(set(ids[:100]) & relevant) / len(relevant) if relevant else None}
 
 
-def evaluate(documents_file, measurements_file):
+def evaluate(documents_file, measurements_file, supplementary=None):
     intentions = {i['id']: i for i in json.loads((HERE / 'intentions.json').read_text())}
     metadata = json.loads(Path(str(documents_file) + '.metadata.json').read_text())
     with documents_file.open('rb') as stream:
@@ -50,8 +50,10 @@ def evaluate(documents_file, measurements_file):
         documents[d['id']] = {'country': d['country'], 'occupationCode': d['occupationCode']}
     measurements = [json.loads(line) for line in measurements_file.open()]
     labels = {}
-    for filename, key in [('judgments.json', 'judgments'), ('anchors.json', 'anchors')]:
-        artifact = json.loads((HERE / filename).read_text())
+    artifacts = [(HERE / 'judgments.json', 'judgments'), (HERE / 'anchors.json', 'anchors')]
+    if supplementary: artifacts.append((supplementary, 'judgments'))
+    for filename, key in artifacts:
+        artifact = json.loads(filename.read_text())
         if artifact['snapshotSha256'] != metadata['snapshotSha256']:
             raise ValueError(f'{filename}: snapshot mismatch')
         for item in artifact[key]:
@@ -70,7 +72,10 @@ def evaluate(documents_file, measurements_file):
             raise ValueError(f'{engine}: incomplete or duplicated measurements')
     qualities = {(r['engine'], r['intentionId'], r['q']): quality(r['ids'], labels.get(r['intentionId'], {})) for r in measurements}
     paired = {key for key in expected if all(qualities[(e, *key)]['ndcgAt20'] is not None for e in engines)}
-    report = {'snapshotSha256': metadata['snapshotSha256'], 'projectionSha256': metadata['projectionSha256'],
+    with measurements_file.open('rb') as stream:
+        measurement_hash = hashlib.file_digest(stream, 'sha256').hexdigest()
+    report = {'measurementSha256': measurement_hash, 'snapshotSha256': metadata['snapshotSha256'], 'projectionSha256': metadata['projectionSha256'],
+              'supplementaryJudgments': supplementary.name if supplementary else None,
               'intentions': len(intentions), 'variants': len(expected), 'measurementRows': len(measurements), 'engines': {},
               'comparisonLimits': [
                   'Single-agent engine-blind native-content labels; no independent human validation.',
@@ -128,4 +133,4 @@ def evaluate(documents_file, measurements_file):
 
 
 if __name__ == '__main__':
-    print(json.dumps(evaluate(*map(Path, sys.argv[1:3])), ensure_ascii=False, indent=2))
+    print(json.dumps(evaluate(*map(Path, sys.argv[1:4])), ensure_ascii=False, indent=2))

@@ -1,0 +1,2790 @@
+{
+  "schemaVersion": 1,
+  "snapshotSha256": "d549eef3720fa98970be96294781ad578fea821b73945f821bd9a7ae400854bd",
+  "reviewer": "Codex, single-agent native-content review; S2 supplementary pool",
+  "blindFields": "No engine, rank or occupation code in the judgment pool",
+  "judgments": [
+    {
+      "intentionId": "role-sales",
+      "groupId": "032d2e5484f9",
+      "ids": [
+        "cmu9ibctk000vpe9zurz7u5qp",
+        "cmu9ibcx20012pe9zbyezzed9"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "role-sales",
+      "groupId": "429d0bc4077c",
+      "ids": [
+        "cmu87tmvk0030ny44i4t9cyx5"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "role-beauty",
+      "groupId": "011a597616c3",
+      "ids": [
+        "cmueaqk1y06hyoi3520lbhwf0"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "role-beauty",
+      "groupId": "10ae726e719d",
+      "ids": [
+        "cmuebvc9x1bn5oi35y19f3aye"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "role-beauty",
+      "groupId": "19e6bb5b791c",
+      "ids": [
+        "cmueaqjq306e6oi35tlan1zlp"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "role-beauty",
+      "groupId": "58891ce8dc4b",
+      "ids": [
+        "cmueaq7mq02ofoi35ttdtpu78"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "role-beauty",
+      "groupId": "7a96bbfd0183",
+      "ids": [
+        "cmuebvct31bqsoi35bsy7wvor"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "role-beauty",
+      "groupId": "87fef4bac235",
+      "ids": [
+        "cmuebvcur1br3oi353xc13y89"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "role-beauty",
+      "groupId": "8a5137217cae",
+      "ids": [
+        "cmuebv6v51apvoi35gh82oiio"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "role-beauty",
+      "groupId": "8de2ad4cea09",
+      "ids": [
+        "cmuebv6th1apkoi3591378t63"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "role-beauty",
+      "groupId": "a9aee6945e3a",
+      "ids": [
+        "cmueaqjii06ceoi357kszmhl1"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "role-beauty",
+      "groupId": "af7fc7ec8177",
+      "ids": [
+        "cmuebv3wq1a61oi351jyuhzs7"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "role-beauty",
+      "groupId": "b3b8254dd2da",
+      "ids": [
+        "cmueaqdi804k6oi3582q100el"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "role-makeup",
+      "groupId": "f6b536db84be",
+      "ids": [
+        "cmu8a30qi00rpl986m79kv9ig"
+      ],
+      "grade": 1,
+      "basis": "Fonction adjacente ou responsabilité explicite secondaire, correspondance partielle."
+    },
+    {
+      "intentionId": "role-cashier",
+      "groupId": "4f171a17bc36",
+      "ids": [
+        "cmuecad3v236roi35crb98x2f"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "role-cashier",
+      "groupId": "63c7051103b1",
+      "ids": [
+        "cmuecbei82almoi35jrwpragx"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "role-cashier",
+      "groupId": "95a916fe6226",
+      "ids": [
+        "cmuecaokm258voi35rvdyq58l",
+        "cmuecapry25i2oi353vnxh6fb",
+        "cmuecaqh825mfoi35w25kncmy",
+        "cmuecayzx27fnoi35e00g1urs",
+        "cmuecazsa27lyoi352z0up18j",
+        "cmuecb0hq27rkoi3510kyxudm",
+        "cmuecb1sc2814oi35avmxjkju",
+        "cmuecb1tq281doi35men9aijz",
+        "cmuecb23p283foi35schlzm3r",
+        "cmuecb3vg28a1oi35nyn88coh",
+        "cmuecb4tq28hdoi355jb8qo22",
+        "cmuecb5vv28phoi35nsjzd560",
+        "cmuecb97h29ezoi35ma96ltxy",
+        "cmuecbclx2a67oi35aeacwwtf",
+        "cmuecbf3g2aqeoi35b2qxda0a",
+        "cmuecbivl2bhboi35vo8qun4l",
+        "cmuecbkio2bt7oi35hinverra"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "role-cashier",
+      "groupId": "aa4334e85ea9",
+      "ids": [
+        "cmuecauzf26kwoi35mxywawkj"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "role-store-manager",
+      "groupId": "080463cd9029",
+      "ids": [
+        "cmue50j5y058zo234nhjo3sfz"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "role-store-manager",
+      "groupId": "0ff081518c2c",
+      "ids": [
+        "cmue4zapn0156o234jf041ale"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "role-store-manager",
+      "groupId": "1b7d9a28b599",
+      "ids": [
+        "cmue4zg0701fao2348ss6posl"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "role-store-manager",
+      "groupId": "2635ff9eb478",
+      "ids": [
+        "cmue4zbo7018ho234fgasghpy"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "role-store-manager",
+      "groupId": "2863a7817bd9",
+      "ids": [
+        "cmue4zfyh01f3o234ie8ajjo9"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "role-store-manager",
+      "groupId": "2b696f2ef492",
+      "ids": [
+        "cmue4z7wz00x7o234a4hm43lt"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "role-store-manager",
+      "groupId": "304ae8e84306",
+      "ids": [
+        "cmu84jw7200r4pc876yl42qkh"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "role-store-manager",
+      "groupId": "36370d4d3606",
+      "ids": [
+        "cmue4zajf014lo234bv64uznq"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "role-store-manager",
+      "groupId": "81c94aa6861d",
+      "ids": [
+        "cmu84jvo700o0pc87brfkm0pt"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "role-store-manager",
+      "groupId": "c716ef733568",
+      "ids": [
+        "cmue4za5i0138o234z4uptf0m"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "role-store-manager",
+      "groupId": "cc9c8fb99c2f",
+      "ids": [
+        "cmue4za3n0131o234jls004om"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "role-deputy-manager",
+      "groupId": "b5ab198e66ea",
+      "ids": [
+        "cmu7fg8r6002mnlm116x1p5b5"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "role-deputy-manager",
+      "groupId": "cec5d27ff07e",
+      "ids": [
+        "cmuegupc104fxqo34rdjpj8wp"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "role-visual",
+      "groupId": "0dda8966e18d",
+      "ids": [
+        "cmueb0hes0kncoi354bda6oga"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "role-visual",
+      "groupId": "398487c133ba",
+      "ids": [
+        "cmueb0ftw0kfkoi35zb3pw8py"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "role-visual",
+      "groupId": "78863e75e731",
+      "ids": [
+        "cmueb0gkr0kjgoi35xsrqk2b0"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "role-visual",
+      "groupId": "cd4b7eec45fd",
+      "ids": [
+        "cmueb0g8n0khpoi35yo8pczay"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "role-stock",
+      "groupId": "3a10650dcb74",
+      "ids": [
+        "cmueaqkcg06l9oi35x42pkss3"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "role-stock",
+      "groupId": "41bd1c7d5dea",
+      "ids": [
+        "cmudw8l683qv6oa34wkvhbckk"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "role-stock",
+      "groupId": "5c2a06ad79be",
+      "ids": [
+        "cmueaqk6306j9oi35yw8olt31"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "role-stock",
+      "groupId": "819c807e2672",
+      "ids": [
+        "cmue4zllx01y5o234xdeb69xj"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "role-warehouse",
+      "groupId": "00436fa6f990",
+      "ids": [
+        "cmue2blqy030epc343c6seomj"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "role-warehouse",
+      "groupId": "3dc404393e34",
+      "ids": [
+        "cmue2c8ju05pfpc34puuuiyvs"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "role-jeweller",
+      "groupId": "3b736132176e",
+      "ids": [
+        "cmu8cfk7o0u50mn48zuq85bg3"
+      ],
+      "grade": 1,
+      "basis": "Fonction adjacente ou responsabilité explicite secondaire, correspondance partielle."
+    },
+    {
+      "intentionId": "role-jeweller",
+      "groupId": "7658c451a3c6",
+      "ids": [
+        "cmu8cat5206fhmn48mm2xx6n7"
+      ],
+      "grade": 1,
+      "basis": "Fonction adjacente ou responsabilité explicite secondaire, correspondance partielle."
+    },
+    {
+      "intentionId": "role-jeweller",
+      "groupId": "788e235d3265",
+      "ids": [
+        "cmu8casz806eimn48s2dwo0l3"
+      ],
+      "grade": 1,
+      "basis": "Fonction adjacente ou responsabilité explicite secondaire, correspondance partielle."
+    },
+    {
+      "intentionId": "role-jeweller",
+      "groupId": "8a466ad739db",
+      "ids": [
+        "cmu9fz6br069yofad9t7adm6x"
+      ],
+      "grade": 0,
+      "basis": "La fonction ou l’employeur natif ne satisfait pas cette intention ; mention de contexte insuffisante."
+    },
+    {
+      "intentionId": "role-jeweller",
+      "groupId": "b75e1e1eb9a5",
+      "ids": [
+        "cmu8ca7lu038rmn48r9yy15r0"
+      ],
+      "grade": 0,
+      "basis": "La fonction ou l’employeur natif ne satisfait pas cette intention ; mention de contexte insuffisante."
+    },
+    {
+      "intentionId": "role-leather",
+      "groupId": "474e3a133b12",
+      "ids": [
+        "cmue50ef404u7o234ty4bk1ch"
+      ],
+      "grade": 0,
+      "basis": "La fonction ou l’employeur natif ne satisfait pas cette intention ; mention de contexte insuffisante."
+    },
+    {
+      "intentionId": "role-leather",
+      "groupId": "7afbd2dcca04",
+      "ids": [
+        "cmue501gi03j5o234t97izlp8"
+      ],
+      "grade": 0,
+      "basis": "La fonction ou l’employeur natif ne satisfait pas cette intention ; mention de contexte insuffisante."
+    },
+    {
+      "intentionId": "role-seamster",
+      "groupId": "960e8e5922d8",
+      "ids": [
+        "cmu8cdrfq0ktemn48svrojdfq"
+      ],
+      "grade": 0,
+      "basis": "La fonction ou l’employeur natif ne satisfait pas cette intention ; mention de contexte insuffisante."
+    },
+    {
+      "intentionId": "role-seamster",
+      "groupId": "b24587c118ee",
+      "ids": [
+        "cmu7ectjg0021o7ka5z16q7ar"
+      ],
+      "grade": 0,
+      "basis": "La fonction ou l’employeur natif ne satisfait pas cette intention ; mention de contexte insuffisante."
+    },
+    {
+      "intentionId": "role-seamster",
+      "groupId": "fd5d3031bbb8",
+      "ids": [
+        "cmu815kd000dpl96gulqhy9en"
+      ],
+      "grade": 0,
+      "basis": "La fonction ou l’employeur natif ne satisfait pas cette intention ; mention de contexte insuffisante."
+    },
+    {
+      "intentionId": "role-buyer",
+      "groupId": "b74959f3876f",
+      "ids": [
+        "cmu8cc23o0ck5mn48l381rnq6"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "role-accountant",
+      "groupId": "a8e28b744f92",
+      "ids": [
+        "cmu8ccv3j0gm1mn484z29pcz4"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "role-controller",
+      "groupId": "1e37fc6dff04",
+      "ids": [
+        "cmu6yn09p019eo8ig5aqch26l"
+      ],
+      "grade": 1,
+      "basis": "Fonction adjacente ou responsabilité explicite secondaire, correspondance partielle."
+    },
+    {
+      "intentionId": "role-controller",
+      "groupId": "3848580eff86",
+      "ids": [
+        "cmu9fz2lx05ueofad7t38aesq"
+      ],
+      "grade": 0,
+      "basis": "La fonction ou l’employeur natif ne satisfait pas cette intention ; mention de contexte insuffisante."
+    },
+    {
+      "intentionId": "role-controller",
+      "groupId": "6c04288e6126",
+      "ids": [
+        "cmu9fjqjs00b6of8lsr5tdrq2"
+      ],
+      "grade": 0,
+      "basis": "La fonction ou l’employeur natif ne satisfait pas cette intention ; mention de contexte insuffisante."
+    },
+    {
+      "intentionId": "role-controller",
+      "groupId": "7811e513068c",
+      "ids": [
+        "cmu9fy22601ogofad8gtvsdlt"
+      ],
+      "grade": 0,
+      "basis": "La fonction ou l’employeur natif ne satisfait pas cette intention ; mention de contexte insuffisante."
+    },
+    {
+      "intentionId": "role-controller",
+      "groupId": "8022dd24b7df",
+      "ids": [
+        "cmu9fy21301o9ofadlmew1ldb"
+      ],
+      "grade": 0,
+      "basis": "La fonction ou l’employeur natif ne satisfait pas cette intention ; mention de contexte insuffisante."
+    },
+    {
+      "intentionId": "role-controller",
+      "groupId": "ec28da2f07a2",
+      "ids": [
+        "cmuealoqw011zoi35c1eba11a"
+      ],
+      "grade": 1,
+      "basis": "Fonction adjacente ou responsabilité explicite secondaire, correspondance partielle."
+    },
+    {
+      "intentionId": "role-controller",
+      "groupId": "ff60e389c433",
+      "ids": [
+        "cmu9fyxf205a4ofadn61x61z8"
+      ],
+      "grade": 0,
+      "basis": "La fonction ou l’employeur natif ne satisfait pas cette intention ; mention de contexte insuffisante."
+    },
+    {
+      "intentionId": "role-recruiter",
+      "groupId": "2317db35ee8f",
+      "ids": [
+        "cmuegaa4i0638ld344togd8qf"
+      ],
+      "grade": 0,
+      "basis": "La fonction ou l’employeur natif ne satisfait pas cette intention ; mention de contexte insuffisante."
+    },
+    {
+      "intentionId": "role-recruiter",
+      "groupId": "377a9e74dbc0",
+      "ids": [
+        "cmueg7dsp0064ld34z56guheu"
+      ],
+      "grade": 0,
+      "basis": "La fonction ou l’employeur natif ne satisfait pas cette intention ; mention de contexte insuffisante."
+    },
+    {
+      "intentionId": "role-recruiter",
+      "groupId": "53f55c06318c",
+      "ids": [
+        "cmue51u7h0973o234j0v99o4h"
+      ],
+      "grade": 0,
+      "basis": "La fonction ou l’employeur natif ne satisfait pas cette intention ; mention de contexte insuffisante."
+    },
+    {
+      "intentionId": "role-recruiter",
+      "groupId": "a319bef8ff95",
+      "ids": [
+        "cmueg9yio05ecld34ef6adiw4"
+      ],
+      "grade": 0,
+      "basis": "La fonction ou l’employeur natif ne satisfait pas cette intention ; mention de contexte insuffisante."
+    },
+    {
+      "intentionId": "role-hrbp",
+      "groupId": "bdf11d01ebfa",
+      "ids": [
+        "cmu9mlcsu02t7mb9zlgh2bu54"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "role-data-analyst",
+      "groupId": "fa43ef2027ab",
+      "ids": [
+        "cmue4zt7u02oeo234osomo5vn"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "role-legal",
+      "groupId": "01969510cea6",
+      "ids": [
+        "cmudu8iqp1hagoa34m2of6kcy"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "role-legal",
+      "groupId": "ec7f65853a2d",
+      "ids": [
+        "cmudu8ipe1ha5oa347xdcyg9r"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "role-legal",
+      "groupId": "fc3ccd640a78",
+      "ids": [
+        "cmu87zjpq007opgf6q9i82f1g"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "role-product",
+      "groupId": "ccebf444196a",
+      "ids": [
+        "cmu6ymt5m0082o8igcvz8t6wx"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "role-product",
+      "groupId": "eeeb05c10a1e",
+      "ids": [
+        "cmu6yn0c5019so8igrnggdwk8"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "role-pastry",
+      "groupId": "a643af631511",
+      "ids": [
+        "cmu8cf5t90rz9mn48rusxp1ls"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-retail-client-advisor",
+      "groupId": "f6bf5f7ebaae",
+      "ids": [
+        "cmu9fk5t202msof8lbi6pjlpd"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-beauty-advisor",
+      "groupId": "7e077fc0cac2",
+      "ids": [
+        "cmue51dtg07wzo234jqq23a2f"
+      ],
+      "grade": 0,
+      "basis": "La fonction ou l’employeur natif ne satisfait pas cette intention ; mention de contexte insuffisante."
+    },
+    {
+      "intentionId": "family-beauty-advisor",
+      "groupId": "8a91d96ddaab",
+      "ids": [
+        "cmu8cdpss0kl1mn48oj9vbm54"
+      ],
+      "grade": 0,
+      "basis": "La fonction ou l’employeur natif ne satisfait pas cette intention ; mention de contexte insuffisante."
+    },
+    {
+      "intentionId": "family-beauty-advisor",
+      "groupId": "8e8c054b4f10",
+      "ids": [
+        "cmu8cazkj076ymn486qja79la"
+      ],
+      "grade": 0,
+      "basis": "La fonction ou l’employeur natif ne satisfait pas cette intention ; mention de contexte insuffisante."
+    },
+    {
+      "intentionId": "family-beauty-advisor",
+      "groupId": "e7109fbaa6ae",
+      "ids": [
+        "cmu8cf1zm0rgcmn489pjrfjgz"
+      ],
+      "grade": 0,
+      "basis": "La fonction ou l’employeur natif ne satisfait pas cette intention ; mention de contexte insuffisante."
+    },
+    {
+      "intentionId": "family-retail-store-management",
+      "groupId": "048e8242fd19",
+      "ids": [
+        "cmuduwfew1w9goa34y8auak6n"
+      ],
+      "grade": 1,
+      "basis": "Fonction adjacente ou responsabilité explicite secondaire, correspondance partielle."
+    },
+    {
+      "intentionId": "family-retail-store-management",
+      "groupId": "04cf21f3ceec",
+      "ids": [
+        "cmueaqg2105a0oi355yigx05l"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-retail-store-management",
+      "groupId": "1e76c0af05ce",
+      "ids": [
+        "cmuduwfao1w8voa3449uf1uxq"
+      ],
+      "grade": 1,
+      "basis": "Fonction adjacente ou responsabilité explicite secondaire, correspondance partielle."
+    },
+    {
+      "intentionId": "family-retail-store-management",
+      "groupId": "2529305489d1",
+      "ids": [
+        "cmu7c8isb03l0o3415ln9916u",
+        "cmu7c8sj803uco341n79qa5od",
+        "cmu7ca53w0532o341plin4ifw"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-retail-store-management",
+      "groupId": "2ea7debc2c8e",
+      "ids": [
+        "cmu7c8nq003q2o341wns9fhvn"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-retail-store-management",
+      "groupId": "4cec6de762a1",
+      "ids": [
+        "cmuduw4g91uvooa34bkdy3v49"
+      ],
+      "grade": 1,
+      "basis": "Fonction adjacente ou responsabilité explicite secondaire, correspondance partielle."
+    },
+    {
+      "intentionId": "family-retail-store-management",
+      "groupId": "53f1942d8e28",
+      "ids": [
+        "cmu7c7txf02tlo341tqz9yofi"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-retail-store-management",
+      "groupId": "62757bcc38c0",
+      "ids": [
+        "cmuduw5sf1v2aoa345qgu63d8"
+      ],
+      "grade": 1,
+      "basis": "Fonction adjacente ou responsabilité explicite secondaire, correspondance partielle."
+    },
+    {
+      "intentionId": "family-retail-store-management",
+      "groupId": "68641bed4961",
+      "ids": [
+        "cmu8aaewj01vyl9dft9bpsci1"
+      ],
+      "grade": 1,
+      "basis": "Fonction adjacente ou responsabilité explicite secondaire, correspondance partielle."
+    },
+    {
+      "intentionId": "family-retail-store-management",
+      "groupId": "6d7e134c3517",
+      "ids": [
+        "cmu6yle4r003zo86dec0q467i"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-retail-store-management",
+      "groupId": "79ea73f71c13",
+      "ids": [
+        "cmu7c7u3q02tso341oyedq7wp"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-retail-store-management",
+      "groupId": "a281da98f99e",
+      "ids": [
+        "cmue2azk400lhpc34a6sexdq2"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-retail-store-management",
+      "groupId": "c0b83479db08",
+      "ids": [
+        "cmu8ceau00nn0mn48d7f3xevn"
+      ],
+      "grade": 0,
+      "basis": "La fonction ou l’employeur natif ne satisfait pas cette intention ; mention de contexte insuffisante."
+    },
+    {
+      "intentionId": "family-retail-store-management",
+      "groupId": "cd46941ad433",
+      "ids": [
+        "cmuduwfgf1w9noa34oi7w2ow1"
+      ],
+      "grade": 1,
+      "basis": "Fonction adjacente ou responsabilité explicite secondaire, correspondance partielle."
+    },
+    {
+      "intentionId": "family-retail-store-management",
+      "groupId": "d10ad1dd3492",
+      "ids": [
+        "cmuefp3w201qppm330f13ufd8"
+      ],
+      "grade": 1,
+      "basis": "Fonction adjacente ou responsabilité explicite secondaire, correspondance partielle."
+    },
+    {
+      "intentionId": "family-retail-store-management",
+      "groupId": "e148dd03bc37",
+      "ids": [
+        "cmu7c8mis03owo341drgklpn9"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-retail-store-management",
+      "groupId": "e95c1bbb4155",
+      "ids": [
+        "cmu7c7za702zfo3412uwjfee8"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-retail-store-management",
+      "groupId": "f4027611b0fe",
+      "ids": [
+        "cmuefr54905rdpm33m4d8viiw"
+      ],
+      "grade": 1,
+      "basis": "Fonction adjacente ou responsabilité explicite secondaire, correspondance partielle."
+    },
+    {
+      "intentionId": "family-retail-store-management",
+      "groupId": "f448f953d7f9",
+      "ids": [
+        "cmu7c7ua002tzo3413kc2ukau"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-retail-store-management",
+      "groupId": "f4a54530654d",
+      "ids": [
+        "cmu7c7xqg02xvo341x4qx00ux"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-retail-area-management",
+      "groupId": "18e0339073e3",
+      "ids": [
+        "cmu8aafh301z2l9df54ypvo9k"
+      ],
+      "grade": 0,
+      "basis": "La fonction ou l’employeur natif ne satisfait pas cette intention ; mention de contexte insuffisante."
+    },
+    {
+      "intentionId": "family-retail-area-management",
+      "groupId": "8de1ecd23b19",
+      "ids": [
+        "cmu8aae2i01rhl9dfgnd8uken"
+      ],
+      "grade": 0,
+      "basis": "La fonction ou l’employeur natif ne satisfait pas cette intention ; mention de contexte insuffisante."
+    },
+    {
+      "intentionId": "family-retail-operations",
+      "groupId": "05b48853b904",
+      "ids": [
+        "cmu8crmmv00olld42ods8tz25"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-retail-operations",
+      "groupId": "2bbf2cc94266",
+      "ids": [
+        "cmu8cbgyj09m2mn488psu4qyl"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-retail-operations",
+      "groupId": "2e6fef2a0703",
+      "ids": [
+        "cmu6ul15i007oo73nrjcwh8fi",
+        "cmu6ul6ql00j5o73ngjsie28o"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-retail-operations",
+      "groupId": "37804de80e31",
+      "ids": [
+        "cmu9fjv0w0109of8lxgdx60fp"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-retail-operations",
+      "groupId": "37e09e795e8b",
+      "ids": [
+        "cmu8cds140kwimn48dba4awum"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-retail-operations",
+      "groupId": "397b4028c0be",
+      "ids": [
+        "cmu6ul0ht006bo73n5t6vab6i"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-retail-operations",
+      "groupId": "5a6eefc5c2bd",
+      "ids": [
+        "cmu7e66mn009mjxbmx9dnmu0h",
+        "cmu7e67tj00g8jxbmpapv5t0r"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-retail-operations",
+      "groupId": "5d156fce351b",
+      "ids": [
+        "cmudvm6e5336qoa34h97vxq08",
+        "cmudvmg1y34a8oa34cpe7sowv",
+        "cmudvmgtu34croa34pf2b18vk",
+        "cmudvmoun355roa34o19dfoia",
+        "cmudvn0p036nvoa34ujviak8w",
+        "cmudvn74z37i2oa34tttwvziu",
+        "cmudvndpp38cxoa34rowm3zwp",
+        "cmudvnlgm39axoa3421tzr92a",
+        "cmudvnnfu39i5oa34jvprthx8",
+        "cmudvnrkl39vzoa34eevchwx0"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-retail-operations",
+      "groupId": "7018c1d1424b",
+      "ids": [
+        "cmu6ul2ep00a7o73n2csafg46"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-retail-operations",
+      "groupId": "95d7f305724b",
+      "ids": [
+        "cmue4z74900vuo2341rrf1f7h"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-retail-operations",
+      "groupId": "9914231c3607",
+      "ids": [
+        "cmu7e64zy000ojxbmkdauo09z"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-retail-operations",
+      "groupId": "ca5f9c5d7a76",
+      "ids": [
+        "cmu7e65i9003ljxbmg15x18cu",
+        "cmu7e672v00c5jxbm9owuw329",
+        "cmu7e679z00d4jxbmxvihj4ee",
+        "cmu7e67b800dbjxbmiaq154es",
+        "cmu7e67yz00h7jxbmjx1vtvsf",
+        "cmudt43wf04e2oa34k87jf271"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-retail-operations",
+      "groupId": "df1f0bd739af",
+      "ids": [
+        "cmu7e65h6003ejxbm0xsf1861"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-retail-operations",
+      "groupId": "e72368ab2ca6",
+      "ids": [
+        "cmueg8ppg02x3ld34d5hh8l8c"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-retail-operations",
+      "groupId": "f53a06728172",
+      "ids": [
+        "cmu7e65d8002tjxbm5kfneq4u"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-retail-operations",
+      "groupId": "fbad6caa8db3",
+      "ids": [
+        "cmu8c9x8t01sumn48gmrpxmcy"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-visual-merchandising",
+      "groupId": "7156ce9ad3a2",
+      "ids": [
+        "cmudvmo2l352noa34df442iyf"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-visual-merchandising",
+      "groupId": "d197d4cccd5f",
+      "ids": [
+        "cmudvmz4z36gooa34zx6qbb1a"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-merchandising-buying",
+      "groupId": "073cf015b153",
+      "ids": [
+        "cmu9nyd6d003emrbnoy54uw6y"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-merchandising-buying",
+      "groupId": "1314ebd4868c",
+      "ids": [
+        "cmu7zqz5p0003p8dd2fkdj4fg"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-merchandising-buying",
+      "groupId": "1b7f910405d1",
+      "ids": [
+        "cmu8cbhf109oemn48350i5g5s"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-merchandising-buying",
+      "groupId": "344f539d129f",
+      "ids": [
+        "cmue502f303m9o234d8n4trlg"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-merchandising-buying",
+      "groupId": "38f8ab4d46a0",
+      "ids": [
+        "cmueasep80e1moi35vnlbjlzq"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-merchandising-buying",
+      "groupId": "4877aa128ea6",
+      "ids": [
+        "cmue50ksn05f0o2345vshy3il"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-merchandising-buying",
+      "groupId": "51db93ed4c62",
+      "ids": [
+        "cmu8cc8bl0dcjmn480gpxc3qr"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-merchandising-buying",
+      "groupId": "5a527f8c2af7",
+      "ids": [
+        "cmu87uvta007lpg6h21qxszmh"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-merchandising-buying",
+      "groupId": "5c6f40316aea",
+      "ids": [
+        "cmudu7xc51dtroa34mmywkx2d"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-merchandising-buying",
+      "groupId": "60e358f669fe",
+      "ids": [
+        "cmu8cce7f0e7imn48zikhy0b0"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-merchandising-buying",
+      "groupId": "664e67c5a3fd",
+      "ids": [
+        "cmue51jkg08gfo234b8f18utm"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-merchandising-buying",
+      "groupId": "71521a4928fe",
+      "ids": [
+        "cmu8er34t0012nu8fi6ahyo2q"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-merchandising-buying",
+      "groupId": "866bbce76c2f",
+      "ids": [
+        "cmuejynsd01akox6fp0c3xvgz"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-merchandising-buying",
+      "groupId": "8e543dd25264",
+      "ids": [
+        "cmue508ri04bco234y7e19uos"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-merchandising-buying",
+      "groupId": "a5a743adac0d",
+      "ids": [
+        "cmu9fxplj0097ofad0ad720dv"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-merchandising-buying",
+      "groupId": "a8b48b4340b8",
+      "ids": [
+        "cmue5010903hlo234n8nc0uwe"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-merchandising-buying",
+      "groupId": "b91bc2076a44",
+      "ids": [
+        "cmue51tv40964o234ltsixhqw"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-merchandising-buying",
+      "groupId": "bba3f4141ab3",
+      "ids": [
+        "cmudu8o8f1i7aoa349agasi9s"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-merchandising-buying",
+      "groupId": "c6cc147d6b51",
+      "ids": [
+        "cmu8ce1e30mb2mn48lefj1rla"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-merchandising-buying",
+      "groupId": "d3216512036a",
+      "ids": [
+        "cmue502j803mno234lo694nst"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-merchandising-buying",
+      "groupId": "d5d1ab6194cc",
+      "ids": [
+        "cmu8boxyw00mulg8feb66uegb"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-merchandising-buying",
+      "groupId": "daee0dd40da5",
+      "ids": [
+        "cmu9fxzju01edofadnft9j1hx"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-merchandising-buying",
+      "groupId": "f3dcc0dd9283",
+      "ids": [
+        "cmue51tt8095xo234gebs9bt6"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-merchandising-buying",
+      "groupId": "fcff177fdd13",
+      "ids": [
+        "cmudw8jfe3qoroa345z0cdd9b"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-wholesale-b2b",
+      "groupId": "12c9bcee1317",
+      "ids": [
+        "cmu9rmv5t000qnw487ypvtr9n"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-wholesale-b2b",
+      "groupId": "2c6505b138ee",
+      "ids": [
+        "cmu9ifts800irpebqay2hnhqy"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-wholesale-b2b",
+      "groupId": "404afd1f7d69",
+      "ids": [
+        "cmu9p46zt00swpkguq626l0vx"
+      ],
+      "grade": 1,
+      "basis": "Fonction adjacente ou responsabilité explicite secondaire, correspondance partielle."
+    },
+    {
+      "intentionId": "family-wholesale-b2b",
+      "groupId": "4c7670b639e7",
+      "ids": [
+        "cmuefqdzh04aapm33ngo3i1yb"
+      ],
+      "grade": 1,
+      "basis": "Fonction adjacente ou responsabilité explicite secondaire, correspondance partielle."
+    },
+    {
+      "intentionId": "family-wholesale-b2b",
+      "groupId": "50a1bfa987eb",
+      "ids": [
+        "cmu9fjrvz00i6of8lf3cri627"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-wholesale-b2b",
+      "groupId": "5cccac87cd27",
+      "ids": [
+        "cmue57lqy007as46fq46xpdfg"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-wholesale-b2b",
+      "groupId": "7a035388b00c",
+      "ids": [
+        "cmudt7iig08d5oa340d3jyzh8"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-wholesale-b2b",
+      "groupId": "832a22e3b93c",
+      "ids": [
+        "cmu8aa6vt00qql9df85hw0dju"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-wholesale-b2b",
+      "groupId": "94a0bf79f0a6",
+      "ids": [
+        "cmu8cbxi00bxemn48pbpg6azk"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-wholesale-b2b",
+      "groupId": "9ac91b531d79",
+      "ids": [
+        "cmue2cf2f06htpc34wjsye0zn"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-wholesale-b2b",
+      "groupId": "9e3faa6b19b8",
+      "ids": [
+        "cmu8aa5ei00jcl9dfw3lw6x2t"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-wholesale-b2b",
+      "groupId": "9efab0a39c2d",
+      "ids": [
+        "cmu8cem3r0parmn48xaxxjbh9"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-wholesale-b2b",
+      "groupId": "b437c0a6ee79",
+      "ids": [
+        "cmueddukp4wegoi355qschllm"
+      ],
+      "grade": 1,
+      "basis": "Fonction adjacente ou responsabilité explicite secondaire, correspondance partielle."
+    },
+    {
+      "intentionId": "family-wholesale-b2b",
+      "groupId": "beffa5edcb22",
+      "ids": [
+        "cmuegipws0031qv6dyx7hz9aw"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-wholesale-b2b",
+      "groupId": "c8e59b694d64",
+      "ids": [
+        "cmuebtmbj17bsoi35czibf7v4"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-wholesale-b2b",
+      "groupId": "d0493313666f",
+      "ids": [
+        "cmuecd0iv2kqroi35gs0cq4xx"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-wholesale-b2b",
+      "groupId": "f4f40d625ece",
+      "ids": [
+        "cmu9fy52u020rofadqbpszre9"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-wholesale-b2b",
+      "groupId": "f7ad6496b7a8",
+      "ids": [
+        "cmu8bow6500cqlg8fxwfzcwyr"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-wholesale-b2b",
+      "groupId": "fa57ab9e2c67",
+      "ids": [
+        "cmu6yp66x0012o8zoqiqqtz4t"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-crm-clienteling",
+      "groupId": "173f8f907ebf",
+      "ids": [
+        "cmueasia80eheoi35y8zwl5fd"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-crm-clienteling",
+      "groupId": "237447e58463",
+      "ids": [
+        "cmu8cel560p6omn48iq632tsv"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-crm-clienteling",
+      "groupId": "31c9dcab109c",
+      "ids": [
+        "cmueasida0ehpoi354maxj023"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-crm-clienteling",
+      "groupId": "69e1efc46c40",
+      "ids": [
+        "cmu9fjxmb01f1of8lvxrcow8u"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-crm-clienteling",
+      "groupId": "783a82b615ae",
+      "ids": [
+        "cmu8ca4fr02r9mn48tia3oqj6"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-crm-clienteling",
+      "groupId": "910526819f09",
+      "ids": [
+        "cmu9fyw5u053oofadibpvrgjd"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-crm-clienteling",
+      "groupId": "a9bedc8d25f1",
+      "ids": [
+        "cmu8cf0g40r86mn48xqo12off"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-crm-clienteling",
+      "groupId": "aa03559373bf",
+      "ids": [
+        "cmu9fjrxg00idof8lyr0tj09v"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-crm-clienteling",
+      "groupId": "b98671a421c5",
+      "ids": [
+        "cmu815kd000dpl96gulqhy9en"
+      ],
+      "grade": 1,
+      "basis": "Fonction adjacente ou responsabilité explicite secondaire, correspondance partielle."
+    },
+    {
+      "intentionId": "family-crm-clienteling",
+      "groupId": "d826555eaf3c",
+      "ids": [
+        "cmu8c9ulu01e2mn48gz3vlwon"
+      ],
+      "grade": 1,
+      "basis": "Fonction adjacente ou responsabilité explicite secondaire, correspondance partielle."
+    },
+    {
+      "intentionId": "family-ecommerce-digital",
+      "groupId": "9230f97502e7",
+      "ids": [
+        "cmu7fh5r9000hnl1knq5uns4c"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-ecommerce-digital",
+      "groupId": "b21e9cc0e8c2",
+      "ids": [
+        "cmu6yfskr000on2sex60lkrpw"
+      ],
+      "grade": 0,
+      "basis": "La fonction ou l’employeur natif ne satisfait pas cette intention ; mention de contexte insuffisante."
+    },
+    {
+      "intentionId": "family-ecommerce-digital",
+      "groupId": "e15a9601d255",
+      "ids": [
+        "cmuechg5l2xjxoi352ooe8c6k"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-ecommerce-digital",
+      "groupId": "e55b2d677e7e",
+      "ids": [
+        "cmu7fh5yi001nnl1k8mrx29hp"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-marketing-communication",
+      "groupId": "34b8522e57d4",
+      "ids": [
+        "cmu8a4m6p00m2l9bnctd9l4ey"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-marketing-communication",
+      "groupId": "40ea9209486b",
+      "ids": [
+        "cmu8ce9xa0ni5mn48d8i9owh0"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-marketing-communication",
+      "groupId": "438c54998c80",
+      "ids": [
+        "cmu8canrf05lxmn483f6bdt8r"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-marketing-communication",
+      "groupId": "4c176f87d6d6",
+      "ids": [
+        "cmu9fxy54018fofad1ca5h88a"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-marketing-communication",
+      "groupId": "571aa2acd3fb",
+      "ids": [
+        "cmu8a4koq00eal9bn8hfz0wqb"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-marketing-communication",
+      "groupId": "623c1ff80887",
+      "ids": [
+        "cmu8bp06b00z3lg8fa8eosx1g"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-marketing-communication",
+      "groupId": "664e086befae",
+      "ids": [
+        "cmueaseqg0e1xoi35o8520q7w"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-marketing-communication",
+      "groupId": "69f2da1760ba",
+      "ids": [
+        "cmueash670e9yoi35bsuvxitb"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-marketing-communication",
+      "groupId": "713176db83e3",
+      "ids": [
+        "cmueash4n0e9noi350a1lvkdh"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-marketing-communication",
+      "groupId": "af2fcc538200",
+      "ids": [
+        "cmu8cavdp06q8mn48d8oitkbr"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-marketing-communication",
+      "groupId": "c0406c0c744b",
+      "ids": [
+        "cmu854mae00xqnt43xvj7u610"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-marketing-communication",
+      "groupId": "d5974c16fae4",
+      "ids": [
+        "cmu6xmcjb0019pobiuzz24zqr"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-marketing-communication",
+      "groupId": "fdb649112233",
+      "ids": [
+        "cmu8cbi6v09samn486akl83ub"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-design-creation",
+      "groupId": "2960c69c3f3a",
+      "ids": [
+        "cmu9er0qk02pnof47f9loqgyh"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-design-creation",
+      "groupId": "4fb5239f5a02",
+      "ids": [
+        "cmu9er1uz02umof47obkrfc57"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-design-creation",
+      "groupId": "6372a5021952",
+      "ids": [
+        "cmue2covh07r4pc34xifxbqnf"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-design-creation",
+      "groupId": "b5b38e143336",
+      "ids": [
+        "cmu9er2ea02wuof47fxax54u0"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-design-creation",
+      "groupId": "c81b68d6b37d",
+      "ids": [
+        "cmu8cfk7o0u50mn48zuq85bg3"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-design-creation",
+      "groupId": "fd029f5e069b",
+      "ids": [
+        "cmue2by1304fqpc345atj2uuc"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-atelier-craft",
+      "groupId": "015c98256740",
+      "ids": [
+        "cmue4zxma034ro234oz7ysgex"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-atelier-craft",
+      "groupId": "033b0ff4543c",
+      "ids": [
+        "cmu8cfbxk0sw4mn48d3ru5bf1"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-atelier-craft",
+      "groupId": "07cfe938f333",
+      "ids": [
+        "cmue4zv1j02vfo234y3tmkqsx"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-atelier-craft",
+      "groupId": "0b261489aec7",
+      "ids": [
+        "cmue4zyai0373o234pchuvqsa"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-atelier-craft",
+      "groupId": "160446ca7d6a",
+      "ids": [
+        "cmueg7m3m00mgld34mzuv495a"
+      ],
+      "grade": 0,
+      "basis": "La fonction ou l’employeur natif ne satisfait pas cette intention ; mention de contexte insuffisante."
+    },
+    {
+      "intentionId": "family-atelier-craft",
+      "groupId": "20330c52d1e0",
+      "ids": [
+        "cmueg8gna02e1ld34rzlxm1t7"
+      ],
+      "grade": 0,
+      "basis": "La fonction ou l’employeur natif ne satisfait pas cette intention ; mention de contexte insuffisante."
+    },
+    {
+      "intentionId": "family-atelier-craft",
+      "groupId": "25bd76cc25e1",
+      "ids": [
+        "cmue50jgs05a5o234jv74rq9q"
+      ],
+      "grade": 1,
+      "basis": "Fonction adjacente ou responsabilité explicite secondaire, correspondance partielle."
+    },
+    {
+      "intentionId": "family-atelier-craft",
+      "groupId": "3fa4fadcd973",
+      "ids": [
+        "cmudts9v40s3roa34kbd9zbvg",
+        "cmuechmdr2yajoi35sm5ivkj2"
+      ],
+      "grade": 0,
+      "basis": "La fonction ou l’employeur natif ne satisfait pas cette intention ; mention de contexte insuffisante."
+    },
+    {
+      "intentionId": "family-atelier-craft",
+      "groupId": "4bb9bc48c34c",
+      "ids": [
+        "cmueg8drj027tld34x9kja9at"
+      ],
+      "grade": 0,
+      "basis": "La fonction ou l’employeur natif ne satisfait pas cette intention ; mention de contexte insuffisante."
+    },
+    {
+      "intentionId": "family-atelier-craft",
+      "groupId": "4bce2af20b56",
+      "ids": [
+        "cmue4zwba030ao2343m0qck8j"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-atelier-craft",
+      "groupId": "4daba9d15902",
+      "ids": [
+        "cmueg959z03phld34m4slq81c"
+      ],
+      "grade": 0,
+      "basis": "La fonction ou l’employeur natif ne satisfait pas cette intention ; mention de contexte insuffisante."
+    },
+    {
+      "intentionId": "family-atelier-craft",
+      "groupId": "5240a3f6b74f",
+      "ids": [
+        "cmue4zwyc032to234qsl0bx0r"
+      ],
+      "grade": 1,
+      "basis": "Fonction adjacente ou responsabilité explicite secondaire, correspondance partielle."
+    },
+    {
+      "intentionId": "family-atelier-craft",
+      "groupId": "5c955eb3d257",
+      "ids": [
+        "cmueg7ig000fnld340r9qefla"
+      ],
+      "grade": 0,
+      "basis": "La fonction ou l’employeur natif ne satisfait pas cette intention ; mention de contexte insuffisante."
+    },
+    {
+      "intentionId": "family-atelier-craft",
+      "groupId": "5e03c1ad9235",
+      "ids": [
+        "cmueg813s01hrld34kencxqov"
+      ],
+      "grade": 0,
+      "basis": "La fonction ou l’employeur natif ne satisfait pas cette intention ; mention de contexte insuffisante."
+    },
+    {
+      "intentionId": "family-atelier-craft",
+      "groupId": "66d572acd486",
+      "ids": [
+        "cmueg827001k3ld34ke7jdm5q"
+      ],
+      "grade": 0,
+      "basis": "La fonction ou l’employeur natif ne satisfait pas cette intention ; mention de contexte insuffisante."
+    },
+    {
+      "intentionId": "family-atelier-craft",
+      "groupId": "7194161608cf",
+      "ids": [
+        "cmueg7f3v008uld34izpvefid"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-atelier-craft",
+      "groupId": "737edd1f6ed5",
+      "ids": [
+        "cmue51g4t084ro234t7jqgbua"
+      ],
+      "grade": 0,
+      "basis": "La fonction ou l’employeur natif ne satisfait pas cette intention ; mention de contexte insuffisante."
+    },
+    {
+      "intentionId": "family-atelier-craft",
+      "groupId": "752bce5154f2",
+      "ids": [
+        "cmueg7spm0109ld34lh293lkd"
+      ],
+      "grade": 1,
+      "basis": "Fonction adjacente ou responsabilité explicite secondaire, correspondance partielle."
+    },
+    {
+      "intentionId": "family-atelier-craft",
+      "groupId": "84efc1e91bae",
+      "ids": [
+        "cmudv0a7d1ywmoa34g6zdr4ip"
+      ],
+      "grade": 0,
+      "basis": "La fonction ou l’employeur natif ne satisfait pas cette intention ; mention de contexte insuffisante."
+    },
+    {
+      "intentionId": "family-atelier-craft",
+      "groupId": "90c65e5069f6",
+      "ids": [
+        "cmuechmft2yavoi35wiy8tm1i"
+      ],
+      "grade": 0,
+      "basis": "La fonction ou l’employeur natif ne satisfait pas cette intention ; mention de contexte insuffisante."
+    },
+    {
+      "intentionId": "family-atelier-craft",
+      "groupId": "962024c452fd",
+      "ids": [
+        "cmueg9nh504qmld34gk0ui2xf"
+      ],
+      "grade": 0,
+      "basis": "La fonction ou l’employeur natif ne satisfait pas cette intention ; mention de contexte insuffisante."
+    },
+    {
+      "intentionId": "family-atelier-craft",
+      "groupId": "a3c807d90ce4",
+      "ids": [
+        "cmudv09rv1yuhoa348qxefli1"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-atelier-craft",
+      "groupId": "a515340122a8",
+      "ids": [
+        "cmu9fy2qg01rpofadcq4qa4z3"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-atelier-craft",
+      "groupId": "a678f6fa3a8c",
+      "ids": [
+        "cmueg7bdy001gld34nqyy3wdw"
+      ],
+      "grade": 0,
+      "basis": "La fonction ou l’employeur natif ne satisfait pas cette intention ; mention de contexte insuffisante."
+    },
+    {
+      "intentionId": "family-atelier-craft",
+      "groupId": "a8f8a3b2d41a",
+      "ids": [
+        "cmue4zy080364o2347mbxxdm9"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-atelier-craft",
+      "groupId": "aebba95f9942",
+      "ids": [
+        "cmueg85pv01rhld34w25bd1ng"
+      ],
+      "grade": 1,
+      "basis": "Fonction adjacente ou responsabilité explicite secondaire, correspondance partielle."
+    },
+    {
+      "intentionId": "family-atelier-craft",
+      "groupId": "b0efdccddc52",
+      "ids": [
+        "cmu8ccpjg0fwdmn48jqagnpos"
+      ],
+      "grade": 0,
+      "basis": "La fonction ou l’employeur natif ne satisfait pas cette intention ; mention de contexte insuffisante."
+    },
+    {
+      "intentionId": "family-atelier-craft",
+      "groupId": "d2e55b436f0c",
+      "ids": [
+        "cmueg9m9q04o3ld34syyp5irv"
+      ],
+      "grade": 1,
+      "basis": "Fonction adjacente ou responsabilité explicite secondaire, correspondance partielle."
+    },
+    {
+      "intentionId": "family-atelier-craft",
+      "groupId": "d4488f2915fa",
+      "ids": [
+        "cmue4zx6p033so234mpxnax2b"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-atelier-craft",
+      "groupId": "da42a341a4e2",
+      "ids": [
+        "cmueg9gxz04ctld34fe1r3dhz"
+      ],
+      "grade": 1,
+      "basis": "Fonction adjacente ou responsabilité explicite secondaire, correspondance partielle."
+    },
+    {
+      "intentionId": "family-atelier-craft",
+      "groupId": "e0a4bfc9b5d5",
+      "ids": [
+        "cmueg7uap013kld34iys9nw69"
+      ],
+      "grade": 1,
+      "basis": "Fonction adjacente ou responsabilité explicite secondaire, correspondance partielle."
+    },
+    {
+      "intentionId": "family-atelier-craft",
+      "groupId": "ec9123ffbd66",
+      "ids": [
+        "cmueg81we01jild349eebbh5m"
+      ],
+      "grade": 0,
+      "basis": "La fonction ou l’employeur natif ne satisfait pas cette intention ; mention de contexte insuffisante."
+    },
+    {
+      "intentionId": "family-supply-chain-logistics",
+      "groupId": "c873f28fdfee",
+      "ids": [
+        "cmu8cdvem0lf6mn48yeizjqh6"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-finance",
+      "groupId": "5e982e82cfc6",
+      "ids": [
+        "cmue50r8b062jo2341r34x6ex"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-finance",
+      "groupId": "f072d8082f55",
+      "ids": [
+        "cmu8cc8j90ddpmn4840a5yr3h"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-it-data",
+      "groupId": "01216ad02ac6",
+      "ids": [
+        "cmuegv27j062nqo34kkurffbp"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-it-data",
+      "groupId": "0e070b3d6fe5",
+      "ids": [
+        "cmuebt94z15mxoi35sgf9e27e"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-it-data",
+      "groupId": "3278b3e55883",
+      "ids": [
+        "cmue50kqn05eto234duvw0nyt"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-it-data",
+      "groupId": "3a0de0430b09",
+      "ids": [
+        "cmueguh3s03elqo342gbrhlno"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-it-data",
+      "groupId": "c79e3036cfac",
+      "ids": [
+        "cmuecczya2kmvoi35ophxccbd"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-it-data",
+      "groupId": "d209ce10fc42",
+      "ids": [
+        "cmudttv7w0wouoa345rz0dko2"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-it-data",
+      "groupId": "dc807d3ff535",
+      "ids": [
+        "cmudtt7t00tvqoa341grmmmq3"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-it-data",
+      "groupId": "e67e523d0141",
+      "ids": [
+        "cmu8aagb9023ql9dfydlhd292"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-strategy-management",
+      "groupId": "609e20311e99",
+      "ids": [
+        "cmu9fz6tb06caofaddi77ydk3"
+      ],
+      "grade": 0,
+      "basis": "La fonction ou l’employeur natif ne satisfait pas cette intention ; mention de contexte insuffisante."
+    },
+    {
+      "intentionId": "family-sustainability",
+      "groupId": "77a44e47988f",
+      "ids": [
+        "cmu8cavxm06srmn48i4fojta2"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-sustainability",
+      "groupId": "8dac3bf9eac4",
+      "ids": [
+        "cmu9iaeb6007vpe89k0acvli3"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-sustainability",
+      "groupId": "9d1749993d3f",
+      "ids": [
+        "cmue8e754005uqy34ue7jy3wq"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-sustainability",
+      "groupId": "ab756c53f888",
+      "ids": [
+        "cmu87up4201kvpg444kaahctt"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-sustainability",
+      "groupId": "b21d0490b916",
+      "ids": [
+        "cmueay4cp0hpxoi35zhsz9ss1"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-sustainability",
+      "groupId": "cc3c686e231c",
+      "ids": [
+        "cmued0rfi435voi35q8y5ydn3"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-sustainability",
+      "groupId": "e25074aebaaa",
+      "ids": [
+        "cmudu8inh1h9uoa348f223fxy"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-sustainability",
+      "groupId": "ef471ffe6c16",
+      "ids": [
+        "cmu8csxna0028ld85q8npnqsc"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-sustainability",
+      "groupId": "fe4058a89044",
+      "ids": [
+        "cmuejym51014jox6fpu62rm11"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-customer-service",
+      "groupId": "77efe1b625ae",
+      "ids": [
+        "cmu7fh5zt001unl1kfoxden1j"
+      ],
+      "grade": 0,
+      "basis": "La fonction ou l’employeur natif ne satisfait pas cette intention ; mention de contexte insuffisante."
+    },
+    {
+      "intentionId": "family-customer-service",
+      "groupId": "cbfc2df35f09",
+      "ids": [
+        "cmueg8e0l028eld34161uo98t"
+      ],
+      "grade": 0,
+      "basis": "La fonction ou l’employeur natif ne satisfait pas cette intention ; mention de contexte insuffisante."
+    },
+    {
+      "intentionId": "family-hospitality",
+      "groupId": "09b83551a14a",
+      "ids": [
+        "cmu8cf0dl0r7smn487mmqh64u"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-hospitality",
+      "groupId": "2dbec437ea47",
+      "ids": [
+        "cmu8ce9xa0ni5mn48d8i9owh0"
+      ],
+      "grade": 0,
+      "basis": "La fonction ou l’employeur natif ne satisfait pas cette intention ; mention de contexte insuffisante."
+    },
+    {
+      "intentionId": "family-hospitality",
+      "groupId": "2e546433a244",
+      "ids": [
+        "cmu8ceyyc0qztmn482ee57k1f"
+      ],
+      "grade": 1,
+      "basis": "Fonction adjacente ou responsabilité explicite secondaire, correspondance partielle."
+    },
+    {
+      "intentionId": "family-hospitality",
+      "groupId": "33a996c76f4c",
+      "ids": [
+        "cmudtp8eg0n10oa3494rqwa9t"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-hospitality",
+      "groupId": "3d4fcea36f10",
+      "ids": [
+        "cmueasida0ehpoi354maxj023"
+      ],
+      "grade": 1,
+      "basis": "Fonction adjacente ou responsabilité explicite secondaire, correspondance partielle."
+    },
+    {
+      "intentionId": "family-hospitality",
+      "groupId": "4addf0897b2a",
+      "ids": [
+        "cmu8ccosr0fshmn48r2gqsp55"
+      ],
+      "grade": 0,
+      "basis": "La fonction ou l’employeur natif ne satisfait pas cette intention ; mention de contexte insuffisante."
+    },
+    {
+      "intentionId": "family-hospitality",
+      "groupId": "7cef8a2196b2",
+      "ids": [
+        "cmu9my4ge007vmburxten448a"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-hospitality",
+      "groupId": "a1dc886bcf2d",
+      "ids": [
+        "cmueg8b99022dld34n4do3e9y"
+      ],
+      "grade": 1,
+      "basis": "Fonction adjacente ou responsabilité explicite secondaire, correspondance partielle."
+    },
+    {
+      "intentionId": "family-hospitality",
+      "groupId": "c471ea27c525",
+      "ids": [
+        "cmue50p9z05vjo234o50d0f8k"
+      ],
+      "grade": 1,
+      "basis": "Fonction adjacente ou responsabilité explicite secondaire, correspondance partielle."
+    },
+    {
+      "intentionId": "family-hospitality",
+      "groupId": "d05d99cbf322",
+      "ids": [
+        "cmudtp8cd0n0loa34om30zkih"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-hospitality",
+      "groupId": "d4da1d73a124",
+      "ids": [
+        "cmue4zrni02jwo2345c0hsert"
+      ],
+      "grade": 0,
+      "basis": "La fonction ou l’employeur natif ne satisfait pas cette intention ; mention de contexte insuffisante."
+    },
+    {
+      "intentionId": "family-hospitality",
+      "groupId": "eabbc440f3a2",
+      "ids": [
+        "cmu8ccoua0fsomn48620j4kh5"
+      ],
+      "grade": 0,
+      "basis": "La fonction ou l’employeur natif ne satisfait pas cette intention ; mention de contexte insuffisante."
+    },
+    {
+      "intentionId": "family-health-optical-services",
+      "groupId": "44178b69e35c",
+      "ids": [
+        "cmu6yam7f00p6n2eknlntprxj"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-health-optical-services",
+      "groupId": "482563e30801",
+      "ids": [
+        "cmu6ya1h3007vn2ekbd8q7y37",
+        "cmu6ya1q90082n2ekjsqjya2j",
+        "cmu6ya25s008gn2ek30v4rbtx"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-health-optical-services",
+      "groupId": "51a4df05bd0d",
+      "ids": [
+        "cmu6yamea00pdn2ekonxunq89"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-health-optical-services",
+      "groupId": "572e1091cdd4",
+      "ids": [
+        "cmu6yalhf00oln2ek57tzwsho"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-health-optical-services",
+      "groupId": "57e375df1ec6",
+      "ids": [
+        "cmu6ya2jn008un2ekokpzkl6n"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-health-optical-services",
+      "groupId": "644aa8ca06cb",
+      "ids": [
+        "cmu6yaiy800mnn2ekr60ou5j0",
+        "cmu6yaj5e00mun2eklvxcm0kj",
+        "cmu6yajcy00n1n2ekgulj0rth"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-health-optical-services",
+      "groupId": "665b8fbc2b26",
+      "ids": [
+        "cmu6yakcp00ntn2ekpod7h38k"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-health-optical-services",
+      "groupId": "7715ae99d5a3",
+      "ids": [
+        "cmu6yak3b00nmn2ekpt6a516e"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-health-optical-services",
+      "groupId": "86c9dcc601fd",
+      "ids": [
+        "cmu6ya2cl008nn2ekbmp9m7ov"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-health-optical-services",
+      "groupId": "a51b56219111",
+      "ids": [
+        "cmu6yaknq00o0n2ekr103neua",
+        "cmu6yakvo00o7n2ekjq3pa1z7"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-health-optical-services",
+      "groupId": "b1de7e6199fb",
+      "ids": [
+        "cmu6yajld00n8n2ekzpnzfsem"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-health-optical-services",
+      "groupId": "c04abc8810f7",
+      "ids": [
+        "cmu6ya167007on2ekrs4wnz0a"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-health-optical-services",
+      "groupId": "c38a79af28ce",
+      "ids": [
+        "cmu6yal4j00oen2ek0xpz95wx"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-health-optical-services",
+      "groupId": "e6bba1b1121d",
+      "ids": [
+        "cmu6yamlk00pkn2ekl9eju1ku"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-health-optical-services",
+      "groupId": "f0c1bebbfa1a",
+      "ids": [
+        "cmu6yalzf00ozn2ek0httm6lg"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-beauty-services",
+      "groupId": "36bc9efddfd8",
+      "ids": [
+        "cmuec3t481mneoi35aht5wffw",
+        "cmuec3t751mnsoi35sfzb8xqt",
+        "cmuec3u2m1mraoi35bsv5672x",
+        "cmuec3uue1mueoi35gkvljivj",
+        "cmuec3v5l1mvkoi35na7ruhnh",
+        "cmuec3vbp1mwcoi35yx1c8hl0"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-beauty-services",
+      "groupId": "54dba5a2043e",
+      "ids": [
+        "cmuec3sjb1mkooi35b9ap5vqx",
+        "cmuec3t191mn0oi35dngy47y7",
+        "cmuec3taf1mo6oi35gsahoxh3",
+        "cmuec3thp1moroi35gs44vjfc",
+        "cmuec3tq71mpqoi35zci76h90",
+        "cmuec3uw71muloi35hu0jxwoj",
+        "cmuec3vaa1mw5oi35uie3bsbz"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "family-beauty-services",
+      "groupId": "55773e04a55c",
+      "ids": [
+        "cmuec3svd1mm8oi357phwod86",
+        "cmuec3swt1mmfoi35q79kf10q",
+        "cmuec3tj41moyoi35gjzrijaa",
+        "cmuec3to31mpjoi352fm2s66f",
+        "cmuec3usy1mu7oi35a1m2qd00",
+        "cmuec3uy51musoi35i9hxyg93",
+        "cmuec3v8o1mvyoi352qt5thhf"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "composed-chanel-fr",
+      "groupId": "a73f9798bfc3",
+      "ids": [
+        "cmueg8uow037zld344ethov31"
+      ],
+      "grade": 1,
+      "basis": "Fonction adjacente ou responsabilité explicite secondaire, correspondance partielle."
+    },
+    {
+      "intentionId": "composed-louis-vuitton",
+      "groupId": "3609e29e6443",
+      "ids": [
+        "cmu8cfcvv0t1dmn48r5nm7b1g"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "composed-louis-vuitton",
+      "groupId": "83c1374297b9",
+      "ids": [
+        "cmu8cf9wj0sl1mn48kl9k4333"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "composed-hermes",
+      "groupId": "087d8ac5f96e",
+      "ids": [
+        "cmue50ef404u7o234ty4bk1ch"
+      ],
+      "grade": 0,
+      "basis": "La fonction ou l’employeur natif ne satisfait pas cette intention ; mention de contexte insuffisante."
+    },
+    {
+      "intentionId": "composed-hermes",
+      "groupId": "faf0c063b2f2",
+      "ids": [
+        "cmue501gi03j5o234t97izlp8"
+      ],
+      "grade": 0,
+      "basis": "La fonction ou l’employeur natif ne satisfait pas cette intention ; mention de contexte insuffisante."
+    },
+    {
+      "intentionId": "composed-on",
+      "groupId": "3da4f1192996",
+      "ids": [
+        "cmu6yn0c5019so8igrnggdwk8"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "composed-on",
+      "groupId": "905b70b66478",
+      "ids": [
+        "cmu6ymt5m0082o8igcvz8t6wx"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "composed-beaumanoir",
+      "groupId": "0033f26d5490",
+      "ids": [
+        "cmu87ugch007cpg44earj0h56"
+      ],
+      "grade": 0,
+      "basis": "La fonction ou l’employeur natif ne satisfait pas cette intention ; mention de contexte insuffisante."
+    },
+    {
+      "intentionId": "composed-beaumanoir",
+      "groupId": "22e46abf324d",
+      "ids": [
+        "cmu87ujgs00p8pg44l15imj16"
+      ],
+      "grade": 0,
+      "basis": "La fonction ou l’employeur natif ne satisfait pas cette intention ; mention de contexte insuffisante."
+    },
+    {
+      "intentionId": "composed-beaumanoir",
+      "groupId": "2a55d394f447",
+      "ids": [
+        "cmu87ug2s005spg447rsjfyvt"
+      ],
+      "grade": 0,
+      "basis": "La fonction ou l’employeur natif ne satisfait pas cette intention ; mention de contexte insuffisante."
+    },
+    {
+      "intentionId": "company-sephora",
+      "groupId": "00ced9cf32f2",
+      "ids": [
+        "cmueka7gb007lo26ft2xj17ur"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "company-sephora",
+      "groupId": "f6bdd9ac5d8c",
+      "ids": [
+        "cmueka78j006fo26frqj9sct0"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "company-on",
+      "groupId": "188142537ec6",
+      "ids": [
+        "cmueccz5u2khioi35jkm8ttk0"
+      ],
+      "grade": 0,
+      "basis": "La fonction ou l’employeur natif ne satisfait pas cette intention ; mention de contexte insuffisante."
+    },
+    {
+      "intentionId": "company-on",
+      "groupId": "439c5ca41857",
+      "ids": [
+        "cmu9fjqeg00aeof8lamzfpji2"
+      ],
+      "grade": 0,
+      "basis": "La fonction ou l’employeur natif ne satisfait pas cette intention ; mention de contexte insuffisante."
+    },
+    {
+      "intentionId": "edge-negation",
+      "groupId": "45612b9a08b8",
+      "ids": [
+        "cmu87tmoa001uny44twcpe1cu",
+        "cmu87tmp90021ny44ri4rqxz7",
+        "cmu87tmro002fny44udtrl85i",
+        "cmu87tmvk0030ny44i4t9cyx5"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "edge-negation",
+      "groupId": "708af04e5ddd",
+      "ids": [
+        "cmu9ibctk000vpe9zurz7u5qp",
+        "cmu9ibcx20012pe9zbyezzed9"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "edge-cjk",
+      "groupId": "b10b22507cc3",
+      "ids": [
+        "cmu8cfgw50tmqmn48ekz3fkyw"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "edge-joaillerie",
+      "groupId": "0f2c261028d0",
+      "ids": [
+        "cmue50bs804lno2340gk0xs04"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "edge-joaillerie",
+      "groupId": "164d6b77e3c1",
+      "ids": [
+        "cmu9fk0t101vyof8l5vtyvxzg"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "edge-joaillerie",
+      "groupId": "190b72d6a0ca",
+      "ids": [
+        "cmue505f403xxo2343rp05xo0"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    },
+    {
+      "intentionId": "edge-joaillerie",
+      "groupId": "69a10bec7425",
+      "ids": [
+        "cmu9fz629068vofadrxuzpwg8"
+      ],
+      "grade": 2,
+      "basis": "Intitulé natif ou missions décrites répondant directement à cette intention."
+    }
+  ],
+  "abstentions": [
+    {
+      "intentionId": "family-product-development-rd",
+      "groupId": "829448b9addf",
+      "ids": [
+        "cmu9fyuke04vpofadpraor8l2"
+      ],
+      "grade": null,
+      "basis": "Abstention : identité de marque ou périmètre fonctionnel insuffisamment établi."
+    },
+    {
+      "intentionId": "company-sandro",
+      "groupId": "df414f9f077e",
+      "ids": [
+        "cmue7vvs8001jqf6ehryyxjgf"
+      ],
+      "grade": null,
+      "basis": "Abstention : identité de marque ou périmètre fonctionnel insuffisamment établi."
+    },
+    {
+      "intentionId": "company-maje",
+      "groupId": "8442475e0972",
+      "ids": [
+        "cmue7vvs8001jqf6ehryyxjgf"
+      ],
+      "grade": null,
+      "basis": "Abstention : identité de marque ou périmètre fonctionnel insuffisamment établi."
+    }
+  ]
+}

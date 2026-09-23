@@ -17,4 +17,7 @@ env['DATABASE_URL'] = 'postgresql://{}:{}@{}:{}/{}?connection_limit=2'.format(
     quote(access['PGUSER'], safe=''), quote(access['PGPASSWORD'], safe=''),
     access['PGHOST'], access['PGPORT'], access['PGDATABASE'])
 folder = Path(__file__).resolve().parents[2]  # apps/api: real baseline CSV path
-sys.exit(subprocess.run(['npx', 'tsx', str(Path(sys.argv[2]).resolve()), *sys.argv[3:]], cwd=folder, env=env).returncode)
+# measure.ts takes three file paths before its optional engine list. Resolve
+# them in the caller's directory before setting the baseline's working dir.
+arguments = [str(Path(arg).resolve()) if i < 3 else arg for i, arg in enumerate(sys.argv[3:])]
+sys.exit(subprocess.run(['npx', 'tsx', str(Path(sys.argv[2]).resolve()), *arguments], cwd=folder, env=env).returncode)

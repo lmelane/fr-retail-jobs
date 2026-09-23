@@ -1,7 +1,7 @@
 /** Engine-independent query interpretation. This candidate is exercised by the
  * frozen-corpus benchmark before it replaces the public search path.
  * No network, model call, publication gate, or modification of native fields. */
-export type SearchConcept = { key: string; kind: 'role' | 'family' | 'sector'; aliases: readonly string[] };
+export type SearchConcept = { key: string; kind: 'role' | 'family' | 'sector'; aliases: readonly string[]; titleOnlyAliases?: readonly string[] };
 export type SearchCompany = { id: string; names: readonly string[] };
 export type SearchClause = {
   kind: SearchConcept['kind'] | 'company' | 'text';
@@ -10,12 +10,19 @@ export type SearchClause = {
   observed: string;
   corrected: boolean;
   exclude: boolean;
+  /** An ambiguous standalone brand gets a ranking preference, never a hard filter. */
+  preferCompanyKeys?: string[];
+  /** Broad activity words may establish a role in the title, not a colleague mention. */
+  titleOnlyPhrases?: string[];
 };
 export type SearchIntent = { version: 1; original: string; clauses: SearchClause[] };
 
 export function searchWords(value: string): string[] {
   return value.normalize('NFKD').replace(/\p{M}/gu, '').toLowerCase()
     .replace(/œ/g, 'oe').replace(/æ/g, 'ae').replace(/ß/g, 'ss')
+    // Shared character positions let a native CJK role match inside an
+    // unsegmented title even when no occupation code exists.
+    .replace(/[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}]/gu, ' $& ')
     .match(/[\p{L}\p{N}]+/gu) ?? [];
 }
 const phrase = (value: string) => searchWords(value).join(' ');
@@ -39,10 +46,11 @@ function oneEdit(a: string, b: string): boolean {
   return short.slice(i) === long.slice(i + 1);
 }
 
-type Entry = { kind: SearchClause['kind']; keys: string[]; phrases: string[]; words: string[] };
+type Entry = { kind: SearchClause['kind']; keys: string[]; phrases: string[]; words: string[]; titleOnlyPhrases?: string[] };
 
 export function createIntentResolver(concepts: readonly SearchConcept[], companies: readonly SearchCompany[]) {
   const entries = new Map<string, Entry[]>();
+  const ambiguousCompanies = new Map<string, Entry[]>();
   const add = (raw: string, e: Omit<Entry, 'words'>) => {
     const p = phrase(raw);
     if (!p) return;
@@ -50,11 +58,17 @@ export function createIntentResolver(concepts: readonly SearchConcept[], compani
     if (!list.some(x => x.kind === e.kind && x.keys.join('\0') === e.keys.join('\0'))) list.push({ ...e, words: p.split(' ') });
     entries.set(p, list);
   };
-  for (const c of concepts) for (const a of c.aliases) add(a, { kind: c.kind, keys: [c.key], phrases: [...new Set(c.aliases.map(phrase))] });
+  for (const c of concepts) for (const a of c.aliases) add(a, { kind: c.kind, keys: [c.key], phrases: [...new Set(c.aliases.map(phrase))], titleOnlyPhrases: c.titleOnlyAliases?.map(phrase) });
   // Only reviewed aliases and explicit company/group relationships enter here.
   // Duplicate names naming unrelated entities remain lexical, never a forced ID.
   for (const c of companies) for (const a of c.names) {
-    if (!AMBIGUOUS_COMPANIES.has(phrase(a))) add(a, { kind: 'company', keys: [c.id], phrases: [...new Set(c.names.map(phrase))] });
+    const entry = { kind: 'company' as const, keys: [c.id], phrases: [...new Set(c.names.map(phrase))] };
+    if (!AMBIGUOUS_COMPANIES.has(phrase(a))) add(a, entry);
+    else {
+      const list = ambiguousCompanies.get(phrase(a)) ?? [];
+      if (!list.some(e => e.keys[0] === c.id)) list.push({ ...entry, words: phrase(a).split(' ') });
+      ambiguousCompanies.set(phrase(a), list);
+    }
   }
   const unique = [...entries.values()].filter(es => es.length === 1).map(es => es[0]);
   const maxWords = Math.max(1, ...unique.map(x => x.words.length));
@@ -92,15 +106,22 @@ export function createIntentResolver(concepts: readonly SearchConcept[], compani
       for (let i = 0; i < words.length;) {
         let exclude = false;
         if (NEGATION.has(words[i]) && i + 1 < words.length) { exclude = true; i++; }
-        const found = find(words, i, true);
+        const ambiguous = ambiguousCompanies.get(words[i]);
+        // A terminal Maison after a resolved role, or explicitly introduced by
+        // 'chez/at', has identity context. A free 'on' remains an ordinary word.
+        const companyContext = ambiguous?.length === 1 && i === words.length - 1
+          && (clauses.some(c => c.kind === 'role' && !c.exclude) || (i > 0 && CONNECTOR.has(words[i - 1])));
+        const found = companyContext ? { entry: ambiguous[0], length: 1, corrected: false } : find(words, i, true);
         if (found) {
           clauses.push({ kind: found.entry.kind, keys: found.entry.keys, phrases: found.entry.phrases,
-            observed: words.slice(i, i + found.length).join(' '), corrected: found.corrected, exclude });
+            observed: words.slice(i, i + found.length).join(' '), corrected: found.corrected, exclude,
+            ...(found.entry.titleOnlyPhrases?.length ? { titleOnlyPhrases: found.entry.titleOnlyPhrases } : {}) });
           i += found.length;
-        } else if (!exclude && CONNECTOR.has(words[i]) && clauses.length && find(words, i + 1, false)) {
+        } else if (!exclude && CONNECTOR.has(words[i]) && clauses.length && (find(words, i + 1, false) || (i + 2 === words.length && ambiguousCompanies.get(words[i + 1])?.length === 1))) {
           i++;
         } else {
-          clauses.push({ kind: 'text', keys: [], phrases: [words[i]], observed: words[i], corrected: false, exclude });
+          clauses.push({ kind: 'text', keys: [], phrases: [words[i]], observed: words[i], corrected: false, exclude,
+            ...(words.length === 1 && ambiguous?.length === 1 ? { preferCompanyKeys: ambiguous[0].keys } : {}) });
           i++;
         }
       }

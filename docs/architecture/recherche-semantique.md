@@ -140,7 +140,7 @@ Typesense permet de régler [pondération et pertinence](https://typesense.org/d
 |---|---|---|
 | S0 — constat | Audit code/base et essai de composition | Réalisé dans ce document ; pas de conclusion de pertinence globale |
 | S1 — benchmark | S1A corpus/gold, S1B compréhension commune, S1C PostgreSQL, S1D Elasticsearch, S1E comparaison | Réalisé : [bilan et limites](../../audits/2026-09-24/search-s1.md), PostgreSQL enrichi retenu pour V1 |
-| S2 — compréhension | Décomposition métier/Maison/secteur/précisions, synonymes multilingues, récupération des offres non classées | Tests de pertinence et d'ambiguïté verts sur le moteur retenu |
+| S2 — compréhension | [Prototype corrigé et mesuré](../../audits/2026-09-24/search-s2.md) ; intégration API à terminer | 36 régressions réelles PASS ; zéro recherche vide connue. Disponibilité, suggestions et curseurs à intégrer avant livraison |
 | S3 — qualification | Qualification entreprise initiale puis incrémentale via le circuit existant ; enrichissement métier optionnel | Idempotence, preuve, abstention, reprise et coût mesurés |
 | S4 — produit/index | Projection si nécessaire, suppression du filtre Métier dans l'UI, suggestions contextualisées | E2E `/emplois`, langues/marchés, facettes, pagination et deux origines sans régression |
 | S5 — livraison | Comparaison de résultats avant exposition, audit défensif ciblé, bascule réversible et retrait du code remplacé | Critères fonctionnels et opérationnels atteints ; mise en production du site uniquement sur GO explicite |
