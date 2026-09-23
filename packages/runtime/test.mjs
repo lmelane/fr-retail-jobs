@@ -54,6 +54,12 @@ test('an optional bounded run deadline remains validated', () => {
   for (const deadline of ['', 'invalid', new Date(now - 1).toISOString(), new Date(now + 901_000).toISOString()])
     assert.throws(() => validateRuntime('worker', [], { ...env, CATWALKS_RUN_DEADLINE: deadline }, built, now), /run window/);
 });
+test('source-add delegates its public definition to the existing preflight parser', () => {
+  const argv = ['source-add', '--key=example'];
+  assert.deepEqual(workerArguments(argv), argv);
+  assert.throws(() => workerArguments(['source-add']), /argv/);
+  assert.throws(() => workerArguments(['source-campaign', '--keys=example']), /argv/);
+});
 test('API attests public values without copying secrets', () => {
   const env = fixture('api'); env.CATALOGUE_API_KEY = 'credential-not-for-logs';
   const result = validateRuntime('api', [], env, built, now);

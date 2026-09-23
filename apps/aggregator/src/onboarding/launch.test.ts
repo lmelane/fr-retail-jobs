@@ -13,3 +13,13 @@ describe('one-source operational definition', () => {
     for (let i = 0; i < args.length; i++) expect(() => sourceLaunchArguments(args.filter((_, j) => j !== i))).toThrow();
   });
 });
+
+it('keeps qualification and child ingestion run IDs distinct without changing the runtime bindings', async () => {
+  const { ingestionChildEnvironment } = await import('./launch.js');
+  const env = { CATWALKS_RUNTIME_PROFILE: 'production', CATWALKS_RUN_ID: '11111111-1111-4111-8111-111111111111', PIPELINE_PAUSED: '0', DATABASE_URL: 'fixture' };
+  const a = ingestionChildEnvironment(env), b = ingestionChildEnvironment(env);
+  expect(a.CATWALKS_RUN_ID).not.toBe(env.CATWALKS_RUN_ID);
+  expect(a.CATWALKS_RUN_ID).not.toBe(b.CATWALKS_RUN_ID);
+  expect({ ...a, CATWALKS_RUN_ID: env.CATWALKS_RUN_ID }).toEqual(env);
+  expect(env.CATWALKS_RUN_ID).toBe('11111111-1111-4111-8111-111111111111');
+});

@@ -54,6 +54,7 @@ import { captureSourceForValidation } from '../../src/connectors/sourceValidatio
 import { observedRequests, qualifySourceAccess } from '../../src/connectors/sourceAccessQualification.js';
 import { promoteSource } from '../../src/connectors/sourceStore.js';
 import { sourceStatus } from '../../src/onboarding/status.js';
+import { ingestionChildEnvironment } from '../../src/onboarding/launch.js';
 import { objectStoreConfigured, objectStoreFromEnv } from '../../src/retention/objectStore.js';
 import { readRefreshPlan } from '../../src/pipeline/refresh.js';
 import { closeBrowser } from '../../src/lib/browser.js';
@@ -333,8 +334,10 @@ async function qualifier(c: Candidat): Promise<Verdict> {
 
 /** The child runs the normal ingestion CLI, preserves its logs and receives stop signals. */
 async function ingestChild(key: string): Promise<{ status: number; output: string }> {
+  const childEnv = ingestionChildEnvironment(process.env);
+  await log.info('source.ingestion_child', { sourceKey: key, childRunId: childEnv.CATWALKS_RUN_ID ?? null });
   return new Promise((resolve, reject) => {
-    const child = spawn(process.execPath, ['--import', 'tsx', 'apps/aggregator/src/cli.ts', 'ingest', `--source=${key}`, '--no-geocode'], { stdio: ['ignore', 'pipe', 'pipe'], env: process.env });
+    const child = spawn(process.execPath, ['--import', 'tsx', 'apps/aggregator/src/cli.ts', 'ingest', `--source=${key}`, '--no-geocode'], { stdio: ['ignore', 'pipe', 'pipe'], env: childEnv });
     let output = '', oversized = false;
     const forward = (signal: NodeJS.Signals) => { child.kill(signal); };
     process.prependListener('SIGINT', forward); process.prependListener('SIGTERM', forward);

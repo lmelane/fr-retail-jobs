@@ -12,6 +12,9 @@ const uuid = value => typeof value === 'string' && /^[0-9a-f]{8}-(?:[0-9a-f]{4}-
 
 /** Execution scope is an argument, never a release-specific source allowlist. */
 export function workerArguments(argv) {
+  // The existing source-add parser owns its public definition contract. The
+  // worker validates it before heartbeat/schema/network, then runs that CLI.
+  if (argv[0] === 'source-add' && argv.length > 1) return argv;
   if (argv.length === 1 && argv[0] === 'scheduled') return ['ingest-all'];
   if (argv.length === 0 || (argv.length === 1 && argv[0] === 'ingest-all')) return ['ingest-all'];
   const args = argv[0]?.startsWith('--source=') ? ['ingest', ...argv] : argv;

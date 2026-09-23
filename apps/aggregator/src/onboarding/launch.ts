@@ -1,4 +1,10 @@
 import { parseSourceCandidate } from '../connectors/sourceCandidate.js';
+import { randomUUID } from 'node:crypto';
+
+/** Qualification and ingestion are distinct persisted runs in the same worker. */
+export function ingestionChildEnvironment(env: NodeJS.ProcessEnv): NodeJS.ProcessEnv {
+  return { ...env, ...(env.CATWALKS_RUNTIME_PROFILE ? { CATWALKS_RUN_ID: randomUUID() } : {}) };
+}
 
 /** Explicit public definition; no hand-written JSON file or implicit DRAFT scan. */
 export function sourceLaunchArguments(args: string[]) {

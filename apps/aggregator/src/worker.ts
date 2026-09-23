@@ -5,8 +5,10 @@ import { pingHeartbeat } from './pipeline/heartbeat.js';
 import { log } from './observability/logger.js';
 import { exitIfPipelinePaused } from './lib/pipelinePause.js';
 import { attestRuntime, workerArguments, scheduledRunDue } from '@catwalks/runtime';
+import { sourceLaunchArguments } from './onboarding/launch.js';
 
 const root = fileURLToPath(new URL('../../../', import.meta.url));
+if (process.argv[2] === 'source-add') sourceLaunchArguments(process.argv.slice(3));
 const attestation = attestRuntime('worker', process.argv.slice(2));
 if (!['0', '1'].includes(process.env.PIPELINE_PAUSED ?? '')) throw new Error('PIPELINE_PAUSED must be 0 or 1 (explicit worker setting required)');
 exitIfPipelinePaused(process.argv[2] ?? 'ingest-all');

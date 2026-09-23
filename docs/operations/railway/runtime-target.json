@@ -157,7 +157,8 @@
         "paused": "PIPELINE_PAUSED=1: exit without operational side effects",
         "normal": "sh apps/aggregator/start.sh (or ingest-all): every ACTIVE source selected by the existing orchestrator",
         "targeted": "sh apps/aggregator/start.sh ingest --source=<key> [--no-geocode]",
-        "scheduled": "sh apps/aggregator/start.sh scheduled: one full run at 18:00 Europe/Paris; the other UTC launch exits before DB/network"
+        "scheduled": "sh apps/aggregator/start.sh scheduled: one full run at 18:00 Europe/Paris; the other UTC launch exits before DB/network",
+        "sourceAdd": "sh apps/aggregator/start.sh source-add <explicit public definition>: existing Golden Path parser and qualification, one candidate, no status override"
       },
       "businessEgress": "Existing source access scopes and public-URL/redirect guards; no permanent source allowlist in the runtime",
       "dailySchedule": {

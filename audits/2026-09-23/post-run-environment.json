@@ -1,0 +1,86 @@
+{
+  "observedAt": "2026-09-23T10:40:27.672087+00:00",
+  "method": "Railway CLI variables JSON + exact-environment configuration",
+  "services": {
+    "api": {
+      "customNames": [
+        "CATALOGUE_API_KEY",
+        "CATWALKS_RUNTIME_PROFILE",
+        "DATABASE_URL",
+        "HOSTNAME",
+        "NEXT_PUBLIC_SITE_URL",
+        "NODE_ENV",
+        "PORT"
+      ],
+      "customCount": 7,
+      "valuesPresent": true,
+      "matchesControlPlane": true,
+      "unexpectedCustomNames": [],
+      "missingCustomNames": [],
+      "sameDatabaseAsPostgres": true,
+      "databaseClientPool": {
+        "connection_limit": [
+          "10"
+        ],
+        "pool_timeout": [
+          "20"
+        ]
+      }
+    },
+    "worker": {
+      "customNames": [
+        "ALERT_EMAIL",
+        "BREVO_API_KEY",
+        "BREVO_SENDER_EMAIL",
+        "BREVO_SENDER_NAME",
+        "CATWALKS_RUNTIME_PROFILE",
+        "DATABASE_URL",
+        "HEALTHCHECK_PING_URL",
+        "NODE_ENV",
+        "PIPELINE_PAUSED"
+      ],
+      "customCount": 9,
+      "valuesPresent": true,
+      "matchesControlPlane": true,
+      "unexpectedCustomNames": [],
+      "missingCustomNames": [],
+      "sameDatabaseAsPostgres": true,
+      "databaseClientPool": {
+        "connection_limit": [
+          "8"
+        ],
+        "pool_timeout": [
+          "30"
+        ]
+      }
+    },
+    "db": {
+      "customNames": [
+        "DATABASE_URL",
+        "PGDATA",
+        "PGDATABASE",
+        "PGHOST",
+        "PGPASSWORD",
+        "PGPORT",
+        "PGUSER",
+        "POSTGRES_DB",
+        "POSTGRES_PASSWORD",
+        "POSTGRES_USER",
+        "RAILWAY_DEPLOYMENT_DRAINING_SECONDS",
+        "SSL_CERT_DAYS"
+      ],
+      "customCount": 12,
+      "valuesPresent": true,
+      "referenceResolution": "PGHOST, PGDATABASE, PGUSER, PGPASSWORD and DATABASE_URL are Railway reference templates, resolved by CLI. Alias equality verified; API and worker match the resolved target."
+    }
+  },
+  "sharedVariables": 0,
+  "databaseAliasChecks": {
+    "user": true,
+    "password": true,
+    "database": true
+  },
+  "storage": "Native RAW retained in PostgreSQL; no S3 configuration or separate storage worker. No database setting changed.",
+  "legacyRuntimeCount": 0,
+  "databaseClientPoolReason": "API and worker have distinct bounded connection pools (10 and 8); timeout applies to pool acquisition, not source collection. Same host/port/user/password/database."
+}
