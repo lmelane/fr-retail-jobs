@@ -1,5 +1,5 @@
 import { readFileSync, existsSync } from 'node:fs';
-import { createHash } from 'node:crypto';
+import { createHash, randomUUID } from 'node:crypto';
 
 const targetUrl = new URL('../../docs/operations/railway/runtime-target.json', import.meta.url);
 const releaseUrl = new URL('./release.json', import.meta.url);
@@ -10,6 +10,17 @@ export const release = existsSync(releaseUrl) ? JSON.parse(readFileSync(releaseU
 const fail = reason => { throw new Error(`Runtime contract rejected: ${reason}`); };
 const uuid = value => typeof value === 'string' && /^[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}$/i.test(value);
 
+/** Execution scope is an argument, never a release-specific source allowlist. */
+export function workerArguments(argv) {
+  if (argv.length === 0 || (argv.length === 1 && argv[0] === 'ingest-all')) return ['ingest-all'];
+  const args = argv[0]?.startsWith('--source=') ? ['ingest', ...argv] : argv;
+  if (args[0] !== 'ingest') fail('unsupported worker argv');
+  const sources = args.slice(1).filter(a => /^--source=[a-z0-9][a-z0-9_-]*$/.test(a));
+  if (sources.length !== 1 || args.slice(1).some(a => a !== sources[0] && a !== '--no-geocode') ||
+      new Set(args).size !== args.length) fail('targeted argv requires exactly one source');
+  return args;
+}
+
 /** Pure validation, shared only by the catalogue API and ingestion worker. */
 export function validateRuntime(role, argv, env, built, now = Date.now()) {
   if (!['api', 'worker'].includes(role)) fail('unknown role');
@@ -17,14 +28,15 @@ export function validateRuntime(role, argv, env, built, now = Date.now()) {
     fail('missing or inconsistent embedded release');
   const profile = target.profiles.find(p => p.name === env.CATWALKS_RUNTIME_PROFILE);
   if (!profile) fail('missing or unknown profile');
-  if (role === 'api' && !profile.name.endsWith('-paused')) fail('API requires base profile');
+  if (!profile.roles.includes(role)) fail('profile does not allow this role');
   const service = target.services[role === 'api' ? 0 : 1];
-  const running = role === 'worker' && profile.workerPaused === '0';
-  const expectedArgs = role === 'api' ? [] : profile.workerCommand.split(' ').slice(2);
-  if (JSON.stringify(argv) !== JSON.stringify(expectedArgs)) fail('argv differs from profile');
+  if (role === 'worker' && !['0', '1'].includes(env.PIPELINE_PAUSED)) fail('PIPELINE_PAUSED must be 0 or 1');
+  const running = role === 'worker' && env.PIPELINE_PAUSED === '0';
+  if (role === 'api' && argv.length) fail('API argv must be empty');
+  if (running) workerArguments(argv);
 
   const values = { ...service.environment, CATWALKS_RUNTIME_PROFILE: profile.name };
-  if (role === 'worker') values.PIPELINE_PAUSED = profile.workerPaused;
+  if (role === 'worker') values.PIPELINE_PAUSED = profile.workerPaused === 'environment' ? env.PIPELINE_PAUSED : profile.workerPaused;
   for (const [name, value] of Object.entries(values)) if (env[name] !== value) fail(`value differs: ${name}`);
   const secretNames = Object.keys(service.secretBindings);
   const privateNames = Object.keys(service.privateConfigurationBindings ?? {});
@@ -51,9 +63,11 @@ export function validateRuntime(role, argv, env, built, now = Date.now()) {
   let deadline = null;
   if (running) {
     if (!uuid(env.CATWALKS_RUN_ID)) fail('missing unique run ID');
-    deadline = Date.parse(env.CATWALKS_RUN_DEADLINE ?? '');
-    if (!Number.isFinite(deadline) || deadline <= now || deadline - now > profile.maximumDurationSeconds * 1000)
-      fail('expired or excessive run window');
+    if (env.CATWALKS_RUN_DEADLINE !== undefined) {
+      deadline = Date.parse(env.CATWALKS_RUN_DEADLINE);
+      if (!Number.isFinite(deadline) || deadline <= now || deadline - now > profile.optionalDeadlineMaximumSeconds * 1000)
+        fail('expired or excessive run window');
+    }
   }
   return { profile, service, deadline, proof: {
     event: 'runtime.attested', role, profile: profile.name, gitSha: built.gitSha, contractSha256,
@@ -61,7 +75,7 @@ export function validateRuntime(role, argv, env, built, now = Date.now()) {
     generatedEnvironment: Object.fromEntries([...generatedNames, ...serviceDomainNames].filter(k => env[k] !== undefined).map(k => [k, env[k]])),
     imageEnvironment: Object.fromEntries(osNames.filter(k => env[k] !== undefined).map(k => [k, env[k]])),
     database: dbTarget, runId: running ? env.CATWALKS_RUN_ID : null,
-    deadline: running ? env.CATWALKS_RUN_DEADLINE : null,
+    deadline: running ? env.CATWALKS_RUN_DEADLINE ?? null : null,
     pid: process.pid, node: process.version, at: new Date(now).toISOString(),
   }};
 }
@@ -70,6 +84,8 @@ export function attestRuntime(role, argv) {
   // Local developer CLI remains available; a built image or Railway process
   // always requires the contract. No opt-out flag exists in deployed images.
   if (!release && !process.env.RAILWAY_PROJECT_ID && !process.env.CATWALKS_RUNTIME_PROFILE) return null;
+  // A cron launch gets a fresh identity; an explicit debug run may supply its own.
+  if (role === 'worker' && process.env.PIPELINE_PAUSED === '0') process.env.CATWALKS_RUN_ID ??= randomUUID();
   const checked = validateRuntime(role, argv, process.env, release);
   console.log(JSON.stringify(checked.proof));
   return checked;
@@ -82,6 +98,9 @@ export function assertBusinessUrl(value) {
   const profile = target.profiles.find(p => p.name === name);
   let url;
   try { url = new URL(value); } catch { fail('invalid business URL'); }
-  if (!profile || url.protocol !== 'https:' || url.port || url.username || url.password ||
-      !profile.businessHosts.includes(url.hostname)) fail('business egress outside selected profile');
+  // Host/path/method authorization belongs to the source's existing access decision.
+  // http.ts still checks that decision and the SSRF boundary on every redirect hop.
+  if (!profile?.roles.includes('worker') || profile.workerPaused === '1' || process.env.PIPELINE_PAUSED !== '0' ||
+      !['http:', 'https:'].includes(url.protocol) || url.username || url.password)
+    fail('business egress outside running worker');
 }

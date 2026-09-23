@@ -4,7 +4,7 @@
 
 Le domaine `agregator.catwalks.io` sert désormais la nouvelle API, déploiement `0d62ade6-efc0-45cc-a3a6-1c69a0864199`, image `c3613a1` inchangée. Le CNAME `4b8h83cv.up.railway.app` est propagé, DNS seul et TTL automatique conservés, certificat valide. Sauvegarde privée du CNAME précédent `4j23i5c2.up.railway.app` et du rattachement Railway dans le dossier d'exploitation. Health/auth, FR (4 440), US (18 287), filtre Maison (Oh My Cream : 21), fiche et rendu du site local relié au domaine public : PASS. Aucun rollback, aucune ingestion, aucun changement de code pendant R5.
 
-Le dernier GO demandait uniquement la bascule et ces smoke tests. **Les quatre anciens services sont donc encore présents**, anciens workers en pause, ancienne API conservée pour repli. Leur décommissionnement prévu ci-dessous reste à clôturer ; le PASS de la bascule ne signifie pas que leur suppression a été effectuée. Ne pas rejouer R1–R4 ni le canari. La montée progressive des sources est le prochain lot, worker maintenu sous pause jusque-là. `main` demeure à `72300c9` ; l'image publique déployée est la référence exacte de cette release tant que la promotion Git n'est pas réalisée.
+**Clôture autorisée après R5 :** les quatre anciens services (`catwalks-aggregator`, `catwalks-refresh`, `catwalks-reconcile`, `catwalks-api`) sont supprimés. L'ancienne API n'était plus appelée par `/offres` ou le matching ; leurs chemins Catwalks backend sont conservés. La DB et son volume sont intacts. Le GO suivant autorise le worker générique et un run complet des ACTIVE ; le CRON attend un résultat sain. Les reçus R1–R5 restent les preuves historiques, sans nouvelle répétition.
 
 **Contrôle R1 : PASS après accord explicite de Loïc sur les images publiques.** Les deux images `c3613a1` sont conservées sans rebuild. Le [reçu de release](../operations/railway/runtime-release.json) fixe les digests et documente les deux seuls écarts approuvés avec le contrat embarqué : la visibilité du registre, sans changement de commande, variables, garde ou données. R2 utilise le clone Railway isolé. Voir le [reçu R1](../../audits/2026-09-23/runtime-reset-r1.md).
 
@@ -14,7 +14,7 @@ La [cible structurée](../operations/railway/runtime-target.json) décrit le ré
 
 Export privé : `/Users/lmelane/.catwalks/runtime-reset-20260923/snapshot-20260923T044617Z/`. Dossier mode `0700`, fichiers `0600`, secrets hors Git. Sont conservés : configuration déchiffrée, variables effectives du plan de contrôle, métadonnées des variables, commandes, build, calendrier, politiques, domaines, source Git, métadonnées du dernier déploiement et digest, références des volumes, environnements et propriété IaC. `manifest.json` vérifie les empreintes. Ce n'est pas un nouveau dump de la DB.
 
-Lors de l'export initial, le projet possédait cinq services en production : PostgreSQL et quatre runtimes. L'environnement `capture-validation-20260915` était vide. R2 a depuis ajouté l'environnement isolé `runtime-validation-20260923`, puis R3 les deux nouveaux runtimes en production ; les anciens attendent leur retrait après R5. Les quatre anciens runtimes indiquent toujours `72300c97586955536ee1f89b0a9b7b0273fbf8a9`. Le statut Railway `SUCCESS` ne prouve pas à lui seul qu'un processus de worker est vivant.
+Lors de l'export initial, le projet possédait cinq services en production : PostgreSQL et quatre runtimes. L'environnement `capture-validation-20260915` était vide. R2 a depuis ajouté l'environnement isolé `runtime-validation-20260923`, puis R3 les deux nouveaux runtimes en production ; les anciens ont été retirés après R5. Avant retrait, les quatre anciens runtimes indiquaient `72300c97586955536ee1f89b0a9b7b0273fbf8a9`. Le statut Railway `SUCCESS` ne prouve pas à lui seul qu'un processus de worker est vivant.
 
 | Constat vérifié | Décision cible |
 |---|---|
@@ -46,7 +46,7 @@ Les deux runtimes : une réplique, région `europe-west4-drams3a`, aucun volume,
 - Service Postgres : `b5c68d1c-6988-4f15-8d85-afe684109cea`.
 - Volume : `32f92d01-d465-42e6-8fab-79e17d0a4d3f`, montage `/var/lib/postgresql/data`.
 
-Aucune rotation de credentials DB, création de rôle, migration, réparation, purge ou reconstruction de la production dans ce lot. La seule écriture métier ultérieure sera l'ingestion Oh My Cream autorisée, avec ses captures et traces habituelles. « Conservation de la DB » ne signifie pas interdire les écritures normales du canari.
+Aucune rotation de credentials DB, création de rôle, migration, réparation, purge ou reconstruction de la production dans ce lot. Les ingestions autorisées conservent leurs écritures normales, captures et traces. Aucune réparation historique n'est incluse.
 
 ### Variables et secrets attendus
 
@@ -63,23 +63,22 @@ Les migrations attendues (`CATWALKS_SCHEMA_MIGRATIONS`) sont un artefact du buil
 
 Pas de secrets S3, Google Indexing ou Direct Offers ajoutés : ces dépendances ne sont pas nécessaires à ce runtime borné. Leur absence n'autorise pas la suppression de code métier encore utilisé ailleurs.
 
-### Exécutions bornées, sans nouveau moteur d'ingestion
+### Exécution normale ou source explicite
 
-La pause devient obligatoire et explicite à l'entrée du runtime Railway : absente ou invalide = refus. Retirer le repli silencieux vers `ingest-all` et l'interprétation de `PIPELINE_CMD`. Le CLI, les adaptateurs, le registre et les contrôles d'ingestion existants restent le chemin commun.
+`PIPELINE_PAUSED` reste obligatoire : `1` sort avant DB/réseau, `0` permet le travail. Le worker utilise `CATWALKS_RUNTIME_PROFILE=production` (ou `validation` sur clone), dans les deux états. Les profils `production-paused` / `validation-paused` restent les profils API et les profils strictement sans collecte. Aucun `PIPELINE_CMD`, `INGEST_ONLY_KEYS` ni `EGRESS_PROBE` accepté dans le runtime.
 
-Quatre profils : `validation-paused`, `validation-ohmycream`, `production-paused`, `production-ohmycream`. Chaque profil fixe la commande, la pause, le rattachement DB et les hôtes métier. Pour le seul profil canari :
-
-```text
+```sh
+# Mode normal : toutes les ACTIVE sélectionnées par l'orchestrateur existant.
+sh apps/aggregator/start.sh
+# Identique, explicite :
+sh apps/aggregator/start.sh ingest-all
+# Une source, par paramètre d'exécution :
 sh apps/aggregator/start.sh ingest --source=oh-my-cream --no-geocode
-PIPELINE_PAUSED=0
-Hôte métier autorisé : careers.ohmycream.com
-Maximum : 1 lancement, fenêtre de 15 minutes
-Retour obligatoire : profil paused du même environnement
 ```
 
-L'outil de lancement produit le manifeste résolu (SHA, digest, profil, ID déploiement, échéance et run), interdit un lancement concurrent et n'effectue aucune relance automatique. Le garde compare l'argv réel au profil ; un argument ou hôte supplémentaire est refusé. Le délai borne l'exécution et son moniteur externe. Un run interrompu reste observable, sans prétendre annuler des écritures déjà validées.
+Chaque lancement génère son UUID, transmis au CLI et persisté dans PipelineRun. Un lancement ciblé peut fournir `CATWALKS_RUN_ID` et une échéance `CATWALKS_RUN_DEADLINE` (15 minutes maximum) ; ces valeurs ne restent pas dans une configuration CRON. Le mode normal n'hérite pas de la fenêtre canari de 15 minutes : l'orchestrateur conserve ses budgets par source. Aucun changement des règles d'admission, GEO ou ingestion. Les permissions hôte/chemin/méthode de chaque source et les contrôles SSRF/redirections existants continuent de s'appliquer. Oh My Cream n'est plus inscrit dans le contrat permanent du worker.
 
-Contrôler les hôtes **avant** le transport, y compris les redirections ; prouver la couverture des transports empruntés par Oh My Cream. Les tests négatifs n'émettent aucun appel métier réel hors périmètre. Le contrôle applicatif n'est pas présenté comme un pare-feu réseau Railway. Les futurs adaptateurs utilisant d'autres transports devront satisfaire le même contrôle avant ramp-up. Les appels PostgreSQL, Healthchecks et Brevo sont des dépendances opérationnelles distinctes des hôtes métier ; pas de diagnostic vers une source tierce ou un service d'IP publique.
+Un refus d'admission est un échec réel de source, jamais une réussite vide. Aucun renouvellement automatique des preuves dans ce changement. L'identité du lecteur reste celle de l'image ; un nouveau SHA peut rendre les preuves antérieures périmées. Les commandes de maintenance locales (dont `source-add`) restent disponibles ; elles ne deviennent pas des modes du worker de production.
 
 ## 3. Configuration versionnée et effectivement chargée
 
@@ -95,7 +94,7 @@ L'égalité demandée repose sur **trois preuves** :
 
 Une clé secrète présente n'est pas nécessairement la bonne : tester l'authentification et le rattachement à la bonne DB. Comparer les références, la portée et les noms ; ne publier ni valeur ni hash simple de secret. Le build et les images doivent intégrer l'attestation, sans accepter comme preuve un SHA fourni librement dans une variable.
 
-**Cela requiert une nouvelle candidate.** Recréer des services à `72300c9` ne suffit pas à retirer la sonde, le deadman et le défaut de commande. La production reste à ce SHA jusqu'à validation de la nouvelle candidate. Construire une fois les deux images, enregistrer les digests et promouvoir exactement les images testées sur clone. Accès au registre OCI et authentification de pull Railway à vérifier avant provisioning ; pas de rebuild silencieux à la bascule.
+**Historique du reset R1 :** Recréer des services à `72300c9` ne suffit pas à retirer la sonde, le deadman et le défaut de commande. La production reste à ce SHA jusqu'à validation de la nouvelle candidate. Construire une fois les deux images, enregistrer les digests et promouvoir exactement les images testées sur clone. Accès au registre OCI et authentification de pull Railway à vérifier avant provisioning ; pas de rebuild silencieux à la bascule.
 
 ## 4. Observabilité adaptée à la pause
 

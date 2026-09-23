@@ -7,7 +7,7 @@ Le produit est un agrégateur mondial du luxe, de la mode, de la beauté et du r
 - [README du projet](README.md).
 - [Exploitation et état vérifié](apps/aggregator/README.md).
 - [Canari validé le 23 septembre 2026](audits/2026-09-23/canary-delta-oh-my-cream.md) : delta egress PASS ; restaurabilité acquise, état final en pause. Le ramp-up attend désormais le reset du runtime demandé ensuite. Les preuves acquises ne sont pas à rejouer sans changement qui les invalide.
-- [Reset du runtime Railway](docs/architecture/railway-runtime-reset.md) : **R1 à R4 PASS ; bascule publique R5 PASS**. `agregator.catwalks.io` sert la nouvelle API `c3613a1` ; health/auth, `/emplois`, fiche, FR/US et filtre Maison passent. Worker toujours sous pause, aucune ingestion pendant R5, aucun rollback nécessaire. Les quatre anciens services sont conservés pour repli : le dernier GO limitait l'action au domaine et aux smoke tests. Leur retrait reste à clôturer ; aucune affirmation de suppression complète du legacy runtime. PostgreSQL/volume/configuration conservés. Ne pas rejouer le canari ni les gates acquises. La montée progressive des sources est le prochain lot.
+- [Runtime Railway](docs/architecture/railway-runtime-reset.md) : R5 validé, nouvelle API publique ; les quatre anciens services sont supprimés. Le worker générique accepte la pause, une source explicite ou toutes les ACTIVE. Le run complet est autorisé ; le CRON dépend de son résultat.
 - [Architecture produit](docs/architecture/production-foundations.md).
 - [Capture native et rétention](docs/architecture/native-capture.md).
 - [Faits issus des publications](docs/architecture/source-facts.md).
@@ -19,7 +19,7 @@ Le code, les réponses brutes et les mesures datées doivent être vérifiés av
 
 Le RAW est la référence. Les interprétations restent séparées, versionnées et rejouables. Aucun métier, diplôme ou contrat universel ne doit devenir une condition de publication. Les offres Catwalks et externes gardent leurs parcours de candidature distincts.
 
-Périmètre courant : reset du runtime/configuration Railway, avant reprise du ramp-up. La DB de production, ses données et son schéma restent intacts. `/emplois`, marchés/filtres et Direct Offers ne sont pas refondus dans ce lot. `/offres`, moteur de matching et onboarding candidat restent gelés, y compris leur dette encore utilisée.
+Périmètre courant : clôture R5, worker normal et run complet des sources ACTIVE autorisés. La DB de production, ses données et son schéma restent intacts. `/emplois`, marchés/filtres et Direct Offers ne sont pas refondus dans ce lot. `/offres`, moteur de matching et onboarding candidat restent gelés, y compris leur dette encore utilisée.
 
 La phase avance par lots validés et audités. Le CRON, le matching et la nouvelle promesse de `/offres` restent des chantiers distincts. Aucune affirmation de préparation globale à la production sans les contrôles de release.
 

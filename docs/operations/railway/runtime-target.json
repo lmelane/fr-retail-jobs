@@ -1,16 +1,9 @@
 {
   "formatVersion": 1,
-  "status": "R1_CANDIDATE",
+  "status": "NORMAL_WORKER",
   "date": "2026-09-23",
   "baselineGitSha": "72300c97586955536ee1f89b0a9b7b0273fbf8a9",
   "implementationRequired": false,
-  "deploymentBlockedUntil": [
-    "R1 minimal candidate and images pass",
-    "R2 clone gates pass",
-    "R3 target/deployment/process match",
-    "R4 production canary passes before domain transfer",
-    "R5 public endpoint verification passes before retirement"
-  ],
   "scope": {
     "productionProjectId": "0eae47d0-598d-4cf0-bb3f-b38921eafa7e",
     "productionEnvironmentId": "e66b019c-d280-41dc-85d8-25ed86bdd101",
@@ -28,10 +21,9 @@
       "historical-data repair",
       "markets",
       "filters",
-      "scheduled campaigns",
       "source qualification campaign"
     ],
-    "productionIngestionException": "Only the later expressly authorized bounded Oh My Cream canary; ordinary traceable ingestion writes, no historical repair",
+    "productionIngestionException": "Authorized normal ingestion of ACTIVE sources or one explicitly selected source; existing admission, GEO and ingestion rules unchanged; no historical repair",
     "provisioning": "Railway CLI 5.59.0, exact service/environment selectors and JSON comparisons; no generic infrastructure framework"
   },
   "services": [
@@ -126,7 +118,7 @@
         "maxRetries": 0
       },
       "healthcheck": null,
-      "heartbeat": "run.alive every 30 seconds; external bounded-run start/success/failure and timeout monitor",
+      "heartbeat": "Existing Healthchecks start, pipeline heartbeat, terminal success/failure; run.alive every 30 seconds",
       "publicDomain": null,
       "dependencies": [
         "same-environment PostgreSQL",
@@ -155,80 +147,61 @@
         "hc-ping.com",
         "api.brevo.com"
       ],
-      "baseBusinessEgress": [],
-      "allowedResetAction": "ingest exactly oh-my-cream with no geocode; no refresh/direct-sync/global run",
-      "boundedCommand": "sh apps/aggregator/start.sh ingest --source=oh-my-cream --no-geocode",
-      "boundedBusinessEgress": [
-        "careers.ohmycream.com"
-      ],
-      "automaticExecution": false,
-      "concurrencyPolicy": "One explicit launch; no overlapping deployment/run; restart and auto-update disabled",
+      "automaticExecution": "Enable Railway cron only after the authorized full production run is healthy",
+      "concurrencyPolicy": "One worker instance; NEVER restart; do not manually launch or redeploy during a run",
       "pauseProof": {
         "event": "pipeline.paused",
         "workStarted": false,
         "businessRequests": 0
       },
-      "boundedRunTimeoutSeconds": 900
+      "executionModes": {
+        "paused": "PIPELINE_PAUSED=1: exit without operational side effects",
+        "normal": "sh apps/aggregator/start.sh (or ingest-all): every ACTIVE source selected by the existing orchestrator",
+        "targeted": "sh apps/aggregator/start.sh ingest --source=<key> [--no-geocode]"
+      },
+      "businessEgress": "Existing source access scopes and public-URL/redirect guards; no permanent source allowlist in the runtime"
     }
   ],
   "profiles": [
     {
       "name": "validation-paused",
       "database": "validation",
+      "roles": [
+        "api",
+        "worker"
+      ],
       "workerPaused": "1",
-      "workerCommand": "sh apps/aggregator/start.sh",
-      "businessHosts": [],
       "cronSchedule": null
     },
     {
-      "name": "validation-ohmycream",
+      "name": "validation",
       "database": "validation",
-      "workerPaused": "0",
-      "workerCommand": "sh apps/aggregator/start.sh ingest --source=oh-my-cream --no-geocode",
-      "businessHosts": [
-        "careers.ohmycream.com"
+      "roles": [
+        "worker"
       ],
-      "cronSchedule": null,
-      "returnProfile": "validation-paused",
-      "maximumExecutions": 1,
-      "executionRecordRequired": [
-        "runId",
-        "approvedSource",
-        "deadline",
-        "deploymentId",
-        "imageDigest",
-        "contractSha256"
-      ],
-      "maximumDurationSeconds": 900
+      "workerPaused": "environment",
+      "workerCommand": "sh apps/aggregator/start.sh",
+      "optionalDeadlineMaximumSeconds": 900
     },
     {
       "name": "production-paused",
       "database": "production",
+      "roles": [
+        "api",
+        "worker"
+      ],
       "workerPaused": "1",
-      "workerCommand": "sh apps/aggregator/start.sh",
-      "businessHosts": [],
       "cronSchedule": null
     },
     {
-      "name": "production-ohmycream",
+      "name": "production",
       "database": "production",
-      "workerPaused": "0",
-      "workerCommand": "sh apps/aggregator/start.sh ingest --source=oh-my-cream --no-geocode",
-      "businessHosts": [
-        "careers.ohmycream.com"
+      "roles": [
+        "worker"
       ],
-      "cronSchedule": null,
-      "returnProfile": "production-paused",
-      "maximumExecutions": 1,
-      "executionRecordRequired": [
-        "runId",
-        "approvedSource",
-        "deadline",
-        "deploymentId",
-        "imageDigest",
-        "contractSha256"
-      ],
-      "maximumDurationSeconds": 900
+      "workerPaused": "environment",
+      "workerCommand": "sh apps/aggregator/start.sh",
+      "optionalDeadlineMaximumSeconds": 900
     }
   ],
   "decommissionAfterCanary": [

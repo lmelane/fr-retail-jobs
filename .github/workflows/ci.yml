@@ -175,7 +175,7 @@ jobs:
           assert image['Architecture'] == 'amd64'
           assert len(image['RepoDigests']) == 1
           receipt.update(service=os.environ['RUNTIME_NAME'], image=image['RepoDigests'][0], imageId=image['Id'],
-                         imageEnvironment=image['Config']['Env'], profiles=['validation-paused','validation-ohmycream','production-paused','production-ohmycream'])
+                         imageEnvironment=image['Config']['Env'], profiles=[p['name'] for p in json.loads(pathlib.Path('docs/operations/railway/runtime-target.json').read_text())['profiles']])
           pathlib.Path('runtime-image.json').write_text(json.dumps(receipt, indent=2) + '\n')
           print(json.dumps(receipt))
           PY

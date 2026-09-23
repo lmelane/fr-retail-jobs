@@ -78,6 +78,8 @@ const cli = (...args) => node('apps/aggregator/src/cli.ts', args);
 const onboard = (...args) => node('apps/aggregator/scripts/ops/source-onboard.mts', args);
 const cases = [
   ['start.sh', () => ['sh', ['apps/aggregator/start.sh']]],
+  ['start.sh normal', () => ['sh', ['apps/aggregator/start.sh', 'ingest-all']]],
+  ['start.sh targeted', () => ['sh', ['apps/aggregator/start.sh', 'ingest', '--source=another-source']]],
   ['CLI ingest', () => cli('ingest', '--source=witness', '--no-geocode')],
   ['CLI geocode', () => cli('geocode')],
   ['CLI direct-sync', () => cli('direct-sync')],
