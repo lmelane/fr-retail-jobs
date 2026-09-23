@@ -2,11 +2,16 @@ import { createHash } from 'node:crypto';
 import { readFileSync, readdirSync } from 'node:fs';
 import { join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { release } from '@catwalks/runtime';
 
 let localRevision: string | undefined;
 /** A local extraction also has a concrete reader fingerprint, including dependencies. */
 export function captureReaderRevision(): string {
-  const deployed = process.env.RAILWAY_GIT_COMMIT_SHA;
+  // Registry images have no Railway Git source. Their sealed revision is the
+  // same identity used by startup attestation and PipelineRun.
+  const deployed = release?.gitSha ?? process.env.RAILWAY_GIT_COMMIT_SHA;
+  if (release && process.env.RAILWAY_GIT_COMMIT_SHA && process.env.RAILWAY_GIT_COMMIT_SHA !== release.gitSha)
+    throw new Error('Deployed reader differs from the embedded release');
   if (deployed !== undefined) {
     if (!/^[a-f0-9]{40}$/i.test(deployed)) throw new Error('Invalid deployed reader revision');
     return `git:${deployed.toLowerCase()}`;
