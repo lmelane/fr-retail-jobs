@@ -12,9 +12,9 @@ Collecte des offres du luxe, de la mode, de la beauté et du retail. Les publica
 
 Aucun push sur `main` ni déploiement du site, backend, back-office ou média sans validation explicite de Loïc. Le GO de Loïc couvre la livraison et l’exploitation normale de l’agrégateur décrites dans le bilan courant, y compris sa promotion vers `main`. La mission post-RUN autorise les correctifs génériques, leurs migrations non destructives versionnées, la CI et la livraison de l’agrégateur. Aucun reset, réparation historique ou déploiement des autres produits n’est inclus.
 
-### Transition des copies de travail
+### Copies de travail
 
-Les checkouts actuellement utilisés par Claude sont conservés tant que son travail est actif. Leur branche locale peut donc encore porter un ancien nom, y compris `main` : cela ne vaut ni validation ni autorisation de production. `development` distante reçoit les commits validés. La branche locale sera réalignée après coordination, sans perdre de fichiers modifiés ou non suivis. Le SHA réellement déployé doit être vérifié avant d’affirmer que `main` lui correspond.
+Le checkout de référence de l’agrégateur travaille sur `development` ; Git n’enregistre qu’un worktree pour ce dépôt, avec les branches locales `development` et `main`. Le SHA du code réellement déployé est attesté dans le reçu de release ; les commits de documentation ne reconstruisent pas les images. Préserver toute copie utilisée par un autre agent ou processus et tout travail unique avant une opération de nettoyage.
 
 Les règles de travail figurent dans [CLAUDE.md](CLAUDE.md). Préserver le travail unique avant toute suppression de branche ou de clone ; une copie utilisée par un processus actif reste en place jusqu’à coordination.
 

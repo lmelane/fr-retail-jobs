@@ -1,16 +1,16 @@
 {
-  "observedAt": "2026-09-23T15:09:17.119269+00:00",
-  "productionCodeSha": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+  "observedAt": "2026-09-23T19:02:38.501358+00:00",
+  "productionCodeSha": "3581d05557b4e283074811f4ab53796ef2fbcfe9",
   "targetContractSha256": "85eb5ad68621ab7d8b4d04fe7e3d4778141635255aab25038907c0d03ea8119f",
   "registryVisibility": "public",
   "registryCredentialsRequired": false,
   "images": [
     {
-      "gitSha": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "gitSha": "3581d05557b4e283074811f4ab53796ef2fbcfe9",
       "contractSha256": "85eb5ad68621ab7d8b4d04fe7e3d4778141635255aab25038907c0d03ea8119f",
       "service": "catwalks-catalogue-api",
-      "image": "ghcr.io/lmelane/catwalks-catalogue-api@sha256:6ffef7b4869b92ea809067804cc169545c12f58f0f30a2b562d9df0c3e4ee55b",
-      "imageId": "sha256:b30165e07a70c7e7eb17fd0ae506736975a7df2d447c749d63a50847ce2b022c",
+      "image": "ghcr.io/lmelane/catwalks-catalogue-api@sha256:2f112e8abcac0f0c4f935ac91a979bac5fcee1e44167910c55eddbf174d2687e",
+      "imageId": "sha256:15123b604a0d954d2e50c6e3549ed983b5afa58ac8abd1afb0754ab853a6afc3",
       "imageEnvironment": [
         "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
         "NODE_VERSION=22.23.2",
@@ -27,15 +27,15 @@
         "status": "PASS",
         "network": "none",
         "role": "api",
-        "gitSha": "a5321650adbbd49843a30be60aae7de8ed869d8a"
+        "gitSha": "3581d05557b4e283074811f4ab53796ef2fbcfe9"
       }
     },
     {
-      "gitSha": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+      "gitSha": "3581d05557b4e283074811f4ab53796ef2fbcfe9",
       "contractSha256": "85eb5ad68621ab7d8b4d04fe7e3d4778141635255aab25038907c0d03ea8119f",
       "service": "catwalks-ingestion-worker",
-      "image": "ghcr.io/lmelane/catwalks-ingestion-worker@sha256:e2d6b8678f082024d2733cab72e52b384e376370e1268632561fc1750bc862c0",
-      "imageId": "sha256:779df6ae01373c35dbd2cf021bc16f0a9e85e0fbb5c78e58893421bee3db2fdb",
+      "image": "ghcr.io/lmelane/catwalks-ingestion-worker@sha256:158c4750368776e32b83163e9e642464eae74f30ca18a134b1f7d04f473e3d00",
+      "imageId": "sha256:fde3cced2a692d27d31ea56b131a1007d096743fac7ebbec60e585102c8e40a3",
       "imageEnvironment": [
         "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
         "LANG=C.UTF-8",
@@ -52,23 +52,23 @@
         "status": "PASS",
         "network": "none",
         "role": "worker",
-        "gitSha": "a5321650adbbd49843a30be60aae7de8ed869d8a"
+        "gitSha": "3581d05557b4e283074811f4ab53796ef2fbcfe9"
       }
     }
   ],
   "reason": "Post-RUN generic fixes delivered on both runtimes; native evidence, source identity and access guards preserved. Documentation/proof-only commits after this code SHA do not rebuild or restart images.",
   "ci": {
-    "development": 35867602571,
-    "main": 35868630320,
+    "development": 35892261037,
+    "main": 35895189990,
     "status": "SUCCESS"
   },
   "services": [
     {
       "serviceId": "9c50b8a9-5651-478f-b0d1-5bc02d2c138f",
       "name": "catwalks-catalogue-api",
-      "deploymentId": "49bab5cb-9831-4ad0-ac77-caf527e2f5f3",
+      "deploymentId": "94d39c69-c980-4da0-a2b3-a85eb9e6c8a6",
       "deploymentStatus": "SUCCESS",
-      "image": "ghcr.io/lmelane/catwalks-catalogue-api@sha256:6ffef7b4869b92ea809067804cc169545c12f58f0f30a2b562d9df0c3e4ee55b",
+      "image": "ghcr.io/lmelane/catwalks-catalogue-api@sha256:2f112e8abcac0f0c4f935ac91a979bac5fcee1e44167910c55eddbf174d2687e",
       "deploy": {
         "region": null,
         "runtime": "V2",
@@ -105,9 +105,9 @@
         "PORT"
       ],
       "process": {
-        "at": "2026-09-23T13:47:48.945Z",
+        "at": "2026-09-23T17:46:10.969Z",
         "role": "api",
-        "gitSha": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+        "gitSha": "3581d05557b4e283074811f4ab53796ef2fbcfe9",
         "contractSha256": "85eb5ad68621ab7d8b4d04fe7e3d4778141635255aab25038907c0d03ea8119f",
         "profile": "production-paused",
         "argv": [],
@@ -136,9 +136,9 @@
     {
       "serviceId": "210322c3-51b7-42c3-a93d-f50f64d44d19",
       "name": "catwalks-ingestion-worker",
-      "deploymentId": "8d8c59aa-405e-461b-bf80-96c7a26094f4",
+      "deploymentId": "562e871c-6922-42e8-80a7-34abe538a4dd",
       "deploymentStatus": "SUCCESS",
-      "image": "ghcr.io/lmelane/catwalks-ingestion-worker@sha256:e2d6b8678f082024d2733cab72e52b384e376370e1268632561fc1750bc862c0",
+      "image": "ghcr.io/lmelane/catwalks-ingestion-worker@sha256:158c4750368776e32b83163e9e642464eae74f30ca18a134b1f7d04f473e3d00",
       "deploy": {
         "region": null,
         "runtime": "V2",
@@ -177,9 +177,9 @@
         "PIPELINE_PAUSED"
       ],
       "process": {
-        "at": "2026-09-23T15:08:31.940Z",
+        "at": "2026-09-23T19:02:18.671Z",
         "role": "worker",
-        "gitSha": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+        "gitSha": "3581d05557b4e283074811f4ab53796ef2fbcfe9",
         "contractSha256": "85eb5ad68621ab7d8b4d04fe7e3d4778141635255aab25038907c0d03ea8119f",
         "profile": "production",
         "argv": [
@@ -217,32 +217,33 @@
     "localHour": 18,
     "actualRunsPerDay": 1,
     "initialOffScheduleStart": {
-      "level": "info",
-      "requiredHour": 18,
-      "message": "",
-      "event": "worker.schedule_skipped",
       "timeZone": "Europe/Paris",
-      "timestamp": "2026-09-23T15:08:32.389517580Z"
+      "timestamp": "2026-09-23T19:02:18.742996618Z",
+      "message": "",
+      "requiredHour": 18,
+      "level": "info",
+      "event": "worker.schedule_skipped"
     },
-    "nextScheduledRun": "2026-09-23T16:00:00Z",
-    "nextFullRunAlreadyExecuted": false
+    "nextScheduledRun": "2026-09-24T16:00:00Z",
+    "priorDailyRunId": "8b13d1f0-ced1-4380-8ad5-89e33a74587d",
+    "newCodeValidatedBy": "targeted production replays"
   },
   "database": {
     "serviceId": "b5c68d1c-6988-4f15-8d85-afe684109cea",
     "serviceAndVolumeConfigurationUnchanged": true,
     "migrationsApplied": 88,
-    "newMigration": "20260923133000_fractional_experience",
+    "newMigration": null,
     "historicalDataRepair": false,
     "reset": false,
     "rollbackConstraint": "Preserve the Float experienceYears schema and runtime support. No integer downgrade after native fractional values have been published."
   },
   "registry": [
     {
-      "_count": 409,
+      "_count": 410,
       "status": "ACTIVE"
     },
     {
-      "_count": 12,
+      "_count": 11,
       "status": "PAUSED"
     },
     {
@@ -251,7 +252,7 @@
     }
   ],
   "httpSmoke": {
-    "at": "2026-09-23T15:03:40.919169+00:00",
+    "at": "2026-09-23T19:00:25.421820+00:00",
     "health": {
       "status": 200
     },
@@ -260,11 +261,11 @@
     },
     "detail": {
       "status": 200,
-      "id": "cmue6b6bi01m3md34s15bjn3c"
+      "id": "cmue51vd109beo234uuge7daw"
     },
     "FR": {
       "status": 200,
-      "total": 9171,
+      "total": 10418,
       "perimetre": {
         "code": "FR",
         "nom": "France",
@@ -283,11 +284,11 @@
         "FR"
       ],
       "marketBound": true,
-      "sampleId": "cmue6b6bi01m3md34s15bjn3c"
+      "sampleId": "cmue51vd109beo234uuge7daw"
     },
     "US": {
       "status": 200,
-      "total": 25584,
+      "total": 33997,
       "perimetre": {
         "code": "US",
         "nom": "United States",
@@ -310,7 +311,7 @@
     },
     "FR_filters": {
       "status": 200,
-      "total": 2940,
+      "total": 3508,
       "perimetre": {
         "code": "FR",
         "nom": "France",
@@ -359,6 +360,6 @@
     "pass": true
   },
   "productionOutcome": "../../../audits/2026-09-23/post-run.md",
-  "targetedReplays": "../../../audits/2026-09-23/post-run-immediate-results.json",
+  "targetedReplays": "../../../audits/2026-09-23/post-run-followup-results.json",
   "environmentInventory": "../../../audits/2026-09-23/post-run-environment.json"
 }

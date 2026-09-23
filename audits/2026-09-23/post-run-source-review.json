@@ -376,6 +376,40 @@
           "nativeResponseHashes": [
             "0f7d7c3db07f34919359b624babfc0f8633eba1be6f3d34a7328cf44180de90d"
           ]
+        },
+        "releaseFollowUp": {
+          "observedAt": "2026-09-23T18:59:58.169Z",
+          "productionCodeSha": "3581d05557b4e283074811f4ab53796ef2fbcfe9",
+          "sourceKey": "alberto",
+          "deploymentId": "a89b18a7-a4ce-4ee2-bbe3-3d253c74729d",
+          "processSha": "3581d05557b4e283074811f4ab53796ef2fbcfe9",
+          "exitCode": 0,
+          "registryStatus": "ACTIVE",
+          "runIds": [
+            "703d92d6-fff0-4831-9e6d-fc1b6f2be017"
+          ],
+          "latestHealth": "OK",
+          "latestResult": {
+            "source": "alberto",
+            "fetched": 4,
+            "created": 0,
+            "updated": 4,
+            "merged": 0,
+            "errors": 0,
+            "held": null,
+            "heldUnresolved": null,
+            "rejected": 78,
+            "rejectedReasons": {
+              "LISTED_POSTING_PREVIEW": 4,
+              "LISTED_PAGE_WITHOUT_JOBPOSTING": 74
+            },
+            "france": 0,
+            "complete": true,
+            "truncated": false,
+            "captureBatchId": "a0863c5f-0400-476e-b1ff-96972743509b",
+            "completionReportHash": "7203f4c8b7e53cdb4700f8b84d01b83d4c014a0267bb23329fa728fb8fb5fe05"
+          },
+          "resultsReference": "post-run-followup-results.json"
         }
       }
     },
@@ -10815,6 +10849,38 @@
           "nativeResponseHashes": [
             "a339ba782ab9c8361535a885901d0bece19b8f9342bde42cc277286112e41eb3"
           ]
+        },
+        "releaseFollowUp": {
+          "observedAt": "2026-09-23T18:59:58.169Z",
+          "productionCodeSha": "3581d05557b4e283074811f4ab53796ef2fbcfe9",
+          "sourceKey": "picard",
+          "deploymentId": "949d2dd2-2deb-47b2-a021-b484cc764a30",
+          "processSha": "3581d05557b4e283074811f4ab53796ef2fbcfe9",
+          "exitCode": 0,
+          "registryStatus": "ACTIVE",
+          "runIds": [
+            "42b61d0d-f61b-4d17-a770-b6d5ed372232",
+            "a011d861-0002-4204-b165-ef4f84d8d1b6"
+          ],
+          "latestHealth": "DEGRADED",
+          "latestResult": {
+            "source": "picard",
+            "fetched": 6,
+            "created": 6,
+            "updated": 0,
+            "merged": 0,
+            "errors": 0,
+            "held": null,
+            "heldUnresolved": null,
+            "rejected": null,
+            "rejectedReasons": null,
+            "france": 0,
+            "complete": false,
+            "truncated": false,
+            "captureBatchId": "567882b9-76aa-4dbf-ac58-e5e2d52ab55d",
+            "completionReportHash": "573f20f16597ec59b707e1959c9c6fa9e9e9ae999d10933c3325b1a83debaf54"
+          },
+          "resultsReference": "post-run-followup-results.json"
         }
       }
     },
@@ -15053,6 +15119,25 @@
           "conclusion": "27 IDENTITY_MISMATCH : URL anglaise appliquée par le collecteur, document arabe seul retenu. Le détail est maintenant conservé et relu, avec origine, slug et URL canonique concordants. Identité employeur reste indépendante."
         }
       ]
+    },
+    "latestRuntimeVerification": {
+      "observedAt": "2026-09-23T18:59:58.169Z",
+      "productionCodeSha": "3581d05557b4e283074811f4ab53796ef2fbcfe9",
+      "registry": [
+        {
+          "_count": 410,
+          "status": "ACTIVE"
+        },
+        {
+          "_count": 11,
+          "status": "PAUSED"
+        },
+        {
+          "_count": 116,
+          "status": "RETIRED"
+        }
+      ],
+      "results": "post-run-followup-results.json"
     }
   }
 }

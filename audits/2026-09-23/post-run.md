@@ -2,9 +2,60 @@
 
 ## État de livraison
 
-**Suite en cours, 16:25 UTC.** Le RUN quotidien `8b13d1f0-ced1-4380-8ad5-89e33a74587d` a démarré automatiquement à 16:01:58 UTC (18:01 Paris), sur `a532165`. Aucun redémarrage ni changement de registre pendant ce RUN. Correctifs testés localement, pas encore livrés : résumé de source atomique lors d'un échec ; aperçus JSON-LD écartés uniquement si leur fiche native est lue dans la même capture ; RAW RSS/Atom complet et relecture partagée. Validation ciblée : 25 tests accès/santé, 39 tests JSON-LD, 65 tests qualification/relecture/rejets ; typecheck vert.
+**Code `3581d05` livré et vérifié sur l’API et le worker.** Les deux images immuables portent ce SHA ; CI développement et main vertes. Le [reçu courant](../../docs/operations/railway/runtime-release.json) compare contrat, configuration Railway et processus, hors valeurs secrètes. PostgreSQL, son volume et les 88 migrations restent inchangés ; aucun reset ni réparation historique. Le CRON normal est rétabli à **18 h Europe/Paris, une fois par jour**. Le démarrage hors créneau sort sans collecte. Les contrôles API, authentification, FR, US, filtres et fiche passent ; `/emplois` local affiche notamment les 51 offres Adidas FR avec leur candidature externe.
 
-**Correctifs livrés et mesures immédiates terminées.** Code de production `a532165`, API et worker sur leurs images immuables attestées, CI verte. 39 sources rejouées explicitement avant le RUN quotidien : 24 réussies, 3 partielles, 12 bloquées individuellement. Ce bilan ne prétend pas que toutes les sources ACTIVE ont été rejouées ou sont sans erreur. Aucun nouveau RUN global n’a été lancé pour l’audit. Le calendrier quotidien est rétabli à **18 h Europe/Paris** ; [configuration effectivement chargée](../../docs/operations/railway/runtime-release.json).
+Le [bilan du RUN quotidien et des replays ciblés](post-run-followup-results.json) conserve les tentatives, y compris les échecs initiaux. Registre final : **410 ACTIVE, 11 PAUSED, 116 RETIRED**. La livraison est exploitable avec des incidents de sources identifiés ; elle ne signifie pas que chaque source est sans erreur.
+
+### RUN quotidien effectivement observé
+
+`8b13d1f0-ced1-4380-8ad5-89e33a74587d`, sur `a532165`, du 16:01:58 au 17:44:56 UTC : **1 h 42 min 57 s**, 409 sources parcourues, **349 OK, 33 DEGRADED, 18 BROKEN et 9 ERROR**. L’orchestrateur compte séparément 375 sources sans échec d’exécution et 34 avec échec ; une source partielle peut publier des offres et avoir des refus d’écriture. Ne pas confondre ces deux classifications.
+
+- 1 196 captures, 93 057 réponses RAW, 147 184 extractions comprenant qualification et ingestion.
+- 13 441 créations, 50 207 mises à jour, 20 rapprochements ; 5 097 erreurs rapportées par l’ingestion, dont 5 095 refus d’identité et deux échecs de collecte/admission. Les neuf échecs avant ingestion restent comptés séparément.
+- Refus d’identité : 5 001 `PORTAL_OWNER_NOT_CERTIFIED`, 93 `EMPLOYER_SPELLING_DIVERGED`, un `ALIAS_SOURCE_OR_TENANT_CHANGED`.
+- Zéro timeout de source, zéro échec de persistance ; 205 signaux `run.alive`.
+- Refresh : 771 publications source désactivées et 749 offres fermées, avec 755 entrées de journal. Les preuves couvrent 133 échéances natives et 638 absences ; les 71 captures d’énumération appartiennent à ce RUN, sont admises et terminées avec zéro erreur d’écriture. Aucune preuve manquante ni fermeture induite par une source partielle.
+
+Ce RUN précède `3581d05`. Les corrections suivantes sont vérifiées par replays ciblés, sans déclencher un second RUN global.
+
+### Correctifs et validations de cette livraison
+
+- Résumé de santé : échec et résumé de source écrits atomiquement. Les anciens écarts ne sont pas réécrits ; le dernier `SourceRun` reste la référence pour ces lignes.
+- Sitemap JSON-LD : aperçus écartés seulement lorsque leur fiche native exploitable est présente dans la même capture. Identifiants et langues conservés, pas de fusion par titre.
+- RSS/Atom : contenu natif intégral conservé et lecteur partagé pour la récupération. Picard utilise le flux publié par son portail officiel.
+- Phenom : `companyName` natif lu avec sa provenance chez Hugo Boss. **Skechers n’a pas ce champ** et son JSON-LD porte un nom vide : sa correction est une revue du portail dédié, avec redirection officielle et RAW, pas une lecture de champ prétendument présent.
+- Typesense : détail natif retenu et relisible sous contrôle d’origine/slug. Rivoli passe désormais ce contrôle ; l’employeur reste non établi sur ce portail de groupe.
+- Workday : la qualification applique la même règle de portail explicitement revu que l’ingestion. Preuve de registre distincte du RAW, contrôle de révision et refus si cette preuve change pendant la validation. Chanel est le témoin de production.
+- Registre : cinq sources revues (Picard, Aéropostale, Adidas, Chanel, Skechers), sans alias fabriqué, déplacement de société ou réécriture d’offres historiques. Les nouvelles révisions Picard/Aéropostale passent par `source-add`.
+
+| Source | Santé de la dernière tentative | Créations | Mises à jour | Erreurs d’ingestion |
+|---|---|---:|---:|---:|
+| alberto | OK | 0 | 4 | 0 |
+| hugo-boss-phenom | DEGRADED | 585 | 0 | 0 |
+| skechers-phenom | DEGRADED | 1593 | 0 | 0 |
+| rivoli-typesense | BROKEN | 0 | 0 | 46 |
+| adidas | OK | 1253 | 0 | 0 |
+| parfums-chanel | OK | 1157 | 0 | 0 |
+| picard | DEGRADED | 6 | 0 | 0 |
+| aeropostale | OK | 18 | 0 | 0 |
+
+Les résultats partiels restent partiels : répétitions d’identifiants entre pages Phenom, HTTP 403 sur certaines fiches et corpus sans compteur d’exhaustivité utilisable ne deviennent pas des preuves d’absence. Rivoli reste un refus individuel d’identité, explicitement conservé dans le bilan. Les empreintes, rapports de fin d’ingestion et compteurs de chaque tentative figurent dans le JSON associé.
+
+### Incidents et décisions restant ouverts
+
+`PORTAL_OWNER_NOT_CERTIFIED` est un refus d’attribution employeur : la publication ne fournit pas d’employeur natif exploitable et la portée revue du portail ne permet pas de prendre son propriétaire comme employeur. Ce n’est pas un refus HTTP ni une panne globale. Les correctifs de lecteur et les revues de portail ci-dessus réduisent les cas injustifiés ; les refus restants ne sont pas automatiquement autorisés.
+
+- LVMH : 6 178 publications créées ou mises à jour sur 6 208 observées, 30 refus. Les trois RAW examinés portent réellement `maison: null` ; aucun employeur groupe inventé à leur place.
+- Portails de groupe/intermédiaires : preuves d’employeur encore insuffisantes pour Tiffany, Rivoli, Luxe Talent et plusieurs groupes. Chantelle expose une enseigne dans le détail ignorée par le lecteur lorsqu’un RSS fournit déjà une description : limite d’adapter identifiée, pas absence native démontrée.
+- Accès ou contenu : limites de périmètre Boots ; refus explicites Lindex/Nocibé ; TLS Ralph Lauren ; HTTP 406 L’Oréal ; détails refusés PVH ; contenus vides Kering/ELC ; quatre HTML non structurés et une adresse native incohérente chez Zegna. Aucun contournement, plafond abaissé ni pays inventé.
+- Identités historiques : B&S/B’s, ALTEX/Funky Buddha, ponctuation Thomas Sabo et un alias Tapestry lié à une ancienne configuration restent distincts d’un défaut de lecteur. Aucune attribution historique modifiée.
+- **MIU/Miu Miu : sept anciennes offres universitaires mal attribuées.** Proposition de retrait public prête avec avant-images et conservation des RAW/historiques ; autorisation spécifique en attente au titre du gel des données historiques. Ni retrait ni suppression exécutés.
+
+Validation : suites CI du code livré vertes ; tests ciblés de qualification/relecture et du registre, dont 70 cas d’intégration et 39 unitaires pour le complément Workday. Les preuves déjà acquises ne sont pas rejouées sans changement pertinent. `/offres`, matching, onboarding, Direct Offers et marchés/filtres restent hors modification.
+
+## Référence historique du RUN initial
+
+Les constats et états ci-dessous sont datés. La section « État de livraison » ci-dessus et le reçu courant priment pour l’exploitation actuelle.
 
 Source de vérité : RUN production `ca946bd4-c8ba-40f7-ab8f-ddc1a3095bb1`, image worker `653920c`, RAW et captures immuables. Du 07:51:28 au 09:45:28 UTC : 384 ACTIVE, 255 OK, 35 DEGRADED, 60 BROKEN, 34 ERROR. 1 098 captures (734 JOBS, 364 SOURCE_ACCESS), 74 818 réponses RAW, 120 421 extractions comprenant qualification et ingestion ; 11 791 créations, 20 883 mises à jour, 63 rapprochements. Aucun timeout ni échec de persistance.
 
@@ -78,7 +129,7 @@ Dernières tentatives par source : 33 lots de capture, 2676 RAW, 2428 extraction
 
 26 brouillons sans appel/import/processus actif retirés après archive et vérification SHA-256 ; trois copies inactives supprimées après restauration vérifiée. Les copies actives, changements uniques, bases et conteneurs préexistants sont conservés. Les JSON historiques utiles restent inchangés. Deux exports CSV racine, archivés à l’identique, et trois caches Python générés ont aussi été retirés du checkout. Le script de correction d’ATS refuse désormais un kind invalide, maintient domaine/tenant ensemble et protège la révision contre une écriture concurrente.
 
-CRON chargé : **18 h Europe/Paris une fois par jour**, été/hiver. Railway déclenche aux deux heures UTC possibles ; `scheduled` sort avant DB/réseau au créneau qui ne correspond pas. Le [reçu de livraison](../../docs/operations/railway/runtime-release.json) confirme cible = Railway = processus, hors secrets. Le lancement de configuration hors créneau a produit `worker.schedule_skipped`, sans activité DB/réseau. Aucun ancien service de production ne subsiste : PostgreSQL + API + worker. Premier départ prévu : **23 septembre 2026 à 18 h Paris (16 h UTC)**. Les pings Healthchecks fonctionnent ; la réception des alertes et le délai configuré dans le compte ne sont pas prouvés par ces réponses HTTP et restent distincts du calendrier Railway. Aucun nouveau dashboard/service/outil d’observabilité.
+CRON chargé : **18 h Europe/Paris une fois par jour**, été/hiver. Railway déclenche aux deux heures UTC possibles ; `scheduled` sort avant DB/réseau au créneau qui ne correspond pas. Le [reçu de livraison](../../docs/operations/railway/runtime-release.json) confirme cible = Railway = processus, hors secrets. Le lancement de configuration hors créneau a produit `worker.schedule_skipped`, sans activité DB/réseau. Aucun ancien service de production ne subsiste : PostgreSQL + API + worker. Premier départ effectivement observé : **23 septembre 2026 à 18 h Paris (16 h UTC)** ; bilan en tête de ce document. Les pings Healthchecks fonctionnent ; la réception des alertes et le délai configuré dans le compte ne sont pas prouvés par ces réponses HTTP et restent distincts du calendrier Railway. Aucun nouveau dashboard/service/outil d’observabilité.
 
 ## Validation technique
 
@@ -88,7 +139,7 @@ CRON chargé : **18 h Europe/Paris une fois par jour**, été/hiver. Railway dé
 - Contrat runtime/DST et pause des entrypoints : 41 cas, dont 40 PASS et une variante non applicable ignorée ; aucun accès métier sous pause.
 - Preuves de production : 63 rapprochements reconstruits, erreurs/captures réelles conservées. Les anciens exports ne sont jamais réécrits pour obtenir un PASS.
 
-La première livraison s’appuyait sur les replays ciblés, les lectures API et le contrôle produit local. La mesure complémentaire ci-dessous couvre les corrections et qualifications suivantes. Le RUN quotidien complet ne doit pas être présenté comme déjà observé. `/offres`, matching, Direct Offers, onboarding, marchés et filtres sont inchangés.
+La première livraison s’appuyait sur les replays ciblés, les lectures API et le contrôle produit local. La mesure complémentaire ci-dessous couvre les corrections et qualifications suivantes. À cette étape, le RUN quotidien complet n’avait pas encore été observé ; son résultat figure désormais en tête de ce document. `/offres`, matching, Direct Offers, onboarding, marchés et filtres sont inchangés.
 
 ## Mesure immédiate avant le RUN quotidien
 
@@ -151,9 +202,9 @@ TFG (clé stable `markham`) : 181/181 réponses natives sans LegalEmployer, Busi
 
 Nocibé reste un incident d’accès externe déjà diagnostiqué : capture `81abadd7-e757-4fc2-b4cc-4b8a8ac1e4bf`, `/robots.txt` → 301 `/` → 302 `/front-jobs.html` → HTML de listing. Ce n’est ni un robots exploitable ni une preuve de challenge anti-bot ; aucune permission inventée. Cotton On expose neuf détails dont description, responsabilités, qualifications et résumé sont réellement vides ; empreintes des neuf extractions vérifiées. Le plafond de rejet n’est pas modifié pour les faire passer.
 
-### État de sortie
+### État de sortie avant le RUN quotidien
 
-API et worker exécutent `a532165`, via les digests CI immuables ; configuration cible, Railway et processus comparés hors secrets. PostgreSQL, son service et son volume sont préservés. Le worker normal est programmé à 18 h Europe/Paris ; lancement de configuration hors créneau attesté sans ingestion globale. Healthcheck, authentification, FR, US, filtre Paris, Caudalie FR et fiche offre vérifiés. Les données natives incomplètes et les identités non établies restent des incidents isolés et visibles ; aucune preuve acquise n’est effacée pour produire un PASS.
+À cette mesure, API et worker exécutaient `a532165`, via les digests CI immuables ; configuration cible, Railway et processus comparés hors secrets. PostgreSQL, son service et son volume sont préservés. Le worker normal est programmé à 18 h Europe/Paris ; lancement de configuration hors créneau attesté sans ingestion globale. Healthcheck, authentification, FR, US, filtre Paris, Caudalie FR et fiche offre vérifiés. Les données natives incomplètes et les identités non établies restent des incidents isolés et visibles ; aucune preuve acquise n’est effacée pour produire un PASS.
 
 ### Complément de diagnostic depuis les RAW, 16:10–16:25 UTC
 
@@ -175,12 +226,12 @@ Le RUN `8b13d1f0-ced1-4380-8ad5-89e33a74587d` a démarré automatiquement à 16:
 - **Aéropostale / iCIMS** : les trois RAW inspectés portent déjà `hiringOrganization.name = Aeropostale`. L'option existante `employerFromJobPosting` n'est pas déclarée dans cette source ; préparer une révision relue, sans changer le garde-fou global ni le registre pendant le RUN.
 - **Adidas / portails de groupe** : distinguer le registre non renseigné d'un portail multimarque. Aucun `SINGLE_BRAND` automatique pour éliminer les refus.
 
-Validation locale complémentaire : 62 tests lecteurs/recovery et 66 tests capture/replay/qualification/rejets sur PostgreSQL jetable, types application/scripts verts. Ces correctifs ne sont pas encore déployés ; leur validation opérationnelle reste ciblée, après fin du RUN et passage development → main → CI.
+Validation locale complémentaire : 62 tests lecteurs/recovery et 66 tests capture/replay/qualification/rejets sur PostgreSQL jetable, types application/scripts verts. À cette mesure, ces correctifs n’étaient pas encore déployés. Leur livraison et leurs replays de production figurent en tête de ce document.
 
 ### Qualification et périmètre employeur, 16:56 UTC
 
 La capture Chanel contient 1 156 publications Workday sans employeur natif. La règle existante autorise leur publication sous un portail explicitement revu `SINGLE_BRAND`, mais la qualification refusait ces publications avant que cette règle puisse être appliquée. La qualification et la relecture utilisent désormais cette même règle, uniquement avec le registre courant de la révision capturée. Le rapport conserve cette provenance distincte ; le RAW et la sortie native restent inchangés. Une modification du registre pendant la validation fait échouer la décision. Un portail non revu ou multimarque, une identité de détail incohérente ou une description vide restent refusés.
 
-Validation : 39 tests unitaires recovery/portail et 70 tests d'intégration capture/replay/qualification/rejets sur base jetable, types application/scripts verts. Le déploiement reste à effectuer après le RUN en cours.
+Validation : 39 tests unitaires recovery/portail et 70 tests d'intégration capture/replay/qualification/rejets sur base jetable, types application/scripts verts. À cette mesure, le déploiement attendait la fin du RUN ; il est désormais attesté en tête de ce document.
 
 Revue des autres portails groupe : le détail Talentsoft de Chantelle expose une enseigne native (Darjeeling) ignorée lorsque le RSS fournit déjà une description ; c'est une limite de couverture du lecteur, pas une preuve d'absence d'employeur chez l'éditeur. Le champ `reseau` de Beauty Success distingue réseau intégré/franchisé et ne nomme pas l'employeur ; les départements Lever de Hot Topic sont fonctionnels. Les portails Printemps et Lagardère demandent également une preuve d'entité à l'annonce. Aucun de ces groupes n'est transformé arbitrairement en portail mono-marque pour éliminer un refus.

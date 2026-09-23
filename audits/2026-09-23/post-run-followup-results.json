@@ -1,0 +1,5607 @@
+{
+  "observedAt": "2026-09-23T18:59:58.169Z",
+  "scope": "Validation ciblée des correctifs 3581d05 après le RUN quotidien du 23 septembre. Aucun nouveau RUN global. Les compteurs de qualification et d’ingestion restent distincts ; les refus individuels et les collectes partielles sont conservés.",
+  "runs": [
+    {
+      "runId": "703d92d6-fff0-4831-9e6d-fc1b6f2be017",
+      "command": "ingest",
+      "revision": "3581d05557b4e283074811f4ab53796ef2fbcfe9",
+      "startedAt": "2026-09-23T17:47:33.585Z",
+      "finishedAt": "2026-09-23T17:48:00.639Z",
+      "durationSeconds": 27.054,
+      "status": "COMPLETED",
+      "sources": [
+        "alberto"
+      ],
+      "captures": 3,
+      "raw": 163,
+      "extractions": 8,
+      "aliveEvents": 0,
+      "sealedCompletions": 1,
+      "heartbeat": [
+        "pinged"
+      ],
+      "errorEvents": 0,
+      "qualification": [],
+      "runObservability": [
+        {
+          "status": "COMPLETED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 163,
+            "http.responses": 163
+          }
+        }
+      ],
+      "sourceRuns": [
+        {
+          "runId": "703d92d6-fff0-4831-9e6d-fc1b6f2be017",
+          "id": "cmueebzfm000gkm34uj27bqes",
+          "sourceKey": "alberto",
+          "status": "OK",
+          "jobs": 4,
+          "previousJobs": 4,
+          "fetched": 4,
+          "accepted": 4,
+          "declaredTotal": 80,
+          "truncated": false,
+          "errors": 0,
+          "canAttestAbsence": false,
+          "complete": true,
+          "note": "desc 0% date 100% pays 100% url 100%",
+          "descriptionRate": 0,
+          "dateRate": 1,
+          "countryRate": 1,
+          "urlRate": 1,
+          "ranAt": "2026-09-23T17:48:00.417Z"
+        }
+      ],
+      "completionProofs": [
+        {
+          "batchId": "a0863c5f-0400-476e-b1ff-96972743509b",
+          "reportHash": "7203f4c8b7e53cdb4700f8b84d01b83d4c014a0267bb23329fa728fb8fb5fe05",
+          "published": 4,
+          "held": 0,
+          "writeFailed": 0,
+          "skipped": 0,
+          "readerRevision": "git:3581d05557b4e283074811f4ab53796ef2fbcfe9",
+          "policyVersion": "native-ingestion-completion/1",
+          "completedAt": "2026-09-23T17:48:00.383Z"
+        }
+      ],
+      "results": [
+        {
+          "source": "alberto",
+          "fetched": 4,
+          "created": 0,
+          "updated": 4,
+          "merged": 0,
+          "errors": 0,
+          "held": null,
+          "heldUnresolved": null,
+          "rejected": 78,
+          "rejectedReasons": {
+            "LISTED_POSTING_PREVIEW": 4,
+            "LISTED_PAGE_WITHOUT_JOBPOSTING": 74
+          },
+          "france": 0,
+          "complete": true,
+          "truncated": false,
+          "captureBatchId": "a0863c5f-0400-476e-b1ff-96972743509b",
+          "completionReportHash": "7203f4c8b7e53cdb4700f8b84d01b83d4c014a0267bb23329fa728fb8fb5fe05"
+        }
+      ]
+    },
+    {
+      "runId": "9482218c-5f5f-426a-aeb3-f3bf0d0ad9cd",
+      "command": "ingest",
+      "revision": "3581d05557b4e283074811f4ab53796ef2fbcfe9",
+      "startedAt": "2026-09-23T17:49:11.840Z",
+      "finishedAt": "2026-09-23T17:52:41.478Z",
+      "durationSeconds": 209.638,
+      "status": "COMPLETED",
+      "sources": [
+        "hugo-boss-phenom"
+      ],
+      "captures": 3,
+      "raw": 1203,
+      "extractions": 1184,
+      "aliveEvents": 6,
+      "sealedCompletions": 1,
+      "heartbeat": [
+        "pinged"
+      ],
+      "errorEvents": 0,
+      "qualification": [],
+      "runObservability": [
+        {
+          "status": "COMPLETED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 1203,
+            "http.responses": 1203
+          }
+        }
+      ],
+      "sourceRuns": [
+        {
+          "runId": "9482218c-5f5f-426a-aeb3-f3bf0d0ad9cd",
+          "id": "cmueei04e036cpm34805aj154",
+          "sourceKey": "hugo-boss-phenom",
+          "status": "DEGRADED",
+          "jobs": 585,
+          "previousJobs": 0,
+          "fetched": 585,
+          "accepted": 585,
+          "declaredTotal": null,
+          "truncated": false,
+          "errors": 0,
+          "canAttestAbsence": false,
+          "complete": false,
+          "note": "énumération réfutée : le balayage n’a pas atteint la fin du listing · desc 100% date 100% pays 100% url 100%",
+          "descriptionRate": 1,
+          "dateRate": 1,
+          "countryRate": 1,
+          "urlRate": 1,
+          "ranAt": "2026-09-23T17:52:41.246Z"
+        }
+      ],
+      "completionProofs": [
+        {
+          "batchId": "3f9bfb50-7df8-4d0d-82e1-8ad420db2ad4",
+          "reportHash": "69eed4a6d3a41e59c42c8c4620674e52309e78747a14661d791c4f583bcc519d",
+          "published": 585,
+          "held": 0,
+          "writeFailed": 0,
+          "skipped": 0,
+          "readerRevision": "git:3581d05557b4e283074811f4ab53796ef2fbcfe9",
+          "policyVersion": "native-ingestion-completion/1",
+          "completedAt": "2026-09-23T17:52:41.243Z"
+        }
+      ],
+      "results": [
+        {
+          "source": "hugo-boss-phenom",
+          "fetched": 585,
+          "created": 585,
+          "updated": 0,
+          "merged": 0,
+          "errors": 0,
+          "held": null,
+          "heldUnresolved": null,
+          "rejected": null,
+          "rejectedReasons": null,
+          "france": 11,
+          "complete": false,
+          "truncated": false,
+          "captureBatchId": "3f9bfb50-7df8-4d0d-82e1-8ad420db2ad4",
+          "completionReportHash": "69eed4a6d3a41e59c42c8c4620674e52309e78747a14661d791c4f583bcc519d"
+        }
+      ]
+    },
+    {
+      "runId": "3bef7e2d-e202-4dd1-bf40-e6c8a5abccc6",
+      "command": "ingest",
+      "revision": "3581d05557b4e283074811f4ab53796ef2fbcfe9",
+      "startedAt": "2026-09-23T17:55:07.122Z",
+      "finishedAt": "2026-09-23T18:16:55.587Z",
+      "durationSeconds": 1308.465,
+      "status": "COMPLETED_WITH_ERRORS",
+      "sources": [
+        "skechers-phenom"
+      ],
+      "captures": 3,
+      "raw": 3224,
+      "extractions": 3138,
+      "aliveEvents": 43,
+      "sealedCompletions": 1,
+      "heartbeat": [
+        "pinged"
+      ],
+      "errorEvents": 1594,
+      "qualification": [],
+      "runObservability": [
+        {
+          "status": "COMPLETED_WITH_ERRORS",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.retries": 49,
+            "http.attempts": 3224,
+            "http.responses": 3224
+          }
+        }
+      ],
+      "sourceRuns": [
+        {
+          "runId": "3bef7e2d-e202-4dd1-bf40-e6c8a5abccc6",
+          "id": "cmuefd63r02gins35ialcwewl",
+          "sourceKey": "skechers-phenom",
+          "status": "BROKEN",
+          "jobs": 0,
+          "previousJobs": 0,
+          "fetched": 1593,
+          "accepted": 1593,
+          "declaredTotal": null,
+          "truncated": false,
+          "errors": 1593,
+          "canAttestAbsence": false,
+          "complete": false,
+          "note": "1593 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%",
+          "descriptionRate": 1,
+          "dateRate": 1,
+          "countryRate": 1,
+          "urlRate": 1,
+          "ranAt": "2026-09-23T18:16:55.334Z"
+        }
+      ],
+      "completionProofs": [
+        {
+          "batchId": "d219397d-7a36-4433-843b-5b9f91d46b84",
+          "reportHash": "365171bb71cd5a37bc8e5c88b74d883e2eb1897aa1714e616c405647af483407",
+          "published": 0,
+          "held": 0,
+          "writeFailed": 1593,
+          "skipped": 0,
+          "readerRevision": "git:3581d05557b4e283074811f4ab53796ef2fbcfe9",
+          "policyVersion": "native-ingestion-completion/1",
+          "completedAt": "2026-09-23T18:16:55.331Z"
+        }
+      ],
+      "results": [
+        {
+          "source": "skechers-phenom",
+          "fetched": 1593,
+          "created": 0,
+          "updated": 0,
+          "merged": 0,
+          "errors": 1593,
+          "held": null,
+          "heldUnresolved": null,
+          "rejected": null,
+          "rejectedReasons": null,
+          "france": 24,
+          "complete": false,
+          "truncated": false,
+          "captureBatchId": "d219397d-7a36-4433-843b-5b9f91d46b84",
+          "completionReportHash": "365171bb71cd5a37bc8e5c88b74d883e2eb1897aa1714e616c405647af483407"
+        }
+      ]
+    },
+    {
+      "runId": "e23f2df1-e493-4321-9816-c01c4b03d954",
+      "command": "ingest",
+      "revision": "3581d05557b4e283074811f4ab53796ef2fbcfe9",
+      "startedAt": "2026-09-23T18:17:52.171Z",
+      "finishedAt": "2026-09-23T18:18:10.704Z",
+      "durationSeconds": 18.533,
+      "status": "COMPLETED_WITH_ERRORS",
+      "sources": [
+        "rivoli-typesense"
+      ],
+      "captures": 4,
+      "raw": 78,
+      "extractions": 92,
+      "aliveEvents": 0,
+      "sealedCompletions": 1,
+      "heartbeat": [
+        "pinged"
+      ],
+      "errorEvents": 47,
+      "qualification": [],
+      "runObservability": [
+        {
+          "status": "COMPLETED_WITH_ERRORS",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 78,
+            "http.responses": 78
+          }
+        }
+      ],
+      "sourceRuns": [
+        {
+          "runId": "e23f2df1-e493-4321-9816-c01c4b03d954",
+          "id": "cmuefes2z002kmw34r73ke5e4",
+          "sourceKey": "rivoli-typesense",
+          "status": "BROKEN",
+          "jobs": 0,
+          "previousJobs": 0,
+          "fetched": 46,
+          "accepted": 46,
+          "declaredTotal": 46,
+          "truncated": false,
+          "errors": 46,
+          "canAttestAbsence": false,
+          "complete": null,
+          "note": "46 erreurs de collecte ou d’écriture · desc 98% date 100% pays 0% url 100%",
+          "descriptionRate": 0.978,
+          "dateRate": 1,
+          "countryRate": 0,
+          "urlRate": 1,
+          "ranAt": "2026-09-23T18:18:10.474Z"
+        }
+      ],
+      "completionProofs": [
+        {
+          "batchId": "27454543-50cb-4c88-93c8-c75b06c9338d",
+          "reportHash": "76795e08e3088fe751388cbe5a2e02f4154a22a808bb216e5a14f460a0568bda",
+          "published": 0,
+          "held": 0,
+          "writeFailed": 46,
+          "skipped": 0,
+          "readerRevision": "git:3581d05557b4e283074811f4ab53796ef2fbcfe9",
+          "policyVersion": "native-ingestion-completion/1",
+          "completedAt": "2026-09-23T18:18:10.466Z"
+        }
+      ],
+      "results": [
+        {
+          "source": "rivoli-typesense",
+          "fetched": 46,
+          "created": 0,
+          "updated": 0,
+          "merged": 0,
+          "errors": 46,
+          "held": null,
+          "heldUnresolved": null,
+          "rejected": null,
+          "rejectedReasons": null,
+          "france": 0,
+          "complete": null,
+          "truncated": false,
+          "captureBatchId": "27454543-50cb-4c88-93c8-c75b06c9338d",
+          "completionReportHash": "76795e08e3088fe751388cbe5a2e02f4154a22a808bb216e5a14f460a0568bda"
+        }
+      ]
+    },
+    {
+      "runId": "8712af70-616c-44fc-8b54-d8cfd01fa2c0",
+      "command": "ingest",
+      "revision": "3581d05557b4e283074811f4ab53796ef2fbcfe9",
+      "startedAt": "2026-09-23T18:19:29.599Z",
+      "finishedAt": "2026-09-23T18:28:12.252Z",
+      "durationSeconds": 522.653,
+      "status": "COMPLETED",
+      "sources": [
+        "adidas"
+      ],
+      "captures": 3,
+      "raw": 2562,
+      "extractions": 2506,
+      "aliveEvents": 17,
+      "sealedCompletions": 1,
+      "heartbeat": [
+        "pinged"
+      ],
+      "errorEvents": 0,
+      "qualification": [],
+      "runObservability": [
+        {
+          "status": "COMPLETED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.retries": 3,
+            "http.attempts": 2562,
+            "http.responses": 2559
+          }
+        }
+      ],
+      "sourceRuns": [
+        {
+          "runId": "8712af70-616c-44fc-8b54-d8cfd01fa2c0",
+          "id": "cmuefroaz06rnpm33pez2lqs6",
+          "sourceKey": "adidas",
+          "status": "OK",
+          "jobs": 1253,
+          "previousJobs": 0,
+          "fetched": 1253,
+          "accepted": 1253,
+          "declaredTotal": 1253,
+          "truncated": false,
+          "errors": 0,
+          "canAttestAbsence": true,
+          "complete": true,
+          "note": "desc 99% date 100% pays 100% url 100%",
+          "descriptionRate": 0.99,
+          "dateRate": 1,
+          "countryRate": 1,
+          "urlRate": 1,
+          "ranAt": "2026-09-23T18:28:12.107Z"
+        }
+      ],
+      "completionProofs": [
+        {
+          "batchId": "bd6fddc8-2ec2-4247-b299-2c38e39615c6",
+          "reportHash": "adad3f9c019e930697145275da38fd4d45c1886460e50859ef683e8b972b994d",
+          "published": 1253,
+          "held": 0,
+          "writeFailed": 0,
+          "skipped": 0,
+          "readerRevision": "git:3581d05557b4e283074811f4ab53796ef2fbcfe9",
+          "policyVersion": "native-ingestion-completion/1",
+          "completedAt": "2026-09-23T18:28:12.091Z"
+        }
+      ],
+      "results": [
+        {
+          "source": "adidas",
+          "fetched": 1253,
+          "created": 1253,
+          "updated": 0,
+          "merged": 0,
+          "errors": 0,
+          "held": null,
+          "heldUnresolved": null,
+          "rejected": null,
+          "rejectedReasons": null,
+          "france": 51,
+          "complete": true,
+          "truncated": false,
+          "captureBatchId": "bd6fddc8-2ec2-4247-b299-2c38e39615c6",
+          "completionReportHash": "adad3f9c019e930697145275da38fd4d45c1886460e50859ef683e8b972b994d"
+        }
+      ]
+    },
+    {
+      "runId": "191b5bfa-0cee-40d3-a478-84456d5ee697",
+      "command": "ingest",
+      "revision": "3581d05557b4e283074811f4ab53796ef2fbcfe9",
+      "startedAt": "2026-09-23T18:30:42.635Z",
+      "finishedAt": "2026-09-23T18:42:43.902Z",
+      "durationSeconds": 721.267,
+      "status": "COMPLETED",
+      "sources": [
+        "parfums-chanel"
+      ],
+      "captures": 3,
+      "raw": 2454,
+      "extractions": 2314,
+      "aliveEvents": 24,
+      "sealedCompletions": 1,
+      "heartbeat": [
+        "pinged"
+      ],
+      "errorEvents": 0,
+      "qualification": [],
+      "runObservability": [
+        {
+          "status": "COMPLETED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.retries": 23,
+            "http.attempts": 2454,
+            "http.responses": 2454
+          }
+        }
+      ],
+      "sourceRuns": [
+        {
+          "runId": "191b5bfa-0cee-40d3-a478-84456d5ee697",
+          "id": "cmuegacv8068zld34gbfpw0kp",
+          "sourceKey": "parfums-chanel",
+          "status": "OK",
+          "jobs": 1157,
+          "previousJobs": 0,
+          "fetched": 1157,
+          "accepted": 1157,
+          "declaredTotal": 1157,
+          "truncated": false,
+          "errors": 0,
+          "canAttestAbsence": true,
+          "complete": true,
+          "note": "desc 100% date 100% pays 98% url 100%",
+          "descriptionRate": 0.997,
+          "dateRate": 1,
+          "countryRate": 0.982,
+          "urlRate": 1,
+          "ranAt": "2026-09-23T18:42:43.747Z"
+        }
+      ],
+      "completionProofs": [
+        {
+          "batchId": "ec050f5f-21da-45e2-8357-e31cb55f29a4",
+          "reportHash": "701c3958b84ad6eb0f1965bdd30e1282d2a2ce5bfcf6e27601f438dc93e99d83",
+          "published": 1157,
+          "held": 0,
+          "writeFailed": 0,
+          "skipped": 0,
+          "readerRevision": "git:3581d05557b4e283074811f4ab53796ef2fbcfe9",
+          "policyVersion": "native-ingestion-completion/1",
+          "completedAt": "2026-09-23T18:42:43.731Z"
+        }
+      ],
+      "results": [
+        {
+          "source": "parfums-chanel",
+          "fetched": 1157,
+          "created": 1157,
+          "updated": 0,
+          "merged": 0,
+          "errors": 0,
+          "held": null,
+          "heldUnresolved": null,
+          "rejected": null,
+          "rejectedReasons": null,
+          "france": 455,
+          "complete": true,
+          "truncated": false,
+          "captureBatchId": "ec050f5f-21da-45e2-8357-e31cb55f29a4",
+          "completionReportHash": "701c3958b84ad6eb0f1965bdd30e1282d2a2ce5bfcf6e27601f438dc93e99d83"
+        }
+      ]
+    },
+    {
+      "runId": "42b61d0d-f61b-4d17-a770-b6d5ed372232",
+      "command": "source-campaign",
+      "revision": "3581d05557b4e283074811f4ab53796ef2fbcfe9",
+      "startedAt": "2026-09-23T18:44:28.179Z",
+      "finishedAt": "2026-09-23T18:44:31.098Z",
+      "durationSeconds": 2.919,
+      "status": "COMPLETED",
+      "sources": [
+        "picard"
+      ],
+      "captures": 3,
+      "raw": 3,
+      "extractions": 6,
+      "aliveEvents": 0,
+      "sealedCompletions": 0,
+      "heartbeat": [],
+      "errorEvents": 0,
+      "qualification": [
+        {
+          "key": "picard",
+          "verdict": "QUALIFIEE",
+          "raisons": [],
+          "revision": "d703d8ec-6eda-4e69-a7de-41509189903b"
+        }
+      ],
+      "runObservability": [
+        {
+          "status": "COMPLETED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 3,
+            "http.responses": 3
+          }
+        }
+      ],
+      "sourceRuns": [],
+      "completionProofs": [],
+      "results": []
+    },
+    {
+      "runId": "a011d861-0002-4204-b165-ef4f84d8d1b6",
+      "command": "ingest",
+      "revision": "3581d05557b4e283074811f4ab53796ef2fbcfe9",
+      "startedAt": "2026-09-23T18:44:29.943Z",
+      "finishedAt": "2026-09-23T18:44:30.838Z",
+      "durationSeconds": 0.895,
+      "status": "COMPLETED",
+      "sources": [
+        "picard"
+      ],
+      "captures": 1,
+      "raw": 1,
+      "extractions": 6,
+      "aliveEvents": 0,
+      "sealedCompletions": 1,
+      "heartbeat": [
+        "pinged"
+      ],
+      "errorEvents": 0,
+      "qualification": [],
+      "runObservability": [
+        {
+          "status": "COMPLETED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 1,
+            "http.responses": 1
+          }
+        }
+      ],
+      "sourceRuns": [
+        {
+          "runId": "a011d861-0002-4204-b165-ef4f84d8d1b6",
+          "id": "cmuegcncu0016mu6d3hac603s",
+          "sourceKey": "picard",
+          "status": "DEGRADED",
+          "jobs": 6,
+          "previousJobs": 6,
+          "fetched": 6,
+          "accepted": 6,
+          "declaredTotal": null,
+          "truncated": false,
+          "errors": 0,
+          "canAttestAbsence": false,
+          "complete": false,
+          "note": "énumération réfutée : le balayage n’a pas atteint la fin du listing · desc 100% date 100% pays 0% url 100%",
+          "descriptionRate": 1,
+          "dateRate": 1,
+          "countryRate": 0,
+          "urlRate": 1,
+          "ranAt": "2026-09-23T18:44:30.654Z"
+        }
+      ],
+      "completionProofs": [
+        {
+          "batchId": "567882b9-76aa-4dbf-ac58-e5e2d52ab55d",
+          "reportHash": "573f20f16597ec59b707e1959c9c6fa9e9e9ae999d10933c3325b1a83debaf54",
+          "published": 6,
+          "held": 0,
+          "writeFailed": 0,
+          "skipped": 0,
+          "readerRevision": "git:3581d05557b4e283074811f4ab53796ef2fbcfe9",
+          "policyVersion": "native-ingestion-completion/1",
+          "completedAt": "2026-09-23T18:44:30.647Z"
+        }
+      ],
+      "results": [
+        {
+          "source": "picard",
+          "fetched": 6,
+          "created": 6,
+          "updated": 0,
+          "merged": 0,
+          "errors": 0,
+          "held": null,
+          "heldUnresolved": null,
+          "rejected": null,
+          "rejectedReasons": null,
+          "france": 0,
+          "complete": false,
+          "truncated": false,
+          "captureBatchId": "567882b9-76aa-4dbf-ac58-e5e2d52ab55d",
+          "completionReportHash": "573f20f16597ec59b707e1959c9c6fa9e9e9ae999d10933c3325b1a83debaf54"
+        }
+      ]
+    },
+    {
+      "runId": "b3a7b65b-514f-493d-ae4b-771f45d6985e",
+      "command": "source-campaign",
+      "revision": "3581d05557b4e283074811f4ab53796ef2fbcfe9",
+      "startedAt": "2026-09-23T18:48:44.040Z",
+      "finishedAt": "2026-09-23T18:49:14.472Z",
+      "durationSeconds": 30.432,
+      "status": "COMPLETED",
+      "sources": [
+        "aeropostale"
+      ],
+      "captures": 12,
+      "raw": 34,
+      "extractions": 18,
+      "aliveEvents": 1,
+      "sealedCompletions": 0,
+      "heartbeat": [],
+      "errorEvents": 0,
+      "qualification": [
+        {
+          "key": "aeropostale",
+          "verdict": "QUALIFIEE",
+          "raisons": [
+            "aucune page du domaine officiel ne lie exactement le portail configuré (voir etapes.identite)"
+          ],
+          "revision": "dfa87542-bc94-4f77-9849-360643d9305e"
+        }
+      ],
+      "runObservability": [
+        {
+          "status": "COMPLETED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 34,
+            "http.redirects": 4,
+            "http.responses": 34
+          }
+        }
+      ],
+      "sourceRuns": [],
+      "completionProofs": [],
+      "results": []
+    },
+    {
+      "runId": "6af42825-8b33-4f22-8b4c-df4e0e61d946",
+      "command": "ingest",
+      "revision": "3581d05557b4e283074811f4ab53796ef2fbcfe9",
+      "startedAt": "2026-09-23T18:49:05.056Z",
+      "finishedAt": "2026-09-23T18:49:14.211Z",
+      "durationSeconds": 9.155,
+      "status": "COMPLETED",
+      "sources": [
+        "aeropostale"
+      ],
+      "captures": 1,
+      "raw": 19,
+      "extractions": 18,
+      "aliveEvents": 0,
+      "sealedCompletions": 1,
+      "heartbeat": [
+        "pinged"
+      ],
+      "errorEvents": 0,
+      "qualification": [],
+      "runObservability": [
+        {
+          "status": "COMPLETED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.attempts": 19,
+            "http.responses": 19
+          }
+        }
+      ],
+      "sourceRuns": [
+        {
+          "runId": "6af42825-8b33-4f22-8b4c-df4e0e61d946",
+          "id": "cmuegiq1b003jqv6du94u3fdp",
+          "sourceKey": "aeropostale",
+          "status": "OK",
+          "jobs": 18,
+          "previousJobs": 0,
+          "fetched": 18,
+          "accepted": 18,
+          "declaredTotal": null,
+          "truncated": false,
+          "errors": 0,
+          "canAttestAbsence": true,
+          "complete": true,
+          "note": "desc 100% date 100% pays 100% url 100%",
+          "descriptionRate": 1,
+          "dateRate": 1,
+          "countryRate": 1,
+          "urlRate": 1,
+          "ranAt": "2026-09-23T18:49:14.063Z"
+        }
+      ],
+      "completionProofs": [
+        {
+          "batchId": "e3687330-5b97-4bd6-aaa6-310d2ce29bca",
+          "reportHash": "49b8d3ca35596ecbd609eb7c0180d075d98105b36c80ce0ebf71bf0330bf5046",
+          "published": 18,
+          "held": 0,
+          "writeFailed": 0,
+          "skipped": 0,
+          "readerRevision": "git:3581d05557b4e283074811f4ab53796ef2fbcfe9",
+          "policyVersion": "native-ingestion-completion/1",
+          "completedAt": "2026-09-23T18:49:14.055Z"
+        }
+      ],
+      "results": [
+        {
+          "source": "aeropostale",
+          "fetched": 18,
+          "created": 18,
+          "updated": 0,
+          "merged": 0,
+          "errors": 0,
+          "held": null,
+          "heldUnresolved": null,
+          "rejected": null,
+          "rejectedReasons": null,
+          "france": 0,
+          "complete": true,
+          "truncated": false,
+          "captureBatchId": "e3687330-5b97-4bd6-aaa6-310d2ce29bca",
+          "completionReportHash": "49b8d3ca35596ecbd609eb7c0180d075d98105b36c80ce0ebf71bf0330bf5046"
+        }
+      ]
+    },
+    {
+      "runId": "4af7a48d-a397-4420-b455-ed2d19d2d2ea",
+      "command": "ingest",
+      "revision": "3581d05557b4e283074811f4ab53796ef2fbcfe9",
+      "startedAt": "2026-09-23T18:49:40.343Z",
+      "finishedAt": "2026-09-23T18:59:16.003Z",
+      "durationSeconds": 575.66,
+      "status": "COMPLETED",
+      "sources": [
+        "skechers-phenom"
+      ],
+      "captures": 1,
+      "raw": 1628,
+      "extractions": 1593,
+      "aliveEvents": 19,
+      "sealedCompletions": 1,
+      "heartbeat": [
+        "pinged"
+      ],
+      "errorEvents": 0,
+      "qualification": [],
+      "runObservability": [
+        {
+          "status": "COMPLETED",
+          "persistenceFailures": 0,
+          "counters": {
+            "http.retries": 17,
+            "http.attempts": 1628,
+            "http.responses": 1628
+          }
+        }
+      ],
+      "sourceRuns": [
+        {
+          "runId": "4af7a48d-a397-4420-b455-ed2d19d2d2ea",
+          "id": "cmuegvmc708lrqo34zmau1tu1",
+          "sourceKey": "skechers-phenom",
+          "status": "DEGRADED",
+          "jobs": 1593,
+          "previousJobs": 0,
+          "fetched": 1593,
+          "accepted": 1593,
+          "declaredTotal": null,
+          "truncated": false,
+          "errors": 0,
+          "canAttestAbsence": false,
+          "complete": false,
+          "note": "énumération réfutée : le balayage n’a pas atteint la fin du listing · desc 100% date 100% pays 100% url 100%",
+          "descriptionRate": 1,
+          "dateRate": 1,
+          "countryRate": 1,
+          "urlRate": 1,
+          "ranAt": "2026-09-23T18:59:15.799Z"
+        }
+      ],
+      "completionProofs": [
+        {
+          "batchId": "8b01a294-8985-4b1f-8190-5a9ef901fc81",
+          "reportHash": "a84a97257324e4a017adc321eac34fcfb2f434d630ef6e39e702f04e8ef4cc36",
+          "published": 1593,
+          "held": 0,
+          "writeFailed": 0,
+          "skipped": 0,
+          "readerRevision": "git:3581d05557b4e283074811f4ab53796ef2fbcfe9",
+          "policyVersion": "native-ingestion-completion/1",
+          "completedAt": "2026-09-23T18:59:15.786Z"
+        }
+      ],
+      "results": [
+        {
+          "source": "skechers-phenom",
+          "fetched": 1593,
+          "created": 1593,
+          "updated": 0,
+          "merged": 0,
+          "errors": 0,
+          "held": null,
+          "heldUnresolved": null,
+          "rejected": null,
+          "rejectedReasons": null,
+          "france": 23,
+          "complete": false,
+          "truncated": false,
+          "captureBatchId": "8b01a294-8985-4b1f-8190-5a9ef901fc81",
+          "completionReportHash": "a84a97257324e4a017adc321eac34fcfb2f434d630ef6e39e702f04e8ef4cc36"
+        }
+      ]
+    }
+  ],
+  "total": {
+    "captures": 37,
+    "raw": 11369,
+    "extractions": 10883,
+    "fetched": 6255,
+    "created": 4612,
+    "updated": 4,
+    "merged": 0,
+    "errors": 1639
+  },
+  "dailyBaseline": {
+    "runId": "8b13d1f0-ced1-4380-8ad5-89e33a74587d",
+    "codeSha": "a5321650adbbd49843a30be60aae7de8ed869d8a",
+    "status": "COMPLETED_WITH_ERRORS",
+    "startedAt": "2026-09-23T16:01:58.884Z",
+    "finishedAt": "2026-09-23T17:44:56.188Z",
+    "durationSeconds": 6177.304,
+    "sources": {
+      "attempted": 409,
+      "health": {
+        "ERROR": 9,
+        "OK": 349,
+        "DEGRADED": 33,
+        "BROKEN": 18
+      }
+    },
+    "totals": {
+      "fetched": 70778,
+      "created": 13441,
+      "updated": 50207,
+      "merged": 20,
+      "errors": 5097
+    },
+    "evidence": {
+      "captures": 1196,
+      "raw": 93057,
+      "extractions": 147184,
+      "aliveEvents": 205
+    },
+    "writeFailureMotifs": {
+      "PORTAL_OWNER_NOT_CERTIFIED": 5001,
+      "ALIAS_SOURCE_OR_TENANT_CHANGED": 1,
+      "EMPLOYER_SPELLING_DIVERGED": 93
+    },
+    "sourceTimeouts": 0,
+    "persistenceFailures": 0,
+    "refresh": {
+      "events": [
+        {
+          "at": "2026-09-23T17:44:55.807Z",
+          "payload": {
+            "checked": 66000,
+            "command": "ingest-all",
+            "refused": false,
+            "reopened": 0,
+            "withdrawn": 0,
+            "closedJobs": 749,
+            "republished": 0,
+            "auditBatchId": "refresh:aee9b9e2-46b1-45db-8026-af8d9fd8bd07",
+            "closedSources": 771,
+            "unverifiableSources": [
+              "585-gold",
+              "abercrombie",
+              "acne-studios-jobylon",
+              "adopt-parfums",
+              "aeyde",
+              "aime-leon-dore",
+              "alberto",
+              "annoushka",
+              "apivita",
+              "apm-monaco",
+              "aptar-beauty",
+              "armand-thiery-flatchr",
+              "asics",
+              "asos",
+              "attaquer",
+              "audemars-piguet",
+              "avolta",
+              "baccarat",
+              "ballantynes",
+              "baron",
+              "bash-talents",
+              "beiersdorf",
+              "bellabeat",
+              "bella-canvas",
+              "bellroy",
+              "bernadette",
+              "bevilles-jewellers",
+              "blacks",
+              "blackstore",
+              "bloom",
+              "bloomingdales-oracle",
+              "boardriders",
+              "bombas",
+              "breitling-sf",
+              "brilliant-earth",
+              "browns",
+              "brown-thomas-taleo",
+              "b-s-international",
+              "bubble",
+              "buff",
+              "burberry",
+              "capri-michael-kors",
+              "chisholm-hunter",
+              "chrome",
+              "city-beauty",
+              "clarins",
+              "clarkson-eyecare",
+              "club-monaco",
+              "courir",
+              "crocs",
+              "cuyana",
+              "cynthia-rowley",
+              "damiani",
+              "decjuba",
+              "dfs",
+              "dolce-gabbana",
+              "douglas-sf",
+              "dr-martens-tf",
+              "dr-pierre-ricaud",
+              "drunk-elephant-2",
+              "eastpak",
+              "element-6",
+              "el-palacio-de-hierro",
+              "end-clothing",
+              "eram-3",
+              "eric-bompard",
+              "escada-parfums-16",
+              "essilorluxottica",
+              "everlane",
+              "everything-but-water",
+              "fenwick-volcanic",
+              "ferrari",
+              "figs",
+              "filson",
+              "foot-locker-france",
+              "fred-perry",
+              "funky-buddha",
+              "galeries-lafayette",
+              "g-label-by-goop",
+              "globus",
+              "glossier",
+              "go-outdoors",
+              "gorjana",
+              "goyard-successfactors",
+              "groundies",
+              "gu-us-headquarters",
+              "gu-us-retail",
+              "gymshark",
+              "hans-anders",
+              "herschel-supply-co",
+              "hm-group",
+              "ilia",
+              "innisfree",
+              "intersport-france",
+              "it-s-fashion",
+              "jansport",
+              "jd-sports",
+              "jean-paul-gaultier-5",
+              "joe-fresh",
+              "jonsson-workwear",
+              "jules",
+              "julie-grace",
+              "kastner-ohler",
+              "kate-mcleod",
+              "kiabi",
+              "kidzart",
+              "knitwell-us-retail",
+              "la-fee-maraboutee",
+              "la-prairie",
+              "la-redoute-talentview",
+              "la-senza",
+              "levis",
+              "little-words-project",
+              "l-occitane-en-provence-2",
+              "lovable",
+              "lucy-yak",
+              "lumentee",
+              "lush",
+              "luxexperience",
+              "lvmh",
+              "madame-figaro",
+              "madewell",
+              "maison-margiela",
+              "marc-o-polo",
+              "marella",
+              "margaret-howell",
+              "mascot-workwear",
+              "mejuri",
+              "miu-miu",
+              "molton-brown",
+              "movado",
+              "mq-marqet",
+              "mvmt",
+              "naos",
+              "nars",
+              "nordstrom",
+              "nutrafol",
+              "oak-essentials",
+              "olaplex",
+              "on-running",
+              "oska",
+              "pandora-talenthub",
+              "parachute",
+              "parco",
+              "patek-philippe",
+              "peacocks",
+              "pegador",
+              "penningtons",
+              "pepco",
+              "petit-bateau",
+              "point-zero",
+              "prada-group",
+              "primark",
+              "promod",
+              "psycho-bunny",
+              "quince",
+              "rebag",
+              "reformation",
+              "rituals",
+              "riu-paris",
+              "rolex",
+              "sacoor-brothers",
+              "saks",
+              "salomon",
+              "sandro",
+              "selfridges",
+              "sephora-france",
+              "sezane",
+              "shein",
+              "shinola",
+              "shinola-retail",
+              "sisley",
+              "skin-laundry",
+              "spinelli-kilcollin",
+              "suitsupply",
+              "supergoop",
+              "swarovski",
+              "swatch-group",
+              "tapestry",
+              "taylor-stitch",
+              "tekla",
+              "thirdlove",
+              "thomas-sabo",
+              "tods",
+              "toscane",
+              "toteme",
+              "ulta-jibe",
+              "uniqlo-au-graduates",
+              "uniqlo-au-stores",
+              "uniqlo-graduates",
+              "uniqlo-headquarters",
+              "uniqlo-hkm-headquarters",
+              "united-colors-of-benetton",
+              "urbn-hub",
+              "valentino",
+              "velvet-canyon",
+              "veronica-beard",
+              "vf-corporation",
+              "visionlab",
+              "wehkamp",
+              "wttj-sector",
+              "yema"
+            ]
+          }
+        }
+      ],
+      "journalEntries": 755,
+      "proofKinds": {
+        "DEADLINE": 133,
+        "ENUMERATION": 638
+      },
+      "missingProofs": 0,
+      "missingProofHashes": 0,
+      "captureVerification": {
+        "batches": 71,
+        "allBelongToDailyRun": true,
+        "allAdmittedAndCompleted": true,
+        "outcomeStatuses": {
+          "EXTRACTED": 71
+        },
+        "writeFailed": 0
+      }
+    },
+    "sourceHealth": [
+      {
+        "key": "pvh",
+        "status": "ERROR",
+        "fetched": null,
+        "accepted": null,
+        "errors": null,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "abercrombie",
+        "status": "OK",
+        "fetched": 8,
+        "accepted": 8,
+        "errors": 0,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "aeyde",
+        "status": "OK",
+        "fetched": 8,
+        "accepted": 8,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "annoushka",
+        "status": "OK",
+        "fetched": 3,
+        "accepted": 3,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "attaquer",
+        "status": "DEGRADED",
+        "fetched": 3,
+        "accepted": 3,
+        "errors": 0,
+        "complete": false,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "bernadette",
+        "status": "OK",
+        "fetched": 0,
+        "accepted": 0,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "beauty-success-geodir",
+        "status": "BROKEN",
+        "fetched": 90,
+        "accepted": 90,
+        "errors": 90,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "aeropostale",
+        "status": "BROKEN",
+        "fetched": 18,
+        "accepted": 18,
+        "errors": 18,
+        "complete": true,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "breitling-sf",
+        "status": "OK",
+        "fetched": 45,
+        "accepted": 45,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "buff",
+        "status": "OK",
+        "fetched": 4,
+        "accepted": 4,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "clarins",
+        "status": "OK",
+        "fetched": 92,
+        "accepted": 92,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "cove",
+        "status": "OK",
+        "fetched": 0,
+        "accepted": 0,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "boots",
+        "status": "ERROR",
+        "fetched": null,
+        "accepted": null,
+        "errors": null,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "cuyana",
+        "status": "OK",
+        "fetched": 0,
+        "accepted": 0,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "crocs",
+        "status": "OK",
+        "fetched": 490,
+        "accepted": 490,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "adidas",
+        "status": "BROKEN",
+        "fetched": 1253,
+        "accepted": 1253,
+        "errors": 1253,
+        "complete": true,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "dolce-gabbana",
+        "status": "OK",
+        "fetched": 98,
+        "accepted": 98,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "bloomingdales-oracle",
+        "status": "OK",
+        "fetched": 1011,
+        "accepted": 1011,
+        "errors": 0,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "decjuba",
+        "status": "OK",
+        "fetched": 162,
+        "accepted": 162,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "essilorluxottica",
+        "status": "OK",
+        "fetched": 7,
+        "accepted": 7,
+        "errors": 0,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "end-clothing",
+        "status": "OK",
+        "fetched": 20,
+        "accepted": 20,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "dr-martens-tf",
+        "status": "OK",
+        "fetched": 203,
+        "accepted": 203,
+        "errors": 0,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "everything-but-water",
+        "status": "OK",
+        "fetched": 51,
+        "accepted": 51,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "fred-perry",
+        "status": "OK",
+        "fetched": 15,
+        "accepted": 15,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "galeries-lafayette",
+        "status": "OK",
+        "fetched": 148,
+        "accepted": 148,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "escada-parfums-16",
+        "status": "OK",
+        "fetched": 168,
+        "accepted": 168,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "groundies",
+        "status": "OK",
+        "fetched": 1,
+        "accepted": 1,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "fenwick-volcanic",
+        "status": "OK",
+        "fetched": 44,
+        "accepted": 44,
+        "errors": 0,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "gu-us-headquarters",
+        "status": "OK",
+        "fetched": 2,
+        "accepted": 2,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "gu-us-retail",
+        "status": "OK",
+        "fetched": 6,
+        "accepted": 6,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "groupe-chantelle",
+        "status": "BROKEN",
+        "fetched": 37,
+        "accepted": 37,
+        "errors": 37,
+        "complete": true,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "hans-anders",
+        "status": "OK",
+        "fetched": 143,
+        "accepted": 143,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "hot-topic",
+        "status": "BROKEN",
+        "fetched": 20,
+        "accepted": 20,
+        "errors": 20,
+        "complete": true,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "groupe-printemps",
+        "status": "BROKEN",
+        "fetched": 100,
+        "accepted": 100,
+        "errors": 100,
+        "complete": true,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "jansport",
+        "status": "DEGRADED",
+        "fetched": 8,
+        "accepted": 2,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "julie-grace",
+        "status": "OK",
+        "fetched": 4,
+        "accepted": 4,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "kastner-ohler",
+        "status": "DEGRADED",
+        "fetched": 6,
+        "accepted": 6,
+        "errors": 0,
+        "complete": false,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "hugo-boss-phenom",
+        "status": "BROKEN",
+        "fetched": 780,
+        "accepted": 780,
+        "errors": 780,
+        "complete": true,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "la-fee-maraboutee",
+        "status": "OK",
+        "fetched": 20,
+        "accepted": 20,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "lagardere-duty-free",
+        "status": "BROKEN",
+        "fetched": 9,
+        "accepted": 9,
+        "errors": 9,
+        "complete": true,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "lagardere-travel-retail",
+        "status": "BROKEN",
+        "fetched": 109,
+        "accepted": 109,
+        "errors": 109,
+        "complete": true,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "lagardere-travel-retail-de",
+        "status": "BROKEN",
+        "fetched": 10,
+        "accepted": 10,
+        "errors": 10,
+        "complete": true,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "hm-group",
+        "status": "OK",
+        "fetched": 1823,
+        "accepted": 1823,
+        "errors": 0,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "lexington",
+        "status": "OK",
+        "fetched": 0,
+        "accepted": 0,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "lindex-easycruit",
+        "status": "ERROR",
+        "fetched": null,
+        "accepted": null,
+        "errors": null,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "loplabbet",
+        "status": "OK",
+        "fetched": 0,
+        "accepted": 0,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "levis",
+        "status": "DEGRADED",
+        "fetched": 1273,
+        "accepted": 2,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "lucy-yak",
+        "status": "OK",
+        "fetched": 2,
+        "accepted": 2,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "lumentee",
+        "status": "DEGRADED",
+        "fetched": 5,
+        "accepted": 5,
+        "errors": 0,
+        "complete": false,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "luxe-talent",
+        "status": "BROKEN",
+        "fetched": 478,
+        "accepted": 478,
+        "errors": 478,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "madewell",
+        "status": "OK",
+        "fetched": 341,
+        "accepted": 341,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "marc-o-polo",
+        "status": "DEGRADED",
+        "fetched": 15,
+        "accepted": 15,
+        "errors": 0,
+        "complete": false,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "margaret-howell",
+        "status": "OK",
+        "fetched": 1,
+        "accepted": 1,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "movado",
+        "status": "DEGRADED",
+        "fetched": 131,
+        "accepted": 130,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "mq-marqet",
+        "status": "OK",
+        "fetched": 6,
+        "accepted": 6,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "nocibe-eqwa",
+        "status": "ERROR",
+        "fetched": null,
+        "accepted": null,
+        "errors": null,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "l-oreal-professionnel",
+        "status": "BROKEN",
+        "fetched": 0,
+        "accepted": 0,
+        "errors": 1,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "parfums-chanel",
+        "status": "ERROR",
+        "fetched": null,
+        "accepted": null,
+        "errors": null,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "patek-philippe",
+        "status": "OK",
+        "fetched": 14,
+        "accepted": 14,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "pegador",
+        "status": "OK",
+        "fetched": 11,
+        "accepted": 11,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "kering",
+        "status": "BROKEN",
+        "fetched": 0,
+        "accepted": 0,
+        "errors": 1,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "penningtons",
+        "status": "OK",
+        "fetched": 316,
+        "accepted": 316,
+        "errors": 0,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "pepco",
+        "status": "OK",
+        "fetched": 56,
+        "accepted": 56,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "ralph-lauren-avature",
+        "status": "ERROR",
+        "fetched": null,
+        "accepted": null,
+        "errors": null,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "estee-lauder-companies",
+        "status": "ERROR",
+        "fetched": null,
+        "accepted": null,
+        "errors": null,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "rituals",
+        "status": "OK",
+        "fetched": 776,
+        "accepted": 776,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "rivoli-typesense",
+        "status": "ERROR",
+        "fetched": null,
+        "accepted": null,
+        "errors": null,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "rolex",
+        "status": "OK",
+        "fetched": 216,
+        "accepted": 216,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "pandora-talenthub",
+        "status": "DEGRADED",
+        "fetched": 922,
+        "accepted": 922,
+        "errors": 0,
+        "complete": false,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "saks",
+        "status": "OK",
+        "fetched": 806,
+        "accepted": 806,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "richemont-workday",
+        "status": "OK",
+        "fetched": 1443,
+        "accepted": 1443,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "swarovski",
+        "status": "DEGRADED",
+        "fetched": 568,
+        "accepted": 540,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "tropicfeel",
+        "status": "OK",
+        "fetched": 0,
+        "accepted": 0,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "toteme",
+        "status": "OK",
+        "fetched": 21,
+        "accepted": 21,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "uniqlo-au-stores",
+        "status": "OK",
+        "fetched": 71,
+        "accepted": 71,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "swatch-group",
+        "status": "OK",
+        "fetched": 71,
+        "accepted": 71,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "tiffany-oracle",
+        "status": "BROKEN",
+        "fetched": 457,
+        "accepted": 457,
+        "errors": 457,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "uniqlo-au-graduates",
+        "status": "OK",
+        "fetched": 2,
+        "accepted": 2,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "uniqlo-graduates",
+        "status": "OK",
+        "fetched": 11,
+        "accepted": 11,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "uniqlo-headquarters",
+        "status": "OK",
+        "fetched": 16,
+        "accepted": 16,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "uniqlo-hkm-headquarters",
+        "status": "DEGRADED",
+        "fetched": 8,
+        "accepted": 4,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "tapestry",
+        "status": "DEGRADED",
+        "fetched": 2273,
+        "accepted": 2269,
+        "errors": 1,
+        "complete": false,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "zegna-altamira",
+        "status": "ERROR",
+        "fetched": null,
+        "accepted": null,
+        "errors": null,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "asket",
+        "status": "OK",
+        "fetched": 1,
+        "accepted": 1,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "bellabeat",
+        "status": "OK",
+        "fetched": 1,
+        "accepted": 1,
+        "errors": 0,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "blacks",
+        "status": "OK",
+        "fetched": 1,
+        "accepted": 1,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "chisholm-hunter",
+        "status": "OK",
+        "fetched": 1,
+        "accepted": 1,
+        "errors": 0,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "chrome",
+        "status": "OK",
+        "fetched": 1,
+        "accepted": 1,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "city-beauty",
+        "status": "OK",
+        "fetched": 1,
+        "accepted": 1,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "cynthia-rowley",
+        "status": "OK",
+        "fetched": 1,
+        "accepted": 1,
+        "errors": 0,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "fjallraven",
+        "status": "OK",
+        "fetched": 1,
+        "accepted": 1,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "indiska",
+        "status": "OK",
+        "fetched": 1,
+        "accepted": 1,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "innisfree",
+        "status": "OK",
+        "fetched": 1,
+        "accepted": 1,
+        "errors": 0,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "it-s-fashion",
+        "status": "OK",
+        "fetched": 1,
+        "accepted": 1,
+        "errors": 0,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "kidzart",
+        "status": "OK",
+        "fetched": 1,
+        "accepted": 1,
+        "errors": 0,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "lerros",
+        "status": "OK",
+        "fetched": 1,
+        "accepted": 1,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "mvmt",
+        "status": "OK",
+        "fetched": 1,
+        "accepted": 1,
+        "errors": 0,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "ortovox",
+        "status": "OK",
+        "fetched": 1,
+        "accepted": 1,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "parco",
+        "status": "OK",
+        "fetched": 1,
+        "accepted": 1,
+        "errors": 0,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "point-zero",
+        "status": "OK",
+        "fetched": 1,
+        "accepted": 1,
+        "errors": 0,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "sacoor-brothers",
+        "status": "OK",
+        "fetched": 1,
+        "accepted": 1,
+        "errors": 0,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "stella-mccartney",
+        "status": "OK",
+        "fetched": 34,
+        "accepted": 34,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "united-colors-of-benetton",
+        "status": "OK",
+        "fetched": 1,
+        "accepted": 1,
+        "errors": 0,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "velvet-canyon",
+        "status": "OK",
+        "fetched": 1,
+        "accepted": 1,
+        "errors": 0,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "visionlab",
+        "status": "OK",
+        "fetched": 1,
+        "accepted": 1,
+        "errors": 0,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "alpha-industries",
+        "status": "OK",
+        "fetched": 2,
+        "accepted": 2,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "bella-canvas",
+        "status": "OK",
+        "fetched": 2,
+        "accepted": 2,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "bloom",
+        "status": "OK",
+        "fetched": 2,
+        "accepted": 2,
+        "errors": 0,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "blueland",
+        "status": "OK",
+        "fetched": 2,
+        "accepted": 2,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "gu-hk-headquarters",
+        "status": "OK",
+        "fetched": 2,
+        "accepted": 2,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "klattermusen",
+        "status": "OK",
+        "fetched": 2,
+        "accepted": 2,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "lavish-alice",
+        "status": "OK",
+        "fetched": 2,
+        "accepted": 2,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "luhta",
+        "status": "OK",
+        "fetched": 3,
+        "accepted": 3,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "happy-socks",
+        "status": "OK",
+        "fetched": 3,
+        "accepted": 3,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "lensa",
+        "status": "OK",
+        "fetched": 3,
+        "accepted": 3,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "nudie-jeans",
+        "status": "OK",
+        "fetched": 3,
+        "accepted": 3,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "spinelli-kilcollin",
+        "status": "OK",
+        "fetched": 3,
+        "accepted": 3,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "tom-wood",
+        "status": "OK",
+        "fetched": 3,
+        "accepted": 3,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "ackermans",
+        "status": "OK",
+        "fetched": 4,
+        "accepted": 4,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "tiger-of-sweden",
+        "status": "OK",
+        "fetched": 5,
+        "accepted": 5,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "hoff",
+        "status": "OK",
+        "fetched": 7,
+        "accepted": 7,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "iris-van-herpen",
+        "status": "OK",
+        "fetched": 7,
+        "accepted": 7,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "medik8",
+        "status": "OK",
+        "fetched": 8,
+        "accepted": 8,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "nutrafol",
+        "status": "OK",
+        "fetched": 7,
+        "accepted": 7,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "stanley-stella",
+        "status": "OK",
+        "fetched": 10,
+        "accepted": 10,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "typology",
+        "status": "OK",
+        "fetched": 8,
+        "accepted": 8,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "vlisco",
+        "status": "OK",
+        "fetched": 8,
+        "accepted": 8,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "intersport",
+        "status": "OK",
+        "fetched": 3,
+        "accepted": 3,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "merz-b-schwanen",
+        "status": "OK",
+        "fetched": 2,
+        "accepted": 2,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "motel",
+        "status": "OK",
+        "fetched": 2,
+        "accepted": 2,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "realself",
+        "status": "OK",
+        "fetched": 2,
+        "accepted": 2,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "sabon",
+        "status": "OK",
+        "fetched": 2,
+        "accepted": 2,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "saffron",
+        "status": "OK",
+        "fetched": 2,
+        "accepted": 2,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "taylor-stitch",
+        "status": "OK",
+        "fetched": 2,
+        "accepted": 2,
+        "errors": 0,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "uniqlo-th-headquarters",
+        "status": "OK",
+        "fetched": 2,
+        "accepted": 2,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "585-gold",
+        "status": "OK",
+        "fetched": 3,
+        "accepted": 3,
+        "errors": 0,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "bespoke-post",
+        "status": "OK",
+        "fetched": 3,
+        "accepted": 3,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "burnt",
+        "status": "OK",
+        "fetched": 3,
+        "accepted": 3,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "fast-retailing-ph-headquarters",
+        "status": "OK",
+        "fetched": 3,
+        "accepted": 3,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "got-bag",
+        "status": "OK",
+        "fetched": 3,
+        "accepted": 3,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "joe-fresh",
+        "status": "OK",
+        "fetched": 3,
+        "accepted": 3,
+        "errors": 0,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "kate-mcleod",
+        "status": "OK",
+        "fetched": 4,
+        "accepted": 4,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "killstar",
+        "status": "OK",
+        "fetched": 3,
+        "accepted": 3,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "naturkompaniet",
+        "status": "OK",
+        "fetched": 3,
+        "accepted": 3,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "nikin",
+        "status": "OK",
+        "fetched": 3,
+        "accepted": 3,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "tekla",
+        "status": "OK",
+        "fetched": 3,
+        "accepted": 3,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "wehkamp",
+        "status": "OK",
+        "fetched": 3,
+        "accepted": 3,
+        "errors": 0,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "aim-n",
+        "status": "OK",
+        "fetched": 4,
+        "accepted": 4,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "alberto",
+        "status": "DEGRADED",
+        "fetched": 6,
+        "accepted": 4,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "capri-jimmy-choo",
+        "status": "OK",
+        "fetched": 48,
+        "accepted": 48,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "damart",
+        "status": "OK",
+        "fetched": 4,
+        "accepted": 4,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "dfs",
+        "status": "OK",
+        "fetched": 4,
+        "accepted": 4,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "eastpak",
+        "status": "OK",
+        "fetched": 4,
+        "accepted": 4,
+        "errors": 0,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "go-outdoors",
+        "status": "OK",
+        "fetched": 4,
+        "accepted": 4,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "ilia",
+        "status": "OK",
+        "fetched": 5,
+        "accepted": 5,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "la-redoute-talentview",
+        "status": "OK",
+        "fetched": 5,
+        "accepted": 5,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "petrol-industries",
+        "status": "OK",
+        "fetched": 4,
+        "accepted": 4,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "subset",
+        "status": "OK",
+        "fetched": 4,
+        "accepted": 4,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "ulta-jibe",
+        "status": "OK",
+        "fetched": 9992,
+        "accepted": 9992,
+        "errors": 0,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "faguo",
+        "status": "OK",
+        "fetched": 9,
+        "accepted": 9,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "fitflop",
+        "status": "OK",
+        "fetched": 10,
+        "accepted": 10,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "el-palacio-de-hierro",
+        "status": "OK",
+        "fetched": 4,
+        "accepted": 4,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "baron",
+        "status": "OK",
+        "fetched": 5,
+        "accepted": 5,
+        "errors": 0,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "jewells",
+        "status": "OK",
+        "fetched": 5,
+        "accepted": 5,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "theory-us-retail",
+        "status": "OK",
+        "fetched": 6,
+        "accepted": 6,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "uniqlo-my-headquarters",
+        "status": "OK",
+        "fetched": 5,
+        "accepted": 5,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "axel-arigato",
+        "status": "OK",
+        "fetched": 6,
+        "accepted": 6,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "bubble",
+        "status": "OK",
+        "fetched": 6,
+        "accepted": 6,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "fast-retailing-id-headquarters",
+        "status": "OK",
+        "fetched": 6,
+        "accepted": 6,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "g-label-by-goop",
+        "status": "OK",
+        "fetched": 6,
+        "accepted": 6,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "yema",
+        "status": "OK",
+        "fetched": 6,
+        "accepted": 6,
+        "errors": 0,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "filson",
+        "status": "OK",
+        "fetched": 7,
+        "accepted": 7,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "hanna-andersson",
+        "status": "OK",
+        "fetched": 7,
+        "accepted": 7,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "miu-miu",
+        "status": "BROKEN",
+        "fetched": 7,
+        "accepted": 7,
+        "errors": 7,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "olaplex",
+        "status": "OK",
+        "fetched": 8,
+        "accepted": 8,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "printful",
+        "status": "OK",
+        "fetched": 8,
+        "accepted": 8,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "ballantynes",
+        "status": "OK",
+        "fetched": 9,
+        "accepted": 9,
+        "errors": 0,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "cambio",
+        "status": "OK",
+        "fetched": 7,
+        "accepted": 7,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "apivita",
+        "status": "OK",
+        "fetched": 9,
+        "accepted": 9,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "profuomo",
+        "status": "OK",
+        "fetched": 10,
+        "accepted": 10,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "canada-goose",
+        "status": "DEGRADED",
+        "fetched": 98,
+        "accepted": 75,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "supergoop",
+        "status": "OK",
+        "fetched": 9,
+        "accepted": 9,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "vestiaire-collective",
+        "status": "OK",
+        "fetched": 9,
+        "accepted": 9,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "vivienne-westwood",
+        "status": "OK",
+        "fetched": 9,
+        "accepted": 9,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "cabaia",
+        "status": "OK",
+        "fetched": 10,
+        "accepted": 10,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "georges",
+        "status": "OK",
+        "fetched": 14,
+        "accepted": 14,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "herschel-supply-co",
+        "status": "OK",
+        "fetched": 10,
+        "accepted": 10,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "prisma-media",
+        "status": "OK",
+        "fetched": 10,
+        "accepted": 10,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "passage-du-desir",
+        "status": "OK",
+        "fetched": 11,
+        "accepted": 11,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "aime-leon-dore",
+        "status": "OK",
+        "fetched": 11,
+        "accepted": 11,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "uniqlo-us-headquarters",
+        "status": "OK",
+        "fetched": 9,
+        "accepted": 9,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "john-henric",
+        "status": "OK",
+        "fetched": 10,
+        "accepted": 10,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "karla-otto",
+        "status": "OK",
+        "fetched": 11,
+        "accepted": 11,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "kicks",
+        "status": "OK",
+        "fetched": 13,
+        "accepted": 13,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "claires-workday",
+        "status": "OK",
+        "fetched": 12,
+        "accepted": 12,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "parachute",
+        "status": "OK",
+        "fetched": 11,
+        "accepted": 11,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "molton-brown",
+        "status": "OK",
+        "fetched": 14,
+        "accepted": 14,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "bellroy",
+        "status": "OK",
+        "fetched": 12,
+        "accepted": 12,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "bombas",
+        "status": "OK",
+        "fetched": 12,
+        "accepted": 12,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "uniqlo-vn-headquarters",
+        "status": "OK",
+        "fetched": 11,
+        "accepted": 11,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "celio",
+        "status": "OK",
+        "fetched": 12,
+        "accepted": 12,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "j-lindeberg",
+        "status": "OK",
+        "fetched": 12,
+        "accepted": 12,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "orlebar-brown",
+        "status": "OK",
+        "fetched": 14,
+        "accepted": 14,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "shinola",
+        "status": "OK",
+        "fetched": 12,
+        "accepted": 12,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "madame-figaro",
+        "status": "OK",
+        "fetched": 14,
+        "accepted": 14,
+        "errors": 0,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "shinola-retail",
+        "status": "OK",
+        "fetched": 11,
+        "accepted": 11,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "blue-banana",
+        "status": "OK",
+        "fetched": 10,
+        "accepted": 10,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "bravissimo",
+        "status": "OK",
+        "fetched": 12,
+        "accepted": 12,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "dolls-kill",
+        "status": "OK",
+        "fetched": 13,
+        "accepted": 13,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "rebag",
+        "status": "OK",
+        "fetched": 14,
+        "accepted": 14,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "ferrari",
+        "status": "OK",
+        "fetched": 13,
+        "accepted": 13,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "lounge",
+        "status": "OK",
+        "fetched": 14,
+        "accepted": 14,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "nyx-professional-makeup",
+        "status": "OK",
+        "fetched": 14,
+        "accepted": 14,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "closed",
+        "status": "OK",
+        "fetched": 14,
+        "accepted": 14,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "baccarat",
+        "status": "OK",
+        "fetched": 17,
+        "accepted": 17,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "shein",
+        "status": "OK",
+        "fetched": 17,
+        "accepted": 17,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "catbird",
+        "status": "OK",
+        "fetched": 20,
+        "accepted": 20,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "funky-buddha",
+        "status": "BROKEN",
+        "fetched": 23,
+        "accepted": 23,
+        "errors": 23,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "ounass",
+        "status": "OK",
+        "fetched": 30,
+        "accepted": 30,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "skechers-phenom",
+        "status": "BROKEN",
+        "fetched": 1595,
+        "accepted": 1595,
+        "errors": 1595,
+        "complete": false,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "everlane",
+        "status": "OK",
+        "fetched": 42,
+        "accepted": 42,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "boardriders",
+        "status": "OK",
+        "fetched": 45,
+        "accepted": 45,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "oh-polly",
+        "status": "OK",
+        "fetched": 15,
+        "accepted": 15,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "brothers",
+        "status": "OK",
+        "fetched": 13,
+        "accepted": 13,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "vivobarefoot",
+        "status": "OK",
+        "fetched": 14,
+        "accepted": 14,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "vf-corporation",
+        "status": "DEGRADED",
+        "fetched": 1427,
+        "accepted": 873,
+        "errors": 0,
+        "complete": false,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "nude-project",
+        "status": "OK",
+        "fetched": 15,
+        "accepted": 15,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "trussardi",
+        "status": "OK",
+        "fetched": 15,
+        "accepted": 15,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "loccitane-fr",
+        "status": "OK",
+        "fetched": 16,
+        "accepted": 16,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "peak-performance",
+        "status": "OK",
+        "fetched": 16,
+        "accepted": 16,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "globus",
+        "status": "OK",
+        "fetched": 27,
+        "accepted": 27,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "damiani",
+        "status": "OK",
+        "fetched": 29,
+        "accepted": 29,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "profil-optik",
+        "status": "OK",
+        "fetched": 31,
+        "accepted": 31,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "state-of-art",
+        "status": "OK",
+        "fetched": 33,
+        "accepted": 33,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "caudalie",
+        "status": "OK",
+        "fetched": 45,
+        "accepted": 45,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "skin-laundry",
+        "status": "OK",
+        "fetched": 47,
+        "accepted": 47,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "browns-shoes",
+        "status": "OK",
+        "fetched": 70,
+        "accepted": 70,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "little-words-project",
+        "status": "OK",
+        "fetched": 15,
+        "accepted": 15,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "bzb",
+        "status": "OK",
+        "fetched": 16,
+        "accepted": 16,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "good-american",
+        "status": "OK",
+        "fetched": 15,
+        "accepted": 15,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "jojo-maman-bebe",
+        "status": "OK",
+        "fetched": 15,
+        "accepted": 15,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "horace",
+        "status": "OK",
+        "fetched": 24,
+        "accepted": 24,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "figs",
+        "status": "OK",
+        "fetched": 23,
+        "accepted": 23,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "yaya",
+        "status": "OK",
+        "fetched": 23,
+        "accepted": 23,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "club-monaco",
+        "status": "OK",
+        "fetched": 24,
+        "accepted": 24,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "pronovias",
+        "status": "OK",
+        "fetched": 26,
+        "accepted": 26,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "acne-studios-jobylon",
+        "status": "OK",
+        "fetched": 30,
+        "accepted": 30,
+        "errors": 0,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "l-occitane-en-provence-2",
+        "status": "OK",
+        "fetched": 31,
+        "accepted": 31,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "soeur",
+        "status": "OK",
+        "fetched": 53,
+        "accepted": 53,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "chico-s",
+        "status": "OK",
+        "fetched": 14,
+        "accepted": 14,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "madhappy",
+        "status": "OK",
+        "fetched": 16,
+        "accepted": 16,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "knitwell-us-distribution",
+        "status": "OK",
+        "fetched": 15,
+        "accepted": 15,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "kiko-milano",
+        "status": "OK",
+        "fetched": 20,
+        "accepted": 20,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "riu-paris",
+        "status": "OK",
+        "fetched": 19,
+        "accepted": 19,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "brunello-cucinelli",
+        "status": "DEGRADED",
+        "fetched": 47,
+        "accepted": 46,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "tods",
+        "status": "OK",
+        "fetched": 16,
+        "accepted": 16,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "ganni-talentrecruiter",
+        "status": "OK",
+        "fetched": 21,
+        "accepted": 21,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "theory-eu",
+        "status": "OK",
+        "fetched": 18,
+        "accepted": 18,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "balmain",
+        "status": "OK",
+        "fetched": 19,
+        "accepted": 19,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "singularu",
+        "status": "OK",
+        "fetched": 29,
+        "accepted": 29,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "nike-nke2",
+        "status": "OK",
+        "fetched": 20,
+        "accepted": 20,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "ami-paris",
+        "status": "OK",
+        "fetched": 21,
+        "accepted": 21,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "new-balance",
+        "status": "OK",
+        "fetched": 100,
+        "accepted": 100,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "goyard-successfactors",
+        "status": "OK",
+        "fetched": 20,
+        "accepted": 20,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "katie-loxton",
+        "status": "OK",
+        "fetched": 21,
+        "accepted": 21,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "siebel-juweliers",
+        "status": "OK",
+        "fetched": 20,
+        "accepted": 20,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "sephora-france",
+        "status": "OK",
+        "fetched": 21,
+        "accepted": 21,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "uniqlo-stores",
+        "status": "DEGRADED",
+        "fetched": 105,
+        "accepted": 104,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "laverana-gmbh-co-kg",
+        "status": "OK",
+        "fetched": 22,
+        "accepted": 22,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "thirdlove",
+        "status": "OK",
+        "fetched": 22,
+        "accepted": 22,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "club-l-london",
+        "status": "OK",
+        "fetched": 23,
+        "accepted": 23,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "dune-london",
+        "status": "OK",
+        "fetched": 23,
+        "accepted": 23,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "bevilles-jewellers",
+        "status": "OK",
+        "fetched": 22,
+        "accepted": 22,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "oh-my-cream",
+        "status": "OK",
+        "fetched": 23,
+        "accepted": 23,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "ssense",
+        "status": "OK",
+        "fetched": 23,
+        "accepted": 23,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "castore",
+        "status": "OK",
+        "fetched": 25,
+        "accepted": 25,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "gymshark",
+        "status": "OK",
+        "fetched": 26,
+        "accepted": 26,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "kapten-son",
+        "status": "OK",
+        "fetched": 24,
+        "accepted": 24,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "toscane",
+        "status": "OK",
+        "fetched": 26,
+        "accepted": 26,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "peacocks",
+        "status": "OK",
+        "fetched": 25,
+        "accepted": 25,
+        "errors": 0,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "frank-darling",
+        "status": "OK",
+        "fetched": 26,
+        "accepted": 26,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "la-prairie",
+        "status": "OK",
+        "fetched": 27,
+        "accepted": 27,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "yse-paris",
+        "status": "OK",
+        "fetched": 27,
+        "accepted": 27,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "glossier",
+        "status": "OK",
+        "fetched": 29,
+        "accepted": 29,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "showroomprive",
+        "status": "OK",
+        "fetched": 28,
+        "accepted": 28,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "naos",
+        "status": "OK",
+        "fetched": 27,
+        "accepted": 27,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "jonsson-workwear",
+        "status": "OK",
+        "fetched": 29,
+        "accepted": 29,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "conde-nast-france",
+        "status": "OK",
+        "fetched": 138,
+        "accepted": 138,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "glitter",
+        "status": "OK",
+        "fetched": 31,
+        "accepted": 31,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "merkal",
+        "status": "OK",
+        "fetched": 31,
+        "accepted": 31,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "oska",
+        "status": "OK",
+        "fetched": 30,
+        "accepted": 30,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "eurofragrance",
+        "status": "OK",
+        "fetched": 36,
+        "accepted": 36,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "amiri",
+        "status": "OK",
+        "fetched": 38,
+        "accepted": 38,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "ephemera",
+        "status": "OK",
+        "fetched": 39,
+        "accepted": 39,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "nars",
+        "status": "OK",
+        "fetched": 38,
+        "accepted": 38,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "mulberry",
+        "status": "OK",
+        "fetched": 41,
+        "accepted": 41,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "thomas-sabo",
+        "status": "DEGRADED",
+        "fetched": 41,
+        "accepted": 41,
+        "errors": 1,
+        "complete": true,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "browns",
+        "status": "DEGRADED",
+        "fetched": 46,
+        "accepted": 46,
+        "errors": 1,
+        "complete": true,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "american-vintage-dr",
+        "status": "OK",
+        "fetched": 49,
+        "accepted": 49,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "b-s-international",
+        "status": "BROKEN",
+        "fetched": 62,
+        "accepted": 62,
+        "errors": 62,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "maison-123",
+        "status": "OK",
+        "fetched": 66,
+        "accepted": 66,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "kult-olymp-hades",
+        "status": "OK",
+        "fetched": 73,
+        "accepted": 73,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "jules",
+        "status": "OK",
+        "fetched": 73,
+        "accepted": 73,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "saltrock-harri",
+        "status": "OK",
+        "fetched": 30,
+        "accepted": 30,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "magasin-du-nord",
+        "status": "OK",
+        "fetched": 33,
+        "accepted": 33,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "longchamp",
+        "status": "OK",
+        "fetched": 36,
+        "accepted": 36,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "lager-157",
+        "status": "OK",
+        "fetched": 42,
+        "accepted": 42,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "asics",
+        "status": "OK",
+        "fetched": 37,
+        "accepted": 37,
+        "errors": 0,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "petit-bateau",
+        "status": "OK",
+        "fetched": 42,
+        "accepted": 42,
+        "errors": 0,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "mascot-workwear",
+        "status": "OK",
+        "fetched": 46,
+        "accepted": 46,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "camper",
+        "status": "OK",
+        "fetched": 48,
+        "accepted": 48,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "nutrire",
+        "status": "OK",
+        "fetched": 51,
+        "accepted": 51,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "dr-pierre-ricaud",
+        "status": "DEGRADED",
+        "fetched": 67,
+        "accepted": 67,
+        "errors": 1,
+        "complete": true,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "brown-thomas-taleo",
+        "status": "DEGRADED",
+        "fetched": 81,
+        "accepted": 81,
+        "errors": 12,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "oak-essentials",
+        "status": "OK",
+        "fetched": 34,
+        "accepted": 34,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "mr-marvis",
+        "status": "OK",
+        "fetched": 34,
+        "accepted": 34,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "jeans-centre",
+        "status": "OK",
+        "fetched": 43,
+        "accepted": 43,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "belstaff",
+        "status": "OK",
+        "fetched": 42,
+        "accepted": 42,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "promod",
+        "status": "OK",
+        "fetched": 50,
+        "accepted": 50,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "undiz",
+        "status": "OK",
+        "fetched": 58,
+        "accepted": 58,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "bash-talents",
+        "status": "OK",
+        "fetched": 50,
+        "accepted": 50,
+        "errors": 0,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "veronica-beard",
+        "status": "OK",
+        "fetched": 67,
+        "accepted": 67,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "eram-3",
+        "status": "OK",
+        "fetched": 87,
+        "accepted": 87,
+        "errors": 0,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "audemars-piguet",
+        "status": "OK",
+        "fetched": 87,
+        "accepted": 87,
+        "errors": 0,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "monica-vinader",
+        "status": "OK",
+        "fetched": 39,
+        "accepted": 39,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "sisley",
+        "status": "OK",
+        "fetched": 39,
+        "accepted": 39,
+        "errors": 0,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "luxexperience",
+        "status": "OK",
+        "fetched": 47,
+        "accepted": 47,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "ms-mode",
+        "status": "OK",
+        "fetched": 56,
+        "accepted": 56,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "blackstore",
+        "status": "DEGRADED",
+        "fetched": 56,
+        "accepted": 51,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "versace",
+        "status": "OK",
+        "fetched": 50,
+        "accepted": 50,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "la-senza",
+        "status": "OK",
+        "fetched": 59,
+        "accepted": 59,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "lovable",
+        "status": "OK",
+        "fetched": 61,
+        "accepted": 61,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "asos",
+        "status": "OK",
+        "fetched": 60,
+        "accepted": 60,
+        "errors": 0,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "honey-birdette",
+        "status": "OK",
+        "fetched": 66,
+        "accepted": 66,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "valentino",
+        "status": "OK",
+        "fetched": 67,
+        "accepted": 67,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "selfridges",
+        "status": "OK",
+        "fetched": 67,
+        "accepted": 67,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "brilliant-earth",
+        "status": "OK",
+        "fetched": 80,
+        "accepted": 80,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "the-kooples",
+        "status": "OK",
+        "fetched": 73,
+        "accepted": 73,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "silbon",
+        "status": "OK",
+        "fetched": 75,
+        "accepted": 75,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "orchestra",
+        "status": "OK",
+        "fetched": 83,
+        "accepted": 83,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "polene",
+        "status": "OK",
+        "fetched": 83,
+        "accepted": 83,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "white-stuff",
+        "status": "OK",
+        "fetched": 88,
+        "accepted": 88,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "eric-bompard",
+        "status": "OK",
+        "fetched": 80,
+        "accepted": 80,
+        "errors": 0,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "my-jewellery",
+        "status": "OK",
+        "fetched": 98,
+        "accepted": 98,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "multiopticas",
+        "status": "OK",
+        "fetched": 96,
+        "accepted": 96,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "salomon",
+        "status": "OK",
+        "fetched": 86,
+        "accepted": 86,
+        "errors": 0,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "boggi-milano",
+        "status": "OK",
+        "fetched": 102,
+        "accepted": 102,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "gant",
+        "status": "OK",
+        "fetched": 110,
+        "accepted": 110,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "beiersdorf",
+        "status": "OK",
+        "fetched": 166,
+        "accepted": 166,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "aigle",
+        "status": "OK",
+        "fetched": 113,
+        "accepted": 113,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "knitwell-us-corporate",
+        "status": "OK",
+        "fetched": 100,
+        "accepted": 100,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "adopt-parfums",
+        "status": "OK",
+        "fetched": 129,
+        "accepted": 129,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "reformation",
+        "status": "OK",
+        "fetched": 128,
+        "accepted": 128,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "clarkson-eyecare",
+        "status": "OK",
+        "fetched": 135,
+        "accepted": 135,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "space-nk",
+        "status": "OK",
+        "fetched": 139,
+        "accepted": 139,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "akira",
+        "status": "OK",
+        "fetched": 141,
+        "accepted": 141,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "quince",
+        "status": "OK",
+        "fetched": 140,
+        "accepted": 140,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "sezane",
+        "status": "OK",
+        "fetched": 120,
+        "accepted": 120,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "chalhoub",
+        "status": "OK",
+        "fetched": 140,
+        "accepted": 140,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "mejuri",
+        "status": "OK",
+        "fetched": 151,
+        "accepted": 151,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "therealreal",
+        "status": "DEGRADED",
+        "fetched": 120,
+        "accepted": 119,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "apm-monaco",
+        "status": "OK",
+        "fetched": 149,
+        "accepted": 149,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "burberry",
+        "status": "OK",
+        "fetched": 147,
+        "accepted": 147,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "drunk-elephant-2",
+        "status": "OK",
+        "fetched": 154,
+        "accepted": 154,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "suitsupply",
+        "status": "OK",
+        "fetched": 160,
+        "accepted": 160,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "gorjana",
+        "status": "OK",
+        "fetched": 165,
+        "accepted": 165,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "mecca",
+        "status": "DEGRADED",
+        "fetched": 165,
+        "accepted": 158,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "aroma-zone",
+        "status": "OK",
+        "fetched": 177,
+        "accepted": 177,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "maison-margiela",
+        "status": "OK",
+        "fetched": 171,
+        "accepted": 171,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "armand-thiery-flatchr",
+        "status": "OK",
+        "fetched": 188,
+        "accepted": 188,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "marella",
+        "status": "OK",
+        "fetched": 190,
+        "accepted": 190,
+        "errors": 0,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "jd-sports",
+        "status": "OK",
+        "fetched": 210,
+        "accepted": 210,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "pga-tour-superstore",
+        "status": "OK",
+        "fetched": 175,
+        "accepted": 175,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "diptyque-workday",
+        "status": "OK",
+        "fetched": 192,
+        "accepted": 192,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "jean-paul-gaultier-5",
+        "status": "DEGRADED",
+        "fetched": 215,
+        "accepted": 215,
+        "errors": 1,
+        "complete": true,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "kiabi",
+        "status": "OK",
+        "fetched": 221,
+        "accepted": 221,
+        "errors": 0,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "aptar-beauty",
+        "status": "OK",
+        "fetched": 226,
+        "accepted": 226,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "a-derma-4",
+        "status": "OK",
+        "fetched": 222,
+        "accepted": 222,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "psycho-bunny",
+        "status": "OK",
+        "fetched": 148,
+        "accepted": 148,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "buck-mason",
+        "status": "OK",
+        "fetched": 244,
+        "accepted": 244,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "prada-group",
+        "status": "OK",
+        "fetched": 231,
+        "accepted": 231,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "etam",
+        "status": "OK",
+        "fetched": 258,
+        "accepted": 258,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "on-running",
+        "status": "DEGRADED",
+        "fetched": 247,
+        "accepted": 247,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "avolta",
+        "status": "OK",
+        "fetched": 239,
+        "accepted": 239,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "lush",
+        "status": "OK",
+        "fetched": 309,
+        "accepted": 309,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "arcteryx",
+        "status": "OK",
+        "fetched": 290,
+        "accepted": 290,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "aritzia",
+        "status": "DEGRADED",
+        "fetched": 545,
+        "accepted": 540,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "element-6",
+        "status": "OK",
+        "fetched": 343,
+        "accepted": 343,
+        "errors": 0,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "douglas-sf",
+        "status": "OK",
+        "fetched": 315,
+        "accepted": 315,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "courir",
+        "status": "OK",
+        "fetched": 382,
+        "accepted": 382,
+        "errors": 0,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "uniqlo-us-retail",
+        "status": "OK",
+        "fetched": 354,
+        "accepted": 354,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "normal",
+        "status": "OK",
+        "fetched": 465,
+        "accepted": 465,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "capri-michael-kors",
+        "status": "OK",
+        "fetched": 503,
+        "accepted": 503,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "lacoste",
+        "status": "OK",
+        "fetched": 469,
+        "accepted": 469,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "sandro",
+        "status": "OK",
+        "fetched": 544,
+        "accepted": 544,
+        "errors": 0,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "deckers",
+        "status": "OK",
+        "fetched": 426,
+        "accepted": 426,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "la-casa-de-las-carcasas",
+        "status": "OK",
+        "fetched": 665,
+        "accepted": 665,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "richemont",
+        "status": "OK",
+        "fetched": 502,
+        "accepted": 502,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "lovisa",
+        "status": "OK",
+        "fetched": 1167,
+        "accepted": 1167,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "primark",
+        "status": "OK",
+        "fetched": 924,
+        "accepted": 924,
+        "errors": 0,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "nike",
+        "status": "DEGRADED",
+        "fetched": 841,
+        "accepted": 832,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "intersport-france",
+        "status": "DEGRADED",
+        "fetched": 978,
+        "accepted": 915,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "nordstrom",
+        "status": "DEGRADED",
+        "fetched": 1314,
+        "accepted": 1313,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "mango",
+        "status": "DEGRADED",
+        "fetched": 1669,
+        "accepted": 1641,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "knitwell-us-retail",
+        "status": "OK",
+        "fetched": 1999,
+        "accepted": 1999,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "urbn-hub",
+        "status": "DEGRADED",
+        "fetched": 1472,
+        "accepted": 1471,
+        "errors": 0,
+        "complete": true,
+        "canAttestAbsence": true
+      },
+      {
+        "key": "wttj-sector",
+        "status": "OK",
+        "fetched": 2084,
+        "accepted": 2084,
+        "errors": 0,
+        "complete": null,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "foot-locker-france",
+        "status": "DEGRADED",
+        "fetched": 2991,
+        "accepted": 2991,
+        "errors": 0,
+        "complete": false,
+        "canAttestAbsence": false
+      },
+      {
+        "key": "lvmh",
+        "status": "DEGRADED",
+        "fetched": 6208,
+        "accepted": 6208,
+        "errors": 30,
+        "complete": null,
+        "canAttestAbsence": false
+      }
+    ]
+  },
+  "registryChanges": {
+    "at": "2026-09-23T17:46:51.737Z",
+    "reviewer": "post-run-followup-20260923",
+    "publicationsChanged": 0,
+    "decisionsFabricated": 0,
+    "receipts": [
+      {
+        "sourceKey": "picard",
+        "before": {
+          "revision": "4744009c-6ae2-4df5-9a06-2a8a60400eaa",
+          "status": "PAUSED",
+          "portalScope": "SINGLE_BRAND",
+          "config": {
+            "startUrl": "https://picard-fashion.com/blogs/karriere"
+          }
+        },
+        "after": {
+          "revision": "d703d8ec-6eda-4e69-a7de-41509189903b",
+          "status": "PAUSED",
+          "portalScope": "SINGLE_BRAND",
+          "config": {
+            "feedUrl": "https://picard-fashion.com/blogs/karriere.atom",
+            "startUrl": "https://picard-fashion.com/blogs/karriere"
+          }
+        },
+        "proof": {
+          "captureBatchId": "1d071191-ccd2-481f-94b3-7ee8aeacb725",
+          "nativeHtmlSha256": "a339ba782ab9c8361535a885901d0bece19b8f9342bde42cc277286112e41eb3",
+          "feedUrl": "https://picard-fashion.com/blogs/karriere.atom",
+          "publicFeedSha256": "47e37f8204c274a970531720d5d607c073b2b71bf882e606ba854bba1268b045"
+        }
+      },
+      {
+        "sourceKey": "aeropostale",
+        "before": {
+          "revision": "90fcf38b-197e-4d39-9975-5c664ab02b9f",
+          "status": "ACTIVE",
+          "portalScope": null,
+          "config": {
+            "origin": "https://careers-aeropostale.icims.com"
+          }
+        },
+        "after": {
+          "revision": "dfa87542-bc94-4f77-9849-360643d9305e",
+          "status": "PAUSED",
+          "portalScope": null,
+          "config": {
+            "origin": "https://careers-aeropostale.icims.com",
+            "employerFromJobPosting": true
+          }
+        },
+        "proof": {
+          "captureBatchId": "901130f7-ad85-4afe-ad7b-85b427c2f3f5",
+          "publicationIds": [
+            "9610",
+            "9601",
+            "9594"
+          ],
+          "rule": "Read the hiringOrganization already present in each captured native JobPosting using the existing source setting; no inferred portal employer.",
+          "officialPage": "https://www.aeropostale.com/aeropostale-careers/stores-corporate.html"
+        }
+      },
+      {
+        "sourceKey": "adidas",
+        "before": {
+          "revision": "2c60c24b-f23b-492b-b625-58ea3f9e69e1",
+          "status": "ACTIVE",
+          "portalScope": null,
+          "config": {
+            "origin": "https://jobs.adidas-group.com"
+          }
+        },
+        "after": {
+          "revision": "2c60c24b-f23b-492b-b625-58ea3f9e69e1",
+          "status": "ACTIVE",
+          "portalScope": "SINGLE_BRAND",
+          "config": {
+            "origin": "https://jobs.adidas-group.com"
+          }
+        },
+        "proof": {
+          "captureBatchId": "363f9d53-496f-4638-b668-adac77c79a7f",
+          "officialPage": "https://jobs.adidas-group.com/",
+          "officialHtmlSha256": "1a45bf2b0d0dbf0c24547b29dd9375462753fe03f4bb8d718fa674a1563cf649",
+          "rule": "Reviewed adidas-owned recruiting portal and native adidas listings; missing structured employer remains explicitly inferred from the reviewed portal, never native."
+        }
+      },
+      {
+        "sourceKey": "parfums-chanel",
+        "before": {
+          "revision": "17c60637-1440-49b8-b163-0b3cf5d2e374",
+          "status": "ACTIVE",
+          "portalScope": null,
+          "config": {
+            "site": "ChanelCareers",
+            "origin": "https://cc.wd3.myworkdayjobs.com",
+            "tenant": "cc"
+          }
+        },
+        "after": {
+          "revision": "17c60637-1440-49b8-b163-0b3cf5d2e374",
+          "status": "ACTIVE",
+          "portalScope": "SINGLE_BRAND",
+          "config": {
+            "site": "ChanelCareers",
+            "origin": "https://cc.wd3.myworkdayjobs.com",
+            "tenant": "cc"
+          }
+        },
+        "proof": {
+          "captureBatchId": "3ab77aa6-6f1c-417c-81c3-97610fb288dc",
+          "officialPage": "https://www.chanel.com/us/careers/",
+          "officialHtmlSha256": "4356696414e340bb68e9fd971aefcc6c1b86538f94243e5e8d9ccc9b13f1bcc5",
+          "officialTarget": "https://cc.wd3.myworkdayjobs.com/en-US/ChanelCareers",
+          "rule": "CHANEL careers names its own employer and links the exact ChanelCareers board; the reviewed portal fallback retains its distinct provenance. No inference for other multi-brand sources."
+        }
+      },
+      {
+        "sourceKey": "skechers-phenom",
+        "before": {
+          "revision": "b4dc09bb-2ed4-4813-bbda-df64213c6e8a",
+          "status": "ACTIVE",
+          "portalScope": null,
+          "config": {
+            "origin": "https://careers.skechers.com",
+            "dialect": "CAREER_CONNECT_WIDGETS",
+            "localePath": "us/en"
+          }
+        },
+        "after": {
+          "revision": "b4dc09bb-2ed4-4813-bbda-df64213c6e8a",
+          "status": "ACTIVE",
+          "portalScope": "SINGLE_BRAND",
+          "config": {
+            "origin": "https://careers.skechers.com",
+            "dialect": "CAREER_CONNECT_WIDGETS",
+            "localePath": "us/en"
+          }
+        },
+        "proof": {
+          "captureBatchId": "d219397d-7a36-4433-843b-5b9f91d46b84",
+          "nativeEmployerAbsent": true,
+          "sampleExternalIds": [
+            "SRJSVUUSJR112837EXTERNALENUS",
+            "SRJSVUUSJR102291EXTERNALENUS",
+            "SRJSVUUSJR102295EXTERNALENUS"
+          ],
+          "officialPage": "https://about.skechers.com/careers/",
+          "officialTarget": "https://careers.skechers.com/fr/fr",
+          "officialHtmlSha256": "266df940b5f3c13eded52b1880f1e74941384d2cceafe02cf2a03110b7d8afc9",
+          "rule": "Official Skechers corporate careers page redirects to the exact Skechers career portal. Native postings describe Skechers retail/corporate roles and link this portal as hiringOrganization.sameAs; native name is empty. Reviewed brand-level portal fallback only; no fabricated native employer, aliases or company reassignment."
+        }
+      }
+    ]
+  },
+  "rootCauseFindings": [
+    {
+      "sources": [
+        "miu-miu"
+      ],
+      "class": "CATALOGUE_DATA",
+      "cause": "UNRELATED_EMPLOYER_HOMONYM",
+      "proof": {
+        "captureBatchId": "46b67206-a86d-4f31-8811-375d577666a3",
+        "nativeEmployer": "MIU",
+        "nativeDescription": "Private university in Egypt",
+        "rows": 7
+      },
+      "state": "Historical withdrawal proposal pending explicit authorization; no data changed."
+    },
+    {
+      "sources": [
+        "b-s-international"
+      ],
+      "class": "HISTORICAL_IDENTITY",
+      "cause": "NATIVE_LABEL_CONTRADICTS_PRIOR_EMPLOYER",
+      "proof": {
+        "captureBatchId": "de052c0f-3f01-4a20-a13d-dbc0331308c6",
+        "nativeEmployer": "B&S International",
+        "previousEmployer": "B’s",
+        "currentRunRefusals": 62
+      },
+      "state": "No alias or reassignment fabricated. Retail/distribution group scope needs a reviewed historical identity decision."
+    },
+    {
+      "sources": [
+        "funky-buddha"
+      ],
+      "class": "HISTORICAL_IDENTITY",
+      "cause": "LEGAL_EMPLOYER_DIFFERS_FROM_PRIOR_BRAND",
+      "proof": {
+        "captureBatchId": "9837fb9f-1d80-416f-992d-ef3e064f3af3",
+        "nativeEmployer": "ALTEX S.A.",
+        "previousEmployer": "Funky Buddha",
+        "currentRunRefusals": 23
+      },
+      "state": "Native legal employer retained. Do not collapse the Altex group into a brand to remove an identity error."
+    },
+    {
+      "sources": [
+        "thomas-sabo"
+      ],
+      "class": "HISTORICAL_IDENTITY",
+      "cause": "PREVIOUS_SPELLING_DIFFERS_IN_PUNCTUATION",
+      "proof": {
+        "captureBatchId": "5cac20e4-351b-49c2-bbc3-3bd315b72ce8",
+        "nativeEmployer": "THOMAS SABO GmbH & Co. KG",
+        "previousEmployer": "Thomas Sabo GmbH & Co.KG",
+        "currentRunRefusals": 1
+      },
+      "state": "Existing alias review can address the one previous attribution; no global weakening of legal-name comparison."
+    },
+    {
+      "sources": [
+        "zegna-altamira"
+      ],
+      "class": "ADAPTER_AND_NATIVE_DATA",
+      "cause": "UNSUPPORTED_UNSTRUCTURED_DETAILS_AND_INVALID_NATIVE_COUNTRY",
+      "proof": {
+        "captureBatchId": "636a26aa-0e72-4a71-b968-684da24f3f37",
+        "htmlWithNoJobPosting": 4,
+        "nativeCountryField": "Piemonte",
+        "invalidGeographyRows": 1,
+        "qualified": 59,
+        "observed": 64
+      },
+      "state": "Qualification ceiling preserved. Four unsupported HTML publications are an adapter coverage limit; region in addressCountry is a publisher data defect."
+    },
+    {
+      "sources": [
+        "pvh"
+      ],
+      "class": "SOURCE_EXTERNAL",
+      "cause": "SITEMAP_POSTING_DETAILS_REFUSED_OR_REMOVED",
+      "proof": {
+        "captureBatchId": "b0286d4a-0ce9-4ee6-a18f-e0636d599ef5",
+        "unqualifiedListedPages": 7,
+        "nonPostingPagesExplained": 63,
+        "http403Attempts": 21,
+        "http410Attempts": 1
+      },
+      "state": "No access bypass or invented absence. HTTP failures make the current enumeration incomplete."
+    },
+    {
+      "sources": [
+        "lvmh"
+      ],
+      "class": "SOURCE_NATIVE_DATA",
+      "cause": "MISSING_STRUCTURED_MAISON_ON_MULTIBRAND_PORTAL",
+      "proof": {
+        "captureBatchId": "5ddacbaa-2f53-4440-8966-ad3a4e0bc33d",
+        "nativeExternalIds": [
+          "LBMGA00003",
+          "LBMGA00004",
+          "LBMGA00005"
+        ],
+        "nativeMaison": null,
+        "fetched": 6208,
+        "published": 6178,
+        "refusals": 30
+      },
+      "state": "RAW examined and hashes verified: native maison is null; prose mentions several related entities. No portal-wide LVMH employer certification or fabricated identity."
+    },
+    {
+      "sources": [
+        "hugo-boss-phenom"
+      ],
+      "class": "SOURCE_PAGINATION",
+      "cause": "REPEATED_NATIVE_IDS_ACROSS_VALID_OFFSETS",
+      "proof": {
+        "captureBatchId": "3f9bfb50-7df8-4d0d-82e1-8ad420db2ad4",
+        "manifestHash": "bd86866b67e9f6bbfd969676c652fe3e15653a70cbb7184f6abcf4fb8ea6f071",
+        "declaredTotal": 780,
+        "rawListingRows": 780,
+        "uniqueIds": 585,
+        "pages": 9,
+        "termination": "EMPTY_PAGE",
+        "httpErrors": 0
+      },
+      "state": "Employer extraction fixed: 585 creations, zero write failures. Repeated native IDs leave enumeration incomplete; capture cannot attest absence. Qualification and ingestion observed different unique counts (599 then 585). No forced completeness."
+    },
+    {
+      "sources": [
+        "skechers-phenom"
+      ],
+      "class": "REGISTRY",
+      "cause": "SINGLE_BRAND_PORTAL_SCOPE_NOT_REVIEWED",
+      "proof": {
+        "captureBatchId": "d219397d-7a36-4433-843b-5b9f91d46b84",
+        "nativeListingCompanyName": null,
+        "nativeHiringOrganizationName": "",
+        "firstReplayRefusals": 1593,
+        "officialPage": "https://about.skechers.com/careers/",
+        "officialTarget": "https://careers.skechers.com/fr/fr",
+        "officialHtmlSha256": "266df940b5f3c13eded52b1880f1e74941384d2cceafe02cf2a03110b7d8afc9",
+        "finalReplay": {
+          "runId": "4af7a48d-a397-4420-b455-ed2d19d2d2ea",
+          "captureBatchId": "8b01a294-8985-4b1f-8190-5a9ef901fc81",
+          "created": 1593,
+          "errors": 0,
+          "merged": 0,
+          "complete": false,
+          "france": 23,
+          "completionReportHash": "a84a97257324e4a017adc321eac34fcfb2f434d630ef6e39e702f04e8ef4cc36",
+          "http403Attempts": 23,
+          "http410Attempts": 3
+        }
+      },
+      "state": "Corrected initial diagnosis: unlike Hugo Boss, native employer is absent. Registry scope reviewed with official redirect and native postings. Targeted production replay COMPLETED: 1593 creations, zero write failures. Enumeration stays partial after external HTTP 403/410 responses; no forced absence, fabricated native employer or source-specific code."
+    },
+    {
+      "sources": [
+        "rivoli-typesense"
+      ],
+      "class": "NATIVE_EMPLOYER_EVIDENCE",
+      "cause": "NATIVE_QUALIFICATION_FIXED_BUT_EMPLOYER_STILL_UNESTABLISHED",
+      "proof": {
+        "captureBatchId": "27454543-50cb-4c88-93c8-c75b06c9338d",
+        "identityWriteRefusals": 46,
+        "completionReportHash": "76795e08e3088fe751388cbe5a2e02f4154a22a808bb216e5a14f460a0568bda",
+        "observedOutputs": 46
+      },
+      "state": "Typesense native detail replay now qualifies. Employer resolution remains blocked for the group portal; no arbitrary SINGLE_BRAND certification."
+    },
+    {
+      "sources": [
+        "tapestry"
+      ],
+      "class": "HISTORICAL_IDENTITY",
+      "cause": "ALIAS_SOURCE_OR_TENANT_CHANGED",
+      "proof": {
+        "runId": "8b13d1f0-ced1-4380-8ad5-89e33a74587d",
+        "externalId": "Manager--Treasury-Operations_JR16149-1",
+        "nativeEmployer": "Coach Stores Limited",
+        "refusals": 1
+      },
+      "state": "Existing alias no longer proves the current source/tenant configuration. Guard preserved; no identity reassignment or unreviewed alias renewal."
+    },
+    {
+      "sources": [
+        "aeropostale"
+      ],
+      "class": "SOURCE_CONFIGURATION",
+      "cause": "NATIVE_JOBPOSTING_EMPLOYER_SETTING_UNUSED",
+      "proof": {
+        "captureBatchId": "e3687330-5b97-4bd6-aaa6-310d2ce29bca",
+        "sourceRevision": "dfa87542-bc94-4f77-9849-360643d9305e",
+        "fetched": 18,
+        "created": 18,
+        "errors": 0,
+        "complete": true
+      },
+      "state": "Existing employerFromJobPosting setting enabled after inspection of native hiringOrganization. Qualification and ingestion passed in production; no inferred portal identity."
+    },
+    {
+      "sources": [
+        "picard"
+      ],
+      "class": "ADAPTER_COVERAGE",
+      "cause": "OFFICIAL_ATOM_FEED_PUBLISHABLE_BUT_EXHAUSTIVENESS_UNPROVEN",
+      "proof": {
+        "captureBatchId": "567882b9-76aa-4dbf-ac58-e5e2d52ab55d",
+        "sourceRevision": "d703d8ec-6eda-4e69-a7de-41509189903b",
+        "feedUrl": "https://picard-fashion.com/blogs/karriere.atom",
+        "created": 6,
+        "errors": 0,
+        "countryProvided": 0,
+        "complete": false
+      },
+      "state": "Six native publications ingested. RSS/Atom coverage does not attest a complete enumeration, and no country is fabricated. Source remains visibly DEGRADED, without absence-based closure."
+    }
+  ],
+  "browserSmoke": {
+    "observedAt": "2026-09-23T17:47:22.039576+00:00",
+    "url": "http://localhost:3022/emplois?marche=FR&q=Caudalie",
+    "visibleSearchResults": 14,
+    "marketTotal": 9878,
+    "selectedTitle": "CDI - PRATICIEN(NE)S SOINS SPA, PARIS",
+    "externalApply": "https://caudalie.career/apply/offer/XNX7G8",
+    "detailRendered": true,
+    "country": "France",
+    "pass": true,
+    "adidas": {
+      "observedAt": "2026-09-23T18:31:01.568841+00:00",
+      "url": "http://localhost:3022/emplois?marche=FR&maison=adidas",
+      "visibleResults": 51,
+      "marketTotal": 9940,
+      "selectedTitle": "Floor Manager adidas (H/F/D)",
+      "location": "Beaucouze, France",
+      "externalApply": "https://jobs.adidas-group.com/job/Beaucouze-Floor-Manager-adidas-%28HFD%29/1440145333/",
+      "detailRendered": true,
+      "pass": true
+    }
+  },
+  "httpSmoke": {
+    "at": "2026-09-23T19:00:25.421820+00:00",
+    "health": {
+      "status": 200
+    },
+    "unauthorized": {
+      "status": 401
+    },
+    "detail": {
+      "status": 200,
+      "id": "cmue51vd109beo234uuge7daw"
+    },
+    "FR": {
+      "status": 200,
+      "total": 10418,
+      "perimetre": {
+        "code": "FR",
+        "nom": "France",
+        "pays": [
+          "FR"
+        ],
+        "mesure": true,
+        "locales": [
+          "fr-FR"
+        ],
+        "localeParDefaut": "fr-FR",
+        "langueDesLibelles": "fr"
+      },
+      "returned": 25,
+      "countries": [
+        "FR"
+      ],
+      "marketBound": true,
+      "sampleId": "cmue51vd109beo234uuge7daw"
+    },
+    "US": {
+      "status": 200,
+      "total": 33997,
+      "perimetre": {
+        "code": "US",
+        "nom": "United States",
+        "pays": [
+          "US"
+        ],
+        "mesure": true,
+        "locales": [
+          "en-US",
+          "es-US"
+        ],
+        "localeParDefaut": "en-US",
+        "langueDesLibelles": "en"
+      },
+      "returned": 25,
+      "countries": [
+        "US"
+      ],
+      "marketBound": true
+    },
+    "FR_filters": {
+      "status": 200,
+      "total": 3508,
+      "perimetre": {
+        "code": "FR",
+        "nom": "France",
+        "pays": [
+          "FR"
+        ],
+        "mesure": true,
+        "locales": [
+          "fr-FR"
+        ],
+        "localeParDefaut": "fr-FR",
+        "langueDesLibelles": "fr"
+      },
+      "returned": 25,
+      "countries": [
+        "FR"
+      ],
+      "marketBound": true
+    },
+    "Caudalie_FR": {
+      "status": 200,
+      "total": 14,
+      "perimetre": {
+        "code": "FR",
+        "nom": "France",
+        "pays": [
+          "FR"
+        ],
+        "mesure": true,
+        "locales": [
+          "fr-FR"
+        ],
+        "localeParDefaut": "fr-FR",
+        "langueDesLibelles": "fr"
+      },
+      "returned": 14,
+      "countries": [
+        "FR"
+      ],
+      "marketBound": true,
+      "nativeScopeCorrect": true
+    },
+    "markets": {
+      "status": 200
+    },
+    "pass": true
+  },
+  "registryAtExit": [
+    {
+      "_count": 410,
+      "status": "ACTIVE"
+    },
+    {
+      "_count": 11,
+      "status": "PAUSED"
+    },
+    {
+      "_count": 116,
+      "status": "RETIRED"
+    }
+  ],
+  "sourceOutcomes": [
+    {
+      "sourceKey": "alberto",
+      "deploymentId": "a89b18a7-a4ce-4ee2-bbe3-3d253c74729d",
+      "processSha": "3581d05557b4e283074811f4ab53796ef2fbcfe9",
+      "exitCode": 0,
+      "registryStatus": "ACTIVE",
+      "runIds": [
+        "703d92d6-fff0-4831-9e6d-fc1b6f2be017"
+      ],
+      "latestHealth": "OK",
+      "latestResult": {
+        "source": "alberto",
+        "fetched": 4,
+        "created": 0,
+        "updated": 4,
+        "merged": 0,
+        "errors": 0,
+        "held": null,
+        "heldUnresolved": null,
+        "rejected": 78,
+        "rejectedReasons": {
+          "LISTED_POSTING_PREVIEW": 4,
+          "LISTED_PAGE_WITHOUT_JOBPOSTING": 74
+        },
+        "france": 0,
+        "complete": true,
+        "truncated": false,
+        "captureBatchId": "a0863c5f-0400-476e-b1ff-96972743509b",
+        "completionReportHash": "7203f4c8b7e53cdb4700f8b84d01b83d4c014a0267bb23329fa728fb8fb5fe05"
+      }
+    },
+    {
+      "sourceKey": "hugo-boss-phenom",
+      "deploymentId": "2a2c8799-ee25-4b02-a57a-aef42b729688",
+      "processSha": "3581d05557b4e283074811f4ab53796ef2fbcfe9",
+      "exitCode": 0,
+      "registryStatus": "ACTIVE",
+      "runIds": [
+        "9482218c-5f5f-426a-aeb3-f3bf0d0ad9cd"
+      ],
+      "latestHealth": "DEGRADED",
+      "latestResult": {
+        "source": "hugo-boss-phenom",
+        "fetched": 585,
+        "created": 585,
+        "updated": 0,
+        "merged": 0,
+        "errors": 0,
+        "held": null,
+        "heldUnresolved": null,
+        "rejected": null,
+        "rejectedReasons": null,
+        "france": 11,
+        "complete": false,
+        "truncated": false,
+        "captureBatchId": "3f9bfb50-7df8-4d0d-82e1-8ad420db2ad4",
+        "completionReportHash": "69eed4a6d3a41e59c42c8c4620674e52309e78747a14661d791c4f583bcc519d"
+      }
+    },
+    {
+      "sourceKey": "skechers-phenom",
+      "deploymentId": "884d5807-74fe-42bb-8b80-adb968d5e8b2",
+      "processSha": "3581d05557b4e283074811f4ab53796ef2fbcfe9",
+      "exitCode": 0,
+      "registryStatus": "ACTIVE",
+      "runIds": [
+        "3bef7e2d-e202-4dd1-bf40-e6c8a5abccc6",
+        "4af7a48d-a397-4420-b455-ed2d19d2d2ea"
+      ],
+      "latestHealth": "DEGRADED",
+      "latestResult": {
+        "source": "skechers-phenom",
+        "fetched": 1593,
+        "created": 1593,
+        "updated": 0,
+        "merged": 0,
+        "errors": 0,
+        "held": null,
+        "heldUnresolved": null,
+        "rejected": null,
+        "rejectedReasons": null,
+        "france": 23,
+        "complete": false,
+        "truncated": false,
+        "captureBatchId": "8b01a294-8985-4b1f-8190-5a9ef901fc81",
+        "completionReportHash": "a84a97257324e4a017adc321eac34fcfb2f434d630ef6e39e702f04e8ef4cc36"
+      }
+    },
+    {
+      "sourceKey": "rivoli-typesense",
+      "deploymentId": "5c83d4dc-6523-4b99-b97d-70d27f12d882",
+      "processSha": "3581d05557b4e283074811f4ab53796ef2fbcfe9",
+      "exitCode": 1,
+      "registryStatus": "ACTIVE",
+      "runIds": [
+        "e23f2df1-e493-4321-9816-c01c4b03d954"
+      ],
+      "latestHealth": "BROKEN",
+      "latestResult": {
+        "source": "rivoli-typesense",
+        "fetched": 46,
+        "created": 0,
+        "updated": 0,
+        "merged": 0,
+        "errors": 46,
+        "held": null,
+        "heldUnresolved": null,
+        "rejected": null,
+        "rejectedReasons": null,
+        "france": 0,
+        "complete": null,
+        "truncated": false,
+        "captureBatchId": "27454543-50cb-4c88-93c8-c75b06c9338d",
+        "completionReportHash": "76795e08e3088fe751388cbe5a2e02f4154a22a808bb216e5a14f460a0568bda"
+      }
+    },
+    {
+      "sourceKey": "adidas",
+      "deploymentId": "0a47c2b2-4ca8-4b37-b3ce-4641d11eba31",
+      "processSha": "3581d05557b4e283074811f4ab53796ef2fbcfe9",
+      "exitCode": 0,
+      "registryStatus": "ACTIVE",
+      "runIds": [
+        "8712af70-616c-44fc-8b54-d8cfd01fa2c0"
+      ],
+      "latestHealth": "OK",
+      "latestResult": {
+        "source": "adidas",
+        "fetched": 1253,
+        "created": 1253,
+        "updated": 0,
+        "merged": 0,
+        "errors": 0,
+        "held": null,
+        "heldUnresolved": null,
+        "rejected": null,
+        "rejectedReasons": null,
+        "france": 51,
+        "complete": true,
+        "truncated": false,
+        "captureBatchId": "bd6fddc8-2ec2-4247-b299-2c38e39615c6",
+        "completionReportHash": "adad3f9c019e930697145275da38fd4d45c1886460e50859ef683e8b972b994d"
+      }
+    },
+    {
+      "sourceKey": "parfums-chanel",
+      "deploymentId": "282ed84f-896c-421f-9bd6-c1274b8c2b15",
+      "processSha": "3581d05557b4e283074811f4ab53796ef2fbcfe9",
+      "exitCode": 0,
+      "registryStatus": "ACTIVE",
+      "runIds": [
+        "191b5bfa-0cee-40d3-a478-84456d5ee697"
+      ],
+      "latestHealth": "OK",
+      "latestResult": {
+        "source": "parfums-chanel",
+        "fetched": 1157,
+        "created": 1157,
+        "updated": 0,
+        "merged": 0,
+        "errors": 0,
+        "held": null,
+        "heldUnresolved": null,
+        "rejected": null,
+        "rejectedReasons": null,
+        "france": 455,
+        "complete": true,
+        "truncated": false,
+        "captureBatchId": "ec050f5f-21da-45e2-8357-e31cb55f29a4",
+        "completionReportHash": "701c3958b84ad6eb0f1965bdd30e1282d2a2ce5bfcf6e27601f438dc93e99d83"
+      }
+    },
+    {
+      "sourceKey": "picard",
+      "deploymentId": "949d2dd2-2deb-47b2-a021-b484cc764a30",
+      "processSha": "3581d05557b4e283074811f4ab53796ef2fbcfe9",
+      "exitCode": 0,
+      "registryStatus": "ACTIVE",
+      "runIds": [
+        "42b61d0d-f61b-4d17-a770-b6d5ed372232",
+        "a011d861-0002-4204-b165-ef4f84d8d1b6"
+      ],
+      "latestHealth": "DEGRADED",
+      "latestResult": {
+        "source": "picard",
+        "fetched": 6,
+        "created": 6,
+        "updated": 0,
+        "merged": 0,
+        "errors": 0,
+        "held": null,
+        "heldUnresolved": null,
+        "rejected": null,
+        "rejectedReasons": null,
+        "france": 0,
+        "complete": false,
+        "truncated": false,
+        "captureBatchId": "567882b9-76aa-4dbf-ac58-e5e2d52ab55d",
+        "completionReportHash": "573f20f16597ec59b707e1959c9c6fa9e9e9ae999d10933c3325b1a83debaf54"
+      }
+    },
+    {
+      "sourceKey": "aeropostale",
+      "deploymentId": "d8181603-f6d7-4351-89a7-1e60c3bd01f5",
+      "processSha": "3581d05557b4e283074811f4ab53796ef2fbcfe9",
+      "exitCode": 0,
+      "registryStatus": "ACTIVE",
+      "runIds": [
+        "b3a7b65b-514f-493d-ae4b-771f45d6985e",
+        "6af42825-8b33-4f22-8b4c-df4e0e61d946"
+      ],
+      "latestHealth": "OK",
+      "latestResult": {
+        "source": "aeropostale",
+        "fetched": 18,
+        "created": 18,
+        "updated": 0,
+        "merged": 0,
+        "errors": 0,
+        "held": null,
+        "heldUnresolved": null,
+        "rejected": null,
+        "rejectedReasons": null,
+        "france": 0,
+        "complete": true,
+        "truncated": false,
+        "captureBatchId": "e3687330-5b97-4bd6-aaa6-310d2ce29bca",
+        "completionReportHash": "49b8d3ca35596ecbd609eb7c0180d075d98105b36c80ce0ebf71bf0330bf5046"
+      }
+    }
+  ],
+  "latestIngestionTotals": {
+    "fetched": 4662,
+    "created": 4612,
+    "updated": 4,
+    "merged": 0,
+    "errors": 46
+  },
+  "latestSourceHealth": {
+    "OK": 4,
+    "DEGRADED": 3,
+    "BROKEN": 1
+  }
+}

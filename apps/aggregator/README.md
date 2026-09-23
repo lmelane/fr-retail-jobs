@@ -1,6 +1,6 @@
 # Agrégateur Catwalks — état vérifié et exploitation
 
-**Audit post-RUN du 23 septembre 2026.** Le RUN initial a tenté 384 ACTIVE : 255 réussites, 35 partielles et 94 échecs. Les corrections issues de ses RAW et la version réellement livrée sont suivies dans le [bilan post-RUN](../../audits/2026-09-23/post-run.md), avec classification des 129 incidents et revue des 153 sources hors exploitation. La cible est un RUN par jour à 18 h Europe/Paris. Aucun nouveau RUN complet n’est nécessaire à la validation des correctifs : les replays restent ciblés. Les quatre anciens runtimes sont supprimés ; PostgreSQL et son volume sont conservés. Le site, backend, back-office et média ne sont pas déployés.
+**État vérifié le 23 septembre 2026.** Le RUN quotidien de 18 h Paris a parcouru 409 sources : 349 OK, 33 partielles, 27 en échec de santé, sans timeout ni échec de persistance. Les correctifs suivants (`3581d05`) sont livrés sur l’API et le worker et vérifiés par replays ciblés ; le [bilan post-RUN](../../audits/2026-09-23/post-run.md) distingue résultats, incidents restants et données historiques gelées. Le CRON normal est rétabli une fois par jour à 18 h Europe/Paris. Les quatre anciens runtimes sont supprimés ; PostgreSQL et son volume sont conservés. Le site, backend, back-office et média ne sont pas déployés.
 
 ## Une chaîne opérationnelle
 
@@ -18,7 +18,7 @@ La restauration du registre passe par `scripts/ops/exporter-registre-sources.mts
 
 Les runs, décisions de qualification, résultats de collecte et erreurs sont persistés. Le signal `run.alive` revient toutes les 30 secondes. `worker-status.mts` rend une lecture seule des derniers runs, captures et erreurs ; un RUNNING ancien sans signal récent reste UNVERIFIED. Les commandes maintenues conservent Brevo et heartbeat.
 
-Le retour arrière PR-1 a été exécuté sur base locale dédiée : ancienne API à 85 migrations → candidate à 86 → 23 offres réellement collectées → ancienne API, résultats et fiche identiques. La base reste forward-compatible ; aucun downgrade Prisma ni effacement du ledger. Toute reprise de collecte après rollback exige les preuves du lecteur courant.
+Le retour arrière PR-1 a été exécuté sur base locale dédiée : ancienne API à 85 migrations → candidate à 86 → 23 offres réellement collectées → ancienne API, résultats et fiche identiques. La base reste forward-compatible ; aucun downgrade Prisma ni effacement du ledger. Depuis la migration 88, un retour arrière doit aussi conserver le champ décimal `experienceYears` et un runtime compatible ; ne pas redéployer un modèle Prisma où ce champ est entier. Toute reprise de collecte exige les preuves du lecteur courant.
 
 ## Validation locale
 
@@ -38,11 +38,11 @@ Le contrôle des services courants suit le [runbook Railway](../../docs/architec
 
 Les [outils d’exploitation](scripts/ops/README.md) décrivent les lecteurs de runs, de captures et de preuves conservés. Les accès et les valeurs des secrets restent privés.
 
-## Dépendances hors canari
+## Dépendances séparées
 
-**DIRECT_OFFERS = hors canari.** Le consommateur existant `direct-sync` exige `CATALOGUE_FLUX_URL` et `CATALOGUE_FLUX_KEY`, reprend au curseur et signale les refus sur `DirectFeedCursor.lastError`. Son déploiement est séparé ; ni le backend des candidatures ni `/offres` ne sont modifiés. Le Golden Path vérifie `/emplois` avec zéro offre directe.
+**Direct Offers : chantier séparé.** Le consommateur existant `direct-sync` exige `CATALOGUE_FLUX_URL` et `CATALOGUE_FLUX_KEY`, reprend au curseur et signale les refus sur `DirectFeedCursor.lastError`. Son déploiement est séparé ; ni le backend des candidatures ni `/offres` ne sont modifiés. Le Golden Path vérifie `/emplois` avec zéro offre directe.
 
-**S3 = non bloquant canari.** Les RAW chauds sont durables dans PostgreSQL ; la répétition de rollback fonctionne sans stockage objet. Stockage froid et politique de rétention restent à traiter avant toute purge des RAW ; leur absence ne bloque pas l’exploitation autorisée.
+**Stockage froid : non bloquant pour l’exploitation autorisée.** Les RAW chauds sont durables dans PostgreSQL ; la répétition de rollback fonctionne sans stockage objet. Stockage froid et politique de rétention restent à traiter avant toute purge des RAW ; leur absence ne bloque pas l’exploitation autorisée.
 
 ## Repères
 
