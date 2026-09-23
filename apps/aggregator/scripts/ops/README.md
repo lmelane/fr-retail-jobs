@@ -2,17 +2,19 @@
 
 Les commandes maintenues vivent dans ce dossier ; les captures, dumps et identifiants d’accès restent privés. L’[architecture courante](../../../../docs/architecture/production-foundations.md) définit les contrats à livrer et les circuits à supprimer. Les chaînes de mutation ci-dessous restent des prototypes tant que leur répétition complète n’est pas validée ; leur présence ne certifie pas la production.
 
-Le transport GraphQL commun est [`railway_api.py`](railway_api.py), utilisé par le contrôle des services, le contrôle des crons et la garde de déploiement. Il utilise `CATWALKS_RAILWAY_TOKEN` ou la connexion CLI Railway. Aucun exécutable de transport n’est chargé depuis `backups/`.
+## Runtime Railway courant
+
+Le [runbook de livraison](../../../../docs/architecture/railway-runtime-reset.md), le [contrat cible](../../../../docs/operations/railway/runtime-target.json) et le [reçu de release](../../../../docs/operations/railway/runtime-release.json) décrivent les services `catwalks-catalogue-api` et `catwalks-ingestion-worker`. Leurs images immuables sont livrées explicitement, sans autodeploy. Les quatre anciens services ont été supprimés ; leurs pilotes, gardes de fusion et runners qui remplaçaient la commande de démarrage ont été retirés.
+
+Le worker courant passe par `sh apps/aggregator/start.sh` et applique le contrat de runtime et la pause. Les lectures de runs et de preuves restent disponibles dans les outils ci-dessous ; elles ne déclenchent pas une livraison.
+
+`railway_api.py` reste le transport de [`recuperer-tous-verdicts.py`](recuperer-tous-verdicts.py), lecteur **historique** des logs de l'ancien aggregator. Ce lecteur ne décrit pas les nouveaux services. L'accès aux anciens logs après suppression du service n'est pas garanti ; les verdicts déjà archivés restent dans le stockage privé. [`exporter-domaines-divergents.mts`](exporter-domaines-divergents.mts) relit cette archive privée, `backups/verdicts-campagne.json`. Aucun secret n'est chargé depuis un exécutable privé.
+
+Tests hors réseau du transport historique :
 
 ```sh
-python3 -B apps/aggregator/scripts/ops/railway-service.py status api
-python3 -B apps/aggregator/scripts/ops/read-crons.py
-python3 -B -m unittest discover -s apps/aggregator/scripts/ops/tests
+python3 -B -m unittest discover -s apps/aggregator/scripts/ops/tests -p test_railway.py
 ```
-
-Les noms acceptés sont `aggregator`, `api`, `refresh` et `reconcile`. Le nom public courant est `catwalks-api` ; les commandes bornées ne s’appliquent qu’à l’aggregator. Le préflight compare les révisions de l’API et du worker séparément, y compris leurs dépendances partagées.
-
-Le service Railway `reconcile` est conservé ici comme identifiant d’exploitation d’un service gelé. Son ancienne commande globale n’existe plus dans le runtime.
 
 ### Réparer une répartition de publications
 
@@ -47,30 +49,23 @@ INTEGRITY_TEST_CONTAINER=catwalks-consolide-rehearsal python3 -B -m unittest dis
 
 La base et le dossier de résultat doivent être nouveaux. `--pg-restore` désigne le binaire PostgreSQL compatible installé sur l’hôte. Cette procédure ne possède aucun mode production et n’autorise aucun nettoyage historique.
 
-## Mutating production
+## Données et preuves de répétition
 
 | | |
 |---|---|
-| [`mutation.sh`](mutation.sh) | The single entry point for any production data mutation: guards → perimeter → backup → **restore** (the restore *is* the proof the backup is usable) → rehearsal on the clone → gate → before → apply → after + replay → archive. Resume is fingerprint-based, not marker-based. Still qualified as a **prototype not validated for exploitation**. |
 | [`gate.mts`](gate.mts) | The blocking check between rehearsal and production. Exits non-zero when the replay changed anything, when the touched identifiers are not the declared perimeter, or when an invariant fails. Compares **sets**, and treats a **missing declaration as unverifiable, never as zero**. Tested in [`src/ops/gate.test.ts`](../../src/ops/gate.test.ts) — nine tests, all asserting exit 1. |
-| [`deploy-guard.py`](deploy-guard.py) | Refuses a merge while a deployment or a production run is in flight. A run may be exempted explicitly with `--allow-running <id>`, never by a hard-coded id. |
 | [`db.py`](db.py) | Which database, read-only or not, how the URL is built — `production` / `readonly` / `clone` / `test`. Secrets come from a host-local file named by `CATWALKS_DB_ACCESS`. |
-| [`read-crons.py`](read-crons.py), [`running-pipeline-runs.mts`](running-pipeline-runs.mts) | Read the frozen cron schedules and any run still in flight. |
+| [`running-pipeline-runs.mts`](running-pipeline-runs.mts) | Lit les runs sans fin attestée dans la base ; ne déduit pas leur état des anciens crons. |
 
-## Un cycle P7 borné : ingestion, preuve, manifeste, refresh
+## Preuves de collecte et manifestes de refresh
 
 Un cycle ne se déclare pas terminé parce qu'il a tourné : chaque étape doit avoir produit sa preuve, et le
 refresh ne touche que ce qui a été revu.
 
 | | |
 |---|---|
-| [`ingest-preflight.py`](ingest-preflight.py) | Impose les étapes 1 à 8 et **refuse en exit 1** : commit figé, arbre propre, aucun run en vol, les **deux** services vérifiés séparément (`DEPLOYED_AT_COMMIT` / `SAME_CODE_FOR_THIS_SERVICE` démontré par le diff / `STALE_CODE`), allowlist exacte, sauvegarde **restaurée** et comparée sur six grandeurs, canaux d'alerte **testés par émission réelle**. Refuse aussi **avant la première écriture** si le disque n'a pas 8 Gio libres — le dump *et* le clone restauré tiennent sur le même disque — et **rend** la base clone une fois qu'elle a prouvé la restauration (jamais si la comparaison a échoué : ce clone-là doit rester inspectable). |
-| [`bounded-ingest.sh`](bounded-ingest.sh) | Une ingestion bornée, sans aucun tube — le code de sortie d'un tube est celui de sa dernière commande. Pose la commande bornée, attend le SUCCESS sur CE commit, exécute, attend un statut **terminal** (restaurer plus tôt tuerait le run), restaure, contrôle les variables et les crons. |
-| [`bounded-command.py`](bounded-command.py), [`bounded-refresh-command.py`](bounded-refresh-command.py) | Les commandes de démarrage, échappées par `shlex` — assemblées en shell elles se cassent en silence, et une commande malformée qui se déploie remplace la commande normale par quelque chose qui échoue. Le refresh y porte l’empreinte du manifeste immuable stocké dans `MaintenancePlan` ; le volume du plan ne gonfle pas la commande. |
 | [`cycle-contracts.mts`](cycle-contracts.mts) | Les deux contrats d'une collecte, lus sur la base : `canonicalObservedIds = publiés ∪ retenus ∪ échecs ∪ rejets ∪ écartés`. Tout vient de la **capture attestante** de la source (manifeste scellé et rapport de fin d'ingestion), lue par le même lecteur que le refresh — jamais de `SourceRun` ni de `PipelineEvent`. |
 | [`refresh-preview.mts`](refresh-preview.mts) | Ce que le refresh ferait, par identifiant, sur le planificateur **commun**. Lit `canonicalIds`, jamais `ids`. Chaque source recevable nomme sa capture attestante (`eligibility[].captureBatchId`). `--manifest-out=<fichier>` fige les désactivations avec leur preuve et le hash de l’état de l’offre. |
-| [`bounded-refresh.sh`](bounded-refresh.sh) | Le refresh borné. **Refuse de démarrer si `INGEST_ONLY_KEYS` est posé** : un refresh ne collecte rien. Un manifeste vide arrête la chaîne en succès. La commande déployée est bornée **deux fois** : `REFRESH_ONLY_KEYS` *et* le manifeste version 4 complet chargé par empreinte. Les retraits d’orphelins et réouvertures ne font pas partie de ce mode. |
-| [`railway-service.py`](railway-service.py) `execute` | Refuse de déclencher une exécution si le déploiement n'est pas SUCCESS, si le commit diffère, si la commande déployée n'est pas celle qu'on a posée, si le périmètre déployé n'est pas **exactement** l'allowlist attendue (via `INGEST_ONLY_KEYS` **ou** `REFRESH_ONLY_KEYS`), ou s'il porte **les deux** — un état incohérent n'est pas deux fois plus sûr. Sans cette garde, un `execute` lancé après un redéploiement automatique relancerait le pipeline **complet** en production. Contre-exemples en test : [`src/ops/executeGuard.test.ts`](../../src/ops/executeGuard.test.ts). |
 | [`refresh-audit.mts`](refresh-audit.mts) | Lit les écritures et omissions expliquées dans `DataCorrection`, créé dans la transaction du refresh. Compare les identifiants et conséquences au manifeste, sans déduire les mutations d’une date de fermeture. |
 | [`cycle-compare.mts`](cycle-compare.mts) | Cycle 1 contre cycle 2, **par identifiant**. Seule l'intersection des absences des deux cycles peut fonder une fermeture. |
 | [`record-employer-alias.mts`](record-employer-alias.mts) | Une décision d'identité : libellé **exact**, portée **source**, preuve archivée dont le sha256 est vérifié. Refuse un alias global. |
@@ -82,7 +77,7 @@ refresh ne touche que ce qui a été revu.
 - `REFRESH_ONLY_KEYS` absent : portée non bornée. Une valeur explicitement vide : aucune mutation.
 - Une source cassée ou sans preuve complète ne prouve aucune absence. Un zéro explicitement annoncé et entièrement parcouru peut le faire.
 - `REFRESH_MAX_CLOSE_RATIO=0.05`, `REFRESH_MIN_CLOSE_FOR_GUARD=50`, `REFRESH_STALE_HOURS=48` sont les valeurs par défaut du même moteur pour le preview et l’exécution. Le ratio porte sur les offres actives du périmètre de sources ; il bloque à partir de 50 retraits/fermetures prévus. Les limites du manifeste sont figées dans son empreinte.
-- Un manifeste version 4 désactive seulement les représentations nommées ; chaque preuve d’absence y nomme sa capture attestante. L’état de l’offre et de ses autres publications est vérifié sous verrou. Une preuve ou un état nouveau entraîne une omission tracée ; relancer le même manifeste ne rejoue pas la mutation. Les manifestes des versions antérieures restent de l’historique : `bounded-refresh-command.py` et `loadRefreshManifest` les refusent, et un test Python vérifie que les deux versions ne divergent plus (mesuré le 16 septembre 2026 : la commande exigeait encore la version 2 quand le planificateur produisait la 3).
+- Un manifeste version 4 désactive seulement les représentations nommées ; chaque preuve d’absence y nomme sa capture attestante. L’état de l’offre et de ses autres publications est vérifié sous verrou. Une preuve ou un état nouveau entraîne une omission tracée ; relancer le même manifeste ne rejoue pas la mutation. Les manifestes des versions antérieures restent de l’historique : le lecteur `loadRefreshManifest` les refuse.
 - `JobSource.expiresAt` vient d’un chemin RAW qualifié. Les jours sans heure expirent après la fin de la journée dans tous les fuseaux (lendemain à 12:00 UTC). La preuve garde cette politique et la valeur originale. Une date telle que `9999-12-31`, dont la fin calculée dépasse la plage de Prisma, conserve `BEYOND_STORAGE_RANGE` dans la preuve et aucun instant inventé. `Job.validThrough` ne remplace jamais cette preuve.
 - [`source-expiry.mts`](source-expiry.mts) prépare le rattrapage RAW par pages de 250 (`preview --keys=… --out=…`). Le plan version 3 lie chaque échéance à une identité native qualifiée et vérifie toute capture référencée. `apply --plan=… --hash=…` revalide preuves et état, puis journalise les changements de cache de façon idempotente. La révision est calculée automatiquement ; `--revision` est refusé. Une page contenant un examen non résolu ne peut pas être appliquée. Le preview doit être répété si la source, son URL, sa capture ou le lecteur a changé. Les RAW, contenus, activités et dates d’attestation restent inchangés.
 - Les tests PostgreSQL de `refresh.test.ts`, `expiry.test.ts`, `sourceExpiry.test.ts` et les tests API couvrent les invariants. Les anciens scripts manuels de parité et le second calcul du manifeste ont été supprimés.
@@ -201,9 +196,9 @@ Tous s'exécutent sous `db.py readonly` (ou sur le clone) : `db.py readonly npx 
 | [`purge-preflight-clones.mts`](purge-preflight-clones.mts) `[--keep-latest=2] [--apply]` | Purge les clones de préflight périmés (`db.py clone`). |
 | [`backup.py`](backup.py) `<chemin.dump>` | Sauvegarde logique, sous `db.py production`. |
 
-## Fusionner sans tuer un run
+## Livraison explicite
 
-[`safe-merge.sh`](safe-merge.sh) `<PR> [args gh pr merge…]` refuse une fusion pendant un passage borné (un déploiement remplace le conteneur et tue le run : incidents du 09/09 et du 13/09/2026). [`run-merge.sh`](run-merge.sh) `<journal.log> <PR>` l'enveloppe pour que le code de sortie lu soit celui de la fusion, jamais celui d'un `tail`. Témoin : `src/ops/safeMerge.test.ts`.
+Une fusion Git ne déploie plus les services Railway. Toute livraison ou interruption du worker suit le [runbook courant](../../../../docs/architecture/railway-runtime-reset.md) et son contrôle des exécutions en cours. Les anciennes gardes de fusion attachées aux services supprimés ne sont plus des commandes d'exploitation.
 
 ## Mesures datées, rejouables
 

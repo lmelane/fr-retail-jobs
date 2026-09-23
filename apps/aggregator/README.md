@@ -34,14 +34,9 @@ npm run build:local -w @catwalks/aggregator
 
 Le [Golden Path](../../docs/architecture/golden-source.md) teste une nouvelle source, deux ingestions, les rejeux et la lecture API. Le [témoin de rollback](../../docs/architecture/canary-operations.md#répétition-du-retour-arrière) installe deux archives Git et démarre réellement leurs API, dans un environnement local dédié.
 
-Lectures de production, sans mutation :
+Le contrôle des services courants suit le [runbook Railway](../../docs/architecture/railway-runtime-reset.md), le [contrat cible](../../docs/operations/railway/runtime-target.json) et le [reçu de release](../../docs/operations/railway/runtime-release.json). Les services sont `catwalks-catalogue-api` et `catwalks-ingestion-worker` ; leur livraison par image immuable est explicite, sans autodeploy. Les anciens lecteurs de crons et pilotes des services supprimés ont été retirés.
 
-```sh
-python3 -B apps/aggregator/scripts/ops/railway-service.py status api
-python3 -B apps/aggregator/scripts/ops/read-crons.py
-```
-
-Les [outils d’exploitation](scripts/ops/README.md) décrivent les contrôles maintenus. Le transport Railway utilise `CATWALKS_RAILWAY_TOKEN` ou la connexion CLI locale ; les valeurs des secrets restent privées.
+Les [outils d’exploitation](scripts/ops/README.md) décrivent les lecteurs de runs, de captures et de preuves conservés. Les accès et les valeurs des secrets restent privés.
 
 ## Dépendances hors canari
 
