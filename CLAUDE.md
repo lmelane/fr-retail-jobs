@@ -6,7 +6,8 @@ Le produit est un agrégateur mondial du luxe, de la mode, de la beauté et du r
 
 - [README du projet](README.md).
 - [Exploitation et état vérifié](apps/aggregator/README.md).
-- [Canari validé le 23 septembre 2026](audits/2026-09-23/canary-delta-oh-my-cream.md) : delta egress PASS ; restaurabilité acquise, état final en pause et passage au ramp-up contrôlé. Les preuves acquises ne sont pas à rejouer sans changement qui les invalide.
+- [Canari validé le 23 septembre 2026](audits/2026-09-23/canary-delta-oh-my-cream.md) : delta egress PASS ; restaurabilité acquise, état final en pause. Le ramp-up attend désormais le reset du runtime demandé ensuite. Les preuves acquises ne sont pas à rejouer sans changement qui les invalide.
+- [Reset du runtime Railway — plan courant](docs/architecture/railway-runtime-reset.md) : deux nouveaux runtimes, configuration attestée, DB de production conservée ; plan non appliqué.
 - [Architecture produit](docs/architecture/production-foundations.md).
 - [Capture native et rétention](docs/architecture/native-capture.md).
 - [Faits issus des publications](docs/architecture/source-facts.md).
@@ -18,7 +19,7 @@ Le code, les réponses brutes et les mesures datées doivent être vérifiés av
 
 Le RAW est la référence. Les interprétations restent séparées, versionnées et rejouables. Aucun métier, diplôme ou contrat universel ne doit devenir une condition de publication. Les offres Catwalks et externes gardent leurs parcours de candidature distincts.
 
-Périmètre courant : `/emplois` et maintenabilité de l’agrégateur. `/offres`, moteur de matching et onboarding candidat restent gelés, y compris leur dette encore utilisée.
+Périmètre courant : reset du runtime/configuration Railway, avant reprise du ramp-up. La DB de production, ses données et son schéma restent intacts. `/emplois`, marchés/filtres et Direct Offers ne sont pas refondus dans ce lot. `/offres`, moteur de matching et onboarding candidat restent gelés, y compris leur dette encore utilisée.
 
 La phase avance par lots validés et audités. Le CRON, le matching et la nouvelle promesse de `/offres` restent des chantiers distincts. Aucune affirmation de préparation globale à la production sans les contrôles de release.
 

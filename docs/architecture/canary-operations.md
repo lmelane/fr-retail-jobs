@@ -54,15 +54,13 @@ Ce mode exige `PIPELINE_PAUSED=1`, le SHA de processus attendu et un heartbeat c
 
 Les journaux Railway structurés peuvent avoir un champ `message` vide : lire aussi `attributes { key value }` et décoder les valeurs JSON pour retrouver `event`, `workStarted` et le résultat du heartbeat. L’absence de texte dans `message` seul ne prouve pas une absence de signal.
 
-## Plan Railway à appliquer seulement après GO
+## Railway : plan courant et preuve historique
 
-1. Figer le SHA candidat validé et le SHA actuellement déployé. Sauvegarder la base et vérifier la restauration opérationnelle décrite ci-dessous. Vérifier les canaux d'alerte depuis le futur environnement (l'émission réelle reste une étape du canari autorisé).
-2. Tous les workers restent `PIPELINE_PAUSED=1`, calendriers gelés. Remplacer l'override de campagne de l'agrégateur par `sh apps/aggregator/start.sh` ; aucune référence à un fichier supprimé ne doit subsister dans le manifeste Railway. Fixer explicitement `EGRESS_PROBE=0` dans l’environnement du service canari et vérifier sa prise en compte au déploiement : l’ancienne sonde vise un hôte indépendant de la source sélectionnée. Ne pas compter sur un ancien préfixe inline qui disparaît avec l’override. Cette vérification de configuration s’ajoute au preflight ; ce dernier ne vérifie pas cette variable.
-3. Livrer le candidat, appliquer les migrations **une seule fois par l'étape de release API**, puis vérifier `/api/health`, lecture authentifiée et statut des services. Le worker refuse les migrations en attente ; il ne les applique pas.
-4. Pour le seul service autorisé, préparer la commande `source-add` ci-dessus, périmètre d'une seule source. Conserver les secrets d'alerte, vérifier les variables présentes sans les afficher, garder les autres services en pause. Retirer la pause du seul service canari et exécuter **une fois**, sous surveillance. La méthode de déploiement Railway peut démarrer le conteneur immédiatement : le dégel lui-même est une action d'exécution soumise au GO.
-5. Vérifier verdict, admissions/fins, captures liées, doublons, lecture API et `/emplois`. Restaurer la pause et la commande normale, confirmer les calendriers et l'absence de processus actif. Aucun refresh ni clôture automatique dans ce premier canari.
+Le [reset du runtime Railway](railway-runtime-reset.md) remplace le nettoyage incrémental des variables et commandes. La cible prévoit deux nouveaux runtimes, aucun CRON, aucun hook de migration automatique et une comparaison cible/déploiement/processus. PostgreSQL reste intégralement conservé. Ce plan n'est pas encore appliqué ; ne pas copier la configuration historique ci-dessus comme cible.
 
-`railway-service.py` refuse une commande bornée/exécution si la pause distante n'est pas exactement `0`, avant mutation. La restauration de la commande normale reste possible en pause. Le [bilan du 22 septembre](../../audits/2026-09-22/restorability-canary-final.md) atteste la livraison autorisée et le retour à la commande normale. Son écart HTTP hors périmètre a été clos par la [validation différentielle explicitement autorisée du 23 septembre](../../audits/2026-09-23/canary-delta-oh-my-cream.md), au même SHA et sans rejouer les preuves acquises.
+Le [bilan du 22 septembre](../../audits/2026-09-22/restorability-canary-final.md) atteste la livraison autorisée. Son écart HTTP hors périmètre a été clos par la [validation différentielle du 23 septembre](../../audits/2026-09-23/canary-delta-oh-my-cream.md), au même SHA `72300c9`. Ce canari reste PASS. Les commandes et preuves précédentes décrivent ce runtime existant ; la future candidate doit apporter sa propre attestation sans rejouer les validations produit non affectées.
+
+Les futures migrations seront une opération de release distincte, jamais une conséquence d'un démarrage d'API/worker. Aucune migration n'est prévue pour le reset.
 
 ## Restauration du stock historique, sans data repair
 

@@ -1,0 +1,391 @@
+{
+  "status": "READ_ONLY_SNAPSHOT_NOT_RUNTIME_ATTESTATION",
+  "date": "2026-09-23",
+  "projectId": "0eae47d0-598d-4cf0-bb3f-b38921eafa7e",
+  "productionEnvironmentId": "e66b019c-d280-41dc-85d8-25ed86bdd101",
+  "configEtag": "b0d5af50d4a45244b979d2167ec4505e53b565829dbc0b0c9c6360d4f0c7ee58",
+  "unmergedChangesCount": null,
+  "privateBackup": "/Users/lmelane/.catwalks/runtime-reset-20260923/snapshot-20260923T044617Z",
+  "backupManifest": {
+    "exportedAt": "2026-09-23T04:51:44.224321+00:00",
+    "scope": "Railway configuration; no database dump; read-only API requests",
+    "projectId": "0eae47d0-598d-4cf0-bb3f-b38921eafa7e",
+    "files": [
+      {
+        "name": "effective-variables.private.json",
+        "bytes": 8728,
+        "sha256": "e702ceca354bc8cd8710a12eb3341f89f348482c219b4ede8d27ff437be58a66"
+      },
+      {
+        "name": "environment.private.json",
+        "bytes": 46174,
+        "sha256": "d50c582b2eab34cffdf8a53e500ec373c015fbfdfc480830cb8fc9cacb1e6e61"
+      },
+      {
+        "name": "production-ownership.private.json",
+        "bytes": 27983,
+        "sha256": "3f0805de7cf2e96378cbb998763b4c022419a49d8b9ebbdfc7890340472c2049"
+      },
+      {
+        "name": "project.private.json",
+        "bytes": 1233,
+        "sha256": "7bc0fa6ed59e14b7223dda4718d1bdc3e0b859329568fd396500172298087bba"
+      },
+      {
+        "name": "validation-environment.private.json",
+        "bytes": 533,
+        "sha256": "fcef5decbaa6feecc6f01916fa0c04c8d15649ddca988150247b79212c86df86"
+      }
+    ]
+  },
+  "sharedVariableNames": [],
+  "protectedProductionVolumeId": "32f92d01-d465-42e6-8fab-79e17d0a4d3f",
+  "services": [
+    {
+      "id": "b5c68d1c-6988-4f15-8d85-afe684109cea",
+      "name": "Postgres",
+      "disposition": "PRESERVE_UNMANAGED",
+      "current": {
+        "source": {
+          "image": "ghcr.io/railwayapp-templates/postgres-ssl:18"
+        },
+        "startCommand": null,
+        "preDeployCommand": null,
+        "cronSchedule": null,
+        "nextCronRunAt": null,
+        "restartPolicyType": "ON_FAILURE",
+        "healthcheckPath": null,
+        "deployment": {
+          "id": "0391dd34-5466-4691-91e6-f3e059c3aed7",
+          "status": "SUCCESS",
+          "deploymentStopped": false,
+          "canRollback": true,
+          "snapshotId": "1aee6e72-78cd-4fc1-9a81-7d0c208358d1",
+          "createdAt": "2026-09-01T14:10:49.240Z"
+        },
+        "gitSha": null,
+        "imageDigest": "sha256:0a458a815f2d12e6aad17d8abca4f956a60ca50adf12ac50ad4ce314015459af"
+      },
+      "configuredVariables": [
+        {
+          "name": "DATABASE_URL",
+          "decision": "PRESERVE_DB_VARIABLE_UNCHANGED"
+        },
+        {
+          "name": "PGDATA",
+          "decision": "PRESERVE_DB_VARIABLE_UNCHANGED"
+        },
+        {
+          "name": "PGDATABASE",
+          "decision": "PRESERVE_DB_VARIABLE_UNCHANGED"
+        },
+        {
+          "name": "PGHOST",
+          "decision": "PRESERVE_DB_VARIABLE_UNCHANGED"
+        },
+        {
+          "name": "PGPASSWORD",
+          "decision": "PRESERVE_DB_VARIABLE_UNCHANGED"
+        },
+        {
+          "name": "PGPORT",
+          "decision": "PRESERVE_DB_VARIABLE_UNCHANGED"
+        },
+        {
+          "name": "PGUSER",
+          "decision": "PRESERVE_DB_VARIABLE_UNCHANGED"
+        },
+        {
+          "name": "POSTGRES_DB",
+          "decision": "PRESERVE_DB_VARIABLE_UNCHANGED"
+        },
+        {
+          "name": "POSTGRES_PASSWORD",
+          "decision": "PRESERVE_DB_VARIABLE_UNCHANGED"
+        },
+        {
+          "name": "POSTGRES_USER",
+          "decision": "PRESERVE_DB_VARIABLE_UNCHANGED"
+        },
+        {
+          "name": "RAILWAY_DEPLOYMENT_DRAINING_SECONDS",
+          "decision": "PRESERVE_DB_VARIABLE_UNCHANGED"
+        },
+        {
+          "name": "SSL_CERT_DAYS",
+          "decision": "PRESERVE_DB_VARIABLE_UNCHANGED"
+        }
+      ]
+    },
+    {
+      "id": "85d0e5ba-992a-467e-9ddd-0dc25be1d74c",
+      "name": "catwalks-reconcile",
+      "disposition": "REPLACE_THEN_DECOMMISSION_AFTER_GREEN_CANARY",
+      "current": {
+        "source": {
+          "repo": "lmelane/fr-retail-jobs",
+          "branch": "main",
+          "checkSuites": true
+        },
+        "startCommand": null,
+        "preDeployCommand": null,
+        "cronSchedule": "0 0 29 2 *",
+        "nextCronRunAt": "2028-02-29T00:00:00.000Z",
+        "restartPolicyType": "NEVER",
+        "healthcheckPath": null,
+        "deployment": {
+          "id": "669c0263-82f9-4eeb-84ff-90fe64a5c6d3",
+          "status": "SUCCESS",
+          "deploymentStopped": false,
+          "canRollback": true,
+          "snapshotId": "92e886a7-95a5-4241-8471-b46652f149ee",
+          "createdAt": "2026-09-22T21:46:07.289Z"
+        },
+        "gitSha": "72300c97586955536ee1f89b0a9b7b0273fbf8a9",
+        "imageDigest": "sha256:da44c938014f9d46bda105dba4aec88fcc75de7b8da90c119fdf31c22e369cc5"
+      },
+      "configuredVariables": [
+        {
+          "name": "DATABASE_URL",
+          "decision": "REBIND: existing Postgres reference in production; isolated clone reference in validation; never copy production credentials into validation"
+        },
+        {
+          "name": "PIPELINE_CMD",
+          "decision": "REMOVE_AND_REJECT: explicit command from validated execution profile; no ingest-all default"
+        },
+        {
+          "name": "PIPELINE_PAUSED",
+          "decision": "REQUIRE: exactly 1 in base profile; 0 only in the explicit bounded execution profile"
+        },
+        {
+          "name": "RAILWAY_DOCKERFILE_PATH",
+          "decision": "REMOVE: explicit Docker build and immutable image digest in release manifest"
+        },
+        {
+          "name": "RAILWAY_RUN_COMMAND",
+          "decision": "REMOVE_AND_REJECT: obsolete shell override contains prisma db push --accept-data-loss"
+        }
+      ]
+    },
+    {
+      "id": "a2280bb1-36be-4e6a-8250-2acc2aef0a47",
+      "name": "catwalks-api",
+      "disposition": "REPLACE_THEN_DECOMMISSION_AFTER_GREEN_CANARY",
+      "current": {
+        "source": {
+          "repo": "lmelane/fr-retail-jobs",
+          "branch": "main",
+          "checkSuites": true
+        },
+        "startCommand": null,
+        "preDeployCommand": [
+          "node /migration/node_modules/prisma/build/index.js migrate deploy --schema /migration/prisma/schema.prisma"
+        ],
+        "cronSchedule": null,
+        "nextCronRunAt": null,
+        "restartPolicyType": "ON_FAILURE",
+        "healthcheckPath": "/api/health",
+        "deployment": {
+          "id": "a53a241d-f30c-4e41-8759-620e12503a44",
+          "status": "SUCCESS",
+          "deploymentStopped": false,
+          "canRollback": true,
+          "snapshotId": "61d8ab5e-332e-4f80-9214-ae38163130ed",
+          "createdAt": "2026-09-22T21:50:09.224Z"
+        },
+        "gitSha": "72300c97586955536ee1f89b0a9b7b0273fbf8a9",
+        "imageDigest": "sha256:39cd23674348b2db02f43b846a9d297dccb547ac11ab66628bbab202374dc12d"
+      },
+      "configuredVariables": [
+        {
+          "name": "BREVO_API_KEY",
+          "decision": "KEEP_WORKER_ONLY: operational alert transport; remove API timer dependency after replacement monitoring passes"
+        },
+        {
+          "name": "BREVO_SENDER_EMAIL",
+          "decision": "KEEP_WORKER_ONLY: explicitly bound, verified sender"
+        },
+        {
+          "name": "BREVO_SENDER_NAME",
+          "decision": "REPLACE_WORKER_ONLY: Catwalks; remove Mode Careers identity"
+        },
+        {
+          "name": "CATALOGUE_API_KEY",
+          "decision": "KEEP_API: retain existing production key for client compatibility; independent validation key"
+        },
+        {
+          "name": "DATABASE_URL",
+          "decision": "REBIND: existing Postgres reference in production; isolated clone reference in validation; never copy production credentials into validation"
+        },
+        {
+          "name": "HOSTNAME",
+          "decision": "REQUIRE_API: 0.0.0.0"
+        },
+        {
+          "name": "NEXT_PUBLIC_SITE_URL",
+          "decision": "REPLACE_API: https://catwalks.io (existing code fallback); no front-domain or market change"
+        },
+        {
+          "name": "NODE_ENV",
+          "decision": "REQUIRE: production on both runtimes"
+        },
+        {
+          "name": "RAILWAY_DOCKERFILE_PATH",
+          "decision": "REMOVE: explicit Docker build and immutable image digest in release manifest"
+        }
+      ]
+    },
+    {
+      "id": "203613c5-701f-4013-a2c0-66c8de147c34",
+      "name": "catwalks-aggregator",
+      "disposition": "REPLACE_THEN_DECOMMISSION_AFTER_GREEN_CANARY",
+      "current": {
+        "source": {
+          "repo": "lmelane/fr-retail-jobs",
+          "branch": "main",
+          "checkSuites": true
+        },
+        "startCommand": "sh apps/aggregator/start.sh",
+        "preDeployCommand": null,
+        "cronSchedule": "0 0 29 2 *",
+        "nextCronRunAt": "2028-02-29T00:00:00.000Z",
+        "restartPolicyType": "NEVER",
+        "healthcheckPath": null,
+        "deployment": {
+          "id": "3a1197ab-7954-47d3-a850-60d2130b8ab3",
+          "status": "SUCCESS",
+          "deploymentStopped": true,
+          "canRollback": true,
+          "snapshotId": "25ff0028-8772-4c3d-8c28-51f040f15053",
+          "createdAt": "2026-09-23T04:40:51.587Z"
+        },
+        "gitSha": "72300c97586955536ee1f89b0a9b7b0273fbf8a9",
+        "imageDigest": "sha256:3cb30a25b906e4f529d31d029cb1b651f8dd7c2d84d74ce63bae0c9ff70cbf31"
+      },
+      "configuredVariables": [
+        {
+          "name": "ALERT_EMAIL",
+          "decision": "KEEP_WORKER_ONLY: explicitly bound existing operator recipient"
+        },
+        {
+          "name": "BREVO_API_KEY",
+          "decision": "KEEP_WORKER_ONLY: operational alert transport; remove API timer dependency after replacement monitoring passes"
+        },
+        {
+          "name": "BREVO_SENDER_EMAIL",
+          "decision": "KEEP_WORKER_ONLY: explicitly bound, verified sender"
+        },
+        {
+          "name": "BREVO_SENDER_NAME",
+          "decision": "REPLACE_WORKER_ONLY: Catwalks; remove Mode Careers identity"
+        },
+        {
+          "name": "DATABASE_URL",
+          "decision": "REBIND: existing Postgres reference in production; isolated clone reference in validation; never copy production credentials into validation"
+        },
+        {
+          "name": "EGRESS_PROBE",
+          "decision": "REMOVE_AND_REJECT: remove diagnostic implementation and caller, not only set to zero"
+        },
+        {
+          "name": "HEALTHCHECK_PING_URL",
+          "decision": "REQUIRE_WORKER: distinct check for each environment; independently verified monitor configuration"
+        },
+        {
+          "name": "PIPELINE_CMD",
+          "decision": "REMOVE_AND_REJECT: explicit command from validated execution profile; no ingest-all default"
+        },
+        {
+          "name": "PIPELINE_PAUSED",
+          "decision": "REQUIRE: exactly 1 in base profile; 0 only in the explicit bounded execution profile"
+        },
+        {
+          "name": "RAILWAY_DOCKERFILE_PATH",
+          "decision": "REMOVE: explicit Docker build and immutable image digest in release manifest"
+        },
+        {
+          "name": "RAILWAY_RUN_COMMAND",
+          "decision": "REMOVE_AND_REJECT: obsolete shell override contains prisma db push --accept-data-loss"
+        }
+      ]
+    },
+    {
+      "id": "ddc5dece-7865-4cfa-b71e-8d139e2e1ea5",
+      "name": "catwalks-refresh",
+      "disposition": "REPLACE_THEN_DECOMMISSION_AFTER_GREEN_CANARY",
+      "current": {
+        "source": {
+          "repo": "lmelane/fr-retail-jobs",
+          "branch": "main",
+          "checkSuites": true
+        },
+        "startCommand": null,
+        "preDeployCommand": null,
+        "cronSchedule": "0 0 29 2 *",
+        "nextCronRunAt": "2028-02-29T00:00:00.000Z",
+        "restartPolicyType": "NEVER",
+        "healthcheckPath": null,
+        "deployment": {
+          "id": "7c1cb5d5-8882-48de-871e-8b54dbceca20",
+          "status": "SUCCESS",
+          "deploymentStopped": false,
+          "canRollback": true,
+          "snapshotId": "119cf2a3-00a4-4b65-af17-dcdfb00ba8fa",
+          "createdAt": "2026-09-22T21:46:07.289Z"
+        },
+        "gitSha": "72300c97586955536ee1f89b0a9b7b0273fbf8a9",
+        "imageDigest": "sha256:baec505cb2780273c80477c0ff028dd2c4ff9f9f315619332a7e5f899de49d33"
+      },
+      "configuredVariables": [
+        {
+          "name": "BREVO_API_KEY",
+          "decision": "KEEP_WORKER_ONLY: operational alert transport; remove API timer dependency after replacement monitoring passes"
+        },
+        {
+          "name": "BREVO_SENDER_EMAIL",
+          "decision": "KEEP_WORKER_ONLY: explicitly bound, verified sender"
+        },
+        {
+          "name": "BREVO_SENDER_NAME",
+          "decision": "REPLACE_WORKER_ONLY: Catwalks; remove Mode Careers identity"
+        },
+        {
+          "name": "DATABASE_URL",
+          "decision": "REBIND: existing Postgres reference in production; isolated clone reference in validation; never copy production credentials into validation"
+        },
+        {
+          "name": "PIPELINE_CMD",
+          "decision": "REMOVE_AND_REJECT: explicit command from validated execution profile; no ingest-all default"
+        },
+        {
+          "name": "PIPELINE_PAUSED",
+          "decision": "REQUIRE: exactly 1 in base profile; 0 only in the explicit bounded execution profile"
+        },
+        {
+          "name": "RAILWAY_DOCKERFILE_PATH",
+          "decision": "REMOVE: explicit Docker build and immutable image digest in release manifest"
+        },
+        {
+          "name": "RAILWAY_RUN_COMMAND",
+          "decision": "REMOVE_AND_REJECT: obsolete shell override contains prisma db push --accept-data-loss"
+        }
+      ]
+    }
+  ],
+  "otherEnvironments": [
+    {
+      "id": "917b9a0b-6ec0-475d-b101-7cebcff9a5d8",
+      "name": "capture-validation-20260915",
+      "serviceInstances": 0,
+      "volumeInstances": 0,
+      "decision": "Leave unchanged during planning; do not treat as a restored clone"
+    }
+  ],
+  "iacPartials": {},
+  "scopeCaveats": [
+    "Effective variables are from the control plane; this export does not prove their presence in a running process.",
+    "SUCCESS and deploymentStopped=false do not establish that an exited cron worker is still running.",
+    "Private backup includes secret values; never commit or blindly apply it.",
+    "No production SQL, migration, restart, deployment or service mutation performed."
+  ]
+}

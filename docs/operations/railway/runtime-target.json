@@ -1,0 +1,277 @@
+{
+  "formatVersion": 1,
+  "status": "PROPOSED_NOT_APPLIED_NOT_YET_EXECUTABLE",
+  "date": "2026-09-23",
+  "baselineGitSha": "72300c97586955536ee1f89b0a9b7b0273fbf8a9",
+  "candidateGitSha": null,
+  "candidateImageDigests": null,
+  "implementationRequired": true,
+  "deploymentBlockedUntil": [
+    "runtime guards and probe removal implemented",
+    "external monitoring configuration and alert delivery verified",
+    "IaC CLI/SDK pinned and partial-only plan proven against validation environment",
+    "exact release SHA and both image digests fixed",
+    "platform-generated env names and defaults observed and classified",
+    "clone validation complete",
+    "production cutover authorized after review of this target"
+  ],
+  "scope": {
+    "productionProjectId": "0eae47d0-598d-4cf0-bb3f-b38921eafa7e",
+    "productionEnvironmentId": "e66b019c-d280-41dc-85d8-25ed86bdd101",
+    "iacPartial": "catwalks-runtime",
+    "protectedServiceIds": [
+      "b5c68d1c-6988-4f15-8d85-afe684109cea"
+    ],
+    "protectedVolumeIds": [
+      "32f92d01-d465-42e6-8fab-79e17d0a4d3f"
+    ],
+    "productionDatabaseChanges": "FORBIDDEN: schema, data repair, roles, credentials, service, image, volume and settings",
+    "excluded": [
+      "/offres",
+      "matching",
+      "Direct Offers",
+      "historical-data repair",
+      "markets",
+      "filters",
+      "scheduled campaigns",
+      "source qualification campaign"
+    ],
+    "productionIngestionException": "Only the later expressly authorized bounded Oh My Cream canary; ordinary traceable ingestion writes, no historical repair"
+  },
+  "services": [
+    {
+      "region": "europe-west4-drams3a",
+      "replicas": 1,
+      "cronSchedule": null,
+      "preDeployCommand": null,
+      "sleepApplication": false,
+      "volumes": [],
+      "githubAutodeploy": false,
+      "imageAutoUpdate": false,
+      "sourceMode": "immutable_oci_image_digest",
+      "requiredReleaseBindings": [
+        "gitSha",
+        "imageDigest",
+        "contractSha256",
+        "platformInjectedEnvironmentManifest"
+      ],
+      "buildCommandOverride": null,
+      "railwayConfigFile": null,
+      "watchPatterns": [],
+      "unexpectedCustomVariablePolicy": "FAIL_BEFORE_DATABASE_OR_NETWORK",
+      "platformVariablePolicy": "Explicit generated-name list and provenance; never allow every RAILWAY_* variable",
+      "unlistedSettingsPolicy": "Classify and compare effective platform defaults; no unexplained override",
+      "name": "catwalks-catalogue-api",
+      "dockerfile": "apps/api/Dockerfile",
+      "startCommand": "node apps/api/runtime/start.mjs",
+      "entrypointStatus": "TO_IMPLEMENT: validate profile and process environment, then start existing standalone server",
+      "workingDirectory": "/app",
+      "restartPolicy": {
+        "type": "ON_FAILURE",
+        "maxRetries": 3
+      },
+      "healthcheck": {
+        "path": "/api/health",
+        "timeoutSeconds": 120
+      },
+      "pipelinePaused": "NOT_APPLICABLE: HTTP reader, no ingestion or background deadman",
+      "heartbeat": "External HTTP availability check; no source-age timer inside API",
+      "publicDomain": "agregator.catwalks.io",
+      "publicPort": 8080,
+      "dependencies": [
+        "same-environment PostgreSQL",
+        "external availability monitor"
+      ],
+      "environment": {
+        "NODE_ENV": "production",
+        "HOSTNAME": "0.0.0.0",
+        "PORT": "8080",
+        "NEXT_PUBLIC_SITE_URL": "https://catwalks.io"
+      },
+      "profileEnvironment": [
+        "CATWALKS_RUNTIME_PROFILE"
+      ],
+      "secretBindings": {
+        "DATABASE_URL": "same-environment database URL; production binding preserved",
+        "CATALOGUE_API_KEY": "existing production key; isolated validation key"
+      },
+      "runtimeExternalBusinessHosts": [],
+      "schemaReadiness": "Read-only built-in migration names/checksums; no schema changes in this reset",
+      "publicBuildInputs": {
+        "NEXT_PUBLIC_SITE_URL": "https://catwalks.io"
+      }
+    },
+    {
+      "region": "europe-west4-drams3a",
+      "replicas": 1,
+      "cronSchedule": null,
+      "preDeployCommand": null,
+      "sleepApplication": false,
+      "volumes": [],
+      "githubAutodeploy": false,
+      "imageAutoUpdate": false,
+      "sourceMode": "immutable_oci_image_digest",
+      "requiredReleaseBindings": [
+        "gitSha",
+        "imageDigest",
+        "contractSha256",
+        "platformInjectedEnvironmentManifest"
+      ],
+      "buildCommandOverride": null,
+      "railwayConfigFile": null,
+      "watchPatterns": [],
+      "unexpectedCustomVariablePolicy": "FAIL_BEFORE_DATABASE_OR_NETWORK",
+      "platformVariablePolicy": "Explicit generated-name list and provenance; never allow every RAILWAY_* variable",
+      "unlistedSettingsPolicy": "Classify and compare effective platform defaults; no unexplained override",
+      "name": "catwalks-ingestion-worker",
+      "dockerfile": "apps/aggregator/Dockerfile",
+      "startCommand": "sh apps/aggregator/start.sh",
+      "entrypointStatus": "TO_HARDEN: explicit pause required; no default ingest-all; validate argv and loaded environment against profile",
+      "workingDirectory": "/repo",
+      "restartPolicy": {
+        "type": "NEVER",
+        "maxRetries": 0
+      },
+      "healthcheck": null,
+      "heartbeat": "run.alive every 30 seconds; external bounded-run start/success/failure and timeout monitor",
+      "publicDomain": null,
+      "dependencies": [
+        "same-environment PostgreSQL",
+        "Healthchecks check dedicated to environment",
+        "Brevo verified sender and alert recipient"
+      ],
+      "environment": {
+        "NODE_ENV": "production",
+        "PIPELINE_PAUSED": "1",
+        "BREVO_SENDER_NAME": "Catwalks"
+      },
+      "profileEnvironment": [
+        "CATWALKS_RUNTIME_PROFILE"
+      ],
+      "privateConfigurationBindings": {
+        "BREVO_SENDER_EMAIL": "existing verified sender",
+        "ALERT_EMAIL": "existing operator recipient"
+      },
+      "secretBindings": {
+        "DATABASE_URL": "same-environment database URL; production binding preserved",
+        "HEALTHCHECK_PING_URL": "environment-specific monitor check",
+        "BREVO_API_KEY": "operational alert transport"
+      },
+      "operationalEgress": [
+        "database binding",
+        "hc-ping.com",
+        "api.brevo.com"
+      ],
+      "baseBusinessEgress": [],
+      "allowedResetAction": "ingest exactly oh-my-cream with no geocode; no refresh/direct-sync/global run",
+      "boundedCommand": "sh apps/aggregator/start.sh ingest --source=oh-my-cream --no-geocode",
+      "boundedBusinessEgress": [
+        "careers.ohmycream.com"
+      ],
+      "automaticExecution": false,
+      "concurrencyPolicy": "One explicit launch; no overlapping deployment/run; restart and auto-update disabled",
+      "pauseProof": {
+        "event": "pipeline.paused",
+        "workStarted": false,
+        "businessRequests": 0
+      },
+      "boundedRunTimeoutSeconds": 900
+    }
+  ],
+  "profiles": [
+    {
+      "name": "validation-paused",
+      "database": "validation",
+      "workerPaused": "1",
+      "workerCommand": "sh apps/aggregator/start.sh",
+      "businessHosts": [],
+      "cronSchedule": null
+    },
+    {
+      "name": "validation-ohmycream",
+      "database": "validation",
+      "workerPaused": "0",
+      "workerCommand": "sh apps/aggregator/start.sh ingest --source=oh-my-cream --no-geocode",
+      "businessHosts": [
+        "careers.ohmycream.com"
+      ],
+      "cronSchedule": null,
+      "returnProfile": "validation-paused",
+      "maximumExecutions": 1,
+      "executionRecordRequired": [
+        "runId",
+        "approvedSource",
+        "deadline",
+        "deploymentId",
+        "imageDigest",
+        "contractSha256"
+      ],
+      "maximumDurationSeconds": 900
+    },
+    {
+      "name": "production-paused",
+      "database": "production",
+      "workerPaused": "1",
+      "workerCommand": "sh apps/aggregator/start.sh",
+      "businessHosts": [],
+      "cronSchedule": null
+    },
+    {
+      "name": "production-ohmycream",
+      "database": "production",
+      "workerPaused": "0",
+      "workerCommand": "sh apps/aggregator/start.sh ingest --source=oh-my-cream --no-geocode",
+      "businessHosts": [
+        "careers.ohmycream.com"
+      ],
+      "cronSchedule": null,
+      "returnProfile": "production-paused",
+      "maximumExecutions": 1,
+      "executionRecordRequired": [
+        "runId",
+        "approvedSource",
+        "deadline",
+        "deploymentId",
+        "imageDigest",
+        "contractSha256"
+      ],
+      "maximumDurationSeconds": 900
+    }
+  ],
+  "forbiddenRuntimeVariables": [
+    "EGRESS_PROBE",
+    "RAILWAY_RUN_COMMAND",
+    "RAILWAY_DOCKERFILE_PATH",
+    "PIPELINE_CMD",
+    "PIPELINE_DEADMAN_HOURS",
+    "INGEST_ONLY_KEYS",
+    "REFRESH_ONLY_KEYS",
+    "P8_CRASH_AT",
+    "P8_CRASH_AFTER"
+  ],
+  "decommissionAfterCanary": [
+    {
+      "id": "85d0e5ba-992a-467e-9ddd-0dc25be1d74c",
+      "name": "catwalks-reconcile"
+    },
+    {
+      "id": "a2280bb1-36be-4e6a-8250-2acc2aef0a47",
+      "name": "catwalks-api"
+    },
+    {
+      "id": "203613c5-701f-4013-a2c0-66c8de147c34",
+      "name": "catwalks-aggregator"
+    },
+    {
+      "id": "ddc5dece-7865-4cfa-b71e-8d139e2e1ea5",
+      "name": "catwalks-refresh"
+    }
+  ],
+  "proofLayers": [
+    "versioned target with resolved release/environment bindings",
+    "actual deployment settings and image digest from Railway",
+    "PID 1 startup attestation of actual argv, environment and compiled contract"
+  ],
+  "secretComparison": "Names, provenance, scope, presence and functional authentication; never secret values in public proof",
+  "controlPlaneSnapshot": "../../../audits/2026-09-23/railway-runtime-inventory.json"
+}
