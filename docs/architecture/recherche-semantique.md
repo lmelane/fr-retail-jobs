@@ -2,11 +2,11 @@
 
 ## Statut et décision
 
-Conception du 23 septembre 2026, fondée sur le code de production `92c2bb1` et des lectures du catalogue réel. L'audit initial et un essai de décomposition de requêtes sont réalisés. Aucun nouveau moteur, modèle IA, index ou changement d'interface n'est déployé dans ce lot.
+Conception du 23 septembre 2026, complétée par le [benchmark S1 du 24 septembre](../../audits/2026-09-24/search-s1.md) : 73 833 offres publiques figées, 115 intentions, 234 formulations, PostgreSQL actuel et deux prototypes à enrichissement identique. Aucune nouvelle route de recherche ni modification d'interface n'est encore déployée.
 
-**Elasticsearch est le candidat prioritaire à comparer à PostgreSQL enrichi.** La préférence porte sur ses capacités de recherche et de classement ; sa supériorité sur notre catalogue n'est pas encore mesurée. Aucun hébergement supplémentaire n'est engagé. Le choix final doit résulter d'un comparatif identique de pertinence, latence, fraîcheur et coût d'exploitation.
+**Décision S1 : PostgreSQL enrichi pour V1.** Les deux prototypes ont une qualité très proche ; Elasticsearch est plus rapide sur la queue des temps locaux, mais aucun gain de pertinence net ne justifie encore son coût de synchronisation et d'exploitation. Le choix reste soumis au budget de la vraie route API sous charge en S4. Les scripts et annotations permettent de réévaluer Elasticsearch si PostgreSQL ne tient pas ce budget. Les défauts de compréhension communs aux deux moteurs sont prioritaires en S2.
 
-La recherche doit retrouver les offres pertinentes du marché actif même si elles n'ont aucun code métier. Les intitulés originaux restent affichés. Le filtre visible « Métier » doit sortir du parcours principal ; les concepts et familles restent utiles au moteur. Le secteur reste une donnée d'entreprise, sans rendre sa sélection obligatoire pour chercher. La refonte UI sera appliquée avec le skill Catwalks, dans le dépôt du site sur `development`.
+La métrique produit est la retrouvabilité correcte pour une intention, jamais l'obtention de 100 % de codes métier précis. La recherche doit retrouver les offres pertinentes du marché actif même si elles n'ont aucun code métier. Les intitulés originaux restent affichés. Le filtre visible « Métier » doit sortir du parcours principal ; les concepts et familles restent utiles au moteur. Le secteur reste une donnée d'entreprise, sans rendre sa sélection obligatoire pour chercher. La refonte UI sera appliquée avec le skill Catwalks, dans le dépôt du site sur `development`.
 
 La couverture se mesure séparément : (1) offres officielles accessibles et collectées ; (2) offres publiables présentes dans le catalogue ; (3) offres pertinentes retrouvées par la recherche. Un moteur de recherche ne peut pas retrouver une offre encore absente du catalogue, notamment Aesop/L'Oréal actuellement bloquée à la publication par HTTP 406.
 
@@ -122,8 +122,8 @@ Versionner le schéma, les analyseurs et les synonymes. Reconstruire un nouvel i
 
 | Option | Capacités utiles | Coût architectural à mesurer | Position |
 |---|---|---|---|
-| PostgreSQL enrichi | Plein texte, dictionnaires/thésaurus, similarité de caractères avec `pg_trgm` | Compréhension et classement davantage à construire dans l'application ; charge partagée avec le catalogue | Référence à battre, pas écartée sur la seule taille du catalogue |
-| Elasticsearch | Analyseurs linguistiques, synonymes multi-mots, champs pondérés, fautes de frappe, suggestions ; possibilité de recherche hybride | Nouveau service, synchronisation, réindexation, mémoire, disponibilité et fonctionnalités de l'offre retenue | Candidat prioritaire pour l'ambition mondiale de Catwalks |
+| PostgreSQL enrichi | Plein texte, dictionnaires/thésaurus, similarité de caractères avec `pg_trgm` | Compréhension et classement davantage à construire dans l'application ; charge partagée avec le catalogue | Retenu pour V1 après S1 ; API complète et charge à valider |
+| Elasticsearch | Analyseurs linguistiques, synonymes multi-mots, champs pondérés, fautes de frappe, suggestions ; possibilité de recherche hybride | Nouveau service, synchronisation, réindexation, mémoire, disponibilité et fonctionnalités de l'offre retenue | Comparé en S1 ; conservé comme option si les limites de PG sont mesurées |
 | Typesense | Recherche avec tolérance aux fautes et réglage de pertinence par champs | Évaluer langues, classement métier, tris et mécanismes d'élargissement automatique avec nos contraintes | Alternative si le compromis exploitation/pertinence est meilleur ; pas de troisième intégration initiale |
 
 PostgreSQL fournit des [dictionnaires et thésaurus](https://www.postgresql.org/docs/current/textsearch-dictionaries.html) et [pg_trgm](https://www.postgresql.org/docs/current/pgtrgm.html). Ces outils ne remplacent pas une décision sur le sens des mots.
@@ -139,7 +139,7 @@ Typesense permet de régler [pondération et pertinence](https://typesense.org/d
 | Lot | Travail | Validation requise |
 |---|---|---|
 | S0 — constat | Audit code/base et essai de composition | Réalisé dans ce document ; pas de conclusion de pertinence globale |
-| S1 — benchmark | Snapshot du catalogue publiable ; même contrat de requête et mêmes données pour PostgreSQL enrichi et Elasticsearch local | Jeu de requêtes évalué, limites identifiées, décision de moteur argumentée |
+| S1 — benchmark | S1A corpus/gold, S1B compréhension commune, S1C PostgreSQL, S1D Elasticsearch, S1E comparaison | Réalisé : [bilan et limites](../../audits/2026-09-24/search-s1.md), PostgreSQL enrichi retenu pour V1 |
 | S2 — compréhension | Décomposition métier/Maison/secteur/précisions, synonymes multilingues, récupération des offres non classées | Tests de pertinence et d'ambiguïté verts sur le moteur retenu |
 | S3 — qualification | Qualification entreprise initiale puis incrémentale via le circuit existant ; enrichissement métier optionnel | Idempotence, preuve, abstention, reprise et coût mesurés |
 | S4 — produit/index | Projection si nécessaire, suppression du filtre Métier dans l'UI, suggestions contextualisées | E2E `/emplois`, langues/marchés, facettes, pagination et deux origines sans régression |
@@ -149,7 +149,7 @@ Ordre interne de S1 : **jeu de pertinence figé → modèle sémantique minimal 
 
 S1 doit couvrir au moins les 27 familles présentes, les métiers fréquents et rares, les offres sans code, les requêtes composées, fautes, accents, formes féminines, niveaux hiérarchiques, négations, entreprises multimarques et langues croisées. Inclure FR/US, CA/CH/BE multilingues et des écritures non latines. Les résultats attendus sont annotés depuis le contenu natif ; notre classification actuelle ne sert pas d'oracle.
 
-Constituer un jeu figé de 100 à 300 intentions et leurs variantes, avec trois degrés d'annotation : très pertinent, acceptable, non pertinent. Former le pool depuis les sorties des moteurs, les titres bruts et un échantillon d'offres non classées, afin de limiter le biais du moteur actuel. Mesurer `Precision@20`, `nDCG@20`, `Recall@20` et `Recall@100` sur ce pool annoté ; ne pas présenter ce rappel comme une preuve de rappel mondial absolu. Les requêtes très larges peuvent avoir plus de vingt offres pertinentes : leur rappel à vingt n'a pas vocation à atteindre 100 %. Une requête qui possède un exemple pertinent connu ne doit plus retourner zéro.
+Constituer un jeu figé de 100 à 300 intentions et leurs variantes, avec trois degrés d'annotation : très pertinent, acceptable, non pertinent. Former le pool depuis les sorties des moteurs, les titres bruts et un échantillon d'offres non classées, afin de limiter le biais du moteur actuel. Mesurer précision sur les résultats disponibles jusqu’à vingt (nommer explicitement ce dénominateur), `nDCG@20`, `Recall@20` et `Recall@100` sur ce pool annoté ; mesurer aussi la stabilité des variantes avec Jaccard@20, en excluant et comptant les paires toutes deux vides ; ne pas présenter ce rappel comme une preuve de rappel mondial absolu. Les requêtes très larges peuvent avoir plus de vingt offres pertinentes : leur rappel à vingt n'a pas vocation à atteindre 100 %. Une requête qui possède un exemple pertinent connu ne doit plus retourner zéro.
 
 Le document de recherche doit conserver les concepts stables séparément de leurs traductions et alias, ainsi que le titre brut. Inutile d'imposer « quelques centaines » de concepts à partir du compteur d'offres non classées : leur nombre doit répondre aux distinctions réellement utiles du corpus. Pour V1, le chemin critique ne dépend pas d'un appel LLM génératif par requête. Un encodeur sémantique éventuel se juge séparément sur son gain, sa latence et son coût ; le mot « déterministe » ne garantit pas la pertinence.
 

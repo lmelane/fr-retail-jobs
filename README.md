@@ -22,7 +22,7 @@ Les règles de travail figurent dans [CLAUDE.md](CLAUDE.md). Préserver le trava
 
 - [Qualification des sources du 23 septembre](audits/2026-09-23/source-qualification.md) : résultats production, couverture multilingue, limites Aesop/L’Oréal et recouvrement SAP/LVMH.
 - [Architecture et contrats produit](docs/architecture/production-foundations.md) : deux origines d’offres, pays/langue, recherche et parcours de validation des sources.
-- [Recherche sémantique — conception et lots](docs/architecture/recherche-semantique.md) : constats mesurés, secteurs entreprise, recherche métier/Maison et comparaison PostgreSQL/Elasticsearch à mener ; aucune bascule de moteur encore effectuée.
+- [Recherche sémantique — conception et lots](docs/architecture/recherche-semantique.md) : [benchmark S1 mesuré](audits/2026-09-24/search-s1.md), PostgreSQL enrichi retenu pour V1, secteurs entreprise et suite S2–S5 ; aucune bascule de moteur encore effectuée.
 - [Recherche bornée par marché](docs/architecture/recherche-marche.md) : périmètre obligatoire, champ lieu, filtres refusés explicitement, inconnues non confirmées, contrat de facettes et `GET /api/marches`.
 - [Parcours unique des sources](docs/architecture/source-onboarding.md) : découverte, enregistrement, captures HTTP des preuves, collecte native et activation.
 - [Validation multilingue `/emplois`](docs/architecture/emplois-e2e.md) : chaîne locale de répétition et tests navigateur.

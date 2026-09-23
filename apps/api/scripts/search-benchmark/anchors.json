@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "snapshotSha256": "d549eef3720fa98970be96294781ad578fea821b73945f821bd9a7ae400854bd",
+  "anchors": [
+    {
+      "intentionId": "family-it-data",
+      "id": "cmudwiifl3te5oa34jxz8je3e",
+      "grade": 2,
+      "basis": "Contenu natif relu pour role-software ; la fonction appartient aussi à cette famille."
+    },
+    {
+      "intentionId": "family-finance",
+      "id": "cmu8cdt9g0l3bmn4846rurjl6",
+      "grade": 2,
+      "basis": "Contenu natif relu pour role-accountant ; la fonction appartient aussi à cette famille."
+    },
+    {
+      "intentionId": "family-atelier-craft",
+      "id": "cmue4zvms02xro2346vwufyz1",
+      "grade": 2,
+      "basis": "Contenu natif relu pour role-leather ; la fonction appartient aussi à cette famille."
+    },
+    {
+      "intentionId": "family-product-development-rd",
+      "id": "cmu6ymz6d013ko8ig1r4qm030",
+      "grade": 2,
+      "basis": "Contenu natif relu pour role-product ; la fonction appartient aussi à cette famille."
+    },
+    {
+      "intentionId": "family-retail-operations",
+      "id": "cmu6ul07r005qo73nbabvcrb7",
+      "grade": 2,
+      "basis": "Échantillon natif indépendant des résultats : In-Store Operations"
+    },
+    {
+      "intentionId": "family-merchandising-buying",
+      "id": "cmu6x31440041pq6117qer70v",
+      "grade": 2,
+      "basis": "Échantillon natif indépendant des résultats : Assistant.e Achats - Stage Janvier 2027"
+    },
+    {
+      "intentionId": "family-health-optical-services",
+      "id": "cmu6y9tgh0019n2ekrmwtwyie",
+      "grade": 2,
+      "basis": "Échantillon natif indépendant des résultats : Brunswick, OH - Optometrist"
+    },
+    {
+      "intentionId": "composed-typology",
+      "id": "cmu6xmc9p0003pobi6l2ndet9",
+      "grade": 2,
+      "basis": "Échantillon natif indépendant des résultats : Financial Control Intern [Internship - 6 mois]"
+    },
+    {
+      "intentionId": "composed-shinola",
+      "id": "cmu6yoib80021o8uinclf1jty",
+      "grade": 2,
+      "basis": "Échantillon natif indépendant des résultats : Shinola Watch Technician (Artisan) - New York - Tribeca"
+    }
+  ]
+}

@@ -1,0 +1,1686 @@
+[
+  {
+    "id": "role-sales",
+    "description": "Postes exerçant le métier « conseillère de vente », sans imposer un code métier.",
+    "market": "FR",
+    "variants": [
+      "conseillère de vente",
+      "sales advisor",
+      "vendeuse"
+    ],
+    "strata": [
+      "role",
+      "multilingual",
+      "sales"
+    ],
+    "split": "holdout"
+  },
+  {
+    "id": "role-beauty",
+    "description": "Postes exerçant le métier « conseiller beauté », sans imposer un code métier.",
+    "market": "US",
+    "variants": [
+      "conseiller beauté",
+      "beauty consultant"
+    ],
+    "strata": [
+      "role",
+      "multilingual",
+      "beauty"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "role-hairdresser",
+    "description": "Postes exerçant le métier « coiffeuse », sans imposer un code métier.",
+    "market": "FR",
+    "variants": [
+      "coiffeuse",
+      "hairdresser"
+    ],
+    "strata": [
+      "role",
+      "multilingual",
+      "hairdresser"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "role-esthetician",
+    "description": "Postes exerçant le métier « esthéticienne », sans imposer un code métier.",
+    "market": "US",
+    "variants": [
+      "esthéticienne",
+      "aesthetician"
+    ],
+    "strata": [
+      "role",
+      "multilingual",
+      "esthetician"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "role-makeup",
+    "description": "Postes exerçant le métier « maquilleur », sans imposer un code métier.",
+    "market": "GB",
+    "variants": [
+      "maquilleur",
+      "makeup artist"
+    ],
+    "strata": [
+      "role",
+      "multilingual",
+      "makeup"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "role-cashier",
+    "description": "Postes exerçant le métier « hôtesse de caisse », sans imposer un code métier.",
+    "market": "US",
+    "variants": [
+      "hôtesse de caisse",
+      "cashier"
+    ],
+    "strata": [
+      "role",
+      "multilingual",
+      "cashier"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "role-store-manager",
+    "description": "Postes exerçant le métier « responsable de boutique », sans imposer un code métier.",
+    "market": "FR",
+    "variants": [
+      "responsable de boutique",
+      "store manager"
+    ],
+    "strata": [
+      "role",
+      "multilingual",
+      "store-manager"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "role-deputy-manager",
+    "description": "Postes exerçant le métier « adjoint au responsable de boutique », sans imposer un code métier.",
+    "market": "CA",
+    "variants": [
+      "adjoint au responsable de boutique",
+      "assistant store manager"
+    ],
+    "strata": [
+      "role",
+      "multilingual",
+      "deputy-manager"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "role-regional",
+    "description": "Postes exerçant le métier « responsable régional retail », sans imposer un code métier.",
+    "market": "FR",
+    "variants": [
+      "responsable régional retail",
+      "regional retail manager"
+    ],
+    "strata": [
+      "role",
+      "multilingual",
+      "regional"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "role-visual",
+    "description": "Postes exerçant le métier « visual merchandiser », sans imposer un code métier.",
+    "market": "US",
+    "variants": [
+      "visual merchandiser",
+      "vitriniste"
+    ],
+    "strata": [
+      "role",
+      "multilingual",
+      "visual"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "role-stock",
+    "description": "Postes exerçant le métier « stockiste », sans imposer un code métier.",
+    "market": "FR",
+    "variants": [
+      "stockiste",
+      "stock keeper"
+    ],
+    "strata": [
+      "role",
+      "multilingual",
+      "stock"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "role-warehouse",
+    "description": "Postes exerçant le métier « préparateur de commandes », sans imposer un code métier.",
+    "market": "US",
+    "variants": [
+      "préparateur de commandes",
+      "warehouse operative"
+    ],
+    "strata": [
+      "role",
+      "multilingual",
+      "warehouse"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "role-logistics",
+    "description": "Postes exerçant le métier « responsable logistique », sans imposer un code métier.",
+    "market": "FR",
+    "variants": [
+      "responsable logistique",
+      "logistics manager"
+    ],
+    "strata": [
+      "role",
+      "multilingual",
+      "logistics"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "role-customer",
+    "description": "Postes exerçant le métier « conseiller service client », sans imposer un code métier.",
+    "market": "CA",
+    "variants": [
+      "conseiller service client",
+      "customer service advisor"
+    ],
+    "strata": [
+      "role",
+      "multilingual",
+      "customer"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "role-watchmaker",
+    "description": "Postes exerçant le métier « horloger », sans imposer un code métier.",
+    "market": "CH",
+    "variants": [
+      "horloger",
+      "watchmaker",
+      "Uhrmacher"
+    ],
+    "strata": [
+      "role",
+      "multilingual",
+      "watchmaker"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "role-jeweller",
+    "description": "Postes exerçant le métier « joaillier », sans imposer un code métier.",
+    "market": "US",
+    "variants": [
+      "joaillier",
+      "jeweller"
+    ],
+    "strata": [
+      "role",
+      "multilingual",
+      "jeweller"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "role-leather",
+    "description": "Postes exerçant le métier « maroquinière », sans imposer un code métier.",
+    "market": "FR",
+    "variants": [
+      "maroquinière",
+      "leather craftsperson"
+    ],
+    "strata": [
+      "role",
+      "multilingual",
+      "leather"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "role-seamster",
+    "description": "Postes exerçant le métier « couturière », sans imposer un code métier.",
+    "market": "FR",
+    "variants": [
+      "couturière",
+      "seamstress"
+    ],
+    "strata": [
+      "role",
+      "multilingual",
+      "seamster"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "role-fashion",
+    "description": "Postes exerçant le métier « styliste de mode », sans imposer un code métier.",
+    "market": "US",
+    "variants": [
+      "styliste de mode",
+      "fashion designer"
+    ],
+    "strata": [
+      "role",
+      "multilingual",
+      "fashion"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "role-graphic",
+    "description": "Postes exerçant le métier « graphiste », sans imposer un code métier.",
+    "market": "FR",
+    "variants": [
+      "graphiste",
+      "graphic designer"
+    ],
+    "strata": [
+      "role",
+      "multilingual",
+      "graphic"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "role-buyer",
+    "description": "Postes exerçant le métier « acheteuse », sans imposer un code métier.",
+    "market": "FR",
+    "variants": [
+      "acheteuse",
+      "buyer"
+    ],
+    "strata": [
+      "role",
+      "multilingual",
+      "buyer"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "role-accountant",
+    "description": "Postes exerçant le métier « comptable », sans imposer un code métier.",
+    "market": "FR",
+    "variants": [
+      "comptable",
+      "accountant"
+    ],
+    "strata": [
+      "role",
+      "multilingual",
+      "accountant"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "role-controller",
+    "description": "Postes exerçant le métier « contrôleur de gestion », sans imposer un code métier.",
+    "market": "CH",
+    "variants": [
+      "contrôleur de gestion",
+      "financial controller"
+    ],
+    "strata": [
+      "role",
+      "multilingual",
+      "controller"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "role-recruiter",
+    "description": "Postes exerçant le métier « chargée de recrutement », sans imposer un code métier.",
+    "market": "FR",
+    "variants": [
+      "chargée de recrutement",
+      "recruiter"
+    ],
+    "strata": [
+      "role",
+      "multilingual",
+      "recruiter"
+    ],
+    "split": "holdout"
+  },
+  {
+    "id": "role-hrbp",
+    "description": "Postes exerçant le métier « HRBP », sans imposer un code métier.",
+    "market": "US",
+    "variants": [
+      "HRBP",
+      "human resources business partner"
+    ],
+    "strata": [
+      "role",
+      "multilingual",
+      "hrbp"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "role-payroll",
+    "description": "Postes exerçant le métier « gestionnaire de paie », sans imposer un code métier.",
+    "market": "FR",
+    "variants": [
+      "gestionnaire de paie",
+      "payroll specialist"
+    ],
+    "strata": [
+      "role",
+      "multilingual",
+      "payroll"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "role-software",
+    "description": "Postes exerçant le métier « développeur logiciel », sans imposer un code métier.",
+    "market": "US",
+    "variants": [
+      "développeur logiciel",
+      "software engineer"
+    ],
+    "strata": [
+      "role",
+      "multilingual",
+      "software"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "role-data-analyst",
+    "description": "Postes exerçant le métier « analyste de données », sans imposer un code métier.",
+    "market": "FR",
+    "variants": [
+      "analyste de données",
+      "data analyst"
+    ],
+    "strata": [
+      "role",
+      "multilingual",
+      "data-analyst"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "role-data-scientist",
+    "description": "Postes exerçant le métier « data scientist », sans imposer un code métier.",
+    "market": "CH",
+    "variants": [
+      "data scientist",
+      "Data Scientist"
+    ],
+    "strata": [
+      "role",
+      "multilingual",
+      "data-scientist"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "role-legal",
+    "description": "Postes exerçant le métier « juriste », sans imposer un code métier.",
+    "market": "FR",
+    "variants": [
+      "juriste",
+      "legal counsel"
+    ],
+    "strata": [
+      "role",
+      "multilingual",
+      "legal"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "role-sustainability",
+    "description": "Postes exerçant le métier « chargé de développement durable », sans imposer un code métier.",
+    "market": "FR",
+    "variants": [
+      "chargé de développement durable",
+      "sustainability specialist"
+    ],
+    "strata": [
+      "role",
+      "multilingual",
+      "sustainability"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "role-marketing",
+    "description": "Postes exerçant le métier « responsable marketing », sans imposer un code métier.",
+    "market": "DE",
+    "variants": [
+      "responsable marketing",
+      "marketing manager"
+    ],
+    "strata": [
+      "role",
+      "multilingual",
+      "marketing"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "role-crm",
+    "description": "Postes exerçant le métier « responsable CRM », sans imposer un code métier.",
+    "market": "FR",
+    "variants": [
+      "responsable CRM",
+      "CRM manager"
+    ],
+    "strata": [
+      "role",
+      "multilingual",
+      "crm"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "role-ecommerce",
+    "description": "Postes exerçant le métier « responsable e-commerce », sans imposer un code métier.",
+    "market": "FR",
+    "variants": [
+      "responsable e-commerce",
+      "ecommerce manager"
+    ],
+    "strata": [
+      "role",
+      "multilingual",
+      "ecommerce"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "role-key-account",
+    "description": "Postes exerçant le métier « responsable grands comptes », sans imposer un code métier.",
+    "market": "DE",
+    "variants": [
+      "responsable grands comptes",
+      "key account manager"
+    ],
+    "strata": [
+      "role",
+      "multilingual",
+      "key-account"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "role-product",
+    "description": "Postes exerçant le métier « développeur produit », sans imposer un code métier.",
+    "market": "CH",
+    "variants": [
+      "développeur produit",
+      "product developer"
+    ],
+    "strata": [
+      "role",
+      "multilingual",
+      "product"
+    ],
+    "split": "holdout"
+  },
+  {
+    "id": "role-quality",
+    "description": "Postes exerçant le métier « technicien qualité », sans imposer un code métier.",
+    "market": "FR",
+    "variants": [
+      "technicien qualité",
+      "quality technician"
+    ],
+    "strata": [
+      "role",
+      "multilingual",
+      "quality"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "role-cook",
+    "description": "Postes exerçant le métier « cuisinière », sans imposer un code métier.",
+    "market": "FR",
+    "variants": [
+      "cuisinière",
+      "cook"
+    ],
+    "strata": [
+      "role",
+      "multilingual",
+      "cook"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "role-waiter",
+    "description": "Postes exerçant le métier « serveuse », sans imposer un code métier.",
+    "market": "FR",
+    "variants": [
+      "serveuse",
+      "waiter"
+    ],
+    "strata": [
+      "role",
+      "multilingual",
+      "waiter"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "role-receptionist",
+    "description": "Postes exerçant le métier « réceptionniste », sans imposer un code métier.",
+    "market": "FR",
+    "variants": [
+      "réceptionniste",
+      "receptionist"
+    ],
+    "strata": [
+      "role",
+      "multilingual",
+      "receptionist"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "role-assistant",
+    "description": "Postes exerçant le métier « assistante de direction », sans imposer un code métier.",
+    "market": "US",
+    "variants": [
+      "assistante de direction",
+      "executive assistant"
+    ],
+    "strata": [
+      "role",
+      "multilingual",
+      "assistant"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "role-optician",
+    "description": "Postes exerçant le métier « opticienne », sans imposer un code métier.",
+    "market": "BE",
+    "variants": [
+      "opticienne",
+      "dispensing optician"
+    ],
+    "strata": [
+      "role",
+      "multilingual",
+      "optician"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "role-pharmacist",
+    "description": "Postes exerçant le métier « pharmacien », sans imposer un code métier.",
+    "market": "GB",
+    "variants": [
+      "pharmacien",
+      "pharmacist"
+    ],
+    "strata": [
+      "role",
+      "multilingual",
+      "pharmacist"
+    ],
+    "split": "holdout"
+  },
+  {
+    "id": "role-optometrist",
+    "description": "Postes exerçant le métier « optométriste », sans imposer un code métier.",
+    "market": "CA",
+    "variants": [
+      "optométriste",
+      "optometrist"
+    ],
+    "strata": [
+      "role",
+      "multilingual",
+      "optometrist"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "role-analytics",
+    "description": "Postes exerçant le métier « analytics engineer », sans imposer un code métier.",
+    "market": "US",
+    "variants": [
+      "analytics engineer",
+      "ingénieur analytics"
+    ],
+    "strata": [
+      "role",
+      "multilingual",
+      "analytics"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "role-pastry",
+    "description": "Postes exerçant le métier « pâtissière », sans imposer un code métier.",
+    "market": "FR",
+    "variants": [
+      "pâtissière",
+      "pastry chef"
+    ],
+    "strata": [
+      "role",
+      "multilingual",
+      "pastry"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "family-retail-client-advisor",
+    "description": "Fonctions de la famille retail-client-advisor ; domaine des missions, pas seulement secteur employeur.",
+    "market": "BE",
+    "variants": [
+      "conseil de vente",
+      "retail sales"
+    ],
+    "strata": [
+      "family",
+      "retail-client-advisor"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "family-beauty-advisor",
+    "description": "Fonctions de la famille beauty-advisor ; domaine des missions, pas seulement secteur employeur.",
+    "market": "FR",
+    "variants": [
+      "conseil beauté",
+      "beauty sales"
+    ],
+    "strata": [
+      "family",
+      "beauty-advisor"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "family-retail-store-management",
+    "description": "Fonctions de la famille retail-store-management ; domaine des missions, pas seulement secteur employeur.",
+    "market": "CA",
+    "variants": [
+      "direction de boutique",
+      "store management"
+    ],
+    "strata": [
+      "family",
+      "retail-store-management"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "family-retail-area-management",
+    "description": "Fonctions de la famille retail-area-management ; domaine des missions, pas seulement secteur employeur.",
+    "market": "FR",
+    "variants": [
+      "direction régionale retail",
+      "retail area management"
+    ],
+    "strata": [
+      "family",
+      "retail-area-management"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "family-retail-operations",
+    "description": "Fonctions de la famille retail-operations ; domaine des missions, pas seulement secteur employeur.",
+    "market": "FR",
+    "variants": [
+      "opérations boutique stock",
+      "store operations stock"
+    ],
+    "strata": [
+      "family",
+      "retail-operations"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "family-visual-merchandising",
+    "description": "Fonctions de la famille visual-merchandising ; domaine des missions, pas seulement secteur employeur.",
+    "market": "DE",
+    "variants": [
+      "visual merchandising",
+      "Visual Merchandising"
+    ],
+    "strata": [
+      "family",
+      "visual-merchandising"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "family-merchandising-buying",
+    "description": "Fonctions de la famille merchandising-buying ; domaine des missions, pas seulement secteur employeur.",
+    "market": "FR",
+    "variants": [
+      "merchandising achats",
+      "merchandising buying"
+    ],
+    "strata": [
+      "family",
+      "merchandising-buying"
+    ],
+    "split": "holdout"
+  },
+  {
+    "id": "family-wholesale-b2b",
+    "description": "Fonctions de la famille wholesale-b2b ; domaine des missions, pas seulement secteur employeur.",
+    "market": "US",
+    "variants": [
+      "wholesale B2B",
+      "Wholesale B2B"
+    ],
+    "strata": [
+      "family",
+      "wholesale-b2b"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "family-crm-clienteling",
+    "description": "Fonctions de la famille crm-clienteling ; domaine des missions, pas seulement secteur employeur.",
+    "market": "FR",
+    "variants": [
+      "CRM clienteling",
+      "crm clienteling"
+    ],
+    "strata": [
+      "family",
+      "crm-clienteling"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "family-ecommerce-digital",
+    "description": "Fonctions de la famille ecommerce-digital ; domaine des missions, pas seulement secteur employeur.",
+    "market": "CA",
+    "variants": [
+      "e-commerce digital",
+      "ecommerce digital"
+    ],
+    "strata": [
+      "family",
+      "ecommerce-digital"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "family-marketing-communication",
+    "description": "Fonctions de la famille marketing-communication ; domaine des missions, pas seulement secteur employeur.",
+    "market": "FR",
+    "variants": [
+      "marketing communication",
+      "Marketing Communication"
+    ],
+    "strata": [
+      "family",
+      "marketing-communication"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "family-design-creation",
+    "description": "Fonctions de la famille design-creation ; domaine des missions, pas seulement secteur employeur.",
+    "market": "US",
+    "variants": [
+      "création design",
+      "creative design"
+    ],
+    "strata": [
+      "family",
+      "design-creation"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "family-product-development-rd",
+    "description": "Fonctions de la famille product-development-rd ; domaine des missions, pas seulement secteur employeur.",
+    "market": "CH",
+    "variants": [
+      "développement produit",
+      "product development"
+    ],
+    "strata": [
+      "family",
+      "product-development-rd"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "family-atelier-craft",
+    "description": "Fonctions de la famille atelier-craft ; domaine des missions, pas seulement secteur employeur.",
+    "market": "FR",
+    "variants": [
+      "artisanat",
+      "craftsmanship"
+    ],
+    "strata": [
+      "family",
+      "atelier-craft"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "family-manufacturing-quality",
+    "description": "Fonctions de la famille manufacturing-quality ; domaine des missions, pas seulement secteur employeur.",
+    "market": "US",
+    "variants": [
+      "production qualité",
+      "manufacturing quality"
+    ],
+    "strata": [
+      "family",
+      "manufacturing-quality"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "family-supply-chain-logistics",
+    "description": "Fonctions de la famille supply-chain-logistics ; domaine des missions, pas seulement secteur employeur.",
+    "market": "DE",
+    "variants": [
+      "supply chain logistique",
+      "supply chain logistics"
+    ],
+    "strata": [
+      "family",
+      "supply-chain-logistics"
+    ],
+    "split": "holdout"
+  },
+  {
+    "id": "family-finance",
+    "description": "Fonctions de la famille finance ; domaine des missions, pas seulement secteur employeur.",
+    "market": "FR",
+    "variants": [
+      "finance",
+      "Finance"
+    ],
+    "strata": [
+      "family",
+      "finance"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "family-hr-talent",
+    "description": "Fonctions de la famille hr-talent ; domaine des missions, pas seulement secteur employeur.",
+    "market": "CA",
+    "variants": [
+      "ressources humaines",
+      "human resources"
+    ],
+    "strata": [
+      "family",
+      "hr-talent"
+    ],
+    "split": "holdout"
+  },
+  {
+    "id": "family-it-data",
+    "description": "Fonctions de la famille it-data ; domaine des missions, pas seulement secteur employeur.",
+    "market": "US",
+    "variants": [
+      "informatique données",
+      "information technology data"
+    ],
+    "strata": [
+      "family",
+      "it-data"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "family-legal-compliance",
+    "description": "Fonctions de la famille legal-compliance ; domaine des missions, pas seulement secteur employeur.",
+    "market": "BE",
+    "variants": [
+      "juridique conformité",
+      "legal compliance"
+    ],
+    "strata": [
+      "family",
+      "legal-compliance"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "family-strategy-management",
+    "description": "Fonctions de la famille strategy-management ; domaine des missions, pas seulement secteur employeur.",
+    "market": "CH",
+    "variants": [
+      "stratégie direction",
+      "strategy management"
+    ],
+    "strata": [
+      "family",
+      "strategy-management"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "family-sustainability",
+    "description": "Fonctions de la famille sustainability ; domaine des missions, pas seulement secteur employeur.",
+    "market": "FR",
+    "variants": [
+      "développement durable",
+      "sustainability"
+    ],
+    "strata": [
+      "family",
+      "sustainability"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "family-customer-service",
+    "description": "Fonctions de la famille customer-service ; domaine des missions, pas seulement secteur employeur.",
+    "market": "CA",
+    "variants": [
+      "service client",
+      "customer service"
+    ],
+    "strata": [
+      "family",
+      "customer-service"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "family-hospitality",
+    "description": "Fonctions de la famille hospitality ; domaine des missions, pas seulement secteur employeur.",
+    "market": "FR",
+    "variants": [
+      "hôtellerie restauration",
+      "hospitality"
+    ],
+    "strata": [
+      "family",
+      "hospitality"
+    ],
+    "split": "holdout"
+  },
+  {
+    "id": "family-admin-facilities",
+    "description": "Fonctions de la famille admin-facilities ; domaine des missions, pas seulement secteur employeur.",
+    "market": "US",
+    "variants": [
+      "administration services généraux",
+      "administration facilities"
+    ],
+    "strata": [
+      "family",
+      "admin-facilities"
+    ],
+    "split": "holdout"
+  },
+  {
+    "id": "family-health-optical-services",
+    "description": "Fonctions de la famille health-optical-services ; domaine des missions, pas seulement secteur employeur.",
+    "market": "US",
+    "variants": [
+      "santé pharmacie optique",
+      "health pharmacy optical"
+    ],
+    "strata": [
+      "family",
+      "health-optical-services"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "family-beauty-services",
+    "description": "Fonctions de la famille beauty-services ; domaine des missions, pas seulement secteur employeur.",
+    "market": "US",
+    "variants": [
+      "coiffure prestations beauté",
+      "hair beauty services"
+    ],
+    "strata": [
+      "family",
+      "beauty-services"
+    ],
+    "split": "holdout"
+  },
+  {
+    "id": "composed-chanel-fr",
+    "description": "Métier et Maison doivent tous deux correspondre ; texte natif admissible sans classification.",
+    "market": "FR",
+    "variants": [
+      "conseillère de vente Chanel",
+      "sales advisor Chanel",
+      "vendeuse Chanel",
+      "sales advsior Chanel"
+    ],
+    "strata": [
+      "composed",
+      "company",
+      "multilingual"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "composed-chanel-us",
+    "description": "Métier et Maison doivent tous deux correspondre ; texte natif admissible sans classification.",
+    "market": "US",
+    "variants": [
+      "conseiller de vente Chanel",
+      "sales advisor Chanel"
+    ],
+    "strata": [
+      "composed",
+      "company",
+      "multilingual"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "composed-sephora-ca",
+    "description": "Métier et Maison doivent tous deux correspondre ; texte natif admissible sans classification.",
+    "market": "CA",
+    "variants": [
+      "conseillère beauté Sephora",
+      "beauty advisor Sephora"
+    ],
+    "strata": [
+      "composed",
+      "company",
+      "multilingual"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "composed-nocibe",
+    "description": "Métier et Maison doivent tous deux correspondre ; texte natif admissible sans classification.",
+    "market": "FR",
+    "variants": [
+      "conseillère beauté Nocibé",
+      "beauty advisor Nocibe"
+    ],
+    "strata": [
+      "composed",
+      "company",
+      "multilingual"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "composed-aesop",
+    "description": "Métier et Maison doivent tous deux correspondre ; texte natif admissible sans classification.",
+    "market": "FR",
+    "variants": [
+      "conseiller de vente Aesop",
+      "sales advisor Aesop"
+    ],
+    "strata": [
+      "composed",
+      "company",
+      "multilingual"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "composed-mejuri",
+    "description": "Métier et Maison doivent tous deux correspondre ; texte natif admissible sans classification.",
+    "market": "CA",
+    "variants": [
+      "gestionnaire de stock en boutique Mejuri",
+      "stock associate Mejuri"
+    ],
+    "strata": [
+      "composed",
+      "company",
+      "multilingual"
+    ],
+    "split": "holdout"
+  },
+  {
+    "id": "composed-louis-vuitton",
+    "description": "Métier et Maison doivent tous deux correspondre ; texte natif admissible sans classification.",
+    "market": "US",
+    "variants": [
+      "sales advisor Louis Vuitton",
+      "conseiller de vente Louis Vuitton"
+    ],
+    "strata": [
+      "composed",
+      "company",
+      "multilingual"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "composed-hermes",
+    "description": "Métier et Maison doivent tous deux correspondre ; texte natif admissible sans classification.",
+    "market": "FR",
+    "variants": [
+      "maroquinier Hermès",
+      "leather craftsperson Hermes"
+    ],
+    "strata": [
+      "composed",
+      "company",
+      "multilingual"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "composed-dior",
+    "description": "Métier et Maison doivent tous deux correspondre ; texte natif admissible sans classification.",
+    "market": "FR",
+    "variants": [
+      "responsable de boutique Dior",
+      "store manager Dior"
+    ],
+    "strata": [
+      "composed",
+      "company",
+      "multilingual"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "composed-gucci",
+    "description": "Métier et Maison doivent tous deux correspondre ; texte natif admissible sans classification.",
+    "market": "US",
+    "variants": [
+      "sales advisor Gucci",
+      "vendeuse Gucci"
+    ],
+    "strata": [
+      "composed",
+      "company",
+      "multilingual"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "composed-uniqlo",
+    "description": "Métier et Maison doivent tous deux correspondre ; texte natif admissible sans classification.",
+    "market": "FR",
+    "variants": [
+      "vendeuse Uniqlo",
+      "sales advisor Uniqlo"
+    ],
+    "strata": [
+      "composed",
+      "company",
+      "multilingual"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "composed-oh-my-cream",
+    "description": "Métier et Maison doivent tous deux correspondre ; texte natif admissible sans classification.",
+    "market": "FR",
+    "variants": [
+      "conseillère beauté Oh My Cream",
+      "beauty advisor Oh My Cream"
+    ],
+    "strata": [
+      "composed",
+      "company",
+      "multilingual"
+    ],
+    "split": "holdout"
+  },
+  {
+    "id": "composed-normal",
+    "description": "Métier et Maison doivent tous deux correspondre ; texte natif admissible sans classification.",
+    "market": "FR",
+    "variants": [
+      "gestionnaire de paie Normal",
+      "payroll specialist Normal"
+    ],
+    "strata": [
+      "composed",
+      "company",
+      "multilingual"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "composed-ssense",
+    "description": "Métier et Maison doivent tous deux correspondre ; texte natif admissible sans classification.",
+    "market": "CA",
+    "variants": [
+      "service client SSENSE",
+      "customer service SSENSE"
+    ],
+    "strata": [
+      "composed",
+      "company",
+      "multilingual"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "composed-on",
+    "description": "Métier et Maison doivent tous deux correspondre ; texte natif admissible sans classification.",
+    "market": "CH",
+    "variants": [
+      "product developer On",
+      "développeur produit On"
+    ],
+    "strata": [
+      "composed",
+      "company",
+      "multilingual"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "composed-undiz",
+    "description": "Métier et Maison doivent tous deux correspondre ; texte natif admissible sans classification.",
+    "market": "FR",
+    "variants": [
+      "marketing Undiz",
+      "Undiz marketing"
+    ],
+    "strata": [
+      "composed",
+      "company",
+      "multilingual"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "composed-typology",
+    "description": "Métier et Maison doivent tous deux correspondre ; texte natif admissible sans classification.",
+    "market": "FR",
+    "variants": [
+      "contrôleur de gestion Typology",
+      "financial controller Typology"
+    ],
+    "strata": [
+      "composed",
+      "company",
+      "multilingual"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "composed-beaumanoir",
+    "description": "Métier et Maison doivent tous deux correspondre ; texte natif admissible sans classification.",
+    "market": "FR",
+    "variants": [
+      "développement durable Groupe Beaumanoir",
+      "sustainability Groupe Beaumanoir"
+    ],
+    "strata": [
+      "composed",
+      "company",
+      "multilingual"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "composed-aromazone",
+    "description": "Métier et Maison doivent tous deux correspondre ; texte natif admissible sans classification.",
+    "market": "FR",
+    "variants": [
+      "opérateur de production Aroma-Zone",
+      "Aroma Zone opérateur de production"
+    ],
+    "strata": [
+      "composed",
+      "company",
+      "multilingual"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "composed-shinola",
+    "description": "Métier et Maison doivent tous deux correspondre ; texte natif admissible sans classification.",
+    "market": "US",
+    "variants": [
+      "watchmaker Shinola",
+      "horloger Shinola"
+    ],
+    "strata": [
+      "composed",
+      "company",
+      "multilingual"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "composed-figs",
+    "description": "Métier et Maison doivent tous deux correspondre ; texte natif admissible sans classification.",
+    "market": "US",
+    "variants": [
+      "analytics engineer FIGS",
+      "ingénieur analytics FIGS"
+    ],
+    "strata": [
+      "composed",
+      "company",
+      "multilingual"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "composed-everlane",
+    "description": "Métier et Maison doivent tous deux correspondre ; texte natif admissible sans classification.",
+    "market": "US",
+    "variants": [
+      "graphic designer Everlane",
+      "graphiste Everlane"
+    ],
+    "strata": [
+      "composed",
+      "company",
+      "multilingual"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "composed-boggi",
+    "description": "Métier et Maison doivent tous deux correspondre ; texte natif admissible sans classification.",
+    "market": "FR",
+    "variants": [
+      "stockiste Boggi Milano",
+      "stock keeper Boggi Milano"
+    ],
+    "strata": [
+      "composed",
+      "company",
+      "multilingual"
+    ],
+    "split": "holdout"
+  },
+  {
+    "id": "composed-longchamp",
+    "description": "Métier et Maison doivent tous deux correspondre ; texte natif admissible sans classification.",
+    "market": "FR",
+    "variants": [
+      "conseillère de vente Longchamp",
+      "sales advisor Longchamp"
+    ],
+    "strata": [
+      "composed",
+      "company",
+      "multilingual"
+    ],
+    "split": "holdout"
+  },
+  {
+    "id": "company-chanel",
+    "description": "Offres réellement associées à Chanel ; une mention accessoire du groupe ou d’un concurrent ne suffit pas.",
+    "market": "FR",
+    "variants": [
+      "Chanel",
+      "CHANEL"
+    ],
+    "strata": [
+      "company",
+      "identity"
+    ],
+    "split": "holdout"
+  },
+  {
+    "id": "company-lvmh",
+    "description": "Offres réellement associées à LVMH ; une mention accessoire du groupe ou d’un concurrent ne suffit pas.",
+    "market": "US",
+    "variants": [
+      "LVMH",
+      "lvmh"
+    ],
+    "strata": [
+      "company",
+      "identity"
+    ],
+    "split": "holdout"
+  },
+  {
+    "id": "company-kering",
+    "description": "Offres réellement associées à Kering ; une mention accessoire du groupe ou d’un concurrent ne suffit pas.",
+    "market": "FR",
+    "variants": [
+      "Kering",
+      "KERING"
+    ],
+    "strata": [
+      "company",
+      "identity"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "company-smcp",
+    "description": "Offres réellement associées à SMCP ; une mention accessoire du groupe ou d’un concurrent ne suffit pas.",
+    "market": "FR",
+    "variants": [
+      "SMCP",
+      "smcp"
+    ],
+    "strata": [
+      "company",
+      "identity"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "company-sandro",
+    "description": "Offres réellement associées à Sandro ; une mention accessoire du groupe ou d’un concurrent ne suffit pas.",
+    "market": "FR",
+    "variants": [
+      "Sandro",
+      "sandro"
+    ],
+    "strata": [
+      "company",
+      "identity"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "company-maje",
+    "description": "Offres réellement associées à Maje ; une mention accessoire du groupe ou d’un concurrent ne suffit pas.",
+    "market": "FR",
+    "variants": [
+      "Maje",
+      "maje"
+    ],
+    "strata": [
+      "company",
+      "identity"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "company-aesop",
+    "description": "Offres réellement associées à Aesop ; une mention accessoire du groupe ou d’un concurrent ne suffit pas.",
+    "market": "US",
+    "variants": [
+      "Aesop",
+      "aesop"
+    ],
+    "strata": [
+      "company",
+      "identity"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "company-sephora",
+    "description": "Offres réellement associées à Sephora ; une mention accessoire du groupe ou d’un concurrent ne suffit pas.",
+    "market": "CA",
+    "variants": [
+      "Sephora",
+      "SEPHORA"
+    ],
+    "strata": [
+      "company",
+      "identity"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "company-nocibe",
+    "description": "Offres réellement associées à Nocibé ; une mention accessoire du groupe ou d’un concurrent ne suffit pas.",
+    "market": "FR",
+    "variants": [
+      "Nocibé",
+      "Nocibe"
+    ],
+    "strata": [
+      "company",
+      "identity"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "company-on",
+    "description": "Offres réellement associées à On ; une mention accessoire du groupe ou d’un concurrent ne suffit pas.",
+    "market": "CH",
+    "variants": [
+      "On",
+      "ON"
+    ],
+    "strata": [
+      "company",
+      "identity"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "edge-senior",
+    "description": "Conserver senior comme précision.",
+    "market": "US",
+    "variants": [
+      "senior sales advisor Chanel",
+      "senior conseiller de vente Chanel"
+    ],
+    "strata": [
+      "defensive",
+      "senior"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "edge-deputy",
+    "description": "Ne pas mélanger direction et adjoint.",
+    "market": "FR",
+    "variants": [
+      "assistant store manager Chanel",
+      "adjoint au responsable de boutique Chanel"
+    ],
+    "strata": [
+      "defensive",
+      "deputy"
+    ],
+    "split": "holdout"
+  },
+  {
+    "id": "edge-negation",
+    "description": "Vente avec exclusion explicite de Chanel.",
+    "market": "FR",
+    "variants": [
+      "sales advisor sans Chanel",
+      "conseillère de vente without Chanel"
+    ],
+    "strata": [
+      "defensive",
+      "negation"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "edge-cjk",
+    "description": "Conseil de vente, marché CN.",
+    "market": "CN",
+    "variants": [
+      "销售顾问",
+      "sales advisor"
+    ],
+    "strata": [
+      "defensive",
+      "cjk"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "edge-joaillerie",
+    "description": "Métiers ou employeurs de la joaillerie ; pas toute la vente.",
+    "market": "FR",
+    "variants": [
+      "joaillerie",
+      "jewellery"
+    ],
+    "strata": [
+      "defensive",
+      "joaillerie"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "edge-unknown",
+    "description": "Fonction décrite par le texte même sans métier de la taxonomie.",
+    "market": "FR",
+    "variants": [
+      "Senior Client Experience Ambassador",
+      "client experience ambassador senior"
+    ],
+    "strata": [
+      "defensive",
+      "unknown"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "edge-no-corpus",
+    "description": "Témoin négatif ; zéro offre native attendue.",
+    "market": "FR",
+    "variants": [
+      "xylophoniste interplanétaire",
+      "interplanetary xylophonist"
+    ],
+    "strata": [
+      "defensive",
+      "no-corpus"
+    ],
+    "split": "development"
+  },
+  {
+    "id": "edge-special-chars",
+    "description": "Apostrophe de Maison préservée.",
+    "market": "FR",
+    "variants": [
+      "vendeuse O’Neill",
+      "sales advisor O'Neill"
+    ],
+    "strata": [
+      "defensive",
+      "special-chars"
+    ],
+    "split": "development"
+  }
+]
