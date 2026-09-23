@@ -82,6 +82,19 @@ describe('sitemap listing previews and detail identities', () => {
     // Both ambiguous native nodes survive for DUPLICATE_PUBLICATION_IDS validation.
     expect(result.rejectedRows).toEqual([]);
   });
+
+  it('does not discard a preview when the detail carries no usable description', async () => {
+    mockFetch.mockImplementation(async url => {
+      if (String(url) === sitemapUrl) return xml;
+      const index = alberto.pages.findIndex(page => page.pageUrl === String(url));
+      if (index !== 1) return nativePage(index);
+      return alberto.pages[index].postings.map(node => `<script type="application/ld+json">${JSON.stringify({ ...node, description: '' })}</script>`).join('');
+    });
+    const result = await fetchGenericJsonLdJobs({ sitemapUrl });
+    expect(result.jobs).toHaveLength(3);
+    expect(result.jobs.filter(job => job.publicationHold)).toHaveLength(1);
+    expect(result.rejectedRows).toHaveLength(1);
+  });
 });
 
 describe('mixed sitemap with reviewed job paths', () => {

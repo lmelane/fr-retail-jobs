@@ -332,7 +332,7 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
       // and its evidence; title similarity alone never merges publications.
       if (typeof node.url !== 'string' || node.url === pageUrl) return true;
       const detail = detailPostings.get(node.url)?.find(candidate =>
-        candidate.url === node.url && candidate.title === job.title && !candidate.publicationHold);
+        candidate.url === node.url && candidate.title === job.title && !candidate.publicationHold && candidate.description?.trim());
       if (!detail) return true;
       rejectedRows.push({ reason: 'LISTED_POSTING_PREVIEW', raw: { url: pageUrl, posting: node, detailUrl: node.url, detailExternalId: detail.externalId } });
       return false;
