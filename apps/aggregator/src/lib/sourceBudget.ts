@@ -27,16 +27,19 @@ export async function withSourceBudget<T>(work: () => Promise<T>, ms: number, la
   const soft = options.softTimeoutMs;
   if (soft !== undefined && (!Number.isSafeInteger(soft) || soft < 1 || soft > ms)) throw new Error('Invalid source soft timeout');
   const startedAt = Date.now();
+  const parent = budgets.getStore();
   const controller = new AbortController();
+  const signal = parent ? AbortSignal.any([parent.signal, controller.signal]) : controller.signal;
   const timer = setTimeout(() => controller.abort(new Error(`__TIMEOUT__ ${label}`)), ms);
   try {
-    return await budgets.run({ signal: controller.signal, startedAt, timeoutMs: ms, softTimeoutMs: soft }, async () => {
+    signal.throwIfAborted();
+    return await budgets.run({ signal, startedAt, timeoutMs: ms, softTimeoutMs: soft }, async () => {
       try {
         const result = await work();
         assertSourceRunning();
         return result;
       } catch (error) {
-        const reason = controller.signal.aborted ? controller.signal.reason : error;
+        const reason = signal.aborted ? signal.reason : error;
         // Promise.all can reject while sibling requests are still pending.
         // Invalidate their budget too, so they cannot start new I/O or commit writes.
         controller.abort(reason);

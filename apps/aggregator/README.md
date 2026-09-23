@@ -10,6 +10,8 @@ Le runner général ne prend que les sources ACTIVE. En local, le parcours maint
 
 La table `Source` est le registre opérationnel ; le RAW archivé reste la référence du contenu publié. Les observations, faits dérivés et projections restent distincts. Un statut ACTIVE ne suffit pas à prouver une qualification ni une absence. Les captures, admissions et fins immuables fondent le cycle de vie, jamais un simple `lastSeenAt` ou un journal d’exécution.
 
+Après autorisation d’exécution, `ingest-all` entretient la preuve d’accès de chaque ACTIVE : une décision valide est conservée ; `ACCESS_STALE` ou `ACCESS_MISSING` déclenche la même qualification que `source-add` (capture native, validation par rejeu, robots, décision persistée). La collecte normale repasse ensuite toutes les admissions. Un refus explicite n’est jamais renouvelé automatiquement, même après un changement de révision ; une décision concurrente ne peut pas être écrasée. Une qualification impossible bloque sa source et laisse les autres continuer. Ces preuves appartiennent au même run et au même budget par source. Sous `PIPELINE_PAUSED=1`, aucun de ces appels n’est exécuté.
+
 La restauration du registre passe par `scripts/ops/exporter-registre-sources.mts` puis `reimporter-registre-sources.mts`. Aucun seed historique ni enregistrement SQL parallèle.
 
 ## Surveillance et reprise

@@ -52,6 +52,17 @@ describe('source execution budget', () => {
     expect(sourceSignal()).toBeUndefined();
   });
 
+  it('propagates the outer source deadline into nested qualification/evidence budgets', async () => {
+    let dispatched = false;
+    await expect(withSourceBudget(() => withSourceBudget(async () => {
+      await new Promise(resolve => setTimeout(resolve, 20));
+      assertSourceRunning();
+      dispatched = true;
+    }, 1000, 'qualification'), 5, 'source')).rejects.toThrow('__TIMEOUT__ source');
+    expect(dispatched).toBe(false);
+    expect(sourceSignal()).toBeUndefined();
+  });
+
   it('isolates simultaneous sources and clears completed timers', async () => {
     const slow = withSourceBudget(async () => {
       await new Promise(resolve => setTimeout(resolve, 20));

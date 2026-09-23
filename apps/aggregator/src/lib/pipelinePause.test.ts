@@ -1,4 +1,5 @@
 import { afterEach, expect, it, vi } from 'vitest';
+import { maintainSourceAccess, qualifySourceAccess } from '../connectors/sourceAccessQualification.js';
 import { pipelinePaused, assertPipelineRunning } from './pipelinePause.js';
 import { captureExtraction } from '../capture/batch.js';
 import { captureSourceEvidence } from '../capture/sourceEvidence.js';
@@ -28,6 +29,8 @@ it('blocks imported collection functions before touching DB, adapter, HTTP or br
     () => fetchAtsJobs('TEAMTAILOR', { origin: 'https://example.com' }),
     () => runGeocode(db), () => consommerFlux(db, { lire: touched }),
     () => fluxHttp('https://example.com', 'unused', touched).lire(0n, 10),
+    () => maintainSourceAccess(db, 'witness', 1000),
+    () => qualifySourceAccess(db, { key: 'witness', kind: 'ashby' }, 'revision', 'batch', 'test'),
     () => runIngest(db), () => ingestAllBySource(db), () => runRefresh(db),
     () => fetchFollowingSafely('https://example.com', {}, new AbortController().signal),
     () => fetchRenderedHtml('https://example.com'),

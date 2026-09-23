@@ -7,6 +7,7 @@ import { loadActiveSources } from '../connectors/sourceStore.js';
 import { runIngest, KIND_TO_ATS } from './ingest.js';
 import { checkSourceHealth, type SourceHealth } from './health.js';
 import { briefError } from '../lib/normalize.js';
+import { maintainSourceAccess } from '../connectors/sourceAccessQualification.js';
 import { WafChallengeError } from '../lib/wafToken.js';
 
 /**
@@ -127,7 +128,10 @@ async function ingestOne(prisma: PrismaClient, key: string, result: Orchestrator
     // the same cities in parallel. The soft deadline lets a slow crawl stop
     // gracefully just before the hard timeout, keeping what it fetched.
     const stats = await withSourceBudget(
-      () => runIngest(prisma, { only: key, skipGeocode: true }),
+      async () => {
+        await maintainSourceAccess(prisma, key, PER_SOURCE_TIMEOUT_MS);
+        return runIngest(prisma, { only: key, skipGeocode: true });
+      },
       PER_SOURCE_TIMEOUT_MS,
       key,
       { softTimeoutMs: Math.floor(PER_SOURCE_TIMEOUT_MS - Math.min(SOFT_DEADLINE_MARGIN_MS, PER_SOURCE_TIMEOUT_MS / 10)) },

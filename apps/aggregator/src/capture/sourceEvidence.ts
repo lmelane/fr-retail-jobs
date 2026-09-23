@@ -1,3 +1,4 @@
+import { log } from '../observability/logger.js';
 import { assertPipelineRunning } from '../lib/pipelinePause.js';
 import { Prisma, type PrismaClient } from '@prisma/client';
 import { randomUUID } from 'node:crypto';
@@ -92,7 +93,7 @@ export async function captureSourceEvidence(db: PrismaClient, sourceKey: string,
   const batch = await withSourceBudget(async () => {
     const batch = await db.$transaction(async tx => {
       const sourceRevisionId = await bindSourceRevision(tx, sourceKey, config, kind, { revisionId: options.revisionId });
-      return tx.captureBatch.create({ data: { id: randomUUID(), purpose: options.purpose, sourceKey, sourceRevisionId,
+      return tx.captureBatch.create({ data: { id: randomUUID(), purpose: options.purpose, sourceKey, sourceRevisionId, runId: log.runId(),
         sourceKind: kind, configHash: evidenceHash(config), executionBudget: sourceExecutionBudget(),
         readerRevision: captureReaderRevision(), formatVersion: 3 } });
     });

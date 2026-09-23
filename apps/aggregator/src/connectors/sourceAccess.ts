@@ -3,6 +3,8 @@ import { captureReaderRevision } from '../capture/revision.js';
 import { evidenceHash } from '../lib/evidenceHash.js';
 import { OWNER_DECISION_AT, OWNER_DECISION_SCOPE } from '../lib/accessDecision.js';
 import { lockSourceWrites } from '../lib/writeLocks.js';
+import { assertPipelineRunning } from '../lib/pipelinePause.js';
+import { assertSourceRunning } from '../lib/sourceBudget.js';
 import type { ObjectStore } from '../retention/objectStore.js';
 import { readIdentitySource } from './sourceRegistryRead.js';
 import { inspectSourceAccess, type AccessEvidenceReport } from './sourceAccessEvidence.js';
@@ -74,7 +76,7 @@ export function accessStatus(source: Subject, decision: SourceAccessDecision | n
 
 /** Native inspection outside registry locks; the exact source revision is checked
  * again when appending. A retry cannot jump ahead of an intervening denial. */
-export async function recordSourceAccessDecision(db: PrismaClient, input: unknown, apply = false, store?: ObjectStore) {
+export async function recordSourceAccessDecision(db: PrismaClient, input: unknown, apply = false, store?: ObjectStore, expectedDecisionId?: string | null) {
   const document = parseAccessDocument(input);
   const source = await readIdentitySource(db, document.sourceKey);
   if (!source || source.currentRevisionId !== document.sourceRevisionId) return invalidAccess('Access review requires the current registered source revision');
@@ -88,6 +90,14 @@ export async function recordSourceAccessDecision(db: PrismaClient, input: unknow
       verdict: document.verdict, policyVersion: SOURCE_ACCESS_POLICY, readerRevision: captureReaderRevision(),
       document: document as unknown as Prisma.InputJsonValue, report: report ? report as unknown as Prisma.InputJsonValue : Prisma.DbNull,
       checkedAt: new Date(document.checkedAt), validUntil: report ? new Date(report.validUntil) : null };
+    if (apply && expectedDecisionId !== undefined) {
+      assertPipelineRunning(); assertSourceRunning();
+      if (current.status !== 'ACTIVE')
+        throw new SourceAccessGateError('ACCESS_SUPERSEDED', 'Source is no longer ACTIVE during automatic qualification');
+      const latest = await tx.sourceAccessDecision.findFirst({ where: { sourceKey: current.key }, orderBy: { sequence: 'desc' }, select: { id: true } });
+      if ((latest?.id ?? null) !== expectedDecisionId)
+        throw new SourceAccessGateError('ACCESS_SUPERSEDED', 'Access decision changed during automatic qualification');
+    }
     let written = 0;
     if (apply && !await tx.sourceAccessDecision.findUnique({ where: { id }, select: { id: true } })) {
       await tx.sourceAccessDecision.create({ data }); written = 1;

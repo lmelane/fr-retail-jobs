@@ -51,16 +51,14 @@ import { configuredPortal, reviewedOfficialDomain, type PortalContract } from '.
 import { effectiveSourceConfig } from '../../src/connectors/sourceConfig.js';
 import { recordSourceIdentityReview } from '../../src/connectors/sourceIdentity.js';
 import { captureSourceForValidation } from '../../src/connectors/sourceValidation.js';
-import { recordSourceAccessDecision } from '../../src/connectors/sourceAccess.js';
+import { observedRequests, qualifySourceAccess } from '../../src/connectors/sourceAccessQualification.js';
 import { promoteSource } from '../../src/connectors/sourceStore.js';
 import { sourceStatus } from '../../src/onboarding/status.js';
-import { readRequestData } from '../../src/capture/requestDataRead.js';
 import { objectStoreConfigured, objectStoreFromEnv } from '../../src/retention/objectStore.js';
 import { readRefreshPlan } from '../../src/pipeline/refresh.js';
 import { closeBrowser } from '../../src/lib/browser.js';
 import { auditUrl } from '../../src/capture/context.js';
 import { captureReaderRevision } from '../../src/capture/revision.js';
-import { deriveAccessScopeDocument } from '../../src/connectors/accessScopeDerivation.js';
 
 type Candidat = { key: string; maison: string; kind: string; config: Record<string, unknown>; careersDomain: string | null; tier: string;
   jobUrlPattern?: string | null; domain?: string | null; domainSource?: string | null; lastRunJobs?: number | null;
@@ -203,48 +201,6 @@ async function identite(c: Candidat, revision: string, officialDomain: string, d
   return { ok: false, blocked: !anyPage && blockedSignals > 0, divergentDomain };
 }
 
-/** Les requêtes HTTP réellement observées pendant une capture (chaque saut de chaque réponse), avec le type de contenu servi. */
-async function observedRequests(captureBatchId: string) {
-  const rows = await db.rawCapture.findMany({ where: { batchId: captureBatchId }, orderBy: { sequence: 'asc' } });
-  const requests: { method: string; url: URL; contentType: string }[] = [];
-  for (const row of rows) {
-    const data = await readRequestData(db, row, store);
-    if (!data || data.origin !== 'HTTP_TRANSPORT') throw new Error('ACCESS_JOURNAL: requête sans provenance HTTP native');
-    for (const hop of data.hops) requests.push({ method: hop.request.method, url: new URL(hop.request.url), contentType: String((hop.responseHeaders as Record<string, string>)['content-type'] ?? '') });
-  }
-  if (!requests.length) throw new Error('ACCESS_JOURNAL: aucune requête observée');
-  return requests;
-}
-
-async function acces(c: Candidat, revision: string, jobsCaptureId: string, etapes: Record<string, unknown>) {
-  const requests = await observedRequests(jobsCaptureId);
-  const origins = [...new Set(requests.map(r => r.url.origin))];
-  const robotsCaptureIds: string[] = [];
-  for (const origin of origins) {
-    const capture = await captureSourceEvidence(db, c.key, { revisionId: revision, purpose: 'SOURCE_ACCESS', url: `${origin}/robots.txt`, deadlineMs: 60_000 }, store) as { captureBatchId: string };
-    robotsCaptureIds.push(capture.captureBatchId);
-  }
-  const { scopes, derivation } = deriveAccessScopeDocument(c.kind, requests);
-  const statement = `Périmètre dérivé des ${requests.length} requête(s) HTTP réellement observées, sous l'identité du robot, pendant la collecte de qualification ${jobsCaptureId} : ${derivation.exact} chemin(s) observé(s) déclaré(s) tel(s) quel(s) (EXACT) et ${derivation.prefix} répertoire(s) d'offres observé(s) déclaré(s) par leur préfixe (PREFIX), qui couvre les entrées futures de ce répertoire et rien au-delà${derivation.climbs ? ` ; ${derivation.climbs} remontée(s) d'un répertoire pour tenir dans la liste bornée de 64 périmètres, jamais jusqu'à la racine` : ''}${scopes.some(s => s.query.variable.length) ? ' ; les paramètres variables sont ceux observés avec plusieurs valeurs' : ''}. Méthodes déclarées par périmètre, jamais fusionnées entre un point d'entrée et des pages. Robots archivé pour chaque origine interrogée. Liste : ${scopes.map(s => `${s.methods.join('/')} ${s.origin}${s.path.value}${s.path.kind === 'PREFIX' ? '…' : ''}${Object.keys(s.query.fixed).length ? ' ?' + Object.entries(s.query.fixed).map(([k, v]) => `${k}=${v}`).join('&') : ''}${s.query.variable.length ? ` [variables : ${s.query.variable.join(', ')}]` : ''}`).join(' ; ')}`;
-  const document = { sourceKey: c.key, sourceRevisionId: revision, captureBatchId: jobsCaptureId, verdict: 'ALLOWED', robotsCaptureIds, scopes, statement, reviewer: REVIEWER, checkedAt: nowMs() };
-  etapes.acces = { origins, scopes, robotsCaptureIds, derivation };
-  try {
-    const decision = await recordSourceAccessDecision(db, document as Parameters<typeof recordSourceAccessDecision>[1], true, store) as { verdict?: string; written?: number; reason?: string };
-    etapes.decisionAcces = decision;
-    if (decision.verdict === 'ALLOWED' && (decision.written === 1 || (decision as { isLatestDecision?: boolean }).isLatestDecision)) return { allowed: true, reason: null as string | null };
-    return { allowed: false, reason: decision.reason ?? JSON.stringify(decision).slice(0, 300) };
-  } catch (error) {
-    const reason = message(error);
-    // Un refus robots ou un périmètre non couvert devient une décision NOT_AUTHORIZED explicite : rien ne sera collecté.
-    if (/not covered|DISALLOWED|robots/i.test(reason)) {
-      const denial = { sourceKey: c.key, sourceRevisionId: revision, captureBatchId: null, verdict: 'NOT_AUTHORIZED', robotsCaptureIds: [], scopes: [],
-        statement: `Accès refusé lors de la campagne F3 : ${reason}`, reviewer: REVIEWER, checkedAt: nowMs() };
-      try { etapes.decisionAcces = await recordSourceAccessDecision(db, denial as Parameters<typeof recordSourceAccessDecision>[1], true, store); } catch (e) { etapes.decisionAccesErreur = message(e); }
-    }
-    return { allowed: false, reason };
-  }
-}
-
 async function qualifier(c: Candidat): Promise<Verdict> {
   const debut = Date.now(); const etapes: Record<string, unknown> = {}; const raisons: string[] = [];
   const rendre = (verdict: string, extra: Partial<Verdict> = {}): Verdict => ({ key: c.key, kind: c.kind, maison: c.maison, verdict, raisons, etapes, readerRevision: READER_REVISION, dureeMs: Date.now() - debut, evalueLe: nowMs(), ...extra });
@@ -290,9 +246,9 @@ async function qualifier(c: Candidat): Promise<Verdict> {
   etapes.collecte = { captureBatchId: validation.captureBatchId, verdict: validation.verdict, report: validation.report };
   const offres = (validation.report as { observed?: number })?.observed;
   if (validation.verdict !== 'VALIDATED') { raisons.unshift(`validation native : ${validation.verdict} (${Object.keys((validation.report as { reasons?: Record<string, number> })?.reasons ?? {}).join(', ') || 'sans motif'})`); return rendre('COLLECTE_NON_VALIDEE', { revision, offres }); }
-  try { etapes.collecteOrigines = [...new Set((await observedRequests(validation.captureBatchId)).map(r => r.url.origin))]; }
+  try { etapes.collecteOrigines = [...new Set((await observedRequests(db, validation.captureBatchId, store)).map(r => r.url.origin))]; }
   catch (error) { raisons.unshift(`journal de collecte : ${message(error)}`); return rendre('COLLECTE_NON_VALIDEE', { revision, offres }); }
-  let access; try { access = await acces(c, revision, validation.captureBatchId, etapes); }
+  let access; try { access = await qualifySourceAccess(db, c, revision, validation.captureBatchId, REVIEWER, etapes, store); }
   catch (error) { const m = message(error); raisons.unshift(`accès : ${m}`); return rendre(inaccessible(m) ? 'INACCESSIBLE' : 'COLLECTE_NON_VALIDEE', { revision, offres }); }
   if (!access.allowed) { raisons.unshift(`accès : ${access.reason}`); return rendre(/not covered|DISALLOWED|robots/i.test(access.reason ?? '') ? 'REFUSEE' : 'COLLECTE_NON_VALIDEE', { revision, offres }); }
   /*

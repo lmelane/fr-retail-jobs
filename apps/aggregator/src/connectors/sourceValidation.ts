@@ -1,3 +1,4 @@
+import { log } from '../observability/logger.js';
 import { Prisma, type PrismaClient } from '@prisma/client';
 import type { ObjectStore } from '../retention/objectStore.js';
 import { fetchAtsJobs } from '../ats/index.js';
@@ -149,7 +150,7 @@ export async function captureSourceForValidation(db: PrismaClient, sourceKey: st
   const kind = KIND_TO_ATS[row.kind];
   if (!kind) throw new Error('Source has no supported collector');
   const config = effectiveSourceConfig(JSON.parse(row.configText));
-  const result = await withSourceBudget(() => captureExtraction(db, row.key, config, undefined,
+  const result = await withSourceBudget(() => captureExtraction(db, row.key, config, log.runId(),
     settings => fetchAtsJobs(kind, settings), kind, { revisionId: row.currentRevisionId }), timeoutMs, row.key,
   { softTimeoutMs: Math.max(1, timeoutMs - Math.min(30_000, Math.floor(timeoutMs / 10))) });
   return validateCapturedSource(db, result.captureBatchId, store);
