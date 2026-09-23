@@ -10,7 +10,7 @@ export function ingestionChildEnvironment(env: NodeJS.ProcessEnv): NodeJS.Proces
 export function sourceLaunchArguments(args: string[]) {
   const values = new Map<string, string>();
   const config: Record<string, unknown> = {};
-  const names = ['key', 'name', 'kind', 'careers-url', 'official-domain', 'tier', 'reviewer', 'out-dir'];
+  const names = ['key', 'name', 'kind', 'careers-url', 'official-domain', 'tier', 'reviewer', 'out-dir', 'job-url-pattern'];
   for (const arg of args) {
     const match = /^--([a-z-]+)=(.+)$/.exec(arg);
     if (!match) throw new Error('Source definition requires explicit --name=value options');
@@ -30,14 +30,15 @@ export function sourceLaunchArguments(args: string[]) {
       values.set(name, value.trim());
     }
   }
-  for (const name of names.filter(n => n !== 'out-dir')) if (!values.has(name)) throw new Error(`Missing --${name}`);
+  for (const name of names.filter(n => !['out-dir', 'job-url-pattern'].includes(n))) if (!values.has(name)) throw new Error(`Missing --${name}`);
   const careers = publicUrl(values.get('careers-url')!);
+  if (values.has('job-url-pattern')) publicUrl(values.get('job-url-pattern')!.replaceAll('{id}', 'native-id'));
   const domain = values.get('official-domain')!;
   if (!/^[a-z0-9-]+(?:\.[a-z0-9-]+)+$/i.test(domain)) throw new Error('An explicit official domain is required');
   const reviewer = values.get('reviewer')!;
   if (reviewer.length > 160 || /[\r\n]/.test(reviewer)) throw new Error('Invalid reviewer');
   const candidate = parseSourceCandidate({ key: values.get('key'), maison: values.get('name'), kind: values.get('kind'),
-    config, careersDomain: careers.hostname, tier: values.get('tier') });
+    config, careersDomain: careers.hostname, tier: values.get('tier'), jobUrlPattern: values.get('job-url-pattern') });
   return { candidate: { ...candidate, domain, domainSource: `explicit definition by ${reviewer}`, portalScope: null },
     reviewer, outDir: values.get('out-dir') };
 }

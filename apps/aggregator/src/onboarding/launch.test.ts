@@ -12,6 +12,11 @@ describe('one-source operational definition', () => {
   it('requires the definition, official domain and reviewer', () => {
     for (let i = 0; i < args.length; i++) expect(() => sourceLaunchArguments(args.filter((_, j) => j !== i))).toThrow();
   });
+  it('preserves an explicitly reviewed native URL pattern for an existing draft', () => {
+    const pattern = 'https://careers.ohmycream.com/jobs/{id}';
+    expect(sourceLaunchArguments([...args, `--job-url-pattern=${pattern}`]).candidate.jobUrlPattern).toBe(pattern);
+    expect(() => sourceLaunchArguments([...args, '--job-url-pattern=https://user:secret@example.com/{id}'])).toThrow();
+  });
 });
 
 it('keeps qualification and child ingestion run IDs distinct without changing the runtime bindings', async () => {
