@@ -36,6 +36,34 @@ const config = {
 
 beforeEach(() => mockFetch.mockReset());
 
+describe('mixed sitemap with reviewed job paths', () => {
+  const sitemapUrl = 'https://careers.example/sitemap.xml';
+  const urls = ['https://careers.example/job/paris/advisor/1', 'https://careers.example/fr/job/lyon/advisor/2',
+    'https://careers.example/business/retail%2520%2526%2520beauty/1', 'https://careers.example/search?next=/job/3'];
+  const xml = `<urlset>${urls.map(url => `<url><loc>${url}</loc></url>`).join('')}</urlset>`;
+
+  it('fetches only posting paths and retains the measured exclusion count', async () => {
+    mockFetch.mockImplementation(async url => url === sitemapUrl ? xml : detailPage(1));
+    const result = await fetchGenericJsonLdJobs({ sitemapUrl, linkPattern: '/job/' });
+    expect(mockFetch.mock.calls.map(call => call[0])).toEqual([sitemapUrl, ...urls.slice(0, 2)]);
+    expect(result.jobs).toHaveLength(2);
+    expect(result).toMatchObject({ complete: true, declaredTotal: 2, enumeration: { rawCount: 4 } });
+    expect(result.enumeration?.scopes).toContainEqual({ scope: 'sitemapUrlsOutsideJobPath', declaredTotal: 2, uniqueIds: 2, pages: 1, complete: true });
+  });
+
+  it('fails visibly when a configured path matches no posting, without claiming an empty catalogue', async () => {
+    mockFetch.mockResolvedValue(xml);
+    await expect(fetchGenericJsonLdJobs({ sitemapUrl, linkPattern: '/other-jobs/' })).rejects.toThrow('0 URLs');
+    expect(mockFetch).toHaveBeenCalledTimes(1);
+  });
+
+  it('keeps full sitemap enumeration when no path is configured', async () => {
+    mockFetch.mockImplementation(async url => url === sitemapUrl ? xml : detailPage(1));
+    expect((await fetchGenericJsonLdJobs({ sitemapUrl })).jobs).toHaveLength(4);
+    expect(mockFetch).toHaveBeenCalledTimes(5);
+  });
+});
+
 describe('fetchGenericJsonLdJobs — paginated listing that 404s past the last page', () => {
   it('stops cleanly on a 404 and keeps every offer already collected', async () => {
     mockFetch.mockImplementation(async (url) => {

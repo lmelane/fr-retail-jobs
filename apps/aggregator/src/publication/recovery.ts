@@ -36,7 +36,7 @@ import { parseHarriPublication } from '../ats/adapters/harri.js';
 import { parseTalentRecruiterPosition } from '../ats/adapters/talentRecruiter.js';
 import { toNormalized as toEightfoldJob } from '../ats/adapters/eightfold.js';
 import { parseBashListing, parseBashDetail } from '../ats/adapters/bashTalents.js';
-import { parseTaleoListing, parseTaleoDetail } from '../ats/adapters/taleo.js';
+import { parseTaleoListing, applyTaleoDetail } from '../ats/adapters/taleo.js';
 import { parseWttjHit, wttjCanonicalId, descriptionFromApi, type WttjHit } from '../ats/adapters/wttj.js';
 import { parseEqwaDetail, eqwaRowToJob, type EqwaListingJob } from '../ats/adapters/eqwa.js';
 import { enrichRetainedPostingEvidence } from '../lib/postingEvidence.js';
@@ -127,8 +127,11 @@ function readRetainedPublication(kind: string, raw: unknown, context: Context, r
         }
         if (typeof raw.detailHtml === 'string') {
           if (raw.detailUrl !== job.url) return failure('DETAIL_IDENTITY_MISMATCH');
-          const detail = kind === 'bashtalents' ? parseBashDetail(raw.detailHtml) : parseTaleoDetail(raw.detailHtml);
-          job = { ...job, description: detail.description ?? job.description, postedAt: detail.postedAt ?? job.postedAt };
+          if (kind === 'taleo') job = applyTaleoDetail(job, raw.detailHtml);
+          else {
+            const detail = parseBashDetail(raw.detailHtml);
+            job = { ...job, description: detail.description ?? job.description, postedAt: detail.postedAt ?? job.postedAt };
+          }
         }
         break;
       }

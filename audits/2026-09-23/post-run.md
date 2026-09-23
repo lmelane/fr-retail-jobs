@@ -2,7 +2,7 @@
 
 ## État de livraison
 
-**GO exploitation quotidienne. Code `1db582d` livré sur API et worker ; CI verte ; replays ciblés terminés ; CRON chargé à 18 h Europe/Paris.** Aucun nouveau RUN complet lancé pour cet audit.
+**Livraison initiale validée, clôture du catalogue encore en cours.** Le code `1db582d` a passé ses replays ciblés. Ce bilan ne vaut pas qualification des 153 dossiers non opérationnels examinés. Le 23 septembre à 12:59 UTC, le CRON quotidien est temporairement suspendu sous pause pour les replays complémentaires autorisés, puis sera rétabli à 18 h Europe/Paris. Aucun nouveau RUN complet lancé pour cet audit.
 
 Source de vérité : RUN production `ca946bd4-c8ba-40f7-ab8f-ddc1a3095bb1`, image worker `653920c`, RAW et captures immuables. Du 07:51:28 au 09:45:28 UTC : 384 ACTIVE, 255 OK, 35 DEGRADED, 60 BROKEN, 34 ERROR. 1 098 captures (734 JOBS, 364 SOURCE_ACCESS), 74 818 réponses RAW, 120 421 extractions comprenant qualification et ingestion ; 11 791 créations, 20 883 mises à jour, 63 rapprochements. Aucun timeout ni échec de persistance.
 
@@ -86,4 +86,16 @@ CRON chargé : **18 h Europe/Paris une fois par jour**, été/hiver. Railway dé
 - Contrat runtime/DST et pause des entrypoints : 41 cas, dont 40 PASS et une variante non applicable ignorée ; aucun accès métier sous pause.
 - Preuves de production : 63 rapprochements reconstruits, erreurs/captures réelles conservées. Les anciens exports ne sont jamais réécrits pour obtenir un PASS.
 
-La clôture s’appuie sur les replays ciblés, les lectures API authentifiées, le contrôle produit local et le reçu du calendrier effectif. Le premier RUN quotidien complet après ces corrections est prévu à 18 h : il ne doit pas être présenté comme déjà observé. `/offres`, matching, Direct Offers, onboarding, marchés et filtres sont inchangés.
+La livraison initiale s’appuie sur les replays ciblés, les lectures API authentifiées, le contrôle produit local et le reçu du calendrier effectif. La clôture de mission exige encore les qualifications du catalogue corrigé et le traitement des trois investigations ouvertes. Le premier RUN quotidien complet après ces corrections est prévu à 18 h : il ne doit pas être présenté comme déjà observé. `/offres`, matching, Direct Offers, onboarding, marchés et filtres sont inchangés.
+
+## Complément immédiat avant le RUN quotidien
+
+À la demande de Loïc, les mesures complémentaires partent de la production à **12:59:04 UTC** : 385 ACTIVE, 43 PAUSED, 109 RETIRED, aucun RUN ouvert ; santé enregistrée des ACTIVE : 264 OK, 34 DEGRADED, 87 BROKEN. Ces états agrègent des exécutions datées différentes ; ils ne constituent pas un nouveau RUN.
+
+Deux défauts locaux sont confirmés dans les RAW :
+
+- Taleo : sur 79 publications de la capture `171319d5-466e-4284-bb50-7b41d188c774`, 67 portent un `JobPosting.hiringOrganization` exploitable ; le lecteur perdait ce champ. Le correctif ne reprend que le JSON-LD de la même URL et réquisition, partagé entre collecte et relecture. Les 12 autres identités restent non prouvées. Les 79 descriptions sont inchangées au replay hors réseau.
+- Radancy : le sitemap de la capture `7c9f0016-c5fa-4369-b46d-1d3b08cb62d4` contient 38 chemins `/job/` et 84 pages de navigation. Le lecteur sitemap réutilise le filtre de chemin littéral déjà disponible pour les listings. La sélection doit être enregistrée dans la révision NARS avant requalification ; la garde HTTP reste inchangée.
+- Nocibé : capture d’accès `81abadd7-e757-4fc2-b4cc-4b8a8ac1e4bf` : `/robots.txt` → 301 `/` → 302 `/front-jobs.html` → 200 HTML « Liste des offres @ Nocibé ». C’est une redirection vers le portail, sans robots exploitable, pas une panne du lecteur EQWA ni une preuve de refus anti-bot. Aucun droit n’est déduit de cette réponse.
+
+Tests ciblés du correctif : 66 tests, typecheck agrégateur, et relecture des 79 RAW Taleo avec vérification des empreintes, sans réseau. Publication CI et replays en production à compléter avant de déclarer ces correctifs livrés.

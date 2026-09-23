@@ -73,7 +73,7 @@ describe('parseTaleoDescription', () => {
 
 // ——— l2 (2026-09-06) : la fiche TBE publie bien une date, en JSON-LD (« 2026-08-20 00:00:00.0 ») ———
 import { readFileSync } from 'node:fs';
-import { parseTaleoDetail } from './taleo.js';
+import { parseTaleoDetail, applyTaleoDetail } from './taleo.js';
 
 describe('parseTaleoDetail — l2 : date de publication et texte', () => {
   const BROWN_THOMAS = readFileSync(new URL('./__fixtures__/l2-taleo-brownthomas-detail.html', import.meta.url), 'utf8');
@@ -87,6 +87,27 @@ describe('parseTaleoDetail — l2 : date de publication et texte', () => {
   it('rend une date absente sur une réquisition retirée', () => {
     expect(parseTaleoDetail(GONE).postedAt).toBeUndefined();
     expect(parseTaleoDetail(GONE).description).toBeUndefined();
+  });
+
+  it('reads the employer from the matching native requisition in live and retained readers', async () => {
+    const { recoverRetainedPublication } = await import('../../publication/recovery.js');
+    const job = parseTaleoListing(ROW)[0];
+    const live = applyTaleoDetail(job, BROWN_THOMAS);
+    expect(live).toMatchObject({ company: 'Brown Thomas Arnotts', employerEvidence: {
+      rawName: 'Brown Thomas Arnotts', path: 'hiringOrganization.name', rule: 'HIRING_ORGANIZATION_LABEL' } });
+    const raw = { ...job.raw as object, detailHtml: BROWN_THOMAS, detailUrl: job.url };
+    const retained = recoverRetainedPublication('taleo', raw, {
+      externalId: job.externalId, url: job.url, observedAt: new Date('2026-09-23T10:00:00Z'), config: {} });
+    expect(retained).toMatchObject({ status: 'RECOVERABLE', job: { company: live.company, employerEvidence: live.employerEvidence } });
+  });
+
+  it('does not borrow an employer from another requisition or infer one from the description', () => {
+    const job = parseTaleoListing(ROW)[0];
+    expect(applyTaleoDetail(job, BROWN_THOMAS.replace(/7770/g, '8888')).company).toBeUndefined();
+    expect(applyTaleoDetail(job, BROWN_THOMAS.replace('"value" : "7770"', '"value" : "8888"')).company).toBeUndefined();
+    expect(applyTaleoDetail(job, BROWN_THOMAS + BROWN_THOMAS).company).toBeUndefined();
+    expect(applyTaleoDetail(job, DETAIL).company).toBeUndefined();
+    expect(applyTaleoDetail(job, GONE).company).toBeUndefined();
   });
 });
 

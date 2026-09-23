@@ -274,7 +274,13 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
   const sitemapUrl = String(config.sitemapUrl ?? '');
   if (sitemapUrl) {
     const sitemap = await fetchSitemapUrlsDetailed(sitemapUrl);
-    const urls = [...new Set(sitemap.urls)];
+    const listedUrls = [...new Set(sitemap.urls)];
+    // A public sitemap may include navigation/search pages alongside postings
+    // (Radancy). Reuse the reviewed literal job-path fragments already used by
+    // paginated listings; never fetch unrelated navigation to discover it has
+    // no JobPosting. Keep the excluded count in the enumeration evidence.
+    const fragments = linkPattern.split('|').map(value => value.trim()).filter(Boolean);
+    const urls = fragments.length ? listedUrls.filter(url => fragments.some(fragment => new URL(url).pathname.includes(fragment))) : listedUrls;
     // F-06: an empty sitemap on a catalogued source is the sitemap moving or
     // dying, not zero openings — say so instead of a quiet [].
     if (urls.length === 0) {
@@ -329,7 +335,8 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
     rejectedRows.sort((a, b) => String((a.raw as { url: string }).url).localeCompare(String((b.raw as { url: string }).url), 'en'));
     return { jobs, declaredTotal: urls.length, complete, truncated: !complete, rejectedRows,
       enumeration: { method: sitemap.isIndex ? 'SITEMAP_INDEX_WITH_DETAIL_READ' : 'SITEMAP_URLSET_WITH_DETAIL_READ', endpoint: sitemapUrl, pages: sitemap.shards.length, rawCount: sitemap.urls.length, termination: complete ? 'ALL_LISTED_PAGES_READ' : 'LISTED_PAGES_MISSING', issues,
-        scopes: [{ scope: 'shards', declaredTotal: sitemap.shards.length, uniqueIds: sitemap.shards.length - sitemap.failedShards.length, pages: sitemap.shards.length, complete: sitemap.failedShards.length === 0 },
+        scopes: [...(fragments.length ? [{ scope: 'sitemapUrlsOutsideJobPath', declaredTotal: listedUrls.length - urls.length, uniqueIds: listedUrls.length - urls.length, pages: sitemap.shards.length, complete: true }] : []),
+                 { scope: 'shards', declaredTotal: sitemap.shards.length, uniqueIds: sitemap.shards.length - sitemap.failedShards.length, pages: sitemap.shards.length, complete: sitemap.failedShards.length === 0 },
                  { scope: 'listedUrls', declaredTotal: urls.length, uniqueIds: urls.length - fetchFailures, pages: sitemap.shards.length, complete: fetchFailures === 0 },
                  { scope: 'postingsParsed', declaredTotal: urls.length, uniqueIds: jobs.length, pages: sitemap.shards.length, complete }] } };
   }

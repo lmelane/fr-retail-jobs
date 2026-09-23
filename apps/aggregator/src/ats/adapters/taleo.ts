@@ -4,6 +4,7 @@ import { fetchText, fetchWithRetry, DEFAULT_DETAIL_CONCURRENCY } from '../../lib
 import { htmlToPlainText } from '../../lib/html.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
 import { captureObservedAt } from '../../capture/context.js';
+import { extractJobPostings, normalizeJobPosting } from '../../connectors/generic/jsonLdSitemap.js';
 
 /**
  * Taleo Business Edition (TBE) — portails `{pod}.tbe.taleo.net/{pod}02/ats/careers/v2/`.
@@ -105,6 +106,20 @@ export function parseTaleoDetail(html: string): TaleoDetail {
   return { description, postedAt: parseTaleoDate(html.match(/"datePosted"\s*:\s*"([^"]+)"/i)?.[1]) };
 }
 
+/** Keep the employer named by this requisition, never the portal's owner.
+ * A page can contain other structured postings: only its exact URL and native
+ * requisition ID may contribute employer evidence. Malformed/missing JSON-LD
+ * leaves identity unresolved while retaining the readable description. */
+export function applyTaleoDetail(job: NormalizedJob, html: string): NormalizedJob {
+  const detail = parseTaleoDetail(html);
+  const nodes = extractJobPostings(html).filter(node => node.url === job.url &&
+    (node.identifier?.value == null || String(node.identifier.value) === job.externalId));
+  const native = nodes.length === 1 ? normalizeJobPosting(nodes[0], job.url) : null;
+  return { ...job, description: detail.description ?? job.description, postedAt: detail.postedAt ?? job.postedAt,
+    ...(native?.company ? { company: native.company, employerEvidence: native.employerEvidence } : {}),
+    ...(native?.publicationHold ? { publicationHold: native.publicationHold } : {}) };
+}
+
 function sessionCookie(response: Response): string | undefined {
   const raw = response.headers.get('set-cookie') ?? '';
   return raw.match(/JSESSIONID=[^;]+/)?.[0];
@@ -189,9 +204,9 @@ export async function fetchTaleoJobs(config: Record<string, unknown>): Promise<A
       limit(async () => {
         try {
           const detailHtml = await fetchText(job.url);
-          const detail = parseTaleoDetail(detailHtml);
-          return detail.description
-            ? { ...job, description: detail.description, postedAt: detail.postedAt ?? job.postedAt, raw: { ...(job.raw as object), detailHtml, detailUrl: job.url } }
+          const enriched = applyTaleoDetail(job, detailHtml);
+          return enriched.description
+            ? { ...enriched, raw: { ...(job.raw as object), detailHtml, detailUrl: job.url } }
             : job;
         } catch {
           // Un détail injoignable ne doit pas faire perdre l'offre de liste.
