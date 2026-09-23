@@ -42,8 +42,11 @@ export function avatureJobData(script: string, externalId: string): { jobBrand: 
         fields[field[1]] = JSON.parse(field[2]);
       } catch { invalid = true; }
     }
-    if (!invalid && fields.pageCategory === 'job detail page' && fields.jobIDATS === externalId && fields.jobBrand?.trim()) {
-      matches.push({ jobBrand: fields.jobBrand.trim() });
+    const brand = fields.jobBrand ? cheerio.load(fields.jobBrand, { scriptingEnabled: false }, false).text().trim() : '';
+    // Observed publisher placeholders describe an unassigned/multi-brand role,
+    // not an employer named "N/A" or "Multi Brand". Preserve the raw witness.
+    if (!invalid && fields.pageCategory === 'job detail page' && fields.jobIDATS === externalId && brand && !/^(?:N\/A|Multi Brand)$/i.test(brand)) {
+      matches.push({ jobBrand: brand });
     }
   }
   return matches.length === 1 ? matches[0] : null;

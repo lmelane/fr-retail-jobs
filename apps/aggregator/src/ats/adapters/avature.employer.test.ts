@@ -26,6 +26,9 @@ describe('Avature native per-job brand', () => {
     expect(avatureJobData(script.replace('jobBrand: "Aesop"', 'jobBrand: "Aesop", jobBrand: "Other"'), '241889')).toBeNull();
     expect(avatureJobData(script + script.replace('jobBrand: "Aesop"', 'jobBrand: "Other"'), '241889')).toBeNull();
     expect(avatureJobData(script.replace('"Aesop",', 'getBrand(),'), '241889')).toBeNull();
+    expect(avatureJobData(script.replace('jobBrand: "Aesop"', 'jobBrand: "N/A"'), '241889')).toBeNull();
+    expect(avatureJobData(script.replace('jobBrand: "Aesop"', 'jobBrand: "Multi Brand"'), '241889')).toBeNull();
+    expect(avatureJobData(script.replace('jobBrand: "Aesop"', 'jobBrand: "L&#039;Oréal Paris"'), '241889')).toEqual({ jobBrand: "L'Oréal Paris" });
   });
   it('reconstructs the employer from the retained native metadata only with the reviewed option', () => {
     const observed = applyAvatureJobData(job, script);
