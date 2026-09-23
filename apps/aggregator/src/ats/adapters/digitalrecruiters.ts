@@ -2,7 +2,7 @@ import pLimit from 'p-limit';
 import { captureObservedAt } from '../../capture/context.js';
 import { createHash } from 'node:crypto';
 import { fetchJson, fetchText } from '../../lib/http.js';
-import { enrichPostingEvidence } from '../../lib/postingEvidence.js';
+import { enrichPostingEvidence, postingEvidenceOptions, type PostingEvidenceOptions } from '../../lib/postingEvidence.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
 import { CRAWLER_IDENTITY } from '../../lib/crawlerIdentity.js';
 
@@ -56,6 +56,8 @@ export type DrItem = {
   /** Slug only; the absolute URL is built from the careers domain. */
   url?: string;
   careers_site_url?: string;
+  /** Native publishing tenant for an offer syndicated by a group career site. */
+  career_domain?: string;
 };
 
 type DrResponse = { count?: number; items?: DrItem[] };
@@ -83,6 +85,8 @@ export function normalizeAnnouncement(diffusions: DrItem[], domainName: string, 
   const primary = diffusions.find(isLocationSpecific) ?? diffusions[0];
   if (!primary?.title) return null;
   const path = primary.url ? `/${locale.slice(0, 2)}/annonce/${primary.url}` : '';
+  const careerDomain = primary.career_domain?.trim();
+  if (careerDomain && !/^[a-z0-9-]+(?:\.[a-z0-9-]+)+$/i.test(careerDomain)) throw new Error('Invalid native DigitalRecruiters career_domain');
   const locations = [...new Set(diffusions.map((d) => d.location).filter((x): x is string => !!x))];
   return {
     externalId: announcementExternalId(diffusions)!,
@@ -91,7 +95,7 @@ export function normalizeAnnouncement(diffusions: DrItem[], domainName: string, 
     // The API returns no country field; France detection falls back to the city,
     // which the location normaliser already handles.
     contract: primary.contract,
-    url: primary.careers_site_url ?? `https://${domainName}${path}`,
+    url: primary.careers_site_url ?? `https://${careerDomain || domainName}${path}`,
     raw: { ...primary, diffusions: diffusions.map((d) => ({ id: d.id, location: d.location, url: d.url })), locations },
   };
 }
@@ -107,6 +111,7 @@ export function normalizeAnnouncement(diffusions: DrItem[], domainName: string, 
 async function attachDescriptions(
   jobs: NormalizedJob[],
   concurrency: number,
+  options: PostingEvidenceOptions,
 ): Promise<NormalizedJob[]> {
   const limit = pLimit(concurrency);
 
@@ -117,7 +122,7 @@ async function attachDescriptions(
           const html = await fetchText(job.url, { headers: { 'user-agent': USER_AGENT } });
           // The detail page's single JobPosting (description, country, location, date) is applied AND retained in
           // RAW (`postingEvidence`, lot F3b): the retained publication is rebuilt offline by the same reader.
-          return enrichPostingEvidence(job, html);
+          return enrichPostingEvidence(job, html, options);
         } catch {
           // A failed detail fetch must not lose the listing entry.
           return job;
@@ -156,7 +161,7 @@ export async function fetchDigitalRecruitersJobs(
   }
   const listing = result!;
   if (config.withDescriptions === false) return listing;
-  return { ...listing, jobs: await attachDescriptions(listing.jobs, Number(config.detailConcurrency ?? 4)) };
+  return { ...listing, jobs: await attachDescriptions(listing.jobs, Number(config.detailConcurrency ?? 4), postingEvidenceOptions(config)) };
 }
 
 async function fetchAllPages(domainName: string, locale: string): Promise<AdapterResult> {

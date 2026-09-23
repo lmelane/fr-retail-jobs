@@ -40,7 +40,7 @@ import { parseBashListing, parseBashDetail } from '../ats/adapters/bashTalents.j
 import { parseTaleoListing, applyTaleoDetail } from '../ats/adapters/taleo.js';
 import { parseWttjHit, wttjCanonicalId, descriptionFromApi, type WttjHit } from '../ats/adapters/wttj.js';
 import { parseEqwaDetail, eqwaRowToJob, type EqwaListingJob } from '../ats/adapters/eqwa.js';
-import { enrichRetainedPostingEvidence } from '../lib/postingEvidence.js';
+import { enrichRetainedPostingEvidence, postingEvidenceOptions } from '../lib/postingEvidence.js';
 import { htmlToPlainText } from '../lib/html.js';
 import { evidenceHash } from '../lib/evidenceHash.js';
 import type { NormalizedJob } from '../types.js';
@@ -449,7 +449,7 @@ function readRetainedPublication(kind: string, raw: unknown, context: Context, r
         const locales = [...new Set([config.locale, 'fr_FR', 'en_US'].filter((value): value is string => typeof value === 'string' && !!value))];
         job = locales.map(locale => normalizeAnnouncement([primary as DrItem], domainName, locale)).find(candidate => !!candidate && new URL(candidate.url).href === new URL(context.url).href) ?? null;
         if (!job) return failure('IDENTITY_MISMATCH');
-        if (postingEvidence != null) { job = object(postingEvidence) ? enrichRetainedPostingEvidence(job, postingEvidence) : null; if (!job) return failure('DETAIL_EVIDENCE_UNUSABLE'); }
+        if (postingEvidence != null) { job = object(postingEvidence) ? enrichRetainedPostingEvidence(job, postingEvidence, postingEvidenceOptions(config)) : null; if (!job) return failure('DETAIL_EVIDENCE_UNUSABLE'); }
         break;
       }
       /*

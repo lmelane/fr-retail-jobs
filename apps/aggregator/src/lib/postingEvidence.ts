@@ -47,9 +47,9 @@ export function enrichPostingEvidence(job: NormalizedJob, html: string, options:
 }
 
 /** Reuses the native node without manufacturing a page or a new capture. */
-export function enrichRetainedPostingEvidence(job: NormalizedJob, evidence: Record<string, unknown>): NormalizedJob | null {
+export function enrichRetainedPostingEvidence(job: NormalizedJob, evidence: Record<string, unknown>, options: PostingEvidenceOptions = {}): NormalizedJob | null {
   if (evidence.pageUrl !== job.url || typeof evidence.htmlSha256 !== 'string' || !/^[a-f0-9]{64}$/.test(evidence.htmlSha256) ||
-    ![0, 1].includes(evidence.jobPostingCount as number) || evidence.employerFromJobPosting === true ||
+    ![0, 1].includes(evidence.jobPostingCount as number) || (evidence.employerFromJobPosting === true) !== !!options.employerFromJobPosting ||
     evidence.geographyConflict != null && typeof evidence.geographyConflict !== 'boolean') return null;
   const node = evidence.jobPosting;
   if (evidence.jobPostingCount === 0 && node != null) return null;
@@ -62,7 +62,7 @@ export function enrichRetainedPostingEvidence(job: NormalizedJob, evidence: Reco
     }
   }
   return applyPostingEvidence(job, readPostingNode(node as Record<string, unknown> | undefined,
-    { pageUrl: job.url, htmlSha256: evidence.htmlSha256, jobPostingCount: evidence.jobPostingCount as number, jobPosting: node as Record<string, unknown> | null }), {});
+    { pageUrl: job.url, htmlSha256: evidence.htmlSha256, jobPostingCount: evidence.jobPostingCount as number, jobPosting: node as Record<string, unknown> | null }), options);
 }
 
 function applyPostingEvidence(job: NormalizedJob, detail: ReturnType<typeof readPostingNode>, options: PostingEvidenceOptions): NormalizedJob {

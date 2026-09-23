@@ -1,7 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 vi.mock('../../lib/http.js', () => ({ fetchJson: vi.fn(), fetchText: vi.fn() }));
-import { fetchJson } from '../../lib/http.js';
+import { fetchJson, fetchText } from '../../lib/http.js';
 import { fetchDigitalRecruitersJobs, normalizeAnnouncement } from './digitalrecruiters.js';
+import { enrichRetainedPostingEvidence } from '../../lib/postingEvidence.js';
 
 /**
  * Modèle natif mesuré sur careers.lacoste.com (2026-09-09) : l'API liste des
@@ -66,6 +67,24 @@ describe('DigitalRecruiters — annonces et diffusions', () => {
   it('normalizeAnnouncement garde la diffusion générique quand aucune n’est localisée', () => {
     const j = normalizeAnnouncement([item('5', '62445899', 'Japan', false)], 'careers.example.com', 'fr_FR')!;
     expect(j.location).toBe('Japan'); expect(j.externalId).toBe('5'); expect((j.raw as any).locations).toEqual(['Japan']);
+  });
+  it('reads a syndicated posting on its declared career domain, retaining the native employer for replay', async () => {
+    const row = { ...item('4613647', '33067417', 'Paris', false), career_domain: 'nousrejoindre.naturalia.fr' };
+    vi.mocked(fetchJson).mockResolvedValueOnce(page(1, [row]));
+    const job = normalizeAnnouncement([row], 'recrutement.monoprix.fr', 'fr_FR')!;
+    vi.mocked(fetchText).mockResolvedValueOnce('<script type="application/ld+json">' + JSON.stringify({ '@type': 'JobPosting',
+      title: row.title, description: 'Native Naturalia job description', url: job.url, hiringOrganization: { '@type': 'Organization', name: 'Naturalia' } }) + '</script>');
+    const result = await fetchDigitalRecruitersJobs({ domainName: 'recrutement.monoprix.fr', employerFromJobPosting: true });
+    expect(fetchText).toHaveBeenCalledWith(expect.stringContaining('https://nousrejoindre.naturalia.fr/fr/annonce/'), expect.anything());
+    expect(result.jobs[0]).toMatchObject({ company: 'Naturalia', employerEvidence: { rawName: 'Naturalia', rule: 'EXPLICIT_JOBPOSTING_EMPLOYER' } });
+    const raw = result.jobs[0].raw as any;
+    expect(enrichRetainedPostingEvidence(job, raw.postingEvidence, { employerFromJobPosting: true })).toEqual(result.jobs[0]);
+    expect(enrichRetainedPostingEvidence(job, raw.postingEvidence)).toBeNull(); // No implicit policy change on older sources.
+  });
+  it('prefers the explicit native absolute URL and refuses malformed career hosts', () => {
+    const row = { ...item('1', '1', 'Paris'), career_domain: 'jobs.other.example', careers_site_url: 'https://native.example/job/1' };
+    expect(normalizeAnnouncement([row], 'group.example', 'fr_FR')?.url).toBe(row.careers_site_url);
+    expect(() => normalizeAnnouncement([{ ...row, career_domain: 'host/path' }], 'group.example', 'fr_FR')).toThrow('career_domain');
   });
 });
 
