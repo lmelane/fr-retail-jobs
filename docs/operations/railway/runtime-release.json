@@ -1,16 +1,16 @@
 {
-  "productionCodeSha": "653920cbc9f24dbe3edecadf755b1772291be72a",
-  "apiRetainsValidatedR5Image": true,
-  "targetContractSha256": "27350975fedfa8fee3fb6f9df0e5f53c11e74ce91bbb0a1bc551e66fc15e2163",
+  "observedAt": "2026-09-23T12:15:43.220088+00:00",
+  "productionCodeSha": "1db582defcde13912c22ed38b523b9af40dd6a9e",
+  "targetContractSha256": "85eb5ad68621ab7d8b4d04fe7e3d4778141635255aab25038907c0d03ea8119f",
   "registryVisibility": "public",
   "registryCredentialsRequired": false,
   "images": [
     {
-      "gitSha": "c3613a1d7b2a3c709f68fb18801eed3277a2302b",
-      "contractSha256": "ba9fbd873305c50357c93c2cc3662af88d64d5f62b025ed7065e4883f3770bbf",
+      "gitSha": "1db582defcde13912c22ed38b523b9af40dd6a9e",
+      "contractSha256": "85eb5ad68621ab7d8b4d04fe7e3d4778141635255aab25038907c0d03ea8119f",
       "service": "catwalks-catalogue-api",
-      "image": "ghcr.io/lmelane/catwalks-catalogue-api@sha256:3457d652ade426fda8459a189e0eee2ee46d482bc2887cfc6f9fa274edf7b1a0",
-      "imageId": "sha256:cd2f8e639e0c56dd5d6bdea819c9401126fa07e89a6ade1e1b79fd87a0523db1",
+      "image": "ghcr.io/lmelane/catwalks-catalogue-api@sha256:5bfbca915266e6d01f70316572f2598087ee78bec636d4ce9e2ed763978c8334",
+      "imageId": "sha256:40fbc165c307df90f3e9bbfed1b2c7e5211f185a644fce6baaa2098b34082fed",
       "imageEnvironment": [
         "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
         "NODE_VERSION=22.23.2",
@@ -19,23 +19,23 @@
       ],
       "profiles": [
         "validation-paused",
-        "validation-ohmycream",
+        "validation",
         "production-paused",
-        "production-ohmycream"
+        "production"
       ],
       "offlineEntrypoint": {
         "status": "PASS",
         "network": "none",
         "role": "api",
-        "gitSha": "c3613a1d7b2a3c709f68fb18801eed3277a2302b"
+        "gitSha": "1db582defcde13912c22ed38b523b9af40dd6a9e"
       }
     },
     {
-      "gitSha": "653920cbc9f24dbe3edecadf755b1772291be72a",
-      "contractSha256": "27350975fedfa8fee3fb6f9df0e5f53c11e74ce91bbb0a1bc551e66fc15e2163",
+      "gitSha": "1db582defcde13912c22ed38b523b9af40dd6a9e",
+      "contractSha256": "85eb5ad68621ab7d8b4d04fe7e3d4778141635255aab25038907c0d03ea8119f",
       "service": "catwalks-ingestion-worker",
-      "image": "ghcr.io/lmelane/catwalks-ingestion-worker@sha256:a312fba5daddc5f83172421deabf92fe59b1cf3fdd70a8bb3629675a85869b19",
-      "imageId": "sha256:73d7996902d7f683c752df41587c54e79489e26f218a3421ceee359bf705321f",
+      "image": "ghcr.io/lmelane/catwalks-ingestion-worker@sha256:c9b6bc3c933f1e9d2f8ed1893c4222d50c1124c6625c9ea17c74a105f9b85fb5",
+      "imageId": "sha256:d65c656e3d7b1005639bc76c448dd8420fe15834b2db68e4a97d5886a131f6e7",
       "imageEnvironment": [
         "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
         "LANG=C.UTF-8",
@@ -52,37 +52,312 @@
         "status": "PASS",
         "network": "none",
         "role": "worker",
-        "gitSha": "653920cbc9f24dbe3edecadf755b1772291be72a"
+        "gitSha": "1db582defcde13912c22ed38b523b9af40dd6a9e"
       }
     }
   ],
-  "reason": "Worker-only access-evidence maintenance: valid decisions are retained; stale/missing decisions use the existing Golden Path qualification before normal admission. Public API retains its validated R5 image. Later cleanup/documentation commits do not rebuild or restart these images.",
-  "resolvedExecutionSettings": {
-    "overlapSeconds": 0,
-    "drainingSeconds": 10,
-    "reason": "Explicit release settings for both runtimes: no overlap with a previous deployment, 10 seconds for graceful termination. Identical in validation and production.",
-    "platformDefaults": {
-      "runtime": "V2",
-      "useLegacyStacker": false,
-      "ipv6EgressEnabled": false,
-      "buildEnvironment": "V3",
-      "builder": "RAILPACK"
-    },
-    "inactiveSettings": {
-      "build": "Image source: no Railway build is executed; builder/buildEnvironment are inactive platform metadata.",
-      "workerRestartRetries": "NEVER policy: Railway normalizes retry count 0 to null; no retry is scheduled."
-    },
-    "productionWorker": {
-      "serviceId": "210322c3-51b7-42c3-a93d-f50f64d44d19",
-      "deploymentId": "a5e1ec9b-d1b0-49af-b7f1-13d9f6b4c282",
-      "profile": "production",
-      "pipelinePaused": "0",
-      "startCommand": "sh apps/aggregator/start.sh",
-      "cronSchedule": "0 */4 * * *",
-      "cronTimezone": "UTC",
-      "restartPolicy": "NEVER",
-      "reason": "Normal four-hour operation authorized after the complete 384-source run. This explicitly resolves the embedded baseline cronSchedule:null and profile-controlled pause; image and embedded contract unchanged."
-    }
+  "reason": "Post-RUN generic fixes delivered on both runtimes; native evidence, source identity and access guards preserved. Documentation/proof-only commits after this code SHA do not rebuild or restart images.",
+  "ci": {
+    "development": 35854957586,
+    "main": 35855493345,
+    "status": "SUCCESS"
   },
-  "productionOutcome": "../../../audits/2026-09-23/normal-production-run.json"
+  "services": [
+    {
+      "serviceId": "9c50b8a9-5651-478f-b0d1-5bc02d2c138f",
+      "name": "catwalks-catalogue-api",
+      "deploymentId": "9f350b14-4c6b-40c9-be2b-ba7629079bb0",
+      "deploymentStatus": "SUCCESS",
+      "image": "ghcr.io/lmelane/catwalks-catalogue-api@sha256:5bfbca915266e6d01f70316572f2598087ee78bec636d4ce9e2ed763978c8334",
+      "deploy": {
+        "region": null,
+        "runtime": "V2",
+        "numReplicas": 1,
+        "cronSchedule": null,
+        "startCommand": "node apps/api/runtime/start.mjs",
+        "limitOverride": null,
+        "overlapSeconds": 0,
+        "drainingSeconds": 10,
+        "healthcheckPath": "/api/health",
+        "preDeployCommand": null,
+        "sleepApplication": false,
+        "useLegacyStacker": false,
+        "ipv6EgressEnabled": false,
+        "multiRegionConfig": {
+          "europe-west4-drams3a": {
+            "numReplicas": 1
+          }
+        },
+        "requiredMountPath": null,
+        "restartPolicyType": "ON_FAILURE",
+        "healthcheckTimeout": 120,
+        "registryCredentials": null,
+        "preDeployTimeoutSeconds": null,
+        "restartPolicyMaxRetries": 3
+      },
+      "customVariableNames": [
+        "CATALOGUE_API_KEY",
+        "CATWALKS_RUNTIME_PROFILE",
+        "DATABASE_URL",
+        "HOSTNAME",
+        "NEXT_PUBLIC_SITE_URL",
+        "NODE_ENV",
+        "PORT"
+      ],
+      "process": {
+        "at": "2026-09-23T11:41:58.766Z",
+        "role": "api",
+        "gitSha": "1db582defcde13912c22ed38b523b9af40dd6a9e",
+        "contractSha256": "85eb5ad68621ab7d8b4d04fe7e3d4778141635255aab25038907c0d03ea8119f",
+        "profile": "production-paused",
+        "argv": [],
+        "values": {
+          "CATWALKS_RUNTIME_PROFILE": "production-paused",
+          "HOSTNAME": "0.0.0.0",
+          "NEXT_PUBLIC_SITE_URL": "https://catwalks.io",
+          "NODE_ENV": "production",
+          "PORT": "8080"
+        },
+        "secretNames": [
+          "DATABASE_URL",
+          "CATALOGUE_API_KEY"
+        ],
+        "privateConfigurationNames": [],
+        "database": {
+          "database": "railway",
+          "hostname": "postgres.railway.internal"
+        },
+        "node": "v22.23.2",
+        "pid": 1
+      },
+      "secretValuesPublished": false,
+      "targetEffectiveProcessMatch": true
+    },
+    {
+      "serviceId": "210322c3-51b7-42c3-a93d-f50f64d44d19",
+      "name": "catwalks-ingestion-worker",
+      "deploymentId": "9f9280ef-4f80-4feb-8842-ddb5e20d5fad",
+      "deploymentStatus": "SUCCESS",
+      "image": "ghcr.io/lmelane/catwalks-ingestion-worker@sha256:c9b6bc3c933f1e9d2f8ed1893c4222d50c1124c6625c9ea17c74a105f9b85fb5",
+      "deploy": {
+        "region": null,
+        "runtime": "V2",
+        "numReplicas": 1,
+        "cronSchedule": "0 16,17 * * *",
+        "startCommand": "sh apps/aggregator/start.sh scheduled",
+        "limitOverride": null,
+        "overlapSeconds": 0,
+        "drainingSeconds": 10,
+        "healthcheckPath": null,
+        "preDeployCommand": null,
+        "sleepApplication": false,
+        "useLegacyStacker": false,
+        "ipv6EgressEnabled": false,
+        "multiRegionConfig": {
+          "europe-west4-drams3a": {
+            "numReplicas": 1
+          }
+        },
+        "requiredMountPath": null,
+        "restartPolicyType": "NEVER",
+        "healthcheckTimeout": null,
+        "registryCredentials": null,
+        "preDeployTimeoutSeconds": null,
+        "restartPolicyMaxRetries": null
+      },
+      "customVariableNames": [
+        "ALERT_EMAIL",
+        "BREVO_API_KEY",
+        "BREVO_SENDER_EMAIL",
+        "BREVO_SENDER_NAME",
+        "CATWALKS_RUNTIME_PROFILE",
+        "DATABASE_URL",
+        "HEALTHCHECK_PING_URL",
+        "NODE_ENV",
+        "PIPELINE_PAUSED"
+      ],
+      "process": {
+        "at": "2026-09-23T12:15:06.463Z",
+        "role": "worker",
+        "gitSha": "1db582defcde13912c22ed38b523b9af40dd6a9e",
+        "contractSha256": "85eb5ad68621ab7d8b4d04fe7e3d4778141635255aab25038907c0d03ea8119f",
+        "profile": "production",
+        "argv": [
+          "scheduled"
+        ],
+        "values": {
+          "BREVO_SENDER_NAME": "Catwalks",
+          "CATWALKS_RUNTIME_PROFILE": "production",
+          "NODE_ENV": "production",
+          "PIPELINE_PAUSED": "0"
+        },
+        "secretNames": [
+          "DATABASE_URL",
+          "HEALTHCHECK_PING_URL",
+          "BREVO_API_KEY"
+        ],
+        "privateConfigurationNames": [
+          "BREVO_SENDER_EMAIL",
+          "ALERT_EMAIL"
+        ],
+        "database": {
+          "database": "railway",
+          "hostname": "postgres.railway.internal"
+        },
+        "node": "v24.18.1",
+        "pid": 1
+      },
+      "secretValuesPublished": false,
+      "targetEffectiveProcessMatch": true
+    }
+  ],
+  "schedule": {
+    "cronUTC": "0 16,17 * * *",
+    "timeZone": "Europe/Paris",
+    "localHour": 18,
+    "actualRunsPerDay": 1,
+    "initialOffScheduleStart": {
+      "timeZone": "Europe/Paris",
+      "requiredHour": 18,
+      "message": "",
+      "timestamp": "2026-09-23T12:15:06.981272063Z",
+      "event": "worker.schedule_skipped",
+      "level": "info"
+    },
+    "nextScheduledRun": "2026-09-23T16:00:00Z",
+    "nextFullRunAlreadyExecuted": false
+  },
+  "database": {
+    "serviceId": "b5c68d1c-6988-4f15-8d85-afe684109cea",
+    "serviceAndVolumeConfigurationUnchanged": true,
+    "migrationsApplied": 87,
+    "newMigration": "20260923110000_validation_policy_v3",
+    "historicalDataRepair": false,
+    "reset": false
+  },
+  "registry": [
+    {
+      "_count": 385,
+      "status": "ACTIVE"
+    },
+    {
+      "_count": 43,
+      "status": "PAUSED"
+    },
+    {
+      "_count": 109,
+      "status": "RETIRED"
+    }
+  ],
+  "httpSmoke": {
+    "at": "2026-09-23T12:13:20.265922+00:00",
+    "health": {
+      "status": 200
+    },
+    "unauthorized": {
+      "status": 401
+    },
+    "detail": {
+      "status": 200,
+      "id": "cmue0pmcq0003ny34ooggktea"
+    },
+    "FR": {
+      "status": 200,
+      "total": 6700,
+      "perimetre": {
+        "code": "FR",
+        "nom": "France",
+        "pays": [
+          "FR"
+        ],
+        "mesure": true,
+        "locales": [
+          "fr-FR"
+        ],
+        "localeParDefaut": "fr-FR",
+        "langueDesLibelles": "fr"
+      },
+      "returned": 25,
+      "countries": [
+        "FR"
+      ],
+      "marketBound": true,
+      "sampleId": "cmue0pmcq0003ny34ooggktea"
+    },
+    "US": {
+      "status": 200,
+      "total": 25279,
+      "perimetre": {
+        "code": "US",
+        "nom": "United States",
+        "pays": [
+          "US"
+        ],
+        "mesure": true,
+        "locales": [
+          "en-US",
+          "es-US"
+        ],
+        "localeParDefaut": "en-US",
+        "langueDesLibelles": "en"
+      },
+      "returned": 25,
+      "countries": [
+        "US"
+      ],
+      "marketBound": true
+    },
+    "FR_filters": {
+      "status": 200,
+      "total": 2067,
+      "perimetre": {
+        "code": "FR",
+        "nom": "France",
+        "pays": [
+          "FR"
+        ],
+        "mesure": true,
+        "locales": [
+          "fr-FR"
+        ],
+        "localeParDefaut": "fr-FR",
+        "langueDesLibelles": "fr"
+      },
+      "returned": 25,
+      "countries": [
+        "FR"
+      ],
+      "marketBound": true
+    },
+    "Caudalie_FR": {
+      "status": 200,
+      "total": 14,
+      "perimetre": {
+        "code": "FR",
+        "nom": "France",
+        "pays": [
+          "FR"
+        ],
+        "mesure": true,
+        "locales": [
+          "fr-FR"
+        ],
+        "localeParDefaut": "fr-FR",
+        "langueDesLibelles": "fr"
+      },
+      "returned": 14,
+      "countries": [
+        "FR"
+      ],
+      "marketBound": true,
+      "nativeScopeCorrect": true
+    },
+    "markets": {
+      "status": 200
+    },
+    "pass": true
+  },
+  "productionOutcome": "../../../audits/2026-09-23/post-run.md",
+  "targetedReplays": "../../../audits/2026-09-23/post-run-replays.json",
+  "environmentInventory": "../../../audits/2026-09-23/post-run-environment.json"
 }

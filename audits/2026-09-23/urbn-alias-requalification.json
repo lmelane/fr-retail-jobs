@@ -1,0 +1,145 @@
+{
+  "batchId": "20260923-URBN-NATIVE-ALIAS-REVIEW-v1",
+  "reviewedAt": "2026-09-23T12:02:29.444189+00:00",
+  "statement": "Requalification explicite de 11 alias URBN à partir de 11 fiches HTML natives capturées en production le 23 septembre 2026. Les libellés hiringOrganization.name correspondent exactement aux sociétés cibles existantes. La seule différence de révision source est la liste des sept origines régionales de détail ; portail, tenant, type et propriétaire restent identiques. Aucun changement de société cible, aucune fusion, aucun déplacement de publication ni correction historique. Nouvelle preuve limitée à la révision f35d1b6e-f09e-4608-b38f-cb1526afe802 ; les références antérieures ne sont pas utilisées comme autorité.",
+  "sourceRevisionBefore": "cdde33df-944b-4a39-858e-3e632e0c89d0",
+  "sourceRevisionAfter": "f35d1b6e-f09e-4608-b38f-cb1526afe802",
+  "onlyConfigDifference": {
+    "detailOrigins": [
+      "https://homeoffice-eu-urbn.icims.com",
+      "https://homeoffice-na-urbn.icims.com",
+      "https://menusandvenues-na-urbn.icims.com",
+      "https://stores-eu-urbn.icims.com",
+      "https://stores-na-urbn.icims.com",
+      "https://supplychain-eu-urbn.icims.com",
+      "https://supplychain-na-urbn.icims.com"
+    ]
+  },
+  "aliases": [
+    {
+      "aliasId": "cmtuhjfjy000b3ngufx2vs7og",
+      "rawName": "Free People",
+      "companyId": "cr327a650529449cec822a02ef",
+      "extractionId": "25741ef0-11d8-43a3-b374-a0c6e0036fad",
+      "rawCaptureId": "7b9f95bd-04f9-4cee-a8d0-d717576dda13",
+      "nativeHash": "41e0541b9e8d3c05b64f85186ea3a051a5e2e8c7839297e5d2de717fafb74cfa",
+      "oldSourceHash": "6af91d87aea34e2c4f4ec3456866bd83bb57f963a5349b83d59d6930563da400",
+      "url": "https://stores-eu-urbn.icims.com/jobs/32238/free-people-sales-associates-butiksassistent---illum%2c-%28-15-hour-%29-copenhagen-dk/job?hub=%5BVALUE+OMITTED%5D&in_iframe=%5BVALUE+OMITTED%5D"
+    },
+    {
+      "aliasId": "cmtuhjfc600033nguqowssdse",
+      "rawName": "Anthropologie",
+      "companyId": "cr655b6e40636c40426a08b97c",
+      "extractionId": "cc6797cd-a46f-4e5a-80ea-3ab8d2621199",
+      "rawCaptureId": "0b35fbb6-c259-4dc2-8880-37ceff789481",
+      "nativeHash": "0d21f9f12211a49d41e37dfa3e3a5f89e40d826535a1a44e4387dfabba7bae2a",
+      "oldSourceHash": "6af91d87aea34e2c4f4ec3456866bd83bb57f963a5349b83d59d6930563da400",
+      "url": "https://stores-na-urbn.icims.com/jobs/32237/anthropologie-seasonal-sales-associate/job?hub=%5BVALUE+OMITTED%5D&in_iframe=%5BVALUE+OMITTED%5D"
+    },
+    {
+      "aliasId": "cmtuhjfl2000d3ngu0lur5n4y",
+      "rawName": "FP Movement",
+      "companyId": "cr9b98334f7d83dfa1519910b7",
+      "extractionId": "90e68da0-5087-4222-b1b5-a13af5a1ee79",
+      "rawCaptureId": "45209eb6-9f84-4949-bd92-f4b609d4a255",
+      "nativeHash": "7e9528b6081dfa40ac85e8f1e1fb92a37ea58214645e00c0ecc588e8689e8806",
+      "oldSourceHash": "6af91d87aea34e2c4f4ec3456866bd83bb57f963a5349b83d59d6930563da400",
+      "url": "https://stores-na-urbn.icims.com/jobs/32230/fp-movement-assistant-visual-manager/job?hub=%5BVALUE+OMITTED%5D&in_iframe=%5BVALUE+OMITTED%5D"
+    },
+    {
+      "aliasId": "cmtuhjfis00093ngu9g7haox1",
+      "rawName": "Urban Outfitters",
+      "companyId": "cr88d105073d8cbab03ce8e3ad",
+      "extractionId": "04085d0e-2f50-41df-bfe0-57cefb1b8431",
+      "rawCaptureId": "fa25f91e-75a3-4fcb-8ba5-d951040392d7",
+      "nativeHash": "94ebbbb6e95a22f0a3da5f902f66b64d4aa9abc5e4b5d2d64f7c902d831963f0",
+      "oldSourceHash": "6af91d87aea34e2c4f4ec3456866bd83bb57f963a5349b83d59d6930563da400",
+      "url": "https://stores-na-urbn.icims.com/jobs/32220/urban-outfitters-visual-merchandising-manager/job?hub=%5BVALUE+OMITTED%5D&in_iframe=%5BVALUE+OMITTED%5D"
+    },
+    {
+      "aliasId": "cmtuhjfdb00053ngu8aqdb9v0",
+      "rawName": "Anthro Weddings",
+      "companyId": "cr5537a7fe130986710832d6a4",
+      "extractionId": "306296c2-2895-4123-a63c-063250954d23",
+      "rawCaptureId": "0d94564f-b8a2-4e7d-bed6-b177ffaed1ac",
+      "nativeHash": "88bef603b75d8a1f1fdad3e147446f2fcf4038ff8fb613e47a1792c78b2b54f6",
+      "oldSourceHash": "6af91d87aea34e2c4f4ec3456866bd83bb57f963a5349b83d59d6930563da400",
+      "url": "https://stores-na-urbn.icims.com/jobs/32210/anthropologie-weddings-stylist---part-time/job?hub=%5BVALUE+OMITTED%5D&in_iframe=%5BVALUE+OMITTED%5D"
+    },
+    {
+      "aliasId": "cmtuhjfol000j3ngucudnr7s6",
+      "rawName": "Menus and Venues",
+      "companyId": "crba5319aa0213b50e13f2122c",
+      "extractionId": "86af727a-43fa-4415-aa87-f4a749b102fb",
+      "rawCaptureId": "e2d69e02-887f-438b-8ad7-ceacf9612f4a",
+      "nativeHash": "ad28b4f79a72588ec68acf36ae777008e2683dfc13584bd65b03ee1c2fc67c69",
+      "oldSourceHash": "6af91d87aea34e2c4f4ec3456866bd83bb57f963a5349b83d59d6930563da400",
+      "url": "https://menusandvenues-na-urbn.icims.com/jobs/32209/terrain-cafe-%7c-devon-%7c-bartender/job?hub=%5BVALUE+OMITTED%5D&in_iframe=%5BVALUE+OMITTED%5D"
+    },
+    {
+      "aliasId": "cmtuhjfab00013nguli4tlnvp",
+      "rawName": "URBN",
+      "companyId": "cmtpkx0dp59qspf5lz9252szw",
+      "extractionId": "67d06ac7-912d-4bf3-be18-18df2ce166b4",
+      "rawCaptureId": "f610816d-6878-4b97-801a-1247c7b82768",
+      "nativeHash": "e7230a7d61d119cc11786a814c131189bf2ece71a0433cd721720a5d8ab09fa0",
+      "oldSourceHash": "6af91d87aea34e2c4f4ec3456866bd83bb57f963a5349b83d59d6930563da400",
+      "url": "https://homeoffice-eu-urbn.icims.com/jobs/32188/urbn-asset-protection-advisor/job?hub=%5BVALUE+OMITTED%5D&in_iframe=%5BVALUE+OMITTED%5D"
+    },
+    {
+      "aliasId": "cmtuhjfpw000l3nguj2v02943",
+      "rawName": "Reclectic",
+      "companyId": "cr5a4778ec71807661c42b93cc",
+      "extractionId": "b59cbe89-26f4-4613-a23a-53cff153ae00",
+      "rawCaptureId": "1034cb68-ca76-45dc-82cc-c1fb79bd9b53",
+      "nativeHash": "a435b6eb171469ade52e855926f8c1e8aef2c8b1659936c308a694a1301a9f5d",
+      "oldSourceHash": "6af91d87aea34e2c4f4ec3456866bd83bb57f963a5349b83d59d6930563da400",
+      "url": "https://stores-na-urbn.icims.com/jobs/32069/reclectic-associate-store-manager/job?hub=%5BVALUE+OMITTED%5D&in_iframe=%5BVALUE+OMITTED%5D"
+    },
+    {
+      "aliasId": "cmtuhjfnf000h3ngu0ig16tik",
+      "rawName": "Nuuly",
+      "companyId": "crd8b9169bcbc38f1c16255968",
+      "extractionId": "1fa207af-ae63-4cf6-afc2-4865060dc803",
+      "rawCaptureId": "461e57b9-1997-4506-a89a-0144e61bb197",
+      "nativeHash": "e48f524a34f0895f39b8172642c1a79afb35eaac9dff5f41c554b5286fc8062d",
+      "oldSourceHash": "6af91d87aea34e2c4f4ec3456866bd83bb57f963a5349b83d59d6930563da400",
+      "url": "https://supplychain-na-urbn.icims.com/jobs/32037/nuuly-warehouse-trainer/job?hub=%5BVALUE+OMITTED%5D&in_iframe=%5BVALUE+OMITTED%5D"
+    },
+    {
+      "aliasId": "cmtuhjfm9000f3ngub4saj6fl",
+      "rawName": "Terrain",
+      "companyId": "cr885cb8c56387e5d08ce5a70d",
+      "extractionId": "3bedeb18-9f74-4b1a-a7e0-acfcd3472715",
+      "rawCaptureId": "3966a82f-e420-44ac-860a-914cef6d9049",
+      "nativeHash": "cd57222f043f041b14dfec5565591cf6bc5be6dac5ff26a73c4de62555d6e1c5",
+      "oldSourceHash": "6af91d87aea34e2c4f4ec3456866bd83bb57f963a5349b83d59d6930563da400",
+      "url": "https://stores-na-urbn.icims.com/jobs/31941/terrain-key-holder---decor/job?hub=%5BVALUE+OMITTED%5D&in_iframe=%5BVALUE+OMITTED%5D"
+    },
+    {
+      "aliasId": "cmtuhjfh300073ngu25jpcu1l",
+      "rawName": "Maeve",
+      "companyId": "cr01bba755d51739d8d51417ae",
+      "extractionId": "64c53ac8-f4d1-48e1-9300-c44c5b8c4551",
+      "rawCaptureId": "3e05c9ea-c216-420c-a8cd-b2a2d1c3744e",
+      "nativeHash": "799abb5550e9705de02a4317bcaeb8d8767e0544d2f960ff2146452aaea099a4",
+      "oldSourceHash": "6af91d87aea34e2c4f4ec3456866bd83bb57f963a5349b83d59d6930563da400",
+      "url": "https://stores-na-urbn.icims.com/jobs/31011/maeve-by-anthropologie-senior-stylist/job?hub=%5BVALUE+OMITTED%5D&in_iframe=%5BVALUE+OMITTED%5D"
+    }
+  ],
+  "merges": 0,
+  "postingMoves": 0,
+  "status": "APPLIED",
+  "planHash": "b3fef501ae81f0707179400a66eb6118e5b3cff4dccedfd1b97c9000f387d8be",
+  "previewPlanHash": "cf7a1bec8d4d68e513ab3d0cb9148956131a8d8e91aa217ab75e95bc246e1119",
+  "previewDifference": "Plan construction timestamp only; all decisions, evidence and source/data snapshot hashes identical.",
+  "commit": "1db582defcde13912c22ed38b523b9af40dd6a9e",
+  "appliedVerification": {
+    "reviewId": "20260923-URBN-NATIVE-ALIAS-REVIEW-v1",
+    "planHash": "b3fef501ae81f0707179400a66eb6118e5b3cff4dccedfd1b97c9000f387d8be",
+    "aliasCorrections": 11,
+    "targetCompanyChanges": 0,
+    "jobMoves": 0,
+    "reviewPersisted": true
+  }
+}

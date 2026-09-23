@@ -1,0 +1,649 @@
+{
+  "observedAt": "2026-09-23T12:12:59.738Z",
+  "scope": "Targeted post-RUN production validations; all attempts retained, including failed attempts superseded by a correction. No full run repeated. Counts include qualification captures as well as ingestion.",
+  "runs": [
+    {
+      "runId": "1f710f58-24b1-458d-85d6-e428fb94863f",
+      "command": "ingest",
+      "revision": "95ef0a9fcb8e6914393797f49ecc0558d8ab6f15",
+      "startedAt": "2026-09-23T11:02:21.430Z",
+      "finishedAt": "2026-09-23T11:02:44.440Z",
+      "durationSeconds": 23.01,
+      "status": "COMPLETED",
+      "sources": [
+        "asos"
+      ],
+      "captures": 3,
+      "raw": 125,
+      "extractions": 122,
+      "aliveEvents": 0,
+      "sealedCompletions": 1,
+      "heartbeat": [
+        "pinged"
+      ],
+      "errorEvents": 0,
+      "results": [
+        {
+          "source": "asos",
+          "fetched": 61,
+          "created": 61,
+          "updated": 0,
+          "merged": 0,
+          "errors": 0,
+          "france": 0,
+          "complete": null,
+          "truncated": false,
+          "captureBatchId": "c7eddcdb-3dfb-4955-8e83-0dbea982f03c",
+          "completionReportHash": "78c33a32f5435d2085671a524983a7353d43016388c23ab57dd71f451c64c36b"
+        }
+      ]
+    },
+    {
+      "runId": "fea218c5-7fd3-4e3b-a732-833aa1e613f8",
+      "command": "ingest",
+      "revision": "95ef0a9fcb8e6914393797f49ecc0558d8ab6f15",
+      "startedAt": "2026-09-23T11:03:42.631Z",
+      "finishedAt": "2026-09-23T11:04:04.064Z",
+      "durationSeconds": 21.433,
+      "status": "COMPLETED",
+      "sources": [
+        "versace"
+      ],
+      "captures": 3,
+      "raw": 111,
+      "extractions": 104,
+      "aliveEvents": 0,
+      "sealedCompletions": 1,
+      "heartbeat": [
+        "pinged"
+      ],
+      "errorEvents": 0,
+      "results": [
+        {
+          "source": "versace",
+          "fetched": 52,
+          "created": 38,
+          "updated": 14,
+          "merged": 0,
+          "errors": 0,
+          "france": 5,
+          "complete": true,
+          "truncated": false,
+          "captureBatchId": "17c3c5c9-ccdd-4c03-9ac6-a858dd36966e",
+          "completionReportHash": "4ccbcd3fbd22219fe47cf81beb075acefaa2953239fe10e66e7bdbb18177fb12"
+        }
+      ]
+    },
+    {
+      "runId": "e23c9fda-32b5-475d-86b6-b7ddc33c171a",
+      "command": "ingest",
+      "revision": "95ef0a9fcb8e6914393797f49ecc0558d8ab6f15",
+      "startedAt": "2026-09-23T11:04:48.703Z",
+      "finishedAt": "2026-09-23T11:05:12.878Z",
+      "durationSeconds": 24.175,
+      "status": "COMPLETED",
+      "sources": [
+        "bash-talents"
+      ],
+      "captures": 3,
+      "raw": 103,
+      "extractions": 100,
+      "aliveEvents": 0,
+      "sealedCompletions": 1,
+      "heartbeat": [
+        "pinged"
+      ],
+      "errorEvents": 0,
+      "results": [
+        {
+          "source": "bash-talents",
+          "fetched": 50,
+          "created": 50,
+          "updated": 0,
+          "merged": 0,
+          "errors": 0,
+          "france": 38,
+          "complete": null,
+          "truncated": false,
+          "captureBatchId": "7af89b21-6c13-4934-94b1-8bad1eabff18",
+          "completionReportHash": "311c1a7cbc7223d991617e4eb392a098e9e61cf52a36c6d1510e6488ec834c11"
+        }
+      ]
+    },
+    {
+      "runId": "98d73cd0-c72e-49fa-a72a-10b8cb2669fc",
+      "command": "ingest",
+      "revision": "95ef0a9fcb8e6914393797f49ecc0558d8ab6f15",
+      "startedAt": "2026-09-23T11:06:04.043Z",
+      "finishedAt": "2026-09-23T11:06:05.659Z",
+      "durationSeconds": 1.616,
+      "status": "FAILED",
+      "sources": [
+        "madame-figaro"
+      ],
+      "captures": 1,
+      "raw": 13,
+      "extractions": 12,
+      "aliveEvents": 0,
+      "sealedCompletions": 0,
+      "heartbeat": [
+        "pinged"
+      ],
+      "errorEvents": 2,
+      "results": []
+    },
+    {
+      "runId": "77af90aa-1182-4a3f-b5fe-81bfc3fe99aa",
+      "command": "ingest",
+      "revision": "95ef0a9fcb8e6914393797f49ecc0558d8ab6f15",
+      "startedAt": "2026-09-23T11:07:06.652Z",
+      "finishedAt": "2026-09-23T11:07:42.040Z",
+      "durationSeconds": 35.388,
+      "status": "COMPLETED_WITH_ERRORS",
+      "sources": [
+        "brown-thomas-taleo"
+      ],
+      "captures": 3,
+      "raw": 233,
+      "extractions": 158,
+      "aliveEvents": 1,
+      "sealedCompletions": 1,
+      "heartbeat": [
+        "pinged"
+      ],
+      "errorEvents": 80,
+      "results": [
+        {
+          "source": "brown-thomas-taleo",
+          "fetched": 79,
+          "created": 0,
+          "updated": 0,
+          "merged": 0,
+          "errors": 79,
+          "france": 0,
+          "complete": null,
+          "truncated": false,
+          "captureBatchId": "171319d5-466e-4284-bb50-7b41d188c774",
+          "completionReportHash": "ddc3e40e016fd5db6b2dbd1abfae459c5c594137a623dd3c6730eeed113afb06"
+        }
+      ]
+    },
+    {
+      "runId": "543dc6f7-b4f7-490f-9a22-c14e502e4765",
+      "command": "ingest",
+      "revision": "95ef0a9fcb8e6914393797f49ecc0558d8ab6f15",
+      "startedAt": "2026-09-23T11:09:09.407Z",
+      "finishedAt": "2026-09-23T11:09:36.755Z",
+      "durationSeconds": 27.348,
+      "status": "FAILED",
+      "sources": [
+        "nocibe-eqwa"
+      ],
+      "captures": 2,
+      "raw": 278,
+      "extractions": 274,
+      "aliveEvents": 0,
+      "sealedCompletions": 0,
+      "heartbeat": [
+        "pinged"
+      ],
+      "errorEvents": 2,
+      "results": []
+    },
+    {
+      "runId": "83d88799-f1b9-4952-aa74-60404a38d2e5",
+      "command": "ingest",
+      "revision": "95ef0a9fcb8e6914393797f49ecc0558d8ab6f15",
+      "startedAt": "2026-09-23T11:11:16.997Z",
+      "finishedAt": "2026-09-23T11:11:17.905Z",
+      "durationSeconds": 0.908,
+      "status": "COMPLETED",
+      "sources": [
+        "bernadette"
+      ],
+      "captures": 3,
+      "raw": 3,
+      "extractions": 0,
+      "aliveEvents": 0,
+      "sealedCompletions": 1,
+      "heartbeat": [
+        "pinged"
+      ],
+      "errorEvents": 0,
+      "results": [
+        {
+          "source": "bernadette",
+          "fetched": 0,
+          "created": 0,
+          "updated": 0,
+          "merged": 0,
+          "errors": 0,
+          "france": 0,
+          "complete": true,
+          "truncated": false,
+          "captureBatchId": "87940bf1-4abf-45f1-b4d8-8567faf973c1",
+          "completionReportHash": "adb41b1cdae67b48f11bc94fd7fc49deca35a150556d3b099c0ca0c09c6732ff"
+        }
+      ]
+    },
+    {
+      "runId": "3186debf-5e3d-4b97-a634-087467b8eb36",
+      "command": "ingest",
+      "revision": "95ef0a9fcb8e6914393797f49ecc0558d8ab6f15",
+      "startedAt": "2026-09-23T11:11:46.962Z",
+      "finishedAt": "2026-09-23T11:11:47.789Z",
+      "durationSeconds": 0.827,
+      "status": "COMPLETED",
+      "sources": [
+        "tropicfeel"
+      ],
+      "captures": 3,
+      "raw": 4,
+      "extractions": 0,
+      "aliveEvents": 0,
+      "sealedCompletions": 1,
+      "heartbeat": [
+        "pinged"
+      ],
+      "errorEvents": 0,
+      "results": [
+        {
+          "source": "tropicfeel",
+          "fetched": 0,
+          "created": 0,
+          "updated": 0,
+          "merged": 0,
+          "errors": 0,
+          "france": 0,
+          "complete": true,
+          "truncated": false,
+          "captureBatchId": "f7553b88-3237-419d-9c33-9ee9c8729065",
+          "completionReportHash": "9248e7c24300ec462eaa6abe9aef19edb96bac1f82ebf656becd04a1086baca6"
+        }
+      ]
+    },
+    {
+      "runId": "cdad6845-86e2-4182-a455-c4468384b447",
+      "command": "ingest",
+      "revision": "95ef0a9fcb8e6914393797f49ecc0558d8ab6f15",
+      "startedAt": "2026-09-23T11:12:28.139Z",
+      "finishedAt": "2026-09-23T11:12:48.947Z",
+      "durationSeconds": 20.808,
+      "status": "FAILED",
+      "sources": [
+        "nars"
+      ],
+      "captures": 2,
+      "raw": 124,
+      "extractions": 38,
+      "aliveEvents": 0,
+      "sealedCompletions": 0,
+      "heartbeat": [
+        "pinged"
+      ],
+      "errorEvents": 2,
+      "results": []
+    },
+    {
+      "runId": "4134a4d3-51b1-4613-b821-7e8de4fb432d",
+      "command": "source-campaign",
+      "revision": "95ef0a9fcb8e6914393797f49ecc0558d8ab6f15",
+      "startedAt": "2026-09-23T11:13:58.619Z",
+      "finishedAt": "2026-09-23T11:14:15.325Z",
+      "durationSeconds": 16.706,
+      "status": "FAILED",
+      "sources": [
+        "caudalie"
+      ],
+      "captures": 12,
+      "raw": 57,
+      "extractions": 45,
+      "aliveEvents": 0,
+      "sealedCompletions": 0,
+      "heartbeat": [],
+      "errorEvents": 1,
+      "results": []
+    },
+    {
+      "runId": "ffeffa7b-e975-44f0-b701-3918f37df88d",
+      "command": "ingest",
+      "revision": "95ef0a9fcb8e6914393797f49ecc0558d8ab6f15",
+      "startedAt": "2026-09-23T11:15:50.726Z",
+      "finishedAt": "2026-09-23T11:15:50.884Z",
+      "durationSeconds": 0.158,
+      "status": "FAILED",
+      "sources": [
+        "urbn-hub"
+      ],
+      "captures": 0,
+      "raw": 0,
+      "extractions": 0,
+      "aliveEvents": 0,
+      "sealedCompletions": 0,
+      "heartbeat": [
+        "pinged"
+      ],
+      "errorEvents": 2,
+      "results": []
+    },
+    {
+      "runId": "3e6717ec-b060-4d91-94b4-9602546842fd",
+      "command": "source-campaign",
+      "revision": "95ef0a9fcb8e6914393797f49ecc0558d8ab6f15",
+      "startedAt": "2026-09-23T11:19:34.821Z",
+      "finishedAt": "2026-09-23T11:19:35.010Z",
+      "durationSeconds": 0.189,
+      "status": "FAILED",
+      "sources": [
+        "caudalie"
+      ],
+      "captures": 0,
+      "raw": 0,
+      "extractions": 0,
+      "aliveEvents": 0,
+      "sealedCompletions": 0,
+      "heartbeat": [],
+      "errorEvents": 1,
+      "results": []
+    },
+    {
+      "runId": "4f7b3ade-b801-4a09-a027-002cd56a2cbd",
+      "command": "ingest",
+      "revision": "753645b98c1eb607a3df37a7cb3584c10f68fe63",
+      "startedAt": "2026-09-23T11:26:35.231Z",
+      "finishedAt": "2026-09-23T11:26:45.967Z",
+      "durationSeconds": 10.736,
+      "status": "COMPLETED",
+      "sources": [
+        "madame-figaro"
+      ],
+      "captures": 4,
+      "raw": 29,
+      "extractions": 24,
+      "aliveEvents": 0,
+      "sealedCompletions": 1,
+      "heartbeat": [
+        "pinged"
+      ],
+      "errorEvents": 0,
+      "results": [
+        {
+          "source": "madame-figaro",
+          "fetched": 12,
+          "created": 12,
+          "updated": 0,
+          "merged": 0,
+          "errors": 0,
+          "france": 12,
+          "complete": null,
+          "truncated": false,
+          "captureBatchId": "0f516a04-882b-447b-a3bb-1d38a61d59d5",
+          "completionReportHash": "e3aa7619a341b6fba5c0620c2597c8a441417a92c2260cfbf194073f1e14c805"
+        }
+      ]
+    },
+    {
+      "runId": "30936506-5cb1-439d-98ef-efce31c3c4cd",
+      "command": "source-campaign",
+      "revision": "753645b98c1eb607a3df37a7cb3584c10f68fe63",
+      "startedAt": "2026-09-23T11:27:28.702Z",
+      "finishedAt": "2026-09-23T11:27:51.103Z",
+      "durationSeconds": 22.401,
+      "status": "COMPLETED",
+      "sources": [
+        "caudalie"
+      ],
+      "captures": 4,
+      "raw": 49,
+      "extractions": 45,
+      "aliveEvents": 0,
+      "sealedCompletions": 0,
+      "heartbeat": [],
+      "errorEvents": 0,
+      "results": []
+    },
+    {
+      "runId": "aab2ca6a-9926-4400-8f6e-00d296a77365",
+      "command": "ingest",
+      "revision": "753645b98c1eb607a3df37a7cb3584c10f68fe63",
+      "startedAt": "2026-09-23T11:27:39.031Z",
+      "finishedAt": "2026-09-23T11:27:50.862Z",
+      "durationSeconds": 11.831,
+      "status": "COMPLETED",
+      "sources": [
+        "caudalie"
+      ],
+      "captures": 1,
+      "raw": 46,
+      "extractions": 45,
+      "aliveEvents": 0,
+      "sealedCompletions": 1,
+      "heartbeat": [
+        "pinged"
+      ],
+      "errorEvents": 0,
+      "results": [
+        {
+          "source": "caudalie",
+          "fetched": 45,
+          "created": 45,
+          "updated": 0,
+          "merged": 0,
+          "errors": 0,
+          "france": 37,
+          "complete": true,
+          "truncated": false,
+          "captureBatchId": "407485cf-eb25-4bf3-9d2b-cf76a345338c",
+          "completionReportHash": "1422dbeaeac7e56edc5fe9cf47913ed1cd3735e5b6efa1d905744afafae3d183"
+        }
+      ]
+    },
+    {
+      "runId": "bcf1e26f-543b-4497-879c-2c4cfd5745e9",
+      "command": "ingest",
+      "revision": "753645b98c1eb607a3df37a7cb3584c10f68fe63",
+      "startedAt": "2026-09-23T11:28:25.869Z",
+      "finishedAt": "2026-09-23T11:28:39.103Z",
+      "durationSeconds": 13.234,
+      "status": "COMPLETED",
+      "sources": [
+        "goyard-successfactors"
+      ],
+      "captures": 3,
+      "raw": 67,
+      "extractions": 42,
+      "aliveEvents": 0,
+      "sealedCompletions": 1,
+      "heartbeat": [
+        "pinged"
+      ],
+      "errorEvents": 0,
+      "results": [
+        {
+          "source": "goyard-successfactors",
+          "fetched": 21,
+          "created": 21,
+          "updated": 0,
+          "merged": 0,
+          "errors": 0,
+          "france": 13,
+          "complete": true,
+          "truncated": false,
+          "captureBatchId": "48f3b437-360b-45fb-9c67-018db4a59393",
+          "completionReportHash": "518b853b1548e2d0473132d66878122d8990aaefbd52829c200e084f7ffaa9ea"
+        }
+      ]
+    },
+    {
+      "runId": "307b28a2-7f2a-42d6-a469-eb4ea62ed91d",
+      "command": "ingest",
+      "revision": "1db582defcde13912c22ed38b523b9af40dd6a9e",
+      "startedAt": "2026-09-23T11:43:01.832Z",
+      "finishedAt": "2026-09-23T11:43:23.588Z",
+      "durationSeconds": 21.756,
+      "status": "COMPLETED",
+      "sources": [
+        "caudalie"
+      ],
+      "captures": 3,
+      "raw": 93,
+      "extractions": 90,
+      "aliveEvents": 0,
+      "sealedCompletions": 1,
+      "heartbeat": [
+        "pinged"
+      ],
+      "errorEvents": 0,
+      "results": [
+        {
+          "source": "caudalie",
+          "fetched": 45,
+          "created": 0,
+          "updated": 45,
+          "merged": 0,
+          "errors": 0,
+          "france": 14,
+          "complete": true,
+          "truncated": false,
+          "captureBatchId": "fa59b488-07ae-419a-9bb5-e0773b0bae4c",
+          "completionReportHash": "26132ea26a760f03e3e866d5c1328346dd5e17cbd7dbfda0461cc73723101a27"
+        }
+      ]
+    },
+    {
+      "runId": "797b5a26-76cf-4b19-9e7a-bc04babd85f4",
+      "command": "source-campaign",
+      "revision": "1db582defcde13912c22ed38b523b9af40dd6a9e",
+      "startedAt": "2026-09-23T11:44:12.835Z",
+      "finishedAt": "2026-09-23T11:57:44.068Z",
+      "durationSeconds": 811.233,
+      "status": "FAILED",
+      "sources": [
+        "urbn-hub"
+      ],
+      "captures": 11,
+      "raw": 1518,
+      "extractions": 1475,
+      "aliveEvents": 27,
+      "sealedCompletions": 0,
+      "heartbeat": [],
+      "errorEvents": 1,
+      "results": []
+    },
+    {
+      "runId": "50190519-6bfd-46fd-9a5d-80425e6e2261",
+      "command": "ingest",
+      "revision": "1db582defcde13912c22ed38b523b9af40dd6a9e",
+      "startedAt": "2026-09-23T11:51:03.634Z",
+      "finishedAt": "2026-09-23T11:57:43.742Z",
+      "durationSeconds": 400.108,
+      "status": "COMPLETED_WITH_ERRORS",
+      "sources": [
+        "urbn-hub"
+      ],
+      "captures": 1,
+      "raw": 1506,
+      "extractions": 1476,
+      "aliveEvents": 13,
+      "sealedCompletions": 1,
+      "heartbeat": [
+        "pinged"
+      ],
+      "errorEvents": 1477,
+      "results": [
+        {
+          "source": "urbn-hub",
+          "fetched": 1476,
+          "created": 0,
+          "updated": 0,
+          "merged": 0,
+          "errors": 1476,
+          "france": 8,
+          "complete": true,
+          "truncated": false,
+          "captureBatchId": "a3ec1378-c2d7-43ab-80b4-5812618c5b6c",
+          "completionReportHash": "26795541ca9aa47a719b040b3bbbf5bb8a175f41df58e0b7d71a612617012a7e"
+        }
+      ]
+    },
+    {
+      "runId": "3ea19630-b6cb-4167-8fa9-67f52894f184",
+      "command": "ingest",
+      "revision": "1db582defcde13912c22ed38b523b9af40dd6a9e",
+      "startedAt": "2026-09-23T12:05:07.741Z",
+      "finishedAt": "2026-09-23T12:12:40.326Z",
+      "durationSeconds": 452.585,
+      "status": "COMPLETED",
+      "sources": [
+        "urbn-hub"
+      ],
+      "captures": 1,
+      "raw": 1506,
+      "extractions": 1476,
+      "aliveEvents": 15,
+      "sealedCompletions": 1,
+      "heartbeat": [
+        "pinged"
+      ],
+      "errorEvents": 0,
+      "results": [
+        {
+          "source": "urbn-hub",
+          "fetched": 1476,
+          "created": 1476,
+          "updated": 0,
+          "merged": 0,
+          "errors": 0,
+          "france": 8,
+          "complete": true,
+          "truncated": false,
+          "captureBatchId": "5a6671b9-2a8a-4757-8de3-c0ff41a196dd",
+          "completionReportHash": "6f6cf8050ced6695b09d4163d1b345623ced7eb0c4285d90015800fb0dd04a08"
+        }
+      ]
+    }
+  ],
+  "total": {
+    "captures": 63,
+    "raw": 5865,
+    "extractions": 5526,
+    "fetched": 3317,
+    "created": 1703,
+    "updated": 59,
+    "merged": 0,
+    "errors": 1555
+  },
+  "latestPerSource": {
+    "sourceCount": 12,
+    "statuses": {
+      "COMPLETED": 9,
+      "COMPLETED_WITH_ERRORS": 1,
+      "FAILED": 2
+    },
+    "totals": {
+      "captures": 33,
+      "raw": 2676,
+      "extractions": 2428,
+      "fetched": 1796,
+      "created": 1658,
+      "updated": 59,
+      "merged": 0,
+      "errors": 79
+    },
+    "runIds": {
+      "asos": "1f710f58-24b1-458d-85d6-e428fb94863f",
+      "versace": "fea218c5-7fd3-4e3b-a732-833aa1e613f8",
+      "bash-talents": "e23c9fda-32b5-475d-86b6-b7ddc33c171a",
+      "madame-figaro": "4f7b3ade-b801-4a09-a027-002cd56a2cbd",
+      "brown-thomas-taleo": "77af90aa-1182-4a3f-b5fe-81bfc3fe99aa",
+      "nocibe-eqwa": "543dc6f7-b4f7-490f-9a22-c14e502e4765",
+      "bernadette": "83d88799-f1b9-4952-aa74-60404a38d2e5",
+      "tropicfeel": "3186debf-5e3d-4b97-a634-087467b8eb36",
+      "nars": "cdad6845-86e2-4182-a455-c4468384b447",
+      "urbn-hub": "3ea19630-b6cb-4167-8fa9-67f52894f184",
+      "caudalie": "307b28a2-7f2a-42d6-a469-eb4ea62ed91d",
+      "goyard-successfactors": "bcf1e26f-543b-4497-879c-2c4cfd5745e9"
+    },
+    "interpretation": "Final attempt per source, including failed admissions. Error counts in totals are ingestion row errors; failed qualification/admission runs are separately counted as FAILED. Whole-attempt totals retain superseded failures and initial Caudalie creation."
+  }
+}

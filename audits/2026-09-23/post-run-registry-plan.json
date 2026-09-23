@@ -1,6 +1,5 @@
 {
-  "status": "PREPARED_NOT_APPLIED",
-  "preserveStatuses": true,
+  "status": "APPLIED",
   "entries": [
     {
       "key": "cotton-on",
@@ -12,7 +11,8 @@
           "origin": "https://ekxm.fa.ap1.oraclecloud.com",
           "siteNumber": "CX",
           "lang": "en"
-        }
+        },
+        "careersDomain": "ekxm.fa.ap1.oraclecloud.com"
       },
       "evidence": [
         {
@@ -38,7 +38,21 @@
           "truncated": false
         }
       ],
-      "reason": "Le site officiel Cotton On pointe Oracle HCM ekxm.fa.ap1.oraclecloud.com, site CX. Le vieux board SmartRecruiters ne présente que trois liens et ne constitue pas la référence actuelle prouvée par la marque."
+      "reason": "Le site officiel Cotton On pointe Oracle HCM ekxm.fa.ap1.oraclecloud.com, site CX. Le vieux board SmartRecruiters ne présente que trois liens et ne constitue pas la référence actuelle prouvée par la marque.",
+      "application": {
+        "effectivePatch": {
+          "kind": "oraclehcm",
+          "config": {
+            "origin": "https://ekxm.fa.ap1.oraclecloud.com",
+            "siteNumber": "CX",
+            "lang": "en"
+          },
+          "careersDomain": "ekxm.fa.ap1.oraclecloud.com",
+          "tenantKey": "oraclehcm:ekxm.fa.ap1.oraclecloud.com"
+        },
+        "observedRevision": "07d1da9e-6695-43eb-a182-a6dd576e05a6",
+        "observedStatus": "PAUSED"
+      }
     },
     {
       "key": "de-beers-london",
@@ -60,7 +74,14 @@
           "truncated": false
         }
       ],
-      "reason": "Le tenant configuré est Anglo American / De Beers Group : il liste aussi extraction minière et industrie. Des fiches officielles portent bien De Beers London et des postes retail."
+      "reason": "Le tenant configuré est Anglo American / De Beers Group : il liste aussi extraction minière et industrie. Des fiches officielles portent bien De Beers London et des postes retail.",
+      "application": {
+        "effectivePatch": {
+          "portalScope": "MULTI_BRAND"
+        },
+        "observedRevision": "1006ad9b-8121-458e-85d3-53dc9f2363d7",
+        "observedStatus": "PAUSED"
+      }
     },
     {
       "key": "fastrack",
@@ -82,7 +103,15 @@
           "truncated": false
         }
       ],
-      "reason": "La configuration vise déjà careers.titan.in (Phenom), alors que careersDomain est encore fastrack.teamtailor.com. Le portail actuel est celui du groupe Titan, pas uniquement Fastrack."
+      "reason": "La configuration vise déjà careers.titan.in (Phenom), alors que careersDomain est encore fastrack.teamtailor.com. Le portail actuel est celui du groupe Titan, pas uniquement Fastrack.",
+      "application": {
+        "effectivePatch": {
+          "careersDomain": "careers.titan.in",
+          "tenantKey": "phenom:careers.titan.in"
+        },
+        "observedRevision": "5dd6aceb-0c65-4f44-9f59-fe4ca47472e5",
+        "observedStatus": "PAUSED"
+      }
     },
     {
       "key": "ghost",
@@ -104,7 +133,15 @@
           "truncated": false
         }
       ],
-      "reason": "Le startUrl configuré est la page carrières officielle Ghost London, mais careersDomain garde boards.greenhouse.io."
+      "reason": "Le startUrl configuré est la page carrières officielle Ghost London, mais careersDomain garde boards.greenhouse.io.",
+      "application": {
+        "effectivePatch": {
+          "careersDomain": "www.ghostfashion.com",
+          "tenantKey": "generic-listing:www.ghostfashion.com/careers"
+        },
+        "observedRevision": "eaedf779-8e01-411d-a69a-f693552263a3",
+        "observedStatus": "PAUSED"
+      }
     },
     {
       "key": "marella",
@@ -137,7 +174,14 @@
           "truncated": false
         }
       ],
-      "reason": "Le board configuré est Max Mara Fashion Group ; il liste Marella, Max Mara, Max&Co et Pennyblack. Ce n’est pas un board Marella exclusif."
+      "reason": "Le board configuré est Max Mara Fashion Group ; il liste Marella, Max Mara, Max&Co et Pennyblack. Ce n’est pas un board Marella exclusif.",
+      "application": {
+        "effectivePatch": {
+          "portalScope": "MULTI_BRAND"
+        },
+        "observedRevision": "1b084379-430d-4726-9bbc-6f7f3c0e5aea",
+        "observedStatus": "PAUSED"
+      }
     },
     {
       "key": "markham",
@@ -173,7 +217,22 @@
           "truncated": false
         }
       ],
-      "reason": "TFG officiel lie le tenant Oracle déjà configuré, site CX_1. Le kind PROD oracle_hcm n’est pas dans KIND_TO_ATS (le kind maintenu est oraclehcm), et careersDomain vaut encore jobs.lever.co."
+      "reason": "TFG officiel lie le tenant Oracle déjà configuré, site CX_1. Le kind PROD oracle_hcm n’est pas dans KIND_TO_ATS (le kind maintenu est oraclehcm), et careersDomain vaut encore jobs.lever.co.",
+      "application": {
+        "effectivePatch": {
+          "kind": "oraclehcm",
+          "config": {
+            "origin": "https://fa-expc-saasfaprod1.fa.ocs.oraclecloud.com",
+            "siteNumber": "CX_1",
+            "lang": "en"
+          },
+          "careersDomain": "fa-expc-saasfaprod1.fa.ocs.oraclecloud.com",
+          "portalScope": "MULTI_BRAND",
+          "tenantKey": "oraclehcm:fa-expc-saasfaprod1.fa.ocs.oraclecloud.com"
+        },
+        "observedRevision": "aaa12bdb-b9ea-49d3-b1a8-2a01e0ef1eb8",
+        "observedStatus": "PAUSED"
+      }
     },
     {
       "key": "minimalist",
@@ -195,7 +254,15 @@
           "truncated": false
         }
       ],
-      "reason": "La page officielle beminimalist.co/pages/about inclut une rubrique carrières et un formulaire Zoho Recruit ; le domaine enregistré minimalist.recruitee.com est ancien."
+      "reason": "La page officielle beminimalist.co/pages/about inclut une rubrique carrières et un formulaire Zoho Recruit ; le domaine enregistré minimalist.recruitee.com est ancien.",
+      "application": {
+        "effectivePatch": {
+          "careersDomain": "beminimalist.co",
+          "tenantKey": "generic-listing:beminimalist.co/pages/about"
+        },
+        "observedRevision": "a27bd072-a3c6-4a80-97d1-331df1a14c2a",
+        "observedStatus": "PAUSED"
+      }
     },
     {
       "key": "nimble",
@@ -217,7 +284,15 @@
           "truncated": false
         }
       ],
-      "reason": "Le startUrl est la page officielle carrières Nimble Activewear ; le domaine enregistré nimble.recruitee.com n’est pas le domaine effectivement lu."
+      "reason": "Le startUrl est la page officielle carrières Nimble Activewear ; le domaine enregistré nimble.recruitee.com n’est pas le domaine effectivement lu.",
+      "application": {
+        "effectivePatch": {
+          "careersDomain": "nimbleactivewear.com",
+          "tenantKey": "generic-listing:nimbleactivewear.com/pages/careers"
+        },
+        "observedRevision": "971056f2-88d3-4363-8883-515b06d684df",
+        "observedStatus": "PAUSED"
+      }
     },
     {
       "key": "orchestra",
@@ -239,7 +314,15 @@
           "truncated": false
         }
       ],
-      "reason": "La configuration pointe bien le portail Teamtailor Orchestra-Prémaman ; careersDomain conserve à tort boards.greenhouse.io."
+      "reason": "La configuration pointe bien le portail Teamtailor Orchestra-Prémaman ; careersDomain conserve à tort boards.greenhouse.io.",
+      "application": {
+        "effectivePatch": {
+          "careersDomain": "recrutement.orchestra-premaman.com",
+          "tenantKey": "teamtailor:recrutement.orchestra-premaman.com"
+        },
+        "observedRevision": "7a894fa2-65ab-4736-a6c6-ffe8ed8c18a8",
+        "observedStatus": "PAUSED"
+      }
     },
     {
       "key": "picard",
@@ -261,7 +344,15 @@
           "truncated": false
         }
       ],
-      "reason": "Le site picard-fashion.com publie plusieurs pages carrières natives ; il s’agit de la marque de maroquinerie PICARD, pas du distributeur alimentaire. Le domaine Recruitee enregistré est périmé."
+      "reason": "Le site picard-fashion.com publie plusieurs pages carrières natives ; il s’agit de la marque de maroquinerie PICARD, pas du distributeur alimentaire. Le domaine Recruitee enregistré est périmé.",
+      "application": {
+        "effectivePatch": {
+          "careersDomain": "picard-fashion.com",
+          "tenantKey": "generic-listing:picard-fashion.com/blogs/karriere"
+        },
+        "observedRevision": "4744009c-6ae2-4df5-9a06-2a8a60400eaa",
+        "observedStatus": "PAUSED"
+      }
     },
     {
       "key": "rotate",
@@ -283,7 +374,15 @@
           "truncated": false
         }
       ],
-      "reason": "La page officielle ROTATE affiche plusieurs intitulés de stages ; l’ancien domaine Recruitee n’est plus celui du startUrl lu."
+      "reason": "La page officielle ROTATE affiche plusieurs intitulés de stages ; l’ancien domaine Recruitee n’est plus celui du startUrl lu.",
+      "application": {
+        "effectivePatch": {
+          "careersDomain": "www.rotatebirgerchristensen.com",
+          "tenantKey": "generic-listing:www.rotatebirgerchristensen.com/career"
+        },
+        "observedRevision": "4eeef934-b191-4df2-9b45-48741b4a4611",
+        "observedStatus": "PAUSED"
+      }
     },
     {
       "key": "sandro",
@@ -305,7 +404,14 @@
           "truncated": false
         }
       ],
-      "reason": "La source key sandro cible le board global SMCP ; la Maison enregistrée mentionne déjà toutes les Maisons. Le site propose des sections Sandro/Maje/Claudie Pierlot/Fursac."
+      "reason": "La source key sandro cible le board global SMCP ; la Maison enregistrée mentionne déjà toutes les Maisons. Le site propose des sections Sandro/Maje/Claudie Pierlot/Fursac.",
+      "application": {
+        "effectivePatch": {
+          "portalScope": "MULTI_BRAND"
+        },
+        "observedRevision": "fba4ace6-e51a-43e6-95b3-a01a4b71e16c",
+        "observedStatus": "PAUSED"
+      }
     },
     {
       "key": "showroomprive",
@@ -315,7 +421,8 @@
         "kind": "teamtailor",
         "config": {
           "origin": "https://talents.showroomprivegroup.com"
-        }
+        },
+        "careersDomain": "talents.showroomprivegroup.com"
       },
       "evidence": [
         {
@@ -330,7 +437,19 @@
           "truncated": false
         }
       ],
-      "reason": "Le portail Teamtailor talents.showroomprivegroup.com se présente comme Showroomprive.com et pointe le groupe."
+      "reason": "Le portail Teamtailor talents.showroomprivegroup.com se présente comme Showroomprive.com et pointe le groupe.",
+      "application": {
+        "effectivePatch": {
+          "kind": "teamtailor",
+          "config": {
+            "origin": "https://talents.showroomprivegroup.com"
+          },
+          "careersDomain": "talents.showroomprivegroup.com",
+          "tenantKey": "teamtailor:talents.showroomprivegroup.com"
+        },
+        "observedRevision": "3cd5f88c-2e0f-480c-91c7-e6ac337b49ef",
+        "observedStatus": "PAUSED"
+      }
     },
     {
       "key": "sioux",
@@ -352,7 +471,15 @@
           "truncated": false
         }
       ],
-      "reason": "Le startUrl est la page emplois officielle du chausseur Sioux, tandis que careersDomain reste sioux.recruitee.com."
+      "reason": "Le startUrl est la page emplois officielle du chausseur Sioux, tandis que careersDomain reste sioux.recruitee.com.",
+      "application": {
+        "effectivePatch": {
+          "careersDomain": "www.sioux.de",
+          "tenantKey": "generic-listing:www.sioux.de/pages/stellenangebote"
+        },
+        "observedRevision": "17436def-b126-41d9-a7ff-c226a279a2bf",
+        "observedStatus": "PAUSED"
+      }
     },
     {
       "key": "soeur",
@@ -362,7 +489,8 @@
         "kind": "teamtailor",
         "config": {
           "origin": "https://soeur-1711354805.teamtailor.com"
-        }
+        },
+        "careersDomain": "soeur-1711354805.teamtailor.com"
       },
       "evidence": [
         {
@@ -377,7 +505,19 @@
           "truncated": false
         }
       ],
-      "reason": "Le portail Teamtailor se présente comme Soeur, expose des postes et lie soeur.fr."
+      "reason": "Le portail Teamtailor se présente comme Soeur, expose des postes et lie soeur.fr.",
+      "application": {
+        "effectivePatch": {
+          "kind": "teamtailor",
+          "config": {
+            "origin": "https://soeur-1711354805.teamtailor.com"
+          },
+          "careersDomain": "soeur-1711354805.teamtailor.com",
+          "tenantKey": "teamtailor:soeur-1711354805.teamtailor.com"
+        },
+        "observedRevision": "a543029c-3e98-4bf5-a957-f6526006083b",
+        "observedStatus": "PAUSED"
+      }
     },
     {
       "key": "rituals",
@@ -397,7 +537,14 @@
           "file": "pages/active-rituals.html.gz"
         }
       ],
-      "reason": "Le portail se présente comme la seule marque Rituals. Aucune vitrine de groupe multi-marques observée dans cette lecture. SINGLE_BRAND décrit la marque du portail, pas nécessairement une seule entité juridique."
+      "reason": "Le portail se présente comme la seule marque Rituals. Aucune vitrine de groupe multi-marques observée dans cette lecture. SINGLE_BRAND décrit la marque du portail, pas nécessairement une seule entité juridique.",
+      "application": {
+        "effectivePatch": {
+          "portalScope": "SINGLE_BRAND"
+        },
+        "observedRevision": "c8d4236e-08d3-47ec-ba10-0b7922637700",
+        "observedStatus": "ACTIVE"
+      }
     },
     {
       "key": "dr-martens-tf",
@@ -417,7 +564,14 @@
           "file": "pages/active-dr-martens-tf.html.gz"
         }
       ],
-      "reason": "Le portail se présente comme la seule marque Dr. Martens. Aucune vitrine de groupe multi-marques observée dans cette lecture. SINGLE_BRAND décrit la marque du portail, pas nécessairement une seule entité juridique."
+      "reason": "Le portail se présente comme la seule marque Dr. Martens. Aucune vitrine de groupe multi-marques observée dans cette lecture. SINGLE_BRAND décrit la marque du portail, pas nécessairement une seule entité juridique.",
+      "application": {
+        "effectivePatch": {
+          "portalScope": "SINGLE_BRAND"
+        },
+        "observedRevision": "040b8b81-b60a-4299-a3d2-e3283fe91faa",
+        "observedStatus": "ACTIVE"
+      }
     },
     {
       "key": "beauty-success-geodir",
@@ -437,7 +591,14 @@
           "file": null
         }
       ],
-      "reason": "Ne pas définir SINGLE_BRAND : le site officiel expose aussi des postes ENSEIGNE JFG et JFG CLINIC, et des partenaires franchisés. Il s’agit au minimum d’un périmètre multi-enseignes/opérateurs."
+      "reason": "Ne pas définir SINGLE_BRAND : le site officiel expose aussi des postes ENSEIGNE JFG et JFG CLINIC, et des partenaires franchisés. Il s’agit au minimum d’un périmètre multi-enseignes/opérateurs.",
+      "application": {
+        "effectivePatch": {
+          "portalScope": "MULTI_BRAND"
+        },
+        "observedRevision": "f3a3e53e-0168-4681-8cbe-4ceaab583785",
+        "observedStatus": "ACTIVE"
+      }
     },
     {
       "key": "breitling-sf",
@@ -457,7 +618,14 @@
           "file": "pages/active-breitling-sf.html.gz"
         }
       ],
-      "reason": "Le portail se présente comme la seule marque Breitling. Aucune vitrine de groupe multi-marques observée dans cette lecture. SINGLE_BRAND décrit la marque du portail, pas nécessairement une seule entité juridique."
+      "reason": "Le portail se présente comme la seule marque Breitling. Aucune vitrine de groupe multi-marques observée dans cette lecture. SINGLE_BRAND décrit la marque du portail, pas nécessairement une seule entité juridique.",
+      "application": {
+        "effectivePatch": {
+          "portalScope": "SINGLE_BRAND"
+        },
+        "observedRevision": "56902c3e-d1d0-4aef-a320-ba7dadafdccc",
+        "observedStatus": "ACTIVE"
+      }
     },
     {
       "key": "fenwick-volcanic",
@@ -477,7 +645,14 @@
           "file": "pages/active-fenwick-volcanic.html.gz"
         }
       ],
-      "reason": "Le portail se présente comme la seule marque Fenwick. Aucune vitrine de groupe multi-marques observée dans cette lecture. SINGLE_BRAND décrit la marque du portail, pas nécessairement une seule entité juridique."
+      "reason": "Le portail se présente comme la seule marque Fenwick. Aucune vitrine de groupe multi-marques observée dans cette lecture. SINGLE_BRAND décrit la marque du portail, pas nécessairement une seule entité juridique.",
+      "application": {
+        "effectivePatch": {
+          "portalScope": "SINGLE_BRAND"
+        },
+        "observedRevision": "f3d28692-3a1c-4cab-ad77-4bc38105ccfb",
+        "observedStatus": "ACTIVE"
+      }
     },
     {
       "key": "goyard-successfactors",
@@ -497,7 +672,14 @@
           "file": "pages/active-goyard-successfactors.html.gz"
         }
       ],
-      "reason": "Le portail se présente comme la seule marque Goyard. Aucune vitrine de groupe multi-marques observée dans cette lecture. SINGLE_BRAND décrit la marque du portail, pas nécessairement une seule entité juridique."
+      "reason": "Le portail se présente comme la seule marque Goyard. Aucune vitrine de groupe multi-marques observée dans cette lecture. SINGLE_BRAND décrit la marque du portail, pas nécessairement une seule entité juridique.",
+      "application": {
+        "effectivePatch": {
+          "portalScope": "SINGLE_BRAND"
+        },
+        "observedRevision": "4f0dc404-8c85-4561-99a8-a763d98fd4f2",
+        "observedStatus": "ACTIVE"
+      }
     },
     {
       "key": "urbn-hub",
@@ -523,7 +705,27 @@
           "captureBatchId": "dbf34f4e-cc2d-44c9-b09d-4aa53de57ac6"
         }
       ],
-      "reason": "Exact regional detail origins in 1475 native hub links"
+      "reason": "Exact regional detail origins in 1475 native hub links",
+      "application": {
+        "effectivePatch": {
+          "config": {
+            "origin": "https://hub-urbn.icims.com",
+            "employerFromJobPosting": true,
+            "detailOrigins": [
+              "https://homeoffice-eu-urbn.icims.com",
+              "https://homeoffice-na-urbn.icims.com",
+              "https://menusandvenues-na-urbn.icims.com",
+              "https://stores-eu-urbn.icims.com",
+              "https://stores-na-urbn.icims.com",
+              "https://supplychain-eu-urbn.icims.com",
+              "https://supplychain-na-urbn.icims.com"
+            ]
+          },
+          "tenantKey": "icims:hub-urbn.icims.com"
+        },
+        "observedRevision": "f35d1b6e-f09e-4608-b38f-cb1526afe802",
+        "observedStatus": "PAUSED"
+      }
     },
     {
       "key": "caudalie",
@@ -542,7 +744,101 @@
           "portal": "https://caudalie.career"
         }
       ],
-      "reason": "Official fr.caudalie.com links caudalie.career; same-host native AJAX and details"
+      "reason": "Official fr.caudalie.com links caudalie.career; same-host native AJAX and details",
+      "application": {
+        "effectivePatch": {
+          "config": {
+            "startUrl": "https://caudalie.career/home/our-job-offers",
+            "reader": "caudalie-ajax"
+          },
+          "portalScope": "SINGLE_BRAND",
+          "tenantKey": "generic-listing:caudalie.career/home/our-job-offers"
+        },
+        "observedRevision": "c7607f38-fa40-42a1-96da-034c56a9b5c0",
+        "observedStatus": "DRAFT"
+      }
+    },
+    {
+      "key": "bloomingdales-oracle",
+      "expectedRevision": "cee332e1-1c28-4d7f-b821-f2199ea2c6a9",
+      "expectedStatus": "ACTIVE",
+      "patch": {
+        "portalScope": "SINGLE_BRAND"
+      },
+      "evidence": [
+        {
+          "url": "https://www.bloomingdales.com/b/about-us/directory/",
+          "observedAt": "2026-09-23T10:45:00Z",
+          "method": "Public page reader",
+          "link": "https://www.bloomingdalesjobs.com/",
+          "limitation": "Direct urllib request returned HTTP error; public page reader resolved the official Careers link."
+        },
+        {
+          "url": "https://www.bloomingdalesjobs.com/",
+          "finalUrl": "https://ebwh.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1002/",
+          "httpStatus": 200,
+          "observedAt": "2026-09-23T10:46:01.958135+00:00",
+          "sha256": "0080fe087dcebbbeeb3eee50afeddbde1201c560534036a56bd811ffc1e63ed8",
+          "file": "pages/bloomingdales-redirect.html.gz",
+          "linksCareers": false
+        }
+      ],
+      "reason": "Official Bloomingdales.com Careers link points to bloomingdalesjobs.com, which resolves to the exact Oracle brand site CX_1002.",
+      "application": {
+        "effectivePatch": {
+          "portalScope": "SINGLE_BRAND"
+        },
+        "observedRevision": "cee332e1-1c28-4d7f-b821-f2199ea2c6a9",
+        "observedStatus": "ACTIVE"
+      }
     }
+  ],
+  "followupCorrections": [
+    {
+      "key": "caudalie",
+      "expectedRevision": "c7607f38-fa40-42a1-96da-034c56a9b5c0",
+      "expectedStatus": "DRAFT",
+      "patch": {
+        "config": {
+          "reader": "caudalie-ajax",
+          "startUrl": "https://caudalie.career/home/our-job-offers",
+          "listingUrl": "https://caudalie.career/"
+        }
+      },
+      "observedRevision": "cdaccb6c-73d8-4d19-a38f-8f10ea676b6e",
+      "evidence": {
+        "captureBatchId": "1e5bad8c-38e2-475e-800e-326c6cf7ea16",
+        "href": "https://caudalie.career/",
+        "text": "Recrutement"
+      },
+      "reason": "Portal root explicitly linked by the official site; native listing endpoint unchanged"
+    },
+    {
+      "key": "caudalie",
+      "expectedRevision": "cdaccb6c-73d8-4d19-a38f-8f10ea676b6e",
+      "expectedStatus": "DRAFT",
+      "patch": {
+        "tenantKey": "generic-listing:caudalie.career"
+      },
+      "observedRevision": "8a07457b-7b36-42f7-8e1e-07fc7e8aba7d",
+      "reason": "Recompute tenantKey with the maintained tenantKeyOf resolver after changing the reviewed portal locator; candidate registration then matches the registry."
+    }
+  ],
+  "appliedAt": "2026-09-23T10:59:28.441Z",
+  "appliedPlanSha256": "64ffc82dd9b1c3e9a1e2dde502d89e4f0f19bc4e1144b0fcd8ab49d27261c361",
+  "statusPolicy": "No explicit status override; the database pauses ACTIVE when its collection revision changes. Explicit requalification is recorded separately.",
+  "operationalNotes": [
+    {
+      "key": "caudalie",
+      "revision": "8a07457b-7b36-42f7-8e1e-07fc7e8aba7d",
+      "beforeNoteSha256": "a9ad8f821fd02e22d3518229684582f1ca008e45289e208490705b8a9b139870",
+      "note": "23/09/2026 — Portail employeur Caudalie vérifié depuis fr.caudalie.com. Liste publique native POST /home/ajax_filter_offers, fiches HTML /apply/offer/{slug}. Qualification, accès et ingestion normaux validés en production : 45 offres, 0 erreur. Capture fa59b488-07ae-419a-9bb5-e0773b0bae4c, lecteur git:1db582defcde13912c22ed38b523b9af40dd6a9e. Le champ de zone contient France ou des macro-régions : 14 France, 31 pays indéterminés conservés sans localisation inventée. Historique de diagnostic du 18/09 conservé dans la preuve privée de maintenance post-run-20260923.",
+      "statusUnchanged": true,
+      "revisionUnchanged": true
+    }
+  ],
+  "explicitStatusWrites": false,
+  "automaticPauses": [
+    "urbn-hub"
   ]
 }
