@@ -1,5 +1,5 @@
 {
-  "productionCodeSha": "19d9f1c436cef7efec744e666090dd8b625933cb",
+  "productionCodeSha": "653920cbc9f24dbe3edecadf755b1772291be72a",
   "apiRetainsValidatedR5Image": true,
   "targetContractSha256": "27350975fedfa8fee3fb6f9df0e5f53c11e74ce91bbb0a1bc551e66fc15e2163",
   "registryVisibility": "public",
@@ -31,11 +31,11 @@
       }
     },
     {
-      "gitSha": "19d9f1c436cef7efec744e666090dd8b625933cb",
+      "gitSha": "653920cbc9f24dbe3edecadf755b1772291be72a",
       "contractSha256": "27350975fedfa8fee3fb6f9df0e5f53c11e74ce91bbb0a1bc551e66fc15e2163",
       "service": "catwalks-ingestion-worker",
-      "image": "ghcr.io/lmelane/catwalks-ingestion-worker@sha256:0a78a04f91da020024eef206fb8e2e004087428fb0290653473b0966a85d424e",
-      "imageId": "sha256:fddfa2f7ac6d101f2cf97a3d136e6105cf26c16227dae328859e51a69763c1e2",
+      "image": "ghcr.io/lmelane/catwalks-ingestion-worker@sha256:a312fba5daddc5f83172421deabf92fe59b1cf3fdd70a8bb3629675a85869b19",
+      "imageId": "sha256:73d7996902d7f683c752df41587c54e79489e26f218a3421ceee359bf705321f",
       "imageEnvironment": [
         "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
         "LANG=C.UTF-8",
@@ -52,11 +52,11 @@
         "status": "PASS",
         "network": "none",
         "role": "worker",
-        "gitSha": "19d9f1c436cef7efec744e666090dd8b625933cb"
+        "gitSha": "653920cbc9f24dbe3edecadf755b1772291be72a"
       }
     }
   ],
-  "reason": "Worker-only minimal generic execution change after R5. Public API remains on its validated R5 image and embedded contract; each service records its actual source SHA and contract hash.",
+  "reason": "Worker-only access-evidence maintenance: valid decisions are retained; stale/missing decisions use the existing Golden Path qualification before normal admission. Public API retains its validated R5 image. Later cleanup/documentation commits do not rebuild or restart these images.",
   "resolvedExecutionSettings": {
     "overlapSeconds": 0,
     "drainingSeconds": 10,
@@ -71,6 +71,17 @@
     "inactiveSettings": {
       "build": "Image source: no Railway build is executed; builder/buildEnvironment are inactive platform metadata.",
       "workerRestartRetries": "NEVER policy: Railway normalizes retry count 0 to null; no retry is scheduled."
+    },
+    "productionWorker": {
+      "serviceId": "210322c3-51b7-42c3-a93d-f50f64d44d19",
+      "deploymentId": "a5e1ec9b-d1b0-49af-b7f1-13d9f6b4c282",
+      "profile": "production",
+      "pipelinePaused": "0",
+      "startCommand": "sh apps/aggregator/start.sh",
+      "cronSchedule": "0 */4 * * *",
+      "cronTimezone": "UTC",
+      "restartPolicy": "NEVER",
+      "reason": "Normal four-hour operation authorized after the complete 384-source run. This explicitly resolves the embedded baseline cronSchedule:null and profile-controlled pause; image and embedded contract unchanged."
     }
   },
   "productionOutcome": "../../../audits/2026-09-23/normal-production-run.json"

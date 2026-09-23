@@ -10,7 +10,7 @@ Collecte des offres du luxe, de la mode, de la beauté et du retail. Les publica
 - `development` porte le travail en cours ; les pushes sur cette branche sont autorisés.
 - La promotion de `development` vers `main` intervient après validation de la release. Un push de développement ne vaut pas autorisation de mise en production.
 
-Aucun push sur `main` ni déploiement du site, backend, back-office ou média sans validation explicite de Loïc. L’agrégateur exige lui aussi le GO explicite de Loïc avant tout push sur `main`, déploiement, migration ou collecte de production. Un GO technique canari ne vaut pas cette autorisation.
+Aucun push sur `main` ni déploiement du site, backend, back-office ou média sans validation explicite de Loïc. Le GO de Loïc couvre la livraison et l’exploitation normale de l’agrégateur décrites dans le bilan courant, y compris sa promotion vers `main`. Il ne vaut pas autorisation d’une migration, d’une réparation historique ou d’un déploiement des autres produits.
 
 ### Transition des copies de travail
 
@@ -25,7 +25,7 @@ Les règles de travail figurent dans [CLAUDE.md](CLAUDE.md). Préserver le trava
 - [Parcours unique des sources](docs/architecture/source-onboarding.md) : découverte, enregistrement, captures HTTP des preuves, collecte native et activation.
 - [Validation multilingue `/emplois`](docs/architecture/emplois-e2e.md) : chaîne locale de répétition et tests navigateur.
 - [Bilan PR-1 : préparation au canari](audits/2026-09-22/pr1-canary-readiness.md).
-- [Runtime Railway](docs/architecture/railway-runtime-reset.md) : R5 validé, nouvelle API publique ; les quatre anciens services sont supprimés. Le worker générique accepte la pause, une source explicite ou toutes les ACTIVE. Run complet effectué : 384 refus d’admission, aucun succès ; worker en pause, NO-GO CRON. Voir le [bilan](audits/2026-09-23/normal-production-run.json).
+- [Runtime Railway](docs/architecture/railway-runtime-reset.md) : nouvelle API publique, anciens services retirés, worker `653920c` en exploitation normale toutes les quatre heures UTC. Les 384 ACTIVE ont été tentées : 255 réussies, 35 partielles, 94 échouées individuellement ; aucun blocage systémique d’accès ni échec de persistance. Voir le [bilan](audits/2026-09-23/normal-production-run.json).
 - [Canari Railway validé — delta egress](audits/2026-09-23/canary-delta-oh-my-cream.md) : quatre contrôles PASS, une ingestion Oh My Cream, workers revenus en pause ; [restaurabilité déjà acquise](audits/2026-09-22/restorability-canary-final.md).
 - [Exploitation canari et retour arrière](docs/architecture/canary-operations.md) : worker unique, pause autoritaire, nouvelle source et répétition locale.
 - [Golden Path nouvelle source](docs/architecture/golden-source.md) : base neuve, qualification, deux ingestions, rejeu et lecture API.
@@ -61,4 +61,4 @@ npm run test:local
 
 Cette commande crée une base PostgreSQL jetable depuis une image figée, applique les migrations, vérifie les types et exécute les suites agrégateur/API ainsi que les tests des outils Railway. Elle ignore les URL de base de l’environnement appelant et retire son conteneur en fin d’exécution. Les deux tests réservés au corpus réel restent explicitement séparés.
 
-La CI vérifie aussi le build de l’API. `npm run api:build` permet de le reproduire. L’activation des crons, le matching et la nouvelle promesse de `/offres` viennent après cette phase de reprise.
+La CI vérifie aussi le build de l’API. `npm run api:build` permet de le reproduire. Le CRON d’ingestion est actif ; le matching et la nouvelle promesse de `/offres` restent gelés.

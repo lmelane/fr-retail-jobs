@@ -1,1652 +1,604 @@
 {
   "date": "2026-09-23",
-  "status": "NO_GO_CRON_SYSTEMIC_ADMISSION_FAILURE",
+  "status": "GO_CRON_WITH_SOURCE_INCIDENTS",
   "git": {
-    "productionCodeSha": "19d9f1c436cef7efec744e666090dd8b625933cb",
-    "promotion": "development -> main, fast-forward; required API and aggregator checks passed",
-    "ciRun": "https://github.com/lmelane/fr-retail-jobs/actions/runs/35830449706"
+    "productionCodeSha": "653920cbc9f24dbe3edecadf755b1772291be72a",
+    "promotion": "development -> main, fast-forward after required checks",
+    "ciRun": "https://github.com/lmelane/fr-retail-jobs/actions/runs/35833266831",
+    "cleanupCommit": "496ec98b92589d78e7a057e8753682af449a2e15",
+    "cleanupCiRun": "https://github.com/lmelane/fr-retail-jobs/actions/runs/35835118499"
   },
   "runtime": {
     "apiSourceSha": "c3613a1d7b2a3c709f68fb18801eed3277a2302b",
     "apiDeploymentUnchanged": "0d62ade6-efc0-45cc-a3a6-1c69a0864199",
-    "workerImage": "ghcr.io/lmelane/catwalks-ingestion-worker@sha256:0a78a04f91da020024eef206fb8e2e004087428fb0290653473b0966a85d424e",
-    "runDeployment": "fd1d0b62-0653-4d7f-9b1c-28cb8270d145",
-    "pausedDeployment": "2387775f-911d-471c-9be7-d5b11b1c9a9f",
+    "workerImage": "ghcr.io/lmelane/catwalks-ingestion-worker@sha256:a312fba5daddc5f83172421deabf92fe59b1cf3fdd70a8bb3629675a85869b19",
+    "runDeployment": "0f5652df-f494-46ed-a6f3-4b5b64b5f59a",
+    "cronDeployment": "a5e1ec9b-d1b0-49af-b7f1-13d9f6b4c282",
     "profile": "production",
     "startCommand": "sh apps/aggregator/start.sh",
     "effectiveArgv": [],
-    "pipelinePaused": "1",
-    "cronSchedule": null,
+    "pipelinePaused": "0",
+    "cronSchedule": "0 */4 * * *",
+    "cronTimezone": "UTC",
     "restartPolicy": "NEVER",
     "databaseAndApiConfigurationUnchanged": true,
+    "configurationDeltaAtCronActivation": "worker deploy.cronSchedule only",
     "retiredServices": [
       "catwalks-aggregator",
       "catwalks-refresh",
       "catwalks-reconcile",
       "catwalks-api"
-    ]
+    ],
+    "cronDeploymentStatus": "SUCCESS",
+    "nextScheduledRunExpectedAt": "2026-09-23T12:00:00Z",
+    "scheduledExecutionObserved": false,
+    "scheduledExecutionNote": "Schedule and deployed manifest verified; no extra ingestion launched by cron configuration. Next scheduled execution has not occurred at the time of this report."
   },
   "run": {
-    "id": "c4c32dcb-e824-4537-8e3b-e84219f88951",
+    "id": "ca946bd4-c8ba-40f7-ab8f-ddc1a3095bb1",
     "status": "COMPLETED_WITH_ERRORS",
-    "startedAt": "2026-09-23T07:19:14.476Z",
-    "finishedAt": "2026-09-23T07:22:00.241Z",
-    "durationSeconds": 165.765,
+    "startedAt": "2026-09-23T07:51:28.342Z",
+    "finishedAt": "2026-09-23T09:45:28.469Z",
+    "durationSeconds": 6840.127,
     "sources": {
       "active": 384,
       "attempted": 384,
-      "succeeded": 0,
-      "partial": 0,
-      "failed": 384,
+      "succeeded": 255,
+      "partial": 35,
+      "failed": 94,
       "timedOut": 0
     },
-    "captureBatches": 0,
-    "rawCaptures": 0,
-    "sourceExtractions": 0,
-    "ingestionCompletions": 0,
+    "sourceClassification": "Mutually exclusive SourceRun statuses: OK/NEW, DEGRADED, BROKEN/ERROR/TIMEOUT/CHALLENGED. Orchestrator execution counters below have a different definition.",
+    "orchestrator": {
+      "completed": true,
+      "outcome": "COMPLETED_WITH_ERRORS",
+      "sources": {
+        "total": 384,
+        "failed": 120,
+        "timedOut": 0,
+        "processed": 384,
+        "succeeded": 264
+      },
+      "incidents": {
+        "total": 95,
+        "broken": 60,
+        "degraded": 35,
+        "evidence": "SourceRun"
+      }
+    },
+    "accessMaintenance": {
+      "attempted": 384,
+      "causes": {
+        "ACCESS_MISSING": 38,
+        "ACCESS_STALE": 346
+      },
+      "allowed": 350,
+      "blockedIndividually": 34,
+      "staleOrMissingAdmissionFailuresAfterMaintenance": 0
+    },
+    "captureBatches": 1098,
+    "captureBatchesByPurpose": {
+      "JOBS": 734,
+      "SOURCE_ACCESS": 364
+    },
+    "rawCaptures": 74818,
+    "sourceExtractions": 120421,
+    "captureCountScope": "Qualification and normal ingestion belonging to this same run; these are not unique offers.",
+    "ingestionCompletions": 346,
     "ingestion": {
-      "fetched": 0,
-      "created": 0,
-      "updated": 0,
-      "errors": 384,
-      "held": 0,
-      "merged": 0
+      "fetched": 41922,
+      "created": 11791,
+      "updated": 20883,
+      "merged": 63,
+      "held": 157,
+      "errors": 9032
     },
-    "geocode": {
-      "pending": 3901,
-      "lookedUp": 470,
-      "remaining": 0,
-      "jobsLocated": 3762
+    "sealedCompletionTotals": {
+      "published": 32737,
+      "held": 157,
+      "writeFailed": 9028,
+      "skipped": 0
     },
-    "sourceAdmissionErrors": {
-      "ACCESS_STALE": 346,
-      "ACCESS_MISSING": 38
-    },
-    "errorEvents": 385,
-    "pipelineHeartbeat": "pinged; terminal failure reported",
-    "healthAlertSent": true,
-    "httpByHost": [
+    "errorEvents": 9067,
+    "errorEventInterpretation": "9028 rejected job writes + 4 ingestion failures + 34 qualification failures + 1 aggregate command.failed event. The aggregate event is not another source incident.",
+    "errorClasses": [
       {
-        "host": "api-adresse.data.gouv.fr",
-        "maxMs": 2397,
-        "p50Ms": 74,
-        "p95Ms": 206,
-        "errors": 0,
-        "retries": 0,
-        "attempts": 461,
-        "statuses": {
-          "200": 461
-        },
-        "timeouts": 0,
-        "responses": 461,
-        "bytesDeclared": null,
-        "requestsPerSecond": 2.78,
-        "responsesWithoutLength": 461
+        "event": "job.write_failed",
+        "reason": "PORTAL_OWNER_NOT_CERTIFIED",
+        "count": 5677,
+        "sources": 25
+      },
+      {
+        "event": "job.write_failed",
+        "reason": "SOURCE_NEVER_PUBLISHED_FOR_HOUSE",
+        "count": 2846,
+        "sources": 48
+      },
+      {
+        "event": "job.write_failed",
+        "reason": "EMPLOYER_TARGET_MISMATCH",
+        "count": 504,
+        "sources": 13
+      },
+      {
+        "event": "source.failed",
+        "reason": "CAPTURE_NOT_VALIDATED",
+        "count": 32,
+        "sources": 32
+      },
+      {
+        "event": "source.ingest_failed",
+        "reason": "CAPTURE_NOT_VALIDATED",
+        "count": 3,
+        "sources": 3
+      },
+      {
+        "event": "source.ingest_failed",
+        "reason": "HttpStatusError",
+        "count": 1,
+        "sources": 1
+      },
+      {
+        "event": "job.write_failed",
+        "reason": "EMPLOYER_SPELLING_DIVERGED",
+        "count": 1,
+        "sources": 1
+      },
+      {
+        "event": "source.failed",
+        "reason": "ACCESS_INVALID",
+        "count": 1,
+        "sources": 1
+      },
+      {
+        "event": "source.failed",
+        "reason": "TypeError",
+        "count": 1,
+        "sources": 1
       }
     ],
-    "persistenceFailures": 0
+    "geocode": {
+      "pending": 4556,
+      "lookedUp": 175,
+      "remaining": 0,
+      "jobsLocated": 4332
+    },
+    "pipelineHeartbeat": "pinged",
+    "terminalHeartbeatSignal": "fail: source incidents are not masked as success",
+    "healthAlertSent": true,
+    "persistenceFailures": 0,
+    "systemicPipelineFailureObserved": false
   },
   "publicApiSmoke": {
-    "health": 200,
-    "withoutKey": 401,
+    "health": {
+      "status": 200
+    },
+    "withoutKey": {
+      "status": 401
+    },
     "FR": {
       "status": 200,
-      "total": 4440,
-      "countries": [
-        "FR"
-      ]
+      "total": 6610,
+      "market": "FR",
+      "returned": 25
     },
     "US": {
       "status": 200,
-      "total": 18287,
-      "countries": [
-        "US"
-      ]
+      "total": 23966,
+      "market": "US",
+      "returned": 25
     }
   },
   "interpretation": [
-    "All 384 ACTIVE sources reached their admission checks. None could collect; no captures or extractions were created.",
-    "The source access gate requires evidence for the current source revision and reader. 346 decisions are stale and 38 missing. Later technical validation gates were not reached.",
-    "The normal existing GEO phase ran after the source pass: 3762 offers were geolocated. This is separate from zero ingestion updates; no GEO code or rule was changed.",
-    "The process completed naturally with errors before the pause deployment took over; it was not recorded as INTERRUPTED.",
-    "No admission bypass, evidence renewal, migration, historical repair, matching or Direct Offers change. No cron enabled."
+    "The former 384/384 admission blocker is resolved by the existing qualification mechanism; no guard or decision was bypassed.",
+    "Every ACTIVE source was attempted and the process finished naturally. Individual capture, access and employer-publication refusals remain visible.",
+    "Normal cron is authorized despite individual source incidents, per the owner decision. COMPLETED_WITH_ERRORS and exit code 1 remain honest operational signals; they are not reclassified as COMPLETED.",
+    "The existing GEO phase located 4332 offers. No GEO code, schema, historical repair, matching, Direct Offers or product filter change.",
+    "The catalogue still has source-quality work: 94 failed and 35 partial sources. Enabling normal operation does not certify those sources."
   ],
-  "sourceFailures": [
-    {
-      "sourceKey": "585-gold",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "a-derma-4",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "abercrombie",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "ackermans",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "acne-studios-jobylon",
-      "code": "ACCESS_MISSING"
-    },
-    {
-      "sourceKey": "adidas",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "adopt-parfums",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "aeropostale",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "aeyde",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "aigle",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "aim-n",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "aime-leon-dore",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "akira",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "alpha-industries",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "american-vintage-dr",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "annoushka",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "aptar-beauty",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "arcteryx",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "aritzia",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "armand-thiery-flatchr",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "aroma-zone",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "asics",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "asket",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "asos",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "attaquer",
-      "code": "ACCESS_MISSING"
-    },
-    {
-      "sourceKey": "avolta",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "axel-arigato",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "b-s-international",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "ballantynes",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "balmain",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "baron",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "bash-talents",
-      "code": "ACCESS_MISSING"
-    },
-    {
-      "sourceKey": "beauty-success-geodir",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "beiersdorf",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "bella-canvas",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "bellabeat",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "bellroy",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "belstaff",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "bernadette",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "bespoke-post",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "blacks",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "blackstore",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "bloom",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "bloomingdales-oracle",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "blue-banana",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "blueland",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "boardriders",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "boggi-milano",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "bombas",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "boots",
-      "code": "ACCESS_MISSING"
-    },
-    {
-      "sourceKey": "bravissimo",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "breitling-sf",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "brilliant-earth",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "brothers",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "brown-thomas-taleo",
-      "code": "ACCESS_MISSING"
-    },
-    {
-      "sourceKey": "browns",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "browns-shoes",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "brunello-cucinelli",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "bubble",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "buck-mason",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "buff",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "burberry",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "burnt",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "bzb",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "cabaia",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "cambio",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "camper",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "canada-goose",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "capri-jimmy-choo",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "capri-michael-kors",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "castore",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "catbird",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "celio",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "chalhoub",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "chico-s",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "chisholm-hunter",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "chrome",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "city-beauty",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "claires-workday",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "clarins",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "clarkson-eyecare",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "closed",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "club-l-london",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "club-monaco",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "conde-nast-france",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "courir",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "cove",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "crocs",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "cuyana",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "cynthia-rowley",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "damart",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "damiani",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "decjuba",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "deckers",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "dfs",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "diptyque-workday",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "dolce-gabbana",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "dolls-kill",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "dr-martens-tf",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "dr-pierre-ricaud",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "drunk-elephant-2",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "dune-london",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "eastpak",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "el-palacio-de-hierro",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "element-6",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "end-clothing",
-      "code": "ACCESS_MISSING"
-    },
-    {
-      "sourceKey": "ephemera",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "eram-3",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "eric-bompard",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "escada-parfums-16",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "essilorluxottica",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "estee-lauder-companies",
-      "code": "ACCESS_MISSING"
-    },
-    {
-      "sourceKey": "etam",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "eurofragrance",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "everlane",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "everything-but-water",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "faguo",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "fast-retailing-id-headquarters",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "fast-retailing-ph-headquarters",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "fenwick-volcanic",
-      "code": "ACCESS_MISSING"
-    },
-    {
-      "sourceKey": "ferrari",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "figs",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "filson",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "fitflop",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "fjallraven",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "foot-locker-france",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "frank-darling",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "fred-perry",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "funky-buddha",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "g-label-by-goop",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "galeries-lafayette",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "ganni-talentrecruiter",
-      "code": "ACCESS_MISSING"
-    },
-    {
-      "sourceKey": "gant",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "georges",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "glitter",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "globus",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "glossier",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "go-outdoors",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "good-american",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "gorjana",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "got-bag",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "goyard-successfactors",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "groundies",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "groupe-chantelle",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "groupe-printemps",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "gu-hk-headquarters",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "gu-us-headquarters",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "gu-us-retail",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "gymshark",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "hanna-andersson",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "hans-anders",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "happy-socks",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "herschel-supply-co",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "hm-group",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "hoff",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "honey-birdette",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "horace",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "hot-topic",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "hugo-boss-phenom",
-      "code": "ACCESS_MISSING"
-    },
-    {
-      "sourceKey": "ilia",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "indiska",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "innisfree",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "intersport",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "intersport-france",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "it-s-fashion",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "j-lindeberg",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "jansport",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "jd-sports",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "jean-paul-gaultier-5",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "jeans-centre",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "jewells",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "joe-fresh",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "john-henric",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "jojo-maman-bebe",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "jonsson-workwear",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "julie-grace",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "kapten-son",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "karla-otto",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "kastner-ohler",
-      "code": "ACCESS_MISSING"
-    },
-    {
-      "sourceKey": "kate-mcleod",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "katie-loxton",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "kering",
-      "code": "ACCESS_MISSING"
-    },
-    {
-      "sourceKey": "kiabi",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "kicks",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "kidzart",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "kiko-milano",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "killstar",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "klattermusen",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "knitwell-us-corporate",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "knitwell-us-distribution",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "knitwell-us-retail",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "kult-olymp-hades",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "l-occitane-en-provence-2",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "l-oreal-professionnel",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "la-casa-de-las-carcasas",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "la-fee-maraboutee",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "la-prairie",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "la-redoute-talentview",
-      "code": "ACCESS_MISSING"
-    },
-    {
-      "sourceKey": "la-senza",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "lacoste",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "lagardere-duty-free",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "lagardere-travel-retail",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "lagardere-travel-retail-de",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "lager-157",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "laverana-gmbh-co-kg",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "lavish-alice",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "lensa",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "lerros",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "levis",
-      "code": "ACCESS_MISSING"
-    },
-    {
-      "sourceKey": "lexington",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "lindex-easycruit",
-      "code": "ACCESS_MISSING"
-    },
-    {
-      "sourceKey": "little-words-project",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "loccitane-fr",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "longchamp",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "loplabbet",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "lounge",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "lovable",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "lovisa",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "lucy-yak",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "luhta",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "lumentee",
-      "code": "ACCESS_MISSING"
-    },
-    {
-      "sourceKey": "lush",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "luxe-talent",
-      "code": "ACCESS_MISSING"
-    },
-    {
-      "sourceKey": "luxexperience",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "lvmh",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "madame-figaro",
-      "code": "ACCESS_MISSING"
-    },
-    {
-      "sourceKey": "madewell",
-      "code": "ACCESS_MISSING"
-    },
-    {
-      "sourceKey": "madhappy",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "magasin-du-nord",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "maison-123",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "maison-margiela",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "mango",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "marc-o-polo",
-      "code": "ACCESS_MISSING"
-    },
-    {
-      "sourceKey": "margaret-howell",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "mascot-workwear",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "mecca",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "medik8",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "mejuri",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "merkal",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "merz-b-schwanen",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "miu-miu",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "molton-brown",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "monica-vinader",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "motel",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "movado",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "mq-marqet",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "mr-marvis",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "ms-mode",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "mulberry",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "multiopticas",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "mvmt",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "my-jewellery",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "naos",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "nars",
-      "code": "ACCESS_MISSING"
-    },
-    {
-      "sourceKey": "naturkompaniet",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "new-balance",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "nike",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "nike-nke2",
-      "code": "ACCESS_MISSING"
-    },
-    {
-      "sourceKey": "nikin",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "nocibe-eqwa",
-      "code": "ACCESS_MISSING"
-    },
-    {
-      "sourceKey": "nordstrom",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "normal",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "nude-project",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "nudie-jeans",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "nutrafol",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "nutrire",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "oak-essentials",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "oh-my-cream",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "oh-polly",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "olaplex",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "on-running",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "orlebar-brown",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "ortovox",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "ounass",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "pandora-talenthub",
-      "code": "ACCESS_MISSING"
-    },
-    {
-      "sourceKey": "parachute",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "parco",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "parfums-chanel",
-      "code": "ACCESS_MISSING"
-    },
-    {
-      "sourceKey": "passage-du-desir",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "patek-philippe",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "peacocks",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "peak-performance",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "pegador",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "penningtons",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "pepco",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "petrol-industries",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "pga-tour-superstore",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "point-zero",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "prada-group",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "primark",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "printful",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "prisma-media",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "profil-optik",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "profuomo",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "pronovias",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "pvh",
-      "code": "ACCESS_MISSING"
-    },
-    {
-      "sourceKey": "quince",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "ralph-lauren-avature",
-      "code": "ACCESS_MISSING"
-    },
-    {
-      "sourceKey": "realself",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "rebag",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "reformation",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "richemont",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "richemont-workday",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "rituals",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "riu-paris",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "rivoli-typesense",
-      "code": "ACCESS_MISSING"
-    },
-    {
-      "sourceKey": "rolex",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "sabon",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "sacoor-brothers",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "saffron",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "saks",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "salomon",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "saltrock-harri",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "selfridges",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "sephora-france",
-      "code": "ACCESS_MISSING"
-    },
-    {
-      "sourceKey": "sezane",
-      "code": "ACCESS_MISSING"
-    },
-    {
-      "sourceKey": "shein",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "shinola",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "shinola-retail",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "silbon",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "singularu",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "sisley",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "skechers-phenom",
-      "code": "ACCESS_MISSING"
-    },
-    {
-      "sourceKey": "skin-laundry",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "space-nk",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "spinelli-kilcollin",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "ssense",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "stanley-stella",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "state-of-art",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "stella-mccartney",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "subset",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "suitsupply",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "supergoop",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "swarovski",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "swatch-group",
-      "code": "ACCESS_MISSING"
-    },
-    {
-      "sourceKey": "tapestry",
-      "code": "ACCESS_MISSING"
-    },
-    {
-      "sourceKey": "taylor-stitch",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "tekla",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "the-kooples",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "theory-eu",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "theory-us-retail",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "therealreal",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "thirdlove",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "thomas-sabo",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "tiffany-oracle",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "tiger-of-sweden",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "tods",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "tom-wood",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "toscane",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "toteme",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "tropicfeel",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "trussardi",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "typology",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "ulta-jibe",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "undiz",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "uniqlo-au-graduates",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "uniqlo-au-stores",
-      "code": "ACCESS_MISSING"
-    },
-    {
-      "sourceKey": "uniqlo-graduates",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "uniqlo-headquarters",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "uniqlo-hkm-headquarters",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "uniqlo-my-headquarters",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "uniqlo-stores",
-      "code": "ACCESS_MISSING"
-    },
-    {
-      "sourceKey": "uniqlo-th-headquarters",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "uniqlo-us-headquarters",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "uniqlo-us-retail",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "uniqlo-vn-headquarters",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "united-colors-of-benetton",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "urbn-hub",
-      "code": "ACCESS_MISSING"
-    },
-    {
-      "sourceKey": "valentino",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "velvet-canyon",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "veronica-beard",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "versace",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "vestiaire-collective",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "vf-corporation",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "visionlab",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "vivienne-westwood",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "vivobarefoot",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "vlisco",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "wehkamp",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "white-stuff",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "wttj-sector",
-      "code": "ACCESS_MISSING"
-    },
-    {
-      "sourceKey": "yema",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "yse-paris",
-      "code": "ACCESS_STALE"
-    },
-    {
-      "sourceKey": "zegna-altamira",
-      "code": "ACCESS_MISSING"
-    }
-  ]
+  "previousRun": {
+    "id": "c4c32dcb-e824-4537-8e3b-e84219f88951",
+    "sourceSha": "19d9f1c436cef7efec744e666090dd8b625933cb",
+    "attempted": 384,
+    "succeeded": 0,
+    "failures": {
+      "ACCESS_STALE": 346,
+      "ACCESS_MISSING": 38
+    },
+    "originalReportGitCommit": "d7f5245"
+  },
+  "sourceOutcomes": {
+    "BROKEN": [
+      "abercrombie",
+      "aeropostale",
+      "aeyde",
+      "annoushka",
+      "asos",
+      "beauty-success-geodir",
+      "bloomingdales-oracle",
+      "breitling-sf",
+      "buff",
+      "clarins",
+      "cove",
+      "crocs",
+      "decjuba",
+      "dolce-gabbana",
+      "dr-martens-tf",
+      "escada-parfums-16",
+      "essilorluxottica",
+      "everything-but-water",
+      "fenwick-volcanic",
+      "fred-perry",
+      "galeries-lafayette",
+      "goyard-successfactors",
+      "groundies",
+      "groupe-chantelle",
+      "groupe-printemps",
+      "gu-us-headquarters",
+      "gu-us-retail",
+      "hans-anders",
+      "hm-group",
+      "hot-topic",
+      "jansport",
+      "julie-grace",
+      "la-fee-maraboutee",
+      "lagardere-duty-free",
+      "lagardere-travel-retail",
+      "lagardere-travel-retail-de",
+      "lexington",
+      "loplabbet",
+      "l-oreal-professionnel",
+      "lucy-yak",
+      "luxe-talent",
+      "madewell",
+      "margaret-howell",
+      "movado",
+      "mq-marqet",
+      "patek-philippe",
+      "pegador",
+      "penningtons",
+      "pepco",
+      "rituals",
+      "rolex",
+      "saks",
+      "tiffany-oracle",
+      "toteme",
+      "tropicfeel",
+      "uniqlo-au-graduates",
+      "uniqlo-au-stores",
+      "uniqlo-graduates",
+      "uniqlo-headquarters",
+      "uniqlo-hkm-headquarters"
+    ],
+    "DEGRADED": [
+      "aritzia",
+      "beiersdorf",
+      "blackstore",
+      "browns",
+      "brunello-cucinelli",
+      "canada-goose",
+      "capri-jimmy-choo",
+      "capri-michael-kors",
+      "claires-workday",
+      "conde-nast-france",
+      "dr-pierre-ricaud",
+      "element-6",
+      "eram-3",
+      "etam",
+      "foot-locker-france",
+      "ilia",
+      "indiska",
+      "intersport-france",
+      "la-redoute-talentview",
+      "lvmh",
+      "mango",
+      "mecca",
+      "new-balance",
+      "nike",
+      "nordstrom",
+      "normal",
+      "on-running",
+      "stanley-stella",
+      "stella-mccartney",
+      "theory-us-retail",
+      "therealreal",
+      "thomas-sabo",
+      "uniqlo-stores",
+      "valentino",
+      "versace"
+    ],
+    "ERROR": [
+      "adidas",
+      "attaquer",
+      "bash-talents",
+      "bernadette",
+      "boots",
+      "brown-thomas-taleo",
+      "cuyana",
+      "end-clothing",
+      "estee-lauder-companies",
+      "hugo-boss-phenom",
+      "kastner-ohler",
+      "kering",
+      "levis",
+      "lindex-easycruit",
+      "lumentee",
+      "madame-figaro",
+      "marc-o-polo",
+      "nars",
+      "nocibe-eqwa",
+      "pandora-talenthub",
+      "parfums-chanel",
+      "pvh",
+      "ralph-lauren-avature",
+      "richemont-workday",
+      "rivoli-typesense",
+      "skechers-phenom",
+      "swarovski",
+      "swatch-group",
+      "tapestry",
+      "ulta-jibe",
+      "urbn-hub",
+      "vf-corporation",
+      "wttj-sector",
+      "zegna-altamira"
+    ],
+    "OK": [
+      "585-gold",
+      "ackermans",
+      "acne-studios-jobylon",
+      "a-derma-4",
+      "adopt-parfums",
+      "aigle",
+      "aime-leon-dore",
+      "aim-n",
+      "akira",
+      "alpha-industries",
+      "american-vintage-dr",
+      "aptar-beauty",
+      "arcteryx",
+      "armand-thiery-flatchr",
+      "aroma-zone",
+      "asics",
+      "asket",
+      "avolta",
+      "axel-arigato",
+      "ballantynes",
+      "balmain",
+      "baron",
+      "bellabeat",
+      "bella-canvas",
+      "bellroy",
+      "belstaff",
+      "bespoke-post",
+      "blacks",
+      "bloom",
+      "blue-banana",
+      "blueland",
+      "boardriders",
+      "boggi-milano",
+      "bombas",
+      "bravissimo",
+      "brilliant-earth",
+      "brothers",
+      "browns-shoes",
+      "b-s-international",
+      "bubble",
+      "buck-mason",
+      "burberry",
+      "burnt",
+      "bzb",
+      "cabaia",
+      "cambio",
+      "camper",
+      "castore",
+      "catbird",
+      "celio",
+      "chalhoub",
+      "chico-s",
+      "chisholm-hunter",
+      "chrome",
+      "city-beauty",
+      "clarkson-eyecare",
+      "closed",
+      "club-l-london",
+      "club-monaco",
+      "courir",
+      "cynthia-rowley",
+      "damart",
+      "damiani",
+      "deckers",
+      "dfs",
+      "diptyque-workday",
+      "dolls-kill",
+      "drunk-elephant-2",
+      "dune-london",
+      "eastpak",
+      "el-palacio-de-hierro",
+      "ephemera",
+      "eric-bompard",
+      "eurofragrance",
+      "everlane",
+      "faguo",
+      "fast-retailing-id-headquarters",
+      "fast-retailing-ph-headquarters",
+      "ferrari",
+      "figs",
+      "filson",
+      "fitflop",
+      "fjallraven",
+      "frank-darling",
+      "funky-buddha",
+      "ganni-talentrecruiter",
+      "gant",
+      "georges",
+      "g-label-by-goop",
+      "glitter",
+      "globus",
+      "glossier",
+      "good-american",
+      "go-outdoors",
+      "gorjana",
+      "got-bag",
+      "gu-hk-headquarters",
+      "gymshark",
+      "hanna-andersson",
+      "happy-socks",
+      "herschel-supply-co",
+      "hoff",
+      "honey-birdette",
+      "horace",
+      "innisfree",
+      "intersport",
+      "it-s-fashion",
+      "jd-sports",
+      "jean-paul-gaultier-5",
+      "jeans-centre",
+      "jewells",
+      "j-lindeberg",
+      "joe-fresh",
+      "john-henric",
+      "jojo-maman-bebe",
+      "jonsson-workwear",
+      "kapten-son",
+      "karla-otto",
+      "kate-mcleod",
+      "katie-loxton",
+      "kiabi",
+      "kicks",
+      "kidzart",
+      "kiko-milano",
+      "killstar",
+      "klattermusen",
+      "knitwell-us-corporate",
+      "knitwell-us-distribution",
+      "knitwell-us-retail",
+      "kult-olymp-hades",
+      "la-casa-de-las-carcasas",
+      "lacoste",
+      "lager-157",
+      "la-prairie",
+      "la-senza",
+      "laverana-gmbh-co-kg",
+      "lavish-alice",
+      "lensa",
+      "lerros",
+      "little-words-project",
+      "l-occitane-en-provence-2",
+      "loccitane-fr",
+      "longchamp",
+      "lounge",
+      "lovable",
+      "lovisa",
+      "luhta",
+      "lush",
+      "luxexperience",
+      "madhappy",
+      "magasin-du-nord",
+      "maison-123",
+      "maison-margiela",
+      "mascot-workwear",
+      "medik8",
+      "mejuri",
+      "merkal",
+      "merz-b-schwanen",
+      "miu-miu",
+      "molton-brown",
+      "monica-vinader",
+      "motel",
+      "mr-marvis",
+      "ms-mode",
+      "mulberry",
+      "multiopticas",
+      "mvmt",
+      "my-jewellery",
+      "naos",
+      "naturkompaniet",
+      "nike-nke2",
+      "nikin",
+      "nude-project",
+      "nudie-jeans",
+      "nutrafol",
+      "nutrire",
+      "oak-essentials",
+      "oh-my-cream",
+      "oh-polly",
+      "olaplex",
+      "orlebar-brown",
+      "ortovox",
+      "ounass",
+      "parachute",
+      "parco",
+      "passage-du-desir",
+      "peacocks",
+      "peak-performance",
+      "petrol-industries",
+      "pga-tour-superstore",
+      "point-zero",
+      "prada-group",
+      "primark",
+      "printful",
+      "prisma-media",
+      "profil-optik",
+      "profuomo",
+      "pronovias",
+      "quince",
+      "realself",
+      "rebag",
+      "reformation",
+      "richemont",
+      "riu-paris",
+      "sabon",
+      "sacoor-brothers",
+      "saffron",
+      "salomon",
+      "saltrock-harri",
+      "selfridges",
+      "sephora-france",
+      "sezane",
+      "shein",
+      "shinola",
+      "shinola-retail",
+      "silbon",
+      "singularu",
+      "sisley",
+      "skin-laundry",
+      "space-nk",
+      "spinelli-kilcollin",
+      "ssense",
+      "state-of-art",
+      "subset",
+      "suitsupply",
+      "supergoop",
+      "taylor-stitch",
+      "tekla",
+      "the-kooples",
+      "theory-eu",
+      "thirdlove",
+      "tiger-of-sweden",
+      "tods",
+      "tom-wood",
+      "toscane",
+      "trussardi",
+      "typology",
+      "undiz",
+      "uniqlo-my-headquarters",
+      "uniqlo-th-headquarters",
+      "uniqlo-us-headquarters",
+      "uniqlo-us-retail",
+      "uniqlo-vn-headquarters",
+      "united-colors-of-benetton",
+      "velvet-canyon",
+      "veronica-beard",
+      "vestiaire-collective",
+      "visionlab",
+      "vivienne-westwood",
+      "vivobarefoot",
+      "vlisco",
+      "wehkamp",
+      "white-stuff",
+      "yema",
+      "yse-paris"
+    ]
+  }
 }
