@@ -9,7 +9,7 @@ import { captureReaderRevision } from '../capture/revision.js';
 import { CRAWLER_IDENTITY } from '../lib/crawlerIdentity.js';
 import { accessDecision, OWNER_DECISION_AT, OWNER_DECISION_SCOPE, type RobotsObserved } from '../lib/accessDecision.js';
 import { robotsVerdictFor } from '../lib/robotsVerdict.js';
-import { detectChallenge } from '../lib/responseIntegrity.js';
+import { readRobotsResponse } from '../lib/robotsResponse.js';
 import { evidenceHash } from '../lib/evidenceHash.js';
 import { invalidAccess, matchingAccessScope, recentAccess, SOURCE_ACCESS_MAX_AGE_MS, SOURCE_ACCESS_POLICY, type AccessDocument } from './accessScope.js';
 
@@ -22,7 +22,7 @@ export type AccessEvidenceReport = {
   authorizationBasis: 'OWNER_SECTOR_AUTHORIZATION'; ownerDecisionScope: string; ownerDecisionAt: string;
   scopeCounts: number[]; observations: Observations;
   robots: { captureBatchId: string; origin: string; responseId: string; bodyHash: string; observedAt: string;
-    status: number; observationKind: 'RULES' | 'NO_ROBOTS' | 'UNREACHABLE'; observations: Observations }[];
+    status: number; observationKind: 'RULES' | 'NO_ROBOTS' | 'UNREACHABLE'; nonStandardResponse?: boolean; observations: Observations }[];
 };
 
 /** Native HTTP journal only. The reviewer classifies the public surfaces;
@@ -56,17 +56,12 @@ export async function inspectSourceAccess(db: PrismaClient, document: Readonly<A
       if (!data || data.origin !== 'HTTP_TRANSPORT' || data.hops.length !== 1 || data.hops[0].request.userAgent !== CRAWLER_IDENTITY) return invalidAccess('Robots capture requires observed collector identity on every redirect');
     }
     const last = evidence.responses.at(-1)!;
-    let text: string | null = null;
-    let kind: 'RULES' | 'NO_ROBOTS' | 'UNREACHABLE' = [404, 410].includes(last.status!) ? 'NO_ROBOTS' : 'UNREACHABLE';
-    if (last.status === 200) {
-      if (evidence.body.length > 512_000 || !/^text\/plain(?:\s*;|\s*$)/i.test(String((last.headers as Record<string, unknown>)['content-type'] ?? ''))) return invalidAccess('Robots response requires bounded plain text, not a portal or challenge page');
-      try { text = new TextDecoder('utf-8', { fatal: true }).decode(evidence.body); }
-      catch { return invalidAccess('Robots body is not valid UTF-8'); }
-      if (detectChallenge(new Response(null, { status: 200 }), text) || /<\s*(?:!doctype|html|script|body)\b/i.test(text)) return invalidAccess('Robots response contains an HTML or challenge document');
-      kind = 'RULES';
-    }
+    let reading: ReturnType<typeof readRobotsResponse>;
+    try { reading = readRobotsResponse(last.status!, last.headers as Record<string, unknown>, evidence.body); }
+    catch (error) { return invalidAccess(`Robots observation unresolved: ${error instanceof Error ? error.message : 'reading failed'}`); }
+    const { kind, text, nonStandard } = reading;
     const item = { captureBatchId: id, origin: initial.origin, responseId: last.id, bodyHash: last.blobHash!,
-      observedAt: evidence.batch.startedAt.toISOString(), status: last.status!, observationKind: kind, observations: emptyObservations() };
+      observedAt: evidence.batch.startedAt.toISOString(), status: last.status!, observationKind: kind, nonStandardResponse: nonStandard, observations: emptyObservations() };
     report.robots.push(item); policies.set(initial.origin, { text, report: item });
     report.validUntil = new Date(Math.min(Date.parse(report.validUntil), evidence.batch.startedAt.getTime() + SOURCE_ACCESS_MAX_AGE_MS)).toISOString();
   }
@@ -95,7 +90,7 @@ export async function inspectSourceAccess(db: PrismaClient, document: Readonly<A
         let observed: RobotsObserved = policy.report.observationKind === 'RULES' ? 'UNREACHABLE' : policy.report.observationKind;
         if (policy.report.observationKind === 'RULES') {
           try { observed = robotsVerdictFor(policy.text, url.pathname + url.search); }
-          catch { observed = 'UNREACHABLE'; }
+          catch { return invalidAccess('Robots rules evaluation failed; no access decision can be issued'); }
         }
         if (accessDecision({ robotsObserved: observed, accessSurface: document.scopes[index].surface }).effectiveAccessDecision !== 'ALLOWED') return invalidAccess('Observed request is not covered by the owner authorization');
         report.scopeCounts[index]++; report.observations[observed]++; policy.report.observations[observed]++;

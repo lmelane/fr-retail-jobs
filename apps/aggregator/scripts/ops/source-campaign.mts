@@ -9,7 +9,7 @@ import { campaignArguments, selectCandidates, sourceQualificationRefusal } from 
  *   QUALIFIEE              identité vérifiée (lien exact de la page officielle vers le portail, portail servi sur le
  *                          domaine officiel, ou portail redirigé par son éditeur vers son hôte canonique sous ce domaine),
  *                          collecte native validée hors réseau, accès ALLOWED sur les requêtes réellement observées, source ACTIVE
- *   REFUSEE                robots ou périmètre : décision NOT_AUTHORIZED enregistrée, rien ne sera collecté
+ *   REFUSEE                source suspendue hors reprise explicite : rien ne sera collecté
  *   INACCESSIBLE           le portail ne répond pas (HTTP, délai, défi anti-robot)
  *   RETIREE                source RETIRED dans le registre, non ressuscitée
  *   BLOCAGE_EXTERNE        conflit d'enregistrement, ou pages officielles inaccessibles à la campagne (403/429/5xx,
@@ -251,7 +251,7 @@ async function qualifier(c: Candidat): Promise<Verdict> {
   catch (error) { raisons.unshift(`journal de collecte : ${message(error)}`); return rendre('COLLECTE_NON_VALIDEE', { revision, offres }); }
   let access; try { access = await qualifySourceAccess(db, c, revision, validation.captureBatchId, REVIEWER, etapes, store); }
   catch (error) { const m = message(error); raisons.unshift(`accès : ${m}`); return rendre(inaccessible(m) ? 'INACCESSIBLE' : 'COLLECTE_NON_VALIDEE', { revision, offres }); }
-  if (!access.allowed) { raisons.unshift(`accès : ${access.reason}`); return rendre(/not covered|DISALLOWED|robots/i.test(access.reason ?? '') ? 'REFUSEE' : 'COLLECTE_NON_VALIDEE', { revision, offres }); }
+  if (!access.allowed) { raisons.unshift(`accès : ${access.reason}`); return rendre(inaccessible(access.reason ?? '') ? 'INACCESSIBLE' : 'COLLECTE_NON_VALIDEE', { revision, offres }); }
   /*
    * L'IDENTITÉ NE BLOQUE PLUS LA QUALIFICATION (lot F5, 18/09/2026).
    *

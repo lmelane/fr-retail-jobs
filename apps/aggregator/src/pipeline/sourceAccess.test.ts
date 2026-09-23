@@ -103,13 +103,28 @@ describe('immutable native access decisions', () => {
     const proof = await captureSourceEvidence(db, source.key, { revisionId: source.currentRevisionId, purpose: 'SOURCE_ACCESS', url: origin + '/robots.txt', deadlineMs: 15000 });
     await expect(recordSourceAccessDecision(db, { ...document, robotsCaptureIds: [proof.captureBatchId] }, true)).rejects.toThrow();
   });
-  it('retains NO_ROBOTS and UNREACHABLE as distinct observations', async () => {
+  it('retains missing robots but blocks unresolved HTTP responses without an authorization', async () => {
     const { source, document } = await prepared();
     for (const [status, observation] of [[404, 'NO_ROBOTS'], [403, 'UNREACHABLE']] as const) {
       vi.stubGlobal('fetch', vi.fn(async () => new Response('Native response', { status })));
       const proof = await captureSourceEvidence(db, source.key, { revisionId: source.currentRevisionId, purpose: 'SOURCE_ACCESS', url: origin + '/robots.txt', deadlineMs: 15000 });
-      expect(await recordSourceAccessDecision(db, { ...document, robotsCaptureIds: [proof.captureBatchId] })).toMatchObject({ observations: { [observation]: 1 } });
+      const inspect = recordSourceAccessDecision(db, { ...document, robotsCaptureIds: [proof.captureBatchId] });
+      if (observation === 'NO_ROBOTS') expect(await inspect).toMatchObject({ observations: { NO_ROBOTS: 1 } });
+      else await expect(inspect).rejects.toThrow('unresolved');
     }
+  });
+  it.each(['User-agent: *\nDisallow: /', '<html><title>Jobs</title><body>Open vacancies</body></html>'])('follows five robots redirects and binds the result to the original origin', async body => {
+    const { source, document } = await prepared();
+    let calls = 0;
+    vi.stubGlobal('fetch', vi.fn(async () => ++calls <= 5
+      ? new Response(null, { status: 302, headers: { location: `${origin}/hop-${calls}` } })
+      : new Response(body, { headers: { 'content-type': body.startsWith('<') ? 'text/html' : 'text/plain' } })));
+    const proof = await captureSourceEvidence(db, source.key, { revisionId: source.currentRevisionId, purpose: 'SOURCE_ACCESS', url: origin + '/robots.txt', deadlineMs: 15000 });
+    expect(calls).toBe(6);
+    const result = await recordSourceAccessDecision(db, { ...document, robotsCaptureIds: [proof.captureBatchId], checkedAt: new Date().toISOString() }, true);
+    expect(result.observations).toMatchObject(body.startsWith('<') ? { ALLOWED: 1 } : { DISALLOWED: 1 });
+    const stored = await db.sourceAccessDecision.findUniqueOrThrow({ where: { id: result.decisionId } });
+    expect((stored.report as any).robots[0]).toMatchObject({ origin, nonStandardResponse: body.startsWith('<') });
   });
 });
 

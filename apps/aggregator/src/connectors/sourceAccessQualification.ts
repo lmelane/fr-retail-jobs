@@ -50,12 +50,9 @@ export async function qualifySourceAccess(db: PrismaClient, c: { key: string; ki
     return { allowed: false, reason: decision.reason ?? JSON.stringify(decision).slice(0, 300) };
   } catch (error) {
     const reason = message(error);
-    // Un refus robots ou un périmètre non couvert devient une décision NOT_AUTHORIZED explicite : rien ne sera collecté.
-    if (/not covered|DISALLOWED|robots/i.test(reason)) {
-      const denial = { sourceKey: c.key, sourceRevisionId: revision, captureBatchId: null, verdict: 'NOT_AUTHORIZED', robotsCaptureIds: [], scopes: [],
-        statement: `Accès refusé lors de la qualification : ${reason}`, reviewer, checkedAt: new Date().toISOString() };
-      try { etapes.decisionAcces = await recordSourceAccessDecision(db, denial as Parameters<typeof recordSourceAccessDecision>[1], true, store, expectedDecisionId); } catch (e) { etapes.decisionAccesErreur = message(e); }
-    }
+    // A failed inspection blocks this attempt. It is not an explicit revocation:
+    // do not turn a temporary HTTP/parser/scope error into a permanent denial.
+    // Existing explicit NOT_AUTHORIZED decisions remain authoritative.
     return { allowed: false, reason };
   }
 }

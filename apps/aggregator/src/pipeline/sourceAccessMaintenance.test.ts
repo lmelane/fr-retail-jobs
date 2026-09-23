@@ -104,10 +104,18 @@ describe('normal run maintains its access prerequisite through the Golden Path',
     await collect(source); expect(transport).toHaveBeenCalledTimes(3);
   });
 
-  it('keeps refused qualification blocked and never retries an explicit denial automatically', async () => {
+  it('leaves failed technical qualification retryable without fabricating a permanent denial', async () => {
     const source = await create(); native('<html>Sign in</html>');
     await expect(maintain(source)).rejects.toMatchObject({ code: 'ACCESS_INVALID' });
-    await expect(requireSourceAccess(db, source)).rejects.toMatchObject({ code: 'ACCESS_DENIED' });
+    await expect(requireSourceAccess(db, source)).rejects.toMatchObject({ code: 'ACCESS_MISSING' });
+    expect(await db.sourceAccessDecision.count({ where: { sourceKey: source.key } })).toBe(0);
+    native();
+    expect((await maintain(source)).renewed).toBe(true);
+    await expect(requireSourceAccess(db, source)).resolves.toMatchObject({ decision: { verdict: 'ALLOWED' } });
+  });
+
+  it('never retries an explicit denial automatically', async () => {
+    const source = await create(); await deny(source);
     const transport = native();
     await expect(maintain(source)).rejects.toMatchObject({ code: 'ACCESS_DENIED' });
     // A registry revision does not erase a refusal either.
