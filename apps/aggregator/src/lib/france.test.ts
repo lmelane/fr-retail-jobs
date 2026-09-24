@@ -52,4 +52,15 @@ describe('isFranceJob — location, when no country is given', () => {
     expect(isFranceJob(undefined, 'Milano, Italia')).toBe(false);
     expect(isFranceJob(undefined, 'New York')).toBe(false);
   });
+
+  it('does not turn a street named after a French place into a country proof', () => {
+    for (const place of ['Glenrothes, Lyon Square', 'Paris Street', 'Nice Road', 'France Avenue']) {
+      expect(isFranceJob(undefined, place), place).toBe(false);
+    }
+    // An independent country/city remains usable; do not discard the whole address.
+    expect(isFranceJob('FR', 'Lyon Square')).toBe(true);
+    expect(isFranceJob(undefined, 'Lyon Square, France')).toBe(true);
+    expect(isFranceJob(undefined, 'Paris, Oxford Street')).toBe(true);
+    expect(isFranceJob(undefined, 'Lyon Square, Lyon')).toBe(true);
+  });
 });

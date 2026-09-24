@@ -40,10 +40,12 @@ const FOREIGN_SIGNALS = [
 ];
 
 /** Whole-word match of any signal inside the normalized location. */
-function matchesAny(loc: string, signals: readonly string[]): boolean {
+function matchesAny(loc: string, signals: readonly string[], excludeStreetNames = false): boolean {
   return signals.some((signal) => {
     const escaped = signal.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    return new RegExp(`(?:^|[^A-Z0-9])${escaped}(?:[^A-Z0-9]|$)`).test(loc);
+    const matches = loc.matchAll(new RegExp(`(?:^|[^A-Z0-9])${escaped}(?=[^A-Z0-9]|$)`, 'g'));
+    return [...matches].some(match => !excludeStreetNames ||
+      !/^[\s-]+(?:SQUARE|STREET|ROAD|LANE|DRIVE|AVENUE|BOULEVARD|WAY|CRESCENT|CLOSE|TERRACE|COURT)\b/.test(loc.slice(match.index + match[0].length)));
   });
 }
 
@@ -70,5 +72,7 @@ export function isFranceJob(country?: string, location?: string): boolean {
 
   // A Paris postcode (75xxx) or any French signal as a whole word.
   if (/(?:^|[^0-9])75\d{3}(?:[^0-9]|$)/.test(loc)) return true;
-  return matchesAny(loc, FRENCH_SIGNALS);
+  // Boots names a street "Glenrothes, Lyon Square" in its native address.
+  // A French place used as a street name does not establish a country.
+  return matchesAny(loc, FRENCH_SIGNALS, true);
 }

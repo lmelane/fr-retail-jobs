@@ -22,6 +22,21 @@ async function fixture(historical = false, preciseCoordinates = false) {
 }
 
 describe('source facts across ingestion and reviewed repairs', () => {
+  it('keeps the country absent when a native street name contains a French city (Boots)', async () => {
+    const key = `boots-street-${randomUUID()}`;
+    await db.source.create({ data: { key, maison: key, kind: 'generic-listing', config: {}, tenantKey: key, tier: 'EMPLOYER_DIRECT' } });
+    const raw = { '@type': 'JobPosting', title: 'Pharmacist', jobLocation: { '@type': 'Place',
+      address: { '@type': 'PostalAddress', streetAddress: 'Glenrothes, Lyon Square', addressLocality: '-', addressRegion: '-', postalCode: '-' },
+      geo: { '@type': 'GeoCoordinates', latitude: '56.196137471', longitude: '-3.170018729' } } };
+    const { jobId } = await upsertDeduplicated(db, { company: key, companyId: key, sourceKey: key,
+      sourceTier: 'EMPLOYER_DIRECT', atsType: 'GENERIC_JSONLD', externalId: '273495BR', title: 'Pharmacist',
+      location: 'Glenrothes, Lyon Square', url: 'https://www.boots.jobs/jobs/273495br-pharmacist-glenrothes-lyon-square', raw });
+    const job = await db.job.findUniqueOrThrow({ where: { id: jobId }, include: { sources: true } });
+    expect(job.countryCode).toBeNull();
+    expect(job.latitude).toBe(56.196137471);
+    expect(job.sources[0].raw).toEqual(raw);
+  });
+
   it('preserves precise coordinates and produces no follow-up repair after applying them', async () => {
     const { key, jobId, publication } = await fixture(true, true);
     const plan = await planFactsRepair(db, [key]);
