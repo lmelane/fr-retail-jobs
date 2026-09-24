@@ -78,12 +78,14 @@ def main():
         return status, body, (time.monotonic() - started) * 1000
 
     def jobs(params):
+        request_started = dt.datetime.now(dt.timezone.utc).isoformat()
         status, body, elapsed = get('/api/jobs?' + urllib.parse.urlencode(params))
         rows = body.get('jobs', [])
         expected = {'GB': ['GB', 'IE'], 'DE': ['DE', 'AT']}.get(params['marche'], [params['marche']])
         now = dt.datetime.now(dt.timezone.utc)
         expired = [j['id'] for j in rows if j.get('validThrough') and dt.datetime.fromisoformat(j['validThrough'].replace('Z', '+00:00')) <= now]
         record = {'params': params, 'status': status, 'ms': round(elapsed, 2), 'total': body.get('total'),
+                  'startedAt': request_started, 'endedAt': dt.datetime.now(dt.timezone.utc).isoformat(),
                   'ids': [j['id'] for j in rows], 'uncoded': sum(not j.get('occupationCode') for j in rows),
                   'outsideMarket': sum(j.get('countryCode') not in expected for j in rows),
                   'expired': expired, 'withdrawn': [j['id'] for j in rows if j.get('withdrawnAt')],

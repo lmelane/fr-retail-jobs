@@ -17,6 +17,11 @@ class GuardTest(unittest.TestCase):
     def test_low_traffic_is_not_a_latency_verdict(self):
         self.assertFalse(assess({'searchSamples': 4, 'p95Ms': 3000}, POLICY)['benchmarkRequired'])
 
+    def test_invalid_quality_is_not_a_passing_score(self):
+        result = assess({'precisionAtAvailable20': 1.2, 'ndcgAt20': 85}, POLICY)
+        self.assertIn('precisionAtAvailable20', result['unknown'])
+        self.assertIn('ndcgAt20', result['unknown'])
+
     def test_sustained_cpu_requires_consecutive_samples(self):
         self.assertFalse(assess({'cpuFractions': [.9, .1, .9, .9]}, POLICY)['benchmarkRequired'])
         self.assertIn('cpuFractions', assess({'cpuFractions': [.1, .9, .9, .9]}, POLICY)['reasons'])

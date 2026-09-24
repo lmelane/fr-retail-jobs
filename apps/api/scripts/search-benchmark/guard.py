@@ -44,11 +44,13 @@ def assess(observed, policy):
     elif any(all(v > policy['cpuMaxFraction'] for v in cpu[i:i+n]) for i in range(len(cpu)-n+1)):
         reasons.append('cpuFractions')
     precision = number('precisionAtAvailable20')
-    if precision is not None and precision < policy['precisionMin']:
-        reasons.append('precisionAtAvailable20')
     ndcg = number('ndcgAt20')
-    if ndcg is not None and ndcg < policy['ndcgMin']:
-        reasons.append('ndcgAt20')
+    for key, value, minimum in [('precisionAtAvailable20', precision, policy['precisionMin']), ('ndcgAt20', ndcg, policy['ndcgMin'])]:
+        if value is not None:
+            if value > 1:
+                unknown.append(key)
+            elif value < minimum:
+                reasons.append(key)
     return {'benchmarkRequired': bool(reasons), 'reasons': reasons,
             'unknown': sorted(set(unknown)), 'policyVersion': policy['version']}
 
