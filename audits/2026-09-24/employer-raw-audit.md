@@ -242,3 +242,11 @@ Fichiers privés du même dossier : `measure-corrections.mts`,
 `rules-reviewed.private.json`, `corrections-details.private.json`,
 `corrections-summary.json`. Empreinte stable des règles examinées :
 `bce8852a5b8d8783ee5a7be4f5c721b9750f37dd534562948a0ec61ef7b0a485`.
+
+### Livraison du code générique, 24 septembre 2026
+
+Le code testé est désormais livré sur l'API et le worker au SHA `f10e1f2` ;
+[reçu et validation Railway](search-railway.md). Les configurations de règles
+natives et les alias cités ci-dessus n'ont pas été activés par ce lot de recherche.
+Les gains d'extraction hors réseau ne sont donc toujours pas comptés comme des
+publications acquises. La qualification source par source reste l'étape suivante.

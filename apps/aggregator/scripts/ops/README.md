@@ -8,7 +8,7 @@ Le [runbook de livraison](../../../../docs/architecture/railway-runtime-reset.md
 
 Le worker courant passe par `sh apps/aggregator/start.sh` et applique le contrat de runtime et la pause. Les lectures de runs et de preuves restent disponibles dans les outils ci-dessous ; elles ne déclenchent pas une livraison.
 
-`railway_api.py` reste le transport de [`recuperer-tous-verdicts.py`](recuperer-tous-verdicts.py), lecteur **historique** des logs de l'ancien aggregator. Ce lecteur ne décrit pas les nouveaux services. L'accès aux anciens logs après suppression du service n'est pas garanti ; les verdicts déjà archivés restent dans le stockage privé. [`exporter-domaines-divergents.mts`](exporter-domaines-divergents.mts) relit cette archive privée, `backups/verdicts-campagne.json`. Aucun secret n'est chargé depuis un exécutable privé.
+`railway_api.py` est le transport partagé des mesures Railway du [benchmark de recherche](../../../api/scripts/search-benchmark/README.md) et de [`recuperer-tous-verdicts.py`](recuperer-tous-verdicts.py), lecteur **historique** des logs de l'ancien aggregator. Ce lecteur ne décrit pas les nouveaux services. L'accès aux anciens logs après suppression du service n'est pas garanti ; les verdicts déjà archivés restent dans le stockage privé. [`exporter-domaines-divergents.mts`](exporter-domaines-divergents.mts) relit cette archive privée, `backups/verdicts-campagne.json`. Aucun secret n'est chargé depuis un exécutable privé.
 
 Tests hors réseau du transport historique :
 

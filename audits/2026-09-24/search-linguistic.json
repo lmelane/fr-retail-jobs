@@ -102,8 +102,7 @@
   },
   "comparisonLimits": [
     "Single-agent engine-blind native-content labels; no independent human validation.",
-    "Baseline times include facet/count SQL; candidates retrieve IDs+total only.",
-    "One local measured pass, concurrency one: NOT production API p95/SLO.",
+    "Two local passes, concurrency one, identical rankings; NOT production API p95/SLO.",
     "Recall uses pooled annotated documents plus nine native-content anchors, not all relevant market offers.",
     "Market guard checks indexed country, not correctness of source geography.",
     "Snapshot has no public DirectOffer: real two-origin behaviour is not measured here."
