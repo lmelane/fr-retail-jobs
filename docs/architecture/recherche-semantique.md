@@ -2,7 +2,7 @@
 
 ## Décision et périmètre
 
-**Décision confirmée le 24 septembre 2026 : PostgreSQL enrichi est le moteur de production V1.** Elasticsearch reste un comparateur hors runtime, sans double lecture publique ni bascule automatique. Le [benchmark S1](../../audits/2026-09-24/search-s1.md) comparait 73 833 offres figées, 115 intentions et 234 formulations. Le [prototype S2](../../audits/2026-09-24/search-s2.md) a corrigé les recherches vides connues. Ces mesures historiques ne prouvent pas un rappel exhaustif mondial.
+**Arbitrage V1 en validation au 24 septembre 2026 : PostgreSQL enrichi est le moteur actuellement livré, encore candidat au choix définitif.** Elasticsearch reste un comparateur hors runtime, sans double lecture publique ni bascule automatique. Le [benchmark S1](../../audits/2026-09-24/search-s1.md) comparait 73 833 offres figées, 115 intentions et 234 formulations. Le [prototype S2](../../audits/2026-09-24/search-s2.md) a corrigé les recherches vides connues. Ces mesures historiques ne prouvent pas un rappel exhaustif mondial.
 
 ### Arbitrage explicite PostgreSQL / Elasticsearch
 
@@ -12,7 +12,7 @@ Le code du comparateur Elasticsearch emploie un analyseur standard + lowercase/a
 
 Le choix V1 porte sur le produit à exploiter maintenant : la compréhension commune explique l'essentiel du progrès observé ; la projection PG et sa file transactionnelle sont déjà intégrées avec la disponibilité native, les deux origines, les facettes et la pagination. Aucun gain produit mesuré ne justifie encore de développer et exploiter une seconde synchronisation. PostgreSQL possède lui-même la [recherche plein texte](https://www.postgresql.org/docs/current/textsearch.html) ; le SQL public est la seule implémentation de service maintenue.
 
-Réexaminer ce choix uniquement si la vraie API ne tient plus son objectif de service sous une charge représentative, ou si un challenger démontre un gain de pertinence significatif sur des requêtes indépendantes. Le corpus RAW et le modèle de document restent réutilisables ; cela n'impose pas de maintenir deux architectures en production. La simple croissance du nombre de sources n'est pas une preuve que le moteur courant est insuffisant.
+Avant confirmation : challenger Elasticsearch linguistique et fuzzy sur le même snapshot, puis validation Railway sous charge avec ingestion simultanée. Ne pas retirer le harness avant ce contrôle. Ensuite, réexaminer le choix si la vraie API ne tient plus son objectif de service sous une charge représentative, ou si un challenger démontre un gain de pertinence significatif sur des requêtes indépendantes. Le corpus RAW et le modèle de document restent réutilisables ; cela n'impose pas de maintenir deux architectures en production. La simple croissance du nombre de sources n'est pas une preuve que le moteur courant est insuffisant.
 
 Le moteur public utilise maintenant la même compréhension, le même modèle de document et le même compilateur SQL que le benchmark PostgreSQL. Le site `/emplois` utilise la recherche comme entrée principale ; le sélecteur Métier est retiré. Un ancien filtre `metier` dans une URL reste visible et retirable. Les marchés, langues et parcours de candidature conservent leurs contrats. `/offres`, matching et onboarding restent gelés.
 

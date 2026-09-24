@@ -1,0 +1,6 @@
+{
+  "index": "catwalks-benchmark-linguistic-v1",
+  "languages": { "en": "english", "fr": "french", "de": "german", "it": "italian", "es": "spanish", "nl": "dutch", "pt": "portuguese", "zh": "cjk", "ja": "cjk", "ko": "cjk" },
+  "linguisticBoost": 0.5,
+  "fuzzy": { "minLength": 6, "maxWords": 4, "prefixLength": 2, "maxExpansions": 20, "boost": 0.2 }
+}

@@ -5,6 +5,7 @@ import { prisma } from '@catwalks/db';
 import { perimetreDeRecherche } from '@catwalks/db/marches';
 import { snapshotModel, type SnapshotMetadata } from './model';
 import { elasticsearch, enrichedPostgres } from './adapters';
+import profile from './elastic-profile.json';
 
 export type BenchmarkIntention = {
   id: string; description: string; market: string; variants: string[];
@@ -18,6 +19,16 @@ async function main() {
   if (engines.includes('baseline')) throw Error('Historical baseline: use S1 commit 8d93697; current API is the enriched engine');
   if (!engines.length || engines.some(e => !['postgres', 'elastic'].includes(e))) throw new Error('Invalid engine selection');
   const metadata: SnapshotMetadata = JSON.parse(readFileSync(metadataFile, 'utf8'));
+  if (engines.includes('elastic')) {
+    const response = await fetch(`http://127.0.0.1:59200/${profile.index}/_mapping`);
+    if (!response.ok) throw new Error('Elasticsearch benchmark index unavailable');
+    const mapping = await response.json();
+    const receipt = mapping[profile.index]?.mappings?._meta;
+    const expected = JSON.parse(readFileSync(metadataFile, 'utf8')).projectionSha256;
+    if (!receipt?.ready || !expected || receipt.projectionSha256 !== expected) {
+      throw new Error('Elasticsearch index not fully built from this projection');
+    }
+  }
   const intentions: BenchmarkIntention[] = JSON.parse(readFileSync(intentionsFile, 'utf8'));
   if (!intentions.length || new Set(intentions.map(i => i.id)).size !== intentions.length) throw new Error('Invalid intention IDs');
   const model = snapshotModel(metadata);

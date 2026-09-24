@@ -1,4 +1,4 @@
-# Benchmark de recherche S1
+# Benchmark de recherche
 
 Trois lectures du **même catalogue public figé** : SQL actuel, PostgreSQL enrichi, Elasticsearch enrichi. Les deux candidats partagent le modèle public (`model.ts` le réexporte), `search-intent.ts` et le compilateur PostgreSQL. Les scripts de mesure ne sont pas appelés par les routes publiques. Les résultats [S1](../../../../audits/2026-09-24/search-s1.md) et [S2](../../../../audits/2026-09-24/search-s2.md) distinguent la qualité, le temps local et les limites restantes.
 
@@ -16,7 +16,7 @@ S1 est figé au commit `8d93697`. Le code courant contient les corrections S2 : 
 
 ## Rejouer
 
-Prérequis : dépendances npm du dépôt, Python ≥ 3.11, PostgreSQL local, Elasticsearch **9.5.4** local. Le snapshot initial est daté du 23 septembre 2026 à 21:53:35 UTC. Réexporter aujourd'hui produirait un autre catalogue et invaliderait les jugements associés à son empreinte.
+Prérequis : dépendances npm du dépôt, Python ≥ 3.11, PostgreSQL local, Elasticsearch **9.5.4** local. Le profil courant est le challenger linguistique ; pour reproduire S2 utiliser son commit historique, pas ce profil. Le snapshot initial est daté du 23 septembre 2026 à 21:53:35 UTC. Réexporter aujourd'hui produirait un autre catalogue et invaliderait les jugements associés à son empreinte.
 
 1. Utiliser le snapshot existant. Pour une **nouvelle** campagne explicitement voulue, `snapshot.py /chemin/prive/nouveau-snapshot` exporte en transaction PostgreSQL Repeatable Read / Read Only via Railway SSH. Il ne mute pas la production.
 2. Créer une base vide nommée `catwalks_search_benchmark_<identifiant>` sur `127.0.0.1`. Créer un JSON privé (mode `0600`) avec `PGHOST`, `PGPORT`, `PGUSER`, `PGPASSWORD`, `PGDATABASE` ; aucune valeur dans Git ni dans les commandes. Le chargeur refuse une base non vide ou un hôte distant.
@@ -28,7 +28,7 @@ python3 -B apps/api/scripts/search-benchmark/load-postgres.py /prive/snapshot /p
 npx tsx apps/api/scripts/search-benchmark/prepare.ts /prive/snapshot /prive/documents.ndjson
 python3 -B apps/api/scripts/search-benchmark/index.py /prive/documents.ndjson /prive/access.json /chemin/psql
 python3 -B apps/api/scripts/search-benchmark/run.py /prive/access.json apps/api/scripts/search-benchmark/measure.ts /prive/documents.ndjson.metadata.json apps/api/scripts/search-benchmark/intentions.json /prive/mesures.ndjson
-python3 -B apps/api/scripts/search-benchmark/evaluate.py /prive/documents.ndjson /prive/mesures.ndjson apps/api/scripts/search-benchmark/judgments-s2.json > /prive/bilan.json
+python3 -B apps/api/scripts/search-benchmark/evaluate.py /prive/documents.ndjson /prive/mesures.ndjson apps/api/scripts/search-benchmark/judgments-linguistic.json > /prive/bilan.json
 python3 -B apps/api/scripts/search-benchmark/verify.py /prive/mesures.ndjson /prive/bilan.json
 ```
 
@@ -47,3 +47,23 @@ npm run typecheck -w @catwalks/api
 ```
 
 Les unités couvrent notamment les requêtes composées, la négation, les ambiguïtés, le rang, les offres sans code et les séparateurs Unicode dans le RAW. Elles ne remplacent pas les tests d'intégration deux origines, lieu, facettes, pagination et disponibilité nécessaires avant branchement au produit.
+
+## Challenger linguistique
+
+`elastic-profile.json` fige analyseurs et bornes fuzzy. `index.py` recopie titre, missions et texte dans les champs de la **langue déclarée de chaque offre** (EN, FR, DE, IT, ES, NL, PT et CJK). Il conserve exactement les champs communs et les empreintes du snapshot. Les langues absentes/non supportées restent recherchables par les champs communs. Les chaînes ont subi la normalisation partagée : ce test ne compare pas une nouvelle extraction native ES à celle de PG.
+
+Les expansions proviennent uniquement de `SearchIntent` : aucune liste de synonymes propre à ES. Les requêtes de métier élargissent linguistiquement le titre ; les missions gardent leurs phrases exactes pour éviter « financial control » → « financial controller ». Le fuzzy concerne un seul token latin résiduel de ≥6 caractères, une édition, préfixe de 2 caractères et 20 expansions maximum, dans le titre ou les missions. Pas de fuzzy sur identité résolue, marque ambiguë, chiffres ou négation. Aucun LLM, vecteur ni reranker.
+
+`--elastic-only` reconstruit l'index ES sans modifier la base de benchmark PG existante. L'index a un nom spécifique, reste create-only et n'est déclaré prêt qu'après contrôle du nombre de documents. Le mesureur refuse une empreinte différente ou une reconstruction incomplète. PostgreSQL ne doit pas être modifié entre deux passes.
+
+`judgments-linguistic.json` reprend tous les labels S2 et ajoute 160 groupes relus depuis le pool natif sans moteur/rang/code affiché. Les anciennes annotations ne sont jamais écrasées. Les 17 intentions réservées de S1 ne sont plus un jeu aveugle indépendant.
+
+## Mesure Railway
+
+`railway.py` lit la clé via la CLI Railway, teste l'API publique puis mesure un lot borné (32–480 requêtes, concurrence 1–8). Il ne démarre aucun worker et ne modifie aucune offre. Exécuter séparément au repos et pendant une ingestion autorisée, puis rattacher le vrai `PipelineRun` et ses horodatages au relevé ; un nom de phase n'est pas une preuve de recouvrement.
+
+```sh
+python3 -B apps/api/scripts/search-benchmark/railway.py /prive/baseline.json --sha SHA_COMPLET --phase baseline --requests 240 --concurrency 4
+```
+
+Les métriques Railway arrivent en différé : relire la même fenêtre après publication, ne jamais interpréter une limite/RAM nulle comme une consommation mesurée. Les temps HTTP incluent réseau public et transfert JSON. Le reçu contient les limites du protocole ; il n'atteste pas à lui seul les transitions fermeture/expiration ni la capacité mondiale.

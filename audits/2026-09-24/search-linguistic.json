@@ -1,0 +1,135 @@
+{
+  "measurementSha256": "74bf6e8921a1808a26281d2a29fdeb85020c75c82d121c8f5d5e8e1e1fa66e55",
+  "snapshotSha256": "d549eef3720fa98970be96294781ad578fea821b73945f821bd9a7ae400854bd",
+  "projectionSha256": "82e2e41bc3065a734f7f8b5ef063fbcdf8888b0fcc82de7a5b3a79c01907a76c",
+  "supplementaryJudgments": "judgments-linguistic.json",
+  "intentions": 115,
+  "variants": 234,
+  "measurementRows": 468,
+  "engines": {
+    "elastic": {
+      "queries": 234,
+      "zeroResultQueries": 18,
+      "zeroDespiteKnownPositive": 0,
+      "knownPositiveZeroQueries": [],
+      "p50Ms": 10.514541999999892,
+      "p95Ms": 31.50983300000007,
+      "maxMs": 79.39200000000005,
+      "outsideIndexedMarket": 0,
+      "macroVariantJaccard20": 0.9283509026557686,
+      "bothEmptyVariantPairsExcluded": 9,
+      "top20JudgmentCoverage": 1.0,
+      "precisionQueries": 216,
+      "precisionAtAvailable20": 0.8702285754369088,
+      "strictPrecisionAtAvailable20": 0.8189522540216985,
+      "ndcgAt20": 0.8609544667152821,
+      "pooledRecallAt20": 0.587181697870348,
+      "pooledRecallAt100": 0.750876097386466,
+      "pooledUnclassifiedRecallAt100": 0.5315832485100779,
+      "pairedComparison": {
+        "queries": 214,
+        "precisionAtAvailable20": 0.8783615527774407,
+        "strictPrecisionAtAvailable20": 0.8266060134050788,
+        "ndcgAt20": 0.8609544667152821,
+        "pooledRecallAt20": 0.587181697870348,
+        "pooledRecallAt100": 0.750876097386466
+      },
+      "bySplit": {
+        "development": {
+          "pairedQueries": 185,
+          "precisionAtAvailable20": 0.8675221325221325,
+          "strictPrecisionAtAvailable20": 0.8134493584493584,
+          "ndcgAt20": 0.8480283910357193,
+          "pooledRecallAt20": 0.5831358332661529,
+          "pooledRecallAt100": 0.7478368027606436
+        },
+        "holdout": {
+          "pairedQueries": 29,
+          "precisionAtAvailable20": 0.9475095785440613,
+          "strictPrecisionAtAvailable20": 0.910536398467433,
+          "ndcgAt20": 0.9434139150159414,
+          "pooledRecallAt20": 0.612991523793662,
+          "pooledRecallAt100": 0.7702647010339541
+        }
+      }
+    },
+    "postgres": {
+      "queries": 234,
+      "zeroResultQueries": 18,
+      "zeroDespiteKnownPositive": 0,
+      "knownPositiveZeroQueries": [],
+      "p50Ms": 6.665208000000348,
+      "p95Ms": 190.86362499999996,
+      "maxMs": 1412.430875,
+      "outsideIndexedMarket": 0,
+      "macroVariantJaccard20": 0.9285573086546914,
+      "bothEmptyVariantPairsExcluded": 9,
+      "top20JudgmentCoverage": 1.0,
+      "precisionQueries": 216,
+      "precisionAtAvailable20": 0.8829086165891722,
+      "strictPrecisionAtAvailable20": 0.8329697437336326,
+      "ndcgAt20": 0.8493048712022587,
+      "pooledRecallAt20": 0.5817598206833668,
+      "pooledRecallAt100": 0.7241442201165706,
+      "pooledUnclassifiedRecallAt100": 0.4940177147970486,
+      "pairedComparison": {
+        "queries": 214,
+        "precisionAtAvailable20": 0.8911600989872018,
+        "strictPrecisionAtAvailable20": 0.84075450769376,
+        "ndcgAt20": 0.8493048712022587,
+        "pooledRecallAt20": 0.5817598206833668,
+        "pooledRecallAt100": 0.7241442201165706
+      },
+      "bySplit": {
+        "development": {
+          "pairedQueries": 185,
+          "precisionAtAvailable20": 0.8789635739635739,
+          "strictPrecisionAtAvailable20": 0.8238998088998088,
+          "ndcgAt20": 0.8366237971844697,
+          "pooledRecallAt20": 0.5815276324115815,
+          "pooledRecallAt100": 0.727628570664775
+        },
+        "holdout": {
+          "pairedQueries": 29,
+          "precisionAtAvailable20": 0.9689655172413794,
+          "strictPrecisionAtAvailable20": 0.9482758620689655,
+          "ndcgAt20": 0.9302013778674648,
+          "pooledRecallAt20": 0.583241021727515,
+          "pooledRecallAt100": 0.7019164666194049
+        }
+      }
+    }
+  },
+  "comparisonLimits": [
+    "Single-agent engine-blind native-content labels; no independent human validation.",
+    "Baseline times include facet/count SQL; candidates retrieve IDs+total only.",
+    "One local measured pass, concurrency one: NOT production API p95/SLO.",
+    "Recall uses pooled annotated documents plus nine native-content anchors, not all relevant market offers.",
+    "Market guard checks indexed country, not correctness of source geography.",
+    "Snapshot has no public DirectOffer: real two-origin behaviour is not measured here."
+  ],
+  "linguisticProfileSha256": "551081e61c81bcf2042ca59deedf7df2ecbd6de99e1a7c9ac53df5a8c38b1931",
+  "localWarmPass": {
+    "postgres": {
+      "p50Ms": 7.3527289999997265,
+      "p95Ms": 268.6949160000004,
+      "maxMs": 1487.9967499999993
+    },
+    "elastic": {
+      "p50Ms": 12.427645499999926,
+      "p95Ms": 43.29333299999962,
+      "maxMs": 92.43316600000003
+    }
+  },
+  "index": {
+    "count": 73833,
+    "postgresIndexSeconds": null,
+    "elasticIndexSeconds": 37.56537841699998,
+    "postgresBytes": 949223424,
+    "elastic": {
+      "size_in_bytes": 515921916,
+      "total_data_set_size_in_bytes": 515921916,
+      "reserved_in_bytes": 0
+    }
+  }
+}
