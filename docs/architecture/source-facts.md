@@ -28,38 +28,47 @@ Le cache contient `version`, `sourceType` et `inputHash`. Cette dernière emprei
 
 ## Identité de l’employeur et de l’annonceur
 
-Décision produit du 24 septembre : l’absence de Maison précise ne suffit pas à
-rejeter une offre valide provenant d’un annonceur identifié. Le portail, le
-recruteur et l’employeur sont des rôles distincts.
+La source technique, le diffuseur, l’employeur réel, la Maison/enseigne et le
+groupe sont des rôles distincts. Un diffuseur identifié ne prouve pas l’identité
+du client pour lequel il recrute. Une entreprise dont l’enrichissement est
+incomplet peut néanmoins être identifiée de manière fiable dans la publication.
+
+**Décision du 24 septembre : la politique de publication sans employeur identifié
+reste indécise.** Elle doit s’appuyer sur l’[audit des RAW réellement rejetés](../../audits/2026-09-24/employer-raw-audit.md),
+en distinguant information non communiquée, information perdue par le pipeline
+et identité contradictoire ou ambiguë. La proposition antérieure de publication
+sur la seule qualification du diffuseur n’est pas une décision validée.
 
 - Un employeur explicitement nommé dans la fiche ou le flux reste prioritaire.
   TalentSoft peut lire les champs de fiche `Enseigne`, `Marque`, `Employeur` et
   `Société` avec `employerFromDetail: true`, même lorsque le RSS contient déjà la
   description. La valeur, le libellé, l’URL et l’empreinte de la page sont retenus
   et le rejeu utilise la même lecture. Les filtres globaux ne servent pas de preuve.
-- Un groupe officiel dont la Maison n’est pas nommée doit pouvoir publier avec
-  l’indication « Publiée par [groupe] — Maison non précisée ».
-- Un cabinet identifié doit pouvoir publier avec l’indication « Recrutée par
-  [cabinet] — employeur non communiqué ». Le terme « confidentiel » exige que la
-  source le dise ; une simple absence n’est pas une demande de confidentialité.
-- Une identité contradictoire ou un annonceur non qualifié reste un vrai blocage.
+- `VERIFIED` désigne une identité suffisamment établie pour publier avec
+  l’employeur ; ce n’est pas une exigence d’enrichissement complet de sa société.
+- `UNRESOLVED` désigne une identité qui reste à établir. Sa publication éventuelle
+  dépendra d’une politique produit explicite. Aucune Maison ni aucun secteur du
+  client ne sont déduits par défaut du diffuseur.
+- `CONFLICTING` impose un blocage/revue ; une contradiction ne se résout pas en
+  effaçant simplement l’employeur pour publier anonymement.
+- Le terme « confidentiel » exige une indication explicite de la source. Un nom
+  absent de l’extraction, voire d’un RSS, ne prouve ni son absence de la fiche
+  complète ni une volonté de le masquer.
 
-**État d’implémentation :** la lecture TalentSoft est implémentée et testée ; le
-modèle de publication via un annonceur est une cible à implémenter. Le schéma
-actuel exige encore `Job.companyId` et le traite comme l’employeur. Renseigner
-ce champ avec le cabinet pour faire passer le garde serait une fausse attribution.
-Aucun changement d’admission ne l’autorise aujourd’hui.
+**État d’implémentation :** la lecture TalentSoft est implémentée et testée.
+Les trois états ci-dessus expriment la règle métier convenue ; ils ne constituent
+pas une migration déjà livrée. Le schéma actuel exige `Job.companyId` et le traite
+comme l’employeur. Renseigner ce champ avec le cabinet pour faire passer le garde
+serait une fausse attribution. Le prototype de publication sans employeur a été
+retiré du travail actif ; aucune migration ou activation en production n’a eu lieu.
 
-La réalisation doit séparer l’employeur facultatif de l’annonceur qualifié, porter
-le rôle et les preuves dans la publication native, puis les servir explicitement
-sur `/emplois`. Recherche de métier et de lieu : offre éligible. Recherche ou filtre
-d’une Maison précise : uniquement si cette Maison est prouvée. Aucun secteur du
-cabinet hérité par son client ; aucune fusion entre clients anonymes sur la seule
-base d’un titre, d’une ville ou du cabinet. Les identifiants natifs restent la clé.
-La collecte et les contrôles d’accès restent inchangés. Les nouvelles règles ne
-réattribuent pas les offres historiques et ne rouvrent pas le chantier `/offres`
-ou matching. Le modèle, l’API et l’affichage doivent être validés ensemble avant
-activation des publications dont l’employeur n’est pas nommé.
+La prochaine correction doit récupérer les preuves natives manquées et traiter
+les conflits de résolution, sans ouvrir globalement la publication. Une offre
+close, un événement ou une fiche de test ne devient pas valide parce que son
+diffuseur est connu. Toute évolution ultérieure devra préserver les preuves par
+publication, éviter les fusions entre clients anonymes et ne rechercher une
+Maison que lorsqu’elle est attestée. Aucun changement de collecte, de données
+historiques, de `/offres` ou de matching n’est inclus dans cet audit.
 
 ## Salaires
 

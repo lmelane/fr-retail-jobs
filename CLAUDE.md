@@ -12,6 +12,7 @@ Le produit est un agrégateur mondial du luxe, de la mode, de la beauté et du r
 - [Architecture produit](docs/architecture/production-foundations.md).
 - [Capture native et rétention](docs/architecture/native-capture.md).
 - [Faits issus des publications](docs/architecture/source-facts.md).
+- [Audit RAW des rejets d’identité du 24 septembre](audits/2026-09-24/employer-raw-audit.md) : preuves manquées, conflits, clients non nommés et publications invalides ; la politique V1 sans employeur identifié reste indécise.
 - [Plan de reprise et validations](audits/reprise-2026-09-15/plan.md).
 - [Exploitation canari et retour arrière](docs/architecture/canary-operations.md) : worker unique, pause autoritaire, nouvelle source et répétition locale.
 - [`/emplois` multilingue](docs/architecture/emplois-e2e.md) et [Golden Path nouvelle source](docs/architecture/golden-source.md).
