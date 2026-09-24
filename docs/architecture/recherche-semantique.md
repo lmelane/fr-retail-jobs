@@ -2,7 +2,17 @@
 
 ## Décision et périmètre
 
-PostgreSQL enrichi est retenu pour V1. Le [benchmark S1](../../audits/2026-09-24/search-s1.md) comparait 73 833 offres figées, 115 intentions et 234 formulations : Elasticsearch n’apportait pas de gain net de pertinence. Le [prototype S2](../../audits/2026-09-24/search-s2.md) a corrigé les recherches vides connues. Ces mesures historiques ne prouvent pas un rappel exhaustif mondial.
+**Décision confirmée le 24 septembre 2026 : PostgreSQL enrichi est le moteur de production V1.** Elasticsearch reste un comparateur hors runtime, sans double lecture publique ni bascule automatique. Le [benchmark S1](../../audits/2026-09-24/search-s1.md) comparait 73 833 offres figées, 115 intentions et 234 formulations. Le [prototype S2](../../audits/2026-09-24/search-s2.md) a corrigé les recherches vides connues. Ces mesures historiques ne prouvent pas un rappel exhaustif mondial.
+
+### Arbitrage explicite PostgreSQL / Elasticsearch
+
+Le dernier résultat S2, sur 193 formulations communes entièrement annotées, donne **89,4 % de précision pour les deux moteurs**, un classement nDCG@20 de **0,851 pour PG / 0,861 pour ES** et un rappel dans le pool de **73,5 % / 74,2 %**. Elasticsearch a également une meilleure latence locale p95 (**41,7 ms / 59,8 ms pour PG**) et une reconstruction plus rapide. Ces avantages sont réels dans ce protocole ; ce n'est pas une preuve statistique ni une mesure de charge de production.
+
+Le code du comparateur Elasticsearch emploie un analyseur standard + lowercase/asciifolding, des requêtes de phrases et le modèle métier partagé. Il ne teste pas tous les analyseurs linguistiques, la recherche floue, le reranking ni la recherche hybride possibles dans [Elasticsearch](https://www.elastic.co/docs/solutions/search/full-text/search-relevance). Il serait donc incorrect de conclure que PostgreSQL est intrinsèquement plus pertinent, ou qu'Elasticsearch a été optimisé au maximum.
+
+Le choix V1 porte sur le produit à exploiter maintenant : la compréhension commune explique l'essentiel du progrès observé ; la projection PG et sa file transactionnelle sont déjà intégrées avec la disponibilité native, les deux origines, les facettes et la pagination. Aucun gain produit mesuré ne justifie encore de développer et exploiter une seconde synchronisation. PostgreSQL possède lui-même la [recherche plein texte](https://www.postgresql.org/docs/current/textsearch.html) ; le SQL public est la seule implémentation de service maintenue.
+
+Réexaminer ce choix uniquement si la vraie API ne tient plus son objectif de service sous une charge représentative, ou si un challenger démontre un gain de pertinence significatif sur des requêtes indépendantes. Le corpus RAW et le modèle de document restent réutilisables ; cela n'impose pas de maintenir deux architectures en production. La simple croissance du nombre de sources n'est pas une preuve que le moteur courant est insuffisant.
 
 Le moteur public utilise maintenant la même compréhension, le même modèle de document et le même compilateur SQL que le benchmark PostgreSQL. Le site `/emplois` utilise la recherche comme entrée principale ; le sélecteur Métier est retiré. Un ancien filtre `metier` dans une URL reste visible et retirable. Les marchés, langues et parcours de candidature conservent leurs contrats. `/offres`, matching et onboarding restent gelés.
 

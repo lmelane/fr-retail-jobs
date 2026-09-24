@@ -78,15 +78,26 @@ export type PostingDetail = {
 /**
  * The listing endpoint carries no description; /postings/{id} does, split across
  * named sections. They are concatenated in the order a candidate reads them.
- * Exported for the retained-publication reader (lot F3b), which rebuilds the text from the retained advert.
+ * Shared internally by the collector/replay merge below.
  */
-export function descriptionFromJobAd(jobAd: PostingDetail['jobAd'] | undefined): string | undefined {
+function descriptionFromJobAd(jobAd: PostingDetail['jobAd'] | undefined): string | undefined {
   const sections = jobAd?.sections ?? {};
   const text = ['companyDescription', 'jobDescription', 'qualifications', 'additionalInformation']
     .map((key) => htmlToPlainText(sections[key]?.text))
     .filter(Boolean)
     .join('\n\n');
   return text || undefined;
+}
+
+/** One merge for the collector and RAW replay, including explicit native
+ * open applications. Missing or ambiguous content does not change the type. */
+export function applySmartRecruitersJobAd(job: NormalizedJob, jobAd: PostingDetail['jobAd'] | undefined): NormalizedJob {
+  const description = descriptionFromJobAd(jobAd);
+  const spontaneous = job.title.normalize('NFC').trim() === 'Εκδήλωση Ενδιαφέροντος' &&
+    description?.normalize('NFC').replace(/\s+/g, ' ').includes('τη δεδομένη στιγμή δεν υπάρχει αντίστοιχη θέση');
+  return { ...job, description,
+    ...(spontaneous ? { opportunityType: 'OPEN_APPLICATION' as const } : {}),
+    raw: jobAd ? { ...(job.raw as object), jobAd } : job.raw };
 }
 
 /** The advert is retained in RAW (`jobAd`) so the publication can be rebuilt offline from its native input. */
@@ -124,7 +135,7 @@ export async function fetchSmartRecruitersJobs(config: Record<string, unknown>):
     out.map((job) =>
       limit(async () => {
         const jobAd = await fetchJobAd(company, job.externalId);
-        return { ...job, description: descriptionFromJobAd(jobAd), raw: jobAd ? { ...(job.raw as object), jobAd } : job.raw };
+        return applySmartRecruitersJobAd(job, jobAd);
       }),
     ),
   );

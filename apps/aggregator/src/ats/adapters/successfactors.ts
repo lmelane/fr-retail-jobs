@@ -555,6 +555,7 @@ export function parseMicrodataDescription(html: string): string | undefined {
 }
 
 export type SuccessFactorsDetail = {
+  closure?: { message: string; observedAt: string };
   company?: string;
   employerEvidence?: NormalizedJob['employerEvidence'];
   /**
@@ -599,8 +600,16 @@ export function parseSuccessFactorsVisibleDate(html: string): Date | undefined {
   return date.getUTCMonth()===month && date.getUTCDate()===Number(match[2]) ? date : undefined;
 }
 
-export function parseMicrodataDetail(html: string): SuccessFactorsDetail {
+export function parseMicrodataDetail(html: string, observedAt = captureObservedAt()): SuccessFactorsDetail {
   const detail: SuccessFactorsDetail = {};
+  const $ = cheerio.load(html, { scriptingEnabled: false });
+  // Native RMK closure page observed on Rocher and Puig (HTTP 200). A mention
+  // inside an ordinary description, a menu, or an unreadable page cannot close a job.
+  const content = $('.content .job');
+  if (content.length === 1 && content.text().replace(/\s+/g, ' ').trim() === 'Désolé, ce poste est déjà pourvu.' &&
+    !$('[itemprop="description"], [itemprop="title"]').text().trim()) {
+    return { closure: { message: 'Désolé, ce poste est déjà pourvu.', observedAt: observedAt.toISOString() } };
+  }
 
   // Not every tenant page carries itemprop="title" (the Clarins FR pages do
   // not); og:title holds the same exact string there.
@@ -613,7 +622,6 @@ export function parseMicrodataDetail(html: string): SuccessFactorsDetail {
   const meta = (name: string) =>
     new RegExp(`<meta itemprop="${name}" content="([^"]*)"`, 'i').exec(html)?.[1]?.trim();
 
-  const $ = cheerio.load(html, { scriptingEnabled: false });
   const employerNames = [...new Set($('[itemprop="hiringOrganization"]').map((_, node) => $(node).attr('content')?.trim() || $(node).find('[itemprop="name"]').first().text().trim()).get().filter(Boolean))];
   if (employerNames.length === 1) {
     detail.company = employerNames[0];
@@ -726,6 +734,12 @@ export function retainedSuccessFactorsDetail(detail: SuccessFactorsDetail): Reta
 
 /** The detail page overrides the listing (exact title and address); the same merge serves the live collector and the retained-publication reader. */
 export function applySuccessFactorsDetail(job: NormalizedJob, detail: SuccessFactorsDetail | RetainedSuccessFactorsDetail, brandProperty?: string): NormalizedJob {
+  if (detail.closure) {
+    const observedAt = new Date(detail.closure.observedAt);
+    if (detail.closure.message !== 'Désolé, ce poste est déjà pourvu.' || !Number.isFinite(observedAt.getTime()))
+      throw new Error('Invalid native SuccessFactors closure');
+    return { ...job, publicationHold: 'APPLICATION_EXPLICITLY_CLOSED', publicationWithdrawnAt: observedAt };
+  }
   const employer = employerFromDetail(detail as SuccessFactorsDetail, brandProperty);
   const date = (value: unknown) => value instanceof Date ? value : typeof value === 'string' ? new Date(value) : undefined;
   return {

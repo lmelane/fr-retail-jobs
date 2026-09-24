@@ -1,3 +1,4 @@
+import { applyNativeEmployerRules, nativeEmployerRules } from '../identity/nativeClaims.js';
 import { assertPipelineRunning } from '../lib/pipelinePause.js';
 import { canonicalIdContract } from './canonicalIdContract.js';
 import { fetchJobaffinityWordpressJobs } from './adapters/jobaffinityWordpress.js';
@@ -60,8 +61,9 @@ function toResult(value: NormalizedJob[] | AdapterResult): AdapterResult {
 
 export async function fetchAtsJobs(type: AtsType, config: Record<string, unknown>): Promise<AdapterResult> {
   assertPipelineRunning();
-  const result = await dispatch(type, config);
-  return normalizeAdapterResult(result);
+  const rules = nativeEmployerRules(config);
+  const result = toResult(await dispatch(type, config));
+  return normalizeAdapterResult({ ...result, jobs: result.jobs.map(job => applyNativeEmployerRules(job, rules)) });
 }
 
 export function normalizeAdapterResult(result: NormalizedJob[] | AdapterResult): AdapterResult {

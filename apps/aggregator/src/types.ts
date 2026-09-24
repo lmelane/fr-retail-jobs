@@ -86,7 +86,11 @@ export type NormalizedJob = {
   /** Employer as named by the source; overrides the registry name when present. */
   company?: string;
   /** Original field when an adapter transforms an employer label. */
-  employerEvidence?: { rawName: string; path: string; rule: string };
+  employerEvidence?: { rawName: string; path: string; rule: string;
+    role?: 'EMPLOYER' | 'BRAND' | 'GROUP';
+    statements?: { ruleId: string; witnesses: { path: string; quote: string }[] }[];
+    /** Brand names explicitly related to this legal employer in the retained posting. */
+    brands?: string[] };
   /** Parent group, when the source distinguishes it. */
   group?: string;
   /** Function or department, e.g. "Retail", "Marketing". */

@@ -1,10 +1,27 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { applyTalentsoftDetail, talentsoftEmployerField, talentsoftItemToJob, listingCards } from './talentsoft.js';
+import { applyTalentsoftDetail, readTalentsoftDetail, talentsoftEntityDescription, talentsoftEmployerField, talentsoftItemToJob, listingCards } from './talentsoft.js';
 import { recoverRetainedPublication } from '../../publication/recovery.js';
 import { cleanPlace } from '../../lib/normalize.js';
 
 describe('native employer on a multibrand Talentsoft portal', () => {
+  it('retains the scoped entity statement and replays its qualified name, never a global entity filter', () => {
+    // Excerpt from native Chantelle 2565, capture 34511a3f…178b8 (RAW audit).
+    const html = `<select><option>Wrong global entity</option></select><h3>Entité</h3><p>Wrong header</p>
+      <div class="ts-offer-page__entity-description"><h3>Entité d'accueil</h3>
+      Nous sommes le Groupe Chantelle — un studio de création international basé à Paris.</div>
+      <h2>Description du poste</h2><p>Méthodes et industrialisation.</p><h2>Profil</h2>`;
+    expect(talentsoftEntityDescription(html)).toBe('Nous sommes le Groupe Chantelle — un studio de création international basé à Paris.');
+    expect(talentsoftEntityDescription('<select><option>Groupe Chantelle</option></select>')).toBeUndefined();
+    expect(talentsoftEntityDescription(html + html)).toBeUndefined();
+    const url = 'https://tenant.talent-soft.com/offre-de-emploi/emploi-agent_2565.aspx';
+    const job = applyTalentsoftDetail(talentsoftItemToJob({ link: url, title: 'Agent méthodes' })!, readTalentsoftDetail(html, url));
+    expect(job.company).toBeUndefined(); // retaining prose alone does not identify the employer
+    const config = { origin: 'https://tenant.talent-soft.com', nativeEmployerRules: [{ id: 'chantelle-entity',
+      employer: { name: 'Groupe Chantelle', role: 'GROUP' }, when: [{ path: 'talentsoftDetail.entityDescription', startsWith: 'Nous sommes le Groupe Chantelle' }] }] };
+    expect(recoverRetainedPublication('talentsoft', job.raw, { externalId: '2565', url, observedAt: new Date(), config }))
+      .toMatchObject({ status: 'RECOVERABLE', job: { company: 'Groupe Chantelle', employerEvidence: { role: 'GROUP' } } });
+  });
   // Native field observed in archived Chantelle posting 2535, 2026-09-24.
   const field='<h2>Description du poste</h2><h3>\r\n\tEnseigne\r\n</h3><p id="fldjobdescription_customcodetablevalue2">Darjeeling</p><h3>Intitulé du poste</h3><p>Vendeur(se)</p><h2>Profil candidat</h2>';
   it('reads one labelled posting employer, never a global filter or company description', () => {

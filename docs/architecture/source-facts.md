@@ -62,13 +62,50 @@ comme l’employeur. Renseigner ce champ avec le cabinet pour faire passer le ga
 serait une fausse attribution. Le prototype de publication sans employeur a été
 retiré du travail actif ; aucune migration ou activation en production n’a eu lieu.
 
-La prochaine correction doit récupérer les preuves natives manquées et traiter
+Les corrections en cours récupèrent les preuves natives manquées et traitent
 les conflits de résolution, sans ouvrir globalement la publication. Une offre
 close, un événement ou une fiche de test ne devient pas valide parce que son
 diffuseur est connu. Toute évolution ultérieure devra préserver les preuves par
 publication, éviter les fusions entre clients anonymes et ne rechercher une
 Maison que lorsqu’elle est attestée. Aucun changement de collecte, de données
 historiques, de `/offres` ou de matching n’est inclus dans cet audit.
+
+### Lecture des identités et retrait des mécanismes remplacés
+
+`Source.config.nativeEmployerRules` porte des règles relues pour une source,
+versionnées dans sa `SourceRevision`. Chaque règle nomme les chemins RAW et les
+énoncés exacts attendus, ainsi que le rôle `EMPLOYER`, `BRAND` ou `GROUP`.
+Toutes ses conditions doivent être satisfaites ; les noms doivent figurer dans
+les énoncés témoins. Un menu, un code de département ou la seule présence d'un
+nom ailleurs dans le RAW ne suffisent pas. Une contradiction reste en attente.
+Le même interpréteur intervient dans la collecte et dans le rejeu conservé.
+En collecte, la pause est vérifiée avant lecture réseau ; le rejeu hors ligne
+n'ouvre aucun accès métier.
+
+TalentSoft conserve la section d'entité propre à la fiche, séparée des filtres
+globaux. Une description générale du groupe ne remplace pas une enseigne déjà
+nommée dans un champ du poste. Les relations marque/entité juridique sont des
+preuves distinctes, pas des alias : le résolveur peut remplacer une ancienne
+attribution **issue du registre** uniquement si la relation vers cette marque
+est relue dans le RAW du poste avec les règles de la source courante. Il ne
+fusionne aucune entreprise et n'invente aucun lien de groupe.
+
+La comparaison typographique d'un poste déjà connu tolère les espaces après un
+point d'abréviation, sans changer les clés d'alias ni supprimer raison sociale,
+numéro ou pays. Les pages SAP indiquant explicitement une fermeture utilisent
+le circuit de clôture existant ; événement et test sont retenus hors publication,
+sans être assimilés à une fermeture employeur. La candidature spontanée reste
+le type `OPEN_APPLICATION` déjà existant.
+
+Avant suppression : inventorier les consommateurs, remplacer leur chemin,
+passer les tests défensifs, puis retirer l'ancien code. Le constructeur de texte
+SmartRecruiters n'est plus une API séparée du lecteur conservé : une seule
+fusion applique description et type d'opportunité aux deux chemins. Les mappings
+Lever encore consommés par le registre et la reprise, les anciennes formes RAW
+encore relues, ainsi que `/offres` et le matching ne sont pas du code mort.
+
+**État : code local testé, configurations de source non activées en production.**
+La mesure hors réseau est dans la suite de l'[audit RAW](../../audits/2026-09-24/employer-raw-audit.md).
 
 ## Salaires
 

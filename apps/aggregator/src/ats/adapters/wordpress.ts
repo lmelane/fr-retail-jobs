@@ -128,11 +128,17 @@ export function parseWordpressPost(post: WpPost): NormalizedJob | null {
   // the latter omits a timezone suffix. The worker's timezone is irrelevant.
   const gmt = post.date_gmt;
   const postedAt = publisherInstant(typeof gmt === 'string' && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/.test(gmt) ? `${gmt}Z` : gmt);
+  const description = htmlToPlainText(post.content?.rendered);
+  // A recruitment event is not a vacancy. Require the publisher's explicit
+  // self-description as well as its title; an event-manager role is unaffected.
+  const event = /\bjob dating\b/i.test(title) &&
+    /\bOur Job Dating is a recruitment event we organize on behalf of our client\b/i.test(description?.replace(/\s+/g, ' ') ?? '');
 
   return {
     externalId: String(post.id ?? post.link),
     title,
-    description: htmlToPlainText(post.content?.rendered),
+    description,
+    ...(event ? { publicationHold: 'NATIVE_RECRUITMENT_EVENT' } : {}),
     url: post.link,
     postedAt,
     raw: post,

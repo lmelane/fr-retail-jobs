@@ -183,3 +183,62 @@ Les URL identifient la publication ; le verdict repose sur la capture datée, pa
 - `proofs.private.json` : `980d2ccd5458a4dcab550d640b57cd327919828e630c14f2bec4a03a7c55a538`.
 
 **Sortie du lot : audit documenté, politique non figée, aucun changement de production.** Les corrections applicatives listées restent à réaliser et à mesurer.
+
+## Suite — premiers correctifs mesurés hors réseau
+
+**24 septembre, 07:36 UTC ; développement, sans mutation de production.**
+La population ci-dessus reste figée. Le fichier d'export est vérifié par son
+empreinte et les détails HTML relus par l'empreinte native de leur capture.
+Les 19 révisions de source sont inchangées au nouveau relevé en lecture seule.
+
+Les règles de lecture relues, encore non activées dans le registre, donnent :
+
+| Mesure d'extraction | Résultat |
+|---|---:|
+| Sorties relues | 1 413 |
+| Nom déjà extrait avant correction | 94 |
+| Nom extrait après correction | 168 |
+| Noms supplémentaires | 74 |
+| Relations explicites ALTEX / Funky Buddha conservées | 20 |
+| Fermetures SAP correctement reconnues | 2 |
+| Événement / fiche de test retenus hors publication | 1 / 1 |
+| Candidature spontanée reconnue | 1 |
+| Détails TalentSoft relus depuis les captures disponibles dans cet export | 12 |
+
+Les 74 nouvelles identifications se répartissent entre Beauty Success (54),
+LVMH (7), Tiffany (6), Lagardère (4), Chantelle (1), Hot Topic (1) et Farfetch (1).
+Ce sont des **noms extraits, pas des publications validées** : les 94 noms
+déjà présents incluent toujours les vrais conflits B&S/MIU et l'alias Tapestry.
+Les 1 241 autres sorties sans nom, après exclusion des quatre publications
+invalides, ne constituent pas une mesure d'offres anonymes valides.
+
+La mesure ne rejoue ni admission, ni écriture de déduplication, ni publication.
+Elle ne prétend pas lire les détails non exportés. Aucun ancien RAW n'est
+réécrit ; les nouveaux champs TalentSoft sont reconstruits en mémoire depuis
+les captures natives du même lot, avec URL exacte et empreinte vérifiées.
+
+Les tests défensifs de persistance passent sur base locale jetable : **590 tests
+d'intégration**. La variation Thomas Sabo conserve l'entreprise sans créer
+d'alias ; la relation ALTEX/Funky Buddha conserve deux entreprises distinctes ;
+un faux témoin, une autre entreprise, un nouveau pays ou suffixe restent refusés.
+
+### Consommateurs et étapes restantes
+
+- La fusion SmartRecruiters de description/type est maintenant unique entre
+  collecte et rejeu ; l'export auxiliaire devenu inutilisé est retiré.
+- Les mappings Lever restent utilisés par des configurations et par
+  `remediation/owners.ts` : ils ne sont pas supprimés sans migration de ces consommateurs.
+- Le registre LVMH possède encore un alias relu `Groupe Bon Marché` lié à son
+  empreinte de configuration. Modifier cette configuration sans revoir cet alias
+  introduirait des refus : pas d'activation aveugle des nouvelles règles.
+- Restent la qualification et l'activation des règles par source, la revue des
+  rattachements/alias (dont Tapestry, B&S et les trois ALTEX sans relation attestée
+  dans leur propre RAW), l'enrichissement des cas encore manqués et la mesure
+  après ingestion réelle. Aucune politique d'employeur anonyme n'est décidée.
+- `main` et les deux images Railway restent sur `504d388` au contrôle CLI ;
+  les corrections de cette section n'y sont pas encore livrées.
+
+Fichiers privés du même dossier : `measure-corrections.mts`,
+`rules-reviewed.private.json`, `corrections-details.private.json`,
+`corrections-summary.json`. Empreinte stable des règles examinées :
+`bce8852a5b8d8783ee5a7be4f5c721b9750f37dd534562948a0ec61ef7b0a485`.

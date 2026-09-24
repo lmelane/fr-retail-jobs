@@ -4,7 +4,7 @@ import { afterAll, beforeEach, describe, expect, it } from 'vitest';
 import { PrismaClient } from '@prisma/client';
 import { createHash } from 'node:crypto';
 import { resolveCompany } from '../normalize/company.js';
-import { normalizedEmployerName } from '../normalize/employerName.js';
+import { normalizedEmployerName, employerAliasKey, sameEmployerTypography } from '../normalize/employerName.js';
 import { buildEmployerRepair, applyEmployerRepair, type EmployerRepairSpec } from '../identity/repair.js';
 import { digest, verifyRepair } from '../remediation/plan.js';
 import { recordDiscoveredEmployer } from './discoverFashionJobs.js';
@@ -182,6 +182,57 @@ it('does not silently accept a changed employer label on an already-known postin
   await upsertDeduplicated(p, posting('Acme'));
   await expect(upsertDeduplicated(p, posting('Acme France'))).rejects.toThrow('needs evidence');
   expect(await p.job.count()).toBe(1);
+});
+
+it('re-attests a typographic legal label on the same native posting without merging or rewriting aliases', async () => {
+  const prior = 'Thomas Sabo GmbH & Co.KG', native = 'THOMAS SABO GmbH & Co. KG';
+  const first = await upsertDeduplicated(p, posting(prior));
+  const stableIdentity = { id: true, name: true, canonicalKey: true, fashionjobsUrl: true, mergedIntoId: true, parentGroupId: true } as const;
+  const before = await p.company.findMany({ select: stableIdentity });
+  const repeated = await upsertDeduplicated(p, posting(native));
+  expect(repeated.jobId).toBe(first.jobId);
+  expect(await p.company.findMany({ select: stableIdentity })).toEqual(before);
+  expect(await p.companyAlias.count()).toBe(0);
+  expect(employerAliasKey('promod', prior)).not.toBe(employerAliasKey('promod', native));
+  expect(await p.employerObservation.findFirst({ where: { rawEmployerName: native } })).toMatchObject({ rule: 'NATIVE_SOURCE_LABEL' });
+  for (const other of ['Thomas Sabo GmbH & Co. KG France', 'Thomas Sabo GmbH & Co. KG 2', 'Thomas Sabo GmbH', 'Thomas Sabo GmbH & Co KG']) {
+    expect(sameEmployerTypography(native, other)).toBe(false);
+    await expect(upsertDeduplicated(p, posting(other))).rejects.toThrow('needs evidence');
+  }
+});
+
+it('replaces only a registry-derived brand with the explicitly related native legal employer, retaining separate companies', async () => {
+  const brand = await company('Funky Buddha');
+  const { rawEmployerName: _, ...legacy } = posting(brand.name);
+  const first = await upsertDeduplicated(p, legacy);
+  // Historical registry observation, as found in the production RAW audit.
+  await p.employerObservation.create({ data: { sourceKey: 'promod', externalId: legacy.externalId,
+    observationHash: 'registry-before-native', rawEmployerName: brand.name, normalizedEmployerName: normalizedEmployerName(brand.name),
+    canonicalEmployerId: brand.id, labelOrigin: 'SOURCE_CATALOGUE_LABEL', rule: 'LEGACY_UNREVIEWED', pipelineVersion: 1,
+    observedAt: new Date(Date.now() + 1) } });
+  const statement = 'Η Funky Buddha, σήμα της εταιρείας Αltex S.A., που δραστηριοποιείται στο χώρο της σύγχρονης ένδυσης';
+  const config = { company: 'ALTEXSA', nativeEmployerRules: [{ id: 'native-legal-brand-relation',
+    employer: { name: 'ALTEX S.A.', role: 'EMPLOYER' }, brands: ['Funky Buddha'],
+    when: [{ path: 'company.name', equals: 'ALTEX S.A.' },
+      { path: 'jobAd.sections.companyDescription.text', includes: 'Η Funky Buddha, σήμα της εταιρείας Αltex S.A.' }] }] };
+  await p.source.create({ data: { key: 'promod', maison: brand.name, kind: 'smartrecruiters', config,
+    tier: 'EMPLOYER_DIRECT', tenantKey: 'smartrecruiters:ALTEXSA', status: 'ACTIVE' } });
+  const native = { ...posting('ALTEX S.A.'), raw: { company: { name: 'ALTEX S.A.' },
+    jobAd: { sections: { companyDescription: { text: statement } } } } };
+  // Fake evidence or a name merely mentioned in a different RAW field cannot override history.
+  await expect(upsertDeduplicated(p, { ...native, raw: { company: { name: 'ALTEX S.A.' }, footer: statement },
+    employerEvidence: { rawName: 'ALTEX S.A.', path: 'footer', rule: 'FAKE', role: 'EMPLOYER', brands: ['Funky Buddha'] } }))
+    .rejects.toThrow('needs evidence');
+  const accepted = await upsertDeduplicated(p, native);
+  expect(accepted.jobId).toBe(first.jobId);
+  const written = await p.job.findUniqueOrThrow({ where: { id: first.jobId }, include: { company: true } });
+  expect(written.company.name).toBe('ALTEX S.A.');
+  expect(written.company.parentGroupId).toBeNull();
+  expect(await p.company.findUniqueOrThrow({ where: { id: brand.id } })).toMatchObject({ name: 'Funky Buddha', mergedIntoId: null });
+  expect(await p.companyAlias.count()).toBe(0);
+  expect(await p.employerObservation.findFirst({ where: { rule: 'NATIVE_EMPLOYER_BRAND_RELATION' } })).not.toBeNull();
+  expect((await upsertDeduplicated(p, native)).jobId).toBe(first.jobId);
+  await expect(upsertDeduplicated(p, posting('B&S International'))).rejects.toThrow('needs evidence');
 });
 
 it('upgrades a legacy alias only through an explicit scoped evidence decision', async () => {

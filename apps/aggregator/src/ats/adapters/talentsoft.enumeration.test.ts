@@ -93,7 +93,7 @@ describe('TalentSoft — employeur porté par la fiche native', () => {
     const result = await fetchTalentsoftJobs({ origin, employerFromDetail: true });
     expect(result.jobs).toHaveLength(1);
     expect(result.jobs[0]).toMatchObject({ company: 'Darjeeling', description: 'Contrat : CDI',
-      employerEvidence: { rawName: 'Darjeeling', path: 'talentsoftDetail.Enseigne', rule: 'EXPLICIT_POSTING_EMPLOYER_FIELD' } });
+      employerEvidence: { rawName: 'Darjeeling', path: 'talentsoftDetail.employerField.value', rule: 'EXPLICIT_POSTING_EMPLOYER_FIELD', role: 'BRAND' } });
     expect(vi.mocked(fetchText).mock.calls.some(([url]) => String(url).endsWith('_2535.aspx'))).toBe(true);
   });
 });

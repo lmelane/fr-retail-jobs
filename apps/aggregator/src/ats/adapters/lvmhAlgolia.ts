@@ -171,6 +171,9 @@ export function parseLvmhHit(hit: LvmhHit): NormalizedJob | null {
     company: hit.maison,
     group: hit.businessGroup,
     description: description || undefined,
+    // The native body of TP01660 consists solely of this test marker (repeated
+    // across sections). A real QA/security role merely mentioning tests stays a job.
+    ...(/^(?:Just a smoke test\.[\s-]*)+$/i.test(description.trim()) ? { publicationHold: 'NATIVE_TEST_PUBLICATION' } : {}),
     // Straight to the Maison's own ATS — the canonical apply URL, which is why
     // this source outranks any jobboard reposting it.
     url: hit.link ?? `${LISTING_URL}?ref=${hit.objectID ?? ''}`,

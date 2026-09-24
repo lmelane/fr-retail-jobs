@@ -33,6 +33,14 @@ Les secteurs utilisent le circuit SectorReview existant et des preuves officiell
 
 ## Branches et coordination
 
+Précision du 24 septembre : retirer un mécanisme seulement après inventaire de
+ses consommateurs, remplacement et tests défensifs. La suppression aveugle des
+anciens chemins peut casser `/offres`, matching, facettes ou reprise des RAW.
+Le GO de promotion vers `main` porte sur le chantier validé ; il ne transforme
+pas les corrections locales encore non qualifiées en release de production.
+L'arbitrage confirmé est **PostgreSQL enrichi pour la recherche V1**, documenté
+avec les avantages et limites mesurés d'Elasticsearch dans l'architecture recherche.
+
 - `main` est réservée à la version livrée et vérifiée en production.
 - `development` porte le travail en cours ; les pushes sur cette branche sont autorisés.
 - La promotion de `development` vers `main` intervient après validation de la release. Un push de développement ne vaut pas autorisation de mise en production.

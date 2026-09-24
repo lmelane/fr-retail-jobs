@@ -4,13 +4,14 @@ import { EmployerIdentityReviewRequired } from './errors.js';
 import { createHash } from 'node:crypto';
 import { Prisma } from '@prisma/client';
 import type { CandidateJob } from '../dedup/match.js';
-import { normalizedEmployerName } from '../normalize/employerName.js';
+import { normalizedEmployerName, sameEmployerTypography } from '../normalize/employerName.js';
 import { PIPELINE_VERSION } from '../pipeline/version.js';
+import { applyNativeEmployerRules, nativeEmployerRules } from './nativeClaims.js';
 
 type Company = Prisma.CompanyGetPayload<Record<string, never>>;
 export type EmployerResolution = {
   company: Company | null;
-  rule: 'REVIEWED_ALIAS' | 'REVIEWED_MERGE' | 'NATIVE_SOURCE_LABEL' | 'LEGACY_UNREVIEWED' | 'REVIEW_REQUIRED' | 'GROUP_LABEL_KEPT_HOUSE' | 'CERTIFIED_SINGLE_BRAND_PORTAL';
+  rule: 'REVIEWED_ALIAS' | 'REVIEWED_MERGE' | 'NATIVE_SOURCE_LABEL' | 'NATIVE_EMPLOYER_BRAND_RELATION' | 'LEGACY_UNREVIEWED' | 'REVIEW_REQUIRED' | 'GROUP_LABEL_KEPT_HOUSE' | 'CERTIFIED_SINGLE_BRAND_PORTAL';
   rawEmployerName: string;
   normalizedEmployerName: string;
   aliasId?: string;
@@ -101,10 +102,30 @@ export async function resolveEmployer(tx: Prisma.TransactionClient, candidate: C
       if (isRecordedGroup) return { company: current, rule: 'GROUP_LABEL_KEPT_HOUSE', rawEmployerName, normalizedEmployerName: normalized };
     }
     if (current) {
+      // The same source and native posting already identify this employer.
+      // Typographic convergence does not merge companies or rewrite alias keys.
+      // An independently resolved different target remains a contradiction.
+      if ((!target || target.id === current.id) && sameEmployerTypography(rawEmployerName, current.name)) {
+        return { company: current, rule: 'NATIVE_SOURCE_LABEL', rawEmployerName, normalizedEmployerName: normalized };
+      }
       const previous = await tx.employerObservation.findFirst({
         where: { sourceKey: candidate.sourceKey, externalId: candidate.externalId, canonicalEmployerId: { not: null } },
-        orderBy: [{ observedAt: 'desc' }, { id: 'desc' }], select: { normalizedEmployerName: true },
+        orderBy: [{ observedAt: 'desc' }, { id: 'desc' }], select: { normalizedEmployerName: true, labelOrigin: true, canonicalEmployerId: true },
       });
+      // Replace only a registry-derived attribution when THIS posting names
+      // the legal employer and explicitly relates it to that historical brand.
+      // Re-evaluate current reviewed rules against RAW; caller-supplied evidence
+      // alone cannot authorize the transition. No company merge/parent mutation.
+      if (previous?.canonicalEmployerId === current.id && isPortalEmployerOrigin(previous.labelOrigin)) {
+        const source = await tx.source.findUniqueOrThrow({ where: { key: candidate.sourceKey } });
+        const proof = applyNativeEmployerRules({ externalId: candidate.externalId, title: candidate.title,
+          url: candidate.url, raw: candidate.raw, company: rawEmployerName }, nativeEmployerRules(source.config as Record<string, unknown>));
+        if (!proof.publicationHold && proof.employerEvidence?.role === 'EMPLOYER' &&
+          proof.employerEvidence.brands?.some(brand => normalizedEmployerName(brand) === normalizedEmployerName(current.name))) {
+          return { company: target, rule: 'NATIVE_EMPLOYER_BRAND_RELATION', rawEmployerName, normalizedEmployerName: normalized,
+            ...(!target ? { newKey: sourceScopedKey, newName: rawEmployerName.trim() } : {}) };
+        }
+      }
       // Re-attesting the same source/publication/employer observation does not
       // move the publication, even if an old display-name heuristic differs.
       if (previous?.normalizedEmployerName === normalized) {

@@ -1,3 +1,4 @@
+import { applyNativeEmployerRules, nativeEmployerRules } from '../identity/nativeClaims.js';
 import { parseAshbyJob } from '../ats/adapters/ashby.js';
 import { applyAvatureJobData } from '../ats/adapters/avature.js';
 import { parseLeverJob } from '../ats/adapters/lever.js';
@@ -12,7 +13,7 @@ import { parseGreenhouseJob } from '../ats/adapters/greenhouse.js';
 import { parseRecruiteeJob } from '../ats/adapters/recruitee.js';
 import { normalizeGenericPosting } from '../ats/adapters/genericJsonLd.js';
 import { readCaudalieRaw } from '../ats/adapters/caudalie.js';
-import { descriptionFromJobAd, parseSmartRecruitersPosting, type PostingDetail, type SmartRecruitersPosting } from '../ats/adapters/smartrecruiters.js';
+import { applySmartRecruitersJobAd, parseSmartRecruitersPosting, type PostingDetail, type SmartRecruitersPosting } from '../ats/adapters/smartrecruiters.js';
 import { applySuccessFactorsDetail, brandPropertyOf, normalizeRmkItem, splitSlug, type RetainedSuccessFactorsDetail, type RmkV2Item } from '../ats/adapters/successfactors.js';
 import { normalizeAnnouncement, type DrItem } from '../ats/adapters/digitalrecruiters.js';
 import { personioDetailFromEvidence } from '../ats/adapters/personioDetail.js';
@@ -406,7 +407,7 @@ function readRetainedPublication(kind: string, raw: unknown, context: Context, r
         const { jobAd, ...posting } = raw;
         if (jobAd != null && !object(jobAd)) return failure('DETAIL_EVIDENCE_UNUSABLE');
         job = parseSmartRecruitersPosting(posting as SmartRecruitersPosting, config.company, typeof config.employerField === 'string' ? config.employerField : undefined);
-        job = { ...job, description: descriptionFromJobAd(jobAd as PostingDetail['jobAd'] | undefined) }; break;
+        job = applySmartRecruitersJobAd(job, jobAd as PostingDetail['jobAd'] | undefined); break;
       }
       case 'successfactors': {
         if (typeof config.origin !== 'string' || !config.origin) return failure('RAW_SCHEMA_INVALID');
@@ -567,6 +568,7 @@ function readRetainedPublication(kind: string, raw: unknown, context: Context, r
     const url = new URL(job.url);
     if (job.externalId !== context.externalId || url.href !== new URL(context.url).href ||
       !['https:', 'http:'].includes(url.protocol) || url.username || url.password) return failure('IDENTITY_MISMATCH');
+    job = applyNativeEmployerRules({ ...job, raw }, nativeEmployerRules(config));
     if (context.certifiedPortal) job = employerFromCertifiedScope(job, context.certifiedPortal.ownerName, context.certifiedPortal.scope);
     if (job.publicationHold || job.publicationWithdrawnAt) return failure('PUBLICATION_HELD');
     if (requireContent && (typeof job.description !== 'string' || !htmlToPlainText(job.description)?.trim())) return failure('CONTENT_MISSING');

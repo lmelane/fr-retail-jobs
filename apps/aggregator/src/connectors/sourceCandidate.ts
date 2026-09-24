@@ -5,6 +5,7 @@ import { captureConfig } from '../capture/config.js';
 import { tenantKeyOf } from './sourceStore.js';
 import { sourceIdentityHash } from './sourceIdentity.js';
 import { readIdentitySource } from './sourceRegistryRead.js';
+import { nativeEmployerRules } from '../identity/nativeClaims.js';
 
 export type SourceCandidate = {
   key: string; maison: string; kind: string; config: Record<string, unknown>;
@@ -25,6 +26,7 @@ export function parseSourceCandidate(value: unknown): SourceCandidate {
     typeof v.careersDomain !== 'string' || !/^[a-z0-9-]+(?:\.[a-z0-9-]+)+$/i.test(v.careersDomain) ||
     (v.jobUrlPattern != null && (typeof v.jobUrlPattern !== 'string' || !v.jobUrlPattern.trim()))) throw new Error('Invalid source candidate');
   const config = captureConfig(v.config as Record<string, unknown>);
+  nativeEmployerRules(config);
   if (!Object.keys(config).length) throw new Error('Candidate configuration is empty');
   return { key: v.key, maison: v.maison, kind: v.kind, config, careersDomain: v.careersDomain,
     tier: v.tier as SourceCandidate['tier'], jobUrlPattern: v.jobUrlPattern as string | null | undefined ?? null };
