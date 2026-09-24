@@ -73,9 +73,9 @@ import { createHash } from 'node:crypto';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { resolve } from 'node:path';
-import { CODES_MARCHE_LOCALISES, MARCHES_ROUTABLES } from '@catwalks/db/marches';
+import { CODES_MARCHE } from '@catwalks/db/marches';
 import {
-  DIMENSIONS_SOUMISES_AU_SEUIL,
+  DIMENSIONS_EMPLOI_MESURABLES,
   EXPRESSION_FACETTE,
   POPULATION_MESUREE,
   sqlCouverture,
@@ -174,7 +174,7 @@ async function main(): Promise<number> {
                count(*)::int AS offres,
                count(*) FILTER (WHERE j."countryIntegrity" IN ('RAW_COUNTRY_CODE','RAW_COUNTRY','VERIFIED'))::int AS pays_prouve,
                count(*) FILTER (WHERE j."countryIntegrity" IS NULL)::int AS sans_verdict,
-               ${DIMENSIONS_SOUMISES_AU_SEUIL.map(
+               ${DIMENSIONS_EMPLOI_MESURABLES.map(
                  (d) => `${sqlCouverture(d as DimensionMesurable)} AS ${d}_remplies, ${sqlDiversite(d as DimensionMesurable)} AS ${d}_distinctes`,
                ).join(',\n               ')}
           FROM "Job" j WHERE ${ELIGIBLE}
@@ -296,8 +296,7 @@ async function main(): Promise<number> {
     parPays,
     rawParSource,
     registre: {
-      marchesLocalises: CODES_MARCHE_LOCALISES.length,
-      marchesRoutables: MARCHES_ROUTABLES.length,
+      marchesLocalises: CODES_MARCHE.length,
     },
   };
 

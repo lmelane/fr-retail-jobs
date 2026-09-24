@@ -88,7 +88,7 @@ export async function libellerFacettes(
     contrat: (v) => {
       const dimension = plan.perimetre.marche?.contratUnifie && v in EMPLOYMENT_LABELS[langue].programType ? 'programType'
         : plan.perimetre.marche?.contratUnifie && v in EMPLOYMENT_LABELS[langue].engagementType ? 'engagementType' : 'employmentTerm';
-      return employmentLabel(dimension, v, langue) ?? v;
+      return employmentLabel(dimension, v, langue, plan.perimetre.code) ?? v;
     },
     temps: (v) => employmentLabel('workTime', v, langue) ?? v,
     programme: (v) => employmentLabel('programType', v, langue) ?? v,

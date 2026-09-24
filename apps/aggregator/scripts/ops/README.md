@@ -205,8 +205,11 @@ Une fusion Git ne déploie plus les services Railway. Toute livraison ou interru
 Des preuves gravées avec leur lot, pas des procédures courantes : on les rejoue pour re-mesurer, jamais pour opérer.
 
 - [`verif-couverture-registre.mts`](verif-couverture-registre.mts) (`npm run verif:couverture`) et [`verif-couverture-marches.mts`](verif-couverture-marches.mts) : les taux gravés dans `packages/db/marches.ts`, recomptés sur la bonne colonne, en lecture seule stricte.
-- [`verif-marche-cn.mts`](verif-marche-cn.mts), [`verif-marche-cn-facettes.mts`](verif-marche-cn-facettes.mts), [`verif-marche-cn-discrimination.mts`](verif-marche-cn-discrimination.mts), [`verif-marche-cn-dimension-unique.mts`](verif-marche-cn-dimension-unique.mts) : les mesures du marché Chine (lot 6, 15/09/2026) — ouverture, facettes côté site, pouvoir de discrimination, dimension unique `工作性质`.
 - [`p9-verdict.mts`](p9-verdict.mts) `--keys=a,b [--run-id=…]` : le verdict complet d'une ingestion P9 par source, la chaîne entière sans trou entre deux nombres.
 - [`wave-candidates.mts`](wave-candidates.mts) `--actors=<actors.csv> [--limit=40]` : le vivier d'une vague, construit en sondant les portails (D33 : 45 % des `careers.<domaine>` devinés étaient des NXDOMAIN).
 
 Retirés au lot 12 (16/09/2026), sans remplaçant parce que sans usage : `_ca2.mts`, `_demote.mts`, `p9-ingest-facts.mts`, `p9-set-locale.mts`, `p9-url-proof.mts` (essais et mutations ponctuels de septembre).
+
+### Marchés et couverture
+
+Les 41 marchés ouverts sont tous localisés. `packages/db/marches.ts` fixe leurs langues, périmètres et filtres ; aucune mesure historique ni seuil de remplissage ne pilote l’interface. `npm run verif:couverture -w @catwalks/aggregator` mesure les champs des `Job` actifs en lecture seule et signale explicitement sa population (hors offres directes). Les neuf sondes ponctuelles d’ouverture et de comparaison aux anciens taux ont été retirées ; elles n’avaient aucun consommateur applicatif ou CI.

@@ -61,3 +61,7 @@ Le checkout de référence de l’agrégateur travaille sur `development` ; Git 
 Le dossier de référence est `/Users/lmelane/Downloads/catwalks-job-aggregator`, dépôt GitHub `lmelane/fr-retail-jobs`. Les copies temporaires de test restent identifiées et isolées ; aucune copie active n’est supprimée ou synchronisée pendant une validation. Préserver le travail unique avant de supprimer une branche ou un clone.
 
 Les tests doivent couvrir les changements réels. Pour les seuls README et consignes non consommés par le runtime, vérifier le diff, les liens et les affirmations ; ne pas ajouter une nouvelle campagne globale sans modification du code. Conserver les contrôles de sécurité et de données ainsi que les hooks existants.
+
+## Localisation publique et filtres (24 septembre)
+
+Le lot pays/langues remplace les anciens profils « localisé / repli anglais » par un registre unique de 41 marchés natifs, avec 25 catalogues d’interface API/site. Les mesures historiques quittent le runtime. La nature d’emploi regroupe contrat, programme et indépendant dans un menu ; le temps de travail reste distinct. Le détail et la procédure d’ajout sont dans `docs/architecture/recherche-marche.md` et le README du site. La priorité des offres Catwalks, leurs candidatures, les faits RAW, les périmètres GB+IE/DE+AT et les parcours gelés restent inchangés. Le GO de Loïc couvre la promotion du lot complet validé vers main ; aucune migration ni collecte n’est requise pour cette livraison.

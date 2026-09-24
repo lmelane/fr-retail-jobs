@@ -60,13 +60,13 @@ describe('les facettes du contrat suivent le registre', () => {
     expect(facettesContrat(FR()).map((f) => f.cle)).toEqual(['secteur', 'contrat', 'temps', 'ville', 'maison', 'groupe', 'langue']);
     expect(facettesContrat(FR()).find((f) => f.cle === 'contrat')?.libelle).toBe('Type de contrat');
   });
-  it('les États-Unis n’exposent ni contrat ni programme ; la Belgique et le Canada exposent `pays`', () => {
+  it('le contrat regroupe les programmes, le pays ne raffine que les marchés composites', () => {
     const us = facettesContrat(US()).map((f) => f.cle);
-    expect(us).not.toContain('contrat');
+    expect(us).toContain('contrat');
     expect(us).not.toContain('programme');
     expect(us).toContain('temps');
-    expect(facettesContrat(exigerPerimetre('BE')).map((f) => f.cle)).toContain('pays');
-    expect(facettesContrat(exigerPerimetre('CA')).find((f) => f.cle === 'contrat')?.libelle).toBe('Type de poste');
+    expect(facettesContrat(exigerPerimetre('BE')).map((f) => f.cle)).not.toContain('pays');
+    expect(facettesContrat(exigerPerimetre('CA')).find((f) => f.cle === 'contrat')?.libelle).toBe('Employment type');
     // Deux pays dans le périmètre : le candidat peut s'y restreindre.
     expect(facettesContrat(exigerPerimetre('DE')).map((f) => f.cle)).toContain('pays');
   });
@@ -79,7 +79,7 @@ describe('les facettes du contrat suivent le registre', () => {
      */
     const cn = facettesContrat(exigerPerimetre('CN'));
     expect(cn.length, 'la prémisse : la Chine expose bien des facettes').toBeGreaterThan(0);
-    expect(cn.find((f) => f.cle === 'metier')?.libelle).toBe('职位类别');
+    expect(cn.find((f) => f.cle === 'contrat')?.libelle).toBe('合同类型');
     expect(cn.find((f) => f.cle === 'ville')?.libelle).toBe('城市');
     /* Aucun libellé servi ne doit être du latin : ce serait un repli non déclaré. */
     for (const f of cn) {
@@ -90,11 +90,11 @@ describe('les facettes du contrat suivent le registre', () => {
 
 describe('les filtres sont honorés dans le périmètre, refusés explicitement hors de lui', () => {
   it('un filtre sur une facette que le marché ne sert pas est refusé et nommé, jamais honoré ni ignoré', () => {
-    // Prémisse : `contrat` n'est pas servi aux États-Unis (19,2 % de couverture).
-    expect(facettesContrat(US()).some((f) => f.cle === 'contrat')).toBe(false);
-    const plan = planifierRecherche(US(), criteres({ filtres: { contrat: ['PERMANENT'], temps: ['FULL_TIME'] } }));
+    // Les programmes ne sont plus une dimension de menu séparée.
+    expect(facettesContrat(US()).some((f) => f.cle === 'programme')).toBe(false);
+    const plan = planifierRecherche(US(), criteres({ filtres: { programme: ['INTERNSHIP'], temps: ['FULL_TIME'] } }));
     expect(plan.selections).toEqual({ temps: ['FULL_TIME'] });
-    expect(plan.refus).toEqual([{ cle: 'contrat', valeurs: ['PERMANENT'], motif: 'FACETTE_NON_SERVIE' }]);
+    expect(plan.refus).toEqual([{ cle: 'programme', valeurs: ['INTERNSHIP'], motif: 'FACETTE_NON_SERVIE' }]);
   });
 
   it('un pays hors périmètre est refusé ; un pays du périmètre est honoré', () => {

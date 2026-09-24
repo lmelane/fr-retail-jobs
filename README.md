@@ -66,3 +66,7 @@ npm run test:local
 Cette commande crée une base PostgreSQL jetable depuis une image figée, applique les migrations, vérifie les types et exécute les suites agrégateur/API ainsi que les tests des outils Railway. Elle ignore les URL de base de l’environnement appelant et retire son conteneur en fin d’exécution. Les deux tests réservés au corpus réel restent explicitement séparés.
 
 La CI vérifie aussi le build de l’API. `npm run api:build` permet de le reproduire. Le CRON d’ingestion est actif ; le matching et la nouvelle promesse de `/offres` restent gelés.
+
+## Localisation publique
+
+Les 41 marchés ouverts disposent de leurs langues natives (25 catalogues API/site). `packages/db/marches.ts` est le registre unique des pays, locales et filtres. Le site conserve la page courante lorsque le pays change. Les taux de couverture restent des diagnostics des données, jamais des critères de langue ou d’exposition UX. Consulter le [contrat de recherche par marché](docs/architecture/recherche-marche.md) pour les limites des pays hors registre, les variantes multilingues et les deux origines d’offres.

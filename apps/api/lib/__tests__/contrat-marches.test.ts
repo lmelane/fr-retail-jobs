@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
-  CLES_FACETTE, CODES_MARCHE, CODES_MARCHE_LOCALISES, CONTRAT_RECHERCHE_VERSION, DIMENSION_PAR_CLE,
-  LIBELLES_GENERIQUES, MARCHES, MARCHES_ROUTABLES,
+  CLES_FACETTE, CODES_MARCHE, CONTRAT_RECHERCHE_VERSION, DIMENSION_PAR_CLE,
+  LIBELLES_GENERIQUES, MARCHES,
   facettesContrat, facettesDuMarche, perimetreDeRecherche,
 } from '@catwalks/db/marches';
 
@@ -12,17 +12,7 @@ import {
  * registre cesse de porter l'une de ces promesses.
  */
 describe('le registre décrit chaque marché en entier', () => {
-  /**
-   * ⚠️ LE NOMBRE A CHANGÉ LE 17/09/2026, ET IL SE LIT EN DEUX MOITIÉS.
-   *
-   * Douze marchés LOCALISÉS (interface, libellés et vocabulaire dans leur langue) et vingt-neuf
-   * marchés ROUTABLES (corpus mesuré, interface anglaise en repli, locale native déjà déclarée).
-   * Les deux ouvertures sont des décisions différentes : un seul total les confondrait, et une
-   * traduction supprimée pourrait être compensée par un pays ouvert sans que rien ne rougisse.
-   */
   it('PRÉMISSE : quarante et un marchés, sans doublon, version de contrat posée', () => {
-    expect(CODES_MARCHE_LOCALISES).toHaveLength(12);
-    expect(MARCHES_ROUTABLES).toHaveLength(29);
     expect(CODES_MARCHE).toHaveLength(41);
     expect(new Set(CODES_MARCHE).size, 'aucun code déclaré deux fois').toBe(41);
     expect(CONTRAT_RECHERCHE_VERSION).toBe(2);
@@ -104,20 +94,20 @@ describe('le registre décrit chaque marché en entier', () => {
     expect(Object.keys(LIBELLES_GENERIQUES).sort()).toEqual([...CLES_FACETTE].sort());
   });
 
-  it('les libellés que le site affichait sont ceux du registre — le Canada dit « Type de poste », le néerlandais et le chinois sont servis', () => {
+  it('les libellés initiaux sont natifs, les dimensions ne portent pas de titres dupliqués', () => {
     const libelle = (code: string, cle: string) => facettesContrat(perimetreDeRecherche(code, new Set())!).find((f) => f.cle === cle)?.libelle;
-    expect(libelle('CA', 'contrat')).toBe('Type de poste');
-    expect(libelle('CA', 'metier')).toBe('Domaine');
-    expect(libelle('NL', 'contrat')).toBe('Dienstverband');
+    expect(libelle('CA', 'contrat')).toBe('Employment type');
+    expect(libelle('CA', 'metier')).toBeUndefined();
+    expect(libelle('NL', 'contrat')).toBe('Contracttype');
     expect(libelle('NL', 'ville')).toBe('Stad');
     expect(libelle('CN', 'maison')).toBe('品牌');
-    expect(libelle('BE', 'temps')).toBe('Temps de travail · Dienstverband');
+    expect(libelle('BE', 'temps')).toBe('Temps de travail');
     expect(libelle('DE', 'secteur')).toBe('Branche');
     expect(libelle('IT', 'langue')).toBe('Lingua');
-    // Non servies : le contrat en Suisse (17,2 %), le programme en Allemagne (8,0 %), le contrat aux États-Unis (19,2 %).
-    expect(libelle('CH', 'contrat')).toBeUndefined();
+    // Nature d’emploi disponible ; les programmes sont des options du même filtre.
+    expect(libelle('CH', 'contrat')).toBe('Type de contrat');
     expect(libelle('DE', 'programme')).toBeUndefined();
-    expect(libelle('US', 'contrat')).toBeUndefined();
+    expect(libelle('US', 'contrat')).toBe('Employment type');
   });
 
   it('un périmètre hors registre n’existe que pour un pays connu, et sans dimension mesurée', () => {

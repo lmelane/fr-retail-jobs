@@ -11,7 +11,7 @@ import { resoudrePerimetre } from '../perimetre';
  */
 describe('la langue des libellés (lot 8)', () => {
   it('PRÉMISSE — les catalogues existent et divergent ; chaque valeur française a ses traductions', () => {
-    expect(LANGUES_LIBELLES).toEqual(['fr', 'en', 'de', 'it', 'nl', 'es', 'zh']);
+    expect(LANGUES_LIBELLES).toHaveLength(25);
     for (const langue of LANGUES_LIBELLES) for (const dimension of Object.keys(EMPLOYMENT_LABELS.fr) as Array<keyof typeof EMPLOYMENT_LABELS.fr>) {
       expect(Object.keys(EMPLOYMENT_LABELS[langue][dimension]).sort(), dimension).toEqual(Object.keys(EMPLOYMENT_LABELS.fr[dimension]).sort());
     }
@@ -34,7 +34,7 @@ describe('la langue des libellés (lot 8)', () => {
     expect(employmentLabel('workTime', 'PART_TIME', 'en')).toBe('Part-time');
     expect(employmentLabel('workplaceType', 'REMOTE', 'en')).toBe('Remote');
     expect(employmentLabel('workTime', null, 'en')).toBeNull();
-    expect(employmentLabel('workTime', 'INCONNU', 'en')).toBe('Valeur à vérifier');
+    expect(employmentLabel('workTime', 'INCONNU', 'en')).toBeNull();
   });
 
   it('chaque marché du registre sait dans quelle langue il est libellé : anglophones en anglais, francophones en français, les autres dans leur langue servie', () => {
@@ -49,26 +49,14 @@ describe('la langue des libellés (lot 8)', () => {
     expect(perimetreServi(resoudrePerimetre('BG')!).langueDesLibelles).toBe('fr');
   });
 
-  /**
-   * LES MARCHÉS ROUTABLES LISENT L'ANGLAIS, ET C'EST UN CORRECTIF (17/09/2026).
-   *
-   * Vingt-neuf marchés sont entrés au registre avec leur locale NATIVE — `pl-PL`, `ja-JP`,
-   * `ko-KR` — et aucun catalogue d'interface dans cette langue. Servir `localeParDefaut` à
-   * `langueDesLibelles` les faisait tous retomber sur `fr` : un visiteur polonais aurait lu
-   * « Temps plein » et « Stage » en français, alors que le repli décidé est l'anglais.
-   *
-   * `localeServie` répond à la bonne question — dans quelle langue rendre MAINTENANT — et ce
-   * témoin garde la chaîne complète, du registre jusqu'au contrat servi au site.
-   */
-  it('un marché routable est libellé en ANGLAIS, pas dans le français par défaut', () => {
-    // PRÉMISSE : leur locale native n'a aucun catalogue, donc sans correctif ils tomberaient en `fr`.
-    expect(MARCHES.PL.localeParDefaut).toBe('pl-PL');
-    expect(MARCHES.PL.localisation).toBe('FALLBACK');
-
-    for (const code of ['PL', 'JP', 'KR', 'PT', 'BR', 'TH']) {
-      expect(perimetreServi(resoudrePerimetre(code)!).langueDesLibelles, code).toBe('en');
-      expect(langueDesLibellesDuPays(code), `${code} lu comme offre seule`).toBe('en');
+  it('tous les marchés utilisent leur catalogue natif, y compris les variantes régionales', () => {
+    for (const [code, m] of Object.entries(MARCHES)) {
+      expect(perimetreServi(resoudrePerimetre(code)!).langueDesLibelles).toBe(langueDesLibelles(m.localeParDefaut));
+      expect(langueDesLibellesDuPays(code)).toBe(langueDesLibelles(m.localeParDefaut));
     }
+    expect(langueDesLibelles('pl-PL')).toBe('pl');
+    expect(langueDesLibelles('zh-HK')).toBe('zh-Hant');
+    expect(langueDesLibelles('pt-BR')).toBe('pt-BR');
   });
 
   it('une offre lue seule suit le marché de son pays : Autriche → DE → allemand, Irlande → GB → anglais', () => {

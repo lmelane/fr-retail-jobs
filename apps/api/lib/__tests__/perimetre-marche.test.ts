@@ -224,9 +224,9 @@ describe.skipIf(!enabled)('la recherche est bornée par le périmètre (lot 6)',
   });
 
   it('un filtre que le marché ne sert pas est refusé et nommé ; un changement de marché avec d’anciens filtres ne ment pas', async () => {
-    const r = await chercher('US', {}, { ...AUTRE_SEULE, contrat: ['PERMANENT'] });
-    expect(r.filtresRefuses).toEqual([{ cle: 'contrat', valeurs: ['PERMANENT'], motif: 'FACETTE_NON_SERVIE' }]);
-    expect(r.facettes.map((f) => f.cle)).not.toContain('contrat');
+    const r = await chercher('US', {}, { ...AUTRE_SEULE, programme: ['INTERNSHIP'] });
+    expect(r.filtresRefuses).toEqual([{ cle: 'programme', valeurs: ['INTERNSHIP'], motif: 'FACETTE_NON_SERVIE' }]);
+    expect(r.facettes.map((f) => f.cle)).not.toContain('programme');
     expect(ids(r)).toEqual(['newyork', 'paris-tx']);
     // Le pays hors périmètre, sur un marché qui expose `pays` : refusé nommément, le reste honoré.
     const gb = await chercher('GB', {}, { ...AUTRE_SEULE, pays: ['IE', 'FR'] });
@@ -238,8 +238,8 @@ describe.skipIf(!enabled)('la recherche est bornée par le périmètre (lot 6)',
     const r = await chercher('BE', {}, AUTRE_SEULE);
     expect(r.total).toBe(2);
     expect(r.suivant).toBeNull();
-    expect(facette(r, 'pays')?.options.reduce((n, o) => n + o.count, 0)).toBe(r.total);
-    expect(facette(r, 'pays')?.options[0]).toEqual({ value: 'BE', label: 'Belgique', count: 2 });
+    expect(facette(r, 'pays')).toBeUndefined();
+    expect(r.jobs.every((j) => j.countryCode === 'BE')).toBe(true);
     expect(facette(r, 'ville')?.options.map((o) => o.label).sort()).toEqual(['Mons', 'Tournai']);
     expect(r.totalPerimetre).toBeGreaterThanOrEqual(2);
     // Les libellés d'options suivent la langue de service : l'Autriche s'écrit en allemand sur le marché DE.

@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import {
-  DIMENSIONS_SOUMISES_AU_SEUIL,
+  DIMENSIONS_EMPLOI_MESURABLES,
   EXPRESSION_AFFICHEE,
   EXPRESSION_FACETTE,
   POPULATION_MESUREE,
@@ -150,7 +150,7 @@ describe('les outils de mesure lisent la colonne que la facette sert', () => {
      * Le témoin garde quand même la règle : le jour où une source écrit une chaîne vide, la
      * mesure et la facette doivent diverger par décision, pas par accident.
      */
-    for (const d of DIMENSIONS_SOUMISES_AU_SEUIL) {
+    for (const d of DIMENSIONS_EMPLOI_MESURABLES) {
       expect(sqlCouverture(d), `${d} : la mesure doit exclure la chaîne vide`).toContain("<> ''");
       expect(sqlDiversite(d), `${d} : la diversité doit exclure la chaîne vide`).toContain("<> ''");
     }

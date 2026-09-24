@@ -177,10 +177,9 @@ describe.skipIf(!enabled)('pertinence multilingue et curseur (lot 7)', () => {
     expect(ids(r)).toEqual([]);
   });
 
-  it('ET entre dimensions, OU entre valeurs, inconnues conservées (D-435), avec la recherche texte', async () => {
+  it('un contrat sélectionné exclut une offre sans preuve, même si son titre correspond', async () => {
     const r = await chercher('FR', { q: 'manager', filtres: { contrat: ['PERMANENT', 'FIXED_TERM'] } });
-    expect(ids(r)).toEqual(['souligne']);
-    expect(r.jobs[0].correspondance).toEqual({ statut: 'NON_CONFIRMEE', dimensions: ['contrat'] });
+    expect(ids(r)).toEqual([]);
   });
 
   it('CURSEUR — deux pages sans doublon ni saut ; une insertion concurrente n’apparaît qu’à la prochaine recherche ; un retrait ne fait rien sauter', async () => {

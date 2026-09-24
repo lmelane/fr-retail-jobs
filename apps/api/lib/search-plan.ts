@@ -1,3 +1,4 @@
+import { FACET_LABELS, langueDesLibelles } from '@catwalks/db/presentation';
 import { validateSearchQuery } from './search-intent';
 import { facettesContrat, type CleFacette, type FacetteContrat, type Perimetre } from '@catwalks/db/marches';
 import { resolveLieu, type LieuResolu } from './lieu';
@@ -61,7 +62,12 @@ export type PlanRecherche = {
 export function planifierRecherche(perimetre: Perimetre, criteres: CriteresRecherche): PlanRecherche {
   const q = (criteres.q ?? '').trim();
   validateSearchQuery(q);
-  const facettes = facettesContrat(perimetre);
+  // Les liens partagés et les consommateurs API peuvent porter un métier
+  // explicite. Cette contrainte reste applicable sans proposer un sélecteur
+  // concurrent de la recherche principale dans le contrat initial.
+  const facettes = [...facettesContrat(perimetre)];
+  if (criteres.filtres.metier?.length) facettes.unshift({ cle: 'metier',
+    libelle: FACET_LABELS[langueDesLibelles(perimetre.marche?.localeParDefaut)].metier });
   const servies = new Set(facettes.map((f) => f.cle));
   const refus: FiltreRefuse[] = [];
   const selections: Selections = {};

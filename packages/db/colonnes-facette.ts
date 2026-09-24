@@ -40,7 +40,7 @@
  * ── CE QUE CE MODULE NE FAIT PAS ──────────────────────────────────────────────────────────────
  *
  * Il ne décide RIEN. Il ne porte ni seuil, ni verdict, ni politique d'exposition : ceux-là vivent
- * dans `marches.ts` (`SEUIL_AFFICHAGE_FACETTE`, `facettesDuMarche`) et n'ont pas à être dupliqués
+ * dans `marches.ts` (`facettesDuMarche`), sans seuil de couverture et n'ont pas à être dupliqués
  * ici — ce serait recréer le défaut qu'on ferme.
  *
  * Il ne mesure pas non plus la JUSTESSE d'une valeur. Le remplissage dit qu'une information
@@ -78,7 +78,7 @@ export const EXPRESSION_AFFICHEE: Partial<Record<DimensionMesurable, string>> = 
 };
 
 /**
- * Les dimensions que le registre des marchés soumet au seuil d'exposition.
+ * Les dimensions d’emploi mesurables séparément dans les RAW.
  *
  * Volontairement plus étroit que `EXPRESSION_FACETTE` : `ville`, `langue` et `pays` sont des
  * facettes de SITE, servies partout sans mesure de couverture — une ville est une ville sur tous
@@ -86,7 +86,7 @@ export const EXPRESSION_AFFICHEE: Partial<Record<DimensionMesurable, string>> = 
  * dédiée : il vit dans `isSeasonal`, un booléen, et aucun marché ne porte de libellé natif pour
  * lui — donc aucune facette n'est servie. Il est absent ici pour cette raison, pas par oubli.
  */
-export const DIMENSIONS_SOUMISES_AU_SEUIL = ['metier', 'contrat', 'temps', 'programme'] as const;
+export const DIMENSIONS_EMPLOI_MESURABLES = ['metier', 'contrat', 'temps', 'programme'] as const;
 
 /**
  * La population que les sondes mesurent, et la raison pour laquelle c'est exact aujourd'hui.

@@ -59,9 +59,9 @@ function nomPays(code: string, langue: LangueLibelles): string {
 
 function libelles(job: JobRow, langue: LangueLibelles): Libelles {
   return {
-    employmentTermLabel: employmentTermLabel(job.employmentTerm, langue),
+    employmentTermLabel: employmentTermLabel(job.employmentTerm, langue, job.countryCode),
     workTimeLabel: workTimeLabel(job.workTime, langue),
-    programTypeLabel: programTypeLabel(job.programType, langue),
+    programTypeLabel: programTypeLabel(job.programType, langue, job.countryCode),
     engagementTypeLabel: engagementTypeLabel(job.engagementType, langue),
     workplaceTypeLabel: workplaceTypeLabel(job.workplaceType, langue),
     countryLabel: job.countryCode ? nomPays(job.countryCode, langue) : null,

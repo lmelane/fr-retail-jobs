@@ -38,8 +38,8 @@ import { employmentLabel, type LangueLibelles } from '@catwalks/db/presentation'
  */
 export type { LangueLibelles } from '@catwalks/db/presentation';
 // Lot 8 : la langue des libellés est celle du marché servi (`langueDesLibelles`), le français par défaut.
-export const employmentTermLabel = (value: string | null | undefined, langue: LangueLibelles = 'fr') => employmentLabel('employmentTerm', value, langue);
+export const employmentTermLabel = (value: string | null | undefined, langue: LangueLibelles = 'fr', pays?: string | null) => employmentLabel('employmentTerm', value, langue, pays);
 export const workTimeLabel = (value: string | null | undefined, langue: LangueLibelles = 'fr') => employmentLabel('workTime', value, langue);
-export const programTypeLabel = (value: string | null | undefined, langue: LangueLibelles = 'fr') => employmentLabel('programType', value, langue);
+export const programTypeLabel = (value: string | null | undefined, langue: LangueLibelles = 'fr', pays?: string | null) => employmentLabel('programType', value, langue, pays);
 export const engagementTypeLabel = (value: string | null | undefined, langue: LangueLibelles = 'fr') => employmentLabel('engagementType', value, langue);
 export const workplaceTypeLabel = (value: string | null | undefined, langue: LangueLibelles = 'fr') => employmentLabel('workplaceType', value, langue);

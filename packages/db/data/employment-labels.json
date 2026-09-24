@@ -3,7 +3,7 @@
     "employmentTerm": {
       "PERMANENT": "CDI",
       "FIXED_TERM": "CDD",
-      "TEMPORARY": "Intérim / Temporaire"
+      "TEMPORARY": "Temporaire"
     },
     "workTime": {
       "FULL_TIME": "Temps plein",
@@ -57,7 +57,7 @@
     "employmentTerm": {
       "PERMANENT": "Unbefristet",
       "FIXED_TERM": "Befristet",
-      "TEMPORARY": "Zeitarbeit"
+      "TEMPORARY": "Temporär"
     },
     "workTime": {
       "FULL_TIME": "Vollzeit",
@@ -186,6 +186,492 @@
       "ONSITE": "现场办公",
       "HYBRID": "混合办公",
       "REMOTE": "远程办公"
+    }
+  },
+  "ar": {
+    "employmentTerm": {
+      "PERMANENT": "دائم",
+      "FIXED_TERM": "محدد المدة",
+      "TEMPORARY": "مؤقت"
+    },
+    "workTime": {
+      "FULL_TIME": "دوام كامل",
+      "PART_TIME": "دوام جزئي"
+    },
+    "programType": {
+      "INTERNSHIP": "تدريب",
+      "APPRENTICESHIP": "تلمذة مهنية",
+      "GRADUATE_PROGRAM": "برنامج الخريجين",
+      "VIE": "V.I.E"
+    },
+    "engagementType": {
+      "EMPLOYEE": "موظف",
+      "FREELANCE": "عمل حر",
+      "INDEPENDENT_CONTRACTOR": "مقاول مستقل"
+    },
+    "workplaceType": {
+      "ONSITE": "في الموقع",
+      "HYBRID": "هجين",
+      "REMOTE": "عن بُعد"
+    }
+  },
+  "cs": {
+    "employmentTerm": {
+      "PERMANENT": "Na dobu neurčitou",
+      "FIXED_TERM": "Na dobu určitou",
+      "TEMPORARY": "Dočasné"
+    },
+    "workTime": {
+      "FULL_TIME": "Plný úvazek",
+      "PART_TIME": "Částečný úvazek"
+    },
+    "programType": {
+      "INTERNSHIP": "Stáž",
+      "APPRENTICESHIP": "Učňovská příprava",
+      "GRADUATE_PROGRAM": "Absolventský program",
+      "VIE": "V.I.E"
+    },
+    "engagementType": {
+      "EMPLOYEE": "Zaměstnanec",
+      "FREELANCE": "Freelancer",
+      "INDEPENDENT_CONTRACTOR": "Nezávislý dodavatel"
+    },
+    "workplaceType": {
+      "ONSITE": "Na pracovišti",
+      "HYBRID": "Hybridní",
+      "REMOTE": "Na dálku"
+    }
+  },
+  "da": {
+    "employmentTerm": {
+      "PERMANENT": "Fastansættelse",
+      "FIXED_TERM": "Tidsbegrænset",
+      "TEMPORARY": "Midlertidig"
+    },
+    "workTime": {
+      "FULL_TIME": "Fuldtid",
+      "PART_TIME": "Deltid"
+    },
+    "programType": {
+      "INTERNSHIP": "Praktik",
+      "APPRENTICESHIP": "Elevplads",
+      "GRADUATE_PROGRAM": "Graduateprogram",
+      "VIE": "V.I.E"
+    },
+    "engagementType": {
+      "EMPLOYEE": "Medarbejder",
+      "FREELANCE": "Freelance",
+      "INDEPENDENT_CONTRACTOR": "Selvstændig kontrahent"
+    },
+    "workplaceType": {
+      "ONSITE": "På arbejdspladsen",
+      "HYBRID": "Hybrid",
+      "REMOTE": "Fjernarbejde"
+    }
+  },
+  "el": {
+    "employmentTerm": {
+      "PERMANENT": "Αορίστου χρόνου",
+      "FIXED_TERM": "Ορισμένου χρόνου",
+      "TEMPORARY": "Προσωρινή"
+    },
+    "workTime": {
+      "FULL_TIME": "Πλήρης απασχόληση",
+      "PART_TIME": "Μερική απασχόληση"
+    },
+    "programType": {
+      "INTERNSHIP": "Πρακτική άσκηση",
+      "APPRENTICESHIP": "Μαθητεία",
+      "GRADUATE_PROGRAM": "Πρόγραμμα αποφοίτων",
+      "VIE": "V.I.E"
+    },
+    "engagementType": {
+      "EMPLOYEE": "Υπάλληλος",
+      "FREELANCE": "Ελεύθερος επαγγελματίας",
+      "INDEPENDENT_CONTRACTOR": "Ανεξάρτητος συνεργάτης"
+    },
+    "workplaceType": {
+      "ONSITE": "Επιτόπια εργασία",
+      "HYBRID": "Υβριδική εργασία",
+      "REMOTE": "Εξ αποστάσεως"
+    }
+  },
+  "hu": {
+    "employmentTerm": {
+      "PERMANENT": "Határozatlan idejű",
+      "FIXED_TERM": "Határozott idejű",
+      "TEMPORARY": "Ideiglenes"
+    },
+    "workTime": {
+      "FULL_TIME": "Teljes munkaidő",
+      "PART_TIME": "Részmunkaidő"
+    },
+    "programType": {
+      "INTERNSHIP": "Gyakornoki program",
+      "APPRENTICESHIP": "Tanulószerződéses gyakorlat",
+      "GRADUATE_PROGRAM": "Diplomás program",
+      "VIE": "V.I.E"
+    },
+    "engagementType": {
+      "EMPLOYEE": "Munkavállaló",
+      "FREELANCE": "Szabadúszó",
+      "INDEPENDENT_CONTRACTOR": "Önálló vállalkozó"
+    },
+    "workplaceType": {
+      "ONSITE": "Helyszínen",
+      "HYBRID": "Hibrid",
+      "REMOTE": "Távmunka"
+    }
+  },
+  "ja": {
+    "employmentTerm": {
+      "PERMANENT": "無期雇用",
+      "FIXED_TERM": "有期雇用",
+      "TEMPORARY": "臨時雇用"
+    },
+    "workTime": {
+      "FULL_TIME": "フルタイム",
+      "PART_TIME": "パートタイム"
+    },
+    "programType": {
+      "INTERNSHIP": "インターンシップ",
+      "APPRENTICESHIP": "見習い",
+      "GRADUATE_PROGRAM": "新卒採用プログラム",
+      "VIE": "V.I.E"
+    },
+    "engagementType": {
+      "EMPLOYEE": "従業員",
+      "FREELANCE": "フリーランス",
+      "INDEPENDENT_CONTRACTOR": "業務委託"
+    },
+    "workplaceType": {
+      "ONSITE": "オンサイト",
+      "HYBRID": "ハイブリッド",
+      "REMOTE": "リモート"
+    }
+  },
+  "ko": {
+    "employmentTerm": {
+      "PERMANENT": "정규직",
+      "FIXED_TERM": "기간제",
+      "TEMPORARY": "임시직"
+    },
+    "workTime": {
+      "FULL_TIME": "전일제",
+      "PART_TIME": "시간제"
+    },
+    "programType": {
+      "INTERNSHIP": "인턴십",
+      "APPRENTICESHIP": "견습직",
+      "GRADUATE_PROGRAM": "신입 채용 프로그램",
+      "VIE": "V.I.E"
+    },
+    "engagementType": {
+      "EMPLOYEE": "직원",
+      "FREELANCE": "프리랜서",
+      "INDEPENDENT_CONTRACTOR": "개인 계약자"
+    },
+    "workplaceType": {
+      "ONSITE": "현장 근무",
+      "HYBRID": "하이브리드 근무",
+      "REMOTE": "원격 근무"
+    }
+  },
+  "ms": {
+    "employmentTerm": {
+      "PERMANENT": "Tetap",
+      "FIXED_TERM": "Kontrak berjangka",
+      "TEMPORARY": "Sementara"
+    },
+    "workTime": {
+      "FULL_TIME": "Sepenuh masa",
+      "PART_TIME": "Separuh masa"
+    },
+    "programType": {
+      "INTERNSHIP": "Latihan industri",
+      "APPRENTICESHIP": "Perantisan",
+      "GRADUATE_PROGRAM": "Program graduan",
+      "VIE": "V.I.E"
+    },
+    "engagementType": {
+      "EMPLOYEE": "Pekerja",
+      "FREELANCE": "Bebas (freelance)",
+      "INDEPENDENT_CONTRACTOR": "Kontraktor bebas"
+    },
+    "workplaceType": {
+      "ONSITE": "Di tapak",
+      "HYBRID": "Hibrid",
+      "REMOTE": "Jarak jauh"
+    }
+  },
+  "nb": {
+    "employmentTerm": {
+      "PERMANENT": "Fast",
+      "FIXED_TERM": "Midlertidig (tidsbegrenset)",
+      "TEMPORARY": "Vikariat"
+    },
+    "workTime": {
+      "FULL_TIME": "Heltid",
+      "PART_TIME": "Deltid"
+    },
+    "programType": {
+      "INTERNSHIP": "Praksisplass",
+      "APPRENTICESHIP": "Læreplass",
+      "GRADUATE_PROGRAM": "Traineeprogram",
+      "VIE": "V.I.E"
+    },
+    "engagementType": {
+      "EMPLOYEE": "Ansatt",
+      "FREELANCE": "Frilanser",
+      "INDEPENDENT_CONTRACTOR": "Selvstendig næringsdrivende"
+    },
+    "workplaceType": {
+      "ONSITE": "På stedet",
+      "HYBRID": "Hybrid",
+      "REMOTE": "Fjernarbeid"
+    }
+  },
+  "pl": {
+    "employmentTerm": {
+      "PERMANENT": "Umowa na czas nieokreślony",
+      "FIXED_TERM": "Umowa na czas określony",
+      "TEMPORARY": "Praca tymczasowa"
+    },
+    "workTime": {
+      "FULL_TIME": "Pełny etat",
+      "PART_TIME": "Niepełny etat"
+    },
+    "programType": {
+      "INTERNSHIP": "Staż",
+      "APPRENTICESHIP": "Praktyki zawodowe",
+      "GRADUATE_PROGRAM": "Program dla absolwentów",
+      "VIE": "V.I.E"
+    },
+    "engagementType": {
+      "EMPLOYEE": "Pracownik",
+      "FREELANCE": "Freelancer",
+      "INDEPENDENT_CONTRACTOR": "Niezależny kontrahent"
+    },
+    "workplaceType": {
+      "ONSITE": "Na miejscu",
+      "HYBRID": "Hybrydowo",
+      "REMOTE": "Zdalnie"
+    }
+  },
+  "pt-BR": {
+    "employmentTerm": {
+      "PERMANENT": "Efetivo",
+      "FIXED_TERM": "Prazo determinado",
+      "TEMPORARY": "Temporário"
+    },
+    "workTime": {
+      "FULL_TIME": "Tempo integral",
+      "PART_TIME": "Meio período"
+    },
+    "programType": {
+      "INTERNSHIP": "Estágio",
+      "APPRENTICESHIP": "Aprendizagem",
+      "GRADUATE_PROGRAM": "Programa de trainee",
+      "VIE": "V.I.E"
+    },
+    "engagementType": {
+      "EMPLOYEE": "Empregado",
+      "FREELANCE": "Freelancer",
+      "INDEPENDENT_CONTRACTOR": "Prestador de serviços independente"
+    },
+    "workplaceType": {
+      "ONSITE": "Presencial",
+      "HYBRID": "Híbrido",
+      "REMOTE": "Remoto"
+    }
+  },
+  "pt": {
+    "employmentTerm": {
+      "PERMANENT": "Efetivo",
+      "FIXED_TERM": "Prazo determinado",
+      "TEMPORARY": "Temporário"
+    },
+    "workTime": {
+      "FULL_TIME": "Tempo integral",
+      "PART_TIME": "Tempo parcial"
+    },
+    "programType": {
+      "INTERNSHIP": "Estágio",
+      "APPRENTICESHIP": "Aprendizagem",
+      "GRADUATE_PROGRAM": "Programa de trainee",
+      "VIE": "V.I.E"
+    },
+    "engagementType": {
+      "EMPLOYEE": "Colaborador",
+      "FREELANCE": "Freelancer",
+      "INDEPENDENT_CONTRACTOR": "Prestador de serviços independente"
+    },
+    "workplaceType": {
+      "ONSITE": "Presencial",
+      "HYBRID": "Híbrido",
+      "REMOTE": "Remoto"
+    }
+  },
+  "ro": {
+    "employmentTerm": {
+      "PERMANENT": "Permanent",
+      "FIXED_TERM": "Pe durată determinată",
+      "TEMPORARY": "Temporar"
+    },
+    "workTime": {
+      "FULL_TIME": "Normă întreagă",
+      "PART_TIME": "Normă parțială"
+    },
+    "programType": {
+      "INTERNSHIP": "Stagiu",
+      "APPRENTICESHIP": "Ucenicie",
+      "GRADUATE_PROGRAM": "Program pentru absolvenți",
+      "VIE": "V.I.E"
+    },
+    "engagementType": {
+      "EMPLOYEE": "Angajat",
+      "FREELANCE": "Freelancer",
+      "INDEPENDENT_CONTRACTOR": "Contractor independent"
+    },
+    "workplaceType": {
+      "ONSITE": "La sediu",
+      "HYBRID": "Hibrid",
+      "REMOTE": "La distanță"
+    }
+  },
+  "sv": {
+    "employmentTerm": {
+      "PERMANENT": "Fast anställning",
+      "FIXED_TERM": "Visstidsanställning",
+      "TEMPORARY": "Tillfällig anställning"
+    },
+    "workTime": {
+      "FULL_TIME": "Heltid",
+      "PART_TIME": "Deltid"
+    },
+    "programType": {
+      "INTERNSHIP": "Praktik",
+      "APPRENTICESHIP": "Lärlingsutbildning",
+      "GRADUATE_PROGRAM": "Traineeprogram",
+      "VIE": "V.I.E"
+    },
+    "engagementType": {
+      "EMPLOYEE": "Anställd",
+      "FREELANCE": "Frilans",
+      "INDEPENDENT_CONTRACTOR": "Egenföretagare"
+    },
+    "workplaceType": {
+      "ONSITE": "På plats",
+      "HYBRID": "Hybrid",
+      "REMOTE": "Distans"
+    }
+  },
+  "th": {
+    "employmentTerm": {
+      "PERMANENT": "ถาวร",
+      "FIXED_TERM": "สัญญาระยะเวลาแน่นอน",
+      "TEMPORARY": "ชั่วคราว"
+    },
+    "workTime": {
+      "FULL_TIME": "เต็มเวลา",
+      "PART_TIME": "นอกเวลา"
+    },
+    "programType": {
+      "INTERNSHIP": "ฝึกงาน",
+      "APPRENTICESHIP": "ฝึกงานแบบทวิภาคี",
+      "GRADUATE_PROGRAM": "โครงการสำหรับบัณฑิตจบใหม่",
+      "VIE": "V.I.E"
+    },
+    "engagementType": {
+      "EMPLOYEE": "พนักงาน",
+      "FREELANCE": "ฟรีแลนซ์",
+      "INDEPENDENT_CONTRACTOR": "ผู้รับจ้างอิสระ"
+    },
+    "workplaceType": {
+      "ONSITE": "ทำงานที่สถานที่ทำงาน",
+      "HYBRID": "รูปแบบผสมผสาน",
+      "REMOTE": "ทำงานทางไกล"
+    }
+  },
+  "tr": {
+    "employmentTerm": {
+      "PERMANENT": "Süresiz",
+      "FIXED_TERM": "Belirli süreli",
+      "TEMPORARY": "Geçici"
+    },
+    "workTime": {
+      "FULL_TIME": "Tam zamanlı",
+      "PART_TIME": "Yarı zamanlı"
+    },
+    "programType": {
+      "INTERNSHIP": "Staj",
+      "APPRENTICESHIP": "Çıraklık",
+      "GRADUATE_PROGRAM": "Yeni mezun programı",
+      "VIE": "V.I.E"
+    },
+    "engagementType": {
+      "EMPLOYEE": "Çalışan",
+      "FREELANCE": "Serbest çalışan",
+      "INDEPENDENT_CONTRACTOR": "Bağımsız yüklenici"
+    },
+    "workplaceType": {
+      "ONSITE": "Ofiste",
+      "HYBRID": "Hibrit",
+      "REMOTE": "Uzaktan"
+    }
+  },
+  "vi": {
+    "employmentTerm": {
+      "PERMANENT": "CDI",
+      "FIXED_TERM": "CDD",
+      "TEMPORARY": "Tạm thời"
+    },
+    "workTime": {
+      "FULL_TIME": "Toàn thời gian",
+      "PART_TIME": "Bán thời gian"
+    },
+    "programType": {
+      "INTERNSHIP": "Thực tập",
+      "APPRENTICESHIP": "Học nghề",
+      "GRADUATE_PROGRAM": "Chương trình dành cho sinh viên mới tốt nghiệp",
+      "VIE": "V.I.E"
+    },
+    "engagementType": {
+      "EMPLOYEE": "Nhân viên",
+      "FREELANCE": "Tự do",
+      "INDEPENDENT_CONTRACTOR": "Nhà thầu độc lập"
+    },
+    "workplaceType": {
+      "ONSITE": "Tại chỗ",
+      "HYBRID": "Kết hợp",
+      "REMOTE": "Từ xa"
+    }
+  },
+  "zh-Hant": {
+    "employmentTerm": {
+      "PERMANENT": "正式雇用",
+      "FIXED_TERM": "定期合約",
+      "TEMPORARY": "臨時工作"
+    },
+    "workTime": {
+      "FULL_TIME": "全職",
+      "PART_TIME": "兼職"
+    },
+    "programType": {
+      "INTERNSHIP": "實習",
+      "APPRENTICESHIP": "學徒制",
+      "GRADUATE_PROGRAM": "畢業生計劃",
+      "VIE": "V.I.E"
+    },
+    "engagementType": {
+      "EMPLOYEE": "員工",
+      "FREELANCE": "自由工作者",
+      "INDEPENDENT_CONTRACTOR": "獨立承包商"
+    },
+    "workplaceType": {
+      "ONSITE": "現場辦公",
+      "HYBRID": "混合辦公",
+      "REMOTE": "遠端工作"
     }
   }
 }

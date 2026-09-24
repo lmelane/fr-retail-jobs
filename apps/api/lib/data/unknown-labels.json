@@ -1,0 +1,127 @@
+{
+  "fr": {
+    "metier": "Métier à préciser",
+    "secteur": "Secteur à vérifier",
+    "libelle": "Libellé indisponible"
+  },
+  "en": {
+    "metier": "Job category unspecified",
+    "secteur": "Sector to verify",
+    "libelle": "Label unavailable"
+  },
+  "de": {
+    "metier": "Beruf nicht angegeben",
+    "secteur": "Branche zu prüfen",
+    "libelle": "Bezeichnung nicht verfügbar"
+  },
+  "it": {
+    "metier": "Professione non specificata",
+    "secteur": "Settore da verificare",
+    "libelle": "Etichetta non disponibile"
+  },
+  "nl": {
+    "metier": "Functie niet vermeld",
+    "secteur": "Sector te controleren",
+    "libelle": "Benaming niet beschikbaar"
+  },
+  "es": {
+    "metier": "Profesión sin especificar",
+    "secteur": "Sector por verificar",
+    "libelle": "Etiqueta no disponible"
+  },
+  "zh": {
+    "metier": "职位类别未注明",
+    "secteur": "行业待核实",
+    "libelle": "暂无名称"
+  },
+  "ar": {
+    "metier": "الفئة الوظيفية غير محددة",
+    "secteur": "القطاع قيد التحقق",
+    "libelle": "التسمية غير متوفرة"
+  },
+  "cs": {
+    "metier": "Pracovní oblast neuvedena",
+    "secteur": "Odvětví k ověření",
+    "libelle": "Popisek není k dispozici"
+  },
+  "da": {
+    "metier": "Jobkategori ikke angivet",
+    "secteur": "Branche skal verificeres",
+    "libelle": "Betegnelse ikke tilgængelig"
+  },
+  "el": {
+    "metier": "Κατηγορία θέσης μη καθορισμένη",
+    "secteur": "Τομέας προς επιβεβαίωση",
+    "libelle": "Ετικέτα μη διαθέσιμη"
+  },
+  "hu": {
+    "metier": "Munkakör nincs megadva",
+    "secteur": "Ágazat ellenőrzésre vár",
+    "libelle": "Megnevezés nem elérhető"
+  },
+  "ja": {
+    "metier": "職種未指定",
+    "secteur": "業界確認中",
+    "libelle": "ラベル未定"
+  },
+  "ko": {
+    "metier": "직군 미지정",
+    "secteur": "업종 확인 필요",
+    "libelle": "레이블 없음"
+  },
+  "ms": {
+    "metier": "Kategori pekerjaan tidak dinyatakan",
+    "secteur": "Sektor perlu disahkan",
+    "libelle": "Label tidak tersedia"
+  },
+  "nb": {
+    "metier": "Yrke ikke angitt",
+    "secteur": "Sektor må bekreftes",
+    "libelle": "Merkelapp ikke tilgjengelig"
+  },
+  "pl": {
+    "metier": "Zawód nieokreślony",
+    "secteur": "Sektor do zweryfikowania",
+    "libelle": "Etykieta niedostępna"
+  },
+  "pt-BR": {
+    "metier": "Categoria de vaga não especificada",
+    "secteur": "Setor a confirmar",
+    "libelle": "Rótulo indisponível"
+  },
+  "pt": {
+    "metier": "Área profissional não especificada",
+    "secteur": "Setor a confirmar",
+    "libelle": "Rótulo indisponível"
+  },
+  "ro": {
+    "metier": "Categorie de posturi nespecificată",
+    "secteur": "Sector de verificat",
+    "libelle": "Etichetă indisponibilă"
+  },
+  "sv": {
+    "metier": "Yrkeskategori ospecificerad",
+    "secteur": "Sektor att bekräfta",
+    "libelle": "Etikett saknas"
+  },
+  "th": {
+    "metier": "ไม่ระบุสายอาชีพ",
+    "secteur": "ภาคธุรกิจที่ต้องตรวจสอบ",
+    "libelle": "ไม่มีป้ายกำกับ"
+  },
+  "tr": {
+    "metier": "Meslek kategorisi belirtilmemiş",
+    "secteur": "Sektör doğrulanacak",
+    "libelle": "Etiket mevcut değil"
+  },
+  "vi": {
+    "metier": "Ngành nghề chưa xác định",
+    "secteur": "Lĩnh vực cần xác minh",
+    "libelle": "Nhãn không khả dụng"
+  },
+  "zh-Hant": {
+    "metier": "職務類別未指定",
+    "secteur": "產業待確認",
+    "libelle": "標籤不可用"
+  }
+}
