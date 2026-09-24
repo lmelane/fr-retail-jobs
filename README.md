@@ -20,6 +20,8 @@ Les règles de travail figurent dans [CLAUDE.md](CLAUDE.md). Préserver le trava
 
 ## Documentation maintenue
 
+- [Contrat d’exploitation V1](docs/architecture/canary-operations.md) : attribution SOURCE / INTERNAL / UNKNOWN, statut du RUN, protocole de correction et validation Railway.
+
 - [Qualification des sources du 23 septembre](audits/2026-09-23/source-qualification.md) : résultats production, couverture multilingue, limites Aesop/L’Oréal et recouvrement SAP/LVMH.
 - [Architecture et contrats produit](docs/architecture/production-foundations.md) : deux origines d’offres, pays/langue, recherche et parcours de validation des sources.
 - [Recherche V1 et exploitation](docs/architecture/recherche-semantique.md) : PostgreSQL retenu après le challenger linguistique et la [validation Railway avec ingestion simultanée](audits/2026-09-24/search-railway.md), limites mesurées et seuils de réexamen.

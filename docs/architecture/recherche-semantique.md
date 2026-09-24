@@ -2,13 +2,13 @@
 
 ## Décision et périmètre
 
-**Décision du 24 septembre 2026 : PostgreSQL enrichi est retenu et livré pour la V1.** La [validation réelle Railway](../../audits/2026-09-24/search-railway.md) couvre la recherche pendant publication, les ressources DB et la disponibilité. Elasticsearch reste un comparateur hors runtime, sans double lecture ni bascule automatique.
+**Décision du 24 septembre 2026 : PostgreSQL enrichi est retenu et livré pour la V1.** La [validation réelle Railway](../../audits/2026-09-24/search-railway.md) couvre la recherche pendant publication, les ressources DB et la disponibilité. Le challenger Elasticsearch et son outillage ont été retirés. Les rapports ci-dessous conservent uniquement la justification historique de cette décision.
 
 ### Arbitrage PostgreSQL / Elasticsearch
 
 Le [dernier challenger linguistique](../../audits/2026-09-24/search-linguistic.md) ajoute les analyseurs par langue déclarée et un fuzzy borné, avec le même snapshot, les mêmes intentions et synonymes. Sur 214 formulations appariées : précision **89,12 % PG / 87,84 % ES**, nDCG **0,8493 / 0,8610**, rappel dans le pool **72,41 % / 75,09 %**, p95 moteur local de la seconde passe **268,7 / 43,3 ms**. ES gagne réellement en rappel, classement et vitesse moteur ; sa précision baisse légèrement. Aucun LLM, vecteur ou second pipeline de production.
 
-La projection PG et sa file transactionnelle sont déjà intégrées à la disponibilité native, aux deux origines, aux facettes et à la pagination. Le gain produit mixte d'ES ne justifie pas aujourd'hui une seconde infrastructure. Les capacités supplémentaires d'[Elasticsearch](https://www.elastic.co/docs/solutions/search/full-text/search-relevance) restent des pistes, pas des bénéfices démontrés dans ce protocole. Les benchmarks [S1](../../audits/2026-09-24/search-s1.md) et [S2](../../audits/2026-09-24/search-s2.md) conservent leurs résultats historiques ; ne pas les confondre avec le dernier profil.
+La projection PG et sa file transactionnelle sont déjà intégrées à la disponibilité native, aux deux origines, aux facettes et à la pagination. Le gain produit mixte d'ES ne justifie pas aujourd'hui une seconde infrastructure. Les benchmarks [S1](../../audits/2026-09-24/search-s1.md) et [S2](../../audits/2026-09-24/search-s2.md) conservent leurs résultats historiques ; ne pas les confondre avec le dernier profil.
 
 Le contrôle final Railway mesure un p95 HTTP de **384,37 ms au repos / 400,09 ms pendant publication**, sur 300 recherches identiques à concurrence quatre, toutes comprises dans les écritures du worker. Le corpus réel atteint **76 096 documents**, `pending=0`. Ce GO porte sur l'enveloppe mesurée : une source normale, des requêtes représentatives bornées, aucune promesse de capacité mondiale. Le [garde versionné](../../apps/api/scripts/search-benchmark/guard-policy.json) et le suivi local de la tâche relancent un benchmark lors du franchissement des seuils documentés ; ils ne changent jamais automatiquement le moteur.
 

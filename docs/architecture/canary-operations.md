@@ -1,14 +1,76 @@
-# Exploitation du canari agrégateur
+# Exploitation de l’agrégateur V1
 
-Ce runbook prépare une livraison ; il ne l'autorise pas. `main`, les déploiements, migrations et collectes Railway attendent le GO explicite de Loïc. Le développement reste sur `development`. `/emplois` V1, les marchés, GEO, `/offres` et le matching ne sont pas modifiés par PR-1.
+## Contrat de livraison et attribution des incidents
+
+Décision produit du 24 septembre 2026 : une livraison n'est terminée que lorsque
+les défauts de code, d'architecture et de configuration Catwalks identifiés dans
+son périmètre sont corrigés et vérifiés **sur le runtime Railway livré**. Un test
+local ou une fixture verte ne remplace jamais cette validation. Les tests ciblés
+et la CI préviennent les régressions avant la livraison ; aucun défaut n'est
+injecté artificiellement dans la base de production pour exercer un test.
+
+Le contrat s'appuie sur les chemins existants : registre → qualification et
+admission → capture RAW → extraction → identité/publication → projection PG.
+Une erreur ne supprime ni le RAW ni les garde-fous. Aucun patch SQL historique,
+aucune attribution employeur par défaut, aucune seconde architecture.
+
+| Attribution | Preuve et traitement |
+|---|---|
+| `SOURCE` | Incident natif démontré, rattaché à la capture de ce RUN. Peut rester un incident individuel accepté. |
+| `INTERNAL` | Défaut de code, DB, capture, observabilité ou prérequis mal entretenu. Correction obligatoire. |
+| `UNKNOWN` | Cause non démontrée. Investigation obligatoire ; jamais assimilée à SOURCE par défaut. |
+
+L'automatisation initiale ne reconnaît comme SOURCE qu'un HTTP 5xx sur un GET
+**admis**, dans son périmètre qualifié, avec réponse native complète persistée,
+identifiant du RAW et requête exacte vérifiée. Le statut HTTP observé n'est pas
+une règle de publication. Une panne pendant la qualification, un 4xx, un timeout,
+un rejet d'identité ou une anomalie de contenu restent UNKNOWN tant que la cause
+n'est pas démontrée. Une contradiction peut venir de notre ancien rattachement :
+le maintien du blocage n'autorise pas à déclarer la livraison terminée.
+
+| Résultat du RUN normal | PipelineRun / worker | Sortie / Healthchecks |
+|---|---|---|
+| Toutes les sources traitées, aucun incident | COMPLETED | 0 / succès |
+| RUN terminé, uniquement des incidents SOURCE prouvés, autres sources réussies, récapitulatif transmis | COMPLETED_WITH_ERRORS | 0 / succès ; incidents conservés et alertés |
+| Erreur INTERNAL ou UNKNOWN, aucune source, toutes les sources en échec, RUN incomplet, finalisation/alerte/heartbeat indisponible | FAILED | non nulle / fail |
+| Arrêt du processus en cours | INTERRUPTED en base quand la persistance reste possible ; FAILED côté worker | non nulle / fail |
+
+Le worker n'annonce un succès qu'après un acquittement du CLI correspondant à
+la commande et au run, envoyé **après** la persistance du statut final. Un code 0
+sans cet acquittement échoue. `source-add` conserve son propre verdict de
+qualification ; il n'est pas rendu permissif par cette politique du RUN normal.
+Le rejeu d'une seule source doit réussir pour valider cette source.
+
+Les exceptions avant ingestion figurent dans le même récapitulatif que les
+incidents après extraction. Une indisponibilité de l'alerte ne transforme pas un
+RUN dégradé en succès silencieux. Les compteurs par source, les événements et les
+preuves de capture restent accessibles ; aucune réécriture des anciens RUN.
+`8d8c59aa` conserve ainsi son verdict historique et n'est pas repeint en vert.
+
+### Protocole de changement
+
+1. Reproduire le défaut depuis les preuves de la source et identifier ses consommateurs.
+2. Corriger le chemin commun ; fixtures et tests défensifs ciblés, CI obligatoire.
+3. `development` → `main`, images immuables, comparaison SHA/commande/env réels.
+4. Requalifier les seules révisions de sources modifiées par le Golden Path existant,
+   puis les ingérer réellement sur Railway ; lire bilan, RAW, catalogue et API.
+5. Corriger tout défaut INTERNAL et investiguer tout UNKNOWN du périmètre livré.
+   Conserver les refus natifs démontrés sans contournement.
+6. Retirer le mécanisme remplacé après vérification des consommateurs ; actualiser
+   le reçu de release et ce runbook. Aucun nouveau canari global sans changement pertinent.
+
+Le GO couvre l'agrégateur. `/offres`, matching, onboarding, Direct Offers et le
+site restent dans leurs périmètres gelés. PostgreSQL est le seul moteur de
+recherche maintenu ; le challenger Elasticsearch a été supprimé. Les rapports
+historiques expliquent la décision, sans conserver un moteur alternatif.
 
 ## Commande et pause uniques
 
 Le démarrage Docker normal est `sh apps/aggregator/start.sh`. Il appelle `src/worker.ts`, qui vérifie les migrations **sans les appliquer**, puis appelle le CLI ou l'ajout explicite de source. Le runner normal garde son filtre ACTIVE. `reconcile` n'est pas une commande reconnue ; les anciens services ont été supprimés après R5.
 
-`PIPELINE_PAUSED=1` arrête les lanceurs avant le travail avec un événement JSON `pipeline.paused`, `workStarted:false`, code 0. Les fonctions de collecte importées refusent également les effets métier. Seuls `0` et l'absence de variable permettent le lancement ; toute autre valeur échoue. La pause n'est pas contournée par une campagne ni par les commandes bornées. Les commandes de lecture restent disponibles.
+`PIPELINE_PAUSED=1` arrête les lanceurs avant le travail avec un événement JSON `pipeline.paused`, `workStarted:false`, code 0. Les fonctions de collecte importées refusent également les effets métier. Le worker exige explicitement `0` ou `1` ; le CLI local accepte aussi l'absence de variable. Toute autre valeur échoue. La pause n'est pas contournée par une campagne ni par les commandes bornées. Les commandes de lecture restent disponibles.
 
-La variable est lue dans l'environnement du **processus**. Pour arrêter un processus déjà démarré sur Railway, modifier la variable et arrêter/redémarrer le conteneur ; une modification distante ne réécrit pas l'environnement d'un ancien processus. Les signaux d'arrêt sont transmis aux enfants et les runs interrompus sont enregistrés. Le calendrier doit rester gelé pendant le canari ; aucun job périodique n'est activé ici.
+La variable est lue dans l'environnement du **processus**. Pour arrêter un processus déjà démarré sur Railway, modifier la variable et arrêter/redémarrer le conteneur ; une modification distante ne réécrit pas l'environnement d'un ancien processus. Les signaux d'arrêt sont transmis aux enfants et les runs interrompus sont enregistrés. Un canari borne temporairement le calendrier ; le mode normal utilise `scheduled`, à 18 h Europe/Paris. Son état courant est attesté dans le reçu de release.
 
 ## Une nouvelle source, sans modification manuelle de la base
 

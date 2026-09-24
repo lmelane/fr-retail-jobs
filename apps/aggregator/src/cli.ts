@@ -3,6 +3,8 @@ import { startObservability } from './observability/runtime.js';
 import { ObservabilityUnavailableError } from './observability/logger.js';
 import { log } from './observability/logger.js';
 import { summarizeOrchestration } from './lib/runSummary.js';
+import type { CompletionStatus, RunCompletion } from './lib/runCompletion.js';
+import { issuesFromResult } from './lib/ingestionIssue.js';
 import { PrismaClient } from '@prisma/client';
 import { runIngest } from './pipeline/ingest.js';
 import { ingestAllBySource, runQualifiedIngest } from './pipeline/ingestOrchestrator.js';
@@ -43,6 +45,7 @@ if (!['health-report', 'stats', 'export-companies', 'occupation-review-queue'].i
 const prisma = new PrismaClient({ errorFormat: 'minimal', log: [] });
 
 let fatalFailure = false;
+let sourceIncidents = false;
 let observation: Awaited<ReturnType<typeof startObservability>> | undefined;
 
 try {
@@ -76,9 +79,11 @@ try {
      */
     const health = await checkSourceHealth(prisma, stats);
     const alerted = await sendHealthAlert(health);
-    await log.info('command.result', { ok: health.broken === 0, command, sources: stats, geo, health, alerted });
+    const issues = issuesFromResult(stats, health.incidents.length);
+    await log.info('command.result', { ok: stats.length > 0 && issues.length === 0, command, sources: stats, issues, geo, health, alerted });
 
-    if (health.broken > 0) {
+    if (!stats.length || issues.length > 0) {
+      fatalFailure = true;
       for (const incident of health.incidents) {
         await log.error('command.failed', `[health] ${incident.source}: ${incident.status} — ${incident.note}`);
       }
@@ -106,6 +111,7 @@ try {
     const refresh = await runRefresh(prisma, { onlyKeys: activeSources.map(source => source.key) });
     await log.info('refresh.completed', { command, ...refresh });
     if (refresh.refused) {
+      fatalFailure = true;
       await log.error('command.failed', '[refresh] mass-closure guard refused lifecycle maintenance');
       process.exitCode = 1;
     }
@@ -133,17 +139,16 @@ try {
       closedRows.map((r) => r.id),
     );
 
-    // DEC-4: tell the external pinger this run happened (no-op unconfigured).
-    // A completed run with source failures remains a failure signal. The
-    // summary distinguishes source incidents from an interrupted process.
-    // The common finalizer reports the terminal outcome for every operational command.
-
     // SourceRun already persists each incident. Dumping hundreds of nested
     // records exceeded Railway's 500-lines/s limit and hid the final outcome.
+    const summary = summarizeOrchestration(orchestration);
+    sourceIncidents = orchestration.failed + orchestration.timedOut > 0;
     await log.info('ingest.completed', { command,
-      ...summarizeOrchestration(orchestration), geo, refresh, alerted, indexing });
-    if (orchestration.failed > 0 || orchestration.timedOut > 0) {
-      await log.error('command.failed', `[orchestrator] ${orchestration.failed} failed, ${orchestration.timedOut} timed out: ${orchestration.failures.join(', ')}`);
+      ...summary, geo, refresh, alerted, indexing });
+    if (!summary.executionHealthy || (orchestration.incidents.length > 0 && !alerted)) {
+      fatalFailure = true;
+      await log.error('command.failed', { blockingReasons: summary.blockingReasons,
+        alertDeliveryFailed: orchestration.incidents.length > 0 && !alerted });
       process.exitCode = 1;
     }
   } else if (command === 'refresh') {
@@ -307,14 +312,21 @@ try {
     if (observation && !['health-report', 'stats', 'export-companies', 'occupation-review-queue'].includes(command)) {
       const heartbeat = await pingHeartbeat(!fatalFailure && !process.exitCode);
       await log.info('pipeline.heartbeat', { heartbeat, command });
-      if (heartbeat === 'failed') process.exitCode = 1;
+      if (heartbeat === 'failed') { fatalFailure = true; process.exitCode = 1; }
     }
-    await observation?.finish(fatalFailure ? 'FAILED' : process.exitCode ? 'COMPLETED_WITH_ERRORS' : 'COMPLETED');
+    const status: CompletionStatus = fatalFailure ? 'FAILED' : process.exitCode || sourceIncidents ? 'COMPLETED_WITH_ERRORS' : 'COMPLETED';
+    await observation?.finish(status);
+    if (observation && process.send) {
+      const message: RunCompletion = { event: 'pipeline.finalized', command, runId: observation.runId,
+        status: process.exitCode ? 'FAILED' : status };
+      await new Promise<void>((resolve, reject) => process.send!(message, error => error ? reject(error) : resolve()));
+    }
   } catch (error) {
     process.exitCode = 1;
+    await pingHeartbeat(false);
     if (!(error instanceof ObservabilityUnavailableError)) {
       try { await log.error('run.finalization_failed', { error }); }
       catch (loggingError) { if (!(loggingError instanceof ObservabilityUnavailableError)) throw loggingError; }
     }
-  } finally { await prisma.$disconnect(); }
+  } finally { await prisma.$disconnect(); if (process.connected) process.disconnect(); }
 }

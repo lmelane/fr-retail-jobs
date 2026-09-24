@@ -2,6 +2,14 @@
 
 Le produit est un agrégateur mondial du luxe, de la mode, de la beauté et du retail, avec deux origines d’offres : publications directes Catwalks et publications externes.
 
+## Critère central de clôture
+
+Une erreur INTERNAL (code, architecture, configuration Catwalks) doit être corrigée.
+Une cause UNKNOWN doit être investiguée. Seules les erreurs SOURCE démontrées par
+les preuves natives peuvent rester des incidents acceptés. Le contrat de statuts,
+alertes et livraison est dans [le runbook V1](docs/architecture/canary-operations.md).
+La validation finale se fait sur Railway ; tests ciblés et CI la précèdent.
+
 ## Références actuelles
 
 - [README du projet](README.md).
@@ -38,7 +46,7 @@ ses consommateurs, remplacement et tests défensifs. La suppression aveugle des
 anciens chemins peut casser `/offres`, matching, facettes ou reprise des RAW.
 Le GO de promotion vers `main` porte sur le chantier validé ; il ne transforme
 pas les corrections locales encore non qualifiées en release de production.
-L'arbitrage V1 est **PostgreSQL unique au runtime**. Le harness ES isolé reste pour le réexamen, sans service ni synchronisation en production. Les seuils de `apps/api/scripts/search-benchmark/guard-policy.json` déclenchent une nouvelle mesure ; suivi de cette tâche toutes les six heures, dépendant de Codex local. Les métriques absentes restent inconnues. Aucune bascule automatique ni prétention à couvrir toute la croissance mondiale. Le GO recherche ne clôture pas les qualifications d'identité encore ouvertes dans l'audit RAW.
+L'arbitrage V1 est **PostgreSQL unique au runtime**. Le challenger ES, son outillage et son runtime local sont retirés ; les seuils entraînent une nouvelle mesure PostgreSQL. Les seuils de `apps/api/scripts/search-benchmark/guard-policy.json` déclenchent une nouvelle mesure ; suivi de cette tâche toutes les six heures, dépendant de Codex local. Les métriques absentes restent inconnues. Aucune bascule automatique ni prétention à couvrir toute la croissance mondiale. Le GO recherche ne clôture pas les qualifications d'identité encore ouvertes dans l'audit RAW.
 
 - `main` est réservée à la version livrée et vérifiée en production.
 - `development` porte le travail en cours ; les pushes sur cette branche sont autorisés.

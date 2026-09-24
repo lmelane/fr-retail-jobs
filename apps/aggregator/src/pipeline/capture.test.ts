@@ -7,7 +7,8 @@ import { captureExtraction, replayExtraction } from '../capture/batch.js';
 import { archiveAdapterOutput } from '../capture/observations.js';
 import { type CaptureRecord, digestBytes, captureResponse, withCaptureContext } from '../capture/context.js';
 import { archiveRawBlob, readRawBlob } from '../capture/store.js';
-import { fetchJson, fetchText } from '../lib/http.js';
+import { fetchJson, fetchText, fetchWithRetry, HttpStatusError } from '../lib/http.js';
+import { ingestionIssue } from '../lib/ingestionIssue.js';
 import { snapshotHosts } from '../observability/httpTelemetry.js';
 import { MemoryStore } from '../test/memoryObjectStore.js';
 import { upsertDeduplicated } from '../dedup/upsert.js';
@@ -25,6 +26,22 @@ afterEach(() => { vi.restoreAllMocks(); vi.unstubAllGlobals(); });
 afterAll(() => db.$disconnect());
 
 describe('native extraction evidence', () => {
+  it('does not accept an unqualified probe or invented HTTP error as a proven source incident', async () => {
+    const source = key();
+    vi.stubGlobal('fetch', vi.fn(async () => new Response('Service unavailable', { status: 503 })));
+    let failure: unknown;
+    try { await captureExtraction(db, source, {}, undefined, async () => {
+      await fetchWithRetry(url, {}, 1); return { jobs: [] };
+    }); } catch (error) { failure = error; }
+    const batch = await latest(source);
+    expect(ingestionIssue(failure).origin).toBe('UNKNOWN');
+    expect(batch.outcome?.status).toBe('FAILED');
+    expect(await readRawBlob(db, batch.captures[0].blobHash!)).toEqual(Buffer.from('Service unavailable'));
+    let invented: unknown;
+    try { await captureExtraction(db, key(), {}, undefined, async () => { throw new HttpStatusError(503, url); }); }
+    catch (error) { invented = error; }
+    expect(ingestionIssue(invented).origin).toBe('UNKNOWN');
+  });
   it('replays a failed transport attempt followed by success without poisoning the archive', async () => {
     const source = key();
     const network = vi.fn().mockRejectedValueOnce(new DOMException('Native request timed out', 'AbortError'))

@@ -33,6 +33,7 @@ import { validateCapturedSource } from '../connectors/sourceValidation.js';
 import { SourceAdmissionGateError } from '../connectors/sourceAdmission.js';
 import { requireCurrentCaptureRevision } from '../connectors/sourceRevision.js';
 import { lockSourceWrites } from '../lib/writeLocks.js';
+import { addIssue, ingestionIssue, type IngestionIssue } from '../lib/ingestionIssue.js';
 
 /**
  * INGEST — picks up new and updated offers.
@@ -54,6 +55,7 @@ export type IngestStats = {
   merged: number;
   updated: number;
   errors: number;
+  issues?: IngestionIssue[];
   occupationStatuses?: Record<string, number>;
   /** Initial release; occupationReleases counts the actual decisions if activation occurs mid-run. */
   occupationReleaseId?: string;
@@ -283,6 +285,7 @@ async function ingestApiSource(
     // to attest absence (Alberto 6 postings / 74 expired pages, 2026-09-09).
     const split = splitRejectedRows(rejectedRows);
     stats.errors += split.failures.length;
+    if (split.failures.length) addIssue(stats, { origin: 'UNKNOWN', code: 'REJECTED_NATIVE_ROWS', count: split.failures.length, captureBatchId });
     stats.rejected = rejectedRows.length;
     stats.rejectedReasons = split.reasons;
     await log.warn('source.rows_rejected', { sourceKey: stats.source, count: rejectedRows.length, failures: split.failures.length, reasons: split.reasons, rejectedRows });
@@ -402,6 +405,7 @@ async function ingestApiSource(
     } catch (error) {
       log.assertHealthy();
       stats.errors++;
+      addIssue(stats, { ...ingestionIssue(error), captureBatchId });
       /*
        * Le fate scellé ne garde qu'un CODE BORNÉ : les messages peuvent porter des URLs ou des
        * paramètres. La classe seule ne suffisait pourtant pas — `EmployerIdentityReviewRequired`
@@ -520,6 +524,7 @@ export async function runIngest(
         fetched: 0, inSector: 0, france: 0, created: 0, merged: 0, updated: 0, errors: 1,
         withDescription: 0, withDate: 0, withCountry: 0, withUrl: 0,
         errorNote: briefError(error),
+        issues: [ingestionIssue(error)],
       });
       await log.error('source.ingest_failed', { sourceKey: source.key, connectorId: source.kind, error });
     }

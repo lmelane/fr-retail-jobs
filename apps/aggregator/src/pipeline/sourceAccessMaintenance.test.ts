@@ -11,10 +11,11 @@ import { fetchAtsJobs } from '../ats/index.js';
 import { ingestAllBySource } from './ingestOrchestrator.js';
 import { loadActiveSources } from '../connectors/sourceStore.js';
 import { runIngest } from './ingest.js';
+import { ingestionIssue } from '../lib/ingestionIssue.js';
 
 // Keep native qualification, archive, replay, decisions, admission and SQL real.
 // Only downstream publication is replaced in the orchestration-isolation witness.
-vi.mock('./ingest.js', () => ({ KIND_TO_ATS: { ashby: 'ASHBY' }, runIngest: vi.fn(async () => []) }));
+vi.mock('./ingest.js', () => ({ KIND_TO_ATS: { ashby: 'ASHBY' }, runIngest: vi.fn(async (_db, options) => [{ source: options.only, errors: 0, fetched: 0, created: 0, updated: 0 }]) }));
 vi.mock('../connectors/sourceStore.js', async importOriginal => ({
   ...await importOriginal<typeof import('../connectors/sourceStore.js')>(), loadActiveSources: vi.fn(),
 }));
@@ -54,6 +55,19 @@ afterAll(async () => {
 });
 
 describe('normal run maintains its access prerequisite through the Golden Path', () => {
+  it('accepts a native server failure only after qualification and admission of the exact request', async () => {
+    const source = await create(); native(); await maintain(source);
+    vi.stubGlobal('fetch', vi.fn(async () => new Response('Service unavailable', { status: 503 })));
+    let failure: unknown;
+    try { await collect(source); } catch (error) { failure = error; }
+    const issue = ingestionIssue(failure);
+    expect(issue).toMatchObject({ origin: 'SOURCE', code: 'HTTP_503' });
+    expect(issue.captureBatchId).toBeTruthy(); expect(issue.rawCaptureId).toBeTruthy();
+    expect(await db.sourceIngestionAdmission.findUnique({ where: { batchId: issue.captureBatchId! } })).toBeTruthy();
+    expect(await db.rawCapture.findUniqueOrThrow({ where: { id: issue.rawCaptureId! } })).toMatchObject({
+      batchId: issue.captureBatchId, status: 503, complete: true, failure: null,
+    });
+  });
   it('qualifies missing access from native evidence, then admits a separate collection', async () => {
     const source = await create(); const transport = native();
     const result = await maintain(source);

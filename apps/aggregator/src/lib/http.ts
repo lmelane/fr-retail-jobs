@@ -33,7 +33,7 @@ function withWafCookie(url: string, headers: Record<string, string>): Record<str
 
 /** Statut HTTP définitif (4xx hors 403/405/429) : pas de nouvel essai. */
 export class HttpStatusError extends Error {
-  constructor(public readonly status: number, url: string) {
+  constructor(public readonly status: number, public readonly url: string) {
     super(`HTTP ${status} for ${url}`);
     this.name = 'HttpStatusError';
   }

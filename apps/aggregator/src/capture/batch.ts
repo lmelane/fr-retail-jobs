@@ -16,6 +16,9 @@ import { requireSourceAccess } from '../connectors/sourceAccess.js';
 import { matchingAccessScope, SourceAccessGateError } from '../connectors/accessScope.js';
 import { ingestionQualifications, SOURCE_ADMISSION_POLICY } from '../connectors/sourceAdmission.js';
 import { lockSourceWrites } from '../lib/writeLocks.js';
+import { HttpStatusError } from '../lib/http.js';
+import { attestNativeFailure } from '../lib/ingestionIssue.js';
+import { auditUrl } from './context.js';
 
 export async function captureExtraction(db: PrismaClient, sourceKey: string, config: Record<string, unknown>,
   runId: string | undefined, work: (config: Record<string, unknown>) => Promise<AdapterResult>, sourceKind?: AtsType, binding?: SourceBinding): Promise<AdapterResult & { captureBatchId: string }> {
@@ -64,6 +67,18 @@ export async function captureExtraction(db: PrismaClient, sourceKey: string, con
       // Native inputs were committed before parsing and survive this failure.
       await db.captureOutcome.create({ data: { batchId: batch.id, status: 'FAILED', extractedCount: 0,
         failure: error instanceof Error ? error.name : 'UnknownError' } });
+      // A server refusal is accepted only with an archived response to this
+      // exact GET request. No classification from an error message or a 4xx.
+      if (access && error instanceof HttpStatusError && error.status >= 500 && error.status <= 599) {
+        const row = await db.rawCapture.findFirst({ where: { batchId: batch.id, requestUrl: auditUrl(error.url),
+          status: error.status, method: 'GET', complete: true, blobHash: { not: null }, failure: null }, orderBy: { sequence: 'desc' } });
+        if (row) {
+          const request = await readRequestData(db, row);
+          if (request?.origin === 'HTTP_TRANSPORT' && request.hops.some(hop =>
+            hop.request.url === error.url && hop.request.method === 'GET' && hop.status === error.status))
+            attestNativeFailure(error, { captureBatchId: batch.id, rawCaptureId: row.id, status: error.status });
+        }
+      }
       throw error;
     }
   });

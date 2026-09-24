@@ -10,6 +10,7 @@ import { checkSourceHealth, type SourceHealth } from './health.js';
 import { briefError } from '../lib/normalize.js';
 import { maintainSourceAccess } from '../connectors/sourceAccessQualification.js';
 import { WafChallengeError } from '../lib/wafToken.js';
+import { ingestionIssue, issuesFromResult, type IngestionIssue } from '../lib/ingestionIssue.js';
 
 /**
  * Bounded source concurrency with cooperative cancellation. A timed-out source
@@ -56,6 +57,7 @@ export type OrchestratorResult = {
   failures: string[];
   /** Sources that returned degraded/broken health this run — feeds the alert. */
   incidents: SourceHealth[];
+  issues?: (IngestionIssue & { source: string })[];
 };
 
 /**
@@ -70,8 +72,9 @@ export type OrchestratorResult = {
  * large feeds run last, where a cut costs the fewest employers.
  */
 export async function allSourceKeys(prisma: PrismaClient): Promise<string[]> {
-  const apiKeys = (await loadActiveSources(prisma))
-    .filter((source) => KIND_TO_ATS[source.kind])
+  const sources = await loadActiveSources(prisma);
+  if (sources.some(source => !KIND_TO_ATS[source.kind])) throw new Error('ACTIVE source without supported collector');
+  const apiKeys = sources
     .sort((a, b) => (a.lastRunJobs ?? 0) - (b.lastRunJobs ?? 0))
     .map((source) => source.key);
   return onlyRequested([...new Set(apiKeys)]);
@@ -100,7 +103,7 @@ export async function ingestAllBySource(prisma: PrismaClient): Promise<Orchestra
   const keys = await allSourceKeys(prisma);
   await log.info('run.sources_selected', { sources: keys.length, sourceKeys: keys, concurrency: SOURCE_CONCURRENCY, timeoutMs: PER_SOURCE_TIMEOUT_MS });
 
-  const result: OrchestratorResult = { total: keys.length, ok: 0, failed: 0, timedOut: 0, failures: [], incidents: [] };
+  const result: OrchestratorResult = { total: keys.length, ok: 0, failed: 0, timedOut: 0, failures: [], incidents: [], issues: [] };
 
   // Smallest-first order is preserved by the limiter: the giants are still
   // started last, and now run side by side instead of one after the other.
@@ -133,13 +136,17 @@ async function ingestOne(prisma: PrismaClient, key: string, result: Orchestrator
     // the same cities in parallel. The soft deadline lets a slow crawl stop
     // gracefully just before the hard timeout, keeping what it fetched.
     const stats = await runQualifiedIngest(prisma, key);
+    if (stats.length !== 1 || stats[0].source !== key) throw new TypeError('Expected one result for the selected ACTIVE source');
     // Record this source's health so a source that stops producing becomes a
     // detectable incident (BROKEN) on its next run — one SourceRun per source.
     // Collect any incident so the run can send ONE digest at the end.
     const health = await checkSourceHealth(prisma, stats);
     result.incidents.push(...health.incidents);
+    const issues = issuesFromResult(stats, health.incidents.length);
+    result.issues!.push(...issues.map(issue => ({ ...issue, source: key })));
+    if (issues.length) await log.warn('source.issue_classified', { sourceKey: key, issues, acceptedNativeOnly: issues.every(i => i.origin === 'SOURCE') });
     await log.info('source_sync_completed', { sourceKey: key, durationMs: Date.now() - started, fetched: stats.reduce((n, s) => n + s.fetched, 0), created: stats.reduce((n, s) => n + s.created, 0), updated: stats.reduce((n, s) => n + s.updated, 0), held: stats.reduce((n, s) => n + (s.held ?? 0), 0), errors: stats.reduce((n, s) => n + s.errors, 0), http: log.counters(key), stats, health: { broken: health.broken, degraded: health.degraded } });
-    if (stats.some(stat => stat.errors > 0) || health.broken > 0) {
+    if (issues.length) {
       result.failed++;
       result.failures.push(key + ' (ingest errors)');
     } else result.ok++;
@@ -155,6 +162,11 @@ async function ingestOne(prisma: PrismaClient, key: string, result: Orchestrator
      * diagnostics erronés avant d'être compris (D51).
      */
     const challenged = error instanceof WafChallengeError;
+    const issue = ingestionIssue(error);
+    result.issues!.push({ ...issue, source: key });
+    result.incidents.push({ source: key, status: 'BROKEN', jobs: 0, previous: null,
+      note: `${issue.origin}/${issue.code}: ${briefError(error)}` });
+    await log.warn('source.issue_classified', { sourceKey: key, issues: [issue], acceptedNativeOnly: issue.origin === 'SOURCE' });
     if (timedOut) {
       result.timedOut++;
       result.failures.push(`${key} (timedOut)`);

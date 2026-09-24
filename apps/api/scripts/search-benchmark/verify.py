@@ -16,7 +16,7 @@ regressions = json.loads(Path(__file__).with_name('regressions.json').read_text(
 if summary['snapshotSha256'] != regressions['snapshotSha256']:
     raise SystemExit('Snapshot mismatch')
 checks, failures = 0, []
-for engine in ['postgres', 'elastic']:
+for engine in ['postgres']:
     values = summary['engines'].get(engine)
     if not values: raise SystemExit(f'Missing {engine}')
     for key in ['outsideIndexedMarket', 'zeroDespiteKnownPositive']:
