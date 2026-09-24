@@ -102,10 +102,18 @@ export async function resolveEmployer(tx: Prisma.TransactionClient, candidate: C
       if (isRecordedGroup) return { company: current, rule: 'GROUP_LABEL_KEPT_HOUSE', rawEmployerName, normalizedEmployerName: normalized };
     }
     if (current) {
-      // The same source and native posting already identify this employer.
-      // Typographic convergence does not merge companies or rewrite alias keys.
-      // An independently resolved different target remains a contradiction.
-      if ((!target || target.id === current.id) && sameEmployerTypography(rawEmployerName, current.name)) {
+      // Two unreviewed, source-generated spellings can already coexist because
+      // other postings used the new typography first. Their row IDs alone are
+      // not contrary evidence. Keep THIS posting's employer; do not merge the
+      // identities or alter any other posting. Reviewed/parent-linked entities
+      // and identities from another source still require an explicit decision.
+      const currentNativeKey = `SOURCE_${createHash('sha256').update(JSON.stringify([candidate.sourceKey, normalizedEmployerName(current.name)])).digest('hex')}`;
+      const unreviewedTypographicPeer = scoped?.id === target?.id && scoped?.mergedIntoId === null &&
+        current.fashionjobsUrl === `resolved:${currentNativeKey}` &&
+        current.identityReviewId === null && scoped.identityReviewId === null &&
+        current.kind === 'UNKNOWN' && scoped.kind === 'UNKNOWN' &&
+        !current.parentGroupId && !scoped.parentGroupId && !current.parentGroup && !scoped.parentGroup;
+      if ((!target || target.id === current.id || unreviewedTypographicPeer) && sameEmployerTypography(rawEmployerName, current.name)) {
         return { company: current, rule: 'NATIVE_SOURCE_LABEL', rawEmployerName, normalizedEmployerName: normalized };
       }
       const previous = await tx.employerObservation.findFirst({

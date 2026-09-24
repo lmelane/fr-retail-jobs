@@ -201,6 +201,39 @@ it('re-attests a typographic legal label on the same native posting without merg
   }
 });
 
+it('keeps the posting employer when the same source already has both unreviewed typographic identities', async () => {
+  const prior = 'Thomas Sabo GmbH & Co.KG', native = 'THOMAS SABO GmbH & Co. KG';
+  const other = await upsertDeduplicated(p, posting(native, 'other-native-posting'));
+  const first = await upsertDeduplicated(p, posting(prior));
+  const identitySnapshot = () => p.company.findMany({ omit: { updatedAt: true, lastSeenAt: true }, orderBy: { id: 'asc' } });
+  const before = await identitySnapshot();
+  const jobsBefore = await p.job.findMany({ select: { id: true, companyId: true }, orderBy: { id: 'asc' } });
+  expect(before).toHaveLength(2);
+  expect(other.jobId).not.toBe(first.jobId);
+  const repeated = await upsertDeduplicated(p, posting(native));
+  expect(repeated.jobId).toBe(first.jobId);
+  expect(await identitySnapshot()).toEqual(before);
+  expect(await p.job.findMany({ select: { id: true, companyId: true }, orderBy: { id: 'asc' } })).toEqual(jobsBefore);
+  expect(await p.companyAlias.count()).toBe(0);
+});
+
+it('does not use typography to ignore reviewed or parent-linked competing identities', async () => {
+  const prior = 'Thomas Sabo GmbH & Co.KG', native = 'THOMAS SABO GmbH & Co. KG';
+  const other = await upsertDeduplicated(p, posting(native, 'other-native-posting'));
+  const first = await upsertDeduplicated(p, posting(prior));
+  const targetId = (await p.job.findUniqueOrThrow({ where: { id: other.jobId } })).companyId;
+  const parent = await company('Distinct parent');
+  await p.company.update({ where: { id: parent.id }, data: { kind: 'GROUP' } });
+  const proof = spec(targetId, targetId);
+  await p.employerIdentityReview.create({ data: { id: proof.batchId, statement: proof.statement,
+    evidence: proof.evidence, planHash: 'reviewed-distinct-employer', reviewedBy: proof.reviewedBy, reviewedAt: new Date(proof.reviewedAt) } });
+  await p.company.update({ where: { id: targetId }, data: { parentGroupId: parent.id, identityReviewId: proof.batchId } });
+  await expect(upsertDeduplicated(p, posting(native))).rejects.toThrow('needs evidence');
+  await p.company.update({ where: { id: targetId }, data: { parentGroupId: null, parentGroup: null } });
+  await expect(upsertDeduplicated(p, posting(native))).rejects.toThrow('needs evidence');
+  expect((await p.job.findUniqueOrThrow({ where: { id: first.jobId } })).companyId).not.toBe(targetId);
+});
+
 it('replaces only a registry-derived brand with the explicitly related native legal employer, retaining separate companies', async () => {
   const brand = await company('Funky Buddha');
   const { rawEmployerName: _, ...legacy } = posting(brand.name);
