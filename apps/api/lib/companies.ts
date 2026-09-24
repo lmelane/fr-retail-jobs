@@ -1,8 +1,11 @@
+import { localeAffichage, nomFacette } from './presentation-locale';
+import { langueDesLibelles } from '@catwalks/db/presentation';
+import { libelleInconnu } from './taxonomy-labels';
 import { getSectorPresentation, sectorWhere } from './sectors';
 import { companyIdentityWhere } from './company-identity';
 import { prisma } from '@catwalks/db';
 import { publicJobWhere } from '@catwalks/db/availability';
-import { facettesContrat, filtresDuMarche, localeServie, TYPE_FILTRE_PAR_DEFAUT, type Perimetre } from '@catwalks/db/marches';
+import { facettesContrat, filtresDuMarche, TYPE_FILTRE_PAR_DEFAUT, type Perimetre } from '@catwalks/db/marches';
 import { Prisma } from '@prisma/client';
 import { DatabaseUnavailableError, MAX_VALUES, perimetreServi, type PerimetreServi } from './jobs';
 import { CURSEUR_MAX, CurseurInvalideError, decoderCurseur, empreinteCriteres, encoderCurseur } from './curseur';
@@ -58,6 +61,7 @@ export const COMPANY_PAGE_SIZE = 40;
 
 /** D-426 — secteur et pays portent PLUSIEURS valeurs, comme sur la liste d'offres. */
 export type CompanyFilters = {
+  locale?: string;
   q?: string;
   secteur?: string[];
   pays?: string[];
@@ -95,6 +99,7 @@ export function parseCompanyFilters(
   const jeton = (Array.isArray(apres) ? apres[0] : apres)?.trim().slice(0, CURSEUR_MAX + 1) || undefined;
 
   return {
+    locale: one('locale'),
     q: one('q'),
     secteur: many('secteur'),
     pays: pays?.length ? pays : undefined,
@@ -137,7 +142,9 @@ async function queryCompanies(filters: CompanyFilters, perimetre: Perimetre): Pr
   // Lot 7 — la clé ordonnée de la dernière ligne servie : (offres, clé de ligne) ; refusée si elle vient d'autres critères.
   const curseur = filters.apres ? decoderCurseur(filters.apres, empreinte, 2) : null;
   if (curseur && (typeof curseur[0] !== 'number' || typeof curseur[1] !== 'string')) throw new CurseurInvalideError('clé');
-  const presentation = await getSectorPresentation();
+  const locale = localeAffichage(filters.locale, perimetre);
+  const langue = langueDesLibelles(locale);
+  const presentation = await getSectorPresentation(langue);
   const contrat = facettesContrat(perimetre);
   const refus: FiltreRefuse[] = [];
 
@@ -312,7 +319,7 @@ async function queryCompanies(filters: CompanyFilters, perimetre: Perimetre): Pr
     try {
       // La locale SERVIE, pas la locale cible : un marché en repli rend sa page en anglais, noms
       // de pays compris. Voir `localeServie` dans le registre.
-      return new Intl.DisplayNames([localeServie(perimetre.marche) ?? 'fr-FR'], { type: 'region', fallback: 'none' });
+      return new Intl.DisplayNames([locale], { type: 'region', fallback: 'none' });
     } catch {
       return null;
     }
@@ -320,10 +327,11 @@ async function queryCompanies(filters: CompanyFilters, perimetre: Perimetre): Pr
 
   /* Le type d'interaction vient du registre, comme pour la recherche d'offres. */
   const typesFiltre = new Map(filtresDuMarche(perimetre).map((f) => [f.cle, f.type]));
-  const facettes: FacetteServie[] = contrat.flatMap(({ cle, libelle }): FacetteServie[] => {
+  const facettes: FacetteServie[] = contrat.flatMap(({ cle, libelle: natif }): FacetteServie[] => {
+    const libelle = nomFacette(cle, natif, perimetre, locale);
     const type = typesFiltre.get(cle) ?? TYPE_FILTRE_PAR_DEFAUT[cle];
     if (cle === 'secteur') return [{ cle, libelle, type, options: [...sectorCounts.entries()]
-      .map(([value, count]) => ({ value, count, label: presentation.labels[value] ?? 'Secteur à vérifier' }))
+      .map(([value, count]) => ({ value, count, label: presentation.labels[value] ?? libelleInconnu(langue, 'secteur') }))
       .filter((o) => o.count > 0).sort((a, b) => b.count - a.count || a.value.localeCompare(b.value)) }];
     if (cle === 'pays') return [{ cle, libelle, type, options: [...paysCounts.entries()]
       .map(([value, count]) => ({ value, count, label: nomsPays?.of(value) ?? value }))

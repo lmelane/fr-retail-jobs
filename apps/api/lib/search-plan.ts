@@ -25,9 +25,6 @@ export type Dimension = CleFacette;
 export const DIMENSIONS: readonly Dimension[] = ['pays', 'metier', 'secteur', 'contrat', 'temps', 'programme', 'ville', 'maison', 'groupe', 'langue'];
 
 /** Les dimensions où « non renseigné » n'exclut pas (D-435) ; les autres sont structurelles ou choisies explicitement. */
-export type DimensionTolerante = 'contrat' | 'temps' | 'programme' | 'langue';
-export const DIMENSIONS_TOLERANTES: readonly DimensionTolerante[] = ['contrat', 'temps', 'programme', 'langue'];
-
 export type FiltreRefuse = {
   cle: Dimension | 'lieu';
   valeurs: string[];

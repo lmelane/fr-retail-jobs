@@ -1,257 +1,16 @@
-/**
- * LE REGISTRE DU VOCABULAIRE NATIF PAR MARCHÉ — données pures, zéro branchement.
- *
- * ── LE PRINCIPE PRODUIT (arbitrage Loïc) ──────────────────────────────────
- *
- * « On canonise en fonction du PAYS, toujours sur la même logique de filtres,
- * sauf que le nom et le type des champs sont différents. En France "Type de
- * contrat", ailleurs "Job type", donc les valeurs ne sont pas les mêmes. »
- *
- * Autrement dit : les DIMENSIONS canoniques (durée, rythme, programme,
- * saisonnalité, métier) restent mondiales et ne bougent pas. Ce qui
- * change d'un marché à l'autre, c'est (a) le LIBELLÉ sous lequel on les
- * présente, et (b) LESQUELLES on présente. Un candidat français qui clique sur
- * le drapeau australien tombe sur l'Australie, en anglais, avec les facettes
- * australiennes.
- *
- * ── CE QUE CE MODULE EST, ET CE QU'IL N'EST PAS ───────────────────────────
- *
- * C'est un module de DONNÉES : aucun import de la base, aucun effet de bord,
- * aucun appelant à ce stade. Il ne filtre rien, ne requête rien, ne décide rien
- * à l'exécution. Le branchement de l'API et des adaptateurs est un lot séparé.
- *
- * Il ne remplace ni `country.ts` (qui normalise un code pays) ni `language.ts`
- * (qui lit la langue d'une ANNONCE). Un marché n'est pas une langue : la Suisse
- * expose ici `fr-CH` parce que c'est la locale de service par défaut retenue,
- * pas parce que toutes ses annonces sont en français.
- *
- * ── CE QUE LES TAUX DÉCRIVENT : LES MARCHÉS, PAS NOS BUGS ─────────────────
- *
- * Mesuré le 2026-09-15 sur 83 431 offres actives. Le point le plus contre-
- * intuitif du registre — les États-Unis, notre plus gros marché, sans facette
- * de contrat — a été vérifié AVANT d'être gravé, précisément parce qu'un taux
- * bas ressemble toujours à une panne de normalisation :
- *
- *  · le BRUT américain publie une durée de contrat sur 18,8 % des offres, et
- *    nous en canonisons 19,2 %. Nous lisons donc TOUT ce qui existe, et même un
- *    peu plus (titres et descriptions récupèrent le reste). Il n'y a rien à
- *    réparer en amont : le gisement est vide à la source ;
- *  · 12 503 descriptions américaines déclarent l'emploi *at-will* — la relation
- *    y est résiliable à tout moment de part et d'autre. « CDI vs CDD » n'est pas
- *    une question que le marché américain se pose, donc les employeurs ne la
- *    renseignent pas. Le taux mesure une RÉALITÉ JURIDIQUE, pas un défaut.
- *
- * La conséquence produit est la même dans les deux cas : un filtre qu'on ne
- * peut pas remplir ne doit pas être affiché.
- */
-
-/**
- * LE SEUIL D'AFFICHAGE D'UNE FACETTE.
- *
- * Au-dessous de 20 % de couverture, un filtre rend majoritairement du
- * « non précisé » : le candidat coche « CDI », voit le catalogue fondre de 80 %
- * et conclut que le site est vide — alors que les offres manquantes sont
- * simplement muettes sur la dimension. Il perd l'offre ET la confiance.
- *
- * Le seuil est une CONSTANTE nommée, exportée, et le seul endroit où le nombre
- * existe : une valeur recopiée dans chaque marché dériverait au premier
- * ajustement, et le registre deviendrait faux sans que rien ne le signale.
- *
- * Il n'a rien d'une vérité mathématique — c'est un arbitrage produit, révisable
- * par décision. Ce qui n'est PAS révisable, c'est qu'il se décide sur un chiffre
- * mesuré par marché, jamais sur une impression.
+/** Contrat des marchés : périmètres, locales et facettes.
+ * Les mesures historiques décrivent le corpus à leur date de relevé ; elles ne
+ * prouvent ni la pertinence produit des filtres ni la traduction du site.
+ * Une politique `facettesEmploi` explicite prime sur ces mesures.
  */
 export const SEUIL_AFFICHAGE_FACETTE = 0.2;
 
-/**
- * ── POURQUOI « CASUAL » N'EST PAS UNE DIMENSION (AUSTRALIE) ────────────────
- *
- * Bloc nommé et volontairement trouvable : la question reviendra, et la réponse
- * mesurée doit être plus facile à retrouver que l'intuition qui la contredit.
- *
- * L'audit défensif a proposé de créer une dimension `casual` pour l'Australie,
- * sur le constat que le mot apparaît dans 17,8 % des descriptions australiennes
- * et qu'il y désigne un STATUT JURIDIQUE local, sans équivalent ailleurs. La
- * mesure du 2026-09-15 dit que le constat est vrai à moitié, et que la
- * conclusion ne suit pas :
- *
- *  · 220 offres australiennes portent « casual » dans leur description ;
- *  · 121 d'entre elles (55 %) sont DÉJÀ `isSeasonal = true` — donc déjà
- *    couvertes par une dimension existante ;
- *  · il reste 99 offres (45 % des « casual », soit 8 % du marché australien)
- *    que rien ne couvre — très loin des 20 % du seuil d'affichage ;
- *  · AUCUN champ structuré ne porte « casual » : le mot ne vit que dans le
- *    texte libre. Une dimension construite là-dessus serait alimentée par de
- *    l'extraction lexicale, pas par une donnée déclarée.
- *
- * Le contexte réel des offres tranche : « Holiday Superstar Casual »,
- * « Seasonal Casual Sales Consultants », « casual Holiday Stock Replenishment
- * Assistants ». En Australie, `casual` est massivement le VOCABULAIRE du
- * saisonnier, pas une dimension parallèle. Créer une facette reviendrait à
- * afficher deux filtres qui sélectionnent largement les mêmes offres — le pire
- * cas pour un candidat, qui croit affiner et ne fait que se perdre.
- *
- * SI CE RÉSIDUEL MONTAIT UN JOUR au-dessus du seuil, la bonne réponse resterait
- * d'AMÉLIORER LA DÉTECTION DU SAISONNIER pour absorber les 45 % non marqués —
- * pas d'ajouter une dimension. Un gisement mal détecté est un défaut de
- * normalisation ; il ne se répare pas en lui donnant sa propre colonne.
- */
-
-/**
- * ── LE GARDE-FOU PRODUIT : AU MOINS UNE FACETTE DENSE PAR MARCHÉ ───────────
- *
- * Le seuil de 20 % empêche d'afficher un filtre inutilisable. Il n'empêche pas
- * le cas inverse, et bien plus sournois : un marché dont TOUTES les facettes
- * exposées frôlent le seuil. Techniquement conforme, produit mort.
- *
- * C'est exactement l'état du registre sur les seules dimensions contractuelles.
- * Mesuré le 2026-09-15, toutes les facettes exposées laissent 70 % ou plus de
- * « non précisé », la seule exception étant le contrat français (69,2 % de
- * couverture, donc 30,8 % de muettes). Un candidat allemand qui coche
- * « Vollzeit » sur une facette à 74,9 % perd déjà un quart du catalogue.
- *
- * `metier` DEVAIT changer la nature du problème — 90,0 à 96,8 % sur dix marchés
- * sur douze. CES CHIFFRES ÉTAIENT CEUX DE `jobFunction`, une colonne que la
- * facette ne sert pas. Re-mesurée le 2026-09-15 sur `occupationCode`, la
- * colonne réellement agrégée (`job-search-query.ts:167`), la même dimension
- * couvre 25,7 % (CH) à 57,0 % (ES).
- *
- * ⚠️ LA CONSÉQUENCE EST BRUTALE ET ELLE DOIT ÊTRE DITE : AUCUN MARCHÉ N'A PLUS
- * DE FACETTE MÉTIER DENSE. Quatre marchés atteignent encore le plancher de
- * 77 % — US (81,8 %), BE (81,4 %), CA (79,5 %), NL (78,2 %) — mais tous les
- * quatre par le RYTHME, une facette à deux valeurs qui affine à la marge. La
- * facette qui porte l'intention du candidat (« je cherche un poste de
- * vendeur ») est creuse PARTOUT : 57,0 % au mieux (ES), 25,7 % au pire (CH).
- *
- * Le garde-fou « au moins une facette dense par marché » ne gardait donc pas ce
- * qu'il prétendait : il était satisfait par un chiffre mesuré sur une colonne
- * que personne ne sert. C'est le motif d'erreur dominant de ce dépôt sous une
- * forme nouvelle — non pas un commentaire resté en arrière, mais un TÉMOIN VERT
- * sur la mauvaise donnée.
- *
- * ── CE QUI EST FAIT ICI, ET CE QUI NE L'EST PAS ──────────────────────────
- *
- * Les constantes sont CONSERVÉES et le témoin de densité est converti en constat
- * mesuré : il grave l'état réel (aucun marché dense) au lieu d'affirmer un
- * invariant que les données ne portent pas. Baisser le plancher à 33 % pour
- * refaire passer le témoin aurait été l'interdit explicite du CLAUDE.md —
- * modifier une règle pour la faire correspondre après coup au code.
- *
- * ⚠️ CE QUI RESTE À ARBITRER PAR LE CEO, ET N'EST PAS TRANCHÉ ICI : que faire
- * d'un catalogue dont la facette métier laisse 43 à 74 % de « Métier à
- * préciser » selon le marché. Trois voies existent — améliorer le taux de
- * classification (`occupationStatus = PENDING`), remonter le seuil d'affichage,
- * ou servir la famille `jobFunction` (mieux remplie, 27 valeurs) à la place du
- * métier fin. Chacune change ce que le candidat voit, donc aucune n'est un
- * réglage de registre.
- */
 export const SEUIL_FACETTE_DENSE = 0.9;
 
-/**
- * Le PLANCHER de densité, en dessous duquel un marché n'est plus exploitable.
- *
- * 77 % — la valeur d'origine, CONSERVÉE À DESSEIN alors qu'aucun marché ne
- * l'atteint plus depuis la re-mesure du métier sur la bonne colonne.
- *
- * Elle était calée « juste sous la Suisse (77,705 %) », un chiffre de
- * `jobFunction`. La Suisse réelle est à 25,656 % sur la facette servie, et sa
- * meilleure facette exposée (le rythme, 49,1 %) reste sous le plancher.
- *
- * La constante reste donc la CIBLE PRODUIT — le niveau auquel une facette
- * mérite d'être appelée dense — et non plus la description d'un état atteint.
- * L'abaisser à la mesure du jour reviendrait à supprimer le garde-fou en
- * feignant de le respecter.
- */
 export const PLANCHER_FACETTE_DENSE = 0.77;
 
-/**
- * Les marchés MESURÉS, et eux seuls.
- *
- * ── LA BELGIQUE EST ENTRÉE LE 2026-09-15, PARCE QU'ELLE A ÉTÉ MESURÉE ─────
- *
- * Elle était écartée pour la seule raison qui vaille — « nous ne disposons
- * d'aucun taux » — et non par jugement sur le marché. La mesure a été faite :
- * 671 offres actives, et QUATRE dimensions passent le seuil d'affichage (cinq
- * avant le retrait de la séniorité). C'est le marché le MIEUX couvert du
- * registre en nombre de facettes, à égalité avec la France. L'écarter plus
- * longtemps fermait un marché sur une absence de données qui n'existait plus.
- *
- * Le registre n'a pas changé de règle pour l'accueillir : ses taux sont
- * recopiés de la même requête que les dix autres, ses libellés sont relevés et
- * non déduits de la France voisine — exactement le piège que CA-fr a révélé.
- *
- * ── LA CHINE EST ENTRÉE LE 2026-09-15, ET ELLE A CHANGÉ UNE RÈGLE ────────
- *
- * Elle était écartée pour la bonne raison : mesurable, mais « non ouverte »,
- * et l'ouverture d'un marché appartient au CEO — « non mesuré » se répare par
- * une requête, « non ouvert » se tranche par une décision.
- *
- * Son entrée a révélé que LE SEUIL SEUL NE SUFFIT PAS. Le rythme chinois
- * couvre 81,9 % des offres — très au-dessus des 20 % — mais 99,7 % de ses
- * valeurs renseignées sont identiques. Un filtre qui passe le seuil peut donc
- * être parfaitement inutile, et le registre le sait désormais : voir le bloc
- * de la Chine, qui porte la mesure, la contre-épreuve française et le
- * mécanisme retenu (pas de libellé, donc pas de facette).
- */
 export const CODES_MARCHE_LOCALISES = ['US', 'FR', 'GB', 'CA', 'DE', 'IT', 'ES', 'NL', 'AU', 'CH', 'BE', 'CN'] as const;
 
-/**
- * LES MARCHÉS ROUTABLES — un pays s'ouvre sur son CORPUS, pas sur sa traduction.
- *
- * ── LA RÈGLE QUE CETTE TABLE APPLIQUE ─────────────────────────────────────────────────────────
- *
- * Trois niveaux, à ne jamais confondre : un pays PRÉSENT porte des offres ; un marché ROUTABLE a
- * un corpus assez fiable pour être exposé, avec l'interface anglaise en repli ; un marché
- * LOCALISÉ a en plus sa locale, ses catalogues et ses libellés natifs. Cette table porte le
- * deuxième niveau ; `MARCHES_LOCALISES` au-dessus porte le troisième.
- *
- * Chaque ligne porte la LOCALE NATIVE du pays — `pl-PL`, jamais `en-GB`. Le repli d'interface est
- * calculé par `marcheEnRepli`, séparément, et `localisation: 'FALLBACK'` le dit. Écrire la locale
- * de repli ici aurait déclaré que l'anglais EST la langue du marché polonais, et ce mensonge se
- * serait propagé au `hreflang`, aux métadonnées et au sélecteur.
- *
- * ── D'OÙ VIENNENT CES TRENTE ET UNE LIGNES ────────────────────────────────────────────────────
- *
- * De la sonde `audits/mesures-d435-d436/marches-routables-2026-09-17.mts`, rejouée en lecture
- * seule le 2026-09-17 : 107 pays hors des douze localisés portent 9 973 offres actives ; 31
- * passent les trois critères (volume ≥ 50, intégrité géographique, au moins une facette
- * exploitable) et totalisent 8 210 offres.
- *
- * DEUX DE CES TRENTE ET UN SONT ÉCARTÉS ICI — l'Autriche et l'Irlande, déjà servies par DE et GB
- * (voir plus bas). Restent 29 marchés et 7 533 offres.
- *
- * `offresMesurees` recopie ce comptage-là. C'est un ordre de grandeur daté, pas une vérité
- * courante : il sert à classer et à documenter, jamais à décider d'un affichage — les facettes se
- * mesurent, et un marché en repli n'en expose aucune tant qu'elle ne l'est pas.
- *
- * ── LES SIX PAYS ABSENTS, ET POURQUOI C'EST LA MÊME RÈGLE ─────────────────────────────────────
- *
- * IN · CO · IL · MO · MA · ID portent 1 015 offres et sont ÉCARTÉS : leur code ISO est aussi une
- * subdivision fédérale (`IN` est l'Indiana, `CO` le Colorado, `ID` l'Idaho…) et la part d'offres
- * portant une preuve pays explicite est trop faible pour trancher — 3 % pour l'Inde sur 576
- * offres, 0 % pour IL, MO et MA. Les ouvrir servirait à un candidat indien des offres de
- * l'Indiana : exactement le défaut mesuré sur le Canada, 200 offres californiennes sur 3 129.
- *
- * L'Inde est le cas à connaître : sa locale `en-IN` est validée et son volume la placerait au
- * premier rang des routables. Ce n'est PAS un doute sur la locale, c'est la géographie qui
- * bloque. Elle entre dès que le chantier Country Resolution rend ses preuves — sans rien changer
- * ici qu'une ligne.
- *
- * ── AT ET IE SONT ABSENTS POUR UNE RAISON DIFFÉRENTE : ILS SONT DÉJÀ SERVIS ───────────────────
- *
- * L'Autriche (395 offres) et l'Irlande (282) passent les trois critères, et pourtant elles ne
- * sont PAS ici. Le registre les sert déjà : `MARCHES.DE.pays` vaut `['DE', 'AT']` et
- * `MARCHES.GB.pays` vaut `['GB', 'IE']` — deux périmètres à plusieurs pays, posés avant ce lot.
- *
- * Les ouvrir comme marchés propres mettrait un pays dans DEUX marchés : le SQL bornerait les
- * mêmes offres sous deux drapeaux, le sélecteur proposerait deux entrées à un candidat
- * autrichien, et `perimetreDeRecherche` devrait choisir. Le témoin « aucun pays n'appartient à
- * deux marchés » (`apps/api/lib/__tests__/contrat-marches.test.ts`) l'a attrapé, et il a raison.
- *
- * Détacher AT de DE et IE de GB est une DÉCISION PRODUIT — elle change ce que voit aujourd'hui un
- * candidat autrichien sur le marché allemand — et elle appartient au CEO, pas à ce fichier. Les
- * offres restent atteignables en attendant : elles sont servies par DE et GB.
- */
 export const MARCHES_ROUTABLES = [
   { code: 'JP', nom: '日本', localeNative: 'ja-JP', offresMesurees: 552, couverture: { contrat: 0.3632, temps: 0.7547, programme: 0.0236, saisonnier: 0, metier: 0.2594 }, cardinalite: { contrat: 3, temps: 2, programme: 1, saisonnier: 0, metier: 13 }, facettesSite: ['secteur', 'ville', 'maison', 'groupe', 'langue'] },
   { code: 'KR', nom: '대한민국', localeNative: 'ko-KR', offresMesurees: 527, couverture: { contrat: 0.3586, temps: 0.9343, programme: 0.0152, saisonnier: 0, metier: 0.3485 }, cardinalite: { contrat: 2, temps: 2, programme: 1, saisonnier: 0, metier: 10 }, facettesSite: ['secteur', 'ville', 'maison', 'groupe'] },
@@ -290,115 +49,6 @@ export const CODES_MARCHE = [
 ] as const;
 export type CodeMarche = (typeof CODES_MARCHE)[number];
 
-/**
- * Les DIMENSIONS exposables — strict sous-ensemble du modèle de `employment.ts`.
- *
- * `engagementType` n'y figure pas : 162 offres sur 83 431 actives (0,19 %,
- * mesuré en production le 2026-09-15), aucune facette, aucun index (règle Loïc,
- * 2026-09-08). Le registre ne réintroduit pas par la fenêtre une dimension que
- * le modèle a laissée hors facette.
- *
- * DEUX VALEURS DISTINCTES SEULEMENT — FREELANCE (118) et INDEPENDENT_CONTRACTOR
- * (44). Même si la couverture montait un jour au-dessus du seuil, ce serait la
- * dimension la plus pauvre du registre en pouvoir de discrimination : `metier`
- * en porte 51. Le nombre de valeurs compte autant que le taux de remplissage,
- * et c'est pourquoi le registre mesure les deux.
- *
- * ── MÉTIER : LA DIMENSION, ET LA COLONNE QUI LA PORTE RÉELLEMENT ─────────
- *
- * Le registre a d'abord été écrit avec les seules dimensions du VOCABULAIRE
- * CONTRACTUEL, et cette omission a produit un contresens : on en a conclu que
- * « le marché américain ne garde qu'une facette ». `metier` a donc été ajouté
- * — mais MESURÉ SUR LA MAUVAISE COLONNE, et c'est le défaut que l'audit du
- * 2026-09-15 (chantier 2) a trouvé.
- *
- * LES TAUX GRAVÉS ÉTAIENT CEUX DE `jobFunction` (95,5 % en FR, 77,7 % en CH).
- * La facette réellement servie au candidat lit `occupationCode` — vérifié dans
- * le code, pas déduit : `job-search-query.ts:167` agrège
- * `COALESCE("occupationCode",'unclassified')` en facette `occupations`, que
- * `EXPRESSION_FACETTE` (`packages/db/colonnes-facette.ts`) mappe sur la dimension
- * `metier`. `jobFunction` n'est JAMAIS agrégé en facette, et il n'est PLUS
- * filtrable du tout : aucun paramètre `?fonction=` n'existe dans l'API — vérifié
- * le 2026-09-20, `parseFilters` (`apps/api/lib/jobs.ts`) ne le lit pas. Il n'est
- * plus qu'un libellé de famille sur la fiche.
- *
- * Les deux colonnes ne disent d'ailleurs pas la même chose : `jobFunction` est
- * la FAMILLE (27 valeurs, dérivée du code — `occupation-engine.ts:494`),
- * `occupationCode` est le MÉTIER lui-même (51 valeurs). Le registre décrivait
- * donc la couverture d'une colonne pendant que le produit en servait une autre,
- * moins remplie de 42 points en moyenne.
- *
- * Les taux ci-dessous sont RE-MESURÉS sur `occupationCode`, même population
- * (83 431 offres actives, 2026-09-15) : 25,7 % (CH) à 57,0 % (ES). Les douze
- * marchés restent au-dessus du seuil d'affichage, donc aucun ne perd la facette
- * — mais AUCUN n'atteint plus la densité de 90 %, ni même le plancher de 77 %.
- * Voir le bloc `SEUIL_FACETTE_DENSE`, qui porte la conséquence.
- *
- * ── `seniorite` N'EST PLUS UNE DIMENSION DE FACETTE (2026-09-15) ─────────
- *
- * Elle a été RETIRÉE de cette liste. La raison n'est pas la couverture — elle
- * passait le seuil sur sept marchés — mais la PROVENANCE de la donnée :
- *
- *  · 22 625 offres sur 22 631 tirent leur séniorité d'un REGEX SUR L'INTITULÉ
- *    (`occupationEvidence->>'seniorityConfidence' = 'TITLE_HEURISTIC'`), contre
- *    6 d'une mention littérale certifiée. Soit 99,97 % de déduit ;
- *  · confrontée à la source quand les deux existent (1 861 offres), la
- *    déduction CONTREDIT le niveau déclaré par l'employeur dans 1 489 cas,
- *    soit 80,0 %. « Team Lead (Part time) », déclaré `Entry Level` à la source,
- *    ressort MANAGER ; « Allievo/a Manager di Store » — un manager STAGIAIRE,
- *    déclaré `Associate` — ressort MANAGER lui aussi ;
- *  · le moteur le dit lui-même, dans son propre champ de preuve :
- *    « Migrated title heuristic; not a source-certified experience level »
- *    (`occupation-engine.ts:523`).
- *
- * Un filtre « Niveau d'expérience » est une PROMESSE faite au candidat : qu'en
- * cochant « Senior » il verra des postes seniors. Sur une donnée déduite à
- * 99,97 % et fausse 4 fois sur 5 face à la source, cette promesse ne peut pas
- * être tenue — et un candidat junior écarté d'une offre « Lead Cashier » classée
- * SENIOR ne saura jamais pourquoi son écran est vide.
- *
- * ⚠️ LE REGISTRE DÉCRIVAIT DÉJÀ UNE CIBLE COMME UN ÉTAT EXISTANT. `seniorite`
- * portait douze libellés natifs relevés (`经验`, `Erfahrungslevel`…) et un taux
- * par marché, alors qu'elle n'était servie NULLE PART : absente de
- * `EXPRESSION_FACETTE`, de `JobsResult['facets']` et de `CleFiltre` côté
- * site. Aucun candidat n'a jamais vu ce filtre. Le retrait ne supprime donc
- * aucune fonctionnalité — il aligne le registre sur la réalité.
- *
- * CE QUI LA FERAIT REVENIR : une séniorité SOURCÉE, pas déduite. Le chantier
- * qui branche l'expérience DÉCLARÉE (`experienceYears`, alimenté par les
- * adaptateurs ATS) est en cours. Le jour où cette donnée existe et couvre un
- * marché au-dessus du seuil, la dimension peut renaître — sur du sourcé, avec
- * ses libellés qui sont conservés dans l'historique de ce fichier, et par
- * DÉCISION (le retrait comme le retour sont des arbitrages produit).
- *
- * CE QUI N'EST PAS SUPPRIMÉ : la colonne `Job.seniority` et le moteur qui la
- * remplit restent en place. La déduction garde un usage INTERNE légitime
- * (matching, agrégats Intelligence, index `[isActive, seniority]`). On retire
- * la PROMESSE faite au candidat, pas la donnée.
- *
- * ── `saisonnier` RESTE UNE DIMENSION MESURÉE, ET C'EST DÉLIBÉRÉ ──────────
- *
- * Elle n'a jamais été exposée (aucun marché ne porte de libellé natif) et elle
- * ne PEUT pas l'être : `isSeasonal` porte `true` sur 3 449 offres et `null` sur
- * les 79 982 autres — ZÉRO `false`, vérifié en base le 2026-09-15. Une colonne
- * à une seule valeur distincte ne partitionne rien : un filtre construit dessus
- * ne saurait que tout garder ou tout exclure.
- *
- * Elle reste NÉANMOINS dans cette liste, contrairement à `seniorite`, parce que
- * les deux cas sont différents et que confondre les deux coûterait cher :
- *
- *  · `seniorite` était une PROMESSE — douze libellés relevés, un taux au-dessus
- *    du seuil sur sept marchés, donc une facette qui n'attendait que son
- *    câblage. Elle est retirée ;
- *  · `saisonnier` est une MESURE dont la conclusion est « non », et elle porte
- *    l'argument qui ferme la question du `casual` australien (voir le bloc
- *    nommé en tête de fichier, qui compare 17,0 % de saisonnier AU à 8 % de
- *    résiduel casual). La retirer effacerait la mesure qui justifie le refus,
- *    et la question reviendrait à la revue suivante sans sa réponse.
- *
- * L'invariant « aucun marché ne porte de libellé saisonnier » est gardé par un
- * témoin, et c'est lui qui garantit qu'elle ne sera pas exposée par accident.
- */
 export const DIMENSIONS_FACETTE = [
   'contrat',
   'temps',
@@ -408,50 +58,19 @@ export const DIMENSIONS_FACETTE = [
 ] as const;
 export type DimensionFacette = (typeof DIMENSIONS_FACETTE)[number];
 
-/** La couverture mesurée d'un marché, dimension par dimension, en proportion. */
 export type CouvertureMesuree = Readonly<Record<DimensionFacette, number>>;
 
-/**
- * Le nombre de VALEURS DISTINCTES d'une dimension sur ce marché.
- *
- * Mesure à part entière, jamais encodée dans la couverture. Une dimension peut être remplie à
- * 93 % et ne porter qu'UNE valeur : elle est alors parfaitement renseignée et ne filtre rien.
- * Écrire `couverture: 0` pour exprimer cela ferait mentir le registre — six mois plus tard, on y
- * lirait « aucune information » là où l'information est complète.
- *
- * Le seuil `>= 2` n'est pas un réglage : c'est une propriété logique. Une facette à une seule
- * valeur ne partitionne rien.
- */
 export type CardinaliteMesuree = Readonly<Record<DimensionFacette, number>>;
 export const CARDINALITE_MINIMALE = 2;
 
-/**
- * ── LE CONTRAT DE RECHERCHE PARTAGÉ (lot 6) ───────────────────────────────
- *
- * Ce registre est la SEULE description des marchés lue par l'API et, à
- * travers `GET /api/marches` et les réponses de `/api/jobs`, par le site. Il
- * porte donc tout ce qu'un marché est pour le produit : son périmètre
- * géographique (le SQL borne les offres à ces pays), ses langues de service,
- * les facettes qu'il expose et leurs libellés natifs. Le site n'en garde
- * aucune copie : la version du contrat change quand sa FORME change.
- */
-export const CONTRAT_RECHERCHE_VERSION = 1;
+export const CONTRAT_RECHERCHE_VERSION = 2;
 
-/**
- * Les clés de facette telles que l'URL du site et l'API les nomment — le
- * vocabulaire visible par le candidat, en français parce que l'URL l'est.
- * `pays` n'est une facette que sur les marchés qui couvrent plusieurs pays ou
- * où le découpage territorial sert (BE, CA) ; `langue` traverse tous les
- * marchés (D-419 §3).
- */
 export const CLES_FACETTE = ['pays', 'metier', 'secteur', 'contrat', 'temps', 'programme', 'ville', 'maison', 'groupe', 'langue'] as const;
 export type CleFacette = (typeof CLES_FACETTE)[number];
 
-/** Les facettes propres au site, hors périmètre de la mesure : une ville est une ville partout. */
 export const CLES_FACETTE_SITE = ['pays', 'secteur', 'ville', 'maison', 'groupe', 'langue'] as const;
 export type CleFacetteSite = (typeof CLES_FACETTE_SITE)[number];
 
-/** La dimension mesurée qui gouverne une clé de facette ; absente pour les facettes du site. */
 export const DIMENSION_PAR_CLE: Readonly<Partial<Record<CleFacette, DimensionFacette>>> = {
   contrat: 'contrat',
   temps: 'temps',
@@ -460,154 +79,31 @@ export const DIMENSION_PAR_CLE: Readonly<Partial<Record<CleFacette, DimensionFac
 };
 
 export type Marche = {
-  /** Le code ISO 3166-1 alpha-2 du marché, tel que le sélecteur le porte. */
+  readonly facettesEmploi?: readonly DimensionFacette[];
+  readonly contratUnifie?: boolean;
   readonly code: CodeMarche;
-  /** Le libellé du marché, dans sa langue native (`Deutschland`, `中国`). */
   readonly nom: string;
-  /**
-   * Le PÉRIMÈTRE GÉOGRAPHIQUE : les codes pays dont ce marché sert les offres.
-   * C'est lui que le SQL impose (lot 6) ; `DE` sert l'Allemagne ET l'Autriche,
-   * `GB` le Royaume-Uni ET l'Irlande. Un marché n'est pas forcément un pays.
-   */
   readonly pays: readonly string[];
-  /** Toutes les langues de service de ce marché, en étiquettes BCP 47. Au moins une. */
   readonly locales: readonly string[];
-  /**
-   * La langue de SERVICE par défaut — celle dans laquelle on parle au marché
-   * sans demande explicite. Toujours dans `locales`.
-   *
-   * Distincte de la langue d'une annonce (`language.ts`) : un candidat français
-   * qui visite l'Australie lit « Job type », même si son navigateur est en
-   * français. C'est le marché qui impose sa langue, pas le visiteur.
-   *
-   * ⚠️ **Ce champ dit la locale NATIVE du marché, jamais un repli de traduction.**
-   * Un marché polonais a pour locale native `pl-PL`, même tant qu'aucun catalogue
-   * polonais n'existe. Écrire `localeParDefaut: 'en-GB'` sur la Pologne ferait de
-   * l'anglais britannique la langue DU MARCHÉ polonais — un mensonge qui se
-   * propagerait au `hreflang`, aux métadonnées et au sélecteur. Le repli se
-   * déclare dans `localisation`, jamais ici.
-   */
   readonly localeParDefaut: string;
-  /**
-   * OÙ EN EST LA LOCALISATION DE CE MARCHÉ — et pourquoi ce champ existe.
-   *
-   * Ouvrir un marché et traduire une interface sont deux travaux INDÉPENDANTS.
-   * Mesuré le 2026-09-17 : 28 pays hors des seize marchés portent 6 606 offres,
-   * un corpus fiable et au moins trois facettes exploitables. Les faire attendre
-   * une traduction polonaise ou thaïe reviendrait à garder 6 606 offres
-   * inatteignables pour une raison qui n'a rien à voir avec leur qualité.
-   *
-   * `NATIVE`   — la locale native est servie, catalogue et libellés compris.
-   * `FALLBACK` — le marché est ouvert, son corpus et ses facettes sont servis,
-   *              mais l'interface emprunte `localeDeRepli` en attendant. La
-   *              locale native reste déclarée dans `localeParDefaut` : c'est la
-   *              cible, et elle ne se perd pas en route.
-   *
-   * Un marché `FALLBACK` n'est pas un marché au rabais : son corpus, son
-   * périmètre et ses facettes sont ceux du pays. Seuls les mots de l'interface
-   * viennent d'ailleurs, et ils le disent.
-   */
   readonly localisation: 'NATIVE' | 'FALLBACK';
-  /**
-   * La locale empruntée tant que `localisation` vaut `FALLBACK` — et rien d'autre.
-   *
-   * Absente sur un marché `NATIVE` : un marché localisé n'emprunte rien. Le type
-   * ne l'interdit pas formellement, mais un témoin le garde (`contrat-marches`),
-   * parce qu'un repli déclaré sur un marché natif finirait par être servi.
-   */
   readonly localeDeRepli?: string;
-  /**
-   * La SURCHARGE du type d'interaction, quand un marché exige autre chose que la nature de la clé.
-   *
-   * Absente partout aujourd'hui, et c'est voulu : le type vient de `TYPE_FILTRE_PAR_DEFAUT`, qui
-   * dit qu'une ville se cherche et qu'un métier se coche — indépendamment du volume. Ce champ
-   * existe pour le jour où un marché démentirait cette nature, pas pour dupliquer dix décisions
-   * sur quarante et un marchés.
-   */
   readonly typesFiltres?: Readonly<Partial<Record<CleFacette, TypeFiltre>>>;
-  /** Les facettes propres au site exposées sur ce marché, dans l'ordre du contrat. */
-  /** Les valeurs distinctes par dimension — voir `CardinaliteMesuree`. Absente = non mesurée. */
   readonly cardinalite?: CardinaliteMesuree;
   readonly facettesSite: readonly CleFacetteSite[];
-  /** Les libellés natifs des facettes du site, relevés dans la langue de service. */
   readonly libellesSite: Readonly<Record<CleFacetteSite, string>>;
-  /**
-   * Les LIBELLÉS natifs, dans la langue du marché.
-   *
-   * Relevés marché par marché, et JAMAIS déduits d'une traduction : Indeed
-   * pour les marchés occidentaux, qu'il sert avec autant de traductions et
-   * plusieurs découpages différents. La dimension ne change jamais — seul son
-   * nom change. C'est toute la raison d'être de ce registre : un libellé codé
-   * en dur côté front aurait affiché « Type de contrat » à un candidat
-   * néerlandais.
-   *
-   * ⚠️ LA SOURCE N'EST PAS LA MÊME PARTOUT, et il ne faut pas la supposer. Les
-   * libellés chinois viennent de `zhaopin.com` (dont la barre de filtres rend
-   * `经验` et `职位类别`), pas d'Indeed : c'est là que le marché local se lit.
-   * Relever un libellé chinois sur un site occidental aurait reproduit, en
-   * pire, l'erreur que le Canada a révélée — déduire le libellé de la langue
-   * qu'on suppose au lieu de le relever là où le marché vit.
-   *
-   * Un libellé n'est présent que si la dimension l'est : une clé absente est un
-   * choix, pas un oubli, et le type l'impose (`Partial` + contrôle au témoin).
-   */
   readonly libelles: Readonly<Partial<Record<DimensionFacette, string>>>;
-  /** Le nombre d'offres actives mesurées — sert à dater et pondérer le registre. */
   readonly offresMesurees: number;
-  /** La couverture mesurée, sur laquelle le seuil s'applique. Rien n'est estimé. */
   readonly couverture: CouvertureMesuree;
 };
 
-/**
- * LE REGISTRE — un enregistrement par marché mesuré.
- *
- * Les taux sont recopiés de la mesure de production du 2026-09-15 et d'elle
- * seule. Aucune ligne n'est arrondie « pour faire propre » : 17,2 % reste
- * 0.172, parce que c'est ce chiffre-là qui décide que la Suisse n'expose pas de
- * facette de contrat, et qu'un arrondi à 0.2 inverserait la décision.
- */
 const MARCHES_LOCALISES: Readonly<Record<(typeof CODES_MARCHE_LOCALISES)[number], Marche>> = {
-  /**
-   * ÉTATS-UNIS — le plus gros marché, et celui SANS facette de contrat.
-   *
-   * 19,2 % : c'est le cas qui fonde le seuil. Exposer « Job type » ici
-   * afficherait un filtre qui masque 4 offres sur 5 dès le premier clic, sur le
-   * marché où nous avons le plus à perdre. Le rythme (81,8 %) porte à lui seul
-   * le besoin réel — et c'est précisément la dimension que le vocabulaire
-   * américain nomme : « full-time » 20 %, « part-time » 18 % des descriptions.
-   *
-   * Le saisonnier (6,1 %) reste sous le seuil malgré 11 % de « seasonal » dans
-   * les descriptions : un mot cité n'est pas une dimension renseignée.
-   *
-   * DEUX facettes, pas une, et pas trois. Le métier (53,9 % sur la colonne
-   * réellement servie) passe le seuil et s'ajoute au rythme. Lire « les US ne
-   * gardent qu'une facette » était une conclusion tirée du sous-ensemble
-   * contractuel, pas du marché.
-   *
-   * ⚠️ 96,8 % ÉTAIT LE TAUX DE `jobFunction`, pas celui de la facette servie.
-   * Re-mesuré sur `occupationCode` : 53,949 %. Le marché reste le mieux couvert
-   * du registre sur cette dimension, mais « la mieux couverte de tout le
-   * registre » décrivait une colonne que le candidat ne voit jamais.
-   *
-   * La séniorité a été RETIRÉE des dimensions de facette (déduite à 99,97 %,
-   * contredit la source à 80 %) : voir le bloc `DIMENSIONS_FACETTE`.
-   */
   US: {
     code: 'US',
     nom: 'United States',
     pays: ['US'],
-    /**
-     * `es-US` ajouté le 2026-09-17 (D-436). Relevé sur la page publique « Country and language »
-     * d'Indeed le même jour : les États-Unis y sont proposés en DEUX langues — « United States
-     * (English) » et « Estados Unidos (español) ». Ce n'est pas une déduction depuis la
-     * démographie : c'est la locale que l'éditeur de référence expose.
-     *
-     * Rien à traduire : `es-US` partage le catalogue `es`, déjà livré au lot F5b. Une locale
-     * régionale n'est pas un catalogue — voir le bloc `locales` du type.
-     */
     locales: ['en-US', 'es-US'],
     localeParDefaut: 'en-US',
-    /** Localisé : catalogue d'interface, libellés de facettes et vocabulaire d'emploi dans sa langue. */
     localisation: 'NATIVE',
     facettesSite: ['secteur', 'ville', 'maison', 'langue'],
     libellesSite: { pays: 'Country', secteur: 'Sector', ville: 'City', maison: 'Maison', groupe: 'Group', langue: 'Language' },
@@ -617,61 +113,33 @@ const MARCHES_LOCALISES: Readonly<Record<(typeof CODES_MARCHE_LOCALISES)[number]
     cardinalite: { contrat: 3, temps: 2, programme: 4, saisonnier: 1, metier: 47 },
   },
 
-  /**
-   * FRANCE — le marché contractuellement le mieux renseigné, et l'un des deux
-   * (avec la Belgique) à exposer QUATRE dimensions du registre.
-   *
-   * 69,2 % de contrat : le droit français NOMME la durée (CDI 19 %, CDD 12 % des
-   * descriptions), donc les employeurs la publient. C'est le miroir exact de la
-   * situation américaine — même produit, même modèle canonique, conséquence
-   * opposée, décidée par la mesure et non par le pays d'origine du produit.
-   *
-   * Programme à 22,2 % : stage (17 %) et alternance (4 %) sont des dispositifs
-   * structurants du marché français, pas une niche. La combinaison mesurée
-   * FULL_TIME+INTERNSHIP (1 226 offres) confirme que programme et rythme sont
-   * bien DEUX dimensions, et qu'elles se cumulent.
-   */
   FR: {
     code: 'FR',
+    facettesEmploi: ['contrat', 'temps'],
+    contratUnifie: true,
     nom: 'France',
     pays: ['FR'],
     locales: ['fr-FR'],
     localeParDefaut: 'fr-FR',
-    /** Localisé : catalogue d'interface, libellés de facettes et vocabulaire d'emploi dans sa langue. */
     localisation: 'NATIVE',
     facettesSite: ['secteur', 'ville', 'maison', 'groupe', 'langue'],
     libellesSite: { pays: 'Pays', secteur: 'Secteur', ville: 'Ville', maison: 'Maison', groupe: 'Groupe', langue: 'Langue' },
     libelles: {
       contrat: 'Type de contrat',
       temps: 'Temps de travail',
-      programme: 'Type de programme',
-      metier: 'Métier',
     },
     offresMesurees: 11_026,
     couverture: { contrat: 0.6146, temps: 0.7383, programme: 0.3041, saisonnier: 0.0023, metier: 0.4176 },
     cardinalite: { contrat: 3, temps: 2, programme: 3, saisonnier: 1, metier: 40 },
   },
 
-  /**
-   * ROYAUME-UNI — contrat (38,9 %) et rythme (64,6 %) ; « Job type » comme aux US.
-   *
-   * Le marché britannique nomme le niveau (« junior », « senior », « head of »)
-   * dans ses intitulés bien plus systématiquement que les marchés latins — ce
-   * qui faisait de lui le mieux couvert en séniorité (34,9 %). C'est
-   * précisément ce qu'on ne peut PAS servir : un niveau lu dans l'intitulé est
-   * une déduction, et elle contredit la source déclarée 4 fois sur 5. La
-   * dimension a été retirée des facettes (voir `DIMENSIONS_FACETTE`).
-   */
   GB: {
     code: 'GB',
     nom: 'United Kingdom',
-    /** Le Royaume-Uni ET l'Irlande : le drapeau seul mentirait, le code reste affiché à côté (D-433). */
     pays: ['GB', 'IE'],
     locales: ['en-GB'],
     localeParDefaut: 'en-GB',
-    /** Localisé : catalogue d'interface, libellés de facettes et vocabulaire d'emploi dans sa langue. */
     localisation: 'NATIVE',
-    /** `pays` : le périmètre couvre deux pays, le candidat peut s'y restreindre. */
     facettesSite: ['secteur', 'ville', 'maison', 'groupe', 'langue', 'pays'],
     libellesSite: { pays: 'Country', secteur: 'Sector', ville: 'City', maison: 'Maison', groupe: 'Group', langue: 'Language' },
     libelles: {
@@ -684,36 +152,13 @@ const MARCHES_LOCALISES: Readonly<Record<(typeof CODES_MARCHE_LOCALISES)[number]
     cardinalite: { contrat: 6, temps: 4, programme: 3, saisonnier: 1, metier: 42 },
   },
 
-  /**
-   * CANADA — le marché qui prouve que le libellé ne se déduit PAS de la langue.
-   *
-   * Indeed sert le Canada francophone avec « Type de poste », pas « Type de
-   * contrat ». Même langue que la France, libellé différent. Un registre indexé
-   * sur la langue au lieu du marché aurait écrit « Type de contrat » à Montréal.
-   *
-   * Locale `fr-CA` : le Canada est officiellement bilingue et le catalogue luxe
-   * y est majoritairement québécois. C'est un choix de service, révisable par
-   * décision — pas une déduction de la mesure, qui ne dit rien de la langue.
-   *
-   * Saisonnier 11,4 % : sous le seuil, donc non exposé, malgré la combinaison
-   * FIXED_TERM+PART_TIME+SEASONAL mesurée 245 fois. Une combinaison fréquente
-   * dans le sous-ensemble renseigné ne dit rien du taux de remplissage global.
-   */
   CA: {
     code: 'CA',
     nom: 'Canada',
     pays: ['CA'],
-    /*
-     * Bilingue, et l'anglais domine le catalogue (2 308 offres en anglais, 400
-     * en français, mesuré le 15/09/2026) : `en-CA` par défaut, `fr-CA` servi.
-     * Les libellés relevés restent ceux d'Indeed Canada francophone (« Type de
-     * poste ») : la langue ne détermine pas le libellé, le marché si.
-     */
     locales: ['en-CA', 'fr-CA'],
     localeParDefaut: 'en-CA',
-    /** Localisé : catalogue d'interface, libellés de facettes et vocabulaire d'emploi dans sa langue. */
     localisation: 'NATIVE',
-    /** `pays` : un marché où le candidat filtre utilement par territoire. */
     facettesSite: ['secteur', 'ville', 'maison', 'groupe', 'langue', 'pays'],
     libellesSite: { pays: 'Pays', secteur: 'Secteur', ville: 'Ville', maison: 'Maison', groupe: 'Groupe', langue: 'Langue' },
     libelles: {
@@ -726,35 +171,13 @@ const MARCHES_LOCALISES: Readonly<Record<(typeof CODES_MARCHE_LOCALISES)[number]
     cardinalite: { contrat: 2, temps: 2, programme: 1, saisonnier: 1, metier: 18 },
   },
 
-  /**
-   * ALLEMAGNE — « Anstellungsart », et le programme qui rate le seuil de justesse.
-   *
-   * 8,0 % de programme alors que « ausbildung » est le mot le plus fréquent des
-   * descriptions allemandes (13 %). L'écart dit exactement ce que le seuil
-   * protège : le mot est PARTOUT dans le texte, la dimension est renseignée
-   * nulle part. Un filtre construit sur la fréquence lexicale au lieu de la
-   * couverture réelle aurait été vide huit fois sur dix.
-   *
-   * LA SÉNIORITÉ ALLEMANDE ÉTAIT À 19,838 %, sous le seuil de seize millièmes —
-   * le cas qui mesurait la valeur d'un seuil, puisque la tentation d'arrondir
-   * « puisque c'est pareil » y est maximale.
-   *
-   * Cet argument est CADUC depuis le retrait de la dimension : ce n'est plus le
-   * taux qui l'écarte, c'est la provenance de la donnée (déduite par regex sur
-   * l'intitulé, contredisant la source dans 80 % des cas confrontables). Le
-   * seuil aurait laissé passer sept marchés sur douze — il ne protégeait pas
-   * contre ce défaut-là, et aucun seuil ne le pouvait.
-   */
   DE: {
     code: 'DE',
     nom: 'Deutschland',
-    /** L'Allemagne ET l'Autriche (D-433) ; le code ISO reste affiché à côté du drapeau. */
     pays: ['DE', 'AT'],
     locales: ['de-DE'],
     localeParDefaut: 'de-DE',
-    /** Localisé : catalogue d'interface, libellés de facettes et vocabulaire d'emploi dans sa langue. */
     localisation: 'NATIVE',
-    /** `pays` : le périmètre couvre deux pays, le candidat peut s'y restreindre. */
     facettesSite: ['secteur', 'ville', 'maison', 'groupe', 'langue', 'pays'],
     libellesSite: { pays: 'Land', secteur: 'Branche', ville: 'Stadt', maison: 'Haus', groupe: 'Gruppe', langue: 'Sprache' },
     libelles: {
@@ -767,19 +190,12 @@ const MARCHES_LOCALISES: Readonly<Record<(typeof CODES_MARCHE_LOCALISES)[number]
     cardinalite: { contrat: 5, temps: 4, programme: 4, saisonnier: 2, metier: 30 },
   },
 
-  /**
-   * ITALIE — « Tipo di contratto » ; programme à 16,2 %, sous le seuil.
-   *
-   * La séniorité y était à 18,975 %, sous le seuil — elle n'est plus une
-   * dimension de facette du tout, sur aucun marché (voir `DIMENSIONS_FACETTE`).
-   */
   IT: {
     code: 'IT',
     nom: 'Italia',
     pays: ['IT'],
     locales: ['it-IT'],
     localeParDefaut: 'it-IT',
-    /** Localisé : catalogue d'interface, libellés de facettes et vocabulaire d'emploi dans sa langue. */
     localisation: 'NATIVE',
     facettesSite: ['secteur', 'ville', 'maison', 'groupe', 'langue'],
     libellesSite: { pays: 'Paese', secteur: 'Settore', ville: 'Città', maison: 'Maison', groupe: 'Gruppo', langue: 'Lingua' },
@@ -793,14 +209,12 @@ const MARCHES_LOCALISES: Readonly<Record<(typeof CODES_MARCHE_LOCALISES)[number]
     cardinalite: { contrat: 2, temps: 2, programme: 3, saisonnier: 1, metier: 19 },
   },
 
-  /** ESPAGNE — « Tipo de empleo » ; « contrato indefinido » 9 % des descriptions. */
   ES: {
     code: 'ES',
     nom: 'España',
     pays: ['ES'],
     locales: ['es-ES'],
     localeParDefaut: 'es-ES',
-    /** Localisé : catalogue d'interface, libellés de facettes et vocabulaire d'emploi dans sa langue. */
     localisation: 'NATIVE',
     facettesSite: ['secteur', 'ville', 'maison', 'langue'],
     libellesSite: { pays: 'País', secteur: 'Sector', ville: 'Ciudad', maison: 'Maison', groupe: 'Grupo', langue: 'Idioma' },
@@ -814,37 +228,12 @@ const MARCHES_LOCALISES: Readonly<Record<(typeof CODES_MARCHE_LOCALISES)[number]
     cardinalite: { contrat: 3, temps: 2, programme: 3, saisonnier: 0, metier: 23 },
   },
 
-  /**
-   * PAYS-BAS — « Dienstverband » ; un seul mot néerlandais pour les deux axes.
-   *
-   * « Vakgebied » et « Ervaringsniveau » sont en revanche deux mots distincts :
-   * la fusion de libellés est une particularité de la dimension contractuelle
-   * néerlandaise, pas une règle du marché.
-   */
   NL: {
     code: 'NL',
     nom: 'Nederland',
     pays: ['NL'],
-    /**
-     * UNE SEULE LOCALE — `en-GB` retiré le 2026-09-17 (D-436), et le motif du retrait vaut
-     * au-delà de ce marché.
-     *
-     * L'ancien commentaire justifiait `en-GB` ainsi : « 1 033 offres en néerlandais, 561 en
-     * anglais ». C'est un raisonnement faux, et le CEO l'a tranché : **la langue des OFFRES d'un
-     * marché ne dit rien de la langue d'INTERFACE que ce marché doit servir**. Les annonces
-     * restent dans leur langue native quelle que soit la locale ; un Néerlandais lisant son
-     * interface en néerlandais voit ses 561 offres anglaises, en anglais. Les deux notions sont
-     * indépendantes, et les confondre conduit à ouvrir des locales que rien ne demande.
-     *
-     * Relevé sur la page publique « Country and language » d'Indeed le 17/09 : les Pays-Bas n'y
-     * sont proposés qu'en néerlandais — « Nederland (Nederlands) ».
-     *
-     * Si l'anglais devait être servi ici un jour, la forme serait `en-NL`, jamais `en-GB` : une
-     * locale d'interface est localisée à son pays (cf. `en-BE` et `en-CH` chez Indeed).
-     */
     locales: ['nl-NL'],
     localeParDefaut: 'nl-NL',
-    /** Localisé : catalogue d'interface, libellés de facettes et vocabulaire d'emploi dans sa langue. */
     localisation: 'NATIVE',
     facettesSite: ['secteur', 'ville', 'maison', 'langue'],
     libellesSite: { pays: 'Land', secteur: 'Sector', ville: 'Stad', maison: 'Maison', groupe: 'Groep', langue: 'Taal' },
@@ -858,28 +247,12 @@ const MARCHES_LOCALISES: Readonly<Record<(typeof CODES_MARCHE_LOCALISES)[number]
     cardinalite: { contrat: 2, temps: 2, programme: 1, saisonnier: 1, metier: 26 },
   },
 
-  /**
-   * AUSTRALIE — le seul marché du registre à exposer le SAISONNIER.
-   *
-   * 17,0 % : sous le seuil de 20 %, donc PAS exposé — et c'est volontaire.
-   * Le vocabulaire australien est pourtant le plus saisonnier du lot
-   * (« seasonal » 19 %, « casual » 18 % des descriptions), et FIXED_TERM+SEASONAL
-   * y est mesuré 111 fois. C'est le cas limite qui montre que le seuil tranche
-   * même quand l'intuition métier dit l'inverse : 83 % de « non précisé »
-   * resterait 83 % de « non précisé ».
-   *
-   * À rouvrir par décision si une mesure ultérieure passe la barre — pas par
-   * conviction. Et pas non plus en créant une dimension `casual` : voir le bloc
-   * « POURQUOI CASUAL N'EST PAS UNE DIMENSION » en tête de fichier, qui mesure
-   * ce gisement à 99 offres non saisonnières, soit 8 % du marché.
-   */
   AU: {
     code: 'AU',
     nom: 'Australia',
     pays: ['AU'],
     locales: ['en-AU'],
     localeParDefaut: 'en-AU',
-    /** Localisé : catalogue d'interface, libellés de facettes et vocabulaire d'emploi dans sa langue. */
     localisation: 'NATIVE',
     facettesSite: ['secteur', 'ville', 'maison', 'groupe'],
     libellesSite: { pays: 'Country', secteur: 'Sector', ville: 'City', maison: 'Maison', groupe: 'Group', langue: 'Language' },
@@ -893,53 +266,12 @@ const MARCHES_LOCALISES: Readonly<Record<(typeof CODES_MARCHE_LOCALISES)[number]
     cardinalite: { contrat: 2, temps: 2, programme: 2, saisonnier: 1, metier: 13 },
   },
 
-  /**
-   * SUISSE — pas de facette de contrat (17,2 %), mais une facette PROGRAMME.
-   *
-   * Le seul marché du registre dont le programme dépasse le seuil (26,3 %)
-   * pendant que son contrat le rate. L'apprentissage y est une institution :
-   * APPRENTICESHIP arrive en 3e position des combinaisons canoniques (131), et
-   * « apprentissage » (10 %) devance « stage » (9 %) dans les descriptions.
-   *
-   * Un registre qui aurait supposé « contrat partout, programme nulle part »
-   * aurait affiché le filtre inutile et masqué le seul qui compte ici.
-   *
-   * Indeed expose en Suisse « Type de contrat » ET « Temps de travail » comme
-   * DEUX filtres distincts. Nous conservons donc deux libellés distincts — mais
-   * seul « Temps de travail » sera affiché tant que le contrat reste sous le
-   * seuil. Le libellé décrit le marché ; le seuil décide de l'affichage. Les
-   * deux sont séparés exprès : le jour où la couverture monte, il n'y a rien à
-   * traduire.
-   *
-   * LE MARCHÉ LE PLUS PAUVREMENT COUVERT DU REGISTRE, sur toutes les dimensions
-   * à la fois : métier 25,656 % (le PLUS BAS du registre), rythme 49,1 % (le
-   * seul sous 60 %). Avec 1 220 offres, c'est aussi le plus petit.
-   *
-   * ⚠️ 77,705 % ÉTAIT SON TAUX DE `jobFunction`, la colonne que la facette ne
-   * sert pas. Sur `occupationCode`, la Suisse tombe à 25,656 % — à cinq points
-   * du seuil d'affichage, et non plus à onze points de la cible de densité.
-   * Elle garde la facette métier, mais de justesse : c'est le marché qu'une
-   * dégradation de la classification fermerait en premier.
-   *
-   * Elle ne fixe plus « le plancher » de quoi que ce soit : depuis la
-   * re-mesure, AUCUN marché n'a de facette métier dense, et la meilleure
-   * facette suisse (rythme, 49,1 %) reste elle-même sous les 77 % — comme celle
-   * de sept autres marchés. Seuls US, BE, CA et NL franchissent encore le
-   * plancher, et par le rythme. Voir `PLANCHER_FACETTE_DENSE`.
-   *
-   * Les libellés suisses suivent la France, locale de service `fr-CH` oblige.
-   * C'est le seul endroit du registre où deux marchés partagent leurs libellés,
-   * et c'est une DÉDUCTION DE SERVICE, pas une mesure : contrairement au Canada,
-   * aucun relevé Indeed distinct n'a été fait pour la Suisse romande. À
-   * re-vérifier si un écart apparaît, exactement comme CA-fr a révélé le sien.
-   */
   CH: {
     code: 'CH',
     nom: 'Suisse · Schweiz',
     pays: ['CH'],
     locales: ['fr-CH', 'de-CH', 'it-CH'],
     localeParDefaut: 'fr-CH',
-    /** Localisé : catalogue d'interface, libellés de facettes et vocabulaire d'emploi dans sa langue. */
     localisation: 'NATIVE',
     facettesSite: ['secteur', 'ville', 'maison', 'groupe', 'langue'],
     libellesSite: { pays: 'Pays', secteur: 'Secteur', ville: 'Ville', maison: 'Maison', groupe: 'Groupe', langue: 'Langue' },
@@ -954,88 +286,13 @@ const MARCHES_LOCALISES: Readonly<Record<(typeof CODES_MARCHE_LOCALISES)[number]
     cardinalite: { contrat: 3, temps: 2, programme: 2, saisonnier: 1, metier: 18 },
   },
 
-  /**
-   * BELGIQUE — QUATRE FACETTES EXPOSÉES, à égalité avec la France et avec elle
-   * seule. Mesuré le 2026-09-15 sur 671 offres actives.
-   *
-   * Contrat 43,1 % · temps 81,4 % · programme 22,4 % · métier 45,9 %. Les
-   * quatre dimensions exposables passent le seuil ; le saisonnier le rate
-   * (2,7 %), comme en France (0,2 %).
-   *
-   * ⚠️ CE BLOC A DIT « CINQ FACETTES » ET « métier 90,5 % ». Les deux étaient
-   * faux pour la même raison : le métier était mesuré sur `jobFunction` (90,462 %)
-   * quand la facette sert `occupationCode` (45,902 %), et la cinquième facette
-   * était la séniorité, retirée depuis (déduite à 99,97 %). Le taux reste
-   * largement au-dessus du seuil : la Belgique garde bien sa facette métier.
-   *
-   * Vérifié dans le code plutôt qu'affirmé : `facettesDuMarche` rend quatre
-   * entrées pour FR et BE, trois pour GB/CA/DE/IT/ES/NL/AU/CH, deux pour US et
-   * une pour CN. Une première rédaction de ce bloc disait « le SEUL marché à
-   * cinq facettes » — c'était faux, la France en expose autant, et seul le
-   * comptage réel l'a montré.
-   *
-   * Ce qui EST singulier tient au PROGRAMME : à 22,4 %, la Belgique rejoint la
-   * France (22,2 %) et la Suisse (26,3 %) dans le très petit groupe des marchés
-   * où stage et alternance sont assez publiés pour qu'un filtre tienne. C'est
-   * ce qui la sépare de GB, CA, NL et AU, qui s'arrêtent à quatre.
-   *
-   * Le plus petit marché du registre par le volume (671 offres, moins que la
-   * Suisse) et pourtant parmi les mieux couverts. Volume et densité sont deux
-   * choses distinctes : c'est précisément pourquoi le registre mesure les deux
-   * et n'infère jamais l'une de l'autre.
-   *
-   * ── LES LIBELLÉS SONT BILINGUES, ET CE N'EST PAS UN ORNEMENT ─────────────
-   *
-   * Mesuré : 163 offres néerlandophones contre 144 francophones (et 224 en
-   * anglais). Le NÉERLANDAIS DEVANCE LE FRANÇAIS. Servir la Belgique avec les
-   * seuls libellés français aurait reproduit, sur le marché où c'est le plus
-   * faux, l'erreur que le Canada a révélée — déduire le libellé de la langue
-   * qu'on suppose, au lieu de le relever.
-   *
-   * La forme retenue suit celle de la Suisse pour les mêmes raisons (locale de
-   * service unique, marché réellement plurilingue), avec une différence
-   * assumée : la Suisse porte les libellés d'UNE langue, la Belgique porte les
-   * DEUX, séparées par « · ». Indeed sert bel et bien deux sites belges
-   * distincts (be.indeed.com en fr et en nl), et aucune des deux langues n'est
-   * assez majoritaire pour écraser l'autre — 163 contre 144, l'écart tient en
-   * dix-neuf offres.
-   *
-   * `locale` reste `fr-BE` : c'est la locale de SERVICE (dans quelle langue on
-   * parle au visiteur par défaut), pas un verdict sur la langue des annonces.
-   * Le registre côté site porte les trois locales réellement servies.
-   *
-   * ── LE SAISONNIER RESTE DEHORS ──────────────────────────────────────────
-   *
-   * 2,7 % : très loin du seuil, et aucun libellé natif relevé. La règle
-   * s'applique sans exception, y compris sur le marché le mieux couvert.
-   */
   BE: {
     code: 'BE',
     nom: 'Belgique · België',
     pays: ['BE'],
-    /**
-     * QUATRE LOCALES, corrigées le 2026-09-17 (D-436).
-     *
-     * `de-BE` ajouté : l'allemand est la troisième langue officielle belge, et Indeed le déclare
-     * (`de_BE`, documentation éditeur des locales supportées, relevée le 17/09).
-     *
-     * `en-GB` REMPLACÉ par `en-BE`, et c'est une correction de fond, pas de forme. Servir
-     * l'anglais BRITANNIQUE à un candidat belge était une approximation : Indeed déclare `en_BE`,
-     * comme il déclare `en_CH` pour la Suisse — l'anglais proposé en langue supplémentaire est
-     * toujours localisé au pays, jamais emprunté au marché britannique.
-     *
-     * Le marché reste BE dans les quatre cas : une locale n'est pas un marché. `en-BE` ne
-     * transforme pas la Belgique en Royaume-Uni, pas plus que `fr-CH` ne fait de la Suisse la
-     * France.
-     *
-     * Aucun catalogue à produire : `fr-BE` → `fr`, `nl-BE` → `nl`, `de-BE` → `de`, `en-BE` → `en`,
-     * tous livrés au lot F5b.
-     */
     locales: ['fr-BE', 'nl-BE', 'de-BE', 'en-BE'],
     localeParDefaut: 'fr-BE',
-    /** Localisé : catalogue d'interface, libellés de facettes et vocabulaire d'emploi dans sa langue. */
     localisation: 'NATIVE',
-    /** `pays` : un marché où le candidat filtre utilement par territoire. */
     facettesSite: ['secteur', 'ville', 'maison', 'groupe', 'langue', 'pays'],
     libellesSite: {
       pays: 'Pays · Land',
@@ -1056,153 +313,17 @@ const MARCHES_LOCALISES: Readonly<Record<(typeof CODES_MARCHE_LOCALISES)[number]
     cardinalite: { contrat: 2, temps: 2, programme: 2, saisonnier: 1, metier: 12 },
   },
 
-  /**
-   * ══════════════════════════════════════════════════════════════════════════
-   *  CHINE — le marché qui prouve que LE SEUIL NE SUFFIT PAS.
-   * ══════════════════════════════════════════════════════════════════════════
-   *
-   * Mesurée le 2026-09-15 : 1 224 offres actives. Elle était écartée non par
-   * manque de mesure — le registre le disait lui-même — mais parce que
-   * l'ouverture d'un marché appartient au CEO.
-   *
-   * ── LE FAIT CENTRAL : `contrat` ET `temps` N'EN FONT QU'UNE ICI ──────────
-   *
-   * C'est la découverte de ce lot, et elle est établie par DEUX méthodes
-   * indépendantes qui ne pouvaient pas se contaminer :
-   *
-   *  1. LE RELEVÉ DES LIBELLÉS. Les sites d'emploi chinois (zhaopin.com, dont
-   *     la barre de filtres rend exactement « 地区 · 薪资 · 学历 · 经验 ·
-   *     公司性质 · 融资阶段 · 公司人数 · 工作性质 · 职位类别 · 公司行业 », et
-   *     Indeed CN) n'exposent AUCUNE facette « type de contrat ». Ils servent
-   *     UNE facette, `工作性质`, dont les valeurs mélangent ce que le français
-   *     sépare : 全职 / 兼职 (le rythme) y voisine avec 合同工 / 临时工 /
-   *     外包 (la durée). Le droit chinois connaît pourtant le contrat à durée
-   *     déterminée (固定期限劳动合同) — c'est une formalité de signature, pas
-   *     un critère de recherche. Aucun site d'emploi relevé n'en fait un filtre ;
-   *
-   *  2. LA MESURE DE NOTRE CATALOGUE. Le croisement des deux colonnes est
-   *     DÉGÉNÉRÉ : sur les 498 offres chinoises où les deux sont renseignées,
-   *     99,6 % tombent dans UNE SEULE case (PERMANENT × FULL_TIME). La
-   *     contre-épreuve française, sur 5 032 offres, rend 54,4 % — un croisement
-   *     réellement croisé. `temps` seul le dit aussi : 1 000 FULL_TIME contre
-   *     3 PART_TIME, soit 99,7 % d'une seule valeur, quand les onze marchés
-   *     ouverts s'étagent entre 52 % et 77 %. La Chine est hors de cette plage
-   *     de vingt-trois points.
-   *
-   * Le relevé dit POURQUOI, la mesure dit COMBIEN. Aucune des deux seule
-   * n'aurait suffi : un relevé de sites est un témoignage sur le marché, pas
-   * une preuve sur notre catalogue, et une concentration mesurée aurait pu
-   * n'être qu'un défaut de notre normalisation.
-   *
-   * ── CE QUE LE SEUIL SEUL AURAIT FAIT, ET POURQUOI C'ÉTAIT FAUX ───────────
-   *
-   * `temps` couvre 81,944 % — très au-dessus des 20 %. Le seuil, appliqué
-   * mécaniquement, aurait donc EXPOSÉ un filtre dont 99,7 % des valeurs sont
-   * identiques : le candidat coche « 全职 », le catalogue ne bouge pas, et il
-   * conclut que le filtre est cassé. Un filtre qui ne filtre rien est pire
-   * qu'un filtre absent — il consomme l'attention et détruit la confiance.
-   *
-   * Le registre savait déjà que le taux ne suffit pas : c'est l'argument qui
-   * écarte `engagementType` (« le nombre de valeurs compte autant que le taux
-   * de remplissage »). La Chine est le premier marché où cette règle mord sur
-   * une dimension qui passe pourtant le seuil.
-   *
-   * ── LE MÉCANISME UTILISÉ : PAS DE LIBELLÉ, DONC PAS DE FACETTE ───────────
-   *
-   * `contrat` et `temps` n'ont volontairement PAS de libellé ici, et c'est le
-   * registre lui-même qui en tire la conséquence : `facettesDuMarche` exige
-   * DEUX conditions cumulatives — le seuil ET un libellé natif. La règle
-   * existait déjà, écrite pour éviter d'afficher un libellé anglais au milieu
-   * d'une page allemande ; elle exprime exactement ce qu'il faut ici.
-   *
-   * Aucune exception n'est donc ajoutée au moteur pour la Chine. Une clé
-   * absente est un choix documenté, jamais un oubli — et graver `工作性质`
-   * sans savoir la remplir aurait été pire : on aurait affiché un filtre chinois
-   * authentique branché sur une donnée qui ne le porte pas.
-   *
-   * ⚠️ CE QUI RESTE OUVERT ET APPARTIENT AU CEO : fusionner `contrat` et
-   * `temps` en une dimension `工作性质` conforme à l'usage chinois demanderait
-   * un modèle canonique nouveau, sur tous les marchés. C'est une décision
-   * produit, pas un réglage de registre — elle n'est pas prise ici.
-   *
-   * ── CE QUI EST GRAVÉ ICI : LE MÉTIER, ET LUI SEUL ───────────────────────
-   *
-   * `metier` — 33,088 %, et c'est l'UNIQUE facette du marché chinois. Elle est
-   * réellement servie : `EXPRESSION_FACETTE` la mappe vers `occupations`,
-   * que `job-search-query.ts:167` agrège depuis `occupationCode`.
-   *
-   * ⚠️ 88,807 % ÉTAIT LE TAUX DE `jobFunction`, pas celui de la facette servie.
-   * Ce bloc affirmait que la Chine « porte le besoin réel du candidat au
-   * premier clic » sur la foi de ce chiffre. La mesure sur la bonne colonne dit
-   * 33,088 % : les deux tiers du catalogue chinois ressortent « Métier à
-   * préciser ». C'est au-dessus du seuil d'affichage, donc la facette reste —
-   * mais c'est le marché le plus fragile du registre, avec la Suisse.
-   *
-   * ── `seniorite` A ÉTÉ RETIRÉE DU REGISTRE (2026-09-15) ───────────────────
-   *
-   * Ce bloc portait déjà le diagnostic — « elle N'EST SERVIE NULLE PART, ET
-   * SUR AUCUN MARCHÉ », « le trou est ANTÉRIEUR à la Chine » — et concluait
-   * qu'il fallait CÂBLER la dimension, par arbitrage CEO.
-   *
-   * La mesure de la donnée elle-même a renversé la conclusion : 99,97 % des
-   * séniorités sont déduites par regex sur l'intitulé, et elles contredisent le
-   * niveau déclaré par l'employeur dans 80 % des cas confrontables. Il ne
-   * fallait donc pas câbler la promesse, il fallait la retirer du registre en
-   * attendant une donnée sourcée. Le libellé `经验` relevé sur zhaopin reste
-   * dans l'historique de ce fichier, prêt pour le jour où elle renaîtra.
-   *
-   * `programme` (17,075 %) et `saisonnier` (0 %) restent dehors : le seuil
-   * s'applique sans exception.
-   *
-   * ── LA DENSITÉ : 33,088 %, SOUS LA CIBLE ET SOUS LE PLANCHER ────────────
-   *
-   * La Chine n'a AUCUNE facette dense, et elle n'est plus seule : depuis la
-   * re-mesure du métier sur la bonne colonne, aucun marché du registre n'atteint
-   * le plancher de 77 %. Elle reste le cas extrême — son unique facette est
-   * aussi la plus creuse de toutes celles qui sont servies.
-   *
-   * ── LE CONTENU DES ANNONCES RESTE EN CHINOIS ─────────────────────────────
-   *
-   * Seuls les LIBELLÉS D'INTERFACE ci-dessous sont traduits. Les titres, les
-   * descriptions et les noms d'entreprise ne le sont JAMAIS : 592 annonces
-   * chinoises sont en `zh`, 398 en `en`, 223 sans langue déclarée, et elles
-   * doivent sortir telles qu'elles sont entrées.
-   *
-   * ── LA COLLISION `CN`, VÉRIFIÉE PLUTÔT QUE SUPPOSÉE ─────────────────────
-   *
-   * `CA` (Canada/Californie) et `IN` (Inde/Indiana) imposent la garde D-435.
-   * `CN` n'est PAS un code d'État américain, et ce n'est pas une lecture mais
-   * une exécution : « Shanghai, CN », « Shanghai, SH, CN » et « Shenzhen, GD,
-   * CN » rendent tous `CN`, pendant que « Louisville, KY » et « Indianapolis,
-   * IN » s'abstiennent toujours. La sonde en base rend 0 offre chinoise portant
-   * une ville non chinoise, avec une contre-épreuve à 8 912 sur les mêmes
-   * villes sous leurs pays réels — la sonde sait donc trouver ce qu'elle
-   * cherche. Le stock est propre : Shanghai (493), Pékin (64), Guangzhou (60).
-   */
   CN: {
     code: 'CN',
     nom: '中国',
     pays: ['CN'],
     locales: ['zh-CN'],
     localeParDefaut: 'zh-CN',
-    /** Localisé : catalogue d'interface, libellés de facettes et vocabulaire d'emploi dans sa langue. */
     localisation: 'NATIVE',
-    /** `langue` compte plus ici qu'ailleurs : un tiers du catalogue chinois est anglophone. */
     facettesSite: ['secteur', 'ville', 'maison', 'groupe', 'langue'],
     libellesSite: { pays: '国家', secteur: '行业', ville: '城市', maison: '品牌', groupe: '集团', langue: '语言' },
-    /*
-     * `contrat` et `temps` sont ABSENTS À DESSEIN — voir le bloc ci-dessus.
-     * Leur absence est ce qui les retire des facettes, par la règle générale
-     * du registre et sans exception dans le moteur.
-     */
     libelles: {
       metier: '职位类别',
-      /*
-       * Ajouté le 2026-09-22 : la dimension est couverte à 54 % avec deux valeurs distinctes, donc
-       * exploitable — seul son libellé natif manquait. Le marché reste NATIVE : il est localisé en
-       * `zh-CN`, et le passer en FALLBACK pour un libellé absent aurait déclaré que l'anglais est
-       * la langue du marché chinois.
-       */
       contrat: '雇佣类型',
     },
     offresMesurees: 1_224,
@@ -1211,60 +332,6 @@ const MARCHES_LOCALISES: Readonly<Record<(typeof CODES_MARCHE_LOCALISES)[number]
   },
 };
 
-/* ────────────────────────────────────────────────────────────────────────────────────────────
- * LES MARCHÉS ROUTABLES — ouvrir un pays sans attendre sa traduction.
- * ──────────────────────────────────────────────────────────────────────────────────────────── */
-
-/**
- * LA FABRIQUE D'UN MARCHÉ EN REPLI DE LOCALISATION.
- *
- * ── LE PROBLÈME QU'ELLE RÉSOUT ────────────────────────────────────────────────────────────────
- *
- * Un marché localisé coûte **27 lignes** dans la table ci-dessus, dont deux blocs de libellés
- * qu'il faut faire traduire par un locuteur du marché. C'est le prix juste pour un marché servi
- * dans sa langue — et un prix absurde pour ouvrir un pays dont on a déjà le corpus.
- *
- * Mesuré le 2026-09-17 (`audits/mesures-d435-d436/marches-routables-2026-09-17.mts`) : 28 pays
- * hors des seize travaillés portent **6 606 offres**, un corpus fiable et au moins trois facettes
- * exploitables. Les faire attendre une traduction polonaise, thaïe ou vietnamienne garderait ces
- * offres inatteignables pour une raison étrangère à leur qualité.
- *
- * ── CE QU'ELLE PRÉSERVE, ET C'EST LE POINT ────────────────────────────────────────────────────
- *
- * `localeParDefaut` porte la locale **NATIVE** du marché — `pl-PL` pour la Pologne — même quand
- * aucun catalogue polonais n'existe. Le repli vit dans `localeDeRepli`, séparément.
- *
- * Écrire `localeParDefaut: 'en-GB'` sur la Pologne aurait été plus court et faux : le registre
- * aurait déclaré que l'anglais britannique EST la langue du marché polonais, et ce mensonge se
- * serait propagé au `hreflang`, aux métadonnées et au sélecteur. La cible ne se perd pas en route ;
- * le jour où le catalogue polonais existe, `localisation` passe à `NATIVE` et le repli disparaît.
- *
- * ── LES FACETTES, ET POURQUOI ELLES NE SONT PAS VIDES ─────────────────────────────────────────
- *
- * Un marché en repli sert les MÊMES facettes que n'importe quel pays sans registre :
- * `facettesContrat` les libelle alors avec `LIBELLES_GENERIQUES`, dans la langue du dépôt. Le
- * candidat polonais filtre donc par métier et par ville comme un candidat français — seuls les
- * mots du menu viennent d'ailleurs, et `localisation: 'FALLBACK'` le dit.
- *
- * Aucune couverture n'est recopiée ici : elle se mesure, et la recopier figerait un chiffre qui
- * dérive. Un marché en repli n'expose donc pas de facette de dimension tant qu'il n'est pas
- * mesuré — c'est conservateur, et c'est voulu.
- */
-/**
- * Les libellés servis hors marché mesuré : le français source, la langue de ce
- * dépôt. Un pays sans registre lit ses facettes en français tant que son marché
- * n'est pas ouvert ; l'ouvrir relève d'une décision, pas d'une traduction.
- *
- * ⚠️ DÉCLARÉE ICI, AVANT `marcheEnRepli`, ET L'ORDRE EST UNE CONTRAINTE D'EXÉCUTION.
- *
- * Elle vivait plus bas, près de `facettesContrat` qui la consomme. Depuis que `MARCHES` construit
- * les marchés routables À L'INITIALISATION DU MODULE, `marcheEnRepli` la lit avant sa déclaration
- * et le `const` lève `ReferenceError: Cannot access 'LIBELLES_GENERIQUES' before initialization` —
- * au CHARGEMENT, donc sur tout ce qui importe ce module.
- *
- * Le typecheck ne voit rien : c'est un ordre d'évaluation, pas un type. Seule l'exécution l'a
- * montré. Ne pas la redescendre.
- */
 export const LIBELLES_GENERIQUES: Readonly<Record<CleFacette, string>> = {
   pays: 'Pays',
   metier: 'Métier',
@@ -1284,11 +351,8 @@ export function marcheEnRepli(params: {
   localeNative: string;
   localeDeRepli?: string;
   offresMesurees: number;
-  /** Les couvertures MESURÉES, quand elles existent. Voir le bloc `couverture` plus bas. */
   couverture?: CouvertureMesuree;
-  /** Les valeurs distinctes par dimension — une facette à une seule valeur ne filtre rien. */
   cardinalite?: CardinaliteMesuree;
-  /** Les facettes de site que la décision V1 retient pour ce marché. */
   facettesSite?: readonly CleFacetteSite[];
 }): Marche {
   const repli = params.localeDeRepli ?? 'en-GB';
@@ -1296,31 +360,10 @@ export function marcheEnRepli(params: {
     code: params.code as CodeMarche,
     nom: params.nom,
     pays: [params.code],
-    /*
-     * `locales` NE CONTIENT QUE LA LOCALE NATIVE, et c'est un correctif, pas une omission.
-     *
-     * La première version y ajoutait la locale de repli — `['pl-PL', 'en-GB']`. Le témoin
-     * « aucune locale n'emprunte le pays d'un autre marché » (`contrat-marches.test.ts`) l'a
-     * attrapée, et il avait raison : `en-GB` dans les locales de la Pologne, c'est exactement
-     * `en-GB` servi en Belgique — l'emprunt que D-436 a supprimé le 17/09 en le remplaçant par
-     * `en-BE`. `locales` déclare ce que le marché SERT dans sa propre langue ; y glisser la
-     * locale d'un autre pays remélange les deux axes que la décision sépare.
-     *
-     * Le repli vit dans `localeDeRepli`, et là seulement. Un consommateur qui a besoin de savoir
-     * ce que le visiteur lira AUJOURD'HUI lit `localisation === 'FALLBACK'` puis `localeDeRepli` :
-     * deux champs explicites valent mieux qu'une liste où les deux natures se confondent.
-     */
     locales: [params.localeNative],
     localeParDefaut: params.localeNative,
     localisation: 'FALLBACK',
     localeDeRepli: repli,
-    /*
-     * Les facettes de site que la mesure retient pour CE marché.
-     *
-     * La liste complète était servie à tous les marchés en repli, faute de mesure — `groupe` s'y
-     * trouvait donc même là où sa couverture le disqualifie. Les 41 marchés sont mesurés depuis
-     * le 2026-09-22 ; ce que la mesure décide prime sur l'ancien défaut.
-     */
     facettesSite: params.facettesSite ?? ['secteur', 'ville', 'maison', 'groupe', 'langue'],
     libellesSite: {
       pays: LIBELLES_GENERIQUES.pays, secteur: LIBELLES_GENERIQUES.secteur, ville: LIBELLES_GENERIQUES.ville,
@@ -1328,42 +371,11 @@ export function marcheEnRepli(params: {
     },
     libelles: {},
     offresMesurees: params.offresMesurees,
-    /*
-     * Zéro sur TOUTES les dimensions, dérivé de `DIMENSIONS_FACETTE` et non recopié : une liste
-     * saisie à la main ici dériverait le jour où une dimension entre ou sort, et le compilateur
-     * ne le dirait qu'à l'ajout, jamais au retrait.
-     *
-     * Zéro n'est pas une couverture mesurée à zéro : c'est l'ABSENCE de mesure. C'était le cas de
-     * TOUS les marchés en repli jusqu'au 2026-09-22, d'où ce repli conservateur.
-     *
-     * Les 41 marchés ont depuis été mesurés sur `CORPUS_ANALYTIQUE_V1_POST_GEO`. Quand une mesure
-     * est fournie, elle prime ; le repli à zéro ne sert plus qu'à un marché ouvert sans mesure.
-     */
     couverture: params.couverture ?? (Object.fromEntries(DIMENSIONS_FACETTE.map((d) => [d, 0])) as CouvertureMesuree),
     cardinalite: params.cardinalite,
   };
 }
 
-/**
- * LE REGISTRE COMPLET — les douze marchés localisés, plus les VINGT-NEUF routables.
- *
- * Vingt-neuf, pas trente et un : AT et IE sont servis DANS les périmètres de DE et GB
- * (`pays: ['DE','AT']`, `pays: ['GB','IE']`) et n'ont donc pas d'entrée propre. Le total
- * est 41 marchés, recompté le 2026-09-20 depuis les tables elles-mêmes.
- *
- * Les deux moitiés ne sont pas interchangeables et la distinction se lit dans `localisation` :
- * `NATIVE` pour un marché dont l'interface, les libellés de facettes et le vocabulaire d'emploi
- * existent dans sa langue ; `FALLBACK` pour un marché dont le CORPUS est prêt mais dont
- * l'interface emprunte l'anglais en attendant. Sa locale native, elle, est déjà déclarée.
- *
- * Un marché routable ne se saisit pas à la main : `MARCHES_ROUTABLES` porte trois champs par
- * pays et `marcheEnRepli` construit le reste. Ajouter la Bulgarie, le jour où son volume le
- * justifie, coûte UNE ligne de données — pas vingt-sept lignes de registre.
- *
- * L'ordre de la fusion compte : un code présent dans les deux moitiés serait servi par la
- * version LOCALISÉE, parce qu'un marché traduit ne doit jamais régresser en repli. Le témoin
- * `marches-routables` vérifie qu'aucun code n'est effectivement en double.
- */
 export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
   ...Object.fromEntries(
     MARCHES_ROUTABLES.map((m) => [
@@ -1375,109 +387,23 @@ export const MARCHES: Readonly<Record<CodeMarche, Marche>> = {
   ...MARCHES_LOCALISES,
 } as Readonly<Record<CodeMarche, Marche>>;
 
-/**
- * LA LOCALE QUE LE VISITEUR LIT AUJOURD'HUI — et pas celle que le marché vise.
- *
- * ── LES DEUX QUESTIONS QUE CE MODULE NE DOIT PAS CONFONDRE ────────────────────────────────────
- *
- *  · « Quelle est la langue de ce marché ? » → `localeParDefaut`. Pour la Pologne, `pl-PL`.
- *    C'est la CIBLE, elle part dans le `hreflang`, les métadonnées et le sélecteur.
- *  · « Dans quelle langue dois-je rendre cette page MAINTENANT ? » → cette fonction. Pour la
- *    Pologne, `en-GB`, tant qu'aucun catalogue polonais n'existe.
- *
- * ── LE DÉFAUT QU'ELLE FERME, MESURÉ LE 17/09/2026 ─────────────────────────────────────────────
- *
- * Sans elle, `langueDesLibelles(marche.localeParDefaut)` reçoit `pl-PL`, ne trouve pas `pl` dans
- * `LANGUES_LIBELLES` (qui ne contient que `fr` et `en`) et retombe sur **`fr`**. Un visiteur
- * polonais aurait donc lu ses libellés d'offres en FRANÇAIS, alors que le repli décidé est
- * l'anglais — et ce défaut aurait touché les vingt-neuf marchés routables d'un coup.
- *
- * Le registre portait bien `localeDeRepli`, mais AUCUN code ne le lisait : une garantie sans
- * appelant n'est pas une garantie. C'est cette fonction qui la rend réelle.
- */
 export function localeServie(m: Marche | undefined): string | undefined {
   if (!m) return undefined;
   return m.localisation === 'FALLBACK' ? (m.localeDeRepli ?? m.localeParDefaut) : m.localeParDefaut;
 }
 
-/** Le marché existe-t-il dans le registre ? Sert de garde avant tout accès. */
 export function estCodeMarche(code: string): code is CodeMarche {
   return (CODES_MARCHE as readonly string[]).includes(code);
 }
 
-/**
- * Le marché, ou `undefined` si le code n'est pas mesuré.
- *
- * On s'abstient plutôt que de retomber sur un marché par défaut : servir les
- * facettes françaises à un candidat belge serait pire qu'un catalogue sans
- * facettes — il filtrerait sur une dimension que nous n'avons pas mesurée chez
- * lui, et croirait le résultat.
- */
 export function marche(code: string): Marche | undefined {
-  /*
-   * GARDE DE TYPE, et pas une précaution théorique.
-   *
-   * L'audit défensif du 15/09/2026 a montré que `undefined`, `null`, un
-   * nombre, un objet ou un tableau faisaient LEVER une exception sur
-   * `code.trim()` — alors que le contrat documenté juste au-dessus promet
-   * « une liste vide, jamais une exception », précisément parce que ce
-   * registre sera lu sur un CHEMIN DE RENDU.
-   *
-   * Un pays hors périmètre doit dégrader l'écran en catalogue sans facettes.
-   * Un paramètre d'URL absent ou malformé arrive `undefined` : sans cette
-   * garde, il faisait tomber la page entière.
-   *
-   * Le témoin ne couvrait que des chaînes malformées — la branche qui
-   * plantait n'était testée nulle part.
-   */
   if (typeof code !== 'string') return undefined;
   const normalise = code.trim().toUpperCase();
   return estCodeMarche(normalise) ? MARCHES[normalise] : undefined;
 }
 
-/**
- * Les dimensions dont la COUVERTURE MESURÉE justifie l'affichage sur ce marché.
- *
- * Deux conditions cumulatives, et la seconde n'est pas redondante : la
- * couverture doit atteindre le seuil, ET le marché doit porter un libellé natif
- * pour la dimension. Une dimension bien remplie mais sans traduction relevée
- * serait affichée en anglais au milieu d'une page allemande — un défaut visible
- * par le candidat, causé par un trou de registre invisible en revue.
- *
- * L'ordre du rendu suit `DIMENSIONS_FACETTE` et non l'ordre de déclaration du
- * marché : la position d'un filtre dans une barre de recherche est un fait
- * d'interface, il ne doit pas dépendre de l'ordre où quelqu'un a saisi un objet.
- *
- * Un code inconnu rend une liste VIDE, jamais une exception : ce registre sera
- * lu sur un chemin de rendu, et un pays hors périmètre doit dégrader l'écran en
- * catalogue sans facettes, pas le faire tomber.
- */
-/**
- * LE TYPE D'INTERACTION D'UN FILTRE — ce que le front doit RENDRE, pas ce qu'il doit décider.
- *
- *   FACETTE    une liste de valeurs à cocher ;
- *   RECHERCHE  une autocomplétion — trop de valeurs pour une liste, ou une nature de champ libre ;
- *   TOGGLE     un booléen, qui filtre par présence de la propriété.
- */
 export type TypeFiltre = 'FACETTE' | 'RECHERCHE' | 'TOGGLE';
 
-/**
- * Le type d'interaction PAR NATURE DE CLÉ, jamais par volume.
- *
- * ── POURQUOI PAS UN SEUIL DE CARDINALITÉ (arbitrage du 2026-09-22) ────────────────────────────
- *
- * L'analyse avait proposé de basculer FACETTE → RECHERCHE au-delà de 60 valeurs. Le seuil est un
- * bon outil d'audit et une mauvaise règle produit : il suffirait qu'un marché passe de 59 à 61
- * Maisons pour que son interface change de nature toute seule. La mesure sert à DÉCIDER, pas à
- * recalculer l'UX à chaque variation du catalogue.
- *
- * Une ville est un champ de recherche partout, y compris au Danemark où quatre Maisons seulement
- * sont servies : une autocomplétion y reste parfaitement utilisable, et l'expérience est la même
- * d'un marché à l'autre. C'est cette cohérence qu'on préfère.
- *
- * Un marché qui exigerait réellement une autre interaction l'écrit dans `typesFiltres` ; aucun
- * n'en a le besoin aujourd'hui.
- */
 export const TYPE_FILTRE_PAR_DEFAUT: Readonly<Record<CleFacette, TypeFiltre>> = {
   pays: 'FACETTE',
   metier: 'FACETTE',
@@ -1486,33 +412,17 @@ export const TYPE_FILTRE_PAR_DEFAUT: Readonly<Record<CleFacette, TypeFiltre>> = 
   temps: 'FACETTE',
   programme: 'FACETTE',
   langue: 'FACETTE',
-  /* Par NATURE : une ville se cherche, elle ne se coche pas. */
   ville: 'RECHERCHE',
-  /* Idem — et cela vaut du Danemark (4 Maisons) aux États-Unis (162). */
   maison: 'RECHERCHE',
   groupe: 'FACETTE',
 };
 
-/** Un filtre servi par un marché : sa clé, son type d'interaction, son libellé natif. */
 export type FiltreMarche = {
   readonly cle: CleFacette;
   readonly type: TypeFiltre;
   readonly libelle: string;
 };
 
-/**
- * LES FILTRES EXPOSÉS PAR UN MARCHÉ — le contrat que le front rend sans rien recalculer.
- *
- * Deux décisions distinctes, et c'est ce qui rend le contrat maintenable :
- *
- *   L'EXPOSITION est propre au MARCHÉ. `facettesContrat` la calcule déjà : une dimension mesurée
- *     n'apparaît que si sa couverture atteint le seuil ET qu'un libellé natif existe ; une facette
- *     du site n'apparaît que si le marché la déclare.
- *   LE TYPE est propre à la CLÉ, avec surcharge par marché si un jour l'un d'eux l'exige.
- *
- * Le front n'a donc aucune règle de seuil ni de cardinalité à refaire : il reçoit la liste de ce
- * qu'il doit afficher, et comment.
- */
 export function filtresDuMarche(perimetre: Perimetre): readonly FiltreMarche[] {
   const surcharges = perimetre.marche?.typesFiltres;
   return facettesContrat(perimetre).map(({ cle, libelle }) => ({
@@ -1520,23 +430,6 @@ export function filtresDuMarche(perimetre: Perimetre): readonly FiltreMarche[] {
   }));
 }
 
-/**
- * Le libellé d'une dimension dans la langue RÉELLEMENT SERVIE par ce marché.
- *
- * ── LA DETTE QUE CE HELPER SUPPRIME (arbitrage du 2026-09-22) ─────────────────────────────────
- *
- * `facettesDuMarche` exigeait un libellé NATIF. La règle était bonne tant qu'un marché en repli
- * n'avait jamais été mesuré : sans mesure, rien à exposer de toute façon. Depuis la mesure des 41
- * marchés, elle produit l'inverse de ce que `NATIVE/FALLBACK` promet — un marché thaï au corpus
- * sain n'exposerait aucun filtre tant que « Type de contrat » n'existe pas en thaï.
- *
- * Or c'est précisément ce que le modèle sépare : l'interface emprunte `localeDeRepli` en
- * attendant sa traduction, le corpus n'attend pas. Lier les filtres à la traduction native
- * recouple les deux axes que la décision a séparés.
- *
- * Une seule source par locale : les marchés en repli sur `en-GB` lisent le catalogue de GB,
- * jamais vingt-neuf copies de « Job type ».
- */
 export function libelleFacetteServi(marche: Marche, dimension: DimensionFacette): string | undefined {
   const natif = marche.libelles[dimension];
   if (natif !== undefined) return natif;
@@ -1549,13 +442,8 @@ export function libelleFacetteServi(marche: Marche, dimension: DimensionFacette)
 
 export function facettesDuMarche(code: string): readonly DimensionFacette[] {
   const m = marche(code);
+  if (m?.facettesEmploi) return m.facettesEmploi;
   if (!m) return [];
-  /*
-   * TROIS CONDITIONS, chacune mesurant une chose distincte :
-   *   la COUVERTURE — assez d'offres portent la valeur pour que le filtre serve ;
-   *   la CARDINALITÉ — au moins deux valeurs, sans quoi la facette ne partitionne rien ;
-   *   le LIBELLÉ SERVI — dans la langue que ce marché rend aujourd'hui, native ou de repli.
-   */
   return DIMENSIONS_FACETTE.filter(
     (dimension) =>
       m.couverture[dimension] >= SEUIL_AFFICHAGE_FACETTE &&
@@ -1564,30 +452,13 @@ export function facettesDuMarche(code: string): readonly DimensionFacette[] {
   );
 }
 
-/**
- * Le libellé natif d'une facette sur ce marché, ou `undefined`.
- *
- * `undefined` signifie « ce marché n'expose pas cette dimension » — jamais
- * « traduis-la toi-même » ni « prends celle de la France ».
- */
 export function libelleFacette(code: string, dimension: DimensionFacette): string | undefined {
   return marche(code)?.libelles[dimension];
 }
 
-/**
- * LE PÉRIMÈTRE D'UNE RECHERCHE — un ensemble de pays, jamais « le monde ».
- *
- * Un marché mesuré porte son périmètre et ses facettes natives. Tout autre code
- * ISO 3166-1 connu (JP, PT, IN… 8 905 offres publiables hors des douze marchés
- * mesurées le 16/09/2026) reste un périmètre d'un seul pays, sans facettes
- * natives : le stock hors marchés n'est ni invisible ni fondu dans le monde.
- * Un code absent, mal formé ou inconnu ne rend rien — c'est à l'appelant de
- * refuser, jamais de dégrader en recherche mondiale.
- */
 export type Perimetre = {
   readonly code: string;
   readonly pays: readonly string[];
-  /** Le marché mesuré, ou `undefined` pour un pays servi sans registre. */
   readonly marche: Marche | undefined;
 };
 
@@ -1600,18 +471,8 @@ export function perimetreDeRecherche(code: string | undefined, paysConnus: Reado
   return { code: normalise, pays: [normalise], marche: undefined };
 }
 
-/** Une facette du contrat : sa clé d'URL et son libellé, dans l'ordre d'affichage. */
 export type FacetteContrat = { readonly cle: CleFacette; readonly libelle: string };
 
-/**
- * Les facettes servies pour un périmètre, dans l'ordre du contrat.
- *
- * Sur un marché mesuré : les dimensions dont la couverture et le libellé le
- * justifient (`facettesDuMarche`), plus les facettes propres au site. Hors
- * marché mesuré : les facettes du site seulement, `pays` compris quand le
- * périmètre s'y prête, sans dimension contractuelle — rien n'est mesuré, rien
- * n'est proposé.
- */
 export function facettesContrat(perimetre: Perimetre): readonly FacetteContrat[] {
   const m = perimetre.marche;
   const dimensions = m ? new Set(facettesDuMarche(m.code)) : new Set<DimensionFacette>();

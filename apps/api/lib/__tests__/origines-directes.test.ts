@@ -128,13 +128,11 @@ describe.skipIf(!enabled)('deux origines, une recherche (lot 6)', () => {
     expect(us).toEqual([cw('NewYork'), `${M}-agg-austin`]);
   });
 
-  it('les filtres s’appliquent aux deux origines : un contrat sélectionné garde les non renseignées, marquées NON_CONFIRMEE (D-435)', async () => {
+  it('le filtre exige un contrat connu pour les deux origines', async () => {
     const r = await chercher('FR', { ...MAISON_SEULE, contrat: ['PERMANENT'] });
-    expect(ids(r)).toEqual([cw('Paris'), cw('Lyon'), `${M}-agg-paris`, `${M}-agg-lyon`]);
-    expect(r.jobs.map((j) => j.correspondance)).toEqual([
-      { statut: 'CONFIRMEE' }, { statut: 'NON_CONFIRMEE', dimensions: ['contrat'] }, { statut: 'CONFIRMEE' }, { statut: 'NON_CONFIRMEE', dimensions: ['contrat'] },
-    ]);
-    expect(r.total).toBe(4);
+    expect(ids(r)).toEqual([cw('Paris'), `${M}-agg-paris`]);
+    expect(r.jobs.map(j => j.correspondance)).toEqual([{ statut: 'CONFIRMEE' }, { statut: 'CONFIRMEE' }]);
+    expect(r.total).toBe(2);
     expect(r.totalConfirmes).toBe(2);
   });
 

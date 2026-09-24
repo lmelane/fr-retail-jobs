@@ -198,24 +198,15 @@ describe.skipIf(!enabled)('la recherche est bornée par le périmètre (lot 6)',
     expect(ids(await chercher('BE', { lieu: 'télétravail' }))).toEqual([]);
   });
 
-  it('D-435 — les inconnues restent servies sans être confirmées, une incompatibilité connue exclut', async () => {
+  it('un filtre exige une valeur attestée ; une valeur absente ne devient pas une correspondance', async () => {
     const cdi = await chercher('FR', {}, { ...MAISON_SEULE, contrat: ['PERMANENT'] });
-    expect(ids(cdi)).toEqual(['lille', 'nice', 'paris1', 'paris3']);
-    expect(cdi.total).toBe(4);
+    expect(ids(cdi)).toEqual(['lille', 'paris1']);
+    expect(cdi.total).toBe(2);
     expect(cdi.totalConfirmes).toBe(2);
-    const par = Object.fromEntries(cdi.jobs.map((j) => [j.id.replace(`${M}-`, ''), j.correspondance]));
-    expect(par.paris1).toEqual({ statut: 'CONFIRMEE' });
-    expect(par.lille).toEqual({ statut: 'CONFIRMEE' });
-    expect(par.paris3).toEqual({ statut: 'NON_CONFIRMEE', dimensions: ['contrat'] });
-    expect(par.nice).toEqual({ statut: 'NON_CONFIRMEE', dimensions: ['contrat'] });
-    // Les confirmées précèdent les non confirmées.
-    expect(cdi.jobs.map((j) => j.correspondance?.statut)).toEqual(['CONFIRMEE', 'CONFIRMEE', 'NON_CONFIRMEE', 'NON_CONFIRMEE']);
-
-    // CDI + temps plein : Lille (temps partiel confirmé) est exclue ; Paris 3 reste, doublement non précisée.
+    expect(cdi.jobs.every(j => j.correspondance?.statut === 'CONFIRMEE')).toBe(true);
     const deux = await chercher('FR', {}, { ...MAISON_SEULE, contrat: ['PERMANENT'], temps: ['FULL_TIME'] });
-    expect(ids(deux)).toEqual(['nice', 'paris1', 'paris3']);
-    expect(deux.totalConfirmes).toBe(1);
-    expect(deux.jobs.find((j) => j.id.endsWith('paris3'))?.correspondance).toEqual({ statut: 'NON_CONFIRMEE', dimensions: ['contrat', 'temps'] });
+    expect(ids(deux)).toEqual(['paris1']);
+    expect((await chercher('FR', {}, MAISON_SEULE)).total).toBe(5);
   });
 
   it('ET entre dimensions, OU dans une dimension, et chaque facette exclut sa propre sélection', async () => {
@@ -226,10 +217,10 @@ describe.skipIf(!enabled)('la recherche est bornée par le périmètre (lot 6)',
     ]));
     // La facette ville, elle, est comptée avec le filtre contrat (tolérant) : Paris 3 et Nice y restent.
     expect(facette(r, 'ville')?.options).toEqual(expect.arrayContaining([
-      { value: 'paris', label: 'Paris', count: 2 }, { value: 'lille', label: 'Lille', count: 1 }, { value: 'nice', label: 'Nice', count: 1 },
+      { value: 'paris', label: 'Paris', count: 1 }, { value: 'lille', label: 'Lille', count: 1 },
     ]));
     const ou = await chercher('FR', {}, { ...MAISON_SEULE, contrat: ['PERMANENT', 'FIXED_TERM'] });
-    expect(ids(ou)).toEqual(['lille', 'nice', 'paris1', 'paris2', 'paris3']);
+    expect(ids(ou)).toEqual(['lille', 'paris1', 'paris2']);
   });
 
   it('un filtre que le marché ne sert pas est refusé et nommé ; un changement de marché avec d’anciens filtres ne ment pas', async () => {
@@ -284,7 +275,7 @@ describe.skipIf(!enabled)('la recherche est bornée par le périmètre (lot 6)',
 
   it('le contrat des marchés compte le catalogue par périmètre, hors marchés et sans pays', async () => {
     const contrat = await contratMarches();
-    expect(contrat.version).toBe(1);
+    expect(contrat.version).toBe(2);
     /*
      * 41 marchés depuis le 17/09/2026 : les 12 LOCALISÉS (interface et libellés dans leur langue)
      * plus les 29 ROUTABLES (corpus mesuré, interface anglaise en repli). Le nombre est gravé

@@ -15,7 +15,7 @@ import { offerIdCandidates } from './offer-url';
 import { localeAffichage } from './presentation-locale';
 import { libellerFacettes, type FacetteServie } from './facettes';
 import { exigerPerimetre, resoudrePerimetre } from './perimetre';
-import { DIMENSIONS, DIMENSIONS_TOLERANTES, planifierRecherche, type CriteresRecherche, type Dimension, type DimensionTolerante, type FiltreRefuse, type Selections } from './search-plan';
+import { DIMENSIONS, planifierRecherche, type CriteresRecherche, type Dimension, type FiltreRefuse, type Selections } from './search-plan';
 import type { LieuResolu } from './lieu';
 
 /** Sector keys are data, not an application enum. Unknown keys stay bound
@@ -363,24 +363,6 @@ function toRow(row: {
   };
 }
 
-/** La colonne d'une ligne qui porte chaque dimension tolérante. */
-const CHAMP_TOLERANT: Record<DimensionTolerante, (row: JobRow) => string | null> = {
-  contrat: (row) => row.employmentTerm,
-  temps: (row) => row.workTime,
-  programme: (row) => row.programType,
-  langue: (row) => row.language,
-};
-
-/**
- * D-435 — une offre non renseignée sur une dimension filtrée reste servie,
- * jamais présentée comme une correspondance confirmée : la ligne nomme les
- * dimensions qu'elle laisse ouvertes.
- */
-export function correspondance(row: JobRow, selections: Selections): Correspondance {
-  const ouvertes = DIMENSIONS_TOLERANTES.filter((d) => selections[d]?.length && CHAMP_TOLERANT[d](row) === null);
-  return ouvertes.length ? { statut: 'NON_CONFIRMEE', dimensions: ouvertes } : { statut: 'CONFIRMEE' };
-}
-
 /** A public withdrawal never asserts that the employer closed its vacancy. */
 function publicOfferState(row: { isActive: boolean; withdrawnAt: Date | null; closedAt: Date | null;
   sources: Array<ApplySource>; canonicalSourceKey?: string | null; canonicalExternalId?: string | null; url: string }, at: Date) {
@@ -599,7 +581,7 @@ export async function getSimilarJobs(job: JobRow, limit = 6, langue: LangueLibel
  */
 function empreintePlan(plan: ReturnType<typeof planifierRecherche>): string {
   return empreinteCriteres({
-    version: SEARCH_VERSION, perimetre: plan.perimetre.code, q: plan.q, lieu: plan.lieu ?? null,
+    version: `${SEARCH_VERSION}-strict-filters-fr-2`, perimetre: plan.perimetre.code, q: plan.q, lieu: plan.lieu ?? null,
     selections: Object.fromEntries(DIMENSIONS.flatMap((d) => (plan.selections[d]?.length ? [[d, [...plan.selections[d]!].sort()]] : []))),
     prioritePays: plan.prioritePays ?? null, source: plan.source ?? null,
   });
@@ -636,7 +618,7 @@ export async function getJobs(filters: JobFilters): Promise<JobsResult> {
     ]);
     const jobs = summary.ids.flatMap((id) => {
       const ligne = byId.get(id);
-      return ligne ? [{ ...ligne, correspondance: correspondance(ligne, plan.selections) }] : [];
+      return ligne ? [{ ...ligne, correspondance: { statut: 'CONFIRMEE' as const } }] : [];
     });
     return {
       jobs,

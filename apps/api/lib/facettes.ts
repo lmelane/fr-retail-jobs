@@ -1,6 +1,6 @@
 import { libelleInconnu } from './taxonomy-labels';
 import { localeAffichage, nomFacette } from './presentation-locale';
-import { employmentLabel, langueDesLibelles } from '@catwalks/db/presentation';
+import { employmentLabel, EMPLOYMENT_LABELS, langueDesLibelles } from '@catwalks/db/presentation';
 import { filtresDuMarche, TYPE_FILTRE_PAR_DEFAUT, type CleFacette, type TypeFiltre } from '@catwalks/db/marches';
 import type { Facet } from './job-search-query';
 import { getSectorPresentation } from './sectors';
@@ -85,7 +85,11 @@ export async function libellerFacettes(
     pays,
     metier: (v) => v === 'unclassified' ? libelleInconnu(langue, 'metier') : taxonomy.occupationLabel(v) ?? libelleInconnu(langue, 'libelle'),
     secteur: (v) => secteurs[v] ?? libelleInconnu(langue, 'secteur'),
-    contrat: (v) => employmentLabel('employmentTerm', v, langue) ?? v,
+    contrat: (v) => {
+      const dimension = plan.perimetre.marche?.contratUnifie && v in EMPLOYMENT_LABELS[langue].programType ? 'programType'
+        : plan.perimetre.marche?.contratUnifie && v in EMPLOYMENT_LABELS[langue].engagementType ? 'engagementType' : 'employmentTerm';
+      return employmentLabel(dimension, v, langue) ?? v;
+    },
     temps: (v) => employmentLabel('workTime', v, langue) ?? v,
     programme: (v) => employmentLabel('programType', v, langue) ?? v,
     ville: canonicalCity,

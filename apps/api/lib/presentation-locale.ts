@@ -3,9 +3,17 @@ import { localeServie, type Perimetre, type CleFacette } from '@catwalks/db/marc
 
 /** La locale présente les mêmes résultats. Elle ne participe jamais au plan SQL ni au curseur. */
 export function localeAffichage(demande: string | undefined, perimetre?: Perimetre): string {
+  if (perimetre?.marche) {
+    const m = perimetre.marche;
+    const candidate = demande?.trim().toLowerCase();
+    const locale = m.locales.find((l) => l.toLowerCase() === candidate
+      || (candidate && !candidate.includes('-') && l.split('-')[0].toLowerCase() === candidate));
+    return locale && (LANGUES_LIBELLES as readonly string[]).includes(locale.slice(0, 2).toLowerCase())
+      ? locale : localeServie(m)!;
+  }
   if (demande && /^[a-z]{2}(?:-[a-z]{2})?$/i.test(demande)
     && (LANGUES_LIBELLES as readonly string[]).includes(demande.slice(0, 2).toLowerCase())) return demande;
-  return localeServie(perimetre?.marche) ?? 'fr-FR';
+  return 'fr-FR';
 }
 
 const CLES: CleFacette[] = ['pays', 'metier', 'secteur', 'contrat', 'temps', 'programme', 'ville', 'maison', 'groupe', 'langue'];

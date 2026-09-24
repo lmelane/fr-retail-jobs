@@ -4,7 +4,7 @@ import { publicJobSql } from '@catwalks/db/availability';
 import { Prisma, prisma } from '@catwalks/db';
 import { echapperLike } from './like';
 import { PREFIXE_DIRECT, directPubliableSql } from './direct-offers';
-import { DIMENSIONS, DIMENSIONS_TOLERANTES, type Dimension, type DimensionTolerante, type PlanRecherche } from './search-plan';
+import { DIMENSIONS, type Dimension, type PlanRecherche } from './search-plan';
 
 export type Facet = { value: string; count: number };
 
@@ -44,9 +44,23 @@ const COLONNE: Record<Exclude<Dimension, 'metier' | 'secteur' | 'maison' | 'vill
   langue: Prisma.sql`b.language`,
 };
 
+/** Projection de recherche : on conserve les faits RAW indépendants. Une alternance
+ * en CDI peut répondre aux deux choix, sans dupliquer l'offre ni additionner ses comptes. */
+const choixContrat = Prisma.sql`array_remove(ARRAY[b."employmentTerm", b."programType",
+  CASE WHEN b."engagementType" IN ('FREELANCE', 'INDEPENDENT_CONTRACTOR') THEN b."engagementType" END], NULL)::text[]`;
+
+const facetteContratUnifie = (plan: PlanRecherche) => Prisma.sql`
+  (SELECT coalesce(jsonb_agg(jsonb_build_object('value', value, 'count', n) ORDER BY n DESC, value), '[]'::jsonb)
+   FROM (SELECT value, count(DISTINCT b.id)::int AS n FROM base b
+     CROSS JOIN LATERAL unnest(${choixContrat}) value
+     WHERE ${restriction(plan, 'contrat')} GROUP BY value) f)`;
+
 /** Le prédicat SQL d'une dimension sélectionnée, sur l'alias `b` de `base`. */
-function predicat(dimension: Dimension, valeurs: readonly string[]): Prisma.Sql {
+function predicat(dimension: Dimension, valeurs: readonly string[], plan: PlanRecherche): Prisma.Sql {
   const liste = Prisma.join(valeurs.map((v) => Prisma.sql`${v}`));
+  if (dimension === 'contrat' && plan.perimetre.marche?.contratUnifie) {
+    return Prisma.sql`${choixContrat} && ARRAY[${liste}]::text[]`;
+  }
   switch (dimension) {
     case 'metier':
       return Prisma.sql`(${Prisma.join(valeurs.map((v) => v === 'unclassified'
@@ -63,7 +77,7 @@ function predicat(dimension: Dimension, valeurs: readonly string[]): Prisma.Sql 
     default: {
       const colonne = COLONNE[dimension];
       const dedans = Prisma.sql`${colonne} IN (${liste})`;
-      return (DIMENSIONS_TOLERANTES as readonly Dimension[]).includes(dimension) ? Prisma.sql`(${dedans} OR ${colonne} IS NULL)` : dedans;
+      return dedans;
     }
   }
 }
@@ -72,7 +86,7 @@ function predicat(dimension: Dimension, valeurs: readonly string[]): Prisma.Sql 
 function restriction(plan: PlanRecherche, sauf?: Dimension): Prisma.Sql {
   const conditions = DIMENSIONS.flatMap((d) => {
     const valeurs = plan.selections[d];
-    return d !== sauf && valeurs?.length ? [predicat(d, valeurs)] : [];
+    return d !== sauf && valeurs?.length ? [predicat(d, valeurs, plan)] : [];
   });
   return conditions.length ? Prisma.join(conditions, ' AND ') : Prisma.sql`true`;
 }
@@ -155,12 +169,7 @@ export async function searchSummary(
   const aggregateIndex = search ? Prisma.sql`JOIN "SearchDocument" s ON s.id=j.id AND s.version=${SEARCH_VERSION} AND s.country IN (${pays})` : Prisma.empty;
   const directIndex = search ? Prisma.sql`JOIN "SearchDocument" s ON s.id='cw_'||d.id AND s.version=${SEARCH_VERSION} AND s.country IN (${pays})` : Prisma.empty;
 
-  /*
-   * D-435 — une offre est CONFIRMÉE quand chaque dimension tolérante filtrée
-   * est renseignée ; sans filtre tolérant, tout est confirmé.
-   */
-  const confirmees = DIMENSIONS_TOLERANTES.flatMap((d: DimensionTolerante) => plan.selections[d]?.length ? [Prisma.sql`${COLONNE[d]} IS NOT NULL`] : []);
-  const confirme = confirmees.length ? Prisma.join(confirmees, ' AND ') : Prisma.sql`true`;
+  // Un filtre sélectionné exige une valeur attestée. Aucun élargissement aux valeurs absentes.
   // D-419 §2 : le pays du visiteur d'abord, à l'intérieur du périmètre. Jamais un filtre.
   const priorite = plan.prioritePays ? Prisma.sql`(CASE WHEN b."countryCode" = ${plan.prioritePays} THEN 0 ELSE 1 END)` : Prisma.sql`0`;
   const apres = curseur
@@ -170,18 +179,18 @@ export async function searchSummary(
   const [[summary], totalPerimetre] = await Promise.all([prisma.$queryRaw<Array<Omit<SearchSummary, 'ids' | 'suivant' | 'totalPerimetre'> & { page: Array<{ id: string; k: CleRecherche }> | null }>>(Prisma.sql`
     WITH base AS MATERIALIZED (
       SELECT j.id, 1 AS origine, j."occupationCode", j."countryCode", lower(trim(j.city)) AS ville, j."employmentTerm", j."workTime",
-        j."programType", j."postedAt", j."firstSeenAt", j.language, c.id AS "companyId", c.name AS maison, c."sectorCodes", c."parentGroup" AS groupe,
+        j."programType", j."engagementType", j."postedAt", j."firstSeenAt", j.language, c.id AS "companyId", c.name AS maison, c."sectorCodes", c."parentGroup" AS groupe,
         ${search?.score ?? Prisma.sql`0`} AS score
       FROM "Job" j JOIN "Company" c ON c.id = j."companyId" ${aggregateIndex}
       WHERE ${Prisma.join(conditions, ' AND ')}
       UNION ALL
       SELECT ${PREFIXE_DIRECT} || d.id, 0 AS origine, NULL::text, d."countryCode", lower(trim(d.city)), d."employmentTerm", d."workTime",
-        d."programType", d."postedAt", d."receivedAt", d.language, NULL::text, d.company, d."sectorCodes", NULL::text,
+        d."programType", d."engagementType", d."postedAt", d."receivedAt", d.language, NULL::text, d.company, d."sectorCodes", NULL::text,
         ${search?.score ?? Prisma.sql`0`}
       FROM "DirectOffer" d ${directIndex}
       WHERE ${Prisma.join(conditionsDirect, ' AND ')}
     ), scoped AS MATERIALIZED (
-      SELECT b.id, b.origine, b."countryCode", b."postedAt", b."firstSeenAt", (${confirme}) AS confirme, ${priorite} AS pri, b.score
+      SELECT b.id, b.origine, b."countryCode", b."postedAt", b."firstSeenAt", true AS confirme, ${priorite} AS pri, b.score
       FROM base b WHERE ${restriction(plan)}
     ), cles AS (
       SELECT id, origine, (NOT confirme)::int AS nc, pri, -score AS ns,
@@ -199,7 +208,7 @@ export async function searchSummary(
         'secteur', (SELECT coalesce(jsonb_agg(jsonb_build_object('value', code, 'count', n) ORDER BY n DESC, code), '[]'::jsonb)
           FROM (SELECT code, count(*)::int AS n FROM base b CROSS JOIN LATERAL unnest(CASE WHEN cardinality(b."sectorCodes") = 0
             THEN ARRAY['unclassified'] ELSE b."sectorCodes" END) code WHERE ${restriction(plan, 'secteur')} GROUP BY code) f),
-        'contrat', ${facette(Prisma.sql`b."employmentTerm"`, plan, 'contrat')},
+        'contrat', ${plan.perimetre.marche?.contratUnifie ? facetteContratUnifie(plan) : facette(Prisma.sql`b."employmentTerm"`, plan, 'contrat')},
         'temps', ${facette(Prisma.sql`b."workTime"`, plan, 'temps')},
         'programme', ${facette(Prisma.sql`b."programType"`, plan, 'programme')},
         'ville', ${facette(Prisma.sql`b.ville`, plan, 'ville', 60)},

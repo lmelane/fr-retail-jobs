@@ -57,7 +57,7 @@ describe('le périmètre est obligatoire', () => {
 
 describe('les facettes du contrat suivent le registre', () => {
   it('la France sert quatre dimensions mesurées et les facettes du site, dans l’ordre du contrat', () => {
-    expect(facettesContrat(FR()).map((f) => f.cle)).toEqual(['metier', 'secteur', 'contrat', 'temps', 'programme', 'ville', 'maison', 'groupe', 'langue']);
+    expect(facettesContrat(FR()).map((f) => f.cle)).toEqual(['secteur', 'contrat', 'temps', 'ville', 'maison', 'groupe', 'langue']);
     expect(facettesContrat(FR()).find((f) => f.cle === 'contrat')?.libelle).toBe('Type de contrat');
   });
   it('les États-Unis n’exposent ni contrat ni programme ; la Belgique et le Canada exposent `pays`', () => {
@@ -130,9 +130,9 @@ describe('les filtres sont honorés dans le périmètre, refusés explicitement 
   });
 
   it('ET entre dimensions, OU entre valeurs : toutes les sélections servies coexistent', () => {
-    const plan = planifierRecherche(FR(), criteres({ q: 'vendeuse', filtres: { maison: ['Dior', 'Chanel'], groupe: ['LVMH'], contrat: ['PERMANENT', 'FIXED_TERM'], metier: ['unclassified'] } }));
+    const plan = planifierRecherche(FR(), criteres({ q: 'vendeuse', filtres: { maison: ['Dior', 'Chanel'], groupe: ['LVMH'], contrat: ['PERMANENT', 'FIXED_TERM'], secteur: ['unclassified'] } }));
     expect(plan.q).toBe('vendeuse');
-    expect(plan.selections).toEqual({ maison: ['Dior', 'Chanel'], groupe: ['LVMH'], contrat: ['PERMANENT', 'FIXED_TERM'], metier: ['unclassified'] });
+    expect(plan.selections).toEqual({ maison: ['Dior', 'Chanel'], groupe: ['LVMH'], contrat: ['PERMANENT', 'FIXED_TERM'], secteur: ['unclassified'] });
     expect(plan.refus).toEqual([]);
   });
 

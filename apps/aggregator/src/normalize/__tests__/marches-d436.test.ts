@@ -140,24 +140,10 @@ describe('D-436 — registre du vocabulaire natif par marché', () => {
     expect(libelleFacette('CA', 'contrat')).not.toBe(libelleFacette('FR', 'contrat'));
   });
 
-  it('LA FRANCE EXPOSE LES QUATRE FACETTES — contrat, temps, programme, métier', () => {
-    /*
-     * PRÉMISSE — le marché le mieux renseigné du registre. Il sert de contre-
-     * épreuve aux témoins « ne contient pas » : si le seuil bloquait tout, ils
-     * passeraient tous au vert et celui-ci rougirait.
-     */
-    const fr = MARCHES.FR;
-    expect(fr.couverture.contrat, 'la prémisse : contrat FR largement au-dessus du seuil').toBeGreaterThan(
-      SEUIL_AFFICHAGE_FACETTE,
-    );
-
-    expect(facettesDuMarche('FR')).toEqual([
-      'contrat',
-      'temps',
-      'programme',
-      'metier',
-    ]);
-    expect(libelleFacette('FR', 'programme')).toBe('Type de programme');
+  it('la France expose le contrat unifié et le temps de travail', () => {
+    expect(MARCHES.FR.contratUnifie).toBe(true);
+    expect(facettesDuMarche('FR')).toEqual(['contrat', 'temps']);
+    expect(libelleFacette('FR', 'contrat')).toBe('Type de contrat');
   });
 
   it('UN CODE MARCHÉ INCONNU NE FAIT PAS PLANTER — liste vide, pas d’exception', () => {
@@ -377,7 +363,7 @@ describe('D-436 — registre du vocabulaire natif par marché', () => {
      */
   });
 
-  it('LA BELGIQUE EXPOSE SES QUATRE FACETTES — à égalité avec la France, et elle seule', () => {
+  it('la politique belge reste indépendante de la présentation française', () => {
     /*
      * CE QUE CE TÉMOIN EMPÊCHE : que la Belgique ressorte du registre aussi
      * discrètement qu'elle y est restée absente. Elle a été écartée des mois
@@ -405,15 +391,7 @@ describe('D-436 — registre du vocabulaire natif par marché', () => {
 
     expect(facettesDuMarche('BE')).toEqual(['contrat', 'temps', 'programme', 'metier']);
 
-    /*
-     * CONTRE-ÉPREUVE, et elle corrige une erreur que j'ai commise en écrivant
-     * ce lot : j'avais gravé « le SEUL marché à cinq facettes ». Le comptage
-     * réel dit que la France en expose autant. Le témoin affirme donc le fait
-     * VÉRIFIÉ — BE et FR sont les deux seuls au maximum — au lieu de la formule
-     * flatteuse qui ne résistait pas au comptage.
-     */
-    const maxFacettes = CODES_MARCHE.filter((code) => facettesDuMarche(code).length === 4);
-    expect([...maxFacettes].sort(), 'BE et FR, et eux seuls, exposent quatre facettes').toEqual(['BE', 'FR']);
+
 
     /*
      * Le saisonnier reste dehors À 2,7 %, sur le marché le mieux couvert : la

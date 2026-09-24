@@ -51,8 +51,17 @@ Les tests unitaires restent séparés : un E2E ne se saute pas silencieusement s
 
 ## Contrat de présentation
 
-`locale` est un paramètre d’affichage de `/api/jobs` et `/api/offres/:id`. Il est distinct de `langue`, filtre sur la langue native des annonces. Il n’entre ni dans le plan de recherche ni dans l’empreinte du curseur. Le proxy du site le transmet aussi lors de la pagination et de l’ouverture d’une fiche.
+`locale` est un paramètre d’affichage de `/api/jobs`, `/api/companies` et `/api/offres/:id`. Il est distinct de `langue`, filtre sur la langue native des annonces. Il n’entre ni dans le plan de recherche ni dans l’empreinte du curseur. Le proxy du site le transmet aussi lors de la pagination et de l’ouverture d’une fiche.
 
 Le registre garde la décision sur les dimensions, l’ordre et les types d’interaction. L’API traduit les libellés, jamais le texte de l’annonce. Les traductions complémentaires des métiers et secteurs vivent dans `apps/api/lib/data/taxonomy-labels.json`, séparées des règles de classification. Une traduction native du concept prime ; une traduction complémentaire n’est utilisée que si son libellé anglais de référence n’a pas changé. Un concept nouveau ou renommé conserve son libellé natif jusqu’à traduction.
 
 Limite explicite : le layout racine historique porte encore `html lang="fr"` dans le HTML brut. Le contenu `/emplois` porte sa locale côté serveur et le document est aligné après hydratation. Modifier le layout global est un chantier distinct, susceptible d’affecter les parcours gelés.
+
+## Vérification différentielle du 24 septembre 2026
+
+La branche de travail couvre le contrat français unifié et les filtres stricts :
+fixtures PostgreSQL locales pour CDI, CDD, stage, alternance en CDI, freelance et
+valeur absente, avec les deux origines d’offres. La locale de l’annuaire ne change
+ni ses identifiants, ni ses comptes, ni ses critères de pagination. Les catalogues
+front sont contrôlés sans fusion avec le français. Ces preuves ciblées ne clôturent
+ni la revue produit de tous les pays ni la traduction de toutes les pages du site.

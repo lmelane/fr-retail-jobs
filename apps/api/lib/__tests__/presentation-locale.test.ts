@@ -23,7 +23,13 @@ describe('locale de présentation indépendante des critères', () => {
   it('valide la locale sans transformer une valeur arbitraire en critère SQL', () => {
     const p=resoudrePerimetre('CA')!;
     expect(localeAffichage('fr-CA',p)).toBe('fr-CA');
-    for (const invalid of ['zz','../fr','en;DROP TABLE Job','']) expect(localeAffichage(invalid,p)).toBe('en-CA');
+    for (const invalid of ['zz','../fr','en;DROP TABLE Job','it','fr-FR','']) expect(localeAffichage(invalid,p)).toBe('en-CA');
+  });
+  it('le pays monolingue impose sa langue malgré une ancienne préférence', () => {
+    expect(localeAffichage('fr', resoudrePerimetre('IT')!)).toBe('it-IT');
+    expect(localeAffichage('it', resoudrePerimetre('FR')!)).toBe('fr-FR');
+    expect(localeAffichage('fr', resoudrePerimetre('CA')!)).toBe('fr-CA');
+    expect(localeAffichage('it', resoudrePerimetre('CH')!)).toBe('it-CH');
   });
   it('conserve les mots du marché canadien et sépare les langues belges', () => {
     const ca=resoudrePerimetre('CA')!,be=resoudrePerimetre('BE')!;

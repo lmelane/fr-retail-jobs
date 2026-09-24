@@ -25,7 +25,7 @@ describe('le registre décrit chaque marché en entier', () => {
     expect(MARCHES_ROUTABLES).toHaveLength(29);
     expect(CODES_MARCHE).toHaveLength(41);
     expect(new Set(CODES_MARCHE).size, 'aucun code déclaré deux fois').toBe(41);
-    expect(CONTRAT_RECHERCHE_VERSION).toBe(1);
+    expect(CONTRAT_RECHERCHE_VERSION).toBe(2);
   });
 
   it('chaque marché porte un nom natif, un périmètre non vide, ses langues et sa langue par défaut', () => {
