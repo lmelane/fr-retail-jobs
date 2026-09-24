@@ -250,3 +250,70 @@ Le code testé est désormais livré sur l'API et le worker au SHA `f10e1f2` ;
 natives et les alias cités ci-dessus n'ont pas été activés par ce lot de recherche.
 Les gains d'extraction hors réseau ne sont donc toujours pas comptés comme des
 publications acquises. La qualification source par source reste l'étape suivante.
+
+### Validation production des corrections, 24 septembre, 09:52 UTC
+
+**Code livré : `2cc91d8` sur l'API et le worker.** CI développement
+[35982734216](https://github.com/lmelane/fr-retail-jobs/actions/runs/35982734216)
+et main [35983539433](https://github.com/lmelane/fr-retail-jobs/actions/runs/35983539433)
+vertes ; images immuables et preuves dans le
+[reçu courant](../../docs/operations/railway/runtime-release.json).
+PostgreSQL et son volume inchangés, aucune migration ni réparation historique.
+
+#### Chantelle : règle native activée et ingestion réelle
+
+La règle relue dans l'audit est activée par le registre, puis sa qualification
+est renouvelée par `source-add`. Elle exige le témoin explicite
+« Nous sommes le Groupe Chantelle » dans `talentsoftDetail.entityDescription`.
+Elle ne remplace pas les autres marques du portail par défaut.
+Run `03f6832a-06a3-4c0e-8f17-7ef2f91dbbb9` : **COMPLETED**, 40 captures métier,
+35 extractions, 35 publications (1 création, 34 mises à jour), 0 erreur,
+0 fusion, 0 retenue. L'offre 2565 est attribuée au Groupe Chantelle depuis
+son contenu natif. Les autres configurations relues restent à qualifier.
+
+#### Thomas Sabo : collision typographique dans le résolveur commun
+
+Le déploiement `8b4b1bec` a bien échoué : un refus interne subsistait quand
+deux identités non revues, issues de la même source, existaient déjà sous
+`THOMAS SABO GmbH & Co. KG` et `Thomas Sabo GmbH & Co.KG`.
+Le premier correctif ne couvrait pas cette coexistence. Un test d'intégration
+a reproduit le refus avant correction ; les 20 tests d'identité passent ensuite.
+
+La correction commune conserve l'identité du poste quand les deux entreprises
+sont des identités natives non revues de la même source, sans rattachement
+parent, et que seule la typographie autorisée diffère. Elle ne fusionne pas
+les entreprises et ne crée pas d'alias. Une entreprise revue, un rattachement
+parent, un autre pays ou suffixe juridique restent protégés.
+
+Rejeu production `8f681072-6c2d-41e9-abd5-004ccf81e44a`, déploiement
+`c7ae15ba-7326-408c-8837-6188068440c7` : **COMPLETED / exit 0 / SUCCESS**,
+41 offres mises à jour, 0 création, 0 fusion, 0 erreur, en 13,988 s.
+Le lot métier contient 42 captures et 41 extractions/publications ; les preuves
+de préqualification ajoutent 42 captures de lecture et 1 capture d'accès.
+Toutes les 85 requêtes vont à `thomassabo.jobs.personio.de`.
+L'offre 2573206 conserve `cmu6zrbuj003vponlzm7a9s45` et son entreprise antérieure.
+L'ancien échec reste dans l'historique ; il n'est pas requalifié a posteriori.
+
+#### Portée mesurée et résidu
+
+Relevé en lecture seule depuis le 23 septembre à 00:00 UTC : 597 derniers
+refus distincts par source/identifiant pour `EMPLOYER_SPELLING_DIVERGED` et
+`EMPLOYER_TARGET_MISMATCH`. Avant ce rejeu, 498 avaient été republiés ; 99 ne
+l'avaient pas été, dont 92 sous sources ACTIVE : B&S 62, Funky Buddha 23,
+Nike 4, Etam 1, Normal 1 et Thomas Sabo 1. Les 7 autres étaient sous MIU PAUSED.
+**Un seul cas non republié correspondait à la collision typographique corrigée**,
+Thomas Sabo. Les autres familles demandent une revue des preuves et relations,
+pas un élargissement de cette équivalence. Ce relevé de refus historiques ne
+prouve pas que toutes ces annonces soient encore ouvertes chez leurs sources.
+
+Le CRON normal est restauré (`scheduled`, pause 0, 18 h Europe/Paris, une fois
+par jour). Le prochain départ planifié n'est pas encore observé au moment du
+reçu : sa configuration est vérifiée, la preuve d'exécution actuelle porte
+sur le rejeu borné. API publique, authentification, FR/US, recherche bilingue,
+localisation, facettes et fiche passent après livraison.
+
+**Ce lot ne clôture pas l'ensemble de l'audit d'identité.** Les vrais conflits,
+alias à revoir et extractions encore manquées restent ouverts. Aucun employeur
+anonyme de repli n'a été ajouté. Le retrait d'Elasticsearch concerne le moteur
+et l'outillage Catwalks ; un connecteur qui lit l'API native Elasticsearch de
+sa source reste nécessaire.
