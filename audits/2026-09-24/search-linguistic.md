@@ -1,8 +1,8 @@
 # Dernier challenger linguistique, 24 septembre 2026
 
-## Résultat avant validation de concurrence Railway
+## Résultat du challenger et décision V1
 
-**PostgreSQL reste candidat V1. Le choix définitif attend la mesure ingestion + recherche sur Railway.** Elasticsearch présente un avantage de classement, rappel et latence ; ce test ne démontre pas son inutilité.
+**PostgreSQL retenu pour V1 après la [validation Railway](search-railway.md).** Elasticsearch présente un avantage de classement, rappel et latence ; ce test ne démontre pas son inutilité.
 
 Même snapshot de 73 833 offres, même projection (empreinte `82e2e41bc3065a734f7f8b5ef063fbcdf8888b0fcc82de7a5b3a79c01907a76c`), même `SearchIntent`, mêmes synonymes et 234 formulations. Le SQL PG est celui du produit. Deux formulations « assistant store manager » ont une intention corrigée depuis S2 ; cette correction partagée s'applique aux deux moteurs. Les anciennes métriques S2 ne sont donc pas recopiées comme nouveau témoin.
 
@@ -32,6 +32,6 @@ Le stemming des missions assimilait « financial control » à « financial cont
 
 La projection réelle contient **76 077 documents**, `pending=0`, une génération prête. Les 90 migrations appliquées comprennent les deux migrations search. Aucun reset ni nouvelle migration nécessaire pour ce delta. Les métriques CPU/RAM sont accessibles mais différées ; leur interprétation finale et la charge simultanée restent à terminer.
 
-## Décision restant à fermer
+## Décision fermée pour la V1
 
-Le gain de rappel d'ES s'accompagne d'une baisse de précision, avec un avantage net de temps moteur local. PG est opérationnel ; il faut encore prouver l'absence de contention sous ingestion et fixer l'enveloppe mesurée. Si cette mesure est saine, la simplicité d'exploitation justifie PG V1 ; aucune affirmation de capacité mondiale n'en découle. Les limites et résultats complets sont dans [le reçu JSON](search-linguistic.json).
+Le gain de rappel d'ES s'accompagne d'une baisse de précision et d'un avantage net de temps moteur local. La [mesure Railway](search-railway.md) confirme PG sur l'enveloppe éprouvée : p95 384 ms au repos / 400 ms pendant publications, 300/300 recherches réellement simultanées, 76 096 documents et `pending=0`. PG devient l'unique moteur runtime V1, pour sa simplicité d'exploitation et ce niveau de service mesuré. Les seuils versionnés imposent un nouveau benchmark en cas de dérive ; aucune affirmation de capacité mondiale n'en découle. Résultats du challenger dans [le reçu JSON](search-linguistic.json).

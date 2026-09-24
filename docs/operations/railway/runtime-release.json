@@ -1,19 +1,19 @@
 {
-  "observedAt": "2026-09-23T21:37:08.504840+00:00",
-  "productionCodeSha": "92c2bb16913f82875b86ee6cb1bf9a5290a7bb72",
-  "targetContractSha256": "85eb5ad68621ab7d8b4d04fe7e3d4778141635255aab25038907c0d03ea8119f",
+  "observedAt": "2026-09-24T08:50:06.827875+00:00",
+  "productionCodeSha": "f10e1f2f38412abcf4072f6bea17d5ec1955ed7f",
+  "targetContractSha256": "fdc0256fafcac40b59441aa1c7881fd1092ad544f6ca7122255ad05cb3fc8748",
   "registryVisibility": "public",
   "registryCredentialsRequired": false,
   "images": [
     {
-      "gitSha": "92c2bb16913f82875b86ee6cb1bf9a5290a7bb72",
-      "contractSha256": "85eb5ad68621ab7d8b4d04fe7e3d4778141635255aab25038907c0d03ea8119f",
+      "gitSha": "f10e1f2f38412abcf4072f6bea17d5ec1955ed7f",
+      "contractSha256": "fdc0256fafcac40b59441aa1c7881fd1092ad544f6ca7122255ad05cb3fc8748",
       "service": "catwalks-catalogue-api",
-      "image": "ghcr.io/lmelane/catwalks-catalogue-api@sha256:5ed1b6029169f85719b1d3d7848bbb0679263687c1e8fa612418db557bc1d8c9",
-      "imageId": "sha256:90dd7d767cd8a8fb234837c2c3b8df65fcbeabde74539e24ee0b722f4a55a868",
+      "image": "ghcr.io/lmelane/catwalks-catalogue-api@sha256:a360f23e1b89f587916e49dac841a944b605af9628b60d0f456b63e59dd8962d",
+      "imageId": "sha256:013090443531d26eb346cc4614b3d0589c3a976cd7f0d4537f3013ca0d4db89d",
       "imageEnvironment": [
         "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
-        "NODE_VERSION=22.23.2",
+        "NODE_VERSION=22.23.3",
         "YARN_VERSION=1.22.22",
         "NODE_ENV=production"
       ],
@@ -27,15 +27,15 @@
         "status": "PASS",
         "network": "none",
         "role": "api",
-        "gitSha": "92c2bb16913f82875b86ee6cb1bf9a5290a7bb72"
+        "gitSha": "f10e1f2f38412abcf4072f6bea17d5ec1955ed7f"
       }
     },
     {
-      "gitSha": "92c2bb16913f82875b86ee6cb1bf9a5290a7bb72",
-      "contractSha256": "85eb5ad68621ab7d8b4d04fe7e3d4778141635255aab25038907c0d03ea8119f",
+      "gitSha": "f10e1f2f38412abcf4072f6bea17d5ec1955ed7f",
+      "contractSha256": "fdc0256fafcac40b59441aa1c7881fd1092ad544f6ca7122255ad05cb3fc8748",
       "service": "catwalks-ingestion-worker",
-      "image": "ghcr.io/lmelane/catwalks-ingestion-worker@sha256:f5a7c458496a8cd4387ab6111544ebef4c19bbe6dfa842d14146a30b61a369e9",
-      "imageId": "sha256:db0334fd99431a302f1c843b80045bcd8390f67352ac6606f02635b16f57ebe3",
+      "image": "ghcr.io/lmelane/catwalks-ingestion-worker@sha256:4566491788ede4d073d694607d2a5aa0479ddfc4c2a74d490f4825a328335166",
+      "imageId": "sha256:14e4b33d01956af3b81459e9f91fc62a0f971f3bd50b1bf94efa0d9aafcfe851",
       "imageEnvironment": [
         "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
         "LANG=C.UTF-8",
@@ -52,23 +52,23 @@
         "status": "PASS",
         "network": "none",
         "role": "worker",
-        "gitSha": "92c2bb16913f82875b86ee6cb1bf9a5290a7bb72"
+        "gitSha": "f10e1f2f38412abcf4072f6bea17d5ec1955ed7f"
       }
     }
   ],
-  "reason": "Source qualification and multilingual SAP/native Avature coverage fixes delivered on both runtimes. Daily schedule restored and process-attested; L’Oréal publication remains blocked by HTTP 406. Documentation-only commits do not rebuild images.",
+  "reason": "Search V1: linguistic challenger completed; actual Railway search and concurrent ingestion measured. Evidence-only commits do not rebuild runtime images.",
   "ci": {
-    "development": 35919428187,
-    "main": 35920144449,
+    "development": 35974199919,
+    "main": 35974896600,
     "status": "SUCCESS"
   },
   "services": [
     {
       "serviceId": "9c50b8a9-5651-478f-b0d1-5bc02d2c138f",
       "name": "catwalks-catalogue-api",
-      "deploymentId": "01bbcaef-9f78-4674-96f0-081651787027",
+      "deploymentId": "8a015d2a-e5a0-4f11-9a2f-74a6624321fd",
       "deploymentStatus": "SUCCESS",
-      "image": "ghcr.io/lmelane/catwalks-catalogue-api@sha256:5ed1b6029169f85719b1d3d7848bbb0679263687c1e8fa612418db557bc1d8c9",
+      "image": "ghcr.io/lmelane/catwalks-catalogue-api@sha256:a360f23e1b89f587916e49dac841a944b605af9628b60d0f456b63e59dd8962d",
       "deploy": {
         "startCommand": "node apps/api/runtime/start.mjs",
         "healthcheckPath": "/api/health",
@@ -95,7 +95,10 @@
         "PORT"
       ],
       "process": {
-        "at": "2026-09-23T21:04:54.261Z",
+        "at": "2026-09-24T08:23:07.726Z",
+        "gitSha": "f10e1f2f38412abcf4072f6bea17d5ec1955ed7f",
+        "contractSha256": "fdc0256fafcac40b59441aa1c7881fd1092ad544f6ca7122255ad05cb3fc8748",
+        "role": "api",
         "argv": [],
         "values": {
           "CATWALKS_RUNTIME_PROFILE": "production-paused",
@@ -105,30 +108,20 @@
           "PORT": "8080"
         },
         "profile": "production-paused",
-        "gitSha": "92c2bb16913f82875b86ee6cb1bf9a5290a7bb72",
-        "pid": 1,
-        "role": "api",
-        "privateConfigurationNames": [],
-        "database": {
-          "database": "railway",
-          "hostname": "postgres.railway.internal"
-        },
         "secretNames": [
           "DATABASE_URL",
           "CATALOGUE_API_KEY"
-        ],
-        "contractSha256": "85eb5ad68621ab7d8b4d04fe7e3d4778141635255aab25038907c0d03ea8119f",
-        "node": "v22.23.2"
+        ]
       },
-      "secretValuesPublished": false,
-      "targetEffectiveProcessMatch": true
+      "targetEffectiveProcessMatch": true,
+      "secretValuesPublished": false
     },
     {
       "serviceId": "210322c3-51b7-42c3-a93d-f50f64d44d19",
       "name": "catwalks-ingestion-worker",
-      "deploymentId": "08431f37-3c8e-4725-92a9-a0a0bf333568",
+      "deploymentId": "1c8a77c1-a6b5-45fe-99e3-15eb2cc680e9",
       "deploymentStatus": "SUCCESS",
-      "image": "ghcr.io/lmelane/catwalks-ingestion-worker@sha256:f5a7c458496a8cd4387ab6111544ebef4c19bbe6dfa842d14146a30b61a369e9",
+      "image": "ghcr.io/lmelane/catwalks-ingestion-worker@sha256:4566491788ede4d073d694607d2a5aa0479ddfc4c2a74d490f4825a328335166",
       "deploy": {
         "startCommand": "sh apps/aggregator/start.sh scheduled",
         "restartPolicyType": "NEVER",
@@ -156,26 +149,10 @@
         "PIPELINE_PAUSED"
       ],
       "process": {
-        "gitSha": "92c2bb16913f82875b86ee6cb1bf9a5290a7bb72",
-        "pid": 1,
-        "profile": "production",
-        "secretNames": [
-          "DATABASE_URL",
-          "HEALTHCHECK_PING_URL",
-          "BREVO_API_KEY"
-        ],
-        "contractSha256": "85eb5ad68621ab7d8b4d04fe7e3d4778141635255aab25038907c0d03ea8119f",
-        "privateConfigurationNames": [
-          "BREVO_SENDER_EMAIL",
-          "ALERT_EMAIL"
-        ],
-        "database": {
-          "database": "railway",
-          "hostname": "postgres.railway.internal"
-        },
-        "at": "2026-09-23T21:36:28.759Z",
+        "at": "2026-09-24T08:49:14.058Z",
+        "gitSha": "f10e1f2f38412abcf4072f6bea17d5ec1955ed7f",
+        "contractSha256": "fdc0256fafcac40b59441aa1c7881fd1092ad544f6ca7122255ad05cb3fc8748",
         "role": "worker",
-        "node": "v24.18.1",
         "argv": [
           "scheduled"
         ],
@@ -184,10 +161,16 @@
           "CATWALKS_RUNTIME_PROFILE": "production",
           "NODE_ENV": "production",
           "PIPELINE_PAUSED": "0"
-        }
+        },
+        "profile": "production",
+        "secretNames": [
+          "DATABASE_URL",
+          "HEALTHCHECK_PING_URL",
+          "BREVO_API_KEY"
+        ]
       },
-      "secretValuesPublished": false,
-      "targetEffectiveProcessMatch": true
+      "targetEffectiveProcessMatch": true,
+      "secretValuesPublished": false
     }
   ],
   "schedule": {
@@ -195,398 +178,24 @@
     "timeZone": "Europe/Paris",
     "localHour": 18,
     "actualRunsPerDay": 1,
-    "initialOffScheduleStart": {
-      "timestamp": "2026-09-23T21:36:29.732066862Z",
-      "level": "info",
-      "event": "worker.schedule_skipped",
-      "requiredHour": 18,
-      "message": "",
-      "timeZone": "Europe/Paris"
-    },
-    "nextScheduledRun": "2026-09-24T16:00:00Z",
-    "priorDailyRunId": "8b13d1f0-ced1-4380-8ad5-89e33a74587d",
-    "newCodeValidatedBy": "Targeted source-add qualifications and ingestions; result distinctions in source-qualification.md"
+    "initialOffScheduleStart": "worker.schedule_skipped attested"
   },
   "database": {
     "serviceId": "b5c68d1c-6988-4f15-8d85-afe684109cea",
     "serviceAndVolumeConfigurationUnchanged": true,
-    "migrationsApplied": 88,
+    "migrationsApplied": 90,
     "newMigration": null,
     "historicalDataRepair": false,
-    "reset": false,
-    "rollbackConstraint": "Preserve the Float experienceYears schema and runtime support. No integer downgrade after native fractional values have been published."
+    "reset": false
   },
-  "registry": [
-    {
-      "_count": 415,
-      "status": "ACTIVE"
+  "validation": "audits/2026-09-24/search-railway.md",
+  "rollback": {
+    "previousCodeSha": "504d3888a84569c0890dd043dac0625e162d600c",
+    "images": {
+      "9c50b8a9-5651-478f-b0d1-5bc02d2c138f": "ghcr.io/lmelane/catwalks-catalogue-api@sha256:e9df67544b995d38b6b6506897da496d4061a6be82370c9b8e3fecdd3f0b236c",
+      "210322c3-51b7-42c3-a93d-f50f64d44d19": "ghcr.io/lmelane/catwalks-ingestion-worker@sha256:20173142cceb9ebb9ea33c7c52c6f8d52b44bb2a462d18ebf941ffff246ced23"
     },
-    {
-      "_count": 11,
-      "status": "PAUSED"
-    },
-    {
-      "_count": 116,
-      "status": "RETIRED"
-    }
-  ],
-  "httpSmoke": {
-    "at": "2026-09-23T21:35:37.125027+00:00",
-    "health": {
-      "status": 200
-    },
-    "unauthorized": {
-      "status": 401
-    },
-    "detail": {
-      "status": 200,
-      "id": "cmue51vd109beo234uuge7daw"
-    },
-    "FR": {
-      "status": 200,
-      "total": 11565,
-      "perimetre": {
-        "code": "FR",
-        "nom": "France",
-        "pays": [
-          "FR"
-        ],
-        "mesure": true,
-        "locales": [
-          "fr-FR"
-        ],
-        "localeParDefaut": "fr-FR",
-        "langueDesLibelles": "fr"
-      },
-      "returned": 25,
-      "countries": [
-        "FR"
-      ],
-      "publicationPresent": true,
-      "marketBound": true,
-      "sampleId": "cmue51vd109beo234uuge7daw"
-    },
-    "US": {
-      "status": 200,
-      "total": 35605,
-      "perimetre": {
-        "code": "US",
-        "nom": "United States",
-        "pays": [
-          "US"
-        ],
-        "mesure": true,
-        "locales": [
-          "en-US",
-          "es-US"
-        ],
-        "localeParDefaut": "en-US",
-        "langueDesLibelles": "en"
-      },
-      "returned": 25,
-      "countries": [
-        "US"
-      ],
-      "publicationPresent": true,
-      "marketBound": true
-    },
-    "FR_filters": {
-      "status": 200,
-      "total": 3755,
-      "perimetre": {
-        "code": "FR",
-        "nom": "France",
-        "pays": [
-          "FR"
-        ],
-        "mesure": true,
-        "locales": [
-          "fr-FR"
-        ],
-        "localeParDefaut": "fr-FR",
-        "langueDesLibelles": "fr"
-      },
-      "returned": 25,
-      "countries": [
-        "FR"
-      ],
-      "publicationPresent": true,
-      "marketBound": true
-    },
-    "Nocibe_FR": {
-      "status": 200,
-      "total": 255,
-      "perimetre": {
-        "code": "FR",
-        "nom": "France",
-        "pays": [
-          "FR"
-        ],
-        "mesure": true,
-        "locales": [
-          "fr-FR"
-        ],
-        "localeParDefaut": "fr-FR",
-        "langueDesLibelles": "fr"
-      },
-      "returned": 25,
-      "countries": [
-        "FR"
-      ],
-      "publicationPresent": true,
-      "marketBound": true
-    },
-    "Sephora_US": {
-      "status": 200,
-      "total": 2951,
-      "perimetre": {
-        "code": "US",
-        "nom": "United States",
-        "pays": [
-          "US"
-        ],
-        "mesure": true,
-        "locales": [
-          "en-US",
-          "es-US"
-        ],
-        "localeParDefaut": "en-US",
-        "langueDesLibelles": "en"
-      },
-      "returned": 25,
-      "countries": [
-        "US"
-      ],
-      "publicationPresent": true,
-      "marketBound": true
-    },
-    "Sephora_FR": {
-      "status": 200,
-      "total": 386,
-      "perimetre": {
-        "code": "FR",
-        "nom": "France",
-        "pays": [
-          "FR"
-        ],
-        "mesure": true,
-        "locales": [
-          "fr-FR"
-        ],
-        "localeParDefaut": "fr-FR",
-        "langueDesLibelles": "fr"
-      },
-      "returned": 25,
-      "countries": [
-        "FR"
-      ],
-      "publicationPresent": true,
-      "marketBound": true
-    },
-    "Aesop_US": {
-      "status": 200,
-      "total": 0,
-      "perimetre": {
-        "code": "US",
-        "nom": "United States",
-        "pays": [
-          "US"
-        ],
-        "mesure": true,
-        "locales": [
-          "en-US",
-          "es-US"
-        ],
-        "localeParDefaut": "en-US",
-        "langueDesLibelles": "en"
-      },
-      "returned": 0,
-      "countries": [],
-      "publicationPresent": false,
-      "marketBound": true
-    },
-    "Aesop_FR": {
-      "status": 200,
-      "total": 17,
-      "perimetre": {
-        "code": "FR",
-        "nom": "France",
-        "pays": [
-          "FR"
-        ],
-        "mesure": true,
-        "locales": [
-          "fr-FR"
-        ],
-        "localeParDefaut": "fr-FR",
-        "langueDesLibelles": "fr"
-      },
-      "returned": 17,
-      "countries": [
-        "FR"
-      ],
-      "publicationPresent": true,
-      "marketBound": true
-    },
-    "Monoprix_FR": {
-      "status": 200,
-      "total": 696,
-      "perimetre": {
-        "code": "FR",
-        "nom": "France",
-        "pays": [
-          "FR"
-        ],
-        "mesure": true,
-        "locales": [
-          "fr-FR"
-        ],
-        "localeParDefaut": "fr-FR",
-        "langueDesLibelles": "fr"
-      },
-      "returned": 25,
-      "countries": [
-        "FR"
-      ],
-      "publicationPresent": true,
-      "marketBound": true
-    },
-    "Naturalia_FR": {
-      "status": 200,
-      "total": 45,
-      "perimetre": {
-        "code": "FR",
-        "nom": "France",
-        "pays": [
-          "FR"
-        ],
-        "mesure": true,
-        "locales": [
-          "fr-FR"
-        ],
-        "localeParDefaut": "fr-FR",
-        "langueDesLibelles": "fr"
-      },
-      "returned": 25,
-      "countries": [
-        "FR"
-      ],
-      "publicationPresent": true,
-      "marketBound": true
-    },
-    "Bonsoirs_FR": {
-      "status": 200,
-      "total": 1,
-      "perimetre": {
-        "code": "FR",
-        "nom": "France",
-        "pays": [
-          "FR"
-        ],
-        "mesure": true,
-        "locales": [
-          "fr-FR"
-        ],
-        "localeParDefaut": "fr-FR",
-        "langueDesLibelles": "fr"
-      },
-      "returned": 1,
-      "countries": [
-        "FR"
-      ],
-      "publicationPresent": true,
-      "marketBound": true
-    },
-    "Puma_US": {
-      "status": 200,
-      "total": 222,
-      "perimetre": {
-        "code": "US",
-        "nom": "United States",
-        "pays": [
-          "US"
-        ],
-        "mesure": true,
-        "locales": [
-          "en-US",
-          "es-US"
-        ],
-        "localeParDefaut": "en-US",
-        "langueDesLibelles": "en"
-      },
-      "returned": 25,
-      "countries": [
-        "US"
-      ],
-      "publicationPresent": true,
-      "marketBound": true
-    },
-    "Gemmyo_FR": {
-      "status": 200,
-      "total": 5,
-      "perimetre": {
-        "code": "FR",
-        "nom": "France",
-        "pays": [
-          "FR"
-        ],
-        "mesure": true,
-        "locales": [
-          "fr-FR"
-        ],
-        "localeParDefaut": "fr-FR",
-        "langueDesLibelles": "fr"
-      },
-      "returned": 5,
-      "countries": [
-        "FR"
-      ],
-      "publicationPresent": true,
-      "marketBound": true
-    },
-    "markets": {
-      "status": 200
-    },
-    "sourceAvailability": {
-      "Nocibe_FR": true,
-      "Sephora_US": true,
-      "Sephora_FR": true,
-      "Aesop_US": false,
-      "Aesop_FR": true,
-      "Monoprix_FR": true,
-      "Naturalia_FR": true,
-      "Bonsoirs_FR": true,
-      "Puma_US": true,
-      "Gemmyo_FR": true
-    },
-    "pass": true
-  },
-  "productionOutcome": "../../../audits/2026-09-23/source-qualification.md",
-  "targetedReplays": "../../../audits/2026-09-23/source-qualification-results.json",
-  "environmentInventory": "../../../audits/2026-09-23/post-run-environment.json",
-  "sourceQualification": {
-    "report": "../../../audits/2026-09-23/source-qualification.md",
-    "results": "../../../audits/2026-09-23/source-qualification-results.json",
-    "captures": {
-      "captures": 53,
-      "raw": 14005,
-      "extractions": 13385
-    },
-    "writes": {
-      "fetched": 5860,
-      "created": 3933,
-      "updated": 1912,
-      "errors": 5,
-      "merged": 0,
-      "held": 11
-    },
-    "limitations": [
-      "L’Oréal HTTP 406 after qualification: no new publication",
-      "Aesop Workday provenance challenge: not activated",
-      "SAP/LVMH duplicate publication identity not reconciled",
-      "Two Sephora pages missing native employer; eleven Puma records held",
-      "Gemmyo incomplete enumeration; Nocibé/Bonsoirs completeness unknown"
-    ]
-  },
-  "priorDailyOutcome": "../../../audits/2026-09-23/post-run.md"
+    "pauseWorkerBeforeRollback": true,
+    "databaseDowngrade": false
+  }
 }

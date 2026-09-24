@@ -2,7 +2,7 @@
   "version": "2026-09-24",
   "minimumSearchSamples": 100,
   "p95MaxMs": 1000,
-  "measuredDocuments": 76077,
+  "measuredDocuments": 76096,
   "cpuMaxFraction": 0.7,
   "cpuConsecutiveSamples": 3,
   "oldestPendingMaxSeconds": 120,

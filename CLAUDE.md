@@ -23,11 +23,11 @@ Le RAW est la référence. Les interprétations restent séparées, versionnées
 
 Lot livré : audit et correction post-RUN, depuis les RAW, SourceRun et logs de production. Le worker entretient accès et qualification native par les mécanismes existants. Les migrations non destructives nécessaires au correctif passent par development → main → CI → Railway ; aucun reset ni réparation des données historiques. Les validations de production restent ciblées, sans nouveau RUN complet. `/emplois`, marchés/filtres et Direct Offers ne sont pas refondus dans ce lot. `/offres`, moteur de matching et onboarding candidat restent gelés, y compris leur dette encore utilisée.
 
-Les évolutions restent validées par des tests ciblés. Le CRON chargé est 18 h Europe/Paris, une fois par jour ; son reçu est dans `docs/operations/railway/runtime-release.json`. Le dernier code de production vérifié le 24 septembre est `504d388` ; les commits de documentation et preuves suivants ne reconstruisent pas les images. Les incidents de sources sont isolés. Le matching, l’onboarding et la nouvelle promesse de `/offres` restent des chantiers distincts et gelés. Ne pas relancer les protocoles déjà acquis sans changement qui les invalide.
+Les évolutions restent validées par des tests ciblés. Le CRON chargé est 18 h Europe/Paris, une fois par jour ; son reçu est dans `docs/operations/railway/runtime-release.json`. Le dernier code de production vérifié le 24 septembre est `f10e1f2` ; les commits de documentation et preuves suivants ne reconstruisent pas les images. Les incidents de sources sont isolés. Le matching, l’onboarding et la nouvelle promesse de `/offres` restent des chantiers distincts et gelés. Ne pas relancer les protocoles déjà acquis sans changement qui les invalide.
 
-## Recherche en cours de livraison
+## Recherche V1 livrée côté agrégateur
 
-La [recherche métier, mot-clé ou Maison](docs/architecture/recherche-semantique.md) utilise PostgreSQL enrichi, choisi après S1. Le modèle, le compilateur SQL et les suggestions sont partagés avec le benchmark. L’API entretient une projection PostgreSQL durable ; migrations additives puis préchargement sont nécessaires avant livraison. L’UI `/emplois` retire le sélecteur Métier, les anciennes contraintes URL restent visibles et retirables. Les validations locales et limites figurent dans le document ; elles ne remplacent pas le reçu de production.
+La [recherche métier, mot-clé ou Maison](docs/architecture/recherche-semantique.md) retient **PostgreSQL enrichi pour V1**, après le challenger linguistique Elasticsearch et la [validation Railway](audits/2026-09-24/search-railway.md). API/worker `f10e1f2`, 90 migrations, 76 096 documents et `pending=0` observés. Sur 300 recherches : p95 384 ms au repos / 400 ms pendant publications réelles. Ce relevé borné ne certifie pas la charge mondiale. Les images sont immuables ; les commits d'outillage et preuves suivants ne changent pas le runtime. Le site `/emplois` et son retrait du sélecteur Métier restent en development. Les anciens filtres URL restent visibles et retirables.
 
 Les secteurs utilisent le circuit SectorReview existant et des preuves officielles relues avec abstention. Six règles initiales ne constituent pas une couverture complète. Aucun appel IA par offre ou requête. La recherche ne dépend jamais d’un code métier ou secteur. Toute correction UI utilise le skill Catwalks. `/offres`, matching, onboarding et circuit Direct Offers restent gelés ; aucun déploiement du site sans GO explicite.
 
@@ -38,10 +38,7 @@ ses consommateurs, remplacement et tests défensifs. La suppression aveugle des
 anciens chemins peut casser `/offres`, matching, facettes ou reprise des RAW.
 Le GO de promotion vers `main` porte sur le chantier validé ; il ne transforme
 pas les corrections locales encore non qualifiées en release de production.
-L'arbitrage V1 reste **ouvert** : PostgreSQL est livré, mais le GO définitif exige
-un dernier challenger Elasticsearch linguistique/fuzzy puis la mesure réelle
-Railway, incluant ingestion et recherche simultanées. Le harness hors runtime
-peut rester ; aucun deuxième moteur de production dormant.
+L'arbitrage V1 est **PostgreSQL unique au runtime**. Le harness ES isolé reste pour le réexamen, sans service ni synchronisation en production. Les seuils de `apps/api/scripts/search-benchmark/guard-policy.json` déclenchent une nouvelle mesure ; suivi de cette tâche toutes les six heures, dépendant de Codex local. Les métriques absentes restent inconnues. Aucune bascule automatique ni prétention à couvrir toute la croissance mondiale. Le GO recherche ne clôture pas les qualifications d'identité encore ouvertes dans l'audit RAW.
 
 - `main` est réservée à la version livrée et vérifiée en production.
 - `development` porte le travail en cours ; les pushes sur cette branche sont autorisés.

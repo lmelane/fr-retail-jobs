@@ -2,21 +2,19 @@
 
 ## Décision et périmètre
 
-**Arbitrage V1 en validation au 24 septembre 2026 : PostgreSQL enrichi est le moteur actuellement livré, encore candidat au choix définitif.** Elasticsearch reste un comparateur hors runtime, sans double lecture publique ni bascule automatique. Le [benchmark S1](../../audits/2026-09-24/search-s1.md) comparait 73 833 offres figées, 115 intentions et 234 formulations. Le [prototype S2](../../audits/2026-09-24/search-s2.md) a corrigé les recherches vides connues. Ces mesures historiques ne prouvent pas un rappel exhaustif mondial.
+**Décision du 24 septembre 2026 : PostgreSQL enrichi est retenu et livré pour la V1.** La [validation réelle Railway](../../audits/2026-09-24/search-railway.md) couvre la recherche pendant publication, les ressources DB et la disponibilité. Elasticsearch reste un comparateur hors runtime, sans double lecture ni bascule automatique.
 
-### Arbitrage explicite PostgreSQL / Elasticsearch
+### Arbitrage PostgreSQL / Elasticsearch
 
-Le dernier résultat S2, sur 193 formulations communes entièrement annotées, donne **89,4 % de précision pour les deux moteurs**, un classement nDCG@20 de **0,851 pour PG / 0,861 pour ES** et un rappel dans le pool de **73,5 % / 74,2 %**. Elasticsearch a également une meilleure latence locale p95 (**41,7 ms / 59,8 ms pour PG**) et une reconstruction plus rapide. Ces avantages sont réels dans ce protocole ; ce n'est pas une preuve statistique ni une mesure de charge de production.
+Le [dernier challenger linguistique](../../audits/2026-09-24/search-linguistic.md) ajoute les analyseurs par langue déclarée et un fuzzy borné, avec le même snapshot, les mêmes intentions et synonymes. Sur 214 formulations appariées : précision **89,12 % PG / 87,84 % ES**, nDCG **0,8493 / 0,8610**, rappel dans le pool **72,41 % / 75,09 %**, p95 moteur local de la seconde passe **268,7 / 43,3 ms**. ES gagne réellement en rappel, classement et vitesse moteur ; sa précision baisse légèrement. Aucun LLM, vecteur ou second pipeline de production.
 
-Le code du comparateur Elasticsearch emploie un analyseur standard + lowercase/asciifolding, des requêtes de phrases et le modèle métier partagé. Il ne teste pas tous les analyseurs linguistiques, la recherche floue, le reranking ni la recherche hybride possibles dans [Elasticsearch](https://www.elastic.co/docs/solutions/search/full-text/search-relevance). Il serait donc incorrect de conclure que PostgreSQL est intrinsèquement plus pertinent, ou qu'Elasticsearch a été optimisé au maximum.
+La projection PG et sa file transactionnelle sont déjà intégrées à la disponibilité native, aux deux origines, aux facettes et à la pagination. Le gain produit mixte d'ES ne justifie pas aujourd'hui une seconde infrastructure. Les capacités supplémentaires d'[Elasticsearch](https://www.elastic.co/docs/solutions/search/full-text/search-relevance) restent des pistes, pas des bénéfices démontrés dans ce protocole. Les benchmarks [S1](../../audits/2026-09-24/search-s1.md) et [S2](../../audits/2026-09-24/search-s2.md) conservent leurs résultats historiques ; ne pas les confondre avec le dernier profil.
 
-Le choix V1 porte sur le produit à exploiter maintenant : la compréhension commune explique l'essentiel du progrès observé ; la projection PG et sa file transactionnelle sont déjà intégrées avec la disponibilité native, les deux origines, les facettes et la pagination. Aucun gain produit mesuré ne justifie encore de développer et exploiter une seconde synchronisation. PostgreSQL possède lui-même la [recherche plein texte](https://www.postgresql.org/docs/current/textsearch.html) ; le SQL public est la seule implémentation de service maintenue.
-
-Avant confirmation : challenger Elasticsearch linguistique et fuzzy sur le même snapshot, puis validation Railway sous charge avec ingestion simultanée. Ne pas retirer le harness avant ce contrôle. Ensuite, réexaminer le choix si la vraie API ne tient plus son objectif de service sous une charge représentative, ou si un challenger démontre un gain de pertinence significatif sur des requêtes indépendantes. Le corpus RAW et le modèle de document restent réutilisables ; cela n'impose pas de maintenir deux architectures en production. La simple croissance du nombre de sources n'est pas une preuve que le moteur courant est insuffisant.
+Le contrôle final Railway mesure un p95 HTTP de **384,37 ms au repos / 400,09 ms pendant publication**, sur 300 recherches identiques à concurrence quatre, toutes comprises dans les écritures du worker. Le corpus réel atteint **76 096 documents**, `pending=0`. Ce GO porte sur l'enveloppe mesurée : une source normale, des requêtes représentatives bornées, aucune promesse de capacité mondiale. Le [garde versionné](../../apps/api/scripts/search-benchmark/guard-policy.json) et le suivi local de la tâche relancent un benchmark lors du franchissement des seuils documentés ; ils ne changent jamais automatiquement le moteur.
 
 Le moteur public utilise maintenant la même compréhension, le même modèle de document et le même compilateur SQL que le benchmark PostgreSQL. Le site `/emplois` utilise la recherche comme entrée principale ; le sélecteur Métier est retiré. Un ancien filtre `metier` dans une URL reste visible et retirable. Les marchés, langues et parcours de candidature conservent leurs contrats. `/offres`, matching et onboarding restent gelés.
 
-L’implémentation et les validations ci-dessous sont locales tant que le reçu Railway ne désigne pas cette release. Aucun déploiement du site n’est autorisé implicitement.
+L’API et le worker `f10e1f2` sont livrés ; le reçu Railway et le rapport ci-dessus attestent leur état. Les validations du site restent locales/development : aucun déploiement du site n’est autorisé implicitement.
 
 ## Recherche et classement
 
@@ -52,7 +50,7 @@ Le premier jeu comprend six règles (Mango, Skechers, Lovisa, Bloomingdale’s, 
 
 1. Valider les suites ciblées, les builds et la CI de `development`. Construire les images immuables du SHA validé ; promouvoir vers `main` selon le GO agrégateur.
 2. Conserver les images actuellement attestées dans `docs/operations/railway/runtime-release.json` et la configuration effective. La DB native et son volume ne changent pas.
-3. Appliquer les deux migrations additives `20260924120000_search_projection` et `20260924130000_search_market_index` via Prisma. Elles n’altèrent aucune publication ni capture historique.
+3. Pour une première installation, appliquer les deux migrations additives `20260924120000_search_projection` et `20260924130000_search_market_index` via Prisma. Elles n’altèrent aucune publication ni capture historique. Elles sont déjà appliquées en production ; ne pas les rejouer ni reconstruire une génération inchangée pour cette livraison.
 4. Depuis le code validé, avec les secrets fournis par l’environnement :
 
 ```sh
@@ -92,4 +90,15 @@ Charge mesurée sur une copie locale de 40 188 lignes Job ; ce n’est pas une m
 
 Supprimés : reconnaissance d’un métier uniquement sur la requête entière, branches SQL remplacées, SQL d’alias inutilisé, attribution de l’ancien secteur lors de l’upsert, tables de secours sectorielles sans consommateurs, sélecteur Métier du site. Les scripts de benchmark importent le modèle public ; la baseline historique se rejoue au commit S1, sans deuxième moteur legacy dans le produit.
 
-Restent intentionnellement : données historiques `Company.sector` encore exposées par des lecteurs et outils de reprise ; anciens vecteurs employés par le circuit Direct Offers gelé et le retour arrière ; migrations et preuves historiques nécessaires à la traçabilité. Leur retrait physique requiert la suppression vérifiée de leurs consommateurs, pas une suppression aveugle de données.
+Inventaire des dépendances conservées :
+
+| Élément | Consommateurs encore présents / traitement |
+|---|---|
+| `Company.sector` | Lecteurs d’offres, aside entreprise et outils de reprise ; l’ingestion n’en déduit plus un secteur. |
+| `Job.searchText` | Contrôle de schéma du healthcheck, Prisma et tests des triggers historiques. Retrait physique après remplacement de ces consommateurs. |
+| Vecteurs/texte `DirectOffer` | Écrivain `apps/aggregator/src/direct/projection.ts`, triggers et tests du parcours gelé ; conservés. |
+| Paramètre URL `metier` | Anciennes contraintes visibles et retirables dans `/emplois` ; maintien explicitement décidé pour V1. |
+| Adaptateur Rituals et son endpoint Elasticsearch | Source externe de l’employeur, distincte d’un moteur de recherche Catwalks ; conservé. |
+| Migrations et rapports datés | Rejeu et traçabilité ; ne sont pas des chemins runtime alternatifs. |
+
+Le lot retire aussi les cartes inutilisées de présentation des métiers et le chargeur de benchmark qui recréait les anciens vecteurs Job/DirectOffer. S1 se rejoue à son commit historique. Aucun import Elasticsearch dans le runtime public, aucune synchronisation dormante, aucun service ES Railway. Les fonctions SQL et colonnes physiques historiques ne sont pas prétendues toutes supprimées : leur retrait doit préserver les consommateurs ci-dessus et la fenêtre de retour arrière.

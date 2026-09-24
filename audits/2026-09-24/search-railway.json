@@ -1,0 +1,405 @@
+{
+  "decision": "PostgreSQL enriched — V1 runtime only",
+  "runtimeSha": "f10e1f2f38412abcf4072f6bea17d5ec1955ed7f",
+  "observedAt": "2026-09-24T08:47:23.868582+00:00",
+  "baseline": {
+    "runId": "search-qualification-b5cd53631043",
+    "startedAt": "2026-09-24T08:39:00.293180+00:00",
+    "loadStartedAt": "2026-09-24T08:39:05.969760+00:00",
+    "endedAt": "2026-09-24T08:39:24.056405+00:00",
+    "requests": 300,
+    "concurrency": 4,
+    "workloadQueries": 250,
+    "p50Ms": 162.56,
+    "p95Ms": 384.37,
+    "checks": {
+      "authentication": true,
+      "synonyms": true,
+      "typo": true,
+      "locales_CA": true,
+      "locales_CH": true,
+      "locales_BE": true,
+      "pagination": true,
+      "composed": true,
+      "uncoded": true,
+      "health": true,
+      "requests": true
+    },
+    "pass": true
+  },
+  "duringPublication": {
+    "runId": "search-qualification-ca77cf44c4ac",
+    "startedAt": "2026-09-24T08:42:56.404400+00:00",
+    "loadStartedAt": "2026-09-24T08:43:03.745516+00:00",
+    "endedAt": "2026-09-24T08:43:22.608892+00:00",
+    "requests": 300,
+    "concurrency": 4,
+    "workloadQueries": 250,
+    "p50Ms": 158.485,
+    "p95Ms": 400.09,
+    "checks": {
+      "authentication": true,
+      "synonyms": true,
+      "typo": true,
+      "locales_CA": true,
+      "locales_CH": true,
+      "locales_BE": true,
+      "pagination": true,
+      "composed": true,
+      "uncoded": true,
+      "health": true,
+      "requests": true
+    },
+    "pass": true
+  },
+  "overlap": {
+    "pipelineRunId": "5a2ce9eb-c1d1-4ee8-8b69-80b0b051ec50",
+    "publicationStartedAt": "2026-09-24T08:42:40.899Z",
+    "publicationEndedAt": "2026-09-24T08:44:09.202Z",
+    "fullyOverlappingSearchRequests": 300,
+    "slowdownRatio": 1.0408980929833234
+  },
+  "baselinePaced": {
+    "runId": "search-qualification-e08f9653d66d",
+    "startedAt": "2026-09-24T08:23:37.016316+00:00",
+    "loadStartedAt": "2026-09-24T08:23:43.077169+00:00",
+    "endedAt": "2026-09-24T08:25:42.241507+00:00",
+    "requests": 480,
+    "concurrency": 4,
+    "workloadQueries": 250,
+    "p50Ms": 184.325,
+    "p95Ms": 404.74,
+    "checks": {
+      "authentication": true,
+      "synonyms": true,
+      "typo": true,
+      "locales_CA": true,
+      "locales_CH": true,
+      "locales_BE": true,
+      "pagination": true,
+      "composed": true,
+      "uncoded": true,
+      "health": true,
+      "requests": true
+    },
+    "pass": true
+  },
+  "pipeline": [
+    {
+      "id": "b98271b8-f223-4144-8afe-768d092aaf29",
+      "revision": "f10e1f2f38412abcf4072f6bea17d5ec1955ed7f",
+      "startedAt": "2026-09-24T08:26:48.039Z",
+      "finishedAt": "2026-09-24T08:36:35.391Z",
+      "status": "COMPLETED",
+      "durationSeconds": 587.352,
+      "result": {
+        "errors": 0,
+        "france": 0,
+        "merged": 0,
+        "source": "boots",
+        "created": 19,
+        "fetchMs": 123897,
+        "fetched": 1458,
+        "updated": 1439,
+        "withUrl": 1458,
+        "complete": true,
+        "inSector": 1458,
+        "rejected": 4,
+        "upsertMs": 89662,
+        "withDate": 0,
+        "truncated": false,
+        "withCountry": 0,
+        "declaredTotal": 1462,
+        "captureBatchId": "16e25fd9-9f64-4718-97a3-5c0f61facefe",
+        "rejectedReasons": {
+          "LISTED_PAGE_WITHOUT_JOBPOSTING": 4
+        },
+        "withDescription": 1458,
+        "occupationReleases": {
+          "catwalks-occupations-20260909-v1": 1458
+        },
+        "occupationStatuses": {
+          "NO_RULE": 375,
+          "AMBIGUOUS": 6,
+          "CLASSIFIED": 606,
+          "FAMILY_ONLY": 471
+        },
+        "occupationReleaseId": "catwalks-occupations-20260909-v1",
+        "completionReportHash": "4bd580045729a1ffc195afba4d6b6d9be630784e073ac2717d4c8367dc3c142b"
+      },
+      "raw": [
+        {
+          "batchId": "16e25fd9-9f64-4718-97a3-5c0f61facefe",
+          "captures": 1470,
+          "bodies": 1470,
+          "failed": 0
+        },
+        {
+          "batchId": "3ba26d7b-5d90-4d60-87ec-c8a785a5add0",
+          "captures": 1471,
+          "bodies": 1471,
+          "failed": 0
+        },
+        {
+          "batchId": "aad74a53-bf84-4f46-bcc4-9c8f6fc328a7",
+          "captures": 1,
+          "bodies": 1,
+          "failed": 0
+        }
+      ],
+      "sourceHealth": [
+        "OK"
+      ]
+    },
+    {
+      "id": "5a2ce9eb-c1d1-4ee8-8b69-80b0b051ec50",
+      "revision": "f10e1f2f38412abcf4072f6bea17d5ec1955ed7f",
+      "startedAt": "2026-09-24T08:40:17.423Z",
+      "finishedAt": "2026-09-24T08:44:09.348Z",
+      "status": "COMPLETED",
+      "durationSeconds": 231.925,
+      "result": {
+        "errors": 0,
+        "france": 0,
+        "merged": 0,
+        "source": "boots",
+        "created": 0,
+        "fetchMs": 129603,
+        "fetched": 1458,
+        "updated": 1458,
+        "withUrl": 1458,
+        "complete": true,
+        "inSector": 1458,
+        "rejected": 4,
+        "upsertMs": 87948,
+        "withDate": 0,
+        "truncated": false,
+        "withCountry": 0,
+        "declaredTotal": 1462,
+        "captureBatchId": "d1d57f0a-f75c-4921-96ee-2ee387bea209",
+        "rejectedReasons": {
+          "LISTED_PAGE_WITHOUT_JOBPOSTING": 4
+        },
+        "withDescription": 1458,
+        "occupationReleases": {
+          "catwalks-occupations-20260909-v1": 1458
+        },
+        "occupationStatuses": {
+          "NO_RULE": 375,
+          "AMBIGUOUS": 6,
+          "CLASSIFIED": 606,
+          "FAMILY_ONLY": 471
+        },
+        "occupationReleaseId": "catwalks-occupations-20260909-v1",
+        "completionReportHash": "ab644c5fc246ea1ceab1033ced93746abb9d7c094abc678532978f87e3bcf434"
+      },
+      "raw": [
+        {
+          "batchId": "d1d57f0a-f75c-4921-96ee-2ee387bea209",
+          "captures": 1470,
+          "bodies": 1470,
+          "failed": 0
+        }
+      ],
+      "sourceHealth": [
+        "OK"
+      ]
+    }
+  ],
+  "projection": {
+    "version": "search-3-20260924-v2",
+    "createdAt": "2026-09-24T06:34:05.993Z",
+    "readyAt": "2026-09-24T06:37:58.562Z",
+    "documents": 76096,
+    "pending": 0
+  },
+  "migrations": {
+    "applied": 90,
+    "newThisDelta": 0,
+    "reset": false,
+    "historicalRepair": false
+  },
+  "contention": {
+    "samples": 12,
+    "intervalSeconds": 5,
+    "from": "2026-09-24T08:42:56.406Z",
+    "to": "2026-09-24T08:43:51.586Z",
+    "maximumBlockedSessions": 0,
+    "maximumPendingObserved": 0,
+    "deadlocksDelta": 0,
+    "workerObservedDbWaitingPeak": 6,
+    "workerObservedLongestQuerySeconds": 10.950253
+  },
+  "databaseMetrics": {
+    "at": "2026-09-24T08:46:13.515011+00:00",
+    "runId": "5a2ce9eb-c1d1-4ee8-8b69-80b0b051ec50",
+    "start": "2026-09-24T08:42:40.899Z",
+    "end": "2026-09-24T08:44:09.202Z",
+    "metrics": [
+      {
+        "measurement": "CPU_USAGE",
+        "values": [
+          {
+            "ts": 1790239350,
+            "value": 0.07760003333333335
+          },
+          {
+            "ts": 1790239380,
+            "value": 1.1097377666666666
+          },
+          {
+            "ts": 1790239410,
+            "value": 0.7332831666666666
+          },
+          {
+            "ts": 1790239440,
+            "value": 0
+          }
+        ]
+      },
+      {
+        "measurement": "CPU_LIMIT",
+        "values": [
+          {
+            "ts": 1790239350,
+            "value": 24
+          },
+          {
+            "ts": 1790239380,
+            "value": 24
+          },
+          {
+            "ts": 1790239410,
+            "value": 24
+          },
+          {
+            "ts": 1790239440,
+            "value": 24
+          }
+        ]
+      },
+      {
+        "measurement": "MEMORY_USAGE_GB",
+        "values": [
+          {
+            "ts": 1790239350,
+            "value": 3.3199104
+          },
+          {
+            "ts": 1790239380,
+            "value": 3.379355648
+          },
+          {
+            "ts": 1790239410,
+            "value": 4.046163968
+          },
+          {
+            "ts": 1790239440,
+            "value": 4.046163968
+          }
+        ]
+      },
+      {
+        "measurement": "MEMORY_LIMIT_GB",
+        "values": [
+          {
+            "ts": 1790239350,
+            "value": 24
+          },
+          {
+            "ts": 1790239380,
+            "value": 24
+          },
+          {
+            "ts": 1790239410,
+            "value": 24
+          },
+          {
+            "ts": 1790239440,
+            "value": 24
+          }
+        ]
+      }
+    ]
+  },
+  "lifecycle": {
+    "at": "2026-09-24T08:23:39.137551+00:00",
+    "sha": "f10e1f2f38412abcf4072f6bea17d5ec1955ed7f",
+    "checks": [
+      {
+        "kind": "closed",
+        "id": "cmu7e6au300x5jxbmev3te93v",
+        "httpStatus": 410,
+        "state": "closed",
+        "searchAbsent": true,
+        "pages": 1
+      },
+      {
+        "kind": "closed",
+        "id": "cmu81hn170145pu4537xdnvz3",
+        "httpStatus": 410,
+        "state": "closed",
+        "searchAbsent": true,
+        "pages": 1
+      },
+      {
+        "kind": "closed",
+        "id": "cmu81hmw7013kpu45twlquw90",
+        "httpStatus": 410,
+        "state": "closed",
+        "searchAbsent": true,
+        "pages": 1
+      },
+      {
+        "kind": "expired",
+        "id": "cmu6yfitu002fn2qox9dwvz0s",
+        "httpStatus": 410,
+        "state": "closed",
+        "searchAbsent": true,
+        "pages": 3
+      },
+      {
+        "kind": "expired",
+        "id": "cmu6xftek01avqj600vnzgbry",
+        "httpStatus": 410,
+        "state": "closed",
+        "searchAbsent": true,
+        "pages": 1
+      },
+      {
+        "kind": "expired",
+        "id": "cmue2axmo00d4pc34boembeiz",
+        "httpStatus": 410,
+        "state": "closed",
+        "searchAbsent": true,
+        "pages": 2
+      }
+    ],
+    "pass": true,
+    "note": "Read-only real closed and expired offers, including expired offers still isActive=true in Job and still present in SearchDocument."
+  },
+  "limits": [
+    "One normal source, not the full daily multisource run.",
+    "Four concurrent requests; no claim about worldwide traffic capacity.",
+    "DB samples do not exclude transient waits between probes; worker observed six active waits and one 10.95s query somewhere in the whole run, without attribution.",
+    "Only the second burst has all requests inside the publication window; preliminary paced measurements do not prove that overlap.",
+    "Production snapshot has no public direct offer; direct/aggregate coexistence is covered by existing integration fixtures, not invented production offers.",
+    "Historical RUNNING records were not rewritten; current deployment and correlated run IDs identify actual work."
+  ],
+  "evidenceHashes": {
+    "baseline-burst.private.json": "468b82b637b97b7421ecb90438d54a54151f270b74d7797d88bce864e48e369b",
+    "publication-burst.private.json": "8bf159b3b55872661afea37afd31c2a890264824d04ff76f2d753e3830238af7",
+    "burst-completed.private.json": "43e6bf52c2c7a5d1f565bf563d848135250f3d4ac791cb0c0c734d03b50c5049",
+    "first-run-final.private.json": "b5e3a68fdf09e23ab15bfa958ad4b311b37fd6fbf9b7e8eaa329677d6579e95e",
+    "post-run-db.private.json": "7da9f8ccf3373065651b9f345ee3454bd25d9f81df768f4b959c5fa74148d87f",
+    "publication-burst-contention.private.json": "e5c55fccf980522d19b51edc61404f08187c761fde6a2bb25a8b8fd66f5e7f1e",
+    "lifecycle-http.private.json": "29ef62677b43acf8b371841aea3595b179898d1679321fb398f8022ead74ac47"
+  },
+  "followUp": {
+    "automationId": "r-valuer-le-moteur-catwalks",
+    "cadenceHours": 6,
+    "policy": "apps/api/scripts/search-benchmark/guard-policy.json",
+    "automaticEngineSwitch": false,
+    "execution": "local Codex thread"
+  }
+}
