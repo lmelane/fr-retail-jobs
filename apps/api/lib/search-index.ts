@@ -107,5 +107,12 @@ export async function requireSearchIndex() {
  * ended. Current generation is never removable through this operation. */
 export async function retireSearchGeneration(version:string) {
   if (version === SEARCH_VERSION || !/^search-[a-zA-Z0-9-]+$/.test(version)) throw Error('Cannot retire current or invalid search generation');
-  return prisma.$executeRaw`DELETE FROM "SearchGeneration" WHERE version=${version}`;
+  return prisma.$transaction(async tx => {
+    await tx.$executeRaw`SET LOCAL lock_timeout='2s'`;
+    // Native enqueue statements retain AccessShare on this table until commit.
+    // Wait for them before deleting, and prevent later producers from selecting
+    // a retiring version. The old indexer must already be stopped (CLI contract).
+    await tx.$executeRaw`LOCK TABLE "SearchGeneration" IN ACCESS EXCLUSIVE MODE`;
+    return tx.$executeRaw`DELETE FROM "SearchGeneration" WHERE version=${version}`;
+  }, { timeout: 30000 });
 }

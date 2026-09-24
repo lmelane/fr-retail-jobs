@@ -1,6 +1,6 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { prisma, Prisma } from '@catwalks/db';
-import { initializeSearchIndex, drainSearchIndex, SEARCH_VERSION } from './search-index';
+import { initializeSearchIndex, drainSearchIndex, retireSearchGeneration, SEARCH_VERSION } from './search-index';
 import { getJobs } from './jobs';
 import { publicationFixture } from '../../aggregator/src/test/publication-fixture';
 import { suggestTitles } from './suggestions';
@@ -127,5 +127,25 @@ describe.skipIf(!enabled)('durable search projection and live public API', () =>
   it('suggests a cross-language role only in markets with a live matching offer', async () => {
     expect(await suggestTitles('conseiller de ven', exigerPerimetre('US'))).toContain('Conseiller de vente');
     expect(await suggestTitles('conseiller de ven', exigerPerimetre('JP'))).toEqual([]);
+  });
+  it('retires an old generation without failing a concurrent native enqueue', async () => {
+    const version='search-integration-retirement';
+    await prisma.$executeRaw`INSERT INTO "SearchGeneration"(version) VALUES (${version})`;
+    let unlock!: () => void; let locked!: () => void;
+    const acquired = new Promise<void>(resolve => { locked=resolve; });
+    const release = new Promise<void>(resolve => { unlock=resolve; });
+    const writer=prisma.$transaction(async tx=>{
+      // The generation scan and enqueue belong to the same native transaction.
+      await tx.$queryRaw`SELECT version FROM "SearchGeneration"`;
+      locked(); await release;
+      await tx.$executeRaw`SELECT catwalks_search_enqueue(${prefix+'fr'})`;
+    });
+    await acquired;
+    const retiring=retireSearchGeneration(version);
+    await new Promise(r=>setTimeout(r,30));unlock();
+    await expect(Promise.all([writer,retiring])).resolves.toEqual([undefined,1]);
+    const pending=await prisma.$queryRaw<{version:string}[]>`SELECT version FROM "SearchPending" WHERE id=${prefix+'fr'}`;
+    expect(pending).toContainEqual({version:SEARCH_VERSION});
+    expect(pending).not.toContainEqual({version});await sync();
   });
 });
