@@ -52,8 +52,9 @@ def main():
     parser.add_argument('--phase', choices=['baseline', 'ingestion'], required=True)
     parser.add_argument('--requests', type=int, default=240)
     parser.add_argument('--concurrency', type=int, default=4)
+    parser.add_argument('--duration-seconds', type=int, default=0)
     args = parser.parse_args()
-    if args.output.exists() or not 32 <= args.requests <= 480 or not 1 <= args.concurrency <= 8:
+    if args.output.exists() or not 32 <= args.requests <= 480 or not 1 <= args.concurrency <= 8 or not 0 <= args.duration_seconds <= 300:
         parser.error('Create-only output; 32..480 requests and 1..8 concurrent requests required')
     variables = json.loads(subprocess.check_output([
         'railway', 'variable', 'list', '--service', API_SERVICE, '--environment', ENVIRONMENT, '--json'], text=True))
@@ -113,9 +114,14 @@ def main():
     checks['composed'] = bool(smoke[6]['ids']) and bool(smoke[7]['ids'])
     checks['uncoded'] = any(r['uncoded'] > 0 for r in smoke)
     rows = []
+    load_started = time.monotonic()
+    load_started_at = dt.datetime.now(dt.timezone.utc)
     with concurrent.futures.ThreadPoolExecutor(max_workers=args.concurrency) as pool:
         # Bound the batch. Two consecutive failed responses stop the load early.
         for offset in range(0, args.requests, args.concurrency):
+            due = load_started + args.duration_seconds * offset / args.requests
+            if due > time.monotonic():
+                time.sleep(due - time.monotonic())
             batch = list(pool.map(lambda i: jobs(WORKLOAD[i % len(WORKLOAD)])[0], range(offset, min(args.requests, offset + args.concurrency))))
             rows.extend(batch)
             if sum(r['status'] != 200 for r in batch) >= 2:
@@ -124,15 +130,21 @@ def main():
     status, after, _ = get('/api/health', False)
     checks['health'] = status == 200 and after.get('runtime', {}).get('gitSha') == args.sha and after.get('search', {}).get('ready') is True
     checks['requests'] = len(rows) == args.requests and all(r['status'] == 200 and not r['outsideMarket'] and not r['expired'] and not r['withdrawn'] and r['facetsPresent'] for r in rows + smoke)
-    metrics = api('''query($environment:String!,$service:String!,$start:DateTime!,$end:DateTime!){
-      metrics(environmentId:$environment,serviceId:$service,startDate:$start,endDate:$end,
-        measurements:[CPU_USAGE,CPU_USAGE_2,CPU_LIMIT,MEMORY_USAGE_GB,MEMORY_LIMIT_GB],sampleRateSeconds:30){measurement values{ts value}}}''',
-      {'environment': ENVIRONMENT, 'service': DB_SERVICE, 'start': started.isoformat(), 'end': ended.isoformat()})
+    metrics_error = None
+    try:
+        metrics = api('''query($environment:String!,$service:String!,$start:DateTime!,$end:DateTime!){
+          metrics(environmentId:$environment,serviceId:$service,startDate:$start,endDate:$end,
+            measurements:[CPU_USAGE,CPU_LIMIT,MEMORY_USAGE_GB,MEMORY_LIMIT_GB],sampleRateSeconds:30){measurement values{ts value}}}''',
+          {'environment': ENVIRONMENT, 'service': DB_SERVICE, 'start': started.isoformat(), 'end': ended.isoformat()})
+    except RuntimeError:
+        # Preserve the completed HTTP evidence even if delayed metrics fail.
+        metrics = {'metrics': []}; metrics_error = 'Railway metrics unavailable; recollect this time window'
     times = sorted(r['ms'] for r in rows)
     report = {'runId': run_id, 'phase': args.phase, 'sha': args.sha, 'startedAt': started.isoformat(), 'endedAt': ended.isoformat(),
+              'loadStartedAt': load_started_at.isoformat(), 'durationSeconds': args.duration_seconds,
               'concurrency': args.concurrency, 'requests': len(rows), 'p50Ms': statistics.median(times), 'p95Ms': times[math.ceil(.95 * len(times))-1],
               'healthBefore': before, 'healthAfter': after, 'checks': checks, 'pass': all(checks.values()),
-              'smoke': smoke, 'measurements': rows, 'databaseMetrics': metrics['metrics'],
+              'smoke': smoke, 'measurements': rows, 'databaseMetrics': metrics['metrics'], 'metricsError': metrics_error,
               'limits': ['HTTP times include the public network and JSON transfer.', 'Ingestion overlap must be proved separately with PipelineRun timestamps.',
                          'Railway metrics can arrive late; collect the same time window again before final interpretation.',
                          'No native offer is mutated by this measurement. Closure/expiration transitions require separate lifecycle evidence.']}

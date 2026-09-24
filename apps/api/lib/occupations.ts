@@ -8,33 +8,19 @@ import {
 } from '@catwalks/db/occupations';
 
 /** Request-local consistency, immutable release cache shared with the pipeline. */
-export const getOccupationPresentation = cache(async (langue: LangueLibelles = 'fr') => {
+const getOccupationPresentation = cache(async (langue: LangueLibelles = 'fr') => {
   const taxonomy = await loadOccupationTaxonomy(prisma);
-  const JOB_FUNCTIONS = [...taxonomy.families.values()].map((d) => ({
-    key: d.key,
-    label: occupationLabel(d)!,
-    family: d.group!,
-  }));
-  const FUNCTION_BY_KEY = new Map(JOB_FUNCTIONS.map((d) => [d.key, d]));
-  const FAMILY_LABELS = Object.fromEntries(
-    [...taxonomy.groups.values()].map((d) => [d.key, occupationLabel(d)!]),
-  );
   return {
     available: true as const,
     taxonomy,
-    JOB_FUNCTIONS,
-    FUNCTION_BY_KEY,
-    FAMILY_LABELS,
     seniorityLabel: (key: string | null | undefined) =>
       key
         ? (occupationLabel(taxonomy.seniorities.get(key)) ?? 'Non renseigné')
         : 'Non renseigné',
     functionLabel: (key: string | null | undefined) =>
-      key ? (FUNCTION_BY_KEY.get(key)?.label ?? 'Non classé') : 'Non classé',
+      key ? (occupationLabel(taxonomy.families.get(key)) ?? 'Non classé') : 'Non classé',
     occupationLabel: (key: string | null | undefined) =>
       key && taxonomy.occupations.has(key) ? libelleConcept('occupations', key, taxonomy.occupations.get(key)!.labels, langue) : null,
-    familyOf: (key: string | null | undefined) =>
-      key ? (FUNCTION_BY_KEY.get(key)?.family ?? null) : null,
   };
 });
 
@@ -61,13 +47,9 @@ export const getOptionalOccupationPresentation = cache(async (langue: LangueLibe
     return {
       available: false as const,
       taxonomy: null,
-      JOB_FUNCTIONS: [],
-      FUNCTION_BY_KEY: new Map(),
-      FAMILY_LABELS: {},
       seniorityLabel: (_key: string | null | undefined) => 'Non renseigné',
       functionLabel: (_key: string | null | undefined) => 'Non classé',
       occupationLabel: (_key: string | null | undefined) => null,
-      familyOf: (_key: string | null | undefined) => null,
     };
   }
 });
