@@ -17,7 +17,7 @@ import { createHash } from 'node:crypto';
  * critères (autre périmètre, autres filtres, autre texte) : reprendre une
  * clé au milieu d'un autre ordre servirait une page qui ne veut rien dire.
  */
-export const CURSEUR_VERSION = 1;
+export const CURSEUR_VERSION = 2;
 /** Taille maximale d'un jeton accepté depuis une URL publique. */
 export const CURSEUR_MAX = 600;
 

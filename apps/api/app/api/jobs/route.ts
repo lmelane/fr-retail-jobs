@@ -1,3 +1,4 @@
+import { SearchQueryError } from '@/lib/search-intent';
 import { NextRequest, NextResponse } from 'next/server';
 import { randomUUID } from 'node:crypto';
 import { DatabaseUnavailableError, getJobs, parseFilters } from '@/lib/jobs';
@@ -52,7 +53,7 @@ export async function GET(request: NextRequest) {
       totalConfirmes: result.totalConfirmes, suite: result.suivant !== null, resultats: result.jobs.length, refus: result.filtresRefuses.length });
     return NextResponse.json(projeterListe(result), { headers: entetes });
   } catch (error) {
-    if (error instanceof PerimetreRequisError || error instanceof CurseurInvalideError) {
+    if (error instanceof PerimetreRequisError || error instanceof CurseurInvalideError || error instanceof SearchQueryError) {
       journaliser({ requestId, statut: 400, dureeMs: Date.now() - debut, erreur: error.code });
       return NextResponse.json(error.corps(requestId), { status: 400, headers: entetes });
     }

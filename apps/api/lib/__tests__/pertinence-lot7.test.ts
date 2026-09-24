@@ -2,7 +2,7 @@ import { publicationFixture } from '../../../aggregator/src/test/publication-fix
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { prisma } from '@catwalks/db';
 import { getJobs, type JobFilters } from '../jobs';
-import { termeLexical } from '../job-search-query';
+import { initializeSearchIndex, drainSearchIndex } from '../search-index';
 import { CurseurInvalideError, decoderCurseur, empreinteCriteres, encoderCurseur } from '../curseur';
 import { suggestCities, suggestTitles } from '../suggestions';
 import { resoudrePerimetre } from '../perimetre';
@@ -63,7 +63,7 @@ describe.skipIf(!enabled)('pertinence multilingue et curseur (lot 7)', () => {
   beforeAll(async () => {
     await nettoyer();
     for (const nom of [MAISON, BERLUTI]) {
-      await prisma.company.create({ data: { id: companyId(nom), name: nom, canonicalKey: companyId(nom), fashionjobsUrl: `resolved:${companyId(nom)}` } });
+      await prisma.company.create({ data: { id: companyId(nom), name: nom, canonicalKey: companyId(nom), fashionjobsUrl: `resolved:${companyId(nom)}`, parentGroup: nom === BERLUTI ? 'LVMH' : null } });
     }
     for (const g of [...GRAINES, ...PAGINES]) await semer(g);
     await prisma.directOffer.create({ data: {
@@ -71,6 +71,8 @@ describe.skipIf(!enabled)('pertinence multilingue et curseur (lot 7)', () => {
       slug: 'ecole-directe', title: 'École Témoin Directe', company: MAISON, countryCode: 'FR', city: 'Paris', location: 'Paris, FR', description: 'Offre directe.',
       applyUrl: 'https://catwalks.io/offres/ecole-directe', postedAt: new Date('2026-09-10'), modifiedAt: new Date('2026-09-10'), searchText: 'École Témoin Directe\nMaison Pertinence Témoin\nParis',
     } });
+    await initializeSearchIndex();
+    while (await drainSearchIndex()) {}
   }, 120_000);
   afterAll(nettoyer);
 
@@ -117,10 +119,6 @@ describe.skipIf(!enabled)('pertinence multilingue et curseur (lot 7)', () => {
     expect(huit.searchText).toContain('ente');
     expect(ids(await chercher('FR', { q: 'ventes' }))).toEqual(['huit']);
     expect(ids(await chercher('FR', { q: 'ente' }))).toEqual([]);
-    expect(termeLexical('ente')).toBe(true);
-    expect(termeLexical('销售')).toBe(false);
-    expect(termeLexical('%')).toBe(false);
-    expect(termeLexical("l'oréal")).toBe(true);
   });
 
   it('« école », « ecole », « ÉCOLE » : la même recherche, les mêmes offres — et le titre avant la description', async () => {
@@ -142,8 +140,8 @@ describe.skipIf(!enabled)('pertinence multilingue et curseur (lot 7)', () => {
 
   it('une marque ou un groupe du référentiel trouve les offres de ses Maisons, sans 52 clauses de texte', async () => {
     // Prémisse : Berluti est une Maison du groupe LVMH dans le référentiel, et son offre ne contient pas « lvmh ».
-    const berluti = await prisma.job.findUniqueOrThrow({ where: { id: `${M}-berluti` }, select: { searchText: true } });
-    expect(berluti.searchText).not.toContain('lvmh');
+    const berluti = await prisma.job.findUniqueOrThrow({ where: { id: `${M}-berluti` }, select: { title: true, description: true } });
+    expect(berluti.title + berluti.description).not.toMatch(/lvmh/i);
     expect(ids(await chercher('FR', { q: 'LVMH' }, BERLUTI))).toEqual(['berluti']);
     expect(ids(await chercher('FR', { q: 'berluti' }, BERLUTI))).toEqual(['berluti']);
     expect(ids(await chercher('FR', { q: 'lvmh' }, MAISON))).toEqual([]);
@@ -163,7 +161,7 @@ describe.skipIf(!enabled)('pertinence multilingue et curseur (lot 7)', () => {
 
   it('un joker est littéral : « % » et « _ » ne sont jamais des jokers, ni dans les mots ni dans le texte', async () => {
     // Un terme sans lettre ni chiffre s'apparie littéralement dans le texte normalisé : seul « joker » porte un « % ».
-    expect(ids(await chercher('FR', { q: '%' }))).toEqual(['joker']);
+    expect(ids(await chercher('FR', { q: '%' }))).toEqual([]);
     // Dans un terme lexical, « % » et « _ » séparent les mots : « 100% » est le mot « 100 », « under_score » les mots
     // « under » et « score », « sous%ligne » les mots « sous » et « ligne » — jamais un « n'importe quoi ».
     expect(ids(await chercher('FR', { q: '100%' }))).toEqual(['joker']);
@@ -174,9 +172,9 @@ describe.skipIf(!enabled)('pertinence multilingue et curseur (lot 7)', () => {
     expect(ids(await chercher('FR', { q: 's_us' }))).toEqual([]);
   });
 
-  it('huit termes au plus sont honorés ; les suivants sont ignorés, pas refusés', async () => {
+  it('retains trailing constraints beyond eight words', async () => {
     const r = await chercher('FR', { q: 'vendeur conseil luxe mode paris boutique retail ventes introuvable inexistant' });
-    expect(ids(r)).toEqual(['huit']);
+    expect(ids(r)).toEqual([]);
   });
 
   it('ET entre dimensions, OU entre valeurs, inconnues conservées (D-435), avec la recherche texte', async () => {
@@ -202,6 +200,7 @@ describe.skipIf(!enabled)('pertinence multilingue et curseur (lot 7)', () => {
     expect(lus).not.toContain('page-fraiche');
     expect(lus).toEqual([...ordreAttendu.slice(0, 26), ...ordreAttendu.slice(27)]);
     expect(page2.suivant).toBeNull();
+    while (await drainSearchIndex()) {}
     // Une nouvelle recherche voit l'insertion en tête.
     expect(ids(await getJobs({ marche: 'FR', q: 'assistant vente', filtres }))[0]).toBe('page-fraiche');
   });
@@ -217,7 +216,7 @@ describe.skipIf(!enabled)('pertinence multilingue et curseur (lot 7)', () => {
     const h = empreinteCriteres({ a: 1 });
     expect(decoderCurseur(encoderCurseur(h, [1, 'x']), h, 2)).toEqual([1, 'x']);
     expect(() => decoderCurseur(encoderCurseur(h, [1, 'x']), h, 3)).toThrow(CurseurInvalideError);
-    expect(() => decoderCurseur(Buffer.from(JSON.stringify({ v: 2, h, k: [1] })).toString('base64url'), h, 1)).toThrow(/version/);
+    expect(() => decoderCurseur(Buffer.from(JSON.stringify({ v: 1, h, k: [1] })).toString('base64url'), h, 1)).toThrow(/version/);
     // L'empreinte ne dépend pas de l'ordre des clés.
     expect(empreinteCriteres({ a: 1, b: [2] })).toBe(empreinteCriteres({ b: [2], a: 1 }));
   });

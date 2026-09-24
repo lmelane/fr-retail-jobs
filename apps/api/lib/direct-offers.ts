@@ -31,7 +31,7 @@ export function directPubliable(at = new Date()): Prisma.DirectOfferWhereInput {
 
 /** Only trusted, static SQL identifiers may be supplied as the alias. */
 export function directPubliableSql(alias: Prisma.Sql, at = new Date()): Prisma.Sql {
-  return Prisma.sql`${alias}.eligible AND (${alias}."validThrough" IS NULL OR ${alias}."validThrough" > ${at})`;
+  return Prisma.sql`${alias}.eligible AND (${alias}."validThrough" IS NULL OR ${alias}."validThrough" > (${at}::timestamptz AT TIME ZONE 'UTC'))`;
 }
 
 export function statutDirect(offre: Pick<DirectOffer, 'eligible' | 'validThrough'>, at = new Date()): 'active' | 'closed' {

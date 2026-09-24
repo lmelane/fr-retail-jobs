@@ -1,6 +1,6 @@
 # Benchmark de recherche S1
 
-Trois lectures du **même catalogue public figé** : SQL actuel, PostgreSQL enrichi, Elasticsearch enrichi. Les deux candidats partagent `model.ts` et `search-intent.ts`. Aucun de ces scripts n'est appelé par les routes publiques. Les résultats [S1](../../../../audits/2026-09-24/search-s1.md) et [S2](../../../../audits/2026-09-24/search-s2.md) distinguent la qualité, le temps local et les limites restantes.
+Trois lectures du **même catalogue public figé** : SQL actuel, PostgreSQL enrichi, Elasticsearch enrichi. Les deux candidats partagent le modèle public (`model.ts` le réexporte), `search-intent.ts` et le compilateur PostgreSQL. Les scripts de mesure ne sont pas appelés par les routes publiques. Les résultats [S1](../../../../audits/2026-09-24/search-s1.md) et [S2](../../../../audits/2026-09-24/search-s2.md) distinguent la qualité, le temps local et les limites restantes.
 
 S1 est figé au commit `8d93697`. Le code courant contient les corrections S2 : revenir à ce commit pour reproduire exactement les prototypes S1. Le même snapshot sert aux deux étapes.
 
@@ -36,7 +36,7 @@ Les sorties sont créées sans écrasement. L'indexation est create-only ; une i
 
 Pour refaire l'annotation aveugle : `python3 -B apps/api/scripts/search-benchmark/pool.py /prive/snapshot /prive/mesures.ndjson /prive/pool.json`. Les labels actuels doivent rester figés lors de nouvelles optimisations. Tout résultat hors pool reste non jugé.
 
-La baseline importe le vrai `searchSummary` de ce commit. Après remplacement du moteur public, rejouer cette baseline depuis ce commit historique ; ne pas maintenir une deuxième ancienne route dans le produit pour le benchmark.
+La baseline historique importe `searchSummary` au commit S1 `8d93697`. Le mesureur courant accepte uniquement `postgres` et `elastic` ; reproduire la baseline depuis ce commit historique, sans maintenir une ancienne route dans le produit.
 
 ## Vérifications ciblées
 

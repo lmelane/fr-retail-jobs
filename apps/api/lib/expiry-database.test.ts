@@ -1,3 +1,4 @@
+import { initializeSearchIndex, drainSearchIndex } from './search-index';
 import { publicationFixture } from '../../aggregator/src/test/publication-fixture';
 import { afterAll, beforeEach, describe, expect, it } from 'vitest';
 import { prisma, Prisma } from '@catwalks/db';
@@ -103,6 +104,8 @@ describe.skipIf(!enabled)('public availability from source publications', () => 
   it('expired publications disappear from discovery', async () => {
     const expired = await create('expired', past);
     const live = await create('live', future);
+    await initializeSearchIndex();
+    while (await drainSearchIndex()) {}
     expect(await suggestCities('Expirycity', exigerPerimetre('FR'))).toEqual(['Expirycitylive']);
     expect(await suggestTitles('ExpiryWitness', exigerPerimetre('FR'))).toEqual(['ExpiryWitness live']);
     const ids = (await recherche()).jobs.map((job) => job.id);

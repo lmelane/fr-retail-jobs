@@ -1,7 +1,6 @@
 import { createHash } from 'node:crypto';
 import type { PrismaClient } from '@prisma/client';
 import { resolveCompany } from '../normalize/company.js';
-import { classifySector, sectorForSource } from '../normalize/sector.js';
 import { findMaison } from '../normalize/maisons.js';
 import { blockingKey } from '../dedup/match.js';
 import { leverEmployer, type LeverJob } from '../ats/adapters/lever.js';
@@ -43,10 +42,9 @@ export async function planSourceOwners(prisma: PrismaClient): Promise<RepairPlan
       if (!companyId) {
         const company = await prisma.company.findUnique({ where: { fashionjobsUrl: `resolved:${identity.companyId}` } });
         companyId = company?.id ?? `cr${createHash('sha256').update(`OWNER:${identity.companyId}`).digest('hex').slice(0,24)}`;
-        const sector = classifySector({ company: name, title: '', fromCatalogue: true, sourceSector: sectorForSource(d.key) }).sector;
         const companyPatch = {
           name: identity.displayName, canonicalKey: identity.companyId,
-          kind: name === "L'Oréal" ? 'GROUP' : name === 'Chanel' ? 'MAISON' : 'RETAILER', sector,
+          kind: name === "L'Oréal" ? 'GROUP' : name === 'Chanel' ? 'MAISON' : 'RETAILER',
           // Sharing a recruitment portal alone never establishes corporate ownership.
           parentGroup: findMaison(name)?.group || identity.group || company?.parentGroup || null,
         };

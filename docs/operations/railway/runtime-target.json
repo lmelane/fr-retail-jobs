@@ -60,8 +60,8 @@
         "path": "/api/health",
         "timeoutSeconds": 120
       },
-      "pipelinePaused": "NOT_APPLICABLE: HTTP reader, no ingestion or background deadman",
-      "heartbeat": "Railway healthcheck and external HTTP gate; no background timer",
+      "pipelinePaused": "NOT_APPLICABLE: HTTP reader and rebuildable search projection; no source ingestion",
+      "heartbeat": "Railway readiness includes search generation and backlog age; existing API process drains the durable search queue without external requests",
       "publicDomain": "agregator.catwalks.io",
       "publicPort": 8080,
       "dependencies": [

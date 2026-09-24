@@ -18,8 +18,8 @@ describe('parseFilters — bornes et clés du contrat', () => {
     // Un jeton trop long est tronqué à CURSEUR_MAX + 1 : c'est le décodeur qui le refuse, pas le parseur qui le devine.
     expect(parseFilters({ apres: 'a'.repeat(5000) }).apres).toHaveLength(CURSEUR_MAX + 1);
   });
-  it('bounds search text', () => {
-    expect(parseFilters({ q: 'a'.repeat(5000) })).toMatchObject({ q: 'a'.repeat(200) });
+  it('preserves the full query for explicit validation by the search plan', () => {
+    expect(parseFilters({ q: 'a'.repeat(5000) })).toMatchObject({ q: 'a'.repeat(5000) });
   });
   // parseFilters reçoit les searchParams de Next (un objet), pas une URLSearchParams.
   const filters = (qs: string) =>

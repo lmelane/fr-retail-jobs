@@ -13,6 +13,12 @@ Use a JSON manifest with `reviewer`, optional `concepts` (code, slug, labels.fr/
 
 No application deployment is needed for another reviewed membership, concept or translation. Changing the meaning/slug of an existing concept is forbidden; introduce a new concept and review the transition. Definitions and reviews cannot be deleted. A merge of employers must first review the union of proven memberships for the surviving identity; a DB guard prevents silently discarding a sector.
 
-Every membership write must exactly match an immutable SectorReview manifest. All rows in a batch are locked and checked before writing, so a stale identity or before-image rejects the whole batch. New source runs neither erase memberships nor assign Retail from catalogue membership. Sector review invalidates intelligence caches. Statistics count each offer once per sector; multi-sector totals overlap. Global, country, occupation and contract counts never expand memberships. Historical sector comparisons start after the latest sector review, rather than presenting a taxonomy change as growth.
+Every membership write must exactly match an immutable SectorReview manifest. All rows in a batch are locked and checked before writing, so a stale identity or before-image rejects the whole batch. New source runs neither erase memberships nor assign Retail from catalogue membership. Statistics count each offer once per sector; multi-sector totals overlap. Global, country, occupation and contract counts never expand memberships.
 
 The initial 15 concepts implement the requested business scope. Coverage is not completeness: missing sectors stay queued, and one evidenced activity does not prove all other activities have been checked.
+
+## Initial and incremental qualification
+
+`cli.mts qualify manifest.json abstentions.json` proposes memberships from `reviewed-rules.ts`; use the same preview/apply steps above. Rules bind the canonical key, name, domain, taxonomy hash and dated official evidence. Unknown, changed or expired evidence causes abstention; no offer disappears. Provenance records method/version, evidence hash, taxonomy hash, checkedAt/validUntil; model and promptVersion are null because these rules are reviewed, not model-generated.
+
+The normal ingestion run maintains these rules once after its sources; explicitly scoped runs skip global qualification. Pause is authoritative. One existing SectorReview transaction per company makes retries idempotent and prevents a stale identity from approving a different employer. Existing unrelated memberships remain. Six initial rules do not constitute complete catalogue qualification.

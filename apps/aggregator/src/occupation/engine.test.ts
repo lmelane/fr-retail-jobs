@@ -141,17 +141,8 @@ describe("occupation resolution from real multilingual title shapes", () => {
     changed.familyRules[0].pattern = "(a+)+$";
     expect(() => compileOccupationManifest(changed)).toThrow("immutable");
   });
-  it("does not drop query constraints when expanding synonyms", () => {
-    expect(catalogue.queryOccupations("Conseillère de vente")).toEqual([
-      "sales-advisor",
-    ]);
-    expect(catalogue.queryOccupations("Conseillère de vente Paris")).toEqual(
-      [],
-    );
-    expect(catalogue.queryOccupations("Client Consultant")).toEqual([]);
-  });
   /**
-   * L'exemple d'ajout doit porter sur un métier ABSENT du référentiel réel — ligne 173 ci-dessous vérifie
+   * L'exemple d'ajout doit porter sur un métier ABSENT du référentiel réel — le test ci-dessous vérifie
    * précisément que le catalogue courant ne le classe pas. `optical-assistant` servait d'exemple ; il est
    * devenu un vrai métier le 2026-09-14 (assistants de magasin d'optique chez Boots et Clarkson Eyecare),
    * et le test s'est mis à échouer sur un doublon de clé — ce qui est le bon comportement.
@@ -180,9 +171,10 @@ describe("occupation resolution from real multilingual title shapes", () => {
       "eyewear-workshop-technician",
     );
     expect(catalogue.classify("Eyewear Workshop Technician").occupationCode).toBeNull();
-    expect(next.queryOccupations("Technicien atelier lunetterie")).toEqual([
-      "eyewear-workshop-technician",
-    ]);
+    expect(next.occupations.get("eyewear-workshop-technician")?.labels).toEqual({
+      fr: "Technicien atelier lunetterie",
+      en: "Eyewear workshop technician",
+    });
   });
   it("rule order cannot choose between two conflicting occupations", () => {
     const next = structuredClone(seed);

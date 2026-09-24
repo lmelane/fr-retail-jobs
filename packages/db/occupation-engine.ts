@@ -356,15 +356,6 @@ export function compileOccupationManifest(raw: unknown) {
       seniorities,
       true,
     );
-  const aliases = new Map<string, Set<string>>();
-  for (const o of occupations.values())
-    for (const a of [...Object.values(o.labels), ...(o.aliases ?? [])]) {
-      const k = phrase(a),
-        set = aliases.get(k) ?? new Set<string>();
-      set.add(o.key);
-      aliases.set(k, set);
-    }
-
   const freeze = (x: any) => {
     if (x && typeof x === "object" && !Object.isFrozen(x)) {
       Object.values(x).forEach(freeze);
@@ -379,10 +370,6 @@ export function compileOccupationManifest(raw: unknown) {
     occupations,
     seniorities,
     specializations,
-    queryOccupations(value: string) {
-      const ids = aliases.get(phrase(value));
-      return ids?.size === 1 ? [...ids] : [];
-    },
     classify(
       title: string | null | undefined,
       department?: string | null,

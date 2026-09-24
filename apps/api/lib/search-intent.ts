@@ -1,6 +1,14 @@
-/** Engine-independent query interpretation. This candidate is exercised by the
- * frozen-corpus benchmark before it replaces the public search path.
+/** Engine-independent query interpretation shared by public search and benchmark.
  * No network, model call, publication gate, or modification of native fields. */
+export class SearchQueryError extends Error {
+  readonly code = 'SEARCH_QUERY_INVALID';
+  constructor(readonly reason: string) { super(reason); this.name = 'SearchQueryError'; }
+  corps(requestId: string) { return { error: this.code, reason: this.reason, requestId }; }
+}
+export function validateSearchQuery(query: string) {
+  if (query.length > 500) throw new SearchQueryError('SEARCH_QUERY_TOO_LONG');
+  if (searchWords(query).length > 64) throw new SearchQueryError('SEARCH_QUERY_TOO_MANY_WORDS');
+}
 export type SearchConcept = { key: string; kind: 'role' | 'family' | 'sector'; aliases: readonly string[]; titleOnlyAliases?: readonly string[] };
 export type SearchCompany = { id: string; names: readonly string[] };
 export type SearchClause = {
@@ -99,9 +107,8 @@ export function createIntentResolver(concepts: readonly SearchConcept[], compani
   return {
     resolve(original: string): SearchIntent {
       // Reject excessive input explicitly; never drop trailing intent silently.
-      if (original.length > 500) throw new Error('SEARCH_QUERY_TOO_LONG');
+      validateSearchQuery(original);
       const words = searchWords(original);
-      if (words.length > 64) throw new Error('SEARCH_QUERY_TOO_MANY_WORDS');
       const clauses: SearchClause[] = [];
       for (let i = 0; i < words.length;) {
         let exclude = false;

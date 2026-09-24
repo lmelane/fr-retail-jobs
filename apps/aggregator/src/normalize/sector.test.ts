@@ -84,52 +84,16 @@ describe('classifySector — Decathlon is RETAIL (decision 2026-09-03)', () => {
   });
 });
 
-describe('classifySector — unrecognised employer inherits its source sector', () => {
-  it('an unknown brand from a FashionJobs source is FASHION, not OTHER', () => {
-    const v = classifySector({ company: 'Some Unlisted Label', sourceSector: 'FASHION' });
-    expect(v.inScope).toBe(true);
-    expect(v.sector).toBe('FASHION');
+describe('classifySector — employer admission is independent of the job title', () => {
+  it('keeps an unknown employer unresolved even for a fashion job', () => {
+    expect(classifySector({ company: 'Buck Mason', title: 'Fashion Designer' })).toMatchObject({
+      sector: 'OTHER', inScope: false,
+    });
   });
 
-  it('a source sector never overrides a positive name match', () => {
-    // Sephora is a recognised employer (classified by name); a FASHION source
-    // hint must NOT flip it to the fallback FASHION — the name match wins.
-    const withHint = classifySector({ company: 'Sephora', sourceSector: 'FASHION' });
-    const withoutHint = classifySector({ company: 'Sephora' });
-    expect(withHint.sector).toBe(withoutHint.sector);
-    expect(withHint.reason).not.toContain('inherited');
-  });
-});
-
-describe('classifySector — repli sur le périmètre du catalogue', () => {
-  /**
-   * Mesuré en prod le 2026-09-05 : OTHER était le PREMIER secteur du site avec
-   * 14 925 offres (30 %), et il contenait Levi's (1 308), Crocs (494), MAC
-   * (341), Madewell, Reformation, Mejuri, Suitsupply — que personne ne cherche
-   * hors de la mode. Cause : seules 2 sources sur 434 déclaraient un secteur,
-   * donc toute marque absente de la liste de référence tombait en OTHER.
-   */
-  it('une maison inconnue venue du catalogue reste publiable sans inventer Retail', () => {
-    const verdict = classifySector({ company: 'Buck Mason', fromCatalogue: true });
-    expect(verdict.inScope).toBe(true);
-    expect(verdict.sector).toBe('OTHER');
-  });
-
-  it('sans catalogue, un employeur inconnu reste à revoir', () => {
-    const verdict = classifySector({ company: 'Buck Mason' });
-    expect(verdict.sector).toBe('OTHER');
-    expect(verdict.inScope).toBe(false);
-  });
-
-  it('le repli ne contourne JAMAIS une exclusion de périmètre', () => {
-    // Carrefour est hors vertical par décision : source ou pas, il le reste.
-    const verdict = classifySector({ company: 'Carrefour', fromCatalogue: true });
-    expect(verdict.sector).toBe('OTHER');
-    expect(verdict.inScope).toBe(false);
-  });
-
-  it('la liste de référence garde la priorité sur le repli', () => {
-    const verdict = classifySector({ company: 'Chanel', fromCatalogue: true });
-    expect(verdict.reason).toMatch(/reference list/i);
+  it('retains an admitted employer for a corporate role and rejects an excluded employer for a beauty role', () => {
+    expect(classifySector({ company: 'Sephora', title: 'Data Analyst' }).inScope).toBe(true);
+    expect(classifySector({ company: 'Carrefour', title: 'Beauty Advisor' }).inScope).toBe(false);
+    expect(classifySector({ company: 'Chanel', title: 'Data Analyst' }).reason).toMatch(/reference list/i);
   });
 });

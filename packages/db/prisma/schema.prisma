@@ -1398,3 +1398,35 @@ model DirectFeedCursor {
   lastError       String?
   updatedAt       DateTime  @updatedAt
 }
+
+// Rebuildable search state; native catalogue and availability remain authoritative.
+model SearchGeneration {
+  version String @id
+  createdAt DateTime @default(now()) @db.Timestamptz
+  readyAt DateTime? @db.Timestamptz
+  documents SearchDocument[]
+  pending SearchPending[]
+}
+model SearchMetadata {
+  id String @id
+  revision BigInt @default(0)
+}
+model SearchDocument {
+  country String? @default(dbgenerated())
+  version String
+  id String
+  document Json
+  vector Unsupported("tsvector")?
+  indexedAt DateTime @default(now()) @db.Timestamptz
+  generation SearchGeneration @relation(fields: [version], references: [version], onDelete: Cascade, onUpdate: NoAction)
+  @@index([version, country])
+  @@id([version, id])
+}
+model SearchPending {
+  version String
+  id String
+  queuedAt DateTime @default(now()) @db.Timestamptz
+  generation SearchGeneration @relation(fields: [version], references: [version], onDelete: Cascade, onUpdate: NoAction)
+  @@id([version, id])
+  @@index([version, queuedAt])
+}

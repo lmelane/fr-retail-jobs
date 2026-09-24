@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { suggestCities, suggestCompanies, suggestTitles } from '@/lib/suggestions';
 import { PerimetreRequisError, exigerPerimetre } from '@/lib/perimetre';
 import { refuserSiCleInvalide } from '@/lib/cle-api';
+import { SearchQueryError } from '@/lib/search-intent';
 import { randomUUID } from 'node:crypto';
 
 /**
@@ -39,7 +40,8 @@ export async function GET(request: NextRequest) {
           ? await suggestCompanies(q, perimetre)
           : await suggestTitles(q, perimetre);
     return NextResponse.json({ suggestions });
-  } catch {
-    return NextResponse.json({ suggestions: [] });
+  } catch (error) {
+    if (error instanceof SearchQueryError) return NextResponse.json(error.corps(requestId), {status:400});
+    return NextResponse.json({ suggestions: [], code: 'SEARCH_UNAVAILABLE', requestId }, {status:503});
   }
 }

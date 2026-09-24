@@ -1,3 +1,4 @@
+import { initializeSearchIndex, drainSearchIndex } from '../search-index';
 import { publicationFixture } from '../../../aggregator/src/test/publication-fixture';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { prisma } from '@catwalks/db';
@@ -81,6 +82,8 @@ describe.skipIf(!enabled)('la recherche est bornée par le périmètre (lot 6)',
             workplaceType: g.remote ? 'REMOTE' : undefined, language: g.langue, postedAt: new Date(g.posteLe ?? '2026-08-15') }) } },
       } });
     }
+    await initializeSearchIndex();
+    while (await drainSearchIndex()) {}
   }, 120_000);
   afterAll(nettoyer);
 
@@ -259,7 +262,7 @@ describe.skipIf(!enabled)('la recherche est bornée par le périmètre (lot 6)',
     expect((await chercher('FR', { q: 'Conseiller' }, MAISON_SEULE)).total).toBe(5);
     expect((await chercher('FR', { q: 'Ginza' })).total).toBe(0);
     expect((await chercher('BG', { q: 'Vitosha' })).total).toBe(1);
-    expect(await suggestTitles('Store Manager', exigerPerimetre('BG'))).toEqual(['Store Manager Vitosha']);
+    expect(await suggestTitles('Store Manager', exigerPerimetre('BG'))).toEqual(['Store Manager Vitosha', 'Store manager']);
     expect(await suggestTitles('Store Manager', exigerPerimetre('FR'))).toEqual([]);
     expect(await suggestCompanies('Périmètre Témoin', exigerPerimetre('FR'))).toEqual([MAISON]);
     expect(await suggestCompanies('Périmètre Témoin', exigerPerimetre('BG'))).toEqual([]);

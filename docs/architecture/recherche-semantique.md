@@ -1,160 +1,85 @@
-# Recherche Catwalks : métiers, Maisons et secteurs
+# Recherche Catwalks : moteur public et exploitation
 
-## Statut et décision
+## Décision et périmètre
 
-Conception du 23 septembre 2026, complétée par le [benchmark S1 du 24 septembre](../../audits/2026-09-24/search-s1.md) : 73 833 offres publiques figées, 115 intentions, 234 formulations, PostgreSQL actuel et deux prototypes à enrichissement identique. Aucune nouvelle route de recherche ni modification d'interface n'est encore déployée.
+PostgreSQL enrichi est retenu pour V1. Le [benchmark S1](../../audits/2026-09-24/search-s1.md) comparait 73 833 offres figées, 115 intentions et 234 formulations : Elasticsearch n’apportait pas de gain net de pertinence. Le [prototype S2](../../audits/2026-09-24/search-s2.md) a corrigé les recherches vides connues. Ces mesures historiques ne prouvent pas un rappel exhaustif mondial.
 
-**Décision S1 : PostgreSQL enrichi pour V1.** Les deux prototypes ont une qualité très proche ; Elasticsearch est plus rapide sur la queue des temps locaux, mais aucun gain de pertinence net ne justifie encore son coût de synchronisation et d'exploitation. Le choix reste soumis au budget de la vraie route API sous charge en S4. Les scripts et annotations permettent de réévaluer Elasticsearch si PostgreSQL ne tient pas ce budget. Les défauts de compréhension communs aux deux moteurs sont prioritaires en S2.
+Le moteur public utilise maintenant la même compréhension, le même modèle de document et le même compilateur SQL que le benchmark PostgreSQL. Le site `/emplois` utilise la recherche comme entrée principale ; le sélecteur Métier est retiré. Un ancien filtre `metier` dans une URL reste visible et retirable. Les marchés, langues et parcours de candidature conservent leurs contrats. `/offres`, matching et onboarding restent gelés.
 
-La métrique produit est la retrouvabilité correcte pour une intention, jamais l'obtention de 100 % de codes métier précis. La recherche doit retrouver les offres pertinentes du marché actif même si elles n'ont aucun code métier. Les intitulés originaux restent affichés. Le filtre visible « Métier » doit sortir du parcours principal ; les concepts et familles restent utiles au moteur. Le secteur reste une donnée d'entreprise, sans rendre sa sélection obligatoire pour chercher. La refonte UI sera appliquée avec le skill Catwalks, dans le dépôt du site sur `development`.
+L’implémentation et les validations ci-dessous sont locales tant que le reçu Railway ne désigne pas cette release. Aucun déploiement du site n’est autorisé implicitement.
 
-La couverture se mesure séparément : (1) offres officielles accessibles et collectées ; (2) offres publiables présentes dans le catalogue ; (3) offres pertinentes retrouvées par la recherche. Un moteur de recherche ne peut pas retrouver une offre encore absente du catalogue, notamment Aesop/L'Oréal actuellement bloquée à la publication par HTTP 406.
+## Recherche et classement
 
-## 1. Ce que fait réellement le système
+- `search-intent.ts` décompose métiers, Maisons/groupes, secteurs et précisions sans supprimer les termes non compris. Une requête composée exige toutes ses composantes ; chaque composante peut correspondre au texte natif ou à une interprétation justifiée.
+- `search-model.ts` conserve le titre original. Les rôles reconnus dans le titre priment sur une ancienne classification. « Assistant Store Director » n’est pas « Store Manager ».
+- Un code métier absent n’exclut jamais une offre. Les synonymes multilingues servent aussi la recherche dans une autre langue que celle du marché.
+- `search-sql.ts` lie les valeurs SQL. Les rôles du titre empêchent les correspondances lexicales qui confondraient un poste avec son adjoint. Les intitulés, identités et missions ont des poids distincts.
+- Les deux origines sont interrogées dans le même SQL. Disponibilité, pays, dates d’expiration et filtres sont vérifiés sur les lignes natives ; les offres Catwalks pertinentes précèdent les offres externes. Les offres sont relues avant exposition.
+- Les suggestions de métiers vérifient l’existence d’une offre publiable dans le marché actif avec le même moteur. Une Maison mentionnée dans une description n’est pas transformée en employeur.
+- Limites explicites : 500 caractères / 64 mots ; dépassement = `SEARCH_QUERY_INVALID` (400), jamais troncature silencieuse. Le curseur versionné refuse une ancienne génération de classement.
 
-### Secteurs
+## Projection PostgreSQL durable
 
-- La qualification structurée est **déjà portée par l'entreprise** : `Company.sectorCodes`, `sectorEvidence`, `sectorReviewId`, avec 15 `SectorConcept` et 12 décisions `SectorReview` observées.
-- Le circuit [preview/apply des secteurs](../../apps/aggregator/src/sectors/review.ts) contrôle identité, codes, preuves, hash de l'état préalable et idempotence. Il faut le compléter, pas créer un second circuit de décisions concurrent.
-- L'[ingestion](../../apps/aggregator/src/dedup/upsert.ts) calcule encore `classifySector` depuis chaque offre et remplit l'ancien `Company.sector` à la création. Cela ne renseigne pas `sectorCodes`, qui alimente la facette actuelle. Ses commentaires affirmant le contraire sont obsolètes.
-- Au relevé du 23 septembre à 21:24:40 UTC : 834 entreprises sans secteur structuré, associées à 35 751 lignes Job actives ; 156 qualifiées, associées à 38 083 lignes actives. Ce comptage administratif `isActive` n'applique pas toutes les conditions de publication API et ne constitue pas le total public.
-- Parmi les entreprises FR non qualifiées : Groupe MONOPRIX (695 offres actives), Mango (351), Nocibé (230). L'ancien enum peut être renseigné alors que `sectorCodes` est vide.
+`SearchDocument` est dérivé, remplaçable et séparé du RAW. Son vecteur pondéré porte texte et identités ; son pays indexé sert de préfiltre, toujours recoupé avec le pays natif.
 
-« 4 819 secteurs à vérifier » compte des **offres sans secteur structuré**, pas 4 819 catégories à créer. Le problème combine alimentation incomplète et présentation ambiguë.
+`SearchPending` reçoit les modifications dans la transaction native via des triggers. L’API existante vide cette file par lots de 128 avec `FOR UPDATE SKIP LOCKED`. Projection et acquittement sont atomiques. Une modification concurrente ne peut pas disparaître derrière un acquittement. Une interruption laisse les éléments à reprendre.
 
-### Métiers
+`SearchMetadata.revision` invalide le contexte entreprises/alias/taxonomie. Les changements d’identité et de groupe réenfilent les offres concernées, y compris les relations textuelles historiques de groupe. Aucun appel externe ni service supplémentaire dans ce traitement.
 
-La release active en base est `catwalks-occupations-20260909-v1` : 4 groupes, 27 familles, 61 métiers. Le fichier embarqué `occupations-v1.json` contient une autre release (`20260914-v2`, 62 métiers) ; sa présence ne prouve pas son activation. Le moteur charge la release active depuis la base.
+La disponibilité reste native : fermeture et expiration sont immédiatement respectées sans attendre la file. Les colonnes descriptives non utilisées pour la recherche peuvent attendre la prochaine réindexation ; elles ne gouvernent jamais publication, compteurs ou facettes.
 
-| État des offres FR observées | Nombre |
-|---|---:|
-| Métier précis renseigné | 5 359 |
-| Famille connue, métier précis absent | 5 635 |
-| Aucune règle reconnue | 556 |
-| Interprétation ambiguë | 15 |
+`SearchGeneration.readyAt` est posé seulement après vidage du chargement initial. L’API refuse les recherches et renvoie un healthcheck non prêt si la génération n’est pas prête ou si un élément attend depuis plus de 300 secondes. Les générations précédentes sont conservées pendant le déploiement progressif et la fenêtre de retour arrière, puis retirées explicitement.
 
-La facette API « à préciser » atteint alors **6 206 offres**, dont 5 635 ont déjà une famille. Elle ne représente pas 6 206 métiers différents. On ne doit ni classifier artificiellement chacune de ces offres, ni les exclure de la recherche.
+## Qualification des secteurs
 
-### Recherche
+Le circuit unique reste [SectorReview](../../apps/aggregator/src/sectors/README.md), avec preview, contrôle de l’identité, manifeste immuable et application idempotente. L’ancien enum `Company.sector` n’est plus alimenté par l’ingestion.
 
-Le [SQL actuel](../../apps/api/lib/job-search-query.ts) utilise un index plein texte PostgreSQL, les titres, descriptions et identités d'entreprise, avec priorité aux offres Catwalks parmi les offres répondant à la recherche. Ce n'est pas une simple comparaison de chaînes exactes.
+Le mainteneur réutilise des preuves officielles relues, versionnées et datées, liées exactement à la clé, au nom et au domaine de l’entreprise. Il conserve URL, justification, empreinte des preuves et de la taxonomie, date de vérification et échéance. Il s’abstient si l’identité, la taxonomie ou la validité divergent. Il n’hérite pas des secteurs du groupe. Aucun modèle génératif n’est invoqué : `model` et `promptVersion` sont explicitement nuls.
 
-Mais [queryOccupations](../../packages/db/occupation-engine.ts) reconnaît un alias sur **la requête entière**. Il comprend un alias métier isolé, puis perd cette interprétation lorsque la saisie contient aussi une Maison ou un qualificatif. Familles et secteurs ne sont pas exploités comme des voies de recherche équivalentes. Le classement ajoute des poids simples titre/entreprise ; il ne suffit pas à contrôler les mentions accessoires dans les descriptions.
+Le premier jeu comprend six règles (Mango, Skechers, Lovisa, Bloomingdale’s, Monoprix, Nocibé). Il ne prétend pas qualifier tout le catalogue. Sur la copie locale : 1 618 entreprises examinées, cinq changements, 1 365 abstentions ; second passage sans changement. Les entreprises sans preuve restent recherchables. Le run normal entretient les règles après les sources ; un run limité à une source ne déclenche pas de changement global. `PIPELINE_PAUSED=1` interdit cette maintenance.
 
-## 2. Essai réel : acquis et limites
+## Procédure de livraison de l’agrégateur
 
-24 recherches API ont été observées : 12 requêtes sur FR et US. Un prototype externe, en lecture seule, a ensuite séparé un alias métier et une Maison connue, puis appelé les filtres structurés existants. Il n'a modifié ni l'API ni les offres. Une hypothèse isolée ajoutait `retail advisor` comme alias de `sales-advisor`.
+1. Valider les suites ciblées, les builds et la CI de `development`. Construire les images immuables du SHA validé ; promouvoir vers `main` selon le GO agrégateur.
+2. Conserver les images actuellement attestées dans `docs/operations/railway/runtime-release.json` et la configuration effective. La DB native et son volume ne changent pas.
+3. Appliquer les deux migrations additives `20260924120000_search_projection` et `20260924130000_search_market_index` via Prisma. Elles n’altèrent aucune publication ni capture historique.
+4. Depuis le code validé, avec les secrets fournis par l’environnement :
 
-| Marché | Saisie | Recherche actuelle | Prototype par filtres stricts |
-|---|---|---:|---:|
-| FR | sales advisor Chanel | 0 | 22 |
-| FR | conseiller de vente Chanel | 78 | 22 |
-| US | conseiller de vente Chanel | 0 | 23 |
-| US | sales advisor Chanel | 51 | 23 |
-| FR | retail advisor | 63 | 3 866 |
-| FR | conseiller de vente | 4 662 | 3 866 |
-| US | joaillerie | 0 | 193 |
-
-Ces résultats prouvent une faiblesse de composition et le potentiel de la couche sémantique. **Ils ne prouvent pas le rappel ni la pertinence de chaque résultat.** Les 78 résultats ne sont pas tous présumés pertinents, et les 22 ne sont pas présumés exhaustifs. Transformer systématiquement la saisie en `metier=...` exclut les offres sans classification et ne constitue pas la solution.
-
-Précision après la contre-proposition externe : le filtre strict appartient uniquement au prototype. La recherche de production ne transforme pas systématiquement une intention en filtre métier ; son défaut constaté est la reconnaissance de l'alias sur la requête entière. Aucun des nombres de cette table n'est un résultat Elasticsearch.
-
-Sept variantes de « conseiller de vente » donnent les mêmes dix premiers identifiants dans le prototype ; les résultats échantillonnés restent dans le marché demandé. Cinq contrôles défensifs préservent notamment `senior`, `junior`, la négation et l'ambiguïté de `retail`, et empêchent de transformer « assistant store manager » en vendeur. Cela valide uniquement ce petit interpréteur expérimental.
-
-Les latences API observées, 127–463 ms, sont des mesures unitaires en ligne. Elles ne sont ni un p95 sous charge, ni un benchmark Elasticsearch. Les compteurs sont des observations successives d'un catalogue vivant, sans snapshot transactionnel commun.
-
-## 3. Architecture cible
-
-```mermaid
-flowchart TD
-  A[Captures RAW conservées] --> B[Extraction fidèle]
-  B --> C[Catalogue PostgreSQL : offres et entreprises]
-  C --> D[Qualification entreprise : secteurs et preuves]
-  C --> E[Interprétation optionnelle : métiers et familles]
-  C --> F[Projection de recherche reconstruisible]
-  D --> F
-  E --> F
-  Q[Saisie + marché + lieu] --> P[Compréhension de la requête]
-  P --> R[Recherche et classement]
-  F --> R
-  R --> U[Résultats /emplois]
+```sh
+npx tsx apps/api/scripts/search/index.mts rebuild
+npx tsx apps/api/scripts/search/index.mts status
 ```
 
-### Comprendre la saisie sans perdre les mots
+Le chargement initial précède la livraison de l’API : il peut dépasser les 120 secondes du healthcheck Railway. `rebuild` reprend la file, puis met à jour les statistiques SQL (`ANALYZE`). Exiger `registered=true`, `ready=true`, `pending=0` avant bascule.
 
-Décomposer indépendamment métier, entreprise/marque/groupe, secteur et précisions. La langue de la requête peut différer de la langue de l'interface et du marché : un candidat peut chercher « sales advisor » en France.
+5. Livrer l’API et le worker validés. Vérifier SHA/digest/commande, health, authentification, recherche FR/US, fiche, facettes et absence de file bloquée. Les erreurs de source se traitent séparément, sans reset historique.
+6. Effectuer la qualification initiale par `sectors/cli.mts qualify`, `preview`, `apply` avec le SHA complet validé ; conserver le plan privé et le bilan, puis vérifier le second passage sans écritures.
+7. En cas d’échec, remettre l’image précédente ; les tables additives sont compatibles avec l’ancienne API. Ne pas retirer la génération précédente pendant cette fenêtre. Après arrêt vérifié de l’ancien runtime :
 
-Pour « conseillère de vente Chanel », interroger les variantes linguistiques du rôle et l'identité Chanel en conservant la possibilité de retrouver un titre non classé. Pour « retail », conserver les différents sens possibles : activité d'entreprise et fonctions en magasin. Pour « joaillerie », utiliser le texte, les métiers du domaine et les secteurs d'entreprises vérifiés avec des poids distincts.
+```sh
+npx tsx apps/api/scripts/search/index.mts retire VERSION_PRECEDENTE --previous-runtime-stopped
+```
 
-Ne pas confondre synonymes, métiers proches et hiérarchie : « store manager », « assistant store manager » et « sales advisor » ne sont pas des synonymes. Les expressions négatives ou non comprises ne perdent aucun terme silencieusement. Les corrections de fautes ne doivent pas remplacer une Maison valide par une autre.
+La commande refuse la génération courante. Un changement de vocabulaire ou de projection exige une nouvelle `SEARCH_VERSION` ; aucune réécriture en place de l’index encore servi par l’ancien runtime.
 
-### Retrouver puis classer
+Le site se livre séparément : commit/push `development` autorisés ; `main` et déploiement attendent le GO explicite.
 
-Réunir les candidats provenant du texte original, des alias multilingues, des concepts/familles optionnels et des relations d'entreprise vérifiées. L'absence de classification n'exclut aucune offre. Une expansion sémantique ne supprime pas les contraintes exprimées par la saisie ; des offres proches peuvent être présentées séparément si aucun résultat exact n'est disponible.
+## Validation du 24 septembre, locale
 
-Le classement ne suffit pas à respecter une requête composée : une somme de boosts facultatifs pourrait placer un vendeur Louis Vuitton devant un poste Chanel mal classé. Pour une intention « rôle + Maison » reconnue sans ambiguïté, exiger une correspondance pour les deux composantes, chacune pouvant être satisfaite par du texte natif ou une interprétation justifiée. On peut ainsi conserver une offre Chanel sans code métier, sans autoriser silencieusement une autre Maison. Une entité ambiguë ne devient pas un filtre implicite définitif ; son texte reste dans la requête.
+| Vérification | Résultat |
+|---|---|
+| Agrégateur, intégration sur base de test neuve | 587 tests / 62 fichiers PASS |
+| API, y compris mutations concurrentes, expiration, pays et deux origines | 281 tests / 31 fichiers PASS |
+| Site, unités | 157 tests / 23 fichiers PASS |
+| E2E CA/CH/BE, changement de langue et recherche, mobile | 8 tests PASS |
+| Builds API et site | PASS |
+| API HTTP, 96 requêtes / 12 recherches / concurrence 4 | p50 46 ms, p95 226 ms, max 287 ms ; 0 résultat hors marché |
+| Variantes FR « sales advisor » / « conseiller de vente » | mêmes identifiants et total |
 
-Appliquer marché, disponibilité et filtres explicites à toutes les voies, suggestions et facettes. Conserver les périmètres existants, dont GB/IE et DE/AT ; ne pas les réduire implicitement au seul code de l'URL. Une marque citée dans une description n'est pas automatiquement l'employeur. Une recherche libre « Chanel » ne doit donc pas être transformée aveuglément en filtre d'employeur unique.
+Charge mesurée sur une copie locale de 40 188 lignes Job ; ce n’est pas une mesure de capacité Railway. Cette copie sert à la recherche, pas à tester une restauration complète des corps RAW. Les deux origines sont couvertes par fixtures natives en intégration ; la copie réelle ne contient aucune offre directe. Les mesures S1/S2 demeurent historiques et ne sont pas présentées comme une nouvelle évaluation aveugle de cette release.
 
-Classer d'abord les offres éligibles : titre/identité réellement pertinents avant simple mention accessoire ; précision du rôle et du niveau conservée ; fraîcheur comme facteur secondaire. Préserver la priorité des offres Catwalks au sein des résultats pertinents et leurs parcours de candidature. Le modèle cible doit traiter les deux origines ; ce lot ne modifie pas le circuit Direct Offers gelé.
+## Retrait du code remplacé
 
-### Qualifier les entreprises une fois, puis maintenir
+Supprimés : reconnaissance d’un métier uniquement sur la requête entière, branches SQL remplacées, SQL d’alias inutilisé, attribution de l’ancien secteur lors de l’upsert, tables de secours sectorielles sans consommateurs, sélecteur Métier du site. Les scripts de benchmark importent le modèle public ; la baseline historique se rejoue au commit S1, sans deuxième moteur legacy dans le produit.
 
-Réutiliser `SectorReview` : une IA propose des codes de la taxonomie depuis les informations et preuves de l'entreprise ; une recherche sur ses sites officiels complète les lacunes. Conserver contenu justificatif, URL, date, hash, version de taxonomie et version du modèle/prompt. Le contenu web reste une donnée, jamais une instruction exécutable.
-
-Valider l'identité et les preuves par règles déterministes. Une confiance déclarée par le modèle ne suffit pas à auto-approuver : calibrer les critères sur un échantillon relu, autoriser l'abstention et réserver les cas contradictoires à une revue. Une preuve manquante ne bloque pas la publication des offres.
-
-Déclencher au nouvel employeur, changement d'identité/preuves/taxonomie ou péremption définie ; dédupliquer par identité et version. Effectuer le rattrapage par lots reprenables, puis le traitement incrémental asynchrone, avec budget et limites réseau. Aucun appel IA obligatoire par offre ou par recherche utilisateur.
-
-Séparer les activités d'une entreprise de ses formats commerciaux : « Retail » recoupe plusieurs verticales. Examiner les 15 concepts existants avant toute nouvelle taxonomie, sans multiplier les secteurs. Ne pas recopier tous les secteurs d'un groupe sur chacune de ses marques, ni qualifier les missions d'un poste à partir du seul secteur de l'employeur.
-
-### Index dérivé si Elasticsearch est retenu
-
-PostgreSQL reste le catalogue de référence ; Elasticsearch contient une projection remplaçable : identifiant stable, origine, titre brut, texte recherchable, employeur et relations prouvées, pays/localisation, dates et disponibilité, concepts optionnels, versions d'enrichissement et de document.
-
-Prévoir une propagation durable des changements, idempotente et ordonnée par version, incluant fermetures, expirations, fusions, changements d'entreprise et retraits. Si un outbox est nécessaire, il appartient au même commit transactionnel que la mutation du catalogue ; pas de double écriture fragile « DB puis HTTP Elasticsearch ». Un rattrapage paginé et un point de reprise permettent de reconstruire l'index sans recollecter les sites.
-
-Pendant le benchmark, vérifier aussi les changements qui n'émettent pas encore d'événement : expiration par horloge, relations d'entreprise ou règles de visibilité. Les offres périmées doivent être filtrées par leur date ; leur suppression asynchrone de l'index ne suffit pas. Après récupération d'identifiants, recontrôler la publiabilité en base avant exposition et mesurer les écarts de compteurs ; une divergence n'est pas présentée comme un total exact.
-
-Versionner le schéma, les analyseurs et les synonymes. Reconstruire un nouvel index, contrôler sa couverture, puis basculer son alias ; les [alias Elasticsearch](https://www.elastic.co/docs/manage-data/data-store/aliases) permettent de remplacer plusieurs associations en une opération. L'ancien index est conservé pendant une fenêtre de rollback bornée, puis retiré. Curseurs et caches portent la version de recherche : aucun ancien curseur ne doit paginer un classement différent.
-
-## 4. Comparatif technique
-
-| Option | Capacités utiles | Coût architectural à mesurer | Position |
-|---|---|---|---|
-| PostgreSQL enrichi | Plein texte, dictionnaires/thésaurus, similarité de caractères avec `pg_trgm` | Compréhension et classement davantage à construire dans l'application ; charge partagée avec le catalogue | Retenu pour V1 après S1 ; API complète et charge à valider |
-| Elasticsearch | Analyseurs linguistiques, synonymes multi-mots, champs pondérés, fautes de frappe, suggestions ; possibilité de recherche hybride | Nouveau service, synchronisation, réindexation, mémoire, disponibilité et fonctionnalités de l'offre retenue | Comparé en S1 ; conservé comme option si les limites de PG sont mesurées |
-| Typesense | Recherche avec tolérance aux fautes et réglage de pertinence par champs | Évaluer langues, classement métier, tris et mécanismes d'élargissement automatique avec nos contraintes | Alternative si le compromis exploitation/pertinence est meilleur ; pas de troisième intégration initiale |
-
-PostgreSQL fournit des [dictionnaires et thésaurus](https://www.postgresql.org/docs/current/textsearch-dictionaries.html) et [pg_trgm](https://www.postgresql.org/docs/current/pgtrgm.html). Ces outils ne remplacent pas une décision sur le sens des mots.
-
-Elasticsearch documente les [synonymes multi-mots au moment de la recherche](https://www.elastic.co/docs/solutions/search/full-text/search-with-synonyms), les [analyseurs linguistiques](https://www.elastic.co/docs/reference/text-analysis/analysis-lang-analyzer), la [tolérance aux fautes](https://www.elastic.co/docs/reference/query-languages/query-dsl/query-dsl-match-query) et la [recherche pendant la saisie](https://www.elastic.co/docs/reference/elasticsearch/mapping-reference/search-as-you-type). Les analyseurs ne traduisent pas automatiquement « vendeur » en « sales advisor » : il faut nos équivalences ou un modèle adapté.
-
-La [recherche hybride](https://www.elastic.co/docs/solutions/search/hybrid-search) combine texte et proximité sémantique ; le [classement](https://www.elastic.co/docs/solutions/search/ranking) peut ensuite être affiné. C'est une option à mesurer après le socle lexical enrichi, pas une dépendance obligatoire au premier prototype. Version, fonctionnalités sous licence, modèle et coût d'inférence devront être fixés avant chiffrage. Aucune affirmation de gratuité ou de budget n'est faite ici.
-
-Typesense permet de régler [pondération et pertinence](https://typesense.org/docs/guide/ranking-and-relevance.html). Ses mécanismes d'élargissement doivent être contrôlés pour ne jamais sacrifier une précision métier ou une Maison afin de produire davantage de résultats.
-
-## 5. Suite par lots et critères de sortie
-
-| Lot | Travail | Validation requise |
-|---|---|---|
-| S0 — constat | Audit code/base et essai de composition | Réalisé dans ce document ; pas de conclusion de pertinence globale |
-| S1 — benchmark | S1A corpus/gold, S1B compréhension commune, S1C PostgreSQL, S1D Elasticsearch, S1E comparaison | Réalisé : [bilan et limites](../../audits/2026-09-24/search-s1.md), PostgreSQL enrichi retenu pour V1 |
-| S2 — compréhension | [Prototype corrigé et mesuré](../../audits/2026-09-24/search-s2.md) ; intégration API à terminer | 36 régressions réelles PASS ; zéro recherche vide connue. Disponibilité, suggestions et curseurs à intégrer avant livraison |
-| S3 — qualification | Qualification entreprise initiale puis incrémentale via le circuit existant ; enrichissement métier optionnel | Idempotence, preuve, abstention, reprise et coût mesurés |
-| S4 — produit/index | Projection si nécessaire, suppression du filtre Métier dans l'UI, suggestions contextualisées | E2E `/emplois`, langues/marchés, facettes, pagination et deux origines sans régression |
-| S5 — livraison | Comparaison de résultats avant exposition, audit défensif ciblé, bascule réversible et retrait du code remplacé | Critères fonctionnels et opérationnels atteints ; mise en production du site uniquement sur GO explicite |
-
-Ordre interne de S1 : **jeu de pertinence figé → modèle sémantique minimal partagé → moteur actuel → PostgreSQL enrichi → Elasticsearch → comparaison aveugle → décision**. Les deux prototypes reçoivent les mêmes enrichissements et la même photographie du catalogue ; sinon on comparerait simultanément qualité des données et moteurs. Les évaluateurs ne voient pas le nom du moteur. Conserver des intentions hors réglage pour éviter d'optimiser seulement les exemples connus. Typesense reste une alternative de second tour si les résultats ou contraintes d'exploitation le justifient.
-
-S1 doit couvrir au moins les 27 familles présentes, les métiers fréquents et rares, les offres sans code, les requêtes composées, fautes, accents, formes féminines, niveaux hiérarchiques, négations, entreprises multimarques et langues croisées. Inclure FR/US, CA/CH/BE multilingues et des écritures non latines. Les résultats attendus sont annotés depuis le contenu natif ; notre classification actuelle ne sert pas d'oracle.
-
-Constituer un jeu figé de 100 à 300 intentions et leurs variantes, avec trois degrés d'annotation : très pertinent, acceptable, non pertinent. Former le pool depuis les sorties des moteurs, les titres bruts et un échantillon d'offres non classées, afin de limiter le biais du moteur actuel. Mesurer précision sur les résultats disponibles jusqu’à vingt (nommer explicitement ce dénominateur), `nDCG@20`, `Recall@20` et `Recall@100` sur ce pool annoté ; mesurer aussi la stabilité des variantes avec Jaccard@20, en excluant et comptant les paires toutes deux vides ; ne pas présenter ce rappel comme une preuve de rappel mondial absolu. Les requêtes très larges peuvent avoir plus de vingt offres pertinentes : leur rappel à vingt n'a pas vocation à atteindre 100 %. Une requête qui possède un exemple pertinent connu ne doit plus retourner zéro.
-
-Le document de recherche doit conserver les concepts stables séparément de leurs traductions et alias, ainsi que le titre brut. Inutile d'imposer « quelques centaines » de concepts à partir du compteur d'offres non classées : leur nombre doit répondre aux distinctions réellement utiles du corpus. Pour V1, le chemin critique ne dépend pas d'un appel LLM génératif par requête. Un encodeur sémantique éventuel se juge séparément sur son gain, sa latence et son coût ; le mot « déterministe » ne garantit pas la pertinence.
-
-Mesurer p50/p95, mémoire, taille d'index, durée et débit de réindexation, délai entre mutation et visibilité, reprise après interruption et coût complet. Cibles initiales proposées : p95 API ≤ 500 ms sous une charge documentée, zéro résultat hors marché, zéro offre fermée affichée, aucune disparition attribuable au seul code métier manquant. Les mesures actuelles ne valident pas ces objectifs.
-
-Tester les plans de requête ambigus, les limites de taille, les caractères spéciaux et les valeurs liées ; ne jamais concaténer directement la saisie à du SQL ou à une syntaxe de requête exécutable. Vérifier suppressions/expirations, événements reçus hors ordre, reprise d'indexation, cohérence des facettes et invalidation des anciens curseurs.
-
-Le retrait de legacy suit ses consommateurs : ancien classificateur de secteur, enum `Company.sector`, facette Métier et branches de recherche remplacées seulement après inventaire de leurs lectures réelles. Supprimer alors code, configuration, tests devenus sans objet et documentation contradictoire dans le même lot. Les migrations historiques restent des preuves de construction du schéma. `/offres`, matching et onboarding restent gelés.
+Restent intentionnellement : données historiques `Company.sector` encore exposées par des lecteurs et outils de reprise ; anciens vecteurs employés par le circuit Direct Offers gelé et le retour arrière ; migrations et preuves historiques nécessaires à la traçabilité. Leur retrait physique requiert la suppression vérifiée de leurs consommateurs, pas une suppression aveugle de données.

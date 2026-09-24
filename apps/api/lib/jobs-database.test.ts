@@ -3,8 +3,16 @@ import { randomUUID } from 'node:crypto';
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 import * as database from '@catwalks/db/occupations';
 import { prisma } from '@catwalks/db';
-import { getJobs, getJobStatus, getOfferState, resolveOfferParam, type JobFilters } from './jobs';
+import { getJobs as getJobsUnindexed, getJobStatus, getOfferState, resolveOfferParam, type JobFilters } from './jobs';
 import { offerPath } from './offer-url';
+
+import { initializeSearchIndex, drainSearchIndex } from './search-index';
+// Explicitly await the same durable projector as the API background loop.
+async function getJobs(filters: JobFilters) {
+  await initializeSearchIndex();
+  while (await drainSearchIndex()) {}
+  return getJobsUnindexed(filters);
+}
 
 const url = process.env.DATABASE_URL ? new URL(process.env.DATABASE_URL) : undefined;
 const enabled = !!url && ['localhost', '127.0.0.1', '[::1]'].includes(url.hostname) && /test/i.test(url.pathname);

@@ -1,3 +1,4 @@
+import { validateSearchQuery } from './search-intent';
 import { facettesContrat, type CleFacette, type FacetteContrat, type Perimetre } from '@catwalks/db/marches';
 import { resolveLieu, type LieuResolu } from './lieu';
 
@@ -45,8 +46,8 @@ export type CriteresRecherche = {
 
 export type PlanRecherche = {
   perimetre: Perimetre;
-  /** Les termes de la recherche texte, bornés en nombre. */
-  termes: readonly string[];
+  /** Complete input: excessive queries are refused, never truncated. */
+  q: string;
   /** Le lieu accepté dans le périmètre ; `undefined` sans lieu ou lieu refusé. */
   lieu: LieuResolu | undefined;
   /** Ce que le moteur a compris du lieu, même refusé : le front l'affiche tel quel. */
@@ -60,15 +61,9 @@ export type PlanRecherche = {
   prioritePays: string | undefined;
 };
 
-/**
- * AUDIT 14/09/2026 — le nombre de TERMES est borné, pas seulement la longueur
- * de `q` : chaque terme coûte une résolution de Maisons et sa condition. Huit
- * termes dépassent largement une recherche d'emploi réelle ; les termes au-delà
- * sont IGNORÉS, pas refusés — une recherche bavarde rend des résultats.
- */
-export const MAX_TERMES = 8;
-
 export function planifierRecherche(perimetre: Perimetre, criteres: CriteresRecherche): PlanRecherche {
+  const q = (criteres.q ?? '').trim();
+  validateSearchQuery(q);
   const facettes = facettesContrat(perimetre);
   const servies = new Set(facettes.map((f) => f.cle));
   const refus: FiltreRefuse[] = [];
@@ -106,7 +101,7 @@ export function planifierRecherche(perimetre: Perimetre, criteres: CriteresReche
 
   return {
     perimetre,
-    termes: (criteres.q ?? '').trim().split(/\s+/).filter(Boolean).slice(0, MAX_TERMES),
+    q,
     lieu,
     lieuCompris: resolu ? { type: resolu.type, libelle: resolu.libelle } : undefined,
     selections,

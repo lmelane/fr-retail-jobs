@@ -7,6 +7,7 @@ export type SectorEvidence = {
   confidence: "HIGH" | "MEDIUM";
   basis: "OFFICIAL_SOURCE" | "REFERENCE_LIST";
   checkedAt: string;
+  provenance?: { method: "reviewed-official-evidence"; version: string; taxonomyHash: string; evidenceHash: string; model: null; promptVersion: null; validUntil: string };
 };
 export type SectorDefinition = {
   code: string;
@@ -21,6 +22,7 @@ export type SectorManifest = {
   companies: {
     id: string;
     canonicalKey: string;
+    identity?: { name: string; domain: string };
     codes: string[];
     evidence: SectorEvidence[];
   }[];
@@ -92,6 +94,11 @@ export function validateSectorManifest(raw: unknown): SectorManifest {
       )
     )
       throw Error("Invalid sector evidence");
+    for (const e of c.evidence) if (e.provenance && (
+      e.provenance.method !== 'reviewed-official-evidence' || !e.provenance.version ||
+      !/^[a-f0-9]{64}$/.test(e.provenance.taxonomyHash) || !/^[a-f0-9]{64}$/.test(e.provenance.evidenceHash) ||
+      !Number.isFinite(Date.parse(e.provenance.validUntil)) || e.provenance.model !== null || e.provenance.promptVersion !== null
+    )) throw Error('Invalid sector provenance');
     if (c.codes.some((code) => !c.evidence.some((e) => e.code === code)))
       throw Error("Every sector needs evidence");
   }
@@ -110,6 +117,11 @@ async function inspect(tx: Prisma.TransactionClient, m: SectorManifest) {
       throw Error("Sector identity is immutable; publish a new concept");
     return !previous || sectorHash(previous) !== sectorHash(c);
   });
+  const taxonomyHash = sectorHash(concepts.map(({code,slug,definition}) => ({code,slug,definition})).sort((a,b) => a.code.localeCompare(b.code)));
+  for (const company of m.companies) for (const evidence of company.evidence) {
+    if (evidence.provenance && (evidence.provenance.taxonomyHash !== taxonomyHash || new Date(evidence.provenance.validUntil) <= new Date()))
+      throw Error('Reviewed evidence expired or taxonomy changed');
+  }
   const codes = new Set(
     [...concepts, ...(m.concepts ?? [])].map((c) => c.code),
   );
@@ -121,6 +133,8 @@ async function inspect(tx: Prisma.TransactionClient, m: SectorManifest) {
     select: {
       id: true,
       canonicalKey: true,
+      name: true,
+      domain: true,
       mergedIntoId: true,
       sectorCodes: true,
       sectorEvidence: true,
@@ -129,7 +143,7 @@ async function inspect(tx: Prisma.TransactionClient, m: SectorManifest) {
   });
   for (const c of m.companies) {
     const prev = before.find((p) => p.id === c.id);
-    if (!prev || prev.mergedIntoId || prev.canonicalKey !== c.canonicalKey)
+    if (!prev || prev.mergedIntoId || prev.canonicalKey !== c.canonicalKey || (c.identity && (prev.name !== c.identity.name || prev.domain !== c.identity.domain)))
       throw Error(`Employer identity changed or unresolved: ${c.id}`);
   }
   const changed = m.companies.filter((c) => {

@@ -4,8 +4,8 @@
  * The filter is deliberately company-first, not title-first: "Carrefour —
  * Développeur Java" is out, "Sephora — Data Analyst" is in. A tech title at a
  * beauty retailer is a Catwalks job; the same title at a supermarket is not.
- * So an in-sector employer keeps its whole job list, and the title is only used
- * as a weak signal when the employer is unknown.
+ * An in-sector employer keeps its whole job list; the title does not decide
+ * the employer's admission.
  */
 
 import { findMaison, type MaisonEntry } from './maisons.js';
@@ -23,27 +23,6 @@ export type Sector =
   /** Fashion-specialised search firms; they post real Maison roles. */
   | 'RECRUITER'
   | 'OTHER';
-
-/**
- * Sector-scoped SOURCES: a source key whose whole catalogue is in one sector, so
- * an unrecognised employer from it inherits this sector rather than OTHER.
- * FashionJobs is a fashion-only jobboard; the LVMH portal is luxury. Matched by a
- * prefix so per-brand LVMH feed keys ("lvmh", "lvmh-dior"…) all resolve.
- */
-const SOURCE_SECTOR_PREFIXES: ReadonlyArray<readonly [string, Sector]> = [
-  ['fashionjobs', 'FASHION'],
-  ['lvmh', 'LUXURY'],
-];
-
-/** The sector a source's catalogue belongs to, or undefined for a generalist. */
-export function sectorForSource(sourceKey: string | undefined): Sector | undefined {
-  if (!sourceKey) return undefined;
-  const key = sourceKey.toLowerCase();
-  for (const [prefix, sector] of SOURCE_SECTOR_PREFIXES) {
-    if (key === prefix || key.startsWith(prefix + '-')) return sector;
-  }
-  return undefined;
-}
 
 /** Reference-list segments map straight onto sectors; both vocabularies match. */
 const MAISON_SEGMENT_SECTORS: Record<MaisonEntry['segment'], Sector> = {
@@ -63,18 +42,6 @@ export type SectorVerdict = {
   /** True when the posting should enter the Catwalks database. */
   inScope: boolean;
   reason: string;
-};
-
-/**
- * LVMH business groups, from the live `criteria` endpoint (2026-09-01).
- * "Vins & Spiritueux" and "Autres activités" (hotels, media) are intentionally
- * NOT mapped in-scope: a Moët logistics role is not a Catwalks job.
- */
-const LVMH_BUSINESS_GROUP_SECTORS: Record<string, Sector> = {
-  'Mode & Maroquinerie': 'FASHION',
-  'Parfums & Cosmétiques': 'BEAUTY',
-  'Montres & Joaillerie': 'JEWELRY_WATCHES',
-  'Distribution Sélective': 'RETAIL',
 };
 
 /** Employer-name signals, checked against the canonical (accent-free) name. */
@@ -169,36 +136,11 @@ function canonical(value: string): string {
     .trim();
 }
 
-/**
- * Classifies a posting. `businessGroup` is an authoritative sector label when the
- * source provides one (LVMH does); it wins over name matching.
- *
- * `sourceSector` is the sector of the SOURCE this posting came from — set for a
- * sector-scoped source (a fashion-only jobboard like FashionJobs, or a luxury
- * group portal). When the employer name is unrecognised, the offer inherits its
- * source's sector instead of falling to OTHER: a brand on FashionJobs IS a
- * fashion employer even if our reference list has never heard of it. This is
- * what rescued ~300 real Maisons (Amina Muaddi, A.P.C., Azzedine Alaïa…) that
- * were being mislabelled OTHER. It never OVERRIDES a positive name match — those
- * are more specific — it only replaces the OTHER fallback.
- */
+/** Admission filter for sources with filterSector enabled; no persisted sector assignment. */
 export function classifySector(input: {
   company: string;
-  businessGroup?: string;
   title?: string;
-  sourceSector?: Sector;
-  /**
-   * L'offre vient d'une source du catalogue, donc d'une maison dont le
-   * périmètre a déjà été validé à la promotion. Sert de dernier filet avant
-   * OTHER, jamais avant la liste de référence ni avant les exclusions.
-   */
-  fromCatalogue?: boolean;
 }): SectorVerdict {
-  const group = input.businessGroup && LVMH_BUSINESS_GROUP_SECTORS[input.businessGroup];
-  if (group) {
-    return { sector: group, inScope: true, reason: `business group "${input.businessGroup}"` };
-  }
-
   const company = canonical(input.company);
 
   // The reference list is the authority, and it is checked BEFORE the exclusions:
@@ -235,26 +177,6 @@ export function classifySector(input: {
     if (pattern.test(company)) {
       return { sector, inScope: true, reason: `sector keyword in employer name (${sector})` };
     }
-  }
-
-  // Unknown employer, but it came from a sector-scoped source: inherit that
-  // sector rather than dropping the brand to OTHER (a FashionJobs employer is a
-  // fashion employer). Only in-sector source hints reach here.
-  if (input.sourceSector && input.sourceSector !== 'OTHER') {
-    return {
-      sector: input.sourceSector,
-      inScope: true,
-      reason: `unrecognised employer, inherited from ${input.sourceSector} source`,
-    };
-  }
-
-  // Scope was reviewed at source activation; it proves admission, not Retail.
-  if (input.fromCatalogue) {
-    return {
-      sector: 'OTHER',
-      inScope: true,
-      reason: 'source du catalogue (périmètre déjà validé) ; segment à préciser',
-    };
   }
 
   // Unknown employer with no sector hint: excluded, but flagged so a human can

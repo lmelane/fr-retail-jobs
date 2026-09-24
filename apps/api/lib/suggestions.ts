@@ -1,3 +1,6 @@
+import { getSearchContext, requireSearchIndex, SEARCH_VERSION } from './search-index';
+import { searchSql } from './search-sql';
+import { searchWords, validateSearchQuery } from './search-intent';
 import { publicJobSql } from '@catwalks/db/availability';
 import type { Perimetre } from '@catwalks/db/marches';
 import { prisma, Prisma } from '@catwalks/db';
@@ -58,6 +61,7 @@ const directPubliable = (asOf: Date) => directPubliableSql(Prisma.sql`d`, asOf);
  */
 export async function suggestCities(query: string, perimetre: Perimetre): Promise<string[]> {
   if (!process.env.DATABASE_URL) return [];
+  validateSearchQuery(query);
   const q = query.trim();
   if (q.length < 2) return [];
   try {
@@ -102,7 +106,7 @@ export async function suggestCities(query: string, perimetre: Perimetre): Promis
  * (les lignes arrivent triées par volume décroissant). Sans ça le panneau
  * montrait « Paris » ET « PARIS » — vu en production.
  */
-function dedupliquer(valeurs: readonly (string | null)[]): string[] {
+function dedupliquer(valeurs: readonly (string | null)[], limit = SUGGEST_LIMIT): string[] {
   const vues = new Set<string>();
   const propres: string[] = [];
   for (const brut of valeurs) {
@@ -111,7 +115,7 @@ function dedupliquer(valeurs: readonly (string | null)[]): string[] {
     if (vues.has(cle)) continue;
     vues.add(cle);
     propres.push(brut);
-    if (propres.length >= SUGGEST_LIMIT) break;
+    if (propres.length >= limit) break;
   }
   return propres;
 }
@@ -127,9 +131,9 @@ export function roleKeyword(title: string): string {
   return title
     // Cut everything after the first " - " / " – " / " — " / " | " / " / " separator:
     // the role leads, the qualifiers (city, contract, hours) follow it.
-    .split(/\s[-–—|/]\s/)[0]
     // Drop a leading contract/reference prefix ("CDI - …", "2026-2825 - …").
     .replace(/^(CDI|CDD|STAGE|ALTERNANCE|INTERIM|VIE|FREELANCE|\d[\d-]*)\s*[-–]\s*/i, '')
+    .split(/\s[-–—|/]\s/)[0]
     // Strip trailing H/F, F/H, (H/F), hours like "35h", and stray separators.
     .replace(/\(?\b[hf](?:\s*\/\s*[hf])?\b\)?/gi, '')
     .replace(/\b\d{2,}\s*h\b/gi, '')
@@ -139,8 +143,10 @@ export function roleKeyword(title: string): string {
 
 export async function suggestTitles(query: string, perimetre: Perimetre): Promise<string[]> {
   if (!process.env.DATABASE_URL) return [];
+  validateSearchQuery(query);
   const q = query.trim();
   if (q.length < 2) return [];
+  await requireSearchIndex();
   try {
     const motif = `%${echapperLike(q)}%`;
     const asOf = new Date();
@@ -155,21 +161,23 @@ export async function suggestTitles(query: string, perimetre: Perimetre): Promis
         SELECT d.title, count(*) FROM "DirectOffer" d
          WHERE ${directPubliable(asOf)} AND d."countryCode" IN (${pays}) AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte(${motif}) GROUP BY d.title
       ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40`;
-    const seen = new Set<string>();
-    const roles: string[] = [];
-    for (const row of rows) {
-      if (!row.valeur) continue;
-      const role = roleKeyword(row.valeur);
-      const key = role.toLowerCase();
-      // Keep only roles that still contain what the candidate typed, so a title
-      // matched on a trailing city does not surface an unrelated-looking role.
-      // Comparaison sans accents ni casse, comme la base : « ecole » retient « École de vente ».
-      if (role.length < 2 || seen.has(key) || !sansAccents(role).includes(sansAccents(q))) continue;
-      seen.add(key);
-      roles.push(role);
-      if (roles.length >= SUGGEST_LIMIT) break;
-    }
-    return roles;
+    const { model } = await getSearchContext();
+    const normalized = searchWords(q).join(' ');
+    const candidates = dedupliquer([...rows.map(r => r.valeur && roleKeyword(r.valeur)).filter((r): r is string => !!r && sansAccents(r).includes(sansAccents(q))),
+      ...model.concepts.flatMap(c => c.aliases.filter(a => searchWords(a).join(' ').startsWith(normalized)))], 24);
+    if (!candidates.length) return [];
+    // Every suggestion is executed through the same interpretation and live
+    // publication predicates as search. No global taxonomy label with zero jobs.
+    const queries = candidates.map((value, position) => {
+      const { condition } = searchSql(model.resolver.resolve(value));
+      return Prisma.sql`SELECT ${value}::text AS value, ${position}::int AS position WHERE EXISTS (
+        SELECT 1 FROM "SearchDocument" s JOIN "Job" j ON j.id=s.id
+        WHERE s.version=${SEARCH_VERSION} AND ${condition} AND ${publicJobSql(Prisma.sql`j`, asOf)} AND j."countryCode" IN (${pays})
+        UNION ALL SELECT 1 FROM "SearchDocument" s JOIN "DirectOffer" d ON s.id='cw_'||d.id
+        WHERE s.version=${SEARCH_VERSION} AND ${condition} AND ${directPubliable(asOf)} AND d."countryCode" IN (${pays}))`;
+    });
+    const found = await prisma.$queryRaw<{ value: string }[]>(Prisma.sql`SELECT value FROM (${Prisma.join(queries, ' UNION ALL ')}) suggestions ORDER BY position LIMIT ${SUGGEST_LIMIT}`);
+    return found.map(r => r.value);
   } catch {
     return [];
   }
@@ -182,6 +190,7 @@ export async function suggestTitles(query: string, perimetre: Perimetre): Promis
  */
 export async function suggestCompanies(query: string, perimetre: Perimetre): Promise<string[]> {
   if (!process.env.DATABASE_URL) return [];
+  validateSearchQuery(query);
   const q = query.trim();
   if (q.length < 2) return [];
   try {

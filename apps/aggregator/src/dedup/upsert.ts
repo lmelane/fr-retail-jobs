@@ -24,24 +24,10 @@ import { blockingKey, provenPublicationGroup, type CandidateJob } from './match.
 import { enforcePublicationPolicy } from '../capture/publicationPolicy.js';
 import { archiveAdapterOutput } from '../capture/observations.js';
 import { recordPublicationAttachment, reviewedPublicationGroup } from './decisions.js';
-import { classifySector, sectorForSource, type Sector } from '../normalize/sector.js';
 import { findMaison } from '../normalize/maisons.js';
 import { resolveCompany } from '../normalize/company.js';
 import { changedEvents, diffStructuralFields, structuralValuesOf, toNestedEventRow, type JobEventInput } from '../pipeline/jobEvents.js';
 
-
-/** Classifier sectors map 1:1 onto the CompanySector enum. */
-const SECTOR_TO_COMPANY_SECTOR: Record<Sector, string> = {
-  FASHION: 'FASHION',
-  LUXURY: 'LUXURY',
-  BEAUTY: 'BEAUTY',
-  JEWELRY_WATCHES: 'JEWELRY_WATCHES',
-  RETAIL: 'RETAIL',
-  SUPPLIER: 'SUPPLIER',
-  MEDIA_AGENCY: 'MEDIA_AGENCY',
-  RECRUITER: 'RECRUITER',
-  OTHER: 'OTHER',
-};
 
 /** Native source identity is stable. Cross-source grouping requires an exact,
  * qualified application identity; every publication and observation survives. */
@@ -144,26 +130,6 @@ async function upsertInTransaction(
   const clusterKey = blockingKey(candidate);
   const now = new Date();
 
-  // Job.companyId is a foreign key, so the Company row has to exist first —
-  // otherwise every single write fails on a constraint violation and the run
-  // ends with an empty database.
-  // Classify once, at write time: the front end reads Company.kind, which
-  // otherwise stays at its UNKNOWN default and every sector facet reads
-  // "UNKNOWN" no matter how well the classifier works.
-  // Pass the source's sector so an unrecognised employer from a sector-scoped
-  // source (FashionJobs -> FASHION, LVMH -> LUXURY) inherits it instead of
-  // falling to OTHER — this is what rescues the ~300 real Maisons the reference
-  // list has never heard of.
-  const verdict = classifySector({
-    company: candidate.company,
-    title: candidate.title,
-    sourceSector: sectorForSource(candidate.sourceKey),
-    // Toute offre ingérée vient d'une source promue au catalogue : son
-    // appartenance au secteur est déjà établie (voir classifySector).
-    fromCatalogue: Boolean(candidate.sourceKey),
-  });
-  const sector = (SECTOR_TO_COMPANY_SECTOR[verdict.sector] ?? 'OTHER') as never;
-
   // The reference list knows Sandro belongs to SMCP and Dior to LVMH. Storing
   // it lets a search for one brand reach offers a group portal published under
   // the parent's name — and gives the group its own filter.
@@ -176,7 +142,6 @@ async function upsertInTransaction(
     create: {
       name: candidate.company,
       canonicalKey: candidate.companyId,
-      sector,
       // The unique key is the employer identity, not a FashionJobs URL: employers
       // reach us from their own sites too, and most never appear on that board.
       fashionjobsUrl: `resolved:${candidate.companyId}`,

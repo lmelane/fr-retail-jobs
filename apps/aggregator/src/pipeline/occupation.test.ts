@@ -349,9 +349,12 @@ describe("occupation persistence and release lifecycle", () => {
     expect((await loadOccupationTaxonomy(db)).manifest.id).toBe(seed.id);
     const fresh = await previewOccupationRelease(db, next);
     await activateOccupationRelease(db, next, fresh, "a".repeat(40));
-    expect(
-      (await loadOccupationTaxonomy(db)).queryOccupations("Trieur de gemmes"),
-    ).toEqual(["gemstone-sorter"]);
+    const activated = await loadOccupationTaxonomy(db);
+    expect(activated.manifest.id).toBe(next.id);
+    expect(activated.occupations.get("gemstone-sorter")?.labels).toEqual({
+      fr: "Trieur de gemmes",
+      en: "Gemstone Sorter",
+    });
     await upsertDeduplicated(
       db,
       { ...c, title: "Gemstone Sorter - Paris" },

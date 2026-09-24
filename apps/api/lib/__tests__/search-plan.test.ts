@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { facettesContrat } from '@catwalks/db/marches';
 import { exigerPerimetre, PerimetreRequisError, resoudrePerimetre } from '../perimetre';
-import { MAX_TERMES, planifierRecherche } from '../search-plan';
+import { planifierRecherche } from '../search-plan';
 import { parseFilters } from '../jobs';
 
 /**
@@ -131,15 +131,16 @@ describe('les filtres sont honorés dans le périmètre, refusés explicitement 
 
   it('ET entre dimensions, OU entre valeurs : toutes les sélections servies coexistent', () => {
     const plan = planifierRecherche(FR(), criteres({ q: 'vendeuse', filtres: { maison: ['Dior', 'Chanel'], groupe: ['LVMH'], contrat: ['PERMANENT', 'FIXED_TERM'], metier: ['unclassified'] } }));
-    expect(plan.termes).toEqual(['vendeuse']);
+    expect(plan.q).toBe('vendeuse');
     expect(plan.selections).toEqual({ maison: ['Dior', 'Chanel'], groupe: ['LVMH'], contrat: ['PERMANENT', 'FIXED_TERM'], metier: ['unclassified'] });
     expect(plan.refus).toEqual([]);
   });
 
-  it('le nombre de termes est borné, pas refusé', () => {
-    const bavard = Array.from({ length: 30 }, (_, i) => `mot${i}`).join(' ');
-    expect(bavard.split(' ').length).toBeGreaterThan(MAX_TERMES);
-    expect(planifierRecherche(FR(), criteres({ q: bavard })).termes).toHaveLength(MAX_TERMES);
+  it('preserves complete intentions and explicitly rejects excessive input', () => {
+    const q = Array.from({ length: 30 }, (_, i) => `mot${i}`).join(' ');
+    expect(planifierRecherche(FR(), criteres({ q })).q).toBe(q);
+    expect(() => planifierRecherche(FR(), criteres({ q: 'x'.repeat(501) }))).toThrow('SEARCH_QUERY_TOO_LONG');
+    expect(() => planifierRecherche(FR(), criteres({ q: 'mot '.repeat(65) }))).toThrow('SEARCH_QUERY_TOO_MANY_WORDS');
   });
 
   it('le pays prioritaire du visiteur ne compte que dans le périmètre, et n’est jamais un filtre', () => {

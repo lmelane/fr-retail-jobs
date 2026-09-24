@@ -1,3 +1,4 @@
+import { maintainReviewedSectors } from '../sectors/qualify.js';
 import { assertPipelineRunning } from '../lib/pipelinePause.js';
 import { KIND_TO_ATS } from '../ats/catalogKinds.js';
 import { splitRejectedRows } from './rejectedRows.js';
@@ -524,6 +525,12 @@ export async function runIngest(
     }
   }
 
+  // One bounded employer review pass for a normal run. Single-source debugging
+  // never mutates unrelated employers; unknown identities simply abstain.
+  if (!options.only) {
+    assertPipelineRunning();
+    await log.info('sectors.qualification', await maintainReviewedSectors(prisma));
+  }
   return results;
 }
 

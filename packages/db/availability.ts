@@ -18,5 +18,5 @@ export function publicJobWhere(at = new Date()): Prisma.JobWhereInput {
 export function publicJobSql(job: Prisma.Sql, at = new Date()): Prisma.Sql {
   return Prisma.sql`${job}."isActive" AND ${job}."mergedIntoId" IS NULL AND EXISTS (
     SELECT 1 FROM "JobSource" available_source WHERE available_source."jobId" = ${job}.id
-      AND available_source."isActive" AND (available_source."expiresAt" IS NULL OR available_source."expiresAt" > ${at}))`;
+      AND available_source."isActive" AND (available_source."expiresAt" IS NULL OR available_source."expiresAt" > (${at}::timestamptz AT TIME ZONE 'UTC')))`;
 }

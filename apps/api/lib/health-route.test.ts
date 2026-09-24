@@ -1,12 +1,14 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-const db = vi.hoisted(() => ({ $transaction: vi.fn() }));
+const db = vi.hoisted(() => ({ $transaction: vi.fn(), search: vi.fn() }));
+vi.mock('./search-index', () => ({ searchIndexStatus: db.search }));
 vi.mock('@catwalks/db', () => ({ prisma: db }));
 import { GET } from '../app/api/health/route';
 
 const migration = { name: '20260909232000_talent_recruiter_opportunity', checksum: 'a'.repeat(64) };
 beforeEach(() => {
   vi.resetAllMocks();
+  db.search.mockResolvedValue({ ready: true, oldestSeconds: null });
   vi.stubEnv('CATWALKS_SCHEMA_MIGRATIONS', JSON.stringify([migration]));
 });
 
@@ -32,6 +34,11 @@ describe('deployment readiness', () => {
     expect(response.status).toBe(503);
     expect(await response.json()).toEqual({ status: 'unavailable' });
     expect(tx.$queryRaw).toHaveBeenCalledTimes(1);
+  });
+  it.each([{ready:false,oldestSeconds:null},{ready:true,oldestSeconds:301}])('refuses partial or stalled search projections %j',async status=>{
+    const tx={$executeRaw:vi.fn(),$queryRaw:vi.fn().mockResolvedValueOnce([{migration_name:migration.name,checksum:migration.checksum,finished_at:new Date()}])};
+    db.$transaction.mockImplementation(async work=>work(tx));db.search.mockResolvedValue(status);
+    expect((await GET()).status).toBe(503);
   });
   it('refuses a missing build contract before accessing the database', async () => {
     vi.stubEnv('CATWALKS_SCHEMA_MIGRATIONS', '');

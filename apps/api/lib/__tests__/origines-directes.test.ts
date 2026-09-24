@@ -1,3 +1,4 @@
+import { initializeSearchIndex, drainSearchIndex } from '../search-index';
 import { publicationFixture } from '../../../aggregator/src/test/publication-fixture';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { prisma } from '@catwalks/db';
@@ -87,6 +88,8 @@ describe.skipIf(!enabled)('deux origines, une recherche (lot 6)', () => {
         searchText: `${d.titre}\n${d.maison}\n${d.ville}\n${d.titre} — description`,
       } });
     }
+    await initializeSearchIndex();
+    while (await drainSearchIndex()) {}
   }, 120_000);
   afterAll(nettoyer);
 

@@ -5,8 +5,9 @@ import { searchWords, type SearchConcept } from './search-intent';
  * These phrases describe the same activity; they never rewrite a native title,
  * activate an occupation release, or turn a neighbouring role into a synonym.
  * Reviewed against S1 native descriptions; see the dated benchmark findings. */
-export const SEARCH_VOCABULARY_VERSION = '20260924-v1';
+export const SEARCH_VOCABULARY_VERSION = '20260924-v2';
 const ROLE_ALIASES: Readonly<Record<string, readonly string[]>> = {
+  'assistant-store-manager': ['Assistant Store Director', 'Deputy Store Director', 'Assistant Boutique Director', 'Deputy Boutique Director'],
   'product-developer': ['Footwear Developer', 'Apparel Developer', 'Accessories Developer', 'Développeur chaussures', 'Développeur accessoires'],
   'financial-controller': ['Financial Control', 'Contrôle de gestion', 'Controlling'],
   watchmaker: ['Watch Technician', 'Watch Repair Technician', 'Technicien horloger', 'Technicienne horlogère'],

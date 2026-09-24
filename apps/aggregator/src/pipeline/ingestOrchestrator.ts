@@ -1,3 +1,4 @@
+import { maintainReviewedSectors } from '../sectors/qualify.js';
 import { assertPipelineRunning } from '../lib/pipelinePause.js';
 import { log } from '../observability/logger.js';
 import { withSourceBudget } from '../lib/sourceBudget.js';
@@ -112,6 +113,10 @@ export async function ingestAllBySource(prisma: PrismaClient): Promise<Orchestra
   const failed = settlements.find((s): s is PromiseRejectedResult => s.status === 'rejected');
   if (failed) throw failed.reason;
 
+  if (!process.env.INGEST_ONLY_KEYS?.trim()) {
+    assertPipelineRunning();
+    await log.info('sectors.qualification', await maintainReviewedSectors(prisma));
+  }
   await log.info('run.sources_completed', `[orchestrator] done: ${result.ok}/${result.total} ok, ${result.failed} failed, ${result.timedOut} timed out` +
       (result.failures.length ? ` — ${result.failures.join(', ')}` : ''));
   return result;

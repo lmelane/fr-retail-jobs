@@ -1,3 +1,4 @@
+import { searchIndexStatus } from '@/lib/search-index';
 import { NextResponse } from 'next/server';
 import { prisma } from '@catwalks/db';
 
@@ -22,8 +23,10 @@ export async function GET() {
       await tx.$queryRaw`SELECT "countryCode", "searchText", "canonicalSourceKey" FROM "Job" LIMIT 0`;
       await tx.$queryRaw`SELECT "complete", "canAttestAbsence" FROM "SourceRun" LIMIT 0`;
     }, { maxWait: 2000, timeout: 3000 });
+    const search = await searchIndexStatus();
+    if (!search.ready || (search.oldestSeconds ?? 0) > 300) throw new Error('Search projection unavailable');
     const runtime = process.env.CATWALKS_RUNTIME_ATTESTATION ? JSON.parse(process.env.CATWALKS_RUNTIME_ATTESTATION) : undefined;
-    return NextResponse.json({ status: 'ok', ...(runtime ? { runtime } : {}) }, { headers: { 'Cache-Control': 'no-store' } });
+    return NextResponse.json({ status: 'ok', search, ...(runtime ? { runtime } : {}) }, { headers: { 'Cache-Control': 'no-store' } });
   } catch {
     return NextResponse.json({ status: 'unavailable' }, { status: 503, headers: { 'Cache-Control': 'no-store' } });
   }

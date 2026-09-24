@@ -1,3 +1,4 @@
+import { SEARCH_VERSION } from './search-index';
 import { publicationContentOf, type PresentationSource } from '@catwalks/db/publication-presentation';
 import { publicAmount } from '@catwalks/db/money';
 import { availableSourceWhere, publicJobWhere, publicJobSql, sourceIsAvailable } from '@catwalks/db/availability';
@@ -116,7 +117,7 @@ export function parseFilters(params: Record<string, string | string[] | undefine
   const jeton = (Array.isArray(apres) ? apres[0] : apres)?.trim().slice(0, CURSEUR_MAX + 1) || undefined;
 
   return {
-    q: one('q'),
+    q: (Array.isArray(params.q) ? params.q[0] : params.q)?.trim() || undefined,
     lieu: one('lieu'),
     filtres,
     prioritePays: normalizedPriority(one('prioritePays')),
@@ -598,7 +599,7 @@ export async function getSimilarJobs(job: JobRow, limit = 6, langue: LangueLibel
  */
 function empreintePlan(plan: ReturnType<typeof planifierRecherche>): string {
   return empreinteCriteres({
-    perimetre: plan.perimetre.code, termes: plan.termes, lieu: plan.lieu ?? null,
+    version: SEARCH_VERSION, perimetre: plan.perimetre.code, q: plan.q, lieu: plan.lieu ?? null,
     selections: Object.fromEntries(DIMENSIONS.flatMap((d) => (plan.selections[d]?.length ? [[d, [...plan.selections[d]!].sort()]] : []))),
     prioritePays: plan.prioritePays ?? null, source: plan.source ?? null,
   });
@@ -614,7 +615,7 @@ export async function getJobs(filters: JobFilters): Promise<JobsResult> {
   const curseur = filters.apres ? (decoderCurseur(filters.apres, empreinte, ARITE_CLE_RECHERCHE) as CleRecherche) : null;
   try {
     const taxonomy = await getOptionalOccupationPresentation(langueDesLibelles(localeAffichage(filters.locale, perimetre)));
-    const summary = await searchSummary(plan, curseur, PAGE_SIZE, taxonomy);
+    const summary = await searchSummary(plan, curseur, PAGE_SIZE);
     // La page mêle les deux origines dans l'ordre du SQL ; chaque origine est
     // relue dans sa table, et la ligne servie a la même forme pour les deux.
     const idsDirects = summary.ids.filter(estIdDirect).map(idDirect);
@@ -624,7 +625,7 @@ export async function getJobs(filters: JobFilters): Promise<JobsResult> {
         omit: { raw: true, searchText: true },
         include: { company: true, sources: publicSources() },
       }),
-      idsDirects.length ? prisma.directOffer.findMany({ where: { id: { in: idsDirects } } }) : [],
+      idsDirects.length ? prisma.directOffer.findMany({ where: { ...directPubliable(), id: { in: idsDirects } } }) : [],
     ]);
     const byId = new Map<string, JobRow>([
       ...rows.map((row): [string, JobRow] => [row.id, toRow(row, taxonomy)]),

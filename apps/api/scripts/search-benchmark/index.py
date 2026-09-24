@@ -46,6 +46,7 @@ sql('''CREATE TABLE benchmark_document AS SELECT doc->>'id' AS id, (doc->>'origi
  setweight(to_tsvector('simple', doc->>'title'),'A') || setweight(to_tsvector('simple', doc->>'company'),'B')
  || setweight(to_tsvector('simple',coalesce(doc->>'duties','')),'C')
  || setweight(to_tsvector('simple',doc->>'body'),'D')
+ || to_tsvector('simple',CASE WHEN jsonb_array_length(coalesce(doc->'titleRoles','[]'::jsonb))>0 THEN 'cwhastitlerole' ELSE '' END)
  || to_tsvector('simple', coalesce((SELECT string_agg('cwi' || md5(kind || ':' || value), ' ')
      FROM (SELECT 'role' AS kind, jsonb_array_elements_text(doc->'roles') AS value
        UNION ALL SELECT 'family', jsonb_array_elements_text(doc->'families')
@@ -67,7 +68,7 @@ elastic('/' + index, {
     'settings': {'number_of_shards': 1, 'number_of_replicas': 0, 'refresh_interval': '-1',
                  'analysis': {'analyzer': {'catwalks': {'type': 'custom', 'tokenizer': 'standard', 'filter': ['lowercase', 'asciifolding']}}}},
     'mappings': {'dynamic': 'strict', 'properties': {
-        **{k: {'type': 'keyword'} for k in ['id','country','city','roles','families','sectors','companyKeys','occupationCode','employmentTerm','workTime','programType','language']},
+        **{k: {'type': 'keyword'} for k in ['id','country','city','titleRoles','roles','families','sectors','companyKeys','occupationCode','employmentTerm','workTime','programType','language']},
         **{k: {'type': 'text', 'analyzer': 'catwalks'} for k in ['title','company','body','duties']},
         'origin': {'type': 'integer'}, 'postedAt': {'type': 'double'}, 'firstSeenAt': {'type': 'double'},
     }},
