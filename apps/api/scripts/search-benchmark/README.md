@@ -24,7 +24,6 @@ Prérequis : dépendances npm du dépôt, Python ≥ 3.11, PostgreSQL local, Ela
 4. Exécuter depuis la racine du dépôt en remplaçant les chemins :
 
 ```sh
-python3 -B apps/api/scripts/search-benchmark/load-postgres.py /prive/snapshot /prive/access.json /chemin/psql
 npx tsx apps/api/scripts/search-benchmark/prepare.ts /prive/snapshot /prive/documents.ndjson
 python3 -B apps/api/scripts/search-benchmark/index.py /prive/documents.ndjson /prive/access.json /chemin/psql
 python3 -B apps/api/scripts/search-benchmark/run.py /prive/access.json apps/api/scripts/search-benchmark/measure.ts /prive/documents.ndjson.metadata.json apps/api/scripts/search-benchmark/intentions.json /prive/mesures.ndjson
@@ -32,7 +31,7 @@ python3 -B apps/api/scripts/search-benchmark/evaluate.py /prive/documents.ndjson
 python3 -B apps/api/scripts/search-benchmark/verify.py /prive/mesures.ndjson /prive/bilan.json
 ```
 
-Les sorties sont créées sans écrasement. L'indexation est create-only ; une interruption laisse des ressources partielles identifiables. Pour recommencer, recréer **uniquement cette base de benchmark et cet index local**, jamais un clone de répétition partagé. Le script `run.py` fournit l'URL de connexion via l'environnement, sans l'imprimer. `measure.ts` accepte en dernier argument `postgres,elastic` ou un moteur seul.
+Les sorties sont créées sans écrasement. L'indexation est create-only ; une interruption laisse des ressources partielles identifiables. Pour recommencer, recréer **uniquement cette base de benchmark et cet index local**, jamais un clone de répétition partagé. Le script `run.py` fournit l'URL de connexion via l'environnement, sans l'imprimer. `measure.ts` accepte en dernier argument `postgres,elastic` ou un moteur seul. Le chargeur de l'ancien schéma Job/DirectOffer et ses vecteurs S1 a été retiré : les deux candidats courants lisent directement la projection partagée issue du snapshot, sans recréer un ancien moteur SQL. S1 reste reproductible à son commit historique.
 
 Pour refaire l'annotation aveugle : `python3 -B apps/api/scripts/search-benchmark/pool.py /prive/snapshot /prive/mesures.ndjson /prive/pool.json`. Les labels actuels doivent rester figés lors de nouvelles optimisations. Tout résultat hors pool reste non jugé.
 
@@ -67,3 +66,20 @@ python3 -B apps/api/scripts/search-benchmark/railway.py /prive/baseline.json --s
 ```
 
 Les métriques Railway arrivent en différé : relire la même fenêtre après publication, ne jamais interpréter une limite/RAM nulle comme une consommation mesurée. Les temps HTTP incluent réseau public et transfert JSON. Le reçu contient les limites du protocole ; il n'atteste pas à lui seul les transitions fermeture/expiration ni la capacité mondiale.
+
+La charge comprend les 234 formulations communes, plus les 16 cas fonctionnels. `--duration-seconds 120` espace les lots sur au moins deux minutes ; les requêtes lentes peuvent allonger ce temps. Le test plafonne à quatre requêtes simultanées dans la qualification V1 : ce n'est pas une simulation du trafic mondial.
+
+## Déclenchement d'un nouveau benchmark
+
+`guard-policy.json` versionne les seuils et `guard.py` les applique à un relevé JSON. Cet outil reste hors runtime et ne crée aucun service de surveillance. Le suivi programmé de cette tâche lit les logs/metrics Railway, le healthcheck et les preuves de reconstruction/pertinence existantes ; il appelle ce garde puis relance le benchmark partagé si un seuil est franchi. Les observations privées datées restent hors Git. Une donnée absente ou invalide donne `unknown`, jamais zéro ou PASS.
+
+```sh
+python3 -B apps/api/scripts/search-benchmark/guard.py /prive/observations.json
+python3 -B -m unittest discover -s apps/api/scripts/search-benchmark -p 'test_*.py'
+```
+
+Relevé attendu : `searchSamples`, `p95Ms`, `documents`, `cpuFractions` (usage / limite réelle, échantillons consécutifs de 30 s), `oldestPendingSeconds`, `deadlocksDelta`, `ingestionSlowdownRatio` (p95 pendant ingestion / p95 au repos, même charge), `rebuildSeconds`, `failedRelevanceRegressions`, `precisionAtAvailable20`, `ndcgAt20`. Conserver séparément horodatages et provenance ; ne pas réutiliser une qualité ancienne comme mesure d'une nouvelle version.
+
+Seuils : p95 >1 s sur ≥100 recherches ; CPU >70 % de la limite sur trois points consécutifs ; file âgée de >120 s ; nouveau deadlock ; ralentissement ingestion >1,5× ; reconstruction >2× la durée réelle de référence (232,569 s) ; perte de précision ou nDCG >2 points, ou régression native ; dépassement du nombre de documents réellement éprouvé. Le nombre de documents est une **frontière de validation**, pas une capacité maximale attribuée à PostgreSQL. Les seuils de service et de qualité sont des décisions d'exploitation explicites, pas des résultats de benchmark.
+
+Un déclenchement lance une nouvelle comparaison PG/ES isolée sur un même snapshot. Il ne bascule jamais le moteur et ne déploie rien automatiquement. Pour un nouveau corpus, réannoter les nouveaux résultats à partir des preuves natives : ne pas recycler les labels d'un autre snapshot. En présence d'un incident de production, aucun test de charge supplémentaire : diagnostic en lecture seule et comparaison hors production. Le suivi local dépend de l'exécution de Codex ; les garde-fous et alertes Railway/Healthchecks existants restent responsables de l'exploitation continue.

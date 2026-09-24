@@ -114,6 +114,10 @@ def main():
     checks['composed'] = bool(smoke[6]['ids']) and bool(smoke[7]['ids'])
     checks['uncoded'] = any(r['uncoded'] > 0 for r in smoke)
     rows = []
+    # Stress the complete shared benchmark, including its expensive and rare
+    # queries, instead of repeatedly measuring only the smoke-test examples.
+    intentions = json.loads(Path(__file__).with_name('intentions.json').read_text())
+    workload = WORKLOAD + [{'marche': i['market'], 'q': q} for i in intentions for q in i['variants']]
     load_started = time.monotonic()
     load_started_at = dt.datetime.now(dt.timezone.utc)
     with concurrent.futures.ThreadPoolExecutor(max_workers=args.concurrency) as pool:
@@ -122,7 +126,7 @@ def main():
             due = load_started + args.duration_seconds * offset / args.requests
             if due > time.monotonic():
                 time.sleep(due - time.monotonic())
-            batch = list(pool.map(lambda i: jobs(WORKLOAD[i % len(WORKLOAD)])[0], range(offset, min(args.requests, offset + args.concurrency))))
+            batch = list(pool.map(lambda i: jobs(workload[i % len(workload)])[0], range(offset, min(args.requests, offset + args.concurrency))))
             rows.extend(batch)
             if sum(r['status'] != 200 for r in batch) >= 2:
                 break
@@ -141,7 +145,7 @@ def main():
         metrics = {'metrics': []}; metrics_error = 'Railway metrics unavailable; recollect this time window'
     times = sorted(r['ms'] for r in rows)
     report = {'runId': run_id, 'phase': args.phase, 'sha': args.sha, 'startedAt': started.isoformat(), 'endedAt': ended.isoformat(),
-              'loadStartedAt': load_started_at.isoformat(), 'durationSeconds': args.duration_seconds,
+              'loadStartedAt': load_started_at.isoformat(), 'durationSeconds': args.duration_seconds, 'workloadQueries': len(workload),
               'concurrency': args.concurrency, 'requests': len(rows), 'p50Ms': statistics.median(times), 'p95Ms': times[math.ceil(.95 * len(times))-1],
               'healthBefore': before, 'healthAfter': after, 'checks': checks, 'pass': all(checks.values()),
               'smoke': smoke, 'measurements': rows, 'databaseMetrics': metrics['metrics'], 'metricsError': metrics_error,
