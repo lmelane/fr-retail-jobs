@@ -1,16 +1,15 @@
 {
-  "observedAt": "2026-09-24T09:55:18.487878+00:00",
-  "productionCodeSha": "2cc91d8637671ba81ea23f03dd558f889befd70f",
+  "observedAt": "2026-09-24T11:32:12.378106+00:00",
   "targetContractSha256": "fdc0256fafcac40b59441aa1c7881fd1092ad544f6ca7122255ad05cb3fc8748",
   "registryVisibility": "public",
   "registryCredentialsRequired": false,
   "images": [
     {
-      "gitSha": "2cc91d8637671ba81ea23f03dd558f889befd70f",
+      "gitSha": "c62a5342441cc6d5fe2806598ca8e1279f47d3eb",
       "contractSha256": "fdc0256fafcac40b59441aa1c7881fd1092ad544f6ca7122255ad05cb3fc8748",
       "service": "catwalks-catalogue-api",
-      "image": "ghcr.io/lmelane/catwalks-catalogue-api@sha256:bce344bbfcf50318bafc351de3fa976bb11358f33078178e3c4afa28caa50197",
-      "imageId": "sha256:f9d5fee0d82af11402842058eaffa009d239cd44e6649db54bce18796b6bc944",
+      "image": "ghcr.io/lmelane/catwalks-catalogue-api@sha256:7cfe60a8c09f034145db2a28cefcede1d25ca8b14b597f85fb0af55038a85524",
+      "imageId": "sha256:0607678061c03e30fd32a2ec3922ab164968f4d11603cd5b9078253985f07abd",
       "imageEnvironment": [
         "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
         "NODE_VERSION=22.23.3",
@@ -27,7 +26,7 @@
         "status": "PASS",
         "network": "none",
         "role": "api",
-        "gitSha": "2cc91d8637671ba81ea23f03dd558f889befd70f"
+        "gitSha": "c62a5342441cc6d5fe2806598ca8e1279f47d3eb"
       }
     },
     {
@@ -56,19 +55,20 @@
       }
     }
   ],
-  "reason": "Native failure attribution and generic employer typography resolution. Thomas Sabo replay completed in production; normal daily worker configuration restored. Evidence commits do not rebuild images.",
+  "reason": "Native public market locales and unified employment facets. API-only release; ingestion runtime has no consumer of these presentation changes. Worker, CRON, database and volume configuration are unchanged.",
   "ci": {
-    "development": 35982734216,
-    "main": 35983539433,
-    "status": "SUCCESS"
+    "development": 35992570704,
+    "headSha": "c62a5342441cc6d5fe2806598ca8e1279f47d3eb",
+    "status": "SUCCESS",
+    "mainPromotion": "Same tested commit; no code change."
   },
   "services": [
     {
       "serviceId": "9c50b8a9-5651-478f-b0d1-5bc02d2c138f",
       "name": "catwalks-catalogue-api",
-      "deploymentId": "bccd22d0-9679-417f-8fb5-ce82b76e193c",
+      "deploymentId": "29dc3301-68bd-4892-b3f7-6de3540dfb62",
       "deploymentStatus": "SUCCESS",
-      "image": "ghcr.io/lmelane/catwalks-catalogue-api@sha256:bce344bbfcf50318bafc351de3fa976bb11358f33078178e3c4afa28caa50197",
+      "image": "ghcr.io/lmelane/catwalks-catalogue-api@sha256:7cfe60a8c09f034145db2a28cefcede1d25ca8b14b597f85fb0af55038a85524",
       "deploy": {
         "startCommand": "node apps/api/runtime/start.mjs",
         "healthcheckPath": "/api/health",
@@ -95,8 +95,8 @@
         "PORT"
       ],
       "process": {
-        "at": "2026-09-24T09:49:57.953Z",
-        "gitSha": "2cc91d8637671ba81ea23f03dd558f889befd70f",
+        "at": "2026-09-24T11:29:39.076Z",
+        "gitSha": "c62a5342441cc6d5fe2806598ca8e1279f47d3eb",
         "contractSha256": "fdc0256fafcac40b59441aa1c7881fd1092ad544f6ca7122255ad05cb3fc8748",
         "role": "api",
         "argv": [],
@@ -194,14 +194,13 @@
     "historicalDataRepair": false,
     "reset": false
   },
-  "validation": "audits/2026-09-24/employer-raw-audit.md",
+  "validation": "docs/architecture/emplois-e2e.md",
   "rollback": {
-    "previousCodeSha": "0c4dd7bae956eb433886253d2237247d2e45a312",
+    "previousCodeSha": "2cc91d8637671ba81ea23f03dd558f889befd70f",
     "images": {
-      "9c50b8a9-5651-478f-b0d1-5bc02d2c138f": "ghcr.io/lmelane/catwalks-catalogue-api@sha256:3d1741824118f82cd59b6b99030915eaff1acbfae224cb41d31dd73c439d10d3",
-      "210322c3-51b7-42c3-a93d-f50f64d44d19": "ghcr.io/lmelane/catwalks-ingestion-worker@sha256:fd2d0d2464c2c47eef3e164a22bbeb6a9a1cfd3eb9b7ade1abdac60595334fb8"
+      "9c50b8a9-5651-478f-b0d1-5bc02d2c138f": "ghcr.io/lmelane/catwalks-catalogue-api@sha256:bce344bbfcf50318bafc351de3fa976bb11358f33078178e3c4afa28caa50197"
     },
-    "pauseWorkerBeforeRollback": true,
+    "scope": "API only; worker and database untouched",
     "databaseDowngrade": false
   },
   "productionChecks": {
@@ -224,7 +223,7 @@
     "catalogue": {
       "FR": {
         "status": 200,
-        "ms": 327,
+        "ms": 442,
         "total": 11586,
         "returned": 25,
         "countryBound": true,
@@ -232,15 +231,39 @@
       },
       "US": {
         "status": 200,
-        "ms": 373,
+        "ms": 524,
         "total": 35597,
+        "returned": 25,
+        "countryBound": true,
+        "facetsPresent": true
+      },
+      "IT": {
+        "status": 200,
+        "ms": 127,
+        "total": 2235,
+        "returned": 25,
+        "countryBound": true,
+        "facetsPresent": true
+      },
+      "JP": {
+        "status": 200,
+        "ms": 111,
+        "total": 534,
+        "returned": 25,
+        "countryBound": true,
+        "facetsPresent": true
+      },
+      "AE": {
+        "status": 200,
+        "ms": 129,
+        "total": 222,
         "returned": 25,
         "countryBound": true,
         "facetsPresent": true
       },
       "roleFR": {
         "status": 200,
-        "ms": 536,
+        "ms": 573,
         "total": 4013,
         "returned": 25,
         "countryBound": true,
@@ -248,7 +271,7 @@
       },
       "roleFRFrench": {
         "status": 200,
-        "ms": 260,
+        "ms": 354,
         "total": 4013,
         "returned": 25,
         "countryBound": true,
@@ -256,7 +279,7 @@
       },
       "composedFR": {
         "status": 200,
-        "ms": 211,
+        "ms": 125,
         "total": 25,
         "returned": 25,
         "countryBound": true,
@@ -264,7 +287,7 @@
       },
       "composedUS": {
         "status": 200,
-        "ms": 133,
+        "ms": 145,
         "total": 50,
         "returned": 25,
         "countryBound": true,
@@ -272,7 +295,7 @@
       },
       "placeFR": {
         "status": 200,
-        "ms": 196,
+        "ms": 197,
         "total": 3757,
         "returned": 25,
         "countryBound": true,
@@ -288,7 +311,7 @@
           "registered": true,
           "ready": true
         },
-        "gitSha": "2cc91d8637671ba81ea23f03dd558f889befd70f"
+        "gitSha": "c62a5342441cc6d5fe2806598ca8e1279f47d3eb"
       },
       "unauthorized": {
         "status": 401
@@ -299,6 +322,16 @@
       },
       "translationConsistency": true,
       "pass": true
+    },
+    "marketLocales": {
+      "markets": 41,
+      "catalogueLanguages": 25,
+      "productionReadOnlyMatrix": "PASS",
+      "CA_CH_BE_sameCorpusAcrossLocales": "PASS"
     }
+  },
+  "productionCodeShas": {
+    "catwalks-catalogue-api": "c62a5342441cc6d5fe2806598ca8e1279f47d3eb",
+    "catwalks-ingestion-worker": "2cc91d8637671ba81ea23f03dd558f889befd70f"
   }
 }
