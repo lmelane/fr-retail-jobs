@@ -1,7 +1,25 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { talentsoftItemToJob, listingCards } from './talentsoft.js';
+import { applyTalentsoftDetail, talentsoftEmployerField, talentsoftItemToJob, listingCards } from './talentsoft.js';
+import { recoverRetainedPublication } from '../../publication/recovery.js';
 import { cleanPlace } from '../../lib/normalize.js';
+
+describe('native employer on a multibrand Talentsoft portal', () => {
+  // Native field observed in archived Chantelle posting 2535, 2026-09-24.
+  const field='<h2>Description du poste</h2><h3>\r\n\tEnseigne\r\n</h3><p id="fldjobdescription_customcodetablevalue2">Darjeeling</p><h3>Intitulé du poste</h3><p>Vendeur(se)</p><h2>Profil candidat</h2>';
+  it('reads one labelled posting employer, never a global filter or company description', () => {
+    expect(talentsoftEmployerField(field)).toEqual({label:'Enseigne',value:'Darjeeling'});
+    expect(talentsoftEmployerField('<h3>Enseigne</h3><p>Group header</p><h2>Description du poste</h2><h3>Missions</h3><p>Sell Darjeeling products</p><h2>Profil</h2>')).toBeUndefined();
+    expect(talentsoftEmployerField(field.replace('<h3>Intitulé', '<h3>Marque</h3><p>Other</p><h3>Intitulé'))).toBeUndefined();
+  });
+  it('preserves the employer and provenance during offline replay, including RSS entries', () => {
+    const url='https://tenant.talent-soft.com/offre-de-emploi/emploi-vendeur_2535.aspx';
+    const job=talentsoftItemToJob({link:url,title:'Vendeur(se)',description:'Conseil et vente en boutique.'})!;
+    const enriched=applyTalentsoftDetail(job,{pageUrl:url,htmlSha256:'a'.repeat(64),description:'Description détaillée',employerField:talentsoftEmployerField(field)});
+    const recovered=recoverRetainedPublication('talentsoft',enriched.raw,{externalId:'2535',url,observedAt:new Date(),config:{origin:'https://tenant.talent-soft.com',employerFromDetail:true}});
+    expect(recovered).toMatchObject({status:'RECOVERABLE',job:{company:'Darjeeling',description:job.description,employerEvidence:enriched.employerEvidence}});
+  });
+});
 
 /**
  * Parsing the TalentSoft RSS <item> shape, verified live against Longchamp's

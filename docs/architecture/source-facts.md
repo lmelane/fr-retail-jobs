@@ -26,6 +26,41 @@ Le cache contient `version`, `sourceType` et `inputHash`. Cette dernière emprei
 
 `NOT_OBSERVED` ne signifie pas que l’employeur ne publie jamais cette information. Un ancien adaptateur peut avoir perdu une partie de la réponse ; seul un RAW natif disponible permet de la relire.
 
+## Identité de l’employeur et de l’annonceur
+
+Décision produit du 24 septembre : l’absence de Maison précise ne suffit pas à
+rejeter une offre valide provenant d’un annonceur identifié. Le portail, le
+recruteur et l’employeur sont des rôles distincts.
+
+- Un employeur explicitement nommé dans la fiche ou le flux reste prioritaire.
+  TalentSoft peut lire les champs de fiche `Enseigne`, `Marque`, `Employeur` et
+  `Société` avec `employerFromDetail: true`, même lorsque le RSS contient déjà la
+  description. La valeur, le libellé, l’URL et l’empreinte de la page sont retenus
+  et le rejeu utilise la même lecture. Les filtres globaux ne servent pas de preuve.
+- Un groupe officiel dont la Maison n’est pas nommée doit pouvoir publier avec
+  l’indication « Publiée par [groupe] — Maison non précisée ».
+- Un cabinet identifié doit pouvoir publier avec l’indication « Recrutée par
+  [cabinet] — employeur non communiqué ». Le terme « confidentiel » exige que la
+  source le dise ; une simple absence n’est pas une demande de confidentialité.
+- Une identité contradictoire ou un annonceur non qualifié reste un vrai blocage.
+
+**État d’implémentation :** la lecture TalentSoft est implémentée et testée ; le
+modèle de publication via un annonceur est une cible à implémenter. Le schéma
+actuel exige encore `Job.companyId` et le traite comme l’employeur. Renseigner
+ce champ avec le cabinet pour faire passer le garde serait une fausse attribution.
+Aucun changement d’admission ne l’autorise aujourd’hui.
+
+La réalisation doit séparer l’employeur facultatif de l’annonceur qualifié, porter
+le rôle et les preuves dans la publication native, puis les servir explicitement
+sur `/emplois`. Recherche de métier et de lieu : offre éligible. Recherche ou filtre
+d’une Maison précise : uniquement si cette Maison est prouvée. Aucun secteur du
+cabinet hérité par son client ; aucune fusion entre clients anonymes sur la seule
+base d’un titre, d’une ville ou du cabinet. Les identifiants natifs restent la clé.
+La collecte et les contrôles d’accès restent inchangés. Les nouvelles règles ne
+réattribuent pas les offres historiques et ne rouvrent pas le chantier `/offres`
+ou matching. Le modèle, l’API et l’affichage doivent être validés ensemble avant
+activation des publications dont l’employeur n’est pas nommé.
+
 ## Salaires
 
 - Stockage PostgreSQL `NUMERIC(24,6)` ; aucune troncature entière, conversion de devise ou annualisation.

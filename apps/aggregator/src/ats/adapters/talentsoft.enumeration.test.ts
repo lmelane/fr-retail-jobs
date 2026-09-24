@@ -82,6 +82,22 @@ describe('fetchTalentsoftJobs — énumération prouvée et RSS hors board', () 
  * illisible, ou carte absente) n'apparaîtrait dans aucun `canonicalIds` et paraîtrait disparue au refresh.
  * Le témoin passe au rouge si `canonicalIds` est retiré de l'un ou l'autre chemin.
  */
+describe('TalentSoft — employeur porté par la fiche native', () => {
+  it('lit la fiche même si le RSS a déjà une description et ne confond pas un filtre avec l’enseigne', async () => {
+    vi.mocked(fetchText).mockImplementation(async (url) => {
+      const u = String(url);
+      if (u.includes('offerRss')) return rss([{ id: 2535, link: `${origin}/Pages/Offre/detailoffre.aspx?idOffre=2535` }]);
+      if (u.includes('liste-toutes-offres')) return listing(1, 1, [2535]);
+      return '<h3>Enseigne</h3><p>Filtre global</p><h2>Description du poste</h2><h3>Enseigne</h3><p>Darjeeling</p><h2>Critères candidat</h2>';
+    });
+    const result = await fetchTalentsoftJobs({ origin, employerFromDetail: true });
+    expect(result.jobs).toHaveLength(1);
+    expect(result.jobs[0]).toMatchObject({ company: 'Darjeeling', description: 'Contrat : CDI',
+      employerEvidence: { rawName: 'Darjeeling', path: 'talentsoftDetail.Enseigne', rule: 'EXPLICIT_POSTING_EMPLOYER_FIELD' } });
+    expect(vi.mocked(fetchText).mock.calls.some(([url]) => String(url).endsWith('_2535.aspx'))).toBe(true);
+  });
+});
+
 describe('TalentSoft — contrat des identifiants canoniques', () => {
   it('déclare canonicalIds sur le flux RSS ET sur chaque page de listing', async () => {
     const ids = Array.from({ length: 23 }, (_, i) => 1000 + i);

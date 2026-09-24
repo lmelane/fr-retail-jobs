@@ -1,4 +1,5 @@
 import { XMLParser } from 'fast-xml-parser';
+import * as cheerio from 'cheerio';
 import { captureObservedAt } from '../../capture/context.js';
 import { createHash } from 'node:crypto';
 import pLimit from 'p-limit';
@@ -215,7 +216,31 @@ export function listingCardJob(card: ListingCard, origin: string): NormalizedJob
 }
 
 /** La description d'une fiche, retenue avec la page qui la porte : le lecteur la réapplique sans réseau. */
-export type TalentsoftDetail = { pageUrl: string; htmlSha256: string; description: string };
+export type TalentsoftDetail = { pageUrl: string; htmlSha256: string; description: string; employerField?: { label: string; value: string } };
+
+const EMPLOYER_FIELDS = new Set(['Enseigne', 'Marque', 'Employeur', 'Société']);
+/** A labelled field in the posting, never the portal header, a filter or prose. */
+export function talentsoftEmployerField(html: string): TalentsoftDetail['employerField'] {
+  const section = html.match(/Description du poste<\/h2>([\s\S]*?)(?:<h2|$)/)?.[1];
+  if (!section) return undefined;
+  const $ = cheerio.load(section, {}, false);
+  const fields: NonNullable<TalentsoftDetail['employerField']>[] = [];
+  $('h3').each((_, heading) => {
+    const label = $(heading).text().trim(), next = $(heading).next();
+    const value = next.text().replace(/\s+/g, ' ').trim();
+    if (EMPLOYER_FIELDS.has(label) && next.is('p') && value && value.length <= 180) fields.push({label,value});
+  });
+  return fields.length === 1 ? fields[0] : undefined;
+}
+
+export function applyTalentsoftDetail(job: NormalizedJob, detail: TalentsoftDetail): NormalizedJob {
+  const field = detail.employerField;
+  if (field && (!EMPLOYER_FIELDS.has(field.label) || typeof field.value !== 'string' || !field.value.trim() || field.value.length > 180))
+    throw Error('Invalid native Talentsoft employer field');
+  return { ...job, description: job.description || detail.description || undefined,
+    ...(field ? { company: field.value, employerEvidence: { rawName: field.value, path: `talentsoftDetail.${field.label}`, rule: 'EXPLICIT_POSTING_EMPLOYER_FIELD' } } : {}),
+    raw: { ...(job.raw as Record<string, unknown>), talentsoftDetail: detail } };
+}
 
 /** "Description du poste" section text of a detail page; empty when absent. */
 export function talentsoftDetailDescription(html: string): string {
@@ -352,17 +377,18 @@ export async function fetchTalentsoftJobs(config: Record<string, unknown>): Prom
   if (!complete) issues.add('ENUMERATION_NOT_PROVEN');
 
   // 4. Descriptions for the listing-only offers, from their detail pages.
-  if (config.withDescriptions !== false) {
+  if (config.withDescriptions !== false || config.employerFromDetail === true) {
     const limit = pLimit(Number(config.detailConcurrency ?? 4));
     await Promise.all(
       jobs.map((job, index) =>
         limit(async () => {
-          if (job.description) return;
+          if (job.description && config.employerFromDetail !== true) return;
           try {
             const html = await fetchText(job.url);
             const description = talentsoftDetailDescription(html);
-            const talentsoftDetail: TalentsoftDetail = { pageUrl: job.url, htmlSha256: createHash('sha256').update(html).digest('hex'), description };
-            if (description) jobs[index] = { ...jobs[index], description, raw: { ...(jobs[index].raw as Record<string, unknown>), talentsoftDetail } };
+            const talentsoftDetail: TalentsoftDetail = { pageUrl: job.url, htmlSha256: createHash('sha256').update(html).digest('hex'), description,
+              ...(config.employerFromDetail === true ? { employerField: talentsoftEmployerField(html) } : {}) };
+            if (description || talentsoftDetail.employerField) jobs[index] = applyTalentsoftDetail(jobs[index], talentsoftDetail);
           } catch {
             // A failed detail fetch must not lose the listing entry.
           }

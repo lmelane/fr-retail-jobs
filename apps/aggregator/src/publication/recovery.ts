@@ -22,7 +22,7 @@ import { normalizeMagnetOffer } from '../ats/adapters/magnet.js';
 import { parseRitualsHit } from '../ats/adapters/rituals.js';
 import { parseWordpressPost } from '../ats/adapters/wordpress.js';
 import { normalizeGeoDirPost } from '../ats/adapters/geodirectory.js';
-import { type RssItem, listingCardJob, talentsoftItemToJob } from '../ats/adapters/talentsoft.js';
+import { type RssItem, type TalentsoftDetail, applyTalentsoftDetail, listingCardJob, talentsoftItemToJob } from '../ats/adapters/talentsoft.js';
 import { applyVacancyDetail, docToJob } from '../ats/adapters/rivoliTypesense.js';
 import { parseWorkableJob } from '../ats/adapters/workable.js';
 import { normalizeListRequisition, mergeDetail } from '../ats/adapters/oraclehcm.js';
@@ -246,7 +246,15 @@ function readRetainedPublication(kind: string, raw: unknown, context: Context, r
         // Trois formes retenues : un article RSS seul (`link`, gabarit historique et listing illisible) ; depuis le lot F3b,
         // une carte du listing (`path`, `id`, `title`, `cells`) avec, le cas échéant, l'article RSS apparié (`rss`) et la
         // description de la fiche (`talentsoftDetail`), appliqués dans l'ordre du collecteur, sans réseau.
-        if (typeof raw.link === 'string') { job = talentsoftItemToJob(raw as RssItem); break; }
+        if (typeof raw.link === 'string') {
+          job = talentsoftItemToJob(raw as RssItem);
+          if (raw.talentsoftDetail != null) {
+            const d=raw.talentsoftDetail;
+            if (!job || !object(d) || d.pageUrl !== job.url || typeof d.htmlSha256 !== 'string' || !/^[a-f0-9]{64}$/.test(d.htmlSha256) || typeof d.description !== 'string') return failure('DETAIL_EVIDENCE_UNUSABLE');
+            job=applyTalentsoftDetail(job,d as TalentsoftDetail);
+          }
+          break;
+        }
         if (typeof raw.path !== 'string' || !/_\d+\.aspx$/i.test(raw.path)) return failure('NATIVE_ID_MISSING');
         if (typeof config.origin !== 'string' || !config.origin) return failure('RAW_SCHEMA_INVALID');
         // Une carte d'avant le lot F3b ne retient que son lien : son identité est là, son contenu natif ne l'est pas.
@@ -263,7 +271,7 @@ function readRetainedPublication(kind: string, raw: unknown, context: Context, r
         if (talentsoftDetail != null) {
           if (!object(talentsoftDetail) || talentsoftDetail.pageUrl !== job.url || typeof talentsoftDetail.htmlSha256 !== 'string' ||
             !/^[a-f0-9]{64}$/.test(talentsoftDetail.htmlSha256) || typeof talentsoftDetail.description !== 'string') return failure('DETAIL_EVIDENCE_UNUSABLE');
-          if (!job.description && talentsoftDetail.description) job = { ...job, description: talentsoftDetail.description, raw: { ...(job.raw as Record<string, unknown>), talentsoftDetail } };
+          job = applyTalentsoftDetail(job, talentsoftDetail as TalentsoftDetail);
         }
         break;
       }

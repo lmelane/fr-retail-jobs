@@ -85,3 +85,36 @@ Les résultats complets, identifiants de runs, captures, fins d'ingestion, compt
 RUN `8b13d1f0-ced1-4380-8ad5-89e33a74587d` du 23 septembre : 409 sources tentées, 375 réussies, 34 en erreur, zéro timeout. Statut DB `COMPLETED_WITH_ERRORS`, sortie volontaire 1 après le bilan, puis arrêt du conteneur. Pic RSS observé 3,23 Go pour une limite de 24 Go ; aucun signal OOM dans les preuves examinées. Le SIGTERM postérieur n'a pas interrompu le RUN. Les indicateurs de santé (349 OK, 33 partielles, 27 en échec) mesurent autre chose que le succès des commandes ; ils ne sont pas interchangeables.
 
 Plusieurs sources ont depuis été rejouées avec succès. L'ensemble des 34 incidents n'est pas déclaré corrigé et le code de sortie n'a pas été changé pour masquer les erreurs.
+
+
+## Delta du 24 septembre — traitement des 34 erreurs
+
+Six sources ont déjà une ingestion ultérieure sans erreur d’écriture : Adidas,
+Parfums Chanel, Aeropostale, Skechers Phenom, Hugo Boss Phenom et Nocibé Eqwa.
+Les deux Phenom gardent une couverture partielle : succès de l’écriture ne vaut
+pas exhaustivité.
+
+Boots : le sitemap amenait le lecteur sur des pages de navigation et dépassait
+le budget d’accès. Le filtre existant `linkPattern=/jobs/` limite la collecte aux
+chemins d’offres observés. Révision `2bfa0e23-15d9-449d-ba63-c61deee7fbc8`,
+qualification normale puis ingestion production `6828b712-dc95-4229-9ffe-1a54b348f9f4`
+le 24 septembre : **1 456 collectées, 1 456 créations, 0 mise à jour, 0 fusion,
+0 erreur**, environ 205 secondes d’ingestion. Quatre autres pages listées ne
+contiennent pas de JobPosting. Capture `5827b171-074d-4c74-b2f2-d9dfaaf6c25d`,
+fin d’ingestion `31509c804ed83dabce54e7e453d19722e6332aef5be1741c12e0d51c8b7e1a8e`.
+Le parent `53f0cc5d-d9f3-4b83-aef0-9d970eb58d7d` termine `COMPLETED`, sortie 0,
+avec ping Healthchecks réussi. Le périmètre réseau métier est `www.boots.jobs`.
+Le rejeu utilise l’image déjà livrée `92c2bb1` ; aucune migration.
+
+`miu-miu` est passée en PAUSED : son tenant SmartRecruiters désigne une université
+égyptienne MIU, pas la Maison Miu Miu. La capture native révèle ce mauvais
+rattachement. Aucun employeur historique, offre ou RAW n’a été réécrit.
+
+TalentSoft : correction locale de lecture du champ natif `Enseigne` sur la fiche
+Chantelle (exemple Darjeeling 2535), opt-in `employerFromDetail`, provenance et
+rejeu offline identiques. **64 tests ciblés et typecheck PASS**. L’activation
+production et le rejeu Chantelle restent à réaliser après livraison de ce code.
+La [décision sur les rôles d’annonceur et d’employeur](../../docs/architecture/source-facts.md#identité-de-lemployeur-et-de-lannonceur)
+remplace le principe de rejet systématique des offres anonymes de portails
+qualifiés ; son nouveau modèle de publication n’est pas encore implémenté.
+Les autres erreurs ne sont pas déclarées résolues par ces corrections.
