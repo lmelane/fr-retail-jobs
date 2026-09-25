@@ -338,6 +338,24 @@ export const US_SUBDIVISION_NAMES: ReadonlySet<string> = new Set(Object.values(U
 export const CA_SUBDIVISION_NAMES: ReadonlySet<string> = new Set(Object.values(CA_PROVINCES));
 
 /**
+ * Le pays auquel appartient un champ ÉTAT / RÉGION DÉDIÉ (D-442), par les seules tables de subdivisions que
+ * le code possède : États-Unis et Canada, code (« NC ») ou nom (« North Carolina »). Tout le reste — une
+ * région d'un pays sans table, « UK » écrit dans le champ État — ne désigne rien.
+ *
+ * Réservée à un champ dont la subdivision est l'unique objet : dans un LIBELLÉ, un suffixe à deux lettres
+ * reste soumis aux gardes de collision de `resolveGeography` (« Berlin, DE » n'est pas le Delaware).
+ * Une exception, sûre parce qu'elle ne peut que REFUSER : la règle du territoire (`declaredPlaceCountry.ts`)
+ * l'applique à chaque segment d'un nom de lieu pour écarter un lieu qui nomme aussi une subdivision du pays
+ * englobant. Une lecture trop large n'y affecte aucun pays : l'offre garde son verdict d'avant la règle.
+ */
+export function subdivisionCountryOf(token: string | null | undefined): 'US' | 'CA' | undefined {
+  if (!token?.trim()) return undefined;
+  if (resolveSubdivision('US', token)) return 'US';
+  if (resolveSubdivision('CA', token)) return 'CA';
+  return undefined;
+}
+
+/**
  * LA SEULE PORTE D'ENTRÉE de `adminArea1`.
  *
  * Deux invariants, tous deux imposés par une mesure en prod (2026-09-08, après

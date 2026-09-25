@@ -72,10 +72,13 @@ const ISO_CODES = new Set([
 /** Libellés Intl (anglais + français) de chaque code, en minuscules → code. Calculé une fois. */
 const INTL_LABELS = new Map<string, string>(Object.entries(countryLabels.legacyEnglishFrenchLabels));
 
+/** Les valeurs d'un champ pays qui disent l'ABSENCE, pas un pays illisible (« N/A », « - », « null »). */
+export const ABSENT_COUNTRY_VALUE = /^(undefined|null|n\/a|-)$/i;
+
 export function normalizeCountry(raw?: string | null): string | undefined {
   if (!raw) return undefined;
   const text = raw.trim();
-  if (!text || /^(undefined|null|n\/a|-)$/i.test(text)) return undefined;
+  if (!text || ABSENT_COUNTRY_VALUE.test(text)) return undefined;
 
   // Déjà un code ISO-2, quelle que soit la casse.
   if (/^[a-z]{2}$/i.test(text)) {
