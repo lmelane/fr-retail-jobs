@@ -2,7 +2,10 @@ import { maintainReviewedSectors } from '../sectors/qualify.js';
 import { assertPipelineRunning } from '../lib/pipelinePause.js';
 import { KIND_TO_ATS } from '../ats/catalogKinds.js';
 import { splitRejectedRows } from './rejectedRows.js';
+import { readEnumeration, type EnumerationReading } from './enumerationReading.js';
+import { FULL_RUN_MARKER } from './fullRunMarker.js';
 import { loadOccupationTaxonomy, type CompiledOccupationTaxonomy } from '@catwalks/db/occupations';
+import { availableSourceWhere } from '@catwalks/db/availability';
 import { log } from '../observability/logger.js';
 import { archivePublicationHold } from './publicationHold.js';
 import { publicationDisposition } from './publicationDisposition.js';
@@ -48,6 +51,13 @@ import { addIssue, ingestionIssue, type IngestionIssue } from '../lib/ingestionI
 export type IngestStats = {
   source: string;
   complete?: boolean;
+  /**
+   * `complete: false` lu par le RUN (D-453 §1) : NOT_PROVEN quand aucun fait observé ne contredit la fin du
+   * parcours, REFUTED sinon (`enumerationReading.ts`). Les deux restent bloquants ; seule l'étiquette change.
+   */
+  enumerationReading?: EnumerationReading;
+  /** Les faits observés qui réfutent l'énumération, nommés et bornés, pour la note de santé. */
+  enumerationRefutedBy?: string[];
   fetched: number;
   inSector: number;
   france: number;
@@ -63,6 +73,11 @@ export type IngestStats = {
   /** Bounded original cause, persisted in SourceRun rather than lost with logs. */
   errorNote?: string;
   /**
+   * Posting write failures per bounded code (`fateReason`: `EmployerIdentityReviewRequired:PORTAL_OWNER_NOT_CERTIFIED`…),
+   * the same code the sealed report keeps: the health note names the cause in plain words instead of a bare count.
+   */
+  writeFailures?: Record<string, number>;
+  /**
    * Chronométrage PAR PHASE (P8) : `fetchMs` est le temps passé DEHORS (listing + détails), `upsertMs` le
    * temps cumulé passé à normaliser, dédupliquer et écrire. Leur somme est inférieure à la durée de la source
    * — le reste est l'orchestration —, et c'est leur RAPPORT qui dit où corriger : attendre le réseau et peiner
@@ -74,7 +89,20 @@ export type IngestStats = {
   rejected?: number;
   rejectedReasons?: Record<string, number>;
   held?: number;
+  /**
+   * Retenues SANS disposition de cycle de vie (`publicationDisposition`) : rien ne les ferme ni ne les retire. Ce n'est
+   * pas « à instruire » au sens du RUN : une retenue sur preuve de la source peut n'avoir aucune disposition
+   * (employeur absent Workday) et ne pas bloquer ; seule `retentionClass` dit ce qui bloque (D-453 §1, D-456).
+   */
   heldUnresolved?: number;
+  /** Retained postings per hold reason: the health pass tells a native-evidence retention (D-453 §1) from the rest. */
+  heldReasons?: Record<string, number>;
+  /**
+   * Per hold reason, the retained postings that stay online from an EARLIER collection once this RUN has archived
+   * its holds (usable representation, offer active and not merged). Measured once per source; absent when nothing
+   * was held or when the source failed before counting.
+   */
+  heldOnline?: Record<string, number>;
   /**
    * Field-coverage counters (audit L-02 generalized, décision Loïc 2026-09-03):
    * a source can return the right VOLUME while silently losing a field — the
@@ -259,8 +287,9 @@ async function ingestApiSource(
    * endroits opposés, et les confondre enverrait optimiser la mauvaise moitié.
    */
   const fetchStartedAt = Date.now();
-  const { captureBatchId, jobs, declaredTotal, truncated, complete, enumeration, rejectedRows } = await captureExtraction(
+  const extraction = await captureExtraction(
     prisma, stats.source, config, log.runId(), settings => fetchAtsJobs(type as never, settings), type, { revisionId: source.revisionId, requireActive: true });
+  const { captureBatchId, jobs, declaredTotal, truncated, complete, enumeration, rejectedRows } = extraction;
   stats.fetchMs = Date.now() - fetchStartedAt;
   const validation = await validateCapturedSource(prisma, captureBatchId);
   if (validation.verdict !== 'VALIDATED') throw new SourceAdmissionGateError('CAPTURE_NOT_VALIDATED', 'Ingestion requires a qualified native result');
@@ -291,6 +320,10 @@ async function ingestApiSource(
     await log.warn('source.rows_rejected', { sourceKey: stats.source, count: rejectedRows.length, failures: split.failures.length, reasons: split.reasons, rejectedRows });
   }
   stats.complete = complete;
+  // Read from the sealed extraction itself, never from the log above: not proven ≠ refuted ≠ unknown (D-453 §1).
+  const reading = readEnumeration(extraction);
+  stats.enumerationReading = reading.enumerationReading;
+  if (reading.enumerationRefutedBy) stats.enumerationRefutedBy = reading.enumerationRefutedBy;
   stats.declaredTotal = declaredTotal;
   stats.truncated = truncated;
   if (truncated) {
@@ -329,11 +362,14 @@ async function ingestApiSource(
    * d'absence : elle ne peut alors rien faire disparaître.
    */
   const fates: OutputFate[] = [];
+  // Every held posting, to count after the loop those an earlier collection still keeps online.
+  const heldPostings: { externalId: string; reason: string }[] = [];
   for (const [ordinal, rawJob] of jobs.entries()) {
     const job = applyScopeExclusion(employerFromCertifiedScope(rawJob, sourceDef.company, scope), scopeExclusions);
     assertSourceRunning();
     if (job.publicationHold) {
       stats.held = (stats.held ?? 0) + 1;
+      stats.heldReasons = { ...stats.heldReasons, [job.publicationHold]: (stats.heldReasons?.[job.publicationHold] ?? 0) + 1 };
       fates.push({ ordinal, externalId: job.externalId, disposition: 'HELD', reason: job.publicationHold });
       if (!publicationDisposition(job.publicationHold)) {
         /**
@@ -353,6 +389,7 @@ async function ingestApiSource(
         stats.heldUnresolved = (stats.heldUnresolved ?? 0) + 1;
       }
       await archivePublicationHold(prisma, stats.source, job);
+      heldPostings.push({ externalId: job.externalId, reason: job.publicationHold });
       await log.warn('job.publication_held', { sourceKey: stats.source, connectorId: source.kind, jobId: job.externalId, reason: job.publicationHold, evidence: 'SourceObservation' });
       continue;
     }
@@ -415,9 +452,34 @@ async function ingestApiSource(
        * qualifié par la classe pour rester lisible sans ambiguïté.
        */
       fates.push({ ordinal, externalId: job.externalId, disposition: 'WRITE_FAILED', reason: fateReason(error) });
+      // The same bounded code, counted so the health note names the cause (identity refusal motifs).
+      const failure = fateReason(error);
+      (stats.writeFailures ??= {})[failure] = (stats.writeFailures[failure] ?? 0) + 1;
       // Journal every failure, with its upstream posting ID. Console repeats
       // are aggregated centrally only AFTER durable recording.
       await log.error('job.write_failed', { sourceKey: stats.source, connectorId: source.kind, jobId: job.externalId, error });
+    }
+  }
+
+  /**
+   * A retention keeps THIS collection from publishing; it withdraws an earlier publication only when its reason
+   * carries a disposition and the adapter dated the withdrawal (`publicationHold.ts`). Otherwise the earlier
+   * representation stays online (`PRESENT_BUT_HELD`). The alert says how many, per reason, as the site sees them
+   * (`availableSourceWhere`, offer active and not merged): one read per source, after every hold is archived.
+   * Present as soon as a posting is held; `{}` = none online. Read only: nothing here withdraws anything. A failed
+   * read fails nothing either: the count stays absent, and the alert says « maintien en ligne non mesuré ».
+   */
+  if (heldPostings.length) {
+    try {
+      const online = new Set((await prisma.jobSource.findMany({ where: { sourceKey: stats.source, ...availableSourceWhere(),
+        externalId: { in: [...new Set(heldPostings.map(held => held.externalId))] }, job: { isActive: true, mergedIntoId: null } },
+      select: { externalId: true } })).map(row => row.externalId));
+      const heldOnline: Record<string, number> = {};
+      for (const held of heldPostings) if (online.has(held.externalId)) heldOnline[held.reason] = (heldOnline[held.reason] ?? 0) + 1;
+      stats.heldOnline = heldOnline;
+    } catch (error) {
+      log.assertHealthy();
+      await log.warn('source.held_online_unmeasured', { sourceKey: stats.source, held: heldPostings.length, error });
     }
   }
 
@@ -534,7 +596,8 @@ export async function runIngest(
   // never mutates unrelated employers; unknown identities simply abstain.
   if (!options.only) {
     assertPipelineRunning();
-    await log.info('sectors.qualification', await maintainReviewedSectors(prisma));
+    // A complete collection of every source: the negative-proof guard may take its reference here (health.ts).
+    await log.info(FULL_RUN_MARKER, await maintainReviewedSectors(prisma));
   }
   return results;
 }

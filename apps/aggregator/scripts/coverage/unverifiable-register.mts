@@ -10,14 +10,14 @@
  * observation réussie** ; `lastReliableObservationAt` est le dernier run qui avait le droit d'attester, ou pour
  * une offre publiée son `lastSeenAt`. Quand une de ces dates n'existe pas, elle reste **nulle**.
  *
- * Le classement et les traitements viennent de `src/pipeline/unverifiable.ts`, testé unitairement — le script ne
- * réimplémente aucune règle.
+ * Le classement, les traitements et les textes viennent de `src/pipeline/unverifiable.ts` (`registerEntries`), sous
+ * témoin (`unverifiable.test.ts`) : le script ne fait que lire et écrire, il ne réimplémente aucune règle.
  *
  * Lecture seule. usage: unverifiable-register.mts [--out=<file.json>] [--csv=<file.csv>]
  */
 import { PrismaClient, Prisma } from '@prisma/client';
 import { writeFileSync } from 'node:fs';
-import { classifyHold, classifySourceBlock, describeUnverifiable, type UnverifiableEntry } from '../../src/pipeline/unverifiable.js';
+import { NO_NAMED_DEFECT, registerEntries, type UnverifiableEntry } from '../../src/pipeline/unverifiable.js';
 
 const arg = (n: string) => process.argv.find((a) => a.startsWith(`--${n}=`))?.slice(n.length + 3);
 const p = new PrismaClient();
@@ -86,39 +86,7 @@ try {
     return { now: at as Date, holdRows, sourceRows };
   }, { isolationLevel: Prisma.TransactionIsolationLevel.RepeatableRead, maxWait: 20_000, timeout: 120_000 });
 
-  const entries: UnverifiableEntry[] = [];
-
-  for (const h of holdRows) {
-    entries.push(describeUnverifiable({
-      sourceKey: h.sourceKey, externalId: h.externalId, kind: classifyHold(h.reason), reason: h.reason,
-      firstHeldAt: h.first_held_at,
-      lastAttemptAt: h.last_attempt,
-      // Une retenue signifie précisément qu'on n'a pas pu exploiter cette page : la dernière observation FIABLE
-      // de l'offre est celle de sa représentation publiée, si elle en a une. Sinon il n'y en a aucune.
-      lastReliableObservationAt: h.representation_active ? h.representation_last_seen : null,
-      now,
-      ...(h.representation_active ? {} : { blockedBy: 'Offre non publiée : aucune observation fiable à comparer.' }),
-    }));
-  }
-
-  for (const s of sourceRows) {
-    const kind = classifySourceBlock({
-      status: s.status ?? 'NEW', complete: s.complete, truncated: s.truncated, errors: s.errors,
-      declaredTotal: s.declaredTotal, fetched: s.fetched, previous: s.previousJobs,
-    });
-    // `null` = plus rien ne bloque cette source sous les règles corrigées. On la signale à part : c'est la
-    // mesure de l'effet du correctif, pas un dossier à traiter.
-    entries.push(describeUnverifiable({
-      sourceKey: s.sourceKey, kind: kind ?? 'LISTING_NOT_ENUMERATED',
-      reason: kind ? `${s.status ?? 'NEW'} (déclaré ${s.declaredTotal ?? 'n/d'}, lu ${s.fetched ?? 'n/d'}, précédent ${s.previousJobs ?? 'n/d'})`
-                   : 'PLUS BLOQUÉE SOUS LES RÈGLES CORRIGÉES',
-      firstHeldAt: s.blocked_since ?? s.last_attempt ?? now,
-      lastAttemptAt: s.last_attempt,
-      lastReliableObservationAt: s.last_reliable_run,
-      now,
-      blockedBy: kind ? undefined : 'Aucun : le verdict d\'énumération à trois valeurs lui rend son droit d\'attester.',
-    }));
-  }
+  const entries: UnverifiableEntry[] = registerEntries(holdRows, sourceRows, now);
 
   const byState: Record<string, number> = {};
   const byKind: Record<string, number> = {};
@@ -127,8 +95,8 @@ try {
   const report = {
     at: now, denominators: { holdDossiers: holdRows.length, blockedSources: sourceRows.length, entries: entries.length },
     byState, byKind,
-    stillBlockedSources: entries.filter((e) => !e.externalId && e.reason !== 'PLUS BLOQUÉE SOUS LES RÈGLES CORRIGÉES').length,
-    unblockedByTheFix: entries.filter((e) => e.reason === 'PLUS BLOQUÉE SOUS LES RÈGLES CORRIGÉES').map((e) => e.sourceKey),
+    sourcesWithNamedDefect: entries.filter((e) => !e.externalId && e.reason !== NO_NAMED_DEFECT).length,
+    sourcesWithoutNamedDefect: entries.filter((e) => e.reason === NO_NAMED_DEFECT).map((e) => e.sourceKey),
     entries,
   };
 
@@ -147,5 +115,5 @@ try {
       e.ageDays, e.state, e.nextAction, e.resolvedWhen, e.blockedBy ?? ''].map(cell).join(','))].join('\n'));
   }
 
-  console.log(JSON.stringify({ ...report, entries: `${entries.length} entries`, unblockedByTheFix: `${report.unblockedByTheFix.length} sources` }, null, 1));
+  console.log(JSON.stringify({ ...report, entries: `${entries.length} entries`, sourcesWithoutNamedDefect: `${report.sourcesWithoutNamedDefect.length} sources` }, null, 1));
 } finally { await p.$disconnect(); }

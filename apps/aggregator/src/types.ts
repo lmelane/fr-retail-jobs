@@ -175,9 +175,11 @@ export type AdapterResult = {
   /**
    * Explicit proof of enumeration completion; absence is unknown, not complete.
    *
-   * On the way IN (an adapter's own claim) this is `true` or absent. On the way OUT of
-   * `normalizeAdapterResult` it carries the three-valued verdict flattened: `true` proven, `false` refuted,
-   * `undefined` unknown — the distinction the whole freshness chain depends on.
+   * On the way IN (an adapter's own claim) this is `true`, `false` (the adapter declines the proof: it saw a
+   * cut, or it cannot demonstrate the end — an RSS feed, a start-page link crawl) or absent. On the way OUT of
+   * `normalizeAdapterResult` it carries the three-valued verdict flattened: `true` proven, `false` refused,
+   * `undefined` unknown — the distinction the whole freshness chain depends on. The RUN reads a `false` as NOT
+   * PROVEN or REFUTED from the observed facts (`pipeline/enumerationReading.ts`); the sealed value never changes.
    */
   complete?: boolean;
   /** The verdict in full, set by `normalizeAdapterResult`; adapters never provide it. */

@@ -1,4 +1,6 @@
 
+import { transportFailureCode } from './transportFailure.js';
+
 export function collapseWhitespace(value: string): string {
   return value.replace(/[\s\u00a0\u202f]+/g, ' ').trim();
 }
@@ -24,8 +26,16 @@ export function canonicalCompanyKey(value: string): string {
  * dropped — including OTHER errors we then never saw. The reason (e.g. "Unique
  * constraint failed on…") sits at the end of that dump, so this keeps the first
  * line AND any constraint/failure line, on ONE line, capped.
+ *
+ * A transport failure keeps its cause code (D-453): « fetch failed » alone was
+ * all the SourceRun of Rolex and Ralph Lauren retained on 24/09/2026.
  */
 export function briefError(error: unknown, maxLength = 200): string {
+  const transport = transportFailureCode(error);
+  if (transport) {
+    const suffix = ` [${transport}]`;
+    return `${briefError(error instanceof Error ? error.message : String(error), Math.max(1, maxLength - suffix.length))}${suffix}`;
+  }
   const message = (error instanceof Error ? error.message : String(error)).trim();
   const lines = message.split('\n').map((line) => line.trim()).filter(Boolean);
   if (lines.length === 0) return message.slice(0, maxLength);

@@ -15,6 +15,7 @@ import { recordAttempt, recordResponse, recordFailure } from '../observability/h
 import { assertCaptureHealthy, assertRequestAccess, auditUrl, describeRequest, capturingResponses, replayingResponses, captureResponse, replayResponse, CaptureUnavailableError, OfflineReplayError } from '../capture/context.js';
 
 import { observedHop, type RequestDescription, type TransportHop } from '../capture/requestData.js';
+import { captureFailureLabel } from './transportFailure.js';
 
 export { WafChallengeError } from './wafToken.js';
 export { detectChallenge, type ChallengeVendor } from './responseIntegrity.js';
@@ -291,7 +292,7 @@ export async function fetchWithRetry(url: string, init: RequestInit = {}, attemp
         catch (error) {
           await captureResponse({ url, method: init.method, body: init.body, headers: init.headers, format: 'HTTP_RESPONSE', transport },
             { status: response.status, headers: response.headers, bytes: error instanceof IncompleteBodyError ? error.prefix : null,
-              complete: false, failure: error instanceof Error ? error.name : 'ReadError' });
+              complete: false, failure: captureFailureLabel(error, 'ReadError') });
           attemptCaptured = true;
           throw error;
         }
@@ -378,7 +379,7 @@ export async function fetchWithRetry(url: string, init: RequestInit = {}, attemp
     } catch (error) {
       if (capturingResponses() && !attemptCaptured && !(error instanceof CaptureUnavailableError)) {
         await captureResponse({ url, method: init.method, body: init.body, headers: init.headers, format: 'HTTP_RESPONSE', transport },
-          { bytes: null, complete: false, failure: error instanceof Error ? error.name : 'NetworkError' });
+          { bytes: null, complete: false, failure: captureFailureLabel(error, 'NetworkError') });
       }
       assertCaptureHealthy();
       assertSourceRunning();

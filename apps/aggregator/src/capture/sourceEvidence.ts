@@ -16,6 +16,7 @@ import { readRequestData } from './requestDataRead.js';
 import { observedHop } from './requestData.js';
 import { captureConfig } from './config.js';
 import { captureReaderRevision } from './revision.js';
+import { captureFailureLabel } from '../lib/transportFailure.js';
 import { persistCapture, readRawBlob, storeRawBlob } from './store.js';
 import type { ObjectStore } from '../retention/objectStore.js';
 
@@ -105,7 +106,7 @@ export async function captureSourceEvidence(db: PrismaClient, sourceKey: string,
           const request = { url, method: 'GET', headers, format: 'HTTP_RESPONSE' as const,
             transport: { origin: 'HTTP_TRANSPORT' as const, hops: [observedHop(native, response, failure)] } };
           if (!response) {
-            await captureResponse(request, { bytes: null, complete: false, failure: failure instanceof Error ? failure.name : 'NetworkFailure' });
+            await captureResponse(request, { bytes: null, complete: false, failure: captureFailureLabel(failure, 'NetworkFailure') });
             return;
           }
           let bytes: Buffer;
@@ -113,7 +114,7 @@ export async function captureSourceEvidence(db: PrismaClient, sourceKey: string,
           catch (error) {
             await captureResponse(request, { status: response.status, headers: response.headers,
               bytes: error instanceof IncompleteBodyError ? error.prefix : null, complete: false,
-              failure: error instanceof Error ? error.name : 'BodyReadFailure' });
+              failure: captureFailureLabel(error, 'BodyReadFailure') });
             throw error;
           }
           await captureResponse(request, { status: response.status, headers: response.headers, bytes, complete: true });
@@ -131,7 +132,7 @@ export async function captureSourceEvidence(db: PrismaClient, sourceKey: string,
         // If the connection failed after committing the success receipt, its
         // immutable outcome wins; never attempt to replace it with a failure.
         await db.captureOutcome.createMany({ data: [{ batchId: batch.id, status: 'FAILED', extractedCount: 0,
-          failure: error instanceof Error ? error.name : 'UnknownError' }], skipDuplicates: true });
+          failure: captureFailureLabel(error, 'UnknownError') }], skipDuplicates: true });
         throw error;
       }
     });

@@ -115,8 +115,10 @@ try {
     }
 
     // ── Exhaustivité ──────────────────────────────────────────────────────────
+    // `ENUMERATION_NOT_PROVEN` dit que l'adaptateur ne sait pas démontrer la fin, pas qu'il a vu une coupure :
+    // « non prouvée », jamais « réfutée » (D-453 §1). Les deux refusent l'attestation d'absence.
     const enumerationVerdict =
-      issues.includes('ENUMERATION_NOT_PROVEN') ? 'REFUTED'
+      issues.includes('ENUMERATION_NOT_PROVEN') ? 'NOT_PROVEN'
       : row.termination && PROVING_TERMINATIONS.has(row.termination) ? 'PROVEN'
       : row.termination ? 'UNKNOWN'
       : 'AUCUNE_TRACE';

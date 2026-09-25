@@ -1,4 +1,5 @@
 import { digestBytes } from '../lib/evidenceHash.js';
+import { captureFailureLabel } from '../lib/transportFailure.js';
 
 export const REQUEST_DATA_MAX_BYTES = 512_000;
 export const REQUEST_NEGOTIATION_HEADERS = ['accept', 'accept-language', 'content-type'] as const;
@@ -40,7 +41,7 @@ const RESPONSE_HEADERS = ['content-type', 'location', 'retry-after'] as const;
 export function observedHop(request: RequestDescription, response: Pick<Response, 'status' | 'headers'> | null, failure?: unknown): TransportHop {
   return { request, status: response?.status ?? null, responseHeaders: Object.fromEntries(RESPONSE_HEADERS.flatMap(name => {
     const value = response?.headers.get(name); return value == null ? [] : [[name, value]];
-  })), failure: failure instanceof Error ? failure.name : failure == null ? null : 'TransportError' };
+  })), failure: failure == null ? null : captureFailureLabel(failure, 'TransportError') };
 }
 const targetUrl = (value: string) => { const url = new URL(value); url.hash = ''; return url.toString(); };
 

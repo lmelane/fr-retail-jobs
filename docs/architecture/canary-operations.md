@@ -28,12 +28,157 @@ un rejet d'identité ou une anomalie de contenu restent UNKNOWN tant que la caus
 n'est pas démontrée. Une contradiction peut venir de notre ancien rattachement :
 le maintien du blocage n'autorise pas à déclarer la livraison terminée.
 
+### Contrat de statut après D-453 et D-456 (24-25/09/2026)
+
+Statuts employés ci-dessous : **décidé** = tranché par le CEO (D-453, D-456, D-462, `docs/governance/DECISIONS.md`
+du dépôt backend) ; **application non arbitrée** = lecture d'une décision retenue par l'équipe sans arbitrage
+propre (aucun motif dans ce cas depuis D-462, le 25/09) ; **garde technique** = protection du code, pas une
+décision produit. Cette section décrit le classement du code de ce dépôt. Livraison du 25/09 : voir
+`docs/operations/railway/runtime-release.json`, seul le reçu dit quelle image le worker exécute.
+
+**Rejeu du classement du RUN du 24/09 (`35ba463f`).** Seul le *classement* est rejoué, hors base, sur les
+chiffres que le RUN a enregistrés : santé, attribution, bilan et objet de l'alerte ; aucune source n'est
+recollectée, rien n'est écrit. Le code du RUN (`2cc91d8`) rejoué reproduit exactement le bilan enregistré
+(414 sources, 354 OK, 60 non OK : 2 INTERNAL, 58 UNKNOWN ; aucun écart par source). Sous la cible (D-453 §1 et
+D-456) : 414 sources, 354 OK, 60 non OK, dont **19 non bloquantes** (retenues sur preuve de la source,
+2 032 offres : les 18 sources à retenue Workday ou candidature close du 24/09, 1 969 offres, et Intersport,
+63 offres) et **41 bloquantes** (`UNKNOWN`) : les 5 énumérations non prouvées (attaquer, kastner-ohler,
+lumentee, marc-o-polo, picard), les 2 pannes de transport désormais nommées (Rolex, Ralph Lauren), 3
+énumérations réfutées (hugo-boss-phenom, skechers-phenom, tapestry) et 31 incidents inchangés (identité, accès,
+troncatures, retenues à instruire, couverture de champ). Statut **FAILED** (`UNRESOLVED_FAILURE`) au lieu de
+FAILED (`INTERNAL_FAILURE`, `UNRESOLVED_FAILURE`). Aucune exclusion de périmètre ce jour-là. Sur les 41
+bloquantes, 21 relèvent déjà d'une décision prise : les 20 refus d'identité (D-453 §4) et Ralph Lauren (D-453
+§3). Les 41 sont à traiter (D-456 §5 : 20 refus d'identité, 8 échecs d'accès et de transport, 8 énumérations
+non prouvées ou réfutées, 5 régressions), après la livraison et jamais pendant le RUN. Pour recompter :
+`audits/2026-09-24/scripts/rejeu-classement-2409-extraction.mts` (lecture seule de la production, rôle
+`catwalks_audit`) puis `audits/2026-09-24/scripts/rejeu-classement-2409.mts` ; le script refuse de rendre un
+chiffre, `--json` compris, tant que l'ancien code ne reproduit pas le RUN. SourceRun ne garde que dix jours
+d'historique (`HISTORY`, `pipeline/health.ts`) : au-delà du 04/10/2026, seul le fichier extrait
+(`audits/2026-09-24/rejeu-classement-2409.json`) fait foi.
+
+- **Panne de transport = UNKNOWN nommée par sa cause, jamais INTERNAL sur sa seule classe** (défaut du code
+  corrigé, D-453). Le client HTTP (undici) rejette toute panne réseau ou TLS par
+  `TypeError('fetch failed', { cause })`. Son code de cause la classe `UNKNOWN` / `TRANSPORT_<code>`
+  (`TRANSPORT_UND_ERR_CONNECT_TIMEOUT` pour Rolex, `TRANSPORT_UNABLE_TO_VERIFY_LEAF_SIGNATURE` pour Ralph Lauren
+  le 24/09). Une `TypeError`, `ReferenceError` ou `RangeError` de notre code reste INTERNAL, y compris quand
+  `fetch` enveloppe un défaut de notre dispatcher. Un refus de notre garde SSRF levé avant la requête reste
+  `UNKNOWN` / `BlockedUrlError` ; levé pendant la résolution DNS, `fetch` l'enveloppe dans
+  `TypeError('fetch failed')`, que l'ancien classement rangeait INTERNAL / `TypeError` : il est désormais classé
+  comme le refus lui-même, `UNKNOWN` / `BlockedUrlError`. La cause est conservée sur la capture
+  (`RawCapture.failure` et `CaptureOutcome.failure` : `TypeError__UND_ERR_CONNECT_TIMEOUT` — le nom vivant
+  d'abord, pour qu'un rejeu hors ligne relance la même erreur) et dans la note du SourceRun
+  (`fetch failed [UND_ERR_CONNECT_TIMEOUT]`).
+- **Retenue sur preuve de la source = visible, attribuée à la source, non bloquante** (décidé, D-453 §1 et
+  D-456 §1). Preuves publiées par la source elle-même : la candidature impossible sur son site — close
+  explicitement (exemple de D-453), page de candidature en erreur 404 ou marquée « modèle expiré » (D-456 §1),
+  page supprimée en 410 (D-462, aucune offre le 24/09) — ; l'employeur
+  absent de l'annonce Workday sous la politique revue du 09/09 (exemple de D-453) ; le retrait de son listing,
+  la publication de test, l'événement de recrutement ou job dating (D-462, 25/09). La source reçoit l'attribution `SOURCE` / `NATIVE_RETENTION`, avec pour preuve le rapport
+  scellé de fin d'ingestion (`completionReportHash`) de sa capture admise ; elle reste DEGRADED dans SourceRun
+  et, seule, donne COMPLETED_WITH_ERRORS. La garde de masse de JobAffinity (plus de la moitié des pages
+  retirées sur 50 offres ou plus = collecte refusée, `jobaffinityWordpress.ts`) reste en place.
+- **Une retenue n'est « non publiée » que par ce RUN.** Elle empêche ce RUN de publier l'offre ; elle ne retire
+  une publication antérieure que si son motif porte une disposition (candidature close, 404, 410, retrait du
+  listing, exclusion de périmètre) et que la source en a daté le retrait (`publicationHold.ts`). Sans
+  disposition (employeur absent de l'annonce Workday, modèle expiré, publication de test, événement de
+  recrutement), l'offre déjà publiée reste en ligne (`PRESENT_BUT_HELD`, `refreshPlan.ts`). L'ingestion compte,
+  après avoir archivé ses retenues, celles qui restent en ligne telles que le site les voit (représentation
+  disponible, offre active et non fusionnée) ; l'alerte le dit par motif et par source (« non publiées par ce
+  RUN ; N restent en ligne depuis une collecte antérieure », « maintien en ligne non mesuré » si la lecture a
+  échoué), le bilan en donne le total (`retainedStillOnline`). Mesuré le 25/09 à 06:29 UTC sur les retenues du
+  RUN du 24/09 (lecture seule, `audits/2026-09-25/scripts/retenues-encore-en-ligne-2409.mts`) : aucune des
+  1 981 retenues sans disposition n'est en ligne (1 967 employeur absent, 12 modèle expiré, 1 test, 1
+  événement) et aucune n'a jamais été publiée ; des 59 retenues à disposition (51 candidatures closes, 8 pages
+  404), 2 avaient été publiées et aucune ne l'est plus ; 2 retenues à instruire (échec de lecture du détail,
+  nordstrom et urbn-hub) restent en ligne depuis une collecte antérieure. Le retrait des offres n'est pas
+  modifié : la question est soumise au CEO.
+- **Exclusion de périmètre = décision de l'équipe, visible, non bloquante** (décidé, D-456 §2). Ce n'est pas une
+  preuve de la source : aucune attribution, aucun échec ; SourceRun, alerte et bilan (`teamExclusions`) la
+  nomment « écartée par l'équipe ». Aucune offre concernée le 24/09.
+- **Ce qui reste bloquant.** Les échecs de lecture (`*_DETAIL_FETCH_FAILED`), les états non reconnus, tout
+  motif nouveau (liste fermée) ; une retenue n'exempte jamais le reste de la collecte : troncature, énumération
+  non prouvée ou réfutée, effondrement ou couverture de champ effondrée restent bloquants et sont nommés dans la
+  même note. Un refus d'identité (`EmployerIdentityReviewRequired`) est un refus d'écriture : il bloque, et les
+  retenues de la même source restent nommées à côté (note du SourceRun, bilan `retainedOnBlockingSources`).
+- **Garde de la preuve négative** (garde technique, pas une décision). « L'annonce ne nomme pas d'employeur »
+  ne distingue pas un portail multi-marques d'une page dont le format a changé. Seul ce motif Workday est
+  surveillé : il devient bloquant (`UNKNOWN` / `NATIVE_RETENTION_JUMP`) si la part des offres de la source
+  qu'il laisse non publiées dépasse de plus de 10 points, et d'au moins 10 offres, la part non publiée au
+  RUN COMPLET de référence. La référence est le dernier RUN complet de production où la source a été collectée,
+  reconnu à l'événement `sectors.qualification` qu'émet seul un RUN non ciblé qui a fini sa boucle
+  (`FULL_RUN_MARKER`) ; un run ciblé, un canari ou `ingest --source` ne l'est jamais. Sa part non publiée
+  compte tous les motifs : borne haute, garde moins sensible, jamais plus. Sans référence, la retenue reste non
+  bloquante (§1 interdit qu'une retenue native bloque faute d'historique) et le bilan le dit
+  (`guardWithoutReference`, ligne « garde technique sans référence » dans l'alerte). Au rejeu du 24/09, les 15 sources
+  Workday sont sans référence : les RUN du 23/09 (images `653920c`, `a532165`) n'émettaient pas encore le
+  marqueur, ajouté le 24/09 (`f1d16b4`) ; le RUN du 24/09 l'a émis. Une retenue qui emporte plus de la moitié du
+  volume publié précédent est déjà un effondrement. Limites connues : une source saturée ne peut plus bondir
+  (Levi's : 1 268 offres non publiées sur 1 270, 99,8 %) ; un saut accepté devient la référence suivante ; pour
+  un jobboard filtré par secteur, la part de la référence compte aussi les offres hors secteur.
+- **« Non prouvée » n'est pas « réfutée », et les deux bloquent** (décidé, D-453 §1, précisé le 25/09).
+  `complete: false` sans aucun fait observé qui contredise la fin du parcours — lien depuis une page d'accueil,
+  flux RSS/Atom, pager terminé sur une page vide — est une énumération **non prouvée** : DEGRADED, `UNKNOWN` /
+  `ENUMERATION_NOT_PROVEN`, note « énumération non prouvée … à instruire ». Avec un fait observé (total annoncé
+  non atteint ou contredit, identifiant répété, motif de parcours nommé par l'adaptateur, ligne illisible), elle
+  est **réfutée** : `UNKNOWN` / `ENUMERATION_REFUTED`, le fait est nommé ; une troncature garde son libellé
+  propre. Une énumération **inconnue** (`complete` absent) ne fait aucun incident (règle du 11/09). Aucune des
+  trois n'atteste une absence. La sortie de l'adaptateur et sa preuve scellée ne changent pas — seule la lecture
+  du RUN distingue non prouvée et réfutée (`pipeline/enumerationReading.ts`) — pour que le rejeu des collectes
+  antérieures reste exact. Limite connue : la lecture ignore `enumeration.termination`, les `scopes` et les écarts
+  au total déclaré inférieurs à 10 % ; un adaptateur qui voit une coupure sans la nommer (ex. Workable, un arrêt
+  `REPEATED_PAGE` de DigitalRecruiters) serait dit « non prouvé » au lieu de « réfuté » — toujours bloquant.
+- **L'alerte et le bilan disent ce qui bloque, et pourquoi chaque offre est retenue** (défauts corrigés).
+  L'alerte empile un bloc par source (lisible sur téléphone, plus de tableau) : chaque bloc dit « bloquant » ou
+  « non bloquant » ; « chaque ligne est une source à investiguer » ne coiffe que les bloquantes ; les retenues
+  sont toutes listées, par nombre d'offres décroissant, avec leur total. Chaque motif a sa ligne : le texte
+  (« l'annonce ne nomme pas l'employeur (X % des offres collectées de la source) », « la source rend la
+  candidature impossible » pour une candidature close, une 404, une 410 ou un modèle expiré, « écartée par
+  l'équipe » pour le périmètre), le statut (« décidé » avec sa décision, « application non arbitrée », rien pour
+  un motif à instruire, dont le texte le dit déjà) et ce qui reste en ligne (voir plus haut) ; la garde se
+  nomme « garde technique ». Une retenue décidée n'est jamais dite « non résolue ». Un refus d'identité dit sa
+  cause en clair, depuis les codes bornés du rapport scellé (motifs de `identity/errors.ts`) : « 477 erreurs de
+  collecte ou d'écriture, dont 477 refus d'identité (employeur non certifié : 477) ». Au RUN du 24/09 (lecture
+  seule, `audits/2026-09-25/scripts/refus-identite-motifs-2409.mts`) : 1 446 refus sur 20 sources, 1 371
+  « employeur non certifié » (portail non certifié mono-marque) et 75 « nouvelle graphie de l'employeur »
+  (b-s-international 59, funky-buddha 15, swatch-group 1).
+  Une source qui échoue avant toute collecte aboutie (exception de la source, délai, anti-bot) est « non
+  collectée » : « aucune collecte aboutie par ce RUN ; ses offres en ligne restent publiées », jamais « en
+  panne, 0 offre publiée » (le refresh ne ferme rien sans collecte attestée). Aucun tiret cadratin, même dans le
+  texte d'erreur d'une source (D-319). Le bilan `ingest.completed` nomme les causes non bloquantes
+  (`nonBlockingCauses` : `NATIVE_RETENTION`, `NATIVE_HTTP_5XX`), liste sans troncature `nativeRetentions`,
+  `teamExclusions`, `guardWithoutReference`, `retainedOnBlockingSources` et `retainedStillOnline`, et met les
+  lignes bloquantes en tête de `failures`.
+  Un RUN ciblé dont les seules sources retiennent sur preuve de la source finit COMPLETED_WITH_ERRORS, jamais
+  `ALL_SOURCES_FAILED`. Défaut connu : l'alerte part avant le bilan (`cli.ts`) et ne porte pas l'issue du RUN.
+- **Le registre des invérifiables parle le vocabulaire du RUN** (défaut corrigé). Il lit les mêmes listes
+  (`retentionClass`) : candidature impossible, retrait, test, événement y sont des retenues décidées
+  (`NATIVE_EVIDENCE`), l'exclusion de périmètre une décision de l'équipe non bloquante, l'échec de lecture un
+  cas à instruire ; l'employeur absent de l'annonce Workday y reste à instruire (seule une certification du
+  propriétaire du portail permettrait de publier). Une énumération `complete: false` y est dite non prouvée ou
+  réfutée, jamais « le balayage n'a pas atteint la fin » ; une énumération inconnue y a sa propre nature
+  (`ENUMERATION_UNKNOWN`), non bloquante comme au RUN, et une source sans défaut nommé n'a pas pour autant le
+  droit d'attester. Les délais de 30 jours des preuves de la source et de 90 jours d'une énumération inconnue
+  sont des choix techniques, non arbitrés. Les règles
+  et les textes vivent dans `pipeline/unverifiable.ts` (`registerEntries`), sous témoin ; le script ne fait que
+  lire et écrire.
+- **Traçabilité des corrections.** `DataCorrection.commitHash` porte le SHA de la release embarquée,
+  le même que `PipelineRun.revision` ; `LOCAL_WORKTREE` ne désigne plus qu'un poste local sans release.
+  Les 755 puis 54 corrections de cycle de vie (`REFRESH_LIFECYCLE`) écrites en production les 23 et
+  24/09 portent `LOCAL_WORKTREE` : elles restent telles quelles (aucune réparation historique) ; leur
+  SHA se retrouve en rapprochant leur `createdAt` de la fenêtre du `PipelineRun` qui les a écrites
+  (le lot `refresh:<uuid>` ne porte pas l'identifiant du RUN).
+
 | Résultat du RUN normal | PipelineRun / worker | Sortie / Healthchecks |
 |---|---|---|
-| Toutes les sources traitées, aucun incident | COMPLETED | 0 / succès |
-| RUN terminé, uniquement des incidents SOURCE prouvés, autres sources réussies, récapitulatif transmis | COMPLETED_WITH_ERRORS | 0 / succès ; incidents conservés et alertés |
-| Erreur INTERNAL ou UNKNOWN, aucune source, toutes les sources en échec, RUN incomplet, finalisation/alerte/heartbeat indisponible | FAILED | non nulle / fail |
+| Toutes les sources traitées, aucun incident (une exclusion de périmètre seule n'en est pas une) | COMPLETED | 0 / succès |
+| RUN terminé, uniquement des incidents SOURCE prouvés (HTTP 5xx natif ; retenues sur preuve de la source, dans la release attestée par `runtime-release.json`), autres sources réussies, récapitulatif transmis | COMPLETED_WITH_ERRORS | 0 / succès ; incidents conservés et alertés |
+| Erreur INTERNAL ou UNKNOWN (dont pannes de transport, énumérations non prouvées ou réfutées, troncatures, retenues à instruire, saut de la preuve négative, refus d'identité), aucune source, toutes les sources en échec, RUN incomplet, finalisation/alerte/heartbeat indisponible | FAILED | non nulle / fail |
 | Arrêt du processus en cours | INTERRUPTED en base quand la persistance reste possible ; FAILED côté worker | non nulle / fail |
+
+L'ingestion ciblée `ingest --source=<clé>` (comme `ingest` sans argument) garde son verdict strict : toute
+attribution, SOURCE comprise (retenue sur preuve de la source, 5xx natif), la rend en échec (code 1) et son
+alerte présente la source comme bloquante. Une exclusion de périmètre seule n'est une attribution sur aucun
+chemin : code 0, et l'alerte la dit non bloquante. D-453 et D-456 ne portent que sur le RUN quotidien.
 
 Le worker n'annonce un succès qu'après un acquittement du CLI correspondant à
 la commande et au run, envoyé **après** la persistance du statut final. Un code 0

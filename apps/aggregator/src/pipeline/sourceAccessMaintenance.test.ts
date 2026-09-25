@@ -154,6 +154,27 @@ describe('normal run maintains its access prerequisite through the Golden Path',
     expect(transport).not.toHaveBeenCalled();
   });
 
+  it('names a transport failure of qualification UNKNOWN and keeps its cause in capture and SourceRun (D-453)', async () => {
+    const source = await create();
+    // Rolex, RUN of 24/09/2026: robots.txt timed out at connect after a valid qualification collection.
+    const cause = Object.assign(new Error('Connect Timeout Error (attempted address: robots.example:443, timeout: 12000ms)'),
+      { name: 'ConnectTimeoutError', code: 'UND_ERR_CONNECT_TIMEOUT' });
+    vi.stubGlobal('fetch', vi.fn(async (input: string | URL | Request) => {
+      const url = new URL(typeof input === 'string' ? input : input instanceof URL ? input.href : input.url);
+      if (url.pathname === '/robots.txt') throw new TypeError('fetch failed', { cause });
+      return new Response('{"apiVersion":"1","jobs":[]}', { headers: { 'content-type': 'application/json' } });
+    }));
+    vi.mocked(loadActiveSources).mockResolvedValue([{ ...source, config: source.config as Record<string, unknown>, revisionId: source.currentRevisionId }]);
+    const result = await ingestAllBySource(db);
+    expect(result).toMatchObject({ total: 1, ok: 0, failed: 1 });
+    expect(result.issues).toEqual([{ source: source.key, origin: 'UNKNOWN', code: 'TRANSPORT_UND_ERR_CONNECT_TIMEOUT', count: 1 }]);
+    const run = await db.sourceRun.findFirstOrThrow({ where: { sourceKey: source.key } });
+    expect(run).toMatchObject({ status: 'ERROR', note: 'fetch failed [UND_ERR_CONNECT_TIMEOUT]' });
+    const access = await db.captureBatch.findFirstOrThrow({ where: { sourceKey: source.key, purpose: 'SOURCE_ACCESS' }, include: { outcome: true, captures: true } });
+    expect(access.outcome).toMatchObject({ status: 'FAILED', failure: 'TypeError__UND_ERR_CONNECT_TIMEOUT' });
+    expect(access.captures.map(capture => [capture.complete, capture.failure])).toEqual([[false, 'TypeError__UND_ERR_CONNECT_TIMEOUT']]);
+  });
+
   it('isolates a refused source and continues the normal run on other ACTIVE sources', async () => {
     const blocked = await create(); await deny(blocked); const allowed = await create(); const transport = native();
     const previous = new Date('2026-01-01T00:00:00Z');

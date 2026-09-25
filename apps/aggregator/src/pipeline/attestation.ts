@@ -58,15 +58,16 @@ const NEVER_ATTESTS: ReadonlySet<RunStatus> = new Set<RunStatus>([
 export type AttestationInput = {
   status: RunStatus;
   /**
-   * Le verdict d'énumération, en booléen : `true` PROUVÉ, `false` RÉFUTÉ, `undefined` INCONNU.
+   * Le verdict d'énumération, en booléen : `true` PROUVÉ, `false` NON PROUVÉ OU RÉFUTÉ, `undefined` INCONNU.
    *
    * **Seul `true` peut autoriser une fermeture** (règle imposée le 2026-09-11). `true` ne s'obtient que par un
    * PARCOURS DÉMONTRÉ — fin d'endpoint, fin de pagination, ou toutes les partitions lues ; jamais par un ratio.
    * Voir `pipeline/enumeration.ts`.
    *
-   * `false` et `undefined` refusent tous deux la fermeture, mais ne disent pas la même chose et ne se traitent
-   * pas pareil : `false` est un défaut à corriger, `undefined` est un parcours à démontrer. Le registre des
-   * invérifiables les sépare.
+   * `false` et `undefined` refusent tous deux la fermeture, mais ne disent pas la même chose. `false` ne prouve pas
+   * qu'une coupure a été vue : un flux RSS ou le parcours des liens d'une page d'accueil rendent `false` parce
+   * qu'ils ne savent pas démontrer la fin. Le RUN distingue « non prouvée » et « réfutée » sur les faits observés
+   * (`enumerationReading.ts`, D-453 §1) ; les deux sont des échecs à instruire. `undefined` n'est pas un incident.
    */
   complete?: boolean;
   errors?: number;

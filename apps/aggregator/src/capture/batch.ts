@@ -18,6 +18,7 @@ import { ingestionQualifications, SOURCE_ADMISSION_POLICY } from '../connectors/
 import { lockSourceWrites } from '../lib/writeLocks.js';
 import { HttpStatusError } from '../lib/http.js';
 import { attestNativeFailure } from '../lib/ingestionIssue.js';
+import { captureFailureLabel } from '../lib/transportFailure.js';
 import { auditUrl } from './context.js';
 
 export async function captureExtraction(db: PrismaClient, sourceKey: string, config: Record<string, unknown>,
@@ -66,7 +67,7 @@ export async function captureExtraction(db: PrismaClient, sourceKey: string, con
     } catch (error) {
       // Native inputs were committed before parsing and survive this failure.
       await db.captureOutcome.create({ data: { batchId: batch.id, status: 'FAILED', extractedCount: 0,
-        failure: error instanceof Error ? error.name : 'UnknownError' } });
+        failure: captureFailureLabel(error, 'UnknownError') } });
       // A server refusal is accepted only with an archived response to this
       // exact GET request. No classification from an error message or a 4xx.
       if (access && error instanceof HttpStatusError && error.status >= 500 && error.status <= 599) {

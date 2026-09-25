@@ -5,12 +5,14 @@ import { withSourceBudget } from '../lib/sourceBudget.js';
 import type { PrismaClient } from '@prisma/client';
 import pLimit from 'p-limit';
 import { loadActiveSources, recordSourceRunSummary } from '../connectors/sourceStore.js';
-import { runIngest, KIND_TO_ATS } from './ingest.js';
+import { runIngest, KIND_TO_ATS, type IngestStats } from './ingest.js';
 import { checkSourceHealth, type SourceHealth } from './health.js';
+import { FULL_RUN_MARKER } from './fullRunMarker.js';
 import { briefError } from '../lib/normalize.js';
 import { maintainSourceAccess } from '../connectors/sourceAccessQualification.js';
 import { WafChallengeError } from '../lib/wafToken.js';
-import { ingestionIssue, issuesFromResult, type IngestionIssue } from '../lib/ingestionIssue.js';
+import { ingestionIssue, isProvenSourceIssue, issuesFromResult, type IngestionIssue } from '../lib/ingestionIssue.js';
+import { failureLine } from '../lib/runSummary.js';
 
 /**
  * Bounded source concurrency with cooperative cancellation. A timed-out source
@@ -118,11 +120,23 @@ export async function ingestAllBySource(prisma: PrismaClient): Promise<Orchestra
 
   if (!process.env.INGEST_ONLY_KEYS?.trim()) {
     assertPipelineRunning();
-    await log.info('sectors.qualification', await maintainReviewedSectors(prisma));
+    // Only a complete, untargeted RUN reaches this point: the negative-proof guard takes its reference here (health.ts).
+    await log.info(FULL_RUN_MARKER, await maintainReviewedSectors(prisma));
   }
   await log.info('run.sources_completed', `[orchestrator] done: ${result.ok}/${result.total} ok, ${result.failed} failed, ${result.timedOut} timed out` +
       (result.failures.length ? ` — ${result.failures.join(', ')}` : ''));
   return result;
+}
+
+/**
+ * The classification of one collected source run, exactly as the RUN applies it: its issues, and its incidents
+ * annotated `blocking` so the alert and the bilan tell what fails the RUN from what stays only visible
+ * (D-453 §1, D-456). A source with no issue — a team exclusion alone — blocks nothing and fails nothing.
+ */
+export function classifySourceRun(stats: IngestStats[], incidents: readonly SourceHealth[]): { issues: IngestionIssue[]; incidents: SourceHealth[] } {
+  const issues = issuesFromResult(stats, incidents);
+  const blocking = issues.some(issue => !isProvenSourceIssue(issue));
+  return { issues, incidents: incidents.map(incident => ({ ...incident, blocking })) };
 }
 
 /** One source, bounded by its own timeout; the counters it touches are shared. */
@@ -141,14 +155,15 @@ async function ingestOne(prisma: PrismaClient, key: string, result: Orchestrator
     // detectable incident (BROKEN) on its next run — one SourceRun per source.
     // Collect any incident so the run can send ONE digest at the end.
     const health = await checkSourceHealth(prisma, stats);
-    result.incidents.push(...health.incidents);
-    const issues = issuesFromResult(stats, health.incidents.length);
+    const { issues, incidents } = classifySourceRun(stats, health.incidents);
+    result.incidents.push(...incidents);
     result.issues!.push(...issues.map(issue => ({ ...issue, source: key })));
-    if (issues.length) await log.warn('source.issue_classified', { sourceKey: key, issues, acceptedNativeOnly: issues.every(i => i.origin === 'SOURCE') });
+    if (issues.length) await log.warn('source.issue_classified', { sourceKey: key, issues, acceptedNativeOnly: issues.every(isProvenSourceIssue) });
     await log.info('source_sync_completed', { sourceKey: key, durationMs: Date.now() - started, fetched: stats.reduce((n, s) => n + s.fetched, 0), created: stats.reduce((n, s) => n + s.created, 0), updated: stats.reduce((n, s) => n + s.updated, 0), held: stats.reduce((n, s) => n + (s.held ?? 0), 0), errors: stats.reduce((n, s) => n + s.errors, 0), http: log.counters(key), stats, health: { broken: health.broken, degraded: health.degraded } });
     if (issues.length) {
+      // A retention decided on native evidence stays counted and listed (D-453 §1); its line says it does not block.
       result.failed++;
-      result.failures.push(key + ' (ingest errors)');
+      result.failures.push(failureLine(key, issues, 'erreurs d’ingestion'));
     } else result.ok++;
   } catch (error) {
     log.assertHealthy();
@@ -164,20 +179,21 @@ async function ingestOne(prisma: PrismaClient, key: string, result: Orchestrator
     const challenged = error instanceof WafChallengeError;
     const issue = ingestionIssue(error);
     result.issues!.push({ ...issue, source: key });
-    result.incidents.push({ source: key, status: 'BROKEN', jobs: 0, previous: null,
-      note: `${issue.origin}/${issue.code}: ${briefError(error)}` });
-    await log.warn('source.issue_classified', { sourceKey: key, issues: [issue], acceptedNativeOnly: issue.origin === 'SOURCE' });
+    // Nothing collected to the end: the refresh leaves the source's offers open (L-01), the alert says so.
+    result.incidents.push({ source: key, status: 'BROKEN', jobs: 0, previous: null, blocking: !isProvenSourceIssue(issue),
+      notCollected: true, note: `${issue.origin}/${issue.code}: ${briefError(error)}` });
+    await log.warn('source.issue_classified', { sourceKey: key, issues: [issue], acceptedNativeOnly: isProvenSourceIssue(issue) });
     if (timedOut) {
       result.timedOut++;
-      result.failures.push(`${key} (timedOut)`);
+      result.failures.push(failureLine(key, [issue], 'délai dépassé'));
       await log.error('source.timed_out', `[orchestrator] ${key}: timed out after ${PER_SOURCE_TIMEOUT_MS / 1000}s, moving on`, { error });
     } else if (challenged) {
       result.failed++;
-      result.failures.push(`${key} (challenged)`);
+      result.failures.push(failureLine(key, [issue], 'anti-bot'));
       await log.error('source.challenged', `[orchestrator] ${key}: bloqué par un anti-bot (${error.vendor}) — offres conservées`, { error });
     } else {
       result.failed++;
-      result.failures.push(`${key} (failed)`);
+      result.failures.push(failureLine(key, [issue], 'échec'));
       await log.error('source.failed', `[orchestrator] ${key}: failed — ${briefError(error)}`, { error });
     }
     // L-01: a source that did not finish gets a SourceRun anyway — TIMEOUT or

@@ -61,6 +61,37 @@ describe('native extraction evidence', () => {
     expect(network).toHaveBeenCalledTimes(2);
   });
 
+  it('keeps the transport cause on the capture rows and replays the failure under its live name (D-453)', async () => {
+    const source = key();
+    // The production shape of Rolex on 24/09/2026: undici's TypeError with a coded cause.
+    const timeout = () => new TypeError('fetch failed', { cause: Object.assign(new Error('Connect Timeout Error'), { name: 'ConnectTimeoutError', code: 'UND_ERR_CONNECT_TIMEOUT' }) });
+    // An adapter may keep the failed attempt's NAME in its output: replay must reproduce it exactly.
+    const readKeepingFailure = async () => {
+      let failed = '';
+      try { await fetchWithRetry(url, {}, 1); } catch (error) { failed = (error as Error).name; }
+      const value = await fetchJson<{ id: string; title: string }>(url);
+      return { jobs: [{ externalId: value.id, title: value.title, url, raw: { id: value.id, failed } }] };
+    };
+    const network = vi.fn().mockRejectedValueOnce(timeout()).mockImplementation(async () => new Response(payload));
+    vi.stubGlobal('fetch', network);
+    const live = await captureExtraction(db, source, {}, undefined, readKeepingFailure);
+    expect(live.jobs[0].raw).toMatchObject({ failed: 'TypeError' });
+    const batch = await latest(source);
+    expect(batch.captures[0]).toMatchObject({ complete: false, failure: 'TypeError__UND_ERR_CONNECT_TIMEOUT' });
+    network.mockImplementation(async () => { throw new Error('Live HTTP forbidden'); });
+    const replay = await replayExtraction(db, batch.id, readKeepingFailure);
+    expect(replay.jobs).toEqual(live.jobs.map(({ captureBatchId: _batch, captureOutputId: _output, ...job }) => job));
+    // A capture that never succeeds keeps the cause on its outcome, and its issue is UNKNOWN, never INTERNAL.
+    const failedSource = key();
+    vi.stubGlobal('fetch', vi.fn(async () => { throw timeout(); }));
+    let failure: unknown;
+    try { await captureExtraction(db, failedSource, {}, undefined, read); } catch (error) { failure = error; }
+    const failedBatch = await latest(failedSource);
+    expect(failedBatch.outcome).toMatchObject({ status: 'FAILED', failure: 'TypeError__UND_ERR_CONNECT_TIMEOUT' });
+    expect(failedBatch.captures.map(capture => capture.failure)).toEqual(Array(3).fill('TypeError__UND_ERR_CONNECT_TIMEOUT'));
+    expect(ingestionIssue(failure)).toEqual({ origin: 'UNKNOWN', code: 'TRANSPORT_UND_ERR_CONNECT_TIMEOUT', count: 1 });
+  });
+
   it('commits exact native bytes before parsing but cannot publish an unregistered probe', async () => {
     const source = key();
     vi.stubGlobal('fetch', vi.fn(async () => new Response(payload, { headers: { 'content-type': 'application/json',

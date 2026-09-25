@@ -18,7 +18,9 @@
  *
  *   PROVEN      on a **atteint la fin du parcours**, et on peut le montrer ;
  *   UNKNOWN     on ne sait pas si on a tout vu — suivi et mesuré, mais **aucun droit de fermer** ;
- *   REFUTED     on a la preuve du contraire : troncature, cycle, contradiction du compteur.
+ *   REFUTED     on a la preuve du contraire (troncature, cycle, contradiction du compteur), ou l'adaptateur
+ *               refuse la preuve (`complete: false`) ; le RUN relit ce refus en « non prouvée » quand aucune
+ *               coupure n'est observée (`enumerationReading.ts`, D-453 §1).
  *
  * ────────────────────────────────────────────────────────────────────────────────────────────────────────────
  * RÈGLE MÉTIER IMPOSÉE LE 2026-09-11 (arbitrage du propriétaire) — LA PREUVE EST UN PARCOURS, PAS UN RATIO.
@@ -57,8 +59,10 @@ export type EnumerationInput = {
    * L'adaptateur DÉMONTRE avoir atteint la fin du parcours : dernière page sans continuation, endpoint unique
    * documenté comme complet, ou toutes les partitions lues. C'est la SEULE façon d'obtenir `PROVEN`.
    *
-   * `false` est un refus explicite (l'adaptateur a vu la coupure) ; `undefined` signifie qu'il ne se prononce
-   * pas — et une absence de démonstration n'est pas une démonstration.
+   * `false` est un refus explicite de la preuve — soit l'adaptateur a vu une coupure, soit il sait ne pas pouvoir
+   * démontrer la fin (flux RSS, liens d'une page d'accueil) ; le verdict le compte `REFUTED` dans les deux cas et
+   * le RUN les distingue sur les faits observés (`enumerationReading.ts`). `undefined` signifie qu'il ne se
+   * prononce pas — et une absence de démonstration n'est pas une démonstration.
    */
   adapterProvesCompletion?: boolean;
   /** Le total que la SOURCE annonce pour son listing, si elle l'annonce. */
@@ -85,8 +89,10 @@ export function enumerationVerdict(input: EnumerationInput): EnumerationVerdict 
 
   /**
    * Un adaptateur qui REFUSE explicitement la preuve sait quelque chose que le compte ne dit pas — une page
-   * d'index mal déclarée, une pagination dont il a vu la coupure. Son refus n'est pas rattrapable par un total
-   * atteint : il l'emporte. (C'est le cas `complete: false` respecté depuis l'audit du 2026-09-09.)
+   * d'index mal déclarée, une pagination dont il a vu la coupure, ou un parcours qu'il sait indémontrable. Son
+   * refus n'est pas rattrapable par un total atteint : il l'emporte. (C'est le cas `complete: false` respecté
+   * depuis l'audit du 2026-09-09.) Ce verdict scellé reste `REFUTED` ; « non prouvée » et « réfutée » ne se
+   * séparent qu'à la lecture du RUN (`enumerationReading.ts`, D-453 §1), jamais dans la preuve.
    */
   if (adapterProvesCompletion === false) return 'REFUTED';
 

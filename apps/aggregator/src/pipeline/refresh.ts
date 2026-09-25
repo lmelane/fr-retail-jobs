@@ -2,6 +2,7 @@ import { assertPipelineRunning } from '../lib/pipelinePause.js';
 import { lockOccupationTaxonomy } from '@catwalks/db/occupations';
 import { publicationJobPatch } from '../publication/presentation.js';
 import { evidenceHash } from '../lib/evidenceHash.js';
+import { deployedCommitHash } from '../capture/revision.js';
 import { log } from '../observability/logger.js';
 import type { Prisma, PrismaClient } from '@prisma/client';
 import { selectApplySource } from '@catwalks/db/publications';
@@ -308,7 +309,7 @@ export async function runRefresh(prisma: PrismaClient, options: RefreshOptions =
           const deactivatedIds = beforeState.sources.filter((source: { id: string; isActive: boolean }) => source.isActive &&
             job.sources.some(afterSource => afterSource.id === source.id && !afterSource.isActive)).map((source: { id: string }) => source.id);
           await tx.dataCorrection.create({ data: { batchId: auditBatchId, planHash: manifest?.planHash ?? evidenceHash({ beforeState, evidence: [...evidence.values()] }),
-            commitHash: process.env.RAILWAY_GIT_COMMIT_SHA ?? 'LOCAL_WORKTREE', finding: 'REFRESH_LIFECYCLE', entityType: 'Job', entityId: job.id,
+            commitHash: deployedCommitHash(), finding: 'REFRESH_LIFECYCLE', entityType: 'Job', entityId: job.id,
             before: beforeState, after: afterState,
             evidence: { outcome: skipped.get(job.id) ?? (changed ? 'APPLIED' : 'UNCHANGED'), deactivatedIds,
               proofs: [...evidence.values()].filter(source => source.jobId === job.id), cutoff: cutoff.toISOString() },
@@ -353,7 +354,7 @@ export async function runRefresh(prisma: PrismaClient, options: RefreshOptions =
       if (outcome !== 'APPLIED' && !manifest) return 0;
       await tx.dataCorrection.create({ data: { batchId: auditBatchId,
         planHash: manifest?.planHash ?? evidenceHash({ before, proof: proof ?? null }),
-        commitHash: process.env.RAILWAY_GIT_COMMIT_SHA ?? 'LOCAL_WORKTREE', finding: 'REFRESH_LIFECYCLE',
+        commitHash: deployedCommitHash(), finding: 'REFRESH_LIFECYCLE',
         entityType: 'JobSource', entityId: id, before,
         after: outcome === 'APPLIED' ? { ...before, isActive: false } : before,
         evidence: { outcome, deactivatedIds: outcome === 'APPLIED' ? [id] : [], proofs: proof ? [proof] : [], cutoff: cutoff.toISOString() } } });
@@ -365,7 +366,7 @@ export async function runRefresh(prisma: PrismaClient, options: RefreshOptions =
     const audited = new Set((await prisma.dataCorrection.findMany({ where: { batchId: auditBatchId, entityType: 'Job' }, select: { entityId: true } })).map(row => row.entityId));
     const missing = [...new Set(manifest.entries.flatMap(entry => entry.jobId ? [entry.jobId] : []))].filter(id => !audited.has(id));
     if (missing.length) await prisma.dataCorrection.createMany({ data: missing.map(id => ({
-      batchId: auditBatchId, planHash: manifest.planHash, commitHash: process.env.RAILWAY_GIT_COMMIT_SHA ?? 'LOCAL_WORKTREE',
+      batchId: auditBatchId, planHash: manifest.planHash, commitHash: deployedCommitHash(),
       finding: 'REFRESH_LIFECYCLE', entityType: 'Job', entityId: id,
       before: { expectedHash: manifest.entries.find(entry => entry.jobId === id)!.beforeHash }, after: { available: false },
       evidence: { outcome: 'MISSING_OR_OUTSIDE_SCOPE', deactivatedIds: [] },

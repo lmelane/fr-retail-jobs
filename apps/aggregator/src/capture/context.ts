@@ -1,5 +1,6 @@
 import { AsyncLocalStorage } from 'node:async_hooks';
 import { digestBytes } from '../lib/evidenceHash.js';
+import { parseCaptureFailure } from '../lib/transportFailure.js';
 import { logicalRequestFingerprint, REQUEST_NEGOTIATION_HEADERS, type RequestDescription, type RequestData, type TransportHop } from './requestData.js';
 
 export { digestBytes } from '../lib/evidenceHash.js';
@@ -30,9 +31,17 @@ export class OfflineReplayError extends Error {
   constructor(message: string) { super(message); this.name = 'OfflineReplayError'; }
 }
 /** A recorded failed attempt is data, not a missing/corrupt archive. The normal
- * retry loop must consume the next recorded attempt without live HTTP. */
+ * retry loop must consume the next recorded attempt without live HTTP. It is
+ * rethrown under the LIVE error name (adapters may keep that name in their
+ * output); a recorded transport cause (`TypeError__UND_ERR_SOCKET`) stays attached. */
 export class RecordedTransportError extends Error {
-  constructor(name: string) { super('Recorded transport attempt failed'); this.name = name; }
+  readonly transportCode?: string;
+  constructor(failure: string) {
+    super('Recorded transport attempt failed');
+    const { name, transportCode } = parseCaptureFailure(failure);
+    this.name = name;
+    if (transportCode) this.transportCode = transportCode;
+  }
 }
 export class CaptureUnavailableError extends Error {
   constructor(cause: unknown) { super('Native response capture unavailable; extraction stopped', { cause }); this.name = 'CaptureUnavailableError'; }

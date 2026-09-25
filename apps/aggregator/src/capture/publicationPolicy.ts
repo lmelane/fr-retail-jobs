@@ -5,6 +5,7 @@ import { certifiedPortalScope } from '../connectors/sourceIdentity.js';
 import { employerFromCertifiedScope } from '../identity/portalEmployer.js';
 import { evidenceHash } from '../lib/evidenceHash.js';
 import { SCOPE_HOLD } from '../pipeline/scopeDecisions.js';
+import { deployedCommitHash } from './revision.js';
 
 type CapturedPublication = Awaited<ReturnType<typeof readCapturedPublication>>;
 export type PublicationInput = NormalizedJob & { sourceKey: string };
@@ -34,7 +35,7 @@ export async function enforcePublicationPolicy(tx: Prisma.TransactionClient, cap
     if (scope?.verdict !== 'OUT_OF_SCOPE' || scope.decidedAt.getTime() !== withdrawn?.getTime()) throw new Error('Publication scope decision is no longer current');
     const planHash = evidenceHash(scope.decisionText);
     await tx.dataCorrection.createMany({ data: [{ batchId: `scope-policy:${planHash}`, planHash,
-      commitHash: process.env.RAILWAY_GIT_COMMIT_SHA ?? 'LOCAL_WORKTREE', finding: 'PUBLICATION_SCOPE_HOLD',
+      commitHash: deployedCommitHash(), finding: 'PUBLICATION_SCOPE_HOLD',
       entityType: 'SourceExtraction', entityId: input.captureOutputId!,
       before: { publicationHold: native.publicationHold ?? null, publicationWithdrawnAt: native.publicationWithdrawnAt ?? null },
       after: { publicationHold: input.publicationHold, publicationWithdrawnAt: withdrawn!.toISOString() },

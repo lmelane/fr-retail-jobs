@@ -79,7 +79,7 @@ try {
      */
     const health = await checkSourceHealth(prisma, stats);
     const alerted = await sendHealthAlert(health);
-    const issues = issuesFromResult(stats, health.incidents.length);
+    const issues = issuesFromResult(stats, health.incidents);
     await log.info('command.result', { ok: stats.length > 0 && issues.length === 0, command, sources: stats, issues, geo, health, alerted });
 
     if (!stats.length || issues.length > 0) {
@@ -188,8 +188,11 @@ try {
     const depuis = arg('depuis'), limite = Number(arg('limite') ?? 200);
     if (depuis !== undefined && !/^\d{1,19}$/.test(depuis)) throw new Error('--depuis must be a sequence number');
     const stats = await consommerFlux(prisma, fluxHttp(base, cle), { taillePage: limite, ...(depuis !== undefined ? { depuis: BigInt(depuis) } : {}) });
-    await log.info('command.result', { ok: !stats.refus, command, ...stats, dernierSeq: stats.dernierSeq?.toString() ?? null });
-    if (stats.refus) process.exitCode = 1;
+    // D-455 : une ligne du stock que la re-projection n'a pas su reconstruire garde son ancien employeur affiché.
+    // Le flux a bien été lu, mais la commande le dit : un ok:true silencieux cacherait l'écart à l'ordonnanceur.
+    const nonReprojetees = stats.reprojection.nonReprojetees.length;
+    await log.info('command.result', { ok: !stats.refus && nonReprojetees === 0, command, ...stats, dernierSeq: stats.dernierSeq?.toString() ?? null });
+    if (stats.refus || nonReprojetees > 0) process.exitCode = 1;
   } else if (command === 'retire-source') {
     /**
      * Cleans up after a catalogue line is removed (a robots-forbidden route, an

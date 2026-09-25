@@ -9,6 +9,7 @@ import type { Prisma, PrismaClient } from '@prisma/client';
 import { lockCompanyRows, lockSourceWrites } from '../lib/writeLocks.js';
 import { randomUUID } from 'node:crypto';
 import { evidenceHash } from '../lib/evidenceHash.js';
+import { deployedCommitHash } from '../capture/revision.js';
 import { quarantineSnapshot } from './refreshManifest.js';
 import { selectApplySource } from '@catwalks/db/publications';
 import { recordEvents, changedEvents, diffStructuralFields, structuralValuesOf } from './jobEvents.js';
@@ -99,7 +100,7 @@ async function deactivate(prisma: PrismaClient, sourceWhere: Prisma.JobSourceWhe
     const before = quarantineSnapshot(source);
     await tx.jobSource.update({ where: { id: source.id }, data: { isActive: false } });
     await tx.dataCorrection.create({ data: { batchId, planHash: evidenceHash({ before, disposition }),
-      commitHash: process.env.RAILWAY_GIT_COMMIT_SHA ?? 'LOCAL_WORKTREE', finding: 'QUARANTINE_SOURCE_DEACTIVATION',
+      commitHash: deployedCommitHash(), finding: 'QUARANTINE_SOURCE_DEACTIVATION',
       entityType: 'JobSource', entityId: source.id, before, after: { ...before, isActive: false }, evidence: { disposition } } });
     assertSourceRunning();
     return 1;
