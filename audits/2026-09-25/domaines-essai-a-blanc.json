@@ -1,0 +1,5769 @@
+{
+ "mesureLe": "2026-09-25T09:54:39.202762+00:00",
+ "limite": 150,
+ "sociétésSansDomaine": 452,
+ "resultats": [
+  {
+   "id": "cmtvbixfg0alfpd01s6cm9cbp",
+   "nom": "Kate Spade",
+   "cle": "SOURCE_5579730968daaac9b6acff7bdcbea6184579174556163d81d212f7031080f99c",
+   "actives": 551,
+   "publiables": 551,
+   "publiablesFR": 0,
+   "hotes": {
+    "tapestry.wd108.myworkdayjobs.com": 551
+   },
+   "sources": {
+    "tapestry": 551
+   },
+   "resolveDomains": {
+    "domain": "katespade.com",
+    "domainSource": "wikidata"
+   },
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "tapestry.wd108.myworkdayjobs.com",
+     "n": 551,
+     "domaine": null
+    }
+   ],
+   "soeurs": [],
+   "verification": {
+    "katespade.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.katespade.eu",
+      "titre": "Kate Spade New York | Handbags, Clothing &amp; Accessories FR"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cr957f902abe3206942a9194e1",
+   "nom": "Neiman Marcus",
+   "cle": "NEIMAN_MARCUS",
+   "actives": 473,
+   "publiables": 473,
+   "publiablesFR": 0,
+   "hotes": {
+    "saks.wd1.myworkdayjobs.com": 473
+   },
+   "sources": {
+    "saks": 473
+   },
+   "resolveDomains": {
+    "domain": "neimanmarcus.com",
+    "domainSource": "wikidata"
+   },
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "saks.wd1.myworkdayjobs.com",
+     "n": 473,
+     "domaine": null
+    }
+   ],
+   "soeurs": [],
+   "verification": {
+    "neimanmarcus.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 403,
+      "hoteFinal": "www.neimanmarcus.com",
+      "titre": "neimanmarcus.com"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmuebk33i0wgloi355afus1wo",
+   "nom": "Reitmans (Canada) Ltée/Ltd",
+   "cle": "SOURCE_763fa9762a16c29c3e6537d864f21d603b378248343adb27a6b8c94fe6049bef",
+   "actives": 335,
+   "publiables": 335,
+   "publiablesFR": 0,
+   "hotes": {
+    "jobs.smartrecruiters.com": 335
+   },
+   "sources": {
+    "penningtons": 335
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "jobs.smartrecruiters.com",
+     "n": 335,
+     "domaine": null
+    }
+   ],
+   "soeurs": [],
+   "verification": {}
+  },
+  {
+   "id": "cmuebc9r30tndoi35ypfqtiug",
+   "nom": "Madewell Stores Madewell, Inc.",
+   "cle": "SOURCE_c7ec6f950a298defe3ede0430252f9fbe3cfd9dac9c386a695bf0de5b723f045",
+   "actives": 331,
+   "publiables": 331,
+   "publiablesFR": 0,
+   "hotes": {
+    "jcrew.wd1.myworkdayjobs.com": 331
+   },
+   "sources": {
+    "madewell": 331
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "jcrew.wd1.myworkdayjobs.com",
+     "n": 331,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "Madewell Stores Madewell, Inc.",
+     "domaine": "madewell.com",
+     "source": "manual"
+    },
+    {
+     "nom": "Madewell Stores Madewell",
+     "domaine": "madewell.com",
+     "source": "manual"
+    },
+    {
+     "nom": "Madewell",
+     "domaine": "madewell.com",
+     "source": "registre-relu-2026-09-18"
+    }
+   ],
+   "verification": {
+    "madewell.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.madewell.com",
+      "titre": "Women’s + Men's Clothing | Jeans, Tees, Sweaters + More | Madewell"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmued14sz44oyoi35eiuuial3",
+   "nom": "United States of Aritzia Inc.",
+   "cle": "SOURCE_1e842ead15a04e3d2479b071a2e8bba352b916c3aff7121cd242f5593a725f1b",
+   "actives": 325,
+   "publiables": 325,
+   "publiablesFR": 0,
+   "hotes": {
+    "aritzia.wd3.myworkdayjobs.com": 325
+   },
+   "sources": {
+    "aritzia": 325
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "aritzia.wd3.myworkdayjobs.com",
+     "n": 325,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "Aritzia",
+     "domaine": "aritzia.com",
+     "source": "wikidata"
+    }
+   ],
+   "verification": {
+    "aritzia.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 403,
+      "hoteFinal": "www.aritzia.com",
+      "titre": "Just a moment..."
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmtkf06ej0lqap22bicqm90nc",
+   "nom": "Maje",
+   "cle": "MAJE",
+   "actives": 232,
+   "publiables": 232,
+   "publiablesFR": 67,
+   "hotes": {
+    "jobs.smartrecruiters.com": 232
+   },
+   "sources": {
+    "sandro": 232
+   },
+   "resolveDomains": {
+    "domain": "maje.com",
+    "domainSource": "wikidata"
+   },
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "jobs.smartrecruiters.com",
+     "n": 232,
+     "domaine": null
+    }
+   ],
+   "soeurs": [],
+   "verification": {
+    "maje.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "fr.maje.com",
+      "titre": "Maje Site Officiel : Vêtements et Accessoires pour Femme"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmtvs8inq0000msh97ttbw6dt",
+   "nom": "Lane Bryant",
+   "cle": "LANE_BRYANT",
+   "actives": 215,
+   "publiables": 215,
+   "publiablesFR": 0,
+   "hotes": {
+    "knitwellgroup.wd1.myworkdayjobs.com": 215
+   },
+   "sources": {
+    "knitwell-us-corporate": 9,
+    "knitwell-us-retail": 206
+   },
+   "resolveDomains": {
+    "domain": "lanebryant.com",
+    "domainSource": "wikidata"
+   },
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "knitwellgroup.wd1.myworkdayjobs.com",
+     "n": 215,
+     "domaine": null
+    }
+   ],
+   "soeurs": [],
+   "verification": {
+    "lanebryant.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.lanebryant.com",
+      "titre": "Plus Size Clothing for Women | Lane Bryant"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmueks6co0018mr5o9lux1rh7",
+   "nom": "PUMA North America, Inc.",
+   "cle": "SOURCE_91bfd4b1a483b3f557ff43de2158a67ab7e76d028b7a51345b7cfff2dc05e91f",
+   "actives": 212,
+   "publiables": 212,
+   "publiablesFR": 0,
+   "hotes": {
+    "puma.wd502.myworkdayjobs.com": 212
+   },
+   "sources": {
+    "puma": 212
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "puma.wd502.myworkdayjobs.com",
+     "n": 212,
+     "domaine": null
+    }
+   ],
+   "soeurs": [],
+   "verification": {}
+  },
+  {
+   "id": "cmtvs8iu70001msh9r6ivl3cu",
+   "nom": "Ann Taylor",
+   "cle": "ANN_TAYLOR",
+   "actives": 194,
+   "publiables": 194,
+   "publiablesFR": 0,
+   "hotes": {
+    "knitwellgroup.wd1.myworkdayjobs.com": 194
+   },
+   "sources": {
+    "knitwell-us-corporate": 6,
+    "knitwell-us-retail": 188
+   },
+   "resolveDomains": {
+    "domain": "anntaylor.com",
+    "domainSource": "wikidata"
+   },
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "knitwellgroup.wd1.myworkdayjobs.com",
+     "n": 194,
+     "domaine": null
+    }
+   ],
+   "soeurs": [],
+   "verification": {
+    "anntaylor.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.anntaylor.com",
+      "titre": "Ann Taylor : Women's Clothing, Petites, Dresses, Pants, Shirts, Sweaters"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmue6y5sm0001l46e0zdf4x3a",
+   "nom": "Max Mara Fashion Group",
+   "cle": "SOURCE_1f8f4cdaa1c0a3a894bd729b305302c0c95ce6f679d3231d1727c3f0edb3edbe",
+   "actives": 191,
+   "publiables": 191,
+   "publiablesFR": 4,
+   "hotes": {
+    "jobs.smartrecruiters.com": 191
+   },
+   "sources": {
+    "marella": 191
+   },
+   "resolveDomains": {
+    "domain": "maxmarafashiongroup.com",
+    "domainSource": "wikidata"
+   },
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "jobs.smartrecruiters.com",
+     "n": 191,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "Fashion Group",
+     "domaine": "lvmh.com",
+     "source": "manual"
+    }
+   ],
+   "verification": {
+    "maxmarafashiongroup.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.maxmarafashiongroup.com",
+      "titre": "Sito ufficiale Max Mara Fashion Group"
+     },
+     "nomDansDomaine": true
+    },
+    "lvmh.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.lvmh.com",
+      "titre": "LVMH, world leader in high-quality products"
+     },
+     "nomDansDomaine": false
+    }
+   }
+  },
+  {
+   "id": "cmuebyotm1i94oi3546unohdu",
+   "nom": "1151 Swarovski Retail Ventures",
+   "cle": "SOURCE_9a614f6a28291ea3eff2e6bda2f7ba1b22ca52eab08c33094e7924d78911bc3b",
+   "actives": 181,
+   "publiables": 181,
+   "publiablesFR": 0,
+   "hotes": {
+    "swarovski.wd3.myworkdayjobs.com": 181
+   },
+   "sources": {
+    "swarovski": 181
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "swarovski.wd3.myworkdayjobs.com",
+     "n": 181,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "Swarovski",
+     "domaine": "swarovski.com",
+     "source": "wikidata"
+    }
+   ],
+   "verification": {
+    "swarovski.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.swarovski.com",
+      "titre": "Swarovski Official | Bijoux, montres et décorations en cristal"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cr9b98334f7d83dfa1519910b7",
+   "nom": "FP Movement",
+   "cle": "FP_MOVEMENT",
+   "actives": 153,
+   "publiables": 153,
+   "publiablesFR": 0,
+   "hotes": {
+    "stores-na-urbn.icims.com": 132,
+    "homeoffice-na-urbn.icims.com": 21
+   },
+   "sources": {
+    "urbn-hub": 153
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "stores-na-urbn.icims.com",
+     "n": 132,
+     "domaine": null
+    },
+    {
+     "hote": "homeoffice-na-urbn.icims.com",
+     "n": 21,
+     "domaine": null
+    }
+   ],
+   "soeurs": [],
+   "verification": {}
+  },
+  {
+   "id": "cmtk48edn1bx1ny2bw96j1oca",
+   "nom": "Moët Hennessy",
+   "cle": "MOET_HENNESSY",
+   "actives": 132,
+   "publiables": 132,
+   "publiablesFR": 30,
+   "hotes": {
+    "emea3.recruitmentplatform.com": 125,
+    "lvmh-china.ajinga.com": 7
+   },
+   "sources": {
+    "lvmh": 132
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "emea3.recruitmentplatform.com",
+     "n": 125,
+     "domaine": "recruitmentplatform.com"
+    },
+    {
+     "hote": "lvmh-china.ajinga.com",
+     "n": 7,
+     "domaine": "ajinga.com"
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "Hennessy",
+     "domaine": "hennessy.com",
+     "source": "wikidata"
+    }
+   ],
+   "verification": {
+    "recruitmentplatform.com": {
+     "logo": 404,
+     "accueil": {
+      "erreur": "fetch failed"
+     },
+     "nomDansDomaine": false
+    },
+    "ajinga.com": {
+     "logo": 200,
+     "accueil": {
+      "erreur": "fetch failed"
+     },
+     "nomDansDomaine": false
+    },
+    "hennessy.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.hennessy.com",
+      "titre": "Hennessy Cognac | Hennessy"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cr5c9308138c86e24341e51b89",
+   "nom": "Claudie Pierlot",
+   "cle": "CLAUDIE_PIERLOT",
+   "actives": 104,
+   "publiables": 104,
+   "publiablesFR": 62,
+   "hotes": {
+    "jobs.smartrecruiters.com": 104
+   },
+   "sources": {
+    "sandro": 104
+   },
+   "resolveDomains": {
+    "domain": "claudiepierlot.com",
+    "domainSource": "wikidata"
+   },
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "jobs.smartrecruiters.com",
+     "n": 104,
+     "domaine": null
+    }
+   ],
+   "soeurs": [],
+   "verification": {
+    "claudiepierlot.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "fr.claudiepierlot.com",
+      "titre": "Claudie Pierlot site officiel | Archives jusqu&#x27;à -70%* sur les anciennes collections"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cr73ef5b87fa07d0af0b1d74b9",
+   "nom": "Diesel",
+   "cle": "DIESEL",
+   "actives": 98,
+   "publiables": 98,
+   "publiablesFR": 5,
+   "hotes": {
+    "careers.otb.net": 98
+   },
+   "sources": {
+    "maison-margiela": 98
+   },
+   "resolveDomains": {
+    "domain": "diesel.com",
+    "domainSource": "wikidata"
+   },
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "careers.otb.net",
+     "n": 98,
+     "domaine": "otb.net"
+    }
+   ],
+   "soeurs": [],
+   "verification": {
+    "diesel.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "diesel.com",
+      "titre": "Diesel - Country Selector"
+     },
+     "nomDansDomaine": true
+    },
+    "otb.net": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.otb.net",
+      "titre": "OTB Group – Only The Brave – OTB Group"
+     },
+     "nomDansDomaine": false
+    }
+   }
+  },
+  {
+   "id": "cmtrspy2f1pqmpg5mtx61w9oj",
+   "nom": "Nike Sports (China) Co.",
+   "cle": "NIKE_SPORTS_CHINA_CO",
+   "actives": 78,
+   "publiables": 78,
+   "publiablesFR": 0,
+   "hotes": {
+    "nike.wd1.myworkdayjobs.com": 78
+   },
+   "sources": {
+    "nike": 78
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "nike.wd1.myworkdayjobs.com",
+     "n": 78,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "NIKE",
+     "domaine": "nike.com",
+     "source": "source-careers"
+    }
+   ],
+   "verification": {
+    "nike.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.nike.com",
+      "titre": "Nike. Just Do It. Nike FR"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmueks7vs003omr5o60ryy9m2",
+   "nom": "PUMA SE",
+   "cle": "SOURCE_e256010c878e88fde786e9790252e25a90b79901d57d465671bc161d0ee90b54",
+   "actives": 74,
+   "publiables": 74,
+   "publiablesFR": 0,
+   "hotes": {
+    "puma.wd502.myworkdayjobs.com": 74
+   },
+   "sources": {
+    "puma": 74
+   },
+   "resolveDomains": {
+    "domain": "puma.com",
+    "domainSource": "wikidata"
+   },
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "puma.wd502.myworkdayjobs.com",
+     "n": 74,
+     "domaine": null
+    }
+   ],
+   "soeurs": [],
+   "verification": {
+    "puma.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "eu.puma.com",
+      "titre": "PUMA France | Vêtements, chaussures et accessoires | Puma France"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmuebduds0vl9oi35f0cp2bts",
+   "nom": "US02 Movado Retail Group, Inc.",
+   "cle": "SOURCE_d687fb46ad4dc7086c717b84d1852a839c656dfe41abae062d042e88f73f9478",
+   "actives": 73,
+   "publiables": 73,
+   "publiablesFR": 0,
+   "hotes": {
+    "movadogroup.wd1.myworkdayjobs.com": 73
+   },
+   "sources": {
+    "movado": 73
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "movadogroup.wd1.myworkdayjobs.com",
+     "n": 73,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "Movado",
+     "domaine": "movado.com",
+     "source": "source-careers"
+    }
+   ],
+   "verification": {
+    "movado.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.movado.com",
+      "titre": "Movado | 145 Years of Swiss Watchmaking"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmuebzqzl1lzooi35wwbg4hjn",
+   "nom": "UNIQLO AUSTRALIA PTY LTD.",
+   "cle": "SOURCE_7b5153223741d3751be2e9ca0147062e2448bc42ae824aa367d14b19288b937d",
+   "actives": 71,
+   "publiables": 71,
+   "publiablesFR": 0,
+   "hotes": {
+    "fastretailing.wd3.myworkdayjobs.com": 71
+   },
+   "sources": {
+    "uniqlo-au-stores": 71
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "fastretailing.wd3.myworkdayjobs.com",
+     "n": 71,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "UNIQLO",
+     "domaine": "uniqlo.com",
+     "source": "manual"
+    }
+   ],
+   "verification": {
+    "uniqlo.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 403,
+      "hoteFinal": "www.uniqlo.com",
+      "titre": "Access Denied"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cr3a14f8ab245fd4f80eb4766c",
+   "nom": "Bergdorf Goodman",
+   "cle": "BERGDORF_GOODMAN",
+   "actives": 71,
+   "publiables": 71,
+   "publiablesFR": 0,
+   "hotes": {
+    "saks.wd1.myworkdayjobs.com": 71
+   },
+   "sources": {
+    "saks": 71
+   },
+   "resolveDomains": {
+    "domain": "bergdorfgoodman.com",
+    "domainSource": "wikidata"
+   },
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "saks.wd1.myworkdayjobs.com",
+     "n": 71,
+     "domaine": null
+    }
+   ],
+   "soeurs": [],
+   "verification": {
+    "bergdorfgoodman.com": {
+     "logo": 404,
+     "accueil": {
+      "statut": 403,
+      "hoteFinal": "www.bergdorfgoodman.com",
+      "titre": "bergdorfgoodman.com"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmtk48fsk1cjbny2bgajhyzgg",
+   "nom": "LVMH Perfumes & Cosmetics",
+   "cle": "LVMH_PERFUMES_AND_COSMETICS",
+   "actives": 64,
+   "publiables": 64,
+   "publiablesFR": 3,
+   "hotes": {
+    "emea3.recruitmentplatform.com": 49,
+    "lvmh-china.tupu360.com": 15
+   },
+   "sources": {
+    "lvmh": 64
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "emea3.recruitmentplatform.com",
+     "n": 49,
+     "domaine": "recruitmentplatform.com"
+    },
+    {
+     "hote": "lvmh-china.tupu360.com",
+     "n": 15,
+     "domaine": "tupu360.com"
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "LVMH",
+     "domaine": "lvmh.com",
+     "source": "source-careers"
+    }
+   ],
+   "verification": {
+    "recruitmentplatform.com": {
+     "logo": 404,
+     "accueil": {
+      "erreur": "fetch failed"
+     },
+     "nomDansDomaine": false
+    },
+    "tupu360.com": {
+     "logo": 404,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "passport.tupu360.com",
+      "titre": "欢迎您"
+     },
+     "nomDansDomaine": false
+    },
+    "lvmh.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.lvmh.com",
+      "titre": "LVMH, world leader in high-quality products"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmtrta68w39ukpg5mze4sqp6m",
+   "nom": "LVMH Fragrance Brands",
+   "cle": "LVMH_FRAGRANCE_BRANDS",
+   "actives": 59,
+   "publiables": 59,
+   "publiablesFR": 32,
+   "hotes": {
+    "emea3.recruitmentplatform.com": 59
+   },
+   "sources": {
+    "lvmh": 59
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "emea3.recruitmentplatform.com",
+     "n": 59,
+     "domaine": "recruitmentplatform.com"
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "LVMH",
+     "domaine": "lvmh.com",
+     "source": "source-careers"
+    }
+   ],
+   "verification": {
+    "recruitmentplatform.com": {
+     "logo": 404,
+     "accueil": {
+      "erreur": "fetch failed"
+     },
+     "nomDansDomaine": false
+    },
+    "lvmh.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.lvmh.com",
+      "titre": "LVMH, world leader in high-quality products"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmuebypd61i9toi356bzjtvqh",
+   "nom": "1630 Swarovski Canada Limited",
+   "cle": "SOURCE_3578336700a44e2478c03db99afc5b4b1ae95588b899d8c7642c7374ebbf7178",
+   "actives": 59,
+   "publiables": 59,
+   "publiablesFR": 0,
+   "hotes": {
+    "swarovski.wd3.myworkdayjobs.com": 59
+   },
+   "sources": {
+    "swarovski": 59
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "swarovski.wd3.myworkdayjobs.com",
+     "n": 59,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "Swarovski",
+     "domaine": "swarovski.com",
+     "source": "wikidata"
+    }
+   ],
+   "verification": {
+    "swarovski.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.swarovski.com",
+      "titre": "Swarovski Official | Bijoux, montres et décorations en cristal"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmueks7du002tmr5o60qdtzia",
+   "nom": "PUMA Sports India Pvt Ltd.",
+   "cle": "SOURCE_e771da9a0c7aca9af5a1a56a53f0d2f44814d162a1ab38ca45a8175273b0d441",
+   "actives": 58,
+   "publiables": 58,
+   "publiablesFR": 0,
+   "hotes": {
+    "puma.wd502.myworkdayjobs.com": 58
+   },
+   "sources": {
+    "puma": 58
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "puma.wd502.myworkdayjobs.com",
+     "n": 58,
+     "domaine": null
+    }
+   ],
+   "soeurs": [],
+   "verification": {}
+  },
+  {
+   "id": "cmueas4wc0de2oi353xeqshiu",
+   "nom": "Orlando Bathing Suit, LLC",
+   "cle": "SOURCE_61fff2cac0d08cd867148670d1572d52776c0ffc71e472a492610df4c46cd1b9",
+   "actives": 56,
+   "publiables": 56,
+   "publiablesFR": 0,
+   "hotes": {
+    "everythingbutwater.wd5.myworkdayjobs.com": 56
+   },
+   "sources": {
+    "everything-but-water": 56
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "everythingbutwater.wd5.myworkdayjobs.com",
+     "n": 56,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "Orlando Bathing Suit, LLC",
+     "domaine": "orlandobathingsuit.com",
+     "source": "manual"
+    },
+    {
+     "nom": "Orlando Bathing Suit",
+     "domaine": "orlandobathingsuit.com",
+     "source": "manual"
+    }
+   ],
+   "verification": {
+    "orlandobathingsuit.com": {
+     "logo": 404,
+     "accueil": {
+      "erreur": "fetch failed"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmuebkkms0y64oi350qnh85q2",
+   "nom": "PEPCO Germany GmbH",
+   "cle": "SOURCE_15a28cd931097098694dd30e86d500dadd1447d5c96d46e387516c55b09e62c1",
+   "actives": 56,
+   "publiables": 56,
+   "publiablesFR": 0,
+   "hotes": {
+    "pepco.jobs.personio.de": 56
+   },
+   "sources": {
+    "pepco": 56
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "pepco.jobs.personio.de",
+     "n": 56,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "Pepco",
+     "domaine": "pepco.pl",
+     "source": "wikidata"
+    }
+   ],
+   "verification": {
+    "pepco.pl": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "pepco.pl",
+      "titre": "Pepco – poczuj jakość, pokochaj niskie ceny | Pepco Polska"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmued5bun4flloi35lmkm6943",
+   "nom": "Michael Kors Stores California Inc",
+   "cle": "SOURCE_b2e227dab5eb183c685984ded76bdff3e9e55f929d2ec5cec5e90562100a1afd",
+   "actives": 54,
+   "publiables": 54,
+   "publiablesFR": 0,
+   "hotes": {
+    "capri.wd1.myworkdayjobs.com": 54
+   },
+   "sources": {
+    "capri-michael-kors": 54
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "capri.wd1.myworkdayjobs.com",
+     "n": 54,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "Michael Kors",
+     "domaine": "michaelkors.com",
+     "source": "manual"
+    }
+   ],
+   "verification": {
+    "michaelkors.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.michaelkors.fr",
+      "titre": "Sacs, chaussures, vêtements de créateur et plus encore | Michael Kors [FR]"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cr57e9ef0f339cdfa95081d842",
+   "nom": "Fursac",
+   "cle": "FURSAC",
+   "actives": 52,
+   "publiables": 52,
+   "publiablesFR": 41,
+   "hotes": {
+    "jobs.smartrecruiters.com": 52
+   },
+   "sources": {
+    "sandro": 52
+   },
+   "resolveDomains": {
+    "domain": "fursac.com",
+    "domainSource": "wikidata"
+   },
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "jobs.smartrecruiters.com",
+     "n": 52,
+     "domaine": null
+    }
+   ],
+   "soeurs": [],
+   "verification": {
+    "fursac.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "fr.fursac.com",
+      "titre": "Fursac : Vêtement Homme &amp; Costume Homme"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmueehhgf00pkpm345xpvqtl7",
+   "nom": "HUGO BOSS México S.A. de C.V.",
+   "cle": "SOURCE_f59f1705f1c8a640b5a4bb0209aef6c8639c86a9abd143999d0f1bfd36307106",
+   "actives": 45,
+   "publiables": 45,
+   "publiablesFR": 0,
+   "hotes": {
+    "careers.hugoboss.com": 45
+   },
+   "sources": {
+    "hugo-boss-phenom": 45
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "careers.hugoboss.com",
+     "n": 45,
+     "domaine": "hugoboss.com"
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "HUGO BOSS",
+     "domaine": "hugoboss.com",
+     "source": "manual"
+    }
+   ],
+   "verification": {
+    "hugoboss.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.hugoboss.com",
+      "titre": "HUGO BOSS collection | Femmes & hommes | Soignée & Particulière"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmuekheim0001na5nu4t7o5jr",
+   "nom": "Naturalia",
+   "cle": "SOURCE_8abbb8c277c3505baf16f925d02ffb2ae5b364e261e82801cb8ea370086096c8",
+   "actives": 44,
+   "publiables": 44,
+   "publiablesFR": 44,
+   "hotes": {
+    "nousrejoindre.naturalia.fr": 44
+   },
+   "sources": {
+    "monoprix": 44
+   },
+   "resolveDomains": {
+    "domain": "naturalia.fr",
+    "domainSource": "wikidata"
+   },
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "nousrejoindre.naturalia.fr",
+     "n": 44,
+     "domaine": "naturalia.fr"
+    }
+   ],
+   "soeurs": [],
+   "verification": {
+    "naturalia.fr": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.naturalia.fr",
+      "titre": "Naturalia, magasin bio, vegan et nature, produits biologiques"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmuechegx2x54oi35u7dozgcn",
+   "nom": "Canada Goose Inc.",
+   "cle": "SOURCE_b1410316fe3bfa23f4f7f173acdeba5500d415471f4522657b3717e980640e75",
+   "actives": 43,
+   "publiables": 43,
+   "publiablesFR": 0,
+   "hotes": {
+    "canadagoose.wd3.myworkdayjobs.com": 43
+   },
+   "sources": {
+    "canada-goose": 43
+   },
+   "resolveDomains": {
+    "domain": "canada-goose.com",
+    "domainSource": "wikidata"
+   },
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "canadagoose.wd3.myworkdayjobs.com",
+     "n": 43,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "Canada Goose",
+     "domaine": "canada-goose.com",
+     "source": "wikidata"
+    }
+   ],
+   "verification": {
+    "canada-goose.com": {
+     "logo": 200,
+     "accueil": {
+      "erreur": "fetch failed"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmueclcip37o4oi35opet6yqj",
+   "nom": "Advance Magazine Publishers Inc.",
+   "cle": "SOURCE_8910ad126a75a06cd683e35836998c7ef0d7009d7084dd62dd519f48afe5aa90",
+   "actives": 42,
+   "publiables": 42,
+   "publiablesFR": 0,
+   "hotes": {
+    "condenast.wd115.myworkdayjobs.com": 42
+   },
+   "sources": {
+    "conde-nast-france": 42
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "condenast.wd115.myworkdayjobs.com",
+     "n": 42,
+     "domaine": null
+    }
+   ],
+   "soeurs": [],
+   "verification": {}
+  },
+  {
+   "id": "cmue4pmi60001tb6fh9jkzz98",
+   "nom": "Shiseido Americas Corporation",
+   "cle": "SOURCE_03d8f33e91504e934a9a4b664dc5f7a41cff165051bf382d181916b33527da5d",
+   "actives": 40,
+   "publiables": 40,
+   "publiablesFR": 0,
+   "hotes": {
+    "jobs.shiseidoamericas.com": 40
+   },
+   "sources": {
+    "nars": 40
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "jobs.shiseidoamericas.com",
+     "n": 40,
+     "domaine": "shiseidoamericas.com"
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "Shiseido",
+     "domaine": "shiseido.com",
+     "source": "https://careers.shiseido.com/"
+    }
+   ],
+   "verification": {
+    "shiseidoamericas.com": {
+     "logo": 404,
+     "accueil": {
+      "erreur": "fetch failed"
+     },
+     "nomDansDomaine": true
+    },
+    "shiseido.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.shiseido.com",
+      "titre": "SHISEIDO | Skincare, Makeup & Suncare from Japan"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmu6x2uzj0001pq3p6f96xhsq",
+   "nom": "Ephemera Group",
+   "cle": "SOURCE_29c4526edea6787ac4d5dc67ad07cdfb9ffb22623120d7f5679e54d9fc47cd50",
+   "actives": 39,
+   "publiables": 39,
+   "publiablesFR": 39,
+   "hotes": {
+    "ephemera.teamtailor.com": 39
+   },
+   "sources": {
+    "ephemera": 39
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "ephemera.teamtailor.com",
+     "n": 39,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "EPHEMERA",
+     "domaine": "ephemera-group.com",
+     "source": "registre-relu-2026-09-18"
+    }
+   ],
+   "verification": {
+    "ephemera-group.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.ephemera-group.com",
+      "titre": "Ephemera | Restaurants immersifs uniques"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmueks7in0031mr5oh0qqw2bb",
+   "nom": "PUMA Europe GmbH",
+   "cle": "SOURCE_5371b2a63a277563709bb0efec82cd116d494e03dfdea22f664b709ffc51b762",
+   "actives": 37,
+   "publiables": 37,
+   "publiablesFR": 0,
+   "hotes": {
+    "puma.wd502.myworkdayjobs.com": 37
+   },
+   "sources": {
+    "puma": 37
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "puma.wd502.myworkdayjobs.com",
+     "n": 37,
+     "domaine": null
+    }
+   ],
+   "soeurs": [],
+   "verification": {}
+  },
+  {
+   "id": "cmtrspy4c1prlpg5m1dka97ou",
+   "nom": "Nike Commercial (China)",
+   "cle": "NIKE_COMMERCIAL_CHINA",
+   "actives": 36,
+   "publiables": 36,
+   "publiablesFR": 0,
+   "hotes": {
+    "nike.wd1.myworkdayjobs.com": 36
+   },
+   "sources": {
+    "nike": 36
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "nike.wd1.myworkdayjobs.com",
+     "n": 36,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "NIKE",
+     "domaine": "nike.com",
+     "source": "source-careers"
+    }
+   ],
+   "verification": {
+    "nike.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.nike.com",
+      "titre": "Nike. Just Do It. Nike FR"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmuebyt6t1it3oi353s0i3ko1",
+   "nom": "1610 Swarovski Australia Pty.",
+   "cle": "SOURCE_a6c369ae94e57b63e414cc5905fb240574fbf6b04b424348cd653a0e6fa11c7e",
+   "actives": 36,
+   "publiables": 36,
+   "publiablesFR": 0,
+   "hotes": {
+    "swarovski.wd3.myworkdayjobs.com": 36
+   },
+   "sources": {
+    "swarovski": 36
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "swarovski.wd3.myworkdayjobs.com",
+     "n": 36,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "Swarovski",
+     "domaine": "swarovski.com",
+     "source": "wikidata"
+    }
+   ],
+   "verification": {
+    "swarovski.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.swarovski.com",
+      "titre": "Swarovski Official | Bijoux, montres et décorations en cristal"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmuecjgv932ssoi35rwfhv45x",
+   "nom": "New Balance Athletic Shoes (UK) Limited",
+   "cle": "SOURCE_4aa4cf697133c486c03fa41da027eb1d305a7ab3606bda2b652b8d11f142d003",
+   "actives": 36,
+   "publiables": 36,
+   "publiablesFR": 0,
+   "hotes": {
+    "newbalance.wd1.myworkdayjobs.com": 36
+   },
+   "sources": {
+    "new-balance": 36
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "newbalance.wd1.myworkdayjobs.com",
+     "n": 36,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "New Balance",
+     "domaine": "newbalance.com",
+     "source": "manual"
+    }
+   ],
+   "verification": {
+    "newbalance.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.newbalance.com",
+      "titre": "Shoes, Sneakers, &amp; Athletic Wear - New Balance"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmtrspy101ppypg5mgur3j8cw",
+   "nom": "Nike NEON",
+   "cle": "NIKE_NEON",
+   "actives": 35,
+   "publiables": 35,
+   "publiablesFR": 0,
+   "hotes": {
+    "nike.wd1.myworkdayjobs.com": 35
+   },
+   "sources": {
+    "nike": 35
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "nike.wd1.myworkdayjobs.com",
+     "n": 35,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "NIKE",
+     "domaine": "nike.com",
+     "source": "source-careers"
+    }
+   ],
+   "verification": {
+    "nike.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.nike.com",
+      "titre": "Nike. Just Do It. Nike FR"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmuebyq9m1ieqoi35ihutblw1",
+   "nom": "0510 Swarovski Crystal, S.A de C.V",
+   "cle": "SOURCE_67e57fb9defa85def63be47aef7f809424d8a5290d502a9dce062154bd9869af",
+   "actives": 34,
+   "publiables": 34,
+   "publiablesFR": 0,
+   "hotes": {
+    "swarovski.wd3.myworkdayjobs.com": 34
+   },
+   "sources": {
+    "swarovski": 34
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "swarovski.wd3.myworkdayjobs.com",
+     "n": 34,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "Swarovski",
+     "domaine": "swarovski.com",
+     "source": "wikidata"
+    }
+   ],
+   "verification": {
+    "swarovski.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.swarovski.com",
+      "titre": "Swarovski Official | Bijoux, montres et décorations en cristal"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmued5cgp4fonoi35kbeeq0pp",
+   "nom": "Michael Kors (UK) limited",
+   "cle": "SOURCE_756fdafac4002bfbd5bc4472be53d01fabc8e0d16b2585686a25ae944110b0c0",
+   "actives": 33,
+   "publiables": 33,
+   "publiablesFR": 0,
+   "hotes": {
+    "capri.wd1.myworkdayjobs.com": 33
+   },
+   "sources": {
+    "capri-michael-kors": 33
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "capri.wd1.myworkdayjobs.com",
+     "n": 33,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "Michael Kors",
+     "domaine": "michaelkors.com",
+     "source": "manual"
+    }
+   ],
+   "verification": {
+    "michaelkors.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.michaelkors.fr",
+      "titre": "Sacs, chaussures, vêtements de créateur et plus encore | Michael Kors [FR]"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmueks7zu003wmr5obe7t3ogo",
+   "nom": "PUMA Australia Pty. Ltd.",
+   "cle": "SOURCE_88333aca56fdf974856d01f43110a4dcc7e597621caff9ff7b89e4be477dac86",
+   "actives": 32,
+   "publiables": 32,
+   "publiablesFR": 0,
+   "hotes": {
+    "puma.wd502.myworkdayjobs.com": 32
+   },
+   "sources": {
+    "puma": 32
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "puma.wd502.myworkdayjobs.com",
+     "n": 32,
+     "domaine": null
+    }
+   ],
+   "soeurs": [],
+   "verification": {}
+  },
+  {
+   "id": "cmu6zhz7r0001nr3zzt6tebf4",
+   "nom": "Magazine zum Globus AG",
+   "cle": "SOURCE_aaf2b5e98ee1871bcedd126d464a61cf16fd9d7ac3948cbd3510f007fffff781",
+   "actives": 31,
+   "publiables": 31,
+   "publiablesFR": 0,
+   "hotes": {
+    "jobs.globus.ch": 31
+   },
+   "sources": {
+    "globus": 31
+   },
+   "resolveDomains": {
+    "domain": "globus.ch",
+    "domainSource": "wikidata"
+   },
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "jobs.globus.ch",
+     "n": 31,
+     "domaine": "globus.ch"
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "Globus",
+     "domaine": "globus.ch",
+     "source": "source-careers"
+    }
+   ],
+   "verification": {
+    "globus.ch": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.globus.ch",
+      "titre": "Globus - Des offres attractives maintenant sur globus.ch"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmueclcfy37naoi35uqza5w41",
+   "nom": "30000 The Condé Nast Publications Limited",
+   "cle": "SOURCE_759344660bd6bc9692500cbfe4760beea8ec94414128a1b54bb5432372a6e4f2",
+   "actives": 31,
+   "publiables": 31,
+   "publiablesFR": 0,
+   "hotes": {
+    "condenast.wd115.myworkdayjobs.com": 31
+   },
+   "sources": {
+    "conde-nast-france": 31
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "condenast.wd115.myworkdayjobs.com",
+     "n": 31,
+     "domaine": null
+    }
+   ],
+   "soeurs": [],
+   "verification": {}
+  },
+  {
+   "id": "crcafaa7a4ec667cf18ea56024",
+   "nom": "SMCP",
+   "cle": "SMCP",
+   "actives": 31,
+   "publiables": 31,
+   "publiablesFR": 24,
+   "hotes": {
+    "jobs.smartrecruiters.com": 31
+   },
+   "sources": {
+    "sandro": 31
+   },
+   "resolveDomains": {
+    "domain": "smcp.com",
+    "domainSource": "wikidata"
+   },
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "jobs.smartrecruiters.com",
+     "n": 31,
+     "domaine": null
+    }
+   ],
+   "soeurs": [],
+   "verification": {
+    "smcp.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.smcp.com",
+      "titre": "Accueil - SMCP"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmu6zrasy0001ponl8symkk0w",
+   "nom": "THOMAS SABO GmbH & Co. KG",
+   "cle": "SOURCE_4801f9f2ac889e8af4c7578c9b5c4ae6e4e3067d5dee9277524a9bd0e0b8dd84",
+   "actives": 30,
+   "publiables": 30,
+   "publiablesFR": 0,
+   "hotes": {
+    "thomassabo.jobs.personio.de": 30
+   },
+   "sources": {
+    "thomas-sabo": 30
+   },
+   "resolveDomains": {
+    "domain": "thomassabo.com",
+    "domainSource": "wikidata"
+   },
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "thomassabo.jobs.personio.de",
+     "n": 30,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "THOMAS SABO",
+     "domaine": "thomassabo.com",
+     "source": "wikidata"
+    }
+   ],
+   "verification": {
+    "thomassabo.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.thomassabo.com",
+      "titre": "Official THOMAS SABO Shop France &ndash; Bijoux &amp; montres"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmuebyoh31i7aoi35lcfkse54",
+   "nom": "1590 Swarovski France S.A.",
+   "cle": "SOURCE_743127f635b81e1b7c3fc81f2ef495fd7758ee4daf6fe4f1633acc0f15b406a4",
+   "actives": 30,
+   "publiables": 30,
+   "publiablesFR": 30,
+   "hotes": {
+    "swarovski.wd3.myworkdayjobs.com": 30
+   },
+   "sources": {
+    "swarovski": 30
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "swarovski.wd3.myworkdayjobs.com",
+     "n": 30,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "Swarovski",
+     "domaine": "swarovski.com",
+     "source": "wikidata"
+    }
+   ],
+   "verification": {
+    "swarovski.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.swarovski.com",
+      "titre": "Swarovski Official | Bijoux, montres et décorations en cristal"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmuecjqxo33jqoi35gkqdokmd",
+   "nom": "UNIQLO EUROPE LIMITED GERMAN BRANCH",
+   "cle": "SOURCE_6c3e25314616110e7c72c1402301a8b1e27184759b4beb77510323f200caf18d",
+   "actives": 29,
+   "publiables": 29,
+   "publiablesFR": 0,
+   "hotes": {
+    "fastretailing.wd3.myworkdayjobs.com": 29
+   },
+   "sources": {
+    "uniqlo-stores": 29
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "fastretailing.wd3.myworkdayjobs.com",
+     "n": 29,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "UNIQLO",
+     "domaine": "uniqlo.com",
+     "source": "manual"
+    }
+   ],
+   "verification": {
+    "uniqlo.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 403,
+      "hoteFinal": "www.uniqlo.com",
+      "titre": "Access Denied"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmueehheo00pcpm340x9wc3r2",
+   "nom": "HUGO BOSS Fashions, Inc.",
+   "cle": "SOURCE_18eb11b5168e3310a3da069e9434a060cf863a43a2b38b2734cce786eaf79f8b",
+   "actives": 28,
+   "publiables": 28,
+   "publiablesFR": 0,
+   "hotes": {
+    "careers.hugoboss.com": 28
+   },
+   "sources": {
+    "hugo-boss-phenom": 28
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "careers.hugoboss.com",
+     "n": 28,
+     "domaine": "hugoboss.com"
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "HUGO BOSS",
+     "domaine": "hugoboss.com",
+     "source": "manual"
+    }
+   ],
+   "verification": {
+    "hugoboss.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.hugoboss.com",
+      "titre": "HUGO BOSS collection | Femmes & hommes | Soignée & Particulière"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmueks5m10001mr5o96fz1fzz",
+   "nom": "PUMA Canada, Inc.",
+   "cle": "SOURCE_6e8a11dd4127298694d4de243a3c2f26a54d91c09121da758a99e9396914e172",
+   "actives": 28,
+   "publiables": 28,
+   "publiablesFR": 0,
+   "hotes": {
+    "puma.wd502.myworkdayjobs.com": 28
+   },
+   "sources": {
+    "puma": 28
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "puma.wd502.myworkdayjobs.com",
+     "n": 28,
+     "domaine": null
+    }
+   ],
+   "soeurs": [],
+   "verification": {}
+  },
+  {
+   "id": "cr97d3bb8020ae3d11dca848c7",
+   "nom": "Saks OFF 5TH",
+   "cle": "SAKS_OFF_5TH",
+   "actives": 28,
+   "publiables": 28,
+   "publiablesFR": 0,
+   "hotes": {
+    "saks.wd1.myworkdayjobs.com": 28
+   },
+   "sources": {
+    "saks": 28
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "saks.wd1.myworkdayjobs.com",
+     "n": 28,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "SAKS",
+     "domaine": "saks.com",
+     "source": "manual"
+    }
+   ],
+   "verification": {
+    "saks.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 403,
+      "hoteFinal": "www.saksfifthavenue.com",
+      "titre": "saksfifthavenue.com"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmue5iut40001pe6d8nbwkuop",
+   "nom": "Bevilles External",
+   "cle": "SOURCE_ac3a866d3dcade15935d1811ea7710423f4f5fa1b7501bc929ce344e333e3178",
+   "actives": 26,
+   "publiables": 26,
+   "publiablesFR": 0,
+   "hotes": {
+    "careers.bevilles.com.au": 26
+   },
+   "sources": {
+    "bevilles-jewellers": 26
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "careers.bevilles.com.au",
+     "n": 26,
+     "domaine": "bevilles.com.au"
+    }
+   ],
+   "soeurs": [],
+   "verification": {
+    "bevilles.com.au": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.bevilles.com.au",
+      "titre": "Bevilles Jewellers | Diamond &amp; Gold Jewellery for Less"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cr5537a7fe130986710832d6a4",
+   "nom": "Anthro Weddings",
+   "cle": "ANTHRO_WEDDINGS",
+   "actives": 26,
+   "publiables": 26,
+   "publiablesFR": 0,
+   "hotes": {
+    "stores-na-urbn.icims.com": 25,
+    "homeoffice-na-urbn.icims.com": 1
+   },
+   "sources": {
+    "urbn-hub": 26
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "stores-na-urbn.icims.com",
+     "n": 25,
+     "domaine": null
+    },
+    {
+     "hote": "homeoffice-na-urbn.icims.com",
+     "n": 1,
+     "domaine": null
+    }
+   ],
+   "soeurs": [],
+   "verification": {}
+  },
+  {
+   "id": "cmu6wyx4c0001rr89t3olslz6",
+   "nom": "The Dune Group",
+   "cle": "SOURCE_49f779f7878f0803c9b5d927e802004ddd290e5b66eeff3a1987dd1d2358ab44",
+   "actives": 25,
+   "publiables": 25,
+   "publiablesFR": 0,
+   "hotes": {
+    "careers.dunelondon.com": 25
+   },
+   "sources": {
+    "dune-london": 25
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "careers.dunelondon.com",
+     "n": 25,
+     "domaine": "dunelondon.com"
+    }
+   ],
+   "soeurs": [],
+   "verification": {
+    "dunelondon.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.dunelondon.com",
+      "titre": "Shoes, Boots, Sandals &amp; Accessories | Dune London"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmuecjpxd33fnoi35lw5axxkt",
+   "nom": "UNIQLO EUROPE LIMITED FRENCH BRANCH",
+   "cle": "SOURCE_130e3a58f7be3ceaa15a597959e1f60144845c442fc3f5cfc04b8a1bdc574950",
+   "actives": 25,
+   "publiables": 25,
+   "publiablesFR": 25,
+   "hotes": {
+    "fastretailing.wd3.myworkdayjobs.com": 25
+   },
+   "sources": {
+    "uniqlo-stores": 25
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "fastretailing.wd3.myworkdayjobs.com",
+     "n": 25,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "UNIQLO",
+     "domaine": "uniqlo.com",
+     "source": "manual"
+    }
+   ],
+   "verification": {
+    "uniqlo.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 403,
+      "hoteFinal": "www.uniqlo.com",
+      "titre": "Access Denied"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmuecqawj3ledoi35uhzlqvne",
+   "nom": "Beiersdorf AG",
+   "cle": "SOURCE_be88aab94a322a2bb90334eb127bfcd955b2894f1360f9a451279e53e063a286",
+   "actives": 25,
+   "publiables": 25,
+   "publiablesFR": 0,
+   "hotes": {
+    "www.beiersdorf.de": 20,
+    "www.beiersdorf.com": 5
+   },
+   "sources": {
+    "beiersdorf": 25
+   },
+   "resolveDomains": {
+    "domain": "beiersdorf.com",
+    "domainSource": "wikidata"
+   },
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "www.beiersdorf.de",
+     "n": 20,
+     "domaine": "beiersdorf.de"
+    },
+    {
+     "hote": "www.beiersdorf.com",
+     "n": 5,
+     "domaine": "beiersdorf.com"
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "Beiersdorf",
+     "domaine": "beiersdorf.com",
+     "source": "wikidata"
+    }
+   ],
+   "verification": {
+    "beiersdorf.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.beiersdorf.com",
+      "titre": "Beiersdorf – The inventors of modern skin care"
+     },
+     "nomDansDomaine": true
+    },
+    "beiersdorf.de": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.beiersdorf.de",
+      "titre": "Beiersdorf – Die Erfinder*innen der modernen Hautpflege"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmued5b6r4fk5oi356xsd6xgr",
+   "nom": "Michael Kors (Germany) GmbH",
+   "cle": "SOURCE_56fa22f6f71e9ceb1dee2c9086403cf238f302d7d3e7762e2dd00839d7b966dc",
+   "actives": 25,
+   "publiables": 25,
+   "publiablesFR": 0,
+   "hotes": {
+    "capri.wd1.myworkdayjobs.com": 25
+   },
+   "sources": {
+    "capri-michael-kors": 25
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "capri.wd1.myworkdayjobs.com",
+     "n": 25,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "Michael Kors",
+     "domaine": "michaelkors.com",
+     "source": "manual"
+    }
+   ],
+   "verification": {
+    "michaelkors.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.michaelkors.fr",
+      "titre": "Sacs, chaussures, vêtements de créateur et plus encore | Michael Kors [FR]"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmuecjgwp32t0oi3548ijdgu4",
+   "nom": "New Balance Germany GmbH",
+   "cle": "SOURCE_c26c2f92cfb3096982049a58e6bac48df8259b3731e44c9c3989a1918e3f634f",
+   "actives": 24,
+   "publiables": 24,
+   "publiablesFR": 0,
+   "hotes": {
+    "newbalance.wd1.myworkdayjobs.com": 24
+   },
+   "sources": {
+    "new-balance": 24
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "newbalance.wd1.myworkdayjobs.com",
+     "n": 24,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "New Balance",
+     "domaine": "newbalance.com",
+     "source": "manual"
+    }
+   ],
+   "verification": {
+    "newbalance.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.newbalance.com",
+      "titre": "Shoes, Sneakers, &amp; Athletic Wear - New Balance"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmtrsgpdk0lxlpg5mi3xcj5ln",
+   "nom": "Advance Magazine Publishers Inc. HQ",
+   "cle": "ADVANCE_MAGAZINE_PUBLISHERS_INC_HQ",
+   "actives": 23,
+   "publiables": 23,
+   "publiablesFR": 0,
+   "hotes": {
+    "condenast.wd115.myworkdayjobs.com": 23
+   },
+   "sources": {
+    "conde-nast-france": 23
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "condenast.wd115.myworkdayjobs.com",
+     "n": 23,
+     "domaine": null
+    }
+   ],
+   "soeurs": [],
+   "verification": {}
+  },
+  {
+   "id": "cmtrspxz61ppapg5m6q905375",
+   "nom": "NIKE de Mexico, S. de R.L. de C.V.",
+   "cle": "NIKE_DE_MEXICO_S_DE_R_L_DE_C_V",
+   "actives": 23,
+   "publiables": 23,
+   "publiablesFR": 0,
+   "hotes": {
+    "nike.wd1.myworkdayjobs.com": 23
+   },
+   "sources": {
+    "nike": 23
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "nike.wd1.myworkdayjobs.com",
+     "n": 23,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "NIKE",
+     "domaine": "nike.com",
+     "source": "source-careers"
+    }
+   ],
+   "verification": {
+    "nike.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.nike.com",
+      "titre": "Nike. Just Do It. Nike FR"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmuebzbov1lutoi35jdpq1fgf",
+   "nom": "TOTEME",
+   "cle": "SOURCE_030f1bf13411cec243a3c4d7e9b7f9f19b39f7e1196aff1e6b03218964f57be5",
+   "actives": 23,
+   "publiables": 23,
+   "publiablesFR": 2,
+   "hotes": {
+    "toteme.teamtailor.com": 23
+   },
+   "sources": {
+    "toteme": 23
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "toteme.teamtailor.com",
+     "n": 23,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "Totême",
+     "domaine": "toteme.com",
+     "source": "manual"
+    }
+   ],
+   "verification": {
+    "toteme.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "toteme.com",
+      "titre": "TOTEME - Official online store"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmuekttw502nomr5ofyjex181",
+   "nom": "PUMA JAPAN K.K.",
+   "cle": "SOURCE_495d556596e6cd13791316fef182cb945ea256fbf24f52b2921ad84a2af2b246",
+   "actives": 22,
+   "publiables": 22,
+   "publiablesFR": 0,
+   "hotes": {
+    "puma.wd502.myworkdayjobs.com": 22
+   },
+   "sources": {
+    "puma": 22
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "puma.wd502.myworkdayjobs.com",
+     "n": 22,
+     "domaine": null
+    }
+   ],
+   "soeurs": [],
+   "verification": {}
+  },
+  {
+   "id": "cmued5bnw4fkroi35io3zlkne",
+   "nom": "Michael Kors Stores LLC",
+   "cle": "SOURCE_447229881822ea3f9e6ca045af12063460d7604ec3179aa1bb544fd430390234",
+   "actives": 21,
+   "publiables": 21,
+   "publiablesFR": 0,
+   "hotes": {
+    "capri.wd1.myworkdayjobs.com": 21
+   },
+   "sources": {
+    "capri-michael-kors": 21
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "capri.wd1.myworkdayjobs.com",
+     "n": 21,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "Michael Kors",
+     "domaine": "michaelkors.com",
+     "source": "manual"
+    }
+   ],
+   "verification": {
+    "michaelkors.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.michaelkors.fr",
+      "titre": "Sacs, chaussures, vêtements de créateur et plus encore | Michael Kors [FR]"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cr5a4778ec71807661c42b93cc",
+   "nom": "Reclectic",
+   "cle": "RECLECTIC",
+   "actives": 21,
+   "publiables": 21,
+   "publiablesFR": 0,
+   "hotes": {
+    "stores-na-urbn.icims.com": 21
+   },
+   "sources": {
+    "urbn-hub": 21
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "stores-na-urbn.icims.com",
+     "n": 21,
+     "domaine": null
+    }
+   ],
+   "soeurs": [],
+   "verification": {}
+  },
+  {
+   "id": "cmueay49a0hpgoi352r95shvr",
+   "nom": "la fée maraboutée",
+   "cle": "SOURCE_984e586814e2e714d77f0519ec26789e5100b554de6e8baef35f893e6b682cf1",
+   "actives": 20,
+   "publiables": 20,
+   "publiablesFR": 20,
+   "hotes": {
+    "lafeemaraboutee.teamtailor.com": 20
+   },
+   "sources": {
+    "la-fee-maraboutee": 20
+   },
+   "resolveDomains": {
+    "domain": "lafeemaraboutee.fr",
+    "domainSource": "wikidata"
+   },
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "lafeemaraboutee.teamtailor.com",
+     "n": 20,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "LA FEE MARABOUTEE",
+     "domaine": "lafeemaraboutee.fr",
+     "source": "wikidata"
+    },
+    {
+     "nom": "La Fée Maraboutée",
+     "domaine": "lafeemaraboutee.fr",
+     "source": "registre-relu-2026-09-18"
+    }
+   ],
+   "verification": {
+    "lafeemaraboutee.fr": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "lafeemaraboutee.fr",
+      "titre": "La Fée Maraboutée : Eshop officiel | Vêtements et accessoires femme"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmuebc9mi0tmyoi35in6b62d9",
+   "nom": "Corporate J. Crew Group, LLC",
+   "cle": "SOURCE_5c2ceeeb5f2421dff7e86f6284b03810832d63d1a9e27bdf2251858e472d662a",
+   "actives": 20,
+   "publiables": 20,
+   "publiablesFR": 0,
+   "hotes": {
+    "jcrew.wd1.myworkdayjobs.com": 20
+   },
+   "sources": {
+    "madewell": 20
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "jcrew.wd1.myworkdayjobs.com",
+     "n": 20,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "Corporate J. Crew Group",
+     "domaine": "jcrew.com",
+     "source": "manual"
+    }
+   ],
+   "verification": {
+    "jcrew.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.jcrew.com",
+      "titre": "J.Crew: Clothes, Shoes &amp; Accessories For Women, Men &amp; Kids"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmueehhmh00qepm348raeizut",
+   "nom": "HUGO BOSS Benelux Retail B.V.",
+   "cle": "SOURCE_995bdcdb01cb4389e2a852cf66d8452d7d5af56759967d2f539a361336aafe1a",
+   "actives": 20,
+   "publiables": 20,
+   "publiablesFR": 0,
+   "hotes": {
+    "careers.hugoboss.com": 20
+   },
+   "sources": {
+    "hugo-boss-phenom": 20
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "careers.hugoboss.com",
+     "n": 20,
+     "domaine": "hugoboss.com"
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "HUGO BOSS",
+     "domaine": "hugoboss.com",
+     "source": "manual"
+    }
+   ],
+   "verification": {
+    "hugoboss.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.hugoboss.com",
+      "titre": "HUGO BOSS collection | Femmes & hommes | Soignée & Particulière"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmuegip8o0001qv6dtw8lg272",
+   "nom": "Aeropostale",
+   "cle": "SOURCE_34aab0c4bb18b3cdbc9a2edb69580ab60e9e0a9dfca4d32189d96bd92b11347b",
+   "actives": 19,
+   "publiables": 19,
+   "publiablesFR": 0,
+   "hotes": {
+    "careers-aeropostale.icims.com": 19
+   },
+   "sources": {
+    "aeropostale": 19
+   },
+   "resolveDomains": {
+    "domain": "aeropostale.com",
+    "domainSource": "wikidata"
+   },
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "careers-aeropostale.icims.com",
+     "n": 19,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "Aéropostale",
+     "domaine": "aeropostale.com",
+     "source": "manual"
+    }
+   ],
+   "verification": {
+    "aeropostale.com": {
+     "logo": 404,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.aeropostale.com",
+      "titre": "Men's and Women's Jeans, Clothes, Hoodies, and Graphic Tees | Aeropostale."
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmueksl1r00pomr5oohnb8a29",
+   "nom": "Puma Mexico Sport SA de CV",
+   "cle": "SOURCE_711533779f76271d33b5aa064a8fdb9728ca057e4de5f31de64e3fa03cad7318",
+   "actives": 19,
+   "publiables": 19,
+   "publiablesFR": 0,
+   "hotes": {
+    "puma.wd502.myworkdayjobs.com": 19
+   },
+   "sources": {
+    "puma": 19
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "puma.wd502.myworkdayjobs.com",
+     "n": 19,
+     "domaine": null
+    }
+   ],
+   "soeurs": [],
+   "verification": {}
+  },
+  {
+   "id": "cmuebduav0vktoi35e2k38ogc",
+   "nom": "US01 Movado Group, Inc.",
+   "cle": "SOURCE_53c9ac852a3f71cf848ea4155c10ae3b6c330f470b156d4ad7bdcb917b4adebb",
+   "actives": 18,
+   "publiables": 18,
+   "publiablesFR": 0,
+   "hotes": {
+    "movadogroup.wd1.myworkdayjobs.com": 18
+   },
+   "sources": {
+    "movado": 18
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "movadogroup.wd1.myworkdayjobs.com",
+     "n": 18,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "Movado",
+     "domaine": "movado.com",
+     "source": "source-careers"
+    }
+   ],
+   "verification": {
+    "movado.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.movado.com",
+      "titre": "Movado | 145 Years of Swiss Watchmaking"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmueksj4f00mnmr5oeljj6fs9",
+   "nom": "PUMA Sports Philippines Inc.",
+   "cle": "SOURCE_48f78e5c9ce27a7690adabfd7f6b587fe8e58315a52a474977a187c7797ccefc",
+   "actives": 18,
+   "publiables": 18,
+   "publiablesFR": 0,
+   "hotes": {
+    "puma.wd502.myworkdayjobs.com": 18
+   },
+   "sources": {
+    "puma": 18
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "puma.wd502.myworkdayjobs.com",
+     "n": 18,
+     "domaine": null
+    }
+   ],
+   "soeurs": [],
+   "verification": {}
+  },
+  {
+   "id": "cmuecfogy2rwmoi35l1pj7lgb",
+   "nom": "J Choo USA Inc",
+   "cle": "SOURCE_cb1f935f2fabb087a3ea183efcc8a91f643ca229b5bc4df13d5295152bb39459",
+   "actives": 17,
+   "publiables": 17,
+   "publiablesFR": 0,
+   "hotes": {
+    "capri.wd1.myworkdayjobs.com": 17
+   },
+   "sources": {
+    "capri-jimmy-choo": 17
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "capri.wd1.myworkdayjobs.com",
+     "n": 17,
+     "domaine": null
+    }
+   ],
+   "soeurs": [],
+   "verification": {}
+  },
+  {
+   "id": "cmu6ze0u20001jk6bydfeqa5e",
+   "nom": "todsspa",
+   "cle": "SOURCE_fa1286c9980320bf72c0c4d194b3f34fff560528a01f8b432b85505993caab29",
+   "actives": 16,
+   "publiables": 16,
+   "publiablesFR": 1,
+   "hotes": {
+    "jobs.todsgroup.com": 16
+   },
+   "sources": {
+    "tods": 16
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "jobs.todsgroup.com",
+     "n": 16,
+     "domaine": "todsgroup.com"
+    }
+   ],
+   "soeurs": [],
+   "verification": {
+    "todsgroup.com": {
+     "logo": 404,
+     "accueil": {
+      "erreur": "fetch failed"
+     },
+     "nomDansDomaine": false
+    }
+   }
+  },
+  {
+   "id": "cmudzwg00000dmo34v9qm7bub",
+   "nom": "Versace USA, Inc.",
+   "cle": "SOURCE_9ba201f702b907d1ee01a38f5d61b8406c9112f95df5d43080e6da8fef9bbe61",
+   "actives": 16,
+   "publiables": 16,
+   "publiablesFR": 0,
+   "hotes": {
+    "capri.wd1.myworkdayjobs.com": 16
+   },
+   "sources": {
+    "versace": 16
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "capri.wd1.myworkdayjobs.com",
+     "n": 16,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "Versace",
+     "domaine": "versace.com",
+     "source": "manual"
+    }
+   ],
+   "verification": {
+    "versace.com": {
+     "logo": 200,
+     "accueil": {
+      "erreur": "fetch failed"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmue4zth502p4o234fos3ib4g",
+   "nom": "HADDAD BRANDS EUROPE",
+   "cle": "SOURCE_2efee42b12e19a1b40973279c0951f978916dec611e1a062f741280b04fd5b7d",
+   "actives": 16,
+   "publiables": 16,
+   "publiablesFR": 16,
+   "hotes": {
+    "www.welcometothejungle.com": 16
+   },
+   "sources": {
+    "wttj-sector": 16
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "www.welcometothejungle.com",
+     "n": 16,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "HADDAD BRANDS",
+     "domaine": "haddad.com",
+     "source": "manual"
+    }
+   ],
+   "verification": {
+    "haddad.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.haddad.com",
+      "titre": "Homepage - Haddad Brands"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmuecfoi52rwwoi35s7db8jfd",
+   "nom": "J. Choo Limited",
+   "cle": "SOURCE_d594d749f391ab6862d4edbbc90e4c9610aa77de2e71d2de95fc46a6834f7746",
+   "actives": 16,
+   "publiables": 16,
+   "publiablesFR": 0,
+   "hotes": {
+    "capri.wd1.myworkdayjobs.com": 16
+   },
+   "sources": {
+    "capri-jimmy-choo": 16
+   },
+   "resolveDomains": {
+    "domain": "jimmychoo.com",
+    "domainSource": "wikidata"
+   },
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "capri.wd1.myworkdayjobs.com",
+     "n": 16,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "J. Choo Limited",
+     "domaine": "jimmychoo.com",
+     "source": "wikidata"
+    }
+   ],
+   "verification": {
+    "jimmychoo.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "row.jimmychoo.com",
+      "titre": "JIMMY CHOO - Boutique en ligne officielle | Chaussures, sacs et accessoires de luxe"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmudwgz9q3t7noa34ru7o5y67",
+   "nom": "Link Theory (UK) Ltd.",
+   "cle": "SOURCE_26ff1450fa42b74a1c038e47c50d55deeffeede9b335cb7e45af8f850b61d5ca",
+   "actives": 15,
+   "publiables": 15,
+   "publiablesFR": 0,
+   "hotes": {
+    "fastretailing.wd3.myworkdayjobs.com": 15
+   },
+   "sources": {
+    "theory-eu": 15
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "fastretailing.wd3.myworkdayjobs.com",
+     "n": 15,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "Theory",
+     "domaine": "theory.com",
+     "source": "registre-relu-2026-09-18"
+    }
+   ],
+   "verification": {
+    "theory.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "eu.theory.com",
+      "titre": "Theory Official Site | Contemporary Clothing for Women and Men"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmuecjpzu33fvoi354jdn2aob",
+   "nom": "UNIQLO EUROPE LIMITED SPANISH BRANCH",
+   "cle": "SOURCE_29cb33267cc25e9e5f5f051a2d2cf357dddfab48d5cc71f512e17fcc8f7b6255",
+   "actives": 15,
+   "publiables": 15,
+   "publiablesFR": 0,
+   "hotes": {
+    "fastretailing.wd3.myworkdayjobs.com": 15
+   },
+   "sources": {
+    "uniqlo-stores": 15
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "fastretailing.wd3.myworkdayjobs.com",
+     "n": 15,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "UNIQLO",
+     "domaine": "uniqlo.com",
+     "source": "manual"
+    }
+   ],
+   "verification": {
+    "uniqlo.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 403,
+      "hoteFinal": "www.uniqlo.com",
+      "titre": "Access Denied"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmuekso8400urmr5olbwidnh5",
+   "nom": "PUMA Europe GmbH – Sede Secondaria in Italia",
+   "cle": "SOURCE_a18fcadb963e3672c18015eaf1a25fb647f82485b102d34172c92313b7bb3996",
+   "actives": 15,
+   "publiables": 15,
+   "publiablesFR": 0,
+   "hotes": {
+    "puma.wd502.myworkdayjobs.com": 15
+   },
+   "sources": {
+    "puma": 15
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "puma.wd502.myworkdayjobs.com",
+     "n": 15,
+     "domaine": null
+    }
+   ],
+   "soeurs": [],
+   "verification": {}
+  },
+  {
+   "id": "cmtrsmvr71dafpg5m1bphr849",
+   "nom": "Michael Kors (Italy) srl con socio unico",
+   "cle": "MICHAEL_KORS_ITALY_SRL_CON_SOCIO_UNICO",
+   "actives": 14,
+   "publiables": 14,
+   "publiablesFR": 0,
+   "hotes": {
+    "capri.wd1.myworkdayjobs.com": 15
+   },
+   "sources": {
+    "capri-jimmy-choo": 1,
+    "capri-michael-kors": 14
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "capri.wd1.myworkdayjobs.com",
+     "n": 15,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "Michael Kors",
+     "domaine": "michaelkors.com",
+     "source": "manual"
+    }
+   ],
+   "verification": {
+    "michaelkors.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.michaelkors.fr",
+      "titre": "Sacs, chaussures, vêtements de créateur et plus encore | Michael Kors [FR]"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmue51ubn097fo234rigl4w6x",
+   "nom": "Puig France",
+   "cle": "SOURCE_b9d136550c6209fa4d93bfd382123ad1f05b833af98e24cf5fd090849d3c656f",
+   "actives": 14,
+   "publiables": 14,
+   "publiablesFR": 11,
+   "hotes": {
+    "www.welcometothejungle.com": 14
+   },
+   "sources": {
+    "wttj-sector": 14
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "www.welcometothejungle.com",
+     "n": 14,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "Puig",
+     "domaine": "puig.com",
+     "source": "https://jobs.puig.com/job/Paris-Responsable-RP/1425151733/"
+    }
+   ],
+   "verification": {
+    "puig.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 403,
+      "hoteFinal": "www.puig.com",
+      "titre": "Just a moment..."
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cradb6c50fa312cf6c94ddf97b",
+   "nom": "Marni",
+   "cle": "MARNI",
+   "actives": 14,
+   "publiables": 14,
+   "publiablesFR": 0,
+   "hotes": {
+    "careers.otb.net": 14
+   },
+   "sources": {
+    "maison-margiela": 14
+   },
+   "resolveDomains": {
+    "domain": "marni.com",
+    "domainSource": "wikidata"
+   },
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "careers.otb.net",
+     "n": 14,
+     "domaine": "otb.net"
+    }
+   ],
+   "soeurs": [],
+   "verification": {
+    "marni.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.marni.com",
+      "titre": "Marni | Boutique en ligne officielle | France"
+     },
+     "nomDansDomaine": true
+    },
+    "otb.net": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.otb.net",
+      "titre": "OTB Group – Only The Brave – OTB Group"
+     },
+     "nomDansDomaine": false
+    }
+   }
+  },
+  {
+   "id": "cmueati7g0ggvoi35fr23460i",
+   "nom": "Kastner &amp; Öhler Online Shop",
+   "cle": "SOURCE_c7c34bb238376d420b8aaa2dc6fb4855e85c5d15e2336d4ed022a40305159018",
+   "actives": 13,
+   "publiables": 13,
+   "publiablesFR": 0,
+   "hotes": {
+    "www.kastner-oehler.at": 13
+   },
+   "sources": {
+    "kastner-ohler": 13
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "www.kastner-oehler.at",
+     "n": 13,
+     "domaine": "kastner-oehler.at"
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "Kastner & Öhler",
+     "domaine": "kastner-oehler.at",
+     "source": "source-careers"
+    }
+   ],
+   "verification": {
+    "kastner-oehler.at": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.kastner-oehler.at",
+      "titre": "Mode | Beauty | Home | Kastner &amp; Öhler Online Shop"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmuebytcw1itwoi35oha9a947",
+   "nom": "1050 Swarovski India Private",
+   "cle": "SOURCE_c77bb58d737f0110a16e3745c1abe369ebb8b3dd4a6fe057e5bce5816826f351",
+   "actives": 13,
+   "publiables": 13,
+   "publiablesFR": 0,
+   "hotes": {
+    "swarovski.wd3.myworkdayjobs.com": 13
+   },
+   "sources": {
+    "swarovski": 13
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "swarovski.wd3.myworkdayjobs.com",
+     "n": 13,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "Swarovski",
+     "domaine": "swarovski.com",
+     "source": "wikidata"
+    }
+   ],
+   "verification": {
+    "swarovski.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.swarovski.com",
+      "titre": "Swarovski Official | Bijoux, montres et décorations en cristal"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmuebz02u1jpyoi35goobduuh",
+   "nom": "1215 Swarovski (Schweiz) AG",
+   "cle": "SOURCE_24be8321ab76bf3fa59798ac10638f8929bb8a4ba94e577f7c839b48650a3346",
+   "actives": 13,
+   "publiables": 13,
+   "publiablesFR": 0,
+   "hotes": {
+    "swarovski.wd3.myworkdayjobs.com": 13
+   },
+   "sources": {
+    "swarovski": 13
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "swarovski.wd3.myworkdayjobs.com",
+     "n": 13,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "Swarovski",
+     "domaine": "swarovski.com",
+     "source": "wikidata"
+    }
+   ],
+   "verification": {
+    "swarovski.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.swarovski.com",
+      "titre": "Swarovski Official | Bijoux, montres et décorations en cristal"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmueddwhj4wm9oi352x8ble7s",
+   "nom": "NIKE India Private Limited",
+   "cle": "SOURCE_17262b39b0ed440591c328c162c6363e972fad6ca6f8a79c68acf4b2d1dd7411",
+   "actives": 13,
+   "publiables": 13,
+   "publiablesFR": 0,
+   "hotes": {
+    "nike.wd1.myworkdayjobs.com": 13
+   },
+   "sources": {
+    "nike": 13
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "nike.wd1.myworkdayjobs.com",
+     "n": 13,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "NIKE",
+     "domaine": "nike.com",
+     "source": "source-careers"
+    }
+   ],
+   "verification": {
+    "nike.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.nike.com",
+      "titre": "Nike. Just Do It. Nike FR"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmtrspy2s1pqrpg5mvlaqi23d",
+   "nom": "Nike Israel",
+   "cle": "NIKE_ISRAEL",
+   "actives": 12,
+   "publiables": 12,
+   "publiablesFR": 0,
+   "hotes": {
+    "nike.wd1.myworkdayjobs.com": 12
+   },
+   "sources": {
+    "nike": 12
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "nike.wd1.myworkdayjobs.com",
+     "n": 12,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "NIKE",
+     "domaine": "nike.com",
+     "source": "source-careers"
+    }
+   ],
+   "verification": {
+    "nike.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.nike.com",
+      "titre": "Nike. Just Do It. Nike FR"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmuecldas37txoi35r96sn1gz",
+   "nom": "30080 Les Publications Condé Nast S.A.S.",
+   "cle": "SOURCE_f6253b908c2f2938ca71b4a56728bb7d7773d3df6eac5dbb3f20043368e03368",
+   "actives": 12,
+   "publiables": 12,
+   "publiablesFR": 12,
+   "hotes": {
+    "condenast.wd115.myworkdayjobs.com": 12
+   },
+   "sources": {
+    "conde-nast-france": 12
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "condenast.wd115.myworkdayjobs.com",
+     "n": 12,
+     "domaine": null
+    }
+   ],
+   "soeurs": [],
+   "verification": {}
+  },
+  {
+   "id": "cmued5b3d4fjpoi35vpo8rz8e",
+   "nom": "Michael Kors (France) SA",
+   "cle": "SOURCE_4f3127a3b1d79cbaecbfaab8065fed0977477c125c1ce76571b462ed2d62dd7c",
+   "actives": 12,
+   "publiables": 12,
+   "publiablesFR": 12,
+   "hotes": {
+    "capri.wd1.myworkdayjobs.com": 12
+   },
+   "sources": {
+    "capri-michael-kors": 12
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "capri.wd1.myworkdayjobs.com",
+     "n": 12,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "Michael Kors",
+     "domaine": "michaelkors.com",
+     "source": "manual"
+    }
+   ],
+   "verification": {
+    "michaelkors.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.michaelkors.fr",
+      "titre": "Sacs, chaussures, vêtements de créateur et plus encore | Michael Kors [FR]"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cr1848dd5739195c10387b8d71",
+   "nom": "Jil Sander",
+   "cle": "JIL_SANDER",
+   "actives": 12,
+   "publiables": 12,
+   "publiablesFR": 0,
+   "hotes": {
+    "careers.otb.net": 12
+   },
+   "sources": {
+    "maison-margiela": 12
+   },
+   "resolveDomains": {
+    "domain": "jilsander.com",
+    "domainSource": "wikidata"
+   },
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "careers.otb.net",
+     "n": 12,
+     "domaine": "otb.net"
+    }
+   ],
+   "soeurs": [],
+   "verification": {
+    "jilsander.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.jilsander.com",
+      "titre": "Jil Sander | Boutique en Ligne Officielle France"
+     },
+     "nomDansDomaine": true
+    },
+    "otb.net": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.otb.net",
+      "titre": "OTB Group – Only The Brave – OTB Group"
+     },
+     "nomDansDomaine": false
+    }
+   }
+  },
+  {
+   "id": "cmtrsmvng1d93pg5ms8ufsb7v",
+   "nom": "Michael Kors Spain, S.L.U.",
+   "cle": "MICHAEL_KORS_SPAIN_S_L_U",
+   "actives": 11,
+   "publiables": 11,
+   "publiablesFR": 0,
+   "hotes": {
+    "capri.wd1.myworkdayjobs.com": 11
+   },
+   "sources": {
+    "capri-michael-kors": 11
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "capri.wd1.myworkdayjobs.com",
+     "n": 11,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "Michael Kors",
+     "domaine": "michaelkors.com",
+     "source": "manual"
+    }
+   ],
+   "verification": {
+    "michaelkors.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.michaelkors.fr",
+      "titre": "Sacs, chaussures, vêtements de créateur et plus encore | Michael Kors [FR]"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmue50ujf06bvo234rxv655hx",
+   "nom": "JUNE STORE",
+   "cle": "SOURCE_1380304184ace9f5099b757c5807b5feb95667d6ed73ce58d1730f3917ca4e4b",
+   "actives": 11,
+   "publiables": 11,
+   "publiablesFR": 11,
+   "hotes": {
+    "www.welcometothejungle.com": 11
+   },
+   "sources": {
+    "wttj-sector": 11
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "www.welcometothejungle.com",
+     "n": 11,
+     "domaine": null
+    }
+   ],
+   "soeurs": [],
+   "verification": {}
+  },
+  {
+   "id": "cmuebiu5c0weeoi35t9gw1p0a",
+   "nom": "Pegador®",
+   "cle": "SOURCE_8c6a0ac0771105a2c8bc3e0cc99f307863ef9bb6c9acd8f9cb233e64f4b8eff7",
+   "actives": 11,
+   "publiables": 11,
+   "publiablesFR": 0,
+   "hotes": {
+    "pegador.jobs.personio.de": 11
+   },
+   "sources": {
+    "pegador": 11
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "pegador.jobs.personio.de",
+     "n": 11,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "Pegador",
+     "domaine": "pegador.com",
+     "source": "manual"
+    }
+   ],
+   "verification": {
+    "pegador.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "pegador.com",
+      "titre": "Official Web &ndash; PEGADOR®"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmuece4qf2nswoi3529xsxxva",
+   "nom": "Stella McCartney Italia S.r.l",
+   "cle": "SOURCE_5ef93494a46b789fc261761a9b1b630089bac69ccdb6f657a791e47d4b47eec0",
+   "actives": 11,
+   "publiables": 11,
+   "publiablesFR": 0,
+   "hotes": {
+    "stellamccartney.wd3.myworkdayjobs.com": 11
+   },
+   "sources": {
+    "stella-mccartney": 11
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "stellamccartney.wd3.myworkdayjobs.com",
+     "n": 11,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "Stella McCartney",
+     "domaine": "stellamccartney.com",
+     "source": "wikidata"
+    }
+   ],
+   "verification": {
+    "stellamccartney.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.stellamccartney.com",
+      "titre": "Stella McCartney FR | Prêt-à-porter de créateur, Sacs et accessoires, Lingerie, Adidas, Parfums, Kids"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmuechf4f2xaxoi35sl98ud91",
+   "nom": "Canada Goose, US Inc.",
+   "cle": "SOURCE_e317a9b40a6f3ac24874e12a6139f9a54216ae56c779f2893d6279e9fcc12006",
+   "actives": 11,
+   "publiables": 11,
+   "publiablesFR": 0,
+   "hotes": {
+    "canadagoose.wd3.myworkdayjobs.com": 11
+   },
+   "sources": {
+    "canada-goose": 11
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "canadagoose.wd3.myworkdayjobs.com",
+     "n": 11,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "Canada Goose",
+     "domaine": "canada-goose.com",
+     "source": "wikidata"
+    }
+   ],
+   "verification": {
+    "canada-goose.com": {
+     "logo": 200,
+     "accueil": {
+      "erreur": "fetch failed"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmueehha300oqpm343pgnupl7",
+   "nom": "HUGO BOSS Benelux B.V. CIA",
+   "cle": "SOURCE_e98fc154946a5a39b4ea12a6ad87fb36ee4ae337c98d60e4855b0bce7132238f",
+   "actives": 11,
+   "publiables": 11,
+   "publiablesFR": 0,
+   "hotes": {
+    "careers.hugoboss.com": 11
+   },
+   "sources": {
+    "hugo-boss-phenom": 11
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "careers.hugoboss.com",
+     "n": 11,
+     "domaine": "hugoboss.com"
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "HUGO BOSS",
+     "domaine": "hugoboss.com",
+     "source": "manual"
+    }
+   ],
+   "verification": {
+    "hugoboss.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.hugoboss.com",
+      "titre": "HUGO BOSS collection | Femmes & hommes | Soignée & Particulière"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmuf5zq550017md6dri6cfryo",
+   "nom": "Chantelle",
+   "cle": "SOURCE_b344ccd8ff1a3f41badb8db97d7f953a4d7229ed8c02c56204028cde87b54255",
+   "actives": 11,
+   "publiables": 11,
+   "publiablesFR": 4,
+   "hotes": {
+    "groupechantelle-recrute.talent-soft.com": 11
+   },
+   "sources": {
+    "groupe-chantelle": 11
+   },
+   "resolveDomains": {
+    "domain": "chantelle.com",
+    "domainSource": "wikidata"
+   },
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "groupechantelle-recrute.talent-soft.com",
+     "n": 11,
+     "domaine": null
+    }
+   ],
+   "soeurs": [],
+   "verification": {
+    "chantelle.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "chantelle.com",
+      "titre": "We design lingerie"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmu6uw6z0002op940zt3qavmv",
+   "nom": "NIVEA India Pvt. Ltd.",
+   "cle": "SOURCE_24cea21b9f3ca0fb10b8303bafafa262fd2c84d3475d947c27c360219f9d5875",
+   "actives": 10,
+   "publiables": 10,
+   "publiablesFR": 0,
+   "hotes": {
+    "www.beiersdorf.com": 10
+   },
+   "sources": {
+    "beiersdorf": 10
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "www.beiersdorf.com",
+     "n": 10,
+     "domaine": "beiersdorf.com"
+    }
+   ],
+   "soeurs": [],
+   "verification": {
+    "beiersdorf.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.beiersdorf.com",
+      "titre": "Beiersdorf – The inventors of modern skin care"
+     },
+     "nomDansDomaine": false
+    }
+   }
+  },
+  {
+   "id": "cmu6zrawi0009ponltogp3avf",
+   "nom": "TSJ Holding GmbH",
+   "cle": "SOURCE_9df0f9bd0e47c1ad9f88b6745582b1dee5bb56e0068aa64808c45712cde86145",
+   "actives": 10,
+   "publiables": 10,
+   "publiablesFR": 0,
+   "hotes": {
+    "thomassabo.jobs.personio.de": 10
+   },
+   "sources": {
+    "thomas-sabo": 10
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "thomassabo.jobs.personio.de",
+     "n": 10,
+     "domaine": null
+    }
+   ],
+   "soeurs": [],
+   "verification": {}
+  },
+  {
+   "id": "cmuebdvbr0vpuoi35sl43cbjm",
+   "nom": "MX01 MGI Distribucion S. de R.L. de C.V.",
+   "cle": "SOURCE_a625bcdf48981c135bed0c852ead38397fecd1f6cf00df0d2e233939485ebd63",
+   "actives": 10,
+   "publiables": 10,
+   "publiablesFR": 0,
+   "hotes": {
+    "movadogroup.wd1.myworkdayjobs.com": 10
+   },
+   "sources": {
+    "movado": 10
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "movadogroup.wd1.myworkdayjobs.com",
+     "n": 10,
+     "domaine": null
+    }
+   ],
+   "soeurs": [],
+   "verification": {}
+  },
+  {
+   "id": "cmuebyrci1ikhoi35abrk1zkv",
+   "nom": "1580 Swarovski Int. d'Italia",
+   "cle": "SOURCE_2e68ce2cd13571d19421dd4e4495526b192a2e06f676710a4a104c9195929c55",
+   "actives": 10,
+   "publiables": 10,
+   "publiablesFR": 0,
+   "hotes": {
+    "swarovski.wd3.myworkdayjobs.com": 10
+   },
+   "sources": {
+    "swarovski": 10
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "swarovski.wd3.myworkdayjobs.com",
+     "n": 10,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "Swarovski",
+     "domaine": "swarovski.com",
+     "source": "wikidata"
+    }
+   ],
+   "verification": {
+    "swarovski.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.swarovski.com",
+      "titre": "Swarovski Official | Bijoux, montres et décorations en cristal"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmuebywfc1j83oi35327xfwvn",
+   "nom": "1840 Swarovski Hellas S.A.",
+   "cle": "SOURCE_06091de23a7a3535c4a7d7d66e6c4cebc2a24f6e262b2f8f5f03e88a3cfdd7a5",
+   "actives": 10,
+   "publiables": 10,
+   "publiablesFR": 0,
+   "hotes": {
+    "swarovski.wd3.myworkdayjobs.com": 10
+   },
+   "sources": {
+    "swarovski": 10
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "swarovski.wd3.myworkdayjobs.com",
+     "n": 10,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "Swarovski",
+     "domaine": "swarovski.com",
+     "source": "wikidata"
+    }
+   ],
+   "verification": {
+    "swarovski.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.swarovski.com",
+      "titre": "Swarovski Official | Bijoux, montres et décorations en cristal"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmueehghk00kqpm34nrqmqq7h",
+   "nom": "HUGO BOSS AG, Branch Poland",
+   "cle": "SOURCE_4c21b986f2edab5ff4b99e81c664d27da75813ae8736c7ce07b9433e388958d3",
+   "actives": 10,
+   "publiables": 10,
+   "publiablesFR": 0,
+   "hotes": {
+    "careers.hugoboss.com": 10
+   },
+   "sources": {
+    "hugo-boss-phenom": 10
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "careers.hugoboss.com",
+     "n": 10,
+     "domaine": "hugoboss.com"
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "HUGO BOSS",
+     "domaine": "hugoboss.com",
+     "source": "manual"
+    },
+    {
+     "nom": "HUGO BOSS AG",
+     "domaine": "hugoboss.com",
+     "source": "source-careers"
+    }
+   ],
+   "verification": {
+    "hugoboss.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.hugoboss.com",
+      "titre": "HUGO BOSS collection | Femmes & hommes | Soignée & Particulière"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmueksfai00gdmr5oe8d0rjsv",
+   "nom": "PUMA New Zealand Ltd",
+   "cle": "SOURCE_4734bc0d35f4437310ca882d904f6872acfb11612b09c050a694a7b1111e1d6d",
+   "actives": 10,
+   "publiables": 10,
+   "publiablesFR": 0,
+   "hotes": {
+    "puma.wd502.myworkdayjobs.com": 10
+   },
+   "sources": {
+    "puma": 10
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "puma.wd502.myworkdayjobs.com",
+     "n": 10,
+     "domaine": null
+    }
+   ],
+   "soeurs": [],
+   "verification": {}
+  },
+  {
+   "id": "cmtrspy191pq3pg5m222snsqa",
+   "nom": "NIKE Retail Poland",
+   "cle": "NIKE_RETAIL_POLAND",
+   "actives": 9,
+   "publiables": 9,
+   "publiablesFR": 0,
+   "hotes": {
+    "nike.wd1.myworkdayjobs.com": 9
+   },
+   "sources": {
+    "nike": 9
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "nike.wd1.myworkdayjobs.com",
+     "n": 9,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "NIKE",
+     "domaine": "nike.com",
+     "source": "source-careers"
+    }
+   ],
+   "verification": {
+    "nike.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.nike.com",
+      "titre": "Nike. Just Do It. Nike FR"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmue51jv508hjo234qjox10up",
+   "nom": "LUSH | France",
+   "cle": "SOURCE_d71994dda740cf672a7f355078dfdf890e4bf4abf6ca30b280edb9da354a69e4",
+   "actives": 9,
+   "publiables": 9,
+   "publiablesFR": 9,
+   "hotes": {
+    "www.welcometothejungle.com": 9
+   },
+   "sources": {
+    "wttj-sector": 9
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "www.welcometothejungle.com",
+     "n": 9,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "LUSH |",
+     "domaine": "lush.com",
+     "source": "wikidata"
+    }
+   ],
+   "verification": {
+    "lush.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 403,
+      "hoteFinal": "www.lush.com",
+      "titre": "Just a moment..."
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmuebdvd80vq2oi3595sm4cor",
+   "nom": "NL01 Movado Group Nederland B.V.",
+   "cle": "SOURCE_df81e0df4e91c4f0e341c4a55c611e2fcb9107603941b6a201219cef35e798df",
+   "actives": 9,
+   "publiables": 9,
+   "publiablesFR": 0,
+   "hotes": {
+    "movadogroup.wd1.myworkdayjobs.com": 9
+   },
+   "sources": {
+    "movado": 9
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "movadogroup.wd1.myworkdayjobs.com",
+     "n": 9,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "Movado",
+     "domaine": "movado.com",
+     "source": "source-careers"
+    }
+   ],
+   "verification": {
+    "movado.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.movado.com",
+      "titre": "Movado | 145 Years of Swiss Watchmaking"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmuebyq8b1ieioi35pnqff16q",
+   "nom": "1900 Swarovski Cristais Ltda.",
+   "cle": "SOURCE_2c5a68e4cf95f4721340e0523f6d4aafbf92e558455675d4fb3c3df411245b32",
+   "actives": 9,
+   "publiables": 9,
+   "publiablesFR": 0,
+   "hotes": {
+    "swarovski.wd3.myworkdayjobs.com": 9
+   },
+   "sources": {
+    "swarovski": 9
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "swarovski.wd3.myworkdayjobs.com",
+     "n": 9,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "Swarovski",
+     "domaine": "swarovski.com",
+     "source": "wikidata"
+    }
+   ],
+   "verification": {
+    "swarovski.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.swarovski.com",
+      "titre": "Swarovski Official | Bijoux, montres et décorations en cristal"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmuebyv4w1j1toi35dy55719b",
+   "nom": "1670 Swarovski Netherlands B.V.",
+   "cle": "SOURCE_8e2d3b9a70ef370f4c0b61c4884068916333391a7e0eeb83bcebc37640eb6580",
+   "actives": 9,
+   "publiables": 9,
+   "publiablesFR": 0,
+   "hotes": {
+    "swarovski.wd3.myworkdayjobs.com": 9
+   },
+   "sources": {
+    "swarovski": 9
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "swarovski.wd3.myworkdayjobs.com",
+     "n": 9,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "Swarovski",
+     "domaine": "swarovski.com",
+     "source": "wikidata"
+    }
+   ],
+   "verification": {
+    "swarovski.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.swarovski.com",
+      "titre": "Swarovski Official | Bijoux, montres et décorations en cristal"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmuece4o32ns9oi359oyeplah",
+   "nom": "Stella McCartney Limited",
+   "cle": "SOURCE_b5e5fff4f3e5374865654fefec95d886aed2c6b6398134ded8f90e12a242fc9e",
+   "actives": 9,
+   "publiables": 9,
+   "publiablesFR": 0,
+   "hotes": {
+    "stellamccartney.wd3.myworkdayjobs.com": 9
+   },
+   "sources": {
+    "stella-mccartney": 9
+   },
+   "resolveDomains": {
+    "domain": "stellamccartney.com",
+    "domainSource": "wikidata"
+   },
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "stellamccartney.wd3.myworkdayjobs.com",
+     "n": 9,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "Stella McCartney",
+     "domaine": "stellamccartney.com",
+     "source": "wikidata"
+    }
+   ],
+   "verification": {
+    "stellamccartney.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.stellamccartney.com",
+      "titre": "Stella McCartney FR | Prêt-à-porter de créateur, Sacs et accessoires, Lingerie, Adidas, Parfums, Kids"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmuecjhwt32wloi357g2yein3",
+   "nom": "New Balance France Retail SARL",
+   "cle": "SOURCE_95ebe6fb2d345cae7fc0a77a5e7a5ab53ecb55ed4bbf6db65a6fb8b30781856d",
+   "actives": 9,
+   "publiables": 9,
+   "publiablesFR": 9,
+   "hotes": {
+    "newbalance.wd1.myworkdayjobs.com": 9
+   },
+   "sources": {
+    "new-balance": 9
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "newbalance.wd1.myworkdayjobs.com",
+     "n": 9,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "New Balance",
+     "domaine": "newbalance.com",
+     "source": "manual"
+    }
+   ],
+   "verification": {
+    "newbalance.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.newbalance.com",
+      "titre": "Shoes, Sneakers, &amp; Athletic Wear - New Balance"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmuecqaoj3ldaoi35wy896k7c",
+   "nom": "Beiersdorf s.a.s.",
+   "cle": "SOURCE_3aa90a67713551d55b69589b441a53bde828afe97722e205e2a10e6cfedfc56d",
+   "actives": 9,
+   "publiables": 9,
+   "publiablesFR": 9,
+   "hotes": {
+    "www.beiersdorf.com": 9
+   },
+   "sources": {
+    "beiersdorf": 9
+   },
+   "resolveDomains": {
+    "domain": "beiersdorf.com",
+    "domainSource": "wikidata"
+   },
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "www.beiersdorf.com",
+     "n": 9,
+     "domaine": "beiersdorf.com"
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "Beiersdorf",
+     "domaine": "beiersdorf.com",
+     "source": "wikidata"
+    }
+   ],
+   "verification": {
+    "beiersdorf.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.beiersdorf.com",
+      "titre": "Beiersdorf – The inventors of modern skin care"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmuecqaq33ldioi356bi6m85t",
+   "nom": "Beiersdorf Inc.",
+   "cle": "SOURCE_21529bd83a7ae74593fc0c43f4be6894fd89ccbd35c6b3c90df65d5141e2f622",
+   "actives": 9,
+   "publiables": 9,
+   "publiablesFR": 0,
+   "hotes": {
+    "www.beiersdorf.com": 9
+   },
+   "sources": {
+    "beiersdorf": 9
+   },
+   "resolveDomains": {
+    "domain": "beiersdorf.com",
+    "domainSource": "wikidata"
+   },
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "www.beiersdorf.com",
+     "n": 9,
+     "domaine": "beiersdorf.com"
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "Beiersdorf",
+     "domaine": "beiersdorf.com",
+     "source": "wikidata"
+    }
+   ],
+   "verification": {
+    "beiersdorf.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.beiersdorf.com",
+      "titre": "Beiersdorf – The inventors of modern skin care"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmued3qdf4bpaoi35g9wbw60w",
+   "nom": "Courir",
+   "cle": "SOURCE_fbe15d1a3fedd133af303815cf0c217c8b946c4d8b14d758b8fcbf029c6d68f8",
+   "actives": 9,
+   "publiables": 9,
+   "publiablesFR": 7,
+   "hotes": {
+    "jobs.smartrecruiters.com": 9
+   },
+   "sources": {
+    "courir": 9
+   },
+   "resolveDomains": {
+    "domain": "courir.com",
+    "domainSource": "wikidata"
+   },
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "jobs.smartrecruiters.com",
+     "n": 9,
+     "domaine": null
+    }
+   ],
+   "soeurs": [],
+   "verification": {
+    "courir.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.courir.com",
+      "titre": "Courir - Sneakers et baskets Nike, Adidas, Converse, Jordan, Puma"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmueehq3c01w7pm3402bja75s",
+   "nom": "HB Retail, Inc.",
+   "cle": "SOURCE_c8d3ecd076ffa7393fe263d2a051647413873467c2f8576add0913d0a85b08cd",
+   "actives": 9,
+   "publiables": 9,
+   "publiablesFR": 0,
+   "hotes": {
+    "careers.hugoboss.com": 9
+   },
+   "sources": {
+    "hugo-boss-phenom": 9
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "careers.hugoboss.com",
+     "n": 9,
+     "domaine": "hugoboss.com"
+    }
+   ],
+   "soeurs": [],
+   "verification": {
+    "hugoboss.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.hugoboss.com",
+      "titre": "HUGO BOSS collection | Femmes & hommes | Soignée & Particulière"
+     },
+     "nomDansDomaine": false
+    }
+   }
+  },
+  {
+   "id": "cmueks7qx003gmr5o73k3vsc5",
+   "nom": "World Cat Vietnam Sourcing & Development Services Co. Ltd",
+   "cle": "SOURCE_d15db2570fa90471be51b7765d28fa5cc5d0706bd0bc8a0f76ad49b96aed674f",
+   "actives": 9,
+   "publiables": 9,
+   "publiablesFR": 0,
+   "hotes": {
+    "puma.wd502.myworkdayjobs.com": 9
+   },
+   "sources": {
+    "puma": 9
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "puma.wd502.myworkdayjobs.com",
+     "n": 9,
+     "domaine": null
+    }
+   ],
+   "soeurs": [],
+   "verification": {}
+  },
+  {
+   "id": "cmueks8w8005hmr5oaxnxh6kp",
+   "nom": "PUMA Europe GmbH, Sucursal en Espana",
+   "cle": "SOURCE_e477fddf0da5e726e32075609e341bf5a93b61b1eafd64aa1bac7e8aa828d657",
+   "actives": 9,
+   "publiables": 9,
+   "publiablesFR": 0,
+   "hotes": {
+    "puma.wd502.myworkdayjobs.com": 9
+   },
+   "sources": {
+    "puma": 9
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "puma.wd502.myworkdayjobs.com",
+     "n": 9,
+     "domaine": null
+    }
+   ],
+   "soeurs": [],
+   "verification": {}
+  },
+  {
+   "id": "cmueks93x005wmr5odxn8b9xq",
+   "nom": "PUMA UNITED KINGDOM LTD",
+   "cle": "SOURCE_ec005819dada07cdf56c07da8e0c0bc6d22e2c7eaf3814bc88cdf29c970adf28",
+   "actives": 9,
+   "publiables": 9,
+   "publiablesFR": 0,
+   "hotes": {
+    "puma.wd502.myworkdayjobs.com": 9
+   },
+   "sources": {
+    "puma": 9
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "puma.wd502.myworkdayjobs.com",
+     "n": 9,
+     "domaine": null
+    }
+   ],
+   "soeurs": [],
+   "verification": {}
+  },
+  {
+   "id": "cmuekt81m01numr5o2jf8tz26",
+   "nom": "Puma South East Asia Pte Ltd",
+   "cle": "SOURCE_12356775c41fb2ec52dcdba6da3bdba51a139f107013212c152186220a0a2bfd",
+   "actives": 9,
+   "publiables": 9,
+   "publiablesFR": 0,
+   "hotes": {
+    "puma.wd502.myworkdayjobs.com": 9
+   },
+   "sources": {
+    "puma": 9
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "puma.wd502.myworkdayjobs.com",
+     "n": 9,
+     "domaine": null
+    }
+   ],
+   "soeurs": [],
+   "verification": {}
+  },
+  {
+   "id": "cmufq1u250004my3335wnn3mi",
+   "nom": "ALTEX S.A.",
+   "cle": "SOURCE_9183ff123a7bf0f410b77396d6fe19ccf50b5a41c9d5adf9d12a8bcbc7a5a8da",
+   "actives": 9,
+   "publiables": 9,
+   "publiablesFR": 0,
+   "hotes": {
+    "jobs.smartrecruiters.com": 9
+   },
+   "sources": {
+    "funky-buddha": 9
+   },
+   "resolveDomains": {
+    "domain": "altex.ro",
+    "domainSource": "wikidata"
+   },
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "jobs.smartrecruiters.com",
+     "n": 9,
+     "domaine": null
+    }
+   ],
+   "soeurs": [],
+   "verification": {
+    "altex.ro": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "altex.ro",
+      "titre": "Electronice si electrocasnice online la cel mai mic pret"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmtrspyqi1q0lpg5mgfyppt7x",
+   "nom": "NIKE Retail Austria",
+   "cle": "NIKE_RETAIL_AUSTRIA",
+   "actives": 8,
+   "publiables": 8,
+   "publiablesFR": 0,
+   "hotes": {
+    "nike.wd1.myworkdayjobs.com": 8
+   },
+   "sources": {
+    "nike": 8
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "nike.wd1.myworkdayjobs.com",
+     "n": 8,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "NIKE",
+     "domaine": "nike.com",
+     "source": "source-careers"
+    }
+   ],
+   "verification": {
+    "nike.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.nike.com",
+      "titre": "Nike. Just Do It. Nike FR"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmtvuca3b0001mszuve6zbutq",
+   "nom": "Icebreaker",
+   "cle": "ICEBREAKER",
+   "actives": 8,
+   "publiables": 8,
+   "publiablesFR": 0,
+   "hotes": {
+    "vfc.wd5.myworkdayjobs.com": 8
+   },
+   "sources": {
+    "vf-corporation": 8
+   },
+   "resolveDomains": {
+    "domain": "icebreaker.com",
+    "domainSource": "wikidata"
+   },
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "vfc.wd5.myworkdayjobs.com",
+     "n": 8,
+     "domaine": null
+    }
+   ],
+   "soeurs": [],
+   "verification": {
+    "icebreaker.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "eu.icebreaker.com",
+      "titre": "Site Officiel icebreaker® | Vêtements en laine mérinos"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmu147o130511ms01g9qc8iqc",
+   "nom": "Ruinart",
+   "cle": "SOURCE_26da244ea8bf0fae63c4c86d6bfb4e0212e03603d33b67f290baf48301ce8c3a",
+   "actives": 8,
+   "publiables": 8,
+   "publiablesFR": 8,
+   "hotes": {
+    "emea3.recruitmentplatform.com": 8
+   },
+   "sources": {
+    "lvmh": 8
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "emea3.recruitmentplatform.com",
+     "n": 8,
+     "domaine": "recruitmentplatform.com"
+    }
+   ],
+   "soeurs": [],
+   "verification": {
+    "recruitmentplatform.com": {
+     "logo": 404,
+     "accueil": {
+      "erreur": "fetch failed"
+     },
+     "nomDansDomaine": false
+    }
+   }
+  },
+  {
+   "id": "cmu6meq5w00013npsytulgy7p",
+   "nom": "Laverana GmbH & Co. KG - Hannover",
+   "cle": "SOURCE_76067a8464707c14daed078c249ca09e7fef7e83032736b9614795d87693d32b",
+   "actives": 8,
+   "publiables": 8,
+   "publiablesFR": 0,
+   "hotes": {
+    "lavera.jobs.personio.de": 8
+   },
+   "sources": {
+    "laverana-gmbh-co-kg": 8
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "lavera.jobs.personio.de",
+     "n": 8,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "Laverana GmbH & Co. KG",
+     "domaine": "laverana.com",
+     "source": "source-careers"
+    }
+   ],
+   "verification": {
+    "laverana.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.laverana.com",
+      "titre": "Laverana GmbH &amp; Co. KG"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmu6mer7p00093npsfn7y12aq",
+   "nom": "Laverana GmbH & Co. KG - Bantorf",
+   "cle": "SOURCE_1f97e801f16e999ac2a7591302d7540cfab68e926235eeff19e547c4dc04b183",
+   "actives": 8,
+   "publiables": 8,
+   "publiablesFR": 0,
+   "hotes": {
+    "lavera.jobs.personio.de": 8
+   },
+   "sources": {
+    "laverana-gmbh-co-kg": 8
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "lavera.jobs.personio.de",
+     "n": 8,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "Laverana GmbH & Co. KG",
+     "domaine": "laverana.com",
+     "source": "source-careers"
+    }
+   ],
+   "verification": {
+    "laverana.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.laverana.com",
+      "titre": "Laverana GmbH &amp; Co. KG"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmu6uw745002yp940iylr1vdl",
+   "nom": "Beiersdorf (Thailand) Co., Ltd.",
+   "cle": "SOURCE_b23d0f2ee78436b40d4c45cd5f137356aa950f13c414bca902c053819be16b82",
+   "actives": 8,
+   "publiables": 8,
+   "publiablesFR": 0,
+   "hotes": {
+    "www.beiersdorf.com": 8
+   },
+   "sources": {
+    "beiersdorf": 8
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "www.beiersdorf.com",
+     "n": 8,
+     "domaine": "beiersdorf.com"
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "Beiersdorf",
+     "domaine": "beiersdorf.com",
+     "source": "wikidata"
+    }
+   ],
+   "verification": {
+    "beiersdorf.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.beiersdorf.com",
+      "titre": "Beiersdorf – The inventors of modern skin care"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmudzwg9i001bmo34f629xim3",
+   "nom": "Gianni Versace S.r.l.",
+   "cle": "SOURCE_b3695c6fb45d0dfab10bd8e69a9cdc087cb4d4100915a7d266f2983888a4bcdb",
+   "actives": 8,
+   "publiables": 8,
+   "publiablesFR": 0,
+   "hotes": {
+    "capri.wd1.myworkdayjobs.com": 8
+   },
+   "sources": {
+    "versace": 8
+   },
+   "resolveDomains": {
+    "domain": "versace.com",
+    "domainSource": "wikidata"
+   },
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "capri.wd1.myworkdayjobs.com",
+     "n": 8,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "Gianni Versace S.r.l.",
+     "domaine": "versace.com",
+     "source": "wikidata"
+    },
+    {
+     "nom": "Versace",
+     "domaine": "versace.com",
+     "source": "manual"
+    }
+   ],
+   "verification": {
+    "versace.com": {
+     "logo": 200,
+     "accueil": {
+      "erreur": "fetch failed"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmueajp8g0003oi35es5qqp7z",
+   "nom": "Abercrombie and Fitch Co.",
+   "cle": "SOURCE_fc192afabaace9483f2ee9dc650ea7fd0bb67dcca02b0def54d898056c327d9d",
+   "actives": 8,
+   "publiables": 8,
+   "publiablesFR": 0,
+   "hotes": {
+    "jobs.smartrecruiters.com": 8
+   },
+   "sources": {
+    "abercrombie": 8
+   },
+   "resolveDomains": {
+    "domain": "abercrombie.com",
+    "domainSource": "wikidata"
+   },
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "jobs.smartrecruiters.com",
+     "n": 8,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "Abercrombie & Fitch",
+     "domaine": "abercrombie.com",
+     "source": "wikidata"
+    }
+   ],
+   "verification": {
+    "abercrombie.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 403,
+      "hoteFinal": "www.abercrombie.com",
+      "titre": null
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmuecip5x31teoi354kp4ae5e",
+   "nom": "BRUNELLO CUCINELLI USA INC",
+   "cle": "SOURCE_dd0f1fbe0c9ce5e5392dfcb20e2664bfd9770ab24e05ec3133f124f83110b6b3",
+   "actives": 8,
+   "publiables": 8,
+   "publiablesFR": 0,
+   "hotes": {
+    "brunellocucinelli.wd3.myworkdayjobs.com": 8
+   },
+   "sources": {
+    "brunello-cucinelli": 8
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "brunellocucinelli.wd3.myworkdayjobs.com",
+     "n": 8,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "BRUNELLO CUCINELLI",
+     "domaine": "brunellocucinelli.com",
+     "source": "manual"
+    }
+   ],
+   "verification": {
+    "brunellocucinelli.com": {
+     "logo": 200,
+     "accueil": {
+      "erreur": "fetch failed"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmuecjk9832xboi358jjevfy7",
+   "nom": "New Balance Netherlands BV",
+   "cle": "SOURCE_86df71c74a128461393b8bddda0f385393440f49fb9ede3a0b2dadabef39ad5e",
+   "actives": 8,
+   "publiables": 8,
+   "publiablesFR": 0,
+   "hotes": {
+    "newbalance.wd1.myworkdayjobs.com": 8
+   },
+   "sources": {
+    "new-balance": 8
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "newbalance.wd1.myworkdayjobs.com",
+     "n": 8,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "New Balance",
+     "domaine": "newbalance.com",
+     "source": "manual"
+    }
+   ],
+   "verification": {
+    "newbalance.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.newbalance.com",
+      "titre": "Shoes, Sneakers, &amp; Athletic Wear - New Balance"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmued1tls49ajoi35noai5von",
+   "nom": "Beaumanoir",
+   "cle": "SOURCE_2033c56f2619ae95229df3a820bee669c9d66bfd2230e9fe2eb974a13cd327eb",
+   "actives": 8,
+   "publiables": 8,
+   "publiablesFR": 8,
+   "hotes": {
+    "groupe-beaumanoir.gestmax.fr": 8
+   },
+   "sources": {
+    "element-6": 8
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "groupe-beaumanoir.gestmax.fr",
+     "n": 8,
+     "domaine": "gestmax.fr"
+    }
+   ],
+   "soeurs": [],
+   "verification": {
+    "gestmax.fr": {
+     "logo": 404,
+     "accueil": {
+      "statut": 503,
+      "hoteFinal": "gestmax.fr",
+      "titre": null
+     },
+     "nomDansDomaine": false
+    }
+   }
+  },
+  {
+   "id": "cmued5dj94ftfoi35iqejeh4u",
+   "nom": "Michael Kors (Europe) BV",
+   "cle": "SOURCE_10b4d5bc5e1dd884de4bdfd4bb2a5fb0d73f4ddc583133c6fbf3708f96c561cf",
+   "actives": 8,
+   "publiables": 8,
+   "publiablesFR": 0,
+   "hotes": {
+    "capri.wd1.myworkdayjobs.com": 8
+   },
+   "sources": {
+    "capri-michael-kors": 8
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "capri.wd1.myworkdayjobs.com",
+     "n": 8,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "Michael Kors",
+     "domaine": "michaelkors.com",
+     "source": "manual"
+    }
+   ],
+   "verification": {
+    "michaelkors.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.michaelkors.fr",
+      "titre": "Sacs, chaussures, vêtements de créateur et plus encore | Michael Kors [FR]"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmueddzmk4wxyoi35s3flglqy",
+   "nom": "Nike China Holding HK Limited",
+   "cle": "SOURCE_b336b9ef2812b2a17c9ce4ef8e9a1bf8e8cf5ef4ab60de76e99928acefa96a66",
+   "actives": 8,
+   "publiables": 8,
+   "publiablesFR": 0,
+   "hotes": {
+    "nike.wd1.myworkdayjobs.com": 8
+   },
+   "sources": {
+    "nike": 8
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "nike.wd1.myworkdayjobs.com",
+     "n": 8,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "NIKE",
+     "domaine": "nike.com",
+     "source": "source-careers"
+    }
+   ],
+   "verification": {
+    "nike.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.nike.com",
+      "titre": "Nike. Just Do It. Nike FR"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmueehgnb00lkpm349n9g65bg",
+   "nom": "HUGO BOSS Textile Ind. Ltd.",
+   "cle": "SOURCE_c90ce5de5069bee9edfa4a0459e4e3ae933e068080b8d749f7d2ba8df8d30738",
+   "actives": 8,
+   "publiables": 8,
+   "publiablesFR": 0,
+   "hotes": {
+    "careers.hugoboss.com": 8
+   },
+   "sources": {
+    "hugo-boss-phenom": 8
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "careers.hugoboss.com",
+     "n": 8,
+     "domaine": "hugoboss.com"
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "HUGO BOSS",
+     "domaine": "hugoboss.com",
+     "source": "manual"
+    }
+   ],
+   "verification": {
+    "hugoboss.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.hugoboss.com",
+      "titre": "HUGO BOSS collection | Femmes & hommes | Soignée & Particulière"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmueehh2o00nqpm34umtfusq1",
+   "nom": "HUGO BOSS Belgium Retail BVBA",
+   "cle": "SOURCE_1e8fb2e9035eef5cfb3ba9b9ca1a600ad762542221d378faffe048d0884910bc",
+   "actives": 8,
+   "publiables": 8,
+   "publiablesFR": 0,
+   "hotes": {
+    "careers.hugoboss.com": 8
+   },
+   "sources": {
+    "hugo-boss-phenom": 8
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "careers.hugoboss.com",
+     "n": 8,
+     "domaine": "hugoboss.com"
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "HUGO BOSS",
+     "domaine": "hugoboss.com",
+     "source": "manual"
+    }
+   ],
+   "verification": {
+    "hugoboss.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.hugoboss.com",
+      "titre": "HUGO BOSS collection | Femmes & hommes | Soignée & Particulière"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmtlyfr1600xaqf5kej8v3ztx",
+   "nom": "Hindbag",
+   "cle": "HINDBAG",
+   "actives": 7,
+   "publiables": 7,
+   "publiablesFR": 7,
+   "hotes": {
+    "www.welcometothejungle.com": 7
+   },
+   "sources": {
+    "wttj-sector": 7
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "www.welcometothejungle.com",
+     "n": 7,
+     "domaine": null
+    }
+   ],
+   "soeurs": [],
+   "verification": {}
+  },
+  {
+   "id": "cmtrspz2z1q5apg5mmh73hnon",
+   "nom": "NIKE ELC",
+   "cle": "NIKE_ELC",
+   "actives": 7,
+   "publiables": 7,
+   "publiablesFR": 0,
+   "hotes": {
+    "nike.wd1.myworkdayjobs.com": 7
+   },
+   "sources": {
+    "nike": 7
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "nike.wd1.myworkdayjobs.com",
+     "n": 7,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "NIKE",
+     "domaine": "nike.com",
+     "source": "source-careers"
+    }
+   ],
+   "verification": {
+    "nike.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.nike.com",
+      "titre": "Nike. Just Do It. Nike FR"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmtrsq2jy1rcnpg5mk60jfnw9",
+   "nom": "NIKE Vietnam Limited Liability Company",
+   "cle": "NIKE_VIETNAM_LIMITED_LIABILITY_COMPANY",
+   "actives": 7,
+   "publiables": 7,
+   "publiablesFR": 0,
+   "hotes": {
+    "nike.wd1.myworkdayjobs.com": 7
+   },
+   "sources": {
+    "nike": 7
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "nike.wd1.myworkdayjobs.com",
+     "n": 7,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "NIKE",
+     "domaine": "nike.com",
+     "source": "source-careers"
+    }
+   ],
+   "verification": {
+    "nike.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.nike.com",
+      "titre": "Nike. Just Do It. Nike FR"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmtrt96hh32jrpg5mkohtfcgs",
+   "nom": "The Bradery",
+   "cle": "THE_BRADERY",
+   "actives": 7,
+   "publiables": 7,
+   "publiablesFR": 7,
+   "hotes": {
+    "www.welcometothejungle.com": 7
+   },
+   "sources": {
+    "wttj-sector": 7
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "www.welcometothejungle.com",
+     "n": 7,
+     "domaine": null
+    }
+   ],
+   "soeurs": [],
+   "verification": {}
+  },
+  {
+   "id": "cmu6uw7j9003tp940p9j2yv81",
+   "nom": "NIVEA Polska Sp. z o.o.",
+   "cle": "SOURCE_2fb484ddf0a3fbd94d31566b4659b5baac5522b8f9af384d2ec4f56176057b3e",
+   "actives": 7,
+   "publiables": 7,
+   "publiablesFR": 0,
+   "hotes": {
+    "www.beiersdorf.com": 7
+   },
+   "sources": {
+    "beiersdorf": 7
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "www.beiersdorf.com",
+     "n": 7,
+     "domaine": "beiersdorf.com"
+    }
+   ],
+   "soeurs": [],
+   "verification": {
+    "beiersdorf.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.beiersdorf.com",
+      "titre": "Beiersdorf – The inventors of modern skin care"
+     },
+     "nomDansDomaine": false
+    }
+   }
+  },
+  {
+   "id": "cmu6uwcx200efp940hpba3vjl",
+   "nom": "NIVEA (Shanghai) Company Limited",
+   "cle": "SOURCE_bd1950c504340ba9544ed0eee86bc264dc1455a51394b484f0975e970eccec39",
+   "actives": 7,
+   "publiables": 7,
+   "publiablesFR": 0,
+   "hotes": {
+    "www.beiersdorf.com": 7
+   },
+   "sources": {
+    "beiersdorf": 7
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "www.beiersdorf.com",
+     "n": 7,
+     "domaine": "beiersdorf.com"
+    }
+   ],
+   "soeurs": [],
+   "verification": {
+    "beiersdorf.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.beiersdorf.com",
+      "titre": "Beiersdorf – The inventors of modern skin care"
+     },
+     "nomDansDomaine": false
+    }
+   }
+  },
+  {
+   "id": "cmu6zqucd0009polvfl4yy3jn",
+   "nom": "Stanley/Stella BE",
+   "cle": "SOURCE_247216a251e69439b77831162bf59c6205c3a3f9b34a3f6a75c79ebee6444519",
+   "actives": 7,
+   "publiables": 7,
+   "publiablesFR": 0,
+   "hotes": {
+    "stanley-stella.jobs.personio.de": 7
+   },
+   "sources": {
+    "stanley-stella": 7
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "stanley-stella.jobs.personio.de",
+     "n": 7,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "STANLEY/STELLA",
+     "domaine": "stanleystella.com",
+     "source": "manual"
+    }
+   ],
+   "verification": {
+    "stanleystella.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "stanleystella.com",
+      "titre": "Stanley/Stella | Premium, modern and sustainable blank apparel"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmudzwfun0001mo34vu96379a",
+   "nom": "Versace Canada",
+   "cle": "SOURCE_3c5e22dab2c6616969cdd56ceeb9d0cec62fa8e40fc22478d69d93b62d1c5dc7",
+   "actives": 7,
+   "publiables": 7,
+   "publiablesFR": 0,
+   "hotes": {
+    "capri.wd1.myworkdayjobs.com": 7
+   },
+   "sources": {
+    "versace": 7
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "capri.wd1.myworkdayjobs.com",
+     "n": 7,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "Versace",
+     "domaine": "versace.com",
+     "source": "manual"
+    }
+   ],
+   "verification": {
+    "versace.com": {
+     "logo": 200,
+     "accueil": {
+      "erreur": "fetch failed"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmue4zh5u01j4o234ecyczly4",
+   "nom": "Car & Classic",
+   "cle": "SOURCE_fc9b71f0c17706cce518f2e5715e2edabc84142fd25a894dab4445cef9bbc4ec",
+   "actives": 7,
+   "publiables": 7,
+   "publiablesFR": 3,
+   "hotes": {
+    "www.welcometothejungle.com": 7
+   },
+   "sources": {
+    "wttj-sector": 7
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "www.welcometothejungle.com",
+     "n": 7,
+     "domaine": null
+    }
+   ],
+   "soeurs": [],
+   "verification": {}
+  },
+  {
+   "id": "cmuearjn20c57oi35xe6l60vc",
+   "nom": "EssilorLuxottica Demo",
+   "cle": "SOURCE_eeb605648211bc409c577d956a3d35173d4a04651b3df45a8bd9d06451e96145",
+   "actives": 7,
+   "publiables": 7,
+   "publiablesFR": 0,
+   "hotes": {
+    "jobs.smartrecruiters.com": 7
+   },
+   "sources": {
+    "essilorluxottica": 7
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "jobs.smartrecruiters.com",
+     "n": 7,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "EssilorLuxottica",
+     "domaine": "essilorluxottica.com",
+     "source": "wikidata"
+    }
+   ],
+   "verification": {
+    "essilorluxottica.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.essilorluxottica.com",
+      "titre": "Home"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmuebyona1i8aoi35hc3ruzyt",
+   "nom": "R600 Swarovski Poland Sp. z o.o.",
+   "cle": "SOURCE_e9d6be19b5c25594cc2e5c5a55df0e2a52b2c1e6d00c32cfd0e57138b8bef3c8",
+   "actives": 7,
+   "publiables": 7,
+   "publiablesFR": 0,
+   "hotes": {
+    "swarovski.wd3.myworkdayjobs.com": 7
+   },
+   "sources": {
+    "swarovski": 7
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "swarovski.wd3.myworkdayjobs.com",
+     "n": 7,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "Swarovski",
+     "domaine": "swarovski.com",
+     "source": "wikidata"
+    }
+   ],
+   "verification": {
+    "swarovski.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.swarovski.com",
+      "titre": "Swarovski Official | Bijoux, montres et décorations en cristal"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmuece5k32nzioi355e86dqpu",
+   "nom": "Stella McCartney (Japan) Limited",
+   "cle": "SOURCE_6a9f0d341803a66038364d37f800217b87ee3f7f0d8af74ec05955bf104c9bcb",
+   "actives": 7,
+   "publiables": 7,
+   "publiablesFR": 0,
+   "hotes": {
+    "stellamccartney.wd3.myworkdayjobs.com": 7
+   },
+   "sources": {
+    "stella-mccartney": 7
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "stellamccartney.wd3.myworkdayjobs.com",
+     "n": 7,
+     "domaine": null
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "Stella McCartney",
+     "domaine": "stellamccartney.com",
+     "source": "wikidata"
+    },
+    {
+     "nom": "Stella McCartney (Japan)",
+     "domaine": "stellamccartney.com",
+     "source": "manual"
+    }
+   ],
+   "verification": {
+    "stellamccartney.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.stellamccartney.com",
+      "titre": "Stella McCartney FR | Prêt-à-porter de créateur, Sacs et accessoires, Lingerie, Adidas, Parfums, Kids"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmuecqbk23lgioi358lwxuts7",
+   "nom": "Beiersdorf SpA",
+   "cle": "SOURCE_7adc407a224617af31245e79f8e7eb441bc4cd2e2b5bce862cbae69ca6688444",
+   "actives": 7,
+   "publiables": 7,
+   "publiablesFR": 0,
+   "hotes": {
+    "www.beiersdorf.com": 7
+   },
+   "sources": {
+    "beiersdorf": 7
+   },
+   "resolveDomains": {
+    "domain": "beiersdorf.com",
+    "domainSource": "wikidata"
+   },
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "www.beiersdorf.com",
+     "n": 7,
+     "domaine": "beiersdorf.com"
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "Beiersdorf",
+     "domaine": "beiersdorf.com",
+     "source": "wikidata"
+    }
+   ],
+   "verification": {
+    "beiersdorf.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.beiersdorf.com",
+      "titre": "Beiersdorf – The inventors of modern skin care"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmuecqblh3lguoi35ao5o0wgz",
+   "nom": "Beiersdorf Australia Ltd.",
+   "cle": "SOURCE_706dd1c25b994ce1be64cb3c96ce1b3c403afb2a9635e6b09027242e447a504e",
+   "actives": 7,
+   "publiables": 7,
+   "publiablesFR": 0,
+   "hotes": {
+    "www.beiersdorf.com": 7
+   },
+   "sources": {
+    "beiersdorf": 7
+   },
+   "resolveDomains": null,
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "www.beiersdorf.com",
+     "n": 7,
+     "domaine": "beiersdorf.com"
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "Beiersdorf",
+     "domaine": "beiersdorf.com",
+     "source": "wikidata"
+    }
+   ],
+   "verification": {
+    "beiersdorf.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.beiersdorf.com",
+      "titre": "Beiersdorf – The inventors of modern skin care"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  },
+  {
+   "id": "cmuecqbs93lieoi3553gsmzt9",
+   "nom": "Beiersdorf S.A.",
+   "cle": "SOURCE_6ef370fa29699a5c74ef0ab678b5de62806a01ae5c9f6e56e93e25acfc5fbdd7",
+   "actives": 7,
+   "publiables": 7,
+   "publiablesFR": 0,
+   "hotes": {
+    "www.beiersdorf.com": 7
+   },
+   "sources": {
+    "beiersdorf": 7
+   },
+   "resolveDomains": {
+    "domain": "beiersdorf.com",
+    "domainSource": "wikidata"
+   },
+   "erreurResolution": null,
+   "hotesCandidature": [
+    {
+     "hote": "www.beiersdorf.com",
+     "n": 7,
+     "domaine": "beiersdorf.com"
+    }
+   ],
+   "soeurs": [
+    {
+     "nom": "Beiersdorf",
+     "domaine": "beiersdorf.com",
+     "source": "wikidata"
+    }
+   ],
+   "verification": {
+    "beiersdorf.com": {
+     "logo": 200,
+     "accueil": {
+      "statut": 200,
+      "hoteFinal": "www.beiersdorf.com",
+      "titre": "Beiersdorf – The inventors of modern skin care"
+     },
+     "nomDansDomaine": true
+    }
+   }
+  }
+ ]
+}

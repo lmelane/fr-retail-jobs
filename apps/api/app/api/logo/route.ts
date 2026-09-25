@@ -59,7 +59,23 @@ function googleSize(needed: number): number {
 /** Un hôte simple : lettres, chiffres, tirets et points. Rien d'autre. */
 const DOMAIN_RE = /^[a-z0-9-]{1,63}(\.[a-z0-9-]{1,63}){1,3}$/;
 
+/** `width` est le CÔTÉ mesuré de l'image (voir `plusGrandCote`), comme le lit `bestLogo`. */
 type Logo = { bytes: ArrayBuffer; type: string; width: number; opaque: boolean };
+
+/**
+ * Le côté qui décide de la netteté est le PLUS GRAND : la pastille affiche le
+ * logo en `object-fit: contain`, donc c'est lui qui fixe l'agrandissement.
+ *
+ * Mesuré le 25/09/2026 : Lovisa (1 282 offres, la première Maison sans logo)
+ * sert un « L » de 31×32 px chez les deux fournisseurs. Lu sur sa seule
+ * largeur, il tombait sous le seuil de 32 px et la Maison perdait son logo,
+ * alors qu'il s'affiche exactement comme un favicon de 32×32. Les favicons de
+ * 16 px restent refusés, comme toute image dont aucun côté n'atteint 32 px.
+ */
+function plusGrandCote(bytes: Uint8Array): number {
+  const size = imageSize(bytes);
+  return size ? Math.max(size.width, size.height) : 0;
+}
 
 /** Une image utilisable chez un fournisseur, ou `null` — jamais d'exception. */
 async function fetchLogo(url: string): Promise<Logo | null> {
@@ -74,9 +90,7 @@ async function fetchLogo(url: string): Promise<Logo | null> {
     // Format que l'on ne sait pas mesurer : largeur 0, donc retenu seulement
     // faute de mieux — et refusé par le seuil, qui ne devine jamais.
     const bytes = new Uint8Array(buffer);
-    const width = imageSize(bytes)?.width ?? 0;
-    const isJpeg = bytes[0] === 0xff && bytes[1] === 0xd8;
-    return { bytes: buffer, type: response.headers.get('content-type') ?? 'image/png', width, opaque: isJpeg };
+    return { bytes: buffer, type: response.headers.get('content-type') ?? 'image/png', width: plusGrandCote(bytes), opaque: bytes[0] === 0xff && bytes[1] === 0xd8 };
   } catch {
     // Fournisseur injoignable : l'autre peut suffire, jamais d'erreur au client.
     return null;

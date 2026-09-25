@@ -6,6 +6,7 @@
  * TRANSPARENCE (un JPEG dessine un carré blanc là où un ICO se fond).
  */
 
+/** `width` : le plus grand côté de l'image, celui qui fixe l'agrandissement dans la pastille. */
 export type LogoCandidate = { width: number; opaque: boolean };
 
 /**

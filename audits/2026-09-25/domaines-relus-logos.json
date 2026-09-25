@@ -1,0 +1,1431 @@
+{
+ "lot": "logos-relu-2026-09-25",
+ "relecteur": "Claude (audit logos du 25/09/2026), contre-relecture de Loïc avant --ecrire",
+ "reluLe": "2026-09-25",
+ "domaines": [
+  {
+   "id": "cmtvbixfg0alfpd01s6cm9cbp",
+   "nom": "Kate Spade",
+   "domaine": "katespade.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.katespade.com/",
+   "confiance": "HAUTE",
+   "note": "P856 Wikidata retenu par resolve-domains (essai à blanc) · offres publiées par tapestry.wd108.myworkdayjobs.com · accueil www.katespade.eu « Kate Spade New York | Handbags, Clothing &amp; Accessories F » · logo servi : oui"
+  },
+  {
+   "id": "cr957f902abe3206942a9194e1",
+   "nom": "Neiman Marcus",
+   "domaine": "neimanmarcus.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.neimanmarcus.com/",
+   "confiance": "HAUTE",
+   "note": "P856 Wikidata retenu par resolve-domains (essai à blanc) · offres publiées par saks.wd1.myworkdayjobs.com · accueil www.neimanmarcus.com « neimanmarcus.com » · logo servi : oui"
+  },
+  {
+   "id": "cmuebc9r30tndoi35ypfqtiug",
+   "nom": "Madewell Stores Madewell, Inc.",
+   "domaine": "madewell.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.madewell.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par jcrew.wd1.myworkdayjobs.com · accueil www.madewell.com « Women’s + Men's Clothing | Jeans, Tees, Sweaters + More | Ma » · logo servi : oui"
+  },
+  {
+   "id": "cmued14sz44oyoi35eiuuial3",
+   "nom": "United States of Aritzia Inc.",
+   "domaine": "aritzia.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.aritzia.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par aritzia.wd3.myworkdayjobs.com · accueil www.aritzia.com « Just a moment... » · logo servi : oui"
+  },
+  {
+   "id": "cmtkf06ej0lqap22bicqm90nc",
+   "nom": "Maje",
+   "domaine": "maje.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.maje.com/",
+   "confiance": "HAUTE",
+   "note": "P856 Wikidata retenu par resolve-domains (essai à blanc) · offres publiées par jobs.smartrecruiters.com · accueil fr.maje.com « Maje Site Officiel : Vêtements et Accessoires pour Femme » · logo servi : oui"
+  },
+  {
+   "id": "cmtvs8inq0000msh97ttbw6dt",
+   "nom": "Lane Bryant",
+   "domaine": "lanebryant.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.lanebryant.com/",
+   "confiance": "HAUTE",
+   "note": "P856 Wikidata retenu par resolve-domains (essai à blanc) · offres publiées par knitwellgroup.wd1.myworkdayjobs.com · accueil www.lanebryant.com « Plus Size Clothing for Women | Lane Bryant » · logo servi : oui"
+  },
+  {
+   "id": "cmueks6co0018mr5o9lux1rh7",
+   "nom": "PUMA North America, Inc.",
+   "domaine": "puma.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.puma.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par puma.wd502.myworkdayjobs.com · logo servi : vérifié sur la planche"
+  },
+  {
+   "id": "cmtvs8iu70001msh9r6ivl3cu",
+   "nom": "Ann Taylor",
+   "domaine": "anntaylor.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.anntaylor.com/",
+   "confiance": "HAUTE",
+   "note": "P856 Wikidata retenu par resolve-domains (essai à blanc) · offres publiées par knitwellgroup.wd1.myworkdayjobs.com · accueil www.anntaylor.com « Ann Taylor : Women's Clothing, Petites, Dresses, Pants, Shir » · logo servi : oui"
+  },
+  {
+   "id": "cmue6y5sm0001l46e0zdf4x3a",
+   "nom": "Max Mara Fashion Group",
+   "domaine": "maxmarafashiongroup.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.maxmarafashiongroup.com/",
+   "confiance": "HAUTE",
+   "note": "P856 Wikidata retenu par resolve-domains (essai à blanc) · offres publiées par jobs.smartrecruiters.com · accueil www.maxmarafashiongroup.com « Sito ufficiale Max Mara Fashion Group » · logo servi : oui"
+  },
+  {
+   "id": "cmuebyotm1i94oi3546unohdu",
+   "nom": "1151 Swarovski Retail Ventures",
+   "domaine": "swarovski.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.swarovski.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par swarovski.wd3.myworkdayjobs.com · accueil www.swarovski.com « Swarovski Official | Bijoux, montres et décorations en crist » · logo servi : oui"
+  },
+  {
+   "id": "cr9b98334f7d83dfa1519910b7",
+   "nom": "FP Movement",
+   "domaine": "freepeople.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.freepeople.com/fpmovement/",
+   "confiance": "HAUTE",
+   "note": "ligne d’activewear de Free People (URBN), vendue sur freepeople.com/fpmovement ; offres « FP Movement … » sur l’iCIMS d’URBN ; fpmovement.com refuse la connexion · offres publiées par stores-na-urbn.icims.com, homeoffice-na-urbn.icims.com · logo servi : vérifié sur la planche"
+  },
+  {
+   "id": "cr5c9308138c86e24341e51b89",
+   "nom": "Claudie Pierlot",
+   "domaine": "claudiepierlot.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.claudiepierlot.com/",
+   "confiance": "HAUTE",
+   "note": "P856 Wikidata retenu par resolve-domains (essai à blanc) · offres publiées par jobs.smartrecruiters.com · accueil fr.claudiepierlot.com « Claudie Pierlot site officiel | Archives jusqu&#x27;à -70%*  » · logo servi : oui"
+  },
+  {
+   "id": "cr73ef5b87fa07d0af0b1d74b9",
+   "nom": "Diesel",
+   "domaine": "diesel.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.diesel.com/",
+   "confiance": "HAUTE",
+   "note": "P856 Wikidata retenu par resolve-domains (essai à blanc) · offres publiées par careers.otb.net · accueil diesel.com « Diesel - Country Selector » · logo servi : oui"
+  },
+  {
+   "id": "cmtrspy2f1pqmpg5mtx61w9oj",
+   "nom": "Nike Sports (China) Co.",
+   "domaine": "nike.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.nike.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par nike.wd1.myworkdayjobs.com · accueil www.nike.com « Nike. Just Do It. Nike FR » · logo servi : oui"
+  },
+  {
+   "id": "cmueks7vs003omr5o60ryy9m2",
+   "nom": "PUMA SE",
+   "domaine": "puma.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.puma.com/",
+   "confiance": "HAUTE",
+   "note": "P856 Wikidata retenu par resolve-domains (essai à blanc) · offres publiées par puma.wd502.myworkdayjobs.com · accueil eu.puma.com « PUMA France | Vêtements, chaussures et accessoires | Puma Fr » · logo servi : oui"
+  },
+  {
+   "id": "cmuebduds0vl9oi35f0cp2bts",
+   "nom": "US02 Movado Retail Group, Inc.",
+   "domaine": "movadogroup.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.movadogroup.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par movadogroup.wd1.myworkdayjobs.com · logo servi : vérifié sur la planche"
+  },
+  {
+   "id": "cmuebzqzl1lzooi35wwbg4hjn",
+   "nom": "UNIQLO AUSTRALIA PTY LTD.",
+   "domaine": "uniqlo.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.uniqlo.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par fastretailing.wd3.myworkdayjobs.com · accueil www.uniqlo.com « Access Denied » · logo servi : oui"
+  },
+  {
+   "id": "cr3a14f8ab245fd4f80eb4766c",
+   "nom": "Bergdorf Goodman",
+   "domaine": "bergdorfgoodman.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.bergdorfgoodman.com/",
+   "confiance": "HAUTE",
+   "note": "P856 Wikidata retenu par resolve-domains (essai à blanc) · offres publiées par saks.wd1.myworkdayjobs.com · accueil www.bergdorfgoodman.com « bergdorfgoodman.com » · logo servi : non, monogramme maintenu"
+  },
+  {
+   "id": "cmtk48fsk1cjbny2bgajhyzgg",
+   "nom": "LVMH Perfumes & Cosmetics",
+   "domaine": "lvmh.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.lvmh.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par emea3.recruitmentplatform.com, lvmh-china.tupu360.com · accueil www.lvmh.com « LVMH, world leader in high-quality products » · logo servi : oui"
+  },
+  {
+   "id": "cmtrta68w39ukpg5mze4sqp6m",
+   "nom": "LVMH Fragrance Brands",
+   "domaine": "lvmh.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.lvmh.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par emea3.recruitmentplatform.com · accueil www.lvmh.com « LVMH, world leader in high-quality products » · logo servi : oui"
+  },
+  {
+   "id": "cmuebypd61i9toi356bzjtvqh",
+   "nom": "1630 Swarovski Canada Limited",
+   "domaine": "swarovski.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.swarovski.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par swarovski.wd3.myworkdayjobs.com · accueil www.swarovski.com « Swarovski Official | Bijoux, montres et décorations en crist » · logo servi : oui"
+  },
+  {
+   "id": "cmueks7du002tmr5o60qdtzia",
+   "nom": "PUMA Sports India Pvt Ltd.",
+   "domaine": "puma.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.puma.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par puma.wd502.myworkdayjobs.com · logo servi : vérifié sur la planche"
+  },
+  {
+   "id": "cmueas4wc0de2oi353xeqshiu",
+   "nom": "Orlando Bathing Suit, LLC",
+   "domaine": "everythingbutwater.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.everythingbutwater.com/legal-statement.html",
+   "confiance": "HAUTE",
+   "note": "mentions légales du site : « © Orlando Bathing Suit, LLC » ; offres du tenant Workday d’Everything But Water · offres publiées par everythingbutwater.wd5.myworkdayjobs.com · logo servi : vérifié sur la planche"
+  },
+  {
+   "id": "cmuebkkms0y64oi350qnh85q2",
+   "nom": "PEPCO Germany GmbH",
+   "domaine": "pepco.eu",
+   "ancienDomaine": null,
+   "preuve": "https://www.pepco.eu/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par pepco.jobs.personio.de · logo servi : vérifié sur la planche"
+  },
+  {
+   "id": "cmued5bun4flloi35lmkm6943",
+   "nom": "Michael Kors Stores California Inc",
+   "domaine": "michaelkors.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.michaelkors.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par capri.wd1.myworkdayjobs.com · accueil www.michaelkors.fr « Sacs, chaussures, vêtements de créateur et plus encore | Mic » · logo servi : oui"
+  },
+  {
+   "id": "cr57e9ef0f339cdfa95081d842",
+   "nom": "Fursac",
+   "domaine": "fursac.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.fursac.com/",
+   "confiance": "HAUTE",
+   "note": "P856 Wikidata retenu par resolve-domains (essai à blanc) · offres publiées par jobs.smartrecruiters.com · accueil fr.fursac.com « Fursac : Vêtement Homme &amp; Costume Homme » · logo servi : oui"
+  },
+  {
+   "id": "cmueehhgf00pkpm345xpvqtl7",
+   "nom": "HUGO BOSS México S.A. de C.V.",
+   "domaine": "hugoboss.com",
+   "ancienDomaine": null,
+   "preuve": "https://careers.hugoboss.com/",
+   "confiance": "HAUTE",
+   "note": "liens de candidature sur careers.hugoboss.com · accueil www.hugoboss.com « HUGO BOSS collection | Femmes & hommes | Soignée & Particuli » · logo servi : oui"
+  },
+  {
+   "id": "cmuekheim0001na5nu4t7o5jr",
+   "nom": "Naturalia",
+   "domaine": "naturalia.fr",
+   "ancienDomaine": null,
+   "preuve": "https://nousrejoindre.naturalia.fr/",
+   "confiance": "HAUTE",
+   "note": "P856 Wikidata retenu par resolve-domains (essai à blanc) · liens de candidature sur nousrejoindre.naturalia.fr · accueil www.naturalia.fr « Naturalia, magasin bio, vegan et nature, produits biologique » · logo servi : oui"
+  },
+  {
+   "id": "cmuechegx2x54oi35u7dozgcn",
+   "nom": "Canada Goose Inc.",
+   "domaine": "canada-goose.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.canada-goose.com/",
+   "confiance": "HAUTE",
+   "note": "P856 Wikidata retenu par resolve-domains (essai à blanc) · offres publiées par canadagoose.wd3.myworkdayjobs.com · logo servi : oui"
+  },
+  {
+   "id": "cmueclcip37o4oi35opet6yqj",
+   "nom": "Advance Magazine Publishers Inc.",
+   "domaine": "condenast.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.condenast.com/user-agreement",
+   "confiance": "HAUTE",
+   "note": "raison sociale de Condé Nast (conditions d’utilisation : « Condé Nast … means Advance Magazine Publishers, Inc. ») ; offres du tenant Workday condenast.wd115 · offres publiées par condenast.wd115.myworkdayjobs.com · logo servi : vérifié sur la planche"
+  },
+  {
+   "id": "cmue4pmi60001tb6fh9jkzz98",
+   "nom": "Shiseido Americas Corporation",
+   "domaine": "shiseido.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.shiseido.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par jobs.shiseidoamericas.com · accueil www.shiseido.com « SHISEIDO | Skincare, Makeup & Suncare from Japan » · logo servi : oui"
+  },
+  {
+   "id": "cmu6x2uzj0001pq3p6f96xhsq",
+   "nom": "Ephemera Group",
+   "domaine": "ephemera-group.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.ephemera-group.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par ephemera.teamtailor.com · accueil www.ephemera-group.com « Ephemera | Restaurants immersifs uniques » · logo servi : oui"
+  },
+  {
+   "id": "cmueks7in0031mr5oh0qqw2bb",
+   "nom": "PUMA Europe GmbH",
+   "domaine": "puma.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.puma.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par puma.wd502.myworkdayjobs.com · logo servi : vérifié sur la planche"
+  },
+  {
+   "id": "cmtrspy4c1prlpg5m1dka97ou",
+   "nom": "Nike Commercial (China)",
+   "domaine": "nike.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.nike.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par nike.wd1.myworkdayjobs.com · accueil www.nike.com « Nike. Just Do It. Nike FR » · logo servi : oui"
+  },
+  {
+   "id": "cmuebyt6t1it3oi353s0i3ko1",
+   "nom": "1610 Swarovski Australia Pty.",
+   "domaine": "swarovski.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.swarovski.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par swarovski.wd3.myworkdayjobs.com · accueil www.swarovski.com « Swarovski Official | Bijoux, montres et décorations en crist » · logo servi : oui"
+  },
+  {
+   "id": "cmuecjgv932ssoi35rwfhv45x",
+   "nom": "New Balance Athletic Shoes (UK) Limited",
+   "domaine": "newbalance.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.newbalance.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par newbalance.wd1.myworkdayjobs.com · accueil www.newbalance.com « Shoes, Sneakers, &amp; Athletic Wear - New Balance » · logo servi : oui"
+  },
+  {
+   "id": "cmtrspy101ppypg5mgur3j8cw",
+   "nom": "Nike NEON",
+   "domaine": "nike.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.nike.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par nike.wd1.myworkdayjobs.com · accueil www.nike.com « Nike. Just Do It. Nike FR » · logo servi : oui"
+  },
+  {
+   "id": "cmuebyq9m1ieqoi35ihutblw1",
+   "nom": "0510 Swarovski Crystal, S.A de C.V",
+   "domaine": "swarovski.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.swarovski.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par swarovski.wd3.myworkdayjobs.com · accueil www.swarovski.com « Swarovski Official | Bijoux, montres et décorations en crist » · logo servi : oui"
+  },
+  {
+   "id": "cmued5cgp4fonoi35kbeeq0pp",
+   "nom": "Michael Kors (UK) limited",
+   "domaine": "michaelkors.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.michaelkors.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par capri.wd1.myworkdayjobs.com · accueil www.michaelkors.fr « Sacs, chaussures, vêtements de créateur et plus encore | Mic » · logo servi : oui"
+  },
+  {
+   "id": "cmueks7zu003wmr5obe7t3ogo",
+   "nom": "PUMA Australia Pty. Ltd.",
+   "domaine": "puma.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.puma.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par puma.wd502.myworkdayjobs.com · logo servi : vérifié sur la planche"
+  },
+  {
+   "id": "cmu6zhz7r0001nr3zzt6tebf4",
+   "nom": "Magazine zum Globus AG",
+   "domaine": "globus.ch",
+   "ancienDomaine": null,
+   "preuve": "https://jobs.globus.ch/",
+   "confiance": "HAUTE",
+   "note": "P856 Wikidata retenu par resolve-domains (essai à blanc) · liens de candidature sur jobs.globus.ch · accueil www.globus.ch « Globus - Des offres attractives maintenant sur globus.ch » · logo servi : oui"
+  },
+  {
+   "id": "cmueclcfy37naoi35uqza5w41",
+   "nom": "30000 The Condé Nast Publications Limited",
+   "domaine": "condenast.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.condenast.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par condenast.wd115.myworkdayjobs.com · logo servi : vérifié sur la planche"
+  },
+  {
+   "id": "crcafaa7a4ec667cf18ea56024",
+   "nom": "SMCP",
+   "domaine": "smcp.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.smcp.com/",
+   "confiance": "HAUTE",
+   "note": "P856 Wikidata retenu par resolve-domains (essai à blanc) · offres publiées par jobs.smartrecruiters.com · accueil www.smcp.com « Accueil - SMCP » · logo servi : oui"
+  },
+  {
+   "id": "cmu6zrasy0001ponl8symkk0w",
+   "nom": "THOMAS SABO GmbH & Co. KG",
+   "domaine": "thomassabo.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.thomassabo.com/",
+   "confiance": "HAUTE",
+   "note": "P856 Wikidata retenu par resolve-domains (essai à blanc) · offres publiées par thomassabo.jobs.personio.de · accueil www.thomassabo.com « Official THOMAS SABO Shop France &ndash; Bijoux &amp; montre » · logo servi : oui"
+  },
+  {
+   "id": "cmuebyoh31i7aoi35lcfkse54",
+   "nom": "1590 Swarovski France S.A.",
+   "domaine": "swarovski.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.swarovski.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par swarovski.wd3.myworkdayjobs.com · accueil www.swarovski.com « Swarovski Official | Bijoux, montres et décorations en crist » · logo servi : oui"
+  },
+  {
+   "id": "cmuecjqxo33jqoi35gkqdokmd",
+   "nom": "UNIQLO EUROPE LIMITED GERMAN BRANCH",
+   "domaine": "uniqlo.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.uniqlo.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par fastretailing.wd3.myworkdayjobs.com · accueil www.uniqlo.com « Access Denied » · logo servi : oui"
+  },
+  {
+   "id": "cmueehheo00pcpm340x9wc3r2",
+   "nom": "HUGO BOSS Fashions, Inc.",
+   "domaine": "hugoboss.com",
+   "ancienDomaine": null,
+   "preuve": "https://careers.hugoboss.com/",
+   "confiance": "HAUTE",
+   "note": "liens de candidature sur careers.hugoboss.com · accueil www.hugoboss.com « HUGO BOSS collection | Femmes & hommes | Soignée & Particuli » · logo servi : oui"
+  },
+  {
+   "id": "cmueks5m10001mr5o96fz1fzz",
+   "nom": "PUMA Canada, Inc.",
+   "domaine": "puma.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.puma.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par puma.wd502.myworkdayjobs.com · logo servi : vérifié sur la planche"
+  },
+  {
+   "id": "cmue5iut40001pe6d8nbwkuop",
+   "nom": "Bevilles External",
+   "domaine": "bevilles.com.au",
+   "ancienDomaine": null,
+   "preuve": "https://careers.bevilles.com.au/",
+   "confiance": "HAUTE",
+   "note": "liens de candidature sur careers.bevilles.com.au · accueil www.bevilles.com.au « Bevilles Jewellers | Diamond &amp; Gold Jewellery for Less » · logo servi : oui"
+  },
+  {
+   "id": "cr5537a7fe130986710832d6a4",
+   "nom": "Anthro Weddings",
+   "domaine": "anthropologie.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.anthropologie.com/",
+   "confiance": "HAUTE",
+   "note": "offres « Anthropologie Weddings Stylist » sur l’iCIMS d’URBN ; ligne mariage vendue sur anthropologie.com · offres publiées par stores-na-urbn.icims.com, homeoffice-na-urbn.icims.com · logo servi : vérifié sur la planche"
+  },
+  {
+   "id": "cmu6wyx4c0001rr89t3olslz6",
+   "nom": "The Dune Group",
+   "domaine": "dunelondon.com",
+   "ancienDomaine": null,
+   "preuve": "https://careers.dunelondon.com/",
+   "confiance": "HAUTE",
+   "note": "liens de candidature sur careers.dunelondon.com · accueil www.dunelondon.com « Shoes, Boots, Sandals &amp; Accessories | Dune London » · logo servi : oui"
+  },
+  {
+   "id": "cmuecjpxd33fnoi35lw5axxkt",
+   "nom": "UNIQLO EUROPE LIMITED FRENCH BRANCH",
+   "domaine": "uniqlo.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.uniqlo.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par fastretailing.wd3.myworkdayjobs.com · accueil www.uniqlo.com « Access Denied » · logo servi : oui"
+  },
+  {
+   "id": "cmuecqawj3ledoi35uhzlqvne",
+   "nom": "Beiersdorf AG",
+   "domaine": "beiersdorf.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.beiersdorf.com/",
+   "confiance": "HAUTE",
+   "note": "P856 Wikidata retenu par resolve-domains (essai à blanc) · liens de candidature sur www.beiersdorf.com · accueil www.beiersdorf.com « Beiersdorf – The inventors of modern skin care » · logo servi : oui"
+  },
+  {
+   "id": "cmued5b6r4fk5oi356xsd6xgr",
+   "nom": "Michael Kors (Germany) GmbH",
+   "domaine": "michaelkors.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.michaelkors.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par capri.wd1.myworkdayjobs.com · accueil www.michaelkors.fr « Sacs, chaussures, vêtements de créateur et plus encore | Mic » · logo servi : oui"
+  },
+  {
+   "id": "cmuecjgwp32t0oi3548ijdgu4",
+   "nom": "New Balance Germany GmbH",
+   "domaine": "newbalance.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.newbalance.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par newbalance.wd1.myworkdayjobs.com · accueil www.newbalance.com « Shoes, Sneakers, &amp; Athletic Wear - New Balance » · logo servi : oui"
+  },
+  {
+   "id": "cmtrsgpdk0lxlpg5mi3xcj5ln",
+   "nom": "Advance Magazine Publishers Inc. HQ",
+   "domaine": "condenast.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.condenast.com/user-agreement",
+   "confiance": "HAUTE",
+   "note": "raison sociale de Condé Nast (conditions d’utilisation : « Condé Nast … means Advance Magazine Publishers, Inc. ») ; offres du tenant Workday condenast.wd115 · offres publiées par condenast.wd115.myworkdayjobs.com · logo servi : vérifié sur la planche"
+  },
+  {
+   "id": "cmtrspxz61ppapg5m6q905375",
+   "nom": "NIKE de Mexico, S. de R.L. de C.V.",
+   "domaine": "nike.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.nike.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par nike.wd1.myworkdayjobs.com · accueil www.nike.com « Nike. Just Do It. Nike FR » · logo servi : oui"
+  },
+  {
+   "id": "cmuebzbov1lutoi35jdpq1fgf",
+   "nom": "TOTEME",
+   "domaine": "toteme.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.toteme.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par toteme.teamtailor.com · accueil toteme.com « TOTEME - Official online store » · logo servi : oui"
+  },
+  {
+   "id": "cmuekttw502nomr5ofyjex181",
+   "nom": "PUMA JAPAN K.K.",
+   "domaine": "puma.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.puma.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par puma.wd502.myworkdayjobs.com · logo servi : vérifié sur la planche"
+  },
+  {
+   "id": "cmued5bnw4fkroi35io3zlkne",
+   "nom": "Michael Kors Stores LLC",
+   "domaine": "michaelkors.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.michaelkors.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par capri.wd1.myworkdayjobs.com · accueil www.michaelkors.fr « Sacs, chaussures, vêtements de créateur et plus encore | Mic » · logo servi : oui"
+  },
+  {
+   "id": "cmueay49a0hpgoi352r95shvr",
+   "nom": "la fée maraboutée",
+   "domaine": "lafeemaraboutee.fr",
+   "ancienDomaine": null,
+   "preuve": "https://www.lafeemaraboutee.fr/",
+   "confiance": "HAUTE",
+   "note": "P856 Wikidata retenu par resolve-domains (essai à blanc) · offres publiées par lafeemaraboutee.teamtailor.com · accueil lafeemaraboutee.fr « La Fée Maraboutée : Eshop officiel | Vêtements et accessoire » · logo servi : oui"
+  },
+  {
+   "id": "cmuebc9mi0tmyoi35in6b62d9",
+   "nom": "Corporate J. Crew Group, LLC",
+   "domaine": "jcrew.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.jcrew.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par jcrew.wd1.myworkdayjobs.com · accueil www.jcrew.com « J.Crew: Clothes, Shoes &amp; Accessories For Women, Men &amp » · logo servi : oui"
+  },
+  {
+   "id": "cmueehhmh00qepm348raeizut",
+   "nom": "HUGO BOSS Benelux Retail B.V.",
+   "domaine": "hugoboss.com",
+   "ancienDomaine": null,
+   "preuve": "https://careers.hugoboss.com/",
+   "confiance": "HAUTE",
+   "note": "liens de candidature sur careers.hugoboss.com · accueil www.hugoboss.com « HUGO BOSS collection | Femmes & hommes | Soignée & Particuli » · logo servi : oui"
+  },
+  {
+   "id": "cmuegip8o0001qv6dtw8lg272",
+   "nom": "Aeropostale",
+   "domaine": "aeropostale.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.aeropostale.com/",
+   "confiance": "HAUTE",
+   "note": "P856 Wikidata retenu par resolve-domains (essai à blanc) · offres publiées par careers-aeropostale.icims.com · accueil www.aeropostale.com « Men's and Women's Jeans, Clothes, Hoodies, and Graphic Tees  » · logo servi : non, monogramme maintenu"
+  },
+  {
+   "id": "cmueksl1r00pomr5oohnb8a29",
+   "nom": "Puma Mexico Sport SA de CV",
+   "domaine": "puma.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.puma.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par puma.wd502.myworkdayjobs.com · logo servi : vérifié sur la planche"
+  },
+  {
+   "id": "cmuebduav0vktoi35e2k38ogc",
+   "nom": "US01 Movado Group, Inc.",
+   "domaine": "movadogroup.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.movadogroup.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par movadogroup.wd1.myworkdayjobs.com · logo servi : vérifié sur la planche"
+  },
+  {
+   "id": "cmueksj4f00mnmr5oeljj6fs9",
+   "nom": "PUMA Sports Philippines Inc.",
+   "domaine": "puma.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.puma.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par puma.wd502.myworkdayjobs.com · logo servi : vérifié sur la planche"
+  },
+  {
+   "id": "cmuecfogy2rwmoi35l1pj7lgb",
+   "nom": "J Choo USA Inc",
+   "domaine": "jimmychoo.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.jimmychoo.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par capri.wd1.myworkdayjobs.com · logo servi : vérifié sur la planche"
+  },
+  {
+   "id": "cmu6ze0u20001jk6bydfeqa5e",
+   "nom": "todsspa",
+   "domaine": "tods.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.tods.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par jobs.todsgroup.com · logo servi : vérifié sur la planche"
+  },
+  {
+   "id": "cmudzwg00000dmo34v9qm7bub",
+   "nom": "Versace USA, Inc.",
+   "domaine": "versace.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.versace.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par capri.wd1.myworkdayjobs.com · logo servi : oui"
+  },
+  {
+   "id": "cmue4zth502p4o234fos3ib4g",
+   "nom": "HADDAD BRANDS EUROPE",
+   "domaine": "haddad.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.haddad.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par www.welcometothejungle.com · accueil www.haddad.com « Homepage - Haddad Brands » · logo servi : oui"
+  },
+  {
+   "id": "cmuecfoi52rwwoi35s7db8jfd",
+   "nom": "J. Choo Limited",
+   "domaine": "jimmychoo.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.jimmychoo.com/",
+   "confiance": "HAUTE",
+   "note": "P856 Wikidata retenu par resolve-domains (essai à blanc) · offres publiées par capri.wd1.myworkdayjobs.com · accueil row.jimmychoo.com « JIMMY CHOO - Boutique en ligne officielle | Chaussures, sacs » · logo servi : oui"
+  },
+  {
+   "id": "cmudwgz9q3t7noa34ru7o5y67",
+   "nom": "Link Theory (UK) Ltd.",
+   "domaine": "theory.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.theory.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par fastretailing.wd3.myworkdayjobs.com · accueil eu.theory.com « Theory Official Site | Contemporary Clothing for Women and M » · logo servi : oui"
+  },
+  {
+   "id": "cmuecjpzu33fvoi354jdn2aob",
+   "nom": "UNIQLO EUROPE LIMITED SPANISH BRANCH",
+   "domaine": "uniqlo.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.uniqlo.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par fastretailing.wd3.myworkdayjobs.com · accueil www.uniqlo.com « Access Denied » · logo servi : oui"
+  },
+  {
+   "id": "cmuekso8400urmr5olbwidnh5",
+   "nom": "PUMA Europe GmbH – Sede Secondaria in Italia",
+   "domaine": "puma.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.puma.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par puma.wd502.myworkdayjobs.com · logo servi : vérifié sur la planche"
+  },
+  {
+   "id": "cmtrsmvr71dafpg5m1bphr849",
+   "nom": "Michael Kors (Italy) srl con socio unico",
+   "domaine": "michaelkors.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.michaelkors.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par capri.wd1.myworkdayjobs.com · accueil www.michaelkors.fr « Sacs, chaussures, vêtements de créateur et plus encore | Mic » · logo servi : oui"
+  },
+  {
+   "id": "cmue51ubn097fo234rigl4w6x",
+   "nom": "Puig France",
+   "domaine": "puig.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.puig.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par www.welcometothejungle.com · accueil www.puig.com « Just a moment... » · logo servi : oui"
+  },
+  {
+   "id": "cradb6c50fa312cf6c94ddf97b",
+   "nom": "Marni",
+   "domaine": "marni.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.marni.com/",
+   "confiance": "HAUTE",
+   "note": "P856 Wikidata retenu par resolve-domains (essai à blanc) · offres publiées par careers.otb.net · accueil www.marni.com « Marni | Boutique en ligne officielle | France » · logo servi : oui"
+  },
+  {
+   "id": "cmueati7g0ggvoi35fr23460i",
+   "nom": "Kastner &amp; Öhler Online Shop",
+   "domaine": "kastner-oehler.at",
+   "ancienDomaine": null,
+   "preuve": "https://www.kastner-oehler.at/",
+   "confiance": "HAUTE",
+   "note": "liens de candidature sur www.kastner-oehler.at · accueil www.kastner-oehler.at « Mode | Beauty | Home | Kastner &amp; Öhler Online Shop » · logo servi : oui"
+  },
+  {
+   "id": "cmuebytcw1itwoi35oha9a947",
+   "nom": "1050 Swarovski India Private",
+   "domaine": "swarovski.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.swarovski.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par swarovski.wd3.myworkdayjobs.com · accueil www.swarovski.com « Swarovski Official | Bijoux, montres et décorations en crist » · logo servi : oui"
+  },
+  {
+   "id": "cmuebz02u1jpyoi35goobduuh",
+   "nom": "1215 Swarovski (Schweiz) AG",
+   "domaine": "swarovski.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.swarovski.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par swarovski.wd3.myworkdayjobs.com · accueil www.swarovski.com « Swarovski Official | Bijoux, montres et décorations en crist » · logo servi : oui"
+  },
+  {
+   "id": "cmueddwhj4wm9oi352x8ble7s",
+   "nom": "NIKE India Private Limited",
+   "domaine": "nike.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.nike.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par nike.wd1.myworkdayjobs.com · accueil www.nike.com « Nike. Just Do It. Nike FR » · logo servi : oui"
+  },
+  {
+   "id": "cmtrspy2s1pqrpg5mvlaqi23d",
+   "nom": "Nike Israel",
+   "domaine": "nike.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.nike.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par nike.wd1.myworkdayjobs.com · accueil www.nike.com « Nike. Just Do It. Nike FR » · logo servi : oui"
+  },
+  {
+   "id": "cmuecldas37txoi35r96sn1gz",
+   "nom": "30080 Les Publications Condé Nast S.A.S.",
+   "domaine": "condenast.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.condenast.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par condenast.wd115.myworkdayjobs.com · logo servi : vérifié sur la planche"
+  },
+  {
+   "id": "cmued5b3d4fjpoi35vpo8rz8e",
+   "nom": "Michael Kors (France) SA",
+   "domaine": "michaelkors.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.michaelkors.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par capri.wd1.myworkdayjobs.com · accueil www.michaelkors.fr « Sacs, chaussures, vêtements de créateur et plus encore | Mic » · logo servi : oui"
+  },
+  {
+   "id": "cr1848dd5739195c10387b8d71",
+   "nom": "Jil Sander",
+   "domaine": "jilsander.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.jilsander.com/",
+   "confiance": "HAUTE",
+   "note": "P856 Wikidata retenu par resolve-domains (essai à blanc) · offres publiées par careers.otb.net · accueil www.jilsander.com « Jil Sander | Boutique en Ligne Officielle France » · logo servi : oui"
+  },
+  {
+   "id": "cmtrsmvng1d93pg5ms8ufsb7v",
+   "nom": "Michael Kors Spain, S.L.U.",
+   "domaine": "michaelkors.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.michaelkors.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par capri.wd1.myworkdayjobs.com · accueil www.michaelkors.fr « Sacs, chaussures, vêtements de créateur et plus encore | Mic » · logo servi : oui"
+  },
+  {
+   "id": "cmuebiu5c0weeoi35t9gw1p0a",
+   "nom": "Pegador®",
+   "domaine": "pegador.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.pegador.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par pegador.jobs.personio.de · accueil pegador.com « Official Web &ndash; PEGADOR® » · logo servi : oui"
+  },
+  {
+   "id": "cmuece4qf2nswoi3529xsxxva",
+   "nom": "Stella McCartney Italia S.r.l",
+   "domaine": "stellamccartney.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.stellamccartney.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par stellamccartney.wd3.myworkdayjobs.com · accueil www.stellamccartney.com « Stella McCartney FR | Prêt-à-porter de créateur, Sacs et acc » · logo servi : oui"
+  },
+  {
+   "id": "cmuechf4f2xaxoi35sl98ud91",
+   "nom": "Canada Goose, US Inc.",
+   "domaine": "canada-goose.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.canada-goose.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par canadagoose.wd3.myworkdayjobs.com · logo servi : oui"
+  },
+  {
+   "id": "cmueehha300oqpm343pgnupl7",
+   "nom": "HUGO BOSS Benelux B.V. CIA",
+   "domaine": "hugoboss.com",
+   "ancienDomaine": null,
+   "preuve": "https://careers.hugoboss.com/",
+   "confiance": "HAUTE",
+   "note": "liens de candidature sur careers.hugoboss.com · accueil www.hugoboss.com « HUGO BOSS collection | Femmes & hommes | Soignée & Particuli » · logo servi : oui"
+  },
+  {
+   "id": "cmuf5zq550017md6dri6cfryo",
+   "nom": "Chantelle",
+   "domaine": "chantelle.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.chantelle.com/",
+   "confiance": "HAUTE",
+   "note": "P856 Wikidata retenu par resolve-domains (essai à blanc) · offres publiées par groupechantelle-recrute.talent-soft.com · accueil chantelle.com « We design lingerie » · logo servi : oui"
+  },
+  {
+   "id": "cmu6uw6z0002op940zt3qavmv",
+   "nom": "NIVEA India Pvt. Ltd.",
+   "domaine": "nivea.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.nivea.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par www.beiersdorf.com · logo servi : vérifié sur la planche"
+  },
+  {
+   "id": "cmu6zrawi0009ponltogp3avf",
+   "nom": "TSJ Holding GmbH",
+   "domaine": "thomassabo.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.northdata.de/TSJ+Holding+GmbH,+Linz/237980x",
+   "confiance": "HAUTE",
+   "note": "registre du commerce autrichien (FN 237980x) : associée TS Unternehmens- und Beteiligungs GmbH, groupe Thomas Sabo ; offres du tenant Personio de THOMAS SABO · offres publiées par thomassabo.jobs.personio.de · logo servi : vérifié sur la planche"
+  },
+  {
+   "id": "cmuebdvbr0vpuoi35sl43cbjm",
+   "nom": "MX01 MGI Distribucion S. de R.L. de C.V.",
+   "domaine": "movadogroup.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.sec.gov/Archives/edgar/data/72573/000119312526115298/mov-ex21_1.htm",
+   "confiance": "HAUTE",
+   "note": "filiale mexicaine déclarée par Movado Group (Exhibit 21.1 du 10-K : « MGI Distribución, S de R.L. de C.V. ») ; offres du tenant Workday movadogroup · offres publiées par movadogroup.wd1.myworkdayjobs.com · logo servi : vérifié sur la planche"
+  },
+  {
+   "id": "cmuebyrci1ikhoi35abrk1zkv",
+   "nom": "1580 Swarovski Int. d'Italia",
+   "domaine": "swarovski.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.swarovski.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par swarovski.wd3.myworkdayjobs.com · accueil www.swarovski.com « Swarovski Official | Bijoux, montres et décorations en crist » · logo servi : oui"
+  },
+  {
+   "id": "cmuebywfc1j83oi35327xfwvn",
+   "nom": "1840 Swarovski Hellas S.A.",
+   "domaine": "swarovski.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.swarovski.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par swarovski.wd3.myworkdayjobs.com · accueil www.swarovski.com « Swarovski Official | Bijoux, montres et décorations en crist » · logo servi : oui"
+  },
+  {
+   "id": "cmueehghk00kqpm34nrqmqq7h",
+   "nom": "HUGO BOSS AG, Branch Poland",
+   "domaine": "hugoboss.com",
+   "ancienDomaine": null,
+   "preuve": "https://careers.hugoboss.com/",
+   "confiance": "HAUTE",
+   "note": "liens de candidature sur careers.hugoboss.com · accueil www.hugoboss.com « HUGO BOSS collection | Femmes & hommes | Soignée & Particuli » · logo servi : oui"
+  },
+  {
+   "id": "cmueksfai00gdmr5oe8d0rjsv",
+   "nom": "PUMA New Zealand Ltd",
+   "domaine": "puma.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.puma.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par puma.wd502.myworkdayjobs.com · logo servi : vérifié sur la planche"
+  },
+  {
+   "id": "cmtrspy191pq3pg5m222snsqa",
+   "nom": "NIKE Retail Poland",
+   "domaine": "nike.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.nike.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par nike.wd1.myworkdayjobs.com · accueil www.nike.com « Nike. Just Do It. Nike FR » · logo servi : oui"
+  },
+  {
+   "id": "cmue51jv508hjo234qjox10up",
+   "nom": "LUSH | France",
+   "domaine": "lush.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.lush.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par www.welcometothejungle.com · accueil www.lush.com « Just a moment... » · logo servi : oui"
+  },
+  {
+   "id": "cmuebdvd80vq2oi3595sm4cor",
+   "nom": "NL01 Movado Group Nederland B.V.",
+   "domaine": "movadogroup.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.movadogroup.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par movadogroup.wd1.myworkdayjobs.com · logo servi : vérifié sur la planche"
+  },
+  {
+   "id": "cmuebyq8b1ieioi35pnqff16q",
+   "nom": "1900 Swarovski Cristais Ltda.",
+   "domaine": "swarovski.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.swarovski.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par swarovski.wd3.myworkdayjobs.com · accueil www.swarovski.com « Swarovski Official | Bijoux, montres et décorations en crist » · logo servi : oui"
+  },
+  {
+   "id": "cmuebyv4w1j1toi35dy55719b",
+   "nom": "1670 Swarovski Netherlands B.V.",
+   "domaine": "swarovski.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.swarovski.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par swarovski.wd3.myworkdayjobs.com · accueil www.swarovski.com « Swarovski Official | Bijoux, montres et décorations en crist » · logo servi : oui"
+  },
+  {
+   "id": "cmuece4o32ns9oi359oyeplah",
+   "nom": "Stella McCartney Limited",
+   "domaine": "stellamccartney.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.stellamccartney.com/",
+   "confiance": "HAUTE",
+   "note": "P856 Wikidata retenu par resolve-domains (essai à blanc) · offres publiées par stellamccartney.wd3.myworkdayjobs.com · accueil www.stellamccartney.com « Stella McCartney FR | Prêt-à-porter de créateur, Sacs et acc » · logo servi : oui"
+  },
+  {
+   "id": "cmuecjhwt32wloi357g2yein3",
+   "nom": "New Balance France Retail SARL",
+   "domaine": "newbalance.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.newbalance.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par newbalance.wd1.myworkdayjobs.com · accueil www.newbalance.com « Shoes, Sneakers, &amp; Athletic Wear - New Balance » · logo servi : oui"
+  },
+  {
+   "id": "cmuecqaoj3ldaoi35wy896k7c",
+   "nom": "Beiersdorf s.a.s.",
+   "domaine": "beiersdorf.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.beiersdorf.com/",
+   "confiance": "HAUTE",
+   "note": "P856 Wikidata retenu par resolve-domains (essai à blanc) · liens de candidature sur www.beiersdorf.com · accueil www.beiersdorf.com « Beiersdorf – The inventors of modern skin care » · logo servi : oui"
+  },
+  {
+   "id": "cmuecqaq33ldioi356bi6m85t",
+   "nom": "Beiersdorf Inc.",
+   "domaine": "beiersdorf.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.beiersdorf.com/",
+   "confiance": "HAUTE",
+   "note": "P856 Wikidata retenu par resolve-domains (essai à blanc) · liens de candidature sur www.beiersdorf.com · accueil www.beiersdorf.com « Beiersdorf – The inventors of modern skin care » · logo servi : oui"
+  },
+  {
+   "id": "cmued3qdf4bpaoi35g9wbw60w",
+   "nom": "Courir",
+   "domaine": "courir.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.courir.com/",
+   "confiance": "HAUTE",
+   "note": "P856 Wikidata retenu par resolve-domains (essai à blanc) · offres publiées par jobs.smartrecruiters.com · accueil www.courir.com « Courir - Sneakers et baskets Nike, Adidas, Converse, Jordan, » · logo servi : oui"
+  },
+  {
+   "id": "cmueehq3c01w7pm3402bja75s",
+   "nom": "HB Retail, Inc.",
+   "domaine": "hugoboss.com",
+   "ancienDomaine": null,
+   "preuve": "https://careers.hugoboss.com/",
+   "confiance": "HAUTE",
+   "note": "entité de détail américaine de HUGO BOSS : ses offres (magasins BOSS) se postulent sur careers.hugoboss.com · liens de candidature sur careers.hugoboss.com · accueil www.hugoboss.com « HUGO BOSS collection | Femmes & hommes | Soignée & Particuli » · logo servi : oui"
+  },
+  {
+   "id": "cmueks7qx003gmr5o73k3vsc5",
+   "nom": "World Cat Vietnam Sourcing & Development Services Co. Ltd",
+   "domaine": "puma.com",
+   "ancienDomaine": null,
+   "preuve": "https://about.puma.com/en/newsroom/news/puma-opens-milestone-development-center-vietnam",
+   "confiance": "HAUTE",
+   "note": "PUMA : « PUMA’s sourcing organisation World Cat » ; offres du tenant Workday de PUMA · offres publiées par puma.wd502.myworkdayjobs.com · logo servi : vérifié sur la planche"
+  },
+  {
+   "id": "cmueks8w8005hmr5oaxnxh6kp",
+   "nom": "PUMA Europe GmbH, Sucursal en Espana",
+   "domaine": "puma.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.puma.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par puma.wd502.myworkdayjobs.com · logo servi : vérifié sur la planche"
+  },
+  {
+   "id": "cmueks93x005wmr5odxn8b9xq",
+   "nom": "PUMA UNITED KINGDOM LTD",
+   "domaine": "puma.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.puma.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par puma.wd502.myworkdayjobs.com · logo servi : vérifié sur la planche"
+  },
+  {
+   "id": "cmuekt81m01numr5o2jf8tz26",
+   "nom": "Puma South East Asia Pte Ltd",
+   "domaine": "puma.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.puma.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par puma.wd502.myworkdayjobs.com · logo servi : vérifié sur la planche"
+  },
+  {
+   "id": "cmufq1u250004my3335wnn3mi",
+   "nom": "ALTEX S.A.",
+   "domaine": "altex.gr",
+   "ancienDomaine": null,
+   "preuve": "https://www.altex.gr/",
+   "confiance": "HAUTE",
+   "note": "Altex, « A Leading Fashion Retailer », propriétaire de FUNKY BUDDHA ; offres du tenant SmartRecruiters ALTEXSA de la source funky-buddha. altex.ro (proposé par Wikidata) est un distributeur roumain d’électronique : exclu · offres publiées par jobs.smartrecruiters.com · logo servi : vérifié sur la planche"
+  },
+  {
+   "id": "cmtrspyqi1q0lpg5mgfyppt7x",
+   "nom": "NIKE Retail Austria",
+   "domaine": "nike.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.nike.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par nike.wd1.myworkdayjobs.com · accueil www.nike.com « Nike. Just Do It. Nike FR » · logo servi : oui"
+  },
+  {
+   "id": "cmtvuca3b0001mszuve6zbutq",
+   "nom": "Icebreaker",
+   "domaine": "icebreaker.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.icebreaker.com/",
+   "confiance": "HAUTE",
+   "note": "P856 Wikidata retenu par resolve-domains (essai à blanc) · offres publiées par vfc.wd5.myworkdayjobs.com · accueil eu.icebreaker.com « Site Officiel icebreaker® | Vêtements en laine mérinos » · logo servi : oui"
+  },
+  {
+   "id": "cmu147o130511ms01g9qc8iqc",
+   "nom": "Ruinart",
+   "domaine": "ruinart.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.ruinart.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par emea3.recruitmentplatform.com · logo servi : vérifié sur la planche"
+  },
+  {
+   "id": "cmu6meq5w00013npsytulgy7p",
+   "nom": "Laverana GmbH & Co. KG - Hannover",
+   "domaine": "laverana.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.laverana.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par lavera.jobs.personio.de · accueil www.laverana.com « Laverana GmbH &amp; Co. KG » · logo servi : oui"
+  },
+  {
+   "id": "cmu6mer7p00093npsfn7y12aq",
+   "nom": "Laverana GmbH & Co. KG - Bantorf",
+   "domaine": "laverana.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.laverana.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par lavera.jobs.personio.de · accueil www.laverana.com « Laverana GmbH &amp; Co. KG » · logo servi : oui"
+  },
+  {
+   "id": "cmu6uw745002yp940iylr1vdl",
+   "nom": "Beiersdorf (Thailand) Co., Ltd.",
+   "domaine": "beiersdorf.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.beiersdorf.com/",
+   "confiance": "HAUTE",
+   "note": "liens de candidature sur www.beiersdorf.com · accueil www.beiersdorf.com « Beiersdorf – The inventors of modern skin care » · logo servi : oui"
+  },
+  {
+   "id": "cmudzwg9i001bmo34f629xim3",
+   "nom": "Gianni Versace S.r.l.",
+   "domaine": "versace.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.versace.com/",
+   "confiance": "HAUTE",
+   "note": "P856 Wikidata retenu par resolve-domains (essai à blanc) · offres publiées par capri.wd1.myworkdayjobs.com · logo servi : oui"
+  },
+  {
+   "id": "cmueajp8g0003oi35es5qqp7z",
+   "nom": "Abercrombie and Fitch Co.",
+   "domaine": "abercrombie.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.abercrombie.com/",
+   "confiance": "HAUTE",
+   "note": "P856 Wikidata retenu par resolve-domains (essai à blanc) · offres publiées par jobs.smartrecruiters.com · logo servi : oui"
+  },
+  {
+   "id": "cmuecip5x31teoi354kp4ae5e",
+   "nom": "BRUNELLO CUCINELLI USA INC",
+   "domaine": "brunellocucinelli.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.brunellocucinelli.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par brunellocucinelli.wd3.myworkdayjobs.com · logo servi : oui"
+  },
+  {
+   "id": "cmuecjk9832xboi358jjevfy7",
+   "nom": "New Balance Netherlands BV",
+   "domaine": "newbalance.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.newbalance.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par newbalance.wd1.myworkdayjobs.com · accueil www.newbalance.com « Shoes, Sneakers, &amp; Athletic Wear - New Balance » · logo servi : oui"
+  },
+  {
+   "id": "cmued1tls49ajoi35noai5von",
+   "nom": "Beaumanoir",
+   "domaine": "groupe-beaumanoir.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.groupe-beaumanoir.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par groupe-beaumanoir.gestmax.fr · logo servi : vérifié sur la planche"
+  },
+  {
+   "id": "cmued5dj94ftfoi35iqejeh4u",
+   "nom": "Michael Kors (Europe) BV",
+   "domaine": "michaelkors.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.michaelkors.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par capri.wd1.myworkdayjobs.com · accueil www.michaelkors.fr « Sacs, chaussures, vêtements de créateur et plus encore | Mic » · logo servi : oui"
+  },
+  {
+   "id": "cmueddzmk4wxyoi35s3flglqy",
+   "nom": "Nike China Holding HK Limited",
+   "domaine": "nike.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.nike.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par nike.wd1.myworkdayjobs.com · accueil www.nike.com « Nike. Just Do It. Nike FR » · logo servi : oui"
+  },
+  {
+   "id": "cmueehgnb00lkpm349n9g65bg",
+   "nom": "HUGO BOSS Textile Ind. Ltd.",
+   "domaine": "hugoboss.com",
+   "ancienDomaine": null,
+   "preuve": "https://careers.hugoboss.com/",
+   "confiance": "HAUTE",
+   "note": "liens de candidature sur careers.hugoboss.com · accueil www.hugoboss.com « HUGO BOSS collection | Femmes & hommes | Soignée & Particuli » · logo servi : oui"
+  },
+  {
+   "id": "cmueehh2o00nqpm34umtfusq1",
+   "nom": "HUGO BOSS Belgium Retail BVBA",
+   "domaine": "hugoboss.com",
+   "ancienDomaine": null,
+   "preuve": "https://careers.hugoboss.com/",
+   "confiance": "HAUTE",
+   "note": "liens de candidature sur careers.hugoboss.com · accueil www.hugoboss.com « HUGO BOSS collection | Femmes & hommes | Soignée & Particuli » · logo servi : oui"
+  },
+  {
+   "id": "cmtlyfr1600xaqf5kej8v3ztx",
+   "nom": "Hindbag",
+   "domaine": "hindbag.fr",
+   "ancienDomaine": null,
+   "preuve": "https://www.hindbag.fr/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par www.welcometothejungle.com · logo servi : vérifié sur la planche"
+  },
+  {
+   "id": "cmtrspz2z1q5apg5mmh73hnon",
+   "nom": "NIKE ELC",
+   "domaine": "nike.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.nike.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par nike.wd1.myworkdayjobs.com · accueil www.nike.com « Nike. Just Do It. Nike FR » · logo servi : oui"
+  },
+  {
+   "id": "cmtrsq2jy1rcnpg5mk60jfnw9",
+   "nom": "NIKE Vietnam Limited Liability Company",
+   "domaine": "nike.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.nike.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par nike.wd1.myworkdayjobs.com · accueil www.nike.com « Nike. Just Do It. Nike FR » · logo servi : oui"
+  },
+  {
+   "id": "cmtrt96hh32jrpg5mkohtfcgs",
+   "nom": "The Bradery",
+   "domaine": "thebradery.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.thebradery.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par www.welcometothejungle.com · logo servi : vérifié sur la planche"
+  },
+  {
+   "id": "cmu6uw7j9003tp940p9j2yv81",
+   "nom": "NIVEA Polska Sp. z o.o.",
+   "domaine": "nivea.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.nivea.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par www.beiersdorf.com · logo servi : vérifié sur la planche"
+  },
+  {
+   "id": "cmu6uwcx200efp940hpba3vjl",
+   "nom": "NIVEA (Shanghai) Company Limited",
+   "domaine": "nivea.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.nivea.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par www.beiersdorf.com · logo servi : vérifié sur la planche"
+  },
+  {
+   "id": "cmu6zqucd0009polvfl4yy3jn",
+   "nom": "Stanley/Stella BE",
+   "domaine": "stanleystella.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.stanleystella.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par stanley-stella.jobs.personio.de · accueil stanleystella.com « Stanley/Stella | Premium, modern and sustainable blank appar » · logo servi : oui"
+  },
+  {
+   "id": "cmudzwfun0001mo34vu96379a",
+   "nom": "Versace Canada",
+   "domaine": "versace.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.versace.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par capri.wd1.myworkdayjobs.com · logo servi : oui"
+  },
+  {
+   "id": "cmue4zh5u01j4o234ecyczly4",
+   "nom": "Car & Classic",
+   "domaine": "carandclassic.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.carandclassic.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par www.welcometothejungle.com · logo servi : vérifié sur la planche"
+  },
+  {
+   "id": "cmuebyona1i8aoi35hc3ruzyt",
+   "nom": "R600 Swarovski Poland Sp. z o.o.",
+   "domaine": "swarovski.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.swarovski.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par swarovski.wd3.myworkdayjobs.com · accueil www.swarovski.com « Swarovski Official | Bijoux, montres et décorations en crist » · logo servi : oui"
+  },
+  {
+   "id": "cmuece5k32nzioi355e86dqpu",
+   "nom": "Stella McCartney (Japan) Limited",
+   "domaine": "stellamccartney.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.stellamccartney.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par stellamccartney.wd3.myworkdayjobs.com · accueil www.stellamccartney.com « Stella McCartney FR | Prêt-à-porter de créateur, Sacs et acc » · logo servi : oui"
+  },
+  {
+   "id": "cmuecqbk23lgioi358lwxuts7",
+   "nom": "Beiersdorf SpA",
+   "domaine": "beiersdorf.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.beiersdorf.com/",
+   "confiance": "HAUTE",
+   "note": "P856 Wikidata retenu par resolve-domains (essai à blanc) · liens de candidature sur www.beiersdorf.com · accueil www.beiersdorf.com « Beiersdorf – The inventors of modern skin care » · logo servi : oui"
+  },
+  {
+   "id": "cmuecqblh3lguoi35ao5o0wgz",
+   "nom": "Beiersdorf Australia Ltd.",
+   "domaine": "beiersdorf.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.beiersdorf.com/",
+   "confiance": "HAUTE",
+   "note": "liens de candidature sur www.beiersdorf.com · accueil www.beiersdorf.com « Beiersdorf – The inventors of modern skin care » · logo servi : oui"
+  },
+  {
+   "id": "cmuecqbs93lieoi3553gsmzt9",
+   "nom": "Beiersdorf S.A.",
+   "domaine": "beiersdorf.com",
+   "ancienDomaine": null,
+   "preuve": "https://www.beiersdorf.com/",
+   "confiance": "HAUTE",
+   "note": "P856 Wikidata retenu par resolve-domains (essai à blanc) · liens de candidature sur www.beiersdorf.com · accueil www.beiersdorf.com « Beiersdorf – The inventors of modern skin care » · logo servi : oui"
+  },
+  {
+   "id": "cmtm8mla31efspv5job60vgle",
+   "nom": "La casa de las Carcasas",
+   "domaine": "lacasadelascarcasas.com",
+   "ancienDomaine": "lacasadelascarcasas.es",
+   "preuve": "https://lacasadelascarcasas.com/",
+   "confiance": "HAUTE",
+   "note": "le .es (P856 Wikidata) est exact mais inconnu des deux fournisseurs ; le .com est la passerelle internationale de la même Maison (« © La Casa de las Carcasas », choix España, Francia, Italia, Portugal, Mexico, Chile, Colombia) et sert son logo vert"
+  },
+  {
+   "id": "cmtlygfhc01y9qf5kvq0ggi25",
+   "nom": "Talbots",
+   "domaine": "talbots.com",
+   "ancienDomaine": "talbots.co.jp",
+   "preuve": "https://www.talbots.com/",
+   "confiance": "HAUTE",
+   "note": "offres publiées par Knitwell Group (propriétaire de Talbots aux États-Unis) ; talbots.co.jp est Talbots Japon. Aucun des deux domaines ne sert de logo : correction de la donnée, sans effet visible"
+  },
+  {
+   "id": "cmue6tx4e0044ti6f2bjtnrxi",
+   "nom": "NOCIBE",
+   "domaine": "nocibe.fr",
+   "ancienDomaine": "douglas.group",
+   "preuve": "https://www.nocibe.fr/",
+   "confiance": "HAUTE",
+   "note": "le logo affiché est celui du groupe Douglas (domaine du portail jobs.douglas.group/NOCIBE) ; nocibe.fr sert le logo NOCIBÉ"
+  },
+  {
+   "id": "cmtm7vlqt14bnpv5jwkbal0n0",
+   "nom": "Donzé-Baume",
+   "domaine": null,
+   "ancienDomaine": "swatchgroup.com",
+   "preuve": "https://www.richemont.com/news-media/press-releases-news/richemont-acquires-watch-component-manufacturer-done-baume-sa/",
+   "confiance": "HAUTE",
+   "note": "filiale de Richemont depuis 2007 (offres du tenant Workday de Richemont, Les Breuleux) : le logo affiché est celui du Swatch Group, un concurrent. Aucun site propre joignable : retrait, monogramme"
+  },
+  {
+   "id": "cmtk1xrp9020anv2bx7tlltw0",
+   "nom": "Petit Bateau",
+   "domaine": "petitbateau.com",
+   "ancienDomaine": "petit-bateau.com",
+   "preuve": "https://www.petitbateau.com/",
+   "confiance": "HAUTE",
+   "note": "l’apex petit-bateau.com n’est pas le site (hébergeur OVHcloud) : les deux fournisseurs servent le logo d’OVHcloud, affiché sur 46 offres dont 39 en France. petitbateau.com redirige vers www.petit-bateau.com et sert le voilier Petit Bateau"
+  },
+  {
+   "id": "cmtlyntz10j3nqf5k4qbz9fb0",
+   "nom": "TBS",
+   "domaine": "tbs.fr",
+   "ancienDomaine": "tbs.nl",
+   "preuve": "https://www.tbs.fr/",
+   "confiance": "HAUTE",
+   "note": "tbs.nl est une société néerlandaise de drainage ; les offres viennent du groupe Eram, propriétaire de la marque de chaussures TBS (« Tbs - Chaussures & Vêtements Sportswear »)"
+  },
+  {
+   "id": "cmtlyf1yk00b6qf5kpjwwio4g",
+   "nom": "Tekla",
+   "domaine": "teklafabrics.com",
+   "ancienDomaine": "tekla.com",
+   "preuve": "https://job-boards.eu.greenhouse.io/tekla",
+   "confiance": "HAUTE",
+   "note": "tekla.com est le logiciel de construction de Trimble ; le tenant Greenhouse « tekla » publie les postes de Tekla Fabrics (Copenhague, boutique de Londres) ; teklafabrics.com « Tekla Fabrics »"
+  },
+  {
+   "id": "cmtp330rp14duqq4zgstlhn22",
+   "nom": "TEVA",
+   "domaine": "teva.com",
+   "ancienDomaine": "tevapharm.com",
+   "preuve": "https://www.deckers.com/brands",
+   "confiance": "HAUTE",
+   "note": "tevapharm.com est Teva Pharmaceutical ; les offres viennent du tenant Workday de Deckers (« … - Teva ») ; teva.com est le site de la marque et sert l’icône de son propre site (teva-eu.com/favicon.ico)"
+  },
+  {
+   "id": "cmtlyfbdg00j3qf5kcmsvepi2",
+   "nom": "Wolf Lingerie",
+   "domaine": "wolflingerie.com",
+   "ancienDomaine": "wolf-lingerie.com",
+   "preuve": "https://www.wolflingerie.com/",
+   "confiance": "HAUTE",
+   "note": "wolf-lingerie.com est une page d’hébergeur (logo OVHcloud) ; wolflingerie.com « Wolf Lingerie, spécialiste de la lingerie depuis 1947 », offres WTTJ de La Wantzenau"
+  },
+  {
+   "id": "cmtlyek3h000fqf5k6s23u0ze",
+   "nom": "Blacks",
+   "domaine": "blacks.co.uk",
+   "ancienDomaine": "blackstone.com",
+   "preuve": "https://www.blacks.co.uk/",
+   "confiance": "HAUTE",
+   "note": "blackstone.com est le fonds Blackstone ; le tenant Greenhouse « blacks » renvoie vers careers.jdplc.com, unité Blacks du groupe JD ; blacks.co.uk sert le logo Blacks"
+  }
+ ],
+ "abstentions": [
+  {
+   "id": "cmuebk33i0wgloi355afus1wo",
+   "nom": "Reitmans (Canada) Ltée/Ltd",
+   "publiables": 335,
+   "motif": "domaine de la société mère (reitmanscanadalimited.com) faiblement attesté, et ni lui ni reitmans.com ne servent un logo lisible : rien à gagner, un risque"
+  },
+  {
+   "id": "cmtk48edn1bx1ny2bw96j1oca",
+   "nom": "Moët Hennessy",
+   "publiables": 132,
+   "motif": "moethennessy.com redirige vers lvmh.com : le logo serait celui de LVMH, actionnaire à 66 % seulement"
+  },
+  {
+   "id": "cr97d3bb8020ae3d11dca848c7",
+   "nom": "Saks OFF 5TH",
+   "publiables": 28,
+   "motif": "saksoff5th.com affiche « Site Offline » et ne sert aucun logo ; saks.com est une autre enseigne"
+  },
+  {
+   "id": "cr5a4778ec71807661c42b93cc",
+   "nom": "Reclectic",
+   "publiables": 21,
+   "motif": "concept de magasin d’URBN sans domaine propre identifié ; reclectic.com est un HOMONYME (boutique Shopify d’antiquités indépendante) : ne jamais l’utiliser"
+  },
+  {
+   "id": "cmue50ujf06bvo234rxv655hx",
+   "nom": "JUNE STORE",
+   "publiables": 11,
+   "motif": "junestore.fr sert une page d’hébergeur par défaut"
+  },
+  {
+   "id": "cmuearjn20c57oi35xe6l60vc",
+   "nom": "EssilorLuxottica Demo",
+   "publiables": 7,
+   "motif": "« Demo » : libellé de démonstration, pas un employeur"
+  }
+ ]
+}
