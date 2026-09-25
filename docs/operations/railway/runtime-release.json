@@ -1,15 +1,15 @@
 {
-  "observedAt": "2026-09-24T11:32:12.378106+00:00",
+  "observedAt": "2026-09-25T09:32:45.919158+00:00",
   "targetContractSha256": "fdc0256fafcac40b59441aa1c7881fd1092ad544f6ca7122255ad05cb3fc8748",
   "registryVisibility": "public",
   "registryCredentialsRequired": false,
   "images": [
     {
-      "gitSha": "c62a5342441cc6d5fe2806598ca8e1279f47d3eb",
+      "gitSha": "1e1ad4cb39fc93d180674817c9fdde956e7cb973",
       "contractSha256": "fdc0256fafcac40b59441aa1c7881fd1092ad544f6ca7122255ad05cb3fc8748",
       "service": "catwalks-catalogue-api",
-      "image": "ghcr.io/lmelane/catwalks-catalogue-api@sha256:7cfe60a8c09f034145db2a28cefcede1d25ca8b14b597f85fb0af55038a85524",
-      "imageId": "sha256:0607678061c03e30fd32a2ec3922ab164968f4d11603cd5b9078253985f07abd",
+      "image": "ghcr.io/lmelane/catwalks-catalogue-api@sha256:38de3203b75e3f1680184d07c289ee6b6ab3785d760bcff286bd7d0bfda37919",
+      "imageId": "sha256:da72e10c52e93950b66eb95b1bd8463c99430a324126668a5025f05bc2f52ae6",
       "imageEnvironment": [
         "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
         "NODE_VERSION=22.23.3",
@@ -26,15 +26,15 @@
         "status": "PASS",
         "network": "none",
         "role": "api",
-        "gitSha": "c62a5342441cc6d5fe2806598ca8e1279f47d3eb"
+        "gitSha": "1e1ad4cb39fc93d180674817c9fdde956e7cb973"
       }
     },
     {
-      "gitSha": "2cc91d8637671ba81ea23f03dd558f889befd70f",
+      "gitSha": "1e1ad4cb39fc93d180674817c9fdde956e7cb973",
       "contractSha256": "fdc0256fafcac40b59441aa1c7881fd1092ad544f6ca7122255ad05cb3fc8748",
       "service": "catwalks-ingestion-worker",
-      "image": "ghcr.io/lmelane/catwalks-ingestion-worker@sha256:7c8e50bf38f5564b9bb5bd23ef7ae2ff548787d037c66c22a998ca9de34d9b2c",
-      "imageId": "sha256:0055e78d39f1fc5c3cbd1a116be1b26695a651e80540211e5ada3691720b5272",
+      "image": "ghcr.io/lmelane/catwalks-ingestion-worker@sha256:a5a99134e60cfa1af4ec26000cee5cf5b04abe2de9dd26d311db2711fb044c6b",
+      "imageId": "sha256:3b8cafe5a80c6f4144968cdf00c566c5c6e2b4a0adc1317ea6c4f9085bfcb04a",
       "imageEnvironment": [
         "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
         "LANG=C.UTF-8",
@@ -51,24 +51,24 @@
         "status": "PASS",
         "network": "none",
         "role": "worker",
-        "gitSha": "2cc91d8637671ba81ea23f03dd558f889befd70f"
+        "gitSha": "1e1ad4cb39fc93d180674817c9fdde956e7cb973"
       }
     }
   ],
-  "reason": "Native public market locales and unified employment facets. API-only release; ingestion runtime has no consumer of these presentation changes. Worker, CRON, database and volume configuration are unchanged.",
+  "reason": "RUN stabilisation (D-453 §1, D-456, D-462), offer country (D-442, D-450, D-454), Catwalks employer and JobPosting (D-455, D-456 §4, D-450 §4). API and worker.",
   "ci": {
-    "development": 35992570704,
-    "headSha": "c62a5342441cc6d5fe2806598ca8e1279f47d3eb",
+    "development": 36116544769,
+    "headSha": "1e1ad4cb39fc93d180674817c9fdde956e7cb973",
     "status": "SUCCESS",
-    "mainPromotion": "Same tested commit; no code change."
+    "mainPromotion": "Same tested commit; fast-forward c62a534..1e1ad4c; no code change."
   },
   "services": [
     {
       "serviceId": "9c50b8a9-5651-478f-b0d1-5bc02d2c138f",
       "name": "catwalks-catalogue-api",
-      "deploymentId": "29dc3301-68bd-4892-b3f7-6de3540dfb62",
+      "deploymentId": "60cdd067-1c99-47fd-81e5-984862e54edb",
       "deploymentStatus": "SUCCESS",
-      "image": "ghcr.io/lmelane/catwalks-catalogue-api@sha256:7cfe60a8c09f034145db2a28cefcede1d25ca8b14b597f85fb0af55038a85524",
+      "image": "ghcr.io/lmelane/catwalks-catalogue-api@sha256:38de3203b75e3f1680184d07c289ee6b6ab3785d760bcff286bd7d0bfda37919",
       "deploy": {
         "startCommand": "node apps/api/runtime/start.mjs",
         "healthcheckPath": "/api/health",
@@ -95,8 +95,8 @@
         "PORT"
       ],
       "process": {
-        "at": "2026-09-24T11:29:39.076Z",
-        "gitSha": "c62a5342441cc6d5fe2806598ca8e1279f47d3eb",
+        "at": "2026-09-25T09:13:37.476Z",
+        "gitSha": "1e1ad4cb39fc93d180674817c9fdde956e7cb973",
         "contractSha256": "fdc0256fafcac40b59441aa1c7881fd1092ad544f6ca7122255ad05cb3fc8748",
         "role": "api",
         "argv": [],
@@ -119,9 +119,9 @@
     {
       "serviceId": "210322c3-51b7-42c3-a93d-f50f64d44d19",
       "name": "catwalks-ingestion-worker",
-      "deploymentId": "b4b152e1-cb2b-4849-8238-f772c1bbca23",
+      "deploymentId": "4f25059c-5bf6-4c65-9aaa-a42ffc2e873d",
       "deploymentStatus": "SUCCESS",
-      "image": "ghcr.io/lmelane/catwalks-ingestion-worker@sha256:7c8e50bf38f5564b9bb5bd23ef7ae2ff548787d037c66c22a998ca9de34d9b2c",
+      "image": "ghcr.io/lmelane/catwalks-ingestion-worker@sha256:a5a99134e60cfa1af4ec26000cee5cf5b04abe2de9dd26d311db2711fb044c6b",
       "deploy": {
         "startCommand": "sh apps/aggregator/start.sh scheduled",
         "restartPolicyType": "NEVER",
@@ -149,20 +149,16 @@
         "PIPELINE_PAUSED"
       ],
       "process": {
-        "at": "2026-09-24T09:51:37.320Z",
-        "gitSha": "2cc91d8637671ba81ea23f03dd558f889befd70f",
+        "at": "2026-09-25T09:13:56.056Z",
+        "gitSha": "1e1ad4cb39fc93d180674817c9fdde956e7cb973",
         "contractSha256": "fdc0256fafcac40b59441aa1c7881fd1092ad544f6ca7122255ad05cb3fc8748",
         "role": "worker",
-        "argv": [
-          "ingest",
-          "--source=thomas-sabo",
-          "--no-geocode"
-        ],
+        "argv": [],
         "values": {
           "BREVO_SENDER_NAME": "Catwalks",
           "CATWALKS_RUNTIME_PROFILE": "production",
           "NODE_ENV": "production",
-          "PIPELINE_PAUSED": "0"
+          "PIPELINE_PAUSED": "1"
         },
         "profile": "production",
         "secretNames": [
@@ -171,11 +167,8 @@
           "BREVO_API_KEY"
         ]
       },
-      "targetEffectiveProcessMatch": null,
-      "secretValuesPublished": false,
-      "lastExecutedDeploymentId": "c7ae15ba-7326-408c-8837-6188068440c7",
-      "configuredImageAndEnvironmentMatchLastExecutedProcess": true,
-      "scheduledInvocationObservation": "Pending next scheduled invocation. Restored configuration is verified; process evidence above is the successful bounded ingest, not a scheduled execution."
+      "targetEffectiveProcessMatch": true,
+      "secretValuesPublished": false
     }
   ],
   "schedule": {
@@ -183,7 +176,7 @@
     "timeZone": "Europe/Paris",
     "localHour": 18,
     "actualRunsPerDay": 1,
-    "restoredAfterSuccessfulBoundedRun": true,
+    "restoredAfterPausedBoot": true,
     "nextScheduledRunObserved": false
   },
   "database": {
@@ -194,144 +187,109 @@
     "historicalDataRepair": false,
     "reset": false
   },
-  "validation": "docs/architecture/emplois-e2e.md",
+  "validation": "npm run test:local on a fresh database (unit 3067, integration 607, API 300) and CI run 36116544769",
   "rollback": {
-    "previousCodeSha": "2cc91d8637671ba81ea23f03dd558f889befd70f",
-    "images": {
-      "9c50b8a9-5651-478f-b0d1-5bc02d2c138f": "ghcr.io/lmelane/catwalks-catalogue-api@sha256:bce344bbfcf50318bafc351de3fa976bb11358f33078178e3c4afa28caa50197"
+    "previousCodeSha": {
+      "api": "c62a5342441cc6d5fe2806598ca8e1279f47d3eb",
+      "worker": "2cc91d8637671ba81ea23f03dd558f889befd70f"
     },
-    "scope": "API only; worker and database untouched",
+    "images": {
+      "9c50b8a9-5651-478f-b0d1-5bc02d2c138f": "ghcr.io/lmelane/catwalks-catalogue-api@sha256:7cfe60a8c09f034145db2a28cefcede1d25ca8b14b597f85fb0af55038a85524",
+      "210322c3-51b7-42c3-a93d-f50f64d44d19": "ghcr.io/lmelane/catwalks-ingestion-worker@sha256:7c8e50bf38f5564b9bb5bd23ef7ae2ff548787d037c66c22a998ca9de34d9b2c"
+    },
+    "scope": "API and worker; database untouched",
     "databaseDowngrade": false
   },
   "productionChecks": {
-    "thomasSabo": {
-      "runId": "8f681072-6c2d-41e9-abd5-004ccf81e44a",
-      "status": "COMPLETED",
-      "captureBatchId": "77751eb6-7640-4819-9198-bd83f8882fb1",
-      "jobCaptures": 42,
-      "extractions": 41,
-      "published": 41,
-      "created": 0,
-      "updated": 41,
-      "merged": 0,
-      "errors": 0,
-      "held": 0,
-      "durationSeconds": 13.988,
-      "workerExitCode": 0,
-      "completionReportHash": "07876ca681129b493e5d4a693622689517d7accbd5b0178f27ee7b99d30ffd5c"
-    },
-    "catalogue": {
-      "FR": {
-        "status": 200,
-        "ms": 442,
-        "total": 11586,
-        "returned": 25,
-        "countryBound": true,
-        "facetsPresent": true
-      },
-      "US": {
-        "status": 200,
-        "ms": 524,
-        "total": 35597,
-        "returned": 25,
-        "countryBound": true,
-        "facetsPresent": true
-      },
-      "IT": {
-        "status": 200,
-        "ms": 127,
-        "total": 2235,
-        "returned": 25,
-        "countryBound": true,
-        "facetsPresent": true
-      },
-      "JP": {
-        "status": 200,
-        "ms": 111,
-        "total": 534,
-        "returned": 25,
-        "countryBound": true,
-        "facetsPresent": true
-      },
-      "AE": {
-        "status": 200,
-        "ms": 129,
-        "total": 222,
-        "returned": 25,
-        "countryBound": true,
-        "facetsPresent": true
-      },
-      "roleFR": {
-        "status": 200,
-        "ms": 573,
-        "total": 4013,
-        "returned": 25,
-        "countryBound": true,
-        "facetsPresent": true
-      },
-      "roleFRFrench": {
-        "status": 200,
-        "ms": 354,
-        "total": 4013,
-        "returned": 25,
-        "countryBound": true,
-        "facetsPresent": true
-      },
-      "composedFR": {
-        "status": 200,
-        "ms": 125,
-        "total": 25,
-        "returned": 25,
-        "countryBound": true,
-        "facetsPresent": true
-      },
-      "composedUS": {
-        "status": 200,
-        "ms": 145,
-        "total": 50,
-        "returned": 25,
-        "countryBound": true,
-        "facetsPresent": true
-      },
-      "placeFR": {
-        "status": 200,
-        "ms": 197,
-        "total": 3757,
-        "returned": 25,
-        "countryBound": true,
-        "facetsPresent": true
-      },
+    "apiSmoke": {
+      "pass": true,
       "health": {
         "status": 200,
         "search": {
           "version": "search-3-20260924-v2",
           "pending": 0,
           "oldestSeconds": null,
-          "documents": 76097,
+          "documents": 78704,
           "registered": true,
           "ready": true
         },
-        "gitSha": "c62a5342441cc6d5fe2806598ca8e1279f47d3eb"
+        "gitSha": "1e1ad4cb39fc93d180674817c9fdde956e7cb973"
       },
-      "unauthorized": {
-        "status": 401
-      },
-      "detail": {
-        "status": 200,
-        "id": "cmuf5ztie006zmd6dlkoqwc1w"
-      },
+      "unauthorizedStatus": 401,
+      "detailStatus": 200,
       "translationConsistency": true,
-      "pass": true
+      "markets": {
+        "FR": {
+          "status": 200,
+          "total": 11937,
+          "ms": 287,
+          "countryBound": true
+        },
+        "US": {
+          "status": 200,
+          "total": 36541,
+          "ms": 442,
+          "countryBound": true
+        },
+        "IT": {
+          "status": 200,
+          "total": 2292,
+          "ms": 142,
+          "countryBound": true
+        },
+        "JP": {
+          "status": 200,
+          "total": 538,
+          "ms": 151,
+          "countryBound": true
+        },
+        "AE": {
+          "status": 200,
+          "total": 231,
+          "ms": 97,
+          "countryBound": true
+        },
+        "roleFR": {
+          "status": 200,
+          "total": 4177,
+          "ms": 268,
+          "countryBound": true
+        },
+        "roleFRFrench": {
+          "status": 200,
+          "total": 4177,
+          "ms": 278,
+          "countryBound": true
+        },
+        "composedFR": {
+          "status": 200,
+          "total": 25,
+          "ms": 124,
+          "countryBound": true
+        },
+        "composedUS": {
+          "status": 200,
+          "total": 50,
+          "ms": 119,
+          "countryBound": true
+        },
+        "placeFR": {
+          "status": 200,
+          "total": 3855,
+          "ms": 198,
+          "countryBound": true
+        }
+      },
+      "coldStartFirstKeywordSearchMs": 10272
     },
-    "marketLocales": {
-      "markets": 41,
-      "catalogueLanguages": 25,
-      "productionReadOnlyMatrix": "PASS",
-      "CA_CH_BE_sameCorpusAcrossLocales": "PASS"
-    }
-  },
-  "productionCodeShas": {
-    "catwalks-catalogue-api": "c62a5342441cc6d5fe2806598ca8e1279f47d3eb",
-    "catwalks-ingestion-worker": "2cc91d8637671ba81ea23f03dd558f889befd70f"
+    "configuration": "check paused and check normal: effective configuration equals the snapshot with the two images replaced",
+    "workerPausedBoot": {
+      "deploymentId": "4f25059c-5bf6-4c65-9aaa-a42ffc2e873d",
+      "events": [
+        "runtime.attested",
+        "pipeline.paused"
+      ]
+    },
+    "firstRunAfterRelease": "to be observed at the 18:00 Europe/Paris RUN of 25/09/2026"
   }
 }
