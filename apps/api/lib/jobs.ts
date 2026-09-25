@@ -10,7 +10,7 @@ import { getOptionalOccupationPresentation, type OptionalOccupationPresentation 
 import { prisma, Prisma, canonicalJobId } from '@catwalks/db';
 import { ARITE_CLE_RECHERCHE, searchSummary, type CleRecherche } from './job-search-query';
 import { CURSEUR_MAX, decoderCurseur, empreinteCriteres, encoderCurseur } from './curseur';
-import { directPubliable, directPubliableSql, directToRow, estIdDirect, idDirect, statutDirect } from './direct-offers';
+import { directPubliable, directPubliableSql, directToRow, estIdDirect, estMandatCatwalks, idDirect, statutDirect } from './direct-offers';
 import { offerIdCandidates } from './offer-url';
 import { localeAffichage } from './presentation-locale';
 import { libellerFacettes, type FacetteServie } from './facettes';
@@ -528,22 +528,27 @@ export async function getSimilarJobs(job: JobRow, limit = 6, langue: LangueLibel
     const memePays = job.countryCode ? { countryCode: job.countryCode } : {};
     const taxonomy = await getOptionalOccupationPresentation(langue);
     const ordre: Prisma.JobOrderByWithRelationInput[] = [{ postedAt: { sort: 'desc', nulls: 'last' } }, { id: 'asc' }];
-    // D-419 §1 : les offres Catwalks de la même Maison, dans le même pays, ouvrent la liste.
-    const directes = (await prisma.directOffer.findMany({
-      where: { ...directPubliable(), ...memePays, company: job.company, ...(job.origine === 'CATWALKS' ? { id: { not: idDirect(job.id) } } : {}) },
-      // `postedAt` d'une offre directe est toujours renseigné : tri simple.
-      orderBy: [{ postedAt: 'desc' }, { id: 'asc' }],
-      take: limit,
-    })).map(directToRow);
-    if (directes.length >= limit) return directes;
-    const sameMaison = await prisma.job.findMany({
-      where: { ...base, ...memePays, company: { name: job.company } },
-      include,
-      omit: { raw: true, searchText: true },
-      orderBy: [...ordre],
-      take: limit - directes.length,
-    });
-    const memeMaison = [...directes, ...sameMaison.map((row) => toRow(row, taxonomy))];
+    const memeEmployeur = async (): Promise<JobRow[]> => {
+      // D-419 §1 : les offres Catwalks de la même Maison, dans le même pays, ouvrent la liste.
+      const directes = (await prisma.directOffer.findMany({
+        where: { ...directPubliable(), ...memePays, company: job.company, ...(job.origine === 'CATWALKS' ? { id: { not: idDirect(job.id) } } : {}) },
+        // `postedAt` d'une offre directe est toujours renseigné : tri simple.
+        orderBy: [{ postedAt: 'desc' }, { id: 'asc' }],
+        take: limit,
+      })).map(directToRow);
+      if (directes.length >= limit) return directes;
+      const sameMaison = await prisma.job.findMany({
+        where: { ...base, ...memePays, company: { name: job.company } },
+        include,
+        omit: { raw: true, searchText: true },
+        orderBy: [...ordre],
+        take: limit - directes.length,
+      });
+      return [...directes, ...sameMaison.map((row) => toRow(row, taxonomy))];
+    };
+    // D-456 §4 : « Catwalks » ne nomme pas un employeur commun aux mandats sans Maison publique. Sur leur fiche, le bloc
+    // « même employeur » (offres directes, puis agrégées) ne propose rien : la liste passe directement au remplissage.
+    const memeMaison = estMandatCatwalks(job) ? [] : await memeEmployeur();
     if (memeMaison.length >= limit) return memeMaison;
 
     const sectorCodes = job.sectorCodes ?? [];

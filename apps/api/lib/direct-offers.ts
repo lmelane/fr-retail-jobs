@@ -21,6 +21,17 @@ import type { JobRow } from './jobs';
 export const PREFIXE_DIRECT = 'cw_';
 export const SOURCE_DIRECTE = 'catwalks';
 
+/**
+ * L'employeur affiché d'une offre Catwalks sans Maison publique (D-455 §1) : la projection de l'agrégateur l'écrit
+ * dans `company` (`EMPLOYEUR_CATWALKS`, apps/aggregator/src/direct/vocabulaire.ts). Les deux valeurs doivent rester
+ * identiques ; le témoin D-456 §4 projette ses mandats par l'agrégateur et échoue si elles divergent.
+ */
+const EMPLOYEUR_CATWALKS = 'Catwalks';
+
+/** Un mandat Catwalks sans Maison publique : une offre directe dont l'employeur affiché est « Catwalks » (D-456 §4). */
+export const estMandatCatwalks = (job: Pick<JobRow, 'origine' | 'company'>): boolean =>
+  job.origine === 'CATWALKS' && job.company === EMPLOYEUR_CATWALKS;
+
 export const estIdDirect = (id: string): boolean => id.startsWith(PREFIXE_DIRECT);
 export const idDirect = (idPublic: string): string => idPublic.slice(PREFIXE_DIRECT.length);
 export const idPublicDirect = (id: string): string => `${PREFIXE_DIRECT}${id}`;

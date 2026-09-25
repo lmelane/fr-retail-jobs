@@ -18,9 +18,17 @@ import { offerPath } from './offer-url';
  *  - addressCountry: the canonical code of what the SOURCE said — never a
  *    hard-coded FR on a worldwide board (the audited S-02b bug), omitted when
  *    unknown;
- *  - identifier + directApply:false — we are an aggregator, the apply happens
- *    at the employer, and saying otherwise is the kind of lie that gets a
- *    board penalized.
+ *  - hiringOrganization + identifier.name: "Catwalks" for EVERY offer published
+ *    on Catwalks, with or without a public Maison (D-346, confirmed by D-455
+ *    §2; R-124 §7), with the same node as `/offres` (@id, url, logo); the
+ *    Maison's name for an aggregated offer. The DISPLAYED employer (`company`)
+ *    follows R-96 and is not what is declared here;
+ *  - identifier + directApply:false, for EVERY offer (D-450 §4). Google's
+ *    "direct apply" means applying from the page itself, without signing in
+ *    or any intermediate step. An aggregated offer is applied for at the
+ *    employer (D18); applying to a Catwalks offer requires an account, and
+ *    D-447 §4 decides an account and the full onboarding for every offer.
+ *    Saying otherwise is the kind of lie that gets a board penalized.
  */
 
 /**
@@ -334,7 +342,8 @@ export function markupIneligibility(job: JobRow, now: Date = new Date()): Markup
   if (!job.postedAt || !Number.isFinite(job.postedAt.getTime())) reasons.push('NO_REAL_POSTED_DATE');
   if (!job.title?.trim()) reasons.push('NO_TITLE');
   if (!job.description || job.description.trim().length < DESCRIPTION_MINIMALE) reasons.push('DESCRIPTION_TOO_THIN');
-  if (!job.company?.trim()) reasons.push('NO_HIRING_ORGANIZATION');
+  // La porte juge l'employeur que le balisage DÉCLARE (`employeurDeclare`), pas le nom affiché : une seule règle.
+  if (!employeurDeclare(job)?.trim()) reasons.push('NO_HIRING_ORGANIZATION');
   /**
    * La localisation est jugée par `resolveLocation`, la MÊME fonction que celle qui construit les propriétés du
    * balisage : la porte et le rendu ne peuvent pas divergir. Elle rend soit des lieux au pays établi, soit un
@@ -491,6 +500,38 @@ function resolveLocation(job: JobRow): LocationOutcome {
   } } } };
 }
 
+/** L'employeur déclaré à Google d'une offre publiée sur Catwalks (D-346, confirmée par D-455 §2 ; R-124 §7). */
+const EMPLOYEUR_DECLARE_CATWALKS = 'Catwalks';
+
+/**
+ * L'EMPLOYEUR DÉCLARÉ (`hiringOrganization`, `identifier.name`) : « Catwalks » pour toute offre publiée sur Catwalks,
+ * qu'elle affiche une Maison publique ou non ; la Maison pour une offre agrégée. L'identifiant `cw_…` d'une offre
+ * Catwalks est émis par Catwalks, d'où le même nom. L'employeur AFFICHÉ (`company`) suit R-96 et n'est pas celui-ci.
+ */
+function employeurDeclare(job: JobRow): string {
+  return job.origine === 'CATWALKS' ? EMPLOYEUR_DECLARE_CATWALKS : job.company;
+}
+
+/**
+ * L'identité de Catwalks telle que le site la déclare (catwalks-website, `src/lib/seo/schema.ts` : `SITE_URL`,
+ * `ORGANIZATION_ID`, `hiringOrganization`). Fixe, comme sur le site : elle ne suit pas l'origine qui sert la fiche
+ * (`siteUrl`), et l'entité restera la même quand une fiche vivra sur le sous-domaine du pays de son offre (D-448 §3).
+ */
+const ORIGINE_CATWALKS = 'https://catwalks.io';
+
+/**
+ * L'ORGANISATION DÉCLARÉE (`hiringOrganization`). Pour une offre Catwalks, le même nœud que `/offres` : nom, site, logo,
+ * et l'`@id` du nœud `Organization` que le site pose sur son accueil. La fiche `/emplois` est servie par le site :
+ * l'`@id` relie sa page au graphe du site, et les champs développés sur place la laissent lisible seule, comme Google
+ * lit chaque page. Une offre agrégée déclare sa Maison par son seul nom, jamais l'identité de Catwalks.
+ */
+function organisationDeclaree(job: JobRow): Record<string, unknown> {
+  // Le nom est celui que juge la porte (`employeurDeclare`) : une seule règle pour les deux.
+  const name = employeurDeclare(job);
+  if (job.origine !== 'CATWALKS') return { '@type': 'Organization', name };
+  return { '@type': 'Organization', '@id': `${ORIGINE_CATWALKS}/#organization`, name, url: ORIGINE_CATWALKS, logo: `${ORIGINE_CATWALKS}/logo-catwalks.svg` };
+}
+
 export function jobPostingSchema(job: JobRow, now: Date = new Date()): Record<string, unknown> | null {
   // Une seule porte, partagée avec la mesure : aucune condition n'est vérifiée deux fois à deux endroits.
   if (markupIneligibility(job, now).length > 0) return null;
@@ -506,14 +547,14 @@ export function jobPostingSchema(job: JobRow, now: Date = new Date()): Record<st
     // An expired source date remains expired until new evidence corrects it.
     validThrough: job.validThrough?.toISOString(),
     employmentType: employmentTypes.length ? employmentTypes : undefined,
-    identifier: { '@type': 'PropertyValue', name: job.company, value: job.id },
-    hiringOrganization: { '@type': 'Organization', name: job.company },
+    identifier: { '@type': 'PropertyValue', name: employeurDeclare(job), value: job.id },
+    hiringOrganization: organisationDeclaree(job),
     /**
-     * Une offre agrégée se pourvoit chez l'employeur, jamais sur cette page (D18) ; une offre publiée sur
-     * Catwalks se pourvoit ici, sans quitter le site (D-418 §1) — c'est la définition de Google du
-     * « direct apply », et la seule qu'on affirme.
+     * D-450 §4 : `false` pour toute offre. Google réserve la « candidature directe » à un parcours sans connexion
+     * ni étape intermédiaire. Une offre agrégée se pourvoit chez la Maison (D18) ; postuler à une offre Catwalks
+     * exige un compte, et D-447 §4 décide un compte et l'onboarding complet pour toute offre.
      */
-    directApply: job.candidature.type === 'CATWALKS',
+    directApply: false,
     url: `${siteUrl()}${offerPath(job)}`,
     ...(job.language ? { inLanguage: job.language } : {}),
     /**

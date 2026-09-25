@@ -3,7 +3,7 @@ import { Prisma } from '@prisma/client';
 import { storedAmount } from '@catwalks/db/money';
 import { detectLanguage } from '../lib/language.js';
 import type { OffreCatalogueV1 } from './contrat.js';
-import { CORRESPONDANCE_DIRECTE_VERSION, codesSecteur, dimensionsEmploi, nomUnivers } from './vocabulaire.js';
+import { CORRESPONDANCE_DIRECTE_VERSION, codesSecteur, dimensionsEmploi, employeurAffiche, libellesUnivers } from './vocabulaire.js';
 
 /**
  * LA PROJECTION D'UNE OFFRE DIRECTE DANS LE CATALOGUE (lot 6).
@@ -17,10 +17,16 @@ export function hashPayload(offre: OffreCatalogueV1): string {
   return createHash('sha256').update(JSON.stringify(offre)).digest('hex');
 }
 
-/** Le texte indexé : intitulé, Maison, métier, lieu et description, dans cet ordre. */
+/**
+ * Le texte indexé : intitulé, employeur affiché (D-455 §1), métier, univers, lieu et description, dans cet ordre.
+ * L'univers y est un mot de secteur de l'offre, sur sa propre ligne, jamais l'employeur. La recherche de l'API ne lit
+ * PAS encore ce texte : le document de recherche d'une offre directe l'ignore (`search-model.ts`, génération `search-3`).
+ * Sa lecture (génération `search-4` et migration) est mise de côté pour partir avec l'activation des offres directes
+ * (D-444) ; voir docs/architecture/recherche-marche.md.
+ */
 export function texteRecherche(offre: OffreCatalogueV1): string {
   return [
-    offre.titre, offre.maison?.nom ?? nomUnivers(offre.univers), offre.metier?.libelle ?? '', offre.lieu.libelle,
+    offre.titre, employeurAffiche(offre.maison), offre.metier?.libelle ?? '', libellesUnivers(offre.univers).join(', '), offre.lieu.libelle,
     offre.lieu.ville ?? '', offre.lieu.codePostal ?? '', offre.description.poste, offre.description.missions, offre.description.profil,
   ].filter(Boolean).join('\n');
 }
@@ -32,10 +38,8 @@ export function descriptionServie(offre: OffreCatalogueV1): string {
     .join('\n\n');
 }
 
+/** Une offre publiée : son identité, son état et sa provenance, puis les colonnes que la correspondance en dérive. */
 export function projeterOffreDirecte(offre: OffreCatalogueV1, seq: bigint, version: bigint) {
-  const emploi = dimensionsEmploi(offre.contrat, offre.tempsDeTravail, offre.teletravail);
-  const description = descriptionServie(offre);
-  const salaire = offre.salaire;
   return {
     id: offre.id,
     version,
@@ -43,11 +47,26 @@ export function projeterOffreDirecte(offre: OffreCatalogueV1, seq: bigint, versi
     eligible: true,
     payloadHash: hashPayload(offre),
     payload: offre as unknown as Prisma.InputJsonValue,
+    ...colonnesProjetees(offre),
+  };
+}
+
+/**
+ * Les colonnes que la correspondance DÉRIVE du contrat reçu, et elles seules : ni l'identité, ni l'état (version,
+ * séquence, éligibilité), ni la provenance (contrat, hachage). C'est ce que la re-projection du stock reconstruit
+ * quand la correspondance change (`reprojeterStock`, feed.ts).
+ */
+export function colonnesProjetees(offre: OffreCatalogueV1) {
+  const emploi = dimensionsEmploi(offre.contrat, offre.tempsDeTravail, offre.teletravail);
+  const description = descriptionServie(offre);
+  const salaire = offre.salaire;
+  return {
     correspondanceVersion: CORRESPONDANCE_DIRECTE_VERSION,
     slug: offre.slug,
     anciensSlugs: offre.anciensSlugs,
     title: offre.titre,
-    company: offre.maison?.nom ?? nomUnivers(offre.univers),
+    // D-455 §1 : la Maison publique, sinon « Catwalks » ; jamais l'univers ni « Maison confidentielle ».
+    company: employeurAffiche(offre.maison),
     maisonSlug: offre.maison?.slug ?? null,
     countryCode: offre.lieu.pays,
     city: offre.lieu.ville,

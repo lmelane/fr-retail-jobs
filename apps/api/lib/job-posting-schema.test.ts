@@ -1,6 +1,7 @@
-import { describe, it, expect } from 'vitest';
+import { afterEach, describe, it, expect } from 'vitest';
 import { balisage, jobPostingSchema, markupIneligibility, schemaEmploymentTypes, COUNTRY_INTEGRITY_PROVING } from './job-posting-schema';
-import type { JobRow } from './jobs';
+import type { ActionCandidature, JobRow } from './jobs';
+import { siteUrl } from './site-url';
 
 /**
  * S-02a/S-02b intérim — the JSON-LD contract, pinned:
@@ -572,10 +573,10 @@ describe('balisage (lot 9)', () => {
     expect(b.jobPosting?.identifier).toEqual({ '@type': 'PropertyValue', name: 'Cartier', value: 'ck123' });
   });
 
-  it('une offre publiée sur Catwalks se pourvoit ici : directApply vrai, identifiant cw_', () => {
+  it('une offre publiée sur Catwalks : fiche du site et identifiant cw_, sans candidature directe (D-450 §4)', () => {
     const directe = ligne({ ...eligible(), id: 'cw_cm1', origine: 'CATWALKS', candidature: { type: 'CATWALKS', offreId: 'cm1', slug: 'vendeur', url: 'https://catwalks.io/offres/vendeur' } });
     const b = balisage(directe, 'active', new Date('2026-09-16T00:00:00Z'));
-    expect(b.jobPosting).toMatchObject({ directApply: true, url: 'https://catwalks.io/emplois/vendeur-cw_cm1' });
+    expect(b.jobPosting).toMatchObject({ directApply: false, url: 'https://catwalks.io/emplois/vendeur-cw_cm1' });
   });
 
   it('une offre fermée ou retirée n’est JAMAIS balisée, même éligible par son contenu ; le motif est nommé', () => {
@@ -594,5 +595,102 @@ describe('balisage (lot 9)', () => {
     expect(b.motifs).toEqual(expect.arrayContaining(['NO_REAL_POSTED_DATE', 'DESCRIPTION_TOO_THIN', 'NO_USABLE_LOCATION']));
     const echue = balisage(ligne({ ...eligible(), validThrough: new Date('2026-09-01T00:00:00Z') }), 'active', new Date('2026-09-16T00:00:00Z'));
     expect(echue.motifs).toEqual(['VALID_THROUGH_EXPIRED']);
+  });
+});
+
+/**
+ * D-450 §4 (avec D-447 §4) — AUCUN JobPosting servi ne déclare une candidature directe.
+ *
+ * Google réserve `directApply: true` au parcours où l'on postule depuis la page, sans connexion ni étape intermédiaire. Une offre
+ * agrégée se pourvoit chez la Maison (D18) ; postuler à une offre Catwalks exige un compte, et D-447 §4 décide un compte et
+ * l'onboarding complet pour toute offre. Le témoin parcourt chaque action de candidature du contrat par le chemin servi
+ * (`balisage`, route `/api/offres/[id]`), et échoue dès qu'un JobPosting déclare autre chose que `false`.
+ */
+describe('directApply — jamais une promesse que le parcours ne tient pas (D-450 §4)', () => {
+  const NOW = new Date('2026-09-16T00:00:00Z');
+  /** Chaque action de candidature du contrat : le type impose d'ajouter ici toute action nouvelle (typecheck de l'API). */
+  const ACTIONS = {
+    CATWALKS: { type: 'CATWALKS', offreId: 'cm1', slug: 'vendeur', url: 'https://catwalks.io/offres/vendeur' },
+    EXTERNE: { type: 'EXTERNE', url: 'https://x/1' },
+    AUCUNE: { type: 'AUCUNE' },
+  } satisfies { [K in ActionCandidature['type']]: Extract<ActionCandidature, { type: K }> };
+  /** Une offre éligible par son contenu ; une offre Catwalks porte son origine et son identifiant `cw_`. */
+  const offre = (candidature: ActionCandidature): JobRow => ({
+    ...base, postedAt: new Date('2026-09-01T00:00:00Z'), description: 'd'.repeat(200), countryCode: 'FR', city: 'Paris',
+    countryIntegrity: 'RAW_COUNTRY', validThrough: null, candidature,
+    ...(candidature.type === 'CATWALKS' ? { id: 'cw_cm1', origine: 'CATWALKS' as const } : {}),
+  });
+
+  it('TÉMOIN — chaque offre servie avec un JobPosting déclare directApply false, Catwalks comme agrégée', () => {
+    const servies = Object.values(ACTIONS).map((action) => ({ action: action.type, b: balisage(offre(action), 'active', NOW) }))
+      .filter(({ b }) => b.jobPosting);
+    // PRÉMISSE : l'offre Catwalks ET l'offre agrégée sont bien servies avec un JobPosting ; sinon le témoin ne teste rien.
+    expect(servies.map(({ action }) => action).sort()).toEqual(['CATWALKS', 'EXTERNE']);
+    for (const { action, b } of servies) {
+      expect(Object.prototype.hasOwnProperty.call(b.jobPosting, 'directApply'), action).toBe(true);
+      expect(b.jobPosting!.directApply, action).toBe(false);
+    }
+  });
+
+  it('sans chemin de candidature, aucun JobPosting n’est servi : il n’y a rien à déclarer', () => {
+    expect(balisage(offre(ACTIONS.AUCUNE), 'active', NOW)).toEqual({ jobPosting: null, motifs: ['NO_APPLY_PATH'] });
+  });
+});
+
+/**
+ * D-455 §2 (D-346 confirmée ; R-124 §7) — L'EMPLOYEUR DÉCLARÉ D'UNE OFFRE CATWALKS EST « CATWALKS ».
+ *
+ * L'employeur AFFICHÉ d'une offre Catwalks est sa Maison publique, sinon « Catwalks » (R-96, D-455 §1) ; l'employeur
+ * DÉCLARÉ à Google (`hiringOrganization`, et le nom de l'identifiant `cw_…` qu'émet Catwalks) est toujours « Catwalks »,
+ * avec le même nœud que `/offres` : `@id`, site et logo (catwalks-website, `src/lib/seo/schema.ts:225-233`, valeurs de
+ * production ci-dessous). Une offre agrégée déclare sa Maison par son seul nom, comme avant.
+ */
+describe('hiringOrganization — une offre Catwalks déclare « Catwalks », avec ou sans Maison publique (D-455 §2)', () => {
+  const NOW = new Date('2026-09-16T00:00:00Z');
+  const servie = (surcharges: Partial<JobRow>): JobRow => ({ ...base, postedAt: new Date('2026-09-01T00:00:00Z'), description: 'd'.repeat(200),
+    countryCode: 'FR', city: 'Paris', countryIntegrity: 'RAW_COUNTRY', validThrough: null, ...surcharges });
+  const catwalks = (company: string) => servie({ id: 'cw_cm1', origine: 'CATWALKS', company,
+    candidature: { type: 'CATWALKS', offreId: 'cm1', slug: 'vendeur', url: 'https://catwalks.io/offres/vendeur' } });
+  /** Le nœud que `/offres` déclare pour toute offre Catwalks (site : `hiringOrganization()`, `SITE_URL`, `ORGANIZATION_ID`). */
+  const ORGANISATION_CATWALKS = { '@type': 'Organization', '@id': 'https://catwalks.io/#organization', name: 'Catwalks',
+    url: 'https://catwalks.io', logo: 'https://catwalks.io/logo-catwalks.svg' };
+  const origineConfiguree = process.env.NEXT_PUBLIC_SITE_URL;
+  afterEach(() => {
+    if (origineConfiguree === undefined) delete process.env.NEXT_PUBLIC_SITE_URL;
+    else process.env.NEXT_PUBLIC_SITE_URL = origineConfiguree;
+  });
+
+  it('TÉMOIN — le nom d’une Maison ne revient jamais comme employeur déclaré d’une offre Catwalks', () => {
+    for (const company of ['Dior', 'Catwalks']) {
+      const b = balisage(catwalks(company), 'active', NOW);
+      // PRÉMISSE : l'offre est servie avec un JobPosting, et son employeur AFFICHÉ est bien celui-ci.
+      expect(b.motifs, company).toEqual([]);
+      expect(catwalks(company).company).toBe(company);
+      expect(b.jobPosting!.hiringOrganization, company).toEqual(ORGANISATION_CATWALKS);
+      expect(b.jobPosting!.identifier, company).toEqual({ '@type': 'PropertyValue', name: 'Catwalks', value: 'cw_cm1' });
+    }
+  });
+
+  it('l’identité de Catwalks ne suit pas l’origine qui sert la fiche : le même nœud que le site, partout', () => {
+    process.env.NEXT_PUBLIC_SITE_URL = 'https://preprod.catwalks.test/';
+    const b = balisage(catwalks('Dior'), 'active', NOW);
+    // PRÉMISSE : l'origine configurée gouverne bien la fiche servie.
+    expect(siteUrl()).toBe('https://preprod.catwalks.test');
+    expect(String(b.jobPosting!.url).startsWith('https://preprod.catwalks.test/')).toBe(true);
+    expect(b.jobPosting!.hiringOrganization).toEqual(ORGANISATION_CATWALKS);
+  });
+
+  it('une offre agrégée garde sa Maison comme employeur déclaré', () => {
+    const b = balisage(servie({ company: 'Cartier', origine: 'AGREGEE' }), 'active', NOW);
+    expect(b.jobPosting!.hiringOrganization).toEqual({ '@type': 'Organization', name: 'Cartier' });
+    expect(b.jobPosting!.identifier).toEqual({ '@type': 'PropertyValue', name: 'Cartier', value: 'ck123' });
+  });
+
+  it('la porte juge l’employeur DÉCLARÉ : une offre Catwalks est balisée même sans nom affiché, une agrégée sans Maison ne l’est pas', () => {
+    // PRÉMISSE : les deux offres n'ont aucun nom affiché.
+    expect(catwalks('').company).toBe('');
+    expect(markupIneligibility(catwalks(''), NOW)).toEqual([]);
+    expect(balisage(catwalks(''), 'active', NOW).jobPosting!.hiringOrganization).toEqual(ORGANISATION_CATWALKS);
+    expect(markupIneligibility(servie({ company: '', origine: 'AGREGEE' }), NOW)).toContain('NO_HIRING_ORGANIZATION');
   });
 });

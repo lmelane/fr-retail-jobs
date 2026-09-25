@@ -11,9 +11,17 @@
  * valeur ÉTABLIT, et rien de plus : un stage établit un programme, pas une
  * durée ; « Luxe » est un positionnement, pas un secteur, donc il n'établit
  * aucun code. Cette table est versionnée : une correspondance qui change est
- * une nouvelle version, jamais une réécriture silencieuse.
+ * une nouvelle version, jamais une réécriture silencieuse. Le consommateur du
+ * flux re-projette le stock resté à une version antérieure (`reprojeterStock`,
+ * feed.ts), depuis le contrat conservé.
+ *
+ *   1 — lot 6 : première correspondance ;
+ *   2 — D-455 : l'employeur affiché d'une offre sans Maison publique est
+ *       « Catwalks », jamais son univers ni « Maison confidentielle » ;
+ *   3 — D-455 (suite) : les libellés d'univers entrent dans le texte indexé
+ *       comme mots de secteur de l'offre, avec ou sans Maison publique.
  */
-export const CORRESPONDANCE_DIRECTE_VERSION = 1;
+export const CORRESPONDANCE_DIRECTE_VERSION = 3;
 
 export type DimensionsEmploi = {
   employmentTerm: string | null;
@@ -55,8 +63,17 @@ const SECTEURS: Record<string, string> = {
   MAQUILLAGE: 'BEAUTY',
 };
 
-/** Le libellé français d'un univers, pour nommer une offre dont la Maison est confidentielle. */
+/**
+ * Le libellé d'un univers : un MOT DE SECTEUR de l'offre, écrit dans son texte indexé. La recherche de l'API ne le lit pas
+ * encore (génération `search-3`) : « luxe » ne trouve donc pas une offre de l'univers Luxe tant que la génération
+ * `search-4`, mise de côté avec D-444, n'est pas livrée. Il ne nomme jamais l'employeur (D-455 §1), et « Luxe » n'établit
+ * toujours aucun code de secteur.
+ */
 const UNIVERS_LIBELLE: Record<string, string> = { MODE: 'Mode', BEAUTE: 'Beauté', LUXE: 'Luxe' };
+
+export function libellesUnivers(univers: readonly string[]): string[] {
+  return univers.flatMap((u) => (UNIVERS_LIBELLE[u] ? [UNIVERS_LIBELLE[u]] : []));
+}
 
 export function dimensionsEmploi(contrat: string, tempsDeTravail: string, teletravail: string | null): DimensionsEmploi & { workplaceType: string | null } {
   const c = CONTRAT[contrat] ?? {};
@@ -78,8 +95,15 @@ export function codesSecteur(univers: readonly string[], specialisations: readon
   return [...codes];
 }
 
-/** « Mode, Luxe » — le nom affiché quand la Maison ne sort pas (mandat confidentiel), comme sur `/offres`. */
-export function nomUnivers(univers: readonly string[]): string {
-  const noms = univers.map((u) => UNIVERS_LIBELLE[u]).filter((n): n is string => Boolean(n));
-  return noms.length ? noms.join(', ') : 'Maison confidentielle';
+/** L'employeur d'une offre publiée par Catwalks sans Maison publique (D-455 §1). */
+export const EMPLOYEUR_CATWALKS = 'Catwalks';
+
+/**
+ * L'EMPLOYEUR AFFICHÉ D'UNE OFFRE CATWALKS sur la page Emploi (D-455 §1, R-96) : le nom de sa Maison publique quand le
+ * flux en porte une ; sinon « Catwalks ». L'univers et « Maison confidentielle » ne nomment jamais un employeur. Le
+ * backend passe déjà la Maison par `maisonPublique` : le mandat interne arrive ici sans Maison (`maison: null`). Un
+ * nom vide, que le contrat laisse passer, ne nomme pas une Maison.
+ */
+export function employeurAffiche(maison: { nom: string } | null): string {
+  return maison?.nom.trim() || EMPLOYEUR_CATWALKS;
 }

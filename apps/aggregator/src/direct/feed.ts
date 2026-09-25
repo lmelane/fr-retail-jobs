@@ -1,7 +1,9 @@
 import { assertPipelineRunning } from '../lib/pipelinePause.js';
-import type { PrismaClient } from '@prisma/client';
-import { CATALOGUE_CONTRAT_VERSION, ContratInvalideError, lireFlux, type EvenementCatalogue, type FluxCatalogue } from './contrat.js';
-import { projeterOffreDirecte } from './projection.js';
+import { log } from '../observability/logger.js';
+import type { Prisma, PrismaClient } from '@prisma/client';
+import { CATALOGUE_CONTRAT_VERSION, ContratInvalideError, lireFlux, lireOffre, type EvenementCatalogue, type FluxCatalogue } from './contrat.js';
+import { colonnesProjetees, projeterOffreDirecte } from './projection.js';
+import { CORRESPONDANCE_DIRECTE_VERSION } from './vocabulaire.js';
 
 /**
  * LE CONSOMMATEUR DU FLUX D'OUTBOX (lot 6, D-423) — idempotent, monotone, repris.
@@ -18,7 +20,9 @@ import { projeterOffreDirecte } from './projection.js';
  *    offre jamais vue ne crée rien ;
  *  - chaque événement laisse une ligne immuable (`DirectOfferEvent`) avec son
  *    effet, et le curseur avance après lui — une interruption reprend au
- *    dernier événement appliqué, sans perte ni double effet.
+ *    dernier événement appliqué, sans perte ni double effet ;
+ *  - avant la lecture, le stock resté à une correspondance antérieure est
+ *    re-projeté depuis son contrat conservé (`reprojeterStock`, D-455).
  *
  * Aucune capture HTTP n'est impliquée : le flux est la projection directe du
  * propriétaire des offres, sa provenance est la séquence et le hachage du
@@ -38,8 +42,69 @@ export type StatsFlux = {
   inconnus: number;
   dejaVus: number;
   dernierSeq: bigint | null;
+  /** Le stock re-projeté à la correspondance courante avant la lecture (`reprojeterStock`). */
+  reprojection: StatsReprojection;
   refus?: string;
 };
+
+/** Une ligne que la re-projection n'a pas pu reconstruire, et pourquoi (nom de l'erreur, jamais de donnée). */
+export type NonReprojetee = { id: string; cause: string };
+export type StatsReprojection = { reprojetees: number; nonReprojetees: NonReprojetee[] };
+
+/** Une ligne à re-projeter, telle qu'elle a été lue : son contrat conservé et l'empreinte de ce contrat. */
+export type LigneLue = { id: string; payload: Prisma.JsonValue; payloadHash: string };
+
+/**
+ * LE STOCK SUIT LA CORRESPONDANCE (D-455). Le flux ne re-projette une offre que lorsque le backend en publie une version
+ * plus récente : une offre qu'il ne republie pas garderait sa projection quand la correspondance change (l'univers pour
+ * employeur, avant D-455). Toute ligne restée à une `correspondanceVersion` antérieure est donc reconstruite depuis le
+ * contrat conservé (`payload`), sans le backend, avant chaque lecture du flux. Ni sa version, ni sa séquence, ni son
+ * éligibilité (une offre retirée le reste), ni sa provenance (`payload`, `payloadHash`) ne changent. Une ligne dont le
+ * contrat conservé ne se projette plus (illisible, ou montant que la base refuse) garde sa projection antérieure : elle
+ * est rendue dans les statistiques et journalisée, jamais tue, et ne bloque ni les autres lignes ni la lecture du flux.
+ * Idempotent : une ligne à jour n'est plus relue.
+ */
+export async function reprojeterStock(db: PrismaClient): Promise<StatsReprojection> {
+  const perimees = await db.directOffer.findMany({
+    where: { correspondanceVersion: { lt: CORRESPONDANCE_DIRECTE_VERSION } },
+    select: { id: true, payload: true, payloadHash: true },
+    orderBy: { id: 'asc' },
+  });
+  const stats: StatsReprojection = { reprojetees: 0, nonReprojetees: [] };
+  for (const ligne of perimees) {
+    const resultat = await reprojeterLigne(db, ligne);
+    if (typeof resultat === 'number') stats.reprojetees += resultat;
+    else stats.nonReprojetees.push({ id: ligne.id, cause: resultat.cause });
+  }
+  if (stats.nonReprojetees.length) {
+    await log.warn('direct.reprojection_incomplete',
+      `[direct-sync] ${stats.nonReprojetees.length} offre(s) directe(s) gardent leur projection antérieure : contrat conservé non projetable`,
+      { reprojetees: stats.reprojetees, nonReprojetees: stats.nonReprojetees });
+  } else if (stats.reprojetees) {
+    await log.info('direct.reprojection', { reprojetees: stats.reprojetees, correspondanceVersion: CORRESPONDANCE_DIRECTE_VERSION });
+  }
+  return stats;
+}
+
+/**
+ * Re-projette UNE ligne lue : le nombre de lignes écrites (0 ou 1), ou la cause qui empêche de la reconstruire.
+ * L'écriture n'a lieu que si la ligne porte encore le contrat lu (`payloadHash`) et une correspondance antérieure : une
+ * version plus récente écrite entre la lecture et l'écriture, par ce code ou par un processus plus ancien, n'est jamais
+ * écrasée par des colonnes dérivées d'un contrat périmé ; la passe suivante la relira.
+ */
+export async function reprojeterLigne(db: PrismaClient, ligne: LigneLue): Promise<number | { cause: string }> {
+  let colonnes: ReturnType<typeof colonnesProjetees>;
+  try {
+    colonnes = colonnesProjetees(lireOffre(ligne.payload));
+  } catch (error) {
+    return { cause: error instanceof Error ? error.name : 'UnknownError' };
+  }
+  const { count } = await db.directOffer.updateMany({
+    where: { id: ligne.id, payloadHash: ligne.payloadHash, correspondanceVersion: { lt: CORRESPONDANCE_DIRECTE_VERSION } },
+    data: colonnes,
+  });
+  return count;
+}
 
 export class FluxIndisponibleError extends Error {
   constructor(readonly statut: number | null, detail: string) {
@@ -104,10 +169,11 @@ export async function consommerFlux(
   options: { taillePage?: number; depuis?: bigint; pagesMax?: number } = {},
 ): Promise<StatsFlux> {
   assertPipelineRunning();
+  const reprojection = await reprojeterStock(db);
   const taillePage = Math.min(Math.max(options.taillePage ?? 200, 1), 500);
   const curseur = await db.directFeedCursor.findUnique({ where: { id: CURSEUR_CATWALKS } });
   let depuis = options.depuis ?? curseur?.lastSeq ?? BigInt(0);
-  const stats: StatsFlux = { pages: 0, evenements: 0, appliques: 0, stales: 0, inconnus: 0, dejaVus: 0, dernierSeq: curseur?.lastSeq ?? null };
+  const stats: StatsFlux = { pages: 0, evenements: 0, appliques: 0, stales: 0, inconnus: 0, dejaVus: 0, dernierSeq: curseur?.lastSeq ?? null, reprojection };
   const pagesMax = options.pagesMax ?? 10_000;
   try {
     while (stats.pages < pagesMax) {
