@@ -3,8 +3,8 @@ import { CORRESPONDANCE_DIRECTE_VERSION, EMPLOYEUR_CATWALKS, codesSecteur, dimen
 
 /** Chaque valeur du backend ÉTABLIT une dimension et une seule ; l'inconnu reste nul (lot 6, même discipline que D-421). */
 describe('correspondance des vocabulaires directs', () => {
-  it('est versionnée : la version 3 indexe l’univers comme mot de secteur, et le stock resté en version antérieure est re-projeté', () => {
-    expect(CORRESPONDANCE_DIRECTE_VERSION).toBe(3);
+  it('est versionnée : la version 4 rattache la Maison au registre et donne le métier de la taxonomie ; le stock resté en version antérieure est re-projeté', () => {
+    expect(CORRESPONDANCE_DIRECTE_VERSION).toBe(4);
   });
 
   it('un contrat établit la durée, OU le programme, OU la nature — jamais deux à la fois', () => {
@@ -18,6 +18,14 @@ describe('correspondance des vocabulaires directs', () => {
 
   it('une valeur inconnue n’établit rien : nul, jamais deviné', () => {
     expect(dimensionsEmploi('PORTAGE', 'HORAIRES_LIBRES', 'PARFOIS')).toEqual({ employmentTerm: null, workTime: null, programType: null, engagementType: null, workplaceType: null });
+  });
+
+  it('une valeur qui nomme une propriété d’objet (`constructor`, `__proto__`, `toString`) n’établit rien non plus', () => {
+    for (const piege of ['constructor', '__proto__', 'toString', 'hasOwnProperty']) {
+      expect(dimensionsEmploi(piege, piege, piege), piege).toEqual({ employmentTerm: null, workTime: null, programType: null, engagementType: null, workplaceType: null });
+      expect(codesSecteur([piege], [piege]), piege).toEqual([]);
+      expect(libellesUnivers([piege]), piege).toEqual([]);
+    }
   });
 
   it('le télétravail se projette sur le lieu de travail du catalogue', () => {

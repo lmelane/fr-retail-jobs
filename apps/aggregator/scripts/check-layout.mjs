@@ -48,7 +48,9 @@ for (const path of walk(join(app, 'scripts'))) {
  * au moins un appelant vérifié — le garde exige ce qui existe, jamais ce qui a été supprimé.
  */
 for (const entry of ['reference/maisons.csv', 'reference/country-labels.json', 'reference/UNICODE-LICENSE.txt',
-  'reference/villes-exonymes.csv', 'reference/villes-non-lieux.csv', 'reference/discovery-career-signals.json']) {
+  'reference/villes-exonymes.csv', 'reference/villes-non-lieux.csv', 'reference/discovery-career-signals.json',
+  // D-444 : le tracé Natural Earth au 1:10 000 000 qui donne son pays à une offre Catwalks (`src/geo/frontieres.ts`).
+  'reference/frontieres-ne10m.json.gz']) {
   try { if (!statSync(join(app, 'data', entry)).isFile()) throw Error(); }
   catch { errors.push(`Required reference missing: ${entry}`); }
 }

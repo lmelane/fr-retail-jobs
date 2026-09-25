@@ -1,0 +1,745 @@
+{
+ "mesureLe": "2026-09-25",
+ "site": "catwalks-website development 4d56386, clone local sans secrets, EMPLOIS_API_URL = API locale sur la base de preuve (liste réelle du 25/09 11:43 UTC)",
+ "page": "/fr/emplois?marche=FR",
+ "cartesMesurees": 12,
+ "largeurs": [
+  {
+   "largeur": 320,
+   "pageDebordeHorizontalement": true,
+   "scrollWidth": 338,
+   "tetesQuiDebordent": 12,
+   "badgesHorsDeLaCarte": 12
+  },
+  {
+   "largeur": 375,
+   "pageDebordeHorizontalement": false,
+   "scrollWidth": 375,
+   "tetesQuiDebordent": 8,
+   "badgesHorsDeLaCarte": 0
+  },
+  {
+   "largeur": 390,
+   "pageDebordeHorizontalement": false,
+   "scrollWidth": 390,
+   "tetesQuiDebordent": 0,
+   "badgesHorsDeLaCarte": 0
+  },
+  {
+   "largeur": 960,
+   "pageDebordeHorizontalement": false,
+   "scrollWidth": 960,
+   "tetesQuiDebordent": 0,
+   "badgesHorsDeLaCarte": 0
+  },
+  {
+   "largeur": 1440,
+   "pageDebordeHorizontalement": false,
+   "scrollWidth": 1440,
+   "tetesQuiDebordent": 0,
+   "badgesHorsDeLaCarte": 0
+  }
+ ],
+ "detail": [
+  {
+   "largeur": 320,
+   "pageDeborde": true,
+   "scrollWidth": 338,
+   "innerWidth": 320,
+   "tetes": [
+    {
+     "maison": "Meilleur Moment",
+     "badge": "Candidature sur Catwalks",
+     "teteDeborde": true,
+     "maisonDeborde": false,
+     "badgeHorsCarte": true,
+     "chevauchement": false,
+     "largeurCarte": 288,
+     "largeurMaison": 51.6875,
+     "largeurBadge": 185.296875
+    },
+    {
+     "maison": "Meilleur Moment",
+     "badge": "Candidature sur Catwalks",
+     "teteDeborde": true,
+     "maisonDeborde": false,
+     "badgeHorsCarte": true,
+     "chevauchement": false,
+     "largeurCarte": 288,
+     "largeurMaison": 51.6875,
+     "largeurBadge": 185.296875
+    },
+    {
+     "maison": "Lancel",
+     "badge": "Candidature sur Catwalks",
+     "teteDeborde": true,
+     "maisonDeborde": false,
+     "badgeHorsCarte": true,
+     "chevauchement": false,
+     "largeurCarte": 288,
+     "largeurMaison": 40.671875,
+     "largeurBadge": 185.296875
+    },
+    {
+     "maison": "Maison Francis Kurkdjian",
+     "badge": "Candidature sur Catwalks",
+     "teteDeborde": true,
+     "maisonDeborde": false,
+     "badgeHorsCarte": true,
+     "chevauchement": false,
+     "largeurCarte": 288,
+     "largeurMaison": 60.09375,
+     "largeurBadge": 185.296875
+    },
+    {
+     "maison": "Maison Francis Kurkdjian",
+     "badge": "Candidature sur Catwalks",
+     "teteDeborde": true,
+     "maisonDeborde": false,
+     "badgeHorsCarte": true,
+     "chevauchement": false,
+     "largeurCarte": 288,
+     "largeurMaison": 60.09375,
+     "largeurBadge": 185.296875
+    },
+    {
+     "maison": "Maison Francis Kurkdjian",
+     "badge": "Candidature sur Catwalks",
+     "teteDeborde": true,
+     "maisonDeborde": false,
+     "badgeHorsCarte": true,
+     "chevauchement": false,
+     "largeurCarte": 288,
+     "largeurMaison": 60.09375,
+     "largeurBadge": 185.296875
+    },
+    {
+     "maison": "Maison Francis Kurkdjian",
+     "badge": "Candidature sur Catwalks",
+     "teteDeborde": true,
+     "maisonDeborde": false,
+     "badgeHorsCarte": true,
+     "chevauchement": false,
+     "largeurCarte": 288,
+     "largeurMaison": 60.09375,
+     "largeurBadge": 185.296875
+    },
+    {
+     "maison": "L'Atelier du sourcil",
+     "badge": "Candidature sur Catwalks",
+     "teteDeborde": true,
+     "maisonDeborde": false,
+     "badgeHorsCarte": true,
+     "chevauchement": false,
+     "largeurCarte": 288,
+     "largeurMaison": 45.90625,
+     "largeurBadge": 185.296875
+    },
+    {
+     "maison": "Catwalks",
+     "badge": "Candidature sur Catwalks",
+     "teteDeborde": true,
+     "maisonDeborde": false,
+     "badgeHorsCarte": true,
+     "chevauchement": false,
+     "largeurCarte": 288,
+     "largeurMaison": 57.546875,
+     "largeurBadge": 185.296875
+    },
+    {
+     "maison": "Catwalks",
+     "badge": "Candidature sur Catwalks",
+     "teteDeborde": true,
+     "maisonDeborde": false,
+     "badgeHorsCarte": true,
+     "chevauchement": false,
+     "largeurCarte": 288,
+     "largeurMaison": 57.546875,
+     "largeurBadge": 185.296875
+    },
+    {
+     "maison": "Catwalks",
+     "badge": "Candidature sur Catwalks",
+     "teteDeborde": true,
+     "maisonDeborde": false,
+     "badgeHorsCarte": true,
+     "chevauchement": false,
+     "largeurCarte": 288,
+     "largeurMaison": 57.546875,
+     "largeurBadge": 185.296875
+    },
+    {
+     "maison": "Catwalks",
+     "badge": "Candidature sur Catwalks",
+     "teteDeborde": true,
+     "maisonDeborde": false,
+     "badgeHorsCarte": true,
+     "chevauchement": false,
+     "largeurCarte": 288,
+     "largeurMaison": 57.546875,
+     "largeurBadge": 185.296875
+    }
+   ]
+  },
+  {
+   "largeur": 375,
+   "pageDeborde": false,
+   "scrollWidth": 375,
+   "innerWidth": 375,
+   "tetes": [
+    {
+     "maison": "Meilleur Moment",
+     "badge": "Candidature sur Catwalks",
+     "teteDeborde": false,
+     "maisonDeborde": false,
+     "badgeHorsCarte": false,
+     "chevauchement": false,
+     "largeurCarte": 343,
+     "largeurMaison": 55.703125,
+     "largeurBadge": 185.296875
+    },
+    {
+     "maison": "Meilleur Moment",
+     "badge": "Candidature sur Catwalks",
+     "teteDeborde": false,
+     "maisonDeborde": false,
+     "badgeHorsCarte": false,
+     "chevauchement": false,
+     "largeurCarte": 343,
+     "largeurMaison": 55.703125,
+     "largeurBadge": 185.296875
+    },
+    {
+     "maison": "Lancel",
+     "badge": "Candidature sur Catwalks",
+     "teteDeborde": false,
+     "maisonDeborde": false,
+     "badgeHorsCarte": false,
+     "chevauchement": false,
+     "largeurCarte": 343,
+     "largeurMaison": 40.671875,
+     "largeurBadge": 185.296875
+    },
+    {
+     "maison": "Maison Francis Kurkdjian",
+     "badge": "Candidature sur Catwalks",
+     "teteDeborde": true,
+     "maisonDeborde": false,
+     "badgeHorsCarte": false,
+     "chevauchement": false,
+     "largeurCarte": 343,
+     "largeurMaison": 60.09375,
+     "largeurBadge": 185.296875
+    },
+    {
+     "maison": "Maison Francis Kurkdjian",
+     "badge": "Candidature sur Catwalks",
+     "teteDeborde": true,
+     "maisonDeborde": false,
+     "badgeHorsCarte": false,
+     "chevauchement": false,
+     "largeurCarte": 343,
+     "largeurMaison": 60.09375,
+     "largeurBadge": 185.296875
+    },
+    {
+     "maison": "Maison Francis Kurkdjian",
+     "badge": "Candidature sur Catwalks",
+     "teteDeborde": true,
+     "maisonDeborde": false,
+     "badgeHorsCarte": false,
+     "chevauchement": false,
+     "largeurCarte": 343,
+     "largeurMaison": 60.09375,
+     "largeurBadge": 185.296875
+    },
+    {
+     "maison": "Maison Francis Kurkdjian",
+     "badge": "Candidature sur Catwalks",
+     "teteDeborde": true,
+     "maisonDeborde": false,
+     "badgeHorsCarte": false,
+     "chevauchement": false,
+     "largeurCarte": 343,
+     "largeurMaison": 60.09375,
+     "largeurBadge": 185.296875
+    },
+    {
+     "maison": "L'Atelier du sourcil",
+     "badge": "Candidature sur Catwalks",
+     "teteDeborde": false,
+     "maisonDeborde": false,
+     "badgeHorsCarte": false,
+     "chevauchement": false,
+     "largeurCarte": 343,
+     "largeurMaison": 55.703125,
+     "largeurBadge": 185.296875
+    },
+    {
+     "maison": "Catwalks",
+     "badge": "Candidature sur Catwalks",
+     "teteDeborde": true,
+     "maisonDeborde": false,
+     "badgeHorsCarte": false,
+     "chevauchement": false,
+     "largeurCarte": 343,
+     "largeurMaison": 57.546875,
+     "largeurBadge": 185.296875
+    },
+    {
+     "maison": "Catwalks",
+     "badge": "Candidature sur Catwalks",
+     "teteDeborde": true,
+     "maisonDeborde": false,
+     "badgeHorsCarte": false,
+     "chevauchement": false,
+     "largeurCarte": 343,
+     "largeurMaison": 57.546875,
+     "largeurBadge": 185.296875
+    },
+    {
+     "maison": "Catwalks",
+     "badge": "Candidature sur Catwalks",
+     "teteDeborde": true,
+     "maisonDeborde": false,
+     "badgeHorsCarte": false,
+     "chevauchement": false,
+     "largeurCarte": 343,
+     "largeurMaison": 57.546875,
+     "largeurBadge": 185.296875
+    },
+    {
+     "maison": "Catwalks",
+     "badge": "Candidature sur Catwalks",
+     "teteDeborde": true,
+     "maisonDeborde": false,
+     "badgeHorsCarte": false,
+     "chevauchement": false,
+     "largeurCarte": 343,
+     "largeurMaison": 57.546875,
+     "largeurBadge": 185.296875
+    }
+   ]
+  },
+  {
+   "largeur": 390,
+   "pageDeborde": false,
+   "scrollWidth": 390,
+   "innerWidth": 390,
+   "tetes": [
+    {
+     "maison": "Meilleur Moment",
+     "badge": "Candidature sur Catwalks",
+     "teteDeborde": false,
+     "maisonDeborde": false,
+     "badgeHorsCarte": false,
+     "chevauchement": false,
+     "largeurCarte": 358,
+     "largeurMaison": 70.703125,
+     "largeurBadge": 185.296875
+    },
+    {
+     "maison": "Meilleur Moment",
+     "badge": "Candidature sur Catwalks",
+     "teteDeborde": false,
+     "maisonDeborde": false,
+     "badgeHorsCarte": false,
+     "chevauchement": false,
+     "largeurCarte": 358,
+     "largeurMaison": 70.703125,
+     "largeurBadge": 185.296875
+    },
+    {
+     "maison": "Lancel",
+     "badge": "Candidature sur Catwalks",
+     "teteDeborde": false,
+     "maisonDeborde": false,
+     "badgeHorsCarte": false,
+     "chevauchement": false,
+     "largeurCarte": 358,
+     "largeurMaison": 40.671875,
+     "largeurBadge": 185.296875
+    },
+    {
+     "maison": "Maison Francis Kurkdjian",
+     "badge": "Candidature sur Catwalks",
+     "teteDeborde": false,
+     "maisonDeborde": false,
+     "badgeHorsCarte": false,
+     "chevauchement": false,
+     "largeurCarte": 358,
+     "largeurMaison": 70.703125,
+     "largeurBadge": 185.296875
+    },
+    {
+     "maison": "Maison Francis Kurkdjian",
+     "badge": "Candidature sur Catwalks",
+     "teteDeborde": false,
+     "maisonDeborde": false,
+     "badgeHorsCarte": false,
+     "chevauchement": false,
+     "largeurCarte": 358,
+     "largeurMaison": 70.703125,
+     "largeurBadge": 185.296875
+    },
+    {
+     "maison": "Maison Francis Kurkdjian",
+     "badge": "Candidature sur Catwalks",
+     "teteDeborde": false,
+     "maisonDeborde": false,
+     "badgeHorsCarte": false,
+     "chevauchement": false,
+     "largeurCarte": 358,
+     "largeurMaison": 70.703125,
+     "largeurBadge": 185.296875
+    },
+    {
+     "maison": "Maison Francis Kurkdjian",
+     "badge": "Candidature sur Catwalks",
+     "teteDeborde": false,
+     "maisonDeborde": false,
+     "badgeHorsCarte": false,
+     "chevauchement": false,
+     "largeurCarte": 358,
+     "largeurMaison": 70.703125,
+     "largeurBadge": 185.296875
+    },
+    {
+     "maison": "L'Atelier du sourcil",
+     "badge": "Candidature sur Catwalks",
+     "teteDeborde": false,
+     "maisonDeborde": false,
+     "badgeHorsCarte": false,
+     "chevauchement": false,
+     "largeurCarte": 358,
+     "largeurMaison": 70.703125,
+     "largeurBadge": 185.296875
+    },
+    {
+     "maison": "Catwalks",
+     "badge": "Candidature sur Catwalks",
+     "teteDeborde": false,
+     "maisonDeborde": false,
+     "badgeHorsCarte": false,
+     "chevauchement": false,
+     "largeurCarte": 358,
+     "largeurMaison": 57.546875,
+     "largeurBadge": 185.296875
+    },
+    {
+     "maison": "Catwalks",
+     "badge": "Candidature sur Catwalks",
+     "teteDeborde": false,
+     "maisonDeborde": false,
+     "badgeHorsCarte": false,
+     "chevauchement": false,
+     "largeurCarte": 358,
+     "largeurMaison": 57.546875,
+     "largeurBadge": 185.296875
+    },
+    {
+     "maison": "Catwalks",
+     "badge": "Candidature sur Catwalks",
+     "teteDeborde": false,
+     "maisonDeborde": false,
+     "badgeHorsCarte": false,
+     "chevauchement": false,
+     "largeurCarte": 358,
+     "largeurMaison": 57.546875,
+     "largeurBadge": 185.296875
+    },
+    {
+     "maison": "Catwalks",
+     "badge": "Candidature sur Catwalks",
+     "teteDeborde": false,
+     "maisonDeborde": false,
+     "badgeHorsCarte": false,
+     "chevauchement": false,
+     "largeurCarte": 358,
+     "largeurMaison": 57.546875,
+     "largeurBadge": 185.296875
+    }
+   ]
+  },
+  {
+   "largeur": 960,
+   "pageDeborde": false,
+   "scrollWidth": 960,
+   "innerWidth": 960,
+   "tetes": [
+    {
+     "maison": "Meilleur Moment",
+     "badge": "Candidature sur Catwalks",
+     "teteDeborde": false,
+     "maisonDeborde": false,
+     "badgeHorsCarte": false,
+     "chevauchement": false,
+     "largeurCarte": 363.328125,
+     "largeurMaison": 76.03125,
+     "largeurBadge": 185.296875
+    },
+    {
+     "maison": "Meilleur Moment",
+     "badge": "Candidature sur Catwalks",
+     "teteDeborde": false,
+     "maisonDeborde": false,
+     "badgeHorsCarte": false,
+     "chevauchement": false,
+     "largeurCarte": 363.328125,
+     "largeurMaison": 76.03125,
+     "largeurBadge": 185.296875
+    },
+    {
+     "maison": "Lancel",
+     "badge": "Candidature sur Catwalks",
+     "teteDeborde": false,
+     "maisonDeborde": false,
+     "badgeHorsCarte": false,
+     "chevauchement": false,
+     "largeurCarte": 363.328125,
+     "largeurMaison": 40.671875,
+     "largeurBadge": 185.296875
+    },
+    {
+     "maison": "Maison Francis Kurkdjian",
+     "badge": "Candidature sur Catwalks",
+     "teteDeborde": false,
+     "maisonDeborde": false,
+     "badgeHorsCarte": false,
+     "chevauchement": false,
+     "largeurCarte": 363.328125,
+     "largeurMaison": 76.03125,
+     "largeurBadge": 185.296875
+    },
+    {
+     "maison": "Maison Francis Kurkdjian",
+     "badge": "Candidature sur Catwalks",
+     "teteDeborde": false,
+     "maisonDeborde": false,
+     "badgeHorsCarte": false,
+     "chevauchement": false,
+     "largeurCarte": 363.328125,
+     "largeurMaison": 76.03125,
+     "largeurBadge": 185.296875
+    },
+    {
+     "maison": "Maison Francis Kurkdjian",
+     "badge": "Candidature sur Catwalks",
+     "teteDeborde": false,
+     "maisonDeborde": false,
+     "badgeHorsCarte": false,
+     "chevauchement": false,
+     "largeurCarte": 363.328125,
+     "largeurMaison": 76.03125,
+     "largeurBadge": 185.296875
+    },
+    {
+     "maison": "Maison Francis Kurkdjian",
+     "badge": "Candidature sur Catwalks",
+     "teteDeborde": false,
+     "maisonDeborde": false,
+     "badgeHorsCarte": false,
+     "chevauchement": false,
+     "largeurCarte": 363.328125,
+     "largeurMaison": 76.03125,
+     "largeurBadge": 185.296875
+    },
+    {
+     "maison": "L'Atelier du sourcil",
+     "badge": "Candidature sur Catwalks",
+     "teteDeborde": false,
+     "maisonDeborde": false,
+     "badgeHorsCarte": false,
+     "chevauchement": false,
+     "largeurCarte": 363.328125,
+     "largeurMaison": 76.03125,
+     "largeurBadge": 185.296875
+    },
+    {
+     "maison": "Catwalks",
+     "badge": "Candidature sur Catwalks",
+     "teteDeborde": false,
+     "maisonDeborde": false,
+     "badgeHorsCarte": false,
+     "chevauchement": false,
+     "largeurCarte": 363.328125,
+     "largeurMaison": 57.546875,
+     "largeurBadge": 185.296875
+    },
+    {
+     "maison": "Catwalks",
+     "badge": "Candidature sur Catwalks",
+     "teteDeborde": false,
+     "maisonDeborde": false,
+     "badgeHorsCarte": false,
+     "chevauchement": false,
+     "largeurCarte": 363.328125,
+     "largeurMaison": 57.546875,
+     "largeurBadge": 185.296875
+    },
+    {
+     "maison": "Catwalks",
+     "badge": "Candidature sur Catwalks",
+     "teteDeborde": false,
+     "maisonDeborde": false,
+     "badgeHorsCarte": false,
+     "chevauchement": false,
+     "largeurCarte": 363.328125,
+     "largeurMaison": 57.546875,
+     "largeurBadge": 185.296875
+    },
+    {
+     "maison": "Catwalks",
+     "badge": "Candidature sur Catwalks",
+     "teteDeborde": false,
+     "maisonDeborde": false,
+     "badgeHorsCarte": false,
+     "chevauchement": false,
+     "largeurCarte": 363.328125,
+     "largeurMaison": 57.546875,
+     "largeurBadge": 185.296875
+    }
+   ]
+  },
+  {
+   "largeur": 1440,
+   "pageDeborde": false,
+   "scrollWidth": 1440,
+   "innerWidth": 1440,
+   "tetes": [
+    {
+     "maison": "Meilleur Moment",
+     "badge": "Candidature sur Catwalks",
+     "teteDeborde": false,
+     "maisonDeborde": false,
+     "badgeHorsCarte": false,
+     "chevauchement": false,
+     "largeurCarte": 496.65625,
+     "largeurMaison": 104.296875,
+     "largeurBadge": 185.296875
+    },
+    {
+     "maison": "Meilleur Moment",
+     "badge": "Candidature sur Catwalks",
+     "teteDeborde": false,
+     "maisonDeborde": false,
+     "badgeHorsCarte": false,
+     "chevauchement": false,
+     "largeurCarte": 496.65625,
+     "largeurMaison": 104.296875,
+     "largeurBadge": 185.296875
+    },
+    {
+     "maison": "Lancel",
+     "badge": "Candidature sur Catwalks",
+     "teteDeborde": false,
+     "maisonDeborde": false,
+     "badgeHorsCarte": false,
+     "chevauchement": false,
+     "largeurCarte": 496.65625,
+     "largeurMaison": 40.671875,
+     "largeurBadge": 185.296875
+    },
+    {
+     "maison": "Maison Francis Kurkdjian",
+     "badge": "Candidature sur Catwalks",
+     "teteDeborde": false,
+     "maisonDeborde": false,
+     "badgeHorsCarte": false,
+     "chevauchement": false,
+     "largeurCarte": 496.65625,
+     "largeurMaison": 160.859375,
+     "largeurBadge": 185.296875
+    },
+    {
+     "maison": "Maison Francis Kurkdjian",
+     "badge": "Candidature sur Catwalks",
+     "teteDeborde": false,
+     "maisonDeborde": false,
+     "badgeHorsCarte": false,
+     "chevauchement": false,
+     "largeurCarte": 496.65625,
+     "largeurMaison": 160.859375,
+     "largeurBadge": 185.296875
+    },
+    {
+     "maison": "Maison Francis Kurkdjian",
+     "badge": "Candidature sur Catwalks",
+     "teteDeborde": false,
+     "maisonDeborde": false,
+     "badgeHorsCarte": false,
+     "chevauchement": false,
+     "largeurCarte": 496.65625,
+     "largeurMaison": 160.859375,
+     "largeurBadge": 185.296875
+    },
+    {
+     "maison": "Maison Francis Kurkdjian",
+     "badge": "Candidature sur Catwalks",
+     "teteDeborde": false,
+     "maisonDeborde": false,
+     "badgeHorsCarte": false,
+     "chevauchement": false,
+     "largeurCarte": 496.65625,
+     "largeurMaison": 160.859375,
+     "largeurBadge": 185.296875
+    },
+    {
+     "maison": "L'Atelier du sourcil",
+     "badge": "Candidature sur Catwalks",
+     "teteDeborde": false,
+     "maisonDeborde": false,
+     "badgeHorsCarte": false,
+     "chevauchement": false,
+     "largeurCarte": 496.65625,
+     "largeurMaison": 113.078125,
+     "largeurBadge": 185.296875
+    },
+    {
+     "maison": "Catwalks",
+     "badge": "Candidature sur Catwalks",
+     "teteDeborde": false,
+     "maisonDeborde": false,
+     "badgeHorsCarte": false,
+     "chevauchement": false,
+     "largeurCarte": 496.65625,
+     "largeurMaison": 57.546875,
+     "largeurBadge": 185.296875
+    },
+    {
+     "maison": "Catwalks",
+     "badge": "Candidature sur Catwalks",
+     "teteDeborde": false,
+     "maisonDeborde": false,
+     "badgeHorsCarte": false,
+     "chevauchement": false,
+     "largeurCarte": 496.65625,
+     "largeurMaison": 57.546875,
+     "largeurBadge": 185.296875
+    },
+    {
+     "maison": "Catwalks",
+     "badge": "Candidature sur Catwalks",
+     "teteDeborde": false,
+     "maisonDeborde": false,
+     "badgeHorsCarte": false,
+     "chevauchement": false,
+     "largeurCarte": 496.65625,
+     "largeurMaison": 57.546875,
+     "largeurBadge": 185.296875
+    },
+    {
+     "maison": "Catwalks",
+     "badge": "Candidature sur Catwalks",
+     "teteDeborde": false,
+     "maisonDeborde": false,
+     "badgeHorsCarte": false,
+     "chevauchement": false,
+     "largeurCarte": 496.65625,
+     "largeurMaison": 57.546875,
+     "largeurBadge": 185.296875
+    }
+   ]
+  }
+ ]
+}

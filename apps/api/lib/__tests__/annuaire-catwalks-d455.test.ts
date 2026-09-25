@@ -1,7 +1,7 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { prisma } from '@catwalks/db';
 import { lireOffre } from '../../../aggregator/src/direct/contrat';
-import { offreBrute } from '../../../aggregator/src/direct/fixture';
+import { offreBrute, contexteTemoin } from '../../../aggregator/src/direct/fixture';
 import { projeterOffreDirecte } from '../../../aggregator/src/direct/projection';
 import { directPubliable } from '../direct-offers';
 import { getCompanies } from '../companies';
@@ -29,7 +29,7 @@ describe.skipIf(!enabled)('annuaire : une seule ligne « Catwalks » pour les of
       offreBrute({ id: `${P}SansUnivers`, slug: `${P}-sans-univers`, maison: null, univers: [] }),
       offreBrute({ id: `${P}Maison`, slug: `${P}-maison`, maison: { nom: DIOR, slug: 'maison-temoin-d455' } }),
     ];
-    for (const brute of offres) await prisma.directOffer.create({ data: projeterOffreDirecte(lireOffre(brute), BigInt(1), BigInt(1)) });
+    for (const brute of offres) await prisma.directOffer.create({ data: projeterOffreDirecte(lireOffre(brute), BigInt(1), BigInt(1), contexteTemoin()) });
   });
   afterAll(nettoyer);
 

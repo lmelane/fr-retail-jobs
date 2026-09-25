@@ -17,13 +17,13 @@
     "excluded": [
       "/offres",
       "matching",
-      "Direct Offers",
       "historical-data repair",
       "markets",
       "filters"
     ],
     "productionIngestionException": "Authorized ACTIVE ingestion and targeted source replays; native evidence, access admission and GEO remain authoritative; no historical repair",
-    "provisioning": "Railway CLI 5.59.0, exact service/environment selectors and JSON comparisons; no generic infrastructure framework"
+    "provisioning": "Railway CLI 5.59.0, exact service/environment selectors and JSON comparisons; no generic infrastructure framework",
+    "directOffers": "D-444: catwalks-direct-sync is defined, not activated; its creation, check and unpause are production gestures on explicit GO"
   },
   "services": [
     {
@@ -167,6 +167,74 @@
         "timeZone": "Europe/Paris",
         "localHour": 18
       }
+    },
+    {
+      "region": "europe-west4-drams3a",
+      "replicas": 1,
+      "cronSchedule": "*/5 * * * *",
+      "preDeployCommand": null,
+      "sleepApplication": false,
+      "volumes": [],
+      "githubAutodeploy": false,
+      "imageAutoUpdate": false,
+      "sourceMode": "public_oci_image_pinned_by_digest",
+      "requiredReleaseBindings": [
+        "gitSha",
+        "imageDigest",
+        "contractSha256"
+      ],
+      "buildCommandOverride": null,
+      "railwayConfigFile": null,
+      "watchPatterns": [],
+      "unexpectedCustomVariablePolicy": "FAIL_BEFORE_DATABASE_OR_NETWORK",
+      "platformVariablePolicy": "Explicit generated-name list and provenance; never allow every RAILWAY_* variable",
+      "unlistedSettingsPolicy": "Classify and compare effective platform defaults; no unexplained override",
+      "name": "catwalks-direct-sync",
+      "dockerfile": "apps/aggregator/Dockerfile",
+      "imageOf": "catwalks-ingestion-worker",
+      "startCommand": "sh apps/aggregator/start.sh direct-liste",
+      "entrypointStatus": "IMPLEMENTED",
+      "workingDirectory": "/repo",
+      "restartPolicy": {
+        "type": "NEVER",
+        "maxRetries": 0
+      },
+      "healthcheck": null,
+      "heartbeat": "Dedicated Healthchecks check (5-minute period): start, success or failure of each pass; run.alive every 30 seconds",
+      "publicDomain": null,
+      "dependencies": [
+        "same-environment PostgreSQL",
+        "Dedicated Healthchecks Ping URL",
+        "Catwalks backend public list (read only)"
+      ],
+      "environment": {
+        "NODE_ENV": "production",
+        "PIPELINE_PAUSED": "1",
+        "CATALOGUE_LISTE_URL": "https://catwalks.api.catwalks.io"
+      },
+      "profileEnvironment": [
+        "CATWALKS_RUNTIME_PROFILE"
+      ],
+      "secretBindings": {
+        "DATABASE_URL": "same-environment database URL; production binding preserved",
+        "HEALTHCHECK_PING_URL": "Dedicated check of this service, created with the production GO (D-444); never the ingestion worker check"
+      },
+      "operationalEgress": [
+        "database binding",
+        "hc-ping.com"
+      ],
+      "businessEgress": "GET https://catwalks.api.catwalks.io/api/jobs (the list) and /api/jobs/filters (the backend's own count of the same offers) only (fixed CATALOGUE_LISTE_URL, no redirect followed); no backend key, no outbox feed (D-444)",
+      "automaticExecution": "NOT ACTIVATED. Every 5 minutes once the production GO is given (D-444): service creation, dedicated check, PIPELINE_PAUSED=0; never during the 18:00 RUN",
+      "concurrencyPolicy": "One replica; a pass that finds the advisory lock held writes nothing",
+      "pauseProof": {
+        "event": "pipeline.paused",
+        "workStarted": false,
+        "businessRequests": 0
+      },
+      "executionModes": {
+        "paused": "PIPELINE_PAUSED=1: exit without operational side effects",
+        "normal": "sh apps/aggregator/start.sh direct-liste: one pass over the public list; writes only what changed; an empty list, a list at the 500 cap, a list whose length differs from the backend's count (or whose count is unavailable) and a partly unreadable list retire nothing and fail the pass; a backend outage writes no offer and fails the pass; a pass that finds a more recent read already noted (database clock) or the lock held writes nothing and fails; offers without an established country or outside every market are reported on each pass without failing it"
+      }
     }
   ],
   "profiles": [
@@ -175,7 +243,8 @@
       "database": "validation",
       "roles": [
         "api",
-        "worker"
+        "worker",
+        "direct-sync"
       ],
       "workerPaused": "1",
       "cronSchedule": null
@@ -184,7 +253,8 @@
       "name": "validation",
       "database": "validation",
       "roles": [
-        "worker"
+        "worker",
+        "direct-sync"
       ],
       "workerPaused": "environment",
       "workerCommand": "sh apps/aggregator/start.sh",
@@ -195,7 +265,8 @@
       "database": "production",
       "roles": [
         "api",
-        "worker"
+        "worker",
+        "direct-sync"
       ],
       "workerPaused": "1",
       "cronSchedule": null
@@ -204,7 +275,8 @@
       "name": "production",
       "database": "production",
       "roles": [
-        "worker"
+        "worker",
+        "direct-sync"
       ],
       "workerPaused": "environment",
       "workerCommand": "sh apps/aggregator/start.sh",

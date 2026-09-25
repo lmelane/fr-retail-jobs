@@ -5,7 +5,9 @@ import { SEARCH_VOCABULARY_VERSION } from './search-vocabulary';
 
 // Bump for any projection/normalization change. Old generations remain usable
 // by the previous application during a rolling release and a bounded rollback.
-export const SEARCH_VERSION = `search-3-${SEARCH_VOCABULARY_VERSION}`;
+// 4 — a direct offer's document also carries its indexed text (D-455: univers words) and, like an aggregated
+// offer's, falls back on the taxonomy occupation of its title when the title names no role (D-444).
+export const SEARCH_VERSION = `search-4-${SEARCH_VOCABULARY_VERSION}`;
 type Database = Prisma.TransactionClient;
 type Context = { revision: string; model: ReturnType<typeof snapshotModel> };
 let cached: Context | undefined;
@@ -66,9 +68,14 @@ export async function drainSearchIndex(batchSize = 128): Promise<number> {
         department: true, occupationCode: true, jobFunction: true, postedAt: true, firstSeenAt: true,
         employmentTerm: true, workTime: true, programType: true, language: true,
       } }),
+      // Le document d'une offre directe est remis en file quand une colonne qui le nourrit change : intitulé, description,
+      // employeur, lieu, secteurs, contrat (migration `20260924120000`), pays (`20260924130000`), texte indexé
+      // (`20260925080000`), métier (`20260925090000`). `companyId` n'est volontairement pas lue ici (la Maison se
+      // retrouve par son nom, le groupe se lit à la requête) : aucun déclencheur ne la suit, la lire exigerait le sien.
       tx.directOffer.findMany({ where: { id: { in: ids.filter(id => id.startsWith('cw_')).map(id => id.slice(3)) } }, select: {
         id: true, title: true, company: true, description: true, countryCode: true, city: true, location: true, sectorCodes: true,
-        postedAt: true, receivedAt: true, employmentTerm: true, workTime: true, programType: true, language: true,
+        postedAt: true, receivedAt: true, employmentTerm: true, workTime: true, programType: true, language: true, searchText: true,
+        occupationCode: true,
       } }),
     ]);
     const documents = [...jobs.map(j => model.document(JSON.parse(JSON.stringify(j)) as NativeJob)),

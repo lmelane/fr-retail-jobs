@@ -25,6 +25,9 @@ Après un redémarrage du poste : les conteneurs repartent seuls (`--restart unl
 | Archive RAW (MinIO) | 56900 / console 56901 | conteneur `catwalks-stack-minio` | bucket `catwalks-stack-observations`, variables `OBSERVATION_ARCHIVE_S3_*` des commandes de collecte |
 | API catalogue (`apps/api`) | 3110 | `http://127.0.0.1:3110` | `CATALOGUE_API_KEY` de test ; `/api/health` porte le contrat des 78 migrations |
 | Backend Catwalks | 3101 | `http://localhost:3101` | `CATALOGUE_FLUX_KEY` de test, CORS ouvert aux seuls hôtes du site local |
+
+> **État au 25/09/2026 : les offres directes de la stack sont cassées.** Le backend a retiré son flux d’outbox (commit `8352cff` de sa branche `development`, conforme à D-444) : `seed.mjs` écrit encore la colonne retirée `countryCode` et compte `catalogueOutbox`, `verify.mjs` attend `/api/catalogue/flux` puis lance `direct-sync`. Tant que la stack n’est pas adaptée au lecteur de la liste publique (`direct-liste`, D-444), son semis et ses vérifications d’offres directes échouent contre ce backend.
+
 | Site | 3100 | `http://localhost:3100` et `http://<pays>.catwalks.localhost:3100` | `EMPLOIS_API_URL` → API locale, `EMPLOIS_INDEXABLE=0` |
 | Boîte de réception (imite l’API Brevo) | 56025 | `http://127.0.0.1:56025/` | chaque email « envoyé » y est archivé en JSON |
 

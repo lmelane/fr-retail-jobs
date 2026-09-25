@@ -33,9 +33,10 @@
  *     sur les six dimensions, donc l'écart est nul AUJOURD'HUI — mais la règle reste celle de la
  *     facette, pas celle de `count()`, pour que l'apparition d'une chaîne vide ne crée pas
  *     silencieusement un écart ;
- *  3. la base est une UNION de `Job` et `DirectOffer`. Mesuré : `DirectOffer` est VIDE (0 ligne),
- *     donc mesurer sur `Job` seul est exact aujourd'hui. `POPULATION_MESUREE` le dit explicitement
- *     pour qu'on sache quoi rouvrir le jour où des offres directes existent.
+ *  3. la base est une UNION de `Job` et `DirectOffer`. Les sondes mesurent `Job` seul, et le disent
+ *     (`POPULATION_MESUREE`) : depuis D-444 (lot du 25/09/2026, non livré), l'UNION porte le métier
+ *     de la taxonomie des offres directes, que la facette compte et que la mesure n'inclut pas —
+ *     59 offres au 25/09/2026, face à environ 76 000 offres agrégées.
  *
  * ── CE QUE CE MODULE NE FAIT PAS ──────────────────────────────────────────────────────────────
  *
@@ -89,19 +90,21 @@ export const EXPRESSION_AFFICHEE: Partial<Record<DimensionMesurable, string>> = 
 export const DIMENSIONS_EMPLOI_MESURABLES = ['metier', 'contrat', 'temps', 'programme'] as const;
 
 /**
- * La population que les sondes mesurent, et la raison pour laquelle c'est exact aujourd'hui.
+ * La population que les sondes mesurent, et ce qu'elle laisse de côté.
  *
- * Mesuré le 2026-09-17 : `DirectOffer` compte 0 ligne. Mesurer sur `Job` seul rend donc le même
- * chiffre que l'UNION servie. Le jour où des offres directes existent, deux choses deviennent
- * fausses d'un coup : le dénominateur, et la couverture `metier` (l'UNION force
- * `NULL::text` sur `occupationCode` pour les offres directes — voir job-search-query.ts:314).
- * Le témoin `colonnes-facette.test.ts` rougit si cette hypothèse cesse d'être vraie.
+ * Les sondes mesurent la qualité du catalogue AGRÉGÉ, sur lequel se décide l'exposition d'une
+ * facette par marché : `Job` seul. Jusqu'au 25/09/2026, c'était aussi toute la population servie
+ * (`DirectOffer` : 0 ligne, et l'UNION forçait `NULL::text` sur leur `occupationCode`). D-444 fait
+ * entrer les offres Catwalks dans la recherche avec le métier de la taxonomie appliquée à leur
+ * intitulé : la facette les compte, la mesure non. L'écart est nommé ici plutôt que caché : 59
+ * offres au 25/09/2026, soit moins de 0,1 % des offres publiables. Le témoin
+ * `colonnes-facette.test.ts` rougit si l'UNION ou cette déclaration changent sans l'autre.
  */
 export const POPULATION_MESUREE = {
   table: 'Job',
   filtre: '"isActive"',
   tableExclue: 'DirectOffer',
-  raisonExclusion: 'mesurée VIDE le 2026-09-17 ; son inclusion changerait le dénominateur ET la couverture métier',
+  raisonExclusion: 'D-444 : les offres directes Catwalks portent le métier de la taxonomie et sont comptées par la facette, pas par la mesure de couverture du catalogue agrégé (59 offres au 2026-09-25)',
 } as const;
 
 /**

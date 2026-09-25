@@ -1,0 +1,146 @@
+{
+  "mesureLe": "2026-09-25T11:43:26.122Z",
+  "base": "127.0.0.1:32788/catwalks_d444_preuve",
+  "liste": {
+    "url": "https://catwalks.api.catwalks.io/api/jobs",
+    "offres": 59,
+    "empreinteSha256": "7a59c2836454fdb296b21e0c061272fa9d3601a4b8eba293c7328959ad0ca316",
+    "compteAnnonce": "https://catwalks.api.catwalks.io/api/jobs/filters"
+  },
+  "taxonomieActive": "catwalks-occupations-20260914-v2",
+  "registre": {
+    "mesureLe": "2026-09-25T09:34:29.184674+00:00",
+    "societes": 961,
+    "semees": 961,
+    "fusionneesEcartees": 0
+  },
+  "concurrentes": {
+    "societes": 2,
+    "offresCreees": 60,
+    "fraicheur": "2026-09-25T10:43:24.776Z"
+  },
+  "premierePasse": {
+    "recues": 59,
+    "annoncees": 59,
+    "compteErreur": null,
+    "lues": 59,
+    "refusees": [],
+    "complete": true,
+    "motifIncomplet": null,
+    "publiees": 59,
+    "misesAJour": 0,
+    "retablies": 0,
+    "inchangees": 0,
+    "retirees": 0,
+    "retraitsSuspendus": 0,
+    "parPays": {
+      "FR": 53,
+      "GB": 1,
+      "US": 2,
+      "DE": 2,
+      "MC": 1
+    },
+    "abstentions": [],
+    "horsMarche": [
+      {
+        "id": "cmo00mesb00072ccsv2b8uch7",
+        "lieu": "Monaco — Carré d'Or",
+        "pays": "MC"
+      }
+    ],
+    "reprojection": {
+      "reprojetees": 0,
+      "nonReprojetees": []
+    },
+    "concurrente": false,
+    "perimee": false
+  },
+  "secondePasse": {
+    "publiees": 0,
+    "misesAJour": 0,
+    "retablies": 0,
+    "inchangees": 59,
+    "retirees": 0,
+    "complete": true
+  },
+  "offres": {
+    "total": 59,
+    "publiables": 59,
+    "parPays": {
+      "FR": 53,
+      "GB": 1,
+      "US": 2,
+      "DE": 2,
+      "MC": 1
+    },
+    "parMarche": {
+      "FR": 53,
+      "GB": 1,
+      "US": 2,
+      "DE": 2,
+      "hors marché (MC)": 1
+    },
+    "employeur": {
+      "catwalks": 21,
+      "maisonPublique": 38
+    },
+    "rattacheesAuRegistre": 16,
+    "maisons": {
+      "distinctes": 22,
+      "rattachees": 11
+    },
+    "avecGroupe": {
+      "LVMH": 7,
+      "Groupe Rocher": 1,
+      "L'Occitane": 1
+    },
+    "metier": {
+      "sales-advisor": 14,
+      "store-manager": 8,
+      "non classée": 28,
+      "beauty-therapist": 5,
+      "buyer": 1,
+      "makeup-artist": 2,
+      "beauty-consultant": 1
+    },
+    "intitulesNonClasses": [
+      "Animateur·rice des ventes",
+      "Animateur·rice des ventes",
+      "Animateur·rice des ventes parfums — France",
+      "Assistant·e merchandiser en alternance — Paris",
+      "Chargé·e de relation client e-commerce — Paris",
+      "Chef·fe de produit maroquinerie — Paris",
+      "Chef·fe de produit parfum — Paris",
+      "Chef·fe de projet CRM luxe — Paris",
+      "Conseiller de vente en beauté capillaire",
+      "Conseiller·ère de vente parfumerie — Berlin",
+      "Conseiller·ère de vente parfumerie — Londres",
+      "Conseiller·ère de vente parfumerie — New York",
+      "Conseiller·ère parfum",
+      "Conseiller·ère parfum",
+      "Directeur·rice de réseau France — Paris",
+      "Expert(e) parfum",
+      "Expert(e) parfum",
+      "Expert(e) parfum",
+      "Expert(e) parfum",
+      "Expert(e) praticien(ne)",
+      "Floor manager mode femme — Paris",
+      "Formateur·rice produits",
+      "Manager Floor parfumerie",
+      "Manager Floor prêt-à-porter",
+      "Parfumeur·se conseil — Paris",
+      "Responsable adjoint·e",
+      "Responsable d'institut",
+      "Responsable relation client — Paris"
+    ]
+  },
+  "index": {
+    "lots": 1,
+    "version": "search-4-20260924-v2",
+    "pending": 0,
+    "oldestSeconds": null,
+    "documents": 119,
+    "registered": true,
+    "ready": true
+  }
+}

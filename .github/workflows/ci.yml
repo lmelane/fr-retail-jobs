@@ -122,6 +122,8 @@ jobs:
           - name: catwalks-catalogue-api
             dockerfile: apps/api/Dockerfile
             root: /app
+          # D-444 : catwalks-direct-sync tourne sur cette même image (`imageOf` dans le contrat) ; verify-image.mjs
+          # l'y démarre aussi, hors réseau, en pause, avec sa commande. Aucun paquet supplémentaire n'est publié.
           - name: catwalks-ingestion-worker
             dockerfile: apps/aggregator/Dockerfile
             root: /repo

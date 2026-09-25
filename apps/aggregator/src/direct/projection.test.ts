@@ -1,15 +1,16 @@
 import { describe, expect, it } from 'vitest';
 import { lireOffre } from './contrat.js';
-import { offreBrute } from './fixture.js';
+import { contexteTemoin, offreBrute } from './fixture.js';
 import { colonnesProjetees, descriptionServie, hashPayload, projeterOffreDirecte, texteRecherche } from './projection.js';
 import { CORRESPONDANCE_DIRECTE_VERSION } from './vocabulaire.js';
 
 /** La projection reconstruit toutes les colonnes depuis le contrat reçu, à chaque version (lot 6). */
 describe('projection d’une offre directe', () => {
   const offre = lireOffre(offreBrute());
+  const contexte = contexteTemoin({ maisons: { 'Maison Témoin Directe': 'societe-temoin' }, metiers: { 'Visual Merchandiser': 'visual-merchandiser' } });
 
   it('projette les colonnes du vocabulaire commun et garde le contrat entier comme provenance', () => {
-    const ligne = projeterOffreDirecte(offre, BigInt(12), BigInt(3));
+    const ligne = projeterOffreDirecte(offre, BigInt(12), BigInt(3), contexte);
     expect(ligne).toMatchObject({
       id: 'cmoffre0001', version: BigInt(3), appliedSeq: BigInt(12), eligible: true, correspondanceVersion: CORRESPONDANCE_DIRECTE_VERSION,
       slug: 'visual-merchandiser-paris', anciensSlugs: ['vm-paris'], title: 'Visual Merchandiser', company: 'Maison Témoin Directe', maisonSlug: 'maison-temoin-directe',
@@ -18,7 +19,10 @@ describe('projection d’une offre directe', () => {
       sectorCodes: ['FASHION', 'LEATHER_GOODS'], occupationLabel: 'Visual Merchandiser', language: 'fr',
       salaryCurrency: 'EUR', salaryPeriod: 'YEAR', visuel: 'https://media.example.com/visuel.jpg',
       applyUrl: 'https://catwalks.io/offres/visual-merchandiser-paris', validThrough: null,
+      // D-444 : la Maison rattachée au registre, le métier de la taxonomie active, l'empreinte des colonnes projetées.
+      companyId: 'societe-temoin', occupationCode: 'visual-merchandiser', occupationReleaseId: 'release-temoin',
     });
+    expect(ligne.projectionHash).toMatch(/^[0-9a-f]{64}$/);
     expect(ligne.salaryMin?.toString()).toBe('38000');
     expect(ligne.salaryMax?.toString()).toBe('45000');
     expect(ligne.postedAt.toISOString()).toBe('2026-09-10T08:00:00.000Z');
@@ -42,7 +46,7 @@ describe('projection d’une offre directe', () => {
     // PRÉMISSE : l'offre n'a pas de Maison publique et porte des univers, ceux que la version 1 affichait (« Mode, Luxe »).
     expect(confidentielle.maison).toBeNull();
     expect(confidentielle.univers).toEqual(['MODE', 'LUXE']);
-    const ligne = projeterOffreDirecte(confidentielle, BigInt(1), BigInt(1));
+    const ligne = projeterOffreDirecte(confidentielle, BigInt(1), BigInt(1), contexte);
     expect(ligne.company).toBe('Catwalks');
     expect(ligne.maisonSlug).toBeNull();
     const lignes = ligne.searchText.split('\n');
@@ -52,13 +56,13 @@ describe('projection d’une offre directe', () => {
     expect(lignes.filter((l) => l === 'Mode, Luxe')).toHaveLength(1);
     expect(ligne.searchText).not.toContain('Maison confidentielle');
     // Sans univers, la version 1 écrivait « Maison confidentielle » : la retombée reste « Catwalks ».
-    expect(projeterOffreDirecte(lireOffre(offreBrute({ maison: null, univers: [] })), BigInt(1), BigInt(1)).company).toBe('Catwalks');
+    expect(projeterOffreDirecte(lireOffre(offreBrute({ maison: null, univers: [] })), BigInt(1), BigInt(1), contexte).company).toBe('Catwalks');
     expect(ligne).toMatchObject({ salaryMin: null, salaryMax: null, salaryCurrency: null, salaryPeriod: null });
     expect(ligne.validThrough?.toISOString()).toBe('2026-12-31T00:00:00.000Z');
   });
 
   it('D-455 §1 : une offre avec une Maison publique l’affiche comme employeur, dans la ligne et dans le texte indexé', () => {
-    const dior = projeterOffreDirecte(lireOffre(offreBrute({ maison: { nom: 'Dior', slug: 'dior' } })), BigInt(1), BigInt(1));
+    const dior = projeterOffreDirecte(lireOffre(offreBrute({ maison: { nom: 'Dior', slug: 'dior' } })), BigInt(1), BigInt(1), contexte);
     expect(dior).toMatchObject({ company: 'Dior', maisonSlug: 'dior' });
     expect(dior.searchText.split('\n')[1]).toBe('Dior');
     // L'univers est un mot de secteur de l'offre, Maison publique ou non.
@@ -66,10 +70,10 @@ describe('projection d’une offre directe', () => {
   });
 
   it('la re-projection reconstruit les seules colonnes dérivées : ni identité, ni état, ni provenance', () => {
-    const colonnes = colonnesProjetees(offre);
+    const colonnes = colonnesProjetees(offre, contexte);
     for (const cle of ['id', 'version', 'appliedSeq', 'eligible', 'payload', 'payloadHash']) expect(colonnes, cle).not.toHaveProperty(cle);
     // Une projection complète est exactement l'identité, l'état et la provenance, plus ces colonnes.
-    expect(projeterOffreDirecte(offre, BigInt(12), BigInt(3))).toEqual({ id: offre.id, version: BigInt(3), appliedSeq: BigInt(12), eligible: true,
+    expect(projeterOffreDirecte(offre, BigInt(12), BigInt(3), contexte)).toEqual({ id: offre.id, version: BigInt(3), appliedSeq: BigInt(12), eligible: true,
       payloadHash: hashPayload(offre), payload: offre, ...colonnes });
   });
 

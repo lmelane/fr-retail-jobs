@@ -17,17 +17,21 @@ try {
   if (preflight && !process.env.HEALTHCHECK_PING_URL) throw new Error('Preflight requires configured heartbeat');
   db = new PrismaClient({ errorFormat: 'minimal', log: [] });
   const aliveSince = new Date(Date.now() - 90_000);
+  // D-444 : les passes de 5 minutes du service `catwalks-direct-sync` (`direct-liste`) ne sont pas des runs du worker ;
+  // un déploiement du worker ne les interrompt pas. Elles ne masquent ni le dernier run, ni un pipeline vivant, ni la
+  // dernière erreur du worker.
+  const horsDirect = { command: { not: 'direct-liste' } };
   const report = await db.$transaction(async tx => {
     await tx.$executeRaw`SET TRANSACTION ISOLATION LEVEL REPEATABLE READ, READ ONLY`;
     const [lastRun, running, lastCapture, lastFailure, runningCount, recentlyAlive] = await Promise.all([
-      tx.pipelineRun.findFirst({ orderBy: { startedAt: 'desc' }, omit: { metrics: true } }),
-      tx.pipelineRun.findMany({ where: { status: 'RUNNING' }, orderBy: { startedAt: 'desc' }, take: 10,
+      tx.pipelineRun.findFirst({ where: horsDirect, orderBy: { startedAt: 'desc' }, omit: { metrics: true } }),
+      tx.pipelineRun.findMany({ where: { ...horsDirect, status: 'RUNNING' }, orderBy: { startedAt: 'desc' }, take: 10,
         select: { id: true, command: true, startedAt: true, events: { where: { event: { in: ['run.started', 'run.alive'] } }, orderBy: { at: 'desc' }, take: 1, select: { at: true, event: true } } } }),
       tx.captureBatch.findFirst({ where: { purpose: 'JOBS' }, orderBy: { startedAt: 'desc' }, select: { id: true, sourceKey: true, startedAt: true } }),
-      tx.pipelineEvent.findFirst({ where: { level: 'error' }, orderBy: { at: 'desc' }, select: { runId: true, at: true, event: true, sourceKey: true } }),
-      tx.pipelineRun.count({ where: { status: 'RUNNING' } }),
+      tx.pipelineEvent.findFirst({ where: { level: 'error', run: horsDirect }, orderBy: { at: 'desc' }, select: { runId: true, at: true, event: true, sourceKey: true } }),
+      tx.pipelineRun.count({ where: { ...horsDirect, status: 'RUNNING' } }),
       // The ten displayed runs are a summary, never the scope of the safety check.
-      tx.pipelineRun.count({ where: { status: 'RUNNING', events: { some: {
+      tx.pipelineRun.count({ where: { ...horsDirect, status: 'RUNNING', events: { some: {
         event: { in: ['run.started', 'run.alive'] }, at: { gte: aliveSince },
       } } } }),
     ]);

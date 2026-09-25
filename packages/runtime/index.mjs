@@ -10,6 +10,15 @@ export const release = existsSync(releaseUrl) ? JSON.parse(readFileSync(releaseU
 const fail = reason => { throw new Error(`Runtime contract rejected: ${reason}`); };
 const uuid = value => typeof value === 'string' && /^[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}$/i.test(value);
 
+/** The service each role runs as; a process may only attest as the service its role names. */
+export const SERVICE_OF_ROLE = { api: 'catwalks-catalogue-api', worker: 'catwalks-ingestion-worker', 'direct-sync': 'catwalks-direct-sync' };
+/** D-444: the direct-sync service runs one command, the public-list reader; no argument widens or retargets it. */
+export const DIRECT_SYNC_COMMAND = 'direct-liste';
+export function directSyncArguments(argv) {
+  if (argv.length !== 1 || argv[0] !== DIRECT_SYNC_COMMAND) fail('unsupported direct-sync argv');
+  return argv;
+}
+
 /** Execution scope is an argument, never a release-specific source allowlist. */
 export function workerArguments(argv) {
   // The existing source-add parser owns its public definition contract. The
@@ -33,20 +42,24 @@ export function scheduledRunDue(now = new Date()) {
 
 /** Pure validation, shared only by the catalogue API and ingestion worker. */
 export function validateRuntime(role, argv, env, built, now = Date.now()) {
-  if (!['api', 'worker'].includes(role)) fail('unknown role');
+  if (!Object.hasOwn(SERVICE_OF_ROLE, role)) fail('unknown role');
   if (!built || !/^[a-f0-9]{40}$/.test(built.gitSha) || built.contractSha256 !== contractSha256)
     fail('missing or inconsistent embedded release');
   const profile = target.profiles.find(p => p.name === env.CATWALKS_RUNTIME_PROFILE);
   if (!profile) fail('missing or unknown profile');
   if (!profile.roles.includes(role)) fail('profile does not allow this role');
-  const service = target.services[role === 'api' ? 0 : 1];
-  if (role === 'worker' && !['0', '1'].includes(env.PIPELINE_PAUSED)) fail('PIPELINE_PAUSED must be 0 or 1');
-  const running = role === 'worker' && env.PIPELINE_PAUSED === '0';
+  const service = target.services.find(s => s.name === SERVICE_OF_ROLE[role]);
+  if (!service) fail('service of this role is not in the contract');
+  // The direct-sync reader is a scheduled job like the worker: the same explicit pause rule governs it, but through its
+  // OWN service variable. Pausing the worker does not pause direct-sync, and the reverse.
+  const scheduled = role === 'worker' || role === 'direct-sync';
+  if (scheduled && !['0', '1'].includes(env.PIPELINE_PAUSED)) fail('PIPELINE_PAUSED must be 0 or 1');
+  const running = scheduled && env.PIPELINE_PAUSED === '0';
   if (role === 'api' && argv.length) fail('API argv must be empty');
-  if (running) workerArguments(argv);
+  if (running) (role === 'direct-sync' ? directSyncArguments : workerArguments)(argv);
 
   const values = { ...service.environment, CATWALKS_RUNTIME_PROFILE: profile.name };
-  if (role === 'worker') values.PIPELINE_PAUSED = profile.workerPaused === 'environment' ? env.PIPELINE_PAUSED : profile.workerPaused;
+  if (scheduled) values.PIPELINE_PAUSED = profile.workerPaused === 'environment' ? env.PIPELINE_PAUSED : profile.workerPaused;
   for (const [name, value] of Object.entries(values)) if (env[name] !== value) fail(`value differs: ${name}`);
   const secretNames = Object.keys(service.secretBindings);
   const privateNames = Object.keys(service.privateConfigurationBindings ?? {});
@@ -95,7 +108,7 @@ export function attestRuntime(role, argv) {
   // always requires the contract. No opt-out flag exists in deployed images.
   if (!release && !process.env.RAILWAY_PROJECT_ID && !process.env.CATWALKS_RUNTIME_PROFILE) return null;
   // A cron launch gets a fresh identity; an explicit debug run may supply its own.
-  if (role === 'worker' && process.env.PIPELINE_PAUSED === '0') process.env.CATWALKS_RUN_ID ??= randomUUID();
+  if ((role === 'worker' || role === 'direct-sync') && process.env.PIPELINE_PAUSED === '0') process.env.CATWALKS_RUN_ID ??= randomUUID();
   const checked = validateRuntime(role, argv, process.env, release);
   console.log(JSON.stringify(checked.proof));
   return checked;

@@ -83,6 +83,9 @@ const cases = [
   ['CLI ingest', () => cli('ingest', '--source=witness', '--no-geocode')],
   ['CLI geocode', () => cli('geocode')],
   ['CLI direct-sync', () => cli('direct-sync')],
+  // D-444 : le lecteur de la liste publique, par son lanceur de service et par la CLI.
+  ['start.sh direct-liste', () => ['sh', ['apps/aggregator/start.sh', 'direct-liste']]],
+  ['CLI direct-liste', () => cli('direct-liste')],
   ['source-campaign', files => node('apps/aggregator/scripts/ops/source-campaign.mts',
     [`--candidates=${files.input}`, `--out-dir=${files.output}`, '--keys=witness', '--ingest'])],
   ['source-add', files => node('apps/aggregator/scripts/ops/source-add.mts', [
@@ -183,6 +186,36 @@ test('paused preflight: real read-only DB, heartbeat failure, and live run outsi
       assert.equal(failed.code, 1);
       assert.match(failed.event.error.message, /heartbeat not acknowledged/);
       assert.equal(await db.pipelineRun.count(), 0);
+      // D-444 : une passe vivante du service catwalks-direct-sync n'est pas un run du worker, que son déploiement
+      // interromprait : elle ne bloque pas le préflight et ne passe pas pour le dernier run.
+      await db.pipelineRun.create({ data: { id: 'preflight-direct', command: 'direct-liste', startedAt: new Date() } });
+      await db.pipelineEvent.create({ data: { id: 'preflight-direct-alive', runId: 'preflight-direct',
+        event: 'run.alive', level: 'info', fingerprint: 'test', payload: {} } });
+      status = 200;
+      const direct = await run();
+      assert.equal(direct.code, 0, direct.stderr);
+      assert.equal(direct.event.lastRun, null);
+      assert.equal(direct.event.unverifiedRunning, 0);
+      await db.pipelineEvent.deleteMany({ where: { id: 'preflight-direct-alive' } });
+      await db.pipelineRun.deleteMany({ where: { id: 'preflight-direct' } });
+      // … ni la dernière erreur du worker : une passe direct-liste en échec, plus récente, ne la masque pas.
+      await db.pipelineRun.create({ data: { id: 'status-worker', command: 'run', status: 'FAILED', startedAt: new Date(Date.now() - 60_000) } });
+      await db.pipelineEvent.create({ data: { id: 'status-worker-error', runId: 'status-worker', at: new Date(Date.now() - 50_000),
+        event: 'source.failed', level: 'error', fingerprint: 'test', payload: {} } });
+      await db.pipelineRun.create({ data: { id: 'status-direct', command: 'direct-liste', status: 'FAILED', startedAt: new Date() } });
+      await db.pipelineEvent.create({ data: { id: 'status-direct-error', runId: 'status-direct',
+        event: 'command.failed', level: 'error', fingerprint: 'test', payload: {} } });
+      // PRÉMISSE : l'erreur de la passe direct-liste est la plus récente ; sans le filtre, c'est elle qui serait rendue.
+      const [erreurWorker, erreurDirect] = await Promise.all(['status-worker-error', 'status-direct-error'].map(id => db.pipelineEvent.findUniqueOrThrow({ where: { id } })));
+      assert.ok(erreurDirect.at > erreurWorker.at);
+      const statut = spawnSync(...node('apps/aggregator/scripts/ops/worker-status.mts', []), {
+        cwd: root, env: { ...process.env, DATABASE_URL: url.href, DIRECT_URL: url.href }, encoding: 'utf8', timeout: 20_000 });
+      assert.equal(statut.status, 0, statut.stderr);
+      const rapport = JSON.parse(statut.stdout);
+      assert.equal(rapport.lastRun?.id, 'status-worker');
+      assert.equal(rapport.lastFailure?.runId, 'status-worker');
+      await db.pipelineEvent.deleteMany({ where: { id: { in: ['status-worker-error', 'status-direct-error'] } } });
+      await db.pipelineRun.deleteMany({ where: { id: { in: ['status-worker', 'status-direct'] } } });
       // This live run is older than ten stale ones: a display limit must not hide it.
       await db.pipelineRun.createMany({ data: Array.from({ length: 11 }, (_, i) => ({
         id: `preflight-${i}`, command: 'test', startedAt: new Date(Date.now() - (i === 0 ? 600_000 : 180_000)),
@@ -197,8 +230,9 @@ test('paused preflight: real read-only DB, heartbeat failure, and live run outsi
       assert.equal(await db.pipelineRun.count(), 11, 'The command did not create a run');
       assert.equal(await db.captureBatch.count(), 0);
     } finally {
-      await db.pipelineEvent.deleteMany({ where: { id: 'preflight-alive' } });
-      await db.pipelineRun.deleteMany({ where: { id: { in: Array.from({ length: 11 }, (_, i) => `preflight-${i}`) } } });
+      // Un échec en cours de route (un mutant, par exemple) ne doit pas laisser de run qui fausserait le suivant.
+      await db.pipelineEvent.deleteMany({ where: { id: { in: ['preflight-alive', 'preflight-direct-alive', 'status-worker-error', 'status-direct-error'] } } });
+      await db.pipelineRun.deleteMany({ where: { id: { in: [...Array.from({ length: 11 }, (_, i) => `preflight-${i}`), 'preflight-direct', 'status-worker', 'status-direct'] } } });
       await db.$disconnect();
       await new Promise(resolve => server.close(resolve));
     }

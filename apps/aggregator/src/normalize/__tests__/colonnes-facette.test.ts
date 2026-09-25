@@ -158,22 +158,25 @@ describe('les outils de mesure lisent la colonne que la facette sert', () => {
     expect(REQUETE_FACETTES, "la requête de facette a cessé d'exclure la chaîne vide").toContain("::text <> ''");
   });
 
-  it('LA POPULATION mesurée est celle que la facette sert — DirectOffer doit rester vide', () => {
+  it('LA POPULATION mesurée : le catalogue agrégé seul, et les offres directes comptées par la facette sont NOMMÉES (D-444)', () => {
     /*
-     * La facette est construite sur une UNION `Job` + `DirectOffer`, et l'UNION force
-     * `NULL::text` sur `occupationCode` pour les offres directes. Mesurer sur `Job` seul n'est
-     * exact que tant que `DirectOffer` est VIDE — vérifié le 17/09 : 0 ligne.
+     * La facette est construite sur une UNION `Job` + `DirectOffer`. Jusqu'au 25/09/2026, l'UNION
+     * forçait `NULL::text` sur l'`occupationCode` des offres directes et `DirectOffer` était vide :
+     * mesurer `Job` seul rendait exactement la population servie. D-444 donne aux offres directes le
+     * métier de la taxonomie (`d."occupationCode"`) : la facette les compte désormais.
      *
-     * Ce témoin ne peut pas interroger la base (module de données pur). Il grave donc
-     * l'HYPOTHÈSE et sa raison, pour qu'un futur lecteur sache exactement quoi rouvrir. Le garde
-     * `verif:couverture`, lui, tourne contre la base et verra la divergence.
+     * Ce témoin a rougi à ce changement, c'était son travail. La mesure reste celle du catalogue
+     * agrégé (sur lui se décide l'exposition d'une facette), et l'écart est déclaré avec sa raison
+     * dans `POPULATION_MESUREE` : il rougit si l'UNION et la déclaration divergent de nouveau.
      */
     expect(POPULATION_MESUREE.table).toBe('Job');
     expect(POPULATION_MESUREE.tableExclue).toBe('DirectOffer');
     expect(REQUETE_FACETTES, "l'UNION avec DirectOffer a disparu : la population mesurée est à revoir")
       .toContain('FROM "DirectOffer" d');
-    expect(REQUETE_FACETTES, "l'UNION doit toujours forcer occupationCode à NULL pour les offres directes")
-      .toContain('NULL::text');
+    // L'UNION porte le métier des offres directes : l'exclusion de la mesure est un choix nommé, plus une hypothèse vide.
+    expect(REQUETE_FACETTES, 'l’UNION ne porte plus le métier des offres directes : revoir POPULATION_MESUREE')
+      .toContain('0 AS origine, d."occupationCode"');
+    expect(POPULATION_MESUREE.raisonExclusion, 'la raison de l’exclusion doit nommer la décision qui l’a rendue nécessaire').toMatch(/D-444/);
   });
 
   it('LE SAISONNIER n’est pas mesurable comme les autres — et c’est dit, pas oublié', () => {

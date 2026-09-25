@@ -4,7 +4,7 @@ Les commandes maintenues vivent dans ce dossier ; les captures, dumps et identif
 
 ## Runtime Railway courant
 
-Le [runbook de livraison](../../../../docs/architecture/railway-runtime-reset.md), le [contrat cible](../../../../docs/operations/railway/runtime-target.json) et le [reçu de release](../../../../docs/operations/railway/runtime-release.json) décrivent les services `catwalks-catalogue-api` et `catwalks-ingestion-worker`. Leurs images immuables sont livrées explicitement, sans autodeploy. Les quatre anciens services ont été supprimés ; leurs pilotes, gardes de fusion et runners qui remplaçaient la commande de démarrage ont été retirés.
+Le [runbook de livraison](../../../../docs/architecture/railway-runtime-reset.md), le [contrat cible](../../../../docs/operations/railway/runtime-target.json) et le [reçu de release](../../../../docs/operations/railway/runtime-release.json) décrivent les services `catwalks-catalogue-api` et `catwalks-ingestion-worker` ; le contrat définit aussi `catwalks-direct-sync` (D-444), en pause et non créé. Leurs images immuables sont livrées explicitement, sans autodeploy. Les quatre anciens services ont été supprimés ; leurs pilotes, gardes de fusion et runners qui remplaçaient la commande de démarrage ont été retirés.
 
 Le worker courant passe par `sh apps/aggregator/start.sh` et applique le contrat de runtime et la pause. Les lectures de runs et de preuves restent disponibles dans les outils ci-dessous ; elles ne déclenchent pas une livraison.
 

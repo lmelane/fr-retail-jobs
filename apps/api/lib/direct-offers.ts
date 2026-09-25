@@ -4,9 +4,9 @@ import { publicAmount } from '@catwalks/db/money';
 import type { JobRow } from './jobs';
 
 /**
- * L'ORIGINE DIRECTE DANS L'API (lot 6, D-423) — les offres publiées sur
- * Catwalks par une Maison, lues depuis la copie `DirectOffer` que le flux
- * d'outbox du backend alimente.
+ * L'ORIGINE DIRECTE DANS L'API (lot 6, D-423 ; D-444) — les offres publiées sur
+ * Catwalks, lues depuis la copie `DirectOffer` que l'agrégateur alimente par la
+ * relecture de la liste publique du backend (`direct-liste`, D-444).
  *
  * Elles vivent dans un espace d'identifiants DISTINCT (`cw_<id>`) : un
  * identifiant public dit d'où vient l'offre, et un identifiant agrégé ne peut
@@ -98,7 +98,9 @@ export function directToRow(d: DirectOffer): JobRow {
     salaryPeriod: salaire ? d.salaryPeriod : null,
     validThrough: d.validThrough,
     countryCode: d.countryCode,
-    // Le pays vient du géocodage du propriétaire de l'offre, servi en code ISO : la provenance la plus directe qui existe.
+    // Le pays est prouvé par une méthode indépendante du libellé : les coordonnées que le backend a géocodées, situées
+    // dans le tracé Natural Earth au 1:10 000 000, avec abstention au moindre doute (D-444, `geo/frontieres.ts` de
+    // l'agrégateur) ; le flux d'outbox, lui, servait le code ISO géocodé par le backend. Le verdict reste celui qui prouve.
     countryIntegrity: d.countryCode ? 'RAW_COUNTRY_CODE' : null,
     language: d.language,
     firstSeenAt: d.receivedAt,

@@ -3,7 +3,7 @@ import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { prisma } from '@catwalks/db';
 import { publicJobWhere } from '@catwalks/db/availability';
 import { lireOffre } from '../../../aggregator/src/direct/contrat';
-import { offreBrute } from '../../../aggregator/src/direct/fixture';
+import { offreBrute, contexteTemoin } from '../../../aggregator/src/direct/fixture';
 import { projeterOffreDirecte } from '../../../aggregator/src/direct/projection';
 import { publicationFixture } from '../../../aggregator/src/test/publication-fixture';
 import { directPubliable } from '../direct-offers';
@@ -90,7 +90,7 @@ describe.skipIf(!enabled)('offres similaires : un mandat Catwalks passe directem
             country: g.pays, language: 'fr', postedAt: new Date(g.posteLe) }) } },
       } });
     }
-    for (const brute of DIRECTES) await prisma.directOffer.create({ data: projeterOffreDirecte(lireOffre(brute), BigInt(1), BigInt(1)) });
+    for (const brute of DIRECTES) await prisma.directOffer.create({ data: projeterOffreDirecte(lireOffre(brute), BigInt(1), BigInt(1), contexteTemoin()) });
   }, 120_000);
   afterAll(nettoyer);
 

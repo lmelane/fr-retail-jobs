@@ -197,19 +197,25 @@ async function queryCompanies(filters: CompanyFilters, perimetre: Perimetre): Pr
 
   const [grouped, directGrouped] = await Promise.all([
     prisma.job.groupBy({ by: ['companyId'], where: jobWhere, _count: true, orderBy: { _count: { companyId: 'desc' } } }),
-    prisma.directOffer.groupBy({ by: ['company'], where: directWhere, _count: true, orderBy: { _count: { company: 'desc' } } }),
+    prisma.directOffer.groupBy({ by: ['company', 'companyId'], where: directWhere, _count: true, orderBy: { _count: { company: 'desc' } } }),
   ]);
-  // Une Maison directe que le registre connaît par son nom rejoint sa ligne agrégée.
-  const connues = directGrouped.length
-    ? await prisma.company.findMany({ where: { name: { in: directGrouped.map((r) => r.company) }, mergedIntoId: null }, select: { id: true, name: true } })
+  // Une Maison directe rejoint sa ligne agrégée : par son rattachement au registre (D-444 : nom à la casse, aux accents
+  // et aux apostrophes près, alias, fusions ; jamais un mandat), sinon par son nom exact au registre. Une seule ligne
+  // par Maison, au nom du registre, comme l'option « Maison » de la recherche.
+  const sansRattachement = directGrouped.filter((r) => !r.companyId).map((r) => r.company);
+  const connues = sansRattachement.length
+    ? await prisma.company.findMany({ where: { name: { in: sansRattachement }, mergedIntoId: null }, select: { id: true, name: true } })
     : [];
   const idParNom = new Map(connues.map((c) => [c.name, c.id]));
+  const cleParNomDirect = new Map<string, string>();
   const parCle = new Map<string, Entree>(grouped.map((row) => [row.companyId, { cle: row.companyId, companyId: row.companyId, nomsDirects: [], count: row._count }]));
   for (const row of directGrouped) {
-    const companyId = idParNom.get(row.company) ?? null;
+    const companyId = row.companyId ?? idParNom.get(row.company) ?? null;
     const cle = companyId ?? `${PREFIXE_DIRECT}${row.company}`;
+    cleParNomDirect.set(row.company, cle);
     const avant = parCle.get(cle) ?? { cle, companyId, nomsDirects: [], count: 0 };
-    parCle.set(cle, { ...avant, nomsDirects: [...avant.nomsDirects, row.company], count: avant.count + row._count });
+    const nomsDirects = avant.nomsDirects.includes(row.company) ? avant.nomsDirects : [...avant.nomsDirects, row.company];
+    parCle.set(cle, { ...avant, nomsDirects, count: avant.count + row._count });
   }
   const entrees = [...parCle.values()].sort((a, b) => b.count - a.count || a.cle.localeCompare(b.cle));
 
@@ -244,7 +250,7 @@ async function queryCompanies(filters: CompanyFilters, perimetre: Perimetre): Pr
   ]);
 
   const byCompany = new Map(companies.map((company) => [company.id, company]));
-  const cleDuNom = (nom: string) => idParNom.get(nom) ?? `${PREFIXE_DIRECT}${nom}`;
+  const cleDuNom = (nom: string) => cleParNomDirect.get(nom) ?? idParNom.get(nom) ?? `${PREFIXE_DIRECT}${nom}`;
   const villes = new Map<string, Map<string, number>>();
   const ajouterVille = (cle: string, city: string | null, n: number) => {
     if (!city) return;

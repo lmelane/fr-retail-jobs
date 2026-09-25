@@ -4,13 +4,15 @@ import { fileURLToPath } from 'node:url';
 import { pingHeartbeat } from './pipeline/heartbeat.js';
 import { log } from './observability/logger.js';
 import { exitIfPipelinePaused } from './lib/pipelinePause.js';
-import { attestRuntime, workerArguments, scheduledRunDue } from '@catwalks/runtime';
+import { attestRuntime, workerArguments, scheduledRunDue, directSyncArguments, DIRECT_SYNC_COMMAND } from '@catwalks/runtime';
 import { sourceLaunchArguments } from './onboarding/launch.js';
 import { isRunCompletion, workerOutcome, type RunCompletion, type CompletionStatus } from './lib/runCompletion.js';
 
 const root = fileURLToPath(new URL('../../../', import.meta.url));
 if (process.argv[2] === 'source-add') sourceLaunchArguments(process.argv.slice(3));
-const attestation = attestRuntime('worker', process.argv.slice(2));
+// D-444 : le lecteur de la liste publique est son propre service (`catwalks-direct-sync`), attesté sous son rôle.
+const role = process.argv[2] === DIRECT_SYNC_COMMAND ? 'direct-sync' : 'worker';
+const attestation = attestRuntime(role, process.argv.slice(2));
 if (!['0', '1'].includes(process.env.PIPELINE_PAUSED ?? '')) throw new Error('PIPELINE_PAUSED must be 0 or 1 (explicit worker setting required)');
 exitIfPipelinePaused(process.argv[2] ?? 'ingest-all');
 const argv = process.argv.slice(2);
@@ -19,8 +21,9 @@ if (argv[0] === 'scheduled' && !scheduledRunDue()) {
   process.exit(0);
 }
 // Preserve the existing local maintenance CLI; deployed ingestion stays normal or source-scoped.
-const [command, ...args] = !attestation && argv.length && argv[0] !== 'scheduled' && !argv[0].startsWith('--source=') ? argv : workerArguments(argv);
-if (!['ingest-all', 'ingest', 'refresh', 'health-report', 'direct-sync', 'source-add'].includes(command)) throw new Error('Unsupported worker command');
+const [command, ...args] = role === 'direct-sync' ? directSyncArguments(argv)
+  : !attestation && argv.length && argv[0] !== 'scheduled' && !argv[0].startsWith('--source=') ? argv : workerArguments(argv);
+if (!['ingest-all', 'ingest', 'refresh', 'health-report', 'direct-sync', DIRECT_SYNC_COMMAND, 'source-add'].includes(command)) throw new Error('Unsupported worker command');
 console.log(JSON.stringify({ event: 'worker.started', state: 'RUNNING', command, pid: process.pid, at: new Date().toISOString() }));
 let terminal: RunCompletion | undefined;
 let state: CompletionStatus = 'FAILED';

@@ -33,7 +33,14 @@ export type SearchSummary = {
 
 /** Single search path for both origins. The rebuildable projection selects
  * candidates; live catalogue predicates enforce publication, market, location
- * and facets. Self-excluded facets and keyset pagination share the same base. */
+ * and facets. Self-excluded facets and keyset pagination share the same base.
+ * D-444 : a direct offer carries the taxonomy's occupation of its title and its
+ * Maison's attachment to the Company registry (hence its group, read live as for
+ * an aggregated offer), so the "metier", "groupe" and "maison" filters reach it.
+ * An attached offer is faceted and filtered under the registry's name of its
+ * Maison (« L’Occitane en Provence », « Typology »), the name its aggregated
+ * offers carry: one option per Maison, never two spellings. The offer itself
+ * still displays the Maison's name as the backend publishes it (D-455). */
 
 const COLONNE: Record<Exclude<Dimension, 'metier' | 'secteur' | 'maison' | 'ville'>, Prisma.Sql> = {
   pays: Prisma.sql`b."countryCode"`,
@@ -71,9 +78,13 @@ function predicat(dimension: Dimension, valeurs: readonly string[], plan: PlanRe
     case 'ville':
       return Prisma.sql`b.ville IN (${Prisma.join(valeurs.map((v) => Prisma.sql`lower(trim(${v}))`))})`;
     case 'maison':
+      // Une offre directe rattachée au registre est facettée sous le nom du registre (`b.maison`). Le nom que le backend
+      // publie, celui de sa carte, désigne la même société par ce rattachement (D-444) : un lien bâti sur lui (bloc
+      // Maison, fiche fermée, suggestion) trouve toutes les offres de la Maison, directes et agrégées.
       return Prisma.sql`(${Prisma.join(valeurs.map((v) => Prisma.sql`(lower(b.maison) = lower(${v}) OR b."companyId" IN (
         SELECT a."companyId" FROM "CompanyAlias" a WHERE a."reviewId" IS NOT NULL AND lower(a."displayName") = lower(${v})
-        UNION SELECT old."mergedIntoId" FROM "Company" old WHERE old."mergedIntoId" IS NOT NULL AND lower(old.name) = lower(${v})))`), ' OR ')})`;
+        UNION SELECT old."mergedIntoId" FROM "Company" old WHERE old."mergedIntoId" IS NOT NULL AND lower(old.name) = lower(${v})
+        UNION SELECT publiee."companyId" FROM "DirectOffer" publiee WHERE publiee."companyId" IS NOT NULL AND lower(publiee.company) = lower(${v})))`), ' OR ')})`;
     default: {
       const colonne = COLONNE[dimension];
       const dedans = Prisma.sql`${colonne} IN (${liste})`;
@@ -184,10 +195,10 @@ export async function searchSummary(
       FROM "Job" j JOIN "Company" c ON c.id = j."companyId" ${aggregateIndex}
       WHERE ${Prisma.join(conditions, ' AND ')}
       UNION ALL
-      SELECT ${PREFIXE_DIRECT} || d.id, 0 AS origine, NULL::text, d."countryCode", lower(trim(d.city)), d."employmentTerm", d."workTime",
-        d."programType", d."engagementType", d."postedAt", d."receivedAt", d.language, NULL::text, d.company, d."sectorCodes", NULL::text,
+      SELECT ${PREFIXE_DIRECT} || d.id, 0 AS origine, d."occupationCode", d."countryCode", lower(trim(d.city)), d."employmentTerm", d."workTime",
+        d."programType", d."engagementType", d."postedAt", d."receivedAt", d.language, d."companyId", COALESCE(dc.name, d.company), d."sectorCodes", dc."parentGroup",
         ${search?.score ?? Prisma.sql`0`}
-      FROM "DirectOffer" d ${directIndex}
+      FROM "DirectOffer" d LEFT JOIN "Company" dc ON dc.id = d."companyId" ${directIndex}
       WHERE ${Prisma.join(conditionsDirect, ' AND ')}
     ), scoped AS MATERIALIZED (
       SELECT b.id, b.origine, b."countryCode", b."postedAt", b."firstSeenAt", true AS confirme, ${priorite} AS pri, b.score

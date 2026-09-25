@@ -1,0 +1,467 @@
+{
+  "mesureLe": "2026-09-25T12:27:11.208Z",
+  "api": "http://127.0.0.1:3444",
+  "ok": true,
+  "resultats": [
+    {
+      "cas": "sans filtre",
+      "parametres": {
+        "marche": "FR"
+      },
+      "total": 113,
+      "filtresRefuses": [],
+      "pages": 5,
+      "lues": 113,
+      "catwalks": 53,
+      "agregees": 60,
+      "page1": {
+        "catwalks": 25,
+        "agregees": 0
+      },
+      "page2": {
+        "catwalks": 25,
+        "agregees": 0
+      },
+      "premiereAgregee": 53,
+      "derniereCatwalks": 52,
+      "catwalksDabord": true,
+      "sansDoublon": true,
+      "tousLesResultatsLus": true,
+      "premieres": [
+        "CATWALKS · Meilleur Moment · Conseiller de Vente Prêt-À-Porter Féminin Contemporain H/F - Temps partiel",
+        "CATWALKS · Meilleur Moment · Conseiller de Vente Prêt-À-Porter Féminin Contemporain H/F",
+        "CATWALKS · Lancel · Directeur·rice de boutique"
+      ],
+      "premiereAgregeeVue": "Concurrente Mode Preuve · Conseiller de vente parfum conseiller luxe · 2026-09-25T10:43:24.776Z"
+    },
+    {
+      "cas": "secteur Mode (FASHION)",
+      "parametres": {
+        "marche": "FR",
+        "secteur": "FASHION"
+      },
+      "total": 50,
+      "filtresRefuses": [],
+      "pages": 2,
+      "lues": 50,
+      "catwalks": 20,
+      "agregees": 30,
+      "page1": {
+        "catwalks": 20,
+        "agregees": 5
+      },
+      "page2": {
+        "catwalks": 0,
+        "agregees": 25
+      },
+      "premiereAgregee": 20,
+      "derniereCatwalks": 19,
+      "catwalksDabord": true,
+      "sansDoublon": true,
+      "tousLesResultatsLus": true,
+      "premieres": [
+        "CATWALKS · Meilleur Moment · Conseiller de Vente Prêt-À-Porter Féminin Contemporain H/F - Temps partiel",
+        "CATWALKS · Meilleur Moment · Conseiller de Vente Prêt-À-Porter Féminin Contemporain H/F",
+        "CATWALKS · Catwalks · Conseiller·ère de vente en alternance — Paris"
+      ],
+      "premiereAgregeeVue": "Concurrente Mode Preuve · Conseiller de vente parfum conseiller luxe · 2026-09-25T10:43:24.776Z"
+    },
+    {
+      "cas": "secteur Beauté (BEAUTY)",
+      "parametres": {
+        "marche": "FR",
+        "secteur": "BEAUTY"
+      },
+      "total": 61,
+      "filtresRefuses": [],
+      "pages": 3,
+      "lues": 61,
+      "catwalks": 31,
+      "agregees": 30,
+      "page1": {
+        "catwalks": 25,
+        "agregees": 0
+      },
+      "page2": {
+        "catwalks": 6,
+        "agregees": 19
+      },
+      "premiereAgregee": 31,
+      "derniereCatwalks": 30,
+      "catwalksDabord": true,
+      "sansDoublon": true,
+      "tousLesResultatsLus": true,
+      "premieres": [
+        "CATWALKS · Maison Francis Kurkdjian · Expert(e) parfum",
+        "CATWALKS · Maison Francis Kurkdjian · Expert(e) parfum",
+        "CATWALKS · Maison Francis Kurkdjian · Expert(e) parfum"
+      ],
+      "premiereAgregeeVue": "Concurrente Beauté Preuve · Conseiller de vente mode conseiller boutique · 2026-09-25T10:43:24.776Z"
+    },
+    {
+      "cas": "contrat CDI (PERMANENT)",
+      "parametres": {
+        "marche": "FR",
+        "contrat": "PERMANENT"
+      },
+      "total": 108,
+      "filtresRefuses": [],
+      "pages": 5,
+      "lues": 108,
+      "catwalks": 48,
+      "agregees": 60,
+      "page1": {
+        "catwalks": 25,
+        "agregees": 0
+      },
+      "page2": {
+        "catwalks": 23,
+        "agregees": 2
+      },
+      "premiereAgregee": 48,
+      "derniereCatwalks": 47,
+      "catwalksDabord": true,
+      "sansDoublon": true,
+      "tousLesResultatsLus": true,
+      "premieres": [
+        "CATWALKS · Meilleur Moment · Conseiller de Vente Prêt-À-Porter Féminin Contemporain H/F - Temps partiel",
+        "CATWALKS · Meilleur Moment · Conseiller de Vente Prêt-À-Porter Féminin Contemporain H/F",
+        "CATWALKS · Lancel · Directeur·rice de boutique"
+      ],
+      "premiereAgregeeVue": "Concurrente Mode Preuve · Conseiller de vente parfum conseiller luxe · 2026-09-25T10:43:24.776Z"
+    },
+    {
+      "cas": "métier conseiller de vente (sales-advisor)",
+      "parametres": {
+        "marche": "FR",
+        "metier": "sales-advisor"
+      },
+      "total": 54,
+      "filtresRefuses": [],
+      "pages": 3,
+      "lues": 54,
+      "catwalks": 14,
+      "agregees": 40,
+      "page1": {
+        "catwalks": 14,
+        "agregees": 11
+      },
+      "page2": {
+        "catwalks": 0,
+        "agregees": 25
+      },
+      "premiereAgregee": 14,
+      "derniereCatwalks": 13,
+      "catwalksDabord": true,
+      "sansDoublon": true,
+      "tousLesResultatsLus": true,
+      "premieres": [
+        "CATWALKS · Meilleur Moment · Conseiller de Vente Prêt-À-Porter Féminin Contemporain H/F - Temps partiel",
+        "CATWALKS · Meilleur Moment · Conseiller de Vente Prêt-À-Porter Féminin Contemporain H/F",
+        "CATWALKS · Catwalks · Conseiller·ère de vente en alternance — Paris"
+      ],
+      "premiereAgregeeVue": "Concurrente Mode Preuve · Conseiller de vente parfum conseiller luxe · 2026-09-25T10:43:24.776Z"
+    },
+    {
+      "cas": "groupe LVMH",
+      "parametres": {
+        "marche": "FR",
+        "groupe": "LVMH"
+      },
+      "total": 67,
+      "filtresRefuses": [],
+      "pages": 3,
+      "lues": 67,
+      "catwalks": 7,
+      "agregees": 60,
+      "page1": {
+        "catwalks": 7,
+        "agregees": 18
+      },
+      "page2": {
+        "catwalks": 0,
+        "agregees": 25
+      },
+      "premiereAgregee": 7,
+      "derniereCatwalks": 6,
+      "catwalksDabord": true,
+      "sansDoublon": true,
+      "tousLesResultatsLus": true,
+      "premieres": [
+        "CATWALKS · Maison Francis Kurkdjian · Expert(e) parfum",
+        "CATWALKS · Maison Francis Kurkdjian · Expert(e) parfum",
+        "CATWALKS · Maison Francis Kurkdjian · Expert(e) parfum"
+      ],
+      "premiereAgregeeVue": "Concurrente Mode Preuve · Conseiller de vente parfum conseiller luxe · 2026-09-25T10:43:24.776Z"
+    },
+    {
+      "cas": "mot-clé « conseiller », visiteur en France",
+      "parametres": {
+        "marche": "FR",
+        "q": "conseiller",
+        "prioritePays": "FR"
+      },
+      "total": 93,
+      "filtresRefuses": [],
+      "pages": 4,
+      "lues": 93,
+      "catwalks": 33,
+      "agregees": 60,
+      "page1": {
+        "catwalks": 25,
+        "agregees": 0
+      },
+      "page2": {
+        "catwalks": 8,
+        "agregees": 17
+      },
+      "premiereAgregee": 33,
+      "derniereCatwalks": 32,
+      "catwalksDabord": true,
+      "sansDoublon": true,
+      "tousLesResultatsLus": true,
+      "premieres": [
+        "CATWALKS · Catwalks · Conseiller·ère de vente joaillerie — Nice",
+        "CATWALKS · La Bonne Brosse · Conseiller de vente en beauté capillaire",
+        "CATWALKS · Frame · Conseiller·ère de vente"
+      ],
+      "premiereAgregeeVue": "Concurrente Mode Preuve · Conseiller de vente parfum conseiller luxe · 2026-09-25T10:43:24.776Z"
+    },
+    {
+      "cas": "mot-clé « parfum »",
+      "parametres": {
+        "marche": "FR",
+        "q": "parfum"
+      },
+      "total": 70,
+      "filtresRefuses": [],
+      "pages": 3,
+      "lues": 70,
+      "catwalks": 10,
+      "agregees": 60,
+      "page1": {
+        "catwalks": 10,
+        "agregees": 15
+      },
+      "page2": {
+        "catwalks": 0,
+        "agregees": 25
+      },
+      "premiereAgregee": 10,
+      "derniereCatwalks": 9,
+      "catwalksDabord": true,
+      "sansDoublon": true,
+      "tousLesResultatsLus": true,
+      "premieres": [
+        "CATWALKS · Catwalks · Chef·fe de produit parfum — Paris",
+        "CATWALKS · Maison Francis Kurkdjian · Expert(e) parfum",
+        "CATWALKS · Maison Francis Kurkdjian · Expert(e) parfum"
+      ],
+      "premiereAgregeeVue": "Concurrente Mode Preuve · Conseiller de vente parfum conseiller luxe · 2026-09-25T10:43:24.776Z"
+    },
+    {
+      "cas": "mot-clé « luxe »",
+      "parametres": {
+        "marche": "FR",
+        "q": "luxe"
+      },
+      "total": 89,
+      "filtresRefuses": [],
+      "pages": 4,
+      "lues": 89,
+      "catwalks": 29,
+      "agregees": 60,
+      "page1": {
+        "catwalks": 25,
+        "agregees": 0
+      },
+      "page2": {
+        "catwalks": 4,
+        "agregees": 21
+      },
+      "premiereAgregee": 29,
+      "derniereCatwalks": 28,
+      "catwalksDabord": true,
+      "sansDoublon": true,
+      "tousLesResultatsLus": true,
+      "premieres": [
+        "CATWALKS · Catwalks · Chef·fe de projet CRM luxe — Paris",
+        "CATWALKS · Maison Francis Kurkdjian · Expert(e) parfum",
+        "CATWALKS · Maison Francis Kurkdjian · Expert(e) parfum"
+      ],
+      "premiereAgregeeVue": "Concurrente Mode Preuve · Conseiller de vente parfum conseiller luxe · 2026-09-25T10:43:24.776Z"
+    },
+    {
+      "cas": "mot-clé de métier « conseiller de vente »",
+      "parametres": {
+        "marche": "FR",
+        "q": "conseiller de vente"
+      },
+      "total": 55,
+      "filtresRefuses": [],
+      "pages": 3,
+      "lues": 55,
+      "catwalks": 15,
+      "agregees": 40,
+      "page1": {
+        "catwalks": 15,
+        "agregees": 10
+      },
+      "page2": {
+        "catwalks": 0,
+        "agregees": 25
+      },
+      "premiereAgregee": 15,
+      "derniereCatwalks": 14,
+      "catwalksDabord": true,
+      "sansDoublon": true,
+      "tousLesResultatsLus": true,
+      "premieres": [
+        "CATWALKS · Meilleur Moment · Conseiller de Vente Prêt-À-Porter Féminin Contemporain H/F - Temps partiel",
+        "CATWALKS · Meilleur Moment · Conseiller de Vente Prêt-À-Porter Féminin Contemporain H/F",
+        "CATWALKS · La Bonne Brosse · Conseiller de vente en beauté capillaire"
+      ],
+      "premiereAgregeeVue": "Concurrente Mode Preuve · Conseiller de vente parfum conseiller luxe · 2026-09-25T10:43:24.776Z"
+    },
+    {
+      "cas": "mot-clé de métier « vendeur »",
+      "parametres": {
+        "marche": "FR",
+        "q": "vendeur"
+      },
+      "total": 55,
+      "filtresRefuses": [],
+      "pages": 3,
+      "lues": 55,
+      "catwalks": 15,
+      "agregees": 40,
+      "page1": {
+        "catwalks": 15,
+        "agregees": 10
+      },
+      "page2": {
+        "catwalks": 0,
+        "agregees": 25
+      },
+      "premiereAgregee": 15,
+      "derniereCatwalks": 14,
+      "catwalksDabord": true,
+      "sansDoublon": true,
+      "tousLesResultatsLus": true,
+      "premieres": [
+        "CATWALKS · Meilleur Moment · Conseiller de Vente Prêt-À-Porter Féminin Contemporain H/F - Temps partiel",
+        "CATWALKS · Meilleur Moment · Conseiller de Vente Prêt-À-Porter Féminin Contemporain H/F",
+        "CATWALKS · La Bonne Brosse · Conseiller de vente en beauté capillaire"
+      ],
+      "premiereAgregeeVue": "Concurrente Mode Preuve · Conseiller de vente parfum conseiller luxe · 2026-09-25T10:43:24.776Z"
+    },
+    {
+      "cas": "mot-clé de métier « vendeuse »",
+      "parametres": {
+        "marche": "FR",
+        "q": "vendeuse"
+      },
+      "total": 55,
+      "filtresRefuses": [],
+      "pages": 3,
+      "lues": 55,
+      "catwalks": 15,
+      "agregees": 40,
+      "page1": {
+        "catwalks": 15,
+        "agregees": 10
+      },
+      "page2": {
+        "catwalks": 0,
+        "agregees": 25
+      },
+      "premiereAgregee": 15,
+      "derniereCatwalks": 14,
+      "catwalksDabord": true,
+      "sansDoublon": true,
+      "tousLesResultatsLus": true,
+      "premieres": [
+        "CATWALKS · Meilleur Moment · Conseiller de Vente Prêt-À-Porter Féminin Contemporain H/F - Temps partiel",
+        "CATWALKS · Meilleur Moment · Conseiller de Vente Prêt-À-Porter Féminin Contemporain H/F",
+        "CATWALKS · La Bonne Brosse · Conseiller de vente en beauté capillaire"
+      ],
+      "premiereAgregeeVue": "Concurrente Mode Preuve · Conseiller de vente parfum conseiller luxe · 2026-09-25T10:43:24.776Z"
+    },
+    {
+      "cas": "mot-clé de métier « conseillère de vente »",
+      "parametres": {
+        "marche": "FR",
+        "q": "conseillère de vente"
+      },
+      "total": 55,
+      "filtresRefuses": [],
+      "pages": 3,
+      "lues": 55,
+      "catwalks": 15,
+      "agregees": 40,
+      "page1": {
+        "catwalks": 15,
+        "agregees": 10
+      },
+      "page2": {
+        "catwalks": 0,
+        "agregees": 25
+      },
+      "premiereAgregee": 15,
+      "derniereCatwalks": 14,
+      "catwalksDabord": true,
+      "sansDoublon": true,
+      "tousLesResultatsLus": true,
+      "premieres": [
+        "CATWALKS · Meilleur Moment · Conseiller de Vente Prêt-À-Porter Féminin Contemporain H/F - Temps partiel",
+        "CATWALKS · Meilleur Moment · Conseiller de Vente Prêt-À-Porter Féminin Contemporain H/F",
+        "CATWALKS · La Bonne Brosse · Conseiller de vente en beauté capillaire"
+      ],
+      "premiereAgregeeVue": "Concurrente Mode Preuve · Conseiller de vente parfum conseiller luxe · 2026-09-25T10:43:24.776Z"
+    },
+    {
+      "cas": "mot-clé de groupe « LVMH »",
+      "parametres": {
+        "marche": "FR",
+        "q": "LVMH"
+      },
+      "total": 67,
+      "filtresRefuses": [],
+      "pages": 3,
+      "lues": 67,
+      "catwalks": 7,
+      "agregees": 60,
+      "page1": {
+        "catwalks": 7,
+        "agregees": 18
+      },
+      "page2": {
+        "catwalks": 0,
+        "agregees": 25
+      },
+      "premiereAgregee": 7,
+      "derniereCatwalks": 6,
+      "catwalksDabord": true,
+      "sansDoublon": true,
+      "tousLesResultatsLus": true,
+      "premieres": [
+        "CATWALKS · Maison Francis Kurkdjian · Expert(e) parfum",
+        "CATWALKS · Maison Francis Kurkdjian · Expert(e) parfum",
+        "CATWALKS · Maison Francis Kurkdjian · Expert(e) parfum"
+      ],
+      "premiereAgregeeVue": "Concurrente Mode Preuve · Conseiller de vente parfum conseiller luxe · 2026-09-25T10:43:24.776Z"
+    }
+  ],
+  "facetteMaison": {
+    "options": 24,
+    "maisonsEnDouble": []
+  },
+  "liensMaison": {
+    "nomsAffiches": 22,
+    "liensMorts": []
+  },
+  "annuaire": {
+    "lignes": 24,
+    "enDouble": []
+  }
+}

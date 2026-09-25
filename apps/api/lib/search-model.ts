@@ -17,6 +17,9 @@ export type NativeJob = {
   department?: string; occupationCode?: string; jobFunction?: string;
   sectorCodes?: string[]; postedAt?: string; firstSeenAt?: string; receivedAt?: string;
   employmentTerm?: string; workTime?: string; programType?: string; language?: string;
+  /** A direct offer's indexed text, written by the aggregator's projection (`texteRecherche`): it carries the
+   * offer's univers as sector words (D-455), which no other served field holds. */
+  searchText?: string;
 };
 export type SearchDocument = {
   id: string; origin: number; country: string | null; city: string;
@@ -58,7 +61,7 @@ export function snapshotModel(metadata: SnapshotMetadata) {
       return {
         id: direct ? `cw_${j.id}` : j.id, origin: direct ? 0 : 1, country: j.countryCode,
         city: normalized(j.city), title: normalized(j.rawTitle || j.title), company: normalized([c?.name || j.company, evidence.affiliations].filter(Boolean).join(' ')), duties: normalized(evidence.duties),
-        body: normalized([j.description?.replace(/<[^>]*>/g, ' '), j.department, j.city, j.location, j.employmentTerm].filter(Boolean).join(' ')),
+        body: normalized([j.description?.replace(/<[^>]*>/g, ' '), j.department, j.city, j.location, j.employmentTerm, direct ? j.searchText : undefined].filter(Boolean).join(' ')),
         titleRoles: titleConcepts.roles, roles, families: [...new Set([...roles.map(r => roleFamilies.get(r)).filter((f): f is string => !!f),
           ...(j.jobFunction ? [j.jobFunction] : titleConcepts.families)])],
         sectors: direct ? j.sectorCodes ?? [] : c?.sectorCodes ?? [], companyKeys: [c?.id, parent].filter((x): x is string => !!x),

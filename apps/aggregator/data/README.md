@@ -2,7 +2,8 @@
 
 Point d’entrée et procédures : [README de l’agrégateur](../README.md).
 
-- `reference/` : référentiels réellement lus par le code (pays, villes, Maisons, signaux carrière) et licence CLDR. **Chaque fichier a au moins un appelant** — vérifié le 2026-09-17 : `maisons.csv` 6, `country-labels.json` 2, `villes-exonymes.csv` 2, `discovery-career-signals.json` 1, `villes-non-lieux.csv` 1.
+- `reference/` : référentiels réellement lus par le code (pays, villes, Maisons, signaux carrière, frontières) et licence CLDR. **Chaque fichier a au moins un appelant** — vérifié le 2026-09-17 : `maisons.csv` 6, `country-labels.json` 2, `villes-exonymes.csv` 2, `discovery-career-signals.json` 1, `villes-non-lieux.csv` 1 ; le 2026-09-25 : `frontieres-ne10m.json.gz` 1 (`src/geo/frontieres.ts`, pays d'une offre Catwalks par ses coordonnées, D-444).
+- `reference/frontieres-ne10m.json.gz` : Natural Earth, « Admin 0 – Countries », 1:10 000 000, version 5.1.1, **domaine public** (<https://www.naturalearthdata.com/about/terms-of-use/>). Dérivé, sans autre changement que la quantification au millionième de degré, de l'archive officielle épinglée par son empreinte SHA-256 ; reproduit et vérifié par `scripts/generate-frontieres.mts`. Le code refuse de classer une offre avec un contenu dont l'empreinte diffère de celle revue (`FRONTIERES_CONTENU_SHA256`).
 
 Le dossier `imports/` a été supprimé le 2026-09-17 : ses trois fichiers (1,5 Mo) n'avaient **aucun
 appelant** dans le code. Ils restent dans l'historique git si un rapprochement les redemande.

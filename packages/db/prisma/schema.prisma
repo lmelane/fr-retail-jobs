@@ -1370,6 +1370,13 @@ model DirectOffer {
   titleVector           Unsupported("tsvector")?
   receivedAt            DateTime  @default(now())
   updatedAt             DateTime  @updatedAt
+  /** D-444 : la société du registre à laquelle la Maison publique est rattachée (d'où le groupe) ; aucune pour un mandat. */
+  companyId             String?
+  /** D-444 : le métier de la taxonomie active appliquée à l'intitulé, et la version qui l'a établi. */
+  occupationCode        String?
+  occupationReleaseId   String?
+  /** L'empreinte des colonnes projetées : le lecteur de la liste publique n'écrit que ce qui change. */
+  projectionHash        String?
 
   @@index([eligible, countryCode])
   @@index([slug])

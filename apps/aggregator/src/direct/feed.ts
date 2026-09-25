@@ -1,12 +1,19 @@
 import { assertPipelineRunning } from '../lib/pipelinePause.js';
-import { log } from '../observability/logger.js';
-import type { Prisma, PrismaClient } from '@prisma/client';
-import { CATALOGUE_CONTRAT_VERSION, ContratInvalideError, lireFlux, lireOffre, type EvenementCatalogue, type FluxCatalogue } from './contrat.js';
-import { colonnesProjetees, projeterOffreDirecte } from './projection.js';
-import { CORRESPONDANCE_DIRECTE_VERSION } from './vocabulaire.js';
+import type { PrismaClient } from '@prisma/client';
+import { CATALOGUE_CONTRAT_VERSION, ContratInvalideError, lireFlux, type EvenementCatalogue, type FluxCatalogue } from './contrat.js';
+import { chargerContexte, type ContexteProjection } from './contexte.js';
+import { hashPayload, projeterOffreDirecte } from './projection.js';
+import { reprojeterStock, type StatsReprojection } from './reprojection.js';
+
+export { reprojeterLigne, reprojeterStock, type LigneLue, type NonReprojetee, type StatsReprojection } from './reprojection.js';
 
 /**
  * LE CONSOMMATEUR DU FLUX D'OUTBOX (lot 6, D-423) — idempotent, monotone, repris.
+ *
+ * D-444 (24/09/2026) n'utilise pas ce flux pour la sortie : la copie de production est alimentée par la relecture de la
+ * liste publique (`photo.ts`, commande `direct-liste`). Le backend a retiré son outbox de sa branche `development` le
+ * 25/09/2026 (`8352cff`) : ce consommateur n'a plus de producteur ; la stack locale l'appelle encore et reste à adapter
+ * au lecteur de la liste. Le contrat d'exécution Railway ne l'autorise sur aucun service.
  *
  * Le backend Catwalks sert son outbox page par page, par séquence. Chaque
  * événement est appliqué dans sa propre transaction :
@@ -47,65 +54,6 @@ export type StatsFlux = {
   refus?: string;
 };
 
-/** Une ligne que la re-projection n'a pas pu reconstruire, et pourquoi (nom de l'erreur, jamais de donnée). */
-export type NonReprojetee = { id: string; cause: string };
-export type StatsReprojection = { reprojetees: number; nonReprojetees: NonReprojetee[] };
-
-/** Une ligne à re-projeter, telle qu'elle a été lue : son contrat conservé et l'empreinte de ce contrat. */
-export type LigneLue = { id: string; payload: Prisma.JsonValue; payloadHash: string };
-
-/**
- * LE STOCK SUIT LA CORRESPONDANCE (D-455). Le flux ne re-projette une offre que lorsque le backend en publie une version
- * plus récente : une offre qu'il ne republie pas garderait sa projection quand la correspondance change (l'univers pour
- * employeur, avant D-455). Toute ligne restée à une `correspondanceVersion` antérieure est donc reconstruite depuis le
- * contrat conservé (`payload`), sans le backend, avant chaque lecture du flux. Ni sa version, ni sa séquence, ni son
- * éligibilité (une offre retirée le reste), ni sa provenance (`payload`, `payloadHash`) ne changent. Une ligne dont le
- * contrat conservé ne se projette plus (illisible, ou montant que la base refuse) garde sa projection antérieure : elle
- * est rendue dans les statistiques et journalisée, jamais tue, et ne bloque ni les autres lignes ni la lecture du flux.
- * Idempotent : une ligne à jour n'est plus relue.
- */
-export async function reprojeterStock(db: PrismaClient): Promise<StatsReprojection> {
-  const perimees = await db.directOffer.findMany({
-    where: { correspondanceVersion: { lt: CORRESPONDANCE_DIRECTE_VERSION } },
-    select: { id: true, payload: true, payloadHash: true },
-    orderBy: { id: 'asc' },
-  });
-  const stats: StatsReprojection = { reprojetees: 0, nonReprojetees: [] };
-  for (const ligne of perimees) {
-    const resultat = await reprojeterLigne(db, ligne);
-    if (typeof resultat === 'number') stats.reprojetees += resultat;
-    else stats.nonReprojetees.push({ id: ligne.id, cause: resultat.cause });
-  }
-  if (stats.nonReprojetees.length) {
-    await log.warn('direct.reprojection_incomplete',
-      `[direct-sync] ${stats.nonReprojetees.length} offre(s) directe(s) gardent leur projection antérieure : contrat conservé non projetable`,
-      { reprojetees: stats.reprojetees, nonReprojetees: stats.nonReprojetees });
-  } else if (stats.reprojetees) {
-    await log.info('direct.reprojection', { reprojetees: stats.reprojetees, correspondanceVersion: CORRESPONDANCE_DIRECTE_VERSION });
-  }
-  return stats;
-}
-
-/**
- * Re-projette UNE ligne lue : le nombre de lignes écrites (0 ou 1), ou la cause qui empêche de la reconstruire.
- * L'écriture n'a lieu que si la ligne porte encore le contrat lu (`payloadHash`) et une correspondance antérieure : une
- * version plus récente écrite entre la lecture et l'écriture, par ce code ou par un processus plus ancien, n'est jamais
- * écrasée par des colonnes dérivées d'un contrat périmé ; la passe suivante la relira.
- */
-export async function reprojeterLigne(db: PrismaClient, ligne: LigneLue): Promise<number | { cause: string }> {
-  let colonnes: ReturnType<typeof colonnesProjetees>;
-  try {
-    colonnes = colonnesProjetees(lireOffre(ligne.payload));
-  } catch (error) {
-    return { cause: error instanceof Error ? error.name : 'UnknownError' };
-  }
-  const { count } = await db.directOffer.updateMany({
-    where: { id: ligne.id, payloadHash: ligne.payloadHash, correspondanceVersion: { lt: CORRESPONDANCE_DIRECTE_VERSION } },
-    data: colonnes,
-  });
-  return count;
-}
-
 export class FluxIndisponibleError extends Error {
   constructor(readonly statut: number | null, detail: string) {
     super(`Flux catalogue indisponible : ${detail}`);
@@ -134,7 +82,7 @@ export function fluxHttp(base: string, cle: string, fetchImpl: typeof fetch = fe
   };
 }
 
-async function appliquer(db: PrismaClient, evenement: EvenementCatalogue): Promise<Effet> {
+async function appliquer(db: PrismaClient, evenement: EvenementCatalogue, contexte: ContexteProjection): Promise<Effet> {
   return db.$transaction(async (tx) => {
     const vu = await tx.directOfferEvent.findUnique({ where: { seq: evenement.seq } });
     if (vu) return 'DEJA_VU';
@@ -143,7 +91,7 @@ async function appliquer(db: PrismaClient, evenement: EvenementCatalogue): Promi
     let effet: Effet;
     if (courante && courante.version >= evenement.version) effet = 'STALE';
     else if (evenement.evenement === 'PUBLIE') {
-      const ligne = projeterOffreDirecte(evenement.offre, evenement.seq, evenement.version);
+      const ligne = projeterOffreDirecte(evenement.offre, evenement.seq, evenement.version, contexte);
       await tx.directOffer.upsert({ where: { id: ligne.id }, create: ligne, update: ligne });
       effet = 'APPLIQUE';
     } else if (courante) {
@@ -152,7 +100,7 @@ async function appliquer(db: PrismaClient, evenement: EvenementCatalogue): Promi
     } else effet = 'INCONNU';
     await tx.directOfferEvent.create({ data: {
       seq: evenement.seq, offerId: offreId, version: evenement.version, evenement: evenement.evenement,
-      payloadHash: evenement.evenement === 'PUBLIE' ? projeterOffreDirecte(evenement.offre, evenement.seq, evenement.version).payloadHash : null, effet,
+      payloadHash: evenement.evenement === 'PUBLIE' ? hashPayload(evenement.offre) : null, effet,
     } });
     await tx.directFeedCursor.upsert({
       where: { id: CURSEUR_CATWALKS },
@@ -166,10 +114,11 @@ async function appliquer(db: PrismaClient, evenement: EvenementCatalogue): Promi
 export async function consommerFlux(
   db: PrismaClient,
   source: SourceFlux,
-  options: { taillePage?: number; depuis?: bigint; pagesMax?: number } = {},
+  options: { taillePage?: number; depuis?: bigint; pagesMax?: number; contexte?: ContexteProjection } = {},
 ): Promise<StatsFlux> {
   assertPipelineRunning();
-  const reprojection = await reprojeterStock(db);
+  const contexte = options.contexte ?? await chargerContexte(db);
+  const reprojection = await reprojeterStock(db, contexte);
   const taillePage = Math.min(Math.max(options.taillePage ?? 200, 1), 500);
   const curseur = await db.directFeedCursor.findUnique({ where: { id: CURSEUR_CATWALKS } });
   let depuis = options.depuis ?? curseur?.lastSeq ?? BigInt(0);
@@ -193,7 +142,7 @@ export async function consommerFlux(
       }
       stats.pages += 1;
       for (const evenement of flux.evenements) {
-        const effet = await appliquer(db, evenement);
+        const effet = await appliquer(db, evenement, contexte);
         stats.evenements += 1;
         if (effet === 'APPLIQUE') stats.appliques += 1;
         else if (effet === 'STALE') stats.stales += 1;

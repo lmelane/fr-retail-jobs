@@ -1,12 +1,12 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { validateRuntime, contractSha256, target, assertBusinessUrl, workerArguments, scheduledRunDue } from './index.mjs';
+import { validateRuntime, contractSha256, target, assertBusinessUrl, workerArguments, scheduledRunDue, directSyncArguments, SERVICE_OF_ROLE } from './index.mjs';
 
 const built = { gitSha: 'a'.repeat(40), contractSha256 };
 const now = Date.now();
 const id = '11111111-1111-4111-8111-111111111111';
 function fixture(role = 'worker', profile = 'production-paused') {
-  const service = target.services[role === 'api' ? 0 : 1];
+  const service = target.services.find(s => s.name === SERVICE_OF_ROLE[role]);
   return { ...service.environment, CATWALKS_RUNTIME_PROFILE: profile,
     DATABASE_URL: 'postgresql://fixture:fixture@postgres.railway.internal/railway',
     ...Object.fromEntries(Object.keys(service.secretBindings).filter(k => k !== 'DATABASE_URL').map(k => [k, 'fixture'])),
@@ -100,4 +100,33 @@ for (const day of ['2026-03-28','2026-03-29','2026-09-23','2026-10-24','2026-10-
 test('scheduled invocation uses the normal worker and rejects extra arguments', () => {
   assert.deepEqual(workerArguments(['scheduled']), ['ingest-all']);
   assert.throws(() => workerArguments(['scheduled', '--source=one']), /argv/);
+});
+
+// D-444 — the direct-sync service is defined, paused by default, and can only run the public-list reader.
+test('direct-sync: paused by default, one command only, never on another service', () => {
+  const service = target.services.find(s => s.name === 'catwalks-direct-sync');
+  assert.equal(service.environment.PIPELINE_PAUSED, '1');
+  assert.equal(service.cronSchedule, '*/5 * * * *');
+  assert.equal(service.startCommand, 'sh apps/aggregator/start.sh direct-liste');
+  assert.equal(service.environment.CATALOGUE_LISTE_URL, 'https://catwalks.api.catwalks.io');
+  // Il tourne sur l'image du worker : aucun paquet ni build supplémentaire, la même révision attestée.
+  assert.equal(service.imageOf, 'catwalks-ingestion-worker');
+  assert.equal(service.dockerfile, target.services.find(s => s.name === service.imageOf).dockerfile);
+  const paused = fixture('direct-sync');
+  assert.equal(validateRuntime('direct-sync', ['direct-liste'], paused, built, now).profile.workerPaused, '1');
+  const running = { ...fixture('direct-sync', 'production'), PIPELINE_PAUSED: '0', CATWALKS_RUN_ID: id };
+  assert.equal(validateRuntime('direct-sync', ['direct-liste'], running, built, now).proof.runId, id);
+  for (const argv of [[], ['direct-sync'], ['direct-liste', '--depuis=0'], ['ingest-all'], ['direct-liste', 'direct-liste']])
+    assert.throws(() => validateRuntime('direct-sync', argv, running, built, now), /argv/);
+  assert.throws(() => validateRuntime('direct-sync', ['direct-liste'], { ...running, CATWALKS_RUN_ID: undefined }, built, now), /unique run ID/);
+  // The origin is attested: another backend, or the outbox feed variables, stop the process before any request.
+  assert.throws(() => validateRuntime('direct-sync', ['direct-liste'], { ...running, CATALOGUE_LISTE_URL: 'https://evil.example' }, built, now), /value differs/);
+  for (const key of ['CATALOGUE_FLUX_URL', 'CATALOGUE_FLUX_KEY', 'BREVO_API_KEY'])
+    assert.throws(() => validateRuntime('direct-sync', ['direct-liste'], { ...running, [key]: 'x' }, built, now), /unexpected environment/);
+  // A process never attests as another service: the reader on the worker, the worker on the reader.
+  assert.throws(() => validateRuntime('direct-sync', ['direct-liste'], { ...running, RAILWAY_SERVICE_NAME: 'catwalks-ingestion-worker' }, built, now), /service name/);
+  const worker = { ...fixture('worker', 'production'), PIPELINE_PAUSED: '0', CATWALKS_RUN_ID: id };
+  assert.throws(() => validateRuntime('worker', ['direct-liste'], worker, built, now), /argv/);
+  assert.throws(() => validateRuntime('worker', [], { ...worker, RAILWAY_SERVICE_NAME: 'catwalks-direct-sync' }, built, now), /service name/);
+  assert.deepEqual(directSyncArguments(['direct-liste']), ['direct-liste']);
 });

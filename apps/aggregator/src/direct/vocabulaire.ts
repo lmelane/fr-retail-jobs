@@ -11,17 +11,22 @@
  * valeur ÉTABLIT, et rien de plus : un stage établit un programme, pas une
  * durée ; « Luxe » est un positionnement, pas un secteur, donc il n'établit
  * aucun code. Cette table est versionnée : une correspondance qui change est
- * une nouvelle version, jamais une réécriture silencieuse. Le consommateur du
- * flux re-projette le stock resté à une version antérieure (`reprojeterStock`,
- * feed.ts), depuis le contrat conservé.
+ * une nouvelle version, jamais une réécriture silencieuse. Le lecteur de la
+ * liste publique (`photo.ts`) comme le consommateur du flux (`feed.ts`)
+ * re-projettent le stock resté à une version antérieure (`reprojeterStock`,
+ * reprojection.ts), depuis le contrat conservé.
  *
  *   1 — lot 6 : première correspondance ;
  *   2 — D-455 : l'employeur affiché d'une offre sans Maison publique est
  *       « Catwalks », jamais son univers ni « Maison confidentielle » ;
  *   3 — D-455 (suite) : les libellés d'univers entrent dans le texte indexé
- *       comme mots de secteur de l'offre, avec ou sans Maison publique.
+ *       comme mots de secteur de l'offre, avec ou sans Maison publique ;
+ *   4 — D-444 : la Maison publique est rattachée au registre `Company`
+ *       (`companyId`, d'où le groupe) et l'intitulé reçoit le métier de la
+ *       taxonomie active (`occupationCode`) ; les filtres « groupe » et
+ *       « métier » ne les excluent plus (`contexte.ts`).
  */
-export const CORRESPONDANCE_DIRECTE_VERSION = 3;
+export const CORRESPONDANCE_DIRECTE_VERSION = 4;
 
 export type DimensionsEmploi = {
   employmentTerm: string | null;
@@ -64,32 +69,38 @@ const SECTEURS: Record<string, string> = {
 };
 
 /**
- * Le libellé d'un univers : un MOT DE SECTEUR de l'offre, écrit dans son texte indexé. La recherche de l'API ne le lit pas
- * encore (génération `search-3`) : « luxe » ne trouve donc pas une offre de l'univers Luxe tant que la génération
- * `search-4`, mise de côté avec D-444, n'est pas livrée. Il ne nomme jamais l'employeur (D-455 §1), et « Luxe » n'établit
- * toujours aucun code de secteur.
+ * Le libellé d'un univers : un MOT DE SECTEUR de l'offre, écrit dans son texte indexé, que la génération de recherche
+ * `search-4` verse au document d'une offre directe (« luxe » trouve une offre de l'univers Luxe). Il ne nomme jamais
+ * l'employeur (D-455 §1), et « Luxe » n'établit toujours aucun code de secteur.
  */
 const UNIVERS_LIBELLE: Record<string, string> = { MODE: 'Mode', BEAUTE: 'Beauté', LUXE: 'Luxe' };
 
+/** Une entrée PROPRE d'une table de correspondance : `constructor` ou `__proto__` reçus ne lisent jamais `Object.prototype`. */
+const propre = <T>(table: Record<string, T>, cle: string | null | undefined): T | undefined =>
+  cle !== null && cle !== undefined && Object.hasOwn(table, cle) ? table[cle] : undefined;
+
 export function libellesUnivers(univers: readonly string[]): string[] {
-  return univers.flatMap((u) => (UNIVERS_LIBELLE[u] ? [UNIVERS_LIBELLE[u]] : []));
+  return univers.flatMap((u) => {
+    const libelle = propre(UNIVERS_LIBELLE, u);
+    return libelle ? [libelle] : [];
+  });
 }
 
 export function dimensionsEmploi(contrat: string, tempsDeTravail: string, teletravail: string | null): DimensionsEmploi & { workplaceType: string | null } {
-  const c = CONTRAT[contrat] ?? {};
+  const c = propre(CONTRAT, contrat) ?? {};
   return {
     employmentTerm: c.employmentTerm ?? null,
-    workTime: TEMPS[tempsDeTravail] ?? null,
+    workTime: propre(TEMPS, tempsDeTravail) ?? null,
     programType: c.programType ?? null,
     engagementType: c.engagementType ?? null,
-    workplaceType: teletravail ? TELETRAVAIL[teletravail] ?? null : null,
+    workplaceType: propre(TELETRAVAIL, teletravail) ?? null,
   };
 }
 
 export function codesSecteur(univers: readonly string[], specialisations: readonly string[]): string[] {
   const codes = new Set<string>();
   for (const v of [...univers, ...specialisations]) {
-    const code = SECTEURS[v];
+    const code = propre(SECTEURS, v);
     if (code) codes.add(code);
   }
   return [...codes];

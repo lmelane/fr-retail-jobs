@@ -193,6 +193,25 @@ try {
     const nonReprojetees = stats.reprojection.nonReprojetees.length;
     await log.info('command.result', { ok: !stats.refus && nonReprojetees === 0, command, ...stats, dernierSeq: stats.dernierSeq?.toString() ?? null });
     if (stats.refus || nonReprojetees > 0) process.exitCode = 1;
+  } else if (command === 'direct-liste') {
+    /**
+     * D-444 — la photo des offres Catwalks : relit la liste publique du backend (origine `CATALOGUE_LISTE_URL`, chemins
+     * `/api/jobs` et `/api/jobs/filters` pour son compte) et tient `DirectOffer` à jour en n'écrivant que ce qui change
+     * (`direct/photo.ts`). Une photo vide, tronquée au plafond de 500, plus courte que le compte du backend (ou sans
+     * compte lisible) ou portant une offre refusée ne retire rien et fait échouer la passe ; une panne du backend ou une
+     * réponse invalide la fait échouer sans rien écrire dans les offres. Le service Railway `catwalks-direct-sync` la
+     * lance toutes les 5 minutes, sur GO de production.
+     */
+    const { passeReussie, synchroniserListe } = await import('./direct/photo.js');
+    const { listeHttp } = await import('./direct/liste.js');
+    const origine = process.env.CATALOGUE_LISTE_URL?.trim();
+    if (!origine) throw new Error('direct-liste requires CATALOGUE_LISTE_URL');
+    const stats = await synchroniserListe(prisma, listeHttp(origine));
+    // Une photo incomplète, périmée ou concurrente, ou une ligne du stock que la re-projection n'a pas su reconstruire,
+    // se dit à l'ordonnanceur.
+    const ok = passeReussie(stats);
+    await log.info('command.result', { ok, command, ...stats });
+    if (!ok) process.exitCode = 1;
   } else if (command === 'retire-source') {
     /**
      * Cleans up after a catalogue line is removed (a robots-forbidden route, an
