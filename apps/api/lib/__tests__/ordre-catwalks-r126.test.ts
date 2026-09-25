@@ -218,6 +218,19 @@ describe.skipIf(!enabled)('R-126 — les offres Catwalks d’abord, sur toutes l
     expect((await toutes('FR', { metier: ['sales-advisor'] })).flat().filter(estAgregee)).toHaveLength(AGREGEES_FR);
   });
 
+  it('D-468 §1 — le filtre « Ville » trouve les offres Catwalks par la ville de la liste, et devant', async () => {
+    // PRÉMISSE : la ville des offres Catwalks vient de la liste (champ `city`), leur libellé de lieu ne la porte pas seul.
+    expect(await prisma.directOffer.count({ where: { id: { startsWith: `${D}Fr` }, city: 'Paris', location: 'Paris 8e' } })).toBe(DIRECTES_FR);
+    const pages = await toutes('FR', { ville: ['Paris'] });
+    const ids = pages.flat();
+    expect(new Set(ids).size).toBe(ids.length);
+    expect(ids.filter((id) => id.startsWith(`cw_${D}Fr`))).toHaveLength(DIRECTES_FR);
+    expect(ids.filter(estAgregee)).toHaveLength(AGREGEES_FR);
+    expect(catwalksDabord(ids)).toBe(true);
+    // Berlin et Vienne ne sont pas à Paris.
+    expect(ids).not.toContain(`cw_${D}Berlin`);
+  });
+
   it('les facettes « groupe » et « métier » comptent les offres Catwalks', async () => {
     // La Maison au registre : les 30, l'intitulé inclusif et l'offre au nom écrit en capitales (rattachée elle aussi).
     const r = await chercher('FR', { maison: [MAISON] });
