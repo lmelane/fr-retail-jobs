@@ -59,7 +59,7 @@ describe('le périmètre est obligatoire', () => {
 
 describe('les facettes du contrat suivent le registre', () => {
   it('la France sert quatre dimensions mesurées et les facettes du site, dans l’ordre du contrat', () => {
-    // D-468 §2 : Monaco entre au périmètre sans filtre « pays » ; exposer ce filtre attend l'arbitrage du CEO.
+    // D-468 §2 : Monaco entre au périmètre ; D-469 §1 : sans filtre « pays ».
     expect(FR().pays).toEqual(['FR', 'MC']);
     expect(facettesContrat(FR()).map((f) => f.cle)).toEqual(['secteur', 'contrat', 'temps', 'ville', 'maison', 'groupe', 'langue']);
     expect(facettesContrat(FR()).find((f) => f.cle === 'contrat')?.libelle).toBe('Type de contrat');
@@ -107,7 +107,7 @@ describe('les filtres sont honorés dans le périmètre, refusés explicitement 
     expect(plan.selections.pays).toEqual(['IE']);
     expect(plan.refus).toEqual([{ cle: 'pays', valeurs: ['FR'], motif: 'PAYS_HORS_MARCHE' }]);
     // Le marché français ne sert pas la facette pays : `pays=FR` (lien hérité) ne change rien, `pays=US` est refusé.
-    // PRÉMISSE : la France n'expose pas la facette « pays », Monaco compris (D-468 §2, sans filtre décidé).
+    // PRÉMISSE : la France n'expose pas la facette « pays », Monaco compris (D-468 §2 ; sans filtre « pays », D-469 §1).
     expect(facettesContrat(FR()).some((f) => f.cle === 'pays')).toBe(false);
     const herite = planifierRecherche(FR(), criteres({ filtres: { pays: ['FR'] } }));
     expect(herite.selections).toEqual({});

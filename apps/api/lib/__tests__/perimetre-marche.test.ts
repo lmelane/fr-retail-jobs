@@ -118,7 +118,7 @@ describe.skipIf(!enabled)('la recherche est bornée par le périmètre (lot 6)',
     const fr = await chercher('FR', {}, AUTRE_SEULE);
     expect(ids(fr)).toEqual(['monaco']);
     expect(fr.perimetre.pays).toEqual(['FR', 'MC']);
-    // Aucun filtre « pays » n'est servi au marché France (non décidé) : Monaco se trouve par le lieu.
+    // Aucun filtre « pays » au marché France (D-469 §1) : Monaco se trouve par le lieu.
     expect(fr.facettes.some((f) => f.cle === 'pays')).toBe(false);
     expect(ids(await chercher('FR', { lieu: 'Monaco' }, AUTRE_SEULE))).toEqual(['monaco']);
     expect(ids(await chercher('BE', {}, AUTRE_SEULE))).toEqual(['mons', 'tournai']);
