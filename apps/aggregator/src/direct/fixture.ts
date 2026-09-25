@@ -64,7 +64,10 @@ export function contexteTemoin(options: { maisons?: Record<string, string>; meti
   };
 }
 
-/** Une offre telle que la liste publique du backend la sert (`GET /api/jobs`, 29 champs), forme réelle du 25/09/2026. */
+/**
+ * Une offre telle que la liste publique du backend la sert (`GET /api/jobs`) : la forme réelle du 25/09/2026 (29 champs),
+ * plus la ville et le code postal de D-468 §1 (31 champs). Le témoin d'une liste d'avant D-468 les retire.
+ */
 export function offreListe(surcharges: Record<string, unknown> = {}): Record<string, unknown> {
   return {
     id: 'cmliste0001',
@@ -73,6 +76,8 @@ export function offreListe(surcharges: Record<string, unknown> = {}): Record<str
     location: 'Paris 8e — avenue Montaigne',
     latitude: 48.8666,
     longitude: 2.3048,
+    city: 'Paris',
+    postalCode: '75008',
     salary: '30K à 35K €',
     salaryMin: 30000,
     salaryMax: 35000,

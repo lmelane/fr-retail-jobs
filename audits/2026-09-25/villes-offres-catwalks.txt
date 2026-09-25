@@ -1,0 +1,17 @@
+garde {"base":"railway","role":"catwalks_audit","lectureSeule":"on","maintenant":"2026-09-25T14:15:18.742876+00:00"}
+Paris	Paris=3815 {"?":1,"BE":1,"ES":1,"FR":3801,"US":11}
+Berlin	Berlin=251 {"?":1,"DE":244,"GB":6}
+Lyon	Lyon=306 {"FR":306}
+New York	New York=1669 {"?":40,"US":1629} · Brooklyn=118 {"?":3,"US":115} · Manhattan=31 {"US":31} · New York City=0 · NYC=0
+Aix-en-Provence	Aix-en-Provence=87 {"FR":87} · Aix en Provence=0
+Cannes	Cannes=101 {"FR":101}
+Lille	Lille=88 {"FR":88}
+Londres	Londres=1344 {"?":55,"CA":37,"CH":1,"GB":1249,"JE":1,"US":1} · London=0 · City of London=0
+Marseille	Marseille=156 {"FR":156}
+Monaco	Monaco=38 {"MC":38} · Montecarlo=4 {"MC":4} · Monte-Carlo=0 · Monte Carlo=0
+Nice	Nice=152 {"FR":152}
+Pélissanne	Pélissanne=0 · Pelissanne=0
+Saint-Tropez	Saint-Tropez=18 {"FR":18} · St Tropez=13 {"FR":13} · St-Tropez=0 · Saint Tropez=0
+Salon-de-Provence	Salon-de-Provence=4 {"FR":4} · Salon de Provence=1 {"FR":1}
+Tassin-la-Demi-Lune	Tassin=0 · Tassin-la-Demi-Lune=0 · Tassin la Demi Lune=0 · Tassin la Demi-Lune=0
+pays MC (toutes villes)	{"pays" : "MC", "offres" : 42, "villes" : { "Monaco" : 38, "Montecarlo" : 4 }}

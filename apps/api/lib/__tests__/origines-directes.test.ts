@@ -94,8 +94,10 @@ describe.skipIf(!enabled)('deux origines, une recherche (lot 6)', () => {
   afterAll(nettoyer);
 
   const perimetreFR = () => resoudrePerimetre('FR')!;
-  const publiablesFR = async () => (await prisma.job.count({ where: { ...publicJobWhere(), countryCode: 'FR' } }))
-    + (await prisma.directOffer.count({ where: { ...directPubliable(), countryCode: 'FR' } }));
+  // Le périmètre du marché France : la France et Monaco (D-468 §2).
+  const PAYS_FR = ['FR', 'MC'];
+  const publiablesFR = async () => (await prisma.job.count({ where: { ...publicJobWhere(), countryCode: { in: PAYS_FR } } }))
+    + (await prisma.directOffer.count({ where: { ...directPubliable(), countryCode: { in: PAYS_FR } } }));
 
   it('PRÉMISSE — les deux tables portent des offres FR de la même Maison, et trois offres directes ne sont pas publiables en FR', async () => {
     expect(await prisma.job.count({ where: { companyId, countryCode: 'FR', isActive: true } })).toBe(2);

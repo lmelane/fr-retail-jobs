@@ -9,6 +9,7 @@ import {
   langueDesLibellesDuPays,
   resolveOfferParam,
 } from '@/lib/jobs';
+import { estMandatCatwalks } from '@/lib/direct-offers';
 import { offerPath } from '@/lib/offer-url';
 import { projeterFiche, projeterLignes } from '@/lib/projection';
 import { balisage } from '@/lib/job-posting-schema';
@@ -52,7 +53,12 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     // Audit UX 14/09 (H1) : les similaires servent SURTOUT sur une offre
     // fermée, c'est la seule issue du candidat ; calculées quel que soit le statut.
     const job = resolu.job!;
-    const [similaires, maison] = await Promise.all([getSimilarJobs(job, 6, langueDemandee), getCompanyAside(job.company)]);
+    // D-468 §3 : « Catwalks » ne nomme pas un employeur commun aux mandats sans Maison publique (D-456 §4). Leur fiche
+    // n'a donc pas de bloc Maison : pas d'encadré « Catwalks recrute sur N postes », qui compterait tous les mandats.
+    const [similaires, maison] = await Promise.all([
+      getSimilarJobs(job, 6, langueDemandee),
+      estMandatCatwalks(job) ? null : getCompanyAside(job.company),
+    ]);
     // Lot 8 : une offre lue seule est libellée dans la langue du marché de son pays.
     const langue = langueDemandee ?? langueDesLibellesDuPays(job.countryCode);
     const corps = {

@@ -55,7 +55,8 @@ describe.skipIf(!enabled)('search against a dedicated local database', () => {
     // Le groupe est sélectionné : sa facette compte SANS sa propre sélection, donc le groupe reste proposé.
     expect(facette(result, 'groupe').find((o) => o.value === group)).toEqual({ value: group, label: group, count: 301 });
     expect(facette(result, 'maison')).toHaveLength(301);
-    expect(result.perimetre).toMatchObject({ code: 'FR', pays: ['FR'], mesure: true });
+    // D-468 §2 : le marché France sert aussi Monaco.
+    expect(result.perimetre).toMatchObject({ code: 'FR', pays: ['FR', 'MC'], mesure: true });
   });
 
   it('accepts a new sector and localized label as reviewed data without changing frontend enums',async()=>{

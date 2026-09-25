@@ -45,9 +45,10 @@ const LISTE = [
   ...Array.from({ length: DIRECTES_FR }, (_, i) => directe(`Fr${String(i).padStart(2, '0')}`)),
   directe('Mandat', { maison: null, title: 'Responsable de boutique', contractType: 'CDD', publishedAt: '2026-08-15T00:00:00.000Z',
     jobCategoryRef: { slug: 'RESPONSABLE_BOUTIQUE', label: 'Responsable de boutique' } }),
-  directe('Berlin', { location: 'Berlin — Kurfürstendamm', latitude: 52.5043937, longitude: 13.3353476 }),
+  // La ville et le code postal suivent le lieu (D-468 §1) : le jeu d'essai partagé les met à Paris par défaut.
+  directe('Berlin', { location: 'Berlin — Kurfürstendamm', city: 'Berlin', postalCode: null, latitude: 52.5043937, longitude: 13.3353476 }),
   // Plus ancienne que Berlin, mais dans le pays d'un visiteur autrichien.
-  directe('Vienne', { location: 'Wien — Kärntner Straße', latitude: 48.2049, longitude: 16.3718, publishedAt: '2026-07-01T00:00:00.000Z' }),
+  directe('Vienne', { location: 'Wien — Kärntner Straße', city: 'Vienne', postalCode: null, latitude: 48.2049, longitude: 16.3718, publishedAt: '2026-07-01T00:00:00.000Z' }),
   // Un intitulé en écriture inclusive : la taxonomie le classe, la recherche n'y lit aucun rôle (H2 de l'audit).
   directe('Inclusif', { title: 'Conseiller·ère de vente' }),
   // La même Maison, écrite autrement par le backend : rattachée au registre, une seule option « Maison ».

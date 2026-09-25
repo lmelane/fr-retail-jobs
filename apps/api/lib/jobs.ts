@@ -552,21 +552,37 @@ export async function getSimilarJobs(job: JobRow, limit = 6, langue: LangueLibel
     if (memeMaison.length >= limit) return memeMaison;
 
     const sectorCodes = job.sectorCodes ?? [];
-    const fill = sectorCodes.length
+    if (!sectorCodes.length) return memeMaison;
+    const memeVille = job.city ? { city: { equals: job.city, mode: 'insensitive' as const } } : {};
+    // D-468 §1 : le remplissage retrouve aussi les offres Catwalks du même secteur, dans la même ville et le même pays,
+    // et elles l'ouvrent (D-419 §1). Jamais l'employeur de l'offre elle-même, déjà servi par le bloc « même employeur » ;
+    // sur la fiche d'un mandat, cet employeur est « Catwalks » : aucun autre mandat n'y est proposé (D-456 §4).
+    const directesRemplissage = (await prisma.directOffer.findMany({
+      where: {
+        ...directPubliable(), ...memePays, ...memeVille,
+        sectorCodes: { hasSome: sectorCodes },
+        company: { not: job.company },
+        ...(job.origine === 'CATWALKS' ? { id: { not: idDirect(job.id) } } : {}),
+      },
+      orderBy: [{ postedAt: 'desc' }, { id: 'asc' }],
+      take: limit - memeMaison.length,
+    })).map(directToRow);
+    const reste = limit - memeMaison.length - directesRemplissage.length;
+    const fill = reste > 0
       ? await prisma.job.findMany({
           where: {
             ...base,
             ...memePays,
             company: { sectorCodes: { hasSome: sectorCodes }, name: { not: job.company } },
-            ...(job.city ? { city: { equals: job.city, mode: 'insensitive' as const } } : {}),
+            ...memeVille,
           },
           include,
           omit: { raw: true, searchText: true },
           orderBy: [...ordre],
-          take: limit - memeMaison.length,
+          take: reste,
         })
       : [];
-    return [...memeMaison, ...fill.map((row) => toRow(row, taxonomy))];
+    return [...memeMaison, ...directesRemplissage, ...fill.map((row) => toRow(row, taxonomy))];
   } catch (error) {
     throw new DatabaseUnavailableError(error);
   }

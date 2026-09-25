@@ -45,7 +45,7 @@ Le lanceur refuse toute base parente autre que `catwalks_stack_catalogue` sur lo
 4. Le rejeu hors réseau de cette ingestion est validé.
 5. Réenregistrer le même candidat conserve sa source et sa révision.
 6. Une deuxième ingestion conserve exactement les identifiants et le nombre d’offres, sans création supplémentaire ; ses propres captures et sa fin sont vérifiées puis rejouées.
-7. `getJobs(parseFilters(...))`, utilisé par l’API `/emplois`, rend exactement les identifiants SQL du périmètre demandé, avec pagination. Les marchés composés utilisent le périmètre du moteur (GB + IE, DE + AT).
+7. `getJobs(parseFilters(...))`, utilisé par l’API `/emplois`, rend exactement les identifiants SQL du périmètre demandé, avec pagination. Les marchés composés utilisent le périmètre du moteur (GB + IE, DE + AT ; FR + MC par D-468 §2, sur `development` le 25/09/2026, non livré).
 8. Le plan de refresh est lu sans appliquer de fermeture ; l’éligibilité à prouver une absence reste explicitement mesurée dans le rapport.
 
 Le test d’idempotence suppose un portail stable entre ses deux collectes rapprochées. Si le portail change réellement, examiner les captures et relancer : ne pas masquer la différence pour produire un PASS. Ce témoin strict ne convient pas tel quel à une source dont l’exclusion sectorielle est intentionnelle.

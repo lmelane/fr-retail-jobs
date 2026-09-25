@@ -34,7 +34,9 @@ const DEFINITIONS = {
   PH: {"nom": "Philippines", "pays": ["PH"], "locales": ["en-PH"], "localeParDefaut": "en-PH", "facettesSite": ["secteur", "ville", "maison"]},
   LU: {"nom": "Luxembourg", "pays": ["LU"], "locales": ["fr-LU"], "localeParDefaut": "fr-LU", "facettesSite": ["secteur", "ville", "maison", "groupe", "langue"]},
   US: {"nom": "United States", "pays": ["US"], "locales": ["en-US", "es-US"], "localeParDefaut": "en-US", "facettesSite": ["secteur", "ville", "maison", "langue"]},
-  FR: {"nom": "France", "pays": ["FR"], "locales": ["fr-FR"], "localeParDefaut": "fr-FR", "facettesSite": ["secteur", "ville", "maison", "groupe", "langue"]},
+  // D-468 §2 : le marché France sert aussi Monaco, comme le marché allemand sert l'Autriche. D-468 ne décide aucun filtre
+  // « Pays » : ses filtres restent ceux d'avant, jusqu'à l'arbitrage soumis au CEO le 25/09/2026.
+  FR: {"nom": "France", "pays": ["FR", "MC"], "locales": ["fr-FR"], "localeParDefaut": "fr-FR", "facettesSite": ["secteur", "ville", "maison", "groupe", "langue"]},
   GB: {"nom": "United Kingdom", "pays": ["GB", "IE"], "locales": ["en-GB"], "localeParDefaut": "en-GB", "facettesSite": ["secteur", "ville", "maison", "groupe", "langue", "pays"]},
   CA: {"nom": "Canada", "pays": ["CA"], "locales": ["en-CA", "fr-CA"], "localeParDefaut": "en-CA", "facettesSite": ["secteur", "ville", "maison", "groupe", "langue"]},
   DE: {"nom": "Deutschland", "pays": ["DE", "AT"], "locales": ["de-DE"], "localeParDefaut": "de-DE", "facettesSite": ["secteur", "ville", "maison", "groupe", "langue", "pays"]},

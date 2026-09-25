@@ -70,8 +70,9 @@ export type StatsPhoto = {
   parPays: Record<string, number>;
   abstentions: Abstention[];
   /**
-   * Les offres lues dont le pays établi n'est servi par aucun marché de `/emplois` (Monaco au 25/09/2026) : publiables,
-   * mais dans aucune liste. Comme les abstentions, elles sont signalées à chaque passe, sans la faire échouer.
+   * Les offres lues dont le pays établi n'est servi par aucun marché de `/emplois` (aucune au 25/09/2026 depuis que le
+   * marché France sert Monaco, D-468 §2) : publiables, mais dans aucune liste. Comme les abstentions, elles sont
+   * signalées à chaque passe, sans la faire échouer.
    */
   horsMarche: { id: string; lieu: string; pays: string }[];
   reprojection: StatsReprojection;

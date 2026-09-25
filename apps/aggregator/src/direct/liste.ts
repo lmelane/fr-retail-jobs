@@ -6,10 +6,11 @@ import { ContratInvalideError, lireOffre, type OffreCatalogueV1 } from './contra
  * LA LISTE PUBLIQUE DES OFFRES CATWALKS, TELLE QUE L'AGRÉGATEUR LA LIT (D-444).
  *
  * `GET https://catwalks.api.catwalks.io/api/jobs` est la liste que le site sert déjà à `/offres` : un tableau JSON des
- * offres en ligne, 29 champs chacune (`catwalks-backend/src/app/api/jobs/route.ts`), sans pagination, plafonnée à 500
- * (`take: 500`), la Maison déjà masquée pour un mandat interne (`maisonPublique` : `maison: null`). Aucun champ pays :
- * des coordonnées. D-444 en fait la PHOTO COMPLÈTE des offres publiables : présente, l'offre est publiable ; absente
- * d'une photo complète, elle est retirée.
+ * offres en ligne, 29 champs chacune en production au 25/09/2026, 31 avec la ville et le code postal de D-468 §1
+ * (`catwalks-backend/src/app/api/jobs/route.ts`, `b51d2b2` sur la branche `development`, non livré au 25/09/2026),
+ * sans pagination, plafonnée à 500 (`take: 500`), la Maison déjà masquée
+ * pour un mandat interne (`maisonPublique` : `maison: null`). Aucun champ pays : des coordonnées. D-444 en fait la PHOTO
+ * COMPLÈTE des offres publiables : présente, l'offre est publiable ; absente d'une photo complète, elle est retirée.
  *
  * Ce module ne fait confiance à rien. Chaque offre est relue champ par champ ; une offre qui ne se lit pas est REFUSÉE,
  * nommée par son chemin, et la photo n'est plus complète (aucun retrait). Une réponse qui n'est pas un tableau, ou qui
@@ -17,8 +18,9 @@ import { ContratInvalideError, lireOffre, type OffreCatalogueV1 } from './contra
  *
  * Une offre lue devient un contrat catalogue version 1 (`contrat.ts`), le vocabulaire que la projection sait déjà lire,
  * au miroir de `projeterOffreCatalogue` du backend (branche `development`) pour les champs que la liste porte ; ceux
- * qu'elle ne porte pas restent vides, jamais devinés : ville, arrondissement, code postal, expérience, télétravail,
- * anciens slugs. Le pays vient des coordonnées, par le tracé des frontières (`geo/frontieres.ts`).
+ * qu'elle ne porte pas restent vides, jamais devinés : arrondissement, expérience, télétravail, anciens slugs. La ville
+ * et le code postal (D-468 §1) sont lus quand la liste les sert, vides sinon : un backend qui ne les sert pas encore
+ * reste lisible. Le pays vient des coordonnées, par le tracé des frontières (`geo/frontieres.ts`).
  */
 export const LISTE_PLAFOND = 500;
 /** La version de ce contrat de lecture, consignée avec l'état du lecteur (`DirectFeedCursor.contractVersion`). */
@@ -33,6 +35,9 @@ export type ItemListe = {
   slug: string;
   titre: string;
   lieu: string;
+  /** D-468 §1 : la ville et le code postal géocodés du backend ; `null` quand la liste ne les sert pas. */
+  ville: string | null;
+  codePostal: string | null;
   latitude: number | null;
   longitude: number | null;
   salaire: string;
@@ -119,6 +124,10 @@ export function lireItemListe(v: unknown, chemin = 'offre'): ItemListe {
     slug: identifiant(o.slug, `${chemin}.slug`),
     titre: texte(o.title, `${chemin}.title`, 500),
     lieu: texte(o.location, `${chemin}.location`, 500),
+    // Bornes du contrat catalogue (`contrat.ts`, `lieu.ville` ≤ 200, `lieu.codePostal` ≤ 20) : lues ici avec les mêmes, une
+    // valeur trop longue refuse l'offre à la lecture, nommée par son chemin dans la liste.
+    ville: texteOuNull(o.city ?? null, `${chemin}.city`, 200),
+    codePostal: texteOuNull(o.postalCode ?? null, `${chemin}.postalCode`, 20),
     latitude: nombreOuNull(o.latitude ?? null, `${chemin}.latitude`),
     longitude: nombreOuNull(o.longitude ?? null, `${chemin}.longitude`),
     salaire: texte(o.salary, `${chemin}.salary`, 200),
@@ -190,7 +199,16 @@ export function offreCatalogueDepuisListe(item: ItemListe, pays: string | null):
     tempsDeTravail: item.tempsDeTravail,
     experience: null,
     teletravail: null,
-    lieu: { libelle: item.lieu, ville: null, arrondissement: null, codePostal: null, pays, latitude: item.latitude, longitude: item.longitude },
+    lieu: {
+      libelle: item.lieu,
+      // Une valeur blanche n'est pas une ville : elle reste vide, comme une section blanche de la description.
+      ville: item.ville?.trim() || null,
+      arrondissement: null,
+      codePostal: item.codePostal?.trim() || null,
+      pays,
+      latitude: item.latitude,
+      longitude: item.longitude,
+    },
     salaire: { min: item.salaireMin, max: item.salaireMax, devise: borne ? item.devise : null, texte: item.salaire.trim() ? item.salaire : null },
     description: {
       marque: item.marque?.trim() ? item.marque : null,

@@ -17,6 +17,9 @@ import { getJobStatus, getSimilarJobs, type JobRow } from '../jobs';
  * Avant D-456, la fiche d'un mandat proposait d'abord les autres mandats du pays, quel que soit le métier, puisque tous
  * portent le même employeur affiché. Désormais elle passe directement au remplissage : même secteur, même ville, même
  * pays. Les fiches des Maisons, directes comme agrégées, gardent leurs offres de la même Maison.
+ *
+ * D-468 §1 : le remplissage retrouve aussi les offres Catwalks du même secteur et de la même ville, en tête (D-419 §1),
+ * sans jamais proposer un autre mandat sur la fiche d'un mandat.
  */
 const url = process.env.DATABASE_URL ? new URL(process.env.DATABASE_URL) : undefined;
 const enabled = !!url && ['localhost', '127.0.0.1', '[::1]'].includes(url.hostname) && /test/i.test(url.pathname);
@@ -107,11 +110,24 @@ describe.skipIf(!enabled)('offres similaires : un mandat Catwalks passe directem
   it('la fiche d’un mandat ne propose ni les autres mandats ni l’employeur « Catwalks » : même secteur, même ville, même pays', async () => {
     const ids = await similaires(cw('MandatParis'));
     for (const autre of [cw('MandatParisBis'), cw('MandatLyon'), agg('catwalks-paris')]) expect(ids, `${autre} parmi ${ids.join(', ')}`).not.toContain(autre);
-    expect(ids).toEqual([agg('secteur-paris')]);
+    // D-468 §1 : l'offre Catwalks d'une Maison publique, de la mode à Paris, ouvre le remplissage ; puis l'offre agrégée.
+    expect(ids).toEqual([cw('MaisonParis'), agg('secteur-paris')]);
   });
 
-  it('la fiche d’une Maison ne change pas : offre directe, ses offres de la même Maison d’abord, puis le remplissage', async () => {
-    expect(await similaires(cw('MaisonParis'))).toEqual([cw('MaisonLyon'), agg('maison-paris'), agg('maison-lyon'), agg('secteur-paris')]);
+  it('la fiche d’une Maison : ses offres de la même Maison d’abord, puis le remplissage, offres Catwalks en tête (D-468 §1)', async () => {
+    expect(await similaires(cw('MaisonParis'))).toEqual([cw('MaisonLyon'), agg('maison-paris'), agg('maison-lyon'),
+      cw('MandatParisBis'), cw('MandatParis'), agg('secteur-paris')]);
+  });
+
+  it('D-468 §1 — la fiche agrégée d’une Maison du secteur retrouve les offres Catwalks de sa ville, en tête du remplissage', async () => {
+    const secteur = await fiche(agg('secteur-paris'));
+    // PRÉMISSE : l'offre agrégée porte le secteur et la ville des trois offres Catwalks de la mode à Paris.
+    expect(secteur).toMatchObject({ origine: 'AGREGEE', city: 'Paris', countryCode: 'FR', sectorCodes: ['FASHION'] });
+    expect(await prisma.directOffer.count({ where: { id: { startsWith: P }, city: 'Paris', sectorCodes: { has: 'FASHION' }, ...directPubliable() } })).toBe(3);
+    const ids = await similaires(agg('secteur-paris'));
+    // Sa propre Maison d'abord (Lyon, en France ; pas Paris, Texas), puis les offres Catwalks de Paris, les plus récentes
+    // d'abord ; ni celles de Lyon ni l'offre de la beauté.
+    expect(ids).toEqual([agg('secteur-lyon'), cw('MandatParisBis'), cw('MandatParis'), cw('MaisonParis')]);
   });
 
   it('la fiche agrégée d’une Maison ne change pas : ses offres Catwalks d’abord, puis ses offres agrégées', async () => {

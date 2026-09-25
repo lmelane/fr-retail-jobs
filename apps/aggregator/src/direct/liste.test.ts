@@ -5,7 +5,7 @@ import { colonnesProjetees } from './projection.js';
 
 /**
  * D-444 — LA LISTE PUBLIQUE DU BACKEND, LUE SANS CONFIANCE. La forme de `offreListe` est celle de
- * `GET https://catwalks.api.catwalks.io/api/jobs` au 25/09/2026 (29 champs).
+ * `GET https://catwalks.api.catwalks.io/api/jobs` au 25/09/2026 (29 champs), plus la ville et le code postal de D-468 §1.
  */
 describe('lecture de la liste publique (D-444)', () => {
   it('une offre de la liste devient un contrat catalogue v1, au miroir de la projection du backend, sans rien deviner', () => {
@@ -14,8 +14,9 @@ describe('lecture de la liste publique (D-444)', () => {
       version: 1, id: 'cmliste0001', slug: 'conseiller-de-vente-h-f', anciensSlugs: [], titre: 'Conseiller de vente H/F',
       maison: { nom: 'Maison Liste Témoin', slug: 'maison-liste-temoin' }, univers: ['MODE', 'LUXE'], specialisations: ['PRET_A_PORTER_ACCESSOIRES'],
       metier: { slug: 'CONSEILLER_VENTE', libelle: 'Conseiller de vente' }, contrat: 'CDI', tempsDeTravail: 'TEMPS_PLEIN', experience: null, teletravail: null,
-      // La liste ne porte ni ville, ni arrondissement, ni code postal : ils restent vides ; le pays est celui qu'on lui donne.
-      lieu: { libelle: 'Paris 8e — avenue Montaigne', ville: null, arrondissement: null, codePostal: null, pays: 'FR', latitude: 48.8666, longitude: 2.3048 },
+      // La ville et le code postal sont ceux de la liste (D-468 §1) ; elle ne porte pas d'arrondissement : il reste vide. Le
+      // pays est celui qu'on lui donne.
+      lieu: { libelle: 'Paris 8e — avenue Montaigne', ville: 'Paris', arrondissement: null, codePostal: '75008', pays: 'FR', latitude: 48.8666, longitude: 2.3048 },
       salaire: { min: 30000, max: 35000, devise: 'EUR', texte: '30K à 35K €' },
       publieeLe: '2026-09-22T11:13:21.199Z', finLe: '2027-09-17T11:13:21.199Z', modifieeLe: '2026-09-23T08:31:05.640Z',
       // Au miroir de `urlOffre` du backend.
@@ -25,6 +26,43 @@ describe('lecture de la liste publique (D-444)', () => {
     expect(offre.description.avantages).toBeNull();
     expect(offreCatalogueDepuisListe(lireItemListe(offreListe({ salaryMin: null, salaryMax: null, salary: '  ' })), null).salaire)
       .toEqual({ min: null, max: null, devise: null, texte: null });
+  });
+
+  it('D-468 §1 — la ville et le code postal servis entrent dans la projection : colonnes, texte indexé', () => {
+    const colonnes = colonnesProjetees(offreCatalogueDepuisListe(lireItemListe(offreListe()), 'FR'), contexteTemoin());
+    expect(colonnes).toMatchObject({ city: 'Paris', postalCode: '75008', location: 'Paris 8e — avenue Montaigne' });
+    // Le libellé affiché ne contient pas le code postal : s'il est dans le texte indexé, c'est la colonne qui l'y a mis.
+    expect('Paris 8e — avenue Montaigne').not.toContain('75008');
+    expect(colonnes.searchText.split('\n')).toContain('75008');
+  });
+
+  it('D-468 §1 — une liste d’avant D-468 (sans ville ni code postal) reste lisible : ils restent vides', () => {
+    const { city: _ville, postalCode: _codePostal, ...avant } = offreListe();
+    // PRÉMISSE : la forme servie en production avant la livraison du backend ne porte aucun des deux champs.
+    expect(avant).not.toHaveProperty('city');
+    expect(avant).not.toHaveProperty('postalCode');
+    const lecture = lireListe([avant]);
+    expect(lecture.refus).toEqual([]);
+    expect(offreCatalogueDepuisListe(lecture.offres[0].item, 'FR').lieu).toMatchObject({ ville: null, codePostal: null });
+  });
+
+  it('D-468 §1 — une valeur blanche reste vide ; une valeur illisible ou hors borne refuse l’offre, nommée', () => {
+    expect(offreCatalogueDepuisListe(lireItemListe(offreListe({ city: '  ', postalCode: '' })), 'FR').lieu).toMatchObject({ ville: null, codePostal: null });
+    expect(offreCatalogueDepuisListe(lireItemListe(offreListe({ city: ' Monaco ', postalCode: null })), 'MC').lieu).toMatchObject({ ville: 'Monaco', codePostal: null });
+    const lecture = lireListe([
+      offreListe({ id: 'villeNombre', slug: 'ville-nombre', city: 75 }),
+      offreListe({ id: 'villeLongue', slug: 'ville-longue', city: 'P'.repeat(201) }),
+      offreListe({ id: 'cpLong', slug: 'cp-long', postalCode: '7'.repeat(21) }),
+      offreListe({ id: 'bornes', slug: 'bornes', city: 'P'.repeat(200), postalCode: '7'.repeat(20) }),
+    ]);
+    expect(lecture.refus.map(({ id, chemin }) => ({ id, chemin }))).toEqual([
+      { id: 'villeNombre', chemin: 'liste[0].city' },
+      { id: 'villeLongue', chemin: 'liste[1].city' },
+      { id: 'cpLong', chemin: 'liste[2].postalCode' },
+    ]);
+    // Aux bornes exactes du contrat catalogue, l'offre se lit ET se projette.
+    expect(lecture.offres.map((o) => o.id)).toEqual(['bornes']);
+    expect(() => offreCatalogueDepuisListe(lecture.offres[0].item, 'FR')).not.toThrow();
   });
 
   it('D-455 sur la forme réelle de la liste : un mandat (`maison: null`) a « Catwalks » pour employeur, aucun rattachement', () => {

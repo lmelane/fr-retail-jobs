@@ -24,9 +24,12 @@
  *   4 — D-444 : la Maison publique est rattachée au registre `Company`
  *       (`companyId`, d'où le groupe) et l'intitulé reçoit le métier de la
  *       taxonomie active (`occupationCode`) ; les filtres « groupe » et
- *       « métier » ne les excluent plus (`contexte.ts`).
+ *       « métier » ne les excluent plus (`contexte.ts`) ;
+ *   5 — D-468 §1 : la ville et le code postal de la liste publique entrent
+ *       dans la projection (`city`, `postalCode`, texte indexé) ; le filtre
+ *       « ville » retrouve les offres Catwalks.
  */
-export const CORRESPONDANCE_DIRECTE_VERSION = 4;
+export const CORRESPONDANCE_DIRECTE_VERSION = 5;
 
 export type DimensionsEmploi = {
   employmentTerm: string | null;

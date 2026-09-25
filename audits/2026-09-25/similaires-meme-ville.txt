@@ -1,0 +1,17 @@
+garde {"base":"railway","role":"catwalks_audit","lectureSeule":"on","maintenant":"2026-09-25T14:15:28.25705+00:00"}
+{"offres":59,"listeServieAvecVille":true,"sansCodeSecteur":0,"sansPays":0,"avant":{"aucune":0,"moinsDeSix":1},"apres":{"aucune":3,"moinsDeSix":7},"mandats":{"total":21,"apresAucune":0}}
+FR Pélissanne	1 offre(s), 0 mandat(s)	candidates min. avant 2528 · après 0
+FR Salon-de-Provence	1 offre(s), 0 mandat(s)	candidates min. avant 2528 · après 0
+FR Tassin-la-Demi-Lune	1 offre(s), 0 mandat(s)	candidates min. avant 2528 · après 0
+FR Lyon	2 offre(s), 0 mandat(s)	candidates min. avant 529 · après 1
+MC Monaco	1 offre(s), 0 mandat(s)	candidates min. avant 2 · après 2
+FR Nice	1 offre(s), 1 mandat(s)	candidates min. avant 1077 · après 4
+FR Saint-Tropez	1 offre(s), 0 mandat(s)	candidates min. avant 2601 · après 4
+FR Lille	1 offre(s), 0 mandat(s)	candidates min. avant 2528 · après 18
+FR Aix-en-Provence	1 offre(s), 0 mandat(s)	candidates min. avant 2528 · après 18
+FR Marseille	1 offre(s), 1 mandat(s)	candidates min. avant 2528 · après 22
+DE Berlin	2 offre(s), 2 mandat(s)	candidates min. avant 477 · après 23
+FR Cannes	1 offre(s), 0 mandat(s)	candidates min. avant 2528 · après 34
+GB Londres	1 offre(s), 1 mandat(s)	candidates min. avant 458 · après 136
+US New York	2 offre(s), 2 mandat(s)	candidates min. avant 11962 · après 173
+FR Paris	42 offre(s), 14 mandat(s)	candidates min. avant 1077 · après 328

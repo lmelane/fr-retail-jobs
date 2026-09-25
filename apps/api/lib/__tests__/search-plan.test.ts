@@ -33,7 +33,9 @@ describe('le périmètre est obligatoire', () => {
   });
 
   it('un marché mesuré porte son périmètre géographique, plusieurs pays compris', () => {
-    expect(resoudrePerimetre('fr')).toMatchObject({ code: 'FR', pays: ['FR'] });
+    // D-468 §2 : le marché France sert aussi Monaco.
+    expect(resoudrePerimetre('fr')).toMatchObject({ code: 'FR', pays: ['FR', 'MC'] });
+    expect(resoudrePerimetre('IT')).toMatchObject({ code: 'IT', pays: ['IT'] });
     expect(resoudrePerimetre('DE')).toMatchObject({ code: 'DE', pays: ['DE', 'AT'] });
     expect(resoudrePerimetre('GB')).toMatchObject({ code: 'GB', pays: ['GB', 'IE'] });
     expect(resoudrePerimetre('DE')?.marche?.nom).toBe('Deutschland');
@@ -57,6 +59,8 @@ describe('le périmètre est obligatoire', () => {
 
 describe('les facettes du contrat suivent le registre', () => {
   it('la France sert quatre dimensions mesurées et les facettes du site, dans l’ordre du contrat', () => {
+    // D-468 §2 : Monaco entre au périmètre sans filtre « pays » ; exposer ce filtre attend l'arbitrage du CEO.
+    expect(FR().pays).toEqual(['FR', 'MC']);
     expect(facettesContrat(FR()).map((f) => f.cle)).toEqual(['secteur', 'contrat', 'temps', 'ville', 'maison', 'groupe', 'langue']);
     expect(facettesContrat(FR()).find((f) => f.cle === 'contrat')?.libelle).toBe('Type de contrat');
   });
@@ -103,10 +107,17 @@ describe('les filtres sont honorés dans le périmètre, refusés explicitement 
     expect(plan.selections.pays).toEqual(['IE']);
     expect(plan.refus).toEqual([{ cle: 'pays', valeurs: ['FR'], motif: 'PAYS_HORS_MARCHE' }]);
     // Le marché français ne sert pas la facette pays : `pays=FR` (lien hérité) ne change rien, `pays=US` est refusé.
+    // PRÉMISSE : la France n'expose pas la facette « pays », Monaco compris (D-468 §2, sans filtre décidé).
+    expect(facettesContrat(FR()).some((f) => f.cle === 'pays')).toBe(false);
     const herite = planifierRecherche(FR(), criteres({ filtres: { pays: ['FR'] } }));
     expect(herite.selections).toEqual({});
     expect(herite.refus).toEqual([]);
     expect(planifierRecherche(FR(), criteres({ filtres: { pays: ['US'] } })).refus).toEqual([{ cle: 'pays', valeurs: ['US'], motif: 'PAYS_HORS_MARCHE' }]);
+    // Monaco est dans le périmètre (D-468 §2) : `pays=MC` n'est pas refusé, et ne restreint rien tant que la facette
+    // n'est pas servie ; l'ancien `pays=FR` n'exclut donc pas Monaco.
+    const monaco = planifierRecherche(FR(), criteres({ filtres: { pays: ['MC'] } }));
+    expect(monaco.selections).toEqual({});
+    expect(monaco.refus).toEqual([]);
   });
 
   it('un pays tapé dans le champ lieu n’est honoré que dans le périmètre — « aucun choix de pays dans l’input 2 »', () => {

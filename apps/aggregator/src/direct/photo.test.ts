@@ -48,12 +48,14 @@ describe.skipIf(!enabled)('la photo des offres Catwalks (D-444)', () => {
     await prisma.company.deleteMany({ where: { id: { startsWith: S } } });
     await prisma.searchPending.deleteMany({ where: { id: { startsWith: `cw_${P}` } } });
   };
-  // Paris (avec Maison du registre), Nice (mandat), New York, Monaco : les coordonnées de la liste de production.
+  // Paris (avec Maison du registre), Nice (mandat), New York, Monaco : les coordonnées de la liste de production, avec la
+  // ville et le code postal qu'elle servira avec D-468 §1 (backend `b51d2b2`, non livré au 25/09/2026 ; vides quand le
+  // géocodage n'en a pas trouvé).
   const BASE = [
     offre('Paris'),
-    offre('Nice', { maison: null, title: 'Responsable de boutique', location: 'Nice — avenue de Verdun', latitude: 43.6963773, longitude: 7.2676739 }),
-    offre('NewYork', { title: 'Store Manager', location: 'New York — Madison Avenue', latitude: 40.7422083, longitude: -73.9869957 }),
-    offre('Monaco', { title: 'Conseiller de vente', location: 'Monaco — Carré d’Or', latitude: 43.73841760000001, longitude: 7.424615799999999 }),
+    offre('Nice', { maison: null, title: 'Responsable de boutique', location: 'Nice — avenue de Verdun', city: 'Nice', postalCode: '06000', latitude: 43.6963773, longitude: 7.2676739 }),
+    offre('NewYork', { title: 'Store Manager', location: 'New York — Madison Avenue', city: 'New York', postalCode: null, latitude: 40.7422083, longitude: -73.9869957 }),
+    offre('Monaco', { title: 'Conseiller de vente', location: 'Monaco — Carré d’Or', city: 'Monaco', postalCode: null, latitude: 43.73841760000001, longitude: 7.424615799999999 }),
   ];
 
   beforeAll(async () => {
@@ -72,18 +74,18 @@ describe.skipIf(!enabled)('la photo des offres Catwalks (D-444)', () => {
   it('première passe : chaque offre présente entre, publiable, avec son pays, son employeur, son groupe et son métier', async () => {
     const stats = await synchroniserListe(prisma, source(BASE), { contexte });
     expect(stats).toMatchObject({ recues: 4, lues: 4, complete: true, publiees: 4, inchangees: 0, retirees: 0, parPays: { FR: 2, US: 1, MC: 1 }, abstentions: [] });
-    // Monaco n'est servi par aucun marché de /emplois : l'offre entre, publiable, et la passe la signale.
-    expect(stats.horsMarche).toEqual([{ id: `${P}Monaco`, lieu: 'Monaco — Carré d’Or', pays: 'MC' }]);
+    // D-468 §2 : Monaco est servi par le marché France ; aucune offre de la base n'est hors marché.
+    expect(stats.horsMarche).toEqual([]);
     const paris = await ligne('Paris');
     expect(paris).toMatchObject({ eligible: true, countryCode: 'FR', company: MAISON, companyId: `${S}maison`, correspondanceVersion: CORRESPONDANCE_DIRECTE_VERSION,
-      applyUrl: `https://catwalks.io/offres/${S}paris`, city: null, postalCode: null, version: BigInt(0), appliedSeq: BigInt(0) });
+      applyUrl: `https://catwalks.io/offres/${S}paris`, city: 'Paris', postalCode: '75008', version: BigInt(0), appliedSeq: BigInt(0) });
     // Le métier vient de la taxonomie active, appliquée à l'intitulé.
     expect(paris.occupationCode).toBe(contexte.metier('Conseiller de vente H/F').occupationCode);
     expect(paris.occupationCode).not.toBeNull();
     // Le mandat : « Catwalks », aucun rattachement ; Nice est en France, Monaco à Monaco.
-    expect(await ligne('Nice')).toMatchObject({ company: 'Catwalks', companyId: null, maisonSlug: null, countryCode: 'FR' });
-    expect(await ligne('Monaco')).toMatchObject({ countryCode: 'MC' });
-    expect(await ligne('NewYork')).toMatchObject({ countryCode: 'US' });
+    expect(await ligne('Nice')).toMatchObject({ company: 'Catwalks', companyId: null, maisonSlug: null, countryCode: 'FR', city: 'Nice', postalCode: '06000' });
+    expect(await ligne('Monaco')).toMatchObject({ countryCode: 'MC', city: 'Monaco', postalCode: null });
+    expect(await ligne('NewYork')).toMatchObject({ countryCode: 'US', city: 'New York', postalCode: null });
     expect(await prisma.directFeedCursor.findUniqueOrThrow({ where: { id: ETAT_LISTE } })).toMatchObject({ lastError: null });
   });
 
@@ -191,6 +193,28 @@ describe.skipIf(!enabled)('la photo des offres Catwalks (D-444)', () => {
     expect(await ligne('EnMer')).toMatchObject({ eligible: true, countryCode: null });
     await synchroniserListe(prisma, source(BASE), { contexte });
     await prisma.directOffer.deleteMany({ where: { id: { in: [`${P}SansPoint`, `${P}EnMer`] } } });
+  });
+
+  it('une offre dans un pays qu’aucun marché ne sert entre, publiable, et la passe la signale', async () => {
+    // PRÉMISSE : le tracé place Sofia en Bulgarie, et aucun marché de /emplois ne sert la Bulgarie.
+    expect(contexte.pays(42.6977082, 23.3218675).pays).toBe('BG');
+    const sofia = offre('Sofia', { title: 'Store Manager', location: 'Sofia — boulevard Vitosha', city: 'Sofia', postalCode: '1000', latitude: 42.6977082, longitude: 23.3218675 });
+    const stats = await synchroniserListe(prisma, source([...BASE, sofia]), { contexte });
+    expect(stats.horsMarche).toEqual([{ id: `${P}Sofia`, lieu: 'Sofia — boulevard Vitosha', pays: 'BG' }]);
+    expect(await ligne('Sofia')).toMatchObject({ eligible: true, countryCode: 'BG', city: 'Sofia' });
+    await synchroniserListe(prisma, source(BASE), { contexte });
+    await prisma.directOffer.deleteMany({ where: { id: `${P}Sofia` } });
+  });
+
+  it('D-468 §1 — une liste d’avant D-468 écrit la ville vide ; la même offre servie avec sa ville la réécrit', async () => {
+    const { city: _ville, postalCode: _codePostal, ...avant } = BASE[0];
+    // PRÉMISSE : la forme d'avant D-468 ne porte ni ville ni code postal ; la ligne en porte avant la passe.
+    expect(avant).not.toHaveProperty('city');
+    expect(await ligne('Paris')).toMatchObject({ city: 'Paris', postalCode: '75008' });
+    expect(await synchroniserListe(prisma, source([avant, ...BASE.slice(1)]), { contexte })).toMatchObject({ complete: true, misesAJour: 1, inchangees: 3 });
+    expect(await ligne('Paris')).toMatchObject({ city: null, postalCode: null, eligible: true });
+    expect(await synchroniserListe(prisma, source(BASE), { contexte })).toMatchObject({ complete: true, misesAJour: 1, inchangees: 3 });
+    expect(await ligne('Paris')).toMatchObject({ city: 'Paris', postalCode: '75008' });
   });
 
   it('le rattachement au registre de la base : nom à l’accent et à l’apostrophe près ; un nom ambigu ne rattache rien', async () => {

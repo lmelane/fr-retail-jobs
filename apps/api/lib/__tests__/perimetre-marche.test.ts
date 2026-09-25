@@ -45,6 +45,8 @@ const GRAINES: readonly Graine[] = [
   { id: 'vienne', maison: AUTRE, pays: 'AT', ville: 'Wien', contrat: 'PERMANENT', temps: 'FULL_TIME' },
   { id: 'dublin', maison: AUTRE, pays: 'IE', ville: 'Dublin', contrat: 'PERMANENT', temps: 'FULL_TIME' },
   { id: 'sofia', maison: AUTRE, pays: 'BG', ville: 'Sofia', titre: 'Store Manager Vitosha', contrat: 'PERMANENT', temps: 'FULL_TIME' },
+  // D-468 §2 : Monaco est servi par le marché France.
+  { id: 'monaco', maison: AUTRE, pays: 'MC', ville: 'Monaco', contrat: 'PERMANENT', temps: 'FULL_TIME' },
   { id: 'nulle-part', maison: AUTRE, pays: null, ville: 'Nulle Part', remote: true, contrat: 'PERMANENT', temps: 'FULL_TIME' },
 ];
 const jobId = (g: Graine) => `${M}-${g.id}`;
@@ -87,10 +89,10 @@ describe.skipIf(!enabled)('la recherche est bornée par le périmètre (lot 6)',
   }, 120_000);
   afterAll(nettoyer);
 
-  it('PRÉMISSE — le semis est mondial : l’autre Maison recrute dans sept pays et une fois sans pays', async () => {
+  it('PRÉMISSE — le semis est mondial : l’autre Maison recrute dans huit pays et une fois sans pays', async () => {
     const monde = await prisma.job.groupBy({ by: ['countryCode'], where: { companyId: companyId(AUTRE), isActive: true }, _count: true });
-    expect(monde.map((r) => r.countryCode).sort()).toEqual([null, 'AT', 'BE', 'BG', 'CN', 'IE', 'US'].sort());
-    expect(await prisma.job.count({ where: { companyId: companyId(AUTRE), isActive: true } })).toBe(9);
+    expect(monde.map((r) => r.countryCode).sort()).toEqual([null, 'AT', 'BE', 'BG', 'CN', 'IE', 'MC', 'US'].sort());
+    expect(await prisma.job.count({ where: { companyId: companyId(AUTRE), isActive: true } })).toBe(10);
   });
 
   it('CONTRE-ÉPREUVE DU DÉFAUT HISTORIQUE — `marche=US` ne rend plus le total mondial', async () => {
@@ -110,8 +112,15 @@ describe.skipIf(!enabled)('la recherche est bornée par le périmètre (lot 6)',
     await expect(chercher('monde')).rejects.toMatchObject({ code: 'MARCHE_INCONNU' });
   });
 
-  it('chaque marché ne voit que ses pays : FR, US, BE, CN — et DE voit l’Autriche, GB voit l’Irlande', async () => {
+  it('chaque marché ne voit que ses pays : FR, US, BE, CN — et DE voit l’Autriche, GB voit l’Irlande, FR voit Monaco', async () => {
     expect(ids(await chercher('FR', {}, MAISON_SEULE))).toEqual(['lille', 'nice', 'paris1', 'paris2', 'paris3']);
+    // D-468 §2 : l'autre Maison ne recrute pas en France, seulement à Monaco, que sert le marché France.
+    const fr = await chercher('FR', {}, AUTRE_SEULE);
+    expect(ids(fr)).toEqual(['monaco']);
+    expect(fr.perimetre.pays).toEqual(['FR', 'MC']);
+    // Aucun filtre « pays » n'est servi au marché France (non décidé) : Monaco se trouve par le lieu.
+    expect(fr.facettes.some((f) => f.cle === 'pays')).toBe(false);
+    expect(ids(await chercher('FR', { lieu: 'Monaco' }, AUTRE_SEULE))).toEqual(['monaco']);
     expect(ids(await chercher('BE', {}, AUTRE_SEULE))).toEqual(['mons', 'tournai']);
     expect(ids(await chercher('CN', {}, AUTRE_SEULE))).toEqual(['shanghai']);
     const de = await chercher('DE', {}, AUTRE_SEULE);
@@ -262,7 +271,8 @@ describe.skipIf(!enabled)('la recherche est bornée par le périmètre (lot 6)',
 
   it('l’annuaire des Maisons est borné par le même périmètre', async () => {
     const fr = await getCompanies({ marche: 'FR', q: 'Périmètre' });
-    expect(fr.companies.map((c) => [c.name, c.jobCount])).toEqual([[MAISON, 5]]);
+    // L'autre Maison entre à l'annuaire français par son offre de Monaco (D-468 §2).
+    expect(fr.companies.map((c) => [c.name, c.jobCount]).sort()).toEqual([[AUTRE, 1], [MAISON, 5]]);
     expect(fr.companies[0].cities.map((c) => c.city)).toEqual(expect.arrayContaining(['Paris', 'Lille', 'Nice']));
     const us = await getCompanies({ marche: 'US', q: 'Périmètre' });
     expect(us.companies.map((c) => [c.name, c.jobCount]).sort()).toEqual([[AUTRE, 2], [MAISON, 1]]);
@@ -285,7 +295,10 @@ describe.skipIf(!enabled)('la recherche est bornée par le périmètre (lot 6)',
     expect(contrat.marches.map((m) => m.code)).toHaveLength(41);
     const compte = async (pays: string[]) => prisma.job.count({ where: { isActive: true, mergedIntoId: null, countryCode: { in: pays }, sources: { some: { isActive: true, OR: [{ expiresAt: null }, { expiresAt: { gt: new Date() } }] } } } });
     expect(contrat.marches.find((m) => m.code === 'DE')?.offresPubliables).toBe(await compte(['DE', 'AT']));
-    expect(contrat.marches.find((m) => m.code === 'FR')?.offresPubliables).toBe(await compte(['FR']));
+    // D-468 §2 : le marché France compte Monaco, qui quitte les pays hors marché (comme l'Autriche pour DE).
+    expect(contrat.marches.find((m) => m.code === 'FR')?.offresPubliables).toBe(await compte(['FR', 'MC']));
+    expect(await compte(['MC'])).toBe(1);
+    expect(contrat.catalogue.autresPays.some((p) => p.code === 'MC')).toBe(false);
     expect(contrat.marches.find((m) => m.code === 'FR')?.facettes.map((f) => f.cle)).toContain('contrat');
     expect(contrat.catalogue.autresPays.find((p) => p.code === 'BG')?.offresPubliables).toBe(await compte(['BG']));
     expect(contrat.catalogue.autresPays.some((p) => p.code === 'AT')).toBe(false);
