@@ -4,7 +4,8 @@ import { chargerFrontieres, paysDesCoordonnees, type Frontieres, type VerdictPay
 import { classifyJob } from '../normalize/taxonomy.js';
 
 /**
- * CE QUE LA PROJECTION D'UNE OFFRE DIRECTE LIT HORS DE L'OFFRE (D-444 ; correspondance version 4).
+ * CE QUE LA PROJECTION D'UNE OFFRE DIRECTE LIT HORS DE L'OFFRE (D-444 ; introduit en correspondance version 4,
+ * inchangé en version 5).
  *
  *  - le GROUPE : la Maison publique est rattachée au registre `Company` par son nom, ses alias revus (toutes sources,
  *    comme le filtre « Maison » de l'API) ou le nom d'une société fusionnée ; la comparaison ignore la casse, les

@@ -30,7 +30,8 @@ describe('marché natif et politique des filtres', () => {
     expect(filtres.find((f) => f.cle === 'programme')).toBeUndefined();
     expect(filtres.find((f) => f.cle === 'metier')).toBeUndefined();
     expect(filtres.every((f) => f.libelle.trim())).toBe(true);
-    // Le filtre « pays » est servi aux marchés composites DE et GB (depuis c62a534, 24/09/2026). Le marché France sert
+    // Le filtre « pays » est servi aux marchés composites DE et GB (déclaré depuis 3680e5a, 16/09/2026 ; c62a534, 24/09,
+    // en a fait la règle « plusieurs pays, un filtre »). Le marché France sert
     // aussi Monaco (D-468 §2) SANS ce filtre, par décision du CEO (D-469 §1, 25/09/2026). La liste
     // est écrite en toutes lettres : un marché de plusieurs pays n'hérite d'aucun filtre en silence.
     expect(filtres.some((f) => f.cle === 'pays')).toBe(MARCHES_AVEC_FILTRE_PAYS.has(code));
