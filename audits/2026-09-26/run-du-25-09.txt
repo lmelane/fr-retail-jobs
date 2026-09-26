@@ -1,0 +1,38 @@
+garde {"base":"railway","role":"catwalks_audit","lectureSeule":"on","maintenant":"2026-09-26T06:27:13.46025+00:00"}
+{
+ "id": "02ce57f9-42d5-4f89-bc47-24e6a05fc817",
+ "command": "ingest-all",
+ "revision": "1e1ad4cb39fc93d180674817c9fdde956e7cb973",
+ "status": "FAILED",
+ "startedAt": "2026-09-25T16:01:46.374",
+ "finishedAt": "2026-09-25T18:09:00.874",
+ "sourceRuns": {
+  "BROKEN": 11,
+  "DEGRADED": 42,
+  "ERROR": 5,
+  "OK": 356
+ },
+ "evenements": {
+  "warn job.publication_held": 2005,
+  "error job.write_failed": 1438,
+  "warn source.issue_classified": 58,
+  "warn source.rows_rejected": 6,
+  "error source.failed": 5,
+  "error source.listing_truncated": 2,
+  "error source.ingest_failed": 2,
+  "warn indexing.site_unconfigured": 1,
+  "error command.failed": 1,
+  "error run.completed": 1
+ },
+ "metricsCles": [
+  "byEvent",
+  "printed",
+  "counters",
+  "recorded",
+  "repeated",
+  "resources",
+  "httpByHost",
+  "debugDisabled",
+  "persistenceFailures"
+ ]
+}

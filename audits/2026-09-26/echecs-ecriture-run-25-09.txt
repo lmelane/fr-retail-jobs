@@ -1,0 +1,26 @@
+garde {"base":"railway","role":"catwalks_audit","lectureSeule":"on","maintenant":"2026-09-26T06:27:19.413477+00:00"}
+K {"cles" : ["connectorId", "error", "jobId", "sourceKey"]}
+S {"source":"luxe-talent","n":477,"motif":"PORTAL_OWNER_NOT_CERTIFIED","premier":"2026-09-25T16:03:11.091","dernier":"2026-09-25T16:03:26.906"}
+S {"source":"tiffany-oracle","n":460,"motif":"PORTAL_OWNER_NOT_CERTIFIED","premier":"2026-09-25T16:15:12.554","dernier":"2026-09-25T16:15:27.35"}
+S {"source":"lagardere-travel-retail","n":109,"motif":"PORTAL_OWNER_NOT_CERTIFIED","premier":"2026-09-25T16:02:33.201","dernier":"2026-09-25T16:02:36.186"}
+S {"source":"groupe-printemps","n":99,"motif":"PORTAL_OWNER_NOT_CERTIFIED","premier":"2026-09-25T16:02:14.184","dernier":"2026-09-25T16:02:16.863"}
+S {"source":"beauty-success-geodir","n":89,"motif":"PORTAL_OWNER_NOT_CERTIFIED","premier":"2026-09-25T16:02:04.286","dernier":"2026-09-25T16:02:08.196"}
+S {"source":"b-s-international","n":56,"motif":"EMPLOYER_SPELLING_DIVERGED","premier":"2026-09-25T16:14:18.887","dernier":"2026-09-25T16:14:20.515"}
+S {"source":"rivoli-typesense","n":46,"motif":"PORTAL_OWNER_NOT_CERTIFIED","premier":"2026-09-25T16:11:42.595","dernier":"2026-09-25T16:11:44.243"}
+S {"source":"lvmh","n":30,"motif":"PORTAL_OWNER_NOT_CERTIFIED","premier":"2026-09-25T17:50:51.851","dernier":"2026-09-25T17:58:34.696"}
+S {"source":"hot-topic","n":20,"motif":"PORTAL_OWNER_NOT_CERTIFIED","premier":"2026-09-25T16:01:56.133","dernier":"2026-09-25T16:01:57.05"}
+S {"source":"funky-buddha","n":15,"motif":"EMPLOYER_SPELLING_DIVERGED","premier":"2026-09-25T16:18:02.123","dernier":"2026-09-25T16:18:02.55"}
+S {"source":"lagardere-travel-retail-de","n":10,"motif":"PORTAL_OWNER_NOT_CERTIFIED","premier":"2026-09-25T16:02:18.696","dernier":"2026-09-25T16:02:18.946"}
+S {"source":"lagardere-duty-free","n":9,"motif":"PORTAL_OWNER_NOT_CERTIFIED","premier":"2026-09-25T16:02:09.853","dernier":"2026-09-25T16:02:10.112"}
+S {"source":"brown-thomas-taleo","n":9,"motif":"PORTAL_OWNER_NOT_CERTIFIED","premier":"2026-09-25T16:28:18.651","dernier":"2026-09-25T16:28:18.958"}
+S {"source":"sephora-france","n":5,"motif":"PORTAL_OWNER_NOT_CERTIFIED","premier":"2026-09-25T17:49:01.273","dernier":"2026-09-25T17:51:21.364"}
+S {"source":"aptar-beauty","n":1,"motif":"PORTAL_OWNER_NOT_CERTIFIED","premier":"2026-09-25T16:39:22.49","dernier":"2026-09-25T16:39:22.49"}
+S {"source":"prada-group","n":1,"motif":"PORTAL_OWNER_NOT_CERTIFIED","premier":"2026-09-25T16:39:31.201","dernier":"2026-09-25T16:39:31.201"}
+S {"source":"drunk-elephant-2","n":1,"motif":"PORTAL_OWNER_NOT_CERTIFIED","premier":"2026-09-25T16:34:20.097","dernier":"2026-09-25T16:34:20.097"}
+S {"source":"browns","n":1,"motif":"PORTAL_OWNER_NOT_CERTIFIED","premier":"2026-09-25T16:24:46.341","dernier":"2026-09-25T16:24:46.341"}
+H {"jour" : "2026-09-23", "revision" : "19d9f1c", "run" : "c4c32dcb", "writeFailed" : 0}
+H {"jour" : "2026-09-23", "revision" : "653920c", "run" : "ca946bd4", "writeFailed" : 9028}
+H {"jour" : "2026-09-23", "revision" : "a532165", "run" : "8b13d1f0", "writeFailed" : 5095}
+H {"jour" : "2026-09-24", "revision" : "2cc91d8", "run" : "35ba463f", "writeFailed" : 1446}
+H {"jour" : "2026-09-25", "revision" : "1e1ad4c", "run" : "02ce57f9", "writeFailed" : 1438}
+

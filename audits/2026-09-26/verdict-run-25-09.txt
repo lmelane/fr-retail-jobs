@@ -1,0 +1,13 @@
+garde {"base":"railway","role":"catwalks_audit","lectureSeule":"on","maintenant":"2026-09-26T06:27:16.214753+00:00"}
+F {"event" : "command.failed", "payload" : "{\"blockingReasons\": [\"UNRESOLVED_FAILURE\"], \"alertDeliveryFailed\": false}"}
+I {"run" : "35ba463f", "revision" : "2cc91d8", "status" : "FAILED", "issues" : { "BROKEN" : 11, "DEGRADED" : 43, "ERROR" : 6, "OK" : 354 }, "classees" : 60, "retenues" : 2042}
+I {"run" : "02ce57f9", "revision" : "1e1ad4c", "status" : "FAILED", "issues" : { "BROKEN" : 11, "DEGRADED" : 42, "ERROR" : 5, "OK" : 356 }, "classees" : 58, "retenues" : 2005}
+C {"classement" : "?", "bloquant" : "?", "n" : 58}
+X {"exemple" : "{\"issues\": [{\"code\": \"EmployerIdentityReviewRequired\", \"count\": 20, \"origin\": \"UNKNOWN\", \"captureBatchId\": \"243d55b2-bb28-45d0-a0fa-05117e670b34\"}], \"sourceKey\": \"hot-topic\", \"acceptedNativeOnly\": false}"}
+X {"exemple" : "{\"issues\": [{\"code\": \"EmployerIdentityReviewRequired\", \"count\": 89, \"origin\": \"UNKNOWN\", \"captureBatchId\": \"d3069005-4be9-4c83-93fc-b4d93843fdad\"}], \"sourceKey\": \"beauty-success-geodir\", \"acceptedNativeOnly\": false}"}
+P {"pays" : "CN", "publiables" : 1116}
+P {"pays" : "HK", "publiables" : 292}
+P {"pays" : "MC", "publiables" : 42}
+P {"pays" : "PR", "publiables" : 87}
+P {"pays" : "TW", "publiables" : 167}
+P {"pays" : "US", "publiables" : 37051}
