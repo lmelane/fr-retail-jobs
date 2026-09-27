@@ -1,15 +1,16 @@
 {
-  "observedAt": "2026-09-25T09:32:45.919158+00:00",
-  "targetContractSha256": "fdc0256fafcac40b59441aa1c7881fd1092ad544f6ca7122255ad05cb3fc8748",
+  "observedAt": "2026-09-27T07:23:53.070880+00:00",
+  "previousReceipt": "git show 3a66854:docs/operations/railway/runtime-release.json (release of 25/09/2026, 1e1ad4c, first RUN observed)",
+  "targetContractSha256": "ba3dbeee8f2c4b9b3b09511412179996c1122b5c71b300fd9889ed1069e87300",
   "registryVisibility": "public",
   "registryCredentialsRequired": false,
   "images": [
     {
-      "gitSha": "1e1ad4cb39fc93d180674817c9fdde956e7cb973",
-      "contractSha256": "fdc0256fafcac40b59441aa1c7881fd1092ad544f6ca7122255ad05cb3fc8748",
+      "gitSha": "957f24c6b863ccb9c8c2a64cdfbe5ba3a27c225f",
+      "contractSha256": "ba3dbeee8f2c4b9b3b09511412179996c1122b5c71b300fd9889ed1069e87300",
       "service": "catwalks-catalogue-api",
-      "image": "ghcr.io/lmelane/catwalks-catalogue-api@sha256:38de3203b75e3f1680184d07c289ee6b6ab3785d760bcff286bd7d0bfda37919",
-      "imageId": "sha256:da72e10c52e93950b66eb95b1bd8463c99430a324126668a5025f05bc2f52ae6",
+      "image": "ghcr.io/lmelane/catwalks-catalogue-api@sha256:9bdccd687e367e227b075230f3a70a975a74497183b6e9353e13f6215cf775e8",
+      "imageId": "sha256:4061792cd1537bde28615707d0a7adc2c64fc608c7ac2c3c6bbeca9a495a4014",
       "imageEnvironment": [
         "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
         "NODE_VERSION=22.23.3",
@@ -26,15 +27,15 @@
         "status": "PASS",
         "network": "none",
         "role": "api",
-        "gitSha": "1e1ad4cb39fc93d180674817c9fdde956e7cb973"
+        "gitSha": "957f24c6b863ccb9c8c2a64cdfbe5ba3a27c225f"
       }
     },
     {
-      "gitSha": "1e1ad4cb39fc93d180674817c9fdde956e7cb973",
-      "contractSha256": "fdc0256fafcac40b59441aa1c7881fd1092ad544f6ca7122255ad05cb3fc8748",
+      "gitSha": "957f24c6b863ccb9c8c2a64cdfbe5ba3a27c225f",
+      "contractSha256": "ba3dbeee8f2c4b9b3b09511412179996c1122b5c71b300fd9889ed1069e87300",
       "service": "catwalks-ingestion-worker",
-      "image": "ghcr.io/lmelane/catwalks-ingestion-worker@sha256:a5a99134e60cfa1af4ec26000cee5cf5b04abe2de9dd26d311db2711fb044c6b",
-      "imageId": "sha256:3b8cafe5a80c6f4144968cdf00c566c5c6e2b4a0adc1317ea6c4f9085bfcb04a",
+      "image": "ghcr.io/lmelane/catwalks-ingestion-worker@sha256:62c48074422fe5affd1655cb0b8d24a2345230d88a928f2483d9aa0954a43c3b",
+      "imageId": "sha256:2fcb45bd54519584d758c2453a73063b79c0a155349b6b70deed563bcaa35d8c",
       "imageEnvironment": [
         "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
         "LANG=C.UTF-8",
@@ -51,24 +52,32 @@
         "status": "PASS",
         "network": "none",
         "role": "worker",
-        "gitSha": "1e1ad4cb39fc93d180674817c9fdde956e7cb973"
+        "gitSha": "957f24c6b863ccb9c8c2a64cdfbe5ba3a27c225f"
+      },
+      "sharedOfflineEntrypoints": {
+        "catwalks-direct-sync": {
+          "status": "PASS",
+          "network": "none",
+          "role": "direct-sync",
+          "gitSha": "957f24c6b863ccb9c8c2a64cdfbe5ba3a27c225f"
+        }
       }
     }
   ],
-  "reason": "RUN stabilisation (D-453 §1, D-456, D-462), offer country (D-442, D-450, D-454), Catwalks employer and JobPosting (D-455, D-456 §4, D-450 §4). API and worker.",
+  "reason": "Catwalks offers in the catalogue by the public-list reader (D-444), city and postal code (D-468 §1), Monaco served by the France market without a country filter (D-468 §2, D-469 §1), no Maison block on an internal-mandate page (D-468 §3), Catwalks offers in similar offers (D-468 §1, D-470 §1), logo sharpness threshold, search-4. API and worker; direct-sync service created by direct_sync.py.",
   "ci": {
-    "development": 36116544769,
-    "headSha": "1e1ad4cb39fc93d180674817c9fdde956e7cb973",
+    "development": 36225373179,
+    "headSha": "957f24c6b863ccb9c8c2a64cdfbe5ba3a27c225f",
     "status": "SUCCESS",
-    "mainPromotion": "Same tested commit; fast-forward c62a534..1e1ad4c; no code change."
+    "mainPromotion": "Same tested commit; fast-forward 1e1ad4c..957f24c; no code change."
   },
   "services": [
     {
       "serviceId": "9c50b8a9-5651-478f-b0d1-5bc02d2c138f",
       "name": "catwalks-catalogue-api",
-      "deploymentId": "60cdd067-1c99-47fd-81e5-984862e54edb",
+      "deploymentId": "b8f0cc5a-bf62-4231-b647-99dfece67448",
       "deploymentStatus": "SUCCESS",
-      "image": "ghcr.io/lmelane/catwalks-catalogue-api@sha256:38de3203b75e3f1680184d07c289ee6b6ab3785d760bcff286bd7d0bfda37919",
+      "image": "ghcr.io/lmelane/catwalks-catalogue-api@sha256:9bdccd687e367e227b075230f3a70a975a74497183b6e9353e13f6215cf775e8",
       "deploy": {
         "startCommand": "node apps/api/runtime/start.mjs",
         "healthcheckPath": "/api/health",
@@ -95,9 +104,9 @@
         "PORT"
       ],
       "process": {
-        "at": "2026-09-25T09:13:37.476Z",
-        "gitSha": "1e1ad4cb39fc93d180674817c9fdde956e7cb973",
-        "contractSha256": "fdc0256fafcac40b59441aa1c7881fd1092ad544f6ca7122255ad05cb3fc8748",
+        "at": "2026-09-26T08:07:15.263Z",
+        "gitSha": "957f24c6b863ccb9c8c2a64cdfbe5ba3a27c225f",
+        "contractSha256": "ba3dbeee8f2c4b9b3b09511412179996c1122b5c71b300fd9889ed1069e87300",
         "role": "api",
         "argv": [],
         "values": {
@@ -113,15 +122,18 @@
           "CATALOGUE_API_KEY"
         ]
       },
+      "observedEvents": [
+        "runtime.attested"
+      ],
       "targetEffectiveProcessMatch": true,
       "secretValuesPublished": false
     },
     {
       "serviceId": "210322c3-51b7-42c3-a93d-f50f64d44d19",
       "name": "catwalks-ingestion-worker",
-      "deploymentId": "4f25059c-5bf6-4c65-9aaa-a42ffc2e873d",
+      "deploymentId": "ec643246-439c-4514-8f0e-6ab2fa592819",
       "deploymentStatus": "SUCCESS",
-      "image": "ghcr.io/lmelane/catwalks-ingestion-worker@sha256:a5a99134e60cfa1af4ec26000cee5cf5b04abe2de9dd26d311db2711fb044c6b",
+      "image": "ghcr.io/lmelane/catwalks-ingestion-worker@sha256:62c48074422fe5affd1655cb0b8d24a2345230d88a928f2483d9aa0954a43c3b",
       "deploy": {
         "startCommand": "sh apps/aggregator/start.sh scheduled",
         "restartPolicyType": "NEVER",
@@ -149,9 +161,9 @@
         "PIPELINE_PAUSED"
       ],
       "process": {
-        "at": "2026-09-25T09:13:56.056Z",
-        "gitSha": "1e1ad4cb39fc93d180674817c9fdde956e7cb973",
-        "contractSha256": "fdc0256fafcac40b59441aa1c7881fd1092ad544f6ca7122255ad05cb3fc8748",
+        "at": "2026-09-26T08:07:31.144Z",
+        "gitSha": "957f24c6b863ccb9c8c2a64cdfbe5ba3a27c225f",
+        "contractSha256": "ba3dbeee8f2c4b9b3b09511412179996c1122b5c71b300fd9889ed1069e87300",
         "role": "worker",
         "argv": [],
         "values": {
@@ -167,10 +179,41 @@
           "BREVO_API_KEY"
         ]
       },
+      "observedEvents": [
+        "pipeline.paused",
+        "runtime.attested"
+      ],
       "targetEffectiveProcessMatch": true,
       "secretValuesPublished": false
     }
   ],
+  "directSync": {
+    "serviceId": "9f0f4d0c-b18c-4468-855b-6fe9a9c8d008",
+    "name": "catwalks-direct-sync",
+    "deploy": {
+      "startCommand": "sh apps/aggregator/start.sh direct-liste",
+      "restartPolicyType": "NEVER",
+      "useLegacyStacker": false,
+      "ipv6EgressEnabled": false,
+      "cronSchedule": "*/5 * * * *",
+      "runtime": "V2",
+      "multiRegionConfig": {
+        "europe-west4-drams3a": {
+          "numReplicas": 1
+        }
+      }
+    },
+    "customVariableNames": [
+      "CATALOGUE_LISTE_URL",
+      "CATWALKS_RUNTIME_PROFILE",
+      "DATABASE_URL",
+      "HEALTHCHECK_PING_URL",
+      "NODE_ENV",
+      "PIPELINE_PAUSED"
+    ],
+    "paused": "0",
+    "image": "ghcr.io/lmelane/catwalks-ingestion-worker@sha256:62c48074422fe5affd1655cb0b8d24a2345230d88a928f2483d9aa0954a43c3b"
+  },
   "schedule": {
     "cronUTC": "0 16,17 * * *",
     "timeZone": "Europe/Paris",
@@ -182,22 +225,36 @@
   "database": {
     "serviceId": "b5c68d1c-6988-4f15-8d85-afe684109cea",
     "serviceAndVolumeConfigurationUnchanged": true,
-    "migrationsApplied": 90,
-    "newMigration": null,
+    "migrationsApplied": 92,
+    "newMigrations": [
+      "20260925080000_search_direct_indexed_text",
+      "20260925090000_direct_offer_registry"
+    ],
+    "newMigrationsAdditive": true,
+    "searchGeneration": {
+      "version": "search-4-20260924-v2",
+      "rebuiltBeforeApi": true,
+      "documents": 80592,
+      "previousGenerationRetained": "search-3-20260924-v2"
+    },
     "historicalDataRepair": false,
     "reset": false
   },
-  "validation": "npm run test:local on a fresh database (unit 3067, integration 607, API 300) and CI run 36116544769",
+  "backend": {
+    "repository": "catwalks-back-end",
+    "main": "1ca0d39 (b51d2b2 cherry-picked alone + governance documents, D-469 §2)",
+    "previousMain": "63f61fa",
+    "vercelProduction": "catwalks.api.catwalks.io aliased to 1ca0d39, READY",
+    "check": "GET /api/jobs: 59 offers, 59 with city, 24 with postal code, 31 fields, no internal name; /api/jobs/filters count 59"
+  },
+  "validation": "aggregator: unit 3136, integration 607, API 322 on a disposable database; CI run 36225373179; backend main: verifier-lot green on 1ca0d39 (types, tests, real-database tests, build)",
   "rollback": {
-    "previousCodeSha": {
-      "api": "c62a5342441cc6d5fe2806598ca8e1279f47d3eb",
-      "worker": "2cc91d8637671ba81ea23f03dd558f889befd70f"
-    },
+    "previousCodeSha": "1e1ad4cb39fc93d180674817c9fdde956e7cb973",
     "images": {
-      "9c50b8a9-5651-478f-b0d1-5bc02d2c138f": "ghcr.io/lmelane/catwalks-catalogue-api@sha256:7cfe60a8c09f034145db2a28cefcede1d25ca8b14b597f85fb0af55038a85524",
-      "210322c3-51b7-42c3-a93d-f50f64d44d19": "ghcr.io/lmelane/catwalks-ingestion-worker@sha256:7c8e50bf38f5564b9bb5bd23ef7ae2ff548787d037c66c22a998ca9de34d9b2c"
+      "9c50b8a9-5651-478f-b0d1-5bc02d2c138f": "ghcr.io/lmelane/catwalks-catalogue-api@sha256:38de3203b75e3f1680184d07c289ee6b6ab3785d760bcff286bd7d0bfda37919",
+      "210322c3-51b7-42c3-a93d-f50f64d44d19": "ghcr.io/lmelane/catwalks-ingestion-worker@sha256:a5a99134e60cfa1af4ec26000cee5cf5b04abe2de9dd26d311db2711fb044c6b"
     },
-    "scope": "API and worker; database untouched",
+    "scope": "API and worker (release.py rollback); direct-sync: PIPELINE_PAUSED=1 (direct_sync.py pause); backend: revert of 1ca0d39 and 72b8b06 on main; migrations additive, search-3 retained",
     "databaseDowngrade": false
   },
   "productionChecks": {
@@ -206,14 +263,14 @@
       "health": {
         "status": 200,
         "search": {
-          "version": "search-3-20260924-v2",
+          "version": "search-4-20260924-v2",
           "pending": 0,
           "oldestSeconds": null,
-          "documents": 78704,
+          "documents": 81436,
           "registered": true,
           "ready": true
         },
-        "gitSha": "1e1ad4cb39fc93d180674817c9fdde956e7cb973"
+        "gitSha": "957f24c6b863ccb9c8c2a64cdfbe5ba3a27c225f"
       },
       "unauthorizedStatus": 401,
       "detailStatus": 200,
@@ -221,127 +278,121 @@
       "markets": {
         "FR": {
           "status": 200,
-          "total": 11937,
-          "ms": 287,
+          "total": 12143,
+          "ms": 548,
           "countryBound": true
         },
         "US": {
           "status": 200,
-          "total": 36541,
-          "ms": 442,
+          "total": 37056,
+          "ms": 646,
           "countryBound": true
         },
         "IT": {
           "status": 200,
-          "total": 2292,
-          "ms": 142,
+          "total": 2330,
+          "ms": 287,
           "countryBound": true
         },
         "JP": {
           "status": 200,
-          "total": 538,
-          "ms": 151,
+          "total": 541,
+          "ms": 230,
           "countryBound": true
         },
         "AE": {
           "status": 200,
-          "total": 231,
-          "ms": 97,
+          "total": 223,
+          "ms": 244,
           "countryBound": true
         },
         "roleFR": {
           "status": 200,
-          "total": 4177,
-          "ms": 268,
+          "total": 4232,
+          "ms": 8788,
           "countryBound": true
         },
         "roleFRFrench": {
           "status": 200,
-          "total": 4177,
-          "ms": 278,
+          "total": 4232,
+          "ms": 403,
           "countryBound": true
         },
         "composedFR": {
           "status": 200,
-          "total": 25,
-          "ms": 124,
+          "total": 26,
+          "ms": 251,
           "countryBound": true
         },
         "composedUS": {
           "status": 200,
           "total": 50,
-          "ms": 119,
+          "ms": 254,
           "countryBound": true
         },
         "placeFR": {
           "status": 200,
-          "total": 3855,
-          "ms": 198,
+          "total": 3949,
+          "ms": 345,
           "countryBound": true
         }
       },
-      "coldStartFirstKeywordSearchMs": 10272
+      "coldStartFirstKeywordSearchMs": 8034,
+      "note": "the first keyword search of each smoke run took 8-9 s; eight consecutive keyword searches afterwards: 0.2-0.5 s"
+    },
+    "monaco": {
+      "perimeterFR": [
+        "FR",
+        "MC"
+      ],
+      "countryFilterFR": false,
+      "placeMonacoTotal": 42
     },
     "configuration": "check paused and check normal: effective configuration equals the snapshot with the two images replaced",
     "workerPausedBoot": {
-      "deploymentId": "4f25059c-5bf6-4c65-9aaa-a42ffc2e873d",
-      "events": [
-        "runtime.attested",
-        "pipeline.paused"
-      ]
+      "deploymentId": "ec643246-439c-4514-8f0e-6ab2fa592819"
     },
     "firstRunAfterRelease": {
-      "observedAt": "2026-09-26T06:24:00Z",
-      "runId": "02ce57f9-42d5-4f89-bc47-24e6a05fc817",
-      "command": "ingest-all",
-      "revision": "1e1ad4cb39fc93d180674817c9fdde956e7cb973",
-      "revisionMatchesRelease": true,
-      "startedAt": "2026-09-25T16:01:46Z",
-      "finishedAt": "2026-09-25T18:09:00Z",
+      "runId": "966e9549-6b05-4e78-8b26-dfff1a76d28f",
+      "revision": "957f24c6b863ccb9c8c2a64cdfbe5ba3a27c225f",
+      "startedAt": "2026-09-26T16:02:05Z",
+      "finishedAt": "2026-09-26T18:04:00Z",
       "status": "FAILED",
-      "exitCode": 1,
-      "railwayDeploymentStatus": "CRASHED (non-zero exit of the cron process, not a process crash: no OOM, terminal status written, heartbeat pinged)",
       "blockingReasons": [
         "UNRESOLVED_FAILURE"
       ],
       "sourceRuns": {
-        "OK": 356,
-        "DEGRADED": 42,
+        "OK": 359,
+        "DEGRADED": 39,
         "BROKEN": 11,
         "ERROR": 5
       },
-      "previousRun": {
-        "runId": "35ba463f",
-        "revision": "2cc91d8",
-        "status": "FAILED",
-        "sourceRuns": {
-          "OK": 354,
-          "DEGRADED": 43,
-          "BROKEN": 11,
-          "ERROR": 6
+      "writeFailed": 1436,
+      "publicationHeld": 2207,
+      "note": "known blocking sources (D-456 §3); held rise entirely WORKDAY_EMPLOYER_ABSENT_IN_DETAIL (1928 -> 2137), source data; no regression"
+    },
+    "directSyncActivation": {
+      "pausedPass": "2026-09-27T07:15:28Z runtime.attested (direct-sync, production, 957f24c) then pipeline.paused, workStarted=false, businessRequests=0",
+      "unpausedAt": "2026-09-27T07:16Z",
+      "firstPass": "2026-09-27T07:20:27Z worker.finished direct-liste COMPLETED exitCode=0",
+      "catalogue": {
+        "directOffers": 59,
+        "publishable": 59,
+        "byCountry": {
+          "FR": 53,
+          "US": 2,
+          "DE": 2,
+          "GB": 1,
+          "MC": 1
         },
-        "writeFailed": 1446
+        "withCity": 59,
+        "withPostalCode": 24,
+        "mandates": 21,
+        "attachedToRegistry": 23,
+        "withOccupation": 31,
+        "readerError": null
       },
-      "writeFailed": {
-        "count": 1438,
-        "cause": "EmployerIdentityReviewRequired (PORTAL_OWNER_NOT_CERTIFIED, EMPLOYER_SPELLING_DIVERGED) on 18 multi-brand sources: pending identity reviews, not a regression of this release"
-      },
-      "countryReclassification": {
-        "PR": 87,
-        "note": "expected 71 -> 87 (D-442, D-450, D-454)"
-      },
-      "apiHealthAfter": {
-        "status": "ok",
-        "searchVersion": "search-3-20260924-v2",
-        "ready": true,
-        "pending": 0,
-        "documents": 80592
-      },
-      "evidence": [
-        "audits/2026-09-26/run-du-25-09.txt",
-        "audits/2026-09-26/verdict-run-25-09.txt",
-        "audits/2026-09-26/echecs-ecriture-run-25-09.txt"
-      ]
+      "apiChecks": "audits/2026-09-27/activation-d444.json: Catwalks first in FR, FR ville=Paris, FR lieu=Monaco (43), DE, US, GB; mandate page without Maison block; similar offers include Catwalks offers"
     }
   }
 }

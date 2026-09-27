@@ -1,0 +1,206 @@
+{
+ "at": "2026-09-27T07:23Z",
+ "source": "API de production, lecture, clé du site (non incluse)",
+ "resultats": {
+  "FR": {
+   "status": 200,
+   "ms": 882,
+   "total": 12197,
+   "catwalksSurLaPage": 25,
+   "catwalksDabord": true,
+   "premiers": [
+    [
+     "Meilleur Moment",
+     "Paris",
+     "FR"
+    ],
+    [
+     "Meilleur Moment",
+     "Paris",
+     "FR"
+    ],
+    [
+     "Lancel",
+     "Lyon",
+     "FR"
+    ]
+   ]
+  },
+  "FR_Paris": {
+   "status": 200,
+   "ms": 371,
+   "total": 3934,
+   "catwalksSurLaPage": 25,
+   "catwalksDabord": true,
+   "premiers": [
+    [
+     "Meilleur Moment",
+     "Paris",
+     "FR"
+    ],
+    [
+     "Meilleur Moment",
+     "Paris",
+     "FR"
+    ],
+    [
+     "Maison Francis Kurkdjian",
+     "Paris",
+     "FR"
+    ]
+   ]
+  },
+  "FR_Monaco": {
+   "status": 200,
+   "ms": 339,
+   "total": 43,
+   "catwalksSurLaPage": 1,
+   "catwalksDabord": true,
+   "premiers": [
+    [
+     "Loewe Parfums",
+     "Monaco",
+     "MC"
+    ],
+    [
+     "Armand Thiery",
+     "Monaco",
+     "MC"
+    ],
+    [
+     "Richemont",
+     "Monaco",
+     "MC"
+    ]
+   ]
+  },
+  "FR_conseiller": {
+   "status": 200,
+   "ms": 10014,
+   "total": 4247,
+   "catwalksSurLaPage": 15,
+   "catwalksDabord": true,
+   "premiers": [
+    [
+     "Meilleur Moment",
+     "Paris",
+     "FR"
+    ],
+    [
+     "Meilleur Moment",
+     "Paris",
+     "FR"
+    ],
+    [
+     "La Bonne Brosse",
+     "Paris",
+     "FR"
+    ]
+   ]
+  },
+  "DE": {
+   "status": 200,
+   "ms": 375,
+   "total": 3110,
+   "catwalksSurLaPage": 2,
+   "catwalksDabord": true,
+   "premiers": [
+    [
+     "Catwalks",
+     "Berlin",
+     "DE"
+    ],
+    [
+     "Catwalks",
+     "Berlin",
+     "DE"
+    ],
+    [
+     "Alpha Industries GmbH & Co. KG",
+     "Neu-Isenburg",
+     "DE"
+    ]
+   ]
+  },
+  "US": {
+   "status": 200,
+   "ms": 720,
+   "total": 37053,
+   "catwalksSurLaPage": 2,
+   "catwalksDabord": true,
+   "premiers": [
+    [
+     "Catwalks",
+     "New York",
+     "US"
+    ],
+    [
+     "Catwalks",
+     "New York",
+     "US"
+    ],
+    [
+     "Ulta Beauty",
+     "Webster",
+     "US"
+    ]
+   ]
+  },
+  "GB": {
+   "status": 200,
+   "ms": 314,
+   "total": 3260,
+   "catwalksSurLaPage": 1,
+   "catwalksDabord": true,
+   "premiers": [
+    [
+     "Catwalks",
+     "Londres",
+     "GB"
+    ],
+    [
+     "Rituals",
+     "Cheltenham",
+     "GB"
+    ],
+    [
+     "Rituals",
+     "Bury",
+     "GB"
+    ]
+   ]
+  },
+  "ficheMandat": {
+   "status": 200,
+   "ms": 168,
+   "id": "cw_cmsxlvwfp000bl6044kq7slr1",
+   "company": "Catwalks",
+   "candidature": "CATWALKS",
+   "blocMaison": false,
+   "similaires": 6,
+   "similairesCatwalks": 6,
+   "lieu": [
+    "Paris 1er — rue Saint-Honoré",
+    "Paris",
+    null,
+    "FR"
+   ]
+  },
+  "ficheMaison": {
+   "status": 200,
+   "ms": 183,
+   "id": "cw_cmuckslrj0003l504mebrko9w",
+   "company": "Meilleur Moment",
+   "candidature": "CATWALKS",
+   "blocMaison": true,
+   "similaires": 6,
+   "similairesCatwalks": 6,
+   "lieu": [
+    "Paris",
+    "Paris",
+    null,
+    "FR"
+   ]
+  }
+ }
+}
