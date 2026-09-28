@@ -1,0 +1,592 @@
+[
+ {
+  "fiche": "lancel",
+  "largeur": 320,
+  "hauteur": 568,
+  "pageDeborde": false,
+  "scrollWidth": 320,
+  "innerWidth": 320,
+  "dansUnVolet": false,
+  "couverture": {
+   "haut": 489,
+   "bas": 579,
+   "gauche": 16,
+   "droite": 304,
+   "largeur": 288,
+   "hauteur": 90
+  },
+  "volet": null,
+  "imageChargee": true,
+  "imageSrc": "http://127.0.0.1:3036/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Fcatwalks-storage-medias-publics%2Fjobs%2Fcm",
+  "logo": {
+   "haut": 555,
+   "bas": 603,
+   "gauche": 16,
+   "droite": 64,
+   "largeur": 48,
+   "hauteur": 48
+  },
+  "logoSrc": "monogramme:L",
+  "nomMaison": {
+   "haut": 586,
+   "bas": 603,
+   "gauche": 76,
+   "droite": 117,
+   "largeur": 41,
+   "hauteur": 18
+  },
+  "chevauchementLogo": 24,
+  "postuler": {
+   "haut": 729,
+   "bas": 783,
+   "gauche": 16,
+   "droite": 132,
+   "largeur": 116,
+   "hauteur": 54
+  },
+  "postulerVisibleSansDefiler": false,
+  "tiretCadratin": false
+ },
+ {
+  "fiche": "lancel",
+  "largeur": 375,
+  "hauteur": 667,
+  "pageDeborde": false,
+  "scrollWidth": 375,
+  "innerWidth": 375,
+  "dansUnVolet": false,
+  "couverture": {
+   "haut": 489,
+   "bas": 597,
+   "gauche": 16,
+   "droite": 359,
+   "largeur": 343,
+   "hauteur": 107
+  },
+  "volet": null,
+  "imageChargee": true,
+  "imageSrc": "http://127.0.0.1:3036/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Fcatwalks-storage-medias-publics%2Fjobs%2Fcm",
+  "logo": {
+   "haut": 573,
+   "bas": 621,
+   "gauche": 16,
+   "droite": 64,
+   "largeur": 48,
+   "hauteur": 48
+  },
+  "logoSrc": "monogramme:L",
+  "nomMaison": {
+   "haut": 603,
+   "bas": 621,
+   "gauche": 76,
+   "droite": 117,
+   "largeur": 41,
+   "hauteur": 18
+  },
+  "chevauchementLogo": 24,
+  "postuler": {
+   "haut": 746,
+   "bas": 800,
+   "gauche": 16,
+   "droite": 132,
+   "largeur": 116,
+   "hauteur": 54
+  },
+  "postulerVisibleSansDefiler": false,
+  "tiretCadratin": false
+ },
+ {
+  "fiche": "lancel",
+  "largeur": 390,
+  "hauteur": 844,
+  "pageDeborde": false,
+  "scrollWidth": 390,
+  "innerWidth": 390,
+  "dansUnVolet": false,
+  "couverture": {
+   "haut": 489,
+   "bas": 601,
+   "gauche": 16,
+   "droite": 374,
+   "largeur": 358,
+   "hauteur": 112
+  },
+  "volet": null,
+  "imageChargee": true,
+  "imageSrc": "http://127.0.0.1:3036/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Fcatwalks-storage-medias-publics%2Fjobs%2Fcm",
+  "logo": {
+   "haut": 577,
+   "bas": 625,
+   "gauche": 16,
+   "droite": 64,
+   "largeur": 48,
+   "hauteur": 48
+  },
+  "logoSrc": "monogramme:L",
+  "nomMaison": {
+   "haut": 608,
+   "bas": 625,
+   "gauche": 76,
+   "droite": 117,
+   "largeur": 41,
+   "hauteur": 18
+  },
+  "chevauchementLogo": 24,
+  "postuler": {
+   "haut": 751,
+   "bas": 805,
+   "gauche": 16,
+   "droite": 132,
+   "largeur": 116,
+   "hauteur": 54
+  },
+  "postulerVisibleSansDefiler": true,
+  "tiretCadratin": false
+ },
+ {
+  "fiche": "lancel",
+  "largeur": 768,
+  "hauteur": 1024,
+  "pageDeborde": false,
+  "scrollWidth": 768,
+  "innerWidth": 768,
+  "dansUnVolet": false,
+  "couverture": {
+   "haut": 465,
+   "bas": 665,
+   "gauche": 16,
+   "droite": 752,
+   "largeur": 736,
+   "hauteur": 200
+  },
+  "volet": null,
+  "imageChargee": true,
+  "imageSrc": "http://127.0.0.1:3036/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Fcatwalks-storage-medias-publics%2Fjobs%2Fcm",
+  "logo": {
+   "haut": 641,
+   "bas": 689,
+   "gauche": 16,
+   "droite": 64,
+   "largeur": 48,
+   "hauteur": 48
+  },
+  "logoSrc": "monogramme:L",
+  "nomMaison": {
+   "haut": 672,
+   "bas": 689,
+   "gauche": 76,
+   "droite": 117,
+   "largeur": 41,
+   "hauteur": 18
+  },
+  "chevauchementLogo": 24,
+  "postuler": {
+   "haut": 815,
+   "bas": 869,
+   "gauche": 16,
+   "droite": 132,
+   "largeur": 116,
+   "hauteur": 54
+  },
+  "postulerVisibleSansDefiler": true,
+  "tiretCadratin": false
+ },
+ {
+  "fiche": "lancel",
+  "largeur": 1440,
+  "hauteur": 900,
+  "pageDeborde": false,
+  "scrollWidth": 1440,
+  "innerWidth": 1440,
+  "dansUnVolet": false,
+  "couverture": {
+   "haut": 422,
+   "bas": 622,
+   "gauche": 112,
+   "droite": 1328,
+   "largeur": 1216,
+   "hauteur": 200
+  },
+  "volet": null,
+  "imageChargee": true,
+  "imageSrc": "http://127.0.0.1:3036/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Fcatwalks-storage-medias-publics%2Fjobs%2Fcm",
+  "logo": {
+   "haut": 598,
+   "bas": 646,
+   "gauche": 112,
+   "droite": 160,
+   "largeur": 48,
+   "hauteur": 48
+  },
+  "logoSrc": "monogramme:L",
+  "nomMaison": {
+   "haut": 628,
+   "bas": 646,
+   "gauche": 172,
+   "droite": 213,
+   "largeur": 41,
+   "hauteur": 18
+  },
+  "chevauchementLogo": 24,
+  "postuler": {
+   "haut": 781,
+   "bas": 835,
+   "gauche": 112,
+   "droite": 228,
+   "largeur": 116,
+   "hauteur": 54
+  },
+  "postulerVisibleSansDefiler": true,
+  "tiretCadratin": false
+ },
+ {
+  "fiche": "mandat",
+  "largeur": 320,
+  "hauteur": 568,
+  "pageDeborde": false,
+  "scrollWidth": 320,
+  "innerWidth": 320,
+  "dansUnVolet": false,
+  "couverture": {
+   "haut": 489,
+   "bas": 579,
+   "gauche": 16,
+   "droite": 304,
+   "largeur": 288,
+   "hauteur": 90
+  },
+  "volet": null,
+  "imageChargee": true,
+  "imageSrc": "http://127.0.0.1:3036/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Fcatwalks-storage-medias-publics%2Fjobs%2Fcm",
+  "logo": {
+   "haut": 555,
+   "bas": 603,
+   "gauche": 16,
+   "droite": 64,
+   "largeur": 48,
+   "hauteur": 48
+  },
+  "logoSrc": "/picto.png",
+  "nomMaison": {
+   "haut": 586,
+   "bas": 603,
+   "gauche": 76,
+   "droite": 134,
+   "largeur": 58,
+   "hauteur": 18
+  },
+  "chevauchementLogo": 24,
+  "postuler": {
+   "haut": 781,
+   "bas": 835,
+   "gauche": 16,
+   "droite": 132,
+   "largeur": 116,
+   "hauteur": 54
+  },
+  "postulerVisibleSansDefiler": false,
+  "tiretCadratin": false
+ },
+ {
+  "fiche": "mandat",
+  "largeur": 375,
+  "hauteur": 667,
+  "pageDeborde": false,
+  "scrollWidth": 375,
+  "innerWidth": 375,
+  "dansUnVolet": false,
+  "couverture": {
+   "haut": 489,
+   "bas": 597,
+   "gauche": 16,
+   "droite": 359,
+   "largeur": 343,
+   "hauteur": 107
+  },
+  "volet": null,
+  "imageChargee": true,
+  "imageSrc": "http://127.0.0.1:3036/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Fcatwalks-storage-medias-publics%2Fjobs%2Fcm",
+  "logo": {
+   "haut": 573,
+   "bas": 621,
+   "gauche": 16,
+   "droite": 64,
+   "largeur": 48,
+   "hauteur": 48
+  },
+  "logoSrc": "/picto.png",
+  "nomMaison": {
+   "haut": 603,
+   "bas": 621,
+   "gauche": 76,
+   "droite": 134,
+   "largeur": 58,
+   "hauteur": 18
+  },
+  "chevauchementLogo": 24,
+  "postuler": {
+   "haut": 776,
+   "bas": 830,
+   "gauche": 16,
+   "droite": 132,
+   "largeur": 116,
+   "hauteur": 54
+  },
+  "postulerVisibleSansDefiler": false,
+  "tiretCadratin": false
+ },
+ {
+  "fiche": "mandat",
+  "largeur": 390,
+  "hauteur": 844,
+  "pageDeborde": false,
+  "scrollWidth": 390,
+  "innerWidth": 390,
+  "dansUnVolet": false,
+  "couverture": {
+   "haut": 489,
+   "bas": 601,
+   "gauche": 16,
+   "droite": 374,
+   "largeur": 358,
+   "hauteur": 112
+  },
+  "volet": null,
+  "imageChargee": true,
+  "imageSrc": "http://127.0.0.1:3036/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Fcatwalks-storage-medias-publics%2Fjobs%2Fcm",
+  "logo": {
+   "haut": 577,
+   "bas": 625,
+   "gauche": 16,
+   "droite": 64,
+   "largeur": 48,
+   "hauteur": 48
+  },
+  "logoSrc": "/picto.png",
+  "nomMaison": {
+   "haut": 608,
+   "bas": 625,
+   "gauche": 76,
+   "droite": 134,
+   "largeur": 58,
+   "hauteur": 18
+  },
+  "chevauchementLogo": 24,
+  "postuler": {
+   "haut": 781,
+   "bas": 835,
+   "gauche": 16,
+   "droite": 132,
+   "largeur": 116,
+   "hauteur": 54
+  },
+  "postulerVisibleSansDefiler": true,
+  "tiretCadratin": false
+ },
+ {
+  "fiche": "mandat",
+  "largeur": 768,
+  "hauteur": 1024,
+  "pageDeborde": false,
+  "scrollWidth": 768,
+  "innerWidth": 768,
+  "dansUnVolet": false,
+  "couverture": {
+   "haut": 465,
+   "bas": 665,
+   "gauche": 16,
+   "droite": 752,
+   "largeur": 736,
+   "hauteur": 200
+  },
+  "volet": null,
+  "imageChargee": true,
+  "imageSrc": "http://127.0.0.1:3036/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Fcatwalks-storage-medias-publics%2Fjobs%2Fcm",
+  "logo": {
+   "haut": 641,
+   "bas": 689,
+   "gauche": 16,
+   "droite": 64,
+   "largeur": 48,
+   "hauteur": 48
+  },
+  "logoSrc": "/picto.png",
+  "nomMaison": {
+   "haut": 672,
+   "bas": 689,
+   "gauche": 76,
+   "droite": 134,
+   "largeur": 58,
+   "hauteur": 18
+  },
+  "chevauchementLogo": 24,
+  "postuler": {
+   "haut": 815,
+   "bas": 869,
+   "gauche": 16,
+   "droite": 132,
+   "largeur": 116,
+   "hauteur": 54
+  },
+  "postulerVisibleSansDefiler": true,
+  "tiretCadratin": false
+ },
+ {
+  "fiche": "mandat",
+  "largeur": 1440,
+  "hauteur": 900,
+  "pageDeborde": false,
+  "scrollWidth": 1440,
+  "innerWidth": 1440,
+  "dansUnVolet": false,
+  "couverture": {
+   "haut": 422,
+   "bas": 622,
+   "gauche": 112,
+   "droite": 1328,
+   "largeur": 1216,
+   "hauteur": 200
+  },
+  "volet": null,
+  "imageChargee": true,
+  "imageSrc": "http://127.0.0.1:3036/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Fcatwalks-storage-medias-publics%2Fjobs%2Fcm",
+  "logo": {
+   "haut": 598,
+   "bas": 646,
+   "gauche": 112,
+   "droite": 160,
+   "largeur": 48,
+   "hauteur": 48
+  },
+  "logoSrc": "/picto.png",
+  "nomMaison": {
+   "haut": 628,
+   "bas": 646,
+   "gauche": 172,
+   "droite": 230,
+   "largeur": 58,
+   "hauteur": 18
+  },
+  "chevauchementLogo": 24,
+  "postuler": {
+   "haut": 781,
+   "bas": 835,
+   "gauche": 112,
+   "droite": 228,
+   "largeur": 116,
+   "hauteur": 54
+  },
+  "postulerVisibleSansDefiler": true,
+  "tiretCadratin": false
+ },
+ {
+  "fiche": "liste",
+  "largeur": 1024,
+  "hauteur": 768,
+  "pageDeborde": false,
+  "scrollWidth": 1024,
+  "innerWidth": 1024,
+  "dansUnVolet": true,
+  "couverture": {
+   "haut": 512,
+   "bas": 672,
+   "gauche": 446,
+   "droite": 992,
+   "largeur": 546,
+   "hauteur": 160
+  },
+  "volet": {
+   "haut": 512,
+   "bas": 1138,
+   "gauche": 446,
+   "droite": 992,
+   "largeur": 546,
+   "hauteur": 626
+  },
+  "imageChargee": true,
+  "imageSrc": "http://127.0.0.1:3036/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Fcatwalks-storage-medias-publics%2Fjobs%2Fcm",
+  "logo": {
+   "haut": 648,
+   "bas": 696,
+   "gauche": 478,
+   "droite": 526,
+   "largeur": 48,
+   "hauteur": 48
+  },
+  "logoSrc": "/picto.png",
+  "nomMaison": {
+   "haut": 678,
+   "bas": 696,
+   "gauche": 538,
+   "droite": 596,
+   "largeur": 58,
+   "hauteur": 18
+  },
+  "chevauchementLogo": 24,
+  "postuler": {
+   "haut": 871,
+   "bas": 925,
+   "gauche": 478,
+   "droite": 594,
+   "largeur": 116,
+   "hauteur": 54
+  },
+  "postulerVisibleSansDefiler": false,
+  "tiretCadratin": false
+ },
+ {
+  "fiche": "liste",
+  "largeur": 1440,
+  "hauteur": 900,
+  "pageDeborde": false,
+  "scrollWidth": 1440,
+  "innerWidth": 1440,
+  "dansUnVolet": true,
+  "couverture": {
+   "haut": 520,
+   "bas": 680,
+   "gauche": 633,
+   "droite": 1328,
+   "largeur": 695,
+   "hauteur": 160
+  },
+  "volet": {
+   "haut": 520,
+   "bas": 1278,
+   "gauche": 633,
+   "droite": 1328,
+   "largeur": 695,
+   "hauteur": 758
+  },
+  "imageChargee": true,
+  "imageSrc": "http://127.0.0.1:3036/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Fcatwalks-storage-medias-publics%2Fjobs%2Fcm",
+  "logo": {
+   "haut": 656,
+   "bas": 704,
+   "gauche": 665,
+   "droite": 713,
+   "largeur": 48,
+   "hauteur": 48
+  },
+  "logoSrc": "/picto.png",
+  "nomMaison": {
+   "haut": 686,
+   "bas": 704,
+   "gauche": 725,
+   "droite": 782,
+   "largeur": 58,
+   "hauteur": 18
+  },
+  "chevauchementLogo": 24,
+  "postuler": {
+   "haut": 839,
+   "bas": 893,
+   "gauche": 665,
+   "droite": 780,
+   "largeur": 116,
+   "hauteur": 54
+  },
+  "postulerVisibleSansDefiler": true,
+  "tiretCadratin": false
+ }
+]

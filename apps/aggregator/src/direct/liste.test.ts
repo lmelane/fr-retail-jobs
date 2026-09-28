@@ -146,3 +146,59 @@ describe('lecture de la liste publique (D-444)', () => {
     expect(servis).toBeLessThan(25);
   });
 });
+
+/**
+ * D-471 — LA MAISON DE LA LISTE PORTE SON DOMAINE ET SON LIEN AU REGISTRE. Une liste d'avant D-471 reste lisible (les deux
+ * restent vides) ; une valeur présente mais hors forme est IGNORÉE et son chemin signalé (`ecarts`), l'offre reste :
+ * sur la liste, un champ facultatif mal formé ne retire jamais une offre, sans rien deviner à sa place.
+ */
+describe('domaine et lien au registre de la Maison (D-471)', () => {
+  const ID = 'cmtkdvxgl1soynf2buwtrw9nd';
+
+  it('une liste d’avant D-471 reste lisible : domaine et lien restent vides', () => {
+    // PRÉMISSE : la forme servie en production au 27/09/2026 ne porte aucun des deux champs.
+    expect(offreListe().maison).toEqual({ name: 'Maison Liste Témoin', slug: 'maison-liste-temoin' });
+    const lecture = lireListe([offreListe()]);
+    expect(lecture.refus).toEqual([]);
+    expect(offreCatalogueDepuisListe(lecture.offres[0].item, 'FR').maison).toEqual({
+      nom: 'Maison Liste Témoin', slug: 'maison-liste-temoin', domaine: null, catalogueId: null,
+    });
+  });
+
+  it('les deux champs servis entrent dans le contrat', () => {
+    const item = lireItemListe(offreListe({ maison: { name: 'Lancel', slug: 'lancel', domaine: 'lancel.com', catalogueId: ID } }));
+    expect(offreCatalogueDepuisListe(item, 'FR').maison).toEqual({ nom: 'Lancel', slug: 'lancel', domaine: 'lancel.com', catalogueId: ID });
+    // Servis à `null` par le backend : vides.
+    const vide = lireItemListe(offreListe({ maison: { name: 'Aesop', slug: 'aesop', domaine: null, catalogueId: null } }));
+    expect(offreCatalogueDepuisListe(vide, 'FR').maison).toMatchObject({ domaine: null, catalogueId: null });
+  });
+
+  it('une valeur hors forme est ignorée et signalée par son chemin ; l’offre reste lue (un logo ne fige pas les retraits)', () => {
+    const maison = (surcharge: Record<string, unknown>) => ({ name: 'Lancel', slug: 'lancel', ...surcharge });
+    const lecture = lireListe([
+      offreListe({ id: 'a', slug: 'a', maison: maison({ domaine: 'https://www.lancel.com' }) }),
+      offreListe({ id: 'b', slug: 'b', maison: maison({ domaine: '127.0.0.1' }) }),
+      offreListe({ id: 'c', slug: 'c', maison: maison({ domaine: 42 }) }),
+      offreListe({ id: 'd', slug: 'd', maison: maison({ catalogueId: '../registre' }) }),
+      offreListe({ id: 'e', slug: 'e', maison: maison({ catalogueId: ID.toUpperCase() }) }),
+      offreListe({ id: 'f', slug: 'f', maison: maison({ domaine: 'lancel.com', catalogueId: ID }) }),
+      offreListe({ id: 'g', slug: 'g', maison: maison({ catalogueId: '3f2b8c1e-9d4a-4c6b-8e2f-1a7b9c0d5e6f' }) }),
+    ]);
+    expect(lecture.refus).toEqual([]);
+    expect(lecture.offres.map((o) => [o.id, o.item.ecarts])).toEqual([
+      ['a', ['liste[0].maison.domaine']], ['b', ['liste[1].maison.domaine']], ['c', ['liste[2].maison.domaine']],
+      ['d', ['liste[3].maison.catalogueId']], ['e', ['liste[4].maison.catalogueId']], ['f', []], ['g', []],
+    ]);
+    const maisonDe = (id: string) => lecture.offres.find((o) => o.id === id)!.item.maison;
+    expect(maisonDe('a')).toMatchObject({ nom: 'Lancel', domaine: null, catalogueId: null });
+    expect(maisonDe('f')).toMatchObject({ domaine: 'lancel.com', catalogueId: ID });
+    // Un identifiant UUID du registre (12 sociétés canoniques au 27/09/2026) est un lien valide.
+    expect(maisonDe('g')).toMatchObject({ catalogueId: '3f2b8c1e-9d4a-4c6b-8e2f-1a7b9c0d5e6f' });
+    // Le contrat servi à la projection reste lisible : l'offre entre au catalogue.
+    expect(offreCatalogueDepuisListe(lecture.offres[0].item, 'FR').maison).toMatchObject({ domaine: null });
+  });
+
+  it('un mandat reste sans Maison, donc sans domaine ni lien', () => {
+    expect(offreCatalogueDepuisListe(lireItemListe(offreListe({ maison: null })), 'FR').maison).toBeNull();
+  });
+});

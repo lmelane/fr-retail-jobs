@@ -31,7 +31,8 @@ function journaliser(ligne: Record<string, unknown>): void {
 
 export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const requestId = requestIdDepuis(request);
-  const refus = refuserSiCleInvalide(request, requestId);
+  // D-464 §3 : le backend lit aussi la fiche d'une offre (les démarches, R-133), avec sa propre clé.
+  const refus = refuserSiCleInvalide(request, requestId, ['site', 'backend']);
   if (refus) return refus;
   const debut = Date.now();
   const { id } = await params;
@@ -57,7 +58,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     // n'a donc pas de bloc Maison : pas d'encadré « Catwalks recrute sur N postes », qui compterait tous les mandats.
     const [similaires, maison] = await Promise.all([
       getSimilarJobs(job, 6, langueDemandee),
-      estMandatCatwalks(job) ? null : getCompanyAside(job.company),
+      estMandatCatwalks(job) ? null : getCompanyAside(job.company, job.companyId ?? null),
     ]);
     // Lot 8 : une offre lue seule est libellée dans la langue du marché de son pays.
     const langue = langueDemandee ?? langueDesLibellesDuPays(job.countryCode);

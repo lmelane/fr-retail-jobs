@@ -35,7 +35,7 @@ type Libelles = {
   countryLabel: string | null;
 };
 
-export type JobListe = Omit<JobRow, 'description'> & Libelles;
+export type JobListe = Omit<JobRow, 'description' | 'visuel'> & Libelles;
 export type JobFiche = JobRow & Libelles;
 export type JobsResultListe = Omit<JobsResult, 'jobs'> & { jobs: JobListe[] };
 
@@ -68,9 +68,9 @@ function libelles(job: JobRow, langue: LangueLibelles): Libelles {
   };
 }
 
-/** Une ligne de liste : sans description, avec ses libellés dans la langue demandée. */
+/** Une ligne de liste : sans description ni visuel (D-471, fiche seule), avec ses libellés dans la langue demandée. */
 export function projeterLigne(job: JobRow, langue: LangueLibelles = 'fr'): JobListe {
-  const { description: _description, ...reste } = job;
+  const { description: _description, visuel: _visuel, ...reste } = job;
   return { ...reste, ...libelles(job, langue) };
 }
 

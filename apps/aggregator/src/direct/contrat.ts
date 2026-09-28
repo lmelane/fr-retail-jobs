@@ -22,13 +22,20 @@ export type LieuCatalogue = {
   longitude: number | null;
 };
 
+/**
+ * La Maison publique d'une offre (D-315). D-471 : son domaine, hôte nu saisi par l'équipe (le logo), et la société du
+ * registre que l'équipe lui a liée (`Company.id`, qui prime sur le rattachement par le nom). Absents du flux et d'une
+ * liste antérieure à D-471 : `null`, jamais devinés.
+ */
+export type MaisonCatalogue = { nom: string; slug: string; domaine: string | null; catalogueId: string | null };
+
 export type OffreCatalogueV1 = {
   version: 1;
   id: string;
   slug: string;
   anciensSlugs: string[];
   titre: string;
-  maison: { nom: string; slug: string } | null;
+  maison: MaisonCatalogue | null;
   univers: string[];
   specialisations: string[];
   metier: { slug: string; libelle: string } | null;
@@ -82,6 +89,32 @@ const liste = (v: unknown, chemin: string): string[] => {
   if (!Array.isArray(v) || v.length > 50) throw new ContratInvalideError(chemin, 'liste de chaînes attendue');
   return v.map((x, i) => texte(x, `${chemin}[${i}]`, 200));
 };
+/** D-471 : la forme exacte que les routes de logo acceptent (`DOMAIN_RE`, `apps/api/app/api/logo/route.ts`), extension alphabétique. */
+const DOMAINE = /^[a-z0-9-]{1,63}(\.[a-z0-9-]{1,63}){1,3}$/;
+const EXTENSION = /\.(?:[a-z]{2,63}|xn--[a-z0-9-]{1,59})$/;
+/**
+ * Absent ou `null` : aucun domaine. Présent : un hôte nu valide, sinon une erreur à son chemin. Sur le flux, l'offre est
+ * alors refusée ; la liste (`liste.ts`, `facultatif`) l'attrape, garde l'offre sans domaine et signale le chemin.
+ */
+export const domaineOuNull = (v: unknown, chemin: string): string | null => {
+  if (v === null || v === undefined) return null;
+  const s = texte(v, chemin, 253);
+  if (!DOMAINE.test(s) || !EXTENSION.test(s)) throw new ContratInvalideError(chemin, 'domaine (hôte nu) attendu');
+  return s;
+};
+/**
+ * Un identifiant du registre : un `cuid` (le défaut de `Company.id`), ou un UUID, forme de 12 sociétés canoniques créées
+ * par les scripts de domaines (`randomUUID()`). Les deux formes, rien d'autre : sur les 1 966 sociétés canoniques du
+ * 27/09/2026, 1 954 cuid, 12 UUID, aucune autre (`audits/2026-09-27/scripts/maisons-catwalks-registre.mts`, mesure I).
+ */
+export const ID_REGISTRE = /^(?:[a-z0-9]{8,40}|[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})$/;
+/** Absent ou `null` : aucun lien. Présent : un identifiant du registre, sinon une erreur — même traitement que le domaine. */
+export const idRegistreOuNull = (v: unknown, chemin: string): string | null => {
+  if (v === null || v === undefined) return null;
+  const s = texte(v, chemin, 40);
+  if (!ID_REGISTRE.test(s)) throw new ContratInvalideError(chemin, 'identifiant du registre attendu');
+  return s;
+};
 const dateIso = (v: unknown, chemin: string): string => {
   const s = texte(v, chemin, 40);
   if (Number.isNaN(Date.parse(s))) throw new ContratInvalideError(chemin, 'date ISO attendue');
@@ -115,7 +148,12 @@ export function lireOffre(v: unknown, chemin = 'offre'): OffreCatalogueV1 {
     slug: identifiant(o.slug, `${chemin}.slug`),
     anciensSlugs: liste(o.anciensSlugs, `${chemin}.anciensSlugs`),
     titre: texte(o.titre, `${chemin}.titre`, 500),
-    maison: maison && { nom: texte(maison.nom, `${chemin}.maison.nom`, 200), slug: identifiant(maison.slug, `${chemin}.maison.slug`) },
+    maison: maison && {
+      nom: texte(maison.nom, `${chemin}.maison.nom`, 200),
+      slug: identifiant(maison.slug, `${chemin}.maison.slug`),
+      domaine: domaineOuNull(maison.domaine, `${chemin}.maison.domaine`),
+      catalogueId: idRegistreOuNull(maison.catalogueId, `${chemin}.maison.catalogueId`),
+    },
     univers: liste(o.univers, `${chemin}.univers`),
     specialisations: liste(o.specialisations, `${chemin}.specialisations`),
     metier: metier && { slug: identifiant(metier.slug, `${chemin}.metier.slug`), libelle: texte(metier.libelle, `${chemin}.metier.libelle`, 200) },

@@ -27,9 +27,13 @@
  *       « métier » ne les excluent plus (`contexte.ts`) ;
  *   5 — D-468 §1 : la ville et le code postal de la liste publique entrent
  *       dans la projection (`city`, `postalCode`, texte indexé) ; le filtre
- *       « ville » retrouve les offres Catwalks.
+ *       « ville » retrouve les offres Catwalks ;
+ *   6 — D-471 : le lien au registre posé dans le back-office prime sur le nom
+ *       (`companyId`), et l'offre porte le domaine de son logo
+ *       (`companyDomain` : celui de la Maison, sinon celui de la société
+ *       rattachée).
  */
-export const CORRESPONDANCE_DIRECTE_VERSION = 5;
+export const CORRESPONDANCE_DIRECTE_VERSION = 6;
 
 export type DimensionsEmploi = {
   employmentTerm: string | null;

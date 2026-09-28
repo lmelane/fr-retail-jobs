@@ -1,0 +1,37 @@
+garde {"base":"railway","role":"catwalks_audit","maintenant":"2026-09-27T21:29:38.936021+00:00","lectureSeule":"on"}
+registre	{"societes": 2045, "canoniques": 1966, "parSourceDeDomaine": {"manual": 329, "(aucun)": 2, "wikidata": 325, "source-careers": 169, "https://www.urbn.com/": 1, "logos-relu-2026-09-25": 153, "https://www.pina.earth/": 1, "registre-relu-2026-09-18": 40, "https://careers.tricoci.com/": 1, "https://careers.shiseido.com/": 1, "https://www.hades.com/imprint": 1, "https://www.saltrock.de/karriere": 1, "https://careers.groupe-rocher.com/": 1, "https://www.hellomateo.de/unternehmen/karriere": 1, "https://www.kenteurope.com/karriere/darum-kent/": 1, "https://www.samson-partner.de/home/karriere.html": 1, "https://jobs.puig.com/job/Paris-Responsable-RP/1425151733/": 1, "https://careers.otb.net/job/Vienna-Aushilfe-im-Verkauf-%28mwd%29/1369861057/": 1, "https://careers.saksglobal.com/us/en/job/R-108463/Selling-Advisor-Contemporary": 1, "https://jobs.aptar.com/job/Dortmund-Light-Setter-%28mwd%29-NW-44319/1434270833/": 1, "https://careers.coty.com/job/London-Brand-Finance-Manager-LND-SW19-4DR/1425146333/": 1, "https://stores-na-urbn.icims.com/jobs/27241/terrain-design-services-artisan/job?hub=15&in_iframe=1": 1, "https://menusandvenues-na-urbn.icims.com/jobs/28277/terrain-cafe-%7c-devon-%7c-host/job?hub=15&in_iframe=1": 1, "https://supplychain-na-urbn.icims.com/jobs/24676/nuuly-inspection-clerk--night-shift/job?hub=15&in_iframe=1": 1, "https://homeoffice-na-urbn.icims.com/jobs/16023/anthropologie-senior-designer---print-%26-concept/job?hub=15&in_iframe=1": 1, "https://stores-eu-urbn.icims.com/jobs/23460/urban-outfitters-visual-coordinator---utrecht-oudegracht%2c-nl/job?hub=15&in_iframe=1": 1, "https://homeoffice-na-urbn.icims.com/jobs/17325/free-people-associate-designer---apparel-graphics-%26-craft/job?hub=15&in_iframe=1": 1}, "canoniquesAvecDomaine": 1039}
+Maison des offres Catwalks	{"maison": "Catwalks", "offres": 21, "domaine": null, "societe": null, "rattachee": false, "sourceDomaine": null}
+Maison des offres Catwalks	{"maison": "L'Atelier du sourcil", "offres": 6, "domaine": null, "societe": null, "rattachee": false, "sourceDomaine": null}
+Maison des offres Catwalks	{"maison": "Maison Francis Kurkdjian", "offres": 5, "domaine": "franciskurkdjian.com", "societe": "Maison Francis Kurkdjian", "rattachee": true, "sourceDomaine": "wikidata"}
+Maison des offres Catwalks	{"maison": "Marella", "offres": 3, "domaine": "marella.com", "societe": "Marella", "rattachee": true, "sourceDomaine": "manual"}
+Maison des offres Catwalks	{"maison": "Meilleur Moment", "offres": 3, "domaine": null, "societe": null, "rattachee": false, "sourceDomaine": null}
+Maison des offres Catwalks	{"maison": "JFG Clinic", "offres": 2, "domaine": null, "societe": null, "rattachee": false, "sourceDomaine": null}
+Maison des offres Catwalks	{"maison": "La Bonne Brosse", "offres": 2, "domaine": "labonnebrosse.com", "societe": "La Bonne Brosse", "rattachee": true, "sourceDomaine": "manual"}
+Maison des offres Catwalks	{"maison": "Lancel", "offres": 2, "domaine": "lancel.com", "societe": "LANCEL", "rattachee": true, "sourceDomaine": "wikidata"}
+Maison des offres Catwalks	{"maison": "Aesop", "offres": 1, "domaine": null, "societe": null, "rattachee": false, "sourceDomaine": null}
+Maison des offres Catwalks	{"maison": "Bastille Parfums", "offres": 1, "domaine": null, "societe": null, "rattachee": false, "sourceDomaine": null}
+Maison des offres Catwalks	{"maison": "Canada Goose", "offres": 1, "domaine": "canada-goose.com", "societe": "Canada Goose", "rattachee": true, "sourceDomaine": "wikidata"}
+Maison des offres Catwalks	{"maison": "Frame", "offres": 1, "domaine": null, "societe": "Frame", "rattachee": true, "sourceDomaine": null}
+Maison des offres Catwalks	{"maison": "Guerlain", "offres": 1, "domaine": "guerlain.com", "societe": "Guerlain", "rattachee": true, "sourceDomaine": "wikidata"}
+Maison des offres Catwalks	{"maison": "L'Occitane en Provence", "offres": 1, "domaine": "loccitane.com", "societe": "L’Occitane en Provence", "rattachee": true, "sourceDomaine": "source-careers"}
+Maison des offres Catwalks	{"maison": "Loewe Parfums", "offres": 1, "domaine": null, "societe": null, "rattachee": false, "sourceDomaine": null}
+Maison des offres Catwalks	{"maison": "Maison 21G", "offres": 1, "domaine": null, "societe": null, "rattachee": false, "sourceDomaine": null}
+Maison des offres Catwalks	{"maison": "Officine Universelle Buly", "offres": 1, "domaine": "buly1803.com", "societe": "Officine Universelle Buly", "rattachee": true, "sourceDomaine": "manual"}
+Maison des offres Catwalks	{"maison": "Oh My Cream", "offres": 1, "domaine": "ohmycream.com", "societe": "Oh My Cream", "rattachee": true, "sourceDomaine": "source-careers"}
+Maison des offres Catwalks	{"maison": "Polène", "offres": 1, "domaine": "polene-paris.com", "societe": "Polène", "rattachee": true, "sourceDomaine": "wikidata"}
+Maison des offres Catwalks	{"maison": "Sabon", "offres": 1, "domaine": "sabon.fr", "societe": "Sabon", "rattachee": true, "sourceDomaine": "wikidata"}
+Maison des offres Catwalks	{"maison": "Sézane", "offres": 1, "domaine": "sezane.com", "societe": "Sézane", "rattachee": true, "sourceDomaine": "wikidata"}
+Maison des offres Catwalks	{"maison": "Sisley", "offres": 1, "domaine": "sisley-paris.com", "societe": "Sisley", "rattachee": true, "sourceDomaine": "wikidata"}
+Maison des offres Catwalks	{"maison": "TYPOLOGY", "offres": 1, "domaine": "typology.com", "societe": "Typology", "rattachee": true, "sourceDomaine": "wikidata"}
+candidats du sélecteur pour une Maison non rattachée	{"mot": "aesop", "maison": "Aesop", "candidats": null}
+candidats du sélecteur pour une Maison non rattachée	{"mot": "bastille", "maison": "Bastille Parfums", "candidats": null}
+candidats du sélecteur pour une Maison non rattachée	{"mot": "jfg", "maison": "JFG Clinic", "candidats": null}
+candidats du sélecteur pour une Maison non rattachée	{"mot": "sourcil", "maison": "L'Atelier du sourcil", "candidats": null}
+candidats du sélecteur pour une Maison non rattachée	{"mot": "loewe", "maison": "Loewe Parfums", "candidats": [{"name": "Loewe", "domain": "loewe.com", "offres": 80}, {"name": "Perfumes Loewe", "domain": "loewe.com", "offres": 7}]}
+candidats du sélecteur pour une Maison non rattachée	{"mot": "21g", "maison": "Maison 21G", "candidats": null}
+candidats du sélecteur pour une Maison non rattachée	{"mot": "meilleur", "maison": "Meilleur Moment", "candidats": null}
+candidats du sélecteur pour une Maison non rattachée	{"mot": "moment", "maison": "Meilleur Moment", "candidats": null}
+forme des identifiants du registre	{"cuid": 1954, "uuid": 12, "autre": 0, "canoniques": 1966}
+salaire des offres Catwalks	{"offres": 59, "avecSalaire": 59}
+Lancel au registre	{"ats": "UNKNOWN", "domaine": "lancel.com", "societe": "LANCEL", "fusionnee": false, "decouverte": "PENDING", "offresTotal": 0, "siteCarriere": null, "sourceDomaine": "wikidata", "noteDecouverte": null, "offresPubliables": 0}
+visuels des offres Catwalks	{"hotes": {"storage.googleapis.com": 59}, "offres": 59, "avecVisuel": 59}

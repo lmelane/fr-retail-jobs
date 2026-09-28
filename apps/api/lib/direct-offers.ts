@@ -59,7 +59,12 @@ export function directToRow(d: DirectOffer): JobRow {
     candidature: { type: 'CATWALKS', offreId: d.id, slug: d.slug, url: d.applyUrl },
     title: d.title,
     company: d.company,
-    companyDomain: null,
+    // D-471 : projeté par le lecteur (correspondance version 6) — le domaine saisi pour la Maison, sinon celui de la
+    // société rattachée ; null pour un mandat, dont le site affiche le logo Catwalks.
+    companyDomain: d.companyDomain,
+    // D-471 : la société rattachée par le lecteur ; le bloc Maison et « même employeur » la suivent avant le nom.
+    companyId: d.companyId,
+    visuel: d.visuel,
     group: null,
     city: d.city,
     location: d.location,

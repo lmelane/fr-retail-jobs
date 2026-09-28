@@ -5,6 +5,7 @@ import { offreListe } from './fixture.js';
 import { LISTE_PLAFOND, ListeIndisponibleError, ListeInvalideError, type SourceListe } from './liste.js';
 import { ETAT_LISTE, passeReussie, synchroniserListe, type StatsPhoto } from './photo.js';
 import { CORRESPONDANCE_DIRECTE_VERSION } from './vocabulaire.js';
+import { log } from '../observability/logger.js';
 
 /**
  * D-444 — LA PHOTO DE LA LISTE PUBLIQUE, SUR UNE VRAIE BASE. Présente : publiable ; absente d'une photo complète :
@@ -19,6 +20,9 @@ const P = 'photoD444';
 const S = 'photo-d444-';
 const MAISON = 'Maison Photo Témoin';
 const GROUPE = 'Groupe Photo Témoin';
+/** D-471 : une société liée au back-office et un lien vers une société absente, à la forme d'un identifiant du registre. */
+const LIEE = 'photod444liee00001';
+const INCONNUE = 'photod444inconnue01';
 /** Une génération de recherche propre au témoin : ses entrées en file se comptent sans celles des autres générations. */
 const GENERATION = 'search-temoin-photo';
 
@@ -46,6 +50,7 @@ describe.skipIf(!enabled)('la photo des offres Catwalks (D-444)', () => {
     await prisma.companyAlias.deleteMany({ where: { companyId: { startsWith: S } } });
     await prisma.company.deleteMany({ where: { id: { startsWith: S }, mergedIntoId: { not: null } } });
     await prisma.company.deleteMany({ where: { id: { startsWith: S } } });
+    await prisma.company.deleteMany({ where: { id: LIEE } });
     await prisma.searchPending.deleteMany({ where: { id: { startsWith: `cw_${P}` } } });
   };
   // Paris (avec Maison du registre), Nice (mandat), New York, Monaco : les coordonnées de la liste de production, avec la
@@ -233,6 +238,31 @@ describe.skipIf(!enabled)('la photo des offres Catwalks (D-444)', () => {
     expect(await ligne('Double')).toMatchObject({ company: 'Maison Double', companyId: null });
     await prisma.directOffer.deleteMany({ where: { id: { in: [`${P}Occitane`, `${P}Double`] } } });
     await prisma.company.deleteMany({ where: { id: { in: [`${S}occitane`, `${S}double-a`, `${S}double-b`] } } });
+  });
+
+  it('D-471 — le lien du back-office prime sur le nom et le domaine suit ; un lien inconnu retombe sur le nom, et la passe le signale', async () => {
+    await prisma.company.create({ data: { id: LIEE, name: 'Société Liée Témoin', canonicalKey: LIEE, fashionjobsUrl: `resolved:${LIEE}`, domain: 'societe-liee.example' } });
+    const ctx = await chargerContexte(prisma);
+    // PRÉMISSE : par son seul nom, l'offre se rattacherait à la Maison du témoin, pas à la société liée.
+    expect(ctx.rattacher(MAISON)).toBe(`${S}maison`);
+    const avertissements = vi.spyOn(log, 'warn');
+    const stats = await synchroniserListe(prisma, source([...BASE,
+      offre('Liee', { maison: { name: MAISON, slug: 'maison-photo-temoin', domaine: null, catalogueId: LIEE } }),
+      offre('Inconnue', { maison: { name: MAISON, slug: 'maison-photo-temoin', domaine: 'maison-photo.example', catalogueId: INCONNUE } }),
+      offre('HorsForme', { maison: { name: MAISON, slug: 'maison-photo-temoin', domaine: 'https://www.maison-photo.example', catalogueId: null } })]), { contexte: ctx });
+    // Un domaine hors forme ne refuse pas l'offre : la photo reste complète, l'offre est écrite sans lui, la passe le signale.
+    expect(stats.complete).toBe(true);
+    expect(await ligne('HorsForme')).toMatchObject({ companyId: `${S}maison`, companyDomain: null, eligible: true });
+    expect(stats.champsIgnores).toEqual([{ id: `${P}HorsForme`, chemins: [expect.stringMatching(/\.maison\.domaine$/)] }]);
+    expect(avertissements).toHaveBeenCalledWith('direct.champs_ignores', expect.any(String), { champsIgnores: stats.champsIgnores });
+    expect(await ligne('Liee')).toMatchObject({ companyId: LIEE, companyDomain: 'societe-liee.example' });
+    // Le lien inconnu ne rattache pas à sa place : le nom reprend la main ; le domaine saisi pour la Maison prime.
+    expect(await ligne('Inconnue')).toMatchObject({ companyId: `${S}maison`, companyDomain: 'maison-photo.example' });
+    expect(stats.liensInconnus).toEqual([INCONNUE]);
+    expect(avertissements).toHaveBeenCalledWith('direct.liens_registre_inconnus', expect.any(String), { liensInconnus: [INCONNUE] });
+    avertissements.mockRestore();
+    await prisma.directOffer.deleteMany({ where: { id: { in: [`${P}Liee`, `${P}Inconnue`, `${P}HorsForme`] } } });
+    await prisma.company.deleteMany({ where: { id: LIEE } });
   });
 
   it('la correspondance antérieure est re-projetée avant la photo, sans version ni éligibilité touchées', async () => {

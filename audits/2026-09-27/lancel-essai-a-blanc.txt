@@ -1,0 +1,2 @@
+{"offres":33,"annoncees":33,"complete":true,"methode":"SITEMAP_URLSET_WITH_DETAIL_READ","fin":"ALL_LISTED_PAGES_READ","anomalies":[],"pays":{"FR":33},"employeur":{"Lancel":33}}
+{"offresCatwalksPourLancel":[{"titre":"Directeur·rice de boutique","ville":"Lyon"},{"titre":"Responsable de boutique","ville":"Paris"}],"memePosteMemeVille":0}

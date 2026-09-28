@@ -1,19 +1,21 @@
 import { assertBusinessUrl } from '@catwalks/runtime';
 import { assertPipelineRunning } from '../lib/pipelinePause.js';
-import { ContratInvalideError, lireOffre, type OffreCatalogueV1 } from './contrat.js';
+import { ContratInvalideError, domaineOuNull, idRegistreOuNull, lireOffre, type MaisonCatalogue, type OffreCatalogueV1 } from './contrat.js';
 
 /**
  * LA LISTE PUBLIQUE DES OFFRES CATWALKS, TELLE QUE L'AGRÉGATEUR LA LIT (D-444).
  *
  * `GET https://catwalks.api.catwalks.io/api/jobs` est la liste que le site sert déjà à `/offres` : un tableau JSON des
- * offres en ligne, 29 champs chacune en production au 25/09/2026, 31 avec la ville et le code postal de D-468 §1
- * (`catwalks-backend/src/app/api/jobs/route.ts`, `b51d2b2` sur la branche `development`, non livré au 25/09/2026),
- * sans pagination, plafonnée à 500 (`take: 500`), la Maison déjà masquée
- * pour un mandat interne (`maisonPublique` : `maison: null`). Aucun champ pays : des coordonnées. D-444 en fait la PHOTO
+ * offres en ligne, 31 champs chacune en production depuis le 26/09/2026 (ville et code postal de D-468 §1, backend
+ * `1ca0d39`), sans pagination, plafonnée à 500 (`take: 500`), la Maison déjà masquée pour un mandat interne (`maison:
+ * null`). D-471 ajoute à la Maison son domaine et la société du registre que l'équipe lui a liée (`maisonPubliqueCatalogue`
+ * du backend, même masque). Aucun champ pays : des coordonnées. D-444 en fait la PHOTO
  * COMPLÈTE des offres publiables : présente, l'offre est publiable ; absente d'une photo complète, elle est retirée.
  *
  * Ce module ne fait confiance à rien. Chaque offre est relue champ par champ ; une offre qui ne se lit pas est REFUSÉE,
- * nommée par son chemin, et la photo n'est plus complète (aucun retrait). Une réponse qui n'est pas un tableau, ou qui
+ * nommée par son chemin, et la photo n'est plus complète (aucun retrait). Seule exception, D-471 : le domaine et le lien
+ * au registre de la Maison, facultatifs, sont ignorés et signalés quand ils sont hors forme (`ecarts`), sans refuser
+ * l'offre. Une réponse qui n'est pas un tableau, ou qui
  * porte deux fois le même identifiant, est INVALIDE tout entière. Les champs `reference` et `createdAt` ne sont pas lus.
  *
  * Une offre lue devient un contrat catalogue version 1 (`contrat.ts`), le vocabulaire que la projection sait déjà lire,
@@ -58,7 +60,14 @@ export type ItemListe = {
   contrat: string;
   tempsDeTravail: string;
   metier: { slug: string; libelle: string } | null;
-  maison: { nom: string; slug: string } | null;
+  /** D-471 : avec le domaine et le lien au registre que l'équipe a saisis ; `null` quand la liste ne les sert pas. */
+  maison: MaisonCatalogue | null;
+  /**
+   * D-471 : les chemins des champs FACULTATIFS reçus hors forme (le domaine et le lien de la Maison), ignorés. Refuser
+   * l'offre pour eux rendrait la photo incomplète, et une photo incomplète ne retire plus aucune offre : un logo ne doit
+   * pas pouvoir figer les retraits (audit du 27/09/2026). La passe les signale.
+   */
+  ecarts: string[];
 };
 
 export type RefusListe = { index: number; id: string | null; chemin: string; detail: string };
@@ -119,6 +128,16 @@ export function lireItemListe(v: unknown, chemin = 'offre'): ItemListe {
   if (typeof o.isActive !== 'boolean') throw new ContratInvalideError(`${chemin}.isActive`, 'booléen attendu');
   const maison = o.maison === null ? null : objet(o.maison, `${chemin}.maison`);
   const metier = o.jobCategoryRef === null || o.jobCategoryRef === undefined ? null : objet(o.jobCategoryRef, `${chemin}.jobCategoryRef`);
+  const ecarts: string[] = [];
+  const facultatif = (lire: (v: unknown, c: string) => string | null, v: unknown, c: string): string | null => {
+    try {
+      return lire(v, c);
+    } catch (error) {
+      if (!(error instanceof ContratInvalideError)) throw error;
+      ecarts.push(c);
+      return null;
+    }
+  };
   return {
     id: identifiant(o.id, `${chemin}.id`),
     slug: identifiant(o.slug, `${chemin}.slug`),
@@ -148,7 +167,15 @@ export function lireItemListe(v: unknown, chemin = 'offre'): ItemListe {
     contrat: texte(o.contractType, `${chemin}.contractType`, 50),
     tempsDeTravail: texte(o.workTime, `${chemin}.workTime`, 50),
     metier: metier && { slug: identifiant(metier.slug, `${chemin}.jobCategoryRef.slug`), libelle: texte(metier.label, `${chemin}.jobCategoryRef.label`, 200) },
-    maison: maison && { nom: texte(maison.name, `${chemin}.maison.name`, 200), slug: identifiant(maison.slug, `${chemin}.maison.slug`) },
+    maison: maison && {
+      nom: texte(maison.name, `${chemin}.maison.name`, 200),
+      slug: identifiant(maison.slug, `${chemin}.maison.slug`),
+      // D-471 : absents d'une liste antérieure (`null`) ; présents, relus avec les bornes du contrat ; hors forme, ignorés
+      // et signalés (`ecarts`), l'offre restant lue.
+      domaine: facultatif(domaineOuNull, maison.domaine, `${chemin}.maison.domaine`),
+      catalogueId: facultatif(idRegistreOuNull, maison.catalogueId, `${chemin}.maison.catalogueId`),
+    },
+    ecarts,
   };
 }
 

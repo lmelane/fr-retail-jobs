@@ -78,7 +78,8 @@
       ],
       "secretBindings": {
         "DATABASE_URL": "same-environment database URL; production binding preserved",
-        "CATALOGUE_API_KEY": "existing production key; isolated validation key"
+        "CATALOGUE_API_KEY": "existing production key; isolated validation key",
+        "CATALOGUE_API_KEY_BACKEND": "backend caller key (D-464 §3, D-471): offer page and registry search only; set in the same deployment as the image that declares it"
       },
       "runtimeExternalBusinessHosts": [],
       "schemaReadiness": "Read-only built-in migration names/checksums; migrations are applied separately through the release workflow",
@@ -171,7 +172,7 @@
     {
       "region": "europe-west4-drams3a",
       "replicas": 1,
-      "cronSchedule": "*/5 * * * *",
+      "cronSchedule": "7 * * * *",
       "preDeployCommand": null,
       "sleepApplication": false,
       "volumes": [],
@@ -224,7 +225,7 @@
         "hc-ping.com"
       ],
       "businessEgress": "GET https://catwalks.api.catwalks.io/api/jobs (the list) and /api/jobs/filters (the backend's own count of the same offers) only (fixed CATALOGUE_LISTE_URL, no redirect followed); no backend key, no outbox feed (D-444)",
-      "automaticExecution": "NOT ACTIVATED. Every 5 minutes once the production GO is given (D-444): service creation, dedicated check, PIPELINE_PAUSED=0; never during the 18:00 RUN",
+      "automaticExecution": "Hourly at minute 7 (D-474, 28/09/2026: Catwalks publishes about one offer a week; was every 5 minutes under D-444). Changing the Railway schedule and the dedicated Healthchecks check period (1 hour) are production gestures on explicit GO, never during the 18:00 RUN",
       "concurrencyPolicy": "One replica; a pass that finds the advisory lock held writes nothing",
       "pauseProof": {
         "event": "pipeline.paused",
@@ -233,7 +234,7 @@
       },
       "executionModes": {
         "paused": "PIPELINE_PAUSED=1: exit without operational side effects",
-        "normal": "sh apps/aggregator/start.sh direct-liste: one pass over the public list; writes only what changed; an empty list, a list at the 500 cap, a list whose length differs from the backend's count (or whose count is unavailable) and a partly unreadable list retire nothing and fail the pass; a backend outage writes no offer and fails the pass; a pass that finds a more recent read already noted (database clock) or the lock held writes nothing and fails; offers without an established country or outside every market are reported on each pass without failing it"
+        "normal": "sh apps/aggregator/start.sh direct-liste: one pass over the public list; writes only what changed; an empty list, a list at the 500 cap, a list whose length differs from the backend's count (or whose count is unavailable) and a partly unreadable list retire nothing and fail the pass; a backend outage writes no offer and fails the pass; a pass that finds a more recent read already noted (database clock) or the lock held writes nothing and fails; offers without an established country or outside every market are reported on each pass without failing it; a malformed Maison domain or registry link is ignored and reported (direct.champs_ignores), and a registry link to an unknown company falls back to the name and is reported (direct.liens_registre_inconnus), without failing the pass"
       }
     }
   ],

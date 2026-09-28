@@ -1,0 +1,246 @@
+[
+ {
+  "ecran": "1440x790",
+  "page": "directeur-rice-de-boutique-cw_temoind471lance",
+  "lcp": [
+   {
+    "t": 420,
+    "el": "IMG.cw-fiche__couverture-image",
+    "url": "https%3A%2F%2Fstorage.googleapis.com%2Fcatwalks-st",
+    "taille": 111058
+   },
+   {
+    "t": 424,
+    "el": "IMG.cw-hero__bg",
+    "url": "%2FHero%20Maison%20I%20-%20Upscaled.webp&w=1920&q=",
+    "taille": 508320
+   }
+  ],
+  "hero": {
+   "loading": "lazy",
+   "fetchpriority": null,
+   "visibleAuChargement": false,
+   "hauteur": 353
+  },
+  "couverture": {
+   "loading": null,
+   "fetchpriority": null
+  },
+  "preloads": [
+   "http://127.0.0.1:3036/logo-catwalks.svg",
+   "http://127.0.0.1:3036/picto.png",
+   "/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Fcatw"
+  ]
+ },
+ {
+  "ecran": "1440x790",
+  "page": "conseiller-ere-de-vente-en-alternance-paris-c",
+  "lcp": [
+   {
+    "t": 184,
+    "el": "IMG.cw-fiche__couverture-image",
+    "url": "https%3A%2F%2Fstorage.googleapis.com%2Fcatwalks-st",
+    "taille": 111058
+   },
+   {
+    "t": 208,
+    "el": "IMG.cw-hero__bg",
+    "url": "%2FHero%20Maison%20I%20-%20Upscaled.webp&w=1920&q=",
+    "taille": 508320
+   }
+  ],
+  "hero": {
+   "loading": "lazy",
+   "fetchpriority": null,
+   "visibleAuChargement": false,
+   "hauteur": 353
+  },
+  "couverture": {
+   "loading": null,
+   "fetchpriority": null
+  },
+  "preloads": [
+   "http://127.0.0.1:3036/logo-catwalks.svg",
+   "http://127.0.0.1:3036/picto.png",
+   "/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Fcatw"
+  ]
+ },
+ {
+  "ecran": "1440x790",
+  "page": "directeur-rice-de-boutique-cw_temoind471lance",
+  "lcp": [
+   {
+    "t": 148,
+    "el": "IMG.cw-fiche__couverture-image",
+    "url": "https%3A%2F%2Fstorage.googleapis.com%2Fcatwalks-st",
+    "taille": 242953
+   },
+   {
+    "t": 160,
+    "el": "IMG.cw-hero__bg",
+    "url": "%2FHero%20Maison%20I%20-%20Upscaled.webp&w=1920&q=",
+    "taille": 508320
+   }
+  ],
+  "hero": {
+   "loading": "lazy",
+   "fetchpriority": null,
+   "visibleAuChargement": true,
+   "hauteur": 353
+  },
+  "couverture": {
+   "loading": null,
+   "fetchpriority": null
+  },
+  "preloads": [
+   "http://127.0.0.1:3036/logo-catwalks.svg",
+   "/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Fcatw"
+  ]
+ },
+ {
+  "ecran": "1440x790",
+  "page": "/fr/emplois?marche=FR",
+  "lcp": [
+   {
+    "t": 132,
+    "el": "H2.cw-fiche__titre",
+    "url": "",
+    "taille": 22764
+   },
+   {
+    "t": 132,
+    "el": "IMG.cw-hero__bg",
+    "url": "%2FHero%20Maison%20I%20-%20Upscaled.webp&w=1920&q=",
+    "taille": 508320
+   }
+  ],
+  "hero": {
+   "loading": null,
+   "fetchpriority": null,
+   "visibleAuChargement": true,
+   "hauteur": 353
+  },
+  "couverture": {
+   "loading": "lazy",
+   "fetchpriority": null
+  },
+  "preloads": [
+   "http://127.0.0.1:3036/logo-catwalks.svg",
+   "/_next/image?url=%2FHero%20Maison%20I%20-%20Upscaled.webp&w=",
+   "http://127.0.0.1:3036/picto.png"
+  ]
+ },
+ {
+  "ecran": "390x664",
+  "page": "directeur-rice-de-boutique-cw_temoind471lance",
+  "lcp": [
+   {
+    "t": 176,
+    "el": "IMG.cw-fiche__couverture-image",
+    "url": "https%3A%2F%2Fstorage.googleapis.com%2Fcatwalks-st",
+    "taille": 39956
+   }
+  ],
+  "hero": {
+   "loading": "lazy",
+   "fetchpriority": null,
+   "visibleAuChargement": true,
+   "hauteur": 60
+  },
+  "couverture": {
+   "loading": null,
+   "fetchpriority": null
+  },
+  "preloads": [
+   "http://127.0.0.1:3036/logo-catwalks.svg",
+   "http://127.0.0.1:3036/picto.png",
+   "/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Fcatw"
+  ]
+ },
+ {
+  "ecran": "390x664",
+  "page": "conseiller-ere-de-vente-en-alternance-paris-c",
+  "lcp": [
+   {
+    "t": 160,
+    "el": "H1.cw-fiche__titre",
+    "url": "",
+    "taille": 13298
+   },
+   {
+    "t": 164,
+    "el": "IMG.cw-fiche__couverture-image",
+    "url": "https%3A%2F%2Fstorage.googleapis.com%2Fcatwalks-st",
+    "taille": 39956
+   }
+  ],
+  "hero": {
+   "loading": "lazy",
+   "fetchpriority": null,
+   "visibleAuChargement": true,
+   "hauteur": 60
+  },
+  "couverture": {
+   "loading": null,
+   "fetchpriority": null
+  },
+  "preloads": [
+   "http://127.0.0.1:3036/logo-catwalks.svg",
+   "http://127.0.0.1:3036/picto.png",
+   "/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Fcatw"
+  ]
+ },
+ {
+  "ecran": "390x664",
+  "page": "directeur-rice-de-boutique-cw_temoind471lance",
+  "lcp": [
+   {
+    "t": 188,
+    "el": "IMG.cw-fiche__couverture-image",
+    "url": "https%3A%2F%2Fstorage.googleapis.com%2Fcatwalks-st",
+    "taille": 39956
+   }
+  ],
+  "hero": {
+   "loading": "lazy",
+   "fetchpriority": null,
+   "visibleAuChargement": true,
+   "hauteur": 60
+  },
+  "couverture": {
+   "loading": null,
+   "fetchpriority": null
+  },
+  "preloads": [
+   "http://127.0.0.1:3036/logo-catwalks.svg",
+   "/_next/image?url=https%3A%2F%2Fstorage.googleapis.com%2Fcatw"
+  ]
+ },
+ {
+  "ecran": "390x664",
+  "page": "/fr/emplois?marche=FR",
+  "lcp": [
+   {
+    "t": 136,
+    "el": "IMG.cw-hero__bg",
+    "url": "%2FHero%20Maison%20I%20-%20Upscaled.webp&w=640&q=7",
+    "taille": 160290
+   }
+  ],
+  "hero": {
+   "loading": null,
+   "fetchpriority": null,
+   "visibleAuChargement": true,
+   "hauteur": 411
+  },
+  "couverture": {
+   "loading": "lazy",
+   "fetchpriority": null
+  },
+  "preloads": [
+   "http://127.0.0.1:3036/logo-catwalks.svg",
+   "/_next/image?url=%2FHero%20Maison%20I%20-%20Upscaled.webp&w=",
+   "http://127.0.0.1:3036/picto.png"
+  ]
+ }
+]

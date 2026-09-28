@@ -1,0 +1,1150 @@
+[
+ {
+  "w": 320,
+  "h": 568,
+  "scrollListe": 578,
+  "surOffre": {
+   "url": "/fr/emplois/directeur-rice-de-boutique-cw_temoind471lancel?marche=FR",
+   "scrollY": 0,
+   "docW": 320,
+   "header": {
+    "classe": "cw-header -transparent",
+    "bas": 60
+   },
+   "heroH": 60,
+   "menu": {
+    "top": 8,
+    "bas": 52,
+    "w": 44,
+    "h": 44,
+    "visible": true
+   },
+   "connexion": {
+    "top": 8,
+    "bas": 52,
+    "w": 95,
+    "h": 44,
+    "visible": true
+   },
+   "logo": {
+    "top": 25,
+    "bas": 35,
+    "w": 84,
+    "h": 11,
+    "visible": true
+   },
+   "retour": {
+    "top": 90,
+    "h": 18,
+    "href": "/fr/emplois?marche=FR",
+    "texte": "← Toutes les offres"
+   },
+   "recherche": false,
+   "filtres": false,
+   "couverture": {
+    "top": 138,
+    "h": 90,
+    "w": 288
+   },
+   "titre": true,
+   "titreTop": 264,
+   "salaire": true,
+   "salaireTexte": "45 000 EUR à 55 000 EUR par an",
+   "postuler": true,
+   "postulerBas": 460,
+   "nonConfirmees": false
+  },
+  "toutes": {
+   "url": "/fr/emplois?marche=FR",
+   "scrollY": 0,
+   "carteTop": 779,
+   "recherche": true
+  },
+  "retourArriere": {
+   "b1": {
+    "url": "/fr/emplois/directeur-rice-de-boutique-cw_temoind471lancel?marche=FR",
+    "scrollY": 0
+   },
+   "b2": {
+    "url": "/fr/emplois?marche=FR",
+    "scrollY": 578,
+    "carteTop": 201
+   }
+  }
+ },
+ {
+  "w": 360,
+  "h": 640,
+  "scrollListe": 505,
+  "surOffre": {
+   "url": "/fr/emplois/directeur-rice-de-boutique-cw_temoind471lancel?marche=FR",
+   "scrollY": 0,
+   "docW": 360,
+   "header": {
+    "classe": "cw-header -transparent",
+    "bas": 60
+   },
+   "heroH": 60,
+   "menu": {
+    "top": 8,
+    "bas": 52,
+    "w": 44,
+    "h": 44,
+    "visible": true
+   },
+   "connexion": {
+    "top": 8,
+    "bas": 52,
+    "w": 95,
+    "h": 44,
+    "visible": true
+   },
+   "logo": {
+    "top": 24,
+    "bas": 36,
+    "w": 100,
+    "h": 13,
+    "visible": true
+   },
+   "retour": {
+    "top": 90,
+    "h": 18,
+    "href": "/fr/emplois?marche=FR",
+    "texte": "← Toutes les offres"
+   },
+   "recherche": false,
+   "filtres": false,
+   "couverture": {
+    "top": 138,
+    "h": 103,
+    "w": 328
+   },
+   "titre": true,
+   "titreTop": 277,
+   "salaire": true,
+   "salaireTexte": "45 000 EUR à 55 000 EUR par an",
+   "postuler": true,
+   "postulerBas": 473,
+   "nonConfirmees": false
+  },
+  "toutes": {
+   "url": "/fr/emplois?marche=FR",
+   "scrollY": 0,
+   "carteTop": 758,
+   "recherche": true
+  },
+  "retourArriere": {
+   "b1": {
+    "url": "/fr/emplois/directeur-rice-de-boutique-cw_temoind471lancel?marche=FR",
+    "scrollY": 0
+   },
+   "b2": {
+    "url": "/fr/emplois?marche=FR",
+    "scrollY": 505,
+    "carteTop": 253
+   }
+  }
+ },
+ {
+  "w": 375,
+  "h": 667,
+  "scrollListe": 492,
+  "surOffre": {
+   "url": "/fr/emplois/directeur-rice-de-boutique-cw_temoind471lancel?marche=FR",
+   "scrollY": 0,
+   "docW": 375,
+   "header": {
+    "classe": "cw-header -transparent",
+    "bas": 60
+   },
+   "heroH": 60,
+   "menu": {
+    "top": 8,
+    "bas": 52,
+    "w": 44,
+    "h": 44,
+    "visible": true
+   },
+   "connexion": {
+    "top": 8,
+    "bas": 52,
+    "w": 95,
+    "h": 44,
+    "visible": true
+   },
+   "logo": {
+    "top": 24,
+    "bas": 36,
+    "w": 100,
+    "h": 13,
+    "visible": true
+   },
+   "retour": {
+    "top": 90,
+    "h": 18,
+    "href": "/fr/emplois?marche=FR",
+    "texte": "← Toutes les offres"
+   },
+   "recherche": false,
+   "filtres": false,
+   "couverture": {
+    "top": 138,
+    "h": 107,
+    "w": 343
+   },
+   "titre": true,
+   "titreTop": 282,
+   "salaire": true,
+   "salaireTexte": "45 000 EUR à 55 000 EUR par an",
+   "postuler": true,
+   "postulerBas": 477,
+   "nonConfirmees": false
+  },
+  "toutes": {
+   "url": "/fr/emplois?marche=FR",
+   "scrollY": 0,
+   "carteTop": 758,
+   "recherche": true
+  },
+  "retourArriere": {
+   "b1": {
+    "url": "/fr/emplois/directeur-rice-de-boutique-cw_temoind471lancel?marche=FR",
+    "scrollY": 0
+   },
+   "b2": {
+    "url": "/fr/emplois?marche=FR",
+    "scrollY": 492,
+    "carteTop": 266
+   }
+  }
+ },
+ {
+  "w": 390,
+  "h": 664,
+  "scrollListe": 461,
+  "surOffre": {
+   "url": "/fr/emplois/directeur-rice-de-boutique-cw_temoind471lancel?marche=FR",
+   "scrollY": 0,
+   "docW": 390,
+   "header": {
+    "classe": "cw-header -transparent",
+    "bas": 60
+   },
+   "heroH": 60,
+   "menu": {
+    "top": 8,
+    "bas": 52,
+    "w": 44,
+    "h": 44,
+    "visible": true
+   },
+   "connexion": {
+    "top": 8,
+    "bas": 52,
+    "w": 95,
+    "h": 44,
+    "visible": true
+   },
+   "logo": {
+    "top": 24,
+    "bas": 36,
+    "w": 100,
+    "h": 13,
+    "visible": true
+   },
+   "retour": {
+    "top": 90,
+    "h": 18,
+    "href": "/fr/emplois?marche=FR",
+    "texte": "← Toutes les offres"
+   },
+   "recherche": false,
+   "filtres": false,
+   "couverture": {
+    "top": 138,
+    "h": 112,
+    "w": 358
+   },
+   "titre": true,
+   "titreTop": 286,
+   "salaire": true,
+   "salaireTexte": "45 000 EUR à 55 000 EUR par an",
+   "postuler": true,
+   "postulerBas": 482,
+   "nonConfirmees": false
+  },
+  "toutes": {
+   "url": "/fr/emplois?marche=FR",
+   "scrollY": 0,
+   "carteTop": 725,
+   "recherche": true
+  },
+  "retourArriere": {
+   "b1": {
+    "url": "/fr/emplois/directeur-rice-de-boutique-cw_temoind471lancel?marche=FR",
+    "scrollY": 0
+   },
+   "b2": {
+    "url": "/fr/emplois?marche=FR",
+    "scrollY": 461,
+    "carteTop": 264
+   }
+  }
+ },
+ {
+  "w": 390,
+  "h": 844,
+  "scrollListe": 16,
+  "surOffre": {
+   "url": "/fr/emplois/directeur-rice-de-boutique-cw_temoind471lancel?marche=FR",
+   "scrollY": 0,
+   "docW": 390,
+   "header": {
+    "classe": "cw-header -transparent",
+    "bas": 60
+   },
+   "heroH": 60,
+   "menu": {
+    "top": 8,
+    "bas": 52,
+    "w": 44,
+    "h": 44,
+    "visible": true
+   },
+   "connexion": {
+    "top": 8,
+    "bas": 52,
+    "w": 95,
+    "h": 44,
+    "visible": true
+   },
+   "logo": {
+    "top": 24,
+    "bas": 36,
+    "w": 100,
+    "h": 13,
+    "visible": true
+   },
+   "retour": {
+    "top": 90,
+    "h": 18,
+    "href": "/fr/emplois?marche=FR",
+    "texte": "← Toutes les offres"
+   },
+   "recherche": false,
+   "filtres": false,
+   "couverture": {
+    "top": 138,
+    "h": 112,
+    "w": 358
+   },
+   "titre": true,
+   "titreTop": 286,
+   "salaire": true,
+   "salaireTexte": "45 000 EUR à 55 000 EUR par an",
+   "postuler": true,
+   "postulerBas": 482,
+   "nonConfirmees": false
+  },
+  "toutes": {
+   "url": "/fr/emplois?marche=FR",
+   "scrollY": 0,
+   "carteTop": 725,
+   "recherche": true
+  },
+  "retourArriere": {
+   "b1": {
+    "url": "/fr/emplois/directeur-rice-de-boutique-cw_temoind471lancel?marche=FR",
+    "scrollY": 0
+   },
+   "b2": {
+    "url": "/fr/emplois?marche=FR",
+    "scrollY": 16,
+    "carteTop": 709
+   }
+  }
+ },
+ {
+  "w": 412,
+  "h": 839,
+  "scrollListe": 0,
+  "surOffre": {
+   "url": "/fr/emplois/directeur-rice-de-boutique-cw_temoind471lancel?marche=FR",
+   "scrollY": 0,
+   "docW": 412,
+   "header": {
+    "classe": "cw-header -transparent",
+    "bas": 60
+   },
+   "heroH": 60,
+   "menu": {
+    "top": 8,
+    "bas": 52,
+    "w": 44,
+    "h": 44,
+    "visible": true
+   },
+   "connexion": {
+    "top": 8,
+    "bas": 52,
+    "w": 95,
+    "h": 44,
+    "visible": true
+   },
+   "logo": {
+    "top": 24,
+    "bas": 36,
+    "w": 100,
+    "h": 13,
+    "visible": true
+   },
+   "retour": {
+    "top": 90,
+    "h": 18,
+    "href": "/fr/emplois?marche=FR",
+    "texte": "← Toutes les offres"
+   },
+   "recherche": false,
+   "filtres": false,
+   "couverture": {
+    "top": 138,
+    "h": 119,
+    "w": 380
+   },
+   "titre": true,
+   "titreTop": 293,
+   "salaire": true,
+   "salaireTexte": "45 000 EUR à 55 000 EUR par an",
+   "postuler": true,
+   "postulerBas": 489,
+   "nonConfirmees": false
+  },
+  "toutes": {
+   "url": "/fr/emplois?marche=FR",
+   "scrollY": 0,
+   "carteTop": 701,
+   "recherche": true
+  },
+  "retourArriere": {
+   "b1": {
+    "url": "/fr/emplois/directeur-rice-de-boutique-cw_temoind471lancel?marche=FR",
+    "scrollY": 0
+   },
+   "b2": {
+    "url": "/fr/emplois?marche=FR",
+    "scrollY": 0,
+    "carteTop": 701
+   }
+  }
+ },
+ {
+  "w": 412,
+  "h": 915,
+  "scrollListe": 0,
+  "surOffre": {
+   "url": "/fr/emplois/directeur-rice-de-boutique-cw_temoind471lancel?marche=FR",
+   "scrollY": 0,
+   "docW": 412,
+   "header": {
+    "classe": "cw-header -transparent",
+    "bas": 60
+   },
+   "heroH": 60,
+   "menu": {
+    "top": 8,
+    "bas": 52,
+    "w": 44,
+    "h": 44,
+    "visible": true
+   },
+   "connexion": {
+    "top": 8,
+    "bas": 52,
+    "w": 95,
+    "h": 44,
+    "visible": true
+   },
+   "logo": {
+    "top": 24,
+    "bas": 36,
+    "w": 100,
+    "h": 13,
+    "visible": true
+   },
+   "retour": {
+    "top": 90,
+    "h": 18,
+    "href": "/fr/emplois?marche=FR",
+    "texte": "← Toutes les offres"
+   },
+   "recherche": false,
+   "filtres": false,
+   "couverture": {
+    "top": 138,
+    "h": 119,
+    "w": 380
+   },
+   "titre": true,
+   "titreTop": 293,
+   "salaire": true,
+   "salaireTexte": "45 000 EUR à 55 000 EUR par an",
+   "postuler": true,
+   "postulerBas": 489,
+   "nonConfirmees": false
+  },
+  "toutes": {
+   "url": "/fr/emplois?marche=FR",
+   "scrollY": 0,
+   "carteTop": 701,
+   "recherche": true
+  },
+  "retourArriere": {
+   "b1": {
+    "url": "/fr/emplois/directeur-rice-de-boutique-cw_temoind471lancel?marche=FR",
+    "scrollY": 0
+   },
+   "b2": {
+    "url": "/fr/emplois?marche=FR",
+    "scrollY": 0,
+    "carteTop": 701
+   }
+  }
+ },
+ {
+  "w": 430,
+  "h": 739,
+  "scrollListe": 97,
+  "surOffre": {
+   "url": "/fr/emplois/directeur-rice-de-boutique-cw_temoind471lancel?marche=FR",
+   "scrollY": 0,
+   "docW": 430,
+   "header": {
+    "classe": "cw-header -transparent",
+    "bas": 60
+   },
+   "heroH": 60,
+   "menu": {
+    "top": 8,
+    "bas": 52,
+    "w": 44,
+    "h": 44,
+    "visible": true
+   },
+   "connexion": {
+    "top": 8,
+    "bas": 52,
+    "w": 95,
+    "h": 44,
+    "visible": true
+   },
+   "logo": {
+    "top": 24,
+    "bas": 36,
+    "w": 100,
+    "h": 13,
+    "visible": true
+   },
+   "retour": {
+    "top": 90,
+    "h": 18,
+    "href": "/fr/emplois?marche=FR",
+    "texte": "← Toutes les offres"
+   },
+   "recherche": false,
+   "filtres": false,
+   "couverture": {
+    "top": 138,
+    "h": 124,
+    "w": 398
+   },
+   "titre": true,
+   "titreTop": 299,
+   "salaire": true,
+   "salaireTexte": "45 000 EUR à 55 000 EUR par an",
+   "postuler": true,
+   "postulerBas": 495,
+   "nonConfirmees": false
+  },
+  "toutes": {
+   "url": "/fr/emplois?marche=FR",
+   "scrollY": 0,
+   "carteTop": 701,
+   "recherche": true
+  },
+  "retourArriere": {
+   "b1": {
+    "url": "/fr/emplois/directeur-rice-de-boutique-cw_temoind471lancel?marche=FR",
+    "scrollY": 0
+   },
+   "b2": {
+    "url": "/fr/emplois?marche=FR",
+    "scrollY": 97,
+    "carteTop": 604
+   }
+  }
+ },
+ {
+  "w": 430,
+  "h": 932,
+  "scrollListe": 0,
+  "surOffre": {
+   "url": "/fr/emplois/directeur-rice-de-boutique-cw_temoind471lancel?marche=FR",
+   "scrollY": 0,
+   "docW": 430,
+   "header": {
+    "classe": "cw-header -transparent",
+    "bas": 60
+   },
+   "heroH": 60,
+   "menu": {
+    "top": 8,
+    "bas": 52,
+    "w": 44,
+    "h": 44,
+    "visible": true
+   },
+   "connexion": {
+    "top": 8,
+    "bas": 52,
+    "w": 95,
+    "h": 44,
+    "visible": true
+   },
+   "logo": {
+    "top": 24,
+    "bas": 36,
+    "w": 100,
+    "h": 13,
+    "visible": true
+   },
+   "retour": {
+    "top": 90,
+    "h": 18,
+    "href": "/fr/emplois?marche=FR",
+    "texte": "← Toutes les offres"
+   },
+   "recherche": false,
+   "filtres": false,
+   "couverture": {
+    "top": 138,
+    "h": 124,
+    "w": 398
+   },
+   "titre": true,
+   "titreTop": 299,
+   "salaire": true,
+   "salaireTexte": "45 000 EUR à 55 000 EUR par an",
+   "postuler": true,
+   "postulerBas": 495,
+   "nonConfirmees": false
+  },
+  "toutes": {
+   "url": "/fr/emplois?marche=FR",
+   "scrollY": 0,
+   "carteTop": 701,
+   "recherche": true
+  },
+  "retourArriere": {
+   "b1": {
+    "url": "/fr/emplois/directeur-rice-de-boutique-cw_temoind471lancel?marche=FR",
+    "scrollY": 0
+   },
+   "b2": {
+    "url": "/fr/emplois?marche=FR",
+    "scrollY": 0,
+    "carteTop": 701
+   }
+  }
+ },
+ {
+  "w": 568,
+  "h": 320,
+  "scrollListe": 585,
+  "surOffre": {
+   "url": "/fr/emplois/directeur-rice-de-boutique-cw_temoind471lancel?marche=FR",
+   "scrollY": 0,
+   "docW": 568,
+   "header": {
+    "classe": "cw-header -transparent",
+    "bas": 60
+   },
+   "heroH": 60,
+   "menu": {
+    "top": 8,
+    "bas": 52,
+    "w": 44,
+    "h": 44,
+    "visible": true
+   },
+   "connexion": {
+    "top": 8,
+    "bas": 52,
+    "w": 95,
+    "h": 44,
+    "visible": true
+   },
+   "logo": {
+    "top": 24,
+    "bas": 36,
+    "w": 100,
+    "h": 13,
+    "visible": true
+   },
+   "retour": {
+    "top": 90,
+    "h": 18,
+    "href": "/fr/emplois?marche=FR",
+    "texte": "← Toutes les offres"
+   },
+   "recherche": false,
+   "filtres": false,
+   "couverture": {
+    "top": 138,
+    "h": 160,
+    "w": 536
+   },
+   "titre": false,
+   "titreTop": 334,
+   "salaire": false,
+   "salaireTexte": "45 000 EUR à 55 000 EUR par an",
+   "postuler": false,
+   "postulerBas": 530,
+   "nonConfirmees": false
+  },
+  "toutes": {
+   "url": "/fr/emplois?marche=FR",
+   "scrollY": 0,
+   "carteTop": 677,
+   "recherche": true
+  },
+  "retourArriere": {
+   "b1": {
+    "url": "/fr/emplois/directeur-rice-de-boutique-cw_temoind471lancel?marche=FR",
+    "scrollY": 0
+   },
+   "b2": {
+    "url": "/fr/emplois?marche=FR",
+    "scrollY": 585,
+    "carteTop": 92
+   }
+  }
+ },
+ {
+  "w": 667,
+  "h": 375,
+  "scrollListe": 557,
+  "surOffre": {
+   "url": "/fr/emplois/directeur-rice-de-boutique-cw_temoind471lancel?marche=FR",
+   "scrollY": 0,
+   "docW": 667,
+   "header": {
+    "classe": "cw-header -transparent",
+    "bas": 60
+   },
+   "heroH": 60,
+   "menu": {
+    "top": 8,
+    "bas": 52,
+    "w": 44,
+    "h": 44,
+    "visible": true
+   },
+   "connexion": {
+    "top": 8,
+    "bas": 52,
+    "w": 95,
+    "h": 44,
+    "visible": true
+   },
+   "logo": {
+    "top": 24,
+    "bas": 36,
+    "w": 100,
+    "h": 13,
+    "visible": true
+   },
+   "retour": {
+    "top": 90,
+    "h": 18,
+    "href": "/fr/emplois?marche=FR",
+    "texte": "← Toutes les offres"
+   },
+   "recherche": false,
+   "filtres": false,
+   "couverture": {
+    "top": 138,
+    "h": 160,
+    "w": 635
+   },
+   "titre": true,
+   "titreTop": 334,
+   "salaire": false,
+   "salaireTexte": "45 000 EUR à 55 000 EUR par an",
+   "postuler": false,
+   "postulerBas": 530,
+   "nonConfirmees": false
+  },
+  "toutes": {
+   "url": "/fr/emplois?marche=FR",
+   "scrollY": 0,
+   "carteTop": 677,
+   "recherche": true
+  },
+  "retourArriere": {
+   "b1": {
+    "url": "/fr/emplois/directeur-rice-de-boutique-cw_temoind471lancel?marche=FR",
+    "scrollY": 0
+   },
+   "b2": {
+    "url": "/fr/emplois?marche=FR",
+    "scrollY": 557,
+    "carteTop": 120
+   }
+  }
+ },
+ {
+  "w": 844,
+  "h": 390,
+  "scrollListe": 468,
+  "surOffre": {
+   "url": "/fr/emplois/directeur-rice-de-boutique-cw_temoind471lancel?marche=FR",
+   "scrollY": 0,
+   "docW": 844,
+   "header": {
+    "classe": "cw-header -transparent",
+    "bas": 70
+   },
+   "heroH": 70,
+   "menu": {
+    "top": 20,
+    "bas": 50,
+    "w": 76,
+    "h": 30,
+    "visible": true
+   },
+   "connexion": {
+    "top": 18,
+    "bas": 52,
+    "w": 95,
+    "h": 34,
+    "visible": true
+   },
+   "logo": {
+    "top": 27,
+    "bas": 43,
+    "w": 120,
+    "h": 15,
+    "visible": true
+   },
+   "retour": {
+    "top": 100,
+    "h": 18,
+    "href": "/fr/emplois?marche=FR",
+    "texte": "← Toutes les offres"
+   },
+   "recherche": false,
+   "filtres": false,
+   "couverture": {
+    "top": 148,
+    "h": 160,
+    "w": 812
+   },
+   "titre": true,
+   "titreTop": 344,
+   "salaire": false,
+   "salaireTexte": "45 000 EUR à 55 000 EUR par an",
+   "postuler": false,
+   "postulerBas": 540,
+   "nonConfirmees": false
+  },
+  "toutes": {
+   "url": "/fr/emplois?marche=FR",
+   "scrollY": 0,
+   "carteTop": 595,
+   "recherche": true
+  },
+  "retourArriere": {
+   "b1": {
+    "url": "/fr/emplois/directeur-rice-de-boutique-cw_temoind471lancel?marche=FR",
+    "scrollY": 0
+   },
+   "b2": {
+    "url": "/fr/emplois?marche=FR",
+    "scrollY": 468,
+    "carteTop": 127
+   }
+  }
+ },
+ {
+  "w": 932,
+  "h": 430,
+  "scrollListe": 496,
+  "surOffre": {
+   "url": "/fr/emplois/directeur-rice-de-boutique-cw_temoind471lancel?marche=FR",
+   "scrollY": 496,
+   "docW": 932,
+   "header": {
+    "classe": "cw-header -solid -hidden",
+    "bas": 0
+   },
+   "heroH": 305,
+   "menu": {
+    "top": -50,
+    "bas": -20,
+    "w": 76,
+    "h": 30,
+    "visible": false
+   },
+   "connexion": {
+    "top": -52,
+    "bas": -18,
+    "w": 95,
+    "h": 34,
+    "visible": false
+   },
+   "logo": {
+    "top": -43,
+    "bas": -27,
+    "w": 120,
+    "h": 15,
+    "visible": false
+   },
+   "retour": null,
+   "recherche": true,
+   "filtres": true,
+   "couverture": {
+    "top": 2,
+    "h": 154,
+    "w": 492
+   },
+   "titre": true,
+   "titreTop": 192,
+   "salaire": true,
+   "salaireTexte": "45 000 EUR à 55 000 EUR par an",
+   "postuler": true,
+   "postulerBas": 398,
+   "nonConfirmees": false
+  },
+  "toutes": null,
+  "retourArriere": null
+ },
+ {
+  "w": 768,
+  "h": 1024,
+  "scrollListe": 0,
+  "surOffre": {
+   "url": "/fr/emplois/directeur-rice-de-boutique-cw_temoind471lancel?marche=FR",
+   "scrollY": 0,
+   "docW": 768,
+   "header": {
+    "classe": "cw-header -transparent",
+    "bas": 60
+   },
+   "heroH": 60,
+   "menu": {
+    "top": 8,
+    "bas": 52,
+    "w": 44,
+    "h": 44,
+    "visible": true
+   },
+   "connexion": {
+    "top": 8,
+    "bas": 52,
+    "w": 95,
+    "h": 44,
+    "visible": true
+   },
+   "logo": {
+    "top": 24,
+    "bas": 36,
+    "w": 100,
+    "h": 13,
+    "visible": true
+   },
+   "retour": {
+    "top": 90,
+    "h": 18,
+    "href": "/fr/emplois?marche=FR",
+    "texte": "← Toutes les offres"
+   },
+   "recherche": false,
+   "filtres": false,
+   "couverture": {
+    "top": 138,
+    "h": 160,
+    "w": 736
+   },
+   "titre": true,
+   "titreTop": 334,
+   "salaire": true,
+   "salaireTexte": "45 000 EUR à 55 000 EUR par an",
+   "postuler": true,
+   "postulerBas": 530,
+   "nonConfirmees": false
+  },
+  "toutes": {
+   "url": "/fr/emplois?marche=FR",
+   "scrollY": 0,
+   "carteTop": 677,
+   "recherche": true
+  },
+  "retourArriere": {
+   "b1": {
+    "url": "/fr/emplois/directeur-rice-de-boutique-cw_temoind471lancel?marche=FR",
+    "scrollY": 0
+   },
+   "b2": {
+    "url": "/fr/emplois?marche=FR",
+    "scrollY": 0,
+    "carteTop": 677
+   }
+  }
+ },
+ {
+  "w": 820,
+  "h": 1180,
+  "scrollListe": 0,
+  "surOffre": {
+   "url": "/fr/emplois/directeur-rice-de-boutique-cw_temoind471lancel?marche=FR",
+   "scrollY": 0,
+   "docW": 820,
+   "header": {
+    "classe": "cw-header -transparent",
+    "bas": 70
+   },
+   "heroH": 70,
+   "menu": {
+    "top": 20,
+    "bas": 50,
+    "w": 76,
+    "h": 30,
+    "visible": true
+   },
+   "connexion": {
+    "top": 18,
+    "bas": 52,
+    "w": 95,
+    "h": 34,
+    "visible": true
+   },
+   "logo": {
+    "top": 27,
+    "bas": 43,
+    "w": 120,
+    "h": 15,
+    "visible": true
+   },
+   "retour": {
+    "top": 100,
+    "h": 18,
+    "href": "/fr/emplois?marche=FR",
+    "texte": "← Toutes les offres"
+   },
+   "recherche": false,
+   "filtres": false,
+   "couverture": {
+    "top": 148,
+    "h": 160,
+    "w": 788
+   },
+   "titre": true,
+   "titreTop": 344,
+   "salaire": true,
+   "salaireTexte": "45 000 EUR à 55 000 EUR par an",
+   "postuler": true,
+   "postulerBas": 540,
+   "nonConfirmees": false
+  },
+  "toutes": {
+   "url": "/fr/emplois?marche=FR",
+   "scrollY": 0,
+   "carteTop": 595,
+   "recherche": true
+  },
+  "retourArriere": {
+   "b1": {
+    "url": "/fr/emplois/directeur-rice-de-boutique-cw_temoind471lancel?marche=FR",
+    "scrollY": 0
+   },
+   "b2": {
+    "url": "/fr/emplois?marche=FR",
+    "scrollY": 0,
+    "carteTop": 595
+   }
+  }
+ },
+ {
+  "w": 900,
+  "h": 1200,
+  "scrollListe": 0,
+  "surOffre": {
+   "url": "/fr/emplois/directeur-rice-de-boutique-cw_temoind471lancel?marche=FR",
+   "scrollY": 0,
+   "docW": 900,
+   "header": {
+    "classe": "cw-header -transparent",
+    "bas": 70
+   },
+   "heroH": 70,
+   "menu": {
+    "top": 20,
+    "bas": 50,
+    "w": 76,
+    "h": 30,
+    "visible": true
+   },
+   "connexion": {
+    "top": 18,
+    "bas": 52,
+    "w": 95,
+    "h": 34,
+    "visible": true
+   },
+   "logo": {
+    "top": 27,
+    "bas": 43,
+    "w": 120,
+    "h": 15,
+    "visible": true
+   },
+   "retour": {
+    "top": 100,
+    "h": 18,
+    "href": "/fr/emplois?marche=FR",
+    "texte": "← Toutes les offres"
+   },
+   "recherche": false,
+   "filtres": false,
+   "couverture": {
+    "top": 148,
+    "h": 160,
+    "w": 868
+   },
+   "titre": true,
+   "titreTop": 344,
+   "salaire": true,
+   "salaireTexte": "45 000 EUR à 55 000 EUR par an",
+   "postuler": true,
+   "postulerBas": 540,
+   "nonConfirmees": false
+  },
+  "toutes": {
+   "url": "/fr/emplois?marche=FR",
+   "scrollY": 0,
+   "carteTop": 595,
+   "recherche": true
+  },
+  "retourArriere": {
+   "b1": {
+    "url": "/fr/emplois/directeur-rice-de-boutique-cw_temoind471lancel?marche=FR",
+    "scrollY": 0
+   },
+   "b2": {
+    "url": "/fr/emplois?marche=FR",
+    "scrollY": 0,
+    "carteTop": 595
+   }
+  }
+ }
+]

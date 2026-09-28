@@ -163,6 +163,17 @@ export type JobRow = {
   company: string;
   /** The Maison's own domain (`sephora.com`) for its logo; null when no source names it. */
   companyDomain: string | null;
+  /**
+   * La société du registre : celle d'une offre agrégée ; pour une offre Catwalks, celle que le lecteur lui a rattachée
+   * (lien du back-office, sinon nom — D-444, D-471), `null` pour un mandat ou une Maison hors registre. Le bloc Maison
+   * et les offres « même employeur » la suivent avant le nom publié.
+   */
+  companyId?: string | null;
+  /**
+   * D-471 : le visuel généré d'une offre Catwalks (URL du bucket public), affiché en tête de sa fiche. Absent d'une offre
+   * agrégée ; retiré des lignes de liste, qui ne l'affichent pas (`projeterLigne`).
+   */
+  visuel?: string | null;
   group: string | null;
   city: string | null;
   location: string | null;
@@ -298,7 +309,7 @@ export function actionExterne(url: string | null | undefined): ActionCandidature
 function toRow(row: {
   id: string; url: string; firstSeenAt: Date; withdrawnAt?: Date | null;
   canonicalSourceKey?: string | null; canonicalExternalId?: string | null;
-  company: { name: string; sector: string | null; parentGroup: string | null; domain: string | null; sectorCodes?: string[] };
+  company: { id?: string; name: string; sector: string | null; parentGroup: string | null; domain: string | null; sectorCodes?: string[] };
   sources: Array<ApplySource & PresentationSource>;
 }, taxonomy: OptionalOccupationPresentation, historical = false, at = new Date()): JobRow {
   const live = row.sources.filter(source => sourceIsAvailable(source, at));
@@ -319,6 +330,7 @@ function toRow(row: {
     title: content.title,
     company: row.company.name,
     companyDomain: row.company.domain,
+    companyId: row.company.id ?? null,
     group: row.company.parentGroup,
     city: content.city,
     location: content.location,
@@ -476,14 +488,16 @@ export async function resolveOfferParam(
  */
 export type CompanyAside = { openJobs: number; cities: number; countries: number; domain: string | null; sector: string | null; group: string | null };
 
-export async function getCompanyAside(companyName: string): Promise<CompanyAside | null> {
+export async function getCompanyAside(companyName: string, companyId: string | null = null): Promise<CompanyAside | null> {
   if (!process.env.DATABASE_URL) throw new DatabaseUnavailableError();
   try {
     const at = new Date();
-    const company = await prisma.company.findFirst({
-      where: { name: companyName },
-      select: { id: true, domain: true, sector: true, sectorCodes: true, parentGroup: true },
-    });
+    // D-471 : la société rattachée d'abord (le nom publié par le backend peut s'écrire autrement qu'au registre :
+    // « Lancel » et « LANCEL »), le nom exact seulement à défaut.
+    const select = { id: true, domain: true, sector: true, sectorCodes: true, parentGroup: true } as const;
+    const company = companyId
+      ? await prisma.company.findUnique({ where: { id: companyId }, select })
+      : await prisma.company.findFirst({ where: { name: companyName }, select });
     // Une Maison qui publie sur Catwalks compte ses offres directes avec ses
     // offres agrégées ; une Maison connue par ses seules offres directes a
     // aussi son bloc, sans domaine ni groupe (le registre ne la connaît pas).
@@ -494,7 +508,8 @@ export async function getCompanyAside(companyName: string): Promise<CompanyAside
       FROM (
         SELECT j.city, j."countryCode" FROM "Job" j WHERE j."companyId" = ${company?.id ?? ''} AND ${publicJobSql(Prisma.sql`j`, at)}
         UNION ALL
-        SELECT d.city, d."countryCode" FROM "DirectOffer" d WHERE d.company = ${companyName} AND ${directPubliableSql(Prisma.sql`d`, at)}
+        SELECT d.city, d."countryCode" FROM "DirectOffer" d
+        WHERE (d.company = ${companyName} OR d."companyId" = ${company?.id ?? ''}) AND ${directPubliableSql(Prisma.sql`d`, at)}
       ) offres`;
     const openJobs = Number(agg?.jobs ?? 0);
     if (!company && openJobs === 0) return null;
@@ -528,17 +543,21 @@ export async function getSimilarJobs(job: JobRow, limit = 6, langue: LangueLibel
     const memePays = job.countryCode ? { countryCode: job.countryCode } : {};
     const taxonomy = await getOptionalOccupationPresentation(langue);
     const ordre: Prisma.JobOrderByWithRelationInput[] = [{ postedAt: { sort: 'desc', nulls: 'last' } }, { id: 'asc' }];
+    // D-471 : « même employeur » suit la société du registre quand l'offre en a une, le nom publié à défaut. Sous `AND` :
+    // `directPubliable()` porte déjà un `OR`, qu'un second `OR` étalé à côté écraserait.
+    const societe = job.companyId ?? null;
+    const memeSocieteDirecte: Prisma.DirectOfferWhereInput = societe ? { OR: [{ companyId: societe }, { company: job.company }] } : { company: job.company };
     const memeEmployeur = async (): Promise<JobRow[]> => {
       // D-419 §1 : les offres Catwalks de la même Maison, dans le même pays, ouvrent la liste.
       const directes = (await prisma.directOffer.findMany({
-        where: { ...directPubliable(), ...memePays, company: job.company, ...(job.origine === 'CATWALKS' ? { id: { not: idDirect(job.id) } } : {}) },
+        where: { ...directPubliable(), ...memePays, AND: [memeSocieteDirecte], ...(job.origine === 'CATWALKS' ? { id: { not: idDirect(job.id) } } : {}) },
         // `postedAt` d'une offre directe est toujours renseigné : tri simple.
         orderBy: [{ postedAt: 'desc' }, { id: 'asc' }],
         take: limit,
       })).map(directToRow);
       if (directes.length >= limit) return directes;
       const sameMaison = await prisma.job.findMany({
-        where: { ...base, ...memePays, company: { name: job.company } },
+        where: { ...base, ...memePays, ...(societe ? { companyId: societe } : { company: { name: job.company } }) },
         include,
         omit: { raw: true, searchText: true },
         orderBy: [...ordre],
@@ -562,6 +581,8 @@ export async function getSimilarJobs(job: JobRow, limit = 6, langue: LangueLibel
         ...directPubliable(), ...memePays, ...memeVille,
         sectorCodes: { hasSome: sectorCodes },
         company: { not: job.company },
+        // Une offre sans société (mandat, Maison hors registre) reste candidate : `NOT companyId = x` l'écarterait (NULL).
+        ...(societe ? { AND: [{ OR: [{ companyId: null }, { companyId: { not: societe } }] }] } : {}),
         ...(job.origine === 'CATWALKS' ? { id: { not: idDirect(job.id) } } : {}),
       },
       orderBy: [{ postedAt: 'desc' }, { id: 'asc' }],
@@ -574,6 +595,7 @@ export async function getSimilarJobs(job: JobRow, limit = 6, langue: LangueLibel
             ...base,
             ...memePays,
             company: { sectorCodes: { hasSome: sectorCodes }, name: { not: job.company } },
+            ...(societe ? { companyId: { not: societe } } : {}),
             ...memeVille,
           },
           include,

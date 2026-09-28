@@ -53,12 +53,25 @@ export function page(evenements: unknown[], suivant: string | null = evenements.
 
 /**
  * Un contexte de projection de témoin : un registre et des métiers écrits à la main (nom → société, intitulé → code), le
- * pays par le vrai tracé des frontières sauf surcharge. Les témoins d'intégration lisent le vrai (`chargerContexte`).
+ * pays par le vrai tracé des frontières sauf surcharge. D-471 : `liens` (lien du back-office → société, prioritaire sur le
+ * nom) et `domaines` (société → domaine). Les témoins d'intégration lisent le vrai (`chargerContexte`).
  */
-export function contexteTemoin(options: { maisons?: Record<string, string>; metiers?: Record<string, string>; pays?: (latitude: number | null, longitude: number | null) => VerdictPays } = {}): ContexteProjection {
-  const maisons = options.maisons ?? {}, metiers = options.metiers ?? {};
+export function contexteTemoin(options: {
+  maisons?: Record<string, string>; metiers?: Record<string, string>; liens?: Record<string, string>; domaines?: Record<string, string>;
+  pays?: (latitude: number | null, longitude: number | null) => VerdictPays;
+} = {}): ContexteProjection {
+  const maisons = options.maisons ?? {}, metiers = options.metiers ?? {}, liens = options.liens ?? {}, domaines = options.domaines ?? {};
+  const inconnus = new Set<string>();
   return {
-    rattacher: (nom) => (nom && Object.hasOwn(maisons, nom) ? maisons[nom] : null),
+    rattacher: (nom, catalogueId) => {
+      if (catalogueId) {
+        if (Object.hasOwn(liens, catalogueId)) return liens[catalogueId];
+        inconnus.add(catalogueId);
+      }
+      return nom && Object.hasOwn(maisons, nom) ? maisons[nom] : null;
+    },
+    domaine: (companyId) => (companyId && Object.hasOwn(domaines, companyId) ? domaines[companyId] : null),
+    liensInconnus: () => [...inconnus].sort(),
     metier: (titre) => (Object.hasOwn(metiers, titre) ? { occupationCode: metiers[titre], occupationReleaseId: 'release-temoin' } : { occupationCode: null, occupationReleaseId: 'release-temoin' }),
     pays: options.pays ?? ((latitude, longitude) => paysDesCoordonnees(latitude, longitude)),
   };

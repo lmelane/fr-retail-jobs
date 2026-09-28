@@ -245,7 +245,7 @@ async function queryCompanies(filters: CompanyFilters, perimetre: Perimetre): Pr
       ? prisma.directOffer.groupBy({ by: ['company', 'city'], where: { ...directWhere, company: { in: pageNoms }, city: { not: null } }, _count: true })
       : [],
     pageNoms.length
-      ? prisma.directOffer.findMany({ where: { ...directWhere, company: { in: pageNoms } }, select: { company: true, sectorCodes: true }, distinct: ['company', 'sectorCodes'] })
+      ? prisma.directOffer.findMany({ where: { ...directWhere, company: { in: pageNoms } }, select: { company: true, sectorCodes: true, companyDomain: true }, distinct: ['company', 'sectorCodes', 'companyDomain'] })
       : [],
   ]);
 
@@ -261,10 +261,14 @@ async function queryCompanies(filters: CompanyFilters, perimetre: Perimetre): Pr
   for (const row of cityRows) ajouterVille(row.companyId, row.city, row._count);
   for (const row of directCityRows) ajouterVille(cleDuNom(row.company), row.city, row._count);
   const codesDirects = new Map<string, Set<string>>();
+  // D-471 : le domaine que portent les offres Catwalks d'une ligne (celui de la Maison saisi au back-office, sinon celui
+  // de la société rattachée) ; il sert quand le registre n'en connaît pas, ou que la Maison n'y est pas.
+  const domainesDirects = new Map<string, string>();
   for (const o of directSecteurs) {
     const codes = codesDirects.get(cleDuNom(o.company)) ?? new Set<string>();
     for (const code of o.sectorCodes) codes.add(code);
     codesDirects.set(cleDuNom(o.company), codes);
+    if (o.companyDomain && !domainesDirects.has(cleDuNom(o.company))) domainesDirects.set(cleDuNom(o.company), o.companyDomain);
   }
 
   const rows: CompanyRow[] = pageEntrees
@@ -276,7 +280,7 @@ async function queryCompanies(filters: CompanyFilters, perimetre: Perimetre): Pr
         name: company?.name ?? entree.nomsDirects[0] ?? '—',
         sectors: presentation.sectors.filter((s) => codes.has(s.code)),
         group: company?.parentGroup ?? null,
-        domain: company?.domain ?? null,
+        domain: company?.domain ?? domainesDirects.get(entree.cle) ?? null,
         jobCount: entree.count,
         cities: [...(villes.get(entree.cle) ?? [])].map(([city, count]) => ({ city, count })).sort((a, b) => b.count - a.count || a.city.localeCompare(b.city)),
       };

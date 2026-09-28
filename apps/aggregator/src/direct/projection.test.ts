@@ -82,3 +82,46 @@ describe('projection d’une offre directe', () => {
     expect(hashPayload(lireOffre(offreBrute({ titre: 'Visual Merchandiser Senior' })))).not.toBe(hashPayload(offre));
   });
 });
+
+/**
+ * D-471 — LE RATTACHEMENT PAR LE LIEN DU BACK-OFFICE, ET LE DOMAINE DU LOGO : celui de la Maison, sinon celui de la
+ * société rattachée ; aucun pour un mandat.
+ */
+describe('projection du lien et du domaine (D-471)', () => {
+  const avecMaison = (maison: Record<string, unknown> | null) => lireOffre(offreBrute({ maison }));
+  const contexte = contexteTemoin({
+    maisons: { 'Loewe Parfums': 'loewe' },
+    liens: { cperfumesloewe0001: 'perfumesloewe' },
+    domaines: { loewe: 'loewe.com', perfumesloewe: 'loewe-perfumes.com' },
+  });
+
+  it('le lien prime sur le nom ; le domaine suit la société rattachée', () => {
+    // PRÉMISSE : sans lien, le nom rattache à une autre société, d'un autre domaine.
+    expect(colonnesProjetees(avecMaison({ nom: 'Loewe Parfums', slug: 'loewe-parfums' }), contexte))
+      .toMatchObject({ companyId: 'loewe', companyDomain: 'loewe.com' });
+    expect(colonnesProjetees(avecMaison({ nom: 'Loewe Parfums', slug: 'loewe-parfums', catalogueId: 'cperfumesloewe0001' }), contexte))
+      .toMatchObject({ companyId: 'perfumesloewe', companyDomain: 'loewe-perfumes.com' });
+  });
+
+  it('le domaine saisi pour la Maison prime sur celui de la société rattachée', () => {
+    expect(colonnesProjetees(avecMaison({ nom: 'Loewe Parfums', slug: 'loewe-parfums', domaine: 'perfumesloewe.com' }), contexte))
+      .toMatchObject({ companyId: 'loewe', companyDomain: 'perfumesloewe.com' });
+  });
+
+  it('une Maison hors registre prend le domaine saisi ; sans saisie, aucun domaine n’est deviné', () => {
+    expect(colonnesProjetees(avecMaison({ nom: "L'Atelier du sourcil", slug: 'l-atelier-du-sourcil', domaine: 'atelierdusourcil.com' }), contexte))
+      .toMatchObject({ companyId: null, companyDomain: 'atelierdusourcil.com' });
+    expect(colonnesProjetees(avecMaison({ nom: "L'Atelier du sourcil", slug: 'l-atelier-du-sourcil' }), contexte))
+      .toMatchObject({ companyId: null, companyDomain: null });
+  });
+
+  it('un mandat n’a ni société ni domaine', () => {
+    expect(colonnesProjetees(avecMaison(null), contexte)).toMatchObject({ company: 'Catwalks', companyId: null, companyDomain: null });
+  });
+
+  it('un changement de domaine change l’empreinte : le lecteur réécrit la ligne', () => {
+    const a = colonnesProjetees(avecMaison({ nom: 'Loewe Parfums', slug: 'loewe-parfums' }), contexte);
+    const b = colonnesProjetees(avecMaison({ nom: 'Loewe Parfums', slug: 'loewe-parfums', domaine: 'perfumesloewe.com' }), contexte);
+    expect(a.projectionHash).not.toBe(b.projectionHash);
+  });
+});

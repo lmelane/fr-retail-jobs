@@ -17,19 +17,27 @@ import { classifyJob } from '../normalize/taxonomy.js';
  *  - le MÉTIER : la version active de la taxonomie des métiers, appliquée à l'intitulé comme pour une offre agrégée ;
  *    le code n'existe que lorsqu'une seule règle revue le désigne (`occupationStatus` CLASSIFIED).
  *  - le PAYS d'une offre de la liste publique : ses coordonnées, par le tracé des frontières, avec abstention (D-435).
+ *  - D-471 (correspondance version 6) : le LIEN que l'équipe a posé dans le back-office (`maison.catalogueId`) prime sur
+ *    le nom ; il suit les fusions comme le nom. Un lien vers une société inconnue du registre ne rattache pas à sa place :
+ *    le nom reprend la main, et le lien est compté (`liensInconnus`) pour être corrigé. Le DOMAINE du logo est celui que
+ *    l'équipe a saisi pour la Maison, sinon celui de la société rattachée (`Company.domain`, tel que le registre le porte).
  *
  * Le contexte est chargé une fois par passe : une Maison ajoutée au registre, un alias revu ou une nouvelle version de
  * la taxonomie atteignent les offres directes à la passe suivante, par la comparaison des projections (`photo.ts`).
  */
 export type MetierProjete = { occupationCode: string | null; occupationReleaseId: string | null };
 export type ContexteProjection = {
-  rattacher(nomMaison: string | null | undefined): string | null;
+  rattacher(nomMaison: string | null | undefined, catalogueId?: string | null): string | null;
+  /** Le domaine de la société canonique rattachée, ou `null` (inconnu, ou aucune société). */
+  domaine(companyId: string | null): string | null;
+  /** Les liens du back-office qui ne désignent aucune société du registre, vus depuis le chargement du contexte. */
+  liensInconnus(): string[];
   metier(titre: string): MetierProjete;
   pays(latitude: number | null, longitude: number | null): VerdictPays;
 };
 
 type Database = PrismaClient | Prisma.TransactionClient;
-export type SocieteRegistre = { id: string; name: string; mergedIntoId: string | null };
+export type SocieteRegistre = { id: string; name: string; mergedIntoId: string | null; domain?: string | null };
 export type AliasRegistre = { companyId: string; displayName: string };
 
 /** La clé de comparaison d'un nom de Maison : accents, casse, apostrophes typographiques et espaces ne distinguent pas. */
@@ -37,8 +45,12 @@ export function cleMaison(nom: string): string {
   return nom.normalize('NFKD').replace(/\p{M}/gu, '').replace(/[’‘‛`´ʼ]/gu, "'").replace(/[\s  ]+/gu, ' ').trim().toLowerCase();
 }
 
-/** Le rattacheur d'un registre : nom ou alias → identifiant canonique (fusions suivies), ou `null` si absent ou ambigu. */
-export function rattacheurRegistre(societes: readonly SocieteRegistre[], alias: readonly AliasRegistre[]): (nom: string | null | undefined) => string | null {
+/**
+ * Le rattacheur d'un registre : lien explicite, sinon nom ou alias → identifiant canonique (fusions suivies), ou `null` si
+ * absent ou ambigu. `inconnu` reçoit un lien qui ne désigne aucune société : le nom reprend alors la main.
+ */
+export function rattacheurRegistre(societes: readonly SocieteRegistre[], alias: readonly AliasRegistre[],
+  inconnu: (catalogueId: string) => void = () => {}): (nom: string | null | undefined, catalogueId?: string | null) => string | null {
   const parId = new Map(societes.map((s) => [s.id, s]));
   const canonique = (id: string): string | null => {
     const vus = new Set<string>();
@@ -61,7 +73,12 @@ export function rattacheurRegistre(societes: readonly SocieteRegistre[], alias: 
   };
   for (const s of societes) ajouter(s.name, s.id);
   for (const a of alias) ajouter(a.displayName, a.companyId);
-  return (nom) => {
+  return (nom, catalogueId) => {
+    if (catalogueId) {
+      const lie = parId.has(catalogueId) ? canonique(catalogueId) : null;
+      if (lie) return lie;
+      inconnu(catalogueId);
+    }
     if (!nom?.trim()) return null;
     const trouves = index.get(cleMaison(nom));
     return trouves?.size === 1 ? [...trouves][0] : null;
@@ -77,15 +94,24 @@ export function metierDepuisTaxonomie(taxonomie: CompiledOccupationTaxonomy): (t
 
 export function contexteDepuis(societes: readonly SocieteRegistre[], alias: readonly AliasRegistre[], taxonomie: CompiledOccupationTaxonomy,
   frontieres: Frontieres = chargerFrontieres()): ContexteProjection {
-  const rattacher = rattacheurRegistre(societes, alias);
+  const inconnus = new Set<string>();
+  const rattacher = rattacheurRegistre(societes, alias, (id) => inconnus.add(id));
+  const domaines = new Map(societes.map((s) => [s.id, s.domain?.trim() || null]));
   const metier = metierDepuisTaxonomie(taxonomie);
-  return { rattacher, metier, pays: (latitude, longitude) => paysDesCoordonnees(latitude, longitude, frontieres) };
+  return {
+    rattacher,
+    // `rattacher` rend toujours un identifiant CANONIQUE : son domaine est celui de la société qui a survécu aux fusions.
+    domaine: (companyId) => (companyId ? domaines.get(companyId) ?? null : null),
+    liensInconnus: () => [...inconnus].sort(),
+    metier,
+    pays: (latitude, longitude) => paysDesCoordonnees(latitude, longitude, frontieres),
+  };
 }
 
 /** Le contexte courant, lu dans la base : registre (alias revus seulement, comme l'API) et version active de la taxonomie. */
 export async function chargerContexte(db: Database): Promise<ContexteProjection> {
   const [societes, alias, taxonomie] = await Promise.all([
-    db.company.findMany({ select: { id: true, name: true, mergedIntoId: true } }),
+    db.company.findMany({ select: { id: true, name: true, mergedIntoId: true, domain: true } }),
     db.companyAlias.findMany({ where: { reviewId: { not: null } }, select: { companyId: true, displayName: true } }),
     loadOccupationTaxonomy(db),
   ]);

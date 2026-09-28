@@ -1,0 +1,29 @@
+{
+ "liste": {
+  "url": "/fr/emplois?marche=FR&q=directeur&contrat=CDI",
+  "total": "0",
+  "cartes": []
+ },
+ "offre": {
+  "url": "/fr/emplois/directeur-rice-de-boutique-cw_temoind471lancel?marche=FR&q=directeur&contrat=CDI",
+  "hrefRetour": "/fr/emplois?q=directeur&marche=FR&contrat=CDI",
+  "lien": {
+   "h": 18,
+   "w": 109
+  },
+  "paragraphe": {
+   "h": 46,
+   "w": 343
+  },
+  "toucherAuDessus": "P.cw-emplois-page__retour -mobile",
+  "toucherAuDessous": "P.cw-emplois-page__retour -mobile",
+  "toucherADroite": "P.cw-emplois-page__retour -mobile",
+  "nonConfirmees": null,
+  "heroRegion": {
+   "role": "SECTION",
+   "label": "Affiner la recherche",
+   "texteVisible": ""
+  }
+ },
+ "a11y": "- region \"Affiner la recherche\""
+}

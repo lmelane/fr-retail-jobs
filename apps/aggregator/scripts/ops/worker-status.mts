@@ -17,7 +17,7 @@ try {
   if (preflight && !process.env.HEALTHCHECK_PING_URL) throw new Error('Preflight requires configured heartbeat');
   db = new PrismaClient({ errorFormat: 'minimal', log: [] });
   const aliveSince = new Date(Date.now() - 90_000);
-  // D-444 : les passes de 5 minutes du service `catwalks-direct-sync` (`direct-liste`) ne sont pas des runs du worker ;
+  // D-444 : les passes du service `catwalks-direct-sync` (`direct-liste`, toutes les 5 minutes, toutes les heures par D-474) ne sont pas des runs du worker ;
   // un déploiement du worker ne les interrompt pas. Elles ne masquent ni le dernier run, ni un pipeline vivant, ni la
   // dernière erreur du worker.
   const horsDirect = { command: { not: 'direct-liste' } };

@@ -77,6 +77,8 @@ export function colonnesProjetees(offre: OffreCatalogueV1, contexte: ContextePro
   const description = descriptionServie(offre);
   const salaire = offre.salaire;
   const metier = contexte.metier(offre.titre);
+  // D-444 / D-471 : la Maison publique rattachée au registre, par le lien du back-office sinon par le nom ; un mandat, jamais.
+  const companyId = contexte.rattacher(offre.maison?.nom, offre.maison?.catalogueId);
   const colonnes = {
     correspondanceVersion: CORRESPONDANCE_DIRECTE_VERSION,
     slug: offre.slug,
@@ -85,8 +87,11 @@ export function colonnesProjetees(offre: OffreCatalogueV1, contexte: ContextePro
     // D-455 §1 : la Maison publique, sinon « Catwalks » ; jamais l'univers ni « Maison confidentielle ».
     company: employeurAffiche(offre.maison),
     maisonSlug: offre.maison?.slug ?? null,
-    // D-444 : la Maison publique rattachée au registre (son groupe sert le filtre « groupe ») ; un mandat, jamais.
-    companyId: contexte.rattacher(offre.maison?.nom),
+    // D-444 : son groupe sert le filtre « groupe ».
+    companyId,
+    // D-471 : le logo. Le domaine saisi pour la Maison, sinon celui de la société rattachée ; un mandat n'en a aucun (le
+    // site y met le logo Catwalks). Jamais un domaine deviné depuis un nom.
+    companyDomain: offre.maison ? (offre.maison.domaine ?? contexte.domaine(companyId)) : null,
     countryCode: offre.lieu.pays,
     city: offre.lieu.ville,
     postalCode: offre.lieu.codePostal,

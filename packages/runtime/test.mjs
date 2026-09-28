@@ -62,10 +62,19 @@ test('source-add delegates its public definition to the existing preflight parse
 });
 test('API attests public values without copying secrets', () => {
   const env = fixture('api'); env.CATALOGUE_API_KEY = 'credential-not-for-logs';
+  env.CATALOGUE_API_KEY_BACKEND = 'backend-credential-not-for-logs';
   const result = validateRuntime('api', [], env, built, now);
   assert.equal(result.proof.role, 'api');
+  assert.ok(result.proof.secretNames.includes('CATALOGUE_API_KEY_BACKEND'));
   assert.ok(!JSON.stringify(result.proof).includes(env.CATALOGUE_API_KEY));
+  assert.ok(!JSON.stringify(result.proof).includes(env.CATALOGUE_API_KEY_BACKEND));
   assert.ok(!JSON.stringify(result.proof).includes(env.DATABASE_URL));
+});
+test('D-471: the API image that declares the backend key refuses to start without it', () => {
+  // The variable and the image change in the SAME deployment: an older image refuses the unknown key, this one its absence.
+  const env = fixture('api'); env.CATALOGUE_API_KEY = 'credential-not-for-logs';
+  delete env.CATALOGUE_API_KEY_BACKEND;
+  assert.throws(() => validateRuntime('api', [], env, built, now), /missing binding: CATALOGUE_API_KEY_BACKEND/);
 });
 test('runtime egress follows pause; source access and SSRF remain in the HTTP layer', () => {
   const before = { profile: process.env.CATWALKS_RUNTIME_PROFILE, pause: process.env.PIPELINE_PAUSED };
@@ -106,7 +115,8 @@ test('scheduled invocation uses the normal worker and rejects extra arguments', 
 test('direct-sync: paused by default, one command only, never on another service', () => {
   const service = target.services.find(s => s.name === 'catwalks-direct-sync');
   assert.equal(service.environment.PIPELINE_PAUSED, '1');
-  assert.equal(service.cronSchedule, '*/5 * * * *');
+  // D-474 (28/09/2026) : toutes les heures, et non plus toutes les 5 minutes (D-444).
+  assert.equal(service.cronSchedule, '7 * * * *');
   assert.equal(service.startCommand, 'sh apps/aggregator/start.sh direct-liste');
   assert.equal(service.environment.CATALOGUE_LISTE_URL, 'https://catwalks.api.catwalks.io');
   // Il tourne sur l'image du worker : aucun paquet ni build supplémentaire, la même révision attestée.

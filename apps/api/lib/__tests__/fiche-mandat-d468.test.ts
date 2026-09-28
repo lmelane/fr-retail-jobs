@@ -50,12 +50,12 @@ describe('D-468 §3 — le bloc Maison de la fiche', () => {
   it('une offre Catwalks qui affiche sa Maison garde son bloc', async () => {
     const { corps } = await fiche({ id: 'cw_maison1', origine: 'CATWALKS', company: 'Maison Témoin', countryCode: 'FR' });
     expect(corps.maison).toEqual(BLOC);
-    expect(getCompanyAside).toHaveBeenCalledWith('Maison Témoin');
+    expect(getCompanyAside).toHaveBeenCalledWith('Maison Témoin', null);
   });
 
   it('une offre agrégée garde son bloc, même d’un employeur nommé « Catwalks » : seul un mandat direct en est privé', async () => {
     const { corps } = await fiche({ id: 'agregee1', origine: 'AGREGEE', company: 'Catwalks', countryCode: 'FR' });
     expect(corps.maison).toEqual(BLOC);
-    expect(getCompanyAside).toHaveBeenCalledWith('Catwalks');
+    expect(getCompanyAside).toHaveBeenCalledWith('Catwalks', null);
   });
 });

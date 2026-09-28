@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { BOOTSTRAP_TAXONOMY } from '../normalize/taxonomy.js';
-import { cleMaison, metierDepuisTaxonomie, rattacheurRegistre } from './contexte.js';
+import { cleMaison, contexteDepuis, metierDepuisTaxonomie, rattacheurRegistre } from './contexte.js';
 
 /**
  * D-444 — LE RATTACHEMENT D'UNE MAISON AU REGISTRE ET LE MÉTIER D'UN INTITULÉ, sans rien deviner : un nom qui désigne
@@ -48,5 +48,48 @@ describe('contexte de projection des offres directes (D-444)', () => {
     expect(metier('Conseiller de vente H/F')).toEqual({ occupationCode: 'sales-advisor', occupationReleaseId: BOOTSTRAP_TAXONOMY.manifest.id });
     // Une famille seule n'est pas un métier : l'intitulé reste sans code, jamais deviné.
     expect(metier('Animateur·rice des ventes')).toEqual({ occupationCode: null, occupationReleaseId: BOOTSTRAP_TAXONOMY.manifest.id });
+  });
+});
+
+/**
+ * D-471 — LE LIEN DU BACK-OFFICE PRIME SUR LE NOM. Il suit les fusions comme le nom ; un lien vers une société inconnue ne
+ * rattache pas à sa place, le nom reprend la main et le lien est signalé.
+ */
+describe('lien explicite au registre (D-471, correspondance version 6)', () => {
+  const societes = [
+    { id: 'loewe', name: 'Loewe', mergedIntoId: null, domain: 'loewe.com' },
+    { id: 'perfumesloewe', name: 'Perfumes Loewe', mergedIntoId: null, domain: ' loewe.com ' },
+    { id: 'lancelancien', name: 'Lancel Paris', mergedIntoId: 'lancel', domain: 'lancel.fr' },
+    { id: 'lancel', name: 'LANCEL', mergedIntoId: null, domain: 'lancel.com' },
+    { id: 'frame', name: 'Frame', mergedIntoId: null, domain: null },
+  ];
+
+  it('le lien prime sur un nom qui rattacherait ailleurs, et suit les fusions', () => {
+    const inconnus: string[] = [];
+    const rattacher = rattacheurRegistre(societes, [], (id) => inconnus.push(id));
+    // PRÉMISSE : sans lien, le nom rattache à une AUTRE société que celle du lien.
+    expect(rattacher('Loewe')).toBe('loewe');
+    expect(rattacher('Loewe', 'perfumesloewe')).toBe('perfumesloewe');
+    expect(rattacher('Maison sans homonyme', 'lancelancien')).toBe('lancel');
+    expect(inconnus).toEqual([]);
+  });
+
+  it('un lien inconnu ne rattache pas à sa place : le nom reprend la main, et le lien est signalé', () => {
+    const inconnus: string[] = [];
+    const rattacher = rattacheurRegistre(societes, [], (id) => inconnus.push(id));
+    expect(rattacher('Loewe', 'societeabsente1')).toBe('loewe');
+    expect(rattacher('Inconnue', 'societeabsente2')).toBeNull();
+    expect(inconnus).toEqual(['societeabsente1', 'societeabsente2']);
+  });
+
+  it('le contexte sert le domaine de la société rattachée, et compte les liens inconnus', () => {
+    const contexte = contexteDepuis(societes, [], BOOTSTRAP_TAXONOMY);
+    expect(contexte.domaine('perfumesloewe')).toBe('loewe.com');
+    expect(contexte.domaine('frame')).toBeNull();
+    expect(contexte.domaine(null)).toBeNull();
+    expect(contexte.domaine('absente')).toBeNull();
+    contexte.rattacher('Loewe', 'societeabsente1');
+    contexte.rattacher('Loewe', 'societeabsente1');
+    expect(contexte.liensInconnus()).toEqual(['societeabsente1']);
   });
 });

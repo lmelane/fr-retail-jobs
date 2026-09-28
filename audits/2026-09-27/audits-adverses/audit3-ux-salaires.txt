@@ -1,0 +1,67 @@
+G	{"base": "railway", "role": "catwalks_audit", "maintenant": "2026-09-27T21:16:01.723152+00:00", "lectureSeule": "on"}
+A	{"publiables": 78778, "avecSalaireServi": 2355}
+AF	{"n": 393, "forme": "fourchette", "devise": "USD", "periode": "HOUR"}
+AF	{"n": 296, "forme": "min_seul", "devise": "EUR", "periode": "HOUR"}
+AF	{"n": 223, "forme": "fourchette", "devise": "EUR", "periode": "MONTH"}
+AF	{"n": 215, "forme": "min_seul", "devise": "USD", "periode": "HOUR"}
+AF	{"n": 206, "forme": "fourchette", "devise": "EUR", "periode": "YEAR"}
+AF	{"n": 166, "forme": "min_seul", "devise": "EUR", "periode": "MONTH"}
+AF	{"n": 144, "forme": "min_seul", "devise": "CLP", "periode": "MONTH"}
+AF	{"n": 133, "forme": "fourchette", "devise": "USD", "periode": "YEAR"}
+AF	{"n": 123, "forme": "min_seul", "devise": "GBP", "periode": "HOUR"}
+AF	{"n": 58, "forme": "unique", "devise": "GBP", "periode": "HOUR"}
+AF	{"n": 55, "forme": "unique", "devise": "EUR", "periode": "MONTH"}
+AF	{"n": 45, "forme": "min_seul", "devise": "PEN", "periode": "MONTH"}
+AF	{"n": 35, "forme": "max_seul", "devise": "EUR", "periode": "MONTH"}
+AF	{"n": 33, "forme": "unique", "devise": "EUR", "periode": "HOUR"}
+AF	{"n": 31, "forme": "min_seul", "devise": "EUR", "periode": "YEAR"}
+AF	{"n": 24, "forme": "fourchette", "devise": "GBP", "periode": "YEAR"}
+AF	{"n": 19, "forme": "unique", "devise": "USD", "periode": "HOUR"}
+AF	{"n": 19, "forme": "min_seul", "devise": "PLN", "periode": "MONTH"}
+AF	{"n": 16, "forme": "fourchette", "devise": "CAD", "periode": "HOUR"}
+AF	{"n": 13, "forme": "min_seul", "devise": "GBP", "periode": "YEAR"}
+AF	{"n": 12, "forme": "min_seul", "devise": "CNY", "periode": "MONTH"}
+AF	{"n": 10, "forme": "unique", "devise": "EUR", "periode": "YEAR"}
+AF	{"n": 8, "forme": "fourchette", "devise": "MXN", "periode": "MONTH"}
+AF	{"n": 7, "forme": "min_seul", "devise": "MXN", "periode": "MONTH"}
+AF	{"n": 6, "forme": "fourchette", "devise": "CAD", "periode": "YEAR"}
+AF	{"n": 6, "forme": "unique", "devise": "GBP", "periode": "YEAR"}
+AF	{"n": 6, "forme": "min_seul", "devise": "COP", "periode": "MONTH"}
+AF	{"n": 5, "forme": "max_seul", "devise": "EUR", "periode": "YEAR"}
+AF	{"n": 5, "forme": "fourchette", "devise": "COP", "periode": "MONTH"}
+AF	{"n": 5, "forme": "fourchette", "devise": "GBP", "periode": "HOUR"}
+AF	{"n": 4, "forme": "max_seul", "devise": "USD", "periode": "HOUR"}
+AF	{"n": 3, "forme": "fourchette", "devise": "AUD", "periode": "YEAR"}
+AF	{"n": 3, "forme": "fourchette", "devise": "GBP", "periode": "MONTH"}
+AF	{"n": 3, "forme": "fourchette", "devise": "CLP", "periode": "MONTH"}
+AF	{"n": 3, "forme": "unique", "devise": "CAD", "periode": "HOUR"}
+AF	{"n": 2, "forme": "min_seul", "devise": "USD", "periode": "YEAR"}
+AF	{"n": 2, "forme": "min_seul", "devise": "CAD", "periode": "HOUR"}
+AF	{"n": 2, "forme": "min_seul", "devise": "GBP", "periode": "MONTH"}
+AF	{"n": 2, "forme": "min_seul", "devise": "AUD", "periode": "YEAR"}
+AF	{"n": 2, "forme": "min_seul", "devise": "AUD", "periode": "MONTH"}
+AF	{"n": 2, "forme": "min_seul", "devise": "NZD", "periode": "HOUR"}
+AF	{"n": 2, "forme": "fourchette", "devise": "USD", "periode": "MONTH"}
+AF	{"n": 1, "forme": "unique", "devise": "USD", "periode": "YEAR"}
+AF	{"n": 1, "forme": "fourchette", "devise": "PEN", "periode": "MONTH"}
+AF	{"n": 1, "forme": "fourchette", "devise": "NZD", "periode": "HOUR"}
+AF	{"n": 1, "forme": "fourchette", "devise": "HUF", "periode": "YEAR"}
+AF	{"n": 1, "forme": "unique", "devise": "GBP", "periode": "MONTH"}
+AF	{"n": 1, "forme": "max_seul", "devise": "EUR", "periode": "DAY"}
+AF	{"n": 1, "forme": "min_seul", "devise": "MYR", "periode": "MONTH"}
+AF	{"n": 1, "forme": "unique", "devise": "CAD", "periode": "YEAR"}
+AX	{"max": null, "min": 13.500000, "pays": "US", "devise": "USD", "periode": "HOUR"}
+AX	{"max": 17.000000, "min": 16.500000, "pays": "US", "devise": "USD", "periode": "HOUR"}
+AX	{"max": 22.100000, "min": 19.200000, "pays": "US", "devise": "USD", "periode": "HOUR"}
+AX	{"max": null, "min": 14.650000, "pays": "US", "devise": "USD", "periode": "HOUR"}
+AX	{"max": null, "min": 20.500000, "pays": "US", "devise": "USD", "periode": "HOUR"}
+AX	{"max": null, "min": 14.930000, "pays": "US", "devise": "USD", "periode": "HOUR"}
+AX	{"max": null, "min": 13.900000, "pays": "DE", "devise": "EUR", "periode": "HOUR"}
+AX	{"max": null, "min": 15.750000, "pays": "US", "devise": "USD", "periode": "HOUR"}
+AX	{"max": 22.500000, "min": 19.500000, "pays": "US", "devise": "USD", "periode": "HOUR"}
+AX	{"max": null, "min": 13.950000, "pays": "US", "devise": "USD", "periode": "HOUR"}
+AX	{"max": 15.000000, "min": 14.500000, "pays": "US", "devise": "USD", "periode": "HOUR"}
+AX	{"max": null, "min": 15.120000, "pays": "US", "devise": "USD", "periode": "HOUR"}
+D	{"n": 57, "forme": "fourchette", "devise": "EUR", "periode": "YEAR"}
+D	{"n": 1, "forme": "unique", "devise": "EUR", "periode": "YEAR"}
+D	{"n": 1, "forme": "fourchette", "devise": "GBP", "periode": "YEAR"}

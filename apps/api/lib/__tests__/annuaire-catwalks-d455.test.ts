@@ -18,6 +18,8 @@ const enabled = !!url && ['localhost', '127.0.0.1', '[::1]'].includes(url.hostna
 
 const P = 'annuaireD455';
 const DIOR = 'Maison Témoin D-455';
+/** D-471 : une Maison absente du registre, dont l'équipe a saisi le site au back-office. */
+const HORS_REGISTRE = 'Maison Hors Registre D-471';
 
 describe.skipIf(!enabled)('annuaire : une seule ligne « Catwalks » pour les offres sans Maison publique (D-455 §1)', () => {
   const nettoyer = () => prisma.directOffer.deleteMany({ where: { id: { startsWith: P } } });
@@ -28,6 +30,7 @@ describe.skipIf(!enabled)('annuaire : une seule ligne « Catwalks » pour les of
       offreBrute({ id: `${P}Beaute`, slug: `${P}-beaute`, maison: null, univers: ['BEAUTE'] }),
       offreBrute({ id: `${P}SansUnivers`, slug: `${P}-sans-univers`, maison: null, univers: [] }),
       offreBrute({ id: `${P}Maison`, slug: `${P}-maison`, maison: { nom: DIOR, slug: 'maison-temoin-d455' } }),
+      offreBrute({ id: `${P}HorsRegistre`, slug: `${P}-hors-registre`, maison: { nom: HORS_REGISTRE, slug: 'maison-hors-registre-d471', domaine: 'hors-registre.example', catalogueId: null } }),
     ];
     for (const brute of offres) await prisma.directOffer.create({ data: projeterOffreDirecte(lireOffre(brute), BigInt(1), BigInt(1), contexteTemoin()) });
   });
@@ -36,7 +39,7 @@ describe.skipIf(!enabled)('annuaire : une seule ligne « Catwalks » pour les of
   it('PRÉMISSE puis preuve — trois offres sans Maison, d’univers différents, forment UNE ligne « Catwalks » ; la Maison publique garde la sienne', async () => {
     // PRÉMISSE : les quatre offres sont publiables en France, et le registre ne connaît aucune société « Catwalks »
     // (sinon l'annuaire rattacherait la ligne à cette société, par son nom).
-    expect(await prisma.directOffer.count({ where: { id: { startsWith: P }, countryCode: 'FR', ...directPubliable() } })).toBe(4);
+    expect(await prisma.directOffer.count({ where: { id: { startsWith: P }, countryCode: 'FR', ...directPubliable() } })).toBe(5);
     expect(await prisma.company.count({ where: { name: 'Catwalks' } })).toBe(0);
     const r = await getCompanies({ marche: 'FR' });
     const lignes = r.companies.filter((c) => c.name === 'Catwalks');
@@ -44,6 +47,14 @@ describe.skipIf(!enabled)('annuaire : une seule ligne « Catwalks » pour les of
     expect(lignes[0]).toMatchObject({ id: 'cw_catwalks', jobCount: 3, group: null, domain: null });
     for (const faux of ['Mode, Luxe', 'Beauté', 'Maison confidentielle']) expect(r.companies.map((c) => c.name), faux).not.toContain(faux);
     expect(r.companies.find((c) => c.name === DIOR)).toMatchObject({ jobCount: 1 });
+  });
+
+  it('D-471 — une Maison absente du registre porte dans l’annuaire le domaine de ses offres ; la ligne « Catwalks » n’en a aucun', async () => {
+    // PRÉMISSE : le registre ne connaît pas cette Maison ; seul le domaine saisi au back-office peut lui donner un logo.
+    expect(await prisma.company.count({ where: { name: HORS_REGISTRE } })).toBe(0);
+    const r = await getCompanies({ marche: 'FR' });
+    expect(r.companies.find((c) => c.name === HORS_REGISTRE)).toMatchObject({ jobCount: 1, domain: 'hors-registre.example' });
+    expect(r.companies.find((c) => c.name === 'Catwalks')).toMatchObject({ domain: null });
   });
 
   it('le bloc Maison d’une fiche sans Maison publique compte ses offres sous « Catwalks », sans domaine ni groupe', async () => {

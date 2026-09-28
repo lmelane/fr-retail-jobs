@@ -1,0 +1,120 @@
+{
+ "total": 2625,
+ "navigateurs": {
+  "chromium": {
+   "version": "151.0.7922.34",
+   "ecarts": 0,
+   "parLangue": {},
+   "exemples": []
+  },
+  "webkit": {
+   "version": "26.5",
+   "ecarts": 69,
+   "parLangue": {
+    "ja": 3,
+    "ms": 66
+   },
+   "exemples": [
+    {
+     "k": "ja|JPY|45000",
+     "serveur": "￥45,000",
+     "client": "¥45,000"
+    },
+    {
+     "k": "ja|JPY|13.5",
+     "serveur": "￥13.50",
+     "client": "¥13.50"
+    },
+    {
+     "k": "ja|JPY|1800",
+     "serveur": "￥1,800",
+     "client": "¥1,800"
+    },
+    {
+     "k": "ms|USD|45000",
+     "serveur": "USD 45,000",
+     "client": "USD45,000"
+    },
+    {
+     "k": "ms|USD|13.5",
+     "serveur": "USD 13.50",
+     "client": "USD13.50"
+    },
+    {
+     "k": "ms|USD|1800",
+     "serveur": "USD 1,800",
+     "client": "USD1,800"
+    },
+    {
+     "k": "ms|CHF|45000",
+     "serveur": "CHF 45,000",
+     "client": "CHF45,000"
+    },
+    {
+     "k": "ms|CHF|13.5",
+     "serveur": "CHF 13.50",
+     "client": "CHF13.50"
+    },
+    {
+     "k": "ms|CHF|1800",
+     "serveur": "CHF 1,800",
+     "client": "CHF1,800"
+    },
+    {
+     "k": "ms|SGD|45000",
+     "serveur": "SGD 45,000",
+     "client": "SGD45,000"
+    },
+    {
+     "k": "ms|SGD|13.5",
+     "serveur": "SGD 13.50",
+     "client": "SGD13.50"
+    },
+    {
+     "k": "ms|SGD|1800",
+     "serveur": "SGD 1,800",
+     "client": "SGD1,800"
+    }
+   ]
+  },
+  "firefox": {
+   "version": "153.0",
+   "ecarts": 0,
+   "parLangue": {},
+   "exemples": []
+  }
+ },
+ "lectures": {
+  "fr|EUR|45000": "45 000 €",
+  "fr|USD|45000": "45 000 $US",
+  "fr|GBP|45000": "45 000 £GB",
+  "fr|CHF|45000": "45 000 CHF",
+  "fr|JPY|13.5": "13,50 JPY",
+  "en|EUR|45000": "€45,000",
+  "en|USD|45000": "US$45,000",
+  "de|CHF|45000": "45.000 CHF",
+  "ja|JPY|45000": "￥45,000",
+  "ja|EUR|45000": "€45,000",
+  "zh-CN|CNY|45000": "¥45,000",
+  "ar|AED|45000": "‏٤٥٬٠٠٠ د.إ.‏",
+  "ar|EUR|45000": "‏٤٥٬٠٠٠ €",
+  "th|THB|45000": "฿45,000",
+  "ko|KRW|45000": "₩45,000",
+  "sv|SEK|45000": "45 000 kr",
+  "nb|NOK|45000": "45 000 kr",
+  "pl|PLN|13.5": "13,50 zł",
+  "hu|HUF|13.5": "13,50 Ft",
+  "vi|VND|45000": "45.000 ₫",
+  "zh-Hant|TWD|45000": "$45,000",
+  "ms|MYR|45000": "RM 45,000",
+  "tr|TRY|45000": "₺45.000",
+  "pt-BR|BRL|13.5": "R$ 13,50",
+  "el|EUR|13.5": "13,50 €",
+  "cs|CZK|45000": "45 000 Kč",
+  "ro|RON|45000": "45.000 RON",
+  "da|DKK|45000": "45.000 kr.",
+  "nl|EUR|45000": "€ 45.000",
+  "es|EUR|45000": "45.000 €",
+  "it|EUR|45000": "45.000 €"
+ }
+}

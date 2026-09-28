@@ -13,7 +13,7 @@ import { colonnesProjetees, empreinteStable } from './projection.js';
 import { reprojeterStock, type StatsReprojection } from './reprojection.js';
 
 /**
- * LA PHOTO DES OFFRES CATWALKS (D-444) — la liste publique du backend, relue toutes les 5 minutes, tenue à jour dans
+ * LA PHOTO DES OFFRES CATWALKS (D-444) — la liste publique du backend, relue toutes les heures (D-474 ; toutes les 5 minutes sous D-444), tenue à jour dans
  * `DirectOffer` sans le backend ni son flux d'outbox.
  *
  *  - présente dans la liste : publiable (`eligible`), projetée par `colonnesProjetees` (employeur de D-455, groupe et
@@ -30,7 +30,7 @@ import { reprojeterStock, type StatsReprojection } from './reprojection.js';
  *
  * N'ÉCRIT QUE CE QUI CHANGE. Une offre dont le contenu reçu (`payloadHash`) et la projection (`projectionHash`) n'ont pas
  * bougé n'est pas touchée : la file d'indexation de la recherche ne reçoit rien, et une passe sur une liste inchangée
- * n'écrit que l'état du lecteur. Un effacement suivi d'une réinsertion toutes les 5 minutes inonderait cette file, et
+ * n'écrit que l'état du lecteur. Un effacement suivi d'une réinsertion à chaque passe inonderait cette file, et
  * au-delà de 300 s de retard toute recherche par mots répondrait 503 (`requireSearchIndex`).
  *
  * Les écritures d'une passe tiennent dans UNE transaction, sous un verrou consultatif : deux passes simultanées n'en
@@ -76,6 +76,13 @@ export type StatsPhoto = {
    */
   horsMarche: { id: string; lieu: string; pays: string }[];
   reprojection: StatsReprojection;
+  /**
+   * D-471 : les liens posés au back-office (`maison.catalogueId`) qui ne désignent aucune société du registre. L'offre
+   * retombe sur le rattachement par le nom ; le lien est signalé à chaque passe, pour que l'équipe le corrige.
+   */
+  liensInconnus: string[];
+  /** D-471 : les champs facultatifs reçus hors forme (domaine, lien de la Maison), ignorés ; l'offre est écrite sans eux. */
+  champsIgnores: { id: string; chemins: string[] }[];
   /** Une autre passe tenait le verrou : celle-ci n'a rien écrit. */
   concurrente: boolean;
   /** Une passe qui avait lu la liste APRÈS celle-ci (ou dans la même milliseconde) l'a déjà notée : celle-ci n'a rien écrit. */
@@ -155,6 +162,7 @@ export async function synchroniserListe(db: PrismaClient, source: SourceListe, o
   const parPays: Record<string, number> = {};
   const abstentions: Abstention[] = [];
   const horsMarche: StatsPhoto['horsMarche'] = [];
+  const champsIgnores: StatsPhoto['champsIgnores'] = lecture.offres.filter((l) => l.item.ecarts.length).map((l) => ({ id: l.id, chemins: l.item.ecarts }));
   for (const lue of lecture.offres) {
     try {
       const verdict = contexte.pays(lue.item.latitude, lue.item.longitude);
@@ -174,7 +182,7 @@ export async function synchroniserListe(db: PrismaClient, source: SourceListe, o
   const stats: StatsPhoto = {
     recues: lecture.taille, annoncees, compteErreur, lues: projetees.length, refusees: refus, complete: motif === null, motifIncomplet: motif,
     publiees: 0, misesAJour: 0, retablies: 0, inchangees: 0, retirees: 0, retraitsSuspendus: 0,
-    parPays, abstentions, horsMarche, reprojection: { reprojetees: 0, nonReprojetees: [] }, concurrente: false, perimee: false,
+    parPays, abstentions, horsMarche, reprojection: { reprojetees: 0, nonReprojetees: [] }, liensInconnus: [], champsIgnores, concurrente: false, perimee: false,
   };
 
   return db.$transaction(async (tx) => {
@@ -186,6 +194,8 @@ export async function synchroniserListe(db: PrismaClient, source: SourceListe, o
     const etat = await tx.directFeedCursor.findUnique({ where: { id: ETAT_LISTE }, select: { lastReadAt: true } });
     if (etat && etat.lastReadAt >= luLe) return { ...stats, perimee: true };
     stats.reprojection = await reprojeterStock(tx, contexte);
+    // Après la projection de la liste ET la reprojection du stock : le contexte a vu tous les liens de la passe.
+    stats.liensInconnus = contexte.liensInconnus();
     const existantes = await tx.directOffer.findMany({ select: { id: true, eligible: true, payloadHash: true, projectionHash: true } });
     const parId = new Map(existantes.map((e) => [e.id, e]));
     for (const p of projetees) {
@@ -221,6 +231,14 @@ export async function synchroniserListe(db: PrismaClient, source: SourceListe, o
     if (resultat.abstentions.length || resultat.horsMarche.length)
       await log.warn('direct.liste_hors_listes', `[direct-liste] ${resultat.abstentions.length + resultat.horsMarche.length} offre(s) Catwalks dans aucune liste de /emplois (pays non établi ou hors marché)`,
         { abstentions: resultat.abstentions, horsMarche: resultat.horsMarche });
+    // D-471 : un domaine ou un lien reçu hors forme ; l'offre est écrite sans lui, la photo reste complète.
+    if (resultat.champsIgnores.length)
+      await log.warn('direct.champs_ignores', `[direct-liste] ${resultat.champsIgnores.length} offre(s) Catwalks avec un domaine ou un lien hors forme, ignoré`,
+        { champsIgnores: resultat.champsIgnores });
+    // D-471 : un lien du back-office vers une société absente du registre ; l'offre a été rattachée par son nom.
+    if (resultat.liensInconnus.length)
+      await log.warn('direct.liens_registre_inconnus', `[direct-liste] ${resultat.liensInconnus.length} lien(s) du back-office vers une société absente du registre : rattachement par le nom`,
+        { liensInconnus: resultat.liensInconnus });
     return resultat;
   });
 }

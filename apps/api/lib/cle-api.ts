@@ -4,9 +4,11 @@ import { NextResponse, type NextRequest } from 'next/server';
 /**
  * Le garde d'accès de l'API du catalogue (D-422).
  *
- * L'appelant légitime est UNIQUE et c'est un serveur : le rendu de
- * catwalks.io sur Vercel. Pas de comptes, pas de portail : une clé partagée,
- * portée par `Authorization: Bearer …`, comparée à `CATALOGUE_API_KEY`.
+ * Les appelants légitimes sont des SERVEURS, chacun avec sa clé : le rendu de
+ * catwalks.io sur Vercel (`CATALOGUE_API_KEY`, toutes les routes publiques) et,
+ * depuis D-471, le backend (`CATALOGUE_API_KEY_BACKEND`, deux routes seulement,
+ * voir plus bas). Pas de comptes, pas de portail : une clé par appelant, portée
+ * par `Authorization: Bearer …`.
  *
  * Mesuré avant d'écrire ce fichier (14/09/2026) : sans garde, 3 338 requêtes
  * suffisaient à aspirer les 83 431 offres du catalogue (~166 Mo). L'absence
@@ -14,6 +16,12 @@ import { NextResponse, type NextRequest } from 'next/server';
  *
  * `/api/health` n'est PAS gardée (D-422 §3) : Railway l'interroge pour savoir
  * si le service est vivant, et une santé protégée ferait redéployer en boucle.
+ *
+ * D-464 §3 / D-471 — UN SECOND APPELANT, LE BACKEND, AVEC SA PROPRE CLÉ
+ * (`CATALOGUE_API_KEY_BACKEND`), révocable seule. Il ne reçoit que les routes
+ * dont il a besoin : la fiche d'une offre (les démarches, R-133) et la
+ * recherche du registre (le sélecteur du back-office). Une route qui ne le
+ * nomme pas reste réservée au site : par défaut, `appelants = ['site']`.
  */
 
 /**
@@ -36,9 +44,12 @@ function egalesEnTempsConstant(a: string, b: string): boolean {
   return timingSafeEqual(ha, hb);
 }
 
-/** La clé attendue, ou null si le service n'en exige aucune. */
-export function cleAttendue(): string | null {
-  const brut = process.env.CATALOGUE_API_KEY?.trim();
+export type Appelant = 'site' | 'backend';
+const VARIABLE_DE_CLE: Record<Appelant, string> = { site: 'CATALOGUE_API_KEY', backend: 'CATALOGUE_API_KEY_BACKEND' };
+
+/** La clé attendue d'un appelant, ou null si elle n'est pas configurée. */
+export function cleAttendue(appelant: Appelant = 'site'): string | null {
+  const brut = process.env[VARIABLE_DE_CLE[appelant]]?.trim();
   return brut ? brut : null;
 }
 
@@ -55,22 +66,28 @@ export function cleAttendue(): string | null {
  * que le poste local fonctionne sans secret. Poser la variable est l'acte qui
  * arme le garde ; en production, l'oublier se voit en 503, jamais en fuite.
  */
-export function refuserSiCleInvalide(request: NextRequest, requestId: string): NextResponse | null {
-  const attendue = cleAttendue();
-  if (!attendue) {
+export function refuserSiCleInvalide(request: NextRequest, requestId: string,
+  appelants: readonly Appelant[] = ['site']): NextResponse | null {
+  const attendues = appelants.map((a) => cleAttendue(a)).filter((c): c is string => c !== null);
+  if (!attendues.length) {
     if (process.env.NODE_ENV === 'production') {
-      console.error(JSON.stringify({ evenement: 'api.cle', requestId, etat: 'non_configure', detail: 'CATALOGUE_API_KEY absente en production' }));
+      console.error(JSON.stringify({ evenement: 'api.cle', requestId, etat: 'non_configure',
+        detail: `${appelants.map((a) => VARIABLE_DE_CLE[a]).join(' et ')} absente(s) en production` }));
       return NextResponse.json(
         { error: 'Clé d’accès du catalogue non configurée.', requestId },
         { status: 503, headers: { 'x-request-id': requestId, 'retry-after': '60' } },
       );
     }
-    console.info(JSON.stringify({ evenement: 'api.cle', requestId, etat: 'desarme', detail: 'CATALOGUE_API_KEY absente hors production' }));
+    console.info(JSON.stringify({ evenement: 'api.cle', requestId, etat: 'desarme',
+      detail: `${appelants.map((a) => VARIABLE_DE_CLE[a]).join(' et ')} absente(s) hors production` }));
     return null;
   }
   const entete = request.headers.get('authorization')?.trim() ?? '';
   const fournie = /^Bearer\s+(.+)$/i.exec(entete)?.[1]?.trim() ?? '';
-  if (fournie && egalesEnTempsConstant(fournie, attendue)) return null;
+  // Chaque clé attendue est comparée, sans sortie anticipée : le temps de réponse ne dit pas laquelle a été reconnue.
+  let reconnue = false;
+  for (const attendue of attendues) reconnue = (fournie !== '' && egalesEnTempsConstant(fournie, attendue)) || reconnue;
+  if (reconnue) return null;
 
   console.info(JSON.stringify({
     evenement: 'api.cle',

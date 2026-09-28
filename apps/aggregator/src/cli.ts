@@ -200,7 +200,7 @@ try {
      * (`direct/photo.ts`). Une photo vide, tronquée au plafond de 500, plus courte que le compte du backend (ou sans
      * compte lisible) ou portant une offre refusée ne retire rien et fait échouer la passe ; une panne du backend ou une
      * réponse invalide la fait échouer sans rien écrire dans les offres. Le service Railway `catwalks-direct-sync` la
-     * lance toutes les 5 minutes, sur GO de production.
+     * lance toutes les heures (D-474), sur GO de production.
      */
     const { passeReussie, synchroniserListe } = await import('./direct/photo.js');
     const { listeHttp } = await import('./direct/liste.js');

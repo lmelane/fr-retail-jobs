@@ -1372,6 +1372,8 @@ model DirectOffer {
   updatedAt             DateTime  @updatedAt
   /** D-444 : la société du registre à laquelle la Maison publique est rattachée (d'où le groupe) ; aucune pour un mandat. */
   companyId             String?
+  /** D-471 : le domaine du logo — celui de la Maison saisi au back-office, sinon celui de la société rattachée ; aucun pour un mandat. */
+  companyDomain         String?
   /** D-444 : le métier de la taxonomie active appliquée à l'intitulé, et la version qui l'a établi. */
   occupationCode        String?
   occupationReleaseId   String?

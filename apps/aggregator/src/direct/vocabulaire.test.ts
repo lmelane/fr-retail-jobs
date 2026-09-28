@@ -3,8 +3,8 @@ import { CORRESPONDANCE_DIRECTE_VERSION, EMPLOYEUR_CATWALKS, codesSecteur, dimen
 
 /** Chaque valeur du backend ÉTABLIT une dimension et une seule ; l'inconnu reste nul (lot 6, même discipline que D-421). */
 describe('correspondance des vocabulaires directs', () => {
-  it('est versionnée : la version 5 projette la ville et le code postal de la liste (D-468 §1) ; le stock resté en version antérieure est re-projeté', () => {
-    expect(CORRESPONDANCE_DIRECTE_VERSION).toBe(5);
+  it('est versionnée : la version 6 rattache par le lien du back-office et porte le domaine du logo (D-471) ; le stock resté en version antérieure est re-projeté', () => {
+    expect(CORRESPONDANCE_DIRECTE_VERSION).toBe(6);
   });
 
   it('un contrat établit la durée, OU le programme, OU la nature — jamais deux à la fois', () => {
