@@ -1,16 +1,16 @@
 {
-  "observedAt": "2026-09-27T07:23:53.070880+00:00",
-  "previousReceipt": "git show 3a66854:docs/operations/railway/runtime-release.json (release of 25/09/2026, 1e1ad4c, first RUN observed)",
-  "targetContractSha256": "ba3dbeee8f2c4b9b3b09511412179996c1122b5c71b300fd9889ed1069e87300",
+  "observedAt": "2026-09-28T08:25:40.676501+00:00",
+  "previousReceipt": "git show 0ce26fb:docs/operations/railway/runtime-release.json (release of 26/09 and direct-sync activation of 27/09/2026, 957f24c)",
+  "targetContractSha256": "b00fc41e719f541315fb0e8a09f707eb6dbcab343bfd2b869a8f7334768b4077",
   "registryVisibility": "public",
   "registryCredentialsRequired": false,
   "images": [
     {
-      "gitSha": "957f24c6b863ccb9c8c2a64cdfbe5ba3a27c225f",
-      "contractSha256": "ba3dbeee8f2c4b9b3b09511412179996c1122b5c71b300fd9889ed1069e87300",
+      "gitSha": "200950aa404aa5b35b1967e86fffe0bd0c8d2f0e",
+      "contractSha256": "b00fc41e719f541315fb0e8a09f707eb6dbcab343bfd2b869a8f7334768b4077",
       "service": "catwalks-catalogue-api",
-      "image": "ghcr.io/lmelane/catwalks-catalogue-api@sha256:9bdccd687e367e227b075230f3a70a975a74497183b6e9353e13f6215cf775e8",
-      "imageId": "sha256:4061792cd1537bde28615707d0a7adc2c64fc608c7ac2c3c6bbeca9a495a4014",
+      "image": "ghcr.io/lmelane/catwalks-catalogue-api@sha256:736ab2f2ab075e2b4f7e9836e8f4c8ef37c7a501dc2feb7ed168fdfbbcc164e9",
+      "imageId": "sha256:36712e7e08d716a4a13c6c22dbe0a9c43a8e707a78f560c6f3a958fe3c7c1464",
       "imageEnvironment": [
         "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
         "NODE_VERSION=22.23.3",
@@ -27,15 +27,15 @@
         "status": "PASS",
         "network": "none",
         "role": "api",
-        "gitSha": "957f24c6b863ccb9c8c2a64cdfbe5ba3a27c225f"
+        "gitSha": "200950aa404aa5b35b1967e86fffe0bd0c8d2f0e"
       }
     },
     {
-      "gitSha": "957f24c6b863ccb9c8c2a64cdfbe5ba3a27c225f",
-      "contractSha256": "ba3dbeee8f2c4b9b3b09511412179996c1122b5c71b300fd9889ed1069e87300",
+      "gitSha": "200950aa404aa5b35b1967e86fffe0bd0c8d2f0e",
+      "contractSha256": "b00fc41e719f541315fb0e8a09f707eb6dbcab343bfd2b869a8f7334768b4077",
       "service": "catwalks-ingestion-worker",
-      "image": "ghcr.io/lmelane/catwalks-ingestion-worker@sha256:62c48074422fe5affd1655cb0b8d24a2345230d88a928f2483d9aa0954a43c3b",
-      "imageId": "sha256:2fcb45bd54519584d758c2453a73063b79c0a155349b6b70deed563bcaa35d8c",
+      "image": "ghcr.io/lmelane/catwalks-ingestion-worker@sha256:278e5a8752d58cc4bb68ab12cb97fc864d861e51263437c2a8bddc8defccc0d8",
+      "imageId": "sha256:c9f13976a1760b9eecab37573334a029f97a097b73bc6d494ca01ece30fda545",
       "imageEnvironment": [
         "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
         "LANG=C.UTF-8",
@@ -52,32 +52,32 @@
         "status": "PASS",
         "network": "none",
         "role": "worker",
-        "gitSha": "957f24c6b863ccb9c8c2a64cdfbe5ba3a27c225f"
+        "gitSha": "200950aa404aa5b35b1967e86fffe0bd0c8d2f0e"
       },
       "sharedOfflineEntrypoints": {
         "catwalks-direct-sync": {
           "status": "PASS",
           "network": "none",
           "role": "direct-sync",
-          "gitSha": "957f24c6b863ccb9c8c2a64cdfbe5ba3a27c225f"
+          "gitSha": "200950aa404aa5b35b1967e86fffe0bd0c8d2f0e"
         }
       }
     }
   ],
-  "reason": "Catwalks offers in the catalogue by the public-list reader (D-444), city and postal code (D-468 §1), Monaco served by the France market without a country filter (D-468 §2, D-469 §1), no Maison block on an internal-mandate page (D-468 §3), Catwalks offers in similar offers (D-468 §1, D-470 §1), logo sharpness threshold, search-4. API and worker; direct-sync service created by direct_sync.py.",
+  "reason": "D-471: Catwalks offers attached to the registry company chosen in the back-office (correspondence version 6), Maison domain and generated cover served by the API, registry search and offer detail opened to the backend's own key (CATALOGUE_API_KEY_BACKEND, bound by the contract); migration DirectOffer.companyDomain; Lancel added as a generic-listing source on CEO GO (D-471 §5). D-474 (hourly direct-sync) is in the target contract but NOT applied: the CEO kept */5 until the dedicated Healthchecks check moves to one hour.",
   "ci": {
-    "development": 36225373179,
-    "headSha": "957f24c6b863ccb9c8c2a64cdfbe5ba3a27c225f",
+    "development": 36393925584,
+    "headSha": "200950aa404aa5b35b1967e86fffe0bd0c8d2f0e",
     "status": "SUCCESS",
-    "mainPromotion": "Same tested commit; fast-forward 1e1ad4c..957f24c; no code change."
+    "mainPromotion": "Same tested commit; fast-forward 957f24c..200950a on 28/09/2026 08:0x UTC"
   },
   "services": [
     {
       "serviceId": "9c50b8a9-5651-478f-b0d1-5bc02d2c138f",
       "name": "catwalks-catalogue-api",
-      "deploymentId": "b8f0cc5a-bf62-4231-b647-99dfece67448",
+      "deploymentId": "8de18f61-c7a8-47d8-bd51-ffdbba22aeff",
       "deploymentStatus": "SUCCESS",
-      "image": "ghcr.io/lmelane/catwalks-catalogue-api@sha256:9bdccd687e367e227b075230f3a70a975a74497183b6e9353e13f6215cf775e8",
+      "image": "ghcr.io/lmelane/catwalks-catalogue-api@sha256:736ab2f2ab075e2b4f7e9836e8f4c8ef37c7a501dc2feb7ed168fdfbbcc164e9",
       "deploy": {
         "startCommand": "node apps/api/runtime/start.mjs",
         "healthcheckPath": "/api/health",
@@ -96,6 +96,7 @@
       },
       "customVariableNames": [
         "CATALOGUE_API_KEY",
+        "CATALOGUE_API_KEY_BACKEND",
         "CATWALKS_RUNTIME_PROFILE",
         "DATABASE_URL",
         "HOSTNAME",
@@ -104,9 +105,9 @@
         "PORT"
       ],
       "process": {
-        "at": "2026-09-26T08:07:15.263Z",
-        "gitSha": "957f24c6b863ccb9c8c2a64cdfbe5ba3a27c225f",
-        "contractSha256": "ba3dbeee8f2c4b9b3b09511412179996c1122b5c71b300fd9889ed1069e87300",
+        "at": "2026-09-28T08:04:50.323Z",
+        "gitSha": "200950aa404aa5b35b1967e86fffe0bd0c8d2f0e",
+        "contractSha256": "b00fc41e719f541315fb0e8a09f707eb6dbcab343bfd2b869a8f7334768b4077",
         "role": "api",
         "argv": [],
         "values": {
@@ -119,7 +120,8 @@
         "profile": "production-paused",
         "secretNames": [
           "DATABASE_URL",
-          "CATALOGUE_API_KEY"
+          "CATALOGUE_API_KEY",
+          "CATALOGUE_API_KEY_BACKEND"
         ]
       },
       "observedEvents": [
@@ -131,9 +133,9 @@
     {
       "serviceId": "210322c3-51b7-42c3-a93d-f50f64d44d19",
       "name": "catwalks-ingestion-worker",
-      "deploymentId": "ec643246-439c-4514-8f0e-6ab2fa592819",
+      "deploymentId": "91b28082-71f0-4783-82c6-8250eccebd4f",
       "deploymentStatus": "SUCCESS",
-      "image": "ghcr.io/lmelane/catwalks-ingestion-worker@sha256:62c48074422fe5affd1655cb0b8d24a2345230d88a928f2483d9aa0954a43c3b",
+      "image": "ghcr.io/lmelane/catwalks-ingestion-worker@sha256:278e5a8752d58cc4bb68ab12cb97fc864d861e51263437c2a8bddc8defccc0d8",
       "deploy": {
         "startCommand": "sh apps/aggregator/start.sh scheduled",
         "restartPolicyType": "NEVER",
@@ -161,16 +163,28 @@
         "PIPELINE_PAUSED"
       ],
       "process": {
-        "at": "2026-09-26T08:07:31.144Z",
-        "gitSha": "957f24c6b863ccb9c8c2a64cdfbe5ba3a27c225f",
-        "contractSha256": "ba3dbeee8f2c4b9b3b09511412179996c1122b5c71b300fd9889ed1069e87300",
+        "at": "2026-09-28T08:13:18.711Z",
+        "gitSha": "200950aa404aa5b35b1967e86fffe0bd0c8d2f0e",
+        "contractSha256": "b00fc41e719f541315fb0e8a09f707eb6dbcab343bfd2b869a8f7334768b4077",
         "role": "worker",
-        "argv": [],
+        "argv": [
+          "source-add",
+          "--key=lancel",
+          "--name=Lancel",
+          "--kind=generic-listing",
+          "--careers-url=https://lancel.nous-recrutons.fr/offres-d-emploi/",
+          "--official-domain=lancel.com",
+          "--tier=ATS_OFFICIAL",
+          "--setting=sitemapUrl=https://lancel.nous-recrutons.fr/job_listing-sitemap.xml",
+          "--setting=linkPattern=/poste/",
+          "--setting=concurrency=4",
+          "--reviewer=claude-d471-go-ceo-20260928"
+        ],
         "values": {
           "BREVO_SENDER_NAME": "Catwalks",
           "CATWALKS_RUNTIME_PROFILE": "production",
           "NODE_ENV": "production",
-          "PIPELINE_PAUSED": "1"
+          "PIPELINE_PAUSED": "0"
         },
         "profile": "production",
         "secretNames": [
@@ -184,7 +198,8 @@
         "runtime.attested"
       ],
       "targetEffectiveProcessMatch": true,
-      "secretValuesPublished": false
+      "secretValuesPublished": false,
+      "processObservedOn": "c5a87585-b3f2-4a21-8adf-3de5fccb7ff1 (source-add Lancel, 28/09/2026 08:12 UTC)"
     }
   ],
   "directSync": {
@@ -212,7 +227,8 @@
       "PIPELINE_PAUSED"
     ],
     "paused": "0",
-    "image": "ghcr.io/lmelane/catwalks-ingestion-worker@sha256:62c48074422fe5affd1655cb0b8d24a2345230d88a928f2483d9aa0954a43c3b"
+    "image": "ghcr.io/lmelane/catwalks-ingestion-worker@sha256:278e5a8752d58cc4bb68ab12cb97fc864d861e51263437c2a8bddc8defccc0d8",
+    "cadence": "*/5 * * * * kept on 28/09/2026 by CEO decision; the target contract (D-474) says 7 * * * *, applied only once the dedicated Healthchecks check period is one hour"
   },
   "schedule": {
     "cronUTC": "0 16,17 * * *",
@@ -225,174 +241,156 @@
   "database": {
     "serviceId": "b5c68d1c-6988-4f15-8d85-afe684109cea",
     "serviceAndVolumeConfigurationUnchanged": true,
-    "migrationsApplied": 92,
+    "migrationsApplied": 93,
     "newMigrations": [
-      "20260925080000_search_direct_indexed_text",
-      "20260925090000_direct_offer_registry"
+      "20260927100000_direct_offer_company_domain"
     ],
     "newMigrationsAdditive": true,
-    "searchGeneration": {
-      "version": "search-4-20260924-v2",
-      "rebuiltBeforeApi": true,
-      "documents": 80592,
-      "previousGenerationRetained": "search-3-20260924-v2"
-    },
-    "historicalDataRepair": false,
-    "reset": false
+    "backup": "No dump before this migration: the database is 18 GB and the release host had 9.8 GB free (ENOSPC risk); the migration adds one nullable column without default (catalogue-only change, no table rewrite, lock_timeout 2s); rollback is the previous images, which ignore the column"
   },
   "backend": {
     "repository": "catwalks-back-end",
     "main": "1ca0d39 (b51d2b2 cherry-picked alone + governance documents, D-469 §2)",
-    "previousMain": "63f61fa",
-    "vercelProduction": "catwalks.api.catwalks.io aliased to 1ca0d39, READY",
-    "check": "GET /api/jobs: 59 offers, 59 with city, 24 with postal code, 31 fields, no internal name; /api/jobs/filters count 59"
+    "development": "165c615 (a4adf8a: D-471 code, independent of D-464, cherry-pickable; 165c615: governance)",
+    "productionMigration": "20260927100000_maison_domaine_catalogue_d471 applied to Neon production on 28/09/2026 on CEO GO (45 maisons before and after, 0 rows modified); production code (main) ignores the columns",
+    "vercelVariables": "CATALOGUE_API_URL and CATALOGUE_API_KEY_BACKEND set on 27/09/2026 (Production and Preview of development)"
   },
-  "validation": "aggregator: unit 3136, integration 607, API 322 on a disposable database; CI run 36225373179; backend main: verifier-lot green on 1ca0d39 (types, tests, real-database tests, build)",
+  "validation": "aggregator: unit 3113, integration 607, direct 86, API 340 on a disposable database; runtime contract 15/15; CI run 36393925584; five adversarial audit rounds (D-471 to D-474)",
   "rollback": {
-    "previousCodeSha": "1e1ad4cb39fc93d180674817c9fdde956e7cb973",
+    "previousCodeSha": "957f24c6b863ccb9c8c2a64cdfbe5ba3a27c225f",
     "images": {
-      "9c50b8a9-5651-478f-b0d1-5bc02d2c138f": "ghcr.io/lmelane/catwalks-catalogue-api@sha256:38de3203b75e3f1680184d07c289ee6b6ab3785d760bcff286bd7d0bfda37919",
-      "210322c3-51b7-42c3-a93d-f50f64d44d19": "ghcr.io/lmelane/catwalks-ingestion-worker@sha256:a5a99134e60cfa1af4ec26000cee5cf5b04abe2de9dd26d311db2711fb044c6b"
+      "9c50b8a9-5651-478f-b0d1-5bc02d2c138f": "ghcr.io/lmelane/catwalks-catalogue-api@sha256:9bdccd687e367e227b075230f3a70a975a74497183b6e9353e13f6215cf775e8",
+      "210322c3-51b7-42c3-a93d-f50f64d44d19": "ghcr.io/lmelane/catwalks-ingestion-worker@sha256:62c48074422fe5affd1655cb0b8d24a2345230d88a928f2483d9aa0954a43c3b",
+      "9f0f4d0c-b18c-4468-855b-6fe9a9c8d008": "ghcr.io/lmelane/catwalks-ingestion-worker@sha256:62c48074422fe5affd1655cb0b8d24a2345230d88a928f2483d9aa0954a43c3b"
     },
-    "scope": "API and worker (release.py rollback); direct-sync: PIPELINE_PAUSED=1 (direct_sync.py pause); backend: revert of 1ca0d39 and 72b8b06 on main; migrations additive, search-3 retained",
+    "scope": "API, worker and direct-sync (release.py rollback in ~/.catwalks/release-agregateur-20260928, which also removes CATALOGUE_API_KEY_BACKEND from the API: the previous image refuses it); migration additive, retained; Lancel source can be retired by the registry operations",
     "databaseDowngrade": false
   },
   "productionChecks": {
     "apiSmoke": {
       "pass": true,
+      "note": "smoke-api.py of 25/09 hardcodes the SHA 1e1ad4c in its verdict; every other criterion passes and health reports 200950a",
       "health": {
         "status": 200,
         "search": {
           "version": "search-4-20260924-v2",
           "pending": 0,
           "oldestSeconds": null,
-          "documents": 81436,
+          "documents": 81798,
           "registered": true,
           "ready": true
         },
-        "gitSha": "957f24c6b863ccb9c8c2a64cdfbe5ba3a27c225f"
+        "gitSha": "200950aa404aa5b35b1967e86fffe0bd0c8d2f0e"
       },
       "unauthorizedStatus": 401,
-      "detailStatus": 200,
+      "detail": {
+        "status": 200,
+        "id": "cw_cmuckslrj0003l504mebrko9w"
+      },
       "translationConsistency": true,
       "markets": {
         "FR": {
           "status": 200,
-          "total": 12143,
-          "ms": 548,
-          "countryBound": true
+          "total": 12193,
+          "ms": 263,
+          "countryBound": true,
+          "facetsPresent": true
         },
         "US": {
           "status": 200,
-          "total": 37056,
-          "ms": 646,
-          "countryBound": true
+          "total": 36896,
+          "ms": 461,
+          "countryBound": true,
+          "facetsPresent": true
         },
         "IT": {
           "status": 200,
-          "total": 2330,
-          "ms": 287,
-          "countryBound": true
+          "total": 2328,
+          "ms": 148,
+          "countryBound": true,
+          "facetsPresent": true
         },
         "JP": {
           "status": 200,
           "total": 541,
-          "ms": 230,
-          "countryBound": true
+          "ms": 108,
+          "countryBound": true,
+          "facetsPresent": true
         },
         "AE": {
           "status": 200,
           "total": 223,
-          "ms": 244,
-          "countryBound": true
+          "ms": 99,
+          "countryBound": true,
+          "facetsPresent": true
         },
         "roleFR": {
           "status": 200,
-          "total": 4232,
-          "ms": 8788,
-          "countryBound": true
+          "total": 4234,
+          "ms": 384,
+          "countryBound": true,
+          "facetsPresent": true
         },
         "roleFRFrench": {
           "status": 200,
-          "total": 4232,
-          "ms": 403,
-          "countryBound": true
+          "total": 4234,
+          "ms": 294,
+          "countryBound": true,
+          "facetsPresent": true
         },
         "composedFR": {
           "status": 200,
           "total": 26,
-          "ms": 251,
-          "countryBound": true
+          "ms": 130,
+          "countryBound": true,
+          "facetsPresent": true
         },
         "composedUS": {
           "status": 200,
-          "total": 50,
-          "ms": 254,
-          "countryBound": true
+          "total": 49,
+          "ms": 151,
+          "countryBound": true,
+          "facetsPresent": true
         },
         "placeFR": {
           "status": 200,
-          "total": 3949,
-          "ms": 345,
-          "countryBound": true
+          "total": 4002,
+          "ms": 222,
+          "countryBound": true,
+          "facetsPresent": true
         }
+      }
+    },
+    "directSyncFirstPassV6": {
+      "at": "2026-09-28T08:10:23Z",
+      "directOffers": 59,
+      "correspondenceVersion6": 59,
+      "withCompanyDomain": 22,
+      "withCover": 59,
+      "lastError": null
+    },
+    "registrySearch": {
+      "withBackendKey": 200,
+      "withoutKey": 401,
+      "q": "lancel",
+      "found": "LANCEL (lancel.com)"
+    },
+    "lancelSource": {
+      "addedAt": "2026-09-28T08:13:33Z",
+      "command": "source-add (generic-listing, sitemapUrl job_listing-sitemap.xml, linkPattern /poste/, concurrency 4)",
+      "state": "COMPLETED",
+      "exitCode": 0,
+      "status": "ACTIVE",
+      "tier": "ATS_OFFICIAL",
+      "activeOffers": 33,
+      "country": {
+        "FR": 33
       },
-      "coldStartFirstKeywordSearchMs": 8034,
-      "note": "the first keyword search of each smoke run took 8-9 s; eight consecutive keyword searches afterwards: 0.2-0.5 s"
+      "employer": "LANCEL",
+      "searchDocuments": 81831,
+      "indexPending": 0
     },
-    "monaco": {
-      "perimeterFR": [
-        "FR",
-        "MC"
-      ],
-      "countryFilterFR": false,
-      "placeMonacoTotal": 42
-    },
-    "configuration": "check paused and check normal: effective configuration equals the snapshot with the two images replaced",
-    "workerPausedBoot": {
-      "deploymentId": "ec643246-439c-4514-8f0e-6ab2fa592819"
-    },
-    "firstRunAfterRelease": {
-      "runId": "966e9549-6b05-4e78-8b26-dfff1a76d28f",
-      "revision": "957f24c6b863ccb9c8c2a64cdfbe5ba3a27c225f",
-      "startedAt": "2026-09-26T16:02:05Z",
-      "finishedAt": "2026-09-26T18:04:00Z",
-      "status": "FAILED",
-      "blockingReasons": [
-        "UNRESOLVED_FAILURE"
-      ],
-      "sourceRuns": {
-        "OK": 359,
-        "DEGRADED": 39,
-        "BROKEN": 11,
-        "ERROR": 5
-      },
-      "writeFailed": 1436,
-      "publicationHeld": 2207,
-      "note": "known blocking sources (D-456 §3); held rise entirely WORKDAY_EMPLOYER_ABSENT_IN_DETAIL (1928 -> 2137), source data; no regression"
-    },
-    "directSyncActivation": {
-      "pausedPass": "2026-09-27T07:15:28Z runtime.attested (direct-sync, production, 957f24c) then pipeline.paused, workStarted=false, businessRequests=0",
-      "unpausedAt": "2026-09-27T07:16Z",
-      "firstPass": "2026-09-27T07:20:27Z worker.finished direct-liste COMPLETED exitCode=0",
-      "catalogue": {
-        "directOffers": 59,
-        "publishable": 59,
-        "byCountry": {
-          "FR": 53,
-          "US": 2,
-          "DE": 2,
-          "GB": 1,
-          "MC": 1
-        },
-        "withCity": 59,
-        "withPostalCode": 24,
-        "mandates": 21,
-        "attachedToRegistry": 23,
-        "withOccupation": 31,
-        "readerError": null
-      },
-      "apiChecks": "audits/2026-09-27/activation-d444.json: Catwalks first in FR, FR ville=Paris, FR lieu=Monaco (43), DE, US, GB; mandate page without Maison block; similar offers include Catwalks offers"
-    }
+    "workerRestored": "release.py check normal: exact configuration of before the release (cron 0 16,17 * * *, scheduled, PIPELINE_PAUSED=0)",
+    "previousRunBeforeRelease": "RUN of 27/09/2026 finished at 17:41:28 UTC (worker.finished after command.failed, the known blocking sources)"
   }
 }
