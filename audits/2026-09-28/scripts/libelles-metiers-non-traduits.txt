@@ -1,0 +1,5 @@
+Manifeste catwalks-occupations-20260914-v2 : 62 métiers ; 23 langues d'affichage hors français
+langue	métiers servis en français	exemples
+nl	1	Opticien
+th	9	Cuisinier · Serveur · Réceptionniste · Assistant de direction
+vi	7	Cuisinier · Serveur · Réceptionniste · Pharmacien

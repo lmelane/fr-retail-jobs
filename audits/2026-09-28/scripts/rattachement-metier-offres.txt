@@ -1,0 +1,6 @@
+garde {"base":"railway","role":"catwalks_audit","lectureSeule":"on","maintenant":"2026-09-28T12:43:24.938969+00:00"}
+publiables 78773 · avec un métier précis 37224 (47.3 %) · intitulés distincts 41218
+statut CLASSIFIED	37224 (47.3 %)	avec métier 37224
+statut FAMILY_ONLY	36399 (46.2 %)	avec métier 0
+statut NO_RULE	5102 (6.5 %)	avec métier 0
+statut AMBIGUOUS	48 (0.1 %)	avec métier 0
