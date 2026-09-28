@@ -1,0 +1,6 @@
+garde {"base":"railway","role":"catwalks_audit","lectureSeule":"on","maintenant":"2026-09-28T17:25:07.4781+00:00"}
+version	{"id" : "catwalks-occupations-20260909-v1", "creeLe" : "2026-09-17T21:08:32.259", "octets" : 35990, "metiers" : 61, "familles" : 27, "domaines" : 4, "regles" : 66, "active" : true}
+pointeur actif	{"releaseId" : "catwalks-occupations-20260909-v1", "majLe" : "2026-09-17T21:08:32.259", "rattrapeLe" : null}
+file de l'index de recherche	{"generation" : "search-3-20260924-v2", "enAttente" : 18656, "plusAncien" : "2026-09-26T16:13:32.309156+00:00"}
+offres Catwalks	{"offresCatwalks" : 59, "sansCode" : 28}
+variante portée par plusieurs métiers (version active)	{"alias" : "demand planner", "metiers" : ["demand-planner", "merchandise-planner"]}

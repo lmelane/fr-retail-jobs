@@ -1,0 +1,11 @@
+offres agrégées de l'échantillon : 480 ; rangées sales-advisor par le catalogue : 86
+codes ESCO choisis pour elles (itération 3) : 7
+  56	5223.4 vendeur/vendeuse
+  15	5223.7.8 vendeur en boutique de vêtements/vendeuse en boutique de vêtements
+  5	5223.7 vendeur spécialisé/vendeuse spécialisée
+  5	aucun
+  2	5223.7.31 vendeur en chaussures/vendeuse en chaussures
+  1	5223.7.33 vendeur/vendeuse en articles de sport
+  1	5223.7.29 vendeur en papeterie/vendeuse en papeterie
+  1	4225.1 représentant du service clients/représentante du service clients
+libellés français ESCO : 2938 ; au double genre (« / ») : 2252 ; commençant par « vendeu » : 38

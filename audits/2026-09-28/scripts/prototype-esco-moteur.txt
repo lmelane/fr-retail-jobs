@@ -1,0 +1,21 @@
+compilation étendue 369 ms ; tas 23 Mo ; règles 3005 ; JSON 4 Mo
+classification de 480 intitulés d'offres en 169 ms
+CLASSIFIED -> AMBIGUOUS: 122
+FAMILY_ONLY -> FAMILY_ONLY: 120
+FAMILY_ONLY -> AMBIGUOUS: 91
+CLASSIFIED -> CLASSIFIED: 50
+NO_RULE -> NO_RULE: 41
+FAMILY_ONLY -> CLASSIFIED: 35
+NO_RULE -> AMBIGUOUS: 12
+NO_RULE -> CLASSIFIED: 9
+CLASSIFIED -> AMBIGUOUS : 122 ; encore ambigus après fusion d'un équivalent : 78
+CDI 35H - Vendeur (h/f/x) - Petit Bateau Rouen ! | actuel sales-advisor | 3 autres : sales assistant ; sporting accessories specialised seller ; lottery cashier
+CDD - Vendeur(se) - H/F | actuel sales-advisor | 3 autres : sales assistant ; sporting accessories specialised seller ; lottery cashier
+Hôte/hotesse de caisse, temps partiel samedi et plus | actuel cashier | 5 autres : steward/stewardess ; flight attendant ; ship steward/ship stewardess ; train attendant
+Vendeur (H/F) - CDD 30h - Nantes | actuel sales-advisor | 3 autres : sales assistant ; sporting accessories specialised seller ; lottery cashier
+CDI 38H - Conseiller de Vente - Clermont Ferrand F/H | actuel sales-advisor | 2 autres : sales assistant ; promotions demonstrator
+Vendeur (H/F) - CDI 15h - Metz | actuel sales-advisor | 3 autres : sales assistant ; sporting accessories specialised seller ; lottery cashier
+Conseiller(ère) de vente - CDD - 20h - NOYELLES | actuel sales-advisor | 2 autres : sales assistant ; promotions demonstrator
+ALTERNANCE - Conseiller de vente H/F | actuel sales-advisor | 2 autres : sales assistant ; promotions demonstrator
+classify actuel : 0.015 ms par intitulé
+classify étendu : 0.253 ms par intitulé

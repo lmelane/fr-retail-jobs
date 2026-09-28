@@ -1,0 +1,19 @@
+phrases ESCO distinctes 85071 ; portées par >=2 métiers ESCO 1659 (2.0 %)
+libellés préférés (langues du site) contenant « / » (forme masc/fém) : 19593 sur 47008
+alias actuels 467 ; portés aussi par 1 métier ESCO 118 ; par >=2 métiers ESCO 34
+cashier [cashier] 2 métiers ESCO
+responsable de boutique [store-manager] 2 métiers ESCO
+shop manager [store-manager] 2 métiers ESCO
+directeur de magasin [store-manager] 2 métiers ESCO
+directrice de magasin [store-manager] 2 métiers ESCO
+warehouse operative [warehouse-operative] 2 métiers ESCO
+warehouse worker [warehouse-operative] 2 métiers ESCO
+order picker [warehouse-operative] 2 métiers ESCO
+customer service representative [customer-service-advisor] 2 métiers ESCO
+couturier [seamster] 3 métiers ESCO
+seamster [seamster] 2 métiers ESCO
+seamstress [seamster] 3 métiers ESCO
+tailor [seamster] 2 métiers ESCO
+buyer [buyer] 2 métiers ESCO
+accountant [accountant] 2 métiers ESCO
+mots seuls les plus partagés : geologist:7, steward:5, conservator:4, bailiff:4, caster:4, concierge:4, electrician:4, confiseur:4, hotesse:4, chemist:4, barman:4, biologist:4

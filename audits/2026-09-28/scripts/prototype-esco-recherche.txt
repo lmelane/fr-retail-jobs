@@ -1,0 +1,17 @@
+actuel (62 métiers): concepts=89 aliases=582 construction=10 ms tas retenu=1 Mo
+étendu ESCO: concepts=3027 aliases=88110 construction=4896 ms tas retenu=139 Mo
+alias actuels résolus vers leur concept : 579 ; perdus après extension : 178
+Fashion Advisor [sales-advisor] -> text:fashion + text:advisor
+Sales Associate [sales-advisor] -> text:sales + text:associate
+Sales Assistant [sales-advisor] -> text:sales + text:assistant
+Vendeur [sales-advisor] -> text:vendeur
+Vendeuse [sales-advisor] -> text:vendeuse
+Conseiller Vendeur [sales-advisor] -> text:conseiller + text:vendeur
+Conseillere Vendeuse [sales-advisor] -> text:conseillere + text:vendeuse
+Conseiller en parfumerie [beauty-consultant] -> text:conseiller + text:en + text:parfumerie
+Conseillère en parfumerie [beauty-consultant] -> text:conseillere + text:en + text:parfumerie
+Beauty Specialist [beauty-consultant] -> text:beauty + text:specialist
+Coiffeur [hairdresser] -> text:coiffeur
+Hairdresser [hairdresser] -> text:hairdresser
+suggestions actuel : 0.3 ms par frappe, 7 alias candidats
+suggestions étendu : 74.8 ms par frappe, 1180 alias candidats

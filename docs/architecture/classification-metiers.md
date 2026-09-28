@@ -1,0 +1,243 @@
+# Taxonomie des métiers Catwalks : plan de refonte complète (lot 2 de D-475)
+
+*Statut : **proposé**, non construit. Version 6, après cinq tours d'audit adverse. Tout ce qui n'est pas
+marqué **existe** (lu ou mesuré le 28/09/2026) ou **décidé** (D-475, R-140 dans
+`catwalks-backend/docs/governance/`) est proposé par ce plan. Les choix produit connus sont tranchés
+(D-475 §23-§32) ; il reste au CEO les GO de production et, au lot 3, l'heure d'envoi des alertes (§6).*
+
+## 1. Le modèle, décidé
+
+- **Une taxonomie propre à Catwalks** (D-475 §12, §29) : identifiant stable par métier, variantes par langue,
+  hiérarchie métier › famille › domaine ; propriété du catalogue, lue par le backend, le back-office et, au
+  travers des API, par le site.
+- **L'ESCO est l'amorce et la référence de la machine**, jamais affiché tel quel (§29).
+- **Chaque intitulé est normalisé à son arrivée**, jamais pendant une recherche (§20) : métier, sinon famille,
+  sinon domaine (§13). Le candidat tape librement et n'est jamais bloqué ; son texte est stocké avec son code
+  (§7, §12).
+- **La recherche par le code retient les offres du métier et celles dont l'intitulé contient le métier**,
+  jamais toute la famille (§26 a, §27 e).
+- **Une IA valide seule** (§30), **par passes de curation sur plan**, jamais au fil de l'eau (§31 a) ; un métier
+  publié n'est jamais supprimé, il est remplacé par un successeur.
+- **Un recruteur dont le métier manque choisit le plus proche et publie**, en signalant « métier manquant » ;
+  l'IA l'ajoute à la passe suivante et reclasse l'offre (§31 b ; R-39 tient).
+- **Les métiers s'affichent en forme courte** (« Conseiller de vente »), la forme d'usage dans chaque langue ;
+  les autres formes restent des variantes de recherche (§31 c).
+- **Deux juges** : un synonyme appris (un intitulé d'offre valable pour toutes les offres qui le portent) exige
+  leur consensus ; le métier d'un seul candidat est vérifié par un juge (R-66 §1-§2, D-213 ; lecture de
+  l'assistant au §30).
+- **Le poste actuel se lit dans le parcours et les missions** (D-145 ; le moteur actuel n'a jamais écrit, §29).
+- **Un poste d'encadrement est un autre métier** (« Responsable vendeur » n'est pas « Vendeur ») ; **un intitulé
+  vague** n'a jamais de métier, sa famille seulement quand elle est sûre ; **quand un métier tapé est rattaché
+  plus tard, l'accueil et les alertes basculent ensemble** (§32).
+
+## 2. L'existant qui contraint (vérifié)
+
+- **Version servie** `catwalks-occupations-20260909-v1` : 61 métiers, 27 familles, 4 domaines, 66 règles ;
+  « Demand Planner » y désigne deux métiers (`audits/2026-09-28/scripts/etat-catalogue-metiers.txt`). Les
+  identités publiées ne peuvent être ni retirées ni changer de parent ; une fusion passe par un successeur
+  (`apps/aggregator/src/occupation/release.ts:13-36`).
+- **Moteur** : inclusion de phrase (`packages/db/occupation-engine.ts:312-317`), `AMBIGUOUS` à deux candidats
+  (`:487-490`), regex héritées gelées (`:187-197`) ; `phrase()` ne sépare que les idéogrammes (`:92`) : un
+  intitulé en kana sans idéogramme (« コスメビューティーアドバイザー ») ou en thaï (« พนักงานขายเครื่องสำอาง »)
+  ne peut pas contenir une variante plus courte, et le thaï perd ses voyelles à la normalisation. Importer l'ESCO dans le manifeste fait passer les offres à métier précis de 172 à 94 sur 480
+  (`audits/2026-09-28/scripts/prototype-esco-*.txt`).
+- **Activation** : une transaction qui change `releaseId` (`release.ts:167-208`) ; le déclencheur remet alors
+  en file, en un seul INSERT, toutes les offres (environ 82 000) dans chaque génération d'index (migration
+  `20260924120000`). Reconstruction mesurée : 232,569 s pour 76 096 documents (`search-3`,
+  `audits/2026-09-24/search-railway.md:15`), soit environ 327 documents par seconde. Au-delà de 300 s d'attente,
+  la recherche avec texte, les suggestions de titre et `/api/health` répondent 503 (`search-index.ts:106-111`) ;
+  le healthcheck Railway attend 120 s. `search-3`, périmée, garde plus de 18 000 éléments en file.
+- **Recherche** : le filtre et la facette métier lisent le code stocké, hors index (`job-search-query.ts:72-74,
+  218`) ; les rôles lus dans le titre n'existent que dans le document d'index (`search-model.ts:55-65`) ; le
+  vocabulaire de recherche prend libellés et variantes du manifeste, plus des alias écrits dans l'API
+  (`search-vocabulary.ts:9-48`).
+- **Offres Catwalks** : contrat v1 `metier {slug, libelle}` (`direct/contrat.ts:41,159`) ; 28 des 59 sans code ;
+  un champ additif ne casse pas l'ancien agrégateur, une version 2 du contrat le ferait (`contrat.ts:6-7`).
+- **Backend** : `canonical()` efface les écritures non latines (`job-taxonomy.ts:24-34`), `masculiniser`
+  rattrape les féminins (`:36-60`) ; les alertes sont des instantanés à empreinte unique (`RechercheSauvegardee`) ;
+  R-39 exige un métier pour mettre une offre en ligne.
+
+## 3. Architecture
+
+### 3.1 Données : la taxonomie v3
+
+- Les 61 clés servies restent ; les nouveaux métiers reçoivent une clé stable Catwalks, jamais dérivée de l'ESCO.
+- Contenu : les 61, `optical-assistant`, les vrais métiers du backend (fusionnés quand c'est le même métier), les
+  métiers génériques que nos offres portent vraiment. Correspondances : les 290 métiers du backend (241 actifs ;
+  les inactifs restent référencés par des profils et des candidats sourcés), et ses 32
+  « domaines » (un axe fonctionnel) vers les **familles** du catalogue ; ses 13 familles vers celles du catalogue.
+- **Forme additive du manifeste** : `aliases` reste un tableau de chaînes ; champs optionnels : variantes par
+  langue, URI ESCO (`externalRefs`), successeur (`replacedBy`). Stockage additif du **domaine** sur `Job` et
+  `DirectOffer`, avec le déclencheur d'intégrité (remplacement de la contrainte `occupation_state_valid`) ; le
+  domaine n'est pas un filtre de recherche (aucune décision ne l'expose).
+- **Garde d'unicité**, une fonction partagée appelée par la preview et par un test de l'API : aucune variante
+  (toutes langues, libellés, secteurs) ne désigne deux concepts. Les alias écrits aujourd'hui dans l'API
+  (`search-vocabulary.ts:9-44`) sont versés dans le manifeste : il n'existe plus qu'une source de vocabulaire,
+  versionnée avec lui.
+  La v3 corrige « Demand Planner ». Une traduction machine n'entre dans le vocabulaire qu'une fois passée par la
+  curation (§3.2).
+- **Libellés** en forme courte dans 25 langues : matière ESCO pour 17, modèle pour les autres, variantes
+  régionales (espagnol du Mexique, portugais du Brésil).
+- **Constitution de la v3** (R-140 §2 : « constituée une fois ») : elle échappe au plafond de métiers par passe
+  et à la preuve de volume, qui valent ensuite ; elle garde ses contrôles (granularité ancrée à l'ESCO, famille,
+  unicité, deux juges). **Encadrement** (§32 a) : la v3 porte des métiers d'encadrement et leurs **exclusions
+  dans les règles** : aujourd'hui « Responsable vendeur H/F » et « Team Leader Client Advisor » sont classés
+  `sales-advisor` par la règle `sales-advisor-title`, que ni la table ni une variante ne peuvent corriger ; le
+  nombre de titres classés qui combinent un rôle et un mot d'encadrement est mesuré sur le corpus. Le champ
+  « titre seulement » d'un alias (`financial-controller`, `search-vocabulary.ts:49`) devient un champ optionnel
+  du manifeste.
+- **Référence ESCO** publiée et datée, somme de contrôle versionnée.
+
+### 3.2 L'IA validatrice : passes de curation (D-475 §30, §31 a)
+
+Une passe, mensuelle au départ : regrouper les intitulés nouveaux et les signaux « métier manquant » →
+écrire le plan (métiers nouveaux, successeurs, correspondances, variantes) → preview sur le corpus réel →
+contrôles (granularité ancrée à l'ESCO, famille obligatoire, aucun orphelin, garde d'unicité, deux juges, au
+moins 20 intitulés réels venus d'au moins 3 employeurs ou sources distincts par métier nouveau, sauf signal
+d'un recruteur Catwalks, qui suffit (§31 b) ; au plus 20 métiers nouveaux par passe) → activation avec reçu.
+Après la v3, **les passes s'activent sans GO** (D-475 §30 : aucun humain en bout de chaîne ; lecture de
+l'assistant), sous leurs seuils d'arrêt ; chacune est irréversible pour les identifiants qu'elle publie.
+**Sécurité** : la sortie du modèle est contrainte par un schéma ; un libellé n'est jamais recopié d'un intitulé
+tiers ; les gardes « non-métier » de R-66 s'appliquent. **Seuils de départ, à recalibrer** : échantillon neuf de 200
+rattachements par version, jugé par un modèle différent de celui qui a rattaché (sans vérité humaine) ; arrêt si
+plus de 1 % de faux mesurés (la preuve en mesure 1 sur 507 avec le consensus, 2 % sans), ou si la version change la classe de plus
+de 10 % des intitulés hors plan de curation. **Surveillance** : une passe suspendue, une sonde de juge en échec,
+un retard de synchronisation ou une file d'index de plus de 60 s envoient une alerte par l'e-mail d'exploitation
+du RUN (`apps/aggregator/src/pipeline/alert.ts`, Brevo) ; la présence de sa clé en production est vérifiée en 2B,
+car sans elle l'alerte ne part pas.
+
+### 3.3 Normalisation d'un intitulé
+
+- **Un seul module de normalisation et de classification**, partagé par l'agrégateur, l'API et le backend
+  (paquet versionné) : il remplace `canonical()`, `phrase()` et `searchWords()`, garde le rattrapage des
+  féminins, découpe le thaï et les kana. Témoins communs, dont deux rouges aujourd'hui :
+  « コスメビューティーアドバイザー » (contient « ビューティーアドバイザー ») et « พนักงานขายเครื่องสำอาง »
+  (contient « พนักงานขาย ») ; plus des féminins, « 販売員 », « مستشار مبيعات », « 판매 사원 », et
+  « アドバイザー » (la normalisation actuelle efface le dakuten : « アトハイサー »).
+- **En ligne, déterministe** : variante exacte, puis règle relue, puis table apprise. La table peut préciser en
+  métier une décision `FAMILY_ONLY`, `NO_RULE` ou `AMBIGUOUS`, jamais remplacer un `CLASSIFIED` venu d'une règle.
+  Aucun appel d'IA en ligne (garde de test).
+- **Table apprise** : cache, verrou et garde d'écriture sur deux versions (taxonomie, table) ; toute décision qui
+  atteint l'étape de la table porte la version évaluée ; le balayage reprend les intitulés dont l'entrée a changé.
+  Reçu et pointeur précédent pour revenir.
+- **Rôles du titre stockés** : au moment de la classification, le résolveur (déplacé dans `packages/db`) écrit
+  sur `Job` et `DirectOffer` un tableau `titleRoles`, indexé, avec la version du manifeste qui l'a calculé ; les
+  variantes de toutes les langues l'alimentent (§32 a) ; pour `DirectOffer`, l'empreinte de projection inclut
+  cette version.
+- **Hors ligne** : candidats Catwalks d'abord (avec leurs URI ESCO), l'ESCO au-delà ; synonymes d'offres au
+  consensus de deux juges. Les intitulés de CV sont traités **au backend**, qui appelle déjà le modèle : aucun
+  intitulé de CV ne part vers l'agrégateur ; la politique de confidentialité le déclare avec le reste du lot.
+  Comme aujourd'hui (R-66 §2, D-213), un intitulé de CV récurrent peut devenir une variante de recherche : le
+  backend ne transmet au catalogue que les variantes validées par le consensus de deux juges et les gardes
+  d'alias, vues dans au moins 3 CV distincts, jamais l'intitulé d'une personne ; elles ne deviennent jamais des
+  suggestions affichées ; la politique de confidentialité le déclare.
+
+### 3.4 Profils, choix et corrections
+
+- Le profil stocke le texte, et le code de métier quand il est connu (une saisie rattachée à sa seule famille
+  cherche par son texte) ; sans code, l'accueil et les alertes cherchent par le texte ; quand le code arrive,
+  **ils basculent ensemble** (§32 b) : une tâche du backend réécrit la préférence et les alertes nées d'elle
+  (onboarding, conversion ; jamais une alerte créée depuis un texte tapé sur `/emplois`), fusionne un doublon
+  d'empreinte en gardant la plus ancienne, son état (active ou suspendue) le plus actif et **l'union des offres
+  déjà annoncées** (`AlerteOffreAnnoncee`), pour qu'aucune ne reparte. Un profil qui a plusieurs métiers dont certains sans code cherche par le code pour les uns
+  et par le texte pour les autres, dans une même requête (le paramètre de texte accepte plusieurs valeurs).
+- Le choix d'une suggestion vaut 1,0 sur le profil seulement ; il ne nourrit que la passe de curation suivante
+  (au moins 3 comptes distincts), jamais une écriture directe dans la table.
+- Corrections (candidat, recruteur, chasse) : des signaux négatifs pour la passe suivante.
+- Poste actuel (D-145) : calculé au backend sur l'intitulé et les missions de l'expérience en cours, avec le
+  module partagé, par une **passe cadencée et durable** (reprise sur erreur), jamais dans la requête ni dans une
+  mémoire d'instance : c'est un cache d'empreintes en mémoire serverless qui faisait sauter le moteur v1 à froid
+  (`rattachement-v1.ts:108-117, 231`) ; un témoin prouve le passage à froid.
+
+### 3.5 Recherche, suggestions, alertes
+
+- `metier=X` retient une offre si son code est X, **ou** si X figure dans ses `titleRoles`. Une clé remplacée
+  n'est plus classée, n'entre plus dans le vocabulaire, la garde ou les facettes ; une recherche, une préférence
+  ou une alerte qui la porte est suivie vers son successeur **au moment de la requête**, sans réécrire son
+  empreinte. La facette compte la même appartenance. Aucune dépendance à l'index. **Encadrement** (§32 a) :
+  « Responsable vendeur », « Team Leader Client Advisor » ont leur métier d'encadrement, dont la v3 porte les
+  variantes ; témoins : ils ne comptent pas comme « Vendeur ».
+- **Suggestions, contrat additif** : les chaînes restent ; un champ nouveau porte `{libellé, identifiant}` ;
+  les intitulés réels sans identifiant restent proposés ; l'écran dit le métier reconnu (« Métier : Conseiller
+  de vente ») ; pour les préférences et l'onboarding, un métier sans offre vivante reste choisissable, sans
+  dépendre de l'index.
+- **Alertes** : elles rejouent le même filtre ; la bascule texte → code est celle du §3.4.
+
+### 3.6 Changer de version sans panne
+
+- **Préalable, en 2B** : le changement de version ne remet plus rien en file ; il incrémente la révision, et une
+  tâche remet le stock en file **par tranches** bornées par le débit mesuré (environ 327 documents par seconde :
+  une tranche de 10 000 se vide en une trentaine de secondes, sous le seuil d'alerte de 60 s), la tranche
+  suivante partant quand le plus ancien élément de la **génération servie** a moins de 60 s ; la durée réelle
+  est remesurée sur la génération courante (`SearchGeneration.createdAt` et `readyAt`) avant la bascule ; `search-3` retirée avant (suppression en
+  cascade : GO et confirmation).
+- **Séquence de bascule, hors RUN** : migrations additives ; remplissage cadencé de `titleRoles` ; construction de
+  la nouvelle génération d'index, **drainée sans arrêt** jusqu'au déploiement par un processus dédié du service
+  d'indexation (l'API en service ne vide que sa propre génération, `search-index.ts:53-91`) ; déploiement de
+  l'API ; retrait de l'ancienne génération. L'âge de la file est surveillé en continu par ce même service, qui
+  détient la clé Brevo et envoie l'alerte (§3.2).
+- Même règle pour tout écrivain de masse (reclassement, table apprise, rattrapage) ; `OccupationState` touché une
+  fois par passe.
+- **Cible mesurée sur une copie** : aucune réponse 503 pendant l'activation et le reclassement ; p95 de la
+  recherche avant et après `titleRoles`.
+
+### 3.7 Backend, site, back-office, Média
+
+- **Synchronisation** : export versionné (version et empreinte) de la taxonomie, des variantes et de la table
+  apprise, tiré par une tâche du backend, chargé par paquets puis basculé par un pointeur (la table peut compter
+  des dizaines de milliers d'intitulés, sous les plafonds des fonctions Vercel, mesurés dans ce contexte) ; retard
+  mesuré et alerté ; un identifiant inconnu
+  est accepté, stocké et résolu plus tard, jamais refusé.
+- **Transition** : chaque écrivain écrit le code et l'ancien identifiant (correspondance validée par l'IA) ; R-39
+  accepte le code ; l'onboarding ne bloque jamais sur un code en attente ; les anciens liens de la CVthèque
+  (`?jobFamily=`) sont traduits.
+- **Back-office** : métier d'une offre choisi dans la taxonomie ; signal « métier manquant » (§31 b), enregistré
+  au backend et remis au catalogue par une route authentifiée par la clé du backend (jamais par la liste
+  publique) ; il suffit à la passe suivante ; après la passe, une tâche du backend réécrit le métier de l'offre
+  sur le nouveau métier, qui voyage ensuite dans le contrat ; un témoin va du signal au reclassement. La création
+  de métier disparaît. **Pour une offre Catwalks, le métier choisi au back-office
+  prime sur le titre** (§20) : il s'écrit dans l'offre du backend, voyage dans le contrat, et l'agrégateur le
+  prend tel quel.
+- **Offres Catwalks** : identifiant en champ additif du contrat v1 ; agrégateur livré avant le backend ; libellé
+  dans la langue du marché.
+- **Ordre en 2E** : backend, puis back-office, puis site, puis Média (qui lit le libellé du métier des offres).
+
+### 3.8 Retrait complet
+
+Après bascule vérifiée de chaque surface : retrait du moteur v1 et de son drapeau, du chemin IA inerte de
+`mapJobCategory`, de la création de métier au back-office, des écritures dans `JobCategoryRef`, puis des
+anciennes colonnes (suppression : GO, confirmation, sauvegarde), et de `/api/job-categories` sans client.
+Mise à jour du `CLAUDE.md` de l'agrégateur (D-475 §20, §26 a).
+
+## 4. Sous-lots, dans l'ordre
+
+| | Contenu | Production |
+|---|---|---|
+| 2A | Référence ESCO datée ; taxonomie v3 et correspondances par la première passe de curation ; bancs (classification, recherche, mémoire, rappel par marché) | aucune écriture |
+| 2B | Agrégateur : forme additive, garde d'unicité partagée, module partagé, `titleRoles`, domaine stocké, table à deux versions, filtre et facette sans index, suggestions additives, activation sans remise en file massive, génération d'index pré-construite, IA validatrice et surveillance ; la preview de 2A est refaite sur ce code | migrations additives et retrait de `search-3` : GO et confirmation |
+| 2C | Activation de la v3 hors RUN, reclassement au rythme, table apprise sur le stock de l'agrégateur | GO, **irréversible pour les identifiants** |
+| 2D | Site `/emplois` : suggestions, recherche par identifiant | GO |
+| 2E | Backend (synchronisation, colonnes, transition, poste actuel), puis back-office, site, Média ; rattrapage des populations du backend | GO et confirmation |
+| 2F | Retrait (§3.8) | suppressions : GO, confirmation, sauvegarde |
+
+Chaque sous-lot : audit adverse, push sur `development`.
+
+## 5. Pour le lot 3 : ce que disent les plateformes (citations vérifiées à la source)
+
+- **Google Cloud Talent Solution** : une recherche dédiée aux alertes, « tuned to the needs of "passive job
+  seekers" », restreinte aux offres « posted since the last alert was generated » ; les quasi-doublons : « displays
+  only one representative job from that group high up in the results. The remainder are returned lower down. » ;
+  la requête normalisée : « the ontologies are used to map the cleaned query to relevant clean jobs ».
+- **LinkedIn, Air Traffic Controller (01/03/2018)** : « repetitive, excessive and low-quality notifications can
+  create a bad experience for members » ; une notification tombe si le membre a déjà agi, si elle est en
+  double, si son contenu a expiré ; envoi « at a time when the member is most likely to engage » ; « cut member
+  complaints in half ».
+
+Catwalks a déjà décidé l'essentiel (R-130) : les offres nouvelles depuis le précédent examen, un e-mail par
+inscrit, rien s'il n'y a pas de nouveauté, jamais une offre déjà poursuivie. À instruire au lot 3 : l'heure
+d'envoi, le regroupement d'une même offre entre plusieurs alertes, le suivi des désabonnements et des plaintes.
+
+## 6. Ce qui reviendra au CEO
+
+Les GO de production du §4. Au lot 3 : l'heure d'envoi des alertes (07:30 heure de Paris, décidé par R-130 §1,
+non construit). Tout nouveau choix produit qu'un audit révélerait lui sera posé en carte de décision.
