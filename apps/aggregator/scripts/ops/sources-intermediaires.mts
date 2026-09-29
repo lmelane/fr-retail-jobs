@@ -44,7 +44,19 @@ SELECT json_build_object(
         AND NOT EXISTS (SELECT 1 FROM "JobSource" o WHERE o."jobId" = js."jobId" AND o."sourceKey" <> k)),
      'dontActives', (SELECT count(DISTINCT j.id) FROM "JobSource" js JOIN "Job" j ON j.id = js."jobId" WHERE js."sourceKey" = k AND j."isActive"
         AND NOT EXISTS (SELECT 1 FROM "JobSource" o WHERE o."jobId" = js."jobId" AND o."sourceKey" <> k))))
-     FROM unnest(ARRAY['luxe-talent']) k));
+     FROM unnest(ARRAY['luxe-talent']) k),
+  -- Le registre des portails refusés pour identité (D-453 §4) : propriétaire, domaine officiel, éditeur, périmètre déclaré,
+  -- et les adresses de la configuration (jamais ses valeurs secrètes : seules les clés au nom d'URL, d'hôte ou de tenant).
+  'portails', (SELECT json_agg(json_build_object('cle', s.key, 'maison', s.maison, 'domaine', s."careersDomain", 'type', s.kind,
+     'niveau', s.tier, 'statut', s.status, 'perimetre', s."portalScope", 'revision', s."currentRevisionId" IS NOT NULL,
+     'adresses', (SELECT json_object_agg(c.key, c.value) FROM jsonb_each_text(s.config) c
+        WHERE c.key ~* '(url|host|tenant|site|domain|board|company|index)' AND c.key !~* '(key|token|secret|password)'),
+     'refus24h', (SELECT json_object_agg(m, n) FROM (SELECT e.payload->'error'->>'motif' AS m, count(*) AS n FROM "PipelineEvent" e
+        WHERE e."sourceKey" = s.key AND e.event = 'job.write_failed' AND e.at > now() - interval '24 hours' GROUP BY 1) r),
+     'libelles', (SELECT json_agg(DISTINCT e.payload->'error'->>'rawEmployerName') FROM "PipelineEvent" e
+        WHERE e."sourceKey" = s.key AND e.event = 'job.write_failed' AND e.at > now() - interval '24 hours')) ORDER BY s.key)
+     FROM "Source" s WHERE s.key = ANY(ARRAY['tiffany-oracle','rivoli-typesense','brown-thomas-taleo','beauty-success-geodir','groupe-printemps',
+       'hot-topic','lagardere-travel-retail','lagardere-travel-retail-de','lagardere-duty-free','b-s-international','funky-buddha','browns','lvmh'])));
 \\else
 SELECT 'REFUS';
 \\endif
