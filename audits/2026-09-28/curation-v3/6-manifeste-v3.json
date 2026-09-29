@@ -153236,7 +153236,7 @@
  ],
  "review": {
   "author": "Passe de curation v3 (IA seule, D-475 §30)",
-  "at": "2026-09-29T15:52:18.092Z",
+  "at": "2026-09-29T16:07:19.736Z",
   "basis": "Première passe de curation : 253 métiers (servis, backend, offres), 33 familles, 25 langues ; preuves : audits/2026-09-28/curation-v3."
  },
  "families": [
@@ -158715,6 +158715,9 @@
     "حارسة أمن",
     "Bezpečnostní pracovnice"
    ],
+   "titleReadingAliases": [
+    "Agent de sécurité"
+   ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/31808988-fc0a-4bc3-9e47-27216d6759f5"
    ]
@@ -160317,6 +160320,10 @@
     "Asistentka merchandisingu",
     "Asistentă merchandiser"
    ],
+   "titleReadingAliases": [
+    "Merchandising Assistant",
+    "Merchandising assistant"
+   ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/35eb0aa6-b40d-449d-9390-719be8912277"
    ]
@@ -160634,9 +160641,6 @@
     "Asistentă showroom",
     "مساعدة صالة عرض"
    ],
-   "titleReadingAliases": [
-    "Assistant showroom"
-   ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/5c1eba1e-7820-4287-9746-4c5906320100"
    ]
@@ -160753,9 +160757,6 @@
     "Auditorin",
     "Auditora",
     "Auditorka"
-   ],
-   "titleReadingAliases": [
-    "Auditor"
    ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/1ad59946-d13e-441e-9b36-56e1df055e21"
@@ -161150,10 +161151,6 @@
     "Gestora de categoria",
     "Gerenta de categoria",
     "مديرة فئة المنتجات"
-   ],
-   "titleReadingAliases": [
-    "Category Manager",
-    "Category manager"
    ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/dab60fc6-c16e-4de7-b969-b323784f5a49"
@@ -162065,10 +162062,6 @@
     "Produktmanagerin",
     "Produktová manažerka"
    ],
-   "titleReadingAliases": [
-    "Chef de produit",
-    "Product Manager"
-   ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/9f508305-80ce-4111-8722-f2c9b4a44890"
    ]
@@ -162242,9 +162235,6 @@
     "Πωλήτρια",
     "Obchodní zástupkyně",
     "Verkoopvertegenwoordigster"
-   ],
-   "titleReadingAliases": [
-    "Πωλητής"
    ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/c418ed9a-132f-48cd-ae5c-dd375070ee0e"
@@ -162477,9 +162467,6 @@
     "Konsierj",
     "كونسيرج"
    ],
-   "titleReadingAliases": [
-    "Concierge"
-   ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/1ae8d28e-407c-48ab-88ff-4cb25bfcdea6"
    ]
@@ -162672,9 +162659,6 @@
     "Consultora de imagem",
     "Stylistka",
     "Consilieră de imagine"
-   ],
-   "titleReadingAliases": [
-    "Personal Stylist"
    ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/d5ce0c23-6f8a-459f-9bf9-a7cb9768740a"
@@ -163127,9 +163111,6 @@
     "Coordenadora de retail",
     "Koordynatorka ds. retailu",
     "منسقة مبيعات التجزئة"
-   ],
-   "titleReadingAliases": [
-    "Coordinateur retail"
    ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/c94f3565-d987-431f-a46b-6f4e018e0bd7"
@@ -164950,10 +164931,6 @@
     "Školitelka",
     "Formatoare"
    ],
-   "titleReadingAliases": [
-    "Formateur",
-    "Trainer"
-   ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/0ba06640-e0ac-4911-9e43-289a8e41651e"
    ]
@@ -165538,9 +165515,6 @@
     "Engenheira de Qualidade",
     "مهندسة جودة",
     "Inženýrka kvality"
-   ],
-   "titleReadingAliases": [
-    "Quality Engineer"
    ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/30c0943c-caa1-411d-b273-26f475971273"
@@ -166603,6 +166577,9 @@
     "Quản lý văn phòng",
     "Office Managerin",
     "مديرة مكتب"
+   ],
+   "titleReadingAliases": [
+    "Office Manager"
    ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/8cce40c1-4479-47e7-b5fc-c976631d919f"
@@ -168439,10 +168416,6 @@
     "Provozní manažerka",
     "Operatív vezető",
     "Manager operațiuni"
-   ],
-   "titleReadingAliases": [
-    "Operations Manager",
-    "Responsable des opérations"
    ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/c6bd511a-d966-4df9-a48e-4f800354f268"

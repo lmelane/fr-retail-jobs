@@ -9,10 +9,14 @@
  * la LECTURE capte :
  *  - pour chaque expression lue dans un intitulé plus long (packages/db/occupation-title-roles.ts,
  *    `occupationTitleReadings`), les couples (intitulé, service) du corpus où elle AJOUTE un métier au moteur ;
- *  - une expression qui capte au moins `SEUIL_OFFRES` offres est jugée sur ses intitulés captés (le plus fréquent, puis
- *    ceux qui ajoutent le plus de mots, les plus susceptibles de dévier ; davantage pour un mot seul, qui peut être un
- *    adjectif ou la tête de plusieurs métiers) par deux juges, avec la grille de la mesure 6f : un seul « autre métier »
- *    et elle ne vaut que pour l'intitulé exact ; sinon elle devient une expression lue (`titleReadingAliases`) ;
+ *  - une expression qui capte au moins `SEUIL_OFFRES` offres est jugée sur des intitulés captés tirés pour être
+ *    REPRÉSENTATIFS : le plus fréquent, puis un tirage reproductible (empreinte), √n intitulés distincts bornés entre
+ *    `ECHANTILLON` (`ECHANTILLON_MOT_SEUL` pour un mot seul, qui peut être un adjectif ou la tête de plusieurs métiers) et
+ *    `ECHANTILLON_MAX`. Le premier passage prenait les intitulés les plus LONGS : les qualificatifs courts qui changent
+ *    de métier (« IT Operations Manager », « Digital Product Manager ») n'y paraissaient jamais (mesure 6f, tour 2) ;
+ *  - deux juges, avec la grille de la mesure 6f et la FAMILLE du métier (« Operations Manager » est celui des
+ *    opérations de boutique) : un seul « autre métier » et elle ne vaut que pour l'intitulé exact ; sinon elle devient
+ *    une expression lue (`titleReadingAliases`) ;
  *  - en dessous du seuil, sans preuve : intitulé exact.
  * Les juges ne sont pas celui de la mesure (6f), qui reste indépendant. Sortie : `curation-v3/6g-lectures.json`, que lit
  * l'assemblage (étape 6). L'étape échoue si un verdict manque.
@@ -23,13 +27,14 @@
 import { createHash } from 'node:crypto';
 import { readFileSync, writeFileSync } from 'node:fs';
 import { gunzipSync } from 'node:zlib';
-import { compileOccupationManifest, normalizeOccupationTitle, occupationTitleReadings } from '../../../../../packages/db/occupations.ts';
+import { compileOccupationManifest, occupationTitleReadings } from '../../../../../packages/db/occupations.ts';
 import { DOSSIER_SORTIE as D, lireEtape } from './commun.mts';
 
-const SEUIL_OFFRES = 5, ECHANTILLON = 4, ECHANTILLON_MOT_SEUL = 6;
+const SEUIL_OFFRES = 5, ECHANTILLON = 4, ECHANTILLON_MOT_SEUL = 6, ECHANTILLON_MAX = 15;
 const m = lireEtape('6-manifeste-v3.json'), v3 = compileOccupationManifest(m);
 const { couples } = JSON.parse(gunzipSync(readFileSync(`${D}entrees/offres-preview-2026-09-29.json.gz`)).toString('utf8'));
 const metier = new Map(m.occupations.map((o: any) => [o.key, o]));
+const famille = new Map<string, string>(m.families.map((f: any) => [f.key, f.labels.fr]));
 
 type Capture = { phrase: string; occupation: string; titres: Map<string, { offres: number; service: string | null }> };
 const captures = new Map<string, Capture>();
@@ -62,17 +67,17 @@ const { JUGES, MODELE_CHOIX, repondre } = await import('./ia.mts');
 const JUGES_6G = [MODELE_CHOIX, JUGES.j2];
 const echantillons = aJuger.map((x) => {
   const titres = [...x.titres].sort((a, b) => b[1].offres - a[1].offres || a[0].localeCompare(b[0]));
-  const extra = (t: string) => normalizeOccupationTitle(t).split(/\s+/).length;
-  const n = x.phrase.includes(' ') ? ECHANTILLON : ECHANTILLON_MOT_SEUL;
-  const choisis = [titres[0], ...titres.slice(1).sort((a, b) => extra(b[0]) - extra(a[0]) || b[1].offres - a[1].offres || a[0].localeCompare(b[0]))].slice(0, n);
+  const alea = (t: string) => createHash('sha256').update(`6g|${x.phrase}|${x.occupation}|${t}`).digest('hex');
+  const n = Math.min(titres.length, ECHANTILLON_MAX, Math.max(x.phrase.includes(' ') ? ECHANTILLON : ECHANTILLON_MOT_SEUL, Math.ceil(Math.sqrt(titres.length))));
+  const choisis = [titres[0], ...titres.slice(1).sort((a, b) => alea(a[0]).localeCompare(alea(b[0])))].slice(0, n);
   return { x, titres: choisis.map(([titre, v]) => ({ titre, service: v.service })) };
 });
 const paires = echantillons.flatMap((e) => e.titres.map((t) => ({ e, t })));
-const CONSIGNE = `Tu évalues, pour un job board du luxe, de la mode et de la beauté, le métier qu'on lit dans l'intitulé d'une offre pour qu'une recherche par ce métier la retrouve. Pour chaque offre (intitulé, service), note le métier lu : "C" l'offre est bien un poste de ce métier ; "P" métier voisin (niveau ou spécialité proche) ; "F" un autre métier (règle du produit : un poste d'encadrement est un autre métier que celui qu'il encadre ; un mot du métier employé dans un autre sens, comme un adjectif ou un nom de lieu, est un autre métier).`;
+const CONSIGNE = `Tu évalues, pour un job board du luxe, de la mode et de la beauté, le métier qu'on lit dans l'intitulé d'une offre pour qu'une recherche par ce métier la retrouve. Pour chaque offre (intitulé, service), note le métier lu : "C" l'offre est bien un poste de ce métier ; "P" métier voisin (niveau ou spécialité proche) ; "F" un autre métier (règle du produit : un poste d'encadrement est un autre métier que celui qu'il encadre ; un mot du métier employé dans un autre sens, comme un adjectif ou un nom de lieu, est un autre métier). Le métier se comprend dans sa famille, indiquée : le même intitulé dans une autre fonction (informatique, finance, entrepôt, paie, produit numérique) est un autre métier.`;
 const SCHEMA = { type: 'OBJECT', properties: { i: { type: 'INTEGER' }, verdict: { type: 'STRING', enum: ['C', 'P', 'F'] } }, required: ['i', 'verdict'] };
 const rendu = (lot: typeof paires) => lot.map((p, j) => {
   const o: any = metier.get(p.e.x.occupation);
-  return `[${j}] « ${p.t.titre} »${p.t.service ? ` (service : ${p.t.service})` : ''} → métier lu : ${o.labels.fr} / ${o.labels.en ?? o.labels.fr}`;
+  return `[${j}] « ${p.t.titre} »${p.t.service ? ` (service : ${p.t.service})` : ''} → métier lu : ${o.labels.fr} / ${o.labels.en ?? o.labels.fr} (famille : ${famille.get(o.family)})`;
 }).join('\n');
 const [v1, v2] = [await repondre(JUGES_6G[0], CONSIGNE, paires, 25, rendu, SCHEMA), await repondre(JUGES_6G[1], CONSIGNE, paires, 25, rendu, SCHEMA)];
 const decisions = echantillons.map((e) => {
@@ -87,7 +92,7 @@ const bilan = { expressionsLues: toutes.length, offresCaptees: total, jugees: de
   lues: decisions.filter((d) => d.mode === 'lue').length, exactes: decisions.filter((d) => d.mode === 'exacte').length,
   indeterminees: decisions.filter((d) => d.mode === 'indetermine').length, sousSeuil: sousSeuil.length,
   offresLues: offresPar('lue'), offresRameneesALExact: offresPar('exacte') + sousSeuil.reduce((n, x) => n + x.offres, 0),
-  seuils: { SEUIL_OFFRES, ECHANTILLON, ECHANTILLON_MOT_SEUL } };
+  seuils: { SEUIL_OFFRES, ECHANTILLON, ECHANTILLON_MOT_SEUL, ECHANTILLON_MAX }, paires: paires.length };
 writeFileSync(`${D}6g-lectures.json`, JSON.stringify({ calculeLe: new Date().toISOString(), manifeste: m.id,
   empreinteManifeste: createHash('sha256').update(readFileSync(`${D}6-manifeste-v3.json`)).digest('hex'),
   juges: JUGES_6G, bilan, decisions, sousSeuil }, null, 1));

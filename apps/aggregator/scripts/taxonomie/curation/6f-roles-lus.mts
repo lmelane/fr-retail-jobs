@@ -53,9 +53,14 @@ if (mode === '--juger-modele') {
   if (o.empreinteManifeste !== empreinte()) throw new Error('le manifeste a changé depuis le tirage');
   if (o.echantillon.some((x: any) => !x.verdictAssistant)) throw new Error('verdicts de l\'assistant manquants : ils se committent AVANT ceux du modèle');
   if ((Object.values(JUGES) as string[]).includes(JUGE_MESURE) || (JUGE_MESURE as string) === MODELE_CHOIX) throw new Error('le juge de mesure a servi aux rattachements');
-  const CONSIGNE = `Tu évalues, pour un job board du luxe, de la mode et de la beauté, le métier qu'on lit dans l'intitulé d'une offre pour qu'une recherche par ce métier la retrouve. Pour chaque offre (intitulé, service), note le métier lu : "C" l'offre est bien un poste de ce métier ; "P" métier voisin (niveau ou spécialité proche) ; "F" un autre métier (règle du produit : un poste d'encadrement est un autre métier que celui qu'il encadre).`;
+  const CONSIGNE = `Tu évalues, pour un job board du luxe, de la mode et de la beauté, le métier qu'on lit dans l'intitulé d'une offre pour qu'une recherche par ce métier la retrouve. Pour chaque offre (intitulé, service), note le métier lu : "C" l'offre est bien un poste de ce métier ; "P" métier voisin (niveau ou spécialité proche) ; "F" un autre métier (règle du produit : un poste d'encadrement est un autre métier que celui qu'il encadre).${(o.tour ?? 1) >= 3 ? ' Le métier se comprend dans sa famille, indiquée.' : ''}`;
   const SCHEMA = { type: 'OBJECT', properties: { i: { type: 'INTEGER' }, verdict: { type: 'STRING', enum: ['C', 'P', 'F'] } }, required: ['i', 'verdict'] };
-  const rendu = (lot: any[]) => lot.map((x, j) => `[${j}] « ${x.titre} »${x.service ? ` (service : ${x.service})` : ''} → métier lu : ${x.ajoutes.map((a: any) => a.libelle).join(', ')}`).join('\n');
+  // Dès le tour 3, le juge voit la famille du métier lu, comme les juges de 6g (« Operations Manager » est celui des
+  // opérations de boutique) ; les tours 1 et 2 l'ont jugé sans.
+  const m = lireEtape('6-manifeste-v3.json');
+  const famille = (k: string) => m.families.find((f: any) => f.key === m.occupations.find((o: any) => o.key === k)?.family)?.labels.fr;
+  const lu = (a: any) => (o.tour ?? 1) >= 3 ? `${a.libelle} (famille : ${famille(a.cle)})` : a.libelle;
+  const rendu = (lot: any[]) => lot.map((x, j) => `[${j}] « ${x.titre} »${x.service ? ` (service : ${x.service})` : ''} → métier lu : ${x.ajoutes.map(lu).join(', ')}`).join('\n');
   const r = await repondre(JUGE_MESURE, CONSIGNE, o.echantillon, 20, rendu, SCHEMA);
   o.echantillon.forEach((x: any, n: number) => { x.verdictModele = r[n]?.verdict ?? null; });
   o.jugeModele = JUGE_MESURE;
