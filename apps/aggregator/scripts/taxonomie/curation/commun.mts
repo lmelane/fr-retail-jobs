@@ -40,11 +40,11 @@ export const texteBackend = (b: any) => [b.label, b.labelEn, ...(b.aliases ?? []
 export type Concept = { cle: string; fr: string; en: string; famille: string; variantes: string[]; texte: string };
 
 /**
- * Les métiers de la v3 à l'issue des étapes 1, 1b et 2 (et 3-3b si `avecOffres`) : les métiers servis avec leurs variantes
+ * Les métiers de la v3 à l'issue des étapes 1, 1b et 2 (et 3-3b si `avecOffres`, 4 si `avecEncadrement`) : les métiers servis avec leurs variantes
  * venues du backend, les métiers nouveaux du backend avec les doublons qu'ils absorbent, et les métiers nouveaux
  * venus des offres. `texte` est la clé du cache de vecteurs.
  */
-export function conceptsV3({ avecOffres }: { avecOffres: boolean }): Concept[] {
+export function conceptsV3({ avecOffres, avecEncadrement = false }: { avecOffres: boolean; avecEncadrement?: boolean }): Concept[] {
   const etape1 = lireEtape('1-correspondance-backend.json');
   const etape1b = lireEtape('1b-doublons-backend.json');
   const etape2 = lireEtape('2-familles.json');
@@ -64,9 +64,18 @@ export function conceptsV3({ avecOffres }: { avecOffres: boolean }): Concept[] {
   if (!avecOffres) return concepts;
   // Les métiers nouveaux des offres, après la garde d'unicité (étape 3b).
   const etape3b = lireEtape('3b-garde-unicite.json');
-  return [...concepts, ...etape3b.nouveauxMetiers.map((m: any) => ({ cle: `offres:${m.cle}`, fr: m.fr, en: m.en, famille: m.famille,
-    texte: `${m.fr} / ${m.en} ; ${m.titres.slice(0, 8).join(', ')}`, variantes: m.titres }))];
+  const offres = etape3b.nouveauxMetiers.map((m: any) => ({ cle: `offres:${m.cle}`, fr: m.fr, en: m.en, famille: m.famille,
+    texte: `${m.fr} / ${m.en} ; ${m.titres.slice(0, 8).join(', ')}`, variantes: m.titres }));
+  if (!avecEncadrement) return [...concepts, ...offres];
+  const encadrement = lireEtape('4-encadrement.json').nouveauxMetiers.map((m: any) => ({ cle: `encadrement:${m.cle}`, fr: m.fr, en: m.en,
+    famille: m.famille, texte: `${m.fr} / ${m.en} ; ${m.titres.slice(0, 8).join(', ')}`, variantes: m.titres }));
+  return [...concepts, ...offres, ...encadrement];
 }
+
+/** Les 25 langues du site (`catwalks-website/src/lib/langue/langue.ts`), et la langue ESCO qui sert de matière. */
+export const LANGUES_SITE = ['fr', 'en', 'de', 'it', 'es', 'nl', 'zh-CN', 'ja', 'ko', 'pt', 'pt-BR', 'da', 'zh-Hant', 'pl', 'sv', 'tr', 'th', 'ms', 'ar',
+  'nb', 'el', 'vi', 'cs', 'hu', 'ro'] as const;
+export const LANGUE_ESCO: Record<string, string | undefined> = { 'pt-BR': 'pt', nb: 'no' };
 
 /** Toutes les familles de la v3 : celles du catalogue et les nouvelles de l'étape 2. */
 export const famillesV3 = (): string[] => [...familles.map((f) => f.key), ...lireEtape('2-familles.json').nouvellesFamilles.map((f: any) => f.key)];
