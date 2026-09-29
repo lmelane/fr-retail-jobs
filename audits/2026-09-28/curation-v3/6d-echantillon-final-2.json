@@ -2222,11 +2222,11 @@
    "C": 182,
    "P": 17,
    "F": 1,
-   "fauxPct": 0.5,
+   "fauxOffresPct": 0.5,
    "borneHauteWilson95": 2.8,
-   "parOffre": {
-    "fauxPct": 0.1,
-    "justesPct": 80.5
+   "justesOffresPct": 91,
+   "parIntitule": {
+    "fauxPct": 0.8
    }
   },
   "modele": {
@@ -2234,11 +2234,11 @@
    "C": 196,
    "P": 2,
    "F": 2,
-   "fauxPct": 1,
+   "fauxOffresPct": 1,
    "borneHauteWilson95": 3.6,
-   "parOffre": {
-    "fauxPct": 0.2,
-    "justesPct": 97.9
+   "justesOffresPct": 98,
+   "parIntitule": {
+    "fauxPct": 1.7
    }
   },
   "desaccords": 16
