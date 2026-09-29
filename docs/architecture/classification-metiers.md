@@ -116,14 +116,20 @@ marqué **existe** (lu ou mesuré le 28/09/2026) ou **décidé** (D-475, R-140 d
   | 2 | séparation, première forme | 1 (0,5 %) | 2 (1,0 %), même juge, **non indépendant** (il a co-décidé les rattachements) | audits BLOCKED |
   | 3 | correctifs du 2e audit, avant §36 | 0 | 0, `gemini-3.1-pro-preview` (aucun rattachement) | audit : §36 à trancher |
   | 4 | après §36 | 0 (borne haute de Wilson 1,9 %) | 3 (1,5 %), tous des cas tranchés par §36 (« Team Manager » → Floor manager), notés d'après une grille restée périmée ; 0 hors ces cas | 0 hors §36 ; non concluant au seuil de 1 % ; 3e audit : rayons « à service » rouverts (13 offres), corrigé |
-  | 5 | rayons « à service » exclus | 1 (0,5 %) | 11 (5,5 %), grille portant désormais le texte des décisions ; après examen de chaque désaccord, 4 faux retenus (2,0 %) : « Chef des ventes » (Pandora) au Manager commercial, « Part Time Supervisor », « Service Lead » (Burberry), « Planner » seul ; les autres contredisent §36 ou l'employeur réel | au-dessus du seuil : les 4 causes corrigées |
-  | 6 | **version actuelle** | 1 (0,5 %) : « Responsable Contrôle de Gestion » au métier de base (§32 a, 1 offre) | 7 (3,5 %) : 5 intitulés de niveau seul que §36 rattache à l'encadrement (« Assistant Manager », « Responsable adjoint », « Shift Leader », « Acting Supervisor I »), et 2 cas limites (« Responsable de rayons » → Floor manager, 40 offres ; « Assistant Manager - Visual Merchandising » → Assistant VM) | entre 0,5 % et 1,5 % selon la lecture des cas limites ; non concluant au seuil de 1 % (borne haute 2,8 %) |
+  | 5 | rayons « à service » exclus | 1 (0,5 %) | 11 (5,5 %), grille résumant les décisions ; 2 relèvent de §36 (« Lead Supervisor I », « Team Lead ») ; 4 retenus par l'assistant et corrigés (« Chef des ventes » de Pandora au Manager commercial, « Part Time Supervisor », « Service Lead » de Burberry, « Planner » seul) ; 5 écartés par l'assistant seul (« Sales and Service Leader », « Retail Lead », « Eladó » d'H&M, « Trainee Dispenser », « Replenishment Sales Associate » de Primark) | au-dessus du seuil ; les 4 causes corrigées, plus « Lead - Full Time » (5 offres) sans métier par le même correctif |
+  | 6 | avant §37 | 1 (0,5 %) : « Responsable Contrôle de Gestion » au métier de base (§32 a, 1 offre) | 7 (3,5 %) : 2 relèvent de §36 (« Shift Leader », « Acting Supervisor I ») ; 5 hors de toute décision : « Assistant Manager » (×2) et « Responsable adjoint » rattachés à l'Adjoint au responsable de boutique, « Responsable de rayons » au Floor manager (40 offres), « Assistant Manager - Visual Merchandising » à l'Assistant VM | entre 0,5 % (assistant) et 3,0 % (juge, hors §36) ; au-dessus du seuil selon le juge |
 
-  **Lecture des six tours** : les faux restants ne sont plus des défauts de la chaîne mais des frontières de
-  métier (encadrement de la grande distribution, niveau seul) ; le juge indépendant lit §32 c plus strictement que
-  §36. Deux cents couples ne peuvent pas prouver 1 % : **avant l'activation (2C), une mesure finale sur environ 460
-  couples** (la taille où zéro ou un faux place la borne haute de Wilson près de 1 %), sur la version à activer,
-  avec la même grille.
+  **Version finale de 2A** : le tour 6 plus l'arbitrage D-475 §37 (quatre lectures de l'assistant soumises au CEO :
+  « Supervisor », « Superviseur », « Lead » seuls → Floor manager, environ 60 offres ; « Assistant Manager » et
+  « Responsable adjoint » gardent l'Adjoint ; « Sales Manager » et « Chef des ventes » restent sans métier ; sans
+  accord des juges de 3c, aucun métier). Preview : 62,3 % des offres classées, 57 perdent le métier servi, 0 décision
+  de 3c non tenue ; bancs 6 338/6 338. Elle n'a pas de tour propre : la mesure finale ci-dessous la porte.
+
+  Le critère d'arrêt porte sur les verdicts du **juge de mesure** (plan : un modèle différent de celui qui a
+  rattaché) ; ceux de l'assistant l'accompagnent, jamais ne le remplacent. Deux cents couples ne peuvent pas
+  prouver 1 % : **avant l'activation (2C), une mesure finale de 600 couples** sur la version à activer, avec la même
+  grille, pré-enregistrée (la borne haute de Wilson à 95 % passe sous 1 % à 381 couples sans faux, à 563 avec un
+  faux).
 
   Les « 0,1 % en offres » annoncés aux tours 1 et 2 étaient faux : le tirage est déjà proportionnel aux offres, la
   repondération comptait le poids deux fois ; la proportion brute approche la part d'offres fausses (recalcul

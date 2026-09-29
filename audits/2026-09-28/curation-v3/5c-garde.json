@@ -1,12 +1,12 @@
 {
- "calculeLe": "2026-09-29T12:31:27.325Z",
+ "calculeLe": "2026-09-29T13:07:47.117Z",
  "juges": {
   "j1": "gemini-3.6-flash",
   "j2": "gemini-3-flash-preview"
  },
  "bilan": {
   "formesRevendiquees": 8500,
-  "interdites": 7,
+  "interdites": 5,
   "conflits": 42,
   "pairesJugees": 8,
   "fusions": 3,
@@ -182,22 +182,6 @@
    "garde": null,
    "retires": [
     "backend:MANAGER_COMMERCIAL"
-   ],
-   "motif": "forme vague interdite"
-  },
-  {
-   "forme": "LEAD FULL TIME",
-   "garde": null,
-   "retires": [
-    "backend:MANAGER_FLOOR"
-   ],
-   "motif": "forme vague interdite"
-  },
-  {
-   "forme": "PART TIME SUPERVISOR",
-   "garde": null,
-   "retires": [
-    "backend:MANAGER_FLOOR"
    ],
    "motif": "forme vague interdite"
   },

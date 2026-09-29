@@ -94,6 +94,12 @@ for (const c of tous) {
 for (const t of e3.intitules) if (t.decision === 'variante') ajouter(t.concept, t.intitule);
 for (const v of e3b.variantesAjoutees) ajouter(v.concept, v.intitule);
 for (const t of e4.intitules) if (t.cible) ajouter(t.cible, t.intitule);
+// D-475 §37 a (arbitrage du CEO) : « Supervisor », « Superviseur » et « Lead » seuls reçoivent le Floor manager,
+// intitulé exact seulement (des mots de niveau : jamais généralisés).
+const FLOOR_MANAGER = concepts.find((c) => cleMetier.get(c.cle) === 'manager-floor')?.cle;
+if (!FLOOR_MANAGER) throw new Error('métier Floor manager absent');
+const DECIDES_37 = ['Supervisor', 'Superviseur', 'Superviseure', 'Superviseuse', 'Lead'];
+for (const v of DECIDES_37) ajouter(FLOOR_MANAGER, v);
 // D-475 §35 : l'étape 3c décide, pour chaque intitulé et chaque ancien nom d'« Employé de commerce » : vente, rayon, ou
 // aucun métier sans accord des juges ; les formes grammaticales d'un nom suivent son verdict. Elle fait autorité sur tout
 // ce qu'elle a jugé, anciens noms compris (retirés des libellés par le renommage).
@@ -161,7 +167,9 @@ for (const [f, cles] of porteurs) {
 // Formes vagues (§32 c), appliquées à TOUTES les expressions, pas seulement à celles que 5c a vues (« superviseur » restait).
 const interdites = new Set<string>([...VAGUES, ...e3.intitules.filter((t: any) => t.preuve?.choix?.decision === 'vague' && t.preuve?.second?.decision === 'vague').map((t: any) => phraseMoteur(t.intitule)),
   ...e5c.attributions.filter((a: any) => a.motif === 'forme vague interdite').map((a: any) => a.forme)]);
-const interdite = (f: string) => interdites.has(f) || estVague(f);
+// Une décision du CEO prime sur le jugement « vague » des juges de l'étape 3 (« lead », jugé vague, §37 a).
+const decidesCeo = new Set(DECIDES_37.map(phraseMoteur));
+const interdite = (f: string) => !decidesCeo.has(f) && (interdites.has(f) || estVague(f));
 
 // Familles.
 const cleFamille = (k: string) => k;

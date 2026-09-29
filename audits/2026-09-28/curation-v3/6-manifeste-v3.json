@@ -123532,6 +123532,20 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
+   "id": "v3-manager-floor~76db2a9174",
+   "occupation": "manager-floor",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "Lead"
+     ],
+     "mode": "exact"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
    "id": "v3-manager-floor~25f7f58c17",
    "occupation": "manager-floor",
    "all": [
@@ -123539,6 +123553,20 @@
      "field": "title",
      "any": [
       "lead athlete"
+     ],
+     "mode": "exact"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
+   "id": "v3-manager-floor~de20d3f177",
+   "occupation": "manager-floor",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "lead - full time"
      ],
      "mode": "exact"
     }
@@ -123651,6 +123679,20 @@
      "field": "title",
      "any": [
       "manager retail"
+     ],
+     "mode": "exact"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
+   "id": "v3-manager-floor~28c01dc2fd",
+   "occupation": "manager-floor",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "part time supervisor"
      ],
      "mode": "exact"
     }
@@ -124017,6 +124059,20 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
+   "id": "v3-manager-floor~356cb63ab9",
+   "occupation": "manager-floor",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "superviseur"
+     ],
+     "mode": "exact"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
    "id": "v3-manager-floor~279330c110",
    "occupation": "manager-floor",
    "all": [
@@ -124038,6 +124094,48 @@
      "field": "title",
      "any": [
       "superviseur des ventes"
+     ],
+     "mode": "exact"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
+   "id": "v3-manager-floor~59e431b906",
+   "occupation": "manager-floor",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "Superviseure"
+     ],
+     "mode": "exact"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
+   "id": "v3-manager-floor~ab296ae3b5",
+   "occupation": "manager-floor",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "superviseuse"
+     ],
+     "mode": "exact"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
+   "id": "v3-manager-floor~14f7c397bc",
+   "occupation": "manager-floor",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "supervisor"
      ],
      "mode": "exact"
     }
@@ -153207,7 +153305,7 @@
  ],
  "review": {
   "author": "Passe de curation v3 (IA seule, D-475 §30)",
-  "at": "2026-09-29T12:31:30.675Z",
+  "at": "2026-09-29T13:08:33.788Z",
   "basis": "Première passe de curation : 253 métiers (servis, backend, offres), 33 familles, 25 langues ; preuves : audits/2026-09-28/curation-v3."
  },
  "families": [

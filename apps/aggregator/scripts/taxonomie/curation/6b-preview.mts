@@ -63,7 +63,7 @@ const cle = (l: Ligne) => l.titre.toLowerCase().trim();
 const [cleVente, cleRayon] = [cleV3(scission.cible), cleV3(scission.source)];
 const interdit = (m: string) => (m === 'aucun' ? [cleVente, cleRayon] : m === 'rayon' ? [cleVente] : [cleRayon]);
 const decisions3c = [...scission.decisions.flatMap((d: any) => [d.intitule, ...(d.formes ?? [])].map((t: string) => ({ f: ` ${phraseMoteur(t)} `, m: d.metier }))),
-  ...EXCLUS_RAYON.map((t) => ({ f: ` ${phraseMoteur(t)} `, m: 'vente' }))];
+  ...EXCLUS_RAYON.map((t) => ({ f: ` ${phraseMoteur(t)} `, m: 'aucun' }))];
 const ecarts3c = lignes.filter((l) => { const t = ` ${phraseMoteur(l.titre)} `; return decisions3c.some((d: any) => t.includes(d.f) && interdit(d.m).includes(l.v3!)); });
 const estPrevu = (l: Ligne) => prevu.has(cle(l)) && prevu.get(cle(l)) === l.v3;
 const gains = lignes.filter((l) => !l.v1 && l.v3), pertes = lignes.filter((l) => l.v1 && !l.v3);

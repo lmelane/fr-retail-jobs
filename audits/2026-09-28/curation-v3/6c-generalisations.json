@@ -1,17 +1,17 @@
 {
- "calculeLe": "2026-09-29T12:31:30.234Z",
+ "calculeLe": "2026-09-29T13:08:33.264Z",
  "juges": {
   "j1": "gemini-3.6-flash",
   "j2": "gemini-3-flash-preview"
  },
  "bilan": {
-  "expressionsQuiGeneralisent": 679,
-  "jugees": 185,
+  "expressionsQuiGeneralisent": 683,
+  "jugees": 188,
   "modes": {
    "generalisable": 103,
-   "exacte": 82
+   "exacte": 85
   },
-  "sousSeuil": 494,
+  "sousSeuil": 495,
   "motsSeulsJuges": 24,
   "motsSeulsRamenesALExact": [
    "CONTROLLER",
@@ -25,8 +25,8 @@
    "OPTICO",
    "DISPENSER"
   ],
-  "offresGeneralisables": 6461,
-  "offresRameneesALExact": 6158,
+  "offresGeneralisables": 6457,
+  "offresRameneesALExact": 8497,
   "seuils": {
    "SEUIL_OFFRES": 10,
    "ECHANTILLON": 3
@@ -225,7 +225,7 @@
    "expression": "ASSISTANT MANAGER",
    "occupation": "assistant-store-manager",
    "mode": "exacte",
-   "offres": 486,
+   "offres": 484,
    "juges": [
     {
      "titre": "Assistant Manager-ANN",
@@ -237,6 +237,26 @@
     },
     {
      "titre": "STAGE – Assistant(e) Manager des Opérations Boutique Mode Monaco - Janvier 2027 - H/F/X",
+     "verdict": "rejete"
+    }
+   ]
+  },
+  {
+   "expression": "LEAD",
+   "occupation": "manager-floor",
+   "mode": "exacte",
+   "offres": 1170,
+   "juges": [
+    {
+     "titre": "Lead Supervisor I",
+     "verdict": "rejete"
+    },
+    {
+     "titre": "Lead, DC Operations - Control Room (Night Shift) | $27.00/hr + $2.50 Shift Differential",
+     "verdict": "rejete"
+    },
+    {
+     "titre": "Japan Retail Operations Lead - Fixed term contract / Keiyaku Shain (契約社員)",
      "verdict": "rejete"
     }
    ]
@@ -326,6 +346,26 @@
    ]
   },
   {
+   "expression": "SUPERVISOR",
+   "occupation": "manager-floor",
+   "mode": "exacte",
+   "offres": 1136,
+   "juges": [
+    {
+     "titre": "Lead Supervisor I",
+     "verdict": "rejete"
+    },
+    {
+     "titre": "網紅行銷暨經紀事業主任 Supervisor, Social Talent Agency",
+     "verdict": "rejete"
+    },
+    {
+     "titre": "Junior Teamleiter (m/w/d) / Store Supervisor (m/w/d) - Iller Center Senden",
+     "verdict": "confirme"
+    }
+   ]
+  },
+  {
    "expression": "LEAD SUPERVISOR",
    "occupation": "manager-floor",
    "mode": "exacte",
@@ -369,7 +409,7 @@
    "expression": "SALES LEAD",
    "occupation": "retail-sales-lead",
    "mode": "generalisable",
-   "offres": 441,
+   "offres": 440,
    "juges": [
     {
      "titre": "Sales Lead-ANN",
@@ -629,7 +669,7 @@
    "expression": "COMMERCIAL",
    "occupation": "commercial",
    "mode": "exacte",
-   "offres": 111,
+   "offres": 103,
    "juges": [
     {
      "titre": "Commercial itinérant H/F",
@@ -773,7 +813,7 @@
    "expression": "PRODUCT MANAGER",
    "occupation": "chef-produit",
    "mode": "exacte",
-   "offres": 111,
+   "offres": 107,
    "juges": [
     {
      "titre": "Assistant Product Manager",
@@ -833,7 +873,7 @@
    "expression": "SALES REPRESENTATIVE",
    "occupation": "commercial",
    "mode": "generalisable",
-   "offres": 23,
+   "offres": 22,
    "juges": [
     {
      "titre": "Dermatology Sales Representative",
@@ -901,7 +941,7 @@
    "expression": "WHOLESALE",
    "occupation": "responsable-wholesale",
    "mode": "exacte",
-   "offres": 80,
+   "offres": 79,
    "juges": [
     {
      "titre": "Specialist GBS AR Retail & Wholesale",
@@ -1001,7 +1041,7 @@
    "expression": "KEY HOLDER",
    "occupation": "keyholder",
    "mode": "generalisable",
-   "offres": 548,
+   "offres": 547,
    "juges": [
     {
      "titre": "Retail Key Holder",
@@ -1021,7 +1061,7 @@
    "expression": "KEYHOLDER",
    "occupation": "keyholder",
    "mode": "exacte",
-   "offres": 367,
+   "offres": 366,
    "juges": [
     {
      "titre": "Retail Sales Associate Keyholder",
@@ -1045,7 +1085,7 @@
    "expression": "MODEL",
    "occupation": "mannequin",
    "mode": "exacte",
-   "offres": 24,
+   "offres": 23,
    "juges": [
     {
      "titre": "Anthropologie On-Model Studio Intern",
@@ -1057,26 +1097,6 @@
     },
     {
      "titre": "Men´s Fitting model to J.Lindeberg HQ, Stockholm.",
-     "verdict": "confirme"
-    }
-   ]
-  },
-  {
-   "expression": "PERSONAL STYLIST",
-   "occupation": "conseiller-en-image",
-   "mode": "exacte",
-   "offres": 10,
-   "juges": [
-    {
-     "titre": "Anthropologie Personal Stylist - King's Road, London",
-     "verdict": "confirme"
-    },
-    {
-     "titre": "Part-Time Personal Stylist Support - The Village at Corte Madera",
-     "verdict": "rejete"
-    },
-    {
-     "titre": "Personal Stylist - Full Time - Flagship - New York, NY",
      "verdict": "confirme"
     }
    ]
@@ -1533,7 +1553,7 @@
    "expression": "FOOTWEAR DESIGNER",
    "occupation": "designer-chaussures",
    "mode": "exacte",
-   "offres": 13,
+   "offres": 12,
    "juges": [
     {
      "titre": "ASSISTANT(E) FOOTWEAR DESIGNER - NEW CREATIONS",
@@ -1901,7 +1921,7 @@
    "expression": "OPERATIONS ASSOCIATE",
    "occupation": "retail-operations-associate",
    "mode": "exacte",
-   "offres": 218,
+   "offres": 217,
    "juges": [
     {
      "titre": "Operations Associate - Flex",
@@ -2273,7 +2293,7 @@
    "expression": "CONTROLLING",
    "occupation": "financial-controller",
    "mode": "exacte",
-   "offres": 26,
+   "offres": 23,
    "juges": [
     {
      "titre": "CDI- Responsable Controlling e-commerce - H/F/X - Groupe Rocher",
@@ -2717,7 +2737,7 @@
    "expression": "DISTRICT MANAGER",
    "occupation": "regional-retail-manager",
    "mode": "generalisable",
-   "offres": 27,
+   "offres": 26,
    "juges": [
     {
      "titre": "District Manager - Western Canada",
@@ -3258,6 +3278,26 @@
    ]
   },
   {
+   "expression": "SUPERVISEUR",
+   "occupation": "manager-floor",
+   "mode": "exacte",
+   "offres": 20,
+   "juges": [
+    {
+     "titre": "Superviseur d'Equipe de Vente H/F",
+     "verdict": "confirme"
+    },
+    {
+     "titre": "Superviseur des Ventes St-Bruno/Sales Supervisor PT- St-Bruno",
+     "verdict": "confirme"
+    },
+    {
+     "titre": "Superviseur de magasin (35 heures) - Forum des Halles",
+     "verdict": "rejete"
+    }
+   ]
+  },
+  {
    "expression": "MANAGER DES VENTES",
    "occupation": "manager-floor",
    "mode": "generalisable",
@@ -3670,6 +3710,26 @@
    ]
   },
   {
+   "expression": "LEAD FULL TIME",
+   "occupation": "manager-floor",
+   "mode": "exacte",
+   "offres": 45,
+   "juges": [
+    {
+     "titre": "Stage Experience Lead - Full Time",
+     "verdict": "rejete"
+    },
+    {
+     "titre": "Store Team Lead - Full Time - Nike Store Crete",
+     "verdict": "confirme"
+    },
+    {
+     "titre": "Stage Experience and Services Lead - Full Time",
+     "verdict": "rejete"
+    }
+   ]
+  },
+  {
    "expression": "STORE TEAM LEAD",
    "occupation": "manager-floor",
    "mode": "generalisable",
@@ -3994,6 +4054,12 @@
    "occupation": "assistant-marketing-digital",
    "mode": "exacte",
    "offres": 2
+  },
+  {
+   "expression": "PERSONAL STYLIST",
+   "occupation": "conseiller-en-image",
+   "mode": "exacte",
+   "offres": 9
   },
   {
    "expression": "PHOTOGRAPHER",
@@ -4680,12 +4746,6 @@
    "offres": 1
   },
   {
-   "expression": "TRAFFIC MANAGER",
-   "occupation": "traffic-manager",
-   "mode": "exacte",
-   "offres": 9
-  },
-  {
    "expression": "DIRECTION ARTISTIQUE",
    "occupation": "direction-artistique",
    "mode": "exacte",
@@ -4798,6 +4858,12 @@
    "occupation": "fashion-designer",
    "mode": "exacte",
    "offres": 8
+  },
+  {
+   "expression": "TRAFFIC MANAGER",
+   "occupation": "traffic-manager",
+   "mode": "exacte",
+   "offres": 7
   },
   {
    "expression": "UI DESIGNER",
@@ -5580,24 +5646,6 @@
    "offres": 1
   },
   {
-   "expression": "ACCESSORIES DEVELOPER",
-   "occupation": "product-developer",
-   "mode": "exacte",
-   "offres": 2
-  },
-  {
-   "expression": "FOOTWEAR DEVELOPER",
-   "occupation": "product-developer",
-   "mode": "exacte",
-   "offres": 6
-  },
-  {
-   "expression": "UX DESIGNER",
-   "occupation": "ux-ui-designer",
-   "mode": "exacte",
-   "offres": 5
-  },
-  {
    "expression": "EXPERIENCE DESIGNER",
    "occupation": "scenographe",
    "mode": "exacte",
@@ -6282,6 +6330,12 @@
    "offres": 1
   },
   {
+   "expression": "FOOTWEAR DEVELOPER",
+   "occupation": "product-developer",
+   "mode": "exacte",
+   "offres": 2
+  },
+  {
    "expression": "SHIFT LEADER",
    "occupation": "manager-floor",
    "mode": "exacte",
@@ -6310,6 +6364,18 @@
    "occupation": "praticien-spa",
    "mode": "exacte",
    "offres": 1
+  },
+  {
+   "expression": "ACCESSORIES DEVELOPER",
+   "occupation": "product-developer",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "expression": "UX DESIGNER",
+   "occupation": "ux-ui-designer",
+   "mode": "exacte",
+   "offres": 3
   },
   {
    "expression": "COORDINATEUR MARKETING",

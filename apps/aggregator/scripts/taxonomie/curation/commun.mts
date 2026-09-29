@@ -42,11 +42,11 @@ export const phraseMoteur = (v: string) => normalizeOccupationTitle(v).replace(/
 
 /** §32 c : un mot vague seul ne désigne pas un métier, donc ne classe aucune offre. */
 export const VAGUES = new Set(['MANAGER', 'ASSISTANT', 'ASSISTANTE', 'ASSOCIATE', 'TEAM MEMBER', 'STAGIAIRE', 'STAGE', 'INTERN', 'EMPLOYE', 'EMPLOYEE',
-  'RESPONSABLE', 'DIRECTEUR', 'DIRECTRICE', 'DIRECTOR', 'CHARGE', 'CHARGEE', 'LEAD', 'SPECIALIST', 'SPECIALISTE', 'COORDINATOR', 'COORDINATEUR',
-  'CONSULTANT', 'CONSULTANTE', 'TECHNICIEN', 'TECHNICIENNE', 'OPERATEUR', 'AGENT', 'CONSEILLER', 'CONSEILLERE', 'ADVISOR', 'SUPERVISOR',
-  // Mesure de justesse du 29/09/2026 : « Superviseur(e) » seul, et « Retail Manager » (directeur de magasin au Royaume-Uni
-  // et en Australie, directeur retail ailleurs) ne désignent pas un métier à eux seuls.
-  'SUPERVISEUR', 'SUPERVISEURE', 'SUPERVISEUSE', 'RETAIL MANAGER',
+  'RESPONSABLE', 'DIRECTEUR', 'DIRECTRICE', 'DIRECTOR', 'CHARGE', 'CHARGEE', 'SPECIALIST', 'SPECIALISTE', 'COORDINATOR', 'COORDINATEUR',
+  'CONSULTANT', 'CONSULTANTE', 'TECHNICIEN', 'TECHNICIENNE', 'OPERATEUR', 'AGENT', 'CONSEILLER', 'CONSEILLERE', 'ADVISOR',
+  // « Retail Manager » (directeur de magasin au Royaume-Uni et en Australie, directeur retail ailleurs) ne désigne pas
+  // un métier à lui seul. « Supervisor », « Superviseur » et « Lead » seuls n'y sont plus : Floor manager (D-475 §37 a).
+  'RETAIL MANAGER',
   // Audit du 29/09/2026 : « Sales Manager » désigne aussi bien l'encadrement de la vente en boutique (123 offres d'un
   // magasin américain, service Retail Management) que le wholesale ou la vente B2B : trop vague pour un métier.
   'SALES MANAGER',

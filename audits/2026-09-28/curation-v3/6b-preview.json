@@ -1,26 +1,26 @@
 {
- "calculeLe": "2026-09-29T12:31:32.598Z",
+ "calculeLe": "2026-09-29T13:08:35.966Z",
  "bilan": {
   "manifeste": "catwalks-occupations-20260929-v3",
   "couples": 43168,
   "offres": 80741,
-  "compilationMs": 102,
-  "classementMs": 1247,
+  "compilationMs": 115,
+  "classementMs": 1434,
   "premisse": {
    "accordAvecLaProduction": 100,
    "seuil": 97
   },
   "offresClassees": {
    "v1": 38000,
-   "v3": 50246,
+   "v3": 50313,
    "v1Pct": 47.1,
-   "v3Pct": 62.2
+   "v3Pct": 62.3
   },
   "ambigues": {
    "v1": 48,
    "v3": 64
   },
-  "gains": 12303,
+  "gains": 12370,
   "changementsDeMetier": 655,
   "pertes": 57,
   "horsPlan": {
@@ -45,7 +45,7 @@
    "pays": "US",
    "offres": 40442,
    "classesV1": 55.2,
-   "classesV3": 70.1
+   "classesV3": 70.2
   },
   {
    "pays": "FR",
@@ -57,25 +57,25 @@
    "pays": "CA",
    "offres": 12672,
    "classesV1": 58.1,
-   "classesV3": 75.2
+   "classesV3": 75.3
   },
   {
    "pays": "GB",
    "offres": 8029,
    "classesV1": 63.7,
-   "classesV3": 80.2
+   "classesV3": 80.8
   },
   {
    "pays": "DE",
    "offres": 7359,
    "classesV1": 66.5,
-   "classesV3": 78.7
+   "classesV3": 79.1
   },
   {
    "pays": "IT",
    "offres": 6644,
    "classesV1": 79.4,
-   "classesV3": 84.5
+   "classesV3": 85
   },
   {
    "pays": "ES",
@@ -93,7 +93,7 @@
    "pays": "NL",
    "offres": 5347,
    "classesV1": 75.4,
-   "classesV3": 86.9
+   "classesV3": 87.5
   },
   {
    "pays": "CH",
@@ -123,13 +123,13 @@
    "pays": "SG",
    "offres": 4234,
    "classesV1": 90.1,
-   "classesV3": 92.2
+   "classesV3": 92.9
   },
   {
    "pays": "IE",
    "offres": 4143,
    "classesV1": 86.2,
-   "classesV3": 91.6
+   "classesV3": 92.6
   },
   {
    "pays": "JP",
@@ -2429,6 +2429,15 @@
    "libelle": "Office Manager"
   },
   {
+   "titre": "Part Time Supervisor",
+   "service": null,
+   "offres": 4,
+   "avant": null,
+   "metier": "manager-floor",
+   "statut": "CLASSIFIED",
+   "libelle": "Floor manager"
+  },
+  {
    "titre": "Sales Consultant",
    "service": null,
    "offres": 19,
@@ -2843,6 +2852,15 @@
    "libelle": "Floor manager"
   },
   {
+   "titre": "Supervisor",
+   "service": null,
+   "offres": 32,
+   "avant": null,
+   "metier": "manager-floor",
+   "statut": "CLASSIFIED",
+   "libelle": "Floor manager"
+  },
+  {
    "titre": "Verkoopmedewerker parttime/fulltime",
    "service": null,
    "offres": 14,
@@ -3102,24 +3120,6 @@
    "metier": "stock-associate",
    "statut": "CLASSIFIED",
    "libelle": "Gestionnaire de stock en boutique"
-  },
-  {
-   "titre": "Sales Lead, Foley Tanger Outlets",
-   "service": null,
-   "offres": 1,
-   "avant": null,
-   "metier": "retail-sales-lead",
-   "statut": "CLASSIFIED",
-   "libelle": "Premier vendeur"
-  },
-  {
-   "titre": "Conseillère, conseiller vente / beauté - Monop'Beauty",
-   "service": null,
-   "offres": 3,
-   "avant": null,
-   "metier": "beauty-consultant",
-   "statut": "CLASSIFIED",
-   "libelle": "Conseiller beauté"
   }
  ]
 }
