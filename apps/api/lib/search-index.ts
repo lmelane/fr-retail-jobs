@@ -124,12 +124,13 @@ export async function advanceSearchRequeue(tranche = TRANCHE_REMISE_EN_FILE): Pr
 }
 
 export async function searchIndexStatus() {
-  const [row] = await prisma.$queryRaw<{ pending: number; oldestSeconds: number | null; documents: number; registered: boolean; ready: boolean }[]>`
+  const [row] = await prisma.$queryRaw<{ pending: number; oldestSeconds: number | null; documents: number; registered: boolean; ready: boolean; requeuePhase: string | null }[]>`
     SELECT (SELECT count(*)::int FROM "SearchPending" WHERE version=${SEARCH_VERSION}) AS pending,
       (SELECT extract(epoch FROM now()-min("queuedAt"))::float8 FROM "SearchPending" WHERE version=${SEARCH_VERSION}) AS "oldestSeconds",
       (SELECT count(*)::int FROM "SearchDocument" WHERE version=${SEARCH_VERSION}) AS documents,
       EXISTS(SELECT 1 FROM "SearchGeneration" WHERE version=${SEARCH_VERSION}) AS registered,
-      EXISTS(SELECT 1 FROM "SearchGeneration" WHERE version=${SEARCH_VERSION} AND "readyAt" IS NOT NULL) AS ready`;
+      EXISTS(SELECT 1 FROM "SearchGeneration" WHERE version=${SEARCH_VERSION} AND "readyAt" IS NOT NULL) AS ready,
+      (SELECT phase FROM "SearchRequeue" WHERE version=${SEARCH_VERSION}) AS "requeuePhase"`;
   return { version: SEARCH_VERSION, ...row };
 }
 

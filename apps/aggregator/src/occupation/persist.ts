@@ -60,6 +60,9 @@ export function occupationState(row: Record<string, any>) {
  * aurait écrit une observation immuable par offre sans que rien ne change (audit du 29/09/2026). */
 const DECISION_FIELDS = OCCUPATION_FIELDS.filter((k) => k !== "titleRoles" && k !== "titleRolesReleaseId");
 const decisionState = (row: Record<string, any>) => Object.fromEntries(DECISION_FIELDS.map((k) => [k, row[k] ?? null]));
+/** Une décision nouvelle (hors métiers lus) : ce que l'historique immuable enregistre, ici et en lot (`batch.ts`). */
+export const occupationDecisionChanged = (before: Record<string, any>, after: Record<string, any>) =>
+  occupationManifestHash(decisionState(before)) !== occupationManifestHash(decisionState(after));
 /** Append actual transitions, including A → B → A. Identical reattestations
  * produce no new row; reusing an old input must still preserve its new date. */
 export async function recordOccupationObservation(
@@ -69,12 +72,7 @@ export async function recordOccupationObservation(
 ) {
   if (!job.occupationReleaseId)
     throw new Error(`Missing occupation decision for ${job.id}`);
-  if (
-    before &&
-    occupationManifestHash(decisionState(before)) ===
-      occupationManifestHash(decisionState(job))
-  )
-    return;
+  if (before && !occupationDecisionChanged(before, job)) return;
   const inputHash = occupationManifestHash(job.occupationEvidence);
   await tx.occupationObservation.create({
     data: {

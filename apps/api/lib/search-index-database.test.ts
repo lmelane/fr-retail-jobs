@@ -29,8 +29,10 @@ describe.skipIf(!enabled)('durable search projection and live public API', () =>
     await initializeSearchIndex(); await cleanup();
     await prisma.company.create({ data: { id: prefix+'company', name: 'Search Native Maison', canonicalKey: prefix+'company', fashionjobsUrl: 'resolved:'+prefix } });
     for (const [id, country, title] of [['fr','FR','Sales Advisor'],['us','US','Sales Advisor'],['deputy','FR','Assistant Store Manager'],['deputy-director','FR','Assistant Store Director'],['senior','FR','Senior Sales Advisor']]) {
-      // La v3 classe « Assistant Store Director » adjoint au responsable de boutique (mesuré le 29/09/2026) ; la base
-      // témoin porte la v1, qui ne connaît pas cet intitulé : l'offre témoin reçoit la décision de l'adjoint.
+      // search-5 n'est servie qu'avec la v3 active et le stock reclassé (garde de `scripts/search/index.mts rebuild`) :
+      // la v3 classe « Assistant Store Director » adjoint (mesuré le 29/09/2026), l'offre témoin porte cette décision.
+      // La base témoin porte la v1, qui ne connaît pas cet intitulé : servie sous la v1, l'offre sortirait sous « store
+      // manager » (défaut de la fenêtre v1 → v3, plan §3.5), d'où la garde.
       const url = 'https://example.com/'+prefix+id, c = await classee(title === 'Assistant Store Director' ? 'Assistant Store Manager' : title);
       await prisma.job.create({ data: { id: prefix+id, companyId: prefix+'company', title, countryCode: country, source: 'GENERIC_JSONLD', externalId: id, url,
         ...c.decision, titleRoles: c.titleRoles, titleRolesReleaseId: c.titleRolesReleaseId,

@@ -12,7 +12,7 @@ import seed from "../../../../packages/db/data/occupations-v1.json" with { type:
 import type { CandidateJob } from "../dedup/match.js";
 import { classifyJobs } from "./classifyJobs.js";
 import { writeOccupationBatch } from "../occupation/batch.js";
-import { classifyOccupationContent } from "../occupation/persist.js";
+import { classifyOccupationContent, occupationDecisionChanged } from "../occupation/persist.js";
 import {
   previewOccupationRelease,
   activateOccupationRelease,
@@ -216,6 +216,21 @@ describe("occupation persistence and release lifecycle", () => {
     // Prémisse : l'écriture a bien rempli la version des métiers lus (l'état comparé a changé)…
     expect(after.titleRolesReleaseId).not.toBeNull();
     // … sans décision nouvelle : l'historique immuable ne reçoit rien.
+    expect(await db.occupationObservation.count()).toBe(count);
+  });
+  it("a batch that only fills the title roles rewrites the row but records no observation (audit du 29/09/2026)", async () => {
+    const { jobId } = await upsertDeduplicated(db, candidate({}));
+    await db.job.update({ where: { id: jobId }, data: { titleRoles: [], titleRolesReleaseId: null } });
+    const catalogue = await loadOccupationTaxonomy(db),
+      before = await db.job.findUniqueOrThrow({ where: { id: jobId } }),
+      after = classifyOccupationContent({ title: before.title, department: before.department, rawTitle: before.rawTitle,
+        sourceKey: before.canonicalSourceKey ?? undefined, externalId: before.canonicalExternalId ?? undefined }, catalogue);
+    // Prémisse : seuls les métiers lus changent, la décision (et sa preuve) reste la même.
+    expect(after.titleRolesReleaseId).not.toBeNull();
+    expect(occupationDecisionChanged(before, after)).toBe(false);
+    const count = await db.occupationObservation.count();
+    expect(await db.$transaction((tx) => writeOccupationBatch(tx, [{ before, after }]))).toBe(1);
+    expect((await db.job.findUniqueOrThrow({ where: { id: jobId } })).titleRolesReleaseId).toBe(after.titleRolesReleaseId);
     expect(await db.occupationObservation.count()).toBe(count);
   });
   it("a previously unknown title remains an active posting with a reviewable reason", async () => {

@@ -307,10 +307,15 @@ car sans elle l'alerte ne part pas.
 
 - `metier=X` retient une offre si son code est X, **ou** si X figure dans ses `titleRoles` ; sans aucun des deux, elle est « non classée » (2B-4, `apps/api/lib/job-search-query.ts`, témoin dans `jobs-database.test.ts` ; construit, pas encore déployé). Aucune clé servie par l'agrégateur n'est remplacée par la v3 (les trois absorptions portent sur des clés du backend) : le suivi vers un successeur n'a pas de cas aujourd'hui. **Recherche texte (2B-4, construit, pas déployé)** : les métiers du document sont ceux de ses colonnes, son code et
   ses `titleRoles` (`apps/api/lib/search-model.ts`, génération `search-5`) ; sans aucun, l'intitulé reste cherchable par
-  ses mots (`search-sql.ts`). Défaut connu, inchangé par rapport à `search-4` : 1 562 offres sans métier en colonnes
-  nomment un métier dans leur intitulé, dont 982 avec un mot de niveau (« Adjoint(e) Responsable de Boutique ») ; une
-  recherche « Responsable de boutique » les trouve par les mots, comme aujourd'hui par un métier lu sans preuve ; le
-  remède est leur vocabulaire (passe de curation suivante). Une clé remplacée
+  ses mots (`search-sql.ts`). **`search-5` ne se sert qu'avec la v3 active et le stock reclassé** : la commande
+  `rebuild` le refuse sinon, et l'API qui la sert ne se promeut qu'à l'activation (2C). Servie sous la v1, elle
+  ferait perdre un métier à 99 offres (36 « Esthéticien / Conseiller de beauté ») et sortir 10 adjoints sous le
+  Responsable de boutique (« Assistant Store Director », non classé en v1) : audit du 29/09/2026, sur l'export v1.
+  Défaut connu sous la v3 : 1 562 offres sans métier en colonnes nomment un métier dans leur intitulé, dont 982 avec un
+  mot de niveau (« Adjoint(e) Responsable de Boutique ») ; une recherche « Responsable de boutique » les trouve par les
+  mots (`search-4` les trouvait par un métier lu sans preuve) ; le remède est leur vocabulaire (passe de curation).
+  Reste pour 2C : le reclassement touche `OccupationState` à chaque lot, ce qui reprend la remise en file au début
+  (une fois par passe, plan §3.6) ; `rebuild` peut s'arrêter avant la fin d'une remise en file, que l'API termine. Une clé remplacée
   n'est plus classée, n'entre plus dans le vocabulaire, la garde ou les facettes ; une recherche, une préférence
   ou une alerte qui la porte est suivie vers son successeur **au moment de la requête**, sans réécrire son
   empreinte. La facette compte la même appartenance. Aucune dépendance à l'index. **Encadrement** (§32 a) :

@@ -4,6 +4,15 @@ try {
   const [command,version,confirmation] = process.argv.slice(2);
   if (command === 'status') console.log(await searchIndexStatus());
   else if (command === 'rebuild') {
+    // search-5 ne se sert qu'avec la v3 active et le stock reclassé (plan D-475 §3.6, audit du 29/09/2026) : sous la v1,
+    // des adjoints non classés sortiraient sous le responsable qu'ils secondent. Refus avant toute écriture.
+    const [etat] = await prisma.$queryRaw<{ vocabulaire: string | null; manquants: number }[]>`
+      SELECT r.manifest->>'searchVocabularyVersion' AS vocabulaire,
+        (SELECT count(*)::int FROM "Job" j WHERE j."isActive" AND j."mergedIntoId" IS NULL AND j."occupationReleaseId" IS NOT NULL
+          AND j."titleRolesReleaseId" IS DISTINCT FROM s."releaseId") AS manquants
+      FROM "OccupationState" s JOIN "OccupationRelease" r ON r.id = s."releaseId" WHERE s.id = 'active'`;
+    if (!etat?.vocabulaire || etat.manquants > 0)
+      throw Error(`rebuild ${SEARCH_VERSION} refusé : ${!etat?.vocabulaire ? 'la taxonomie active ne porte pas le vocabulaire de recherche (v1)' : `${etat.manquants} offres actives sans métiers lus de la version active`} ; activer la v3 et reclasser d'abord (plan D-475 §3.6)`);
     await initializeSearchIndex();
     // Resume the existing durable backlog, including after interruption.
     // Construire une génération AVANT le déploiement de l'API qui la sert (plan D-475 §3.6) : la file initiale, puis
