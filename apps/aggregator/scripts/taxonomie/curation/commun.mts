@@ -9,6 +9,7 @@ import { existsSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { gunzipSync } from 'node:zlib';
 import { normalizeOccupationTitle } from '../../../../../packages/db/occupation-engine.ts';
+import { occupationLevelOnly } from '../../../../../packages/db/occupation-levels.ts';
 
 const ICI = (p: string) => fileURLToPath(new URL(p, import.meta.url));
 const lireJson = (p: string) => JSON.parse(readFileSync(ICI(p), 'utf8'));
@@ -65,9 +66,8 @@ const CONTRAT = new Set(['PART', 'FULL', 'TIME', 'PT', 'FT', 'TEMP', 'TEMPORARY'
  * donné, mais pour l'intitulé EXACT seulement : elle ne se généralise jamais (D-475 §36, arbitrage du CEO du 29/09/2026 ;
  * généralisée, « Team Leader » classait Floor manager un « Team Leader Corporate Tax » et un « DC Team Leader »).
  */
-const HIERARCHIE = new Set(['TEAM', 'SHIFT', 'LEAD', 'LEADER', 'MANAGER', 'SUPERVISOR', 'SUPERVISEUR', 'SUPERVISEURE', 'SUPERVISEUSE', 'CHEF', 'CHEFFE',
-  'D', 'DE', 'DI', 'EQUIPE', 'GENERAL', 'GENERALE', 'RESPONSABLE', 'ACTING', 'SENIOR', 'SR', 'JUNIOR', 'JR', 'I', 'II', 'III', 'IV', '1', '2', '3',
-  'TEAMLEITER', 'TEAMLEITERIN', 'SCHICHTLEITER', 'SCHICHTLEITERIN', 'ENCARGADO', 'ENCARGADA', 'JEFE', 'JEFA', 'EQUIPO', 'CAPO', 'SQUADRA']);
+// La liste des mots de niveau vit dans le paquet partagé (packages/db/occupation-levels.ts) : la même règle pour la
+// curation et pour les métiers lus dans l'intitulé (point 38).
 /**
  * Les rayons « à service » (boucherie, charcuterie coupe, boulangerie) sont de la vente au comptoir, pas de la mise en
  * rayon : les juges de 3c les ont tous laissés sans métier (lecture de D-475 §35). Exclus en tant que motif des règles
@@ -76,7 +76,7 @@ const HIERARCHIE = new Set(['TEAM', 'SHIFT', 'LEAD', 'LEADER', 'MANAGER', 'SUPER
  */
 export const EXCLUS_RAYON = ['à service'];
 /** Une forme (normalisée par `phraseMoteur`) faite seulement de mots de niveau : règle exacte, jamais généralisée (§36). */
-export const niveauSeul = (forme: string) => !!forme && forme.split(' ').every((m) => HIERARCHIE.has(m));
+export const niveauSeul = (forme: string) => !!forme && occupationLevelOnly(forme);
 /** §32 c : une forme (normalisée par `phraseMoteur`) trop vague pour désigner un métier (le mot seul, « Manager »). */
 export const estVague = (forme: string) => VAGUES.has(forme) || VAGUES.has(forme.split(' ').filter((m) => !CONTRAT.has(m)).join(' '));
 

@@ -381,6 +381,13 @@ export function compileOccupationManifest(raw: unknown) {
     }
   }
   type Entree = { title: string; department: string; exact: { title: string; department: string } };
+  // v1 : la clé se calcule sur l'intitulé déjà normalisé, comme avant ; v2 : sur l'intitulé observé (l'orthographe v2
+  // garde le dakuten et les voyelles thaïes que la normalisation v1 a effacés).
+  const entree = (title: string | null | undefined, department: string | null | undefined): Entree => {
+    const cles = version === 2 ? { title: cle(title ?? ""), department: cle(department ?? "") }
+      : { title: phrase(normalizeOccupationTitle(title)), department: phrase(normalizeOccupationTitle(department)) };
+    return { ...cles, exact: version === 2 ? { title: sansMarques(cles.title), department: sansMarques(cles.department) } : cles };
+  };
   const clauses = (c: Clause, input: Entree) =>
     c.any.some((v) =>
       c.mode === "exact"
@@ -442,6 +449,12 @@ export function compileOccupationManifest(raw: unknown) {
     occupations,
     seniorities,
     specializations,
+    /** Les métiers dont une règle EXCLUT cet intitulé (ses mots d'encadrement jugés, D-475 §32 a) : un métier lu dans
+     * « Responsable vendeur » n'est pas « Vendeur » (point 38). */
+    excludedOccupations(title: string | null | undefined, department?: string | null): Set<string> {
+      const input = entree(title, department);
+      return new Set(compiledRules.filter((r) => r.exclude.some((c) => clauses(c, input))).map((r) => r.occupation));
+    },
     classify(
       title: string | null | undefined,
       department?: string | null,
@@ -503,10 +516,7 @@ export function compileOccupationManifest(raw: unknown) {
         result.occupationEvidence.reason =
           "Only a broad family heuristic matched; precise occupation requires review.";
       }
-      // v1 : la clé se calcule sur l'intitulé déjà normalisé, comme avant ; v2 : sur l'intitulé observé (l'orthographe
-      // v2 garde le dakuten et les voyelles thaïes que la normalisation v1 a effacés).
-      const cles = version === 2 ? { title: cle(title ?? ""), department: cle(department ?? "") } : { title: phrase(t), department: phrase(d) };
-      const input: Entree = { ...cles, exact: version === 2 ? { title: sansMarques(cles.title), department: sansMarques(cles.department) } : cles };
+      const input = entree(title, department);
       const phraseMatches = (rows: typeof familyPhrases) =>
         rows.filter(
           (r) =>

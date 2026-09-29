@@ -1,5 +1,5 @@
 import type { Prisma, PrismaClient } from '@prisma/client';
-import { loadOccupationTaxonomy, type CompiledOccupationTaxonomy } from '@catwalks/db/occupations';
+import { loadOccupationTaxonomy, occupationTitleRoles, type CompiledOccupationTaxonomy } from '@catwalks/db/occupations';
 import { chargerFrontieres, paysDesCoordonnees, type Frontieres, type VerdictPays } from '../geo/frontieres.js';
 import { classifyJob } from '../normalize/taxonomy.js';
 
@@ -90,7 +90,7 @@ export function metierDepuisTaxonomie(taxonomie: CompiledOccupationTaxonomy): (t
   return (titre) => {
     const decision = classifyJob({ title: titre }, taxonomie);
     return { occupationCode: decision.occupationCode, occupationReleaseId: decision.occupationReleaseId,
-      titleRoles: [...decision.occupationEvidence.candidates].sort(), titleRolesReleaseId: decision.occupationReleaseId };
+      titleRoles: occupationTitleRoles(taxonomie, titre, decision.occupationEvidence.candidates), titleRolesReleaseId: decision.occupationReleaseId };
   };
 }
 

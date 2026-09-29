@@ -2,6 +2,7 @@ import { Prisma } from "@prisma/client";
 import { randomUUID } from "node:crypto";
 import {
   occupationManifestHash,
+  occupationTitleRoles,
   type CompiledOccupationTaxonomy,
 } from "@catwalks/db/occupations";
 import { classifyJob } from "../normalize/taxonomy.js";
@@ -21,11 +22,9 @@ export function classifyOccupationContent(
   const c = classifyJob(input, catalogue);
   return {
     ...c,
-    // Lot 2B de D-475 : les métiers lus dans le titre sont les candidats retenus par le moteur (le métier d'un intitulé
-    // classé, les métiers en concurrence d'un intitulé ambigu : « Vendeur / Caissier »), donc sous toutes les décisions
-    // (§32 a : « Responsable vendeur » n'est pas « Vendeur » ; §36 : intitulé exact) ; écrits avec la classification,
-    // jamais périmés, avec la version qui les a lus.
-    titleRoles: [...c.occupationEvidence.candidates].sort(),
+    // D-475 point 38 : les métiers lus dans l'intitulé (packages/db/occupation-title-roles.ts), écrits avec la
+    // classification, jamais périmés, avec la version qui les a lus ; l'intitulé observé d'abord.
+    titleRoles: occupationTitleRoles(catalogue, input.rawTitle || input.title, c.occupationEvidence.candidates),
     titleRolesReleaseId: c.occupationReleaseId,
     rawTitle: input.rawTitle ?? null,
     occupationEvidence: {

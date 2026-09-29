@@ -1,5 +1,5 @@
-import type { OccupationManifest } from '@catwalks/db/occupations';
-import { searchWords, type SearchConcept } from './search-intent';
+import type { OccupationManifest } from './occupation-engine.ts';
+import { searchWords, type SearchConcept } from './search-intent.ts';
 
 /** Search vocabulary, separate from catalogue classification and publication.
  * These phrases describe the same activity; they never rewrite a native title,
