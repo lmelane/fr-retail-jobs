@@ -31,7 +31,7 @@
  * Grille : C juste ; P proche (bonne famille ou niveau voisin, ex. stage rattaché au métier plein) ; F faux (autre métier,
  * ou métier donné à un intitulé vague) ; pour une perte (plus de métier), C si l'absence de métier est juste, F sinon.
  *
- *   node [--env-file=<.env portant GEMINI_API_KEY>] --import tsx apps/aggregator/scripts/taxonomie/curation/6d-echantillon-neuf.mts --tirer|--juger-modele|--compter [--tour=<n>]
+ *   node [--env-file=<.env portant GEMINI_API_KEY>] --import tsx apps/aggregator/scripts/taxonomie/curation/6d-echantillon-neuf.mts --tirer|--juger-modele|--compter [--tour=<n>] [--taille=<n>]
  */
 import { createHash } from 'node:crypto';
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
@@ -43,6 +43,11 @@ import { DOSSIER_SORTIE as D, lireEtape, servie } from './commun.mts';
 const argTour = process.argv.filter((a) => a.startsWith('--tour'));
 if (argTour.some((a) => !/^--tour=[1-9]\d*$/.test(a)) || argTour.length > 1) throw new Error('usage : --tour=<entier ≥ 1>');
 const TOUR = argTour.length ? Number(argTour[0].slice(7)) : 1;
+// Taille du tirage : 200 par version (plan §3.2) ; la mesure finale avant l'activation en prend 600 (tour 7), de quoi
+// borner la part de faux près du seuil de 1 % (Wilson à 95 % : 0 faux sur 381, 1 sur 563).
+const argTaille = process.argv.find((a) => a.startsWith('--taille='));
+if (argTaille && !/^--taille=[1-9]\d{0,3}$/.test(argTaille)) throw new Error('usage : --taille=<entier de 1 à 9999>');
+const TAILLE = argTaille ? Number(argTaille.slice(9)) : 200;
 /** Le juge de la mesure : aucun rattachement de la passe ne vient de lui (plan §3.2). */
 const JUGE_MESURE = 'gemini-3.1-pro-preview';
 const empreinte = () => createHash('sha256').update(readFileSync(`${D}6-manifeste-v3.json`)).digest('hex');
@@ -63,7 +68,7 @@ if (mode === '--tirer') {
   const cand = couples.map((c: any) => ({ c, a: v1.classify(c.titre, c.service).occupationCode, b: v3.classify(c.titre, c.service) }))
     .filter((x: any) => (PERTES ? x.a && !x.b.occupationCode : x.a !== x.b.occupationCode) && !vus.has(x.c.titre.toLowerCase().trim()));
   const alea = (x: any) => (parseInt(createHash('sha256').update(`final-2026-09-29${TOUR === 1 ? '' : `-tour${TOUR}`}|${x.c.titre}|${x.c.service}`).digest('hex').slice(0, 12), 16) + 1) / 2 ** 48;
-  const e = cand.map((x: any) => ({ x, k: Math.log(alea(x)) / x.c.offres })).sort((p: any, q: any) => q.k - p.k).slice(0, PERTES ? cand.length : 200)
+  const e = cand.map((x: any) => ({ x, k: Math.log(alea(x)) / x.c.offres })).sort((p: any, q: any) => q.k - p.k).slice(0, PERTES ? cand.length : TAILLE)
     .map(({ x }: any) => ({ titre: x.c.titre, service: x.c.service, offres: x.c.offres, avant: x.a, metier: x.b.occupationCode, statut: x.b.occupationStatus,
       libelle: m.occupations.find((o: any) => o.key === x.b.occupationCode)?.labels.fr ?? null, verdictModele: null, verdictAssistant: null }));
   writeFileSync(FICHIER, JSON.stringify({ tireLe: new Date().toISOString(), tour: TOUR, ...(PERTES ? { exhaustif: true } : {}), manifeste: m.id, ...(TOUR >= 3 ? { empreinteManifeste: empreinte() } : {}),

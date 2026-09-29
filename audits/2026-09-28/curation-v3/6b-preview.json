@@ -1,11 +1,11 @@
 {
- "calculeLe": "2026-09-29T14:26:09.355Z",
+ "calculeLe": "2026-09-29T17:59:52.618Z",
  "bilan": {
   "manifeste": "catwalks-occupations-20260929-v3",
   "couples": 43168,
   "offres": 80741,
-  "compilationMs": 214,
-  "classementMs": 1666,
+  "compilationMs": 210,
+  "classementMs": 1599,
   "premisse": {
    "accordAvecLaProduction": 100,
    "seuil": 97
