@@ -52,17 +52,18 @@ export const VAGUES = new Set(['MANAGER', 'ASSISTANT', 'ASSISTANTE', 'ASSOCIATE'
   'SALES MANAGER']);
 
 /**
- * Mots de niveau hiérarchique sans domaine. Une expression faite UNIQUEMENT de ces mots (« Team Leader », « Shift
- * Manager », « Supervisor I », « General Manager », « Chef d'équipe ») dit un niveau, pas un métier : §32 c, comme
- * « Manager » seul (audit du 29/09/2026 : « Team Leader » classait Floor manager un « Team Leader Corporate Tax » et un
- * « DC Team Leader Lagerlogistik »). « Assistant manager » et « Responsable adjoint » n'y sont pas : l'adjoint de
- * boutique est l'usage de ces titres dans les offres, jugé juste à chaque mesure.
+ * Mots de niveau hiérarchique sans domaine. Une expression faite UNIQUEMENT de ces mots (« Team Manager », « Team
+ * Leader », « Supervisor I », « General Manager ») garde le métier d'encadrement de boutique que les deux juges lui ont
+ * donné, mais pour l'intitulé EXACT seulement : elle ne se généralise jamais (D-475 §36, arbitrage du CEO du 29/09/2026 ;
+ * généralisée, « Team Leader » classait Floor manager un « Team Leader Corporate Tax » et un « DC Team Leader »).
  */
 const HIERARCHIE = new Set(['TEAM', 'SHIFT', 'LEAD', 'LEADER', 'MANAGER', 'SUPERVISOR', 'SUPERVISEUR', 'SUPERVISEURE', 'SUPERVISEUSE', 'CHEF', 'CHEFFE',
   'D', 'DE', 'DI', 'EQUIPE', 'GENERAL', 'GENERALE', 'RESPONSABLE', 'ACTING', 'SENIOR', 'SR', 'JUNIOR', 'JR', 'I', 'II', 'III', 'IV', '1', '2', '3',
   'TEAMLEITER', 'TEAMLEITERIN', 'SCHICHTLEITER', 'SCHICHTLEITERIN', 'ENCARGADO', 'ENCARGADA', 'JEFE', 'JEFA', 'EQUIPO', 'CAPO', 'SQUADRA']);
-/** §32 c : une forme (normalisée par `phraseMoteur`) trop vague pour désigner un métier. */
-export const estVague = (forme: string) => VAGUES.has(forme) || (!!forme && forme.split(' ').every((m) => HIERARCHIE.has(m)));
+/** Une forme (normalisée par `phraseMoteur`) faite seulement de mots de niveau : règle exacte, jamais généralisée (§36). */
+export const niveauSeul = (forme: string) => !!forme && forme.split(' ').every((m) => HIERARCHIE.has(m));
+/** §32 c : une forme (normalisée par `phraseMoteur`) trop vague pour désigner un métier (le mot seul, « Manager »). */
+export const estVague = (forme: string) => VAGUES.has(forme);
 
 /** Forme courte d'un libellé (« Vendeur / Vendeuse » → « Vendeur »). */
 export const courte = (l?: string) => (l ?? '').split('/')[0].trim();

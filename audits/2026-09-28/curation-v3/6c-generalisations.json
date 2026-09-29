@@ -1,17 +1,17 @@
 {
- "calculeLe": "2026-09-29T11:50:55.616Z",
+ "calculeLe": "2026-09-29T12:15:01.173Z",
  "juges": {
   "j1": "gemini-3.6-flash",
   "j2": "gemini-3-flash-preview"
  },
  "bilan": {
-  "expressionsQuiGeneralisent": 673,
-  "jugees": 179,
+  "expressionsQuiGeneralisent": 682,
+  "jugees": 187,
   "modes": {
-   "generalisable": 100,
-   "exacte": 79
+   "generalisable": 103,
+   "exacte": 84
   },
-  "sousSeuil": 494,
+  "sousSeuil": 495,
   "motsSeulsJuges": 24,
   "motsSeulsRamenesALExact": [
    "CONTROLLER",
@@ -25,8 +25,8 @@
    "OPTICO",
    "DISPENSER"
   ],
-  "offresGeneralisables": 6056,
-  "offresRameneesALExact": 5934,
+  "offresGeneralisables": 6462,
+  "offresRameneesALExact": 6305,
   "seuils": {
    "SEUIL_OFFRES": 10,
    "ECHANTILLON": 3
@@ -121,7 +121,7 @@
    "expression": "MAINTENANCE TECHNICIAN",
    "occupation": "maintenance-technician",
    "mode": "generalisable",
-   "offres": 41,
+   "offres": 40,
    "juges": [
     {
      "titre": "DC Maintenance Technician",
@@ -326,6 +326,46 @@
    ]
   },
   {
+   "expression": "LEAD SUPERVISOR",
+   "occupation": "manager-floor",
+   "mode": "exacte",
+   "offres": 160,
+   "juges": [
+    {
+     "titre": "Lead Supervisor I",
+     "verdict": "rejete"
+    },
+    {
+     "titre": "Lead Supervisor FT - Park City, UT.",
+     "verdict": "rejete"
+    },
+    {
+     "titre": "Lead Supervisor F&B II",
+     "verdict": "rejete"
+    }
+   ]
+  },
+  {
+   "expression": "SUPERVISOR I",
+   "occupation": "manager-floor",
+   "mode": "exacte",
+   "offres": 143,
+   "juges": [
+    {
+     "titre": "Lead Supervisor I",
+     "verdict": "rejete"
+    },
+    {
+     "titre": "Supervisor I - Kate Spade Vineland Outlet",
+     "verdict": "confirme"
+    },
+    {
+     "titre": "Acting Lead Supervisor I",
+     "verdict": "rejete"
+    }
+   ]
+  },
+  {
    "expression": "SALES LEAD",
    "occupation": "retail-sales-lead",
    "mode": "generalisable",
@@ -402,6 +442,26 @@
     {
      "titre": "Addetto/a alle vendite - Categorie Protette L.68/99 - Roma Via Del Corso",
      "verdict": "confirme"
+    }
+   ]
+  },
+  {
+   "expression": "COUPE",
+   "occupation": "coupe",
+   "mode": "exacte",
+   "offres": 12,
+   "juges": [
+    {
+     "titre": "Adjointe, adjoint de rayon charcuterie coupe",
+     "verdict": "rejete"
+    },
+    {
+     "titre": "Employée, employé de rayon à service crèmerie coupe",
+     "verdict": "rejete"
+    },
+    {
+     "titre": "Adjointe, adjoint de rayon crèmerie coupe",
+     "verdict": "rejete"
     }
    ]
   },
@@ -861,7 +921,7 @@
    "expression": "WHOLESALE",
    "occupation": "responsable-wholesale",
    "mode": "exacte",
-   "offres": 77,
+   "offres": 76,
    "juges": [
     {
      "titre": "Specialist GBS AR Retail & Wholesale",
@@ -1062,6 +1122,26 @@
    ]
   },
   {
+   "expression": "TEAM LEADER",
+   "occupation": "manager-floor",
+   "mode": "generalisable",
+   "offres": 115,
+   "juges": [
+    {
+     "titre": "Opticians Team Leader",
+     "verdict": "confirme"
+    },
+    {
+     "titre": "Team Leader| Punkt Handlowy| Factory Annopol| Warszawa| UoP| pełny etat/ 3/4 etatu",
+     "verdict": "confirme"
+    },
+    {
+     "titre": "Urban Outfitters Team Leader / Chef d'&eacute;quipe - Paris Rue de Rivoli, FR",
+     "verdict": "confirme"
+    }
+   ]
+  },
+  {
    "expression": "VISUAL MERCHANDISING MANAGER",
    "occupation": "responsable-vm",
    "mode": "generalisable",
@@ -1241,6 +1321,26 @@
     },
     {
      "titre": "Stage chef de produit Chaussants MDD et MN, PGC MN et Collants MDD et MN H/F",
+     "verdict": "rejete"
+    }
+   ]
+  },
+  {
+   "expression": "TEAM LEAD",
+   "occupation": "manager-floor",
+   "mode": "exacte",
+   "offres": 198,
+   "juges": [
+    {
+     "titre": "Team Lead, Sales Part Time",
+     "verdict": "rejete"
+    },
+    {
+     "titre": "Sales Assistant Full time / team lead (m/f/d) - Inno, Brussels",
+     "verdict": "rejete"
+    },
+    {
+     "titre": "Team Lead - adidas Kingston Outlet Retail Store Location (#2011)",
      "verdict": "rejete"
     }
    ]
@@ -1554,6 +1654,26 @@
    ]
   },
   {
+   "expression": "TEAM MANAGER",
+   "occupation": "manager-floor",
+   "mode": "exacte",
+   "offres": 94,
+   "juges": [
+    {
+     "titre": "NIGHT TEAM MANAGER",
+     "verdict": "rejete"
+    },
+    {
+     "titre": "Assistant Online Sales Team Manager/线上销售部门副经理",
+     "verdict": "rejete"
+    },
+    {
+     "titre": "CDD/Mission - Operations Team Manager - Hermès.com Europe (H/F)",
+     "verdict": "rejete"
+    }
+   ]
+  },
+  {
    "expression": "TRAINING MANAGER",
    "occupation": "responsable-formation",
    "mode": "exacte",
@@ -1629,6 +1749,26 @@
     },
     {
      "titre": "Butikschef till John Henric Avenyn, Göteborg",
+     "verdict": "confirme"
+    }
+   ]
+  },
+  {
+   "expression": "GENERAL MANAGER",
+   "occupation": "store-manager",
+   "mode": "exacte",
+   "offres": 16,
+   "juges": [
+    {
+     "titre": "Associate General Manager | Dallas",
+     "verdict": "rejete"
+    },
+    {
+     "titre": "Associate General Manager, Full Time - Versace Chicago Outlet - IL-1",
+     "verdict": "rejete"
+    },
+    {
+     "titre": "General Manager - Versace North Georgia Premium Outlet - GA",
      "verdict": "confirme"
     }
    ]
@@ -1953,7 +2093,7 @@
    "expression": "RETAIL ASSISTANT",
    "occupation": "sales-advisor",
    "mode": "generalisable",
-   "offres": 529,
+   "offres": 516,
    "juges": [
     {
      "titre": "Retail Assistant - Dependiente/a",
@@ -2126,6 +2266,26 @@
     {
      "titre": "Stage - Assistant.e Chef.fe de Projet Architecture Concepts (F/H) - Janvier 2027",
      "verdict": "rejete"
+    }
+   ]
+  },
+  {
+   "expression": "CHEF D EQUIPE",
+   "occupation": "manager-floor",
+   "mode": "generalisable",
+   "offres": 72,
+   "juges": [
+    {
+     "titre": "Chef d'équipe expérience client",
+     "verdict": "confirme"
+    },
+    {
+     "titre": "Chef d'équipe à temps plein - Magasin de détail adidas Montreal (#2042)",
+     "verdict": "confirme"
+    },
+    {
+     "titre": "Chef.fe d'équipe (Temps plein) - Les Promenades du Cuivre Rouyn-Noranda",
+     "verdict": "confirme"
     }
    ]
   },
@@ -2393,7 +2553,7 @@
    "expression": "MANAGER SALES",
    "occupation": "manager-commercial",
    "mode": "exacte",
-   "offres": 21,
+   "offres": 20,
    "juges": [
     {
      "titre": "Manager, Sales - Cosmetics",
@@ -2660,8 +2820,8 @@
   {
    "expression": "EMPLOYE DE RAYON",
    "occupation": "employe-de-commerce",
-   "mode": "exacte",
-   "offres": 257,
+   "mode": "generalisable",
+   "offres": 233,
    "juges": [
     {
      "titre": "Employée, employé de rayon épicerie - entretien",
@@ -2672,8 +2832,8 @@
      "verdict": "confirme"
     },
     {
-     "titre": "Employée, employé de rayon à service fruits & légumes",
-     "verdict": "rejete"
+     "titre": "Employé de rayon à service boulangerie F/H",
+     "verdict": "confirme"
     }
    ]
   },
@@ -3684,6 +3844,18 @@
    "offres": 4
   },
   {
+   "expression": "LEAD SUPERVISOR I",
+   "occupation": "manager-floor",
+   "mode": "exacte",
+   "offres": 9
+  },
+  {
+   "expression": "LEAD SUPERVISOR II",
+   "occupation": "manager-floor",
+   "mode": "exacte",
+   "offres": 5
+  },
+  {
    "expression": "ADDETTO A ALLE VENDITE CATEGORIE PROTETTE L 68 99",
    "occupation": "sales-advisor",
    "mode": "exacte",
@@ -3692,12 +3864,6 @@
   {
    "expression": "ADDETTO ALLE VENDITE",
    "occupation": "sales-advisor",
-   "mode": "exacte",
-   "offres": 8
-  },
-  {
-   "expression": "COUPE",
-   "occupation": "coupe",
    "mode": "exacte",
    "offres": 8
   },
@@ -6162,6 +6328,12 @@
    "offres": 1
   },
   {
+   "expression": "SHIFT LEADER",
+   "occupation": "manager-floor",
+   "mode": "exacte",
+   "offres": 3
+  },
+  {
    "expression": "WATCH TECHNICIAN",
    "occupation": "watchmaker",
    "mode": "exacte",
@@ -6446,12 +6618,6 @@
   {
    "expression": "TERCER ENCARGADO SUPERVISOR",
    "occupation": "manager-floor",
-   "mode": "exacte",
-   "offres": 2
-  },
-  {
-   "expression": "客 户 经 理",
-   "occupation": "responsable-de-comptes",
    "mode": "exacte",
    "offres": 2
   },

@@ -36,7 +36,7 @@ import { createHash } from 'node:crypto';
 import { existsSync, writeFileSync } from 'node:fs';
 import { compileOccupationManifest, type OccupationManifest } from '../../../../../packages/db/occupation-engine.ts';
 import { validateOccupationSuccessor } from '../../../src/occupation/release.ts';
-import { conceptsV3, DOSSIER_SORTIE, estVague, familles, libellesEtFormes, lireEtape, phraseMoteur, servie, VAGUES } from './commun.mts';
+import { conceptsV3, DOSSIER_SORTIE, estVague, familles, libellesEtFormes, lireEtape, niveauSeul, phraseMoteur, servie, VAGUES } from './commun.mts';
 
 const BASE = process.argv.includes('--base');
 const ID = 'catwalks-occupations-20260929-v3';
@@ -188,7 +188,15 @@ const metiersV3 = concepts.map((c) => {
 
 // Règles.
 const exclusions: Record<string, string[]> = e4.bilan.exclusions;
-const exclure = (occupation: string) => (exclusions[occupation]?.length ? [{ field: 'title' as const, any: exclusions[occupation] }] : []);
+// 3c : une forme décidée pour l'un des deux métiers est exclue des règles de l'autre, une forme sans métier des deux
+// (audit du 29/09/2026 : « Retail Assistant - Night Shift », décidé sans métier, restait Conseiller de vente par la règle
+// « retail assistant »). Le contrôle d'assemblage plus bas vérifie que chaque décision de 3c tient dans le moteur.
+const exclusScission = (occupation: string): string[] => (occupation !== deVente && occupation !== deRayon ? []
+  : scission.decisions.filter((d: any) => d.metier === 'aucun' || d.metier === (occupation === deVente ? 'rayon' : 'vente')).flatMap(textesDe));
+const exclure = (occupation: string) => {
+  const l = [...(exclusions[occupation] ?? []), ...exclusScission(occupation)];
+  return l.length ? [{ field: 'title' as const, any: l }] : [];
+};
 const exclusionsServies = (occupation: string) => servie.rules.filter((r: any) => r.occupation === occupation && r.all.every((c: any) => c.field === 'title'))
   .flatMap((r: any) => (r.exclude ?? []).filter((c: any) => c.field === 'title'));
 // Une forme servie portée par les règles de DEUX métiers servis reste au seul qui la nomme (« Demand Planner », ambigu en
@@ -210,7 +218,7 @@ const reglesV3 = concepts.flatMap((c) => [...expressions.get(c.cle)!].filter((f)
   const key = cleMetier.get(c.cle)!;
   const exclude = [...exclusionsServies(c.cle), ...exclure(c.cle)];
   return { id: `v3-${key}~${createHash('sha256').update(f).digest('hex').slice(0, 10)}`, occupation: key,
-    all: [{ field: 'title' as const, any: [brute.get(f)!], mode: BASE || generalisables.has(`${key}|${f}`) ? 'phrase' as const : 'exact' as const }],
+    all: [{ field: 'title' as const, any: [brute.get(f)!], mode: BASE || (generalisables.has(`${key}|${f}`) && !niveauSeul(f)) ? 'phrase' as const : 'exact' as const }],
     ...(exclude.length ? { exclude } : {}),
     evidence: 'Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.' };
 }));
@@ -255,6 +263,10 @@ const manifeste = {
   families: famillesV3, occupations: metiersV3, rules: regles,
 } as unknown as OccupationManifest;
 const compile = compileOccupationManifest(manifeste);
+const [cleVente, cleRayon] = [cleMetier.get(deVente)!, cleMetier.get(deRayon)!];
+const attendu = (m: string, rendu: string | null) => (m === 'vente' ? rendu === cleVente : m === 'rayon' ? rendu === cleRayon : rendu !== cleVente && rendu !== cleRayon);
+const ecartsScission = scission.decisions.flatMap((d: any) => textesDe(d).map((t) => ({ texte: t, decision: d.metier, rendu: compile.classify(t, null).occupationCode })))
+  .filter((x: any) => !attendu(x.decision, x.rendu));
 validateOccupationSuccessor(servie, manifeste);
 
 const fichier = BASE ? '6-manifeste-base.json' : '6-manifeste-v3.json';
@@ -265,7 +277,9 @@ if (!BASE) writeFileSync(`${DOSSIER_SORTIE}6-correspondances.json`, JSON.stringi
 const bilan = { fichier, id: ID, familles: famillesV3.length, metiers: metiersV3.length, absorbes: dans.size, regles: regles.length,
   reglesV3: reglesV3.length, reglesExactes: reglesV3.filter((r) => r.all[0].mode === 'exact').length, generalisables: generalisables.size,
   arbitragesFinaux: arbitragesFinaux.length, libellesRetires: libellesRetires.length, libellesPartages: libellesPartages.length,
-  nonIdempotentes: nonIdempotentes.length, preseances: arcs, preseancesRefuseesPourCycle: arcsRefuses, compile: compile.occupations.size, succession: 'conforme' };
+  nonIdempotentes: nonIdempotentes.length, ecartsScission: ecartsScission.length, preseances: arcs, preseancesRefuseesPourCycle: arcsRefuses, compile: compile.occupations.size, succession: 'conforme' };
 console.log(JSON.stringify(bilan, null, 1));
 for (const x of libellesPartages.slice(0, 10)) console.log(` libellé partagé : ${x}`);
+for (const x of ecartsScission.slice(0, 10)) console.log(` 3c non tenu : « ${x.texte} » décidé ${x.decision}, rendu ${x.rendu ?? 'aucun'}`);
+if (ecartsScission.length) { console.error(`ASSEMBLAGE REFUSÉ : ${ecartsScission.length} décision(s) de 3c non tenue(s) par le moteur`); process.exitCode = 1; }
 if (nonIdempotentes.length || libellesPartages.length) { console.error(`ASSEMBLAGE REFUSÉ : ${nonIdempotentes.length} expression(s) non idempotente(s), ${libellesPartages.length} libellé(s) partagé(s)`); process.exitCode = 1; }
