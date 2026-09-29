@@ -30,7 +30,7 @@ export function manifestVocabulary(manifest: OccupationManifest): VocabularyConc
 
 /**
  * Une variante désigne deux concepts dès qu'elle en désigne deux, QUEL QUE SOIT leur genre : la recherche abandonne
- * une phrase qui a plus d'une entrée (`find` de apps/api/lib/search-intent.ts), qu'il s'agisse de deux métiers ou d'un
+ * une phrase qui a plus d'une entrée (`find` de packages/db/search-intent.ts), qu'il s'agisse de deux métiers ou d'un
  * métier et d'une famille (audit du lot 2B-2 : « 销售顾问 », métier et famille, tombait en texte libre).
  */
 export function vocabularyCollisions(

@@ -11,6 +11,9 @@ export type Definition = {
   aliases?: string[];
   /** Alias de recherche qui ne valent que contre un titre (« Contrôle de gestion » : pas un secteur ni un service). */
   titleOnlyAliases?: string[];
+  /** Libellés et alias lus DANS un intitulé plus long (`titleRoles`, D-475 point 38), chacun vérifié sur ce qu'il y
+   * capte (étape de curation 6g, R-66 §2) ; tout autre alias ne vaut que pour l'intitulé exact. */
+  titleReadingAliases?: string[];
   externalRefs?: string[];
 };
 export type Pattern = { pattern: string; flags?: string };
@@ -244,6 +247,9 @@ export function compileOccupationManifest(raw: unknown) {
       throw new Error(`Missing family: ${o.key}`);
     if (families.has(o.key) || groups.has(o.key))
       throw new Error(`Ambiguous occupation route key: ${o.key}`);
+    const connus = new Set([...Object.values(o.labels), ...(o.aliases ?? [])]);
+    if (o.titleReadingAliases?.some((a) => !connus.has(a)))
+      throw new Error(`Title reading alias outside the occupation vocabulary: ${o.key}`);
   }
   const stable = (v: any): string =>
     JSON.stringify(v, (_k, x) =>

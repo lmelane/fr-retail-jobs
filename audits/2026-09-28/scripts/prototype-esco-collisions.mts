@@ -7,8 +7,8 @@
  *   node --expose-gc --import tsx audits/2026-09-28/scripts/prototype-esco-collisions.mts
  */
 import { readFileSync } from 'node:fs';
-import { searchConcepts } from '/Users/lmelane/Downloads/catwalks-job-aggregator/apps/api/lib/search-vocabulary.ts';
-import { searchWords } from '/Users/lmelane/Downloads/catwalks-job-aggregator/apps/api/lib/search-intent.ts';
+import { searchConcepts } from '/Users/lmelane/Downloads/catwalks-job-aggregator/packages/db/search-vocabulary.ts';
+import { searchWords } from '/Users/lmelane/Downloads/catwalks-job-aggregator/packages/db/search-intent.ts';
 const manifest = JSON.parse(readFileSync('/Users/lmelane/Downloads/catwalks-job-aggregator/packages/db/data/occupations-v1.json', 'utf8'));
 const esco = JSON.parse(readFileSync('/Users/lmelane/Documents/beauchoix-projects/catwalks-build/catwalks-backend/scripts/preuve-pivot-metiers-2026-09-28/sortie/esco-metiers.json', 'utf8'));
 const SITE = new Set(['fr','en','de','it','nl','es','ar','cs','da','el','hu','pl','pt','ro','sv','no']);

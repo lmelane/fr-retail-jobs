@@ -9,8 +9,8 @@
 // Prototype LECTURE SEULE : mesure ce que coûte au résolveur de recherche un manifeste étendu aux métiers ESCO.
 // Aucune base, aucun réseau. Lance : node --expose-gc node_modules/.bin/tsx <ce fichier> [split]
 import { readFileSync } from 'node:fs';
-import { searchConcepts } from '/Users/lmelane/Downloads/catwalks-job-aggregator/apps/api/lib/search-vocabulary.ts';
-import { createIntentResolver, searchWords } from '/Users/lmelane/Downloads/catwalks-job-aggregator/apps/api/lib/search-intent.ts';
+import { searchConcepts } from '/Users/lmelane/Downloads/catwalks-job-aggregator/packages/db/search-vocabulary.ts';
+import { createIntentResolver, searchWords } from '/Users/lmelane/Downloads/catwalks-job-aggregator/packages/db/search-intent.ts';
 
 const manifest = JSON.parse(readFileSync('/Users/lmelane/Downloads/catwalks-job-aggregator/packages/db/data/occupations-v1.json', 'utf8'));
 const esco = JSON.parse(readFileSync('/Users/lmelane/Documents/beauchoix-projects/catwalks-build/catwalks-backend/scripts/preuve-pivot-metiers-2026-09-28/sortie/esco-metiers.json', 'utf8'));

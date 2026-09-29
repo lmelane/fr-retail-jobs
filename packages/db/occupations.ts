@@ -10,7 +10,7 @@ export {
   occupationLabel,
   persistedOccupationDecision,
 } from "./occupation-engine.ts";
-export { occupationTitleRoles } from "./occupation-title-roles.ts";
+export { occupationTitleReadings, occupationTitleRoles } from "./occupation-title-roles.ts";
 export { occupationLevelOnly } from "./occupation-levels.ts";
 export {
   manifestVocabulary,

@@ -18,7 +18,7 @@
  *    l'IA l'a pris pour libellé ; entre métiers nouveaux, la forme reste à celui qui la nomme, le moins peuplé des
  *    deux nommeurs est renommé ; revendiquée sans être nommée ni servie, elle est retirée de tous (ambiguë). L'étape 5b
  *    relit ce fichier (métiers absorbés écartés, renommages).
- * Entrées : étapes 1 à 5b, la version servie, le vocabulaire de recherche de l'API (`apps/api/lib/search-vocabulary.ts`,
+ * Entrées : étapes 1 à 5b, la version servie, le vocabulaire de recherche de l'API (`packages/db/search-vocabulary.ts`,
  * versé dans le manifeste, plan §3.1). Sortie : `curation-v3/5c-garde.json`, que lisent 5b (renommages) et 6.
  *
  *   node --env-file=<fichier .env portant GEMINI_API_KEY> --import tsx \
@@ -36,7 +36,7 @@ const e5 = lireEtape('5-libelles.json'), e5b = lireEtape('5b-libelles-correction
 const servis = new Set<string>([...servie.occupations.map((o: any) => o.key), 'optical-assistant']);
 
 // Le vocabulaire de recherche de l'API : ses alias de métiers entrent dans le manifeste (une seule source de vocabulaire).
-const SOURCE_VOCABULAIRE = fileURLToPath(new URL('../../../../api/lib/search-vocabulary.ts', import.meta.url));
+const SOURCE_VOCABULAIRE = fileURLToPath(new URL('../../../../../packages/db/search-vocabulary.ts', import.meta.url));
 const bloc = readFileSync(SOURCE_VOCABULAIRE, 'utf8').match(/const ROLE_ALIASES[^{]*\{([\s\S]*?)\n\};/)?.[1] ?? '';
 export const aliasRecherche = Object.fromEntries([...bloc.matchAll(/^\s*'?([a-z0-9-]+)'?:\s*\[([^\]]*)\]/gm)]
   .map((m) => [m[1], [...m[2].matchAll(/'([^']+)'/g)].map((x) => x[1])]));

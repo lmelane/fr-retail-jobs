@@ -104,7 +104,22 @@ export function createIntentResolver(concepts: readonly SearchConcept[], compani
     return { entry: matches[0], length: matches[0].words.length, corrected: true };
   }
 
+  /** Exact, longest alias spans only, with the words each one covers. */
+  function titleMatches(title: string): { kind: SearchClause['kind']; keys: string[]; phrase: string; whole: boolean }[] {
+    const words = searchWords(title);
+    const matches: { kind: SearchClause['kind']; keys: string[]; phrase: string; whole: boolean }[] = [];
+    for (let i = 0; i < words.length;) {
+      const found = find(words, i, false);
+      if (found) {
+        matches.push({ kind: found.entry.kind, keys: found.entry.keys, phrase: words.slice(i, i + found.length).join(' '), whole: found.length === words.length });
+        i += found.length;
+      } else i++;
+    }
+    return matches;
+  }
+
   return {
+    titleMatches,
     resolve(original: string): SearchIntent {
       // Reject excessive input explicitly; never drop trailing intent silently.
       validateSearchQuery(original);
@@ -137,15 +152,10 @@ export function createIntentResolver(concepts: readonly SearchConcept[], compani
     /** Exact, longest alias spans only. Typo correction belongs to queries, not
      * inferred job facts. A deputy title cannot acquire the nested manager role. */
     titleConcepts(title: string): { roles: string[]; families: string[] } {
-      const words = searchWords(title);
       const roles = new Set<string>(), families = new Set<string>();
-      for (let i = 0; i < words.length;) {
-        const found = find(words, i, false);
-        if (found) {
-          if (found.entry.kind === 'role') found.entry.keys.forEach(k => roles.add(k));
-          if (found.entry.kind === 'family') found.entry.keys.forEach(k => families.add(k));
-          i += found.length;
-        } else i++;
+      for (const m of titleMatches(title)) {
+        if (m.kind === 'role') m.keys.forEach(k => roles.add(k));
+        if (m.kind === 'family') m.keys.forEach(k => families.add(k));
       }
       return { roles: [...roles].sort(), families: [...families].sort() };
     },

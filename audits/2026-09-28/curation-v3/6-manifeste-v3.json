@@ -153236,7 +153236,7 @@
  ],
  "review": {
   "author": "Passe de curation v3 (IA seule, D-475 §30)",
-  "at": "2026-09-29T14:26:06.492Z",
+  "at": "2026-09-29T15:52:18.092Z",
   "basis": "Première passe de curation : 253 métiers (servis, backend, offres), 33 familles, 25 langues ; preuves : audits/2026-09-28/curation-v3."
  },
  "families": [
@@ -154769,6 +154769,10 @@
     "Prodavač",
     "Prodavačka",
     "Bolti eladó"
+   ],
+   "titleReadingAliases": [
+    "Addetto alle vendite",
+    "Prodejní poradce"
    ]
   },
   {
@@ -155237,6 +155241,13 @@
     "Manager magazin",
     "مديرة متجر",
     "Διευθύντρια καταστήματος"
+   ],
+   "titleReadingAliases": [
+    "Butikksjef",
+    "Butikschef",
+    "Gerente de loja",
+    "Mağaza Müdürü",
+    "ストアマネージャー"
    ]
   },
   {
@@ -155300,6 +155311,9 @@
     "Deputy Store Director",
     "Assistant Boutique Director",
     "Deputy Boutique Director"
+   ],
+   "titleReadingAliases": [
+    "Assistant Store Director"
    ]
   },
   {
@@ -155361,6 +155375,9 @@
     "Regionalleiterin Retail",
     "Directora regional",
     "Direttrice Regionale Retail"
+   ],
+   "titleReadingAliases": [
+    "Area Manager"
    ]
   },
   {
@@ -155540,6 +155557,9 @@
     "Operadora de almoxarifado",
     "Pracovnice skladu",
     "Préparateur de commandes et agent logistique"
+   ],
+   "titleReadingAliases": [
+    "Operador de armazém"
    ]
   },
   {
@@ -155742,6 +155762,9 @@
     "Watch Repair Technician",
     "Technicien horloger",
     "Technicienne horlogère"
+   ],
+   "titleReadingAliases": [
+    "Watch Technician"
    ]
   },
   {
@@ -156944,6 +156967,9 @@
     "مديرة تسويق",
     "Διευθύντρια μάρκετινγκ",
     "Marketingová manažerka"
+   ],
+   "titleReadingAliases": [
+    "Manager marketing"
    ]
   },
   {
@@ -157769,6 +157795,9 @@
     "Optometristă",
     "Optometric Technician",
     "Optometry Technician"
+   ],
+   "titleReadingAliases": [
+    "Optometric Technician"
    ]
   },
   {
@@ -157833,6 +157862,10 @@
     "Contact Lens Optician",
     "Mobile Contact Lens Optician",
     "Optical Technician / Optician"
+   ],
+   "titleReadingAliases": [
+    "Optician",
+    "Óptico"
    ]
   },
   {
@@ -158026,6 +158059,9 @@
     "Právní asistentka",
     "Asistentă juridică",
     "Assistant juridique / Paralegal"
+   ],
+   "titleReadingAliases": [
+    "Assistant juridique"
    ]
   },
   {
@@ -158096,6 +158132,9 @@
     "Trainee Dispenser",
     "Mobile Dispenser",
     "Dispenser - Bank"
+   ],
+   "titleReadingAliases": [
+    "Dispenser"
    ]
   },
   {
@@ -158480,6 +158519,9 @@
     "Optical Sales Associate",
     "Optical Team Member",
     "Assistante optique"
+   ],
+   "titleReadingAliases": [
+    "Optical Sales Associate"
    ]
   },
   {
@@ -159257,6 +159299,9 @@
     "Administrativní asistentka",
     "Asistentă administrativă"
    ],
+   "titleReadingAliases": [
+    "Assistant administratif"
+   ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/044d78cc-f62f-4532-83a5-8e04f2889652"
    ]
@@ -159443,6 +159488,9 @@
     "Obchodní asistentka",
     "Asistentă comercială"
    ],
+   "titleReadingAliases": [
+    "Assistant commercial"
+   ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/5c1eba1e-7820-4287-9746-4c5906320100"
    ]
@@ -159570,6 +159618,10 @@
     "مساعدة مصممة",
     "Asistentka designérky",
     "Asistentă designer"
+   ],
+   "titleReadingAliases": [
+    "Design Assistant",
+    "Design assistant"
    ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/77bfd6e7-5598-4818-84cb-31e2651eb046"
@@ -160075,6 +160127,9 @@
     "Asistentka digitálního marketingu",
     "Asistentă marketing digital"
    ],
+   "titleReadingAliases": [
+    "Assistant marketing digital"
+   ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/47e81c7f-2d04-4a60-a8ff-9913c36d8344"
    ]
@@ -160579,6 +160634,9 @@
     "Asistentă showroom",
     "مساعدة صالة عرض"
    ],
+   "titleReadingAliases": [
+    "Assistant showroom"
+   ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/5c1eba1e-7820-4287-9746-4c5906320100"
    ]
@@ -160695,6 +160753,9 @@
     "Auditorin",
     "Auditora",
     "Auditorka"
+   ],
+   "titleReadingAliases": [
+    "Auditor"
    ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/1ad59946-d13e-441e-9b36-56e1df055e21"
@@ -161090,6 +161151,10 @@
     "Gerenta de categoria",
     "مديرة فئة المنتجات"
    ],
+   "titleReadingAliases": [
+    "Category Manager",
+    "Category manager"
+   ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/dab60fc6-c16e-4de7-b969-b323784f5a49"
    ]
@@ -161278,6 +161343,9 @@
     "مسؤولة علاقات عامة",
     "Υπεύθυνη γραφείου τύπου",
     "Specialistka pro vztahy s médii"
+   ],
+   "titleReadingAliases": [
+    "Attaché de presse"
    ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/c0489e22-6a1b-4e52-974a-eb71bbb42134"
@@ -161625,6 +161693,9 @@
     "Cheffe de projet digital",
     "Chef de projet digitale"
    ],
+   "titleReadingAliases": [
+    "Chef de projet digital"
+   ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/dc97adbe-f807-4ad8-8f3c-c24b3416cdef"
    ]
@@ -161674,6 +161745,9 @@
     "Rendezvényszervező projektmenedzser",
     "Cheffe de projet événementiel"
    ],
+   "titleReadingAliases": [
+    "Chef de projet événementiel"
+   ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/1b38a27d-ef98-4d9f-b1b2-8c109bf47e79"
    ]
@@ -161721,6 +161795,9 @@
     "Quản lý tiếp thị influencer",
     "Influencer marketing menedzser",
     "Cheffe de projet influence"
+   ],
+   "titleReadingAliases": [
+    "Influencer Marketing Manager"
    ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/6cc19251-763b-4de1-b4f7-526c9ff732d2"
@@ -161770,6 +161847,9 @@
     "Quản lý dự án chuỗi cung ứng",
     "Ellátási lánc projektmenedzser",
     "Cheffe de projet Supply Chain"
+   ],
+   "titleReadingAliases": [
+    "Chef de projet Supply Chain"
    ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/c4071145-a774-4cf4-aefa-ae18a385cca4"
@@ -161879,6 +161959,9 @@
     "Trade marketing menedzser",
     "Cheffe de projet Trade Marketing"
    ],
+   "titleReadingAliases": [
+    "Trade Marketing Manager"
+   ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/d954fd71-0e2f-4cf9-85f0-c040fa6cbda9"
    ]
@@ -161923,6 +162006,10 @@
     "Cheffe de rang",
     "Jefe de rango",
     "Jefa de rango"
+   ],
+   "titleReadingAliases": [
+    "Chef de Rang",
+    "Chef de rang"
    ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/d5db9d5c-2ebf-4a54-a79a-1b7e7ff70471"
@@ -161977,6 +162064,10 @@
     "Cheffe de produit",
     "Produktmanagerin",
     "Produktová manažerka"
+   ],
+   "titleReadingAliases": [
+    "Chef de produit",
+    "Product Manager"
    ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/9f508305-80ce-4111-8722-f2c9b4a44890"
@@ -162086,6 +162177,9 @@
     "Koleksiyon Merchandiser",
     "นักบริหารจัดการสินค้า",
     "Merchandiser Koleksi"
+   ],
+   "titleReadingAliases": [
+    "Collection Merchandiser"
    ]
   },
   {
@@ -162148,6 +162242,9 @@
     "Πωλήτρια",
     "Obchodní zástupkyně",
     "Verkoopvertegenwoordigster"
+   ],
+   "titleReadingAliases": [
+    "Πωλητής"
    ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/c418ed9a-132f-48cd-ae5c-dd375070ee0e"
@@ -162380,6 +162477,9 @@
     "Konsierj",
     "كونسيرج"
    ],
+   "titleReadingAliases": [
+    "Concierge"
+   ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/1ae8d28e-407c-48ab-88ff-4cb25bfcdea6"
    ]
@@ -162572,6 +162672,9 @@
     "Consultora de imagem",
     "Stylistka",
     "Consilieră de imagine"
+   ],
+   "titleReadingAliases": [
+    "Personal Stylist"
    ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/d5ce0c23-6f8a-459f-9bf9-a7cb9768740a"
@@ -163025,6 +163128,9 @@
     "Koordynatorka ds. retailu",
     "منسقة مبيعات التجزئة"
    ],
+   "titleReadingAliases": [
+    "Coordinateur retail"
+   ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/c94f3565-d987-431f-a46b-6f4e018e0bd7"
    ]
@@ -163289,6 +163395,9 @@
     "Farmaceutická reprezentantka",
     "Reprezentantă farmaceutică"
    ],
+   "titleReadingAliases": [
+    "Délégué pharmaceutique"
+   ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/ab762f91-d737-485f-a85c-67cab92dee01"
    ]
@@ -163484,6 +163593,9 @@
     "مصممة أحذية",
     "Σχεδιάστρια υποδημάτων",
     "Návrhářka obuvi"
+   ],
+   "titleReadingAliases": [
+    "Footwear Designer"
    ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/06f89f2c-c6e9-40c5-a4a5-0e34d5fbc184"
@@ -164323,6 +164435,10 @@
     "Καλλιτεχνική διευθύντρια",
     "Umělecká ředitelka"
    ],
+   "titleReadingAliases": [
+    "Art Director",
+    "Directeur artistique"
+   ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/cb93fd23-1f51-4495-867a-936c1967066b"
    ]
@@ -164707,6 +164823,9 @@
     "مخطط تجارة إلكترونية",
     "مخططة تجارة إلكترونية"
    ],
+   "titleReadingAliases": [
+    "E-Merchandiser"
+   ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/356227b9-2263-4dbd-81e9-7dfc6d3f3af7"
    ]
@@ -164830,6 +164949,10 @@
     "Εκπαιδεύτρια",
     "Školitelka",
     "Formatoare"
+   ],
+   "titleReadingAliases": [
+    "Formateur",
+    "Trainer"
    ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/0ba06640-e0ac-4911-9e43-289a8e41651e"
@@ -165082,6 +165205,11 @@
     "مسؤولة موارد بشرية",
     "Υπεύθυνη Ανθρώπινου Δυναμικού",
     "HR specialistka"
+   ],
+   "titleReadingAliases": [
+    "HR Assistant",
+    "HR specialist",
+    "HR-specialist"
    ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/d8ed1703-9c03-4ea0-83cc-b6169bc54ffd"
@@ -165344,6 +165472,9 @@
     "Engenheira de Melhoria Contínua",
     "مهندسة تحسين مستمر"
    ],
+   "titleReadingAliases": [
+    "Ingénieur amélioration continue"
+   ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/b5eaf231-77ad-4a86-8e54-15cc4398aad2"
    ]
@@ -165407,6 +165538,9 @@
     "Engenheira de Qualidade",
     "مهندسة جودة",
     "Inženýrka kvality"
+   ],
+   "titleReadingAliases": [
+    "Quality Engineer"
    ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/30c0943c-caa1-411d-b273-26f475971273"
@@ -165724,6 +165858,9 @@
     "Advogada de propriedade intelectual",
     "محامية ملكية فكرية",
     "Právnička duševního vlastnictví"
+   ],
+   "titleReadingAliases": [
+    "Juriste propriété intellectuelle"
    ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/5a8835bf-65c7-48e3-ab2f-7ad98b3fdb59"
@@ -166230,6 +166367,11 @@
     "Responsable de planta",
     "Gerente de salão"
    ],
+   "titleReadingAliases": [
+    "Abteilungsleiter",
+    "Floor Manager",
+    "Floor manager"
+   ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/94e0bedd-e56e-42be-a5a4-b74a260f437c"
    ]
@@ -166573,6 +166715,9 @@
     "متسوق شخصي",
     "متسوقة شخصية"
    ],
+   "titleReadingAliases": [
+    "Personal Shopper"
+   ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/f8da6546-0c8a-4bd0-a952-6f3c253c9aba"
    ]
@@ -166629,6 +166774,9 @@
     "Fotógrafa",
     "مصورة",
     "Fotografka"
+   ],
+   "titleReadingAliases": [
+    "Photographer"
    ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/66542dd6-05a6-4d9e-97ff-3f4858c31ff9"
@@ -166975,6 +167123,9 @@
     "產品負責人",
     "เจ้าของผลิตภัณฑ์"
    ],
+   "titleReadingAliases": [
+    "Product Owner"
+   ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/a79170ad-0b7b-4697-864f-1748359aa10a"
    ]
@@ -167102,6 +167253,9 @@
     "صانعة نماذج",
     "Modelářka",
     "Prototipistă"
+   ],
+   "titleReadingAliases": [
+    "Prototypiste"
    ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/3cbbdb83-7c36-4ae5-8c45-6c284186f477"
@@ -167688,6 +167842,9 @@
     "Oblastní obchodní manažerka",
     "Responsabilă comercială zonală"
    ],
+   "titleReadingAliases": [
+    "Area Sales Manager"
+   ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/3a4c4e33-ee34-4abe-ba5c-26f9037d292f"
    ]
@@ -167989,6 +168146,9 @@
     "Responsabile formazione",
     "مديرة التدريب"
    ],
+   "titleReadingAliases": [
+    "Training Manager"
+   ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/a14e96a7-6c4d-4d69-8c6f-7ccadf77bac5"
    ]
@@ -168279,6 +168439,10 @@
     "Provozní manažerka",
     "Operatív vezető",
     "Manager operațiuni"
+   ],
+   "titleReadingAliases": [
+    "Operations Manager",
+    "Responsable des opérations"
    ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/c6bd511a-d966-4df9-a48e-4f800354f268"
@@ -168627,6 +168791,9 @@
     "Responsabil servicii generale",
     "Facilities Managerin",
     "Υπεύθυνη Γενικών Υπηρεσιών"
+   ],
+   "titleReadingAliases": [
+    "Facilities Manager"
    ]
   },
   {
@@ -169029,6 +169196,9 @@
     "Engastadora",
     "Cravadora",
     "Fasérka"
+   ],
+   "titleReadingAliases": [
+    "Sertisseur"
    ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/6729aa5a-285f-4baf-a466-c2ccd2f2d96f"
@@ -169773,6 +169943,9 @@
     "Primera vendedora",
     "Liderka zespołu sprzedaży"
    ],
+   "titleReadingAliases": [
+    "Sales Lead"
+   ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/ff3a164d-4045-4511-a472-49093dabf9fc"
    ]
@@ -169833,6 +170006,9 @@
     "Schlüsselträgerin",
     "Encargada de llaves",
     "Υπεύθυνη ανοιγματοκλεισίματος"
+   ],
+   "titleReadingAliases": [
+    "Keyholder"
    ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/bdfb48e0-79dc-4b63-8470-db2e03b37326"

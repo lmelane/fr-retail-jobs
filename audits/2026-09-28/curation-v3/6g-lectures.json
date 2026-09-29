@@ -1,0 +1,3813 @@
+{
+ "calculeLe": "2026-09-29T15:50:47.521Z",
+ "manifeste": "catwalks-occupations-20260929-v3",
+ "empreinteManifeste": "80f10cb8138ce9a4fd758354bf1239f011388203f9d908477966fe2f0a157e2d",
+ "juges": [
+  "gemini-3.6-flash",
+  "gemini-3-flash-preview"
+ ],
+ "bilan": {
+  "expressionsLues": 282,
+  "offresCaptees": 2527,
+  "jugees": 86,
+  "lues": 65,
+  "exactes": 21,
+  "indeterminees": 0,
+  "sousSeuil": 196,
+  "offresLues": 1689,
+  "offresRameneesALExact": 838,
+  "seuils": {
+   "SEUIL_OFFRES": 5,
+   "ECHANTILLON": 4,
+   "ECHANTILLON_MOT_SEUL": 6
+  }
+ },
+ "decisions": [
+  {
+   "phrase": "gouvernant",
+   "occupation": "gouvernant",
+   "mode": "exacte",
+   "offres": 7,
+   "juges": [
+    {
+     "titre": "1er Gouvernant (H/F)",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Adjoint Gouvernant Général (H/F)",
+     "j1": "F",
+     "j2": "C"
+    },
+    {
+     "titre": "Gouvernant(e) Junior (H/F)",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Stage Gouvernant H/F",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Stagiaire Gouvernant (H/F)",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Réceptionniste-Gouvernant(e) (H/F)",
+     "j1": "P",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "product owner",
+   "occupation": "product-owner",
+   "mode": "lue",
+   "offres": 30,
+   "juges": [
+    {
+     "titre": "CDI - Product Owner Applicatif H/F/X",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Assistant Product Owner Junior IT CRM F/H - Stage",
+     "j1": "P",
+     "j2": "C"
+    },
+    {
+     "titre": "HRIS Product Owner (Compensation, Benefits & Pay Transparency) F/M",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "CDI - Product Owner Privileged Access Management (H/F)",
+     "j1": "C",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "assistant styliste",
+   "occupation": "assistant-styliste",
+   "mode": "exacte",
+   "offres": 5,
+   "juges": [
+    {
+     "titre": "2026-924 - Stage - Assistant.e Styliste Denim, Cuir et Jersey H/F",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Stage 6 mois - Assistant Styliste Personal Shopper (F/H) - Le Bon Marché",
+     "j1": "F",
+     "j2": "C"
+    },
+    {
+     "titre": "STAGE - Assistant Styliste Prêt à Porter Homme Outerwear H/F",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Stage - Assistant(e) Styliste Accessoires (H/F)",
+     "j1": "C",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "controller",
+   "occupation": "financial-controller",
+   "mode": "exacte",
+   "offres": 54,
+   "juges": [
+    {
+     "titre": "Business Unit Controller / Plant controller",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Apprentice - Junior Cost Controller - Store Planning Europe (F/H)",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Senior Group Controller & Transformation Value Manager (f/m/x)",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Senior FP&A Controller – Finance Digitalization (m/f/d)",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "2026-942 - Internship - Industrial Controller H/F",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Finished Product Quality Controller – Italy (M/F)",
+     "j1": "F",
+     "j2": "F"
+    }
+   ]
+  },
+  {
+   "phrase": "abteilungsleiter",
+   "occupation": "manager-floor",
+   "mode": "lue",
+   "offres": 20,
+   "juges": [
+    {
+     "titre": "Abteilungsleiter - Elbe Einkaufszentrum Hamburg-Osdorf (m/w/d)",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Nike Abteilungsleiter/in (Coach) - 37.5 H - Radolfzell am Bodensee (m/w/d)",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Nike Abteilungsleiter (Coach) (w/m/d) – 37,5h/week – Neumünster",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Nike Abteilungsleiter (Coach) (w/m/d) – 37.5h – NFS Metzingen",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Stellvertretender Abteilungsleiter (Lead) (w/m/d) - 37.5H - Converse Zweibrücken",
+     "j1": "P",
+     "j2": "C"
+    },
+    {
+     "titre": "Urban Outfitters Department Manager / Abteilungsleiter - Berlin Mitte, Weinmeisterstrasse, DE",
+     "j1": "P",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "merchandising assistant",
+   "occupation": "assistant-merchandiser",
+   "mode": "exacte",
+   "offres": 16,
+   "juges": [
+    {
+     "titre": "Visual Merchandising Assistant",
+     "j1": "P",
+     "j2": "F"
+    },
+    {
+     "titre": "STAGE Boutiques Channel - Retail Merchandising Assistant F/H",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Digital Merchandising Assistant Manager - Contractor",
+     "j1": "F",
+     "j2": "F"
+    },
+    {
+     "titre": "STAGE Collection Merchandising Assistant F/H",
+     "j1": "C",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "addetto alle vendite",
+   "occupation": "sales-advisor",
+   "mode": "lue",
+   "offres": 5,
+   "juges": [
+    {
+     "titre": "Addetto alle vendite - Categorie Protette L.68/99",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Nike Addetto alle Vendite (Athlete) - Nike Store MOLFETTA - Contratto a Chiamata",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Nike Addetto alle Vendite (Athlete) - Nike Store TORINO - Part Time 20H",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Addetto alle Vendite 20 Ore - Contratto permanente",
+     "j1": "C",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "agent de securite",
+   "occupation": "agent-de-securite",
+   "mode": "exacte",
+   "offres": 5,
+   "juges": [
+    {
+     "titre": "CDI - Agent de Sécurité jour/nuit Paris (H/F)",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Agent de sécurité et de prévention des pertes (H/F) - CDI Temps plein - UNIQLO Cannes",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "CDI - Agent de sécurité chargé de télésurveillance H/F",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "CDI - AGENT DE SÉCURITÉ INCENDIE SSIAP 2 (F/H)",
+     "j1": "P",
+     "j2": "F"
+    }
+   ]
+  },
+  {
+   "phrase": "category manager",
+   "occupation": "category-manager",
+   "mode": "lue",
+   "offres": 46,
+   "juges": [
+    {
+     "titre": "Alternance - Assistant(e) Category Manager MakeUp Europe (F/H/X)",
+     "j1": "P",
+     "j2": "P"
+    },
+    {
+     "titre": "Alternance 12 mois - Sourcing Category Manager - Media & CMI - Janvier 2027",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "CDI - Category Manager Packaging - H/F/X - GROUPE ROCHER",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Stage - Assistant(e) Category Manager Europe - Sephora Collection (F/H/X)",
+     "j1": "P",
+     "j2": "P"
+    }
+   ]
+  },
+  {
+   "phrase": "animateur",
+   "occupation": "animateur-de-loisirs",
+   "mode": "exacte",
+   "offres": 21,
+   "juges": [
+    {
+     "titre": "Alternance - Animateur H/F/X - Strasbourg",
+     "j1": "F",
+     "j2": "C"
+    },
+    {
+     "titre": "Animateur Commercial Expert Beauté - L'Oréal Luxe - Cannes - CDD 35H - H/F",
+     "j1": "F",
+     "j2": "F"
+    },
+    {
+     "titre": "Animateur Qualité (H/F) - CDD - Les Ateliers de Châteauneuf-sur-Isère",
+     "j1": "F",
+     "j2": "F"
+    },
+    {
+     "titre": "Animateur Réseau de Points de Vente Presse en apprentissage F/H",
+     "j1": "F",
+     "j2": "F"
+    },
+    {
+     "titre": "Animateur·rice de rayon (Corner) - 35h CDI h/f/x",
+     "j1": "F",
+     "j2": "F"
+    },
+    {
+     "titre": "Animateur de rayons textile loisirs et multisport H/F",
+     "j1": "F",
+     "j2": "F"
+    }
+   ]
+  },
+  {
+   "phrase": "assistant commercial",
+   "occupation": "assistant-commercial",
+   "mode": "lue",
+   "offres": 18,
+   "juges": [
+    {
+     "titre": "Stage - Assistant Commercial France H/F",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Stage - Assistant commercial MEA - H/F/X - YVES ROCHER",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Service & Process Assistant - Commercial Operations (m/f) I Fulltime (40h)",
+     "j1": "P",
+     "j2": "C"
+    },
+    {
+     "titre": "Assistant Commercial IT/UK/CH Wholesale F/H - Stage",
+     "j1": "C",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "commercial",
+   "occupation": "commercial",
+   "mode": "exacte",
+   "offres": 139,
+   "juges": [
+    {
+     "titre": "ASSISTANT JURIDIQUE - PROPRIÉTÉ INTELLECTUELLE & DROIT COMMERCIAL/CONTRATS (H/F)",
+     "j1": "F",
+     "j2": "F"
+    },
+    {
+     "titre": "Alternance – Assistant(e) Grands Comptes On-Trade (F/H/X) - Analyse des ventes – Category Management – Développement commercial",
+     "j1": "P",
+     "j2": "P"
+    },
+    {
+     "titre": "CDD - Conseiller de Vente (H/F/X) 35H - Centre Commercial des Terrasses du Port",
+     "j1": "F",
+     "j2": "F"
+    },
+    {
+     "titre": "Stage - Juriste IT/Data et Droit commercial (F/H) - 6 mois - Janvier 2027",
+     "j1": "F",
+     "j2": "F"
+    },
+    {
+     "titre": "Animateur Commercial Expert Beauté - L'Oréal Luxe - Cannes - CDD 35H - H/F",
+     "j1": "P",
+     "j2": "C"
+    },
+    {
+     "titre": "Commercial(e) Pharmacie Ile de France Grand Est (02, 10, 77, 89, 91, 93, 94, 95)",
+     "j1": "C",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "office manager",
+   "occupation": "office-manager",
+   "mode": "exacte",
+   "offres": 17,
+   "juges": [
+    {
+     "titre": "Assistant Office Manager",
+     "j1": "P",
+     "j2": "P"
+    },
+    {
+     "titre": "Stage - Global IT Client Programme Office Manager - Corporate - Janvier 2027 - H/F/X",
+     "j1": "F",
+     "j2": "F"
+    },
+    {
+     "titre": "Office Manager & Personal Assistant - Central London (9-12 Month FTC - 37.5 hours)",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Stage – Office Manager Développement Souliers - Mode - Janvier (H/F/X)",
+     "j1": "C",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "product manager",
+   "occupation": "chef-produit",
+   "mode": "lue",
+   "offres": 119,
+   "juges": [
+    {
+     "titre": "Assistant Product Manager",
+     "j1": "P",
+     "j2": "P"
+    },
+    {
+     "titre": "CDI - Data Product Manager Analytics & IA - Supply Chain (H/F)",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Internship - Export Marketing Product Manager Assistant - Shiseido Brand - January 2027",
+     "j1": "P",
+     "j2": "P"
+    },
+    {
+     "titre": "Internship - Export Marketing Product Manager Assistant Designer Fragance Brands - January 2027",
+     "j1": "P",
+     "j2": "P"
+    }
+   ]
+  },
+  {
+   "phrase": "art director",
+   "occupation": "direction-artistique",
+   "mode": "lue",
+   "offres": 21,
+   "juges": [
+    {
+     "titre": "Associate Art Director",
+     "j1": "P",
+     "j2": "C"
+    },
+    {
+     "titre": "Graphic Designer / Art Director (m/w/d)",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Art Director (White House Black Market)",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Art Director Creative Services - TEMP",
+     "j1": "C",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "operations manager",
+   "occupation": "responsable-operationnel",
+   "mode": "lue",
+   "offres": 108,
+   "juges": [
+    {
+     "titre": "Talent and Business Operations Manager, Stores",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Vivier de candidats : Store Operations Manager - F/H - CDI - St Tropez/Courchevel",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Operations Manager In Training - New Graduate & Early Career - Cedar Rapids Fulfillment Center",
+     "j1": "P",
+     "j2": "P"
+    },
+    {
+     "titre": "Operations Manager In Training - New Graduate & Early Career - East Coast Fulfillment Center",
+     "j1": "P",
+     "j2": "P"
+    }
+   ]
+  },
+  {
+   "phrase": "trainer",
+   "occupation": "formateur",
+   "mode": "lue",
+   "offres": 55,
+   "juges": [
+    {
+     "titre": "CDD - International Trainer (H/F) | BYREDO",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Trainer Byredo & Dries Van Noten - France & Benelux - CDI - H/F",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Field Sales Trainer (m/f/d) - BENELUX Region",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "In Store Trainer - Place Vendome Doha (boutique based)",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Learning & Development Trainer (Property Interventions & Store Transformation)",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Field Coach Trainer (m/f/d) - Munich",
+     "j1": "C",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "keyholder",
+   "occupation": "keyholder",
+   "mode": "lue",
+   "offres": 344,
+   "juges": [
+    {
+     "titre": "Keyholder (Part time) - Reitmans",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Keyholder, Full-Time - Versace North Georgia Premium Outlet - GA",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Outlet Keyholder - Selling, Full Time - Outlets at Orange",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Swatch Part Time Keyholder - University Town Center (San Diego)",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Temp to Perm - Customer Experience Lead (Keyholder) - Manhasset",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Verkoopmedewerker & keyholder - Capelle a/d IJssel (26 uur)",
+     "j1": "C",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "model",
+   "occupation": "mannequin",
+   "mode": "exacte",
+   "offres": 25,
+   "juges": [
+    {
+     "titre": "Anthropologie On-Model Studio Intern",
+     "j1": "F",
+     "j2": "C"
+    },
+    {
+     "titre": "Senior 2 Technical Program Manager, AI Native Operating Model - HYBRID (Seattle, WA)",
+     "j1": "F",
+     "j2": "F"
+    },
+    {
+     "titre": "Assistant Ingénieur logistique Core Model F/H - Stage",
+     "j1": "F",
+     "j2": "F"
+    },
+    {
+     "titre": "Flex Female Model - Photo Studio - Downtown Seattle",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Flex Male Model - Photo Studio - Downtown Seattle",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Flex Female Model - Cedar Rapids Photo Studio",
+     "j1": "C",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "personal stylist",
+   "occupation": "conseiller-en-image",
+   "mode": "lue",
+   "offres": 48,
+   "juges": [
+    {
+     "titre": "Anthropologie Personal Stylist - Part-Time",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "SSENSE Montréal - Styliste personnel·le adjoint·e // SSENSE Montreal - Associate Personal Stylist",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Personal Stylist - Full Time - Flagship - New York, NY",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Part-Time Personal Stylist Support - The Village at Corte Madera",
+     "j1": "P",
+     "j2": "P"
+    }
+   ]
+  },
+  {
+   "phrase": "photographer",
+   "occupation": "photographe",
+   "mode": "lue",
+   "offres": 7,
+   "juges": [
+    {
+     "titre": "Anthropologie Photographer (Home Photo Studio)",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Photographe - Sur appel // Photographer - On-call",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Freelance Photographer - Republic of Ireland",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Art Director - Photographer [CDI]",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Freelance Photographer - Fashion E-comm",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Photographer & Retoucher",
+     "j1": "C",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "directeur artistique",
+   "occupation": "direction-artistique",
+   "mode": "lue",
+   "offres": 6,
+   "juges": [
+    {
+     "titre": "Apprenti.e Directeur Artistique / Crépuscule",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Stage / Alternance - Assistant(e) Directeur(trice) Artistique / Graphiste (H/F)",
+     "j1": "P",
+     "j2": "P"
+    },
+    {
+     "titre": "Assistant Directeur Artistique - Stage H/F",
+     "j1": "P",
+     "j2": "P"
+    },
+    {
+     "titre": "Stage Directeur Artistique Réseaux Sociaux F/H",
+     "j1": "C",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "sertisseur",
+   "occupation": "sertisseur",
+   "mode": "lue",
+   "offres": 5,
+   "juges": [
+    {
+     "titre": "Apprentissage de sertisseur·euse de pierres précieuses CFC",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Sertisseur - Les Ateliers de Paris (H/F)",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Sertisseur - Les Ateliers d'Aurigane (H/F)",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Sertisseur - Les Ateliers de Lyon (f-h)",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Sertisseur baguette (H/F)",
+     "j1": "C",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "area manager",
+   "occupation": "regional-retail-manager",
+   "mode": "lue",
+   "offres": 40,
+   "juges": [
+    {
+     "titre": "Assistant.e Area Manager International - Stage Janvier 2027",
+     "j1": "P",
+     "j2": "P"
+    },
+    {
+     "titre": "Area Manager Shop in Shops ECI South Zone Spain 40h (m/f/x)",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "AREA MANAGER - MULTIPLE AREAS: EMILIA ROMAGNA; CAMPANIA, CALABRIA & SICILIA",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Area Manager (w/m) 100 % - Flughafen Zürich/Deutschschweiz",
+     "j1": "C",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "area sales manager",
+   "occupation": "responsable-commercial-de-zone",
+   "mode": "lue",
+   "offres": 8,
+   "juges": [
+    {
+     "titre": "STAGE - Assistant Area Sales Manager - Travel Retail (Europe) (H/F) - Hermès Parfum Beauté",
+     "j1": "P",
+     "j2": "P"
+    },
+    {
+     "titre": "Area Sales Manager - Mexico and South America",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Area Sales Manager - South - Kerala",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Area Sales Manager - Vilnius",
+     "j1": "C",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "comercial",
+   "occupation": "commercial",
+   "mode": "exacte",
+   "offres": 24,
+   "juges": [
+    {
+     "titre": "Encargado/a (Segundo/a) Tienda KIABI 38h/semana. Centro Comercial El Trompo. La Orotava",
+     "j1": "F",
+     "j2": "F"
+    },
+    {
+     "titre": "NUEVA APERTURA HOME S.SEBASTIAN DE LOS REYES C.COMERCIAL PLAZA NORTE 2 30/25/20/14 H",
+     "j1": "F",
+     "j2": "F"
+    },
+    {
+     "titre": "VENDEDOR NUEVA APERTURA LINEA TEEN MADRID C.COMERCIAL PLAZA RÍO 30/24/20/16/12/8 H",
+     "j1": "F",
+     "j2": "C"
+    },
+    {
+     "titre": "NUEVA APERTURA MÁLAGA C.COMERCIAL VELEZ EL INGENIO LÍNEA TEEN 30/25/20/16 HORAS",
+     "j1": "F",
+     "j2": "F"
+    },
+    {
+     "titre": "NUEVA APERTURA TEEN MADRID C.COMERCIAL LA VAGUADA 30/24/20/16/12/8 H",
+     "j1": "F",
+     "j2": "F"
+    },
+    {
+     "titre": "CDI - Sales Developer / Delegado Comercial - Canal Farmacias F/H - Erborian",
+     "j1": "C",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "chef de produit",
+   "occupation": "chef-produit",
+   "mode": "lue",
+   "offres": 173,
+   "juges": [
+    {
+     "titre": "Assistant.e Chef de Produit Développement - Oh My Cream Skincare",
+     "j1": "P",
+     "j2": "C"
+    },
+    {
+     "titre": "Stage - Assistant(e) Chef de Produit Marketing Opérationnel Maquillage et Soin – Parfums Beauté – Janvier 2027 – H/F/X",
+     "j1": "P",
+     "j2": "C"
+    },
+    {
+     "titre": "Stage – Assistant(e) Chef de Produit Brand Animation & Gifting – Parfums Beauté – Janvier 2027 – H/F/X",
+     "j1": "P",
+     "j2": "C"
+    },
+    {
+     "titre": "Stage - Assistant(e) Chef de Produit Pricing & Valorisation Maroquinerie (H/F/X) - Mode – Janvier 2027",
+     "j1": "P",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "assistant administratif",
+   "occupation": "assistant-administratif",
+   "mode": "lue",
+   "offres": 13,
+   "juges": [
+    {
+     "titre": "Assistant(e) administratif(ve) travaux et moyens généraux",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "STAGE – Assistant.e Administratif - Sécurité & Maintenance F/H – Marché France – Janvier 2027",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Assistant(e) Administratif Maintenance et Coordination - Stage - Paris - H/F",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Assistant(e) administratif(ve) étudiant(e) H/F – 7h par semaine",
+     "j1": "C",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "attache de presse",
+   "occupation": "charge-de-relations-presse",
+   "mode": "lue",
+   "offres": 12,
+   "juges": [
+    {
+     "titre": "ASSISTANT ATTACHÉ DE PRESSE INTERNATIONAL JOAILLERIE ET HORLOGERIE F/H - STAGE",
+     "j1": "P",
+     "j2": "C"
+    },
+    {
+     "titre": "STAGE - Attaché de Presse et Influence Local (France) (H/F) - Hermès Parfum et Beauté",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "STAGE - Assistant Attaché de Presse Femme France - RELATION PRESSE F/H",
+     "j1": "P",
+     "j2": "C"
+    },
+    {
+     "titre": "Attaché(e) de Presse Parfums/Beauté Senior - France/International (F/H)",
+     "j1": "C",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "chef de projet supply chain",
+   "occupation": "chef-de-projet-supply-chain",
+   "mode": "lue",
+   "offres": 5,
+   "juges": [
+    {
+     "titre": "Stage - Assistant(e) Chef de Projet Supply Chain (F/H/X)",
+     "j1": "P",
+     "j2": "C"
+    },
+    {
+     "titre": "Stage – Assistant.e Chef.fe de Projet Supply Chain – Distribution Omnicanale - F/H",
+     "j1": "P",
+     "j2": "C"
+    },
+    {
+     "titre": "Assistant Chef De Projet Supply Chain & Omnistock - F/H Stage",
+     "j1": "P",
+     "j2": "C"
+    },
+    {
+     "titre": "Chef de Projet Supply Chain et Logistique (CDD) - H/F/X",
+     "j1": "C",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "coordinateur retail",
+   "occupation": "coordinateur-retail",
+   "mode": "lue",
+   "offres": 6,
+   "juges": [
+    {
+     "titre": "Assistant Coordinateur Retail H.F - Stage",
+     "j1": "P",
+     "j2": "C"
+    },
+    {
+     "titre": "STAGE - Assistant Coordinateur Retail, Performance et Data - JUILLET 2026 (H/F/NB)",
+     "j1": "P",
+     "j2": "C"
+    },
+    {
+     "titre": "STAGE - Assistant coordinateur Retail Marketing International - Uber Luxury F/H",
+     "j1": "P",
+     "j2": "C"
+    },
+    {
+     "titre": "STAGE - Assistant Coordinateur Retail, performance et Data - JANVIER 2027",
+     "j1": "P",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "chef de projet digital",
+   "occupation": "chef-de-projet-digital",
+   "mode": "lue",
+   "offres": 14,
+   "juges": [
+    {
+     "titre": "Assistant.e Chef de Projet Digital - stage",
+     "j1": "P",
+     "j2": "C"
+    },
+    {
+     "titre": "Stage - Assistant Chef de Projet Digital Expérience Client - Parfums Beauté – Janvier 2027 - H/F/X",
+     "j1": "P",
+     "j2": "C"
+    },
+    {
+     "titre": "Stage – Assistant(e) Chef de Projet Digital Expérience - Horlogerie Joaillerie - Janvier 2027 - H/F/X",
+     "j1": "P",
+     "j2": "C"
+    },
+    {
+     "titre": "Stage - Assistante Chef.fe de Projet Digital – Corporate – Janvier 2027 – H/F/X",
+     "j1": "P",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "commerciale",
+   "occupation": "commercial",
+   "mode": "exacte",
+   "offres": 40,
+   "juges": [
+    {
+     "titre": "Employée commerciale, employé commercial Monop'",
+     "j1": "F",
+     "j2": "F"
+    },
+    {
+     "titre": "CDI - Chargé(e) d'animation commerciale e-store (Belgique) - (F/H/X)",
+     "j1": "F",
+     "j2": "P"
+    },
+    {
+     "titre": "Directeur Animation Marketing et Commerciale F/H (CDD de 4 mois)",
+     "j1": "F",
+     "j2": "F"
+    },
+    {
+     "titre": "Stage Assistant(e) Chef(fe) de projet Commerciale & Retail (F/H/X)",
+     "j1": "F",
+     "j2": "P"
+    },
+    {
+     "titre": "Sales Assistant - Centro Commerciale GRAN RENO - D/U",
+     "j1": "F",
+     "j2": "P"
+    },
+    {
+     "titre": "Sales Assistant (Part Time) - Fiumicino Parco Commerciale \"Da Vinci\"",
+     "j1": "F",
+     "j2": "P"
+    }
+   ]
+  },
+  {
+   "phrase": "footwear designer",
+   "occupation": "designer-chaussures",
+   "mode": "lue",
+   "offres": 13,
+   "juges": [
+    {
+     "titre": "ASSISTANT(E) FOOTWEAR DESIGNER - NEW CREATIONS",
+     "j1": "P",
+     "j2": "P"
+    },
+    {
+     "titre": "Footwear Designer - New Creations – Men's & Energy (F/H)",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Footwear Designer II, Color & Materials, Local Creation GC",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Sr. Footwear Designer - Color, Material & Finish",
+     "j1": "C",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "assistant marketing digital",
+   "occupation": "assistant-marketing-digital",
+   "mode": "lue",
+   "offres": 5,
+   "juges": [
+    {
+     "titre": "Assistant(e) Marketing Digital (Influence et paid media)",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Stage 6 mois - Assistant·e Marketing Digital - CRM Manager",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Stage Assistant Marketing Digital et E-Retail (F/H/X)",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Berluti Stage - Assistant(e) Marketing Digital (F/H)",
+     "j1": "C",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "assistant showroom",
+   "occupation": "assistant-showroom",
+   "mode": "lue",
+   "offres": 10,
+   "juges": [
+    {
+     "titre": "assistant·e showroom - paris fashion week f/h",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Stage - Assistant(e) Showroom Presse Collections (H/F/X) - Mode - Janvier 2027",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Stage - Assistant(e) Showroom Presse Shopping (H/F/X) - Mode – Janvier 2027",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Stage Nona Source - Assistant(e) Showroom – Mars 2027 – 6 mois",
+     "j1": "C",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "floor manager",
+   "occupation": "manager-floor",
+   "mode": "lue",
+   "offres": 85,
+   "juges": [
+    {
+     "titre": "Floor Manager - Eastland",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Flagship Floor Manager, Women's Department (Full Time) - adidas LDN Flagship Store, Oxford St,London",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Floor Manager (Visual Merchandising & Styling Coach) - 40HR - Nike Wembley",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Floor Manager Visuel Merchandising (H/F/D) - Flagship des Champs-Elysées/Paris",
+     "j1": "C",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "assistant juridique",
+   "occupation": "paralegal",
+   "mode": "lue",
+   "offres": 8,
+   "juges": [
+    {
+     "titre": "ASSISTANT JURIDIQUE - PROPRIÉTÉ INTELLECTUELLE & DROIT COMMERCIAL/CONTRATS (H/F)",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Assistant Juridique (H/F) - Paris - CDI 35H",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Stage - Assistant Juridique Droit des Affaires H/F",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Assistant Juridique (H/F) - Paris - Alternance",
+     "j1": "C",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "manager commercial",
+   "occupation": "manager-commercial",
+   "mode": "exacte",
+   "offres": 9,
+   "juges": [
+    {
+     "titre": "Manager, Commercial Strategy & Growth",
+     "j1": "F",
+     "j2": "P"
+    },
+    {
+     "titre": "Senior Manager Commercial Strategy (m/f/d)",
+     "j1": "P",
+     "j2": "P"
+    },
+    {
+     "titre": "MANAGER, COMMERCIAL LEARNING & DEVELOPMENT",
+     "j1": "F",
+     "j2": "F"
+    },
+    {
+     "titre": "Manager, Commercial Operations Americas E-Commerce",
+     "j1": "P",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "training manager",
+   "occupation": "responsable-formation",
+   "mode": "lue",
+   "offres": 30,
+   "juges": [
+    {
+     "titre": "Assistant QA & Training Manager /Assistant QA & Training Manager",
+     "j1": "P",
+     "j2": "P"
+    },
+    {
+     "titre": "CDI - International Training Manager - EME + US - Erborian",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Retail Excellence & Training Manager (H/F) - CDI",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Operations Training Manager, NYC & Central Region",
+     "j1": "C",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "assistant store director",
+   "occupation": "assistant-store-manager",
+   "mode": "lue",
+   "offres": 7,
+   "juges": [
+    {
+     "titre": "ASSISTANT STORE DIRECTOR - BEVERLY HILLS, RODEO DRIVE",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Assistant Store Director - London Regent Street Global Flagship",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Assistant Store Director, Customer Experience and Workforce Management",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Assistant Store Director - Milan Sant'Andrea",
+     "j1": "C",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "kok",
+   "occupation": "cook",
+   "mode": "exacte",
+   "offres": 10,
+   "juges": [
+    {
+     "titre": "Assistent Kok",
+     "j1": "P",
+     "j2": "P"
+    },
+    {
+     "titre": "Assistent kok bij Asia Street Cooking",
+     "j1": "P",
+     "j2": "P"
+    },
+    {
+     "titre": "Kok/Cater til logistikcenter Hedensted",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Zelfstandig Werkend Kok Comptoir Libanais",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Assistent Kok Comptoir Libanais",
+     "j1": "P",
+     "j2": "P"
+    },
+    {
+     "titre": "Chef Kok The Wanderer",
+     "j1": "F",
+     "j2": "F"
+    }
+   ]
+  },
+  {
+   "phrase": "butikschef",
+   "occupation": "store-manager",
+   "mode": "lue",
+   "offres": 21,
+   "juges": [
+    {
+     "titre": "Assisterande butikschef",
+     "j1": "P",
+     "j2": "P"
+    },
+    {
+     "titre": "Butikschef till INTERSPORT Göteborg Högsbo 421 – Led en av våra största enheter",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Butikschef till John Henric Avenyn, Göteborg",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Assisterande Butikschef Gant Outlet Hede",
+     "j1": "P",
+     "j2": "P"
+    },
+    {
+     "titre": "Butikschef till Brothers Södertälje (vik)",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "KICKS Borås City söker Butikschef",
+     "j1": "C",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "magaza muduru",
+   "occupation": "store-manager",
+   "mode": "lue",
+   "offres": 5,
+   "juges": [
+    {
+     "titre": "Aydın OPSMall- Mağaza Müdürü",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Mağaza Müdürü - İstanbul Avrupa Yakası",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "MAĞAZA MÜDÜRÜ - STARCITY AVM",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Mağaza Müdürü - İstMarina",
+     "j1": "C",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "concierge",
+   "occupation": "concierge",
+   "mode": "lue",
+   "offres": 44,
+   "juges": [
+    {
+     "titre": "Beauty Concierge",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "New Store Opening - Beauty Concierge - Earn up to $400 Bonus - Dillon Ridge Marketplace Rack",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Seasonal Beauty Concierge - The Shops at La Jolla Village Rack",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Beauty Concierge - Towne Place at Garden State Park Rack",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "New Store Opening - Beauty Concierge - Montrose Plaza Rack",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Client Concierge Specialist US & UK | Century City (USA)",
+     "j1": "C",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "collection merchandiser",
+   "occupation": "collection-merchandiser",
+   "mode": "lue",
+   "offres": 11,
+   "juges": [
+    {
+     "titre": "Collection Merchandiser Maroquinerie (F/H)",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "CDD - Collection Merchandiser Senior (H/F) - Petit Bateau !",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "SENIOR COLLECTION MERCHANDISER PRET A PORTER FEMME F/H/X",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Berluti Stage - Assistant(e) Collection Merchandiser (F/H)",
+     "j1": "P",
+     "j2": "P"
+    }
+   ]
+  },
+  {
+   "phrase": "butikksjef",
+   "occupation": "store-manager",
+   "mode": "lue",
+   "offres": 9,
+   "juges": [
+    {
+     "titre": "Vi søker Butikksjef",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Vi søker butikksjef 80% til Glitter Oasen i Haugesund",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Butikksjef til John Henric – Sandvika Storsenter, Oslo",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "BUTIKKSJEF TIL LAGER 157 , Trondheim(Malvik) og Larvik",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Vi søker 80% butikksjef til Glitter Moldetorget",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Vi søker 80% butikksjef til Glitter Strandtorvet",
+     "j1": "C",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "extra",
+   "occupation": "figurant",
+   "mode": "exacte",
+   "offres": 35,
+   "juges": [
+    {
+     "titre": "Extra Cuisine H/F",
+     "j1": "F",
+     "j2": "F"
+    },
+    {
+     "titre": "Conseiller(e) de Vente - Extra - Lille CDD H/F",
+     "j1": "F",
+     "j2": "F"
+    },
+    {
+     "titre": "SALES ASSOCIATES – EXTRA / ON-CALL TILBURG - NEW STORE OPENING",
+     "j1": "F",
+     "j2": "F"
+    },
+    {
+     "titre": "STAGE EXTRA CURRICULARE ADDETTO/A VENDITA KIABI CORSICO",
+     "j1": "F",
+     "j2": "F"
+    },
+    {
+     "titre": "Butikssäljare 3 h/v samt extra vid behov",
+     "j1": "F",
+     "j2": "F"
+    },
+    {
+     "titre": "EXTRA - Femme / Valet de Chambre (H/F)",
+     "j1": "F",
+     "j2": "F"
+    }
+   ]
+  },
+  {
+   "phrase": "prototypiste",
+   "occupation": "prototypiste",
+   "mode": "lue",
+   "offres": 7,
+   "juges": [
+    {
+     "titre": "[Candidature spontanée] Prototypiste-Modéliste",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "CDI - Technicien(ne) expert prototypiste et formateur interne H/F - Petit Bateau",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Joaillier(e) prototypiste CAO Innovation (H/F) - Les Ateliers de Lyon",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Stage - Assistant(e) Concepteur CAO/prototypiste (F/H)",
+     "j1": "C",
+     "j2": "P"
+    },
+    {
+     "titre": "CDD – MENUISIER D’AGENCEMENT & PROTOTYPISTE",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "CDI PROTOTYPISTE MATIERES METALLIQUES F/H",
+     "j1": "C",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "hr specialist",
+   "occupation": "gestionnaire-des-ressources-humaines",
+   "mode": "lue",
+   "offres": 7,
+   "juges": [
+    {
+     "titre": "(Cartier) HR Specialist",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "HR Specialist - Apprenticeship & Vocational Training (60%) (m/f/x)",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "HR Specialist (m/w/d) - Talent Acquisition",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Payroll & HR Specialist / Spécialiste RH et Paie",
+     "j1": "C",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "trade marketing manager",
+   "occupation": "chef-de-projet-trade-marketing",
+   "mode": "lue",
+   "offres": 7,
+   "juges": [
+    {
+     "titre": "Category Growth (Trade Marketing) Manager - Mass Scenting (Bruno Banani, Mexx, Adidas) (m/w/d)",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "STAGE EMEA Trade Marketing Manager Assistant F/H",
+     "j1": "C",
+     "j2": "P"
+    },
+    {
+     "titre": "Nordic Brand Activation & Trade Marketing Manager",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "STAGE Trade Marketing Manager Assistant F/H",
+     "j1": "C",
+     "j2": "P"
+    }
+   ]
+  },
+  {
+   "phrase": "ingenieur amelioration continue",
+   "occupation": "ingenieur-amelioration-continue",
+   "mode": "lue",
+   "offres": 7,
+   "juges": [
+    {
+     "titre": "CDD - Ingénieur Amélioration Continue et Méthode (H/F)",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "STAGE - Assistant Ingénieur Amélioration Continue et Qualité (H/F)",
+     "j1": "C",
+     "j2": "P"
+    },
+    {
+     "titre": "STAGE – INGENIEUR.E AMELIORATION CONTINUE (H/F) – JANVIER 2027",
+     "j1": "C",
+     "j2": "P"
+    },
+    {
+     "titre": "Stage 2027 - Ingénieur Amélioration Continue F/H",
+     "j1": "C",
+     "j2": "P"
+    }
+   ]
+  },
+  {
+   "phrase": "controlling",
+   "occupation": "financial-controller",
+   "mode": "exacte",
+   "offres": 29,
+   "juges": [
+    {
+     "titre": "CDI- Responsable Controlling e-commerce - H/F/X - Groupe Rocher",
+     "j1": "C",
+     "j2": "F"
+    },
+    {
+     "titre": "Global Business & Financial Controlling Intern (Retail, E-commerce & Wholesale)",
+     "j1": "C",
+     "j2": "P"
+    },
+    {
+     "titre": "Commercial Controlling Manager (Fixed-Term Contract, 18 Months)",
+     "j1": "C",
+     "j2": "F"
+    },
+    {
+     "titre": "Functional Consultant Controlling Solutions (f/m/x)",
+     "j1": "F",
+     "j2": "F"
+    },
+    {
+     "titre": "Junior Sales Controlling Analyst (6 Months Contract)",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Specialist, Merchandising Controlling & OTB - Interim",
+     "j1": "C",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "traffic manager",
+   "occupation": "traffic-manager",
+   "mode": "exacte",
+   "offres": 8,
+   "juges": [
+    {
+     "titre": "CDI - Lead Traffic Manager (H/F)",
+     "j1": "C",
+     "j2": "F"
+    },
+    {
+     "titre": "CDI - Traffic Manager Senior - Petit Bateau",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "STAGE - Assistant(e) Traffic Manager - H/F",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Stagiaire Traffic Manager Paid Social Junior F/H",
+     "j1": "C",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "responsable des operations",
+   "occupation": "responsable-operationnel",
+   "mode": "lue",
+   "offres": 7,
+   "juges": [
+    {
+     "titre": "CDI - Responsable des opérations de Ventes physiques Exceptionnelles - H/F",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "STAGE - ASSISTANT(E) RESPONSABLE DES OPÉRATIONS BOUTIQUES MODE FRANCE (H/F) - Paris Grands magasins - Juillet 2023",
+     "j1": "P",
+     "j2": "C"
+    },
+    {
+     "titre": "STAGE - ASSISTANT(E) RESPONSABLE DES OPÉRATIONS BOUTIQUES MODE FRANCE (H/F), boutique ROISSY - Juillet 2023",
+     "j1": "P",
+     "j2": "C"
+    },
+    {
+     "titre": "STAGE - ASSISTANT(E) RESPONSABLE DES OPÉRATIONS BOUTIQUES MODE FRANCE PARIS (H/F), Juillet 2023",
+     "j1": "P",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "formateur",
+   "occupation": "formateur",
+   "mode": "lue",
+   "offres": 9,
+   "juges": [
+    {
+     "titre": "- FORMATEUR-COACH MAKE UP FRANCE (H/F)",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Formateur sell-out Avène - Secteur Marne/ Seine et Marne - CDD - H/F",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "CDI - Technicien(ne) expert prototypiste et formateur interne H/F - Petit Bateau",
+     "j1": "P",
+     "j2": "P"
+    },
+    {
+     "titre": "Formateur Concepteur HAIR RITUEL H/F - CDD",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Préparateur de commandes - Mission formateur H/F",
+     "j1": "P",
+     "j2": "P"
+    },
+    {
+     "titre": "Formateur mécanicien (H/F)",
+     "j1": "C",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "e merchandiser",
+   "occupation": "e-merchandiser",
+   "mode": "lue",
+   "offres": 5,
+   "juges": [
+    {
+     "titre": "Chargé de Production & e-merchandiser Marketplace - Stage août/sept 2026 - H/F/X",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "STAGE - ASSISTANT.E E-MERCHANDISER EMEA (F/H/X) - JANVIER 2027",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "E-Merchandiser Chaussants (H/F)",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "E-Merchandiser International H/F",
+     "j1": "C",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "chef de projet evenementiel",
+   "occupation": "chef-de-projet-evenementiel",
+   "mode": "lue",
+   "offres": 6,
+   "juges": [
+    {
+     "titre": "STAGE - Chef de Projet Evènementiel (H/F) - Hermès Parfum Beauté",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Stage - ASSISTANTE CHEF DE PROJET EVENEMENTIEL INTERNE - Janvier 2027",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "STAGE JANVIER 2027 - Assistant(e) Chef de Projet Evénementiel (F/H)",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Stage - Assistant(e) Chef de Projet Événementiel International",
+     "j1": "C",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "chef de rang",
+   "occupation": "chef-de-rang",
+   "mode": "lue",
+   "offres": 10,
+   "juges": [
+    {
+     "titre": "Chef de Rang (F/H) – 30 avenue Montaigne",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Chef de Rang - Café Maxime Frédéric x Louis Vuitton - CDD (H/F)",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Servicekraft / Chef de Rang / Barista (m/w/d) - BOSS Café Metzingen (Vollzeit)",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Chef de Rang - Room Service (Carte Blanche) (H/F)",
+     "j1": "C",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "facilities manager",
+   "occupation": "responsable-services-generaux",
+   "mode": "lue",
+   "offres": 5,
+   "juges": [
+    {
+     "titre": "Country Facilities Manager USA",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Senior Workplace & Facilities Manager, SEAO",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Facilities Manager - OTB NAM",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Regional Facilities Manager - Southeast",
+     "j1": "C",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "managing director",
+   "occupation": "direction",
+   "mode": "exacte",
+   "offres": 5,
+   "juges": [
+    {
+     "titre": "Country Managing Director",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "EXECUTIVE ASSISTANT TO THE MANAGING DIRECTOR",
+     "j1": "F",
+     "j2": "F"
+    },
+    {
+     "titre": "Managing Director (In-house Patent Services)",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Managing Director Northern Europe",
+     "j1": "C",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "delegue pharmaceutique",
+   "occupation": "delegue-pharmaceutique",
+   "mode": "lue",
+   "offres": 9,
+   "juges": [
+    {
+     "titre": "Délégué Pharmaceutique - Région Auvergne Rhone Alpes",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Délégué(e) Pharmaceutique - Région Auvergne - Secteur Clermont-Ferrand, Saint-Étienne, Montluçon",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Délégué(e) Pharmaceutique - Région Centre - secteurs Tours - Blois",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Vivier - Délégué Pharmaceutique - Région Paris Ile de France",
+     "j1": "C",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "design assistant",
+   "occupation": "assistant-designer",
+   "mode": "lue",
+   "offres": 6,
+   "juges": [
+    {
+     "titre": "Visual Design Assistant",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Graphic Design Assistant - Studio Maroquinerie F/H - Stage Octobre",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Stage - Store Design Assistant H/F - Janvier 2027",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Denim Design Assistant",
+     "j1": "C",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "optometric technician",
+   "occupation": "optometrist",
+   "mode": "lue",
+   "offres": 8,
+   "juges": [
+    {
+     "titre": "Optometric Technician - Training Provided!",
+     "j1": "P",
+     "j2": "P"
+    },
+    {
+     "titre": "Doctor's Assistant / Optometric Technician - Training Provided!",
+     "j1": "P",
+     "j2": "P"
+    },
+    {
+     "titre": "Optometric Technician (Part-Time) - Willing to Train!",
+     "j1": "P",
+     "j2": "P"
+    },
+    {
+     "titre": "Optometric Technician - Willing to Train!",
+     "j1": "P",
+     "j2": "P"
+    }
+   ]
+  },
+  {
+   "phrase": "hr assistant",
+   "occupation": "gestionnaire-des-ressources-humaines",
+   "mode": "lue",
+   "offres": 6,
+   "juges": [
+    {
+     "titre": "People & Culture (HR) Assistant Amsterdam",
+     "j1": "P",
+     "j2": "P"
+    },
+    {
+     "titre": "Executive Team & HR Assistant (TEMP)",
+     "j1": "P",
+     "j2": "P"
+    },
+    {
+     "titre": "People & Culture (HR) Assistant Arnhem",
+     "j1": "P",
+     "j2": "P"
+    },
+    {
+     "titre": "STAGE HR Assistant F/H",
+     "j1": "P",
+     "j2": "P"
+    }
+   ]
+  },
+  {
+   "phrase": "auditor",
+   "occupation": "auditeur",
+   "mode": "lue",
+   "offres": 15,
+   "juges": [
+    {
+     "titre": "Fin Auditor",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Senior Internal Auditor - Audit & Data Analytics",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Senior Auditor, Global Audit and Risk Management",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Sr. Internal Auditor - NA",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Quality Auditor - Jewelry",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Quality Auditor, Footwear",
+     "j1": "C",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "gerente de loja",
+   "occupation": "store-manager",
+   "mode": "lue",
+   "offres": 9,
+   "juges": [
+    {
+     "titre": "Gerente de Loja - Barra Shopping RJ",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Gerente de Loja (full time, 40h) - Vila do Conde",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Gerente de Loja - BOSS Outlet Guarulhos",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Gerente De Loja - Swarovski, São Paulo",
+     "j1": "C",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "influencer marketing manager",
+   "occupation": "chef-de-projet-influence",
+   "mode": "lue",
+   "offres": 6,
+   "juges": [
+    {
+     "titre": "Influencer Marketing Manager - Skincare",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Senior Influencer Marketing Manager DACH (f/m/x)",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Influencer Marketing Manager – Fragrance",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Influencer Marketing Manager – Skincare",
+     "j1": "C",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "personal shopper",
+   "occupation": "personal-shopper",
+   "mode": "lue",
+   "offres": 13,
+   "juges": [
+    {
+     "titre": "Junior Personal Shopper",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Stage 6 mois - Assistant Styliste Personal Shopper (F/H) - Le Bon Marché",
+     "j1": "P",
+     "j2": "P"
+    },
+    {
+     "titre": "Personal Shopper Support Assistant, Full Time - 59th Street",
+     "j1": "P",
+     "j2": "P"
+    },
+    {
+     "titre": "Personal Shopper Assistant, Full Time - 59th Street",
+     "j1": "P",
+     "j2": "P"
+    }
+   ]
+  },
+  {
+   "phrase": "销 售 助 理",
+   "occupation": "assistant-commercial",
+   "mode": "exacte",
+   "offres": 8,
+   "juges": [
+    {
+     "titre": "Sales Associate 销售助理 (Contractor)- Givenchy",
+     "j1": "F",
+     "j2": "C"
+    },
+    {
+     "titre": "Marc Jacobs - （高级）销售助理 - 北京斯普瑞斯奥莱",
+     "j1": "F",
+     "j2": "C"
+    },
+    {
+     "titre": "Sales Associate 销售助理 - Givenchy",
+     "j1": "F",
+     "j2": "C"
+    },
+    {
+     "titre": "KENZO广州太古汇-销售助理/资深销售",
+     "j1": "F",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "saljare",
+   "occupation": "commercial",
+   "mode": "exacte",
+   "offres": 9,
+   "juges": [
+    {
+     "titre": "KICKS Gällivare söker Säljare på deltid 20 h / vecka",
+     "j1": "F",
+     "j2": "P"
+    },
+    {
+     "titre": "KICKS Uddevalla City söker Säljare 2,5tim/v",
+     "j1": "F",
+     "j2": "P"
+    },
+    {
+     "titre": "KICKS Uddevalla City söker Säljare Vikariat 20tim/v",
+     "j1": "F",
+     "j2": "P"
+    },
+    {
+     "titre": "Säljare Extra John Henric – PK Huset, Stockholm",
+     "j1": "F",
+     "j2": "P"
+    },
+    {
+     "titre": "Säljare Extra John Henric – Frölunda Torg",
+     "j1": "C",
+     "j2": "F"
+    },
+    {
+     "titre": "Säljare Extra John Henric – Nova Lund",
+     "j1": "C",
+     "j2": "F"
+    }
+   ]
+  },
+  {
+   "phrase": "footwear developer",
+   "occupation": "product-developer",
+   "mode": "exacte",
+   "offres": 6,
+   "juges": [
+    {
+     "titre": "Senior Lead - Footwear Developer",
+     "j1": "P",
+     "j2": "F"
+    },
+    {
+     "titre": "Lead - Footwear Developer - PAD + Young Movers",
+     "j1": "P",
+     "j2": "F"
+    },
+    {
+     "titre": "Senior Lead - Innovation Footwear Developer",
+     "j1": "P",
+     "j2": "F"
+    },
+    {
+     "titre": "Senior Specialist - Innovation Footwear Developer",
+     "j1": "P",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "ux designer",
+   "occupation": "ux-ui-designer",
+   "mode": "exacte",
+   "offres": 5,
+   "juges": [
+    {
+     "titre": "Lead UX Designer",
+     "j1": "P",
+     "j2": "F"
+    },
+    {
+     "titre": "Stage - UI/UX Designer (H/F/X) - Mode - Janvier 2026",
+     "j1": "P",
+     "j2": "C"
+    },
+    {
+     "titre": "Lead UX Designer - Platform Tools",
+     "j1": "P",
+     "j2": "F"
+    },
+    {
+     "titre": "UX Designer - 6 Month FTC",
+     "j1": "C",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "optician",
+   "occupation": "dispensing-optician",
+   "mode": "lue",
+   "offres": 10,
+   "juges": [
+    {
+     "titre": "Optical Sales Associate / Optician - Training Provided!",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Optical Sales Associate / Optician - Willing to Train!",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Optical Team Member / Optician - Training Provided!",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Licensed Optician",
+     "j1": "C",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "manager marketing",
+   "occupation": "marketing-manager",
+   "mode": "lue",
+   "offres": 12,
+   "juges": [
+    {
+     "titre": "Senior Manager, Marketing",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Marketing - Senior Manager/Manager, Marketing Projects, Marketing Integration",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Senior Manager Marketing Strategic Key Accounts (Intersport & Sport2000)",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Marketing Integration - Senior Manager / Manager, Marketing Projects",
+     "j1": "C",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "optical sales associate",
+   "occupation": "optical-assistant",
+   "mode": "lue",
+   "offres": 5,
+   "juges": [
+    {
+     "titre": "Optical Sales Associate - Paid Training",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Optical Sales Associate / Optician - Willing to Train!",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Optical Technician / Optical Sales Associate",
+     "j1": "C",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "optico",
+   "occupation": "dispensing-optician",
+   "mode": "lue",
+   "offres": 57,
+   "juges": [
+    {
+     "titre": "Óptico en A Coruña",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Óptico/a en Alcalá de Henares, Madrid, Calle Plaza de Cervantes",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Óptico/a en Alcalá de Henares, Madrid, CC Parque Corredor",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Óptico/a- optometrista. C/Galcerán. Santa Cruz de Tenerife",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Óptico en Madrid, calle Fuencarral, fin de semana",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Óptico en San Sebastián de los Reyes, Madrid",
+     "j1": "C",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "prodejni poradce",
+   "occupation": "sales-advisor",
+   "mode": "lue",
+   "offres": 6,
+   "juges": [
+    {
+     "titre": "Prodejní poradce/poradkyně, hlavní pracovní poměr 38,75h týdně, Praha Myslbek",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Prodejní poradce/poradkyně, hlavní pracovní poměr 38,75h týdně, Praha Palác Anděl",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Prodejní poradce/poradkyně, zkrácený pracovní poměr 20h týdně, Praha Galerie Butovice",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Prodejní poradce/poradkyně, zkrácený pracovní poměr 30h týdně, České Budějovice Lannova",
+     "j1": "C",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "operador de armazem",
+   "occupation": "warehouse-operative",
+   "mode": "lue",
+   "offres": 7,
+   "juges": [
+    {
+     "titre": "Stockroom Retail Assistant - Operador de Armazém de Loja (m/f)",
+     "j1": "P",
+     "j2": "C"
+    },
+    {
+     "titre": "PT - Stockroom Retail Assistant - Operador de Armazém de Loja (m/f)",
+     "j1": "P",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "quality engineer",
+   "occupation": "ingenieur-qualite",
+   "mode": "lue",
+   "offres": 6,
+   "juges": [
+    {
+     "titre": "Quality Engineer — Omnichannel Order Execution",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Senior FW Materials Quality Engineer, Color (Base in Taipei or Taichung, but prefer in Taipei)",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Senior Quality Engineer (SDET) - Test Automation (.NET, Azure DevOps) (w/m/x)",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Supplier Quality Engineer (m/w/d)",
+     "j1": "C",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "dispenser",
+   "occupation": "pharmacy-support-worker",
+   "mode": "lue",
+   "offres": 22,
+   "juges": [
+    {
+     "titre": "Relief Dispenser",
+     "j1": "C",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "sales lead",
+   "occupation": "retail-sales-lead",
+   "mode": "lue",
+   "offres": 39,
+   "juges": [
+    {
+     "titre": "Sales Lead (SLPT) -Lane Bryant",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Sales Lead with Keys - HOKA",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Sales Lead with Keys - UGG",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Sales Lead with Keys- HOKA",
+     "j1": "C",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "watch technician",
+   "occupation": "watchmaker",
+   "mode": "lue",
+   "offres": 6,
+   "juges": [
+    {
+     "titre": "Shinola Watch Technician (Artisan) - Chicago - Rush St",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Shinola Watch Technician (Artisan) - Los Angeles - Venice",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Shinola Watch Technician (Artisan) - New York - Tribeca",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "Watch Technician Battery - Temporary",
+     "j1": "C",
+     "j2": "C"
+    }
+   ]
+  },
+  {
+   "phrase": "juriste propriete intellectuelle",
+   "occupation": "juriste-propriete-intellectuelle",
+   "mode": "lue",
+   "offres": 10,
+   "juges": [
+    {
+     "titre": "Stage - Assistant(e) Juriste Propriété Intellectuelle (F/H/X)",
+     "j1": "P",
+     "j2": "P"
+    },
+    {
+     "titre": "STAGE - Juriste Propriété Intellectuelle (F/H) – LVMH – Juillet à Décembre 2027",
+     "j1": "C",
+     "j2": "P"
+    },
+    {
+     "titre": "Stage – Juriste Propriété Intellectuelle – Contentieux Civil Europe (F/H) - Janvier 2027",
+     "j1": "C",
+     "j2": "P"
+    },
+    {
+     "titre": "Stage - Juriste Propriété Intellectuelle (F/H) – LVMH – Juillet 2027 (6mois)",
+     "j1": "C",
+     "j2": "P"
+    }
+   ]
+  },
+  {
+   "phrase": "πωλητης",
+   "occupation": "commercial",
+   "mode": "lue",
+   "offres": 9,
+   "juges": [
+    {
+     "titre": "Πωλητής/τρια Καταστήματος",
+     "j1": "P",
+     "j2": "P"
+    },
+    {
+     "titre": "Πωλητής / τρια Καταστήματος (μερικής απασχόλησης)",
+     "j1": "P",
+     "j2": "P"
+    },
+    {
+     "titre": "Πωλητής /τρια Καταστήματος",
+     "j1": "P",
+     "j2": "P"
+    },
+    {
+     "titre": "Πωλητής / τρια Καταστήματος",
+     "j1": "P",
+     "j2": "P"
+    },
+    {
+     "titre": "Πωλητής / Πωλήτρια",
+     "j1": "C",
+     "j2": "P"
+    }
+   ]
+  },
+  {
+   "phrase": "ス ト ア マ ネ ー シ ャ ー",
+   "occupation": "store-manager",
+   "mode": "lue",
+   "offres": 7,
+   "juges": [
+    {
+     "titre": "【プーマアウトレット入間】アシスタントストアマネージャー募集！",
+     "j1": "P",
+     "j2": "P"
+    },
+    {
+     "titre": "シニア ストアマネージャー（都内）",
+     "j1": "C",
+     "j2": "C"
+    },
+    {
+     "titre": "【プーマアウトレット滋賀竜王】アシスタントストアマネージャー募集！",
+     "j1": "P",
+     "j2": "P"
+    },
+    {
+     "titre": "【プーマジャパン】ストアマネージャー募集！【京都府】",
+     "j1": "C",
+     "j2": "C"
+    }
+   ]
+  }
+ ],
+ "sousSeuil": [
+  {
+   "phrase": "gouvernante",
+   "occupation": "gouvernant",
+   "mode": "exacte",
+   "offres": 2
+  },
+  {
+   "phrase": "jurist",
+   "occupation": "legal-counsel",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "partnerships manager",
+   "occupation": "responsable-partenariats",
+   "mode": "exacte",
+   "offres": 2
+  },
+  {
+   "phrase": "agent d entretien",
+   "occupation": "agent-d-entretien",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "fotograaf",
+   "occupation": "photographe",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "coupeur",
+   "occupation": "coupe",
+   "mode": "exacte",
+   "offres": 2
+  },
+  {
+   "phrase": "regisseur",
+   "occupation": "regisseur",
+   "mode": "exacte",
+   "offres": 2
+  },
+  {
+   "phrase": "contabil",
+   "occupation": "accountant",
+   "mode": "exacte",
+   "offres": 2
+  },
+  {
+   "phrase": "contable",
+   "occupation": "accountant",
+   "mode": "exacte",
+   "offres": 4
+  },
+  {
+   "phrase": "animateur des ventes",
+   "occupation": "animateur-ventes",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "digital marketing assistant",
+   "occupation": "assistant-marketing-digital",
+   "mode": "exacte",
+   "offres": 4
+  },
+  {
+   "phrase": "videographer",
+   "occupation": "videaste",
+   "mode": "exacte",
+   "offres": 2
+  },
+  {
+   "phrase": "바리스타",
+   "occupation": "barista",
+   "mode": "exacte",
+   "offres": 2
+  },
+  {
+   "phrase": "inventory specialist",
+   "occupation": "inventoriste",
+   "mode": "exacte",
+   "offres": 3
+  },
+  {
+   "phrase": "assistant boutique director",
+   "occupation": "assistant-store-manager",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "assistant business development",
+   "occupation": "assistant-business-development",
+   "mode": "exacte",
+   "offres": 3
+  },
+  {
+   "phrase": "developpeur chaussures",
+   "occupation": "product-developer",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "directrice de production",
+   "occupation": "directeur-production",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "assistant operations retail",
+   "occupation": "retail-operations-associate",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "photographe",
+   "occupation": "photographe",
+   "mode": "exacte",
+   "offres": 3
+  },
+  {
+   "phrase": "assistant service client",
+   "occupation": "assistant-operations-client",
+   "mode": "exacte",
+   "offres": 2
+  },
+  {
+   "phrase": "assistant key account manager",
+   "occupation": "assistant-key-account-manager",
+   "mode": "exacte",
+   "offres": 4
+  },
+  {
+   "phrase": "maitre d hotel",
+   "occupation": "maitre-d-hotel",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "restaurant manager",
+   "occupation": "manager-de-restaurant",
+   "mode": "exacte",
+   "offres": 4
+  },
+  {
+   "phrase": "assistant visual merchandiser",
+   "occupation": "assistant-visual-merchandising-manager",
+   "mode": "exacte",
+   "offres": 2
+  },
+  {
+   "phrase": "audioprotesista",
+   "occupation": "hearing-aid-specialist",
+   "mode": "exacte",
+   "offres": 4
+  },
+  {
+   "phrase": "auditeur",
+   "occupation": "auditeur",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "reponedor",
+   "occupation": "employe-de-commerce",
+   "mode": "exacte",
+   "offres": 4
+  },
+  {
+   "phrase": "barman",
+   "occupation": "barman",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "beveiliger",
+   "occupation": "agent-de-securite",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "logistics coordinator",
+   "occupation": "coordinateur-logistique",
+   "mode": "exacte",
+   "offres": 4
+  },
+  {
+   "phrase": "bottier",
+   "occupation": "bottier",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "brand director",
+   "occupation": "direction-marque",
+   "mode": "exacte",
+   "offres": 3
+  },
+  {
+   "phrase": "business development assistant",
+   "occupation": "assistant-business-development",
+   "mode": "exacte",
+   "offres": 3
+  },
+  {
+   "phrase": "directeur commercial",
+   "occupation": "direction-commerciale",
+   "mode": "exacte",
+   "offres": 2
+  },
+  {
+   "phrase": "camarero",
+   "occupation": "waiter",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "casier",
+   "occupation": "cashier",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "cassiere",
+   "occupation": "cashier",
+   "mode": "exacte",
+   "offres": 2
+  },
+  {
+   "phrase": "responsable industrialisation",
+   "occupation": "responsable-industrialisation",
+   "mode": "exacte",
+   "offres": 4
+  },
+  {
+   "phrase": "regisseuse",
+   "occupation": "regisseur",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "responsable achats",
+   "occupation": "responsable-achats-et-offre",
+   "mode": "exacte",
+   "offres": 3
+  },
+  {
+   "phrase": "responsable communication",
+   "occupation": "responsable-communication",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "responsable visual merchandising",
+   "occupation": "responsable-vm",
+   "mode": "exacte",
+   "offres": 2
+  },
+  {
+   "phrase": "technicien produit",
+   "occupation": "technicien-produit",
+   "mode": "exacte",
+   "offres": 4
+  },
+  {
+   "phrase": "chef de projet trade marketing",
+   "occupation": "chef-de-projet-trade-marketing",
+   "mode": "exacte",
+   "offres": 2
+  },
+  {
+   "phrase": "directeur supply chain",
+   "occupation": "directeur-supply-chain",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "responsable de collection",
+   "occupation": "responsable-collection",
+   "mode": "exacte",
+   "offres": 2
+  },
+  {
+   "phrase": "responsable developpement matieres",
+   "occupation": "responsable-developpement-matieres",
+   "mode": "exacte",
+   "offres": 3
+  },
+  {
+   "phrase": "responsable projets retail",
+   "occupation": "responsable-projets-retail",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "responsable recrutement",
+   "occupation": "responsable-recrutement",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "responsable relation client",
+   "occupation": "responsable-relation-client",
+   "mode": "exacte",
+   "offres": 2
+  },
+  {
+   "phrase": "responsable supply chain",
+   "occupation": "responsable-supply-chain",
+   "mode": "exacte",
+   "offres": 4
+  },
+  {
+   "phrase": "咖 啡 师",
+   "occupation": "barista",
+   "mode": "exacte",
+   "offres": 3
+  },
+  {
+   "phrase": "textile designer",
+   "occupation": "dessinateur-textile",
+   "mode": "exacte",
+   "offres": 2
+  },
+  {
+   "phrase": "commercial director",
+   "occupation": "direction-commerciale",
+   "mode": "exacte",
+   "offres": 2
+  },
+  {
+   "phrase": "commercial manager",
+   "occupation": "manager-commercial",
+   "mode": "exacte",
+   "offres": 4
+  },
+  {
+   "phrase": "comprador",
+   "occupation": "buyer",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "consejera de belleza",
+   "occupation": "beauty-consultant",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "videaste",
+   "occupation": "videaste",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "continuous improvement engineer",
+   "occupation": "ingenieur-amelioration-continue",
+   "mode": "exacte",
+   "offres": 2
+  },
+  {
+   "phrase": "apparel developer",
+   "occupation": "product-developer",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "coordinador de produccion",
+   "occupation": "coordinateur-de-production",
+   "mode": "exacte",
+   "offres": 2
+  },
+  {
+   "phrase": "coordinateur logistique",
+   "occupation": "coordinateur-logistique",
+   "mode": "exacte",
+   "offres": 2
+  },
+  {
+   "phrase": "costureira",
+   "occupation": "seamster",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "フ ロ ア マ ネ ー シ ャ ー",
+   "occupation": "manager-floor",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "createur de contenu",
+   "occupation": "createur-de-contenu",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "cleaner",
+   "occupation": "agent-d-entretien",
+   "mode": "exacte",
+   "offres": 2
+  },
+  {
+   "phrase": "crm マ ネ ー シ ャ ー",
+   "occupation": "crm-manager",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "workshop manager",
+   "occupation": "responsable-atelier",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "executive assistant",
+   "occupation": "executive-assistant",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "facility manager",
+   "occupation": "responsable-services-generaux",
+   "mode": "exacte",
+   "offres": 3
+  },
+  {
+   "phrase": "dekorator",
+   "occupation": "scenographe",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "deputy boutique director",
+   "occupation": "assistant-store-manager",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "deputy store director",
+   "occupation": "assistant-store-manager",
+   "mode": "exacte",
+   "offres": 2
+  },
+  {
+   "phrase": "美 容 师",
+   "occupation": "beauty-therapist",
+   "mode": "exacte",
+   "offres": 4
+  },
+  {
+   "phrase": "directeur de clientele",
+   "occupation": "directeur-de-clientele",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "optica",
+   "occupation": "dispensing-optician",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "directora regional",
+   "occupation": "regional-retail-manager",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "director supply chain",
+   "occupation": "directeur-supply-chain",
+   "mode": "exacte",
+   "offres": 3
+  },
+  {
+   "phrase": "selger",
+   "occupation": "commercial",
+   "mode": "exacte",
+   "offres": 3
+  },
+  {
+   "phrase": "retail project manager",
+   "occupation": "responsable-projets-retail",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "esteticista",
+   "occupation": "beauty-therapist",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "estoquista",
+   "occupation": "stock-associate",
+   "mode": "exacte",
+   "offres": 4
+  },
+  {
+   "phrase": "event manager",
+   "occupation": "charge-de-communication-evenementielle",
+   "mode": "exacte",
+   "offres": 2
+  },
+  {
+   "phrase": "event project manager",
+   "occupation": "chef-de-projet-evenementiel",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "communication manager",
+   "occupation": "responsable-communication",
+   "mode": "exacte",
+   "offres": 4
+  },
+  {
+   "phrase": "financial control",
+   "occupation": "financial-controller",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "purchasing manager",
+   "occupation": "responsable-achats-et-offre",
+   "mode": "exacte",
+   "offres": 4
+  },
+  {
+   "phrase": "modell",
+   "occupation": "mannequin",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "formador",
+   "occupation": "formateur",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "digital project manager",
+   "occupation": "chef-de-projet-digital",
+   "mode": "exacte",
+   "offres": 4
+  },
+  {
+   "phrase": "fotograf",
+   "occupation": "photographe",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "gestionnaire rh",
+   "occupation": "gestionnaire-des-ressources-humaines",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "talent manager",
+   "occupation": "talent-manager",
+   "mode": "exacte",
+   "offres": 3
+  },
+  {
+   "phrase": "growth marketing manager",
+   "occupation": "responsable-growth-marketing",
+   "mode": "exacte",
+   "offres": 3
+  },
+  {
+   "phrase": "housekeeper",
+   "occupation": "gouvernant",
+   "mode": "exacte",
+   "offres": 4
+  },
+  {
+   "phrase": "hr officer",
+   "occupation": "gestionnaire-des-ressources-humaines",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "human resources director",
+   "occupation": "directeur-des-ressources-humaines",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "ingenieur qualite",
+   "occupation": "ingenieur-qualite",
+   "mode": "exacte",
+   "offres": 4
+  },
+  {
+   "phrase": "crm marketing assistant",
+   "occupation": "assistant-marketing-client",
+   "mode": "exacte",
+   "offres": 2
+  },
+  {
+   "phrase": "media assistant",
+   "occupation": "assistant-media",
+   "mode": "exacte",
+   "offres": 2
+  },
+  {
+   "phrase": "cheffe de projet digital",
+   "occupation": "chef-de-projet-digital",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "journaliste",
+   "occupation": "journaliste",
+   "mode": "exacte",
+   "offres": 4
+  },
+  {
+   "phrase": "einkaufer",
+   "occupation": "buyer",
+   "mode": "exacte",
+   "offres": 2
+  },
+  {
+   "phrase": "kassierer",
+   "occupation": "cashier",
+   "mode": "exacte",
+   "offres": 2
+  },
+  {
+   "phrase": "makeupartist",
+   "occupation": "makeup-artist",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "kierownik sklepu",
+   "occupation": "store-manager",
+   "mode": "exacte",
+   "offres": 2
+  },
+  {
+   "phrase": "knitwear designer",
+   "occupation": "designer-maille",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "accessories developer",
+   "occupation": "product-developer",
+   "mode": "exacte",
+   "offres": 2
+  },
+  {
+   "phrase": "gemologist",
+   "occupation": "gemmologue",
+   "mode": "exacte",
+   "offres": 2
+  },
+  {
+   "phrase": "livreur",
+   "occupation": "livreur",
+   "mode": "exacte",
+   "offres": 4
+  },
+  {
+   "phrase": "administratief medewerker",
+   "occupation": "assistant-administratif",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "lucrator comercial",
+   "occupation": "sales-advisor",
+   "mode": "exacte",
+   "offres": 2
+  },
+  {
+   "phrase": "maitre",
+   "occupation": "maitre-d-hotel",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "maschinenbediener",
+   "occupation": "equipment-operator",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "kasiyer",
+   "occupation": "cashier",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "modelist",
+   "occupation": "modeliste",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "modellista",
+   "occupation": "modeliste",
+   "mode": "exacte",
+   "offres": 4
+  },
+  {
+   "phrase": "modelo",
+   "occupation": "mannequin",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "wholesale manager",
+   "occupation": "responsable-wholesale",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "responsabile di reparto",
+   "occupation": "manager-floor",
+   "mode": "exacte",
+   "offres": 2
+  },
+  {
+   "phrase": "retail operations assistant",
+   "occupation": "retail-operations-associate",
+   "mode": "exacte",
+   "offres": 4
+  },
+  {
+   "phrase": "operador de producao",
+   "occupation": "operateur-de-production",
+   "mode": "exacte",
+   "offres": 2
+  },
+  {
+   "phrase": "operario de produccion",
+   "occupation": "operateur-de-production",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "operateur de production",
+   "occupation": "operateur-de-production",
+   "mode": "exacte",
+   "offres": 3
+  },
+  {
+   "phrase": "optical team member",
+   "occupation": "optical-assistant",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "optical technician optician",
+   "occupation": "dispensing-optician",
+   "mode": "exacte",
+   "offres": 2
+  },
+  {
+   "phrase": "optometrista",
+   "occupation": "optometrist",
+   "mode": "exacte",
+   "offres": 3
+  },
+  {
+   "phrase": "patternmaker",
+   "occupation": "modeliste",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "penztaros",
+   "occupation": "cashier",
+   "mode": "exacte",
+   "offres": 2
+  },
+  {
+   "phrase": "pharmareferent",
+   "occupation": "delegue-pharmaceutique",
+   "mode": "exacte",
+   "offres": 3
+  },
+  {
+   "phrase": "pracownik magazynu",
+   "occupation": "warehouse-operative",
+   "mode": "exacte",
+   "offres": 2
+  },
+  {
+   "phrase": "asistente administrativo",
+   "occupation": "assistant-administratif",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "dresser",
+   "occupation": "habilleur",
+   "mode": "exacte",
+   "offres": 2
+  },
+  {
+   "phrase": "premiere main",
+   "occupation": "premiere-main",
+   "mode": "exacte",
+   "offres": 2
+  },
+  {
+   "phrase": "prodavac",
+   "occupation": "sales-advisor",
+   "mode": "exacte",
+   "offres": 3
+  },
+  {
+   "phrase": "production coordinator",
+   "occupation": "coordinateur-de-production",
+   "mode": "exacte",
+   "offres": 3
+  },
+  {
+   "phrase": "production director",
+   "occupation": "directeur-production",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "produktionsmitarbeiter",
+   "occupation": "operateur-de-production",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "prototipista",
+   "occupation": "prototypiste",
+   "mode": "exacte",
+   "offres": 2
+  },
+  {
+   "phrase": "regulatory affairs manager",
+   "occupation": "charge-d-affaires-reglementaires",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "raktaros",
+   "occupation": "stock-associate",
+   "mode": "exacte",
+   "offres": 2
+  },
+  {
+   "phrase": "recepcionista",
+   "occupation": "receptionist",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "recruiting manager",
+   "occupation": "responsable-recrutement",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "responsabile logistica",
+   "occupation": "logistics-manager",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "responsable communication interne",
+   "occupation": "responsable-communication-interne",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "responsable d atelier",
+   "occupation": "responsable-atelier",
+   "mode": "exacte",
+   "offres": 2
+  },
+  {
+   "phrase": "responsable e commerce",
+   "occupation": "ecommerce-manager",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "responsable formation",
+   "occupation": "responsable-formation",
+   "mode": "exacte",
+   "offres": 3
+  },
+  {
+   "phrase": "responsable operationnel",
+   "occupation": "responsable-operationnel",
+   "mode": "exacte",
+   "offres": 2
+  },
+  {
+   "phrase": "responsable services generaux",
+   "occupation": "responsable-services-generaux",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "retail coordinator",
+   "occupation": "coordinateur-retail",
+   "mode": "exacte",
+   "offres": 2
+  },
+  {
+   "phrase": "gebietsverkaufsleiter",
+   "occupation": "responsable-commercial-de-zone",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "saelger",
+   "occupation": "commercial",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "stylist assistant",
+   "occupation": "assistant-styliste",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "salgsassistent",
+   "occupation": "assistant-commercial",
+   "mode": "exacte",
+   "offres": 2
+  },
+  {
+   "phrase": "scenographe",
+   "occupation": "scenographe",
+   "mode": "exacte",
+   "offres": 2
+  },
+  {
+   "phrase": "sarta",
+   "occupation": "seamster",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "sarto",
+   "occupation": "seamster",
+   "mode": "exacte",
+   "offres": 2
+  },
+  {
+   "phrase": "campionarista",
+   "occupation": "premiere-main",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "schneider",
+   "occupation": "seamster",
+   "mode": "exacte",
+   "offres": 3
+  },
+  {
+   "phrase": "培 训 师",
+   "occupation": "formateur",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "logistiek coordinator",
+   "occupation": "coordinateur-logistique",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "designer ux",
+   "occupation": "ux-ui-designer",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "showroom assistant",
+   "occupation": "assistant-showroom",
+   "mode": "exacte",
+   "offres": 2
+  },
+  {
+   "phrase": "assistant media",
+   "occupation": "assistant-media",
+   "mode": "exacte",
+   "offres": 2
+  },
+  {
+   "phrase": "chef de projet influence",
+   "occupation": "chef-de-projet-influence",
+   "mode": "exacte",
+   "offres": 3
+  },
+  {
+   "phrase": "e commerce merchandiser",
+   "occupation": "e-merchandiser",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "assistant marketing client",
+   "occupation": "assistant-marketing-client",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "assistant patrimoine",
+   "occupation": "assistant-patrimoine",
+   "mode": "exacte",
+   "offres": 2
+  },
+  {
+   "phrase": "charge d affaires reglementaires",
+   "occupation": "charge-d-affaires-reglementaires",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "management assistant",
+   "occupation": "assistant-de-gestion",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "assistante media",
+   "occupation": "assistant-media",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "assistante patrimoine",
+   "occupation": "assistant-patrimoine",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "sprzedawca",
+   "occupation": "sales-advisor",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "subgerente de loja",
+   "occupation": "assistant-store-manager",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "supervisor de loja",
+   "occupation": "manager-floor",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "supply chain manager",
+   "occupation": "responsable-supply-chain",
+   "mode": "exacte",
+   "offres": 2
+  },
+  {
+   "phrase": "supply chain planner",
+   "occupation": "planificateur-supply-chain",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "supply chain project manager",
+   "occupation": "chef-de-projet-supply-chain",
+   "mode": "exacte",
+   "offres": 3
+  },
+  {
+   "phrase": "客 户 经 理",
+   "occupation": "responsable-de-comptes",
+   "mode": "exacte",
+   "offres": 2
+  },
+  {
+   "phrase": "产 品 经 理",
+   "occupation": "chef-produit",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "assistant visual merchandising manager",
+   "occupation": "assistant-visual-merchandising-manager",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "vedouci prodejny",
+   "occupation": "store-manager",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "assisterende butikksjef",
+   "occupation": "assistant-store-manager",
+   "mode": "exacte",
+   "offres": 2
+  },
+  {
+   "phrase": "regionsjef",
+   "occupation": "regional-retail-manager",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "ヒ シ ュ ア ル マ ー チ ャ ン タ イ サ ー",
+   "occupation": "visual-merchandiser",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "πωλητρια",
+   "occupation": "commercial",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "συμβουλος ομορφιας",
+   "occupation": "beauty-consultant",
+   "mode": "exacte",
+   "offres": 2
+  },
+  {
+   "phrase": "ト レ ー ナ ー",
+   "occupation": "formateur",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "銷 售 助 理",
+   "occupation": "assistant-commercial",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "副 店 長",
+   "occupation": "assistant-store-manager",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "副 店 长",
+   "occupation": "assistant-store-manager",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "财 务 经 理",
+   "occupation": "responsable-administratif-et-financier",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "phrase": "文 员",
+   "occupation": "assistant-administratif",
+   "mode": "exacte",
+   "offres": 3
+  },
+  {
+   "phrase": "裁 缝",
+   "occupation": "seamster",
+   "mode": "exacte",
+   "offres": 1
+  }
+ ]
+}

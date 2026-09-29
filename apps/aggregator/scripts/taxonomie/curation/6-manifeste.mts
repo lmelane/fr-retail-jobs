@@ -38,8 +38,8 @@ import { compileOccupationManifest, occupationExactKey, occupationMatchKey, type
 import { manifestVocabularyCollisions, vocabularyCollisions } from '../../../../../packages/db/occupation-vocabulary.ts';
 import releaseDecidee from '../../../../../packages/db/data/occupations-v1.json' with { type: 'json' };
 import secteurs from '../../../../../packages/db/data/sectors-v1.json' with { type: 'json' };
-import { FAMILY_ALIASES, SEARCH_VOCABULARY_VERSION, searchConcepts } from '../../../../api/lib/search-vocabulary.ts';
-import { searchWords } from '../../../../api/lib/search-intent.ts';
+import { FAMILY_ALIASES, SEARCH_VOCABULARY_VERSION, searchConcepts } from '../../../../../packages/db/search-vocabulary.ts';
+import { searchWords } from '../../../../../packages/db/search-intent.ts';
 import { validateOccupationSuccessor } from '../../../src/occupation/release.ts';
 import { conceptsV3, DOSSIER_SORTIE, estVague, EXCLUS_RAYON, familles, libellesEtFormes, lireEtape, niveauSeul, phraseMoteur, servie, VAGUES } from './commun.mts';
 
@@ -200,6 +200,12 @@ for (const [cle, s] of expressions) for (const f of s) { const k = occupationExa
 const anciensNoms = (cle: string, cleV3: string, s: any) => [...Object.values<string>(s?.labels ?? {}),
   ...Object.values<string>(decideeParCle.get(cleV3)?.labels ?? {}), ...(decideeParCle.get(cleV3)?.aliases ?? [])]
   .filter((v) => [...(porteursParCleV2.get(occupationExactKey(v, 2)) ?? [])].every((k) => k === cle));
+const cleRecherche = (v: string) => searchWords(v).join(' ');
+// Expressions lues dans un intitulé plus long (`titleRoles`, D-475 point 38) : seulement celles que l'étape 6g a vérifiées
+// sur ce qu'elles y captent (R-66 §2) ; un métier les porte parmi ses libellés et alias.
+const lues: { phrase: string; occupation: string }[] = !BASE && existsSync(`${DOSSIER_SORTIE}6g-lectures.json`)
+  ? lireEtape('6g-lectures.json').decisions.filter((d: any) => d.mode === 'lue') : [];
+const luesDe = (cle: string, noms: string[]) => { const p = new Set(lues.filter((d) => d.occupation === cle).map((d) => d.phrase)); return [...new Set(noms)].filter((x) => p.has(cleRecherche(x))).sort(); };
 const metiersV3 = concepts.map((c) => {
   const s = servis.get(c.cle);
   const labels = libellesDe(c.cle);
@@ -208,7 +214,9 @@ const metiersV3 = concepts.map((c) => {
     ...anciensNoms(c.cle, cleMetier.get(c.cle)!, s)])]
     .filter((x) => x && x !== labels.fr && !interdite(phraseMoteur(x), c.cle) && !(c.cle === deRayon && decide.has(phraseMoteur(x)) && decide.get(phraseMoteur(x)) !== 'rayon') && (!attribution.get(phraseMoteur(x)) || attribution.get(phraseMoteur(x))!.garde === c.cle || !attribution.get(phraseMoteur(x))!.retires.includes(c.cle)));
   const ancre = e5ParCle.get(c.cle)?.ancreEsco;
+  const lu = luesDe(cleMetier.get(c.cle)!, [...Object.values(labels), ...aliases]);
   return { key: cleMetier.get(c.cle)!, family: s ? s.family : c.cle === deRayon ? FAMILLE_RAYON : cleFamille(c.famille), labels, aliases,
+    ...(lu.length ? { titleReadingAliases: lu } : {}),
     ...(ancre ? { externalRefs: [ancre] } : {}),
     ...(c.cle === 'financial-controller' && e5c.aliasRecherche[c.cle] ? { titleOnlyAliases: e5c.aliasRecherche[c.cle] } : {}) };
 });
@@ -322,7 +330,6 @@ for (const langue of new Set(metiersV3.flatMap((m) => Object.keys(m.labels)))) {
   for (const m of metiersV3) { const v = m.labels[langue]; if (!v) continue; const f = phraseMoteur(v); if (vus.has(f)) libellesPartages.push(`${langue} « ${v} » : ${vus.get(f)} / ${m.key}`); else vus.set(f, m.key); }
 }
 
-const cleRecherche = (v: string) => searchWords(v).join(' ');
 const nomsDeSecteur = new Set<string>((secteurs as any[]).flatMap((s) => Object.values<string>(s.labels).map(cleRecherche)));
 const maintenant = new Date();
 const manifeste = {
@@ -363,9 +370,11 @@ const attendu = (m: string, rendu: string | null) => (m === 'vente' ? rendu === 
 const ecartsScission = scission.decisions.flatMap((d: any) => textesDe(d).map((t) => ({ texte: t, decision: d.metier, rendu: compile.classify(t, null).occupationCode })))
   .filter((x: any) => !attendu(x.decision, x.rendu));
 validateOccupationSuccessor(servie, manifeste);
+// Chaque lecture vérifiée par 6g doit trouver son expression chez son métier : sinon le vocabulaire a changé depuis 6g.
+const luesPerdues = lues.filter((d) => !metiersV3.some((o: any) => o.key === d.occupation && (o.titleReadingAliases ?? []).some((a: string) => cleRecherche(a) === d.phrase)));
 
 // Un manifeste refusé ne remplace jamais le bon : il s'écrit à part (audit du lot 2B-2).
-const refuse = nonIdempotentes.length + libellesPartages.length + ecartsScission.length + collisionsV2.length + collisionsVocabulaire.length > 0;
+const refuse = luesPerdues.length + nonIdempotentes.length + libellesPartages.length + ecartsScission.length + collisionsV2.length + collisionsVocabulaire.length > 0;
 const fichier = `${BASE ? '6-manifeste-base' : '6-manifeste-v3'}${refuse ? '.refuse' : ''}.json`;
 writeFileSync(`${DOSSIER_SORTIE}${fichier}`, JSON.stringify(manifeste, null, 1));
 if (!BASE && !refuse) writeFileSync(`${DOSSIER_SORTIE}6-correspondances.json`, JSON.stringify({ calculeLe: maintenant.toISOString(), manifeste: ID,
@@ -373,7 +382,7 @@ if (!BASE && !refuse) writeFileSync(`${DOSSIER_SORTIE}6-correspondances.json`, J
   familles: Object.fromEntries(famillesV3.map((f: any) => [f.key, f.key])), libellesRetires, arbitragesFinaux }, null, 1));
 const bilan = { fichier, id: ID, familles: famillesV3.length, metiers: metiersV3.length, absorbes: dans.size, regles: regles.length,
   reglesV3: reglesV3.length, reglesExactes: reglesV3.filter((r) => r.all[0].mode === 'exact').length, generalisables: generalisables.size,
-  arbitragesFinaux: arbitragesFinaux.length, arbitragesV2: arbitragesV2.length, libellesRetires: libellesRetires.length, libellesPartages: libellesPartages.length,
+  lues: lues.length, luesPerdues: luesPerdues.length, arbitragesFinaux: arbitragesFinaux.length, arbitragesV2: arbitragesV2.length, libellesRetires: libellesRetires.length, libellesPartages: libellesPartages.length,
   nonIdempotentes: nonIdempotentes.length, ecartsScission: ecartsScission.length, collisionsV2: collisionsV2.length, collisionsVocabulaire: collisionsVocabulaire.length, preseances: arcs, preseancesRefuseesPourCycle: arcsRefuses, compile: compile.occupations.size, succession: 'conforme' };
 console.log(JSON.stringify(bilan, null, 1));
 for (const x of libellesPartages.slice(0, 10)) console.log(` libellé partagé : ${x}`);
@@ -383,4 +392,6 @@ for (const x of collisionsV2.slice(0, 15)) console.log(` collision v2 : « ${x.c
 if (collisionsV2.length) { console.error(`ASSEMBLAGE REFUSÉ : ${collisionsV2.length} clé(s) v2 pour plusieurs métiers`); process.exitCode = 1; }
 for (const x of ecartsScission.slice(0, 10)) console.log(` 3c non tenu : « ${x.texte} » décidé ${x.decision}, rendu ${x.rendu ?? 'aucun'}`);
 if (ecartsScission.length) { console.error(`ASSEMBLAGE REFUSÉ : ${ecartsScission.length} décision(s) de 3c non tenue(s) par le moteur`); process.exitCode = 1; }
+for (const x of luesPerdues.slice(0, 10)) console.log(` lecture perdue : « ${x.phrase} » → ${x.occupation}`);
+if (luesPerdues.length) { console.error(`ASSEMBLAGE REFUSÉ : ${luesPerdues.length} lecture(s) de 6g sans expression chez leur métier`); process.exitCode = 1; }
 if (nonIdempotentes.length || libellesPartages.length) { console.error(`ASSEMBLAGE REFUSÉ : ${nonIdempotentes.length} expression(s) non idempotente(s), ${libellesPartages.length} libellé(s) partagé(s)`); process.exitCode = 1; }
