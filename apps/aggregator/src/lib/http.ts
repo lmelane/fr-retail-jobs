@@ -16,6 +16,7 @@ import { assertCaptureHealthy, assertRequestAccess, auditUrl, describeRequest, c
 
 import { observedHop, type RequestDescription, type TransportHop } from '../capture/requestData.js';
 import { captureFailureLabel } from './transportFailure.js';
+import { SourceAccessGateError } from '../connectors/accessScope.js';
 
 export { WafChallengeError } from './wafToken.js';
 export { detectChallenge, type ChallengeVendor } from './responseIntegrity.js';
@@ -377,7 +378,11 @@ export async function fetchWithRetry(url: string, init: RequestInit = {}, attemp
         continue;
       }
     } catch (error) {
-      if (capturingResponses() && !attemptCaptured && !(error instanceof CaptureUnavailableError)) {
+      // A refusal by our own access gate before the FIRST hop leaves nothing dispatched to archive, and archiving the
+      // empty attempt replaced the refusal by `CaptureUnavailableError`, hiding its motive (ACCESS_SCOPE, 14 sources on
+      // 29/09/2026). A refusal on a later hop still archives the hops actually dispatched.
+      const refusedBeforeTransport = error instanceof SourceAccessGateError && hops.length === 0;
+      if (capturingResponses() && !attemptCaptured && !(error instanceof CaptureUnavailableError) && !refusedBeforeTransport) {
         await captureResponse({ url, method: init.method, body: init.body, headers: init.headers, format: 'HTTP_RESPONSE', transport },
           { bytes: null, complete: false, failure: captureFailureLabel(error, 'NetworkError') });
       }

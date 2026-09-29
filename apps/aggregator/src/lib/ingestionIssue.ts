@@ -57,7 +57,8 @@ export function ingestionIssue(error: unknown): IngestionIssue {
     return ingestionIssue(error.cause);
   if (error instanceof TypeError || error instanceof ReferenceError || error instanceof RangeError)
     return { origin: 'INTERNAL', code: error.name, count: 1 };
-  if (error instanceof SourceAccessGateError && ['ACCESS_MISSING', 'ACCESS_STALE', 'ACCESS_SUPERSEDED'].includes(error.code))
+  // ACCESS_SCOPE: a request outside the scope our own qualification derived — our gate, not the publisher.
+  if (error instanceof SourceAccessGateError && ['ACCESS_MISSING', 'ACCESS_STALE', 'ACCESS_SUPERSEDED', 'ACCESS_SCOPE'].includes(error.code))
     return { origin: 'INTERNAL', code: error.code, count: 1 };
   // HTTP 4xx, timeouts, parsing, attribution and admission refusals can come
   // from our request/config/reader. Their message alone does not prove blame.

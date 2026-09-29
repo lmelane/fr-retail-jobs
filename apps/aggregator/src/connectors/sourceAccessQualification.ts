@@ -10,7 +10,9 @@ import { assertSourceRunning } from '../lib/sourceBudget.js';
 import { log } from '../observability/logger.js';
 import { captureReaderRevision } from '../capture/revision.js';
 import { captureSourceForValidation } from './sourceValidation.js';
-import { SourceAccessGateError } from './accessScope.js';
+import { matchingAccessScope, SourceAccessGateError, type AccessScope } from './accessScope.js';
+import { describeRequest } from '../capture/context.js';
+import { CRAWLER_IDENTITY } from '../lib/crawlerIdentity.js';
 import { requireSourceValidation, SourceValidationGateError } from './sourceCertification.js';
 import { SourceAdmissionGateError } from './sourceAdmission.js';
 
@@ -70,8 +72,10 @@ export async function maintainSourceAccess(db: PrismaClient, sourceKey: string, 
   if (previous && previous.verdict !== 'ALLOWED')
     throw new SourceAccessGateError('ACCESS_DENIED', 'Automatic qualification cannot replace an explicit denial');
   let reason: string;
+  // A fresh validated capture the grant no longer covers: the new grant is derived from it, without collecting again.
+  let outgrownBy: string | null = null;
   try {
-    const { decision } = assertSourceAccess(source, previous);
+    const { decision, document } = assertSourceAccess(source, previous);
     // Access grants live up to 30 days; native qualification lasts 24 hours.
     // A daily run must renew the latter without replacing a still-valid grant.
     try { await requireSourceValidation(db, source.currentRevisionId); }
@@ -81,24 +85,66 @@ export async function maintainSourceAccess(db: PrismaClient, sourceKey: string, 
       const validation = await captureSourceForValidation(db, sourceKey, timeoutMs, store);
       if (validation.verdict !== 'VALIDATED') throw new SourceAdmissionGateError('CAPTURE_NOT_VALIDATED', `Native qualification failed: ${validation.verdict}`);
       await log.info('source.native_qualification_completed', { sourceKey, captureBatchId: validation.captureBatchId });
+      if (await scopeOutgrown(db, sourceKey, document.scopes, validation.captureBatchId, store)) outgrownBy = validation.captureBatchId;
     }
-    return { renewed: false, decisionId: decision.id };
+    if (!outgrownBy) return { renewed: false, decisionId: decision.id };
+    reason = 'ACCESS_SCOPE_OUTGROWN';
   } catch (error) {
     if (!(error instanceof SourceAccessGateError) || !['ACCESS_STALE', 'ACCESS_MISSING'].includes(error.code)) throw error;
     reason = error.code;
   }
   await log.info('source.access_qualification_started', { sourceKey, reason, previousDecisionId: previous?.id ?? null });
   assertPipelineRunning(); assertSourceRunning();
-  const validation = await captureSourceForValidation(db, sourceKey, timeoutMs, store);
-  if (validation.verdict !== 'VALIDATED')
-    throw new SourceAdmissionGateError('CAPTURE_NOT_VALIDATED', `Access qualification requires validated native evidence: ${validation.verdict}`);
-  const qualification = await qualifySourceAccess(db, source, source.currentRevisionId, validation.captureBatchId,
+  let evidenceBatchId = outgrownBy;
+  if (!evidenceBatchId) {
+    const validation = await captureSourceForValidation(db, sourceKey, timeoutMs, store);
+    if (validation.verdict !== 'VALIDATED')
+      throw new SourceAdmissionGateError('CAPTURE_NOT_VALIDATED', `Access qualification requires validated native evidence: ${validation.verdict}`);
+    evidenceBatchId = validation.captureBatchId;
+  }
+  const qualification = await qualifySourceAccess(db, source, source.currentRevisionId, evidenceBatchId,
     `normal-worker:${captureReaderRevision()}`, {}, store, previous?.id ?? null);
   if (!qualification.allowed) throw new SourceAccessGateError('ACCESS_INVALID', `Access qualification refused: ${qualification.reason}`);
   assertPipelineRunning(); assertSourceRunning();
   // Re-read the real grant; a returned boolean cannot replace admission.
   const { decision } = await requireSourceAccess(db, source);
   await log.info('source.access_qualification_completed', { sourceKey, reason, decisionId: decision.id,
-    verdict: decision.verdict, captureBatchId: validation.captureBatchId });
+    verdict: decision.verdict, captureBatchId: evidenceBatchId });
   return { renewed: true, decisionId: decision.id };
+}
+
+/**
+ * La capture native du jour sort-elle du périmètre de l'autorisation en vigueur ?
+ *
+ * Un périmètre est dérivé des adresses observées le jour où l'autorisation est accordée, et l'autorisation vit
+ * 30 jours. Une offre publiée ensuite hors d'un répertoire déclaré en préfixe (une offre Workday dans un lieu
+ * nouveau, une page de détail qu'aucune offre n'exigeait ce jour-là) sort du périmètre, et sa lecture arrête la
+ * collecte entière : 14 sources le 29/09/2026, premier RUN sans déploiement (un déploiement change la révision du
+ * lecteur et requalifiait tout, ce qui masquait le défaut). La capture de qualification précède la collecte de
+ * quelques secondes et lit les mêmes adresses : si l'une sort du périmètre, l'autorisation est redérivée d'elle.
+ *
+ * Une capture illisible pour ce contrôle ne change rien au comportement antérieur : l'autorisation est gardée, et
+ * l'échec est journalisé plutôt que d'arrêter une source que rien ne bloquait.
+ */
+async function scopeOutgrown(db: PrismaClient, sourceKey: string, scopes: readonly AccessScope[], captureBatchId: string, store?: ObjectStore) {
+  let requests: Awaited<ReturnType<typeof observedRequests>>;
+  try { requests = await observedRequests(db, captureBatchId, store); }
+  catch (error) {
+    await log.warn('source.access_scope_check_failed', { sourceKey, captureBatchId, error: message(error) });
+    return false;
+  }
+  const outside = requests.filter(request => {
+    try {
+      matchingAccessScope(scopes, describeRequest({ url: request.url.toString(), method: request.method,
+        headers: { 'user-agent': CRAWLER_IDENTITY }, format: 'HTTP_RESPONSE' }));
+      return false;
+    } catch (error) {
+      if (error instanceof SourceAccessGateError) return true;
+      throw error;
+    }
+  });
+  if (!outside.length) return false;
+  await log.info('source.access_scope_outgrown', { sourceKey, captureBatchId, outside: outside.length,
+    example: `${outside[0].method} ${outside[0].url.origin}${outside[0].url.pathname}` });
+  return true;
 }

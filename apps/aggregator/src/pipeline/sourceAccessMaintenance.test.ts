@@ -106,6 +106,34 @@ describe('normal run maintains its access prerequisite through the Golden Path',
     await collect(source);
   });
 
+  it('re-derives a grant that the day\'s native qualification outgrows, then admits the collection (29/09/2026)', async () => {
+    const source = await create(); native();
+    const first = await maintain(source);
+    // The publisher moves its feed: the address the first day's grant was derived from now redirects elsewhere.
+    const moved = vi.fn(async (input: string | URL | Request) => {
+      const url = new URL(typeof input === 'string' ? input : input instanceof URL ? input.href : input.url);
+      if (url.pathname === '/robots.txt') return new Response('User-agent: *\nAllow: /', { headers: { 'content-type': 'text/plain' } });
+      if (!url.pathname.endsWith('/v2')) return new Response(null, { status: 301, headers: { location: `${url.pathname}/v2${url.search}` } });
+      return new Response('{"apiVersion":"1","jobs":[]}', { headers: { 'content-type': 'application/json' } });
+    });
+    vi.stubGlobal('fetch', moved);
+    // Premise: the first grant does not cover the new address, and the refusal names its motive instead of
+    // `CaptureUnavailableError` (the 14 sources of the RUN of 29/09/2026 were reported that way).
+    let refusal: unknown;
+    try { await collect(source); } catch (error) { refusal = error; }
+    expect(refusal).toMatchObject({ name: 'SourceAccessGateError', code: 'ACCESS_SCOPE' });
+    expect(ingestionIssue(refusal)).toEqual({ origin: 'INTERNAL', code: 'ACCESS_SCOPE', count: 1 });
+    vi.spyOn(certification, 'requireSourceValidation').mockRejectedValueOnce(
+      new certification.SourceValidationGateError('CAPTURE_STALE', '24-hour native qualification expired'));
+    const renewed = await maintain(source);
+    expect(renewed.renewed).toBe(true); expect(renewed.decisionId).not.toBe(first.decisionId);
+    expect(await db.sourceAccessDecision.count({ where: { sourceKey: source.key } })).toBe(2);
+    // Derived from the day's qualification capture: no second collection, only the robots of the origin.
+    expect(moved.mock.calls.map(([input]) => new URL(String(input)).pathname).filter(path => path === '/robots.txt')).toHaveLength(1);
+    const collected = await collect(source);
+    expect(await db.captureBatch.findUniqueOrThrow({ where: { id: collected.captureBatchId } })).toMatchObject({ accessDecisionId: renewed.decisionId });
+  });
+
   it('renews stale reader evidence through capture/replay/robots without rewriting history', async () => {
     const source = await create(); native();
     const oldReader = vi.spyOn(revision, 'captureReaderRevision').mockReturnValue('git:' + '1'.repeat(40));

@@ -3,6 +3,7 @@ import { digestBytes, describeRequest, requestFingerprint, withCaptureContext, t
 import { logicalRequestFingerprint, observedHop, validateRequestData, type RequestData } from './requestData.js';
 import { fetchFollowingSafely, fetchWithRetry } from '../lib/http.js';
 import { CRAWLER_IDENTITY } from '../lib/crawlerIdentity.js';
+import { SourceAccessGateError } from '../connectors/accessScope.js';
 
 const gate = vi.hoisted(() => ({ before: null as (() => void) | null }));
 vi.mock('../lib/hostGate.js', () => ({ withHostGate: async (_url: string, run: () => Promise<unknown>) => { gate.before?.(); return run(); }, reportThrottle: () => {}, reportSuccess: () => {} }));
@@ -71,6 +72,15 @@ it('does not mislabel an SSRF refusal before transport as an observed HTTP reque
   const fetch = vi.fn(); vi.stubGlobal('fetch', fetch); const rows: CaptureRecord[] = [];
   await expect(withCaptureContext({ sequence: 0, write: async row => { rows.push(row); } }, () => fetchWithRetry('http://127.0.0.1/private', {}, 1))).rejects.toThrow();
   expect(rows[0].requestData).toMatchObject({ origin: 'UNOBSERVED_TRANSPORT', hops: [] }); expect(fetch).not.toHaveBeenCalled();
+});
+
+it('keeps the motive of an access-scope refusal before transport instead of an unavailable capture (29/09/2026)', async () => {
+  const fetch = vi.fn(); vi.stubGlobal('fetch', fetch); const rows: CaptureRecord[] = [];
+  const outOfScope = () => { throw new SourceAccessGateError('ACCESS_SCOPE', 'Request is outside the reviewed public HTTP scope'); };
+  await expect(withCaptureContext({ sequence: 0, write: async row => { rows.push(row); }, requestAccess: outOfScope },
+    () => fetchWithRetry('https://request-proof.example/job/new-posting', {}, 1))).rejects.toMatchObject({ name: 'SourceAccessGateError', code: 'ACCESS_SCOPE' });
+  // Premise of the RUN of 29/09/2026: the gate refused the FIRST request, before any hop existed.
+  expect(fetch).not.toHaveBeenCalled(); expect(rows).toEqual([]);
 });
 
 it.each([
