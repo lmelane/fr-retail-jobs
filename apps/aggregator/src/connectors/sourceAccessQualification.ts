@@ -60,7 +60,8 @@ export async function qualifySourceAccess(db: PrismaClient, c: { key: string; ki
 }
 
 /** Maintain only a missing/stale prerequisite for an ACTIVE source in its normal run.
- * A current grant is untouched; denials/invalid evidence never trigger a replacement grant.
+ * A current grant is kept unless the day's native qualification capture requests something outside
+ * its scope; it is then re-derived from that capture. Denials/invalid evidence never trigger a replacement grant.
  * Qualification captures are evidence only. The subsequent normal ingestion still has to
  * obtain its own admission and pass every existing publication check. */
 export async function maintainSourceAccess(db: PrismaClient, sourceKey: string, timeoutMs: number, store?: ObjectStore) {
@@ -76,8 +77,8 @@ export async function maintainSourceAccess(db: PrismaClient, sourceKey: string, 
   let outgrownBy: string | null = null;
   try {
     const { decision, document } = assertSourceAccess(source, previous);
-    // Access grants live up to 30 days; native qualification lasts 24 hours.
-    // A daily run must renew the latter without replacing a still-valid grant.
+    // Access grants live up to 30 days; native qualification lasts 24 hours. A daily run renews
+    // the latter and keeps a still-valid grant, unless that fresh capture outgrows its scope.
     try { await requireSourceValidation(db, source.currentRevisionId); }
     catch (error) {
       if (!(error instanceof SourceValidationGateError)) throw error;
@@ -124,7 +125,11 @@ export async function maintainSourceAccess(db: PrismaClient, sourceKey: string, 
  * quelques secondes et lit les mêmes adresses : si l'une sort du périmètre, l'autorisation est redérivée d'elle.
  *
  * Une capture illisible pour ce contrôle ne change rien au comportement antérieur : l'autorisation est gardée, et
- * l'échec est journalisé plutôt que d'arrêter une source que rien ne bloquait.
+ * l'échec est journalisé plutôt que d'arrêter une source que rien ne bloquait. Une redérivation qui échoue ensuite
+ * (budget de 64 périmètres dépassé, robots refusé) arrête la source, comme l'aurait fait sa collecte hors périmètre.
+ *
+ * Coût : ce contrôle relit à chaque RUN, pour chaque source requalifiée, les requêtes de sa capture du jour (lecture
+ * en base, aucune requête vers l'éditeur) ; de quelques dizaines à quelques milliers de lignes selon la source.
  */
 async function scopeOutgrown(db: PrismaClient, sourceKey: string, scopes: readonly AccessScope[], captureBatchId: string, store?: ObjectStore) {
   let requests: Awaited<ReturnType<typeof observedRequests>>;

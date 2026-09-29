@@ -380,7 +380,8 @@ export async function fetchWithRetry(url: string, init: RequestInit = {}, attemp
     } catch (error) {
       // A refusal by our own access gate before the FIRST hop leaves nothing dispatched to archive, and archiving the
       // empty attempt replaced the refusal by `CaptureUnavailableError`, hiding its motive (ACCESS_SCOPE, 14 sources on
-      // 29/09/2026). A refusal on a later hop still archives the hops actually dispatched.
+      // 29/09/2026). A refusal on a later hop still archives the hops actually dispatched. Unlike an SSRF refusal, this
+      // one leaves no `RawCapture` row: nothing left the process, and the batch outcome still records the refusal.
       const refusedBeforeTransport = error instanceof SourceAccessGateError && hops.length === 0;
       if (capturingResponses() && !attemptCaptured && !(error instanceof CaptureUnavailableError) && !refusedBeforeTransport) {
         await captureResponse({ url, method: init.method, body: init.body, headers: init.headers, format: 'HTTP_RESPONSE', transport },
