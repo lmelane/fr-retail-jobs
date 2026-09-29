@@ -86,6 +86,14 @@ marqué **existe** (lu ou mesuré le 28/09/2026) ou **décidé** (D-475, R-140 d
   nombre de titres classés qui combinent un rôle et un mot d'encadrement est mesuré sur le corpus. Le champ
   « titre seulement » d'un alias (`financial-controller`, `search-vocabulary.ts:49`) devient un champ optionnel
   du manifeste.
+- **Déroulé de la constitution** (`apps/aggregator/scripts/taxonomie/curation/`), chaque étape échouant plutôt que de
+  laisser une entrée sans décision : (1) métiers du backend face aux métiers servis ; (1b) doublons à l'intérieur du
+  backend, groupés par cliques confirmées ; (2) familles ; (3) intitulés d'offres sans métier, la tête (au moins 3
+  offres sans métier) ; (4) encadrement ; (5) libellés ; (6) manifeste et bancs. Toute fusion proposée par l'un ou
+  l'autre des deux modèles passe au consensus des deux juges ; une exclusion ou un métier nouveau venu des offres
+  exige l'accord des deux modèles ; sans accord, un intitulé d'offre reste sans métier (§32 c). **Seuils de départ**,
+  à recalibrer comme ceux du §3.2 : un métier nouveau venu des offres porte au moins 10 offres de 3 employeurs
+  distincts (sinon il attend la passe suivante) ; une famille nouvelle reçoit au moins 2 métiers.
 - **Référence ESCO** publiée et datée, somme de contrôle versionnée.
 
 ### 3.2 L'IA validatrice : passes de curation (D-475 §30, §31 a)
@@ -100,8 +108,8 @@ l'assistant), sous leurs seuils d'arrêt ; chacune est irréversible pour les id
 **Sécurité** : la sortie du modèle est contrainte par un schéma ; un libellé n'est jamais recopié d'un intitulé
 tiers ; les gardes « non-métier » de R-66 s'appliquent. **Seuils de départ, à recalibrer** : échantillon neuf de 200
 rattachements par version, jugé par un modèle différent de celui qui a rattaché (sans vérité humaine) ; arrêt si
-plus de 1 % de faux mesurés (la preuve en mesure 1 sur 507 avec le consensus, 2 % sans), ou si la version change la classe de plus
-de 10 % des intitulés hors plan de curation. **Surveillance** : une passe suspendue, une sonde de juge en échec,
+plus de 1 % de faux mesurés (la preuve en mesure 1 sur 541 avec le consensus, 2 % sans ; D-475 §30, mesure
+corrigée le 28/09/2026), ou si la version change la classe de plus de 10 % des intitulés hors plan de curation. **Surveillance** : une passe suspendue, une sonde de juge en échec,
 un retard de synchronisation ou une file d'index de plus de 60 s envoient une alerte par l'e-mail d'exploitation
 du RUN (`apps/aggregator/src/pipeline/alert.ts`, Brevo) ; la présence de sa clé en production est vérifiée en 2B,
 car sans elle l'alerte ne part pas.

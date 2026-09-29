@@ -1,0 +1,189 @@
+{
+ "calculeLe": "2026-09-28T19:30:25.957Z",
+ "modeles": {
+  "choix": "gemini-3.6-flash",
+  "j1": "gemini-3.6-flash",
+  "j2": "gemini-3-flash-preview"
+ },
+ "seuils": {
+  "VOISINS": 5,
+  "SEUIL_VOISIN": 0.85
+ },
+ "bilan": {
+  "nouveaux": 192,
+  "avecVoisins": 184,
+  "pairesProposees": 13,
+  "pairesInternesAjoutees": 0,
+  "verdicts": {
+   "rejete": 8,
+   "confirme": 5
+  },
+  "groupes": 5,
+  "metiersAbsorbes": 5
+ },
+ "groupes": [
+  {
+   "representant": {
+    "id": "cms8unllx000k2cdf6qj1l8zf",
+    "label": "Assistant Hôtelier",
+    "population": 5
+   },
+   "variantes": [
+    {
+     "id": "cms8uyvn600252cu60vvpx15a",
+     "label": "Agent hôtelier",
+     "population": 1
+    }
+   ]
+  },
+  {
+   "representant": {
+    "id": "5243dcce-f3da-478f-950d-f36968c7f008",
+    "label": "Commercial·e",
+    "population": 249
+   },
+   "variantes": [
+    {
+     "id": "df4ba3dd-ebb9-49d0-8ebb-87d2fb222fbe",
+     "label": "Business developer",
+     "population": 201
+    }
+   ]
+  },
+  {
+   "representant": {
+    "id": "cms8ueri200272ctl3bnevq2h",
+    "label": "Responsable Commercial de Zone",
+    "population": 73
+   },
+   "variantes": [
+    {
+     "id": "jc_chef_secteur",
+     "label": "Chef·fe de secteur",
+     "population": 66
+    }
+   ]
+  },
+  {
+   "representant": {
+    "id": "cms7l3jwi001m2czvb3o3ij7s",
+    "label": "Conseiller immobilier",
+    "population": 38
+   },
+   "variantes": [
+    {
+     "id": "cms8ssaoe00142c7ue5wtz73e",
+     "label": "Négociateur immobilier",
+     "population": 9
+    }
+   ]
+  },
+  {
+   "representant": {
+    "id": "cms85yx1i00292c204q9h7en7",
+    "label": "Tuteur scolaire",
+    "population": 10
+   },
+   "variantes": [
+    {
+     "id": "cms85lwti002k2cux52jy4br4",
+     "label": "Professeur particulier",
+     "population": 10
+    }
+   ]
+  }
+ ],
+ "paires": [
+  {
+   "a": "Conseiller en image",
+   "b": "Personal shopper",
+   "similarite": 0.954,
+   "proposee": true,
+   "verdict": "rejete"
+  },
+  {
+   "a": "Conseiller immobilier",
+   "b": "Négociateur immobilier",
+   "similarite": 0.929,
+   "proposee": true,
+   "verdict": "confirme"
+  },
+  {
+   "a": "Professeur particulier",
+   "b": "Tuteur scolaire",
+   "similarite": 0.925,
+   "proposee": true,
+   "verdict": "confirme"
+  },
+  {
+   "a": "Agent hôtelier",
+   "b": "Assistant Hôtelier",
+   "similarite": 0.931,
+   "proposee": true,
+   "verdict": "confirme"
+  },
+  {
+   "a": "Assistant d'éducation",
+   "b": "Assistant pédagogique",
+   "similarite": 0.945,
+   "proposee": true,
+   "verdict": "rejete"
+  },
+  {
+   "a": "Assistant Designer",
+   "b": "Assistant styliste",
+   "similarite": 0.883,
+   "proposee": true,
+   "verdict": "rejete"
+  },
+  {
+   "a": "Business developer",
+   "b": "Commercial·e",
+   "similarite": 0.922,
+   "proposee": true,
+   "verdict": "confirme"
+  },
+  {
+   "a": "Chargé de communication événementielle",
+   "b": "Chef de projet événementiel",
+   "similarite": 0.876,
+   "proposee": true,
+   "verdict": "rejete"
+  },
+  {
+   "a": "Chef de projet influence",
+   "b": "Talent Manager",
+   "similarite": 0.924,
+   "proposee": true,
+   "verdict": "rejete"
+  },
+  {
+   "a": "Chef·fe de produit",
+   "b": "Responsable collection",
+   "similarite": 0.904,
+   "proposee": true,
+   "verdict": "rejete"
+  },
+  {
+   "a": "Chef·fe de secteur",
+   "b": "Responsable Commercial de Zone",
+   "similarite": 0.899,
+   "proposee": true,
+   "verdict": "confirme"
+  },
+  {
+   "a": "Directeur·rice de centre esthétique",
+   "b": "Spa manager",
+   "similarite": 0.907,
+   "proposee": true,
+   "verdict": "rejete"
+  },
+  {
+   "a": "Responsable Growth Marketing",
+   "b": "Traffic Manager",
+   "similarite": 0.87,
+   "proposee": true,
+   "verdict": "rejete"
+  }
+ ]
+}

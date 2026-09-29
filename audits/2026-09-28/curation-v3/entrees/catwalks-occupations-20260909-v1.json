@@ -1,0 +1,3759 @@
+{
+ "id": "catwalks-occupations-20260909-v1",
+ "rules": [
+  {
+   "id": "sales-advisor-title",
+   "all": [
+    {
+     "any": [
+      "Sales Advisor",
+      "Client Advisor",
+      "Luxury Sales Advisor",
+      "Conseiller de vente",
+      "Conseillère de vente",
+      "Conseiller vente",
+      "Conseillere vente",
+      "Fashion Advisor",
+      "Sales Associate",
+      "Selling Associate",
+      "Sales Assistant",
+      "Vendeur",
+      "Vendeuse",
+      "Conseillers de vente",
+      "Conseiller Vendeur",
+      "Conseillere Vendeuse",
+      "Associé aux ventes",
+      "Associée aux ventes",
+      "Addetto Vendite",
+      "Addetta Vendite",
+      "Addetti Vendite",
+      "Addett Vendite",
+      "Vendedor",
+      "Vendedora",
+      "Verkaufsberater",
+      "Verkäufer",
+      "Verkäuferin",
+      "销售顾问"
+     ],
+     "mode": "phrase",
+     "field": "title"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "manager",
+      "director",
+      "head",
+      "trainer",
+      "training",
+      "formation",
+      "supervisor",
+      "team lead",
+      "e commerce",
+      "online",
+      "remote",
+      "distance",
+      "clienteling project",
+      "beauty",
+      "beaute",
+      "parfumerie",
+      "cosmetique",
+      "replenishment",
+      "stockroom",
+      "stock support",
+      "E-Boutique",
+      "digital",
+      "wholesale",
+      "b2b"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Reviewed role wording against the 2026-09-09 production title/department corpus. Department constraints retained for ambiguous labels; precise truth is not inferred from legacy jobFunction.",
+   "occupation": "sales-advisor",
+   "supersedes": []
+  },
+  {
+   "id": "beauty-consultant-title",
+   "all": [
+    {
+     "any": [
+      "Beauty Advisor",
+      "Beauty Adviser",
+      "Beauty Consultant",
+      "Conseiller beauté",
+      "Conseillère beauté",
+      "Conseiller de beauté",
+      "Conseillère de beauté",
+      "Conseiller en parfumerie",
+      "Conseillère en parfumerie",
+      "Fragrance Advisor",
+      "Fragrance Consultant",
+      "Beauty Specialist",
+      "Conseiller de vente beauté",
+      "美容顾问"
+     ],
+     "mode": "phrase",
+     "field": "title"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "manager",
+      "director",
+      "head",
+      "trainer",
+      "training",
+      "estheticien",
+      "estheticienne",
+      "aesthetician",
+      "makeup artist"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Reviewed role wording against the 2026-09-09 production title/department corpus. Department constraints retained for ambiguous labels; precise truth is not inferred from legacy jobFunction.",
+   "occupation": "beauty-consultant",
+   "supersedes": []
+  },
+  {
+   "id": "hairdresser-title",
+   "all": [
+    {
+     "any": [
+      "Coiffeur",
+      "Coiffeuse",
+      "Hair Stylist",
+      "Hairstylist",
+      "Hairdresser",
+      "Hair Dresser",
+      "Barber",
+      "Parrucchiere",
+      "Parrucchiera"
+     ],
+     "mode": "phrase",
+     "field": "title"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "manager",
+      "director",
+      "trainer"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Reviewed role wording against the 2026-09-09 production title/department corpus. Department constraints retained for ambiguous labels; precise truth is not inferred from legacy jobFunction.",
+   "occupation": "hairdresser",
+   "supersedes": []
+  },
+  {
+   "id": "hairdresser-salon-context",
+   "all": [
+    {
+     "any": [
+      "Stylist",
+      "Master Stylist",
+      "Elite Stylist",
+      "Assistant Stylist"
+     ],
+     "field": "title"
+    },
+    {
+     "any": [
+      "Salon Professionals"
+     ],
+     "field": "department"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "manager",
+      "director"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Production witnesses: Stylist (1500), Master Stylist (1363), Elite Stylist (1329), Assistant Stylist (257), each with native Salon Professionals department. Exact corpus IDs retained in the audit.",
+   "occupation": "hairdresser"
+  },
+  {
+   "id": "beauty-therapist-title",
+   "all": [
+    {
+     "any": [
+      "Esthéticien",
+      "Esthéticienne",
+      "Aesthetician",
+      "Esthetician",
+      "Beauty Therapist",
+      "Estetista",
+      "Kosmetiker",
+      "Kosmetikerin",
+      "Spa Therapist"
+     ],
+     "mode": "phrase",
+     "field": "title"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "manager",
+      "director",
+      "trainer"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Reviewed role wording against the 2026-09-09 production title/department corpus. Department constraints retained for ambiguous labels; precise truth is not inferred from legacy jobFunction.",
+   "occupation": "beauty-therapist",
+   "supersedes": []
+  },
+  {
+   "id": "makeup-artist-title",
+   "all": [
+    {
+     "any": [
+      "Makeup Artist",
+      "Make up Artist",
+      "Make-up Artist",
+      "Maquilleur",
+      "Maquilleuse"
+     ],
+     "mode": "phrase",
+     "field": "title"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "manager",
+      "director",
+      "trainer"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Reviewed role wording against the 2026-09-09 production title/department corpus. Department constraints retained for ambiguous labels; precise truth is not inferred from legacy jobFunction.",
+   "occupation": "makeup-artist",
+   "supersedes": []
+  },
+  {
+   "id": "brow-specialist-title",
+   "all": [
+    {
+     "any": [
+      "Brow Waxing Expert",
+      "Brow Artist",
+      "Brow Specialist"
+     ],
+     "mode": "phrase",
+     "field": "title"
+    }
+   ],
+   "exclude": [],
+   "evidence": "Reviewed role wording against the 2026-09-09 production title/department corpus. Department constraints retained for ambiguous labels; precise truth is not inferred from legacy jobFunction.",
+   "occupation": "brow-specialist",
+   "supersedes": []
+  },
+  {
+   "id": "cashier-title",
+   "all": [
+    {
+     "any": [
+      "Cashier",
+      "Hôte de caisse",
+      "Hôtesse de caisse",
+      "Hôte de caisse et d accueil",
+      "Caissier",
+      "Caissière",
+      "Caissiers",
+      "Cajero",
+      "Cajera"
+     ],
+     "mode": "phrase",
+     "field": "title"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "manager",
+      "responsable",
+      "supervisor",
+      "coordinateur"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Reviewed role wording against the 2026-09-09 production title/department corpus. Department constraints retained for ambiguous labels; precise truth is not inferred from legacy jobFunction.",
+   "occupation": "cashier",
+   "supersedes": []
+  },
+  {
+   "id": "store-manager-title",
+   "all": [
+    {
+     "any": [
+      "Store Manager",
+      "Storemanager",
+      "Shop Manager",
+      "Shopmanager",
+      "Boutique Manager",
+      "Responsable de boutique",
+      "Responsable de magasin",
+      "Directeur de magasin",
+      "Directrice de magasin",
+      "Directeur de boutique",
+      "Directrice de boutique",
+      "Store Director",
+      "Manager di Store",
+      "Gerente de Tienda",
+      "Filialleiter",
+      "Filialleiterin",
+      "店长"
+     ],
+     "mode": "phrase",
+     "field": "title"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "assistant",
+      "adjoint",
+      "adjointe",
+      "deputy",
+      "district",
+      "regional",
+      "area"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Reviewed role wording against the 2026-09-09 production title/department corpus. Department constraints retained for ambiguous labels; precise truth is not inferred from legacy jobFunction.",
+   "occupation": "store-manager",
+   "supersedes": []
+  },
+  {
+   "id": "assistant-store-manager-title",
+   "all": [
+    {
+     "any": [
+      "Assistant Store Manager",
+      "Assistant Shop Manager",
+      "Assistant Boutique Manager",
+      "Deputy Store Manager",
+      "Directeur adjoint de magasin",
+      "Directrice adjointe de magasin",
+      "Responsable adjoint de boutique",
+      "Responsable adjointe de boutique",
+      "Assistant Store Leader"
+     ],
+     "mode": "phrase",
+     "field": "title"
+    }
+   ],
+   "exclude": [],
+   "evidence": "Reviewed role wording against the 2026-09-09 production title/department corpus. Department constraints retained for ambiguous labels; precise truth is not inferred from legacy jobFunction.",
+   "occupation": "assistant-store-manager",
+   "supersedes": []
+  },
+  {
+   "id": "regional-retail-manager-title",
+   "all": [
+    {
+     "any": [
+      "Regional Retail Manager",
+      "Area Retail Manager",
+      "Directeur regional retail",
+      "Responsable regional retail"
+     ],
+     "mode": "phrase",
+     "field": "title"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "wholesale",
+      "export",
+      "key account",
+      "medical",
+      "b2b",
+      "distribution",
+      "warehouse",
+      "logistics",
+      "supply chain",
+      "fulfillment"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Reviewed role wording against the 2026-09-09 production title/department corpus. Department constraints retained for ambiguous labels; precise truth is not inferred from legacy jobFunction.",
+   "occupation": "regional-retail-manager",
+   "supersedes": []
+  },
+  {
+   "id": "visual-merchandiser-title",
+   "all": [
+    {
+     "any": [
+      "Visual Merchandiser",
+      "Marchandiseur visuel",
+      "Marchandiseuse visuelle",
+      "Vitriniste",
+      "Window Dresser"
+     ],
+     "mode": "phrase",
+     "field": "title"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "manager",
+      "director",
+      "head",
+      "designer"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Reviewed role wording against the 2026-09-09 production title/department corpus. Department constraints retained for ambiguous labels; precise truth is not inferred from legacy jobFunction.",
+   "occupation": "visual-merchandiser",
+   "supersedes": []
+  },
+  {
+   "id": "stock-associate-title",
+   "all": [
+    {
+     "any": [
+      "Stock Associate",
+      "Stock Assistant",
+      "Stock Controller",
+      "Stock Keeper",
+      "Stock Coordinator",
+      "Stockiste",
+      "Stockist",
+      "Stockroom Associate",
+      "Stockroom Assistant"
+     ],
+     "mode": "phrase",
+     "field": "title"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "manager",
+      "head",
+      "director"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Reviewed role wording against the 2026-09-09 production title/department corpus. Department constraints retained for ambiguous labels; precise truth is not inferred from legacy jobFunction.",
+   "occupation": "stock-associate",
+   "supersedes": []
+  },
+  {
+   "id": "warehouse-operative-title",
+   "all": [
+    {
+     "any": [
+      "Warehouse Operative",
+      "Warehouse Associate",
+      "Warehouse Worker",
+      "Préparateur de commandes",
+      "Préparatrice de commandes",
+      "Order Picker",
+      "Picker Packer",
+      "Logistics Associate"
+     ],
+     "mode": "phrase",
+     "field": "title"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "manager",
+      "head",
+      "director"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Reviewed role wording against the 2026-09-09 production title/department corpus. Department constraints retained for ambiguous labels; precise truth is not inferred from legacy jobFunction.",
+   "occupation": "warehouse-operative",
+   "supersedes": []
+  },
+  {
+   "id": "logistics-manager-title",
+   "all": [
+    {
+     "any": [
+      "Logistics Manager",
+      "Warehouse Manager",
+      "Warehouse Supervisor",
+      "Responsable logistique",
+      "Superviseur logistique",
+      "Distribution Center Manager",
+      "Distribution Centre Manager"
+     ],
+     "mode": "phrase",
+     "field": "title"
+    }
+   ],
+   "exclude": [],
+   "evidence": "Reviewed role wording against the 2026-09-09 production title/department corpus. Department constraints retained for ambiguous labels; precise truth is not inferred from legacy jobFunction.",
+   "occupation": "logistics-manager",
+   "supersedes": []
+  },
+  {
+   "id": "customer-service-advisor-title",
+   "all": [
+    {
+     "any": [
+      "Customer Service Advisor",
+      "Customer Service Representative",
+      "Customer Care Advisor",
+      "Customer Support Specialist",
+      "Client Contact Consultant",
+      "E Boutique Client Advisor",
+      "Client Advisor Online",
+      "Téléconseiller",
+      "Téléconseillère",
+      "Conseiller clientèle à distance",
+      "Conseillere clientele a distance"
+     ],
+     "mode": "phrase",
+     "field": "title"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "manager",
+      "head",
+      "director"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Reviewed role wording against the 2026-09-09 production title/department corpus. Department constraints retained for ambiguous labels; precise truth is not inferred from legacy jobFunction.",
+   "occupation": "customer-service-advisor",
+   "supersedes": []
+  },
+  {
+   "id": "watchmaker-title",
+   "all": [
+    {
+     "any": [
+      "Horloger",
+      "Horlogère",
+      "Watchmaker",
+      "Uhrmacher",
+      "Uhrmacherin",
+      "Orologiaio"
+     ],
+     "mode": "phrase",
+     "field": "title"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "sales",
+      "advisory",
+      "advisor",
+      "vente",
+      "conseiller",
+      "conseillere",
+      "marketing",
+      "buyer",
+      "acheteur",
+      "directeur",
+      "director",
+      "manager",
+      "responsable",
+      "composant horloger",
+      "secteur horloger",
+      "industrie horlogere"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Reviewed role wording against the 2026-09-09 production title/department corpus. Department constraints retained for ambiguous labels; precise truth is not inferred from legacy jobFunction.",
+   "occupation": "watchmaker",
+   "supersedes": []
+  },
+  {
+   "id": "jeweller-title",
+   "all": [
+    {
+     "any": [
+      "Joaillier",
+      "Joaillière",
+      "Jeweller",
+      "Jeweler",
+      "Goldsmith",
+      "Bijoutier",
+      "Bijoutière",
+      "Orfèvre"
+     ],
+     "mode": "phrase",
+     "field": "title"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "sales",
+      "advisor",
+      "vente",
+      "conseiller",
+      "conseillere",
+      "marketing",
+      "buyer",
+      "acheteur",
+      "directeur",
+      "director",
+      "manager",
+      "responsable"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Reviewed role wording against the 2026-09-09 production title/department corpus. Department constraints retained for ambiguous labels; precise truth is not inferred from legacy jobFunction.",
+   "occupation": "jeweller",
+   "supersedes": []
+  },
+  {
+   "id": "leather-craftsperson-title",
+   "all": [
+    {
+     "any": [
+      "Maroquinier",
+      "Maroquinière",
+      "Sellier",
+      "Sellière",
+      "Leather Craftsperson"
+     ],
+     "mode": "phrase",
+     "field": "title"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "sales",
+      "advisor",
+      "vente",
+      "conseiller",
+      "conseillere",
+      "marketing",
+      "buyer",
+      "acheteur",
+      "directeur",
+      "director",
+      "manager",
+      "responsable",
+      "product",
+      "produit"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Reviewed role wording against the 2026-09-09 production title/department corpus. Department constraints retained for ambiguous labels; precise truth is not inferred from legacy jobFunction.",
+   "occupation": "leather-craftsperson",
+   "supersedes": []
+  },
+  {
+   "id": "seamster-title",
+   "all": [
+    {
+     "any": [
+      "Couturier",
+      "Couturière",
+      "Seamstress",
+      "Seamster",
+      "Tailor",
+      "Retoucheur",
+      "Retoucheuse"
+     ],
+     "mode": "phrase",
+     "field": "title"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "manager",
+      "director",
+      "responsable"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Reviewed role wording against the 2026-09-09 production title/department corpus. Department constraints retained for ambiguous labels; precise truth is not inferred from legacy jobFunction.",
+   "occupation": "seamster",
+   "supersedes": []
+  },
+  {
+   "id": "fashion-designer-title",
+   "all": [
+    {
+     "any": [
+      "Fashion Designer",
+      "Designer Mode",
+      "Styliste Mode",
+      "Styliste Femme",
+      "Styliste Homme",
+      "Apparel Designer"
+     ],
+     "mode": "phrase",
+     "field": "title"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "assistant",
+      "manager",
+      "director"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Reviewed role wording against the 2026-09-09 production title/department corpus. Department constraints retained for ambiguous labels; precise truth is not inferred from legacy jobFunction.",
+   "occupation": "fashion-designer",
+   "supersedes": []
+  },
+  {
+   "id": "graphic-designer-title",
+   "all": [
+    {
+     "any": [
+      "Graphic Designer",
+      "Graphiste"
+     ],
+     "mode": "phrase",
+     "field": "title"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "manager",
+      "director"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Reviewed role wording against the 2026-09-09 production title/department corpus. Department constraints retained for ambiguous labels; precise truth is not inferred from legacy jobFunction.",
+   "occupation": "graphic-designer",
+   "supersedes": []
+  },
+  {
+   "id": "buyer-title",
+   "all": [
+    {
+     "any": [
+      "Buyer",
+      "Acheteur",
+      "Acheteuse"
+     ],
+     "mode": "phrase",
+     "field": "title"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "indirect",
+      "procurement",
+      "sourcing",
+      "assistant",
+      "manager",
+      "director",
+      "head"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Reviewed role wording against the 2026-09-09 production title/department corpus. Department constraints retained for ambiguous labels; precise truth is not inferred from legacy jobFunction.",
+   "occupation": "buyer",
+   "supersedes": []
+  },
+  {
+   "id": "merchandise-planner-title",
+   "all": [
+    {
+     "any": [
+      "Merchandise Planner",
+      "Merchandising Planner"
+     ],
+     "mode": "phrase",
+     "field": "title"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "manager",
+      "director",
+      "head"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Reviewed role wording against the 2026-09-09 production title/department corpus. Department constraints retained for ambiguous labels; precise truth is not inferred from legacy jobFunction.",
+   "occupation": "merchandise-planner",
+   "supersedes": []
+  },
+  {
+   "id": "accountant-title",
+   "all": [
+    {
+     "any": [
+      "Accountant",
+      "Comptable",
+      "Buchhalter",
+      "Buchhalterin"
+     ],
+     "mode": "phrase",
+     "field": "title"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "assistant",
+      "manager",
+      "director",
+      "head"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Reviewed role wording against the 2026-09-09 production title/department corpus. Department constraints retained for ambiguous labels; precise truth is not inferred from legacy jobFunction.",
+   "occupation": "accountant",
+   "supersedes": []
+  },
+  {
+   "id": "financial-controller-title",
+   "all": [
+    {
+     "any": [
+      "Financial Controller",
+      "Business Controller",
+      "Contrôleur de gestion",
+      "Contrôleuse de gestion",
+      "Project Controller"
+     ],
+     "mode": "phrase",
+     "field": "title"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "assistant",
+      "director",
+      "head"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Reviewed role wording against the 2026-09-09 production title/department corpus. Department constraints retained for ambiguous labels; precise truth is not inferred from legacy jobFunction.",
+   "occupation": "financial-controller",
+   "supersedes": []
+  },
+  {
+   "id": "financial-analyst-title",
+   "all": [
+    {
+     "any": [
+      "Financial Analyst",
+      "Finance Analyst",
+      "Analyste financier",
+      "Analyste financiere",
+      "FP A Analyst"
+     ],
+     "mode": "phrase",
+     "field": "title"
+    }
+   ],
+   "exclude": [],
+   "evidence": "Reviewed role wording against the 2026-09-09 production title/department corpus. Department constraints retained for ambiguous labels; precise truth is not inferred from legacy jobFunction.",
+   "occupation": "financial-analyst",
+   "supersedes": []
+  },
+  {
+   "id": "recruiter-title",
+   "all": [
+    {
+     "any": [
+      "Recruiter",
+      "Talent Acquisition Specialist",
+      "Chargé de recrutement",
+      "Chargée de recrutement",
+      "Recruitment Consultant"
+     ],
+     "mode": "phrase",
+     "field": "title"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "manager",
+      "head",
+      "director"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Reviewed role wording against the 2026-09-09 production title/department corpus. Department constraints retained for ambiguous labels; precise truth is not inferred from legacy jobFunction.",
+   "occupation": "recruiter",
+   "supersedes": []
+  },
+  {
+   "id": "hr-business-partner-title",
+   "all": [
+    {
+     "any": [
+      "HR Business Partner",
+      "Human Resources Business Partner",
+      "People Business Partner",
+      "HRBP"
+     ],
+     "mode": "phrase",
+     "field": "title"
+    }
+   ],
+   "exclude": [],
+   "evidence": "Reviewed role wording against the 2026-09-09 production title/department corpus. Department constraints retained for ambiguous labels; precise truth is not inferred from legacy jobFunction.",
+   "occupation": "hr-business-partner",
+   "supersedes": []
+  },
+  {
+   "id": "payroll-specialist-title",
+   "all": [
+    {
+     "any": [
+      "Payroll Specialist",
+      "Payroll Administrator",
+      "Gestionnaire de paie",
+      "Gestionnaire paie"
+     ],
+     "mode": "phrase",
+     "field": "title"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "manager",
+      "director",
+      "head"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Reviewed role wording against the 2026-09-09 production title/department corpus. Department constraints retained for ambiguous labels; precise truth is not inferred from legacy jobFunction.",
+   "occupation": "payroll-specialist",
+   "supersedes": []
+  },
+  {
+   "id": "software-engineer-title",
+   "all": [
+    {
+     "any": [
+      "Software Engineer",
+      "Software Developer",
+      "Développeur logiciel",
+      "Développeuse logiciel",
+      "Full Stack Developer",
+      "Fullstack Developer",
+      "Frontend Developer",
+      "Backend Developer",
+      "Front End Developer",
+      "Back End Developer"
+     ],
+     "mode": "phrase",
+     "field": "title"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "manager",
+      "director",
+      "head"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Reviewed role wording against the 2026-09-09 production title/department corpus. Department constraints retained for ambiguous labels; precise truth is not inferred from legacy jobFunction.",
+   "occupation": "software-engineer",
+   "supersedes": []
+  },
+  {
+   "id": "data-analyst-title",
+   "all": [
+    {
+     "any": [
+      "Data Analyst",
+      "Analyste de données",
+      "Analyste donnees"
+     ],
+     "mode": "phrase",
+     "field": "title"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "manager",
+      "director",
+      "head"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Reviewed role wording against the 2026-09-09 production title/department corpus. Department constraints retained for ambiguous labels; precise truth is not inferred from legacy jobFunction.",
+   "occupation": "data-analyst",
+   "supersedes": []
+  },
+  {
+   "id": "data-scientist-title",
+   "all": [
+    {
+     "any": [
+      "Data Scientist",
+      "Machine Learning Scientist"
+     ],
+     "mode": "phrase",
+     "field": "title"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "manager",
+      "director",
+      "head"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Reviewed role wording against the 2026-09-09 production title/department corpus. Department constraints retained for ambiguous labels; precise truth is not inferred from legacy jobFunction.",
+   "occupation": "data-scientist",
+   "supersedes": []
+  },
+  {
+   "id": "data-engineer-title",
+   "all": [
+    {
+     "any": [
+      "Data Engineer"
+     ],
+     "mode": "phrase",
+     "field": "title"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "manager",
+      "director",
+      "head"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Reviewed role wording against the 2026-09-09 production title/department corpus. Department constraints retained for ambiguous labels; precise truth is not inferred from legacy jobFunction.",
+   "occupation": "data-engineer",
+   "supersedes": []
+  },
+  {
+   "id": "legal-counsel-title",
+   "all": [
+    {
+     "any": [
+      "Legal Counsel",
+      "Juriste",
+      "Lawyer",
+      "Avocat",
+      "Avocate"
+     ],
+     "mode": "phrase",
+     "field": "title"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "assistant",
+      "manager",
+      "director",
+      "head"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Reviewed role wording against the 2026-09-09 production title/department corpus. Department constraints retained for ambiguous labels; precise truth is not inferred from legacy jobFunction.",
+   "occupation": "legal-counsel",
+   "supersedes": []
+  },
+  {
+   "id": "sustainability-specialist-title",
+   "all": [
+    {
+     "any": [
+      "Sustainability Specialist",
+      "Sustainability Analyst",
+      "Chargé de développement durable",
+      "Chargee de developpement durable",
+      "Chargé de mission RSE"
+     ],
+     "mode": "phrase",
+     "field": "title"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "manager",
+      "director",
+      "head"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Reviewed role wording against the 2026-09-09 production title/department corpus. Department constraints retained for ambiguous labels; precise truth is not inferred from legacy jobFunction.",
+   "occupation": "sustainability-specialist",
+   "supersedes": []
+  },
+  {
+   "id": "marketing-manager-title",
+   "all": [
+    {
+     "any": [
+      "Marketing Manager",
+      "Responsable Marketing"
+     ],
+     "mode": "phrase",
+     "field": "title"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "trade",
+      "product",
+      "digital",
+      "e commerce",
+      "senior director"
+     ],
+     "field": "title"
+    },
+    {
+     "any": [
+      "assistant",
+      "assistante"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Reviewed role wording against the 2026-09-09 production title/department corpus. Department constraints retained for ambiguous labels; precise truth is not inferred from legacy jobFunction.",
+   "occupation": "marketing-manager",
+   "supersedes": []
+  },
+  {
+   "id": "community-manager-title",
+   "all": [
+    {
+     "any": [
+      "Community Manager"
+     ],
+     "mode": "phrase",
+     "field": "title"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "assistant",
+      "assistante"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Reviewed role wording against the 2026-09-09 production title/department corpus. Department constraints retained for ambiguous labels; precise truth is not inferred from legacy jobFunction.",
+   "occupation": "community-manager",
+   "supersedes": []
+  },
+  {
+   "id": "crm-manager-title",
+   "all": [
+    {
+     "any": [
+      "CRM Manager",
+      "Responsable CRM",
+      "Clienteling Manager"
+     ],
+     "mode": "phrase",
+     "field": "title"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "assistant",
+      "assistante"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Reviewed role wording against the 2026-09-09 production title/department corpus. Department constraints retained for ambiguous labels; precise truth is not inferred from legacy jobFunction.",
+   "occupation": "crm-manager",
+   "supersedes": []
+  },
+  {
+   "id": "ecommerce-manager-title",
+   "all": [
+    {
+     "any": [
+      "E Commerce Manager",
+      "Ecommerce Manager",
+      "Responsable E Commerce",
+      "Responsable Ecommerce"
+     ],
+     "mode": "phrase",
+     "field": "title"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "assistant",
+      "assistante"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Reviewed role wording against the 2026-09-09 production title/department corpus. Department constraints retained for ambiguous labels; precise truth is not inferred from legacy jobFunction.",
+   "occupation": "ecommerce-manager",
+   "supersedes": []
+  },
+  {
+   "id": "key-account-manager-title",
+   "all": [
+    {
+     "any": [
+      "Key Account Manager",
+      "Responsable grands comptes",
+      "National Account Manager"
+     ],
+     "mode": "phrase",
+     "field": "title"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "assistant",
+      "assistante"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Reviewed role wording against the 2026-09-09 production title/department corpus. Department constraints retained for ambiguous labels; precise truth is not inferred from legacy jobFunction.",
+   "occupation": "key-account-manager",
+   "supersedes": []
+  },
+  {
+   "id": "product-developer-title",
+   "all": [
+    {
+     "any": [
+      "Product Developer",
+      "Développeur produit",
+      "Developpeuse produit",
+      "Product Development Specialist"
+     ],
+     "mode": "phrase",
+     "field": "title"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "manager",
+      "director",
+      "head"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Reviewed role wording against the 2026-09-09 production title/department corpus. Department constraints retained for ambiguous labels; precise truth is not inferred from legacy jobFunction.",
+   "occupation": "product-developer",
+   "supersedes": []
+  },
+  {
+   "id": "quality-technician-title",
+   "all": [
+    {
+     "any": [
+      "Quality Technician",
+      "Technicien qualite",
+      "Technicienne qualite",
+      "Quality Inspector"
+     ],
+     "mode": "phrase",
+     "field": "title"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "manager",
+      "director",
+      "head"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Reviewed role wording against the 2026-09-09 production title/department corpus. Department constraints retained for ambiguous labels; precise truth is not inferred from legacy jobFunction.",
+   "occupation": "quality-technician",
+   "supersedes": []
+  },
+  {
+   "id": "barista-title",
+   "all": [
+    {
+     "any": [
+      "Barista"
+     ],
+     "mode": "phrase",
+     "field": "title"
+    }
+   ],
+   "exclude": [],
+   "evidence": "Reviewed role wording against the 2026-09-09 production title/department corpus. Department constraints retained for ambiguous labels; precise truth is not inferred from legacy jobFunction.",
+   "occupation": "barista",
+   "supersedes": []
+  },
+  {
+   "id": "cook-title",
+   "all": [
+    {
+     "any": [
+      "Cook",
+      "Cuisinier",
+      "Cuisinière",
+      "Chef de partie",
+      "Sous Chef",
+      "Cuoco",
+      "Cuoca"
+     ],
+     "mode": "phrase",
+     "field": "title"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "manager",
+      "director"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Reviewed role wording against the 2026-09-09 production title/department corpus. Department constraints retained for ambiguous labels; precise truth is not inferred from legacy jobFunction.",
+   "occupation": "cook",
+   "supersedes": []
+  },
+  {
+   "id": "waiter-title",
+   "all": [
+    {
+     "any": [
+      "Waiter",
+      "Waitress",
+      "Serveur",
+      "Serveuse",
+      "Restaurant Server"
+     ],
+     "mode": "phrase",
+     "field": "title"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "manager",
+      "director",
+      "informatique",
+      "it",
+      "software"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Reviewed role wording against the 2026-09-09 production title/department corpus. Department constraints retained for ambiguous labels; precise truth is not inferred from legacy jobFunction.",
+   "occupation": "waiter",
+   "supersedes": []
+  },
+  {
+   "id": "receptionist-title",
+   "all": [
+    {
+     "any": [
+      "Receptionist",
+      "Réceptionniste",
+      "Front Office Specialist"
+     ],
+     "mode": "phrase",
+     "field": "title"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "manager",
+      "director",
+      "hotel"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Reviewed role wording against the 2026-09-09 production title/department corpus. Department constraints retained for ambiguous labels; precise truth is not inferred from legacy jobFunction.",
+   "occupation": "receptionist",
+   "supersedes": []
+  },
+  {
+   "id": "executive-assistant-title",
+   "all": [
+    {
+     "any": [
+      "Executive Assistant",
+      "Assistant de direction",
+      "Assistante de direction",
+      "Personal Assistant"
+     ],
+     "mode": "phrase",
+     "field": "title"
+    }
+   ],
+   "exclude": [],
+   "evidence": "Reviewed role wording against the 2026-09-09 production title/department corpus. Department constraints retained for ambiguous labels; precise truth is not inferred from legacy jobFunction.",
+   "occupation": "executive-assistant",
+   "supersedes": []
+  },
+  {
+   "id": "pharmacist-title",
+   "all": [
+    {
+     "any": [
+      "Pharmacist",
+      "Pharmacien",
+      "Pharmacienne"
+     ],
+     "mode": "phrase",
+     "field": "title"
+    }
+   ],
+   "exclude": [],
+   "evidence": "Reviewed role wording against the 2026-09-09 production title/department corpus. Department constraints retained for ambiguous labels; precise truth is not inferred from legacy jobFunction.",
+   "occupation": "pharmacist",
+   "supersedes": []
+  },
+  {
+   "id": "pharmacy-technician-title",
+   "all": [
+    {
+     "any": [
+      "Pharmacy Technician",
+      "Préparateur en pharmacie",
+      "Preparatrice en pharmacie"
+     ],
+     "mode": "phrase",
+     "field": "title"
+    }
+   ],
+   "exclude": [],
+   "evidence": "Reviewed role wording against the 2026-09-09 production title/department corpus. Department constraints retained for ambiguous labels; precise truth is not inferred from legacy jobFunction.",
+   "occupation": "pharmacy-technician",
+   "supersedes": []
+  },
+  {
+   "id": "optometrist-title",
+   "all": [
+    {
+     "any": [
+      "Optometrist",
+      "Optometriste"
+     ],
+     "mode": "phrase",
+     "field": "title"
+    }
+   ],
+   "exclude": [],
+   "evidence": "Reviewed role wording against the 2026-09-09 production title/department corpus. Department constraints retained for ambiguous labels; precise truth is not inferred from legacy jobFunction.",
+   "occupation": "optometrist",
+   "supersedes": []
+  },
+  {
+   "id": "dispensing-optician-title",
+   "all": [
+    {
+     "any": [
+      "Dispensing Optician",
+      "Opticien",
+      "Opticienne",
+      "Optometrist Optician"
+     ],
+     "mode": "phrase",
+     "field": "title"
+    }
+   ],
+   "exclude": [],
+   "evidence": "Reviewed role wording against the 2026-09-09 production title/department corpus. Department constraints retained for ambiguous labels; precise truth is not inferred from legacy jobFunction.",
+   "occupation": "dispensing-optician",
+   "supersedes": []
+  },
+  {
+   "id": "hearing-aid-specialist-title",
+   "all": [
+    {
+     "any": [
+      "Audioprothésiste",
+      "Hearing Aid Specialist",
+      "Hearing Aid Dispenser"
+     ],
+     "mode": "phrase",
+     "field": "title"
+    }
+   ],
+   "exclude": [],
+   "evidence": "Reviewed role wording against the 2026-09-09 production title/department corpus. Department constraints retained for ambiguous labels; precise truth is not inferred from legacy jobFunction.",
+   "occupation": "hearing-aid-specialist",
+   "supersedes": []
+  },
+  {
+   "id": "demand-planner-title",
+   "all": [
+    {
+     "any": [
+      "Demand Planner",
+      "Prévisionniste des ventes"
+     ],
+     "field": "title"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "manager",
+      "director",
+      "head"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Production Demand Planner titles; keep demand planning in supply chain rather than merchandise buying.",
+   "occupation": "demand-planner"
+  },
+  {
+   "id": "sales-advisor-client-consultant-context",
+   "all": [
+    {
+     "any": [
+      "Client Consultant"
+     ],
+     "field": "title"
+    },
+    {
+     "any": [
+      "Retail",
+      "Boutique",
+      "Store",
+      "Retail Associates"
+     ],
+     "mode": "exact",
+     "field": "department"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "manager",
+      "head",
+      "director"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Client Consultant is ambiguous without retail context. Do not register it as a global search synonym.",
+   "occupation": "sales-advisor"
+  },
+  {
+   "id": "paralegal-title",
+   "all": [
+    {
+     "any": [
+      "Paralegal"
+     ],
+     "field": "title"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "manager",
+      "director",
+      "head"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Distinct occupation from legal counsel: https://nationalcareers.service.gov.uk/job-profiles/paralegal; observed production titles.",
+   "occupation": "paralegal"
+  },
+  {
+   "id": "pharmacy-support-worker-title",
+   "all": [
+    {
+     "any": [
+      "Pharmacy Dispenser",
+      "Pharmacy Assistant",
+      "Dispensing Assistant"
+     ],
+     "field": "title"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "manager",
+      "director",
+      "head"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Distinct support role, not a technician qualification: https://www.careers.nhs.scot/explore-careers/pharmacy/pharmacy-support-worker/; observed Pharmacy Dispenser titles. Bare Dispenser remains unresolved without context.",
+   "occupation": "pharmacy-support-worker"
+  },
+  {
+   "id": "machine-learning-engineer-title",
+   "all": [
+    {
+     "any": [
+      "Machine Learning Engineer"
+     ],
+     "field": "title"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "manager",
+      "director",
+      "head"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Distinct engineering specialization in observed title, not inferred from employer sector.",
+   "occupation": "machine-learning-engineer"
+  },
+  {
+   "id": "analytics-engineer-title",
+   "all": [
+    {
+     "any": [
+      "Analytics Engineer"
+     ],
+     "field": "title"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "manager",
+      "director",
+      "head"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Observed role explicitly differs from Data Engineer; retain separate searchable concept.",
+   "occupation": "analytics-engineer"
+  },
+  {
+   "id": "motion-designer-title",
+   "all": [
+    {
+     "any": [
+      "Motion Designer"
+     ],
+     "field": "title"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "manager",
+      "director",
+      "head"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Explicit motion design role, separated from generic graphic design.",
+   "occupation": "motion-designer"
+  },
+  {
+   "id": "lash-technician-title",
+   "all": [
+    {
+     "any": [
+      "Lash Technician"
+     ],
+     "field": "title"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "manager",
+      "director",
+      "head"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Eyelash service and eyebrow service are distinct advertised roles.",
+   "occupation": "lash-technician"
+  },
+  {
+   "id": "social-media-manager-title",
+   "all": [
+    {
+     "any": [
+      "Social Media Manager"
+     ],
+     "field": "title"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "assistant",
+      "assistante"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Distinct advertised role; no forced equality with community management.",
+   "occupation": "social-media-manager"
+  },
+  {
+   "id": "pastry-chef-title",
+   "all": [
+    {
+     "any": [
+      "Pastry Chef",
+      "Pâtissier",
+      "Pâtissière"
+     ],
+     "field": "title"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "manager",
+      "director",
+      "head"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Explicit pastry profession, distinct from generic cook.",
+   "occupation": "pastry-chef"
+  },
+  {
+   "id": "regional-retail-manager-context",
+   "all": [
+    {
+     "any": [
+      "District Manager",
+      "Area Manager"
+     ],
+     "field": "title"
+    },
+    {
+     "any": [
+      "Retail",
+      "Stores",
+      "Retail Management",
+      "Store Management"
+     ],
+     "mode": "exact",
+     "field": "department"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "wholesale",
+      "export",
+      "key account",
+      "medical",
+      "b2b",
+      "distribution",
+      "warehouse",
+      "logistics",
+      "supply chain",
+      "fulfillment"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Area/District Manager alone does not attest retail. Native retail department is required.",
+   "occupation": "regional-retail-manager"
+  },
+  {
+   "id": "beauty-consultant-fragrance",
+   "all": [
+    {
+     "any": [
+      "Fragrance Advisor",
+      "Fragrance Consultant",
+      "Conseiller en parfumerie",
+      "Conseillère en parfumerie"
+     ],
+     "field": "title"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "manager",
+      "director",
+      "head",
+      "trainer",
+      "training",
+      "estheticien",
+      "estheticienne",
+      "aesthetician",
+      "makeup artist"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Advertised beauty consulting specialization is explicit in the title.",
+   "occupation": "beauty-consultant",
+   "specializations": [
+    "fragrance"
+   ]
+  },
+  {
+   "id": "beauty-consultant-skincare",
+   "all": [
+    {
+     "any": [
+      "Skincare Advisor",
+      "Skin Care Advisor"
+     ],
+     "field": "title"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "manager",
+      "director",
+      "head",
+      "trainer",
+      "training",
+      "estheticien",
+      "estheticienne",
+      "aesthetician",
+      "makeup artist"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Advertised beauty consulting specialization is explicit in the title.",
+   "occupation": "beauty-consultant",
+   "specializations": [
+    "skincare"
+   ]
+  }
+ ],
+ "groups": [
+  {
+   "key": "retail",
+   "labels": {
+    "en": "Retail",
+    "fr": "Retail"
+   }
+  },
+  {
+   "key": "craft",
+   "labels": {
+    "en": "Craft",
+    "fr": "Atelier"
+   }
+  },
+  {
+   "key": "corporate",
+   "labels": {
+    "en": "Corporate",
+    "fr": "Corporate"
+   }
+  },
+  {
+   "key": "services",
+   "labels": {
+    "en": "Specialist services",
+    "fr": "Services spécialisés"
+   }
+  }
+ ],
+ "review": {
+  "at": "2026-09-09T08:42:00.463Z",
+  "basis": "Production corpus 74124 active postings; migrated family heuristics remain explicitly broad evidence, not validated occupations.",
+  "author": "Catwalks lot 2"
+ },
+ "families": [
+  {
+   "key": "retail-client-advisor",
+   "group": "retail",
+   "labels": {
+    "fr": "Conseil de vente"
+   }
+  },
+  {
+   "key": "beauty-advisor",
+   "group": "retail",
+   "labels": {
+    "fr": "Conseil beauté"
+   }
+  },
+  {
+   "key": "retail-store-management",
+   "group": "retail",
+   "labels": {
+    "fr": "Direction de boutique"
+   }
+  },
+  {
+   "key": "retail-area-management",
+   "group": "retail",
+   "labels": {
+    "fr": "Direction régionale retail"
+   }
+  },
+  {
+   "key": "retail-operations",
+   "group": "retail",
+   "labels": {
+    "fr": "Opérations boutique & stock"
+   }
+  },
+  {
+   "key": "visual-merchandising",
+   "group": "retail",
+   "labels": {
+    "fr": "Visual merchandising"
+   }
+  },
+  {
+   "key": "merchandising-buying",
+   "group": "corporate",
+   "labels": {
+    "fr": "Merchandising & achats"
+   }
+  },
+  {
+   "key": "wholesale-b2b",
+   "group": "corporate",
+   "labels": {
+    "fr": "Wholesale & B2B"
+   }
+  },
+  {
+   "key": "crm-clienteling",
+   "group": "corporate",
+   "labels": {
+    "fr": "CRM & clienteling"
+   }
+  },
+  {
+   "key": "ecommerce-digital",
+   "group": "corporate",
+   "labels": {
+    "fr": "E-commerce & digital"
+   }
+  },
+  {
+   "key": "marketing-communication",
+   "group": "corporate",
+   "labels": {
+    "fr": "Marketing & communication"
+   }
+  },
+  {
+   "key": "design-creation",
+   "group": "corporate",
+   "labels": {
+    "fr": "Création & design"
+   }
+  },
+  {
+   "key": "product-development-rd",
+   "group": "corporate",
+   "labels": {
+    "fr": "Développement produit & R&D"
+   }
+  },
+  {
+   "key": "atelier-craft",
+   "group": "craft",
+   "labels": {
+    "fr": "Atelier & savoir-faire"
+   }
+  },
+  {
+   "key": "manufacturing-quality",
+   "group": "craft",
+   "labels": {
+    "fr": "Production & qualité"
+   }
+  },
+  {
+   "key": "supply-chain-logistics",
+   "group": "corporate",
+   "labels": {
+    "fr": "Supply chain & logistique"
+   }
+  },
+  {
+   "key": "finance",
+   "group": "corporate",
+   "labels": {
+    "fr": "Finance"
+   }
+  },
+  {
+   "key": "hr-talent",
+   "group": "corporate",
+   "labels": {
+    "fr": "Ressources humaines"
+   }
+  },
+  {
+   "key": "it-data",
+   "group": "corporate",
+   "labels": {
+    "fr": "IT & data"
+   }
+  },
+  {
+   "key": "legal-compliance",
+   "group": "corporate",
+   "labels": {
+    "fr": "Juridique & conformité"
+   }
+  },
+  {
+   "key": "strategy-management",
+   "group": "corporate",
+   "labels": {
+    "fr": "Stratégie & direction"
+   }
+  },
+  {
+   "key": "sustainability",
+   "group": "corporate",
+   "labels": {
+    "fr": "Développement durable"
+   }
+  },
+  {
+   "key": "customer-service",
+   "group": "corporate",
+   "labels": {
+    "fr": "Service client"
+   }
+  },
+  {
+   "key": "hospitality",
+   "group": "services",
+   "labels": {
+    "fr": "Hôtellerie & restauration"
+   }
+  },
+  {
+   "key": "admin-facilities",
+   "group": "corporate",
+   "labels": {
+    "fr": "Administration & services généraux"
+   }
+  },
+  {
+   "key": "health-optical-services",
+   "group": "services",
+   "labels": {
+    "en": "Health, pharmacy and optical services",
+    "fr": "Santé, pharmacie et optique"
+   }
+  },
+  {
+   "key": "beauty-services",
+   "group": "services",
+   "labels": {
+    "en": "Hair and beauty services",
+    "fr": "Coiffure et prestations beauté"
+   }
+  }
+ ],
+ "patterns": {
+  "JUNIOR_RE": {
+   "flags": "",
+   "pattern": "\\bJUNIOR\\b|\\bJR\\.?\\b|ENTRY[- ]LEVEL|DEBUTANT|\\bTRAINEE\\b|AIDE\\b|AUXILIAIRE|ASSISTANT\\S* (CHEF|CHARGE|MARKETING|COMMUNICATION|RH|COMPTABLE|BUYER|MERCHANDIS|DESIGNER|PRODUCT|PROJECT|BRAND|CRM|E-?COMMERCE|DIGITAL|STYLISTE|COLLECTION|PLANNER|ACHETEU|CONTROLEU|JURISTE|PRESS)|ASSISTANT\\S* (DE |D')(PRODUCTION|COLLECTION|COMMUNICATION|MARKETING)"
+  },
+  "SENIOR_RE": {
+   "flags": "",
+   "pattern": "\\bSENIOR\\b|\\bSR\\.?\\b|CONFIRME|PRINCIPAL|\\bLEAD\\b|\\bIII\\b|\\bIV\\b|STAFF (ENGINEER|DESIGNER)|ARCHITECT|MASTER STYLIST|ELITE STYLIST"
+  },
+  "MANAGER_RE": {
+   "flags": "",
+   "pattern": "MANAGER|MANAGEUR|RESPONSABLE|SUPERVIS|TEAM ?LEAD|STORE LEADER|SHOP LEADER|CHEF D'EQUIPE|CHEF DE (BOUTIQUE|MAGASIN|RAYON|SECTEUR|DEPARTEMENT|ZONE|REGION|VENTE|CAISSE|GROUPE|ATELIER|SERVICE)|GERANT|CAPO\\b|LEITER|LEITUNG|\\bLEAD\\b (?:OF|,)|STORE IN CHARGE|PREMIERE? D'ATELIER|ENCARGAD|GERENTE|RESPONSABILE|SOUSCHEF"
+  },
+  "DIRECTOR_RE": {
+   "flags": "",
+   "pattern": "DIRECTOR|DIRECTEUR|DIRECTRICE|DIRETTOR|DIREKTOR|\\bHEAD OF\\b|\\bHEAD\\b,? |^HEAD\\b|RESPONSABLE (DE |DU |DES )?(DEPARTEMENT|DIRECTION|POLE|BUSINESS UNIT|MARCHE|MARKET|REGION)|\\bDIRECTION\\b (?!ARTISTIQUE)"
+  },
+  "EXECUTIVE_RE": {
+   "flags": "",
+   "pattern": "\\b[SE]?VP\\b|VICE[- ]PRESIDENT|\\bCHIEF\\b|\\bC[EFOMTIHR]O\\b(?! (MANAGER|SPECIALIST|ANALYST|LEAD|INTERN))|\\bCHRO\\b|PRESIDENT|MANAGING DIRECTOR|DIRECTEUR\\S* GENERAL|DIRECTRICE GENERALE|\\bGENERAL MANAGER\\b(?! (STORE|BOUTIQUE|ASSISTANT))|\\bGM\\b|AMMINISTRATORE DELEGATO|GESCHAFTSFUHRER|DIRECTOR GENERAL"
+  },
+  "RANK_HEAD_RE": {
+   "flags": "",
+   "pattern": "^(TEMP |TEMPORARY |SENIOR |JUNIOR )?(ASSISTANT|ASSOCIATE|DEPUTY|SENIOR|TEAM) (MANAGER|LEAD(ER)?),?\\s+(?=\\S)"
+  },
+  "SHOP_ONLY_RE": {
+   "flags": "",
+   "pattern": "^(?:(?:SALES|STORE|DEPARTMENT|FLOOR|COUNTER|SHOP|BOUTIQUE|RETAIL|DUTY|SHIFT|TEAM|GENERAL|LEAD|LEADER|I{1,3}|[-–]|\\d+|H|F|M|W|D|X|H F|F H|M W D)\\s*)+$"
+  },
+  "IC_MANAGER_RE": {
+   "flags": "",
+   "pattern": "(\\bCRO\\b|CONVERSION|\\bSEO\\b|\\bSEA\\b|PROJECT|PRODUCT|ACCOUNT|BRAND|COMMUNITY|CONTENT|CATEGORY|CAMPAIGN|EVENT|PARTNERSHIP|TRAFFIC|SOCIAL MEDIA|INFLUENCE|CRM|E-?COMMERCE|ECOM|MARKETING|COMMUNICATION|\\bPR\\b|PRESS|VISUAL MERCHANDISING|MERCHANDISE PLANNING|SUPPLY|DEMAND|PLANNING|QUALITY|QUALITE|MAINTENANCE|FACILIT|OFFICE|PAYROLL|TRAINING|LEARNING|EDUCATION|RECRUIT|SOURCING|LOGISTIC|TRANSPORT|CUSTOMS|COMPLIANCE|RISK|DATA|IT|SYSTEM|APPLICATION|SALESFORCE|SAP|ERP|CRM|PLM|SECURITY|SUSTAINABILITY|CSR|RSE|ESG|BUSINESS DEVELOPMENT|KEY ACCOUNT|WHOLESALE|EXPORT|TRADE|TERRITORY|REGIONAL SALES|CLIENT DEVELOPMENT|CLIENTELING|LOYALTY|TALENT|HR BUSINESS|PEOPLE|CHEF DE PROJET|CHEF DE PRODUIT|CHEF DE MARQUE|RESPONSABLE (DE |DU |DES )?(PROJET|PRODUIT|MARQUE|COMMUNICATION|MARKETING|CRM|E-?COMMERCE|DIGITAL|QUALITE|DEVELOPPEMENT|CLIENTELE|ZONE EXPORT|COMPTE|GRANDS COMPTES|FORMATION|RECRUTEMENT|PAIE|LOGISTIQUE|APPROVISIONNEMENT|PLANNING|SECURITE|MAINTENANCE|ADMINISTRATIF|COMPTABLE|CONTROLE|JURIDIQUE|RSE|DEVELOPPEMENT DURABLE)) (MANAGER|MANAGEUR)?"
+  },
+  "RANK_WORDS_RE": {
+   "flags": "",
+   "pattern": "\\b(?:TEMP|TEMPORARY|SENIOR|JUNIOR)?\\s?(?:ASSISTANT|ASSOCIATE|DEPUTY|SENIOR|TEAM)?\\s?(?:MANAGER|MANAGEUR)\\b"
+  },
+  "SALON_TITLE_RE": {
+   "flags": "",
+   "pattern": "STYLIST|ARTIST|BROW|LASH|WAX|PIERC|COLOR|BARBER|ESTHET|NAIL|SKIN"
+  },
+  "SALON_DEPARTMENT_RE": {
+   "flags": "",
+   "pattern": "SALON"
+  },
+  "STORE_DEPARTMENT_RE": {
+   "flags": "",
+   "pattern": "RETAIL MANAGEMENT|STORE MANAGEMENT|^STORES?$|^RETAIL$"
+  },
+  "STORE_MANAGER_TITLE_RE": {
+   "flags": "",
+   "pattern": "^(GENERAL|ASSISTANT|ASSOCIATE|DEPUTY|SENIOR)? ?MANAGER\\b|GENERAL MANAGER|^MANAGER\\b"
+  }
+ },
+ "familyRules": [
+  {
+   "id": "legacy-title-0",
+   "key": "visual-merchandising",
+   "flags": "",
+   "pattern": "VISUAL MERCH|\\bVM\\b|WINDOW (DRESS|DISPLAY)|VITRINISTE|MERCHANDISING VISUEL|VISUAL DISPLAY|\\bVISUAL\\b(?! DESIGN)"
+  },
+  {
+   "id": "legacy-title-1",
+   "key": "atelier-craft",
+   "flags": "",
+   "pattern": "^(?!.*\\b(?:CHEF DE PRODUIT|PRODUCT|MANAGER|BUYER|ACHETEU|DEVELOP|MERCHANDIS|MARKETING|PROJECT|PROJET|DESIGNER|DIRECT\\S*|RESPONSABLE\\S*|ASSISTANT\\S*|CATEGORY|PLANNER|SOURCING|COORDINAT\\S*|ANALYST|CONSULTANT|CHARGE\\S*|HEAD|SALES|ADVISOR|VENDEU\\S*|CONSEILLE\\S*|SUPERVISOR|CONTROLLER|CONTROLEU\\S*|ENGINEER|INGENIEU\\S*|SPECIALIST|EXPERT|AMBASSADOR|TRAINER|FORMATEU\\S*|EXECUTIVE)\\b).*(?:JOAILLI|BIJOUTI|HORLOGE|OROLOGIA|UHRMACHER|WATCHMAK|MAROQUIN|SELLIER|SELLERIE|SERTISS|STONE ?SETT|INCASTONAT|POLISS|POLISHER|SCULPT|COUTURI|SEAMSTRESS|BRODEU|EMBROID|GOLDSMITH|ORFEVRE|GEMM?OLOG|ADDETT[OAI] (AL TAGLIO|ALLA PREPARAZIONE)|CONSTRUCTEUR (DE )?MOUVEMENT|GAREU|GUNMAKER|MOULAGE|EBARBAGE|METTEU\\S* AUX? (POINT|BAIN)|ARTISAN|ARTIGIAN|CRAFTS?(MAN|WOMAN|PERSON)|ATELIER|WORKSHOP)"
+  },
+  {
+   "id": "legacy-title-2",
+   "key": "supply-chain-logistics",
+   "flags": "",
+   "pattern": "GESTIONNAIRE.*REFERENTIEL (PRODUITS|ARTICLES)"
+  },
+  {
+   "id": "legacy-title-3",
+   "key": "admin-facilities",
+   "flags": "",
+   "pattern": "ENERGIE ET FLUIDES.*BATIMENT"
+  },
+  {
+   "id": "legacy-title-4",
+   "key": "it-data",
+   "flags": "",
+   "pattern": "MACHINE LEARNING|\\bML\\b (ENGINEER|OPS|SCIENTIST)|MLOPS|DATA (SCIEN|ENGINEER|ARCHITECT|ANALYST|ANALYTICS|PLATFORM|GOVERNANCE|PRODUCT)|\\bBIG DATA|\\bAI\\b|\\bIA\\b(?! GENERALE)|ARTIFICIAL INTELLIGENCE|INTELLIGENCE ARTIFICIELLE|SOFTWARE (ENGINEER|DEVELOP|ARCHITECT|QUALITY)|\\bDEVOPS\\b|\\bSRE\\b|CYBER|INFORMATICIEN|SEMANTIC|FULL ?STACK|FRONT ?END|BACK ?END|TECH(NOLOGY)? (TEAM )?LEAD|SITE RELIABILITY|CLOUD (ENGINEER|ARCHITECT)|SALESFORCE (DEVELOP|ADMIN|ARCHITECT|TECHNOLOGY|SUPPORT)|SOLUTIONS? ARCHITECT|ARCHITECT.*(SYSTEM|\\bIT\\b|DATA|CLOUD|SOFTWARE|ENTERPRISE|INTEGRATION|SALESFORCE|\\bSAP\\b)"
+  },
+  {
+   "id": "legacy-title-5",
+   "key": "finance",
+   "flags": "",
+   "pattern": "CONTROLEU\\S* DE GESTION|PROJECT CONTROLLER|\\bCONTROLLER\\b|CONTROLLING\\b|TRESORI|TRESORER|TREASUR|ACCOUNTS? PAYABLE|ACCOUNTS? RECEIVABLE|COMPTAB|\\bFP&A\\b|\\bTAX\\b|FISCAL"
+  },
+  {
+   "id": "legacy-title-6",
+   "key": "legal-compliance",
+   "flags": "",
+   "pattern": "\\bLEGAL\\b|JURIDIQUE|JURISTE|LAWYER|AVOCAT|COUNSEL\\b|PARALEGAL|COMPLIANCE|CONFORMITE|INTELLECTUAL PROPERTY|PROPRIETE INTELLECTUELLE|BRAND PROTECTION|ANTI-?COUNTERFEIT|CONTREFACON|\\bDPO\\b|\\bRGPD\\b|\\bGDPR\\b"
+  },
+  {
+   "id": "legacy-title-7",
+   "key": "hospitality",
+   "flags": "",
+   "pattern": "RESTAURANT|\\bCAFE\\b|COFFEE|KITCHEN|CUISINE(?! CARE)|CUISINI|\\bCOOK\\b|PASTRY|PATISSI|SOMMELI|BARTEND|BARMAN|BARISTA|SERVEU|WAITER|WAITRESS|WAITING STAFF|\\bHOTEL\\b|HOUSEKEEP|GOUVERNANTE|BUTLER|MAJORDOME|FRONT DESK|GUEST (RELATION|EXPERIENCE|SERVICE)|MAITRE D'|COMMIS DE|PLONGEU|STEWARD|ROOM ATTENDANT|BANQUET|CATERING|TRAITEUR|HOSPITALITY|CONCIERGERIE|BELL(BOY|MAN)|VOITURIER|NIGHT AUDIT|F&B\\b|FOOD (AND|&) BEVERAGE|SOUS[- ]CHEF|CHEF DE PARTIE|\\bCHEF\\b(?! (?:DE (?:PROJET|PRODUIT|MARQUE|SECTEUR|RAYON|BOUTIQUE|MAGASIN|VENTE|ZONE|REGION|DEPARTEMENT|CAISSE|GROUPE|MISSION|SERVICE|COLLECTION|LIGNE)|D'EQUIPE|D'ATELIER))|\\bCUOC|CAMARER|KELLNER|\\bKOCH\\b|\\bSERVER\\b(?! (ADMIN|ENGINEER|SUPPORT))"
+  },
+  {
+   "id": "legacy-title-8",
+   "key": "customer-service",
+   "flags": "",
+   "pattern": "CUSTOMER (SERVICE|CARE|SUPPORT|RELATIONS|ADVISOR|ADVOCATE|SUCCESS|CONTACT)|CLIENT (SERVICE|CARE|SUPPORT|CENTER|CENTRE|CONTACT|SUCCESS)(?! (ASSOCIATE|SPECIALIST|EXPERT|AMBASSADOR))|SERVICE CLIENT|RELATION CLIENT|CONSEILLE\\S* (CLIENTELE |CLIENT )?(A DISTANCE|TELEPHON|EN LIGNE|E-?COMMERCE|DIGITAL|CENTRE D'APPEL|CALL CENTER)|CALL ?CENT|CONTACT ?CENT|CENTRE D'APPEL|TELECONSEIL|CHARGE\\S* (DE )?CLIENTELE|AFTER[- ]?SALES|APRES[- ]VENTE|\\bSAV\\b|CONCIERGE\\b|E-?CONCIERGE|CLIENT ADVISOR (REMOTE|DISTANCE|ONLINE|E-?COMMERCE|DIGITAL)|E-?BOUTIQUE (CLIENT|ADVISOR|ASSISTANT)|LIVE CHAT|CHAT ADVISOR|CARE (ADVISOR|SPECIALIST|AGENT)|ORDER MANAGEMENT|GESTION DES COMMANDES|CUSTOMER OPERATIONS|CUSTOMER EXPERIENCE (AGENT|ADVISOR|ASSOCIATE|SPECIALIST)|KUNDENSERVICE|KUNDENDIENST|ATENCION AL CLIENTE"
+  },
+  {
+   "id": "legacy-title-9",
+   "key": "ecommerce-digital",
+   "flags": "",
+   "pattern": "E-?COMMERCE|ECOM\\b|E-?SHOP|E-?RETAIL|ONLINE (RETAIL|STORE|SHOP|SALES|MERCH|BUSINESS)|OMNI-?CHANNEL|MARKETPLACE(?! CAFE)|SITE MERCH|WEB ?MERCH"
+  },
+  {
+   "id": "legacy-title-10",
+   "key": "wholesale-b2b",
+   "flags": "",
+   "pattern": "\\bB2B\\b|WHOLESALE|KEY ACCOUNT|\\bKAM\\b|FIELD FORCE|EXPORT (MANAGER|SALES|AREA|COORDINATOR|ASSISTANT|EXECUTIVE|DIRECTOR)|TRAVEL RETAIL (MANAGER|DIRECTOR|EXECUTIVE|ACCOUNT|COORDINATOR|SALES (MANAGER|EXECUTIVE|DIRECTOR))|DUTY FREE (MANAGER|ACCOUNT|EXECUTIVE)|GRANDS COMPTES|SALES DIRECTOR|MEDICAL (REPRESENTATIVE|REP|SALES)|VISITEU\\S* MEDICAL|TERRITORY (ACCOUNT|SALES) (EXECUTIVE|MANAGER|REP)|ACCOUNT EXECUTIVE|BUSINESS DEVELOP"
+  },
+  {
+   "id": "legacy-title-11",
+   "key": "crm-clienteling",
+   "flags": "",
+   "pattern": "\\bCRM\\b|CLIENTELING\\b|CLIENT TREATMENT|EXPERIENCE CLIENT\\b|CLIENT EXPERIENCE (MANAGER|LEAD|DIRECTOR|COORDINATOR|ASSISTANT|INTERN|PROJECT|STRATEG)|MANAGER,? CLIENT EXPERIENCE|CLIENT (DEVELOPMENT|ENGAGEMENT|RELATION|LOYALTY|DATA|INSIGHTS?)|LOYALTY|FIDELI[ST]|CUSTOMER (ENGAGEMENT|RELATIONSHIP|LOYALTY|DATA|INSIGHT)|\\bVIC\\b|VIP CLIENT|CLIENT MARKETING|RETENTION|LIFECYCLE MARKETING"
+  },
+  {
+   "id": "legacy-title-12",
+   "key": "merchandising-buying",
+   "flags": "",
+   "pattern": "SALES MERCHANDIS|MERCHANDISE PLANN|DIRECT(EUR|RICE)\\S* DE COLLECTION|RESPONSABLE\\S* DE (COLLECTION|LIGNE PRODUIT)|^MD MANAGER|^PLANNER$|ASSISTANT PLANNER"
+  },
+  {
+   "id": "legacy-title-13",
+   "key": "supply-chain-logistics",
+   "flags": "",
+   "pattern": "ACHETEU\\S* (INDIRECT|HORS PRODUCTION)|ACHATS (INDIRECTS|GENERAUX|NON MARCHANDS)|ORDONNANCEMENT|STRATEGIC SOURCING"
+  },
+  {
+   "id": "legacy-title-14",
+   "key": "strategy-management",
+   "flags": "",
+   "pattern": "NETWORK DEVELOPMENT|STORE NETWORK|NETWORK (EXPANSION|PLANNING)|DEVELOPPEMENT (DU )?RESEAU|NEW STORE OPENING"
+  },
+  {
+   "id": "legacy-title-15",
+   "key": "retail-area-management",
+   "flags": "",
+   "pattern": "\\b(AREA|REGIONAL|DISTRICT|CLUSTER|ZONE|MARKET|COUNTRY|TERRITORY) (SALES )?(MANAGER|DIRECTOR|LEAD(ER)?)\\b|RETAIL (DIRECTOR|DIRECTEUR|DIRECTRICE)|(HEAD|DIRECTOR|DIRECTEUR|DIRECTRICE|VP|VICE PRESIDENT) OF RETAIL|DIRECTEUR RETAIL|DIRECTRICE RETAIL|RESPONSABLE (DE )?(REGION|SECTEUR|RESEAU)|MULTI[- ]?(STORE|SITE)|REGIONAL VISUAL|TRAVEL RETAIL (MANAGER|DIRECTOR)|DIRECT(EUR|RICE)\\S* (REGIONAL|DE REGION|DE ZONE|RESEAU|DES VENTES)|RESPONSABLE\\S* REGIONAL"
+  },
+  {
+   "id": "legacy-title-16",
+   "key": "supply-chain-logistics",
+   "flags": "",
+   "pattern": "(WAREHOUSE|ENTREPOT|ENTREPÔT|LOGISTI|DISTRIBUTION (CENTER|CENTRE)?|SUPPLY ?CHAIN|FULFILMENT|FULFILLMENT)[^|]*?(SUPERVISOR|SUPERVISEUR|TEAM ?LEAD|LEAD\\b|MANAGER|RESPONSABLE)|(SUPERVISOR|SUPERVISEUR|TEAM ?LEAD(ER)?|SHIFT LEAD|FLOOR SUPERVISOR)[^|]*?(WAREHOUSE|ENTREPOT|ENTREPÔT|LOGISTIQUE|LOGISTICS|DISTRIBUTION|SUPPLY ?CHAIN)"
+  },
+  {
+   "id": "legacy-title-17",
+   "key": "retail-store-management",
+   "flags": "",
+   "pattern": "STORE ?(GENERAL )?(MANAGER|DIRECTOR|LEADER|SUPERVISOR|IN CHARGE)|BOUTIQUE (MANAGER|DIRECTOR|DIRECTEUR|DIRECTRICE|SUPERVISOR)|SHOP ?(MANAGER|SUPERVISOR|LEADER)|(RESPONSABLE\\S*|DIRECTEUR|DIRECTRICE|ADJOINT\\S*|GERANT\\S*|ASSISTANT\\S*) (DE |DU |D')?(BOUTIQUE|MAGASIN|POINT DE VENTE|CORNER|STAND|DEPARTEMENT|RAYON|SECTEUR CAISSE|PDV)|CHEF DE (BOUTIQUE|MAGASIN|RAYON|SECTEUR|DEPARTEMENT)|(DEPARTMENT|FLOOR|COUNTER|SALES|DEPUTY|ASSISTANT|CO-?|SHIFT|DUTY) MANAGER\\b(?!,)|(TEAM|SALES|SHIFT|FLOOR|SHOP|STORE) (LEAD(ER)?|SUPERVISOR)\\b|^TEAM MANAGER|SUPERVISOR\\b|SUPERVISEUR|RETAIL (STORE )?MANAGER|MANAGER (DE |DU )?(BOUTIQUE|MAGASIN)|CAPO NEGOZIO|RESPONSABILE (DI |DEL )?NEGOZIO|FILIALLEITER|RESPONSABLE ADJOINT|SECOND DE BOUTIQUE|SECOND DE MAGASIN|ASSISTANT MANAGER\\b(?!,)|MANAGER ADJOINT|GERENTE DE TIENDA|ENCARGAD|(DEPUTY )?HEAD OF (BOUTIQUE|STORE|SHOP)|MANAGER DES VENTES|RESPONSABLE\\S* (DES VENTES|RETAIL|DE TURNO)|RESPONSAVEL DE TURNO|BUTIK(S|K)?(S)?(CHEF|SJEF|LEDER|ANSVARLIG)|SCHICHTLEIT|FILIAAL(MANAGER|LEIDER)|WINKELMANAGER|KIEROWNIK|OUVERTURE FERMETURE|SOUSCHEF|CHEF D'EQUIPE(?! (PRODUCTION|LOGISTIQUE|ENTREPOT|ATELIER))|DIRECT(EUR|RICE)\\S* ADJOINT|店长|店铺经理|店铺主管"
+  },
+  {
+   "id": "legacy-title-18",
+   "key": "beauty-advisor",
+   "flags": "",
+   "pattern": "BEAUTY (ADVISOR|CONSULTANT|ASSISTANT|ARTIST|EXPERT|SPECIALIST|AMBASSADOR|COACH|ASSOCIATE|STYLIST)|CONSEIL\\S* BEAUTE|CONSEIL\\S* (DE )?VENTE BEAUTE|MAKE[- ]?UP ARTIST|MAQUILLEU|ESTHETICIEN|BEAUTICIAN|SKIN ?CARE (ADVISOR|SPECIALIST|EXPERT|CONSULTANT)|FRAGRANCE (ADVISOR|SPECIALIST|EXPERT|CONSULTANT|AMBASSADOR)|COSMETIC (ADVISOR|CONSULTANT)|CONSEILLE\\S* (EN )?(PARFUMERIE|COSMETIQUE)|ANIMAT\\S* (BEAUTE|MAQUILLAGE|PARFUM)|HAIR ?STYLIST|HAIR ?DRESS|COIFFEU|NAIL TECH|ESTETISTA|KOSMETIKER|SPA THERAPIST|BROW|\\bLASH|WAX(ING)? (EXPERT|SPECIALIST|ARTIST)|PIERC|SKIN ?CARE THERAPIST|MAKE ?UP (SPECIALIST|EXPERT|ADVISOR|CONSULTANT)|MAKE-?UP\\S*|BEAUTY CONFID(A|E)NT|SKIN PRO\\b|SKIN (SPECIALIST|EXPERT|THERAPIST)|MAQUILLAGE|\\bTHERAPIST\\b|(MASTER|ELITE|SENIOR|LEAD) STYLIST|SPECIALTY ARTIST|RETAIL ARTIST|SZEPSEGTANACSADO|美容顾问|美容"
+  },
+  {
+   "id": "legacy-title-19",
+   "key": "retail-operations",
+   "flags": "",
+   "pattern": "STOCK (ASSOCIATE|ASSISTANT|CONTROLLER|COORDINATOR|SPECIALIST|KEEPER|CLERK|ROOM|MANAGER|HANDLER|OPERATIVE|SUPERVISOR|LEAD|EXECUTIVE|TEAM|ADMIN)|STOCKROOM|STOCKIST\\S*|BACK ?OF ?HOUSE|\\bBOH\\b|BACK[- ]?OFFICE|INVENTORY (ASSOCIATE|CONTROL|SPECIALIST|COORDINATOR|CLERK|MANAGER|LEAD)|CASHIER|CAISSI|CAJER|HOTE\\S* DE CAISSE|HOST\\S* (DE )?CAISSE|MAGASINIER\\S* (DE |EN )?(BOUTIQUE|MAGASIN)|OPERATIONS? (ASSOCIATE|ASSISTANT|SPECIALIST|COORDINATOR|SUPERVISOR|SUPPORT|LEADER) ?(STORE|BOUTIQUE|RETAIL)?|RETAIL OPERATIONS|STORE OPERATIONS|BOUTIQUE (OPERATIONS|ADMIN\\S*|OFFICE)|LOSS PREVENTION|ASSET PROTECTION|RISK ASSOCIATE|SECURITY (OFFICER|GUARD|AGENT)|AGENT DE SECURITE|VIGIL|RUNNER|GREETER|GUEST COORDINATOR|HOTE\\S* D'ACCUEIL (BOUTIQUE|MAGASIN)|STORE (ASSISTANT|HOST|SUPPORT|RECEPTIONIST|ADMINISTRATOR)|EMPLOYE\\S* (DE )?(MAGASIN|LIBRE[- ]SERVICE|POLYVALENT)|MISE EN RAYON|SALES SUPPORT|RETAIL ADMINISTRATOR|CHARGE\\S* (DE |DU )?STOCK|AGENT DE STOCK|RETAIL STOCK|REPLENISH|REPONEDOR|MAGAZZINIER|LAGERIST|^TASK\\b|TASK (ASSOCIATE|LEAD|MANAGER)|COORDINAT\\S* STOCK"
+  },
+  {
+   "id": "legacy-title-20",
+   "key": "retail-client-advisor",
+   "flags": "",
+   "pattern": "CLIENT ADVIS|CLIENT (SERVICE )?(ASSOCIATE|SPECIALIST|EXPERT|AMBASSADOR|CONSULTANT|EXPERIENCE (SPECIALIST|EXPERT|AMBASSADOR|ADVISOR|ASSOCIATE))|(SALES|RETAIL|STORE|BOUTIQUE|SHOP|FASHION|STYLE|WARDROBE|LUXURY|BRAND) (ADVISOR|ASSOCIATE|ASSISTANT|CONSULTANT|SPECIALIST|EXPERT|AMBASSADOR|STYLIST|PROFESSIONAL|ATTENDANT|EXECUTIVE|REPRESENTATIVE|EXPERT)|\\bSALES\\b(?! (MANAGER|DIRECTOR|OPERATIONS|PLANNING|ANALYST|SUPPORT|ADMIN|COORDINATOR|TRAINER))|SELLING (ASSOCIATE|SPECIALIST|SUPERVISOR|PROFESSIONAL|LEAD|ASSISTANT)|\\bSTYLIST\\b.*\\b(HOURS|HRS|PART[- ]TIME|FULL[- ]TIME|BLOOMINGDALES|OUTLET|STORE|MALL)\\b|STYLIST\\s*SALES|CONSEILLE\\S* (DE |EN |A LA )?(VENTE|CLIENTELE|MODE|BOUTIQUE|MAGASIN|COMMERCIAL)|CONSEILLE\\S* (H F|F H)|\\bVENDEU|VENDEDOR|VENDEDORA|VERKAUF|VERKÄUF|COMMESS[OAI]|ADDETT[OAI] (ALLA |ALLE )?VENDIT|SALES ?PERSON|SHOP ?ASSISTANT|STYLE ADVISOR|PERSONAL SHOPPER|PERSONAL STYLIST|BRAND AMBASSADOR|AMBASSADEU|DEMONSTRAT|ANIMAT\\S* (DE |DES )?VENTE|KEY ?HOLDER|SENIOR SALES|SALES EXPERT|BOUTIQUE ASSISTANT|SHOP FLOOR|EQUIPIER|RETAIL ASSISTANT|RETAIL ASSOCIATE|OPTICIAN|OPTICIEN|VERKOOP|CHARGE\\S* DES VENTES?|COLLABORATEU\\S* (DE |DES )?VENTE|EMPLEAD\\S* DE VENTAS|\\bVENTAS\\b|DEPENDIENT|AYUDANTE DE VENTA|ASSOCIAD\\S* DE VENDAS|\\bVENDAS\\b|COLABORADOR\\S* DE LOJA|\\bLOJA\\b|ASSISTENTE (ALLE |ALLA )?(VENDIT|CLIENTEL)|SPRZEDAWC|DORADC|WINKELMEDEWERKER|VERKOOPMEDEWERKER|STORE MEDEWERKER|\\bBUTIK|MEDARBE[JI]DER|UNGARBEJDER|EKSTRAHJELP|JULEHJELP|DELTIDS|STORE WORKER|TEAM MEMBER|EMPLOYE\\S* DE RAYON|\\bATHLETE\\b|KUNDENBERAT|AUSHILFE|CUSTOMER (HOST|ASSISTANT)|^(TEMPORARY |SEASONAL |FULL TIME |PART TIME |PT |FT |CASUAL )?ASSOCIATE( I{1,3})?$|BECARI|RETAIL (EXPERIENCE|TRAINEE|GENERATION|INTERN)|JEWELL?ERY (EXPERT|ADVISOR|CONSULTANT)|WELCOME HOST|נציג|매장 직원|販売|客户顾问|销售顾问|销售"
+  },
+  {
+   "id": "legacy-title-21",
+   "key": "wholesale-b2b",
+   "flags": "",
+   "pattern": "ACCOUNT (MANAGER|EXECUTIVE|DIRECTOR)|\\bBIZ ?DEV\\b|SALES (MANAGER|DIRECTOR|REPRESENTATIVE|EXECUTIVE|AGENT) ?(WHOLESALE|B2B|EXPORT|TRAVEL RETAIL|DISTRIBUT)|COMMERCIAL (EXPORT|B2B|GRANDS COMPTES|SEDENTAIRE|TERRAIN|ITINERANT)|DISTRIBUTOR MANAG|TRADE (MARKETING|SALES)|SHOWROOM|SALES (REP|AGENT)\\b|VRP|TECHNICO-?COMMERCIAL|CHARGE\\S* D'AFFAIRES|INGENIEUR\\S* COMMERCIAL|ATTACHE\\S* COMMERCIAL|COMMERCIAL\\b(?! ASSISTANT)|DUTY FREE|TRAVEL RETAIL"
+  },
+  {
+   "id": "legacy-title-22",
+   "key": "ecommerce-digital",
+   "flags": "",
+   "pattern": "ONLINE|DIGITAL (MANAGER|MARKETING|PROJECT|PRODUCT|EXPERIENCE|TRANSFORMATION|SPECIALIST|COORDINATOR|ANALYST|CONTENT|ACTIVATION|MERCH|STRATEG|BUSINESS|DIRECTOR|LEAD)|WEB ?(MANAGER|PROJECT|MARKETING|DESIGNER|DEVELOPER|CONTENT|MASTER)|\\bUX\\b|\\bUI\\b|USER EXPERIENCE|PRODUCT OWNER|CONVERSION|\\bCRO\\b|\\bSEO\\b|\\bSEA\\b|\\bSEM\\b|PERFORMANCE MARKETING|GROWTH|TRAFFIC MANAGER|E-?BUSINESS|DIGITAL\\b"
+  },
+  {
+   "id": "legacy-title-23",
+   "key": "merchandising-buying",
+   "flags": "",
+   "pattern": "\\bBUYER|\\bBUYING|ACHETEU|\\bACHATS?\\b|MERCHANDIS(ER|ING)(?! VISUEL)|MERCHANDISE (ALLOCAT|CONTROL|MANAG)|\\bMERCH\\b|ALLOCAT(OR|ION)|PLANNER (RETAIL|MERCH|BUYING)|(RETAIL|MERCHANDISE|RANGE|ASSORTMENT|BUYING) PLANN|CATEGORY MANAG|COLLECTION (MERCH|PLANN|MANAG)|RANGE (MANAG|PLANN)|ASSORTMENT|PRODUCT MERCH|PRODUCT MANAGER|CHEF DE PRODUIT|CHEF\\S* DE PRODUIT|PRODUCT LINE|APPROVISIONNEU|APPROVISIONNEMENT (RETAIL|BOUTIQUE)|SOURCING (MANAGER|SPECIALIST|COORDINATOR)"
+  },
+  {
+   "id": "legacy-title-24",
+   "key": "marketing-communication",
+   "flags": "",
+   "pattern": "MARKETING|COMMUNICATION|RESEAUX SOCIAUX|\\bPR\\b|PRESS|PRESSE|MEDIA|SOCIAL|CONTENT|CONTENU|BRAND (MANAGER|STRATEG|EXPERIENCE|ACTIVATION|COMMUNICATION|CONTENT|MARKETING|PARTNERSHIP|STORYTELL)|CHEF DE MARQUE|INFLUENC|EVENT|EVENEMENT|COPYWRIT|REDACT|EDITOR|JOURNALIST|COMMUNITY|PARTNERSHIP|SPONSOR|ADVERTIS|PUBLICIT|CAMPAIGN|CREATIVE STRATEG|STORYTELL|PUBLIC RELATIONS|RELATIONS PUBLIQUES|ACTIVATION|PHOTOGRAPH|VIDEO|MOTION DESIGN|CELEBRIT|TALENT RELATION|CHARGE\\S* DE COMMUNICATION|GRAPHIC DESIGN|GRAPHISTE|DA JUNIOR|ART DIRECTOR|DIRECT\\S* ARTISTIQUE|DIRECTION ARTISTIQUE|PROMOTIONS?\\b"
+  },
+  {
+   "id": "legacy-title-25",
+   "key": "product-development-rd",
+   "flags": "",
+   "pattern": "DEVELOPPEU\\S* (PEAUX|MATIERE|CUIR|PRODUIT)|DEVELOPPEMENT (MATIERE|TECHNIQUE|PRODUIT)|PRODUCT DEVELOP|CHARGE\\S* DE DEVELOPPEMENT|TECHNICAL DESIGN|GARMENT TECH|FIT TECH|TECHNICIEN\\S* (PRODUIT|METHODE|DEVELOPPEMENT|PATRONAGE)|R ?& ?D\\b|RESEARCH (AND|&) DEVELOP|RECHERCHE (ET|&) DEVELOP|FORMULAT|CHEMIST|CHIMISTE|SCIENTIST|SCIENTIFIQUE|LABORATO|\\bLAB\\b|REGULATORY|AFFAIRES REGLEMENTAIRES|REGLEMENTAIRE|TOXICOLOG|MICROBIOLOG|CLINICAL|EVALUATION (SENSORIELLE|PRODUIT)|PACKAGING (DEVELOP|ENGINEER|DESIGN|PROJECT)|INDUSTRIALISATION|INDUSTRIALIZATION|PROTOTYP|SAMPLE (DEVELOP|COORDINAT|ROOM)|MATERIAL(S)? (DEVELOP|RESEARCH|INNOVATION|SPECIALIST)|INNOVATION|PRODUCT (ENGINEER|TECHNOLOGIST|QUALITY|SPECIALIST|COORDINATOR|ASSISTANT)|BUREAU D'ETUDES|\\bBE\\b PRODUIT|COSTING|SAFETY ASSESSOR"
+  },
+  {
+   "id": "legacy-title-26",
+   "key": "design-creation",
+   "flags": "",
+   "pattern": "DESIGNER|DESIGN\\b(?! ENGINEER)|STYLIST\\b(?! ADVISOR)|STYLISTE|MODELISTE|PATTERN (MAKER|CUTTER|DESIGN)|CREATI(VE|F|VE DIRECTOR|ON)|STUDIO (ASSISTANT|MANAGER|COORDINATOR|DIRECTOR)|FASHION (DESIGN|ASSISTANT|STUDIO)|ILLUSTRAT|COLORIST|COLORISTE|TEXTILE (DESIGN|DEVELOP)|PRINT (DESIGN|DEVELOP)|KNITWEAR|MAILLE\\b|ACCESSORIES DESIGN|JEWEL(RY|LERY) DESIGN|3D (DESIGN|ARTIST|MODEL)|CAD (DESIGN|ARTIST|OPERATOR)|\\bCAO\\b|DAO\\b|ARCHITECT(?!URE (IT|SI|CLOUD|DATA|SOLUTION|TECHNIQUE|LOGICIEL))|ARCHITECTE (D'INTERIEUR|INTERIEUR|RETAIL)|INTERIOR DESIGN|STORE (DESIGN|PLANNING|DEVELOPMENT|CONCEPT)|CONCEPT (DESIGN|STORE)|VISUAL (DESIGN|IDENTITY)|GRAPHIC"
+  },
+  {
+   "id": "legacy-title-27",
+   "key": "atelier-craft",
+   "flags": "",
+   "pattern": "MACHINIST|PIQUEU|MECANICIEN\\S* (EN )?CONFECTION|CONFECTION|OUVRI\\S* (DE |D')?(PRODUCTION|CONFECTION|MAROQUINERIE|ATELIER|FABRICATION|COUTURE|SELLERIE|BIJOUTERIE|HORLOGERIE|FINITION)|OPERAT\\S* (DE |EN |D')?(PRODUCTION|FABRICATION|CONFECTION|MAROQUINERIE|COUTURE|FINITION|MONTAGE|ASSEMBLAGE|CONDITIONNEMENT|POLISSAGE|SERTISSAGE)|LEATHER (WORK|CRAFT|GOODS ARTISAN|ARTISAN)|SADDLE|COUPEU|CUTTER\\b|CUTTING (OPERATOR|TECHNICIAN|ROOM)|JEWEL(L)?ER\\b|ENGRAV|GRAVEU|BRODERIE|PLUMASSI|PLISS|MAILLEUR|TRICOT|KNITTER|WEAVER|TISSER|TANNER|TANNEU|SHOEMAK|CORDONNI|BOTTIER|FINISSEU|FINISHER|FINISHING (OPERATOR|TECHNICIAN|ARTISAN)|MONTEU|ASSEMBLEU|ASSEMBLER\\b|CONTROLEU\\S* (QUALITE )?(ATELIER|PRODUIT|CONFECTION)|REPAIR (TECHNICIAN|ARTISAN|SPECIALIST)|\\bREPARAT|RETOUCH|ALTERATION|TAILOR|TAILLEU|SEWER|SEWING|MODELLISTA|SARTA|SARTO|CALZOLAI|PELLETTI|TECHNICIEN\\S* (HORLOG|QUALITE ATELIER|ATELIER)|GARMENT (MAKER|TECHNICIAN)|DRAPER|TOILISTE|PREMIERE D'ATELIER|CHEF D'ATELIER|RESPONSABLE D'ATELIER|OPERAD\\S* (DE )?PRODU|MASCHINENBEDIENER|WERKZEUGMECHANIKER"
+  },
+  {
+   "id": "legacy-title-28",
+   "key": "admin-facilities",
+   "flags": "",
+   "pattern": "CLEANING|NETTOYAGE|AGENT D'ENTRETIEN|\\bCLEANER\\b"
+  },
+  {
+   "id": "legacy-title-29",
+   "key": "manufacturing-quality",
+   "flags": "",
+   "pattern": "PRODUCTION(?! PLANN)|MANUFACTUR|FABRICATION|\\bUSINE|PLANT\\b|FACTORY|INDUSTRI(AL|EL)|PROCESS (ENGINEER|TECHNICIAN|IMPROVEMENT)|MAINTENANCE|MAINTAIN|TECHNICIEN\\S* (DE )?MAINTENANCE|MACHINE OPERATOR|OPERATOR\\b|OPERATEU|CONDUCTEU\\S* (DE )?(LIGNE|MACHINE|INSTALLATION)|QUALITY|QUALITE|QUALITA\\b|\\bQC\\b|\\bQA\\b|\\bHSE\\b|\\bEHS\\b|\\bSHE\\b|SECURITE ENVIRONNEMENT|LEAN|CONTINUOUS IMPROVEMENT|AMELIORATION CONTINUE|METHODES|METHODS ENGINEER|CONDITIONNEMENT|PACKAGING OPERATOR|FILLING|REMPLISSAGE|PLANT MANAGER|DIRECTEUR D'USINE|RESPONSABLE DE PRODUCTION|CHEF D'EQUIPE PRODUCTION|TEAM LEADER PRODUCTION|SHIFT (LEADER|MANAGER) PRODUCTION|COMPOUND|PROCESS|MECHANIC\\b|(?<!IT )(?<!SUPPORT )(?<!SERVICE )\\bTECHNICIAN\\b|LINE LEADER|TOOLROOM|MOU?LD MAKER|\\d(ST|ND|RD) SHIFT|SAFETY (OFFICER|MANAGER|COORDINATOR)"
+  },
+  {
+   "id": "legacy-title-30",
+   "key": "supply-chain-logistics",
+   "flags": "",
+   "pattern": "SUPPLY ?CHAIN|LOGISTI|WAREHOUSE|ENTREPOT|MAGASINIER|PREPARAT\\S* (DE )?COMMANDES?|ORDER (PICK|PREP|FULFIL|PROCESS)|PICK(ER|ING)\\b|PACKER|CARISTE|FORKLIFT|TRANSPORT|SHIPPING|EXPEDITION|RECEPTION(?:NAIRE|NISTE)? (MARCHANDISE|LOGISTIQUE|ENTREPOT)|RECEIVING|IMPORT|EXPORT (OPERATIONS|COORDINATOR|SPECIALIST|COMPLIANCE)|CUSTOMS|DOUANE|DISTRIBUTION (CENTER|CENTRE)|\\bDC\\b|FULFIL|PLANIFICAT|(PRODUCTION|SUPPLY|DEMAND|MATERIAL|INVENTORY|CAPACITY|MASTER|LOGISTICS|DISTRIBUTION) PLANN|S&OP|PROCUREMENT|PURCHAS|INVENTORY (PLANN|ANALYST|MANAGER)|STOCK (PLANN|ANALYST|MANAGEMENT)|MATERIAL (PLANN|HANDL|COORDINATOR)|FLUX|FLOW MANAG|OPERATIONS (MANAGER|DIRECTOR|ANALYST|COORDINATOR|SPECIALIST)\\b|CHAINE D'APPROVISIONNEMENT|APPROVISIONNEMENT|DELIVERY DRIVER|CHAUFFEUR|LIVREU|COURIER|GESTIONNAIRE DE STOCK|STOCK MANAGEMENT|3PL|FREIGHT|FORWARD|DEMAND (INTERN|ANALYST|MANAGER)"
+  },
+  {
+   "id": "legacy-title-31",
+   "key": "finance",
+   "flags": "",
+   "pattern": "FINANC|ACCOUNT(ING|ANT)|CONTROL(LER|LING|E DE GESTION)|AUDIT|CREDIT (ANALYST|CONTROL|MANAGER)|BILLING|FACTURATION|FACTURE|RECOUVREMENT|COLLECTIONS (ANALYST|SPECIALIST)|CONSOLIDATION|REPORTING (ANALYST|MANAGER|FINANC)|BUSINESS (CONTROL|ANALYST FINANC|PERFORMANCE)|PRICING|INVESTOR RELATION|\\bM&A\\b|CORPORATE FINANCE|PAYROLL ACCOUNT|ANALYSTE FINANCI|CHEF COMPTABLE|CASH|BUDGET|COST (CONTROL|ACCOUNT)|INTERNAL CONTROL|CONTROLE INTERNE"
+  },
+  {
+   "id": "legacy-title-32",
+   "key": "hr-talent",
+   "flags": "",
+   "pattern": "\\bHR\\b|\\bRH\\b|HUMAN RESOURCE|RESSOURCES HUMAINES|RECRUIT|RECRUT|TALENT (ACQUISITION|MANAG|DEVELOP|PARTNER|SOURC)|LEARNING|FORMATION|TRAINING|TRAINER|FORMATEU|\\bL&D\\b|PEOPLE (PARTNER|MANAGER|OPERATIONS|DIRECTOR|ANALYST|EXPERIENCE|TEAM|(&|AND) CULTURE|BUSINESS PARTNER)|HRBP|HR BUSINESS PARTNER|COMPENSATION|BENEFITS|\\bC&B\\b|PAYROLL|PAIE\\b|PAYE\\b|EMPLOYEE (RELATIONS|EXPERIENCE|ENGAGEMENT)|RELATIONS SOCIALES|LABOR RELATIONS|ORGANI[SZ]ATION(AL)? DEVELOP|WORKFORCE|STAFFING|ONBOARDING|CAMPUS|EMPLOYER BRAND|MARQUE EMPLOYEUR|DIVERSITY|INCLUSION|\\bDEI\\b|\\bD&I\\b|GESTIONNAIRE (DE )?(CARRIERES|PAIE|RH)|CHARGE\\S* (DE |DES )?(RECRUTEMENT|RESSOURCES HUMAINES|RH|FORMATION|DEVELOPPEMENT RH)|COACH\\b|ACADEMY|EDUCATION (MANAGER|SPECIALIST|EXECUTIVE|DIRECTOR)|EDUCAT(OR|RICE|EUR)|RETAIL (TRAINER|EDUCATION|LEARNING)|TALENT\\b(?! DAY)|EXECUTIVE SEARCH|\\bRESEARCHER\\b|MEDECIN DU TRAVAIL|INFIRMI\\S* (DU |D')?(TRAVAIL|ENTREPRISE)|OCCUPATIONAL HEALTH"
+  },
+  {
+   "id": "legacy-title-33",
+   "key": "it-data",
+   "flags": "",
+   "pattern": "\\bIT\\b|INFORMATI(ON TECHNOLOGY|QUE)|\\bSI\\b|SYSTEMES? D'INFORMATION|DATA|ANALYTICS|ANALYSTE (BI|DECISIONNEL)|\\bBI\\b|BUSINESS INTELLIGENCE|SOFTWARE|LOGICIEL|DEVELOP(ER|PEU)(?! PRODUIT)|ENGINEER\\b(?! (PACKAGING|PRODUCT|PROCESS|QUALITY|MAINTENANCE|INDUSTRIAL|MANUFACTURING|R&D|MECHANICAL|ELECTRICAL|CIVIL|CHEMICAL|SALES))|INGENIEU\\S* (LOGICIEL|INFORMATIQUE|DATA|SYSTEME|RESEAU|CLOUD|DEVOPS|IA|IT|SI|ETUDES ET DEVELOPPEMENT|DEVELOPPEMENT LOGICIEL)|PROGRAMM|CLOUD|SECURITY (ENGINEER|ANALYST|ARCHITECT|OFFICER|SPECIALIST)|INFOSEC|\\bSOC\\b|NETWORK|RESEAU\\b(?!X? DE (BOUTIQUE|MAGASIN|DISTRIBUTION|VENTE))|INFRASTRUCTURE|SYSADMIN|SYSTEM(S)? (ADMIN|ENGINEER|ANALYST|ARCHITECT)|DATABASE|\\bDBA\\b|\\bERP\\b|\\bSAP\\b|SALESFORCE|\\bCRM (DEVELOP|TECHNICAL|SYSTEM)|\\bPLM\\b|\\bPOS\\b (ENGINEER|SPECIALIST|SUPPORT|ANALYST)|TECHNICAL (LEAD|ARCHITECT|PRODUCT)|ARCHITECT(E)? (IT|SI|SOLUTION|CLOUD|DATA|TECHNIQUE|LOGICIEL|ENTREPRISE)|SOLUTION(S)? ARCHITECT|APPLICATION (MANAGER|SUPPORT|SPECIALIST|ANALYST|ENGINEER)|SUPPORT (TECHNIQUE|IT|INFORMATIQUE|APPLICATI)|HELP ?DESK|SERVICE DESK|TECHNICIEN\\S* (INFORMATIQUE|SUPPORT|IT|HELPDESK|RESEAU|SYSTEME)|SCRUM|AGILE|\\bQA (ENGINEER|AUTOMATION|TESTER)|TEST(ER|ING) (ENGINEER|ANALYST|AUTOMATION)|\\bETL\\b|DIGITAL WORKPLACE|OFFICE 365|MICROSOFT 365|CHEF DE PROJET (IT|SI|INFORMATIQUE|DIGITAL|TECHNIQUE|ERP|SAP|DATA)|PROJECT MANAGER (IT|ERP|SAP|DATA|TECH)|\\bPMO\\b IT|PRODUIT DIGITAL|INTEGRATION (SPECIALIST|ENGINEER|MANAGER)|AUTOMATION ENGINEER|ROBOTIC|\\bRPA\\b|WEB ?(DEVELOP|ENGINEER)|MOBILE (DEVELOP|ENGINEER)|IOS\\b|ANDROID|\\bCISO\\b"
+  },
+  {
+   "id": "legacy-title-34",
+   "key": "sustainability",
+   "flags": "",
+   "pattern": "SUSTAINAB|DURABLE|\\bCSR\\b|\\bRSE\\b|\\bESG\\b|ENVIRONNEMENT(AL)?(?! HSE)|ENVIRONMENT(AL)?\\b|CIRCULAR|CIRCULARIT|CLIMATE|CLIMAT\\b|CARBON|CARBONE|IMPACT (MANAGER|ANALYST|LEAD|DIRECTOR)|RESPONSIBLE SOURCING|SOURCING RESPONSABLE|ETHICAL (SOURCING|TRADE)|TRACEABILIT|TRACABILIT|BIODIVERSIT|SOCIAL (COMPLIANCE|RESPONSIBILITY|IMPACT)|\\bRSC\\b|GREEN\\b"
+  },
+  {
+   "id": "legacy-title-35",
+   "key": "admin-facilities",
+   "flags": "",
+   "pattern": "ASSISTANT\\S* (DE )?DIRECTION|EXECUTIVE ASSISTANT|PERSONAL ASSISTANT|\\bEA\\b|\\bPA\\b TO|ADMINISTRATIVE|ADMINISTRATI(F|VE)|ASSISTANT\\S* ADMINISTRATI|OFFICE (MANAGER|ASSISTANT|COORDINATOR|ADMINISTRATOR)|RECEPTION(IST|NISTE)?\\b|STANDARD|ACCUEIL\\b|FACILIT|SERVICES GENERAUX|GENERAL SERVICES|WORKPLACE|SECRETAR|TEAM ASSISTANT|ASSISTANT\\S* (D'EQUIPE|POLYVALENT|DE GESTION)|MAILROOM|COURRIER|CHAUFFEUR PRIVE|DRIVER\\b|TRAVEL (COORDINATOR|MANAGER)|FLEET|IMMOBILIER|REAL ESTATE|PROPERTY (MANAGER|DIRECTOR)|LEASE|CONSTRUCTION (MANAGER|PROJECT)|SITE MANAGER|BUILDING|MAINTENANCE (BATIMENT|BUILDING|FACILITIES)|ARCHIVIST|ARCHIVE|DOCUMENT CONTROL|GESTIONNAIRE ADMINISTRATI"
+  },
+  {
+   "id": "legacy-title-36",
+   "key": "strategy-management",
+   "flags": "",
+   "pattern": "STRATEG|\\bCEO\\b|\\bCOO\\b|\\bCFO\\b|\\bCMO\\b|\\bCTO\\b|\\bCIO\\b|\\bCHRO\\b|CHIEF\\b|MANAGING DIRECTOR|DIRECTEUR\\S* GENERAL|DIRECTRICE GENERALE|GENERAL MANAGER|GENERAL DIRECTOR|COUNTRY MANAGER|PRESIDENT|\\bVP\\b|VICE[- ]PRESIDENT|CHIEF OF STAFF|BUSINESS (ANALYST|MANAGER|PLANNING|OPERATIONS|TRANSFORMATION)|TRANSFORMATION|\\bPMO\\b|PROJECT (MANAGER|LEAD|COORDINATOR|DIRECTOR)|CHEF\\S* DE PROJET|CHARGE\\S* DE (PROJET|MISSION)|PROGRAM(ME)? (MANAGER|DIRECTOR|LEAD)|CONSULTANT|CONSEIL\\b(?! (DE|EN|A) )|ANALYST\\b|ANALYSTE\\b|MANAGEMENT|DIRECTION (GENERALE|DES OPERATIONS)|HEAD OF (OPERATIONS|BUSINESS|STRATEGY|TRANSFORMATION)|EXCELLENCE|PERFORMANCE (MANAGER|ANALYST)|MARKET (INTELLIGENCE|RESEARCH|ANALYST)|INSIGHT|ETUDES (MARKETING|CONSOMMATEUR)|CONSUMER (INSIGHT|RESEARCH)|RETAIL EXCELLENCE|OPERATIONS EXCELLENCE|INTERIM (MANAGER|DIRECTOR)|FRANCHISE|LICENSING|LICENCE|DEVELOPPEMENT (INTERNATIONAL|RESEAU|RETAIL)|EXPANSION|NEW (STORE|MARKET) (OPENING|DEVELOPMENT)"
+  },
+  {
+   "id": "legacy-title-37",
+   "key": "retail-client-advisor",
+   "flags": "",
+   "pattern": "\\bADVISOR\\b|\\bCONSEILLE\\S*\\b|\\bVENTE\\b|\\bVENDIT|\\bRETAIL\\b"
+  }
+ ],
+ "occupations": [
+  {
+   "key": "sales-advisor",
+   "family": "retail-client-advisor",
+   "labels": {
+    "en": "Sales advisor",
+    "fr": "Conseiller de vente"
+   },
+   "aliases": [
+    "Sales Advisor",
+    "Client Advisor",
+    "Luxury Sales Advisor",
+    "Conseiller de vente",
+    "Conseillère de vente",
+    "Conseiller vente",
+    "Conseillere vente",
+    "Fashion Advisor",
+    "Sales Associate",
+    "Selling Associate",
+    "Sales Assistant",
+    "Vendeur",
+    "Vendeuse",
+    "Conseillers de vente",
+    "Conseiller Vendeur",
+    "Conseillere Vendeuse",
+    "Associé aux ventes",
+    "Associée aux ventes",
+    "Addetto Vendite",
+    "Addetta Vendite",
+    "Addetti Vendite",
+    "Addett Vendite",
+    "Vendedor",
+    "Vendedora",
+    "Verkaufsberater",
+    "Verkäufer",
+    "Verkäuferin",
+    "销售顾问"
+   ]
+  },
+  {
+   "key": "beauty-consultant",
+   "family": "beauty-advisor",
+   "labels": {
+    "en": "Beauty advisor",
+    "fr": "Conseiller beauté"
+   },
+   "aliases": [
+    "Beauty Advisor",
+    "Beauty Adviser",
+    "Beauty Consultant",
+    "Conseiller beauté",
+    "Conseillère beauté",
+    "Conseiller de beauté",
+    "Conseillère de beauté",
+    "Conseiller en parfumerie",
+    "Conseillère en parfumerie",
+    "Fragrance Advisor",
+    "Fragrance Consultant",
+    "Beauty Specialist",
+    "Conseiller de vente beauté",
+    "美容顾问"
+   ]
+  },
+  {
+   "key": "hairdresser",
+   "family": "beauty-services",
+   "labels": {
+    "en": "Hairdresser",
+    "fr": "Coiffeur"
+   },
+   "aliases": [
+    "Coiffeur",
+    "Coiffeuse",
+    "Hair Stylist",
+    "Hairstylist",
+    "Hairdresser",
+    "Hair Dresser",
+    "Barber",
+    "Parrucchiere",
+    "Parrucchiera"
+   ]
+  },
+  {
+   "key": "beauty-therapist",
+   "family": "beauty-services",
+   "labels": {
+    "en": "Beauty therapist",
+    "fr": "Esthéticien"
+   },
+   "aliases": [
+    "Esthéticien",
+    "Esthéticienne",
+    "Aesthetician",
+    "Esthetician",
+    "Beauty Therapist",
+    "Estetista",
+    "Kosmetiker",
+    "Kosmetikerin",
+    "Spa Therapist"
+   ]
+  },
+  {
+   "key": "makeup-artist",
+   "family": "beauty-services",
+   "labels": {
+    "en": "Makeup artist",
+    "fr": "Maquilleur"
+   },
+   "aliases": [
+    "Makeup Artist",
+    "Make up Artist",
+    "Make-up Artist",
+    "Maquilleur",
+    "Maquilleuse"
+   ]
+  },
+  {
+   "key": "brow-specialist",
+   "family": "beauty-services",
+   "labels": {
+    "en": "Brow specialist",
+    "fr": "Spécialiste sourcils et épilation"
+   },
+   "aliases": [
+    "Brow Waxing Expert",
+    "Brow Artist",
+    "Brow Specialist"
+   ]
+  },
+  {
+   "key": "cashier",
+   "family": "retail-operations",
+   "labels": {
+    "en": "Cashier",
+    "fr": "Hôte de caisse"
+   },
+   "aliases": [
+    "Cashier",
+    "Hôte de caisse",
+    "Hôtesse de caisse",
+    "Hôte de caisse et d accueil",
+    "Caissier",
+    "Caissière",
+    "Caissiers",
+    "Cajero",
+    "Cajera"
+   ]
+  },
+  {
+   "key": "store-manager",
+   "family": "retail-store-management",
+   "labels": {
+    "en": "Store manager",
+    "fr": "Responsable de boutique"
+   },
+   "aliases": [
+    "Store Manager",
+    "Storemanager",
+    "Shop Manager",
+    "Shopmanager",
+    "Boutique Manager",
+    "Responsable de boutique",
+    "Responsable de magasin",
+    "Directeur de magasin",
+    "Directrice de magasin",
+    "Directeur de boutique",
+    "Directrice de boutique",
+    "Store Director",
+    "Manager di Store",
+    "Gerente de Tienda",
+    "Filialleiter",
+    "Filialleiterin",
+    "店长"
+   ]
+  },
+  {
+   "key": "assistant-store-manager",
+   "family": "retail-store-management",
+   "labels": {
+    "en": "Assistant store manager",
+    "fr": "Adjoint au responsable de boutique"
+   },
+   "aliases": [
+    "Assistant Store Manager",
+    "Assistant Shop Manager",
+    "Assistant Boutique Manager",
+    "Deputy Store Manager",
+    "Directeur adjoint de magasin",
+    "Directrice adjointe de magasin",
+    "Responsable adjoint de boutique",
+    "Responsable adjointe de boutique",
+    "Assistant Store Leader"
+   ]
+  },
+  {
+   "key": "regional-retail-manager",
+   "family": "retail-area-management",
+   "labels": {
+    "en": "Regional retail manager",
+    "fr": "Responsable régional retail"
+   },
+   "aliases": [
+    "Regional Retail Manager",
+    "Area Retail Manager",
+    "Directeur regional retail",
+    "Responsable regional retail"
+   ]
+  },
+  {
+   "key": "visual-merchandiser",
+   "family": "visual-merchandising",
+   "labels": {
+    "en": "Visual merchandiser",
+    "fr": "Visual merchandiser"
+   },
+   "aliases": [
+    "Visual Merchandiser",
+    "Marchandiseur visuel",
+    "Marchandiseuse visuelle",
+    "Vitriniste",
+    "Window Dresser"
+   ]
+  },
+  {
+   "key": "stock-associate",
+   "family": "retail-operations",
+   "labels": {
+    "en": "Retail stock associate",
+    "fr": "Gestionnaire de stock en boutique"
+   },
+   "aliases": [
+    "Stock Associate",
+    "Stock Assistant",
+    "Stock Controller",
+    "Stock Keeper",
+    "Stock Coordinator",
+    "Stockiste",
+    "Stockist",
+    "Stockroom Associate",
+    "Stockroom Assistant"
+   ]
+  },
+  {
+   "key": "warehouse-operative",
+   "family": "supply-chain-logistics",
+   "labels": {
+    "en": "Warehouse operative",
+    "fr": "Préparateur de commandes et agent logistique"
+   },
+   "aliases": [
+    "Warehouse Operative",
+    "Warehouse Associate",
+    "Warehouse Worker",
+    "Préparateur de commandes",
+    "Préparatrice de commandes",
+    "Order Picker",
+    "Picker Packer",
+    "Logistics Associate"
+   ]
+  },
+  {
+   "key": "logistics-manager",
+   "family": "supply-chain-logistics",
+   "labels": {
+    "en": "Logistics manager",
+    "fr": "Responsable logistique"
+   },
+   "aliases": [
+    "Logistics Manager",
+    "Warehouse Manager",
+    "Warehouse Supervisor",
+    "Responsable logistique",
+    "Superviseur logistique",
+    "Distribution Center Manager",
+    "Distribution Centre Manager"
+   ]
+  },
+  {
+   "key": "customer-service-advisor",
+   "family": "customer-service",
+   "labels": {
+    "en": "Customer service advisor",
+    "fr": "Conseiller service client"
+   },
+   "aliases": [
+    "Customer Service Advisor",
+    "Customer Service Representative",
+    "Customer Care Advisor",
+    "Customer Support Specialist",
+    "Client Contact Consultant",
+    "E Boutique Client Advisor",
+    "Client Advisor Online",
+    "Téléconseiller",
+    "Téléconseillère",
+    "Conseiller clientèle à distance",
+    "Conseillere clientele a distance"
+   ]
+  },
+  {
+   "key": "watchmaker",
+   "family": "atelier-craft",
+   "labels": {
+    "en": "Watchmaker",
+    "fr": "Horloger"
+   },
+   "aliases": [
+    "Horloger",
+    "Horlogère",
+    "Watchmaker",
+    "Uhrmacher",
+    "Uhrmacherin",
+    "Orologiaio"
+   ]
+  },
+  {
+   "key": "jeweller",
+   "family": "atelier-craft",
+   "labels": {
+    "en": "Jeweller",
+    "fr": "Joaillier"
+   },
+   "aliases": [
+    "Joaillier",
+    "Joaillière",
+    "Jeweller",
+    "Jeweler",
+    "Goldsmith",
+    "Bijoutier",
+    "Bijoutière",
+    "Orfèvre"
+   ]
+  },
+  {
+   "key": "leather-craftsperson",
+   "family": "atelier-craft",
+   "labels": {
+    "en": "Leather craftsperson",
+    "fr": "Maroquinier"
+   },
+   "aliases": [
+    "Maroquinier",
+    "Maroquinière",
+    "Sellier",
+    "Sellière",
+    "Leather Craftsperson"
+   ]
+  },
+  {
+   "key": "seamster",
+   "family": "atelier-craft",
+   "labels": {
+    "en": "Seamster",
+    "fr": "Couturier"
+   },
+   "aliases": [
+    "Couturier",
+    "Couturière",
+    "Seamstress",
+    "Seamster",
+    "Tailor",
+    "Retoucheur",
+    "Retoucheuse"
+   ]
+  },
+  {
+   "key": "fashion-designer",
+   "family": "design-creation",
+   "labels": {
+    "en": "Fashion designer",
+    "fr": "Styliste de mode"
+   },
+   "aliases": [
+    "Fashion Designer",
+    "Designer Mode",
+    "Styliste Mode",
+    "Styliste Femme",
+    "Styliste Homme",
+    "Apparel Designer"
+   ]
+  },
+  {
+   "key": "graphic-designer",
+   "family": "design-creation",
+   "labels": {
+    "en": "Graphic designer",
+    "fr": "Graphiste"
+   },
+   "aliases": [
+    "Graphic Designer",
+    "Graphiste"
+   ]
+  },
+  {
+   "key": "buyer",
+   "family": "merchandising-buying",
+   "labels": {
+    "en": "Buyer",
+    "fr": "Acheteur"
+   },
+   "aliases": [
+    "Buyer",
+    "Acheteur",
+    "Acheteuse"
+   ]
+  },
+  {
+   "key": "merchandise-planner",
+   "family": "merchandising-buying",
+   "labels": {
+    "en": "Merchandise planner",
+    "fr": "Planificateur merchandising"
+   },
+   "aliases": [
+    "Merchandise Planner",
+    "Merchandising Planner",
+    "Demand Planner"
+   ]
+  },
+  {
+   "key": "accountant",
+   "family": "finance",
+   "labels": {
+    "en": "Accountant",
+    "fr": "Comptable"
+   },
+   "aliases": [
+    "Accountant",
+    "Comptable",
+    "Buchhalter",
+    "Buchhalterin"
+   ]
+  },
+  {
+   "key": "financial-controller",
+   "family": "finance",
+   "labels": {
+    "en": "Financial controller",
+    "fr": "Contrôleur de gestion"
+   },
+   "aliases": [
+    "Financial Controller",
+    "Business Controller",
+    "Contrôleur de gestion",
+    "Contrôleuse de gestion",
+    "Project Controller"
+   ]
+  },
+  {
+   "key": "financial-analyst",
+   "family": "finance",
+   "labels": {
+    "en": "Financial analyst",
+    "fr": "Analyste financier"
+   },
+   "aliases": [
+    "Financial Analyst",
+    "Finance Analyst",
+    "Analyste financier",
+    "Analyste financiere",
+    "FP A Analyst"
+   ]
+  },
+  {
+   "key": "recruiter",
+   "family": "hr-talent",
+   "labels": {
+    "en": "Recruiter",
+    "fr": "Chargé de recrutement"
+   },
+   "aliases": [
+    "Recruiter",
+    "Talent Acquisition Specialist",
+    "Chargé de recrutement",
+    "Chargée de recrutement",
+    "Recruitment Consultant"
+   ]
+  },
+  {
+   "key": "hr-business-partner",
+   "family": "hr-talent",
+   "labels": {
+    "en": "HR business partner",
+    "fr": "Partenaire RH"
+   },
+   "aliases": [
+    "HR Business Partner",
+    "Human Resources Business Partner",
+    "People Business Partner",
+    "HRBP"
+   ]
+  },
+  {
+   "key": "payroll-specialist",
+   "family": "hr-talent",
+   "labels": {
+    "en": "Payroll specialist",
+    "fr": "Gestionnaire de paie"
+   },
+   "aliases": [
+    "Payroll Specialist",
+    "Payroll Administrator",
+    "Gestionnaire de paie",
+    "Gestionnaire paie"
+   ]
+  },
+  {
+   "key": "software-engineer",
+   "family": "it-data",
+   "labels": {
+    "en": "Software engineer",
+    "fr": "Ingénieur logiciel"
+   },
+   "aliases": [
+    "Software Engineer",
+    "Software Developer",
+    "Développeur logiciel",
+    "Développeuse logiciel",
+    "Full Stack Developer",
+    "Fullstack Developer",
+    "Frontend Developer",
+    "Backend Developer",
+    "Front End Developer",
+    "Back End Developer"
+   ]
+  },
+  {
+   "key": "data-analyst",
+   "family": "it-data",
+   "labels": {
+    "en": "Data analyst",
+    "fr": "Analyste de données"
+   },
+   "aliases": [
+    "Data Analyst",
+    "Analyste de données",
+    "Analyste donnees"
+   ]
+  },
+  {
+   "key": "data-scientist",
+   "family": "it-data",
+   "labels": {
+    "en": "Data scientist",
+    "fr": "Data scientist"
+   },
+   "aliases": [
+    "Data Scientist",
+    "Machine Learning Scientist"
+   ]
+  },
+  {
+   "key": "data-engineer",
+   "family": "it-data",
+   "labels": {
+    "en": "Data engineer",
+    "fr": "Ingénieur données"
+   },
+   "aliases": [
+    "Data Engineer"
+   ]
+  },
+  {
+   "key": "legal-counsel",
+   "family": "legal-compliance",
+   "labels": {
+    "en": "Legal counsel",
+    "fr": "Juriste"
+   },
+   "aliases": [
+    "Legal Counsel",
+    "Juriste",
+    "Lawyer",
+    "Avocat",
+    "Avocate"
+   ]
+  },
+  {
+   "key": "sustainability-specialist",
+   "family": "sustainability",
+   "labels": {
+    "en": "Sustainability specialist",
+    "fr": "Chargé de développement durable"
+   },
+   "aliases": [
+    "Sustainability Specialist",
+    "Sustainability Analyst",
+    "Chargé de développement durable",
+    "Chargee de developpement durable",
+    "Chargé de mission RSE"
+   ]
+  },
+  {
+   "key": "marketing-manager",
+   "family": "marketing-communication",
+   "labels": {
+    "en": "Marketing manager",
+    "fr": "Responsable marketing"
+   },
+   "aliases": [
+    "Marketing Manager",
+    "Responsable Marketing"
+   ]
+  },
+  {
+   "key": "community-manager",
+   "family": "marketing-communication",
+   "labels": {
+    "en": "Community manager",
+    "fr": "Community manager"
+   },
+   "aliases": [
+    "Community Manager"
+   ]
+  },
+  {
+   "key": "crm-manager",
+   "family": "crm-clienteling",
+   "labels": {
+    "en": "CRM manager",
+    "fr": "Responsable CRM"
+   },
+   "aliases": [
+    "CRM Manager",
+    "Responsable CRM",
+    "Clienteling Manager"
+   ]
+  },
+  {
+   "key": "ecommerce-manager",
+   "family": "ecommerce-digital",
+   "labels": {
+    "en": "E-commerce manager",
+    "fr": "Responsable e-commerce"
+   },
+   "aliases": [
+    "E Commerce Manager",
+    "Ecommerce Manager",
+    "Responsable E Commerce",
+    "Responsable Ecommerce"
+   ]
+  },
+  {
+   "key": "key-account-manager",
+   "family": "wholesale-b2b",
+   "labels": {
+    "en": "Key account manager",
+    "fr": "Responsable grands comptes"
+   },
+   "aliases": [
+    "Key Account Manager",
+    "Responsable grands comptes",
+    "National Account Manager"
+   ]
+  },
+  {
+   "key": "product-developer",
+   "family": "product-development-rd",
+   "labels": {
+    "en": "Product developer",
+    "fr": "Développeur produit"
+   },
+   "aliases": [
+    "Product Developer",
+    "Développeur produit",
+    "Developpeuse produit",
+    "Product Development Specialist"
+   ]
+  },
+  {
+   "key": "quality-technician",
+   "family": "manufacturing-quality",
+   "labels": {
+    "en": "Quality technician",
+    "fr": "Technicien qualité"
+   },
+   "aliases": [
+    "Quality Technician",
+    "Technicien qualite",
+    "Technicienne qualite",
+    "Quality Inspector"
+   ]
+  },
+  {
+   "key": "barista",
+   "family": "hospitality",
+   "labels": {
+    "en": "Barista",
+    "fr": "Barista"
+   },
+   "aliases": [
+    "Barista"
+   ]
+  },
+  {
+   "key": "cook",
+   "family": "hospitality",
+   "labels": {
+    "en": "Cook",
+    "fr": "Cuisinier"
+   },
+   "aliases": [
+    "Cook",
+    "Cuisinier",
+    "Cuisinière",
+    "Chef de partie",
+    "Sous Chef",
+    "Cuoco",
+    "Cuoca"
+   ]
+  },
+  {
+   "key": "waiter",
+   "family": "hospitality",
+   "labels": {
+    "en": "Waiter",
+    "fr": "Serveur"
+   },
+   "aliases": [
+    "Waiter",
+    "Waitress",
+    "Serveur",
+    "Serveuse",
+    "Restaurant Server"
+   ]
+  },
+  {
+   "key": "receptionist",
+   "family": "admin-facilities",
+   "labels": {
+    "en": "Receptionist",
+    "fr": "Réceptionniste"
+   },
+   "aliases": [
+    "Receptionist",
+    "Réceptionniste",
+    "Front Office Specialist"
+   ]
+  },
+  {
+   "key": "executive-assistant",
+   "family": "admin-facilities",
+   "labels": {
+    "en": "Executive assistant",
+    "fr": "Assistant de direction"
+   },
+   "aliases": [
+    "Executive Assistant",
+    "Assistant de direction",
+    "Assistante de direction",
+    "Personal Assistant"
+   ]
+  },
+  {
+   "key": "pharmacist",
+   "family": "health-optical-services",
+   "labels": {
+    "en": "Pharmacist",
+    "fr": "Pharmacien"
+   },
+   "aliases": [
+    "Pharmacist",
+    "Pharmacien",
+    "Pharmacienne"
+   ]
+  },
+  {
+   "key": "pharmacy-technician",
+   "family": "health-optical-services",
+   "labels": {
+    "en": "Pharmacy technician",
+    "fr": "Préparateur en pharmacie"
+   },
+   "aliases": [
+    "Pharmacy Technician",
+    "Préparateur en pharmacie",
+    "Preparatrice en pharmacie"
+   ]
+  },
+  {
+   "key": "optometrist",
+   "family": "health-optical-services",
+   "labels": {
+    "en": "Optometrist",
+    "fr": "Optométriste"
+   },
+   "aliases": [
+    "Optometrist",
+    "Optometriste"
+   ]
+  },
+  {
+   "key": "dispensing-optician",
+   "family": "health-optical-services",
+   "labels": {
+    "en": "Dispensing optician",
+    "fr": "Opticien"
+   },
+   "aliases": [
+    "Dispensing Optician",
+    "Opticien",
+    "Opticienne",
+    "Optometrist Optician"
+   ]
+  },
+  {
+   "key": "hearing-aid-specialist",
+   "family": "health-optical-services",
+   "labels": {
+    "en": "Hearing aid specialist",
+    "fr": "Audioprothésiste"
+   },
+   "aliases": [
+    "Audioprothésiste",
+    "Hearing Aid Specialist",
+    "Hearing Aid Dispenser"
+   ]
+  },
+  {
+   "key": "demand-planner",
+   "family": "supply-chain-logistics",
+   "labels": {
+    "en": "Demand planner",
+    "fr": "Prévisionniste de la demande"
+   },
+   "aliases": [
+    "Demand Planner",
+    "Prévisionniste des ventes"
+   ]
+  },
+  {
+   "key": "paralegal",
+   "family": "legal-compliance",
+   "labels": {
+    "en": "Paralegal",
+    "fr": "Assistant juridique / Paralegal"
+   },
+   "aliases": [
+    "Paralegal"
+   ]
+  },
+  {
+   "key": "pharmacy-support-worker",
+   "family": "health-optical-services",
+   "labels": {
+    "en": "Pharmacy support worker",
+    "fr": "Assistant en pharmacie"
+   },
+   "aliases": [
+    "Pharmacy Dispenser",
+    "Pharmacy Assistant",
+    "Dispensing Assistant"
+   ]
+  },
+  {
+   "key": "machine-learning-engineer",
+   "family": "it-data",
+   "labels": {
+    "en": "Machine learning engineer",
+    "fr": "Ingénieur machine learning"
+   },
+   "aliases": [
+    "Machine Learning Engineer"
+   ]
+  },
+  {
+   "key": "analytics-engineer",
+   "family": "it-data",
+   "labels": {
+    "en": "Analytics engineer",
+    "fr": "Ingénieur analytics"
+   },
+   "aliases": [
+    "Analytics Engineer"
+   ]
+  },
+  {
+   "key": "motion-designer",
+   "family": "design-creation",
+   "labels": {
+    "en": "Motion designer",
+    "fr": "Motion designer"
+   },
+   "aliases": [
+    "Motion Designer"
+   ]
+  },
+  {
+   "key": "lash-technician",
+   "family": "beauty-services",
+   "labels": {
+    "en": "Lash technician",
+    "fr": "Technicien cils"
+   },
+   "aliases": [
+    "Lash Technician"
+   ]
+  },
+  {
+   "key": "social-media-manager",
+   "family": "marketing-communication",
+   "labels": {
+    "en": "Social media manager",
+    "fr": "Responsable réseaux sociaux"
+   },
+   "aliases": [
+    "Social Media Manager"
+   ]
+  },
+  {
+   "key": "pastry-chef",
+   "family": "hospitality",
+   "labels": {
+    "en": "Pastry chef",
+    "fr": "Pâtissier"
+   },
+   "aliases": [
+    "Pastry Chef",
+    "Pâtissier",
+    "Pâtissière"
+   ]
+  }
+ ],
+ "seniorities": [
+  {
+   "key": "JUNIOR",
+   "labels": {
+    "en": "Junior",
+    "fr": "Junior"
+   }
+  },
+  {
+   "key": "MID",
+   "labels": {
+    "en": "Experienced",
+    "fr": "Confirmé"
+   }
+  },
+  {
+   "key": "SENIOR",
+   "labels": {
+    "en": "Senior",
+    "fr": "Senior · Expert"
+   }
+  },
+  {
+   "key": "MANAGER",
+   "labels": {
+    "en": "Manager",
+    "fr": "Manager"
+   }
+  },
+  {
+   "key": "DIRECTOR",
+   "labels": {
+    "en": "Director",
+    "fr": "Directeur"
+   }
+  },
+  {
+   "key": "EXECUTIVE",
+   "labels": {
+    "en": "Executive",
+    "fr": "Dirigeant"
+   }
+  }
+ ],
+ "schemaVersion": 1,
+ "familyContexts": [
+  {
+   "id": "legacy-salon-context",
+   "all": [
+    {
+     "field": "department",
+     "flags": "",
+     "pattern": "SALON"
+    },
+    {
+     "field": "title",
+     "flags": "",
+     "pattern": "STYLIST|ARTIST|BROW|LASH|WAX|PIERC|COLOR|BARBER|ESTHET|NAIL|SKIN"
+    }
+   ],
+   "key": "beauty-advisor"
+  },
+  {
+   "id": "legacy-store-context",
+   "all": [
+    {
+     "field": "department",
+     "flags": "",
+     "pattern": "RETAIL MANAGEMENT|STORE MANAGEMENT|^STORES?$|^RETAIL$"
+    },
+    {
+     "field": "title",
+     "flags": "",
+     "pattern": "^(GENERAL|ASSISTANT|ASSOCIATE|DEPUTY|SENIOR)? ?MANAGER\\b|GENERAL MANAGER|^MANAGER\\b"
+    }
+   ],
+   "key": "retail-store-management"
+  }
+ ],
+ "seniorityRules": [
+  {
+   "id": "store-general-manager-title",
+   "all": [
+    {
+     "field": "title",
+     "pattern": "GENERAL MANAGER"
+    },
+    {
+     "field": "title",
+     "pattern": "STORE|RETAIL|BOUTIQUE|SHOP|MAGASIN"
+    }
+   ],
+   "key": "DIRECTOR",
+   "exclude": [
+    {
+     "field": "title",
+     "pattern": "ASSISTANT(E)? (TO |AU |DU |DE |D\\x27)?(LA |THE |GENERAL )?(DIRECTION|DIRECTOR|DIRECTEUR|DIRECTRICE|PRESIDENT|CEO|CHIEF|MANAGER)|OFFICE OF THE (CEO|PRESIDENT)"
+    }
+   ]
+  },
+  {
+   "id": "store-general-manager-department",
+   "all": [
+    {
+     "field": "title",
+     "pattern": "GENERAL MANAGER"
+    },
+    {
+     "field": "department",
+     "flags": "",
+     "pattern": "RETAIL MANAGEMENT|STORE MANAGEMENT|^STORES?$|^RETAIL$"
+    }
+   ],
+   "key": "DIRECTOR",
+   "exclude": [
+    {
+     "field": "title",
+     "pattern": "ASSISTANT(E)? (TO |AU |DU |DE |D\\x27)?(LA |THE |GENERAL )?(DIRECTION|DIRECTOR|DIRECTEUR|DIRECTRICE|PRESIDENT|CEO|CHIEF|MANAGER)|OFFICE OF THE (CEO|PRESIDENT)"
+    }
+   ]
+  },
+  {
+   "id": "rank-executive",
+   "all": [
+    {
+     "field": "title",
+     "flags": "",
+     "pattern": "\\b[SE]?VP\\b|VICE[- ]PRESIDENT|\\bCHIEF\\b|\\bC[EFOMTIHR]O\\b(?! (MANAGER|SPECIALIST|ANALYST|LEAD|INTERN))|\\bCHRO\\b|PRESIDENT|MANAGING DIRECTOR|DIRECTEUR\\S* GENERAL|DIRECTRICE GENERALE|\\bGENERAL MANAGER\\b(?! (STORE|BOUTIQUE|ASSISTANT))|\\bGM\\b|AMMINISTRATORE DELEGATO|GESCHAFTSFUHRER|DIRECTOR GENERAL"
+    }
+   ],
+   "key": "EXECUTIVE",
+   "exclude": [
+    {
+     "field": "title",
+     "pattern": "ASSISTANT(E)? (TO |AU |DU |DE |D\\x27)?(LA |THE |GENERAL )?(DIRECTION|DIRECTOR|DIRECTEUR|DIRECTRICE|PRESIDENT|CEO|CHIEF|MANAGER)|OFFICE OF THE (CEO|PRESIDENT)"
+    }
+   ]
+  },
+  {
+   "id": "rank-director",
+   "all": [
+    {
+     "field": "title",
+     "flags": "",
+     "pattern": "DIRECTOR|DIRECTEUR|DIRECTRICE|DIRETTOR|DIREKTOR|\\bHEAD OF\\b|\\bHEAD\\b,? |^HEAD\\b|RESPONSABLE (DE |DU |DES )?(DEPARTEMENT|DIRECTION|POLE|BUSINESS UNIT|MARCHE|MARKET|REGION)|\\bDIRECTION\\b (?!ARTISTIQUE)"
+    }
+   ],
+   "key": "DIRECTOR",
+   "exclude": [
+    {
+     "field": "title",
+     "pattern": "ASSISTANT(E)? (TO |AU |DU |DE |D\\x27)?(LA |THE |GENERAL )?(DIRECTION|DIRECTOR|DIRECTEUR|DIRECTRICE|PRESIDENT|CEO|CHIEF|MANAGER)|OFFICE OF THE (CEO|PRESIDENT)"
+    }
+   ]
+  },
+  {
+   "id": "rank-manager",
+   "all": [
+    {
+     "field": "title",
+     "flags": "",
+     "pattern": "MANAGER|MANAGEUR|RESPONSABLE|SUPERVIS|TEAM ?LEAD|STORE LEADER|SHOP LEADER|CHEF D'EQUIPE|CHEF DE (BOUTIQUE|MAGASIN|RAYON|SECTEUR|DEPARTEMENT|ZONE|REGION|VENTE|CAISSE|GROUPE|ATELIER|SERVICE)|GERANT|CAPO\\b|LEITER|LEITUNG|\\bLEAD\\b (?:OF|,)|STORE IN CHARGE|PREMIERE? D'ATELIER|ENCARGAD|GERENTE|RESPONSABILE|SOUSCHEF"
+    }
+   ],
+   "key": "MANAGER",
+   "exclude": [
+    {
+     "field": "title",
+     "flags": "",
+     "pattern": "(\\bCRO\\b|CONVERSION|\\bSEO\\b|\\bSEA\\b|PROJECT|PRODUCT|ACCOUNT|BRAND|COMMUNITY|CONTENT|CATEGORY|CAMPAIGN|EVENT|PARTNERSHIP|TRAFFIC|SOCIAL MEDIA|INFLUENCE|CRM|E-?COMMERCE|ECOM|MARKETING|COMMUNICATION|\\bPR\\b|PRESS|VISUAL MERCHANDISING|MERCHANDISE PLANNING|SUPPLY|DEMAND|PLANNING|QUALITY|QUALITE|MAINTENANCE|FACILIT|OFFICE|PAYROLL|TRAINING|LEARNING|EDUCATION|RECRUIT|SOURCING|LOGISTIC|TRANSPORT|CUSTOMS|COMPLIANCE|RISK|DATA|IT|SYSTEM|APPLICATION|SALESFORCE|SAP|ERP|CRM|PLM|SECURITY|SUSTAINABILITY|CSR|RSE|ESG|BUSINESS DEVELOPMENT|KEY ACCOUNT|WHOLESALE|EXPORT|TRADE|TERRITORY|REGIONAL SALES|CLIENT DEVELOPMENT|CLIENTELING|LOYALTY|TALENT|HR BUSINESS|PEOPLE|CHEF DE PROJET|CHEF DE PRODUIT|CHEF DE MARQUE|RESPONSABLE (DE |DU |DES )?(PROJET|PRODUIT|MARQUE|COMMUNICATION|MARKETING|CRM|E-?COMMERCE|DIGITAL|QUALITE|DEVELOPPEMENT|CLIENTELE|ZONE EXPORT|COMPTE|GRANDS COMPTES|FORMATION|RECRUTEMENT|PAIE|LOGISTIQUE|APPROVISIONNEMENT|PLANNING|SECURITE|MAINTENANCE|ADMINISTRATIF|COMPTABLE|CONTROLE|JURIDIQUE|RSE|DEVELOPPEMENT DURABLE)) (MANAGER|MANAGEUR)?"
+    }
+   ]
+  },
+  {
+   "id": "rank-senior",
+   "all": [
+    {
+     "field": "title",
+     "flags": "",
+     "pattern": "\\bSENIOR\\b|\\bSR\\.?\\b|CONFIRME|PRINCIPAL|\\bLEAD\\b|\\bIII\\b|\\bIV\\b|STAFF (ENGINEER|DESIGNER)|ARCHITECT|MASTER STYLIST|ELITE STYLIST"
+    }
+   ],
+   "key": "SENIOR"
+  },
+  {
+   "id": "rank-junior",
+   "all": [
+    {
+     "field": "title",
+     "flags": "",
+     "pattern": "\\bJUNIOR\\b|\\bJR\\.?\\b|ENTRY[- ]LEVEL|DEBUTANT|\\bTRAINEE\\b|AIDE\\b|AUXILIAIRE|ASSISTANT\\S* (CHEF|CHARGE|MARKETING|COMMUNICATION|RH|COMPTABLE|BUYER|MERCHANDIS|DESIGNER|PRODUCT|PROJECT|BRAND|CRM|E-?COMMERCE|DIGITAL|STYLISTE|COLLECTION|PLANNER|ACHETEU|CONTROLEU|JURISTE|PRESS)|ASSISTANT\\S* (DE |D')(PRODUCTION|COLLECTION|COMMUNICATION|MARKETING)"
+    }
+   ],
+   "key": "JUNIOR"
+  }
+ ],
+ "departmentRules": [
+  {
+   "id": "legacy-department-0",
+   "key": "beauty-advisor",
+   "flags": "",
+   "pattern": "SALON|BEAUTY|BEAUTE"
+  },
+  {
+   "id": "legacy-department-1",
+   "key": "visual-merchandising",
+   "flags": "",
+   "pattern": "VISUAL"
+  },
+  {
+   "id": "legacy-department-2",
+   "key": "retail-store-management",
+   "flags": "",
+   "pattern": "STORE MANAGEMENT|RETAIL MANAGEMENT"
+  },
+  {
+   "id": "legacy-department-3",
+   "key": "retail-operations",
+   "flags": "",
+   "pattern": "STORE OPERATIONS|RETAIL OPERATIONS|STOCK"
+  },
+  {
+   "id": "legacy-department-4",
+   "key": "retail-client-advisor",
+   "flags": "",
+   "pattern": "^(RETAIL|SALES|STORE|BOUTIQUE|VENTE|SHOP|RETAIL SALES|RETAIL STORES?|STORES?|VENTE RETAIL|RETAIL ASSOCIATES?|SALES ADVISOR|SEASONAL-WORKER|零售|销售)$"
+  },
+  {
+   "id": "legacy-department-5",
+   "key": "crm-clienteling",
+   "flags": "",
+   "pattern": "CRM|CLIENTELING|CLIENT (DEVELOPMENT|ENGAGEMENT)"
+  },
+  {
+   "id": "legacy-department-6",
+   "key": "ecommerce-digital",
+   "flags": "",
+   "pattern": "E-?COMMERCE|DIGITAL|ONLINE|OMNI"
+  },
+  {
+   "id": "legacy-department-7",
+   "key": "merchandising-buying",
+   "flags": "",
+   "pattern": "MERCH|BUYING|ACHAT|PLANNING"
+  },
+  {
+   "id": "legacy-department-8",
+   "key": "wholesale-b2b",
+   "flags": "",
+   "pattern": "WHOLESALE|B2B|TRAVEL RETAIL|EXPORT|COMMERCIAL"
+  },
+  {
+   "id": "legacy-department-9",
+   "key": "marketing-communication",
+   "flags": "",
+   "pattern": "MARKETING|COMMUNICATION|PRESS|MEDIA|\\bPR\\b|BRAND|CONTENT|EVENT"
+  },
+  {
+   "id": "legacy-department-10",
+   "key": "design-creation",
+   "flags": "",
+   "pattern": "DESIGN|CREATI|STUDIO|STYLE\\b|COLLECTION"
+  },
+  {
+   "id": "legacy-department-11",
+   "key": "product-development-rd",
+   "flags": "",
+   "pattern": "PRODUCT DEVELOP|R ?& ?D|RESEARCH|DEVELOPPEMENT|SCIENTIFIC|REGULATORY|LABORAT|INNOVATION|PACKAGING"
+  },
+  {
+   "id": "legacy-department-12",
+   "key": "atelier-craft",
+   "flags": "",
+   "pattern": "ATELIER|WORKSHOP|CRAFT|MAROQUIN|HORLOG|JOAILL|COUTURE|SAVOIR"
+  },
+  {
+   "id": "legacy-department-13",
+   "key": "manufacturing-quality",
+   "flags": "",
+   "pattern": "PRODUCTION|MANUFACTUR|INDUSTRI|QUALIT|USINE|PLANT|MAINTENANCE|HSE|EHS"
+  },
+  {
+   "id": "legacy-department-14",
+   "key": "supply-chain-logistics",
+   "flags": "",
+   "pattern": "SUPPLY|LOGISTI|WAREHOUSE|ENTREPOT|PROCUREMENT|PURCHAS|OPERATIONS|DISTRIBUTION"
+  },
+  {
+   "id": "legacy-department-15",
+   "key": "finance",
+   "flags": "",
+   "pattern": "FINANC|ACCOUNT|COMPTAB|CONTROL|AUDIT|TAX|TREASUR"
+  },
+  {
+   "id": "legacy-department-16",
+   "key": "hr-talent",
+   "flags": "",
+   "pattern": "\\bHR\\b|\\bRH\\b|HUMAN|RESSOURCES HUMAINES|TALENT|PEOPLE|LEARNING|FORMATION|TRAINING|EDUCATION|RECRUIT"
+  },
+  {
+   "id": "legacy-department-17",
+   "key": "it-data",
+   "flags": "",
+   "pattern": "\\bIT\\b|INFORMATI|TECH|DATA|SYSTEM|DIGITAL TECH|SOFTWARE|ENGINEERING"
+  },
+  {
+   "id": "legacy-department-18",
+   "key": "legal-compliance",
+   "flags": "",
+   "pattern": "LEGAL|JURIDI|COMPLIANCE|\\bIP\\b"
+  },
+  {
+   "id": "legacy-department-19",
+   "key": "sustainability",
+   "flags": "",
+   "pattern": "SUSTAINAB|DURABLE|CSR|RSE|ESG|ENVIRONNEMENT|ENVIRONMENT"
+  },
+  {
+   "id": "legacy-department-20",
+   "key": "customer-service",
+   "flags": "",
+   "pattern": "CUSTOMER (SERVICE|CARE|SUPPORT)|SERVICE CLIENT|CLIENT SERVICE|CALL CENT|CONTACT CENT|AFTER SALES"
+  },
+  {
+   "id": "legacy-department-21",
+   "key": "hospitality",
+   "flags": "",
+   "pattern": "HOSPITALITY|HOTEL|RESTAURANT|F&B|FOOD"
+  },
+  {
+   "id": "legacy-department-22",
+   "key": "admin-facilities",
+   "flags": "",
+   "pattern": "ADMINISTRATI|FACILIT|OFFICE|GENERAL SERVICES|SERVICES GENERAUX|REAL ESTATE|IMMOBILIER"
+  },
+  {
+   "id": "legacy-department-23",
+   "key": "strategy-management",
+   "flags": "",
+   "pattern": "STRATEG|GENERAL MANAGEMENT|DIRECTION GENERALE|EXECUTIVE|CORPORATE|BUSINESS|MANAGEMENT|PROJECT"
+  }
+ ],
+ "specializations": [
+  {
+   "key": "fragrance",
+   "labels": {
+    "en": "Fragrance",
+    "fr": "Parfumerie"
+   }
+  },
+  {
+   "key": "skincare",
+   "labels": {
+    "en": "Skincare",
+    "fr": "Soin de la peau"
+   }
+  }
+ ],
+ "seniorityPhraseRules": [
+  {
+   "id": "explicit-alternative-ranks",
+   "all": [
+    {
+     "any": [
+      "Junior Senior",
+      "Senior Junior",
+      "Junior or Senior",
+      "Senior or Junior",
+      "Junior ou Senior",
+      "Senior ou Junior",
+      "Jr Sr",
+      "Sr Jr"
+     ],
+     "field": "title"
+    }
+   ],
+   "key": null,
+   "reason": "The source advertises alternative ranks in one title. Do not choose one seniority."
+  },
+  {
+   "id": "explicit-mid-level",
+   "all": [
+    {
+     "any": [
+      "Mid Level",
+      "Midweight",
+      "Mid Weight"
+     ],
+     "field": "title"
+    }
+   ],
+   "key": "MID",
+   "reason": "The title explicitly states an intermediate level; this is not a default."
+  },
+  {
+   "id": "conflicting-mid-senior",
+   "all": [
+    {
+     "any": [
+      "Mid Level",
+      "Midweight",
+      "Mid Weight"
+     ],
+     "field": "title"
+    },
+    {
+     "any": [
+      "Senior",
+      "Sr"
+     ],
+     "field": "title"
+    }
+   ],
+   "key": null,
+   "reason": "The title explicitly names both intermediate and senior levels; do not select one."
+  }
+ ]
+}

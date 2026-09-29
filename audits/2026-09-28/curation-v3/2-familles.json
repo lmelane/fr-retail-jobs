@@ -1,0 +1,3951 @@
+{
+ "calculeLe": "2026-09-29T06:20:35.954Z",
+ "modeles": {
+  "choix": "gemini-3.6-flash",
+  "second": "gemini-3-flash-preview"
+ },
+ "seuils": {
+  "MIN_METIERS_FAMILLE_NOUVELLE": 1
+ },
+ "bilan": {
+  "entrees": 219,
+  "methodes": {
+   "accord-etape-1": 172,
+   "hors-secteur": 28,
+   "accord-etape-2": 15,
+   "voisinage": 4
+  },
+  "propositionsNouvelles": 6,
+  "canoniques": 4,
+  "nouvellesRetenues": [
+   "mannequinat-agences",
+   "architecture-store-design",
+   "art-culture",
+   "patrimoine-archives"
+  ],
+  "dissoutes": [],
+  "horsSecteur": 28,
+  "secteurSansAvis": 0,
+  "sansFamille": 0
+ },
+ "nouvellesFamilles": [
+  {
+   "key": "mannequinat-agences",
+   "labels": {
+    "fr": "Mannequinat & agences",
+    "en": "Modeling & agencies"
+   },
+   "group": "services",
+   "propositions": [
+    "nouvelle:Mannequinat",
+    "nouvelle:agent-mannequins"
+   ]
+  },
+  {
+   "key": "architecture-store-design",
+   "labels": {
+    "fr": "Architecture & store design",
+    "en": "Architecture & store design"
+   },
+   "group": "corporate",
+   "propositions": [
+    "nouvelle:architecture",
+    "nouvelle:architecture-store-design"
+   ]
+  },
+  {
+   "key": "art-culture",
+   "labels": {
+    "fr": "Art & culture",
+    "en": "Art & culture"
+   },
+   "group": "services",
+   "propositions": [
+    "nouvelle:art-culture"
+   ]
+  },
+  {
+   "key": "patrimoine-archives",
+   "labels": {
+    "fr": "Patrimoine & archives",
+    "en": "Heritage & archives"
+   },
+   "group": "corporate",
+   "propositions": [
+    "nouvelle:patrimoine & archives"
+   ]
+  },
+  {
+   "key": "autres-secteurs",
+   "labels": {
+    "fr": "Autres secteurs",
+    "en": "Other sectors"
+   },
+   "group": "services",
+   "horsSecteur": true
+  }
+ ],
+ "canon": {
+  "nouvelle:Mannequinat": "mannequinat-agences",
+  "nouvelle:agent-mannequins": "mannequinat-agences",
+  "nouvelle:architecture": "architecture-store-design",
+  "nouvelle:architecture-store-design": "architecture-store-design",
+  "nouvelle:art-culture": "art-culture",
+  "nouvelle:patrimoine & archives": "patrimoine-archives"
+ },
+ "attributions": [
+  {
+   "id": "cms7l2m4l000q2czv6kzqpc20",
+   "slug": "ACHETEUR_APPROVISIONNEUR",
+   "label": "Acheteur Approvisionneur",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/dbdc9f7b-31c6-4f21-a9c5-48253bb69c08",
+   "propositions": [
+    "supply-chain-logistics",
+    "supply-chain-logistics"
+   ],
+   "famille": "supply-chain-logistics",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms85z2at002d2c20gg4clbiz",
+   "slug": "AGENT_DE_BORD",
+   "label": "Agent de bord",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/f20d3ae6-baeb-482c-b68d-c2fb115e5dde",
+   "propositions": [
+    "hospitality",
+    "hospitality"
+   ],
+   "famille": "autres-secteurs",
+   "methode": "hors-secteur",
+   "horsSecteur": [
+    true,
+    true
+   ]
+  },
+  {
+   "id": "cms8sv8n7002t2c7u7zust1b0",
+   "slug": "AGENT_DE_SECURITE",
+   "label": "Agent de sécurité",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/31808988-fc0a-4bc3-9e47-27216d6759f5",
+   "propositions": [
+    "admin-facilities",
+    "admin-facilities"
+   ],
+   "famille": "admin-facilities",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms8udys6001k2ctloqef9hgw",
+   "slug": "AGENT_DE_SERVICE_HOSPITALIER",
+   "label": "Agent de service hospitalier",
+   "type": "metier",
+   "ancre": null,
+   "propositions": [
+    "nouvelle:services hospitaliers",
+    "health-optical-services"
+   ],
+   "famille": "autres-secteurs",
+   "methode": "hors-secteur",
+   "horsSecteur": [
+    true,
+    true
+   ]
+  },
+  {
+   "id": "cms8ud4hm000z2ctlg7yc94sr",
+   "slug": "AGENT_DE_TRANSIT",
+   "label": "Agent de transit",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/56fa783a-cca4-42ef-8862-1fb6e43f215c",
+   "propositions": [
+    "supply-chain-logistics",
+    "supply-chain-logistics"
+   ],
+   "famille": "supply-chain-logistics",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms85m3ki002s2cuxuxk15tbg",
+   "slug": "AGENT_D_ENTRETIEN",
+   "label": "Agent d'entretien",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/303a1e34-cb16-4054-b323-81e5eec17397",
+   "propositions": [
+    "admin-facilities",
+    "admin-facilities"
+   ],
+   "famille": "admin-facilities",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms7l4cbl002m2czvhlp0csir",
+   "slug": "AGENT_D_ESCALE",
+   "label": "Agent d'escale",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/7153a12d-85e0-4123-87e9-46bb1a2dc929",
+   "propositions": [
+    "hospitality",
+    "customer-service"
+   ],
+   "famille": "autres-secteurs",
+   "methode": "hors-secteur",
+   "horsSecteur": [
+    true,
+    true
+   ]
+  },
+  {
+   "id": "cms8stap6001o2c7uls9kzw70",
+   "slug": "AIDE_A_LA_PERSONNE",
+   "label": "Aide à la personne",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/d5954a2b-a525-45b7-b6d9-b62efafc6c78",
+   "propositions": [
+    "nouvelle:services à la personne",
+    "health-optical-services"
+   ],
+   "famille": "autres-secteurs",
+   "methode": "hors-secteur",
+   "horsSecteur": [
+    true,
+    true
+   ]
+  },
+  {
+   "id": "cms8ukytt00022cdf2hovkgrp",
+   "slug": "ANIMATEUR_DE_LOISIRS",
+   "label": "Animateur de loisirs",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/234be692-befb-41df-bdf0-e1b2f4eaf5e7",
+   "propositions": [
+    "nouvelle:animation et loisirs",
+    "hospitality"
+   ],
+   "famille": "autres-secteurs",
+   "methode": "hors-secteur",
+   "horsSecteur": [
+    true,
+    true
+   ]
+  },
+  {
+   "id": "jc_animateur_ventes",
+   "slug": "ANIMATEUR_VENTES",
+   "label": "Animateur·rice des ventes",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/056f1849-7ff8-4d6f-9b8a-176a610bba44",
+   "propositions": [
+    "beauty-advisor",
+    "retail-client-advisor"
+   ],
+   "famille": "beauty-advisor",
+   "methode": "accord-etape-2",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms7l1gnv00092czv5bigt7po",
+   "slug": "ARCHITECTE_D_INTERIEUR",
+   "label": "Architecte d'intérieur",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/efa81635-9125-4276-8902-9deb12170ea7",
+   "propositions": [
+    "nouvelle:architecture-store-design",
+    "nouvelle:architecture"
+   ],
+   "famille": "architecture-store-design",
+   "methode": "accord-etape-2",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms7fty7x000u2cihgqvorao5",
+   "slug": "ASSISTANT_ADMINISTRATIF",
+   "label": "Assistant administratif",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/044d78cc-f62f-4532-83a5-8e04f2889652",
+   "propositions": [
+    "admin-facilities",
+    "admin-facilities"
+   ],
+   "famille": "admin-facilities",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms8ssiy700182c7ufkk9u3px",
+   "slug": "ASSISTANT_ARCHITECTE",
+   "label": "Assistant Architecte",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/efa81635-9125-4276-8902-9deb12170ea7",
+   "propositions": [
+    "nouvelle:architecture-store-design",
+    "nouvelle:architecture"
+   ],
+   "famille": "architecture-store-design",
+   "methode": "accord-etape-2",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms8uxpdg00102cu6xwwexs8h",
+   "slug": "ASSISTANT_BUSINESS_DEVELOPMENT",
+   "label": "Assistant Business Development",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/c418ed9a-132f-48cd-ae5c-dd375070ee0e",
+   "propositions": [
+    "wholesale-b2b",
+    "wholesale-b2b"
+   ],
+   "famille": "wholesale-b2b",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms8uqeip00342cdfbp7w9hsc",
+   "slug": "ASSISTANT_COMMERCIAL",
+   "label": "Assistant Commercial",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/5c1eba1e-7820-4287-9746-4c5906320100",
+   "propositions": [
+    "wholesale-b2b",
+    "wholesale-b2b"
+   ],
+   "famille": "wholesale-b2b",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms8ufyu800312ctlhsejbbdu",
+   "slug": "ASSISTANT_DENTAIRE",
+   "label": "Assistant dentaire",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/bdc74965-1d1a-4f8e-a490-9cf71f494e02",
+   "propositions": [
+    "health-optical-services",
+    "health-optical-services"
+   ],
+   "famille": "autres-secteurs",
+   "methode": "hors-secteur",
+   "horsSecteur": [
+    true,
+    true
+   ]
+  },
+  {
+   "id": "cms85jrkg00102cuxhjw8gexz",
+   "slug": "ASSISTANT_DESIGNER",
+   "label": "Assistant Designer",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/77bfd6e7-5598-4818-84cb-31e2651eb046",
+   "propositions": [
+    "design-creation",
+    "design-creation"
+   ],
+   "famille": "design-creation",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms85lkaj00242cuxz18tgepf",
+   "slug": "ASSISTANT_DE_GALERIE",
+   "label": "Assistant de galerie",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/2c8a4b72-21f4-4ab1-9dbd-1cae779211b7",
+   "propositions": [
+    "retail-client-advisor",
+    "nouvelle:art-culture"
+   ],
+   "famille": "art-culture",
+   "methode": "accord-etape-2",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms8srauo000g2c7uc37c4hz0",
+   "slug": "ASSISTANT_DE_GESTION",
+   "label": "Assistant de gestion",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/044d78cc-f62f-4532-83a5-8e04f2889652",
+   "propositions": [
+    "admin-facilities",
+    "finance"
+   ],
+   "famille": "admin-facilities",
+   "methode": "accord-etape-2",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms85yt0900212c209hgfgl5c",
+   "slug": "ASSISTANT_D_EDUCATION",
+   "label": "Assistant d'éducation",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/3d0f86c1-9bdd-4e84-bc62-93a716128c8d",
+   "propositions": [
+    "nouvelle:education",
+    "nouvelle:education"
+   ],
+   "famille": "autres-secteurs",
+   "methode": "hors-secteur",
+   "horsSecteur": [
+    true,
+    true
+   ]
+  },
+  {
+   "id": "cms8unllx000k2cdf6qj1l8zf",
+   "slug": "ASSISTANT_HOTELIER",
+   "label": "Assistant Hôtelier",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/82025c02-9082-416c-998b-f51eb0359ee6",
+   "propositions": [
+    "hospitality",
+    "hospitality"
+   ],
+   "famille": "hospitality",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms8uf5rt002f2ctllcr753zh",
+   "slug": "ASSISTANT_IMPORT_EXPORT",
+   "label": "Assistant Import-Export",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/61b859ed-24d8-48cf-9c1b-67d7a6c62bb5",
+   "propositions": [
+    "supply-chain-logistics",
+    "supply-chain-logistics"
+   ],
+   "famille": "supply-chain-logistics",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms8v7s5c001q2c23yhdn28jb",
+   "slug": "ASSISTANT_KEY_ACCOUNT_MANAGER",
+   "label": "Assistant Key Account Manager",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/5c1eba1e-7820-4287-9746-4c5906320100",
+   "propositions": [
+    "wholesale-b2b",
+    "wholesale-b2b"
+   ],
+   "famille": "wholesale-b2b",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms85zcmm002l2c20rxqhcf37",
+   "slug": "ASSISTANT_MARKETING_CLIENT",
+   "label": "Assistant Marketing Client",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/47e81c7f-2d04-4a60-a8ff-9913c36d8344",
+   "propositions": [
+    "crm-clienteling",
+    "crm-clienteling"
+   ],
+   "famille": "crm-clienteling",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms7l330p000y2czvpultx6g3",
+   "slug": "ASSISTANT_MARKETING_DIGITAL",
+   "label": "Assistant Marketing Digital",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/47e81c7f-2d04-4a60-a8ff-9913c36d8344",
+   "propositions": [
+    "ecommerce-digital",
+    "ecommerce-digital"
+   ],
+   "famille": "ecommerce-digital",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms8st3rw001k2c7umd9ffdda",
+   "slug": "ASSISTANT_MARKETING_ET_VENTES",
+   "label": "Assistant Marketing et Ventes",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/47e81c7f-2d04-4a60-a8ff-9913c36d8344",
+   "propositions": [
+    "marketing-communication",
+    "marketing-communication"
+   ],
+   "famille": "marketing-communication",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms85yv5p00252c20d8w08jq4",
+   "slug": "ASSISTANT_MEDIA",
+   "label": "Assistant Média",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/b55718eb-e8ff-4485-8ad0-bbac32cbd77b",
+   "propositions": [
+    "marketing-communication",
+    "marketing-communication"
+   ],
+   "famille": "marketing-communication",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms7l2g8r000m2czvac6o2o0l",
+   "slug": "ASSISTANT_MERCHANDISER",
+   "label": "Assistant Merchandiser",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/35eb0aa6-b40d-449d-9390-719be8912277",
+   "propositions": [
+    "merchandising-buying",
+    "merchandising-buying"
+   ],
+   "famille": "merchandising-buying",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms8uyqn1001x2cu68tthf1kg",
+   "slug": "ASSISTANT_OPERATIONS_CLIENT",
+   "label": "Assistant Opérations Client",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/13d1b2b4-99dd-44da-9734-c9f74bae18f7",
+   "propositions": [
+    "customer-service",
+    "customer-service"
+   ],
+   "famille": "customer-service",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms8v77iz000y2c23fqrt32er",
+   "slug": "ASSISTANT_PATRIMOINE",
+   "label": "Assistant Patrimoine",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/e3b08984-19fe-4d51-a1b0-990676fc7234",
+   "propositions": [
+    "nouvelle:patrimoine & archives",
+    "marketing-communication"
+   ],
+   "famille": "patrimoine-archives",
+   "methode": "accord-etape-2",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms8uy7f1001h2cu63jgqmu30",
+   "slug": "ASSISTANT_PEDAGOGIQUE",
+   "label": "Assistant pédagogique",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/3d0f86c1-9bdd-4e84-bc62-93a716128c8d",
+   "propositions": [
+    "nouvelle:enseignement & formation",
+    "nouvelle:education-formation"
+   ],
+   "famille": "autres-secteurs",
+   "methode": "hors-secteur",
+   "horsSecteur": [
+    true,
+    true
+   ]
+  },
+  {
+   "id": "cms85jmwr000w2cux5ec4b1rh",
+   "slug": "ASSISTANT_QUALITE",
+   "label": "Assistant Qualité",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/b0ad8659-0410-4b5b-9466-a90f8b3cdac9",
+   "propositions": [
+    "manufacturing-quality",
+    "manufacturing-quality"
+   ],
+   "famille": "manufacturing-quality",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms7dkp9i00092c0isckw1ykl",
+   "slug": "ASSISTANT_SHOWROOM",
+   "label": "Assistant showroom",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/5c1eba1e-7820-4287-9746-4c5906320100",
+   "propositions": [
+    "wholesale-b2b",
+    "wholesale-b2b"
+   ],
+   "famille": "wholesale-b2b",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms7dkpbd000b2c0ikvzb133d",
+   "slug": "ASSISTANT_STYLISTE",
+   "label": "Assistant styliste",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/30739eb6-218b-4e8a-9209-e2f36b9446cd",
+   "propositions": [
+    "design-creation",
+    "design-creation"
+   ],
+   "famille": "design-creation",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms8vqnzi00042cmi6lqkz5vr",
+   "slug": "AUDITEUR",
+   "label": "Auditeur",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/1ad59946-d13e-441e-9b36-56e1df055e21",
+   "propositions": [
+    "finance",
+    "finance"
+   ],
+   "famille": "finance",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms8v7kvh001i2c23764qyqlw",
+   "slug": "AUXILIAIRE_BANCAIRE",
+   "label": "Auxiliaire bancaire",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/2ff9e53c-6e7f-42af-8d71-b5dd7f283089",
+   "propositions": [
+    "finance",
+    "finance"
+   ],
+   "famille": "autres-secteurs",
+   "methode": "hors-secteur",
+   "horsSecteur": [
+    true,
+    true
+   ]
+  },
+  {
+   "id": "cms8v7gii001e2c23qnvn5ggb",
+   "slug": "AU_PAIR",
+   "label": "Au Pair",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/f219f643-4df1-4a9a-b6c5-dc2f48c22806",
+   "propositions": [
+    "nouvelle:services à la personne",
+    "nouvelle:services-a-la-personne"
+   ],
+   "famille": "autres-secteurs",
+   "methode": "hors-secteur",
+   "horsSecteur": [
+    true,
+    true
+   ]
+  },
+  {
+   "id": "cmshz8u2p00192cy6dz24s6uu",
+   "slug": "BARBIER",
+   "label": "Barbier",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/4e0c14d6-b170-40f1-bcdc-703c0b92109b",
+   "propositions": [
+    "beauty-services",
+    "beauty-services"
+   ],
+   "famille": "beauty-services",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms7l37v000162czvog1we1nm",
+   "slug": "BARMAN",
+   "label": "Barman",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/2f5e38a0-6578-4665-bdbd-e2ab505be140",
+   "propositions": [
+    "hospitality",
+    "hospitality"
+   ],
+   "famille": "hospitality",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms85zgxs002p2c20tz7fh9rz",
+   "slug": "BOOKER_MODE",
+   "label": "Booker mode",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/bdf2dd9d-6c92-46f4-a8e7-76c12302d3e7",
+   "propositions": [
+    "marketing-communication",
+    "nouvelle:agent-mannequins"
+   ],
+   "famille": "mannequinat-agences",
+   "methode": "accord-etape-2",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cmshz8t6v000t2cy6paliq5nf",
+   "slug": "BOTTIER",
+   "label": "Bottier·ère",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/ce594060-b05a-45d8-ac41-1cf3bb980085",
+   "propositions": [
+    "atelier-craft",
+    "atelier-craft"
+   ],
+   "famille": "atelier-craft",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "jc_broderie",
+   "slug": "BRODERIE",
+   "label": "Brodeur·euse",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/7324e9f5-0f94-497e-af2f-42142e939a94",
+   "propositions": [
+    "atelier-craft",
+    "atelier-craft"
+   ],
+   "famille": "atelier-craft",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms85l9by001s2cux17fr72zw",
+   "slug": "CATEGORY_MANAGER",
+   "label": "Category Manager",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/dab60fc6-c16e-4de7-b969-b323784f5a49",
+   "propositions": [
+    "merchandising-buying",
+    "merchandising-buying"
+   ],
+   "famille": "merchandising-buying",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms7dkpd8000d2c0imh6e5f86",
+   "slug": "CHARGE_DE_COMMUNICATION_EVENEMENTIELLE",
+   "label": "Chargé de communication événementielle",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/1b38a27d-ef98-4d9f-b1b2-8c109bf47e79",
+   "propositions": [
+    "marketing-communication",
+    "marketing-communication"
+   ],
+   "famille": "marketing-communication",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms7dkowm00012c0ixnfl1pal",
+   "slug": "CHARGE_DE_MARKETING_ET_COMMUNICATION",
+   "label": "Chargé de marketing et communication",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/4791e217-d607-40d5-9f84-df1d0a071cbc",
+   "propositions": [
+    "marketing-communication",
+    "marketing-communication"
+   ],
+   "famille": "marketing-communication",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms7ftdlh00052cihg22e3nn1",
+   "slug": "CHARGE_DE_RELATIONS_PRESSE",
+   "label": "Chargé de Relations Presse",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/c0489e22-6a1b-4e52-974a-eb71bbb42134",
+   "propositions": [
+    "marketing-communication",
+    "marketing-communication"
+   ],
+   "famille": "marketing-communication",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms8uebgf001s2ctlk4atiy7x",
+   "slug": "CHARGE_D_ADMISSIONS_ET_PARTENARIATS",
+   "label": "Chargé d'admissions et partenariats",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/6e1b1bd7-9eec-4f10-bce7-94a27d9023e8",
+   "propositions": [
+    "hr-talent",
+    "admin-facilities"
+   ],
+   "famille": "autres-secteurs",
+   "methode": "hors-secteur",
+   "horsSecteur": [
+    true,
+    true
+   ]
+  },
+  {
+   "id": "cms8uxgoq000k2cu61i31nytl",
+   "slug": "CHARGE_D_AFFAIRES_REGLEMENTAIRES",
+   "label": "Chargé d'affaires réglementaires",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/a950e88b-cb5e-4a7d-8a94-3f9460b487d7",
+   "propositions": [
+    "legal-compliance",
+    "legal-compliance"
+   ],
+   "famille": "legal-compliance",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms8ubhn1000d2ctlo05netoc",
+   "slug": "CHEF_DE_MARQUE",
+   "label": "Chef de Marque",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/de80bbf0-447d-4a6a-845a-fdba4e0dc30c",
+   "propositions": [
+    "marketing-communication",
+    "marketing-communication"
+   ],
+   "famille": "marketing-communication",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms85xuru000w2c20vjbfp45j",
+   "slug": "CHEF_DE_PROJET_COSMETIQUE",
+   "label": "Chef de projet cosmétique",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/11b6390b-1e48-4903-a5df-d3e04b451a19",
+   "propositions": [
+    "product-development-rd",
+    "product-development-rd"
+   ],
+   "famille": "product-development-rd",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms7eresh000h2cto4itxd0pc",
+   "slug": "CHEF_DE_PROJET_CRM",
+   "label": "Chef de projet CRM",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/bea99fea-0383-4c63-b944-70d4799de2c5",
+   "propositions": [
+    "crm-clienteling",
+    "crm-clienteling"
+   ],
+   "famille": "crm-clienteling",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms7eqz5200052ctosfv3x0fp",
+   "slug": "CHEF_DE_PROJET_DIGITAL",
+   "label": "Chef de projet digital",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/dc97adbe-f807-4ad8-8f3c-c24b3416cdef",
+   "propositions": [
+    "ecommerce-digital",
+    "ecommerce-digital"
+   ],
+   "famille": "ecommerce-digital",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms7l3aj0001a2czvpdlfugo6",
+   "slug": "CHEF_DE_PROJET_EVENEMENTIEL",
+   "label": "Chef de projet événementiel",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/1b38a27d-ef98-4d9f-b1b2-8c109bf47e79",
+   "propositions": [
+    "marketing-communication",
+    "marketing-communication"
+   ],
+   "famille": "marketing-communication",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms8uxkjq000s2cu6154lb4je",
+   "slug": "CHEF_DE_PROJET_INFLUENCE",
+   "label": "Chef de projet influence",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/6cc19251-763b-4de1-b4f7-526c9ff732d2",
+   "propositions": [
+    "marketing-communication",
+    "marketing-communication"
+   ],
+   "famille": "marketing-communication",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms85yluw001p2c20y8b2o64p",
+   "slug": "CHEF_DE_PROJET_SUPPLY_CHAIN",
+   "label": "Chef de projet Supply Chain",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/c4071145-a774-4cf4-aefa-ae18a385cca4",
+   "propositions": [
+    "supply-chain-logistics",
+    "supply-chain-logistics"
+   ],
+   "famille": "supply-chain-logistics",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms8v829b00222c23jz5vqz8k",
+   "slug": "CHEF_DE_PROJET_TEXTILE",
+   "label": "Chef de projet textile",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/6833077e-e521-4605-bc1a-893f4b3d811c",
+   "propositions": [
+    "product-development-rd",
+    "product-development-rd"
+   ],
+   "famille": "product-development-rd",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms8udraw001g2ctl24cc854e",
+   "slug": "CHEF_DE_PROJET_TRADE_MARKETING",
+   "label": "Chef de projet Trade Marketing",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/d954fd71-0e2f-4cf9-85f0-c040fa6cbda9",
+   "propositions": [
+    "marketing-communication",
+    "marketing-communication"
+   ],
+   "famille": "marketing-communication",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms7l35gr00122czvz9n3oznq",
+   "slug": "CHEF_DE_RANG",
+   "label": "Chef de rang",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/d5db9d5c-2ebf-4a54-a79a-1b7e7ff70471",
+   "propositions": [
+    "hospitality",
+    "hospitality"
+   ],
+   "famille": "hospitality",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "d5024c04-c7e1-4407-9b97-ed60d98b9197",
+   "slug": "CHEF_PRODUIT",
+   "label": "Chef·fe de produit",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/9f508305-80ce-4111-8722-f2c9b4a44890",
+   "propositions": [
+    "product-development-rd",
+    "merchandising-buying"
+   ],
+   "famille": "product-development-rd",
+   "methode": "accord-etape-2",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms8v7ylm001y2c23qim0dzi6",
+   "slug": "COLLABORATEUR_PARLEMENTAIRE",
+   "label": "Collaborateur parlementaire",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/d9004a14-bda2-4c63-ab64-17ca163ac1bd",
+   "propositions": [
+    "nouvelle:affaires publiques",
+    "legal-compliance"
+   ],
+   "famille": "autres-secteurs",
+   "methode": "hors-secteur",
+   "horsSecteur": [
+    true,
+    true
+   ]
+  },
+  {
+   "id": "jc_collection_merchandiser",
+   "slug": "COLLECTION_MERCHANDISER",
+   "label": "Collection merchandiser",
+   "type": "metier",
+   "ancre": null,
+   "propositions": [
+    "merchandising-buying",
+    "merchandising-buying"
+   ],
+   "famille": "merchandising-buying",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "5243dcce-f3da-478f-950d-f36968c7f008",
+   "slug": "COMMERCIAL",
+   "label": "Commercial·e",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/c418ed9a-132f-48cd-ae5c-dd375070ee0e",
+   "propositions": [
+    "wholesale-b2b",
+    "wholesale-b2b"
+   ],
+   "famille": "wholesale-b2b",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms8uz6yr002m2cu6mc2qs8zw",
+   "slug": "COMMERCIAL_AUTOMOBILE",
+   "label": "Commercial automobile",
+   "type": "metier",
+   "ancre": null,
+   "propositions": [
+    "nouvelle:vente automobile",
+    "retail-client-advisor"
+   ],
+   "famille": "autres-secteurs",
+   "methode": "hors-secteur",
+   "horsSecteur": [
+    true,
+    true
+   ]
+  },
+  {
+   "id": "cms8up0y900222cdfxov4sxth",
+   "slug": "COMMIS_DE_CUISINE",
+   "label": "Commis de cuisine",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/e1cf6897-158d-4b48-a39e-2a3a8cac216c",
+   "propositions": [
+    "hospitality",
+    "hospitality"
+   ],
+   "famille": "hospitality",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms8uo9gx00192cdf5a2ltubl",
+   "slug": "CONCEPTEUR_3D_JOAILLERIE",
+   "label": "Concepteur 3D Joaillerie",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/34c57104-ff9b-4003-809e-56eece3cb4d5",
+   "propositions": [
+    "design-creation",
+    "design-creation"
+   ],
+   "famille": "design-creation",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms85yb4u001c2c20khlo397o",
+   "slug": "CONCIERGE",
+   "label": "Concierge",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/1ae8d28e-407c-48ab-88ff-4cb25bfcdea6",
+   "propositions": [
+    "hospitality",
+    "hospitality"
+   ],
+   "famille": "hospitality",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms85ldfl001w2cuxohljwuux",
+   "slug": "CONSEILLER_CLIENTELE_BANCAIRE",
+   "label": "Conseiller Clientèle Bancaire",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/d96de969-d43d-4082-8559-7fc35484a217",
+   "propositions": [
+    "nouvelle:banque",
+    "finance"
+   ],
+   "famille": "autres-secteurs",
+   "methode": "hors-secteur",
+   "horsSecteur": [
+    true,
+    true
+   ]
+  },
+  {
+   "id": "cms8ueigq001y2ctl9dnesawn",
+   "slug": "CONSEILLER_EN_GESTION_DE_PATRIMOINE",
+   "label": "Conseiller en gestion de patrimoine",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/21de0f3b-a71a-4263-a9ba-90c5f3721b4d",
+   "propositions": [
+    "finance",
+    "finance"
+   ],
+   "famille": "autres-secteurs",
+   "methode": "hors-secteur",
+   "horsSecteur": [
+    true,
+    true
+   ]
+  },
+  {
+   "id": "cms7dkppj000l2c0iy4s9qah3",
+   "slug": "CONSEILLER_EN_IMAGE",
+   "label": "Conseiller en image",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/d5ce0c23-6f8a-459f-9bf9-a7cb9768740a",
+   "propositions": [
+    "retail-client-advisor",
+    "retail-client-advisor"
+   ],
+   "famille": "retail-client-advisor",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms7l3jwi001m2czvb3o3ij7s",
+   "slug": "CONSEILLER_IMMOBILIER",
+   "label": "Conseiller immobilier",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/8ec8df02-e9dd-43b7-b416-5846ae0414ab",
+   "propositions": [
+    "nouvelle:immobilier",
+    "admin-facilities"
+   ],
+   "famille": "autres-secteurs",
+   "methode": "hors-secteur",
+   "horsSecteur": [
+    true,
+    true
+   ]
+  },
+  {
+   "id": "cms8uofw0001h2cdfdxljrhgl",
+   "slug": "CONSULTANT_EN_DEVELOPPEMENT_DURABLE",
+   "label": "Consultant en développement durable",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/fab474ea-a4a9-4c11-9548-1d50ad594a34",
+   "propositions": [
+    "sustainability",
+    "sustainability"
+   ],
+   "famille": "sustainability",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms8ulr5700062cdfcutockjb",
+   "slug": "CONSULTANT_EN_STRATEGIE",
+   "label": "Consultant en stratégie",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/6a29d804-f775-446c-bec7-35fc4e28ac97",
+   "propositions": [
+    "strategy-management",
+    "strategy-management"
+   ],
+   "famille": "strategy-management",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms7l1zsi000h2czv548e0hgq",
+   "slug": "COORDINATEUR_DE_PRODUCTION",
+   "label": "Coordinateur de production",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/1aa4bb15-c527-4a3b-9270-b3c71c4be111",
+   "propositions": [
+    "product-development-rd",
+    "manufacturing-quality"
+   ],
+   "famille": "marketing-communication",
+   "methode": "voisinage",
+   "horsSecteur": [
+    false,
+    false
+   ],
+   "propositionsEtape2": [
+    "product-development-rd",
+    "marketing-communication"
+   ]
+  },
+  {
+   "id": "cms8uouba001u2cdf2e1s5b77",
+   "slug": "COORDINATEUR_DE_PROJET_CREATIF",
+   "label": "Coordinateur de projet créatif",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/bea99fea-0383-4c63-b944-70d4799de2c5",
+   "propositions": [
+    "design-creation",
+    "design-creation"
+   ],
+   "famille": "design-creation",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms85x5ii00082c20fbp96nde",
+   "slug": "COORDINATEUR_LOGISTIQUE",
+   "label": "Coordinateur Logistique",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/823db06f-25e1-4658-b063-d6ef956b41f5",
+   "propositions": [
+    "supply-chain-logistics",
+    "supply-chain-logistics"
+   ],
+   "famille": "supply-chain-logistics",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms8uq583002s2cdf93j791c9",
+   "slug": "COORDINATEUR_RETAIL",
+   "label": "Coordinateur Retail",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/c94f3565-d987-431f-a46b-6f4e018e0bd7",
+   "propositions": [
+    "retail-operations",
+    "retail-operations"
+   ],
+   "famille": "retail-operations",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "jc_coupe",
+   "slug": "COUPE",
+   "label": "Coupeur·euse",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/928dd410-c74b-4dab-94b8-fcbdcf541bd1",
+   "propositions": [
+    "atelier-craft",
+    "atelier-craft"
+   ],
+   "famille": "atelier-craft",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms7l1mj2000d2czvptxvtf4j",
+   "slug": "CREATEUR_DE_CONTENU",
+   "label": "Créateur de contenu",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/d5a43cd3-230e-46d0-ba05-d67d61e5cfbb",
+   "propositions": [
+    "marketing-communication",
+    "marketing-communication"
+   ],
+   "famille": "marketing-communication",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms7dkpr9000n2c0if3u1dk7h",
+   "slug": "CREATEUR_DE_MARQUE",
+   "label": "Créateur de marque",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/bf89925d-00a1-4f94-ab3b-2148c887af33",
+   "propositions": [
+    "strategy-management",
+    "strategy-management"
+   ],
+   "famille": "strategy-management",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms85lq7o00282cuxqm6ogmfh",
+   "slug": "DELEGUE_PHARMACEUTIQUE",
+   "label": "Délégué Pharmaceutique",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/ab762f91-d737-485f-a85c-67cab92dee01",
+   "propositions": [
+    "health-optical-services",
+    "wholesale-b2b"
+   ],
+   "famille": "autres-secteurs",
+   "methode": "hors-secteur",
+   "horsSecteur": [
+    true,
+    true
+   ]
+  },
+  {
+   "id": "jc_designer_accessoires",
+   "slug": "DESIGNER_ACCESSOIRES",
+   "label": "Designer accessoires",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/a142a645-6e9e-4d86-accd-9816df857c90",
+   "propositions": [
+    "design-creation",
+    "design-creation"
+   ],
+   "famille": "design-creation",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms7l2y94000u2czvaq90cyvv",
+   "slug": "DESIGNER_BIJOUX_ACCESSOIRES",
+   "label": "Designer Bijoux Accessoires",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/34c57104-ff9b-4003-809e-56eece3cb4d5",
+   "propositions": [
+    "design-creation",
+    "design-creation"
+   ],
+   "famille": "design-creation",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms85xyck00102c20ogmu57r6",
+   "slug": "DESIGNER_CHAUSSURES",
+   "label": "Designer Chaussures",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/06f89f2c-c6e9-40c5-a4a5-0e34d5fbc184",
+   "propositions": [
+    "design-creation",
+    "design-creation"
+   ],
+   "famille": "design-creation",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms8v7cc300162c2338g8dl4o",
+   "slug": "DESIGNER_INDUSTRIEL",
+   "label": "Designer industriel",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/ab7bccb2-6f81-4a3d-a0c0-fca5d47d2775",
+   "propositions": [
+    "design-creation",
+    "design-creation"
+   ],
+   "famille": "design-creation",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    true
+   ]
+  },
+  {
+   "id": "cms8sst2z001c2c7uu6qfritc",
+   "slug": "DESIGNER_MAILLE",
+   "label": "Designer maille",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/0f7c84c5-1c0d-4fc1-8949-07dbe8bd34ef",
+   "propositions": [
+    "design-creation",
+    "design-creation"
+   ],
+   "famille": "design-creation",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms7fu4f500122cih0gf2m3io",
+   "slug": "DESSINATEUR_TEXTILE",
+   "label": "Dessinateur textile",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/0f7c84c5-1c0d-4fc1-8949-07dbe8bd34ef",
+   "propositions": [
+    "design-creation",
+    "design-creation"
+   ],
+   "famille": "design-creation",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cd1b8c6c-28b3-4e63-9b40-c0f2e245a771",
+   "slug": "DIRECTEUR_CENTRE_ESTHETIQUE",
+   "label": "Directeur·rice de centre esthétique",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/33e3a746-f209-4a1a-96df-301505531cb2",
+   "propositions": [
+    "beauty-services",
+    "beauty-services"
+   ],
+   "famille": "beauty-services",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms7ftppw000l2cihby4io6q3",
+   "slug": "DIRECTEUR_DES_RESSOURCES_HUMAINES",
+   "label": "Directeur des ressources humaines",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/f605bcd2-90b6-45a0-a558-d05016d68a77",
+   "propositions": [
+    "hr-talent",
+    "hr-talent"
+   ],
+   "famille": "hr-talent",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cmshz8ttm00152cy6ev61j477",
+   "slug": "DIRECTEUR_DE_CASTING",
+   "label": "Directeur·rice de casting",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/4f2f2539-3e38-4393-9dac-a9a48af7cd32",
+   "propositions": [
+    "marketing-communication",
+    "marketing-communication"
+   ],
+   "famille": "marketing-communication",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms85lubx002g2cuxvs1u47f9",
+   "slug": "DIRECTEUR_DE_CLIENTELE",
+   "label": "Directeur de clientèle",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/2eac08c2-a81a-46fc-8d75-eb0e0f3e0f6d",
+   "propositions": [
+    "wholesale-b2b",
+    "wholesale-b2b"
+   ],
+   "famille": "wholesale-b2b",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms8uy3wt001d2cu6tsj5yzff",
+   "slug": "DIRECTEUR_DE_GALERIE",
+   "label": "Directeur de galerie",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/2c8a4b72-21f4-4ab1-9dbd-1cae779211b7",
+   "propositions": [
+    "retail-store-management",
+    "retail-store-management"
+   ],
+   "famille": "retail-store-management",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    true
+   ]
+  },
+  {
+   "id": "d4a9e1e8-cca4-48fb-bf01-7c32a3d4b41b",
+   "slug": "DIRECTEUR_PRODUCTION",
+   "label": "Directeur·rice de production",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/eb9479c6-5fdf-4f45-ace4-28b547b8c7e5",
+   "propositions": [
+    "manufacturing-quality",
+    "manufacturing-quality"
+   ],
+   "famille": "manufacturing-quality",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "jc_directeur_reseau",
+   "slug": "DIRECTEUR_RESEAU",
+   "label": "Directeur·rice de réseau",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/0917ab6b-18a8-4cfd-8e7a-843b88cf9457",
+   "propositions": [
+    "retail-area-management",
+    "retail-area-management"
+   ],
+   "famille": "retail-area-management",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms8uox43001y2cdfvnlvz0qq",
+   "slug": "DIRECTEUR_SUPPLY_CHAIN",
+   "label": "Directeur Supply Chain",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/aacc3918-b5d3-484b-9480-5d29aa550d74",
+   "propositions": [
+    "supply-chain-logistics",
+    "supply-chain-logistics"
+   ],
+   "famille": "supply-chain-logistics",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "256be3f8-e33b-4193-9086-18f7c3661f61",
+   "slug": "DIRECTION",
+   "label": "Direction générale",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/6c3fd65e-2d24-47d8-bc22-9e93512bdcc2",
+   "propositions": [
+    "strategy-management",
+    "strategy-management"
+   ],
+   "famille": "strategy-management",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "jc_direction_artistique",
+   "slug": "DIRECTION_ARTISTIQUE",
+   "label": "Direction artistique",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/cb93fd23-1f51-4495-867a-936c1967066b",
+   "propositions": [
+    "design-creation",
+    "design-creation"
+   ],
+   "famille": "design-creation",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "jc_direction_commerciale",
+   "slug": "DIRECTION_COMMERCIALE",
+   "label": "Direction commerciale",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/2d3d7188-47ab-49b9-9045-e452d9db06f1",
+   "propositions": [
+    "wholesale-b2b",
+    "wholesale-b2b"
+   ],
+   "famille": "wholesale-b2b",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "jc_direction_marque",
+   "slug": "DIRECTION_MARQUE",
+   "label": "Direction de marque",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/de80bbf0-447d-4a6a-845a-fdba4e0dc30c",
+   "propositions": [
+    "marketing-communication",
+    "marketing-communication"
+   ],
+   "famille": "marketing-communication",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms8unxvd00112cdf6yr1zkyv",
+   "slug": "EDUCATEUR_SPECIALISE",
+   "label": "Éducateur spécialisé",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/fa4a3b52-990c-44eb-a912-490f5d689400",
+   "propositions": [
+    "nouvelle:social-education",
+    "nouvelle:social-education"
+   ],
+   "famille": "autres-secteurs",
+   "methode": "hors-secteur",
+   "horsSecteur": [
+    true,
+    true
+   ]
+  },
+  {
+   "id": "cms8uznfj00362cu64sjh8e4x",
+   "slug": "EMPLOYE_DE_CAFE",
+   "label": "Employé de café",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/bf7d8b16-4e2c-48ef-b44e-dc25b2d0ab61",
+   "propositions": [
+    "hospitality",
+    "hospitality"
+   ],
+   "famille": "hospitality",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms7fta5000012cih4euuqyro",
+   "slug": "EMPLOYE_DE_COMMERCE",
+   "label": "Employé de commerce",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/0b15375e-dfdd-4047-9efb-096e0aaee7d2",
+   "propositions": [
+    "retail-client-advisor",
+    "retail-client-advisor"
+   ],
+   "famille": "retail-client-advisor",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms85yofu001t2c20bik2fqmx",
+   "slug": "EMPLOYE_DE_RESTAURATION",
+   "label": "Employé de restauration",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/b4bff870-5c8f-4c33-b07f-f04d79830633",
+   "propositions": [
+    "hospitality",
+    "hospitality"
+   ],
+   "famille": "hospitality",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms7ftw4r000q2cihl4pv3y77",
+   "slug": "E_MERCHANDISER",
+   "label": "E-Merchandiser",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/356227b9-2263-4dbd-81e9-7dfc6d3f3af7",
+   "propositions": [
+    "ecommerce-digital",
+    "ecommerce-digital"
+   ],
+   "famille": "ecommerce-digital",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms8uyxxi00292cu6xi1kt3ry",
+   "slug": "FIGURANT",
+   "label": "Figurant",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/e4fca489-4c79-4392-874f-9ea1051c05c8",
+   "propositions": [
+    "nouvelle:arts-spectacle",
+    "nouvelle:spectacle-media"
+   ],
+   "famille": "autres-secteurs",
+   "methode": "hors-secteur",
+   "horsSecteur": [
+    true,
+    true
+   ]
+  },
+  {
+   "id": "jc_formateur",
+   "slug": "FORMATEUR",
+   "label": "Formateur·rice",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/0ba06640-e0ac-4911-9e43-289a8e41651e",
+   "propositions": [
+    "hr-talent",
+    "hr-talent"
+   ],
+   "famille": "hr-talent",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cmshz8tmr00112cy66kq38ut3",
+   "slug": "FORMULATEUR_COSMETIQUE",
+   "label": "Formulateur·rice cosmétique",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/11b6390b-1e48-4903-a5df-d3e04b451a19",
+   "propositions": [
+    "product-development-rd",
+    "product-development-rd"
+   ],
+   "famille": "product-development-rd",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms7l3qct001u2czvtprg1866",
+   "slug": "GARDIEN_D_ENFANTS",
+   "label": "Gardien d'enfants",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/c4a81f47-6ed8-4a17-ab4a-21a2e67fa1d9",
+   "propositions": [
+    "nouvelle:services-a-la-personne",
+    "nouvelle:services-a-la-personne"
+   ],
+   "famille": "autres-secteurs",
+   "methode": "hors-secteur",
+   "horsSecteur": [
+    true,
+    true
+   ]
+  },
+  {
+   "id": "cmshz8tdo000x2cy6hwusfzjv",
+   "slug": "GEMMOLOGUE",
+   "label": "Gemmologue",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/f87779ae-7389-44e7-b155-16e87904857e",
+   "propositions": [
+    "atelier-craft",
+    "atelier-craft"
+   ],
+   "famille": "atelier-craft",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms7dkp3h00052c0ikftag2ho",
+   "slug": "GESTIONNAIRE_DES_RESSOURCES_HUMAINES",
+   "label": "Gestionnaire des ressources humaines",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/d8ed1703-9c03-4ea0-83cc-b6169bc54ffd",
+   "propositions": [
+    "hr-talent",
+    "hr-talent"
+   ],
+   "famille": "hr-talent",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms8unqh3000s2cdfcoywe9i6",
+   "slug": "GESTIONNAIRE_SINISTRES",
+   "label": "Gestionnaire sinistres",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/01a83071-6533-4675-b2da-f0c6d02669f5",
+   "propositions": [
+    "legal-compliance",
+    "legal-compliance"
+   ],
+   "famille": "autres-secteurs",
+   "methode": "hors-secteur",
+   "horsSecteur": [
+    true,
+    true
+   ]
+  },
+  {
+   "id": "cms8uep3p00232ctle74s0z6t",
+   "slug": "GOUVERNANT",
+   "label": "Gouvernant",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/6d50f735-dca9-4a02-96dc-e4310ed98ae2",
+   "propositions": [
+    "hospitality",
+    "hospitality"
+   ],
+   "famille": "hospitality",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms7dkphi000f2c0i7svwistc",
+   "slug": "HABILLEUR",
+   "label": "Habilleur",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/2a6784d7-c457-413d-ba99-e320de11fc98",
+   "propositions": [
+    "atelier-craft",
+    "atelier-craft"
+   ],
+   "famille": "atelier-craft",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms8uddrf00142ctlgpbse7vv",
+   "slug": "INGENIEUR_AMELIORATION_CONTINUE",
+   "label": "Ingénieur Amélioration Continue",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/b5eaf231-77ad-4a86-8e54-15cc4398aad2",
+   "propositions": [
+    "manufacturing-quality",
+    "manufacturing-quality"
+   ],
+   "famille": "manufacturing-quality",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms8uxmyl000w2cu6i9wsj88g",
+   "slug": "INGENIEUR_QUALITE",
+   "label": "Ingénieur Qualité",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/30c0943c-caa1-411d-b273-26f475971273",
+   "propositions": [
+    "manufacturing-quality",
+    "manufacturing-quality"
+   ],
+   "famille": "manufacturing-quality",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms8udj7a00182ctlnda99ynw",
+   "slug": "INGENIEUR_TEXTILE",
+   "label": "Ingénieur textile",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/85acc7e9-1fac-4e91-962b-8b8031f39487",
+   "propositions": [
+    "product-development-rd",
+    "product-development-rd"
+   ],
+   "famille": "product-development-rd",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms8uz50v002i2cu6xu1m0kr1",
+   "slug": "INVENTORISTE",
+   "label": "Inventoriste",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/d7a9f9e0-e2f5-4804-a0e0-b21ebb1403ee",
+   "propositions": [
+    "retail-operations",
+    "retail-operations"
+   ],
+   "famille": "retail-operations",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms8uppui002f2cdf1etjjy9n",
+   "slug": "JARDINIER",
+   "label": "Jardinier",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/a48b9a5a-5ded-482d-8cda-7fd097a32c16",
+   "propositions": [
+    "admin-facilities",
+    "admin-facilities"
+   ],
+   "famille": "admin-facilities",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    true,
+    false
+   ]
+  },
+  {
+   "id": "cms85kids001g2cuxq3e4ozic",
+   "slug": "JOURNALISTE",
+   "label": "Journaliste",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/a47f82d3-4cf7-4abf-bb36-2c8cbad28234",
+   "propositions": [
+    "marketing-communication",
+    "marketing-communication"
+   ],
+   "famille": "marketing-communication",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    true,
+    true
+   ]
+  },
+  {
+   "id": "cms8sucgi00292c7u0sbk6bjm",
+   "slug": "JURISTE_PROPRIETE_INTELLECTUELLE",
+   "label": "Juriste Propriété Intellectuelle",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/5a8835bf-65c7-48e3-ab2f-7ad98b3fdb59",
+   "propositions": [
+    "legal-compliance",
+    "legal-compliance"
+   ],
+   "famille": "legal-compliance",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms8uxv6h00182cu66694aice",
+   "slug": "KINESITHERAPEUTE",
+   "label": "Kinésithérapeute",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/9487f835-b5a9-4742-8ecf-35520911e28c",
+   "propositions": [
+    "health-optical-services",
+    "health-optical-services"
+   ],
+   "famille": "autres-secteurs",
+   "methode": "hors-secteur",
+   "horsSecteur": [
+    true,
+    true
+   ]
+  },
+  {
+   "id": "cms8ufjuw002r2ctlzksqoesw",
+   "slug": "LIBRAIRE",
+   "label": "Libraire",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/1246764a-ce7c-45e8-9675-e445d145e818",
+   "propositions": [
+    "retail-client-advisor",
+    "retail-client-advisor"
+   ],
+   "famille": "autres-secteurs",
+   "methode": "hors-secteur",
+   "horsSecteur": [
+    true,
+    true
+   ]
+  },
+  {
+   "id": "cms8uck6a000n2ctl0eyl8azt",
+   "slug": "LIVREUR",
+   "label": "Livreur",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/0c408028-c48f-4df8-ba5d-c3d3be15f5a2",
+   "propositions": [
+    "supply-chain-logistics",
+    "supply-chain-logistics"
+   ],
+   "famille": "supply-chain-logistics",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms8v70aj000m2c2300jr42h1",
+   "slug": "MAITRE_D_HOTEL",
+   "label": "Maître d'hôtel",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/53ed8787-3423-4843-8c63-7be1877d29e2",
+   "propositions": [
+    "hospitality",
+    "hospitality"
+   ],
+   "famille": "hospitality",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms7fu6xu00162cih60q2h39v",
+   "slug": "MANAGER_COMMERCIAL",
+   "label": "Manager commercial",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/544cd9cf-e2ee-4ac0-8a02-7147af6b97d7",
+   "propositions": [
+    "wholesale-b2b",
+    "wholesale-b2b"
+   ],
+   "famille": "wholesale-b2b",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms7l3gyu001i2czvwh6quu7d",
+   "slug": "MANAGER_DE_RESTAURANT",
+   "label": "Manager de restaurant",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/d5eb6150-bbff-4a9c-9d0c-21eab4dbe2b6",
+   "propositions": [
+    "hospitality",
+    "hospitality"
+   ],
+   "famille": "hospitality",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms8uzhdw002y2cu6u7z7a0yk",
+   "slug": "MANAGER_DE_TRANSITION_COMMERCIAL",
+   "label": "Manager de transition commercial",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/544cd9cf-e2ee-4ac0-8a02-7147af6b97d7",
+   "propositions": [
+    "wholesale-b2b",
+    "wholesale-b2b"
+   ],
+   "famille": "wholesale-b2b",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "jc_manager_floor",
+   "slug": "MANAGER_FLOOR",
+   "label": "Manager de floor",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/94e0bedd-e56e-42be-a5a4-b74a260f437c",
+   "propositions": [
+    "retail-store-management",
+    "retail-store-management"
+   ],
+   "famille": "retail-store-management",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms7l3z0m00262czvsun9jt6c",
+   "slug": "MANNEQUIN",
+   "label": "Mannequin",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/9af5fd79-d76e-4343-bc13-ff2d172aec62",
+   "propositions": [
+    "nouvelle:Mannequinat",
+    "marketing-communication"
+   ],
+   "famille": "mannequinat-agences",
+   "methode": "accord-etape-2",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms8suxwn002l2c7u8t8zlowh",
+   "slug": "MEDIATEUR_CULTUREL",
+   "label": "Médiateur culturel",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/c2efadc4-6f47-4f34-997b-dd80aba609dd",
+   "propositions": [
+    "nouvelle:médiation culturelle",
+    "marketing-communication"
+   ],
+   "famille": "autres-secteurs",
+   "methode": "hors-secteur",
+   "horsSecteur": [
+    true,
+    true
+   ]
+  },
+  {
+   "id": "efa75f59-7da0-4f95-9fbc-9366844e3894",
+   "slug": "MODELISTE",
+   "label": "Modéliste",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/18232485-5f8b-4c53-80f2-3d9f8f9d0e20",
+   "propositions": [
+    "product-development-rd",
+    "design-creation"
+   ],
+   "famille": "atelier-craft",
+   "methode": "accord-etape-2",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms85kcvu001c2cuxbw8dojf6",
+   "slug": "OFFICE_MANAGER",
+   "label": "Office Manager",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/8cce40c1-4479-47e7-b5fc-c976631d919f",
+   "propositions": [
+    "admin-facilities",
+    "admin-facilities"
+   ],
+   "famille": "admin-facilities",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms8ss4dc000w2c7ufhnj6bwi",
+   "slug": "OPERATEUR_DE_PRODUCTION",
+   "label": "Opérateur de production",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/b0fa69b4-998c-4e66-acd3-5f5d73cadb5c",
+   "propositions": [
+    "manufacturing-quality",
+    "manufacturing-quality"
+   ],
+   "famille": "manufacturing-quality",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "bafb0644-d99d-40c0-8ea5-f39eff9ca38e",
+   "slug": "PERSONAL_SHOPPER",
+   "label": "Personal shopper",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/f8da6546-0c8a-4bd0-a952-6f3c253c9aba",
+   "propositions": [
+    "retail-client-advisor",
+    "retail-client-advisor"
+   ],
+   "famille": "retail-client-advisor",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms85wdj500012c20phe6e0lj",
+   "slug": "PHOTOGRAPHE",
+   "label": "Photographe",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/66542dd6-05a6-4d9e-97ff-3f4858c31ff9",
+   "propositions": [
+    "marketing-communication",
+    "marketing-communication"
+   ],
+   "famille": "marketing-communication",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms8srya9000o2c7ubii09jjf",
+   "slug": "PLANIFICATEUR_SUPPLY_CHAIN",
+   "label": "Planificateur Supply Chain",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/dbdc9f7b-31c6-4f21-a9c5-48253bb69c08",
+   "propositions": [
+    "supply-chain-logistics",
+    "supply-chain-logistics"
+   ],
+   "famille": "supply-chain-logistics",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "2fd6c1f9-a505-4073-85af-4ff9a69e3684",
+   "slug": "PRATICIEN_MEDECINE_ESTHETIQUE",
+   "label": "Praticien·ne en médecine esthétique",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/71f09c8b-a172-408c-b9e7-32e580e39ff6",
+   "propositions": [
+    "health-optical-services",
+    "health-optical-services"
+   ],
+   "famille": "health-optical-services",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    true
+   ]
+  },
+  {
+   "id": "5c228fce-ede9-42b4-b952-982812599ac2",
+   "slug": "PRATICIEN_SPA",
+   "label": "Praticien·ne spa",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/a1e1a788-2352-4172-8fcf-1f985a6968b0",
+   "propositions": [
+    "beauty-services",
+    "beauty-services"
+   ],
+   "famille": "beauty-services",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms8uz0ar002d2cu6nl36hn3t",
+   "slug": "PREMIERE_MAIN",
+   "label": "Première main",
+   "type": "metier",
+   "ancre": null,
+   "propositions": [
+    "atelier-craft",
+    "atelier-craft"
+   ],
+   "famille": "atelier-craft",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms8uno57000o2cdf3751p4jj",
+   "slug": "PRESIDENT_D_ASSOCIATION",
+   "label": "Président d'association",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/6c3fd65e-2d24-47d8-bc22-9e93512bdcc2",
+   "propositions": [
+    "strategy-management",
+    "strategy-management"
+   ],
+   "famille": "autres-secteurs",
+   "methode": "hors-secteur",
+   "horsSecteur": [
+    true,
+    true
+   ]
+  },
+  {
+   "id": "cmshz8rm400012cy6rdskhtn0",
+   "slug": "PRODUCT_OWNER",
+   "label": "Product Owner",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/a79170ad-0b7b-4697-864f-1748359aa10a",
+   "propositions": [
+    "it-data",
+    "ecommerce-digital"
+   ],
+   "famille": "ecommerce-digital",
+   "methode": "accord-etape-2",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "2cf7c517-ef18-4dd9-b039-5337d048f48d",
+   "slug": "PROTHESISTE_ONGULAIRE",
+   "label": "Prothésiste ongulaire",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/bced9b86-d4e7-42f8-bb47-acb2001b9bd0",
+   "propositions": [
+    "beauty-services",
+    "beauty-services"
+   ],
+   "famille": "beauty-services",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "jc_prototypiste",
+   "slug": "PROTOTYPISTE",
+   "label": "Prototypiste",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/3cbbdb83-7c36-4ae5-8c45-6c284186f477",
+   "propositions": [
+    "product-development-rd",
+    "product-development-rd"
+   ],
+   "famille": "product-development-rd",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms85y8og00182c20f9w9u3rc",
+   "slug": "PROTOTYPISTE_MAROQUINERIE",
+   "label": "Prototypiste maroquinerie",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/d515e82a-ca9f-4be4-9823-33694dff7304",
+   "propositions": [
+    "atelier-craft",
+    "product-development-rd"
+   ],
+   "famille": "atelier-craft",
+   "methode": "accord-etape-2",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms8uph0a00272cdfd4cwlg1f",
+   "slug": "RECRUTEUR_DE_DONATEURS",
+   "label": "Recruteur de donateurs",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/c2e6609d-0abe-4a38-b295-e06edbd52e82",
+   "propositions": [
+    "marketing-communication",
+    "nouvelle:fundraising"
+   ],
+   "famille": "autres-secteurs",
+   "methode": "hors-secteur",
+   "horsSecteur": [
+    true,
+    true
+   ]
+  },
+  {
+   "id": "cms8unt4q000w2cdfpa284db7",
+   "slug": "REGISSEUR",
+   "label": "Régisseur",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/1aa4bb15-c527-4a3b-9270-b3c71c4be111",
+   "propositions": [
+    "admin-facilities",
+    "marketing-communication"
+   ],
+   "famille": "marketing-communication",
+   "methode": "accord-etape-2",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms8spj4l00032c7uabgjity7",
+   "slug": "RESPONSABLE_ACHATS_ET_OFFRE",
+   "label": "Responsable Achats et Offre",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/377865f0-c327-4599-8c7e-d428c6588edf",
+   "propositions": [
+    "merchandising-buying",
+    "merchandising-buying"
+   ],
+   "famille": "merchandising-buying",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms7l42v2002a2czvp8wpuayn",
+   "slug": "RESPONSABLE_ADMINISTRATIF_ET_FINANCIER",
+   "label": "Responsable administratif et financier",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/30f3ea93-882a-4525-841c-1d5b4b64076f",
+   "propositions": [
+    "finance",
+    "finance"
+   ],
+   "famille": "finance",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms8uz974002q2cu6gidd3yg9",
+   "slug": "RESPONSABLE_ADV",
+   "label": "Responsable ADV",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/73357956-f607-4baa-9ce6-03beb9b39da2",
+   "propositions": [
+    "supply-chain-logistics",
+    "wholesale-b2b"
+   ],
+   "famille": "supply-chain-logistics",
+   "methode": "voisinage",
+   "horsSecteur": [
+    false,
+    false
+   ],
+   "propositionsEtape2": [
+    "wholesale-b2b",
+    "supply-chain-logistics"
+   ]
+  },
+  {
+   "id": "cmshycp0c002j2core6q2nq87",
+   "slug": "RESPONSABLE_ATELIER",
+   "label": "Responsable d'atelier",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/e5257110-e7f1-453a-a2dc-bd374945bc4a",
+   "propositions": [
+    "atelier-craft",
+    "atelier-craft"
+   ],
+   "famille": "atelier-craft",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "f8a9a4e4-cd5c-4b64-84bc-56f50ec85a2b",
+   "slug": "RESPONSABLE_COLLECTION",
+   "label": "Responsable collection",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/9f508305-80ce-4111-8722-f2c9b4a44890",
+   "propositions": [
+    "merchandising-buying",
+    "merchandising-buying"
+   ],
+   "famille": "merchandising-buying",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms8ueri200272ctl3bnevq2h",
+   "slug": "RESPONSABLE_COMMERCIAL_DE_ZONE",
+   "label": "Responsable Commercial de Zone",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/3a4c4e33-ee34-4abe-ba5c-26f9037d292f",
+   "propositions": [
+    "wholesale-b2b",
+    "retail-area-management"
+   ],
+   "famille": "wholesale-b2b",
+   "methode": "accord-etape-2",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cmshz8s8x000d2cy6tcm46z72",
+   "slug": "RESPONSABLE_COMMUNICATION",
+   "label": "Responsable communication",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/cd7b838c-51f6-41ec-9067-bb974c0f991b",
+   "propositions": [
+    "marketing-communication",
+    "marketing-communication"
+   ],
+   "famille": "marketing-communication",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms85xbrq000c2c20cc9m9gww",
+   "slug": "RESPONSABLE_COMMUNICATION_INTERNE",
+   "label": "Responsable communication interne",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/cd7b838c-51f6-41ec-9067-bb974c0f991b",
+   "propositions": [
+    "marketing-communication",
+    "marketing-communication"
+   ],
+   "famille": "marketing-communication",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms85xkxp000k2c20i5y0cppb",
+   "slug": "RESPONSABLE_DEVELOPPEMENT_MATIERES",
+   "label": "Responsable Développement Matières",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/6833077e-e521-4605-bc1a-893f4b3d811c",
+   "propositions": [
+    "product-development-rd",
+    "product-development-rd"
+   ],
+   "famille": "product-development-rd",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms8stqg5001w2c7uir2on9a2",
+   "slug": "RESPONSABLE_DE_COMPTES",
+   "label": "Responsable de comptes",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/5e4d156a-1f05-4b2c-b0f0-5abb82d52ed6",
+   "propositions": [
+    "wholesale-b2b",
+    "wholesale-b2b"
+   ],
+   "famille": "wholesale-b2b",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "jc_responsable_formation",
+   "slug": "RESPONSABLE_FORMATION",
+   "label": "Responsable formation",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/a14e96a7-6c4d-4d69-8c6f-7ccadf77bac5",
+   "propositions": [
+    "hr-talent",
+    "hr-talent"
+   ],
+   "famille": "hr-talent",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms85zler002u2c20kd1r4et3",
+   "slug": "RESPONSABLE_GROWTH_MARKETING",
+   "label": "Responsable Growth Marketing",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/6fcf4638-e7c7-4978-9302-9a7b63a3d57c",
+   "propositions": [
+    "marketing-communication",
+    "marketing-communication"
+   ],
+   "famille": "marketing-communication",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms7l49wq002i2czve1f7k5c7",
+   "slug": "RESPONSABLE_IMAGE_ET_CONTENU",
+   "label": "Responsable Image et Contenu",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/d2db926b-8b14-4686-9c98-fb0dc3a38cbb",
+   "propositions": [
+    "marketing-communication",
+    "marketing-communication"
+   ],
+   "famille": "marketing-communication",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms8uc7im000i2ctlkh0copm5",
+   "slug": "RESPONSABLE_INDUSTRIALISATION",
+   "label": "Responsable Industrialisation",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/eb9479c6-5fdf-4f45-ace4-28b547b8c7e5",
+   "propositions": [
+    "manufacturing-quality",
+    "manufacturing-quality"
+   ],
+   "famille": "manufacturing-quality",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms8uoqn8001q2cdft79yhiyh",
+   "slug": "RESPONSABLE_JURIDIQUE",
+   "label": "Responsable juridique",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/d2ff134e-b41a-4fa3-aceb-1b9f5f5cf015",
+   "propositions": [
+    "legal-compliance",
+    "legal-compliance"
+   ],
+   "famille": "legal-compliance",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms7fuajo001a2cihbiu4iexi",
+   "slug": "RESPONSABLE_OPERATIONNEL",
+   "label": "Responsable Opérationnel",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/c6bd511a-d966-4df9-a48e-4f800354f268",
+   "propositions": [
+    "retail-operations",
+    "retail-operations"
+   ],
+   "famille": "retail-operations",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms8srpfl000k2c7uu7nswt8l",
+   "slug": "RESPONSABLE_PARTENARIATS",
+   "label": "Responsable partenariats",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/6fcf4638-e7c7-4978-9302-9a7b63a3d57c",
+   "propositions": [
+    "marketing-communication",
+    "marketing-communication"
+   ],
+   "famille": "marketing-communication",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms8uyfoq001l2cu6j7l0nzdc",
+   "slug": "RESPONSABLE_PROJETS_RETAIL",
+   "label": "Responsable Projets Retail",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/bea99fea-0383-4c63-b944-70d4799de2c5",
+   "propositions": [
+    "retail-operations",
+    "retail-operations"
+   ],
+   "famille": "retail-operations",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms85jjt4000s2cuxnwwohgs8",
+   "slug": "RESPONSABLE_QUALITE_TEXTILE",
+   "label": "Responsable Qualité Textile",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/652b847f-837a-4a08-bd5e-36397fe56455",
+   "propositions": [
+    "manufacturing-quality",
+    "manufacturing-quality"
+   ],
+   "famille": "manufacturing-quality",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms85isdv000f2cuxunul6lx5",
+   "slug": "RESPONSABLE_RECRUTEMENT",
+   "label": "Responsable Recrutement",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/53a362a4-4c83-4ce2-837f-d1faba4cd247",
+   "propositions": [
+    "hr-talent",
+    "hr-talent"
+   ],
+   "famille": "hr-talent",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms85jdrt000o2cuxqkyv6z52",
+   "slug": "RESPONSABLE_RELATION_CLIENT",
+   "label": "Responsable Relation Client",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/bcc2c1db-f969-4355-bebf-4878ff6c2a94",
+   "propositions": [
+    "customer-service",
+    "customer-service"
+   ],
+   "famille": "customer-service",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms8ue1u7001o2ctl328u4lm7",
+   "slug": "RESPONSABLE_SERVICES_GENERAUX",
+   "label": "Responsable Services Généraux",
+   "type": "metier",
+   "ancre": null,
+   "propositions": [
+    "admin-facilities",
+    "admin-facilities"
+   ],
+   "famille": "admin-facilities",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms7fud0o001e2cihu2nrtdfc",
+   "slug": "RESPONSABLE_SUPPLY_CHAIN",
+   "label": "Responsable Supply Chain",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/823db06f-25e1-4658-b063-d6ef956b41f5",
+   "propositions": [
+    "supply-chain-logistics",
+    "supply-chain-logistics"
+   ],
+   "famille": "supply-chain-logistics",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "a48e8526-e997-455e-b58c-cf12fcf06b99",
+   "slug": "RESPONSABLE_VM",
+   "label": "Responsable visual merchandising",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/35eb0aa6-b40d-449d-9390-719be8912277",
+   "propositions": [
+    "visual-merchandising",
+    "visual-merchandising"
+   ],
+   "famille": "visual-merchandising",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "b0aa1e94-2a43-4f4e-8ddc-9566eefa46df",
+   "slug": "RESPONSABLE_WHOLESALE",
+   "label": "Responsable wholesale",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/544cd9cf-e2ee-4ac0-8a02-7147af6b97d7",
+   "propositions": [
+    "wholesale-b2b",
+    "wholesale-b2b"
+   ],
+   "famille": "wholesale-b2b",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms8v7ukm001u2c23rrejn9yv",
+   "slug": "SAUVETEUR",
+   "label": "Sauveteur",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/3025dea4-1752-40a9-9431-fd874420386f",
+   "propositions": [
+    "hospitality",
+    "hospitality"
+   ],
+   "famille": "hospitality",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    true
+   ]
+  },
+  {
+   "id": "cms85lgxj00202cux7mqjt7i7",
+   "slug": "SCENOGRAPHE",
+   "label": "Scénographe",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/874a2080-a9b6-46a9-8662-c9b7d4208f73",
+   "propositions": [
+    "design-creation",
+    "visual-merchandising"
+   ],
+   "famille": "architecture-store-design",
+   "methode": "voisinage",
+   "horsSecteur": [
+    false,
+    false
+   ],
+   "propositionsEtape2": [
+    "architecture-store-design",
+    "marketing-communication"
+   ]
+  },
+  {
+   "id": "cms8v6yb0000i2c23rbt0a59x",
+   "slug": "SERIGRAPHE_TEXTILE",
+   "label": "Sérigraphe textile",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/a98f93a6-b1df-4759-88a9-3234f334afad",
+   "propositions": [
+    "atelier-craft",
+    "manufacturing-quality"
+   ],
+   "famille": "atelier-craft",
+   "methode": "voisinage",
+   "horsSecteur": [
+    false,
+    false
+   ],
+   "propositionsEtape2": [
+    "atelier-craft",
+    "manufacturing-quality"
+   ]
+  },
+  {
+   "id": "cmshz8sxz000p2cy6huq85dxs",
+   "slug": "SERTISSEUR",
+   "label": "Sertisseur·se",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/6729aa5a-285f-4baf-a466-c2ccd2f2d96f",
+   "propositions": [
+    "atelier-craft",
+    "atelier-craft"
+   ],
+   "famille": "atelier-craft",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "9f119118-55dc-433e-8eb2-81cf27b241bc",
+   "slug": "SPA_MANAGER",
+   "label": "Spa manager",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/33e3a746-f209-4a1a-96df-301505531cb2",
+   "propositions": [
+    "beauty-services",
+    "beauty-services"
+   ],
+   "famille": "beauty-services",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cmshz8sou000l2cy6s5vzibnv",
+   "slug": "TAILLEUR",
+   "label": "Tailleur·se",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/978ae3a2-0831-415a-8396-b84dde656fc5",
+   "propositions": [
+    "atelier-craft",
+    "atelier-craft"
+   ],
+   "famille": "atelier-craft",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms85z5dw002h2c20x7n56hhz",
+   "slug": "TALENT_MANAGER",
+   "label": "Talent Manager",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/c85e39a4-2c40-413f-a171-45907ecdd599",
+   "propositions": [
+    "marketing-communication",
+    "marketing-communication"
+   ],
+   "famille": "marketing-communication",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms8v7o40001m2c23r8taxla1",
+   "slug": "TAPISSIER_D_AMEUBLEMENT",
+   "label": "Tapissier d'ameublement",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/cd3f5356-a16f-4aca-9d4b-ceba2b2afec5",
+   "propositions": [
+    "atelier-craft",
+    "atelier-craft"
+   ],
+   "famille": "atelier-craft",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms8ufqwm002x2ctllu9oi1k0",
+   "slug": "TATOUEUR",
+   "label": "Tatoueur",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/40da2fc6-8cb4-4cd3-8fe3-899715905070",
+   "propositions": [
+    "beauty-services",
+    "beauty-services"
+   ],
+   "famille": "autres-secteurs",
+   "methode": "hors-secteur",
+   "horsSecteur": [
+    true,
+    true
+   ]
+  },
+  {
+   "id": "jc_technicien_produit",
+   "slug": "TECHNICIEN_PRODUIT",
+   "label": "Technicien produit",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/42381741-f3a7-4b26-b35c-da6fad9f1cfd",
+   "propositions": [
+    "product-development-rd",
+    "product-development-rd"
+   ],
+   "famille": "product-development-rd",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms85yqjh001x2c20fma49zn3",
+   "slug": "TECHNICIEN_SUPPORT_INFORMATIQUE",
+   "label": "Technicien support informatique",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/3e7bf729-4442-4b9f-ad5e-83111963795c",
+   "propositions": [
+    "it-data",
+    "it-data"
+   ],
+   "famille": "it-data",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms85yd1r001g2c209z32evma",
+   "slug": "TRAFFIC_MANAGER",
+   "label": "Traffic Manager",
+   "type": "metier",
+   "ancre": null,
+   "propositions": [
+    "ecommerce-digital",
+    "ecommerce-digital"
+   ],
+   "famille": "ecommerce-digital",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms85yx1i00292c204q9h7en7",
+   "slug": "TUTEUR_SCOLAIRE",
+   "label": "Tuteur scolaire",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/021663ca-a367-472e-a1f0-6d8ab5b2d860",
+   "propositions": [
+    "nouvelle:enseignement",
+    "nouvelle:education"
+   ],
+   "famille": "autres-secteurs",
+   "methode": "hors-secteur",
+   "horsSecteur": [
+    true,
+    true
+   ]
+  },
+  {
+   "id": "cmshz8rt100052cy64nctzi80",
+   "slug": "UX_UI_DESIGNER",
+   "label": "UX/UI Designer",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/96e20037-0a25-4bf6-a25e-808d1605d890",
+   "propositions": [
+    "ecommerce-digital",
+    "ecommerce-digital"
+   ],
+   "famille": "ecommerce-digital",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms8upkmg002b2cdfy2xdn6ap",
+   "slug": "VENDEUR_EN_LIGNE",
+   "label": "Vendeur en ligne",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/356227b9-2263-4dbd-81e9-7dfc6d3f3af7",
+   "propositions": [
+    "ecommerce-digital",
+    "ecommerce-digital"
+   ],
+   "famille": "ecommerce-digital",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms8sv5fk002p2c7u18rqasd6",
+   "slug": "VIDEASTE",
+   "label": "Vidéaste",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/ac734172-ae9a-41ab-80a0-a7b33694e027",
+   "propositions": [
+    "marketing-communication",
+    "marketing-communication"
+   ],
+   "famille": "marketing-communication",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "cms8uxeaz000g2cu6mg5d4a5d",
+   "slug": "WEBMASTER",
+   "label": "Webmaster",
+   "type": "metier",
+   "ancre": "http://data.europa.eu/esco/occupation/dc8ef7da-d2c0-4474-96a0-6d0385eeec1e",
+   "propositions": [
+    "ecommerce-digital",
+    "ecommerce-digital"
+   ],
+   "famille": "ecommerce-digital",
+   "methode": "accord-etape-1",
+   "horsSecteur": [
+    false,
+    false
+   ]
+  },
+  {
+   "id": "jc_achats_indirects",
+   "slug": "ACHATS_INDIRECTS",
+   "label": "Achats indirects",
+   "type": "domaine",
+   "ancre": null,
+   "propositions": [
+    "admin-facilities",
+    "admin-facilities"
+   ],
+   "famille": "admin-facilities",
+   "methode": "accord-etape-1"
+  },
+  {
+   "id": "5c4faac8-dd7d-46b8-ae75-60d798d2dbf5",
+   "slug": "ASSISTANAT",
+   "label": "Assistanat & administration",
+   "type": "domaine",
+   "ancre": null,
+   "propositions": [
+    "admin-facilities",
+    "admin-facilities"
+   ],
+   "famille": "admin-facilities",
+   "methode": "accord-etape-1"
+  },
+  {
+   "id": "794c2d22-e793-4978-bac3-4d51b427c9bf",
+   "slug": "COMMUNICATION",
+   "label": "Communication",
+   "type": "domaine",
+   "ancre": null,
+   "propositions": [
+    "marketing-communication",
+    "marketing-communication"
+   ],
+   "famille": "marketing-communication",
+   "methode": "accord-etape-1"
+  },
+  {
+   "id": "jc_conformite",
+   "slug": "CONFORMITE",
+   "label": "Conformité",
+   "type": "domaine",
+   "ancre": null,
+   "propositions": [
+    "legal-compliance",
+    "legal-compliance"
+   ],
+   "famille": "legal-compliance",
+   "methode": "accord-etape-1"
+  },
+  {
+   "id": "4dee2186-7c44-4b70-852d-a3336daa443b",
+   "slug": "CRM",
+   "label": "CRM & fidélisation",
+   "type": "domaine",
+   "ancre": null,
+   "propositions": [
+    "crm-clienteling",
+    "crm-clienteling"
+   ],
+   "famille": "crm-clienteling",
+   "methode": "accord-etape-1"
+  },
+  {
+   "id": "jc_data",
+   "slug": "DATA",
+   "label": "Data",
+   "type": "domaine",
+   "ancre": null,
+   "propositions": [
+    "it-data",
+    "it-data"
+   ],
+   "famille": "it-data",
+   "methode": "accord-etape-1"
+  },
+  {
+   "id": "c68529e9-59d1-4781-bbd8-b93e39e3aaa1",
+   "slug": "ECOMMERCE",
+   "label": "E-commerce",
+   "type": "domaine",
+   "ancre": null,
+   "propositions": [
+    "ecommerce-digital",
+    "ecommerce-digital"
+   ],
+   "famille": "ecommerce-digital",
+   "methode": "accord-etape-1"
+  },
+  {
+   "id": "jc_entrepreneuriat",
+   "slug": "ENTREPRENEURIAT",
+   "label": "Entrepreneuriat / Création",
+   "type": "domaine",
+   "ancre": null,
+   "propositions": [
+    "strategy-management",
+    "strategy-management"
+   ],
+   "famille": "strategy-management",
+   "methode": "accord-etape-1"
+  },
+  {
+   "id": "7a4143f0-8770-45b4-a4a2-6df852735ba3",
+   "slug": "EVENEMENTIEL",
+   "label": "Événementiel",
+   "type": "domaine",
+   "ancre": null,
+   "propositions": [
+    "marketing-communication",
+    "marketing-communication"
+   ],
+   "famille": "marketing-communication",
+   "methode": "accord-etape-1"
+  },
+  {
+   "id": "jc_e_merchandising",
+   "slug": "E_MERCHANDISING",
+   "label": "E-merchandising",
+   "type": "domaine",
+   "ancre": null,
+   "propositions": [
+    "ecommerce-digital",
+    "ecommerce-digital"
+   ],
+   "famille": "ecommerce-digital",
+   "methode": "accord-etape-1"
+  },
+  {
+   "id": "a2da13e2-019c-4e94-8d6b-af05a40399d9",
+   "slug": "FINANCE",
+   "label": "Finance & contrôle de gestion",
+   "type": "domaine",
+   "ancre": null,
+   "propositions": [
+    "finance",
+    "finance"
+   ],
+   "famille": "finance",
+   "methode": "accord-etape-1"
+  },
+  {
+   "id": "jc_formulation_cosmetique",
+   "slug": "FORMULATION_COSMETIQUE",
+   "label": "Formulation cosmétique",
+   "type": "domaine",
+   "ancre": null,
+   "propositions": [
+    "product-development-rd",
+    "product-development-rd"
+   ],
+   "famille": "product-development-rd",
+   "methode": "accord-etape-1"
+  },
+  {
+   "id": "jc_industrialisation",
+   "slug": "INDUSTRIALISATION",
+   "label": "Industrialisation",
+   "type": "domaine",
+   "ancre": null,
+   "propositions": [
+    "manufacturing-quality",
+    "manufacturing-quality"
+   ],
+   "famille": "manufacturing-quality",
+   "methode": "accord-etape-1"
+  },
+  {
+   "id": "jc_influence",
+   "slug": "INFLUENCE",
+   "label": "Influence",
+   "type": "domaine",
+   "ancre": null,
+   "propositions": [
+    "marketing-communication",
+    "marketing-communication"
+   ],
+   "famille": "marketing-communication",
+   "methode": "accord-etape-1"
+  },
+  {
+   "id": "jc_it_si",
+   "slug": "IT_SI",
+   "label": "IT / SI",
+   "type": "domaine",
+   "ancre": null,
+   "propositions": [
+    "it-data",
+    "it-data"
+   ],
+   "famille": "it-data",
+   "methode": "accord-etape-1"
+  },
+  {
+   "id": "jc_juridique",
+   "slug": "JURIDIQUE",
+   "label": "Juridique",
+   "type": "domaine",
+   "ancre": null,
+   "propositions": [
+    "legal-compliance",
+    "legal-compliance"
+   ],
+   "famille": "legal-compliance",
+   "methode": "accord-etape-1"
+  },
+  {
+   "id": "jc_laboratoire",
+   "slug": "LABORATOIRE",
+   "label": "Laboratoire",
+   "type": "domaine",
+   "ancre": null,
+   "propositions": [
+    "product-development-rd",
+    "product-development-rd"
+   ],
+   "famille": "product-development-rd",
+   "methode": "accord-etape-1"
+  },
+  {
+   "id": "a0076f7c-2263-4228-8d0c-1893780c0b0f",
+   "slug": "LOGISTIQUE",
+   "label": "Logistique",
+   "type": "domaine",
+   "ancre": null,
+   "propositions": [
+    "supply-chain-logistics",
+    "supply-chain-logistics"
+   ],
+   "famille": "supply-chain-logistics",
+   "methode": "accord-etape-1"
+  },
+  {
+   "id": "03e3c577-fb87-4c33-a97d-96de2684a0f6",
+   "slug": "MARKETING",
+   "label": "Marketing",
+   "type": "domaine",
+   "ancre": null,
+   "propositions": [
+    "marketing-communication",
+    "marketing-communication"
+   ],
+   "famille": "marketing-communication",
+   "methode": "accord-etape-1"
+  },
+  {
+   "id": "jc_methodes",
+   "slug": "METHODES",
+   "label": "Méthodes",
+   "type": "domaine",
+   "ancre": null,
+   "propositions": [
+    "manufacturing-quality",
+    "manufacturing-quality"
+   ],
+   "famille": "manufacturing-quality",
+   "methode": "accord-etape-1"
+  },
+  {
+   "id": "jc_planification",
+   "slug": "PLANIFICATION",
+   "label": "Planification",
+   "type": "domaine",
+   "ancre": null,
+   "propositions": [
+    "supply-chain-logistics",
+    "supply-chain-logistics"
+   ],
+   "famille": "supply-chain-logistics",
+   "methode": "accord-etape-1"
+  },
+  {
+   "id": "jc_produit_numerique",
+   "slug": "PRODUIT_NUMERIQUE",
+   "label": "Produit numérique",
+   "type": "domaine",
+   "ancre": null,
+   "propositions": [
+    "ecommerce-digital",
+    "ecommerce-digital"
+   ],
+   "famille": "ecommerce-digital",
+   "methode": "accord-etape-1"
+  },
+  {
+   "id": "jc_qualite",
+   "slug": "QUALITE",
+   "label": "Qualité",
+   "type": "domaine",
+   "ancre": null,
+   "propositions": [
+    "manufacturing-quality",
+    "manufacturing-quality"
+   ],
+   "famille": "manufacturing-quality",
+   "methode": "accord-etape-1"
+  },
+  {
+   "id": "jc_reglementation_cosmetique",
+   "slug": "REGLEMENTATION_COSMETIQUE",
+   "label": "Réglementation cosmétique",
+   "type": "domaine",
+   "ancre": null,
+   "propositions": [
+    "legal-compliance",
+    "legal-compliance"
+   ],
+   "famille": "legal-compliance",
+   "methode": "accord-etape-1"
+  },
+  {
+   "id": "7d1afee4-bcd3-48ae-8044-8f063ab28af2",
+   "slug": "RH",
+   "label": "Ressources humaines",
+   "type": "domaine",
+   "ancre": null,
+   "propositions": [
+    "hr-talent",
+    "hr-talent"
+   ],
+   "famille": "hr-talent",
+   "methode": "accord-etape-1"
+  },
+  {
+   "id": "jc_rse",
+   "slug": "RSE",
+   "label": "RSE / Développement durable",
+   "type": "domaine",
+   "ancre": null,
+   "propositions": [
+    "sustainability",
+    "sustainability"
+   ],
+   "famille": "sustainability",
+   "methode": "accord-etape-1"
+  },
+  {
+   "id": "jc_showroom",
+   "slug": "SHOWROOM",
+   "label": "Showroom",
+   "type": "domaine",
+   "ancre": null,
+   "propositions": [
+    "wholesale-b2b",
+    "wholesale-b2b"
+   ],
+   "famille": "wholesale-b2b",
+   "methode": "accord-etape-1"
+  },
+  {
+   "id": "jc_sourcing",
+   "slug": "SOURCING",
+   "label": "Sourcing",
+   "type": "domaine",
+   "ancre": null,
+   "propositions": [
+    "merchandising-buying",
+    "merchandising-buying"
+   ],
+   "famille": "merchandising-buying",
+   "methode": "accord-etape-1"
+  },
+  {
+   "id": "907a4bce-be64-4380-aaef-24f11ca36abb",
+   "slug": "STOCK",
+   "label": "Stock & réassort",
+   "type": "domaine",
+   "ancre": null,
+   "propositions": [
+    "supply-chain-logistics",
+    "retail-operations"
+   ],
+   "famille": "retail-operations",
+   "methode": "accord-etape-2"
+  },
+  {
+   "id": "28f76c25-673d-4bc8-8e84-22e5c782414b",
+   "slug": "TRAFFIC_CONTENT",
+   "label": "Traffic & contenu",
+   "type": "domaine",
+   "ancre": null,
+   "propositions": [
+    "ecommerce-digital",
+    "ecommerce-digital"
+   ],
+   "famille": "ecommerce-digital",
+   "methode": "accord-etape-1"
+  },
+  {
+   "id": "jc_transport",
+   "slug": "TRANSPORT",
+   "label": "Transport",
+   "type": "domaine",
+   "ancre": null,
+   "propositions": [
+    "supply-chain-logistics",
+    "supply-chain-logistics"
+   ],
+   "famille": "supply-chain-logistics",
+   "methode": "accord-etape-1"
+  },
+  {
+   "id": "jc_ux_ui",
+   "slug": "UX_UI",
+   "label": "UX / UI",
+   "type": "domaine",
+   "ancre": null,
+   "propositions": [
+    "ecommerce-digital",
+    "ecommerce-digital"
+   ],
+   "famille": "ecommerce-digital",
+   "methode": "accord-etape-1"
+  }
+ ],
+ "correspondanceFamillesBackend": [
+  {
+   "slug": "BEAUTE_SOIN",
+   "label": "Beauté & soin",
+   "metiers": 10,
+   "principale": "beauty-services",
+   "nombre": {
+    "beauty-services": 8,
+    "beauty-advisor": 1,
+    "health-optical-services": 1
+   },
+   "population": {
+    "beauty-services": 704,
+    "beauty-advisor": 43,
+    "health-optical-services": 4
+   }
+  },
+  {
+   "slug": "BOUTIQUE_RESEAU",
+   "label": "Boutique & réseau",
+   "metiers": 18,
+   "principale": "retail-client-advisor",
+   "nombre": {
+    "art-culture": 1,
+    "wholesale-b2b": 1,
+    "retail-client-advisor": 4,
+    "retail-operations": 3,
+    "retail-store-management": 6,
+    "retail-area-management": 1,
+    "admin-facilities": 1,
+    "crm-clienteling": 1
+   },
+   "population": {
+    "art-culture": 22,
+    "wholesale-b2b": 66,
+    "retail-client-advisor": 7499,
+    "retail-operations": 207,
+    "retail-store-management": 2409,
+    "retail-area-management": 322,
+    "admin-facilities": 446,
+    "crm-clienteling": 7
+   }
+  },
+  {
+   "slug": "COMMERCIAL_WHOLESALE",
+   "label": "Commercial & wholesale",
+   "metiers": 14,
+   "principale": "wholesale-b2b",
+   "nombre": {
+    "wholesale-b2b": 13,
+    "supply-chain-logistics": 1
+   },
+   "population": {
+    "wholesale-b2b": 1448,
+    "supply-chain-logistics": 7
+   }
+  },
+  {
+   "slug": "CREATION_STUDIO",
+   "label": "Création & studio",
+   "metiers": 20,
+   "principale": "design-creation",
+   "nombre": {
+    "architecture-store-design": 2,
+    "design-creation": 11,
+    "mannequinat-agences": 2,
+    "strategy-management": 1,
+    "marketing-communication": 4
+   },
+   "population": {
+    "architecture-store-design": 228,
+    "design-creation": 2930,
+    "mannequinat-agences": 50,
+    "strategy-management": 18,
+    "marketing-communication": 158
+   }
+  },
+  {
+   "slug": "ECOMMERCE_DIGITAL",
+   "label": "E-commerce & digital",
+   "metiers": 15,
+   "principale": "ecommerce-digital",
+   "nombre": {
+    "it-data": 2,
+    "customer-service": 3,
+    "crm-clienteling": 1,
+    "ecommerce-digital": 8,
+    "marketing-communication": 1
+   },
+   "population": {
+    "it-data": 104,
+    "customer-service": 342,
+    "crm-clienteling": 90,
+    "ecommerce-digital": 1314,
+    "marketing-communication": 35
+   }
+  },
+  {
+   "slug": "FORMATION",
+   "label": "Formation & animation",
+   "metiers": 3,
+   "principale": "beauty-advisor",
+   "nombre": {
+    "beauty-advisor": 1,
+    "hr-talent": 2
+   },
+   "population": {
+    "beauty-advisor": 271,
+    "hr-talent": 89
+   }
+  },
+  {
+   "slug": "LOGISTIQUE_FLUX",
+   "label": "Supply chain & logistique",
+   "metiers": 12,
+   "principale": "supply-chain-logistics",
+   "nombre": {
+    "supply-chain-logistics": 10,
+    "retail-operations": 2
+   },
+   "population": {
+    "supply-chain-logistics": 552,
+    "retail-operations": 230
+   }
+  },
+  {
+   "slug": "MARKETING_COM",
+   "label": "Marketing & communication",
+   "metiers": 19,
+   "principale": "marketing-communication",
+   "nombre": {
+    "crm-clienteling": 1,
+    "ecommerce-digital": 1,
+    "marketing-communication": 17
+   },
+   "population": {
+    "crm-clienteling": 17,
+    "ecommerce-digital": 702,
+    "marketing-communication": 3343
+   }
+  },
+  {
+   "slug": "METIERS_ART",
+   "label": "Métiers d'art & production",
+   "metiers": 22,
+   "principale": "atelier-craft",
+   "nombre": {
+    "atelier-craft": 16,
+    "marketing-communication": 1,
+    "design-creation": 1,
+    "manufacturing-quality": 2,
+    "product-development-rd": 2
+   },
+   "population": {
+    "atelier-craft": 493,
+    "marketing-communication": 375,
+    "design-creation": 199,
+    "manufacturing-quality": 120,
+    "product-development-rd": 42
+   }
+  },
+  {
+   "slug": "PRODUIT_COLLECTION",
+   "label": "Produit & collection",
+   "metiers": 13,
+   "principale": "product-development-rd",
+   "nombre": {
+    "merchandising-buying": 5,
+    "product-development-rd": 5,
+    "design-creation": 1,
+    "atelier-craft": 2
+   },
+   "population": {
+    "merchandising-buying": 531,
+    "product-development-rd": 1090,
+    "design-creation": 21,
+    "atelier-craft": 921
+   }
+  },
+  {
+   "slug": "RD_INDUSTRIE_QUALITE",
+   "label": "R&D, industrie & qualité",
+   "metiers": 10,
+   "principale": "manufacturing-quality",
+   "nombre": {
+    "manufacturing-quality": 5,
+    "legal-compliance": 1,
+    "sustainability": 1,
+    "product-development-rd": 3
+   },
+   "population": {
+    "manufacturing-quality": 186,
+    "legal-compliance": 5,
+    "sustainability": 6,
+    "product-development-rd": 116
+   }
+  },
+  {
+   "slug": "SIEGE_SUPPORT",
+   "label": "Direction, RH & administration",
+   "metiers": 26,
+   "principale": "hr-talent",
+   "nombre": {
+    "finance": 5,
+    "admin-facilities": 6,
+    "legal-compliance": 4,
+    "sustainability": 1,
+    "strategy-management": 2,
+    "hr-talent": 4,
+    "wholesale-b2b": 1,
+    "marketing-communication": 2,
+    "retail-operations": 1
+   },
+   "population": {
+    "finance": 401,
+    "admin-facilities": 513,
+    "legal-compliance": 96,
+    "sustainability": 40,
+    "strategy-management": 126,
+    "hr-talent": 522,
+    "wholesale-b2b": 212,
+    "marketing-communication": 126,
+    "retail-operations": 156
+   }
+  },
+  {
+   "slug": "VISUAL_MERCH",
+   "label": "Visual merchandising",
+   "metiers": 5,
+   "principale": "visual-merchandising",
+   "nombre": {
+    "merchandising-buying": 1,
+    "visual-merchandising": 3,
+    "architecture-store-design": 1
+   },
+   "population": {
+    "merchandising-buying": 107,
+    "visual-merchandising": 536,
+    "architecture-store-design": 46
+   }
+  }
+ ]
+}
