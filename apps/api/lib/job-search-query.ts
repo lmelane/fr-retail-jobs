@@ -70,8 +70,12 @@ function predicat(dimension: Dimension, valeurs: readonly string[], plan: PlanRe
   }
   switch (dimension) {
     case 'metier':
+      // D-475 point 38 : une offre appartient au métier de son code ET aux métiers lus dans son intitulé (`titleRoles`,
+      // packages/db/occupation-title-roles.ts) ; sans aucun des deux, elle est « non classée ». La facette compte la même
+      // appartenance (`metiersDe`).
       return Prisma.sql`(${Prisma.join(valeurs.map((v) => v === 'unclassified'
-        ? Prisma.sql`b."occupationCode" IS NULL` : Prisma.sql`b."occupationCode" = ${v}`), ' OR ')})`;
+        ? Prisma.sql`(b."occupationCode" IS NULL AND cardinality(b."titleRoles") = 0)`
+        : Prisma.sql`(b."occupationCode" = ${v} OR b."titleRoles" @> ARRAY[${v}]::text[])`), ' OR ')})`;
     case 'secteur':
       return Prisma.sql`(${Prisma.join(valeurs.map((v) => v === 'unclassified'
         ? Prisma.sql`cardinality(b."sectorCodes") = 0` : Prisma.sql`b."sectorCodes" @> ARRAY[${v}]::text[]`), ' OR ')})`;
@@ -92,6 +96,10 @@ function predicat(dimension: Dimension, valeurs: readonly string[], plan: PlanRe
     }
   }
 }
+
+/** Les métiers d'une offre : son code et ses métiers lus, une fois chacun ; « unclassified » sans aucun. */
+const metiersDe = Prisma.sql`CASE WHEN b."occupationCode" IS NULL AND cardinality(b."titleRoles") = 0 THEN ARRAY['unclassified']
+  ELSE ARRAY(SELECT DISTINCT r FROM unnest(array_append(b."titleRoles", b."occupationCode")) r WHERE r IS NOT NULL) END`;
 
 /** `WHERE` composé des dimensions sélectionnées, sauf celle qu'on exclut. */
 function restriction(plan: PlanRecherche, sauf?: Dimension): Prisma.Sql {
@@ -189,13 +197,13 @@ export async function searchSummary(
 
   const [[summary], totalPerimetre] = await Promise.all([prisma.$queryRaw<Array<Omit<SearchSummary, 'ids' | 'suivant' | 'totalPerimetre'> & { page: Array<{ id: string; k: CleRecherche }> | null }>>(Prisma.sql`
     WITH base AS MATERIALIZED (
-      SELECT j.id, 1 AS origine, j."occupationCode", j."countryCode", lower(trim(j.city)) AS ville, j."employmentTerm", j."workTime",
+      SELECT j.id, 1 AS origine, j."occupationCode", j."titleRoles", j."countryCode", lower(trim(j.city)) AS ville, j."employmentTerm", j."workTime",
         j."programType", j."engagementType", j."postedAt", j."firstSeenAt", j.language, c.id AS "companyId", c.name AS maison, c."sectorCodes", c."parentGroup" AS groupe,
         ${search?.score ?? Prisma.sql`0`} AS score
       FROM "Job" j JOIN "Company" c ON c.id = j."companyId" ${aggregateIndex}
       WHERE ${Prisma.join(conditions, ' AND ')}
       UNION ALL
-      SELECT ${PREFIXE_DIRECT} || d.id, 0 AS origine, d."occupationCode", d."countryCode", lower(trim(d.city)), d."employmentTerm", d."workTime",
+      SELECT ${PREFIXE_DIRECT} || d.id, 0 AS origine, d."occupationCode", d."titleRoles", d."countryCode", lower(trim(d.city)), d."employmentTerm", d."workTime",
         d."programType", d."engagementType", d."postedAt", d."receivedAt", d.language, d."companyId", COALESCE(dc.name, d.company), d."sectorCodes", dc."parentGroup",
         ${search?.score ?? Prisma.sql`0`}
       FROM "DirectOffer" d LEFT JOIN "Company" dc ON dc.id = d."companyId" ${directIndex}
@@ -215,7 +223,9 @@ export async function searchSummary(
          FROM (SELECT * FROM cles ${apres} ORDER BY origine, nc, pri, ns, np, nf, id LIMIT ${pageSize + 1}) p) AS page,
       jsonb_build_object(
         'pays', ${facette(Prisma.sql`b."countryCode"`, plan, 'pays')},
-        'metier', ${facette(Prisma.sql`COALESCE(b."occupationCode", 'unclassified')`, plan, 'metier')},
+        'metier', (SELECT coalesce(jsonb_agg(jsonb_build_object('value', code, 'count', n) ORDER BY n DESC, code), '[]'::jsonb)
+          FROM (SELECT code, count(*)::int AS n FROM base b CROSS JOIN LATERAL unnest(${metiersDe}) code
+            WHERE ${restriction(plan, 'metier')} GROUP BY code) f),
         'secteur', (SELECT coalesce(jsonb_agg(jsonb_build_object('value', code, 'count', n) ORDER BY n DESC, code), '[]'::jsonb)
           FROM (SELECT code, count(*)::int AS n FROM base b CROSS JOIN LATERAL unnest(CASE WHEN cardinality(b."sectorCodes") = 0
             THEN ARRAY['unclassified'] ELSE b."sectorCodes" END) code WHERE ${restriction(plan, 'secteur')} GROUP BY code) f),

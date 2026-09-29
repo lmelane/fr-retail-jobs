@@ -297,7 +297,7 @@ car sans elle l'alerte ne part pas.
 
 ### 3.5 Recherche, suggestions, alertes
 
-- `metier=X` retiendra une offre si son code est X, **ou** si X figure dans ses `titleRoles` (2B-4, pas encore construit). Une clé remplacée
+- `metier=X` retient une offre si son code est X, **ou** si X figure dans ses `titleRoles` ; sans aucun des deux, elle est « non classée » (2B-4, `apps/api/lib/job-search-query.ts`, témoin dans `jobs-database.test.ts` ; construit, pas encore déployé). Aucune clé servie par l'agrégateur n'est remplacée par la v3 (les trois absorptions portent sur des clés du backend) : le suivi vers un successeur n'a pas de cas aujourd'hui. Reste à faire en 2B-4 : les rôles de l'index de recherche (`search-model.ts`) lus dans la colonne au lieu de tout alias. Une clé remplacée
   n'est plus classée, n'entre plus dans le vocabulaire, la garde ou les facettes ; une recherche, une préférence
   ou une alerte qui la porte est suivie vers son successeur **au moment de la requête**, sans réécrire son
   empreinte. La facette compte la même appartenance. Aucune dépendance à l'index. **Encadrement** (§32 a) :

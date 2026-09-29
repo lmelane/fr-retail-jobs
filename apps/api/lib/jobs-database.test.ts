@@ -119,6 +119,23 @@ describe.skipIf(!enabled)('search against a dedicated local database', () => {
     expect((await getJobs(fr({q:'Conseiller de vente Lyon'}))).total).toBe(0);
     await prisma.job.update({where:{id},data:{title:'Conseiller de vente',occupationCode:null,occupationStatus:'PENDING',occupationReleaseId:null}});
   });
+  it('finds and counts an offer under the occupation read in its title (D-475 point 38)',async()=>{
+    const id=`${prefix}001`,catalogue=await database.loadOccupationTaxonomy(prisma);
+    const vendeur=async()=>(await getJobs(fr({}, {metier: ['sales-advisor']}))).total;
+    const nonClasses=async()=>(await getJobs(fr({}, {metier: ['unclassified']}))).total;
+    const [avantVendeur,avantNonClasses]=[await vendeur(),await nonClasses()];
+    // Prémisse : l'offre n'a pas de code, le filtre par code seul ne la trouverait pas.
+    expect((await prisma.job.findUniqueOrThrow({where:{id}})).occupationCode).toBeNull();
+    await prisma.job.update({where:{id},data:{titleRoles:['sales-advisor'],titleRolesReleaseId:catalogue.manifest.id}});
+    try{
+      expect(await vendeur()).toBe(avantVendeur+1);
+      expect(await nonClasses()).toBe(avantNonClasses-1);
+      const r=await getJobs(fr({}, {metier: ['sales-advisor']}));
+      expect(facette(r,'metier').find(o=>o.value==='sales-advisor')?.count).toBe(avantVendeur+1);
+    }finally{
+      await prisma.job.update({where:{id},data:{titleRoles:[],titleRolesReleaseId:null}});
+    }
+  });
   it('returns the same offers when optional occupation presentation is unavailable',async()=>{
     const spy=vi.spyOn(database,'loadOccupationTaxonomy').mockRejectedValueOnce(new Error('Witness: occupation catalogue unavailable'));
     try{
