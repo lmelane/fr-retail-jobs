@@ -22,10 +22,26 @@ export function occupationManifestHash(manifest: unknown): string {
     .update(JSON.stringify(stable(manifest)))
     .digest("hex");
 }
+/** Le lot 2B de D-475 ajoute des colonnes que ce code lit et écrit (`titleRoles`, `occupationDomain`, table apprise) :
+ * sans ses migrations, Prisma échouerait en plein passage (P2022), après des écritures. On refuse avant, en nommant les
+ * migrations à appliquer ; vérifié une fois par processus, revérifié après un refus. */
+let schema2B: Promise<void> | undefined;
+function assertOccupationSchema(db: Database): Promise<void> {
+  schema2B ??= (async () => {
+    const [r] = await db.$queryRaw<{ ok: boolean }[]>`SELECT to_regclass('"OccupationLearnedState"') IS NOT NULL
+      AND EXISTS (SELECT 1 FROM information_schema.columns WHERE table_schema = current_schema() AND table_name = 'Job' AND column_name = 'titleRoles') AS ok`;
+    if (!r?.ok) throw new Error("OCCUPATION_SCHEMA_2B_MISSING: appliquer les migrations 20260929160000 et 20260929160100 avant ce code");
+  })().catch((e) => {
+    schema2B = undefined;
+    throw e;
+  });
+  return schema2B;
+}
 /** Load once per source run/backfill. Cache immutable releases, never cache the active pointer. */
 export async function loadOccupationTaxonomy(
   db: Database,
 ): Promise<CompiledOccupationTaxonomy> {
+  await assertOccupationSchema(db);
   const state = await db.occupationState.findUnique({
     where: { id: "active" },
     select: { releaseId: true },

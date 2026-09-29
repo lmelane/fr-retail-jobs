@@ -73,6 +73,9 @@ async function replay(tx: Prisma.TransactionClient, raw: unknown) {
         occupationEvidence: true,
         occupationReleaseId: true,
         seniority: true,
+        // occupationState() les compare (OCCUPATION_FIELDS) : sans eux, chaque offre compterait comme changée.
+        titleRoles: true,
+        titleRolesReleaseId: true,
       },
     });
     if (!rows.length) break;
