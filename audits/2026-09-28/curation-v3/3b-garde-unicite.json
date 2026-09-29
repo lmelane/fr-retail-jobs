@@ -1,0 +1,193 @@
+{
+ "calculeLe": "2026-09-29T07:35:11.928Z",
+ "juges": {
+  "j1": "gemini-3.6-flash",
+  "j2": "gemini-3-flash-preview"
+ },
+ "bilan": {
+  "metiersNouveauxAvant": 9,
+  "doublonsEvites": 3,
+  "indetermines": 0,
+  "metiersNouveauxApres": 6,
+  "variantesAjoutees": 6
+ },
+ "doublonsEvites": [
+  {
+   "groupe": "Retoucheur / Alterations Specialist",
+   "cle": "alterations-specialist",
+   "existant": "seamster",
+   "offres": 19,
+   "titres": [
+    "alterations associate"
+   ]
+  },
+  {
+   "groupe": "Agent de prévention des pertes / Loss Prevention Associate",
+   "cle": "loss-prevention-associate",
+   "existant": "backend:AGENT_DE_SECURITE",
+   "offres": 27,
+   "titres": [
+    "retail stores - risk associate",
+    "partenaire, protection des actifs",
+    "retail stores- risk associate"
+   ]
+  },
+  {
+   "groupe": "Conseiller de vente / Sales Associate",
+   "cle": "sales-associate",
+   "existant": "sales-advisor",
+   "offres": 19,
+   "titres": [
+    "athlete iii",
+    "product guides 프러덕트가이드"
+   ]
+  }
+ ],
+ "indetermines": [],
+ "nouveauxMetiers": [
+  {
+   "cle": "retail-sales-lead",
+   "fr": "Responsable des ventes en boutique",
+   "en": "Retail Sales Lead",
+   "famille": "retail-store-management",
+   "ancre": "http://data.europa.eu/esco/occupation/ff3a164d-4045-4511-a472-49093dabf9fc",
+   "offres": 294,
+   "employeurs": 7,
+   "titres": [
+    "sales lead"
+   ],
+   "procheExistant": {
+    "cle": "backend:COMMERCIAL",
+    "similarite": 0.888
+   }
+  },
+  {
+   "cle": "keyholder",
+   "fr": "Responsable d'ouverture et de fermeture",
+   "en": "Keyholder",
+   "famille": "retail-store-management",
+   "ancre": "http://data.europa.eu/esco/occupation/bdfb48e0-79dc-4b63-8470-db2e03b37326",
+   "offres": 521,
+   "employeurs": 22,
+   "titres": [
+    "retail key holder",
+    "key holder",
+    "anthropologie key holder",
+    "free people key holder",
+    "fp movement key holder",
+    "employé responsable ouverture / fermeture (f/h)",
+    "keyholder",
+    "détentrice de clé",
+    "part-time key holder",
+    "terrain key holder - decor"
+   ],
+   "procheExistant": {
+    "cle": "stock-associate",
+    "similarite": 0.883
+   }
+  },
+  {
+   "cle": "retail-operations-associate",
+   "fr": "Assistant opérations retail",
+   "en": "Retail Operations Associate",
+   "famille": "retail-operations",
+   "ancre": "http://data.europa.eu/esco/occupation/b2e81332-0972-4e0f-9a4d-1d15c9c9513b",
+   "offres": 18,
+   "employeurs": 10,
+   "titres": [
+    "operations associate",
+    "retail operations associate (full-time)"
+   ],
+   "procheExistant": {
+    "cle": "backend:ASSISTANT_OPERATIONS_CLIENT",
+    "similarite": 0.888
+   }
+  },
+  {
+   "cle": "assistant-visual-merchandising-manager",
+   "fr": "Adjoint au responsable visual merchandising",
+   "en": "Assistant Visual Merchandising Manager",
+   "famille": "visual-merchandising",
+   "ancre": "http://data.europa.eu/esco/occupation/35eb0aa6-b40d-449d-9390-719be8912277",
+   "offres": 19,
+   "employeurs": 4,
+   "titres": [
+    "free people assistant visual manager",
+    "fp movement assistant visual manager",
+    "assistant manager - visual merchandising"
+   ],
+   "procheExistant": {
+    "cle": "backend:ASSISTANT_DESIGNER",
+    "similarite": 0.851
+   }
+  },
+  {
+   "cle": "equipment-operator",
+   "fr": "Conducteur d'engins de manutention",
+   "en": "Equipment Operator",
+   "famille": "supply-chain-logistics",
+   "ancre": null,
+   "offres": 18,
+   "employeurs": 3,
+   "titres": [
+    "equipment operator 1 - full time",
+    "equipment operator",
+    "equipment operator - 2nd shift - full time"
+   ],
+   "procheExistant": {
+    "cle": "backend:OPERATEUR_DE_PRODUCTION",
+    "similarite": 0.826
+   }
+  },
+  {
+   "cle": "maintenance-technician",
+   "fr": "Technicien de maintenance",
+   "en": "Maintenance Technician",
+   "famille": "admin-facilities",
+   "ancre": null,
+   "offres": 13,
+   "employeurs": 10,
+   "titres": [
+    "technicien de maintenance (h/f)",
+    "maintenance technician",
+    "technicien de maintenance"
+   ],
+   "procheExistant": {
+    "cle": "quality-technician",
+    "similarite": 0.895
+   }
+  }
+ ],
+ "variantesAjoutees": [
+  {
+   "intitule": "alterations associate",
+   "concept": "seamster",
+   "famille": "atelier-craft"
+  },
+  {
+   "intitule": "retail stores - risk associate",
+   "concept": "backend:AGENT_DE_SECURITE",
+   "famille": "admin-facilities"
+  },
+  {
+   "intitule": "partenaire, protection des actifs",
+   "concept": "backend:AGENT_DE_SECURITE",
+   "famille": "admin-facilities"
+  },
+  {
+   "intitule": "retail stores- risk associate",
+   "concept": "backend:AGENT_DE_SECURITE",
+   "famille": "admin-facilities"
+  },
+  {
+   "intitule": "athlete iii",
+   "concept": "sales-advisor",
+   "famille": "retail-client-advisor"
+  },
+  {
+   "intitule": "product guides 프러덕트가이드",
+   "concept": "sales-advisor",
+   "famille": "retail-client-advisor"
+  }
+ ]
+}

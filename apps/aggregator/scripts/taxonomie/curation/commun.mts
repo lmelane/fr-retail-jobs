@@ -40,7 +40,7 @@ export const texteBackend = (b: any) => [b.label, b.labelEn, ...(b.aliases ?? []
 export type Concept = { cle: string; fr: string; en: string; famille: string; variantes: string[]; texte: string };
 
 /**
- * Les métiers de la v3 à l'issue des étapes 1, 1b et 2 (et 3 si `avecOffres`) : les métiers servis avec leurs variantes
+ * Les métiers de la v3 à l'issue des étapes 1, 1b et 2 (et 3-3b si `avecOffres`) : les métiers servis avec leurs variantes
  * venues du backend, les métiers nouveaux du backend avec les doublons qu'ils absorbent, et les métiers nouveaux
  * venus des offres. `texte` est la clé du cache de vecteurs.
  */
@@ -62,8 +62,9 @@ export function conceptsV3({ avecOffres }: { avecOffres: boolean }): Concept[] {
     }),
   ];
   if (!avecOffres) return concepts;
-  const etape3 = lireEtape('3-intitules-offres.json');
-  return [...concepts, ...etape3.nouveauxMetiers.map((m: any) => ({ cle: `offres:${m.cle}`, fr: m.fr, en: m.en, famille: m.famille,
+  // Les métiers nouveaux des offres, après la garde d'unicité (étape 3b).
+  const etape3b = lireEtape('3b-garde-unicite.json');
+  return [...concepts, ...etape3b.nouveauxMetiers.map((m: any) => ({ cle: `offres:${m.cle}`, fr: m.fr, en: m.en, famille: m.famille,
     texte: `${m.fr} / ${m.en} ; ${m.titres.slice(0, 8).join(', ')}`, variantes: m.titres }))];
 }
 

@@ -9,8 +9,10 @@
  *    (`catwalks-backend/src/lib/verify-job-mapping.ts`) : deux « même métier » et confiance minimale 0,9, fail-closed.
  * La clé vient de l'environnement (`GEMINI_API_KEY`), jamais affichée.
  */
+import { createHash } from 'node:crypto';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const CLE = process.env.GEMINI_API_KEY;
 if (!CLE) throw new Error('GEMINI_API_KEY absente');
@@ -18,6 +20,8 @@ const API = 'https://generativelanguage.googleapis.com/v1beta/models';
 export const MODELE_CHOIX = 'gemini-3.6-flash';
 export const JUGES = { j1: 'gemini-3.6-flash', j2: 'gemini-3-flash-preview' } as const;
 export const SEUIL_CONSENSUS = 0.9;
+/** Mémoire des réponses valides, hors dépôt (dossier `scratchpad/`, ignoré par git). */
+const MEMOIRE = fileURLToPath(new URL('../../../../../scratchpad/memoire-modeles/', import.meta.url));
 /** Lots envoyés en même temps par `repondre`. */
 const PARALLELE = 4;
 
@@ -58,18 +62,26 @@ export class ReponseIncomplete extends Error {}
  * dont le raisonnement sur 20 paires dépassait le plafond de sortie).
  */
 export async function generer(modele: string, consigne: string, texte: string, schemaElement?: unknown): Promise<any[]> {
-  const r = await appeler(`${API}/${modele}:generateContent`, {
-    contents: [{ parts: [{ text: `${consigne}\n\n${texte}` }] }],
+  const corps = { contents: [{ parts: [{ text: `${consigne}\n\n${texte}` }] }],
     generationConfig: { temperature: 0, responseMimeType: 'application/json', maxOutputTokens: 32768,
-      ...(schemaElement ? { responseSchema: { type: 'ARRAY', items: schemaElement } } : {}) },
-  });
+      ...(schemaElement ? { responseSchema: { type: 'ARRAY', items: schemaElement } } : {}) } };
+  // Mémoire des réponses : une relance rejoue à l'identique ce qui n'a pas changé (les modèles ne sont pas
+  // reproductibles à la lettre d'un appel à l'autre, mesuré le 28/09/2026 : une fusion sur 65).
+  const cle = createHash('sha256').update(JSON.stringify([modele, corps])).digest('hex');
+  const fichier = `${MEMOIRE}${cle}.json`;
+  if (existsSync(fichier)) return JSON.parse(readFileSync(fichier, 'utf8'));
+  const r = await appeler(`${API}/${modele}:generateContent`, corps);
   const fin = r.candidates?.[0]?.finishReason;
   if (fin !== 'STOP') throw new ReponseIncomplete(`${modele} : fin « ${fin ?? 'absente'} »`);
   const brut = (r.candidates[0].content?.parts ?? []).map((p: { text?: string }) => p.text ?? '').join('');
   const bloc = brut.match(/\[[\s\S]*\]/);
   try {
     const tableau = bloc ? JSON.parse(bloc[0]) : null;
-    if (Array.isArray(tableau)) return tableau;
+    if (Array.isArray(tableau)) {
+      mkdirSync(MEMOIRE, { recursive: true });
+      writeFileSync(fichier, JSON.stringify(tableau));
+      return tableau;
+    }
   } catch { /* signalé ci-dessous */ }
   throw new ReponseIncomplete(`${modele} : réponse illisible (${brut.slice(0, 80)})`);
 }
@@ -83,11 +95,19 @@ export async function repondre<T>(modele: string, consigne: string, elements: T[
   rendu: (lot: T[]) => string, schemaElement: unknown, valide: (r: any) => boolean = () => true): Promise<any[]> {
   const sortie: any[] = new Array(elements.length);
   let coupes = 0;
+  // Mémoire par élément : la réponse d'un élément ne dépend pas de la place qu'il occupe dans un lot, une relance
+  // n'envoie que les éléments jamais vus (la mémoire par lot ratait tout dès qu'un élément de la liste changeait).
+  const cleElement = (k: number) => createHash('sha256').update(JSON.stringify([modele, consigne, rendu([elements[k]]), schemaElement ?? null])).digest('hex');
+  const fichierElement = (k: number) => `${MEMOIRE}element-${cleElement(k)}.json`;
+  elements.forEach((_, k) => { if (existsSync(fichierElement(k))) sortie[k] = JSON.parse(readFileSync(fichierElement(k), 'utf8')); });
   async function lot(indices: number[]): Promise<void> {
     try {
       const reps = await generer(modele, consigne, rendu(indices.map((k) => elements[k])), schemaElement);
-      for (const r of reps) if (Number.isInteger(r?.i) && r.i >= 0 && r.i < indices.length && sortie[indices[r.i]] === undefined && valide(r))
+      for (const r of reps) if (Number.isInteger(r?.i) && r.i >= 0 && r.i < indices.length && sortie[indices[r.i]] === undefined && valide(r)) {
         sortie[indices[r.i]] = r;
+        mkdirSync(MEMOIRE, { recursive: true });
+        writeFileSync(fichierElement(indices[r.i]), JSON.stringify(r));
+      }
     } catch (e) {
       if (!(e instanceof ReponseIncomplete)) throw e;
       coupes++;
@@ -101,13 +121,14 @@ export async function repondre<T>(modele: string, consigne: string, elements: T[
     }
   }
   // Les lots partent `PARALLELE` par `PARALLELE` : le débit est borné par l'API (429 → relance), pas par la file.
-  const departs = Array.from({ length: Math.ceil(elements.length / taille) }, (_, n) => n * taille);
-  let suivant = 0, faits = 0;
-  await Promise.all(Array.from({ length: Math.min(PARALLELE, departs.length) }, async () => {
-    while (suivant < departs.length) {
-      const d = departs[suivant++];
-      await lot(Array.from({ length: Math.min(taille, elements.length - d) }, (_, j) => d + j));
-      faits += Math.min(taille, elements.length - d);
+  const aDemander = elements.map((_, k) => k).filter((k) => sortie[k] === undefined);
+  const lots = Array.from({ length: Math.ceil(aDemander.length / taille) }, (_, n) => aDemander.slice(n * taille, (n + 1) * taille));
+  let suivant = 0, faits = elements.length - aDemander.length;
+  await Promise.all(Array.from({ length: Math.min(PARALLELE, lots.length) }, async () => {
+    while (suivant < lots.length) {
+      const indices = lots[suivant++];
+      await lot(indices);
+      faits += indices.length;
       process.stderr.write(`\r${modele} ${faits} / ${elements.length}`);
     }
   }));
@@ -175,4 +196,29 @@ Regroupe ceux qui désignent le MÊME métier (même fonction, même niveau) : i
   const verdicts = await consensus(aJuger.map(({ e, g }) => ({ intitule: e.intitule, contexte: e.contexte, metier: `${nom.get(g.cle)!.fr} / ${nom.get(g.cle)!.en}` })));
   const parElement = new Map(aJuger.map(({ e }, n) => [e, verdicts[n]]));
   return elements.map((e, k) => (groupes[k] ? { cle: groupes[k].cle, ...nom.get(groupes[k].cle)!, verdict: parElement.get(e)! } : null));
+}
+
+type Existant = { cle: string; fr: string; en: string; variantes: string[]; texte: string };
+export type Rapprochement = { existant: string | null; indetermine: boolean };
+
+/**
+ * Garde d'unicité d'un métier nouveau (plan §3.1 : aucune variante ne désigne deux concepts) : chaque groupe est jugé par
+ * les deux juges contre ses 3 métiers existants les plus proches. Confirmé identique à l'un d'eux (le plus proche des
+ * confirmés), ses intitulés en deviennent des variantes au lieu de fonder un doublon (première passe du 29/09/2026 :
+ * « Conseiller de vente » et « Retoucheur » recréés à côté de l'existant). Un verdict manquant sans confirmation rend
+ * le groupe indéterminé : on ne crée pas de métier sur un doute.
+ */
+export async function rapprocherDesExistants(groupes: { cle: string; fr: string; en: string; titres: string[] }[],
+  existants: Existant[], cheminCache: string): Promise<Map<string, Rapprochement>> {
+  const nom = (g: { fr: string; en: string }) => `${g.fr} / ${g.en}`;
+  const vec = await vecteurs([...existants.map((c) => c.texte), ...groupes.map(nom)], cheminCache);
+  const paires = groupes.flatMap((g) => existants.map((c) => ({ g, c, s: cosinus(vec.get(nom(g))!, vec.get(c.texte)!) }))
+    .sort((a, b) => b.s - a.s).slice(0, 3));
+  const verdicts = await consensus(paires.map(({ g, c }) => ({ intitule: nom(g), contexte: `intitulés d'offres : ${g.titres.slice(0, 5).join(', ')}`,
+    metier: `${c.fr} / ${c.en}`, alias: c.variantes })));
+  return new Map(groupes.map((g) => {
+    const siens = paires.map((p, n) => ({ ...p, v: verdicts[n] })).filter((p) => p.g === g);
+    const confirme = siens.find((p) => p.v === 'confirme');
+    return [g.cle, { existant: confirme?.c.cle ?? null, indetermine: !confirme && siens.some((p) => p.v === 'indetermine') }];
+  }));
 }

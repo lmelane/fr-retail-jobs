@@ -10,11 +10,11 @@
  *  2. les deux modèles disent, chacun de son côté, si le poste ENCADRE une équipe de ce métier ; encadrement = accord
  *     des deux. Le poste rejoint alors un métier de la v3 (proposition de l'un ou l'autre, consensus des deux juges),
  *     ou un métier nouveau d'encadrement (regroupement, consensus, seuils de volume) ; sans métier, il garde sa famille ;
- *  3. les exclusions : pour chaque métier, les mots d'encadrement de ses intitulés d'encadrement sont ajoutés à
- *     l'exclusion de ses règles, puis TOUS les intitulés du corpus sont reclassés par le moteur réel
- *     (`compileOccupationManifest`) avant et après : un intitulé qui perdrait son métier sans avoir été jugé
- *     d'encadrement est un dégât collatéral ; le mot est alors remplacé par ses expressions exactes (« lead
- *     cashier »), et ce qui résiste encore est écrit dans le bilan, jamais appliqué.
+ *  3. les exclusions, décidées une fois par (métier, mot d'encadrement) : un mot dont tous les intitulés jugés sont
+ *     d'encadrement est exclu des règles du métier ; un mot disputé est tranché une fois par les deux modèles, et
+ *     exclu seulement sur leur accord (sinon le classement actuel reste). Jamais d'exclusion sur mesure (lieu,
+ *     enseigne). TOUS les intitulés du corpus sont ensuite reclassés par le moteur réel (`compileOccupationManifest`)
+ *     avant et après ; les intitulés dont le verdict isolé diffère de la décision de leur mot sont écrits au bilan.
  *
  * Classement sur le seul intitulé (l'export ne porte pas le service) : les règles de contexte restent comparées à
  * elles-mêmes, la preview de l'étape 6 repasse tout avec le service.
@@ -26,13 +26,13 @@
 import { writeFileSync } from 'node:fs';
 import { compileOccupationManifest, normalizeOccupationTitle } from '../../../../../packages/db/occupation-engine.ts';
 import { CACHE_VECTEURS, conceptsV3, contexte, DOSSIER_SORTIE, lireIntitulesOffres, MIN_EMPLOYEURS, MIN_OFFRES_METIER, servie } from './commun.mts';
-import { consensus, cosinus, JUGES, MODELE_CHOIX, regrouper, repondre, vecteurs } from './ia.mts';
+import { consensus, cosinus, JUGES, MODELE_CHOIX, rapprocherDesExistants, regrouper, repondre, vecteurs } from './ia.mts';
 
 /** Mots d'encadrement, toutes langues du corpus (filtre seulement). Forme normalisée du moteur : majuscules sans accents. */
 const MOTS = ['RESPONSABLE', 'RESPONSABILE', 'MANAGER', 'MANAGERIN', 'GERENTE', 'LEITER', 'LEITERIN', 'DIRECTEUR', 'DIRECTRICE',
   'DIRECTOR', 'DIRECTORA', 'DIRETTORE', 'DIRETTRICE', 'HEAD', 'SUPERVISOR', 'SUPERVISEUR', 'SUPERVISEUSE', 'SUPERVISORA', 'LEAD',
   'LEADER', 'CHEF', 'CHEFFE', 'CAPO', 'ENCARGADO', 'ENCARGADA', 'JEFE', 'JEFA', 'COORDINATOR', 'COORDINATEUR', 'COORDINATRICE',
-  'COORDINADOR', 'COORDINADORA', 'COORDINATORE', 'KEYHOLDER', 'KEY HOLDER', 'PREMIER', 'PREMIERE', '店長', '主任', '经理', '主管', '매니저', '팀장'];
+  'COORDINADOR', 'COORDINADORA', 'COORDINATORE', 'KEYHOLDER', 'KEY HOLDER', 'PREMIER VENDEUR', 'PREMIERE VENDEUSE', '店長', '主任', '经理', '主管', '매니저', '팀장'];
 const EXEMPLES_CEO = ['Responsable vendeur H/F', 'Team Leader Client Advisor'];
 
 const { intitules, sha256 } = lireIntitulesOffres();
@@ -83,9 +83,20 @@ const aGrouper = numeros.filter((k) => encadrement[k] && !cible.has(k));
 const groupes = await regrouper(aGrouper.map((k) => ({ intitule: candidats[k].intitule, fr: choix[k].libelle_fr, en: choix[k].libelle_en, contexte: candidats[k].contexte })));
 const membres = new Map<string, number[]>();
 aGrouper.forEach((k, n) => { const g = groupes[n]; if (g?.verdict === 'confirme') membres.set(g.cle, [...(membres.get(g.cle) ?? []), k]); });
+// Garde d'unicité : un poste d'encadrement identique à un métier existant le rejoint.
+const nomGroupe = (ks: number[]) => groupes[aGrouper.indexOf(ks[0])]!;
+const rapprochements = await rapprocherDesExistants([...membres].map(([cle, ks]) => ({ cle, fr: nomGroupe(ks).fr, en: nomGroupe(ks).en,
+  titres: ks.map((k) => candidats[k].intitule) })), concepts, CACHE_VECTEURS);
+const doublonsEvites: { groupe: string; existant: string }[] = [], groupesIndetermines: string[] = [];
+for (const [cle, ks] of [...membres]) {
+  const r = rapprochements.get(cle)!;
+  if (r.existant) { for (const k of ks) cible.set(k, r.existant); doublonsEvites.push({ groupe: `${nomGroupe(ks).fr} / ${nomGroupe(ks).en}`, existant: r.existant }); }
+  if (r.existant || r.indetermine) membres.delete(cle);
+  if (r.indetermine) groupesIndetermines.push(cle);
+}
 const nouveauxMetiers: any[] = [], enAttente: any[] = [];
 for (const [cle, ks] of membres) {
-  const g = groupes[aGrouper.indexOf(ks[0])]!;
+  const g = nomGroupe(ks);
   const offres = ks.reduce((n, k) => n + candidats[k].offres, 0);
   const employeurs = new Set(ks.flatMap((k) => candidats[k].employeursIds)).size;
   const metier = { cle, fr: g.fr, en: g.en, famille: parCle.get(candidats[ks[0]].code)?.famille ?? null, encadre: [...new Set(ks.map((k) => candidats[k].code))],
@@ -94,7 +105,9 @@ for (const [cle, ks] of membres) {
   else enAttente.push(metier);
 }
 
-// 3. Exclusions, éprouvées par le moteur réel sur tout le corpus.
+// 3. Exclusions, décidées UNE fois par (métier, mot) puis éprouvées par le moteur réel sur tout le corpus. Juger chaque
+// intitulé isolément donnait des verdicts contraires pour le même rôle (« premier vendeur h/f » oui, « premier vendeur
+// f/h (cdi 35h) » non, passe du 29/09/2026) et poussait à des exclusions sur mesure (« KEYHOLDER HOLT RENFREW »).
 const encadrants = numeros.filter((k) => encadrement[k]);
 const nonEncadrants = new Set(numeros.filter((k) => encadrement[k] === false).map((k) => candidats[k].intitule));
 const avecExclusions = (ajouts: Map<string, string[]>) => {
@@ -109,34 +122,30 @@ const corpus = [...intitules.map((x) => x.intitule), ...EXEMPLES_CEO];
 const avant = new Map(corpus.map((t) => [t, v1.classify(t).occupationCode]));
 const deplaces = (moteur: ReturnType<typeof compileOccupationManifest>) =>
   corpus.filter((t) => avant.get(t) && moteur.classify(t).occupationCode !== avant.get(t));
-// Premier essai : les mots seuls ; un mot qui déplace un intitulé non jugé d'encadrement est remplacé par ses expressions.
+
+type Unite = { code: string; mot: string; ks: number[] };
+const unites = new Map<string, Unite>();
+for (const k of numeros) for (const mot of candidats[k].mots) {
+  const u = unites.get(`${candidats[k].code}|${mot}`) ?? { code: candidats[k].code, mot, ks: [] };
+  u.ks.push(k);
+  unites.set(`${candidats[k].code}|${mot}`, u);
+}
+const concernees = [...unites.values()].filter((u) => u.ks.some((k) => encadrement[k]));
+const mixtes = concernees.filter((u) => u.ks.some((k) => encadrement[k] === false));
+const CONSIGNE_MOT = `Tu construis la taxonomie des métiers de Catwalks (luxe, mode, beauté, retail, sièges des Maisons, 41 pays).
+Chaque élément est un mot ou une expression relevé dans des intitulés d'offres rangés aujourd'hui dans le MÉTIER indiqué. Dis dans "encadrement" si, dans ces intitulés, ce mot désigne un poste qui ENCADRE, supervise ou dirige une équipe de ce métier (un autre métier : « Responsable vendeur » ou « Team Leader Client Advisor » ne sont pas « Vendeur »), ou le métier lui-même, quel que soit son niveau d'expérience. Une réponse vaut pour tous les intitulés qui portent ce mot dans ce métier.`;
+const SCHEMA_MOT = { type: 'OBJECT', properties: { i: { type: 'INTEGER' }, encadrement: { type: 'BOOLEAN' } }, required: ['i', 'encadrement'] };
+const renduMot = (lot: Unite[]) => lot.map((u, j) => `[${j}] « ${u.mot.toLowerCase()} » — MÉTIER : ${parCle.get(u.code)?.fr ?? u.code} — intitulés : ${u.ks.slice(0, 6).map((k) => candidats[k].intitule).join(' · ')}`).join('\n');
+const [m1, m2] = [await repondre(MODELE_CHOIX, CONSIGNE_MOT, mixtes, 20, renduMot, SCHEMA_MOT), await repondre(JUGES.j2, CONSIGNE_MOT, mixtes, 20, renduMot, SCHEMA_MOT)];
+const motsSansAvis = mixtes.filter((_, n) => !m1[n] || !m2[n]).map((u) => `${u.code}|${u.mot}`);
+// Mot unanime → exclu ; mot disputé → exclu seulement sur l'accord des deux modèles, sinon le classement actuel reste.
+const decisions = [...concernees.filter((u) => !mixtes.includes(u)).map((u) => ({ ...u, exclu: true, par: 'unanime' })),
+  ...mixtes.map((u, n) => ({ ...u, exclu: !!(m1[n]?.encadrement && m2[n]?.encadrement), par: 'mot' }))];
 const ajouts = new Map<string, string[]>();
-for (const k of encadrants) ajouts.set(candidats[k].code, [...new Set([...(ajouts.get(candidats[k].code) ?? []), ...candidats[k].mots])]);
-const estEncadrant = new Set(encadrants.map((k) => candidats[k].intitule));
-const collateraux = (moteur: ReturnType<typeof compileOccupationManifest>) => deplaces(moteur).filter((t) => !estEncadrant.has(t));
-let collat = collateraux(avecExclusions(ajouts));
-if (collat.length) {
-  const expressions = (k: number, mot: string) => {
-    const t = normal(candidats[k].intitule).trim().split(' ');
-    const i = t.indexOf(mot.split(' ')[0]);
-    return [t.slice(Math.max(0, i - 1), i + 2).join(' '), t.slice(i, i + 3).join(' ')].filter((e) => e.includes(' '));
-  };
-  for (const [code, mots] of ajouts) {
-    const fautifs = mots.filter((m) => collat.some((t) => avant.get(t) === code && motsDe(t).includes(m)));
-    if (!fautifs.length) continue;
-    const precis = encadrants.filter((k) => candidats[k].code === code).flatMap((k) => fautifs.filter((m) => candidats[k].mots.includes(m)).flatMap((m) => expressions(k, m)));
-    ajouts.set(code, [...new Set([...mots.filter((m) => !fautifs.includes(m)), ...precis])]);
-  }
-  collat = collateraux(avecExclusions(ajouts));
-}
-// Ce qui déplace encore un intitulé non jugé d'encadrement n'est pas appliqué : on retire l'expression fautive.
-const collaterauxEcartes = [...collat];
-for (const [code, mots] of ajouts) {
-  const garde = mots.filter((m) => !collat.some((t) => avant.get(t) === code && normal(t).includes(` ${m} `)));
-  ajouts.set(code, garde);
-}
-collat = collateraux(avecExclusions(ajouts));
+for (const d of decisions) if (d.exclu) ajouts.set(d.code, [...(ajouts.get(d.code) ?? []), d.mot]);
 const final = avecExclusions(ajouts);
+// Transparence : les intitulés dont le verdict isolé diffère de la décision prise pour leur mot.
+const deplacesNonEncadrants = deplaces(final).filter((t) => nonEncadrants.has(t));
 const encadrantsNonDeplaces = encadrants.filter((k) => final.classify(candidats[k].intitule).occupationCode === candidats[k].code).map((k) => candidats[k].intitule);
 
 const exemples = EXEMPLES_CEO.map((e) => ({ intitule: e, avant: v1.classify(e).occupationCode, apres: final.classify(e).occupationCode }));
@@ -144,15 +153,17 @@ const offresDe = (titres: string[]) => { const s = new Set(titres); return intit
 const bilan = { export: { sha256 }, candidats: candidats.length, sansDecision: encadrement.filter((e) => e === null).length,
   encadrement: encadrants.length, pasEncadrement: nonEncadrants.size, offresEncadrement: offresDe(encadrants.map((k) => candidats[k].intitule)),
   versMetierV3: [...cible.values()].filter((c) => !c.startsWith('encadrement:')).length, versMetierNouveau: [...cible.values()].filter((c) => c.startsWith('encadrement:')).length,
-  sansMetier: encadrants.filter((k) => !cible.has(k)).length, nouveauxMetiers: nouveauxMetiers.length, enAttente: enAttente.length,
-  exclusions: Object.fromEntries(ajouts), collaterauxEcartes, collaterauxRestants: collat, encadrantsNonDeplaces, exemplesCeo: exemples };
+  sansMetier: encadrants.filter((k) => !cible.has(k)).length, nouveauxMetiers: nouveauxMetiers.length, enAttente: enAttente.length, doublonsEvites, groupesIndetermines,
+  motsDecides: decisions.map(({ ks, ...d }) => ({ ...d, intitules: ks.length })), motsSansAvis, exclusions: Object.fromEntries(ajouts),
+  deplacesNonEncadrants, encadrantsNonDeplaces, exemplesCeo: exemples };
 writeFileSync(`${DOSSIER_SORTIE}4-encadrement.json`, JSON.stringify({ calculeLe: new Date().toISOString(), modeles: { choix: MODELE_CHOIX, ...JUGES }, bilan,
   nouveauxMetiers, enAttente,
   intitules: numeros.map((k) => ({ ...candidats[k], employeursIds: undefined, encadrement: encadrement[k], cible: cible.get(k) ?? null,
     preuve: { choix: choix[k] ?? null, second: second[k] ?? null } })) }, null, 1));
 console.log(JSON.stringify({ ...bilan, exclusions: undefined }, null, 1));
 console.log('exclusions :', JSON.stringify(Object.fromEntries(ajouts)));
-const echecs = [bilan.sansDecision && `${bilan.sansDecision} candidat(s) sans décision`, collat.length && `${collat.length} dégât(s) collatéral(aux)`,
-  encadrantsNonDeplaces.length && `${encadrantsNonDeplaces.length} poste(s) d'encadrement encore classé(s) dans le métier encadré`,
+const echecs = [bilan.sansDecision && `${bilan.sansDecision} candidat(s) sans décision`,
+  groupesIndetermines.length && `${groupesIndetermines.length} groupe(s) sans verdict d'unicité`,
+  motsSansAvis.length && `${motsSansAvis.length} mot(s) sans avis des deux modèles`,
   exemples.some((e) => e.apres === e.avant && e.avant) && 'un exemple du CEO reste dans le métier encadré'].filter(Boolean);
 if (echecs.length) { console.error(`ÉTAPE INCOMPLÈTE : ${echecs.join(' ; ')}`); process.exitCode = 1; }

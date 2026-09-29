@@ -15,7 +15,8 @@
  *    les deux modèles s'accordent (D-475 §32 c). C'est aussi l'issue sans accord : on ne crée rien sur un doute ;
  *  - « non_metier » (R-66) : sur l'accord des deux.
  * Les « nouveau » sont regroupés en métiers (un modèle propose le regroupement et la forme courte du libellé, D-475
- * §31 c), puis chaque rattachement d'un intitulé à son métier passe au consensus des deux juges. Un métier nouveau
+ * §31 c), puis chaque rattachement d'un intitulé à son métier passe au consensus des deux juges (la garde d'unicité
+ * contre les métiers existants est l'étape 3b). Un métier nouveau
  * n'entre dans la v3 que s'il porte au moins `MIN_OFFRES_METIER` offres venues d'au moins `MIN_EMPLOYEURS`
  * employeurs distincts ; sinon ses intitulés restent « vague » et il est listé en attente de volume.
  *

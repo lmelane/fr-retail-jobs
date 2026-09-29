@@ -1,0 +1,4584 @@
+{
+ "calculeLe": "2026-09-29T08:01:46.475Z",
+ "modeles": {
+  "choix": "gemini-3.6-flash",
+  "j1": "gemini-3.6-flash",
+  "j2": "gemini-3-flash-preview"
+ },
+ "bilan": {
+  "export": {
+   "sha256": "03d35c499b3f60784fc39d63c71b99d92a60e7cc44b8d7a227a354411fd4d4e1"
+  },
+  "candidats": 154,
+  "sansDecision": 0,
+  "encadrement": 92,
+  "pasEncadrement": 62,
+  "offresEncadrement": 675,
+  "versMetierV3": 59,
+  "versMetierNouveau": 5,
+  "sansMetier": 28,
+  "nouveauxMetiers": 1,
+  "enAttente": 6,
+  "doublonsEvites": [
+   {
+    "groupe": "Premier vendeur / Senior Sales Associate",
+    "existant": "offres:retail-sales-lead"
+   },
+   {
+    "groupe": "Lead développeur front-end / Lead Front-End Developer",
+    "existant": "software-engineer"
+   },
+   {
+    "groupe": "Responsable des ressources humaines / HR Business Partner",
+    "existant": "hr-business-partner"
+   },
+   {
+    "groupe": "Lead software engineer / Lead Software Engineer",
+    "existant": "software-engineer"
+   },
+   {
+    "groupe": "Lead comptable trésorerie / Lead Treasury Accountant",
+    "existant": "accountant"
+   },
+   {
+    "groupe": "Lead graphiste / Lead Graphic Designer",
+    "existant": "graphic-designer"
+   },
+   {
+    "groupe": "Directeur régional des ressources humaines / Regional Human Resources Director",
+    "existant": "backend:DIRECTEUR_DES_RESSOURCES_HUMAINES"
+   },
+   {
+    "groupe": "Responsable administratif et comptable / Administrative and Accounting Manager",
+    "existant": "backend:RESPONSABLE_ADMINISTRATIF_ET_FINANCIER"
+   },
+   {
+    "groupe": "Directeur des ressources humaines / Human Resources Director",
+    "existant": "backend:DIRECTEUR_DES_RESSOURCES_HUMAINES"
+   }
+  ],
+  "groupesIndetermines": [],
+  "motsDecides": [
+   {
+    "code": "cashier",
+    "mot": "HEAD",
+    "exclu": true,
+    "par": "unanime",
+    "intitules": 2
+   },
+   {
+    "code": "financial-controller",
+    "mot": "DIRECTEUR",
+    "exclu": true,
+    "par": "unanime",
+    "intitules": 1
+   },
+   {
+    "code": "accountant",
+    "mot": "RESPONSABLE",
+    "exclu": true,
+    "par": "unanime",
+    "intitules": 7
+   },
+   {
+    "code": "hr-business-partner",
+    "mot": "DIRECTOR",
+    "exclu": true,
+    "par": "unanime",
+    "intitules": 7
+   },
+   {
+    "code": "sales-advisor",
+    "mot": "LEADER",
+    "exclu": true,
+    "par": "unanime",
+    "intitules": 5
+   },
+   {
+    "code": "cashier",
+    "mot": "KEY HOLDER",
+    "exclu": true,
+    "par": "unanime",
+    "intitules": 1
+   },
+   {
+    "code": "hr-business-partner",
+    "mot": "HEAD",
+    "exclu": true,
+    "par": "unanime",
+    "intitules": 1
+   },
+   {
+    "code": "cashier",
+    "mot": "LEAD",
+    "exclu": true,
+    "par": "unanime",
+    "intitules": 3
+   },
+   {
+    "code": "sales-advisor",
+    "mot": "LEAD",
+    "exclu": true,
+    "par": "unanime",
+    "intitules": 3
+   },
+   {
+    "code": "recruiter",
+    "mot": "LEAD",
+    "exclu": true,
+    "par": "unanime",
+    "intitules": 1
+   },
+   {
+    "code": "graphic-designer",
+    "mot": "LEAD",
+    "exclu": true,
+    "par": "unanime",
+    "intitules": 1
+   },
+   {
+    "code": "hr-business-partner",
+    "mot": "RESPONSABLE",
+    "exclu": true,
+    "par": "unanime",
+    "intitules": 1
+   },
+   {
+    "code": "legal-counsel",
+    "mot": "LEAD",
+    "exclu": true,
+    "par": "unanime",
+    "intitules": 1
+   },
+   {
+    "code": "visual-merchandiser",
+    "mot": "KEYHOLDER",
+    "exclu": true,
+    "par": "unanime",
+    "intitules": 2
+   },
+   {
+    "code": "sales-advisor",
+    "mot": "PREMIER VENDEUR",
+    "exclu": true,
+    "par": "mot",
+    "intitules": 17
+   },
+   {
+    "code": "sales-advisor",
+    "mot": "KEYHOLDER",
+    "exclu": true,
+    "par": "mot",
+    "intitules": 14
+   },
+   {
+    "code": "sales-advisor",
+    "mot": "KEY HOLDER",
+    "exclu": true,
+    "par": "mot",
+    "intitules": 6
+   },
+   {
+    "code": "executive-assistant",
+    "mot": "MANAGER",
+    "exclu": false,
+    "par": "mot",
+    "intitules": 4
+   },
+   {
+    "code": "software-engineer",
+    "mot": "LEAD",
+    "exclu": true,
+    "par": "mot",
+    "intitules": 9
+   },
+   {
+    "code": "hr-business-partner",
+    "mot": "MANAGER",
+    "exclu": true,
+    "par": "mot",
+    "intitules": 12
+   },
+   {
+    "code": "sales-advisor",
+    "mot": "RESPONSABLE",
+    "exclu": true,
+    "par": "mot",
+    "intitules": 12
+   },
+   {
+    "code": "accountant",
+    "mot": "LEAD",
+    "exclu": true,
+    "par": "mot",
+    "intitules": 3
+   },
+   {
+    "code": "store-manager",
+    "mot": "店長",
+    "exclu": false,
+    "par": "mot",
+    "intitules": 3
+   }
+  ],
+  "motsSansAvis": [],
+  "exclusions": {
+   "cashier": [
+    "HEAD",
+    "KEY HOLDER",
+    "LEAD"
+   ],
+   "financial-controller": [
+    "DIRECTEUR"
+   ],
+   "accountant": [
+    "RESPONSABLE",
+    "LEAD"
+   ],
+   "hr-business-partner": [
+    "DIRECTOR",
+    "HEAD",
+    "RESPONSABLE",
+    "MANAGER"
+   ],
+   "sales-advisor": [
+    "LEADER",
+    "LEAD",
+    "PREMIER VENDEUR",
+    "KEYHOLDER",
+    "KEY HOLDER",
+    "RESPONSABLE"
+   ],
+   "recruiter": [
+    "LEAD"
+   ],
+   "graphic-designer": [
+    "LEAD"
+   ],
+   "legal-counsel": [
+    "LEAD"
+   ],
+   "visual-merchandiser": [
+    "KEYHOLDER"
+   ],
+   "software-engineer": [
+    "LEAD"
+   ]
+  },
+  "deplacesNonEncadrants": [
+   "global talent manager and corporate hrbp (cdd)",
+   "job dating île-de-france | vendeur.se, adjoint.e , responsable de magasin | 2 octobre 2026",
+   "keyholder / verkaufer (m/w/d) (25-30h/woche) - dusseldorf",
+   "key holder / verkaufer (m/w/d) (25-30h/woche) - frankfurt",
+   "keyholder / verkaufer (m/w/d) (30h/woche) - stuttgart",
+   "lead accountant – china & hong kong",
+   "premier vendeur 35h - paris - cdi h/f",
+   "premier vendeur f/h (cdi 35h)",
+   "premier vendeur h/f",
+   "premier vendeur h.f - bon marché",
+   "premier vendeur h/f - cdi - galeries lafayette nantes",
+   "premier vendeur h/f - cdi - lyon the village",
+   "premier vendeur h/f - cdi - ternes",
+   "premier vendeur (h/f) - sézane",
+   "senior/lead software engineer (c#) – automation & machine control",
+   "senior lead - staff software engineer",
+   "specialist, lead treasury accountant"
+  ],
+  "encadrantsNonDeplaces": [
+   "cvm sr. executive - assistant manager",
+   "店長候補 (store manager)"
+  ],
+  "exemplesCeo": [
+   {
+    "intitule": "Responsable vendeur H/F",
+    "avant": "sales-advisor",
+    "apres": null
+   },
+   {
+    "intitule": "Team Leader Client Advisor",
+    "avant": "sales-advisor",
+    "apres": null
+   }
+  ]
+ },
+ "nouveauxMetiers": [
+  {
+   "cle": "head-cashier",
+   "fr": "Responsable caisse",
+   "en": "Head Cashier",
+   "famille": "retail-operations",
+   "encadre": [
+    "cashier"
+   ],
+   "offres": 547,
+   "employeurs": 3,
+   "titres": [
+    "cashier (head) ft - crabtree",
+    "cashier (head) ft - miami",
+    "lead cashier",
+    "lead cashier i",
+    "lead cashier ii"
+   ]
+  }
+ ],
+ "enAttente": [
+  {
+   "cle": "financial-controlling-director",
+   "fr": "Directeur du contrôle de gestion",
+   "en": "Financial Controlling Director",
+   "famille": "finance",
+   "encadre": [
+    "financial-controller"
+   ],
+   "offres": 1,
+   "employeurs": 1,
+   "titres": [
+    "cdi - directeur contrôleur de gestion (h/f)"
+   ]
+  },
+  {
+   "cle": "assistant-accounting-manager",
+   "fr": "Responsable comptable adjoint",
+   "en": "Assistant Accounting Manager",
+   "famille": "finance",
+   "encadre": [
+    "accountant"
+   ],
+   "offres": 1,
+   "employeurs": 1,
+   "titres": [
+    "cdi - responsable comptable adjoint (h/f)"
+   ]
+  },
+  {
+   "cle": "accounting-manager",
+   "fr": "Responsable comptable",
+   "en": "Accounting Manager",
+   "famille": "finance",
+   "encadre": [
+    "accountant"
+   ],
+   "offres": 3,
+   "employeurs": 3,
+   "titres": [
+    "cdi - responsable comptable (h/f)",
+    "responsable comptable",
+    "responsable comptable f/h"
+   ]
+  },
+  {
+   "cle": "group-accounting-manager",
+   "fr": "Responsable comptable groupe",
+   "en": "Group Accounting Manager",
+   "famille": "finance",
+   "encadre": [
+    "accountant"
+   ],
+   "offres": 1,
+   "employeurs": 1,
+   "titres": [
+    "responsable comptable groupe (h/f) - cdi"
+   ]
+  },
+  {
+   "cle": "sales-associate-or-assistant-store-manager",
+   "fr": "Vendeur ou responsable adjoint",
+   "en": "Sales Associate or Assistant Store Manager",
+   "famille": "retail-client-advisor",
+   "encadre": [
+    "sales-advisor"
+   ],
+   "offres": 10,
+   "employeurs": 1,
+   "titres": [
+    "vendeur ou responsable adjoint en alternance (h/f)",
+    "vendeur ou responsable adjoint en alternance (h/f) - annecy",
+    "vendeur ou responsable adjoint en alternance (h/f) - antibes",
+    "vendeur ou responsable adjoint en alternance (h/f) - béziers",
+    "vendeur ou responsable adjoint en alternance (h/f) - bourg en bresse",
+    "vendeur ou responsable adjoint en alternance (h/f) - lyon",
+    "vendeur ou responsable adjoint en alternance (h/f) - lyon beynost",
+    "vendeur ou responsable adjoint en alternance (h/f) - nice",
+    "vendeur ou responsable adjoint en alternance (h/f) - plan de campagne",
+    "vendeur ou responsable adjoint en alternance (h/f) - st etienne"
+   ]
+  },
+  {
+   "cle": "visual-merchandiser-keyholder",
+   "fr": "Visual merchandiser keyholder",
+   "en": "Visual Merchandiser Keyholder",
+   "famille": "visual-merchandising",
+   "encadre": [
+    "visual-merchandiser"
+   ],
+   "offres": 2,
+   "employeurs": 1,
+   "titres": [
+    "visual merchandiser keyholder - golden triangle mall",
+    "visual merchandiser keyholder - west town mall - knoxville, tn"
+   ]
+  }
+ ],
+ "intitules": [
+  {
+   "intitule": "assistant boutique manager/店铺副经理-成都skp女装",
+   "code": "assistant-store-manager",
+   "offres": 1,
+   "mots": [
+    "经理"
+   ],
+   "contexte": "employeurs : Christian Dior Couture",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 0,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 0,
+     "encadrement": true,
+     "concept": "assistant-store-manager",
+     "libelle_fr": "Adjoint au responsable de boutique",
+     "libelle_en": "Assistant Store Manager"
+    }
+   }
+  },
+  {
+   "intitule": "assistant boutique manager/店铺副经理-武汉",
+   "code": "assistant-store-manager",
+   "offres": 1,
+   "mots": [
+    "经理"
+   ],
+   "contexte": "employeurs : Christian Dior Couture",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 1,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 1,
+     "encadrement": true,
+     "concept": "assistant-store-manager",
+     "libelle_fr": "Adjoint au responsable de boutique",
+     "libelle_en": "Assistant Store Manager"
+    }
+   }
+  },
+  {
+   "intitule": "assistant head coach (assistant store manager) - leeds trinity",
+   "code": "assistant-store-manager",
+   "offres": 1,
+   "mots": [
+    "HEAD"
+   ],
+   "contexte": "employeurs : NIKE Retail UK",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 2,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 2,
+     "encadrement": true,
+     "concept": "assistant-store-manager",
+     "libelle_fr": "Adjoint au responsable de boutique",
+     "libelle_en": "Assistant Store Manager"
+    }
+   }
+  },
+  {
+   "intitule": "assistant store manager - (assistant head coach) battersea",
+   "code": "assistant-store-manager",
+   "offres": 1,
+   "mots": [
+    "HEAD"
+   ],
+   "contexte": "employeurs : NIKE Retail UK",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 3,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 3,
+     "encadrement": true,
+     "concept": "assistant-store-manager",
+     "libelle_fr": "Adjoint au responsable de boutique",
+     "libelle_en": "Assistant Store Manager"
+    }
+   }
+  },
+  {
+   "intitule": "assistant store manager (assistant head coach) - nike liege",
+   "code": "assistant-store-manager",
+   "offres": 1,
+   "mots": [
+    "HEAD"
+   ],
+   "contexte": "employeurs : NIKE Retail Belgium",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 4,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 4,
+     "encadrement": true,
+     "concept": "assistant-store-manager",
+     "libelle_fr": "Adjoint au responsable de boutique",
+     "libelle_en": "Assistant Store Manager"
+    }
+   }
+  },
+  {
+   "intitule": "assistant store manager service (assistant head coach)  -  new nike london flagship",
+   "code": "assistant-store-manager",
+   "offres": 1,
+   "mots": [
+    "HEAD"
+   ],
+   "contexte": "employeurs : NIKE Retail UK",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 5,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 5,
+     "encadrement": true,
+     "concept": "assistant-store-manager",
+     "libelle_fr": "Adjoint au responsable de boutique",
+     "libelle_en": "Assistant Store Manager"
+    }
+   }
+  },
+  {
+   "intitule": "assistant store manager / store supervisor (melbourne)",
+   "code": "assistant-store-manager",
+   "offres": 1,
+   "mots": [
+    "SUPERVISOR"
+   ],
+   "contexte": "employeurs : APM Monaco",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 6,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 6,
+     "encadrement": true,
+     "concept": "assistant-store-manager",
+     "libelle_fr": "Adjoint au responsable de boutique",
+     "libelle_en": "Assistant Store Manager"
+    }
+   }
+  },
+  {
+   "intitule": "cashier (head) ft - crabtree",
+   "code": "cashier",
+   "offres": 1,
+   "mots": [
+    "HEAD"
+   ],
+   "contexte": "employeurs : AKIRA",
+   "encadrement": true,
+   "cible": "encadrement:head-cashier",
+   "preuve": {
+    "choix": {
+     "i": 7,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Responsable caisse",
+     "libelle_en": "Head Cashier"
+    },
+    "second": {
+     "i": 7,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Responsable de caisse",
+     "libelle_en": "Head Cashier"
+    }
+   }
+  },
+  {
+   "intitule": "cashier (head) ft - miami",
+   "code": "cashier",
+   "offres": 1,
+   "mots": [
+    "HEAD"
+   ],
+   "contexte": "employeurs : AKIRA",
+   "encadrement": true,
+   "cible": "encadrement:head-cashier",
+   "preuve": {
+    "choix": {
+     "i": 8,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Responsable caisse",
+     "libelle_en": "Head Cashier"
+    },
+    "second": {
+     "i": 8,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Responsable de caisse",
+     "libelle_en": "Head Cashier"
+    }
+   }
+  },
+  {
+   "intitule": "cdi 38h - premier vendeur- paris f/h",
+   "code": "sales-advisor",
+   "offres": 1,
+   "mots": [
+    "PREMIER VENDEUR"
+   ],
+   "contexte": "employeurs : The Kooples",
+   "encadrement": true,
+   "cible": "offres:retail-sales-lead",
+   "preuve": {
+    "choix": {
+     "i": 9,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Premier vendeur",
+     "libelle_en": "Senior Sales Associate"
+    },
+    "second": {
+     "i": 9,
+     "encadrement": true,
+     "concept": "backend:ANIMATEUR_VENTES",
+     "libelle_fr": "Premier vendeur",
+     "libelle_en": "Senior Sales Associate"
+    }
+   }
+  },
+  {
+   "intitule": "cdi - directeur contrôleur de gestion (h/f)",
+   "code": "financial-controller",
+   "offres": 1,
+   "mots": [
+    "DIRECTEUR"
+   ],
+   "contexte": "employeurs : Hermès",
+   "encadrement": true,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 10,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Directeur du contrôle de gestion",
+     "libelle_en": "Financial Controlling Director"
+    },
+    "second": {
+     "i": 10,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Directeur du contrôle de gestion",
+     "libelle_en": "Director of Financial Control"
+    }
+   }
+  },
+  {
+   "intitule": "cdi - premier.e vendeur.euse 35h (paris)",
+   "code": "sales-advisor",
+   "offres": 1,
+   "mots": [
+    "PREMIER VENDEUR"
+   ],
+   "contexte": "employeurs : Soeur",
+   "encadrement": true,
+   "cible": "offres:retail-sales-lead",
+   "preuve": {
+    "choix": {
+     "i": 11,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Premier vendeur",
+     "libelle_en": "Senior Sales Associate"
+    },
+    "second": {
+     "i": 11,
+     "encadrement": true,
+     "concept": "backend:ANIMATEUR_VENTES",
+     "libelle_fr": "Premier vendeur",
+     "libelle_en": "Senior Sales Associate"
+    }
+   }
+  },
+  {
+   "intitule": "cdi - premier.e vendeur.euse 35h (strasbourg)",
+   "code": "sales-advisor",
+   "offres": 1,
+   "mots": [
+    "PREMIER VENDEUR"
+   ],
+   "contexte": "employeurs : Soeur",
+   "encadrement": true,
+   "cible": "offres:retail-sales-lead",
+   "preuve": {
+    "choix": {
+     "i": 12,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Premier vendeur",
+     "libelle_en": "Senior Sales Associate"
+    },
+    "second": {
+     "i": 12,
+     "encadrement": true,
+     "concept": "backend:ANIMATEUR_VENTES",
+     "libelle_fr": "Premier vendeur",
+     "libelle_en": "Senior Sales Associate"
+    }
+   }
+  },
+  {
+   "intitule": "cdi - premier vendeur boutique haut de gamme(h/f)",
+   "code": "sales-advisor",
+   "offres": 1,
+   "mots": [
+    "PREMIER VENDEUR"
+   ],
+   "contexte": "employeurs : A.P.C.",
+   "encadrement": true,
+   "cible": "offres:retail-sales-lead",
+   "preuve": {
+    "choix": {
+     "i": 13,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Premier vendeur",
+     "libelle_en": "Senior Sales Associate"
+    },
+    "second": {
+     "i": 13,
+     "encadrement": true,
+     "concept": "backend:ANIMATEUR_VENTES",
+     "libelle_fr": "Premier vendeur",
+     "libelle_en": "Senior Sales Associate"
+    }
+   }
+  },
+  {
+   "intitule": "cdi - responsable comptable adjoint (h/f)",
+   "code": "accountant",
+   "offres": 1,
+   "mots": [
+    "RESPONSABLE"
+   ],
+   "contexte": "employeurs : Hermès",
+   "encadrement": true,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 14,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Responsable comptable adjoint",
+     "libelle_en": "Assistant Accounting Manager"
+    },
+    "second": {
+     "i": 14,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Responsable comptable adjoint",
+     "libelle_en": "Assistant Accounting Manager"
+    }
+   }
+  },
+  {
+   "intitule": "cdi responsable comptable fournisseurs & immobilisations f/h",
+   "code": "accountant",
+   "offres": 1,
+   "mots": [
+    "RESPONSABLE"
+   ],
+   "contexte": "employeurs : Fred ; services : Finance",
+   "encadrement": true,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 15,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Responsable comptable",
+     "libelle_en": "Accounting Manager"
+    },
+    "second": {
+     "i": 15,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Responsable comptable",
+     "libelle_en": "Accounting Manager"
+    }
+   }
+  },
+  {
+   "intitule": "cdi - responsable comptable (h/f)",
+   "code": "accountant",
+   "offres": 1,
+   "mots": [
+    "RESPONSABLE"
+   ],
+   "contexte": "employeurs : A.P.C.",
+   "encadrement": true,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 16,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Responsable comptable",
+     "libelle_en": "Accounting Manager"
+    },
+    "second": {
+     "i": 16,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Responsable comptable",
+     "libelle_en": "Accounting Manager"
+    }
+   }
+  },
+  {
+   "intitule": "chef de produits, acheteur(euse)mode",
+   "code": "buyer",
+   "offres": 1,
+   "mots": [
+    "CHEF"
+   ],
+   "contexte": "employeurs : Reitmans (Canada) Ltée/Ltd",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 17,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 17,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    }
+   }
+  },
+  {
+   "intitule": "chef de produits / acheteur (h/f)",
+   "code": "buyer",
+   "offres": 1,
+   "mots": [
+    "CHEF"
+   ],
+   "contexte": "employeurs : CABAIA",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 18,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 18,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    }
+   }
+  },
+  {
+   "intitule": "chef de projet demand planner (cdd) - h/f",
+   "code": "demand-planner",
+   "offres": 1,
+   "mots": [
+    "CHEF"
+   ],
+   "contexte": "employeurs : Puig",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 19,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 19,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    }
+   }
+  },
+  {
+   "intitule": "chef(fe) de produits / acheteur(se)",
+   "code": "buyer",
+   "offres": 1,
+   "mots": [
+    "CHEF"
+   ],
+   "contexte": "employeurs : CABAIA",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 0,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 0,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": "Chef de produit / Acheteur",
+     "libelle_en": "Product Manager / Buyer"
+    }
+   }
+  },
+  {
+   "intitule": "chef.fe de projet acheteur.se",
+   "code": "buyer",
+   "offres": 1,
+   "mots": [
+    "CHEF"
+   ],
+   "contexte": "employeurs : Bogoods",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 1,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 1,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": "Chef de projet acheteur",
+     "libelle_en": "Project Manager Buyer"
+    }
+   }
+  },
+  {
+   "intitule": "client advisor (keyholder)",
+   "code": "sales-advisor",
+   "offres": 1,
+   "mots": [
+    "KEYHOLDER"
+   ],
+   "contexte": "employeurs : Michael Kors Stores California Inc",
+   "encadrement": true,
+   "cible": "offres:keyholder",
+   "preuve": {
+    "choix": {
+     "i": 2,
+     "encadrement": true,
+     "concept": "offres:keyholder",
+     "libelle_fr": "Responsable d'ouverture et de fermeture",
+     "libelle_en": "Keyholder"
+    },
+    "second": {
+     "i": 2,
+     "encadrement": true,
+     "concept": "offres:keyholder",
+     "libelle_fr": "Responsable d'ouverture et de fermeture",
+     "libelle_en": "Keyholder"
+    }
+   }
+  },
+  {
+   "intitule": "client advisor/key holder, boca raton",
+   "code": "sales-advisor",
+   "offres": 1,
+   "mots": [
+    "KEY HOLDER"
+   ],
+   "contexte": "employeurs : Marni",
+   "encadrement": true,
+   "cible": "offres:keyholder",
+   "preuve": {
+    "choix": {
+     "i": 3,
+     "encadrement": true,
+     "concept": "offres:keyholder",
+     "libelle_fr": "Responsable d'ouverture et de fermeture",
+     "libelle_en": "Keyholder"
+    },
+    "second": {
+     "i": 3,
+     "encadrement": true,
+     "concept": "offres:keyholder",
+     "libelle_fr": "Responsable d'ouverture et de fermeture",
+     "libelle_en": "Keyholder"
+    }
+   }
+  },
+  {
+   "intitule": "client advisor (keyholder), holt renfrew bloor",
+   "code": "sales-advisor",
+   "offres": 1,
+   "mots": [
+    "KEYHOLDER"
+   ],
+   "contexte": "employeurs : Christian Dior Couture ; services : Retail",
+   "encadrement": true,
+   "cible": "offres:keyholder",
+   "preuve": {
+    "choix": {
+     "i": 4,
+     "encadrement": true,
+     "concept": "offres:keyholder",
+     "libelle_fr": "Responsable d'ouverture et de fermeture",
+     "libelle_en": "Keyholder"
+    },
+    "second": {
+     "i": 4,
+     "encadrement": true,
+     "concept": "offres:keyholder",
+     "libelle_fr": "Responsable d'ouverture et de fermeture",
+     "libelle_en": "Keyholder"
+    }
+   }
+  },
+  {
+   "intitule": "client advisor/ keyholder, south coast plaza",
+   "code": "sales-advisor",
+   "offres": 1,
+   "mots": [
+    "KEYHOLDER"
+   ],
+   "contexte": "employeurs : Marni",
+   "encadrement": true,
+   "cible": "offres:keyholder",
+   "preuve": {
+    "choix": {
+     "i": 5,
+     "encadrement": true,
+     "concept": "offres:keyholder",
+     "libelle_fr": "Responsable d'ouverture et de fermeture",
+     "libelle_en": "Keyholder"
+    },
+    "second": {
+     "i": 5,
+     "encadrement": true,
+     "concept": "offres:keyholder",
+     "libelle_fr": "Responsable d'ouverture et de fermeture",
+     "libelle_en": "Keyholder"
+    }
+   }
+  },
+  {
+   "intitule": "coordinateur comptable et administratif - (f/h)",
+   "code": "accountant",
+   "offres": 1,
+   "mots": [
+    "COORDINATEUR"
+   ],
+   "contexte": "employeurs : GOYARD",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 6,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 6,
+     "encadrement": true,
+     "concept": "backend:RESPONSABLE_ADMINISTRATIF_ET_FINANCIER",
+     "libelle_fr": "Responsable administratif et financier",
+     "libelle_en": "Administrative and Finance Manager"
+    }
+   }
+  },
+  {
+   "intitule": "cvm sr. executive - assistant manager",
+   "code": "executive-assistant",
+   "offres": 1,
+   "mots": [
+    "MANAGER"
+   ],
+   "contexte": "employeurs : Tiffany & Co. ; services : Design & Creation",
+   "encadrement": true,
+   "cible": "offres:assistant-visual-merchandising-manager",
+   "preuve": {
+    "choix": {
+     "i": 7,
+     "encadrement": true,
+     "concept": "offres:assistant-visual-merchandising-manager",
+     "libelle_fr": "Adjoint au responsable visual merchandising",
+     "libelle_en": "Assistant Visual Merchandising Manager"
+    },
+    "second": {
+     "i": 7,
+     "encadrement": true,
+     "concept": "offres:assistant-visual-merchandising-manager",
+     "libelle_fr": "Adjoint au responsable visual merchandising",
+     "libelle_en": "Assistant Visual Merchandising Manager"
+    }
+   }
+  },
+  {
+   "intitule": "deputy store director / assistant store manager flagship store (m/f/d)- cologne",
+   "code": "assistant-store-manager",
+   "offres": 1,
+   "mots": [
+    "DIRECTOR"
+   ],
+   "contexte": "employeurs : Rimowa ; services : Retail",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 8,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 8,
+     "encadrement": true,
+     "concept": "assistant-store-manager",
+     "libelle_fr": "Adjoint au responsable de boutique",
+     "libelle_en": "Assistant Store Manager"
+    }
+   }
+  },
+  {
+   "intitule": "director, hrbp retail - east",
+   "code": "hr-business-partner",
+   "offres": 2,
+   "mots": [
+    "DIRECTOR"
+   ],
+   "contexte": "employeurs : Sephora ; services : Human Resources",
+   "encadrement": true,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 9,
+     "encadrement": true,
+     "concept": "backend:DIRECTEUR_DES_RESSOURCES_HUMAINES",
+     "libelle_fr": "Directeur des ressources humaines",
+     "libelle_en": "Human Resources Director"
+    },
+    "second": {
+     "i": 9,
+     "encadrement": true,
+     "concept": "backend:DIRECTEUR_DES_RESSOURCES_HUMAINES",
+     "libelle_fr": "Directeur des ressources humaines",
+     "libelle_en": "HR Director"
+    }
+   }
+  },
+  {
+   "intitule": "director, hrbp retail - west",
+   "code": "hr-business-partner",
+   "offres": 2,
+   "mots": [
+    "DIRECTOR"
+   ],
+   "contexte": "employeurs : Sephora ; services : Human Resources",
+   "encadrement": true,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 10,
+     "encadrement": true,
+     "concept": "backend:DIRECTEUR_DES_RESSOURCES_HUMAINES",
+     "libelle_fr": "Directeur des ressources humaines",
+     "libelle_en": "Human Resources Director"
+    },
+    "second": {
+     "i": 10,
+     "encadrement": true,
+     "concept": "backend:DIRECTEUR_DES_RESSOURCES_HUMAINES",
+     "libelle_fr": "Directeur des ressources humaines",
+     "libelle_en": "HR Director"
+    }
+   }
+  },
+  {
+   "intitule": "director, hr business partner",
+   "code": "hr-business-partner",
+   "offres": 3,
+   "mots": [
+    "DIRECTOR"
+   ],
+   "contexte": "employeurs : Crocs, Inc., Skechers, Tapestry ; services : Corporate",
+   "encadrement": true,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 11,
+     "encadrement": true,
+     "concept": "backend:DIRECTEUR_DES_RESSOURCES_HUMAINES",
+     "libelle_fr": "Directeur des ressources humaines",
+     "libelle_en": "Human Resources Director"
+    },
+    "second": {
+     "i": 11,
+     "encadrement": true,
+     "concept": "backend:DIRECTEUR_DES_RESSOURCES_HUMAINES",
+     "libelle_fr": "Directeur des ressources humaines",
+     "libelle_en": "HR Director"
+    }
+   }
+  },
+  {
+   "intitule": "director hr business partner corporate",
+   "code": "hr-business-partner",
+   "offres": 1,
+   "mots": [
+    "DIRECTOR"
+   ],
+   "contexte": "employeurs : adidas",
+   "encadrement": true,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 12,
+     "encadrement": true,
+     "concept": "backend:DIRECTEUR_DES_RESSOURCES_HUMAINES",
+     "libelle_fr": "Directeur des ressources humaines",
+     "libelle_en": "Human Resources Director"
+    },
+    "second": {
+     "i": 12,
+     "encadrement": true,
+     "concept": "backend:DIRECTEUR_DES_RESSOURCES_HUMAINES",
+     "libelle_fr": "Directeur des ressources humaines",
+     "libelle_en": "HR Director"
+    }
+   }
+  },
+  {
+   "intitule": "director hr business partner retail",
+   "code": "hr-business-partner",
+   "offres": 1,
+   "mots": [
+    "DIRECTOR"
+   ],
+   "contexte": "employeurs : adidas",
+   "encadrement": true,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 13,
+     "encadrement": true,
+     "concept": "backend:DIRECTEUR_DES_RESSOURCES_HUMAINES",
+     "libelle_fr": "Directeur des ressources humaines",
+     "libelle_en": "Human Resources Director"
+    },
+    "second": {
+     "i": 13,
+     "encadrement": true,
+     "concept": "backend:DIRECTEUR_DES_RESSOURCES_HUMAINES",
+     "libelle_fr": "Directeur des ressources humaines",
+     "libelle_en": "HR Director"
+    }
+   }
+  },
+  {
+   "intitule": "executive assistant to general manager, fashion division",
+   "code": "executive-assistant",
+   "offres": 1,
+   "mots": [
+    "MANAGER"
+   ],
+   "contexte": "employeurs : Chanel",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 14,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 14,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": "Assistant de direction",
+     "libelle_en": "Executive Assistant"
+    }
+   }
+  },
+  {
+   "intitule": "executive assistant to general manager, supply chain & sustainability",
+   "code": "executive-assistant",
+   "offres": 1,
+   "mots": [
+    "MANAGER"
+   ],
+   "contexte": "employeurs : Chanel",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 15,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 15,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": "Assistant de direction",
+     "libelle_en": "Executive Assistant"
+    }
+   }
+  },
+  {
+   "intitule": "executive assistant to the managing director",
+   "code": "executive-assistant",
+   "offres": 1,
+   "mots": [
+    "DIRECTOR"
+   ],
+   "contexte": "employeurs : Bulgari ; services : Direzione generale",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 16,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 16,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": "Assistant de direction",
+     "libelle_en": "Executive Assistant"
+    }
+   }
+  },
+  {
+   "intitule": "fendi store manager-店铺经理-北京",
+   "code": "store-manager",
+   "offres": 1,
+   "mots": [
+    "经理"
+   ],
+   "contexte": "employeurs : Fendi",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 17,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 17,
+     "encadrement": true,
+     "concept": "store-manager",
+     "libelle_fr": "Responsable de boutique",
+     "libelle_en": "Store Manager"
+    }
+   }
+  },
+  {
+   "intitule": "fendi store manager-店铺经理-北京skp男装店",
+   "code": "store-manager",
+   "offres": 1,
+   "mots": [
+    "经理"
+   ],
+   "contexte": "employeurs : Fendi",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 18,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 18,
+     "encadrement": true,
+     "concept": "store-manager",
+     "libelle_fr": "Responsable de boutique",
+     "libelle_en": "Store Manager"
+    }
+   }
+  },
+  {
+   "intitule": "fendi store manager-店铺经理-深圳湾万象城店",
+   "code": "store-manager",
+   "offres": 1,
+   "mots": [
+    "经理"
+   ],
+   "contexte": "employeurs : Fendi",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 19,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 19,
+     "encadrement": true,
+     "concept": "store-manager",
+     "libelle_fr": "Responsable de boutique",
+     "libelle_en": "Store Manager"
+    }
+   }
+  },
+  {
+   "intitule": "free people team leader/ premier(e) vendeur(se) - paris saint sulpice, france",
+   "code": "sales-advisor",
+   "offres": 1,
+   "mots": [
+    "LEADER",
+    "PREMIER VENDEUR"
+   ],
+   "contexte": "employeurs : Free People",
+   "encadrement": true,
+   "cible": "offres:retail-sales-lead",
+   "preuve": {
+    "choix": {
+     "i": 0,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Leader d'équipe de vente",
+     "libelle_en": "Sales Team Leader"
+    },
+    "second": {
+     "i": 0,
+     "encadrement": true,
+     "concept": "offres:retail-sales-lead",
+     "libelle_fr": "Responsable des ventes en boutique",
+     "libelle_en": "Sales Team Leader"
+    }
+   }
+  },
+  {
+   "intitule": "free people team leader/ premier(e) vendeur(se) - paris saint sulpice, france - cdi 28h/semaine",
+   "code": "sales-advisor",
+   "offres": 1,
+   "mots": [
+    "LEADER",
+    "PREMIER VENDEUR"
+   ],
+   "contexte": "employeurs : Free People",
+   "encadrement": true,
+   "cible": "offres:retail-sales-lead",
+   "preuve": {
+    "choix": {
+     "i": 1,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Leader d'équipe de vente",
+     "libelle_en": "Sales Team Leader"
+    },
+    "second": {
+     "i": 1,
+     "encadrement": true,
+     "concept": "offres:retail-sales-lead",
+     "libelle_fr": "Responsable des ventes en boutique",
+     "libelle_en": "Sales Team Leader"
+    }
+   }
+  },
+  {
+   "intitule": "front end developer lead",
+   "code": "software-engineer",
+   "offres": 1,
+   "mots": [
+    "LEAD"
+   ],
+   "contexte": "employeurs : IN02 Movado Group Private Limited",
+   "encadrement": true,
+   "cible": "software-engineer",
+   "preuve": {
+    "choix": {
+     "i": 2,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Lead Développeur Front-End",
+     "libelle_en": "Front-End Lead Developer"
+    },
+    "second": {
+     "i": 2,
+     "encadrement": true,
+     "concept": "software-engineer",
+     "libelle_fr": "Lead Développeur Front-End",
+     "libelle_en": "Lead Front End Developer"
+    }
+   }
+  },
+  {
+   "intitule": "full time key holder / cashier operations- boss store, royalmount",
+   "code": "cashier",
+   "offres": 1,
+   "mots": [
+    "KEY HOLDER"
+   ],
+   "contexte": "employeurs : HUGO BOSS Canada, Inc. ; services : Retail Store",
+   "encadrement": true,
+   "cible": "offres:keyholder",
+   "preuve": {
+    "choix": {
+     "i": 3,
+     "encadrement": true,
+     "concept": "offres:keyholder",
+     "libelle_fr": "Responsable d'ouverture et de fermeture",
+     "libelle_en": "Keyholder"
+    },
+    "second": {
+     "i": 3,
+     "encadrement": true,
+     "concept": "offres:keyholder",
+     "libelle_fr": "Responsable d'ouverture et de fermeture",
+     "libelle_en": "Key Holder"
+    }
+   }
+  },
+  {
+   "intitule": "gifting and sales advisor - key holder (20 hours)",
+   "code": "sales-advisor",
+   "offres": 1,
+   "mots": [
+    "KEY HOLDER"
+   ],
+   "contexte": "employeurs : Katie Loxton",
+   "encadrement": true,
+   "cible": "offres:keyholder",
+   "preuve": {
+    "choix": {
+     "i": 4,
+     "encadrement": true,
+     "concept": "offres:keyholder",
+     "libelle_fr": "Responsable d'ouverture et de fermeture",
+     "libelle_en": "Keyholder"
+    },
+    "second": {
+     "i": 4,
+     "encadrement": true,
+     "concept": "offres:keyholder",
+     "libelle_fr": "Responsable d'ouverture et de fermeture",
+     "libelle_en": "Key Holder"
+    }
+   }
+  },
+  {
+   "intitule": "global talent manager and corporate hrbp (cdd)",
+   "code": "hr-business-partner",
+   "offres": 1,
+   "mots": [
+    "MANAGER"
+   ],
+   "contexte": "employeurs : Chandon ; services : Human Resources",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 5,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 5,
+     "encadrement": true,
+     "concept": "backend:TALENT_MANAGER",
+     "libelle_fr": "Talent Manager",
+     "libelle_en": "Talent Manager"
+    }
+   }
+  },
+  {
+   "intitule": "graphic designer & coordinator, in-store marketing",
+   "code": "graphic-designer",
+   "offres": 1,
+   "mots": [
+    "COORDINATOR"
+   ],
+   "contexte": "employeurs : UNIQLO",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 6,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 6,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": "Graphiste",
+     "libelle_en": "Graphic Designer"
+    }
+   }
+  },
+  {
+   "intitule": "haven well within - sales associate keyholder - garden city",
+   "code": "sales-advisor",
+   "offres": 1,
+   "mots": [
+    "KEYHOLDER"
+   ],
+   "contexte": "employeurs : Haven Well Within",
+   "encadrement": true,
+   "cible": "offres:keyholder",
+   "preuve": {
+    "choix": {
+     "i": 7,
+     "encadrement": true,
+     "concept": "offres:keyholder",
+     "libelle_fr": "Responsable d'ouverture et de fermeture",
+     "libelle_en": "Keyholder"
+    },
+    "second": {
+     "i": 7,
+     "encadrement": true,
+     "concept": "offres:keyholder",
+     "libelle_fr": "Responsable d'ouverture et de fermeture",
+     "libelle_en": "Key Holder"
+    }
+   }
+  },
+  {
+   "intitule": "haven well within - sales associate keyholder - garden city _ roosevelt field",
+   "code": "sales-advisor",
+   "offres": 1,
+   "mots": [
+    "KEYHOLDER"
+   ],
+   "contexte": "employeurs : Haven Well Within",
+   "encadrement": true,
+   "cible": "offres:keyholder",
+   "preuve": {
+    "choix": {
+     "i": 8,
+     "encadrement": true,
+     "concept": "offres:keyholder",
+     "libelle_fr": "Responsable d'ouverture et de fermeture",
+     "libelle_en": "Keyholder"
+    },
+    "second": {
+     "i": 8,
+     "encadrement": true,
+     "concept": "offres:keyholder",
+     "libelle_fr": "Responsable d'ouverture et de fermeture",
+     "libelle_en": "Key Holder"
+    }
+   }
+  },
+  {
+   "intitule": "head coach / gerente de tienda | nike mexico city and wof",
+   "code": "store-manager",
+   "offres": 1,
+   "mots": [
+    "HEAD"
+   ],
+   "contexte": "employeurs : NIKE de Mexico, S. de R.L. de C.V.",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 9,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 9,
+     "encadrement": true,
+     "concept": "store-manager",
+     "libelle_fr": "Responsable de boutique",
+     "libelle_en": "Store Manager"
+    }
+   }
+  },
+  {
+   "intitule": "head coach nike (directeur de magasin) – h / f cdi – westfield forum des halles",
+   "code": "store-manager",
+   "offres": 1,
+   "mots": [
+    "HEAD"
+   ],
+   "contexte": "employeurs : NIKE",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 10,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 10,
+     "encadrement": true,
+     "concept": "store-manager",
+     "libelle_fr": "Responsable de boutique",
+     "libelle_en": "Store Manager"
+    }
+   }
+  },
+  {
+   "intitule": "head of hrbp retail",
+   "code": "hr-business-partner",
+   "offres": 2,
+   "mots": [
+    "HEAD"
+   ],
+   "contexte": "employeurs : Sephora ; services : Human Resources",
+   "encadrement": true,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 11,
+     "encadrement": true,
+     "concept": "backend:DIRECTEUR_DES_RESSOURCES_HUMAINES",
+     "libelle_fr": "Directeur des Ressources Humaines Retail",
+     "libelle_en": "Head of HRBP Retail"
+    },
+    "second": {
+     "i": 11,
+     "encadrement": true,
+     "concept": "backend:DIRECTEUR_DES_RESSOURCES_HUMAINES",
+     "libelle_fr": "Directeur des ressources humaines",
+     "libelle_en": "Head of HRBP"
+    }
+   }
+  },
+  {
+   "intitule": "hr business partner / hr manager",
+   "code": "hr-business-partner",
+   "offres": 2,
+   "mots": [
+    "MANAGER"
+   ],
+   "contexte": "employeurs : Primark",
+   "encadrement": true,
+   "cible": "hr-business-partner",
+   "preuve": {
+    "choix": {
+     "i": 12,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Responsable des Ressources Humaines",
+     "libelle_en": "HR Manager"
+    },
+    "second": {
+     "i": 12,
+     "encadrement": true,
+     "concept": "hr-business-partner",
+     "libelle_fr": "Partenaire RH",
+     "libelle_en": "HR Business Partner"
+    }
+   }
+  },
+  {
+   "intitule": "hr business partner, manager",
+   "code": "hr-business-partner",
+   "offres": 1,
+   "mots": [
+    "MANAGER"
+   ],
+   "contexte": "employeurs : Skechers ; services : Distribution Center",
+   "encadrement": true,
+   "cible": "hr-business-partner",
+   "preuve": {
+    "choix": {
+     "i": 13,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Responsable des Ressources Humaines",
+     "libelle_en": "HR Manager"
+    },
+    "second": {
+     "i": 13,
+     "encadrement": true,
+     "concept": "hr-business-partner",
+     "libelle_fr": "Partenaire RH",
+     "libelle_en": "HR Business Partner"
+    }
+   }
+  },
+  {
+   "intitule": "human resources manager (hr business partner)",
+   "code": "hr-business-partner",
+   "offres": 1,
+   "mots": [
+    "MANAGER"
+   ],
+   "contexte": "employeurs : Foot Locker",
+   "encadrement": true,
+   "cible": "hr-business-partner",
+   "preuve": {
+    "choix": {
+     "i": 14,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Responsable des Ressources Humaines",
+     "libelle_en": "Human Resources Manager"
+    },
+    "second": {
+     "i": 14,
+     "encadrement": true,
+     "concept": "hr-business-partner",
+     "libelle_fr": "Partenaire RH",
+     "libelle_en": "HR Business Partner"
+    }
+   }
+  },
+  {
+   "intitule": "icebreaker : sales associate, keyholder - otaki outlet",
+   "code": "sales-advisor",
+   "offres": 1,
+   "mots": [
+    "KEYHOLDER"
+   ],
+   "contexte": "employeurs : Icebreaker",
+   "encadrement": true,
+   "cible": "offres:keyholder",
+   "preuve": {
+    "choix": {
+     "i": 15,
+     "encadrement": true,
+     "concept": "offres:keyholder",
+     "libelle_fr": "Responsable d'ouverture et de fermeture",
+     "libelle_en": "Keyholder"
+    },
+    "second": {
+     "i": 15,
+     "encadrement": true,
+     "concept": "offres:keyholder",
+     "libelle_fr": "Responsable d'ouverture et de fermeture",
+     "libelle_en": "Key Holder"
+    }
+   }
+  },
+  {
+   "intitule": "icebreaker : sales associate, keyholder - queenstown touchlab",
+   "code": "sales-advisor",
+   "offres": 1,
+   "mots": [
+    "KEYHOLDER"
+   ],
+   "contexte": "employeurs : Icebreaker",
+   "encadrement": true,
+   "cible": "offres:keyholder",
+   "preuve": {
+    "choix": {
+     "i": 16,
+     "encadrement": true,
+     "concept": "offres:keyholder",
+     "libelle_fr": "Responsable d'ouverture et de fermeture",
+     "libelle_en": "Keyholder"
+    },
+    "second": {
+     "i": 16,
+     "encadrement": true,
+     "concept": "offres:keyholder",
+     "libelle_fr": "Responsable d'ouverture et de fermeture",
+     "libelle_en": "Key Holder"
+    }
+   }
+  },
+  {
+   "intitule": "job dating île-de-france | vendeur.se, adjoint.e , responsable de magasin | 2 octobre 2026",
+   "code": "sales-advisor",
+   "offres": 1,
+   "mots": [
+    "RESPONSABLE"
+   ],
+   "contexte": "employeurs : Etam",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 17,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 17,
+     "encadrement": true,
+     "concept": "assistant-store-manager",
+     "libelle_fr": "Adjoint au responsable de boutique",
+     "libelle_en": "Assistant Store Manager"
+    }
+   }
+  },
+  {
+   "intitule": "key holder / verkaufer (m/w/d) (20-25h/woche) - hamburg westfield",
+   "code": "sales-advisor",
+   "offres": 1,
+   "mots": [
+    "KEY HOLDER"
+   ],
+   "contexte": "employeurs : Dr. Martens ; services : Retail",
+   "encadrement": true,
+   "cible": "offres:keyholder",
+   "preuve": {
+    "choix": {
+     "i": 18,
+     "encadrement": true,
+     "concept": "offres:keyholder",
+     "libelle_fr": "Responsable d'ouverture et de fermeture",
+     "libelle_en": "Keyholder"
+    },
+    "second": {
+     "i": 18,
+     "encadrement": true,
+     "concept": "offres:keyholder",
+     "libelle_fr": "Responsable d'ouverture et de fermeture",
+     "libelle_en": "Key Holder"
+    }
+   }
+  },
+  {
+   "intitule": "key holder / verkaufer (m/w/d) (20-25h/woche) - munich",
+   "code": "sales-advisor",
+   "offres": 1,
+   "mots": [
+    "KEY HOLDER"
+   ],
+   "contexte": "employeurs : Dr. Martens ; services : Retail",
+   "encadrement": true,
+   "cible": "offres:keyholder",
+   "preuve": {
+    "choix": {
+     "i": 19,
+     "encadrement": true,
+     "concept": "offres:keyholder",
+     "libelle_fr": "Responsable d'ouverture et de fermeture",
+     "libelle_en": "Keyholder"
+    },
+    "second": {
+     "i": 19,
+     "encadrement": true,
+     "concept": "offres:keyholder",
+     "libelle_fr": "Responsable d'ouverture et de fermeture",
+     "libelle_en": "Key Holder"
+    }
+   }
+  },
+  {
+   "intitule": "keyholder / verkaufer (m/w/d) (25-30h/woche) - dusseldorf",
+   "code": "sales-advisor",
+   "offres": 1,
+   "mots": [
+    "KEYHOLDER"
+   ],
+   "contexte": "employeurs : Dr. Martens ; services : Retail",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 0,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 0,
+     "encadrement": true,
+     "concept": "offres:keyholder",
+     "libelle_fr": "Responsable d'ouverture et de fermeture",
+     "libelle_en": "Key Holder"
+    }
+   }
+  },
+  {
+   "intitule": "key holder / verkaufer (m/w/d) (25-30h/woche) - frankfurt",
+   "code": "sales-advisor",
+   "offres": 1,
+   "mots": [
+    "KEY HOLDER"
+   ],
+   "contexte": "employeurs : Dr. Martens ; services : Retail",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 1,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 1,
+     "encadrement": true,
+     "concept": "offres:keyholder",
+     "libelle_fr": "Responsable d'ouverture et de fermeture",
+     "libelle_en": "Key Holder"
+    }
+   }
+  },
+  {
+   "intitule": "keyholder / verkaufer (m/w/d) (30h/woche) - stuttgart",
+   "code": "sales-advisor",
+   "offres": 1,
+   "mots": [
+    "KEYHOLDER"
+   ],
+   "contexte": "employeurs : Dr. Martens ; services : Retail",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 2,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 2,
+     "encadrement": true,
+     "concept": "offres:keyholder",
+     "libelle_fr": "Responsable d'ouverture et de fermeture",
+     "libelle_en": "Key Holder"
+    }
+   }
+  },
+  {
+   "intitule": "lead accountant – china & hong kong",
+   "code": "accountant",
+   "offres": 1,
+   "mots": [
+    "LEAD"
+   ],
+   "contexte": "employeurs : Quince",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 3,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 3,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Responsable comptable",
+     "libelle_en": "Lead Accountant"
+    }
+   }
+  },
+  {
+   "intitule": "lead, apparel designer, create, local creation gc",
+   "code": "fashion-designer",
+   "offres": 1,
+   "mots": [
+    "LEAD"
+   ],
+   "contexte": "employeurs : Nike Sports (China) Co.",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 4,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 4,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Responsable style",
+     "libelle_en": "Lead Apparel Designer"
+    }
+   }
+  },
+  {
+   "intitule": "lead, apparel designer, jordan, local creation gc",
+   "code": "fashion-designer",
+   "offres": 1,
+   "mots": [
+    "LEAD"
+   ],
+   "contexte": "employeurs : Nike Sports (China) Co.",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 5,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 5,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Responsable style",
+     "libelle_en": "Lead Apparel Designer"
+    }
+   }
+  },
+  {
+   "intitule": "lead, apparel designer, outerwear, local creation gc",
+   "code": "fashion-designer",
+   "offres": 1,
+   "mots": [
+    "LEAD"
+   ],
+   "contexte": "employeurs : Nike Sports (China) Co.",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 6,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 6,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Responsable style",
+     "libelle_en": "Lead Apparel Designer"
+    }
+   }
+  },
+  {
+   "intitule": "lead cashier",
+   "code": "cashier",
+   "offres": 533,
+   "mots": [
+    "LEAD"
+   ],
+   "contexte": "employeurs : Ulta Beauty ; services : Retail Associates",
+   "encadrement": true,
+   "cible": "encadrement:head-cashier",
+   "preuve": {
+    "choix": {
+     "i": 7,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Responsable caisse",
+     "libelle_en": "Lead Cashier"
+    },
+    "second": {
+     "i": 7,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Responsable caisse",
+     "libelle_en": "Lead Cashier"
+    }
+   }
+  },
+  {
+   "intitule": "lead cashier i",
+   "code": "cashier",
+   "offres": 10,
+   "mots": [
+    "LEAD"
+   ],
+   "contexte": "employeurs : Coach",
+   "encadrement": true,
+   "cible": "encadrement:head-cashier",
+   "preuve": {
+    "choix": {
+     "i": 8,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Responsable caisse",
+     "libelle_en": "Lead Cashier"
+    },
+    "second": {
+     "i": 8,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Responsable caisse",
+     "libelle_en": "Lead Cashier"
+    }
+   }
+  },
+  {
+   "intitule": "lead cashier ii",
+   "code": "cashier",
+   "offres": 2,
+   "mots": [
+    "LEAD"
+   ],
+   "contexte": "employeurs : Coach",
+   "encadrement": true,
+   "cible": "encadrement:head-cashier",
+   "preuve": {
+    "choix": {
+     "i": 9,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Responsable caisse",
+     "libelle_en": "Lead Cashier"
+    },
+    "second": {
+     "i": 9,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Responsable caisse",
+     "libelle_en": "Lead Cashier"
+    }
+   }
+  },
+  {
+   "intitule": "lead client advisor (miami, fl usa) 1",
+   "code": "sales-advisor",
+   "offres": 1,
+   "mots": [
+    "LEAD"
+   ],
+   "contexte": "employeurs : Ferrari",
+   "encadrement": true,
+   "cible": "offres:retail-sales-lead",
+   "preuve": {
+    "choix": {
+     "i": 10,
+     "encadrement": true,
+     "concept": "offres:retail-sales-lead",
+     "libelle_fr": "Responsable des ventes en boutique",
+     "libelle_en": "Lead Client Advisor"
+    },
+    "second": {
+     "i": 10,
+     "encadrement": true,
+     "concept": "offres:retail-sales-lead",
+     "libelle_fr": "Responsable des ventes en boutique",
+     "libelle_en": "Lead Client Advisor"
+    }
+   }
+  },
+  {
+   "intitule": "lead cyber defense data analyst, itc",
+   "code": "data-analyst",
+   "offres": 1,
+   "mots": [
+    "LEAD"
+   ],
+   "contexte": "employeurs : NIKE",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 11,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 11,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Responsable analyse de données",
+     "libelle_en": "Lead Data Analyst"
+    }
+   }
+  },
+  {
+   "intitule": "lead data engineer",
+   "code": "data-engineer",
+   "offres": 1,
+   "mots": [
+    "LEAD"
+   ],
+   "contexte": "employeurs : Gymshark",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 12,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 12,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Responsable ingénierie de données",
+     "libelle_en": "Lead Data Engineer"
+    }
+   }
+  },
+  {
+   "intitule": "lead data scientist",
+   "code": "data-scientist",
+   "offres": 1,
+   "mots": [
+    "LEAD"
+   ],
+   "contexte": "employeurs : Gymshark",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 13,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 13,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Responsable data science",
+     "libelle_en": "Lead Data Scientist"
+    }
+   }
+  },
+  {
+   "intitule": "lead, data scientist - converse",
+   "code": "data-scientist",
+   "offres": 1,
+   "mots": [
+    "LEAD"
+   ],
+   "contexte": "employeurs : Converse Inc.",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 14,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 14,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Responsable data science",
+     "libelle_en": "Lead Data Scientist"
+    }
+   }
+  },
+  {
+   "intitule": "lead marketing manager training",
+   "code": "marketing-manager",
+   "offres": 1,
+   "mots": [
+    "LEAD"
+   ],
+   "contexte": "employeurs : PUMA SE",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 15,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 15,
+     "encadrement": true,
+     "concept": "marketing-manager",
+     "libelle_fr": "Responsable marketing",
+     "libelle_en": "Lead Marketing Manager"
+    }
+   }
+  },
+  {
+   "intitule": "lead product developer ctm - converse",
+   "code": "product-developer",
+   "offres": 1,
+   "mots": [
+    "LEAD"
+   ],
+   "contexte": "employeurs : NIKE",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 16,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 16,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Responsable développement produit",
+     "libelle_en": "Lead Product Developer"
+    }
+   }
+  },
+  {
+   "intitule": "lead product developer - hoka innovation",
+   "code": "product-developer",
+   "offres": 1,
+   "mots": [
+    "LEAD"
+   ],
+   "contexte": "employeurs : HOKA",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 17,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 17,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Responsable développement produit",
+     "libelle_en": "Lead Product Developer"
+    }
+   }
+  },
+  {
+   "intitule": "lead recruiter - product creation",
+   "code": "recruiter",
+   "offres": 1,
+   "mots": [
+    "LEAD"
+   ],
+   "contexte": "employeurs : Deckers",
+   "encadrement": true,
+   "cible": "backend:RESPONSABLE_RECRUTEMENT",
+   "preuve": {
+    "choix": {
+     "i": 18,
+     "encadrement": true,
+     "concept": "backend:RESPONSABLE_RECRUTEMENT",
+     "libelle_fr": "Responsable recrutement",
+     "libelle_en": "Lead Recruiter"
+    },
+    "second": {
+     "i": 18,
+     "encadrement": true,
+     "concept": "backend:RESPONSABLE_RECRUTEMENT",
+     "libelle_fr": "Responsable recrutement",
+     "libelle_en": "Lead Recruiter"
+    }
+   }
+  },
+  {
+   "intitule": "lead retail sales associate",
+   "code": "sales-advisor",
+   "offres": 1,
+   "mots": [
+    "LEAD"
+   ],
+   "contexte": "employeurs : FIGS",
+   "encadrement": true,
+   "cible": "offres:retail-sales-lead",
+   "preuve": {
+    "choix": {
+     "i": 19,
+     "encadrement": true,
+     "concept": "offres:retail-sales-lead",
+     "libelle_fr": "Responsable des ventes en boutique",
+     "libelle_en": "Lead Retail Sales Associate"
+    },
+    "second": {
+     "i": 19,
+     "encadrement": true,
+     "concept": "offres:retail-sales-lead",
+     "libelle_fr": "Responsable des ventes en boutique",
+     "libelle_en": "Lead Retail Sales Associate"
+    }
+   }
+  },
+  {
+   "intitule": "lead software engineer",
+   "code": "software-engineer",
+   "offres": 1,
+   "mots": [
+    "LEAD"
+   ],
+   "contexte": "employeurs : NIKE",
+   "encadrement": true,
+   "cible": "software-engineer",
+   "preuve": {
+    "choix": {
+     "i": 0,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Lead software engineer",
+     "libelle_en": "Lead Software Engineer"
+    },
+    "second": {
+     "i": 0,
+     "encadrement": true,
+     "concept": "software-engineer",
+     "libelle_fr": "Lead Software Engineer",
+     "libelle_en": "Lead Software Engineer"
+    }
+   }
+  },
+  {
+   "intitule": "lead software engineer_ anaplan, itc",
+   "code": "software-engineer",
+   "offres": 1,
+   "mots": [
+    "LEAD"
+   ],
+   "contexte": "employeurs : NIKE",
+   "encadrement": true,
+   "cible": "software-engineer",
+   "preuve": {
+    "choix": {
+     "i": 1,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Lead software engineer",
+     "libelle_en": "Lead Software Engineer"
+    },
+    "second": {
+     "i": 1,
+     "encadrement": true,
+     "concept": "software-engineer",
+     "libelle_fr": "Lead Software Engineer",
+     "libelle_en": "Lead Software Engineer"
+    }
+   }
+  },
+  {
+   "intitule": "lead software engineer/architect- servicenow",
+   "code": "software-engineer",
+   "offres": 1,
+   "mots": [
+    "LEAD"
+   ],
+   "contexte": "employeurs : H&M Group",
+   "encadrement": true,
+   "cible": "software-engineer",
+   "preuve": {
+    "choix": {
+     "i": 2,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Lead software engineer",
+     "libelle_en": "Lead Software Engineer"
+    },
+    "second": {
+     "i": 2,
+     "encadrement": true,
+     "concept": "software-engineer",
+     "libelle_fr": "Lead Software Engineer",
+     "libelle_en": "Lead Software Engineer"
+    }
+   }
+  },
+  {
+   "intitule": "lead software engineer - forward deployed engineering, itc",
+   "code": "software-engineer",
+   "offres": 1,
+   "mots": [
+    "LEAD"
+   ],
+   "contexte": "employeurs : NIKE",
+   "encadrement": true,
+   "cible": "software-engineer",
+   "preuve": {
+    "choix": {
+     "i": 3,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Lead software engineer",
+     "libelle_en": "Lead Software Engineer"
+    },
+    "second": {
+     "i": 3,
+     "encadrement": true,
+     "concept": "software-engineer",
+     "libelle_fr": "Lead Software Engineer",
+     "libelle_en": "Lead Software Engineer"
+    }
+   }
+  },
+  {
+   "intitule": "lead software engineer, itc",
+   "code": "software-engineer",
+   "offres": 5,
+   "mots": [
+    "LEAD"
+   ],
+   "contexte": "employeurs : NIKE",
+   "encadrement": true,
+   "cible": "software-engineer",
+   "preuve": {
+    "choix": {
+     "i": 4,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Lead software engineer",
+     "libelle_en": "Lead Software Engineer"
+    },
+    "second": {
+     "i": 4,
+     "encadrement": true,
+     "concept": "software-engineer",
+     "libelle_fr": "Lead Software Engineer",
+     "libelle_en": "Lead Software Engineer"
+    }
+   }
+  },
+  {
+   "intitule": "lead software engineer, platform engineering, itc",
+   "code": "software-engineer",
+   "offres": 1,
+   "mots": [
+    "LEAD"
+   ],
+   "contexte": "employeurs : NIKE",
+   "encadrement": true,
+   "cible": "software-engineer",
+   "preuve": {
+    "choix": {
+     "i": 5,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Lead software engineer",
+     "libelle_en": "Lead Software Engineer"
+    },
+    "second": {
+     "i": 5,
+     "encadrement": true,
+     "concept": "software-engineer",
+     "libelle_fr": "Lead Software Engineer",
+     "libelle_en": "Lead Software Engineer"
+    }
+   }
+  },
+  {
+   "intitule": "lead, treasury accountant",
+   "code": "accountant",
+   "offres": 1,
+   "mots": [
+    "LEAD"
+   ],
+   "contexte": "employeurs : Chanel",
+   "encadrement": true,
+   "cible": "accountant",
+   "preuve": {
+    "choix": {
+     "i": 6,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Lead comptable trésorerie",
+     "libelle_en": "Lead Treasury Accountant"
+    },
+    "second": {
+     "i": 6,
+     "encadrement": true,
+     "concept": "accountant",
+     "libelle_fr": "Comptable Trésorerie Senior",
+     "libelle_en": "Lead Treasury Accountant"
+    }
+   }
+  },
+  {
+   "intitule": "manager, hr business partner - distribution center",
+   "code": "hr-business-partner",
+   "offres": 2,
+   "mots": [
+    "MANAGER"
+   ],
+   "contexte": "employeurs : Shiseido, Shiseido Americas Corporation",
+   "encadrement": true,
+   "cible": "hr-business-partner",
+   "preuve": {
+    "choix": {
+     "i": 7,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Manager partenaire RH",
+     "libelle_en": "HR Business Partner Manager"
+    },
+    "second": {
+     "i": 7,
+     "encadrement": true,
+     "concept": "hr-business-partner",
+     "libelle_fr": "Responsable RH",
+     "libelle_en": "HR Business Partner Manager"
+    }
+   }
+  },
+  {
+   "intitule": "manager, hr business partner - retail",
+   "code": "hr-business-partner",
+   "offres": 1,
+   "mots": [
+    "MANAGER"
+   ],
+   "contexte": "employeurs : Celine ; services : Human Resources",
+   "encadrement": true,
+   "cible": "hr-business-partner",
+   "preuve": {
+    "choix": {
+     "i": 8,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Manager partenaire RH",
+     "libelle_en": "HR Business Partner Manager"
+    },
+    "second": {
+     "i": 8,
+     "encadrement": true,
+     "concept": "hr-business-partner",
+     "libelle_fr": "Responsable RH Retail",
+     "libelle_en": "Retail HR Business Partner Manager"
+    }
+   }
+  },
+  {
+   "intitule": "manager - hr business partner, south asia pacific",
+   "code": "hr-business-partner",
+   "offres": 1,
+   "mots": [
+    "MANAGER"
+   ],
+   "contexte": "employeurs : Tiffany & Co. ; services : Human Resources",
+   "encadrement": true,
+   "cible": "hr-business-partner",
+   "preuve": {
+    "choix": {
+     "i": 9,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Manager partenaire RH",
+     "libelle_en": "HR Business Partner Manager"
+    },
+    "second": {
+     "i": 9,
+     "encadrement": true,
+     "concept": "hr-business-partner",
+     "libelle_fr": "Responsable RH",
+     "libelle_en": "HR Business Partner Manager"
+    }
+   }
+  },
+  {
+   "intitule": "manager, human resources business partner - central",
+   "code": "hr-business-partner",
+   "offres": 1,
+   "mots": [
+    "MANAGER"
+   ],
+   "contexte": "employeurs : Tiffany & Co. ; services : Human Resources",
+   "encadrement": true,
+   "cible": "hr-business-partner",
+   "preuve": {
+    "choix": {
+     "i": 10,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Manager partenaire RH",
+     "libelle_en": "HR Business Partner Manager"
+    },
+    "second": {
+     "i": 10,
+     "encadrement": true,
+     "concept": "hr-business-partner",
+     "libelle_fr": "Responsable RH",
+     "libelle_en": "HR Business Partner Manager"
+    }
+   }
+  },
+  {
+   "intitule": "manager, human resources business partner, northern region",
+   "code": "hr-business-partner",
+   "offres": 1,
+   "mots": [
+    "MANAGER"
+   ],
+   "contexte": "employeurs : Hermès",
+   "encadrement": true,
+   "cible": "hr-business-partner",
+   "preuve": {
+    "choix": {
+     "i": 11,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Manager partenaire RH",
+     "libelle_en": "HR Business Partner Manager"
+    },
+    "second": {
+     "i": 11,
+     "encadrement": true,
+     "concept": "hr-business-partner",
+     "libelle_fr": "Responsable RH",
+     "libelle_en": "HR Business Partner Manager"
+    }
+   }
+  },
+  {
+   "intitule": "manager, people business partner",
+   "code": "hr-business-partner",
+   "offres": 1,
+   "mots": [
+    "MANAGER"
+   ],
+   "contexte": "employeurs : Exemplar Luxury Group",
+   "encadrement": true,
+   "cible": "hr-business-partner",
+   "preuve": {
+    "choix": {
+     "i": 12,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Manager partenaire RH",
+     "libelle_en": "People Business Partner Manager"
+    },
+    "second": {
+     "i": 12,
+     "encadrement": true,
+     "concept": "hr-business-partner",
+     "libelle_fr": "Responsable RH",
+     "libelle_en": "People Business Partner Manager"
+    }
+   }
+  },
+  {
+   "intitule": "nike assistant store manager (assistant head coach) (w/m/d) – 37.5 h – nfs münchen parsdorf",
+   "code": "assistant-store-manager",
+   "offres": 1,
+   "mots": [
+    "HEAD"
+   ],
+   "contexte": "employeurs : NIKE Retail Germany",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 13,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 13,
+     "encadrement": true,
+     "concept": "assistant-store-manager",
+     "libelle_fr": "Adjoint responsable de boutique",
+     "libelle_en": "Assistant Store Manager"
+    }
+   }
+  },
+  {
+   "intitule": "nike sportswear, lead graphic designer, nsw women’s apparel",
+   "code": "graphic-designer",
+   "offres": 1,
+   "mots": [
+    "LEAD"
+   ],
+   "contexte": "employeurs : NIKE",
+   "encadrement": true,
+   "cible": "graphic-designer",
+   "preuve": {
+    "choix": {
+     "i": 14,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Lead graphiste",
+     "libelle_en": "Lead Graphic Designer"
+    },
+    "second": {
+     "i": 14,
+     "encadrement": true,
+     "concept": "graphic-designer",
+     "libelle_fr": "Lead Graphiste",
+     "libelle_en": "Lead Graphic Designer"
+    }
+   }
+  },
+  {
+   "intitule": "office manager & personal assistant - central london (9-12 month ftc - 37.5 hours)",
+   "code": "executive-assistant",
+   "offres": 1,
+   "mots": [
+    "MANAGER"
+   ],
+   "contexte": "employeurs : Rituals ; services : General Management",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 15,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 15,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    }
+   }
+  },
+  {
+   "intitule": "part-time lead retail sales associate",
+   "code": "sales-advisor",
+   "offres": 1,
+   "mots": [
+    "LEAD"
+   ],
+   "contexte": "employeurs : FIGS",
+   "encadrement": true,
+   "cible": "offres:retail-sales-lead",
+   "preuve": {
+    "choix": {
+     "i": 16,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Premier vendeur",
+     "libelle_en": "Lead Sales Associate"
+    },
+    "second": {
+     "i": 16,
+     "encadrement": true,
+     "concept": "offres:retail-sales-lead",
+     "libelle_fr": "Responsable des ventes",
+     "libelle_en": "Lead Retail Sales Associate"
+    }
+   }
+  },
+  {
+   "intitule": "premier(ère) vendeur(euse) 39h - cdi",
+   "code": "sales-advisor",
+   "offres": 2,
+   "mots": [
+    "PREMIER VENDEUR"
+   ],
+   "contexte": "employeurs : American Vintage",
+   "encadrement": true,
+   "cible": "offres:retail-sales-lead",
+   "preuve": {
+    "choix": {
+     "i": 17,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Premier vendeur",
+     "libelle_en": "Lead Sales Associate"
+    },
+    "second": {
+     "i": 17,
+     "encadrement": true,
+     "concept": "backend:ANIMATEUR_VENTES",
+     "libelle_fr": "Premier vendeur",
+     "libelle_en": "Senior Sales Associate"
+    }
+   }
+  },
+  {
+   "intitule": "premier(ère) vendeur(se) h/f",
+   "code": "sales-advisor",
+   "offres": 1,
+   "mots": [
+    "PREMIER VENDEUR"
+   ],
+   "contexte": "employeurs : LANCEL",
+   "encadrement": true,
+   "cible": "offres:retail-sales-lead",
+   "preuve": {
+    "choix": {
+     "i": 18,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Premier vendeur",
+     "libelle_en": "Lead Sales Associate"
+    },
+    "second": {
+     "i": 18,
+     "encadrement": true,
+     "concept": "backend:ANIMATEUR_VENTES",
+     "libelle_fr": "Premier vendeur",
+     "libelle_en": "Senior Sales Associate"
+    }
+   }
+  },
+  {
+   "intitule": "premier(e) vendeur(se) f/h (cdd 35h)",
+   "code": "sales-advisor",
+   "offres": 1,
+   "mots": [
+    "PREMIER VENDEUR"
+   ],
+   "contexte": "employeurs : Aigle",
+   "encadrement": true,
+   "cible": "offres:retail-sales-lead",
+   "preuve": {
+    "choix": {
+     "i": 19,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Premier vendeur",
+     "libelle_en": "Lead Sales Associate"
+    },
+    "second": {
+     "i": 19,
+     "encadrement": true,
+     "concept": "backend:ANIMATEUR_VENTES",
+     "libelle_fr": "Premier vendeur",
+     "libelle_en": "Senior Sales Associate"
+    }
+   }
+  },
+  {
+   "intitule": "premier vendeur 35h - paris - cdi h/f",
+   "code": "sales-advisor",
+   "offres": 1,
+   "mots": [
+    "PREMIER VENDEUR"
+   ],
+   "contexte": "employeurs : Fursac",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 0,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 0,
+     "encadrement": true,
+     "concept": "backend:ANIMATEUR_VENTES",
+     "libelle_fr": "Premier vendeur",
+     "libelle_en": "Senior Sales Associate"
+    }
+   }
+  },
+  {
+   "intitule": "premier vendeur f/h (cdi 35h)",
+   "code": "sales-advisor",
+   "offres": 1,
+   "mots": [
+    "PREMIER VENDEUR"
+   ],
+   "contexte": "employeurs : Aigle",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 1,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 1,
+     "encadrement": true,
+     "concept": "backend:ANIMATEUR_VENTES",
+     "libelle_fr": "Premier vendeur",
+     "libelle_en": "Senior Sales Associate"
+    }
+   }
+  },
+  {
+   "intitule": "premier vendeur h/f",
+   "code": "sales-advisor",
+   "offres": 1,
+   "mots": [
+    "PREMIER VENDEUR"
+   ],
+   "contexte": "employeurs : Kilo Shop",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 2,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 2,
+     "encadrement": true,
+     "concept": "backend:ANIMATEUR_VENTES",
+     "libelle_fr": "Premier vendeur",
+     "libelle_en": "Senior Sales Associate"
+    }
+   }
+  },
+  {
+   "intitule": "premier vendeur h.f - bon marché",
+   "code": "sales-advisor",
+   "offres": 1,
+   "mots": [
+    "PREMIER VENDEUR"
+   ],
+   "contexte": "employeurs : Eric Bompard",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 3,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 3,
+     "encadrement": true,
+     "concept": "backend:ANIMATEUR_VENTES",
+     "libelle_fr": "Premier vendeur",
+     "libelle_en": "Senior Sales Associate"
+    }
+   }
+  },
+  {
+   "intitule": "premier vendeur h/f - cdi - galeries lafayette nantes",
+   "code": "sales-advisor",
+   "offres": 1,
+   "mots": [
+    "PREMIER VENDEUR"
+   ],
+   "contexte": "employeurs : Maje",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 4,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 4,
+     "encadrement": true,
+     "concept": "backend:ANIMATEUR_VENTES",
+     "libelle_fr": "Premier vendeur",
+     "libelle_en": "Senior Sales Associate"
+    }
+   }
+  },
+  {
+   "intitule": "premier vendeur h/f - cdi - lyon the village",
+   "code": "sales-advisor",
+   "offres": 1,
+   "mots": [
+    "PREMIER VENDEUR"
+   ],
+   "contexte": "employeurs : Maje",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 5,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 5,
+     "encadrement": true,
+     "concept": "backend:ANIMATEUR_VENTES",
+     "libelle_fr": "Premier vendeur",
+     "libelle_en": "Senior Sales Associate"
+    }
+   }
+  },
+  {
+   "intitule": "premier vendeur h/f - cdi - ternes",
+   "code": "sales-advisor",
+   "offres": 1,
+   "mots": [
+    "PREMIER VENDEUR"
+   ],
+   "contexte": "employeurs : Maje",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 6,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 6,
+     "encadrement": true,
+     "concept": "backend:ANIMATEUR_VENTES",
+     "libelle_fr": "Premier vendeur",
+     "libelle_en": "Senior Sales Associate"
+    }
+   }
+  },
+  {
+   "intitule": "premier vendeur (h/f) - sézane",
+   "code": "sales-advisor",
+   "offres": 1,
+   "mots": [
+    "PREMIER VENDEUR"
+   ],
+   "contexte": "employeurs : Sézane",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 7,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 7,
+     "encadrement": true,
+     "concept": "backend:ANIMATEUR_VENTES",
+     "libelle_fr": "Premier vendeur",
+     "libelle_en": "Senior Sales Associate"
+    }
+   }
+  },
+  {
+   "intitule": "regional director, people business partner - west",
+   "code": "hr-business-partner",
+   "offres": 1,
+   "mots": [
+    "DIRECTOR"
+   ],
+   "contexte": "employeurs : Exemplar Luxury Group",
+   "encadrement": true,
+   "cible": "backend:DIRECTEUR_DES_RESSOURCES_HUMAINES",
+   "preuve": {
+    "choix": {
+     "i": 8,
+     "encadrement": true,
+     "concept": "backend:DIRECTEUR_DES_RESSOURCES_HUMAINES",
+     "libelle_fr": "Directeur régional des ressources humaines",
+     "libelle_en": "Regional Director, People Business Partner"
+    },
+    "second": {
+     "i": 8,
+     "encadrement": true,
+     "concept": "backend:DIRECTEUR_DES_RESSOURCES_HUMAINES",
+     "libelle_fr": "Directeur régional RH",
+     "libelle_en": "Regional HR Director"
+    }
+   }
+  },
+  {
+   "intitule": "responsable administratif et comptable f/h",
+   "code": "accountant",
+   "offres": 1,
+   "mots": [
+    "RESPONSABLE"
+   ],
+   "contexte": "employeurs : Bogoods",
+   "encadrement": true,
+   "cible": "backend:RESPONSABLE_ADMINISTRATIF_ET_FINANCIER",
+   "preuve": {
+    "choix": {
+     "i": 9,
+     "encadrement": true,
+     "concept": "backend:RESPONSABLE_ADMINISTRATIF_ET_FINANCIER",
+     "libelle_fr": "Responsable administratif et comptable",
+     "libelle_en": "Administrative and Accounting Manager"
+    },
+    "second": {
+     "i": 9,
+     "encadrement": true,
+     "concept": "backend:RESPONSABLE_ADMINISTRATIF_ET_FINANCIER",
+     "libelle_fr": "Responsable administratif et comptable",
+     "libelle_en": "Accounting and Administrative Manager"
+    }
+   }
+  },
+  {
+   "intitule": "responsable comptable",
+   "code": "accountant",
+   "offres": 1,
+   "mots": [
+    "RESPONSABLE"
+   ],
+   "contexte": "employeurs : L'Oréal Groupe",
+   "encadrement": true,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 10,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Responsable comptable",
+     "libelle_en": "Accounting Manager"
+    },
+    "second": {
+     "i": 10,
+     "encadrement": true,
+     "concept": "backend:RESPONSABLE_ADMINISTRATIF_ET_FINANCIER",
+     "libelle_fr": "Responsable comptable",
+     "libelle_en": "Accounting Manager"
+    }
+   }
+  },
+  {
+   "intitule": "responsable comptable f/h",
+   "code": "accountant",
+   "offres": 1,
+   "mots": [
+    "RESPONSABLE"
+   ],
+   "contexte": "employeurs : ba&sh",
+   "encadrement": true,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 11,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Responsable comptable",
+     "libelle_en": "Accounting Manager"
+    },
+    "second": {
+     "i": 11,
+     "encadrement": true,
+     "concept": "backend:RESPONSABLE_ADMINISTRATIF_ET_FINANCIER",
+     "libelle_fr": "Responsable comptable",
+     "libelle_en": "Accounting Manager"
+    }
+   }
+  },
+  {
+   "intitule": "responsable comptable groupe (h/f) - cdi",
+   "code": "accountant",
+   "offres": 1,
+   "mots": [
+    "RESPONSABLE"
+   ],
+   "contexte": "employeurs : Jonak",
+   "encadrement": true,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 12,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Responsable comptable groupe",
+     "libelle_en": "Group Accounting Manager"
+    },
+    "second": {
+     "i": 12,
+     "encadrement": true,
+     "concept": "backend:RESPONSABLE_ADMINISTRATIF_ET_FINANCIER",
+     "libelle_fr": "Responsable comptable groupe",
+     "libelle_en": "Group Accounting Manager"
+    }
+   }
+  },
+  {
+   "intitule": "responsable des ressources humaines (hrbp) industrie - cdi- h/f",
+   "code": "hr-business-partner",
+   "offres": 1,
+   "mots": [
+    "RESPONSABLE"
+   ],
+   "contexte": "employeurs : Pierre Fabre",
+   "encadrement": true,
+   "cible": "backend:DIRECTEUR_DES_RESSOURCES_HUMAINES",
+   "preuve": {
+    "choix": {
+     "i": 13,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Responsable des ressources humaines",
+     "libelle_en": "Human Resources Manager"
+    },
+    "second": {
+     "i": 13,
+     "encadrement": true,
+     "concept": "backend:DIRECTEUR_DES_RESSOURCES_HUMAINES",
+     "libelle_fr": "Responsable des ressources humaines",
+     "libelle_en": "HR Manager"
+    }
+   }
+  },
+  {
+   "intitule": "retail sales associate - key holder",
+   "code": "sales-advisor",
+   "offres": 1,
+   "mots": [
+    "KEY HOLDER"
+   ],
+   "contexte": "employeurs : PUMA Denmark, filial af PUMA Europe GmbH, Tyskland",
+   "encadrement": true,
+   "cible": "offres:keyholder",
+   "preuve": {
+    "choix": {
+     "i": 14,
+     "encadrement": true,
+     "concept": "offres:keyholder",
+     "libelle_fr": "Responsable d'ouverture et de fermeture",
+     "libelle_en": "Keyholder"
+    },
+    "second": {
+     "i": 14,
+     "encadrement": true,
+     "concept": "offres:keyholder",
+     "libelle_fr": "Responsable d'ouverture et de fermeture",
+     "libelle_en": "Key Holder"
+    }
+   }
+  },
+  {
+   "intitule": "retail sales associate keyholder",
+   "code": "sales-advisor",
+   "offres": 24,
+   "mots": [
+    "KEYHOLDER"
+   ],
+   "contexte": "employeurs : US02 Movado Retail Group, Inc.",
+   "encadrement": true,
+   "cible": "offres:keyholder",
+   "preuve": {
+    "choix": {
+     "i": 15,
+     "encadrement": true,
+     "concept": "offres:keyholder",
+     "libelle_fr": "Responsable d'ouverture et de fermeture",
+     "libelle_en": "Keyholder"
+    },
+    "second": {
+     "i": 15,
+     "encadrement": true,
+     "concept": "offres:keyholder",
+     "libelle_fr": "Responsable d'ouverture et de fermeture",
+     "libelle_en": "Key Holder"
+    }
+   }
+  },
+  {
+   "intitule": "sales advisor/keyholder",
+   "code": "sales-advisor",
+   "offres": 8,
+   "mots": [
+    "KEYHOLDER"
+   ],
+   "contexte": "employeurs : Saltrock ; services : Retail",
+   "encadrement": true,
+   "cible": "offres:keyholder",
+   "preuve": {
+    "choix": {
+     "i": 16,
+     "encadrement": true,
+     "concept": "offres:keyholder",
+     "libelle_fr": "Responsable d'ouverture et de fermeture",
+     "libelle_en": "Keyholder"
+    },
+    "second": {
+     "i": 16,
+     "encadrement": true,
+     "concept": "offres:keyholder",
+     "libelle_fr": "Responsable d'ouverture et de fermeture",
+     "libelle_en": "Key Holder"
+    }
+   }
+  },
+  {
+   "intitule": "sales advisor team leader - derry",
+   "code": "sales-advisor",
+   "offres": 1,
+   "mots": [
+    "LEADER"
+   ],
+   "contexte": "employeurs : H&M Group",
+   "encadrement": true,
+   "cible": "offres:retail-sales-lead",
+   "preuve": {
+    "choix": {
+     "i": 17,
+     "encadrement": true,
+     "concept": "offres:retail-sales-lead",
+     "libelle_fr": "Responsable des ventes en boutique",
+     "libelle_en": "Sales Advisor Team Leader"
+    },
+    "second": {
+     "i": 17,
+     "encadrement": true,
+     "concept": "offres:retail-sales-lead",
+     "libelle_fr": "Responsable des ventes",
+     "libelle_en": "Sales Team Leader"
+    }
+   }
+  },
+  {
+   "intitule": "sales advisor team leader - kilkenny",
+   "code": "sales-advisor",
+   "offres": 1,
+   "mots": [
+    "LEADER"
+   ],
+   "contexte": "employeurs : H&M Group",
+   "encadrement": true,
+   "cible": "offres:retail-sales-lead",
+   "preuve": {
+    "choix": {
+     "i": 18,
+     "encadrement": true,
+     "concept": "offres:retail-sales-lead",
+     "libelle_fr": "Responsable des ventes en boutique",
+     "libelle_en": "Sales Advisor Team Leader"
+    },
+    "second": {
+     "i": 18,
+     "encadrement": true,
+     "concept": "offres:retail-sales-lead",
+     "libelle_fr": "Responsable des ventes",
+     "libelle_en": "Sales Team Leader"
+    }
+   }
+  },
+  {
+   "intitule": "sales associate / keyholder",
+   "code": "sales-advisor",
+   "offres": 1,
+   "mots": [
+    "KEYHOLDER"
+   ],
+   "contexte": "employeurs : UGG",
+   "encadrement": true,
+   "cible": "offres:keyholder",
+   "preuve": {
+    "choix": {
+     "i": 19,
+     "encadrement": true,
+     "concept": "offres:keyholder",
+     "libelle_fr": "Responsable d'ouverture et de fermeture",
+     "libelle_en": "Keyholder"
+    },
+    "second": {
+     "i": 19,
+     "encadrement": true,
+     "concept": "offres:keyholder",
+     "libelle_fr": "Responsable d'ouverture et de fermeture",
+     "libelle_en": "Key Holder"
+    }
+   }
+  },
+  {
+   "intitule": "senior lead - legal counsel, trademarks and brand protection",
+   "code": "legal-counsel",
+   "offres": 1,
+   "mots": [
+    "LEAD"
+   ],
+   "contexte": "employeurs : On",
+   "encadrement": true,
+   "cible": "backend:RESPONSABLE_JURIDIQUE",
+   "preuve": {
+    "choix": {
+     "i": 0,
+     "encadrement": true,
+     "concept": "backend:RESPONSABLE_JURIDIQUE",
+     "libelle_fr": "Responsable juridique",
+     "libelle_en": "Lead Legal Counsel"
+    },
+    "second": {
+     "i": 0,
+     "encadrement": true,
+     "concept": "backend:RESPONSABLE_JURIDIQUE",
+     "libelle_fr": "Responsable juridique",
+     "libelle_en": "Legal Manager"
+    }
+   }
+  },
+  {
+   "intitule": "senior/lead software engineer (c#) – automation & machine control",
+   "code": "software-engineer",
+   "offres": 1,
+   "mots": [
+    "LEAD"
+   ],
+   "contexte": "employeurs : Sioux",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 1,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 1,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Lead ingénieur logiciel",
+     "libelle_en": "Lead Software Engineer"
+    }
+   }
+  },
+  {
+   "intitule": "senior lead - staff software engineer",
+   "code": "software-engineer",
+   "offres": 1,
+   "mots": [
+    "LEAD"
+   ],
+   "contexte": "employeurs : On",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 2,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 2,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Lead ingénieur logiciel",
+     "libelle_en": "Lead Software Engineer"
+    }
+   }
+  },
+  {
+   "intitule": "senior manager, hr business partner",
+   "code": "hr-business-partner",
+   "offres": 1,
+   "mots": [
+    "MANAGER"
+   ],
+   "contexte": "employeurs : Sephora ; services : Human Resources",
+   "encadrement": true,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 3,
+     "encadrement": true,
+     "concept": "backend:DIRECTEUR_DES_RESSOURCES_HUMAINES",
+     "libelle_fr": "Directeur des ressources humaines",
+     "libelle_en": "HR Director"
+    },
+    "second": {
+     "i": 3,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Responsable partenaire RH",
+     "libelle_en": "Senior HR Business Partner"
+    }
+   }
+  },
+  {
+   "intitule": "senior manager, hr business partner - manufacturing",
+   "code": "hr-business-partner",
+   "offres": 2,
+   "mots": [
+    "MANAGER"
+   ],
+   "contexte": "employeurs : Shiseido Americas Corporation, Shiseido",
+   "encadrement": true,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 4,
+     "encadrement": true,
+     "concept": "backend:DIRECTEUR_DES_RESSOURCES_HUMAINES",
+     "libelle_fr": "Directeur des ressources humaines",
+     "libelle_en": "HR Director"
+    },
+    "second": {
+     "i": 4,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Responsable partenaire RH",
+     "libelle_en": "Senior HR Business Partner"
+    }
+   }
+  },
+  {
+   "intitule": "servicekraft / chef de rang / barista (m/w/d) - boss café metzingen (vollzeit)",
+   "code": "barista",
+   "offres": 1,
+   "mots": [
+    "CHEF"
+   ],
+   "contexte": "employeurs : HUGO BOSS AG ; services : Facilities, Architecture & General Services",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 5,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 5,
+     "encadrement": true,
+     "concept": "backend:CHEF_DE_RANG",
+     "libelle_fr": "Chef de rang",
+     "libelle_en": "Chef de rang"
+    }
+   }
+  },
+  {
+   "intitule": "smartwool : sales associate, keyholder (fixed- term) - queenstown",
+   "code": "sales-advisor",
+   "offres": 1,
+   "mots": [
+    "KEYHOLDER"
+   ],
+   "contexte": "employeurs : Icebreaker",
+   "encadrement": true,
+   "cible": "offres:keyholder",
+   "preuve": {
+    "choix": {
+     "i": 6,
+     "encadrement": true,
+     "concept": "offres:keyholder",
+     "libelle_fr": "Responsable d'ouverture et de fermeture",
+     "libelle_en": "Keyholder"
+    },
+    "second": {
+     "i": 6,
+     "encadrement": true,
+     "concept": "offres:keyholder",
+     "libelle_fr": "Responsable d'ouverture et de fermeture",
+     "libelle_en": "Keyholder"
+    }
+   }
+  },
+  {
+   "intitule": "specialist, lead treasury accountant",
+   "code": "accountant",
+   "offres": 1,
+   "mots": [
+    "LEAD"
+   ],
+   "contexte": "employeurs : Pandora",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 7,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 7,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Responsable comptable",
+     "libelle_en": "Lead Accountant"
+    }
+   }
+  },
+  {
+   "intitule": "sr. director, hr business partner - merchandising, planning, strategy and finance",
+   "code": "hr-business-partner",
+   "offres": 1,
+   "mots": [
+    "DIRECTOR"
+   ],
+   "contexte": "employeurs : Bloomingdale's",
+   "encadrement": true,
+   "cible": "backend:DIRECTEUR_DES_RESSOURCES_HUMAINES",
+   "preuve": {
+    "choix": {
+     "i": 8,
+     "encadrement": true,
+     "concept": "backend:DIRECTEUR_DES_RESSOURCES_HUMAINES",
+     "libelle_fr": "Directeur des ressources humaines",
+     "libelle_en": "HR Director"
+    },
+    "second": {
+     "i": 8,
+     "encadrement": true,
+     "concept": "backend:DIRECTEUR_DES_RESSOURCES_HUMAINES",
+     "libelle_fr": "Directeur des ressources humaines",
+     "libelle_en": "HR Director"
+    }
+   }
+  },
+  {
+   "intitule": "stage / alternance - assistant(e) directeur(trice) artistique / graphiste (h/f)",
+   "code": "graphic-designer",
+   "offres": 1,
+   "mots": [
+    "DIRECTEUR"
+   ],
+   "contexte": "employeurs : Sézane",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 9,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 9,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": "Assistant directeur artistique",
+     "libelle_en": "Assistant Art Director"
+    }
+   }
+  },
+  {
+   "intitule": "store manager/encargado/a de tienda - puerto venecia (zaragoza)",
+   "code": "store-manager",
+   "offres": 1,
+   "mots": [
+    "ENCARGADO"
+   ],
+   "contexte": "employeurs : Skechers ; services : Retail",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 10,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 10,
+     "encadrement": true,
+     "concept": "store-manager",
+     "libelle_fr": "Responsable de boutique",
+     "libelle_en": "Store Manager"
+    }
+   }
+  },
+  {
+   "intitule": "store manager / encargado/a de tienda - sustitución - conde peñalver (madrid)",
+   "code": "store-manager",
+   "offres": 1,
+   "mots": [
+    "ENCARGADO"
+   ],
+   "contexte": "employeurs : La casa de las Carcasas",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 11,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 11,
+     "encadrement": true,
+     "concept": "store-manager",
+     "libelle_fr": "Responsable de boutique",
+     "libelle_en": "Store Manager"
+    }
+   }
+  },
+  {
+   "intitule": "store manager (head coach) - nike des moines",
+   "code": "store-manager",
+   "offres": 1,
+   "mots": [
+    "HEAD"
+   ],
+   "contexte": "employeurs : NIKE",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 12,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 12,
+     "encadrement": true,
+     "concept": "store-manager",
+     "libelle_fr": "Responsable de boutique",
+     "libelle_en": "Store Manager"
+    }
+   }
+  },
+  {
+   "intitule": "store manager (head coach) - nike west london",
+   "code": "store-manager",
+   "offres": 1,
+   "mots": [
+    "HEAD"
+   ],
+   "contexte": "employeurs : NIKE Retail UK",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 13,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 13,
+     "encadrement": true,
+     "concept": "store-manager",
+     "libelle_fr": "Responsable de boutique",
+     "libelle_en": "Store Manager"
+    }
+   }
+  },
+  {
+   "intitule": "store manager (nagoya, japan) 店長 (愛知県名古屋市, 日本)",
+   "code": "store-manager",
+   "offres": 1,
+   "mots": [
+    "店長"
+   ],
+   "contexte": "employeurs : APM Monaco",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 14,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 14,
+     "encadrement": true,
+     "concept": "store-manager",
+     "libelle_fr": "Responsable de boutique",
+     "libelle_en": "Store Manager"
+    }
+   }
+  },
+  {
+   "intitule": "store manager, nags head",
+   "code": "store-manager",
+   "offres": 1,
+   "mots": [
+    "HEAD"
+   ],
+   "contexte": "employeurs : LOFT",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 15,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 15,
+     "encadrement": true,
+     "concept": "store-manager",
+     "libelle_fr": "Responsable de boutique",
+     "libelle_en": "Store Manager"
+    }
+   }
+  },
+  {
+   "intitule": "store manager (osaka, japan) 店長 (大阪, 日本)",
+   "code": "store-manager",
+   "offres": 1,
+   "mots": [
+    "店長"
+   ],
+   "contexte": "employeurs : APM Monaco",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 16,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 16,
+     "encadrement": true,
+     "concept": "store-manager",
+     "libelle_fr": "Responsable de boutique",
+     "libelle_en": "Store Manager"
+    }
+   }
+  },
+  {
+   "intitule": "store manager/ store supervisor - qassim مدير معرض و مشرف معرض القصيم",
+   "code": "store-manager",
+   "offres": 1,
+   "mots": [
+    "SUPERVISOR"
+   ],
+   "contexte": "employeurs : adidas",
+   "encadrement": false,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 17,
+     "encadrement": false,
+     "concept": null,
+     "libelle_fr": null,
+     "libelle_en": null
+    },
+    "second": {
+     "i": 17,
+     "encadrement": true,
+     "concept": "store-manager",
+     "libelle_fr": "Responsable de boutique",
+     "libelle_en": "Store Manager"
+    }
+   }
+  },
+  {
+   "intitule": "temporary sales advisor/keyholder",
+   "code": "sales-advisor",
+   "offres": 1,
+   "mots": [
+    "KEYHOLDER"
+   ],
+   "contexte": "employeurs : Saltrock ; services : Retail",
+   "encadrement": true,
+   "cible": "offres:keyholder",
+   "preuve": {
+    "choix": {
+     "i": 18,
+     "encadrement": true,
+     "concept": "offres:keyholder",
+     "libelle_fr": "Responsable d'ouverture et de fermeture",
+     "libelle_en": "Keyholder"
+    },
+    "second": {
+     "i": 18,
+     "encadrement": true,
+     "concept": "offres:keyholder",
+     "libelle_fr": "Responsable d'ouverture et de fermeture",
+     "libelle_en": "Keyholder"
+    }
+   }
+  },
+  {
+   "intitule": "vendeur ou responsable adjoint en alternance (h/f)",
+   "code": "sales-advisor",
+   "offres": 1,
+   "mots": [
+    "RESPONSABLE"
+   ],
+   "contexte": "employeurs : Jules",
+   "encadrement": true,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 19,
+     "encadrement": true,
+     "concept": "assistant-store-manager",
+     "libelle_fr": "Adjoint au responsable de boutique",
+     "libelle_en": "Assistant Store Manager"
+    },
+    "second": {
+     "i": 19,
+     "encadrement": true,
+     "concept": "assistant-store-manager",
+     "libelle_fr": "Adjoint au responsable de boutique",
+     "libelle_en": "Assistant Store Manager"
+    }
+   }
+  },
+  {
+   "intitule": "vendeur ou responsable adjoint en alternance (h/f) - annecy",
+   "code": "sales-advisor",
+   "offres": 1,
+   "mots": [
+    "RESPONSABLE"
+   ],
+   "contexte": "employeurs : Jules",
+   "encadrement": true,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 0,
+     "encadrement": true,
+     "concept": "assistant-store-manager",
+     "libelle_fr": "Vendeur ou Responsable adjoint",
+     "libelle_en": "Sales Associate or Assistant Store Manager"
+    },
+    "second": {
+     "i": 0,
+     "encadrement": true,
+     "concept": "assistant-store-manager",
+     "libelle_fr": "Adjoint au responsable de boutique",
+     "libelle_en": "Assistant Store Manager"
+    }
+   }
+  },
+  {
+   "intitule": "vendeur ou responsable adjoint en alternance (h/f) - antibes",
+   "code": "sales-advisor",
+   "offres": 1,
+   "mots": [
+    "RESPONSABLE"
+   ],
+   "contexte": "employeurs : Jules",
+   "encadrement": true,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 1,
+     "encadrement": true,
+     "concept": "assistant-store-manager",
+     "libelle_fr": "Vendeur ou Responsable adjoint",
+     "libelle_en": "Sales Associate or Assistant Store Manager"
+    },
+    "second": {
+     "i": 1,
+     "encadrement": true,
+     "concept": "assistant-store-manager",
+     "libelle_fr": "Adjoint au responsable de boutique",
+     "libelle_en": "Assistant Store Manager"
+    }
+   }
+  },
+  {
+   "intitule": "vendeur ou responsable adjoint en alternance (h/f) - béziers",
+   "code": "sales-advisor",
+   "offres": 1,
+   "mots": [
+    "RESPONSABLE"
+   ],
+   "contexte": "employeurs : Jules",
+   "encadrement": true,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 2,
+     "encadrement": true,
+     "concept": "assistant-store-manager",
+     "libelle_fr": "Vendeur ou Responsable adjoint",
+     "libelle_en": "Sales Associate or Assistant Store Manager"
+    },
+    "second": {
+     "i": 2,
+     "encadrement": true,
+     "concept": "assistant-store-manager",
+     "libelle_fr": "Adjoint au responsable de boutique",
+     "libelle_en": "Assistant Store Manager"
+    }
+   }
+  },
+  {
+   "intitule": "vendeur ou responsable adjoint en alternance (h/f) - bourg en bresse",
+   "code": "sales-advisor",
+   "offres": 1,
+   "mots": [
+    "RESPONSABLE"
+   ],
+   "contexte": "employeurs : Jules",
+   "encadrement": true,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 3,
+     "encadrement": true,
+     "concept": "assistant-store-manager",
+     "libelle_fr": "Vendeur ou Responsable adjoint",
+     "libelle_en": "Sales Associate or Assistant Store Manager"
+    },
+    "second": {
+     "i": 3,
+     "encadrement": true,
+     "concept": "assistant-store-manager",
+     "libelle_fr": "Adjoint au responsable de boutique",
+     "libelle_en": "Assistant Store Manager"
+    }
+   }
+  },
+  {
+   "intitule": "vendeur ou responsable adjoint en alternance (h/f) - lyon",
+   "code": "sales-advisor",
+   "offres": 1,
+   "mots": [
+    "RESPONSABLE"
+   ],
+   "contexte": "employeurs : Jules",
+   "encadrement": true,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 4,
+     "encadrement": true,
+     "concept": "assistant-store-manager",
+     "libelle_fr": "Vendeur ou Responsable adjoint",
+     "libelle_en": "Sales Associate or Assistant Store Manager"
+    },
+    "second": {
+     "i": 4,
+     "encadrement": true,
+     "concept": "assistant-store-manager",
+     "libelle_fr": "Adjoint au responsable de boutique",
+     "libelle_en": "Assistant Store Manager"
+    }
+   }
+  },
+  {
+   "intitule": "vendeur ou responsable adjoint en alternance (h/f) - lyon beynost",
+   "code": "sales-advisor",
+   "offres": 1,
+   "mots": [
+    "RESPONSABLE"
+   ],
+   "contexte": "employeurs : Jules",
+   "encadrement": true,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 5,
+     "encadrement": true,
+     "concept": "assistant-store-manager",
+     "libelle_fr": "Vendeur ou Responsable adjoint",
+     "libelle_en": "Sales Associate or Assistant Store Manager"
+    },
+    "second": {
+     "i": 5,
+     "encadrement": true,
+     "concept": "assistant-store-manager",
+     "libelle_fr": "Adjoint au responsable de boutique",
+     "libelle_en": "Assistant Store Manager"
+    }
+   }
+  },
+  {
+   "intitule": "vendeur ou responsable adjoint en alternance (h/f) - nice",
+   "code": "sales-advisor",
+   "offres": 1,
+   "mots": [
+    "RESPONSABLE"
+   ],
+   "contexte": "employeurs : Jules",
+   "encadrement": true,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 6,
+     "encadrement": true,
+     "concept": "assistant-store-manager",
+     "libelle_fr": "Vendeur ou Responsable adjoint",
+     "libelle_en": "Sales Associate or Assistant Store Manager"
+    },
+    "second": {
+     "i": 6,
+     "encadrement": true,
+     "concept": "assistant-store-manager",
+     "libelle_fr": "Adjoint au responsable de boutique",
+     "libelle_en": "Assistant Store Manager"
+    }
+   }
+  },
+  {
+   "intitule": "vendeur ou responsable adjoint en alternance (h/f) - plan de campagne",
+   "code": "sales-advisor",
+   "offres": 1,
+   "mots": [
+    "RESPONSABLE"
+   ],
+   "contexte": "employeurs : Jules",
+   "encadrement": true,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 7,
+     "encadrement": true,
+     "concept": "assistant-store-manager",
+     "libelle_fr": "Vendeur ou Responsable adjoint",
+     "libelle_en": "Sales Associate or Assistant Store Manager"
+    },
+    "second": {
+     "i": 7,
+     "encadrement": true,
+     "concept": "assistant-store-manager",
+     "libelle_fr": "Adjoint au responsable de boutique",
+     "libelle_en": "Assistant Store Manager"
+    }
+   }
+  },
+  {
+   "intitule": "vendeur ou responsable adjoint en alternance (h/f) - st etienne",
+   "code": "sales-advisor",
+   "offres": 1,
+   "mots": [
+    "RESPONSABLE"
+   ],
+   "contexte": "employeurs : Jules",
+   "encadrement": true,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 8,
+     "encadrement": true,
+     "concept": "assistant-store-manager",
+     "libelle_fr": "Vendeur ou Responsable adjoint",
+     "libelle_en": "Sales Associate or Assistant Store Manager"
+    },
+    "second": {
+     "i": 8,
+     "encadrement": true,
+     "concept": "assistant-store-manager",
+     "libelle_fr": "Adjoint au responsable de boutique",
+     "libelle_en": "Assistant Store Manager"
+    }
+   }
+  },
+  {
+   "intitule": "visual merchandiser keyholder - golden triangle mall",
+   "code": "visual-merchandiser",
+   "offres": 1,
+   "mots": [
+    "KEYHOLDER"
+   ],
+   "contexte": "employeurs : H&M Group",
+   "encadrement": true,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 9,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Visual Merchandiser Keyholder",
+     "libelle_en": "Visual Merchandiser Keyholder"
+    },
+    "second": {
+     "i": 9,
+     "encadrement": true,
+     "concept": "offres:keyholder",
+     "libelle_fr": "Responsable d'ouverture et de fermeture",
+     "libelle_en": "Keyholder"
+    }
+   }
+  },
+  {
+   "intitule": "visual merchandiser keyholder - west town mall - knoxville, tn",
+   "code": "visual-merchandiser",
+   "offres": 1,
+   "mots": [
+    "KEYHOLDER"
+   ],
+   "contexte": "employeurs : H&M Group",
+   "encadrement": true,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 10,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Visual Merchandiser Keyholder",
+     "libelle_en": "Visual Merchandiser Keyholder"
+    },
+    "second": {
+     "i": 10,
+     "encadrement": true,
+     "concept": "offres:keyholder",
+     "libelle_fr": "Responsable d'ouverture et de fermeture",
+     "libelle_en": "Keyholder"
+    }
+   }
+  },
+  {
+   "intitule": "店長候補 (store manager)",
+   "code": "store-manager",
+   "offres": 1,
+   "mots": [
+    "店長"
+   ],
+   "contexte": "employeurs : Pandora",
+   "encadrement": true,
+   "cible": null,
+   "preuve": {
+    "choix": {
+     "i": 11,
+     "encadrement": true,
+     "concept": "store-manager",
+     "libelle_fr": "Responsable de boutique",
+     "libelle_en": "Store Manager"
+    },
+    "second": {
+     "i": 11,
+     "encadrement": true,
+     "concept": "store-manager",
+     "libelle_fr": "Responsable de boutique",
+     "libelle_en": "Store Manager"
+    }
+   }
+  },
+  {
+   "intitule": "Responsable vendeur H/F",
+   "code": "sales-advisor",
+   "offres": 0,
+   "mots": [
+    "RESPONSABLE"
+   ],
+   "contexte": "",
+   "encadrement": true,
+   "cible": "offres:retail-sales-lead",
+   "preuve": {
+    "choix": {
+     "i": 12,
+     "encadrement": true,
+     "concept": "offres:retail-sales-lead",
+     "libelle_fr": "Responsable vendeur",
+     "libelle_en": "Sales Supervisor"
+    },
+    "second": {
+     "i": 12,
+     "encadrement": true,
+     "concept": "offres:retail-sales-lead",
+     "libelle_fr": "Responsable des ventes en boutique",
+     "libelle_en": "Sales Manager"
+    }
+   }
+  },
+  {
+   "intitule": "Team Leader Client Advisor",
+   "code": "sales-advisor",
+   "offres": 0,
+   "mots": [
+    "LEADER"
+   ],
+   "contexte": "",
+   "encadrement": true,
+   "cible": "backend:MANAGER_FLOOR",
+   "preuve": {
+    "choix": {
+     "i": 13,
+     "encadrement": true,
+     "concept": null,
+     "libelle_fr": "Team Leader Client Advisor",
+     "libelle_en": "Team Leader Client Advisor"
+    },
+    "second": {
+     "i": 13,
+     "encadrement": true,
+     "concept": "backend:MANAGER_FLOOR",
+     "libelle_fr": "Manager de floor",
+     "libelle_en": "Floor Manager"
+    }
+   }
+  }
+ ]
+}
