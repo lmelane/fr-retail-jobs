@@ -598,8 +598,17 @@ model Job {
   occupationStatus          String                  @default("PENDING")
   occupationEvidence        Json?
   occupationReleaseId       String?
-  occupationRelease         OccupationRelease?      @relation(fields: [occupationReleaseId], references: [id], onDelete: Restrict)
+  occupationRelease         OccupationRelease?      @relation("JobOccupationRelease", fields: [occupationReleaseId], references: [id], onDelete: Restrict)
   occupationObservations    OccupationObservation[]
+  /// Lot 2B de D-475 : métiers lus dans le titre (toutes langues, §32 a) et la version qui les a lus ; indexé (GIN).
+  titleRoles                String[]                @default([])
+  titleRolesReleaseId       String?
+  titleRolesRelease         OccupationRelease?      @relation("JobTitleRolesRelease", fields: [titleRolesReleaseId], references: [id], onDelete: Restrict)
+  /// Lot 2B : le domaine (niveau au-dessus de la famille), vérifié contre la version citée par le déclencheur.
+  occupationDomain          String?
+  /// Lot 2B : la version de la table apprise évaluée par la décision, quand elle a atteint cette étape.
+  occupationLearnedReleaseId String?
+  occupationLearnedRelease  OccupationLearnedRelease? @relation("JobLearnedRelease", fields: [occupationLearnedReleaseId], references: [id], onDelete: Restrict)
   /**
    * INTERNSHIP | APPRENTICESHIP | GRADUATE | JUNIOR | MID | SENIOR | MANAGER | DIRECTOR | EXECUTIVE
    */
@@ -647,6 +656,7 @@ model Job {
   @@index([isActive, countryCode])
   @@index([isActive, jobFunction])
   @@index([isActive, occupationCode])
+  @@index([titleRoles], type: Gin)
   @@index([occupationReleaseId, id])
   @@index([occupationStatus, isActive])
   @@index([isActive, seniority])
@@ -1042,9 +1052,48 @@ model OccupationRelease {
   contentHash  String                  @unique
   manifest     Json
   createdAt    DateTime                @default(now())
-  jobs         Job[]
+  jobs         Job[]                     @relation("JobOccupationRelease")
   activeStates OccupationState[]
   observations OccupationObservation[]
+  jobTitleRoles          Job[]                      @relation("JobTitleRolesRelease")
+  directOfferTitleRoles  DirectOffer[]              @relation("DirectOfferTitleRolesRelease")
+  learnedReleases        OccupationLearnedRelease[]
+}
+
+/// Lot 2B de D-475 : une version de la table apprise, immuable (déclencheur), avec son reçu et la version précédente.
+model OccupationLearnedRelease {
+  id                String                     @id
+  taxonomyReleaseId String
+  taxonomyRelease   OccupationRelease          @relation(fields: [taxonomyReleaseId], references: [id], onDelete: Restrict)
+  previousId        String?
+  previous          OccupationLearnedRelease?  @relation("LearnedReleaseChain", fields: [previousId], references: [id], onDelete: Restrict)
+  next              OccupationLearnedRelease[] @relation("LearnedReleaseChain")
+  contentHash       String                     @unique
+  receipt           Json
+  createdAt         DateTime                   @default(now())
+  entries           OccupationLearnedEntry[]
+  activeStates      OccupationLearnedState[]
+  jobs              Job[]                      @relation("JobLearnedRelease")
+  directOffers      DirectOffer[]              @relation("DirectOfferLearnedRelease")
+}
+
+/// Une décision apprise : l'intitulé normalisé et son métier, dans une version de table ; immuable.
+model OccupationLearnedEntry {
+  releaseId      String
+  release        OccupationLearnedRelease @relation(fields: [releaseId], references: [id], onDelete: Restrict)
+  titleKey       String
+  occupationCode String
+  evidence       Json
+
+  @@id([releaseId, titleKey])
+}
+
+/// La version active de la table apprise, à part de `OccupationState` (dont toute écriture remet l'index en file).
+model OccupationLearnedState {
+  id        String                    @id
+  releaseId String?
+  release   OccupationLearnedRelease? @relation(fields: [releaseId], references: [id], onDelete: Restrict)
+  updatedAt DateTime                  @default(now())
 }
 
 model OccupationObservation {
@@ -1377,10 +1426,18 @@ model DirectOffer {
   /** D-444 : le métier de la taxonomie active appliquée à l'intitulé, et la version qui l'a établi. */
   occupationCode        String?
   occupationReleaseId   String?
+  /** Lot 2B de D-475 : métiers lus dans le titre et la version qui les a lus ; domaine ; version de table apprise. */
+  titleRoles            String[]  @default([])
+  titleRolesReleaseId   String?
+  titleRolesRelease     OccupationRelease? @relation("DirectOfferTitleRolesRelease", fields: [titleRolesReleaseId], references: [id], onDelete: Restrict)
+  occupationDomain      String?
+  occupationLearnedReleaseId String?
+  occupationLearnedRelease   OccupationLearnedRelease? @relation("DirectOfferLearnedRelease", fields: [occupationLearnedReleaseId], references: [id], onDelete: Restrict)
   /** L'empreinte des colonnes projetées : le lecteur de la liste publique n'écrit que ce qui change. */
   projectionHash        String?
 
   @@index([eligible, countryCode])
+  @@index([titleRoles], type: Gin)
   @@index([slug])
   @@index([company])
 }
