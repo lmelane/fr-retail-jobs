@@ -9,6 +9,8 @@ export type Definition = {
   group?: string;
   family?: string;
   aliases?: string[];
+  /** Alias de recherche qui ne valent que contre un titre (« Contrôle de gestion » : pas un secteur ni un service). */
+  titleOnlyAliases?: string[];
   externalRefs?: string[];
 };
 export type Pattern = { pattern: string; flags?: string };
@@ -39,6 +41,9 @@ export type OccupationManifest = {
   /** Correspondance des intitulés : 1 (défaut, la version servie à l'octet près) ou 2 (lot 2B de D-475 : écritures
    * japonaise et thaïe, formes féminines, marques de genre et de contrat ignorées en mode exact). */
   matchingVersion?: 1 | 2;
+  /** Présent quand le manifeste porte tout le vocabulaire de recherche (alias de l'API versés, lot 2B) : l'API n'y
+   * ajoute plus rien. Absent (version servie v1) : l'API complète avec ses alias historiques. */
+  searchVocabularyVersion?: string;
   id: string;
   review: { author: string; at: string; basis: string };
   groups: Definition[];

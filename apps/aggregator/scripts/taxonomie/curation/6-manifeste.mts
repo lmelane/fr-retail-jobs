@@ -35,6 +35,8 @@
 import { createHash } from 'node:crypto';
 import { existsSync, writeFileSync } from 'node:fs';
 import { compileOccupationManifest, occupationExactKey, occupationMatchKey, type OccupationManifest } from '../../../../../packages/db/occupation-engine.ts';
+import { manifestVocabularyCollisions } from '../../../../../packages/db/occupation-vocabulary.ts';
+import { FAMILY_ALIASES, SEARCH_VOCABULARY_VERSION } from '../../../../api/lib/search-vocabulary.ts';
 import { validateOccupationSuccessor } from '../../../src/occupation/release.ts';
 import { conceptsV3, DOSSIER_SORTIE, estVague, EXCLUS_RAYON, familles, libellesEtFormes, lireEtape, niveauSeul, phraseMoteur, servie, VAGUES } from './commun.mts';
 
@@ -309,9 +311,12 @@ const manifeste = {
   ...servie, id: ID,
   // Correspondance v2 (lot 2B) : écritures japonaise et thaïe, formes féminines, marques ignorées en mode exact.
   matchingVersion: 2,
+  // Le manifeste porte tout le vocabulaire de recherche : alias de métiers de l'API (versés par 5c) et de familles (ici).
+  searchVocabularyVersion: SEARCH_VOCABULARY_VERSION,
   review: { author: 'Passe de curation v3 (IA seule, D-475 §30)', at: maintenant.toISOString(),
     basis: `Première passe de curation : ${concepts.length} métiers (servis, backend, offres), ${famillesV3.length} familles, 25 langues ; preuves : audits/2026-09-28/curation-v3.` },
-  families: famillesV3, occupations: metiersV3, rules: regles,
+  families: famillesV3.map((f: any) => (FAMILY_ALIASES[f.key]?.length ? { ...f, aliases: [...new Set([...(f.aliases ?? []), ...FAMILY_ALIASES[f.key]])] } : f)),
+  occupations: metiersV3, rules: regles,
 } as unknown as OccupationManifest;
 const compile = compileOccupationManifest(manifeste);
 // Garde d'unicité sous les clés v2 : une forme féminine ramenée au masculin, une marque retirée, ne doit jamais réunir
@@ -322,6 +327,8 @@ for (const r of regles as any[]) for (const c of r.all) if (c.field === 'title')
   parCle.set(k, new Set([...(parCle.get(k) ?? []), r.occupation]));
   if (c.mode !== 'exact') { const e = `exact ${occupationExactKey(v, 2)}`; parCle.set(e, new Set([...(parCle.get(e) ?? []), r.occupation])); }
 }
+// La garde partagée (packages/db/occupation-vocabulary.ts), sur tout le vocabulaire : libellés, alias, expressions.
+const collisionsVocabulaire = manifestVocabularyCollisions(manifeste);
 const collisionsV2 = [...parCle].filter(([, occ]) => occ.size > 1).map(([k, occ]) => ({ cle: k, metiers: [...occ] }));
 const [cleVente, cleRayon] = [cleMetier.get(deVente)!, cleMetier.get(deRayon)!];
 const attendu = (m: string, rendu: string | null) => (m === 'vente' ? rendu === cleVente : m === 'rayon' ? rendu === cleRayon : rendu !== cleVente && rendu !== cleRayon);
@@ -337,9 +344,11 @@ if (!BASE) writeFileSync(`${DOSSIER_SORTIE}6-correspondances.json`, JSON.stringi
 const bilan = { fichier, id: ID, familles: famillesV3.length, metiers: metiersV3.length, absorbes: dans.size, regles: regles.length,
   reglesV3: reglesV3.length, reglesExactes: reglesV3.filter((r) => r.all[0].mode === 'exact').length, generalisables: generalisables.size,
   arbitragesFinaux: arbitragesFinaux.length, arbitragesV2: arbitragesV2.length, libellesRetires: libellesRetires.length, libellesPartages: libellesPartages.length,
-  nonIdempotentes: nonIdempotentes.length, ecartsScission: ecartsScission.length, collisionsV2: collisionsV2.length, preseances: arcs, preseancesRefuseesPourCycle: arcsRefuses, compile: compile.occupations.size, succession: 'conforme' };
+  nonIdempotentes: nonIdempotentes.length, ecartsScission: ecartsScission.length, collisionsV2: collisionsV2.length, collisionsVocabulaire: collisionsVocabulaire.length, preseances: arcs, preseancesRefuseesPourCycle: arcsRefuses, compile: compile.occupations.size, succession: 'conforme' };
 console.log(JSON.stringify(bilan, null, 1));
 for (const x of libellesPartages.slice(0, 10)) console.log(` libellé partagé : ${x}`);
+for (const x of collisionsVocabulaire.slice(0, 15)) console.log(` vocabulaire : ${x.kind} « ${x.key} » → ${x.concepts.join(', ')}`);
+if (collisionsVocabulaire.length) { console.error(`ASSEMBLAGE REFUSÉ : ${collisionsVocabulaire.length} variante(s) pour plusieurs concepts`); process.exitCode = 1; }
 for (const x of collisionsV2.slice(0, 15)) console.log(` collision v2 : « ${x.cle} » → ${x.metiers.join(', ')}`);
 if (collisionsV2.length) { console.error(`ASSEMBLAGE REFUSÉ : ${collisionsV2.length} clé(s) v2 pour plusieurs métiers`); process.exitCode = 1; }
 for (const x of ecartsScission.slice(0, 10)) console.log(` 3c non tenu : « ${x.texte} » décidé ${x.decision}, rendu ${x.rendu ?? 'aucun'}`);

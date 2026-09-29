@@ -22,6 +22,7 @@ import { createHash } from 'node:crypto';
 import { readFileSync, writeFileSync } from 'node:fs';
 import { gunzipSync } from 'node:zlib';
 import { compileOccupationManifest } from '../../../../../packages/db/occupation-engine.ts';
+import { manifestVocabularyCollisions } from '../../../../../packages/db/occupation-vocabulary.ts';
 import { DOSSIER_SORTIE, EXCLUS_RAYON, lireEtape, phraseMoteur, servie } from './commun.mts';
 
 /** Seuils d'arrêt (plan §3.2 ; ambiguïtés et pertes ajoutées après l'audit technique du 29/09/2026). */
@@ -97,6 +98,7 @@ const bilan = { manifeste: v3.id, couples: lignes.length, offres: total, compila
   gains: somme(gains), changementsDeMetier: somme(changes), pertes: somme(pertes),
   horsPlan: { offres: somme(horsPlan), intitules: new Set(horsPlan.map((l) => l.titre)).size, taux: pct(tauxHorsPlan, 1), seuil: SEUIL_HORS_PLAN * 100 },
   decisions3cNonTenues: { couples: ecarts3c.length, offres: somme(ecarts3c) },
+  collisionsVocabulaire: manifestVocabularyCollisions(v3).length,
   seuils: { ambiguesPct: pct(somme(lignes.filter((l) => l.v3s === 'AMBIGUOUS')), total), ambiguesSeuil: SEUIL_AMBIGUES * 100,
     pertesHorsPlanPct: pct(somme(pertes.filter((l) => !estPrevu(l))), total), pertesSeuil: SEUIL_PERTES * 100 } };
 writeFileSync(`${DOSSIER_SORTIE}6b-preview.json`, JSON.stringify({ calculeLe: new Date().toISOString(), bilan, marches,
@@ -106,5 +108,6 @@ const echecs = [accordPremisse < SEUIL_PREMISSE && `prémisse non remplie : la v
   tauxHorsPlan > SEUIL_HORS_PLAN && `seuil d'arrêt : ${pct(tauxHorsPlan, 1)} % des intitulés classés changent de métier hors plan`,
   somme(lignes.filter((l) => l.v3s === 'AMBIGUOUS')) / total > SEUIL_AMBIGUES && `seuil d'arrêt : trop d'offres ambiguës`,
   somme(pertes.filter((l) => !estPrevu(l))) / total > SEUIL_PERTES && `seuil d'arrêt : trop d'offres perdent leur métier hors plan`,
+  manifestVocabularyCollisions(v3).length > 0 && `garde d'unicité : ${manifestVocabularyCollisions(v3).length} variante(s) pour plusieurs concepts`,
   ecarts3c.length > 0 && `${ecarts3c.length} offre(s) contredisent une décision de 3c : ${ecarts3c.slice(0, 5).map((l) => `« ${l.titre} » → ${l.v3}`).join(' ; ')}`].filter(Boolean);
 if (echecs.length) { console.error(`ARRÊT : ${echecs.join(' ; ')}`); process.exitCode = 1; }

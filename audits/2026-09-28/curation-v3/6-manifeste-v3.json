@@ -153222,7 +153222,7 @@
  ],
  "review": {
   "author": "Passe de curation v3 (IA seule, D-475 §30)",
-  "at": "2026-09-29T13:45:29.525Z",
+  "at": "2026-09-29T14:01:43.832Z",
   "basis": "Première passe de curation : 253 métiers (servis, backend, offres), 33 familles, 25 langues ; preuves : audits/2026-09-28/curation-v3."
  },
  "families": [
@@ -153255,7 +153255,11 @@
     "cs": "Prodejní poradenství",
     "hu": "Értékesítési tanácsadás",
     "ro": "Consultanță de vânzări"
-   }
+   },
+   "aliases": [
+    "Sales advisory",
+    "Retail sales"
+   ]
   },
   {
    "key": "beauty-advisor",
@@ -153286,7 +153290,11 @@
     "cs": "Kosmetické poradenství",
     "hu": "Szépségápolási tanácsadás",
     "ro": "Consultanță de frumusețe"
-   }
+   },
+   "aliases": [
+    "Beauty advice",
+    "Beauty consulting"
+   ]
   },
   {
    "key": "retail-store-management",
@@ -153317,7 +153325,12 @@
     "cs": "Vedení prodejny",
     "hu": "Üzletvezetés",
     "ro": "Managementul magazinului"
-   }
+   },
+   "aliases": [
+    "Store management",
+    "Retail management",
+    "Direction boutique"
+   ]
   },
   {
    "key": "retail-area-management",
@@ -153348,7 +153361,11 @@
     "cs": "Regionální řízení maloobchodu",
     "hu": "Regionális kiskereskedelmi vezetés",
     "ro": "Management regional retail"
-   }
+   },
+   "aliases": [
+    "Regional retail management",
+    "Area retail management"
+   ]
   },
   {
    "key": "retail-operations",
@@ -153379,7 +153396,11 @@
     "cs": "Provoz prodejny a skladu",
     "hu": "Üzlet- és készletoperáció",
     "ro": "Operațiuni magazin și stoc"
-   }
+   },
+   "aliases": [
+    "Store operations",
+    "Retail operations"
+   ]
   },
   {
    "key": "visual-merchandising",
@@ -153410,7 +153431,10 @@
     "cs": "Visual Merchandising",
     "hu": "Visual Merchandising",
     "ro": "Visual Merchandising"
-   }
+   },
+   "aliases": [
+    "Visual merchandising"
+   ]
   },
   {
    "key": "merchandising-buying",
@@ -153441,7 +153465,12 @@
     "cs": "Merchandising a nákup",
     "hu": "Merchandising és beszerzés",
     "ro": "Merchandising și achiziții"
-   }
+   },
+   "aliases": [
+    "Merchandising and buying",
+    "Achats",
+    "Buying"
+   ]
   },
   {
    "key": "wholesale-b2b",
@@ -153472,7 +153501,11 @@
     "cs": "Velkoobchod a B2B",
     "hu": "Nagykereskedelem és B2B",
     "ro": "Wholesale & B2B"
-   }
+   },
+   "aliases": [
+    "Wholesale and B2B",
+    "Wholesale"
+   ]
   },
   {
    "key": "crm-clienteling",
@@ -153503,7 +153536,11 @@
     "cs": "CRM & Clienteling",
     "hu": "CRM és Ügyfélkapcsolat",
     "ro": "CRM & Clienteling"
-   }
+   },
+   "aliases": [
+    "CRM and clienteling",
+    "Clienteling"
+   ]
   },
   {
    "key": "ecommerce-digital",
@@ -153534,7 +153571,11 @@
     "cs": "E-commerce & Digital",
     "hu": "E-kereskedelem és Digitális",
     "ro": "E-commerce & Digital"
-   }
+   },
+   "aliases": [
+    "Ecommerce and digital",
+    "E commerce"
+   ]
   },
   {
    "key": "marketing-communication",
@@ -153565,7 +153606,11 @@
     "cs": "Marketing a Komunikace",
     "hu": "Marketing és Kommunikáció",
     "ro": "Marketing și Comunicare"
-   }
+   },
+   "aliases": [
+    "Marketing and communication",
+    "Marketing communications"
+   ]
   },
   {
    "key": "design-creation",
@@ -153596,7 +153641,11 @@
     "cs": "Kreativita a Design",
     "hu": "Kreatív és Design",
     "ro": "Creație și Design"
-   }
+   },
+   "aliases": [
+    "Creation and design",
+    "Creative design"
+   ]
   },
   {
    "key": "product-development-rd",
@@ -153627,7 +153676,12 @@
     "cs": "Vývoj Produktu a R&D",
     "hu": "Termékfejlesztés és K+F",
     "ro": "Dezvoltare Produs și R&D"
-   }
+   },
+   "aliases": [
+    "Product development and R&D",
+    "Research and development",
+    "Recherche et développement"
+   ]
   },
   {
    "key": "atelier-craft",
@@ -153658,7 +153712,13 @@
     "cs": "Ateliér a Řemeslo",
     "hu": "Műhely és Kézművesség",
     "ro": "Atelier și Meșteșug"
-   }
+   },
+   "aliases": [
+    "Workshop and craftsmanship",
+    "Artisanat",
+    "Métiers d’art",
+    "Craftsmanship"
+   ]
   },
   {
    "key": "manufacturing-quality",
@@ -153689,7 +153749,11 @@
     "cs": "Výroba a Kvalita",
     "hu": "Gyártás és Minőség",
     "ro": "Producție și Calitate"
-   }
+   },
+   "aliases": [
+    "Manufacturing and quality",
+    "Production and quality"
+   ]
   },
   {
    "key": "supply-chain-logistics",
@@ -153720,7 +153784,12 @@
     "cs": "Supply Chain a Logistika",
     "hu": "Ellátási Lánc és Logisztika",
     "ro": "Supply Chain și Logistică"
-   }
+   },
+   "aliases": [
+    "Supply chain and logistics",
+    "Logistique",
+    "Logistics"
+   ]
   },
   {
    "key": "finance",
@@ -153751,7 +153820,10 @@
     "cs": "Finance",
     "hu": "Pénzügy",
     "ro": "Finanțe"
-   }
+   },
+   "aliases": [
+    "Finance"
+   ]
   },
   {
    "key": "hr-talent",
@@ -153782,7 +153854,12 @@
     "cs": "Lidské zdroje",
     "hu": "Humánerőforrás",
     "ro": "Resurse umane"
-   }
+   },
+   "aliases": [
+    "Human resources",
+    "Ressources humaines",
+    "RH"
+   ]
   },
   {
    "key": "it-data",
@@ -153813,7 +153890,11 @@
     "cs": "IT a data",
     "hu": "IT és adatok",
     "ro": "IT & Date"
-   }
+   },
+   "aliases": [
+    "IT and data",
+    "Informatique"
+   ]
   },
   {
    "key": "legal-compliance",
@@ -153844,7 +153925,11 @@
     "cs": "Právní a compliance",
     "hu": "Jogi és compliance",
     "ro": "Juridic și conformitate"
-   }
+   },
+   "aliases": [
+    "Legal and compliance",
+    "Juridique"
+   ]
   },
   {
    "key": "strategy-management",
@@ -153875,7 +153960,12 @@
     "cs": "Strategie a vedení",
     "hu": "Stratégia és vezetőség",
     "ro": "Strategie și conducere"
-   }
+   },
+   "aliases": [
+    "Strategy and leadership",
+    "Corporate strategy",
+    "Stratégie générale"
+   ]
   },
   {
    "key": "sustainability",
@@ -153906,7 +153996,12 @@
     "cs": "Udržitelnost",
     "hu": "Fenntarthatóság",
     "ro": "Dezvoltare durabilă"
-   }
+   },
+   "aliases": [
+    "Sustainability",
+    "Sustainable development",
+    "RSE"
+   ]
   },
   {
    "key": "customer-service",
@@ -153937,7 +154032,11 @@
     "cs": "Zákaznický servis",
     "hu": "Ügyfélszolgálat",
     "ro": "Serviciu clienți"
-   }
+   },
+   "aliases": [
+    "Customer service",
+    "Service après vente"
+   ]
   },
   {
    "key": "hospitality",
@@ -153968,7 +154067,12 @@
     "cs": "Hotelnictví a gastronomie",
     "hu": "Vendéglátás és gasztronómia",
     "ro": "Horeca"
-   }
+   },
+   "aliases": [
+    "Hotels and restaurants",
+    "Hotel and restaurant",
+    "Hospitality"
+   ]
   },
   {
    "key": "admin-facilities",
@@ -153999,7 +154103,11 @@
     "cs": "Administrativa a obecné služby",
     "hu": "Adminisztráció és általános szolgáltatások",
     "ro": "Administrație și servicii generale"
-   }
+   },
+   "aliases": [
+    "Administration and facilities",
+    "Services généraux"
+   ]
   },
   {
    "key": "health-optical-services",
@@ -154030,7 +154138,11 @@
     "cs": "Zdraví, farmacie a optika",
     "hu": "Egészségügy, gyógyszerészet és optika",
     "ro": "Sănătate, farmacie și optică"
-   }
+   },
+   "aliases": [
+    "Health pharmacy optical",
+    "Santé pharmacie optique"
+   ]
   },
   {
    "key": "beauty-services",
@@ -154061,7 +154173,11 @@
     "cs": "Kadeřnictví a péče o krásu",
     "hu": "Fodrászat és szépségápolási szolgáltatások",
     "ro": "Coafură și servicii de frumusețe"
-   }
+   },
+   "aliases": [
+    "Hair and beauty services",
+    "Coiffure prestations beauté"
+   ]
   },
   {
    "key": "mannequinat",
@@ -170431,5 +170547,6 @@
    "reason": "The title explicitly names both intermediate and senior levels; do not select one."
   }
  ],
- "matchingVersion": 2
+ "matchingVersion": 2,
+ "searchVocabularyVersion": "20260924-v2"
 }

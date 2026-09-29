@@ -10,6 +10,12 @@ export {
   occupationLabel,
   persistedOccupationDecision,
 } from "./occupation-engine.ts";
+export {
+  manifestVocabulary,
+  manifestVocabularyCollisions,
+  vocabularyCollisions,
+} from "./occupation-vocabulary.ts";
+export type { VocabularyCollision, VocabularyConcept } from "./occupation-vocabulary.ts";
 export type {
   CompiledOccupationTaxonomy,
   OccupationManifest,

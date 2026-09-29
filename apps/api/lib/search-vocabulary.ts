@@ -6,14 +6,16 @@ import { searchWords, type SearchConcept } from './search-intent';
  * activate an occupation release, or turn a neighbouring role into a synonym.
  * Reviewed against S1 native descriptions; see the dated benchmark findings. */
 export const SEARCH_VOCABULARY_VERSION = '20260924-v2';
-const ROLE_ALIASES: Readonly<Record<string, readonly string[]>> = {
+/** Alias historiques de l'API. Un manifeste qui déclare `searchVocabularyVersion` les porte déjà (versés par la passe
+ * de curation v3, lot 2B de D-475) : l'API ne les ajoute qu'à la version servie v1. Retirés au sous-lot 2F. */
+export const ROLE_ALIASES: Readonly<Record<string, readonly string[]>> = {
   'assistant-store-manager': ['Assistant Store Director', 'Deputy Store Director', 'Assistant Boutique Director', 'Deputy Boutique Director'],
   'product-developer': ['Footwear Developer', 'Apparel Developer', 'Accessories Developer', 'Développeur chaussures', 'Développeur accessoires'],
   'financial-controller': ['Financial Control', 'Contrôle de gestion', 'Controlling'],
   watchmaker: ['Watch Technician', 'Watch Repair Technician', 'Technicien horloger', 'Technicienne horlogère'],
 };
 // Broad family labels are search intentions, not 27 mutually exclusive job gates.
-const FAMILY_ALIASES: Readonly<Record<string, readonly string[]>> = {
+export const FAMILY_ALIASES: Readonly<Record<string, readonly string[]>> = {
   'retail-client-advisor': ['Sales advisory', 'Retail sales'],
   'beauty-advisor': ['Beauty advice', 'Beauty consulting'],
   'retail-store-management': ['Store management', 'Retail management', 'Direction boutique'],
@@ -44,12 +46,16 @@ const FAMILY_ALIASES: Readonly<Record<string, readonly string[]>> = {
 };
 
 export function searchConcepts(manifest: OccupationManifest, sectors: { code: string; labels: Record<string, string> }[]): SearchConcept[] {
-  const roles: SearchConcept[] = manifest.occupations.map(o => ({ key: o.key, kind: 'role',
-    aliases: [...new Set([...Object.values(o.labels), ...(o.aliases ?? []), ...(ROLE_ALIASES[o.key] ?? [])])],
-    ...(o.key === 'financial-controller' ? { titleOnlyAliases: ROLE_ALIASES[o.key] } : {}),
-  }));
+  // Une seule source de vocabulaire, versionnée avec le manifeste quand il la porte ; la v1 servie reste inchangée.
+  const historique = !manifest.searchVocabularyVersion;
+  const roles: SearchConcept[] = manifest.occupations.map(o => {
+    const titreSeul = historique ? (o.key === 'financial-controller' ? ROLE_ALIASES[o.key] : undefined) : o.titleOnlyAliases;
+    return { key: o.key, kind: 'role',
+      aliases: [...new Set([...Object.values(o.labels), ...(o.aliases ?? []), ...(historique ? ROLE_ALIASES[o.key] ?? [] : [])])],
+      ...(titreSeul?.length ? { titleOnlyAliases: titreSeul } : {}) };
+  });
   const families: SearchConcept[] = manifest.families.map(f => {
-    const aliases = [...Object.values(f.labels), ...(FAMILY_ALIASES[f.key] ?? [])];
+    const aliases = [...Object.values(f.labels), ...(historique ? FAMILY_ALIASES[f.key] ?? [] : f.aliases ?? [])];
     // Optional conjunctions in an enumerated family label, never globally
     // discarded words in user input or inferred employer identities.
     const withoutConjunction = aliases.map(a => searchWords(a).filter(w => !['and', 'et'].includes(w)).join(' '));
