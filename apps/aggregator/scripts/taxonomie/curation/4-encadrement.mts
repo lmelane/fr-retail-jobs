@@ -25,14 +25,12 @@
  */
 import { writeFileSync } from 'node:fs';
 import { compileOccupationManifest, normalizeOccupationTitle } from '../../../../../packages/db/occupation-engine.ts';
+import { OCCUPATION_SUPERVISORY_WORDS } from '../../../../../packages/db/occupation-levels.ts';
 import { CACHE_VECTEURS, conceptsV3, contexte, DOSSIER_SORTIE, lireIntitulesOffres, MIN_EMPLOYEURS, MIN_OFFRES_METIER, servie } from './commun.mts';
 import { consensus, cosinus, JUGES, MODELE_CHOIX, rapprocherDesExistants, regrouper, repondre, vecteurs } from './ia.mts';
 
 /** Mots d'encadrement, toutes langues du corpus (filtre seulement). Forme normalisée du moteur : majuscules sans accents. */
-const MOTS = ['RESPONSABLE', 'RESPONSABILE', 'MANAGER', 'MANAGERIN', 'GERENTE', 'LEITER', 'LEITERIN', 'DIRECTEUR', 'DIRECTRICE',
-  'DIRECTOR', 'DIRECTORA', 'DIRETTORE', 'DIRETTRICE', 'HEAD', 'SUPERVISOR', 'SUPERVISEUR', 'SUPERVISEUSE', 'SUPERVISORA', 'LEAD',
-  'LEADER', 'CHEF', 'CHEFFE', 'CAPO', 'ENCARGADO', 'ENCARGADA', 'JEFE', 'JEFA', 'COORDINATOR', 'COORDINATEUR', 'COORDINATRICE',
-  'COORDINADOR', 'COORDINADORA', 'COORDINATORE', 'KEYHOLDER', 'KEY HOLDER', 'PREMIER VENDEUR', 'PREMIERE VENDEUSE', '店長', '主任', '经理', '主管', '매니저', '팀장'];
+const MOTS = OCCUPATION_SUPERVISORY_WORDS;
 const EXEMPLES_CEO = ['Responsable vendeur H/F', 'Team Leader Client Advisor', 'Première vendeuse'];
 /** Formes d'un même mot : exclure l'une exclut l'autre (« Première vendeuse » restait vendeuse, audit du 29/09/2026). */
 const FORMES: Record<string, string[]> = { DIRECTEUR: ['DIRECTRICE'], SUPERVISEUR: ['SUPERVISEUSE'], COORDINATEUR: ['COORDINATRICE'],

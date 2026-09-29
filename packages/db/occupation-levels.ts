@@ -13,3 +13,13 @@ export function occupationLevelOnly(forme: string): boolean {
   const mots = forme.normalize("NFKD").replace(/\p{M}/gu, "").toUpperCase().split(/[^\p{L}\p{N}]+/u).filter(Boolean);
   return mots.length > 0 && mots.every((m) => HIERARCHIE.has(m));
 }
+
+/**
+ * Mots d'encadrement, toutes langues du corpus, forme normalisée du moteur (majuscules sans accents). Une seule liste,
+ * pour l'étape 4 de la curation (où elle ne fait que filtrer : les modèles décident) et pour les métiers lus dans
+ * l'intitulé (D-475 point 38 : pas de lecture « sous un mot d'encadrement »).
+ */
+export const OCCUPATION_SUPERVISORY_WORDS: readonly string[] = ["RESPONSABLE", "RESPONSABILE", "MANAGER", "MANAGERIN", "GERENTE", "LEITER", "LEITERIN", "DIRECTEUR", "DIRECTRICE",
+  "DIRECTOR", "DIRECTORA", "DIRETTORE", "DIRETTRICE", "HEAD", "SUPERVISOR", "SUPERVISEUR", "SUPERVISEUSE", "SUPERVISORA", "LEAD",
+  "LEADER", "CHEF", "CHEFFE", "CAPO", "ENCARGADO", "ENCARGADA", "JEFE", "JEFA", "COORDINATOR", "COORDINATEUR", "COORDINATRICE",
+  "COORDINADOR", "COORDINADORA", "COORDINATORE", "KEYHOLDER", "KEY HOLDER", "PREMIER VENDEUR", "PREMIERE VENDEUSE", "店長", "主任", "经理", "主管", "매니저", "팀장"];

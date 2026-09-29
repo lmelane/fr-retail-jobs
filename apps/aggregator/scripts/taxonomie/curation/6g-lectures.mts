@@ -1,10 +1,10 @@
 /**
  * PASSE DE CURATION v3, ÉTAPE 6g : VÉRIFIER CE QU'UNE EXPRESSION CAPTE QUAND ON LA LIT DANS UN INTITULÉ PLUS LONG
- * (D-475 point 38, R-66 §2 ; plan `docs/architecture/classification-metiers.md` §3.3).
+ * (D-475 point 38 ; plan `docs/architecture/classification-metiers.md` §3.1).
  *
  * Les métiers lus dans l'intitulé (`titleRoles`) ajoutent aux candidats du moteur ceux que le résolveur de la recherche
- * lit dans l'intitulé. Lue sans preuve, toute expression du vocabulaire, la lecture était fausse pour 17 % des offres
- * (étape 6f, tour 1) : elle reprenait les généralisations que l'étape 6c avait rejetées (« Commercial Controller » →
+ * lit dans l'intitulé. Lue sans preuve, toute expression du vocabulaire, la lecture était fausse pour 18,5 % des offres
+ * selon l'assistant et 16,5 % selon le juge (étape 6f, tour 1) : elle reprenait les généralisations que l'étape 6c avait rejetées (« Commercial Controller » →
  * commercial, « Extra salle » → figurant, « Data Product Manager » → chef de produit). Même protocole que 6c, sur ce que
  * la LECTURE capte :
  *  - pour chaque expression lue dans un intitulé plus long (packages/db/occupation-title-roles.ts,
@@ -14,9 +14,9 @@
  *    `ECHANTILLON` (`ECHANTILLON_MOT_SEUL` pour un mot seul, qui peut être un adjectif ou la tête de plusieurs métiers) et
  *    `ECHANTILLON_MAX`. Le premier passage prenait les intitulés les plus LONGS : les qualificatifs courts qui changent
  *    de métier (« IT Operations Manager », « Digital Product Manager ») n'y paraissaient jamais (mesure 6f, tour 2) ;
- *  - deux juges, avec la grille de la mesure 6f et la FAMILLE du métier (« Operations Manager » est celui des
- *    opérations de boutique) : un seul « autre métier » et elle ne vaut que pour l'intitulé exact ; sinon elle devient
- *    une expression lue (`titleReadingAliases`) ;
+ *  - deux juges, avec la grille partagée avec la mesure 6f (`GRILLE_METIER_LU`) et la FAMILLE du métier (« Operations
+ *    Manager » est celui des opérations de boutique) : un seul « autre métier » et elle ne vaut que pour l'intitulé
+ *    exact ; sinon elle devient une expression lue (`titleReadingAliases`) ;
  *  - en dessous du seuil, sans preuve : intitulé exact.
  * Les juges ne sont pas celui de la mesure (6f), qui reste indépendant. Sortie : `curation-v3/6g-lectures.json`, que lit
  * l'assemblage (étape 6). L'étape échoue si un verdict manque.
@@ -28,7 +28,7 @@ import { createHash } from 'node:crypto';
 import { readFileSync, writeFileSync } from 'node:fs';
 import { gunzipSync } from 'node:zlib';
 import { compileOccupationManifest, occupationTitleReadings } from '../../../../../packages/db/occupations.ts';
-import { DOSSIER_SORTIE as D, lireEtape } from './commun.mts';
+import { DOSSIER_SORTIE as D, GRILLE_METIER_LU, lireEtape } from './commun.mts';
 
 const SEUIL_OFFRES = 5, ECHANTILLON = 4, ECHANTILLON_MOT_SEUL = 6, ECHANTILLON_MAX = 15;
 const m = lireEtape('6-manifeste-v3.json'), v3 = compileOccupationManifest(m);
@@ -39,8 +39,8 @@ const famille = new Map<string, string>(m.families.map((f: any) => [f.key, f.lab
 type Capture = { phrase: string; occupation: string; titres: Map<string, { offres: number; service: string | null }> };
 const captures = new Map<string, Capture>();
 for (const c of couples) {
-  const candidats = v3.classify(c.titre, c.service).occupationEvidence.candidates;
-  for (const l of occupationTitleReadings(v3, c.titre)) {
+  const d = v3.classify(c.titre, c.service), candidats = d.occupationEvidence.candidates;
+  for (const l of occupationTitleReadings(v3, c.titre, d)) {
     if (candidats.includes(l.role)) continue;
     const k = `${l.phrase}|${l.role}`;
     const x = captures.get(k) ?? { phrase: l.phrase, occupation: l.role, titres: new Map() };
@@ -73,7 +73,7 @@ const echantillons = aJuger.map((x) => {
   return { x, titres: choisis.map(([titre, v]) => ({ titre, service: v.service })) };
 });
 const paires = echantillons.flatMap((e) => e.titres.map((t) => ({ e, t })));
-const CONSIGNE = `Tu évalues, pour un job board du luxe, de la mode et de la beauté, le métier qu'on lit dans l'intitulé d'une offre pour qu'une recherche par ce métier la retrouve. Pour chaque offre (intitulé, service), note le métier lu : "C" l'offre est bien un poste de ce métier ; "P" métier voisin (niveau ou spécialité proche) ; "F" un autre métier (règle du produit : un poste d'encadrement est un autre métier que celui qu'il encadre ; un mot du métier employé dans un autre sens, comme un adjectif ou un nom de lieu, est un autre métier). Le métier se comprend dans sa famille, indiquée : le même intitulé dans une autre fonction (informatique, finance, entrepôt, paie, produit numérique) est un autre métier.`;
+const CONSIGNE = GRILLE_METIER_LU;
 const SCHEMA = { type: 'OBJECT', properties: { i: { type: 'INTEGER' }, verdict: { type: 'STRING', enum: ['C', 'P', 'F'] } }, required: ['i', 'verdict'] };
 const rendu = (lot: typeof paires) => lot.map((p, j) => {
   const o: any = metier.get(p.e.x.occupation);
@@ -83,6 +83,9 @@ const [v1, v2] = [await repondre(JUGES_6G[0], CONSIGNE, paires, 25, rendu, SCHEM
 const decisions = echantillons.map((e) => {
   const juges = paires.map((p, n) => ({ p, j1: v1[n]?.verdict ?? null, j2: v2[n]?.verdict ?? null })).filter((x) => x.p.e === e)
     .map(({ p, j1, j2 }) => ({ titre: p.t.titre, j1, j2 }));
+  // Un seul « autre métier » ramène l'expression à l'intitulé exact. Un métier voisin (P) ne la retire pas : exiger une
+  // capture « le métier lui-même » retirait sans le dire les expressions captées seulement par des assistants
+  // (« Stage - Assistant(e) chef de projet digital »), question posée au CEO (audit du 29/09/2026).
   const mode = juges.some((j) => j.j1 === 'F' || j.j2 === 'F') ? 'exacte' : juges.every((j) => j.j1 && j.j2) ? 'lue' : 'indetermine';
   return { phrase: e.x.phrase, occupation: e.x.occupation, mode, offres: offresDe(e.x), juges };
 });

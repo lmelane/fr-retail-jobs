@@ -90,7 +90,7 @@ export function metierDepuisTaxonomie(taxonomie: CompiledOccupationTaxonomy): (t
   return (titre) => {
     const decision = classifyJob({ title: titre }, taxonomie);
     return { occupationCode: decision.occupationCode, occupationReleaseId: decision.occupationReleaseId,
-      titleRoles: occupationTitleRoles(taxonomie, titre, decision.occupationEvidence.candidates), titleRolesReleaseId: decision.occupationReleaseId };
+      titleRoles: occupationTitleRoles(taxonomie, titre, decision), titleRolesReleaseId: decision.occupationReleaseId };
   };
 }
 

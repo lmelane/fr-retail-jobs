@@ -14,6 +14,10 @@ export type Definition = {
   /** Libellés et alias lus DANS un intitulé plus long (`titleRoles`, D-475 point 38), chacun vérifié sur ce qu'il y
    * capte (étape de curation 6g, R-66 §2) ; tout autre alias ne vaut que pour l'intitulé exact. */
   titleReadingAliases?: string[];
+  /** Ce qui empêche de lire le métier dans un intitulé (D-475 point 38) : les frontières des règles servies avec les
+   * autres métiers (« adjoint », « deputy », « beauty ») et les décisions de la curation v3 (§32 a, §35, §37), sauf
+   * « formation » et « training », que l'exemple de la décision montre faux (« Poste avec formation avant embauche »). */
+  titleReadingExclusions?: string[];
   externalRefs?: string[];
 };
 export type Pattern = { pattern: string; flags?: string };
@@ -250,6 +254,8 @@ export function compileOccupationManifest(raw: unknown) {
     const connus = new Set([...Object.values(o.labels), ...(o.aliases ?? [])]);
     if (o.titleReadingAliases?.some((a) => !connus.has(a)))
       throw new Error(`Title reading alias outside the occupation vocabulary: ${o.key}`);
+    if (o.titleReadingExclusions?.some((x) => typeof x !== "string" || !x.trim()))
+      throw new Error(`Invalid title reading exclusion: ${o.key}`);
   }
   const stable = (v: any): string =>
     JSON.stringify(v, (_k, x) =>

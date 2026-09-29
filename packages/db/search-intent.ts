@@ -104,14 +104,14 @@ export function createIntentResolver(concepts: readonly SearchConcept[], compani
     return { entry: matches[0], length: matches[0].words.length, corrected: true };
   }
 
-  /** Exact, longest alias spans only, with the words each one covers. */
-  function titleMatches(title: string): { kind: SearchClause['kind']; keys: string[]; phrase: string; whole: boolean }[] {
+  /** Exact, longest alias spans only, with the words each one covers and where it starts. */
+  function titleMatches(title: string): { kind: SearchClause['kind']; keys: string[]; phrase: string; start: number; whole: boolean }[] {
     const words = searchWords(title);
-    const matches: { kind: SearchClause['kind']; keys: string[]; phrase: string; whole: boolean }[] = [];
+    const matches: { kind: SearchClause['kind']; keys: string[]; phrase: string; start: number; whole: boolean }[] = [];
     for (let i = 0; i < words.length;) {
       const found = find(words, i, false);
       if (found) {
-        matches.push({ kind: found.entry.kind, keys: found.entry.keys, phrase: words.slice(i, i + found.length).join(' '), whole: found.length === words.length });
+        matches.push({ kind: found.entry.kind, keys: found.entry.keys, phrase: words.slice(i, i + found.length).join(' '), start: i, whole: found.length === words.length });
         i += found.length;
       } else i++;
     }
@@ -150,7 +150,8 @@ export function createIntentResolver(concepts: readonly SearchConcept[], compani
       return { version: 1, original, clauses };
     },
     /** Exact, longest alias spans only. Typo correction belongs to queries, not
-     * inferred job facts. A deputy title cannot acquire the nested manager role. */
+     * inferred job facts. A deputy title keeps its own role only when the
+     * vocabulary names it: the longest span wins (« assistant store manager »). */
     titleConcepts(title: string): { roles: string[]; families: string[] } {
       const roles = new Set<string>(), families = new Set<string>();
       for (const m of titleMatches(title)) {

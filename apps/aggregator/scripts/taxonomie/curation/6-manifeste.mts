@@ -200,6 +200,25 @@ for (const [cle, s] of expressions) for (const f of s) { const k = occupationExa
 const anciensNoms = (cle: string, cleV3: string, s: any) => [...Object.values<string>(s?.labels ?? {}),
   ...Object.values<string>(decideeParCle.get(cleV3)?.labels ?? {}), ...(decideeParCle.get(cleV3)?.aliases ?? [])]
   .filter((v) => [...(porteursParCleV2.get(occupationExactKey(v, 2)) ?? [])].every((k) => k === cle));
+const exclusions: Record<string, string[]> = e4.bilan.exclusions;
+// 3c : une forme décidée pour l'un des deux métiers est exclue des règles de l'autre, une forme sans métier des deux
+// (audit du 29/09/2026 : « Retail Assistant - Night Shift », décidé sans métier, restait Conseiller de vente par la règle
+// « retail assistant »). Le contrôle d'assemblage plus bas vérifie que chaque décision de 3c tient dans le moteur.
+const exclusScission = (occupation: string): string[] => (occupation !== deVente && occupation !== deRayon ? []
+  : [...scission.decisions.filter((d: any) => d.metier === 'aucun' || d.metier === (occupation === deVente ? 'rayon' : 'vente')).flatMap(textesDe),
+    ...(occupation === deRayon ? EXCLUS_RAYON : [])]);
+const exclure = (occupation: string) => {
+  const l = [...(exclusions[occupation] ?? []), ...exclusScission(occupation)];
+  return l.length ? [{ field: 'title' as const, any: l }] : [];
+};
+const exclusionsServies = (occupation: string) => servie.rules.filter((r: any) => r.occupation === occupation && r.all.every((c: any) => c.field === 'title'))
+  .flatMap((r: any) => (r.exclude ?? []).filter((c: any) => c.field === 'title'));
+// Ce qui empêche la lecture (point 38) : les frontières servies entre métiers (« adjoint », « deputy », « beauty »,
+// « stockroom ») et les décisions v3 (§32 a, §35, §37), sauf « formation » et « training », que l'exemple même de la
+// décision montre faux (« Conseiller(ère) de Vente – Poste avec formation avant embauche », « Training Provided »).
+const ROUTAGE_FAUX = new Set(['FORMATION', 'TRAINING']);
+const exclusionsDeLecture = (occupation: string) => [...new Set([...exclusionsServies(occupation).flatMap((c: any) => c.any), ...exclure(occupation).flatMap((c) => c.any)])]
+  .filter((v: string) => !ROUTAGE_FAUX.has(phraseMoteur(v)));
 const cleRecherche = (v: string) => searchWords(v).join(' ');
 // Expressions lues dans un intitulé plus long (`titleRoles`, D-475 point 38) : seulement celles que l'étape 6g a vérifiées
 // sur ce qu'elles y captent (R-66 §2) ; un métier les porte parmi ses libellés et alias.
@@ -217,24 +236,12 @@ const metiersV3 = concepts.map((c) => {
   const lu = luesDe(cleMetier.get(c.cle)!, [...Object.values(labels), ...aliases]);
   return { key: cleMetier.get(c.cle)!, family: s ? s.family : c.cle === deRayon ? FAMILLE_RAYON : cleFamille(c.famille), labels, aliases,
     ...(lu.length ? { titleReadingAliases: lu } : {}),
+    ...(exclusionsDeLecture(c.cle).length ? { titleReadingExclusions: exclusionsDeLecture(c.cle) } : {}),
     ...(ancre ? { externalRefs: [ancre] } : {}),
     ...(c.cle === 'financial-controller' && e5c.aliasRecherche[c.cle] ? { titleOnlyAliases: e5c.aliasRecherche[c.cle] } : {}) };
 });
 
 // Règles.
-const exclusions: Record<string, string[]> = e4.bilan.exclusions;
-// 3c : une forme décidée pour l'un des deux métiers est exclue des règles de l'autre, une forme sans métier des deux
-// (audit du 29/09/2026 : « Retail Assistant - Night Shift », décidé sans métier, restait Conseiller de vente par la règle
-// « retail assistant »). Le contrôle d'assemblage plus bas vérifie que chaque décision de 3c tient dans le moteur.
-const exclusScission = (occupation: string): string[] => (occupation !== deVente && occupation !== deRayon ? []
-  : [...scission.decisions.filter((d: any) => d.metier === 'aucun' || d.metier === (occupation === deVente ? 'rayon' : 'vente')).flatMap(textesDe),
-    ...(occupation === deRayon ? EXCLUS_RAYON : [])]);
-const exclure = (occupation: string) => {
-  const l = [...(exclusions[occupation] ?? []), ...exclusScission(occupation)];
-  return l.length ? [{ field: 'title' as const, any: l }] : [];
-};
-const exclusionsServies = (occupation: string) => servie.rules.filter((r: any) => r.occupation === occupation && r.all.every((c: any) => c.field === 'title'))
-  .flatMap((r: any) => (r.exclude ?? []).filter((c: any) => c.field === 'title'));
 // Une forme servie portée par les règles de DEUX métiers servis reste au seul qui la nomme (« Demand Planner », ambigu en
 // v1 entre prévisionniste de la demande et planificateur merchandising, reste au premier : plan §3.1).
 const garderServie = (occupation: string, v: string) => {

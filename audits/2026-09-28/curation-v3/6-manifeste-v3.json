@@ -153236,7 +153236,7 @@
  ],
  "review": {
   "author": "Passe de curation v3 (IA seule, D-475 §30)",
-  "at": "2026-09-29T16:07:19.736Z",
+  "at": "2026-09-29T16:49:10.770Z",
   "basis": "Première passe de curation : 253 métiers (servis, backend, offres), 33 familles, 25 langues ; preuves : audits/2026-09-28/curation-v3."
  },
  "families": [
@@ -154772,7 +154772,74 @@
    ],
    "titleReadingAliases": [
     "Addetto alle vendite",
-    "Prodejní poradce"
+    "Conseiller de vente",
+    "Prodejní poradce",
+    "Sales Associate"
+   ],
+   "titleReadingExclusions": [
+    "manager",
+    "director",
+    "head",
+    "trainer",
+    "supervisor",
+    "team lead",
+    "e commerce",
+    "online",
+    "remote",
+    "distance",
+    "clienteling project",
+    "beauty",
+    "beaute",
+    "parfumerie",
+    "cosmetique",
+    "replenishment",
+    "stockroom",
+    "stock support",
+    "E-Boutique",
+    "digital",
+    "wholesale",
+    "b2b",
+    "LEADER",
+    "LEAD",
+    "PREMIERE VENDEUSE",
+    "PREMIER VENDEUR",
+    "KEYHOLDER",
+    "KEY HOLDER",
+    "RESPONSABLE",
+    "employée, employé de rayon épicerie - entretien",
+    "employée, employé de rayon textile",
+    "employé libre-service polyvalent (f/h)",
+    "employée, employé de rayon crèmerie et surgelés",
+    "store worker",
+    "employée commerciale, employé commercial monop'",
+    "retail assistant - night shift",
+    "employée, employé de rayon charcuterie libre service",
+    "employée, employé de rayon liquides",
+    "employée, employé de rayon parfumerie",
+    "seasonal task associate",
+    "employée, employé de rayon à service boulangerie",
+    "employée, employé de rayon à service fruits & légumes",
+    "employée, employé de rayon maison - loisirs",
+    "replenishment sales associate (part-time)",
+    "store assistant",
+    "employé de rayon épicerie - entretien f/h",
+    "employée, employé de rayon à service boucherie",
+    "employée, employé de rayon à service crèmerie coupe",
+    "employée, employé de rayon à service poissonnerie",
+    "employé monop' f/h",
+    "employé de rayon maquillage (f/h)",
+    "employé de rayon textile f/h",
+    "Employé de commerce",
+    "Employée de commerce",
+    "Υπάλληλος καταστήματος",
+    "employé commercial",
+    "employée de commerce polyvalent",
+    "employé commercial en magasin",
+    "employée polyvalente saisonnière",
+    "employé de rayon",
+    "employé de rayon textile",
+    "assistant rayon",
+    "employé libre service"
    ]
   },
   {
@@ -154842,6 +154909,19 @@
     "Konsultantka kosmetyczna",
     "مستشارة تجميل",
     "Kosmetická poradkyně"
+   ],
+   "titleReadingAliases": [
+    "Conseiller de beauté"
+   ],
+   "titleReadingExclusions": [
+    "manager",
+    "director",
+    "head",
+    "trainer",
+    "estheticien",
+    "estheticienne",
+    "aesthetician",
+    "makeup artist"
    ]
   },
   {
@@ -154912,6 +154992,11 @@
     "Κομμώτρια",
     "Kadeřnice",
     "Coafeză"
+   ],
+   "titleReadingExclusions": [
+    "manager",
+    "director",
+    "trainer"
    ]
   },
   {
@@ -154976,6 +155061,11 @@
     "أخصائية تجميل",
     "Kosmetička",
     "Cosmeticiană"
+   ],
+   "titleReadingExclusions": [
+    "manager",
+    "director",
+    "trainer"
    ]
   },
   {
@@ -155046,6 +155136,11 @@
     "فنانة مكياج",
     "Vizážistka",
     "Machioză"
+   ],
+   "titleReadingExclusions": [
+    "manager",
+    "director",
+    "trainer"
    ]
   },
   {
@@ -155172,6 +155267,15 @@
     "Kassörska",
     "أمينة صندوق",
     "Casieriță"
+   ],
+   "titleReadingExclusions": [
+    "manager",
+    "responsable",
+    "supervisor",
+    "coordinateur",
+    "HEAD",
+    "KEY HOLDER",
+    "LEAD"
    ]
   },
   {
@@ -155243,11 +155347,26 @@
     "Διευθύντρια καταστήματος"
    ],
    "titleReadingAliases": [
+    "Boutique Manager",
     "Butikksjef",
     "Butikschef",
+    "Filialleiter",
     "Gerente de loja",
     "Mağaza Müdürü",
+    "Responsable de boutique",
+    "Responsable de magasin",
+    "Store Manager",
+    "Store manager",
     "ストアマネージャー"
+   ],
+   "titleReadingExclusions": [
+    "assistant",
+    "adjoint",
+    "adjointe",
+    "deputy",
+    "district",
+    "regional",
+    "area"
    ]
   },
   {
@@ -155376,8 +155495,17 @@
     "Directora regional",
     "Direttrice Regionale Retail"
    ],
-   "titleReadingAliases": [
-    "Area Manager"
+   "titleReadingExclusions": [
+    "wholesale",
+    "export",
+    "key account",
+    "medical",
+    "b2b",
+    "distribution",
+    "warehouse",
+    "logistics",
+    "supply chain",
+    "fulfillment"
    ]
   },
   {
@@ -155423,6 +155551,13 @@
     "นักจัดดิสเพลย์",
     "منسق عرض تجاري",
     "Nhân viên VMD"
+   ],
+   "titleReadingExclusions": [
+    "manager",
+    "director",
+    "head",
+    "designer",
+    "KEYHOLDER"
    ]
   },
   {
@@ -155486,6 +155621,11 @@
     "Gestionar stoc",
     "Magazynierka",
     "Skladnice"
+   ],
+   "titleReadingExclusions": [
+    "manager",
+    "head",
+    "director"
    ]
   },
   {
@@ -155558,8 +155698,10 @@
     "Pracovnice skladu",
     "Préparateur de commandes et agent logistique"
    ],
-   "titleReadingAliases": [
-    "Operador de armazém"
+   "titleReadingExclusions": [
+    "manager",
+    "head",
+    "director"
    ]
   },
   {
@@ -155696,6 +155838,11 @@
     "Kundenbetreuerin",
     "Addetta al servizio clienti",
     "Asesora de atención al cliente"
+   ],
+   "titleReadingExclusions": [
+    "manager",
+    "head",
+    "director"
    ]
   },
   {
@@ -155765,6 +155912,24 @@
    ],
    "titleReadingAliases": [
     "Watch Technician"
+   ],
+   "titleReadingExclusions": [
+    "sales",
+    "advisory",
+    "advisor",
+    "vente",
+    "conseiller",
+    "conseillere",
+    "marketing",
+    "buyer",
+    "acheteur",
+    "directeur",
+    "director",
+    "manager",
+    "responsable",
+    "composant horloger",
+    "secteur horloger",
+    "industrie horlogere"
    ]
   },
   {
@@ -155831,6 +155996,20 @@
     "Joalheira",
     "Klenotnice",
     "Bijutieră"
+   ],
+   "titleReadingExclusions": [
+    "sales",
+    "advisor",
+    "vente",
+    "conseiller",
+    "conseillere",
+    "marketing",
+    "buyer",
+    "acheteur",
+    "directeur",
+    "director",
+    "manager",
+    "responsable"
    ]
   },
   {
@@ -155895,6 +156074,22 @@
     "Marroquinera",
     "Marroquineira",
     "Kožedělka"
+   ],
+   "titleReadingExclusions": [
+    "sales",
+    "advisor",
+    "vente",
+    "conseiller",
+    "conseillere",
+    "marketing",
+    "buyer",
+    "acheteur",
+    "directeur",
+    "director",
+    "manager",
+    "responsable",
+    "product",
+    "produit"
    ]
   },
   {
@@ -155964,6 +156159,11 @@
     "خياطة",
     "Μοδίστρα",
     "Croitoreasă"
+   ],
+   "titleReadingExclusions": [
+    "manager",
+    "director",
+    "responsable"
    ]
   },
   {
@@ -156029,6 +156229,11 @@
     "مصممة أزياء",
     "Σχεδιάστρια Μόδας",
     "Módní návrhářka"
+   ],
+   "titleReadingExclusions": [
+    "assistant",
+    "manager",
+    "director"
    ]
   },
   {
@@ -156087,6 +156292,11 @@
     "مصممة جرافيك",
     "Γραφίστρια",
     "Grafička"
+   ],
+   "titleReadingExclusions": [
+    "manager",
+    "director",
+    "LEAD"
    ]
   },
   {
@@ -156145,6 +156355,19 @@
     "Compradora",
     "مشترية",
     "Αγοράστρια"
+   ],
+   "titleReadingAliases": [
+    "Acheteur",
+    "Buyer"
+   ],
+   "titleReadingExclusions": [
+    "indirect",
+    "procurement",
+    "sourcing",
+    "assistant",
+    "manager",
+    "director",
+    "head"
    ]
   },
   {
@@ -156189,6 +156412,11 @@
     "Perancang Barangan",
     "مخطط بضائع",
     "مخططة بضائع"
+   ],
+   "titleReadingExclusions": [
+    "manager",
+    "director",
+    "head"
    ]
   },
   {
@@ -156252,6 +156480,17 @@
     "محاسبة",
     "Λογίστρια",
     "Contabilă"
+   ],
+   "titleReadingAliases": [
+    "Comptable"
+   ],
+   "titleReadingExclusions": [
+    "assistant",
+    "manager",
+    "director",
+    "head",
+    "RESPONSABLE",
+    "LEAD"
    ]
   },
   {
@@ -156312,6 +156551,18 @@
     "Financial Control",
     "Contrôle de gestion",
     "Controlling"
+   ],
+   "titleReadingAliases": [
+    "Controlling",
+    "Contrôle de gestion",
+    "Contrôleur de gestion"
+   ],
+   "titleReadingExclusions": [
+    "assistant",
+    "director",
+    "head",
+    "DIRECTEUR",
+    "DIRECTRICE"
    ],
    "titleOnlyAliases": [
     "Financial Control",
@@ -156440,6 +156691,12 @@
     "Recrutadora",
     "Rekruterka",
     "Náborářka"
+   ],
+   "titleReadingExclusions": [
+    "manager",
+    "head",
+    "director",
+    "LEAD"
    ]
   },
   {
@@ -156484,6 +156741,14 @@
     "人力資源業務夥伴",
     "หุ้นส่วนทางธุรกิจฝ่ายทรัพยากรบุคคล",
     "شريك أعمال الموارد البشرية"
+   ],
+   "titleReadingExclusions": [
+    "DIRECTOR",
+    "DIRECTORA",
+    "HEAD",
+    "RESPONSABLE",
+    "MANAGER",
+    "MANAGERIN"
    ]
   },
   {
@@ -156549,6 +156814,11 @@
     "Gestora de nóminas",
     "Técnica de processamento de salários",
     "Mzdová účetní"
+   ],
+   "titleReadingExclusions": [
+    "manager",
+    "director",
+    "head"
    ]
   },
   {
@@ -156620,6 +156890,12 @@
     "Ingeniera de software",
     "Engenheira de software",
     "Softwarová inženýrka"
+   ],
+   "titleReadingExclusions": [
+    "manager",
+    "director",
+    "head",
+    "LEAD"
    ]
   },
   {
@@ -156673,6 +156949,11 @@
     "Adatelemző",
     "Analist date",
     "Datová analytička"
+   ],
+   "titleReadingExclusions": [
+    "manager",
+    "director",
+    "head"
    ]
   },
   {
@@ -156722,6 +157003,11 @@
     "Datový vědec",
     "Adattudós",
     "Científica de datos"
+   ],
+   "titleReadingExclusions": [
+    "manager",
+    "director",
+    "head"
    ]
   },
   {
@@ -156779,6 +157065,11 @@
     "مهندسة بيانات",
     "Datová inženýrka",
     "Ingineră de date"
+   ],
+   "titleReadingExclusions": [
+    "manager",
+    "director",
+    "head"
    ]
   },
   {
@@ -156845,6 +157136,16 @@
     "مستشارة قانونية",
     "Právnička",
     "Consilieră juridică"
+   ],
+   "titleReadingAliases": [
+    "Juriste"
+   ],
+   "titleReadingExclusions": [
+    "assistant",
+    "manager",
+    "director",
+    "head",
+    "LEAD"
    ]
   },
   {
@@ -156909,6 +157210,11 @@
     "أخصائية استدامة",
     "Specialistka udržitelnosti",
     "Specialistă în sustenabilitate"
+   ],
+   "titleReadingExclusions": [
+    "manager",
+    "director",
+    "head"
    ]
   },
   {
@@ -156969,7 +157275,18 @@
     "Marketingová manažerka"
    ],
    "titleReadingAliases": [
-    "Manager marketing"
+    "Manager marketing",
+    "Marketing Manager",
+    "Marketing manager"
+   ],
+   "titleReadingExclusions": [
+    "trade",
+    "product",
+    "digital",
+    "e commerce",
+    "senior director",
+    "assistant",
+    "assistante"
    ]
   },
   {
@@ -157015,6 +157332,10 @@
     "Quản lý cộng đồng",
     "Community Managerin",
     "مديرة مجتمع"
+   ],
+   "titleReadingExclusions": [
+    "assistant",
+    "assistante"
    ]
   },
   {
@@ -157067,6 +157388,10 @@
     "CRM Managerin",
     "Gestora de CRM",
     "مديرة CRM"
+   ],
+   "titleReadingExclusions": [
+    "assistant",
+    "assistante"
    ]
   },
   {
@@ -157123,6 +157448,10 @@
     "E-Commerce Managerin",
     "Gestora de E-Commerce",
     "مديرة تجارة إلكترونية"
+   ],
+   "titleReadingExclusions": [
+    "assistant",
+    "assistante"
    ]
   },
   {
@@ -157170,6 +157499,10 @@
     "Quản lý khách hàng Key Account",
     "Key Account Managerin",
     "مديرة حسابات كبار العملاء"
+   ],
+   "titleReadingExclusions": [
+    "assistant",
+    "assistante"
    ]
   },
   {
@@ -157241,6 +157574,11 @@
     "Accessories Developer",
     "Développeur chaussures",
     "Développeur accessoires"
+   ],
+   "titleReadingExclusions": [
+    "manager",
+    "director",
+    "head"
    ]
   },
   {
@@ -157307,6 +157645,11 @@
     "فنية جودة",
     "Technička kvality",
     "Tehniciană calitate"
+   ],
+   "titleReadingExclusions": [
+    "manager",
+    "director",
+    "head"
    ]
   },
   {
@@ -157417,6 +157760,13 @@
     "Μαγείρισσα",
     "Kuchařka",
     "Bucătăreasă"
+   ],
+   "titleReadingAliases": [
+    "Kok"
+   ],
+   "titleReadingExclusions": [
+    "manager",
+    "director"
    ]
   },
   {
@@ -157491,6 +157841,13 @@
     "Servírka",
     "Pincérnő",
     "Ospătăriță"
+   ],
+   "titleReadingExclusions": [
+    "manager",
+    "director",
+    "informatique",
+    "it",
+    "software"
    ]
   },
   {
@@ -157549,6 +157906,11 @@
     "Recepcjonistka",
     "موظفة استقبال",
     "Recepționeră"
+   ],
+   "titleReadingExclusions": [
+    "manager",
+    "director",
+    "hotel"
    ]
   },
   {
@@ -157998,6 +158360,11 @@
     "Σχεδιάστρια ζήτησης",
     "Plánovačka poptávky",
     "Planificatoare cerere"
+   ],
+   "titleReadingExclusions": [
+    "manager",
+    "director",
+    "head"
    ]
   },
   {
@@ -158062,6 +158429,11 @@
    ],
    "titleReadingAliases": [
     "Assistant juridique"
+   ],
+   "titleReadingExclusions": [
+    "manager",
+    "director",
+    "head"
    ]
   },
   {
@@ -158133,8 +158505,10 @@
     "Mobile Dispenser",
     "Dispenser - Bank"
    ],
-   "titleReadingAliases": [
-    "Dispenser"
+   "titleReadingExclusions": [
+    "manager",
+    "director",
+    "head"
    ]
   },
   {
@@ -158187,6 +158561,11 @@
     "Engenheira de machine learning",
     "مهندسة تعلم الآلة",
     "Ingineră machine learning"
+   ],
+   "titleReadingExclusions": [
+    "manager",
+    "director",
+    "head"
    ]
   },
   {
@@ -158231,6 +158610,11 @@
     "مهندس تحليلات البيانات",
     "Kỹ sư phân tích dữ liệu",
     "مهندسة تحليلات البيانات"
+   ],
+   "titleReadingExclusions": [
+    "manager",
+    "director",
+    "head"
    ]
   },
   {
@@ -158273,6 +158657,11 @@
     "Pereka Grafik Gerak",
     "مصمم موشن جرافيك",
     "مصممة موشن جرافيك"
+   ],
+   "titleReadingExclusions": [
+    "manager",
+    "director",
+    "head"
    ]
   },
   {
@@ -158337,6 +158726,11 @@
     "أخصائية رموش",
     "Řasový stylista",
     "Stilistă gene"
+   ],
+   "titleReadingExclusions": [
+    "manager",
+    "director",
+    "head"
    ]
   },
   {
@@ -158385,6 +158779,10 @@
     "Social Media Managerin",
     "Gestora de redes sociais",
     "مديرة وسائل التواصل الاجتماعي"
+   ],
+   "titleReadingExclusions": [
+    "assistant",
+    "assistante"
    ]
   },
   {
@@ -158451,6 +158849,11 @@
     "Ζαχαροπλάστρια",
     "Cukrářka",
     "Patiseră"
+   ],
+   "titleReadingExclusions": [
+    "manager",
+    "director",
+    "head"
    ]
   },
   {
@@ -162660,6 +163063,9 @@
     "Stylistka",
     "Consilieră de imagine"
    ],
+   "titleReadingAliases": [
+    "Personal Stylist"
+   ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/d5ce0c23-6f8a-459f-9bf9-a7cb9768740a"
    ]
@@ -164690,6 +165096,69 @@
     "assistant rayon",
     "employé libre service"
    ],
+   "titleReadingExclusions": [
+    "winkelmedewerker oproepkracht",
+    "store worker",
+    "retail assistant - operador de loja (m/f)",
+    "customer assistant (seasonal)",
+    "retail assistant - night shift",
+    "retail assistant - weekend only",
+    "seasonal task associate",
+    "vi søker butikkmedarbeider over 18 år",
+    "butiksmedarbejder over 18 år - aften og weekend",
+    "ayudante/a de venta y reponedor/a – jornada parcial",
+    "butiksassistent",
+    "butiksassistent - ekstra",
+    "employée, employé de rayon à service boulangerie",
+    "employée, employé de rayon à service fruits & légumes",
+    "retail associate ii",
+    "store assistant",
+    "employée, employé de rayon à service boucherie",
+    "employée, employé de rayon à service crèmerie coupe",
+    "employée, employé de rayon à service poissonnerie",
+    "employé monop' f/h",
+    "lucrător comercial",
+    "Lucrătoare comercială",
+    "pt - retail assistant - operador de loja (m/f)",
+    "retail assistant (m/f/d) 28-35h/woche, befristet - adidas brand flagship store berlin",
+    "retail assistant - operador de loja",
+    "vi søker butikkmedarbeider over 16 år",
+    "winkelmedewerker - studenten/flexi",
+    "Employé de commerce",
+    "Employée de commerce",
+    "Sales Assistant",
+    "Verkäufer",
+    "Verkäuferin",
+    "Addetto alle vendite",
+    "Addetta alle vendite",
+    "Dependiente",
+    "Dependienta",
+    "Winkelmedewerker",
+    "店员",
+    "販売スタッフ",
+    "매장 판매원",
+    "Assistente de loja",
+    "Vendedor de loja",
+    "Vendedora de loja",
+    "店員",
+    "Sprzedawca",
+    "Sprzedawczyni",
+    "Butikssäljare",
+    "Satış Elemanı",
+    "พนักงานขายหน้าร้าน",
+    "Pembantu Kedai",
+    "بائع تجزئة",
+    "بائعة تجزئة",
+    "Butikkmedarbeider",
+    "Υπάλληλος καταστήματος",
+    "Nhân viên bán hàng",
+    "Prodavač",
+    "Prodavačka",
+    "Bolti eladó",
+    "employée de commerce polyvalent",
+    "employée polyvalente saisonnière",
+    "à service"
+   ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/0b15375e-dfdd-4047-9efb-096e0aaee7d2"
    ]
@@ -164930,6 +165399,9 @@
     "Εκπαιδεύτρια",
     "Školitelka",
     "Formatoare"
+   ],
+   "titleReadingAliases": [
+    "Trainer"
    ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/0ba06640-e0ac-4911-9e43-289a8e41651e"
@@ -169568,6 +170040,9 @@
     "ผู้จัดการทราฟฟิก",
     "مدير حركة المرور الرقمية",
     "Traffic Managerin"
+   ],
+   "titleReadingAliases": [
+    "Traffic Manager"
    ]
   },
   {
@@ -169915,9 +170390,6 @@
     "Prima venditrice",
     "Primera vendedora",
     "Liderka zespołu sprzedaży"
-   ],
-   "titleReadingAliases": [
-    "Sales Lead"
    ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/ff3a164d-4045-4511-a472-49093dabf9fc"

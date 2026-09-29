@@ -24,7 +24,7 @@ export function classifyOccupationContent(
     ...c,
     // D-475 point 38 : les métiers lus dans l'intitulé (packages/db/occupation-title-roles.ts), écrits avec la
     // classification, jamais périmés, avec la version qui les a lus ; l'intitulé observé d'abord.
-    titleRoles: occupationTitleRoles(catalogue, input.rawTitle || input.title, c.occupationEvidence.candidates),
+    titleRoles: occupationTitleRoles(catalogue, input.rawTitle || input.title, c),
     titleRolesReleaseId: c.occupationReleaseId,
     rawTitle: input.rawTitle ?? null,
     occupationEvidence: {

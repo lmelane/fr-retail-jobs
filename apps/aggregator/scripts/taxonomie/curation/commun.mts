@@ -163,3 +163,7 @@ export function lireIntitulesOffres(): { intitules: any[]; sha256: string } {
   const octets = readFileSync(`${ENTREES}intitules-offres-2026-09-29.json.gz`);
   return { intitules: JSON.parse(gunzipSync(octets).toString('utf8')).intitules, sha256: createHash('sha256').update(octets).digest('hex') };
 }
+
+/** La grille des métiers lus dans l'intitulé (D-475 point 38), une seule pour la vérification (étape 6g) et pour la mesure
+ * (étape 6f, dès le tour 4 ; les tours 1 à 3 gardent la leur) : l'audit du 29/09/2026 les a trouvées divergentes. */
+export const GRILLE_METIER_LU = `Tu évalues, pour un job board du luxe, de la mode et de la beauté, le métier qu'on lit dans l'intitulé d'une offre pour qu'une recherche par ce métier la retrouve. Pour chaque offre (intitulé, service), note le métier lu : "C" l'offre est bien un poste de ce métier ; "P" métier voisin (niveau ou spécialité proche) ; "F" un autre métier (règle du produit : un poste d'encadrement est un autre métier que celui qu'il encadre ; un mot du métier employé dans un autre sens, comme un adjectif ou un nom de lieu, est un autre métier). Le métier se comprend dans sa famille, indiquée : le même intitulé dans une autre fonction (informatique, finance, entrepôt, paie, produit numérique) est un autre métier.`;

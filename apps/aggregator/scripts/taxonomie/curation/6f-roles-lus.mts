@@ -12,7 +12,8 @@
  * Grille : C l'offre est bien un poste de ce métier ; P métier voisin (niveau, spécialité) ; F un autre métier.
  *
  * Tour 1 (29/09/2026) : 18,5 % de faux selon l'assistant, 16,5 % selon le juge ; la lecture reprenait les généralisations
- * rejetées par 6c. Tour 2 et suivants (`--tour N`) : après l'étape 6g, sur un tirage NEUF (autre sel, autre fichier).
+ * rejetées par 6c. Tour 2 et suivants (`--tour N`) : après l'étape 6g, sur un tirage NEUF (autre sel, autre fichier) ;
+ * le juge voit la famille du métier dès le tour 3, la grille de 6g (`GRILLE_METIER_LU`) dès le tour 4.
  *
  *   node [--env-file=<.env portant GEMINI_API_KEY>] --import tsx apps/aggregator/scripts/taxonomie/curation/6f-roles-lus.mts [--tour N] --tirer|--juger-modele|--compter
  */
@@ -20,7 +21,7 @@ import { createHash } from 'node:crypto';
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { gunzipSync } from 'node:zlib';
 import { compileOccupationManifest, occupationTitleRoles } from '../../../../../packages/db/occupations.ts';
-import { DOSSIER_SORTIE as D, lireEtape } from './commun.mts';
+import { DOSSIER_SORTIE as D, GRILLE_METIER_LU, lireEtape } from './commun.mts';
 
 const TOUR = Number(process.argv[process.argv.indexOf('--tour') + 1] ?? 1) || 1;
 const FICHIER = `${D}6f-roles-lus${TOUR > 1 ? `-t${TOUR}` : ''}.json`;
@@ -35,7 +36,7 @@ if (mode === '--tirer') {
   const libelle = (k: string) => m.occupations.find((o: any) => o.key === k)?.labels.fr ?? k;
   const population = couples.map((c: any) => {
     const d = v3.classify(c.titre, c.service);
-    const ajoutes = occupationTitleRoles(v3, c.titre, d.occupationEvidence.candidates).filter((r) => !d.occupationEvidence.candidates.includes(r));
+    const ajoutes = occupationTitleRoles(v3, c.titre, d).filter((r) => !d.occupationEvidence.candidates.includes(r));
     return { c, d, ajoutes };
   }).filter((x: any) => x.ajoutes.length);
   const alea = (x: any) => (parseInt(createHash('sha256').update(`roles-lus-2026-09-29${TOUR > 1 ? `-t${TOUR}` : ''}|${x.c.titre}|${x.c.service}`).digest('hex').slice(0, 12), 16) + 1) / 2 ** 48;
@@ -54,6 +55,8 @@ if (mode === '--juger-modele') {
   if (o.echantillon.some((x: any) => !x.verdictAssistant)) throw new Error('verdicts de l\'assistant manquants : ils se committent AVANT ceux du modèle');
   if ((Object.values(JUGES) as string[]).includes(JUGE_MESURE) || (JUGE_MESURE as string) === MODELE_CHOIX) throw new Error('le juge de mesure a servi aux rattachements');
   const CONSIGNE = `Tu évalues, pour un job board du luxe, de la mode et de la beauté, le métier qu'on lit dans l'intitulé d'une offre pour qu'une recherche par ce métier la retrouve. Pour chaque offre (intitulé, service), note le métier lu : "C" l'offre est bien un poste de ce métier ; "P" métier voisin (niveau ou spécialité proche) ; "F" un autre métier (règle du produit : un poste d'encadrement est un autre métier que celui qu'il encadre).${(o.tour ?? 1) >= 3 ? ' Le métier se comprend dans sa famille, indiquée.' : ''}`;
+  // Dès le tour 4, la grille est celle de la vérification (étape 6g), une seule pour les deux.
+  const consigne = (o.tour ?? 1) >= 4 ? GRILLE_METIER_LU : CONSIGNE;
   const SCHEMA = { type: 'OBJECT', properties: { i: { type: 'INTEGER' }, verdict: { type: 'STRING', enum: ['C', 'P', 'F'] } }, required: ['i', 'verdict'] };
   // Dès le tour 3, le juge voit la famille du métier lu, comme les juges de 6g (« Operations Manager » est celui des
   // opérations de boutique) ; les tours 1 et 2 l'ont jugé sans.
@@ -61,7 +64,7 @@ if (mode === '--juger-modele') {
   const famille = (k: string) => m.families.find((f: any) => f.key === m.occupations.find((o: any) => o.key === k)?.family)?.labels.fr;
   const lu = (a: any) => (o.tour ?? 1) >= 3 ? `${a.libelle} (famille : ${famille(a.cle)})` : a.libelle;
   const rendu = (lot: any[]) => lot.map((x, j) => `[${j}] « ${x.titre} »${x.service ? ` (service : ${x.service})` : ''} → métier lu : ${x.ajoutes.map(lu).join(', ')}`).join('\n');
-  const r = await repondre(JUGE_MESURE, CONSIGNE, o.echantillon, 20, rendu, SCHEMA);
+  const r = await repondre(JUGE_MESURE, consigne, o.echantillon, 20, rendu, SCHEMA);
   o.echantillon.forEach((x: any, n: number) => { x.verdictModele = r[n]?.verdict ?? null; });
   o.jugeModele = JUGE_MESURE;
   writeFileSync(FICHIER, JSON.stringify(o, null, 1));

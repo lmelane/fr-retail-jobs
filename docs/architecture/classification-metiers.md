@@ -205,6 +205,33 @@ marqué **existe** (lu ou mesuré le 28/09/2026) ou **décidé** (D-475, R-140 d
   porte désormais « Employé de rayon » ; les profils, préférences et alertes qui la portent au backend (141 candidats
   sourcés mesurés le 29/09/2026, aucun inscrit) ne se renomment pas en bloc : chacun se reclasse depuis son intitulé
   selon les décisions de l'étape 3c (vente, rayon ou aucun métier).
+- **Métiers lus dans l'intitulé (2B-3b, D-475 §38, commits 9281fc6 et suivants)** : `titleRoles` = les candidats du
+  moteur, plus les métiers que le résolveur de la recherche (réduit aux métiers) lit dans un intitulé PLUS LONG
+  (`packages/db/occupation-title-roles.ts`), seulement pour une expression vérifiée sur ce qu'elle y capte (étape 6g :
+  `titleReadingAliases`, 70 expressions ; un seul verdict « autre métier » la ramène à l'intitulé exact ; sous 5
+  offres, pas de lecture), jamais sous un mot d'encadrement du même segment de l'intitulé (liste partagée avec
+  l'étape 4), jamais pour une forme qui désigne un autre métier (`titleReadingExclusions` : frontières servies comme
+  « adjoint » ou « deputy », décisions v3 §32 a, §35, §37 ; sauf « formation » et « training », que l'exemple de la
+  décision montre faux), jamais au-delà d'un intitulé classé par une règle exacte. L'exemple de la décision
+  (« Conseiller(ère) de Vente – Poste avec formation avant embauche ») se lit ; 1 048 offres gagnent un métier.
+  **Lecture de l'assistant sur la justesse, à soumettre au CEO avec la carte d'activation** : mesure 6f (tirage neuf,
+  verdicts de l'assistant committés avant le juge indépendant `gemini-3.1-pro-preview`) : lecture sans preuve,
+  18,5 % de faux selon l'assistant et 16,5 % selon le juge ; tour 2, 10,5 % et 7 % ; tour 3 (version précédente de
+  la lecture), 3 % et 1,5 %, au-dessus du seuil de 1 % du moteur. La version actuelle n'est pas encore mesurée : elle
+  le sera avant l'activation, avec la question « un poste d'assistant X sort-il sous X ? » (aujourd'hui, à la lettre
+  du §38, oui). **Rien n'est lu par la recherche** : aucun lecteur de `titleRoles` avant 2B-4. Dès les migrations 2B
+  appliquées et ce code promu, chaque RUN écrit `titleRoles` avec la version active (la v1 : les seuls candidats).
+  `loadOccupationTaxonomy` refuse de tourner sans les migrations 2B (`OCCUPATION_SCHEMA_2B_MISSING`). **La recherche
+  servie (`search-3`, `apps/api/lib/search-model.ts`) lit tout alias dans l'intitulé et le fait passer devant le code
+  du moteur : aucune activation de la v3 (2C) tant qu'elle n'est pas remplacée par la lecture de la colonne (2B-4)** ;
+  sinon 869 offres verraient leur métier remplacé (« Responsable vendeur » indexé Conseiller de vente).
+  **Défauts connus, entrées de la passe suivante** : l'alias servi « Optometric Technician » d'Optométriste ;
+  « Säljare », « Πωλητής », « 销售助理 » portés par Commercial ou Assistant commercial ; adjoints suédois et japonais
+  lus Responsable de boutique (« Assisterande Butikschef Gant Outlet Hede », « アシスタントストアマネージャー ») ;
+  « area manager » lu sur des postes d'entrepôt ou de vente wholesale ; Chef de produit rangé en Développement
+  produit & R&D (« chef de produit » ramené à l'exact : 53 offres non assistantes perdues) ; « Conseiller.e de
+  ventes » au pluriel non lu (48 offres) ; libellés affichés de Premier vendeur et Keyholder en pl, cs, pt, ro, el.
+  L'empreinte du manifeste a changé avec 6g (règles identiques) : les mesures 6d déjà comptées valent pour le moteur.
 - **Référence ESCO** publiée et datée, somme de contrôle versionnée.
 
 ### 3.2 L'IA validatrice : passes de curation (D-475 §30, §31 a)
@@ -239,10 +266,10 @@ car sans elle l'alerte ne part pas.
 - **Table apprise** : cache, verrou et garde d'écriture sur deux versions (taxonomie, table) ; toute décision qui
   atteint l'étape de la table porte la version évaluée ; le balayage reprend les intitulés dont l'entrée a changé.
   Reçu et pointeur précédent pour revenir.
-- **Rôles du titre stockés** : au moment de la classification, le résolveur (déplacé dans `packages/db`) écrit
-  sur `Job` et `DirectOffer` un tableau `titleRoles`, indexé, avec la version du manifeste qui l'a calculé ; les
-  variantes de toutes les langues l'alimentent (§32 a) ; pour `DirectOffer`, l'empreinte de projection inclut
-  cette version.
+- **Rôles du titre stockés** : au moment de la classification, `occupationTitleRoles` (`packages/db`, avec le
+  résolveur de la recherche) écrit sur `Job` et `DirectOffer` un tableau `titleRoles`, indexé, avec la version du
+  manifeste qui l'a calculé : les candidats du moteur et les expressions vérifiées lues dans l'intitulé (§3.1,
+  2B-3b) ; pour `DirectOffer`, l'empreinte de projection inclut ces rôles et leur version.
 - **Hors ligne** : candidats Catwalks d'abord (avec leurs URI ESCO), l'ESCO au-delà ; synonymes d'offres au
   consensus de deux juges. Les intitulés de CV sont traités **au backend**, qui appelle déjà le modèle : aucun
   intitulé de CV ne part vers l'agrégateur ; la politique de confidentialité le déclare avec le reste du lot.
@@ -270,7 +297,7 @@ car sans elle l'alerte ne part pas.
 
 ### 3.5 Recherche, suggestions, alertes
 
-- `metier=X` retient une offre si son code est X, **ou** si X figure dans ses `titleRoles`. Une clé remplacée
+- `metier=X` retiendra une offre si son code est X, **ou** si X figure dans ses `titleRoles` (2B-4, pas encore construit). Une clé remplacée
   n'est plus classée, n'entre plus dans le vocabulaire, la garde ou les facettes ; une recherche, une préférence
   ou une alerte qui la porte est suivie vers son successeur **au moment de la requête**, sans réécrire son
   empreinte. La facette compte la même appartenance. Aucune dépendance à l'index. **Encadrement** (§32 a) :
