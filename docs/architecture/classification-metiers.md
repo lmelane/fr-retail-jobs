@@ -190,7 +190,7 @@ marqué **existe** (lu ou mesuré le 28/09/2026) ou **décidé** (D-475, R-140 d
   écrites seulement en publiant une version ; `titleRoles` versionnés sur Job et DirectOffer ; domaine CALCULÉ par
   déclencheur depuis la famille) et `20260929160100_occupation_learned_table` (table apprise scellée à sa création,
   immuable, rattachée à sa taxonomie ; état actif à part d'`OccupationState`, remis à vide à chaque activation de
-  taxonomie ; source de chaque décision : règle, table apprise ou back-office). **Non appliquées en production.**
+  taxonomie ; source de chaque décision : règle, table apprise ou back-office). **Appliquées en production le 29/09/2026 à 18:18 UTC** (GO n°1 du CEO, après la fin du RUN ; avec la migration `20260930090000_search_requeue_tranches`), en 2 s ; vérifié : statut à jour, aucune transaction en cours, l'API servie répond `ok` (search-4 prête, file vide), et le contrôle de démarrage du worker servi (`prisma migrate status` avec ses 93 migrations) rend 0 face à une base en avance.
   **Application (GO du CEO)** : mesuré en lecture seule le 29/09/2026 (`scripts/taxonomie/mesure-application-2b.mts`) :
   Job 83 826 lignes (188 Mo, 1,9 Go avec index), DirectOffer 59, une seule version publiée (la v1, sans clé en
   double) ; contraintes `NOT VALID` (lignes existantes valides par construction), seul coût sous verrou : l'index GIN

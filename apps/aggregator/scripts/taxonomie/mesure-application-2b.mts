@@ -39,7 +39,17 @@ SELECT json_build_object(
   'dernieresMigrations', (SELECT json_agg(migration_name ORDER BY finished_at DESC) FROM (SELECT migration_name, finished_at FROM _prisma_migrations
      WHERE finished_at IS NOT NULL ORDER BY finished_at DESC LIMIT 4) m),
   'migrations2bPresentes', (SELECT count(*) FROM _prisma_migrations WHERE migration_name LIKE '20260929160%'),
-  'connexionsActives', (SELECT count(*) FROM pg_stat_activity WHERE datname = current_database() AND state = 'active'));
+  'connexionsActives', (SELECT count(*) FROM pg_stat_activity WHERE datname = current_database() AND state = 'active'),
+  -- Juste avant d'appliquer : aucune transaction longue ni ouverte qui tiendrait un verrou (hors cette lecture).
+  'activite', (SELECT json_build_object('actives', count(*) FILTER (WHERE state = 'active'),
+     'ouvertesInactives', count(*) FILTER (WHERE state LIKE 'idle in transaction%'),
+     'plusLongueTransactionSecondes', round(coalesce(max(extract(epoch FROM now() - xact_start)), 0)))
+     FROM pg_stat_activity WHERE datname = current_database() AND pid <> pg_backend_pid()),
+  -- Le dernier RUN : son issue et ses erreurs par type (une panne de base se verrait ici avant de migrer).
+  'dernierRun', (SELECT json_build_object('runId', e."runId", 'le', e.at, 'statut', e.payload->>'status',
+     'erreurs', (SELECT json_object_agg(event, n) FROM (SELECT event, count(*) AS n FROM "PipelineEvent"
+        WHERE "runId" = e."runId" AND lower(level) IN ('error', 'erro') GROUP BY event ORDER BY count(*) DESC LIMIT 12) x))
+     FROM "PipelineEvent" e WHERE e.event = 'run.completed' ORDER BY e.at DESC LIMIT 1));
 \\else
 SELECT 'REFUS';
 \\endif
