@@ -25,7 +25,8 @@ import { classifyJob } from '../normalize/taxonomy.js';
  * Le contexte est chargé une fois par passe : une Maison ajoutée au registre, un alias revu ou une nouvelle version de
  * la taxonomie atteignent les offres directes à la passe suivante, par la comparaison des projections (`photo.ts`).
  */
-export type MetierProjete = { occupationCode: string | null; occupationReleaseId: string | null };
+/** Lot 2B de D-475 : les métiers lus dans le titre et la version qui les a lus, comme pour une offre agrégée. */
+export type MetierProjete = { occupationCode: string | null; occupationReleaseId: string | null; titleRoles: string[]; titleRolesReleaseId: string | null };
 export type ContexteProjection = {
   rattacher(nomMaison: string | null | undefined, catalogueId?: string | null): string | null;
   /** Le domaine de la société canonique rattachée, ou `null` (inconnu, ou aucune société). */
@@ -88,7 +89,8 @@ export function rattacheurRegistre(societes: readonly SocieteRegistre[], alias: 
 export function metierDepuisTaxonomie(taxonomie: CompiledOccupationTaxonomy): (titre: string) => MetierProjete {
   return (titre) => {
     const decision = classifyJob({ title: titre }, taxonomie);
-    return { occupationCode: decision.occupationCode, occupationReleaseId: decision.occupationReleaseId };
+    return { occupationCode: decision.occupationCode, occupationReleaseId: decision.occupationReleaseId,
+      titleRoles: [...decision.occupationEvidence.candidates].sort(), titleRolesReleaseId: decision.occupationReleaseId };
   };
 }
 

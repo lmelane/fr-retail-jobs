@@ -107,6 +107,9 @@ export function colonnesProjetees(offre: OffreCatalogueV1, contexte: ContextePro
     // D-444 : le métier de la taxonomie active, appliquée à l'intitulé (filtre « métier ») ; le libellé du backend reste affiché.
     occupationCode: metier.occupationCode,
     occupationReleaseId: metier.occupationReleaseId,
+    // Lot 2B : dans les colonnes projetées, donc dans l'empreinte (plan §3.3 : l'empreinte inclut la version).
+    titleRoles: metier.titleRoles,
+    titleRolesReleaseId: metier.titleRolesReleaseId,
     occupationLabel: offre.metier?.libelle ?? null,
     language: detectLanguage(`${offre.titre}\n${description}`) ?? null,
     description,

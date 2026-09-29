@@ -45,9 +45,13 @@ describe('contexte de projection des offres directes (D-444)', () => {
 
   it('le métier : un code seulement quand une règle revue le désigne ; la version de la taxonomie est consignée', () => {
     const metier = metierDepuisTaxonomie(BOOTSTRAP_TAXONOMY);
-    expect(metier('Conseiller de vente H/F')).toEqual({ occupationCode: 'sales-advisor', occupationReleaseId: BOOTSTRAP_TAXONOMY.manifest.id });
+    const version = BOOTSTRAP_TAXONOMY.manifest.id;
+    expect(metier('Conseiller de vente H/F')).toEqual({ occupationCode: 'sales-advisor', occupationReleaseId: version, titleRoles: ['sales-advisor'], titleRolesReleaseId: version });
     // Une famille seule n'est pas un métier : l'intitulé reste sans code, jamais deviné.
-    expect(metier('Animateur·rice des ventes')).toEqual({ occupationCode: null, occupationReleaseId: BOOTSTRAP_TAXONOMY.manifest.id });
+    expect(metier('Animateur·rice des ventes')).toEqual({ occupationCode: null, occupationReleaseId: version, titleRoles: [], titleRolesReleaseId: version });
+    // Lot 2B : un intitulé ambigu porte ses métiers en concurrence, que le filtre « métier » retrouve (§27 e).
+    expect(metier('Vendeur / Caissier').titleRoles).toEqual(['cashier', 'sales-advisor']);
+    expect(metier('Vendeur / Caissier').occupationCode).toBeNull();
   });
 });
 

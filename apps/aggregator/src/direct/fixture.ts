@@ -72,7 +72,9 @@ export function contexteTemoin(options: {
     },
     domaine: (companyId) => (companyId && Object.hasOwn(domaines, companyId) ? domaines[companyId] : null),
     liensInconnus: () => [...inconnus].sort(),
-    metier: (titre) => (Object.hasOwn(metiers, titre) ? { occupationCode: metiers[titre], occupationReleaseId: 'release-temoin' } : { occupationCode: null, occupationReleaseId: 'release-temoin' }),
+    // Version fictive : pas de rôles lus dans le titre (leur version est une clé étrangère réelle, lot 2B).
+    metier: (titre) => ({ occupationCode: Object.hasOwn(metiers, titre) ? metiers[titre] : null, occupationReleaseId: 'release-temoin',
+      titleRoles: [], titleRolesReleaseId: null }),
     pays: options.pays ?? ((latitude, longitude) => paysDesCoordonnees(latitude, longitude)),
   };
 }

@@ -106,6 +106,8 @@ export async function classifyJobs(
         occupationEvidence: true,
         occupationReleaseId: true,
         seniority: true,
+        titleRoles: true,
+        titleRolesReleaseId: true,
         canonicalSourceKey: true,
         canonicalExternalId: true,
       },

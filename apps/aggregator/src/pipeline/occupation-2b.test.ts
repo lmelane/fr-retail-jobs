@@ -62,6 +62,15 @@ describe("lot 2B : clés par version, rôles lus dans le titre, domaine calculé
     await expect(db.$executeRaw`TRUNCATE "OccupationReleaseConcept"`).rejects.toThrow(/immutable/);
   });
 
+  it("le reclassement écrit les métiers lus dans le titre avec leur version, et un second passage ne réécrit rien", async () => {
+    const job = await db.job.findUniqueOrThrow({ where: { id: "lot-2b-vendeur" } });
+    expect(job.titleRoles).toEqual(["sales-advisor"]);
+    expect(job.titleRolesReleaseId).toBe(release.id);
+    const encore = await classifyJobs(db, { all: true, batchSize: 10 });
+    expect(encore.written).toBe(0);
+    expect(encore.unchanged).toBe(1);
+  });
+
   it("un rôle lu porte la version qui l'a lu, et appartient à ses métiers (Job et offre Catwalks)", async () => {
     await db.$executeRaw`UPDATE "Job" SET "titleRoles"='{sales-advisor}', "titleRolesReleaseId"=${release.id} WHERE id='lot-2b-vendeur'`;
     expect((await db.job.findUniqueOrThrow({ where: { id: "lot-2b-vendeur" } })).titleRoles).toEqual(["sales-advisor"]);

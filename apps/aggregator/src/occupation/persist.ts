@@ -21,6 +21,12 @@ export function classifyOccupationContent(
   const c = classifyJob(input, catalogue);
   return {
     ...c,
+    // Lot 2B de D-475 : les métiers lus dans le titre sont les candidats retenus par le moteur (le métier d'un intitulé
+    // classé, les métiers en concurrence d'un intitulé ambigu : « Vendeur / Caissier »), donc sous toutes les décisions
+    // (§32 a : « Responsable vendeur » n'est pas « Vendeur » ; §36 : intitulé exact) ; écrits avec la classification,
+    // jamais périmés, avec la version qui les a lus.
+    titleRoles: [...c.occupationEvidence.candidates].sort(),
+    titleRolesReleaseId: c.occupationReleaseId,
     rawTitle: input.rawTitle ?? null,
     occupationEvidence: {
       ...c.occupationEvidence,
@@ -43,6 +49,8 @@ export const OCCUPATION_FIELDS = [
   "occupationEvidence",
   "occupationReleaseId",
   "seniority",
+  "titleRoles",
+  "titleRolesReleaseId",
 ] as const;
 export function occupationState(row: Record<string, any>) {
   return Object.fromEntries(OCCUPATION_FIELDS.map((k) => [k, row[k] ?? null]));

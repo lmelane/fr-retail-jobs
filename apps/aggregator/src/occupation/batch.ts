@@ -39,6 +39,8 @@ export async function writeOccupationBatch(
         "normalizedTitle"=c.decision->>'normalizedTitle',"occupationStatus"=c.decision->>'occupationStatus',
         "occupationEvidence"=c.decision->'occupationEvidence',
         "occupationReleaseId"=c.decision->>'occupationReleaseId',seniority=c.decision->>'seniority',
+        "titleRoles"=ARRAY(SELECT jsonb_array_elements_text(coalesce(c.decision->'titleRoles','[]'::jsonb))),
+        "titleRolesReleaseId"=c.decision->>'titleRolesReleaseId',
         "updatedAt"=statement_timestamp()
       FROM proposals c
       WHERE j.id=c.id AND j."updatedAt"=c."observedAt" AT TIME ZONE 'UTC' AND j."mergedIntoId" IS NULL
