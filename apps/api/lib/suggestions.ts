@@ -6,6 +6,10 @@ import type { Perimetre } from '@catwalks/db/marches';
 import { prisma, Prisma } from '@catwalks/db';
 import { directPubliableSql } from './direct-offers';
 import { echapperLike } from './like';
+import { getOptionalOccupationPresentation } from './occupations';
+import { localeAffichage } from './presentation-locale';
+import { langueDesLibelles } from '@catwalks/db/presentation';
+import { searchConcepts } from './search-vocabulary';
 
 /**
  * L'AUTOCOMPLÉTION DE LA BARRE, DEPUIS NOS DONNÉES ET DANS LE PÉRIMÈTRE (lot 6).
@@ -141,7 +145,27 @@ export function roleKeyword(title: string): string {
     .trim();
 }
 
+/**
+ * LE MÉTIER RECONNU DANS UNE SUGGESTION (D-475, plan §3.5, contrat ADDITIF). Les chaînes restent, telles quelles ; un
+ * champ nouveau porte, pour chacune, le métier qu'elle nomme exactement (`{ identifiant, libelle }`, libellé dans la
+ * langue du marché) ou `null` : un intitulé réel sans métier reste proposé. L'écran peut dire « Métier : Conseiller de
+ * vente » et chercher par l'identifiant.
+ */
+export type MetierSuggere = { identifiant: string; libelle: string };
+export type SuggestionDetaillee = { valeur: string; metier: MetierSuggere | null };
+
+/** Le métier qu'une chaîne nomme exactement : une seule intention, un métier, sans texte libre ni exclusion. */
+function metierNomme(resolve: (q: string) => { clauses: { kind: string; keys: string[]; exclude: boolean }[] }, valeur: string): string | null {
+  const { clauses } = resolve(valeur);
+  const [c] = clauses;
+  return clauses.length === 1 && c.kind === 'role' && !c.exclude && c.keys.length === 1 ? c.keys[0] : null;
+}
+
 export async function suggestTitles(query: string, perimetre: Perimetre): Promise<string[]> {
+  return (await suggestTitlesDetaillees(query, perimetre)).map((s) => s.valeur);
+}
+
+export async function suggestTitlesDetaillees(query: string, perimetre: Perimetre, locale?: string): Promise<SuggestionDetaillee[]> {
   if (!process.env.DATABASE_URL) return [];
   validateSearchQuery(query);
   const q = query.trim();
@@ -177,10 +201,41 @@ export async function suggestTitles(query: string, perimetre: Perimetre): Promis
         WHERE s.version=${SEARCH_VERSION} AND ${condition} AND ${directPubliable(asOf)} AND d."countryCode" IN (${pays}))`;
     });
     const found = await prisma.$queryRaw<{ value: string }[]>(Prisma.sql`SELECT value FROM (${Prisma.join(queries, ' UNION ALL ')}) suggestions ORDER BY position LIMIT ${SUGGEST_LIMIT}`);
-    return found.map(r => r.value);
+    const presentation = await getOptionalOccupationPresentation(langueDesLibelles(localeAffichage(locale, perimetre)));
+    return found.map((r) => {
+      const identifiant = metierNomme((v) => model.resolver.resolve(v), r.value), libelle = presentation.occupationLabel(identifiant);
+      return { valeur: r.value, metier: identifiant && libelle ? { identifiant, libelle } : null };
+    });
   } catch {
     return [];
   }
+}
+
+/**
+ * LES MÉTIERS DE LA TAXONOMIE, par libellé ou variante (D-475, plan §3.5) : pour les préférences et l'onboarding, un
+ * métier reste choisissable même sans offre vivante, donc sans dépendre de l'index de recherche. Le libellé du marché
+ * d'abord, puis les variantes qui commencent par la frappe, puis celles qui la contiennent.
+ */
+export async function suggestOccupations(query: string, perimetre: Perimetre, locale?: string): Promise<MetierSuggere[]> {
+  if (!process.env.DATABASE_URL) return [];
+  validateSearchQuery(query);
+  const q = searchWords(query).join(' ');
+  if (q.length < 2) return [];
+  const presentation = await getOptionalOccupationPresentation(langueDesLibelles(localeAffichage(locale, perimetre)));
+  if (!presentation.available) return [];
+  const rang = new Map<string, number>();
+  for (const c of searchConcepts(presentation.taxonomy.manifest, [])) {
+    if (c.kind !== 'role') continue;
+    const libelle = presentation.occupationLabel(c.key);
+    const cle = (v: string) => searchWords(v).join(' ');
+    const r = libelle && cle(libelle).startsWith(q) ? 0 : c.aliases.some((a) => cle(a).startsWith(q)) ? 1
+      : c.aliases.some((a) => ` ${cle(a)}`.includes(` ${q}`)) ? 2 : null;
+    if (r !== null) rang.set(c.key, r);
+  }
+  return [...rang].map(([identifiant, r]) => ({ identifiant, libelle: presentation.occupationLabel(identifiant)!, r }))
+    .filter((m) => m.libelle)
+    .sort((a, b) => a.r - b.r || a.libelle.localeCompare(b.libelle))
+    .slice(0, SUGGEST_LIMIT).map(({ identifiant, libelle }) => ({ identifiant, libelle }));
 }
 
 /**

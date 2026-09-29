@@ -321,7 +321,10 @@ car sans elle l'alerte ne part pas.
   empreinte. La facette compte la même appartenance. Aucune dépendance à l'index. **Encadrement** (§32 a) :
   « Responsable vendeur », « Team Leader Client Advisor » ont leur métier d'encadrement, dont la v3 porte les
   variantes ; témoins : ils ne comptent pas comme « Vendeur ».
-- **Suggestions, contrat additif** : les chaînes restent ; un champ nouveau porte `{libellé, identifiant}` ;
+- **Suggestions, contrat additif** (API construite en 2B, pas déployée : `apps/api/lib/suggestions.ts`,
+  `/api/suggest` ; le site les lira en 2D) : les chaînes restent ; un champ nouveau porte `{libellé, identifiant}`
+  (`metiers[i]` pour `suggestions[i]`, `null` quand la suggestion ne nomme pas un seul métier ; `type=metier` rend les
+  métiers de la taxonomie, même sans offre vivante et index indisponible) ;
   les intitulés réels sans identifiant restent proposés ; l'écran dit le métier reconnu (« Métier : Conseiller
   de vente ») ; pour les préférences et l'onboarding, un métier sans offre vivante reste choisissable, sans
   dépendre de l'index.

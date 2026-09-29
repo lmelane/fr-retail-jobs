@@ -3,7 +3,7 @@ import { prisma, Prisma } from '@catwalks/db';
 import { initializeSearchIndex, drainSearchIndex, retireSearchGeneration, SEARCH_VERSION } from './search-index';
 import { getJobs } from './jobs';
 import { publicationFixture } from '../../aggregator/src/test/publication-fixture';
-import { suggestTitles } from './suggestions';
+import { suggestOccupations, suggestTitles, suggestTitlesDetaillees } from './suggestions';
 import { exigerPerimetre } from './perimetre';
 import { loadOccupationTaxonomy, occupationTitleRoles, persistedOccupationDecision } from '@catwalks/db/occupations';
 const url = process.env.DATABASE_URL ? new URL(process.env.DATABASE_URL) : null;
@@ -147,6 +147,21 @@ describe.skipIf(!enabled)('durable search projection and live public API', () =>
   it('suggests a cross-language role only in markets with a live matching offer', async () => {
     expect(await suggestTitles('conseiller de ven', exigerPerimetre('US'))).toContain('Conseiller de vente');
     expect(await suggestTitles('conseiller de ven', exigerPerimetre('JP'))).toEqual([]);
+  });
+  it('porte le métier reconnu à côté de chaque suggestion, et liste les métiers sans dépendre de l’index (D-475, plan §3.5)', async () => {
+    const fr = exigerPerimetre('FR');
+    const details = await suggestTitlesDetaillees('conseiller de ven', fr);
+    // Contrat additif : les chaînes restent celles d'avant.
+    expect(details.map(d => d.valeur)).toEqual(await suggestTitles('conseiller de ven', fr));
+    expect(details.find(d => d.valeur === 'Conseiller de vente')?.metier).toEqual({ identifiant: 'sales-advisor', libelle: 'Conseiller de vente' });
+    // Un métier reste choisissable quand l'index est indisponible (préférences, onboarding) : prémisse, la suggestion
+    // d'intitulés, elle, en dépend.
+    await prisma.$executeRaw`UPDATE "SearchGeneration" SET "readyAt"=NULL WHERE version=${SEARCH_VERSION}`;
+    try {
+      await expect(suggestTitles('conseiller de ven', fr)).rejects.toThrow('Search projection unavailable');
+      expect((await suggestOccupations('horlog', fr)).map(m => m.identifiant)).toContain('watchmaker');
+      expect(await suggestOccupations('x', fr)).toEqual([]);
+    } finally { await sync(); }
   });
   it('retires an old generation without failing a concurrent native enqueue', async () => {
     const version='search-integration-retirement';
