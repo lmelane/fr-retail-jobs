@@ -116,6 +116,14 @@ marqué **existe** (lu ou mesuré le 28/09/2026) ou **décidé** (D-475, R-140 d
   | 2 | séparation, première forme | 1 (0,5 %) | 2 (1,0 %), même juge, **non indépendant** (il a co-décidé les rattachements) | audits BLOCKED |
   | 3 | correctifs du 2e audit, avant §36 | 0 | 0, `gemini-3.1-pro-preview` (aucun rattachement) | audit : §36 à trancher |
   | 4 | après §36 | 0 (borne haute de Wilson 1,9 %) | 3 (1,5 %), tous des cas tranchés par §36 (« Team Manager » → Floor manager), notés d'après une grille restée périmée ; 0 hors ces cas | 0 hors §36 ; non concluant au seuil de 1 % ; 3e audit : rayons « à service » rouverts (13 offres), corrigé |
+  | 5 | rayons « à service » exclus | 1 (0,5 %) | 11 (5,5 %), grille portant désormais le texte des décisions ; après examen de chaque désaccord, 4 faux retenus (2,0 %) : « Chef des ventes » (Pandora) au Manager commercial, « Part Time Supervisor », « Service Lead » (Burberry), « Planner » seul ; les autres contredisent §36 ou l'employeur réel | au-dessus du seuil : les 4 causes corrigées |
+  | 6 | **version actuelle** | 1 (0,5 %) : « Responsable Contrôle de Gestion » au métier de base (§32 a, 1 offre) | 7 (3,5 %) : 5 intitulés de niveau seul que §36 rattache à l'encadrement (« Assistant Manager », « Responsable adjoint », « Shift Leader », « Acting Supervisor I »), et 2 cas limites (« Responsable de rayons » → Floor manager, 40 offres ; « Assistant Manager - Visual Merchandising » → Assistant VM) | entre 0,5 % et 1,5 % selon la lecture des cas limites ; non concluant au seuil de 1 % (borne haute 2,8 %) |
+
+  **Lecture des six tours** : les faux restants ne sont plus des défauts de la chaîne mais des frontières de
+  métier (encadrement de la grande distribution, niveau seul) ; le juge indépendant lit §32 c plus strictement que
+  §36. Deux cents couples ne peuvent pas prouver 1 % : **avant l'activation (2C), une mesure finale sur environ 460
+  couples** (la taille où zéro ou un faux place la borne haute de Wilson près de 1 %), sur la version à activer,
+  avec la même grille.
 
   Les « 0,1 % en offres » annoncés aux tours 1 et 2 étaient faux : le tirage est déjà proportionnel aux offres, la
   repondération comptait le poids deux fois ; la proportion brute approche la part d'offres fausses (recalcul
@@ -129,7 +137,9 @@ marqué **existe** (lu ou mesuré le 28/09/2026) ou **décidé** (D-475, R-140 d
   à l'étape 4) ou des doubles intitulés. « Aucune perte hors plan » signifie que chaque perte vient d'une décision de
   la passe ; les 4 offres ci-dessus sont des décisions fausses. **Entrées de la passe suivante** : ces 4 offres ; les
   métiers d'encadrement manquants (responsable comptable, directeur RH business partner…) ; « Lead » niveau
-  d'expertise ou encadrement (« Lead Software Engineer », « Lead Accountant », environ 17 offres perdues), « Sales Lead with Keys » partagé entre Premier vendeur et Floor manager chez UGG, « chef de rayon »
+  d'expertise ou encadrement (« Lead Software Engineer », « Lead Accountant », environ 17 offres perdues), « chef de rayon » et « responsable de rayons » de la grande distribution (un
+  métier d'encadrement propre, aujourd'hui Floor manager, 40 offres et plus), « Responsable contrôle de gestion » au
+  métier de base, « Dispenser » partagé entre Assistant et Préparateur en pharmacie (Boots, près de 400 offres), « Sales Lead with Keys » partagé entre Premier vendeur et Floor manager chez UGG, « chef de rayon »
   de la grande distribution rattaché au Floor manager, les noms de « Conseiller de vente » dans 8 langues à confronter
   à l'usage des offres (§34), « Stellvertretender Filialleiter » classé Store manager par une règle servie (29 offres).
 - **Ce que la constitution impose au moteur (sous-lot 2B)** : (1) un intitulé validé par les juges vaut pour
