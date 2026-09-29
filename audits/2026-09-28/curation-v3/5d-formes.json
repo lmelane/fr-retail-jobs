@@ -1,5 +1,5 @@
 {
- "calculeLe": "2026-09-29T11:50:03.692Z",
+ "calculeLe": "2026-09-29T14:16:41.862Z",
  "modele": "gemini-3.6-flash",
  "bilan": {
   "langues": [
@@ -29,10 +29,10 @@
   ],
   "metiers": 57,
   "noms": 157,
-  "proposees": 55,
+  "proposees": 56,
   "ecartees": 0,
   "sansReponse": 0,
-  "nomsAvecFormes": 55
+  "nomsAvecFormes": 56
  },
  "formes": {
   "regional-retail-manager": {
@@ -175,8 +175,11 @@
    "de": [
     "Spa-Therapeutin"
    ],
+   "it": [
+    "Operatrice Spa"
+   ],
    "pl": [
-    "Terapeutka spa"
+    "Pracownica Spa"
    ],
    "el": [
     "Θεραπεύτρια Spa"

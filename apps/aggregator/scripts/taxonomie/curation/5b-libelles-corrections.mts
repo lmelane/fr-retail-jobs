@@ -60,6 +60,14 @@ function defauts(liste: Element[]) {
     out.push({ cle: e.cle, langue: l, raison: `forme non courte (« ${e.libelles[l]} » : barre ou parenthèse), un seul nom` });
   for (const e of liste) for (const [l, re] of Object.entries(ECRITURE)) if (e.libelles[l] && !re.test(e.libelles[l]))
     out.push({ cle: e.cle, langue: l, raison: `écrit en alphabet latin (« ${e.libelles[l]} ») dans une langue qui s'écrit autrement` });
+  // Une famille ne porte jamais le nom d'un métier : la recherche ne saurait plus lequel des deux on cherche (audit du
+  // lot 2B-2 : « 销售顾问 », Conseil de vente et Conseiller de vente en chinois, tombait en texte libre).
+  for (const l of LANGUES_SITE) {
+    const metiers = new Map<string, Element>();
+    for (const e of liste) if (e.type === 'metier' && e.libelles[l]) metiers.set(norme(e.libelles[l]), e);
+    for (const f of liste) if (f.type === 'famille' && f.libelles[l] && metiers.has(norme(f.libelles[l])))
+      out.push({ cle: f.cle, langue: l, raison: `même nom (« ${f.libelles[l]} ») que le métier ${metiers.get(norme(f.libelles[l]))!.libelles.fr} : une famille porte un nom distinct de ses métiers, qui dit le domaine (« 销售咨询类 »)` });
+  }
   for (const type of ['metier', 'famille']) for (const l of LANGUES_SITE) {
     const parForme = new Map<string, Element[]>();
     for (const e of liste.filter((x) => x.type === type)) if (e.libelles[l]) parForme.set(norme(e.libelles[l]), [...(parForme.get(norme(e.libelles[l])) ?? []), e]);

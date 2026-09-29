@@ -1,40 +1,35 @@
 {
- "calculeLe": "2026-09-29T11:20:49.402Z",
+ "calculeLe": "2026-09-29T14:16:17.014Z",
  "modeles": {
   "correction": "gemini-3.6-flash",
   "relecture": "gemini-3-flash-preview"
  },
  "bilan": {
-  "fautesAudit": 44,
+  "fautesAudit": 39,
   "relectureManquante": 0,
-  "defautsAvant": 194,
+  "defautsAvant": 199,
   "tours": 3,
-  "elementsCorriges": 90,
-  "defautsConnus": 5,
+  "elementsCorriges": 97,
+  "defautsConnus": 4,
   "fautesBloquantes": 0,
-  "preferencesUsage": 22,
+  "preferencesUsage": 18,
   "signalementsEtape5NonBloquants": 63
  },
  "defautsConnus": [
-  {
-   "cle": "backend:RESPONSABLE_COMMERCIAL_DE_ZONE",
-   "langue": "it",
-   "raison": "libellé « Area Manager » déjà employé en production pour Responsable régional retail / Regional retail manager : donner à ce métier un nom distinct"
-  },
-  {
-   "cle": "backend:RESPONSABLE_COMMERCIAL_DE_ZONE",
-   "langue": "it",
-   "raison": "libellé « Area Manager » déjà employé en production pour Responsable régional retail / Regional retail manager : donner à ce métier un nom distinct"
-  },
   {
    "cle": "backend:DIRECTEUR_DE_CLIENTELE",
    "langue": "ar",
    "raison": "Le terme \"مدير إدارة الحسابات\" désigne généralement un responsable comptable (Finance) plutôt qu'un directeur de clientèle."
   },
   {
-   "cle": "backend:PRATICIEN_SPA",
-   "langue": "nl",
-   "raison": "Le libellé est répété deux fois."
+   "cle": "retail-client-advisor",
+   "langue": "th",
+   "raison": "Désigne l'activité ou le secteur (Retail Sales) plutôt que le métier (Sales Advisor/Consultant)."
+  },
+  {
+   "cle": "retail-store-management",
+   "langue": "vi",
+   "raison": "Forme administrative longue (Ban quản lý)"
   },
   {
    "cle": "crm-clienteling",
@@ -43,13 +38,6 @@
   }
  ],
  "preferencesUsage": [
-  {
-   "cle": "beauty-therapist",
-   "langue": "zh-Hant",
-   "raison": "Le terme standard est 美容師, 美膚師 est trop restrictif ou spécifique au soin de la peau.",
-   "type": "usage",
-   "libelle": "美膚師"
-  },
   {
    "cle": "legal-counsel",
    "langue": "el",
@@ -81,30 +69,16 @@
   {
    "cle": "backend:ASSISTANT_DE_GESTION",
    "langue": "de",
-   "raison": "Management-Assistent est plus courant dans le luxe/retail ; Kaufmännischer Assistent est un titre de diplôme.",
+   "raison": "'Kaufmännischer Assistent' est un titre de formation administrative ; 'Management-Assistent' est plus courant pour ce poste.",
    "type": "usage",
    "libelle": "Kaufmännischer Assistent"
   },
   {
    "cle": "backend:ASSISTANT_DE_GESTION",
    "langue": "el",
-   "raison": "Βοηθός Διοίκησης est le terme standard pour un assistant de gestion/management.",
+   "raison": "'Βοηθός Διαχείρισης' est une traduction trop littérale ; 'Βοηθός Διοίκησης' est le terme standard en entreprise.",
    "type": "usage",
    "libelle": "Βοηθός Διαχείρισης"
-  },
-  {
-   "cle": "backend:ASSISTANT_DE_GESTION",
-   "langue": "cs",
-   "raison": "Asistent vedení est plus naturel que le calque Asistent managementu.",
-   "type": "usage",
-   "libelle": "Asistent managementu"
-  },
-  {
-   "cle": "backend:ASSISTANT_DE_GESTION",
-   "langue": "hu",
-   "raison": "Vezetői asszisztens est plus courant que le calque Menedzsment asszisztens.",
-   "type": "usage",
-   "libelle": "Menedzsment asszisztens"
   },
   {
    "cle": "backend:ASSISTANT_PEDAGOGIQUE",
@@ -119,6 +93,13 @@
    "raison": "Le terme 'مسؤول' (responsable) est utilisé au lieu de 'مدير' (manager).",
    "type": "usage",
    "libelle": "مسؤول العلامة التجارية"
+  },
+  {
+   "cle": "backend:COUPE",
+   "langue": "ko",
+   "raison": "Le terme '재단공' (ouvrier) est trop industriel pour le secteur du luxe ; '재단사' est le terme d'usage pour un coupeur dans la mode.",
+   "type": "usage",
+   "libelle": "재단공"
   },
   {
    "cle": "backend:MANAGER_FLOOR",
@@ -156,27 +137,6 @@
    "libelle": "Keyholder"
   },
   {
-   "cle": "backend:PRATICIEN_SPA",
-   "langue": "it",
-   "raison": "Le terme 'Operatore Spa' est plus courant dans ce secteur",
-   "type": "usage",
-   "libelle": "Terapista Spa"
-  },
-  {
-   "cle": "backend:PRATICIEN_SPA",
-   "langue": "pl",
-   "raison": "Le terme 'Pracownik SPA' est plus courant dans ce secteur",
-   "type": "usage",
-   "libelle": "Terapeuta spa"
-  },
-  {
-   "cle": "backend:PRATICIEN_SPA",
-   "langue": "el",
-   "raison": "Terme à connotation médicale",
-   "type": "usage",
-   "libelle": "Θεραπευτής Spa"
-  },
-  {
    "cle": "backend:PREMIERE_MAIN",
    "langue": "pt",
    "raison": "Le masculin est préférable pour un nom de métier générique",
@@ -191,11 +151,18 @@
    "libelle": "Piloteira"
   },
   {
-   "cle": "backend:PRATICIEN_SPA",
-   "langue": "en",
-   "raison": "Le terme 'Spa Therapist' est le standard de l'industrie, 'Spa Practitioner' est un calque du français.",
+   "cle": "backend:RESPONSABLE_COMMERCIAL_DE_ZONE",
+   "langue": "ja",
+   "raison": "Translittération trop longue ; le terme 'エリアマネージャー' (Area Manager) est beaucoup plus courant en retail.",
    "type": "usage",
-   "libelle": "Spa Practitioner"
+   "libelle": "エリアセールスマネージャー"
+  },
+  {
+   "cle": "retail-client-advisor",
+   "langue": "th",
+   "raison": "Terme trop générique ('vendeur') ; pour 'Conseil de vente' dans le luxe, 'ที่ปรึกษาการขาย' (Conseiller de vente) est préférable.",
+   "type": "usage",
+   "libelle": "พนักงานขาย"
   }
  ],
  "signalementsEtape5": [
@@ -1198,7 +1165,7 @@
    "pt": "Esteticista",
    "pt-BR": "Esteticista",
    "da": "Kosmetolog",
-   "zh-Hant": "美膚師",
+   "zh-Hant": "美容師",
    "pl": "Kosmetyczka",
    "sv": "Hudterapeut",
    "tr": "Estetisyen",
@@ -3276,7 +3243,7 @@
    "ko": "경영 지원",
    "pt": "Assistente de Gestão",
    "pt-BR": "Assistente de Gestão",
-   "da": "Ledelsesassistent",
+   "da": "Administrativ assistent",
    "zh-Hant": "管理助理",
    "pl": "Asystent ds. zarządzania",
    "sv": "Ledningsassistent",
@@ -4812,7 +4779,7 @@
    "nl": "Kledingsnijder",
    "zh-CN": "裁床工",
    "ja": "裁断士",
-   "ko": "재단사",
+   "ko": "재단공",
    "pt": "Cortador",
    "pt-BR": "Cortador",
    "da": "Tilskærer",
@@ -6400,9 +6367,9 @@
    "fr": "Praticien spa",
    "en": "Spa Practitioner",
    "de": "Spa-Therapeut",
-   "it": "Terapista Spa",
+   "it": "Operatore Spa",
    "es": "Terapeuta spa",
-   "nl": "Spa Specialist",
+   "nl": "Spa Practitioner",
    "zh-CN": "水疗理疗师",
    "ja": "スパセラピスト",
    "ko": "스파 테라피스트",
@@ -6410,7 +6377,7 @@
    "pt-BR": "Terapeuta de spa",
    "da": "Spaterapeut",
    "zh-Hant": "水療理療師",
-   "pl": "Terapeuta spa",
+   "pl": "Pracownik Spa",
    "sv": "Spaterapeut",
    "tr": "Spa Terapisti",
    "th": "พนักงานนวดสปา",
@@ -6778,7 +6745,7 @@
    "fr": "Responsable commercial de zone",
    "en": "Area Sales Manager",
    "de": "Gebietsverkaufsleiter",
-   "it": "Area Manager",
+   "it": "Responsabile commerciale di zona",
    "es": "Responsable comercial de zona",
    "nl": "Area Sales Manager",
    "zh-CN": "大区销售经理",
@@ -7942,18 +7909,18 @@
    "it": "Consulenza di vendita",
    "es": "Asesoría de ventas",
    "nl": "Verkoopadvies",
-   "zh-CN": "销售顾问",
+   "zh-CN": "销售咨询类",
    "ja": "販売接客",
    "ko": "판매 컨설팅",
    "pt": "Aconselhamento de vendas",
    "pt-BR": "Consultoria de vendas",
    "da": "Salgsrådgivning",
-   "zh-Hant": "銷售顧問",
+   "zh-Hant": "銷售諮詢類",
    "pl": "Doradztwo sprzedaży",
    "sv": "Säljrådgivning",
    "tr": "Satış Danışmanlığı",
-   "th": "พนักงานขาย",
-   "ms": "Penasihat Jualan",
+   "th": "งานขายปลีก",
+   "ms": "Bidang Jualan",
    "ar": "استشارات المبيعات",
    "nb": "Salgsrådgivning",
    "el": "Συμβουλευτική πωλήσεων",
@@ -8011,7 +7978,7 @@
    "ar": "إدارة المتجر",
    "nb": "Butikkledelse",
    "el": "Διεύθυνση καταστήματος",
-   "vi": "Quản lý cửa hàng",
+   "vi": "Ban quản lý cửa hàng",
    "cs": "Vedení prodejny",
    "hu": "Üzletvezetés",
    "ro": "Managementul magazinului"
@@ -8671,13 +8638,13 @@
    "it": "Modelling",
    "es": "Modelaje",
    "nl": "Modellenwerk",
-   "zh-CN": "模特",
-   "ja": "モデル",
-   "ko": "모델",
+   "zh-CN": "模特类",
+   "ja": "モデル関連",
+   "ko": "모델 분야",
    "pt": "Modelling",
    "pt-BR": "Modelling",
    "da": "Modelarbejde",
-   "zh-Hant": "模特兒",
+   "zh-Hant": "模特兒類",
    "pl": "Modeling",
    "sv": "Modellande",
    "tr": "Modellik",
@@ -8686,7 +8653,7 @@
    "ar": "عرض الأزياء",
    "nb": "Modellarbeid",
    "el": "Modeling",
-   "vi": "Người mẫu",
+   "vi": "Lĩnh vực người mẫu",
    "cs": "Modeling",
    "hu": "Modellkedés",
    "ro": "Modeling"

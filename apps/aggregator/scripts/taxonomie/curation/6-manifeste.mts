@@ -35,8 +35,11 @@
 import { createHash } from 'node:crypto';
 import { existsSync, writeFileSync } from 'node:fs';
 import { compileOccupationManifest, occupationExactKey, occupationMatchKey, type OccupationManifest } from '../../../../../packages/db/occupation-engine.ts';
-import { manifestVocabularyCollisions } from '../../../../../packages/db/occupation-vocabulary.ts';
-import { FAMILY_ALIASES, SEARCH_VOCABULARY_VERSION } from '../../../../api/lib/search-vocabulary.ts';
+import { manifestVocabularyCollisions, vocabularyCollisions } from '../../../../../packages/db/occupation-vocabulary.ts';
+import releaseDecidee from '../../../../../packages/db/data/occupations-v1.json' with { type: 'json' };
+import secteurs from '../../../../../packages/db/data/sectors-v1.json' with { type: 'json' };
+import { FAMILY_ALIASES, SEARCH_VOCABULARY_VERSION, searchConcepts } from '../../../../api/lib/search-vocabulary.ts';
+import { searchWords } from '../../../../api/lib/search-intent.ts';
 import { validateOccupationSuccessor } from '../../../src/occupation/release.ts';
 import { conceptsV3, DOSSIER_SORTIE, estVague, EXCLUS_RAYON, familles, libellesEtFormes, lireEtape, niveauSeul, phraseMoteur, servie, VAGUES } from './commun.mts';
 
@@ -185,11 +188,24 @@ const famillesV3 = [
 if (!famillesV3.some((f: any) => f.key === FAMILLE_RAYON)) throw new Error(`famille absente : ${FAMILLE_RAYON}`);
 
 // Métiers.
+// §31 c : une forme remplacée reste une variante de recherche. Les libellés de la version servie (« Spécialiste
+// sourcils et épilation », forme longue remplacée par la forme courte) et le vocabulaire de la release décidée le
+// 14/09/2026 mais pas encore servie (`catwalks-occupations-20260914-v2`, optique et pharmacie : « Dispenser »,
+// « Optical Advisor ») restent donc des alias (audit du lot 2B-2 : 23 recherches trouvées en v1 et perdues en v3).
+const decideeParCle = new Map<string, any>((releaseDecidee as any).occupations.map((o: any) => [o.key, o]));
+// Un ancien nom cède devant une expression qu'un AUTRE métier porte (« Relief Dispenser », alias de l'assistant en
+// pharmacie dans la release du 14/09, jugé préparateur en pharmacie sur les offres) : l'intitulé jugé passe avant.
+const porteursParCleV2 = new Map<string, Set<string>>();
+for (const [cle, s] of expressions) for (const f of s) { const k = occupationExactKey(brute.get(f) ?? f, 2); porteursParCleV2.set(k, new Set([...(porteursParCleV2.get(k) ?? []), cle])); }
+const anciensNoms = (cle: string, cleV3: string, s: any) => [...Object.values<string>(s?.labels ?? {}),
+  ...Object.values<string>(decideeParCle.get(cleV3)?.labels ?? {}), ...(decideeParCle.get(cleV3)?.aliases ?? [])]
+  .filter((v) => [...(porteursParCleV2.get(occupationExactKey(v, 2)) ?? [])].every((k) => k === cle));
 const metiersV3 = concepts.map((c) => {
   const s = servis.get(c.cle);
   const labels = libellesDe(c.cle);
   const vente = c.cle === deVente ? nomsJuges('vente') : c.cle === deRayon ? nomsJuges('rayon') : [];
-  const aliases = [...new Set([...(s?.aliases ?? []), ...Object.values(labels), ...Object.values(libellesEtFormes(c.cle, e5ParCle, e5b).formes).flat(), ...(e5c.aliasRecherche[c.cle] ?? []), ...vente])]
+  const aliases = [...new Set([...(s?.aliases ?? []), ...Object.values(labels), ...Object.values(libellesEtFormes(c.cle, e5ParCle, e5b).formes).flat(), ...(e5c.aliasRecherche[c.cle] ?? []), ...vente,
+    ...anciensNoms(c.cle, cleMetier.get(c.cle)!, s)])]
     .filter((x) => x && x !== labels.fr && !interdite(phraseMoteur(x), c.cle) && !(c.cle === deRayon && decide.has(phraseMoteur(x)) && decide.get(phraseMoteur(x)) !== 'rayon') && (!attribution.get(phraseMoteur(x)) || attribution.get(phraseMoteur(x))!.garde === c.cle || !attribution.get(phraseMoteur(x))!.retires.includes(c.cle)));
   const ancre = e5ParCle.get(c.cle)?.ancreEsco;
   return { key: cleMetier.get(c.cle)!, family: s ? s.family : c.cle === deRayon ? FAMILLE_RAYON : cleFamille(c.famille), labels, aliases,
@@ -306,6 +322,8 @@ for (const langue of new Set(metiersV3.flatMap((m) => Object.keys(m.labels)))) {
   for (const m of metiersV3) { const v = m.labels[langue]; if (!v) continue; const f = phraseMoteur(v); if (vus.has(f)) libellesPartages.push(`${langue} « ${v} » : ${vus.get(f)} / ${m.key}`); else vus.set(f, m.key); }
 }
 
+const cleRecherche = (v: string) => searchWords(v).join(' ');
+const nomsDeSecteur = new Set<string>((secteurs as any[]).flatMap((s) => Object.values<string>(s.labels).map(cleRecherche)));
 const maintenant = new Date();
 const manifeste = {
   ...servie, id: ID,
@@ -315,7 +333,15 @@ const manifeste = {
   searchVocabularyVersion: SEARCH_VOCABULARY_VERSION,
   review: { author: 'Passe de curation v3 (IA seule, D-475 §30)', at: maintenant.toISOString(),
     basis: `Première passe de curation : ${concepts.length} métiers (servis, backend, offres), ${famillesV3.length} familles, 25 langues ; preuves : audits/2026-09-28/curation-v3.` },
-  families: famillesV3.map((f: any) => (FAMILY_ALIASES[f.key]?.length ? { ...f, aliases: [...new Set([...(f.aliases ?? []), ...FAMILY_ALIASES[f.key]])] } : f)),
+  families: famillesV3.map((f: any) => {
+    // Alias de famille : ceux de l'API et les noms remplacés de la version servie et de la release décidée (§31 c),
+    // jamais le nom d'un secteur (« Hospitality » est le secteur : une famille qui le porte rend la recherche muette).
+    const anciens = [...Object.values<string>(servie.families.find((x: any) => x.key === f.key)?.labels ?? {}),
+      ...Object.values<string>((releaseDecidee as any).families.find((x: any) => x.key === f.key)?.labels ?? {})];
+    const aliases = [...new Set([...(f.aliases ?? []), ...(FAMILY_ALIASES[f.key] ?? []), ...anciens])]
+      .filter((a) => !Object.values<string>(f.labels).includes(a) && !nomsDeSecteur.has(cleRecherche(a)));
+    return aliases.length ? { ...f, aliases } : f;
+  }),
   occupations: metiersV3, rules: regles,
 } as unknown as OccupationManifest;
 const compile = compileOccupationManifest(manifeste);
@@ -327,8 +353,10 @@ for (const r of regles as any[]) for (const c of r.all) if (c.field === 'title')
   parCle.set(k, new Set([...(parCle.get(k) ?? []), r.occupation]));
   if (c.mode !== 'exact') { const e = `exact ${occupationExactKey(v, 2)}`; parCle.set(e, new Set([...(parCle.get(e) ?? []), r.occupation])); }
 }
-// La garde partagée (packages/db/occupation-vocabulary.ts), sur tout le vocabulaire : libellés, alias, expressions.
-const collisionsVocabulaire = manifestVocabularyCollisions(manifeste);
+// La garde partagée (packages/db/occupation-vocabulary.ts), sur ses deux surfaces : le moteur (les métiers, clé du
+// moteur) et la recherche (métiers, familles et secteurs ensemble, clé de la recherche, comme le test de l'API).
+const collisionsVocabulaire = [...manifestVocabularyCollisions(manifeste),
+  ...vocabularyCollisions(searchConcepts(manifeste, secteurs as any).map((c) => ({ key: c.key, kind: c.kind, aliases: [...c.aliases, ...(c.titleOnlyAliases ?? [])] })), cleRecherche)];
 const collisionsV2 = [...parCle].filter(([, occ]) => occ.size > 1).map(([k, occ]) => ({ cle: k, metiers: [...occ] }));
 const [cleVente, cleRayon] = [cleMetier.get(deVente)!, cleMetier.get(deRayon)!];
 const attendu = (m: string, rendu: string | null) => (m === 'vente' ? rendu === cleVente : m === 'rayon' ? rendu === cleRayon : rendu !== cleVente && rendu !== cleRayon);
@@ -336,9 +364,11 @@ const ecartsScission = scission.decisions.flatMap((d: any) => textesDe(d).map((t
   .filter((x: any) => !attendu(x.decision, x.rendu));
 validateOccupationSuccessor(servie, manifeste);
 
-const fichier = BASE ? '6-manifeste-base.json' : '6-manifeste-v3.json';
+// Un manifeste refusé ne remplace jamais le bon : il s'écrit à part (audit du lot 2B-2).
+const refuse = nonIdempotentes.length + libellesPartages.length + ecartsScission.length + collisionsV2.length + collisionsVocabulaire.length > 0;
+const fichier = `${BASE ? '6-manifeste-base' : '6-manifeste-v3'}${refuse ? '.refuse' : ''}.json`;
 writeFileSync(`${DOSSIER_SORTIE}${fichier}`, JSON.stringify(manifeste, null, 1));
-if (!BASE) writeFileSync(`${DOSSIER_SORTIE}6-correspondances.json`, JSON.stringify({ calculeLe: maintenant.toISOString(), manifeste: ID,
+if (!BASE && !refuse) writeFileSync(`${DOSSIER_SORTIE}6-correspondances.json`, JSON.stringify({ calculeLe: maintenant.toISOString(), manifeste: ID,
   metiers: Object.fromEntries(tous.map((c) => [c.cle, cleDe(c.cle)])), absorbes: Object.fromEntries(dans), arbitragesV2,
   familles: Object.fromEntries(famillesV3.map((f: any) => [f.key, f.key])), libellesRetires, arbitragesFinaux }, null, 1));
 const bilan = { fichier, id: ID, familles: famillesV3.length, metiers: metiersV3.length, absorbes: dans.size, regles: regles.length,

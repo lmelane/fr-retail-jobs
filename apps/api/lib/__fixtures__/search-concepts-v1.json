@@ -1,0 +1,1243 @@
+[
+ {
+  "key": "sales-advisor",
+  "kind": "role",
+  "aliases": [
+   "Conseiller de vente",
+   "Sales advisor",
+   "Sales Advisor",
+   "Client Advisor",
+   "Luxury Sales Advisor",
+   "Conseillère de vente",
+   "Conseiller vente",
+   "Conseillere vente",
+   "Fashion Advisor",
+   "Sales Associate",
+   "Selling Associate",
+   "Sales Assistant",
+   "Vendeur",
+   "Vendeuse",
+   "Conseillers de vente",
+   "Conseiller Vendeur",
+   "Conseillere Vendeuse",
+   "Associé aux ventes",
+   "Associée aux ventes",
+   "Addetto Vendite",
+   "Addetta Vendite",
+   "Addetti Vendite",
+   "Addett Vendite",
+   "Vendedor",
+   "Vendedora",
+   "Verkaufsberater",
+   "Verkäufer",
+   "Verkäuferin",
+   "销售顾问"
+  ]
+ },
+ {
+  "key": "beauty-consultant",
+  "kind": "role",
+  "aliases": [
+   "Conseiller beauté",
+   "Beauty advisor",
+   "Beauty Advisor",
+   "Beauty Adviser",
+   "Beauty Consultant",
+   "Conseillère beauté",
+   "Conseiller de beauté",
+   "Conseillère de beauté",
+   "Conseiller en parfumerie",
+   "Conseillère en parfumerie",
+   "Fragrance Advisor",
+   "Fragrance Consultant",
+   "Beauty Specialist",
+   "Conseiller de vente beauté",
+   "美容顾问"
+  ]
+ },
+ {
+  "key": "hairdresser",
+  "kind": "role",
+  "aliases": [
+   "Coiffeur",
+   "Hairdresser",
+   "Coiffeuse",
+   "Hair Stylist",
+   "Hairstylist",
+   "Hair Dresser",
+   "Barber",
+   "Parrucchiere",
+   "Parrucchiera"
+  ]
+ },
+ {
+  "key": "beauty-therapist",
+  "kind": "role",
+  "aliases": [
+   "Esthéticien",
+   "Beauty therapist",
+   "Esthéticienne",
+   "Aesthetician",
+   "Esthetician",
+   "Beauty Therapist",
+   "Estetista",
+   "Kosmetiker",
+   "Kosmetikerin",
+   "Spa Therapist"
+  ]
+ },
+ {
+  "key": "makeup-artist",
+  "kind": "role",
+  "aliases": [
+   "Maquilleur",
+   "Makeup artist",
+   "Makeup Artist",
+   "Make up Artist",
+   "Make-up Artist",
+   "Maquilleuse"
+  ]
+ },
+ {
+  "key": "brow-specialist",
+  "kind": "role",
+  "aliases": [
+   "Spécialiste sourcils et épilation",
+   "Brow specialist",
+   "Brow Waxing Expert",
+   "Brow Artist",
+   "Brow Specialist"
+  ]
+ },
+ {
+  "key": "cashier",
+  "kind": "role",
+  "aliases": [
+   "Hôte de caisse",
+   "Cashier",
+   "Hôtesse de caisse",
+   "Hôte de caisse et d accueil",
+   "Caissier",
+   "Caissière",
+   "Caissiers",
+   "Cajero",
+   "Cajera"
+  ]
+ },
+ {
+  "key": "store-manager",
+  "kind": "role",
+  "aliases": [
+   "Responsable de boutique",
+   "Store manager",
+   "Store Manager",
+   "Storemanager",
+   "Shop Manager",
+   "Shopmanager",
+   "Boutique Manager",
+   "Responsable de magasin",
+   "Directeur de magasin",
+   "Directrice de magasin",
+   "Directeur de boutique",
+   "Directrice de boutique",
+   "Store Director",
+   "Manager di Store",
+   "Gerente de Tienda",
+   "Filialleiter",
+   "Filialleiterin",
+   "店长"
+  ]
+ },
+ {
+  "key": "assistant-store-manager",
+  "kind": "role",
+  "aliases": [
+   "Adjoint au responsable de boutique",
+   "Assistant store manager",
+   "Assistant Store Manager",
+   "Assistant Shop Manager",
+   "Assistant Boutique Manager",
+   "Deputy Store Manager",
+   "Directeur adjoint de magasin",
+   "Directrice adjointe de magasin",
+   "Responsable adjoint de boutique",
+   "Responsable adjointe de boutique",
+   "Assistant Store Leader",
+   "Assistant Store Director",
+   "Deputy Store Director",
+   "Assistant Boutique Director",
+   "Deputy Boutique Director"
+  ]
+ },
+ {
+  "key": "regional-retail-manager",
+  "kind": "role",
+  "aliases": [
+   "Responsable régional retail",
+   "Regional retail manager",
+   "Regional Retail Manager",
+   "Area Retail Manager",
+   "Directeur regional retail",
+   "Responsable regional retail"
+  ]
+ },
+ {
+  "key": "visual-merchandiser",
+  "kind": "role",
+  "aliases": [
+   "Visual merchandiser",
+   "Visual Merchandiser",
+   "Marchandiseur visuel",
+   "Marchandiseuse visuelle",
+   "Vitriniste",
+   "Window Dresser"
+  ]
+ },
+ {
+  "key": "stock-associate",
+  "kind": "role",
+  "aliases": [
+   "Gestionnaire de stock en boutique",
+   "Retail stock associate",
+   "Stock Associate",
+   "Stock Assistant",
+   "Stock Controller",
+   "Stock Keeper",
+   "Stock Coordinator",
+   "Stockiste",
+   "Stockist",
+   "Stockroom Associate",
+   "Stockroom Assistant"
+  ]
+ },
+ {
+  "key": "warehouse-operative",
+  "kind": "role",
+  "aliases": [
+   "Préparateur de commandes et agent logistique",
+   "Warehouse operative",
+   "Warehouse Operative",
+   "Warehouse Associate",
+   "Warehouse Worker",
+   "Préparateur de commandes",
+   "Préparatrice de commandes",
+   "Order Picker",
+   "Picker Packer",
+   "Logistics Associate"
+  ]
+ },
+ {
+  "key": "logistics-manager",
+  "kind": "role",
+  "aliases": [
+   "Responsable logistique",
+   "Logistics manager",
+   "Logistics Manager",
+   "Warehouse Manager",
+   "Warehouse Supervisor",
+   "Superviseur logistique",
+   "Distribution Center Manager",
+   "Distribution Centre Manager"
+  ]
+ },
+ {
+  "key": "customer-service-advisor",
+  "kind": "role",
+  "aliases": [
+   "Conseiller service client",
+   "Customer service advisor",
+   "Customer Service Advisor",
+   "Customer Service Representative",
+   "Customer Care Advisor",
+   "Customer Support Specialist",
+   "Client Contact Consultant",
+   "E Boutique Client Advisor",
+   "Client Advisor Online",
+   "Téléconseiller",
+   "Téléconseillère",
+   "Conseiller clientèle à distance",
+   "Conseillere clientele a distance"
+  ]
+ },
+ {
+  "key": "watchmaker",
+  "kind": "role",
+  "aliases": [
+   "Horloger",
+   "Watchmaker",
+   "Horlogère",
+   "Uhrmacher",
+   "Uhrmacherin",
+   "Orologiaio",
+   "Watch Technician",
+   "Watch Repair Technician",
+   "Technicien horloger",
+   "Technicienne horlogère"
+  ]
+ },
+ {
+  "key": "jeweller",
+  "kind": "role",
+  "aliases": [
+   "Joaillier",
+   "Jeweller",
+   "Joaillière",
+   "Jeweler",
+   "Goldsmith",
+   "Bijoutier",
+   "Bijoutière",
+   "Orfèvre"
+  ]
+ },
+ {
+  "key": "leather-craftsperson",
+  "kind": "role",
+  "aliases": [
+   "Maroquinier",
+   "Leather craftsperson",
+   "Maroquinière",
+   "Sellier",
+   "Sellière",
+   "Leather Craftsperson"
+  ]
+ },
+ {
+  "key": "seamster",
+  "kind": "role",
+  "aliases": [
+   "Couturier",
+   "Seamster",
+   "Couturière",
+   "Seamstress",
+   "Tailor",
+   "Retoucheur",
+   "Retoucheuse"
+  ]
+ },
+ {
+  "key": "fashion-designer",
+  "kind": "role",
+  "aliases": [
+   "Styliste de mode",
+   "Fashion designer",
+   "Fashion Designer",
+   "Designer Mode",
+   "Styliste Mode",
+   "Styliste Femme",
+   "Styliste Homme",
+   "Apparel Designer"
+  ]
+ },
+ {
+  "key": "graphic-designer",
+  "kind": "role",
+  "aliases": [
+   "Graphiste",
+   "Graphic designer",
+   "Graphic Designer"
+  ]
+ },
+ {
+  "key": "buyer",
+  "kind": "role",
+  "aliases": [
+   "Acheteur",
+   "Buyer",
+   "Acheteuse"
+  ]
+ },
+ {
+  "key": "merchandise-planner",
+  "kind": "role",
+  "aliases": [
+   "Planificateur merchandising",
+   "Merchandise planner",
+   "Merchandise Planner",
+   "Merchandising Planner",
+   "Demand Planner"
+  ]
+ },
+ {
+  "key": "accountant",
+  "kind": "role",
+  "aliases": [
+   "Comptable",
+   "Accountant",
+   "Buchhalter",
+   "Buchhalterin"
+  ]
+ },
+ {
+  "key": "financial-controller",
+  "kind": "role",
+  "aliases": [
+   "Contrôleur de gestion",
+   "Financial controller",
+   "Financial Controller",
+   "Business Controller",
+   "Contrôleuse de gestion",
+   "Project Controller",
+   "Financial Control",
+   "Contrôle de gestion",
+   "Controlling"
+  ],
+  "titleOnlyAliases": [
+   "Financial Control",
+   "Contrôle de gestion",
+   "Controlling"
+  ]
+ },
+ {
+  "key": "financial-analyst",
+  "kind": "role",
+  "aliases": [
+   "Analyste financier",
+   "Financial analyst",
+   "Financial Analyst",
+   "Finance Analyst",
+   "Analyste financiere",
+   "FP A Analyst"
+  ]
+ },
+ {
+  "key": "recruiter",
+  "kind": "role",
+  "aliases": [
+   "Chargé de recrutement",
+   "Recruiter",
+   "Talent Acquisition Specialist",
+   "Chargée de recrutement",
+   "Recruitment Consultant"
+  ]
+ },
+ {
+  "key": "hr-business-partner",
+  "kind": "role",
+  "aliases": [
+   "Partenaire RH",
+   "HR business partner",
+   "HR Business Partner",
+   "Human Resources Business Partner",
+   "People Business Partner",
+   "HRBP"
+  ]
+ },
+ {
+  "key": "payroll-specialist",
+  "kind": "role",
+  "aliases": [
+   "Gestionnaire de paie",
+   "Payroll specialist",
+   "Payroll Specialist",
+   "Payroll Administrator",
+   "Gestionnaire paie"
+  ]
+ },
+ {
+  "key": "software-engineer",
+  "kind": "role",
+  "aliases": [
+   "Ingénieur logiciel",
+   "Software engineer",
+   "Software Engineer",
+   "Software Developer",
+   "Développeur logiciel",
+   "Développeuse logiciel",
+   "Full Stack Developer",
+   "Fullstack Developer",
+   "Frontend Developer",
+   "Backend Developer",
+   "Front End Developer",
+   "Back End Developer"
+  ]
+ },
+ {
+  "key": "data-analyst",
+  "kind": "role",
+  "aliases": [
+   "Analyste de données",
+   "Data analyst",
+   "Data Analyst",
+   "Analyste donnees"
+  ]
+ },
+ {
+  "key": "data-scientist",
+  "kind": "role",
+  "aliases": [
+   "Data scientist",
+   "Data Scientist",
+   "Machine Learning Scientist"
+  ]
+ },
+ {
+  "key": "data-engineer",
+  "kind": "role",
+  "aliases": [
+   "Ingénieur données",
+   "Data engineer",
+   "Data Engineer"
+  ]
+ },
+ {
+  "key": "legal-counsel",
+  "kind": "role",
+  "aliases": [
+   "Juriste",
+   "Legal counsel",
+   "Legal Counsel",
+   "Lawyer",
+   "Avocat",
+   "Avocate"
+  ]
+ },
+ {
+  "key": "sustainability-specialist",
+  "kind": "role",
+  "aliases": [
+   "Chargé de développement durable",
+   "Sustainability specialist",
+   "Sustainability Specialist",
+   "Sustainability Analyst",
+   "Chargee de developpement durable",
+   "Chargé de mission RSE"
+  ]
+ },
+ {
+  "key": "marketing-manager",
+  "kind": "role",
+  "aliases": [
+   "Responsable marketing",
+   "Marketing manager",
+   "Marketing Manager",
+   "Responsable Marketing"
+  ]
+ },
+ {
+  "key": "community-manager",
+  "kind": "role",
+  "aliases": [
+   "Community manager",
+   "Community Manager"
+  ]
+ },
+ {
+  "key": "crm-manager",
+  "kind": "role",
+  "aliases": [
+   "Responsable CRM",
+   "CRM manager",
+   "CRM Manager",
+   "Clienteling Manager"
+  ]
+ },
+ {
+  "key": "ecommerce-manager",
+  "kind": "role",
+  "aliases": [
+   "Responsable e-commerce",
+   "E-commerce manager",
+   "E Commerce Manager",
+   "Ecommerce Manager",
+   "Responsable E Commerce",
+   "Responsable Ecommerce"
+  ]
+ },
+ {
+  "key": "key-account-manager",
+  "kind": "role",
+  "aliases": [
+   "Responsable grands comptes",
+   "Key account manager",
+   "Key Account Manager",
+   "National Account Manager"
+  ]
+ },
+ {
+  "key": "product-developer",
+  "kind": "role",
+  "aliases": [
+   "Développeur produit",
+   "Product developer",
+   "Product Developer",
+   "Developpeuse produit",
+   "Product Development Specialist",
+   "Footwear Developer",
+   "Apparel Developer",
+   "Accessories Developer",
+   "Développeur chaussures",
+   "Développeur accessoires"
+  ]
+ },
+ {
+  "key": "quality-technician",
+  "kind": "role",
+  "aliases": [
+   "Technicien qualité",
+   "Quality technician",
+   "Quality Technician",
+   "Technicien qualite",
+   "Technicienne qualite",
+   "Quality Inspector"
+  ]
+ },
+ {
+  "key": "barista",
+  "kind": "role",
+  "aliases": [
+   "Barista"
+  ]
+ },
+ {
+  "key": "cook",
+  "kind": "role",
+  "aliases": [
+   "Cuisinier",
+   "Cook",
+   "Cuisinière",
+   "Chef de partie",
+   "Sous Chef",
+   "Cuoco",
+   "Cuoca"
+  ]
+ },
+ {
+  "key": "waiter",
+  "kind": "role",
+  "aliases": [
+   "Serveur",
+   "Waiter",
+   "Waitress",
+   "Serveuse",
+   "Restaurant Server"
+  ]
+ },
+ {
+  "key": "receptionist",
+  "kind": "role",
+  "aliases": [
+   "Réceptionniste",
+   "Receptionist",
+   "Front Office Specialist"
+  ]
+ },
+ {
+  "key": "executive-assistant",
+  "kind": "role",
+  "aliases": [
+   "Assistant de direction",
+   "Executive assistant",
+   "Executive Assistant",
+   "Assistante de direction",
+   "Personal Assistant"
+  ]
+ },
+ {
+  "key": "pharmacist",
+  "kind": "role",
+  "aliases": [
+   "Pharmacien",
+   "Pharmacist",
+   "Pharmacienne"
+  ]
+ },
+ {
+  "key": "pharmacy-technician",
+  "kind": "role",
+  "aliases": [
+   "Préparateur en pharmacie",
+   "Pharmacy technician",
+   "Pharmacy Technician",
+   "Preparatrice en pharmacie"
+  ]
+ },
+ {
+  "key": "optometrist",
+  "kind": "role",
+  "aliases": [
+   "Optométriste",
+   "Optometrist",
+   "Optometriste",
+   "Optometric Technician",
+   "Optometry Technician"
+  ]
+ },
+ {
+  "key": "dispensing-optician",
+  "kind": "role",
+  "aliases": [
+   "Opticien",
+   "Dispensing optician",
+   "Dispensing Optician",
+   "Opticienne",
+   "Optometrist Optician",
+   "Contact Lens Optician",
+   "Mobile Contact Lens Optician",
+   "Optical Technician / Optician",
+   "Optician"
+  ]
+ },
+ {
+  "key": "hearing-aid-specialist",
+  "kind": "role",
+  "aliases": [
+   "Audioprothésiste",
+   "Hearing aid specialist",
+   "Hearing Aid Specialist",
+   "Hearing Aid Dispenser"
+  ]
+ },
+ {
+  "key": "demand-planner",
+  "kind": "role",
+  "aliases": [
+   "Prévisionniste de la demande",
+   "Demand planner",
+   "Demand Planner",
+   "Prévisionniste des ventes"
+  ]
+ },
+ {
+  "key": "paralegal",
+  "kind": "role",
+  "aliases": [
+   "Assistant juridique / Paralegal",
+   "Paralegal"
+  ]
+ },
+ {
+  "key": "pharmacy-support-worker",
+  "kind": "role",
+  "aliases": [
+   "Assistant en pharmacie",
+   "Pharmacy support worker",
+   "Pharmacy Dispenser",
+   "Pharmacy Assistant",
+   "Dispensing Assistant",
+   "Dispenser",
+   "Trainee Dispenser",
+   "Relief Dispenser",
+   "Mobile Dispenser",
+   "Dispenser - Bank"
+  ]
+ },
+ {
+  "key": "machine-learning-engineer",
+  "kind": "role",
+  "aliases": [
+   "Ingénieur machine learning",
+   "Machine learning engineer",
+   "Machine Learning Engineer"
+  ]
+ },
+ {
+  "key": "analytics-engineer",
+  "kind": "role",
+  "aliases": [
+   "Ingénieur analytics",
+   "Analytics engineer",
+   "Analytics Engineer"
+  ]
+ },
+ {
+  "key": "motion-designer",
+  "kind": "role",
+  "aliases": [
+   "Motion designer",
+   "Motion Designer"
+  ]
+ },
+ {
+  "key": "lash-technician",
+  "kind": "role",
+  "aliases": [
+   "Technicien cils",
+   "Lash technician",
+   "Lash Technician"
+  ]
+ },
+ {
+  "key": "social-media-manager",
+  "kind": "role",
+  "aliases": [
+   "Responsable réseaux sociaux",
+   "Social media manager",
+   "Social Media Manager"
+  ]
+ },
+ {
+  "key": "pastry-chef",
+  "kind": "role",
+  "aliases": [
+   "Pâtissier",
+   "Pastry chef",
+   "Pastry Chef",
+   "Pâtissière"
+  ]
+ },
+ {
+  "key": "optical-assistant",
+  "kind": "role",
+  "aliases": [
+   "Assistant d'optique",
+   "Optical assistant",
+   "Optical Assistant",
+   "Retail Assistant (Opticians)",
+   "Optical Retail Assistant",
+   "Opticians Assistant",
+   "Optical Advisor",
+   "Optical Sales Associate",
+   "Optical Team Member",
+   "Assistante optique"
+  ]
+ },
+ {
+  "key": "retail-client-advisor",
+  "kind": "family",
+  "aliases": [
+   "Conseil de vente",
+   "Sales advisory",
+   "Retail sales",
+   "conseil de vente",
+   "sales advisory",
+   "retail sales"
+  ]
+ },
+ {
+  "key": "beauty-advisor",
+  "kind": "family",
+  "aliases": [
+   "Conseil beauté",
+   "Beauty advice",
+   "Beauty consulting",
+   "conseil beaute",
+   "beauty advice",
+   "beauty consulting"
+  ]
+ },
+ {
+  "key": "retail-store-management",
+  "kind": "family",
+  "aliases": [
+   "Direction de boutique",
+   "Store management",
+   "Retail management",
+   "Direction boutique",
+   "direction de boutique",
+   "store management",
+   "retail management",
+   "direction boutique"
+  ]
+ },
+ {
+  "key": "retail-area-management",
+  "kind": "family",
+  "aliases": [
+   "Direction régionale retail",
+   "Regional retail management",
+   "Area retail management",
+   "direction regionale retail",
+   "regional retail management",
+   "area retail management"
+  ]
+ },
+ {
+  "key": "retail-operations",
+  "kind": "family",
+  "aliases": [
+   "Opérations boutique & stock",
+   "Store operations",
+   "Retail operations",
+   "operations boutique stock",
+   "store operations",
+   "retail operations"
+  ]
+ },
+ {
+  "key": "visual-merchandising",
+  "kind": "family",
+  "aliases": [
+   "Visual merchandising",
+   "visual merchandising"
+  ]
+ },
+ {
+  "key": "merchandising-buying",
+  "kind": "family",
+  "aliases": [
+   "Merchandising & achats",
+   "Merchandising and buying",
+   "Achats",
+   "Buying",
+   "merchandising achats",
+   "merchandising buying",
+   "achats",
+   "buying"
+  ]
+ },
+ {
+  "key": "wholesale-b2b",
+  "kind": "family",
+  "aliases": [
+   "Wholesale & B2B",
+   "Wholesale and B2B",
+   "Wholesale",
+   "wholesale b2b",
+   "wholesale"
+  ]
+ },
+ {
+  "key": "crm-clienteling",
+  "kind": "family",
+  "aliases": [
+   "CRM & clienteling",
+   "CRM and clienteling",
+   "Clienteling",
+   "crm clienteling",
+   "clienteling"
+  ]
+ },
+ {
+  "key": "ecommerce-digital",
+  "kind": "family",
+  "aliases": [
+   "E-commerce & digital",
+   "Ecommerce and digital",
+   "E commerce",
+   "e commerce digital",
+   "ecommerce digital",
+   "e commerce"
+  ]
+ },
+ {
+  "key": "marketing-communication",
+  "kind": "family",
+  "aliases": [
+   "Marketing & communication",
+   "Marketing and communication",
+   "Marketing communications",
+   "marketing communication",
+   "marketing communications"
+  ]
+ },
+ {
+  "key": "design-creation",
+  "kind": "family",
+  "aliases": [
+   "Création & design",
+   "Creation and design",
+   "Creative design",
+   "creation design",
+   "creative design"
+  ]
+ },
+ {
+  "key": "product-development-rd",
+  "kind": "family",
+  "aliases": [
+   "Développement produit & R&D",
+   "Product development and R&D",
+   "Research and development",
+   "Recherche et développement",
+   "developpement produit r d",
+   "product development r d",
+   "research development",
+   "recherche developpement"
+  ]
+ },
+ {
+  "key": "atelier-craft",
+  "kind": "family",
+  "aliases": [
+   "Atelier & savoir-faire",
+   "Workshop and craftsmanship",
+   "Artisanat",
+   "Métiers d’art",
+   "Craftsmanship",
+   "atelier savoir faire",
+   "workshop craftsmanship",
+   "artisanat",
+   "metiers d art",
+   "craftsmanship"
+  ]
+ },
+ {
+  "key": "manufacturing-quality",
+  "kind": "family",
+  "aliases": [
+   "Production & qualité",
+   "Manufacturing and quality",
+   "Production and quality",
+   "production qualite",
+   "manufacturing quality",
+   "production quality"
+  ]
+ },
+ {
+  "key": "supply-chain-logistics",
+  "kind": "family",
+  "aliases": [
+   "Supply chain & logistique",
+   "Supply chain and logistics",
+   "Logistique",
+   "Logistics",
+   "supply chain logistique",
+   "supply chain logistics",
+   "logistique",
+   "logistics"
+  ]
+ },
+ {
+  "key": "finance",
+  "kind": "family",
+  "aliases": [
+   "Finance",
+   "finance"
+  ]
+ },
+ {
+  "key": "hr-talent",
+  "kind": "family",
+  "aliases": [
+   "Ressources humaines",
+   "Human resources",
+   "RH",
+   "ressources humaines",
+   "human resources",
+   "rh"
+  ]
+ },
+ {
+  "key": "it-data",
+  "kind": "family",
+  "aliases": [
+   "IT & data",
+   "IT and data",
+   "Informatique",
+   "it data",
+   "informatique"
+  ]
+ },
+ {
+  "key": "legal-compliance",
+  "kind": "family",
+  "aliases": [
+   "Juridique & conformité",
+   "Legal and compliance",
+   "Juridique",
+   "juridique conformite",
+   "legal compliance",
+   "juridique"
+  ]
+ },
+ {
+  "key": "strategy-management",
+  "kind": "family",
+  "aliases": [
+   "Stratégie & direction",
+   "Strategy and leadership",
+   "Corporate strategy",
+   "Stratégie générale",
+   "strategie direction",
+   "strategy leadership",
+   "corporate strategy",
+   "strategie generale"
+  ]
+ },
+ {
+  "key": "sustainability",
+  "kind": "family",
+  "aliases": [
+   "Développement durable",
+   "Sustainability",
+   "Sustainable development",
+   "RSE",
+   "developpement durable",
+   "sustainability",
+   "sustainable development",
+   "rse"
+  ]
+ },
+ {
+  "key": "customer-service",
+  "kind": "family",
+  "aliases": [
+   "Service client",
+   "Customer service",
+   "Service après vente",
+   "service client",
+   "customer service",
+   "service apres vente"
+  ]
+ },
+ {
+  "key": "hospitality",
+  "kind": "family",
+  "aliases": [
+   "Hôtellerie & restauration",
+   "Hotels and restaurants",
+   "Hotel and restaurant",
+   "Hospitality",
+   "hotellerie restauration",
+   "hotels restaurants",
+   "hotel restaurant",
+   "hospitality"
+  ]
+ },
+ {
+  "key": "admin-facilities",
+  "kind": "family",
+  "aliases": [
+   "Administration & services généraux",
+   "Administration and facilities",
+   "Services généraux",
+   "administration services generaux",
+   "administration facilities",
+   "services generaux"
+  ]
+ },
+ {
+  "key": "health-optical-services",
+  "kind": "family",
+  "aliases": [
+   "Santé, pharmacie et optique",
+   "Health, pharmacy and optical services",
+   "Health pharmacy optical",
+   "Santé pharmacie optique",
+   "sante pharmacie optique",
+   "health pharmacy optical services",
+   "health pharmacy optical"
+  ]
+ },
+ {
+  "key": "beauty-services",
+  "kind": "family",
+  "aliases": [
+   "Coiffure et prestations beauté",
+   "Hair and beauty services",
+   "Coiffure prestations beauté",
+   "coiffure prestations beaute",
+   "hair beauty services"
+  ]
+ },
+ {
+  "key": "FASHION",
+  "kind": "sector",
+  "aliases": [
+   "Mode",
+   "Clothing and fashion collections"
+  ]
+ },
+ {
+  "key": "LEATHER_GOODS",
+  "kind": "sector",
+  "aliases": [
+   "Maroquinerie",
+   "Leather goods and saddlery"
+  ]
+ },
+ {
+  "key": "FOOTWEAR",
+  "kind": "sector",
+  "aliases": [
+   "Chaussures",
+   "Footwear"
+  ]
+ },
+ {
+  "key": "JEWELRY",
+  "kind": "sector",
+  "aliases": [
+   "Joaillerie",
+   "Jewelry"
+  ]
+ },
+ {
+  "key": "WATCHMAKING",
+  "kind": "sector",
+  "aliases": [
+   "Horlogerie",
+   "Watches and watchmaking"
+  ]
+ },
+ {
+  "key": "BEAUTY",
+  "kind": "sector",
+  "aliases": [
+   "Beauté",
+   "Cosmetics, makeup and skin or hair care"
+  ]
+ },
+ {
+  "key": "FRAGRANCE",
+  "kind": "sector",
+  "aliases": [
+   "Parfumerie",
+   "Perfumes and fragrances"
+  ]
+ },
+ {
+  "key": "EYEWEAR",
+  "kind": "sector",
+  "aliases": [
+   "Lunetterie",
+   "Eyewear"
+  ]
+ },
+ {
+  "key": "HOME_LIFESTYLE",
+  "kind": "sector",
+  "aliases": [
+   "Maison & Lifestyle",
+   "Homeware, furniture and lifestyle objects"
+  ]
+ },
+ {
+  "key": "WINES_SPIRITS",
+  "kind": "sector",
+  "aliases": [
+   "Vins & Spiritueux",
+   "Wine, champagne and spirits"
+  ]
+ },
+ {
+  "key": "HOSPITALITY",
+  "kind": "sector",
+  "aliases": [
+   "Hospitality",
+   "Luxury hospitality and travel"
+  ]
+ },
+ {
+  "key": "LUXURY_MOBILITY",
+  "kind": "sector",
+  "aliases": [
+   "Automobile & Mobilité de luxe",
+   "Luxury automobiles and mobility"
+  ]
+ },
+ {
+  "key": "ART_DESIGN",
+  "kind": "sector",
+  "aliases": [
+   "Art & Design",
+   "Art and design"
+  ]
+ },
+ {
+  "key": "RETAIL",
+  "kind": "sector",
+  "aliases": [
+   "Retail",
+   "Retail distribution as an employer activity"
+  ]
+ },
+ {
+  "key": "LUXURY_TECH_SERVICES",
+  "kind": "sector",
+  "aliases": [
+   "Luxury Tech & Services",
+   "Technology and services specialized in this vertical"
+  ]
+ }
+]

@@ -25256,30 +25256,6 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
-   "id": "v3-beauty-therapist~2c81f06ace",
-   "occupation": "beauty-therapist",
-   "all": [
-    {
-     "field": "title",
-     "any": [
-      "美膚師"
-     ],
-     "mode": "phrase"
-    }
-   ],
-   "exclude": [
-    {
-     "any": [
-      "manager",
-      "director",
-      "trainer"
-     ],
-     "field": "title"
-    }
-   ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
-  },
-  {
    "id": "v3-makeup-artist~3bbcd18b9e",
    "occupation": "makeup-artist",
    "all": [
@@ -96610,6 +96586,20 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
+   "id": "v3-coupe~441172226c",
+   "occupation": "coupe",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "재단공"
+     ],
+     "mode": "phrase"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
    "id": "v3-coupe~0178dc8106",
    "occupation": "coupe",
    "all": [
@@ -129902,6 +129892,62 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
+   "id": "v3-praticien-spa~a53379e599",
+   "occupation": "praticien-spa",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "Operatore Spa"
+     ],
+     "mode": "phrase"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
+   "id": "v3-praticien-spa~9d75d677e0",
+   "occupation": "praticien-spa",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "Operatrice Spa"
+     ],
+     "mode": "phrase"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
+   "id": "v3-praticien-spa~8f2f1bf345",
+   "occupation": "praticien-spa",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "Pracownica Spa"
+     ],
+     "mode": "phrase"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
+   "id": "v3-praticien-spa~ec80d27396",
+   "occupation": "praticien-spa",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "Pracownik Spa"
+     ],
+     "mode": "phrase"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
    "id": "v3-praticien-spa~a3848dbe12",
    "occupation": "praticien-spa",
    "all": [
@@ -130084,20 +130130,6 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
-   "id": "v3-praticien-spa~508f2bab74",
-   "occupation": "praticien-spa",
-   "all": [
-    {
-     "field": "title",
-     "any": [
-      "Spa Specialist"
-     ],
-     "mode": "phrase"
-    }
-   ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
-  },
-  {
    "id": "v3-praticien-spa~d0ec490482",
    "occupation": "praticien-spa",
    "all": [
@@ -130238,20 +130270,6 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
-   "id": "v3-praticien-spa~994c61a23c",
-   "occupation": "praticien-spa",
-   "all": [
-    {
-     "field": "title",
-     "any": [
-      "Terapeutka spa"
-     ],
-     "mode": "phrase"
-    }
-   ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
-  },
-  {
    "id": "v3-praticien-spa~f73321e957",
    "occupation": "praticien-spa",
    "all": [
@@ -130259,20 +130277,6 @@
      "field": "title",
      "any": [
       "Terapis Spa"
-     ],
-     "mode": "phrase"
-    }
-   ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
-  },
-  {
-   "id": "v3-praticien-spa~d8fa494a7e",
-   "occupation": "praticien-spa",
-   "all": [
-    {
-     "field": "title",
-     "any": [
-      "Terapista Spa"
      ],
      "mode": "phrase"
     }
@@ -136718,6 +136722,24 @@
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
+   "id": "v3-responsable-commercial-de-zone~2d215c75f3",
+   "occupation": "responsable-commercial-de-zone",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "Responsabile commerciale di zona"
+     ],
+     "mode": "phrase"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
+   "supersedes": [
+    "v3-commercial~27503fa393",
+    "v3-manager-commercial~058e49c29c"
+   ]
   },
   {
    "id": "v3-responsable-commercial-de-zone~b2ba48c2ec",
@@ -154895,7 +154917,7 @@
  ],
  "review": {
   "author": "Passe de curation v3 (IA seule, D-475 §30)",
-  "at": "2026-09-29T13:45:25.835Z",
+  "at": "2026-09-29T14:17:18.118Z",
   "basis": "Première passe de curation : 253 métiers (servis, backend, offres), 33 familles, 25 langues ; preuves : audits/2026-09-28/curation-v3."
  },
  "families": [
@@ -154909,18 +154931,18 @@
     "it": "Consulenza di vendita",
     "es": "Asesoría de ventas",
     "nl": "Verkoopadvies",
-    "zh-CN": "销售顾问",
+    "zh-CN": "销售咨询类",
     "ja": "販売接客",
     "ko": "판매 컨설팅",
     "pt": "Aconselhamento de vendas",
     "pt-BR": "Consultoria de vendas",
     "da": "Salgsrådgivning",
-    "zh-Hant": "銷售顧問",
+    "zh-Hant": "銷售諮詢類",
     "pl": "Doradztwo sprzedaży",
     "sv": "Säljrådgivning",
     "tr": "Satış Danışmanlığı",
-    "th": "พนักงานขาย",
-    "ms": "Penasihat Jualan",
+    "th": "งานขายปลีก",
+    "ms": "Bidang Jualan",
     "ar": "استشارات المبيعات",
     "nb": "Salgsrådgivning",
     "el": "Συμβουλευτική πωλήσεων",
@@ -154928,7 +154950,11 @@
     "cs": "Prodejní poradenství",
     "hu": "Értékesítési tanácsadás",
     "ro": "Consultanță de vânzări"
-   }
+   },
+   "aliases": [
+    "Sales advisory",
+    "Retail sales"
+   ]
   },
   {
    "key": "beauty-advisor",
@@ -154959,7 +154985,11 @@
     "cs": "Kosmetické poradenství",
     "hu": "Szépségápolási tanácsadás",
     "ro": "Consultanță de frumusețe"
-   }
+   },
+   "aliases": [
+    "Beauty advice",
+    "Beauty consulting"
+   ]
   },
   {
    "key": "retail-store-management",
@@ -154986,11 +155016,16 @@
     "ar": "إدارة المتجر",
     "nb": "Butikkledelse",
     "el": "Διεύθυνση καταστήματος",
-    "vi": "Quản lý cửa hàng",
+    "vi": "Ban quản lý cửa hàng",
     "cs": "Vedení prodejny",
     "hu": "Üzletvezetés",
     "ro": "Managementul magazinului"
-   }
+   },
+   "aliases": [
+    "Store management",
+    "Retail management",
+    "Direction boutique"
+   ]
   },
   {
    "key": "retail-area-management",
@@ -155021,7 +155056,11 @@
     "cs": "Regionální řízení maloobchodu",
     "hu": "Regionális kiskereskedelmi vezetés",
     "ro": "Management regional retail"
-   }
+   },
+   "aliases": [
+    "Regional retail management",
+    "Area retail management"
+   ]
   },
   {
    "key": "retail-operations",
@@ -155052,7 +155091,11 @@
     "cs": "Provoz prodejny a skladu",
     "hu": "Üzlet- és készletoperáció",
     "ro": "Operațiuni magazin și stoc"
-   }
+   },
+   "aliases": [
+    "Store operations",
+    "Retail operations"
+   ]
   },
   {
    "key": "visual-merchandising",
@@ -155114,7 +155157,12 @@
     "cs": "Merchandising a nákup",
     "hu": "Merchandising és beszerzés",
     "ro": "Merchandising și achiziții"
-   }
+   },
+   "aliases": [
+    "Merchandising and buying",
+    "Achats",
+    "Buying"
+   ]
   },
   {
    "key": "wholesale-b2b",
@@ -155145,7 +155193,11 @@
     "cs": "Velkoobchod a B2B",
     "hu": "Nagykereskedelem és B2B",
     "ro": "Wholesale & B2B"
-   }
+   },
+   "aliases": [
+    "Wholesale and B2B",
+    "Wholesale"
+   ]
   },
   {
    "key": "crm-clienteling",
@@ -155176,7 +155228,11 @@
     "cs": "CRM & Clienteling",
     "hu": "CRM és Ügyfélkapcsolat",
     "ro": "CRM & Clienteling"
-   }
+   },
+   "aliases": [
+    "CRM and clienteling",
+    "Clienteling"
+   ]
   },
   {
    "key": "ecommerce-digital",
@@ -155207,7 +155263,11 @@
     "cs": "E-commerce & Digital",
     "hu": "E-kereskedelem és Digitális",
     "ro": "E-commerce & Digital"
-   }
+   },
+   "aliases": [
+    "Ecommerce and digital",
+    "E commerce"
+   ]
   },
   {
    "key": "marketing-communication",
@@ -155238,7 +155298,11 @@
     "cs": "Marketing a Komunikace",
     "hu": "Marketing és Kommunikáció",
     "ro": "Marketing și Comunicare"
-   }
+   },
+   "aliases": [
+    "Marketing and communication",
+    "Marketing communications"
+   ]
   },
   {
    "key": "design-creation",
@@ -155269,7 +155333,11 @@
     "cs": "Kreativita a Design",
     "hu": "Kreatív és Design",
     "ro": "Creație și Design"
-   }
+   },
+   "aliases": [
+    "Creation and design",
+    "Creative design"
+   ]
   },
   {
    "key": "product-development-rd",
@@ -155300,7 +155368,12 @@
     "cs": "Vývoj Produktu a R&D",
     "hu": "Termékfejlesztés és K+F",
     "ro": "Dezvoltare Produs și R&D"
-   }
+   },
+   "aliases": [
+    "Product development and R&D",
+    "Research and development",
+    "Recherche et développement"
+   ]
   },
   {
    "key": "atelier-craft",
@@ -155331,7 +155404,13 @@
     "cs": "Ateliér a Řemeslo",
     "hu": "Műhely és Kézművesség",
     "ro": "Atelier și Meșteșug"
-   }
+   },
+   "aliases": [
+    "Workshop and craftsmanship",
+    "Artisanat",
+    "Métiers d’art",
+    "Craftsmanship"
+   ]
   },
   {
    "key": "manufacturing-quality",
@@ -155362,7 +155441,11 @@
     "cs": "Výroba a Kvalita",
     "hu": "Gyártás és Minőség",
     "ro": "Producție și Calitate"
-   }
+   },
+   "aliases": [
+    "Manufacturing and quality",
+    "Production and quality"
+   ]
   },
   {
    "key": "supply-chain-logistics",
@@ -155393,7 +155476,12 @@
     "cs": "Supply Chain a Logistika",
     "hu": "Ellátási Lánc és Logisztika",
     "ro": "Supply Chain și Logistică"
-   }
+   },
+   "aliases": [
+    "Supply chain and logistics",
+    "Logistique",
+    "Logistics"
+   ]
   },
   {
    "key": "finance",
@@ -155455,7 +155543,11 @@
     "cs": "Lidské zdroje",
     "hu": "Humánerőforrás",
     "ro": "Resurse umane"
-   }
+   },
+   "aliases": [
+    "Human resources",
+    "RH"
+   ]
   },
   {
    "key": "it-data",
@@ -155486,7 +155578,11 @@
     "cs": "IT a data",
     "hu": "IT és adatok",
     "ro": "IT & Date"
-   }
+   },
+   "aliases": [
+    "IT and data",
+    "Informatique"
+   ]
   },
   {
    "key": "legal-compliance",
@@ -155517,7 +155613,11 @@
     "cs": "Právní a compliance",
     "hu": "Jogi és compliance",
     "ro": "Juridic și conformitate"
-   }
+   },
+   "aliases": [
+    "Legal and compliance",
+    "Juridique"
+   ]
   },
   {
    "key": "strategy-management",
@@ -155548,7 +155648,12 @@
     "cs": "Strategie a vedení",
     "hu": "Stratégia és vezetőség",
     "ro": "Strategie și conducere"
-   }
+   },
+   "aliases": [
+    "Strategy and leadership",
+    "Corporate strategy",
+    "Stratégie générale"
+   ]
   },
   {
    "key": "sustainability",
@@ -155579,7 +155684,11 @@
     "cs": "Udržitelnost",
     "hu": "Fenntarthatóság",
     "ro": "Dezvoltare durabilă"
-   }
+   },
+   "aliases": [
+    "Sustainable development",
+    "RSE"
+   ]
   },
   {
    "key": "customer-service",
@@ -155610,7 +155719,11 @@
     "cs": "Zákaznický servis",
     "hu": "Ügyfélszolgálat",
     "ro": "Serviciu clienți"
-   }
+   },
+   "aliases": [
+    "Customer service",
+    "Service après vente"
+   ]
   },
   {
    "key": "hospitality",
@@ -155641,7 +155754,11 @@
     "cs": "Hotelnictví a gastronomie",
     "hu": "Vendéglátás és gasztronómia",
     "ro": "Horeca"
-   }
+   },
+   "aliases": [
+    "Hotels and restaurants",
+    "Hotel and restaurant"
+   ]
   },
   {
    "key": "admin-facilities",
@@ -155672,7 +155789,11 @@
     "cs": "Administrativa a obecné služby",
     "hu": "Adminisztráció és általános szolgáltatások",
     "ro": "Administrație și servicii generale"
-   }
+   },
+   "aliases": [
+    "Administration and facilities",
+    "Services généraux"
+   ]
   },
   {
    "key": "health-optical-services",
@@ -155703,7 +155824,12 @@
     "cs": "Zdraví, farmacie a optika",
     "hu": "Egészségügy, gyógyszerészet és optika",
     "ro": "Sănătate, farmacie și optică"
-   }
+   },
+   "aliases": [
+    "Health pharmacy optical",
+    "Santé pharmacie optique",
+    "Health, pharmacy and optical services"
+   ]
   },
   {
    "key": "beauty-services",
@@ -155734,7 +155860,11 @@
     "cs": "Kadeřnictví a péče o krásu",
     "hu": "Fodrászat és szépségápolási szolgáltatások",
     "ro": "Coafură și servicii de frumusețe"
-   }
+   },
+   "aliases": [
+    "Hair and beauty services",
+    "Coiffure prestations beauté"
+   ]
   },
   {
    "key": "mannequinat",
@@ -155746,13 +155876,13 @@
     "it": "Modelling",
     "es": "Modelaje",
     "nl": "Modellenwerk",
-    "zh-CN": "模特",
-    "ja": "モデル",
-    "ko": "모델",
+    "zh-CN": "模特类",
+    "ja": "モデル関連",
+    "ko": "모델 분야",
     "pt": "Modelling",
     "pt-BR": "Modelling",
     "da": "Modelarbejde",
-    "zh-Hant": "模特兒",
+    "zh-Hant": "模特兒類",
     "pl": "Modeling",
     "sv": "Modellande",
     "tr": "Modellik",
@@ -155761,7 +155891,7 @@
     "ar": "عرض الأزياء",
     "nb": "Modellarbeid",
     "el": "Modeling",
-    "vi": "Người mẫu",
+    "vi": "Lĩnh vực người mẫu",
     "cs": "Modeling",
     "hu": "Modellkedés",
     "ro": "Modeling"
@@ -156477,7 +156607,6 @@
     "pt": "Esteticista",
     "pt-BR": "Esteticista",
     "da": "Kosmetolog",
-    "zh-Hant": "美膚師",
     "pl": "Kosmetyczka",
     "sv": "Hudterapeut",
     "tr": "Estetisyen",
@@ -156507,7 +156636,6 @@
     "エステティシャン",
     "피부 관리사",
     "Kosmetolog",
-    "美膚師",
     "Kosmetyczka",
     "Hudterapeut",
     "Estetisyen",
@@ -156648,7 +156776,8 @@
     "Szemöldök-specialista",
     "Specialist sprâncene",
     "Stylistka brwi",
-    "أخصائية حواجب"
+    "أخصائية حواجب",
+    "Spécialiste sourcils et épilation"
    ]
   },
   {
@@ -157088,7 +157217,8 @@
     "Preparadora de pedidos",
     "Operadora de armazém",
     "Operadora de almoxarifado",
-    "Pracovnice skladu"
+    "Pracovnice skladu",
+    "Préparateur de commandes et agent logistique"
    ]
   },
   {
@@ -159315,7 +159445,9 @@
     "Optometrystka",
     "أخصائية بصرية",
     "Optometristka",
-    "Optometristă"
+    "Optometristă",
+    "Optometric Technician",
+    "Optometry Technician"
    ]
   },
   {
@@ -159376,7 +159508,10 @@
     "Óptica",
     "أخصائية نظارات",
     "Optička",
-    "Opticiană"
+    "Opticiană",
+    "Contact Lens Optician",
+    "Mobile Contact Lens Optician",
+    "Optical Technician / Optician"
    ]
   },
   {
@@ -159568,7 +159703,8 @@
     "Asystentka prawna",
     "مساعدة قانونية",
     "Právní asistentka",
-    "Asistentă juridică"
+    "Asistentă juridică",
+    "Assistant juridique / Paralegal"
    ]
   },
   {
@@ -159634,7 +159770,11 @@
     "Asystentka farmaceutyczna",
     "مساعدة صيدلي",
     "Lékárenská asistentka",
-    "Asistentă farmacistă"
+    "Asistentă farmacistă",
+    "Dispenser",
+    "Trainee Dispenser",
+    "Mobile Dispenser",
+    "Dispenser - Bank"
    ]
   },
   {
@@ -160010,7 +160150,15 @@
     "Assistente ottica",
     "Asystentka optyka",
     "مساعدة بصريات",
-    "Asistentka optika"
+    "Asistentka optika",
+    "Optical assistant",
+    "Retail Assistant (Opticians)",
+    "Optical Retail Assistant",
+    "Opticians Assistant",
+    "Optical Advisor",
+    "Optical Sales Associate",
+    "Optical Team Member",
+    "Assistante optique"
    ]
   },
   {
@@ -164572,6 +164720,7 @@
     "nl": "Kledingsnijder",
     "zh-CN": "裁床工",
     "ja": "裁断士",
+    "ko": "재단공",
     "pt": "Cortador",
     "pt-BR": "Cortador",
     "da": "Tilskærer",
@@ -164597,6 +164746,7 @@
     "Kledingsnijder",
     "裁床工",
     "裁断士",
+    "재단공",
     "Tilskærer",
     "Krojczy",
     "Tillskärare",
@@ -168291,9 +168441,9 @@
     "fr": "Praticien spa",
     "en": "Spa Practitioner",
     "de": "Spa-Therapeut",
-    "it": "Terapista Spa",
+    "it": "Operatore Spa",
     "es": "Terapeuta spa",
-    "nl": "Spa Specialist",
+    "nl": "Spa Practitioner",
     "zh-CN": "水疗理疗师",
     "ja": "スパセラピスト",
     "ko": "스파 테라피스트",
@@ -168301,7 +168451,7 @@
     "pt-BR": "Terapeuta de spa",
     "da": "Spaterapeut",
     "zh-Hant": "水療理療師",
-    "pl": "Terapeuta spa",
+    "pl": "Pracownik Spa",
     "sv": "Spaterapeut",
     "tr": "Spa Terapisti",
     "th": "พนักงานนวดสปา",
@@ -168317,15 +168467,15 @@
    "aliases": [
     "Spa Practitioner",
     "Spa-Therapeut",
-    "Terapista Spa",
+    "Operatore Spa",
     "Terapeuta spa",
-    "Spa Specialist",
     "水疗理疗师",
     "スパセラピスト",
     "스파 테라피스트",
     "Terapeuta de spa",
     "Spaterapeut",
     "水療理療師",
+    "Pracownik Spa",
     "Spa Terapisti",
     "พนักงานนวดสปา",
     "Terapis Spa",
@@ -168339,7 +168489,8 @@
     "معالجة سبا",
     "Spa terapeutka",
     "Spa-Therapeutin",
-    "Terapeutka spa",
+    "Operatrice Spa",
+    "Pracownica Spa",
     "Θεραπεύτρια Spa"
    ],
    "externalRefs": [
@@ -169166,6 +169317,7 @@
     "fr": "Responsable commercial de zone",
     "en": "Area Sales Manager",
     "de": "Gebietsverkaufsleiter",
+    "it": "Responsabile commerciale di zona",
     "es": "Responsable comercial de zona",
     "nl": "Area Sales Manager",
     "zh-CN": "大区销售经理",
@@ -169191,6 +169343,7 @@
    "aliases": [
     "Area Sales Manager",
     "Gebietsverkaufsleiter",
+    "Responsabile commerciale di zona",
     "Responsable comercial de zona",
     "大区销售经理",
     "エリアセールスマネージャー",
@@ -172104,5 +172257,6 @@
    "reason": "The title explicitly names both intermediate and senior levels; do not select one."
   }
  ],
- "matchingVersion": 2
+ "matchingVersion": 2,
+ "searchVocabularyVersion": "20260924-v2"
 }
