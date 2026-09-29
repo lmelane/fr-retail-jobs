@@ -36,7 +36,7 @@ import { createHash } from 'node:crypto';
 import { existsSync, writeFileSync } from 'node:fs';
 import { compileOccupationManifest, type OccupationManifest } from '../../../../../packages/db/occupation-engine.ts';
 import { validateOccupationSuccessor } from '../../../src/occupation/release.ts';
-import { conceptsV3, DOSSIER_SORTIE, familles, libellesEtFormes, lireEtape, phraseMoteur, servie } from './commun.mts';
+import { conceptsV3, DOSSIER_SORTIE, familles, libellesEtFormes, lireEtape, phraseMoteur, servie, VAGUES } from './commun.mts';
 
 const BASE = process.argv.includes('--base');
 const ID = 'catwalks-occupations-20260929-v3';
@@ -94,6 +94,24 @@ for (const c of tous) {
 for (const t of e3.intitules) if (t.decision === 'variante') ajouter(t.concept, t.intitule);
 for (const v of e3b.variantesAjoutees) ajouter(v.concept, v.intitule);
 for (const t of e4.intitules) if (t.cible) ajouter(t.cible, t.intitule);
+// D-475 §35 : les intitulés de vente en boutique jugés « Conseiller de vente » quittent « Employé de rayon » (étape 3c).
+const scission = lireEtape('3c-scission-vente.json');
+const versVente = new Set<string>(scission.deplaces.map((d: any) => d.forme));
+const [deRayon, deVente] = [racine(scission.source), racine(scission.cible)];
+if (!brutes.has(deRayon) || !brutes.has(deVente)) throw new Error(`scission 3c : métier absent (${deRayon} ou ${deVente})`);
+for (const v of [...brutes.get(deRayon)!]) if (versVente.has(phraseMoteur(v))) { brutes.get(deRayon)!.delete(v); brutes.get(deVente)!.add(v); }
+// 3c fait autorité sur tout ce qu'il a jugé, anciens noms du métier compris (retirés des libellés par le renommage).
+for (const d of scission.deplaces) brutes.get(deVente)!.add(d.intitule);
+for (const t of scission.restent) brutes.get(deRayon)!.add(t);
+// Intitulés jugés sur de vraies offres (étapes 3, 3b, 4, 3c) : ils priment sur une variante ou une forme d'un autre métier
+// (« general manager » d'une boutique, jugé directeur de magasin avec son employeur, n'est pas la « Direction »). À l'étape 3,
+// seulement quand les deux juges ont choisi le même métier (« product manager » : Chef de produit pour l'un, Product
+// Owner pour l'autre, n'a pas cette force).
+const juge = new Map<string, string>();
+for (const t of e3.intitules) if (t.decision === 'variante' && t.preuve?.choix?.concept === t.concept && t.preuve?.second?.concept === t.concept) juge.set(phraseMoteur(t.intitule), racine(t.concept));
+for (const v of e3b.variantesAjoutees) juge.set(phraseMoteur(v.intitule), racine(v.concept));
+for (const t of e4.intitules) if (t.cible) juge.set(phraseMoteur(t.intitule), racine(t.cible));
+for (const d of scission.deplaces) juge.set(d.forme, deVente);
 // La règle garde l'expression BRUTE (le moteur la normalise une fois ; normalisée deux fois, « e-commerce » perdait son
 // « e », audit technique du 29/09/2026) ; la garde compare les formes normalisées.
 const brute = new Map<string, string>();
@@ -113,6 +131,15 @@ const arbitragesFinaux: { forme: string; metiers: string[]; garde: string | null
 const porteurs = new Map<string, string[]>();
 for (const [cle, s] of expressions) for (const f of s) porteurs.set(f, [...(porteurs.get(f) ?? []), cle]);
 for (const [f, cles] of porteurs) {
+  // Priorité : expression validée en production, puis intitulé jugé sur de vraies offres, puis attribution de 5c.
+  const servisDeF = [...(servieParForme.get(f) ?? [])];
+  // Jamais contre le NOM d'un autre métier : un libellé choisi dans la recherche doit rendre son métier (banc 6e).
+  if (servisDeF.length !== 1 && juge.has(f) && cles.includes(juge.get(f)!) && cles.length > 1 && nommePar(f).every((k) => k === juge.get(f))) {
+    const garde = juge.get(f)!;
+    for (const k of cles) if (k !== garde) expressions.get(k)!.delete(f);
+    arbitragesFinaux.push({ forme: f, metiers: cles, garde, motif: 'intitulé jugé' });
+    continue;
+  }
   const a = attribution.get(f);
   // Une forme attribuée par 5c n'appartient qu'à son gardien : tout autre métier la perd, même s'il la tient d'une source
   // que 5c ne voyait pas (« Demand Planner », variante d'un planificateur venue des offres, 29/09/2026).
@@ -125,7 +152,9 @@ for (const [f, cles] of porteurs) {
   for (const k of cles) if (k !== garde) expressions.get(k)!.delete(f);
   arbitragesFinaux.push({ forme: f, metiers, garde, motif: servisDe.length === 1 ? 'version servie' : nommeurs.length === 1 ? 'libellé' : 'ambiguë, retirée' });
 }
-const interdites = new Set<string>(e5c.attributions.filter((a: any) => a.motif === 'forme vague interdite').map((a: any) => a.forme));
+// Formes vagues (§32 c), appliquées à TOUTES les expressions, pas seulement à celles que 5c a vues (« superviseur » restait).
+const interdites = new Set<string>([...VAGUES, ...e3.intitules.filter((t: any) => t.preuve?.choix?.decision === 'vague' && t.preuve?.second?.decision === 'vague').map((t: any) => phraseMoteur(t.intitule)),
+  ...e5c.attributions.filter((a: any) => a.motif === 'forme vague interdite').map((a: any) => a.forme)]);
 
 // Familles.
 const cleFamille = (k: string) => k;
@@ -139,8 +168,10 @@ const famillesV3 = [
 const metiersV3 = concepts.map((c) => {
   const s = servis.get(c.cle);
   const labels = libellesDe(c.cle);
-  const aliases = [...new Set([...(s?.aliases ?? []), ...Object.values(labels), ...Object.values(libellesEtFormes(c.cle, e5ParCle, e5b).formes).flat(), ...(e5c.aliasRecherche[c.cle] ?? [])])]
-    .filter((x) => x && x !== labels.fr && !interdites.has(phraseMoteur(x)) && (!attribution.get(phraseMoteur(x)) || attribution.get(phraseMoteur(x))!.garde === c.cle || !attribution.get(phraseMoteur(x))!.retires.includes(c.cle)));
+  // Les intitulés de vente passés à « Conseiller de vente » (3c) deviennent son vocabulaire de recherche, plus celui du rayon.
+  const vente = c.cle === deVente ? scission.deplaces.map((d: any) => d.intitule) : [];
+  const aliases = [...new Set([...(s?.aliases ?? []), ...Object.values(labels), ...Object.values(libellesEtFormes(c.cle, e5ParCle, e5b).formes).flat(), ...(e5c.aliasRecherche[c.cle] ?? []), ...vente])]
+    .filter((x) => x && x !== labels.fr && !interdites.has(phraseMoteur(x)) && !(c.cle === deRayon && versVente.has(phraseMoteur(x))) && (!attribution.get(phraseMoteur(x)) || attribution.get(phraseMoteur(x))!.garde === c.cle || !attribution.get(phraseMoteur(x))!.retires.includes(c.cle)));
   const ancre = e5ParCle.get(c.cle)?.ancreEsco;
   return { key: cleMetier.get(c.cle)!, family: s ? s.family : cleFamille(c.famille), labels, aliases,
     ...(ancre ? { externalRefs: [ancre] } : {}),

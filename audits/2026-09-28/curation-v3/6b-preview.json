@@ -1,31 +1,31 @@
 {
- "calculeLe": "2026-09-29T10:53:57.375Z",
+ "calculeLe": "2026-09-29T11:21:29.005Z",
  "bilan": {
   "manifeste": "catwalks-occupations-20260929-v3",
   "couples": 43168,
   "offres": 80741,
-  "compilationMs": 77,
-  "classementMs": 1347,
+  "compilationMs": 84,
+  "classementMs": 1469,
   "premisse": {
    "accordAvecLaProduction": 100,
    "seuil": 97
   },
   "offresClassees": {
    "v1": 38000,
-   "v3": 50728,
+   "v3": 50664,
    "v1Pct": 47.1,
-   "v3Pct": 62.8
+   "v3Pct": 62.7
   },
   "ambigues": {
    "v1": 48,
-   "v3": 71
+   "v3": 64
   },
-  "gains": 12789,
+  "gains": 12721,
   "changementsDeMetier": 655,
-  "pertes": 61,
+  "pertes": 57,
   "horsPlan": {
-   "offres": 52,
-   "intitules": 44,
+   "offres": 48,
+   "intitules": 40,
    "taux": 0.3,
    "seuil": 10
   },
@@ -47,7 +47,7 @@
    "pays": "FR",
    "offres": 16521,
    "classesV1": 58,
-   "classesV3": 69.8
+   "classesV3": 69.6
   },
   {
    "pays": "CA",
@@ -59,25 +59,25 @@
    "pays": "GB",
    "offres": 8029,
    "classesV1": 63.7,
-   "classesV3": 81.3
+   "classesV3": 80.7
   },
   {
    "pays": "DE",
    "offres": 7359,
    "classesV1": 66.5,
-   "classesV3": 79.2
+   "classesV3": 78.7
   },
   {
    "pays": "IT",
    "offres": 6644,
    "classesV1": 79.4,
-   "classesV3": 85.2
+   "classesV3": 84.8
   },
   {
    "pays": "ES",
    "offres": 6625,
    "classesV1": 72.3,
-   "classesV3": 89.5
+   "classesV3": 89.9
   },
   {
    "pays": "AU",
@@ -89,7 +89,7 @@
    "pays": "NL",
    "offres": 5347,
    "classesV1": 75.4,
-   "classesV3": 88.2
+   "classesV3": 87.4
   },
   {
    "pays": "CH",
@@ -119,19 +119,19 @@
    "pays": "SG",
    "offres": 4234,
    "classesV1": 90.1,
-   "classesV3": 92.9
+   "classesV3": 92.2
   },
   {
    "pays": "IE",
    "offres": 4143,
    "classesV1": 86.2,
-   "classesV3": 92.6
+   "classesV3": 91.6
   },
   {
    "pays": "JP",
    "offres": 4109,
    "classesV1": 84.1,
-   "classesV3": 91.1
+   "classesV3": 91
   },
   {
    "pays": "HK",
@@ -161,7 +161,7 @@
    "pays": "AE",
    "offres": 3499,
    "classesV1": 91.7,
-   "classesV3": 94.8
+   "classesV3": 94.6
   },
   {
    "pays": "TW",
@@ -185,7 +185,7 @@
    "pays": "TH",
    "offres": 3193,
    "classesV1": 88.5,
-   "classesV3": 91.7
+   "classesV3": 91.5
   },
   {
    "pays": "MO",
@@ -209,7 +209,7 @@
    "pays": "SA",
    "offres": 2828,
    "classesV1": 98,
-   "classesV3": 98.3
+   "classesV3": 98.1
   },
   {
    "pays": "BS",
@@ -227,7 +227,7 @@
    "pays": "?",
    "offres": 1894,
    "classesV1": 32.6,
-   "classesV3": 67.2
+   "classesV3": 67.3
   },
   {
    "pays": "PR",
@@ -239,7 +239,7 @@
    "pays": "DK",
    "offres": 1012,
    "classesV1": 61.2,
-   "classesV3": 77
+   "classesV3": 76.5
   },
   {
    "pays": "MX",
@@ -377,7 +377,7 @@
    "pays": "NO",
    "offres": 180,
    "classesV1": 18.3,
-   "classesV3": 50
+   "classesV3": 51.7
   },
   {
    "pays": "NF",
@@ -868,7 +868,7 @@
    "service": " Retail Management",
    "offres": 71,
    "v1": null,
-   "v3": "direction"
+   "v3": "store-manager"
   },
   {
    "titre": "Guest Coordinator",
@@ -1076,13 +1076,6 @@
    "v3": null
   },
   {
-   "titre": "Client Advisor（販売スタッフ）首都圏・名古屋・関西",
-   "service": "Retail",
-   "offres": 1,
-   "v1": "sales-advisor",
-   "v3": null
-  },
-  {
    "titre": "Client Style Advisor & Stock Controller",
    "service": null,
    "offres": 1,
@@ -1146,31 +1139,38 @@
    "v3": null
   },
   {
-   "titre": "Part Time Sales Associate (Nagoya, Japan) パートタイムの販売スタッフ (愛知県名古屋市, 日本)",
-   "service": null,
-   "offres": 1,
-   "v1": "sales-advisor",
-   "v3": null
-  },
-  {
-   "titre": "Part Time Sales Associate (Osaka, Japan) パートタイムの販売スタッフ (大阪, 日本)",
-   "service": null,
-   "offres": 1,
-   "v1": "sales-advisor",
-   "v3": null
-  },
-  {
-   "titre": "Sales Associate (販売スタッフ)/新宿, 東京",
-   "service": "Retail",
-   "offres": 1,
-   "v1": "sales-advisor",
-   "v3": null
-  },
-  {
    "titre": "Senior/Lead Software Engineer (C#) – Automation & Machine Control",
    "service": null,
    "offres": 1,
    "v1": "software-engineer",
+   "v3": null
+  },
+  {
+   "titre": "Senior Lead - Staff Software Engineer",
+   "service": null,
+   "offres": 1,
+   "v1": "software-engineer",
+   "v3": null
+  },
+  {
+   "titre": "Specialist, Lead Treasury Accountant",
+   "service": null,
+   "offres": 1,
+   "v1": "accountant",
+   "v3": null
+  },
+  {
+   "titre": "Store Manager/ Store Supervisor - Qassim مدير معرض و مشرف معرض القصيم",
+   "service": null,
+   "offres": 1,
+   "v1": "store-manager",
+   "v3": null
+  },
+  {
+   "titre": "Visual Merchandiser Customer Advisor - UNIQLO Milano",
+   "service": null,
+   "offres": 1,
+   "v1": "visual-merchandiser",
    "v3": null
   }
  ],
@@ -1253,13 +1253,6 @@
    "v3": null
   },
   {
-   "titre": "Client Advisor（販売スタッフ）首都圏・名古屋・関西",
-   "service": "Retail",
-   "offres": 1,
-   "v1": "sales-advisor",
-   "v3": null
-  },
-  {
    "titre": "Client Style Advisor & Stock Controller",
    "service": null,
    "offres": 1,
@@ -1311,6 +1304,13 @@
   {
    "titre": "Director, HRBP Retail - West",
    "service": null,
+   "offres": 1,
+   "v1": "hr-business-partner",
+   "v3": null
+  },
+  {
+   "titre": "Director, HR Business Partner",
+   "service": "Corporate",
    "offres": 1,
    "v1": "hr-business-partner",
    "v3": null
@@ -1574,9 +1574,9 @@
    "service": null,
    "offres": 1,
    "avant": null,
-   "metier": "employe-de-commerce",
+   "metier": "sales-advisor",
    "statut": "CLASSIFIED",
-   "libelle": "Employé de commerce"
+   "libelle": "Conseiller de vente"
   },
   {
    "titre": "Responsable adjoint F/H",
@@ -1655,9 +1655,9 @@
    "service": null,
    "offres": 1,
    "avant": null,
-   "metier": "employe-de-commerce",
+   "metier": "sales-advisor",
    "statut": "CLASSIFIED",
-   "libelle": "Employé de commerce"
+   "libelle": "Conseiller de vente"
   },
   {
    "titre": "Floor Lead (Retail) (Part-time)",
@@ -1693,7 +1693,7 @@
    "avant": null,
    "metier": "employe-de-commerce",
    "statut": "CLASSIFIED",
-   "libelle": "Employé de commerce"
+   "libelle": "Employé de rayon"
   },
   {
    "titre": "Operations Associate - Part Time",
@@ -1720,7 +1720,7 @@
    "avant": null,
    "metier": "employe-de-commerce",
    "statut": "CLASSIFIED",
-   "libelle": "Employé de commerce"
+   "libelle": "Employé de rayon"
   },
   {
    "titre": "Seasonal Store Fulfilment Assistant",
@@ -1864,7 +1864,7 @@
    "avant": null,
    "metier": "employe-de-commerce",
    "statut": "CLASSIFIED",
-   "libelle": "Employé de commerce"
+   "libelle": "Employé de rayon"
   },
   {
    "titre": "Employée, employé de rayon charcuterie libre service",
@@ -1873,7 +1873,7 @@
    "avant": null,
    "metier": "employe-de-commerce",
    "statut": "CLASSIFIED",
-   "libelle": "Employé de commerce"
+   "libelle": "Employé de rayon"
   },
   {
    "titre": "LOFT Part Time Sales Lead Quakerbridge Mall",
@@ -1952,9 +1952,9 @@
    "service": " Retail Management",
    "offres": 71,
    "avant": null,
-   "metier": "direction",
+   "metier": "store-manager",
    "statut": "CLASSIFIED",
-   "libelle": "Directeur général"
+   "libelle": "Responsable de boutique"
   },
   {
    "titre": "Employée, employé de caisse livraison à domicile Premium",
@@ -2251,7 +2251,7 @@
    "avant": null,
    "metier": "employe-de-commerce",
    "statut": "CLASSIFIED",
-   "libelle": "Employé de commerce"
+   "libelle": "Employé de rayon"
   },
   {
    "titre": "District Manager",
@@ -2798,9 +2798,9 @@
    "service": null,
    "offres": 10,
    "avant": null,
-   "metier": "employe-de-commerce",
+   "metier": "sales-advisor",
    "statut": "CLASSIFIED",
-   "libelle": "Employé de commerce"
+   "libelle": "Conseiller de vente"
   },
   {
    "titre": "Anthropologie Department Manager - Service & Styling",
@@ -2911,15 +2911,6 @@
    "libelle": "Floor manager"
   },
   {
-   "titre": "Supervisor",
-   "service": null,
-   "offres": 32,
-   "avant": null,
-   "metier": "manager-floor",
-   "statut": "CLASSIFIED",
-   "libelle": "Floor manager"
-  },
-  {
    "titre": "Verkoopmedewerker parttime/fulltime",
    "service": null,
    "offres": 14,
@@ -2996,9 +2987,9 @@
    "service": null,
    "offres": 1,
    "avant": null,
-   "metier": "employe-de-commerce",
+   "metier": "sales-advisor",
    "statut": "CLASSIFIED",
-   "libelle": "Employé de commerce"
+   "libelle": "Conseiller de vente"
   },
   {
    "titre": "Retail Sales Associates - Lynnhaven Mall",
@@ -3116,6 +3107,15 @@
    "metier": "retail-sales-lead",
    "statut": "CLASSIFIED",
    "libelle": "Premier vendeur"
+  },
+  {
+   "titre": "Team Manager",
+   "service": null,
+   "offres": 77,
+   "avant": null,
+   "metier": "manager-floor",
+   "statut": "CLASSIFIED",
+   "libelle": "Floor manager"
   }
  ]
 }

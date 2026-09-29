@@ -23,7 +23,7 @@
  */
 import { existsSync, writeFileSync } from 'node:fs';
 import { normalizeOccupationTitle } from '../../../../../packages/db/occupation-engine.ts';
-import { DOSSIER_SORTIE, LANGUES_SITE, lireEtape } from './commun.mts';
+import { DOSSIER_SORTIE, LANGUES_SITE, lireEtape, phraseMoteur, servie } from './commun.mts';
 import { JUGES, MODELE_CHOIX, repondre } from './ia.mts';
 
 // Seules les langues où l'offre d'emploi s'écrit toujours dans l'écriture locale (translittération comprise) : en grec
@@ -39,9 +39,23 @@ const absorbes = new Set<string>(existsSync(`${DOSSIER_SORTIE}5c-garde.json`) ? 
 const elements: Element[] = [...e5.metiers.filter((m: any) => !absorbes.has(m.cle)).map((m: any) => ({ cle: m.cle, type: 'metier', libelles: { ...m.libelles } })),
   ...e5.familles.map((f: any) => ({ cle: f.cle, type: 'famille', libelles: { ...f.libelles } }))];
 
-/** Les défauts objectifs d'un jeu de libellés : forme (barre, parenthèse), écriture, même libellé pour deux éléments. */
+// Les formes déjà employées en production (règles, libellés, alias de la version servie) et leurs métiers. Un libellé qui
+// en reprend une pour un AUTRE métier est un défaut ici même : laissé à la garde 5c, lancée après, il faisait osciller
+// les deux étapes (« Spa Therapist », forme de l'esthéticien en production, retiré sans remplaçant, 29/09/2026).
+const servieParForme = new Map<string, Set<string>>();
+const noterServie = (v: string | undefined, k: string) => { if (v) servieParForme.set(phraseMoteur(v), new Set([...(servieParForme.get(phraseMoteur(v)) ?? []), k])); };
+for (const r of servie.rules) for (const c of r.all) if (c.field === 'title') for (const v of c.any) noterServie(v, r.occupation);
+for (const o of servie.occupations) for (const v of [o.labels.fr, o.labels.en, ...(o.aliases ?? [])]) noterServie(v, o.key);
+const nomServi = (k: string) => { const o = servie.occupations.find((x: any) => x.key === k); return `${o?.labels.fr} / ${o?.labels.en}`; };
+
+/** Les défauts objectifs d'un jeu de libellés : forme (barre, parenthèse), écriture, même libellé pour deux éléments,
+ *  forme de production d'un autre métier. */
 function defauts(liste: Element[]) {
   const out: { cle: string; langue: string; raison: string }[] = [];
+  for (const e of liste) if (e.type === 'metier') for (const l of LANGUES_SITE) {
+    const autres = [...(servieParForme.get(phraseMoteur(e.libelles[l] ?? '')) ?? [])].filter((k) => k !== e.cle);
+    if (e.libelles[l] && autres.length) out.push({ cle: e.cle, langue: l, raison: `libellé « ${e.libelles[l]} » déjà employé en production pour ${autres.map(nomServi).join(', ')} : donner à ce métier un nom distinct` });
+  }
   for (const e of liste) for (const l of LANGUES_SITE) if (e.libelles[l] && /[/()]/.test(e.libelles[l]))
     out.push({ cle: e.cle, langue: l, raison: `forme non courte (« ${e.libelles[l]} » : barre ou parenthèse), un seul nom` });
   for (const e of liste) for (const [l, re] of Object.entries(ECRITURE)) if (e.libelles[l] && !re.test(e.libelles[l]))

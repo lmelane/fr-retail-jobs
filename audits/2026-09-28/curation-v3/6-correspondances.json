@@ -1,5 +1,5 @@
 {
- "calculeLe": "2026-09-29T10:53:55.604Z",
+ "calculeLe": "2026-09-29T11:21:27.080Z",
  "manifeste": "catwalks-occupations-20260929-v3",
  "metiers": {
   "sales-advisor": "sales-advisor",
@@ -301,83 +301,30 @@
  },
  "libellesRetires": [
   {
-   "cle": "beauty-therapist",
-   "langue": "zh-Hant",
-   "libelle": "美容師"
-  },
-  {
    "cle": "backend:ASSISTANT_DE_GESTION",
    "langue": "da",
-   "libelle": "Administrativ assistent"
+   "libelle": "Ledelsesassistent"
   },
   {
-   "cle": "backend:EMPLOYE_DE_COMMERCE",
-   "langue": "en",
-   "libelle": "Retail Assistant"
+   "cle": "backend:COUPE",
+   "langue": "ko",
+   "libelle": "재단사"
   },
   {
-   "cle": "backend:EMPLOYE_DE_COMMERCE",
-   "langue": "de",
-   "libelle": "Verkäufer"
-  },
-  {
-   "cle": "backend:PRATICIEN_SPA",
-   "langue": "en",
-   "libelle": "Spa Therapist"
-  },
-  {
-   "cle": "backend:PRATICIEN_SPA",
-   "langue": "de",
-   "libelle": "Spa Therapist"
-  },
-  {
-   "cle": "backend:PRATICIEN_SPA",
+   "cle": "backend:RESPONSABLE_COMMERCIAL_DE_ZONE",
    "langue": "it",
-   "libelle": "Spa Therapist"
-  },
-  {
-   "cle": "backend:PRATICIEN_SPA",
-   "langue": "nl",
-   "libelle": "Spa Therapist"
-  },
-  {
-   "cle": "backend:PRATICIEN_SPA",
-   "langue": "pl",
-   "libelle": "Spa Therapist"
-  },
-  {
-   "cle": "backend:PRATICIEN_SPA",
-   "langue": "el",
-   "libelle": "Spa Therapist"
+   "libelle": "Area Manager"
   }
  ],
  "arbitragesFinaux": [
-  {
-   "forme": "WINKELMEDEWERKER",
-   "metiers": [
-    "sales-advisor",
-    "backend:EMPLOYE_DE_COMMERCE"
-   ],
-   "garde": "backend:EMPLOYE_DE_COMMERCE",
-   "motif": "libellé"
-  },
-  {
-   "forme": "SPRZEDAWCA",
-   "metiers": [
-    "sales-advisor",
-    "backend:EMPLOYE_DE_COMMERCE"
-   ],
-   "garde": "backend:EMPLOYE_DE_COMMERCE",
-   "motif": "libellé"
-  },
   {
    "forme": "GENERAL MANAGER",
    "metiers": [
     "store-manager",
     "backend:DIRECTION"
    ],
-   "garde": "backend:DIRECTION",
-   "motif": "libellé"
+   "garde": "store-manager",
+   "motif": "intitulé jugé"
   },
   {
    "forme": "DIRECTEUR REGIONAL",
@@ -387,15 +334,6 @@
    ],
    "garde": null,
    "motif": "ambiguë, retirée"
-  },
-  {
-   "forme": "AREA MANAGER",
-   "metiers": [
-    "regional-retail-manager",
-    "backend:RESPONSABLE_COMMERCIAL_DE_ZONE"
-   ],
-   "garde": "regional-retail-manager",
-   "motif": "version servie"
   },
   {
    "forme": "DIRECTRICE REGIONALE",

@@ -1,15 +1,185 @@
 {
- "source": "Audit adverse métier/UX du lot 2A (29/09/2026), constats vérifiés par l'assistant au moteur ; ces libellés repassent par la correction relue de l'étape 5b.",
+ "source": "Audit adverse métier/UX du lot 2A (29/09/2026), constats vérifiés par l'assistant au moteur ; ces libellés repassent par la correction relue de l'étape 5b. Complété le 29/09/2026 par le renommage d'« Employé de commerce » en « Employé de rayon » (D-475 §35). Complété le 29/09/2026 : nom anglais de « Directeur général » (General Manager désigne le directeur de magasin dans les offres).",
  "fautes": [
-  { "cle": "offres:retail-sales-lead", "langue": "fr", "raison": "« Responsable des ventes » désigne en français un directeur des ventes ; ce poste est le chef d'équipe de la vente en boutique, dont l'usage des offres françaises est « Premier vendeur »" },
-  { "cle": "offres:retail-sales-lead", "langue": "de", "raison": "« Verkaufsleiter » désigne un directeur des ventes ; ce poste est le chef d'équipe de la vente en boutique" },
-  { "cle": "offres:retail-sales-lead", "langue": "it", "raison": "« Responsabile vendite » désigne un directeur des ventes ; ce poste est le chef d'équipe de la vente en boutique" },
-  { "cle": "offres:retail-sales-lead", "langue": "es", "raison": "désigne un directeur des ventes ; ce poste est le chef d'équipe de la vente en boutique" },
-  { "cle": "offres:retail-sales-lead", "langue": "pl", "raison": "désigne un directeur des ventes ; ce poste est le chef d'équipe de la vente en boutique" },
-  { "cle": "offres:keyholder", "langue": "fr", "raison": "« Responsable d'ouverture » n'est employé par aucune offre ; l'usage des offres françaises est « Keyholder » (D-475 §34 : usage du pays, anglais compris)" },
-  { "cle": "backend:PRESIDENT_D_ASSOCIATION", "langue": "fr", "raison": "« Président » seul désigne tout président (société, conseil) ; le métier est « Président d'association », garder le complément" },
-  { "cle": "backend:PRESIDENT_D_ASSOCIATION", "langue": "en", "raison": "« President » seul désigne tout président ; le métier est un président d'association, garder le complément" },
-  { "cle": "backend:MANAGER_FLOOR", "langue": "fr", "raison": "« Responsable de rayon » est le vocabulaire de la grande distribution ; dans les boutiques de mode et de luxe, l'usage est « Floor manager »" },
-  { "cle": "backend:ASSISTANT_HOTELIER", "langue": "fr", "raison": "« Agent hôtelier » ne désigne pas le même métier que l'anglais « Hotel Receptionist » ; donner le nom français d'usage de ce métier" }
+  {
+   "cle": "offres:retail-sales-lead",
+   "langue": "fr",
+   "raison": "« Responsable des ventes » désigne en français un directeur des ventes ; ce poste est le chef d'équipe de la vente en boutique, dont l'usage des offres françaises est « Premier vendeur »"
+  },
+  {
+   "cle": "offres:retail-sales-lead",
+   "langue": "de",
+   "raison": "« Verkaufsleiter » désigne un directeur des ventes ; ce poste est le chef d'équipe de la vente en boutique"
+  },
+  {
+   "cle": "offres:retail-sales-lead",
+   "langue": "it",
+   "raison": "« Responsabile vendite » désigne un directeur des ventes ; ce poste est le chef d'équipe de la vente en boutique"
+  },
+  {
+   "cle": "offres:retail-sales-lead",
+   "langue": "es",
+   "raison": "désigne un directeur des ventes ; ce poste est le chef d'équipe de la vente en boutique"
+  },
+  {
+   "cle": "offres:retail-sales-lead",
+   "langue": "pl",
+   "raison": "désigne un directeur des ventes ; ce poste est le chef d'équipe de la vente en boutique"
+  },
+  {
+   "cle": "offres:keyholder",
+   "langue": "fr",
+   "raison": "« Responsable d'ouverture » n'est employé par aucune offre ; l'usage des offres françaises est « Keyholder » (D-475 §34 : usage du pays, anglais compris)"
+  },
+  {
+   "cle": "backend:PRESIDENT_D_ASSOCIATION",
+   "langue": "fr",
+   "raison": "« Président » seul désigne tout président (société, conseil) ; le métier est « Président d'association », garder le complément"
+  },
+  {
+   "cle": "backend:PRESIDENT_D_ASSOCIATION",
+   "langue": "en",
+   "raison": "« President » seul désigne tout président ; le métier est un président d'association, garder le complément"
+  },
+  {
+   "cle": "backend:MANAGER_FLOOR",
+   "langue": "fr",
+   "raison": "« Responsable de rayon » est le vocabulaire de la grande distribution ; dans les boutiques de mode et de luxe, l'usage est « Floor manager »"
+  },
+  {
+   "cle": "backend:ASSISTANT_HOTELIER",
+   "langue": "fr",
+   "raison": "« Agent hôtelier » ne désigne pas le même métier que l'anglais « Hotel Receptionist » ; donner le nom français d'usage de ce métier"
+  },
+  {
+   "cle": "backend:EMPLOYE_DE_COMMERCE",
+   "langue": "fr",
+   "raison": "ce métier est désormais l'employé de rayon (mise en rayon, grande distribution), distinct du conseiller de vente en boutique (D-475 §35) : donner son nom court d'usage (en français « Employé de rayon »), jamais un nom de vendeur"
+  },
+  {
+   "cle": "backend:EMPLOYE_DE_COMMERCE",
+   "langue": "en",
+   "raison": "ce métier est désormais l'employé de rayon (mise en rayon, grande distribution), distinct du conseiller de vente en boutique (D-475 §35) : donner son nom court d'usage (en français « Employé de rayon »), jamais un nom de vendeur"
+  },
+  {
+   "cle": "backend:EMPLOYE_DE_COMMERCE",
+   "langue": "de",
+   "raison": "ce métier est désormais l'employé de rayon (mise en rayon, grande distribution), distinct du conseiller de vente en boutique (D-475 §35) : donner son nom court d'usage (en français « Employé de rayon »), jamais un nom de vendeur"
+  },
+  {
+   "cle": "backend:EMPLOYE_DE_COMMERCE",
+   "langue": "it",
+   "raison": "ce métier est désormais l'employé de rayon (mise en rayon, grande distribution), distinct du conseiller de vente en boutique (D-475 §35) : donner son nom court d'usage (en français « Employé de rayon »), jamais un nom de vendeur"
+  },
+  {
+   "cle": "backend:EMPLOYE_DE_COMMERCE",
+   "langue": "es",
+   "raison": "ce métier est désormais l'employé de rayon (mise en rayon, grande distribution), distinct du conseiller de vente en boutique (D-475 §35) : donner son nom court d'usage (en français « Employé de rayon »), jamais un nom de vendeur"
+  },
+  {
+   "cle": "backend:EMPLOYE_DE_COMMERCE",
+   "langue": "nl",
+   "raison": "ce métier est désormais l'employé de rayon (mise en rayon, grande distribution), distinct du conseiller de vente en boutique (D-475 §35) : donner son nom court d'usage (en français « Employé de rayon »), jamais un nom de vendeur"
+  },
+  {
+   "cle": "backend:EMPLOYE_DE_COMMERCE",
+   "langue": "zh-CN",
+   "raison": "ce métier est désormais l'employé de rayon (mise en rayon, grande distribution), distinct du conseiller de vente en boutique (D-475 §35) : donner son nom court d'usage (en français « Employé de rayon »), jamais un nom de vendeur"
+  },
+  {
+   "cle": "backend:EMPLOYE_DE_COMMERCE",
+   "langue": "ja",
+   "raison": "ce métier est désormais l'employé de rayon (mise en rayon, grande distribution), distinct du conseiller de vente en boutique (D-475 §35) : donner son nom court d'usage (en français « Employé de rayon »), jamais un nom de vendeur"
+  },
+  {
+   "cle": "backend:EMPLOYE_DE_COMMERCE",
+   "langue": "ko",
+   "raison": "ce métier est désormais l'employé de rayon (mise en rayon, grande distribution), distinct du conseiller de vente en boutique (D-475 §35) : donner son nom court d'usage (en français « Employé de rayon »), jamais un nom de vendeur"
+  },
+  {
+   "cle": "backend:EMPLOYE_DE_COMMERCE",
+   "langue": "pt",
+   "raison": "ce métier est désormais l'employé de rayon (mise en rayon, grande distribution), distinct du conseiller de vente en boutique (D-475 §35) : donner son nom court d'usage (en français « Employé de rayon »), jamais un nom de vendeur"
+  },
+  {
+   "cle": "backend:EMPLOYE_DE_COMMERCE",
+   "langue": "pt-BR",
+   "raison": "ce métier est désormais l'employé de rayon (mise en rayon, grande distribution), distinct du conseiller de vente en boutique (D-475 §35) : donner son nom court d'usage (en français « Employé de rayon »), jamais un nom de vendeur"
+  },
+  {
+   "cle": "backend:EMPLOYE_DE_COMMERCE",
+   "langue": "da",
+   "raison": "ce métier est désormais l'employé de rayon (mise en rayon, grande distribution), distinct du conseiller de vente en boutique (D-475 §35) : donner son nom court d'usage (en français « Employé de rayon »), jamais un nom de vendeur"
+  },
+  {
+   "cle": "backend:EMPLOYE_DE_COMMERCE",
+   "langue": "zh-Hant",
+   "raison": "ce métier est désormais l'employé de rayon (mise en rayon, grande distribution), distinct du conseiller de vente en boutique (D-475 §35) : donner son nom court d'usage (en français « Employé de rayon »), jamais un nom de vendeur"
+  },
+  {
+   "cle": "backend:EMPLOYE_DE_COMMERCE",
+   "langue": "pl",
+   "raison": "ce métier est désormais l'employé de rayon (mise en rayon, grande distribution), distinct du conseiller de vente en boutique (D-475 §35) : donner son nom court d'usage (en français « Employé de rayon »), jamais un nom de vendeur"
+  },
+  {
+   "cle": "backend:EMPLOYE_DE_COMMERCE",
+   "langue": "sv",
+   "raison": "ce métier est désormais l'employé de rayon (mise en rayon, grande distribution), distinct du conseiller de vente en boutique (D-475 §35) : donner son nom court d'usage (en français « Employé de rayon »), jamais un nom de vendeur"
+  },
+  {
+   "cle": "backend:EMPLOYE_DE_COMMERCE",
+   "langue": "tr",
+   "raison": "ce métier est désormais l'employé de rayon (mise en rayon, grande distribution), distinct du conseiller de vente en boutique (D-475 §35) : donner son nom court d'usage (en français « Employé de rayon »), jamais un nom de vendeur"
+  },
+  {
+   "cle": "backend:EMPLOYE_DE_COMMERCE",
+   "langue": "th",
+   "raison": "ce métier est désormais l'employé de rayon (mise en rayon, grande distribution), distinct du conseiller de vente en boutique (D-475 §35) : donner son nom court d'usage (en français « Employé de rayon »), jamais un nom de vendeur"
+  },
+  {
+   "cle": "backend:EMPLOYE_DE_COMMERCE",
+   "langue": "ms",
+   "raison": "ce métier est désormais l'employé de rayon (mise en rayon, grande distribution), distinct du conseiller de vente en boutique (D-475 §35) : donner son nom court d'usage (en français « Employé de rayon »), jamais un nom de vendeur"
+  },
+  {
+   "cle": "backend:EMPLOYE_DE_COMMERCE",
+   "langue": "ar",
+   "raison": "ce métier est désormais l'employé de rayon (mise en rayon, grande distribution), distinct du conseiller de vente en boutique (D-475 §35) : donner son nom court d'usage (en français « Employé de rayon »), jamais un nom de vendeur"
+  },
+  {
+   "cle": "backend:EMPLOYE_DE_COMMERCE",
+   "langue": "nb",
+   "raison": "ce métier est désormais l'employé de rayon (mise en rayon, grande distribution), distinct du conseiller de vente en boutique (D-475 §35) : donner son nom court d'usage (en français « Employé de rayon »), jamais un nom de vendeur"
+  },
+  {
+   "cle": "backend:EMPLOYE_DE_COMMERCE",
+   "langue": "el",
+   "raison": "ce métier est désormais l'employé de rayon (mise en rayon, grande distribution), distinct du conseiller de vente en boutique (D-475 §35) : donner son nom court d'usage (en français « Employé de rayon »), jamais un nom de vendeur"
+  },
+  {
+   "cle": "backend:EMPLOYE_DE_COMMERCE",
+   "langue": "vi",
+   "raison": "ce métier est désormais l'employé de rayon (mise en rayon, grande distribution), distinct du conseiller de vente en boutique (D-475 §35) : donner son nom court d'usage (en français « Employé de rayon »), jamais un nom de vendeur"
+  },
+  {
+   "cle": "backend:EMPLOYE_DE_COMMERCE",
+   "langue": "cs",
+   "raison": "ce métier est désormais l'employé de rayon (mise en rayon, grande distribution), distinct du conseiller de vente en boutique (D-475 §35) : donner son nom court d'usage (en français « Employé de rayon »), jamais un nom de vendeur"
+  },
+  {
+   "cle": "backend:EMPLOYE_DE_COMMERCE",
+   "langue": "hu",
+   "raison": "ce métier est désormais l'employé de rayon (mise en rayon, grande distribution), distinct du conseiller de vente en boutique (D-475 §35) : donner son nom court d'usage (en français « Employé de rayon »), jamais un nom de vendeur"
+  },
+  {
+   "cle": "backend:EMPLOYE_DE_COMMERCE",
+   "langue": "ro",
+   "raison": "ce métier est désormais l'employé de rayon (mise en rayon, grande distribution), distinct du conseiller de vente en boutique (D-475 §35) : donner son nom court d'usage (en français « Employé de rayon »), jamais un nom de vendeur"
+  },
+  {
+   "cle": "backend:DIRECTION",
+   "langue": "en",
+   "raison": "« General Manager » désigne dans les offres le directeur d'un magasin (71 des 78 offres ainsi intitulées viennent du service Retail Management) : donner le nom anglais usuel du dirigeant d'une entreprise (Managing Director), jamais un nom porté par la direction d'un magasin (D-475 §34)"
+  }
  ]
 }

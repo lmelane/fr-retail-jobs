@@ -1,16 +1,16 @@
 {
- "calculeLe": "2026-09-29T10:44:11.190Z",
+ "calculeLe": "2026-09-29T11:21:10.673Z",
  "juges": {
   "j1": "gemini-3.6-flash",
   "j2": "gemini-3-flash-preview"
  },
  "bilan": {
-  "formesRevendiquees": 8406,
+  "formesRevendiquees": 8448,
   "interdites": 1,
-  "conflits": 41,
-  "pairesJugees": 7,
+  "conflits": 42,
+  "pairesJugees": 8,
   "fusions": 3,
-  "renommages": 11,
+  "renommages": 3,
   "sansVerdict": 0
  },
  "aliasRecherche": {
@@ -55,8 +55,8 @@
  ],
  "paires": [
   {
-   "a": "backend:EMPLOYE_DE_COMMERCE",
-   "b": "sales-advisor",
+   "a": "backend:RESPONSABLE_COMMERCIAL_DE_ZONE",
+   "b": "regional-retail-manager",
    "verdict": "rejete"
   },
   {
@@ -70,8 +70,13 @@
    "verdict": "confirme"
   },
   {
-   "a": "backend:ASSISTANT_ADMINISTRATIF",
-   "b": "backend:ASSISTANT_DE_GESTION",
+   "a": "backend:ASSISTANT_DE_GESTION",
+   "b": "executive-assistant",
+   "verdict": "rejete"
+  },
+  {
+   "a": "backend:PLANIFICATEUR_SUPPLY_CHAIN",
+   "b": "demand-planner",
    "verdict": "rejete"
   },
   {
@@ -85,27 +90,35 @@
    "verdict": "confirme"
   },
   {
-   "a": "backend:PRATICIEN_SPA",
-   "b": "beauty-therapist",
+   "a": "backend:COUPE",
+   "b": "backend:TAILLEUR",
    "verdict": "rejete"
   }
  ],
  "attributions": [
   {
-   "forme": "RETAIL ASSISTANT",
-   "garde": "sales-advisor",
+   "forme": "AREA MANAGER",
+   "garde": "regional-retail-manager",
    "retires": [
-    "backend:EMPLOYE_DE_COMMERCE"
+    "backend:RESPONSABLE_COMMERCIAL_DE_ZONE"
    ],
    "motif": "version servie"
   },
   {
-   "forme": "美 容 師",
-   "garde": "hairdresser",
+   "forme": "LEDELSESASSISTENT",
+   "garde": "executive-assistant",
    "retires": [
-    "beauty-therapist"
+    "backend:ASSISTANT_DE_GESTION"
    ],
-   "motif": "libellé partagé"
+   "motif": "version servie"
+  },
+  {
+   "forme": "PLANIFICATEUR DE LA DEMANDE",
+   "garde": "demand-planner",
+   "retires": [
+    "backend:PLANIFICATEUR_SUPPLY_CHAIN"
+   ],
+   "motif": "version servie"
   },
   {
    "forme": "DEMAND PLANNER",
@@ -114,14 +127,6 @@
     "merchandise-planner"
    ],
    "motif": "libellé"
-  },
-  {
-   "forme": "ADMINISTRATIV ASSISTENT",
-   "garde": "backend:ASSISTANT_ADMINISTRATIF",
-   "retires": [
-    "backend:ASSISTANT_DE_GESTION"
-   ],
-   "motif": "libellé partagé"
   },
   {
    "forme": "ASSISTANT MERCHANDISER",
@@ -139,6 +144,14 @@
     "backend:E_MERCHANDISER"
    ],
    "motif": "ambiguë"
+  },
+  {
+   "forme": "재단사",
+   "garde": "seamster",
+   "retires": [
+    "backend:COUPE"
+   ],
+   "motif": "version servie"
   },
   {
    "forme": "VERKAUFER",
@@ -175,59 +188,19 @@
  ],
  "renommages": [
   {
-   "cle": "backend:EMPLOYE_DE_COMMERCE",
-   "langue": "en",
-   "raison": "libellé « RETAIL ASSISTANT » déjà employé en production pour Conseiller de vente / Sales Advisor : donner à ce métier un nom distinct"
-  },
-  {
-   "cle": "beauty-therapist",
-   "langue": "zh-Hant",
-   "raison": "libellé « 美 容 師 » aussi porté par Coiffeur / Hairdresser : donner à ce métier un nom distinct"
+   "cle": "backend:RESPONSABLE_COMMERCIAL_DE_ZONE",
+   "langue": "it",
+   "raison": "libellé « AREA MANAGER » déjà employé en production pour Directeur régional / Regional retail manager : donner à ce métier un nom distinct"
   },
   {
    "cle": "backend:ASSISTANT_DE_GESTION",
    "langue": "da",
-   "raison": "libellé « ADMINISTRATIV ASSISTENT » aussi porté par Assistant administratif / Administrative Assistant : donner à ce métier un nom distinct"
+   "raison": "libellé « LEDELSESASSISTENT » déjà employé en production pour Assistant de direction / Executive Assistant : donner à ce métier un nom distinct"
   },
   {
-   "cle": "backend:EMPLOYE_DE_COMMERCE",
-   "langue": "de",
-   "raison": "libellé « VERKAUFER » déjà employé en production pour Conseiller de vente / Sales Advisor : donner à ce métier un nom distinct"
-  },
-  {
-   "cle": "backend:EMPLOYE_DE_COMMERCE",
-   "langue": "de",
-   "raison": "libellé « VERKAUFERIN » déjà employé en production pour Conseiller de vente / Sales Advisor : donner à ce métier un nom distinct"
-  },
-  {
-   "cle": "backend:PRATICIEN_SPA",
-   "langue": "en",
-   "raison": "libellé « SPA THERAPIST » déjà employé en production pour Esthéticien / Esthetician : donner à ce métier un nom distinct"
-  },
-  {
-   "cle": "backend:PRATICIEN_SPA",
-   "langue": "de",
-   "raison": "libellé « SPA THERAPIST » déjà employé en production pour Esthéticien / Esthetician : donner à ce métier un nom distinct"
-  },
-  {
-   "cle": "backend:PRATICIEN_SPA",
-   "langue": "it",
-   "raison": "libellé « SPA THERAPIST » déjà employé en production pour Esthéticien / Esthetician : donner à ce métier un nom distinct"
-  },
-  {
-   "cle": "backend:PRATICIEN_SPA",
-   "langue": "nl",
-   "raison": "libellé « SPA THERAPIST » déjà employé en production pour Esthéticien / Esthetician : donner à ce métier un nom distinct"
-  },
-  {
-   "cle": "backend:PRATICIEN_SPA",
-   "langue": "pl",
-   "raison": "libellé « SPA THERAPIST » déjà employé en production pour Esthéticien / Esthetician : donner à ce métier un nom distinct"
-  },
-  {
-   "cle": "backend:PRATICIEN_SPA",
-   "langue": "el",
-   "raison": "libellé « SPA THERAPIST » déjà employé en production pour Esthéticien / Esthetician : donner à ce métier un nom distinct"
+   "cle": "backend:COUPE",
+   "langue": "ko",
+   "raison": "libellé « 재단사 » déjà employé en production pour Couturier / Seamster : donner à ce métier un nom distinct"
   }
  ]
 }

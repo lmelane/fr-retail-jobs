@@ -1,0 +1,230 @@
+{
+ "calculeLe": "2026-09-29T11:10:37.254Z",
+ "juges": {
+  "j1": "gemini-3.6-flash",
+  "j2": "gemini-3-flash-preview"
+ },
+ "source": "backend:EMPLOYE_DE_COMMERCE",
+ "cible": "sales-advisor",
+ "bilan": {
+  "intitules": 84,
+  "versConseillerDeVente": 42,
+  "restentEmployeDeRayon": 42,
+  "sansVerdict": 0
+ },
+ "deplaces": [
+  {
+   "intitule": "retail assistant - weekend only",
+   "forme": "RETAIL ASSISTANT WEEKEND ONLY"
+  },
+  {
+   "intitule": "vi søker butikkmedarbeider over 18 år",
+   "forme": "VI SØKER BUTIKKMEDARBEIDER OVER 18 AR"
+  },
+  {
+   "intitule": "butiksmedarbejder over 18 år - aften og weekend",
+   "forme": "BUTIKSMEDARBEJDER OVER 18 AR AFTEN OG WEEKEND"
+  },
+  {
+   "intitule": "ayudante/a de venta y reponedor/a – jornada parcial",
+   "forme": "AYUDANTE A DE VENTA Y REPONEDOR A JORNADA PARCIAL"
+  },
+  {
+   "intitule": "butiksassistent",
+   "forme": "BUTIKSASSISTENT"
+  },
+  {
+   "intitule": "butiksassistent - ekstra",
+   "forme": "BUTIKSASSISTENT EKSTRA"
+  },
+  {
+   "intitule": "retail associate ii",
+   "forme": "RETAIL ASSOCIATE II"
+  },
+  {
+   "intitule": "pt - retail assistant - operador de loja (m/f)",
+   "forme": "PT RETAIL ASSISTANT OPERADOR DE LOJA M F"
+  },
+  {
+   "intitule": "retail assistant (m/f/d) 28-35h/woche, befristet - adidas brand flagship store berlin",
+   "forme": "RETAIL ASSISTANT M F D 28 35H WOCHE BEFRISTET ADIDAS BRAND FLAGSHIP STORE BERLIN"
+  },
+  {
+   "intitule": "retail assistant - operador de loja",
+   "forme": "RETAIL ASSISTANT OPERADOR DE LOJA"
+  },
+  {
+   "intitule": "vi søker butikkmedarbeider over 16 år",
+   "forme": "VI SØKER BUTIKKMEDARBEIDER OVER 16 AR"
+  },
+  {
+   "intitule": "winkelmedewerker - studenten/flexi",
+   "forme": "WINKELMEDEWERKER STUDENTEN FLEXI"
+  },
+  {
+   "intitule": "Sales Assistant",
+   "forme": "SALES ASSISTANT"
+  },
+  {
+   "intitule": "Verkäufer",
+   "forme": "VERKAUFER"
+  },
+  {
+   "intitule": "Addetto alle vendite",
+   "forme": "ADDETTO ALLE VENDITE"
+  },
+  {
+   "intitule": "Dependiente",
+   "forme": "DEPENDIENTE"
+  },
+  {
+   "intitule": "Winkelmedewerker",
+   "forme": "WINKELMEDEWERKER"
+  },
+  {
+   "intitule": "店员",
+   "forme": "店 员"
+  },
+  {
+   "intitule": "販売スタッフ",
+   "forme": "販 売 スタッフ"
+  },
+  {
+   "intitule": "매장 판매원",
+   "forme": "매장 판매원"
+  },
+  {
+   "intitule": "Assistente de loja",
+   "forme": "ASSISTENTE DE LOJA"
+  },
+  {
+   "intitule": "Vendedor de loja",
+   "forme": "VENDEDOR DE LOJA"
+  },
+  {
+   "intitule": "Butiksassistent",
+   "forme": "BUTIKSASSISTENT"
+  },
+  {
+   "intitule": "店員",
+   "forme": "店 員"
+  },
+  {
+   "intitule": "Sprzedawca",
+   "forme": "SPRZEDAWCA"
+  },
+  {
+   "intitule": "Butikssäljare",
+   "forme": "BUTIKSSALJARE"
+  },
+  {
+   "intitule": "Satış Elemanı",
+   "forme": "SATIS ELEMANI"
+  },
+  {
+   "intitule": "พนักงานขายหน้าร้าน",
+   "forme": "พนกงานขายหนาราน"
+  },
+  {
+   "intitule": "Pembantu Kedai",
+   "forme": "PEMBANTU KEDAI"
+  },
+  {
+   "intitule": "بائع تجزئة",
+   "forme": "بايع تجزية"
+  },
+  {
+   "intitule": "Butikkmedarbeider",
+   "forme": "BUTIKKMEDARBEIDER"
+  },
+  {
+   "intitule": "Nhân viên bán hàng",
+   "forme": "NHAN VIEN BAN HANG"
+  },
+  {
+   "intitule": "Prodavač",
+   "forme": "PRODAVAC"
+  },
+  {
+   "intitule": "Bolti eladó",
+   "forme": "BOLTI ELADO"
+  },
+  {
+   "intitule": "Verkäuferin",
+   "forme": "VERKAUFERIN"
+  },
+  {
+   "intitule": "Addetta alle vendite",
+   "forme": "ADDETTA ALLE VENDITE"
+  },
+  {
+   "intitule": "Dependienta",
+   "forme": "DEPENDIENTA"
+  },
+  {
+   "intitule": "Vendedora de loja",
+   "forme": "VENDEDORA DE LOJA"
+  },
+  {
+   "intitule": "Sprzedawczyni",
+   "forme": "SPRZEDAWCZYNI"
+  },
+  {
+   "intitule": "بائعة تجزئة",
+   "forme": "بايعة تجزية"
+  },
+  {
+   "intitule": "Prodavačka",
+   "forme": "PRODAVACKA"
+  },
+  {
+   "intitule": "Lucrătoare comercială",
+   "forme": "LUCRATOARE COMERCIALA"
+  }
+ ],
+ "restent": [
+  "employée, employé de rayon épicerie - entretien",
+  "employée, employé de rayon textile",
+  "employé libre-service polyvalent (f/h)",
+  "winkelmedewerker oproepkracht",
+  "employée, employé de rayon crèmerie et surgelés",
+  "store worker",
+  "retail assistant - operador de loja (m/f)",
+  "employée commerciale, employé commercial monop'",
+  "customer assistant (seasonal)",
+  "retail assistant - night shift",
+  "employée, employé de rayon charcuterie libre service",
+  "employée, employé de rayon liquides",
+  "employée, employé de rayon parfumerie",
+  "seasonal task associate",
+  "employée, employé de rayon à service boulangerie",
+  "employée, employé de rayon à service fruits & légumes",
+  "employée, employé de rayon maison - loisirs",
+  "replenishment sales associate (part-time)",
+  "store assistant",
+  "employé de rayon épicerie - entretien f/h",
+  "employée, employé de rayon à service boucherie",
+  "employée, employé de rayon à service crèmerie coupe",
+  "employée, employé de rayon à service poissonnerie",
+  "employé monop' f/h",
+  "employé de rayon maquillage (f/h)",
+  "employé de rayon textile f/h",
+  "lucrător comercial",
+  "replenishment sales associate (part time)",
+  "employé de commerce",
+  "employé commercial",
+  "employée de commerce polyvalent",
+  "employé commercial en magasin",
+  "employée polyvalente saisonnière",
+  "employé de rayon",
+  "employé de rayon textile",
+  "assistant rayon",
+  "employé libre service",
+  "employé libre-service",
+  "Employé de commerce",
+  "Υπάλληλος καταστήματος",
+  "Lucrător comercial",
+  "Employée de commerce"
+ ],
+ "sansVerdict": []
+}
