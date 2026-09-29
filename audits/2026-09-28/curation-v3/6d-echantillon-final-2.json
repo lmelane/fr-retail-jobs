@@ -13,8 +13,8 @@
    "metier": "assistant-designer",
    "statut": "CLASSIFIED",
    "libelle": "Assistant designer",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "P",
+   "verdictAssistant": "P"
   },
   {
    "titre": "Part Time Floor Leader - Twelve Oaks Mall",
@@ -24,8 +24,8 @@
    "metier": "manager-floor",
    "statut": "CLASSIFIED",
    "libelle": "Floor manager",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Retail Sales Consultant - Part Time - Bayshore, ON",
@@ -35,8 +35,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Key Holder - BOSS Store, St. Bruno",
@@ -46,8 +46,8 @@
    "metier": "keyholder",
    "statut": "CLASSIFIED",
    "libelle": "Keyholder",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Verkoopmedewerker Jeans Centre Oss (15 - 20 uur)",
@@ -57,8 +57,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "[Fashion] Responsable Boutique Flagship - Paris - CDI 35h - H/F",
@@ -68,8 +68,8 @@
    "metier": "store-manager",
    "statut": "CLASSIFIED",
    "libelle": "Responsable de boutique",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Employé libre-service polyvalent (f/h)",
@@ -79,8 +79,8 @@
    "metier": "employe-de-commerce",
    "statut": "CLASSIFIED",
    "libelle": "Employé de rayon",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Merchandising Operations Associate - PT Hours",
@@ -90,8 +90,8 @@
    "metier": "stock-associate",
    "statut": "CLASSIFIED",
    "libelle": "Gestionnaire de stock en boutique",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "P"
   },
   {
    "titre": "Doradca Klienta – niepełny etat",
@@ -101,8 +101,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Festive Retail Sales Associates- Santa Anita",
@@ -112,8 +112,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Part-Time Sales Lead",
@@ -123,8 +123,8 @@
    "metier": "retail-sales-lead",
    "statut": "CLASSIFIED",
    "libelle": "Premier vendeur",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "PT - Retail Assistant - Operador de Loja (m/f)",
@@ -134,8 +134,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Verkoopmedewerker (parttime)",
@@ -145,8 +145,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "CDI - Technicien de maintenance Process- H/F/X - Groupe Rocher",
@@ -156,8 +156,8 @@
    "metier": "maintenance-technician",
    "statut": "CLASSIFIED",
    "libelle": "Technicien de maintenance",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Selling Advisor - Designer RTW",
@@ -167,8 +167,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Optiker Herning",
@@ -178,8 +178,8 @@
    "metier": "dispensing-optician",
    "statut": "CLASSIFIED",
    "libelle": "Opticien",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Employée, employé de rayon épicerie - entretien",
@@ -189,8 +189,8 @@
    "metier": "employe-de-commerce",
    "statut": "CLASSIFIED",
    "libelle": "Employé de rayon",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Retail Associate - The Summit Birmingham",
@@ -200,8 +200,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Sales Lead (SLPT) -Lane Bryant",
@@ -211,8 +211,8 @@
    "metier": "manager-floor",
    "statut": "CLASSIFIED",
    "libelle": "Floor manager",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "P",
+   "verdictAssistant": "P"
   },
   {
    "titre": "Employée, employé de rayon à service boucherie",
@@ -222,8 +222,8 @@
    "metier": "employe-de-commerce",
    "statut": "CLASSIFIED",
    "libelle": "Employé de rayon",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Free People Assistant Visual Manager",
@@ -233,8 +233,8 @@
    "metier": "assistant-visual-merchandising-manager",
    "statut": "CLASSIFIED",
    "libelle": "Assistant Visual Merchandiser",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "P"
   },
   {
    "titre": "Conselheiro/a de Beleza - Temporário",
@@ -244,8 +244,8 @@
    "metier": "beauty-consultant",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller beauté",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Full time Key Holder - BOSS Store, Austin",
@@ -255,8 +255,8 @@
    "metier": "keyholder",
    "statut": "CLASSIFIED",
    "libelle": "Keyholder",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Client Specialist - Fashion Accessories, Part Time - Valley Fair",
@@ -266,8 +266,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Assistant Gérant / Assistant Manager",
@@ -277,8 +277,8 @@
    "metier": "assistant-store-manager",
    "statut": "CLASSIFIED",
    "libelle": "Adjoint au responsable de boutique",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Sales Lead, The Loop",
@@ -288,8 +288,8 @@
    "metier": "retail-sales-lead",
    "statut": "CLASSIFIED",
    "libelle": "Premier vendeur",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Seasonal Client Specialist - Mens, Part Time - Roosevelt Field",
@@ -299,8 +299,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "TEAM MANAGER",
@@ -310,8 +310,8 @@
    "metier": "manager-floor",
    "statut": "CLASSIFIED",
    "libelle": "Floor manager",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "P"
   },
   {
    "titre": "Full Time Sales Supervisor - Los Cerritos",
@@ -321,8 +321,8 @@
    "metier": "manager-floor",
    "statut": "CLASSIFIED",
    "libelle": "Floor manager",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Part Time Floor Leader - Dadeland Mall",
@@ -332,8 +332,8 @@
    "metier": "manager-floor",
    "statut": "CLASSIFIED",
    "libelle": "Floor manager",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Anthropologie Department Manager - Service & Styling",
@@ -343,8 +343,8 @@
    "metier": "manager-floor",
    "statut": "CLASSIFIED",
    "libelle": "Floor manager",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Sales Lead, Watters Creek at Montgomery Farm",
@@ -354,8 +354,8 @@
    "metier": "retail-sales-lead",
    "statut": "CLASSIFIED",
    "libelle": "Premier vendeur",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Seasonal Client Specialist - Handbags, Part Time - Orlando",
@@ -365,8 +365,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Sales Lead, Hanover Square South",
@@ -376,8 +376,8 @@
    "metier": "retail-sales-lead",
    "statut": "CLASSIFIED",
    "libelle": "Premier vendeur",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Assistant Manager (m/w/d)",
@@ -387,8 +387,8 @@
    "metier": "assistant-store-manager",
    "statut": "CLASSIFIED",
    "libelle": "Adjoint au responsable de boutique",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Urban Outfitters Seasonal Brand Ambassador",
@@ -398,8 +398,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Assistant Designer, Women’s Outlet Handbags",
@@ -409,8 +409,8 @@
    "metier": "assistant-designer",
    "statut": "CLASSIFIED",
    "libelle": "Assistant designer",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "VISUAL MERCHANDISER MANAGER, CDD 35H",
@@ -420,8 +420,8 @@
    "metier": "responsable-vm",
    "statut": "CLASSIFIED",
    "libelle": "Responsable visual merchandising",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "FP Movement Key Holder",
@@ -431,8 +431,8 @@
    "metier": "keyholder",
    "statut": "CLASSIFIED",
    "libelle": "Keyholder",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Selling Advisor - Men's",
@@ -442,8 +442,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Retail Sales Associates- Bramalea City Centre",
@@ -453,8 +453,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Anthropologie Back of House Specialist",
@@ -464,8 +464,8 @@
    "metier": "stock-associate",
    "statut": "CLASSIFIED",
    "libelle": "Gestionnaire de stock en boutique",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Client Specialist",
@@ -475,8 +475,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Team Manager",
@@ -486,8 +486,8 @@
    "metier": "manager-floor",
    "statut": "CLASSIFIED",
    "libelle": "Floor manager",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "P"
   },
   {
    "titre": "Chef d'équipe des operations",
@@ -497,8 +497,8 @@
    "metier": "responsable-operationnel",
    "statut": "CLASSIFIED",
    "libelle": "Responsable opérationnel",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "P"
   },
   {
    "titre": "Responsable Adjoint(e)- Place Du Royaume",
@@ -508,8 +508,8 @@
    "metier": "assistant-store-manager",
    "statut": "CLASSIFIED",
    "libelle": "Adjoint au responsable de boutique",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "H&M Responsable de département",
@@ -519,8 +519,8 @@
    "metier": "manager-floor",
    "statut": "CLASSIFIED",
    "libelle": "Floor manager",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Retail Sales Consultant - Seasonal - Tacoma Mall - Tacoma, WA",
@@ -530,8 +530,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Festive Retail Sales Associates-Plaza las Americas",
@@ -541,8 +541,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Festive Retail Sales Associates - Providence Place",
@@ -552,8 +552,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Verkoopmedewerker – Etten-Leur (weekend/bijbaan)",
@@ -563,8 +563,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Werkstudent (m/w/d) im Verkauf Mode und Bekleidung",
@@ -574,8 +574,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "P"
   },
   {
    "titre": "Retail Assistant (m/f/d) 28-35h/Woche, befristet - ADIDAS Brand Flagship Store BERLIN",
@@ -585,8 +585,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Chargé(e) de Stock - F/H",
@@ -596,8 +596,8 @@
    "metier": "stock-associate",
    "statut": "CLASSIFIED",
    "libelle": "Gestionnaire de stock en boutique",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Restaurant Bartender - Zodiac",
@@ -607,8 +607,8 @@
    "metier": "barman",
    "statut": "CLASSIFIED",
    "libelle": "Barman",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Retail Cluster Lead, District Manager",
@@ -618,8 +618,8 @@
    "metier": "regional-retail-manager",
    "statut": "CLASSIFIED",
    "libelle": "Responsable régional retail",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Retail Associate – Town Center Crossing",
@@ -629,8 +629,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Conseiller(e) de Vente Hôte(sse) de caisse H/F",
@@ -640,8 +640,8 @@
    "metier": null,
    "statut": "AMBIGUOUS",
    "libelle": null,
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "F",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Sales Lead- Coligny Shopping Plaza",
@@ -651,8 +651,8 @@
    "metier": "retail-sales-lead",
    "statut": "CLASSIFIED",
    "libelle": "Premier vendeur",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Department Supervisor",
@@ -662,8 +662,8 @@
    "metier": "manager-floor",
    "statut": "CLASSIFIED",
    "libelle": "Floor manager",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "CDI 38H - Responsable Adjoint de Point de Vente - Nailloux F/H",
@@ -673,8 +673,8 @@
    "metier": "assistant-store-manager",
    "statut": "CLASSIFIED",
    "libelle": "Adjoint au responsable de boutique",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Assistant Merchandiser - Womenswear",
@@ -684,8 +684,8 @@
    "metier": "assistant-merchandiser",
    "statut": "CLASSIFIED",
    "libelle": "Assistant merchandiser",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Casual Retail Assistant - Lambton Quay",
@@ -695,8 +695,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Retail Associate - Full Time (Nike JPO)",
@@ -706,8 +706,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Responsable adjoint.e Woluwé - CDI",
@@ -717,8 +717,8 @@
    "metier": "assistant-store-manager",
    "statut": "CLASSIFIED",
    "libelle": "Adjoint au responsable de boutique",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Lynott, Sales Consultant, Full Time, Permanent",
@@ -728,8 +728,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Manager, Industrial Engineering",
@@ -739,8 +739,8 @@
    "metier": "responsable-industrialisation",
    "statut": "CLASSIFIED",
    "libelle": "Responsable industrialisation",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Butikkselger",
@@ -750,8 +750,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Employée, employé de rayon à service boulangerie",
@@ -761,8 +761,8 @@
    "metier": "employe-de-commerce",
    "statut": "CLASSIFIED",
    "libelle": "Employé de rayon",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Personal Shopper",
@@ -772,8 +772,8 @@
    "metier": "personal-shopper",
    "statut": "CLASSIFIED",
    "libelle": "Personal Shopper",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Full Time Sales Supervisor",
@@ -783,8 +783,8 @@
    "metier": "manager-floor",
    "statut": "CLASSIFIED",
    "libelle": "Floor manager",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Manager des Ventes (F/H) - Nantes Beaulieu - CDI 35h",
@@ -794,8 +794,8 @@
    "metier": "manager-floor",
    "statut": "CLASSIFIED",
    "libelle": "Floor manager",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Quality Control Factory Inspector",
@@ -805,8 +805,8 @@
    "metier": "quality-technician",
    "statut": "CLASSIFIED",
    "libelle": "Technicien qualité",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Seasonal Stylist (Retail) (Part-time)",
@@ -816,8 +816,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Account Manager - South Island",
@@ -827,8 +827,8 @@
    "metier": "responsable-de-comptes",
    "statut": "CLASSIFIED",
    "libelle": "Account Manager",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Relief Dispenser",
@@ -838,8 +838,8 @@
    "metier": "pharmacy-technician",
    "statut": "CLASSIFIED",
    "libelle": "Préparateur en pharmacie",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Creative Visual Associate",
@@ -849,8 +849,8 @@
    "metier": "visual-merchandiser",
    "statut": "CLASSIFIED",
    "libelle": "Visual merchandiser",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Multi Brand Advisor I",
@@ -860,8 +860,8 @@
    "metier": "beauty-consultant",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller beauté",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Assistant Manager (37.5 hours)",
@@ -871,8 +871,8 @@
    "metier": "assistant-store-manager",
    "statut": "CLASSIFIED",
    "libelle": "Adjoint au responsable de boutique",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Responsable de Magasin Adjoint - F/H",
@@ -882,8 +882,8 @@
    "metier": "assistant-store-manager",
    "statut": "CLASSIFIED",
    "libelle": "Adjoint au responsable de boutique",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Retail Associate - Nike (Genting Premium Outlet) Malaysia",
@@ -893,8 +893,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Retail Sales Consultant - Part Time - Polaris Fashion Place - Columbus, OH",
@@ -904,8 +904,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Retail Sales Consultant - Seasonal - Rockingham Mall - Salem, NH",
@@ -915,8 +915,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Area Sales Manager",
@@ -926,8 +926,8 @@
    "metier": "responsable-commercial-de-zone",
    "statut": "CLASSIFIED",
    "libelle": "Responsable commercial de zone",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "DIRECTEUR/RICE ADJOINT/E, CDI 35H",
@@ -937,8 +937,8 @@
    "metier": "assistant-store-manager",
    "statut": "CLASSIFIED",
    "libelle": "Adjoint au responsable de boutique",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "E-Merchandiser",
@@ -948,8 +948,8 @@
    "metier": "e-merchandiser",
    "statut": "CLASSIFIED",
    "libelle": "E-Merchandiser",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "RESPONSABLE ADJOINT // CDI 35H",
@@ -959,8 +959,8 @@
    "metier": "assistant-store-manager",
    "statut": "CLASSIFIED",
    "libelle": "Adjoint au responsable de boutique",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Verkoopmedewerker (oproepkracht) Den Bosch",
@@ -970,8 +970,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Weekend Retail Assistant Venlo",
@@ -981,8 +981,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Sales Consultant Noventa di Piave (Part-Time 30h)",
@@ -992,8 +992,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Supply Planner",
@@ -1003,8 +1003,8 @@
    "metier": "planificateur-supply-chain",
    "statut": "CLASSIFIED",
    "libelle": "Planificateur Supply Chain",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Seasonal Casual Retail Assistant - Woden",
@@ -1014,8 +1014,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Equipment Operator",
@@ -1025,8 +1025,8 @@
    "metier": "equipment-operator",
    "statut": "CLASSIFIED",
    "libelle": "Conducteur d'engins",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Urban Outfitters Team Leader - Gent, Belgium",
@@ -1036,8 +1036,8 @@
    "metier": "manager-floor",
    "statut": "CLASSIFIED",
    "libelle": "Floor manager",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Retail Associate - Garden State",
@@ -1047,8 +1047,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Manager des Ventes (F/H) - Marseille Terrasses du Port - CDI 35H",
@@ -1058,8 +1058,8 @@
    "metier": "manager-floor",
    "statut": "CLASSIFIED",
    "libelle": "Floor manager",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Store Team Lead, Kota Bahru",
@@ -1069,8 +1069,8 @@
    "metier": "manager-floor",
    "statut": "CLASSIFIED",
    "libelle": "Floor manager",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Restaurant Bartender",
@@ -1080,8 +1080,8 @@
    "metier": "barman",
    "statut": "CLASSIFIED",
    "libelle": "Barman",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Zastępca Kierownika Sklepu (k/m/d)",
@@ -1091,8 +1091,8 @@
    "metier": "assistant-store-manager",
    "statut": "CLASSIFIED",
    "libelle": "Adjoint au responsable de boutique",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Retail Supervisor",
@@ -1102,8 +1102,8 @@
    "metier": "manager-floor",
    "statut": "CLASSIFIED",
    "libelle": "Floor manager",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Team Lead, Sales Full Time",
@@ -1113,8 +1113,8 @@
    "metier": "manager-floor",
    "statut": "CLASSIFIED",
    "libelle": "Floor manager",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Part Time Athlete (Retail Associate) - Nike, Adelaide",
@@ -1124,8 +1124,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Sales Lead Allen Premium Outlets",
@@ -1135,8 +1135,8 @@
    "metier": "retail-sales-lead",
    "statut": "CLASSIFIED",
    "libelle": "Premier vendeur",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Employée, employé de rayon à service fruits & légumes",
@@ -1146,8 +1146,8 @@
    "metier": "employe-de-commerce",
    "statut": "CLASSIFIED",
    "libelle": "Employé de rayon",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Retail Sales Consultant- Part Time- Broadway Plaza- Walnut Creek, CA",
@@ -1157,8 +1157,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Part Time Satış Danışmanı (Metromall)",
@@ -1168,8 +1168,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "UNIQLO Human Resources Coordinator",
@@ -1179,8 +1179,8 @@
    "metier": "gestionnaire-des-ressources-humaines",
    "statut": "CLASSIFIED",
    "libelle": "Gestionnaire RH",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Lead Cashier I",
@@ -1190,8 +1190,8 @@
    "metier": "head-cashier",
    "statut": "CLASSIFIED",
    "libelle": "Responsable caisse",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Retail Associate - Part Time (m/w/d) - Wustermark",
@@ -1201,8 +1201,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Assistant Merchandiser",
@@ -1212,8 +1212,8 @@
    "metier": "assistant-merchandiser",
    "statut": "CLASSIFIED",
    "libelle": "Assistant merchandiser",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Shift Leader",
@@ -1223,8 +1223,8 @@
    "metier": "manager-floor",
    "statut": "CLASSIFIED",
    "libelle": "Floor manager",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "P"
   },
   {
    "titre": "Retail Sales Consultant - Seasonal - International Plaza - Tampa, FL",
@@ -1234,8 +1234,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Sales Lead, La Centerra at Cinco Ranch",
@@ -1245,8 +1245,8 @@
    "metier": "retail-sales-lead",
    "statut": "CLASSIFIED",
    "libelle": "Premier vendeur",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "SOS Cookie, Sales Consultant, Full Time, Seasonal",
@@ -1256,8 +1256,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "MODELISTE SENIOR CAO/DAO FLOU ou TAILLEUR - Ateliers Prêt-à-Porter Femme ou Homme - (F/H)",
@@ -1267,8 +1267,8 @@
    "metier": "modeliste",
    "statut": "CLASSIFIED",
    "libelle": "Modéliste",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Floor Manager",
@@ -1278,8 +1278,8 @@
    "metier": "manager-floor",
    "statut": "CLASSIFIED",
    "libelle": "Floor manager",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Seasonal Casual Retail Assistant-Newmarket",
@@ -1289,8 +1289,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Team Manager",
@@ -1300,8 +1300,8 @@
    "metier": "manager-floor",
    "statut": "CLASSIFIED",
    "libelle": "Floor manager",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Maintenance Technician II 1st Shift",
@@ -1311,8 +1311,8 @@
    "metier": "maintenance-technician",
    "statut": "CLASSIFIED",
    "libelle": "Technicien de maintenance",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Retail Sales Associates- Laval",
@@ -1322,8 +1322,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Store Sales Manager",
@@ -1333,8 +1333,8 @@
    "metier": "store-manager",
    "statut": "CLASSIFIED",
    "libelle": "Responsable de boutique",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "P"
   },
   {
    "titre": "Sales Ambassador",
@@ -1344,8 +1344,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Full Time Key Holder - BOSS Store, Roosevelt Field",
@@ -1355,8 +1355,8 @@
    "metier": "keyholder",
    "statut": "CLASSIFIED",
    "libelle": "Keyholder",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Audicien",
@@ -1366,8 +1366,8 @@
    "metier": "hearing-aid-specialist",
    "statut": "CLASSIFIED",
    "libelle": "Audioprothésiste",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Chef d'équipe des operations",
@@ -1377,8 +1377,8 @@
    "metier": "responsable-operationnel",
    "statut": "CLASSIFIED",
    "libelle": "Responsable opérationnel",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "P"
   },
   {
    "titre": "Winkelmedewerker",
@@ -1388,8 +1388,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Selling Assistant",
@@ -1399,8 +1399,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "VISUAL MERCHANDISER MANAGER, CDI 35H",
@@ -1410,8 +1410,8 @@
    "metier": "responsable-vm",
    "statut": "CLASSIFIED",
    "libelle": "Responsable visual merchandising",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Assistant Manager-ANN",
@@ -1421,8 +1421,8 @@
    "metier": "assistant-store-manager",
    "statut": "CLASSIFIED",
    "libelle": "Adjoint au responsable de boutique",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Part Time Floor Leader - South Shore Plaza",
@@ -1432,8 +1432,8 @@
    "metier": "manager-floor",
    "statut": "CLASSIFIED",
    "libelle": "Floor manager",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Team Leader",
@@ -1443,8 +1443,8 @@
    "metier": "manager-floor",
    "statut": "CLASSIFIED",
    "libelle": "Floor manager",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "P"
   },
   {
    "titre": "Controller",
@@ -1454,8 +1454,8 @@
    "metier": "financial-controller",
    "statut": "CLASSIFIED",
    "libelle": "Contrôleur de gestion",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Sales Consultant (Part time, 16 Hours) Roermond",
@@ -1465,8 +1465,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "VISUAL MERCHANDISER MANAGER (35 hours - Mons)",
@@ -1476,8 +1476,8 @@
    "metier": "responsable-vm",
    "statut": "CLASSIFIED",
    "libelle": "Responsable visual merchandising",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Butikssäljare extra vid behov",
@@ -1487,8 +1487,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Responsable de magasin adjoint (H/F) - Lyon Part Dieu",
@@ -1498,8 +1498,8 @@
    "metier": "assistant-store-manager",
    "statut": "CLASSIFIED",
    "libelle": "Adjoint au responsable de boutique",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "People and Culture Store Business Partner",
@@ -1509,8 +1509,8 @@
    "metier": "hr-business-partner",
    "statut": "CLASSIFIED",
    "libelle": "Partenaire RH",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Client Style Advisor",
@@ -1520,8 +1520,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Assistant Boutique Director",
@@ -1531,8 +1531,8 @@
    "metier": "assistant-store-manager",
    "statut": "CLASSIFIED",
    "libelle": "Adjoint au responsable de boutique",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Athlete III",
@@ -1542,8 +1542,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Store Supervisor (m/w/d) - MTZ",
@@ -1553,8 +1553,8 @@
    "metier": "manager-floor",
    "statut": "CLASSIFIED",
    "libelle": "Floor manager",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Replenishment Associate (part-time)",
@@ -1564,8 +1564,8 @@
    "metier": "stock-associate",
    "statut": "CLASSIFIED",
    "libelle": "Gestionnaire de stock en boutique",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Festive Retail Sales Associates - American Dream",
@@ -1575,8 +1575,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Meetings and Events Specialist",
@@ -1586,8 +1586,8 @@
    "metier": "chef-de-projet-evenementiel",
    "statut": "CLASSIFIED",
    "libelle": "Chef de projet événementiel",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "P"
   },
   {
    "titre": "Asociado de Ventas Full Time",
@@ -1597,8 +1597,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Acting Supervisor I",
@@ -1608,8 +1608,8 @@
    "metier": "manager-floor",
    "statut": "CLASSIFIED",
    "libelle": "Floor manager",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "P"
   },
   {
    "titre": "Consultor de Vendas - Afirmativa Pessoas negras - Shopping Morumbi",
@@ -1619,8 +1619,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Sales Lead with Keys - UGG",
@@ -1630,8 +1630,8 @@
    "metier": "manager-floor",
    "statut": "CLASSIFIED",
    "libelle": "Floor manager",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "P"
   },
   {
    "titre": "Verkoopmedewerker parttime/fulltime",
@@ -1641,8 +1641,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Floor Leader (Palisades Men's)",
@@ -1652,8 +1652,8 @@
    "metier": "manager-floor",
    "statut": "CLASSIFIED",
    "libelle": "Floor manager",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Brand Manager, Eucerin Face",
@@ -1663,8 +1663,8 @@
    "metier": "chef-de-marque",
    "statut": "CLASSIFIED",
    "libelle": "Chef de marque",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Selling Advisor-Women's Shoes",
@@ -1674,8 +1674,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Seasonal Retail Sales Consultant - Part time - Vaughan Mills, ON",
@@ -1685,8 +1685,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "🇬🇷 Assistant Manager / 2nd Manager -",
@@ -1696,8 +1696,8 @@
    "metier": "assistant-store-manager",
    "statut": "CLASSIFIED",
    "libelle": "Adjoint au responsable de boutique",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Retail Associate - Topanga",
@@ -1707,8 +1707,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Responsable magasin (H/F) - 35H",
@@ -1718,8 +1718,8 @@
    "metier": "store-manager",
    "statut": "CLASSIFIED",
    "libelle": "Responsable de boutique",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Visual Merchandising Specialist adidas (H/F/D)",
@@ -1729,8 +1729,8 @@
    "metier": "visual-merchandiser",
    "statut": "CLASSIFIED",
    "libelle": "Visual merchandiser",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Retail Advisor",
@@ -1740,8 +1740,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Responsable adjoint de magasin H/F",
@@ -1751,8 +1751,8 @@
    "metier": "assistant-store-manager",
    "statut": "CLASSIFIED",
    "libelle": "Adjoint au responsable de boutique",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Senior Maintenance Technician - T/W/TH and every other Monday - 5:30 pm – 5:30 am",
@@ -1762,8 +1762,8 @@
    "metier": "maintenance-technician",
    "statut": "CLASSIFIED",
    "libelle": "Technicien de maintenance",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "FLOOR SUPERVISOR",
@@ -1773,8 +1773,8 @@
    "metier": "manager-floor",
    "statut": "CLASSIFIED",
    "libelle": "Floor manager",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "_DIRECTEUR MAGASIN (H/F/NB)",
@@ -1784,8 +1784,8 @@
    "metier": "store-manager",
    "statut": "CLASSIFIED",
    "libelle": "Responsable de boutique",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Dependienta/e de tienda en CC El Osito, L'Eliana (Valencia)",
@@ -1795,8 +1795,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Sales Consultant 38 Hours",
@@ -1806,8 +1806,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Sales Lead, Delray Market Place",
@@ -1817,8 +1817,8 @@
    "metier": "retail-sales-lead",
    "statut": "CLASSIFIED",
    "libelle": "Premier vendeur",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Verkoopmedewerker (Weekendhulp)",
@@ -1828,8 +1828,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Satış Danışmanı - İstinye Park AVM - 30h",
@@ -1839,8 +1839,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "販売スタッフ(アルバイト) Nike Unite Kobe",
@@ -1850,8 +1850,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Part Time Satış Danışmanı (Ankara CEPA AVM)",
@@ -1861,8 +1861,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Retail Sales Consultant - Full Time - Town Center at Boca Raton - Boca Raton, FL",
@@ -1872,8 +1872,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Stage - Assistant.e Designer WLG Show - Septembre 2026",
@@ -1883,8 +1883,8 @@
    "metier": "assistant-designer",
    "statut": "CLASSIFIED",
    "libelle": "Assistant designer",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "P"
   },
   {
    "titre": "Conseiller de mode GEMO H/F",
@@ -1894,8 +1894,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Verkoopmedewerker flexibel inzetbaar 0 uur (m/v/x)",
@@ -1905,8 +1905,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Sales Lead, Spring Creek",
@@ -1916,8 +1916,8 @@
    "metier": "retail-sales-lead",
    "statut": "CLASSIFIED",
    "libelle": "Premier vendeur",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Seasonal Sales Ambassador - Cielo Vista",
@@ -1927,8 +1927,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "responsable adjoint h/f - temps complet - bruxelles louise",
@@ -1938,8 +1938,8 @@
    "metier": "assistant-store-manager",
    "statut": "CLASSIFIED",
    "libelle": "Adjoint au responsable de boutique",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Assistant Merchandiser - Internship",
@@ -1949,8 +1949,8 @@
    "metier": "assistant-merchandiser",
    "statut": "CLASSIFIED",
    "libelle": "Assistant merchandiser",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "P"
   },
   {
    "titre": "Keyholder / Verkaufer (m/w/d) (30h/Woche) - Stuttgart",
@@ -1960,8 +1960,8 @@
    "metier": null,
    "statut": "FAMILY_ONLY",
    "libelle": null,
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "F",
+   "verdictAssistant": "F"
   },
   {
    "titre": "Sr DC Manager",
@@ -1971,8 +1971,8 @@
    "metier": "logistics-manager",
    "statut": "CLASSIFIED",
    "libelle": "Responsable logistique",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Anthropologie Team Leader - Manchester, UK",
@@ -1982,8 +1982,8 @@
    "metier": "manager-floor",
    "statut": "CLASSIFIED",
    "libelle": "Floor manager",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Maintenance Technician",
@@ -1993,8 +1993,8 @@
    "metier": "maintenance-technician",
    "statut": "CLASSIFIED",
    "libelle": "Technicien de maintenance",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Sales Associate / Optician - Training Provided!",
@@ -2004,8 +2004,8 @@
    "metier": "dispensing-optician",
    "statut": "CLASSIFIED",
    "libelle": "Opticien",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Sales Lead, Countryside Marketplace.",
@@ -2015,8 +2015,8 @@
    "metier": "retail-sales-lead",
    "statut": "CLASSIFIED",
    "libelle": "Premier vendeur",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Retail Associate - Westchester",
@@ -2026,8 +2026,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Seasonal Retail Assistant - Miranda",
@@ -2037,8 +2037,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Festive Retail Sales Associates- Park Place",
@@ -2048,8 +2048,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "VISUAL MERCHANDISING MANAGER",
@@ -2059,8 +2059,8 @@
    "metier": "responsable-vm",
    "statut": "CLASSIFIED",
    "libelle": "Responsable visual merchandising",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Sales Consultant - Macarthur Square",
@@ -2070,8 +2070,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Addetto/a alle vendite – Categorie Protette L.68/99.",
@@ -2081,8 +2081,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Asesor de Ventas - Temporal - Tiempo Completo",
@@ -2092,8 +2092,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Part Time Floor Leader - Penn Square",
@@ -2103,8 +2103,8 @@
    "metier": "manager-floor",
    "statut": "CLASSIFIED",
    "libelle": "Floor manager",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "FP Movement Key Holder - Studio",
@@ -2114,8 +2114,8 @@
    "metier": "keyholder",
    "statut": "CLASSIFIED",
    "libelle": "Keyholder",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Events Manager",
@@ -2125,8 +2125,8 @@
    "metier": "chef-de-projet-evenementiel",
    "statut": "CLASSIFIED",
    "libelle": "Chef de projet événementiel",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Retail Associate, SEAS - Niagara On The Lake",
@@ -2136,8 +2136,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Festive Retail Sales Associates - Fair Oaks Mall",
@@ -2147,8 +2147,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Selling Advisor - Women's Apparel",
@@ -2158,8 +2158,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Agent de Stock F/H",
@@ -2169,8 +2169,8 @@
    "metier": "stock-associate",
    "statut": "CLASSIFIED",
    "libelle": "Gestionnaire de stock en boutique",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Manager des Ventes (F/H) - Ajaccio - CDI 35H",
@@ -2180,8 +2180,8 @@
    "metier": "manager-floor",
    "statut": "CLASSIFIED",
    "libelle": "Floor manager",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Retail Sales Consultant - Part Time - Roseville Galleria - Sacramento, CA",
@@ -2191,8 +2191,8 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   },
   {
    "titre": "Industrial Controller",
@@ -2202,8 +2202,45 @@
    "metier": "financial-controller",
    "statut": "CLASSIFIED",
    "libelle": "Contrôleur de gestion",
-   "verdictModele": null,
-   "verdictAssistant": null
+   "verdictModele": "C",
+   "verdictAssistant": "C"
   }
- ]
+ ],
+ "jugementAssistant": {
+  "le": "2026-09-29",
+  "par": "l'assistant (Claude, autre famille de modèles que les juges Gemini), avant les verdicts du modèle",
+  "notes": {
+   "57": "« Conseiller de vente / Hôte de caisse » : deux métiers distincts, l'absence de métier est honnête",
+   "177": "« Keyholder / Verkäufer » : double intitulé de vente, un métier évident (Keyholder ou Conseiller de vente) est perdu",
+   "27,43,130": "« Team Manager », « Team Leader » sans contexte : niveau plausible dans ce corpus, non certain",
+   "18,147": "« Sales Lead » rattaché au Floor manager alors que ses variantes vont au Premier vendeur : niveau voisin"
+  }
+ },
+ "bilan": {
+  "assistant": {
+   "juges": 200,
+   "C": 182,
+   "P": 17,
+   "F": 1,
+   "fauxPct": 0.5,
+   "borneHauteWilson95": 2.8,
+   "parOffre": {
+    "fauxPct": 0.1,
+    "justesPct": 80.5
+   }
+  },
+  "modele": {
+   "juges": 200,
+   "C": 196,
+   "P": 2,
+   "F": 2,
+   "fauxPct": 1,
+   "borneHauteWilson95": 3.6,
+   "parOffre": {
+    "fauxPct": 0.2,
+    "justesPct": 97.9
+   }
+  },
+  "desaccords": 16
+ }
 }
