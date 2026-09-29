@@ -167,9 +167,10 @@ for (const [f, cles] of porteurs) {
 // Formes vagues (§32 c), appliquées à TOUTES les expressions, pas seulement à celles que 5c a vues (« superviseur » restait).
 const interdites = new Set<string>([...VAGUES, ...e3.intitules.filter((t: any) => t.preuve?.choix?.decision === 'vague' && t.preuve?.second?.decision === 'vague').map((t: any) => phraseMoteur(t.intitule)),
   ...e5c.attributions.filter((a: any) => a.motif === 'forme vague interdite').map((a: any) => a.forme)]);
-// Une décision du CEO prime sur le jugement « vague » des juges de l'étape 3 (« lead », jugé vague, §37 a).
+// Une décision du CEO prime sur le jugement « vague » des juges de l'étape 3 (« lead », jugé vague, §37 a), pour le
+// seul métier qu'elle désigne (audit de clôture du 29/09/2026 : sans ce métier, la primauté ouvrait la forme à tous).
 const decidesCeo = new Set(DECIDES_37.map(phraseMoteur));
-const interdite = (f: string) => !decidesCeo.has(f) && (interdites.has(f) || estVague(f));
+const interdite = (f: string, cle?: string) => !(cle === FLOOR_MANAGER && decidesCeo.has(f)) && (interdites.has(f) || estVague(f));
 
 // Familles.
 const cleFamille = (k: string) => k;
@@ -187,7 +188,7 @@ const metiersV3 = concepts.map((c) => {
   const labels = libellesDe(c.cle);
   const vente = c.cle === deVente ? nomsJuges('vente') : c.cle === deRayon ? nomsJuges('rayon') : [];
   const aliases = [...new Set([...(s?.aliases ?? []), ...Object.values(labels), ...Object.values(libellesEtFormes(c.cle, e5ParCle, e5b).formes).flat(), ...(e5c.aliasRecherche[c.cle] ?? []), ...vente])]
-    .filter((x) => x && x !== labels.fr && !interdite(phraseMoteur(x)) && !(c.cle === deRayon && decide.has(phraseMoteur(x)) && decide.get(phraseMoteur(x)) !== 'rayon') && (!attribution.get(phraseMoteur(x)) || attribution.get(phraseMoteur(x))!.garde === c.cle || !attribution.get(phraseMoteur(x))!.retires.includes(c.cle)));
+    .filter((x) => x && x !== labels.fr && !interdite(phraseMoteur(x), c.cle) && !(c.cle === deRayon && decide.has(phraseMoteur(x)) && decide.get(phraseMoteur(x)) !== 'rayon') && (!attribution.get(phraseMoteur(x)) || attribution.get(phraseMoteur(x))!.garde === c.cle || !attribution.get(phraseMoteur(x))!.retires.includes(c.cle)));
   const ancre = e5ParCle.get(c.cle)?.ancreEsco;
   return { key: cleMetier.get(c.cle)!, family: s ? s.family : c.cle === deRayon ? FAMILLE_RAYON : cleFamille(c.famille), labels, aliases,
     ...(ancre ? { externalRefs: [ancre] } : {}),
@@ -223,7 +224,7 @@ const reglesServies = servie.rules.map((r: any) => ({ ...r,
 const dejaServie = (occupation: string, f: string) => servie.rules.some((r: any) => r.occupation === occupation && r.all.length === 1 && r.all[0].field === 'title' && r.all[0].any.some((v: string) => phraseMoteur(v) === f));
 const generalisables = new Set<string>(!BASE && existsSync(`${DOSSIER_SORTIE}6c-generalisations.json`)
   ? lireEtape('6c-generalisations.json').decisions.filter((d: any) => d.mode === 'generalisable').map((d: any) => `${d.occupation}|${d.expression}`) : []);
-const reglesV3 = concepts.flatMap((c) => [...expressions.get(c.cle)!].filter((f) => !interdite(f) && !dejaServie(c.cle, f)).sort().map((f) => {
+const reglesV3 = concepts.flatMap((c) => [...expressions.get(c.cle)!].filter((f) => !interdite(f, c.cle) && !dejaServie(c.cle, f)).sort().map((f) => {
   const key = cleMetier.get(c.cle)!;
   const exclude = [...exclusionsServies(c.cle), ...exclure(c.cle)];
   return { id: `v3-${key}~${createHash('sha256').update(f).digest('hex').slice(0, 10)}`, occupation: key,

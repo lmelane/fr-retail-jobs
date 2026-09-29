@@ -120,7 +120,8 @@ marqué **existe** (lu ou mesuré le 28/09/2026) ou **décidé** (D-475, R-140 d
   | 6 | avant §37 | 1 (0,5 %) : « Responsable Contrôle de Gestion » au métier de base (§32 a, 1 offre) | 7 (3,5 %) : 2 relèvent de §36 (« Shift Leader », « Acting Supervisor I ») ; 5 hors de toute décision : « Assistant Manager » (×2) et « Responsable adjoint » rattachés à l'Adjoint au responsable de boutique, « Responsable de rayons » au Floor manager (40 offres), « Assistant Manager - Visual Merchandising » à l'Assistant VM | entre 0,5 % (assistant) et 3,0 % (juge, hors §36) ; au-dessus du seuil selon le juge |
 
   **Version finale de 2A** : le tour 6 plus l'arbitrage D-475 §37 (quatre lectures de l'assistant soumises au CEO :
-  « Supervisor », « Superviseur », « Lead » seuls → Floor manager, environ 60 offres ; « Assistant Manager » et
+  « Supervisor », « Superviseur », « Lead » seuls → Floor manager, 67 offres, dont « Lead - Full Time » (5) et « Part
+  Time Supervisor » (4) que le tour 5 laissait sans métier ; « Assistant Manager » et
   « Responsable adjoint » gardent l'Adjoint ; « Sales Manager » et « Chef des ventes » restent sans métier ; sans
   accord des juges de 3c, aucun métier). Preview : 62,3 % des offres classées, 57 perdent le métier servi, 0 décision
   de 3c non tenue ; bancs 6 338/6 338. Elle n'a pas de tour propre : la mesure finale ci-dessous la porte.
@@ -145,7 +146,11 @@ marqué **existe** (lu ou mesuré le 28/09/2026) ou **décidé** (D-475, R-140 d
   métiers d'encadrement manquants (responsable comptable, directeur RH business partner…) ; « Lead » niveau
   d'expertise ou encadrement (« Lead Software Engineer », « Lead Accountant », environ 17 offres perdues), « chef de rayon » et « responsable de rayons » de la grande distribution (un
   métier d'encadrement propre, aujourd'hui Floor manager, 40 offres et plus), « Responsable contrôle de gestion » au
-  métier de base, « Dispenser » partagé entre Assistant et Préparateur en pharmacie (Boots, près de 400 offres), « Sales Lead with Keys » partagé entre Premier vendeur et Floor manager chez UGG, « chef de rayon »
+  métier de base, « Dispenser » partagé entre Assistant et Préparateur en pharmacie (Boots, près de 400 offres), la forme
+  « Responsable adjoint·e » généralisée (« Responsable adjoint comptable » recevrait l'Adjoint de boutique ; aucun
+  cas dans le corpus, et la ramener à l'exact ferait perdre les « Assistant Manager (m/w/d), <centre> » justes),
+  les marques de contrat et de genre sur les intitulés de niveau (« Superviseur H/F », « Lead - Part Time »,
+  « Responsable Adjointe » sans métier : exigence (9) et (10) du moteur), « Sales Lead with Keys » partagé entre Premier vendeur et Floor manager chez UGG, « chef de rayon »
   de la grande distribution rattaché au Floor manager, les noms de « Conseiller de vente » dans 8 langues à confronter
   à l'usage des offres (§34), « Stellvertretender Filialleiter » classé Store manager par une règle servie (29 offres).
 - **Ce que la constitution impose au moteur (sous-lot 2B)** : (1) un intitulé validé par les juges vaut pour

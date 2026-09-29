@@ -1,5 +1,5 @@
 {
- "calculeLe": "2026-09-29T13:08:36.568Z",
+ "calculeLe": "2026-09-29T13:14:17.004Z",
  "manifeste": "catwalks-occupations-20260929-v3",
  "bilan": {
   "resolution": {
@@ -11,12 +11,12 @@
    "libellesDecoresResolus": "164/759"
   },
   "memoireEtTemps": {
-   "compilationV1Ms": 10,
+   "compilationV1Ms": 11,
    "compilationV3Ms": 98,
-   "tasV1Mo": 2,
-   "tasV3Mo": 24,
+   "tasV1Mo": 1,
+   "tasV3Mo": 37,
    "regles": 8204,
-   "classementsParSeconde": 51367
+   "classementsParSeconde": 54044
   },
   "rappelParMarche": [
    {
