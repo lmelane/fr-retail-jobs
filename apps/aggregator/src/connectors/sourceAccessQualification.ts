@@ -125,7 +125,11 @@ export async function maintainSourceAccess(db: PrismaClient, sourceKey: string, 
  * quelques secondes et lit les mêmes adresses : si l'une sort du périmètre, l'autorisation est redérivée d'elle.
  *
  * Une capture illisible pour ce contrôle ne change rien au comportement antérieur : l'autorisation est gardée, et
- * l'échec est journalisé plutôt que d'arrêter une source que rien ne bloquait.
+ * l'échec est journalisé plutôt que d'arrêter une source que rien ne bloquait. Une redérivation qui échoue ensuite
+ * (budget de 64 périmètres dépassé, robots refusé) arrête la source, comme l'aurait fait sa collecte hors périmètre.
+ *
+ * Coût : ce contrôle relit à chaque RUN, pour chaque source requalifiée, les requêtes de sa capture du jour (lecture
+ * en base, aucune requête vers l'éditeur) ; de quelques dizaines à quelques milliers de lignes selon la source.
  */
 async function scopeOutgrown(db: PrismaClient, sourceKey: string, scopes: readonly AccessScope[], captureBatchId: string, store?: ObjectStore) {
   let requests: Awaited<ReturnType<typeof observedRequests>>;
