@@ -25,6 +25,10 @@ import { DOSSIER_SORTIE as D, GRILLE_METIER_LU, lireEtape } from './commun.mts';
 
 const TOUR = Number(process.argv[process.argv.indexOf('--tour') + 1] ?? 1) || 1;
 const FICHIER = `${D}6f-roles-lus${TOUR > 1 ? `-t${TOUR}` : ''}.json`;
+// Taille du tirage : 200 aux tours 1 à 3 ; la mesure finale (tour 4) en prend 400 (Wilson à 95 % : 0 faux sur 381).
+const argTaille = process.argv.find((a) => a.startsWith('--taille='));
+const TAILLE = argTaille ? Number(argTaille.slice(9)) : 200;
+if (!Number.isSafeInteger(TAILLE) || TAILLE < 1) throw new Error('usage : --taille=<entier ≥ 1>');
 const JUGE_MESURE = 'gemini-3.1-pro-preview';
 const mode = process.argv.find((a) => ['--tirer', '--juger-modele', '--compter'].includes(a));
 const empreinte = () => createHash('sha256').update(readFileSync(`${D}6-manifeste-v3.json`)).digest('hex');
@@ -40,7 +44,7 @@ if (mode === '--tirer') {
     return { c, d, ajoutes };
   }).filter((x: any) => x.ajoutes.length);
   const alea = (x: any) => (parseInt(createHash('sha256').update(`roles-lus-2026-09-29${TOUR > 1 ? `-t${TOUR}` : ''}|${x.c.titre}|${x.c.service}`).digest('hex').slice(0, 12), 16) + 1) / 2 ** 48;
-  const e = population.map((x: any) => ({ x, k: Math.log(alea(x)) / x.c.offres })).sort((p: any, q: any) => q.k - p.k).slice(0, 200)
+  const e = population.map((x: any) => ({ x, k: Math.log(alea(x)) / x.c.offres })).sort((p: any, q: any) => q.k - p.k).slice(0, TAILLE)
     .map(({ x }: any) => ({ titre: x.c.titre, service: x.c.service, offres: x.c.offres, moteur: x.d.occupationCode, statut: x.d.occupationStatus,
       ajoutes: x.ajoutes.map((k: string) => ({ cle: k, libelle: libelle(k) })), verdictAssistant: null, verdictModele: null }));
   writeFileSync(FICHIER, JSON.stringify({ tireLe: new Date().toISOString(), tour: TOUR, manifeste: m.id, empreinteManifeste: empreinte(),
