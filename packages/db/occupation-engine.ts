@@ -36,6 +36,9 @@ export type OccupationRule = {
 };
 export type OccupationManifest = {
   schemaVersion: 1;
+  /** Correspondance des intitulés : 1 (défaut, la version servie à l'octet près) ou 2 (lot 2B de D-475 : écritures
+   * japonaise et thaïe, formes féminines, marques de genre et de contrat ignorées en mode exact). */
+  matchingVersion?: 1 | 2;
   id: string;
   review: { author: string; at: string; basis: string };
   groups: Definition[];
@@ -69,9 +72,17 @@ export type OccupationManifest = {
 export function normalizeOccupationTitle(
   value: string | null | undefined,
 ): string {
-  return (value ?? "")
-    .normalize("NFKD")
-    .replace(/\p{M}/gu, "")
+  return orthography(value, 1);
+}
+/**
+ * v1 retire toutes les marques combinantes ; v2 ne retire que les accents des écritures latine, grecque et cyrillique :
+ * le dakuten japonais (« アドバイザー » n'est plus « アトハイサー ») et les voyelles thaïes restent.
+ */
+function orthography(value: string | null | undefined, version: 1 | 2): string {
+  const decompose = (value ?? "").normalize("NFKD");
+  return (version === 1
+    ? decompose.replace(/\p{M}/gu, "")
+    : decompose.replace(/([\p{Script=Latin}\p{Script=Greek}\p{Script=Cyrillic}])\p{M}+/gu, "$1").normalize("NFC"))
     .toUpperCase()
     .replace(/[’'`]/g, "'")
     .replace(/[∙·•]\s?(NE|IN|FE|E|ERE|RICE|TRICE|EUSE)\b/g, " $1")
@@ -94,6 +105,55 @@ function phrase(value: string): string {
     .replace(/\s+/g, " ")
     .trim();
 }
+/**
+ * Formes féminines ramenées à une forme commune, des deux côtés (intitulé et expression), mot à mot, sur les mots
+ * latins d'au moins 6 lettres : français (repris de `masculiniser` du backend, plus « adjointe »), allemand (-erin,
+ * -frau), espagnol, italien et portugais (-ora, -ada/-ado, -ata/-ato, -etta/-etto, -essa/-esso, -enta/-ente,
+ * -trice/-tore). Symétrique : deux expressions ne se confondent que si l'assemblage le laisse passer (il le vérifie).
+ */
+const FEMININS: [RegExp, string][] = [
+  [/TRICE$/, "TEUR"], [/TORE$/, "TEUR"], [/OINTE$/, "OINT"], [/IENNE$/, "IEN"], [/ENNE$/, "EN"], [/IERE$/, "IER"],
+  [/ERE$/, "ER"], [/EUSE$/, "EUR"], [/EFFE$/, "EF"], [/ESSE$/, "E"], [/ELLE$/, "EL"], [/ERIN$/, "ER"], [/FRAU$/, "MANN"],
+  [/ENT[AE]$/, "ENT"], [/ANT[AE]$/, "ANT"], [/ORA$/, "OR"], [/AD[AO]$/, "AD"], [/AT[AO]$/, "AT"], [/ETT[AO]$/, "ETT"],
+  [/ESS[AO]$/, "ESS"], [/EE$/, "E"],
+];
+const genre = (mot: string) => {
+  if (mot.length < 6 || !/^[A-Z]+$/.test(mot)) return mot;
+  const r = FEMININS.find(([re]) => re.test(mot));
+  return r ? mot.replace(r[0], r[1]) : mot;
+};
+/** Écritures sans espace entre les mots : chaque caractère est un mot, comme les idéogrammes. */
+const SANS_ESPACE = /[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Thai}]/gu;
+function phraseV2(value: string | null | undefined): string {
+  return orthography(value, 2)
+    .replace(SANS_ESPACE, " $& ")
+    .replace(/[^\p{L}\p{N}\p{M}]+/gu, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .split(" ")
+    .map(genre)
+    .join(" ");
+}
+/** Marques de genre, de contrat et de temps de travail : ignorées par une règle EXACTE en v2 (« Employé de rayon H/F »).
+ * Jamais un mot qui distingue un métier : « Interim Commercial Manager » est le manager de transition. */
+const MARQUES = new Set(["NB", "PART", "FULL", "TIME", "PT", "FT", "TEMP", "TEMPORARY", "CDI", "CDD", "MINIJOB", "AUSHILFE",
+  "TEILZEIT", "VOLLZEIT", "TEMPS", "PARTIEL", "COMPLET", "PLEIN", "HOURS", "HOUR", "HRS", "HEURES", "HEURE", "UUR", "STUNDEN", "STD", "HORAS",
+  "ORE", "TIMER", "WEEK", "WOCHE", "SEMAINE", "SEMANA", "SETTIMANA", "UGE", "VECKA", "PW"]);
+// Lettres des marques de genre : H/F/X (fr), M/W/D (de), M/V/X (nl), K/M (pl). Ni B ni N : « F&B » est la restauration.
+const LETTRE_DE_GENRE = /^[HFMWDXVK]$/;
+function sansMarques(cle: string): string {
+  const mots = cle.split(" ");
+  return mots
+    .filter((m, i) => {
+      if (MARQUES.has(m) || /^\d+$/.test(m) || /^\d+(H|U|HRS|STD)$/.test(m)) return false;
+      // Une lettre seule n'est une marque que dans une suite de lettres seules (« H F », « M W D »), jamais « Supervisor I ».
+      return !(LETTRE_DE_GENRE.test(m) && (LETTRE_DE_GENRE.test(mots[i - 1] ?? "") || LETTRE_DE_GENRE.test(mots[i + 1] ?? "")));
+    })
+    .join(" ");
+}
+/** Clés de correspondance d'une expression ou d'un intitulé, pour la garde d'unicité de l'assemblage. */
+export const occupationMatchKey = (value: string, version: 1 | 2 = 1) => (version === 2 ? phraseV2(value) : phrase(value));
+export const occupationExactKey = (value: string, version: 1 | 2 = 1) => (version === 2 ? sansMarques(phraseV2(value)) : phrase(value));
 export type OccupationDecision = {
   jobFunction: string | null;
   occupationGroup: string | null;
@@ -111,7 +171,7 @@ export type OccupationDecision = {
   occupationEvidence: {
     inputTitle: string | null;
     department: string | null;
-    normalizationVersion: 1;
+    normalizationVersion: 1 | 2;
     matchedRules: string[];
     candidates: string[];
     familyRule: string | null;
@@ -134,6 +194,11 @@ export function compileOccupationManifest(raw: unknown) {
     !Number.isFinite(Date.parse(manifest.review.at))
   )
     throw new Error("Invalid occupation review");
+  if (![undefined, 1, 2].includes(manifest.matchingVersion))
+    throw new Error("Invalid occupation matching version");
+  const version = manifest.matchingVersion ?? 1;
+  const cle = (v: string) => occupationMatchKey(v, version);
+  const cleValeur = (c: Clause, v: string) => (c.mode === "exact" ? occupationExactKey(v, version) : cle(v));
   const registry = (
     rows: Definition[],
     kind: string,
@@ -268,7 +333,7 @@ export function compileOccupationManifest(raw: unknown) {
       if (
         !["title", "department"].includes(c.field) ||
         !c.any?.length ||
-        c.any.some((v) => typeof v !== "string" || !phrase(v)) ||
+        c.any.some((v) => typeof v !== "string" || !phrase(v) || !cleValeur(c, v)) ||
         !["phrase", "exact"].includes(c.mode ?? "phrase")
       )
         throw new Error(`Invalid clause ${r.id}`);
@@ -294,8 +359,8 @@ export function compileOccupationManifest(raw: unknown) {
   );
   const compiledRules = manifest.rules.map((r) => ({
     ...r,
-    all: r.all.map((c) => ({ ...c, any: c.any.map(phrase) })),
-    exclude: (r.exclude ?? []).map((c) => ({ ...c, any: c.any.map(phrase) })),
+    all: r.all.map((c) => ({ ...c, any: c.any.map((v) => cleValeur(c, v)) })),
+    exclude: (r.exclude ?? []).map((c) => ({ ...c, any: c.any.map((v) => cleValeur(c, v)) })),
   }));
   const anchorRules = new Map<string, Set<number>>();
   for (const [i, r] of compiledRules.entries()) {
@@ -309,10 +374,11 @@ export function compileOccupationManifest(raw: unknown) {
       anchorRules.set(first, set);
     }
   }
-  const clauses = (c: Clause, input: { title: string; department: string }) =>
+  type Entree = { title: string; department: string; exact: { title: string; department: string } };
+  const clauses = (c: Clause, input: Entree) =>
     c.any.some((v) =>
       c.mode === "exact"
-        ? input[c.field] === v
+        ? input.exact[c.field] === v
         : ` ${input[c.field]} `.includes(` ${v} `),
     );
   const compilePhraseDecisions = (
@@ -334,11 +400,11 @@ export function compileOccupationManifest(raw: unknown) {
         if (
           !["title", "department"].includes(c.field) ||
           !c.any?.length ||
-          c.any.some((v) => typeof v !== "string" || !phrase(v)) ||
+          c.any.some((v) => typeof v !== "string" || !phrase(v) || !cleValeur(c, v)) ||
           !["phrase", "exact"].includes(c.mode ?? "phrase")
         )
           throw new Error(`Invalid literal clause ${r.id}`);
-        return { ...c, any: c.any.map(phrase) };
+        return { ...c, any: c.any.map((v) => cleValeur(c, v)) };
       };
       return {
         ...r,
@@ -388,7 +454,7 @@ export function compileOccupationManifest(raw: unknown) {
         occupationEvidence: {
           inputTitle: title ?? null,
           department: department ?? null,
-          normalizationVersion: 1,
+          normalizationVersion: version,
           matchedRules: [],
           candidates: [],
           familyRule: null,
@@ -431,7 +497,10 @@ export function compileOccupationManifest(raw: unknown) {
         result.occupationEvidence.reason =
           "Only a broad family heuristic matched; precise occupation requires review.";
       }
-      const input = { title: phrase(t), department: phrase(d) };
+      // v1 : la clé se calcule sur l'intitulé déjà normalisé, comme avant ; v2 : sur l'intitulé observé (l'orthographe
+      // v2 garde le dakuten et les voyelles thaïes que la normalisation v1 a effacés).
+      const cles = version === 2 ? { title: cle(title ?? ""), department: cle(department ?? "") } : { title: phrase(t), department: phrase(d) };
+      const input: Entree = { ...cles, exact: version === 2 ? { title: sansMarques(cles.title), department: sansMarques(cles.department) } : cles };
       const phraseMatches = (rows: typeof familyPhrases) =>
         rows.filter(
           (r) =>

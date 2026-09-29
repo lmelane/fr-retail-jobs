@@ -590,7 +590,8 @@
    "occupation": "logistics-manager",
    "supersedes": [
     "v3-manager-floor~14f7c397bc",
-    "v3-manager-floor~356cb63ab9"
+    "v3-manager-floor~356cb63ab9",
+    "v3-manager-floor~ab296ae3b5"
    ]
   },
   {
@@ -4359,7 +4360,8 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
-    "v3-employe-de-commerce~70cf9bdbad"
+    "v3-employe-de-commerce~70cf9bdbad",
+    "v3-employe-de-commerce~26f49e402b"
    ]
   },
   {
@@ -27515,37 +27517,6 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
-   "id": "v3-store-manager~1fd39e607a",
-   "occupation": "store-manager",
-   "all": [
-    {
-     "field": "title",
-     "any": [
-      "business manager( 37.5hrs)"
-     ],
-     "mode": "phrase"
-    }
-   ],
-   "exclude": [
-    {
-     "any": [
-      "assistant",
-      "adjoint",
-      "adjointe",
-      "deputy",
-      "district",
-      "regional",
-      "area"
-     ],
-     "field": "title"
-    }
-   ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
-   "supersedes": [
-    "v3-direction~674334cb5b"
-   ]
-  },
-  {
    "id": "v3-store-manager~0d7b59cfbd",
    "occupation": "store-manager",
    "all": [
@@ -29129,7 +29100,10 @@
      "mode": "phrase"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
+   "supersedes": [
+    "v3-store-manager~369ec323ba"
+   ]
   },
   {
    "id": "v3-assistant-store-manager~f190f24dd4",
@@ -30656,10 +30630,7 @@
      "field": "title"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
-   "supersedes": [
-    "v3-warehouse-operative~671c6e8acf"
-   ]
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
    "id": "v3-stock-associate~18ddd41f1e",
@@ -30731,10 +30702,7 @@
      "field": "title"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
-   "supersedes": [
-    "v3-retail-operations-associate~36723725c9"
-   ]
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
    "id": "v3-stock-associate~fb49a20809",
@@ -30758,10 +30726,7 @@
      "field": "title"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
-   "supersedes": [
-    "v3-retail-operations-associate~36723725c9"
-   ]
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
    "id": "v3-stock-associate~482f23475f",
@@ -30809,10 +30774,7 @@
      "field": "title"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
-   "supersedes": [
-    "v3-retail-operations-associate~36723725c9"
-   ]
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
    "id": "v3-stock-associate~9f5b1739ee",
@@ -30983,10 +30945,7 @@
      "field": "title"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
-   "supersedes": [
-    "v3-retail-operations-associate~36723725c9"
-   ]
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
    "id": "v3-stock-associate~51663ef2fc",
@@ -31133,7 +31092,8 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
     "v3-sales-advisor~9050c6c503",
-    "v3-warehouse-operative~40807c781a"
+    "v3-warehouse-operative~40807c781a",
+    "v3-warehouse-operative~ee53bf1d1d"
    ]
   },
   {
@@ -31555,30 +31515,6 @@
      "field": "title",
      "any": [
       "Lagerarbejder"
-     ],
-     "mode": "phrase"
-    }
-   ],
-   "exclude": [
-    {
-     "any": [
-      "manager",
-      "head",
-      "director"
-     ],
-     "field": "title"
-    }
-   ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
-  },
-  {
-   "id": "v3-warehouse-operative~671c6e8acf",
-   "occupation": "warehouse-operative",
-   "all": [
-    {
-     "field": "title",
-     "any": [
-      "Magasinier"
      ],
      "mode": "phrase"
     }
@@ -48719,7 +48655,10 @@
      "field": "title"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
+   "supersedes": [
+    "v3-responsable-de-comptes~490881a84b"
+   ]
   },
   {
    "id": "v3-key-account-manager~d4d48ab085",
@@ -48903,7 +48842,10 @@
      "field": "title"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
+   "supersedes": [
+    "v3-responsable-de-comptes~80c230a805"
+   ]
   },
   {
    "id": "v3-key-account-manager~2bb70cbc86",
@@ -54070,7 +54012,10 @@
      "mode": "phrase"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
+   "supersedes": [
+    "v3-pharmacist~433ab254ea"
+   ]
   },
   {
    "id": "v3-pharmacy-technician~9810c3e8a0",
@@ -57380,7 +57325,10 @@
      "field": "title"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
+   "supersedes": [
+    "v3-pharmacist~433ab254ea"
+   ]
   },
   {
    "id": "v3-pharmacy-support-worker~19ebef1d2c",
@@ -60917,7 +60865,8 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
-    "v3-buyer~2a1a54a44b"
+    "v3-buyer~2a1a54a44b",
+    "v3-buyer~34e6d48147"
    ]
   },
   {
@@ -60934,6 +60883,7 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
+    "v3-buyer~2a1a54a44b",
     "v3-buyer~34e6d48147"
    ]
   },
@@ -61722,7 +61672,10 @@
      "mode": "phrase"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
+   "supersedes": [
+    "v3-receptionist~d43b087e8d"
+   ]
   },
   {
    "id": "v3-agent-de-bord~b374f481c2",
@@ -64867,10 +64820,7 @@
      "mode": "phrase"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
-   "supersedes": [
-    "v3-animateur-ventes~7770382aae"
-   ]
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
    "id": "v3-animateur-de-loisirs~32c3075ba2",
@@ -64884,10 +64834,7 @@
      "mode": "phrase"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
-   "supersedes": [
-    "v3-animateur-ventes~7770382aae"
-   ]
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
    "id": "v3-animateur-de-loisirs~36a8c71cdc",
@@ -65375,20 +65322,6 @@
    ]
   },
   {
-   "id": "v3-animateur-ventes~7770382aae",
-   "occupation": "animateur-ventes",
-   "all": [
-    {
-     "field": "title",
-     "any": [
-      "animatrice"
-     ],
-     "mode": "phrase"
-    }
-   ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
-  },
-  {
    "id": "v3-animateur-ventes~272d621010",
    "occupation": "animateur-ventes",
    "all": [
@@ -65400,7 +65333,10 @@
      "mode": "phrase"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
+   "supersedes": [
+    "v3-animateur-de-loisirs~104d8c59a1"
+   ]
   },
   {
    "id": "v3-animateur-ventes~a12139fb09",
@@ -65416,6 +65352,7 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
+    "v3-animateur-de-loisirs~104d8c59a1",
     "makeup-artist-title"
    ]
   },
@@ -65431,7 +65368,10 @@
      "mode": "phrase"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
+   "supersedes": [
+    "v3-animateur-de-loisirs~104d8c59a1"
+   ]
   },
   {
    "id": "v3-animateur-ventes~51fd750630",
@@ -65447,6 +65387,7 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
+    "v3-animateur-de-loisirs~104d8c59a1",
     "v3-commercial~27503fa393"
    ]
   },
@@ -65464,6 +65405,7 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
+    "v3-animateur-de-loisirs~104d8c59a1",
     "v3-commercial~27503fa393"
    ]
   },
@@ -65481,6 +65423,7 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
+    "v3-animateur-de-loisirs~104d8c59a1",
     "v3-commercial~27503fa393",
     "beauty-consultant-title"
    ]
@@ -65499,6 +65442,7 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
+    "v3-animateur-de-loisirs~104d8c59a1",
     "v3-commercial~27503fa393"
    ]
   },
@@ -65516,6 +65460,7 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
+    "v3-animateur-de-loisirs~104d8c59a1",
     "v3-commercial~27503fa393"
    ]
   },
@@ -65533,6 +65478,7 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
+    "v3-animateur-de-loisirs~104d8c59a1",
     "v3-commercial~27503fa393"
    ]
   },
@@ -65550,6 +65496,7 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
+    "v3-animateur-de-loisirs~104d8c59a1",
     "beauty-consultant-title"
    ]
   },
@@ -65567,6 +65514,7 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
+    "v3-animateur-de-loisirs~104d8c59a1",
     "sales-advisor-title"
    ]
   },
@@ -65582,7 +65530,10 @@
      "mode": "phrase"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
+   "supersedes": [
+    "v3-animateur-de-loisirs~104d8c59a1"
+   ]
   },
   {
    "id": "v3-animateur-ventes~d524596078",
@@ -65596,7 +65547,10 @@
      "mode": "phrase"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
+   "supersedes": [
+    "v3-animateur-de-loisirs~104d8c59a1"
+   ]
   },
   {
    "id": "v3-animateur-ventes~d2dc6cc0fc",
@@ -65610,7 +65564,10 @@
      "mode": "phrase"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
+   "supersedes": [
+    "v3-animateur-de-loisirs~104d8c59a1"
+   ]
   },
   {
    "id": "v3-animateur-ventes~09f6316920",
@@ -65624,7 +65581,10 @@
      "mode": "phrase"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
+   "supersedes": [
+    "v3-animateur-de-loisirs~104d8c59a1"
+   ]
   },
   {
    "id": "v3-animateur-ventes~06f2e53761",
@@ -65638,7 +65598,10 @@
      "mode": "phrase"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
+   "supersedes": [
+    "v3-animateur-de-loisirs~104d8c59a1"
+   ]
   },
   {
    "id": "v3-animateur-ventes~dd8da18c81",
@@ -65652,7 +65615,10 @@
      "mode": "phrase"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
+   "supersedes": [
+    "v3-animateur-de-loisirs~104d8c59a1"
+   ]
   },
   {
    "id": "v3-animateur-ventes~59aeef0d6d",
@@ -65666,7 +65632,10 @@
      "mode": "phrase"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
+   "supersedes": [
+    "v3-animateur-de-loisirs~104d8c59a1"
+   ]
   },
   {
    "id": "v3-animateur-ventes~d88382da27",
@@ -65680,7 +65649,10 @@
      "mode": "phrase"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
+   "supersedes": [
+    "v3-animateur-de-loisirs~104d8c59a1"
+   ]
   },
   {
    "id": "v3-animateur-ventes~5de1e77773",
@@ -65694,7 +65666,10 @@
      "mode": "phrase"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
+   "supersedes": [
+    "v3-animateur-de-loisirs~104d8c59a1"
+   ]
   },
   {
    "id": "v3-animateur-ventes~050614492b",
@@ -65708,7 +65683,10 @@
      "mode": "phrase"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
+   "supersedes": [
+    "v3-animateur-de-loisirs~104d8c59a1"
+   ]
   },
   {
    "id": "v3-animateur-ventes~d620742655",
@@ -65722,7 +65700,10 @@
      "mode": "phrase"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
+   "supersedes": [
+    "v3-animateur-de-loisirs~104d8c59a1"
+   ]
   },
   {
    "id": "v3-animateur-ventes~ce0c81e4f9",
@@ -65736,7 +65717,10 @@
      "mode": "phrase"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
+   "supersedes": [
+    "v3-animateur-de-loisirs~104d8c59a1"
+   ]
   },
   {
    "id": "v3-animateur-ventes~3adabb2072",
@@ -65750,7 +65734,10 @@
      "mode": "phrase"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
+   "supersedes": [
+    "v3-animateur-de-loisirs~104d8c59a1"
+   ]
   },
   {
    "id": "v3-animateur-ventes~0fc84b3bcb",
@@ -65764,7 +65751,10 @@
      "mode": "phrase"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
+   "supersedes": [
+    "v3-animateur-de-loisirs~104d8c59a1"
+   ]
   },
   {
    "id": "v3-animateur-ventes~7fc2c02fc1",
@@ -65778,7 +65768,10 @@
      "mode": "phrase"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
+   "supersedes": [
+    "v3-animateur-de-loisirs~104d8c59a1"
+   ]
   },
   {
    "id": "v3-animateur-ventes~7b5b8415e8",
@@ -65794,6 +65787,7 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
+    "v3-animateur-de-loisirs~104d8c59a1",
     "v3-commercial~27503fa393"
    ]
   },
@@ -65809,7 +65803,10 @@
      "mode": "phrase"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
+   "supersedes": [
+    "v3-animateur-de-loisirs~104d8c59a1"
+   ]
   },
   {
    "id": "v3-animateur-ventes~af76daad36",
@@ -65876,7 +65873,10 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
+    "v3-formateur~c787fb0352",
+    "v3-formateur~6694bbccf1",
     "v3-formateur~8f19e2dba7",
+    "v3-animateur-de-loisirs~104d8c59a1",
     "v3-commercial~27503fa393"
    ]
   },
@@ -67129,7 +67129,8 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
-    "v3-office-manager~42e6bd602a"
+    "v3-office-manager~42e6bd602a",
+    "v3-office-manager~ef464a19d1"
    ]
   },
   {
@@ -67698,7 +67699,8 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
-    "v3-assistant-designer~faa7816748"
+    "v3-assistant-designer~faa7816748",
+    "v3-assistant-designer~e5cb0cba33"
    ]
   },
   {
@@ -67716,6 +67718,7 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
     "v3-assistant-designer~faa7816748",
+    "v3-assistant-designer~e5cb0cba33",
     "v3-architecte-d-interieur~a1002d6c19"
    ]
   },
@@ -71380,7 +71383,10 @@
      "mode": "phrase"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
+   "supersedes": [
+    "v3-tuteur-scolaire~b033d3851e"
+   ]
   },
   {
    "id": "v3-assistant-d-education~7f3bc7512b",
@@ -71915,7 +71921,10 @@
      "mode": "phrase"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
+   "supersedes": [
+    "v3-receptionist~d43b087e8d"
+   ]
   },
   {
    "id": "v3-assistant-hotelier~b2f0691234",
@@ -71943,7 +71952,10 @@
      "mode": "phrase"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
+   "supersedes": [
+    "v3-receptionist~6905c729d5"
+   ]
   },
   {
    "id": "v3-assistant-hotelier~da84fad928",
@@ -72506,7 +72518,8 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
     "v3-responsable-de-comptes~490881a84b",
-    "key-account-manager-title"
+    "key-account-manager-title",
+    "v3-key-account-manager~d0311ace8b"
    ]
   },
   {
@@ -72538,7 +72551,8 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
     "v3-responsable-de-comptes~490881a84b",
-    "key-account-manager-title"
+    "key-account-manager-title",
+    "v3-key-account-manager~d0311ace8b"
    ]
   },
   {
@@ -72556,7 +72570,8 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
     "v3-responsable-de-comptes~490881a84b",
-    "key-account-manager-title"
+    "key-account-manager-title",
+    "v3-key-account-manager~d0311ace8b"
    ]
   },
   {
@@ -72602,7 +72617,8 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
     "v3-responsable-de-comptes~490881a84b",
-    "key-account-manager-title"
+    "key-account-manager-title",
+    "v3-key-account-manager~d0311ace8b"
    ]
   },
   {
@@ -72620,7 +72636,8 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
     "v3-responsable-de-comptes~490881a84b",
-    "key-account-manager-title"
+    "key-account-manager-title",
+    "v3-key-account-manager~d0311ace8b"
    ]
   },
   {
@@ -72638,7 +72655,8 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
     "v3-responsable-de-comptes~490881a84b",
-    "key-account-manager-title"
+    "key-account-manager-title",
+    "v3-key-account-manager~d0311ace8b"
    ]
   },
   {
@@ -72656,7 +72674,8 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
     "v3-responsable-de-comptes~490881a84b",
-    "key-account-manager-title"
+    "key-account-manager-title",
+    "v3-key-account-manager~d0311ace8b"
    ]
   },
   {
@@ -72674,7 +72693,8 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
     "v3-responsable-de-comptes~490881a84b",
-    "key-account-manager-title"
+    "key-account-manager-title",
+    "v3-key-account-manager~d0311ace8b"
    ]
   },
   {
@@ -72692,7 +72712,8 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
     "v3-responsable-de-comptes~490881a84b",
-    "key-account-manager-title"
+    "key-account-manager-title",
+    "v3-key-account-manager~d0311ace8b"
    ]
   },
   {
@@ -72710,7 +72731,8 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
     "v3-responsable-de-comptes~490881a84b",
-    "key-account-manager-title"
+    "key-account-manager-title",
+    "v3-key-account-manager~d0311ace8b"
    ]
   },
   {
@@ -72756,7 +72778,8 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
     "v3-responsable-de-comptes~490881a84b",
-    "key-account-manager-title"
+    "key-account-manager-title",
+    "v3-key-account-manager~d0311ace8b"
    ]
   },
   {
@@ -72774,7 +72797,8 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
     "v3-responsable-de-comptes~490881a84b",
-    "key-account-manager-title"
+    "key-account-manager-title",
+    "v3-key-account-manager~d0311ace8b"
    ]
   },
   {
@@ -72809,7 +72833,8 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
     "v3-responsable-de-comptes~490881a84b",
-    "key-account-manager-title"
+    "key-account-manager-title",
+    "v3-key-account-manager~d0311ace8b"
    ]
   },
   {
@@ -72827,7 +72852,8 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
     "v3-responsable-de-comptes~490881a84b",
-    "key-account-manager-title"
+    "key-account-manager-title",
+    "v3-key-account-manager~d0311ace8b"
    ]
   },
   {
@@ -72859,7 +72885,8 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
     "v3-responsable-de-comptes~490881a84b",
-    "key-account-manager-title"
+    "key-account-manager-title",
+    "v3-key-account-manager~d0311ace8b"
    ]
   },
   {
@@ -72891,7 +72918,11 @@
      "mode": "phrase"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
+   "supersedes": [
+    "v3-responsable-de-comptes~80c230a805",
+    "v3-key-account-manager~27ada0f98b"
+   ]
   },
   {
    "id": "v3-assistant-key-account-manager~92ac6ee9f5",
@@ -73559,7 +73590,8 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
-    "social-media-manager-title"
+    "social-media-manager-title",
+    "v3-social-media-manager~abbb248d58"
    ]
   },
   {
@@ -74064,7 +74096,10 @@
      "mode": "phrase"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
+   "supersedes": [
+    "v3-assistant-commercial~6ce5c69484"
+   ]
   },
   {
    "id": "v3-assistant-marketing-et-ventes~918092b84b",
@@ -74494,7 +74529,10 @@
      "mode": "phrase"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
+   "supersedes": [
+    "v3-assistant-commercial~2aafb755ce"
+   ]
   },
   {
    "id": "v3-assistant-marketing-et-ventes~f7cdc32067",
@@ -80819,7 +80857,8 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
-    "v3-charge-de-marketing-et-communication~9c38f7720f"
+    "v3-charge-de-marketing-et-communication~9c38f7720f",
+    "v3-charge-de-marketing-et-communication~280c4b29a7"
    ]
   },
   {
@@ -80864,6 +80903,7 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
+    "v3-charge-de-marketing-et-communication~9c38f7720f",
     "v3-charge-de-marketing-et-communication~280c4b29a7"
    ]
   },
@@ -80881,6 +80921,7 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
+    "v3-charge-de-marketing-et-communication~9c38f7720f",
     "v3-charge-de-marketing-et-communication~280c4b29a7"
    ]
   },
@@ -81556,7 +81597,8 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
-    "marketing-manager-title"
+    "marketing-manager-title",
+    "v3-marketing-manager~b0ac92b941"
    ]
   },
   {
@@ -81587,7 +81629,8 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
-    "community-manager-title"
+    "community-manager-title",
+    "v3-community-manager~729737794c"
    ]
   },
   {
@@ -81940,7 +81983,8 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
-    "v3-responsable-communication~51153b5139"
+    "v3-responsable-communication~51153b5139",
+    "v3-responsable-communication~b61d162fda"
    ]
   },
   {
@@ -81957,6 +82001,7 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
+    "v3-responsable-communication~51153b5139",
     "v3-responsable-communication~b61d162fda"
    ]
   },
@@ -85915,7 +85960,8 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
-    "marketing-manager-title"
+    "marketing-manager-title",
+    "v3-marketing-manager~b0ac92b941"
    ]
   },
   {
@@ -86037,7 +86083,10 @@
      "mode": "phrase"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
+   "supersedes": [
+    "v3-marketing-manager~aec930fc00"
+   ]
   },
   {
    "id": "v3-chef-de-projet-influence~c7dcce5f8e",
@@ -86798,7 +86847,8 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
-    "marketing-manager-title"
+    "marketing-manager-title",
+    "v3-marketing-manager~b0ac92b941"
    ]
   },
   {
@@ -86872,7 +86922,10 @@
      "mode": "phrase"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
+   "supersedes": [
+    "v3-marketing-manager~aec930fc00"
+   ]
   },
   {
    "id": "v3-chef-de-projet-trade-marketing~7d11c9dbf1",
@@ -91419,7 +91472,8 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
-    "v3-responsable-de-comptes~fe118f6657"
+    "v3-responsable-de-comptes~fe118f6657",
+    "v3-responsable-de-comptes~1dccac788b"
    ]
   },
   {
@@ -91436,6 +91490,7 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
+    "v3-responsable-de-comptes~fe118f6657",
     "v3-responsable-de-comptes~1dccac788b"
    ]
   },
@@ -93048,7 +93103,8 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
-    "v3-consultant-en-strategie~ed5b20452b"
+    "v3-consultant-en-strategie~ed5b20452b",
+    "v3-consultant-en-strategie~c765d147f3"
    ]
   },
   {
@@ -96609,6 +96665,7 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
+    "v3-charge-de-marketing-et-communication~9c38f7720f",
     "v3-charge-de-marketing-et-communication~280c4b29a7"
    ]
   },
@@ -97859,7 +97916,9 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
-    "v3-formateur~c787fb0352"
+    "v3-formateur~c787fb0352",
+    "v3-formateur~6694bbccf1",
+    "v3-formateur~8f19e2dba7"
    ]
   },
   {
@@ -99063,7 +99122,10 @@
      "mode": "phrase"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
+   "supersedes": [
+    "v3-createur-de-marque~1d2ebb02bc"
+   ]
   },
   {
    "id": "v3-designer-bijoux-accessoires~e2583305c1",
@@ -99096,7 +99158,8 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
-    "v3-designer-accessoires~37eca80c3c"
+    "v3-designer-accessoires~37eca80c3c",
+    "v3-designer-accessoires~6f51070a54"
    ]
   },
   {
@@ -99169,7 +99232,8 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
-    "v3-designer-accessoires~37eca80c3c"
+    "v3-designer-accessoires~37eca80c3c",
+    "v3-designer-accessoires~6f51070a54"
    ]
   },
   {
@@ -99186,6 +99250,7 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
+    "v3-designer-accessoires~37eca80c3c",
     "v3-designer-accessoires~6f51070a54"
    ]
   },
@@ -100785,7 +100850,10 @@
      "mode": "phrase"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
+   "supersedes": [
+    "v3-fashion-designer~590b335f89"
+   ]
   },
   {
    "id": "v3-designer-maille~de34730b44",
@@ -101706,7 +101774,8 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
-    "v3-spa-manager~3746e61715"
+    "v3-spa-manager~3746e61715",
+    "v3-spa-manager~60563b6012"
    ]
   },
   {
@@ -105773,20 +105842,6 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
-   "id": "v3-direction~674334cb5b",
-   "occupation": "direction",
-   "all": [
-    {
-     "field": "title",
-     "any": [
-      "business manager"
-     ],
-     "mode": "phrase"
-    }
-   ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
-  },
-  {
    "id": "v3-direction~e605d63d46",
    "occupation": "direction",
    "all": [
@@ -106097,6 +106152,8 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
+    "v3-president-d-association~cdbc184789",
+    "v3-president-d-association~feb09abb8c",
     "v3-president-d-association~613ec92009"
    ]
   },
@@ -113717,7 +113774,7 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
-    "v3-animateur-ventes~7770382aae"
+    "v3-animateur-de-loisirs~104d8c59a1"
    ]
   },
   {
@@ -119430,7 +119487,8 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
-    "v3-agent-d-entretien~13a4fbf518"
+    "v3-agent-d-entretien~13a4fbf518",
+    "v3-agent-d-entretien~9a0f525b2b"
    ]
   },
   {
@@ -120413,7 +120471,8 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
-    "v3-legal-counsel~2dbdf5d94f"
+    "v3-legal-counsel~2dbdf5d94f",
+    "v3-legal-counsel~9bb600c698"
    ]
   },
   {
@@ -120430,6 +120489,7 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
+    "v3-legal-counsel~2dbdf5d94f",
     "v3-legal-counsel~9bb600c698"
    ]
   },
@@ -121714,7 +121774,10 @@
      "mode": "phrase"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
+   "supersedes": [
+    "v3-sales-advisor~4846cbd855"
+   ]
   },
   {
    "id": "v3-libraire~d437e60de1",
@@ -122474,7 +122537,10 @@
      "mode": "phrase"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
+   "supersedes": [
+    "v3-waiter~5fa712db7f"
+   ]
   },
   {
    "id": "v3-maitre-d-hotel~ee29386c6e",
@@ -123368,7 +123434,8 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
-    "v3-manager-floor~356cb63ab9"
+    "v3-manager-floor~356cb63ab9",
+    "v3-manager-floor~ab296ae3b5"
    ]
   },
   {
@@ -123411,7 +123478,10 @@
      "mode": "phrase"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
+   "supersedes": [
+    "v3-store-manager~369ec323ba"
+   ]
   },
   {
    "id": "v3-manager-de-restaurant~93bb8b306e",
@@ -123673,7 +123743,8 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
-    "v3-manager-commercial~6221f11e6e"
+    "v3-manager-commercial~6221f11e6e",
+    "v3-manager-commercial~0e6f26d75a"
    ]
   },
   {
@@ -123690,6 +123761,7 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
+    "v3-manager-commercial~6221f11e6e",
     "v3-manager-commercial~0e6f26d75a"
    ]
   },
@@ -123904,7 +123976,10 @@
      "mode": "phrase"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
+   "supersedes": [
+    "v3-manager-commercial~85d9eb6ab7"
+   ]
   },
   {
    "id": "v3-manager-de-transition-commercial~6497a84653",
@@ -126240,7 +126315,8 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
-    "v3-technicien-produit~5eb996c6ea"
+    "v3-technicien-produit~5eb996c6ea",
+    "v3-technicien-produit~c7a16818b7"
    ]
   },
   {
@@ -126515,7 +126591,8 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
-    "v3-seamster~1e163ce771"
+    "v3-seamster~1e163ce771",
+    "v3-seamster~8f7900a7f5"
    ]
   },
   {
@@ -126689,7 +126766,8 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
-    "v3-seamster~1e163ce771"
+    "v3-seamster~1e163ce771",
+    "v3-seamster~8f7900a7f5"
    ]
   },
   {
@@ -126720,7 +126798,8 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
-    "v3-seamster~1e163ce771"
+    "v3-seamster~1e163ce771",
+    "v3-seamster~8f7900a7f5"
    ]
   },
   {
@@ -126737,7 +126816,8 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
-    "v3-technicien-produit~5eb996c6ea"
+    "v3-technicien-produit~5eb996c6ea",
+    "v3-technicien-produit~c7a16818b7"
    ]
   },
   {
@@ -127085,6 +127165,7 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
+    "v3-technicien-produit~5eb996c6ea",
     "v3-technicien-produit~c7a16818b7"
    ]
   },
@@ -127102,6 +127183,7 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
+    "v3-technicien-produit~5eb996c6ea",
     "v3-technicien-produit~c7a16818b7"
    ]
   },
@@ -129516,7 +129598,8 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
-    "v3-praticien-spa~a3848dbe12"
+    "v3-praticien-spa~a3848dbe12",
+    "v3-praticien-spa~010b4e2e69"
    ]
   },
   {
@@ -129533,7 +129616,8 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
-    "v3-praticien-spa~a3848dbe12"
+    "v3-praticien-spa~a3848dbe12",
+    "v3-praticien-spa~010b4e2e69"
    ]
   },
   {
@@ -129550,6 +129634,7 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
+    "v3-praticien-spa~a3848dbe12",
     "v3-praticien-spa~010b4e2e69"
    ]
   },
@@ -129567,6 +129652,7 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
+    "v3-praticien-spa~a3848dbe12",
     "v3-praticien-spa~010b4e2e69"
    ]
   },
@@ -129584,6 +129670,7 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
+    "v3-praticien-spa~a3848dbe12",
     "v3-praticien-spa~010b4e2e69"
    ]
   },
@@ -130397,6 +130484,7 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
+    "v3-coupe~092f9e1148",
     "v3-coupe~a48607a98b"
    ]
   },
@@ -132597,7 +132685,10 @@
      "mode": "phrase"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
+   "supersedes": [
+    "v3-prototypiste~761b3cdb1f"
+   ]
   },
   {
    "id": "v3-prototypiste-maroquinerie~025ff3eee2",
@@ -132928,7 +133019,10 @@
      "mode": "phrase"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
+   "supersedes": [
+    "v3-recruiter~a3eae3fb82"
+   ]
   },
   {
    "id": "v3-recruteur-de-donateurs~cf06486947",
@@ -136019,7 +136113,8 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
-    "v3-chef-produit~7fb01b1ea3"
+    "v3-chef-produit~7fb01b1ea3",
+    "v3-chef-produit~23e63bb4e2"
    ]
   },
   {
@@ -137458,7 +137553,8 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
-    "v3-charge-de-marketing-et-communication~9c38f7720f"
+    "v3-charge-de-marketing-et-communication~9c38f7720f",
+    "v3-charge-de-marketing-et-communication~280c4b29a7"
    ]
   },
   {
@@ -137492,7 +137588,8 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
-    "v3-charge-de-marketing-et-communication~9c38f7720f"
+    "v3-charge-de-marketing-et-communication~9c38f7720f",
+    "v3-charge-de-marketing-et-communication~280c4b29a7"
    ]
   },
   {
@@ -137888,7 +137985,10 @@
      "mode": "phrase"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
+   "supersedes": [
+    "v3-responsable-communication~4a306f4c20"
+   ]
   },
   {
    "id": "v3-responsable-communication-interne~9fde0b8611",
@@ -139199,7 +139299,8 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
-    "marketing-manager-title"
+    "marketing-manager-title",
+    "v3-marketing-manager~b0ac92b941"
    ]
   },
   {
@@ -139358,7 +139459,10 @@
      "mode": "phrase"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
+   "supersedes": [
+    "v3-marketing-manager~aec930fc00"
+   ]
   },
   {
    "id": "v3-responsable-growth-marketing~f0670cd84a",
@@ -139419,7 +139523,8 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
-    "community-manager-title"
+    "community-manager-title",
+    "v3-community-manager~729737794c"
    ]
   },
   {
@@ -142757,7 +142862,8 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
     "v3-manager-floor~76db2a9174",
-    "recruiter-title"
+    "recruiter-title",
+    "v3-recruiter~4d7d83ece4"
    ]
   },
   {
@@ -146906,7 +147012,8 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
-    "v3-chef-de-projet-influence~6ff2b807f2"
+    "v3-chef-de-projet-influence~6ff2b807f2",
+    "v3-chef-de-projet-influence~bf1d6e6423"
    ]
   },
   {
@@ -150118,7 +150225,10 @@
      "mode": "phrase"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
+   "supersedes": [
+    "v3-sales-advisor~4846cbd855"
+   ]
   },
   {
    "id": "v3-vendeur-en-ligne~febf152b26",
@@ -150516,7 +150626,10 @@
      "mode": "phrase"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
+   "supersedes": [
+    "v3-photographe~1a8504e6a1"
+   ]
   },
   {
    "id": "v3-videaste~da26452c53",
@@ -151305,7 +151418,8 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
-    "sales-advisor-title"
+    "sales-advisor-title",
+    "v3-sales-advisor~be29d350fe"
    ]
   },
   {
@@ -151322,6 +151436,7 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
+    "sales-advisor-title",
     "v3-sales-advisor~be29d350fe"
    ]
   },
@@ -152528,20 +152643,6 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
-   "id": "v3-retail-operations-associate~36723725c9",
-   "occupation": "retail-operations-associate",
-   "all": [
-    {
-     "field": "title",
-     "any": [
-      "operations associate"
-     ],
-     "mode": "phrase"
-    }
-   ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
-  },
-  {
    "id": "v3-retail-operations-associate~4afe7acf6e",
    "occupation": "retail-operations-associate",
    "all": [
@@ -152893,7 +152994,8 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
-    "v3-responsable-vm~589c3fbec7"
+    "v3-responsable-vm~589c3fbec7",
+    "v3-responsable-vm~b79d9e6ed3"
    ]
   },
   {
@@ -152927,7 +153029,8 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
-    "v3-responsable-vm~589c3fbec7"
+    "v3-responsable-vm~589c3fbec7",
+    "v3-responsable-vm~b79d9e6ed3"
    ]
   },
   {
@@ -153009,7 +153112,8 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
-    "v3-responsable-vm~589c3fbec7"
+    "v3-responsable-vm~589c3fbec7",
+    "v3-responsable-vm~b79d9e6ed3"
    ]
   },
   {
@@ -154694,7 +154798,10 @@
      "mode": "phrase"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
+   "supersedes": [
+    "v3-cashier~f91ba4ec0c"
+   ]
   },
   {
    "id": "v3-head-cashier~ac68f02c71",
@@ -154722,7 +154829,10 @@
      "mode": "phrase"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
+   "supersedes": [
+    "v3-cashier~048f8688fc"
+   ]
   },
   {
    "id": "v3-head-cashier~934bdcaf92",
@@ -154785,7 +154895,7 @@
  ],
  "review": {
   "author": "Passe de curation v3 (IA seule, D-475 §30)",
-  "at": "2026-09-29T13:14:11.457Z",
+  "at": "2026-09-29T13:45:25.835Z",
   "basis": "Première passe de curation : 253 métiers (servis, backend, offres), 33 familles, 25 langues ; preuves : audits/2026-09-28/curation-v3."
  },
  "families": [
@@ -171993,5 +172103,6 @@
    "key": null,
    "reason": "The title explicitly names both intermediate and senior levels; do not select one."
   }
- ]
+ ],
+ "matchingVersion": 2
 }

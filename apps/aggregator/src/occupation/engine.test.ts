@@ -251,3 +251,77 @@ describe("optique et pharmacie : le mot seul ne décide pas", () => {
     }
   });
 });
+
+/**
+ * Correspondance v2 (lot 2B de D-475, plan `docs/architecture/classification-metiers.md` §3.3 et exigences (9) à (11)
+ * du §3.1) : activée par le manifeste (`matchingVersion: 2`), jamais par défaut. Chaque témoin vérifie d'abord que la
+ * v1 échoue sur le même manifeste (sa prémisse : le défaut existe), puis que la v2 le corrige.
+ */
+describe("correspondance v2 : écritures, genre, marques", () => {
+  const regle = (id: string, occupation: string, any: string[], mode?: "exact") => ({
+    id, occupation, all: [{ field: "title", any, ...(mode ? { mode } : {}) }], evidence: "témoin du lot 2B",
+  });
+  const rules = [
+    regle("t-beaute-ja", "beauty-consultant", ["ビューティーアドバイザー"]),
+    regle("t-vente-th", "sales-advisor", ["พนักงานขาย"]),
+    regle("t-vente-ja", "sales-advisor", ["販売員"]),
+    regle("t-vente-ar", "sales-advisor", ["مستشار مبيعات"]),
+    regle("t-vente-ko", "sales-advisor", ["판매 사원"]),
+    regle("t-acheteur-ja", "buyer", ["バイヤー"]),
+    regle("t-adjoint", "assistant-store-manager", ["Responsable adjoint"]),
+    regle("t-vente-it", "sales-advisor", ["Commesso"]),
+    regle("t-vente-es", "sales-advisor", ["Dependiente"]),
+    regle("t-vente-de", "sales-advisor", ["Kaufmann im Einzelhandel"]),
+    regle("t-caisse-exact", "cashier", ["Employé de caisse"], "exact"),
+    regle("t-niveau-exact", "store-manager", ["Supervisor I"], "exact"),
+  ];
+  const avec = (version?: 2) => compileOccupationManifest({ ...seed, ...(version ? { matchingVersion: version } : {}), rules: [...seed.rules, ...rules] });
+  const v1 = avec(), v2 = avec(2);
+
+  it.each([
+    ["コスメビューティーアドバイザー", "beauty-consultant"],
+    ["พนักงานขายเครื่องสำอาง", "sales-advisor"],
+    ["Responsable adjointe", "assistant-store-manager"],
+    ["Commessa", "sales-advisor"],
+    ["Dependienta de tienda", "sales-advisor"],
+    ["Kauffrau im Einzelhandel", "sales-advisor"],
+    ["Employée de caisse H/F", "cashier"],
+    ["Employé de caisse (m/w/d) - Part Time", "cashier"],
+    ["Employé de caisse CDI 35H", "cashier"],
+    ["Supervisor I - Full Time", "store-manager"],
+  ])("%s : la v1 le manque, la v2 le classe", (titre, attendu) => {
+    expect(v1.classify(titre).occupationCode).not.toBe(attendu);
+    const d = v2.classify(titre);
+    expect(d.occupationCode).toBe(attendu);
+    expect(d.occupationEvidence.normalizationVersion).toBe(2);
+  });
+
+  it("le dakuten distingue deux mots que la v1 confondait : « バイヤー » (acheteur) n'est pas « ハイヤー » (voiture de place)", () => {
+    expect(v1.classify("ハイヤー運転手").occupationCode).toBe("buyer");
+    expect(v2.classify("ハイヤー運転手").occupationCode).not.toBe("buyer");
+    expect(v2.classify("アパレルバイヤー").occupationCode).toBe("buyer");
+  });
+
+  it("ce que la v1 classait déjà reste classé en v2 (idéogrammes, arabe, coréen)", () => {
+    expect(v2.classify("販売員（アルバイト）").occupationCode).toBe("sales-advisor");
+    expect(v2.classify("مستشار مبيعات - دوام كامل").occupationCode).toBe("sales-advisor");
+    expect(v2.classify("판매 사원 모집").occupationCode).toBe("sales-advisor");
+  });
+
+  it("une règle exacte reste exacte : un intitulé plus long, hors marques, ne la déclenche pas", () => {
+    expect(v2.classify("Employé de caisse principal").occupationCode).not.toBe("cashier");
+    expect(v2.classify("Lead Supervisor I").occupationCode).not.toBe("store-manager");
+    // Une lettre seule n'est pas une marque de genre : « Supervisor I » n'est pas « Supervisor ».
+    expect(v2.classify("Supervisor").occupationCode).not.toBe("store-manager");
+  });
+
+  it("la v1 reste la version servie à l'identique : clé, statut et version de normalisation", () => {
+    const servie = compileOccupationManifest(seed);
+    for (const titre of ["Conseillère de vente", "Verkaufsberater (m/w/d)", "Directrice de magasin", "Vendedora", "販売員"]) {
+      const d = servie.classify(titre);
+      expect(d.occupationEvidence.normalizationVersion).toBe(1);
+      expect(d.normalizedTitle).toBe(normalizeOccupationTitle(titre));
+    }
+    expect(() => compileOccupationManifest({ ...seed, matchingVersion: 3 })).toThrow(/matching version/);
+  });
+});

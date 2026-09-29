@@ -34,7 +34,7 @@
  */
 import { createHash } from 'node:crypto';
 import { existsSync, writeFileSync } from 'node:fs';
-import { compileOccupationManifest, type OccupationManifest } from '../../../../../packages/db/occupation-engine.ts';
+import { compileOccupationManifest, occupationExactKey, occupationMatchKey, type OccupationManifest } from '../../../../../packages/db/occupation-engine.ts';
 import { validateOccupationSuccessor } from '../../../src/occupation/release.ts';
 import { conceptsV3, DOSSIER_SORTIE, estVague, EXCLUS_RAYON, familles, libellesEtFormes, lireEtape, niveauSeul, phraseMoteur, servie, VAGUES } from './commun.mts';
 
@@ -224,7 +224,7 @@ const reglesServies = servie.rules.map((r: any) => ({ ...r,
 const dejaServie = (occupation: string, f: string) => servie.rules.some((r: any) => r.occupation === occupation && r.all.length === 1 && r.all[0].field === 'title' && r.all[0].any.some((v: string) => phraseMoteur(v) === f));
 const generalisables = new Set<string>(!BASE && existsSync(`${DOSSIER_SORTIE}6c-generalisations.json`)
   ? lireEtape('6c-generalisations.json').decisions.filter((d: any) => d.mode === 'generalisable').map((d: any) => `${d.occupation}|${d.expression}`) : []);
-const reglesV3 = concepts.flatMap((c) => [...expressions.get(c.cle)!].filter((f) => !interdite(f, c.cle) && !dejaServie(c.cle, f)).sort().map((f) => {
+const reglesV3Brutes = concepts.flatMap((c) => [...expressions.get(c.cle)!].filter((f) => !interdite(f, c.cle) && !dejaServie(c.cle, f)).sort().map((f) => {
   const key = cleMetier.get(c.cle)!;
   const exclude = [...exclusionsServies(c.cle), ...exclure(c.cle)];
   return { id: `v3-${key}~${createHash('sha256').update(f).digest('hex').slice(0, 10)}`, occupation: key,
@@ -233,11 +233,50 @@ const reglesV3 = concepts.flatMap((c) => [...expressions.get(c.cle)!].filter((f)
     evidence: 'Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.' };
 }));
 
+// Garde d'unicité sous les clés v2 (lot 2B) : en ramenant le féminin au masculin et en retirant les marques de genre et
+// de contrat, deux expressions de métiers différents peuvent devenir la même clé (« Magasinier H/F » du stock en boutique
+// et « Magasinier » de l'entrepôt). Même priorité que la garde finale : version servie, puis intitulé jugé sur de vraies
+// offres, sinon l'expression est retirée des deux côtés. Les règles servies ne sont jamais modifiées.
+const clesV2 = (c: any, v: string) => [c.mode === 'exact' ? `exact ${occupationExactKey(v, 2)}` : `phrase ${occupationMatchKey(v, 2)}`,
+  ...(c.mode === 'exact' ? [] : [`exact ${occupationExactKey(v, 2)}`])];
+const porteursV2 = new Map<string, { servis: Set<string>; v3: Set<string>; juges: Set<string> }>();
+const noter = (occupation: string, c: any, v: string, servi: boolean) => { for (const k of clesV2(c, v)) {
+  const x = porteursV2.get(k) ?? { servis: new Set(), v3: new Set(), juges: new Set() };
+  (servi ? x.servis : x.v3).add(occupation);
+  const j = juge.get(phraseMoteur(v)); if (j) x.juges.add(cleMetier.get(j) ?? j);
+  porteursV2.set(k, x);
+} };
+for (const r of reglesServies) for (const c of r.all) if (c.field === 'title') for (const v of c.any) noter(r.occupation, c, v, true);
+for (const r of reglesV3Brutes) for (const c of r.all) for (const v of c.any) noter(r.occupation, c, v, false);
+// Le métier dont c'est le libellé, quand ni la version servie ni un intitulé jugé ne tranchent (même ordre que la garde finale).
+const nommeursV2 = new Map<string, Set<string>>();
+for (const o of metiersV3) for (const l of Object.values<string>(o.labels)) for (const k of [`exact ${occupationExactKey(l, 2)}`, `phrase ${occupationMatchKey(l, 2)}`])
+  nommeursV2.set(k, new Set([...(nommeursV2.get(k) ?? []), o.key]));
+const arbitragesV2: { cle: string; metiers: string[]; garde: string | null; motif: string }[] = [];
+const gardeV2 = new Map<string, string | null>();
+for (const [k, x] of porteursV2) {
+  const metiers = new Set([...x.servis, ...x.v3]);
+  if (metiers.size < 2) continue;
+  const nommeurs = [...(nommeursV2.get(k) ?? [])].filter((o) => metiers.has(o));
+  const [garde, motif] = x.servis.size === 1 ? [[...x.servis][0], 'version servie']
+    : x.servis.size === 0 && x.juges.size === 1 && metiers.has([...x.juges][0]) ? [[...x.juges][0], 'intitulé jugé']
+    : x.servis.size === 0 && nommeurs.length === 1 ? [nommeurs[0], 'libellé'] : [null, 'ambiguë, retirée'];
+  gardeV2.set(k, garde);
+  arbitragesV2.push({ cle: k, metiers: [...metiers], garde, motif });
+}
+const reglesV3 = reglesV3Brutes.flatMap((r) => {
+  const any = r.all[0].any.filter((v: string) => clesV2(r.all[0], v).every((k) => !gardeV2.has(k) || gardeV2.get(k) === r.occupation));
+  return any.length ? [{ ...r, all: [{ ...r.all[0], any }] }] : [];
+});
+
 // Préséance : la portée la plus longue l'emporte, sans cycle.
 type Regle = { id: string; occupation: string; all: { field: string; any: string[]; mode?: string }[]; supersedes?: string[] };
 const regles: Regle[] = [...reglesServies, ...reglesV3];
 const phrases = new Map<string, Regle[]>();
-for (const r of regles) for (const c of r.all) if (c.field === 'title' && c.mode !== 'exact') for (const v of c.any) phrases.set(phraseMoteur(v), [...(phrases.get(phraseMoteur(v)) ?? []), r]);
+// Sur les clés v2, celles que le moteur compare (« Visual Merchandising Managerin » y devient « … Manager », contenu
+// dans « Assistant Visual Merchandising Manager »).
+const cleMoteur = (v: string) => occupationMatchKey(v, 2);
+for (const r of regles) for (const c of r.all) if (c.field === 'title' && c.mode !== 'exact') for (const v of c.any) phrases.set(cleMoteur(v), [...(phrases.get(cleMoteur(v)) ?? []), r]);
 const suivants = new Map<string, Set<string>>(regles.map((r) => [r.id, new Set(r.supersedes ?? [])]));
 const atteint = (de: string, vers: string) => {
   const pile = [de], vus = new Set<string>();
@@ -246,7 +285,7 @@ const atteint = (de: string, vers: string) => {
 };
 let arcs = 0, arcsRefuses = 0;
 for (const a of regles) for (const c of a.all) if (c.field === 'title') for (const v of c.any) {
-  const mots = phraseMoteur(v).split(' ');
+  const mots = cleMoteur(v).split(' ');
   for (let n = 1; n < mots.length; n++) for (let i = 0; i + n <= mots.length; i++) for (const b of phrases.get(mots.slice(i, i + n).join(' ')) ?? []) {
     if (b.occupation === a.occupation || suivants.get(a.id)!.has(b.id)) continue;
     if (atteint(b.id, a.id)) { arcsRefuses++; continue; }
@@ -268,11 +307,22 @@ for (const langue of new Set(metiersV3.flatMap((m) => Object.keys(m.labels)))) {
 const maintenant = new Date();
 const manifeste = {
   ...servie, id: ID,
+  // Correspondance v2 (lot 2B) : écritures japonaise et thaïe, formes féminines, marques ignorées en mode exact.
+  matchingVersion: 2,
   review: { author: 'Passe de curation v3 (IA seule, D-475 §30)', at: maintenant.toISOString(),
     basis: `Première passe de curation : ${concepts.length} métiers (servis, backend, offres), ${famillesV3.length} familles, 25 langues ; preuves : audits/2026-09-28/curation-v3.` },
   families: famillesV3, occupations: metiersV3, rules: regles,
 } as unknown as OccupationManifest;
 const compile = compileOccupationManifest(manifeste);
+// Garde d'unicité sous les clés v2 : une forme féminine ramenée au masculin, une marque retirée, ne doit jamais réunir
+// deux métiers (« Directrice » et « Directeur » dans deux métiers différents deviendraient la même clé).
+const parCle = new Map<string, Set<string>>();
+for (const r of regles as any[]) for (const c of r.all) if (c.field === 'title') for (const v of c.any) {
+  const k = c.mode === 'exact' ? `exact ${occupationExactKey(v, 2)}` : `phrase ${occupationMatchKey(v, 2)}`;
+  parCle.set(k, new Set([...(parCle.get(k) ?? []), r.occupation]));
+  if (c.mode !== 'exact') { const e = `exact ${occupationExactKey(v, 2)}`; parCle.set(e, new Set([...(parCle.get(e) ?? []), r.occupation])); }
+}
+const collisionsV2 = [...parCle].filter(([, occ]) => occ.size > 1).map(([k, occ]) => ({ cle: k, metiers: [...occ] }));
 const [cleVente, cleRayon] = [cleMetier.get(deVente)!, cleMetier.get(deRayon)!];
 const attendu = (m: string, rendu: string | null) => (m === 'vente' ? rendu === cleVente : m === 'rayon' ? rendu === cleRayon : rendu !== cleVente && rendu !== cleRayon);
 const ecartsScission = scission.decisions.flatMap((d: any) => textesDe(d).map((t) => ({ texte: t, decision: d.metier, rendu: compile.classify(t, null).occupationCode })))
@@ -282,14 +332,16 @@ validateOccupationSuccessor(servie, manifeste);
 const fichier = BASE ? '6-manifeste-base.json' : '6-manifeste-v3.json';
 writeFileSync(`${DOSSIER_SORTIE}${fichier}`, JSON.stringify(manifeste, null, 1));
 if (!BASE) writeFileSync(`${DOSSIER_SORTIE}6-correspondances.json`, JSON.stringify({ calculeLe: maintenant.toISOString(), manifeste: ID,
-  metiers: Object.fromEntries(tous.map((c) => [c.cle, cleDe(c.cle)])), absorbes: Object.fromEntries(dans),
+  metiers: Object.fromEntries(tous.map((c) => [c.cle, cleDe(c.cle)])), absorbes: Object.fromEntries(dans), arbitragesV2,
   familles: Object.fromEntries(famillesV3.map((f: any) => [f.key, f.key])), libellesRetires, arbitragesFinaux }, null, 1));
 const bilan = { fichier, id: ID, familles: famillesV3.length, metiers: metiersV3.length, absorbes: dans.size, regles: regles.length,
   reglesV3: reglesV3.length, reglesExactes: reglesV3.filter((r) => r.all[0].mode === 'exact').length, generalisables: generalisables.size,
-  arbitragesFinaux: arbitragesFinaux.length, libellesRetires: libellesRetires.length, libellesPartages: libellesPartages.length,
-  nonIdempotentes: nonIdempotentes.length, ecartsScission: ecartsScission.length, preseances: arcs, preseancesRefuseesPourCycle: arcsRefuses, compile: compile.occupations.size, succession: 'conforme' };
+  arbitragesFinaux: arbitragesFinaux.length, arbitragesV2: arbitragesV2.length, libellesRetires: libellesRetires.length, libellesPartages: libellesPartages.length,
+  nonIdempotentes: nonIdempotentes.length, ecartsScission: ecartsScission.length, collisionsV2: collisionsV2.length, preseances: arcs, preseancesRefuseesPourCycle: arcsRefuses, compile: compile.occupations.size, succession: 'conforme' };
 console.log(JSON.stringify(bilan, null, 1));
 for (const x of libellesPartages.slice(0, 10)) console.log(` libellé partagé : ${x}`);
+for (const x of collisionsV2.slice(0, 15)) console.log(` collision v2 : « ${x.cle} » → ${x.metiers.join(', ')}`);
+if (collisionsV2.length) { console.error(`ASSEMBLAGE REFUSÉ : ${collisionsV2.length} clé(s) v2 pour plusieurs métiers`); process.exitCode = 1; }
 for (const x of ecartsScission.slice(0, 10)) console.log(` 3c non tenu : « ${x.texte} » décidé ${x.decision}, rendu ${x.rendu ?? 'aucun'}`);
 if (ecartsScission.length) { console.error(`ASSEMBLAGE REFUSÉ : ${ecartsScission.length} décision(s) de 3c non tenue(s) par le moteur`); process.exitCode = 1; }
 if (nonIdempotentes.length || libellesPartages.length) { console.error(`ASSEMBLAGE REFUSÉ : ${nonIdempotentes.length} expression(s) non idempotente(s), ${libellesPartages.length} libellé(s) partagé(s)`); process.exitCode = 1; }

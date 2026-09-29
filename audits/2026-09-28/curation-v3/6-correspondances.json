@@ -1,5 +1,5 @@
 {
- "calculeLe": "2026-09-29T13:14:14.336Z",
+ "calculeLe": "2026-09-29T13:45:29.525Z",
  "manifeste": "catwalks-occupations-20260929-v3",
  "metiers": {
   "sales-advisor": "sales-advisor",
@@ -264,6 +264,44 @@
   "backend:EMPLOYE_DE_CAFE": "barista",
   "backend:BARBIER": "hairdresser"
  },
+ "arbitragesV2": [
+  {
+   "cle": "exact BUSINESS MANAGER",
+   "metiers": [
+    "store-manager",
+    "direction"
+   ],
+   "garde": null,
+   "motif": "ambiguë, retirée"
+  },
+  {
+   "cle": "exact MAGASINIER",
+   "metiers": [
+    "stock-associate",
+    "warehouse-operative"
+   ],
+   "garde": "stock-associate",
+   "motif": "intitulé jugé"
+  },
+  {
+   "cle": "exact OPERATIONS ASSOCIATE",
+   "metiers": [
+    "stock-associate",
+    "retail-operations-associate"
+   ],
+   "garde": "stock-associate",
+   "motif": "intitulé jugé"
+  },
+  {
+   "cle": "exact ANIMATEUR",
+   "metiers": [
+    "animateur-de-loisirs",
+    "animateur-ventes"
+   ],
+   "garde": "animateur-de-loisirs",
+   "motif": "libellé"
+  }
+ ],
  "familles": {
   "retail-client-advisor": "retail-client-advisor",
   "beauty-advisor": "beauty-advisor",

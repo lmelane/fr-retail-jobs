@@ -1,31 +1,31 @@
 {
- "calculeLe": "2026-09-29T13:14:16.430Z",
+ "calculeLe": "2026-09-29T13:45:32.258Z",
  "bilan": {
   "manifeste": "catwalks-occupations-20260929-v3",
   "couples": 43168,
   "offres": 80741,
-  "compilationMs": 114,
-  "classementMs": 1369,
+  "compilationMs": 215,
+  "classementMs": 1651,
   "premisse": {
    "accordAvecLaProduction": 100,
    "seuil": 97
   },
   "offresClassees": {
    "v1": 38000,
-   "v3": 50313,
+   "v3": 50830,
    "v1Pct": 47.1,
-   "v3Pct": 62.3
+   "v3Pct": 63
   },
   "ambigues": {
    "v1": 48,
    "v3": 64
   },
-  "gains": 12370,
-  "changementsDeMetier": 655,
-  "pertes": 57,
+  "gains": 12888,
+  "changementsDeMetier": 659,
+  "pertes": 58,
   "horsPlan": {
-   "offres": 48,
-   "intitules": 40,
+   "offres": 53,
+   "intitules": 44,
    "taux": 0.3,
    "seuil": 10
   },
@@ -45,31 +45,31 @@
    "pays": "US",
    "offres": 40442,
    "classesV1": 55.2,
-   "classesV3": 70.2
+   "classesV3": 70.8
   },
   {
    "pays": "FR",
    "offres": 16521,
    "classesV1": 58,
-   "classesV3": 69.4
+   "classesV3": 70
   },
   {
    "pays": "CA",
    "offres": 12672,
    "classesV1": 58.1,
-   "classesV3": 75.3
+   "classesV3": 76
   },
   {
    "pays": "GB",
    "offres": 8029,
    "classesV1": 63.7,
-   "classesV3": 80.8
+   "classesV3": 81.1
   },
   {
    "pays": "DE",
    "offres": 7359,
    "classesV1": 66.5,
-   "classesV3": 79.1
+   "classesV3": 79.3
   },
   {
    "pays": "IT",
@@ -81,7 +81,7 @@
    "pays": "ES",
    "offres": 6625,
    "classesV1": 72.3,
-   "classesV3": 89.5
+   "classesV3": 90
   },
   {
    "pays": "AU",
@@ -99,7 +99,7 @@
    "pays": "CH",
    "offres": 4972,
    "classesV1": 76.8,
-   "classesV3": 78
+   "classesV3": 78.1
   },
   {
    "pays": "BE",
@@ -117,7 +117,7 @@
    "pays": "PT",
    "offres": 4313,
    "classesV1": 79.3,
-   "classesV3": 95.7
+   "classesV3": 95.8
   },
   {
    "pays": "SG",
@@ -135,7 +135,7 @@
    "pays": "JP",
    "offres": 4109,
    "classesV1": 84.1,
-   "classesV3": 91
+   "classesV3": 92.8
   },
   {
    "pays": "HK",
@@ -159,13 +159,13 @@
    "pays": "AT",
    "offres": 3587,
    "classesV1": 86.9,
-   "classesV3": 89.4
+   "classesV3": 89.5
   },
   {
    "pays": "AE",
    "offres": 3499,
    "classesV1": 91.7,
-   "classesV3": 94.6
+   "classesV3": 94.7
   },
   {
    "pays": "TW",
@@ -207,7 +207,7 @@
    "pays": "BR",
    "offres": 3033,
    "classesV1": 93.5,
-   "classesV3": 96.1
+   "classesV3": 96.2
   },
   {
    "pays": "SA",
@@ -231,13 +231,13 @@
    "pays": "?",
    "offres": 1894,
    "classesV1": 32.6,
-   "classesV3": 67
+   "classesV3": 67.1
   },
   {
    "pays": "PR",
    "offres": 1203,
    "classesV1": 63.2,
-   "classesV3": 82
+   "classesV3": 82.1
   },
   {
    "pays": "DK",
@@ -249,7 +249,7 @@
    "pays": "MX",
    "offres": 1007,
    "classesV1": 69.9,
-   "classesV3": 77.1
+   "classesV3": 77.4
   },
   {
    "pays": "SE",
@@ -261,7 +261,7 @@
    "pays": "RO",
    "offres": 798,
    "classesV1": 64.5,
-   "classesV3": 95.7
+   "classesV3": 96
   },
   {
    "pays": "TR",
@@ -273,7 +273,7 @@
    "pays": "CZ",
    "offres": 599,
    "classesV1": 75.6,
-   "classesV3": 89
+   "classesV3": 89.1
   },
   {
    "pays": "CO",
@@ -291,13 +291,13 @@
    "pays": "VN",
    "offres": 490,
    "classesV1": 64.5,
-   "classesV3": 73.3
+   "classesV3": 73.5
   },
   {
    "pays": "PL",
    "offres": 405,
    "classesV1": 37.5,
-   "classesV3": 63.2
+   "classesV3": 65.4
   },
   {
    "pays": "PH",
@@ -375,7 +375,7 @@
    "pays": "NZ",
    "offres": 181,
    "classesV1": 36.5,
-   "classesV3": 57.5
+   "classesV3": 58.6
   },
   {
    "pays": "NO",
@@ -447,7 +447,7 @@
    "pays": "PA",
    "offres": 31,
    "classesV1": 71,
-   "classesV3": 71
+   "classesV3": 74.2
   },
   {
    "pays": "UA",
@@ -459,7 +459,7 @@
    "pays": "LT",
    "offres": 28,
    "classesV1": 21.4,
-   "classesV3": 21.4
+   "classesV3": 28.6
   },
   {
    "pays": "SC",
@@ -854,6 +854,13 @@
    "v3": "employe-de-commerce"
   },
   {
+   "titre": "Team Lead, Sales Part Time",
+   "service": null,
+   "offres": 74,
+   "v1": null,
+   "v3": "manager-floor"
+  },
+  {
    "titre": "Anthropologie Key Holder",
    "service": null,
    "offres": 71,
@@ -887,13 +894,6 @@
    "offres": 61,
    "v1": null,
    "v3": "sales-advisor"
-  },
-  {
-   "titre": "Employée, employé de rayon textile",
-   "service": null,
-   "offres": 60,
-   "v1": null,
-   "v3": "employe-de-commerce"
   }
  ],
  "principauxHorsPlan": [
@@ -919,11 +919,25 @@
    "v3": "assistant-visual-merchandising-manager"
   },
   {
+   "titre": "Premier.ère Vendeuse",
+   "service": null,
+   "offres": 2,
+   "v1": "sales-advisor",
+   "v3": "retail-sales-lead"
+  },
+  {
    "titre": "Influencer Marketing Manager",
    "service": null,
    "offres": 1,
    "v1": "marketing-manager",
    "v3": "chef-de-projet-influence"
+  },
+  {
+   "titre": "JURISTE PROPRIÉTÉ INTELLECTUELLE [F/H/X] - CDD",
+   "service": "Juridique",
+   "offres": 1,
+   "v1": "legal-counsel",
+   "v3": "juriste-propriete-intellectuelle"
   },
   {
    "titre": "Key Holder / Verkaufer (m/w/d) (25-30h/Woche) - Frankfurt",
@@ -1059,6 +1073,13 @@
    "v3": "assistant-store-manager"
   },
   {
+   "titre": "ブルガリDeputy Store Manager/Store Manager 東京・神奈川・北海道・仙台・名古屋・大阪・神戸・京都・広島・福岡",
+   "service": "リテール",
+   "offres": 1,
+   "v1": "store-manager",
+   "v3": "assistant-store-manager"
+  },
+  {
    "titre": "Assistant Store Manager / Store Supervisor (Melbourne)",
    "service": null,
    "offres": 1,
@@ -1154,27 +1175,6 @@
    "service": null,
    "offres": 1,
    "v1": "software-engineer",
-   "v3": null
-  },
-  {
-   "titre": "Specialist, Lead Treasury Accountant",
-   "service": null,
-   "offres": 1,
-   "v1": "accountant",
-   "v3": null
-  },
-  {
-   "titre": "Store Manager/ Store Supervisor - Qassim مدير معرض و مشرف معرض القصيم",
-   "service": null,
-   "offres": 1,
-   "v1": "store-manager",
-   "v3": null
-  },
-  {
-   "titre": "Visual Merchandiser Customer Advisor - UNIQLO Milano",
-   "service": null,
-   "offres": 1,
-   "v1": "visual-merchandiser",
    "v3": null
   }
  ],
@@ -1979,6 +1979,15 @@
    "libelle": "Gestionnaire de stock en boutique"
   },
   {
+   "titre": "agent logistique H/F",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "warehouse-operative",
+   "statut": "CLASSIFIED",
+   "libelle": "Préparateur de commandes"
+  },
+  {
    "titre": "Free People Key Holder",
    "service": null,
    "offres": 56,
@@ -2051,6 +2060,15 @@
    "libelle": "Responsable visual merchandising"
   },
   {
+   "titre": "セールスアドバイザーアルバイト（H&M 錦糸町店）",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "statut": "CLASSIFIED",
+   "libelle": "Conseiller de vente"
+  },
+  {
    "titre": "Agent de Stock F/H",
    "service": null,
    "offres": 15,
@@ -2076,6 +2094,15 @@
    "metier": "chef-de-marque",
    "statut": "CLASSIFIED",
    "libelle": "Chef de marque"
+  },
+  {
+   "titre": "CDI - Coordinateur Logistique (F/H/X)",
+   "service": "Supply Chain & Logistique",
+   "offres": 1,
+   "avant": null,
+   "metier": "coordinateur-logistique",
+   "statut": "CLASSIFIED",
+   "libelle": "Coordinateur logistique"
   },
   {
    "titre": "Aushilfe Kundenberater (m/w/d)",
@@ -2166,6 +2193,24 @@
    "metier": "keyholder",
    "statut": "CLASSIFIED",
    "libelle": "Keyholder"
+  },
+  {
+   "titre": "セールスアドバイザーアルバイト（H&Mララガーデン川口）",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "statut": "CLASSIFIED",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Seasonal Operations Associate PT Hours (BOH)",
+   "service": null,
+   "offres": 20,
+   "avant": null,
+   "metier": "stock-associate",
+   "statut": "CLASSIFIED",
+   "libelle": "Gestionnaire de stock en boutique"
   },
   {
    "titre": "Assistant Manager - BOSS Store, St. Foy",
@@ -2906,6 +2951,15 @@
    "libelle": "Adjoint au responsable de boutique"
   },
   {
+   "titre": "Team Lead, Sales Part Time",
+   "service": null,
+   "offres": 74,
+   "avant": null,
+   "metier": "manager-floor",
+   "statut": "CLASSIFIED",
+   "libelle": "Floor manager"
+  },
+  {
    "titre": "Customer Support",
    "service": null,
    "offres": 4,
@@ -2913,6 +2967,15 @@
    "metier": "customer-service-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller service client"
+  },
+  {
+   "titre": "Ingénieur Data H/F",
+   "service": null,
+   "offres": 2,
+   "avant": null,
+   "metier": "data-engineer",
+   "statut": "CLASSIFIED",
+   "libelle": "Ingénieur données"
   },
   {
    "titre": "Assistant Merchandiser",
@@ -2931,6 +2994,15 @@
    "metier": "assistant-store-manager",
    "statut": "CLASSIFIED",
    "libelle": "Adjoint au responsable de boutique"
+  },
+  {
+   "titre": "Part-Time Sales Supervisor",
+   "service": null,
+   "offres": 32,
+   "avant": null,
+   "metier": "manager-floor",
+   "statut": "CLASSIFIED",
+   "libelle": "Floor manager"
   },
   {
    "titre": "販売スタッフ(アルバイト) Nike Factory Store Shisui",
@@ -3032,6 +3104,15 @@
    "libelle": "Conseiller de vente"
   },
   {
+   "titre": "セールスアドバイザーアルバイト（イオンモール船橋）",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "statut": "CLASSIFIED",
+   "libelle": "Conseiller de vente"
+  },
+  {
    "titre": "Key Holder- Pine Ridge Square Rack",
    "service": null,
    "offres": 1,
@@ -3039,87 +3120,6 @@
    "metier": "keyholder",
    "statut": "CLASSIFIED",
    "libelle": "Keyholder"
-  },
-  {
-   "titre": "Sales Lead-ANN, Leawood Town Center",
-   "service": null,
-   "offres": 1,
-   "avant": null,
-   "metier": "retail-sales-lead",
-   "statut": "CLASSIFIED",
-   "libelle": "Premier vendeur"
-  },
-  {
-   "titre": "Team Manager",
-   "service": null,
-   "offres": 77,
-   "avant": null,
-   "metier": "manager-floor",
-   "statut": "CLASSIFIED",
-   "libelle": "Floor manager"
-  },
-  {
-   "titre": "Floor Manager - F/H",
-   "service": null,
-   "offres": 9,
-   "avant": null,
-   "metier": "manager-floor",
-   "statut": "CLASSIFIED",
-   "libelle": "Floor manager"
-  },
-  {
-   "titre": "Retail Assistant Tilburg",
-   "service": null,
-   "offres": 1,
-   "avant": null,
-   "metier": "sales-advisor",
-   "statut": "CLASSIFIED",
-   "libelle": "Conseiller de vente"
-  },
-  {
-   "titre": "Verkoopmedewerker - 20u - Heist op den Berg",
-   "service": null,
-   "offres": 1,
-   "avant": null,
-   "metier": "sales-advisor",
-   "statut": "CLASSIFIED",
-   "libelle": "Conseiller de vente"
-  },
-  {
-   "titre": "Seasonal Brand Ambassador (Yorkville)",
-   "service": null,
-   "offres": 1,
-   "avant": null,
-   "metier": "sales-advisor",
-   "statut": "CLASSIFIED",
-   "libelle": "Conseiller de vente"
-  },
-  {
-   "titre": "Seasonal Stylist (Retail) (Part-time)",
-   "service": null,
-   "offres": 46,
-   "avant": null,
-   "metier": "sales-advisor",
-   "statut": "CLASSIFIED",
-   "libelle": "Conseiller de vente"
-  },
-  {
-   "titre": "Sales Lead, Walt Whitman Mall",
-   "service": null,
-   "offres": 1,
-   "avant": null,
-   "metier": "retail-sales-lead",
-   "statut": "CLASSIFIED",
-   "libelle": "Premier vendeur"
-  },
-  {
-   "titre": "Inventory Control Associate 1 - Full Time",
-   "service": null,
-   "offres": 2,
-   "avant": null,
-   "metier": "stock-associate",
-   "statut": "CLASSIFIED",
-   "libelle": "Gestionnaire de stock en boutique"
   }
  ]
 }
