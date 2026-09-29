@@ -1,0 +1,42 @@
+{
+  "batchId": "20260929-D453-EMPLOYER-SPELLING-v1",
+  "reviewedBy": "Claude (CTO produit) : relecture des preuves officielles ; GO du CEO du 29/09/2026 pour certifier les cas nets du RUN",
+  "reviewedAt": "2026-09-29T18:46:37Z",
+  "statement": "Deux sources SmartRecruiters du registre nomment désormais leur employeur nativement, et ce libellé diverge de l'attribution faite par le registre. b-s-international : le compte configuré BSInternational se nomme « B&S International » (59/59 offres), et le site carrières officiel careers.bs-international.com renvoie vers ce compte ; « B's » et « B's International » sont des orthographes erronées du registre : fusion vers « B&S International ». funky-buddha : le compte configuré ALTEXSA se nomme « ALTEX S.A. » (23/23 offres, Grèce), et le site officiel funky-buddha.com déclare dans son balisage Organization « Funky Buddha » que « ALTEX S.A. designs, produces, and distributes » ses produits et renvoie vers ce compte ; l'entité juridique publie sous sa Maison, comme MECCA Brands NZ Pty Ltd sous MECCA : fusion de « ALTEX S.A. » vers « Funky Buddha ». Alias limités à chaque source, libellés exacts.",
+  "aliases": [
+    { "sourceKey": "b-s-international", "rawName": "B&S International", "targetCompany": "B&S International" },
+    { "sourceKey": "funky-buddha", "rawName": "ALTEX S.A.", "targetCompany": "Funky Buddha" }
+  ],
+  "merges": [
+    { "fromCompany": "B's", "toCompany": "B&S International" },
+    { "fromCompany": "B's International", "toCompany": "B&S International" },
+    { "fromCompany": "ALTEX S.A.", "toCompany": "Funky Buddha" }
+  ],
+  "evidence": [
+    {
+      "url": "https://api.smartrecruiters.com/v1/companies/bsinternational/postings?limit=100",
+      "artifactFile": "audits/2026-09-29/registre-relu-d453/smartrecruiters-bsinternational-postings.json",
+      "explanation": "API publique SmartRecruiters du compte configuré pour la source b-s-international : 59 offres, toutes portées par company {identifier: BSInternational, name: B&S International}."
+    },
+    {
+      "url": "https://careers.bs-international.com/vacancies/sales-support-government-defense-dordrecht/",
+      "artifactFile": "audits/2026-09-29/registre-relu-d453/bs-international-vacancy-sales-support.html",
+      "explanation": "Site carrières officiel de B&S (lié depuis www.bs-international.com) : l'offre renvoie vers jobs.smartrecruiters.com/BSInternational/744000151827979, présente dans l'API du compte configuré. Le compte appartient donc à B&S International."
+    },
+    {
+      "url": "https://www.bs-international.com/",
+      "artifactFile": "audits/2026-09-29/registre-relu-d453/bs-international-home.html",
+      "explanation": "Site officiel de B&S (www.bs-group-sa.com y redirige) : il renvoie vers careers.bs-international.com."
+    },
+    {
+      "url": "https://api.smartrecruiters.com/v1/companies/ALTEXSA/postings?limit=100",
+      "artifactFile": "audits/2026-09-29/registre-relu-d453/smartrecruiters-altexsa-postings.json",
+      "explanation": "API publique SmartRecruiters du compte configuré pour la source funky-buddha : 23 offres en Grèce, toutes portées par company {identifier: ALTEXSA, name: ALTEX S.A.}."
+    },
+    {
+      "url": "https://www.funky-buddha.com/en/",
+      "artifactFile": "audits/2026-09-29/registre-relu-d453/funky-buddha-home.html",
+      "explanation": "Site officiel de Funky Buddha : balisage schema.org Organization name « Funky Buddha », description « ALTEX S.A. designs, produces, and distributes fashion products… », et lien carrières vers jobs.smartrecruiters.com/ALTEXSA. ALTEX S.A. est l'entité juridique de la Maison."
+    }
+  ]
+}
