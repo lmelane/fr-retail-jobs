@@ -258,7 +258,12 @@ plus de 1 % de faux mesurés (la preuve en mesure 1 sur 541 avec le consensus, 2
 corrigée le 28/09/2026), ou si la version change la classe de plus de 10 % des intitulés hors plan de curation. **Surveillance** : une passe suspendue, une sonde de juge en échec,
 un retard de synchronisation ou une file d'index de plus de 60 s envoient une alerte par l'e-mail d'exploitation
 du RUN (`apps/aggregator/src/pipeline/alert.ts`, Brevo) ; la présence de sa clé en production est vérifiée en 2B,
-car sans elle l'alerte ne part pas.
+car sans elle l'alerte ne part pas. **Construit (pas déployé)** : la file de recherche est surveillée par l'indexeur de
+l'API lui-même (`apps/api/lib/search-alert.ts`, une vérification par minute, alerte au-delà de 60 s, une par heure au
+plus). **Mesuré le 29/09/2026 sur Railway (noms de variables seulement)** : `BREVO_API_KEY`, `BREVO_SENDER_EMAIL` et
+`ALERT_EMAIL` ne sont posées que sur `catwalks-ingestion-worker` (le RUN) ; ni `catwalks-catalogue-api` (l'API, qui
+indexe) ni `catwalks-direct-sync` n'en ont : **les poser sur l'API fait partie de la carte d'activation**, sans quoi
+cette alerte reste muette. Les alertes des passes de curation et des juges viendront avec les passes automatiques.
 
 ### 3.3 Normalisation d'un intitulé
 

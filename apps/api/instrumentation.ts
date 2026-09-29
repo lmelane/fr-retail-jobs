@@ -5,6 +5,7 @@ export async function register() {
   if (process.env.NEXT_RUNTIME === 'nodejs') {
     if (process.env.NEXT_PHASE === 'phase-production-build' || !process.env.DATABASE_URL) return;
     const { initializeSearchIndex, drainSearchIndex, advanceSearchRequeue } = await import('./lib/search-index');
+    const { surveillerFileRecherche } = await import('./lib/search-alert');
     const state = globalThis as typeof globalThis & { catwalksSearchLoop?: boolean };
     if (state.catwalksSearchLoop) return;
     state.catwalksSearchLoop = true;
@@ -16,6 +17,8 @@ export async function register() {
         worked = (await drainSearchIndex()) > 0;
         // File vide : la tranche suivante d'une remise en file demandée par un changement de taxonomie (D-475, §3.6).
         if (!worked) worked = (await advanceSearchRequeue()) > 0;
+        // Une fois par minute au plus : l'âge de la file, et l'alerte par e-mail au-delà de 60 s (D-475, plan §3.2).
+        await surveillerFileRecherche();
       } catch (error) {
         console.error(JSON.stringify({ event: 'search.projection_failed', error: error instanceof Error ? error.name : 'unknown' }));
       }
