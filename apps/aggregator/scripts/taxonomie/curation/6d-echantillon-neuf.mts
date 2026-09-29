@@ -1,28 +1,73 @@
 /**
- * PASSE DE CURATION v3, ÉTAPE 6d : TIRAGE D'UN ÉCHANTILLON NEUF POUR LA MESURE DE JUSTESSE (plan
- * `docs/architecture/classification-metiers.md` §3.2 : « échantillon neuf de 200 rattachements par version »).
+ * PASSE DE CURATION v3, ÉTAPE 6d : ÉCHANTILLON NEUF ET MESURE DE JUSTESSE DE LA VERSION FINALE (plan
+ * `docs/architecture/classification-metiers.md` §3.2 : « échantillon neuf de 200 rattachements par version, jugé par un
+ * modèle différent de celui qui a rattaché » ; D-475 §30 : mesure « à chaque version »).
  *
- * 200 couples (intitulé, service) dont le métier est nouveau ou change en v3, jamais jugés auparavant, ordonnés par
- * empreinte SHA-256 salée (tirage reproductible). Le jugement (juste, proche, faux) et son compte sont consignés dans
- * `curation-v3/6d-mesure-justesse.json`, par un juge d'une autre famille de modèles que ceux de la passe.
+ * Protocole, après l'audit du 29/09/2026 (la mesure précédente portait sur un manifeste antérieur, jugée par l'assistant
+ * qui corrigeait ensuite) :
+ *  1. `--tirer` : 200 couples (intitulé, service) dont le résultat change en v3 FINALE (gain, changement, perte), jamais
+ *     jugés auparavant, tirés sans remise avec une probabilité proportionnelle au nombre d'offres (Efraimidis-Spirakis,
+ *     aléa tiré d'une empreinte : reproductible) ; écrit `6d-echantillon-final.json` AVANT tout jugement ;
+ *  2. `--juger-modele` : le second juge (`gemini-3-flash-preview`) note chaque couple, seul, avec la grille ci-dessous ;
+ *  3. les verdicts de l'assistant (autre famille de modèles) sont ajoutés à la main dans le fichier, puis `--compter`
+ *     rend les deux mesures, par intitulé et pondérées par offre, avec l'intervalle de Wilson à 95 %.
+ * Grille : C juste ; P proche (bonne famille ou niveau voisin, ex. stage rattaché au métier plein) ; F faux (autre métier,
+ * ou métier donné à un intitulé vague) ; pour une perte (plus de métier), C si l'absence de métier est juste, F sinon.
  *
- *   node --import tsx apps/aggregator/scripts/taxonomie/curation/6d-echantillon-neuf.mts
+ *   node [--env-file=<.env portant GEMINI_API_KEY>] --import tsx apps/aggregator/scripts/taxonomie/curation/6d-echantillon-neuf.mts --tirer|--juger-modele|--compter
  */
 import { createHash } from 'node:crypto';
-import { readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { gunzipSync } from 'node:zlib';
 import { compileOccupationManifest } from '../../../../../packages/db/occupation-engine.ts';
-import { DOSSIER_SORTIE as D } from './commun.mts';
-const v1 = compileOccupationManifest(JSON.parse(readFileSync(D + 'entrees/catwalks-occupations-20260909-v1.json', 'utf8')));
-const m = JSON.parse(readFileSync(D + '6-manifeste-v3.json', 'utf8')); const v3 = compileOccupationManifest(m);
-const { couples } = JSON.parse(gunzipSync(readFileSync(D + 'entrees/offres-preview-2026-09-29.json.gz')).toString());
-// Sans remise : aucun couple déjà jugé (tour 1 de la mesure, échantillon de la preview).
-const vus = new Set([...JSON.parse(readFileSync(D + '6d-mesure-justesse.json', 'utf8')).tour1.verdicts, ...JSON.parse(readFileSync(D + '6b-preview.json', 'utf8')).echantillon].map((x: any) => `${x.titre}|${x.service}`));
-const cand = couples.map((c: any) => ({ c, a: v1.classify(c.titre, c.service).occupationCode, b: v3.classify(c.titre, c.service).occupationCode }))
-  .filter((x: any) => x.b && x.a !== x.b && !vus.has(`${x.c.titre}|${x.c.service}`));
-const h = (x: any) => createHash('sha256').update(`echantillon-neuf-2026-09-29|${x.c.titre}|${x.c.service}`).digest('hex');
-const e = cand.sort((x: any, y: any) => h(x).localeCompare(h(y))).slice(0, 200)
-  .map((x: any) => ({ titre: x.c.titre, service: x.c.service, offres: x.c.offres, avant: x.a, metier: x.b, libelle: m.occupations.find((o: any) => o.key === x.b).labels.fr }));
-writeFileSync(`${D}6d-echantillon-neuf.json`, JSON.stringify(e, null, 1));
-console.log('candidats neufs :', cand.length);
-e.forEach((x: any, n: number) => console.log(n + 1, '|', x.titre.replace(/\s+/g, ' ').slice(0, 62), '|', (x.service ?? '').slice(0, 14), '→', x.libelle));
+import { DOSSIER_SORTIE as D, lireEtape, servie } from './commun.mts';
+
+const FICHIER = `${D}6d-echantillon-final.json`;
+const mode = process.argv.find((a) => a.startsWith('--'));
+
+if (mode === '--tirer') {
+  if (existsSync(FICHIER)) throw new Error('échantillon déjà tiré : il ne se retire pas (enregistré avant jugement)');
+  const v1 = compileOccupationManifest(structuredClone(servie)), m = lireEtape('6-manifeste-v3.json'), v3 = compileOccupationManifest(m);
+  const { couples } = JSON.parse(gunzipSync(readFileSync(`${D}entrees/offres-preview-2026-09-29.json.gz`)).toString('utf8'));
+  const deja = lireEtape('6d-mesure-justesse.json');
+  const vus = new Set([...deja.tour1.verdicts, ...deja.echantillonNeuf.verdicts].map((x: any) => x.titre.toLowerCase().trim()));
+  const cand = couples.map((c: any) => ({ c, a: v1.classify(c.titre, c.service).occupationCode, b: v3.classify(c.titre, c.service) }))
+    .filter((x: any) => x.a !== x.b.occupationCode && !vus.has(x.c.titre.toLowerCase().trim()));
+  const alea = (x: any) => (parseInt(createHash('sha256').update(`final-2026-09-29|${x.c.titre}|${x.c.service}`).digest('hex').slice(0, 12), 16) + 1) / 2 ** 48;
+  const e = cand.map((x: any) => ({ x, k: Math.log(alea(x)) / x.c.offres })).sort((p: any, q: any) => q.k - p.k).slice(0, 200)
+    .map(({ x }: any) => ({ titre: x.c.titre, service: x.c.service, offres: x.c.offres, avant: x.a, metier: x.b.occupationCode, statut: x.b.occupationStatus,
+      libelle: m.occupations.find((o: any) => o.key === x.b.occupationCode)?.labels.fr ?? null, verdictModele: null, verdictAssistant: null }));
+  writeFileSync(FICHIER, JSON.stringify({ tireLe: new Date().toISOString(), manifeste: m.id, candidats: cand.length, echantillon: e }, null, 1));
+  console.log(`tiré : ${e.length} sur ${cand.length} candidats neufs`);
+  e.forEach((x: any, n: number) => console.log(n + 1, '|', x.titre.replace(/\s+/g, ' ').slice(0, 60), '|', (x.service ?? '').slice(0, 14), '|', x.avant ?? '—', '→', x.libelle ?? `aucun (${x.statut})`));
+}
+
+if (mode === '--juger-modele') {
+  const { JUGES, repondre } = await import('./ia.mts');
+  const o = JSON.parse(readFileSync(FICHIER, 'utf8'));
+  const CONSIGNE = `Tu évalues la classification d'offres d'emploi de Catwalks (luxe, mode, beauté, retail). Pour chaque offre (intitulé, service), note le métier attribué : "C" juste ; "P" proche (bonne famille ou niveau voisin, ex. un stage rattaché au métier plein) ; "F" faux (un autre métier, ou un métier donné à un intitulé trop vague pour en avoir un). Quand l'offre n'a PAS de métier, "C" si l'absence de métier est juste (intitulé vague ou ambigu), "F" si un métier évident manque.`;
+  const SCHEMA = { type: 'OBJECT', properties: { i: { type: 'INTEGER' }, verdict: { type: 'STRING', enum: ['C', 'P', 'F'] } }, required: ['i', 'verdict'] };
+  const rendu = (lot: any[]) => lot.map((x, j) => `[${j}] « ${x.titre} »${x.service ? ` (service : ${x.service})` : ''} → ${x.libelle ?? 'aucun métier'}`).join('\n');
+  const r = await repondre(JUGES.j2, CONSIGNE, o.echantillon, 20, rendu, SCHEMA);
+  o.echantillon.forEach((x: any, n: number) => { x.verdictModele = r[n]?.verdict ?? null; });
+  writeFileSync(FICHIER, JSON.stringify(o, null, 1));
+  console.log('verdicts du modèle :', o.echantillon.filter((x: any) => x.verdictModele).length, '/', o.echantillon.length);
+}
+
+if (mode === '--compter') {
+  const o = JSON.parse(readFileSync(FICHIER, 'utf8'));
+  const wilson = (f: number, n: number) => { const z = 1.96, p = f / n; return Math.round(1000 * ((p + z * z / (2 * n) + z * Math.sqrt(p * (1 - p) / n + z * z / (4 * n * n))) / (1 + z * z / n))) / 10; };
+  const mesure = (cle: string) => {
+    const l = o.echantillon.filter((x: any) => x[cle]);
+    const n = (v: string) => l.filter((x: any) => x[cle] === v).length;
+    const w = (v: string) => l.filter((x: any) => x[cle] === v).reduce((s: number, x: any) => s + x.offres, 0);
+    const tot = l.reduce((s: number, x: any) => s + x.offres, 0);
+    return { juges: l.length, C: n('C'), P: n('P'), F: n('F'), fauxPct: Math.round(1000 * n('F') / l.length) / 10, borneHauteWilson95: wilson(n('F'), l.length),
+      parOffre: { fauxPct: Math.round(1000 * w('F') / tot) / 10, justesPct: Math.round(1000 * w('C') / tot) / 10 } };
+  };
+  const bilan = { assistant: mesure('verdictAssistant'), modele: mesure('verdictModele'),
+    desaccords: o.echantillon.filter((x: any) => x.verdictAssistant && x.verdictModele && x.verdictAssistant !== x.verdictModele).length };
+  o.bilan = bilan;
+  writeFileSync(FICHIER, JSON.stringify(o, null, 1));
+  console.log(JSON.stringify(bilan, null, 1));
+}

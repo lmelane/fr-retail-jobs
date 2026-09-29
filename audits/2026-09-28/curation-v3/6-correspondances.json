@@ -1,5 +1,5 @@
 {
- "calculeLe": "2026-09-29T09:59:08.506Z",
+ "calculeLe": "2026-09-29T10:53:55.604Z",
  "manifeste": "catwalks-occupations-20260929-v3",
  "metiers": {
   "sales-advisor": "sales-advisor",
@@ -64,200 +64,205 @@
   "social-media-manager": "social-media-manager",
   "pastry-chef": "pastry-chef",
   "optical-assistant": "optical-assistant",
-  "backend:ACHETEUR_APPROVISIONNEUR": "buyer-planner",
-  "backend:AGENT_DE_BORD": "flight-attendant",
-  "backend:AGENT_DE_SECURITE": "security-guard",
-  "backend:AGENT_DE_SERVICE_HOSPITALIER": "sterile-services-technician",
-  "backend:AGENT_DE_TRANSIT": "freight-forwarder",
-  "backend:AGENT_D_ENTRETIEN": "cleaner",
-  "backend:AGENT_D_ESCALE": "ground-handling-agent",
-  "backend:AIDE_A_LA_PERSONNE": "caregiver",
-  "backend:ANIMATEUR_DE_LOISIRS": "activity-leader",
-  "backend:ANIMATEUR_VENTES": "sales-promoter",
-  "backend:ARCHITECTE_D_INTERIEUR": "interior-architect",
-  "backend:ASSISTANT_ADMINISTRATIF": "administrative-assistant",
-  "backend:ASSISTANT_ARCHITECTE": "architectural-assistant",
-  "backend:ASSISTANT_BUSINESS_DEVELOPMENT": "business-development-assistant",
-  "backend:ASSISTANT_COMMERCIAL": "sales-support-assistant",
-  "backend:ASSISTANT_DENTAIRE": "dental-assistant",
-  "backend:ASSISTANT_DESIGNER": "design-assistant",
-  "backend:ASSISTANT_DE_GALERIE": "gallery-assistant",
-  "backend:ASSISTANT_DE_GESTION": "management-assistant",
-  "backend:ASSISTANT_D_EDUCATION": "learning-mentor",
-  "backend:ASSISTANT_HOTELIER": "hotel-receptionist",
-  "backend:ASSISTANT_IMPORT_EXPORT": "import-export-assistant",
+  "backend:ACHETEUR_APPROVISIONNEUR": "acheteur-approvisionneur",
+  "backend:AGENT_DE_BORD": "agent-de-bord",
+  "backend:AGENT_DE_SECURITE": "agent-de-securite",
+  "backend:AGENT_DE_SERVICE_HOSPITALIER": "agent-de-service-hospitalier",
+  "backend:AGENT_DE_TRANSIT": "agent-de-transit",
+  "backend:AGENT_D_ENTRETIEN": "agent-d-entretien",
+  "backend:AGENT_D_ESCALE": "agent-d-escale",
+  "backend:AIDE_A_LA_PERSONNE": "aide-a-la-personne",
+  "backend:ANIMATEUR_DE_LOISIRS": "animateur-de-loisirs",
+  "backend:ANIMATEUR_VENTES": "animateur-ventes",
+  "backend:ARCHITECTE_D_INTERIEUR": "architecte-d-interieur",
+  "backend:ASSISTANT_ADMINISTRATIF": "assistant-administratif",
+  "backend:ASSISTANT_ARCHITECTE": "assistant-architecte",
+  "backend:ASSISTANT_BUSINESS_DEVELOPMENT": "assistant-business-development",
+  "backend:ASSISTANT_COMMERCIAL": "assistant-commercial",
+  "backend:ASSISTANT_DENTAIRE": "assistant-dentaire",
+  "backend:ASSISTANT_DESIGNER": "assistant-designer",
+  "backend:ASSISTANT_DE_GALERIE": "assistant-de-galerie",
+  "backend:ASSISTANT_DE_GESTION": "assistant-de-gestion",
+  "backend:ASSISTANT_D_EDUCATION": "assistant-d-education",
+  "backend:ASSISTANT_HOTELIER": "assistant-hotelier",
+  "backend:ASSISTANT_IMPORT_EXPORT": "assistant-import-export",
   "backend:ASSISTANT_KEY_ACCOUNT_MANAGER": "assistant-key-account-manager",
-  "backend:ASSISTANT_MARKETING_CLIENT": "crm-marketing-assistant",
-  "backend:ASSISTANT_MARKETING_DIGITAL": "digital-marketing-assistant",
-  "backend:ASSISTANT_MARKETING_ET_VENTES": "sales-and-marketing-assistant",
-  "backend:ASSISTANT_MEDIA": "media-assistant",
-  "backend:ASSISTANT_MERCHANDISER": "merchandising-assistant",
-  "backend:ASSISTANT_OPERATIONS_CLIENT": "customer-operations-assistant",
-  "backend:ASSISTANT_PATRIMOINE": "heritage-assistant",
-  "backend:ASSISTANT_PEDAGOGIQUE": "learning-assistant",
-  "backend:ASSISTANT_QUALITE": "quality-assistant",
-  "backend:ASSISTANT_SHOWROOM": "showroom-assistant",
-  "backend:ASSISTANT_STYLISTE": "stylist-assistant",
-  "backend:AUDITEUR": "auditor",
-  "backend:AUXILIAIRE_BANCAIRE": "bank-teller",
+  "backend:ASSISTANT_MARKETING_CLIENT": "assistant-marketing-client",
+  "backend:ASSISTANT_MARKETING_DIGITAL": "assistant-marketing-digital",
+  "backend:ASSISTANT_MARKETING_ET_VENTES": "assistant-marketing-et-ventes",
+  "backend:ASSISTANT_MEDIA": "assistant-media",
+  "backend:ASSISTANT_MERCHANDISER": "assistant-merchandiser",
+  "backend:ASSISTANT_OPERATIONS_CLIENT": "assistant-operations-client",
+  "backend:ASSISTANT_PATRIMOINE": "assistant-patrimoine",
+  "backend:ASSISTANT_PEDAGOGIQUE": "assistant-pedagogique",
+  "backend:ASSISTANT_QUALITE": "assistant-qualite",
+  "backend:ASSISTANT_SHOWROOM": "assistant-showroom",
+  "backend:ASSISTANT_STYLISTE": "assistant-styliste",
+  "backend:AUDITEUR": "auditeur",
+  "backend:AUXILIAIRE_BANCAIRE": "auxiliaire-bancaire",
   "backend:AU_PAIR": "au-pair",
-  "backend:BARBIER": "barber",
-  "backend:BARMAN": "bartender",
-  "backend:BOOKER_MODE": "booker",
-  "backend:BOTTIER": "shoemaker",
-  "backend:BRODERIE": "embroiderer",
+  "backend:BARBIER": "hairdresser",
+  "backend:BARMAN": "barman",
+  "backend:BOOKER_MODE": "booker-mode",
+  "backend:BOTTIER": "bottier",
+  "backend:BRODERIE": "broderie",
   "backend:CATEGORY_MANAGER": "category-manager",
-  "backend:CHARGE_DE_COMMUNICATION_EVENEMENTIELLE": "event-manager",
-  "backend:CHARGE_DE_MARKETING_ET_COMMUNICATION": "marketing-and-communication-officer",
-  "backend:CHARGE_DE_RELATIONS_PRESSE": "press-officer",
-  "backend:CHARGE_D_ADMISSIONS_ET_PARTENARIATS": "admissions-officer",
-  "backend:CHARGE_D_AFFAIRES_REGLEMENTAIRES": "regulatory-affairs-specialist",
-  "backend:CHEF_DE_MARQUE": "brand-manager",
-  "backend:CHEF_DE_PROJET_COSMETIQUE": "cosmetic-project-manager",
-  "backend:CHEF_DE_PROJET_CRM": "crm-project-manager",
-  "backend:CHEF_DE_PROJET_DIGITAL": "digital-project-manager",
-  "backend:CHEF_DE_PROJET_EVENEMENTIEL": "event-project-manager",
-  "backend:CHEF_DE_PROJET_INFLUENCE": "influencer-marketing-manager",
-  "backend:CHEF_DE_PROJET_SUPPLY_CHAIN": "supply-chain-project-manager",
-  "backend:CHEF_DE_PROJET_TEXTILE": "textile-project-manager",
-  "backend:CHEF_DE_PROJET_TRADE_MARKETING": "trade-marketing-manager",
+  "backend:CHARGE_DE_COMMUNICATION_EVENEMENTIELLE": "charge-de-communication-evenementielle",
+  "backend:CHARGE_DE_MARKETING_ET_COMMUNICATION": "charge-de-marketing-et-communication",
+  "backend:CHARGE_DE_RELATIONS_PRESSE": "charge-de-relations-presse",
+  "backend:CHARGE_D_ADMISSIONS_ET_PARTENARIATS": "charge-d-admissions-et-partenariats",
+  "backend:CHARGE_D_AFFAIRES_REGLEMENTAIRES": "charge-d-affaires-reglementaires",
+  "backend:CHEF_DE_MARQUE": "chef-de-marque",
+  "backend:CHEF_DE_PROJET_COSMETIQUE": "chef-de-projet-cosmetique",
+  "backend:CHEF_DE_PROJET_CRM": "chef-de-projet-crm",
+  "backend:CHEF_DE_PROJET_DIGITAL": "chef-de-projet-digital",
+  "backend:CHEF_DE_PROJET_EVENEMENTIEL": "chef-de-projet-evenementiel",
+  "backend:CHEF_DE_PROJET_INFLUENCE": "chef-de-projet-influence",
+  "backend:CHEF_DE_PROJET_SUPPLY_CHAIN": "chef-de-projet-supply-chain",
+  "backend:CHEF_DE_PROJET_TEXTILE": "chef-de-projet-textile",
+  "backend:CHEF_DE_PROJET_TRADE_MARKETING": "chef-de-projet-trade-marketing",
   "backend:CHEF_DE_RANG": "chef-de-rang",
-  "backend:CHEF_PRODUIT": "product-manager",
-  "backend:COLLABORATEUR_PARLEMENTAIRE": "parliamentary-assistant",
+  "backend:CHEF_PRODUIT": "chef-produit",
+  "backend:COLLABORATEUR_PARLEMENTAIRE": "collaborateur-parlementaire",
   "backend:COLLECTION_MERCHANDISER": "collection-merchandiser",
-  "backend:COMMERCIAL": "sales-representative",
-  "backend:COMMERCIAL_AUTOMOBILE": "car-sales-executive",
-  "backend:COMMIS_DE_CUISINE": "commis-chef",
-  "backend:CONCEPTEUR_3D_JOAILLERIE": "3d-jewelry-designer",
+  "backend:COMMERCIAL": "commercial",
+  "backend:COMMERCIAL_AUTOMOBILE": "commercial-automobile",
+  "backend:COMMIS_DE_CUISINE": "commis-de-cuisine",
+  "backend:CONCEPTEUR_3D_JOAILLERIE": "concepteur-3d-joaillerie",
   "backend:CONCIERGE": "concierge",
-  "backend:CONSEILLER_CLIENTELE_BANCAIRE": "personal-banker",
-  "backend:CONSEILLER_EN_GESTION_DE_PATRIMOINE": "wealth-manager",
-  "backend:CONSEILLER_EN_IMAGE": "personal-stylist",
-  "backend:CONSEILLER_IMMOBILIER": "real-estate-agent",
-  "backend:CONSULTANT_EN_DEVELOPPEMENT_DURABLE": "sustainability-consultant",
-  "backend:CONSULTANT_EN_STRATEGIE": "strategy-consultant",
-  "backend:COORDINATEUR_DE_PRODUCTION": "production-coordinator",
-  "backend:COORDINATEUR_DE_PROJET_CREATIF": "creative-project-coordinator",
-  "backend:COORDINATEUR_LOGISTIQUE": "logistics-coordinator",
-  "backend:COORDINATEUR_RETAIL": "retail-coordinator",
-  "backend:COUPE": "garment-cutter",
-  "backend:CREATEUR_DE_CONTENU": "content-creator",
-  "backend:CREATEUR_DE_MARQUE": "brand-founder",
-  "backend:DELEGUE_PHARMACEUTIQUE": "pharmaceutical-sales-representative",
-  "backend:DESIGNER_ACCESSOIRES": "accessories-designer",
-  "backend:DESIGNER_BIJOUX_ACCESSOIRES": "jewelry-and-accessories-designer",
-  "backend:DESIGNER_CHAUSSURES": "footwear-designer",
-  "backend:DESIGNER_INDUSTRIEL": "industrial-designer",
-  "backend:DESIGNER_MAILLE": "knitwear-designer",
-  "backend:DESSINATEUR_TEXTILE": "textile-designer",
-  "backend:DIRECTEUR_CENTRE_ESTHETIQUE": "beauty-center-manager",
-  "backend:DIRECTEUR_DES_RESSOURCES_HUMAINES": "human-resources-director",
-  "backend:DIRECTEUR_DE_CASTING": "casting-director",
-  "backend:DIRECTEUR_DE_CLIENTELE": "account-director",
-  "backend:DIRECTEUR_DE_GALERIE": "art-gallery-manager",
-  "backend:DIRECTEUR_PRODUCTION": "production-director",
-  "backend:DIRECTEUR_RESEAU": "retail-director",
-  "backend:DIRECTEUR_SUPPLY_CHAIN": "supply-chain-director",
-  "backend:DIRECTION": "general-manager",
-  "backend:DIRECTION_ARTISTIQUE": "art-director",
-  "backend:DIRECTION_COMMERCIALE": "commercial-director",
-  "backend:DIRECTION_MARQUE": "brand-director",
-  "backend:EDUCATEUR_SPECIALISE": "social-pedagogue",
-  "backend:EMPLOYE_DE_CAFE": "coffee-specialist",
-  "backend:EMPLOYE_DE_COMMERCE": "sales-assistant",
-  "backend:EMPLOYE_DE_RESTAURATION": "food-service-worker",
-  "backend:E_MERCHANDISER": "e-commerce-merchandiser",
-  "backend:FIGURANT": "extra",
-  "backend:FORMATEUR": "trainer",
-  "backend:FORMULATEUR_COSMETIQUE": "cosmetic-chemist",
-  "backend:GARDIEN_D_ENFANTS": "babysitter",
-  "backend:GEMMOLOGUE": "gemmologist",
-  "backend:GESTIONNAIRE_DES_RESSOURCES_HUMAINES": "hr-officer",
-  "backend:GESTIONNAIRE_SINISTRES": "claims-handler",
-  "backend:GOUVERNANT": "housekeeper",
-  "backend:HABILLEUR": "dresser",
-  "backend:INGENIEUR_AMELIORATION_CONTINUE": "continuous-improvement-engineer",
-  "backend:INGENIEUR_QUALITE": "quality-engineer",
-  "backend:INGENIEUR_TEXTILE": "textile-engineer",
-  "backend:INVENTORISTE": "inventory-specialist",
-  "backend:JARDINIER": "gardener",
-  "backend:JOURNALISTE": "journalist",
-  "backend:JURISTE_PROPRIETE_INTELLECTUELLE": "ip-lawyer",
-  "backend:KINESITHERAPEUTE": "physiotherapist",
-  "backend:LIBRAIRE": "bookseller",
-  "backend:LIVREUR": "delivery-driver",
+  "backend:CONSEILLER_CLIENTELE_BANCAIRE": "conseiller-clientele-bancaire",
+  "backend:CONSEILLER_EN_GESTION_DE_PATRIMOINE": "conseiller-en-gestion-de-patrimoine",
+  "backend:CONSEILLER_EN_IMAGE": "conseiller-en-image",
+  "backend:CONSEILLER_IMMOBILIER": "conseiller-immobilier",
+  "backend:CONSULTANT_EN_DEVELOPPEMENT_DURABLE": "consultant-en-developpement-durable",
+  "backend:CONSULTANT_EN_STRATEGIE": "consultant-en-strategie",
+  "backend:COORDINATEUR_DE_PRODUCTION": "coordinateur-de-production",
+  "backend:COORDINATEUR_DE_PROJET_CREATIF": "coordinateur-de-projet-creatif",
+  "backend:COORDINATEUR_LOGISTIQUE": "coordinateur-logistique",
+  "backend:COORDINATEUR_RETAIL": "coordinateur-retail",
+  "backend:COUPE": "coupe",
+  "backend:CREATEUR_DE_CONTENU": "createur-de-contenu",
+  "backend:CREATEUR_DE_MARQUE": "createur-de-marque",
+  "backend:DELEGUE_PHARMACEUTIQUE": "delegue-pharmaceutique",
+  "backend:DESIGNER_ACCESSOIRES": "designer-accessoires",
+  "backend:DESIGNER_BIJOUX_ACCESSOIRES": "designer-bijoux-accessoires",
+  "backend:DESIGNER_CHAUSSURES": "designer-chaussures",
+  "backend:DESIGNER_INDUSTRIEL": "designer-industriel",
+  "backend:DESIGNER_MAILLE": "designer-maille",
+  "backend:DESSINATEUR_TEXTILE": "dessinateur-textile",
+  "backend:DIRECTEUR_CENTRE_ESTHETIQUE": "directeur-centre-esthetique",
+  "backend:DIRECTEUR_DES_RESSOURCES_HUMAINES": "directeur-des-ressources-humaines",
+  "backend:DIRECTEUR_DE_CASTING": "directeur-de-casting",
+  "backend:DIRECTEUR_DE_CLIENTELE": "directeur-de-clientele",
+  "backend:DIRECTEUR_DE_GALERIE": "directeur-de-galerie",
+  "backend:DIRECTEUR_PRODUCTION": "directeur-production",
+  "backend:DIRECTEUR_RESEAU": "directeur-reseau",
+  "backend:DIRECTEUR_SUPPLY_CHAIN": "directeur-supply-chain",
+  "backend:DIRECTION": "direction",
+  "backend:DIRECTION_ARTISTIQUE": "direction-artistique",
+  "backend:DIRECTION_COMMERCIALE": "direction-commerciale",
+  "backend:DIRECTION_MARQUE": "direction-marque",
+  "backend:EDUCATEUR_SPECIALISE": "educateur-specialise",
+  "backend:EMPLOYE_DE_CAFE": "barista",
+  "backend:EMPLOYE_DE_COMMERCE": "employe-de-commerce",
+  "backend:EMPLOYE_DE_RESTAURATION": "employe-de-restauration",
+  "backend:E_MERCHANDISER": "e-merchandiser",
+  "backend:FIGURANT": "figurant",
+  "backend:FORMATEUR": "formateur",
+  "backend:FORMULATEUR_COSMETIQUE": "formulateur-cosmetique",
+  "backend:GARDIEN_D_ENFANTS": "gardien-d-enfants",
+  "backend:GEMMOLOGUE": "gemmologue",
+  "backend:GESTIONNAIRE_DES_RESSOURCES_HUMAINES": "gestionnaire-des-ressources-humaines",
+  "backend:GESTIONNAIRE_SINISTRES": "gestionnaire-sinistres",
+  "backend:GOUVERNANT": "gouvernant",
+  "backend:HABILLEUR": "habilleur",
+  "backend:INGENIEUR_AMELIORATION_CONTINUE": "ingenieur-amelioration-continue",
+  "backend:INGENIEUR_QUALITE": "ingenieur-qualite",
+  "backend:INGENIEUR_TEXTILE": "ingenieur-textile",
+  "backend:INVENTORISTE": "inventoriste",
+  "backend:JARDINIER": "jardinier",
+  "backend:JOURNALISTE": "journaliste",
+  "backend:JURISTE_PROPRIETE_INTELLECTUELLE": "juriste-propriete-intellectuelle",
+  "backend:KINESITHERAPEUTE": "kinesitherapeute",
+  "backend:LIBRAIRE": "libraire",
+  "backend:LIVREUR": "livreur",
   "backend:MAITRE_D_HOTEL": "maitre-d-hotel",
-  "backend:MANAGER_COMMERCIAL": "commercial-manager",
-  "backend:MANAGER_DE_RESTAURANT": "restaurant-manager",
-  "backend:MANAGER_DE_TRANSITION_COMMERCIAL": "interim-commercial-manager",
-  "backend:MANAGER_FLOOR": "floor-manager",
-  "backend:MANNEQUIN": "model",
-  "backend:MEDIATEUR_CULTUREL": "cultural-mediator",
-  "backend:MODELISTE": "patternmaker",
+  "backend:MANAGER_COMMERCIAL": "manager-commercial",
+  "backend:MANAGER_DE_RESTAURANT": "manager-de-restaurant",
+  "backend:MANAGER_DE_TRANSITION_COMMERCIAL": "manager-de-transition-commercial",
+  "backend:MANAGER_FLOOR": "manager-floor",
+  "backend:MANNEQUIN": "mannequin",
+  "backend:MEDIATEUR_CULTUREL": "mediateur-culturel",
+  "backend:MODELISTE": "modeliste",
   "backend:OFFICE_MANAGER": "office-manager",
-  "backend:OPERATEUR_DE_PRODUCTION": "production-operator",
+  "backend:OPERATEUR_DE_PRODUCTION": "operateur-de-production",
   "backend:PERSONAL_SHOPPER": "personal-shopper",
-  "backend:PHOTOGRAPHE": "photographer",
-  "backend:PLANIFICATEUR_SUPPLY_CHAIN": "supply-chain-planner",
-  "backend:PRATICIEN_MEDECINE_ESTHETIQUE": "aesthetic-doctor",
-  "backend:PRATICIEN_SPA": "spa-therapist",
-  "backend:PREMIERE_MAIN": "senior-sample-machinist",
-  "backend:PRESIDENT_D_ASSOCIATION": "president",
+  "backend:PHOTOGRAPHE": "photographe",
+  "backend:PLANIFICATEUR_SUPPLY_CHAIN": "planificateur-supply-chain",
+  "backend:PRATICIEN_MEDECINE_ESTHETIQUE": "praticien-medecine-esthetique",
+  "backend:PRATICIEN_SPA": "praticien-spa",
+  "backend:PREMIERE_MAIN": "premiere-main",
+  "backend:PRESIDENT_D_ASSOCIATION": "president-d-association",
   "backend:PRODUCT_OWNER": "product-owner",
-  "backend:PROTHESISTE_ONGULAIRE": "nail-technician",
-  "backend:PROTOTYPISTE": "model-maker",
-  "backend:PROTOTYPISTE_MAROQUINERIE": "leather-goods-prototyper",
-  "backend:RECRUTEUR_DE_DONATEURS": "fundraiser",
-  "backend:REGISSEUR": "stage-manager",
-  "backend:RESPONSABLE_ACHATS_ET_OFFRE": "purchasing-manager",
-  "backend:RESPONSABLE_ADMINISTRATIF_ET_FINANCIER": "financial-manager",
-  "backend:RESPONSABLE_ADV": "sales-administration-manager",
-  "backend:RESPONSABLE_ATELIER": "workshop-manager",
-  "backend:RESPONSABLE_COLLECTION": "collection-manager",
-  "backend:RESPONSABLE_COMMERCIAL_DE_ZONE": "area-sales-manager",
-  "backend:RESPONSABLE_COMMUNICATION": "communication-manager",
-  "backend:RESPONSABLE_COMMUNICATION_INTERNE": "internal-communication-manager",
-  "backend:RESPONSABLE_DEVELOPPEMENT_MATIERES": "material-development-manager",
-  "backend:RESPONSABLE_DE_COMPTES": "account-manager",
-  "backend:RESPONSABLE_FORMATION": "training-manager",
-  "backend:RESPONSABLE_GROWTH_MARKETING": "growth-marketing-manager",
-  "backend:RESPONSABLE_IMAGE_ET_CONTENU": "image-content-manager",
-  "backend:RESPONSABLE_INDUSTRIALISATION": "industrialisation-manager",
-  "backend:RESPONSABLE_JURIDIQUE": "legal-manager",
-  "backend:RESPONSABLE_OPERATIONNEL": "operations-manager",
-  "backend:RESPONSABLE_PARTENARIATS": "partnership-manager",
-  "backend:RESPONSABLE_PROJETS_RETAIL": "retail-project-manager",
-  "backend:RESPONSABLE_QUALITE_TEXTILE": "textile-quality-manager",
-  "backend:RESPONSABLE_RECRUTEMENT": "recruitment-manager",
-  "backend:RESPONSABLE_RELATION_CLIENT": "customer-relationship-manager",
-  "backend:RESPONSABLE_SERVICES_GENERAUX": "facilities-manager",
-  "backend:RESPONSABLE_SUPPLY_CHAIN": "supply-chain-manager",
-  "backend:RESPONSABLE_VM": "visual-merchandising-manager",
-  "backend:RESPONSABLE_WHOLESALE": "wholesale-manager",
-  "backend:SAUVETEUR": "lifeguard",
-  "backend:SCENOGRAPHE": "set-designer",
-  "backend:SERIGRAPHE_TEXTILE": "screen-printer",
-  "backend:SERTISSEUR": "stone-setter",
+  "backend:PROTHESISTE_ONGULAIRE": "prothesiste-ongulaire",
+  "backend:PROTOTYPISTE": "prototypiste",
+  "backend:PROTOTYPISTE_MAROQUINERIE": "prototypiste-maroquinerie",
+  "backend:RECRUTEUR_DE_DONATEURS": "recruteur-de-donateurs",
+  "backend:REGISSEUR": "regisseur",
+  "backend:RESPONSABLE_ACHATS_ET_OFFRE": "responsable-achats-et-offre",
+  "backend:RESPONSABLE_ADMINISTRATIF_ET_FINANCIER": "responsable-administratif-et-financier",
+  "backend:RESPONSABLE_ADV": "responsable-adv",
+  "backend:RESPONSABLE_ATELIER": "responsable-atelier",
+  "backend:RESPONSABLE_COLLECTION": "responsable-collection",
+  "backend:RESPONSABLE_COMMERCIAL_DE_ZONE": "responsable-commercial-de-zone",
+  "backend:RESPONSABLE_COMMUNICATION": "responsable-communication",
+  "backend:RESPONSABLE_COMMUNICATION_INTERNE": "responsable-communication-interne",
+  "backend:RESPONSABLE_DEVELOPPEMENT_MATIERES": "responsable-developpement-matieres",
+  "backend:RESPONSABLE_DE_COMPTES": "responsable-de-comptes",
+  "backend:RESPONSABLE_FORMATION": "responsable-formation",
+  "backend:RESPONSABLE_GROWTH_MARKETING": "responsable-growth-marketing",
+  "backend:RESPONSABLE_IMAGE_ET_CONTENU": "responsable-image-et-contenu",
+  "backend:RESPONSABLE_INDUSTRIALISATION": "responsable-industrialisation",
+  "backend:RESPONSABLE_JURIDIQUE": "responsable-juridique",
+  "backend:RESPONSABLE_OPERATIONNEL": "responsable-operationnel",
+  "backend:RESPONSABLE_PARTENARIATS": "responsable-partenariats",
+  "backend:RESPONSABLE_PROJETS_RETAIL": "responsable-projets-retail",
+  "backend:RESPONSABLE_QUALITE_TEXTILE": "responsable-qualite-textile",
+  "backend:RESPONSABLE_RECRUTEMENT": "responsable-recrutement",
+  "backend:RESPONSABLE_RELATION_CLIENT": "responsable-relation-client",
+  "backend:RESPONSABLE_SERVICES_GENERAUX": "responsable-services-generaux",
+  "backend:RESPONSABLE_SUPPLY_CHAIN": "responsable-supply-chain",
+  "backend:RESPONSABLE_VM": "responsable-vm",
+  "backend:RESPONSABLE_WHOLESALE": "responsable-wholesale",
+  "backend:SAUVETEUR": "sauveteur",
+  "backend:SCENOGRAPHE": "scenographe",
+  "backend:SERIGRAPHE_TEXTILE": "serigraphe-textile",
+  "backend:SERTISSEUR": "sertisseur",
   "backend:SPA_MANAGER": "spa-manager",
-  "backend:TAILLEUR": "tailor",
+  "backend:TAILLEUR": "seamster",
   "backend:TALENT_MANAGER": "talent-manager",
-  "backend:TAPISSIER_D_AMEUBLEMENT": "upholsterer",
-  "backend:TATOUEUR": "tattoo-artist",
-  "backend:TECHNICIEN_PRODUIT": "product-technician",
-  "backend:TECHNICIEN_SUPPORT_INFORMATIQUE": "it-support-technician",
+  "backend:TAPISSIER_D_AMEUBLEMENT": "tapissier-d-ameublement",
+  "backend:TATOUEUR": "tatoueur",
+  "backend:TECHNICIEN_PRODUIT": "technicien-produit",
+  "backend:TECHNICIEN_SUPPORT_INFORMATIQUE": "technicien-support-informatique",
   "backend:TRAFFIC_MANAGER": "traffic-manager",
-  "backend:TUTEUR_SCOLAIRE": "tutor",
-  "backend:UX_UI_DESIGNER": "ux-designer",
-  "backend:VENDEUR_EN_LIGNE": "online-seller",
-  "backend:VIDEASTE": "videographer",
+  "backend:TUTEUR_SCOLAIRE": "tuteur-scolaire",
+  "backend:UX_UI_DESIGNER": "ux-ui-designer",
+  "backend:VENDEUR_EN_LIGNE": "vendeur-en-ligne",
+  "backend:VIDEASTE": "videaste",
   "backend:WEBMASTER": "webmaster",
-  "offres:retail-sales-lead": "sales-lead",
+  "offres:retail-sales-lead": "retail-sales-lead",
   "offres:keyholder": "keyholder",
   "offres:retail-operations-associate": "retail-operations-associate",
   "offres:assistant-visual-merchandising-manager": "assistant-visual-merchandising-manager",
   "offres:equipment-operator": "equipment-operator",
   "offres:maintenance-technician": "maintenance-technician",
   "encadrement:head-cashier": "head-cashier"
+ },
+ "absorbes": {
+  "backend:TAILLEUR": "seamster",
+  "backend:EMPLOYE_DE_CAFE": "barista",
+  "backend:BARBIER": "hairdresser"
  },
  "familles": {
   "retail-client-advisor": "retail-client-advisor",
@@ -287,210 +292,291 @@
   "admin-facilities": "admin-facilities",
   "health-optical-services": "health-optical-services",
   "beauty-services": "beauty-services",
-  "mannequinat-agences": "modeling-agencies",
+  "mannequinat": "mannequinat",
   "architecture-store-design": "architecture-store-design",
-  "art-culture": "art-culture",
-  "patrimoine-archives": "heritage-archives",
-  "autres-secteurs": "other-sectors"
+  "art-et-culture": "art-et-culture",
+  "patrimoine-et-archives": "patrimoine-et-archives",
+  "vente-automobile": "vente-automobile",
+  "autres-secteurs": "autres-secteurs"
  },
- "arbitrages": [
+ "libellesRetires": [
   {
-   "expression": "SALES ASSISTANT",
+   "cle": "beauty-therapist",
+   "langue": "zh-Hant",
+   "libelle": "美容師"
+  },
+  {
+   "cle": "backend:ASSISTANT_DE_GESTION",
+   "langue": "da",
+   "libelle": "Administrativ assistent"
+  },
+  {
+   "cle": "backend:EMPLOYE_DE_COMMERCE",
+   "langue": "en",
+   "libelle": "Retail Assistant"
+  },
+  {
+   "cle": "backend:EMPLOYE_DE_COMMERCE",
+   "langue": "de",
+   "libelle": "Verkäufer"
+  },
+  {
+   "cle": "backend:PRATICIEN_SPA",
+   "langue": "en",
+   "libelle": "Spa Therapist"
+  },
+  {
+   "cle": "backend:PRATICIEN_SPA",
+   "langue": "de",
+   "libelle": "Spa Therapist"
+  },
+  {
+   "cle": "backend:PRATICIEN_SPA",
+   "langue": "it",
+   "libelle": "Spa Therapist"
+  },
+  {
+   "cle": "backend:PRATICIEN_SPA",
+   "langue": "nl",
+   "libelle": "Spa Therapist"
+  },
+  {
+   "cle": "backend:PRATICIEN_SPA",
+   "langue": "pl",
+   "libelle": "Spa Therapist"
+  },
+  {
+   "cle": "backend:PRATICIEN_SPA",
+   "langue": "el",
+   "libelle": "Spa Therapist"
+  }
+ ],
+ "arbitragesFinaux": [
+  {
+   "forme": "WINKELMEDEWERKER",
    "metiers": [
     "sales-advisor",
     "backend:EMPLOYE_DE_COMMERCE"
    ],
-   "garde": "sales-advisor",
-   "motif": "règle servie"
-  },
-  {
-   "expression": "美容師",
-   "metiers": [
-    "hairdresser",
-    "beauty-therapist"
-   ],
-   "garde": null,
-   "motif": "ambiguë, retirée"
-  },
-  {
-   "expression": "FEINTASCHNERIN",
-   "metiers": [
-    "leather-craftsperson",
-    "backend:PROTOTYPISTE_MAROQUINERIE"
-   ],
-   "garde": null,
-   "motif": "ambiguë, retirée"
-  },
-  {
-   "expression": "SCHNEIDERIN",
-   "metiers": [
-    "seamster",
-    "backend:TAILLEUR"
-   ],
-   "garde": null,
-   "motif": "ambiguë, retirée"
-  },
-  {
-   "expression": "SARTA",
-   "metiers": [
-    "seamster",
-    "backend:TAILLEUR"
-   ],
-   "garde": null,
-   "motif": "ambiguë, retirée"
-  },
-  {
-   "expression": "KRAWCOWA",
-   "metiers": [
-    "seamster",
-    "backend:TAILLEUR"
-   ],
-   "garde": null,
-   "motif": "ambiguë, retirée"
-  },
-  {
-   "expression": "خياطة",
-   "metiers": [
-    "seamster",
-    "backend:TAILLEUR"
-   ],
-   "garde": null,
-   "motif": "ambiguë, retirée"
-  },
-  {
-   "expression": "CROITOREASA",
-   "metiers": [
-    "seamster",
-    "backend:TAILLEUR"
-   ],
-   "garde": null,
-   "motif": "ambiguë, retirée"
-  },
-  {
-   "expression": "SPECIALISTE CAFE",
-   "metiers": [
-    "barista",
-    "backend:EMPLOYE_DE_CAFE"
-   ],
-   "garde": "backend:EMPLOYE_DE_CAFE",
+   "garde": "backend:EMPLOYE_DE_COMMERCE",
    "motif": "libellé"
   },
   {
-   "expression": "BARISTA",
+   "forme": "SPRZEDAWCA",
    "metiers": [
-    "barista",
-    "backend:EMPLOYE_DE_CAFE"
+    "sales-advisor",
+    "backend:EMPLOYE_DE_COMMERCE"
    ],
-   "garde": "barista",
-   "motif": "règle servie"
+   "garde": "backend:EMPLOYE_DE_COMMERCE",
+   "motif": "libellé"
   },
   {
-   "expression": "BARISTKA",
+   "forme": "GENERAL MANAGER",
    "metiers": [
-    "barista",
-    "backend:EMPLOYE_DE_CAFE"
+    "store-manager",
+    "backend:DIRECTION"
    ],
-   "garde": null,
-   "motif": "ambiguë, retirée"
+   "garde": "backend:DIRECTION",
+   "motif": "libellé"
   },
   {
-   "expression": "LEDELSESASSISTENT",
+   "forme": "DIRECTEUR REGIONAL",
    "metiers": [
-    "executive-assistant",
-    "backend:ASSISTANT_DE_GESTION"
-   ],
-   "garde": null,
-   "motif": "ambiguë, retirée"
-  },
-  {
-   "expression": "MANAGEMENT ASSISTENTIN",
-   "metiers": [
-    "executive-assistant",
-    "backend:ASSISTANT_DE_GESTION"
+    "regional-retail-manager",
+    "backend:DIRECTEUR_RESEAU"
    ],
    "garde": null,
    "motif": "ambiguë, retirée"
   },
   {
-   "expression": "ASISTENTKA VEDENI",
+   "forme": "AREA MANAGER",
    "metiers": [
-    "executive-assistant",
-    "backend:ASSISTANT_DE_GESTION"
+    "regional-retail-manager",
+    "backend:RESPONSABLE_COMMERCIAL_DE_ZONE"
+   ],
+   "garde": "regional-retail-manager",
+   "motif": "version servie"
+  },
+  {
+   "forme": "DIRECTRICE REGIONALE",
+   "metiers": [
+    "regional-retail-manager",
+    "backend:DIRECTEUR_RESEAU"
    ],
    "garde": null,
    "motif": "ambiguë, retirée"
   },
   {
-   "expression": "مساعدة معرض",
+   "forme": "DISTRICT MANAGER",
    "metiers": [
-    "backend:ASSISTANT_DE_GALERIE",
-    "backend:ASSISTANT_SHOWROOM"
+    "regional-retail-manager",
+    "backend:DIRECTEUR_RESEAU"
+   ],
+   "garde": "regional-retail-manager",
+   "motif": "version servie"
+  },
+  {
+   "forme": "SEASONAL OPERATIONS ASSOCIATE PT HOURS BOH",
+   "metiers": [
+    "stock-associate",
+    "warehouse-operative"
    ],
    "garde": null,
    "motif": "ambiguë, retirée"
   },
   {
-   "expression": "BARBER",
+   "forme": "RESPONSABLE LOGISTIQUE",
    "metiers": [
-    "backend:BARBIER",
-    "hairdresser"
+    "logistics-manager",
+    "backend:RESPONSABLE_SUPPLY_CHAIN"
    ],
-   "garde": "hairdresser",
-   "motif": "règle servie"
+   "garde": "logistics-manager",
+   "motif": "version servie"
   },
   {
-   "expression": "VERKAUFSLEITERIN",
+   "forme": "ACHETEUR",
    "metiers": [
-    "backend:DIRECTION_COMMERCIALE",
-    "offres:retail-sales-lead"
+    "buyer",
+    "backend:RESPONSABLE_ACHATS_ET_OFFRE"
+   ],
+   "garde": "buyer",
+   "motif": "version servie"
+  },
+  {
+   "forme": "MERCHANDISING PLANNER",
+   "metiers": [
+    "merchandise-planner",
+    "backend:COLLECTION_MERCHANDISER"
+   ],
+   "garde": "merchandise-planner",
+   "motif": "version servie"
+  },
+  {
+   "forme": "CHARGE DE RECRUTEMENT",
+   "metiers": [
+    "recruiter",
+    "backend:RESPONSABLE_RECRUTEMENT"
+   ],
+   "garde": "recruiter",
+   "motif": "version servie"
+  },
+  {
+   "forme": "TALENT ACQUISITION SPECIALIST",
+   "metiers": [
+    "recruiter",
+    "backend:RESPONSABLE_RECRUTEMENT"
+   ],
+   "garde": "recruiter",
+   "motif": "version servie"
+  },
+  {
+   "forme": "PARTENAIRE RH",
+   "metiers": [
+    "hr-business-partner",
+    "backend:GESTIONNAIRE_DES_RESSOURCES_HUMAINES"
+   ],
+   "garde": "hr-business-partner",
+   "motif": "version servie"
+  },
+  {
+   "forme": "RESPONSABLE MARKETING",
+   "metiers": [
+    "marketing-manager",
+    "backend:CHARGE_DE_MARKETING_ET_COMMUNICATION"
+   ],
+   "garde": "marketing-manager",
+   "motif": "version servie"
+  },
+  {
+   "forme": "ANIMATEUR",
+   "metiers": [
+    "backend:ANIMATEUR_DE_LOISIRS",
+    "backend:ANIMATEUR_VENTES"
+   ],
+   "garde": "backend:ANIMATEUR_DE_LOISIRS",
+   "motif": "libellé"
+  },
+  {
+   "forme": "RESPONSABLE BACK OFFICE",
+   "metiers": [
+    "backend:ASSISTANT_ADMINISTRATIF",
+    "backend:RESPONSABLE_RELATION_CLIENT"
    ],
    "garde": null,
    "motif": "ambiguë, retirée"
   },
   {
-   "expression": "DIRECTORA COMERCIAL",
+   "forme": "GESTIONNAIRE ADV",
    "metiers": [
-    "backend:DIRECTION_COMMERCIALE",
+    "backend:ASSISTANT_DE_GESTION",
+    "backend:RESPONSABLE_ADV"
+   ],
+   "garde": null,
+   "motif": "ambiguë, retirée"
+  },
+  {
+   "forme": "ASSISTANT MARKETING",
+   "metiers": [
+    "backend:ASSISTANT_MARKETING_DIGITAL",
+    "backend:ASSISTANT_MARKETING_ET_VENTES"
+   ],
+   "garde": null,
+   "motif": "ambiguë, retirée"
+  },
+  {
+   "forme": "DRESSER",
+   "metiers": [
+    "backend:ASSISTANT_STYLISTE",
+    "backend:HABILLEUR"
+   ],
+   "garde": "backend:HABILLEUR",
+   "motif": "libellé"
+  },
+  {
+   "forme": "ASSISTANT DE PRODUCTION",
+   "metiers": [
+    "backend:CHEF_DE_PROJET_EVENEMENTIEL",
+    "backend:COORDINATEUR_DE_PRODUCTION"
+   ],
+   "garde": null,
+   "motif": "ambiguë, retirée"
+  },
+  {
+   "forme": "PRODUCT MANAGER",
+   "metiers": [
+    "backend:CHEF_PRODUIT",
+    "backend:PRODUCT_OWNER"
+   ],
+   "garde": "backend:CHEF_PRODUIT",
+   "motif": "libellé"
+  },
+  {
+   "forme": "COMMERCIAL",
+   "metiers": [
+    "backend:COMMERCIAL",
+    "backend:COMMERCIAL_AUTOMOBILE",
     "backend:MANAGER_COMMERCIAL"
    ],
+   "garde": "backend:COMMERCIAL",
+   "motif": "libellé"
+  },
+  {
+   "forme": "PERSONAL STYLIST",
+   "metiers": [
+    "backend:CONSEILLER_EN_IMAGE",
+    "backend:PERSONAL_SHOPPER"
+   ],
+   "garde": "backend:CONSEILLER_EN_IMAGE",
+   "motif": "libellé"
+  },
+  {
+   "forme": "PRODUCT DESIGNER",
+   "metiers": [
+    "backend:DESIGNER_INDUSTRIEL",
+    "backend:UX_UI_DESIGNER"
+   ],
    "garde": null,
    "motif": "ambiguë, retirée"
-  },
-  {
-   "expression": "VERKAUFER",
-   "metiers": [
-    "backend:EMPLOYE_DE_COMMERCE",
-    "sales-advisor"
-   ],
-   "garde": "sales-advisor",
-   "motif": "règle servie"
-  },
-  {
-   "expression": "VERKAUFERIN",
-   "metiers": [
-    "backend:EMPLOYE_DE_COMMERCE",
-    "sales-advisor"
-   ],
-   "garde": "sales-advisor",
-   "motif": "règle servie"
-  },
-  {
-   "expression": "SPA THERAPIST",
-   "metiers": [
-    "backend:PRATICIEN_SPA",
-    "beauty-therapist"
-   ],
-   "garde": "beauty-therapist",
-   "motif": "règle servie"
-  },
-  {
-   "expression": "TAILOR",
-   "metiers": [
-    "backend:TAILLEUR",
-    "seamster"
-   ],
-   "garde": "seamster",
-   "motif": "règle servie"
   }
  ]
 }

@@ -1,30 +1,33 @@
 {
- "calculeLe": "2026-09-29T09:55:33.930Z",
+ "calculeLe": "2026-09-29T10:52:04.150Z",
  "juges": {
   "j1": "gemini-3.6-flash",
   "j2": "gemini-3-flash-preview"
  },
  "bilan": {
-  "expressionsQuiGeneralisent": 670,
-  "jugees": 187,
+  "expressionsQuiGeneralisent": 686,
+  "jugees": 190,
   "modes": {
-   "generalisable": 100,
-   "exacte": 87
+   "generalisable": 102,
+   "exacte": 88
   },
-  "sousSeuil": 483,
-  "motsSeulsJuges": 25,
+  "sousSeuil": 496,
+  "motsSeulsJuges": 24,
   "motsSeulsRamenesALExact": [
    "CONTROLLER",
    "ABTEILUNGSLEITER",
    "COMMERCIAL",
    "TRAINER",
+   "KEYHOLDER",
    "CONCIERGE",
+   "DEPENDIENTE",
+   "DEPENDIENTA",
    "AUDITOR",
    "OPTICO",
    "DISPENSER"
   ],
-  "offresGeneralisables": 6553,
-  "offresRameneesALExact": 6426,
+  "offresGeneralisables": 6398,
+  "offresRameneesALExact": 7470,
   "seuils": {
    "SEUIL_OFFRES": 10,
    "ECHANTILLON": 3
@@ -52,29 +55,9 @@
    ]
   },
   {
-   "expression": "MERCHANDISER",
-   "occupation": "collection-merchandiser",
-   "mode": "exacte",
-   "offres": 100,
-   "juges": [
-    {
-     "titre": "Anthropologie Merchandiser",
-     "verdict": "rejete"
-    },
-    {
-     "titre": "STAGE – Assistant.e Business Analyst & Product Merchandiser Mode F/H – Marché France – Janvier 2027",
-     "verdict": "rejete"
-    },
-    {
-     "titre": "Stage - Product Merchandiser Eyewear – Mode CHANEL Europe – Janvier 2027 - H/F/X",
-     "verdict": "rejete"
-    }
-   ]
-  },
-  {
    "expression": "PRODUCT OWNER",
    "occupation": "product-owner",
-   "mode": "generalisable",
+   "mode": "exacte",
    "offres": 31,
    "juges": [
     {
@@ -82,8 +65,8 @@
      "verdict": "confirme"
     },
     {
-     "titre": " Assistant Product Owner Junior IT CRM F/H - Stage",
-     "verdict": "confirme"
+     "titre": "Assistant Product Owner Junior IT CRM F/H - Stage",
+     "verdict": "rejete"
     },
     {
      "titre": "HRIS Product Owner (Compensation, Benefits & Pay Transparency) F/M",
@@ -98,7 +81,7 @@
    "offres": 56,
    "juges": [
     {
-     "titre": "Group Controller",
+     "titre": "Brand Controller",
      "verdict": "confirme"
     },
     {
@@ -197,7 +180,7 @@
   },
   {
    "expression": "BUTIKKMEDARBEIDER",
-   "occupation": "sales-assistant",
+   "occupation": "employe-de-commerce",
    "mode": "generalisable",
    "offres": 25,
    "juges": [
@@ -243,7 +226,7 @@
    "expression": "ASSISTANT MANAGER",
    "occupation": "assistant-store-manager",
    "mode": "exacte",
-   "offres": 485,
+   "offres": 484,
    "juges": [
     {
      "titre": "Assistant Manager-ANN",
@@ -261,7 +244,7 @@
   },
   {
    "expression": "ABTEILUNGSLEITER",
-   "occupation": "floor-manager",
+   "occupation": "manager-floor",
    "mode": "exacte",
    "offres": 23,
    "juges": [
@@ -274,18 +257,18 @@
      "verdict": "confirme"
     },
     {
-     "titre": "Nike Abteilungsleiter (Coach) (w/m/d) – 37.5h – NFS Metzingen",
+     "titre": "Nike Abteilungsleiter (Coach) (w/m/d) – 37.5h – NFS Metzingen",
      "verdict": "confirme"
     }
    ],
    "motSeul": [
-    true,
+    false,
     false
    ]
   },
   {
    "expression": "ACCOUNT DIRECTOR",
-   "occupation": "account-director",
+   "occupation": "directeur-de-clientele",
    "mode": "generalisable",
    "offres": 12,
    "juges": [
@@ -305,7 +288,7 @@
   },
   {
    "expression": "ACCOUNT EXECUTIVE",
-   "occupation": "account-manager",
+   "occupation": "responsable-de-comptes",
    "mode": "exacte",
    "offres": 58,
    "juges": [
@@ -325,12 +308,12 @@
   },
   {
    "expression": "ACCOUNT MANAGER",
-   "occupation": "account-manager",
+   "occupation": "responsable-de-comptes",
    "mode": "generalisable",
    "offres": 42,
    "juges": [
     {
-     "titre": "Givenchy Account Manager ",
+     "titre": "Givenchy Account Manager",
      "verdict": "confirme"
     },
     {
@@ -344,8 +327,28 @@
    ]
   },
   {
+   "expression": "SUPERVISOR",
+   "occupation": "manager-floor",
+   "mode": "exacte",
+   "offres": 1136,
+   "juges": [
+    {
+     "titre": "Lead Supervisor I",
+     "verdict": "confirme"
+    },
+    {
+     "titre": "網紅行銷暨經紀事業主任 Supervisor, Social Talent Agency",
+     "verdict": "rejete"
+    },
+    {
+     "titre": "Junior Teamleiter (m/w/d) / Store Supervisor (m/w/d) - Iller Center Senden",
+     "verdict": "confirme"
+    }
+   ]
+  },
+  {
    "expression": "LEAD SUPERVISOR",
-   "occupation": "floor-manager",
+   "occupation": "manager-floor",
    "mode": "exacte",
    "offres": 160,
    "juges": [
@@ -365,7 +368,7 @@
   },
   {
    "expression": "SUPERVISOR I",
-   "occupation": "floor-manager",
+   "occupation": "manager-floor",
    "mode": "exacte",
    "offres": 143,
    "juges": [
@@ -375,7 +378,7 @@
     },
     {
      "titre": "Supervisor I - Kate Spade Vineland Outlet",
-     "verdict": "rejete"
+     "verdict": "confirme"
     },
     {
      "titre": "Acting Lead Supervisor I",
@@ -385,7 +388,7 @@
   },
   {
    "expression": "SALES LEAD",
-   "occupation": "sales-lead",
+   "occupation": "retail-sales-lead",
    "mode": "generalisable",
    "offres": 440,
    "juges": [
@@ -410,11 +413,11 @@
    "offres": 28,
    "juges": [
     {
-     "titre": "Senior Store Leader",
-     "verdict": "confirme"
+     "titre": "Associate Store Leader, Tyson's Corner",
+     "verdict": "rejete"
     },
     {
-     "titre": " Associate Store Leader, Hong Kong (multiple location)",
+     "titre": "Associate Store Leader, Hong Kong (multiple location)",
      "verdict": "rejete"
     },
     {
@@ -425,7 +428,7 @@
   },
   {
    "expression": "REGIONAL MANAGER",
-   "occupation": "retail-director",
+   "occupation": "directeur-reseau",
    "mode": "generalisable",
    "offres": 15,
    "juges": [
@@ -465,7 +468,7 @@
   },
   {
    "expression": "ADMINISTRATIVE ASSISTANT",
-   "occupation": "administrative-assistant",
+   "occupation": "assistant-administratif",
    "mode": "generalisable",
    "offres": 13,
    "juges": [
@@ -485,7 +488,7 @@
   },
   {
    "expression": "OPERATIONS COORDINATOR",
-   "occupation": "logistics-coordinator",
+   "occupation": "coordinateur-logistique",
    "mode": "exacte",
    "offres": 43,
    "juges": [
@@ -506,35 +509,31 @@
   {
    "expression": "MAGASINIER",
    "occupation": "warehouse-operative",
-   "mode": "generalisable",
+   "mode": "exacte",
    "offres": 25,
    "juges": [
     {
      "titre": "Magasinier/cariste H/F CDI",
-     "verdict": "confirme"
+     "verdict": "rejete"
     },
     {
      "titre": "Magasinier cdd 3 mois 35h H/F",
-     "verdict": "confirme"
+     "verdict": "rejete"
     },
     {
      "titre": "Magasinier – préparateur de commande - logistique H/F",
      "verdict": "confirme"
     }
-   ],
-   "motSeul": [
-    true,
-    true
    ]
   },
   {
    "expression": "AMBASSADEUR",
-   "occupation": "sales-promoter",
+   "occupation": "animateur-ventes",
    "mode": "exacte",
    "offres": 16,
    "juges": [
     {
-     "titre": "Airport Ambassadeur ",
+     "titre": "Airport Ambassadeur",
      "verdict": "rejete"
     },
     {
@@ -549,20 +548,20 @@
   },
   {
    "expression": "PATTERN MAKER",
-   "occupation": "patternmaker",
+   "occupation": "modeliste",
    "mode": "generalisable",
-   "offres": 13,
+   "offres": 14,
    "juges": [
     {
      "titre": "Senior Pattern Maker",
      "verdict": "confirme"
     },
     {
-     "titre": "Pattern Maker- H&M Open Application ",
+     "titre": "Pattern Maker/Technical Designer to H&M Women's Underwear & Swimwear",
      "verdict": "confirme"
     },
     {
-     "titre": "Senior Pattern Maker – Parent Leave Cover",
+     "titre": "Pattern Maker- H&M Open Application",
      "verdict": "confirme"
     }
    ]
@@ -608,28 +607,8 @@
    ]
   },
   {
-   "expression": "ASSISTANT QUALITE",
-   "occupation": "quality-assistant",
-   "mode": "generalisable",
-   "offres": 15,
-   "juges": [
-    {
-     "titre": "STAGE - Assistant Qualité Produits Finis (H/F)",
-     "verdict": "confirme"
-    },
-    {
-     "titre": "Assistant qualité produits et matières (h/f) - Stage",
-     "verdict": "confirme"
-    },
-    {
-     "titre": "ALTERNANCE &#8211; ASSISTANT QUALITE MAROQUINERIE H/F",
-     "verdict": "confirme"
-    }
-   ]
-  },
-  {
    "expression": "ANIMATEUR",
-   "occupation": "activity-leader",
+   "occupation": "animateur-de-loisirs",
    "mode": "exacte",
    "offres": 18,
    "juges": [
@@ -651,7 +630,7 @@
    "expression": "PLANNER",
    "occupation": "merchandise-planner",
    "mode": "exacte",
-   "offres": 114,
+   "offres": 116,
    "juges": [
     {
      "titre": "Inventory Planner",
@@ -662,16 +641,16 @@
      "verdict": "rejete"
     },
     {
-     "titre": "Assistant Supply & Distribution Planner Souliers Femme & Homme - F/H - STAGE ",
+     "titre": "Assistant Supply & Distribution Planner Souliers Femme & Homme - F/H - STAGE",
      "verdict": "rejete"
     }
    ]
   },
   {
    "expression": "COMMERCIAL",
-   "occupation": "sales-representative",
+   "occupation": "commercial",
    "mode": "exacte",
-   "offres": 112,
+   "offres": 110,
    "juges": [
     {
      "titre": "Commercial itinérant H/F",
@@ -692,22 +671,22 @@
    ]
   },
   {
-   "expression": "DESIGNER",
-   "occupation": "collection-manager",
-   "mode": "exacte",
-   "offres": 308,
+   "expression": "ASSISTANT QUALITE",
+   "occupation": "assistant-qualite",
+   "mode": "generalisable",
+   "offres": 15,
    "juges": [
     {
-     "titre": "Associate Designer",
-     "verdict": "rejete"
+     "titre": "STAGE - Assistant Qualité Produits Finis (H/F)",
+     "verdict": "confirme"
     },
     {
-     "titre": "Designer - Color & Graphics Apparel - SMSU / Olympics temp until 31.07.27 (x3) (m/f/d)",
-     "verdict": "rejete"
+     "titre": "Assistant qualité produits et matières (h/f) - Stage",
+     "verdict": "confirme"
     },
     {
-     "titre": "Designer Dedicated Salesperson - Lafayette 148 Women's Ready to Wear - NYC Flagship",
-     "verdict": "rejete"
+     "titre": "Assistant Qualité Matières et Règlementation (H/F)",
+     "verdict": "confirme"
     }
    ]
   },
@@ -786,7 +765,7 @@
      "verdict": "confirme"
     },
     {
-     "titre": " Alternance - Visuel Merchandiser (f/h) - Mont St Martin",
+     "titre": "Alternance - Visuel Merchandiser (f/h) - Mont St Martin",
      "verdict": "confirme"
     }
    ]
@@ -813,9 +792,9 @@
   },
   {
    "expression": "PRODUCT MANAGER",
-   "occupation": "product-manager",
+   "occupation": "chef-produit",
    "mode": "exacte",
-   "offres": 109,
+   "offres": 111,
    "juges": [
     {
      "titre": "Assistant Product Manager",
@@ -833,27 +812,27 @@
   },
   {
    "expression": "ART DIRECTOR",
-   "occupation": "art-director",
+   "occupation": "direction-artistique",
    "mode": "exacte",
-   "offres": 19,
+   "offres": 21,
    "juges": [
     {
      "titre": "Associate Art Director",
      "verdict": "rejete"
     },
     {
-     "titre": "Art Director (White House Black Market)",
+     "titre": "Graphic Designer / Art Director (m/w/d)",
      "verdict": "confirme"
     },
     {
-     "titre": "Art Director Creative Services - TEMP",
+     "titre": "Art Director (White House Black Market)",
      "verdict": "confirme"
     }
    ]
   },
   {
    "expression": "OPERATIONS MANAGER",
-   "occupation": "operations-manager",
+   "occupation": "responsable-operationnel",
    "mode": "exacte",
    "offres": 115,
    "juges": [
@@ -862,7 +841,7 @@
      "verdict": "rejete"
     },
     {
-     "titre": "Vivier de candidats : Store Operations Manager - F/H - CDI - St Tropez/Courchevel ",
+     "titre": "Vivier de candidats : Store Operations Manager - F/H - CDI - St Tropez/Courchevel",
      "verdict": "confirme"
     },
     {
@@ -873,7 +852,7 @@
   },
   {
    "expression": "SALES REPRESENTATIVE",
-   "occupation": "sales-representative",
+   "occupation": "commercial",
    "mode": "generalisable",
    "offres": 23,
    "juges": [
@@ -895,7 +874,7 @@
    "expression": "VERKOOPMEDEWERKER",
    "occupation": "sales-advisor",
    "mode": "generalisable",
-   "offres": 315,
+   "offres": 316,
    "juges": [
     {
      "titre": "Verkoopmedewerker (parttime)",
@@ -917,7 +896,7 @@
   },
   {
    "expression": "TRAINER",
-   "occupation": "trainer",
+   "occupation": "formateur",
    "mode": "exacte",
    "offres": 52,
    "juges": [
@@ -926,11 +905,11 @@
      "verdict": "confirme"
     },
     {
-     "titre": "Trainer Byredo & Dries Van Noten - France & Benelux - CDI - H/F",
+     "titre": "(Senior) Area Trainer （高级）区域培训师",
      "verdict": "confirme"
     },
     {
-     "titre": "Field Sales Trainer (m/f/d) - BENELUX Region",
+     "titre": "Trainer Byredo & Dries Van Noten - France & Benelux - CDI - H/F",
      "verdict": "confirme"
     }
    ],
@@ -941,7 +920,7 @@
   },
   {
    "expression": "WHOLESALE",
-   "occupation": "wholesale-manager",
+   "occupation": "responsable-wholesale",
    "mode": "exacte",
    "offres": 74,
    "juges": [
@@ -954,14 +933,14 @@
      "verdict": "rejete"
     },
     {
-     "titre": "Head of Wholesale Business Performance and Transformation (BP&T)  (Maternity leave cover)",
+     "titre": "Head of Wholesale Business Performance and Transformation (BP&T) (Maternity leave cover)",
      "verdict": "rejete"
     }
    ]
   },
   {
    "expression": "DESIGN INTERN",
-   "occupation": "accessories-designer",
+   "occupation": "designer-accessoires",
    "mode": "exacte",
    "offres": 18,
    "juges": [
@@ -981,27 +960,47 @@
   },
   {
    "expression": "DEPARTMENT MANAGER",
-   "occupation": "floor-manager",
-   "mode": "generalisable",
+   "occupation": "manager-floor",
+   "mode": "exacte",
    "offres": 265,
    "juges": [
     {
      "titre": "Anthropologie Assistant Department Manager",
-     "verdict": "confirme"
+     "verdict": "rejete"
     },
     {
      "titre": "Urban Outfitters Department Manager / Responsable de d&eacute;partement (Magasin) - Paris Rue de Rivoli, FR",
      "verdict": "confirme"
     },
     {
-     "titre": "Department Manager (m/w/d) - Oftringen Perry Center (100% / 38.5 Wochenstunden)",
+     "titre": "Fendi Department Manager-部门经理-上海恒隆广场",
+     "verdict": "confirme"
+    }
+   ]
+  },
+  {
+   "expression": "ASSISTANT MERCHANDISER",
+   "occupation": "assistant-merchandiser",
+   "mode": "generalisable",
+   "offres": 18,
+   "juges": [
+    {
+     "titre": "Anthropologie Assistant Merchandiser",
+     "verdict": "confirme"
+    },
+    {
+     "titre": "Stage – Assistant.e merchandiser EMEA Prêt-à-porter Homme (F/H) - Janvier 2027",
+     "verdict": "confirme"
+    },
+    {
+     "titre": "STAGE JANVIER 2027 - Stage Assistant Merchandiser International Joaillerie / Horlogerie (H/F)",
      "verdict": "confirme"
     }
    ]
   },
   {
    "expression": "ASSISTANT DESIGNER",
-   "occupation": "design-assistant",
+   "occupation": "assistant-designer",
    "mode": "generalisable",
    "offres": 27,
    "juges": [
@@ -1023,7 +1022,7 @@
    "expression": "KEY HOLDER",
    "occupation": "keyholder",
    "mode": "generalisable",
-   "offres": 548,
+   "offres": 547,
    "juges": [
     {
      "titre": "Retail Key Holder",
@@ -1042,8 +1041,8 @@
   {
    "expression": "KEYHOLDER",
    "occupation": "keyholder",
-   "mode": "generalisable",
-   "offres": 365,
+   "mode": "exacte",
+   "offres": 366,
    "juges": [
     {
      "titre": "Retail Sales Associate Keyholder",
@@ -1060,12 +1059,12 @@
    ],
    "motSeul": [
     true,
-    true
+    false
    ]
   },
   {
    "expression": "MODEL",
-   "occupation": "model",
+   "occupation": "mannequin",
    "mode": "exacte",
    "offres": 24,
    "juges": [
@@ -1085,7 +1084,7 @@
   },
   {
    "expression": "PERSONAL STYLIST",
-   "occupation": "personal-stylist",
+   "occupation": "conseiller-en-image",
    "mode": "exacte",
    "offres": 10,
    "juges": [
@@ -1114,7 +1113,7 @@
      "verdict": "rejete"
     },
     {
-     "titre": "Education Associate Manager Europe (H/F) - Makeup / Skincare / Haircare ",
+     "titre": "Education Associate Manager Europe (H/F) - Makeup / Skincare / Haircare",
      "verdict": "rejete"
     },
     {
@@ -1125,16 +1124,16 @@
   },
   {
    "expression": "TEAM LEADER",
-   "occupation": "floor-manager",
-   "mode": "exacte",
+   "occupation": "manager-floor",
+   "mode": "generalisable",
    "offres": 112,
    "juges": [
     {
      "titre": "Opticians Team Leader",
-     "verdict": "rejete"
+     "verdict": "confirme"
     },
     {
-     "titre": "Team Leader| Punkt Handlowy| Factory Annopol| Warszawa| UoP| pełny etat/  3/4 etatu",
+     "titre": "Team Leader| Punkt Handlowy| Factory Annopol| Warszawa| UoP| pełny etat/ 3/4 etatu",
      "verdict": "confirme"
     },
     {
@@ -1145,7 +1144,7 @@
   },
   {
    "expression": "VISUAL MERCHANDISING MANAGER",
-   "occupation": "visual-merchandising-manager",
+   "occupation": "responsable-vm",
    "mode": "generalisable",
    "offres": 58,
    "juges": [
@@ -1165,7 +1164,7 @@
   },
   {
    "expression": "APPROVISIONNEUR",
-   "occupation": "buyer-planner",
+   "occupation": "acheteur-approvisionneur",
    "mode": "generalisable",
    "offres": 14,
    "juges": [
@@ -1174,7 +1173,7 @@
      "verdict": "confirme"
     },
     {
-     "titre": "Stage - Approvisionneur.se composants maroquinerie- Supply Chain Client Care Services (F/H) ",
+     "titre": "Stage - Approvisionneur.se composants maroquinerie- Supply Chain Client Care Services (F/H)",
      "verdict": "confirme"
     },
     {
@@ -1189,7 +1188,7 @@
   },
   {
    "expression": "BUSINESS MANAGER",
-   "occupation": "general-manager",
+   "occupation": "direction",
    "mode": "exacte",
    "offres": 25,
    "juges": [
@@ -1249,7 +1248,7 @@
   },
   {
    "expression": "RETAIL DIRECTOR",
-   "occupation": "retail-director",
+   "occupation": "directeur-reseau",
    "mode": "generalisable",
    "offres": 11,
    "juges": [
@@ -1269,7 +1268,7 @@
   },
   {
    "expression": "COMERCIAL",
-   "occupation": "sales-representative",
+   "occupation": "commercial",
    "mode": "exacte",
    "offres": 18,
    "juges": [
@@ -1309,7 +1308,7 @@
   },
   {
    "expression": "CHEF DE PRODUIT",
-   "occupation": "product-manager",
+   "occupation": "chef-produit",
    "mode": "exacte",
    "offres": 182,
    "juges": [
@@ -1318,8 +1317,8 @@
      "verdict": "confirme"
     },
     {
-     "titre": "Stage - Assistant(e) Chef de Produit Marketing Opérationnel Maquillage et Soin  – Parfums Beauté – Janvier 2027 – H/F/X",
-     "verdict": "confirme"
+     "titre": "Stage - Assistant(e) Chef de Produit Marketing Opérationnel Maquillage et Soin – Parfums Beauté – Janvier 2027 – H/F/X",
+     "verdict": "rejete"
     },
     {
      "titre": "Stage chef de produit Chaussants MDD et MN, PGC MN et Collants MDD et MN H/F",
@@ -1329,13 +1328,13 @@
   },
   {
    "expression": "TEAM LEAD",
-   "occupation": "floor-manager",
+   "occupation": "manager-floor",
    "mode": "exacte",
    "offres": 198,
    "juges": [
     {
      "titre": "Team Lead, Sales Part Time",
-     "verdict": "confirme"
+     "verdict": "rejete"
     },
     {
      "titre": "Sales Assistant Full time / team lead (m/f/d) - Inno, Brussels",
@@ -1349,7 +1348,7 @@
   },
   {
    "expression": "ASSISTANT ADMINISTRATIF",
-   "occupation": "administrative-assistant",
+   "occupation": "assistant-administratif",
    "mode": "exacte",
    "offres": 14,
    "juges": [
@@ -1369,7 +1368,7 @@
   },
   {
    "expression": "ATTACHE DE PRESSE",
-   "occupation": "press-officer",
+   "occupation": "charge-de-relations-presse",
    "mode": "exacte",
    "offres": 12,
    "juges": [
@@ -1382,14 +1381,14 @@
      "verdict": "confirme"
     },
     {
-     "titre": "STAGE - Assistant Attaché de Presse Femme France - RELATION PRESSE F/H ",
+     "titre": "STAGE - Assistant Attaché de Presse Femme France - RELATION PRESSE F/H",
      "verdict": "rejete"
     }
    ]
   },
   {
    "expression": "BRAND MANAGER",
-   "occupation": "brand-manager",
+   "occupation": "chef-de-marque",
    "mode": "generalisable",
    "offres": 40,
    "juges": [
@@ -1409,8 +1408,8 @@
   },
   {
    "expression": "ASSISTANT CHEF DE PRODUIT",
-   "occupation": "product-manager",
-   "mode": "generalisable",
+   "occupation": "chef-produit",
+   "mode": "exacte",
    "offres": 119,
    "juges": [
     {
@@ -1418,8 +1417,8 @@
      "verdict": "confirme"
     },
     {
-     "titre": "Stage - Assistant(e) Chef de Produit Marketing Opérationnel Maquillage et Soin  – Parfums Beauté – Janvier 2027 – H/F/X",
-     "verdict": "confirme"
+     "titre": "Stage - Assistant(e) Chef de Produit Marketing Opérationnel Maquillage et Soin – Parfums Beauté – Janvier 2027 – H/F/X",
+     "verdict": "rejete"
     },
     {
      "titre": "Stage – Assistant(e) Chef de Produit Brand Animation & Gifting – Parfums Beauté – Janvier 2027 – H/F/X",
@@ -1429,8 +1428,8 @@
   },
   {
    "expression": "CHEF DE PRODUIT MARKETING",
-   "occupation": "product-manager",
-   "mode": "generalisable",
+   "occupation": "chef-produit",
+   "mode": "exacte",
    "offres": 25,
    "juges": [
     {
@@ -1438,8 +1437,8 @@
      "verdict": "confirme"
     },
     {
-     "titre": "Stage - Assistant(e) Chef de Produit Marketing Opérationnel Maquillage et Soin  – Parfums Beauté – Janvier 2027 – H/F/X",
-     "verdict": "confirme"
+     "titre": "Stage - Assistant(e) Chef de Produit Marketing Opérationnel Maquillage et Soin – Parfums Beauté – Janvier 2027 – H/F/X",
+     "verdict": "rejete"
     },
     {
      "titre": "Stage - Assistant chef de produit marketing développement Maquillage Serge Lutens H/F - Janvier 2027",
@@ -1449,7 +1448,7 @@
   },
   {
    "expression": "CHEF DE PROJET CRM",
-   "occupation": "crm-project-manager",
+   "occupation": "chef-de-projet-crm",
    "mode": "generalisable",
    "offres": 15,
    "juges": [
@@ -1469,7 +1468,7 @@
   },
   {
    "expression": "ASSISTANT COMMERCIAL",
-   "occupation": "sales-support-assistant",
+   "occupation": "assistant-commercial",
    "mode": "exacte",
    "offres": 11,
    "juges": [
@@ -1513,7 +1512,7 @@
   },
   {
    "expression": "CHEF DE PROJET DIGITAL",
-   "occupation": "digital-project-manager",
+   "occupation": "chef-de-projet-digital",
    "mode": "exacte",
    "offres": 14,
    "juges": [
@@ -1533,7 +1532,7 @@
   },
   {
    "expression": "COMMERCIALE",
-   "occupation": "sales-representative",
+   "occupation": "commercial",
    "mode": "exacte",
    "offres": 18,
    "juges": [
@@ -1553,7 +1552,7 @@
   },
   {
    "expression": "FOOTWEAR DESIGNER",
-   "occupation": "footwear-designer",
+   "occupation": "designer-chaussures",
    "mode": "exacte",
    "offres": 13,
    "juges": [
@@ -1573,7 +1572,7 @@
   },
   {
    "expression": "MODELISTE",
-   "occupation": "patternmaker",
+   "occupation": "modeliste",
    "mode": "generalisable",
    "offres": 19,
    "juges": [
@@ -1597,7 +1596,7 @@
   },
   {
    "expression": "FINANCE MANAGER",
-   "occupation": "financial-manager",
+   "occupation": "responsable-administratif-et-financier",
    "mode": "exacte",
    "offres": 22,
    "juges": [
@@ -1617,7 +1616,7 @@
   },
   {
    "expression": "FLOOR MANAGER",
-   "occupation": "floor-manager",
+   "occupation": "manager-floor",
    "mode": "exacte",
    "offres": 102,
    "juges": [
@@ -1657,7 +1656,7 @@
   },
   {
    "expression": "TEAM MANAGER",
-   "occupation": "floor-manager",
+   "occupation": "manager-floor",
    "mode": "exacte",
    "offres": 94,
    "juges": [
@@ -1666,18 +1665,18 @@
      "verdict": "rejete"
     },
     {
-     "titre": "CDD/Mission - Operations Team Manager - Hermès.com Europe (H/F)",
+     "titre": "Assistant Online Sales Team Manager/线上销售部门副经理",
      "verdict": "rejete"
     },
     {
-     "titre": "Retail Management Talent | Team Manager & Department Manager Amsterdam",
-     "verdict": "confirme"
+     "titre": "CDD/Mission - Operations Team Manager - Hermès.com Europe (H/F)",
+     "verdict": "rejete"
     }
    ]
   },
   {
    "expression": "TRAINING MANAGER",
-   "occupation": "training-manager",
+   "occupation": "responsable-formation",
    "mode": "exacte",
    "offres": 27,
    "juges": [
@@ -1697,7 +1696,7 @@
   },
   {
    "expression": "GENERAL MANAGER",
-   "occupation": "general-manager",
+   "occupation": "direction",
    "mode": "exacte",
    "offres": 18,
    "juges": [
@@ -1717,12 +1716,12 @@
   },
   {
    "expression": "ASSISTENTE DE LOJA",
-   "occupation": "sales-assistant",
+   "occupation": "employe-de-commerce",
    "mode": "generalisable",
    "offres": 14,
    "juges": [
     {
-     "titre": "Assistente de Loja - Anália Franco ",
+     "titre": "Assistente de Loja - Anália Franco",
      "verdict": "confirme"
     },
     {
@@ -1817,7 +1816,7 @@
   },
   {
    "expression": "BARTENDER",
-   "occupation": "bartender",
+   "occupation": "barman",
    "mode": "generalisable",
    "offres": 16,
    "juges": [
@@ -1855,6 +1854,26 @@
     },
     {
      "titre": "CDD - Collection Merchandiser Senior (H/F) - Petit Bateau !",
+     "verdict": "rejete"
+    }
+   ]
+  },
+  {
+   "expression": "SALES SPECIALIST",
+   "occupation": "sales-advisor",
+   "mode": "exacte",
+   "offres": 20,
+   "juges": [
+    {
+     "titre": "Bespoke Designer | Jewelry Sales Specialist",
+     "verdict": "rejete"
+    },
+    {
+     "titre": "Part Time Sales Specialist - Macy's Shop - Oakbrook Center",
+     "verdict": "confirme"
+    },
+    {
+     "titre": "Bespoke Designer | Jewelry Sales Specialist | Brooklyn, NYC",
      "verdict": "rejete"
     }
    ]
@@ -1903,7 +1922,7 @@
    "expression": "OPERATIONS ASSOCIATE",
    "occupation": "retail-operations-associate",
    "mode": "exacte",
-   "offres": 218,
+   "offres": 217,
    "juges": [
     {
      "titre": "Operations Associate - Flex",
@@ -1921,9 +1940,9 @@
   },
   {
    "expression": "SALES MANAGER",
-   "occupation": "wholesale-manager",
+   "occupation": "responsable-wholesale",
    "mode": "exacte",
-   "offres": 89,
+   "offres": 92,
    "juges": [
     {
      "titre": "Car Dealer Sale Closer or OEM Vehicle industry Sales Manager",
@@ -1934,7 +1953,7 @@
      "verdict": "rejete"
     },
     {
-     "titre": "Juvi & DA:YT, Senior Sales Manager, Full Time, Permanent",
+     "titre": "Women's Designer Ready to Wear, Contemporary, & Women's Apparel Sales Manager",
      "verdict": "rejete"
     }
    ]
@@ -1955,26 +1974,6 @@
     },
     {
      "titre": "Brand Ambassador (m/w/d) Penhaligon's & Dries Van Noten im Oberpollinger in München",
-     "verdict": "confirme"
-    }
-   ]
-  },
-  {
-   "expression": "SALES SPECIALIST",
-   "occupation": "sales-advisor",
-   "mode": "generalisable",
-   "offres": 16,
-   "juges": [
-    {
-     "titre": "Sales Specialist, Beverly Hills Flagship",
-     "verdict": "confirme"
-    },
-    {
-     "titre": "Part Time Sales Specialist - Macy's Shop - Oakbrook Center",
-     "verdict": "confirme"
-    },
-    {
-     "titre": "Full Time Bi LIngual Luxury Sales Specialist",
      "verdict": "confirme"
     }
    ]
@@ -2005,7 +2004,7 @@
   },
   {
    "expression": "BUTIKSASSISTENT",
-   "occupation": "sales-assistant",
+   "occupation": "employe-de-commerce",
    "mode": "generalisable",
    "offres": 10,
    "juges": [
@@ -2028,28 +2027,32 @@
    ]
   },
   {
-   "expression": "EXTRA",
-   "occupation": "extra",
-   "mode": "exacte",
-   "offres": 24,
+   "expression": "BUTIKSSALJARE",
+   "occupation": "sales-advisor",
+   "mode": "generalisable",
+   "offres": 26,
    "juges": [
     {
-     "titre": "Extra Cuisine H/F",
-     "verdict": "rejete"
+     "titre": "Butikssäljare (vid behov)",
+     "verdict": "confirme"
     },
     {
-     "titre": "SALES ASSOCIATES – EXTRA / ON-CALL TILBURG - NEW STORE OPENING",
-     "verdict": "rejete"
+     "titre": "Butikssäljare Stockholm/Westfield Täby centrum 23 timmar/veckan",
+     "verdict": "confirme"
     },
     {
-     "titre": "STAGE EXTRA CURRICULARE ADDETTO/A VENDITA KIABI CORSICO",
-     "verdict": "rejete"
+     "titre": "Butikssäljare 5,5h/v, varannan helg",
+     "verdict": "confirme"
     }
+   ],
+   "motSeul": [
+    true,
+    true
    ]
   },
   {
    "expression": "MERCHANDISING ASSISTANT",
-   "occupation": "merchandising-assistant",
+   "occupation": "assistant-merchandiser",
    "mode": "exacte",
    "offres": 12,
    "juges": [
@@ -2069,7 +2072,7 @@
   },
   {
    "expression": "OPERATIONS SUPERVISOR",
-   "occupation": "operations-manager",
+   "occupation": "responsable-operationnel",
    "mode": "exacte",
    "offres": 37,
    "juges": [
@@ -2148,48 +2151,28 @@
    ]
   },
   {
-   "expression": "RESPONSABILE VENDITE",
-   "occupation": "sales-lead",
-   "mode": "generalisable",
-   "offres": 24,
-   "juges": [
-    {
-     "titre": "CATEGORIA PROTETTA (L.68/99) - Responsabile vendite/Athlete NIKE MILANO SCALO 21H",
-     "verdict": "confirme"
-    },
-    {
-     "titre": "Responsabile vendite/Athlete NIKE Job On Call (contratto a chiamata) - NEW OPENING Roma Outlet  ",
-     "verdict": "confirme"
-    },
-    {
-     "titre": "Responsabile Vendite PT 21h - Categoria Protetta L.68/99 - Nike Leccio Outlet - Reggello (Firenze)",
-     "verdict": "confirme"
-    }
-   ]
-  },
-  {
    "expression": "EMPLOYE LIBRE SERVICE",
-   "occupation": "sales-assistant",
-   "mode": "exacte",
+   "occupation": "employe-de-commerce",
+   "mode": "generalisable",
    "offres": 50,
    "juges": [
     {
      "titre": "Employé libre-service polyvalent (f/h)",
-     "verdict": "rejete"
+     "verdict": "confirme"
     },
     {
      "titre": "CDD 35H CAEN - Employé libre-service polyvalent (f/h)",
-     "verdict": "rejete"
+     "verdict": "confirme"
     },
     {
      "titre": "CDI - Employé Libre Service - 35h - H/F",
-     "verdict": "rejete"
+     "verdict": "confirme"
     }
    ]
   },
   {
    "expression": "CHARGE DE PRODUCTION",
-   "occupation": "production-coordinator",
+   "occupation": "coordinateur-de-production",
    "mode": "exacte",
    "offres": 16,
    "juges": [
@@ -2218,7 +2201,7 @@
      "verdict": "confirme"
     },
     {
-     "titre": "[Job Dating Claudie Pierlot - 18 septembre 2026]  Responsable Boutique - PARIS CDI 35h - H/F",
+     "titre": "[Job Dating Claudie Pierlot - 18 septembre 2026] Responsable Boutique - PARIS CDI 35h - H/F",
      "verdict": "confirme"
     },
     {
@@ -2229,7 +2212,7 @@
   },
   {
    "expression": "RESPONSABLE QUALITE",
-   "occupation": "textile-quality-manager",
+   "occupation": "responsable-qualite-textile",
    "mode": "exacte",
    "offres": 12,
    "juges": [
@@ -2249,7 +2232,7 @@
   },
   {
    "expression": "SUPPLY PLANNER",
-   "occupation": "supply-chain-planner",
+   "occupation": "planificateur-supply-chain",
    "mode": "generalisable",
    "offres": 18,
    "juges": [
@@ -2268,13 +2251,33 @@
    ]
   },
   {
+   "expression": "PREMIER VENDEUR",
+   "occupation": "retail-sales-lead",
+   "mode": "generalisable",
+   "offres": 18,
+   "juges": [
+    {
+     "titre": "Premier(ère) Vendeur(euse) 39h - CDI",
+     "verdict": "confirme"
+    },
+    {
+     "titre": "Free People Team Leader/ Premier(e) Vendeur(se) - Paris Saint Sulpice, France - CDI 28h/semaine",
+     "verdict": "confirme"
+    },
+    {
+     "titre": "Free People Team Leader/ Premier(e) Vendeur(se) - Paris Saint Sulpice, France",
+     "verdict": "confirme"
+    }
+   ]
+  },
+  {
    "expression": "CHEF DE PROJET ARCHITECTURE",
-   "occupation": "interior-architect",
+   "occupation": "architecte-d-interieur",
    "mode": "exacte",
    "offres": 11,
    "juges": [
     {
-     "titre": "Chef de projet architecture déploiement F/H",
+     "titre": "Chef de projet architecture déploiement F/H",
      "verdict": "rejete"
     },
     {
@@ -2289,21 +2292,41 @@
   },
   {
    "expression": "CHEF D EQUIPE",
-   "occupation": "floor-manager",
-   "mode": "exacte",
+   "occupation": "manager-floor",
+   "mode": "generalisable",
    "offres": 72,
    "juges": [
     {
      "titre": "Chef d'équipe expérience client",
-     "verdict": "rejete"
+     "verdict": "confirme"
     },
     {
      "titre": "Chef d'équipe à temps plein - Magasin de détail adidas Montreal (#2042)",
-     "verdict": "rejete"
+     "verdict": "confirme"
     },
     {
      "titre": "Chef.fe d'équipe (Temps plein) - Les Promenades du Cuivre Rouyn-Noranda",
+     "verdict": "confirme"
+    }
+   ]
+  },
+  {
+   "expression": "CONTROLLING",
+   "occupation": "financial-controller",
+   "mode": "exacte",
+   "offres": 26,
+   "juges": [
+    {
+     "titre": "CDI- Responsable Controlling e-commerce - H/F/X - Groupe Rocher",
+     "verdict": "confirme"
+    },
+    {
+     "titre": "Functional Consultant Controlling Solutions (f/m/x)",
      "verdict": "rejete"
+    },
+    {
+     "titre": "Junior Sales Controlling Analyst (6 Months Contract)",
+     "verdict": "confirme"
     }
    ]
   },
@@ -2328,8 +2351,28 @@
    ]
   },
   {
+   "expression": "CONTROLE DE GESTION",
+   "occupation": "financial-controller",
+   "mode": "generalisable",
+   "offres": 17,
+   "juges": [
+    {
+     "titre": "Responsable Controle de Gestion Industriel H/F",
+     "verdict": "confirme"
+    },
+    {
+     "titre": "STAGE 6 MOIS - À partir de janvier 2027 - Contrôle de Gestion Industriel - Master ½ - 1700€/mois",
+     "verdict": "confirme"
+    },
+    {
+     "titre": "Stage – Contrôle de Gestion Marché Export – Parfums Beauté – CHANEL Europe – Janvier 2027 – H/F/X",
+     "verdict": "confirme"
+    }
+   ]
+  },
+  {
    "expression": "RESPONSABLE DEVELOPPEMENT",
-   "occupation": "material-development-manager",
+   "occupation": "responsable-developpement-matieres",
    "mode": "exacte",
    "offres": 16,
    "juges": [
@@ -2349,7 +2392,7 @@
   },
   {
    "expression": "CHEF DE DEPARTEMENT MODE",
-   "occupation": "collection-manager",
+   "occupation": "responsable-collection",
    "mode": "exacte",
    "offres": 12,
    "juges": [
@@ -2369,7 +2412,7 @@
   },
   {
    "expression": "CHEF DE RAYON",
-   "occupation": "floor-manager",
+   "occupation": "manager-floor",
    "mode": "generalisable",
    "offres": 16,
    "juges": [
@@ -2389,7 +2432,7 @@
   },
   {
    "expression": "CHEF DE SECTEUR",
-   "occupation": "area-sales-manager",
+   "occupation": "responsable-commercial-de-zone",
    "mode": "exacte",
    "offres": 25,
    "juges": [
@@ -2409,7 +2452,7 @@
   },
   {
    "expression": "RETAIL MANAGER",
-   "occupation": "retail-director",
+   "occupation": "directeur-reseau",
    "mode": "exacte",
    "offres": 22,
    "juges": [
@@ -2429,7 +2472,7 @@
   },
   {
    "expression": "EVENTS MANAGER",
-   "occupation": "event-project-manager",
+   "occupation": "chef-de-projet-evenementiel",
    "mode": "exacte",
    "offres": 11,
    "juges": [
@@ -2488,26 +2531,6 @@
    ]
   },
   {
-   "expression": "RESPONSABLE DE RAYON",
-   "occupation": "floor-manager",
-   "mode": "generalisable",
-   "offres": 13,
-   "juges": [
-    {
-     "titre": "Coach Floor Men HOI (Responsable de rayon Floor) – H / F Stretch / CDD",
-     "verdict": "confirme"
-    },
-    {
-     "titre": "Coach Floor Nike Women (Responsable de rayon Floor) – H / F CDD - Stretch",
-     "verdict": "confirme"
-    },
-    {
-     "titre": "Responsable de rayon 35h H/F - Rouen Barentin (76) - Boardriders",
-     "verdict": "confirme"
-    }
-   ]
-  },
-  {
    "expression": "COLLABORATEUR COLLABORATRICE CHARGE DES VENTES",
    "occupation": "sales-advisor",
    "mode": "generalisable",
@@ -2529,7 +2552,7 @@
   },
   {
    "expression": "COMMIS DE CUISINE",
-   "occupation": "commis-chef",
+   "occupation": "commis-de-cuisine",
    "mode": "generalisable",
    "offres": 10,
    "juges": [
@@ -2549,7 +2572,7 @@
   },
   {
    "expression": "SALES SUPERVISOR",
-   "occupation": "floor-manager",
+   "occupation": "manager-floor",
    "mode": "exacte",
    "offres": 171,
    "juges": [
@@ -2559,19 +2582,19 @@
     },
     {
      "titre": "Sales Supervisor PT Men's, Rio Grande Valley Outlets - Mercedes, TX",
-     "verdict": "confirme"
+     "verdict": "rejete"
     },
     {
      "titre": "Retail Sales Supervisor, Michael Kors Outlet Men's, Sawgrass Mills",
-     "verdict": "confirme"
+     "verdict": "rejete"
     }
    ]
   },
   {
    "expression": "MANAGER SALES",
-   "occupation": "commercial-manager",
+   "occupation": "manager-commercial",
    "mode": "exacte",
-   "offres": 21,
+   "offres": 20,
    "juges": [
     {
      "titre": "Manager, Sales - Cosmetics",
@@ -2609,7 +2632,7 @@
   },
   {
    "expression": "CONTENT CREATOR",
-   "occupation": "content-creator",
+   "occupation": "createur-de-contenu",
    "mode": "generalisable",
    "offres": 11,
    "juges": [
@@ -2629,8 +2652,8 @@
   },
   {
    "expression": "DEPENDIENTE",
-   "occupation": "sales-assistant",
-   "mode": "generalisable",
+   "occupation": "employe-de-commerce",
+   "mode": "exacte",
    "offres": 23,
    "juges": [
     {
@@ -2647,13 +2670,13 @@
     }
    ],
    "motSeul": [
-    true,
-    true
+    false,
+    false
    ]
   },
   {
    "expression": "SALES EXECUTIVE",
-   "occupation": "sales-representative",
+   "occupation": "commercial",
    "mode": "exacte",
    "offres": 11,
    "juges": [
@@ -2662,11 +2685,11 @@
      "verdict": "rejete"
     },
     {
-     "titre": " Full-Time Senior Sales Executive - New Bond Street Accessories, London UK",
+     "titre": "Full-Time Senior Sales Executive - New Bond Street Accessories, London UK",
      "verdict": "rejete"
     },
     {
-     "titre": " Full-Time Senior Sales Executive - Sloane Street, London",
+     "titre": "Full-Time Senior Sales Executive - Sloane Street, London",
      "verdict": "rejete"
     }
    ]
@@ -2693,7 +2716,7 @@
   },
   {
    "expression": "DEPARTMENT SUPERVISOR",
-   "occupation": "floor-manager",
+   "occupation": "manager-floor",
    "mode": "generalisable",
    "offres": 47,
    "juges": [
@@ -2713,8 +2736,8 @@
   },
   {
    "expression": "DEPENDIENTA",
-   "occupation": "sales-assistant",
-   "mode": "generalisable",
+   "occupation": "employe-de-commerce",
+   "mode": "exacte",
    "offres": 27,
    "juges": [
     {
@@ -2731,8 +2754,28 @@
     }
    ],
    "motSeul": [
-    true,
-    true
+    false,
+    false
+   ]
+  },
+  {
+   "expression": "DISTRICT MANAGER",
+   "occupation": "regional-retail-manager",
+   "mode": "generalisable",
+   "offres": 27,
+   "juges": [
+    {
+     "titre": "District Manager - Western Canada",
+     "verdict": "confirme"
+    },
+    {
+     "titre": "District Manager, Multi Brand Boutique, South East - Miami, FL",
+     "verdict": "confirme"
+    },
+    {
+     "titre": "Urban Outfitters District Manager - Central East (OH/MI)",
+     "verdict": "confirme"
+    }
    ]
   },
   {
@@ -2757,8 +2800,8 @@
   },
   {
    "expression": "REPLENISHMENT SALES ASSOCIATE PART TIME",
-   "occupation": "sales-assistant",
-   "mode": "exacte",
+   "occupation": "employe-de-commerce",
+   "mode": "generalisable",
    "offres": 11,
    "juges": [
     {
@@ -2767,11 +2810,11 @@
     },
     {
      "titre": "Replenishment Sales Associate (Part-Time), 6am-11am Shift Time",
-     "verdict": "rejete"
+     "verdict": "confirme"
     },
     {
      "titre": "Seasonal Replenishment Sales Associate (Part-Time)- Vineland Outlets",
-     "verdict": "rejete"
+     "verdict": "confirme"
     }
    ]
   },
@@ -2801,43 +2844,43 @@
   },
   {
    "expression": "EMPLOYE DE RAYON",
-   "occupation": "sales-assistant",
-   "mode": "exacte",
+   "occupation": "employe-de-commerce",
+   "mode": "generalisable",
    "offres": 262,
    "juges": [
     {
      "titre": "Employée, employé de rayon épicerie - entretien",
-     "verdict": "rejete"
+     "verdict": "confirme"
     },
     {
      "titre": "Session de recrutement 30/04/20- Employée, employé de rayon boucherie - volaille",
-     "verdict": "rejete"
+     "verdict": "confirme"
     },
     {
      "titre": "Employée, employé de rayon à service fruits & légumes",
-     "verdict": "rejete"
+     "verdict": "confirme"
     }
    ]
   },
   {
    "expression": "EMPLOYE DE RAYON TEXTILE",
-   "occupation": "sales-assistant",
-   "mode": "exacte",
+   "occupation": "employe-de-commerce",
+   "mode": "generalisable",
    "offres": 64,
    "juges": [
     {
      "titre": "Employée, employé de rayon textile",
-     "verdict": "rejete"
+     "verdict": "confirme"
     },
     {
      "titre": "Employé de rayon textile F/H",
-     "verdict": "rejete"
+     "verdict": "confirme"
     }
    ]
   },
   {
    "expression": "EMPLOYE COMMERCIAL",
-   "occupation": "sales-assistant",
+   "occupation": "employe-de-commerce",
    "mode": "generalisable",
    "offres": 14,
    "juges": [
@@ -2849,7 +2892,7 @@
   },
   {
    "expression": "MANAGER RETAIL",
-   "occupation": "floor-manager",
+   "occupation": "manager-floor",
    "mode": "exacte",
    "offres": 36,
    "juges": [
@@ -2868,10 +2911,30 @@
    ]
   },
   {
+   "expression": "EXTRA",
+   "occupation": "figurant",
+   "mode": "exacte",
+   "offres": 22,
+   "juges": [
+    {
+     "titre": "Extra Cuisine H/F",
+     "verdict": "rejete"
+    },
+    {
+     "titre": "SALES ASSOCIATES – EXTRA / ON-CALL TILBURG - NEW STORE OPENING",
+     "verdict": "rejete"
+    },
+    {
+     "titre": "STAGE EXTRA CURRICULARE ADDETTO/A VENDITA KIABI CORSICO",
+     "verdict": "rejete"
+    }
+   ]
+  },
+  {
    "expression": "STORE SUPERVISOR",
-   "occupation": "floor-manager",
+   "occupation": "manager-floor",
    "mode": "generalisable",
-   "offres": 30,
+   "offres": 32,
    "juges": [
     {
      "titre": "Faces Store Supervisor",
@@ -2949,7 +3012,7 @@
   },
   {
    "expression": "AUDITOR",
-   "occupation": "auditor",
+   "occupation": "auditeur",
    "mode": "exacte",
    "offres": 15,
    "juges": [
@@ -2973,7 +3036,7 @@
   },
   {
    "expression": "RETAIL SUPERVISOR",
-   "occupation": "floor-manager",
+   "occupation": "manager-floor",
    "mode": "exacte",
    "offres": 115,
    "juges": [
@@ -2993,7 +3056,7 @@
   },
   {
    "expression": "VISUAL MERCHANDISER MANAGER",
-   "occupation": "visual-merchandising-manager",
+   "occupation": "responsable-vm",
    "mode": "generalisable",
    "offres": 21,
    "juges": [
@@ -3013,7 +3076,7 @@
   },
   {
    "expression": "FLOOR LEADER",
-   "occupation": "floor-manager",
+   "occupation": "manager-floor",
    "mode": "generalisable",
    "offres": 104,
    "juges": [
@@ -3033,7 +3096,7 @@
   },
   {
    "expression": "FLOOR LEAD RETAIL",
-   "occupation": "floor-manager",
+   "occupation": "manager-floor",
    "mode": "generalisable",
    "offres": 52,
    "juges": [
@@ -3049,7 +3112,7 @@
   },
   {
    "expression": "HORECAMEDEWERKER",
-   "occupation": "food-service-worker",
+   "occupation": "employe-de-restauration",
    "mode": "generalisable",
    "offres": 17,
    "juges": [
@@ -3073,7 +3136,7 @@
   },
   {
    "expression": "LOSS PREVENTION AGENT",
-   "occupation": "security-guard",
+   "occupation": "agent-de-securite",
    "mode": "generalisable",
    "offres": 27,
    "juges": [
@@ -3113,7 +3176,7 @@
   },
   {
    "expression": "FULL TIME SALES SUPERVISOR",
-   "occupation": "floor-manager",
+   "occupation": "manager-floor",
    "mode": "generalisable",
    "offres": 12,
    "juges": [
@@ -3173,12 +3236,12 @@
   },
   {
    "expression": "H M RESPONSABLE DE DEPARTEMENT",
-   "occupation": "floor-manager",
+   "occupation": "manager-floor",
    "mode": "generalisable",
    "offres": 11,
    "juges": [
     {
-     "titre": "H&M Responsable de département (Assistant.e gérant.e) ",
+     "titre": "H&M Responsable de département (Assistant.e gérant.e)",
      "verdict": "confirme"
     }
    ]
@@ -3205,7 +3268,7 @@
   },
   {
    "expression": "JURISTE PROPRIETE INTELLECTUELLE",
-   "occupation": "ip-lawyer",
+   "occupation": "juriste-propriete-intellectuelle",
    "mode": "exacte",
    "offres": 11,
    "juges": [
@@ -3241,7 +3304,7 @@
   },
   {
    "expression": "SUPERVISEUR",
-   "occupation": "floor-manager",
+   "occupation": "manager-floor",
    "mode": "exacte",
    "offres": 20,
    "juges": [
@@ -3261,8 +3324,8 @@
   },
   {
    "expression": "MANAGER DES VENTES",
-   "occupation": "floor-manager",
-   "mode": "exacte",
+   "occupation": "manager-floor",
+   "mode": "generalisable",
    "offres": 42,
    "juges": [
     {
@@ -3271,7 +3334,7 @@
     },
     {
      "titre": "Manager des Ventes (F/H) // Axe Caisse - Champs Elysées - CDI 35h",
-     "verdict": "rejete"
+     "verdict": "confirme"
     },
     {
      "titre": "Manager des Ventes (F/H) - Dijon Toison D'Or - CDI 35h",
@@ -3323,7 +3386,7 @@
    "expression": "SELLING ADVISOR",
    "occupation": "sales-advisor",
    "mode": "generalisable",
-   "offres": 197,
+   "offres": 210,
    "juges": [
     {
      "titre": "Selling Advisor - Contemporary",
@@ -3341,7 +3404,7 @@
   },
   {
    "expression": "RETAIL ASSISTANT OPERADOR DE LOJA",
-   "occupation": "sales-assistant",
+   "occupation": "employe-de-commerce",
    "mode": "generalisable",
    "offres": 27,
    "juges": [
@@ -3448,8 +3511,8 @@
    ]
   },
   {
-   "expression": "販売スタッフ",
-   "occupation": "sales-assistant",
+   "expression": "販 売 スタッフ",
+   "occupation": "employe-de-commerce",
    "mode": "generalisable",
    "offres": 47,
    "juges": [
@@ -3458,22 +3521,18 @@
      "verdict": "confirme"
     },
     {
-     "titre": "販売スタッフ(アルバイト) Nike Company Store Tokyo (六本木）",
+     "titre": "フレグランス販売スタッフ（契約社員）｜関東エリア",
      "verdict": "confirme"
     },
     {
-     "titre": "販売スタッフ(アルバイト) Nike Factory Store Sapporo Kitahiroshima",
+     "titre": "販売スタッフ(アルバイト) Nike Company Store Tokyo (六本木）",
      "verdict": "confirme"
     }
-   ],
-   "motSeul": [
-    true,
-    true
    ]
   },
   {
    "expression": "PRESIDENT",
-   "occupation": "president",
+   "occupation": "president-d-association",
    "mode": "exacte",
    "offres": 24,
    "juges": [
@@ -3498,7 +3557,7 @@
    "offres": 44,
    "juges": [
     {
-     "titre": "Responsable adjoint de magasin (f/h)",
+     "titre": "Responsable adjoint de magasin H/F",
      "verdict": "confirme"
     },
     {
@@ -3532,8 +3591,8 @@
    ]
   },
   {
-   "expression": "销售主管",
-   "occupation": "sales-lead",
+   "expression": "销 售 主 管",
+   "occupation": "retail-sales-lead",
    "mode": "generalisable",
    "offres": 16,
    "juges": [
@@ -3542,22 +3601,18 @@
      "verdict": "confirme"
     },
     {
-     "titre": "Sales leader/Sales leader销售主管-济南",
+     "titre": "SALES LEADER/销售主管 _ 北京大兴机场",
      "verdict": "confirme"
     },
     {
-     "titre": "SALES LEADER/销售主管Sales Leader（三亚）",
+     "titre": "Sales leader/Sales leader销售主管-济南",
      "verdict": "confirme"
     }
-   ],
-   "motSeul": [
-    true,
-    true
    ]
   },
   {
    "expression": "SCHICHTLEITER M W D",
-   "occupation": "floor-manager",
+   "occupation": "manager-floor",
    "mode": "exacte",
    "offres": 19,
    "juges": [
@@ -3577,7 +3632,7 @@
   },
   {
    "expression": "SALES LEAD WITH KEYS UGG",
-   "occupation": "floor-manager",
+   "occupation": "manager-floor",
    "mode": "exacte",
    "offres": 16,
    "juges": [
@@ -3637,8 +3692,8 @@
   },
   {
    "expression": "WINKELMEDEWERKER",
-   "occupation": "sales-assistant",
-   "mode": "exacte",
+   "occupation": "employe-de-commerce",
+   "mode": "generalisable",
    "offres": 43,
    "juges": [
     {
@@ -3647,12 +3702,16 @@
     },
     {
      "titre": "Senior Winkelmedewerker Schiphol Airport",
-     "verdict": "rejete"
+     "verdict": "confirme"
     },
     {
      "titre": "Winkelmedewerker - studenten/flexi",
      "verdict": "confirme"
     }
+   ],
+   "motSeul": [
+    true,
+    true
    ]
   },
   {
@@ -3677,7 +3736,7 @@
   },
   {
    "expression": "LEAD FULL TIME",
-   "occupation": "floor-manager",
+   "occupation": "manager-floor",
    "mode": "exacte",
    "offres": 45,
    "juges": [
@@ -3697,7 +3756,7 @@
   },
   {
    "expression": "STORE TEAM LEAD",
-   "occupation": "floor-manager",
+   "occupation": "manager-floor",
    "mode": "generalisable",
    "offres": 19,
    "juges": [
@@ -3717,7 +3776,7 @@
   },
   {
    "expression": "STORE WORKER",
-   "occupation": "sales-assistant",
+   "occupation": "employe-de-commerce",
    "mode": "generalisable",
    "offres": 10,
    "juges": [
@@ -3806,15 +3865,15 @@
    "offres": 30,
    "juges": [
     {
-     "titre": "セールスアドバイザー　アルバイト（H&M沖縄パルコ）",
+     "titre": "セールスアドバイザー アルバイト（H&M沖縄パルコ）",
      "verdict": "confirme"
     },
     {
-     "titre": "セールスアドバイザー　アルバイト（H&M 渋谷）",
+     "titre": "セールスアドバイザー正社員登用（H&M二子玉川）",
      "verdict": "confirme"
     },
     {
-     "titre": "セールスアドバイザー アルバイト (H&M 天神）",
+     "titre": "セールスアドバイザー 正社員（SOCOLA武蔵小金井クロス）",
      "verdict": "confirme"
     }
    ],
@@ -3827,13 +3886,13 @@
  "sousSeuil": [
   {
    "expression": "GOUVERNANT",
-   "occupation": "housekeeper",
+   "occupation": "gouvernant",
    "mode": "exacte",
    "offres": 8
   },
   {
    "expression": "ASSISTANT STYLISTE",
-   "occupation": "stylist-assistant",
+   "occupation": "assistant-styliste",
    "mode": "exacte",
    "offres": 4
   },
@@ -3851,13 +3910,13 @@
   },
   {
    "expression": "LEAD SUPERVISOR I",
-   "occupation": "floor-manager",
+   "occupation": "manager-floor",
    "mode": "exacte",
    "offres": 9
   },
   {
    "expression": "LEAD SUPERVISOR II",
-   "occupation": "floor-manager",
+   "occupation": "manager-floor",
    "mode": "exacte",
    "offres": 5
   },
@@ -3869,25 +3928,25 @@
   },
   {
    "expression": "ADDETTO ALLE VENDITE",
-   "occupation": "sales-assistant",
+   "occupation": "employe-de-commerce",
    "mode": "exacte",
    "offres": 5
   },
   {
    "expression": "COUPE",
-   "occupation": "garment-cutter",
+   "occupation": "coupe",
    "mode": "exacte",
    "offres": 7
   },
   {
    "expression": "GOUVERNANTE",
-   "occupation": "housekeeper",
+   "occupation": "gouvernant",
    "mode": "exacte",
    "offres": 2
   },
   {
    "expression": "ADMINISTRATEUR DES VENTES",
-   "occupation": "sales-support-assistant",
+   "occupation": "assistant-commercial",
    "mode": "exacte",
    "offres": 1
   },
@@ -3899,31 +3958,31 @@
   },
   {
    "expression": "PARTNERSHIPS MANAGER",
-   "occupation": "partnership-manager",
+   "occupation": "responsable-partenariats",
    "mode": "exacte",
    "offres": 2
   },
   {
    "expression": "SALES COORDINATOR",
-   "occupation": "sales-support-assistant",
+   "occupation": "assistant-commercial",
    "mode": "exacte",
    "offres": 6
   },
   {
    "expression": "AGENT D ENTRETIEN",
-   "occupation": "cleaner",
+   "occupation": "agent-d-entretien",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "AGENT DE PRODUCTION",
-   "occupation": "production-operator",
+   "occupation": "operateur-de-production",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "AGENT DE SECURITE",
-   "occupation": "security-guard",
+   "occupation": "agent-de-securite",
    "mode": "exacte",
    "offres": 5
   },
@@ -3941,7 +4000,7 @@
   },
   {
    "expression": "FOTOGRAAF",
-   "occupation": "photographer",
+   "occupation": "photographe",
    "mode": "exacte",
    "offres": 1
   },
@@ -3959,25 +4018,25 @@
   },
   {
    "expression": "ALTERNANCE ACHATS",
-   "occupation": "buyer-planner",
+   "occupation": "acheteur-approvisionneur",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "DEVELOPPEMENT COMMERCIAL",
-   "occupation": "sales-representative",
+   "occupation": "commercial",
    "mode": "exacte",
    "offres": 4
   },
   {
    "expression": "COUPEUR",
-   "occupation": "garment-cutter",
+   "occupation": "coupe",
    "mode": "exacte",
    "offres": 2
   },
   {
    "expression": "REGISSEUR",
-   "occupation": "stage-manager",
+   "occupation": "regisseur",
    "mode": "exacte",
    "offres": 2
   },
@@ -3995,13 +4054,13 @@
   },
   {
    "expression": "COMMERCIAL B2B",
-   "occupation": "sales-representative",
+   "occupation": "commercial",
    "mode": "exacte",
    "offres": 2
   },
   {
    "expression": "AMBASSADEUR DES VENTES",
-   "occupation": "sales-promoter",
+   "occupation": "animateur-ventes",
    "mode": "exacte",
    "offres": 1
   },
@@ -4019,73 +4078,73 @@
   },
   {
    "expression": "ANIMATEUR COMMERCIAL",
-   "occupation": "sales-promoter",
+   "occupation": "animateur-ventes",
    "mode": "exacte",
    "offres": 2
   },
   {
    "expression": "ANIMATEUR DES VENTES",
-   "occupation": "sales-promoter",
+   "occupation": "animateur-ventes",
    "mode": "exacte",
    "offres": 6
   },
   {
    "expression": "PRODUCTION MANAGER",
-   "occupation": "production-director",
+   "occupation": "directeur-production",
    "mode": "exacte",
    "offres": 8
   },
   {
    "expression": "DIGITAL MARKETING ASSISTANT",
-   "occupation": "digital-marketing-assistant",
+   "occupation": "assistant-marketing-digital",
    "mode": "exacte",
    "offres": 4
   },
   {
    "expression": "DIGITAL MARKETING INTERN",
-   "occupation": "digital-marketing-assistant",
+   "occupation": "assistant-marketing-digital",
    "mode": "exacte",
    "offres": 2
   },
   {
    "expression": "PHOTOGRAPHER",
-   "occupation": "photographer",
+   "occupation": "photographe",
    "mode": "exacte",
    "offres": 6
   },
   {
    "expression": "VIDEOGRAPHER",
-   "occupation": "videographer",
+   "occupation": "videaste",
    "mode": "exacte",
    "offres": 2
   },
   {
    "expression": "DIRECTEUR ARTISTIQUE",
-   "occupation": "art-director",
+   "occupation": "direction-artistique",
    "mode": "exacte",
    "offres": 5
   },
   {
    "expression": "PRATICIEN",
-   "occupation": "spa-therapist",
+   "occupation": "praticien-spa",
    "mode": "exacte",
    "offres": 7
   },
   {
    "expression": "EMPLOYE DE COMMERCE",
-   "occupation": "sales-assistant",
+   "occupation": "employe-de-commerce",
    "mode": "exacte",
    "offres": 4
   },
   {
    "expression": "SERTISSEUR",
-   "occupation": "stone-setter",
+   "occupation": "sertisseur",
    "mode": "exacte",
    "offres": 8
   },
   {
    "expression": "PRATICIENNE",
-   "occupation": "spa-therapist",
+   "occupation": "praticien-spa",
    "mode": "exacte",
    "offres": 2
   },
@@ -4097,7 +4156,7 @@
   },
   {
    "expression": "AREA SALES MANAGER",
-   "occupation": "area-sales-manager",
+   "occupation": "responsable-commercial-de-zone",
    "mode": "exacte",
    "offres": 8
   },
@@ -4127,31 +4186,31 @@
   },
   {
    "expression": "CRM INTERN",
-   "occupation": "crm-marketing-assistant",
+   "occupation": "assistant-marketing-client",
    "mode": "exacte",
    "offres": 5
   },
   {
    "expression": "INVENTORY SPECIALIST",
-   "occupation": "inventory-specialist",
+   "occupation": "inventoriste",
    "mode": "exacte",
    "offres": 3
   },
   {
    "expression": "ASSET PROTECTION PARTNER",
-   "occupation": "security-guard",
+   "occupation": "agent-de-securite",
    "mode": "exacte",
    "offres": 2
   },
   {
    "expression": "ASSISTANT ATTACHE DE PRESSE",
-   "occupation": "press-officer",
+   "occupation": "charge-de-relations-presse",
    "mode": "exacte",
    "offres": 7
   },
   {
    "expression": "ASSISTANT BACK OFFICE",
-   "occupation": "administrative-assistant",
+   "occupation": "assistant-administratif",
    "mode": "exacte",
    "offres": 4
   },
@@ -4163,79 +4222,91 @@
   },
   {
    "expression": "ASSISTANT BRAND MANAGER",
-   "occupation": "brand-manager",
+   "occupation": "chef-de-marque",
    "mode": "exacte",
    "offres": 2
   },
   {
    "expression": "ASSISTANT BUSINESS DEVELOPMENT",
-   "occupation": "business-development-assistant",
+   "occupation": "assistant-business-development",
    "mode": "exacte",
    "offres": 3
   },
   {
    "expression": "CHEF DE PRODUIT ACCESSOIRES",
-   "occupation": "product-manager",
+   "occupation": "chef-produit",
    "mode": "exacte",
    "offres": 2
   },
   {
    "expression": "CHEF DE PRODUIT DEVELOPPEMENT PAP",
-   "occupation": "product-manager",
+   "occupation": "chef-produit",
    "mode": "exacte",
    "offres": 4
   },
   {
    "expression": "CHEF DE PROJET SUPPLY CHAIN",
-   "occupation": "supply-chain-project-manager",
+   "occupation": "chef-de-projet-supply-chain",
    "mode": "exacte",
    "offres": 7
   },
   {
    "expression": "COORDINATEUR RETAIL",
-   "occupation": "retail-coordinator",
+   "occupation": "coordinateur-retail",
    "mode": "exacte",
    "offres": 7
   },
   {
    "expression": "ASSISTANT CRM",
-   "occupation": "crm-marketing-assistant",
+   "occupation": "assistant-marketing-client",
    "mode": "exacte",
    "offres": 5
   },
   {
    "expression": "CHARGE D APPROVISIONNEMENT",
-   "occupation": "buyer-planner",
+   "occupation": "acheteur-approvisionneur",
    "mode": "exacte",
    "offres": 1
   },
   {
+   "expression": "CHEF DE PROJET E COMMERCE",
+   "occupation": "chef-de-projet-digital",
+   "mode": "exacte",
+   "offres": 9
+  },
+  {
    "expression": "CHEF DE PRODUIT TEXTILE",
-   "occupation": "product-manager",
+   "occupation": "chef-produit",
    "mode": "exacte",
    "offres": 2
   },
   {
    "expression": "ASSISTANT DE COLLECTION",
-   "occupation": "design-assistant",
+   "occupation": "assistant-designer",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "ASSISTANT DE GESTION",
-   "occupation": "management-assistant",
+   "occupation": "assistant-de-gestion",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "ASSISTANT DE PROJET",
-   "occupation": "architectural-assistant",
+   "occupation": "assistant-architecte",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "expression": "DEVELOPPEUR CHAUSSURES",
+   "occupation": "product-developer",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "DIRECTRICE DE PRODUCTION",
-   "occupation": "production-director",
+   "occupation": "directeur-production",
    "mode": "exacte",
    "offres": 1
   },
@@ -4253,9 +4324,15 @@
   },
   {
    "expression": "ASSISTANT MARKETING DIGITAL",
-   "occupation": "digital-marketing-assistant",
+   "occupation": "assistant-marketing-digital",
    "mode": "exacte",
    "offres": 4
+  },
+  {
+   "expression": "ASSISTANT E MERCHANDISING",
+   "occupation": "e-merchandiser",
+   "mode": "exacte",
+   "offres": 6
   },
   {
    "expression": "ASSISTANT OPERATIONS RETAIL",
@@ -4265,25 +4342,25 @@
   },
   {
    "expression": "ASSISTANT PHOTOGRAPHE",
-   "occupation": "photographer",
+   "occupation": "photographe",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "PHOTOGRAPHE",
-   "occupation": "photographer",
+   "occupation": "photographe",
    "mode": "exacte",
    "offres": 3
   },
   {
    "expression": "ASSISTANT SERVICE CLIENT",
-   "occupation": "customer-operations-assistant",
+   "occupation": "assistant-operations-client",
    "mode": "exacte",
    "offres": 2
   },
   {
    "expression": "ASSISTANT SHOWROOM",
-   "occupation": "showroom-assistant",
+   "occupation": "assistant-showroom",
    "mode": "exacte",
    "offres": 9
   },
@@ -4331,15 +4408,21 @@
   },
   {
    "expression": "RESTAURANT MANAGER",
-   "occupation": "restaurant-manager",
+   "occupation": "manager-de-restaurant",
    "mode": "exacte",
    "offres": 4
   },
   {
    "expression": "ASSISTANT RETAIL MERCHANDISER",
-   "occupation": "merchandising-assistant",
+   "occupation": "assistant-merchandiser",
    "mode": "exacte",
    "offres": 8
+  },
+  {
+   "expression": "ASSISTANT STORE DIRECTOR",
+   "occupation": "assistant-store-manager",
+   "mode": "exacte",
+   "offres": 7
   },
   {
    "expression": "ASSISTANT VISUAL MERCHANDISER",
@@ -4355,7 +4438,7 @@
   },
   {
    "expression": "MANAGER TALENT ACQUISITION",
-   "occupation": "recruitment-manager",
+   "occupation": "responsable-recrutement",
    "mode": "exacte",
    "offres": 4
   },
@@ -4367,7 +4450,7 @@
   },
   {
    "expression": "ATTACHE COMMERCIAL",
-   "occupation": "sales-representative",
+   "occupation": "commercial",
    "mode": "exacte",
    "offres": 5
   },
@@ -4379,13 +4462,13 @@
   },
   {
    "expression": "AUDITEUR INTERNE",
-   "occupation": "auditor",
+   "occupation": "auditeur",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "AUDITEUR",
-   "occupation": "auditor",
+   "occupation": "auditeur",
    "mode": "exacte",
    "offres": 1
   },
@@ -4397,43 +4480,37 @@
   },
   {
    "expression": "BARMAN",
-   "occupation": "bartender",
+   "occupation": "barman",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "BUSINESS DEVELOPER",
-   "occupation": "sales-representative",
+   "occupation": "commercial",
    "mode": "exacte",
    "offres": 6
   },
   {
-   "expression": "VMD",
-   "occupation": "visual-merchandiser",
-   "mode": "exacte",
-   "offres": 5
-  },
-  {
    "expression": "BEVEILIGER",
-   "occupation": "security-guard",
+   "occupation": "agent-de-securite",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "LOGISTICS COORDINATOR",
-   "occupation": "logistics-coordinator",
+   "occupation": "coordinateur-logistique",
    "mode": "exacte",
    "offres": 4
   },
   {
    "expression": "BOTTIER",
-   "occupation": "shoemaker",
+   "occupation": "bottier",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "BOUTIQUE ADMINISTRATOR",
-   "occupation": "administrative-assistant",
+   "occupation": "assistant-administratif",
    "mode": "exacte",
    "offres": 7
   },
@@ -4445,7 +4522,7 @@
   },
   {
    "expression": "BRAND ACTIVATION MANAGER",
-   "occupation": "brand-manager",
+   "occupation": "chef-de-marque",
    "mode": "exacte",
    "offres": 2
   },
@@ -4463,13 +4540,13 @@
   },
   {
    "expression": "BRAND DIRECTOR",
-   "occupation": "brand-director",
+   "occupation": "direction-marque",
    "mode": "exacte",
    "offres": 3
   },
   {
    "expression": "BUSINESS DEVELOPMENT ASSISTANT",
-   "occupation": "business-development-assistant",
+   "occupation": "assistant-business-development",
    "mode": "exacte",
    "offres": 3
   },
@@ -4481,7 +4558,7 @@
   },
   {
    "expression": "DIRECTEUR COMMERCIAL",
-   "occupation": "commercial-director",
+   "occupation": "direction-commerciale",
    "mode": "exacte",
    "offres": 2
   },
@@ -4499,7 +4576,7 @@
   },
   {
    "expression": "MONTEUR",
-   "occupation": "videographer",
+   "occupation": "videaste",
    "mode": "exacte",
    "offres": 3
   },
@@ -4511,7 +4588,7 @@
   },
   {
    "expression": "HR SPECIALIST",
-   "occupation": "hr-officer",
+   "occupation": "gestionnaire-des-ressources-humaines",
    "mode": "exacte",
    "offres": 7
   },
@@ -4529,7 +4606,7 @@
   },
   {
    "expression": "TRADE MARKETING MANAGER",
-   "occupation": "trade-marketing-manager",
+   "occupation": "chef-de-projet-trade-marketing",
    "mode": "exacte",
    "offres": 6
   },
@@ -4541,13 +4618,13 @@
   },
   {
    "expression": "EMPLOYE LIBRE SERVICE POLYVALENT F H",
-   "occupation": "sales-assistant",
+   "occupation": "employe-de-commerce",
    "mode": "exacte",
    "offres": 2
   },
   {
    "expression": "CHARGE DE QUALITE",
-   "occupation": "textile-quality-manager",
+   "occupation": "responsable-qualite-textile",
    "mode": "exacte",
    "offres": 3
   },
@@ -4559,163 +4636,157 @@
   },
   {
    "expression": "CHARGE D ORDONNANCEMENT",
-   "occupation": "supply-chain-planner",
+   "occupation": "planificateur-supply-chain",
    "mode": "exacte",
    "offres": 2
   },
   {
    "expression": "COORDINATEUR ADV",
-   "occupation": "logistics-coordinator",
+   "occupation": "coordinateur-logistique",
    "mode": "exacte",
    "offres": 2
   },
   {
    "expression": "COORDINATEUR LOGISTIQUE",
-   "occupation": "logistics-coordinator",
+   "occupation": "coordinateur-logistique",
    "mode": "exacte",
    "offres": 5
   },
   {
    "expression": "INGENIEUR ASSURANCE QUALITE",
-   "occupation": "quality-engineer",
+   "occupation": "ingenieur-qualite",
    "mode": "exacte",
    "offres": 4
   },
   {
-   "expression": "DIRECTEUR REGIONAL",
-   "occupation": "regional-retail-manager",
-   "mode": "exacte",
-   "offres": 7
-  },
-  {
    "expression": "GESTIONNAIRE DES APPROVISIONNEMENTS",
-   "occupation": "buyer-planner",
+   "occupation": "acheteur-approvisionneur",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "INGENIEUR AMELIORATION CONTINUE",
-   "occupation": "continuous-improvement-engineer",
+   "occupation": "ingenieur-amelioration-continue",
    "mode": "exacte",
    "offres": 7
   },
   {
    "expression": "JURISTE PRODUIT",
-   "occupation": "ip-lawyer",
+   "occupation": "juriste-propriete-intellectuelle",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "PROTOTYPISTE",
-   "occupation": "model-maker",
+   "occupation": "prototypiste",
    "mode": "exacte",
    "offres": 3
   },
   {
    "expression": "RESPONSABLE INDUSTRIALISATION",
-   "occupation": "industrialisation-manager",
+   "occupation": "responsable-industrialisation",
    "mode": "exacte",
    "offres": 4
   },
   {
    "expression": "PATRONNIER",
-   "occupation": "patternmaker",
+   "occupation": "modeliste",
    "mode": "exacte",
    "offres": 3
   },
   {
    "expression": "REGISSEUSE",
-   "occupation": "stage-manager",
+   "occupation": "regisseur",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "RESPONSABLE ACHATS",
-   "occupation": "purchasing-manager",
+   "occupation": "responsable-achats-et-offre",
    "mode": "exacte",
    "offres": 4
   },
   {
    "expression": "RESPONSABLE COMMUNICATION",
-   "occupation": "communication-manager",
+   "occupation": "responsable-communication",
    "mode": "exacte",
    "offres": 2
   },
   {
    "expression": "RESPONSABLE DE PROJET",
-   "occupation": "cosmetic-project-manager",
+   "occupation": "chef-de-projet-cosmetique",
    "mode": "exacte",
    "offres": 2
   },
   {
    "expression": "RESPONSABLE PLANIFICATION",
-   "occupation": "supply-chain-manager",
+   "occupation": "responsable-supply-chain",
    "mode": "exacte",
    "offres": 4
   },
   {
    "expression": "RESPONSABLE VISUAL MERCHANDISING",
-   "occupation": "visual-merchandising-manager",
+   "occupation": "responsable-vm",
    "mode": "exacte",
    "offres": 3
   },
   {
    "expression": "TECHNICIEN FORMULATION",
-   "occupation": "cosmetic-chemist",
+   "occupation": "formulateur-cosmetique",
    "mode": "exacte",
    "offres": 2
   },
   {
    "expression": "TECHNICIEN PRODUIT",
-   "occupation": "product-technician",
+   "occupation": "technicien-produit",
    "mode": "exacte",
    "offres": 4
   },
   {
    "expression": "CHARGE DE COMMUNICATION",
-   "occupation": "marketing-and-communication-officer",
+   "occupation": "charge-de-marketing-et-communication",
    "mode": "exacte",
    "offres": 4
   },
   {
    "expression": "CHARGE D ETUDES",
-   "occupation": "marketing-and-communication-officer",
+   "occupation": "charge-de-marketing-et-communication",
    "mode": "exacte",
    "offres": 8
   },
   {
    "expression": "CHARGE D INDUSTRIALISATION",
-   "occupation": "industrialisation-manager",
+   "occupation": "responsable-industrialisation",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "CHEF D ATELIER",
-   "occupation": "workshop-manager",
+   "occupation": "responsable-atelier",
    "mode": "exacte",
    "offres": 6
   },
   {
    "expression": "CHEF DE PROJET TRADE MARKETING",
-   "occupation": "trade-marketing-manager",
+   "occupation": "chef-de-projet-trade-marketing",
    "mode": "exacte",
    "offres": 2
   },
   {
    "expression": "DIRECTEUR COMMERCIAL INTERNATIONAL",
-   "occupation": "commercial-director",
+   "occupation": "direction-commerciale",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "DIRECTEUR FORMATION",
-   "occupation": "training-manager",
+   "occupation": "responsable-formation",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "DIRECTEUR SUPPLY CHAIN",
-   "occupation": "supply-chain-director",
+   "occupation": "directeur-supply-chain",
    "mode": "exacte",
    "offres": 1
   },
@@ -4727,109 +4798,109 @@
   },
   {
    "expression": "DIRECTION ARTISTIQUE",
-   "occupation": "art-director",
+   "occupation": "direction-artistique",
    "mode": "exacte",
    "offres": 4
   },
   {
    "expression": "MEDECIN",
-   "occupation": "aesthetic-doctor",
+   "occupation": "praticien-medecine-esthetique",
    "mode": "exacte",
    "offres": 2
   },
   {
    "expression": "PLANIFICATEUR DE PRODUCTION",
-   "occupation": "supply-chain-planner",
+   "occupation": "planificateur-supply-chain",
    "mode": "exacte",
    "offres": 2
   },
   {
    "expression": "PRODUCTION PLANNER",
-   "occupation": "supply-chain-planner",
+   "occupation": "planificateur-supply-chain",
    "mode": "exacte",
    "offres": 7
   },
   {
    "expression": "RESPONSABLE DE COLLECTION",
-   "occupation": "collection-manager",
+   "occupation": "responsable-collection",
    "mode": "exacte",
    "offres": 2
   },
   {
    "expression": "RESPONSABLE DES OPERATIONS",
-   "occupation": "operations-manager",
+   "occupation": "responsable-operationnel",
    "mode": "exacte",
    "offres": 7
   },
   {
    "expression": "RESPONSABLE DEVELOPPEMENT MATIERES",
-   "occupation": "material-development-manager",
+   "occupation": "responsable-developpement-matieres",
    "mode": "exacte",
    "offres": 3
   },
   {
    "expression": "RESPONSABLE DE ZONE",
-   "occupation": "area-sales-manager",
+   "occupation": "responsable-commercial-de-zone",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "RESPONSABLE EXPLOITATION",
-   "occupation": "operations-manager",
+   "occupation": "responsable-operationnel",
    "mode": "exacte",
    "offres": 3
   },
   {
    "expression": "RESPONSABLE PROJETS RETAIL",
-   "occupation": "retail-project-manager",
+   "occupation": "responsable-projets-retail",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "RESPONSABLE RECRUTEMENT",
-   "occupation": "recruitment-manager",
+   "occupation": "responsable-recrutement",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "RESPONSABLE REGIONAL",
-   "occupation": "retail-director",
+   "occupation": "directeur-reseau",
    "mode": "exacte",
    "offres": 4
   },
   {
    "expression": "RESPONSABLE RELATION CLIENT",
-   "occupation": "customer-relationship-manager",
+   "occupation": "responsable-relation-client",
    "mode": "exacte",
    "offres": 2
   },
   {
    "expression": "RESPONSABLE SERVICE CLIENT",
-   "occupation": "customer-relationship-manager",
+   "occupation": "responsable-relation-client",
    "mode": "exacte",
    "offres": 3
   },
   {
    "expression": "RESPONSABLE SUPPLY CHAIN",
-   "occupation": "supply-chain-manager",
+   "occupation": "responsable-supply-chain",
    "mode": "exacte",
    "offres": 6
   },
   {
    "expression": "RETAIL OPERATIONS MANAGER",
-   "occupation": "operations-manager",
+   "occupation": "responsable-operationnel",
    "mode": "exacte",
    "offres": 6
   },
   {
    "expression": "SPA PRATICIEN",
-   "occupation": "spa-therapist",
+   "occupation": "praticien-spa",
    "mode": "exacte",
    "offres": 2
   },
   {
    "expression": "STYLISTE CHAUSSURES",
-   "occupation": "footwear-designer",
+   "occupation": "designer-chaussures",
    "mode": "exacte",
    "offres": 1
   },
@@ -4841,43 +4912,43 @@
   },
   {
    "expression": "UI DESIGNER",
-   "occupation": "ux-designer",
+   "occupation": "ux-ui-designer",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "UX UI DESIGNER",
-   "occupation": "ux-designer",
+   "occupation": "ux-ui-designer",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "CHAUFFEUR LIVREUR",
-   "occupation": "delivery-driver",
+   "occupation": "livreur",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "LIVREUR",
-   "occupation": "delivery-driver",
+   "occupation": "livreur",
    "mode": "exacte",
    "offres": 2
   },
   {
    "expression": "CHEF DE MARQUE",
-   "occupation": "brand-manager",
+   "occupation": "chef-de-marque",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "CHEF DE PROJET EVENEMENTIEL",
-   "occupation": "event-project-manager",
+   "occupation": "chef-de-projet-evenementiel",
    "mode": "exacte",
    "offres": 6
   },
   {
    "expression": "CHEF DE PROJET IT CRM",
-   "occupation": "crm-project-manager",
+   "occupation": "chef-de-projet-crm",
    "mode": "exacte",
    "offres": 1
   },
@@ -4897,7 +4968,7 @@
    "expression": "CLIENT CONSULTANT",
    "occupation": "sales-advisor",
    "mode": "exacte",
-   "offres": 6
+   "offres": 7
   },
   {
    "expression": "CLIENT STYLE ADVISOR",
@@ -4907,19 +4978,19 @@
   },
   {
    "expression": "CLINIC MANAGER",
-   "occupation": "beauty-center-manager",
+   "occupation": "directeur-centre-esthetique",
    "mode": "exacte",
    "offres": 2
   },
   {
-   "expression": "咖啡师",
+   "expression": "咖 啡 师",
    "occupation": "barista",
    "mode": "exacte",
    "offres": 3
   },
   {
    "expression": "TEXTILE DESIGNER",
-   "occupation": "textile-designer",
+   "occupation": "dessinateur-textile",
    "mode": "exacte",
    "offres": 2
   },
@@ -4937,19 +5008,19 @@
   },
   {
    "expression": "COMMERCIAL DIRECTOR",
-   "occupation": "commercial-director",
+   "occupation": "direction-commerciale",
    "mode": "exacte",
    "offres": 2
   },
   {
    "expression": "COMMERCIAL ITINERANT",
-   "occupation": "sales-representative",
+   "occupation": "commercial",
    "mode": "exacte",
    "offres": 7
   },
   {
    "expression": "COMMERCIAL MANAGER",
-   "occupation": "commercial-manager",
+   "occupation": "manager-commercial",
    "mode": "exacte",
    "offres": 4
   },
@@ -4985,31 +5056,37 @@
   },
   {
    "expression": "CONTINUOUS IMPROVEMENT ENGINEER",
-   "occupation": "continuous-improvement-engineer",
+   "occupation": "ingenieur-amelioration-continue",
    "mode": "exacte",
    "offres": 2
   },
   {
+   "expression": "APPAREL DEVELOPER",
+   "occupation": "product-developer",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
    "expression": "CONTROLEUR QUALITE",
-   "occupation": "textile-quality-manager",
+   "occupation": "responsable-qualite-textile",
    "mode": "exacte",
    "offres": 5
   },
   {
    "expression": "COORDINADOR DE PRODUCCION",
-   "occupation": "production-coordinator",
+   "occupation": "coordinateur-de-production",
    "mode": "exacte",
    "offres": 2
   },
   {
    "expression": "COORDINATEUR DE PRODUCTION",
-   "occupation": "production-coordinator",
+   "occupation": "coordinateur-de-production",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "COORDINATEUR SERVICE CLIENT",
-   "occupation": "customer-relationship-manager",
+   "occupation": "responsable-relation-client",
    "mode": "exacte",
    "offres": 1
   },
@@ -5027,37 +5104,37 @@
   },
   {
    "expression": "フロアマネーシャー",
-   "occupation": "floor-manager",
+   "occupation": "manager-floor",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "FACILITIES MANAGER",
-   "occupation": "facilities-manager",
+   "occupation": "responsable-services-generaux",
    "mode": "exacte",
    "offres": 5
   },
   {
    "expression": "COUNTRY MANAGER",
-   "occupation": "general-manager",
+   "occupation": "direction",
    "mode": "exacte",
    "offres": 5
   },
   {
    "expression": "CREATEUR DE CONTENU",
-   "occupation": "content-creator",
+   "occupation": "createur-de-contenu",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "MARKETING PROJECT MANAGER",
-   "occupation": "digital-project-manager",
+   "occupation": "chef-de-projet-digital",
    "mode": "exacte",
    "offres": 3
   },
   {
    "expression": "CLEANER",
-   "occupation": "cleaner",
+   "occupation": "agent-d-entretien",
    "mode": "exacte",
    "offres": 1
   },
@@ -5069,7 +5146,7 @@
   },
   {
    "expression": "WORKSHOP MANAGER",
-   "occupation": "workshop-manager",
+   "occupation": "responsable-atelier",
    "mode": "exacte",
    "offres": 1
   },
@@ -5081,7 +5158,7 @@
   },
   {
    "expression": "SERVICE LEAD",
-   "occupation": "customer-relationship-manager",
+   "occupation": "responsable-relation-client",
    "mode": "exacte",
    "offres": 3
   },
@@ -5093,21 +5170,27 @@
   },
   {
    "expression": "FACILITY MANAGER",
-   "occupation": "facilities-manager",
+   "occupation": "responsable-services-generaux",
    "mode": "exacte",
    "offres": 3
   },
   {
    "expression": "DELEGUE PHARMACEUTIQUE",
-   "occupation": "pharmaceutical-sales-representative",
+   "occupation": "delegue-pharmaceutique",
    "mode": "exacte",
-   "offres": 1
+   "offres": 9
   },
   {
    "expression": "DESIGN ASSISTANT",
-   "occupation": "design-assistant",
+   "occupation": "assistant-designer",
    "mode": "exacte",
    "offres": 6
+  },
+  {
+   "expression": "DEPUTY BOUTIQUE DIRECTOR",
+   "occupation": "assistant-store-manager",
+   "mode": "exacte",
+   "offres": 1
   },
   {
    "expression": "DEPUTY BOUTIQUE MANAGER M W D",
@@ -5122,26 +5205,32 @@
    "offres": 2
   },
   {
+   "expression": "DEPUTY STORE DIRECTOR",
+   "occupation": "assistant-store-manager",
+   "mode": "exacte",
+   "offres": 2
+  },
+  {
    "expression": "GRAPHISTE TEXTILE",
-   "occupation": "textile-designer",
+   "occupation": "dessinateur-textile",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "CONCEPTEUR CAO",
-   "occupation": "3d-jewelry-designer",
+   "occupation": "concepteur-3d-joaillerie",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "DESSINATEUR PROJETEUR",
-   "occupation": "interior-architect",
+   "occupation": "architecte-d-interieur",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "PROJETEUR",
-   "occupation": "interior-architect",
+   "occupation": "architecte-d-interieur",
    "mode": "exacte",
    "offres": 1
   },
@@ -5153,12 +5242,12 @@
   },
   {
    "expression": "CRM SPECIALIST",
-   "occupation": "crm-project-manager",
+   "occupation": "chef-de-projet-crm",
    "mode": "exacte",
    "offres": 1
   },
   {
-   "expression": "美容师",
+   "expression": "美 容 师",
    "occupation": "beauty-therapist",
    "mode": "exacte",
    "offres": 4
@@ -5171,13 +5260,13 @@
   },
   {
    "expression": "DIRECTEUR DE CLIENTELE",
-   "occupation": "account-director",
+   "occupation": "directeur-de-clientele",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "DIRECTEUR DES SERVICES GENERAUX",
-   "occupation": "facilities-manager",
+   "occupation": "responsable-services-generaux",
    "mode": "exacte",
    "offres": 1
   },
@@ -5201,7 +5290,7 @@
   },
   {
    "expression": "DIRECTOR SUPPLY CHAIN",
-   "occupation": "supply-chain-director",
+   "occupation": "directeur-supply-chain",
    "mode": "exacte",
    "offres": 3
   },
@@ -5225,7 +5314,7 @@
   },
   {
    "expression": "SELGER",
-   "occupation": "sales-representative",
+   "occupation": "commercial",
    "mode": "exacte",
    "offres": 3
   },
@@ -5237,19 +5326,19 @@
   },
   {
    "expression": "E MERCHANDISER",
-   "occupation": "e-commerce-merchandiser",
+   "occupation": "e-merchandiser",
    "mode": "exacte",
    "offres": 5
   },
   {
    "expression": "EMPLOYE ADMINISTRATIF",
-   "occupation": "administrative-assistant",
+   "occupation": "assistant-administratif",
    "mode": "exacte",
    "offres": 2
   },
   {
    "expression": "RETAIL PROJECT MANAGER",
-   "occupation": "retail-project-manager",
+   "occupation": "responsable-projets-retail",
    "mode": "exacte",
    "offres": 1
   },
@@ -5267,31 +5356,31 @@
   },
   {
    "expression": "EVENT MANAGER",
-   "occupation": "event-manager",
+   "occupation": "charge-de-communication-evenementielle",
    "mode": "exacte",
    "offres": 3
   },
   {
    "expression": "EVENT PROJECT MANAGER",
-   "occupation": "event-project-manager",
+   "occupation": "chef-de-projet-evenementiel",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "PR INTERN",
-   "occupation": "press-officer",
+   "occupation": "charge-de-relations-presse",
    "mode": "exacte",
    "offres": 4
   },
   {
    "expression": "HR ASSISTANT",
-   "occupation": "hr-officer",
+   "occupation": "gestionnaire-des-ressources-humaines",
    "mode": "exacte",
    "offres": 6
   },
   {
    "expression": "COMMUNICATION MANAGER",
-   "occupation": "communication-manager",
+   "occupation": "responsable-communication",
    "mode": "exacte",
    "offres": 4
   },
@@ -5302,6 +5391,12 @@
    "offres": 7
   },
   {
+   "expression": "FINANCIAL CONTROL",
+   "occupation": "financial-controller",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
    "expression": "QUALITY CONTROL SPECIALIST",
    "occupation": "quality-technician",
    "mode": "exacte",
@@ -5309,31 +5404,31 @@
   },
   {
    "expression": "PURCHASING MANAGER",
-   "occupation": "purchasing-manager",
+   "occupation": "responsable-achats-et-offre",
    "mode": "exacte",
    "offres": 4
   },
   {
    "expression": "MODELL",
-   "occupation": "model",
+   "occupation": "mannequin",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "FLOOR SUPERVISOR",
-   "occupation": "floor-manager",
+   "occupation": "manager-floor",
    "mode": "exacte",
    "offres": 4
   },
   {
    "expression": "FORMATEUR",
-   "occupation": "trainer",
+   "occupation": "formateur",
    "mode": "exacte",
    "offres": 7
   },
   {
    "expression": "FORMULATEUR",
-   "occupation": "cosmetic-chemist",
+   "occupation": "formulateur-cosmetique",
    "mode": "exacte",
    "offres": 1
   },
@@ -5345,13 +5440,13 @@
   },
   {
    "expression": "DIGITAL PROJECT MANAGER",
-   "occupation": "digital-project-manager",
+   "occupation": "chef-de-projet-digital",
    "mode": "exacte",
    "offres": 4
   },
   {
    "expression": "GESTIONNAIRE RESSOURCES HUMAINES",
-   "occupation": "hr-officer",
+   "occupation": "gestionnaire-des-ressources-humaines",
    "mode": "exacte",
    "offres": 1
   },
@@ -5363,19 +5458,19 @@
   },
   {
    "expression": "MONTEUR VIDEO",
-   "occupation": "videographer",
+   "occupation": "videaste",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "FOTOGRAF",
-   "occupation": "photographer",
+   "occupation": "photographe",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "FREELANCE PHOTOGRAPHER",
-   "occupation": "photographer",
+   "occupation": "photographe",
    "mode": "exacte",
    "offres": 2
   },
@@ -5387,13 +5482,13 @@
   },
   {
    "expression": "FREE PEOPLE TEAM LEADER PREMIER VENDEUR PARIS SAINT SULPICE FRANCE",
-   "occupation": "sales-lead",
+   "occupation": "retail-sales-lead",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "STORE ASSISTANT",
-   "occupation": "sales-assistant",
+   "occupation": "employe-de-commerce",
    "mode": "exacte",
    "offres": 6
   },
@@ -5411,7 +5506,7 @@
   },
   {
    "expression": "GESTIONNAIRE RH",
-   "occupation": "hr-officer",
+   "occupation": "gestionnaire-des-ressources-humaines",
    "mode": "exacte",
    "offres": 2
   },
@@ -5435,7 +5530,7 @@
   },
   {
    "expression": "GROWTH MARKETING MANAGER",
-   "occupation": "growth-marketing-manager",
+   "occupation": "responsable-growth-marketing",
    "mode": "exacte",
    "offres": 3
   },
@@ -5453,37 +5548,37 @@
   },
   {
    "expression": "HEAD OF PRODUCTION",
-   "occupation": "production-director",
+   "occupation": "directeur-production",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "HEAD OF SALES",
-   "occupation": "commercial-director",
+   "occupation": "direction-commerciale",
    "mode": "exacte",
    "offres": 2
   },
   {
    "expression": "HEAD OF VISUAL MERCHANDISING",
-   "occupation": "visual-merchandising-manager",
+   "occupation": "responsable-vm",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "HOUSEKEEPER",
-   "occupation": "housekeeper",
+   "occupation": "gouvernant",
    "mode": "exacte",
    "offres": 3
   },
   {
    "expression": "HR OFFICER",
-   "occupation": "hr-officer",
+   "occupation": "gestionnaire-des-ressources-humaines",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "HUMAN RESOURCES DIRECTOR",
-   "occupation": "human-resources-director",
+   "occupation": "directeur-des-ressources-humaines",
    "mode": "exacte",
    "offres": 2
   },
@@ -5495,7 +5590,7 @@
   },
   {
    "expression": "INFLUENCER MARKETING MANAGER",
-   "occupation": "influencer-marketing-manager",
+   "occupation": "chef-de-projet-influence",
    "mode": "exacte",
    "offres": 6
   },
@@ -5507,13 +5602,13 @@
   },
   {
    "expression": "INGENIEUR QUALITE",
-   "occupation": "quality-engineer",
+   "occupation": "ingenieur-qualite",
    "mode": "exacte",
    "offres": 4
   },
   {
    "expression": "CRM MARKETING ASSISTANT",
-   "occupation": "crm-marketing-assistant",
+   "occupation": "assistant-marketing-client",
    "mode": "exacte",
    "offres": 2
   },
@@ -5525,7 +5620,7 @@
   },
   {
    "expression": "MEDIA ASSISTANT",
-   "occupation": "media-assistant",
+   "occupation": "assistant-media",
    "mode": "exacte",
    "offres": 2
   },
@@ -5537,19 +5632,19 @@
   },
   {
    "expression": "CHEFFE DE PROJET DIGITAL",
-   "occupation": "digital-project-manager",
+   "occupation": "chef-de-projet-digital",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "JOURNALISTE",
-   "occupation": "journalist",
+   "occupation": "journaliste",
    "mode": "exacte",
    "offres": 4
   },
   {
    "expression": "JOURNALISTE MODE",
-   "occupation": "journalist",
+   "occupation": "journaliste",
    "mode": "exacte",
    "offres": 1
   },
@@ -5572,14 +5667,14 @@
    "offres": 2
   },
   {
-   "expression": "销售助理",
-   "occupation": "sales-support-assistant",
+   "expression": "销 售 助 理",
+   "occupation": "assistant-commercial",
    "mode": "exacte",
    "offres": 4
   },
   {
    "expression": "SALJARE",
-   "occupation": "sales-representative",
+   "occupation": "commercial",
    "mode": "exacte",
    "offres": 6
   },
@@ -5597,61 +5692,73 @@
   },
   {
    "expression": "KNITWEAR DESIGNER",
-   "occupation": "knitwear-designer",
+   "occupation": "designer-maille",
    "mode": "exacte",
    "offres": 1
   },
   {
+   "expression": "ACCESSORIES DEVELOPER",
+   "occupation": "product-developer",
+   "mode": "exacte",
+   "offres": 2
+  },
+  {
+   "expression": "FOOTWEAR DEVELOPER",
+   "occupation": "product-developer",
+   "mode": "exacte",
+   "offres": 6
+  },
+  {
    "expression": "UX DESIGNER",
-   "occupation": "ux-designer",
+   "occupation": "ux-ui-designer",
    "mode": "exacte",
    "offres": 5
   },
   {
    "expression": "EXPERIENCE DESIGNER",
-   "occupation": "set-designer",
+   "occupation": "scenographe",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "GEMOLOGIST",
-   "occupation": "gemmologist",
+   "occupation": "gemmologue",
    "mode": "exacte",
    "offres": 2
   },
   {
    "expression": "MASSAGE THERAPIST",
-   "occupation": "spa-therapist",
+   "occupation": "praticien-spa",
    "mode": "exacte",
    "offres": 6
   },
   {
    "expression": "PROCESS ENGINEER CO OP",
-   "occupation": "continuous-improvement-engineer",
+   "occupation": "ingenieur-amelioration-continue",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "ADMINISTRATIEF MEDEWERKER",
-   "occupation": "administrative-assistant",
+   "occupation": "assistant-administratif",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "LUCRATOR COMERCIAL",
-   "occupation": "sales-assistant",
+   "occupation": "employe-de-commerce",
    "mode": "exacte",
    "offres": 2
   },
   {
    "expression": "ANTHROPOLOGIE VISUAL MERCHANDISING MANAGER",
-   "occupation": "visual-merchandising-manager",
+   "occupation": "responsable-vm",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "MANAGER COMMERCIAL",
-   "occupation": "commercial-manager",
+   "occupation": "manager-commercial",
    "mode": "exacte",
    "offres": 8
   },
@@ -5663,7 +5770,7 @@
   },
   {
    "expression": "MANAGER VISUAL MERCHANDISING",
-   "occupation": "visual-merchandising-manager",
+   "occupation": "responsable-vm",
    "mode": "exacte",
    "offres": 5
   },
@@ -5675,7 +5782,7 @@
   },
   {
    "expression": "TAILLEUR",
-   "occupation": "tailor",
+   "occupation": "seamster",
    "mode": "exacte",
    "offres": 1
   },
@@ -5693,7 +5800,7 @@
   },
   {
    "expression": "SOCIAL MEDIA INTERN",
-   "occupation": "content-creator",
+   "occupation": "createur-de-contenu",
    "mode": "exacte",
    "offres": 2
   },
@@ -5705,37 +5812,31 @@
   },
   {
    "expression": "MODELISTE TECHNICIEN PRODUIT",
-   "occupation": "patternmaker",
+   "occupation": "modeliste",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "MODELIST",
-   "occupation": "patternmaker",
+   "occupation": "modeliste",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "MODELLISTA",
-   "occupation": "patternmaker",
+   "occupation": "modeliste",
    "mode": "exacte",
    "offres": 4
   },
   {
-   "expression": "MR",
-   "occupation": "pharmaceutical-sales-representative",
-   "mode": "exacte",
-   "offres": 2
-  },
-  {
    "expression": "WHOLESALE MANAGER",
-   "occupation": "wholesale-manager",
+   "occupation": "responsable-wholesale",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "RESPONSABILE DI REPARTO",
-   "occupation": "floor-manager",
+   "occupation": "manager-floor",
    "mode": "exacte",
    "offres": 2
   },
@@ -5747,31 +5848,37 @@
   },
   {
    "expression": "RETAIL OPERATIONS COORDINATOR",
-   "occupation": "retail-coordinator",
+   "occupation": "coordinateur-retail",
+   "mode": "exacte",
+   "offres": 2
+  },
+  {
+   "expression": "OPERADOR DE PRODUCAO",
+   "occupation": "operateur-de-production",
    "mode": "exacte",
    "offres": 2
   },
   {
    "expression": "OPERARIO DE PRODUCCION",
-   "occupation": "production-operator",
+   "occupation": "operateur-de-production",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "BRODERIE",
-   "occupation": "embroiderer",
+   "occupation": "broderie",
    "mode": "exacte",
    "offres": 2
   },
   {
    "expression": "OPERATEUR DE PRODUCTION",
-   "occupation": "production-operator",
+   "occupation": "operateur-de-production",
    "mode": "exacte",
    "offres": 3
   },
   {
    "expression": "OPERATIONS LEADER FULL TIME",
-   "occupation": "operations-manager",
+   "occupation": "responsable-operationnel",
    "mode": "exacte",
    "offres": 4
   },
@@ -5789,7 +5896,7 @@
   },
   {
    "expression": "ORDONNANCEUR",
-   "occupation": "supply-chain-planner",
+   "occupation": "planificateur-supply-chain",
    "mode": "exacte",
    "offres": 2
   },
@@ -5813,7 +5920,7 @@
   },
   {
    "expression": "LEAD RETAIL SALES ASSOCIATE",
-   "occupation": "sales-lead",
+   "occupation": "retail-sales-lead",
    "mode": "exacte",
    "offres": 1
   },
@@ -5825,13 +5932,13 @@
   },
   {
    "expression": "PATTERNMAKER",
-   "occupation": "patternmaker",
+   "occupation": "modeliste",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "PHARMAREFERENT",
-   "occupation": "pharmaceutical-sales-representative",
+   "occupation": "delegue-pharmaceutique",
    "mode": "exacte",
    "offres": 3
   },
@@ -5843,37 +5950,37 @@
   },
   {
    "expression": "ASISTENTE ADMINISTRATIVO",
-   "occupation": "administrative-assistant",
+   "occupation": "assistant-administratif",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "DRESSER",
-   "occupation": "dresser",
+   "occupation": "habilleur",
    "mode": "exacte",
    "offres": 2
   },
   {
    "expression": "PR ASSISTANT",
-   "occupation": "press-officer",
+   "occupation": "charge-de-relations-presse",
    "mode": "exacte",
    "offres": 5
   },
   {
    "expression": "PREMIERE MAIN",
-   "occupation": "senior-sample-machinist",
+   "occupation": "premiere-main",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "PREMIER VENDEUR H F",
-   "occupation": "sales-lead",
+   "occupation": "retail-sales-lead",
    "mode": "exacte",
    "offres": 5
   },
   {
    "expression": "PRODAVAC",
-   "occupation": "sales-assistant",
+   "occupation": "employe-de-commerce",
    "mode": "exacte",
    "offres": 3
   },
@@ -5885,37 +5992,37 @@
   },
   {
    "expression": "PRODUCTION COORDINATOR",
-   "occupation": "production-coordinator",
+   "occupation": "coordinateur-de-production",
    "mode": "exacte",
    "offres": 3
   },
   {
    "expression": "PRODUCTION DIRECTOR",
-   "occupation": "production-director",
+   "occupation": "directeur-production",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "PRODUKTIONSMITARBEITER",
-   "occupation": "production-operator",
+   "occupation": "operateur-de-production",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "PROTOTIPISTA",
-   "occupation": "model-maker",
+   "occupation": "prototypiste",
    "mode": "exacte",
-   "offres": 2
+   "offres": 1
   },
   {
    "expression": "RETAIL ASSISTANT OPERADOR DE LOJA M F",
-   "occupation": "sales-assistant",
+   "occupation": "employe-de-commerce",
    "mode": "exacte",
    "offres": 4
   },
   {
    "expression": "PT RETAIL ASSISTANT OPERADOR DE LOJA M F",
-   "occupation": "sales-assistant",
+   "occupation": "employe-de-commerce",
    "mode": "exacte",
    "offres": 1
   },
@@ -5926,16 +6033,16 @@
    "offres": 1
   },
   {
-   "expression": "REGULATORY AFFAIRS MANAGER",
-   "occupation": "regulatory-affairs-specialist",
-   "mode": "exacte",
-   "offres": 1
-  },
-  {
    "expression": "QUALITY ENGINEER",
-   "occupation": "quality-engineer",
+   "occupation": "ingenieur-qualite",
    "mode": "exacte",
    "offres": 6
+  },
+  {
+   "expression": "REGULATORY AFFAIRS MANAGER",
+   "occupation": "charge-d-affaires-reglementaires",
+   "mode": "exacte",
+   "offres": 1
   },
   {
    "expression": "RECEPCIONISTA",
@@ -5945,13 +6052,13 @@
   },
   {
    "expression": "RECRUITING MANAGER",
-   "occupation": "recruitment-manager",
+   "occupation": "responsable-recrutement",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "REGIONAL OPERATIONS MANAGER",
-   "occupation": "operations-manager",
+   "occupation": "responsable-operationnel",
    "mode": "exacte",
    "offres": 2
   },
@@ -5963,7 +6070,7 @@
   },
   {
    "expression": "RESPONSABILE SERVIZI GENERALI",
-   "occupation": "facilities-manager",
+   "occupation": "responsable-services-generaux",
    "mode": "exacte",
    "offres": 1
   },
@@ -5993,61 +6100,67 @@
   },
   {
    "expression": "RESPONSABLE COMMUNICATION INTERNE",
-   "occupation": "internal-communication-manager",
+   "occupation": "responsable-communication-interne",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "RESPONSABLE D ATELIER",
-   "occupation": "workshop-manager",
+   "occupation": "responsable-atelier",
    "mode": "exacte",
    "offres": 2
   },
   {
    "expression": "RESPONSABLE DE PRODUCTION",
-   "occupation": "production-director",
+   "occupation": "directeur-production",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "RESPONSABLE DE PROJETS",
-   "occupation": "retail-project-manager",
+   "occupation": "responsable-projets-retail",
    "mode": "exacte",
    "offres": 3
   },
   {
    "expression": "RESPONSABLE DES RESSOURCES HUMAINES",
-   "occupation": "human-resources-director",
+   "occupation": "directeur-des-ressources-humaines",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "RESPONSABLE DES SERVICES GENERAUX",
-   "occupation": "facilities-manager",
+   "occupation": "responsable-services-generaux",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "RESPONSABLE DES VENTES",
-   "occupation": "sales-lead",
+   "occupation": "responsable-wholesale",
    "mode": "exacte",
    "offres": 3
   },
   {
+   "expression": "RESPONSABLE E COMMERCE",
+   "occupation": "ecommerce-manager",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
    "expression": "RESPONSABLE FINANCIER",
-   "occupation": "financial-manager",
+   "occupation": "responsable-administratif-et-financier",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "RESPONSABLE FORMATION",
-   "occupation": "training-manager",
+   "occupation": "responsable-formation",
    "mode": "exacte",
    "offres": 3
   },
   {
    "expression": "RESPONSABLE JURIDIQUE",
-   "occupation": "legal-manager",
+   "occupation": "responsable-juridique",
    "mode": "exacte",
    "offres": 2
   },
@@ -6059,31 +6172,31 @@
   },
   {
    "expression": "RESPONSABLE OPERATIONNEL",
-   "occupation": "operations-manager",
+   "occupation": "responsable-operationnel",
    "mode": "exacte",
    "offres": 2
   },
   {
    "expression": "RESPONSABLE SERVICES GENERAUX",
-   "occupation": "facilities-manager",
+   "occupation": "responsable-services-generaux",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "RETAIL ASSOCIATE II",
-   "occupation": "sales-assistant",
+   "occupation": "employe-de-commerce",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "COACH SELL OUT",
-   "occupation": "trainer",
+   "occupation": "formateur",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "RETAIL COORDINATOR",
-   "occupation": "retail-coordinator",
+   "occupation": "coordinateur-retail",
    "mode": "exacte",
    "offres": 2
   },
@@ -6107,31 +6220,31 @@
   },
   {
    "expression": "RETAIL SALES SUPERVISOR",
-   "occupation": "floor-manager",
+   "occupation": "manager-floor",
    "mode": "exacte",
    "offres": 9
   },
   {
    "expression": "RETAIL TEAM LEAD",
-   "occupation": "floor-manager",
+   "occupation": "manager-floor",
    "mode": "exacte",
    "offres": 3
   },
   {
    "expression": "SÆLGER",
-   "occupation": "sales-representative",
+   "occupation": "commercial",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "STYLIST ASSISTANT",
-   "occupation": "stylist-assistant",
+   "occupation": "assistant-styliste",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "SALES AND SERVICE LEADER FULL TIME",
-   "occupation": "floor-manager",
+   "occupation": "manager-floor",
    "mode": "exacte",
    "offres": 6
   },
@@ -6143,31 +6256,31 @@
   },
   {
    "expression": "SALES LEAD SLPT LANE BRYANT",
-   "occupation": "floor-manager",
+   "occupation": "manager-floor",
    "mode": "exacte",
    "offres": 3
   },
   {
    "expression": "SALES REP",
-   "occupation": "sales-representative",
+   "occupation": "commercial",
    "mode": "exacte",
    "offres": 2
   },
   {
    "expression": "SUPERVISOR FLOOR",
-   "occupation": "floor-manager",
+   "occupation": "manager-floor",
    "mode": "exacte",
    "offres": 2
   },
   {
    "expression": "SALGSASSISTENT",
-   "occupation": "sales-support-assistant",
+   "occupation": "assistant-commercial",
    "mode": "exacte",
    "offres": 2
   },
   {
    "expression": "SCENOGRAPHE",
-   "occupation": "set-designer",
+   "occupation": "scenographe",
    "mode": "exacte",
    "offres": 1
   },
@@ -6179,19 +6292,19 @@
   },
   {
    "expression": "SARTO",
-   "occupation": "tailor",
+   "occupation": "seamster",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "SASTRE",
-   "occupation": "tailor",
+   "occupation": "seamster",
    "mode": "exacte",
    "offres": 2
   },
   {
    "expression": "SCHNEIDER",
-   "occupation": "tailor",
+   "occupation": "seamster",
    "mode": "exacte",
    "offres": 3
   },
@@ -6251,37 +6364,31 @@
   },
   {
    "expression": "SENIOR ADMINISTRATIVE ASSISTANT",
-   "occupation": "administrative-assistant",
+   "occupation": "assistant-administratif",
    "mode": "exacte",
    "offres": 3
   },
   {
-   "expression": "培训师",
-   "occupation": "trainer",
+   "expression": "培 训 师",
+   "occupation": "formateur",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "LOGISTIEK COORDINATOR",
-   "occupation": "logistics-coordinator",
+   "occupation": "coordinateur-logistique",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "SENIOR MANAGER GLOBAL PROCUREMENT",
-   "occupation": "purchasing-manager",
+   "occupation": "responsable-achats-et-offre",
    "mode": "exacte",
    "offres": 6
   },
   {
-   "expression": "DESIGNER UX UI",
-   "occupation": "ux-designer",
-   "mode": "exacte",
-   "offres": 1
-  },
-  {
    "expression": "DESIGNER UX",
-   "occupation": "ux-designer",
+   "occupation": "ux-ui-designer",
    "mode": "exacte",
    "offres": 1
   },
@@ -6293,13 +6400,19 @@
   },
   {
    "expression": "SHIFT LEADER",
-   "occupation": "floor-manager",
+   "occupation": "manager-floor",
    "mode": "exacte",
    "offres": 3
   },
   {
+   "expression": "WATCH TECHNICIAN",
+   "occupation": "watchmaker",
+   "mode": "exacte",
+   "offres": 6
+  },
+  {
    "expression": "SHOWROOM ASSISTANT",
-   "occupation": "showroom-assistant",
+   "occupation": "assistant-showroom",
    "mode": "exacte",
    "offres": 2
   },
@@ -6311,199 +6424,211 @@
   },
   {
    "expression": "SPA PRATICIENNE",
-   "occupation": "spa-therapist",
+   "occupation": "praticien-spa",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "COORDINATEUR MARKETING",
-   "occupation": "marketing-and-communication-officer",
+   "occupation": "charge-de-marketing-et-communication",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "ASSISTANT MEDIA",
-   "occupation": "media-assistant",
+   "occupation": "assistant-media",
    "mode": "exacte",
    "offres": 2
   },
   {
    "expression": "CHEF DE PRODUIT MARKETING OPERATIONNEL",
-   "occupation": "product-manager",
+   "occupation": "chef-produit",
    "mode": "exacte",
    "offres": 9
   },
   {
    "expression": "ASSISTANT COMMUNICATION ET RELATIONS PRESSE",
-   "occupation": "press-officer",
+   "occupation": "charge-de-relations-presse",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "COORDINATEUR RETAIL MARKETING",
-   "occupation": "retail-coordinator",
+   "occupation": "coordinateur-retail",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "ASSISTANT CHARGE DE COMMUNICATION INTERNE",
-   "occupation": "internal-communication-manager",
+   "occupation": "responsable-communication-interne",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "CHARGE DE COMMUNICATION INTERNE",
-   "occupation": "internal-communication-manager",
+   "occupation": "responsable-communication-interne",
    "mode": "exacte",
    "offres": 3
   },
   {
    "expression": "CHEF DE PROJET COMMUNICATION DIGITALE",
-   "occupation": "digital-project-manager",
+   "occupation": "chef-de-projet-digital",
    "mode": "exacte",
    "offres": 3
   },
   {
    "expression": "CHEF DE PROJET INFLUENCE",
-   "occupation": "influencer-marketing-manager",
+   "occupation": "chef-de-projet-influence",
    "mode": "exacte",
    "offres": 3
   },
   {
    "expression": "CHEF DE PROJET 360",
-   "occupation": "digital-project-manager",
+   "occupation": "chef-de-projet-digital",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "expression": "ASSISTANT E COMMERCE MERCHANDISER",
+   "occupation": "e-merchandiser",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "E COMMERCE MERCHANDISER",
-   "occupation": "e-commerce-merchandiser",
+   "occupation": "e-merchandiser",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "COORDINATEUR MEDIA",
-   "occupation": "marketing-and-communication-officer",
+   "occupation": "charge-de-marketing-et-communication",
    "mode": "exacte",
    "offres": 2
   },
   {
    "expression": "ASSISTANT CREATIF",
-   "occupation": "design-assistant",
+   "occupation": "assistant-designer",
    "mode": "exacte",
    "offres": 2
   },
   {
+   "expression": "ASSISTANT E MERCHANDISER",
+   "occupation": "e-merchandiser",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
    "expression": "ASSISTANT EVENEMENTIEL",
-   "occupation": "event-project-manager",
+   "occupation": "chef-de-projet-evenementiel",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "ASSISTANT EXPERIENCE CLIENT",
-   "occupation": "crm-marketing-assistant",
+   "occupation": "assistant-marketing-client",
    "mode": "exacte",
    "offres": 3
   },
   {
    "expression": "ASSISTANT IMAGE",
-   "occupation": "photographer",
+   "occupation": "photographe",
    "mode": "exacte",
    "offres": 3
   },
   {
    "expression": "ASSISTANT MARKETING CLIENT",
-   "occupation": "crm-marketing-assistant",
+   "occupation": "assistant-marketing-client",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "ASSISTANT PATRIMOINE",
-   "occupation": "heritage-assistant",
+   "occupation": "assistant-patrimoine",
    "mode": "exacte",
    "offres": 2
   },
   {
    "expression": "ASSISTANT PRODUCT MERCHANDISER",
-   "occupation": "merchandising-assistant",
+   "occupation": "assistant-merchandiser",
    "mode": "exacte",
    "offres": 3
   },
   {
    "expression": "PROTOTYPE",
-   "occupation": "model-maker",
+   "occupation": "prototypiste",
    "mode": "exacte",
-   "offres": 1
+   "offres": 2
   },
   {
    "expression": "DESSINATEUR 3D",
-   "occupation": "3d-jewelry-designer",
+   "occupation": "concepteur-3d-joaillerie",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "ASSISTANT PLANIFICATION DE PRODUCTION",
-   "occupation": "supply-chain-planner",
+   "occupation": "planificateur-supply-chain",
    "mode": "exacte",
    "offres": 2
   },
   {
    "expression": "DIRECTION COMMERCIALE",
-   "occupation": "commercial-director",
+   "occupation": "direction-commerciale",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "SERVICES MANAGER STORES",
-   "occupation": "floor-manager",
+   "occupation": "manager-floor",
    "mode": "exacte",
    "offres": 2
   },
   {
    "expression": "TRESORIER",
-   "occupation": "financial-manager",
+   "occupation": "responsable-administratif-et-financier",
    "mode": "exacte",
    "offres": 4
   },
   {
    "expression": "CHARGE D AFFAIRES REGLEMENTAIRES",
-   "occupation": "regulatory-affairs-specialist",
+   "occupation": "charge-d-affaires-reglementaires",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "MANAGEMENT ASSISTANT",
-   "occupation": "management-assistant",
+   "occupation": "assistant-de-gestion",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "ASSISTANTE CHEF DE PRODUIT",
-   "occupation": "product-manager",
+   "occupation": "chef-produit",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "ASSISTANTE MEDIA",
-   "occupation": "media-assistant",
+   "occupation": "assistant-media",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "ASSISTANTE PATRIMOINE",
-   "occupation": "heritage-assistant",
+   "occupation": "assistant-patrimoine",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "ASSISTANTE QUALITE",
-   "occupation": "quality-assistant",
+   "occupation": "assistant-qualite",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "SPRZEDAWCA",
-   "occupation": "sales-assistant",
+   "occupation": "employe-de-commerce",
    "mode": "exacte",
    "offres": 1
   },
@@ -6521,55 +6646,55 @@
   },
   {
    "expression": "SUPERVISEUR DES VENTES",
-   "occupation": "floor-manager",
+   "occupation": "manager-floor",
    "mode": "exacte",
    "offres": 2
   },
   {
    "expression": "SUPERVISOR DE LOJA",
-   "occupation": "floor-manager",
+   "occupation": "manager-floor",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "SUPPLY CHAIN MANAGER",
-   "occupation": "supply-chain-manager",
+   "occupation": "responsable-supply-chain",
    "mode": "exacte",
    "offres": 2
   },
   {
    "expression": "SUPPLY CHAIN PLANNER",
-   "occupation": "supply-chain-planner",
+   "occupation": "planificateur-supply-chain",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "SUPPLY CHAIN PROJECT MANAGER",
-   "occupation": "supply-chain-project-manager",
+   "occupation": "chef-de-projet-supply-chain",
    "mode": "exacte",
    "offres": 3
   },
   {
    "expression": "SURVEILLANT DE BAIGNADE",
-   "occupation": "lifeguard",
+   "occupation": "sauveteur",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "OPERATIONS MANAGER STORES",
-   "occupation": "operations-manager",
+   "occupation": "responsable-operationnel",
    "mode": "exacte",
    "offres": 5
   },
   {
    "expression": "TERCER ENCARGADO SUPERVISOR",
-   "occupation": "floor-manager",
+   "occupation": "manager-floor",
    "mode": "exacte",
    "offres": 2
   },
   {
    "expression": "TECHNICIEN SUPPORT INFORMATIQUE",
-   "occupation": "it-support-technician",
+   "occupation": "technicien-support-informatique",
    "mode": "exacte",
    "offres": 2
   },
@@ -6581,31 +6706,31 @@
   },
   {
    "expression": "HUMAN RESOURCES COORDINATOR",
-   "occupation": "hr-officer",
+   "occupation": "gestionnaire-des-ressources-humaines",
    "mode": "exacte",
    "offres": 5
   },
   {
    "expression": "UNIQLO HUMAN RESOURCES COORDINATOR",
-   "occupation": "hr-officer",
+   "occupation": "gestionnaire-des-ressources-humaines",
    "mode": "exacte",
    "offres": 2
   },
   {
    "expression": "RETAIL SUPERVISOR TRAINING FULL TIME",
-   "occupation": "floor-manager",
+   "occupation": "manager-floor",
    "mode": "exacte",
    "offres": 7
   },
   {
    "expression": "UNIQLO RETAIL SUPERVISOR TRAINING FULL TIME",
-   "occupation": "floor-manager",
+   "occupation": "manager-floor",
    "mode": "exacte",
    "offres": 2
   },
   {
-   "expression": "产品经理",
-   "occupation": "product-manager",
+   "expression": "产 品 经 理",
+   "occupation": "chef-produit",
    "mode": "exacte",
    "offres": 1
   },
@@ -6623,7 +6748,7 @@
   },
   {
    "expression": "VERTRIEBSMITARBEITER",
-   "occupation": "sales-representative",
+   "occupation": "commercial",
    "mode": "exacte",
    "offres": 3
   },
@@ -6635,13 +6760,13 @@
   },
   {
    "expression": "VI SØKER BUTIKKMEDARBEIDER OVER 16 AR",
-   "occupation": "sales-assistant",
+   "occupation": "employe-de-commerce",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "VI SØKER BUTIKKMEDARBEIDER OVER 18 AR",
-   "occupation": "sales-assistant",
+   "occupation": "employe-de-commerce",
    "mode": "exacte",
    "offres": 1
   },
@@ -6665,13 +6790,13 @@
   },
   {
    "expression": "ΠΩΛΗΤΗΣ",
-   "occupation": "sales-representative",
+   "occupation": "commercial",
    "mode": "exacte",
    "offres": 1
   },
   {
    "expression": "ΠΩΛΗΤΡΙΑ",
-   "occupation": "sales-representative",
+   "occupation": "commercial",
    "mode": "exacte",
    "offres": 1
   },
@@ -6695,31 +6820,43 @@
   },
   {
    "expression": "トレーナー",
-   "occupation": "trainer",
+   "occupation": "formateur",
    "mode": "exacte",
    "offres": 1
   },
   {
-   "expression": "銷售助理",
-   "occupation": "sales-support-assistant",
+   "expression": "銷 售 助 理",
+   "occupation": "assistant-commercial",
    "mode": "exacte",
    "offres": 1
   },
   {
-   "expression": "财务经理",
-   "occupation": "financial-manager",
+   "expression": "副 店 長",
+   "occupation": "assistant-store-manager",
    "mode": "exacte",
    "offres": 1
   },
   {
-   "expression": "文员",
-   "occupation": "administrative-assistant",
+   "expression": "副 店 长",
+   "occupation": "assistant-store-manager",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "expression": "财 务 经 理",
+   "occupation": "responsable-administratif-et-financier",
+   "mode": "exacte",
+   "offres": 1
+  },
+  {
+   "expression": "文 员",
+   "occupation": "assistant-administratif",
    "mode": "exacte",
    "offres": 3
   },
   {
-   "expression": "裁缝",
-   "occupation": "tailor",
+   "expression": "裁 缝",
+   "occupation": "seamster",
    "mode": "exacte",
    "offres": 1
   }

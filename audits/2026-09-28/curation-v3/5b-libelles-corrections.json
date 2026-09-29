@@ -1,17 +1,19 @@
 {
- "calculeLe": "2026-09-29T09:32:57.826Z",
+ "calculeLe": "2026-09-29T10:44:02.876Z",
  "modeles": {
   "correction": "gemini-3.6-flash",
   "relecture": "gemini-3-flash-preview"
  },
  "bilan": {
-  "defautsAvant": 209,
+  "fautesAudit": 13,
+  "relectureManquante": 0,
+  "defautsAvant": 138,
   "tours": 3,
-  "elementsCorriges": 88,
+  "elementsCorriges": 84,
   "defautsConnus": 2,
   "fautesBloquantes": 0,
-  "preferencesUsage": 17,
-  "signalementsEtape5NonBloquants": 62
+  "preferencesUsage": 16,
+  "signalementsEtape5NonBloquants": 63
  },
  "defautsConnus": [
   {
@@ -26,13 +28,6 @@
   }
  ],
  "preferencesUsage": [
-  {
-   "cle": "seamster",
-   "langue": "nl",
-   "raison": "connotation péjorative en néerlandais, préférer \"Stikker\" ou \"Coupeur\"",
-   "type": "usage",
-   "libelle": "Naaier"
-  },
   {
    "cle": "legal-counsel",
    "langue": "el",
@@ -63,10 +58,17 @@
   },
   {
    "cle": "backend:ASSISTANT_DE_GESTION",
-   "langue": "el",
-   "raison": "L'utilisation du terme anglais 'management' est moins naturelle que le terme grec 'Διοίκησης'.",
+   "langue": "de",
+   "raison": "'Kaufmännischer Assistent' est un titre de formation administrative ; 'Management-Assistent' est plus courant pour ce poste.",
    "type": "usage",
-   "libelle": "Βοηθός management"
+   "libelle": "Kaufmännischer Assistent"
+  },
+  {
+   "cle": "backend:ASSISTANT_DE_GESTION",
+   "langue": "el",
+   "raison": "'Βοηθός Διαχείρισης' est une traduction trop littérale ; 'Βοηθός Διοίκησης' est le terme standard en entreprise.",
+   "type": "usage",
+   "libelle": "Βοηθός Διαχείρισης"
   },
   {
    "cle": "backend:ASSISTANT_PEDAGOGIQUE",
@@ -85,9 +87,16 @@
   {
    "cle": "backend:COUPE",
    "langue": "ko",
-   "raison": "Le terme \"재단공\" évoque un ouvrier d'usine ; \"재단사\" est plus approprié pour le secteur du luxe et de la mode.",
+   "raison": "Le terme '재단공' (ouvrier) est trop industriel pour le secteur du luxe ; '재단사' est le terme d'usage pour un coupeur dans la mode.",
    "type": "usage",
    "libelle": "재단공"
+  },
+  {
+   "cle": "backend:MANAGER_FLOOR",
+   "langue": "fr",
+   "raison": "Anglicisme non traduit, le terme 'Responsable d'étage' est préférable",
+   "type": "usage",
+   "libelle": "Floor manager"
   },
   {
    "cle": "backend:PRODUCT_OWNER",
@@ -104,32 +113,18 @@
    "libelle": "Endüstriyelleştirme Müdürü"
   },
   {
-   "cle": "backend:TAILLEUR",
-   "langue": "ms",
-   "raison": "Terme descriptif 'Pembuat sut' au lieu du terme générique 'Tukang jahit'",
-   "type": "usage",
-   "libelle": "Pembuat sut"
-  },
-  {
-   "cle": "backend:TAILLEUR",
-   "langue": "vi",
-   "raison": "Terme trop spécifique 'Thợ may vest' au lieu du terme générique 'Thợ may'",
-   "type": "usage",
-   "libelle": "Thợ may vest"
-  },
-  {
-   "cle": "backend:TAILLEUR",
-   "langue": "ar",
-   "raison": "Terme trop spécifique 'خياط بدلات' au lieu du terme générique 'خياط'",
-   "type": "usage",
-   "libelle": "خياط بدلات"
-  },
-  {
    "cle": "backend:TRAFFIC_MANAGER",
    "langue": "th",
    "raison": "Le terme est trop littéral ; l'usage professionnel privilégie le terme anglais ou sa translittération.",
    "type": "usage",
    "libelle": "ผู้จัดการทราฟฟิก"
+  },
+  {
+   "cle": "offres:keyholder",
+   "langue": "fr",
+   "raison": "Anglicisme non traduit, le terme 'Responsable de clés' est utilisé en français",
+   "type": "usage",
+   "libelle": "Keyholder"
   },
   {
    "cle": "backend:PREMIERE_MAIN",
@@ -844,6 +839,27 @@
    ]
   },
   {
+   "cle": "retail-client-advisor",
+   "fautes": [
+    {
+     "langue": "zh_CN",
+     "raison": "Nom du métier (Conseiller de vente) au lieu de la famille (Conseil de vente)"
+    },
+    {
+     "langue": "zh_Hant",
+     "raison": "Nom du métier (Conseiller de vente) au lieu de la famille (Conseil de vente)"
+    },
+    {
+     "langue": "th",
+     "raison": "Nom du métier (Vendeur) au lieu de la famille (Conseil de vente)"
+    },
+    {
+     "langue": "ms",
+     "raison": "Nom du métier (Conseiller de vente) au lieu de la famille (Conseil de vente)"
+    }
+   ]
+  },
+  {
    "cle": "beauty-advisor",
    "fautes": [
     {
@@ -964,24 +980,48 @@
    ]
   },
   {
-   "cle": "mannequinat-agences",
+   "cle": "mannequinat",
    "fautes": [
     {
-     "langue": "es",
-     "raison": "'Modelaje' désigne l'activité technique, 'Modelos' est le terme d'usage pour la catégorie."
+     "langue": "it",
+     "raison": "Anglicisme, le terme italien est 'Moda' ou 'Indossatore'"
     },
     {
-     "langue": "ms",
-     "raison": "'Peragawan' est spécifiquement masculin, 'Model' est le terme neutre d'usage."
+     "langue": "pt",
+     "raison": "Anglicisme, le terme est 'Modelagem' ou 'Modelos'"
     },
     {
-     "langue": "ar",
-     "raison": "'عروض الأزياء' signifie 'Défilés de mode', 'عارضي الأزياء' est le terme pour le mannequinat."
+     "langue": "pt_BR",
+     "raison": "Anglicisme, le terme est 'Modelagem' ou 'Modelos'"
+    },
+    {
+     "langue": "el",
+     "raison": "Anglicisme écrit en alphabet latin"
+    },
+    {
+     "langue": "zh_CN",
+     "raison": "Nom du métier (Mannequin) au lieu de la famille (Mannequinat)"
+    },
+    {
+     "langue": "zh_Hant",
+     "raison": "Nom du métier (Mannequin) au lieu de la famille (Mannequinat)"
+    },
+    {
+     "langue": "ja",
+     "raison": "Nom du métier (Mannequin) au lieu de la famille (Mannequinat)"
+    },
+    {
+     "langue": "ko",
+     "raison": "Nom du métier (Mannequin) au lieu de la famille (Mannequinat)"
+    },
+    {
+     "langue": "vi",
+     "raison": "Nom du métier (Mannequin) au lieu de la famille (Mannequinat)"
     }
    ]
   },
   {
-   "cle": "patrimoine-archives",
+   "cle": "patrimoine-et-archives",
    "fautes": [
     {
      "langue": "de",
@@ -1496,29 +1536,29 @@
   "seamster": {
    "fr": "Couturier",
    "en": "Seamster",
-   "de": "Modenäher",
-   "it": "Cucitore",
+   "de": "Schneider",
+   "it": "Sarto",
    "es": "Modisto",
-   "nl": "Naaier",
-   "zh-CN": "缝纫师",
+   "nl": "Kleermaker",
+   "zh-CN": "裁缝",
    "ja": "仕立屋",
    "ko": "재봉사",
    "pt": "Costureiro",
    "pt-BR": "Costureiro",
-   "da": "Syer",
-   "zh-Hant": "縫紉師",
-   "pl": "Szwacz",
-   "sv": "Sömmare",
-   "tr": "Dikişçi",
-   "th": "ช่างเย็บผ้า",
-   "ms": "Tukang jahit fesyen",
-   "ar": "خياط أزياء",
-   "nb": "Syer",
+   "da": "Skrædder",
+   "zh-Hant": "裁縫",
+   "pl": "Krawiec",
+   "sv": "Skräddare",
+   "tr": "Terzi",
+   "th": "ช่างตัดเสื้อ",
+   "ms": "Tukang Jahit",
+   "ar": "خياط",
+   "nb": "Skredder",
    "el": "Μόδιστρος",
-   "vi": "Thợ may thời trang",
-   "cs": "Švadlena",
-   "hu": "Varró",
-   "ro": "Cusător"
+   "vi": "Thợ may",
+   "cs": "Krejčí",
+   "hu": "Szabó",
+   "ro": "Croitor"
   },
   "fashion-designer": {
    "fr": "Styliste",
@@ -3170,7 +3210,7 @@
   "backend:ASSISTANT_DE_GESTION": {
    "fr": "Assistant de gestion",
    "en": "Management Assistant",
-   "de": "Management-Assistent",
+   "de": "Kaufmännischer Assistent",
    "it": "Assistente di gestione",
    "es": "Asistente de gestión",
    "nl": "Managementassistent",
@@ -3179,7 +3219,7 @@
    "ko": "경영 지원",
    "pt": "Assistente de Gestão",
    "pt-BR": "Assistente de Gestão",
-   "da": "Ledelsesassistent",
+   "da": "Administrativ assistent",
    "zh-Hant": "管理助理",
    "pl": "Asystent ds. zarządzania",
    "sv": "Ledningsassistent",
@@ -3188,7 +3228,7 @@
    "ms": "Pembantu Pengurusan",
    "ar": "مساعد إدارة",
    "nb": "Administrasjonsassistent",
-   "el": "Βοηθός management",
+   "el": "Βοηθός Διαχείρισης",
    "vi": "Trợ lý quản lý",
    "cs": "Asistent managementu",
    "hu": "Menedzsment asszisztens",
@@ -3222,7 +3262,7 @@
    "ro": "Asistent educațional"
   },
   "backend:ASSISTANT_HOTELIER": {
-   "fr": "Agent hôtelier",
+   "fr": "Réceptionniste d'hôtel",
    "en": "Hotel Receptionist",
    "de": "Hotel-Receptionist",
    "it": "Addetto alla reception",
@@ -3679,33 +3719,6 @@
    "cs": "Au-pair",
    "hu": "Au pair",
    "ro": "Au pair"
-  },
-  "backend:BARBIER": {
-   "fr": "Barbier",
-   "en": "Barber",
-   "de": "Barbier",
-   "it": "Barbiere",
-   "es": "Barbero",
-   "nl": "Barbier",
-   "zh-CN": "理发师",
-   "ja": "バーバー",
-   "ko": "바버",
-   "pt": "Barbeiro",
-   "pt-BR": "Barbeiro",
-   "da": "Barber",
-   "zh-Hant": "理髮師",
-   "pl": "Barber",
-   "sv": "Barberare",
-   "tr": "Berber",
-   "th": "ช่างตัดผมชาย",
-   "ms": "Tukang Gunting Rambut",
-   "ar": "حلاق",
-   "nb": "Barberer",
-   "el": "Κουρέας",
-   "vi": "Thợ cắt tóc",
-   "cs": "Holič",
-   "hu": "Borbély",
-   "ro": "Frizer"
   },
   "backend:BARMAN": {
    "fr": "Barman",
@@ -5354,36 +5367,9 @@
    "hu": "Szociálpedagógus",
    "ro": "Educator specializat"
   },
-  "backend:EMPLOYE_DE_CAFE": {
-   "fr": "Spécialiste café",
-   "en": "Coffee Specialist",
-   "de": "Kaffeespezialist",
-   "it": "Specialista del caffè",
-   "es": "Especialista en café",
-   "nl": "Koffiespecialist",
-   "zh-CN": "咖啡专家",
-   "ja": "コーヒースペシャリスト",
-   "ko": "커피 스페셜리스트",
-   "pt": "Especialista de café",
-   "pt-BR": "Especialista em café",
-   "da": "Kaffespecialist",
-   "zh-Hant": "咖啡專家",
-   "pl": "Specjalista ds. kawy",
-   "sv": "Kaffespecialist",
-   "tr": "Kahve Uzmanı",
-   "th": "ผู้เชี่ยวชาญด้านกาแฟ",
-   "ms": "Pakar Kopi",
-   "ar": "خبير قهوة",
-   "nb": "Kaffespesialist",
-   "el": "Barista",
-   "vi": "Chuyên gia cà phê",
-   "cs": "Kávový specialista",
-   "hu": "Kávéspecialista",
-   "ro": "Specialist cafea"
-  },
   "backend:EMPLOYE_DE_COMMERCE": {
    "fr": "Employé de commerce",
-   "en": "Sales Assistant",
+   "en": "Retail Assistant",
    "de": "Verkäufer",
    "it": "Addetto alle vendite",
    "es": "Dependiente",
@@ -6084,7 +6070,7 @@
    "ro": "Manager de tranziție comercial"
   },
   "backend:MANAGER_FLOOR": {
-   "fr": "Responsable de rayon",
+   "fr": "Floor manager",
    "en": "Floor Manager",
    "de": "Abteilungsleiter",
    "it": "Responsabile di reparto",
@@ -6408,8 +6394,8 @@
    "ro": "Croitor prototipuri"
   },
   "backend:PRESIDENT_D_ASSOCIATION": {
-   "fr": "Président",
-   "en": "President",
+   "fr": "Président d'association",
+   "en": "Association President",
    "de": "Präsident",
    "it": "Presidente",
    "es": "Presidente",
@@ -7406,33 +7392,6 @@
    "hu": "Spa Manager",
    "ro": "Spa Manager"
   },
-  "backend:TAILLEUR": {
-   "fr": "Tailleur",
-   "en": "Tailor",
-   "de": "Schneider",
-   "it": "Sarto",
-   "es": "Sastre",
-   "nl": "Kleermaker",
-   "zh-CN": "裁缝",
-   "ja": "テーラー",
-   "ko": "테일러",
-   "pt": "Alfaiate",
-   "pt-BR": "Alfaiate",
-   "da": "Skrædder",
-   "zh-Hant": "裁縫",
-   "pl": "Krawiec",
-   "sv": "Skräddare",
-   "tr": "Terzi",
-   "th": "ช่างตัดเสื้อ",
-   "ms": "Pembuat sut",
-   "ar": "خياط بدلات",
-   "nb": "Skredder",
-   "el": "Ράπτης",
-   "vi": "Thợ may vest",
-   "cs": "Krejčí",
-   "hu": "Szabó",
-   "ro": "Croitor"
-  },
   "backend:TALENT_MANAGER": {
    "fr": "Talent Manager",
    "en": "Talent Manager",
@@ -7731,11 +7690,11 @@
    "ro": "Webmaster"
   },
   "offres:retail-sales-lead": {
-   "fr": "Responsable des ventes",
+   "fr": "Premier vendeur",
    "en": "Sales Lead",
-   "de": "Verkaufsleiter",
-   "it": "Responsabile vendite",
-   "es": "Responsable de ventas",
+   "de": "Senior Verkaufsberater",
+   "it": "Primo venditore",
+   "es": "Primer vendedor",
    "nl": "Verkoopleider",
    "zh-CN": "销售主管",
    "ja": "セールスリード",
@@ -7744,7 +7703,7 @@
    "pt-BR": "Líder de vendas",
    "da": "Salgsleder",
    "zh-Hant": "銷售主管",
-   "pl": "Kierownik sprzedaży",
+   "pl": "Lider zespołu sprzedaży",
    "sv": "Försäljningsansvarig",
    "tr": "Satış Sorumlusu",
    "th": "หัวหน้าทีมขาย",
@@ -7758,7 +7717,7 @@
    "ro": "Responsabil vânzări"
   },
   "offres:keyholder": {
-   "fr": "Responsable d'ouverture",
+   "fr": "Keyholder",
    "en": "Keyholder",
    "de": "Schlüsselträger",
    "it": "Responsabile chiavi",
@@ -7921,23 +7880,23 @@
   },
   "retail-client-advisor": {
    "fr": "Conseil de vente",
-   "en": "Sales Advisory",
+   "en": "Retail Sales",
    "de": "Verkaufsberatung",
    "it": "Consulenza di vendita",
    "es": "Asesoría de ventas",
    "nl": "Verkoopadvies",
-   "zh-CN": "销售咨询",
-   "ja": "セールスアドバイザリー",
-   "ko": "판매 자문",
+   "zh-CN": "销售顾问",
+   "ja": "販売接客",
+   "ko": "판매 컨설팅",
    "pt": "Aconselhamento de vendas",
    "pt-BR": "Consultoria de vendas",
    "da": "Salgsrådgivning",
-   "zh-Hant": "銷售諮詢",
+   "zh-Hant": "銷售顧問",
    "pl": "Doradztwo sprzedaży",
    "sv": "Säljrådgivning",
    "tr": "Satış Danışmanlığı",
-   "th": "คำแนะนำการขาย",
-   "ms": "Nasihat Jualan",
+   "th": "พนักงานขาย",
+   "ms": "Penasihat Jualan",
    "ar": "استشارات المبيعات",
    "nb": "Salgsrådgivning",
    "el": "Συμβουλευτική πωλήσεων",
@@ -8058,28 +8017,28 @@
    "fr": "Visual merchandising",
    "en": "Visual Merchandising",
    "de": "Visual Merchandising",
-   "it": "Visual merchandising",
-   "es": "Visual merchandising",
-   "nl": "Visual merchandising",
+   "it": "Visual Merchandising",
+   "es": "Visual Merchandising",
+   "nl": "Visual Merchandising",
    "zh-CN": "视觉陈列",
    "ja": "ビジュアルマーチャンダイジング",
    "ko": "비주얼 머천다이징",
-   "pt": "Visual merchandising",
-   "pt-BR": "Visual merchandising",
-   "da": "Visual merchandising",
+   "pt": "Visual Merchandising",
+   "pt-BR": "Visual Merchandising",
+   "da": "Visual Merchandising",
    "zh-Hant": "視覺陳列",
-   "pl": "Visual merchandising",
-   "sv": "Visual merchandising",
-   "tr": "Görsel Mağazacılık",
+   "pl": "Visual Merchandising",
+   "sv": "Visual Merchandising",
+   "tr": "Visual Merchandising",
    "th": "การจัดดิสเพลย์หน้าร้าน",
    "ms": "Visual Merchandising",
-   "ar": "التنسيق البصري للمتاجر",
-   "nb": "Visual merchandising",
-   "el": "Visual merchandising",
+   "ar": "التنسيق البصري",
+   "nb": "Visual Merchandising",
+   "el": "Visual Merchandising",
    "vi": "Trưng bày sản phẩm",
-   "cs": "Visual merchandising",
-   "hu": "Visual merchandising",
-   "ro": "Visual merchandising"
+   "cs": "Visual Merchandising",
+   "hu": "Visual Merchandising",
+   "ro": "Visual Merchandising"
   },
   "merchandising-buying": {
    "fr": "Merchandising & achats",
@@ -8648,61 +8607,61 @@
    "hu": "Fodrászat és szépségápolási szolgáltatások",
    "ro": "Coafură și servicii de frumusețe"
   },
-  "mannequinat-agences": {
-   "fr": "Mannequinat & agences",
-   "en": "Modeling & Agencies",
-   "de": "Modeling & Agenturen",
-   "it": "Modelli e agenzie",
-   "es": "Modelaje y agencias",
-   "nl": "Modellen & Agentschappen",
-   "zh-CN": "模特与经纪公司",
-   "ja": "モデリング＆エージェンシー",
-   "ko": "모델링 및 에이전시",
-   "pt": "Modelos e Agências",
-   "pt-BR": "Agenciamento e modelos",
-   "da": "Modeling & Agenturer",
-   "zh-Hant": "模特兒與經紀公司",
-   "pl": "Modeling i agencje",
-   "sv": "Modeling och agenturer",
-   "tr": "Modellik ve Ajanslar",
-   "th": "นายแบบนางแบบและเอเจนซี่",
-   "ms": "Peragawan & Agensi",
-   "ar": "عروض الأزياء والوكالات",
-   "nb": "Modeling og agenturer",
-   "el": "Μοντέλα και πρακτορεία",
-   "vi": "Người mẫu & Công ty quản lý",
-   "cs": "Modeling a agentury",
-   "hu": "Modellkedés és ügynökségek",
-   "ro": "Modeling și agenții"
+  "mannequinat": {
+   "fr": "Mannequinat",
+   "en": "Modeling",
+   "de": "Modeln",
+   "it": "Modelling",
+   "es": "Modelaje",
+   "nl": "Modellenwerk",
+   "zh-CN": "模特",
+   "ja": "モデル",
+   "ko": "모델",
+   "pt": "Modelling",
+   "pt-BR": "Modelling",
+   "da": "Modelarbejde",
+   "zh-Hant": "模特兒",
+   "pl": "Modeling",
+   "sv": "Modellande",
+   "tr": "Modellik",
+   "th": "งานนางแบบนายแบบ",
+   "ms": "Permodelan",
+   "ar": "عرض الأزياء",
+   "nb": "Modellarbeid",
+   "el": "Modeling",
+   "vi": "Người mẫu",
+   "cs": "Modeling",
+   "hu": "Modellkedés",
+   "ro": "Modeling"
   },
   "architecture-store-design": {
    "fr": "Architecture & store design",
    "en": "Architecture & Store Design",
    "de": "Architektur & Store Design",
-   "it": "Architettura e store design",
-   "es": "Arquitectura y store design",
+   "it": "Architettura & Store Design",
+   "es": "Arquitectura & Store Design",
    "nl": "Architectuur & Store Design",
-   "zh-CN": "建筑与门店设计",
-   "ja": "建築＆ストアデザイン",
-   "ko": "건축 및 스토어 디자인",
-   "pt": "Arquitetura e Design de Lojas",
-   "pt-BR": "Arquitetura e Store Design",
+   "zh-CN": "建筑与店铺设计",
+   "ja": "店舗設計・建築",
+   "ko": "건축 및 매장 디자인",
+   "pt": "Arquitetura & Store Design",
+   "pt-BR": "Arquitetura & Store Design",
    "da": "Arkitektur & Store Design",
-   "zh-Hant": "建築與門市設計",
-   "pl": "Architektura i projektowanie sklepów",
-   "sv": "Arkitektur och store design",
-   "tr": "Mimarlık ve Mağaza Tasarımı",
+   "zh-Hant": "建築與店舖設計",
+   "pl": "Architektura & Store Design",
+   "sv": "Arkitektur & Store Design",
+   "tr": "Mimari ve Mağaza Tasarımı",
    "th": "สถาปัตยกรรมและการออกแบบร้านค้า",
    "ms": "Seni Bina & Reka Bentuk Kedai",
-   "ar": "الهندسة المعمارية وتصميم المتاجر",
-   "nb": "Arkitektur og store design",
-   "el": "Αρχιτεκτονική & Store Design",
+   "ar": "العمارة وتصميم المتاجر",
+   "nb": "Arkitektur & Store Design",
+   "el": "Αρχιτεκτονική & Σχεδιασμός Καταστημάτων",
    "vi": "Kiến trúc & Thiết kế cửa hàng",
-   "cs": "Architektura a store design",
-   "hu": "Építészet és store design",
-   "ro": "Arhitectură și store design"
+   "cs": "Architektura & Store Design",
+   "hu": "Építészet és üzlettervezés",
+   "ro": "Arhitectură & Store Design"
   },
-  "art-culture": {
+  "art-et-culture": {
    "fr": "Art & culture",
    "en": "Art & Culture",
    "de": "Kunst & Kultur",
@@ -8729,7 +8688,7 @@
    "hu": "Művészet és kultúra",
    "ro": "Artă și cultură"
   },
-  "patrimoine-archives": {
+  "patrimoine-et-archives": {
    "fr": "Patrimoine & archives",
    "en": "Heritage & Archives",
    "de": "Kulturerbe & Archive",
@@ -8755,6 +8714,33 @@
    "cs": "Dědictví a archivy",
    "hu": "Örökség és archívum",
    "ro": "Patrimoniu și arhive"
+  },
+  "vente-automobile": {
+   "fr": "Vente automobile",
+   "en": "Automotive Sales",
+   "de": "Automobilverkauf",
+   "it": "Vendita automotive",
+   "es": "Venta de automóviles",
+   "nl": "Autoverkoop",
+   "zh-CN": "汽车销售",
+   "ja": "自動車販売",
+   "ko": "자동차 판매",
+   "pt": "Venda automóvel",
+   "pt-BR": "Vendas automotivas",
+   "da": "Bilsalg",
+   "zh-Hant": "汽車銷售",
+   "pl": "Sprzedaż samochodów",
+   "sv": "Bilförsäljning",
+   "tr": "Otomotiv Satışı",
+   "th": "การขายยานยนต์",
+   "ms": "Jualan Automotif",
+   "ar": "مبيعات السيارات",
+   "nb": "Bilsalg",
+   "el": "Πωλήσεις αυτοκινήτων",
+   "vi": "Bán hàng ô tô",
+   "cs": "Prodej automobilů",
+   "hu": "Autóértékesítés",
+   "ro": "Vânzări auto"
   },
   "autres-secteurs": {
    "fr": "Autres secteurs",

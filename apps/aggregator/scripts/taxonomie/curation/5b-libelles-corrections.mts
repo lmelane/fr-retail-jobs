@@ -21,7 +21,7 @@
  *   node --env-file=<fichier .env portant GEMINI_API_KEY> --import tsx \
  *     apps/aggregator/scripts/taxonomie/curation/5b-libelles-corrections.mts
  */
-import { writeFileSync } from 'node:fs';
+import { existsSync, writeFileSync } from 'node:fs';
 import { normalizeOccupationTitle } from '../../../../../packages/db/occupation-engine.ts';
 import { DOSSIER_SORTIE, LANGUES_SITE, lireEtape } from './commun.mts';
 import { JUGES, MODELE_CHOIX, repondre } from './ia.mts';
@@ -33,7 +33,10 @@ const ECRITURE: Record<string, RegExp> = { 'zh-CN': /\p{Script=Han}/u, 'zh-Hant'
 const norme = (v: string) => normalizeOccupationTitle(v).replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
 const e5 = lireEtape('5-libelles.json');
 type Element = { cle: string; type: 'metier' | 'famille'; libelles: Record<string, string> };
-const elements: Element[] = [...e5.metiers.map((m: any) => ({ cle: m.cle, type: 'metier', libelles: { ...m.libelles } })),
+// Les métiers absorbés par la garde d'unicité (étape 5c) ne s'affichent plus : leurs libellés ne sont ni corrigés ni
+// comparés (sinon « Barista » était renommé pour se distinguer d'« Employé de café », qu'il absorbe).
+const absorbes = new Set<string>(existsSync(`${DOSSIER_SORTIE}5c-garde.json`) ? lireEtape('5c-garde.json').fusions.map((f: any) => f.absorbe) : []);
+const elements: Element[] = [...e5.metiers.filter((m: any) => !absorbes.has(m.cle)).map((m: any) => ({ cle: m.cle, type: 'metier', libelles: { ...m.libelles } })),
   ...e5.familles.map((f: any) => ({ cle: f.cle, type: 'famille', libelles: { ...f.libelles } }))];
 
 /** Les défauts objectifs d'un jeu de libellés : forme (barre, parenthèse), écriture, même libellé pour deux éléments. */
@@ -52,7 +55,12 @@ function defauts(liste: Element[]) {
   return out;
 }
 
-const avant = defauts(elements);
+// Les libellés signalés par l'audit métier (fichier versionné, raisons comprises) repassent par la même correction relue.
+const audit = existsSync(`${DOSSIER_SORTIE}5b-fautes-audit.json`) ? lireEtape('5b-fautes-audit.json').fautes as { cle: string; langue: string; raison: string }[] : [];
+// Les renommages demandés par la garde d'unicité complète (étape 5c) : deux métiers ne portent pas le même nom.
+const renommagesGarde = existsSync(`${DOSSIER_SORTIE}5c-garde.json`) ? lireEtape('5c-garde.json').renommages as { cle: string; langue: string; raison: string }[] : [];
+audit.push(...renommagesGarde);
+const avant = [...defauts(elements), ...audit.filter((f) => elements.some((e) => e.cle === f.cle))];
 const cleSchema = (l: string) => l.replace('-', '_');
 const CONSIGNE = `Tu corriges les noms des métiers et familles de Catwalks (luxe, mode, beauté, retail) dans certaines langues du site. Pour chaque élément, les langues fautives et la raison sont données. Donne pour chacune un libellé corrigé : UN seul nom, la forme COURTE d'usage dans les offres d'emploi du pays (un terme anglais s'il est l'usage courant), sans barre ni parenthèse, un vrai mot de la langue (jamais un mot inventé), et DISTINCT du libellé des autres métiers cités quand la raison en cite (un autre métier = un autre nom, au besoin précisé : « Tailleur » et « Couturière », « Barista » et « Serveur en café »).`;
 const SCHEMA = { type: 'OBJECT', required: ['i', 'corrections'], properties: { i: { type: 'INTEGER' }, corrections: { type: 'ARRAY', items: { type: 'OBJECT',
@@ -71,7 +79,7 @@ const renduRelecture = (fautes: Faute[]) => (lot: Element[]) => lot.map((e, j) =
 let corriges = elements.map((e) => ({ ...e, libelles: { ...e.libelles } }));
 let fautes: Faute[] = avant;
 const usage: (Faute & { libelle: string })[] = [];
-let tours = 0, elementsCorriges = 0;
+let tours = 0, elementsCorriges = 0, relectureManquante = 0;
 while (fautes.length && tours < 3) {
   tours++;
   const cibles = [...new Set(fautes.map((d) => d.cle))].map((cle) => corriges.find((e) => e.cle === cle)!);
@@ -86,6 +94,7 @@ while (fautes.length && tours < 3) {
   });
   const relire = corriges.filter((e) => fautes.some((d) => d.cle === e.cle));
   const relus = await repondre(JUGES.j2, RELECTURE, relire, 8, renduRelecture(fautes), SCHEMA_RELECTURE, (r) => Array.isArray(r.fautes));
+  relectureManquante += relire.filter((_, n) => !relus[n]).length;
   const relevees = relire.flatMap((e, n) => (relus[n]?.fautes ?? []).map((f: any) => ({ cle: e.cle, langue: f.langue.replace('_', '-'), raison: f.raison, type: f.type })));
   usage.push(...relevees.filter((f) => f.type === 'usage').map((f) => ({ ...f, libelle: corriges.find((e) => e.cle === f.cle)!.libelles[f.langue] })));
   fautes = [...defauts(corriges), ...relevees.filter((f) => f.type !== 'usage').map(({ cle, langue, raison }) => ({ cle, langue, raison }))];
@@ -98,11 +107,12 @@ corriges = corriges.map((e) => ({ ...e, libelles: Object.fromEntries(Object.entr
   [l, v ? v.replace(/\s*\([^)]*\)/g, '').split(/\s*\/\s*/)[0].trim() : v])) }));
 const connus = [...defauts(corriges), ...fautes.filter((f) => !f.raison.includes('parenthèse') && !f.raison.includes('barre') && !f.raison.includes('même libellé'))];
 const apres = connus.filter((f) => /alphabet latin|forme non courte/.test(f.raison));
-const bilan = { defautsAvant: avant.length, tours, elementsCorriges, defautsConnus: connus.length, fautesBloquantes: apres.length, preferencesUsage: usage.length,
+const bilan = { fautesAudit: audit.length, relectureManquante, defautsAvant: avant.length, tours, elementsCorriges, defautsConnus: connus.length, fautesBloquantes: apres.length, preferencesUsage: usage.length,
   signalementsEtape5NonBloquants: e5.fautesRestantes.length };
 writeFileSync(`${DOSSIER_SORTIE}5b-libelles-corrections.json`, JSON.stringify({ calculeLe: new Date().toISOString(), modeles: { correction: MODELE_CHOIX, relecture: JUGES.j2 },
   bilan, defautsConnus: connus, preferencesUsage: usage, signalementsEtape5: e5.fautesRestantes,
   libelles: Object.fromEntries(corriges.map((e) => [e.cle, e.libelles])) }, null, 1));
 console.log(JSON.stringify(bilan, null, 1));
 for (const d of connus) console.log(` connu : ${d.cle} ${d.langue} — ${d.raison}`);
+if (relectureManquante) { console.error(`ÉTAPE INCOMPLÈTE : ${relectureManquante} relecture(s) manquante(s)`); process.exitCode = 1; }
 if (apres.length) { console.error(`ÉTAPE INCOMPLÈTE : ${apres.length} libellé(s) de forme ou d'écriture fautive après ${tours} tours`); process.exitCode = 1; }

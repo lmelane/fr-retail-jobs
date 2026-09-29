@@ -98,19 +98,27 @@ marqué **existe** (lu ou mesuré le 28/09/2026) ou **décidé** (D-475, R-140 d
   distincts (sinon il attend la passe suivante) ; une famille nouvelle reçoit au moins 1 métier (11 des 27 familles
   servies en portent 0 ou 1 ; le seuil de 2 rangeait « Mannequin » dans l'atelier). Les métiers hors luxe vont dans
   « Autres secteurs » (D-475 §33).
-- **Résultat de la constitution (2A, 29/09/2026, `audits/2026-09-28/curation-v3/`)** : manifeste
-  `catwalks-occupations-20260929-v3`, 256 métiers, 32 familles, 25 langues, compilé par le moteur et conforme à la règle
-  de succession. Preview sur les 80 741 offres publiables (la version servie rejouée redonne 100 % du classement de
-  production) : 63,2 % des offres ont un métier (47,1 % aujourd'hui ; France 58 %) ; 0,3 % des intitulés classés
-  changent de métier hors plan (seuil 10 %). Justesse sur un échantillon neuf de 200, jugé par un modèle d'une autre
-  famille que ceux de la passe : 174 justes, 24 proches, 2 faux (1,0 %, au seuil), les deux causes corrigées ensuite ;
-  une première mesure, avant l'étape 6c, donnait 20 faux sur 200 (bloquant).
+- **Résultat de la constitution (2A, 29/09/2026, `audits/2026-09-28/curation-v3/`), après l'audit adverse du lot**
+  (trois lectures, toutes BLOCKED, corrigées) : manifeste `catwalks-occupations-20260929-v3`, 253 métiers (3 absorbés
+  par fusion confirmée), 33 familles, 25 langues ; compilé par le moteur, conforme à la règle de succession. Preview
+  sur les 80 741 offres publiables, intitulé nettoyé comme en production (la version servie rejouée redonne 100 % du
+  code ET du statut) : 62,8 % des offres ont un métier (47,1 % aujourd'hui) ; 0,1 % d'ambiguës (seuil 1 %) ; 0,3 % des
+  intitulés classés changent de métier hors plan (seuil 10 %) ; aucune perte hors plan (seuil 0,5 %). Bancs
+  (`6e-bancs.json`) : les 6 331 libellés et alias de recherche rendent chacun leur métier ; compilation 65 ms, 22 Mo,
+  environ 58 000 classements par seconde. **Justesse, échantillon neuf de 200 tiré sur la version finale et enregistré
+  avant jugement (`6d-echantillon-final.json`), deux juges indépendants : 6 faux pour l'assistant (3,0 %, 1,5 % en
+  offres), 4 pour le modèle (2,0 %, 0,1 % en offres) : au-dessus du seuil de 1 %, la v3 reste BLOQUÉE** ; causes
+  relevées dans le fichier (titres génériques « General Manager », forme « superviseur•e », scission employé de
+  commerce et conseiller de vente…).
 - **Ce que la constitution impose au moteur (sous-lot 2B)** : (1) un intitulé validé par les juges vaut pour
   l'intitulé EXACT ; sa généralisation à tout intitulé qui le contient est un synonyme partagé, vérifié sur ce qu'il
   capte (R-66 §2, étape 6c : 187 expressions jugées sur leurs captures, 570 ramenées à l'intitulé exact) ; (2)
   l'expression la plus longue l'emporte (D-475 §32 a), portée en 2A par la préséance des règles du moteur, sans cycle ;
   (3) une règle nouvelle d'un métier servi hérite de ses exclusions revues ; (4) un mot seul qui généralise est jugé en
-  lui-même (« commercial », adjectif en anglais) ; (5) les intitulés vagues seuls ne classent rien (§32 c). Limite
+  lui-même (« commercial », adjectif en anglais) ; (5) les intitulés vagues seuls ne classent rien (§32 c) ; (6) une
+  garde d'unicité unique sur libellés, alias et expressions, toutes langues, où la version servie prime sur un libellé
+  écrit par l'IA (étape 5c) ; (7) des clés de métier tirées d'un identifiant stable ; (8) une seule normalisation, celle
+  du moteur, l'expression stockée brute. Limite
   connue : la mémoire des réponses des modèles ne rejoue pas à l'identique une correction de libellés en plusieurs tours
   (29/09/2026) ; la sortie relue de l'étape 5b fait foi.
 - **Référence ESCO** publiée et datée, somme de contrôle versionnée.

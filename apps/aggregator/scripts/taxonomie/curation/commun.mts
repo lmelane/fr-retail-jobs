@@ -8,6 +8,7 @@ import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { gunzipSync } from 'node:zlib';
+import { normalizeOccupationTitle } from '../../../../../packages/db/occupation-engine.ts';
 
 const ICI = (p: string) => fileURLToPath(new URL(p, import.meta.url));
 const lireJson = (p: string) => JSON.parse(readFileSync(ICI(p), 'utf8'));
@@ -29,6 +30,23 @@ export const metiersServis: Metier[] = [...servie.occupations, ...depot.occupati
 export const familles: Famille[] = servie.families;
 export const groupes: string[] = servie.groups.map((g: { key: string }) => g.key);
 export const escoMetiers = esco.metiers.filter((m: any) => m.statut === 'released' || !m.statut);
+
+/**
+ * La forme qu'une expression prend DANS le moteur (`phrase()` de `packages/db/occupation-engine.ts`, non exportée) :
+ * orthographe du moteur, idéogrammes séparés, tout le reste réduit aux lettres et chiffres. Toute comparaison
+ * d'expressions de la passe passe par elle : une autre normalisation fausse la garde et la préséance (audit technique du
+ * 29/09/2026 : « RESPONSABLE E COMMERCE » devenait « RESPONSABLE COMMERCE », « 副店长 » n'était pas découpé).
+ * `6-manifeste.mts` vérifie qu'elle est idempotente sur toutes les expressions qu'il écrit.
+ */
+export const phraseMoteur = (v: string) => normalizeOccupationTitle(v).replace(/\p{Script=Han}/gu, ' $& ').replace(/[^\p{L}\p{N}]+/gu, ' ').replace(/\s+/g, ' ').trim();
+
+/** §32 c : un mot vague seul ne désigne pas un métier, donc ne classe aucune offre. */
+export const VAGUES = new Set(['MANAGER', 'ASSISTANT', 'ASSISTANTE', 'ASSOCIATE', 'TEAM MEMBER', 'STAGIAIRE', 'STAGE', 'INTERN', 'EMPLOYE', 'EMPLOYEE',
+  'RESPONSABLE', 'DIRECTEUR', 'DIRECTRICE', 'DIRECTOR', 'CHARGE', 'CHARGEE', 'LEAD', 'SPECIALIST', 'SPECIALISTE', 'COORDINATOR', 'COORDINATEUR',
+  'CONSULTANT', 'CONSULTANTE', 'TECHNICIEN', 'TECHNICIENNE', 'OPERATEUR', 'AGENT', 'CONSEILLER', 'CONSEILLERE', 'ADVISOR', 'SUPERVISOR',
+  // Mesure de justesse du 29/09/2026 : « Superviseur(e) » seul, et « Retail Manager » (directeur de magasin au Royaume-Uni
+  // et en Australie, directeur retail ailleurs) ne désignent pas un métier à eux seuls.
+  'SUPERVISEUR', 'SUPERVISEURE', 'SUPERVISEUSE', 'RETAIL MANAGER']);
 
 /** Forme courte d'un libellé (« Vendeur / Vendeuse » → « Vendeur »). */
 export const courte = (l?: string) => (l ?? '').split('/')[0].trim();
@@ -76,6 +94,18 @@ export function conceptsV3({ avecOffres, avecEncadrement = false }: { avecOffres
 export const LANGUES_SITE = ['fr', 'en', 'de', 'it', 'es', 'nl', 'zh-CN', 'ja', 'ko', 'pt', 'pt-BR', 'da', 'zh-Hant', 'pl', 'sv', 'tr', 'th', 'ms', 'ar',
   'nb', 'el', 'vi', 'cs', 'hu', 'ro'] as const;
 export const LANGUE_ESCO: Record<string, string | undefined> = { 'pt-BR': 'pt', nb: 'no' };
+
+/**
+ * Les libellés finaux d'un métier (5b, sinon 5 pour un métier absorbé) et ses formes grammaticales de l'étape 5, gardées
+ * seulement dans les langues où le libellé n'a pas été corrigé : une forme d'un libellé abandonné (« Verkäuferin » quand
+ * « Verkäufer » a été renommé) n'en est plus une (29/09/2026).
+ */
+export function libellesEtFormes(cle: string, e5ParCle: Map<string, any>, e5b: any): { libelles: Record<string, string>; formes: Record<string, string[]> } {
+  const avant = e5ParCle.get(cle)?.libelles ?? {};
+  const libelles = e5b.libelles[cle] ?? avant;
+  const formes = Object.fromEntries(Object.entries<string[]>(e5ParCle.get(cle)?.formes ?? {}).filter(([l]) => libelles[l] === avant[l]));
+  return { libelles, formes };
+}
 
 /** Toutes les familles de la v3 : celles du catalogue et les nouvelles de l'étape 2. */
 export const famillesV3 = (): string[] => [...familles.map((f) => f.key), ...lireEtape('2-familles.json').nouvellesFamilles.map((f: any) => f.key)];

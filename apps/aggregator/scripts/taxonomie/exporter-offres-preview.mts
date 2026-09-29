@@ -37,7 +37,9 @@ SELECT (current_database() = '${BASE}' AND current_user = 'catwalks_audit' AND c
 \\if :garde_ok
 SELECT 'G' || E'\\t' || json_build_object('maintenant', now())::text;
 SELECT 'I' || E'\\t' || json_build_object('titre', t, 'service', d, 'code', c, 'statut', s, 'offres', n, 'pays', p)::text FROM (
-  SELECT coalesce(j."rawTitle", j.title) AS t, j.department AS d, j."occupationCode" AS c, j."occupationStatus"::text AS s, count(*) AS n,
+  -- L'intitulé NETTOYÉ, celui que la production classe (classifyOccupationContent reçoit title ; rawTitle n'est
+  -- que consigné) : classer l'intitulé brut faussait la prémisse sur les entités HTML (audit technique du 29/09/2026).
+  SELECT j.title AS t, j.department AS d, j."occupationCode" AS c, j."occupationStatus"::text AS s, count(*) AS n,
          array_agg(DISTINCT j."countryCode") FILTER (WHERE j."countryCode" IS NOT NULL) AS p
   FROM "Job" j WHERE ${PUBLIABLE} GROUP BY 1, 2, 3, 4) x;
 \\else

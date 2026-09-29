@@ -1,23 +1,23 @@
 {
- "calculeLe": "2026-09-29T09:57:55.485Z",
+ "calculeLe": "2026-09-29T10:31:15.731Z",
  "modeles": {
   "redaction": "gemini-3.6-flash",
   "relecture": "gemini-3-flash-preview"
  },
  "bilan": {
   "metiers": 256,
-  "familles": 32,
+  "familles": 33,
   "langues": 25,
   "libellesSignales": {
    "metiers": 116,
-   "familles": 15
+   "familles": 16
   },
   "libellesFautifsRestants": {
    "metiers": 52,
-   "familles": 10
+   "familles": 11
   },
   "sansLibelle": [],
-  "variantes": 8237,
+  "variantes": 8229,
   "conflits": 102,
   "conflitsRetires": 82,
   "generiquesRetires": 4,
@@ -528,23 +528,23 @@
    "cle": "retail-client-advisor",
    "libelles": {
     "fr": "Conseil de vente",
-    "en": "Sales Advisory",
+    "en": "Retail Sales",
     "de": "Verkaufsberatung",
     "it": "Consulenza di vendita",
     "es": "Asesoría de ventas",
     "nl": "Verkoopadvies",
-    "zh-CN": "销售咨询",
-    "ja": "セールスアドバイザリー",
-    "ko": "판매 자문",
+    "zh-CN": "销售顾问",
+    "ja": "販売接客",
+    "ko": "판매 컨설팅",
     "pt": "Aconselhamento de vendas",
     "pt-BR": "Consultoria de vendas",
     "da": "Salgsrådgivning",
-    "zh-Hant": "銷售諮詢",
+    "zh-Hant": "銷售顧問",
     "pl": "Doradztwo sprzedaży",
     "sv": "Säljrådgivning",
     "tr": "Satış Danışmanlığı",
-    "th": "คำแนะนำการขาย",
-    "ms": "Nasihat Jualan",
+    "th": "พนักงานขาย",
+    "ms": "Penasihat Jualan",
     "ar": "استشارات المبيعات",
     "nb": "Salgsrådgivning",
     "el": "Συμβουλευτική πωλήσεων",
@@ -680,28 +680,28 @@
     "fr": "Visual merchandising",
     "en": "Visual Merchandising",
     "de": "Visual Merchandising",
-    "it": "Visual merchandising",
-    "es": "Visual merchandising",
-    "nl": "Visual merchandising",
+    "it": "Visual Merchandising",
+    "es": "Visual Merchandising",
+    "nl": "Visual Merchandising",
     "zh-CN": "视觉陈列",
     "ja": "ビジュアルマーチャンダイジング",
     "ko": "비주얼 머천다이징",
-    "pt": "Visual merchandising",
-    "pt-BR": "Visual merchandising",
-    "da": "Visual merchandising",
+    "pt": "Visual Merchandising",
+    "pt-BR": "Visual Merchandising",
+    "da": "Visual Merchandising",
     "zh-Hant": "視覺陳列",
-    "pl": "Visual merchandising",
-    "sv": "Visual merchandising",
-    "tr": "Görsel Mağazacılık",
+    "pl": "Visual Merchandising",
+    "sv": "Visual Merchandising",
+    "tr": "Visual Merchandising",
     "th": "การจัดดิสเพลย์หน้าร้าน",
     "ms": "Visual Merchandising",
-    "ar": "التنسيق البصري للمتاجر",
-    "nb": "Visual merchandising",
-    "el": "Visual merchandising",
+    "ar": "التنسيق البصري",
+    "nb": "Visual Merchandising",
+    "el": "Visual Merchandising",
     "vi": "Trưng bày sản phẩm",
-    "cs": "Visual merchandising",
-    "hu": "Visual merchandising",
-    "ro": "Visual merchandising"
+    "cs": "Visual Merchandising",
+    "hu": "Visual Merchandising",
+    "ro": "Visual Merchandising"
    }
   },
   {
@@ -1335,33 +1335,33 @@
    }
   },
   {
-   "cle": "mannequinat-agences",
+   "cle": "mannequinat",
    "libelles": {
-    "fr": "Mannequinat & agences",
-    "en": "Modeling & Agencies",
-    "de": "Modeling & Agenturen",
-    "it": "Modelli e agenzie",
-    "es": "Modelaje y agencias",
-    "nl": "Modellen & Agentschappen",
-    "zh-CN": "模特与经纪公司",
-    "ja": "モデリング＆エージェンシー",
-    "ko": "모델링 및 에이전시",
-    "pt": "Modelos e Agências",
-    "pt-BR": "Agenciamento e modelos",
-    "da": "Modeling & Agenturer",
-    "zh-Hant": "模特兒與經紀公司",
-    "pl": "Modeling i agencje",
-    "sv": "Modeling och agenturer",
-    "tr": "Modellik ve Ajanslar",
-    "th": "นายแบบนางแบบและเอเจนซี่",
-    "ms": "Peragawan & Agensi",
-    "ar": "عروض الأزياء والوكالات",
-    "nb": "Modeling og agenturer",
-    "el": "Μοντέλα και πρακτορεία",
-    "vi": "Người mẫu & Công ty quản lý",
-    "cs": "Modeling a agentury",
-    "hu": "Modellkedés és ügynökségek",
-    "ro": "Modeling și agenții"
+    "fr": "Mannequinat",
+    "en": "Modeling",
+    "de": "Modeln",
+    "it": "Modelling",
+    "es": "Modelaje",
+    "nl": "Modellenwerk",
+    "zh-CN": "模特",
+    "ja": "モデル",
+    "ko": "모델",
+    "pt": "Modelling",
+    "pt-BR": "Modelling",
+    "da": "Modelarbejde",
+    "zh-Hant": "模特兒",
+    "pl": "Modeling",
+    "sv": "Modellande",
+    "tr": "Modellik",
+    "th": "งานนางแบบนายแบบ",
+    "ms": "Permodelan",
+    "ar": "عرض الأزياء",
+    "nb": "Modellarbeid",
+    "el": "Modeling",
+    "vi": "Người mẫu",
+    "cs": "Modeling",
+    "hu": "Modellkedés",
+    "ro": "Modeling"
    }
   },
   {
@@ -1370,32 +1370,32 @@
     "fr": "Architecture & store design",
     "en": "Architecture & Store Design",
     "de": "Architektur & Store Design",
-    "it": "Architettura e store design",
-    "es": "Arquitectura y store design",
+    "it": "Architettura & Store Design",
+    "es": "Arquitectura & Store Design",
     "nl": "Architectuur & Store Design",
-    "zh-CN": "建筑与门店设计",
-    "ja": "建築＆ストアデザイン",
-    "ko": "건축 및 스토어 디자인",
-    "pt": "Arquitetura e Design de Lojas",
-    "pt-BR": "Arquitetura e Store Design",
+    "zh-CN": "建筑与店铺设计",
+    "ja": "店舗設計・建築",
+    "ko": "건축 및 매장 디자인",
+    "pt": "Arquitetura & Store Design",
+    "pt-BR": "Arquitetura & Store Design",
     "da": "Arkitektur & Store Design",
-    "zh-Hant": "建築與門市設計",
-    "pl": "Architektura i projektowanie sklepów",
-    "sv": "Arkitektur och store design",
-    "tr": "Mimarlık ve Mağaza Tasarımı",
+    "zh-Hant": "建築與店舖設計",
+    "pl": "Architektura & Store Design",
+    "sv": "Arkitektur & Store Design",
+    "tr": "Mimari ve Mağaza Tasarımı",
     "th": "สถาปัตยกรรมและการออกแบบร้านค้า",
     "ms": "Seni Bina & Reka Bentuk Kedai",
-    "ar": "الهندسة المعمارية وتصميم المتاجر",
-    "nb": "Arkitektur og store design",
-    "el": "Αρχιτεκτονική & Store Design",
+    "ar": "العمارة وتصميم المتاجر",
+    "nb": "Arkitektur & Store Design",
+    "el": "Αρχιτεκτονική & Σχεδιασμός Καταστημάτων",
     "vi": "Kiến trúc & Thiết kế cửa hàng",
-    "cs": "Architektura a store design",
-    "hu": "Építészet és store design",
-    "ro": "Arhitectură și store design"
+    "cs": "Architektura & Store Design",
+    "hu": "Építészet és üzlettervezés",
+    "ro": "Arhitectură & Store Design"
    }
   },
   {
-   "cle": "art-culture",
+   "cle": "art-et-culture",
    "libelles": {
     "fr": "Art & culture",
     "en": "Art & Culture",
@@ -1425,7 +1425,7 @@
    }
   },
   {
-   "cle": "patrimoine-archives",
+   "cle": "patrimoine-et-archives",
    "libelles": {
     "fr": "Patrimoine & archives",
     "en": "Heritage & Archives",
@@ -1452,6 +1452,36 @@
     "cs": "Dědictví a archivy",
     "hu": "Örökség és archívum",
     "ro": "Patrimoniu și arhive"
+   }
+  },
+  {
+   "cle": "vente-automobile",
+   "libelles": {
+    "fr": "Vente automobile",
+    "en": "Automotive Sales",
+    "de": "Automobilverkauf",
+    "it": "Vendita automotive",
+    "es": "Venta de automóviles",
+    "nl": "Autoverkoop",
+    "zh-CN": "汽车销售",
+    "ja": "自動車販売",
+    "ko": "자동차 판매",
+    "pt": "Venda automóvel",
+    "pt-BR": "Vendas automotivas",
+    "da": "Bilsalg",
+    "zh-Hant": "汽車銷售",
+    "pl": "Sprzedaż samochodów",
+    "sv": "Bilförsäljning",
+    "tr": "Otomotiv Satışı",
+    "th": "การขายยานยนต์",
+    "ms": "Jualan Automotif",
+    "ar": "مبيعات السيارات",
+    "nb": "Bilsalg",
+    "el": "Πωλήσεις αυτοκινήτων",
+    "vi": "Bán hàng ô tô",
+    "cs": "Prodej automobilů",
+    "hu": "Autóértékesítés",
+    "ro": "Vânzări auto"
    }
   },
   {
@@ -3929,7 +3959,6 @@
     "GRAPHIC DESIGNER",
     "GRAPHISTE",
     "NHA THIET KE ĐO HOA",
-    "NIKE SPORTSWEAR LEAD GRAPHIC DESIGNER NSW WOMEN S APPAREL",
     "PEREKA GRAFIK",
     "ΓΡΑΦΙΣΤΑΣ",
     "ΓΡΑΦΙΣΤΡΙΑ",
@@ -4210,7 +4239,6 @@
     "KONYVELO",
     "KSIEGOWA",
     "KSIEGOWY",
-    "LEAD TREASURY ACCOUNTANT",
     "MUHASEBECI",
     "REDOVISNINGSEKONOM",
     "REGNSKABSFØRER",
@@ -4593,18 +4621,9 @@
    },
    "variantes": [
     "HR BUSINESS PARTNER",
-    "HR BUSINESS PARTNER HR MANAGER",
-    "HR BUSINESS PARTNER MANAGER",
     "HRBP",
     "HRヒシネスハートナー",
     "HUMAN RESOURCES BUSINESS PARTNER",
-    "HUMAN RESOURCES MANAGER HR BUSINESS PARTNER",
-    "MANAGER HR BUSINESS PARTNER DISTRIBUTION CENTER",
-    "MANAGER HR BUSINESS PARTNER RETAIL",
-    "MANAGER HR BUSINESS PARTNER SOUTH ASIA PACIFIC",
-    "MANAGER HUMAN RESOURCES BUSINESS PARTNER CENTRAL",
-    "MANAGER HUMAN RESOURCES BUSINESS PARTNER NORTHERN REGION",
-    "MANAGER PEOPLE BUSINESS PARTNER",
     "PEOPLE AND CULTURE STORE BUSINESS PARTNER",
     "PEOPLE BUSINESS PARTNER",
     "PEOPLE CULTURE IN STORE BUSINESS PARTNER",
@@ -4796,7 +4815,6 @@
     "ENGENHEIRA DE SOFTWARE",
     "ENGENHEIRO DE SOFTWARE",
     "FRONT END DEVELOPER",
-    "FRONT END DEVELOPER LEAD",
     "FRONTEND DEVELOPER",
     "FULL STACK DEVELOPER",
     "FULLSTACK DEVELOPER",
@@ -4808,12 +4826,6 @@
     "INZYNIER OPROGRAMOWANIA",
     "JURUTERA PERISIAN",
     "KY SU PHAN MEM",
-    "LEAD SOFTWARE ENGINEER",
-    "LEAD SOFTWARE ENGINEER ANAPLAN ITC",
-    "LEAD SOFTWARE ENGINEER ARCHITECT SERVICENOW",
-    "LEAD SOFTWARE ENGINEER FORWARD DEPLOYED ENGINEERING ITC",
-    "LEAD SOFTWARE ENGINEER ITC",
-    "LEAD SOFTWARE ENGINEER PLATFORM ENGINEERING ITC",
     "MJUKVARUINGENJOR",
     "PROGRAMVAREUTVIKLER",
     "SOFTWARE DEVELOPER",
@@ -9937,7 +9949,7 @@
   },
   {
    "cle": "backend:ASSISTANT_DE_GALERIE",
-   "famille": "art-culture",
+   "famille": "art-et-culture",
    "ancreEsco": "http://data.europa.eu/esco/occupation/2c8a4b72-21f4-4ab1-9dbd-1cae779211b7",
    "matiereEsco": null,
    "libelles": {
@@ -11189,7 +11201,7 @@
   },
   {
    "cle": "backend:ASSISTANT_PATRIMOINE",
-   "famille": "patrimoine-archives",
+   "famille": "patrimoine-et-archives",
    "ancreEsco": "http://data.europa.eu/esco/occupation/e3b08984-19fe-4d51-a1b0-990676fc7234",
    "matiereEsco": null,
    "libelles": {
@@ -12177,7 +12189,7 @@
   },
   {
    "cle": "backend:BOOKER_MODE",
-   "famille": "mannequinat-agences",
+   "famille": "mannequinat",
    "ancreEsco": "http://data.europa.eu/esco/occupation/bdf2dd9d-6c92-46f4-a8e7-76c12302d3e7",
    "matiereEsco": null,
    "libelles": {
@@ -14523,7 +14535,7 @@
   },
   {
    "cle": "backend:COMMERCIAL_AUTOMOBILE",
-   "famille": "autres-secteurs",
+   "famille": "vente-automobile",
    "ancreEsco": null,
    "matiereEsco": "http://data.europa.eu/esco/occupation/45037d43-a8f5-4f46-b332-b2935bc305f4",
    "libelles": {
@@ -15561,7 +15573,7 @@
   },
   {
    "cle": "backend:COORDINATEUR_DE_PRODUCTION",
-   "famille": "marketing-communication",
+   "famille": "design-creation",
    "ancreEsco": "http://data.europa.eu/esco/occupation/1aa4bb15-c527-4a3b-9270-b3c71c4be111",
    "matiereEsco": null,
    "libelles": {
@@ -16398,7 +16410,7 @@
   },
   {
    "cle": "backend:DELEGUE_PHARMACEUTIQUE",
-   "famille": "autres-secteurs",
+   "famille": "health-optical-services",
    "ancreEsco": "http://data.europa.eu/esco/occupation/ab762f91-d737-485f-a85c-67cab92dee01",
    "matiereEsco": null,
    "libelles": {
@@ -17402,11 +17414,20 @@
     "DYREKTOR DS PERSONALNYCH",
     "DYREKTORKA DS PERSONALNYCH",
     "GIAM ĐOC NHAN SU",
+    "HR BUSINESS PARTNER HR MANAGER",
+    "HR BUSINESS PARTNER MANAGER",
     "HR DIRECTEUR",
     "HR DIREKTØR",
     "HR IGAZGATO",
     "HUMAN RESOURCES DIRECTOR",
+    "HUMAN RESOURCES MANAGER HR BUSINESS PARTNER",
     "INSAN KAYNAKLARI DIREKTORU",
+    "MANAGER HR BUSINESS PARTNER DISTRIBUTION CENTER",
+    "MANAGER HR BUSINESS PARTNER RETAIL",
+    "MANAGER HR BUSINESS PARTNER SOUTH ASIA PACIFIC",
+    "MANAGER HUMAN RESOURCES BUSINESS PARTNER CENTRAL",
+    "MANAGER HUMAN RESOURCES BUSINESS PARTNER NORTHERN REGION",
+    "MANAGER PEOPLE BUSINESS PARTNER",
     "PENGARAH SUMBER MANUSIA",
     "PERSONALCHEF",
     "PERSONALLEITER",
@@ -20546,7 +20567,7 @@
   },
   {
    "cle": "backend:JARDINIER",
-   "famille": "admin-facilities",
+   "famille": "autres-secteurs",
    "ancreEsco": "http://data.europa.eu/esco/occupation/a48b9a5a-5ded-482d-8cda-7fd097a32c16",
    "matiereEsco": null,
    "libelles": {
@@ -20973,7 +20994,7 @@
   },
   {
    "cle": "backend:LIBRAIRE",
-   "famille": "autres-secteurs",
+   "famille": "retail-client-advisor",
    "ancreEsco": "http://data.europa.eu/esco/occupation/1246764a-ce7c-45e8-9675-e445d145e818",
    "matiereEsco": null,
    "libelles": {
@@ -21749,7 +21770,7 @@
   },
   {
    "cle": "backend:MANNEQUIN",
-   "famille": "mannequinat-agences",
+   "famille": "mannequinat",
    "ancreEsco": "http://data.europa.eu/esco/occupation/9af5fd79-d76e-4343-bc13-ff2d172aec62",
    "matiereEsco": null,
    "libelles": {
@@ -26269,7 +26290,7 @@
   },
   {
    "cle": "backend:SCENOGRAPHE",
-   "famille": "architecture-store-design",
+   "famille": "visual-merchandising",
    "ancreEsco": "http://data.europa.eu/esco/occupation/874a2080-a9b6-46a9-8662-c9b7d4208f73",
    "matiereEsco": null,
    "libelles": {
@@ -27907,6 +27928,7 @@
     "PREMIER VENDEUR 39H CDI",
     "PREMIER VENDEUR F H CDD 35H",
     "PREMIER VENDEUR H F",
+    "PREMIERE VENDEUSE",
     "RESPONSABIL VANZARI",
     "RESPONSABILA VANZARI",
     "RESPONSABILE VENDITE",
@@ -30493,6 +30515,27 @@
    ]
   },
   {
+   "cle": "retail-client-advisor",
+   "fautes": [
+    {
+     "langue": "zh_CN",
+     "raison": "Nom du métier (Conseiller de vente) au lieu de la famille (Conseil de vente)"
+    },
+    {
+     "langue": "zh_Hant",
+     "raison": "Nom du métier (Conseiller de vente) au lieu de la famille (Conseil de vente)"
+    },
+    {
+     "langue": "th",
+     "raison": "Nom du métier (Vendeur) au lieu de la famille (Conseil de vente)"
+    },
+    {
+     "langue": "ms",
+     "raison": "Nom du métier (Conseiller de vente) au lieu de la famille (Conseil de vente)"
+    }
+   ]
+  },
+  {
    "cle": "beauty-advisor",
    "fautes": [
     {
@@ -30613,24 +30656,48 @@
    ]
   },
   {
-   "cle": "mannequinat-agences",
+   "cle": "mannequinat",
    "fautes": [
     {
-     "langue": "es",
-     "raison": "'Modelaje' désigne l'activité technique, 'Modelos' est le terme d'usage pour la catégorie."
+     "langue": "it",
+     "raison": "Anglicisme, le terme italien est 'Moda' ou 'Indossatore'"
     },
     {
-     "langue": "ms",
-     "raison": "'Peragawan' est spécifiquement masculin, 'Model' est le terme neutre d'usage."
+     "langue": "pt",
+     "raison": "Anglicisme, le terme est 'Modelagem' ou 'Modelos'"
     },
     {
-     "langue": "ar",
-     "raison": "'عروض الأزياء' signifie 'Défilés de mode', 'عارضي الأزياء' est le terme pour le mannequinat."
+     "langue": "pt_BR",
+     "raison": "Anglicisme, le terme est 'Modelagem' ou 'Modelos'"
+    },
+    {
+     "langue": "el",
+     "raison": "Anglicisme écrit en alphabet latin"
+    },
+    {
+     "langue": "zh_CN",
+     "raison": "Nom du métier (Mannequin) au lieu de la famille (Mannequinat)"
+    },
+    {
+     "langue": "zh_Hant",
+     "raison": "Nom du métier (Mannequin) au lieu de la famille (Mannequinat)"
+    },
+    {
+     "langue": "ja",
+     "raison": "Nom du métier (Mannequin) au lieu de la famille (Mannequinat)"
+    },
+    {
+     "langue": "ko",
+     "raison": "Nom du métier (Mannequin) au lieu de la famille (Mannequinat)"
+    },
+    {
+     "langue": "vi",
+     "raison": "Nom du métier (Mannequin) au lieu de la famille (Mannequinat)"
     }
    ]
   },
   {
-   "cle": "patrimoine-archives",
+   "cle": "patrimoine-et-archives",
    "fautes": [
     {
      "langue": "de",

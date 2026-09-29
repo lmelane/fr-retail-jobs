@@ -1,0 +1,15 @@
+{
+ "source": "Audit adverse métier/UX du lot 2A (29/09/2026), constats vérifiés par l'assistant au moteur ; ces libellés repassent par la correction relue de l'étape 5b.",
+ "fautes": [
+  { "cle": "offres:retail-sales-lead", "langue": "fr", "raison": "« Responsable des ventes » désigne en français un directeur des ventes ; ce poste est le chef d'équipe de la vente en boutique, dont l'usage des offres françaises est « Premier vendeur »" },
+  { "cle": "offres:retail-sales-lead", "langue": "de", "raison": "« Verkaufsleiter » désigne un directeur des ventes ; ce poste est le chef d'équipe de la vente en boutique" },
+  { "cle": "offres:retail-sales-lead", "langue": "it", "raison": "« Responsabile vendite » désigne un directeur des ventes ; ce poste est le chef d'équipe de la vente en boutique" },
+  { "cle": "offres:retail-sales-lead", "langue": "es", "raison": "désigne un directeur des ventes ; ce poste est le chef d'équipe de la vente en boutique" },
+  { "cle": "offres:retail-sales-lead", "langue": "pl", "raison": "désigne un directeur des ventes ; ce poste est le chef d'équipe de la vente en boutique" },
+  { "cle": "offres:keyholder", "langue": "fr", "raison": "« Responsable d'ouverture » n'est employé par aucune offre ; l'usage des offres françaises est « Keyholder » (D-475 §34 : usage du pays, anglais compris)" },
+  { "cle": "backend:PRESIDENT_D_ASSOCIATION", "langue": "fr", "raison": "« Président » seul désigne tout président (société, conseil) ; le métier est « Président d'association », garder le complément" },
+  { "cle": "backend:PRESIDENT_D_ASSOCIATION", "langue": "en", "raison": "« President » seul désigne tout président ; le métier est un président d'association, garder le complément" },
+  { "cle": "backend:MANAGER_FLOOR", "langue": "fr", "raison": "« Responsable de rayon » est le vocabulaire de la grande distribution ; dans les boutiques de mode et de luxe, l'usage est « Floor manager »" },
+  { "cle": "backend:ASSISTANT_HOTELIER", "langue": "fr", "raison": "« Agent hôtelier » ne désigne pas le même métier que l'anglais « Hotel Receptionist » ; donner le nom français d'usage de ce métier" }
+ ]
+}

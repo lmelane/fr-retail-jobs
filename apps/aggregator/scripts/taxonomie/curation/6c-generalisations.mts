@@ -22,15 +22,16 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import { gunzipSync } from 'node:zlib';
 import { compileOccupationManifest, normalizeOccupationTitle } from '../../../../../packages/db/occupation-engine.ts';
-import { DOSSIER_SORTIE, lireEtape, servie } from './commun.mts';
+import { DOSSIER_SORTIE, lireEtape, phraseMoteur, servie } from './commun.mts';
 import { consensus, JUGES, MODELE_CHOIX, repondre } from './ia.mts';
 
 /** Seuils de départ, à recalibrer : 187 expressions au-dessus captent 89 % des offres généralisées (29/09/2026). */
 const SEUIL_OFFRES = 10, ECHANTILLON = 3;
-const norme = (v: string) => normalizeOccupationTitle(v).replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
-const v3 = lireEtape('6-manifeste-v3.json');
+const norme = phraseMoteur;
+// Le manifeste de base (toutes les expressions en mode phrase), produit par `6-manifeste.mts --base`.
+const v3 = lireEtape('6-manifeste-base.json');
 if (v3.rules.some((r: any) => r.id.startsWith('v3-') && r.all.some((c: any) => c.mode === 'exact')))
-  throw new Error('manifeste de base attendu : refaire l’étape 6 sans 6c-generalisations.json avant de relancer 6c');
+  throw new Error('manifeste de base attendu : `6-manifeste.mts --base`');
 const { couples } = JSON.parse(gunzipSync(readFileSync(`${DOSSIER_SORTIE}entrees/offres-preview-2026-09-29.json.gz`)).toString('utf8'));
 const moteurV1 = compileOccupationManifest(structuredClone(servie)), moteurV3 = compileOccupationManifest(v3);
 const regles = new Map(v3.rules.map((r: any) => [r.id, r]));

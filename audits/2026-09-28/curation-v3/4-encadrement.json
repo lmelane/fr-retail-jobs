@@ -1,5 +1,5 @@
 {
- "calculeLe": "2026-09-29T08:01:46.475Z",
+ "calculeLe": "2026-09-29T10:24:55.734Z",
  "modeles": {
   "choix": "gemini-3.6-flash",
   "j1": "gemini-3.6-flash",
@@ -9,40 +9,24 @@
   "export": {
    "sha256": "03d35c499b3f60784fc39d63c71b99d92a60e7cc44b8d7a227a354411fd4d4e1"
   },
-  "candidats": 154,
+  "candidats": 155,
   "sansDecision": 0,
-  "encadrement": 92,
+  "encadrement": 93,
   "pasEncadrement": 62,
   "offresEncadrement": 675,
-  "versMetierV3": 59,
+  "versMetierV3": 51,
   "versMetierNouveau": 5,
-  "sansMetier": 28,
+  "sansMetier": 37,
   "nouveauxMetiers": 1,
-  "enAttente": 6,
+  "enAttente": 10,
   "doublonsEvites": [
    {
     "groupe": "Premier vendeur / Senior Sales Associate",
     "existant": "offres:retail-sales-lead"
    },
    {
-    "groupe": "Lead développeur front-end / Lead Front-End Developer",
-    "existant": "software-engineer"
-   },
-   {
     "groupe": "Responsable des ressources humaines / HR Business Partner",
-    "existant": "hr-business-partner"
-   },
-   {
-    "groupe": "Lead software engineer / Lead Software Engineer",
-    "existant": "software-engineer"
-   },
-   {
-    "groupe": "Lead comptable trésorerie / Lead Treasury Accountant",
-    "existant": "accountant"
-   },
-   {
-    "groupe": "Lead graphiste / Lead Graphic Designer",
-    "existant": "graphic-designer"
+    "existant": "backend:DIRECTEUR_DES_RESSOURCES_HUMAINES"
    },
    {
     "groupe": "Directeur régional des ressources humaines / Regional Human Resources Director",
@@ -55,6 +39,10 @@
    {
     "groupe": "Directeur des ressources humaines / Human Resources Director",
     "existant": "backend:DIRECTEUR_DES_RESSOURCES_HUMAINES"
+   },
+   {
+    "groupe": "Premier vendeur / Lead Sales Advisor",
+    "existant": "offres:retail-sales-lead"
    }
   ],
   "groupesIndetermines": [],
@@ -159,6 +147,13 @@
    },
    {
     "code": "sales-advisor",
+    "mot": "PREMIERE VENDEUSE",
+    "exclu": true,
+    "par": "unanime",
+    "intitules": 1
+   },
+   {
+    "code": "sales-advisor",
     "mot": "PREMIER VENDEUR",
     "exclu": true,
     "par": "mot",
@@ -229,7 +224,8 @@
     "LEAD"
    ],
    "financial-controller": [
-    "DIRECTEUR"
+    "DIRECTEUR",
+    "DIRECTRICE"
    ],
    "accountant": [
     "RESPONSABLE",
@@ -237,13 +233,16 @@
    ],
    "hr-business-partner": [
     "DIRECTOR",
+    "DIRECTORA",
     "HEAD",
     "RESPONSABLE",
-    "MANAGER"
+    "MANAGER",
+    "MANAGERIN"
    ],
    "sales-advisor": [
     "LEADER",
     "LEAD",
+    "PREMIERE VENDEUSE",
     "PREMIER VENDEUR",
     "KEYHOLDER",
     "KEY HOLDER",
@@ -296,6 +295,11 @@
    },
    {
     "intitule": "Team Leader Client Advisor",
+    "avant": "sales-advisor",
+    "apres": null
+   },
+   {
+    "intitule": "Première vendeuse",
     "avant": "sales-advisor",
     "apres": null
    }
@@ -364,6 +368,67 @@
     "cdi - responsable comptable (h/f)",
     "responsable comptable",
     "responsable comptable f/h"
+   ]
+  },
+  {
+   "cle": "lead-front-end-developer",
+   "fr": "Lead développeur front-end",
+   "en": "Lead Front-End Developer",
+   "famille": "it-data",
+   "encadre": [
+    "software-engineer"
+   ],
+   "offres": 1,
+   "employeurs": 1,
+   "titres": [
+    "front end developer lead"
+   ]
+  },
+  {
+   "cle": "lead-software-engineer",
+   "fr": "Lead software engineer",
+   "en": "Lead Software Engineer",
+   "famille": "it-data",
+   "encadre": [
+    "software-engineer"
+   ],
+   "offres": 10,
+   "employeurs": 2,
+   "titres": [
+    "lead software engineer",
+    "lead software engineer_ anaplan, itc",
+    "lead software engineer/architect- servicenow",
+    "lead software engineer - forward deployed engineering, itc",
+    "lead software engineer, itc",
+    "lead software engineer, platform engineering, itc"
+   ]
+  },
+  {
+   "cle": "lead-treasury-accountant",
+   "fr": "Lead comptable trésorerie",
+   "en": "Lead Treasury Accountant",
+   "famille": "finance",
+   "encadre": [
+    "accountant"
+   ],
+   "offres": 1,
+   "employeurs": 1,
+   "titres": [
+    "lead, treasury accountant"
+   ]
+  },
+  {
+   "cle": "lead-graphic-designer",
+   "fr": "Lead graphiste",
+   "en": "Lead Graphic Designer",
+   "famille": "design-creation",
+   "encadre": [
+    "graphic-designer"
+   ],
+   "offres": 1,
+   "employeurs": 1,
+   "titres": [
+    "nike sportswear, lead graphic designer, nsw women’s apparel"
    ]
   },
   {
@@ -1565,7 +1630,7 @@
    ],
    "contexte": "employeurs : IN02 Movado Group Private Limited",
    "encadrement": true,
-   "cible": "software-engineer",
+   "cible": null,
    "preuve": {
     "choix": {
      "i": 2,
@@ -1835,7 +1900,7 @@
    ],
    "contexte": "employeurs : Primark",
    "encadrement": true,
-   "cible": "hr-business-partner",
+   "cible": "backend:DIRECTEUR_DES_RESSOURCES_HUMAINES",
    "preuve": {
     "choix": {
      "i": 12,
@@ -1862,7 +1927,7 @@
    ],
    "contexte": "employeurs : Skechers ; services : Distribution Center",
    "encadrement": true,
-   "cible": "hr-business-partner",
+   "cible": "backend:DIRECTEUR_DES_RESSOURCES_HUMAINES",
    "preuve": {
     "choix": {
      "i": 13,
@@ -1889,7 +1954,7 @@
    ],
    "contexte": "employeurs : Foot Locker",
    "encadrement": true,
-   "cible": "hr-business-partner",
+   "cible": "backend:DIRECTEUR_DES_RESSOURCES_HUMAINES",
    "preuve": {
     "choix": {
      "i": 14,
@@ -2591,7 +2656,7 @@
    ],
    "contexte": "employeurs : NIKE",
    "encadrement": true,
-   "cible": "software-engineer",
+   "cible": null,
    "preuve": {
     "choix": {
      "i": 0,
@@ -2618,7 +2683,7 @@
    ],
    "contexte": "employeurs : NIKE",
    "encadrement": true,
-   "cible": "software-engineer",
+   "cible": null,
    "preuve": {
     "choix": {
      "i": 1,
@@ -2645,7 +2710,7 @@
    ],
    "contexte": "employeurs : H&M Group",
    "encadrement": true,
-   "cible": "software-engineer",
+   "cible": null,
    "preuve": {
     "choix": {
      "i": 2,
@@ -2672,7 +2737,7 @@
    ],
    "contexte": "employeurs : NIKE",
    "encadrement": true,
-   "cible": "software-engineer",
+   "cible": null,
    "preuve": {
     "choix": {
      "i": 3,
@@ -2699,7 +2764,7 @@
    ],
    "contexte": "employeurs : NIKE",
    "encadrement": true,
-   "cible": "software-engineer",
+   "cible": null,
    "preuve": {
     "choix": {
      "i": 4,
@@ -2726,7 +2791,7 @@
    ],
    "contexte": "employeurs : NIKE",
    "encadrement": true,
-   "cible": "software-engineer",
+   "cible": null,
    "preuve": {
     "choix": {
      "i": 5,
@@ -2753,7 +2818,7 @@
    ],
    "contexte": "employeurs : Chanel",
    "encadrement": true,
-   "cible": "accountant",
+   "cible": null,
    "preuve": {
     "choix": {
      "i": 6,
@@ -2780,7 +2845,7 @@
    ],
    "contexte": "employeurs : Shiseido, Shiseido Americas Corporation",
    "encadrement": true,
-   "cible": "hr-business-partner",
+   "cible": "backend:DIRECTEUR_DES_RESSOURCES_HUMAINES",
    "preuve": {
     "choix": {
      "i": 7,
@@ -2807,7 +2872,7 @@
    ],
    "contexte": "employeurs : Celine ; services : Human Resources",
    "encadrement": true,
-   "cible": "hr-business-partner",
+   "cible": "backend:DIRECTEUR_DES_RESSOURCES_HUMAINES",
    "preuve": {
     "choix": {
      "i": 8,
@@ -2834,7 +2899,7 @@
    ],
    "contexte": "employeurs : Tiffany & Co. ; services : Human Resources",
    "encadrement": true,
-   "cible": "hr-business-partner",
+   "cible": "backend:DIRECTEUR_DES_RESSOURCES_HUMAINES",
    "preuve": {
     "choix": {
      "i": 9,
@@ -2861,7 +2926,7 @@
    ],
    "contexte": "employeurs : Tiffany & Co. ; services : Human Resources",
    "encadrement": true,
-   "cible": "hr-business-partner",
+   "cible": "backend:DIRECTEUR_DES_RESSOURCES_HUMAINES",
    "preuve": {
     "choix": {
      "i": 10,
@@ -2888,7 +2953,7 @@
    ],
    "contexte": "employeurs : Hermès",
    "encadrement": true,
-   "cible": "hr-business-partner",
+   "cible": "backend:DIRECTEUR_DES_RESSOURCES_HUMAINES",
    "preuve": {
     "choix": {
      "i": 11,
@@ -2915,7 +2980,7 @@
    ],
    "contexte": "employeurs : Exemplar Luxury Group",
    "encadrement": true,
-   "cible": "hr-business-partner",
+   "cible": "backend:DIRECTEUR_DES_RESSOURCES_HUMAINES",
    "preuve": {
     "choix": {
      "i": 12,
@@ -2969,7 +3034,7 @@
    ],
    "contexte": "employeurs : NIKE",
    "encadrement": true,
-   "cible": "graphic-designer",
+   "cible": null,
    "preuve": {
     "choix": {
      "i": 14,
@@ -4577,6 +4642,33 @@
      "concept": "backend:MANAGER_FLOOR",
      "libelle_fr": "Manager de floor",
      "libelle_en": "Floor Manager"
+    }
+   }
+  },
+  {
+   "intitule": "Première vendeuse",
+   "code": "sales-advisor",
+   "offres": 0,
+   "mots": [
+    "PREMIERE VENDEUSE"
+   ],
+   "contexte": "",
+   "encadrement": true,
+   "cible": "offres:retail-sales-lead",
+   "preuve": {
+    "choix": {
+     "i": 0,
+     "encadrement": true,
+     "concept": "backend:ANIMATEUR_VENTES",
+     "libelle_fr": "Premier vendeur",
+     "libelle_en": "Lead Sales Advisor"
+    },
+    "second": {
+     "i": 0,
+     "encadrement": true,
+     "concept": "backend:ANIMATEUR_VENTES",
+     "libelle_fr": "Première vendeuse",
+     "libelle_en": "Senior Sales Advisor"
     }
    }
   }

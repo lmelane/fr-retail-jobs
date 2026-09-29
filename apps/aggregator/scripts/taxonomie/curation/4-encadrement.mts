@@ -33,7 +33,12 @@ const MOTS = ['RESPONSABLE', 'RESPONSABILE', 'MANAGER', 'MANAGERIN', 'GERENTE', 
   'DIRECTOR', 'DIRECTORA', 'DIRETTORE', 'DIRETTRICE', 'HEAD', 'SUPERVISOR', 'SUPERVISEUR', 'SUPERVISEUSE', 'SUPERVISORA', 'LEAD',
   'LEADER', 'CHEF', 'CHEFFE', 'CAPO', 'ENCARGADO', 'ENCARGADA', 'JEFE', 'JEFA', 'COORDINATOR', 'COORDINATEUR', 'COORDINATRICE',
   'COORDINADOR', 'COORDINADORA', 'COORDINATORE', 'KEYHOLDER', 'KEY HOLDER', 'PREMIER VENDEUR', 'PREMIERE VENDEUSE', '店長', '主任', '经理', '主管', '매니저', '팀장'];
-const EXEMPLES_CEO = ['Responsable vendeur H/F', 'Team Leader Client Advisor'];
+const EXEMPLES_CEO = ['Responsable vendeur H/F', 'Team Leader Client Advisor', 'Première vendeuse'];
+/** Formes d'un même mot : exclure l'une exclut l'autre (« Première vendeuse » restait vendeuse, audit du 29/09/2026). */
+const FORMES: Record<string, string[]> = { DIRECTEUR: ['DIRECTRICE'], SUPERVISEUR: ['SUPERVISEUSE'], COORDINATEUR: ['COORDINATRICE'],
+  ENCARGADO: ['ENCARGADA'], JEFE: ['JEFA'], LEITER: ['LEITERIN'], CHEF: ['CHEFFE'], DIRETTORE: ['DIRETTRICE'], COORDINADOR: ['COORDINADORA'],
+  DIRECTOR: ['DIRECTORA'], SUPERVISOR: ['SUPERVISORA'], 'PREMIER VENDEUR': ['PREMIERE VENDEUSE'], MANAGER: ['MANAGERIN'] };
+for (const [a, bs] of Object.entries(FORMES)) for (const b of bs) FORMES[b] = [...(FORMES[b] ?? []), a];
 
 const { intitules, sha256 } = lireIntitulesOffres();
 const v1 = compileOccupationManifest(structuredClone(servie));
@@ -78,15 +83,18 @@ const proposees: Proposee[] = [...new Map<string, Proposee>(numeros.filter((k) =
 const verdicts = await consensus(proposees.map(({ k, cle }) => ({ intitule: candidats[k].intitule, contexte: candidats[k].contexte, metier: `${parCle.get(cle)!.fr} / ${parCle.get(cle)!.en}`, alias: parCle.get(cle)!.variantes })));
 const cible = new Map<number, string>();
 proposees.forEach(({ k, cle }, n) => { if (verdicts[n] === 'confirme' && (!cible.has(k) || cle === choix[k].concept)) cible.set(k, cle); });
+const proposeesSansVerdict = proposees.filter((_, n) => verdicts[n] === 'indetermine').map(({ k, cle }) => `${candidats[k].intitule} → ${cle}`);
 
 const aGrouper = numeros.filter((k) => encadrement[k] && !cible.has(k));
 const groupes = await regrouper(aGrouper.map((k) => ({ intitule: candidats[k].intitule, fr: choix[k].libelle_fr, en: choix[k].libelle_en, contexte: candidats[k].contexte })));
 const membres = new Map<string, number[]>();
+// Un intitulé sans groupe ou sans verdict n'est pas une décision : l'étape échoue (audit du 29/09/2026 : il valait rejet).
+const groupesSansVerdict = aGrouper.filter((_, n) => !groupes[n] || groupes[n]!.verdict === 'indetermine').map((k) => candidats[k].intitule);
 aGrouper.forEach((k, n) => { const g = groupes[n]; if (g?.verdict === 'confirme') membres.set(g.cle, [...(membres.get(g.cle) ?? []), k]); });
 // Garde d'unicité : un poste d'encadrement identique à un métier existant le rejoint.
 const nomGroupe = (ks: number[]) => groupes[aGrouper.indexOf(ks[0])]!;
 const rapprochements = await rapprocherDesExistants([...membres].map(([cle, ks]) => ({ cle, fr: nomGroupe(ks).fr, en: nomGroupe(ks).en,
-  titres: ks.map((k) => candidats[k].intitule) })), concepts, CACHE_VECTEURS);
+  titres: ks.map((k) => candidats[k].intitule), exclure: [...new Set(ks.map((k) => candidats[k].code))] })), concepts, CACHE_VECTEURS);
 const doublonsEvites: { groupe: string; existant: string }[] = [], groupesIndetermines: string[] = [];
 for (const [cle, ks] of [...membres]) {
   const r = rapprochements.get(cle)!;
@@ -142,7 +150,7 @@ const motsSansAvis = mixtes.filter((_, n) => !m1[n] || !m2[n]).map((u) => `${u.c
 const decisions = [...concernees.filter((u) => !mixtes.includes(u)).map((u) => ({ ...u, exclu: true, par: 'unanime' })),
   ...mixtes.map((u, n) => ({ ...u, exclu: !!(m1[n]?.encadrement && m2[n]?.encadrement), par: 'mot' }))];
 const ajouts = new Map<string, string[]>();
-for (const d of decisions) if (d.exclu) ajouts.set(d.code, [...(ajouts.get(d.code) ?? []), d.mot]);
+for (const d of decisions) if (d.exclu) ajouts.set(d.code, [...new Set([...(ajouts.get(d.code) ?? []), d.mot, ...(FORMES[d.mot] ?? [])])]);
 const final = avecExclusions(ajouts);
 // Transparence : les intitulés dont le verdict isolé diffère de la décision prise pour leur mot.
 const deplacesNonEncadrants = deplaces(final).filter((t) => nonEncadrants.has(t));
@@ -164,6 +172,8 @@ console.log(JSON.stringify({ ...bilan, exclusions: undefined }, null, 1));
 console.log('exclusions :', JSON.stringify(Object.fromEntries(ajouts)));
 const echecs = [bilan.sansDecision && `${bilan.sansDecision} candidat(s) sans décision`,
   groupesIndetermines.length && `${groupesIndetermines.length} groupe(s) sans verdict d'unicité`,
+  groupesSansVerdict.length && `${groupesSansVerdict.length} intitulé(s) sans groupe ou sans verdict de rattachement`,
+  proposeesSansVerdict.length && `${proposeesSansVerdict.length} rattachement(s) proposé(s) sans verdict des juges`,
   motsSansAvis.length && `${motsSansAvis.length} mot(s) sans avis des deux modèles`,
   exemples.some((e) => e.apres === e.avant && e.avant) && 'un exemple du CEO reste dans le métier encadré'].filter(Boolean);
 if (echecs.length) { console.error(`ÉTAPE INCOMPLÈTE : ${echecs.join(' ; ')}`); process.exitCode = 1; }

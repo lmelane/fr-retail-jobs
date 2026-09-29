@@ -27,7 +27,15 @@ const PARALLELE = 4;
 
 async function appeler(url: string, corps: unknown): Promise<any> {
   for (let essai = 1; ; essai++) {
-    const r = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-goog-api-key': CLE! }, body: JSON.stringify(corps) });
+    let r: Response;
+    try {
+      r = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json', 'x-goog-api-key': CLE! }, body: JSON.stringify(corps), signal: AbortSignal.timeout(180_000) });
+    } catch (e) {
+      // Coupure ou délai dépassé : on réessaie, sans fin muette (au-delà de 8 essais, l'erreur remonte).
+      if (essai >= 8) throw e;
+      await new Promise((ok) => setTimeout(ok, Math.min(90_000, 8_000 * essai)));
+      continue;
+    }
     if (r.ok) return r.json();
     if (essai >= 8 || ![429, 500, 503].includes(r.status)) throw new Error(`Gemini ${r.status} : ${(await r.text()).slice(0, 300)}`);
     await new Promise((ok) => setTimeout(ok, Math.min(90_000, 8_000 * essai)));
@@ -99,7 +107,8 @@ export async function repondre<T>(modele: string, consigne: string, elements: T[
   // n'envoie que les éléments jamais vus (la mémoire par lot ratait tout dès qu'un élément de la liste changeait).
   const cleElement = (k: number) => createHash('sha256').update(JSON.stringify([modele, consigne, rendu([elements[k]]), schemaElement ?? null])).digest('hex');
   const fichierElement = (k: number) => `${MEMOIRE}element-${cleElement(k)}.json`;
-  elements.forEach((_, k) => { if (existsSync(fichierElement(k))) sortie[k] = JSON.parse(readFileSync(fichierElement(k), 'utf8')); });
+  // Une réponse relue en mémoire passe le même contrôle qu'une réponse neuve, sinon l'élément est redemandé.
+  elements.forEach((_, k) => { if (existsSync(fichierElement(k))) { const r = JSON.parse(readFileSync(fichierElement(k), 'utf8')); if (valide(r)) sortie[k] = r; } });
   async function lot(indices: number[]): Promise<void> {
     try {
       const reps = await generer(modele, consigne, rendu(indices.map((k) => elements[k])), schemaElement);
@@ -208,11 +217,12 @@ export type Rapprochement = { existant: string | null; indetermine: boolean };
  * « Conseiller de vente » et « Retoucheur » recréés à côté de l'existant). Un verdict manquant sans confirmation rend
  * le groupe indéterminé : on ne crée pas de métier sur un doute.
  */
-export async function rapprocherDesExistants(groupes: { cle: string; fr: string; en: string; titres: string[] }[],
+export async function rapprocherDesExistants(groupes: { cle: string; fr: string; en: string; titres: string[]; exclure?: string[] }[],
   existants: Existant[], cheminCache: string): Promise<Map<string, Rapprochement>> {
   const nom = (g: { fr: string; en: string }) => `${g.fr} / ${g.en}`;
   const vec = await vecteurs([...existants.map((c) => c.texte), ...groupes.map(nom)], cheminCache);
-  const paires = groupes.flatMap((g) => existants.map((c) => ({ g, c, s: cosinus(vec.get(nom(g))!, vec.get(c.texte)!) }))
+  // `exclure` : les métiers auxquels le groupe ne peut pas être identique (un poste d'encadrement et le métier qu'il encadre).
+  const paires = groupes.flatMap((g) => existants.filter((c) => !g.exclure?.includes(c.cle)).map((c) => ({ g, c, s: cosinus(vec.get(nom(g))!, vec.get(c.texte)!) }))
     .sort((a, b) => b.s - a.s).slice(0, 3));
   const verdicts = await consensus(paires.map(({ g, c }) => ({ intitule: nom(g), contexte: `intitulés d'offres : ${g.titres.slice(0, 5).join(', ')}`,
     metier: `${c.fr} / ${c.en}`, alias: c.variantes })));

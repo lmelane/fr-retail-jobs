@@ -1,5 +1,5 @@
 {
- "calculeLe": "2026-09-29T06:20:35.954Z",
+ "calculeLe": "2026-09-29T10:23:30.985Z",
  "modeles": {
   "choix": "gemini-3.6-flash",
   "second": "gemini-3-flash-preview"
@@ -11,29 +11,32 @@
   "entrees": 219,
   "methodes": {
    "accord-etape-1": 172,
-   "hors-secteur": 28,
-   "accord-etape-2": 15,
-   "voisinage": 4
+   "hors-secteur": 26,
+   "accord-etape-2": 16,
+   "voisinage": 5
   },
-  "propositionsNouvelles": 6,
-  "canoniques": 4,
+  "propositionsNouvelles": 7,
+  "canoniques": 5,
   "nouvellesRetenues": [
-   "mannequinat-agences",
+   "mannequinat",
    "architecture-store-design",
-   "art-culture",
-   "patrimoine-archives"
+   "art-et-culture",
+   "patrimoine-et-archives",
+   "vente-automobile"
   ],
   "dissoutes": [],
-  "horsSecteur": 28,
+  "horsSecteur": 26,
   "secteurSansAvis": 0,
+  "rangementSansAvis": 0,
+  "canonSansReponse": 0,
   "sansFamille": 0
  },
  "nouvellesFamilles": [
   {
-   "key": "mannequinat-agences",
+   "key": "mannequinat",
    "labels": {
-    "fr": "Mannequinat & agences",
-    "en": "Modeling & agencies"
+    "fr": "Mannequinat",
+    "en": "Modeling"
    },
    "group": "services",
    "propositions": [
@@ -54,7 +57,7 @@
    ]
   },
   {
-   "key": "art-culture",
+   "key": "art-et-culture",
    "labels": {
     "fr": "Art & culture",
     "en": "Art & culture"
@@ -65,7 +68,7 @@
    ]
   },
   {
-   "key": "patrimoine-archives",
+   "key": "patrimoine-et-archives",
    "labels": {
     "fr": "Patrimoine & archives",
     "en": "Heritage & archives"
@@ -73,6 +76,17 @@
    "group": "corporate",
    "propositions": [
     "nouvelle:patrimoine & archives"
+   ]
+  },
+  {
+   "key": "vente-automobile",
+   "labels": {
+    "fr": "Vente automobile",
+    "en": "Automotive sales"
+   },
+   "group": "retail",
+   "propositions": [
+    "nouvelle:vente automobile"
    ]
   },
   {
@@ -86,12 +100,13 @@
   }
  ],
  "canon": {
-  "nouvelle:Mannequinat": "mannequinat-agences",
-  "nouvelle:agent-mannequins": "mannequinat-agences",
+  "nouvelle:Mannequinat": "mannequinat",
+  "nouvelle:agent-mannequins": "mannequinat",
   "nouvelle:architecture": "architecture-store-design",
   "nouvelle:architecture-store-design": "architecture-store-design",
-  "nouvelle:art-culture": "art-culture",
-  "nouvelle:patrimoine & archives": "patrimoine-archives"
+  "nouvelle:art-culture": "art-et-culture",
+  "nouvelle:patrimoine & archives": "patrimoine-et-archives",
+  "nouvelle:vente automobile": "vente-automobile"
  },
  "attributions": [
   {
@@ -393,7 +408,7 @@
     "retail-client-advisor",
     "nouvelle:art-culture"
    ],
-   "famille": "art-culture",
+   "famille": "art-et-culture",
    "methode": "accord-etape-2",
    "horsSecteur": [
     false,
@@ -597,7 +612,7 @@
     "nouvelle:patrimoine & archives",
     "marketing-communication"
    ],
-   "famille": "patrimoine-archives",
+   "famille": "patrimoine-et-archives",
    "methode": "accord-etape-2",
    "horsSecteur": [
     false,
@@ -767,7 +782,7 @@
     "marketing-communication",
     "nouvelle:agent-mannequins"
    ],
-   "famille": "mannequinat-agences",
+   "famille": "mannequinat",
    "methode": "accord-etape-2",
    "horsSecteur": [
     false,
@@ -1091,10 +1106,14 @@
     "merchandising-buying"
    ],
    "famille": "product-development-rd",
-   "methode": "accord-etape-2",
+   "methode": "voisinage",
    "horsSecteur": [
     false,
     false
+   ],
+   "propositionsEtape2": [
+    "product-development-rd",
+    "marketing-communication"
    ]
   },
   {
@@ -1158,11 +1177,11 @@
     "nouvelle:vente automobile",
     "retail-client-advisor"
    ],
-   "famille": "autres-secteurs",
-   "methode": "hors-secteur",
+   "famille": "vente-automobile",
+   "methode": "accord-etape-2",
    "horsSecteur": [
     true,
-    true
+    false
    ]
   },
   {
@@ -1328,7 +1347,7 @@
     "product-development-rd",
     "manufacturing-quality"
    ],
-   "famille": "marketing-communication",
+   "famille": "design-creation",
    "methode": "voisinage",
    "horsSecteur": [
     false,
@@ -1336,7 +1355,7 @@
    ],
    "propositionsEtape2": [
     "product-development-rd",
-    "marketing-communication"
+    "design-creation"
    ]
   },
   {
@@ -1451,11 +1470,11 @@
     "health-optical-services",
     "wholesale-b2b"
    ],
-   "famille": "autres-secteurs",
-   "methode": "hors-secteur",
+   "famille": "health-optical-services",
+   "methode": "accord-etape-2",
    "horsSecteur": [
     true,
-    true
+    false
    ]
   },
   {
@@ -1523,7 +1542,7 @@
    "methode": "accord-etape-1",
    "horsSecteur": [
     false,
-    true
+    false
    ]
   },
   {
@@ -1642,7 +1661,7 @@
    "methode": "accord-etape-1",
    "horsSecteur": [
     false,
-    true
+    false
    ]
   },
   {
@@ -2080,11 +2099,11 @@
     "admin-facilities",
     "admin-facilities"
    ],
-   "famille": "admin-facilities",
-   "methode": "accord-etape-1",
+   "famille": "autres-secteurs",
+   "methode": "hors-secteur",
    "horsSecteur": [
     true,
-    false
+    true
    ]
   },
   {
@@ -2148,11 +2167,11 @@
     "retail-client-advisor",
     "retail-client-advisor"
    ],
-   "famille": "autres-secteurs",
-   "methode": "hors-secteur",
+   "famille": "retail-client-advisor",
+   "methode": "accord-etape-1",
    "horsSecteur": [
-    true,
-    true
+    false,
+    false
    ]
   },
   {
@@ -2267,7 +2286,7 @@
     "nouvelle:Mannequinat",
     "marketing-communication"
    ],
-   "famille": "mannequinat-agences",
+   "famille": "mannequinat",
    "methode": "accord-etape-2",
    "horsSecteur": [
     false,
@@ -2407,7 +2426,7 @@
    "methode": "accord-etape-1",
    "horsSecteur": [
     false,
-    true
+    false
    ]
   },
   {
@@ -2523,10 +2542,14 @@
     "product-development-rd"
    ],
    "famille": "atelier-craft",
-   "methode": "accord-etape-2",
+   "methode": "voisinage",
    "horsSecteur": [
     false,
     false
+   ],
+   "propositionsEtape2": [
+    "atelier-craft",
+    "product-development-rd"
    ]
   },
   {
@@ -2557,10 +2580,14 @@
     "marketing-communication"
    ],
    "famille": "marketing-communication",
-   "methode": "accord-etape-2",
+   "methode": "voisinage",
    "horsSecteur": [
     false,
     false
+   ],
+   "propositionsEtape2": [
+    "art-et-culture",
+    "marketing-communication"
    ]
   },
   {
@@ -2608,14 +2635,10 @@
     "wholesale-b2b"
    ],
    "famille": "supply-chain-logistics",
-   "methode": "voisinage",
+   "methode": "accord-etape-2",
    "horsSecteur": [
     false,
     false
-   ],
-   "propositionsEtape2": [
-    "wholesale-b2b",
-    "supply-chain-logistics"
    ]
   },
   {
@@ -3005,8 +3028,8 @@
    "famille": "hospitality",
    "methode": "accord-etape-1",
    "horsSecteur": [
-    false,
-    true
+    true,
+    false
    ]
   },
   {
@@ -3019,15 +3042,11 @@
     "design-creation",
     "visual-merchandising"
    ],
-   "famille": "architecture-store-design",
-   "methode": "voisinage",
+   "famille": "visual-merchandising",
+   "methode": "accord-etape-2",
    "horsSecteur": [
     false,
     false
-   ],
-   "propositionsEtape2": [
-    "architecture-store-design",
-    "marketing-communication"
    ]
   },
   {
@@ -3729,7 +3748,7 @@
    "metiers": 18,
    "principale": "retail-client-advisor",
    "nombre": {
-    "art-culture": 1,
+    "art-et-culture": 1,
     "wholesale-b2b": 1,
     "retail-client-advisor": 4,
     "retail-operations": 3,
@@ -3739,7 +3758,7 @@
     "crm-clienteling": 1
    },
    "population": {
-    "art-culture": 22,
+    "art-et-culture": 22,
     "wholesale-b2b": 66,
     "retail-client-advisor": 7499,
     "retail-operations": 207,
@@ -3771,14 +3790,14 @@
    "nombre": {
     "architecture-store-design": 2,
     "design-creation": 11,
-    "mannequinat-agences": 2,
+    "mannequinat": 2,
     "strategy-management": 1,
     "marketing-communication": 4
    },
    "population": {
     "architecture-store-design": 228,
     "design-creation": 2930,
-    "mannequinat-agences": 50,
+    "mannequinat": 50,
     "strategy-management": 18,
     "marketing-communication": 158
    }
@@ -3851,18 +3870,16 @@
    "slug": "METIERS_ART",
    "label": "Métiers d'art & production",
    "metiers": 22,
-   "principale": "atelier-craft",
+   "principale": "design-creation",
    "nombre": {
     "atelier-craft": 16,
-    "marketing-communication": 1,
-    "design-creation": 1,
+    "design-creation": 2,
     "manufacturing-quality": 2,
     "product-development-rd": 2
    },
    "population": {
     "atelier-craft": 493,
-    "marketing-communication": 375,
-    "design-creation": 199,
+    "design-creation": 574,
     "manufacturing-quality": 120,
     "product-development-rd": 42
    }
@@ -3938,13 +3955,11 @@
    "principale": "visual-merchandising",
    "nombre": {
     "merchandising-buying": 1,
-    "visual-merchandising": 3,
-    "architecture-store-design": 1
+    "visual-merchandising": 4
    },
    "population": {
     "merchandising-buying": 107,
-    "visual-merchandising": 536,
-    "architecture-store-design": 46
+    "visual-merchandising": 582
    }
   }
  ]

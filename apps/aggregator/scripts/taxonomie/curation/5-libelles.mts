@@ -22,16 +22,10 @@
  */
 import { writeFileSync } from 'node:fs';
 import { normalizeOccupationTitle } from '../../../../../packages/db/occupation-engine.ts';
-import { CACHE_VECTEURS, conceptsV3, courte, DOSSIER_SORTIE, escoMetiers, familles, LANGUE_ESCO, LANGUES_SITE, lireEtape, texteEsco } from './commun.mts';
+import { CACHE_VECTEURS, conceptsV3, courte, DOSSIER_SORTIE, escoMetiers, familles, LANGUE_ESCO, LANGUES_SITE, lireEtape, texteEsco, VAGUES } from './commun.mts';
 import { cosinus, JUGES, MODELE_CHOIX, repondre, vecteurs } from './ia.mts';
 
-/** §32 c : un mot vague seul ne désigne pas un métier, donc ne classe aucune offre. */
-const VAGUES = new Set(['MANAGER', 'ASSISTANT', 'ASSISTANTE', 'ASSOCIATE', 'TEAM MEMBER', 'STAGIAIRE', 'STAGE', 'INTERN', 'EMPLOYE', 'EMPLOYEE',
-  'RESPONSABLE', 'DIRECTEUR', 'DIRECTRICE', 'DIRECTOR', 'CHARGE', 'CHARGEE', 'LEAD', 'SPECIALIST', 'SPECIALISTE', 'COORDINATOR', 'COORDINATEUR',
-  'CONSULTANT', 'CONSULTANTE', 'TECHNICIEN', 'TECHNICIENNE', 'OPERATEUR', 'AGENT', 'CONSEILLER', 'CONSEILLERE', 'ADVISOR', 'SUPERVISOR',
-  // Mesure de justesse du 29/09/2026 : « Superviseur(e) » seul, et « Retail Manager » (directeur de magasin au Royaume-Uni
-  // et en Australie, directeur retail ailleurs) ne désignent pas un métier à eux seuls.
-  'SUPERVISEUR', 'SUPERVISEURE', 'SUPERVISEUSE', 'RETAIL MANAGER']);
+
 const norme = (v: string) => normalizeOccupationTitle(v).replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
 const cleSchema = (l: string) => l.replace('-', '_');
 
@@ -96,6 +90,8 @@ async function nommer(elements: Element[], quoi: string) {
   });
   const relus2 = await repondre(JUGES.j2, CONSIGNE_RELECTURE, avecLibelles(finaux).filter((_, k) => signales.includes(k)), 8, rendu, SCHEMA_RELECTURE, (r) => Array.isArray(r.fautes));
   const restantes = signales.map((k, n) => ({ cle: elements[k].cle, fautes: relus2[n]?.fautes ?? null })).filter((x) => x.fautes === null || x.fautes.length);
+  // Une relecture absente n'est pas « sans faute » (audit technique du 29/09/2026) : l'élément compte parmi les restants.
+  for (let k = 0; k < elements.length; k++) if (!relus[k] && !restantes.some((x) => x.cle === elements[k].cle)) restantes.push({ cle: elements[k].cle, fautes: null });
   return { finaux, signales: signales.length, restantes, sansLibelle: elements.filter((_, k) => !valide(finaux[k])).map((e) => e.cle) };
 }
 const metiers = await nommer(elementsMetiers, 'les métiers');

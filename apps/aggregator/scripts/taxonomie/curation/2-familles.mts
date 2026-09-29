@@ -63,7 +63,7 @@ for (const e of entrees) if (e.propositions[0] && e.propositions[0] === e.propos
 
 // 0. Hors secteur (D-475 §33), sur l'accord des deux modèles.
 const CONSIGNE_SECTEUR = `Catwalks est la plateforme de recrutement du luxe, de la mode, de la beauté, du retail et de l'hôtellerie (41 pays).
-Pour chaque MÉTIER, dis dans "hors_secteur" s'il ne s'exerce NI dans une Maison NI dans une entreprise de ces secteurs. Les fonctions support d'une Maison (finance, ressources humaines, juridique, informatique, logistique, communication, services généraux…) sont DANS le secteur. Hors secteur, par exemple : agent immobilier, conseiller bancaire, garde d'enfants.`;
+Pour chaque MÉTIER, dis dans "hors_secteur" s'il ne s'exerce NI dans une Maison NI dans une entreprise de ces secteurs. Les fonctions support d'une Maison (finance, ressources humaines, juridique, informatique, logistique, communication, services généraux…) sont DANS le secteur, comme TOUT commerce de détail et toute boutique, quel que soit ce qu'elle vend (une libraire ou un vendeur de boutique sont dans le secteur). Hors secteur, par exemple : agent immobilier, conseiller bancaire, garde d'enfants.`;
 const SCHEMA_SECTEUR = { type: 'OBJECT', properties: { i: { type: 'INTEGER' }, hors_secteur: { type: 'BOOLEAN' } }, required: ['i', 'hors_secteur'] };
 const metiersEntrees = entrees.filter((e) => e.type === 'metier');
 const renduMetier = (lot: Entree[]) => lot.map((e, j) => `[${j}] « ${e.label} »${e.b?.aliases?.length ? ` (alias : ${e.b.aliases.slice(0, 6).join(', ')})` : ''}`).join('\n');
@@ -95,6 +95,7 @@ propositionsNouvelles.forEach((p, k) => {
   f.propositions.push(p);
   nouvelles.set(c.cle, f);
 });
+const canonSansReponse = propositionsNouvelles.filter((_, k) => !canon[k]);
 const versCanon = new Map(propositionsNouvelles.flatMap((p, k) => (canon[k] ? [[p, canon[k].cle] as const] : [])));
 
 // 2. Rangement des entrées ouvertes par les deux modèles, parmi toutes les familles.
@@ -129,10 +130,13 @@ function plusProche(e: Entree, candidates: string[], voisins: { famille: string;
   return meilleure;
 }
 
+// Sans la réponse des deux modèles, rien n'est rangé : l'étape échoue (audit technique du 29/09/2026 : l'avis d'un seul
+// modèle était retenu).
+const rangementSansAvis = ouvertes.filter((_, k) => !r1[k] || !r2[k]).map((e) => e.label);
 ouvertes.forEach((e, k) => { if (r1[k] && r2[k] && r1[k].famille === r2[k].famille) { e.famille = r1[k].famille; e.methode = 'accord-etape-2'; } });
 const voisinsAccord = ranges();
 ouvertes.forEach((e, k) => {
-  if (e.famille) return;
+  if (e.famille || !r1[k] || !r2[k]) return;
   const props = [...new Set([r1[k]?.famille, r2[k]?.famille].filter(Boolean))] as string[];
   e.famille = plusProche(e, props, voisinsAccord) ?? props[0] ?? null;
   e.methode = 'voisinage';
@@ -174,10 +178,10 @@ const horsSecteur = entrees.filter((e) => e.famille === AUTRES_SECTEURS.key);
 const compte = (l: any[], f: (x: any) => string) => l.reduce((a, x) => ({ ...a, [f(x)]: (a[f(x)] ?? 0) + 1 }), {} as Record<string, number>);
 const bilan = { entrees: entrees.length, methodes: compte(entrees, (e) => e.methode ?? 'aucune'), propositionsNouvelles: propositionsNouvelles.length,
   canoniques: [...versCanon.values()].filter((v, k, t) => t.indexOf(v) === k).length, nouvellesRetenues: [...nouvelles.keys()], dissoutes,
-  horsSecteur: horsSecteur.length, secteurSansAvis, sansFamille: sansFamille.length };
+  horsSecteur: horsSecteur.length, secteurSansAvis, rangementSansAvis: rangementSansAvis.length, canonSansReponse: canonSansReponse.length, sansFamille: sansFamille.length };
 writeFileSync(`${DOSSIER_SORTIE}2-familles.json`, JSON.stringify({ calculeLe: new Date().toISOString(), modeles: { choix: MODELE_CHOIX, second: JUGES.j2 },
   seuils: { MIN_METIERS_FAMILLE_NOUVELLE }, bilan, nouvellesFamilles: [...nouvelles.values(), ...(horsSecteur.length ? [AUTRES_SECTEURS] : [])], canon: Object.fromEntries(versCanon),
   attributions: entrees.map(({ b, ...e }) => e), correspondanceFamillesBackend: correspondance }, null, 1));
 console.log(JSON.stringify(bilan, null, 1));
 console.log(`hors secteur : ${horsSecteur.map((e) => e.label).join(', ')}`);
-if (sansFamille.length || secteurSansAvis) { console.error(`ÉTAPE INCOMPLÈTE : ${sansFamille.length} entrée(s) sans famille, ${secteurSansAvis} sans avis de secteur`); process.exitCode = 1; }
+if (sansFamille.length || secteurSansAvis || rangementSansAvis.length || canonSansReponse.length) { console.error(`ÉTAPE INCOMPLÈTE : ${sansFamille.length} entrée(s) sans famille, ${secteurSansAvis} sans avis de secteur`); process.exitCode = 1; }
