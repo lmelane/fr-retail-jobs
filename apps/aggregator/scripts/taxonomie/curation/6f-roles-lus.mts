@@ -11,7 +11,10 @@
  *  4. `--compter` : part des offres dont un métier ajouté est faux, et borne haute de Wilson à 95 %.
  * Grille : C l'offre est bien un poste de ce métier ; P métier voisin (niveau, spécialité) ; F un autre métier.
  *
- *   node [--env-file=<.env portant GEMINI_API_KEY>] --import tsx apps/aggregator/scripts/taxonomie/curation/6f-roles-lus.mts --tirer|--juger-modele|--compter
+ * Tour 1 (29/09/2026) : 18,5 % de faux selon l'assistant, 16,5 % selon le juge ; la lecture reprenait les généralisations
+ * rejetées par 6c. Tour 2 et suivants (`--tour N`) : après l'étape 6g, sur un tirage NEUF (autre sel, autre fichier).
+ *
+ *   node [--env-file=<.env portant GEMINI_API_KEY>] --import tsx apps/aggregator/scripts/taxonomie/curation/6f-roles-lus.mts [--tour N] --tirer|--juger-modele|--compter
  */
 import { createHash } from 'node:crypto';
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
@@ -19,7 +22,8 @@ import { gunzipSync } from 'node:zlib';
 import { compileOccupationManifest, occupationTitleRoles } from '../../../../../packages/db/occupations.ts';
 import { DOSSIER_SORTIE as D, lireEtape } from './commun.mts';
 
-const FICHIER = `${D}6f-roles-lus.json`;
+const TOUR = Number(process.argv[process.argv.indexOf('--tour') + 1] ?? 1) || 1;
+const FICHIER = `${D}6f-roles-lus${TOUR > 1 ? `-t${TOUR}` : ''}.json`;
 const JUGE_MESURE = 'gemini-3.1-pro-preview';
 const mode = process.argv.find((a) => ['--tirer', '--juger-modele', '--compter'].includes(a));
 const empreinte = () => createHash('sha256').update(readFileSync(`${D}6-manifeste-v3.json`)).digest('hex');
@@ -34,11 +38,11 @@ if (mode === '--tirer') {
     const ajoutes = occupationTitleRoles(v3, c.titre, d.occupationEvidence.candidates).filter((r) => !d.occupationEvidence.candidates.includes(r));
     return { c, d, ajoutes };
   }).filter((x: any) => x.ajoutes.length);
-  const alea = (x: any) => (parseInt(createHash('sha256').update(`roles-lus-2026-09-29|${x.c.titre}|${x.c.service}`).digest('hex').slice(0, 12), 16) + 1) / 2 ** 48;
+  const alea = (x: any) => (parseInt(createHash('sha256').update(`roles-lus-2026-09-29${TOUR > 1 ? `-t${TOUR}` : ''}|${x.c.titre}|${x.c.service}`).digest('hex').slice(0, 12), 16) + 1) / 2 ** 48;
   const e = population.map((x: any) => ({ x, k: Math.log(alea(x)) / x.c.offres })).sort((p: any, q: any) => q.k - p.k).slice(0, 200)
     .map(({ x }: any) => ({ titre: x.c.titre, service: x.c.service, offres: x.c.offres, moteur: x.d.occupationCode, statut: x.d.occupationStatus,
       ajoutes: x.ajoutes.map((k: string) => ({ cle: k, libelle: libelle(k) })), verdictAssistant: null, verdictModele: null }));
-  writeFileSync(FICHIER, JSON.stringify({ tireLe: new Date().toISOString(), manifeste: m.id, empreinteManifeste: empreinte(),
+  writeFileSync(FICHIER, JSON.stringify({ tireLe: new Date().toISOString(), tour: TOUR, manifeste: m.id, empreinteManifeste: empreinte(),
     population: { couples: population.length, offres: population.reduce((n: number, x: any) => n + x.c.offres, 0) }, echantillon: e }, null, 1));
   console.log(`tiré : ${e.length} sur ${population.length} couples (${population.reduce((n: number, x: any) => n + x.c.offres, 0)} offres)`);
 }
