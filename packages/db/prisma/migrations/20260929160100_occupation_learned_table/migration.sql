@@ -91,18 +91,19 @@ CREATE TRIGGER occupation_learned_state_taxonomy BEFORE INSERT OR UPDATE ON "Occ
 
 -- Sur chaque décision : la version de table évaluée et la source (règle, table apprise, back-office). Une décision
 -- apprise porte sa version de table, et cette table a été apprise contre la version de taxonomie de la décision.
+-- Contraintes NOT VALID sur Job et DirectOffer : colonnes neuves, nulles partout, valides par construction.
 ALTER TABLE "Job"
   ADD COLUMN "occupationLearnedReleaseId" TEXT,
   ADD COLUMN "occupationDecisionSource" TEXT;
 ALTER TABLE "DirectOffer"
   ADD COLUMN "occupationLearnedReleaseId" TEXT,
   ADD COLUMN "occupationDecisionSource" TEXT;
-ALTER TABLE "Job" ADD CONSTRAINT "Job_occupationLearnedReleaseId_fkey" FOREIGN KEY ("occupationLearnedReleaseId") REFERENCES "OccupationLearnedRelease"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-ALTER TABLE "DirectOffer" ADD CONSTRAINT "DirectOffer_occupationLearnedReleaseId_fkey" FOREIGN KEY ("occupationLearnedReleaseId") REFERENCES "OccupationLearnedRelease"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-ALTER TABLE "Job" ADD CONSTRAINT job_occupation_source CHECK ("occupationDecisionSource" IS NULL OR "occupationDecisionSource" IN ('rule','learned','backoffice'));
-ALTER TABLE "DirectOffer" ADD CONSTRAINT direct_offer_occupation_source CHECK ("occupationDecisionSource" IS NULL OR "occupationDecisionSource" IN ('rule','learned','backoffice'));
-ALTER TABLE "Job" ADD CONSTRAINT job_learned_decision_versioned CHECK ("occupationDecisionSource" IS DISTINCT FROM 'learned' OR "occupationLearnedReleaseId" IS NOT NULL);
-ALTER TABLE "DirectOffer" ADD CONSTRAINT direct_offer_learned_decision_versioned CHECK ("occupationDecisionSource" IS DISTINCT FROM 'learned' OR "occupationLearnedReleaseId" IS NOT NULL);
+ALTER TABLE "Job" ADD CONSTRAINT "Job_occupationLearnedReleaseId_fkey" FOREIGN KEY ("occupationLearnedReleaseId") REFERENCES "OccupationLearnedRelease"("id") ON DELETE RESTRICT ON UPDATE CASCADE NOT VALID;
+ALTER TABLE "DirectOffer" ADD CONSTRAINT "DirectOffer_occupationLearnedReleaseId_fkey" FOREIGN KEY ("occupationLearnedReleaseId") REFERENCES "OccupationLearnedRelease"("id") ON DELETE RESTRICT ON UPDATE CASCADE NOT VALID;
+ALTER TABLE "Job" ADD CONSTRAINT job_occupation_source CHECK ("occupationDecisionSource" IS NULL OR "occupationDecisionSource" IN ('rule','learned','backoffice')) NOT VALID;
+ALTER TABLE "DirectOffer" ADD CONSTRAINT direct_offer_occupation_source CHECK ("occupationDecisionSource" IS NULL OR "occupationDecisionSource" IN ('rule','learned','backoffice')) NOT VALID;
+ALTER TABLE "Job" ADD CONSTRAINT job_learned_decision_versioned CHECK ("occupationDecisionSource" IS DISTINCT FROM 'learned' OR "occupationLearnedReleaseId" IS NOT NULL) NOT VALID;
+ALTER TABLE "DirectOffer" ADD CONSTRAINT direct_offer_learned_decision_versioned CHECK ("occupationDecisionSource" IS DISTINCT FROM 'learned' OR "occupationLearnedReleaseId" IS NOT NULL) NOT VALID;
 CREATE FUNCTION validate_learned_decision() RETURNS trigger LANGUAGE plpgsql AS $$
 BEGIN
  IF NEW."occupationLearnedReleaseId" IS NOT NULL AND (SELECT "taxonomyReleaseId" FROM "OccupationLearnedRelease" WHERE id=NEW."occupationLearnedReleaseId")

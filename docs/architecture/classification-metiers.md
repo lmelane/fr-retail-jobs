@@ -185,6 +185,22 @@ marqué **existe** (lu ou mesuré le 28/09/2026) ou **décidé** (D-475, R-140 d
   n'est perdue. Défaut connu : le nom vietnamien de la famille Direction de boutique reste « Ban quản lý cửa hàng »
   (organe administratif), trois tours de 5b n'ont pas trouvé de nom court distinct du métier ; entrée de la passe
   suivante.
+- **Migrations additives (2B-3a, commits 5431476, 58441d8 et suivant ; deux audits, le premier BLOCKED)** :
+  `20260929160000_occupation_title_roles_domain` (clés de chaque version indexées dans `OccupationReleaseConcept`,
+  écrites seulement en publiant une version ; `titleRoles` versionnés sur Job et DirectOffer ; domaine CALCULÉ par
+  déclencheur depuis la famille) et `20260929160100_occupation_learned_table` (table apprise scellée à sa création,
+  immuable, rattachée à sa taxonomie ; état actif à part d'`OccupationState`, remis à vide à chaque activation de
+  taxonomie ; source de chaque décision : règle, table apprise ou back-office). **Non appliquées en production.**
+  **Application (GO du CEO)** : mesuré en lecture seule le 29/09/2026 (`scripts/taxonomie/mesure-application-2b.mts`) :
+  Job 83 826 lignes (188 Mo, 1,9 Go avec index), DirectOffer 59, une seule version publiée (la v1, sans clé en
+  double) ; contraintes `NOT VALID` (lignes existantes valides par construction), seul coût sous verrou : l'index GIN
+  de `Job.titleRoles`, quelques secondes ; `lock_timeout` de 5 s : une attente de verrou annule la migration d'un
+  bloc (`prisma migrate resolve --rolled-back <migration>` avant de relancer). **Ordre imposé** : les migrations AVANT
+  toute promotion de ce code sur `main` (le client Prisma lit les nouvelles colonnes : sans elles, toute lecture des
+  offres échouerait), hors RUN, après contrôle de `pg_stat_activity`. Le domaine des lignes existantes se remplit au
+  reclassement de l'activation (2C) : aucun lecteur ne l'attend avant ; une offre Catwalks rattachée à sa seule
+  famille n'a pas de domaine (aucun filtre n'en dépend, plan §3.1) ; le sceau recompte les entrées d'une version à
+  chaque ligne (2,8 s à 8 000 entrées) : à revoir au-delà de 10 000.
 - **Ce que la séparation vente / rayon impose à l'activation (sous-lot 2C)** : la clé stable `employe-de-commerce`
   porte désormais « Employé de rayon » ; les profils, préférences et alertes qui la portent au backend (141 candidats
   sourcés mesurés le 29/09/2026, aucun inscrit) ne se renomment pas en bloc : chacun se reclasse depuis son intitulé

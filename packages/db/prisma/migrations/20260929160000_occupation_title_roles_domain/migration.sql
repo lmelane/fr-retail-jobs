@@ -17,12 +17,25 @@ CREATE TABLE "OccupationReleaseConcept" (
 );
 ALTER TABLE "OccupationReleaseConcept" ADD CONSTRAINT "OccupationReleaseConcept_releaseId_fkey" FOREIGN KEY ("releaseId") REFERENCES "OccupationRelease"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
+-- Les clés ne s'écrivent qu'en publiant une version (par cette fonction) : une clé forgée, absente du manifeste,
+-- ferait accepter un métier inconnu ; la table ne se vide pas non plus (audit du lot 2B-3a).
 CREATE FUNCTION index_occupation_release(release_id text, document jsonb) RETURNS void LANGUAGE sql AS $$
+ SELECT set_config('catwalks.index_release', release_id, true);
  INSERT INTO "OccupationReleaseConcept" ("releaseId","kind","key","family","domain")
   SELECT release_id, 'occupation', x->>'key', x->>'family', NULL FROM jsonb_array_elements(document->'occupations') x
   UNION ALL SELECT release_id, 'family', x->>'key', NULL, x->>'group' FROM jsonb_array_elements(document->'families') x
   UNION ALL SELECT release_id, 'domain', x->>'key', NULL, NULL FROM jsonb_array_elements(document->'groups') x;
 $$;
+CREATE FUNCTION guard_occupation_release_concept() RETURNS trigger LANGUAGE plpgsql AS $$
+BEGIN
+ IF current_setting('catwalks.index_release', true) IS DISTINCT FROM NEW."releaseId" THEN
+  RAISE EXCEPTION 'Release keys are written only by publishing release %',NEW."releaseId";
+ END IF;
+ RETURN NEW;
+END;
+$$;
+CREATE TRIGGER occupation_release_concept_published BEFORE INSERT ON "OccupationReleaseConcept" FOR EACH ROW EXECUTE FUNCTION guard_occupation_release_concept();
+CREATE TRIGGER occupation_release_concept_no_truncate BEFORE TRUNCATE ON "OccupationReleaseConcept" FOR EACH STATEMENT EXECUTE FUNCTION protect_occupation_evidence();
 SELECT index_occupation_release(id, manifest) FROM "OccupationRelease";
 CREATE FUNCTION index_published_occupation_release() RETURNS trigger LANGUAGE plpgsql AS $$
 BEGIN PERFORM index_occupation_release(NEW.id, NEW.manifest); RETURN NEW; END;
@@ -43,10 +56,12 @@ ALTER TABLE "DirectOffer"
   ADD COLUMN "titleRoles" TEXT[] NOT NULL DEFAULT '{}',
   ADD COLUMN "titleRolesReleaseId" TEXT,
   ADD COLUMN "occupationDomain" TEXT;
-ALTER TABLE "Job" ADD CONSTRAINT "Job_titleRolesReleaseId_fkey" FOREIGN KEY ("titleRolesReleaseId") REFERENCES "OccupationRelease"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-ALTER TABLE "DirectOffer" ADD CONSTRAINT "DirectOffer_titleRolesReleaseId_fkey" FOREIGN KEY ("titleRolesReleaseId") REFERENCES "OccupationRelease"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-ALTER TABLE "Job" ADD CONSTRAINT job_title_roles_versioned CHECK (cardinality("titleRoles") = 0 OR "titleRolesReleaseId" IS NOT NULL);
-ALTER TABLE "DirectOffer" ADD CONSTRAINT direct_offer_title_roles_versioned CHECK (cardinality("titleRoles") = 0 OR "titleRolesReleaseId" IS NOT NULL);
+-- NOT VALID : les lignes existantes portent un tableau vide et des nulls, valides par construction ; la contrainte
+-- s'applique à toute écriture sans relire les 84 000 Job sous verrou exclusif (production, 29/09/2026).
+ALTER TABLE "Job" ADD CONSTRAINT "Job_titleRolesReleaseId_fkey" FOREIGN KEY ("titleRolesReleaseId") REFERENCES "OccupationRelease"("id") ON DELETE RESTRICT ON UPDATE CASCADE NOT VALID;
+ALTER TABLE "DirectOffer" ADD CONSTRAINT "DirectOffer_titleRolesReleaseId_fkey" FOREIGN KEY ("titleRolesReleaseId") REFERENCES "OccupationRelease"("id") ON DELETE RESTRICT ON UPDATE CASCADE NOT VALID;
+ALTER TABLE "Job" ADD CONSTRAINT job_title_roles_versioned CHECK (cardinality("titleRoles") = 0 OR "titleRolesReleaseId" IS NOT NULL) NOT VALID;
+ALTER TABLE "DirectOffer" ADD CONSTRAINT direct_offer_title_roles_versioned CHECK (cardinality("titleRoles") = 0 OR "titleRolesReleaseId" IS NOT NULL) NOT VALID;
 -- Filtre « metier=X ou X lu dans le titre » (plan §3.5), sans dépendre de l'index de recherche.
 CREATE INDEX "Job_titleRoles_idx" ON "Job" USING GIN ("titleRoles");
 CREATE INDEX "DirectOffer_titleRoles_idx" ON "DirectOffer" USING GIN ("titleRoles");

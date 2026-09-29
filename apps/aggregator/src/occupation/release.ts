@@ -188,6 +188,10 @@ export async function activateOccupationRelease(
         where: { id: "active" },
         data: { releaseId: manifest.id, backfilledAt: null },
       });
+      // Une table apprise ne vaut que pour la taxonomie contre laquelle elle a été apprise : la nouvelle version n'en a
+      // encore aucune (lot 2B de D-475 ; sans cela, l'état actif restait périmé sans le dire, audit du lot 2B-3a).
+      const learned = await tx.occupationLearnedState.findUnique({ where: { id: "active" } });
+      await tx.occupationLearnedState.update({ where: { id: "active" }, data: { releaseId: null } });
       await tx.dataCorrection.create({
         data: {
           batchId: `occupation-release:${manifest.id}`,
@@ -197,8 +201,8 @@ export async function activateOccupationRelease(
             "Reviewed occupation catalogue activation; posting replay is separate",
           entityType: "OccupationState",
           entityId: "active",
-          before: { releaseId: measured.baseRelease },
-          after: { releaseId: manifest.id },
+          before: { releaseId: measured.baseRelease, learnedReleaseId: learned?.releaseId ?? null },
+          after: { releaseId: manifest.id, learnedReleaseId: null },
           evidence: measured as unknown as Prisma.InputJsonValue,
         },
       });

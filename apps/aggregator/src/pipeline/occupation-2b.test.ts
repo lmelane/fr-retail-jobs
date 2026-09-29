@@ -4,6 +4,7 @@ import { Prisma, PrismaClient } from "@prisma/client";
 import { compileOccupationManifest, occupationManifestHash } from "@catwalks/db/occupations";
 import seed from "../../../../packages/db/data/occupations-v1.json" with { type: "json" };
 import { classifyJobs } from "./classifyJobs.js";
+import { activateOccupationRelease, previewOccupationRelease } from "../occupation/release.js";
 
 /**
  * Lot 2B de D-475 (plan docs/architecture/classification-metiers.md §3.1, §3.3) : les colonnes additives et leurs
@@ -55,6 +56,10 @@ describe("lot 2B : clés par version, rôles lus dans le titre, domaine calculé
     expect(n).toBe(release.occupations.length);
     await publier(autreTaxonomie);
     expect(await db.occupationReleaseConcept.count({ where: { releaseId: autreTaxonomie.id, kind: "family" } })).toBe(release.families.length);
+    // Une clé forgée hors publication ferait accepter un métier inconnu ; la table ne se vide pas.
+    await expect(db.$executeRaw`INSERT INTO "OccupationReleaseConcept" ("releaseId","kind","key","family") VALUES (${release.id},'occupation','metier-forge','retail-client-advisor')`)
+      .rejects.toThrow(/only by publishing/);
+    await expect(db.$executeRaw`TRUNCATE "OccupationReleaseConcept"`).rejects.toThrow(/immutable/);
   });
 
   it("un rôle lu porte la version qui l'a lu, et appartient à ses métiers (Job et offre Catwalks)", async () => {
@@ -120,6 +125,17 @@ describe("lot 2B : table apprise scellée, rattachée à sa taxonomie", () => {
     await publier(autreTaxonomie);
     const etrangere = await versionApprise(autreTaxonomie.id, [["VENDEUR", "sales-advisor"]]);
     await expect(db.occupationLearnedState.update({ where: { id: "active" }, data: { releaseId: etrangere } })).rejects.toThrow(/active taxonomy/);
+  });
+
+  it("activer une nouvelle taxonomie remet la table apprise active à vide, et le reçu le dit", async () => {
+    const id = await versionApprise(release.id, [["VENDEUR", "sales-advisor"]]);
+    await db.occupationLearnedState.update({ where: { id: "active" }, data: { releaseId: id } });
+    const suivante = { ...structuredClone(seed), id: `${seed.id}-suivante-${Date.now()}` };
+    const revue = await previewOccupationRelease(db, suivante);
+    await activateOccupationRelease(db, suivante, revue, "a".repeat(40));
+    expect((await db.occupationLearnedState.findUniqueOrThrow({ where: { id: "active" } })).releaseId).toBeNull();
+    const recu = await db.dataCorrection.findFirstOrThrow({ where: { batchId: `occupation-release:${suivante.id}` } });
+    expect(recu.before).toMatchObject({ learnedReleaseId: id });
   });
 
   it("une décision apprise porte sa table, et cette table vient de la taxonomie de la décision", async () => {
