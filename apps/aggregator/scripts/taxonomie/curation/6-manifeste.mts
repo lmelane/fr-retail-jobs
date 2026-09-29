@@ -36,7 +36,7 @@ import { createHash } from 'node:crypto';
 import { existsSync, writeFileSync } from 'node:fs';
 import { compileOccupationManifest, type OccupationManifest } from '../../../../../packages/db/occupation-engine.ts';
 import { validateOccupationSuccessor } from '../../../src/occupation/release.ts';
-import { conceptsV3, DOSSIER_SORTIE, estVague, familles, libellesEtFormes, lireEtape, niveauSeul, phraseMoteur, servie, VAGUES } from './commun.mts';
+import { conceptsV3, DOSSIER_SORTIE, estVague, EXCLUS_RAYON, familles, libellesEtFormes, lireEtape, niveauSeul, phraseMoteur, servie, VAGUES } from './commun.mts';
 
 const BASE = process.argv.includes('--base');
 const ID = 'catwalks-occupations-20260929-v3';
@@ -192,7 +192,8 @@ const exclusions: Record<string, string[]> = e4.bilan.exclusions;
 // (audit du 29/09/2026 : « Retail Assistant - Night Shift », décidé sans métier, restait Conseiller de vente par la règle
 // « retail assistant »). Le contrôle d'assemblage plus bas vérifie que chaque décision de 3c tient dans le moteur.
 const exclusScission = (occupation: string): string[] => (occupation !== deVente && occupation !== deRayon ? []
-  : scission.decisions.filter((d: any) => d.metier === 'aucun' || d.metier === (occupation === deVente ? 'rayon' : 'vente')).flatMap(textesDe));
+  : [...scission.decisions.filter((d: any) => d.metier === 'aucun' || d.metier === (occupation === deVente ? 'rayon' : 'vente')).flatMap(textesDe),
+    ...(occupation === deRayon ? EXCLUS_RAYON : [])]);
 const exclure = (occupation: string) => {
   const l = [...(exclusions[occupation] ?? []), ...exclusScission(occupation)];
   return l.length ? [{ field: 'title' as const, any: l }] : [];

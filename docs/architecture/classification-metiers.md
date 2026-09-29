@@ -115,17 +115,21 @@ marqué **existe** (lu ou mesuré le 28/09/2026) ou **décidé** (D-475, R-140 d
   | 1 | avant la séparation vente / rayon | 6 faux (3,0 %) | 4 (2,0 %), `gemini-3-flash-preview` | BLOQUÉE |
   | 2 | séparation, première forme | 1 (0,5 %) | 2 (1,0 %), même juge, **non indépendant** (il a co-décidé les rattachements) | audits BLOCKED |
   | 3 | correctifs du 2e audit, avant §36 | 0 | 0, `gemini-3.1-pro-preview` (aucun rattachement) | audit : §36 à trancher |
-  | 4 | **version actuelle** | 0 (borne haute de Wilson 1,9 %) | 3 (1,5 %), tous des cas tranchés par §36 (« Team Manager » → Floor manager), notés d'après l'ancienne grille ; 0 hors ces cas | sous le seuil |
+  | 4 | après §36 | 0 (borne haute de Wilson 1,9 %) | 3 (1,5 %), tous des cas tranchés par §36 (« Team Manager » → Floor manager), notés d'après une grille restée périmée ; 0 hors ces cas | 0 hors §36 ; non concluant au seuil de 1 % ; 3e audit : rayons « à service » rouverts (13 offres), corrigé |
 
   Les « 0,1 % en offres » annoncés aux tours 1 et 2 étaient faux : le tirage est déjà proportionnel aux offres, la
   repondération comptait le poids deux fois ; la proportion brute approche la part d'offres fausses (recalcul
   Horvitz-Thompson du 2e audit : tour 2 à 0,46 % et 0,94 %). Avec 200 couples, zéro faux ne prouve pas le seuil de
-  1 % (borne haute 1,9 %) ; il ne le contredit pas. **Pertes** jugées toutes (`6d-pertes-4.json`, 48 couples, 57
+  1 % (borne haute 1,9 %) ; il ne le contredit pas, et un tirage proportionnel aux offres ne voit pas un défaut de
+  quelques offres : les décisions de 3c sont donc aussi vérifiées sur TOUTES les offres par la preview
+  (`decisions3cNonTenues`, éprouvé en rouge sur le manifeste du tour 4). **Pertes** jugées toutes (`6d-pertes-4.json`, 48 couples, 57
   offres) : 4 offres fausses selon les règles (« Keyholder / Verkäufer », « Visual Merchandiser Keyholder » perdent un
   métier évident) ; les autres sont des postes d'encadrement sans métier d'encadrement dans la taxonomie (« Director,
-  HRBP », « Responsable comptable », « Lead Software Engineer » : §32 a) ou des doubles intitulés. **Entrées de la
-  passe suivante** : les métiers d'encadrement manquants (responsable comptable, directeur RH business partner, lead
-  développeur…), « Sales Lead with Keys » partagé entre Premier vendeur et Floor manager chez UGG, « chef de rayon »
+  HRBP », « Responsable comptable », « Lead Software Engineer » : §32 a, « lead » jugé encadrement par les deux juges
+  à l'étape 4) ou des doubles intitulés. « Aucune perte hors plan » signifie que chaque perte vient d'une décision de
+  la passe ; les 4 offres ci-dessus sont des décisions fausses. **Entrées de la passe suivante** : ces 4 offres ; les
+  métiers d'encadrement manquants (responsable comptable, directeur RH business partner…) ; « Lead » niveau
+  d'expertise ou encadrement (« Lead Software Engineer », « Lead Accountant », environ 17 offres perdues), « Sales Lead with Keys » partagé entre Premier vendeur et Floor manager chez UGG, « chef de rayon »
   de la grande distribution rattaché au Floor manager, les noms de « Conseiller de vente » dans 8 langues à confronter
   à l'usage des offres (§34), « Stellvertretender Filialleiter » classé Store manager par une règle servie (29 offres).
 - **Ce que la constitution impose au moteur (sous-lot 2B)** : (1) un intitulé validé par les juges vaut pour

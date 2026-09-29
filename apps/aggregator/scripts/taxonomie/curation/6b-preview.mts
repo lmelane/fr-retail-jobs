@@ -22,12 +22,12 @@ import { createHash } from 'node:crypto';
 import { readFileSync, writeFileSync } from 'node:fs';
 import { gunzipSync } from 'node:zlib';
 import { compileOccupationManifest } from '../../../../../packages/db/occupation-engine.ts';
-import { DOSSIER_SORTIE, lireEtape, servie } from './commun.mts';
+import { DOSSIER_SORTIE, EXCLUS_RAYON, lireEtape, phraseMoteur, servie } from './commun.mts';
 
 /** Seuils d'arrêt (plan §3.2 ; ambiguïtés et pertes ajoutées après l'audit technique du 29/09/2026). */
 const SEUIL_PREMISSE = 0.97, SEUIL_HORS_PLAN = 0.10, SEUIL_AMBIGUES = 0.01, SEUIL_PERTES = 0.005, ECHANTILLON = 200;
 const { couples } = JSON.parse(gunzipSync(readFileSync(`${DOSSIER_SORTIE}entrees/offres-preview-2026-09-29.json.gz`)).toString('utf8'));
-const v3 = lireEtape('6-manifeste-v3.json'), correspondances = lireEtape('6-correspondances.json');
+const v3 = lireEtape('6-manifeste-v3.json'), correspondances = lireEtape('6-correspondances.json'), scission = lireEtape('3c-scission-vente.json');
 const t0 = performance.now();
 const moteurV1 = compileOccupationManifest(structuredClone(servie)), moteurV3 = compileOccupationManifest(v3);
 const compilation = Math.round(performance.now() - t0);
@@ -57,6 +57,14 @@ const total = somme(lignes);
 // Prémisse sur le code ET le statut : la version servie rejouée doit redonner l'un et l'autre.
 const accordPremisse = somme(lignes.filter((l) => l.v1 === l.stocke && l.v1s === l.statutStocke)) / total;
 const cle = (l: Ligne) => l.titre.toLowerCase().trim();
+// Les décisions de 3c (D-475 §35) tenues sur les VRAIES offres, variantes comprises : une offre dont l'intitulé contient
+// une forme décidée sans métier n'est ni vente ni rayon ; décidée rayon, pas vente ; décidée vente, pas rayon (troisième
+// audit du 29/09/2026 : le contrôle d'assemblage ne voyait que les textes littéraux).
+const [cleVente, cleRayon] = [cleV3(scission.cible), cleV3(scission.source)];
+const interdit = (m: string) => (m === 'aucun' ? [cleVente, cleRayon] : m === 'rayon' ? [cleVente] : [cleRayon]);
+const decisions3c = [...scission.decisions.flatMap((d: any) => [d.intitule, ...(d.formes ?? [])].map((t: string) => ({ f: ` ${phraseMoteur(t)} `, m: d.metier }))),
+  ...EXCLUS_RAYON.map((t) => ({ f: ` ${phraseMoteur(t)} `, m: 'vente' }))];
+const ecarts3c = lignes.filter((l) => { const t = ` ${phraseMoteur(l.titre)} `; return decisions3c.some((d: any) => t.includes(d.f) && interdit(d.m).includes(l.v3!)); });
 const estPrevu = (l: Ligne) => prevu.has(cle(l)) && prevu.get(cle(l)) === l.v3;
 const gains = lignes.filter((l) => !l.v1 && l.v3), pertes = lignes.filter((l) => l.v1 && !l.v3);
 const changes = lignes.filter((l) => l.v1 && l.v3 && l.v1 !== l.v3);
@@ -88,6 +96,7 @@ const bilan = { manifeste: v3.id, couples: lignes.length, offres: total, compila
   ambigues: { v1: somme(lignes.filter((l) => l.v1s === 'AMBIGUOUS')), v3: somme(lignes.filter((l) => l.v3s === 'AMBIGUOUS')) },
   gains: somme(gains), changementsDeMetier: somme(changes), pertes: somme(pertes),
   horsPlan: { offres: somme(horsPlan), intitules: new Set(horsPlan.map((l) => l.titre)).size, taux: pct(tauxHorsPlan, 1), seuil: SEUIL_HORS_PLAN * 100 },
+  decisions3cNonTenues: { couples: ecarts3c.length, offres: somme(ecarts3c) },
   seuils: { ambiguesPct: pct(somme(lignes.filter((l) => l.v3s === 'AMBIGUOUS')), total), ambiguesSeuil: SEUIL_AMBIGUES * 100,
     pertesHorsPlanPct: pct(somme(pertes.filter((l) => !estPrevu(l))), total), pertesSeuil: SEUIL_PERTES * 100 } };
 writeFileSync(`${DOSSIER_SORTIE}6b-preview.json`, JSON.stringify({ calculeLe: new Date().toISOString(), bilan, marches,
@@ -96,5 +105,6 @@ console.log(JSON.stringify({ ...bilan, marches: marches.slice(0, 8) }, null, 1))
 const echecs = [accordPremisse < SEUIL_PREMISSE && `prémisse non remplie : la version servie rejouée ne redonne que ${pct(accordPremisse * total, total)} % du classement stocké`,
   tauxHorsPlan > SEUIL_HORS_PLAN && `seuil d'arrêt : ${pct(tauxHorsPlan, 1)} % des intitulés classés changent de métier hors plan`,
   somme(lignes.filter((l) => l.v3s === 'AMBIGUOUS')) / total > SEUIL_AMBIGUES && `seuil d'arrêt : trop d'offres ambiguës`,
-  somme(pertes.filter((l) => !estPrevu(l))) / total > SEUIL_PERTES && `seuil d'arrêt : trop d'offres perdent leur métier hors plan`].filter(Boolean);
+  somme(pertes.filter((l) => !estPrevu(l))) / total > SEUIL_PERTES && `seuil d'arrêt : trop d'offres perdent leur métier hors plan`,
+  ecarts3c.length > 0 && `${ecarts3c.length} offre(s) contredisent une décision de 3c : ${ecarts3c.slice(0, 5).map((l) => `« ${l.titre} » → ${l.v3}`).join(' ; ')}`].filter(Boolean);
 if (echecs.length) { console.error(`ARRÊT : ${echecs.join(' ; ')}`); process.exitCode = 1; }

@@ -60,6 +60,13 @@ export const VAGUES = new Set(['MANAGER', 'ASSISTANT', 'ASSISTANTE', 'ASSOCIATE'
 const HIERARCHIE = new Set(['TEAM', 'SHIFT', 'LEAD', 'LEADER', 'MANAGER', 'SUPERVISOR', 'SUPERVISEUR', 'SUPERVISEURE', 'SUPERVISEUSE', 'CHEF', 'CHEFFE',
   'D', 'DE', 'DI', 'EQUIPE', 'GENERAL', 'GENERALE', 'RESPONSABLE', 'ACTING', 'SENIOR', 'SR', 'JUNIOR', 'JR', 'I', 'II', 'III', 'IV', '1', '2', '3',
   'TEAMLEITER', 'TEAMLEITERIN', 'SCHICHTLEITER', 'SCHICHTLEITERIN', 'ENCARGADO', 'ENCARGADA', 'JEFE', 'JEFA', 'EQUIPO', 'CAPO', 'SQUADRA']);
+/**
+ * Les rayons « à service » (boucherie, charcuterie coupe, boulangerie) sont de la vente au comptoir, pas de la mise en
+ * rayon : les juges de 3c les ont tous laissés sans métier (lecture de D-475 §35). Exclus en tant que motif des règles
+ * d'« Employé de rayon », ils n'y reviennent pas par une variante (« … à service charcuterie coupe », « … F/H » :
+ * troisième audit du 29/09/2026) ; la preview (6b) vérifie le motif sur les vraies offres.
+ */
+export const EXCLUS_RAYON = ['à service'];
 /** Une forme (normalisée par `phraseMoteur`) faite seulement de mots de niveau : règle exacte, jamais généralisée (§36). */
 export const niveauSeul = (forme: string) => !!forme && forme.split(' ').every((m) => HIERARCHIE.has(m));
 /** §32 c : une forme (normalisée par `phraseMoteur`) trop vague pour désigner un métier (le mot seul, « Manager »). */

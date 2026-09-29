@@ -1,5 +1,5 @@
 {
- "calculeLe": "2026-09-29T12:15:01.173Z",
+ "calculeLe": "2026-09-29T12:27:29.269Z",
  "juges": {
   "j1": "gemini-3.6-flash",
   "j2": "gemini-3-flash-preview"
@@ -25,8 +25,8 @@
    "OPTICO",
    "DISPENSER"
   ],
-  "offresGeneralisables": 6462,
-  "offresRameneesALExact": 6305,
+  "offresGeneralisables": 6460,
+  "offresRameneesALExact": 6316,
   "seuils": {
    "SEUIL_OFFRES": 10,
    "ECHANTILLON": 3
@@ -449,18 +449,18 @@
    "expression": "COUPE",
    "occupation": "coupe",
    "mode": "exacte",
-   "offres": 12,
+   "offres": 23,
    "juges": [
     {
-     "titre": "Adjointe, adjoint de rayon charcuterie coupe",
+     "titre": "Employée, employé de rayon à service charcuterie coupe",
      "verdict": "rejete"
     },
     {
-     "titre": "Employée, employé de rayon à service crèmerie coupe",
+     "titre": "Employé de rayon à service charcuterie coupe F/H",
      "verdict": "rejete"
     },
     {
-     "titre": "Adjointe, adjoint de rayon crèmerie coupe",
+     "titre": "Employé de rayon à service crèmerie coupe F/H",
      "verdict": "rejete"
     }
    ]
@@ -2821,7 +2821,7 @@
    "expression": "EMPLOYE DE RAYON",
    "occupation": "employe-de-commerce",
    "mode": "generalisable",
-   "offres": 233,
+   "offres": 231,
    "juges": [
     {
      "titre": "Employée, employé de rayon épicerie - entretien",
@@ -2832,7 +2832,7 @@
      "verdict": "confirme"
     },
     {
-     "titre": "Employé de rayon à service boulangerie F/H",
+     "titre": "Employée, employé de rayon crèmerie et surgelés",
      "verdict": "confirme"
     }
    ]
