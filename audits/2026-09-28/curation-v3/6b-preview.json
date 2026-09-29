@@ -1,0 +1,2363 @@
+{
+ "calculeLe": "2026-09-29T09:59:10.365Z",
+ "bilan": {
+  "manifeste": "catwalks-occupations-20260929-v3",
+  "couples": 43324,
+  "offres": 80741,
+  "compilationMs": 73,
+  "classementMs": 1412,
+  "premisse": {
+   "accordAvecLaProduction": 100,
+   "seuil": 97
+  },
+  "offresClassees": {
+   "v1": 38000,
+   "v3": 50988,
+   "v1Pct": 47.1,
+   "v3Pct": 63.2
+  },
+  "ambigues": {
+   "v1": 48,
+   "v3": 335
+  },
+  "gains": 13085,
+  "changementsDeMetier": 634,
+  "pertes": 97,
+  "horsPlan": {
+   "offres": 57,
+   "intitules": 49,
+   "taux": 0.3,
+   "seuil": 10
+  }
+ },
+ "marches": [
+  {
+   "pays": "US",
+   "offres": 40401,
+   "classesV1": 55.2,
+   "classesV3": 71.3
+  },
+  {
+   "pays": "FR",
+   "offres": 16488,
+   "classesV1": 58,
+   "classesV3": 69.8
+  },
+  {
+   "pays": "CA",
+   "offres": 12614,
+   "classesV1": 58.1,
+   "classesV3": 76.1
+  },
+  {
+   "pays": "GB",
+   "offres": 7988,
+   "classesV1": 63.7,
+   "classesV3": 80.9
+  },
+  {
+   "pays": "DE",
+   "offres": 7337,
+   "classesV1": 66.4,
+   "classesV3": 78.8
+  },
+  {
+   "pays": "IT",
+   "offres": 6615,
+   "classesV1": 79.5,
+   "classesV3": 85.1
+  },
+  {
+   "pays": "ES",
+   "offres": 6543,
+   "classesV1": 72.9,
+   "classesV3": 88
+  },
+  {
+   "pays": "AU",
+   "offres": 5373,
+   "classesV1": 69.5,
+   "classesV3": 87
+  },
+  {
+   "pays": "NL",
+   "offres": 5273,
+   "classesV1": 75.4,
+   "classesV3": 87.9
+  },
+  {
+   "pays": "CH",
+   "offres": 4956,
+   "classesV1": 76.8,
+   "classesV3": 78.1
+  },
+  {
+   "pays": "BE",
+   "offres": 4658,
+   "classesV1": 78.7,
+   "classesV3": 94.6
+  },
+  {
+   "pays": "KR",
+   "offres": 4313,
+   "classesV1": 86.7,
+   "classesV3": 90.8
+  },
+  {
+   "pays": "PT",
+   "offres": 4289,
+   "classesV1": 79.3,
+   "classesV3": 95.7
+  },
+  {
+   "pays": "SG",
+   "offres": 4194,
+   "classesV1": 90.4,
+   "classesV3": 92.2
+  },
+  {
+   "pays": "IE",
+   "offres": 4121,
+   "classesV1": 86.3,
+   "classesV3": 91.7
+  }
+ ],
+ "principauxGains": [
+  {
+   "titre": "Assistant Manager",
+   "service": null,
+   "offres": 459,
+   "v1": null,
+   "v3": "assistant-store-manager"
+  },
+  {
+   "titre": "Sales Lead",
+   "service": null,
+   "offres": 294,
+   "v1": null,
+   "v3": "sales-lead"
+  },
+  {
+   "titre": "Dispenser",
+   "service": null,
+   "offres": 269,
+   "v1": null,
+   "v3": "pharmacy-support-worker"
+  },
+  {
+   "titre": "Retail Key Holder",
+   "service": "Retail",
+   "offres": 173,
+   "v1": null,
+   "v3": "keyholder"
+  },
+  {
+   "titre": "Operations Associate - Part Time",
+   "service": "Retail",
+   "offres": 150,
+   "v1": null,
+   "v3": "stock-associate"
+  },
+  {
+   "titre": "Collaborateur Charge Des Ventes H/F",
+   "service": null,
+   "offres": 141,
+   "v1": null,
+   "v3": "sales-advisor"
+  },
+  {
+   "titre": "Key Holder",
+   "service": null,
+   "offres": 129,
+   "v1": null,
+   "v3": "keyholder"
+  },
+  {
+   "titre": "Lead Supervisor I",
+   "service": null,
+   "offres": 127,
+   "v1": null,
+   "v3": "floor-manager"
+  },
+  {
+   "titre": "Operations Associate - Part Time",
+   "service": null,
+   "offres": 127,
+   "v1": null,
+   "v3": "stock-associate"
+  },
+  {
+   "titre": "Sales and Service Leader - Full Time",
+   "service": "Retail",
+   "offres": 123,
+   "v1": null,
+   "v3": "floor-manager"
+  },
+  {
+   "titre": "Sales Manager",
+   "service": " Retail Management",
+   "offres": 123,
+   "v1": null,
+   "v3": "wholesale-manager"
+  },
+  {
+   "titre": "Specialty Artist - MAC",
+   "service": " Retail Associates",
+   "offres": 118,
+   "v1": null,
+   "v3": "makeup-artist"
+  },
+  {
+   "titre": "Employée, employé de caisse accueil ",
+   "service": null,
+   "offres": 114,
+   "v1": null,
+   "v3": "cashier"
+  },
+  {
+   "titre": "RETAIL ASSISTANT",
+   "service": null,
+   "offres": 113,
+   "v1": null,
+   "v3": "sales-advisor"
+  },
+  {
+   "titre": "Seasonal Customer Advisor",
+   "service": null,
+   "offres": 113,
+   "v1": null,
+   "v3": "sales-advisor"
+  },
+  {
+   "titre": "Trainee Dispenser",
+   "service": null,
+   "offres": 113,
+   "v1": null,
+   "v3": "pharmacy-support-worker"
+  },
+  {
+   "titre": "Sales and Service Leader - Full Time",
+   "service": null,
+   "offres": 106,
+   "v1": null,
+   "v3": "floor-manager"
+  },
+  {
+   "titre": "Employée, employé de caisse accueil",
+   "service": null,
+   "offres": 105,
+   "v1": null,
+   "v3": "cashier"
+  },
+  {
+   "titre": "Urban Outfitters Brand Ambassador",
+   "service": null,
+   "offres": 95,
+   "v1": null,
+   "v3": "sales-advisor"
+  },
+  {
+   "titre": "Department Manager",
+   "service": null,
+   "offres": 93,
+   "v1": null,
+   "v3": "floor-manager"
+  },
+  {
+   "titre": "Operations Manager",
+   "service": " Retail Management",
+   "offres": 90,
+   "v1": null,
+   "v3": "operations-manager"
+  },
+  {
+   "titre": "Sales Lead-ANN",
+   "service": null,
+   "offres": 83,
+   "v1": null,
+   "v3": "sales-lead"
+  },
+  {
+   "titre": "No7 Advisor",
+   "service": null,
+   "offres": 77,
+   "v1": null,
+   "v3": "beauty-consultant"
+  },
+  {
+   "titre": "Employée, employé de rayon épicerie - entretien",
+   "service": null,
+   "offres": 76,
+   "v1": null,
+   "v3": "sales-assistant"
+  },
+  {
+   "titre": "Team Manager",
+   "service": null,
+   "offres": 76,
+   "v1": null,
+   "v3": "floor-manager"
+  },
+  {
+   "titre": "Anthropologie Key Holder",
+   "service": null,
+   "offres": 71,
+   "v1": null,
+   "v3": "keyholder"
+  },
+  {
+   "titre": "General Manager",
+   "service": " Retail Management",
+   "offres": 71,
+   "v1": null,
+   "v3": "general-manager"
+  },
+  {
+   "titre": "Guest Coordinator",
+   "service": " Salon Professionals",
+   "offres": 68,
+   "v1": null,
+   "v3": "receptionist"
+  },
+  {
+   "titre": "Product Guide - Seasonal",
+   "service": null,
+   "offres": 62,
+   "v1": null,
+   "v3": "sales-advisor"
+  },
+  {
+   "titre": "Kundenberater (m/w/d)",
+   "service": "sales-advisor",
+   "offres": 61,
+   "v1": null,
+   "v3": "sales-advisor"
+  }
+ ],
+ "principauxHorsPlan": [
+  {
+   "titre": "Optical Sales Associate",
+   "service": null,
+   "offres": 5,
+   "v1": "sales-advisor",
+   "v3": null
+  },
+  {
+   "titre": "Warehouse Associate / Equipment Operator",
+   "service": null,
+   "offres": 4,
+   "v1": "warehouse-operative",
+   "v3": null
+  },
+  {
+   "titre": "Assistant Visual Merchandiser",
+   "service": null,
+   "offres": 2,
+   "v1": "visual-merchandiser",
+   "v3": null
+  },
+  {
+   "titre": "Keyholder / Verkaufer (m/w/d) (25-30h/Woche) - Dusseldorf",
+   "service": "Retail",
+   "offres": 1,
+   "v1": "sales-advisor",
+   "v3": "keyholder"
+  },
+  {
+   "titre": "Key Holder / Verkaufer (m/w/d) (25-30h/Woche) - Frankfurt",
+   "service": "Retail",
+   "offres": 1,
+   "v1": "sales-advisor",
+   "v3": "keyholder"
+  },
+  {
+   "titre": "Keyholder / Verkaufer (m/w/d) (30h/Woche) - Stuttgart",
+   "service": "Retail",
+   "offres": 1,
+   "v1": "sales-advisor",
+   "v3": "keyholder"
+  },
+  {
+   "titre": "Multi Store Manager, Retail Management",
+   "service": null,
+   "offres": 1,
+   "v1": "store-manager",
+   "v3": "retail-director"
+  },
+  {
+   "titre": "PREMIER VENDEUR H/F",
+   "service": null,
+   "offres": 1,
+   "v1": "sales-advisor",
+   "v3": "sales-lead"
+  },
+  {
+   "titre": "Alternance Magasinier - Réceptionniste H/F",
+   "service": null,
+   "offres": 1,
+   "v1": "receptionist",
+   "v3": null
+  },
+  {
+   "titre": "Assistant Store Manager / Store Supervisor (Melbourne)",
+   "service": null,
+   "offres": 1,
+   "v1": "assistant-store-manager",
+   "v3": null
+  },
+  {
+   "titre": "Barista/Bartender - Restaurant, Flex - Bloomie's Mosaic",
+   "service": null,
+   "offres": 1,
+   "v1": "barista",
+   "v3": null
+  },
+  {
+   "titre": "Barista/Bartender - Restaurant, Full Time - Bloomie's Mosaic",
+   "service": null,
+   "offres": 1,
+   "v1": "barista",
+   "v3": null
+  },
+  {
+   "titre": "Client Advisor（販売スタッフ）首都圏・名古屋・関西",
+   "service": "Retail",
+   "offres": 1,
+   "v1": "sales-advisor",
+   "v3": null
+  },
+  {
+   "titre": "Client Style Advisor & Stock Controller",
+   "service": null,
+   "offres": 1,
+   "v1": "stock-associate",
+   "v3": null
+  },
+  {
+   "titre": "Community Manager et TikTok Content Creator H.F - Stage",
+   "service": null,
+   "offres": 1,
+   "v1": "community-manager",
+   "v3": null
+  },
+  {
+   "titre": "Conseiller(e) de vente - CDI ou auto-entrepreneur - temps plein ou partiel",
+   "service": null,
+   "offres": 1,
+   "v1": "sales-advisor",
+   "v3": null
+  },
+  {
+   "titre": "Conseiller(e) de Vente Hôte(sse) de caisse H/F",
+   "service": null,
+   "offres": 1,
+   "v1": "sales-advisor",
+   "v3": null
+  },
+  {
+   "titre": "Conseiller(ère) de Vente/ Visuel Merchandiser (H/F) - 35H - Marseille",
+   "service": null,
+   "offres": 1,
+   "v1": "sales-advisor",
+   "v3": null
+  },
+  {
+   "titre": "Dekorator / Dekoratorka - Visual Merchandiser ",
+   "service": null,
+   "offres": 1,
+   "v1": "visual-merchandiser",
+   "v3": null
+  },
+  {
+   "titre": "Esthéticien(ne) Praticien(ne) en Massage Bien-Être – Temps Partiel (H/F)",
+   "service": null,
+   "offres": 1,
+   "v1": "beauty-therapist",
+   "v3": null
+  },
+  {
+   "titre": "GLOBAL TALENT MANAGER AND CORPORATE HRBP (CDD)",
+   "service": "Human Resources",
+   "offres": 1,
+   "v1": "hr-business-partner",
+   "v3": null
+  },
+  {
+   "titre": "Influencer Marketing Manager",
+   "service": null,
+   "offres": 1,
+   "v1": "marketing-manager",
+   "v3": null
+  },
+  {
+   "titre": "Job Dating Île-de-France | Vendeur.se, Adjoint.e , Responsable de magasin | 2 octobre 2026",
+   "service": null,
+   "offres": 1,
+   "v1": "sales-advisor",
+   "v3": null
+  },
+  {
+   "titre": "Lead Accountant – China & Hong Kong",
+   "service": null,
+   "offres": 1,
+   "v1": "accountant",
+   "v3": null
+  },
+  {
+   "titre": "Magasinier / Hote de caisse H/F",
+   "service": null,
+   "offres": 1,
+   "v1": "cashier",
+   "v3": null
+  },
+  {
+   "titre": "Magasinier / Stockiste",
+   "service": null,
+   "offres": 1,
+   "v1": "stock-associate",
+   "v3": null
+  },
+  {
+   "titre": "Magasinier stockiste H/F",
+   "service": null,
+   "offres": 1,
+   "v1": "stock-associate",
+   "v3": null
+  },
+  {
+   "titre": "Modelo #WERECRUITERS 25 horas: Vendedor/a Moda KIABI (Com termo certo - Part time)",
+   "service": null,
+   "offres": 1,
+   "v1": "sales-advisor",
+   "v3": null
+  },
+  {
+   "titre": "Part Time Sales Associate (Nagoya, Japan) パートタイムの販売スタッフ (愛知県名古屋市, 日本)",
+   "service": null,
+   "offres": 1,
+   "v1": "sales-advisor",
+   "v3": null
+  },
+  {
+   "titre": "Part Time Sales Associate (Osaka, Japan) パートタイムの販売スタッフ (大阪, 日本)",
+   "service": null,
+   "offres": 1,
+   "v1": "sales-advisor",
+   "v3": null
+  },
+  {
+   "titre": "Premier vendeur 35h - PARIS - CDI H/F ",
+   "service": null,
+   "offres": 1,
+   "v1": "sales-advisor",
+   "v3": null
+  },
+  {
+   "titre": "Premier Vendeur F/H (CDI 35H)",
+   "service": null,
+   "offres": 1,
+   "v1": "sales-advisor",
+   "v3": null
+  },
+  {
+   "titre": "Premier vendeur H.F - Bon Marché",
+   "service": null,
+   "offres": 1,
+   "v1": "sales-advisor",
+   "v3": null
+  },
+  {
+   "titre": "Premier Vendeur H/F - CDI - Galeries Lafayette Nantes",
+   "service": null,
+   "offres": 1,
+   "v1": "sales-advisor",
+   "v3": null
+  },
+  {
+   "titre": "Premier vendeur H/F - CDI - Lyon the Village",
+   "service": null,
+   "offres": 1,
+   "v1": "sales-advisor",
+   "v3": null
+  },
+  {
+   "titre": "Premier Vendeur H/F - CDI - Ternes",
+   "service": null,
+   "offres": 1,
+   "v1": "sales-advisor",
+   "v3": null
+  },
+  {
+   "titre": "Premier vendeur (H/F) - Sézane",
+   "service": null,
+   "offres": 1,
+   "v1": "sales-advisor",
+   "v3": null
+  },
+  {
+   "titre": "Sales Assistant - Dependiente/a - 30H/S - Indefinido -CC. Mogan Mall",
+   "service": null,
+   "offres": 1,
+   "v1": "sales-advisor",
+   "v3": null
+  },
+  {
+   "titre": "Sales Associate (販売スタッフ)/新宿, 東京",
+   "service": "Retail",
+   "offres": 1,
+   "v1": "sales-advisor",
+   "v3": null
+  },
+  {
+   "titre": "Senior/Lead Software Engineer (C#) – Automation & Machine Control",
+   "service": null,
+   "offres": 1,
+   "v1": "software-engineer",
+   "v3": null
+  }
+ ],
+ "principalesPertes": [
+  {
+   "titre": "Lead Software Engineer, ITC",
+   "service": null,
+   "offres": 5,
+   "v1": "software-engineer",
+   "v3": null
+  },
+  {
+   "titre": "Optical Sales Associate",
+   "service": null,
+   "offres": 5,
+   "v1": "sales-advisor",
+   "v3": null
+  },
+  {
+   "titre": "Warehouse Associate / Equipment Operator",
+   "service": null,
+   "offres": 4,
+   "v1": "warehouse-operative",
+   "v3": null
+  },
+  {
+   "titre": "Assistant Visual Merchandiser",
+   "service": null,
+   "offres": 2,
+   "v1": "visual-merchandiser",
+   "v3": null
+  },
+  {
+   "titre": "Director, HR Business Partner",
+   "service": null,
+   "offres": 2,
+   "v1": "hr-business-partner",
+   "v3": null
+  },
+  {
+   "titre": "HR Business Partner / HR Manager",
+   "service": null,
+   "offres": 2,
+   "v1": "hr-business-partner",
+   "v3": null
+  },
+  {
+   "titre": "Manager, HR Business Partner - Distribution Center",
+   "service": null,
+   "offres": 2,
+   "v1": "hr-business-partner",
+   "v3": null
+  },
+  {
+   "titre": "Senior Manager, HR Business Partner - Manufacturing",
+   "service": null,
+   "offres": 2,
+   "v1": "hr-business-partner",
+   "v3": null
+  },
+  {
+   "titre": "Alternance Magasinier - Réceptionniste H/F",
+   "service": null,
+   "offres": 1,
+   "v1": "receptionist",
+   "v3": null
+  },
+  {
+   "titre": "Assistant Store Manager / Store Supervisor (Melbourne)",
+   "service": null,
+   "offres": 1,
+   "v1": "assistant-store-manager",
+   "v3": null
+  },
+  {
+   "titre": "Barista/Bartender - Restaurant, Flex - Bloomie's Mosaic",
+   "service": null,
+   "offres": 1,
+   "v1": "barista",
+   "v3": null
+  },
+  {
+   "titre": "Barista/Bartender - Restaurant, Full Time - Bloomie's Mosaic",
+   "service": null,
+   "offres": 1,
+   "v1": "barista",
+   "v3": null
+  },
+  {
+   "titre": "CDI - Directeur Contrôleur de Gestion (H/F)",
+   "service": null,
+   "offres": 1,
+   "v1": "financial-controller",
+   "v3": null
+  },
+  {
+   "titre": "CDI - Responsable Comptable Adjoint (H/F)",
+   "service": null,
+   "offres": 1,
+   "v1": "accountant",
+   "v3": null
+  },
+  {
+   "titre": "CDI Responsable Comptable Fournisseurs & Immobilisations F/H",
+   "service": "Finance",
+   "offres": 1,
+   "v1": "accountant",
+   "v3": null
+  },
+  {
+   "titre": "CDI - RESPONSABLE COMPTABLE (H/F)",
+   "service": null,
+   "offres": 1,
+   "v1": "accountant",
+   "v3": null
+  },
+  {
+   "titre": "Client Advisor（販売スタッフ）首都圏・名古屋・関西",
+   "service": "Retail",
+   "offres": 1,
+   "v1": "sales-advisor",
+   "v3": null
+  },
+  {
+   "titre": "Client Style Advisor & Stock Controller",
+   "service": null,
+   "offres": 1,
+   "v1": "stock-associate",
+   "v3": null
+  },
+  {
+   "titre": "Community Manager et TikTok Content Creator H.F - Stage",
+   "service": null,
+   "offres": 1,
+   "v1": "community-manager",
+   "v3": null
+  },
+  {
+   "titre": "Conseiller(e) de vente - CDI ou auto-entrepreneur - temps plein ou partiel",
+   "service": null,
+   "offres": 1,
+   "v1": "sales-advisor",
+   "v3": null
+  }
+ ],
+ "echantillon": [
+  {
+   "titre": "Retail Keyholder - Carolina Place",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "keyholder",
+   "libelle": "Responsable d'ouverture"
+  },
+  {
+   "titre": "Key Holder - BOSS Store - King of Prussia",
+   "service": "Retail Store",
+   "offres": 1,
+   "avant": null,
+   "metier": "keyholder",
+   "libelle": "Responsable d'ouverture"
+  },
+  {
+   "titre": "Verkoopmedewerker Knokke - Flexi",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Sales Consultant (8hour part time)",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Eladó 30 óra (Árkád Győr)",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Chef des ventes à temps partiel",
+   "service": null,
+   "offres": 28,
+   "avant": null,
+   "metier": "commercial-manager",
+   "libelle": "Manager commercial"
+  },
+  {
+   "titre": "Inventory Control Associate 1 - Full Time",
+   "service": "Supply Chain & Logistics",
+   "offres": 2,
+   "avant": null,
+   "metier": "stock-associate",
+   "libelle": "Gestionnaire de stock en boutique"
+  },
+  {
+   "titre": "Σύμβουλος Πωλήσεων 20h",
+   "service": null,
+   "offres": 2,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Festive Retail Sales Associates- Chandler Fashion Ctr",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Retail Keyholder - Tysons Corner",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "keyholder",
+   "libelle": "Responsable d'ouverture"
+  },
+  {
+   "titre": "Specialty Artist - MAC",
+   "service": " Retail Associates",
+   "offres": 118,
+   "avant": null,
+   "metier": "makeup-artist",
+   "libelle": "Maquilleur"
+  },
+  {
+   "titre": "Verkoopmedewerker",
+   "service": null,
+   "offres": 7,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Account Manager",
+   "service": null,
+   "offres": 4,
+   "avant": null,
+   "metier": "account-manager",
+   "libelle": "Account Manager"
+  },
+  {
+   "titre": "Retail Assistant Student - Gent",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Sales Lead St Louis Premium Outlets",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-lead",
+   "libelle": "Responsable des ventes"
+  },
+  {
+   "titre": "Asesor de ventas - Boutique Santa Fe, CDMX",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Seaonal Sales Lead with Keys- UGG",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-lead",
+   "libelle": "Responsable des ventes"
+  },
+  {
+   "titre": "Responsable Adjoint H/F - La Défense",
+   "service": null,
+   "offres": 2,
+   "avant": null,
+   "metier": "assistant-store-manager",
+   "libelle": "Adjoint au responsable de boutique"
+  },
+  {
+   "titre": "Selling Advisor-Contemporary (Weekends PT)",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Optiker Vordingborg",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "dispensing-optician",
+   "libelle": "Opticien"
+  },
+  {
+   "titre": "RETAIL ASSISTANT (M/F/D) BEFRISTET / 28 - 35H/WOCHE - FO Radolfzell",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Retail Sales Consultant - Part Time - Saint Louis Galleria - St. Louis, MO",
+   "service": null,
+   "offres": 2,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Festive Retail Sales Associates- Stonebriar",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Seasonal Casual Retail Assistant-Carindale",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Sales Lead - Valley View Mall",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-lead",
+   "libelle": "Responsable des ventes"
+  },
+  {
+   "titre": "Sales Supervisor (Keyholder) | Suburban Square",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "keyholder",
+   "libelle": "Responsable d'ouverture"
+  },
+  {
+   "titre": "Stage - Assistant Chef De Produit Marketing Opérationnel Fragrances EMEA H/F - Juillet 2026",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "product-manager",
+   "libelle": "Chef de produit"
+  },
+  {
+   "titre": "TALENT ACQUISITION INTERN",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "recruiter",
+   "libelle": "Chargé de recrutement"
+  },
+  {
+   "titre": "Responsable Adjoint H/F",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "assistant-store-manager",
+   "libelle": "Adjoint au responsable de boutique"
+  },
+  {
+   "titre": "Alterations Associate",
+   "service": null,
+   "offres": 19,
+   "avant": null,
+   "metier": "seamster",
+   "libelle": "Couturier"
+  },
+  {
+   "titre": "Sales Lead, The Promenade Shops at Saucon Valley",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-lead",
+   "libelle": "Responsable des ventes"
+  },
+  {
+   "titre": "Visual Keyholder - Quakerbridge Mall",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "keyholder",
+   "libelle": "Responsable d'ouverture"
+  },
+  {
+   "titre": "Full Time Floor Leader - Oak Park",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "floor-manager",
+   "libelle": "Responsable de rayon"
+  },
+  {
+   "titre": "Seasonal Casual Retail Assistant - North Lakes",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Stage assistant chef de produit H/F",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "product-manager",
+   "libelle": "Chef de produit"
+  },
+  {
+   "titre": "Department Manager-Dallas Galleria",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "floor-manager",
+   "libelle": "Responsable de rayon"
+  },
+  {
+   "titre": "Festive Retail Sales Associates - Cordova Mall",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Part Time Floor Leader - Fox River Mall",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "floor-manager",
+   "libelle": "Responsable de rayon"
+  },
+  {
+   "titre": "Seasonal Client Specialist - Womens Ready to Wear, Part Time - Norwalk",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Retail Sales Associates- Parks at Arlington",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Swatch Part Time Keyholder - Topanga (CA)",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "keyholder",
+   "libelle": "Responsable d'ouverture"
+  },
+  {
+   "titre": "URBN General Equipment Operator (Nights)",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "equipment-operator",
+   "libelle": "Conducteur d'engins"
+  },
+  {
+   "titre": "Production Coordinator",
+   "service": null,
+   "offres": 2,
+   "avant": null,
+   "metier": "production-coordinator",
+   "libelle": "Coordinateur de production"
+  },
+  {
+   "titre": "販売スタッフ(アルバイト) Nike Ginza",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-assistant",
+   "libelle": "Employé de commerce"
+  },
+  {
+   "titre": "Employé de rayon textile F/H",
+   "service": null,
+   "offres": 4,
+   "avant": null,
+   "metier": "sales-assistant",
+   "libelle": "Employé de commerce"
+  },
+  {
+   "titre": "Festive Retail Sales Associates - Holyoke",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Responsable adjoint(e) - 35h (Animateur(trice) du Magasin)",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "assistant-store-manager",
+   "libelle": "Adjoint au responsable de boutique"
+  },
+  {
+   "titre": "Brand Manager NIVEA - Baltic region",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "brand-manager",
+   "libelle": "Chef de marque"
+  },
+  {
+   "titre": "Asesor de ventas - Boutique La Isla Mérida",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Responsable adjoint.e Parly 2 - 35h/sem - CDI",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "assistant-store-manager",
+   "libelle": "Adjoint au responsable de boutique"
+  },
+  {
+   "titre": "Retail Sales Consultant - Seasonal - Castleton Square - Indianapolis, IN",
+   "service": null,
+   "offres": 2,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Temporary Part Time Floor Leader - Masonville Place",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "floor-manager",
+   "libelle": "Responsable de rayon"
+  },
+  {
+   "titre": "Retail Keyholder | Bay Park Square",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "keyholder",
+   "libelle": "Responsable d'ouverture"
+  },
+  {
+   "titre": "Sales Lead, Ann Taylor",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-lead",
+   "libelle": "Responsable des ventes"
+  },
+  {
+   "titre": "Sales Manager",
+   "service": null,
+   "offres": 13,
+   "avant": null,
+   "metier": "wholesale-manager",
+   "libelle": "Responsable wholesale"
+  },
+  {
+   "titre": "Directeur Adjoint Vib's (H/F)",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "assistant-store-manager",
+   "libelle": "Adjoint au responsable de boutique"
+  },
+  {
+   "titre": "BRAND CONTROLLER",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "financial-controller",
+   "libelle": "Contrôleur de gestion"
+  },
+  {
+   "titre": "Seasonal Brand Ambassador (Williamsburg)",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Visual Keyholder-Killeen Mall",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "keyholder",
+   "libelle": "Responsable d'ouverture"
+  },
+  {
+   "titre": "Retail Associate - Part Time (m/w/d) - Köln",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Retail Assistant Minijob (m/f/d) befristet - Factory Outlet Berlin Wustermark",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Auxiliar de óptica en Xàtiva, Valencia, CC Plaza Mayor",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "optical-assistant",
+   "libelle": "Assistant d'optique"
+  },
+  {
+   "titre": "Eladó - részmunkaidő",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Retail Associate, SEAS - Nike Kanata",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "【プーマアウトレットふかや花園】販売スタッフ募集！",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-assistant",
+   "libelle": "Employé de commerce"
+  },
+  {
+   "titre": "Sales Lead, Luxury Jewelry",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-lead",
+   "libelle": "Responsable des ventes"
+  },
+  {
+   "titre": "Department Manager - Bruxelles",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "floor-manager",
+   "libelle": "Responsable de rayon"
+  },
+  {
+   "titre": "Store Department Manager (H&M Ho Chi Minh)",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "floor-manager",
+   "libelle": "Responsable de rayon"
+  },
+  {
+   "titre": "Equipment Operator 2 - Full Time",
+   "service": "Supply Chain & Logistics",
+   "offres": 1,
+   "avant": null,
+   "metier": "equipment-operator",
+   "libelle": "Conducteur d'engins"
+  },
+  {
+   "titre": "People experience product owner F/H",
+   "service": "Ressources Humaines",
+   "offres": 1,
+   "avant": null,
+   "metier": "product-owner",
+   "libelle": "Product Owner"
+  },
+  {
+   "titre": "Hôte(sse) de caisse et d’accueil - CDD",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "cashier",
+   "libelle": "Hôte de caisse"
+  },
+  {
+   "titre": "Full Time Floor Leader - NorthPark Center",
+   "service": null,
+   "offres": 2,
+   "avant": null,
+   "metier": "floor-manager",
+   "libelle": "Responsable de rayon"
+  },
+  {
+   "titre": "Style Advisor ",
+   "service": null,
+   "offres": 2,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Material Handler - 3rd Shift",
+   "service": " Distribution Center Associates",
+   "offres": 1,
+   "avant": null,
+   "metier": "warehouse-operative",
+   "libelle": "Préparateur de commandes et agent logistique"
+  },
+  {
+   "titre": "Retail Keyholder - Mall at UTC",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "keyholder",
+   "libelle": "Responsable d'ouverture"
+  },
+  {
+   "titre": "RETAIL ASSISTANT (M/F/D) BEFRISTET - FO WERTHEIM",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Retail Associate - Polo Park",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Manager, Customer Relationships",
+   "service": null,
+   "offres": 5,
+   "avant": null,
+   "metier": "customer-relationship-manager",
+   "libelle": "Responsable relation client"
+  },
+  {
+   "titre": "Department Manager- Part time",
+   "service": "Retail",
+   "offres": 1,
+   "avant": null,
+   "metier": "floor-manager",
+   "libelle": "Responsable de rayon"
+  },
+  {
+   "titre": "Senior Visual Merchandising Manager",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "visual-merchandising-manager",
+   "libelle": "Responsable visual merchandising"
+  },
+  {
+   "titre": "Retail Associate (30 hours) - Cheshire Oaks",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Retail Sales Associates - Bridgewater Commons",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Gérant(e) adjoint(e) de magasin",
+   "service": null,
+   "offres": 6,
+   "avant": null,
+   "metier": "assistant-store-manager",
+   "libelle": "Adjoint au responsable de boutique"
+  },
+  {
+   "titre": "Retail Associate - Full Time (m/w/d) - Oberhausen",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "CONSEILLER DE MODE (H/F/NB) - CDI ETUDIANT 9H",
+   "service": null,
+   "offres": 2,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Client Specialist - Mens, Full Time - Norwalk",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Retail Associate - Dadeland",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Regional Retail Director, Southeast",
+   "service": "Retail",
+   "offres": 1,
+   "avant": null,
+   "metier": "retail-director",
+   "libelle": "Directeur de réseau"
+  },
+  {
+   "titre": "Retail Keyholder - Freehold Mall",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "keyholder",
+   "libelle": "Responsable d'ouverture"
+  },
+  {
+   "titre": "Hôte(sse) de caisse et d’accueil H/F",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "cashier",
+   "libelle": "Hôte de caisse"
+  },
+  {
+   "titre": "Jefe de Turno",
+   "service": null,
+   "offres": 5,
+   "avant": null,
+   "metier": "floor-manager",
+   "libelle": "Responsable de rayon"
+  },
+  {
+   "titre": "Operations Associate - Part Time",
+   "service": null,
+   "offres": 127,
+   "avant": null,
+   "metier": "stock-associate",
+   "libelle": "Gestionnaire de stock en boutique"
+  },
+  {
+   "titre": "Retail Sales Consultant - Seasonal - La Encantada - Tucson, AZ",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Alternance - Assistant(e) Qualité & RSE (H/F)",
+   "service": "Sustainable Development",
+   "offres": 1,
+   "avant": null,
+   "metier": "quality-assistant",
+   "libelle": "Assistant qualité"
+  },
+  {
+   "titre": "E-commerce and Customer Service Specialist",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "customer-service-advisor",
+   "libelle": "Conseiller service client"
+  },
+  {
+   "titre": "Key Holder - BOSS Outlet, St. Louis",
+   "service": "Retail Store",
+   "offres": 1,
+   "avant": null,
+   "metier": "keyholder",
+   "libelle": "Responsable d'ouverture"
+  },
+  {
+   "titre": "STAGE - Assistant(e) Chef(fe) de Produit Souliers - JANVIER 2027 (H/F/X)",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "product-manager",
+   "libelle": "Chef de produit"
+  },
+  {
+   "titre": "Retail Sales Associates- Limeridge",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Sales Supervisor (Keyholder) | Georgetown",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "keyholder",
+   "libelle": "Responsable d'ouverture"
+  },
+  {
+   "titre": "Sales Lead-ANN Woodbridge Center",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-lead",
+   "libelle": "Responsable des ventes"
+  },
+  {
+   "titre": "Chef.fe de Produit Textile",
+   "service": null,
+   "offres": 5,
+   "avant": null,
+   "metier": "product-manager",
+   "libelle": "Chef de produit"
+  },
+  {
+   "titre": "Mitarbeiter im Verkauf (m/w/d)",
+   "service": null,
+   "offres": 3,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Visual Merchandising Associate, Full-Time - Soho",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "visual-merchandiser",
+   "libelle": "Visual merchandiser"
+  },
+  {
+   "titre": "Sales Lead, southgate mall",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-lead",
+   "libelle": "Responsable des ventes"
+  },
+  {
+   "titre": "Sales Consultant M.F - London King's Road",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Selling Advisor - Gift Gallery",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Seasonal Brand Ambassador (Fillmore Street)",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Givenchy Account Manager ",
+   "service": "Retail",
+   "offres": 2,
+   "avant": null,
+   "metier": "account-manager",
+   "libelle": "Account Manager"
+  },
+  {
+   "titre": "Stage - Assistant Chef de produit - F/H - Janvier 2027",
+   "service": "Marketing",
+   "offres": 1,
+   "avant": null,
+   "metier": "product-manager",
+   "libelle": "Chef de produit"
+  },
+  {
+   "titre": "Verkoopmedewerker - Olen (24 uur)",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Retail Sales Consultant - Part Time - Palisades Center - West Nyack, NY",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Department Manager, Oxford Street - Future Opportunities",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "floor-manager",
+   "libelle": "Responsable de rayon"
+  },
+  {
+   "titre": "Retail Sales Consultant - Part Time - Forum Shops - Las Vegas, NV",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Verkoopmedewerker - Foot Locker Amsterdam Kalverstraat",
+   "service": null,
+   "offres": 2,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Verkoopmedewerker Jeans Centre Wageningen (28 uur)",
+   "service": null,
+   "offres": 2,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Department Manager (Coach) - Nike Randhurst",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "floor-manager",
+   "libelle": "Responsable de rayon"
+  },
+  {
+   "titre": "CDD - Approvisionneur Supply Chain - Beyrand (H/F)",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "buyer-planner",
+   "libelle": "Acheteur approvisionneur"
+  },
+  {
+   "titre": "Sales Lead with Keys- HOKA",
+   "service": null,
+   "offres": 3,
+   "avant": null,
+   "metier": "floor-manager",
+   "libelle": "Responsable de rayon"
+  },
+  {
+   "titre": "Retail Associate, SEAS OVN - Nike Beaverton Service Center,",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Selling Advisor-Fine Jewelry",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Sales Lead, Lane Bryant",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-lead",
+   "libelle": "Responsable des ventes"
+  },
+  {
+   "titre": "Technicien de Maintenance Moulage H/F",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "maintenance-technician",
+   "libelle": "Technicien de maintenance"
+  },
+  {
+   "titre": "Assistant Manager (m/w/d), Q1,3",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "assistant-store-manager",
+   "libelle": "Adjoint au responsable de boutique"
+  },
+  {
+   "titre": "Chef d'atelier ",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "workshop-manager",
+   "libelle": "Responsable d'atelier"
+  },
+  {
+   "titre": "Style Advisor Weekendhulp",
+   "service": null,
+   "offres": 6,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Retail Associate - South Park",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "IT - Addetto/a alle vendite | Categorie Protette L. 68/99 271",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Horecamedewerker Zero Zero",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "food-service-worker",
+   "libelle": "Employé de restauration"
+  },
+  {
+   "titre": "Sales Lead, Deer Park",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-lead",
+   "libelle": "Responsable des ventes"
+  },
+  {
+   "titre": "Verkoopmedewerker - Kids Foot Locker Zuidplein",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Sales Consultant - Marion",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Retail Keyholder | Cherry Creek Shopping Center",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "keyholder",
+   "libelle": "Responsable d'ouverture"
+  },
+  {
+   "titre": "Retail Sales Consultant - Part Time - The Domain Northside - Austin, TX",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Stage - Assistant(e) Chef de Produit Marketing Opérationnel Maquillage et Soin  – Parfums Beauté – Janvier 2027 – H/F/X",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "product-manager",
+   "libelle": "Chef de produit"
+  },
+  {
+   "titre": "Verkoopmedewerker Jeans Centre Goirle (0 - 16 uur)",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Keyholder (Part time) - Capilano Mall",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "keyholder",
+   "libelle": "Responsable d'ouverture"
+  },
+  {
+   "titre": "【プーマアウトレット那須】販売スタッフ募集！",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-assistant",
+   "libelle": "Employé de commerce"
+  },
+  {
+   "titre": "Verkoopmedewerker Gent - 30u/Week - contract onbepaalde duur",
+   "service": null,
+   "offres": 2,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Technical Textile and Administrative Assistant - INTERNSHIP",
+   "service": "Production/Fabrication",
+   "offres": 1,
+   "avant": null,
+   "metier": "administrative-assistant",
+   "libelle": "Assistant administratif"
+  },
+  {
+   "titre": "Retail Associate - CrossIron Mills",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Floor Leader -  Abbot Kinney",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "floor-manager",
+   "libelle": "Responsable de rayon"
+  },
+  {
+   "titre": "Festive Retail Sales Associates - Northshore Mall",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Seasonal Casual Retail Assistant - Royal Randwick",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Sales Lead-Indiana Premium Outlets",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-lead",
+   "libelle": "Responsable des ventes"
+  },
+  {
+   "titre": "Retail Operations Specialist",
+   "service": "Sales",
+   "offres": 1,
+   "avant": null,
+   "metier": "retail-coordinator",
+   "libelle": "Coordinateur retail"
+  },
+  {
+   "titre": "Department Manager - Danbury Fair Mall",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "floor-manager",
+   "libelle": "Responsable de rayon"
+  },
+  {
+   "titre": "Prodavač",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-assistant",
+   "libelle": "Employé de commerce"
+  },
+  {
+   "titre": "Seasonal Casual Retail Assistant - Mount Lawley",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "assistant·e achat retail merchandiser f/h",
+   "service": null,
+   "offres": 2,
+   "avant": null,
+   "metier": "merchandising-assistant",
+   "libelle": "Assistant merchandiser"
+  },
+  {
+   "titre": "Customer Relations and Sales Ambassador German",
+   "service": "Customer Relations",
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Vi søker 60 % butikkselger til Glitter City Nord og Glasshuset",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Fragrance Account Manager",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "account-manager",
+   "libelle": "Account Manager"
+  },
+  {
+   "titre": "[Fashion] Responsable Adjoint - CDI - Paris Marais - H/F",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "assistant-store-manager",
+   "libelle": "Adjoint au responsable de boutique"
+  },
+  {
+   "titre": "Verkoopmedewerker -  DBK Eindhoven - 30 hours ",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Urban Outfitters Seasonal Key Holder",
+   "service": null,
+   "offres": 3,
+   "avant": null,
+   "metier": "keyholder",
+   "libelle": "Responsable d'ouverture"
+  },
+  {
+   "titre": "Store Supervisor",
+   "service": null,
+   "offres": 6,
+   "avant": null,
+   "metier": "floor-manager",
+   "libelle": "Responsable de rayon"
+  },
+  {
+   "titre": "Retail Sales Associates - Holyoke Mall",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Responsable adjoint 35h - CDD",
+   "service": null,
+   "offres": 2,
+   "avant": null,
+   "metier": "assistant-store-manager",
+   "libelle": "Adjoint au responsable de boutique"
+  },
+  {
+   "titre": "Sales Lead, University Commons",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-lead",
+   "libelle": "Responsable des ventes"
+  },
+  {
+   "titre": "Vi søker 60% butikkselger til Glitter Gjøvik",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "セールスアドバイザー正社員（H&M 有明）",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Floor Lead (Retail) ",
+   "service": null,
+   "offres": 4,
+   "avant": null,
+   "metier": "floor-manager",
+   "libelle": "Responsable de rayon"
+  },
+  {
+   "titre": "Verkoopmedewerker - Foot Locker Rotterdam Zuidplein",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Retail Keyholder - Northshore Mall",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "keyholder",
+   "libelle": "Responsable d'ouverture"
+  },
+  {
+   "titre": "DEPARTMENT MANAGER 1",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "floor-manager",
+   "libelle": "Responsable de rayon"
+  },
+  {
+   "titre": "Department Manager – Eindhoven Heuvel Galerie (38 uur)",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "floor-manager",
+   "libelle": "Responsable de rayon"
+  },
+  {
+   "titre": "Care Services Customer Partner",
+   "service": null,
+   "offres": 8,
+   "avant": null,
+   "metier": "customer-service-advisor",
+   "libelle": "Conseiller service client"
+  },
+  {
+   "titre": "Boutique Director - Valley Fair",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "store-manager",
+   "libelle": "Responsable de boutique"
+  },
+  {
+   "titre": "Assistente de Loja - Anália Franco ",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-assistant",
+   "libelle": "Employé de commerce"
+  },
+  {
+   "titre": "Full Time Key Holder- BOSS Fashion Valley, San Diego",
+   "service": "Retail Store",
+   "offres": 1,
+   "avant": null,
+   "metier": "keyholder",
+   "libelle": "Responsable d'ouverture"
+  },
+  {
+   "titre": "Client Advisor (Keyholder), Holt Renfrew Bloor",
+   "service": "Retail",
+   "offres": 1,
+   "avant": "sales-advisor",
+   "metier": "keyholder",
+   "libelle": "Responsable d'ouverture"
+  },
+  {
+   "titre": "Store Department Manager (DA NANG)",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "floor-manager",
+   "libelle": "Responsable de rayon"
+  },
+  {
+   "titre": "Retail Sales Consultant - Part Time - The Domain - Austin, TX",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Retail Assistant (Temp Athlete) - PT8HRS Manchester Fort",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Neiman Marcus Alterations Associate $31-39 an hour",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "seamster",
+   "libelle": "Couturier"
+  },
+  {
+   "titre": "販売スタッフ(アルバイト) Nike Unite Gotemba",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-assistant",
+   "libelle": "Employé de commerce"
+  },
+  {
+   "titre": "A Shift DC Maintenance Technician III",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "maintenance-technician",
+   "libelle": "Technicien de maintenance"
+  },
+  {
+   "titre": "Stage Assistant chef de produit F/H",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "product-manager",
+   "libelle": "Chef de produit"
+  },
+  {
+   "titre": "RESPONSABLE ADJOINT H/F, CDD 35H",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "assistant-store-manager",
+   "libelle": "Adjoint au responsable de boutique"
+  },
+  {
+   "titre": "Fashion Associate (Part time) - RW&CO",
+   "service": null,
+   "offres": 3,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "CDI - Approvisionneur pierres Haute-Joaillerie H/F",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "buyer-planner",
+   "libelle": "Acheteur approvisionneur"
+  },
+  {
+   "titre": "Casual Retail Assistant - Chermside",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Verkoopmedewerker - DBK Amstelveen - Parttime",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Keyholder (Part time) - Sarnia",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "keyholder",
+   "libelle": "Responsable d'ouverture"
+  },
+  {
+   "titre": "International Sales Manager",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "commercial-director",
+   "libelle": "Directeur commercial"
+  },
+  {
+   "titre": "Responsable Adjoint de magasin (H/F) - CDI 35h - Strasbourg Les Halles",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "assistant-store-manager",
+   "libelle": "Adjoint au responsable de boutique"
+  },
+  {
+   "titre": "Retail Sales Consultant - Seasonal - Williamsburg Premium Outlets - Williamsburg, VA",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Co-Manager/Assistant Manager",
+   "service": null,
+   "offres": 4,
+   "avant": null,
+   "metier": "assistant-store-manager",
+   "libelle": "Adjoint au responsable de boutique"
+  },
+  {
+   "titre": "Retail Keyholder - Opry Mills",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "keyholder",
+   "libelle": "Responsable d'ouverture"
+  },
+  {
+   "titre": "Retail Keyholder- Grapevine Mills",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "keyholder",
+   "libelle": "Responsable d'ouverture"
+  },
+  {
+   "titre": "Retail Sales Associates- Cornwall Centre",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Department Manager - Orland Square",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "floor-manager",
+   "libelle": "Responsable de rayon"
+  },
+  {
+   "titre": "Stage Assistant(e) Chef(fe) de produit - MOET & CHANDON & CHANDON/ MERCIER (F/H/X)",
+   "service": "Marketing",
+   "offres": 1,
+   "avant": null,
+   "metier": "product-manager",
+   "libelle": "Chef de produit"
+  },
+  {
+   "titre": "Urban Outfitters Key Holder",
+   "service": null,
+   "offres": 31,
+   "avant": null,
+   "metier": "keyholder",
+   "libelle": "Responsable d'ouverture"
+  },
+  {
+   "titre": "Retail Keyholder - Crabtree Valley Mall",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "keyholder",
+   "libelle": "Responsable d'ouverture"
+  },
+  {
+   "titre": "Visual Keyholder - Southridge Mall",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "keyholder",
+   "libelle": "Responsable d'ouverture"
+  },
+  {
+   "titre": "RETAIL ASSISTANT MINIJOB (M/F/D) BEFRISTET - FO OCHTRUP",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Urban Outfitters Assistant Designer",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "design-assistant",
+   "libelle": "Assistant designer"
+  },
+  {
+   "titre": "Verkoopmedewerker Jeans Centre Oss (15 - 20 uur)",
+   "service": null,
+   "offres": 2,
+   "avant": null,
+   "metier": "sales-advisor",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "UNIQLO Loss Prevention Agent (Full Time) - Hudson Yards",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "security-guard",
+   "libelle": "Agent de sécurité"
+  }
+ ]
+}

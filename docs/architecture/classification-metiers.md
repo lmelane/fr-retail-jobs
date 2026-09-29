@@ -89,11 +89,30 @@ marqué **existe** (lu ou mesuré le 28/09/2026) ou **décidé** (D-475, R-140 d
 - **Déroulé de la constitution** (`apps/aggregator/scripts/taxonomie/curation/`), chaque étape échouant plutôt que de
   laisser une entrée sans décision : (1) métiers du backend face aux métiers servis ; (1b) doublons à l'intérieur du
   backend, groupés par cliques confirmées ; (2) familles ; (3) intitulés d'offres sans métier, la tête (au moins 3
-  offres sans métier) ; (4) encadrement ; (5) libellés ; (6) manifeste et bancs. Toute fusion proposée par l'un ou
+  offres sans métier), avec leurs employeurs et services ; (3b) garde d'unicité des métiers nouveaux ; (4) encadrement ;
+  (5, 5b) libellés et leur correction ciblée ; (6) manifeste ; (6b) preview ; (6c) vérification des généralisations ;
+  (6d) échantillon neuf et mesure de justesse. Toute fusion proposée par l'un ou
   l'autre des deux modèles passe au consensus des deux juges ; une exclusion ou un métier nouveau venu des offres
   exige l'accord des deux modèles ; sans accord, un intitulé d'offre reste sans métier (§32 c). **Seuils de départ**,
   à recalibrer comme ceux du §3.2 : un métier nouveau venu des offres porte au moins 10 offres de 3 employeurs
-  distincts (sinon il attend la passe suivante) ; une famille nouvelle reçoit au moins 2 métiers.
+  distincts (sinon il attend la passe suivante) ; une famille nouvelle reçoit au moins 1 métier (11 des 27 familles
+  servies en portent 0 ou 1 ; le seuil de 2 rangeait « Mannequin » dans l'atelier). Les métiers hors luxe vont dans
+  « Autres secteurs » (D-475 §33).
+- **Résultat de la constitution (2A, 29/09/2026, `audits/2026-09-28/curation-v3/`)** : manifeste
+  `catwalks-occupations-20260929-v3`, 256 métiers, 32 familles, 25 langues, compilé par le moteur et conforme à la règle
+  de succession. Preview sur les 80 741 offres publiables (la version servie rejouée redonne 100 % du classement de
+  production) : 63,2 % des offres ont un métier (47,1 % aujourd'hui ; France 58 %) ; 0,3 % des intitulés classés
+  changent de métier hors plan (seuil 10 %). Justesse sur un échantillon neuf de 200, jugé par un modèle d'une autre
+  famille que ceux de la passe : 174 justes, 24 proches, 2 faux (1,0 %, au seuil), les deux causes corrigées ensuite ;
+  une première mesure, avant l'étape 6c, donnait 20 faux sur 200 (bloquant).
+- **Ce que la constitution impose au moteur (sous-lot 2B)** : (1) un intitulé validé par les juges vaut pour
+  l'intitulé EXACT ; sa généralisation à tout intitulé qui le contient est un synonyme partagé, vérifié sur ce qu'il
+  capte (R-66 §2, étape 6c : 187 expressions jugées sur leurs captures, 570 ramenées à l'intitulé exact) ; (2)
+  l'expression la plus longue l'emporte (D-475 §32 a), portée en 2A par la préséance des règles du moteur, sans cycle ;
+  (3) une règle nouvelle d'un métier servi hérite de ses exclusions revues ; (4) un mot seul qui généralise est jugé en
+  lui-même (« commercial », adjectif en anglais) ; (5) les intitulés vagues seuls ne classent rien (§32 c). Limite
+  connue : la mémoire des réponses des modèles ne rejoue pas à l'identique une correction de libellés en plusieurs tours
+  (29/09/2026) ; la sortie relue de l'étape 5b fait foi.
 - **Référence ESCO** publiée et datée, somme de contrôle versionnée.
 
 ### 3.2 L'IA validatrice : passes de curation (D-475 §30, §31 a)

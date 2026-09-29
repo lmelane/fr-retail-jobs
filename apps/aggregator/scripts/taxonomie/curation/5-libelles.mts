@@ -28,7 +28,10 @@ import { cosinus, JUGES, MODELE_CHOIX, repondre, vecteurs } from './ia.mts';
 /** §32 c : un mot vague seul ne désigne pas un métier, donc ne classe aucune offre. */
 const VAGUES = new Set(['MANAGER', 'ASSISTANT', 'ASSISTANTE', 'ASSOCIATE', 'TEAM MEMBER', 'STAGIAIRE', 'STAGE', 'INTERN', 'EMPLOYE', 'EMPLOYEE',
   'RESPONSABLE', 'DIRECTEUR', 'DIRECTRICE', 'DIRECTOR', 'CHARGE', 'CHARGEE', 'LEAD', 'SPECIALIST', 'SPECIALISTE', 'COORDINATOR', 'COORDINATEUR',
-  'CONSULTANT', 'CONSULTANTE', 'TECHNICIEN', 'TECHNICIENNE', 'OPERATEUR', 'AGENT', 'CONSEILLER', 'CONSEILLERE', 'ADVISOR', 'SUPERVISOR']);
+  'CONSULTANT', 'CONSULTANTE', 'TECHNICIEN', 'TECHNICIENNE', 'OPERATEUR', 'AGENT', 'CONSEILLER', 'CONSEILLERE', 'ADVISOR', 'SUPERVISOR',
+  // Mesure de justesse du 29/09/2026 : « Superviseur(e) » seul, et « Retail Manager » (directeur de magasin au Royaume-Uni
+  // et en Australie, directeur retail ailleurs) ne désignent pas un métier à eux seuls.
+  'SUPERVISEUR', 'SUPERVISEURE', 'SUPERVISEUSE', 'RETAIL MANAGER']);
 const norme = (v: string) => normalizeOccupationTitle(v).replace(/[^\p{L}\p{N}]+/gu, ' ').trim();
 const cleSchema = (l: string) => l.replace('-', '_');
 

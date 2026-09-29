@@ -1,5 +1,5 @@
 {
- "calculeLe": "2026-09-29T08:59:24.464Z",
+ "calculeLe": "2026-09-29T09:57:55.485Z",
  "modeles": {
   "redaction": "gemini-3.6-flash",
   "relecture": "gemini-3-flash-preview"
@@ -17,10 +17,10 @@
    "familles": 10
   },
   "sansLibelle": [],
-  "variantes": 8240,
+  "variantes": 8237,
   "conflits": 102,
   "conflitsRetires": 82,
-  "generiquesRetires": 1,
+  "generiquesRetires": 4,
   "libellesEnDoublon": [
    {
     "forme": "SALES ASSISTANT",
@@ -17993,7 +17993,6 @@
     "RESPONSABLE RESEAU",
     "RESPONSABLE RESEAU IDF",
     "RETAIL DIRECTOR",
-    "RETAIL MANAGER",
     "ΔΙΕΥΘΥΝΤΗΣ ΔΙΚΤΥΟΥ",
     "ΔΙΕΥΘΥΝΤΡΙΑ ΔΙΚΤΥΟΥ",
     "مدير شبكة الفروع",
@@ -21722,10 +21721,8 @@
     "STAGE EXPERIENCE LEAD FULL TIME",
     "STORE SUPERVISOR",
     "STORE TEAM LEAD",
-    "SUPERVISEUR",
     "SUPERVISEUR D EQUIPE DE VENTE H F",
     "SUPERVISEUR DES VENTES",
-    "SUPERVISEUSE",
     "SUPERVISOR 37 5 HOURS",
     "SUPERVISOR DE LOJA",
     "SUPERVISOR FLOOR",
@@ -29793,7 +29790,10 @@
   }
  ],
  "generiquesRetires": [
-  "SUPERVISOR"
+  "RETAIL MANAGER",
+  "SUPERVISOR",
+  "SUPERVISEUR",
+  "SUPERVISEUSE"
  ],
  "fautesRestantes": [
   {
