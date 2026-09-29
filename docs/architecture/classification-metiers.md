@@ -232,6 +232,19 @@ marqué **existe** (lu ou mesuré le 28/09/2026) ou **décidé** (D-475, R-140 d
   produit & R&D (« chef de produit » ramené à l'exact : 53 offres non assistantes perdues) ; « Conseiller.e de
   ventes » au pluriel non lu (48 offres) ; libellés affichés de Premier vendeur et Keyholder en pl, cs, pt, ro, el.
   L'empreinte du manifeste a changé avec 6g (règles identiques) : les mesures 6d déjà comptées valent pour le moteur.
+  **Mesures finales avant activation (29/09/2026, verdicts de l'assistant committés avant le juge indépendant)** :
+  aperçu 6b refait (63 % des offres classées contre 47,1 %, prémisse 100 %, 0 collision, hors plan 0,3 %) ; moteur,
+  6d tour 7, 600 couples : 1,2 % de faux selon l'assistant, 1,8 % selon le juge (bornes hautes 2,4 % et 3,3 %),
+  dont « Manager des ventes » (45 offres) classé Floor manager alors que le point 37 d laisse « Sales Manager » sans
+  métier : question au CEO ; métiers lus, 6f tour 4, 400 couples sur 979 (1 048 offres) : 2,8 % selon l'assistant,
+  5,5 % selon le juge (qui compte aussi les Product Owner informatiques et les formateurs d'entrepôt comme d'autres
+  métiers, par la famille). **Compatibilité des trois migrations avec le code servi (vérifiée dans le code de
+  `main`)** : la disponibilité de l'API n'exige que ses propres migrations ; le code servi n'écrit ni `titleRoles` ni
+  le domaine (valeurs par défaut, déclencheurs compatibles) ; le RUN touche `OccupationState` après chaque lot
+  reclassé, ce qui remettait jusqu'ici tout l'index en file : la demande de remise en file la remplace (l'ancienne API
+  ne la sert pas ; chaque offre modifiée reste remise en file par son déclencheur). **Contrainte de 2C** : l'API de ce
+  dépôt sert `search-5` et ne se déploie qu'avec la v3 active (sinon régression ou indisponibilité) ; l'agrégateur et
+  l'API partagent `main` : leur promotion appartient à la fenêtre d'activation.
   Audit technique du 29/09/2026, suites : la lecture coûte 0,012 ms par intitulé (le rejeu d'activation reste de
   l'ordre de 3 s) ; elle lit l'intitulé que le moteur classe, pas le brut et ses entités HTML ; l'historique immuable
   des décisions ne compte plus un changement limité aux métiers lus (sans quoi le premier passage après les
@@ -386,8 +399,9 @@ Mise à jour du `CLAUDE.md` de l'agrégateur (D-475 §20, §26 a).
 | | Contenu | Production |
 |---|---|---|
 | 2A | Référence ESCO datée ; taxonomie v3 et correspondances par la première passe de curation ; bancs (classification, recherche, mémoire, rappel par marché) | aucune écriture |
-| 2B | Agrégateur : forme additive, garde d'unicité partagée, module partagé, `titleRoles`, domaine stocké, table à deux versions, filtre et facette sans index, suggestions additives, activation sans remise en file massive, génération d'index pré-construite, IA validatrice et surveillance ; la preview de 2A est refaite sur ce code | migrations additives et retrait de `search-3` : GO et confirmation |
+| 2B | Agrégateur : forme additive, garde d'unicité partagée, module partagé, `titleRoles`, domaine stocké, table à deux versions, filtre et facette sans index, suggestions additives, activation sans remise en file massive, génération d'index pré-construite, surveillance ; la preview de 2A est refaite sur ce code (l'IA validatrice passe après 2C : D-475 §39) | migrations additives et retrait de `search-3` : GO et confirmation |
 | 2C | Activation de la v3 hors RUN, reclassement au rythme, table apprise sur le stock de l'agrégateur | GO, **irréversible pour les identifiants** |
+| 2C bis | Passes de curation automatiques (IA validatrice, §3.2), avant la v4 (D-475 §39) | activation sans GO sous leurs seuils (§30) |
 | 2D | Site `/emplois` : suggestions, recherche par identifiant | GO |
 | 2E | Backend (synchronisation, colonnes, transition, poste actuel), puis back-office, site, Média ; rattrapage des populations du backend | GO et confirmation |
 | 2F | Retrait (§3.8) | suppressions : GO, confirmation, sauvegarde |
