@@ -10,6 +10,9 @@ section `portails`) : RUN du 29/09/2026, refus `PORTAL_OWNER_NOT_CERTIFIED` sur 
 | `brown-thomas-taleo` | Brown Thomas Arnotts | Taleo | 11 | « Brown Thomas Arnotts » | `SINGLE_BRAND` : un employeur, ses deux enseignes |
 | `lvmh` | LVMH (toutes Maisons) | lvmh.com | 60 | « LVMH » | `MULTI_BRAND` : 53 Maisons prouvées (`portails-groupe-sans-scope.mts`) ; ses offres sans Maison restent refusées (lecteur à compléter) |
 
-Non posés ici, à arbitrer ou à lire : Beauty Success, Groupe Printemps, Hot Topic et les trois sources Lagardère, déjà
-déclarés `MULTI_BRAND` (leurs offres ne nomment aucun employeur : lecteur ou périmètre à revoir) ; B&S International et
+**Arbitrage du CEO (D-478, 29/09/2026)** : Beauty Success (87), Groupe Printemps (100), Hot Topic (19) et les trois sources
+Lagardère (128), déclarés `MULTI_BRAND` par une relecture technique et dont aucune offre ne nomme l'enseigne, publient
+sous le nom du groupe employeur : `SINGLE_BRAND` posé par `portails-groupes-d478.csv`.
+
+Restent : B&S International et
 Funky Buddha (`EMPLOYER_SPELLING_DIVERGED` : orthographe à relire).
