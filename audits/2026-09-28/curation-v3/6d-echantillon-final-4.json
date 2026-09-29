@@ -15,7 +15,7 @@
    "metier": "manager-floor",
    "statut": "CLASSIFIED",
    "libelle": "Floor manager",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -26,7 +26,7 @@
    "metier": "receptionist",
    "statut": "CLASSIFIED",
    "libelle": "Réceptionniste",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -37,7 +37,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -48,7 +48,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -59,7 +59,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -70,7 +70,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -81,7 +81,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -92,7 +92,7 @@
    "metier": "category-manager",
    "statut": "CLASSIFIED",
    "libelle": "Category manager",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -103,7 +103,7 @@
    "metier": "assistant-store-manager",
    "statut": "CLASSIFIED",
    "libelle": "Adjoint au responsable de boutique",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -114,7 +114,7 @@
    "metier": "keyholder",
    "statut": "CLASSIFIED",
    "libelle": "Keyholder",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -125,7 +125,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -136,7 +136,7 @@
    "metier": "employe-de-commerce",
    "statut": "CLASSIFIED",
    "libelle": "Employé de rayon",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -147,7 +147,7 @@
    "metier": "hr-business-partner",
    "statut": "CLASSIFIED",
    "libelle": "Partenaire RH",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -158,7 +158,7 @@
    "metier": "manager-floor",
    "statut": "CLASSIFIED",
    "libelle": "Floor manager",
-   "verdictModele": null,
+   "verdictModele": "F",
    "verdictAssistant": "C"
   },
   {
@@ -169,7 +169,7 @@
    "metier": "agent-de-securite",
    "statut": "CLASSIFIED",
    "libelle": "Agent de sécurité",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -180,7 +180,7 @@
    "metier": "head-cashier",
    "statut": "CLASSIFIED",
    "libelle": "Responsable caisse",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -191,7 +191,7 @@
    "metier": "agent-d-entretien",
    "statut": "CLASSIFIED",
    "libelle": "Agent d'entretien",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -202,7 +202,7 @@
    "metier": "responsable-vm",
    "statut": "CLASSIFIED",
    "libelle": "Responsable visual merchandising",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -213,7 +213,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -224,7 +224,7 @@
    "metier": "retail-sales-lead",
    "statut": "CLASSIFIED",
    "libelle": "Premier vendeur",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -235,7 +235,7 @@
    "metier": "maintenance-technician",
    "statut": "CLASSIFIED",
    "libelle": "Technicien de maintenance",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -246,7 +246,7 @@
    "metier": "visual-merchandiser",
    "statut": "CLASSIFIED",
    "libelle": "Visual merchandiser",
-   "verdictModele": null,
+   "verdictModele": "P",
    "verdictAssistant": "P"
   },
   {
@@ -257,7 +257,7 @@
    "metier": "employe-de-commerce",
    "statut": "CLASSIFIED",
    "libelle": "Employé de rayon",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -268,7 +268,7 @@
    "metier": "manager-floor",
    "statut": "CLASSIFIED",
    "libelle": "Floor manager",
-   "verdictModele": null,
+   "verdictModele": "F",
    "verdictAssistant": "C"
   },
   {
@@ -279,7 +279,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -290,7 +290,7 @@
    "metier": "assistant-store-manager",
    "statut": "CLASSIFIED",
    "libelle": "Adjoint au responsable de boutique",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -301,7 +301,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -312,7 +312,7 @@
    "metier": "cashier",
    "statut": "CLASSIFIED",
    "libelle": "Hôte de caisse",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -323,7 +323,7 @@
    "metier": "manager-floor",
    "statut": "CLASSIFIED",
    "libelle": "Floor manager",
-   "verdictModele": null,
+   "verdictModele": "F",
    "verdictAssistant": "C"
   },
   {
@@ -334,7 +334,7 @@
    "metier": "stock-associate",
    "statut": "CLASSIFIED",
    "libelle": "Gestionnaire de stock en boutique",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -345,7 +345,7 @@
    "metier": "assistant-designer",
    "statut": "CLASSIFIED",
    "libelle": "Assistant designer",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -356,7 +356,7 @@
    "metier": "pharmacy-support-worker",
    "statut": "CLASSIFIED",
    "libelle": "Assistant en pharmacie",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "P"
   },
   {
@@ -367,7 +367,7 @@
    "metier": "assistant-store-manager",
    "statut": "CLASSIFIED",
    "libelle": "Adjoint au responsable de boutique",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -378,7 +378,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -389,7 +389,7 @@
    "metier": "manager-floor",
    "statut": "CLASSIFIED",
    "libelle": "Floor manager",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -400,7 +400,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -411,7 +411,7 @@
    "metier": "manager-floor",
    "statut": "CLASSIFIED",
    "libelle": "Floor manager",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -422,7 +422,7 @@
    "metier": "retail-sales-lead",
    "statut": "CLASSIFIED",
    "libelle": "Premier vendeur",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -433,7 +433,7 @@
    "metier": "manager-floor",
    "statut": "CLASSIFIED",
    "libelle": "Floor manager",
-   "verdictModele": null,
+   "verdictModele": "P",
    "verdictAssistant": "P"
   },
   {
@@ -444,7 +444,7 @@
    "metier": "keyholder",
    "statut": "CLASSIFIED",
    "libelle": "Keyholder",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -455,7 +455,7 @@
    "metier": "makeup-artist",
    "statut": "CLASSIFIED",
    "libelle": "Maquilleur",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -466,7 +466,7 @@
    "metier": "cashier",
    "statut": "CLASSIFIED",
    "libelle": "Hôte de caisse",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -477,7 +477,7 @@
    "metier": "directeur-reseau",
    "statut": "CLASSIFIED",
    "libelle": "Directeur de réseau",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "P"
   },
   {
@@ -488,7 +488,7 @@
    "metier": "keyholder",
    "statut": "CLASSIFIED",
    "libelle": "Keyholder",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -499,7 +499,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -510,7 +510,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -521,7 +521,7 @@
    "metier": "optical-assistant",
    "statut": "CLASSIFIED",
    "libelle": "Assistant d'optique",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -532,7 +532,7 @@
    "metier": "assistant-designer",
    "statut": "CLASSIFIED",
    "libelle": "Assistant designer",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -543,7 +543,7 @@
    "metier": "manager-floor",
    "statut": "CLASSIFIED",
    "libelle": "Floor manager",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -554,7 +554,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -565,7 +565,7 @@
    "metier": "assistant-visual-merchandising-manager",
    "statut": "CLASSIFIED",
    "libelle": "Assistant Visual Merchandiser",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "P"
   },
   {
@@ -576,7 +576,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -587,7 +587,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -598,7 +598,7 @@
    "metier": "manager-floor",
    "statut": "CLASSIFIED",
    "libelle": "Floor manager",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -609,7 +609,7 @@
    "metier": "stock-associate",
    "statut": "CLASSIFIED",
    "libelle": "Gestionnaire de stock en boutique",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -620,7 +620,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -631,7 +631,7 @@
    "metier": "assistant-store-manager",
    "statut": "CLASSIFIED",
    "libelle": "Adjoint au responsable de boutique",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -642,7 +642,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -653,7 +653,7 @@
    "metier": "warehouse-operative",
    "statut": "CLASSIFIED",
    "libelle": "Préparateur de commandes",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -664,7 +664,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -675,7 +675,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -686,7 +686,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -697,7 +697,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -708,7 +708,7 @@
    "metier": "employe-de-commerce",
    "statut": "CLASSIFIED",
    "libelle": "Employé de rayon",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -719,7 +719,7 @@
    "metier": "store-manager",
    "statut": "CLASSIFIED",
    "libelle": "Responsable de boutique",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -730,7 +730,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -741,7 +741,7 @@
    "metier": "manager-floor",
    "statut": "CLASSIFIED",
    "libelle": "Floor manager",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "P"
   },
   {
@@ -752,7 +752,7 @@
    "metier": "manager-floor",
    "statut": "CLASSIFIED",
    "libelle": "Floor manager",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -763,7 +763,7 @@
    "metier": "assistant-store-manager",
    "statut": "CLASSIFIED",
    "libelle": "Adjoint au responsable de boutique",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -774,7 +774,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -785,7 +785,7 @@
    "metier": "keyholder",
    "statut": "CLASSIFIED",
    "libelle": "Keyholder",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -796,7 +796,7 @@
    "metier": "retail-sales-lead",
    "statut": "CLASSIFIED",
    "libelle": "Premier vendeur",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -807,7 +807,7 @@
    "metier": "manager-floor",
    "statut": "CLASSIFIED",
    "libelle": "Floor manager",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -818,7 +818,7 @@
    "metier": "dispensing-optician",
    "statut": "CLASSIFIED",
    "libelle": "Opticien",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -829,7 +829,7 @@
    "metier": "stock-associate",
    "statut": "CLASSIFIED",
    "libelle": "Gestionnaire de stock en boutique",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -840,7 +840,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -851,7 +851,7 @@
    "metier": "coordinateur-retail",
    "statut": "CLASSIFIED",
    "libelle": "Coordinateur retail",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "P"
   },
   {
@@ -862,7 +862,7 @@
    "metier": "assistant-store-manager",
    "statut": "CLASSIFIED",
    "libelle": "Adjoint au responsable de boutique",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -873,7 +873,7 @@
    "metier": "retail-sales-lead",
    "statut": "CLASSIFIED",
    "libelle": "Premier vendeur",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -884,7 +884,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "P"
   },
   {
@@ -895,7 +895,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -906,7 +906,7 @@
    "metier": "employe-de-commerce",
    "statut": "CLASSIFIED",
    "libelle": "Employé de rayon",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -917,7 +917,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -928,7 +928,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -939,7 +939,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -950,7 +950,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -961,7 +961,7 @@
    "metier": "optical-assistant",
    "statut": "CLASSIFIED",
    "libelle": "Assistant d'optique",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -972,7 +972,7 @@
    "metier": "pharmacy-support-worker",
    "statut": "CLASSIFIED",
    "libelle": "Assistant en pharmacie",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "P"
   },
   {
@@ -983,7 +983,7 @@
    "metier": "employe-de-commerce",
    "statut": "CLASSIFIED",
    "libelle": "Employé de rayon",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -994,7 +994,7 @@
    "metier": "charge-d-affaires-reglementaires",
    "statut": "CLASSIFIED",
    "libelle": "Chargé d'affaires réglementaires",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1005,7 +1005,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1016,7 +1016,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1027,7 +1027,7 @@
    "metier": "employe-de-commerce",
    "statut": "CLASSIFIED",
    "libelle": "Employé de rayon",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1038,7 +1038,7 @@
    "metier": "retail-sales-lead",
    "statut": "CLASSIFIED",
    "libelle": "Premier vendeur",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1049,7 +1049,7 @@
    "metier": "manager-floor",
    "statut": "CLASSIFIED",
    "libelle": "Floor manager",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "P"
   },
   {
@@ -1060,7 +1060,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1071,7 +1071,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1082,7 +1082,7 @@
    "metier": "retail-sales-lead",
    "statut": "CLASSIFIED",
    "libelle": "Premier vendeur",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "P"
   },
   {
@@ -1093,7 +1093,7 @@
    "metier": "keyholder",
    "statut": "CLASSIFIED",
    "libelle": "Keyholder",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1104,7 +1104,7 @@
    "metier": "livreur",
    "statut": "CLASSIFIED",
    "libelle": "Livreur",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1115,7 +1115,7 @@
    "metier": "stock-associate",
    "statut": "CLASSIFIED",
    "libelle": "Gestionnaire de stock en boutique",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1126,7 +1126,7 @@
    "metier": "manager-floor",
    "statut": "CLASSIFIED",
    "libelle": "Floor manager",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1137,7 +1137,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1148,7 +1148,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1159,7 +1159,7 @@
    "metier": "manager-floor",
    "statut": "CLASSIFIED",
    "libelle": "Floor manager",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1170,7 +1170,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1181,7 +1181,7 @@
    "metier": "chef-de-projet-crm",
    "statut": "CLASSIFIED",
    "libelle": "Chef de projet CRM",
-   "verdictModele": null,
+   "verdictModele": "P",
    "verdictAssistant": "P"
   },
   {
@@ -1192,7 +1192,7 @@
    "metier": "responsable-vm",
    "statut": "CLASSIFIED",
    "libelle": "Responsable visual merchandising",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1203,7 +1203,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1214,7 +1214,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1225,7 +1225,7 @@
    "metier": "stock-associate",
    "statut": "CLASSIFIED",
    "libelle": "Gestionnaire de stock en boutique",
-   "verdictModele": null,
+   "verdictModele": "P",
    "verdictAssistant": "C"
   },
   {
@@ -1236,7 +1236,7 @@
    "metier": "stock-associate",
    "statut": "CLASSIFIED",
    "libelle": "Gestionnaire de stock en boutique",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1247,7 +1247,7 @@
    "metier": "manager-floor",
    "statut": "CLASSIFIED",
    "libelle": "Floor manager",
-   "verdictModele": null,
+   "verdictModele": "P",
    "verdictAssistant": "P"
   },
   {
@@ -1258,7 +1258,7 @@
    "metier": "store-manager",
    "statut": "CLASSIFIED",
    "libelle": "Responsable de boutique",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1269,7 +1269,7 @@
    "metier": "manager-floor",
    "statut": "CLASSIFIED",
    "libelle": "Floor manager",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1280,7 +1280,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1291,7 +1291,7 @@
    "metier": "responsable-operationnel",
    "statut": "CLASSIFIED",
    "libelle": "Responsable opérationnel",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1302,7 +1302,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1313,7 +1313,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1324,7 +1324,7 @@
    "metier": "ingenieur-qualite",
    "statut": "CLASSIFIED",
    "libelle": "Ingénieur qualité",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1335,7 +1335,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1346,7 +1346,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1357,7 +1357,7 @@
    "metier": "employe-de-commerce",
    "statut": "CLASSIFIED",
    "libelle": "Employé de rayon",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1368,7 +1368,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1379,7 +1379,7 @@
    "metier": "manager-floor",
    "statut": "CLASSIFIED",
    "libelle": "Floor manager",
-   "verdictModele": null,
+   "verdictModele": "P",
    "verdictAssistant": "P"
   },
   {
@@ -1390,7 +1390,7 @@
    "metier": "store-manager",
    "statut": "CLASSIFIED",
    "libelle": "Responsable de boutique",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1401,7 +1401,7 @@
    "metier": "demand-planner",
    "statut": "CLASSIFIED",
    "libelle": "Prévisionniste de la demande",
-   "verdictModele": null,
+   "verdictModele": "P",
    "verdictAssistant": "P"
   },
   {
@@ -1412,7 +1412,7 @@
    "metier": "responsable-de-comptes",
    "statut": "CLASSIFIED",
    "libelle": "Account Manager",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1423,7 +1423,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1434,7 +1434,7 @@
    "metier": "stock-associate",
    "statut": "CLASSIFIED",
    "libelle": "Gestionnaire de stock en boutique",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1445,7 +1445,7 @@
    "metier": "retail-sales-lead",
    "statut": "CLASSIFIED",
    "libelle": "Premier vendeur",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1456,7 +1456,7 @@
    "metier": "agent-de-securite",
    "statut": "CLASSIFIED",
    "libelle": "Agent de sécurité",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1467,7 +1467,7 @@
    "metier": "responsable-operationnel",
    "statut": "CLASSIFIED",
    "libelle": "Responsable opérationnel",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1478,7 +1478,7 @@
    "metier": "equipment-operator",
    "statut": "CLASSIFIED",
    "libelle": "Conducteur d'engins",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1489,7 +1489,7 @@
    "metier": "responsable-operationnel",
    "statut": "CLASSIFIED",
    "libelle": "Responsable opérationnel",
-   "verdictModele": null,
+   "verdictModele": "P",
    "verdictAssistant": "P"
   },
   {
@@ -1500,7 +1500,7 @@
    "metier": "beauty-consultant",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller beauté",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1511,7 +1511,7 @@
    "metier": "visual-merchandiser",
    "statut": "CLASSIFIED",
    "libelle": "Visual merchandiser",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1522,7 +1522,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1533,7 +1533,7 @@
    "metier": "assistant-store-manager",
    "statut": "CLASSIFIED",
    "libelle": "Adjoint au responsable de boutique",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1544,7 +1544,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1555,7 +1555,7 @@
    "metier": "retail-sales-lead",
    "statut": "CLASSIFIED",
    "libelle": "Premier vendeur",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "P"
   },
   {
@@ -1566,7 +1566,7 @@
    "metier": "cashier",
    "statut": "CLASSIFIED",
    "libelle": "Hôte de caisse",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1577,7 +1577,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1588,7 +1588,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "P"
   },
   {
@@ -1599,7 +1599,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1610,7 +1610,7 @@
    "metier": "assistant-store-manager",
    "statut": "CLASSIFIED",
    "libelle": "Adjoint au responsable de boutique",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1621,7 +1621,7 @@
    "metier": "directeur-de-clientele",
    "statut": "CLASSIFIED",
    "libelle": "Directeur de clientèle",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1632,7 +1632,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1643,7 +1643,7 @@
    "metier": "keyholder",
    "statut": "CLASSIFIED",
    "libelle": "Keyholder",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1654,7 +1654,7 @@
    "metier": "agent-de-securite",
    "statut": "CLASSIFIED",
    "libelle": "Agent de sécurité",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1665,7 +1665,7 @@
    "metier": "gestionnaire-des-ressources-humaines",
    "statut": "CLASSIFIED",
    "libelle": "Gestionnaire RH",
-   "verdictModele": null,
+   "verdictModele": "P",
    "verdictAssistant": "P"
   },
   {
@@ -1676,7 +1676,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1687,7 +1687,7 @@
    "metier": "optical-assistant",
    "statut": "CLASSIFIED",
    "libelle": "Assistant d'optique",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1698,7 +1698,7 @@
    "metier": "keyholder",
    "statut": "CLASSIFIED",
    "libelle": "Keyholder",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1709,7 +1709,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1720,7 +1720,7 @@
    "metier": "head-cashier",
    "statut": "CLASSIFIED",
    "libelle": "Responsable caisse",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1731,7 +1731,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1742,7 +1742,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "P",
    "verdictAssistant": "P"
   },
   {
@@ -1753,7 +1753,7 @@
    "metier": "planificateur-supply-chain",
    "statut": "CLASSIFIED",
    "libelle": "Planificateur Supply Chain",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1764,7 +1764,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1775,7 +1775,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1786,7 +1786,7 @@
    "metier": "agent-de-securite",
    "statut": "CLASSIFIED",
    "libelle": "Agent de sécurité",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1797,7 +1797,7 @@
    "metier": "employe-de-commerce",
    "statut": "CLASSIFIED",
    "libelle": "Employé de rayon",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1808,7 +1808,7 @@
    "metier": "manager-floor",
    "statut": "CLASSIFIED",
    "libelle": "Floor manager",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1819,7 +1819,7 @@
    "metier": "quality-technician",
    "statut": "CLASSIFIED",
    "libelle": "Technicien qualité",
-   "verdictModele": null,
+   "verdictModele": "P",
    "verdictAssistant": "C"
   },
   {
@@ -1830,7 +1830,7 @@
    "metier": "charge-de-relations-presse",
    "statut": "CLASSIFIED",
    "libelle": "Attaché de presse",
-   "verdictModele": null,
+   "verdictModele": "P",
    "verdictAssistant": "P"
   },
   {
@@ -1841,7 +1841,7 @@
    "metier": "responsable-operationnel",
    "statut": "CLASSIFIED",
    "libelle": "Responsable opérationnel",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "P"
   },
   {
@@ -1852,7 +1852,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1863,7 +1863,7 @@
    "metier": "maintenance-technician",
    "statut": "CLASSIFIED",
    "libelle": "Technicien de maintenance",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1874,7 +1874,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1885,7 +1885,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1896,7 +1896,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1907,7 +1907,7 @@
    "metier": "retail-sales-lead",
    "statut": "CLASSIFIED",
    "libelle": "Premier vendeur",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1918,7 +1918,7 @@
    "metier": "responsable-relation-client",
    "statut": "CLASSIFIED",
    "libelle": "Responsable relation client",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1929,7 +1929,7 @@
    "metier": "directeur-reseau",
    "statut": "CLASSIFIED",
    "libelle": "Directeur de réseau",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "P"
   },
   {
@@ -1940,7 +1940,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1951,7 +1951,7 @@
    "metier": "manager-floor",
    "statut": "CLASSIFIED",
    "libelle": "Floor manager",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1962,7 +1962,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "P"
   },
   {
@@ -1973,7 +1973,7 @@
    "metier": "createur-de-contenu",
    "statut": "CLASSIFIED",
    "libelle": "Créateur de contenu",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1984,7 +1984,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -1995,7 +1995,7 @@
    "metier": "barman",
    "statut": "CLASSIFIED",
    "libelle": "Barman",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -2006,7 +2006,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -2017,7 +2017,7 @@
    "metier": "manager-floor",
    "statut": "CLASSIFIED",
    "libelle": "Floor manager",
-   "verdictModele": null,
+   "verdictModele": "P",
    "verdictAssistant": "P"
   },
   {
@@ -2028,7 +2028,7 @@
    "metier": "keyholder",
    "statut": "CLASSIFIED",
    "libelle": "Keyholder",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -2039,7 +2039,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -2050,7 +2050,7 @@
    "metier": "logistics-manager",
    "statut": "CLASSIFIED",
    "libelle": "Responsable logistique",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -2061,7 +2061,7 @@
    "metier": "stock-associate",
    "statut": "CLASSIFIED",
    "libelle": "Gestionnaire de stock en boutique",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -2072,7 +2072,7 @@
    "metier": "planificateur-supply-chain",
    "statut": "CLASSIFIED",
    "libelle": "Planificateur Supply Chain",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -2083,7 +2083,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -2094,7 +2094,7 @@
    "metier": "planificateur-supply-chain",
    "statut": "CLASSIFIED",
    "libelle": "Planificateur Supply Chain",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -2105,7 +2105,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -2116,7 +2116,7 @@
    "metier": "pharmacy-technician",
    "statut": "CLASSIFIED",
    "libelle": "Préparateur en pharmacie",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -2127,7 +2127,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -2138,7 +2138,7 @@
    "metier": "retail-sales-lead",
    "statut": "CLASSIFIED",
    "libelle": "Premier vendeur",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -2149,7 +2149,7 @@
    "metier": "retail-sales-lead",
    "statut": "CLASSIFIED",
    "libelle": "Premier vendeur",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -2160,7 +2160,7 @@
    "metier": "visual-merchandiser",
    "statut": "CLASSIFIED",
    "libelle": "Visual merchandiser",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -2171,7 +2171,7 @@
    "metier": "retail-sales-lead",
    "statut": "CLASSIFIED",
    "libelle": "Premier vendeur",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -2182,7 +2182,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -2193,7 +2193,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -2204,7 +2204,7 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente",
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   }
  ],
@@ -2218,5 +2218,33 @@
    "66,124": "chef ou responsable de rayon de la grande distribution rattaché au Floor manager : métier voisin",
    "79,143,177": "ambassadeur de marque parfum ou relation client rattaché au Conseiller de vente : voisin"
   }
+ },
+ "jugeModele": "gemini-3.1-pro-preview",
+ "bilan": {
+  "assistant": {
+   "juges": 200,
+   "C": 175,
+   "P": 25,
+   "F": 0,
+   "fauxOffresPct": 0,
+   "borneHauteWilson95": 1.9,
+   "justesOffresPct": 87.5,
+   "parIntitule": {
+    "fauxPct": 0
+   }
+  },
+  "modele": {
+   "juges": 200,
+   "C": 184,
+   "P": 13,
+   "F": 3,
+   "fauxOffresPct": 1.5,
+   "borneHauteWilson95": 4.3,
+   "justesOffresPct": 92,
+   "parIntitule": {
+    "fauxPct": 0.1
+   }
+  },
+  "desaccords": 19
  }
 }

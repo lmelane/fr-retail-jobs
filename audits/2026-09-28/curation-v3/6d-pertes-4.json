@@ -16,7 +16,7 @@
    "metier": null,
    "statut": "FAMILY_ONLY",
    "libelle": null,
-   "verdictModele": null,
+   "verdictModele": "F",
    "verdictAssistant": "C"
   },
   {
@@ -27,7 +27,7 @@
    "metier": null,
    "statut": "FAMILY_ONLY",
    "libelle": null,
-   "verdictModele": null,
+   "verdictModele": "F",
    "verdictAssistant": "C"
   },
   {
@@ -38,7 +38,7 @@
    "metier": null,
    "statut": "AMBIGUOUS",
    "libelle": null,
-   "verdictModele": null,
+   "verdictModele": "F",
    "verdictAssistant": "C"
   },
   {
@@ -49,7 +49,7 @@
    "metier": null,
    "statut": "AMBIGUOUS",
    "libelle": null,
-   "verdictModele": null,
+   "verdictModele": "F",
    "verdictAssistant": "C"
   },
   {
@@ -60,7 +60,7 @@
    "metier": null,
    "statut": "FAMILY_ONLY",
    "libelle": null,
-   "verdictModele": null,
+   "verdictModele": "C",
    "verdictAssistant": "C"
   },
   {
@@ -71,7 +71,7 @@
    "metier": null,
    "statut": "FAMILY_ONLY",
    "libelle": null,
-   "verdictModele": null,
+   "verdictModele": "F",
    "verdictAssistant": "C"
   },
   {
@@ -82,7 +82,7 @@
    "metier": null,
    "statut": "FAMILY_ONLY",
    "libelle": null,
-   "verdictModele": null,
+   "verdictModele": "F",
    "verdictAssistant": "C"
   },
   {
@@ -93,7 +93,7 @@
    "metier": null,
    "statut": "FAMILY_ONLY",
    "libelle": null,
-   "verdictModele": null,
+   "verdictModele": "F",
    "verdictAssistant": "C"
   },
   {
@@ -104,7 +104,7 @@
    "metier": null,
    "statut": "FAMILY_ONLY",
    "libelle": null,
-   "verdictModele": null,
+   "verdictModele": "F",
    "verdictAssistant": "F"
   },
   {
@@ -115,7 +115,7 @@
    "metier": null,
    "statut": "FAMILY_ONLY",
    "libelle": null,
-   "verdictModele": null,
+   "verdictModele": "F",
    "verdictAssistant": "C"
   },
   {
@@ -126,7 +126,7 @@
    "metier": null,
    "statut": "FAMILY_ONLY",
    "libelle": null,
-   "verdictModele": null,
+   "verdictModele": "F",
    "verdictAssistant": "C"
   },
   {
@@ -137,7 +137,7 @@
    "metier": null,
    "statut": "FAMILY_ONLY",
    "libelle": null,
-   "verdictModele": null,
+   "verdictModele": "F",
    "verdictAssistant": "C"
   },
   {
@@ -148,7 +148,7 @@
    "metier": null,
    "statut": "FAMILY_ONLY",
    "libelle": null,
-   "verdictModele": null,
+   "verdictModele": "F",
    "verdictAssistant": "C"
   },
   {
@@ -159,7 +159,7 @@
    "metier": null,
    "statut": "AMBIGUOUS",
    "libelle": null,
-   "verdictModele": null,
+   "verdictModele": "F",
    "verdictAssistant": "C"
   },
   {
@@ -170,7 +170,7 @@
    "metier": null,
    "statut": "AMBIGUOUS",
    "libelle": null,
-   "verdictModele": null,
+   "verdictModele": "F",
    "verdictAssistant": "C"
   },
   {
@@ -181,7 +181,7 @@
    "metier": null,
    "statut": "FAMILY_ONLY",
    "libelle": null,
-   "verdictModele": null,
+   "verdictModele": "F",
    "verdictAssistant": "C"
   },
   {
@@ -192,7 +192,7 @@
    "metier": null,
    "statut": "FAMILY_ONLY",
    "libelle": null,
-   "verdictModele": null,
+   "verdictModele": "F",
    "verdictAssistant": "C"
   },
   {
@@ -203,7 +203,7 @@
    "metier": null,
    "statut": "FAMILY_ONLY",
    "libelle": null,
-   "verdictModele": null,
+   "verdictModele": "F",
    "verdictAssistant": "C"
   },
   {
@@ -214,7 +214,7 @@
    "metier": null,
    "statut": "AMBIGUOUS",
    "libelle": null,
-   "verdictModele": null,
+   "verdictModele": "F",
    "verdictAssistant": "C"
   },
   {
@@ -225,7 +225,7 @@
    "metier": null,
    "statut": "AMBIGUOUS",
    "libelle": null,
-   "verdictModele": null,
+   "verdictModele": "F",
    "verdictAssistant": "C"
   },
   {
@@ -236,7 +236,7 @@
    "metier": null,
    "statut": "FAMILY_ONLY",
    "libelle": null,
-   "verdictModele": null,
+   "verdictModele": "F",
    "verdictAssistant": "C"
   },
   {
@@ -247,7 +247,7 @@
    "metier": null,
    "statut": "FAMILY_ONLY",
    "libelle": null,
-   "verdictModele": null,
+   "verdictModele": "F",
    "verdictAssistant": "F"
   },
   {
@@ -258,7 +258,7 @@
    "metier": null,
    "statut": "AMBIGUOUS",
    "libelle": null,
-   "verdictModele": null,
+   "verdictModele": "F",
    "verdictAssistant": "C"
   },
   {
@@ -269,7 +269,7 @@
    "metier": null,
    "statut": "FAMILY_ONLY",
    "libelle": null,
-   "verdictModele": null,
+   "verdictModele": "F",
    "verdictAssistant": "C"
   },
   {
@@ -280,7 +280,7 @@
    "metier": null,
    "statut": "FAMILY_ONLY",
    "libelle": null,
-   "verdictModele": null,
+   "verdictModele": "F",
    "verdictAssistant": "C"
   },
   {
@@ -291,7 +291,7 @@
    "metier": null,
    "statut": "FAMILY_ONLY",
    "libelle": null,
-   "verdictModele": null,
+   "verdictModele": "F",
    "verdictAssistant": "C"
   },
   {
@@ -302,7 +302,7 @@
    "metier": null,
    "statut": "FAMILY_ONLY",
    "libelle": null,
-   "verdictModele": null,
+   "verdictModele": "F",
    "verdictAssistant": "C"
   },
   {
@@ -313,7 +313,7 @@
    "metier": null,
    "statut": "FAMILY_ONLY",
    "libelle": null,
-   "verdictModele": null,
+   "verdictModele": "F",
    "verdictAssistant": "C"
   },
   {
@@ -324,7 +324,7 @@
    "metier": null,
    "statut": "FAMILY_ONLY",
    "libelle": null,
-   "verdictModele": null,
+   "verdictModele": "F",
    "verdictAssistant": "C"
   },
   {
@@ -335,7 +335,7 @@
    "metier": null,
    "statut": "FAMILY_ONLY",
    "libelle": null,
-   "verdictModele": null,
+   "verdictModele": "F",
    "verdictAssistant": "C"
   },
   {
@@ -346,7 +346,7 @@
    "metier": null,
    "statut": "FAMILY_ONLY",
    "libelle": null,
-   "verdictModele": null,
+   "verdictModele": "F",
    "verdictAssistant": "C"
   },
   {
@@ -357,7 +357,7 @@
    "metier": null,
    "statut": "FAMILY_ONLY",
    "libelle": null,
-   "verdictModele": null,
+   "verdictModele": "F",
    "verdictAssistant": "C"
   },
   {
@@ -368,7 +368,7 @@
    "metier": null,
    "statut": "FAMILY_ONLY",
    "libelle": null,
-   "verdictModele": null,
+   "verdictModele": "F",
    "verdictAssistant": "C"
   },
   {
@@ -379,7 +379,7 @@
    "metier": null,
    "statut": "FAMILY_ONLY",
    "libelle": null,
-   "verdictModele": null,
+   "verdictModele": "F",
    "verdictAssistant": "C"
   },
   {
@@ -390,7 +390,7 @@
    "metier": null,
    "statut": "AMBIGUOUS",
    "libelle": null,
-   "verdictModele": null,
+   "verdictModele": "F",
    "verdictAssistant": "C"
   },
   {
@@ -401,7 +401,7 @@
    "metier": null,
    "statut": "FAMILY_ONLY",
    "libelle": null,
-   "verdictModele": null,
+   "verdictModele": "F",
    "verdictAssistant": "C"
   },
   {
@@ -412,7 +412,7 @@
    "metier": null,
    "statut": "FAMILY_ONLY",
    "libelle": null,
-   "verdictModele": null,
+   "verdictModele": "F",
    "verdictAssistant": "C"
   },
   {
@@ -423,7 +423,7 @@
    "metier": null,
    "statut": "FAMILY_ONLY",
    "libelle": null,
-   "verdictModele": null,
+   "verdictModele": "F",
    "verdictAssistant": "C"
   },
   {
@@ -434,7 +434,7 @@
    "metier": null,
    "statut": "FAMILY_ONLY",
    "libelle": null,
-   "verdictModele": null,
+   "verdictModele": "F",
    "verdictAssistant": "C"
   },
   {
@@ -445,7 +445,7 @@
    "metier": null,
    "statut": "FAMILY_ONLY",
    "libelle": null,
-   "verdictModele": null,
+   "verdictModele": "F",
    "verdictAssistant": "C"
   },
   {
@@ -456,7 +456,7 @@
    "metier": null,
    "statut": "FAMILY_ONLY",
    "libelle": null,
-   "verdictModele": null,
+   "verdictModele": "F",
    "verdictAssistant": "F"
   },
   {
@@ -467,7 +467,7 @@
    "metier": null,
    "statut": "FAMILY_ONLY",
    "libelle": null,
-   "verdictModele": null,
+   "verdictModele": "F",
    "verdictAssistant": "C"
   },
   {
@@ -478,7 +478,7 @@
    "metier": null,
    "statut": "FAMILY_ONLY",
    "libelle": null,
-   "verdictModele": null,
+   "verdictModele": "F",
    "verdictAssistant": "F"
   },
   {
@@ -489,7 +489,7 @@
    "metier": null,
    "statut": "AMBIGUOUS",
    "libelle": null,
-   "verdictModele": null,
+   "verdictModele": "F",
    "verdictAssistant": "C"
   },
   {
@@ -500,7 +500,7 @@
    "metier": null,
    "statut": "FAMILY_ONLY",
    "libelle": null,
-   "verdictModele": null,
+   "verdictModele": "F",
    "verdictAssistant": "C"
   },
   {
@@ -511,7 +511,7 @@
    "metier": null,
    "statut": "AMBIGUOUS",
    "libelle": null,
-   "verdictModele": null,
+   "verdictModele": "F",
    "verdictAssistant": "C"
   },
   {
@@ -522,7 +522,7 @@
    "metier": null,
    "statut": "FAMILY_ONLY",
    "libelle": null,
-   "verdictModele": null,
+   "verdictModele": "F",
    "verdictAssistant": "C"
   },
   {
@@ -533,7 +533,7 @@
    "metier": null,
    "statut": "FAMILY_ONLY",
    "libelle": null,
-   "verdictModele": null,
+   "verdictModele": "F",
    "verdictAssistant": "C"
   }
  ],
@@ -546,5 +546,27 @@
    "lead, director, responsable": "postes d'encadrement sans métier d'encadrement dans la taxonomie : absence conforme à D-475 §32 a (« Lead Software Engineer » est discutable : lead technique ou encadrement)",
    "doubles intitulés": "deux métiers distincts dans l'intitulé (Barista/Bartender, Vente/Caisse, Entrepôt/Engins) : ambiguïté honnête"
   }
+ },
+ "jugeModele": "gemini-3.1-pro-preview",
+ "bilan": {
+  "assistant": {
+   "juges": 48,
+   "C": 44,
+   "P": 0,
+   "F": 4,
+   "offres": 57,
+   "offresFausses": 4,
+   "fauxOffresPct": 7
+  },
+  "modele": {
+   "juges": 48,
+   "C": 1,
+   "P": 0,
+   "F": 47,
+   "offres": 57,
+   "offresFausses": 56,
+   "fauxOffresPct": 98.2
+  },
+  "desaccords": 43
  }
 }

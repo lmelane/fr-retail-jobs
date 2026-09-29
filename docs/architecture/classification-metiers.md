@@ -98,18 +98,36 @@ marqué **existe** (lu ou mesuré le 28/09/2026) ou **décidé** (D-475, R-140 d
   distincts (sinon il attend la passe suivante) ; une famille nouvelle reçoit au moins 1 métier (11 des 27 familles
   servies en portent 0 ou 1 ; le seuil de 2 rangeait « Mannequin » dans l'atelier). Les métiers hors luxe vont dans
   « Autres secteurs » (D-475 §33).
-- **Résultat de la constitution (2A, 29/09/2026, `audits/2026-09-28/curation-v3/`), après l'audit adverse du lot**
-  (trois lectures, toutes BLOCKED, corrigées) : manifeste `catwalks-occupations-20260929-v3`, 253 métiers (3 absorbés
-  par fusion confirmée), 33 familles, 25 langues ; compilé par le moteur, conforme à la règle de succession. Preview
-  sur les 80 741 offres publiables, intitulé nettoyé comme en production (la version servie rejouée redonne 100 % du
-  code ET du statut) : 62,8 % des offres ont un métier (47,1 % aujourd'hui) ; 0,1 % d'ambiguës (seuil 1 %) ; 0,3 % des
-  intitulés classés changent de métier hors plan (seuil 10 %) ; aucune perte hors plan (seuil 0,5 %). Bancs
-  (`6e-bancs.json`) : les 6 331 libellés et alias de recherche rendent chacun leur métier ; compilation 65 ms, 22 Mo,
-  environ 58 000 classements par seconde. **Justesse, échantillon neuf de 200 tiré sur la version finale et enregistré
-  avant jugement (`6d-echantillon-final.json`), deux juges indépendants : 6 faux pour l'assistant (3,0 %, 1,5 % en
-  offres), 4 pour le modèle (2,0 %, 0,1 % en offres) : au-dessus du seuil de 1 %, la v3 reste BLOQUÉE** ; causes
-  relevées dans le fichier (titres génériques « General Manager », forme « superviseur•e », scission employé de
-  commerce et conseiller de vente…).
+- **Résultat de la constitution (2A, 29/09/2026, `audits/2026-09-28/curation-v3/`)**, après trois tours d'audit
+  adverse (le premier et le deuxième BLOCKED, corrigés) et les arbitrages D-475 §35 et §36 : manifeste
+  `catwalks-occupations-20260929-v3` (empreinte `8cfb2180…`), 253 métiers (3 absorbés par fusion confirmée), 33
+  familles, 25 langues ; compilé par le moteur, conforme à la règle de succession. Preview sur les 80 741 offres
+  publiables, intitulé nettoyé comme en production (la version servie rejouée redonne 100 % du code ET du statut) :
+  62,3 % des offres ont un métier (47,1 % aujourd'hui) ; 0,1 % d'ambiguës (seuil 1 %) ; 0,3 % des intitulés classés
+  changent de métier hors plan (seuil 10 %) ; aucune perte hors plan (seuil 0,5 %) ; 57 offres (0,07 %) perdent le
+  métier servi. Bancs (`6e-bancs.json`) : les 6 338 libellés et alias de recherche rendent chacun leur métier ;
+  compilation 92 ms, 35 Mo, environ 58 000 classements par seconde.
+- **Justesse, par tour** (échantillon de 200 couples tiré en proportion des offres qui changent, enregistré dans un
+  commit avant tout jugement ; `6d-echantillon-final[-n].json`) :
+
+  | Tour | Version mesurée | Assistant | Second juge | Verdict |
+  |---|---|---|---|---|
+  | 1 | avant la séparation vente / rayon | 6 faux (3,0 %) | 4 (2,0 %), `gemini-3-flash-preview` | BLOQUÉE |
+  | 2 | séparation, première forme | 1 (0,5 %) | 2 (1,0 %), même juge, **non indépendant** (il a co-décidé les rattachements) | audits BLOCKED |
+  | 3 | correctifs du 2e audit, avant §36 | 0 | 0, `gemini-3.1-pro-preview` (aucun rattachement) | audit : §36 à trancher |
+  | 4 | **version actuelle** | 0 (borne haute de Wilson 1,9 %) | 3 (1,5 %), tous des cas tranchés par §36 (« Team Manager » → Floor manager), notés d'après l'ancienne grille ; 0 hors ces cas | sous le seuil |
+
+  Les « 0,1 % en offres » annoncés aux tours 1 et 2 étaient faux : le tirage est déjà proportionnel aux offres, la
+  repondération comptait le poids deux fois ; la proportion brute approche la part d'offres fausses (recalcul
+  Horvitz-Thompson du 2e audit : tour 2 à 0,46 % et 0,94 %). Avec 200 couples, zéro faux ne prouve pas le seuil de
+  1 % (borne haute 1,9 %) ; il ne le contredit pas. **Pertes** jugées toutes (`6d-pertes-4.json`, 48 couples, 57
+  offres) : 4 offres fausses selon les règles (« Keyholder / Verkäufer », « Visual Merchandiser Keyholder » perdent un
+  métier évident) ; les autres sont des postes d'encadrement sans métier d'encadrement dans la taxonomie (« Director,
+  HRBP », « Responsable comptable », « Lead Software Engineer » : §32 a) ou des doubles intitulés. **Entrées de la
+  passe suivante** : les métiers d'encadrement manquants (responsable comptable, directeur RH business partner, lead
+  développeur…), « Sales Lead with Keys » partagé entre Premier vendeur et Floor manager chez UGG, « chef de rayon »
+  de la grande distribution rattaché au Floor manager, les noms de « Conseiller de vente » dans 8 langues à confronter
+  à l'usage des offres (§34), « Stellvertretender Filialleiter » classé Store manager par une règle servie (29 offres).
 - **Ce que la constitution impose au moteur (sous-lot 2B)** : (1) un intitulé validé par les juges vaut pour
   l'intitulé EXACT ; sa généralisation à tout intitulé qui le contient est un synonyme partagé, vérifié sur ce qu'il
   capte (R-66 §2, étape 6c : 187 expressions jugées sur leurs captures, 570 ramenées à l'intitulé exact) ; (2)
@@ -118,9 +136,17 @@ marqué **existe** (lu ou mesuré le 28/09/2026) ou **décidé** (D-475, R-140 d
   lui-même (« commercial », adjectif en anglais) ; (5) les intitulés vagues seuls ne classent rien (§32 c) ; (6) une
   garde d'unicité unique sur libellés, alias et expressions, toutes langues, où la version servie prime sur un libellé
   écrit par l'IA (étape 5c) ; (7) des clés de métier tirées d'un identifiant stable ; (8) une seule normalisation, celle
-  du moteur, l'expression stockée brute. Limite
-  connue : la mémoire des réponses des modèles ne rejoue pas à l'identique une correction de libellés en plusieurs tours
+  du moteur, l'expression stockée brute ; (9) **une règle exacte doit ignorer les marques de genre et de contrat**
+  (« H/F », « (m/w/d) », « - Part Time ») : aujourd'hui 164 libellés décorés sur 759 seulement rendent leur métier
+  (`6e-bancs.json`, information) ; (10) **la forme féminine de chaque expression classe comme la masculine**
+  (« Responsable adjointe », « Cheffe de rayon » ne classent pas ; 22 offres « adjointe ») : témoin à écrire en 2B ;
+  (11) une expression faite seulement de mots de niveau ne se généralise jamais (D-475 §36). Limite connue : la
+  mémoire des réponses des modèles ne rejoue pas à l'identique une correction de libellés en plusieurs tours
   (29/09/2026) ; la sortie relue de l'étape 5b fait foi.
+- **Ce que la séparation vente / rayon impose à l'activation (sous-lot 2C)** : la clé stable `employe-de-commerce`
+  porte désormais « Employé de rayon » ; les profils, préférences et alertes qui la portent au backend (141 candidats
+  sourcés mesurés le 29/09/2026, aucun inscrit) ne se renomment pas en bloc : chacun se reclasse depuis son intitulé
+  selon les décisions de l'étape 3c (vente, rayon ou aucun métier).
 - **Référence ESCO** publiée et datée, somme de contrôle versionnée.
 
 ### 3.2 L'IA validatrice : passes de curation (D-475 §30, §31 a)
