@@ -32,7 +32,7 @@ python3 -B apps/api/scripts/search-benchmark/verify.py /prive/mesures.ndjson /pr
 
 ## Mesure Railway
 
-`railway.py` lit la clé via la CLI Railway, teste l'API publique puis mesure un lot borné (32–480 requêtes, concurrence 1–8). Il ne démarre aucun worker et ne modifie aucune offre. Exécuter séparément au repos et pendant une ingestion autorisée, puis rattacher le vrai `PipelineRun` et ses horodatages au relevé ; un nom de phase n'est pas une preuve de recouvrement.
+`railway.py` lit la clé via la CLI Railway, teste l'API publique puis mesure un lot borné (32–480 requêtes, concurrence 1–8). Les pays autorisés viennent du contrat `/api/marches` lu au début de la mesure ; chaque réponse est recoupée avec ce registre, y compris les marchés composites comme FR + MC. Le reçu conserve ces périmètres et les éventuels pays hors périmètre. Il ne démarre aucun worker et ne modifie aucune offre. Exécuter séparément au repos et pendant une ingestion autorisée, puis rattacher le vrai `PipelineRun` et ses horodatages au relevé ; un nom de phase n'est pas une preuve de recouvrement.
 
 ```sh
 python3 -B apps/api/scripts/search-benchmark/railway.py /prive/baseline.json --sha SHA_COMPLET --phase baseline --requests 240 --concurrency 4

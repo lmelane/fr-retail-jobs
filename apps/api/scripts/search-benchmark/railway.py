@@ -45,6 +45,33 @@ class NoRedirect(urllib.request.HTTPRedirectHandler):
         return None
 
 
+
+def market_scopes(contract):
+    """Use the published registry, including composite markets; never invent scope."""
+    markets = contract.get('marches')
+    if not isinstance(markets, list) or not markets:
+        raise ValueError('Market registry missing')
+    scopes = {}
+    for market in markets:
+        code, countries = market.get('code'), market.get('pays')
+        if not isinstance(code, str) or code in scopes or not isinstance(countries, list) or not countries:
+            raise ValueError('Invalid market registry')
+        if any(not isinstance(country, str) or len(country) != 2 or not country.isalpha() or not country.isupper() for country in countries):
+            raise ValueError('Invalid market country')
+        scopes[code] = countries
+    return scopes
+
+
+def scope_evidence(body, market, scopes):
+    expected = scopes[market]
+    perimeter = body.get('perimetre', {})
+    outside = [row for row in body.get('jobs', []) if row.get('countryCode') not in expected]
+    return {'expectedCountries': expected,
+            'scopeMatchesContract': perimeter.get('code') == market and set(perimeter.get('pays', [])) == set(expected),
+            'outsideMarket': len(outside),
+            'outsideMarketCountries': sorted({row.get('countryCode') or '<missing>' for row in outside})}
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('output', type=Path)
@@ -81,13 +108,13 @@ def main():
         request_started = dt.datetime.now(dt.timezone.utc).isoformat()
         status, body, elapsed = get('/api/jobs?' + urllib.parse.urlencode(params))
         rows = body.get('jobs', [])
-        expected = {'GB': ['GB', 'IE'], 'DE': ['DE', 'AT']}.get(params['marche'], [params['marche']])
+        scope = scope_evidence(body, params['marche'], scopes)
         now = dt.datetime.now(dt.timezone.utc)
         expired = [j['id'] for j in rows if j.get('validThrough') and dt.datetime.fromisoformat(j['validThrough'].replace('Z', '+00:00')) <= now]
         record = {'params': params, 'status': status, 'ms': round(elapsed, 2), 'total': body.get('total'),
                   'startedAt': request_started, 'endedAt': dt.datetime.now(dt.timezone.utc).isoformat(),
                   'ids': [j['id'] for j in rows], 'uncoded': sum(not j.get('occupationCode') for j in rows),
-                  'outsideMarket': sum(j.get('countryCode') not in expected for j in rows),
+                  **scope,
                   'expired': expired, 'withdrawn': [j['id'] for j in rows if j.get('withdrawnAt')],
                   'facetsPresent': bool(body.get('facettes'))}
         return record, body
@@ -96,6 +123,9 @@ def main():
     assert status == 200 and before['runtime']['gitSha'] == args.sha and before['search']['ready'], 'Runtime not ready or wrong SHA'
     auth, _, _ = get('/api/jobs?marche=FR', False)
     assert auth == 401, 'Authentication contract failed'
+    registry_status, registry, _ = get('/api/marches')
+    assert registry_status == 200, 'Market registry unavailable'
+    scopes = market_scopes(registry)
     started = dt.datetime.now(dt.timezone.utc)
     smoke, bodies = [], []
     for params in WORKLOAD:
@@ -135,7 +165,7 @@ def main():
     ended = dt.datetime.now(dt.timezone.utc)
     status, after, _ = get('/api/health', False)
     checks['health'] = status == 200 and after.get('runtime', {}).get('gitSha') == args.sha and after.get('search', {}).get('ready') is True
-    checks['requests'] = len(rows) == args.requests and all(r['status'] == 200 and not r['outsideMarket'] and not r['expired'] and not r['withdrawn'] and r['facetsPresent'] for r in rows + smoke)
+    checks['requests'] = len(rows) == args.requests and all(r['status'] == 200 and r['scopeMatchesContract'] and not r['outsideMarket'] and not r['expired'] and not r['withdrawn'] and r['facetsPresent'] for r in rows + smoke)
     metrics_error = None
     try:
         metrics = api('''query($environment:String!,$service:String!,$start:DateTime!,$end:DateTime!){
@@ -149,7 +179,7 @@ def main():
     report = {'runId': run_id, 'phase': args.phase, 'sha': args.sha, 'startedAt': started.isoformat(), 'endedAt': ended.isoformat(),
               'loadStartedAt': load_started_at.isoformat(), 'durationSeconds': args.duration_seconds, 'workloadQueries': len(workload),
               'concurrency': args.concurrency, 'requests': len(rows), 'p50Ms': statistics.median(times), 'p95Ms': times[math.ceil(.95 * len(times))-1],
-              'healthBefore': before, 'healthAfter': after, 'checks': checks, 'pass': all(checks.values()),
+              'healthBefore': before, 'healthAfter': after, 'marketScopes': scopes, 'checks': checks, 'pass': all(checks.values()),
               'smoke': smoke, 'measurements': rows, 'databaseMetrics': metrics['metrics'], 'metricsError': metrics_error,
               'limits': ['HTTP times include the public network and JSON transfer.', 'Ingestion overlap must be proved separately with PipelineRun timestamps.',
                          'Railway metrics can arrive late; collect the same time window again before final interpretation.',
