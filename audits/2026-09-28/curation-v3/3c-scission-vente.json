@@ -1,230 +1,2109 @@
 {
- "calculeLe": "2026-09-29T11:10:37.254Z",
+ "calculeLe": "2026-09-29T11:50:24.162Z",
  "juges": {
   "j1": "gemini-3.6-flash",
   "j2": "gemini-3-flash-preview"
  },
  "source": "backend:EMPLOYE_DE_COMMERCE",
  "cible": "sales-advisor",
+ "metiersJuges": {
+  "vente": "Conseiller de vente (vente en boutique) / Sales Advisor",
+  "rayon": "Employé de rayon (mise en rayon, grande distribution) / Shelf Replenisher"
+ },
  "bilan": {
-  "intitules": 84,
-  "versConseillerDeVente": 42,
-  "restentEmployeDeRayon": 42,
+  "elements": 70,
+  "vente": 37,
+  "rayon": 19,
+  "aucun": 14,
   "sansVerdict": 0
  },
- "deplaces": [
+ "decisions": [
+  {
+   "intitule": "employée, employé de rayon épicerie - entretien",
+   "origine": "offre",
+   "formes": [],
+   "contexte": "employeurs : Groupe MONOPRIX",
+   "forme": "EMPLOYEE EMPLOYE DE RAYON EPICERIE ENTRETIEN",
+   "metier": "rayon",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.9
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.95
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.98
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 0.95
+     }
+    }
+   }
+  },
+  {
+   "intitule": "employée, employé de rayon textile",
+   "origine": "offre",
+   "formes": [],
+   "contexte": "employeurs : Groupe MONOPRIX",
+   "forme": "EMPLOYEE EMPLOYE DE RAYON TEXTILE",
+   "metier": "rayon",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.85
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.85
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.98
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 0.95
+     }
+    }
+   }
+  },
+  {
+   "intitule": "employé libre-service polyvalent (f/h)",
+   "origine": "offre",
+   "formes": [],
+   "contexte": "employeurs : Normal",
+   "forme": "EMPLOYE LIBRE SERVICE POLYVALENT F H",
+   "metier": "rayon",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.85
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.95
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.95
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 0.98
+     }
+    }
+   }
+  },
+  {
+   "intitule": "winkelmedewerker oproepkracht",
+   "origine": "offre",
+   "formes": [],
+   "contexte": "employeurs : Rituals ; services : sales-advisor",
+   "forme": "WINKELMEDEWERKER OPROEPKRACHT",
+   "metier": "vente",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.9
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 0.9
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.9
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.85
+     }
+    }
+   }
+  },
+  {
+   "intitule": "employée, employé de rayon crèmerie et surgelés",
+   "origine": "offre",
+   "formes": [],
+   "contexte": "employeurs : Groupe MONOPRIX",
+   "forme": "EMPLOYEE EMPLOYE DE RAYON CREMERIE ET SURGELES",
+   "metier": "rayon",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.95
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.95
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.98
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 0.95
+     }
+    }
+   }
+  },
+  {
+   "intitule": "store worker",
+   "origine": "offre",
+   "formes": [],
+   "contexte": "employeurs : Normal",
+   "forme": "STORE WORKER",
+   "metier": "aucun",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.9
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.7
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.85
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 0.9
+     }
+    }
+   }
+  },
+  {
+   "intitule": "retail assistant - operador de loja (m/f)",
+   "origine": "offre",
+   "formes": [],
+   "contexte": "employeurs : Primark",
+   "forme": "RETAIL ASSISTANT OPERADOR DE LOJA M F",
+   "metier": "vente",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.95
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 0.95
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.92
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.8
+     }
+    }
+   }
+  },
+  {
+   "intitule": "employée commerciale, employé commercial monop'",
+   "origine": "offre",
+   "formes": [],
+   "contexte": "employeurs : Groupe MONOPRIX",
+   "forme": "EMPLOYEE COMMERCIALE EMPLOYE COMMERCIAL MONOP",
+   "metier": "rayon",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.85
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.9
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.95
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 0.9
+     }
+    }
+   }
+  },
+  {
+   "intitule": "customer assistant (seasonal)",
+   "origine": "offre",
+   "formes": [],
+   "contexte": "employeurs : Boots",
+   "forme": "CUSTOMER ASSISTANT SEASONAL",
+   "metier": "vente",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.95
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 0.95
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.92
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.85
+     }
+    }
+   }
+  },
+  {
+   "intitule": "retail assistant - night shift",
+   "origine": "offre",
+   "formes": [],
+   "contexte": "employeurs : Primark",
+   "forme": "RETAIL ASSISTANT NIGHT SHIFT",
+   "metier": "aucun",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.9
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.85
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.88
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 0.9
+     }
+    }
+   }
+  },
+  {
+   "intitule": "employée, employé de rayon charcuterie libre service",
+   "origine": "offre",
+   "formes": [],
+   "contexte": "employeurs : Groupe MONOPRIX",
+   "forme": "EMPLOYEE EMPLOYE DE RAYON CHARCUTERIE LIBRE SERVICE",
+   "metier": "rayon",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.9
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.95
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.98
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 1
+     }
+    }
+   }
+  },
+  {
+   "intitule": "employée, employé de rayon liquides",
+   "origine": "offre",
+   "formes": [],
+   "contexte": "employeurs : Groupe MONOPRIX",
+   "forme": "EMPLOYEE EMPLOYE DE RAYON LIQUIDES",
+   "metier": "rayon",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.9
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.95
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.98
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 1
+     }
+    }
+   }
+  },
+  {
+   "intitule": "employée, employé de rayon parfumerie",
+   "origine": "offre",
+   "formes": [],
+   "contexte": "employeurs : Groupe MONOPRIX",
+   "forme": "EMPLOYEE EMPLOYE DE RAYON PARFUMERIE",
+   "metier": "rayon",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.85
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.85
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.98
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 1
+     }
+    }
+   }
+  },
   {
    "intitule": "retail assistant - weekend only",
-   "forme": "RETAIL ASSISTANT WEEKEND ONLY"
+   "origine": "offre",
+   "formes": [],
+   "contexte": "employeurs : Primark",
+   "forme": "RETAIL ASSISTANT WEEKEND ONLY",
+   "metier": "vente",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.95
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 0.95
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.85
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.9
+     }
+    }
+   }
+  },
+  {
+   "intitule": "seasonal task associate",
+   "origine": "offre",
+   "formes": [],
+   "contexte": "employeurs : Ulta Beauty ; services : Seasonal/Temporary",
+   "forme": "SEASONAL TASK ASSOCIATE",
+   "metier": "aucun",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.8
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.9
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.95
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 0.8
+     }
+    }
+   }
   },
   {
    "intitule": "vi søker butikkmedarbeider over 18 år",
-   "forme": "VI SØKER BUTIKKMEDARBEIDER OVER 18 AR"
+   "origine": "offre",
+   "formes": [],
+   "contexte": "employeurs : Normal",
+   "forme": "VI SØKER BUTIKKMEDARBEIDER OVER 18 AR",
+   "metier": "vente",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.95
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 0.95
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.9
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.9
+     }
+    }
+   }
   },
   {
    "intitule": "butiksmedarbejder over 18 år - aften og weekend",
-   "forme": "BUTIKSMEDARBEJDER OVER 18 AR AFTEN OG WEEKEND"
+   "origine": "offre",
+   "formes": [],
+   "contexte": "employeurs : Normal",
+   "forme": "BUTIKSMEDARBEJDER OVER 18 AR AFTEN OG WEEKEND",
+   "metier": "vente",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.95
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 0.95
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.9
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.9
+     }
+    }
+   }
   },
   {
    "intitule": "ayudante/a de venta y reponedor/a – jornada parcial",
-   "forme": "AYUDANTE A DE VENTA Y REPONEDOR A JORNADA PARCIAL"
+   "origine": "offre",
+   "formes": [],
+   "contexte": "employeurs : NORMAL Spain",
+   "forme": "AYUDANTE A DE VENTA Y REPONEDOR A JORNADA PARCIAL",
+   "metier": "vente",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.95
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 0.9
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.85
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.9
+     }
+    }
+   }
   },
   {
    "intitule": "butiksassistent",
-   "forme": "BUTIKSASSISTENT"
+   "origine": "nom",
+   "formes": [],
+   "contexte": "employeurs : LAGER 157",
+   "forme": "BUTIKSASSISTENT",
+   "metier": "vente",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.95
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 0.95
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.9
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.9
+     }
+    }
+   }
   },
   {
    "intitule": "butiksassistent - ekstra",
-   "forme": "BUTIKSASSISTENT EKSTRA"
+   "origine": "offre",
+   "formes": [],
+   "contexte": "employeurs : LAGER 157",
+   "forme": "BUTIKSASSISTENT EKSTRA",
+   "metier": "vente",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.95
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 0.95
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.9
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.9
+     }
+    }
+   }
+  },
+  {
+   "intitule": "employée, employé de rayon à service boulangerie",
+   "origine": "offre",
+   "formes": [],
+   "contexte": "employeurs : Groupe MONOPRIX",
+   "forme": "EMPLOYEE EMPLOYE DE RAYON A SERVICE BOULANGERIE",
+   "metier": "aucun",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.85
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.9
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.95
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.9
+     }
+    }
+   }
+  },
+  {
+   "intitule": "employée, employé de rayon à service fruits & légumes",
+   "origine": "offre",
+   "formes": [],
+   "contexte": "employeurs : Groupe MONOPRIX",
+   "forme": "EMPLOYEE EMPLOYE DE RAYON A SERVICE FRUITS LEGUMES",
+   "metier": "aucun",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.85
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.9
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.95
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.9
+     }
+    }
+   }
+  },
+  {
+   "intitule": "employée, employé de rayon maison - loisirs",
+   "origine": "offre",
+   "formes": [],
+   "contexte": "employeurs : Groupe MONOPRIX",
+   "forme": "EMPLOYEE EMPLOYE DE RAYON MAISON LOISIRS",
+   "metier": "rayon",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.85
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.9
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.95
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 1
+     }
+    }
+   }
+  },
+  {
+   "intitule": "replenishment sales associate (part-time)",
+   "origine": "offre",
+   "formes": [],
+   "contexte": "employeurs : Primark",
+   "forme": "REPLENISHMENT SALES ASSOCIATE PART TIME",
+   "metier": "rayon",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.8
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.9
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.95
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 1
+     }
+    }
+   }
   },
   {
    "intitule": "retail associate ii",
-   "forme": "RETAIL ASSOCIATE II"
+   "origine": "offre",
+   "formes": [],
+   "contexte": "employeurs : Nike (Thailand) Ltd., Nike China Holding HK Limited, BRS Nike Taiwan, Inc.",
+   "forme": "RETAIL ASSOCIATE II",
+   "metier": "vente",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.95
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 0.95
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.9
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.9
+     }
+    }
+   }
+  },
+  {
+   "intitule": "store assistant",
+   "origine": "offre",
+   "formes": [],
+   "contexte": "employeurs : Normal",
+   "forme": "STORE ASSISTANT",
+   "metier": "aucun",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.85
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 0.9
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.85
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.9
+     }
+    }
+   }
+  },
+  {
+   "intitule": "employé de rayon épicerie - entretien f/h",
+   "origine": "offre",
+   "formes": [],
+   "contexte": "employeurs : Groupe MONOPRIX",
+   "forme": "EMPLOYE DE RAYON EPICERIE ENTRETIEN F H",
+   "metier": "rayon",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.85
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.95
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.98
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 1
+     }
+    }
+   }
+  },
+  {
+   "intitule": "employée, employé de rayon à service boucherie",
+   "origine": "offre",
+   "formes": [],
+   "contexte": "employeurs : Groupe MONOPRIX",
+   "forme": "EMPLOYEE EMPLOYE DE RAYON A SERVICE BOUCHERIE",
+   "metier": "aucun",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.85
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.9
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.95
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.9
+     }
+    }
+   }
+  },
+  {
+   "intitule": "employée, employé de rayon à service crèmerie coupe",
+   "origine": "offre",
+   "formes": [],
+   "contexte": "employeurs : Groupe MONOPRIX",
+   "forme": "EMPLOYEE EMPLOYE DE RAYON A SERVICE CREMERIE COUPE",
+   "metier": "aucun",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.85
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.9
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.95
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.9
+     }
+    }
+   }
+  },
+  {
+   "intitule": "employée, employé de rayon à service poissonnerie",
+   "origine": "offre",
+   "formes": [],
+   "contexte": "employeurs : Groupe MONOPRIX",
+   "forme": "EMPLOYEE EMPLOYE DE RAYON A SERVICE POISSONNERIE",
+   "metier": "aucun",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.85
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.9
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.95
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.9
+     }
+    }
+   }
+  },
+  {
+   "intitule": "employé monop' f/h",
+   "origine": "offre",
+   "formes": [],
+   "contexte": "employeurs : Groupe MONOPRIX",
+   "forme": "EMPLOYE MONOP F H",
+   "metier": "aucun",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.8
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.9
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.85
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 0.9
+     }
+    }
+   }
+  },
+  {
+   "intitule": "employé de rayon maquillage (f/h)",
+   "origine": "offre",
+   "formes": [],
+   "contexte": "employeurs : Normal",
+   "forme": "EMPLOYE DE RAYON MAQUILLAGE F H",
+   "metier": "rayon",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.9
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.95
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.98
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 1
+     }
+    }
+   }
+  },
+  {
+   "intitule": "employé de rayon textile f/h",
+   "origine": "offre",
+   "formes": [],
+   "contexte": "employeurs : Groupe MONOPRIX",
+   "forme": "EMPLOYE DE RAYON TEXTILE F H",
+   "metier": "rayon",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.9
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.95
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.98
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 1
+     }
+    }
+   }
+  },
+  {
+   "intitule": "lucrător comercial",
+   "origine": "nom",
+   "formes": [
+    "Lucrătoare comercială"
+   ],
+   "contexte": "employeurs : Primark",
+   "forme": "LUCRATOR COMERCIAL",
+   "metier": "vente",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.95
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 0.9
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.85
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.9
+     }
+    }
+   }
   },
   {
    "intitule": "pt - retail assistant - operador de loja (m/f)",
-   "forme": "PT RETAIL ASSISTANT OPERADOR DE LOJA M F"
+   "origine": "offre",
+   "formes": [],
+   "contexte": "employeurs : Primark",
+   "forme": "PT RETAIL ASSISTANT OPERADOR DE LOJA M F",
+   "metier": "vente",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.95
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 1
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.9
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.9
+     }
+    }
+   }
   },
   {
    "intitule": "retail assistant (m/f/d) 28-35h/woche, befristet - adidas brand flagship store berlin",
-   "forme": "RETAIL ASSISTANT M F D 28 35H WOCHE BEFRISTET ADIDAS BRAND FLAGSHIP STORE BERLIN"
+   "origine": "offre",
+   "formes": [],
+   "contexte": "employeurs : adidas",
+   "forme": "RETAIL ASSISTANT M F D 28 35H WOCHE BEFRISTET ADIDAS BRAND FLAGSHIP STORE BERLIN",
+   "metier": "vente",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.95
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 1
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.95
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 1
+     }
+    }
+   }
   },
   {
    "intitule": "retail assistant - operador de loja",
-   "forme": "RETAIL ASSISTANT OPERADOR DE LOJA"
+   "origine": "offre",
+   "formes": [],
+   "contexte": "employeurs : Primark",
+   "forme": "RETAIL ASSISTANT OPERADOR DE LOJA",
+   "metier": "vente",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.95
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 1
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.9
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.9
+     }
+    }
+   }
   },
   {
    "intitule": "vi søker butikkmedarbeider over 16 år",
-   "forme": "VI SØKER BUTIKKMEDARBEIDER OVER 16 AR"
+   "origine": "offre",
+   "formes": [],
+   "contexte": "employeurs : Normal",
+   "forme": "VI SØKER BUTIKKMEDARBEIDER OVER 16 AR",
+   "metier": "vente",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.95
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 0.95
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.85
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.8
+     }
+    }
+   }
   },
   {
    "intitule": "winkelmedewerker - studenten/flexi",
-   "forme": "WINKELMEDEWERKER STUDENTEN FLEXI"
+   "origine": "offre",
+   "formes": [],
+   "contexte": "employeurs : Rituals ; services : seasonal-worker",
+   "forme": "WINKELMEDEWERKER STUDENTEN FLEXI",
+   "metier": "vente",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.95
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 0.95
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.95
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.8
+     }
+    }
+   }
+  },
+  {
+   "intitule": "Employé de commerce",
+   "origine": "nom",
+   "formes": [
+    "Employée de commerce"
+   ],
+   "forme": "EMPLOYE DE COMMERCE",
+   "metier": "aucun",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.75
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 0.9
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.85
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.8
+     }
+    }
+   }
   },
   {
    "intitule": "Sales Assistant",
-   "forme": "SALES ASSISTANT"
+   "origine": "nom",
+   "formes": [],
+   "forme": "SALES ASSISTANT",
+   "metier": "vente",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.98
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 1
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.95
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.95
+     }
+    }
+   }
   },
   {
    "intitule": "Verkäufer",
-   "forme": "VERKAUFER"
+   "origine": "nom",
+   "formes": [
+    "Verkäuferin"
+   ],
+   "forme": "VERKAUFER",
+   "metier": "vente",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.98
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 1
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.95
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.95
+     }
+    }
+   }
   },
   {
    "intitule": "Addetto alle vendite",
-   "forme": "ADDETTO ALLE VENDITE"
+   "origine": "nom",
+   "formes": [
+    "Addetta alle vendite"
+   ],
+   "forme": "ADDETTO ALLE VENDITE",
+   "metier": "vente",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.98
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 1
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.95
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.95
+     }
+    }
+   }
   },
   {
    "intitule": "Dependiente",
-   "forme": "DEPENDIENTE"
+   "origine": "nom",
+   "formes": [
+    "Dependienta"
+   ],
+   "forme": "DEPENDIENTE",
+   "metier": "vente",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.98
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 1
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.95
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.95
+     }
+    }
+   }
   },
   {
    "intitule": "Winkelmedewerker",
-   "forme": "WINKELMEDEWERKER"
+   "origine": "nom",
+   "formes": [],
+   "forme": "WINKELMEDEWERKER",
+   "metier": "vente",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.9
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 0.95
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.9
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.85
+     }
+    }
+   }
   },
   {
    "intitule": "店员",
-   "forme": "店 员"
+   "origine": "nom",
+   "formes": [],
+   "forme": "店 员",
+   "metier": "vente",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.9
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 0.95
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.95
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.9
+     }
+    }
+   }
   },
   {
    "intitule": "販売スタッフ",
-   "forme": "販 売 スタッフ"
+   "origine": "nom",
+   "formes": [],
+   "forme": "販 売 スタッフ",
+   "metier": "vente",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.95
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 1
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.95
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.95
+     }
+    }
+   }
   },
   {
    "intitule": "매장 판매원",
-   "forme": "매장 판매원"
+   "origine": "nom",
+   "formes": [],
+   "forme": "매장 판매원",
+   "metier": "vente",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.95
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 1
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.95
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.95
+     }
+    }
+   }
   },
   {
    "intitule": "Assistente de loja",
-   "forme": "ASSISTENTE DE LOJA"
+   "origine": "nom",
+   "formes": [],
+   "forme": "ASSISTENTE DE LOJA",
+   "metier": "vente",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.98
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 1
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.95
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.95
+     }
+    }
+   }
   },
   {
    "intitule": "Vendedor de loja",
-   "forme": "VENDEDOR DE LOJA"
-  },
-  {
-   "intitule": "Butiksassistent",
-   "forme": "BUTIKSASSISTENT"
+   "origine": "nom",
+   "formes": [
+    "Vendedora de loja"
+   ],
+   "forme": "VENDEDOR DE LOJA",
+   "metier": "vente",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.95
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 0.98
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.9
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.95
+     }
+    }
+   }
   },
   {
    "intitule": "店員",
-   "forme": "店 員"
+   "origine": "nom",
+   "formes": [],
+   "forme": "店 員",
+   "metier": "vente",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.95
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 0.98
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.85
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.9
+     }
+    }
+   }
   },
   {
    "intitule": "Sprzedawca",
-   "forme": "SPRZEDAWCA"
+   "origine": "nom",
+   "formes": [
+    "Sprzedawczyni"
+   ],
+   "forme": "SPRZEDAWCA",
+   "metier": "vente",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.95
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 0.98
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.9
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.95
+     }
+    }
+   }
   },
   {
    "intitule": "Butikssäljare",
-   "forme": "BUTIKSSALJARE"
+   "origine": "nom",
+   "formes": [],
+   "forme": "BUTIKSSALJARE",
+   "metier": "vente",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.95
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 0.98
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.9
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.95
+     }
+    }
+   }
   },
   {
    "intitule": "Satış Elemanı",
-   "forme": "SATIS ELEMANI"
+   "origine": "nom",
+   "formes": [],
+   "forme": "SATIS ELEMANI",
+   "metier": "vente",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.95
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 0.98
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.9
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.95
+     }
+    }
+   }
   },
   {
    "intitule": "พนักงานขายหน้าร้าน",
-   "forme": "พนกงานขายหนาราน"
+   "origine": "nom",
+   "formes": [],
+   "forme": "พนกงานขายหนาราน",
+   "metier": "vente",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.95
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 0.98
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.9
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.95
+     }
+    }
+   }
   },
   {
    "intitule": "Pembantu Kedai",
-   "forme": "PEMBANTU KEDAI"
+   "origine": "nom",
+   "formes": [],
+   "forme": "PEMBANTU KEDAI",
+   "metier": "vente",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.95
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 0.95
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.85
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.9
+     }
+    }
+   }
   },
   {
    "intitule": "بائع تجزئة",
-   "forme": "بايع تجزية"
+   "origine": "nom",
+   "formes": [
+    "بائعة تجزئة"
+   ],
+   "forme": "بايع تجزية",
+   "metier": "vente",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.95
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 0.98
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.9
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.95
+     }
+    }
+   }
   },
   {
    "intitule": "Butikkmedarbeider",
-   "forme": "BUTIKKMEDARBEIDER"
+   "origine": "nom",
+   "formes": [],
+   "forme": "BUTIKKMEDARBEIDER",
+   "metier": "vente",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.95
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 0.98
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.85
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.9
+     }
+    }
+   }
+  },
+  {
+   "intitule": "Υπάλληλος καταστήματος",
+   "origine": "nom",
+   "formes": [],
+   "forme": "ΥΠΑΛΛΗΛΟΣ ΚΑΤΑΣΤΗΜΑΤΟΣ",
+   "metier": "aucun",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.95
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.9
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.8
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.9
+     }
+    }
+   }
   },
   {
    "intitule": "Nhân viên bán hàng",
-   "forme": "NHAN VIEN BAN HANG"
+   "origine": "nom",
+   "formes": [],
+   "forme": "NHAN VIEN BAN HANG",
+   "metier": "vente",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.95
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 0.95
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.95
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.9
+     }
+    }
+   }
   },
   {
    "intitule": "Prodavač",
-   "forme": "PRODAVAC"
+   "origine": "nom",
+   "formes": [
+    "Prodavačka"
+   ],
+   "forme": "PRODAVAC",
+   "metier": "vente",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.95
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 0.95
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.95
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.9
+     }
+    }
+   }
   },
   {
    "intitule": "Bolti eladó",
-   "forme": "BOLTI ELADO"
+   "origine": "nom",
+   "formes": [],
+   "forme": "BOLTI ELADO",
+   "metier": "vente",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.95
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 0.95
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.95
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.9
+     }
+    }
+   }
   },
   {
-   "intitule": "Verkäuferin",
-   "forme": "VERKAUFERIN"
+   "intitule": "employé commercial",
+   "origine": "nom",
+   "formes": [],
+   "forme": "EMPLOYE COMMERCIAL",
+   "metier": "rayon",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.85
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.95
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.95
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 0.9
+     }
+    }
+   }
   },
   {
-   "intitule": "Addetta alle vendite",
-   "forme": "ADDETTA ALLE VENDITE"
+   "intitule": "employée de commerce polyvalent",
+   "origine": "nom",
+   "formes": [],
+   "forme": "EMPLOYEE DE COMMERCE POLYVALENT",
+   "metier": "aucun",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.85
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.95
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.9
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.9
+     }
+    }
+   }
   },
   {
-   "intitule": "Dependienta",
-   "forme": "DEPENDIENTA"
+   "intitule": "employé commercial en magasin",
+   "origine": "nom",
+   "formes": [],
+   "forme": "EMPLOYE COMMERCIAL EN MAGASIN",
+   "metier": "rayon",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.85
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.95
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.95
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 0.9
+     }
+    }
+   }
   },
   {
-   "intitule": "Vendedora de loja",
-   "forme": "VENDEDORA DE LOJA"
+   "intitule": "employée polyvalente saisonnière",
+   "origine": "nom",
+   "formes": [],
+   "forme": "EMPLOYEE POLYVALENTE SAISONNIERE",
+   "metier": "aucun",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.85
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.95
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.75
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.9
+     }
+    }
+   }
   },
   {
-   "intitule": "Sprzedawczyni",
-   "forme": "SPRZEDAWCZYNI"
+   "intitule": "employé de rayon",
+   "origine": "nom",
+   "formes": [],
+   "forme": "EMPLOYE DE RAYON",
+   "metier": "rayon",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.9
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.95
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": true,
+      "confiance": 1
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 1
+     }
+    }
+   }
   },
   {
-   "intitule": "بائعة تجزئة",
-   "forme": "بايعة تجزية"
+   "intitule": "employé de rayon textile",
+   "origine": "nom",
+   "formes": [],
+   "forme": "EMPLOYE DE RAYON TEXTILE",
+   "metier": "rayon",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.85
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.95
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": true,
+      "confiance": 1
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 1
+     }
+    }
+   }
   },
   {
-   "intitule": "Prodavačka",
-   "forme": "PRODAVACKA"
+   "intitule": "assistant rayon",
+   "origine": "nom",
+   "formes": [],
+   "forme": "ASSISTANT RAYON",
+   "metier": "rayon",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.85
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 0.95
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": true,
+      "confiance": 0.95
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 0.95
+     }
+    }
+   }
   },
   {
-   "intitule": "Lucrătoare comercială",
-   "forme": "LUCRATOARE COMERCIALA"
+   "intitule": "employé libre service",
+   "origine": "nom",
+   "formes": [],
+   "forme": "EMPLOYE LIBRE SERVICE",
+   "metier": "rayon",
+   "juges": {
+    "vente": {
+     "j1": {
+      "meme": false,
+      "confiance": 0.95
+     },
+     "j2": {
+      "meme": false,
+      "confiance": 1
+     }
+    },
+    "rayon": {
+     "j1": {
+      "meme": true,
+      "confiance": 1
+     },
+     "j2": {
+      "meme": true,
+      "confiance": 1
+     }
+    }
+   }
   }
- ],
- "restent": [
-  "employée, employé de rayon épicerie - entretien",
-  "employée, employé de rayon textile",
-  "employé libre-service polyvalent (f/h)",
-  "winkelmedewerker oproepkracht",
-  "employée, employé de rayon crèmerie et surgelés",
-  "store worker",
-  "retail assistant - operador de loja (m/f)",
-  "employée commerciale, employé commercial monop'",
-  "customer assistant (seasonal)",
-  "retail assistant - night shift",
-  "employée, employé de rayon charcuterie libre service",
-  "employée, employé de rayon liquides",
-  "employée, employé de rayon parfumerie",
-  "seasonal task associate",
-  "employée, employé de rayon à service boulangerie",
-  "employée, employé de rayon à service fruits & légumes",
-  "employée, employé de rayon maison - loisirs",
-  "replenishment sales associate (part-time)",
-  "store assistant",
-  "employé de rayon épicerie - entretien f/h",
-  "employée, employé de rayon à service boucherie",
-  "employée, employé de rayon à service crèmerie coupe",
-  "employée, employé de rayon à service poissonnerie",
-  "employé monop' f/h",
-  "employé de rayon maquillage (f/h)",
-  "employé de rayon textile f/h",
-  "lucrător comercial",
-  "replenishment sales associate (part time)",
-  "employé de commerce",
-  "employé commercial",
-  "employée de commerce polyvalent",
-  "employé commercial en magasin",
-  "employée polyvalente saisonnière",
-  "employé de rayon",
-  "employé de rayon textile",
-  "assistant rayon",
-  "employé libre service",
-  "employé libre-service",
-  "Employé de commerce",
-  "Υπάλληλος καταστήματος",
-  "Lucrător comercial",
-  "Employée de commerce"
- ],
- "sansVerdict": []
+ ]
 }

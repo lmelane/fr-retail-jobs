@@ -1,26 +1,26 @@
 {
- "calculeLe": "2026-09-29T11:21:29.005Z",
+ "calculeLe": "2026-09-29T11:50:57.949Z",
  "bilan": {
   "manifeste": "catwalks-occupations-20260929-v3",
   "couples": 43168,
   "offres": 80741,
-  "compilationMs": 84,
-  "classementMs": 1469,
+  "compilationMs": 81,
+  "classementMs": 1390,
   "premisse": {
    "accordAvecLaProduction": 100,
    "seuil": 97
   },
   "offresClassees": {
    "v1": 38000,
-   "v3": 50664,
+   "v3": 49818,
    "v1Pct": 47.1,
-   "v3Pct": 62.7
+   "v3Pct": 61.7
   },
   "ambigues": {
    "v1": 48,
    "v3": 64
   },
-  "gains": 12721,
+  "gains": 11875,
   "changementsDeMetier": 655,
   "pertes": 57,
   "horsPlan": {
@@ -41,25 +41,25 @@
    "pays": "US",
    "offres": 40442,
    "classesV1": 55.2,
-   "classesV3": 70.6
+   "classesV3": 69.1
   },
   {
    "pays": "FR",
    "offres": 16521,
    "classesV1": 58,
-   "classesV3": 69.6
+   "classesV3": 69.2
   },
   {
    "pays": "CA",
    "offres": 12672,
    "classesV1": 58.1,
-   "classesV3": 75.7
+   "classesV3": 73.9
   },
   {
    "pays": "GB",
    "offres": 8029,
    "classesV1": 63.7,
-   "classesV3": 80.7
+   "classesV3": 79.7
   },
   {
    "pays": "DE",
@@ -71,79 +71,79 @@
    "pays": "IT",
    "offres": 6644,
    "classesV1": 79.4,
-   "classesV3": 84.8
+   "classesV3": 84.3
   },
   {
    "pays": "ES",
    "offres": 6625,
    "classesV1": 72.3,
-   "classesV3": 89.9
+   "classesV3": 88.2
   },
   {
    "pays": "AU",
    "offres": 5411,
    "classesV1": 69.5,
-   "classesV3": 86.9
+   "classesV3": 86.3
   },
   {
    "pays": "NL",
    "offres": 5347,
    "classesV1": 75.4,
-   "classesV3": 87.4
+   "classesV3": 86.9
   },
   {
    "pays": "CH",
    "offres": 4972,
    "classesV1": 76.8,
-   "classesV3": 78.2
+   "classesV3": 78
   },
   {
    "pays": "BE",
    "offres": 4799,
    "classesV1": 79.2,
-   "classesV3": 94.8
+   "classesV3": 94.2
   },
   {
    "pays": "KR",
    "offres": 4333,
    "classesV1": 86.6,
-   "classesV3": 90.8
+   "classesV3": 88.7
   },
   {
    "pays": "PT",
    "offres": 4313,
    "classesV1": 79.3,
-   "classesV3": 95.9
+   "classesV3": 93.9
   },
   {
    "pays": "SG",
    "offres": 4234,
    "classesV1": 90.1,
-   "classesV3": 92.2
+   "classesV3": 91.9
   },
   {
    "pays": "IE",
    "offres": 4143,
    "classesV1": 86.2,
-   "classesV3": 91.6
+   "classesV3": 90.7
   },
   {
    "pays": "JP",
    "offres": 4109,
    "classesV1": 84.1,
-   "classesV3": 91
+   "classesV3": 89.2
   },
   {
    "pays": "HK",
    "offres": 4025,
    "classesV1": 91.9,
-   "classesV3": 95.3
+   "classesV3": 94.9
   },
   {
    "pays": "CN",
    "offres": 3869,
    "classesV1": 76.9,
-   "classesV3": 81.4
+   "classesV3": 81.3
   },
   {
    "pays": "IN",
@@ -155,7 +155,7 @@
    "pays": "AT",
    "offres": 3587,
    "classesV1": 86.9,
-   "classesV3": 89.5
+   "classesV3": 89.2
   },
   {
    "pays": "AE",
@@ -167,7 +167,7 @@
    "pays": "TW",
    "offres": 3317,
    "classesV1": 94,
-   "classesV3": 97.6
+   "classesV3": 96.1
   },
   {
    "pays": "GR",
@@ -179,7 +179,7 @@
    "pays": "MY",
    "offres": 3247,
    "classesV1": 94.2,
-   "classesV3": 96.7
+   "classesV3": 96.2
   },
   {
    "pays": "TH",
@@ -191,7 +191,7 @@
    "pays": "MO",
    "offres": 3176,
    "classesV1": 98.4,
-   "classesV3": 99.4
+   "classesV3": 99
   },
   {
    "pays": "VI",
@@ -227,25 +227,25 @@
    "pays": "?",
    "offres": 1894,
    "classesV1": 32.6,
-   "classesV3": 67.3
+   "classesV3": 67
   },
   {
    "pays": "PR",
    "offres": 1203,
    "classesV1": 63.2,
-   "classesV3": 82
+   "classesV3": 81.5
   },
   {
    "pays": "DK",
    "offres": 1012,
    "classesV1": 61.2,
-   "classesV3": 76.5
+   "classesV3": 76.4
   },
   {
    "pays": "MX",
    "offres": 1007,
    "classesV1": 69.9,
-   "classesV3": 78.9
+   "classesV3": 77.6
   },
   {
    "pays": "SE",
@@ -257,19 +257,19 @@
    "pays": "RO",
    "offres": 798,
    "classesV1": 64.5,
-   "classesV3": 95.7
+   "classesV3": 86.1
   },
   {
    "pays": "TR",
    "offres": 625,
    "classesV1": 81,
-   "classesV3": 87.2
+   "classesV3": 87
   },
   {
    "pays": "CZ",
    "offres": 599,
    "classesV1": 75.6,
-   "classesV3": 89
+   "classesV3": 76.1
   },
   {
    "pays": "CO",
@@ -287,13 +287,13 @@
    "pays": "VN",
    "offres": 490,
    "classesV1": 64.5,
-   "classesV3": 73.3
+   "classesV3": 70.4
   },
   {
    "pays": "PL",
    "offres": 405,
    "classesV1": 37.5,
-   "classesV3": 63.5
+   "classesV3": 63.2
   },
   {
    "pays": "PH",
@@ -323,7 +323,7 @@
    "pays": "CL",
    "offres": 305,
    "classesV1": 84.3,
-   "classesV3": 86.9
+   "classesV3": 85.2
   },
   {
    "pays": "LU",
@@ -359,7 +359,7 @@
    "pays": "PE",
    "offres": 211,
    "classesV1": 59.7,
-   "classesV3": 84.4
+   "classesV3": 65.4
   },
   {
    "pays": "ZM",
@@ -377,7 +377,7 @@
    "pays": "NO",
    "offres": 180,
    "classesV1": 18.3,
-   "classesV3": 51.7
+   "classesV3": 50
   },
   {
    "pays": "NF",
@@ -461,7 +461,7 @@
    "pays": "SC",
    "offres": 22,
    "classesV1": 0,
-   "classesV3": 9.1
+   "classesV3": 4.5
   },
   {
    "pays": "IL",
@@ -738,13 +738,6 @@
    "v3": "keyholder"
   },
   {
-   "titre": "Lead Supervisor I",
-   "service": null,
-   "offres": 127,
-   "v1": null,
-   "v3": "manager-floor"
-  },
-  {
    "titre": "Operations Associate - Part Time",
    "service": null,
    "offres": 127,
@@ -757,13 +750,6 @@
    "offres": 123,
    "v1": null,
    "v3": "manager-floor"
-  },
-  {
-   "titre": "Sales Manager",
-   "service": " Retail Management",
-   "offres": 123,
-   "v1": null,
-   "v3": "responsable-wholesale"
   },
   {
    "titre": "RETAIL ASSISTANT",
@@ -843,13 +829,6 @@
    "v3": "beauty-consultant"
   },
   {
-   "titre": "Team Manager",
-   "service": null,
-   "offres": 77,
-   "v1": null,
-   "v3": "manager-floor"
-  },
-  {
    "titre": "Employée, employé de rayon épicerie - entretien",
    "service": null,
    "offres": 76,
@@ -862,13 +841,6 @@
    "offres": 71,
    "v1": null,
    "v3": "keyholder"
-  },
-  {
-   "titre": "General Manager",
-   "service": " Retail Management",
-   "offres": 71,
-   "v1": null,
-   "v3": "store-manager"
   },
   {
    "titre": "Guest Coordinator",
@@ -890,6 +862,34 @@
    "offres": 61,
    "v1": null,
    "v3": "sales-advisor"
+  },
+  {
+   "titre": "Employée, employé de rayon textile",
+   "service": null,
+   "offres": 60,
+   "v1": null,
+   "v3": "employe-de-commerce"
+  },
+  {
+   "titre": "Customer Advisor",
+   "service": null,
+   "offres": 58,
+   "v1": null,
+   "v3": "sales-advisor"
+  },
+  {
+   "titre": "Retail Assistant (Opticians)",
+   "service": null,
+   "offres": 58,
+   "v1": null,
+   "v3": "optical-assistant"
+  },
+  {
+   "titre": "Free People Key Holder",
+   "service": null,
+   "offres": 56,
+   "v1": null,
+   "v3": "keyholder"
   }
  ],
  "principauxHorsPlan": [
@@ -1408,15 +1408,6 @@
    "libelle": "Floor manager"
   },
   {
-   "titre": "Lead Supervisor I",
-   "service": null,
-   "offres": 127,
-   "avant": null,
-   "metier": "manager-floor",
-   "statut": "CLASSIFIED",
-   "libelle": "Floor manager"
-  },
-  {
    "titre": "Doradca Klienta – niepełny etat (m/k)",
    "service": null,
    "offres": 7,
@@ -1478,15 +1469,6 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente"
-  },
-  {
-   "titre": "Team Leader",
-   "service": null,
-   "offres": 35,
-   "avant": null,
-   "metier": "manager-floor",
-   "statut": "CLASSIFIED",
-   "libelle": "Floor manager"
   },
   {
    "titre": "SubJefe de Tienda",
@@ -1822,15 +1804,6 @@
    "libelle": "Conseiller de vente"
   },
   {
-   "titre": "VIP Operations Team Leader",
-   "service": null,
-   "offres": 1,
-   "avant": null,
-   "metier": "manager-floor",
-   "statut": "CLASSIFIED",
-   "libelle": "Floor manager"
-  },
-  {
    "titre": "Seasonal Selling Advisor, Bergdorf Goodman",
    "service": null,
    "offres": 1,
@@ -1849,22 +1822,13 @@
    "libelle": "Gestionnaire de stock en boutique"
   },
   {
-   "titre": "Sales Manager",
-   "service": " Retail Management",
-   "offres": 123,
-   "avant": null,
-   "metier": "responsable-wholesale",
-   "statut": "CLASSIFIED",
-   "libelle": "Responsable wholesale"
-  },
-  {
    "titre": "Retail Assistant - Operador de Loja (m/f)",
    "service": null,
    "offres": 22,
    "avant": null,
-   "metier": "employe-de-commerce",
+   "metier": "sales-advisor",
    "statut": "CLASSIFIED",
-   "libelle": "Employé de rayon"
+   "libelle": "Conseiller de vente"
   },
   {
    "titre": "Employée, employé de rayon charcuterie libre service",
@@ -1885,15 +1849,6 @@
    "libelle": "Premier vendeur"
   },
   {
-   "titre": "Sales Manager",
-   "service": null,
-   "offres": 13,
-   "avant": null,
-   "metier": "responsable-wholesale",
-   "statut": "CLASSIFIED",
-   "libelle": "Responsable wholesale"
-  },
-  {
    "titre": "Responsable Boutique Toulouse Blagnac (F/H)",
    "service": null,
    "offres": 1,
@@ -1910,15 +1865,6 @@
    "metier": "store-manager",
    "statut": "CLASSIFIED",
    "libelle": "Responsable de boutique"
-  },
-  {
-   "titre": "Chef d'Equipe Logistique H/F",
-   "service": null,
-   "offres": 1,
-   "avant": null,
-   "metier": "manager-floor",
-   "statut": "CLASSIFIED",
-   "libelle": "Floor manager"
   },
   {
    "titre": "CONSEILLER(E) DE MODE (H/F/X) Kiabi ARRAS REMPLACEMENT CDD",
@@ -1946,15 +1892,6 @@
    "metier": "assistant-store-manager",
    "statut": "CLASSIFIED",
    "libelle": "Adjoint au responsable de boutique"
-  },
-  {
-   "titre": "General Manager",
-   "service": " Retail Management",
-   "offres": 71,
-   "avant": null,
-   "metier": "store-manager",
-   "statut": "CLASSIFIED",
-   "libelle": "Responsable de boutique"
   },
   {
    "titre": "Employée, employé de caisse livraison à domicile Premium",
@@ -2398,24 +2335,6 @@
    "libelle": "Premier vendeur"
   },
   {
-   "titre": "Inbound Quality Shift Team Leader",
-   "service": null,
-   "offres": 1,
-   "avant": null,
-   "metier": "manager-floor",
-   "statut": "CLASSIFIED",
-   "libelle": "Floor manager"
-  },
-  {
-   "titre": "Team Leader 36H - Sevilla",
-   "service": null,
-   "offres": 1,
-   "avant": null,
-   "metier": "manager-floor",
-   "statut": "CLASSIFIED",
-   "libelle": "Floor manager"
-  },
-  {
    "titre": "RETAIL ASSISTANT MINIJOB (M/F/D) BEFRISTET - FACTORY OUTLET RADOLFZELL",
    "service": null,
    "offres": 1,
@@ -2506,15 +2425,6 @@
    "libelle": "Conseiller de vente"
   },
   {
-   "titre": "Sales Manager",
-   "service": "Sales",
-   "offres": 1,
-   "avant": null,
-   "metier": "responsable-wholesale",
-   "statut": "CLASSIFIED",
-   "libelle": "Responsable wholesale"
-  },
-  {
    "titre": "Retail Associate - Rideau",
    "service": null,
    "offres": 1,
@@ -2531,15 +2441,6 @@
    "metier": "warehouse-operative",
    "statut": "CLASSIFIED",
    "libelle": "Préparateur de commandes"
-  },
-  {
-   "titre": "Team Manager",
-   "service": "Retail",
-   "offres": 14,
-   "avant": null,
-   "metier": "manager-floor",
-   "statut": "CLASSIFIED",
-   "libelle": "Floor manager"
   },
   {
    "titre": "RETAIL ASSISTANT",
@@ -2884,15 +2785,6 @@
    "libelle": "Conseiller de vente"
   },
   {
-   "titre": "Lead Supervisor II",
-   "service": null,
-   "offres": 12,
-   "avant": null,
-   "metier": "manager-floor",
-   "statut": "CLASSIFIED",
-   "libelle": "Floor manager"
-  },
-  {
    "titre": "SALES LEADER/销售主管Sales Leader（三亚）",
    "service": null,
    "offres": 1,
@@ -3037,15 +2929,6 @@
    "libelle": "Responsable de boutique"
   },
   {
-   "titre": "Team Leader Gastronomy - Gruyère",
-   "service": null,
-   "offres": 1,
-   "avant": null,
-   "metier": "manager-floor",
-   "statut": "CLASSIFIED",
-   "libelle": "Floor manager"
-  },
-  {
    "titre": "Assistant Merchandiser: Men's and Women's Collection",
    "service": null,
    "offres": 1,
@@ -3109,13 +2992,130 @@
    "libelle": "Premier vendeur"
   },
   {
-   "titre": "Team Manager",
+   "titre": "Floor Manager - F/H",
    "service": null,
-   "offres": 77,
+   "offres": 9,
    "avant": null,
    "metier": "manager-floor",
    "statut": "CLASSIFIED",
    "libelle": "Floor manager"
+  },
+  {
+   "titre": "Retail Assistant Tilburg",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "statut": "CLASSIFIED",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Verkoopmedewerker - 20u - Heist op den Berg",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "statut": "CLASSIFIED",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Seasonal Brand Ambassador (Yorkville)",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "sales-advisor",
+   "statut": "CLASSIFIED",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Seasonal Stylist (Retail) (Part-time)",
+   "service": null,
+   "offres": 46,
+   "avant": null,
+   "metier": "sales-advisor",
+   "statut": "CLASSIFIED",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "Sales Lead, Walt Whitman Mall",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "retail-sales-lead",
+   "statut": "CLASSIFIED",
+   "libelle": "Premier vendeur"
+  },
+  {
+   "titre": "Inventory Control Associate 1 - Full Time",
+   "service": null,
+   "offres": 2,
+   "avant": null,
+   "metier": "stock-associate",
+   "statut": "CLASSIFIED",
+   "libelle": "Gestionnaire de stock en boutique"
+  },
+  {
+   "titre": "Sales Lead, Foley Tanger Outlets",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "retail-sales-lead",
+   "statut": "CLASSIFIED",
+   "libelle": "Premier vendeur"
+  },
+  {
+   "titre": "Conseillère, conseiller vente / beauté - Monop'Beauty",
+   "service": null,
+   "offres": 3,
+   "avant": null,
+   "metier": "beauty-consultant",
+   "statut": "CLASSIFIED",
+   "libelle": "Conseiller beauté"
+  },
+  {
+   "titre": "CDI 38H - Responsable Adjoint de Point de Vente - Nailloux F/H",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "assistant-store-manager",
+   "statut": "CLASSIFIED",
+   "libelle": "Adjoint au responsable de boutique"
+  },
+  {
+   "titre": "Employé de rayon épicerie - entretien F/H",
+   "service": null,
+   "offres": 5,
+   "avant": null,
+   "metier": "employe-de-commerce",
+   "statut": "CLASSIFIED",
+   "libelle": "Employé de rayon"
+  },
+  {
+   "titre": "Employé de caisse accueil F/H",
+   "service": null,
+   "offres": 12,
+   "avant": null,
+   "metier": "cashier",
+   "statut": "CLASSIFIED",
+   "libelle": "Hôte de caisse"
+  },
+  {
+   "titre": "Urban Outfitters Seasonal Brand Ambassador",
+   "service": null,
+   "offres": 33,
+   "avant": null,
+   "metier": "sales-advisor",
+   "statut": "CLASSIFIED",
+   "libelle": "Conseiller de vente"
+  },
+  {
+   "titre": "District Manager - Future Opportunities/Various Locations",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "regional-retail-manager",
+   "statut": "CLASSIFIED",
+   "libelle": "Responsable régional retail"
   }
  ]
 }

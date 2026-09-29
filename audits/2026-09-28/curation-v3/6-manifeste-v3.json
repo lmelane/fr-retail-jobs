@@ -5602,6 +5602,63 @@
      "any": [
       "customer assistant"
      ],
+     "mode": "phrase"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "manager",
+      "director",
+      "head",
+      "trainer",
+      "training",
+      "formation",
+      "supervisor",
+      "team lead",
+      "e commerce",
+      "online",
+      "remote",
+      "distance",
+      "clienteling project",
+      "beauty",
+      "beaute",
+      "parfumerie",
+      "cosmetique",
+      "replenishment",
+      "stockroom",
+      "stock support",
+      "E-Boutique",
+      "digital",
+      "wholesale",
+      "b2b"
+     ],
+     "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "LEADER",
+      "LEAD",
+      "PREMIERE VENDEUSE",
+      "PREMIER VENDEUR",
+      "KEYHOLDER",
+      "KEY HOLDER",
+      "RESPONSABLE"
+     ]
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
+   "id": "v3-sales-advisor~41a094c268",
+   "occupation": "sales-advisor",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "customer assistant (seasonal)"
+     ],
      "mode": "exact"
     }
    ],
@@ -6741,6 +6798,63 @@
      "field": "title",
      "any": [
       "Lucrătoare comercială"
+     ],
+     "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "manager",
+      "director",
+      "head",
+      "trainer",
+      "training",
+      "formation",
+      "supervisor",
+      "team lead",
+      "e commerce",
+      "online",
+      "remote",
+      "distance",
+      "clienteling project",
+      "beauty",
+      "beaute",
+      "parfumerie",
+      "cosmetique",
+      "replenishment",
+      "stockroom",
+      "stock support",
+      "E-Boutique",
+      "digital",
+      "wholesale",
+      "b2b"
+     ],
+     "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "LEADER",
+      "LEAD",
+      "PREMIERE VENDEUSE",
+      "PREMIER VENDEUR",
+      "KEYHOLDER",
+      "KEY HOLDER",
+      "RESPONSABLE"
+     ]
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
+   "id": "v3-sales-advisor~80adaa2171",
+   "occupation": "sales-advisor",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "lucrător comercial"
      ],
      "mode": "exact"
     }
@@ -7941,6 +8055,63 @@
      "field": "title",
      "any": [
       "retail assistant - operador de loja"
+     ],
+     "mode": "phrase"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "manager",
+      "director",
+      "head",
+      "trainer",
+      "training",
+      "formation",
+      "supervisor",
+      "team lead",
+      "e commerce",
+      "online",
+      "remote",
+      "distance",
+      "clienteling project",
+      "beauty",
+      "beaute",
+      "parfumerie",
+      "cosmetique",
+      "replenishment",
+      "stockroom",
+      "stock support",
+      "E-Boutique",
+      "digital",
+      "wholesale",
+      "b2b"
+     ],
+     "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "LEADER",
+      "LEAD",
+      "PREMIERE VENDEUSE",
+      "PREMIER VENDEUR",
+      "KEYHOLDER",
+      "KEY HOLDER",
+      "RESPONSABLE"
+     ]
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
+   "id": "v3-sales-advisor~e606f8fb6d",
+   "occupation": "sales-advisor",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "retail assistant - operador de loja (m/f)"
      ],
      "mode": "exact"
     }
@@ -12963,6 +13134,63 @@
      "field": "title",
      "any": [
       "winkelmedewerker"
+     ],
+     "mode": "phrase"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "manager",
+      "director",
+      "head",
+      "trainer",
+      "training",
+      "formation",
+      "supervisor",
+      "team lead",
+      "e commerce",
+      "online",
+      "remote",
+      "distance",
+      "clienteling project",
+      "beauty",
+      "beaute",
+      "parfumerie",
+      "cosmetique",
+      "replenishment",
+      "stockroom",
+      "stock support",
+      "E-Boutique",
+      "digital",
+      "wholesale",
+      "b2b"
+     ],
+     "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "LEADER",
+      "LEAD",
+      "PREMIERE VENDEUSE",
+      "PREMIER VENDEUR",
+      "KEYHOLDER",
+      "KEY HOLDER",
+      "RESPONSABLE"
+     ]
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
+   "id": "v3-sales-advisor~3f698f096d",
+   "occupation": "sales-advisor",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "winkelmedewerker oproepkracht"
      ],
      "mode": "exact"
     }
@@ -20019,34 +20247,6 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
-   "id": "v3-store-manager~fa28320161",
-   "occupation": "store-manager",
-   "all": [
-    {
-     "field": "title",
-     "any": [
-      "general manager"
-     ],
-     "mode": "exact"
-    }
-   ],
-   "exclude": [
-    {
-     "any": [
-      "assistant",
-      "adjoint",
-      "adjointe",
-      "deputy",
-      "district",
-      "regional",
-      "area"
-     ],
-     "field": "title"
-    }
-   ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
-  },
-  {
    "id": "v3-store-manager~ba076ff6c5",
    "occupation": "store-manager",
    "all": [
@@ -21681,6 +21881,37 @@
      "field": "title",
      "any": [
       "Direttore Regionale Retail"
+     ],
+     "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "wholesale",
+      "export",
+      "key account",
+      "medical",
+      "b2b",
+      "distribution",
+      "warehouse",
+      "logistics",
+      "supply chain",
+      "fulfillment"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
+   "id": "v3-regional-retail-manager~55c2b57c1d",
+   "occupation": "regional-retail-manager",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "Direttrice Regionale Retail"
      ],
      "mode": "exact"
     }
@@ -40542,6 +40773,29 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
+   "id": "v3-crm-manager~7729018cd6",
+   "occupation": "crm-manager",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "مديرة CRM"
+     ],
+     "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "assistant",
+      "assistante"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
    "id": "v3-crm-manager~515b4a17cf",
    "occupation": "crm-manager",
    "all": [
@@ -47418,6 +47672,30 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
+   "id": "v3-demand-planner~e3274a221a",
+   "occupation": "demand-planner",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "Bedarfsplanerin"
+     ],
+     "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "manager",
+      "director",
+      "head"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
    "id": "v3-demand-planner~c0e2ae4dd3",
    "occupation": "demand-planner",
    "all": [
@@ -47634,6 +47912,30 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
+   "id": "v3-demand-planner~9d6b63bd78",
+   "occupation": "demand-planner",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "Pianificatrice della domanda"
+     ],
+     "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "manager",
+      "director",
+      "head"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
    "id": "v3-demand-planner~6754a59cbf",
    "occupation": "demand-planner",
    "all": [
@@ -47641,6 +47943,30 @@
      "field": "title",
      "any": [
       "Planeador de procura"
+     ],
+     "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "manager",
+      "director",
+      "head"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
+   "id": "v3-demand-planner~231f16b345",
+   "occupation": "demand-planner",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "Planeadora de procura"
      ],
      "mode": "exact"
     }
@@ -47682,6 +48008,30 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
+   "id": "v3-demand-planner~5c41a8f052",
+   "occupation": "demand-planner",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "Planejadora de demanda"
+     ],
+     "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "manager",
+      "director",
+      "head"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
    "id": "v3-demand-planner~ff18197671",
    "occupation": "demand-planner",
    "all": [
@@ -47689,6 +48039,30 @@
      "field": "title",
      "any": [
       "Planificador de la demanda"
+     ],
+     "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "manager",
+      "director",
+      "head"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
+   "id": "v3-demand-planner~09747cf092",
+   "occupation": "demand-planner",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "Planificadora de la demanda"
      ],
      "mode": "exact"
     }
@@ -47730,6 +48104,30 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
+   "id": "v3-demand-planner~3064da675b",
+   "occupation": "demand-planner",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "Planificatoare cerere"
+     ],
+     "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "manager",
+      "director",
+      "head"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
    "id": "v3-demand-planner~06759fec5b",
    "occupation": "demand-planner",
    "all": [
@@ -47737,6 +48135,30 @@
      "field": "title",
      "any": [
       "Planificator cerere"
+     ],
+     "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "manager",
+      "director",
+      "head"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
+   "id": "v3-demand-planner~c92577aa04",
+   "occupation": "demand-planner",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "Planificatrice de la demande"
      ],
      "mode": "exact"
     }
@@ -47778,6 +48200,30 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
+   "id": "v3-demand-planner~52ed9823d0",
+   "occupation": "demand-planner",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "Planistka popytu"
+     ],
+     "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "manager",
+      "director",
+      "head"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
    "id": "v3-demand-planner~011ad2fa32",
    "occupation": "demand-planner",
    "all": [
@@ -47785,6 +48231,30 @@
      "field": "title",
      "any": [
       "Plánovač poptávky"
+     ],
+     "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "manager",
+      "director",
+      "head"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
+   "id": "v3-demand-planner~7f0e75070e",
+   "occupation": "demand-planner",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "Plánovačka poptávky"
      ],
      "mode": "exact"
     }
@@ -47881,6 +48351,30 @@
      "field": "title",
      "any": [
       "Σχεδιαστής ζήτησης"
+     ],
+     "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "manager",
+      "director",
+      "head"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
+   "id": "v3-demand-planner~3858c5f47f",
+   "occupation": "demand-planner",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "Σχεδιάστρια ζήτησης"
      ],
      "mode": "exact"
     }
@@ -62296,6 +62790,20 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
+   "id": "v3-assistant-de-galerie~b9d5ebe656",
+   "occupation": "assistant-de-galerie",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "مساعدة معرض فني"
+     ],
+     "mode": "exact"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
    "id": "v3-assistant-de-galerie~6b5b23b3a9",
    "occupation": "assistant-de-galerie",
    "all": [
@@ -62429,6 +62937,20 @@
      "field": "title",
      "any": [
       "Asistente de gestión"
+     ],
+     "mode": "exact"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
+   "id": "v3-assistant-de-gestion~3787e44a14",
+   "occupation": "assistant-de-gestion",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "Asistentka managementu"
      ],
      "mode": "exact"
     }
@@ -62639,6 +63161,20 @@
      "field": "title",
      "any": [
       "gestionnaire administratif"
+     ],
+     "mode": "exact"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
+   "id": "v3-assistant-de-gestion~b6a1d5462a",
+   "occupation": "assistant-de-gestion",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "Kaufmännische Assistentin"
      ],
      "mode": "exact"
     }
@@ -62954,6 +63490,20 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
+   "id": "v3-assistant-d-education~a2153f76bf",
+   "occupation": "assistant-d-education",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "Assistente Educativa"
+     ],
+     "mode": "exact"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
    "id": "v3-assistant-d-education~742e0e7f0d",
    "occupation": "assistant-d-education",
    "all": [
@@ -63157,6 +63707,20 @@
      "field": "title",
      "any": [
       "مرشد تعليمي"
+     ],
+     "mode": "exact"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
+   "id": "v3-assistant-d-education~fd9ce897ea",
+   "occupation": "assistant-d-education",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "مرشدة تعليمية"
      ],
      "mode": "exact"
     }
@@ -68234,6 +68798,20 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
+   "id": "v3-assistant-pedagogique~20927b6a42",
+   "occupation": "assistant-pedagogique",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "مساعدة التعلم"
+     ],
+     "mode": "exact"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
    "id": "v3-assistant-pedagogique~9c390bc1b6",
    "occupation": "assistant-pedagogique",
    "all": [
@@ -69109,6 +69687,20 @@
      "field": "title",
      "any": [
       "مساعد صالة عرض"
+     ],
+     "mode": "exact"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
+   "id": "v3-assistant-showroom~ae902a5149",
+   "occupation": "assistant-showroom",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "مساعدة صالة عرض"
      ],
      "mode": "exact"
     }
@@ -75727,6 +76319,20 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
+   "id": "v3-chef-de-marque~621f6da98c",
+   "occupation": "chef-de-marque",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "مسؤولة العلامة التجارية"
+     ],
+     "mode": "exact"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
    "id": "v3-chef-de-marque~63a4ce7102",
    "occupation": "chef-de-marque",
    "all": [
@@ -80867,6 +81473,20 @@
      "field": "title",
      "any": [
       "Verkoopvertegenwoordiger"
+     ],
+     "mode": "exact"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
+   "id": "v3-commercial~e596023fe3",
+   "occupation": "commercial",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "Verkoopvertegenwoordigster"
      ],
      "mode": "exact"
     }
@@ -94499,6 +95119,20 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
+   "id": "v3-directeur-de-clientele~d328261c45",
+   "occupation": "directeur-de-clientele",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "مديرة إدارة الحسابات"
+     ],
+     "mode": "exact"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
    "id": "v3-directeur-de-clientele~aab51efea2",
    "occupation": "directeur-de-clientele",
    "all": [
@@ -98640,6 +99274,20 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
+   "id": "v3-direction-commerciale~a9219a8820",
+   "occupation": "direction-commerciale",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "Vertriebsdirektorin"
+     ],
+     "mode": "exact"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
    "id": "v3-direction-commerciale~f3d53ab749",
    "occupation": "direction-commerciale",
    "all": [
@@ -99690,20 +100338,6 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
-   "id": "v3-employe-de-commerce~41a094c268",
-   "occupation": "employe-de-commerce",
-   "all": [
-    {
-     "field": "title",
-     "any": [
-      "customer assistant (seasonal)"
-     ],
-     "mode": "exact"
-    }
-   ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
-  },
-  {
    "id": "v3-employe-de-commerce~965cee1a75",
    "occupation": "employe-de-commerce",
    "all": [
@@ -99711,6 +100345,20 @@
      "field": "title",
      "any": [
       "Doplňovač zboží"
+     ],
+     "mode": "exact"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
+   "id": "v3-employe-de-commerce~0c83b800b0",
+   "occupation": "employe-de-commerce",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "Doplňovačka zboží"
      ],
      "mode": "exact"
     }
@@ -99739,20 +100387,6 @@
      "field": "title",
      "any": [
       "employé commercial en magasin"
-     ],
-     "mode": "exact"
-    }
-   ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
-  },
-  {
-   "id": "v3-employe-de-commerce~2b16848196",
-   "occupation": "employe-de-commerce",
-   "all": [
-    {
-     "field": "title",
-     "any": [
-      "Employé de commerce"
      ],
      "mode": "exact"
     }
@@ -99858,20 +100492,6 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
-   "id": "v3-employe-de-commerce~6514b8998c",
-   "occupation": "employe-de-commerce",
-   "all": [
-    {
-     "field": "title",
-     "any": [
-      "employé monop' f/h"
-     ],
-     "mode": "exact"
-    }
-   ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
-  },
-  {
    "id": "v3-employe-de-commerce~d2fe68e86f",
    "occupation": "employe-de-commerce",
    "all": [
@@ -99886,97 +100506,13 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
-   "id": "v3-employe-de-commerce~c1121219f0",
+   "id": "v3-employe-de-commerce~2b70a62d4e",
    "occupation": "employe-de-commerce",
    "all": [
     {
      "field": "title",
      "any": [
-      "Employée de commerce"
-     ],
-     "mode": "exact"
-    }
-   ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
-  },
-  {
-   "id": "v3-employe-de-commerce~5d8fd8b3fc",
-   "occupation": "employe-de-commerce",
-   "all": [
-    {
-     "field": "title",
-     "any": [
-      "employée de commerce polyvalent"
-     ],
-     "mode": "exact"
-    }
-   ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
-  },
-  {
-   "id": "v3-employe-de-commerce~592d71a9a1",
-   "occupation": "employe-de-commerce",
-   "all": [
-    {
-     "field": "title",
-     "any": [
-      "employée, employé de rayon à service boucherie"
-     ],
-     "mode": "exact"
-    }
-   ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
-  },
-  {
-   "id": "v3-employe-de-commerce~4faacb37f1",
-   "occupation": "employe-de-commerce",
-   "all": [
-    {
-     "field": "title",
-     "any": [
-      "employée, employé de rayon à service boulangerie"
-     ],
-     "mode": "exact"
-    }
-   ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
-  },
-  {
-   "id": "v3-employe-de-commerce~07ec95a447",
-   "occupation": "employe-de-commerce",
-   "all": [
-    {
-     "field": "title",
-     "any": [
-      "employée, employé de rayon à service crèmerie coupe"
-     ],
-     "mode": "exact"
-    }
-   ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
-  },
-  {
-   "id": "v3-employe-de-commerce~28bd545b10",
-   "occupation": "employe-de-commerce",
-   "all": [
-    {
-     "field": "title",
-     "any": [
-      "employée, employé de rayon à service fruits & légumes"
-     ],
-     "mode": "exact"
-    }
-   ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
-  },
-  {
-   "id": "v3-employe-de-commerce~6a3ede003d",
-   "occupation": "employe-de-commerce",
-   "all": [
-    {
-     "field": "title",
-     "any": [
-      "employée, employé de rayon à service poissonnerie"
+      "Employée de rayon"
      ],
      "mode": "exact"
     }
@@ -100082,20 +100618,6 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
-   "id": "v3-employe-de-commerce~02a26fde75",
-   "occupation": "employe-de-commerce",
-   "all": [
-    {
-     "field": "title",
-     "any": [
-      "employée polyvalente saisonnière"
-     ],
-     "mode": "exact"
-    }
-   ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
-  },
-  {
    "id": "v3-employe-de-commerce~3d63ee2964",
    "occupation": "employe-de-commerce",
    "all": [
@@ -100110,13 +100632,13 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
-   "id": "v3-employe-de-commerce~80adaa2171",
+   "id": "v3-employe-de-commerce~acfa096419",
    "occupation": "employe-de-commerce",
    "all": [
     {
      "field": "title",
      "any": [
-      "lucrător comercial"
+      "Lucrătoare raion"
      ],
      "mode": "exact"
     }
@@ -100166,6 +100688,20 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
+   "id": "v3-employe-de-commerce~7a8dc527ae",
+   "occupation": "employe-de-commerce",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "Pracownica wykładająca towar"
+     ],
+     "mode": "exact"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
    "id": "v3-employe-de-commerce~b747f86338",
    "occupation": "employe-de-commerce",
    "all": [
@@ -100208,6 +100744,20 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
+   "id": "v3-employe-de-commerce~9feade9432",
+   "occupation": "employe-de-commerce",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "Regalauffüllerin"
+     ],
+     "mode": "exact"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
    "id": "v3-employe-de-commerce~fba7c1e79a",
    "occupation": "employe-de-commerce",
    "all": [
@@ -100239,6 +100789,20 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
+   "id": "v3-employe-de-commerce~26f49e402b",
+   "occupation": "employe-de-commerce",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "Reponedora"
+     ],
+     "mode": "exact"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
    "id": "v3-employe-de-commerce~29b91ae397",
    "occupation": "employe-de-commerce",
    "all": [
@@ -100253,38 +100817,18 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
-   "id": "v3-employe-de-commerce~e79c37df24",
+   "id": "v3-employe-de-commerce~e3ec384e61",
    "occupation": "employe-de-commerce",
    "all": [
     {
      "field": "title",
      "any": [
-      "retail assistant - night shift"
+      "Repositora"
      ],
      "mode": "exact"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
-   "supersedes": [
-    "v3-sales-advisor~9050c6c503"
-   ]
-  },
-  {
-   "id": "v3-employe-de-commerce~e606f8fb6d",
-   "occupation": "employe-de-commerce",
-   "all": [
-    {
-     "field": "title",
-     "any": [
-      "retail assistant - operador de loja (m/f)"
-     ],
-     "mode": "exact"
-    }
-   ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
-   "supersedes": [
-    "v3-sales-advisor~9050c6c503"
-   ]
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
    "id": "v3-employe-de-commerce~a7469b92a3",
@@ -100294,20 +100838,6 @@
      "field": "title",
      "any": [
       "Scaffalista"
-     ],
-     "mode": "exact"
-    }
-   ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
-  },
-  {
-   "id": "v3-employe-de-commerce~3890387ebe",
-   "occupation": "employe-de-commerce",
-   "all": [
-    {
-     "field": "title",
-     "any": [
-      "seasonal task associate"
      ],
      "mode": "exact"
     }
@@ -100329,34 +100859,6 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
-   "id": "v3-employe-de-commerce~47601fea01",
-   "occupation": "employe-de-commerce",
-   "all": [
-    {
-     "field": "title",
-     "any": [
-      "store assistant"
-     ],
-     "mode": "exact"
-    }
-   ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
-  },
-  {
-   "id": "v3-employe-de-commerce~d56248c790",
-   "occupation": "employe-de-commerce",
-   "all": [
-    {
-     "field": "title",
-     "any": [
-      "store worker"
-     ],
-     "mode": "exact"
-    }
-   ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
-  },
-  {
    "id": "v3-employe-de-commerce~b6a5be830c",
    "occupation": "employe-de-commerce",
    "all": [
@@ -100364,6 +100866,20 @@
      "field": "title",
      "any": [
       "Vakkenvuller"
+     ],
+     "mode": "exact"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
+   "id": "v3-employe-de-commerce~579d2041ad",
+   "occupation": "employe-de-commerce",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "Vakkenvulster"
      ],
      "mode": "exact"
     }
@@ -100399,34 +100915,6 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
-   "id": "v3-employe-de-commerce~3f698f096d",
-   "occupation": "employe-de-commerce",
-   "all": [
-    {
-     "field": "title",
-     "any": [
-      "winkelmedewerker oproepkracht"
-     ],
-     "mode": "exact"
-    }
-   ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
-  },
-  {
-   "id": "v3-employe-de-commerce~84b08a0daf",
-   "occupation": "employe-de-commerce",
-   "all": [
-    {
-     "field": "title",
-     "any": [
-      "Υπάλληλος καταστήματος"
-     ],
-     "mode": "exact"
-    }
-   ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
-  },
-  {
    "id": "v3-employe-de-commerce~994141aa52",
    "occupation": "employe-de-commerce",
    "all": [
@@ -100448,6 +100936,20 @@
      "field": "title",
      "any": [
       "عامل ترتيب الرفوف"
+     ],
+     "mode": "exact"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
+   "id": "v3-employe-de-commerce~30b329682e",
+   "occupation": "employe-de-commerce",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "عاملة ترتيب الرفوف"
      ],
      "mode": "exact"
     }
@@ -110744,6 +111246,20 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
+   "id": "v3-manager-commercial~794a703ead",
+   "occupation": "manager-commercial",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "Εμπορική Υπεύθυνη"
+     ],
+     "mode": "exact"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
    "id": "v3-manager-commercial~05026e24c8",
    "occupation": "manager-commercial",
    "all": [
@@ -110765,6 +111281,20 @@
      "field": "title",
      "any": [
       "مدير الشؤون التجارية"
+     ],
+     "mode": "exact"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
+   "id": "v3-manager-commercial~85b0b2bd13",
+   "occupation": "manager-commercial",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "مديرة الشؤون التجارية"
      ],
      "mode": "exact"
     }
@@ -111682,48 +112212,6 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
-   "id": "v3-manager-floor~d89f4d5eea",
-   "occupation": "manager-floor",
-   "all": [
-    {
-     "field": "title",
-     "any": [
-      "acting lead supervisor i"
-     ],
-     "mode": "exact"
-    }
-   ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
-  },
-  {
-   "id": "v3-manager-floor~98e25e0310",
-   "occupation": "manager-floor",
-   "all": [
-    {
-     "field": "title",
-     "any": [
-      "acting lead supervisor ii"
-     ],
-     "mode": "exact"
-    }
-   ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
-  },
-  {
-   "id": "v3-manager-floor~d8edb7f611",
-   "occupation": "manager-floor",
-   "all": [
-    {
-     "field": "title",
-     "any": [
-      "acting supervisor i"
-     ],
-     "mode": "exact"
-    }
-   ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
-  },
-  {
    "id": "v3-manager-floor~9f556b64a3",
    "occupation": "manager-floor",
    "all": [
@@ -111789,20 +112277,6 @@
       "Avdelningschef"
      ],
      "mode": "exact"
-    }
-   ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
-  },
-  {
-   "id": "v3-manager-floor~9be4551a7c",
-   "occupation": "manager-floor",
-   "all": [
-    {
-     "field": "title",
-     "any": [
-      "chef d'équipe"
-     ],
-     "mode": "phrase"
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -112228,48 +112702,6 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
-   "id": "v3-manager-floor~8bd38b5f73",
-   "occupation": "manager-floor",
-   "all": [
-    {
-     "field": "title",
-     "any": [
-      "lead supervisor"
-     ],
-     "mode": "exact"
-    }
-   ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
-  },
-  {
-   "id": "v3-manager-floor~9940a731e5",
-   "occupation": "manager-floor",
-   "all": [
-    {
-     "field": "title",
-     "any": [
-      "lead supervisor i"
-     ],
-     "mode": "exact"
-    }
-   ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
-  },
-  {
-   "id": "v3-manager-floor~9adfa83383",
-   "occupation": "manager-floor",
-   "all": [
-    {
-     "field": "title",
-     "any": [
-      "lead supervisor ii"
-     ],
-     "mode": "exact"
-    }
-   ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
-  },
-  {
    "id": "v3-manager-floor~d82ea30136",
    "occupation": "manager-floor",
    "all": [
@@ -112657,20 +113089,6 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
-   "id": "v3-manager-floor~5d104c0b02",
-   "occupation": "manager-floor",
-   "all": [
-    {
-     "field": "title",
-     "any": [
-      "shift leader"
-     ],
-     "mode": "exact"
-    }
-   ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
-  },
-  {
    "id": "v3-manager-floor~ebe17975c0",
    "occupation": "manager-floor",
    "all": [
@@ -112783,48 +113201,6 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
-   "id": "v3-manager-floor~a3dcdce532",
-   "occupation": "manager-floor",
-   "all": [
-    {
-     "field": "title",
-     "any": [
-      "supervisor i"
-     ],
-     "mode": "exact"
-    }
-   ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
-  },
-  {
-   "id": "v3-manager-floor~c7a7072f53",
-   "occupation": "manager-floor",
-   "all": [
-    {
-     "field": "title",
-     "any": [
-      "team lead"
-     ],
-     "mode": "exact"
-    }
-   ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
-  },
-  {
-   "id": "v3-manager-floor~9b08c5819e",
-   "occupation": "manager-floor",
-   "all": [
-    {
-     "field": "title",
-     "any": [
-      "team lead manager"
-     ],
-     "mode": "exact"
-    }
-   ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
-  },
-  {
    "id": "v3-manager-floor~7da97b1d00",
    "occupation": "manager-floor",
    "all": [
@@ -112834,20 +113210,6 @@
       "team lead, sales full time"
      ],
      "mode": "exact"
-    }
-   ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
-  },
-  {
-   "id": "v3-manager-floor~b3756bb294",
-   "occupation": "manager-floor",
-   "all": [
-    {
-     "field": "title",
-     "any": [
-      "team leader"
-     ],
-     "mode": "phrase"
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -112868,20 +113230,6 @@
    "supersedes": [
     "sales-advisor-title"
    ]
-  },
-  {
-   "id": "v3-manager-floor~4db0d17f10",
-   "occupation": "manager-floor",
-   "all": [
-    {
-     "field": "title",
-     "any": [
-      "team manager"
-     ],
-     "mode": "exact"
-    }
-   ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
    "id": "v3-manager-floor~736a08ffac",
@@ -117624,6 +117972,20 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
+   "id": "v3-praticien-spa~0fb04e3ded",
+   "occupation": "praticien-spa",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "Spa-Therapeutin"
+     ],
+     "mode": "exact"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
    "id": "v3-praticien-spa~c65630f949",
    "occupation": "praticien-spa",
    "all": [
@@ -117680,6 +118042,20 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
+   "id": "v3-praticien-spa~994c61a23c",
+   "occupation": "praticien-spa",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "Terapeutka spa"
+     ],
+     "mode": "exact"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
    "id": "v3-praticien-spa~f73321e957",
    "occupation": "praticien-spa",
    "all": [
@@ -117715,6 +118091,20 @@
      "field": "title",
      "any": [
       "Θεραπευτής Spa"
+     ],
+     "mode": "exact"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
+   "id": "v3-praticien-spa~a9fd3ee1fd",
+   "occupation": "praticien-spa",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "Θεραπεύτρια Spa"
      ],
      "mode": "exact"
     }
@@ -117841,6 +118231,20 @@
      "field": "title",
      "any": [
       "Costureira de amostras"
+     ],
+     "mode": "exact"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
+   "id": "v3-premiere-main~1f966515b5",
+   "occupation": "premiere-main",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "Costureiro de amostras"
      ],
      "mode": "exact"
     }
@@ -117981,6 +118385,20 @@
      "field": "title",
      "any": [
       "Piloteira"
+     ],
+     "mode": "exact"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
+   "id": "v3-premiere-main~f2162ec383",
+   "occupation": "premiere-main",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "Piloteiro"
      ],
      "mode": "exact"
     }
@@ -118457,6 +118875,20 @@
      "field": "title",
      "any": [
       "Presidente"
+     ],
+     "mode": "exact"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
+   "id": "v3-president-d-association~3230e61d2d",
+   "occupation": "president-d-association",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "Présidente d'association"
      ],
      "mode": "exact"
     }
@@ -119636,6 +120068,20 @@
      "field": "title",
      "any": [
       "Lederwaren-Prototypist"
+     ],
+     "mode": "exact"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
+   "id": "v3-prototypiste-maroquinerie~c0fa94569b",
+   "occupation": "prototypiste-maroquinerie",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "Lederwaren-Prototypistin"
      ],
      "mode": "exact"
     }
@@ -125855,6 +126301,20 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
+   "id": "v3-responsable-de-comptes~6cabb42d79",
+   "occupation": "responsable-de-comptes",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "مسؤولة حسابات العملاء"
+     ],
+     "mode": "exact"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
    "id": "v3-responsable-de-comptes~52cce0418e",
    "occupation": "responsable-de-comptes",
    "all": [
@@ -127670,6 +128130,20 @@
    ]
   },
   {
+   "id": "v3-responsable-juridique~e2bb3ae7a1",
+   "occupation": "responsable-juridique",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "Υπεύθυνη Νομικού Τμήματος"
+     ],
+     "mode": "exact"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
    "id": "v3-responsable-juridique~4f529badd9",
    "occupation": "responsable-juridique",
    "all": [
@@ -127821,10 +128295,7 @@
      "mode": "exact"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
-   "supersedes": [
-    "v3-manager-floor~9be4551a7c"
-   ]
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
    "id": "v3-responsable-operationnel~5a6856ef6d",
@@ -128964,10 +129435,7 @@
      "mode": "exact"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
-   "supersedes": [
-    "v3-manager-floor~9be4551a7c"
-   ]
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
    "id": "v3-responsable-projets-retail~b5bcb46582",
@@ -130306,10 +130774,7 @@
      "mode": "exact"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
-   "supersedes": [
-    "v3-manager-floor~9be4551a7c"
-   ]
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
    "id": "v3-responsable-relation-client~4221f753f6",
@@ -131376,6 +131841,20 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
+   "id": "v3-responsable-supply-chain~b0b4660545",
+   "occupation": "responsable-supply-chain",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "مسؤولة سلسلة التوريد"
+     ],
+     "mode": "exact"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
    "id": "v3-responsable-supply-chain~6e0426b152",
    "occupation": "responsable-supply-chain",
    "all": [
@@ -131910,20 +132389,6 @@
      "field": "title",
      "any": [
       "Responsável de Wholesale"
-     ],
-     "mode": "exact"
-    }
-   ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
-  },
-  {
-   "id": "v3-responsable-wholesale~d966d468de",
-   "occupation": "responsable-wholesale",
-   "all": [
-    {
-     "field": "title",
-     "any": [
-      "sales manager"
      ],
      "mode": "exact"
     }
@@ -136411,6 +136876,20 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
+   "id": "v3-tuteur-scolaire~e4d969fedf",
+   "occupation": "tuteur-scolaire",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "Tutor Scolastica"
+     ],
+     "mode": "exact"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
    "id": "v3-tuteur-scolaire~44fde0e082",
    "occupation": "tuteur-scolaire",
    "all": [
@@ -136565,6 +137044,20 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
+   "id": "v3-ux-ui-designer~fc44e9760a",
+   "occupation": "ux-ui-designer",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "Diseñadora UX"
+     ],
+     "mode": "exact"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
    "id": "v3-ux-ui-designer~8f162fad11",
    "occupation": "ux-ui-designer",
    "all": [
@@ -136586,6 +137079,20 @@
      "field": "title",
      "any": [
       "Projektant UX"
+     ],
+     "mode": "exact"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
+   "id": "v3-ux-ui-designer~6929ec4ea5",
+   "occupation": "ux-ui-designer",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "Projektantka UX"
      ],
      "mode": "exact"
     }
@@ -136740,6 +137247,20 @@
      "field": "title",
      "any": [
       "مصمم UX"
+     ],
+     "mode": "exact"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
+   "id": "v3-ux-ui-designer~280ca8d9f9",
+   "occupation": "ux-ui-designer",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "مصممة UX"
      ],
      "mode": "exact"
     }
@@ -137854,8 +138375,7 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
-    "sales-advisor-title",
-    "v3-manager-floor~b3756bb294"
+    "sales-advisor-title"
    ]
   },
   {
@@ -137872,8 +138392,7 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
-    "sales-advisor-title",
-    "v3-manager-floor~b3756bb294"
+    "sales-advisor-title"
    ]
   },
   {
@@ -137946,6 +138465,20 @@
      "field": "title",
      "any": [
       "Lider zespołu sprzedaży"
+     ],
+     "mode": "exact"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
+   "id": "v3-retail-sales-lead~c0f0e33ac9",
+   "occupation": "retail-sales-lead",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "Liderka zespołu sprzedaży"
      ],
      "mode": "exact"
     }
@@ -138055,6 +138588,20 @@
    ]
   },
   {
+   "id": "v3-retail-sales-lead~7f46e77e3d",
+   "occupation": "retail-sales-lead",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "Prima venditrice"
+     ],
+     "mode": "exact"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
    "id": "v3-retail-sales-lead~a2e2cf67de",
    "occupation": "retail-sales-lead",
    "all": [
@@ -138062,6 +138609,23 @@
      "field": "title",
      "any": [
       "Primer vendedor"
+     ],
+     "mode": "exact"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
+   "supersedes": [
+    "sales-advisor-title"
+   ]
+  },
+  {
+   "id": "v3-retail-sales-lead~1820caa424",
+   "occupation": "retail-sales-lead",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "Primera vendedora"
      ],
      "mode": "exact"
     }
@@ -138186,8 +138750,7 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
-    "sales-advisor-title",
-    "v3-manager-floor~b3756bb294"
+    "sales-advisor-title"
    ]
   },
   {
@@ -138204,8 +138767,7 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
-    "sales-advisor-title",
-    "v3-manager-floor~b3756bb294"
+    "sales-advisor-title"
    ]
   },
   {
@@ -138266,6 +138828,20 @@
    "supersedes": [
     "sales-advisor-title"
    ]
+  },
+  {
+   "id": "v3-retail-sales-lead~73feb4199f",
+   "occupation": "retail-sales-lead",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "Senior Verkaufsberaterin"
+     ],
+     "mode": "exact"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
    "id": "v3-retail-sales-lead~0270074ddb",
@@ -141689,7 +142265,7 @@
  ],
  "review": {
   "author": "Passe de curation v3 (IA seule, D-475 §30)",
-  "at": "2026-09-29T11:21:27.080Z",
+  "at": "2026-09-29T11:50:56.123Z",
   "basis": "Première passe de curation : 253 métiers (servis, backend, offres), 33 familles, 25 langues ; preuves : audits/2026-09-28/curation-v3."
  },
  "families": [
@@ -143086,45 +143662,34 @@
     "Consultora de vendas",
     "مستشارة مبيعات",
     "Prodejní poradkyně",
-    "retail assistant - weekend only",
-    "vi søker butikkmedarbeider over 18 år",
-    "butiksmedarbejder over 18 år - aften og weekend",
-    "ayudante/a de venta y reponedor/a – jornada parcial",
     "butiksassistent",
-    "butiksassistent - ekstra",
-    "retail associate ii",
-    "pt - retail assistant - operador de loja (m/f)",
-    "retail assistant (m/f/d) 28-35h/woche, befristet - adidas brand flagship store berlin",
-    "retail assistant - operador de loja",
-    "vi søker butikkmedarbeider over 16 år",
-    "winkelmedewerker - studenten/flexi",
+    "lucrător comercial",
+    "Lucrătoare comercială",
     "Addetto alle vendite",
+    "Addetta alle vendite",
     "Dependiente",
+    "Dependienta",
     "Winkelmedewerker",
     "店员",
     "販売スタッフ",
     "매장 판매원",
     "Assistente de loja",
     "Vendedor de loja",
-    "Butiksassistent",
+    "Vendedora de loja",
     "店員",
     "Sprzedawca",
+    "Sprzedawczyni",
     "Butikssäljare",
     "Satış Elemanı",
     "พนักงานขายหน้าร้าน",
     "Pembantu Kedai",
     "بائع تجزئة",
+    "بائعة تجزئة",
     "Butikkmedarbeider",
     "Nhân viên bán hàng",
     "Prodavač",
-    "Bolti eladó",
-    "Addetta alle vendite",
-    "Dependienta",
-    "Vendedora de loja",
-    "Sprzedawczyni",
-    "بائعة تجزئة",
     "Prodavačka",
-    "Lucrătoare comercială"
+    "Bolti eladó"
    ]
   },
   {
@@ -143714,7 +144279,8 @@
     "Területi vezető",
     "Directrice régionale",
     "Regionalleiterin Retail",
-    "Directora regional"
+    "Directora regional",
+    "Direttrice Regionale Retail"
    ]
   },
   {
@@ -145392,7 +145958,8 @@
     "Quản lý CRM",
     "CRM menedzser",
     "CRM Managerin",
-    "Gestora de CRM"
+    "Gestora de CRM",
+    "مديرة CRM"
    ]
   },
   {
@@ -146301,7 +146868,17 @@
     "Plánovač poptávky",
     "Kereslettervező",
     "Planificator cerere",
-    "مخططة الطلب"
+    "مخططة الطلب",
+    "Planificatrice de la demande",
+    "Bedarfsplanerin",
+    "Pianificatrice della domanda",
+    "Planificadora de la demanda",
+    "Planeadora de procura",
+    "Planejadora de demanda",
+    "Planistka popytu",
+    "Σχεδιάστρια ζήτησης",
+    "Plánovačka poptávky",
+    "Planificatoare cerere"
    ]
   },
   {
@@ -147954,7 +148531,8 @@
     "Galerieassistentin",
     "Asystentka galerii",
     "Asistentka galerie",
-    "Asistentă galerie"
+    "Asistentă galerie",
+    "مساعدة معرض فني"
    ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/2c8a4b72-21f4-4ab1-9dbd-1cae779211b7"
@@ -148013,7 +148591,9 @@
     "Asistent de gestiune",
     "Assistante de gestion",
     "Asystentka ds. zarządzania",
-    "Asistentă de gestiune"
+    "Asistentă de gestiune",
+    "Kaufmännische Assistentin",
+    "Asistentka managementu"
    ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/044d78cc-f62f-4532-83a5-8e04f2889652"
@@ -148074,7 +148654,9 @@
     "Assistante d'éducation",
     "Tutora de apoyo",
     "Asistentka pedagoga",
-    "Asistentă educațională"
+    "Asistentă educațională",
+    "Assistente Educativa",
+    "مرشدة تعليمية"
    ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/3d0f86c1-9bdd-4e84-bc62-93a716128c8d"
@@ -148771,7 +149353,8 @@
     "Assistente pedagógica",
     "Asystentka dydaktyczna",
     "Pedagogická asistentka",
-    "Asistentă pedagogică"
+    "Asistentă pedagogică",
+    "مساعدة التعلم"
    ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/3d0f86c1-9bdd-4e84-bc62-93a716128c8d"
@@ -148894,7 +149477,8 @@
     "Assistante showroom",
     "Asystentka showroomu",
     "Asistentka showroomu",
-    "Asistentă showroom"
+    "Asistentă showroom",
+    "مساعدة صالة عرض"
    ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/5c1eba1e-7820-4287-9746-4c5906320100"
@@ -149774,7 +150358,8 @@
     "Cheffe de marque",
     "Brand Managerin",
     "Gestora de marca",
-    "Gerenta de marca"
+    "Gerenta de marca",
+    "مسؤولة العلامة التجارية"
    ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/de80bbf0-447d-4a6a-845a-fdba4e0dc30c"
@@ -150462,7 +151047,8 @@
     "Consultora comercial",
     "مندوبة مبيعات",
     "Πωλήτρια",
-    "Obchodní zástupkyně"
+    "Obchodní zástupkyně",
+    "Verkoopvertegenwoordigster"
    ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/c418ed9a-132f-48cd-ae5c-dd375070ee0e"
@@ -152246,7 +152832,8 @@
     "Directora de cuentas",
     "Diretora de contas",
     "Dyrektorka ds. obsługi klienta",
-    "Διευθύντρια λογαριασμών"
+    "Διευθύντρια λογαριασμών",
+    "مديرة إدارة الحسابات"
    ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/2eac08c2-a81a-46fc-8d75-eb0e0f3e0f6d"
@@ -152698,7 +153285,8 @@
     "Directora comercial",
     "Diretora comercial",
     "Εμπορική διευθύντρια",
-    "Obchodní ředitelka"
+    "Obchodní ředitelka",
+    "Vertriebsdirektorin"
    ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/2d3d7188-47ab-49b9-9045-e452d9db06f1"
@@ -152838,7 +153426,7 @@
   },
   {
    "key": "employe-de-commerce",
-   "family": "retail-client-advisor",
+   "family": "retail-operations",
    "labels": {
     "fr": "Employé de rayon",
     "en": "Shelf Stocker",
@@ -152889,7 +153477,22 @@
     "Nhân viên sắp xếp hàng hóa",
     "Doplňovač zboží",
     "Árufeltöltő",
-    "Lucrător raion"
+    "Lucrător raion",
+    "Employée de rayon",
+    "Regalauffüllerin",
+    "Reponedora",
+    "Vakkenvulster",
+    "Repositora",
+    "Pracownica wykładająca towar",
+    "عاملة ترتيب الرفوف",
+    "Doplňovačka zboží",
+    "Lucrătoare raion",
+    "employé commercial",
+    "employé commercial en magasin",
+    "employé de rayon",
+    "employé de rayon textile",
+    "assistant rayon",
+    "employé libre service"
    ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/0b15375e-dfdd-4047-9efb-096e0aaee7d2"
@@ -154336,7 +154939,10 @@
     "Manager commerciale",
     "Vertriebsleiterin",
     "Gestora comercial",
-    "Obchodní manažerka"
+    "Obchodní manažerka",
+    "Gestora Comercial",
+    "مديرة الشؤون التجارية",
+    "Εμπορική Υπεύθυνη"
    ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/544cd9cf-e2ee-4ac0-8a02-7147af6b97d7"
@@ -155101,7 +155707,10 @@
     "Terapeut spa",
     "Praticienne spa",
     "معالجة سبا",
-    "Spa terapeutka"
+    "Spa terapeutka",
+    "Spa-Therapeutin",
+    "Terapeutka spa",
+    "Θεραπεύτρια Spa"
    ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/a1e1a788-2352-4172-8fcf-1f985a6968b0"
@@ -155162,7 +155771,9 @@
     "Mintavarrónő",
     "Croitor prototipuri",
     "خياطة عينات أولى",
-    "Πρώτος ράφτης"
+    "Πρώτος ράφτης",
+    "Costureiro de amostras",
+    "Piloteiro"
    ]
   },
   {
@@ -155220,7 +155831,8 @@
     "Presidenta",
     "رئيسة",
     "Předsedkyně",
-    "Președintă"
+    "Președintă",
+    "Présidente d'association"
    ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/6c3fd65e-2d24-47d8-bc22-9e93512bdcc2"
@@ -155452,7 +156064,8 @@
     "Prototipist marochinărie",
     "Modelarka wyrobów skórzanych",
     "Modelářka kožené galanterie",
-    "Prototipistă marochinărie"
+    "Prototipistă marochinărie",
+    "Lederwaren-Prototypistin"
    ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/d515e82a-ca9f-4be4-9823-33694dff7304"
@@ -156219,7 +156832,8 @@
     "Responsable de comptes",
     "Gestor de conta",
     "Gestora de conta",
-    "Gerente de conta"
+    "Gerente de conta",
+    "مسؤولة حسابات العملاء"
    ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/5e4d156a-1f05-4b2c-b0f0-5abb82d52ed6"
@@ -156500,7 +157114,8 @@
     "Responsável jurídica",
     "Gerente jurídica",
     "مديرة الشؤون القانونية",
-    "Právní manažerka"
+    "Právní manažerka",
+    "Υπεύθυνη Νομικού Τμήματος"
    ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/d2ff134e-b41a-4fa3-aceb-1b9f5f5cf015"
@@ -156958,7 +157573,8 @@
     "Pengurus Rantaian Bekalan",
     "مسؤول سلسلة التوريد",
     "Quản lý Chuỗi Cung ứng",
-    "Supply Chain Managerin"
+    "Supply Chain Managerin",
+    "مسؤولة سلسلة التوريد"
    ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/823db06f-25e1-4658-b063-d6ef956b41f5"
@@ -157769,7 +158385,8 @@
     "Explicadora",
     "Korepetytorka",
     "Doučovatelka",
-    "Tutoare școlară"
+    "Tutoare școlară",
+    "Tutor Scolastica"
    ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/021663ca-a367-472e-a1f0-6d8ab5b2d860"
@@ -157818,7 +158435,10 @@
     "Pereka UX",
     "مصمم UX",
     "Thiết kế UX",
-    "UX Tervező"
+    "UX Tervező",
+    "Diseñadora UX",
+    "Projektantka UX",
+    "مصممة UX"
    ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/96e20037-0a25-4bf6-a25e-808d1605d890"
@@ -158046,7 +158666,12 @@
     "Verkoopleidster",
     "مسؤولة مبيعات",
     "Υπεύθυνη πωλήσεων",
-    "Responsabilă vânzări"
+    "Responsabilă vânzări",
+    "Première vendeuse",
+    "Senior Verkaufsberaterin",
+    "Prima venditrice",
+    "Primera vendedora",
+    "Liderka zespołu sprzedaży"
    ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/ff3a164d-4045-4511-a472-49093dabf9fc"

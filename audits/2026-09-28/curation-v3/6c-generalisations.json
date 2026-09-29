@@ -1,18 +1,18 @@
 {
- "calculeLe": "2026-09-29T11:21:26.586Z",
+ "calculeLe": "2026-09-29T11:50:55.616Z",
  "juges": {
   "j1": "gemini-3.6-flash",
   "j2": "gemini-3-flash-preview"
  },
  "bilan": {
-  "expressionsQuiGeneralisent": 685,
-  "jugees": 185,
+  "expressionsQuiGeneralisent": 673,
+  "jugees": 179,
   "modes": {
-   "generalisable": 99,
-   "exacte": 86
+   "generalisable": 100,
+   "exacte": 79
   },
-  "sousSeuil": 500,
-  "motsSeulsJuges": 23,
+  "sousSeuil": 494,
+  "motsSeulsJuges": 24,
   "motsSeulsRamenesALExact": [
    "CONTROLLER",
    "ABTEILUNGSLEITER",
@@ -25,8 +25,8 @@
    "OPTICO",
    "DISPENSER"
   ],
-  "offresGeneralisables": 6115,
-  "offresRameneesALExact": 6686,
+  "offresGeneralisables": 6056,
+  "offresRameneesALExact": 5934,
   "seuils": {
    "SEUIL_OFFRES": 10,
    "ECHANTILLON": 3
@@ -121,7 +121,7 @@
    "expression": "MAINTENANCE TECHNICIAN",
    "occupation": "maintenance-technician",
    "mode": "generalisable",
-   "offres": 40,
+   "offres": 41,
    "juges": [
     {
      "titre": "DC Maintenance Technician",
@@ -322,46 +322,6 @@
     {
      "titre": "Account Manager med mobilt showroom. Distrikt Midt/Vest",
      "verdict": "confirme"
-    }
-   ]
-  },
-  {
-   "expression": "LEAD SUPERVISOR",
-   "occupation": "manager-floor",
-   "mode": "exacte",
-   "offres": 160,
-   "juges": [
-    {
-     "titre": "Lead Supervisor I",
-     "verdict": "rejete"
-    },
-    {
-     "titre": "Lead Supervisor FT - Park City, UT.",
-     "verdict": "rejete"
-    },
-    {
-     "titre": "Lead Supervisor F&B II",
-     "verdict": "rejete"
-    }
-   ]
-  },
-  {
-   "expression": "SUPERVISOR I",
-   "occupation": "manager-floor",
-   "mode": "exacte",
-   "offres": 143,
-   "juges": [
-    {
-     "titre": "Lead Supervisor I",
-     "verdict": "rejete"
-    },
-    {
-     "titre": "Supervisor I - Kate Spade Vineland Outlet",
-     "verdict": "confirme"
-    },
-    {
-     "titre": "Acting Lead Supervisor I",
-     "verdict": "rejete"
     }
    ]
   },
@@ -901,7 +861,7 @@
    "expression": "WHOLESALE",
    "occupation": "responsable-wholesale",
    "mode": "exacte",
-   "offres": 76,
+   "offres": 77,
    "juges": [
     {
      "titre": "Specialist GBS AR Retail & Wholesale",
@@ -1102,26 +1062,6 @@
    ]
   },
   {
-   "expression": "TEAM LEADER",
-   "occupation": "manager-floor",
-   "mode": "generalisable",
-   "offres": 115,
-   "juges": [
-    {
-     "titre": "Opticians Team Leader",
-     "verdict": "confirme"
-    },
-    {
-     "titre": "Team Leader| Punkt Handlowy| Factory Annopol| Warszawa| UoP| pełny etat/ 3/4 etatu",
-     "verdict": "confirme"
-    },
-    {
-     "titre": "Urban Outfitters Team Leader / Chef d'&eacute;quipe - Paris Rue de Rivoli, FR",
-     "verdict": "confirme"
-    }
-   ]
-  },
-  {
    "expression": "VISUAL MERCHANDISING MANAGER",
    "occupation": "responsable-vm",
    "mode": "generalisable",
@@ -1301,26 +1241,6 @@
     },
     {
      "titre": "Stage chef de produit Chaussants MDD et MN, PGC MN et Collants MDD et MN H/F",
-     "verdict": "rejete"
-    }
-   ]
-  },
-  {
-   "expression": "TEAM LEAD",
-   "occupation": "manager-floor",
-   "mode": "exacte",
-   "offres": 198,
-   "juges": [
-    {
-     "titre": "Team Lead, Sales Part Time",
-     "verdict": "rejete"
-    },
-    {
-     "titre": "Sales Assistant Full time / team lead (m/f/d) - Inno, Brussels",
-     "verdict": "rejete"
-    },
-    {
-     "titre": "Team Lead - adidas Kingston Outlet Retail Store Location (#2011)",
      "verdict": "rejete"
     }
    ]
@@ -1634,26 +1554,6 @@
    ]
   },
   {
-   "expression": "TEAM MANAGER",
-   "occupation": "manager-floor",
-   "mode": "exacte",
-   "offres": 94,
-   "juges": [
-    {
-     "titre": "NIGHT TEAM MANAGER",
-     "verdict": "rejete"
-    },
-    {
-     "titre": "Assistant Online Sales Team Manager/线上销售部门副经理",
-     "verdict": "rejete"
-    },
-    {
-     "titre": "CDD/Mission - Operations Team Manager - Hermès.com Europe (H/F)",
-     "verdict": "rejete"
-    }
-   ]
-  },
-  {
    "expression": "TRAINING MANAGER",
    "occupation": "responsable-formation",
    "mode": "exacte",
@@ -1729,26 +1629,6 @@
     },
     {
      "titre": "Butikschef till John Henric Avenyn, Göteborg",
-     "verdict": "confirme"
-    }
-   ]
-  },
-  {
-   "expression": "GENERAL MANAGER",
-   "occupation": "store-manager",
-   "mode": "exacte",
-   "offres": 16,
-   "juges": [
-    {
-     "titre": "Associate General Manager | Dallas",
-     "verdict": "rejete"
-    },
-    {
-     "titre": "Associate General Manager, Full Time - Versace Chicago Outlet - IL-1",
-     "verdict": "rejete"
-    },
-    {
-     "titre": "General Manager - Versace North Georgia Premium Outlet - GA",
      "verdict": "confirme"
     }
    ]
@@ -1918,26 +1798,6 @@
    ]
   },
   {
-   "expression": "SALES MANAGER",
-   "occupation": "responsable-wholesale",
-   "mode": "exacte",
-   "offres": 92,
-   "juges": [
-    {
-     "titre": "Car Dealer Sale Closer or OEM Vehicle industry Sales Manager",
-     "verdict": "rejete"
-    },
-    {
-     "titre": "Medical Sales Manager - Region Mainz / Siegen / Main-Taunus-Kreis (w/m/d)",
-     "verdict": "rejete"
-    },
-    {
-     "titre": "Women's Designer Ready to Wear, Contemporary, & Women's Apparel Sales Manager",
-     "verdict": "rejete"
-    }
-   ]
-  },
-  {
    "expression": "BRAND AMBASSADOR",
    "occupation": "sales-advisor",
    "mode": "generalisable",
@@ -2093,7 +1953,7 @@
    "expression": "RETAIL ASSISTANT",
    "occupation": "sales-advisor",
    "mode": "generalisable",
-   "offres": 493,
+   "offres": 529,
    "juges": [
     {
      "titre": "Retail Assistant - Dependiente/a",
@@ -2266,26 +2126,6 @@
     {
      "titre": "Stage - Assistant.e Chef.fe de Projet Architecture Concepts (F/H) - Janvier 2027",
      "verdict": "rejete"
-    }
-   ]
-  },
-  {
-   "expression": "CHEF D EQUIPE",
-   "occupation": "manager-floor",
-   "mode": "generalisable",
-   "offres": 72,
-   "juges": [
-    {
-     "titre": "Chef d'équipe expérience client",
-     "verdict": "confirme"
-    },
-    {
-     "titre": "Chef d'équipe à temps plein - Magasin de détail adidas Montreal (#2042)",
-     "verdict": "confirme"
-    },
-    {
-     "titre": "Chef.fe d'équipe (Temps plein) - Les Promenades du Cuivre Rouyn-Noranda",
-     "verdict": "confirme"
     }
    ]
   },
@@ -2553,7 +2393,7 @@
    "expression": "MANAGER SALES",
    "occupation": "manager-commercial",
    "mode": "exacte",
-   "offres": 20,
+   "offres": 21,
    "juges": [
     {
      "titre": "Manager, Sales - Cosmetics",
@@ -2669,6 +2509,22 @@
     },
     {
      "titre": "Customer Advisor - 7.5 Hours",
+     "verdict": "confirme"
+    }
+   ]
+  },
+  {
+   "expression": "CUSTOMER ASSISTANT",
+   "occupation": "sales-advisor",
+   "mode": "generalisable",
+   "offres": 21,
+   "juges": [
+    {
+     "titre": "Customer Assistant (Seasonal)",
+     "verdict": "confirme"
+    },
+    {
+     "titre": "Seasonal Customer Assistant",
      "verdict": "confirme"
     }
    ]
@@ -2805,7 +2661,7 @@
    "expression": "EMPLOYE DE RAYON",
    "occupation": "employe-de-commerce",
    "mode": "exacte",
-   "offres": 262,
+   "offres": 257,
    "juges": [
     {
      "titre": "Employée, employé de rayon épicerie - entretien",
@@ -3342,6 +3198,26 @@
    ]
   },
   {
+   "expression": "RETAIL ASSISTANT OPERADOR DE LOJA",
+   "occupation": "sales-advisor",
+   "mode": "generalisable",
+   "offres": 27,
+   "juges": [
+    {
+     "titre": "Retail Assistant - Operador de Loja (m/f)",
+     "verdict": "confirme"
+    },
+    {
+     "titre": "PT - Retail Assistant - Operador de Loja (m/f)Early Team 06h-11h",
+     "verdict": "confirme"
+    },
+    {
+     "titre": "Night Retail Assistant - Operador de Loja Turno da Noite (m/f)",
+     "verdict": "confirme"
+    }
+   ]
+  },
+  {
    "expression": "OPTICAL SALES ASSOCIATE",
    "occupation": "optical-assistant",
    "mode": "exacte",
@@ -3610,6 +3486,30 @@
    ]
   },
   {
+   "expression": "WINKELMEDEWERKER",
+   "occupation": "sales-advisor",
+   "mode": "generalisable",
+   "offres": 43,
+   "juges": [
+    {
+     "titre": "Winkelmedewerker oproepkracht",
+     "verdict": "confirme"
+    },
+    {
+     "titre": "Senior Winkelmedewerker Schiphol Airport",
+     "verdict": "confirme"
+    },
+    {
+     "titre": "Winkelmedewerker - studenten/flexi",
+     "verdict": "confirme"
+    }
+   ],
+   "motSeul": [
+    true,
+    true
+   ]
+  },
+  {
    "expression": "VISUAL MERCHANDISING SPECIALIST",
    "occupation": "visual-merchandiser",
    "mode": "generalisable",
@@ -3666,26 +3566,6 @@
     {
      "titre": "Store Team Lead, Aeon Bukit Tinggi",
      "verdict": "confirme"
-    }
-   ]
-  },
-  {
-   "expression": "STORE WORKER",
-   "occupation": "employe-de-commerce",
-   "mode": "exacte",
-   "offres": 10,
-   "juges": [
-    {
-     "titre": "Store worker 12/24",
-     "verdict": "rejete"
-    },
-    {
-     "titre": "Store worker - 12 uur pw - per direct beginnen",
-     "verdict": "rejete"
-    },
-    {
-     "titre": "Store worker ( 12 uur ) Ma tot Zo",
-     "verdict": "rejete"
     }
    ]
   },
@@ -3804,18 +3684,6 @@
    "offres": 4
   },
   {
-   "expression": "LEAD SUPERVISOR I",
-   "occupation": "manager-floor",
-   "mode": "exacte",
-   "offres": 9
-  },
-  {
-   "expression": "LEAD SUPERVISOR II",
-   "occupation": "manager-floor",
-   "mode": "exacte",
-   "offres": 5
-  },
-  {
    "expression": "ADDETTO A ALLE VENDITE CATEGORIE PROTETTE L 68 99",
    "occupation": "sales-advisor",
    "mode": "exacte",
@@ -3831,7 +3699,7 @@
    "expression": "COUPE",
    "occupation": "coupe",
    "mode": "exacte",
-   "offres": 7
+   "offres": 8
   },
   {
    "expression": "GOUVERNANTE",
@@ -4024,12 +3892,6 @@
    "occupation": "praticien-spa",
    "mode": "exacte",
    "offres": 7
-  },
-  {
-   "expression": "EMPLOYE DE COMMERCE",
-   "occupation": "employe-de-commerce",
-   "mode": "exacte",
-   "offres": 4
   },
   {
    "expression": "SERTISSEUR",
@@ -5394,12 +5256,6 @@
    "offres": 1
   },
   {
-   "expression": "STORE ASSISTANT",
-   "occupation": "employe-de-commerce",
-   "mode": "exacte",
-   "offres": 6
-  },
-  {
    "expression": "GERENTE DE LOJA",
    "occupation": "store-manager",
    "mode": "exacte",
@@ -5653,9 +5509,9 @@
   },
   {
    "expression": "LUCRATOR COMERCIAL",
-   "occupation": "employe-de-commerce",
+   "occupation": "sales-advisor",
    "mode": "exacte",
-   "offres": 2
+   "offres": 3
   },
   {
    "expression": "ANTHROPOLOGIE VISUAL MERCHANDISING MANAGER",
@@ -5740,12 +5596,6 @@
    "occupation": "responsable-wholesale",
    "mode": "exacte",
    "offres": 1
-  },
-  {
-   "expression": "RETAIL ASSISTANT OPERADOR DE LOJA",
-   "occupation": "sales-advisor",
-   "mode": "exacte",
-   "offres": 5
   },
   {
    "expression": "RESPONSABILE DI REPARTO",
@@ -5926,6 +5776,12 @@
    "occupation": "prototypiste",
    "mode": "exacte",
    "offres": 1
+  },
+  {
+   "expression": "RETAIL ASSISTANT OPERADOR DE LOJA M F",
+   "occupation": "sales-advisor",
+   "mode": "exacte",
+   "offres": 4
   },
   {
    "expression": "PT RETAIL ASSISTANT OPERADOR DE LOJA M F",
@@ -6222,12 +6078,6 @@
    "offres": 3
   },
   {
-   "expression": "CUSTOMER ASSISTANT",
-   "occupation": "sales-advisor",
-   "mode": "exacte",
-   "offres": 8
-  },
-  {
    "expression": "REPLENISHMENT ASSOCIATE PART TIME",
    "occupation": "stock-associate",
    "mode": "exacte",
@@ -6310,18 +6160,6 @@
    "occupation": "product-developer",
    "mode": "exacte",
    "offres": 1
-  },
-  {
-   "expression": "WINKELMEDEWERKER",
-   "occupation": "sales-advisor",
-   "mode": "exacte",
-   "offres": 4
-  },
-  {
-   "expression": "SHIFT LEADER",
-   "occupation": "manager-floor",
-   "mode": "exacte",
-   "offres": 3
   },
   {
    "expression": "WATCH TECHNICIAN",
@@ -6608,6 +6446,12 @@
   {
    "expression": "TERCER ENCARGADO SUPERVISOR",
    "occupation": "manager-floor",
+   "mode": "exacte",
+   "offres": 2
+  },
+  {
+   "expression": "客 户 经 理",
+   "occupation": "responsable-de-comptes",
    "mode": "exacte",
    "offres": 2
   },

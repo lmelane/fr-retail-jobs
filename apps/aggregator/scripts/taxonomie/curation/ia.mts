@@ -172,15 +172,23 @@ const LOT_JUGE = 10;
 
 /** Consensus des deux juges (D-127, R-66 §2) : deux « même métier » et confiance minimale 0,9 ; sans verdict = indéterminé. */
 export async function consensus(paires: Paire[]): Promise<Verdict[]> {
+  return (await consensusDetaille(paires)).map((x) => x.verdict);
+}
+
+/** Le consensus, avec la réponse de chaque juge (traçabilité des étapes qui en dépendent, audit du 29/09/2026). */
+export async function consensusDetaille(paires: Paire[]): Promise<{ verdict: Verdict; juges: Record<'j1' | 'j2', { meme: boolean; confiance: number } | null> }[]> {
   const rendu = (lot: Paire[]) => lot.map((p, j) => `[${j}] Intitulé du candidat : "${p.intitule}"${p.contexte ? ` (${p.contexte})` : ''} — Métier choisi : "${p.metier}"${p.alias?.length ? ` (alias connus : ${p.alias.slice(0, 8).join(', ')})` : ''}`).join('\n');
   const valide = (r: any) => typeof r.meme_metier === 'boolean' && typeof r.confiance === 'number';
   const parJuge: Record<'j1' | 'j2', any[]> = { j1: [], j2: [] };
   for (const juge of ['j1', 'j2'] as const)
     parJuge[juge] = await repondre(JUGES[juge], `${juge === 'j1' ? CONSIGNE_J1 : CONSIGNE_J2}\n\n${FORMAT_JUGE}`, paires, LOT_JUGE, rendu, SCHEMA_JUGE, valide);
+  const lu = (r: any) => (r ? { meme: r.meme_metier, confiance: r.confiance } : null);
   return paires.map((_, n) => {
     const a = parJuge.j1[n], b = parJuge.j2[n];
-    if (!a || !b) return 'indetermine';
-    return a.meme_metier && b.meme_metier && Math.min(1, Math.max(0, a.confiance), Math.max(0, b.confiance)) >= SEUIL_CONSENSUS ? 'confirme' : 'rejete';
+    const juges = { j1: lu(a), j2: lu(b) };
+    if (!a || !b) return { verdict: 'indetermine' as Verdict, juges };
+    const ok = a.meme_metier && b.meme_metier && Math.min(1, Math.max(0, a.confiance), Math.max(0, b.confiance)) >= SEUIL_CONSENSUS;
+    return { verdict: (ok ? 'confirme' : 'rejete') as Verdict, juges };
   });
 }
 

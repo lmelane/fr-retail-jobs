@@ -36,7 +36,7 @@ import { createHash } from 'node:crypto';
 import { existsSync, writeFileSync } from 'node:fs';
 import { compileOccupationManifest, type OccupationManifest } from '../../../../../packages/db/occupation-engine.ts';
 import { validateOccupationSuccessor } from '../../../src/occupation/release.ts';
-import { conceptsV3, DOSSIER_SORTIE, familles, libellesEtFormes, lireEtape, phraseMoteur, servie, VAGUES } from './commun.mts';
+import { conceptsV3, DOSSIER_SORTIE, estVague, familles, libellesEtFormes, lireEtape, phraseMoteur, servie, VAGUES } from './commun.mts';
 
 const BASE = process.argv.includes('--base');
 const ID = 'catwalks-occupations-20260929-v3';
@@ -94,15 +94,21 @@ for (const c of tous) {
 for (const t of e3.intitules) if (t.decision === 'variante') ajouter(t.concept, t.intitule);
 for (const v of e3b.variantesAjoutees) ajouter(v.concept, v.intitule);
 for (const t of e4.intitules) if (t.cible) ajouter(t.cible, t.intitule);
-// D-475 §35 : les intitulés de vente en boutique jugés « Conseiller de vente » quittent « Employé de rayon » (étape 3c).
+// D-475 §35 : l'étape 3c décide, pour chaque intitulé et chaque ancien nom d'« Employé de commerce » : vente, rayon, ou
+// aucun métier sans accord des juges ; les formes grammaticales d'un nom suivent son verdict. Elle fait autorité sur tout
+// ce qu'elle a jugé, anciens noms compris (retirés des libellés par le renommage).
 const scission = lireEtape('3c-scission-vente.json');
-const versVente = new Set<string>(scission.deplaces.map((d: any) => d.forme));
 const [deRayon, deVente] = [racine(scission.source), racine(scission.cible)];
 if (!brutes.has(deRayon) || !brutes.has(deVente)) throw new Error(`scission 3c : métier absent (${deRayon} ou ${deVente})`);
-for (const v of [...brutes.get(deRayon)!]) if (versVente.has(phraseMoteur(v))) { brutes.get(deRayon)!.delete(v); brutes.get(deVente)!.add(v); }
-// 3c fait autorité sur tout ce qu'il a jugé, anciens noms du métier compris (retirés des libellés par le renommage).
-for (const d of scission.deplaces) brutes.get(deVente)!.add(d.intitule);
-for (const t of scission.restent) brutes.get(deRayon)!.add(t);
+const textesDe = (d: any): string[] => [d.intitule, ...(d.formes ?? [])];
+const decide = new Map<string, string>();
+for (const d of scission.decisions) for (const t of textesDe(d)) decide.set(phraseMoteur(t), d.metier);
+for (const v of [...brutes.get(deRayon)!]) if (decide.has(phraseMoteur(v)) && decide.get(phraseMoteur(v)) !== 'rayon') brutes.get(deRayon)!.delete(v);
+for (const d of scission.decisions) for (const t of textesDe(d)) { if (d.metier === 'vente') brutes.get(deVente)!.add(t); if (d.metier === 'rayon') brutes.get(deRayon)!.add(t); }
+// Les NOMS jugés (pas les intitulés d'offre, avec leurs horaires et leurs lieux) deviennent le vocabulaire de recherche.
+const nomsJuges = (m: string) => scission.decisions.filter((d: any) => d.origine === 'nom' && d.metier === m).flatMap(textesDe);
+// Dans la séparation, la mise en rayon quitte le conseil de vente pour les opérations de boutique (D-475 §35).
+const FAMILLE_RAYON = 'retail-operations';
 // Intitulés jugés sur de vraies offres (étapes 3, 3b, 4, 3c) : ils priment sur une variante ou une forme d'un autre métier
 // (« general manager » d'une boutique, jugé directeur de magasin avec son employeur, n'est pas la « Direction »). À l'étape 3,
 // seulement quand les deux juges ont choisi le même métier (« product manager » : Chef de produit pour l'un, Product
@@ -111,7 +117,7 @@ const juge = new Map<string, string>();
 for (const t of e3.intitules) if (t.decision === 'variante' && t.preuve?.choix?.concept === t.concept && t.preuve?.second?.concept === t.concept) juge.set(phraseMoteur(t.intitule), racine(t.concept));
 for (const v of e3b.variantesAjoutees) juge.set(phraseMoteur(v.intitule), racine(v.concept));
 for (const t of e4.intitules) if (t.cible) juge.set(phraseMoteur(t.intitule), racine(t.cible));
-for (const d of scission.deplaces) juge.set(d.forme, deVente);
+for (const d of scission.decisions) if (d.metier !== 'aucun') for (const t of textesDe(d)) juge.set(phraseMoteur(t), d.metier === 'vente' ? deVente : deRayon);
 // La règle garde l'expression BRUTE (le moteur la normalise une fois ; normalisée deux fois, « e-commerce » perdait son
 // « e », audit technique du 29/09/2026) ; la garde compare les formes normalisées.
 const brute = new Map<string, string>();
@@ -155,6 +161,7 @@ for (const [f, cles] of porteurs) {
 // Formes vagues (§32 c), appliquées à TOUTES les expressions, pas seulement à celles que 5c a vues (« superviseur » restait).
 const interdites = new Set<string>([...VAGUES, ...e3.intitules.filter((t: any) => t.preuve?.choix?.decision === 'vague' && t.preuve?.second?.decision === 'vague').map((t: any) => phraseMoteur(t.intitule)),
   ...e5c.attributions.filter((a: any) => a.motif === 'forme vague interdite').map((a: any) => a.forme)]);
+const interdite = (f: string) => interdites.has(f) || estVague(f);
 
 // Familles.
 const cleFamille = (k: string) => k;
@@ -164,16 +171,17 @@ const famillesV3 = [
     ...(f.horsSecteur ? { sansElargissement: true } : {}) })),
 ];
 
+if (!famillesV3.some((f: any) => f.key === FAMILLE_RAYON)) throw new Error(`famille absente : ${FAMILLE_RAYON}`);
+
 // Métiers.
 const metiersV3 = concepts.map((c) => {
   const s = servis.get(c.cle);
   const labels = libellesDe(c.cle);
-  // Les intitulés de vente passés à « Conseiller de vente » (3c) deviennent son vocabulaire de recherche, plus celui du rayon.
-  const vente = c.cle === deVente ? scission.deplaces.map((d: any) => d.intitule) : [];
+  const vente = c.cle === deVente ? nomsJuges('vente') : c.cle === deRayon ? nomsJuges('rayon') : [];
   const aliases = [...new Set([...(s?.aliases ?? []), ...Object.values(labels), ...Object.values(libellesEtFormes(c.cle, e5ParCle, e5b).formes).flat(), ...(e5c.aliasRecherche[c.cle] ?? []), ...vente])]
-    .filter((x) => x && x !== labels.fr && !interdites.has(phraseMoteur(x)) && !(c.cle === deRayon && versVente.has(phraseMoteur(x))) && (!attribution.get(phraseMoteur(x)) || attribution.get(phraseMoteur(x))!.garde === c.cle || !attribution.get(phraseMoteur(x))!.retires.includes(c.cle)));
+    .filter((x) => x && x !== labels.fr && !interdite(phraseMoteur(x)) && !(c.cle === deRayon && decide.has(phraseMoteur(x)) && decide.get(phraseMoteur(x)) !== 'rayon') && (!attribution.get(phraseMoteur(x)) || attribution.get(phraseMoteur(x))!.garde === c.cle || !attribution.get(phraseMoteur(x))!.retires.includes(c.cle)));
   const ancre = e5ParCle.get(c.cle)?.ancreEsco;
-  return { key: cleMetier.get(c.cle)!, family: s ? s.family : cleFamille(c.famille), labels, aliases,
+  return { key: cleMetier.get(c.cle)!, family: s ? s.family : c.cle === deRayon ? FAMILLE_RAYON : cleFamille(c.famille), labels, aliases,
     ...(ancre ? { externalRefs: [ancre] } : {}),
     ...(c.cle === 'financial-controller' && e5c.aliasRecherche[c.cle] ? { titleOnlyAliases: e5c.aliasRecherche[c.cle] } : {}) };
 });
@@ -193,12 +201,12 @@ const garderServie = (occupation: string, v: string) => {
 };
 const reglesServies = servie.rules.map((r: any) => ({ ...r,
   // Une forme vague interdite (§32 c) ne classe plus rien, même servie.
-  all: r.all.map((c: any) => (c.field === 'title' ? { ...c, any: c.any.filter((v: string) => !interdites.has(phraseMoteur(v)) && garderServie(r.occupation, v)) } : c)),
+  all: r.all.map((c: any) => (c.field === 'title' ? { ...c, any: c.any.filter((v: string) => !interdite(phraseMoteur(v)) && garderServie(r.occupation, v)) } : c)),
   exclude: [...(r.exclude ?? []), ...exclure(r.occupation)] })).filter((r: any) => r.all.every((c: any) => c.any.length));
 const dejaServie = (occupation: string, f: string) => servie.rules.some((r: any) => r.occupation === occupation && r.all.length === 1 && r.all[0].field === 'title' && r.all[0].any.some((v: string) => phraseMoteur(v) === f));
 const generalisables = new Set<string>(!BASE && existsSync(`${DOSSIER_SORTIE}6c-generalisations.json`)
   ? lireEtape('6c-generalisations.json').decisions.filter((d: any) => d.mode === 'generalisable').map((d: any) => `${d.occupation}|${d.expression}`) : []);
-const reglesV3 = concepts.flatMap((c) => [...expressions.get(c.cle)!].filter((f) => !interdites.has(f) && !dejaServie(c.cle, f)).sort().map((f) => {
+const reglesV3 = concepts.flatMap((c) => [...expressions.get(c.cle)!].filter((f) => !interdite(f) && !dejaServie(c.cle, f)).sort().map((f) => {
   const key = cleMetier.get(c.cle)!;
   const exclude = [...exclusionsServies(c.cle), ...exclure(c.cle)];
   return { id: `v3-${key}~${createHash('sha256').update(f).digest('hex').slice(0, 10)}`, occupation: key,

@@ -1,5 +1,5 @@
 {
- "calculeLe": "2026-09-29T11:21:29.549Z",
+ "calculeLe": "2026-09-29T11:50:58.563Z",
  "manifeste": "catwalks-occupations-20260929-v3",
  "bilan": {
   "resolution": {
@@ -7,40 +7,41 @@
    "justes": 6338,
    "autreMetier": 0,
    "aucunMetier": 0,
-   "servieLibellesResolus": "105/122"
+   "servieLibellesResolus": "105/122",
+   "libellesDecoresResolus": "163/759"
   },
   "memoireEtTemps": {
-   "compilationV1Ms": 9,
-   "compilationV3Ms": 68,
-   "tasV1Mo": 2,
-   "tasV3Mo": 25,
-   "regles": 8166,
-   "classementsParSeconde": 53825
+   "compilationV1Ms": 7,
+   "compilationV3Ms": 69,
+   "tasV1Mo": 3,
+   "tasV3Mo": 36,
+   "regles": 8188,
+   "classementsParSeconde": 52547
   },
   "rappelParMarche": [
    {
     "pays": "US",
     "offres": 40442,
     "classesV1": 55.2,
-    "classesV3": 70.6
+    "classesV3": 69.1
    },
    {
     "pays": "FR",
     "offres": 16521,
     "classesV1": 58,
-    "classesV3": 69.6
+    "classesV3": 69.2
    },
    {
     "pays": "CA",
     "offres": 12672,
     "classesV1": 58.1,
-    "classesV3": 75.7
+    "classesV3": 73.9
    },
    {
     "pays": "GB",
     "offres": 8029,
     "classesV1": 63.7,
-    "classesV3": 80.7
+    "classesV3": 79.7
    },
    {
     "pays": "DE",
@@ -52,79 +53,79 @@
     "pays": "IT",
     "offres": 6644,
     "classesV1": 79.4,
-    "classesV3": 84.8
+    "classesV3": 84.3
    },
    {
     "pays": "ES",
     "offres": 6625,
     "classesV1": 72.3,
-    "classesV3": 89.9
+    "classesV3": 88.2
    },
    {
     "pays": "AU",
     "offres": 5411,
     "classesV1": 69.5,
-    "classesV3": 86.9
+    "classesV3": 86.3
    },
    {
     "pays": "NL",
     "offres": 5347,
     "classesV1": 75.4,
-    "classesV3": 87.4
+    "classesV3": 86.9
    },
    {
     "pays": "CH",
     "offres": 4972,
     "classesV1": 76.8,
-    "classesV3": 78.2
+    "classesV3": 78
    },
    {
     "pays": "BE",
     "offres": 4799,
     "classesV1": 79.2,
-    "classesV3": 94.8
+    "classesV3": 94.2
    },
    {
     "pays": "KR",
     "offres": 4333,
     "classesV1": 86.6,
-    "classesV3": 90.8
+    "classesV3": 88.7
    },
    {
     "pays": "PT",
     "offres": 4313,
     "classesV1": 79.3,
-    "classesV3": 95.9
+    "classesV3": 93.9
    },
    {
     "pays": "SG",
     "offres": 4234,
     "classesV1": 90.1,
-    "classesV3": 92.2
+    "classesV3": 91.9
    },
    {
     "pays": "IE",
     "offres": 4143,
     "classesV1": 86.2,
-    "classesV3": 91.6
+    "classesV3": 90.7
    },
    {
     "pays": "JP",
     "offres": 4109,
     "classesV1": 84.1,
-    "classesV3": 91
+    "classesV3": 89.2
    },
    {
     "pays": "HK",
     "offres": 4025,
     "classesV1": 91.9,
-    "classesV3": 95.3
+    "classesV3": 94.9
    },
    {
     "pays": "CN",
     "offres": 3869,
     "classesV1": 76.9,
-    "classesV3": 81.4
+    "classesV3": 81.3
    },
    {
     "pays": "IN",
@@ -136,7 +137,7 @@
     "pays": "AT",
     "offres": 3587,
     "classesV1": 86.9,
-    "classesV3": 89.5
+    "classesV3": 89.2
    },
    {
     "pays": "AE",
@@ -148,7 +149,7 @@
     "pays": "TW",
     "offres": 3317,
     "classesV1": 94,
-    "classesV3": 97.6
+    "classesV3": 96.1
    },
    {
     "pays": "GR",
@@ -160,7 +161,7 @@
     "pays": "MY",
     "offres": 3247,
     "classesV1": 94.2,
-    "classesV3": 96.7
+    "classesV3": 96.2
    },
    {
     "pays": "TH",
@@ -172,7 +173,7 @@
     "pays": "MO",
     "offres": 3176,
     "classesV1": 98.4,
-    "classesV3": 99.4
+    "classesV3": 99
    },
    {
     "pays": "VI",
@@ -208,25 +209,25 @@
     "pays": "?",
     "offres": 1894,
     "classesV1": 32.6,
-    "classesV3": 67.3
+    "classesV3": 67
    },
    {
     "pays": "PR",
     "offres": 1203,
     "classesV1": 63.2,
-    "classesV3": 82
+    "classesV3": 81.5
    },
    {
     "pays": "DK",
     "offres": 1012,
     "classesV1": 61.2,
-    "classesV3": 76.5
+    "classesV3": 76.4
    },
    {
     "pays": "MX",
     "offres": 1007,
     "classesV1": 69.9,
-    "classesV3": 78.9
+    "classesV3": 77.6
    },
    {
     "pays": "SE",
@@ -238,19 +239,19 @@
     "pays": "RO",
     "offres": 798,
     "classesV1": 64.5,
-    "classesV3": 95.7
+    "classesV3": 86.1
    },
    {
     "pays": "TR",
     "offres": 625,
     "classesV1": 81,
-    "classesV3": 87.2
+    "classesV3": 87
    },
    {
     "pays": "CZ",
     "offres": 599,
     "classesV1": 75.6,
-    "classesV3": 89
+    "classesV3": 76.1
    },
    {
     "pays": "CO",
@@ -268,13 +269,13 @@
     "pays": "VN",
     "offres": 490,
     "classesV1": 64.5,
-    "classesV3": 73.3
+    "classesV3": 70.4
    },
    {
     "pays": "PL",
     "offres": 405,
     "classesV1": 37.5,
-    "classesV3": 63.5
+    "classesV3": 63.2
    },
    {
     "pays": "PH",
@@ -304,7 +305,7 @@
     "pays": "CL",
     "offres": 305,
     "classesV1": 84.3,
-    "classesV3": 86.9
+    "classesV3": 85.2
    },
    {
     "pays": "LU",
@@ -340,7 +341,7 @@
     "pays": "PE",
     "offres": 211,
     "classesV1": 59.7,
-    "classesV3": 84.4
+    "classesV3": 65.4
    },
    {
     "pays": "ZM",
@@ -358,7 +359,7 @@
     "pays": "NO",
     "offres": 180,
     "classesV1": 18.3,
-    "classesV3": 51.7
+    "classesV3": 50
    },
    {
     "pays": "NF",
@@ -442,7 +443,7 @@
     "pays": "SC",
     "offres": 22,
     "classesV1": 0,
-    "classesV3": 9.1
+    "classesV3": 4.5
    },
    {
     "pays": "IL",

@@ -9,9 +9,19 @@
  *     jugés auparavant (tours précédents compris), tirés sans remise avec une probabilité proportionnelle au nombre
  *     d'offres (Efraimidis-Spirakis, aléa tiré d'une empreinte salée par tour : reproductible) ; écrit
  *     `6d-echantillon-final.json` (tour 1) ou `6d-echantillon-final-<n>.json` (`--tour=<n>`) AVANT tout jugement ;
- *  2. `--juger-modele` : le second juge (`gemini-3-flash-preview`) note chaque couple, seul, avec la grille ci-dessous ;
- *  3. les verdicts de l'assistant (autre famille de modèles) sont ajoutés à la main dans le fichier, puis `--compter`
- *     rend les deux mesures, par intitulé et pondérées par offre, avec l'intervalle de Wilson à 95 %.
+ *  2. les verdicts de l'assistant (autre famille de modèles) sont ajoutés à la main dans le fichier et committés AVANT
+ *     `--juger-modele`, qui fait noter chaque couple par un juge de mesure qui n'a servi à AUCUN rattachement ;
+ *  3. `--compter` rend les deux mesures avec l'intervalle de Wilson à 95 %.
+ * Corrections de l'audit du 29/09/2026, à partir du tour 3 :
+ *  - le juge de mesure n'est plus le second juge des étapes 3 à 6c (`gemini-3-flash-preview`, qui a co-décidé chaque
+ *    rattachement) mais `JUGE_MESURE`, distinct des deux juges et du modèle de choix ;
+ *  - le tirage porte sur TOUS les couples (intitulé, service) qui changent, sans écarter un intitulé jugé à un tour
+ *    précédent : l'écarter par son seul titre cachait la moitié des offres qui changent, dont des intitulés jugés contre
+ *    un métier renommé depuis (« Winkelmedewerker oproepkracht » jugé sous « Employé de commerce ») ;
+ *  - le tirage étant proportionnel au nombre d'offres, la proportion brute de faux ESTIME déjà la part d'offres fausses ;
+ *    la repondérer par les offres comptait le poids deux fois (les « 0,1 % en offres » des tours 1 et 2 étaient faux) ;
+ *    la part d'intitulés faux se lit en pondérant chaque couple par l'inverse de ses offres ;
+ *  - l'empreinte du manifeste mesuré est enregistrée au tirage et vérifiée au jugement et au compte.
  * Grille : C juste ; P proche (bonne famille ou niveau voisin, ex. stage rattaché au métier plein) ; F faux (autre métier,
  * ou métier donné à un intitulé vague) ; pour une perte (plus de métier), C si l'absence de métier est juste, F sinon.
  *
@@ -23,8 +33,13 @@ import { gunzipSync } from 'node:zlib';
 import { compileOccupationManifest } from '../../../../../packages/db/occupation-engine.ts';
 import { DOSSIER_SORTIE as D, lireEtape, servie } from './commun.mts';
 
-// Un tour par version mesurée : le tour 2 mesure la version corrigée après le tour 1 (D-475 §35), sur des intitulés neufs.
-const TOUR = Number(process.argv.find((a) => a.startsWith('--tour='))?.slice(7) ?? 1);
+// Un tour par version mesurée : le tour 2 mesure la version corrigée après le tour 1 (D-475 §35), et ainsi de suite.
+const argTour = process.argv.filter((a) => a.startsWith('--tour'));
+if (argTour.some((a) => !/^--tour=[1-9]\d*$/.test(a)) || argTour.length > 1) throw new Error('usage : --tour=<entier ≥ 1>');
+const TOUR = argTour.length ? Number(argTour[0].slice(7)) : 1;
+/** Le juge de la mesure : aucun rattachement de la passe ne vient de lui (plan §3.2). */
+const JUGE_MESURE = 'gemini-3.1-pro-preview';
+const empreinte = () => createHash('sha256').update(readFileSync(`${D}6-manifeste-v3.json`)).digest('hex');
 const fichierDu = (t: number) => `${D}6d-echantillon-final${t === 1 ? '' : `-${t}`}.json`;
 const FICHIER = fichierDu(TOUR);
 const mode = process.argv.find((a) => ['--tirer', '--juger-modele', '--compter'].includes(a));
@@ -35,40 +50,50 @@ if (mode === '--tirer') {
   const { couples } = JSON.parse(gunzipSync(readFileSync(`${D}entrees/offres-preview-2026-09-29.json.gz`)).toString('utf8'));
   const deja = lireEtape('6d-mesure-justesse.json');
   const precedents = Array.from({ length: TOUR - 1 }, (_, n) => JSON.parse(readFileSync(fichierDu(n + 1), 'utf8')).echantillon);
-  const vus = new Set([...deja.tour1.verdicts, ...deja.echantillonNeuf.verdicts, ...precedents.flat()].map((x: any) => x.titre.toLowerCase().trim()));
+  // Tours 1 et 2 : intitulés déjà jugés écartés par leur titre (tirages committés, rejouables tels quels) ; tour 3 et
+  // suivants : aucun écart, voir l'en-tête.
+  const vus = new Set(TOUR <= 2 ? [...deja.tour1.verdicts, ...deja.echantillonNeuf.verdicts, ...precedents.flat()].map((x: any) => x.titre.toLowerCase().trim()) : []);
   const cand = couples.map((c: any) => ({ c, a: v1.classify(c.titre, c.service).occupationCode, b: v3.classify(c.titre, c.service) }))
     .filter((x: any) => x.a !== x.b.occupationCode && !vus.has(x.c.titre.toLowerCase().trim()));
   const alea = (x: any) => (parseInt(createHash('sha256').update(`final-2026-09-29${TOUR === 1 ? '' : `-tour${TOUR}`}|${x.c.titre}|${x.c.service}`).digest('hex').slice(0, 12), 16) + 1) / 2 ** 48;
   const e = cand.map((x: any) => ({ x, k: Math.log(alea(x)) / x.c.offres })).sort((p: any, q: any) => q.k - p.k).slice(0, 200)
     .map(({ x }: any) => ({ titre: x.c.titre, service: x.c.service, offres: x.c.offres, avant: x.a, metier: x.b.occupationCode, statut: x.b.occupationStatus,
       libelle: m.occupations.find((o: any) => o.key === x.b.occupationCode)?.labels.fr ?? null, verdictModele: null, verdictAssistant: null }));
-  writeFileSync(FICHIER, JSON.stringify({ tireLe: new Date().toISOString(), tour: TOUR, manifeste: m.id, candidats: cand.length, dejaJuges: vus.size, echantillon: e }, null, 1));
+  writeFileSync(FICHIER, JSON.stringify({ tireLe: new Date().toISOString(), tour: TOUR, manifeste: m.id, ...(TOUR >= 3 ? { empreinteManifeste: empreinte() } : {}),
+    candidats: cand.length, offresCandidates: cand.reduce((n: number, x: any) => n + x.c.offres, 0), dejaJuges: vus.size, echantillon: e }, null, 1));
   console.log(`tiré : ${e.length} sur ${cand.length} candidats neufs`);
   e.forEach((x: any, n: number) => console.log(n + 1, '|', x.titre.replace(/\s+/g, ' ').slice(0, 60), '|', (x.service ?? '').slice(0, 14), '|', x.avant ?? '—', '→', x.libelle ?? `aucun (${x.statut})`));
 }
 
 if (mode === '--juger-modele') {
-  const { JUGES, repondre } = await import('./ia.mts');
+  const { JUGES, MODELE_CHOIX, repondre } = await import('./ia.mts');
   const o = JSON.parse(readFileSync(FICHIER, 'utf8'));
+  if (o.empreinteManifeste && o.empreinteManifeste !== empreinte()) throw new Error('le manifeste a changé depuis le tirage : la mesure ne le concerne plus');
+  if (o.echantillon.some((x: any) => !x.verdictAssistant)) throw new Error('verdicts de l\'assistant manquants : ils se committent AVANT ceux du modèle');
+  if ((Object.values(JUGES) as string[]).includes(JUGE_MESURE) || (JUGE_MESURE as string) === MODELE_CHOIX) throw new Error('le juge de mesure a servi aux rattachements');
   const CONSIGNE = `Tu évalues la classification d'offres d'emploi de Catwalks (luxe, mode, beauté, retail). Pour chaque offre (intitulé, service), note le métier attribué : "C" juste ; "P" proche (bonne famille ou niveau voisin, ex. un stage rattaché au métier plein) ; "F" faux (un autre métier, ou un métier donné à un intitulé trop vague pour en avoir un). Quand l'offre n'a PAS de métier, "C" si l'absence de métier est juste (intitulé vague ou ambigu), "F" si un métier évident manque.`;
   const SCHEMA = { type: 'OBJECT', properties: { i: { type: 'INTEGER' }, verdict: { type: 'STRING', enum: ['C', 'P', 'F'] } }, required: ['i', 'verdict'] };
   const rendu = (lot: any[]) => lot.map((x, j) => `[${j}] « ${x.titre} »${x.service ? ` (service : ${x.service})` : ''} → ${x.libelle ?? 'aucun métier'}`).join('\n');
-  const r = await repondre(JUGES.j2, CONSIGNE, o.echantillon, 20, rendu, SCHEMA);
+  const r = await repondre(TOUR >= 3 ? JUGE_MESURE : JUGES.j2, CONSIGNE, o.echantillon, 20, rendu, SCHEMA);
   o.echantillon.forEach((x: any, n: number) => { x.verdictModele = r[n]?.verdict ?? null; });
+  o.jugeModele = TOUR >= 3 ? JUGE_MESURE : JUGES.j2;
   writeFileSync(FICHIER, JSON.stringify(o, null, 1));
   console.log('verdicts du modèle :', o.echantillon.filter((x: any) => x.verdictModele).length, '/', o.echantillon.length);
 }
 
 if (mode === '--compter') {
   const o = JSON.parse(readFileSync(FICHIER, 'utf8'));
+  if (o.empreinteManifeste && o.empreinteManifeste !== empreinte()) throw new Error('le manifeste a changé depuis le tirage : la mesure ne le concerne plus');
   const wilson = (f: number, n: number) => { const z = 1.96, p = f / n; return Math.round(1000 * ((p + z * z / (2 * n) + z * Math.sqrt(p * (1 - p) / n + z * z / (4 * n * n))) / (1 + z * z / n))) / 10; };
   const mesure = (cle: string) => {
     const l = o.echantillon.filter((x: any) => x[cle]);
     const n = (v: string) => l.filter((x: any) => x[cle] === v).length;
-    const w = (v: string) => l.filter((x: any) => x[cle] === v).reduce((s: number, x: any) => s + x.offres, 0);
-    const tot = l.reduce((s: number, x: any) => s + x.offres, 0);
-    return { juges: l.length, C: n('C'), P: n('P'), F: n('F'), fauxPct: Math.round(1000 * n('F') / l.length) / 10, borneHauteWilson95: wilson(n('F'), l.length),
-      parOffre: { fauxPct: Math.round(1000 * w('F') / tot) / 10, justesPct: Math.round(1000 * w('C') / tot) / 10 } };
+    // Tirage proportionnel aux offres : la proportion brute estime la part d'OFFRES ; la part d'INTITULÉS se lit en
+    // pondérant chaque couple par l'inverse de ses offres (estimateur de Hansen-Hurwitz).
+    const inv = (v: string) => l.filter((x: any) => x[cle] === v).reduce((s: number, x: any) => s + 1 / x.offres, 0);
+    const totInv = l.reduce((s: number, x: any) => s + 1 / x.offres, 0);
+    return { juges: l.length, C: n('C'), P: n('P'), F: n('F'), fauxOffresPct: Math.round(1000 * n('F') / l.length) / 10, borneHauteWilson95: wilson(n('F'), l.length),
+      justesOffresPct: Math.round(1000 * n('C') / l.length) / 10, parIntitule: { fauxPct: Math.round(1000 * inv('F') / totInv) / 10 } };
   };
   const bilan = { assistant: mesure('verdictAssistant'), modele: mesure('verdictModele'),
     desaccords: o.echantillon.filter((x: any) => x.verdictAssistant && x.verdictModele && x.verdictAssistant !== x.verdictModele).length };

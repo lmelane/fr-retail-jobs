@@ -37,6 +37,11 @@ for (const [metier, alias] of Object.entries<string[]>(garde.aliasRecherche)) fo
 }
 const autreMetier = cas.filter((c) => c.rendu && c.rendu !== c.metier);
 const rienDuTout = cas.filter((c) => !c.rendu);
+// Libellés tels qu'ils s'écrivent dans les offres (« H/F », « (m/w/d) », « - Part Time ») : information, pas un échec.
+// Une règle exacte ne les reconnaît pas tant que le moteur n'écarte pas ces marques avant de comparer (exigence du
+// sous-lot 2B, audit technique du 29/09/2026).
+const DECOR: Record<string, string> = { fr: ' H/F', de: ' (m/w/d)', en: ' - Part Time' };
+const decores = v3.occupations.flatMap((o: any) => Object.entries(DECOR).filter(([l]) => o.labels[l]).map(([l, d]) => moteurV3.classify(`${o.labels[l]}${d}`, null).occupationCode === o.key));
 const servisResolus = servie.occupations.flatMap((o: any) => Object.values<string>(o.labels).map((l) => moteurV1.classify(l, null).occupationCode === o.key));
 
 // Débit de classement sur les intitulés de la preview.
@@ -52,7 +57,8 @@ for (const o of v3.occupations) { const en = (o.labels.en ?? '').trim().toLowerC
 
 const bilan = {
   resolution: { cas: cas.length, justes: cas.length - autreMetier.length - rienDuTout.length, autreMetier: autreMetier.length, aucunMetier: rienDuTout.length,
-    servieLibellesResolus: `${servisResolus.filter(Boolean).length}/${servisResolus.length}` },
+    servieLibellesResolus: `${servisResolus.filter(Boolean).length}/${servisResolus.length}`,
+    libellesDecoresResolus: `${decores.filter(Boolean).length}/${decores.length}` },
   memoireEtTemps: { compilationV1Ms: Math.round(t1 - t0), compilationV3Ms: Math.round(t2 - t1), tasV1Mo: Math.round((h1 - h0) / 1e6), tasV3Mo: Math.round((h2 - h1) / 1e6),
     regles: v3.rules.length, classementsParSeconde: debit },
   rappelParMarche: preview.marches,

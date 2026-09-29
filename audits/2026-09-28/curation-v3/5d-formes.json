@@ -1,0 +1,252 @@
+{
+ "calculeLe": "2026-09-29T11:50:03.692Z",
+ "modele": "gemini-3.6-flash",
+ "bilan": {
+  "langues": [
+   "fr",
+   "de",
+   "es",
+   "pt",
+   "pt-BR",
+   "ar",
+   "cs",
+   "pl",
+   "it",
+   "nl",
+   "el",
+   "ro",
+   "tr",
+   "sv",
+   "en",
+   "th",
+   "ja",
+   "ko",
+   "hu",
+   "da",
+   "ms",
+   "zh-CN",
+   "zh-Hant"
+  ],
+  "metiers": 57,
+  "noms": 157,
+  "proposees": 55,
+  "ecartees": 0,
+  "sansReponse": 0,
+  "nomsAvecFormes": 55
+ },
+ "formes": {
+  "regional-retail-manager": {
+   "it": [
+    "Direttrice Regionale Retail"
+   ]
+  },
+  "crm-manager": {
+   "ar": [
+    "مديرة CRM"
+   ]
+  },
+  "demand-planner": {
+   "fr": [
+    "Planificatrice de la demande"
+   ],
+   "de": [
+    "Bedarfsplanerin"
+   ],
+   "it": [
+    "Pianificatrice della domanda"
+   ],
+   "es": [
+    "Planificadora de la demanda"
+   ],
+   "pt": [
+    "Planeadora de procura"
+   ],
+   "pt-BR": [
+    "Planejadora de demanda"
+   ],
+   "pl": [
+    "Planistka popytu"
+   ],
+   "el": [
+    "Σχεδιάστρια ζήτησης"
+   ],
+   "cs": [
+    "Plánovačka poptávky"
+   ],
+   "ro": [
+    "Planificatoare cerere"
+   ]
+  },
+  "backend:ASSISTANT_DE_GALERIE": {
+   "ar": [
+    "مساعدة معرض فني"
+   ]
+  },
+  "backend:ASSISTANT_DE_GESTION": {
+   "de": [
+    "Kaufmännische Assistentin"
+   ],
+   "cs": [
+    "Asistentka managementu"
+   ]
+  },
+  "backend:ASSISTANT_D_EDUCATION": {
+   "it": [
+    "Assistente Educativa"
+   ],
+   "ar": [
+    "مرشدة تعليمية"
+   ]
+  },
+  "backend:ASSISTANT_PEDAGOGIQUE": {
+   "ar": [
+    "مساعدة التعلم"
+   ]
+  },
+  "backend:ASSISTANT_SHOWROOM": {
+   "ar": [
+    "مساعدة صالة عرض"
+   ]
+  },
+  "backend:CHEF_DE_MARQUE": {
+   "ar": [
+    "مسؤولة العلامة التجارية"
+   ]
+  },
+  "backend:COMMERCIAL": {
+   "nl": [
+    "Verkoopvertegenwoordigster"
+   ]
+  },
+  "backend:DIRECTEUR_DE_CLIENTELE": {
+   "ar": [
+    "مديرة إدارة الحسابات"
+   ]
+  },
+  "backend:DIRECTION_COMMERCIALE": {
+   "de": [
+    "Vertriebsdirektorin"
+   ]
+  },
+  "backend:EMPLOYE_DE_COMMERCE": {
+   "fr": [
+    "Employée de rayon"
+   ],
+   "de": [
+    "Regalauffüllerin"
+   ],
+   "es": [
+    "Reponedora"
+   ],
+   "nl": [
+    "Vakkenvulster"
+   ],
+   "pt": [
+    "Repositora"
+   ],
+   "pt-BR": [
+    "Repositora"
+   ],
+   "pl": [
+    "Pracownica wykładająca towar"
+   ],
+   "ar": [
+    "عاملة ترتيب الرفوف"
+   ],
+   "cs": [
+    "Doplňovačka zboží"
+   ],
+   "ro": [
+    "Lucrătoare raion"
+   ]
+  },
+  "backend:MANAGER_COMMERCIAL": {
+   "es": [
+    "Gestora Comercial"
+   ],
+   "ar": [
+    "مديرة الشؤون التجارية"
+   ],
+   "el": [
+    "Εμπορική Υπεύθυνη"
+   ]
+  },
+  "backend:PRATICIEN_SPA": {
+   "de": [
+    "Spa-Therapeutin"
+   ],
+   "pl": [
+    "Terapeutka spa"
+   ],
+   "el": [
+    "Θεραπεύτρια Spa"
+   ]
+  },
+  "backend:PREMIERE_MAIN": {
+   "pt": [
+    "Costureiro de amostras"
+   ],
+   "pt-BR": [
+    "Piloteiro"
+   ]
+  },
+  "backend:PRESIDENT_D_ASSOCIATION": {
+   "fr": [
+    "Présidente d'association"
+   ]
+  },
+  "backend:PROTOTYPISTE_MAROQUINERIE": {
+   "de": [
+    "Lederwaren-Prototypistin"
+   ]
+  },
+  "backend:RESPONSABLE_DE_COMPTES": {
+   "ar": [
+    "مسؤولة حسابات العملاء"
+   ]
+  },
+  "backend:RESPONSABLE_JURIDIQUE": {
+   "el": [
+    "Υπεύθυνη Νομικού Τμήματος"
+   ]
+  },
+  "backend:RESPONSABLE_SUPPLY_CHAIN": {
+   "ar": [
+    "مسؤولة سلسلة التوريد"
+   ]
+  },
+  "backend:TUTEUR_SCOLAIRE": {
+   "it": [
+    "Tutor Scolastica"
+   ]
+  },
+  "backend:UX_UI_DESIGNER": {
+   "es": [
+    "Diseñadora UX"
+   ],
+   "pl": [
+    "Projektantka UX"
+   ],
+   "ar": [
+    "مصممة UX"
+   ]
+  },
+  "offres:retail-sales-lead": {
+   "fr": [
+    "Première vendeuse"
+   ],
+   "de": [
+    "Senior Verkaufsberaterin"
+   ],
+   "it": [
+    "Prima venditrice"
+   ],
+   "es": [
+    "Primera vendedora"
+   ],
+   "pl": [
+    "Liderka zespołu sprzedaży"
+   ]
+  }
+ }
+}

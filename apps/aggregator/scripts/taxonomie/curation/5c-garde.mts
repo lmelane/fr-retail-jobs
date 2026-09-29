@@ -26,7 +26,7 @@
  */
 import { readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { conceptsV3, DOSSIER_SORTIE, libellesEtFormes, lireEtape, phraseMoteur, servie, VAGUES } from './commun.mts';
+import { conceptsV3, DOSSIER_SORTIE, estVague, libellesEtFormes, lireEtape, phraseMoteur, servie, VAGUES } from './commun.mts';
 import { consensus, JUGES } from './ia.mts';
 
 const concepts = conceptsV3({ avecOffres: true, avecEncadrement: true });
@@ -80,7 +80,8 @@ for (const o of servie.occupations) {
 for (const r of servie.rules) for (const c of r.all) if (c.field === 'title') for (const v of c.any) revendiquer(v, r.occupation, null, 'expression servie');
 
 // Conflits nommés : les deux juges disent si les deux métiers sont le même.
-const conflits = [...revendications].filter(([f, m]) => m.size > 1 && !interdites.has(f));
+const interdite = (f: string) => interdites.has(f) || estVague(f);
+const conflits = [...revendications].filter(([f, m]) => m.size > 1 && !interdite(f));
 const nommes = (m: Map<string, Titre>) => [...m].filter(([, t]) => t.libelle.length).map(([k]) => k);
 const paires = [...new Set(conflits.filter(([, m]) => nommes(m).length).flatMap(([, m]) => {
   const ks = [...m.keys()];
@@ -104,7 +105,7 @@ const attributions: { forme: string; garde: string | null; retires: string[]; mo
 const renommages: { cle: string; langue: string; raison: string }[] = [];
 for (const [f, m] of revendications) {
   const metiers = [...new Set([...m.keys()].map(racine))];
-  if (interdites.has(f)) { attributions.push({ forme: f, garde: null, retires: metiers, motif: 'forme vague interdite' }); continue; }
+  if (interdite(f)) { attributions.push({ forme: f, garde: null, retires: metiers, motif: 'forme vague interdite' }); continue; }
   if (metiers.length < 2) continue;
   const nommeurs = [...new Set(nommes(m).map(racine))];
   const servisPorteurs = metiers.filter((k) => servis.has(k));

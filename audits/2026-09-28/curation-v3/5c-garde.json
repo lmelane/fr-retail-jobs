@@ -1,12 +1,12 @@
 {
- "calculeLe": "2026-09-29T11:21:10.673Z",
+ "calculeLe": "2026-09-29T11:50:32.760Z",
  "juges": {
   "j1": "gemini-3.6-flash",
   "j2": "gemini-3-flash-preview"
  },
  "bilan": {
-  "formesRevendiquees": 8448,
-  "interdites": 1,
+  "formesRevendiquees": 8500,
+  "interdites": 16,
   "conflits": 42,
   "pairesJugees": 8,
   "fusions": 3,
@@ -154,6 +154,14 @@
    "motif": "version servie"
   },
   {
+   "forme": "GENERAL MANAGER",
+   "garde": null,
+   "retires": [
+    "backend:DIRECTION"
+   ],
+   "motif": "forme vague interdite"
+  },
+  {
    "forme": "VERKAUFER",
    "garde": "sales-advisor",
    "retires": [
@@ -170,6 +178,110 @@
    "motif": "version servie"
   },
   {
+   "forme": "ACTING LEAD SUPERVISOR I",
+   "garde": null,
+   "retires": [
+    "backend:MANAGER_FLOOR"
+   ],
+   "motif": "forme vague interdite"
+  },
+  {
+   "forme": "ACTING LEAD SUPERVISOR II",
+   "garde": null,
+   "retires": [
+    "backend:MANAGER_FLOOR"
+   ],
+   "motif": "forme vague interdite"
+  },
+  {
+   "forme": "ACTING SUPERVISOR I",
+   "garde": null,
+   "retires": [
+    "backend:MANAGER_FLOOR"
+   ],
+   "motif": "forme vague interdite"
+  },
+  {
+   "forme": "CHEF D EQUIPE",
+   "garde": null,
+   "retires": [
+    "backend:MANAGER_FLOOR"
+   ],
+   "motif": "forme vague interdite"
+  },
+  {
+   "forme": "LEAD SUPERVISOR",
+   "garde": null,
+   "retires": [
+    "backend:MANAGER_FLOOR"
+   ],
+   "motif": "forme vague interdite"
+  },
+  {
+   "forme": "LEAD SUPERVISOR I",
+   "garde": null,
+   "retires": [
+    "backend:MANAGER_FLOOR"
+   ],
+   "motif": "forme vague interdite"
+  },
+  {
+   "forme": "LEAD SUPERVISOR II",
+   "garde": null,
+   "retires": [
+    "backend:MANAGER_FLOOR"
+   ],
+   "motif": "forme vague interdite"
+  },
+  {
+   "forme": "SHIFT LEADER",
+   "garde": null,
+   "retires": [
+    "backend:MANAGER_FLOOR"
+   ],
+   "motif": "forme vague interdite"
+  },
+  {
+   "forme": "SUPERVISOR I",
+   "garde": null,
+   "retires": [
+    "backend:MANAGER_FLOOR"
+   ],
+   "motif": "forme vague interdite"
+  },
+  {
+   "forme": "TEAM LEAD",
+   "garde": null,
+   "retires": [
+    "backend:MANAGER_FLOOR"
+   ],
+   "motif": "forme vague interdite"
+  },
+  {
+   "forme": "TEAM LEAD MANAGER",
+   "garde": null,
+   "retires": [
+    "backend:MANAGER_FLOOR"
+   ],
+   "motif": "forme vague interdite"
+  },
+  {
+   "forme": "TEAM LEADER",
+   "garde": null,
+   "retires": [
+    "backend:MANAGER_FLOOR"
+   ],
+   "motif": "forme vague interdite"
+  },
+  {
+   "forme": "TEAM MANAGER",
+   "garde": null,
+   "retires": [
+    "backend:MANAGER_FLOOR"
+   ],
+   "motif": "forme vague interdite"
+  },
+  {
    "forme": "SPA THERAPIST",
    "garde": "beauty-therapist",
    "retires": [
@@ -182,6 +294,14 @@
    "garde": null,
    "retires": [
     "backend:RESPONSABLE_COLLECTION"
+   ],
+   "motif": "forme vague interdite"
+  },
+  {
+   "forme": "SALES MANAGER",
+   "garde": null,
+   "retires": [
+    "backend:RESPONSABLE_WHOLESALE"
    ],
    "motif": "forme vague interdite"
   }

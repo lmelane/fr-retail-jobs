@@ -5,7 +5,7 @@
  * et les textes qui servent aux vecteurs (une seule définition, pour que toutes les étapes lisent le même cache).
  */
 import { createHash } from 'node:crypto';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { gunzipSync } from 'node:zlib';
 import { normalizeOccupationTitle } from '../../../../../packages/db/occupation-engine.ts';
@@ -46,7 +46,23 @@ export const VAGUES = new Set(['MANAGER', 'ASSISTANT', 'ASSISTANTE', 'ASSOCIATE'
   'CONSULTANT', 'CONSULTANTE', 'TECHNICIEN', 'TECHNICIENNE', 'OPERATEUR', 'AGENT', 'CONSEILLER', 'CONSEILLERE', 'ADVISOR', 'SUPERVISOR',
   // Mesure de justesse du 29/09/2026 : « Superviseur(e) » seul, et « Retail Manager » (directeur de magasin au Royaume-Uni
   // et en Australie, directeur retail ailleurs) ne désignent pas un métier à eux seuls.
-  'SUPERVISEUR', 'SUPERVISEURE', 'SUPERVISEUSE', 'RETAIL MANAGER']);
+  'SUPERVISEUR', 'SUPERVISEURE', 'SUPERVISEUSE', 'RETAIL MANAGER',
+  // Audit du 29/09/2026 : « Sales Manager » désigne aussi bien l'encadrement de la vente en boutique (123 offres d'un
+  // magasin américain, service Retail Management) que le wholesale ou la vente B2B : trop vague pour un métier.
+  'SALES MANAGER']);
+
+/**
+ * Mots de niveau hiérarchique sans domaine. Une expression faite UNIQUEMENT de ces mots (« Team Leader », « Shift
+ * Manager », « Supervisor I », « General Manager », « Chef d'équipe ») dit un niveau, pas un métier : §32 c, comme
+ * « Manager » seul (audit du 29/09/2026 : « Team Leader » classait Floor manager un « Team Leader Corporate Tax » et un
+ * « DC Team Leader Lagerlogistik »). « Assistant manager » et « Responsable adjoint » n'y sont pas : l'adjoint de
+ * boutique est l'usage de ces titres dans les offres, jugé juste à chaque mesure.
+ */
+const HIERARCHIE = new Set(['TEAM', 'SHIFT', 'LEAD', 'LEADER', 'MANAGER', 'SUPERVISOR', 'SUPERVISEUR', 'SUPERVISEURE', 'SUPERVISEUSE', 'CHEF', 'CHEFFE',
+  'D', 'DE', 'DI', 'EQUIPE', 'GENERAL', 'GENERALE', 'RESPONSABLE', 'ACTING', 'SENIOR', 'SR', 'JUNIOR', 'JR', 'I', 'II', 'III', 'IV', '1', '2', '3',
+  'TEAMLEITER', 'TEAMLEITERIN', 'SCHICHTLEITER', 'SCHICHTLEITERIN', 'ENCARGADO', 'ENCARGADA', 'JEFE', 'JEFA', 'EQUIPO', 'CAPO', 'SQUADRA']);
+/** §32 c : une forme (normalisée par `phraseMoteur`) trop vague pour désigner un métier. */
+export const estVague = (forme: string) => VAGUES.has(forme) || (!!forme && forme.split(' ').every((m) => HIERARCHIE.has(m)));
 
 /** Forme courte d'un libellé (« Vendeur / Vendeuse » → « Vendeur »). */
 export const courte = (l?: string) => (l ?? '').split('/')[0].trim();
@@ -104,8 +120,13 @@ export function libellesEtFormes(cle: string, e5ParCle: Map<string, any>, e5b: a
   const avant = e5ParCle.get(cle)?.libelles ?? {};
   const libelles = e5b.libelles[cle] ?? avant;
   const formes = Object.fromEntries(Object.entries<string[]>(e5ParCle.get(cle)?.formes ?? {}).filter(([l]) => libelles[l] === avant[l]));
+  // Les formes d'un libellé corrigé par 5b viennent de l'étape 5d (« Employée de rayon » pour « Employé de rayon »).
+  const nouvelles = formes5d()?.formes[cle] ?? {};
+  for (const [l, f] of Object.entries<string[]>(nouvelles)) if (libelles[l] !== avant[l] && f.length) formes[l] = f;
   return { libelles, formes };
 }
+let cache5d: any;
+const formes5d = () => (cache5d ??= existsSync(`${DOSSIER_SORTIE}5d-formes.json`) ? lireEtape('5d-formes.json') : null);
 
 /** Toutes les familles de la v3 : celles du catalogue et les nouvelles de l'étape 2. */
 export const famillesV3 = (): string[] => [...familles.map((f) => f.key), ...lireEtape('2-familles.json').nouvellesFamilles.map((f: any) => f.key)];
