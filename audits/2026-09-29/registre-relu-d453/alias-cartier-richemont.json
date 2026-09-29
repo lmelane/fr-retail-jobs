@@ -1,0 +1,17 @@
+{
+  "batchId": "20260929-D479-RICHEMONT-CARTIER-v1",
+  "reviewedBy": "Claude (CTO produit) : relecture des preuves officielles ; D-479 §4 (RUN vert), R-142 §3 (l'offre qui nomme sa Maison la garde)",
+  "reviewedAt": "2026-09-29T21:20:00Z",
+  "statement": "Le portail Workday de Richemont (source richemont-workday) nomme désormais la Maison de l'offre JR133983 par son logo : « Cartier Logo », et sa description ouvre sur « Cartier is founded on audacity » ; l'entité juridique reste DE05 Richemont Northern Europe GmbH. Le libellé natif « Cartier » de cette source désigne la Maison Cartier, comme « VanCleef-Aprels » désigne déjà Van Cleef & Arpels sur la même source. Alias limité à la source, libellé exact, aucune fusion.",
+  "aliases": [
+    { "sourceKey": "richemont-workday", "rawName": "Cartier", "targetCompany": "Cartier" }
+  ],
+  "merges": [],
+  "evidence": [
+    {
+      "url": "https://richemont.wd3.myworkdayjobs.com/wday/cxs/richemont/Richemont/job/MUNICH/Sales-Associate--m-w-d-_JR133983",
+      "artifactFile": "audits/2026-09-29/registre-relu-d453/richemont-workday-JR133983.json",
+      "explanation": "API publique Workday de Richemont pour l'offre JR133983 : logo « Cartier Logo », description qui présente Cartier, hiringOrganization DE05 Richemont Northern Europe GmbH. L'offre est une offre de la Maison Cartier."
+    }
+  ]
+}
