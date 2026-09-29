@@ -23,8 +23,9 @@ export function classifyOccupationContent(
   return {
     ...c,
     // D-475 point 38 : les métiers lus dans l'intitulé (packages/db/occupation-title-roles.ts), écrits avec la
-    // classification, jamais périmés, avec la version qui les a lus ; l'intitulé observé d'abord.
-    titleRoles: occupationTitleRoles(catalogue, input.rawTitle || input.title, c),
+    // classification, jamais périmés, avec la version qui les a lus ; sur l'intitulé que le moteur a classé (le brut
+    // garde ses entités HTML : « Floor&#160;Manager » ne se lisait pas, audit du 29/09/2026).
+    titleRoles: occupationTitleRoles(catalogue, input.title, c),
     titleRolesReleaseId: c.occupationReleaseId,
     rawTitle: input.rawTitle ?? null,
     occupationEvidence: {
@@ -54,6 +55,11 @@ export const OCCUPATION_FIELDS = [
 export function occupationState(row: Record<string, any>) {
   return Object.fromEntries(OCCUPATION_FIELDS.map((k) => [k, row[k] ?? null]));
 }
+/** Ce que l'historique compare : la décision, pas les métiers lus dans l'intitulé qui s'en déduisent. Le premier passage
+ * après les migrations 2B remplit `titleRoles` et leur version sur chaque offre : compté comme décision nouvelle, il
+ * aurait écrit une observation immuable par offre sans que rien ne change (audit du 29/09/2026). */
+const DECISION_FIELDS = OCCUPATION_FIELDS.filter((k) => k !== "titleRoles" && k !== "titleRolesReleaseId");
+const decisionState = (row: Record<string, any>) => Object.fromEntries(DECISION_FIELDS.map((k) => [k, row[k] ?? null]));
 /** Append actual transitions, including A → B → A. Identical reattestations
  * produce no new row; reusing an old input must still preserve its new date. */
 export async function recordOccupationObservation(
@@ -65,8 +71,8 @@ export async function recordOccupationObservation(
     throw new Error(`Missing occupation decision for ${job.id}`);
   if (
     before &&
-    occupationManifestHash(occupationState(before)) ===
-      occupationManifestHash(occupationState(job))
+    occupationManifestHash(decisionState(before)) ===
+      occupationManifestHash(decisionState(job))
   )
     return;
   const inputHash = occupationManifestHash(job.occupationEvidence);

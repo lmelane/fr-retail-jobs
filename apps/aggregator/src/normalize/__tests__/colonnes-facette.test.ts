@@ -88,12 +88,16 @@ describe('les outils de mesure lisent la colonne que la facette sert', () => {
      * rien. `jobFunction` est encore une colonne réelle du schéma : c'est ce qui rend la
      * confusion possible, et c'est pour ça que le témoin est nécessaire.
      */
-    expect(EXPRESSION_FACETTE.metier).toBe('"occupationCode"');
+    // Depuis D-475 point 38 (2B-4), le métier est le code OU un métier lu dans l'intitulé : les deux côtés le disent.
+    expect(EXPRESSION_FACETTE.metier).toBe(`COALESCE("occupationCode", "titleRoles"[1])`);
     expect(EXPRESSION_FACETTE.metier).not.toContain('jobFunction');
 
     const sql = BLOC_FACETTES.replace(/\bb\./g, '');
-    expect(sql, 'la facette métier doit lire occupationCode').toContain('"occupationCode"');
-    expect(sql, 'jobFunction ne doit jamais apparaître dans une facette').not.toContain('jobFunction');
+    const metiersDe = REQUETE_FACETTES.slice(REQUETE_FACETTES.indexOf('const metiersDe'), REQUETE_FACETTES.indexOf('END`;', REQUETE_FACETTES.indexOf('const metiersDe')));
+    expect(sql, 'la facette métier doit compter les métiers de l’offre (metiersDe)').toContain('unnest(${metiersDe})');
+    expect(metiersDe, 'les métiers de l’offre lisent le code et les métiers lus').toContain('"occupationCode"');
+    expect(metiersDe).toContain('"titleRoles"');
+    expect(sql + metiersDe, 'jobFunction ne doit jamais apparaître dans une facette').not.toContain('jobFunction');
   });
 
   it('AUCUNE sonde ne mesure une colonne que la facette n’agrège pas', () => {

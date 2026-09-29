@@ -232,6 +232,14 @@ marqué **existe** (lu ou mesuré le 28/09/2026) ou **décidé** (D-475, R-140 d
   produit & R&D (« chef de produit » ramené à l'exact : 53 offres non assistantes perdues) ; « Conseiller.e de
   ventes » au pluriel non lu (48 offres) ; libellés affichés de Premier vendeur et Keyholder en pl, cs, pt, ro, el.
   L'empreinte du manifeste a changé avec 6g (règles identiques) : les mesures 6d déjà comptées valent pour le moteur.
+  Audit technique du 29/09/2026, suites : la lecture coûte 0,012 ms par intitulé (le rejeu d'activation reste de
+  l'ordre de 3 s) ; elle lit l'intitulé que le moteur classe, pas le brut et ses entités HTML ; l'historique immuable
+  des décisions ne compte plus un changement limité aux métiers lus (sans quoi le premier passage après les
+  migrations aurait écrit une observation par offre) ; les sondes de couverture mesurent le métier comme la facette
+  (code ou métier lu, `packages/db/colonnes-facette.ts`). Défauts connus restants : la clé de l'intitulé et celle de
+  l'alias ne passent pas par la même normalisation (le « ı » turc : 133 formes jamais lues, 4 offres) ; le lecteur
+  ignore les familles (« Visual Merchandising Assistant » lu Assistant merchandiser, 5 offres) ; `titleRoles` dépend
+  aussi du code du lecteur, que sa version ne date pas (à dater avant toute modification du lecteur une fois activé).
 - **Référence ESCO** publiée et datée, somme de contrôle versionnée.
 
 ### 3.2 L'IA validatrice : passes de curation (D-475 §30, §31 a)

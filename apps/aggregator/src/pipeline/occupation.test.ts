@@ -205,6 +205,19 @@ describe("occupation persistence and release lifecycle", () => {
     expect(await db.jobEvent.findMany()).toEqual(events);
     expect(await db.jobSource.findMany()).toEqual(sources);
   });
+  it("filling the title roles after the 2B migrations records no observation (audit du 29/09/2026)", async () => {
+    const c = candidate({}),
+      first = await upsertDeduplicated(db, c);
+    // L'état que laisse la migration : aucun métier lu, aucune version.
+    await db.job.update({ where: { id: first.jobId }, data: { titleRoles: [], titleRolesReleaseId: null } });
+    const count = await db.occupationObservation.count();
+    await upsertDeduplicated(db, c);
+    const after = await db.job.findUniqueOrThrow({ where: { id: first.jobId } });
+    // Prémisse : l'écriture a bien rempli la version des métiers lus (l'état comparé a changé)…
+    expect(after.titleRolesReleaseId).not.toBeNull();
+    // … sans décision nouvelle : l'historique immuable ne reçoit rien.
+    expect(await db.occupationObservation.count()).toBe(count);
+  });
   it("a previously unknown title remains an active posting with a reviewable reason", async () => {
     const { jobId } = await upsertDeduplicated(
       db,

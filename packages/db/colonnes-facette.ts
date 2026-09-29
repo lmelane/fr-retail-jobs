@@ -28,7 +28,8 @@
  * Trois propriétés en découlent, et chacune a été VÉRIFIÉE en production le 17/09 :
  *
  *  1. l'expression comptée n'est pas toujours la colonne nue — `ville` agrège
- *     `lower(trim(city))`, `metier` agrège `COALESCE(occupationCode, 'unclassified')` ;
+ *     `lower(trim(city))`, `metier` compte chaque métier de l'offre, son code et ses métiers lus
+ *     (`titleRoles`, D-475 point 38), « unclassified » sans aucun ;
  *  2. la chaîne VIDE est exclue, alors que `count(colonne)` la compte. Mesuré : zéro chaîne vide
  *     sur les six dimensions, donc l'écart est nul AUJOURD'HUI — mais la règle reste celle de la
  *     facette, pas celle de `count()`, pour que l'apparition d'une chaîne vide ne crée pas
@@ -58,7 +59,10 @@
  * mesure de son sens. `COLONNE_AFFICHEE` porte l'expression d'affichage pour qui en a besoin.
  */
 export const EXPRESSION_FACETTE = {
-  metier: '"occupationCode"',
+  // D-475 point 38 (lot 2B-4) : une offre a un métier par son code OU par un métier lu dans son intitulé. Renseignée si
+  // l'un des deux existe ; la diversité compte le code, sinon le premier métier lu (la facette, elle, compte chaque
+  // appartenance : une offre à deux métiers lus y figure deux fois).
+  metier: `COALESCE("occupationCode", "titleRoles"[1])`,
   contrat: '"employmentTerm"',
   temps: '"workTime"',
   programme: '"programType"',
@@ -75,7 +79,7 @@ export type DimensionMesurable = keyof typeof EXPRESSION_FACETTE;
  * une absence de donnée.
  */
 export const EXPRESSION_AFFICHEE: Partial<Record<DimensionMesurable, string>> = {
-  metier: `COALESCE("occupationCode", 'unclassified')`,
+  metier: `ARRAY(SELECT DISTINCT r FROM unnest(array_append("titleRoles", "occupationCode")) r WHERE r IS NOT NULL)`,
 };
 
 /**
