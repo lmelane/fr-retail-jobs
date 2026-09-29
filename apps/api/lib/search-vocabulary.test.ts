@@ -20,7 +20,7 @@ describe('vocabulaire de recherche de la taxonomie v3', () => {
     expect(vocabularyCollisions(vocabulaire(v3 as OccupationManifest), cleRecherche)).toEqual([]);
   });
 
-  it('le témoin sait échouer : la version servie v1 donne « Demand Planner » à deux métiers', () => {
+  it('le témoin sait échouer : la release v1 du dépôt (20260914-v2, non servie) donne « Demand Planner » à deux métiers', () => {
     const v1Collisions = vocabularyCollisions(vocabulaire(v1 as OccupationManifest), cleRecherche);
     expect(v1Collisions.map((c) => c.key)).toContain('demand planner');
   });
@@ -57,13 +57,15 @@ describe('vocabulaire de recherche de la taxonomie v3', () => {
     expect(famille.aliases).not.toContain('Retail sales');
   });
 
-  it('la version servie v1 garde son vocabulaire à l\'identique (instantané complet, figé avant le lot 2B)', () => {
+  it('la release v1 du dépôt (20260914-v2) garde son vocabulaire à l\'identique (instantané complet, figé avant le lot 2B)', () => {
     expect(JSON.parse(JSON.stringify(searchConcepts(v1 as OccupationManifest, sectors)))).toEqual(figeeV1);
   });
 
   it('toute recherche qui trouvait son concept en v1 le trouve en v3, sauf exception décidée', () => {
     const EXCEPTIONS: Record<string, string> = {
-      'relief dispenser': 'jugé Préparateur en pharmacie sur les offres (étape 3) ; la release du 14/09 disait Assistant en pharmacie',
+      // Le moteur le classe Préparateur en pharmacie (intitulé jugé à l'étape 3) ; la recherche le lit désormais comme
+      // « dispenser » (Assistant en pharmacie) plus le mot libre « relief » : les offres restent trouvées par le texte.
+      'relief dispenser': 'jugé Préparateur en pharmacie sur les offres ; n\'est plus un alias de l\'Assistant en pharmacie',
     };
     const index = (m: OccupationManifest) => {
       const x = new Map<string, Set<string>>();

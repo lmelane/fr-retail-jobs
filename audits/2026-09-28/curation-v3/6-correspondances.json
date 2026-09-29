@@ -1,5 +1,5 @@
 {
- "calculeLe": "2026-09-29T14:17:19.378Z",
+ "calculeLe": "2026-09-29T14:26:06.492Z",
  "manifeste": "catwalks-occupations-20260929-v3",
  "metiers": {
   "sales-advisor": "sales-advisor",
@@ -339,14 +339,19 @@
  },
  "libellesRetires": [
   {
-   "cle": "beauty-therapist",
-   "langue": "zh-Hant",
-   "libelle": "美容師"
-  },
-  {
    "cle": "backend:ASSISTANT_DE_GESTION",
    "langue": "da",
-   "libelle": "Administrativ assistent"
+   "libelle": "Ledelsesassistent"
+  },
+  {
+   "cle": "backend:COUPE",
+   "langue": "ko",
+   "libelle": "재단사"
+  },
+  {
+   "cle": "backend:RESPONSABLE_COMMERCIAL_DE_ZONE",
+   "langue": "it",
+   "libelle": "Area Manager"
   }
  ],
  "arbitragesFinaux": [
@@ -367,15 +372,6 @@
    ],
    "garde": null,
    "motif": "ambiguë, retirée"
-  },
-  {
-   "forme": "AREA MANAGER",
-   "metiers": [
-    "regional-retail-manager",
-    "backend:RESPONSABLE_COMMERCIAL_DE_ZONE"
-   ],
-   "garde": "regional-retail-manager",
-   "motif": "version servie"
   },
   {
    "forme": "DIRECTRICE REGIONALE",

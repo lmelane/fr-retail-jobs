@@ -25224,6 +25224,30 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
+   "id": "v3-beauty-therapist~2c81f06ace",
+   "occupation": "beauty-therapist",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "美膚師"
+     ],
+     "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "any": [
+      "manager",
+      "director",
+      "trainer"
+     ],
+     "field": "title"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
    "id": "v3-makeup-artist~3bbcd18b9e",
    "occupation": "makeup-artist",
    "all": [
@@ -95855,20 +95879,6 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
-   "id": "v3-coupe~441172226c",
-   "occupation": "coupe",
-   "all": [
-    {
-     "field": "title",
-     "any": [
-      "재단공"
-     ],
-     "mode": "exact"
-    }
-   ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
-  },
-  {
    "id": "v3-coupe~0178dc8106",
    "occupation": "coupe",
    "all": [
@@ -135338,20 +135348,6 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
-   "id": "v3-responsable-commercial-de-zone~2d215c75f3",
-   "occupation": "responsable-commercial-de-zone",
-   "all": [
-    {
-     "field": "title",
-     "any": [
-      "Responsabile commerciale di zona"
-     ],
-     "mode": "exact"
-    }
-   ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
-  },
-  {
    "id": "v3-responsable-commercial-de-zone~b2ba48c2ec",
    "occupation": "responsable-commercial-de-zone",
    "all": [
@@ -153240,7 +153236,7 @@
  ],
  "review": {
   "author": "Passe de curation v3 (IA seule, D-475 §30)",
-  "at": "2026-09-29T14:17:19.378Z",
+  "at": "2026-09-29T14:26:06.492Z",
   "basis": "Première passe de curation : 253 métiers (servis, backend, offres), 33 familles, 25 langues ; preuves : audits/2026-09-28/curation-v3."
  },
  "families": [
@@ -154930,6 +154926,7 @@
     "pt": "Esteticista",
     "pt-BR": "Esteticista",
     "da": "Kosmetolog",
+    "zh-Hant": "美膚師",
     "pl": "Kosmetyczka",
     "sv": "Hudterapeut",
     "tr": "Estetisyen",
@@ -154959,6 +154956,7 @@
     "エステティシャン",
     "피부 관리사",
     "Kosmetolog",
+    "美膚師",
     "Kosmetyczka",
     "Hudterapeut",
     "Estetisyen",
@@ -163043,7 +163041,6 @@
     "nl": "Kledingsnijder",
     "zh-CN": "裁床工",
     "ja": "裁断士",
-    "ko": "재단공",
     "pt": "Cortador",
     "pt-BR": "Cortador",
     "da": "Tilskærer",
@@ -163069,7 +163066,6 @@
     "Kledingsnijder",
     "裁床工",
     "裁断士",
-    "재단공",
     "Tilskærer",
     "Krojczy",
     "Tillskärare",
@@ -167640,7 +167636,6 @@
     "fr": "Responsable commercial de zone",
     "en": "Area Sales Manager",
     "de": "Gebietsverkaufsleiter",
-    "it": "Responsabile commerciale di zona",
     "es": "Responsable comercial de zona",
     "nl": "Area Sales Manager",
     "zh-CN": "大区销售经理",
@@ -167666,7 +167661,6 @@
    "aliases": [
     "Area Sales Manager",
     "Gebietsverkaufsleiter",
-    "Responsabile commerciale di zona",
     "Responsable comercial de zona",
     "大区销售经理",
     "エリアセールスマネージャー",

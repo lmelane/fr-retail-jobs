@@ -180,6 +180,11 @@
    "cle": "backend:DIRECTION",
    "langue": "en",
    "raison": "« General Manager » désigne dans les offres le directeur d'un magasin (71 des 78 offres ainsi intitulées viennent du service Retail Management) : donner le nom anglais usuel du dirigeant d'une entreprise (Managing Director), jamais un nom porté par la direction d'un magasin (D-475 §34)"
+  },
+  {
+   "cle": "retail-store-management",
+   "langue": "vi",
+   "raison": "« Ban quản lý » désigne un organe administratif (un conseil de gestion), pas un domaine : donner le nom court du domaine de la direction de boutique, distinct du métier « Quản lý cửa hàng » (par exemple « Quản trị cửa hàng »)"
   }
  ]
 }

@@ -1,16 +1,16 @@
 {
- "calculeLe": "2026-09-29T14:16:42.091Z",
+ "calculeLe": "2026-09-29T14:26:01.812Z",
  "juges": {
   "j1": "gemini-3.6-flash",
   "j2": "gemini-3-flash-preview"
  },
  "bilan": {
-  "formesRevendiquees": 8502,
+  "formesRevendiquees": 8501,
   "interdites": 5,
-  "conflits": 41,
-  "pairesJugees": 6,
+  "conflits": 42,
+  "pairesJugees": 8,
   "fusions": 3,
-  "renommages": 2,
+  "renommages": 3,
   "sansVerdict": 0
  },
  "aliasRecherche": {
@@ -55,6 +55,11 @@
  ],
  "paires": [
   {
+   "a": "backend:RESPONSABLE_COMMERCIAL_DE_ZONE",
+   "b": "regional-retail-manager",
+   "verdict": "rejete"
+  },
+  {
    "a": "backend:TAILLEUR",
    "b": "seamster",
    "verdict": "confirme"
@@ -65,13 +70,13 @@
    "verdict": "confirme"
   },
   {
-   "a": "backend:PLANIFICATEUR_SUPPLY_CHAIN",
-   "b": "demand-planner",
+   "a": "backend:ASSISTANT_DE_GESTION",
+   "b": "executive-assistant",
    "verdict": "rejete"
   },
   {
-   "a": "backend:ASSISTANT_ADMINISTRATIF",
-   "b": "backend:ASSISTANT_DE_GESTION",
+   "a": "backend:PLANIFICATEUR_SUPPLY_CHAIN",
+   "b": "demand-planner",
    "verdict": "rejete"
   },
   {
@@ -83,16 +88,21 @@
    "a": "backend:BARBIER",
    "b": "hairdresser",
    "verdict": "confirme"
+  },
+  {
+   "a": "backend:COUPE",
+   "b": "backend:TAILLEUR",
+   "verdict": "rejete"
   }
  ],
  "attributions": [
   {
-   "forme": "美 容 師",
-   "garde": "hairdresser",
+   "forme": "AREA MANAGER",
+   "garde": "regional-retail-manager",
    "retires": [
-    "beauty-therapist"
+    "backend:RESPONSABLE_COMMERCIAL_DE_ZONE"
    ],
-   "motif": "libellé partagé"
+   "motif": "version servie"
   },
   {
    "forme": "PLANNER",
@@ -101,6 +111,14 @@
     "merchandise-planner"
    ],
    "motif": "forme vague interdite"
+  },
+  {
+   "forme": "LEDELSESASSISTENT",
+   "garde": "executive-assistant",
+   "retires": [
+    "backend:ASSISTANT_DE_GESTION"
+   ],
+   "motif": "version servie"
   },
   {
    "forme": "PLANIFICATEUR DE LA DEMANDE",
@@ -119,14 +137,6 @@
    "motif": "libellé"
   },
   {
-   "forme": "ADMINISTRATIV ASSISTENT",
-   "garde": "backend:ASSISTANT_ADMINISTRATIF",
-   "retires": [
-    "backend:ASSISTANT_DE_GESTION"
-   ],
-   "motif": "libellé partagé"
-  },
-  {
    "forme": "ASSISTANT MERCHANDISER",
    "garde": "backend:ASSISTANT_MERCHANDISER",
    "retires": [
@@ -142,6 +152,14 @@
     "backend:E_MERCHANDISER"
    ],
    "motif": "ambiguë"
+  },
+  {
+   "forme": "재단사",
+   "garde": "seamster",
+   "retires": [
+    "backend:COUPE"
+   ],
+   "motif": "version servie"
   },
   {
    "forme": "VERKAUFER",
@@ -202,14 +220,19 @@
  ],
  "renommages": [
   {
-   "cle": "beauty-therapist",
-   "langue": "zh-Hant",
-   "raison": "libellé « 美 容 師 » aussi porté par Coiffeur / Hairdresser : donner à ce métier un nom distinct"
+   "cle": "backend:RESPONSABLE_COMMERCIAL_DE_ZONE",
+   "langue": "it",
+   "raison": "libellé « AREA MANAGER » déjà employé en production pour Directeur régional / Regional retail manager : donner à ce métier un nom distinct"
   },
   {
    "cle": "backend:ASSISTANT_DE_GESTION",
    "langue": "da",
-   "raison": "libellé « ADMINISTRATIV ASSISTENT » aussi porté par Assistant administratif / Administrative Assistant : donner à ce métier un nom distinct"
+   "raison": "libellé « LEDELSESASSISTENT » déjà employé en production pour Assistant de direction / Executive Assistant : donner à ce métier un nom distinct"
+  },
+  {
+   "cle": "backend:COUPE",
+   "langue": "ko",
+   "raison": "libellé « 재단사 » déjà employé en production pour Couturier / Seamster : donner à ce métier un nom distinct"
   }
  ]
 }

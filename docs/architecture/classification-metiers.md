@@ -178,6 +178,13 @@ marqué **existe** (lu ou mesuré le 28/09/2026) ou **décidé** (D-475, R-140 d
   néerlandais, -ka polonais), compensées aujourd'hui par des expressions explicites ; la release
   `catwalks-occupations-20260914-v2` (optique) est dans le code mais la production sert `20260909-v1` (instantané de la
   preview) : vérifier en lecture la release active avant de basculer.
+- **Garde d'unicité et vocabulaire unique (2B-2, commits 4707325 et 5e78a1e)** : une seule garde
+  (`packages/db/occupation-vocabulary.ts`), deux surfaces (moteur : les métiers ; recherche : métiers, familles et
+  secteurs ensemble), lancée par l'assemblage, la preview et un test de l'API ; la v3 porte tout le vocabulaire de
+  recherche (`searchVocabularyVersion`), noms remplacés compris (§31 c) ; aucune phrase trouvée par la version servie
+  n'est perdue. Défaut connu : le nom vietnamien de la famille Direction de boutique reste « Ban quản lý cửa hàng »
+  (organe administratif), trois tours de 5b n'ont pas trouvé de nom court distinct du métier ; entrée de la passe
+  suivante.
 - **Ce que la séparation vente / rayon impose à l'activation (sous-lot 2C)** : la clé stable `employe-de-commerce`
   porte désormais « Employé de rayon » ; les profils, préférences et alertes qui la portent au backend (141 candidats
   sourcés mesurés le 29/09/2026, aucun inscrit) ne se renomment pas en bloc : chacun se reclasse depuis son intitulé

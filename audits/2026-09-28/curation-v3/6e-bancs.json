@@ -1,22 +1,22 @@
 {
- "calculeLe": "2026-09-29T14:17:23.128Z",
+ "calculeLe": "2026-09-29T14:26:10.198Z",
  "manifeste": "catwalks-occupations-20260929-v3",
  "bilan": {
   "resolution": {
-   "cas": 6339,
-   "justes": 6339,
+   "cas": 6338,
+   "justes": 6338,
    "autreMetier": 0,
    "aucunMetier": 0,
    "servieLibellesResolus": "105/122",
    "libellesDecoresResolus": "759/759"
   },
   "memoireEtTemps": {
-   "compilationV1Ms": 7,
-   "compilationV3Ms": 215,
-   "tasV1Mo": 3,
+   "compilationV1Ms": 6,
+   "compilationV3Ms": 210,
+   "tasV1Mo": 4,
    "tasV3Mo": 18,
-   "regles": 8201,
-   "classementsParSeconde": 38705
+   "regles": 8200,
+   "classementsParSeconde": 40360
   },
   "rappelParMarche": [
    {
@@ -664,7 +664,7 @@
   ],
   "libellesIdentiquesALAnglais": {
    "identiques": 767,
-   "total": 4047,
+   "total": 4046,
    "langues": 16
   }
  },

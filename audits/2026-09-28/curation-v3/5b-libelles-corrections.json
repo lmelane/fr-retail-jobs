@@ -1,5 +1,5 @@
 {
- "calculeLe": "2026-09-29T14:16:17.014Z",
+ "calculeLe": "2026-09-29T14:26:01.397Z",
  "modeles": {
   "correction": "gemini-3.6-flash",
   "relecture": "gemini-3-flash-preview"
@@ -9,13 +9,23 @@
   "relectureManquante": 0,
   "defautsAvant": 199,
   "tours": 3,
-  "elementsCorriges": 97,
-  "defautsConnus": 4,
+  "elementsCorriges": 96,
+  "defautsConnus": 6,
   "fautesBloquantes": 0,
-  "preferencesUsage": 18,
+  "preferencesUsage": 19,
   "signalementsEtape5NonBloquants": 63
  },
  "defautsConnus": [
+  {
+   "cle": "backend:RESPONSABLE_COMMERCIAL_DE_ZONE",
+   "langue": "it",
+   "raison": "libellé « Area Manager » déjà employé en production pour Responsable régional retail / Regional retail manager : donner à ce métier un nom distinct"
+  },
+  {
+   "cle": "backend:RESPONSABLE_COMMERCIAL_DE_ZONE",
+   "langue": "it",
+   "raison": "libellé « Area Manager » déjà employé en production pour Responsable régional retail / Regional retail manager : donner à ce métier un nom distinct"
+  },
   {
    "cle": "backend:DIRECTEUR_DE_CLIENTELE",
    "langue": "ar",
@@ -38,6 +48,13 @@
   }
  ],
  "preferencesUsage": [
+  {
+   "cle": "beauty-therapist",
+   "langue": "zh-Hant",
+   "raison": "Le terme standard est 美容師, 美膚師 est trop restrictif ou spécifique au soin de la peau.",
+   "type": "usage",
+   "libelle": "美膚師"
+  },
   {
    "cle": "legal-counsel",
    "langue": "el",
@@ -69,16 +86,30 @@
   {
    "cle": "backend:ASSISTANT_DE_GESTION",
    "langue": "de",
-   "raison": "'Kaufmännischer Assistent' est un titre de formation administrative ; 'Management-Assistent' est plus courant pour ce poste.",
+   "raison": "Management-Assistent est plus courant dans le luxe/retail ; Kaufmännischer Assistent est un titre de diplôme.",
    "type": "usage",
    "libelle": "Kaufmännischer Assistent"
   },
   {
    "cle": "backend:ASSISTANT_DE_GESTION",
    "langue": "el",
-   "raison": "'Βοηθός Διαχείρισης' est une traduction trop littérale ; 'Βοηθός Διοίκησης' est le terme standard en entreprise.",
+   "raison": "Βοηθός Διοίκησης est le terme standard pour un assistant de gestion/management.",
    "type": "usage",
    "libelle": "Βοηθός Διαχείρισης"
+  },
+  {
+   "cle": "backend:ASSISTANT_DE_GESTION",
+   "langue": "cs",
+   "raison": "Asistent vedení est plus naturel que le calque Asistent managementu.",
+   "type": "usage",
+   "libelle": "Asistent managementu"
+  },
+  {
+   "cle": "backend:ASSISTANT_DE_GESTION",
+   "langue": "hu",
+   "raison": "Vezetői asszisztens est plus courant que le calque Menedzsment asszisztens.",
+   "type": "usage",
+   "libelle": "Menedzsment asszisztens"
   },
   {
    "cle": "backend:ASSISTANT_PEDAGOGIQUE",
@@ -93,13 +124,6 @@
    "raison": "Le terme 'مسؤول' (responsable) est utilisé au lieu de 'مدير' (manager).",
    "type": "usage",
    "libelle": "مسؤول العلامة التجارية"
-  },
-  {
-   "cle": "backend:COUPE",
-   "langue": "ko",
-   "raison": "Le terme '재단공' (ouvrier) est trop industriel pour le secteur du luxe ; '재단사' est le terme d'usage pour un coupeur dans la mode.",
-   "type": "usage",
-   "libelle": "재단공"
   },
   {
    "cle": "backend:MANAGER_FLOOR",
@@ -149,13 +173,6 @@
    "raison": "Le masculin est préférable pour un nom de métier générique",
    "type": "usage",
    "libelle": "Piloteira"
-  },
-  {
-   "cle": "backend:RESPONSABLE_COMMERCIAL_DE_ZONE",
-   "langue": "ja",
-   "raison": "Translittération trop longue ; le terme 'エリアマネージャー' (Area Manager) est beaucoup plus courant en retail.",
-   "type": "usage",
-   "libelle": "エリアセールスマネージャー"
   },
   {
    "cle": "retail-client-advisor",
@@ -1165,7 +1182,7 @@
    "pt": "Esteticista",
    "pt-BR": "Esteticista",
    "da": "Kosmetolog",
-   "zh-Hant": "美容師",
+   "zh-Hant": "美膚師",
    "pl": "Kosmetyczka",
    "sv": "Hudterapeut",
    "tr": "Estetisyen",
@@ -3243,7 +3260,7 @@
    "ko": "경영 지원",
    "pt": "Assistente de Gestão",
    "pt-BR": "Assistente de Gestão",
-   "da": "Administrativ assistent",
+   "da": "Ledelsesassistent",
    "zh-Hant": "管理助理",
    "pl": "Asystent ds. zarządzania",
    "sv": "Ledningsassistent",
@@ -4779,7 +4796,7 @@
    "nl": "Kledingsnijder",
    "zh-CN": "裁床工",
    "ja": "裁断士",
-   "ko": "재단공",
+   "ko": "재단사",
    "pt": "Cortador",
    "pt-BR": "Cortador",
    "da": "Tilskærer",
@@ -6745,7 +6762,7 @@
    "fr": "Responsable commercial de zone",
    "en": "Area Sales Manager",
    "de": "Gebietsverkaufsleiter",
-   "it": "Responsabile commerciale di zona",
+   "it": "Area Manager",
    "es": "Responsable comercial de zona",
    "nl": "Area Sales Manager",
    "zh-CN": "大区销售经理",
