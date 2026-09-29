@@ -171,6 +171,7 @@ export type OccupationDecision = {
   occupationEvidence: {
     inputTitle: string | null;
     department: string | null;
+    /** Version de la CORRESPONDANCE (clé de comparaison) ; `normalizedTitle`, stocké en base, reste la forme v1. */
     normalizationVersion: 1 | 2;
     matchedRules: string[];
     candidates: string[];

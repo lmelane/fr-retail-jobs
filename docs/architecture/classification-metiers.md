@@ -168,6 +168,16 @@ marqué **existe** (lu ou mesuré le 28/09/2026) ou **décidé** (D-475, R-140 d
   (11) une expression faite seulement de mots de niveau ne se généralise jamais (D-475 §36). Limite connue : la
   mémoire des réponses des modèles ne rejoue pas à l'identique une correction de libellés en plusieurs tours
   (29/09/2026) ; la sortie relue de l'étape 5b fait foi.
+- **Correspondance v2 du moteur (2B-1, commit 4a34fe6)** : écritures japonaise et thaïe, formes féminines, marques
+  ignorées en mode exact ; activée par `matchingVersion: 2` (la v1 servie identique à l'octet sur les 80 741 offres,
+  audit du 29/09/2026) ; 63,0 % des offres classées, 759/759 libellés décorés ; 17 % plus lente que la v1 sur le même
+  manifeste (45 000 classements par seconde). **À contrôler avant l'activation (2C)** : « Animateur » seul va à
+  l'animateur de loisirs par son libellé allemand alors que le corpus beauté entend l'animation des ventes (0 offre
+  aujourd'hui) ; « Magasinier » va au stock en boutique (intitulé jugé, 26 offres d'Intersport et Blackstore) et plus à
+  l'entrepôt ; formes féminines non couvertes (-era/-ero, -iera, -essa italien, -in allemand hors -erin, -ster
+  néerlandais, -ka polonais), compensées aujourd'hui par des expressions explicites ; la release
+  `catwalks-occupations-20260914-v2` (optique) est dans le code mais la production sert `20260909-v1` (instantané de la
+  preview) : vérifier en lecture la release active avant de basculer.
 - **Ce que la séparation vente / rayon impose à l'activation (sous-lot 2C)** : la clé stable `employe-de-commerce`
   porte désormais « Employé de rayon » ; les profils, préférences et alertes qui la portent au backend (141 candidats
   sourcés mesurés le 29/09/2026, aucun inscrit) ne se renomment pas en bloc : chacun se reclasse depuis son intitulé
