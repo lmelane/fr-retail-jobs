@@ -1,0 +1,3044 @@
+{
+ "tireLe": "2026-09-29T15:30:45.774Z",
+ "manifeste": "catwalks-occupations-20260929-v3",
+ "empreinteManifeste": "80f10cb8138ce9a4fd758354bf1239f011388203f9d908477966fe2f0a157e2d",
+ "population": {
+  "couples": 2232,
+  "offres": 2506
+ },
+ "echantillon": [
+  {
+   "titre": "Anthropologie Personal Stylist - Part-Time",
+   "service": null,
+   "offres": 19,
+   "moteur": "personal-shopper",
+   "statut": "CLASSIFIED",
+   "ajoutes": [
+    {
+     "cle": "conseiller-en-image",
+     "libelle": "Conseiller en image"
+    }
+   ],
+   "verdictAssistant": "P",
+   "verdictModele": null
+  },
+  {
+   "titre": "Maschinenbediener- Schwerpunkt Fräsen (m/w/d)",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "equipment-operator",
+     "libelle": "Conducteur d'engins"
+    }
+   ],
+   "verdictAssistant": "F",
+   "verdictModele": null
+  },
+  {
+   "titre": "Prodejní poradce/poradkyně, zkrácený pracovní poměr 20h týdně, Teplice",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "NO_RULE",
+   "ajoutes": [
+    {
+     "cle": "sales-advisor",
+     "libelle": "Conseiller de vente"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Optical Technician / Optical Sales Associate",
+   "service": null,
+   "offres": 2,
+   "moteur": "sales-advisor",
+   "statut": "CLASSIFIED",
+   "ajoutes": [
+    {
+     "cle": "optical-assistant",
+     "libelle": "Assistant d'optique"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Parfums Christian Dior - PR Category Manager/ PR Specialist",
+   "service": "コミュニケーション＆イベント",
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "category-manager",
+     "libelle": "Category manager"
+    }
+   ],
+   "verdictAssistant": "F",
+   "verdictModele": null
+  },
+  {
+   "titre": "Concierge - 57th Street",
+   "service": "Retail",
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "concierge",
+     "libelle": "Concierge"
+    }
+   ],
+   "verdictAssistant": "P",
+   "verdictModele": null
+  },
+  {
+   "titre": "Assistant Store Director (Madison)",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "assistant-store-manager",
+     "libelle": "Adjoint au responsable de boutique"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Optometric Technician",
+   "service": null,
+   "offres": 17,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "optometrist",
+     "libelle": "Optométriste"
+    }
+   ],
+   "verdictAssistant": "P",
+   "verdictModele": null
+  },
+  {
+   "titre": "Freelance Photographer - Fashion E-comm",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "photographe",
+     "libelle": "Photographe"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "CDI - Data Product Manager - AI Platform (H/F)",
+   "service": null,
+   "offres": 2,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "chef-produit",
+     "libelle": "Chef de produit"
+    }
+   ],
+   "verdictAssistant": "F",
+   "verdictModele": null
+  },
+  {
+   "titre": "Assistant Office Manager",
+   "service": null,
+   "offres": 6,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "office-manager",
+     "libelle": "Office Manager"
+    }
+   ],
+   "verdictAssistant": "P",
+   "verdictModele": null
+  },
+  {
+   "titre": "Joaillier(e) prototypiste CAO Innovation (H/F) - Les Ateliers de Lyon",
+   "service": null,
+   "offres": 1,
+   "moteur": "jeweller",
+   "statut": "CLASSIFIED",
+   "ajoutes": [
+    {
+     "cle": "prototypiste",
+     "libelle": "Prototypiste"
+    }
+   ],
+   "verdictAssistant": "P",
+   "verdictModele": null
+  },
+  {
+   "titre": "Product Manager, Kids FTW",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "chef-produit",
+     "libelle": "Chef de produit"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "KICKS Drottninggatan- Stockholm söker Butikschef",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "store-manager",
+     "libelle": "Responsable de boutique"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Préparateur de commandes - Mission formateur H/F",
+   "service": null,
+   "offres": 1,
+   "moteur": "warehouse-operative",
+   "statut": "CLASSIFIED",
+   "ajoutes": [
+    {
+     "cle": "formateur",
+     "libelle": "Formateur"
+    }
+   ],
+   "verdictAssistant": "P",
+   "verdictModele": null
+  },
+  {
+   "titre": "NUEVA APERTURA MÁLAGA C.COMERCIAL VELEZ EL INGENIO LÍNEA TEEN 30/25/20/16 HORAS",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "NO_RULE",
+   "ajoutes": [
+    {
+     "cle": "commercial",
+     "libelle": "Commercial"
+    }
+   ],
+   "verdictAssistant": "F",
+   "verdictModele": null
+  },
+  {
+   "titre": "Employée commerciale, employé commercial Monop'",
+   "service": null,
+   "offres": 14,
+   "moteur": "employe-de-commerce",
+   "statut": "CLASSIFIED",
+   "ajoutes": [
+    {
+     "cle": "commercial",
+     "libelle": "Commercial"
+    }
+   ],
+   "verdictAssistant": "F",
+   "verdictModele": null
+  },
+  {
+   "titre": "Gerente de Loja (full time, 40h) - Vila do Conde",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "store-manager",
+     "libelle": "Responsable de boutique"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Chef de Projet Supply Chain et Logistique (CDD) - H/F/X",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "chef-de-projet-supply-chain",
+     "libelle": "Chef de projet Supply Chain"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Commercial Controller - NIVEA",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "commercial",
+     "libelle": "Commercial"
+    },
+    {
+     "cle": "financial-controller",
+     "libelle": "Contrôleur de gestion"
+    }
+   ],
+   "verdictAssistant": "F",
+   "verdictModele": null
+  },
+  {
+   "titre": "ASSISTANT ATTACHÉ DE PRESSE INTERNATIONAL JOAILLERIE ET HORLOGERIE F/H - STAGE",
+   "service": "Communication & Evénementiel",
+   "offres": 2,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "charge-de-relations-presse",
+     "libelle": "Attaché de presse"
+    }
+   ],
+   "verdictAssistant": "P",
+   "verdictModele": null
+  },
+  {
+   "titre": "Junior Product Manager",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "chef-produit",
+     "libelle": "Chef de produit"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Responsable Formation Retail CDD H/F",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "responsable-formation",
+     "libelle": "Responsable formation"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Senior Operations Manager - Supply Chain - Dubuque Distribution Center",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "responsable-operationnel",
+     "libelle": "Responsable opérationnel"
+    }
+   ],
+   "verdictAssistant": "P",
+   "verdictModele": null
+  },
+  {
+   "titre": "Säljare Extra John Henric – Nova Lund",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "NO_RULE",
+   "ajoutes": [
+    {
+     "cle": "commercial",
+     "libelle": "Commercial"
+    },
+    {
+     "cle": "figurant",
+     "libelle": "Figurant"
+    }
+   ],
+   "verdictAssistant": "F",
+   "verdictModele": null
+  },
+  {
+   "titre": "Animateur-rice qualité RSE",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "animateur-de-loisirs",
+     "libelle": "Animateur de loisirs"
+    }
+   ],
+   "verdictAssistant": "F",
+   "verdictModele": null
+  },
+  {
+   "titre": "Manager, Commercial Strategy & Growth",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "manager-commercial",
+     "libelle": "Manager commercial"
+    }
+   ],
+   "verdictAssistant": "P",
+   "verdictModele": null
+  },
+  {
+   "titre": "Personal Stylist Selling Assistant",
+   "service": null,
+   "offres": 5,
+   "moteur": "sales-advisor",
+   "statut": "CLASSIFIED",
+   "ajoutes": [
+    {
+     "cle": "conseiller-en-image",
+     "libelle": "Conseiller en image"
+    }
+   ],
+   "verdictAssistant": "P",
+   "verdictModele": null
+  },
+  {
+   "titre": "Stage - Attaché.e de Presse Hospitality",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "charge-de-relations-presse",
+     "libelle": "Attaché de presse"
+    }
+   ],
+   "verdictAssistant": "P",
+   "verdictModele": null
+  },
+  {
+   "titre": "Supply Chain Project Manager Depot Investment Programme",
+   "service": null,
+   "offres": 2,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "chef-de-projet-supply-chain",
+     "libelle": "Chef de projet Supply Chain"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "FLOOR MANAGER (40 hours- Chester)",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "manager-floor",
+     "libelle": "Floor manager"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Beauty Concierge - Towne Place at Garden State Park Rack",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "concierge",
+     "libelle": "Concierge"
+    }
+   ],
+   "verdictAssistant": "F",
+   "verdictModele": null
+  },
+  {
+   "titre": "URBN Senior Product Manager",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "chef-produit",
+     "libelle": "Chef de produit"
+    }
+   ],
+   "verdictAssistant": "P",
+   "verdictModele": null
+  },
+  {
+   "titre": "Brand Art Director",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "direction-artistique",
+     "libelle": "Directeur artistique"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Anthropologie Personal Stylist - Full-Time",
+   "service": null,
+   "offres": 4,
+   "moteur": "personal-shopper",
+   "statut": "CLASSIFIED",
+   "ajoutes": [
+    {
+     "cle": "conseiller-en-image",
+     "libelle": "Conseiller en image"
+    }
+   ],
+   "verdictAssistant": "P",
+   "verdictModele": null
+  },
+  {
+   "titre": "Quality Auditor, Footwear",
+   "service": null,
+   "offres": 2,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "auditeur",
+     "libelle": "Auditeur"
+    }
+   ],
+   "verdictAssistant": "F",
+   "verdictModele": null
+  },
+  {
+   "titre": "Stage - Assistant Key Account Manager Europe",
+   "service": "Marketing",
+   "offres": 1,
+   "moteur": "responsable-de-comptes",
+   "statut": "CLASSIFIED",
+   "ajoutes": [
+    {
+     "cle": "assistant-key-account-manager",
+     "libelle": "Assistant Key Account Manager"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Extra salle H/F",
+   "service": null,
+   "offres": 3,
+   "moteur": null,
+   "statut": "NO_RULE",
+   "ajoutes": [
+    {
+     "cle": "figurant",
+     "libelle": "Figurant"
+    }
+   ],
+   "verdictAssistant": "F",
+   "verdictModele": null
+  },
+  {
+   "titre": "Animateur réseau franchises (H/F)",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "animateur-de-loisirs",
+     "libelle": "Animateur de loisirs"
+    }
+   ],
+   "verdictAssistant": "F",
+   "verdictModele": null
+  },
+  {
+   "titre": "CDI - Product Owner Applicatif H/F/X",
+   "service": null,
+   "offres": 2,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "product-owner",
+     "libelle": "Product Owner"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "COACH-咖啡厅主管/资深咖啡师-上海新丸",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "barista",
+     "libelle": "Barista"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Responsable Formation Retail Europe - H/F",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "responsable-formation",
+     "libelle": "Responsable formation"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Retail Keyholder | City Creek",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "keyholder",
+     "libelle": "Keyholder"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Beauty Concierge - Stonebriar Centre",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "concierge",
+     "libelle": "Concierge"
+    }
+   ],
+   "verdictAssistant": "F",
+   "verdictModele": null
+  },
+  {
+   "titre": "Floor Manager - Max Mara Harrods",
+   "service": null,
+   "offres": 2,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "manager-floor",
+     "libelle": "Floor manager"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Principal Product Manager, GQ & Pitchfork",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "chef-produit",
+     "libelle": "Chef de produit"
+    }
+   ],
+   "verdictAssistant": "F",
+   "verdictModele": null
+  },
+  {
+   "titre": "FLOOR MANAGER (40 hours, The Springs)",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "manager-floor",
+     "libelle": "Floor manager"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Extra Cuisine H/F",
+   "service": null,
+   "offres": 7,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "figurant",
+     "libelle": "Figurant"
+    }
+   ],
+   "verdictAssistant": "F",
+   "verdictModele": null
+  },
+  {
+   "titre": "(Cartier) HR Specialist",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "gestionnaire-des-ressources-humaines",
+     "libelle": "Gestionnaire RH"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Retail Development & Trainer - Guangzhou / Shenzhen",
+   "service": "Retail",
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "formateur",
+     "libelle": "Formateur"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Óptico/a en Ayamonte, Huelva",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "NO_RULE",
+   "ajoutes": [
+    {
+     "cle": "dispensing-optician",
+     "libelle": "Opticien"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "France Training Manager - Retail Stores",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "responsable-formation",
+     "libelle": "Responsable formation"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "FLOOR MANAGER (40 hours, Cheltenham)",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "manager-floor",
+     "libelle": "Floor manager"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Commercial Key Account Intern - January 2027",
+   "service": "Sales",
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "commercial",
+     "libelle": "Commercial"
+    }
+   ],
+   "verdictAssistant": "P",
+   "verdictModele": null
+  },
+  {
+   "titre": "Retail Keyholder- Ka'Makana",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "keyholder",
+     "libelle": "Keyholder"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Head of Commercial Area",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "commercial",
+     "libelle": "Commercial"
+    }
+   ],
+   "verdictAssistant": "F",
+   "verdictModele": null
+  },
+  {
+   "titre": "Πωλητής /τρια Καταστήματος",
+   "service": null,
+   "offres": 2,
+   "moteur": "sales-advisor",
+   "statut": "CLASSIFIED",
+   "ajoutes": [
+    {
+     "cle": "commercial",
+     "libelle": "Commercial"
+    }
+   ],
+   "verdictAssistant": "F",
+   "verdictModele": null
+  },
+  {
+   "titre": "Visual Keyholder",
+   "service": null,
+   "offres": 4,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "keyholder",
+     "libelle": "Keyholder"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Lead 3D Footwear Designer, Digital Design",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "designer-chaussures",
+     "libelle": "Designer chaussures"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "STAGE - Assistant Chef de Produit Développement - Parfum et Beauté (H/F)",
+   "service": null,
+   "offres": 2,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "chef-produit",
+     "libelle": "Chef de produit"
+    }
+   ],
+   "verdictAssistant": "P",
+   "verdictModele": null
+  },
+  {
+   "titre": "Apprenti.e Directeur Artistique / Crépuscule",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "direction-artistique",
+     "libelle": "Directeur artistique"
+    }
+   ],
+   "verdictAssistant": "P",
+   "verdictModele": null
+  },
+  {
+   "titre": "CDI - Attaché Commercial Secteur France F/H",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "commercial",
+     "libelle": "Commercial"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Showroom Assistant Internship Milano - Starting Period: November 2026",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "assistant-showroom",
+     "libelle": "Assistant showroom"
+    }
+   ],
+   "verdictAssistant": "P",
+   "verdictModele": null
+  },
+  {
+   "titre": "Assistant Store Director - London Regent Street Global Flagship",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "assistant-store-manager",
+     "libelle": "Adjoint au responsable de boutique"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Inventory Operations Manager - West Hollywood",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "responsable-operationnel",
+     "libelle": "Responsable opérationnel"
+    }
+   ],
+   "verdictAssistant": "P",
+   "verdictModele": null
+  },
+  {
+   "titre": "Product Manager | Marketing & Brand Management",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "chef-produit",
+     "libelle": "Chef de produit"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Print & Textile Designer",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "dessinateur-textile",
+     "libelle": "Dessinateur textile"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Dior 美容坊美容师 - 惠州华贸",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "beauty-therapist",
+     "libelle": "Esthéticien"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Visual Keyholder - Southridge Mall",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "keyholder",
+     "libelle": "Keyholder"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Senior Category Manager, Men's EU",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "category-manager",
+     "libelle": "Category manager"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Keyholder (Part time) - Orchard Park S.C.",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "keyholder",
+     "libelle": "Keyholder"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Mouvement Purchasing Manager (f/h/x)",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "responsable-achats-et-offre",
+     "libelle": "Responsable achats"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Commercial Planning Director, EMEA",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "commercial",
+     "libelle": "Commercial"
+    }
+   ],
+   "verdictAssistant": "F",
+   "verdictModele": null
+  },
+  {
+   "titre": "Visual Merchandiser 12m Secondment - Commercial Bay",
+   "service": null,
+   "offres": 1,
+   "moteur": "visual-merchandiser",
+   "statut": "CLASSIFIED",
+   "ajoutes": [
+    {
+     "cle": "commercial",
+     "libelle": "Commercial"
+    }
+   ],
+   "verdictAssistant": "F",
+   "verdictModele": null
+  },
+  {
+   "titre": "Client Service Product Owner Intern",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "product-owner",
+     "libelle": "Product Owner"
+    }
+   ],
+   "verdictAssistant": "P",
+   "verdictModele": null
+  },
+  {
+   "titre": "Personal Stylist - Full Time - Flagship - New York, NY",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "conseiller-en-image",
+     "libelle": "Conseiller en image"
+    }
+   ],
+   "verdictAssistant": "P",
+   "verdictModele": null
+  },
+  {
+   "titre": "Global Traffic & Creative Operations Manager",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "responsable-operationnel",
+     "libelle": "Responsable opérationnel"
+    }
+   ],
+   "verdictAssistant": "P",
+   "verdictModele": null
+  },
+  {
+   "titre": "Category Manager EE",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "category-manager",
+     "libelle": "Category manager"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "CATEGORY MANAGER TRANSPORTE",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "category-manager",
+     "libelle": "Category manager"
+    }
+   ],
+   "verdictAssistant": "P",
+   "verdictModele": null
+  },
+  {
+   "titre": "Clienteling Digital Product Manager",
+   "service": "Omnichannel & Data",
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "chef-produit",
+     "libelle": "Chef de produit"
+    }
+   ],
+   "verdictAssistant": "F",
+   "verdictModele": null
+  },
+  {
+   "titre": "Keyholder (Part time) - le rond point",
+   "service": null,
+   "offres": 2,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "keyholder",
+     "libelle": "Keyholder"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Floor Manager (39 hours) - Carnaby Street",
+   "service": "Retail Management",
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "manager-floor",
+     "libelle": "Floor manager"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "【プーマジャパン】ストアマネージャー募集！【京都府】",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "NO_RULE",
+   "ajoutes": [
+    {
+     "cle": "store-manager",
+     "libelle": "Responsable de boutique"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Managing Director (In-house Patent Services)",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "direction",
+     "libelle": "Directeur général"
+    }
+   ],
+   "verdictAssistant": "P",
+   "verdictModele": null
+  },
+  {
+   "titre": "Keyholder (Part time) - Reitmans",
+   "service": null,
+   "offres": 10,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "keyholder",
+     "libelle": "Keyholder"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Gerente de Loja - Barra Shopping RJ",
+   "service": "Retail",
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "store-manager",
+     "libelle": "Responsable de boutique"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Óptico en Melilla, C.C. Parque Melilla",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "NO_RULE",
+   "ajoutes": [
+    {
+     "cle": "dispensing-optician",
+     "libelle": "Opticien"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Woman´s Fitting model to J.Lindeberg HQ, Stockholm.",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "NO_RULE",
+   "ajoutes": [
+    {
+     "cle": "mannequin",
+     "libelle": "Mannequin"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Stage - Assistant(e) Juridique (H/F)",
+   "service": "Legal",
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "paralegal",
+     "libelle": "Paralegal"
+    }
+   ],
+   "verdictAssistant": "P",
+   "verdictModele": null
+  },
+  {
+   "titre": "Facilities Manager - OTB NAM",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "responsable-services-generaux",
+     "libelle": "Responsable services généraux"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Óptico en Cartagena",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "NO_RULE",
+   "ajoutes": [
+    {
+     "cle": "dispensing-optician",
+     "libelle": "Opticien"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Y-3 Retail Operations Manager",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "responsable-operationnel",
+     "libelle": "Responsable opérationnel"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Retail Keyholder - Willowbrook Mall",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "keyholder",
+     "libelle": "Keyholder"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Stage - Assistant Chef de Projet digital - H/F/X - YVES ROCHER",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "chef-de-projet-digital",
+     "libelle": "Chef de projet digital"
+    }
+   ],
+   "verdictAssistant": "P",
+   "verdictModele": null
+  },
+  {
+   "titre": "Retail Keyholder - Natick Mall",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "keyholder",
+     "libelle": "Keyholder"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Field Trainer (boutique based)",
+   "service": "Retail",
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "formateur",
+     "libelle": "Formateur"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Stage - Store Design Assistant H/F - Janvier 2027",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "assistant-designer",
+     "libelle": "Assistant designer"
+    }
+   ],
+   "verdictAssistant": "F",
+   "verdictModele": null
+  },
+  {
+   "titre": "IT Operations Manager",
+   "service": null,
+   "offres": 3,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "responsable-operationnel",
+     "libelle": "Responsable opérationnel"
+    }
+   ],
+   "verdictAssistant": "F",
+   "verdictModele": null
+  },
+  {
+   "titre": "Retail Keyholder- Arden Fair",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "keyholder",
+     "libelle": "Keyholder"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Prodavač/ka - částečný úvazek",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "NO_RULE",
+   "ajoutes": [
+    {
+     "cle": "sales-advisor",
+     "libelle": "Conseiller de vente"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Brand Controller Intern - Fay/Hogan",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "financial-controller",
+     "libelle": "Contrôleur de gestion"
+    }
+   ],
+   "verdictAssistant": "P",
+   "verdictModele": null
+  },
+  {
+   "titre": "Product Owner IT PLM (H/F)",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "product-owner",
+     "libelle": "Product Owner"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Stage - Assistant(e) Showroom Presse Collections (H/F/X) - Mode - Janvier 2027",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "assistant-showroom",
+     "libelle": "Assistant showroom"
+    }
+   ],
+   "verdictAssistant": "P",
+   "verdictModele": null
+  },
+  {
+   "titre": "Commercial Finance and Business Controller EMEA",
+   "service": null,
+   "offres": 1,
+   "moteur": "financial-controller",
+   "statut": "CLASSIFIED",
+   "ajoutes": [
+    {
+     "cle": "commercial",
+     "libelle": "Commercial"
+    }
+   ],
+   "verdictAssistant": "F",
+   "verdictModele": null
+  },
+  {
+   "titre": "Retail Keyholder | Castleton Square",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "keyholder",
+     "libelle": "Keyholder"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "RTW Junior Collection Merchandiser",
+   "service": "General Merchandising",
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "collection-merchandiser",
+     "libelle": "Collection Merchandiser"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Vivier - Délégué Pharmaceutique - Région Paris Ile de France",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "NO_RULE",
+   "ajoutes": [
+    {
+     "cle": "delegue-pharmaceutique",
+     "libelle": "Délégué pharmaceutique"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Retail Keyholder- Willowbrook",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "keyholder",
+     "libelle": "Keyholder"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Chef de Rang - Café Maxime Frédéric x Louis Vuitton - CDD (H/F)",
+   "service": "Hôtellerie & Restauration",
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "chef-de-rang",
+     "libelle": "Chef de rang"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "UGG KeyHolder (m/w/d) in Teilzeit",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "keyholder",
+     "libelle": "Keyholder"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Keyholder (Part time) - Vaughan Mills",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "keyholder",
+     "libelle": "Keyholder"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Assistant(e) Administratif Maintenance et Coordination - Stage - Paris - H/F",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "assistant-administratif",
+     "libelle": "Assistant administratif"
+    }
+   ],
+   "verdictAssistant": "P",
+   "verdictModele": null
+  },
+  {
+   "titre": "Technicien Prototypiste (H/F) - Cadran",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "prototypiste",
+     "libelle": "Prototypiste"
+    }
+   ],
+   "verdictAssistant": "P",
+   "verdictModele": null
+  },
+  {
+   "titre": "Commercial(e) Dijon-Dole - CDI",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "commercial",
+     "libelle": "Commercial"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Stage - Assistant Chef de Produit Développement Maison - Animations & gifting (H/F)",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "chef-produit",
+     "libelle": "Chef de produit"
+    }
+   ],
+   "verdictAssistant": "P",
+   "verdictModele": null
+  },
+  {
+   "titre": "Regional 3PL Fulfillment Operations Manager - Dallas, TX",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "responsable-operationnel",
+     "libelle": "Responsable opérationnel"
+    }
+   ],
+   "verdictAssistant": "P",
+   "verdictModele": null
+  },
+  {
+   "titre": "Alternance- Office manager- Janvier 2027",
+   "service": "General Management",
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "office-manager",
+     "libelle": "Office Manager"
+    }
+   ],
+   "verdictAssistant": "P",
+   "verdictModele": null
+  },
+  {
+   "titre": "Urban Outfitters Department Manager / Abteilungsleiter - Leipzig, DE",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "manager-floor",
+     "libelle": "Floor manager"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "STAGE JANVIER 2027 - Assistant Chef de produit Marketing Développement Parfums (H/F)",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "chef-produit",
+     "libelle": "Chef de produit"
+    }
+   ],
+   "verdictAssistant": "P",
+   "verdictModele": null
+  },
+  {
+   "titre": "Chef de Produit Marketing Développement CDI",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "chef-produit",
+     "libelle": "Chef de produit"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Beauty Concierge",
+   "service": "Retail",
+   "offres": 6,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "concierge",
+     "libelle": "Concierge"
+    }
+   ],
+   "verdictAssistant": "F",
+   "verdictModele": null
+  },
+  {
+   "titre": "Data Product Owner - CDI- F/H",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "product-owner",
+     "libelle": "Product Owner"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Operador de Produção III",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "operateur-de-production",
+     "libelle": "Opérateur de production"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Retail Keyholder- Santa Rosa",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "keyholder",
+     "libelle": "Keyholder"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Flagship Boutique Operations Manager",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "responsable-operationnel",
+     "libelle": "Responsable opérationnel"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Stage Assistant·e Marketing Digital - Traffic Manager",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "assistant-marketing-digital",
+     "libelle": "Assistant marketing digital"
+    },
+    {
+     "cle": "traffic-manager",
+     "libelle": "Traffic Manager"
+    }
+   ],
+   "verdictAssistant": "P",
+   "verdictModele": null
+  },
+  {
+   "titre": "Pharmareferent Dermatologie - Region Hamburg / Mecklenburg-Vorpommern (w/m/d)",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "NO_RULE",
+   "ajoutes": [
+    {
+     "cle": "delegue-pharmaceutique",
+     "libelle": "Délégué pharmaceutique"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "In Store Trainer - Place Vendome Doha (boutique based)",
+   "service": "Retail",
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "formateur",
+     "libelle": "Formateur"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Assistent kok bij Asia Street Cooking",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "NO_RULE",
+   "ajoutes": [
+    {
+     "cle": "cook",
+     "libelle": "Cuisinier"
+    }
+   ],
+   "verdictAssistant": "P",
+   "verdictModele": null
+  },
+  {
+   "titre": "Finance Intern (Controlling)",
+   "service": "Finance",
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "financial-controller",
+     "libelle": "Contrôleur de gestion"
+    }
+   ],
+   "verdictAssistant": "P",
+   "verdictModele": null
+  },
+  {
+   "titre": "Animateur Commercial (Dimanche / Lundi) F/H",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "animateur-de-loisirs",
+     "libelle": "Animateur de loisirs"
+    },
+    {
+     "cle": "commercial",
+     "libelle": "Commercial"
+    }
+   ],
+   "verdictAssistant": "F",
+   "verdictModele": null
+  },
+  {
+   "titre": "Sales Lead (Keyholder) - Ann Taylor Mall of America",
+   "service": null,
+   "offres": 1,
+   "moteur": "retail-sales-lead",
+   "statut": "CLASSIFIED",
+   "ajoutes": [
+    {
+     "cle": "keyholder",
+     "libelle": "Keyholder"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "STAGE - ASSISTANT(E) CHEF DE PRODUIT MAQUILLAGE TRAVEL RETAIL – MARKETING OPERATIONNEL - Janvier 2027",
+   "service": "Marketing",
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "chef-produit",
+     "libelle": "Chef de produit"
+    }
+   ],
+   "verdictAssistant": "P",
+   "verdictModele": null
+  },
+  {
+   "titre": "H&M Visual Keyholder - Oak Park Mall",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "keyholder",
+     "libelle": "Keyholder"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "CDI - International Training Manager - EME + US - Erborian",
+   "service": null,
+   "offres": 2,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "responsable-formation",
+     "libelle": "Responsable formation"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "CDI- Responsable des Opérations Encaissement Retail H/F - Magasin du George V",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "responsable-operationnel",
+     "libelle": "Responsable opérationnel"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Van Cleef & Arpels Jewelry Product Manager",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "chef-produit",
+     "libelle": "Chef de produit"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Relief Dispenser",
+   "service": null,
+   "offres": 22,
+   "moteur": "pharmacy-technician",
+   "statut": "CLASSIFIED",
+   "ajoutes": [
+    {
+     "cle": "pharmacy-support-worker",
+     "libelle": "Assistant en pharmacie"
+    }
+   ],
+   "verdictAssistant": "P",
+   "verdictModele": null
+  },
+  {
+   "titre": "Retail Keyholder - Sherman Oaks",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "keyholder",
+     "libelle": "Keyholder"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Data Analyst 3 - Anaplan Model Builder",
+   "service": null,
+   "offres": 1,
+   "moteur": "data-analyst",
+   "statut": "CLASSIFIED",
+   "ajoutes": [
+    {
+     "cle": "mannequin",
+     "libelle": "Mannequin"
+    }
+   ],
+   "verdictAssistant": "F",
+   "verdictModele": null
+  },
+  {
+   "titre": "Pénztáros Eladó - teljes munkaidő",
+   "service": null,
+   "offres": 1,
+   "moteur": "sales-advisor",
+   "statut": "CLASSIFIED",
+   "ajoutes": [
+    {
+     "cle": "cashier",
+     "libelle": "Hôte de caisse"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Commercial Finance Manager - Digital",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "commercial",
+     "libelle": "Commercial"
+    }
+   ],
+   "verdictAssistant": "F",
+   "verdictModele": null
+  },
+  {
+   "titre": "Senior Product Manager, Games",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "chef-produit",
+     "libelle": "Chef de produit"
+    }
+   ],
+   "verdictAssistant": "F",
+   "verdictModele": null
+  },
+  {
+   "titre": "Operations Manager - London Future Opportunities",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "responsable-operationnel",
+     "libelle": "Responsable opérationnel"
+    }
+   ],
+   "verdictAssistant": "P",
+   "verdictModele": null
+  },
+  {
+   "titre": "Retail Keyholder | Woodfield Mall",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "keyholder",
+     "libelle": "Keyholder"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Sales Assistant (Part Time) - Fiumicino Parco Commerciale \"Da Vinci\"",
+   "service": null,
+   "offres": 1,
+   "moteur": "sales-advisor",
+   "statut": "CLASSIFIED",
+   "ajoutes": [
+    {
+     "cle": "commercial",
+     "libelle": "Commercial"
+    }
+   ],
+   "verdictAssistant": "F",
+   "verdictModele": null
+  },
+  {
+   "titre": "Modelo #WERECRUITERS 25 horas: Vendedor/a Moda KIABI (Com termo certo - Part time)",
+   "service": null,
+   "offres": 1,
+   "moteur": "sales-advisor",
+   "statut": "CLASSIFIED",
+   "ajoutes": [
+    {
+     "cle": "mannequin",
+     "libelle": "Mannequin"
+    }
+   ],
+   "verdictAssistant": "F",
+   "verdictModele": null
+  },
+  {
+   "titre": "Stage- Assistant(e) Chef de Produit Développement Souliers H/F/X- Mode - Janvier 2025",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "chef-produit",
+     "libelle": "Chef de produit"
+    }
+   ],
+   "verdictAssistant": "P",
+   "verdictModele": null
+  },
+  {
+   "titre": "Art Director (White House Black Market)",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "direction-artistique",
+     "libelle": "Directeur artistique"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Stage – Assistant(e) Chef(fe) de Produit F/H",
+   "service": "Marketing",
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "chef-produit",
+     "libelle": "Chef de produit"
+    }
+   ],
+   "verdictAssistant": "P",
+   "verdictModele": null
+  },
+  {
+   "titre": "Assisterende butikschef",
+   "service": "assistant-shop-manager",
+   "offres": 2,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "store-manager",
+     "libelle": "Responsable de boutique"
+    }
+   ],
+   "verdictAssistant": "P",
+   "verdictModele": null
+  },
+  {
+   "titre": "Assistant Floor Manager (H/F) - Sézane",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "manager-floor",
+     "libelle": "Floor manager"
+    }
+   ],
+   "verdictAssistant": "P",
+   "verdictModele": null
+  },
+  {
+   "titre": "Assistent Kok",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "NO_RULE",
+   "ajoutes": [
+    {
+     "cle": "cook",
+     "libelle": "Cuisinier"
+    }
+   ],
+   "verdictAssistant": "P",
+   "verdictModele": null
+  },
+  {
+   "titre": "STAGE – Assistant.e Chef de Produit Soin F/H - Marché France - Janvier 2027",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "chef-produit",
+     "libelle": "Chef de produit"
+    }
+   ],
+   "verdictAssistant": "P",
+   "verdictModele": null
+  },
+  {
+   "titre": "Retail Keyholder | Eastview Mall",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "keyholder",
+     "libelle": "Keyholder"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Food & Beverage Operations Manager",
+   "service": "Hospitality and Food & Beverage",
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "responsable-operationnel",
+     "libelle": "Responsable opérationnel"
+    }
+   ],
+   "verdictAssistant": "P",
+   "verdictModele": null
+  },
+  {
+   "titre": "Assistant Visual Merchandiser - Viaport",
+   "service": null,
+   "offres": 1,
+   "moteur": "visual-merchandiser",
+   "statut": "CLASSIFIED",
+   "ajoutes": [
+    {
+     "cle": "assistant-visual-merchandising-manager",
+     "libelle": "Assistant Visual Merchandiser"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "INTERN COMMERCIAL CONTROLLER - HOME",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "commercial",
+     "libelle": "Commercial"
+    },
+    {
+     "cle": "financial-controller",
+     "libelle": "Contrôleur de gestion"
+    }
+   ],
+   "verdictAssistant": "F",
+   "verdictModele": null
+  },
+  {
+   "titre": "NUEVA APERTURA LÍNEA TEEN MAJADAHONDA C.COMERCIAL C.OESTE 30/24/20/16/12/8",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "NO_RULE",
+   "ajoutes": [
+    {
+     "cle": "commercial",
+     "libelle": "Commercial"
+    }
+   ],
+   "verdictAssistant": "F",
+   "verdictModele": null
+  },
+  {
+   "titre": "Optical Sales Associate / Optician - Training Provided!",
+   "service": null,
+   "offres": 7,
+   "moteur": "optical-assistant",
+   "statut": "CLASSIFIED",
+   "ajoutes": [
+    {
+     "cle": "dispensing-optician",
+     "libelle": "Opticien"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "CDI - Chef de produit Prêt-à-porter (H/F/X)",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "chef-produit",
+     "libelle": "Chef de produit"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Commercial Intern, AI Growth",
+   "service": "Sales",
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "commercial",
+     "libelle": "Commercial"
+    }
+   ],
+   "verdictAssistant": "P",
+   "verdictModele": null
+  },
+  {
+   "titre": "CDD - Chef.fe de Projet Digital Learning Parfums-Beauté France H/F",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "chef-de-projet-digital",
+     "libelle": "Chef de projet digital"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "AI Creative Specialist | jij maakt beeld en video met de blik van een fotograaf | 2 vacatures",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "photographe",
+     "libelle": "Photographe"
+    }
+   ],
+   "verdictAssistant": "F",
+   "verdictModele": null
+  },
+  {
+   "titre": "Senior Talent Director - TTG Commercial",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "commercial",
+     "libelle": "Commercial"
+    }
+   ],
+   "verdictAssistant": "F",
+   "verdictModele": null
+  },
+  {
+   "titre": "Chef de produit Senior Maroquinerie Lady Dior et Piliers H/F",
+   "service": "Marketing",
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "chef-produit",
+     "libelle": "Chef de produit"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "FLOOR MANAGER GRANADA C/ RECOGIDAS",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "manager-floor",
+     "libelle": "Floor manager"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Optometric Technician- Training Provided!",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "optometrist",
+     "libelle": "Optométriste"
+    }
+   ],
+   "verdictAssistant": "P",
+   "verdictModele": null
+  },
+  {
+   "titre": "TALENT POOL - CHEF DE PRODUIT MARKETING DEVELOPPEMENT MAQUILLAGE - F/H",
+   "service": "Marketing",
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "chef-produit",
+     "libelle": "Chef de produit"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "[LVMH Beauty] Controlling Manager",
+   "service": "Finance",
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "financial-controller",
+     "libelle": "Contrôleur de gestion"
+    }
+   ],
+   "verdictAssistant": "P",
+   "verdictModele": null
+  },
+  {
+   "titre": "Pracownik Magazynu Sklepu (24 hours)",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "NO_RULE",
+   "ajoutes": [
+    {
+     "cle": "warehouse-operative",
+     "libelle": "Préparateur de commandes"
+    }
+   ],
+   "verdictAssistant": "P",
+   "verdictModele": null
+  },
+  {
+   "titre": "Swatch Part Time Keyholder - SOHO (NY)",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "keyholder",
+     "libelle": "Keyholder"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Luxury Retail Keyholder - 5th Avenue (NY)",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "keyholder",
+     "libelle": "Keyholder"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Seasonal Keyholder - Part Time",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "keyholder",
+     "libelle": "Keyholder"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Retail Keyholder | Kenwood Towne Centre",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "keyholder",
+     "libelle": "Keyholder"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "OMEGA Luxury Timepieces - Keyholder - St. Louis",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "keyholder",
+     "libelle": "Keyholder"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Retail Keyholder - Hamilton Place",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "keyholder",
+     "libelle": "Keyholder"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Journaliste Argent, Placements, Immobilier Capital - CDD",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "journaliste",
+     "libelle": "Journaliste"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "SSENSE Montréal - Styliste personnel·le adjoint·e // SSENSE Montreal - Associate Personal Stylist",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "conseiller-en-image",
+     "libelle": "Conseiller en image"
+    }
+   ],
+   "verdictAssistant": "P",
+   "verdictModele": null
+  },
+  {
+   "titre": "FLOOR MANAGER SEVILLA CC LAGOH",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "manager-floor",
+     "libelle": "Floor manager"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Retail Keyholder | Coral Ridge",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "keyholder",
+     "libelle": "Keyholder"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "AREA MANAGER - MULTIPLE AREAS: EMILIA ROMAGNA; CAMPANIA, CALABRIA & SICILIA",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "regional-retail-manager",
+     "libelle": "Responsable régional retail"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Óptico/a en Ciudad Real",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "NO_RULE",
+   "ajoutes": [
+    {
+     "cle": "dispensing-optician",
+     "libelle": "Opticien"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Assistant(e) Gestion Commerciale - H/F - Stage",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "NO_RULE",
+   "ajoutes": [
+    {
+     "cle": "commercial",
+     "libelle": "Commercial"
+    }
+   ],
+   "verdictAssistant": "F",
+   "verdictModele": null
+  },
+  {
+   "titre": "Retail Keyholder- Arrowhead",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "keyholder",
+     "libelle": "Keyholder"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "FLOOR MANAGER - MANGO CALLE ORENSE (MADRID)",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "manager-floor",
+     "libelle": "Floor manager"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Chef Kok Schiphol",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "cook",
+     "libelle": "Cuisinier"
+    }
+   ],
+   "verdictAssistant": "P",
+   "verdictModele": null
+  },
+  {
+   "titre": "CDI - Agent de sécurité chargé de télésurveillance H/F",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "agent-de-securite",
+     "libelle": "Agent de sécurité"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Formateur sell-out Avène - Secteur Marne/ Seine et Marne - CDD - H/F",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "formateur",
+     "libelle": "Formateur"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Retail Keyholder - Mall at UTC",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "keyholder",
+     "libelle": "Keyholder"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Area Manager, Hotel Sales",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "regional-retail-manager",
+     "libelle": "Responsable régional retail"
+    }
+   ],
+   "verdictAssistant": "F",
+   "verdictModele": null
+  },
+  {
+   "titre": "Skincare Service & Facial Trainer",
+   "service": "Retail",
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "formateur",
+     "libelle": "Formateur"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "STAGE - Assistant Coordinateur Retail, performance et Data - JANVIER 2027",
+   "service": "Retail/Magasin",
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "coordinateur-retail",
+     "libelle": "Coordinateur retail"
+    }
+   ],
+   "verdictAssistant": "P",
+   "verdictModele": null
+  },
+  {
+   "titre": "STAGE JANVIER 2027 - Assistant Chef de Produit Marketing Développement (H/F)",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "chef-produit",
+     "libelle": "Chef de produit"
+    }
+   ],
+   "verdictAssistant": "P",
+   "verdictModele": null
+  },
+  {
+   "titre": "Senior Lead - Innovation Footwear Developer",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "product-developer",
+     "libelle": "Développeur produit"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Personal Stylist / Conseiller de vente Beauté CDI F/H",
+   "service": null,
+   "offres": 1,
+   "moteur": "beauty-consultant",
+   "statut": "CLASSIFIED",
+   "ajoutes": [
+    {
+     "cle": "conseiller-en-image",
+     "libelle": "Conseiller en image"
+    }
+   ],
+   "verdictAssistant": "P",
+   "verdictModele": null
+  },
+  {
+   "titre": "Times & Methods and Continuous Improvement Engineer",
+   "service": "Produzione",
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "ingenieur-amelioration-continue",
+     "libelle": "Ingénieur amélioration continue"
+    }
+   ],
+   "verdictAssistant": "C",
+   "verdictModele": null
+  },
+  {
+   "titre": "Digital - Senior/Digital Product Manager, DPM",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "chef-produit",
+     "libelle": "Chef de produit"
+    }
+   ],
+   "verdictAssistant": "F",
+   "verdictModele": null
+  },
+  {
+   "titre": "Assistant Coordinateur Retail H.F - Stage",
+   "service": null,
+   "offres": 2,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "coordinateur-retail",
+     "libelle": "Coordinateur retail"
+    }
+   ],
+   "verdictAssistant": "P",
+   "verdictModele": null
+  },
+  {
+   "titre": "Stage - Assistant Chef de Produit - Marketing Opérationnel TRAVEL RETAIL - Fragrances & Soin/Make-Up",
+   "service": null,
+   "offres": 1,
+   "moteur": null,
+   "statut": "FAMILY_ONLY",
+   "ajoutes": [
+    {
+     "cle": "chef-produit",
+     "libelle": "Chef de produit"
+    }
+   ],
+   "verdictAssistant": "P",
+   "verdictModele": null
+  }
+ ],
+ "jugementAssistant": {
+  "le": "2026-09-29",
+  "par": "l'assistant, committé avant le juge de mesure",
+  "regle": "F dès qu'un des métiers ajoutés est faux pour l'offre",
+  "familles_de_faux": {
+   "Commercial (mot seul)": "centro/parco comercial, Commercial Controller/Finance, employé commercial, Commercial Bay/Planning/Area",
+   "Extra → figurant": "Extra salle, Extra cuisine, Säljare Extra",
+   "Model/Modelo → mannequin": "Anaplan Model Builder, Modelo #WeRecruiters",
+   "Animateur → loisirs": "animateur qualité RSE, réseau franchises, commercial",
+   "Product Manager numérique → chef de produit": "Data/Digital/Games/GQ product managers",
+   "autres": "Beauty Concierge → concierge, Quality Auditor → auditeur, IT Operations Manager, Area Manager Hotel Sales, Store Design Assistant"
+  }
+ }
+}
