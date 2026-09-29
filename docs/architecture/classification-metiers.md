@@ -305,7 +305,12 @@ car sans elle l'alerte ne part pas.
 
 ### 3.5 Recherche, suggestions, alertes
 
-- `metier=X` retient une offre si son code est X, **ou** si X figure dans ses `titleRoles` ; sans aucun des deux, elle est « non classée » (2B-4, `apps/api/lib/job-search-query.ts`, témoin dans `jobs-database.test.ts` ; construit, pas encore déployé). Aucune clé servie par l'agrégateur n'est remplacée par la v3 (les trois absorptions portent sur des clés du backend) : le suivi vers un successeur n'a pas de cas aujourd'hui. Reste à faire en 2B-4 : les rôles de l'index de recherche (`search-model.ts`) lus dans la colonne au lieu de tout alias. Une clé remplacée
+- `metier=X` retient une offre si son code est X, **ou** si X figure dans ses `titleRoles` ; sans aucun des deux, elle est « non classée » (2B-4, `apps/api/lib/job-search-query.ts`, témoin dans `jobs-database.test.ts` ; construit, pas encore déployé). Aucune clé servie par l'agrégateur n'est remplacée par la v3 (les trois absorptions portent sur des clés du backend) : le suivi vers un successeur n'a pas de cas aujourd'hui. **Recherche texte (2B-4, construit, pas déployé)** : les métiers du document sont ceux de ses colonnes, son code et
+  ses `titleRoles` (`apps/api/lib/search-model.ts`, génération `search-5`) ; sans aucun, l'intitulé reste cherchable par
+  ses mots (`search-sql.ts`). Défaut connu, inchangé par rapport à `search-4` : 1 562 offres sans métier en colonnes
+  nomment un métier dans leur intitulé, dont 982 avec un mot de niveau (« Adjoint(e) Responsable de Boutique ») ; une
+  recherche « Responsable de boutique » les trouve par les mots, comme aujourd'hui par un métier lu sans preuve ; le
+  remède est leur vocabulaire (passe de curation suivante). Une clé remplacée
   n'est plus classée, n'entre plus dans le vocabulaire, la garde ou les facettes ; une recherche, une préférence
   ou une alerte qui la porte est suivie vers son successeur **au moment de la requête**, sans réécrire son
   empreinte. La facette compte la même appartenance. Aucune dépendance à l'index. **Encadrement** (§32 a) :
@@ -319,13 +324,13 @@ car sans elle l'alerte ne part pas.
 
 ### 3.6 Changer de version sans panne
 
-- **Préalable, en 2B** : le changement de version ne remet plus rien en file ; il incrémente la révision, et une
+- **Préalable, en 2B (construit, pas déployé : migration `20260930090000_search_requeue_tranches`, `advanceSearchRequeue` dans `apps/api/lib/search-index.ts`, témoins dans `jobs-database.test.ts`)** : le changement de version ne remet plus rien en file ; il incrémente la révision, et une
   tâche remet le stock en file **par tranches** bornées par le débit mesuré (environ 327 documents par seconde :
   une tranche de 10 000 se vide en une trentaine de secondes, sous le seuil d'alerte de 60 s), la tranche
   suivante partant quand le plus ancien élément de la **génération servie** a moins de 60 s ; la durée réelle
   est remesurée sur la génération courante (`SearchGeneration.createdAt` et `readyAt`) avant la bascule ; `search-3` retirée avant (suppression en
   cascade : GO et confirmation).
-- **Séquence de bascule, hors RUN** : migrations additives ; remplissage cadencé de `titleRoles` ; construction de
+- **Séquence de bascule, hors RUN** (commande de construction : `node --import tsx apps/api/scripts/search/index.mts rebuild`, lancée avec le code de la nouvelle génération ; retrait : `retire search-4-… --previous-runtime-stopped`) : migrations additives ; remplissage cadencé de `titleRoles` ; construction de
   la nouvelle génération d'index, **drainée sans arrêt** jusqu'au déploiement par un processus dédié du service
   d'indexation (l'API en service ne vide que sa propre génération, `search-index.ts:53-91`) ; déploiement de
   l'API ; retrait de l'ancienne génération. L'âge de la file est surveillé en continu par ce même service, qui

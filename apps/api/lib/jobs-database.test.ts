@@ -6,7 +6,7 @@ import { prisma } from '@catwalks/db';
 import { getJobs as getJobsUnindexed, getJobStatus, getOfferState, resolveOfferParam, type JobFilters } from './jobs';
 import { offerPath } from './offer-url';
 
-import { initializeSearchIndex, drainSearchIndex } from './search-index';
+import { initializeSearchIndex, drainSearchIndex, advanceSearchRequeue, SEARCH_VERSION } from './search-index';
 // Explicitly await the same durable projector as the API background loop.
 async function getJobs(filters: JobFilters) {
   await initializeSearchIndex();
@@ -142,6 +142,49 @@ describe.skipIf(!enabled)('search against a dedicated local database', () => {
       const result=await getJobs(fr());expect(result.total).toBe(301);expect(result.occupationEnrichmentAvailable).toBe(false);
       expect(result.jobs.every(j=>j.title.length>0)).toBe(true);
     }finally{spy.mockRestore();}
+  });
+  it('une activation de taxonomie ne met rien en file d’un coup, puis remet tout le stock par tranches (D-475, plan §3.6)', async () => {
+    await initializeSearchIndex(); while (await drainSearchIndex()) {}
+    const enFile = async () => (await prisma.$queryRaw<{ n: number }[]>`SELECT count(*)::int AS n FROM "SearchPending" WHERE version=${SEARCH_VERSION}`)[0].n;
+    const stock = (await prisma.job.count()) + (await prisma.directOffer.count());
+    // Prémisse : le stock dépasse une tranche, et la file est vide avant l'activation.
+    expect(stock).toBeGreaterThan(100);
+    expect(await enFile()).toBe(0);
+    // Le déclencheur est par instruction : il part même sans ligne touchée, comme une activation.
+    await prisma.$executeRaw`UPDATE "OccupationState" SET id=id WHERE false`;
+    expect(await enFile()).toBe(0);
+    expect(await prisma.searchRequeue.findUnique({ where: { version: SEARCH_VERSION } })).toMatchObject({ phase: 'job', doneAt: null });
+    expect(await advanceSearchRequeue(100)).toBe(100);
+    expect(await enFile()).toBe(100);
+    // Une file de plus de 60 s retient la tranche suivante.
+    await prisma.$executeRaw`UPDATE "SearchPending" SET "queuedAt"=now()-interval '61 seconds' WHERE version=${SEARCH_VERSION}`;
+    expect(await advanceSearchRequeue(100)).toBe(0);
+    let remis = 100;
+    for (;;) {
+      while (await drainSearchIndex()) {}
+      const n = await advanceSearchRequeue(100);
+      remis += n;
+      if (!n && (await prisma.searchRequeue.findUniqueOrThrow({ where: { version: SEARCH_VERSION } })).phase === 'done') break;
+    }
+    expect(remis).toBe(stock);
+  });
+  it('le document lit les métiers de ses colonnes, et leur changement le remet en file (D-475 point 38)', async () => {
+    await initializeSearchIndex(); while (await drainSearchIndex()) {}
+    const id = `${prefix}002`, catalogue = await database.loadOccupationTaxonomy(prisma);
+    const document = async () => (await prisma.searchDocument.findUniqueOrThrow({ where: { version_id: { version: SEARCH_VERSION, id } } })).document as { roles: string[]; titleRoles: string[] };
+    // Prémisse : sans code ni métier lu, l'intitulé « Conseiller de vente » ne donne aucun métier au document…
+    expect((await prisma.job.findUniqueOrThrow({ where: { id } })).occupationCode).toBeNull();
+    expect((await document()).roles).toEqual([]);
+    // … et un métier lu que l'intitulé ne nomme pas prouve que le document lit la colonne, pas le vocabulaire.
+    await prisma.job.update({ where: { id }, data: { titleRoles: ['store-manager'], titleRolesReleaseId: catalogue.manifest.id } });
+    try {
+      expect(await prisma.searchPending.findUnique({ where: { version_id: { version: SEARCH_VERSION, id } } })).not.toBeNull();
+      while (await drainSearchIndex()) {}
+      expect(await document()).toMatchObject({ roles: ['store-manager'], titleRoles: ['store-manager'] });
+    } finally {
+      await prisma.job.update({ where: { id }, data: { titleRoles: [], titleRolesReleaseId: null } });
+      while (await drainSearchIndex()) {}
+    }
   });
   it('resolves an absorbed posting for pages, old URLs and the middleware status probe', async () => {
     const target = `${prefix}000`, origin = `${prefix}old-posting`;

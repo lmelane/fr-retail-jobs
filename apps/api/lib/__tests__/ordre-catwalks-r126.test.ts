@@ -255,11 +255,14 @@ describe.skipIf(!enabled)('R-126 — les offres Catwalks d’abord, sur toutes l
   });
 
   it('un mot-clé de métier trouve une offre Catwalks dont l’intitulé ne nomme pas le rôle mot pour mot, par le métier de la taxonomie', async () => {
-    // PRÉMISSE : la taxonomie classe « Conseiller·ère de vente » ; la recherche n'y lit aucun rôle de titre.
-    expect((await prisma.directOffer.findUniqueOrThrow({ where: { id: `${D}Inclusif` } })).occupationCode).toBe('sales-advisor');
+    // PRÉMISSE : la taxonomie classe « Conseiller·ère de vente » ; le document porte ce métier (search-5 : ses colonnes),
+    // et l'intitulé ne contient pas l'expression mot pour mot (« conseiller ere de vente ») : seul le métier peut la trouver.
+    const offre = await prisma.directOffer.findUniqueOrThrow({ where: { id: `${D}Inclusif` } });
+    expect(offre.occupationCode).toBe('sales-advisor');
+    expect(offre.title.toLowerCase()).not.toContain('conseiller de vente');
     const [document] = await prisma.$queryRaw<{ roles: string[] }[]>(Prisma.sql`
-      SELECT ARRAY(SELECT jsonb_array_elements_text(document->'titleRoles')) AS roles FROM "SearchDocument" WHERE version = ${SEARCH_VERSION} AND id = ${`cw_${D}Inclusif`}`);
-    expect(document.roles).toEqual([]);
+      SELECT ARRAY(SELECT jsonb_array_elements_text(document->'roles')) AS roles FROM "SearchDocument" WHERE version = ${SEARCH_VERSION} AND id = ${`cw_${D}Inclusif`}`);
+    expect(document.roles).toContain('sales-advisor');
     const ids = (await toutes('FR', {}, { q: 'conseiller de vente' })).flat();
     expect(ids).toContain(`cw_${D}Inclusif`);
     expect(catwalksDabord(ids)).toBe(true);

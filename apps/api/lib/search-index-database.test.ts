@@ -5,11 +5,18 @@ import { getJobs } from './jobs';
 import { publicationFixture } from '../../aggregator/src/test/publication-fixture';
 import { suggestTitles } from './suggestions';
 import { exigerPerimetre } from './perimetre';
+import { loadOccupationTaxonomy, occupationTitleRoles, persistedOccupationDecision } from '@catwalks/db/occupations';
 const url = process.env.DATABASE_URL ? new URL(process.env.DATABASE_URL) : null;
 const enabled = !!url && ['localhost','127.0.0.1'].includes(url.hostname) && /test/i.test(url.pathname);
 const prefix = 'search-live-';
 const sync = async () => { while (await drainSearchIndex()) {} };
 const search = (q: string, marche = 'FR') => getJobs({ q, marche, filtres: { maison: ['Search Native Maison'] } });
+/** Ce que l'agrégateur écrit sur une offre en la classant : le métier, et les métiers lus dans l'intitulé (D-475 point
+ * 38). Le document de recherche lit ces colonnes (search-5) : une offre témoin sans eux ne ressemble à aucune offre servie. */
+const classee = async (title: string) => {
+  const catalogue = await loadOccupationTaxonomy(prisma), d = catalogue.classify(title);
+  return { decision: persistedOccupationDecision(d), titleRoles: occupationTitleRoles(catalogue, title, d), titleRolesReleaseId: catalogue.manifest.id };
+};
 describe.skipIf(!enabled)('durable search projection and live public API', () => {
   const cleanup = async () => {
     await prisma.jobSource.deleteMany({ where: { jobId: { startsWith: prefix } } });
@@ -22,19 +29,27 @@ describe.skipIf(!enabled)('durable search projection and live public API', () =>
     await initializeSearchIndex(); await cleanup();
     await prisma.company.create({ data: { id: prefix+'company', name: 'Search Native Maison', canonicalKey: prefix+'company', fashionjobsUrl: 'resolved:'+prefix } });
     for (const [id, country, title] of [['fr','FR','Sales Advisor'],['us','US','Sales Advisor'],['deputy','FR','Assistant Store Manager'],['deputy-director','FR','Assistant Store Director'],['senior','FR','Senior Sales Advisor']]) {
-      const url = 'https://example.com/'+prefix+id;
+      // La v3 classe « Assistant Store Director » adjoint au responsable de boutique (mesuré le 29/09/2026) ; la base
+      // témoin porte la v1, qui ne connaît pas cet intitulé : l'offre témoin reçoit la décision de l'adjoint.
+      const url = 'https://example.com/'+prefix+id, c = await classee(title === 'Assistant Store Director' ? 'Assistant Store Manager' : title);
       await prisma.job.create({ data: { id: prefix+id, companyId: prefix+'company', title, countryCode: country, source: 'GENERIC_JSONLD', externalId: id, url,
+        ...c.decision, titleRoles: c.titleRoles, titleRolesReleaseId: c.titleRolesReleaseId,
         sources: { create: { sourceKey: prefix, sourceTier: 'ATS_OFFICIAL', externalId: id, url, ...publicationFixture({ sourceKey: prefix, externalId: id, title, country, url }) } },
       } });
     }
+    const direct = await classee('Conseillère de vente');
     await prisma.directOffer.create({ data: { id: prefix+'direct', version: 1n, appliedSeq: 1n, eligible: true, payloadHash: 'test', payload: {}, correspondanceVersion: 1,
+      occupationCode: direct.decision.occupationCode, occupationReleaseId: direct.decision.occupationReleaseId,
+      titleRoles: direct.titleRoles, titleRolesReleaseId: direct.titleRolesReleaseId,
       slug: 'search-direct', title: 'Conseillère de vente', company: 'Search Native Maison', countryCode: 'FR', location: 'Paris', description: 'Conseiller les clients.',
       applyUrl: 'https://catwalks.io/offres/search-direct', postedAt: new Date(), modifiedAt: new Date(),
     } });
     await sync();
   });
   afterAll(cleanup);
-  it('retrieves unclassified roles in both languages, composes employer intent, and prioritizes Catwalks', async () => {
+  // Le métier vient de la classification que l'agrégateur écrit (search-5, D-475 point 38), plus d'une relecture du
+  // vocabulaire au moment d'indexer : les deux langues se rejoignent par le métier, jamais par le mot.
+  it('retrieves classified roles in both languages, composes employer intent, and prioritizes Catwalks', async () => {
     const fr = await search('conseiller de vente Search Native Maison');
     const en = await search('sales advisor Search Native Maison');
     expect(fr.jobs.map(j => j.id)).toEqual(en.jobs.map(j => j.id));
@@ -82,7 +97,9 @@ describe.skipIf(!enabled)('durable search projection and live public API', () =>
       await tx.$executeRaw`DELETE FROM "SearchPending" WHERE version=${SEARCH_VERSION} AND id=${id}`;
     });
     await acquired;
-    const edit = prisma.job.update({ where: { id }, data: { title: 'Footwear Developer' } });
+    // Comme l'agrégateur : un intitulé modifié est reclassé, ses métiers lus avec lui (le document lit ces colonnes).
+    const reclasse = await classee('Footwear Developer');
+    const edit = prisma.job.update({ where: { id }, data: { title: 'Footwear Developer', ...reclasse.decision, titleRoles: reclasse.titleRoles, titleRolesReleaseId: reclasse.titleRolesReleaseId } });
     // Start the writer while the acknowledgement lock is held.
     const started = Promise.resolve(edit);
     await new Promise(r => setTimeout(r,30)); unlock();
@@ -92,7 +109,8 @@ describe.skipIf(!enabled)('durable search projection and live public API', () =>
     await sync();
     expect((await search('product developer')).jobs.map(j => j.id)).toContain(id);
     expect((await search('watchmaker')).total).toBe(0);
-    await prisma.job.update({ where: { id }, data: { title: 'Sales Advisor' } }); await sync();
+    const retour = await classee('Sales Advisor');
+    await prisma.job.update({ where: { id }, data: { title: 'Sales Advisor', ...retour.decision, titleRoles: retour.titleRoles, titleRolesReleaseId: retour.titleRolesReleaseId } }); await sync();
   });
   it('replays rolled-back index acknowledgements after a native title edit', async () => {
     const id = prefix+'fr';

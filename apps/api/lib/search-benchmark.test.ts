@@ -17,17 +17,19 @@ describe('frozen search benchmark', () => {
       expect(actual).toEqual(rows);
     } finally { await rm(directory, { recursive: true }); }
   });
-  it('retrieves native role evidence even when classification is absent or contradictory', () => {
+  it('les métiers du document sont ceux de ses colonnes, jamais une relecture du vocabulaire (search-5, D-475 point 38)', () => {
     const metadata = { asOf: '2026-09-23T00:00:00Z', companies: [], aliases: [], sectorConcepts: [],
       occupationRelease: { id: 'fixture', manifest: { occupations: [
         { key: 'manager', labels: { en: 'Store Manager' } },
         { key: 'deputy', labels: { en: 'Assistant Store Manager' } },
       ], families: [] } } } as unknown as SnapshotMetadata;
     const model = snapshotModel(metadata);
+    // Prémisse : l'intitulé nomme un métier du vocabulaire, que l'ancienne indexation lisait.
     const native = { id: '1', title: 'Assistant Store Manager', company: 'Test', countryCode: 'FR' };
-    expect(model.document(native).roles).toEqual(['deputy']);
-    expect(model.document({ ...native, occupationCode: 'manager' }).roles).toEqual(['deputy']);
-    const direct = model.document(native, true);
+    expect(model.document(native)).toMatchObject({ roles: [], titleRoles: [] });
+    expect(model.document({ ...native, titleRoles: ['deputy'] })).toMatchObject({ roles: ['deputy'], titleRoles: ['deputy'] });
+    expect(model.document({ ...native, occupationCode: 'deputy', titleRoles: ['deputy'] }).roles).toEqual(['deputy']);
+    const direct = model.document({ ...native, occupationCode: 'deputy', titleRoles: ['deputy'] }, true);
     expect(direct.id).toBe('cw_1');
     expect(direct.origin).toBe(0);
     expect(direct.roles).toEqual(['deputy']);

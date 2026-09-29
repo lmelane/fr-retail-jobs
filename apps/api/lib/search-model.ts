@@ -15,6 +15,8 @@ export type NativeJob = {
   id: string; title: string; rawTitle?: string; companyId?: string; company?: string;
   description?: string; countryCode: string | null; city?: string; location?: string;
   department?: string; occupationCode?: string; jobFunction?: string;
+  /** Les métiers lus dans l'intitulé, écrits par l'agrégateur avec la classification (D-475 point 38). */
+  titleRoles?: string[];
   sectorCodes?: string[]; postedAt?: string; firstSeenAt?: string; receivedAt?: string;
   employmentTerm?: string; workTime?: string; programType?: string; language?: string;
   /** A direct offer's indexed text, written by the aggregator's projection (`texteRecherche`): it carries the
@@ -54,15 +56,19 @@ export function snapshotModel(metadata: SnapshotMetadata) {
       const c = j.companyId ? companies.get(j.companyId) : matchingNames.length === 1 ? companies.get(matchingNames[0].id) : undefined;
       const titleConcepts = nativeResolver.titleConcepts(j.rawTitle || j.title);
       const evidence = searchEvidence(j.description);
-      // A title's explicit role takes precedence over contradictory historical
-      // classification. Missing codes never suppress title/text retrieval.
-      const roles = titleConcepts.roles.length ? titleConcepts.roles : j.occupationCode ? [j.occupationCode] : [];
+      // D-475 point 38 (sous-lot 2B-4) : les métiers de l'offre sont ceux de ses colonnes, son code et ses métiers lus
+      // dans l'intitulé (`titleRoles`, packages/db/occupation-title-roles.ts : expressions vérifiées, jamais sous un mot
+      // d'encadrement). Relire ici tout le vocabulaire était faux pour 18,5 % des offres où la lecture ajoutait un
+      // métier, et faisait passer ce métier devant le code du moteur (« Responsable vendeur » indexé Conseiller de vente).
+      // Sans aucun des deux, le texte de l'intitulé reste cherchable (`search-sql.ts`).
+      const titleRoles = [...new Set(j.titleRoles ?? [])].sort();
+      const roles = [...new Set([...(j.occupationCode ? [j.occupationCode] : []), ...titleRoles])];
       const parent = c?.parentGroupId || (c?.parentGroup && names.find(n => n.names.some(x => normalized(x) === normalized(c.parentGroup)))?.id);
       return {
         id: direct ? `cw_${j.id}` : j.id, origin: direct ? 0 : 1, country: j.countryCode,
         city: normalized(j.city), title: normalized(j.rawTitle || j.title), company: normalized([c?.name || j.company, evidence.affiliations].filter(Boolean).join(' ')), duties: normalized(evidence.duties),
         body: normalized([j.description?.replace(/<[^>]*>/g, ' '), j.department, j.city, j.location, j.employmentTerm, direct ? j.searchText : undefined].filter(Boolean).join(' ')),
-        titleRoles: titleConcepts.roles, roles, families: [...new Set([...roles.map(r => roleFamilies.get(r)).filter((f): f is string => !!f),
+        titleRoles, roles, families: [...new Set([...roles.map(r => roleFamilies.get(r)).filter((f): f is string => !!f),
           ...(j.jobFunction ? [j.jobFunction] : titleConcepts.families)])],
         sectors: direct ? j.sectorCodes ?? [] : c?.sectorCodes ?? [], companyKeys: [c?.id, parent].filter((x): x is string => !!x),
         postedAt: j.postedAt ? Date.parse(j.postedAt) : -1e15,

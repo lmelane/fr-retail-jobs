@@ -1490,6 +1490,7 @@ model SearchGeneration {
   readyAt DateTime? @db.Timestamptz
   documents SearchDocument[]
   pending SearchPending[]
+  requeue SearchRequeue?
 }
 model SearchMetadata {
   id String @id
@@ -1505,6 +1506,15 @@ model SearchDocument {
   generation SearchGeneration @relation(fields: [version], references: [version], onDelete: Cascade, onUpdate: NoAction)
   @@index([version, country])
   @@id([version, id])
+}
+/// Remise en file du stock par tranches après un changement de taxonomie ou de secteurs (D-475, plan §3.6).
+model SearchRequeue {
+  version String @id
+  phase String @default("job")
+  cursor String?
+  requestedAt DateTime @default(now()) @db.Timestamptz
+  doneAt DateTime? @db.Timestamptz
+  generation SearchGeneration @relation(fields: [version], references: [version], onDelete: Cascade, onUpdate: NoAction)
 }
 model SearchPending {
   version String
