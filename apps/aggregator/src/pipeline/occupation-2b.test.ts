@@ -7,20 +7,28 @@ import { classifyJobs } from "./classifyJobs.js";
 
 /**
  * Lot 2B de D-475 (plan docs/architecture/classification-metiers.md §3.1, §3.3) : les colonnes additives et leurs
- * gardes en base. Chaque témoin écrit d'abord une valeur VALIDE (la prémisse : la garde ne refuse pas tout), puis la
- * valeur que la garde doit refuser.
+ * gardes en base. Chaque témoin écrit d'abord une valeur VALIDE (la prémisse : la garde ne refuse pas tout), puis ce que
+ * la garde doit refuser ou recalculer.
  */
 const db = new PrismaClient();
 const release = compileOccupationManifest(seed).manifest;
+const autreTaxonomie = { ...release, id: `${release.id}-autre-temoin` };
+let suffixe = 0;
+const unique = (p: string) => `${p}-${Date.now()}-${++suffixe}`;
 
-async function preparer() {
-  if (!(await db.occupationRelease.findUnique({ where: { id: release.id } })))
+async function publier(manifest: typeof release) {
+  if (!(await db.occupationRelease.findUnique({ where: { id: manifest.id } })))
     await db.occupationRelease.create({
-      data: { id: release.id, contentHash: occupationManifestHash(release), manifest: release as unknown as Prisma.InputJsonValue },
+      data: { id: manifest.id, contentHash: occupationManifestHash(manifest), manifest: manifest as unknown as Prisma.InputJsonValue },
     });
+}
+async function preparer() {
+  await publier(release);
   await db.occupationState.update({ where: { id: "active" }, data: { releaseId: release.id, backfilledAt: null } });
+  await db.occupationLearnedState.update({ where: { id: "active" }, data: { releaseId: null } });
   await db.jobSource.deleteMany();
   await db.job.deleteMany();
+  await db.$executeRaw`DELETE FROM "DirectOffer" WHERE id LIKE 'lot-2b-%'`;
   await db.company.deleteMany();
   const company = await db.company.create({ data: { name: "Lot 2B", canonicalKey: "lot-2b", fashionjobsUrl: "resolved:lot-2b" } });
   await db.job.create({
@@ -31,41 +39,96 @@ async function preparer() {
 beforeEach(preparer);
 afterAll(async () => {
   await db.job.deleteMany();
+  await db.$executeRaw`DELETE FROM "DirectOffer" WHERE id LIKE 'lot-2b-%'`;
   await db.company.deleteMany();
   await db.$disconnect();
 });
+const groupeDe = (famille: string) => release.families.find((f) => f.key === famille)!.group!;
+const familleDe = (metier: string) => release.occupations.find((o) => o.key === metier)!.family!;
+const offreCatwalks = (id: string, metier: string | null) => db.$executeRaw`INSERT INTO "DirectOffer"
+  (id, version, "appliedSeq", eligible, "payloadHash", payload, "correspondanceVersion", slug, title, company, location, description, "applyUrl", "postedAt", "modifiedAt", "updatedAt", "occupationCode", "occupationReleaseId")
+  VALUES (${id}, 1, 1, true, 'h', '{}'::jsonb, 1, ${id}, 'Sales Advisor', 'Maison', 'Paris', 'd', 'https://catwalks.example', now(), now(), now(), ${metier}, ${metier ? release.id : null})`;
 
-describe("lot 2B : rôles lus dans le titre, domaine, table apprise", () => {
-  it("un rôle lu porte la version qui l'a lu, et appartient à ses métiers", async () => {
+describe("lot 2B : clés par version, rôles lus dans le titre, domaine calculé", () => {
+  it("les clés d'une version sont indexées à sa publication", async () => {
+    const n = await db.occupationReleaseConcept.count({ where: { releaseId: release.id, kind: "occupation" } });
+    expect(n).toBe(release.occupations.length);
+    await publier(autreTaxonomie);
+    expect(await db.occupationReleaseConcept.count({ where: { releaseId: autreTaxonomie.id, kind: "family" } })).toBe(release.families.length);
+  });
+
+  it("un rôle lu porte la version qui l'a lu, et appartient à ses métiers (Job et offre Catwalks)", async () => {
     await db.$executeRaw`UPDATE "Job" SET "titleRoles"='{sales-advisor}', "titleRolesReleaseId"=${release.id} WHERE id='lot-2b-vendeur'`;
     expect((await db.job.findUniqueOrThrow({ where: { id: "lot-2b-vendeur" } })).titleRoles).toEqual(["sales-advisor"]);
     await expect(db.$executeRaw`UPDATE "Job" SET "titleRolesReleaseId"=NULL WHERE id='lot-2b-vendeur'`).rejects.toThrow(/job_title_roles_versioned/);
     await expect(db.$executeRaw`UPDATE "Job" SET "titleRoles"='{metier-inexistant}' WHERE id='lot-2b-vendeur'`).rejects.toThrow(/unknown to release/);
+    const id = unique("lot-2b-direct");
+    await offreCatwalks(id, "sales-advisor");
+    await db.$executeRaw`UPDATE "DirectOffer" SET "titleRoles"='{sales-advisor}', "titleRolesReleaseId"=${release.id} WHERE id=${id}`;
+    await expect(db.$executeRaw`UPDATE "DirectOffer" SET "titleRoles"='{metier-inexistant}' WHERE id=${id}`).rejects.toThrow(/unknown to release/);
   });
 
-  it("le domaine est celui de la famille dans la version citée", async () => {
-    const job = await db.job.findUniqueOrThrow({ where: { id: "lot-2b-vendeur" } });
-    expect(job.occupationCode).toBe("sales-advisor");
-    const groupe = release.families.find((f) => f.key === job.jobFunction)!.group!;
-    await db.$executeRaw`UPDATE "Job" SET "occupationDomain"=${groupe} WHERE id='lot-2b-vendeur'`;
-    const autre = release.groups.find((g) => g.key !== groupe)!.key;
-    await expect(db.$executeRaw`UPDATE "Job" SET "occupationDomain"=${autre} WHERE id='lot-2b-vendeur'`).rejects.toThrow(/domain\/family mismatch/);
-    await expect(db.$executeRaw`UPDATE "Job" SET "occupationDomain"='domaine-inexistant', "jobFunction"=NULL, "occupationCode"=NULL, "occupationStatus"='NO_RULE' WHERE id='lot-2b-vendeur'`).rejects.toThrow(/domain unknown/);
+  it("le domaine est calculé : un reclassement d'une famille à une autre passe, une valeur écrite à la main est remplacée", async () => {
+    const avant = await db.job.findUniqueOrThrow({ where: { id: "lot-2b-vendeur" } });
+    expect(avant.occupationDomain).toBe(groupeDe(avant.jobFunction!));
+    const autre = release.occupations.find((o) => groupeDe(o.family!) !== avant.occupationDomain)!;
+    expect(groupeDe(autre.family!)).not.toBe(avant.occupationDomain);
+    // Un écrivain comme batch.ts : il reclasse sans écrire le domaine.
+    await db.$executeRaw`UPDATE "Job" SET "occupationCode"=${autre.key}, "jobFunction"=${autre.family} WHERE id='lot-2b-vendeur'`;
+    expect((await db.job.findUniqueOrThrow({ where: { id: "lot-2b-vendeur" } })).occupationDomain).toBe(groupeDe(autre.family!));
+    await db.$executeRaw`UPDATE "Job" SET "occupationDomain"='domaine-faux' WHERE id='lot-2b-vendeur'`;
+    expect((await db.job.findUniqueOrThrow({ where: { id: "lot-2b-vendeur" } })).occupationDomain).toBe(groupeDe(autre.family!));
+    await db.$executeRaw`UPDATE "Job" SET "occupationCode"=NULL, "jobFunction"=NULL, "occupationStatus"='PENDING', "occupationReleaseId"=NULL WHERE id='lot-2b-vendeur'`;
+    expect((await db.job.findUniqueOrThrow({ where: { id: "lot-2b-vendeur" } })).occupationDomain).toBeNull();
+    const id = unique("lot-2b-direct");
+    await offreCatwalks(id, "sales-advisor");
+    const [offre] = await db.$queryRaw<{ occupationDomain: string | null }[]>`SELECT "occupationDomain" FROM "DirectOffer" WHERE id=${id}`;
+    expect(offre.occupationDomain).toBe(groupeDe(familleDe("sales-advisor")));
+    await expect(offreCatwalks(unique("lot-2b-direct"), "metier-inexistant")).rejects.toThrow(/unknown to release/);
   });
+});
 
-  it("la table apprise est immuable et ne désigne que des métiers de sa taxonomie", async () => {
-    const id = `appris-${Date.now()}`;
-    await db.occupationLearnedRelease.create({
-      data: { id, taxonomyReleaseId: release.id, contentHash: id, receipt: { temoin: true } },
-    });
-    await db.occupationLearnedEntry.create({ data: { releaseId: id, titleKey: "VENDEUR", occupationCode: "sales-advisor", evidence: {} } });
-    await expect(db.occupationLearnedEntry.create({ data: { releaseId: id, titleKey: "INCONNU", occupationCode: "metier-inexistant", evidence: {} } }))
-      .rejects.toThrow(/unknown to the taxonomy/);
+describe("lot 2B : table apprise scellée, rattachée à sa taxonomie", () => {
+  const versionApprise = async (taxonomie: string, entrees: [string, string][]) => {
+    const id = unique("appris");
+    await db.$transaction([
+      db.occupationLearnedRelease.create({ data: { id, taxonomyReleaseId: taxonomie, contentHash: id, entryCount: entrees.length, receipt: { temoin: true } } }),
+      ...entrees.map(([titleKey, occupationCode]) => db.occupationLearnedEntry.create({ data: { releaseId: id, titleKey, occupationCode, evidence: {} } })),
+    ]);
+    return id;
+  };
+
+  it("une version est scellée : rien ne s'y ajoute, ne s'y modifie, ne s'efface ni ne se vide", async () => {
+    const id = await versionApprise(release.id, [["VENDEUR", "sales-advisor"]]);
+    await expect(db.occupationLearnedEntry.create({ data: { releaseId: id, titleKey: "CAISSIER", occupationCode: "cashier", evidence: {} } })).rejects.toThrow(/sealed/);
+    await expect(versionApprise(release.id, [["INCONNU", "metier-inexistant"]])).rejects.toThrow(/unknown to the taxonomy/);
     await expect(db.$executeRaw`UPDATE "OccupationLearnedEntry" SET "occupationCode"='cashier' WHERE "releaseId"=${id}`).rejects.toThrow(/immutable/);
     await expect(db.$executeRaw`DELETE FROM "OccupationLearnedRelease" WHERE id=${id}`).rejects.toThrow(/immutable/);
-    // La version active vit à part : l'avancer n'écrit pas dans OccupationState (qui remet tout l'index en file).
+    await expect(db.$executeRaw`TRUNCATE "OccupationLearnedEntry"`).rejects.toThrow(/immutable/);
+    expect(await db.occupationLearnedEntry.count({ where: { releaseId: id } })).toBe(1);
+  });
+
+  it("l'état actif n'active qu'une table de la taxonomie active, sans remettre l'index de recherche en file", async () => {
+    const id = await versionApprise(release.id, [["VENDEUR", "sales-advisor"]]);
+    const revision = async () => (await db.$queryRaw<{ revision: bigint }[]>`SELECT revision FROM "SearchMetadata" WHERE id='active'`)[0]?.revision ?? 0n;
+    const r0 = await revision();
     await db.occupationLearnedState.update({ where: { id: "active" }, data: { releaseId: id } });
-    await db.occupationLearnedState.update({ where: { id: "active" }, data: { releaseId: null } });
-    await expect(db.$executeRaw`INSERT INTO "OccupationLearnedState" (id) VALUES ('second')`).rejects.toThrow(/occupation_learned_state_single/);
+    expect(await revision()).toBe(r0);
+    // Témoin positif : une écriture dans OccupationState, elle, fait avancer la révision de l'index.
+    await db.occupationState.update({ where: { id: "active" }, data: { backfilledAt: null } });
+    expect(await revision()).toBeGreaterThan(r0);
+    await publier(autreTaxonomie);
+    const etrangere = await versionApprise(autreTaxonomie.id, [["VENDEUR", "sales-advisor"]]);
+    await expect(db.occupationLearnedState.update({ where: { id: "active" }, data: { releaseId: etrangere } })).rejects.toThrow(/active taxonomy/);
+  });
+
+  it("une décision apprise porte sa table, et cette table vient de la taxonomie de la décision", async () => {
+    const id = await versionApprise(release.id, [["VENDEUR", "sales-advisor"]]);
+    await db.$executeRaw`UPDATE "Job" SET "occupationLearnedReleaseId"=${id}, "occupationDecisionSource"='learned' WHERE id='lot-2b-vendeur'`;
+    await expect(db.$executeRaw`UPDATE "Job" SET "occupationLearnedReleaseId"=NULL WHERE id='lot-2b-vendeur'`).rejects.toThrow(/job_learned_decision_versioned/);
+    await publier(autreTaxonomie);
+    const etrangere = await versionApprise(autreTaxonomie.id, [["VENDEUR", "sales-advisor"]]);
+    await expect(db.$executeRaw`UPDATE "Job" SET "occupationLearnedReleaseId"=${etrangere} WHERE id='lot-2b-vendeur'`).rejects.toThrow(/does not belong to taxonomy/);
+    await expect(db.$executeRaw`UPDATE "Job" SET "occupationDecisionSource"='devine' WHERE id='lot-2b-vendeur'`).rejects.toThrow(/job_occupation_source/);
   });
 });

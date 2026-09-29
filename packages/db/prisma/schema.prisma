@@ -609,6 +609,8 @@ model Job {
   /// Lot 2B : la version de la table apprise évaluée par la décision, quand elle a atteint cette étape.
   occupationLearnedReleaseId String?
   occupationLearnedRelease  OccupationLearnedRelease? @relation("JobLearnedRelease", fields: [occupationLearnedReleaseId], references: [id], onDelete: Restrict)
+  /// Lot 2B : d'où vient la décision (rule, learned, backoffice) ; une décision apprise ne remplace jamais une règle.
+  occupationDecisionSource  String?
   /**
    * INTERNSHIP | APPRENTICESHIP | GRADUATE | JUNIOR | MID | SENIOR | MANAGER | DIRECTOR | EXECUTIVE
    */
@@ -1055,6 +1057,7 @@ model OccupationRelease {
   jobs         Job[]                     @relation("JobOccupationRelease")
   activeStates OccupationState[]
   observations OccupationObservation[]
+  concepts               OccupationReleaseConcept[]
   jobTitleRoles          Job[]                      @relation("JobTitleRolesRelease")
   directOfferTitleRoles  DirectOffer[]              @relation("DirectOfferTitleRolesRelease")
   learnedReleases        OccupationLearnedRelease[]
@@ -1069,6 +1072,8 @@ model OccupationLearnedRelease {
   previous          OccupationLearnedRelease?  @relation("LearnedReleaseChain", fields: [previousId], references: [id], onDelete: Restrict)
   next              OccupationLearnedRelease[] @relation("LearnedReleaseChain")
   contentHash       String                     @unique
+  /// Le sceau : le nombre d'entrées, contrôlé à la validation de la transaction (déclencheur différé).
+  entryCount        Int
   receipt           Json
   createdAt         DateTime                   @default(now())
   entries           OccupationLearnedEntry[]
@@ -1093,7 +1098,19 @@ model OccupationLearnedState {
   id        String                    @id
   releaseId String?
   release   OccupationLearnedRelease? @relation(fields: [releaseId], references: [id], onDelete: Restrict)
-  updatedAt DateTime                  @default(now())
+  updatedAt DateTime                  @default(now()) @updatedAt
+}
+
+/// Lot 2B : les clés de chaque version (métiers, familles, domaines), indexées, lues par les déclencheurs d'intégrité.
+model OccupationReleaseConcept {
+  releaseId String
+  release   OccupationRelease @relation(fields: [releaseId], references: [id], onDelete: Restrict)
+  kind      String
+  key       String
+  family    String?
+  domain    String?
+
+  @@id([releaseId, kind, key])
 }
 
 model OccupationObservation {
@@ -1433,6 +1450,7 @@ model DirectOffer {
   occupationDomain      String?
   occupationLearnedReleaseId String?
   occupationLearnedRelease   OccupationLearnedRelease? @relation("DirectOfferLearnedRelease", fields: [occupationLearnedReleaseId], references: [id], onDelete: Restrict)
+  occupationDecisionSource   String?
   /** L'empreinte des colonnes projetées : le lecteur de la liste publique n'écrit que ce qui change. */
   projectionHash        String?
 
