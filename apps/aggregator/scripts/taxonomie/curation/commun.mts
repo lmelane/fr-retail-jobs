@@ -49,7 +49,15 @@ export const VAGUES = new Set(['MANAGER', 'ASSISTANT', 'ASSISTANTE', 'ASSOCIATE'
   'SUPERVISEUR', 'SUPERVISEURE', 'SUPERVISEUSE', 'RETAIL MANAGER',
   // Audit du 29/09/2026 : « Sales Manager » désigne aussi bien l'encadrement de la vente en boutique (123 offres d'un
   // magasin américain, service Retail Management) que le wholesale ou la vente B2B : trop vague pour un métier.
-  'SALES MANAGER']);
+  'SALES MANAGER',
+  // Mesure du tour 5 (29/09/2026) : « Chef des ventes » est « Sales Manager » (Pandora au Québec : le Sales Lead de
+  // boutique, rattaché à tort au Manager commercial, 28 offres) ; « Planner » seul se dit du merchandising, de la
+  // supply chain, de la demande, de la production ou de l'événementiel ; « Service Lead » de la boutique, du service
+  // client ou de la restauration (Burberry : rattaché à tort au Responsable relation client).
+  'CHEF DES VENTES', 'CHEFFE DES VENTES', 'PLANNER', 'PLANIFICATEUR', 'PLANIFICATRICE', 'SERVICE LEAD']);
+/** Marques de contrat et de temps de travail : « Part Time Supervisor » est « Supervisor » seul (§32 c, tour 5). */
+const CONTRAT = new Set(['PART', 'FULL', 'TIME', 'PT', 'FT', 'TEMP', 'TEMPORARY', 'SEASONAL', 'SAISONNIER', 'SAISONNIERE', 'CDI', 'CDD', 'INTERIM',
+  'H', 'F', 'M', 'W', 'D', 'X', 'NB', 'A', 'TEMPS', 'PARTIEL', 'COMPLET', 'PLEIN', 'MINIJOB', 'AUSHILFE', 'TEILZEIT', 'VOLLZEIT']);
 
 /**
  * Mots de niveau hiérarchique sans domaine. Une expression faite UNIQUEMENT de ces mots (« Team Manager », « Team
@@ -70,7 +78,7 @@ export const EXCLUS_RAYON = ['à service'];
 /** Une forme (normalisée par `phraseMoteur`) faite seulement de mots de niveau : règle exacte, jamais généralisée (§36). */
 export const niveauSeul = (forme: string) => !!forme && forme.split(' ').every((m) => HIERARCHIE.has(m));
 /** §32 c : une forme (normalisée par `phraseMoteur`) trop vague pour désigner un métier (le mot seul, « Manager »). */
-export const estVague = (forme: string) => VAGUES.has(forme);
+export const estVague = (forme: string) => VAGUES.has(forme) || VAGUES.has(forme.split(' ').filter((m) => !CONTRAT.has(m)).join(' '));
 
 /** Forme courte d'un libellé (« Vendeur / Vendeuse » → « Vendeur »). */
 export const courte = (l?: string) => (l ?? '').split('/')[0].trim();

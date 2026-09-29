@@ -1704,10 +1704,7 @@
     }
    ],
    "evidence": "Production Demand Planner titles; keep demand planning in supply chain rather than merchandise buying.",
-   "occupation": "demand-planner",
-   "supersedes": [
-    "v3-merchandise-planner~1fbe05d617"
-   ]
+   "occupation": "demand-planner"
   },
   {
    "id": "sales-advisor-client-consultant-context",
@@ -39367,30 +39364,6 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
-   "id": "v3-merchandise-planner~1fbe05d617",
-   "occupation": "merchandise-planner",
-   "all": [
-    {
-     "field": "title",
-     "any": [
-      "planner"
-     ],
-     "mode": "phrase"
-    }
-   ],
-   "exclude": [
-    {
-     "any": [
-      "manager",
-      "director",
-      "head"
-     ],
-     "field": "title"
-    }
-   ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
-  },
-  {
    "id": "v3-merchandise-planner~143b051fd9",
    "occupation": "merchandise-planner",
    "all": [
@@ -60896,8 +60869,7 @@
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
-    "buyer-title",
-    "v3-merchandise-planner~1fbe05d617"
+    "buyer-title"
    ]
   },
   {
@@ -85526,10 +85498,7 @@
      "mode": "phrase"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
-   "supersedes": [
-    "v3-merchandise-planner~1fbe05d617"
-   ]
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
    "id": "v3-chef-de-projet-evenementiel~027c9a87c4",
@@ -122557,20 +122526,6 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
-   "id": "v3-manager-commercial~c4754f1042",
-   "occupation": "manager-commercial",
-   "all": [
-    {
-     "field": "title",
-     "any": [
-      "chef des ventes à temps partiel"
-     ],
-     "mode": "phrase"
-    }
-   ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
-  },
-  {
    "id": "v3-manager-commercial~de5f59a3ac",
    "occupation": "manager-commercial",
    "all": [
@@ -124568,20 +124523,6 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
-   "id": "v3-manager-floor~de20d3f177",
-   "occupation": "manager-floor",
-   "all": [
-    {
-     "field": "title",
-     "any": [
-      "lead - full time"
-     ],
-     "mode": "phrase"
-    }
-   ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
-  },
-  {
    "id": "v3-manager-floor~8bd38b5f73",
    "occupation": "manager-floor",
    "all": [
@@ -124687,20 +124628,6 @@
      "field": "title",
      "any": [
       "manager retail"
-     ],
-     "mode": "phrase"
-    }
-   ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
-  },
-  {
-   "id": "v3-manager-floor~28c01dc2fd",
-   "occupation": "manager-floor",
-   "all": [
-    {
-     "field": "title",
-     "any": [
-      "part time supervisor"
      ],
      "mode": "phrase"
     }
@@ -128998,10 +128925,7 @@
      "mode": "phrase"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
-   "supersedes": [
-    "v3-merchandise-planner~1fbe05d617"
-   ]
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
    "id": "v3-planificateur-supply-chain~22e5eb7b21",
@@ -129015,10 +128939,7 @@
      "mode": "phrase"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
-   "supersedes": [
-    "v3-merchandise-planner~1fbe05d617"
-   ]
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
    "id": "v3-planificateur-supply-chain~d365e0a6f3",
@@ -129032,10 +128953,7 @@
      "mode": "phrase"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
-   "supersedes": [
-    "v3-merchandise-planner~1fbe05d617"
-   ]
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
    "id": "v3-planificateur-supply-chain~21c27f68cb",
@@ -140821,10 +140739,7 @@
      "mode": "phrase"
     }
    ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
-   "supersedes": [
-    "v3-manager-floor~de20d3f177"
-   ]
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
    "id": "v3-responsable-operationnel~5a47bca0ac",
@@ -143583,20 +143498,6 @@
      "field": "title",
      "any": [
       "Responsável de Relação com Cliente"
-     ],
-     "mode": "phrase"
-    }
-   ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
-  },
-  {
-   "id": "v3-responsable-relation-client~a815cd9fac",
-   "occupation": "responsable-relation-client",
-   "all": [
-    {
-     "field": "title",
-     "any": [
-      "service lead"
      ],
      "mode": "phrase"
     }
@@ -154747,7 +154648,7 @@
  ],
  "review": {
   "author": "Passe de curation v3 (IA seule, D-475 §30)",
-  "at": "2026-09-29T12:27:20.244Z",
+  "at": "2026-09-29T12:31:27.789Z",
   "basis": "Première passe de curation : 253 métiers (servis, backend, offres), 33 familles, 25 langues ; preuves : audits/2026-09-28/curation-v3."
  },
  "families": [

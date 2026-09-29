@@ -1,17 +1,17 @@
 {
- "calculeLe": "2026-09-29T12:27:29.269Z",
+ "calculeLe": "2026-09-29T12:31:30.234Z",
  "juges": {
   "j1": "gemini-3.6-flash",
   "j2": "gemini-3-flash-preview"
  },
  "bilan": {
-  "expressionsQuiGeneralisent": 682,
-  "jugees": 187,
+  "expressionsQuiGeneralisent": 679,
+  "jugees": 185,
   "modes": {
    "generalisable": 103,
-   "exacte": 84
+   "exacte": 82
   },
-  "sousSeuil": 495,
+  "sousSeuil": 494,
   "motsSeulsJuges": 24,
   "motsSeulsRamenesALExact": [
    "CONTROLLER",
@@ -25,8 +25,8 @@
    "OPTICO",
    "DISPENSER"
   ],
-  "offresGeneralisables": 6460,
-  "offresRameneesALExact": 6316,
+  "offresGeneralisables": 6461,
+  "offresRameneesALExact": 6158,
   "seuils": {
    "SEUIL_OFFRES": 10,
    "ECHANTILLON": 3
@@ -77,7 +77,7 @@
    "expression": "CONTROLLER",
    "occupation": "financial-controller",
    "mode": "exacte",
-   "offres": 56,
+   "offres": 57,
    "juges": [
     {
      "titre": "Brand Controller",
@@ -369,7 +369,7 @@
    "expression": "SALES LEAD",
    "occupation": "retail-sales-lead",
    "mode": "generalisable",
-   "offres": 440,
+   "offres": 441,
    "juges": [
     {
      "titre": "Sales Lead-ANN",
@@ -626,30 +626,10 @@
    ]
   },
   {
-   "expression": "PLANNER",
-   "occupation": "merchandise-planner",
-   "mode": "exacte",
-   "offres": 116,
-   "juges": [
-    {
-     "titre": "Inventory Planner",
-     "verdict": "rejete"
-    },
-    {
-     "titre": "STAGE - ASSISTANT.E SUPPLY & DISTRIBUTION PLANNER READY-TO-WEAR (F/H/X) - FEVRIER 2027",
-     "verdict": "rejete"
-    },
-    {
-     "titre": "Assistant Supply & Distribution Planner Souliers Femme & Homme - F/H - STAGE",
-     "verdict": "rejete"
-    }
-   ]
-  },
-  {
    "expression": "COMMERCIAL",
    "occupation": "commercial",
    "mode": "exacte",
-   "offres": 110,
+   "offres": 111,
    "juges": [
     {
      "titre": "Commercial itinérant H/F",
@@ -921,7 +901,7 @@
    "expression": "WHOLESALE",
    "occupation": "responsable-wholesale",
    "mode": "exacte",
-   "offres": 76,
+   "offres": 80,
    "juges": [
     {
      "titre": "Specialist GBS AR Retail & Wholesale",
@@ -3690,26 +3670,6 @@
    ]
   },
   {
-   "expression": "LEAD FULL TIME",
-   "occupation": "manager-floor",
-   "mode": "exacte",
-   "offres": 45,
-   "juges": [
-    {
-     "titre": "Stage Experience Lead - Full Time",
-     "verdict": "rejete"
-    },
-    {
-     "titre": "Store Team Lead - Full Time - Nike Store Crete",
-     "verdict": "confirme"
-    },
-    {
-     "titre": "Stage Experience and Services Lead - Full Time",
-     "verdict": "rejete"
-    }
-   ]
-  },
-  {
    "expression": "STORE TEAM LEAD",
    "occupation": "manager-floor",
    "mode": "generalisable",
@@ -5088,12 +5048,6 @@
   {
    "expression": "CUSTOMER SERVICE ASSOCIATE",
    "occupation": "customer-service-advisor",
-   "mode": "exacte",
-   "offres": 3
-  },
-  {
-   "expression": "SERVICE LEAD",
-   "occupation": "responsable-relation-client",
    "mode": "exacte",
    "offres": 3
   },

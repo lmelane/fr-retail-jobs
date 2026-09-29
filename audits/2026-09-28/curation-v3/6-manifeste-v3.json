@@ -39281,30 +39281,6 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
-   "id": "v3-merchandise-planner~1fbe05d617",
-   "occupation": "merchandise-planner",
-   "all": [
-    {
-     "field": "title",
-     "any": [
-      "planner"
-     ],
-     "mode": "exact"
-    }
-   ],
-   "exclude": [
-    {
-     "any": [
-      "manager",
-      "director",
-      "head"
-     ],
-     "field": "title"
-    }
-   ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
-  },
-  {
    "id": "v3-merchandise-planner~143b051fd9",
    "occupation": "merchandise-planner",
    "all": [
@@ -121694,20 +121670,6 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
-   "id": "v3-manager-commercial~c4754f1042",
-   "occupation": "manager-commercial",
-   "all": [
-    {
-     "field": "title",
-     "any": [
-      "chef des ventes à temps partiel"
-     ],
-     "mode": "exact"
-    }
-   ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
-  },
-  {
    "id": "v3-manager-commercial~de5f59a3ac",
    "occupation": "manager-commercial",
    "all": [
@@ -123584,20 +123546,6 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
-   "id": "v3-manager-floor~de20d3f177",
-   "occupation": "manager-floor",
-   "all": [
-    {
-     "field": "title",
-     "any": [
-      "lead - full time"
-     ],
-     "mode": "exact"
-    }
-   ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
-  },
-  {
    "id": "v3-manager-floor~8bd38b5f73",
    "occupation": "manager-floor",
    "all": [
@@ -123703,20 +123651,6 @@
      "field": "title",
      "any": [
       "manager retail"
-     ],
-     "mode": "exact"
-    }
-   ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
-  },
-  {
-   "id": "v3-manager-floor~28c01dc2fd",
-   "occupation": "manager-floor",
-   "all": [
-    {
-     "field": "title",
-     "any": [
-      "part time supervisor"
      ],
      "mode": "exact"
     }
@@ -142205,20 +142139,6 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
-   "id": "v3-responsable-relation-client~a815cd9fac",
-   "occupation": "responsable-relation-client",
-   "all": [
-    {
-     "field": "title",
-     "any": [
-      "service lead"
-     ],
-     "mode": "exact"
-    }
-   ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
-  },
-  {
    "id": "v3-responsable-relation-client~a2eb8d9066",
    "occupation": "responsable-relation-client",
    "all": [
@@ -153287,7 +153207,7 @@
  ],
  "review": {
   "author": "Passe de curation v3 (IA seule, D-475 §30)",
-  "at": "2026-09-29T12:27:29.726Z",
+  "at": "2026-09-29T12:31:30.675Z",
   "basis": "Première passe de curation : 253 métiers (servis, backend, offres), 33 familles, 25 langues ; preuves : audits/2026-09-28/curation-v3."
  },
  "families": [

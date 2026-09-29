@@ -1,26 +1,26 @@
 {
- "calculeLe": "2026-09-29T12:27:31.676Z",
+ "calculeLe": "2026-09-29T12:31:32.598Z",
  "bilan": {
   "manifeste": "catwalks-occupations-20260929-v3",
   "couples": 43168,
   "offres": 80741,
-  "compilationMs": 105,
-  "classementMs": 1253,
+  "compilationMs": 102,
+  "classementMs": 1247,
   "premisse": {
    "accordAvecLaProduction": 100,
    "seuil": 97
   },
   "offresClassees": {
    "v1": 38000,
-   "v3": 50296,
+   "v3": 50246,
    "v1Pct": 47.1,
-   "v3Pct": 62.3
+   "v3Pct": 62.2
   },
   "ambigues": {
    "v1": 48,
    "v3": 64
   },
-  "gains": 12353,
+  "gains": 12303,
   "changementsDeMetier": 655,
   "pertes": 57,
   "horsPlan": {
@@ -45,7 +45,7 @@
    "pays": "US",
    "offres": 40442,
    "classesV1": 55.2,
-   "classesV3": 70.2
+   "classesV3": 70.1
   },
   {
    "pays": "FR",
@@ -57,13 +57,13 @@
    "pays": "CA",
    "offres": 12672,
    "classesV1": 58.1,
-   "classesV3": 75.5
+   "classesV3": 75.2
   },
   {
    "pays": "GB",
    "offres": 8029,
    "classesV1": 63.7,
-   "classesV3": 80.3
+   "classesV3": 80.2
   },
   {
    "pays": "DE",
@@ -249,7 +249,7 @@
    "pays": "MX",
    "offres": 1007,
    "classesV1": 69.9,
-   "classesV3": 77.6
+   "classesV3": 77.1
   },
   {
    "pays": "SE",
@@ -2429,15 +2429,6 @@
    "libelle": "Office Manager"
   },
   {
-   "titre": "Part Time Supervisor",
-   "service": null,
-   "offres": 4,
-   "avant": null,
-   "metier": "manager-floor",
-   "statut": "CLASSIFIED",
-   "libelle": "Floor manager"
-  },
-  {
    "titre": "Sales Consultant",
    "service": null,
    "offres": 19,
@@ -3120,6 +3111,15 @@
    "metier": "retail-sales-lead",
    "statut": "CLASSIFIED",
    "libelle": "Premier vendeur"
+  },
+  {
+   "titre": "Conseillère, conseiller vente / beauté - Monop'Beauty",
+   "service": null,
+   "offres": 3,
+   "avant": null,
+   "metier": "beauty-consultant",
+   "statut": "CLASSIFIED",
+   "libelle": "Conseiller beauté"
   }
  ]
 }

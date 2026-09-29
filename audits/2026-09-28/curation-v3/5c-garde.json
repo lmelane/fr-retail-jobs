@@ -1,12 +1,12 @@
 {
- "calculeLe": "2026-09-29T12:14:49.623Z",
+ "calculeLe": "2026-09-29T12:31:27.325Z",
  "juges": {
   "j1": "gemini-3.6-flash",
   "j2": "gemini-3-flash-preview"
  },
  "bilan": {
   "formesRevendiquees": 8500,
-  "interdites": 2,
+  "interdites": 7,
   "conflits": 42,
   "pairesJugees": 8,
   "fusions": 3,
@@ -105,6 +105,14 @@
    "motif": "version servie"
   },
   {
+   "forme": "PLANNER",
+   "garde": null,
+   "retires": [
+    "merchandise-planner"
+   ],
+   "motif": "forme vague interdite"
+  },
+  {
    "forme": "LEDELSESASSISTENT",
    "garde": "executive-assistant",
    "retires": [
@@ -170,6 +178,30 @@
    "motif": "version servie"
   },
   {
+   "forme": "CHEF DES VENTES A TEMPS PARTIEL",
+   "garde": null,
+   "retires": [
+    "backend:MANAGER_COMMERCIAL"
+   ],
+   "motif": "forme vague interdite"
+  },
+  {
+   "forme": "LEAD FULL TIME",
+   "garde": null,
+   "retires": [
+    "backend:MANAGER_FLOOR"
+   ],
+   "motif": "forme vague interdite"
+  },
+  {
+   "forme": "PART TIME SUPERVISOR",
+   "garde": null,
+   "retires": [
+    "backend:MANAGER_FLOOR"
+   ],
+   "motif": "forme vague interdite"
+  },
+  {
    "forme": "SPA THERAPIST",
    "garde": "beauty-therapist",
    "retires": [
@@ -182,6 +214,14 @@
    "garde": null,
    "retires": [
     "backend:RESPONSABLE_COLLECTION"
+   ],
+   "motif": "forme vague interdite"
+  },
+  {
+   "forme": "SERVICE LEAD",
+   "garde": null,
+   "retires": [
+    "backend:RESPONSABLE_RELATION_CLIENT"
    ],
    "motif": "forme vague interdite"
   },
