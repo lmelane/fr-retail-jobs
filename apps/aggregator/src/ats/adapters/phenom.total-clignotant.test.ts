@@ -107,6 +107,54 @@ describe('Phenom Foot Locker — bornes de la relecture (listes construites)', (
     expect(r.enumeration?.issues).toEqual(expect.arrayContaining(['TOTAL_STATES_DISAGREE', 'ENUMERATION_NOT_PROVEN']));
   });
 
+  it('l\'état en retard est majoritaire : la référence est le plus grand total, l\'offre en ligne n\'est jamais déclarée absente', async () => {
+    // État à jour : 251 offres (dont 999, page 2) ; état en retard : 250, sans 999. La page 1 est lue à jour, les pages
+    // 2 et 3 en retard, et une relecture de la page 1 rend l'état en retard : la majorité dit 250.
+    const fresh = [...range(0, 100), 999, ...range(100, 150)];
+    route({ 1: [page(range(0, 100), 251), page(range(0, 100), 250)], 2: [page(range(100, 100), 250), page(fresh.slice(100, 200), 251)],
+      3: [page(range(200, 50), 250), page(fresh.slice(200), 251)], 4: [page([], 250), page([], 251)] });
+    const r = await fetchPhenomJobs({ origin: 'https://careers.example.com' });
+    expect(r.jobs.map(j => j.externalId)).toContain('999');
+    expect(r.complete).toBe(true); expect(r.declaredTotal).toBe(251);
+  });
+
+  it('l\'état en retard ne revient jamais au plus grand total : jamais prouvé', async () => {
+    route({ 1: [page(range(0, 100), 251), page(range(0, 100), 250)], 2: [page(range(100, 100), 250)], 3: [page(range(200, 50), 250)], 4: [page([], 250)] });
+    const r = await fetchPhenomJobs({ origin: 'https://careers.example.com' });
+    expect(r.complete).toBe(false);
+    expect(r.enumeration?.issues).toContain('ENUMERATION_NOT_PROVEN');
+  });
+
+  it('une variante de langue servie deux fois est une répétition, pas une seconde variante', async () => {
+    const variant = (id: number, language: string) => ({ data: { ...entry(id).data, language } });
+    // 250 annoncées : 248 offres + la variante en-us de 7, servie deux fois ; l'offre 248 n'est jamais servie.
+    vi.mocked(fetchJson).mockImplementation(async (url: string) => {
+      const n = Number(new URL(url).searchParams.get('page'));
+      if (n === 1) return { jobs: range(0, 100).map(entry), totalCount: 250 };
+      if (n === 2) return { jobs: [...range(100, 99).map(entry), variant(7, 'en-us')], totalCount: 250 };
+      if (n === 3) return { jobs: [...range(199, 49).map(entry), variant(7, 'en-us')], totalCount: 250 };
+      return { jobs: [], totalCount: 250 };
+    });
+    const r = await fetchPhenomJobs({ origin: 'https://careers.example.com' });
+    expect(r.jobs).toHaveLength(248);
+    expect(r.complete).toBe(false);
+    expect(r.enumeration?.issues).toContain('REPEATED_IDS_ACROSS_PAGES');
+  });
+
+  it('une relecture en échec abandonne la réconciliation : la première lecture est rendue, non prouvée', async () => {
+    const reads = new Map<number, number>();
+    vi.mocked(fetchJson).mockImplementation(async (url: string) => {
+      const n = Number(new URL(url).searchParams.get('page')); const k = reads.get(n) ?? 0; reads.set(n, k + 1);
+      if (n === 1) return page(range(0, 100), 250);
+      if (n === 2) { if (k > 0) throw new Error('HTTP 503 for ' + url); return page(range(100, 100), 249); }
+      if (n === 3) return page(range(200, 50), 250);
+      return page([], 250);
+    });
+    const r = await fetchPhenomJobs({ origin: 'https://careers.example.com' });
+    expect(r.jobs).toHaveLength(250); expect(r.complete).toBe(false);
+    expect(r.enumeration?.issues).toEqual(expect.arrayContaining(['RECONCILIATION_READ_FAILED', 'SOURCE_TOTAL_CHANGED', 'ENUMERATION_NOT_PROVEN']));
+  });
+
   it('relues au même total, les pages ne rendent pas le compte : jamais prouvé', async () => {
     route({ 1: [page(range(0, 100), 250)], 2: [page(range(100, 100), 249), page([...range(100, 99), 0], 250)], 3: [page(range(200, 50), 250)] });
     const r = await fetchPhenomJobs({ origin: 'https://careers.example.com' });
