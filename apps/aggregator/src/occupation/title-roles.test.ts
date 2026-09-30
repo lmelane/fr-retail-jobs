@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import seed from "../../../../packages/db/data/occupations-v1.json" with { type: "json" };
@@ -118,7 +119,11 @@ describe("métiers lus dans un intitulé plus long (D-475 point 38)", () => {
 });
 
 describe("la v3 de la passe de curation, sur les exemples de l'arbitrage, des mesures 6f et de l'audit", () => {
-  const v3 = compileOccupationManifest(JSON.parse(readFileSync(new URL("../../../../audits/2026-09-28/curation-v3/6-manifeste-v3.json", import.meta.url), "utf8")));
+  // Copie du manifeste audité (audits/2026-09-28/curation-v3/6-manifeste-v3.json, sha256 1010f684b3949fa9…) : le code ne lit
+  // jamais les archives (check:layout) ; l'empreinte garde la copie identique à l'audit.
+  const texte = readFileSync(new URL("./__fixtures__/manifeste-v3-20260928.json", import.meta.url), "utf8");
+  it("la copie est celle de l'audit", () => { expect(createHash("sha256").update(texte).digest("hex")).toBe("1010f684b3949fa9eaf59be1cf4ec027e4d71f880acb487900e95bc6c1b8a605"); });
+  const v3 = compileOccupationManifest(JSON.parse(texte));
   const r = (t: string) => occupationTitleRoles(v3, t, v3.classify(t));
   it.each([
     ["Keyholder (Part time) - Reitmans", "keyholder"],
