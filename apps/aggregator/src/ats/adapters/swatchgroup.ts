@@ -277,6 +277,14 @@ export function parseSwatchJobPage(html: string, url: string): NormalizedJob | n
   };
 }
 
+/**
+ * Le lien « Dernier » du pager Drupal, repéré par son icône (indépendante de la langue) :
+ * `<a class="page-link" href="?page=34" aria-label="Dernier"><span aria-hidden="true"><i class="icon--last">`.
+ */
+const LAST_PAGE_LINK = /href="\?page=(\d+)"[^>]*>\s*<span[^>]*>\s*<i class="icon--last"/;
+/** Relectures complètes du listing, au-delà de la première, pour réconcilier un ordre instable. */
+const RECONCILIATION_PASSES = 5;
+
 export async function fetchSwatchGroupJobs(config: Record<string, unknown>): Promise<AdapterResult> {
   const origin = String(config.origin ?? DEFAULT_ORIGIN).replace(/\/$/, '');
   const lang = String(config.lang ?? DEFAULT_LANG);
@@ -285,12 +293,12 @@ export async function fetchSwatchGroupJobs(config: Record<string, unknown>): Pro
   const links: string[] = [];
   const seen = new Set<string>();
   const pageEvidence: NonNullable<NonNullable<AdapterResult['enumeration']>['pageEvidence']> = [];
-  let pagesRead = 0, termination = 'PAGE_BUDGET_EXHAUSTED';
-  for (let page = 0; page < maxPages; page += 1) {
+  let pagesRead = 0;
+  // Chaque carte porte le lien 3 fois (image, titre, « En savoir plus ») : dédoublonner dans la page, puis contre les
+  // pages déjà lues. Rend le nombre de liens distincts de la page.
+  const readPage = async (page: number, pass: number): Promise<{ count: number; html: string }> => {
     const url = `${origin}/${lang}/job-finder?page=${page}`;
     const html = await fetchText(url);
-    // Chaque carte porte le lien 3 fois (image, titre, « En savoir plus ») :
-    // dédoublonner dans la page, puis contre les pages déjà lues.
     const inPage = [...new Set([...html.matchAll(/href="(\/[a-z]{2}\/job\/\d+)"/g)].map((m) => `${origin}${m[1]}`))];
     const fresh = inPage.filter((link) => !seen.has(link));
     for (const link of fresh) {
@@ -299,10 +307,64 @@ export async function fetchSwatchGroupJobs(config: Record<string, unknown>): Pro
     }
     pagesRead += 1;
     pageEvidence.push({ url, checkedAt: captureObservedAt().toISOString(), sha256: createHash('sha256').update(html).digest('hex'), offset: page, pagination: null,
-      ids: inPage.map((l) => l.split('/').pop() ?? l), publisherCounter: '', componentCounters: [`links=${inPage.length}`, `fresh=${fresh.length}`, `uniqueLinks=${seen.size}`] });
-    // Le pager Drupal rend la dernière page en boucle au-delà de la fin :
-    // une page sans lien NOUVEAU termine la lecture (comme le générique).
-    if (fresh.length === 0) { termination = inPage.length ? 'REPEATED_PAGE' : 'EMPTY_PAGE'; break; }
+      ids: inPage.map((l) => l.split('/').pop() ?? l), publisherCounter: '', componentCounters: [`pass=${pass}`, `links=${inPage.length}`, `fresh=${fresh.length}`, `uniqueLinks=${seen.size}`] });
+    return { count: inPage.length, html };
+  };
+
+  /*
+   * LE TOTAL DE L'ÉDITEUR, ET NON LA PREMIÈRE PAGE SANS LIEN NOUVEAU (30/09/2026).
+   *
+   * Le listing n'a pas d'ordre stable : d'une page à l'autre une offre glisse, servie deux fois, et en cache une
+   * autre. Le 30/09 à 05:13 : 35 pages (34 de 10, la dernière de 8) = 348 offres annoncées, 328 liens distincts lus,
+   * 20 répétés, toujours sur deux pages voisines. L'ancienne règle s'arrêtait sur une page sans lien nouveau : elle
+   * ne prouvait rien depuis le 24/09 (page vide au-delà de la fin), et le 23/09 elle avait « prouvé » 71 offres.
+   *
+   * La preuve est désormais le total que l'éditeur publie par son pager : le lien « Dernier » de la première page
+   * donne l'index de la dernière page ; toutes les pages avant elle portent le même nombre de liens (celui de la
+   * première) ; la dernière en porte de 1 à ce nombre ; la page suivante n'en porte aucun. Total = index × taille +
+   * liens de la dernière. Le listing est relu, au plus cinq fois, tant que l'union des lectures n'atteint pas ce
+   * total ; il n'est prouvé que si elle l'atteint exactement.
+   */
+  const first = await readPage(0, 1);
+  const lastIndex = Number(LAST_PAGE_LINK.exec(first.html)?.[1] ?? NaN);
+  const pageSize = first.count;
+  const shapeIssues: string[] = [];
+  let termination: string;
+  let publisherTotal: number | undefined;
+  if (!Number.isInteger(lastIndex) || lastIndex < 1) {
+    // Sans lien « Dernier », aucun total : on lit comme avant, jusqu'à une page sans lien nouveau, sans rien prouver.
+    shapeIssues.push('LAST_PAGE_LINK_ABSENT');
+    termination = 'PAGE_BUDGET_EXHAUSTED';
+    for (let page = 1; page < maxPages; page += 1) {
+      const before = seen.size;
+      const { count } = await readPage(page, 1);
+      if (seen.size === before) { termination = count ? 'REPEATED_PAGE' : 'EMPTY_PAGE'; break; }
+    }
+  } else if (lastIndex + 1 >= maxPages) {
+    shapeIssues.push('PAGE_BUDGET_EXHAUSTED');
+    termination = 'PAGE_BUDGET_EXHAUSTED';
+    for (let page = 1; page < maxPages; page += 1) await readPage(page, 1);
+  } else {
+    let shapeHolds = true;
+    let lastCount = 0;
+    for (let page = 1; page <= lastIndex; page += 1) {
+      const { count } = await readPage(page, 1);
+      if (page < lastIndex ? count !== pageSize : count < 1 || count > pageSize) shapeHolds = false;
+      if (page === lastIndex) lastCount = count;
+    }
+    const beyond = await readPage(lastIndex + 1, 1);
+    termination = beyond.count === 0 ? 'EMPTY_PAGE' : 'PAGE_BEYOND_LAST_NOT_EMPTY';
+    if (!shapeHolds) shapeIssues.push('PAGE_SIZE_INCONSISTENT');
+    if (beyond.count !== 0) shapeIssues.push('PAGE_BEYOND_LAST_NOT_EMPTY');
+    if (shapeHolds && beyond.count === 0) publisherTotal = lastIndex * pageSize + lastCount;
+  }
+  let passes = 1;
+  if (publisherTotal !== undefined) {
+    for (; passes <= RECONCILIATION_PASSES && seen.size < publisherTotal; passes += 1) {
+      for (let page = 0; page <= lastIndex && seen.size < publisherTotal; page += 1) await readPage(page, passes + 1);
+    }
+    if (seen.size === publisherTotal) termination = passes === 1 ? 'PUBLISHER_TOTAL_REACHED' : 'SECOND_SWEEP_RECONCILED';
+    else shapeIssues.push(seen.size > publisherTotal ? 'UNION_ABOVE_PUBLISHER_TOTAL' : 'PUBLISHER_TOTAL_NOT_REACHED');
   }
   if (links.length === 0) throw new Error(`Swatch Group ${origin}/${lang}/job-finder: aucun lien /job/ — gabarit ou listing cassé`);
 
@@ -328,14 +390,16 @@ export async function fetchSwatchGroupJobs(config: Record<string, unknown>): Pro
       }),
     ),
   );
-  const issues: string[] = [];
+  const issues: string[] = [...shapeIssues];
+  if (passes > 1) issues.push('RECONCILED_BY_SECOND_SWEEP');
   if (rejectedRows.length) issues.push('DETAILS_REJECTED');
-  // The board is exhausted when the pager repeats itself; the count is the
-  // adapter's own link count (the page publishes no total), so the proof is
-  // "every listed link read into a posting", not a publisher counter.
-  const complete = termination === 'REPEATED_PAGE' && rejectedRows.length === 0;
+  // The board is proven when the union of the reads reaches exactly the total the pager publishes, and every listed
+  // link was read into a posting.
+  const linksProven = publisherTotal !== undefined && seen.size === publisherTotal;
+  const complete = linksProven && rejectedRows.length === 0;
   if (!complete) issues.push('ENUMERATION_NOT_PROVEN');
-  return { jobs: jobs.filter((job): job is NormalizedJob => job !== null), declaredTotal: links.length, complete, truncated: termination === 'PAGE_BUDGET_EXHAUSTED', rejectedRows,
-    enumeration: { method: 'DRUPAL_PAGER_UNTIL_NO_NEW_LINK_THEN_EVERY_DETAIL', endpoint: `${origin}/${lang}/job-finder`, pages: pagesRead, rawCount: links.length, termination, issues,
-      scopes: [{ scope: 'links', declaredTotal: links.length, uniqueIds: links.length, pages: pagesRead, complete: termination === 'REPEATED_PAGE' }, { scope: 'details', declaredTotal: links.length, uniqueIds: links.length - rejectedRows.length, pages: links.length, complete: rejectedRows.length === 0 }], pageEvidence } };
+  const declaredTotal = publisherTotal ?? links.length;
+  return { jobs: jobs.filter((job): job is NormalizedJob => job !== null), declaredTotal, complete, truncated: shapeIssues.includes('PAGE_BUDGET_EXHAUSTED'), rejectedRows,
+    enumeration: { method: 'DRUPAL_PAGER_TOTAL_RECONCILED_THEN_EVERY_DETAIL', endpoint: `${origin}/${lang}/job-finder`, pages: pagesRead, rawCount: links.length, termination, issues,
+      scopes: [{ scope: 'links', declaredTotal, uniqueIds: links.length, pages: pagesRead, complete: linksProven }, { scope: 'details', declaredTotal: links.length, uniqueIds: links.length - rejectedRows.length, pages: links.length, complete: rejectedRows.length === 0 }], pageEvidence } };
 }
