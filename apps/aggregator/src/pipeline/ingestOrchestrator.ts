@@ -142,6 +142,19 @@ export function classifySourceRun(stats: IngestStats[], incidents: readonly Sour
   return { issues, incidents: incidents.map(incident => ({ ...incident, blocking, ...(known ? { knownFailure: KNOWN_FAILURE_DECISION } : {}) })) };
 }
 
+/**
+ * Le verdict de la commande `ingest` (une source ciblée, ou toutes sans orchestrateur), avec la règle du RUN
+ * (D-453 §1, D-480 §1) : une retenue prouvée par l'éditeur ou un échec connu décidé ne fait pas échouer la commande.
+ * Mesuré le 30/09/2026 : la collecte ciblée de LVMH (6 233 offres publiées, une annonce de test retenue sur la preuve
+ * de l'éditeur) finissait en échec et signalait la surveillance, quand le RUN l'aurait comptée saine.
+ */
+export function ingestCommandVerdict(stats: IngestStats[], incidents: readonly SourceHealth[]) {
+  const perSource = stats.map(stat => classifySourceRun([stat], incidents.filter(incident => incident.source === stat.source)));
+  const issues = perSource.flatMap(({ issues }, i) => issues.map(issue => ({ ...issue, source: stats[i].source })));
+  const blocking = issues.filter(issue => !isNonBlockingIssue(issue.source, issue));
+  return { ok: stats.length > 0 && blocking.length === 0, issues, blocking, incidents: perSource.flatMap(r => r.incidents) };
+}
+
 /** One source, bounded by its own timeout; the counters it touches are shared. */
 async function ingestOne(prisma: PrismaClient, key: string, result: OrchestratorResult): Promise<void> {
   const started = Date.now();
