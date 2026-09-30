@@ -3,7 +3,7 @@ import { parseAshbyJob } from '../ats/adapters/ashby.js';
 import { applyAvatureJobData } from '../ats/adapters/avature.js';
 import { parseLeverJob } from '../ats/adapters/lever.js';
 import { parseJibePage } from '../ats/adapters/jibe.js';
-import { parseCareerConnectJob, parsePhenomJob, phenomDialect, type CareerConnectJob } from '../ats/adapters/phenom.js';
+import { careerConnectOptions, parseCareerConnectJob, parsePhenomJob, phenomDialect, type CareerConnectJob } from '../ats/adapters/phenom.js';
 import { parseLvmhHit } from '../ats/adapters/lvmhAlgolia.js';
 import { toNormalized as parseTeamtailorJob } from '../ats/adapters/teamtailor.js';
 import { parseWorkdayPublication } from '../ats/adapters/workday.js';
@@ -161,8 +161,12 @@ function readRetainedPublication(kind: string, raw: unknown, context: Context, r
         try { dialect = phenomDialect(config); } catch { return failure('READER_UNQUALIFIED'); }
         if (dialect === 'CAREER_CONNECT_WIDGETS') {
           if (!identifier(raw.jobSeqNo)) return failure('NATIVE_ID_MISSING');
+          // Les réglages du collecteur, lus par la même fonction (PVH, 30/09/2026 : la marque vient du champ `brand`
+          // de l'entrée retenue, comme à la collecte).
+          let options: ReturnType<typeof careerConnectOptions>;
+          try { options = careerConnectOptions(config); } catch { return failure('READER_UNQUALIFIED'); }
           const { postingEvidence, ...entry } = raw;
-          job = parseCareerConnectJob(entry as CareerConnectJob, config.origin, { localePath: typeof config.localePath === 'string' ? config.localePath : undefined });
+          job = parseCareerConnectJob(entry as CareerConnectJob, config.origin, { localePath: options.localePath, brandField: options.brandField });
           if (job && postingEvidence != null) { job = object(postingEvidence) ? enrichRetainedPostingEvidence(job, postingEvidence) : null; if (!job) return failure('DETAIL_EVIDENCE_UNUSABLE'); }
           break;
         }
