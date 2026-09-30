@@ -1,0 +1,17 @@
+{
+  "batchId": "20260930-D480-SWATCH-FLIKFLAK-v1",
+  "reviewedBy": "Claude (CTO produit) : exécution de D-480 §2 (arbitrage CEO du 30/09/2026)",
+  "reviewedAt": "2026-09-29T22:15:00Z",
+  "statement": "D-480 §2 : l'offre 33197 du portail Swatch Group (« Responsable distribution wholesale – Flik Flak – Paris ») est publiée par l'éditeur sous le logo Swatch (brands-logos/swatch.png) depuis le 24/09/2026 ; le CEO a tranché qu'elle publie sous Swatch, le libellé actuel de l'éditeur, comme Cartier sur le portail de Richemont. Le libellé natif « Swatch » de la source swatch-group désigne la Maison Swatch. Alias limité à la source, libellé exact, aucune fusion.",
+  "aliases": [
+    { "sourceKey": "swatch-group", "rawName": "Swatch", "targetCompany": "Swatch" }
+  ],
+  "merges": [],
+  "evidence": [
+    {
+      "url": "https://www.swatchgroup.com/fr/job/33197",
+      "artifactFile": "audits/2026-09-29/registre-relu-d453/swatchgroup-job-33197.html",
+      "explanation": "Page officielle de l'offre 33197 sur swatchgroup.com : logo de Maison /sites/default/files/brands-logos/swatch.png ; le texte présente un poste Flik Flak. L'attribution à Swatch est la décision D-480 §2 du CEO."
+    }
+  ]
+}
