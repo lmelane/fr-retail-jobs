@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { BASE_SOURCE_TIMEOUT_MS, MAX_SOURCE_TIMEOUT_MS, expectedVolume, sourceTimeoutMs } from './sourceTimeout.js';
+import { BASE_SOURCE_TIMEOUT_MS, MAX_SOURCE_TIMEOUT_MS, expectedVolume, sourceTimeoutFor, sourceTimeoutMs, type SourceVolumeReader } from './sourceTimeout.js';
 
 /*
  * Chronologie mesurée de ulta-jibe au RUN du 28/09/2026 (PipelineEvent, CaptureBatch, SourceObservation ;
@@ -43,5 +43,37 @@ describe('Le budget d\'une source suit son volume (ulta-jibe, RUN du 28/09/2026)
     expect(sourceTimeoutMs(1_000_000)).toBe(MAX_SOURCE_TIMEOUT_MS);
     expect(sourceTimeoutMs(Number.NaN)).toBe(BASE_SOURCE_TIMEOUT_MS);
     expect(sourceTimeoutMs(-5)).toBe(BASE_SOURCE_TIMEOUT_MS);
+  });
+});
+
+describe('Le budget lu en base survit aux coupures (sourceTimeoutFor, appelé par ingestOrchestrator)', () => {
+  /** La base, réduite à ce que le calcul lit : les SourceRun récents et le compte des publications actives. */
+  const db = (jobs: number[], active: number) => {
+    const asked: unknown[] = [];
+    const reader: SourceVolumeReader = {
+      sourceRun: { findMany: async (args) => { asked.push(args); return jobs.map(j => ({ jobs: j })); } },
+      jobSource: { count: async (args) => { asked.push(args); return active; } },
+    };
+    return { reader, asked };
+  };
+  const NOW = Date.parse('2026-09-30T16:00:00Z');
+
+  it('prémisse : huit coupures de suite ne laissent que des zéros dans les SourceRun de la fenêtre', () => {
+    expect(expectedVolume(Array(8).fill(0))).toBe(0);
+    expect(sourceTimeoutMs(0)).toBe(BASE_SOURCE_TIMEOUT_MS);
+  });
+
+  it('ulta-jibe coupée huit jours de suite garde son budget, par ses 10 053 publications restées ouvertes', async () => {
+    const { reader, asked } = db(Array(8).fill(0), 10_053);
+    expect(await sourceTimeoutFor(reader, 'ulta-jibe', NOW)).toBe(BASE_SOURCE_TIMEOUT_MS + 10_053 * 250);
+    expect(asked).toEqual([
+      { where: { sourceKey: 'ulta-jibe', ranAt: { gte: new Date(NOW - 8 * 24 * 3_600_000) } }, select: { jobs: true } },
+      { where: { sourceKey: 'ulta-jibe', isActive: true } },
+    ]);
+  });
+
+  it('le plus grand des deux volumes fait le budget ; une petite source reste proche de sa base', async () => {
+    expect(await sourceTimeoutFor(db([9_992, 10_026, 0], 9_000).reader, 'ulta-jibe', NOW)).toBe(BASE_SOURCE_TIMEOUT_MS + 10_026 * 250);
+    expect(await sourceTimeoutFor(db([40, 42], 41).reader, 'petite', NOW)).toBe(BASE_SOURCE_TIMEOUT_MS + 42 * 250);
   });
 });

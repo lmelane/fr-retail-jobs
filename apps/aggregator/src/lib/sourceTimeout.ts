@@ -34,3 +34,23 @@ export function sourceTimeoutMs(expectedJobs: number): number {
 export function expectedVolume(recentJobs: readonly (number | null | undefined)[]): number {
   return recentJobs.reduce<number>((max, jobs) => (typeof jobs === 'number' && Number.isSafeInteger(jobs) && jobs > max ? jobs : max), 0);
 }
+
+/** Ce que le calcul du budget lit en base : les collectes récentes de la source et ses publications actives. */
+export type SourceVolumeReader = {
+  sourceRun: { findMany(args: { where: { sourceKey: string; ranAt: { gte: Date } }; select: { jobs: true } }): Promise<Array<{ jobs: number }>> };
+  jobSource: { count(args: { where: { sourceKey: string; isActive: true } }): Promise<number> };
+};
+
+/**
+ * Le budget de cette source : sa base, plus l'écriture de ce qu'elle porte. Le volume attendu est le plus grand de
+ * ce que ses collectes des huit derniers jours ont rendu et de ses publications encore actives — une coupure écrit
+ * `jobs: 0` et laisse ses offres ouvertes : plusieurs coupures de suite ne ramènent donc pas le budget à la base.
+ */
+export async function sourceTimeoutFor(db: SourceVolumeReader, key: string, now = Date.now()): Promise<number> {
+  const since = new Date(now - EXPECTED_VOLUME_WINDOW_DAYS * 24 * 3_600_000);
+  const [runs, active] = await Promise.all([
+    db.sourceRun.findMany({ where: { sourceKey: key, ranAt: { gte: since } }, select: { jobs: true } }),
+    db.jobSource.count({ where: { sourceKey: key, isActive: true } }),
+  ]);
+  return sourceTimeoutMs(expectedVolume([...runs.map(run => run.jobs), active]));
+}

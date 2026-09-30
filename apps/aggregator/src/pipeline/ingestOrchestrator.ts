@@ -2,7 +2,7 @@ import { maintainReviewedSectors } from '../sectors/qualify.js';
 import { assertPipelineRunning } from '../lib/pipelinePause.js';
 import { log } from '../observability/logger.js';
 import { withSourceBudget } from '../lib/sourceBudget.js';
-import { BASE_SOURCE_TIMEOUT_MS, EXPECTED_VOLUME_WINDOW_DAYS, expectedVolume, sourceTimeoutMs } from '../lib/sourceTimeout.js';
+import { BASE_SOURCE_TIMEOUT_MS, sourceTimeoutFor } from '../lib/sourceTimeout.js';
 import type { PrismaClient } from '@prisma/client';
 import pLimit from 'p-limit';
 import { loadActiveSources, recordSourceRunSummary } from '../connectors/sourceStore.js';
@@ -25,20 +25,6 @@ import { failureLine } from '../lib/runSummary.js';
  * are owned by withSourceBudget. Large portals need a measured bounded budget:
  * the base, plus a write allowance for the source's recent volume (`lib/sourceTimeout.ts`, D-482). */
 const PER_SOURCE_TIMEOUT_MS = BASE_SOURCE_TIMEOUT_MS;
-
-/**
- * Le budget de cette source : sa base, plus l'écriture de ce qu'elle porte. Le volume attendu est le plus grand de
- * ce que ses collectes des huit derniers jours ont rendu et de ses publications encore actives — une coupure écrit
- * `jobs: 0` et laisse ses offres ouvertes : plusieurs coupures de suite ne ramènent donc pas le budget à la base.
- */
-async function sourceTimeoutFor(prisma: PrismaClient, key: string): Promise<number> {
-  const since = new Date(Date.now() - EXPECTED_VOLUME_WINDOW_DAYS * 24 * 3_600_000);
-  const [runs, active] = await Promise.all([
-    prisma.sourceRun.findMany({ where: { sourceKey: key, ranAt: { gte: since } }, select: { jobs: true } }),
-    prisma.jobSource.count({ where: { sourceKey: key, isActive: true } }),
-  ]);
-  return sourceTimeoutMs(expectedVolume([...runs.map(run => run.jobs), active]));
-}
 
 /**
  * How long before the hard timeout a slow crawl should stop itself. The margin
