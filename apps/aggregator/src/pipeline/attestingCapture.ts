@@ -9,7 +9,8 @@
  *     (`SourceIngestionCompletion`, rapport haché) ;
  *   · le manifeste scellé du résultat d'adaptateur : énumération, terminaison, identifiants canoniques, total
  *     déclaré, troncature, lignes rejetées ;
- *   · le rapport de fin d'ingestion : le devenir de chaque sortie que la boucle n'a pas publiée.
+ *   · le rapport de fin d'ingestion : le devenir de chaque sortie que la boucle n'a pas publiée ;
+ *   · le seul total annoncé du manifeste scellé de la collecte précédente, pour confirmer une chute (D-484 §2).
  *
  * La porte de publication (`requireCurrentCaptureRevision`) est réutilisée telle quelle : une collecte qui ne
  * pourrait plus publier aujourd'hui — source non ACTIVE, révision changée, accès révoqué, identité remplacée,
@@ -24,7 +25,7 @@ import { readExtractionManifest } from '../capture/manifest.js';
 import { readIngestionCompletion } from '../capture/completion.js';
 import { requireCurrentCaptureRevision } from '../connectors/sourceRevision.js';
 import { evidenceHash } from '../lib/evidenceHash.js';
-import { isDeclaredEmptyEnumeration, isTrustedForAttestation } from './attestation.js';
+import { isDeclaredEmptyEnumeration, isPublisherConfirmedDrop, isTrustedForAttestation } from './attestation.js';
 import { splitRejectedRows } from './rejectedRows.js';
 import { enumerationEvidence, type AttestationFacts, type EnumerationEvidence } from './refreshPlan.js';
 
@@ -58,8 +59,11 @@ export function attestationFacts(input: {
   metadata: { complete?: boolean; truncated?: boolean; declaredTotal?: number };
   outputs: number; counts: { published: number; held: number; writeFailed: number; skipped: number };
   unreadableRows: number; previousPublished: number | null;
+  /** Le total annoncé dans le manifeste scellé de la collecte de `previousPublished` ; null s'il n'y en avait pas. */
+  previousDeclaredTotal?: number | null;
 }): AttestationFacts {
   const { counts, previousPublished: previous } = input;
+  const previousDeclaredTotal = input.previousDeclaredTotal ?? null;
   const errors = counts.writeFailed + input.unreadableRows;
   const complete = input.metadata.complete ?? null;
   const truncated = input.metadata.truncated === true;
@@ -69,12 +73,32 @@ export function attestationFacts(input: {
   const status: AttestationFacts['status'] = counts.published === 0 && !declaredEmpty ? 'BROKEN'
     : previous === null && !declaredEmpty ? 'NEW'
     : errors > 0 || counts.held > 0 || truncated ? 'DEGRADED' : 'OK';
-  const collapsed = !declaredEmpty && previous !== null && previous > 0 && counts.published < previous * COLLAPSE_SHARE;
+  // D-484 §2 : une chute que l'éditeur confirme, sur ces mêmes faits scellés, n'est pas un effondrement.
+  const confirmedDrop = isPublisherConfirmedDrop({ previous, previousDeclaredTotal, published: counts.published, fetched,
+    declaredTotal: declaredTotal ?? undefined, complete: complete ?? undefined, truncated, errors });
+  const collapsed = !declaredEmpty && !confirmedDrop && previous !== null && previous > 0 && counts.published < previous * COLLAPSE_SHARE;
   const canAttestAbsence = (previous !== null || declaredEmpty) && !collapsed && isTrustedForAttestation({
     status, complete: complete ?? undefined, errors, truncated, declaredTotal: declaredTotal ?? undefined, fetched, previous,
+    published: counts.published, previousDeclaredTotal,
   });
   return { sourceKey: input.sourceKey, captureBatchId: input.captureBatchId, startedAt: input.startedAt, status, errors, truncated,
-    complete, declaredTotal, fetched, published: counts.published, previous, canAttestAbsence };
+    complete, declaredTotal, fetched, published: counts.published, previous, canAttestAbsence,
+    // Only on a confirmed drop: the facts then say why a collapse attests; every other source keeps its exact facts.
+    ...(confirmedDrop ? { confirmedDrop: { previousDeclaredTotal: previousDeclaredTotal! } } : {}) };
+}
+
+/**
+ * Le total annoncé par la collecte précédente, lu dans SON manifeste scellé (jamais dans `SourceRun`), pour la seule
+ * confirmation d'une chute par l'éditeur (D-484 §2). Illisible ou absent : null, et la chute reste un effondrement
+ * qui n'atteste rien — le refus est le sens sûr, jamais une fermeture.
+ */
+export async function sealedDeclaredTotal(db: Prisma.TransactionClient, batchId: string, store?: ObjectStore): Promise<number | null> {
+  try {
+    const total = (await readExtractionManifest(db, batchId, store)).metadata.declaredTotal;
+    return Number.isInteger(total) ? total! : null;
+  } catch {
+    return null;
+  }
 }
 
 function gateReason(error: unknown): string {
@@ -115,12 +139,13 @@ export async function readAttestingCapture(db: Prisma.TransactionClient, sourceK
   if (!completion || completion.report.outputs !== manifest.outputs.length) return { ok: false, captureBatchId: batch.id, reasons: ['rapport de fin d’ingestion sans correspondance avec le manifeste scellé'] };
   const previous = await db.sourceIngestionCompletion.findFirst({
     where: { batch: { sourceKey }, published: { gt: 0 }, completedAt: { lt: completion.row.completedAt }, batchId: { not: batch.id } },
-    orderBy: [{ completedAt: 'desc' }, { batchId: 'desc' }], select: { published: true },
+    orderBy: [{ completedAt: 'desc' }, { batchId: 'desc' }], select: { published: true, batchId: true },
   });
   const rejectedRows = Array.isArray(manifest.metadata.rejectedRows) ? manifest.metadata.rejectedRows : [];
   const split = splitRejectedRows(rejectedRows);
   const facts = attestationFacts({ sourceKey, captureBatchId: batch.id, startedAt: batch.startedAt, metadata: manifest.metadata,
-    outputs: manifest.outputs.length, counts: completion.row, unreadableRows: split.failures.length, previousPublished: previous?.published ?? null });
+    outputs: manifest.outputs.length, counts: completion.row, unreadableRows: split.failures.length, previousPublished: previous?.published ?? null,
+    previousDeclaredTotal: previous ? await sealedDeclaredTotal(db, previous.batchId, store) : null });
   const evidence = enumerationEvidence(sourceKey, batch.id, manifest.metadata);
   const fateByOrdinal = new Map(completion.report.fates.map(fate => [fate.ordinal, fate]));
   const ids = (disposition: string) => new Set(completion.report.fates.filter(fate => fate.disposition === disposition && fate.externalId).map(fate => fate.externalId!));

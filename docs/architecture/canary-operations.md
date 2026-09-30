@@ -102,6 +102,18 @@ d'historique (`HISTORY`, `pipeline/health.ts`) : au-delà du 04/10/2026, seul le
   non prouvée ou réfutée, effondrement ou couverture de champ effondrée restent bloquants et sont nommés dans la
   même note. Un refus d'identité (`EmployerIdentityReviewRequired`) est un refus d'écriture : il bloque, et les
   retenues de la même source restent nommées à côté (note du SourceRun, bilan `retainedOnBlockingSources`).
+- **Chute confirmée par l'éditeur = visible, non bloquante** (décidé, D-484 §2, 30/09). Plus de la moitié des
+  offres en moins qu'au run précédent reste un effondrement bloquant (`SOURCE_HEALTH_REGRESSION`), sauf si
+  l'éditeur le confirme lui-même, les trois conditions ensemble (`isPublisherConfirmedDrop`, `attestation.ts`) :
+  son total annoncé baisse dans la même proportion (rapport des parts publiées du total annoncé, veille et jour, à
+  5 % de 1 : bruit ordinaire mesuré sous 2,8 % sur 1 053 couples de runs prouvés du 20 au 29/09,
+  `scripts/ops/mesures/stabilite-couverture-annoncee.mts`), liste prouvée complète, `fetched` égal au total annoncé.
+  Le total de la veille vient de `SourceRun.declaredTotal` pour la santé, et du manifeste scellé de la collecte
+  précédente pour le refresh. La chute est nommée dans la note du SourceRun, dans l'alerte (section « chutes
+  confirmées par l'éditeur ») et au bilan (`confirmedDrops`) ; elle atteste l'absence comme toute liste prouvée, le
+  refresh fermant ensuite après son délai de 48 h. Compteur absent (jour ou veille), compteur stable, énumération non
+  prouvée, lecture partielle, ou autre défaut de la même source (couverture de champ, retenue à instruire) : bloquant
+  comme avant. Cas d'origine : Aigle, 29/09, 122 → 60 annoncées, 60 lues.
 - **Garde de la preuve négative** (garde technique, pas une décision). « L'annonce ne nomme pas d'employeur »
   ne distingue pas un portail multi-marques d'une page dont le format a changé. Ce motif Workday est surveillé,
   et depuis le 30/09 la description vide chez l'éditeur (`NATIVE_DESCRIPTION_EMPTY`, même défaut possible : un

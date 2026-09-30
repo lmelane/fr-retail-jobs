@@ -39,6 +39,11 @@ export type AttestationFacts = {
   /** Ce que la dernière collecte PRODUCTIVE précédente de cette source avait publié ; null sans passé. */
   previous: number | null;
   canAttestAbsence: boolean;
+  /**
+   * Présent seulement quand la chute de plus de moitié est confirmée par l'éditeur (D-484 §2) : le total qu'il
+   * annonçait à la collecte de `previous`, lu dans son manifeste scellé. C'est ce qui permet d'attester malgré la chute.
+   */
+  confirmedDrop?: { previousDeclaredTotal: number };
 };
 
 /**

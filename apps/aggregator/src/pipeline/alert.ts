@@ -7,11 +7,12 @@ type AlertReport = Pick<HealthReport, 'degraded' | 'broken' | 'incidents'>;
 
 /** The subject leads with what blocks; what is only visible follows. */
 export function alertSubject(report: AlertReport): string {
-  const { blocking, retentions, outages, known, retained } = alertSections(report.incidents);
+  const { blocking, retentions, outages, known, drops, retained } = alertSections(report.incidents);
   return [`[Catwalks] ${count(blocking.length, 'source bloquante', 'sources bloquantes')}`,
     retentions.length ? `${count(retentions.length, 'source', 'sources')} avec retenues non bloquantes (${count(retained, 'offre', 'offres')})` : '',
     outages.length ? `${count(outages.length, 'panne éditeur prouvée, non bloquante', 'pannes éditeur prouvées, non bloquantes')}` : '',
-    known.length ? `${count(known.length, 'échec connu, non bloquant', 'échecs connus, non bloquants')}` : ''].filter(Boolean).join(' · ');
+    known.length ? `${count(known.length, 'échec connu, non bloquant', 'échecs connus, non bloquants')}` : '',
+    drops.length ? `${count(drops.length, 'chute confirmée par l’éditeur, non bloquante', 'chutes confirmées par l’éditeur, non bloquantes')}` : ''].filter(Boolean).join(' · ');
 }
 
 /** Exposed for the witness: the digest exactly as it is sent. */
@@ -64,17 +65,23 @@ function esc(value: string): string {
  *   · BLOQUANT : toute source que l'orchestrateur n'a pas déclarée non bloquante (`blocking` absent = bloquant) ;
  *   · RETENUES NON BLOQUANTES : toutes listées, par nombre d'offres décroissant, avec un texte par motif et le
  *     total ; la preuve de la source et la décision de l'équipe y sont nommées pour ce qu'elles sont ;
- *   · PANNES DE L'ÉDITEUR PROUVÉES : un 5xx archivé, non bloquant, mais ce n'est pas une retenue.
+ *   · PANNES DE L'ÉDITEUR PROUVÉES : un 5xx archivé, non bloquant, mais ce n'est pas une retenue ;
+ *   · CHUTES CONFIRMÉES PAR L'ÉDITEUR (D-484 §2) : plus de la moitié des offres en moins, que le total annoncé par
+ *     l'éditeur confirme ; non bloquantes, ni panne ni retenue. Une source qui retient aussi reste dans les retenues,
+ *     sa chute nommée dans son bloc.
  */
 export function alertSections(incidents: readonly SourceHealth[]) {
   const blocking = incidents.filter(incident => incident.blocking !== false);
   const retentions = incidents.filter(incident => incident.blocking === false && incident.nonBlockingRetentionOnly)
     .sort((a, b) => (b.retained ?? 0) - (a.retained ?? 0) || a.source.localeCompare(b.source));
-  const outages = incidents.filter(incident => incident.blocking === false && !incident.nonBlockingRetentionOnly && !incident.knownFailure);
+  const outages = incidents.filter(incident => incident.blocking === false && !incident.nonBlockingRetentionOnly && !incident.knownFailure
+    && !incident.confirmedDrop);
   // D-480 §1 : un échec connu décidé par le CEO n'est ni bloquant ni une panne prouvée de l'éditeur.
   const known = incidents.filter(incident => incident.blocking === false && !incident.nonBlockingRetentionOnly && incident.knownFailure);
+  const drops = incidents.filter(incident => incident.blocking === false && !incident.nonBlockingRetentionOnly && !incident.knownFailure
+    && incident.confirmedDrop);
   const retained = retentions.reduce((total, incident) => total + (incident.retained ?? 0), 0);
-  return { blocking, retentions, outages, known, retained };
+  return { blocking, retentions, outages, known, drops, retained };
 }
 
 /**
@@ -120,20 +127,22 @@ function sourceBlock(incident: SourceHealth, blocks: boolean, lines: string[]): 
 }
 
 function buildHtml(report: AlertReport): string {
-  const { blocking, retentions, outages, known, retained } = alertSections(report.incidents);
+  const { blocking, retentions, outages, known, drops, retained } = alertSections(report.incidents);
   const previous = (incident: SourceHealth) => incident.previous != null ? `${NUMBER.format(incident.previous)} au run précédent` : '';
   const volume = (incident: SourceHealth) => incident.notCollected
     ? [NOT_COLLECTED, previous(incident)].filter(Boolean).join(', ')
     : [count(incident.jobs, 'offre publiée par ce RUN', 'offres publiées par ce RUN'), previous(incident)].filter(Boolean).join(', ');
   const blockingBlocks = blocking.map(incident => sourceBlock(incident, true,
     [volume(incident), ...(incident.note ? [incident.note] : []), ...retentionLines(incident)])).join('');
-  const retentionBlocks = retentions.map(incident => sourceBlock(incident, false, [...retentionLines(incident),
+  const retentionBlocks = retentions.map(incident => sourceBlock(incident, false, [...(incident.confirmedDrop && incident.note ? [incident.note] : []),
+    ...retentionLines(incident),
     ...(incident.guardWithoutReference ? ['garde technique sans référence : aucun RUN complet antérieur n’a collecté la source'] : []),
     volume(incident)])).join('');
   const outageBlocks = outages.map(incident => sourceBlock(incident, false,
     [...(incident.notCollected ? [volume(incident)] : []), ...(incident.note ? [incident.note] : [])])).join('');
   const knownBlocks = known.map(incident => sourceBlock(incident, false,
     [volume(incident), ...(incident.note ? [incident.note] : []), `décision ${incident.knownFailure}`])).join('');
+  const dropBlocks = drops.map(incident => sourceBlock(incident, false, [volume(incident), ...(incident.note ? [incident.note] : [])])).join('');
   const heading = (text: string) => `<h3 style="font-weight:400;font-size:17px;margin:24px 0 4px">${text}</h3>`;
   // A source that failed before collecting is counted apart: its offers stay online, it is not « en panne » with none.
   const notCollected = report.incidents.filter(incident => incident.notCollected && incident.status === 'BROKEN').length;
@@ -154,6 +163,9 @@ function buildHtml(report: AlertReport): string {
     ${known.length ? `${heading(`Non bloquant, échecs connus : ${count(known.length, 'source', 'sources')}`)}
     ${line('Décidés par le CEO : la source reste collectée et publie ses offres, elle ne ferme aucune offre qu’elle ne sait pas prouver absente. Tout autre défaut de ces sources resterait bloquant.')}
     ${knownBlocks}` : ''}
+    ${drops.length ? `${heading(`Non bloquant, chutes confirmées par l’éditeur : ${count(drops.length, 'source', 'sources')}`)}
+    ${line('Plus de la moitié des offres en moins, et l’éditeur le dit lui-même : son total annoncé baisse dans la même proportion, la liste est prouvée complète, toutes les offres annoncées sont lues (D-484 §2). Ses offres retirées suivent la règle d’une liste prouvée : fermées dès qu’elles n’ont pas été revues depuis 48 heures.')}
+    ${dropBlocks}` : ''}
   </div>`;
 }
 

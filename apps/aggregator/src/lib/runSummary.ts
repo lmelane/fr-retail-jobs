@@ -95,6 +95,10 @@ export function summarizeOrchestration(result: OrchestratorResult) {
     teamExclusions: listing(teamExcluded),
     /** Sources whose negative-proof guard had no complete RUN of reference: not blocking, said (D-453 §1). */
     guardWithoutReference: nonBlockingIncidents.filter(incident => incident.guardWithoutReference).map(incident => incident.source).sort(),
+    /** Drops of more than half the publisher confirms itself (D-484 §2): not blocking, never hidden, with both counters. */
+    confirmedDrops: nonBlockingIncidents.filter(incident => incident.confirmedDrop).sort((a, b) => a.source.localeCompare(b.source))
+      .map(incident => ({ source: incident.source, previous: incident.previous, published: incident.jobs,
+        previousDeclaredTotal: incident.confirmedDrop!.previousDeclaredTotal, declaredTotal: incident.confirmedDrop!.declaredTotal })),
     /** Retained postings of the sources that DO block the RUN, whatever blocks them. */
     retainedOnBlockingSources: listing(retainedOnBlocking),
     /** Retained postings, blocking or not, still online from an earlier collection once the RUN archived its holds. */
