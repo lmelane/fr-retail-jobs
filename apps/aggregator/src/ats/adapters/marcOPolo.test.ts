@@ -7,12 +7,13 @@ import { withCaptureContext, type CaptureRecord } from '../../capture/context.js
 vi.mock('../../lib/hostGate.js', () => ({ withHostGate: async (_url: string, run: () => Promise<unknown>) => run(), reportThrottle: () => {}, reportSuccess: () => {} }));
 // Les attentes du transport et de la relecture différée sont sautées ; le rejeu, lui, n'attend jamais.
 vi.mock('../../lib/sourceBudget.js', async (importOriginal) => ({
-  ...(await importOriginal<typeof import('../../lib/sourceBudget.js')>()), sourceDelay: vi.fn(async () => undefined) }));
+  ...(await importOriginal<typeof import('../../lib/sourceBudget.js')>()), sourceDelay: vi.fn(async () => undefined), sourceDeadlineReached: vi.fn(() => false) }));
 
 import { fetchMarcOPoloJobs, marcOPoloSettings, readMarcOPoloRaw, readPublishedList, vacancyExternalId, vacancyPageUrl } from './marcOPolo.js';
 import { fetchAtsJobs, normalizeAdapterResult } from '../index.js';
 import { recoverRetainedPublication } from '../../publication/recovery.js';
 import { readLocations } from '../../facts/locations.js';
+import { sourceDeadlineReached } from '../../lib/sourceBudget.js';
 
 /**
  * MARC O'POLO (D-485) — le lecteur dédié, sur les réponses RÉELLES du site du 30/09/2026.
@@ -137,6 +138,15 @@ describe("Marc O'Polo — lecture complète et preuve de fin de liste", () => {
     const canonical = new Set(result.enumeration!.pageEvidence![0].canonicalIds);
     expect(result.jobs.some((job) => CLOSED.some((id) => job.url.endsWith(id)))).toBe(false);
     expect(canonical.size).toBe(116);
+  });
+
+  it('budget épuisé avant de vérifier les offres que seule la page porte : non vérifiées, la preuve tombe', async () => {
+    vi.mocked(sourceDeadlineReached).mockReturnValue(true);
+    try {
+      const result = await read({ page: prodPage });
+      expect(result.complete).toBe(false);
+      expect([...result.enumeration!.issues!].sort()).toEqual(CLOSED.map((id) => `PUBLISHED_ONLY_UNVERIFIED:${id}`));
+    } finally { vi.mocked(sourceDeadlineReached).mockReturnValue(false); }
   });
 
   it('une offre que la page publie, que l’API omet et dont la fiche est vivante réfute la preuve', async () => {

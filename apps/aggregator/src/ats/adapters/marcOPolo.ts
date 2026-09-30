@@ -277,6 +277,8 @@ export async function fetchMarcOPoloJobs(config: Record<string, unknown>): Promi
   if (pageOnly.length > MAX_PAGE_ONLY_CHECKS) issues.push(`PUBLISHED_LIST_DIVERGES:${pageOnly.length}`);
   else {
     for (const id of pageOnly) {
+      // Budget épuisé : l'offre n'est pas vérifiée, et le dit — jamais comptée fermée faute de temps.
+      if (sourceDeadlineReached()) { issues.push(`PUBLISHED_ONLY_UNVERIFIED:${id}`); continue; }
       const outcome = await readDetail(settings, id);
       if ('detail' in outcome) issues.push(`API_LIST_OMITS_PUBLISHED:${id}`);
       else if (outcome.failure === 'DETAIL_EMPTY_AT_SOURCE') closedSinceRender++;

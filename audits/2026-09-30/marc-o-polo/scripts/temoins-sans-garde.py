@@ -21,6 +21,8 @@ P = 'src/lib/hostGate.marc-o-polo.test.ts'
 CASES = [
   ('témoin de la page publiée supprimé', A, [
     ("  const pageOnly = (published.ids ?? []).filter((id) => !listed.has(id));", "  const pageOnly: string[] = [];")], [T]),
+  ('budget épuisé : offres de la page comptées vérifiées', A, [
+    ("      if (sourceDeadlineReached()) { issues.push(`PUBLISHED_ONLY_UNVERIFIED:${id}`); continue; }\n", "")], [T]),
   ('offre fermée chez l’éditeur non reconnue', A, [
     ("      else if (outcome.failure === 'DETAIL_EMPTY_AT_SOURCE') closedSinceRender++;\n", "")], [T]),
   ('API déclarée par le site non comparée', A, [
