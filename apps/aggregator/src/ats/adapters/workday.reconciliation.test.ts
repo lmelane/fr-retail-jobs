@@ -109,6 +109,22 @@ describe('Nordstrom, 29/09/2026 — le total change pendant la lecture : une sec
     expect(r.jobs).toHaveLength(61);
   });
 
+  it("un retrait au milieu du tableau sans retour en tête (page au-delà de la fin vide) : aucune seconde passe, NON prouvé", async () => {
+    const posting = (id: number): Posting => ({ title: `Sales ${id}`, externalPath: `/job/Paris/Sales_${id}`, bulletFields: [`R-${id}`] });
+    const before = Array.from({ length: 50 }, (_, i) => posting(i));
+    const after = before.filter((_, i) => i !== 5);
+    // Page 0 lue avant le retrait de Sales_5 (déjà lue) ; les suivantes après : Sales_20 saute en page 0, jamais servie.
+    serve((offset) => offset === 0 ? { total: 50, jobPostings: before.slice(0, 20) } : { total: 0, jobPostings: after.slice(offset, offset + 20) });
+    const r = await fetchWorkdayJobs({ ...config, tenant: 't' });
+    // Prémisse : 49 lignes servies sur 50 annoncées, Sales_20 jamais servie, aucun total différent n'a été lu.
+    expect(r.enumeration?.rawCount).toBe(49);
+    expect(r.jobs.map((j) => j.externalId)).not.toContain('Sales_20');
+    expect(r.enumeration?.issues).not.toContain('SOURCE_TOTAL_CHANGED');
+    expect(r.complete).toBe(false);
+    expect(r.enumeration?.termination).toBe('EMPTY_PAGE');
+    expect(fetchJson).toHaveBeenCalledTimes(4);
+  });
+
   it('une ligne sans chemin servie par les deux passes reste UN témoin de rejet, et compte dans la preuve de la seconde', async () => {
     const posting = (id: number): Posting => ({ title: `Sales ${id}`, externalPath: `/job/Paris/Sales_${id}`, bulletFields: [`R-${id}`] });
     const head = Array.from({ length: 20 }, (_, i) => posting(i));
