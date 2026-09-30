@@ -344,6 +344,7 @@ export async function fetchSwatchGroupJobs(config: Record<string, unknown>): Pro
   const shapeIssues: string[] = [];
   let termination: string;
   let publisherTotal: number | undefined;
+  let lastCount = 0;
   if (!Number.isInteger(lastIndex) || lastIndex < 1) {
     // Sans lien « Dernier », aucun total : on lit comme avant, jusqu'à une page sans lien nouveau, sans rien prouver.
     shapeIssues.push('LAST_PAGE_LINK_ABSENT');
@@ -359,7 +360,6 @@ export async function fetchSwatchGroupJobs(config: Record<string, unknown>): Pro
     for (let page = 1; page < maxPages; page += 1) await readPage(page, 1);
   } else {
     let shapeHolds = true;
-    let lastCount = 0;
     for (let page = 1; page <= lastIndex; page += 1) {
       const { count } = await readPage(page, 1);
       if (page < lastIndex ? count !== pageSize : count < 1 || count > pageSize) shapeHolds = false;
@@ -383,7 +383,19 @@ export async function fetchSwatchGroupJobs(config: Record<string, unknown>): Pro
         passes += 1;
         break;
       }
-      for (let page = 1; page <= lastIndex && seen.size < publisherTotal; page += 1) await readPage(page, passes + 1, sweepLang);
+      // Chaque page de l'autre langue doit porter le nombre de liens attendu (celui de la première, ou de la dernière
+      // page lue) AVANT de compter : une page d'une autre forme est un listing changé, pas une relecture (audit adverse).
+      let changed = false;
+      for (let page = 1; page <= lastIndex && seen.size < publisherTotal; page += 1) {
+        const expected = page < lastIndex ? pageSize : lastCount;
+        const read = await readPage(page, passes + 1, sweepLang, (_html, count) => count === expected);
+        if (!read.admitted) { changed = true; break; }
+      }
+      if (changed) {
+        shapeIssues.push('PUBLISHER_TOTAL_CHANGED');
+        passes += 1;
+        break;
+      }
     }
     if (seen.size === publisherTotal) termination = passes === 1 ? 'PUBLISHER_TOTAL_REACHED' : 'SECOND_SWEEP_RECONCILED';
     else shapeIssues.push(seen.size > publisherTotal ? 'UNION_ABOVE_PUBLISHER_TOTAL' : 'PUBLISHER_TOTAL_NOT_REACHED');
