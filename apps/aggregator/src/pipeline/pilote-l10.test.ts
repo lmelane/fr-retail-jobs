@@ -53,8 +53,8 @@ function candidate(cle: string, ext: string, companyId: string, employeur: strin
     sourceKey: cle, externalId: ext, companyId, title: 'Client Advisor',
     url: `https://exemple.test/${cle}/${ext}`, company: employeur ?? maison,
     rawEmployerName: employeur ?? maison,
-    // Sans employeur natif, le libellé vient du REGISTRE : c'est la branche qui exige une
-    // certification SINGLE_BRAND du portail (`resolve.ts:40`).
+    // Sans employeur natif, le libellé vient du REGISTRE : c'est la branche qui exige un
+    // périmètre relu du portail, SINGLE_BRAND ou MULTI_BRAND (`resolve.ts`, D-479 §2).
     employerLabelOrigin: employeur ? 'ADAPTER_COMPANY' : 'SOURCE_CATALOGUE_LABEL',
     atsType: 'GENERIC_JSONLD', sourceTier: 'EMPLOYER_DIRECT', country: 'US', city: 'New York',
   } as unknown as CandidateJob & { companyId: string };
@@ -110,8 +110,8 @@ describe('pilote L10 — attribution automatique de l\'employeur', () => {
   it('ANONYME : une annonce sans employeur nommé n\'est JAMAIS attribuée de force', async () => {
     /*
      * `parfums-chanel` ne nomme personne. Le libellé vient alors du registre, et le produit exige
-     * une certification SINGLE_BRAND avant d'attribuer au propriétaire du portail — refus correct
-     * sur un portail non certifié.
+     * un périmètre relu avant d'attribuer au propriétaire du portail — refus correct sur un
+     * portail dont le périmètre n'a jamais été relu (NULL).
      */
     const cle = `pilote-anon-${randomUUID().slice(0, 8)}`;
     const co = await poser(cle, 'Chanel', null);
@@ -122,6 +122,19 @@ describe('pilote L10 — attribution automatique de l\'employeur', () => {
     // LE MOTIF DÉTAILLÉ — invisible avant le lot de traçabilité, qui écrasait les sept causes
     // sous le seul nom de la classe.
     expect(new Set(r.motifs)).toEqual(new Set(['EmployerIdentityReviewRequired:PORTAL_OWNER_NOT_CERTIFIED']));
+  });
+
+  it('MULTI sans enseigne : l\'annonce qui ne nomme personne publie sous le groupe, les autres gardent la leur (D-479 §2)', async () => {
+    // LVMH, RUN du 29/09/2026 : 30 annonces par jour sans Maison dans l'index public, refusées jusque-là.
+    const cle = `pilote-multi-anon-${randomUUID().slice(0, 8)}`;
+    const co = await poser(cle, 'LVMH (toutes Maisons)', 'MULTI_BRAND');
+    const r = await passage(cle, co.id, 'LVMH (toutes Maisons)', ['Christian Dior Couture', null], 'e');
+
+    expect(r.refuse, `refus inattendus : ${r.motifs.join(', ')}`).toBe(0);
+    expect(r.publie).toBe(2);
+    const jobs = await db.job.findMany({ where: { sources: { some: { sourceKey: cle } } }, select: { company: { select: { name: true } } } });
+    // Le groupe porte le nom de sa clé, sans la parenthèse du registre.
+    expect(jobs.map((j) => j.company.name).sort()).toEqual(['Christian Dior Couture', 'LVMH']);
   });
 
   it('second passage : aucun doublon', async () => {
