@@ -404,7 +404,7 @@ function collectionHealth(stat: IngestStats, base: Omit<SourceHealth, 'status'>,
     const confirmed = isPublisherConfirmedDrop({ previous: before, previousDeclaredTotal, published: jobs, fetched: stat.fetched,
       declaredTotal: stat.declaredTotal, complete: stat.complete, truncated: stat.truncated, errors: stat.errors });
     const confirmation = confirmed ? `, confirmée par l’éditeur : total annoncé ${previousDeclaredTotal} → ${stat.declaredTotal}, ` +
-      `${stat.fetched} lues sur ${stat.declaredTotal}, énumération prouvée (D-484 §2, non bloquant)` : '';
+      `${stat.fetched} lues sur ${stat.declaredTotal}, énumération prouvée (D-484 §2, ${fieldIncident ? 'mais bloquant par le défaut qui suit' : 'non bloquant'})` : '';
     return {
       source: stat.source,
       status: 'DEGRADED',

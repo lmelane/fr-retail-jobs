@@ -134,8 +134,12 @@ describe('D-484 §2 : toute autre chute reste bloquante', () => {
   it('compteur qui baisse, mais pas dans la même proportion (122 → 100 annoncées, 60 publiées)', async () => {
     expect(await blocks({ ...AIGLE_2909, declaredTotal: 100, fetched: 100, inSector: 60 })).toEqual([{ origin: 'UNKNOWN', code: 'SOURCE_HEALTH_REGRESSION', count: 1 }]);
   });
-  it('chute confirmée mais descriptions effondrées : l’autre défaut bloque, jamais comme échec connu', async () => {
+  it('chute confirmée mais descriptions effondrées : l’autre défaut bloque, jamais comme échec connu, et la note le dit', async () => {
     expect(await blocks({ ...AIGLE_2909, withDescription: 10 })).toEqual([{ origin: 'UNKNOWN', code: 'SOURCE_HEALTH_REGRESSION', count: 1 }]);
+    const { incidents } = await runOne({ ...AIGLE_2909, withDescription: 10 });
+    expect(incidents[0].note).toContain('mais bloquant par le défaut qui suit');
+    expect(incidents[0].note).toContain('descriptions manquantes');
+    expect(incidents[0].note).not.toContain('non bloquant');
   });
 });
 
