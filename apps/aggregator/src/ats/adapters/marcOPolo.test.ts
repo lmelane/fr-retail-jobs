@@ -9,7 +9,7 @@ vi.mock('../../lib/hostGate.js', () => ({ withHostGate: async (_url: string, run
 vi.mock('../../lib/sourceBudget.js', async (importOriginal) => ({
   ...(await importOriginal<typeof import('../../lib/sourceBudget.js')>()), sourceDelay: vi.fn(async () => undefined), sourceDeadlineReached: vi.fn(() => false) }));
 
-import { fetchMarcOPoloJobs, marcOPoloSettings, readMarcOPoloRaw, readPublishedList, vacancyExternalId, vacancyPageUrl } from './marcOPolo.js';
+import { fetchMarcOPoloJobs, marcOPoloSettings, readEmployerFromJobPage, readMarcOPoloRaw, readPublishedList, vacancyExternalId, vacancyPageUrl } from './marcOPolo.js';
 import { fetchAtsJobs, normalizeAdapterResult } from '../index.js';
 import { recoverRetainedPublication } from '../../publication/recovery.js';
 import { readLocations } from '../../facts/locations.js';
@@ -36,6 +36,14 @@ const archive = JSON.parse(archiveText) as Archived[];
 const filteredPage = fixture('marc-o-polo-liste-filtree-20260930.html.gz');
 const prodPage = fixture('marc-o-polo-liste-prod-0645-20260930.html.gz');
 const sitemap = fixture('marc-o-polo-sitemap-en-20260930.xml.gz');
+/**
+ * Les pages d'offre lues pour l'employeur (D-489) : 2026-4270 et 2026-4271, les deux premières de la liste du 30/09,
+ * lues en direct à 12:20 sous l'identité du collecteur ; et la page 2026-4345 archivée en production à 06:45 par le
+ * lecteur générique (lot 63f23d1e, séquence 3), qui rattachait les offres en ligne.
+ */
+const page4270 = fixture('marc-o-polo-fiche-4270-20260930.html.gz');
+const page4271 = fixture('marc-o-polo-fiche-4271-20260930.html.gz');
+const prodJobPage = fixture('marc-o-polo-fiche-4345-prod-0645-20260930.html.gz');
 
 const START = 'https://company.marc-o-polo.com/en/career/start-creating-with-us/our-jobs';
 const API = 'https://vhfco59ro6.execute-api.eu-central-1.amazonaws.com/production';
@@ -47,7 +55,8 @@ const livePage = byUrl.get(START)!.body;
 const apiList = JSON.parse(byUrl.get(LIST_URL)!.body) as Array<{ id: string; title: string }>;
 const detailUrl = (id: string) => `${API}/vacancies/${id}?language=en`;
 
-type Plan = { page?: string; list?: unknown; detail?: (id: string, attempt: number) => Response | undefined };
+type Plan = { page?: string; list?: unknown; detail?: (id: string, attempt: number) => Response | undefined;
+  jobPage?: (id: string) => Response | undefined };
 const response = (body: string, status = 200, type = 'application/json') => new Response(body, { status, headers: { 'content-type': type } });
 function network(plan: Plan = {}) {
   const attempts = new Map<string, number>();
@@ -56,6 +65,13 @@ function network(plan: Plan = {}) {
     const n = (attempts.get(url) ?? 0) + 1; attempts.set(url, n);
     if (url === START) return response(plan.page ?? livePage, 200, 'text/html;charset=utf-8');
     if (url === LIST_URL) return response(plan.list === undefined ? byUrl.get(LIST_URL)!.body : JSON.stringify(plan.list));
+    const pageId = url.startsWith(`${START}/`) ? /(\d{4}-\d{4})$/.exec(url)?.[1] : undefined;
+    if (pageId) {
+      const planned = plan.jobPage?.(pageId);
+      if (planned) return planned;
+      const html = JOB_PAGES[pageId];
+      return html ? response(html, 200, 'text/html;charset=utf-8') : response('<html>not found</html>', 404, 'text/html');
+    }
     const id = /\/vacancies\/(\d{4}-\d{4})\?language=en$/.exec(url)?.[1];
     if (id) {
       const planned = plan.detail?.(id, n);
@@ -70,6 +86,9 @@ function network(plan: Plan = {}) {
 }
 const read = async (plan: Plan = {}, settings: Record<string, unknown> = config) => { network(plan); return normalizeAdapterResult(await fetchMarcOPoloJobs(settings)); };
 const counters = (result: Awaited<ReturnType<typeof read>>) => result.enumeration!.pageEvidence![0].componentCounters;
+const JOB_PAGES: Record<string, string> = { '2026-4270': page4270, '2026-4271': page4271 };
+const html = (body: string) => response(body, 200, 'text/html;charset=utf-8');
+const EMPLOYER = 'Marc O’Polo';
 
 beforeEach(() => vi.stubEnv('PIPELINE_PAUSED', '0'));
 afterEach(() => { vi.unstubAllGlobals(); vi.unstubAllEnvs(); });
@@ -190,6 +209,65 @@ describe("Marc O'Polo — lecture complète et preuve de fin de liste", () => {
   });
 });
 
+describe("Marc O'Polo — l'employeur déclaré par le site (D-489)", () => {
+  it('prémisse : la page archivée en production par le lecteur générique et les deux pages lues déclarent le même nom', () => {
+    expect(sha256(prodJobPage)).toBe('7aaa96e8982c04af3aa40d6c6750064e1010fcaa517440306b6921fced93245d');
+    expect(sha256(page4270)).toBe('b41af9bf5e521dc0612c4fa3a27989167ed83cef1c691df14aace54a13c39ac9');
+    expect(sha256(page4271)).toBe('0dae710eb99a70127a92250128da01daf2c0414dd82ba25f64d5cb9580503a87');
+    const title = (id: string) => JSON.parse(byUrl.get(detailUrl(id))!.body).title as string;
+    expect(readEmployerFromJobPage(prodJobPage, 'Lagerist Outlet Radolfzell (25- 30h) m/w/d')).toEqual({ name: EMPLOYER });
+    expect(readEmployerFromJobPage(page4270, title('2026-4270'))).toEqual({ name: EMPLOYER });
+    expect(readEmployerFromJobPage(page4271, title('2026-4271'))).toEqual({ name: EMPLOYER });
+    expect(apiList.slice(0, 2).map((row) => row.id)).toEqual(['2026-4270', '2026-4271']);
+    // L'API, elle, ne nomme aucun employeur : sans les pages, aucune offre n'en porterait.
+    expect(archive.filter((r) => r.url.includes('/vacancies/')).some((r) => /hiringOrganization|employer|company/i.test(r.body))).toBe(false);
+  });
+
+  it('les deux pages lues déclarent « Marc O’Polo » : toutes les offres le portent, la preuve le dit', async () => {
+    const { attempts } = network();
+    const result = normalizeAdapterResult(await fetchMarcOPoloJobs(config));
+    expect(result.complete).toBe(true);
+    expect(result.jobs.every((job) => job.company === EMPLOYER && job.employerEvidence?.rawName === EMPLOYER
+      && job.employerEvidence.rule === 'SITE_JOBPOSTING_EMPLOYER_APPLIED_TO_LISTING')).toBe(true);
+    expect(counters(result)).toEqual(expect.arrayContaining([`employeur=${EMPLOYER}`,
+      `employeur.page=${vacancyPageUrl('en', apiList[0].title, '2026-4270')}`, `employeur.page=${vacancyPageUrl('en', apiList[1].title, '2026-4271')}`]));
+    expect([...attempts.keys()].filter((url) => url.startsWith(`${START}/`))).toHaveLength(2);
+    expect((result.jobs[5].raw as { employer: unknown }).employer).toEqual({ name: EMPLOYER, pages: [
+      { url: vacancyPageUrl('en', apiList[0].title, '2026-4270'), sha256: sha256(page4270) },
+      { url: vacancyPageUrl('en', apiList[1].title, '2026-4271'), sha256: sha256(page4271) }] });
+  });
+
+  const absent = async (plan: Plan, motif: string) => {
+    const result = await read(plan);
+    expect(result.jobs).toHaveLength(116);
+    expect(result.jobs.some((job) => job.company !== undefined || job.employerEvidence !== undefined)).toBe(false);
+    expect(counters(result)).toContain(`employeur=absent:${motif}`);
+    // Un défaut d'employeur n'est pas un défaut de parcours : la preuve de fin de liste tient.
+    expect(result.complete).toBe(true);
+    expect((result.jobs[0].raw as { employer: { problem?: string } }).employer.problem).toBe(motif);
+  };
+  it('page d’offre en échec : aucun nom par défaut', () => absent({ jobPage: (id) => (id === '2026-4271' ? response('{"message":"Forbidden"}', 403) : undefined) }, 'EMPLOYER_PAGE_FETCH_FAILED'));
+  it('page sans JSON-LD : aucun nom par défaut', () => absent({ jobPage: (id) => (id === '2026-4270' ? html('<html><body>Our Jobs</body></html>') : undefined) }, 'EMPLOYER_PAGE_WITHOUT_JOBPOSTING'));
+  it('page d’une autre offre : aucun nom par défaut', () => absent({ jobPage: (id) => (id === '2026-4270' ? html(page4271) : undefined) }, 'EMPLOYER_PAGE_OTHER_POSTING'));
+  it('page qui ne déclare pas d’employeur : aucun nom par défaut', () =>
+    absent({ jobPage: (id) => (id === '2026-4271' ? html(page4271.replace(/"hiringOrganization":\{[^}]*\},?/, '')) : undefined) }, 'EMPLOYER_NOT_DECLARED'));
+  it('deux pages qui déclarent deux noms différents : aucun nom par défaut', () =>
+    absent({ jobPage: (id) => (id === '2026-4271' ? html(page4271.replace(/"name":"Marc O’Polo"/, '"name":"MOP Franchise GmbH"')) : undefined) }, 'EMPLOYER_PAGES_DISAGREE'));
+
+  it('la reprise ne rend le nom que s’il vient de pages du site toutes lues', async () => {
+    network();
+    const job = (await fetchMarcOPoloJobs(config)).jobs[3];
+    const raw = JSON.parse(JSON.stringify(job.raw));
+    const context = { externalId: job.externalId, url: job.url, observedAt: new Date(), config };
+    const recovered = recoverRetainedPublication('generic-listing', raw, context);
+    expect(recovered).toMatchObject({ status: 'RECOVERABLE', job: { company: EMPLOYER } });
+    const forged = { ...raw, employer: { ...raw.employer, pages: [{ url: 'https://evil.example/our-jobs/x-2026-4270', sha256: raw.employer.pages[0].sha256 }] } };
+    expect(readMarcOPoloRaw(forged)?.company).toBeUndefined();
+    expect(readMarcOPoloRaw({ ...raw, employer: { ...raw.employer, problem: 'EMPLOYER_PAGES_DISAGREE' } })?.company).toBeUndefined();
+    expect(readMarcOPoloRaw({ ...raw, employer: undefined })?.company).toBeUndefined();
+  });
+});
+
 describe("Marc O'Polo — fiches", () => {
   it('une fiche refusée (403) est relue une fois plus tard, et l’offre revient', async () => {
     const target = apiList[10].id;
@@ -257,7 +335,7 @@ describe("Marc O'Polo — configuration, rejeu et reprise", () => {
       const recovered = recoverRetainedPublication('generic-listing', JSON.parse(JSON.stringify(job.raw)),
         { externalId: job.externalId, url: job.url, observedAt, config });
       expect(recovered.status).toBe('RECOVERABLE');
-      if (recovered.status === 'RECOVERABLE') expect(recovered.job.description).toBe(job.description);
+      if (recovered.status === 'RECOVERABLE') expect(recovered.job).toMatchObject({ description: job.description, company: EMPLOYER });
     }
     // Le lieu et le code postal se lisent dans le RAW retenu, comme le JSON-LD le permettait au lecteur générique.
     const radolfzell = live.jobs.find((job) => job.url.endsWith('2026-4345'))!;
@@ -267,7 +345,7 @@ describe("Marc O'Polo — configuration, rejeu et reprise", () => {
 
   it('un RAW retenu dont l’adresse ne reproduit pas celle du titre de liste n’est pas repris', () => {
     const raw = { source: 'marc-o-polo-vacancies-v1', language: 'en', pageUrl: `${START}/autre-2026-4345`,
-      listing: apiList.find((row) => row.id === '2026-4345'), detail: JSON.parse(byUrl.get(detailUrl('2026-4345'))!.body) };
+      listing: apiList.find((row) => row.id === '2026-4345'), detail: JSON.parse(byUrl.get(detailUrl('2026-4345'))!.body), employer: { problem: 'EMPLOYER_NO_PAGE_TO_READ', pages: [] } };
     expect(recoverRetainedPublication('generic-listing', raw, { externalId: vacancyExternalId(raw.pageUrl), url: raw.pageUrl,
       observedAt: new Date(), config })).toMatchObject({ status: 'RECOLLECT_OR_REVIEW' });
     // La reprise refuse aussi par son contrôle d'identité ; la lecture du RAW, elle, ne rend jamais une offre dont

@@ -7,6 +7,7 @@ import { htmlToPlainText } from '../../lib/html.js';
 import { assertPipelineRunning } from '../../lib/pipelinePause.js';
 import { assertSourceRunning, sourceDeadlineReached } from '../../lib/sourceBudget.js';
 import { enumerationComplete } from '../enumerationIssues.js';
+import { extractJobPostings } from '../../connectors/generic/jsonLdSitemap.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
 
 /**
@@ -44,10 +45,10 @@ import type { AdapterResult, NormalizedJob } from '../../types.js';
  * autres ont changé d'intitulé chez l'éditeur (2) ou sont fermées (4) (`audits/2026-09-30/marc-o-polo/scripts/
  * publications-retrouvees.mts`).
  *
- * L'EMPLOYEUR N'EST PAS LU : l'API n'en publie aucun. Le lecteur générique lisait « Marc O’Polo » dans le JSON-LD de
- * chaque fiche, une constante du code du site (`hiringOrganization`). Sans libellé, l'offre passe par le portail
- * certifié (`Source.portalScope`), NULL pour cette source le 30/09 : chaque offre serait refusée pour identité. Le
- * choix appartient au CEO (carte D-485, `identite-employeur.mts`) ; la source ne se réactive pas avant.
+ * L'EMPLOYEUR : l'API n'en publie aucun. D-489 (CEO, 30/09) : à chaque collecte, le lecteur lit des pages d'offre du
+ * site et applique à toutes les offres le nom qu'elles déclarent (voir `EmployerStatement`). Sans ce nom, l'offre
+ * passerait par le portail certifié (`Source.portalScope`, NULL le 30/09) et serait refusée pour identité ; le nom lu
+ * rattache à la société déjà liée aux 55 offres en ligne (`audits/2026-09-30/marc-o-polo/scripts/identite-employeur.mts`).
  */
 
 export const MARC_O_POLO_READER = 'marc-o-polo-vacancies';
@@ -71,7 +72,42 @@ const MAX_PAGE_ONLY_CHECKS = 20;
 
 export type MarcOPoloSettings = { startUrl: string; apiUrl: string; language: Language };
 type Row = Record<string, unknown> & { id: string };
-type RetainedVacancy = { source: typeof RAW_SOURCE; language: Language; pageUrl: string; listing: Row; detail: Record<string, unknown> };
+/**
+ * L'EMPLOYEUR DÉCLARÉ PAR LE SITE (D-489, 30/09/2026). L'API ne nomme aucun employeur ; chaque page d'offre du site le
+ * déclare dans son JSON-LD (`hiringOrganization.name`, une constante du code du site : « Marc O’Polo »), le nom que le
+ * lecteur générique lisait et qui rattache les offres en ligne. À chaque collecte, les pages des deux premières offres
+ * lues sont relues ; elles doivent être les pages de ces offres (même intitulé) et déclarer le MÊME nom, appliqué alors
+ * à toutes les offres. Sinon, aucun nom par défaut : le motif est retenu, et les offres restent refusées pour identité.
+ * Deux pages, et non une : un nom recoupé, et deux adresses sœurs, que le périmètre d'accès déclare par leur répertoire
+ * (une seule adresse exacte changerait chaque jour et sortirait du périmètre).
+ */
+export type EmployerStatement = { name?: string; problem?: string; pages: Array<{ url: string; sha256?: string; problem?: string }> };
+const EMPLOYER_PAGES = 2;
+const EMPLOYER_RULE = 'SITE_JOBPOSTING_EMPLOYER_APPLIED_TO_LISTING';
+type RetainedVacancy = { source: typeof RAW_SOURCE; language: Language; pageUrl: string; listing: Row; detail: Record<string, unknown>;
+  employer: EmployerStatement };
+
+/** Le nom déclaré par une page d'offre du site, si elle est bien la page de l'offre attendue. */
+export function readEmployerFromJobPage(html: string, expectedTitle: string): { name: string } | { problem: string } {
+  let postings: ReturnType<typeof extractJobPostings>;
+  try { postings = extractJobPostings(html); } catch { return { problem: 'EMPLOYER_PAGE_UNREADABLE' }; }
+  if (postings.length !== 1) return { problem: postings.length ? 'EMPLOYER_PAGE_SEVERAL_POSTINGS' : 'EMPLOYER_PAGE_WITHOUT_JOBPOSTING' };
+  const posting = postings[0];
+  if (!text(expectedTitle) || text(posting.title) !== text(expectedTitle)) return { problem: 'EMPLOYER_PAGE_OTHER_POSTING' };
+  const name = isRecord(posting.hiringOrganization) ? text(posting.hiringOrganization.name) : '';
+  return name ? { name } : { problem: 'EMPLOYER_NOT_DECLARED' };
+}
+
+/** Le nom retenu, relu du RAW : seulement s'il vient de pages d'offre du site, toutes lues, sans motif. */
+function retainedEmployerName(value: unknown, language: Language): string | undefined {
+  if (!isRecord(value) || value.problem !== undefined || typeof value.name !== 'string' || !text(value.name)) return undefined;
+  const prefix = `${ORIGIN}/${language}/${CAREER_PAGE[language]}/`;
+  const pages = value.pages;
+  if (!Array.isArray(pages) || !pages.length || pages.length > EMPLOYER_PAGES) return undefined;
+  const valid = pages.every((page) => isRecord(page) && typeof page.url === 'string' && page.url.startsWith(prefix) && /-\d{4}-\d{4}$/.test(page.url)
+    && typeof page.sha256 === 'string' && /^[0-9a-f]{64}$/.test(page.sha256) && page.problem === undefined);
+  return valid ? text(value.name) : undefined;
+}
 
 /** La configuration relue : la page de la liste d'une langue connue et l'API que le site déclare. Rien d'autre n'est lu. */
 export function marcOPoloSettings(config: Record<string, unknown>): MarcOPoloSettings {
@@ -175,9 +211,12 @@ export function readMarcOPoloRaw(value: unknown): NormalizedJob | null {
   const country = (typeof detail.countryId === 'number' ? PUBLISHER_COUNTRY_CODES[detail.countryId] : undefined) ?? (countryLabel || undefined);
   const published = typeof detail.published === 'number' ? detail.published : listing.published;
   const postedAt = typeof published === 'number' && Number.isFinite(published) ? new Date(published) : undefined;
+  const employer = retainedEmployerName(raw.employer, language);
   return {
     externalId: vacancyExternalId(pageUrl),
     title,
+    // D-489 : le nom que les pages d'offre du site déclarent, lu à cette collecte ; sans lui, aucun employeur par défaut.
+    ...(employer ? { company: employer, employerEvidence: { rawName: employer, path: 'employer.name', rule: EMPLOYER_RULE } } : {}),
     url: pageUrl,
     location: [[postalCode, city].filter(Boolean).join(' '), countryLabel].filter(Boolean).join(', ') || undefined,
     city: city || undefined,
@@ -211,6 +250,24 @@ async function readDetail(settings: MarcOPoloSettings, id: string): Promise<Deta
   if (isRecord(detail) && Object.keys(detail).length === 0) return { failure: 'DETAIL_EMPTY_AT_SOURCE' };
   if (!isRecord(detail) || detail.id !== id) return { failure: 'DETAIL_MALFORMED_IDENTITY' };
   return { detail };
+}
+
+/** Les pages d'offre lues pour l'employeur, et le nom qu'elles déclarent toutes, ou le premier motif qui l'interdit. */
+async function readSiteEmployer(settings: MarcOPoloSettings, candidates: Array<{ url: string; title: string }>): Promise<EmployerStatement> {
+  if (!candidates.length) return { problem: 'EMPLOYER_NO_PAGE_TO_READ', pages: [] };
+  const pages: EmployerStatement['pages'] = [];
+  const names = new Set<string>();
+  for (const candidate of candidates) {
+    let html: string;
+    try { html = await fetchText(candidate.url); }
+    catch (error) { rethrowUnlessPublisherFailure(error); pages.push({ url: candidate.url, problem: 'EMPLOYER_PAGE_FETCH_FAILED' }); continue; }
+    const read = readEmployerFromJobPage(html, candidate.title);
+    const sha256 = createHash('sha256').update(html).digest('hex');
+    if ('problem' in read) pages.push({ url: candidate.url, sha256, problem: read.problem });
+    else { pages.push({ url: candidate.url, sha256 }); names.add(read.name); }
+  }
+  const problem = pages.find((page) => page.problem)?.problem ?? (names.size > 1 ? 'EMPLOYER_PAGES_DISAGREE' : undefined);
+  return problem ? { problem, pages } : { name: [...names][0], pages };
 }
 
 export async function fetchMarcOPoloJobs(config: Record<string, unknown>): Promise<AdapterResult> {
@@ -263,19 +320,26 @@ export async function fetchMarcOPoloJobs(config: Record<string, unknown>): Promi
   }
   if (rows.length > 0 && outcomes.every((outcome) => 'failure' in outcome && outcome.failure === 'DETAIL_FETCH_FAILED'))
     throw new Error('MARC_O_POLO_DETAILS_UNREACHABLE: aucune fiche lue');
+
+  // 4. L'employeur que le site déclare (D-489) : les pages des deux premières offres lues, dans l'ordre de la liste.
+  const employer = await readSiteEmployer(settings, rows.flatMap((row, index) => {
+    const outcome = outcomes[index];
+    return 'detail' in outcome ? [{ url: vacancyPageUrl(settings.language, row.title as string, row.id), title: String(outcome.detail.title ?? '') }] : [];
+  }).slice(0, EMPLOYER_PAGES));
+
   const jobs: NormalizedJob[] = [];
   rows.forEach((row, index) => {
     const outcome = outcomes[index];
     const pageUrl = vacancyPageUrl(settings.language, row.title as string, row.id);
     const canonicalId = vacancyExternalId(pageUrl);
     if ('failure' in outcome) { rejectedRows.push({ reason: outcome.failure, raw: row, canonicalId }); return; }
-    const retained: RetainedVacancy = { source: RAW_SOURCE, language: settings.language, pageUrl, listing: row, detail: outcome.detail };
+    const retained: RetainedVacancy = { source: RAW_SOURCE, language: settings.language, pageUrl, listing: row, detail: outcome.detail, employer };
     const job = readMarcOPoloRaw(retained);
     if (!job) { rejectedRows.push({ reason: 'DETAIL_MALFORMED_IDENTITY', raw: retained, canonicalId }); return; }
     jobs.push(job);
   });
 
-  // 4. Le témoin : chaque offre que la page embarque est listée par l'API, ou fermée chez l'éditeur.
+  // 5. Le témoin : chaque offre que la page embarque est listée par l'API, ou fermée chez l'éditeur.
   const listed = new Set(nativeIds);
   const pageOnly = (published.ids ?? []).filter((id) => !listed.has(id));
   const apiOnly = published.ids ? nativeIds.filter((id) => !published.ids!.includes(id)).length : undefined;
@@ -307,7 +371,8 @@ export async function fetchMarcOPoloJobs(config: Record<string, unknown>): Promi
         ids: nativeIds, canonicalIds, publisherCounter: `vacancies=${native.length}`,
         componentCounters: [`language=${settings.language}`, `page.jobList=${published.ids?.length ?? 'illisible'}`,
           `page.compteur=${published.counter ?? 'absent'}`, `page.seule=${pageOnly.length}`, `page.seule.fermee=${closedSinceRender}`,
-          `api.seule=${apiOnly ?? 'inconnu'}`, `anonymous=${anonymous}`] }],
+          `api.seule=${apiOnly ?? 'inconnu'}`, `anonymous=${anonymous}`,
+          `employeur=${employer.name ?? `absent:${employer.problem}`}`, ...employer.pages.map((page) => `employeur.page=${page.url}`)] }],
     },
   };
 }

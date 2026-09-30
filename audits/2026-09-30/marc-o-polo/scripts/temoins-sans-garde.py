@@ -50,6 +50,18 @@ CASES = [
     ("  if (typeof config.apiUrl !== 'string' || !API_URL.test(config.apiUrl)) throw new Error('MARC_O_POLO_INVALID_CONFIG: apiUrl');", "")], [T]),
   ('lieu du RAW retenu non lu (faits)', L, [
     ("      if (at(raw, '/source') === 'marc-o-polo-vacancies-v1') add(", "      if (false) add(")], [T]),
+  ('D-489 : nom lu non appliqué aux offres', A, [
+    ("    ...(employer ? { company: employer, employerEvidence:", "    ...(false ? { company: employer, employerEvidence:")], [T]),
+  ('D-489 : page d’une autre offre acceptée', A, [
+    ("  if (!text(expectedTitle) || text(posting.title) !== text(expectedTitle)) return { problem: 'EMPLOYER_PAGE_OTHER_POSTING' };\n", "")], [T]),
+  ('D-489 : pages en désaccord acceptées', A, [
+    ("(names.size > 1 ? 'EMPLOYER_PAGES_DISAGREE' : undefined)", "undefined")], [T]),
+  ('D-489 : page en échec ignorée (nom par défaut de l’autre page)', A, [
+    ("  const problem = pages.find((page) => page.problem)?.problem ?? ", "  const problem = ")], [T]),
+  ('D-489 : origine des pages non vérifiée à la reprise', A, [
+    ("typeof page.url === 'string' && page.url.startsWith(prefix) && /-\\d{4}-\\d{4}$/.test(page.url)", "typeof page.url === 'string'")], [T]),
+  ('D-489 : une seule page lue', A, [
+    ("const EMPLOYER_PAGES = 2;", "const EMPLOYER_PAGES = 1;")], [T]),
   ('cadence plancher de l’API supprimée', K, [
     ("  'host:vhfco59ro6.execute-api.eu-central-1.amazonaws.com': 7_000,\n", "")], [P]),
 ]
