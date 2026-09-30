@@ -99,6 +99,9 @@ export function summarizeOrchestration(result: OrchestratorResult) {
     confirmedDrops: nonBlockingIncidents.filter(incident => incident.confirmedDrop).sort((a, b) => a.source.localeCompare(b.source))
       .map(incident => ({ source: incident.source, previous: incident.previous, published: incident.jobs,
         previousDeclaredTotal: incident.confirmedDrop!.previousDeclaredTotal, declaredTotal: incident.confirmedDrop!.declaredTotal })),
+    /** Drops of more than half where fewer than ten postings disappear (D-491): not blocking, never hidden. */
+    minorDrops: nonBlockingIncidents.filter(incident => incident.minorDrop).sort((a, b) => a.source.localeCompare(b.source))
+      .map(incident => ({ source: incident.source, previous: incident.previous, published: incident.jobs, disappeared: incident.minorDrop!.disappeared })),
     /** Retained postings of the sources that DO block the RUN, whatever blocks them. */
     retainedOnBlockingSources: listing(retainedOnBlocking),
     /** Retained postings, blocking or not, still online from an earlier collection once the RUN archived its holds. */

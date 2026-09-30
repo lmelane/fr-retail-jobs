@@ -120,10 +120,11 @@ type IssueStat = { source: string; errors: number; issues?: IngestionIssue[]; he
  *   · the postings the team excluded from the perimeter (D-456 §2) are no failure of anything: no issue. They
  *     stay visible through the incident — SourceRun, alert and bilan name them as a team decision.
  * A drop of more than half that the publisher confirms itself (D-484 §2, `confirmedDrop`, set by the health pass only
- * when nothing else is wrong) is no failure either: no issue of its own, visible through its incident.
+ * when nothing else is wrong) is no failure either: no issue of its own, visible through its incident. Nor is a drop
+ * of more than half where fewer than ten postings disappear (D-491, `minorDrop`, same condition).
  */
 export function issuesFromResult(stats: IssueStat[], incidents: readonly { source: string; nonBlockingRetentionOnly?: boolean; finding?: string;
-  confirmedDrop?: object }[]): IngestionIssue[] {
+  confirmedDrop?: object; minorDrop?: object }[]): IngestionIssue[] {
   return stats.flatMap(stat => {
     const known = stat.issues ?? [];
     const missing = Math.max(0, stat.errors - known.reduce((sum, issue) => sum + issue.count, 0));
@@ -131,7 +132,7 @@ export function issuesFromResult(stats: IssueStat[], incidents: readonly { sourc
     if (own.length) return own;
     const incident = incidents.find(i => i.source === stat.source);
     if (!incident) return [];
-    if (!incident.nonBlockingRetentionOnly && !incident.confirmedDrop) return [{ origin: 'UNKNOWN' as const, code: incident.finding ?? 'SOURCE_HEALTH_REGRESSION', count: 1 }];
+    if (!incident.nonBlockingRetentionOnly && !incident.confirmedDrop && !incident.minorDrop) return [{ origin: 'UNKNOWN' as const, code: incident.finding ?? 'SOURCE_HEALTH_REGRESSION', count: 1 }];
     const native = Object.entries(stat.heldReasons ?? {}).filter(([reason]) => isNativeEvidenceRetention(reason)).reduce((sum, [, n]) => sum + n, 0);
     return native > 0 ? [{ origin: 'SOURCE' as const, code: NATIVE_RETENTION, count: native,
       ...(stat.captureBatchId ? { captureBatchId: stat.captureBatchId } : {}),

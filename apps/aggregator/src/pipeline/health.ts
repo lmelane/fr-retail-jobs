@@ -27,6 +27,14 @@ import { FULL_RUN_MARKER } from './fullRunMarker.js';
 /** A drop below this share of the previous run is treated as a failure. */
 const COLLAPSE_RATIO = 0.5;
 
+/**
+ * D-491 (arbitrage CEO du 30/09/2026) : une baisse de plus de 50 % ne bloque le RUN que si AU MOINS ce nombre d'offres
+ * disparaissent (publiées au run productif de référence, moins publiées par ce run). En dessous, elle reste signalée
+ * au bilan et dans l'alerte. Mesuré le 30/09 : `indiska`, 3 offres puis 1, rendait le RUN rouge. Une source qui tombe
+ * à ZÉRO reste jugée par sa règle propre (« ne rend aucune offre », ou zéro annoncé et prouvé), jamais par celle-ci.
+ */
+export const MINOR_DROP_BLOCKING_DISAPPEARED = 10;
+
 /** Runs to keep per source; enough to see a trend without growing forever. */
 const HISTORY = 10;
 
@@ -55,6 +63,12 @@ export type SourceHealth = {
    * `SOURCE_HEALTH_REGRESSION`.
    */
   confirmedDrop?: { previousDeclaredTotal: number; declaredTotal: number };
+  /**
+   * La baisse de plus de moitié où moins de `MINOR_DROP_BLOCKING_DISAPPEARED` offres disparaissent (D-491) : signalée,
+   * non bloquante. Posée seulement quand la source n'a AUCUN autre défaut ; elle n'atteste pas l'absence (la règle
+   * d'attestation d'un effondrement est inchangée). Absente, une chute reste `SOURCE_HEALTH_REGRESSION`, bloquante.
+   */
+  minorDrop?: { disappeared: number };
   /**
    * Le code de l'incident quand la santé le nomme ; absent, l'attribution reste `SOURCE_HEALTH_REGRESSION`.
    * Une énumération NON PROUVÉE n'est pas RÉFUTÉE (D-453 §1) : deux codes, tous deux bloquants.
@@ -208,8 +222,9 @@ export function evaluateSourceHealth(stat: IngestStats, before: number | null, r
    * bloquants et nommés dans la même note. Seule une retenue sans aucun autre défaut, sans motif à instruire, et
    * que la garde de la preuve négative ne signale pas, est marquée non bloquante.
    */
-  // A drop the publisher confirms (D-484 §2) is no defect of the collection: it is named, and blocks nothing on its own.
-  const dropped = collection.confirmedDrop;
+  // A drop the publisher confirms (D-484 §2), or one where fewer than ten postings disappear (D-491), is no defect of
+  // the collection: it is named, and blocks nothing on its own.
+  const dropped = collection.confirmedDrop ?? collection.minorDrop;
   const otherDefect = (collection.status === 'BROKEN' || collection.status === 'DEGRADED') && !dropped;
   const guard = retention.nonBlocking && !otherDefect ? negativeProofGuard(stat, retentionBaseline) : undefined;
   const jumped = guard?.kind === 'JUMP';
@@ -222,7 +237,8 @@ export function evaluateSourceHealth(stat: IngestStats, before: number | null, r
   return { ...base, status: jobs > 0 ? 'DEGRADED' : 'BROKEN', note, ...(finding ? { finding } : {}),
     ...(nonBlockingOnly ? { nonBlockingRetentionOnly: true } : {}),
     // Carried only when nothing else blocks: a blocking incident never wears the non-blocking drop.
-    ...(nonBlockingOnly && dropped ? { confirmedDrop: dropped } : {}),
+    ...(nonBlockingOnly && collection.confirmedDrop ? { confirmedDrop: collection.confirmedDrop } : {}),
+    ...(nonBlockingOnly && collection.minorDrop ? { minorDrop: collection.minorDrop } : {}),
     // A team exclusion alone is no issue on ANY path (`issuesFromResult`): `ingest --source` exits 0 on it, so its
     // alert says non-blocking too. A native retention stays strict there: an issue, exit 1, listed as blocking.
     ...(nonBlockingOnly && retention.teamOnly ? { blocking: false } : {}),
@@ -405,14 +421,20 @@ function collectionHealth(stat: IngestStats, base: Omit<SourceHealth, 'status'>,
       declaredTotal: stat.declaredTotal, complete: stat.complete, truncated: stat.truncated, errors: stat.errors });
     const confirmation = confirmed ? `, confirmée par l’éditeur : total annoncé ${previousDeclaredTotal} → ${stat.declaredTotal}, ` +
       `${stat.fetched} lues sur ${stat.declaredTotal}, énumération prouvée (D-484 §2, ${fieldIncident ? 'mais bloquant par le défaut qui suit' : 'non bloquant'})` : '';
+    // D-491 : une chute que l'éditeur ne confirme pas, mais où moins de dix offres disparaissent, est signalée sans bloquer.
+    const disappeared = before - jobs;
+    const minor = !confirmed && disappeared < MINOR_DROP_BLOCKING_DISAPPEARED;
+    const minorText = minor ? `, ${plural(disappeared, 'offre disparue', 'offres disparues')}, moins de ${MINOR_DROP_BLOCKING_DISAPPEARED} ` +
+      `(D-491, ${fieldIncident ? 'mais bloquant par le défaut qui suit' : 'non bloquant'})` : '';
     return {
       source: stat.source,
       status: 'DEGRADED',
       jobs,
       previous: before,
-      note: [`${drop}${confirmation}`, ...(confirmed && fieldIncident ? [fieldIncident] : [])].join(' · '),
+      note: [`${drop}${confirmation}${minorText}`, ...((confirmed || minor) && fieldIncident ? [fieldIncident] : [])].join(' · '),
       // With a field incident too, the drop stays the blocking regression it was (no finding: never a D-480 known failure).
       ...(confirmed && !fieldIncident ? { confirmedDrop: { previousDeclaredTotal: previousDeclaredTotal!, declaredTotal: stat.declaredTotal! } } : {}),
+      ...(minor && !fieldIncident ? { minorDrop: { disappeared } } : {}),
       coverage: coverageOf(stat),
       rates: ratesOf(stat),
     };
