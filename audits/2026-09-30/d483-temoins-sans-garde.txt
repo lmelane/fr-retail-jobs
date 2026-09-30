@@ -1,0 +1,111 @@
+24 gardes retirées une à une, chaque fichier restauré depuis la mémoire (empreinte vérifiée)
+
+## filtre de qualification ouvert (le navigateur charge toute la page) [apps/aggregator/src/connectors/wafBootstrap.ts]: ÉCHOUE (témoin valide)
+   files: 2 failed (2) | tests: 5 ⎯⎯⎯⎯⎯⎯⎯
+   - src/connectors/wafBootstrap.test.ts > le filtre de l’amorçage : la page défiée et l’infrastructure du défi, rien d’autre > sur les 146 requêtes réel
+   - src/lib/wafBootstrap.capture.test.ts > collecte de qualification (aucune décision) : l’amorçage borné est inscrit au journal > la dérivation lit du j
+   - src/lib/wafBootstrap.capture.test.ts > collecte de qualification (aucune décision) : l’amorçage borné est inscrit au journal > le défi, 5 requêtes du
+   - src/lib/wafBootstrap.capture.test.ts > collecte de qualification (aucune décision) : l’amorçage borné est inscrit au journal > se rejoue hors réseau 
+   - src/lib/wafBootstrap.capture.test.ts > collecte de qualification (aucune décision) : l’amorçage borné est inscrit au journal > un amorçage inscrit qu
+
+## liste nommée ouverte à toute source et origine [apps/aggregator/src/connectors/wafBootstrap.ts]: ÉCHOUE (témoin valide)
+   files: 2 failed (2) | tests: 5 ⎯⎯⎯⎯⎯⎯⎯
+   - src/connectors/wafBootstrap.test.ts > document.bootstraps : borné, exact, jamais sans son périmètre HTTP > refuse un amorçage déclaré pour une sourc
+   - src/connectors/wafBootstrap.test.ts > fin de collecte : le journal de l’amorçage tient dans son autorisation > refuse un amorçage que la décision ne
+   - src/connectors/wafBootstrap.test.ts > la dérivation : l’autorisation déclare ce que le journal prouve, jamais plus > refuse une source que D-483 ne 
+   - src/connectors/wafBootstrap.test.ts > le filtre de l’amorçage : la page défiée et l’infrastructure du défi, rien d’autre > la liste nommée par D-483
+   - src/lib/wafBootstrap.capture.test.ts > aucun contournement général > une source que D-483 ne nomme pas : aucun navigateur, le défi échoue comme avant
+
+## dérivation qui accepte une requête hors de l’infrastructure du défi [apps/aggregator/src/connectors/wafBootstrap.ts]: ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 2 ⎯⎯⎯⎯⎯⎯⎯
+   - src/connectors/wafBootstrap.test.ts > fin de collecte : le journal de l’amorçage tient dans son autorisation > refuse une requête échappée (redirect
+   - src/connectors/wafBootstrap.test.ts > la dérivation : l’autorisation déclare ce que le journal prouve, jamais plus > refuse une tuile Google Maps
+
+## dérivation sans contrôle d’identité [apps/aggregator/src/connectors/wafBootstrap.ts]: ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
+   - src/connectors/wafBootstrap.test.ts > la dérivation : l’autorisation déclare ce que le journal prouve, jamais plus > refuse une requête sans l’ident
+
+## filtre sous décision qui ignore les hôtes déclarés [apps/aggregator/src/connectors/wafBootstrap.ts]: ÉCHOUE (témoin valide)
+   files: 2 failed (2) | tests: 2 ⎯⎯⎯⎯⎯⎯⎯
+   - src/connectors/wafBootstrap.test.ts > le filtre de l’amorçage : la page défiée et l’infrastructure du défi, rien d’autre > sous décision, les seuls 
+   - src/lib/wafBootstrap.capture.test.ts > collecte du RUN, sous décision d’accès > une décision qui nomme un autre hôte du défi : le script réel ne part
+
+## collecte du RUN qui amorce sans que la décision le déclare [apps/aggregator/src/capture/batch.ts]: ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
+   - src/lib/wafBootstrap.capture.test.ts > collecte du RUN, sous décision d’accès > une décision sans amorçage arrête la collecte, même si le lecteur ava
+
+## autre fournisseur amorcé dans une collecte [apps/aggregator/src/lib/wafToken.ts]: ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
+   - src/lib/wafBootstrap.capture.test.ts > aucun contournement général > un autre fournisseur que le défi AWS ne s’amorce jamais dans une collecte
+
+## jeton du process réutilisé par une collecte [apps/aggregator/src/lib/wafToken.ts]: ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
+   - src/lib/wafBootstrap.capture.test.ts > aucun contournement général > le jeton d’un amorçage hors collecte n’est jamais réutilisé par une collecte
+
+## jeton rendu par l’infrastructure du défi archivé [apps/aggregator/src/lib/wafToken.ts]: ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
+   - src/lib/wafBootstrap.capture.test.ts > collecte de qualification (aucune décision) : l’amorçage borné est inscrit au journal > le défi, 5 requêtes du
+
+## rejeu qui lève le défi sans amorçage inscrit [apps/aggregator/src/capture/offlineReplay.ts]: ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
+   - src/lib/wafBootstrap.capture.test.ts > collecte de qualification (aucune décision) : l’amorçage borné est inscrit au journal > un rejeu sans l’amorça
+
+## requête navigateur étrangère comptée comme amorçage [apps/aggregator/src/capture/context.ts]: ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
+   - src/lib/wafBootstrap.capture.test.ts > aucun contournement général > pendant l’amorçage, une requête navigateur qui n’en fait pas partie reste un tra
+
+## requête partie sans réponse jamais inscrite [apps/aggregator/src/lib/browser.ts]: ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
+   - src/lib/browser.bootstrap.test.ts > amorçage observé > n’envoie que ce que `allow` accepte et inscrit chaque requête partie — réponse, échec ou fe
+
+## amorçage observé compté comme transport non supporté (politique fermée comme avant) [apps/aggregator/src/lib/browser.ts]: ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
+   - src/lib/browser.bootstrap.test.ts > amorçage observé > sous une politique d’accès, un amorçage observé n’est pas un transport « non supporté »
+
+## inscription dans le contexte du lancement du navigateur (audit : CRITICAL) [apps/aggregator/src/lib/wafToken.ts]: ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
+   - src/lib/wafBootstrap.playwright.test.ts > amorçage inscrit sous le vrai comportement de Playwright > deux collectes successives du même process : chacun
+
+## marque d’amorçage d’une autre collecte acceptée [apps/aggregator/src/capture/context.ts]: ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
+   - src/lib/wafBootstrap.capture.test.ts > aucun contournement général > pendant l’amorçage, une requête navigateur qui n’en fait pas partie reste un tra
+
+## redirection échappée non détectée (audit : HIGH) [apps/aggregator/src/lib/browser.ts]: ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
+   - src/lib/wafBootstrap.playwright.test.ts > amorçage inscrit sous le vrai comportement de Playwright > une redirection de la page défiée vers une autre or
+
+## WebSocket non retenu (audit : HIGH) [apps/aggregator/src/lib/browser.ts]: ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
+   - src/lib/wafBootstrap.playwright.test.ts > amorçage inscrit sous le vrai comportement de Playwright > un WebSocket ouvert par la page est clos avant de j
+
+## requêtes encore envoyées pendant la vidange (audit : MEDIUM) [apps/aggregator/src/lib/browser.ts]: ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
+   - src/lib/wafBootstrap.playwright.test.ts > amorçage inscrit sous le vrai comportement de Playwright > une requête émise pendant la fermeture ne part pas 
+
+## origine dérivée de la première ligne inscrite (audit : MEDIUM) [apps/aggregator/src/connectors/wafBootstrap.ts]: ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
+   - src/connectors/wafBootstrap.test.ts > la dérivation : l’autorisation déclare ce que le journal prouve, jamais plus > lit l’origine défiée sur la pag
+
+## fin de collecte sans relecture du journal d’amorçage (unitaire) [apps/aggregator/src/connectors/wafBootstrap.ts]: ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 2 ⎯⎯⎯⎯⎯⎯⎯
+   - src/connectors/wafBootstrap.test.ts > fin de collecte : le journal de l’amorçage tient dans son autorisation > refuse un amorçage que la décision ne
+   - src/connectors/wafBootstrap.test.ts > fin de collecte : le journal de l’amorçage tient dans son autorisation > refuse une requête échappée (redirect
+
+## document forgé qui déclare un amorçage pour une autre source [apps/aggregator/src/connectors/wafBootstrap.ts]: ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
+   - src/connectors/wafBootstrap.test.ts > document.bootstraps : borné, exact, jamais sans son périmètre HTTP > refuse un amorçage déclaré pour une sourc
+
+## fin de collecte sans relecture du journal d’amorçage (en base) [apps/aggregator/src/capture/batch.ts]: ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
+   - src/pipeline/sourceAccessWafBootstrap.test.ts > D-483 — une collecte amorcée devient une preuve d’accès > une requête d’amorçage échappée au filtre arrête la 
+
+## inspection qui ne vérifie pas les hôtes de l’amorçage [apps/aggregator/src/connectors/sourceAccessEvidence.ts]: ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
+   - src/pipeline/sourceAccessWafBootstrap.test.ts > D-483 — une collecte amorcée devient une preuve d’accès > l’inspection refuse un amorçage qui a joint un hôte 
+
+## décision relue sans contrôle du compte d’amorçage [apps/aggregator/src/connectors/sourceAccess.ts]: ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
+   - src/pipeline/sourceAccessWafBootstrap.test.ts > D-483 — une collecte amorcée devient une preuve d’accès > SQL refuse une projection d’amorçage falsifiée et un
+
+Contre-épreuve sur l’état committé : files: 5 passed (5) | tests: 67 passed (67) (code 0)
+Copie de travail propre après la preuve.
