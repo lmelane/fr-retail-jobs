@@ -2,6 +2,7 @@ import { maintainReviewedSectors } from '../sectors/qualify.js';
 import { assertPipelineRunning } from '../lib/pipelinePause.js';
 import { log } from '../observability/logger.js';
 import { withSourceBudget } from '../lib/sourceBudget.js';
+import { BASE_SOURCE_TIMEOUT_MS, EXPECTED_VOLUME_WINDOW_DAYS, expectedVolume, sourceTimeoutMs } from '../lib/sourceTimeout.js';
 import type { PrismaClient } from '@prisma/client';
 import pLimit from 'p-limit';
 import { loadActiveSources, recordSourceRunSummary } from '../connectors/sourceStore.js';
@@ -21,8 +22,16 @@ import { failureLine } from '../lib/runSummary.js';
  */
 
 /** Per-source wall-clock budget; actual transport cancellation and settlement
- * are owned by withSourceBudget. Large portals need a measured bounded budget. */
-const PER_SOURCE_TIMEOUT_MS = Number(process.env.INGEST_SOURCE_TIMEOUT_MS ?? 40 * 60_000);
+ * are owned by withSourceBudget. Large portals need a measured bounded budget:
+ * the base, plus a write allowance for the source's recent volume (`lib/sourceTimeout.ts`, D-482). */
+const PER_SOURCE_TIMEOUT_MS = BASE_SOURCE_TIMEOUT_MS;
+
+/** Le budget de cette source : sa base, plus l'écriture de ce que ses collectes des huit derniers jours ont rendu. */
+async function sourceTimeoutFor(prisma: PrismaClient, key: string): Promise<number> {
+  const since = new Date(Date.now() - EXPECTED_VOLUME_WINDOW_DAYS * 24 * 3_600_000);
+  const runs = await prisma.sourceRun.findMany({ where: { sourceKey: key, ranAt: { gte: since } }, select: { jobs: true } });
+  return sourceTimeoutMs(expectedVolume(runs.map(run => run.jobs)));
+}
 
 /**
  * How long before the hard timeout a slow crawl should stop itself. The margin
@@ -158,14 +167,16 @@ export function ingestCommandVerdict(stats: IngestStats[], incidents: readonly S
 /** One source, bounded by its own timeout; the counters it touches are shared. */
 async function ingestOne(prisma: PrismaClient, key: string, result: OrchestratorResult): Promise<void> {
   const started = Date.now();
+  let timeoutMs = PER_SOURCE_TIMEOUT_MS;
   try {
     await log.info('source_sync_started', { sourceKey: key });
+    timeoutMs = await sourceTimeoutFor(prisma, key);
     // runIngest with {only} seals the source's end-of-ingestion report; no
     // closure happens in this pass. Geocoding is skipped here and run ONCE by
     // the CLI after every source — a per-source pass would run four times over
     // the same cities in parallel. The soft deadline lets a slow crawl stop
     // gracefully just before the hard timeout, keeping what it fetched.
-    const stats = await runQualifiedIngest(prisma, key);
+    const stats = await runQualifiedIngest(prisma, key, true, timeoutMs);
     if (stats.length !== 1 || stats[0].source !== key) throw new TypeError('Expected one result for the selected ACTIVE source');
     // Record this source's health so a source that stops producing becomes a
     // detectable incident (BROKEN) on its next run — one SourceRun per source.
@@ -204,7 +215,7 @@ async function ingestOne(prisma: PrismaClient, key: string, result: Orchestrator
     if (timedOut) {
       result.timedOut++;
       result.failures.push(failureLine(key, [issue], 'délai dépassé'));
-      await log.error('source.timed_out', `[orchestrator] ${key}: timed out after ${PER_SOURCE_TIMEOUT_MS / 1000}s, moving on`, { error });
+      await log.error('source.timed_out', `[orchestrator] ${key}: timed out after ${timeoutMs / 1000}s, moving on`, { error });
     } else if (challenged) {
       result.failed++;
       result.failures.push(failureLine(key, [issue], 'anti-bot'));
@@ -231,7 +242,7 @@ async function ingestOne(prisma: PrismaClient, key: string, result: Orchestrator
           jobs: 0,
           canAttestAbsence: false,
           note: timedOut
-            ? `cut at ${PER_SOURCE_TIMEOUT_MS / 1000}s`
+            ? `cut at ${timeoutMs / 1000}s`
             : challenged
               ? `anti-bot ${(error as WafChallengeError).vendor} : page d'attente servie, aucune offre lue`
               : briefError(error),
@@ -248,10 +259,11 @@ async function ingestOne(prisma: PrismaClient, key: string, result: Orchestrator
 }
 
 /** Normal and explicitly scoped runs maintain the same admission prerequisite. */
-export function runQualifiedIngest(prisma: PrismaClient, key: string, skipGeocode = true) {
+export async function runQualifiedIngest(prisma: PrismaClient, key: string, skipGeocode = true, timeoutMs?: number) {
+  const budget = timeoutMs ?? await sourceTimeoutFor(prisma, key);
   return withSourceBudget(async () => {
-    await maintainSourceAccess(prisma, key, PER_SOURCE_TIMEOUT_MS);
+    await maintainSourceAccess(prisma, key, budget);
     return runIngest(prisma, { only: key, skipGeocode });
-  }, PER_SOURCE_TIMEOUT_MS, key,
-  { softTimeoutMs: Math.floor(PER_SOURCE_TIMEOUT_MS - Math.min(SOFT_DEADLINE_MARGIN_MS, PER_SOURCE_TIMEOUT_MS / 10)) });
+  }, budget, key,
+  { softTimeoutMs: Math.floor(budget - Math.min(SOFT_DEADLINE_MARGIN_MS, budget / 10)) });
 }
