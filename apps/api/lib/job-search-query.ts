@@ -218,7 +218,8 @@ export type ExamenNouveautes = {
 
 /**
  * R-130 §3 (D-464 §1) — L'EXAMEN D'UNE ALERTE : la recherche de la page, plus deux bornes de date sur les seules
- * nouvelles. Pas de facettes ni de curseur : un compte, un compte filtré, une page.
+ * nouvelles. Pas de facettes ni de curseur : un compte, un compte filtré, une page. Les colonnes sont des `timestamp`
+ * sans fuseau écrits en UTC : les bornes sont converties comme dans `publicJobSql`, jamais selon le fuseau de session.
  */
 export async function examenNouveautes(
   plan: PlanRecherche,
@@ -234,7 +235,8 @@ export async function examenNouveautes(
     nouvelles AS MATERIALIZED (
       SELECT id, origine, -score AS ns, coalesce(-extract(epoch FROM "postedAt"), 1e15)::float8 AS np,
         (-extract(epoch FROM "firstSeenAt"))::float8 AS nf
-      FROM scoped WHERE "firstSeenAt" > ${entreeApres} AND ("postedAt" IS NULL OR "postedAt" >= ${publieeApres})
+      FROM scoped WHERE "firstSeenAt" > (${entreeApres}::timestamptz AT TIME ZONE 'UTC')
+        AND ("postedAt" IS NULL OR "postedAt" >= (${publieeApres}::timestamptz AT TIME ZONE 'UTC'))
     )
     SELECT (SELECT count(*)::int FROM scoped) AS total,
       (SELECT count(*)::int FROM nouvelles) AS nouvelles,
