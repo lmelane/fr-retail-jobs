@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { log } from '../../observability/logger.js';
 import pLimit from 'p-limit';
 import { fetchText } from '../../lib/http.js';
@@ -56,31 +57,63 @@ export function parseAltamiraListing(html: string): AltamiraRow[] {
   return rows;
 }
 
-/** Les champs de la fiche détail, fusionnés avec la ligne de liste. */
-export function parseAltamiraDetail(row: AltamiraRow, html: string, url: string): NormalizedJob {
-  const locations = htmlToPlainText(detailCell(html, 'Locations') ?? '') ?? '';
+/**
+ * Les cellules `data-title` d'une fiche, en texte, avec l'adresse et l'empreinte de la page qui les porte.
+ *
+ * Toutes les fiches ne portent pas de JobPosting JSON-LD (30/09/2026) : 4 fiches Zegna sur 65 de la collecte du 29/09
+ * (JobID 275749301, 272432342, 262106032, 249374382) n'en ont aucun, alors que leurs cellules donnent titre, lieu,
+ * Maison et description. Le collecteur les lisait ; le lecteur de récupération exigeait le JSON-LD, les refusait
+ * DETAIL_EVIDENCE_UNUSABLE, et 4 refus dépassant le plancher de 2, la source était rejetée chaque jour.
+ */
+export type AltamiraDetail = { pageUrl: string; htmlSha256: string; title: string; description: string;
+  brand: string; locations: string; contract: string; department: string };
+
+/** Les cellules lues, dans la forme que le RAW retient : exportée pour la récupération hors réseau. */
+export const ALTAMIRA_DETAIL_CELLS = ['title', 'description', 'brand', 'locations', 'contract', 'department'] as const;
+
+export function readAltamiraDetail(html: string, pageUrl: string): AltamiraDetail {
+  const cell = (title: string) => htmlToPlainText(detailCell(html, title) ?? '') ?? '';
+  return { pageUrl, htmlSha256: createHash('sha256').update(html).digest('hex'), title: cell('Title'), description: cell('Text'),
+    brand: cell('Brand'), locations: cell('Locations'), contract: cell('Contract type'), department: cell('JOB FUNCTION') };
+}
+
+/**
+ * L'offre d'une fiche lue sur ses cellules : le même assemblage pour le collecteur et pour le lecteur de récupération,
+ * qui la relit sur les cellules retenues sans réseau. Un second assemblage dériverait du premier sans que rien le signale.
+ */
+export function altamiraJobFromDetail(row: AltamiraRow, detail: AltamiraDetail): NormalizedJob {
   // « United States/NY/New York » : pays / région / ville, la région parfois absente.
-  const parts = locations.split('/').map((p) => p.trim()).filter(Boolean);
+  const parts = detail.locations.split('/').map((p) => p.trim()).filter(Boolean);
   const country = parts[0];
   const city = parts.length > 1 ? parts[parts.length - 1] : undefined;
   const region = parts.length > 2 ? parts[1] : undefined;
-  const description = htmlToPlainText(detailCell(html, 'Text') ?? '');
-  const brand = htmlToPlainText(detailCell(html, 'Brand') ?? '');
-
-  return enrichPostingEvidence({
+  return {
     externalId: row.externalId,
-    title: htmlToPlainText(detailCell(html, 'Title') ?? '') || row.title,
+    title: detail.title || row.title,
     location: row.location ?? (parts.length ? [city, country].filter(Boolean).join(', ') : undefined),
     city,
     region,
     country,
-    contract: htmlToPlainText(detailCell(html, 'Contract type') ?? '') || undefined,
-    department: htmlToPlainText(detailCell(html, 'JOB FUNCTION') ?? '') || undefined,
-    company: brand || undefined,
-    url,
-    description: description || undefined,
-    raw: { source: 'altamira', team: row.team, locations },
-  }, html);
+    contract: detail.contract || undefined,
+    department: detail.department || undefined,
+    company: detail.brand || undefined,
+    url: detail.pageUrl,
+    description: detail.description || undefined,
+    raw: { source: 'altamira', team: row.team, locations: detail.locations },
+  };
+}
+
+/** Les champs de la fiche détail, fusionnés avec la ligne de liste. */
+export function parseAltamiraDetail(row: AltamiraRow, html: string, url: string): NormalizedJob {
+  const detail = readAltamiraDetail(html, url);
+  const job = enrichPostingEvidence(altamiraJobFromDetail(row, detail), html);
+  /*
+   * Seule une page lue SANS aucun JobPosting retient ses cellules (`altamiraDetail`), liées à la même page que la preuve
+   * (adresse et empreinte) : la récupération n'a rien d'autre à relire. Une page qui porte un JobPosting garde le RAW
+   * d'avant, octet pour octet, et se relit toujours sur lui ; une page en échec (corps vide) ne retient rien.
+   */
+  const evidence = (job.raw as { postingEvidence?: { jobPostingCount?: number } }).postingEvidence;
+  return html && evidence?.jobPostingCount === 0 ? { ...job, raw: { ...(job.raw as Record<string, unknown>), altamiraDetail: detail } } : job;
 }
 
 export async function fetchAltamiraJobs(config: Record<string, unknown>): Promise<AdapterResult> {
