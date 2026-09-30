@@ -1,5 +1,6 @@
 import { createHash } from 'node:crypto';
-import { captureObservedAt } from '../../capture/context.js';
+import { captureObservedAt, CaptureUnavailableError, OfflineReplayError } from '../../capture/context.js';
+import { assertSourceRunning } from '../../lib/sourceBudget.js';
 import pLimit from 'p-limit';
 import { fetchJson, fetchText, DEFAULT_DETAIL_CONCURRENCY } from '../../lib/http.js';
 import { normalizeLanguage } from '../../normalize/language.js';
@@ -178,7 +179,7 @@ export async function fetchPhenomJobs(config: Record<string, unknown>): Promise<
   /** L'état d'une lecture du listing, reconstruit à l'identique quand des pages ont été relues. */
   const newListing = () => ({
     jobs: [] as NormalizedJob[], rejectedRows: [] as NonNullable<AdapterResult['rejectedRows']>, seen: new Set<string>(),
-    languageOf: new Map<string, string>(), pageEvidence: [] as NonNullable<NonNullable<AdapterResult['enumeration']>['pageEvidence']>,
+    languageOf: new Map<string, string>(), languagePairs: new Set<string>(), pageEvidence: [] as NonNullable<NonNullable<AdapterResult['enumeration']>['pageEvidence']>,
     rawCount: 0, withoutData: 0, repeatedIds: 0, languageVariants: 0,
     /** Lignes servies qu'aucun `slug` ni `req_id` ne nomme : aucun identifiant historique ne peut être déclaré absent. */
     anonymousRows: 0,
@@ -225,12 +226,18 @@ export async function fetchPhenomJobs(config: Record<string, unknown>): Promise<
         // nl-be) — totalCount 2 861 sums the language counts, 2 850 requisitions.
         // A language variant is a row the publisher announced and we accounted
         // for, not a posting lost to an unstable sort; the two stay distinct.
+        // Une variante déjà comptée (même réquisition, même langue) servie une seconde fois est une RÉPÉTITION : la
+        // compter deux fois masquerait une offre jamais servie (audit adverse D-482, 30/09/2026).
         const language = String(entry.data.language ?? '');
-        if (language && listing.languageOf.get(job.externalId) && listing.languageOf.get(job.externalId) !== language) { listing.languageVariants++; continue; }
+        const pair = `${job.externalId}\u0000${language}`;
+        if (language && listing.languageOf.get(job.externalId) && listing.languageOf.get(job.externalId) !== language && !listing.languagePairs.has(pair)) {
+          listing.languagePairs.add(pair); listing.languageVariants++; continue;
+        }
         listing.repeatedIds++; continue;
       }
       listing.seen.add(job.externalId);
       listing.languageOf.set(job.externalId, String(entry.data.language ?? ''));
+      listing.languagePairs.add(`${job.externalId}\u0000${String(entry.data.language ?? '')}`);
       listing.jobs.push(job);
       fresh++;
     }
@@ -280,32 +287,41 @@ export async function fetchPhenomJobs(config: Record<string, unknown>): Promise<
    * Le seul motif SOURCE_TOTAL_CHANGED refusait la preuve, alors que la capture du RUN avait tout lu (3 021 offres
    * + 12 variantes de langue = 3 033).
    *
-   * Les pages dont le total diffère du total de référence (celui qu'annonce la majorité des pages) sont relues, au
+   * Les pages dont le total diffère du total de référence (le PLUS GRAND total annoncé) sont relues, au
    * plus RECONCILIATION_PASSES fois chacune, jusqu'à l'annoncer. Le listing n'est prouvé que si TOUTES ses pages
    * (au moins jusqu'à la dernière que ce total exige) viennent d'un même état au même total, et que ce total est
    * atteint exactement, sans identifiant répété, et qu'aucune réponse écartée ne nomme une offre absente de ce listing
    * (TOTAL_STATES_DISAGREE). Sinon rien ne change : la preuve reste refusée. Un vrai changement pendant la lecture
    * (le total ne revient pas) n'est jamais réconcilié. Le changement reste nommé.
+   *
+   * La référence est le plus grand total, jamais celui de la majorité : l'état en retard peut être majoritaire, et le
+   * prouver déclarerait absente une offre encore en ligne (audit adverse, 30/09/2026). Une relecture en échec abandonne
+   * la réconciliation et garde la première lecture, non prouvée, comme avant. La terminaison
+   * TOTAL_RECONCILED_BY_PAGE_REREAD n'est PAS une terminaison probante du refresh (`refreshPlan.ts`) : la source est
+   * saine, mais ce jour-là ses absences ne ferment rien — l'étendre est une décision métier, non prise ici.
    */
   let reconciled = false;
   if (issues.has('SOURCE_TOTAL_CHANGED') && (termination === 'PUBLISHER_TOTAL_REACHED' || termination === 'EMPTY_PAGE')) {
-    const counts = new Map<number, number>();
-    for (const response of responses) { const t = totalOf(response); if (t !== undefined) counts.set(t, (counts.get(t) ?? 0) + 1); }
-    const first = totalOf(responses[0]);
-    const reference = [...counts.entries()].sort((a, b) => b[1] - a[1] || (a[0] === first ? -1 : b[0] === first ? 1 : 0))[0]?.[0];
+    const totals = responses.map(totalOf).filter((t): t is number => t !== undefined);
+    const reference = totals.length ? Math.max(...totals) : undefined;
     if (reference !== undefined && reference > 0) {
       const assembled = [...responses];
       /** Les réponses écartées (d'un autre total) : ce qu'elles nomment doit rester dans le listing prouvé. */
       const discarded: PhenomResponse[] = [];
       const lastPage = Math.max(assembled.length, Math.ceil(reference / PAGE_SIZE));
-      for (let page = 1; page <= lastPage && page <= MAX_PAGES; page++) {
+      let readFailed = false;
+      for (let page = 1; page <= lastPage && page <= MAX_PAGES && !readFailed; page++) {
         for (let reread = 0; reread < RECONCILIATION_PASSES && (assembled[page - 1] === undefined || totalOf(assembled[page - 1]) !== reference); reread++) {
           if (assembled[page - 1] !== undefined) discarded.push(assembled[page - 1]);
-          assembled[page - 1] = await fetchJson<PhenomResponse>(pageUrl(page), { headers: HEADERS });
           pages++;
+          try { assembled[page - 1] = await fetchJson<PhenomResponse>(pageUrl(page), { headers: HEADERS }); }
+          catch (error) {
+            if (error instanceof OfflineReplayError || error instanceof CaptureUnavailableError) throw error;
+            assertSourceRunning(); issues.add('RECONCILIATION_READ_FAILED'); readFailed = true; break;
+          }
         }
       }
-      if (assembled.length >= lastPage && assembled.every((response) => totalOf(response) === reference)) {
+      if (!readFailed && assembled.length >= lastPage && assembled.every((response) => totalOf(response) === reference)) {
         const rebuilt = newListing();
         assembled.forEach((response, index) => consume(rebuilt, index + 1, response));
         // Une offre lue dans une réponse écartée et absente du listing prouvé : les deux états ne listent pas les mêmes
