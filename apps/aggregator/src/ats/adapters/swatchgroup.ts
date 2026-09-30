@@ -284,6 +284,13 @@ export function parseSwatchJobPage(html: string, url: string): NormalizedJob | n
 const LAST_PAGE_LINK = /href="\?page=(\d+)"[^>]*>\s*<span[^>]*>\s*<i class="icon--last"/;
 /** Relectures complètes du listing, au-delà de la première, pour réconcilier un ordre instable. */
 const RECONCILIATION_PASSES = 5;
+/**
+ * Les langues du listing, dans l'ordre des relectures (la langue configurée est relue en dernier). Le décalage n'est pas
+ * aléatoire : relue dans la même langue, la liste cache les mêmes offres (six lectures du 30/09 à 06:38, 340 distinctes
+ * sur 348, les mêmes huit offres servies deux fois, toujours en fin de page puis en tête de la suivante). L'ordre du
+ * listing dépend de la langue : le 30/09 à 07:10, en français 328 distinctes, en anglais 336, l'union 348, le total.
+ */
+const RECONCILIATION_LANGS = ['en', 'de', 'it', 'fr'];
 
 export async function fetchSwatchGroupJobs(config: Record<string, unknown>): Promise<AdapterResult> {
   const origin = String(config.origin ?? DEFAULT_ORIGIN).replace(/\/$/, '');
@@ -298,20 +305,22 @@ export async function fetchSwatchGroupJobs(config: Record<string, unknown>): Pro
   // pages déjà lues, par l'identifiant de l'offre et non par l'adresse : le préfixe de langue varie d'une offre à
   // l'autre (en, fr, de, it sur la même page) et ne doit pas faire compter deux fois une offre qui en changerait
   // entre deux lectures. Rend le nombre d'offres distinctes de la page.
-  const readPage = async (page: number, pass: number): Promise<{ count: number; html: string }> => {
-    const url = `${origin}/${lang}/job-finder?page=${page}`;
+  // `admit` juge la page AVANT qu'elle ne compte : une page refusée (autre total annoncé) n'ajoute rien à l'union.
+  const readPage = async (page: number, pass: number, pageLang = lang, admit?: (html: string, count: number) => boolean): Promise<{ count: number; html: string; admitted: boolean }> => {
+    const url = `${origin}/${pageLang}/job-finder?page=${page}`;
     const html = await fetchText(url);
     const inPage = new Map<string, string>();
     for (const m of html.matchAll(/href="(\/[a-z]{2}\/job\/(\d+))"/g)) if (!inPage.has(m[2])) inPage.set(m[2], `${origin}${m[1]}`);
-    const fresh = [...inPage].filter(([id]) => !seen.has(id));
+    const admitted = admit ? admit(html, inPage.size) : true;
+    const fresh = admitted ? [...inPage].filter(([id]) => !seen.has(id)) : [];
     for (const [id, link] of fresh) {
       seen.add(id);
       links.push(link);
     }
     pagesRead += 1;
     pageEvidence.push({ url, checkedAt: captureObservedAt().toISOString(), sha256: createHash('sha256').update(html).digest('hex'), offset: page, pagination: null,
-      ids: [...inPage.keys()], publisherCounter: '', componentCounters: [`pass=${pass}`, `links=${inPage.size}`, `fresh=${fresh.length}`, `uniqueLinks=${seen.size}`] });
-    return { count: inPage.size, html };
+      ids: [...inPage.keys()], publisherCounter: '', componentCounters: [`pass=${pass}`, `lang=${pageLang}`, ...(admitted ? [] : ['refused=TOTAL_CHANGED']), `links=${inPage.size}`, `fresh=${fresh.length}`, `uniqueLinks=${seen.size}`] });
+    return { count: inPage.size, html, admitted };
   };
 
   /*
@@ -325,8 +334,9 @@ export async function fetchSwatchGroupJobs(config: Record<string, unknown>): Pro
    * La preuve est désormais le total que l'éditeur publie par son pager : le lien « Dernier » de la première page
    * donne l'index de la dernière page ; toutes les pages avant elle portent le même nombre de liens (celui de la
    * première) ; la dernière en porte de 1 à ce nombre ; la page suivante n'en porte aucun. Total = index × taille +
-   * liens de la dernière. Le listing est relu, au plus cinq fois, tant que l'union des lectures n'atteint pas ce
-   * total ; il n'est prouvé que si elle l'atteint exactement.
+   * liens de la dernière. Le listing est relu, au plus cinq fois et chaque fois dans une autre langue, tant que l'union
+   * des lectures n'atteint pas ce total ; il n'est prouvé que si elle l'atteint exactement. Une langue qui annonce une
+   * autre dernière page (total changé en cours de lecture) arrête la réconciliation : non prouvé.
    */
   const first = await readPage(0, 1);
   const lastIndex = Number(LAST_PAGE_LINK.exec(first.html)?.[1] ?? NaN);
@@ -363,8 +373,17 @@ export async function fetchSwatchGroupJobs(config: Record<string, unknown>): Pro
   }
   let passes = 1;
   if (publisherTotal !== undefined) {
+    const configured = Array.isArray(config.reconcileLangs) ? config.reconcileLangs.map(String) : RECONCILIATION_LANGS;
+    const sweepLangs = [...configured.filter((l) => l !== lang), lang];
     for (; passes <= RECONCILIATION_PASSES && seen.size < publisherTotal; passes += 1) {
-      for (let page = 0; page <= lastIndex && seen.size < publisherTotal; page += 1) await readPage(page, passes + 1);
+      const sweepLang = sweepLangs[(passes - 1) % sweepLangs.length];
+      const head = await readPage(0, passes + 1, sweepLang, (html, count) => Number(LAST_PAGE_LINK.exec(html)?.[1] ?? NaN) === lastIndex && count === pageSize);
+      if (!head.admitted) {
+        shapeIssues.push('PUBLISHER_TOTAL_CHANGED');
+        passes += 1;
+        break;
+      }
+      for (let page = 1; page <= lastIndex && seen.size < publisherTotal; page += 1) await readPage(page, passes + 1, sweepLang);
     }
     if (seen.size === publisherTotal) termination = passes === 1 ? 'PUBLISHER_TOTAL_REACHED' : 'SECOND_SWEEP_RECONCILED';
     else shapeIssues.push(seen.size > publisherTotal ? 'UNION_ABOVE_PUBLISHER_TOTAL' : 'PUBLISHER_TOTAL_NOT_REACHED');
