@@ -463,7 +463,7 @@ export async function fetchText(url: string, init: RequestInit = {}, policy: Htt
     // Amorçage navigateur : le même chemin qui débloque déjà le WAF Amazon.
     // Une seule tentative — une origine déjà munie du jeton et pourtant
     // challengée ne gagnera rien à être rejouée à l'identique.
-    if (!getWafCookie(url) && (await primeWafCookie(url))) {
+    if (!getWafCookie(url) && (await primeWafCookie(url, vendor))) {
       const retried = await fetchWithRetry(url, init, 3, policy);
       const retriedBody = await readBodyBounded(retried, url);
       if (!detectChallenge(retried, retriedBody)) return retriedBody;

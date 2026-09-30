@@ -1,0 +1,1382 @@
+{
+ "source": "careers.ralphlauren.com, 30/09/2026, scripts/ops/mesure-amorcage-waf-d483.mts (valeurs de requête omises)",
+ "observateur": {
+  "measuredAt": "2026-09-30T09:26:01.488Z",
+  "sha256": "4f348726faeaa4e4773d484cdd7dc1fdf75e8beddd348e833e2c264d7a7ae415",
+  "challenge": {
+   "status": 202,
+   "wafAction": "challenge",
+   "contentType": "text/html; charset=UTF-8",
+   "bytes": 0,
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "token": "aws-waf-token",
+  "withToken": {
+   "status": 200,
+   "cards": 6,
+   "declaredTotal": 225
+  },
+  "requests": [
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/en_US/CareersCorporate/SearchJobsCorporate/?jobOffset&listFilterMode",
+    "resourceType": "document",
+    "status": 202,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://7d6e0277a337.42c8209d.us-east-1.token.awswaf.com/7d6e0277a337/580a42a23f40/39f553e05fca/challenge.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://7d6e0277a337.42c8209d.us-east-1.token.awswaf.com/7d6e0277a337/580a42a23f40/39f553e05fca/inputs?client",
+    "resourceType": "fetch",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "POST",
+    "url": "https://7d6e0277a337.42c8209d.us-east-1.token.awswaf.com/7d6e0277a337/580a42a23f40/39f553e05fca/mp_verify?region",
+    "resourceType": "fetch",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 11055
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/en_US/CareersCorporate/SearchJobsCorporate/?jobOffset&listFilterMode",
+    "resourceType": "document",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://templates-static-assets.avacdn.net/cssLibrary/bridge/1/bridge__ags-to-tgs.css",
+    "resourceType": "stylesheet",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://templates-static-assets.avacdn.net/cookieUserConsent/2/cookieUserConsent.min.css",
+    "resourceType": "stylesheet",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://templates-static-assets.avacdn.net/cssLibrary/24.4/core.min.css",
+    "resourceType": "stylesheet",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/ASSET/portal/jquery/UI/1.13.2/jquery-ui.min.css?version",
+    "resourceType": "stylesheet",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/assets/index.CoB8YEta.css",
+    "resourceType": "stylesheet",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/assets/session-popup._xa4D8v5.css",
+    "resourceType": "stylesheet",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/assets/vendor-fortawesome-fontawesome-svg-core.DuaSt5cF.css",
+    "resourceType": "stylesheet",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/ASSET/portal/widget/jobsharemethod/styles.css?version",
+    "resourceType": "stylesheet",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/ASSET/wizard/portal/jquery/plugin/select2/select2.min.css?version",
+    "resourceType": "stylesheet",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portal/47/css/library__theme.css?v",
+    "resourceType": "stylesheet",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/assets/wizard-legacy.Bpy3i56j.css",
+    "resourceType": "stylesheet",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portal/47/css/specifics.css?v",
+    "resourceType": "stylesheet",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/assets/body.C9CX2Y2H.css",
+    "resourceType": "stylesheet",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/ASSET/portal/jquery/jquerycore/3.7.1/jquery.min.js?version",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/ASSET/wizard/portal/jquery/plugin/select2/select2_locale_en.js?version",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/js/session-popup.DirR3x9d.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/ASSET/portal/pjquery/pjQueryDeclaration.js?version",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/ASSET/wizard/portal/jquery/plugin/select2/select2.full.min.js?version",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/ASSET/portal/jquery/UI/1.13.2/jquery-ui.min.js?version",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/js/head/head.DKodxVax.iife.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/js/body.09xgreTr.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/js/wizard-legacy.BUfVi9o6.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://templates-static-assets.avacdn.net/cookieUserConsent/2/cookieUserConsent.min.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://templates-static-assets.avacdn.net/jsLibrary/24.4/core.min.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portal/47/js/specifics.js?v",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://templates-static-assets.avacdn.net/cssLibrary/fonts/material-symbols/1/material-symbols-rounded-400.woff2",
+    "resourceType": "font",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/js/vendor-preact-signals-safe-react-BZe8enuW.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/js/vendor-hoist-non-react-statics-C0CBQ6BH.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portal/47/fonts/Lato-Regular.ttf",
+    "resourceType": "font",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portal/47/images/banner--main--desktop.webp",
+    "resourceType": "image",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portal/47/images/logo--default.webp",
+    "resourceType": "image",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/js/vendor-fortawesome-fontawesome-svg-core-BzZaYD8j.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/js/index-D1CfVkOD.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/js/TemplateVariablesService-LxuTVxL7.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/js/globalSingleton-dVHOQSGY.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/js/ApiRouteHelper-D77uw4RX.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/js/AnalyticsServiceFactory-uyLVnsFd.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/js/SubmitManager-BkETKk3E.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/js/MetaDataManager-CZr0V9dW.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/js/ApiRoute-B0Mu7Cyg.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/js/vendor-rxjs-DUFUhm0G.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/js/vendor-tanstack-query-core-CVvfRsjt.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portal/47/fonts/Lato-Bold.ttf",
+    "resourceType": "font",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portal/47/fonts/Lato-Italic.ttf",
+    "resourceType": "font",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portal/47/fonts/DidotRegular.ttf",
+    "resourceType": "font",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/js/IntegrationService-IVKMjjXR.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/js/EventManager-DdE0GSwc.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/js/vendor-emotion-sheet-gUyxtmJr.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/js/ChartRenderer-CBq7s4m8.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/js/GlobalConfig-C4KW9qmZ.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/js/vendor-emotion-cache-Cih8k2n6.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/js/formToken-CmjPu89k.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/js/vendor-tslib-9k7AwCpt.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/js/ServiceFactory-y3UdVUBj.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/js/vendor-js-md5-D9LBoxmw.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/js/vendor-tabbable-8bNhtQr1.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/js/vendor-preact-signals-core-B2hHFcW0.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/js/GoogleDriveApiService-DRf5mbOz.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/js/vendor-react-D0VzsTKy.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/js/vendor-focus-trap-DPyl8d7N.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/js/vendor-tanstack-react-query-6h-POO7G.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/js/vendor-emotion-memoize-3S_6p140.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/js/filepicker.esm-CXxNEgV0.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/js/PortalDataManager-BA4iOVtj.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/js/vendor-react-is-CHJPnZJb.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/js/vendor-emotion-utils-BijCJQMc.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/js/vendor-classnames-DHL_iXYv.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/js/vendor-stylis-BqmD5Vow.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/js/DateUtils-Cqas-NxU.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/js/vendor-emotion-use-insertion-effect-with-fallbacks-DOA5OZkQ.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/js/vendor-emotion-react-B0sU2eUM.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/js/focus-trap-react-compat-BOjDHDqO.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/js/vendor-focus-trap-react-BpITMIr-.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/js/vendor-emotion-serialize-BTq4sc4a.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/js/UrlResolver-BfcwQRf2.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/js/language-detector-B0s7IWlY.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/js/vendor-scheduler-Cvj96rM0.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/js/vendor-emotion-hash-WldOFDRm.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/js/vendor-use-sync-external-store-B_tEgIiX.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/js/vendor-emotion-unitless-x5IvBceT.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/js/Date-C3Ry6Ll4.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/js/vendor-luxon-igWlP9rL.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/js/index-DDN1Mtw0.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/js/vendor-react-dom-OaQKH0eG.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portal/47/images/social-media-x.webp",
+    "resourceType": "image",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portal/47/images/icon--caret--down.svg",
+    "resourceType": "image",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portal/47/images/social-media-linkedin.webp",
+    "resourceType": "image",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portal/47/images/social-media-facebook.webp",
+    "resourceType": "image",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portal/47/images/fv-plus-circle-o.svg",
+    "resourceType": "image",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portal/47/images/social-media-instagram.webp",
+    "resourceType": "image",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portal/47/images/logo--small.webp",
+    "resourceType": "image",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portal/47/images/social-media-glassdoor.webp",
+    "resourceType": "image",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/47/_portalCookieUserConsent?method",
+    "resourceType": "xhr",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://templates-static-assets.avacdn.net/jsLibrary/plugins/glightbox/glightbox.min.css",
+    "resourceType": "stylesheet",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://templates-static-assets.avacdn.net/jsLibrary/plugins/swiper/swiper-bundle.csp.min.css",
+    "resourceType": "stylesheet",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://templates-static-assets.avacdn.net/jsLibrary/plugins/glightbox/glightbox.min.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://templates-static-assets.avacdn.net/jsLibrary/plugins/swiper/swiper-bundle.min.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://templates-static-assets.avacdn.net/jsLibrary/plugins/googlemaps/markerclusterer.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://maps.googleapis.com/maps/api/js?v&key",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/47/_portalCookieUserConsent?method",
+    "resourceType": "xhr",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://maps.googleapis.com/maps/api/mapsjs/gen_204?csp_test",
+    "resourceType": "xhr",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://templates-static-assets.avacdn.net/cookieUserConsent/2/fonts/avaturegdpr.woff2?81345062",
+    "resourceType": "font",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://maps.googleapis.com/maps-api-v3/api/js/65/14a/intl/fr_ALL/common.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://maps.googleapis.com/maps-api-v3/api/js/65/14a/intl/fr_ALL/map.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://maps.googleapis.com/maps-api-v3/api/js/65/14a/intl/fr_ALL/util.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://maps.googleapis.com/maps-api-v3/api/js/65/14a/intl/fr_ALL/log.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://maps.googleapis.com/maps-api-v3/api/js/65/14a/intl/fr_ALL/onion.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "POST",
+    "url": "https://maps.googleapis.com/$rpc/google.internal.maps.mapsjs.v1.MapsJsInternalService/GetViewportInfo",
+    "resourceType": "xhr",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 204
+   },
+   {
+    "method": "GET",
+    "url": "https://maps.gstatic.com/mapfiles/openhand_8_8.cur",
+    "resourceType": "image",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://maps.googleapis.com/maps/vt?pb&key&token",
+    "resourceType": "image",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://maps.googleapis.com/maps/vt?pb&key&token",
+    "resourceType": "image",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://maps.googleapis.com/maps/vt?pb&key&token",
+    "resourceType": "image",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://maps.googleapis.com/maps/vt?pb&key&token",
+    "resourceType": "image",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://maps.googleapis.com/maps/vt?pb&key&token",
+    "resourceType": "image",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://maps.googleapis.com/maps/vt?pb&key&token",
+    "resourceType": "image",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://maps.googleapis.com/maps/vt?pb&key&token",
+    "resourceType": "image",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://maps.googleapis.com/maps/vt?pb&key&token",
+    "resourceType": "image",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://maps.googleapis.com/maps/vt?pb&key&token",
+    "resourceType": "image",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://maps.googleapis.com/maps/vt?pb&key&token",
+    "resourceType": "image",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://maps.googleapis.com/maps/vt?pb&key&token",
+    "resourceType": "image",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://maps.googleapis.com/maps/vt?pb&key&token",
+    "resourceType": "image",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://maps.googleapis.com/maps/vt?pb&key&token",
+    "resourceType": "image",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://maps.googleapis.com/maps/vt?pb&key&token",
+    "resourceType": "image",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://maps.googleapis.com/maps/vt?pb&key&token",
+    "resourceType": "image",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://maps.googleapis.com/maps/vt?pb&callback&key&token",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://maps.googleapis.com/maps/vt?pb&key&token",
+    "resourceType": "image",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/assets/roboto-v27-latin-400.DeojfH1t.woff2",
+    "resourceType": "font",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://maps.googleapis.com/maps-api-v3/api/js/65/14a/intl/fr_ALL/controls.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://maps.gstatic.com/mapfiles/transparent.png",
+    "resourceType": "image",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://maps.googleapis.com/maps-api-v3/api/js/65/14a/intl/fr_ALL/marker.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://maps.gstatic.com/mapfiles/api-3/images/cb_scout5.png",
+    "resourceType": "image",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://fonts.googleapis.com/css?family&text&lang",
+    "resourceType": "stylesheet",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://fonts.googleapis.com/css?family&lang",
+    "resourceType": "stylesheet",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://fonts.googleapis.com/css2?family&text&lang",
+    "resourceType": "stylesheet",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://maps.gstatic.com/mapfiles/api-3/images/drag-cross.png",
+    "resourceType": "image",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/portalpacks/web/assets/roboto-v27-latin-500.C1mc9L83.woff2",
+    "resourceType": "font",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/en_US/CareersCorporate/SearchJobsCorporateData/?jobOffset&amp;listFilterMode",
+    "resourceType": "xhr",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://maps.googleapis.com/maps-api-v3/api/js/65/14a/intl/fr_ALL/overlay.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://maps.gstatic.com/mapfiles/transparent.png",
+    "resourceType": "image",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://maps.gstatic.com/mapfiles/api-3/images/spotlight-poi3.png",
+    "resourceType": "image",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://maps.googleapis.com/maps-api-v3/api/js/65/14a/intl/fr_ALL/infowindow.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   }
+  ],
+  "blocked": []
+ },
+ "borne": {
+  "measuredAt": "2026-09-30T09:26:45.985Z",
+  "sha256": "32a1902826d3971e4bd11ead1dadaf99f0634f1be7321705b83c535c8479e3f9",
+  "challenge": {
+   "status": 202,
+   "wafAction": "challenge",
+   "contentType": "text/html; charset=UTF-8",
+   "bytes": 0,
+   "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "token": "aws-waf-token",
+  "withToken": {
+   "status": 200,
+   "cards": 6,
+   "declaredTotal": 225
+  },
+  "requests": [
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/en_US/CareersCorporate/SearchJobsCorporate/?jobOffset&listFilterMode",
+    "resourceType": "document",
+    "status": 202,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://7d6e0277a337.42c8209d.us-east-1.token.awswaf.com/7d6e0277a337/580a42a23f40/39f553e05fca/challenge.js",
+    "resourceType": "script",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "GET",
+    "url": "https://7d6e0277a337.42c8209d.us-east-1.token.awswaf.com/7d6e0277a337/580a42a23f40/39f553e05fca/inputs?client",
+    "resourceType": "fetch",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   },
+   {
+    "method": "POST",
+    "url": "https://7d6e0277a337.42c8209d.us-east-1.token.awswaf.com/7d6e0277a337/580a42a23f40/39f553e05fca/mp_verify?region",
+    "resourceType": "fetch",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 11052
+   },
+   {
+    "method": "GET",
+    "url": "https://careers.ralphlauren.com/en_US/CareersCorporate/SearchJobsCorporate/?jobOffset&listFilterMode",
+    "resourceType": "document",
+    "status": 200,
+    "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+    "postBytes": 0
+   }
+  ],
+  "blocked": [
+   {
+    "url": "https://careers.ralphlauren.com/ASSET/portal/jquery/UI/1.13.2/jquery-ui.min.css?version",
+    "method": "GET",
+    "resourceType": "stylesheet"
+   },
+   {
+    "url": "https://careers.ralphlauren.com/portalpacks/web/assets/session-popup._xa4D8v5.css",
+    "method": "GET",
+    "resourceType": "stylesheet"
+   },
+   {
+    "url": "https://careers.ralphlauren.com/portalpacks/web/assets/index.CoB8YEta.css",
+    "method": "GET",
+    "resourceType": "stylesheet"
+   },
+   {
+    "url": "https://careers.ralphlauren.com/portalpacks/web/assets/body.C9CX2Y2H.css",
+    "method": "GET",
+    "resourceType": "stylesheet"
+   },
+   {
+    "url": "https://careers.ralphlauren.com/portalpacks/web/assets/vendor-fortawesome-fontawesome-svg-core.DuaSt5cF.css",
+    "method": "GET",
+    "resourceType": "stylesheet"
+   },
+   {
+    "url": "https://careers.ralphlauren.com/ASSET/wizard/portal/jquery/plugin/select2/select2.min.css?version",
+    "method": "GET",
+    "resourceType": "stylesheet"
+   },
+   {
+    "url": "https://careers.ralphlauren.com/portalpacks/web/assets/wizard-legacy.Bpy3i56j.css",
+    "method": "GET",
+    "resourceType": "stylesheet"
+   },
+   {
+    "url": "https://careers.ralphlauren.com/ASSET/portal/widget/jobsharemethod/styles.css?version",
+    "method": "GET",
+    "resourceType": "stylesheet"
+   },
+   {
+    "url": "https://careers.ralphlauren.com/portal/47/css/library__theme.css?v",
+    "method": "GET",
+    "resourceType": "stylesheet"
+   },
+   {
+    "url": "https://templates-static-assets.avacdn.net/cssLibrary/bridge/1/bridge__ags-to-tgs.css",
+    "method": "GET",
+    "resourceType": "stylesheet"
+   },
+   {
+    "url": "https://templates-static-assets.avacdn.net/cssLibrary/24.4/core.min.css",
+    "method": "GET",
+    "resourceType": "stylesheet"
+   },
+   {
+    "url": "https://careers.ralphlauren.com/portal/47/css/specifics.css?v",
+    "method": "GET",
+    "resourceType": "stylesheet"
+   },
+   {
+    "url": "https://templates-static-assets.avacdn.net/cookieUserConsent/2/cookieUserConsent.min.css",
+    "method": "GET",
+    "resourceType": "stylesheet"
+   },
+   {
+    "url": "https://careers.ralphlauren.com/ASSET/portal/jquery/jquerycore/3.7.1/jquery.min.js?version",
+    "method": "GET",
+    "resourceType": "script"
+   },
+   {
+    "url": "https://careers.ralphlauren.com/ASSET/portal/jquery/UI/1.13.2/jquery-ui.min.js?version",
+    "method": "GET",
+    "resourceType": "script"
+   },
+   {
+    "url": "https://careers.ralphlauren.com/ASSET/portal/pjquery/pjQueryDeclaration.js?version",
+    "method": "GET",
+    "resourceType": "script"
+   },
+   {
+    "url": "https://careers.ralphlauren.com/portalpacks/web/js/head/head.DKodxVax.iife.js",
+    "method": "GET",
+    "resourceType": "script"
+   },
+   {
+    "url": "https://careers.ralphlauren.com/portalpacks/web/js/body.09xgreTr.js",
+    "method": "GET",
+    "resourceType": "script"
+   },
+   {
+    "url": "https://careers.ralphlauren.com/portalpacks/web/js/session-popup.DirR3x9d.js",
+    "method": "GET",
+    "resourceType": "script"
+   },
+   {
+    "url": "https://careers.ralphlauren.com/ASSET/wizard/portal/jquery/plugin/select2/select2.full.min.js?version",
+    "method": "GET",
+    "resourceType": "script"
+   },
+   {
+    "url": "https://careers.ralphlauren.com/ASSET/wizard/portal/jquery/plugin/select2/select2_locale_en.js?version",
+    "method": "GET",
+    "resourceType": "script"
+   },
+   {
+    "url": "https://careers.ralphlauren.com/portalpacks/web/js/wizard-legacy.BUfVi9o6.js",
+    "method": "GET",
+    "resourceType": "script"
+   },
+   {
+    "url": "https://templates-static-assets.avacdn.net/cookieUserConsent/2/cookieUserConsent.min.js",
+    "method": "GET",
+    "resourceType": "script"
+   },
+   {
+    "url": "https://templates-static-assets.avacdn.net/jsLibrary/24.4/core.min.js",
+    "method": "GET",
+    "resourceType": "script"
+   },
+   {
+    "url": "https://careers.ralphlauren.com/portal/47/js/specifics.js?v",
+    "method": "GET",
+    "resourceType": "script"
+   },
+   {
+    "url": "https://careers.ralphlauren.com/portal/47/images/logo--default.webp",
+    "method": "GET",
+    "resourceType": "image"
+   }
+  ]
+ }
+}

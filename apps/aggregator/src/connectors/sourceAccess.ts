@@ -34,14 +34,18 @@ export function assertSourceAccess(source: Subject, decision: SourceAccessDecisi
     report.captureBatchId !== decision.captureBatchId || report.validUntil !== decision.validUntil.toISOString() ||
     report.authorizationBasis !== 'OWNER_SECTOR_AUTHORIZATION' || report.ownerDecisionScope !== OWNER_DECISION_SCOPE || report.ownerDecisionAt !== OWNER_DECISION_AT ||
     !/^[a-f0-9]{64}$/.test(report.requestSetHash) || !Number.isSafeInteger(report.captureCount) || report.captureCount < 1 ||
-    !Number.isSafeInteger(report.requestCount) || report.requestCount < report.captureCount || report.requestCount > 100_000 ||
+    // Les requêtes d'un amorçage déclaré (D-483) sont des lignes du journal, comptées à part des sauts HTTP certifiés.
+    !Number.isSafeInteger(report.requestCount) || report.requestCount < report.captureCount - (report.bootstrapRequestCount ?? 0) || report.requestCount > 100_000 ||
     !Array.isArray(report.scopeCounts) || report.scopeCounts.length !== document.scopes.length || report.scopeCounts.some(count => !Number.isSafeInteger(count) || count < 1) ||
     report.scopeCounts.reduce((sum, count) => sum + count, 0) !== report.requestCount ||
     !Array.isArray(report.robots) || report.robots.length !== document.robotsCaptureIds.length ||
     observedCount(report.observations) !== report.requestCount ||
     new Set(report.robots.map(item => item?.origin)).size !== report.robots.length ||
     report.robots.some((item, i) => !item || item.captureBatchId !== document.robotsCaptureIds[i] || observedCount(item.observations) < 1) ||
-    observationKeys.some(key => report.robots.reduce((sum, item) => sum + item.observations[key], 0) !== report.observations[key])) return invalidAccess('Stored access decision differs from its bound document and native projection');
+    observationKeys.some(key => report.robots.reduce((sum, item) => sum + item.observations[key], 0) !== report.observations[key]) ||
+    // D-483 : un amorçage déclaré a ses requêtes inscrites et comptées ; aucune décision sans amorçage n'en compte.
+    (document.bootstraps?.length ? !Number.isSafeInteger(report.bootstrapRequestCount) || report.bootstrapRequestCount! < 1 || report.bootstrapRequestCount! > 100_000
+      : report.bootstrapRequestCount !== undefined)) return invalidAccess('Stored access decision differs from its bound document and native projection');
   return { decision, document };
 }
 

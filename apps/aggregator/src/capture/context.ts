@@ -5,14 +5,22 @@ import { logicalRequestFingerprint, REQUEST_NEGOTIATION_HEADERS, type RequestDes
 
 export { digestBytes } from '../lib/evidenceHash.js';
 export type CaptureRequest = { url: string; method?: string; body?: RequestInit['body']; headers?: RequestInit['headers']; format: 'HTTP_RESPONSE' | 'BROWSER_RESPONSE' | 'RENDERED_DOM';
-  transport?: { origin: 'HTTP_TRANSPORT' | 'BROWSER_TRANSPORT'; hops: TransportHop[] } };
+  transport?: { origin: 'HTTP_TRANSPORT' | 'BROWSER_TRANSPORT'; hops: TransportHop[] };
+  /** Une requête du navigateur d'amorçage WAF autorisé de cette collecte (D-483), jamais un collecteur navigateur. */
+  wafBootstrap?: true };
+/**
+ * L'autorisation d'amorcer un défi WAF pour l'adresse défiée `url` dans cette collecte : le filtre de ce que le
+ * navigateur a le droit d'envoyer, ou `null` si la source n'est pas autorisée (le défi échoue alors comme avant,
+ * sans navigateur). Une autorisation refusée par la décision d'accès lève `SourceAccessGateError`.
+ */
+export type WafBootstrapPolicy = (url: string) => { allow: (request: { url: string; method: string }) => boolean } | null;
 export type CaptureRecord = {
   sequence: number; requestHash: string; requestUrl: string; method: string; format: CaptureRequest['format'];
   status: number | null; headers: Record<string, string>; cookieNames: string[]; complete: boolean;
   failure: string | null; bytes: Uint8Array | null;
   requestData: RequestData;
 };
-type ReplayResponse = { bytes: Uint8Array | null; status: number | null; headers: Record<string, string>; cookieNames: string[]; complete: boolean; failure: string | null };
+export type ReplayResponse = { bytes: Uint8Array | null; status: number | null; headers: Record<string, string>; cookieNames: string[]; complete: boolean; failure: string | null };
 export type CaptureContext = {
   sequence: number;
   observedAt?: Date;
@@ -25,6 +33,14 @@ export type CaptureContext = {
   unsupportedTransport?: boolean;
   accessFailure?: Error;
   failure?: Error;
+  /** D-483 : qui peut amorcer un défi WAF dans cette collecte, et ce que son navigateur peut envoyer. */
+  wafBootstrap?: WafBootstrapPolicy;
+  /** L'amorçage de cette collecte — un au plus, sur une seule origine — et le jeton qu'il a rendu. */
+  wafBootstrapRun?: { origin: string; cookie: Promise<string | undefined>; value?: string };
+  /** Au moins une requête d'amorçage autorisé a été inscrite : la couverture devient `HTTP_WITH_WAF_BOOTSTRAP`. */
+  wafBootstrapped?: boolean;
+  /** Rejeu : consomme les requêtes d'amorçage inscrites pour cette origine, ou rend `false` si la collecte n'en a pas. */
+  replayBootstrap?: (origin: string) => boolean;
 };
 const contexts = new AsyncLocalStorage<CaptureContext>();
 export class OfflineReplayError extends Error {
@@ -47,6 +63,8 @@ export class CaptureUnavailableError extends Error {
   constructor(cause: unknown) { super('Native response capture unavailable; extraction stopped', { cause }); this.name = 'CaptureUnavailableError'; }
 }
 export const withCaptureContext = <T>(context: CaptureContext, work: () => Promise<T>) => contexts.run(context, work);
+/** La collecte ou le rejeu en cours, s'il y en a un (l'amorçage WAF y tient son état, D-483). */
+export const currentCaptureContext = (): CaptureContext | undefined => contexts.getStore();
 /**
  * Stable extraction reference time; native receipts retain their own precise timestamps.
  *
@@ -149,7 +167,13 @@ export async function captureResponse(request: CaptureRequest, response: {
         origin: request.transport?.hops.length ? request.transport.origin : request.format === 'RENDERED_DOM' ? 'RENDERED_DOM' : 'UNOBSERVED_TRANSPORT',
         hops: request.transport?.hops ?? [] },
       status: response.status ?? null, headers, cookieNames, bytes: response.bytes, complete: response.complete, failure: response.failure ?? null };
-    if (record.requestData.origin !== 'HTTP_TRANSPORT') noteUnsupportedTransport();
+    if (record.requestData.origin !== 'HTTP_TRANSPORT') {
+      // Une requête du navigateur d'amorçage n'est un transport inscrit que pendant l'amorçage AUTORISÉ de cette
+      // collecte (D-483) ; toute autre requête navigateur reste un transport non certifié.
+      if (request.wafBootstrap && context.wafBootstrapRun && record.format === 'BROWSER_RESPONSE' &&
+        record.requestData.origin === 'BROWSER_TRANSPORT') context.wafBootstrapped = true;
+      else noteUnsupportedTransport();
+    }
     await context.write(record);
   } catch (cause) {
     context.failure = new CaptureUnavailableError(cause);

@@ -12,6 +12,7 @@ import { robotsVerdictFor } from '../lib/robotsVerdict.js';
 import { readRobotsResponse } from '../lib/robotsResponse.js';
 import { evidenceHash } from '../lib/evidenceHash.js';
 import { invalidAccess, matchingAccessScope, recentAccess, SOURCE_ACCESS_MAX_AGE_MS, SOURCE_ACCESS_POLICY, type AccessDocument } from './accessScope.js';
+import { bootstrapRequestCovered, isChallengeHost } from './wafBootstrap.js';
 
 const MAX_REQUESTS = 100_000;
 type Observations = Record<RobotsObserved, number>;
@@ -21,6 +22,9 @@ export type AccessEvidenceReport = {
   captureCount: number; requestCount: number; requestSetHash: string; validUntil: string;
   authorizationBasis: 'OWNER_SECTOR_AUTHORIZATION'; ownerDecisionScope: string; ownerDecisionAt: string;
   scopeCounts: number[]; observations: Observations;
+  /** D-483 : requêtes du navigateur d'amorçage inscrites au journal, toutes couvertes par `document.bootstraps`.
+   * Absent des décisions antérieures, qui n'en ont aucune. Jamais comptées dans `requestCount` (HTTP seul). */
+  bootstrapRequestCount?: number;
   robots: { captureBatchId: string; origin: string; responseId: string; bodyHash: string; observedAt: string;
     status: number; observationKind: 'RULES' | 'NO_ROBOTS' | 'UNREACHABLE'; nonStandardResponse?: boolean; observations: Observations }[];
 };
@@ -30,17 +34,24 @@ export type AccessEvidenceReport = {
 export async function inspectSourceAccess(db: PrismaClient, document: Readonly<AccessDocument>, store?: ObjectStore): Promise<AccessEvidenceReport> {
   const now = new Date();
   const batch = await db.captureBatch.findUniqueOrThrow({ where: { id: document.captureBatchId! }, include: { outcome: true } });
+  // D-483 : une collecte peut porter UN amorçage WAF inscrit, à condition que la décision le déclare ; sans
+  // déclaration, la collecte doit être HTTP seule — et une déclaration exige son témoin.
+  const bootstrap = document.bootstraps?.[0];
   if (batch.sourceKey !== document.sourceKey || batch.sourceRevisionId !== document.sourceRevisionId ||
     batch.purpose !== 'JOBS' || batch.formatVersion !== 2 || batch.readerRevision !== captureReaderRevision() ||
-    batch.outcome?.status !== 'EXTRACTED' || batch.outcome.transportCoverage !== 'HTTP_ONLY' ||
-    !recentAccess(batch.startedAt, now)) return invalidAccess('Recent HTTP-only extraction of the current source revision and reader required');
+    batch.outcome?.status !== 'EXTRACTED' || batch.outcome.transportCoverage !== (bootstrap ? 'HTTP_WITH_WAF_BOOTSTRAP' : 'HTTP_ONLY') ||
+    !recentAccess(batch.startedAt, now)) return invalidAccess('Recent HTTP-only extraction (or declared WAF bootstrap) of the current source revision and reader required');
   await readExtractionManifest(db, batch.id, store);
   const report: AccessEvidenceReport = { policy: SOURCE_ACCESS_POLICY, readerRevision: captureReaderRevision(),
     sourceKey: document.sourceKey, sourceRevisionId: document.sourceRevisionId, captureBatchId: batch.id,
     captureCount: 0, requestCount: 0, requestSetHash: '',
     validUntil: new Date(Math.min(batch.startedAt.getTime(), Date.parse(document.checkedAt)) + SOURCE_ACCESS_MAX_AGE_MS).toISOString(),
     authorizationBasis: 'OWNER_SECTOR_AUTHORIZATION', ownerDecisionScope: OWNER_DECISION_SCOPE, ownerDecisionAt: OWNER_DECISION_AT,
-    scopeCounts: document.scopes.map(() => 0), observations: emptyObservations(), robots: [] };
+    scopeCounts: document.scopes.map(() => 0), observations: emptyObservations(), robots: [], ...(bootstrap ? { bootstrapRequestCount: 0 } : {}) };
+  /** Les défis AWS archivés du journal HTTP, dans l'ordre : seuls eux justifient un amorçage qui les suit. */
+  const challenged: string[] = [];
+  const bootstrapHosts = new Set<string>();
+  let bootstrapTargets = 0;
   const policies = new Map<string, { text: string | null; report: AccessEvidenceReport['robots'][number] }>();
   const observedMethods = document.scopes.map(() => new Set<string>());
   const observedQueryNames = document.scopes.map(() => new Set<string>());
@@ -76,8 +87,25 @@ export async function inspectSourceAccess(db: PrismaClient, document: Readonly<A
     for (const row of rows) {
       if (row.sequence !== next++ || ++report.captureCount > MAX_REQUESTS) return invalidAccess('Native request journal is non-contiguous or exceeds the inspection budget');
       const data = await readRequestData(db, row, store);
+      if (bootstrap && data?.origin === 'BROWSER_TRANSPORT' && row.format === 'BROWSER_RESPONSE') {
+        // Une requête du navigateur d'amorçage : un seul saut, après un défi archivé de son origine, vers l'adresse
+        // défiée elle-même ou un hôte du défi que la décision déclare, sous l'identité du collecteur.
+        const hop = data.hops.length === 1 ? data.hops[0] : null;
+        const url = hop ? new URL(hop.request.url) : null;
+        if (!hop || !url || hop.request.format !== 'BROWSER_RESPONSE' || !challenged.some(value => new URL(value).origin === bootstrap.origin) ||
+          !bootstrapRequestCovered(bootstrap, challenged, { sequence: row.sequence, url, method: hop.request.method, userAgent: hop.request.userAgent }))
+          return invalidAccess('A WAF bootstrap request is outside its reviewed authorization');
+        if (++report.bootstrapRequestCount! > MAX_REQUESTS) return invalidAccess('Native request hops exceed the inspection budget');
+        if (url.origin === bootstrap.origin) bootstrapTargets++; else bootstrapHosts.add(url.origin);
+        if (row.blobHash) await readRawBlob(db, row.blobHash, store);
+        requestSet.update(evidenceHash({ id: row.id, sequence: row.sequence, requestDataHash: row.requestDataHash, blobHash: row.blobHash,
+          covered: [{ bootstrap: bootstrap.origin }] }) + '\n');
+        continue;
+      }
       if (!data || data.origin !== 'HTTP_TRANSPORT' || !data.hops.length) return invalidAccess('Every request needs native HTTP provenance; browser and historical unknown transports cannot certify access');
       if (row.blobHash) await readRawBlob(db, row.blobHash, store);
+      const last = data.hops.at(-1)!;
+      if (last.status === 202 && (row.headers as Record<string, unknown>)['x-amzn-waf-action'] === 'challenge') challenged.push(last.request.url);
       const covered = [];
       for (const hop of data.hops) {
         if (++report.requestCount > MAX_REQUESTS) return invalidAccess('Native request hops exceed the inspection budget');
@@ -100,6 +128,8 @@ export async function inspectSourceAccess(db: PrismaClient, document: Readonly<A
     }
   }
   if (!report.requestCount || report.scopeCounts.some(count => !count) || report.robots.some(item => Object.values(item.observations).every(count => !count))) return invalidAccess('Every reviewed scope and robots observation must cover an actually observed request');
+  // Aucun amorçage déclaré sans témoin : la page défiée chargée par le navigateur, et chaque hôte du défi nommé.
+  if (bootstrap && (!bootstrapTargets || bootstrap.challengeHosts.some(host => !isChallengeHost(host) || !bootstrapHosts.has(host)))) return invalidAccess('Every declared WAF bootstrap host needs an observed native witness');
   if (document.scopes.some((scope, index) => scope.methods.some(method => !observedMethods[index].has(method)) ||
     scope.query.variable.some(key => !observedQueryNames[index].has(key)))) return invalidAccess('Every declared method and variable query name needs an observed native witness');
   report.requestSetHash = requestSet.digest('hex');

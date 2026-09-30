@@ -10,7 +10,8 @@ import { assertSourceRunning } from '../lib/sourceBudget.js';
 import { log } from '../observability/logger.js';
 import { captureReaderRevision } from '../capture/revision.js';
 import { captureSourceForValidation } from './sourceValidation.js';
-import { matchingAccessScope, SourceAccessGateError, type AccessScope } from './accessScope.js';
+import { matchingAccessScope, SourceAccessGateError, type AccessDocument } from './accessScope.js';
+import { deriveAccessBootstrap, type ObservedBootstrapRequest, type ObservedChallenge } from './wafBootstrap.js';
 import { describeRequest } from '../capture/context.js';
 import { CRAWLER_IDENTITY } from '../lib/crawlerIdentity.js';
 import { requireSourceValidation, SourceValidationGateError } from './sourceCertification.js';
@@ -19,23 +20,44 @@ import { isDatabaseFailure } from '../lib/ingestionIssue.js';
 
 const message = (error: unknown) => (error instanceof Error ? error.message : String(error)).replace(/\s+/g, ' ').replace(/(https?:\/\/[^\s'")?]+)\?[^\s'")]*/g, '$1?…').slice(0, 400);
 
-/** Les requêtes HTTP réellement observées pendant une capture (chaque saut de chaque réponse), avec le type de contenu servi. */
-export async function observedRequests(db: PrismaClient, captureBatchId: string, store?: ObjectStore) {
+/**
+ * Le journal d'une capture relu pour la dérivation : les requêtes HTTP réellement observées (chaque saut de chaque
+ * réponse, avec le type de contenu servi), les défis AWS archivés (`202` + `x-amzn-waf-action: challenge`), et les
+ * requêtes du navigateur d'amorçage inscrites (D-483). Toute autre provenance arrête la dérivation.
+ */
+export async function observedJournal(db: PrismaClient, captureBatchId: string, store?: ObjectStore) {
   const rows = await db.rawCapture.findMany({ where: { batchId: captureBatchId }, orderBy: { sequence: 'asc' } });
   const requests: { method: string; url: URL; contentType: string }[] = [];
+  const challenges: ObservedChallenge[] = [];
+  const bootstrap: ObservedBootstrapRequest[] = [];
   for (const row of rows) {
     const data = await readRequestData(db, row, store);
+    if (data?.origin === 'BROWSER_TRANSPORT' && row.format === 'BROWSER_RESPONSE' && data.hops.length === 1) {
+      const hop = data.hops[0];
+      bootstrap.push({ sequence: row.sequence, url: new URL(hop.request.url), method: hop.request.method, userAgent: hop.request.userAgent });
+      continue;
+    }
     if (!data || data.origin !== 'HTTP_TRANSPORT') throw new Error('ACCESS_JOURNAL: requête sans provenance HTTP native');
     for (const hop of data.hops) requests.push({ method: hop.request.method, url: new URL(hop.request.url), contentType: String((hop.responseHeaders as Record<string, string>)['content-type'] ?? '') });
+    const last = data.hops.at(-1);
+    if (last?.status === 202 && (row.headers as Record<string, unknown>)['x-amzn-waf-action'] === 'challenge') challenges.push({ sequence: row.sequence, url: last.request.url });
   }
   if (!requests.length) throw new Error('ACCESS_JOURNAL: aucune requête observée');
-  return requests;
+  return { requests, challenges, bootstrap };
+}
+
+/** Les requêtes HTTP réellement observées pendant une capture (chaque saut de chaque réponse), avec le type de contenu servi. */
+export async function observedRequests(db: PrismaClient, captureBatchId: string, store?: ObjectStore) {
+  return (await observedJournal(db, captureBatchId, store)).requests;
 }
 
 export async function qualifySourceAccess(db: PrismaClient, c: { key: string; kind: string }, revision: string, jobsCaptureId: string,
   reviewer: string, etapes: Record<string, unknown> = {}, store?: ObjectStore, expectedDecisionId?: string | null) {
   assertPipelineRunning(); assertSourceRunning();
-  const requests = await observedRequests(db, jobsCaptureId, store);
+  const journal = await observedJournal(db, jobsCaptureId, store);
+  const requests = journal.requests;
+  // D-483 : l'amorçage observé, dérivé et borné (source et origine nommées, adresse défiée, hôtes du défi), ou rien.
+  const bootstrap = deriveAccessBootstrap(c.key, journal.challenges, journal.bootstrap);
   const origins = [...new Set(requests.map(r => r.url.origin))];
   const robotsCaptureIds: string[] = [];
   for (const origin of origins) {
@@ -43,9 +65,10 @@ export async function qualifySourceAccess(db: PrismaClient, c: { key: string; ki
     robotsCaptureIds.push(capture.captureBatchId);
   }
   const { scopes, derivation } = deriveAccessScopeDocument(c.kind, requests);
-  const statement = `Périmètre dérivé des ${requests.length} requête(s) HTTP réellement observées, sous l'identité du robot, pendant la collecte de qualification ${jobsCaptureId} : ${derivation.exact} chemin(s) observé(s) déclaré(s) tel(s) quel(s) (EXACT) et ${derivation.prefix} répertoire(s) d'offres observé(s) déclaré(s) par leur préfixe (PREFIX), qui couvre les entrées futures de ce répertoire et rien au-delà${derivation.climbs ? ` ; ${derivation.climbs} remontée(s) d'un répertoire pour tenir dans la liste bornée de 64 périmètres, jamais jusqu'à la racine` : ''}${scopes.some(s => s.query.variable.length) ? ' ; les paramètres variables sont ceux observés avec plusieurs valeurs' : ''}. Méthodes déclarées par périmètre, jamais fusionnées entre un point d'entrée et des pages. Robots archivé pour chaque origine interrogée. Liste : ${scopes.map(s => `${s.methods.join('/')} ${s.origin}${s.path.value}${s.path.kind === 'PREFIX' ? '…' : ''}${Object.keys(s.query.fixed).length ? ' ?' + Object.entries(s.query.fixed).map(([k, v]) => `${k}=${v}`).join('&') : ''}${s.query.variable.length ? ` [variables : ${s.query.variable.join(', ')}]` : ''}`).join(' ; ')}`;
-  const document = { sourceKey: c.key, sourceRevisionId: revision, captureBatchId: jobsCaptureId, verdict: 'ALLOWED', robotsCaptureIds, scopes, statement, reviewer, checkedAt: new Date().toISOString() };
-  etapes.acces = { origins, scopes, robotsCaptureIds, derivation };
+  const statement = `Périmètre dérivé des ${requests.length} requête(s) HTTP réellement observées, sous l'identité du robot, pendant la collecte de qualification ${jobsCaptureId} : ${derivation.exact} chemin(s) observé(s) déclaré(s) tel(s) quel(s) (EXACT) et ${derivation.prefix} répertoire(s) d'offres observé(s) déclaré(s) par leur préfixe (PREFIX), qui couvre les entrées futures de ce répertoire et rien au-delà${derivation.climbs ? ` ; ${derivation.climbs} remontée(s) d'un répertoire pour tenir dans la liste bornée de 64 périmètres, jamais jusqu'à la racine` : ''}${scopes.some(s => s.query.variable.length) ? ' ; les paramètres variables sont ceux observés avec plusieurs valeurs' : ''}. Méthodes déclarées par périmètre, jamais fusionnées entre un point d'entrée et des pages. Robots archivé pour chaque origine interrogée.${bootstrap ? ` Amorçage du défi AWS WAF (D-483) observé sur ${bootstrap.origin} : ${journal.bootstrap.length} requête(s) du navigateur inscrites au journal, limitées à l'adresse défiée elle-même et aux hôtes du défi ${bootstrap.challengeHosts.join(', ')}, sous l'identité du collecteur ; aucune autre requête du navigateur n'est autorisée.` : ''} Liste : ${scopes.map(s => `${s.methods.join('/')} ${s.origin}${s.path.value}${s.path.kind === 'PREFIX' ? '…' : ''}${Object.keys(s.query.fixed).length ? ' ?' + Object.entries(s.query.fixed).map(([k, v]) => `${k}=${v}`).join('&') : ''}${s.query.variable.length ? ` [variables : ${s.query.variable.join(', ')}]` : ''}`).join(' ; ')}`;
+  const document = { sourceKey: c.key, sourceRevisionId: revision, captureBatchId: jobsCaptureId, verdict: 'ALLOWED', robotsCaptureIds, scopes, statement, reviewer, checkedAt: new Date().toISOString(),
+    ...(bootstrap ? { bootstraps: [bootstrap] } : {}) };
+  etapes.acces = { origins, scopes, robotsCaptureIds, derivation, ...(bootstrap ? { bootstraps: [bootstrap] } : {}) };
   try {
     const decision = await recordSourceAccessDecision(db, document as Parameters<typeof recordSourceAccessDecision>[1], true, store, expectedDecisionId) as { verdict?: string; written?: number; reason?: string };
     etapes.decisionAcces = decision;
@@ -91,7 +114,7 @@ export async function maintainSourceAccess(db: PrismaClient, sourceKey: string, 
       const validation = await captureSourceForValidation(db, sourceKey, timeoutMs, store);
       if (validation.verdict !== 'VALIDATED') throw new SourceAdmissionGateError('CAPTURE_NOT_VALIDATED', `Native qualification failed: ${validation.verdict}`);
       await log.info('source.native_qualification_completed', { sourceKey, captureBatchId: validation.captureBatchId });
-      if (await scopeOutgrown(db, sourceKey, document.scopes, validation.captureBatchId, store)) outgrownBy = validation.captureBatchId;
+      if (await scopeOutgrown(db, sourceKey, document, validation.captureBatchId, store)) outgrownBy = validation.captureBatchId;
     }
     if (!outgrownBy) return { renewed: false, decisionId: decision.id };
     reason = 'ACCESS_SCOPE_OUTGROWN';
@@ -136,16 +159,20 @@ export async function maintainSourceAccess(db: PrismaClient, sourceKey: string, 
  * Coût : ce contrôle relit à chaque RUN, pour chaque source requalifiée, les requêtes de sa capture du jour (lecture
  * en base, aucune requête vers l'éditeur) ; de quelques dizaines à quelques milliers de lignes selon la source.
  */
-async function scopeOutgrown(db: PrismaClient, sourceKey: string, scopes: readonly AccessScope[], captureBatchId: string, store?: ObjectStore) {
-  let requests: Awaited<ReturnType<typeof observedRequests>>;
-  try { requests = await observedRequests(db, captureBatchId, store); }
+async function scopeOutgrown(db: PrismaClient, sourceKey: string, document: Readonly<AccessDocument>, captureBatchId: string, store?: ObjectStore) {
+  let journal: Awaited<ReturnType<typeof observedJournal>>;
+  try { journal = await observedJournal(db, captureBatchId, store); }
   catch (error) {
     await log.warn('source.access_scope_check_failed', { sourceKey, captureBatchId, error: message(error) });
     return false;
   }
-  const outside = requests.filter(request => {
+  if (bootstrapOutgrown(sourceKey, document, journal)) {
+    await log.info('source.access_scope_outgrown', { sourceKey, captureBatchId, outside: journal.bootstrap.length, example: 'WAF_BOOTSTRAP' });
+    return true;
+  }
+  const outside = journal.requests.filter(request => {
     try {
-      matchingAccessScope(scopes, describeRequest({ url: request.url.toString(), method: request.method,
+      matchingAccessScope(document.scopes, describeRequest({ url: request.url.toString(), method: request.method,
         headers: { 'user-agent': CRAWLER_IDENTITY }, format: 'HTTP_RESPONSE' }));
       return false;
     } catch (error) {
@@ -157,4 +184,19 @@ async function scopeOutgrown(db: PrismaClient, sourceKey: string, scopes: readon
   await log.info('source.access_scope_outgrown', { sourceKey, captureBatchId, outside: outside.length,
     example: `${outside[0].method} ${outside[0].url.origin}${outside[0].url.pathname}` });
   return true;
+}
+
+/**
+ * D-483 : la capture du jour a-t-elle dû amorcer un défi que l'autorisation en vigueur ne déclare pas (aucun
+ * amorçage, autre origine, hôte du défi nouveau) ? L'autorisation est alors redérivée d'elle, comme pour un chemin.
+ * Un amorçage que la dérivation refuserait (source non nommée, requête hors bornes) ne déclenche rien ici : la
+ * collecte suivante échouera à l'amorçage, sur un motif nommé.
+ */
+function bootstrapOutgrown(sourceKey: string, document: Readonly<AccessDocument>, journal: Awaited<ReturnType<typeof observedJournal>>): boolean {
+  let observed: ReturnType<typeof deriveAccessBootstrap>;
+  try { observed = deriveAccessBootstrap(sourceKey, journal.challenges, journal.bootstrap); }
+  catch { return false; }
+  if (!observed) return false;
+  const current = document.bootstraps?.find(item => item.origin === observed.origin);
+  return !current || observed.challengeHosts.some(host => !current.challengeHosts.includes(host));
 }

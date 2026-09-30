@@ -1,0 +1,250 @@
+{
+  "node": "v26.7.0",
+  "at": "2026-09-30T09:26:45.985Z",
+  "mode": "borne",
+  "listing": "https://careers.ralphlauren.com/en_US/CareersCorporate/SearchJobsCorporate/?jobOffset&listFilterMode",
+  "challenge": {
+    "status": 202,
+    "wafAction": "challenge",
+    "contentType": "text/html; charset=UTF-8",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "ms": 1149
+  },
+  "robots": {
+    "status": 200,
+    "bytes": 1221,
+    "sha256": "de57bbda5b579d075738f4e224aa20d463602de21d5f69d7f924f25783e766f0",
+    "listing": "ALLOWED",
+    "detail": "ALLOWED"
+  },
+  "bootstrap": {
+    "ms": 4913,
+    "token": "aws-waf-token",
+    "requests": [
+      {
+        "method": "GET",
+        "url": "https://careers.ralphlauren.com/en_US/CareersCorporate/SearchJobsCorporate/?jobOffset&listFilterMode",
+        "resourceType": "document",
+        "status": 202,
+        "failure": null,
+        "contentType": "text/html; charset=UTF-8",
+        "wafAction": "challenge",
+        "setCookie": false,
+        "bytes": 2003,
+        "sha256": "709ac60c610667d9c6cb016c2ed3a73d7e869dbe942e361f9b0aa591ff3e9e98",
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+        "postBytes": 0
+      },
+      {
+        "method": "GET",
+        "url": "https://7d6e0277a337.42c8209d.us-east-1.token.awswaf.com/7d6e0277a337/580a42a23f40/39f553e05fca/challenge.js",
+        "resourceType": "script",
+        "status": 200,
+        "failure": null,
+        "contentType": "text/javascript",
+        "wafAction": null,
+        "setCookie": false,
+        "bytes": 697247,
+        "sha256": "a868cec200bd7d6c214b2fa3e6e7551da8fb6893a684cb51365463b53d1bbf7a",
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+        "postBytes": 0
+      },
+      {
+        "method": "GET",
+        "url": "https://7d6e0277a337.42c8209d.us-east-1.token.awswaf.com/7d6e0277a337/580a42a23f40/39f553e05fca/inputs?client",
+        "resourceType": "fetch",
+        "status": 200,
+        "failure": null,
+        "contentType": "application/json",
+        "wafAction": null,
+        "setCookie": false,
+        "bytes": 769,
+        "sha256": "7a958f8074bfbff4675ed1b962fe3351b0d17f25ae0948e02081d0c96a4da964",
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+        "postBytes": 0
+      },
+      {
+        "method": "POST",
+        "url": "https://7d6e0277a337.42c8209d.us-east-1.token.awswaf.com/7d6e0277a337/580a42a23f40/39f553e05fca/mp_verify?region",
+        "resourceType": "fetch",
+        "status": 200,
+        "failure": null,
+        "contentType": "application/json",
+        "wafAction": null,
+        "setCookie": false,
+        "bytes": 400,
+        "sha256": "462b29494cdddafa71bf9309f389b9d3141e7b6e89e16a16b8e018efcdcdf239",
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+        "postBytes": 11052
+      },
+      {
+        "method": "GET",
+        "url": "https://careers.ralphlauren.com/en_US/CareersCorporate/SearchJobsCorporate/?jobOffset&listFilterMode",
+        "resourceType": "document",
+        "status": 200,
+        "failure": null,
+        "contentType": "text/html;charset=UTF-8",
+        "wafAction": null,
+        "setCookie": false,
+        "bytes": 132677,
+        "sha256": "6c9d02e4ff98b622c401ef70b9f5fd30b2b62d2d930e39c380c3e97b2fc8fd24",
+        "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36 CatwalksBot/1.0 (+https://catwalks.io/bot)",
+        "postBytes": 0
+      }
+    ],
+    "blocked": [
+      {
+        "url": "https://careers.ralphlauren.com/ASSET/portal/jquery/UI/1.13.2/jquery-ui.min.css?version",
+        "method": "GET",
+        "resourceType": "stylesheet"
+      },
+      {
+        "url": "https://careers.ralphlauren.com/portalpacks/web/assets/session-popup._xa4D8v5.css",
+        "method": "GET",
+        "resourceType": "stylesheet"
+      },
+      {
+        "url": "https://careers.ralphlauren.com/portalpacks/web/assets/index.CoB8YEta.css",
+        "method": "GET",
+        "resourceType": "stylesheet"
+      },
+      {
+        "url": "https://careers.ralphlauren.com/portalpacks/web/assets/body.C9CX2Y2H.css",
+        "method": "GET",
+        "resourceType": "stylesheet"
+      },
+      {
+        "url": "https://careers.ralphlauren.com/portalpacks/web/assets/vendor-fortawesome-fontawesome-svg-core.DuaSt5cF.css",
+        "method": "GET",
+        "resourceType": "stylesheet"
+      },
+      {
+        "url": "https://careers.ralphlauren.com/ASSET/wizard/portal/jquery/plugin/select2/select2.min.css?version",
+        "method": "GET",
+        "resourceType": "stylesheet"
+      },
+      {
+        "url": "https://careers.ralphlauren.com/portalpacks/web/assets/wizard-legacy.Bpy3i56j.css",
+        "method": "GET",
+        "resourceType": "stylesheet"
+      },
+      {
+        "url": "https://careers.ralphlauren.com/ASSET/portal/widget/jobsharemethod/styles.css?version",
+        "method": "GET",
+        "resourceType": "stylesheet"
+      },
+      {
+        "url": "https://careers.ralphlauren.com/portal/47/css/library__theme.css?v",
+        "method": "GET",
+        "resourceType": "stylesheet"
+      },
+      {
+        "url": "https://templates-static-assets.avacdn.net/cssLibrary/bridge/1/bridge__ags-to-tgs.css",
+        "method": "GET",
+        "resourceType": "stylesheet"
+      },
+      {
+        "url": "https://templates-static-assets.avacdn.net/cssLibrary/24.4/core.min.css",
+        "method": "GET",
+        "resourceType": "stylesheet"
+      },
+      {
+        "url": "https://careers.ralphlauren.com/portal/47/css/specifics.css?v",
+        "method": "GET",
+        "resourceType": "stylesheet"
+      },
+      {
+        "url": "https://templates-static-assets.avacdn.net/cookieUserConsent/2/cookieUserConsent.min.css",
+        "method": "GET",
+        "resourceType": "stylesheet"
+      },
+      {
+        "url": "https://careers.ralphlauren.com/ASSET/portal/jquery/jquerycore/3.7.1/jquery.min.js?version",
+        "method": "GET",
+        "resourceType": "script"
+      },
+      {
+        "url": "https://careers.ralphlauren.com/ASSET/portal/jquery/UI/1.13.2/jquery-ui.min.js?version",
+        "method": "GET",
+        "resourceType": "script"
+      },
+      {
+        "url": "https://careers.ralphlauren.com/ASSET/portal/pjquery/pjQueryDeclaration.js?version",
+        "method": "GET",
+        "resourceType": "script"
+      },
+      {
+        "url": "https://careers.ralphlauren.com/portalpacks/web/js/head/head.DKodxVax.iife.js",
+        "method": "GET",
+        "resourceType": "script"
+      },
+      {
+        "url": "https://careers.ralphlauren.com/portalpacks/web/js/body.09xgreTr.js",
+        "method": "GET",
+        "resourceType": "script"
+      },
+      {
+        "url": "https://careers.ralphlauren.com/portalpacks/web/js/session-popup.DirR3x9d.js",
+        "method": "GET",
+        "resourceType": "script"
+      },
+      {
+        "url": "https://careers.ralphlauren.com/ASSET/wizard/portal/jquery/plugin/select2/select2.full.min.js?version",
+        "method": "GET",
+        "resourceType": "script"
+      },
+      {
+        "url": "https://careers.ralphlauren.com/ASSET/wizard/portal/jquery/plugin/select2/select2_locale_en.js?version",
+        "method": "GET",
+        "resourceType": "script"
+      },
+      {
+        "url": "https://careers.ralphlauren.com/portalpacks/web/js/wizard-legacy.BUfVi9o6.js",
+        "method": "GET",
+        "resourceType": "script"
+      },
+      {
+        "url": "https://templates-static-assets.avacdn.net/cookieUserConsent/2/cookieUserConsent.min.js",
+        "method": "GET",
+        "resourceType": "script"
+      },
+      {
+        "url": "https://templates-static-assets.avacdn.net/jsLibrary/24.4/core.min.js",
+        "method": "GET",
+        "resourceType": "script"
+      },
+      {
+        "url": "https://careers.ralphlauren.com/portal/47/js/specifics.js?v",
+        "method": "GET",
+        "resourceType": "script"
+      },
+      {
+        "url": "https://careers.ralphlauren.com/portal/47/images/logo--default.webp",
+        "method": "GET",
+        "resourceType": "image"
+      }
+    ]
+  },
+  "withToken": {
+    "status": 200,
+    "wafAction": null,
+    "contentType": "text/html;charset=UTF-8",
+    "bytes": 132679,
+    "sha256": "632df3f988be8cd9d1e6f71392d15ab948cc08f598818ed9708e690822bd0ec5",
+    "ms": 1531,
+    "cards": 6,
+    "declaredTotal": 225
+  },
+  "events": [
+    {
+      "event": "tls.chain_completed",
+      "data": {
+        "host": "careers.ralphlauren.com",
+        "url": "http://crt.sectigo.com/SectigoPublicServerAuthenticationCAOVR36.crt",
+        "issuer": "C=GB, O=Sectigo Limited, CN=Sectigo Public Server Authentication CA OV R36",
+        "fingerprint256": "65:42:D1:76:BE:D5:0F:19:3C:0C:E2:97:AE:44:EC:D8:A0:A8:6B:EC:2E:DE:68:27:69:34:40:59:B4:E7:85:30"
+      }
+    }
+  ]
+}

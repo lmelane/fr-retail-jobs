@@ -5,7 +5,7 @@ import { randomUUID } from 'node:crypto';
 import { evidenceHash } from '../lib/evidenceHash.js';
 import type { AdapterResult } from '../types.js';
 import type { ObjectStore } from '../retention/objectStore.js';
-import { assertCaptureHealthy, withCaptureContext, OfflineReplayError, type CaptureContext } from './context.js';
+import { assertCaptureHealthy, withCaptureContext, OfflineReplayError, type CaptureContext, type WafBootstrapPolicy } from './context.js';
 import { persistCapture, persistExtractionOutputs, readRawBlob } from './store.js';
 import { MAX_MANIFEST_OUTPUTS, persistExtractionManifest } from './manifest.js';
 import { captureConfig } from './config.js';
@@ -14,6 +14,8 @@ import { captureReaderRevision } from './revision.js';
 import { readRequestData } from './requestDataRead.js';
 import { requireSourceAccess } from '../connectors/sourceAccess.js';
 import { matchingAccessScope, SourceAccessGateError } from '../connectors/accessScope.js';
+import { bootstrapAuthorizedFor, grantedAllow, observeModeAllow } from '../connectors/wafBootstrap.js';
+import { offlineReplay } from './offlineReplay.js';
 import { ingestionQualifications, SOURCE_ADMISSION_POLICY } from '../connectors/sourceAdmission.js';
 import { lockSourceWrites, SOURCE_WRITE_TRANSACTION } from '../lib/writeLocks.js';
 import { HttpStatusError } from '../lib/http.js';
@@ -50,7 +52,8 @@ export async function captureExtraction(db: PrismaClient, sourceKey: string, con
     requestAccess: access ? request => {
       if (Date.now() > access.decision.validUntil!.getTime()) throw new SourceAccessGateError('ACCESS_STALE', 'Access evidence expired during collection');
       matchingAccessScope(access.document.scopes, request);
-    } : undefined };
+    } : undefined,
+    wafBootstrap: wafBootstrapPolicy(sourceKey, access) };
   return withCaptureContext(context, async () => {
     try {
       const result = await work(settings);
@@ -61,7 +64,7 @@ export async function captureExtraction(db: PrismaClient, sourceKey: string, con
       const outputIds = await persistExtractionOutputs(db, batch.id, result.jobs);
       const manifestHash = await persistExtractionManifest(db, batch.id, result);
       await db.captureOutcome.create({ data: { batchId: batch.id, manifestHash, status: 'EXTRACTED', extractedCount: result.jobs.length,
-        transportCoverage: context.unsupportedTransport ? 'UNSUPPORTED_TRANSPORT' : 'HTTP_ONLY',
+        transportCoverage: context.unsupportedTransport ? 'UNSUPPORTED_TRANSPORT' : context.wafBootstrapped ? 'HTTP_WITH_WAF_BOOTSTRAP' : 'HTTP_ONLY',
         outputHash: evidenceHash(result.jobs) } });
       return { ...result, captureBatchId: batch.id, jobs: result.jobs.map((job, index) => ({ ...job, captureBatchId: batch.id, captureOutputId: outputIds[index] })) };
     } catch (error) {
@@ -85,27 +88,41 @@ export async function captureExtraction(db: PrismaClient, sourceKey: string, con
   });
 }
 
+/**
+ * D-483 — qui peut amorcer un défi AWS dans cette collecte. Une source hors de la liste nommée : personne (le défi
+ * échoue comme avant, sans navigateur). Sans décision d'accès (collecte de qualification) : l'adresse défiée et
+ * l'infrastructure du défi, que la dérivation observera. Sous décision (RUN) : la décision doit déclarer l'amorçage
+ * de cette origine, et le navigateur ne joint que les hôtes du défi qu'elle nomme — sinon la collecte s'arrête.
+ */
+export function wafBootstrapPolicy(sourceKey: string, access: Awaited<ReturnType<typeof requireSourceAccess>> | null): WafBootstrapPolicy {
+  return url => {
+    const origin = new URL(url).origin;
+    if (!bootstrapAuthorizedFor(sourceKey, origin)) return null;
+    if (!access) return { allow: observeModeAllow(url) };
+    if (Date.now() > access.decision.validUntil!.getTime()) throw new SourceAccessGateError('ACCESS_STALE', 'Access evidence expired during collection');
+    const grant = access.document.bootstraps?.find(item => item.origin === origin);
+    if (!grant) throw new SourceAccessGateError('ACCESS_SCOPE', 'WAF bootstrap is outside the reviewed access decision');
+    return { allow: grantedAllow(url, grant) };
+  };
+}
+
 /** Run the same collector offline against the exact recorded native entities. */
 export async function replayExtraction<T>(db: PrismaClient, batchId: string, work: () => Promise<T>, store?: ObjectStore): Promise<T> {
-  const batch = await db.captureBatch.findUniqueOrThrow({ where: { id: batchId } });
+  const batch = await db.captureBatch.findUniqueOrThrow({ where: { id: batchId }, include: { outcome: true } });
   if (batch.purpose !== 'JOBS') throw new Error('Source evidence is not a replayable job extraction');
   const captures = await db.rawCapture.findMany({ where: { batchId }, orderBy: { sequence: 'asc' } });
   if (!captures.length) throw new Error('Capture batch has no recorded responses');
-  const queues = new Map<string, typeof captures>();
-  for (const row of captures) {
-    await readRequestData(db, row, store);
-    if (!queues.has(row.requestHash)) queues.set(row.requestHash, []);
-    queues.get(row.requestHash)!.push(row);
-  }
-  return withCaptureContext({ sequence: 0, observedAt: batch.startedAt, replay: async hash => {
-    const row = queues.get(hash)?.shift();
-    if (!row) throw new OfflineReplayError('Offline replay request is absent from the capture batch');
-    return { ...row, bytes: row.blobHash ? await readRawBlob(db, row.blobHash, store) : null,
-      headers: row.headers as Record<string, string>, cookieNames: row.cookieNames as string[] };
-  } }, async () => {
+  const rows = [];
+  for (const row of captures) rows.push({ ...row, data: await readRequestData(db, row, store) });
+  // Historical extractions whose bootstrap was never journaled keep the historical archive token (D-483).
+  const legacyBootstrap = batch.outcome?.transportCoverage === 'UNSUPPORTED_TRANSPORT' ||
+    (batch.outcome?.status === 'EXTRACTED' && batch.outcome.transportCoverage === null);
+  const { context, left } = offlineReplay(rows, async row => ({ ...row, bytes: row.blobHash ? await readRawBlob(db, row.blobHash, store) : null,
+    headers: row.headers as Record<string, string>, cookieNames: row.cookieNames as string[] }), { observedAt: batch.startedAt, legacyBootstrap });
+  return withCaptureContext(context, async () => {
     const result = await work();
     assertCaptureHealthy();
-    if ([...queues.values()].some(queue => queue.length > 0)) throw new OfflineReplayError('Offline replay left recorded responses unconsumed');
+    if (left()) throw new OfflineReplayError('Offline replay left recorded responses unconsumed');
     return result;
   });
 }

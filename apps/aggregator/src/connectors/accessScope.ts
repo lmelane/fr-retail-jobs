@@ -2,6 +2,7 @@ import { isPublicJobSurface, type AccessSurface } from '../lib/accessDecision.js
 import { assertPublicUrl } from '../lib/ssrf.js';
 import { CRAWLER_IDENTITY } from '../lib/crawlerIdentity.js';
 import type { RequestDescription } from '../capture/requestData.js';
+import { parseAccessBootstraps, type AccessBootstrap } from './wafBootstrap.js';
 
 export const SOURCE_ACCESS_POLICY = 'native-http-access/1';
 export const SOURCE_ACCESS_MAX_AGE_MS = 30 * 86_400_000;
@@ -22,7 +23,10 @@ export type AccessDocument = {
   sourceKey: string; sourceRevisionId: string; captureBatchId: string | null;
   verdict: 'ALLOWED' | 'NOT_AUTHORIZED'; scopes: AccessScope[]; robotsCaptureIds: string[];
   statement: string; reviewer: string; checkedAt: string;
+  /** D-483 : l'amorçage d'un défi WAF que la collecte de qualification a observé, déclaré seulement s'il a eu lieu. */
+  bootstraps?: AccessBootstrap[];
 };
+const DOCUMENT_KEYS = ['sourceKey', 'sourceRevisionId', 'captureBatchId', 'verdict', 'scopes', 'robotsCaptureIds', 'statement', 'reviewer', 'checkedAt'];
 
 function exact(value: unknown, keys: string[]): value is Record<string, unknown> {
   return !!value && typeof value === 'object' && !Array.isArray(value) &&
@@ -70,7 +74,8 @@ export function parseAccessScopes(value: unknown): AccessScope[] {
 
 /** Snapshot before asynchronous archive reads; callers cannot change the review mid-flight. */
 export function parseAccessDocument(input: unknown, now = new Date()): Readonly<AccessDocument> {
-  if (!exact(input, ['sourceKey', 'sourceRevisionId', 'captureBatchId', 'verdict', 'scopes', 'robotsCaptureIds', 'statement', 'reviewer', 'checkedAt'])) return invalidAccess('Explicit access decision document required');
+  // `bootstraps` is the only optional key, and never an empty list: a decision declares a bootstrap it observed or none.
+  if (!exact(input, DOCUMENT_KEYS) && !exact(input, [...DOCUMENT_KEYS, 'bootstraps'])) return invalidAccess('Explicit access decision document required');
   let text: string;
   try { text = JSON.stringify(input); } catch { return invalidAccess('Access document is not serializable'); }
   if (Buffer.byteLength(text) > 128_000) return invalidAccess('Access document exceeds its byte budget');
@@ -87,6 +92,8 @@ export function parseAccessDocument(input: unknown, now = new Date()): Readonly<
     new Set(document.robotsCaptureIds).size !== document.robotsCaptureIds.length ||
     document.robotsCaptureIds.some(id => typeof id !== 'string' || !id || id.length > 300)) return invalidAccess('Invalid access decision or observation references');
   parseAccessScopes(document.scopes);
+  if (Object.hasOwn(document, 'bootstraps') && (document.verdict !== 'ALLOWED' || !Array.isArray(document.bootstraps) ||
+    !document.bootstraps.length || !parseAccessBootstraps(document.bootstraps, document.scopes))) return invalidAccess('A WAF bootstrap is declared only by a grant that observed one');
   if (document.verdict === 'ALLOWED' ?
     typeof document.captureBatchId !== 'string' || !document.captureBatchId || document.captureBatchId.length > 300 || !document.scopes.length || !document.robotsCaptureIds.length :
     document.captureBatchId !== null || document.scopes.length !== 0 || document.robotsCaptureIds.length !== 0) return invalidAccess('A grant requires native evidence; a denial grants no request scope');
