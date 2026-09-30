@@ -458,6 +458,17 @@ describe('D-480 §1 (30/09/2026): a named known failure is collected, listed in 
     expect(alertHtml(report)).toContain('Non bloquant, échecs connus : 1 source');
     expect(alertHtml(report)).not.toContain('pannes de l\'éditeur prouvées');
   });
+  it('on-running, descriptions below the floor: named DESCRIPTION_COVERAGE_BELOW_FLOOR, a known failure; a volume collapse still blocks', async () => {
+    const thin = stat('on-running', 242, { withDescription: 126 });
+    const { issues, incidents, summary } = await runOne(thin);
+    // Premise: 116 of 242 without description, the floor incident — no other defect.
+    expect(issues).toEqual([{ origin: 'UNKNOWN', code: 'DESCRIPTION_COVERAGE_BELOW_FLOOR', count: 1 }]);
+    expect(incidents).toEqual([expect.objectContaining({ blocking: false, knownFailure: 'D-480' })]);
+    expect(summary).toMatchObject({ executionHealthy: true });
+    const collapse = await runOne(stat('on-running', 60), [{ jobs: 242 }]);
+    expect(collapse.issues).toEqual([{ origin: 'UNKNOWN', code: 'SOURCE_HEALTH_REGRESSION', count: 1 }]);
+    expect(collapse.summary).toMatchObject({ executionHealthy: false, blockingReasons: ['UNRESOLVED_FAILURE'] });
+  });
   it('the same defect on an unnamed source still blocks', async () => {
     const { incidents, summary } = await runOne(stat('crawled', 5, { complete: false, enumerationReading: 'NOT_PROVEN' }));
     expect(incidents).toEqual([expect.objectContaining({ blocking: true })]);
