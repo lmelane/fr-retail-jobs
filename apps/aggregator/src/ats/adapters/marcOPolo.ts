@@ -41,7 +41,13 @@ import type { AdapterResult, NormalizedJob } from '../../types.js';
  * L'IDENTITÉ reste celle du lecteur générique que ce lecteur remplace : `sha1` de l'adresse de la fiche, construite
  * comme le site construit ses liens (`getUrl()` : titre de la liste, `\W` → espace, blancs → `-`, minuscules, puis
  * l'identifiant). Mesuré le 30/09 : 49 des 55 publications actives en base retrouvent ainsi leur identifiant ; les
- * autres ont changé d'intitulé chez l'éditeur (2) ou sont fermées (4).
+ * autres ont changé d'intitulé chez l'éditeur (2) ou sont fermées (4) (`audits/2026-09-30/marc-o-polo/scripts/
+ * publications-retrouvees.mts`).
+ *
+ * L'EMPLOYEUR N'EST PAS LU : l'API n'en publie aucun. Le lecteur générique lisait « Marc O’Polo » dans le JSON-LD de
+ * chaque fiche, une constante du code du site (`hiringOrganization`). Sans libellé, l'offre passe par le portail
+ * certifié (`Source.portalScope`), NULL pour cette source le 30/09 : chaque offre serait refusée pour identité. Le
+ * choix appartient au CEO (carte D-485, `identite-employeur.mts`) ; la source ne se réactive pas avant.
  */
 
 export const MARC_O_POLO_READER = 'marc-o-polo-vacancies';
