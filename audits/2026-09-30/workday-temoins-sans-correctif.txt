@@ -1,0 +1,38 @@
+workday.ts restauré depuis la mémoire à chaque cas, sha256 1ce2f42f4c05304a673e1db426e7ab679d00e17c393884254de7453e22794c0b
+
+## seconde passe supprimée (le total change, la preuve reste refusée): ÉCHOUE (témoin valide)
+   files: 2 failed (2) | tests: 5 ⎯⎯⎯⎯⎯⎯⎯
+   - src/ats/adapters/workday.reconciliation.replay.test.ts > Workday — capture puis rejeu hors réseau des relectures D-482 > Nordstrom 29/09 : la seconde passe e
+   - src/ats/adapters/workday.reconciliation.test.ts > Nordstrom, 29/09/2026 — le total change pendant la lecture : une seconde passe entière > la collecte
+   - src/ats/adapters/workday.reconciliation.test.ts > Nordstrom, 29/09/2026 — le total change pendant la lecture : une seconde passe entière > un second c
+   - src/ats/adapters/workday.reconciliation.test.ts > Nordstrom, 29/09/2026 — le total change pendant la lecture : une seconde passe entière > une ligne s
+   - src/ats/adapters/workday.reconciliation.test.ts > Nordstrom, 29/09/2026 — le total change pendant la lecture : une seconde passe entière > une offre r
+
+## mémoire du board supprimée (la seconde passe compte la première comme chevauchement): ÉCHOUE (témoin valide)
+   files: 2 failed (2) | tests: 4 ⎯⎯⎯⎯⎯⎯⎯
+   - src/ats/adapters/workday.reconciliation.replay.test.ts > Workday — capture puis rejeu hors réseau des relectures D-482 > Nordstrom 29/09 : la seconde passe e
+   - src/ats/adapters/workday.reconciliation.test.ts > Nordstrom, 29/09/2026 — le total change pendant la lecture : une seconde passe entière > la collecte
+   - src/ats/adapters/workday.reconciliation.test.ts > Nordstrom, 29/09/2026 — le total change pendant la lecture : une seconde passe entière > une ligne s
+   - src/ats/adapters/workday.reconciliation.test.ts > Nordstrom, 29/09/2026 — le total change pendant la lecture : une seconde passe entière > une offre r
+
+## témoin de rejet ré-enregistré à chaque passe: ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
+   - src/ats/adapters/workday.reconciliation.test.ts > Nordstrom, 29/09/2026 — le total change pendant la lecture : une seconde passe entière > une ligne s
+
+## relecture des lignes sans chemin supprimée (contenu compté une fois): ÉCHOUE (témoin valide)
+   files: 2 failed (2) | tests: 4 ⎯⎯⎯⎯⎯⎯⎯
+   - src/ats/adapters/workday.reconciliation.replay.test.ts > Workday — capture puis rejeu hors réseau des relectures D-482 > Mango 29/09 : la relecture des pages
+   - src/ats/adapters/workday.reconciliation.test.ts > Mango — deux lignes sans chemin au même contenu, à des rangs fixes, sont deux lignes annoncées > 26/
+   - src/ats/adapters/workday.reconciliation.test.ts > Mango — deux lignes sans chemin au même contenu, à des rangs fixes, sont deux lignes annoncées > 29/
+   - src/ats/adapters/workday.reconciliation.test.ts > Mango — deux lignes sans chemin au même contenu, à des rangs fixes, sont deux lignes annoncées > tri
+
+## rang non vérifié (comptage naïf par occurrence): ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
+   - src/ats/adapters/workday.reconciliation.test.ts > Mango — deux lignes sans chemin au même contenu, à des rangs fixes, sont deux lignes annoncées > tri
+
+## relecture même sur un tri instable (garde des identifiants répétés retirée): ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
+   - src/ats/adapters/workday.enumeration.test.ts > Workday — enumeration proof against the announced total > Mango (2026-09-10): the same path-less row
+
+## état committé : exit 0 | files: 3 passed (3) | tests: 21 passed (21)
+tree clean: True
