@@ -78,7 +78,8 @@ export type SourceHealth = {
   blocking?: boolean;
 };
 
-export type HealthFinding = 'ENUMERATION_NOT_PROVEN' | 'ENUMERATION_REFUTED' | 'NATIVE_RETENTION_JUMP';
+/** `DESCRIPTION_COVERAGE_BELOW_FLOOR` (30/09/2026) : nommé pour que D-480 §1 ne reconnaisse QUE ce défaut chez On Running. */
+export type HealthFinding = 'ENUMERATION_NOT_PROVEN' | 'ENUMERATION_REFUTED' | 'NATIVE_RETENTION_JUMP' | 'DESCRIPTION_COVERAGE_BELOW_FLOOR';
 
 /**
  * LA GARDE DE LA PREUVE NÉGATIVE — garde TECHNIQUE, pas une décision (demandée le 25/09/2026).
@@ -368,6 +369,7 @@ function collectionHealth(stat: IngestStats, base: Omit<SourceHealth, 'status'>,
       status: 'DEGRADED',
       jobs,
       previous: before,
+      ...(fieldIncident.startsWith('descriptions manquantes') ? { finding: 'DESCRIPTION_COVERAGE_BELOW_FLOOR' as const } : {}),
       note: fieldIncident,
       coverage: coverageOf(stat),
       rates: ratesOf(stat),

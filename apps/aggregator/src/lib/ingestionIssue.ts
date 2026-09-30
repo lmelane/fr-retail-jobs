@@ -4,6 +4,7 @@ import { ObservabilityUnavailableError } from '../observability/logger.js';
 import { SourceAccessGateError } from '../connectors/accessScope.js';
 import { BlockedUrlError } from './ssrf.js';
 import { transportIssueCode } from './transportFailure.js';
+import { HttpStatusError } from './http.js';
 import { isNativeEvidenceRetention } from '../pipeline/publicationDisposition.js';
 
 /** Attribution is independent of impact. Unknown is never accepted as upstream. */
@@ -15,6 +16,8 @@ export type IngestionIssue = {
   rawCaptureId?: string;
   /** Proof of a native-evidence retention (D-453 §1): the sealed end-of-ingestion report naming each HELD fate. */
   completionReportHash?: string;
+  /** Le statut d'une `HttpStatusError` (`HTTP_406`) : sans lui, un échec connu décidé pour un statut couvrirait tous les autres. */
+  detail?: string;
 };
 
 /** D-453 §1: postings retained on the publisher's own evidence. Visible, attributed to the source, not blocking. */
@@ -37,22 +40,23 @@ export function isProvenSourceIssue(issue: IngestionIssue): boolean {
  * elles restent visibles au bilan et dans l'alerte, avec la décision, mais ne font plus échouer le RUN. Tout AUTRE
  * défaut de ces sources reste bloquant. Liste fermée : l'étendre est une décision du CEO, jamais une configuration.
  */
-export const DECIDED_KNOWN_FAILURES: Readonly<Record<string, readonly string[]>> = {
+type KnownFailure = { code: string; detail?: string };
+export const DECIDED_KNOWN_FAILURES: Readonly<Record<string, readonly KnownFailure[]>> = {
   // L'éditeur ne permet pas de prouver la liste complète.
-  lumentee: ['ENUMERATION_NOT_PROVEN'],
-  attaquer: ['ENUMERATION_NOT_PROVEN'],
-  'kastner-ohler': ['ENUMERATION_NOT_PROVEN'],
-  picard: ['ENUMERATION_NOT_PROVEN'],
-  tapestry: ['ENUMERATION_REFUTED', 'ENUMERATION_NOT_PROVEN'],
-  'knitwell-us-retail': ['ENUMERATION_REFUTED', 'ENUMERATION_NOT_PROVEN'],
-  // L'éditeur bloque (limite de débit, réponse 406) ou vide ses offres (description « - »).
-  'l-oreal-professionnel': ['HttpStatusError'],
-  'on-running': ['SOURCE_HEALTH_REGRESSION'],
+  lumentee: [{ code: 'ENUMERATION_NOT_PROVEN' }],
+  attaquer: [{ code: 'ENUMERATION_NOT_PROVEN' }],
+  'kastner-ohler': [{ code: 'ENUMERATION_NOT_PROVEN' }],
+  picard: [{ code: 'ENUMERATION_NOT_PROVEN' }],
+  tapestry: [{ code: 'ENUMERATION_REFUTED' }, { code: 'ENUMERATION_NOT_PROVEN' }],
+  'knitwell-us-retail': [{ code: 'ENUMERATION_REFUTED' }, { code: 'ENUMERATION_NOT_PROVEN' }],
+  // L'éditeur bloque par sa limite de débit (réponse 406, et elle seule) ou vide ses offres (description « - »).
+  'l-oreal-professionnel': [{ code: 'HttpStatusError', detail: 'HTTP_406' }],
+  'on-running': [{ code: 'DESCRIPTION_COVERAGE_BELOW_FLOOR' }],
 };
 export const KNOWN_FAILURE_DECISION = 'D-480';
 
-export function isDecidedKnownFailure(source: string, issue: Pick<IngestionIssue, 'code'>): boolean {
-  return DECIDED_KNOWN_FAILURES[source]?.includes(issue.code) ?? false;
+export function isDecidedKnownFailure(source: string, issue: Pick<IngestionIssue, 'code' | 'detail'>): boolean {
+  return DECIDED_KNOWN_FAILURES[source]?.some(known => known.code === issue.code && (known.detail === undefined || known.detail === issue.detail)) ?? false;
 }
 
 /** Ce qui ne fait pas échouer le RUN : une preuve native de la source (D-453 §1), ou un échec connu décidé (D-480 §1). */
@@ -92,7 +96,7 @@ export function ingestionIssue(error: unknown): IngestionIssue {
   // HTTP 4xx, timeouts, parsing, attribution and admission refusals can come
   // from our request/config/reader. Their message alone does not prove blame.
   return { origin: 'UNKNOWN', code: error instanceof Error && /^[A-Za-z][A-Za-z0-9_]{0,79}$/.test(error.name)
-    ? error.name : 'UNCLASSIFIED_FAILURE', count: 1 };
+    ? error.name : 'UNCLASSIFIED_FAILURE', count: 1, ...(error instanceof HttpStatusError ? { detail: `HTTP_${error.status}` } : {}) };
 }
 
 export function addIssue(target: { issues?: IngestionIssue[] }, issue: IngestionIssue) {
