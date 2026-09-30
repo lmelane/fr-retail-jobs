@@ -11,7 +11,9 @@ describe('classement des retenues par NATURE, pas par libellé', () => {
     expect(classifyHold('WORKDAY_EMPLOYER_ABSENT_IN_DETAIL')).toBe('DETAIL_INCOMPLETE');
     // D-453 §1 et D-456 §1 : la source rend la candidature impossible ou publie elle-même la preuve.
     for (const reason of ['APPLICATION_EXPLICITLY_CLOSED', 'APPLICATION_HTTP_404', 'APPLICATION_HTTP_410', 'APPLICATION_TEMPLATE_EXPIRY_CONTRADICTION',
-      'SOURCE_UNLISTED', 'NATIVE_TEST_PUBLICATION', 'NATIVE_RECRUITMENT_EVENT'])
+      'SOURCE_UNLISTED', 'NATIVE_TEST_PUBLICATION', 'NATIVE_RECRUITMENT_EVENT',
+      // D-481 §3 : la description que l'éditeur laisse vide — rien à réparer chez nous, la preuve se relit.
+      'NATIVE_DESCRIPTION_EMPTY'])
       expect(classifyHold(reason)).toBe('NATIVE_EVIDENCE');
     // D-456 §2 : une décision de l'équipe, non bloquante.
     expect(classifyHold('SCOPE_OUT_OF_PERIMETER')).toBe('OUT_OF_PERIMETER');

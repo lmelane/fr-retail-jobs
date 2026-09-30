@@ -16,7 +16,7 @@
  */
 
 import { assertSourceRunning, sourceDelay, sourceSignal } from './sourceBudget.js';
-import { rateLimitKeyFor } from './rateLimitKey.js';
+import { paceFloorMs, rateLimitKeyFor } from './rateLimitKey.js';
 import { replayingResponses } from '../capture/context.js';
 
 type HostState = {
@@ -43,10 +43,18 @@ const hosts = new Map<string, HostState>();
 function stateFor(host: string): HostState {
   let state = hosts.get(host);
   if (!state) {
-    state = { active: 0, nextAllowedAt: 0, cooldownUntil: 0, gapMs: BASE_GAP_MS, queue: [] };
+    state = { active: 0, nextAllowedAt: 0, cooldownUntil: 0, gapMs: baseGapOf(host), queue: [] };
     hosts.set(host, state);
   }
   return state;
+}
+
+/**
+ * L'écart de repos d'une clé : la base commune, ou la cadence plancher que l'éditeur impose (`paceFloorMs`, mesurée
+ * — Eightfold, 30/09/2026). Un refus double l'écart à partir de lui, un succès le ramène vers lui, jamais en dessous.
+ */
+function baseGapOf(key: string): number {
+  return Math.max(BASE_GAP_MS, paceFloorMs(key));
 }
 
 /**
@@ -126,8 +134,9 @@ async function waitUntil(at: number): Promise<void> {
  */
 export function reportThrottle(url: string, retryAfterMs?: number | null): void {
   if (replayingResponses()) return;
-  const state = stateFor(hostOf(url));
-  state.gapMs = Math.min(MAX_GAP_MS, Math.max(state.gapMs, BASE_GAP_MS) * 2);
+  const key = hostOf(url);
+  const state = stateFor(key);
+  state.gapMs = Math.min(MAX_GAP_MS, Math.max(state.gapMs, baseGapOf(key)) * 2);
   /**
    * LE COOLDOWN APPARTIENT À LA CLÉ DE LIMITATION, pas au worker qui a pris le 429.
    *
@@ -155,8 +164,10 @@ export function cooldownRemainingMs(url: string): number {
 /** Report a clean success: let the host's gap decay back toward the base. */
 export function reportSuccess(url: string): void {
   if (replayingResponses()) return;
-  const state = stateFor(hostOf(url));
-  if (state.gapMs > BASE_GAP_MS) {
-    state.gapMs = Math.max(BASE_GAP_MS, Math.round(state.gapMs * GAP_DECAY));
+  const key = hostOf(url);
+  const state = stateFor(key);
+  const base = baseGapOf(key);
+  if (state.gapMs > base) {
+    state.gapMs = Math.max(base, Math.round(state.gapMs * GAP_DECAY));
   }
 }

@@ -25,7 +25,10 @@ export function publicationDisposition(reason: string): DeactivationDisposition 
  *   · l'employeur absent de l'annonce Workday, sous la politique revue du 09/09 (portail non certifié
  *     mono-marque ; exemple cité par D-453). C'est la seule preuve NÉGATIVE : la garde technique de `health.ts`
  *     la surveille ;
- *   · le retrait de son listing, la publication de test, l'événement de recrutement ou job dating (D-462).
+ *   · le retrait de son listing, la publication de test, l'événement de recrutement ou job dating (D-462) ;
+ *   · la description que l'éditeur laisse lui-même vide, sur une fiche LUE (D-481 §3, 30/09/2026) — jamais une
+ *     fiche que nous n'avons pas su lire, qui reste refusée et comptée. C'est la seconde preuve NÉGATIVE : la garde
+ *     technique de `health.ts` la surveille aussi.
  *
  * DÉCISION DE L'ÉQUIPE — l'exclusion de périmètre revue (`SCOPE_OUT_OF_PERIMETER`) : ce n'est pas une preuve
  * de la source, c'est un choix de Catwalks ; visible, non bloquant (D-456 §2), nommé comme tel.
@@ -39,10 +42,23 @@ export function publicationDisposition(reason: string): DeactivationDisposition 
 const NATIVE_EVIDENCE_RETENTIONS: ReadonlySet<string> = new Set([
   'APPLICATION_EXPLICITLY_CLOSED', 'APPLICATION_HTTP_404', 'APPLICATION_HTTP_410', 'APPLICATION_TEMPLATE_EXPIRY_CONTRADICTION',
   'SOURCE_UNLISTED', 'WORKDAY_EMPLOYER_ABSENT_IN_DETAIL', 'NATIVE_TEST_PUBLICATION', 'NATIVE_RECRUITMENT_EVENT',
+  'NATIVE_DESCRIPTION_EMPTY',
 ]);
 const TEAM_DECISION_RETENTIONS: ReadonlySet<string> = new Set(['SCOPE_OUT_OF_PERIMETER']);
-/** The only NEGATIVE native proof: the page does not name its employer. */
+/** The Workday NEGATIVE native proof: the page does not name its employer (its registry entry stays to instruct). */
 export const NEGATIVE_PROOF_RETENTION = 'WORKDAY_EMPLOYER_ABSENT_IN_DETAIL';
+/**
+ * LES PREUVES NÉGATIVES que la garde technique de `health.ts` surveille, avec le mot que sa note imprime.
+ *
+ * Une preuve négative se lit comme une ABSENCE dans la fiche : un changement de format de l'éditeur la produit à
+ * l'identique, et d'un coup sur une part de la source. La description vide (D-481 §3) en est une, sur le champ même
+ * où 3 780 descriptions Eightfold ont déjà disparu sans alerte derrière une clé renommée : la même garde s'y applique.
+ * Liste fermée ; les preuves positives de la source n'y entrent jamais.
+ */
+export const GUARDED_NEGATIVE_PROOFS: Readonly<Record<string, string>> = {
+  WORKDAY_EMPLOYER_ABSENT_IN_DETAIL: 'employeur absent',
+  NATIVE_DESCRIPTION_EMPTY: 'description vide chez l’éditeur',
+};
 
 export function isNativeEvidenceRetention(reason: string): boolean {
   return NATIVE_EVIDENCE_RETENTIONS.has(reason);
@@ -67,13 +83,15 @@ const RETENTION_TEXT: Readonly<Record<string, string>> = {
   SOURCE_UNLISTED: 'retirée de son listing par la source',
   NATIVE_TEST_PUBLICATION: 'publication de test déclarée par la source',
   NATIVE_RECRUITMENT_EVENT: 'événement de recrutement déclaré par la source',
+  NATIVE_DESCRIPTION_EMPTY: 'la source publie l’offre sans description (fiche lue, vide ou réduite à ses titres de rubrique)',
   SCOPE_OUT_OF_PERIMETER: 'écartée par l’équipe (hors périmètre)',
 };
 /**
  * The standing of each non-blocking reason, with the decision that settles it. Every non-blocking reason is now
  * arbitrated by the CEO (D-462, 25/09/2026, settled the 410, the listing withdrawal, the test publication and the
  * recruitment event). A reason missing here would print « application non arbitrée »: the witness in `lib/nativeRetention.test.ts`
- * requires « décidé » for each of the nine non-blocking reasons of 25/09.
+ * requires « décidé » for each of the nine non-blocking reasons of 25/09, and for the description left empty by
+ * the publisher (D-481 §3, 30/09).
  * A reason to instruct has no standing: it blocks. Nothing here decides: the list only says what DECISIONS.md holds.
  */
 const DECIDED: Readonly<Record<string, string>> = {
@@ -86,6 +104,7 @@ const DECIDED: Readonly<Record<string, string>> = {
   SOURCE_UNLISTED: 'D-462',
   NATIVE_TEST_PUBLICATION: 'D-462',
   NATIVE_RECRUITMENT_EVENT: 'D-462',
+  NATIVE_DESCRIPTION_EMPTY: 'D-481 §3',
 };
 export type RetentionStatus = 'décidé' | 'application non arbitrée' | 'à instruire';
 export function retentionStatus(reason: string): RetentionStatus {

@@ -3,7 +3,7 @@ import type { PrismaClient } from '@prisma/client';
 import type { IngestStats } from './ingest.js';
 import { isTrustedForAttestation, isDeclaredEmptyEnumeration } from './attestation.js';
 import { recordSourceRunSummary } from '../connectors/sourceStore.js';
-import { NEGATIVE_PROOF_RETENTION, retentionClass, type RetentionClass } from './publicationDisposition.js';
+import { GUARDED_NEGATIVE_PROOFS, retentionClass, type RetentionClass } from './publicationDisposition.js';
 import { FULL_RUN_MARKER } from './fullRunMarker.js';
 
 /**
@@ -84,9 +84,12 @@ export type HealthFinding = 'ENUMERATION_NOT_PROVEN' | 'ENUMERATION_REFUTED' | '
 /**
  * LA GARDE DE LA PREUVE NÉGATIVE — garde TECHNIQUE, pas une décision (demandée le 25/09/2026).
  *
- * « L'annonce Workday ne nomme pas d'employeur » (`WORKDAY_EMPLOYER_ABSENT_IN_DETAIL`) est la seule preuve
+ * « L'annonce Workday ne nomme pas d'employeur » (`WORKDAY_EMPLOYER_ABSENT_IN_DETAIL`) est une preuve
  * NÉGATIVE : un portail multi-marques et une page dont le format a changé la produisent à l'identique. Un
  * changement de format se voit d'un RUN à l'autre : la part de la source que ce motif laisse non publiée bondit.
+ * Depuis le 30/09/2026, la description que l'éditeur laisse vide (`NATIVE_DESCRIPTION_EMPTY`, D-481 §3) est la
+ * seconde, jugée de la même façon et sur sa propre part (`GUARDED_NEGATIVE_PROOFS`) : un gabarit Eightfold vidé
+ * par un changement de format la produirait à l'identique.
  * Cette retenue reste donc non bloquante sauf si cette part dépasse la part non publiée de la RÉFÉRENCE de plus
  * de `RETENTION_JUMP_POINTS` ET d'au moins `RETENTION_JUMP_MIN_POSTINGS` offres. Les preuves positives de la
  * source (candidature close, 404, retrait…) et les décisions de l'équipe ne sont jamais soumises à la garde.
@@ -276,25 +279,33 @@ function enumerationLabel(stat: IngestStats): string {
 }
 
 /**
- * The negative-proof guard. Silent unless the Workday reason is present. Without a complete RUN of reference it
- * says so and blocks nothing (D-453 §1); with one, it blocks only a jump of the share that reason leaves
- * unpublished. The comparison is made in whole basis points, so exactly +10 points is never a jump.
+ * The negative-proof guard. Silent unless a guarded negative reason is present (`GUARDED_NEGATIVE_PROOFS`: the
+ * Workday employer absent, and since 30/09 the description the publisher leaves empty, D-481 §3). Each reason is
+ * judged on its own share. Without a complete RUN of reference it says so and blocks nothing (D-453 §1); with one,
+ * it blocks only a jump of the share that reason leaves unpublished. The comparison is made in whole basis points,
+ * so exactly +10 points is never a jump. A jump of any guarded reason wins over « sans référence ».
  */
 function negativeProofGuard(stat: IngestStats, baseline: RetentionBaseline | null): { kind: 'NO_REFERENCE' | 'JUMP'; note: string } | undefined {
-  const negative = stat.heldReasons?.[NEGATIVE_PROOF_RETENTION] ?? 0;
+  const verdicts = Object.entries(GUARDED_NEGATIVE_PROOFS)
+    .map(([reason, label]) => guardedShare(stat, baseline, stat.heldReasons?.[reason] ?? 0, label))
+    .filter((verdict) => verdict !== undefined);
+  return verdicts.find((verdict) => verdict.kind === 'JUMP') ?? verdicts[0];
+}
+
+function guardedShare(stat: IngestStats, baseline: RetentionBaseline | null, negative: number, label: string): { kind: 'NO_REFERENCE' | 'JUMP'; note: string } | undefined {
   if (negative <= 0 || stat.fetched <= 0) return undefined;
   const pct = (n: number) => `${(n * 100).toFixed(1).replace('.', ',')} %`;
   const now = negative / stat.fetched;
   if (!baseline || baseline.fetched <= 0) {
     return { kind: 'NO_REFERENCE',
-      note: `garde technique sans référence : aucun RUN complet antérieur n’a collecté la source (employeur absent : ${pct(now)} des offres collectées)` };
+      note: `garde technique sans référence : aucun RUN complet antérieur n’a collecté la source (${label} : ${pct(now)} des offres collectées)` };
   }
   const before = (baseline.fetched - baseline.accepted) / baseline.fetched;
   const excess = negative - Math.round(before * stat.fetched);
   const jumpBasisPoints = Math.round(now * 10_000) - Math.round(before * 10_000);
   if (jumpBasisPoints <= Math.round(RETENTION_JUMP_POINTS * 10_000) || excess < RETENTION_JUMP_MIN_POSTINGS) return undefined;
   return { kind: 'JUMP',
-    note: `garde technique : employeur absent sur ${pct(now)} des offres contre ${pct(before)} non publiées au RUN complet de référence (+${excess} offres), preuve négative à instruire` };
+    note: `garde technique : ${label} sur ${pct(now)} des offres contre ${pct(before)} non publiées au RUN complet de référence (+${excess} offres), preuve négative à instruire` };
 }
 
 /** Everything a run is judged on besides write errors and retentions: extent, volume, field coverage. */

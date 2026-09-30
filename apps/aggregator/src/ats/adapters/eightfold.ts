@@ -3,6 +3,7 @@ import { captureObservedAt } from '../../capture/context.js';
 import { log } from '../../observability/logger.js';
 import pLimit from 'p-limit';
 import { fetchJson, fetchWithRetry } from '../../lib/http.js';
+import { assertSourceRunning, sourceDelay } from '../../lib/sourceBudget.js';
 import { htmlToPlainText } from '../../lib/html.js';
 import { employmentTermsFrom, readEmployment } from '../../normalize/employment.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
@@ -32,6 +33,43 @@ import { CRAWLER_IDENTITY } from '../../lib/crawlerIdentity.js';
  */
 const PAGE_SIZE = 10;
 const MAX_PAGES = Number(process.env.EIGHTFOLD_MAX_PAGES ?? 300);
+
+/**
+ * LA FENÊTRE DU PARE-FEU D'EIGHTFOLD (mesurée le 30/09/2026 sur le RUN du 29/09, lecture seule).
+ *
+ * Le pare-feu d'Eightfold répond 405 (`x-amzn-waf-action: captcha`) à tout, Estée Lauder et Kering ENSEMBLE,
+ * quand leur cumul dépasse environ 1 000 requêtes sur cinq minutes glissantes, et lève le refus quand ce cumul
+ * repasse sous le seuil : trois fenêtres le 29/09, de 2 min 16 s à 2 min 49 s du premier au dernier refus, ouvertes
+ * et levées dans les mêmes secondes pour les deux sources. Les trois essais du transport (0,5 s puis 1 s
+ * d'écart) tombent tous dedans : 14 fiches Estée Lauder et 9 fiches Kering perdues (trois 405 de suite, ou un 429
+ * puis deux 405), chacune sans description (refusée à la qualification) et, chez Kering, sans Maison (refusée à
+ * l'identité). Le 28/09, c'est une PAGE DE LISTE Kering (start=700) qui y est tombée : la collecte entière a échoué.
+ *
+ * La cadence commune (`lib/rateLimitKey.ts`, `tenant:eightfold`) doit empêcher la fenêtre de s'ouvrir ; ces
+ * relectures rattrapent ce qui y tomberait encore. Une lecture en échec est relue UNE fois, quatre minutes après le
+ * DERNIER échec : la fenêtre la plus longue mesurée (2 min 49 s) et une marge. Une fiche perdue tôt dans la collecte
+ * est donc relue sans attente. Le rejeu hors réseau sert les réponses d'une même adresse dans l'ordre de leur
+ * capture et n'attend jamais (`sourceDelay`) : il relit exactement ce que la collecte a relu.
+ *
+ * La décision de relire ne dépend que des échecs, jamais de l'horloge : elle ne consulte pas l'échéance douce
+ * (`sourceDeadlineReached`), que le rejeu ignore — il relirait alors une fiche que la collecte n'a pas relue, et
+ * échouerait sur une réponse absente. Une attente qui déborde tombe sous l'échéance dure, comme toute requête.
+ */
+const WAF_WINDOW_WAIT_MS = 240_000;
+/**
+ * Au-delà de 5 % des fiches (et d'au moins cinq), ce n'est plus une fenêtre de pare-feu mais un portail en panne :
+ * tout relire allongerait la collecte sans rien sauver (1 890 fiches Estée Lauder, onze minutes à la cadence
+ * commune). Elles restent alors des offres de liste, refusées à la qualification, comme avant.
+ */
+const DETAIL_REREAD_FLOOR = 5;
+const DETAIL_REREAD_SHARE = 0.05;
+/** Une position retirée entre la liste et sa fiche (404 : deux fiches Estée Lauder le 29/09) ne revient pas. */
+const GONE = new Set([404, 410]);
+const gone = (error: unknown) => {
+  const status = (error as { status?: unknown } | null)?.status;
+  return typeof status === 'number' && GONE.has(status);
+};
+const brief = (error: unknown) => (error instanceof Error ? error.message : String(error)).slice(0, 160);
 
 const USER_AGENT =
   CRAWLER_IDENTITY;
@@ -89,6 +127,43 @@ function brandOf(data: DetailResponse['data']): string | undefined {
     if (first && String(first).trim()) return String(first).trim();
   }
   return undefined;
+}
+
+/**
+ * D-481 §3 (30/09/2026) — LA DESCRIPTION QUE L'ÉDITEUR LAISSE LUI-MÊME VIDE est une retenue sur la preuve de la
+ * source : non publiée, non comptée dans la tolérance de la qualification. Une fiche que NOUS n'avons pas su lire
+ * ne l'est jamais : ce motif ne se pose que sur une fiche LUE (réponse 200 décodée), dont la description est vide.
+ *
+ * Mesuré le 30/09/2026 sur la capture Estée Lauder du 29/09 (`scripts/ops/eightfold-descriptions.mts`, lecture
+ * seule) : 44 offres sur 1 890 sans description utile. 16 fiches n'avaient pas été lues — 14 refusées par le
+ * pare-feu (voir `WAF_WINDOW_WAIT_MS`), 2 positions retirées entre la liste et la fiche (404) ; les 28 autres
+ * avaient été lues, et l'éditeur y publie l'une de trois formes vides :
+ *   · `<div></div>` (2) ;
+ *   · son gabarit à deux rubriques, titres `<h2></h2>` vides et contenus `<div></div>` vides (10) ;
+ *   · le même gabarit titré « Description » et « Qualifications », sans rien dessous (16) — le texte lu faisait
+ *     30 caractères, passait donc pour une description, et aurait été publié tel quel.
+ * Relu en ligne le 30/09 : la fiche 1168275706359 rend, octet pour octet, le gabarit titré sans contenu ; la fiche
+ * 1168275738003, refusée par le pare-feu le 29/09, porte 1 892 caractères de texte.
+ *
+ * La règle est donc STRUCTURELLE : on retire les titres de rubrique (un `<h1>`…`<h6>` court) ; s'il ne reste aucun
+ * texte, l'éditeur n'a rien publié sous ses rubriques. Un titre long reste un contenu. Un champ ABSENT ou d'un
+ * autre type n'est pas une description vide : c'est un format qu'on ne sait pas lire (3 780 descriptions perdues
+ * derrière une clé renommée, `health.ts`), il reste refusé en CONTENT_MISSING et compté. Seule une chaîne rendue
+ * par l'éditeur prouve le vide.
+ *
+ * Le même lecteur sert le collecteur, le rejeu de `publication/recovery.ts` et la mesure : une seule définition.
+ */
+export const NATIVE_DESCRIPTION_EMPTY = 'NATIVE_DESCRIPTION_EMPTY';
+const SECTION_HEADING_MAX_CHARS = 60;
+export function nativeDescriptionEmpty(detail: unknown): boolean {
+  if (!detail || typeof detail !== 'object' || Array.isArray(detail)) return false;
+  const data = detail as NonNullable<DetailResponse['data']>;
+  // La même lecture que le collecteur : la clé actuelle, puis l'ancienne.
+  const html = data.jobDescription ?? data.job_description;
+  if (typeof html !== 'string') return false;
+  const body = html.replace(/<h([1-6])\b[^>]*>([\s\S]*?)<\/h\1\s*>/gi, (heading: string, _level: string, inner: string) =>
+    (htmlToPlainText(inner) ?? '').length <= SECTION_HEADING_MAX_CHARS ? ' ' : heading);
+  return !htmlToPlainText(body);
 }
 
 /** The contract / working-time words the tenant publishes on the detail (l2). */
@@ -152,6 +227,23 @@ async function openSession(origin: string): Promise<string> {
   } catch (error) {
     await log.warn('adapter.incomplete', `[eightfold] session cookie unavailable for ${origin} (${error instanceof Error ? error.message : error}); continuing without it`);
     return '';
+  }
+}
+
+/**
+ * Une page de liste ne se perd plus dans une fenêtre du pare-feu : un échec qui n'est pas une disparition (404,
+ * 410) est relu UNE fois, `WAF_WINDOW_WAIT_MS` plus tard. Sans elle, une seule page refusée faisait échouer la
+ * collecte entière (Kering, 28/09, start=700). Une source déjà arrêtée n'attend pas ; un second échec est levé.
+ */
+async function readAfterWafWindow<T>(read: () => Promise<T>, what: string): Promise<T> {
+  try {
+    return await read();
+  } catch (error) {
+    if (gone(error)) throw error;
+    assertSourceRunning();
+    await log.warn('adapter.incomplete', `[eightfold] ${what} en échec (${brief(error)}) ; relue une fois dans ${WAF_WINDOW_WAIT_MS / 1000} s`);
+    await sourceDelay(WAF_WINDOW_WAIT_MS);
+    return read();
   }
 }
 
@@ -278,7 +370,7 @@ export async function fetchEightfoldJobs(
 
   for (let page = 0; page < MAX_PAGES; page++) {
     const url = `${origin}/api/pcsx/search?domain=${encodeURIComponent(domain)}&query=&location=&start=${page * PAGE_SIZE}&num=${PAGE_SIZE}`;
-    const response = await fetchJson<SearchResponse>(url, { headers });
+    const response = await readAfterWafWindow(() => fetchJson<SearchResponse>(url, { headers }), `page de liste start=${page * PAGE_SIZE}`);
 
     const positions = response.data?.positions ?? [];
     pagesRead += 1; rawCount += positions.length;
@@ -338,43 +430,83 @@ export async function fetchEightfoldJobs(
 
   // Descriptions come from a per-position endpoint; the listing has none.
   const limit = pLimit(Number(config.detailConcurrency ?? 4));
-  const withDescriptions = await Promise.all(
-    jobs.map((job) =>
+  const readDetail = async (job: NormalizedJob): Promise<NormalizedJob> => {
+    const detail = await fetchJson<DetailResponse>(
+      `${origin}/api/pcsx/position_details?position_id=${encodeURIComponent(job.externalId)}&domain=${encodeURIComponent(domain)}&hl=${encodeURIComponent(hl)}`,
+      { headers },
+    );
+    return withDetail(job, detail.data);
+  };
+  /** Index des fiches en échec, et l'heure du dernier : la relecture attend la fin de SA fenêtre, pas davantage. */
+  const failed: number[] = [];
+  let lastFailureAt = 0;
+  const firstPass = await Promise.all(
+    jobs.map((job, index) =>
       limit(async () => {
         try {
-          const detail = await fetchJson<DetailResponse>(
-            `${origin}/api/pcsx/position_details?position_id=${encodeURIComponent(job.externalId)}&domain=${encodeURIComponent(domain)}&hl=${encodeURIComponent(hl)}`,
-            { headers },
-          );
-          const terms = termsOf(detail.data);
-          return {
-            ...job,
-            description: htmlToPlainText(detail.data?.jobDescription ?? detail.data?.job_description),
-            // Group tenants: the offer belongs to its Maison, not the feed label.
-            company: brandOf(detail.data) ?? job.company,
-            // "Fulltime-Regular" carries both; the boundary splits contract from time.
-            contract: terms ?? job.contract,
-            workingTime: terms && readEmployment(terms) !== null ? terms : job.workingTime,
-            /*
-             * LA FICHE DE DÉTAIL ENTRE DANS LE RAW (19/09/2026).
-             *
-             * `raw` était figé sur la position de LISTE, qui ne porte aucune description : le
-             * rejeu (`publication/recovery.ts`) reconstruisait donc une offre muette, refusée en
-             * CONTENT_MISSING. Mesuré sur Kering : 1 035 offres capturées, conservées, et
-             * republiables par aucun chemin — le détail était lu, utilisé, puis jeté.
-             *
-             * On conserve la réponse de détail TELLE QUELLE, sous une clé qui dit d'où elle vient.
-             * Le rejeu en relit la description avec le même lecteur que le collecteur ; rien n'est
-             * reconstitué de mémoire, et la preuve native reste la capture.
-             */
-            raw: { ...(job.raw as Record<string, unknown>), eightfoldDetail: detail.data },
-          };
-        } catch {
-          // A failed detail fetch must not lose the listing entry.
+          return await readDetail(job);
+        } catch (error) {
+          // A failed detail fetch must not lose the listing entry. A position gone (404, 410) is not re-read.
+          if (!gone(error)) { failed.push(index); lastFailureAt = Date.now(); }
           return job;
         }
       }),
     ),
   );
+  const reread = await rereadFailedDetails(jobs, failed, lastFailureAt, (job) => limit(() => readDetail(job)));
+  const withDescriptions = firstPass.map((job, index) => reread.get(index) ?? job);
   return { jobs: withDescriptions, declaredTotal, complete, truncated, enumeration, ...(rejectedRows.length ? { rejectedRows } : {}) };
+}
+
+/** The detail applied to its listing entry: text, Maison, terms, and the native evidence itself. */
+function withDetail(job: NormalizedJob, data: DetailResponse['data']): NormalizedJob {
+  const terms = termsOf(data);
+  return {
+    ...job,
+    description: htmlToPlainText(data?.jobDescription ?? data?.job_description),
+    // Group tenants: the offer belongs to its Maison, not the feed label.
+    company: brandOf(data) ?? job.company,
+    // "Fulltime-Regular" carries both; the boundary splits contract from time.
+    contract: terms ?? job.contract,
+    workingTime: terms && readEmployment(terms) !== null ? terms : job.workingTime,
+    /*
+     * LA FICHE DE DÉTAIL ENTRE DANS LE RAW (19/09/2026).
+     *
+     * `raw` était figé sur la position de LISTE, qui ne porte aucune description : le
+     * rejeu (`publication/recovery.ts`) reconstruisait donc une offre muette, refusée en
+     * CONTENT_MISSING. Mesuré sur Kering : 1 035 offres capturées, conservées, et
+     * republiables par aucun chemin — le détail était lu, utilisé, puis jeté.
+     *
+     * On conserve la réponse de détail TELLE QUELLE, sous une clé qui dit d'où elle vient.
+     * Le rejeu en relit la description avec le même lecteur que le collecteur ; rien n'est
+     * reconstitué de mémoire, et la preuve native reste la capture.
+     */
+    raw: { ...(job.raw as Record<string, unknown>), eightfoldDetail: data },
+    // D-481 §3 : la fiche est LUE et l'éditeur n'y publie rien ; le rejeu pose la même retenue (`recovery.ts`).
+    ...(nativeDescriptionEmpty(data) ? { publicationHold: NATIVE_DESCRIPTION_EMPTY } : {}),
+  };
+}
+
+/**
+ * Les fiches perdues au premier passage, relues une fois après la fenêtre du pare-feu (`WAF_WINDOW_WAIT_MS`).
+ * L'attente court depuis le DERNIER échec : une collecte qui a continué plusieurs minutes après lui ne réattend pas.
+ * Une fiche encore en échec reste une offre de liste, refusée à la qualification comme avant — jamais une retenue.
+ */
+async function rereadFailedDetails(jobs: NormalizedJob[], failed: number[], lastFailureAt: number,
+  read: (job: NormalizedJob) => Promise<NormalizedJob>): Promise<Map<number, NormalizedJob>> {
+  const recovered = new Map<number, NormalizedJob>();
+  if (!failed.length) return recovered;
+  const bound = Math.max(DETAIL_REREAD_FLOOR, Math.ceil(jobs.length * DETAIL_REREAD_SHARE));
+  if (failed.length > bound) {
+    await log.warn('adapter.incomplete', `[eightfold] ${failed.length} fiches en échec sur ${jobs.length}, au-delà de ${bound} : portail en panne, aucune relecture`);
+    return recovered;
+  }
+  assertSourceRunning();
+  const waitMs = Math.max(0, lastFailureAt + WAF_WINDOW_WAIT_MS - Date.now());
+  await sourceDelay(waitMs);
+  await Promise.all(failed.map(async (index) => {
+    try { recovered.set(index, await read(jobs[index])); } catch { /* stays a listing entry, as before */ }
+  }));
+  await log.warn('adapter.incomplete', `[eightfold] ${failed.length} fiches en échec relues après ${Math.round(waitMs / 1000)} s : ${recovered.size} retrouvées`);
+  return recovered;
 }
