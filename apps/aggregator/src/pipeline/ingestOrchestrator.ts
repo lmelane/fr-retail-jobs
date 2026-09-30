@@ -11,7 +11,7 @@ import { FULL_RUN_MARKER } from './fullRunMarker.js';
 import { briefError } from '../lib/normalize.js';
 import { maintainSourceAccess } from '../connectors/sourceAccessQualification.js';
 import { WafChallengeError } from '../lib/wafToken.js';
-import { ingestionIssue, isProvenSourceIssue, issuesFromResult, type IngestionIssue } from '../lib/ingestionIssue.js';
+import { ingestionIssue, isDecidedKnownFailure, isNonBlockingIssue, isProvenSourceIssue, issuesFromResult, KNOWN_FAILURE_DECISION, type IngestionIssue } from '../lib/ingestionIssue.js';
 import { failureLine } from '../lib/runSummary.js';
 
 /**
@@ -135,8 +135,11 @@ export async function ingestAllBySource(prisma: PrismaClient): Promise<Orchestra
  */
 export function classifySourceRun(stats: IngestStats[], incidents: readonly SourceHealth[]): { issues: IngestionIssue[]; incidents: SourceHealth[] } {
   const issues = issuesFromResult(stats, incidents);
-  const blocking = issues.some(issue => !isProvenSourceIssue(issue));
-  return { issues, incidents: incidents.map(incident => ({ ...incident, blocking })) };
+  const source = stats[0]?.source ?? '';
+  const blocking = issues.some(issue => !isNonBlockingIssue(source, issue));
+  // D-480 §1 : un échec connu reste visible, nommé par sa décision, jamais confondu avec une panne prouvée.
+  const known = !blocking && issues.some(issue => isDecidedKnownFailure(source, issue));
+  return { issues, incidents: incidents.map(incident => ({ ...incident, blocking, ...(known ? { knownFailure: KNOWN_FAILURE_DECISION } : {}) })) };
 }
 
 /** One source, bounded by its own timeout; the counters it touches are shared. */
@@ -158,7 +161,8 @@ async function ingestOne(prisma: PrismaClient, key: string, result: Orchestrator
     const { issues, incidents } = classifySourceRun(stats, health.incidents);
     result.incidents.push(...incidents);
     result.issues!.push(...issues.map(issue => ({ ...issue, source: key })));
-    if (issues.length) await log.warn('source.issue_classified', { sourceKey: key, issues, acceptedNativeOnly: issues.every(isProvenSourceIssue) });
+    if (issues.length) await log.warn('source.issue_classified', { sourceKey: key, issues, acceptedNativeOnly: issues.every(isProvenSourceIssue),
+      knownFailure: issues.some(issue => isDecidedKnownFailure(key, issue)) });
     await log.info('source_sync_completed', { sourceKey: key, durationMs: Date.now() - started, fetched: stats.reduce((n, s) => n + s.fetched, 0), created: stats.reduce((n, s) => n + s.created, 0), updated: stats.reduce((n, s) => n + s.updated, 0), held: stats.reduce((n, s) => n + (s.held ?? 0), 0), errors: stats.reduce((n, s) => n + s.errors, 0), http: log.counters(key), stats, health: { broken: health.broken, degraded: health.degraded } });
     if (issues.length) {
       // A retention decided on native evidence stays counted and listed (D-453 §1); its line says it does not block.
@@ -180,7 +184,8 @@ async function ingestOne(prisma: PrismaClient, key: string, result: Orchestrator
     const issue = ingestionIssue(error);
     result.issues!.push({ ...issue, source: key });
     // Nothing collected to the end: the refresh leaves the source's offers open (L-01), the alert says so.
-    result.incidents.push({ source: key, status: 'BROKEN', jobs: 0, previous: null, blocking: !isProvenSourceIssue(issue),
+    result.incidents.push({ source: key, status: 'BROKEN', jobs: 0, previous: null, blocking: !isNonBlockingIssue(key, issue),
+      ...(isDecidedKnownFailure(key, issue) ? { knownFailure: KNOWN_FAILURE_DECISION } : {}),
       notCollected: true, note: `${issue.origin}/${issue.code}: ${briefError(error)}` });
     await log.warn('source.issue_classified', { sourceKey: key, issues: [issue], acceptedNativeOnly: isProvenSourceIssue(issue) });
     if (timedOut) {

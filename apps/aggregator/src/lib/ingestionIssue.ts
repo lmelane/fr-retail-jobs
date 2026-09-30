@@ -31,6 +31,35 @@ export function isProvenSourceIssue(issue: IngestionIssue): boolean {
     (issue.code === NATIVE_RETENTION ? !!issue.completionReportHash : !!issue.rawCaptureId);
 }
 
+/**
+ * D-480 §1 (arbitrage CEO du 30/09/2026) : huit sources NOMMÉES, et pour chacune son seul défaut décrit, sont des
+ * échecs connus. Elles restent collectées et publient leurs offres ; une liste non prouvée ne ferme jamais d'offre ;
+ * elles restent visibles au bilan et dans l'alerte, avec la décision, mais ne font plus échouer le RUN. Tout AUTRE
+ * défaut de ces sources reste bloquant. Liste fermée : l'étendre est une décision du CEO, jamais une configuration.
+ */
+export const DECIDED_KNOWN_FAILURES: Readonly<Record<string, readonly string[]>> = {
+  // L'éditeur ne permet pas de prouver la liste complète.
+  lumentee: ['ENUMERATION_NOT_PROVEN'],
+  attaquer: ['ENUMERATION_NOT_PROVEN'],
+  'kastner-ohler': ['ENUMERATION_NOT_PROVEN'],
+  picard: ['ENUMERATION_NOT_PROVEN'],
+  tapestry: ['ENUMERATION_REFUTED', 'ENUMERATION_NOT_PROVEN'],
+  'knitwell-us-retail': ['ENUMERATION_REFUTED', 'ENUMERATION_NOT_PROVEN'],
+  // L'éditeur bloque (limite de débit, réponse 406) ou vide ses offres (description « - »).
+  'l-oreal-professionnel': ['HttpStatusError'],
+  'on-running': ['SOURCE_HEALTH_REGRESSION'],
+};
+export const KNOWN_FAILURE_DECISION = 'D-480';
+
+export function isDecidedKnownFailure(source: string, issue: Pick<IngestionIssue, 'code'>): boolean {
+  return DECIDED_KNOWN_FAILURES[source]?.includes(issue.code) ?? false;
+}
+
+/** Ce qui ne fait pas échouer le RUN : une preuve native de la source (D-453 §1), ou un échec connu décidé (D-480 §1). */
+export function isNonBlockingIssue(source: string, issue: IngestionIssue): boolean {
+  return isProvenSourceIssue(issue) || isDecidedKnownFailure(source, issue);
+}
+
 /** Called only after the failed native response and outcome have been persisted. */
 export function attestNativeFailure(error: Error, evidence: { captureBatchId: string; rawCaptureId: string; status: number }) {
   if (!Number.isInteger(evidence.status) || evidence.status < 500 || evidence.status > 599 || !evidence.captureBatchId || !evidence.rawCaptureId)
