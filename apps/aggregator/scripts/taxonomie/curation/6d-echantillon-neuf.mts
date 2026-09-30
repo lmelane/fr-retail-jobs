@@ -55,11 +55,16 @@ const fichierDu = (t: number) => `${D}6d-echantillon-final${t === 1 ? '' : `-${t
 const PERTES = process.argv.includes('--pertes');
 const FICHIER = PERTES ? `${D}6d-pertes-${TOUR}.json` : fichierDu(TOUR);
 const mode = process.argv.find((a) => ['--tirer', '--juger-modele', '--compter'].includes(a));
+// Corpus des offres (export en lecture seule, `exporter-offres-preview.mts`) : celui du 29/09/2026 par défaut ; un export plus
+// récent (`--corpus=offres-preview-<date>.json.gz`) apporte des intitulés qu'aucune correction n'a pu voir (tirage neuf du 30/09/2026).
+const argCorpus = process.argv.find((a) => a.startsWith('--corpus='));
+if (argCorpus && !/^--corpus=offres-preview-\d{4}-\d{2}-\d{2}\.json\.gz$/.test(argCorpus)) throw new Error('usage : --corpus=offres-preview-<AAAA-MM-JJ>.json.gz');
+const CORPUS = argCorpus ? argCorpus.slice(9) : 'offres-preview-2026-09-29.json.gz';
 
 if (mode === '--tirer') {
   if (existsSync(FICHIER)) throw new Error('échantillon déjà tiré : il ne se retire pas (enregistré avant jugement)');
   const v1 = compileOccupationManifest(structuredClone(servie)), m = lireEtape('6-manifeste-v3.json'), v3 = compileOccupationManifest(m);
-  const { couples } = JSON.parse(gunzipSync(readFileSync(`${D}entrees/offres-preview-2026-09-29.json.gz`)).toString('utf8'));
+  const { couples } = JSON.parse(gunzipSync(readFileSync(`${D}entrees/${CORPUS}`)).toString('utf8'));
   const deja = lireEtape('6d-mesure-justesse.json');
   const precedents = Array.from({ length: TOUR - 1 }, (_, n) => JSON.parse(readFileSync(fichierDu(n + 1), 'utf8')).echantillon);
   // Tours 1 et 2 : intitulés déjà jugés écartés par leur titre (tirages committés, rejouables tels quels) ; tour 3 et
@@ -70,16 +75,21 @@ if (mode === '--tirer') {
   // les corrections ont été faites sur eux, les remesurer rendrait 0 faux par construction. La mesure porte sur les
   // couples jamais jugés ; la part d'offres écartées est enregistrée.
   const pertesJugees = Array.from({ length: TOUR - 1 }, (_, n) => `${D}6d-pertes-${n + 1}.json`).filter(existsSync).flatMap((f) => JSON.parse(readFileSync(f, 'utf8')).echantillon);
-  const couplesJuges = new Set<string>(TOUR >= 8 ? [...deja.tour1.verdicts, ...deja.echantillonNeuf.verdicts, ...precedents.flat(), ...pertesJugees].map((x: any) => `${x.titre}|${x.service}`) : []);
+  // Tour 9 et suivants (second audit du 30/09/2026) : un couple n’est écarté que si son métier ACTUEL est celui qui a été
+  // jugé ; jugé sous un autre métier (renommage ou vrai changement), son résultat d’aujourd’hui n’a jamais été mesuré.
+  const jugements = new Map<string, Set<string | null>>();
+  if (TOUR >= 8) for (const x of [...deja.tour1.verdicts, ...deja.echantillonNeuf.verdicts, ...precedents.flat(), ...pertesJugees])
+    jugements.set(`${x.titre}|${x.service}`, new Set([...(jugements.get(`${x.titre}|${x.service}`) ?? []), x.metier ?? null]));
+  const dejaJuge = (x: any) => { const j = jugements.get(`${x.c.titre}|${x.c.service}`); return !!j && (TOUR < 9 || j.has(x.b.occupationCode ?? null)); };
   const changent = couples.map((c: any) => ({ c, a: v1.classify(c.titre, c.service).occupationCode, b: v3.classify(c.titre, c.service) }))
     .filter((x: any) => (PERTES ? x.a && !x.b.occupationCode : x.a !== x.b.occupationCode));
-  const cand = changent.filter((x: any) => !vus.has(x.c.titre.toLowerCase().trim()) && !couplesJuges.has(`${x.c.titre}|${x.c.service}`));
-  const ecartes = changent.filter((x: any) => couplesJuges.has(`${x.c.titre}|${x.c.service}`));
+  const cand = changent.filter((x: any) => !vus.has(x.c.titre.toLowerCase().trim()) && !dejaJuge(x));
+  const ecartes = changent.filter((x: any) => dejaJuge(x));
   const alea = (x: any) => (parseInt(createHash('sha256').update(`final-2026-09-29${TOUR === 1 ? '' : `-tour${TOUR}`}|${x.c.titre}|${x.c.service}`).digest('hex').slice(0, 12), 16) + 1) / 2 ** 48;
   const e = cand.map((x: any) => ({ x, k: Math.log(alea(x)) / x.c.offres })).sort((p: any, q: any) => q.k - p.k).slice(0, PERTES ? cand.length : TAILLE)
     .map(({ x }: any) => ({ titre: x.c.titre, service: x.c.service, offres: x.c.offres, avant: x.a, metier: x.b.occupationCode, statut: x.b.occupationStatus,
       libelle: m.occupations.find((o: any) => o.key === x.b.occupationCode)?.labels.fr ?? null, verdictModele: null, verdictAssistant: null }));
-  writeFileSync(FICHIER, JSON.stringify({ tireLe: new Date().toISOString(), tour: TOUR, ...(PERTES ? { exhaustif: true } : {}), manifeste: m.id, ...(TOUR >= 3 ? { empreinteManifeste: empreinte() } : {}),
+  writeFileSync(FICHIER, JSON.stringify({ tireLe: new Date().toISOString(), tour: TOUR, corpus: CORPUS, ...(PERTES ? { exhaustif: true } : {}), manifeste: m.id, ...(TOUR >= 3 ? { empreinteManifeste: empreinte() } : {}),
     candidats: cand.length, offresCandidates: cand.reduce((n: number, x: any) => n + x.c.offres, 0), dejaJuges: vus.size,
     ...(TOUR >= 8 ? { couplesDejaJugesEcartes: { couples: ecartes.length, offres: ecartes.reduce((n: number, x: any) => n + x.c.offres, 0),
       offresQuiChangent: changent.reduce((n: number, x: any) => n + x.c.offres, 0) } } : {}), echantillon: e }, null, 1));

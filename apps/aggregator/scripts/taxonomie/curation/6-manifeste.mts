@@ -40,6 +40,7 @@ import releaseDecidee from '../../../../../packages/db/data/occupations-v1.json'
 import secteurs from '../../../../../packages/db/data/sectors-v1.json' with { type: 'json' };
 import { FAMILY_ALIASES, SEARCH_VOCABULARY_VERSION, searchConcepts } from '../../../../../packages/db/search-vocabulary.ts';
 import { searchWords } from '../../../../../packages/db/search-intent.ts';
+import { occupationTitleRoles } from '../../../../../packages/db/occupation-title-roles.ts';
 import { validateOccupationSuccessor } from '../../../src/occupation/release.ts';
 import { conceptsV3, DOSSIER_SORTIE, estVague, EXCLUS_RAYON, familles, libellesEtFormes, lireEtape, niveauSeul, phraseMoteur, servie, VAGUES } from './commun.mts';
 
@@ -413,7 +414,39 @@ const ecarts6h = [
   ...e6h.expressions.flatMap((x: any) => x.formes.filter((v: string) => compile.classify(v, null).occupationCode !== x.metier).map((v: string) => `« ${v} » ne rend pas ${x.metier}`)),
   ...e6h.lecturesRetirees.filter((x: any) => metiersV3.some((o: any) => o.key === x.metier && (o.titleReadingAliases ?? []).some((a: string) => cleRecherche(a) === x.phrase)))
     .map((x: any) => `lecture « ${x.phrase} » encore vérifiée pour ${x.metier}`),
+  ...exclusionsNonTenues(),
 ];
+/**
+ * 6h : chaque forme d'exclusion est TENUE (aucun de ses témoins, intitulés réels du corpus, ne sort plus sous le métier
+ * exclu, ni par le moteur ni par la lecture) et NÉCESSAIRE (retirée en mémoire, un de ses témoins y revient) : une
+ * exclusion sans effet, sans témoin ou non tenue arrête l'assemblage (audit du 30/09/2026 : la garde ne voyait que les
+ * formes sans métier et les expressions).
+ */
+function exclusionsNonTenues(): string[] {
+  const sort = (cat: ReturnType<typeof compileOccupationManifest>, t: string, k: string) => {
+    const d = cat.classify(t, null);
+    return d.occupationCode === k || occupationTitleRoles(cat, t, d).includes(k);
+  };
+  const sansForme = (k: string, forme: string) => {
+    const m = structuredClone(manifeste) as any;
+    for (const r of m.rules) if (r.occupation === k && r.exclude) {
+      r.exclude = r.exclude.map((c: any) => ({ ...c, any: c.any.filter((v: string) => v !== forme) })).filter((c: any) => c.any.length);
+      if (!r.exclude.length) delete r.exclude;
+    }
+    for (const o of m.occupations) if (o.key === k && o.titleReadingExclusions) {
+      o.titleReadingExclusions = o.titleReadingExclusions.filter((v: string) => v !== forme);
+      if (!o.titleReadingExclusions.length) delete o.titleReadingExclusions;
+    }
+    return compileOccupationManifest(m);
+  };
+  return e6h.exclusions.flatMap((x: any) => {
+    if (!x.temoins?.length) return [`exclusion de ${x.metier} sans témoin`];
+    const tenues = x.temoins.filter((t: string) => sort(compile, t, x.metier)).map((t: string) => `« ${t} » sort encore sous ${x.metier}`);
+    const inutiles = x.formes.filter((f: string) => { const sans = sansForme(x.metier, f); return !x.temoins.some((t: string) => sort(sans, t, x.metier)); })
+      .map((f: string) => `exclusion « ${f} » de ${x.metier} : aucun témoin n'y revient sans elle`);
+    return [...tenues, ...inutiles];
+  });
+}
 
 // Un manifeste refusé ne remplace jamais le bon : il s'écrit à part (audit du lot 2B-2).
 const refuse = luesPerdues.length + nonIdempotentes.length + libellesPartages.length + ecartsScission.length + collisionsV2.length + collisionsVocabulaire.length + ecarts6h.length > 0;
@@ -437,7 +470,7 @@ for (const x of collisionsV2.slice(0, 15)) console.log(` collision v2 : « ${x.c
 if (collisionsV2.length) { console.error(`ASSEMBLAGE REFUSÉ : ${collisionsV2.length} clé(s) v2 pour plusieurs métiers`); process.exitCode = 1; }
 for (const x of ecartsScission.slice(0, 10)) console.log(` 3c non tenu : « ${x.texte} » décidé ${x.decision}, rendu ${x.rendu ?? 'aucun'}`);
 if (ecartsScission.length) { console.error(`ASSEMBLAGE REFUSÉ : ${ecartsScission.length} décision(s) de 3c non tenue(s) par le moteur`); process.exitCode = 1; }
-for (const x of ecarts6h.slice(0, 10)) console.log(` 6h non tenue : ${x}`);
+for (const x of ecarts6h.slice(0, 40)) console.log(` 6h non tenue : ${x}`);
 if (ecarts6h.length) { console.error(`ASSEMBLAGE REFUSÉ : ${ecarts6h.length} correction(s) de 6h non tenue(s) par le moteur`); process.exitCode = 1; }
 for (const x of luesPerdues.slice(0, 10)) console.log(` lecture perdue : « ${x.phrase} » → ${x.occupation}`);
 if (luesPerdues.length) { console.error(`ASSEMBLAGE REFUSÉ : ${luesPerdues.length} lecture(s) de 6g sans expression chez leur métier`); process.exitCode = 1; }

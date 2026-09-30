@@ -1,0 +1,205 @@
+{
+ "calculeLe": "2026-09-30T09:28:50.936Z",
+ "corpus": "offres-preview-2026-09-30.json.gz",
+ "manifesteAvant": "1010f684b3949fa9eaf59be1cf4ec027e4d71f880acb487900e95bc6c1b8a605",
+ "manifesteApres": "e789492df4c8b17ae379818c81b2f588023ab56ce47a24fb83084391cb943850",
+ "couplesQuiChangent": 122,
+ "offresQuiChangent": 189,
+ "inexpliques": [],
+ "metiers": {
+  "assistant-store-manager": {
+   "partent": 3,
+   "arrivent": 91
+  },
+  "store-manager": {
+   "partent": 91,
+   "arrivent": 0
+  },
+  "manager-floor": {
+   "partent": 51,
+   "arrivent": 0
+  },
+  "optometrist": {
+   "partent": 9,
+   "arrivent": 0
+  },
+  "financial-controller": {
+   "partent": 8,
+   "arrivent": 0
+  },
+  "manager-commercial": {
+   "partent": 7,
+   "arrivent": 0
+  },
+  "cook": {
+   "partent": 6,
+   "arrivent": 0
+  },
+  "commis-de-cuisine": {
+   "partent": 0,
+   "arrivent": 6
+  },
+  "assistant-merchandiser": {
+   "partent": 5,
+   "arrivent": 0
+  },
+  "responsable-de-comptes": {
+   "partent": 4,
+   "arrivent": 0
+  },
+  "assistant-key-account-manager": {
+   "partent": 0,
+   "arrivent": 4
+  },
+  "collection-merchandiser": {
+   "partent": 2,
+   "arrivent": 0
+  },
+  "designer-chaussures": {
+   "partent": 1,
+   "arrivent": 0
+  },
+  "assistant-designer": {
+   "partent": 1,
+   "arrivent": 0
+  },
+  "office-manager": {
+   "partent": 1,
+   "arrivent": 0
+  }
+ },
+ "corrections": {
+  "sans métier : Manager des ventes, Manageuse des ventes, Manager, Sales, Manager, Sales - Cosmetics": {
+   "couples": 53,
+   "offres": 58,
+   "exemples": [
+    "Assistant Manager des Ventes H/F",
+    "CDD Manager des Ventes - Printemps Haussmann H/F",
+    "Manager des Ventes (F/H) - Aix en Provence Mirabeau - CDI 35h",
+    "Manager des Ventes (F/H) - Aix en Provence Mirabeau - CDI 35h",
+    "Manager des Ventes (F/H) - Ajaccio - CDI 35H"
+   ]
+  },
+  "exclusion store-manager : assistent, assistants, assisterende, assisterande, stellvertretender, stellvertretende, stellv, vice store manager, アシスタント, ställföreträdande": {
+   "couples": 37,
+   "offres": 91,
+   "exemples": [
+    "ASSISTANTS STORE MANAGER - MARBELLA CAÑADA TEEN",
+    "Assistent Shopmanager",
+    "Assistent Store Manager Arnhem",
+    "Assistent Store Manager Deventer",
+    "Assistent Store Manager - HOKA Covent Garden"
+   ]
+  },
+  "exclusion cook : assistent": {
+   "couples": 4,
+   "offres": 4,
+   "exemples": [
+    "Assistent Kok",
+    "Assistent kok bij Asia Street Cooking",
+    "Assistent Kok Comptoir Libanais",
+    "Assistent Kok Schiphol"
+   ]
+  },
+  "exclusion designer-chaussures : assistant": {
+   "couples": 1,
+   "offres": 1,
+   "exemples": [
+    "ASSISTANT(E) FOOTWEAR DESIGNER - NEW CREATIONS"
+   ]
+  },
+  "exclusion assistant-merchandiser : visual merchandising": {
+   "couples": 3,
+   "offres": 5,
+   "exemples": [
+    "Italy Internship Visual Merchandising Assistant",
+    "STAGE Visual Merchandising Assistant F/H",
+    "Visual Merchandising Assistant"
+   ]
+  },
+  "exclusion financial-controller : responsable, controlling solutions, inventory controlling": {
+   "couples": 7,
+   "offres": 8,
+   "exemples": [
+    "CDI - Responsable Contrôle de Gestion (F/H/X)",
+    "Functional Consultant Controlling Solutions (f/m/x)",
+    "Lead, Inventory Controlling NA (Business Strategy)",
+    "Responsable Controle de Gestion Industriel H/F",
+    "Responsable Contrôle de Gestion Industrie & Opérations"
+   ]
+  },
+  "exclusion assistant-store-manager : adjoint comptabilite, adjoint visual merchandising, adjoint prevention des pertes": {
+   "couples": 3,
+   "offres": 3,
+   "exemples": [
+    "CDI - Responsable adjoint Comptabilité Fournisseurs (H/F)",
+    "CDI - Responsable Adjoint prévention des pertes (F/H)",
+    "CDI - Responsable Adjoint Visual Merchandising - 31 Rue Cambon - H/F/X"
+   ]
+  },
+  "exclusion collection-merchandiser : assistant": {
+   "couples": 2,
+   "offres": 2,
+   "exemples": [
+    "Berluti Stage - Assistant(e) Collection Merchandiser (F/H)",
+    "INTERN - Assistant Collection Merchandiser Leather Good"
+   ]
+  },
+  "exclusion office-manager : programme office": {
+   "couples": 1,
+   "offres": 1,
+   "exemples": [
+    "Stage - Global IT Client Programme Office Manager - Corporate - Janvier 2027 - H/F/X"
+   ]
+  },
+  "exclusion assistant-designer : product manager assistant": {
+   "couples": 1,
+   "offres": 1,
+   "exemples": [
+    "Internship - Export Marketing Product Manager Assistant Designer Fragance Brands - January 2027"
+   ]
+  },
+  "expression assistant-store-manager : Assistent Store Manager, Assistent Storemanager, Assistent Shopmanager, Assistants Store Manager, Assisterende butikschef, Assisterande butikschef, Stellvertretender Filialleiter, Stellvertretende Filialleiterin, Stellvertretende/r Filialleiter, Stellv. Filialleiter, Vice Store Manager, アシスタントストアマネージャー, Ställföreträdande butikschef": {
+   "couples": 37,
+   "offres": 91,
+   "exemples": [
+    "ASSISTANTS STORE MANAGER - MARBELLA CAÑADA TEEN",
+    "Assistent Shopmanager",
+    "Assistent Store Manager Arnhem",
+    "Assistent Store Manager Deventer",
+    "Assistent Store Manager - HOKA Covent Garden"
+   ]
+  },
+  "expression commis-de-cuisine : Commis cuisinier, Assistent kok": {
+   "couples": 6,
+   "offres": 6,
+   "exemples": [
+    "Assistent Kok",
+    "Assistent kok bij Asia Street Cooking",
+    "Assistent Kok Comptoir Libanais",
+    "Assistent Kok Schiphol",
+    "Commis Cuisinier 18H H/F - Anglet - CAFE ONO"
+   ]
+  },
+  "expression assistant-key-account-manager : Assistant Key Account Manager": {
+   "couples": 3,
+   "offres": 4,
+   "exemples": [
+    "Assistant Key Account Manager SEAPAC (internship)",
+    "Stage - Assistant Key Account Manager Europe",
+    "STAGE - Assistant Key Account Manager (Marché France Benelux) (H/F) - Hermès Parfum Beauté"
+   ]
+  },
+  "lecture retirée optometrist : optometric technician": {
+   "couples": 5,
+   "offres": 9,
+   "exemples": [
+    "Doctor's Assistant / Optometric Technician - Training Provided!",
+    "Optometric Technician (Part-Time) - Willing to Train!",
+    "Optometric Technician - Training Provided!",
+    "Optometric Technician- Training Provided!",
+    "Optometric Technician - Willing to Train!"
+   ]
+  }
+ }
+}

@@ -31,12 +31,17 @@ const TAILLE = argTaille ? Number(argTaille.slice(9)) : 200;
 if (!Number.isSafeInteger(TAILLE) || TAILLE < 1) throw new Error('usage : --taille=<entier ≥ 1>');
 const JUGE_MESURE = 'gemini-3.1-pro-preview';
 const mode = process.argv.find((a) => ['--tirer', '--juger-modele', '--compter'].includes(a));
+// Corpus des offres (export en lecture seule, `exporter-offres-preview.mts`) : celui du 29/09/2026 par défaut ; un export plus
+// récent (`--corpus=offres-preview-<date>.json.gz`) apporte des intitulés qu'aucune correction n'a pu voir (tirage neuf du 30/09/2026).
+const argCorpus = process.argv.find((a) => a.startsWith('--corpus='));
+if (argCorpus && !/^--corpus=offres-preview-\d{4}-\d{2}-\d{2}\.json\.gz$/.test(argCorpus)) throw new Error('usage : --corpus=offres-preview-<AAAA-MM-JJ>.json.gz');
+const CORPUS = argCorpus ? argCorpus.slice(9) : 'offres-preview-2026-09-29.json.gz';
 const empreinte = () => createHash('sha256').update(readFileSync(`${D}6-manifeste-v3.json`)).digest('hex');
 
 if (mode === '--tirer') {
   if (existsSync(FICHIER)) throw new Error('échantillon déjà tiré : il ne se retire pas (enregistré avant jugement)');
   const m = lireEtape('6-manifeste-v3.json'), v3 = compileOccupationManifest(m);
-  const { couples } = JSON.parse(gunzipSync(readFileSync(`${D}entrees/offres-preview-2026-09-29.json.gz`)).toString('utf8'));
+  const { couples } = JSON.parse(gunzipSync(readFileSync(`${D}entrees/${CORPUS}`)).toString('utf8'));
   const libelle = (k: string) => m.occupations.find((o: any) => o.key === k)?.labels.fr ?? k;
   const lus = couples.map((c: any) => {
     const d = v3.classify(c.titre, c.service);
@@ -47,15 +52,20 @@ if (mode === '--tirer') {
   // jugés à un tour précédent sont écartés, par le couple et jamais par le seul titre : les corrections ont été faites sur
   // eux, les remesurer rendrait 0 faux par construction. La part d'offres écartées est enregistrée.
   const fichierDuTour = (t: number) => `${D}6f-roles-lus${t > 1 ? `-t${t}` : ''}.json`;
-  const couplesJuges = new Set<string>(TOUR >= 5 ? Array.from({ length: TOUR - 1 }, (_, n) => fichierDuTour(n + 1)).filter(existsSync)
-    .flatMap((f) => JSON.parse(readFileSync(f, 'utf8')).echantillon).map((x: any) => `${x.titre}|${x.service}`) : []);
-  const population = lus.filter((x: any) => !couplesJuges.has(`${x.c.titre}|${x.c.service}`));
-  const ecartes = lus.filter((x: any) => couplesJuges.has(`${x.c.titre}|${x.c.service}`));
+  // Tour 6 et suivants (second audit du 30/09/2026) : un couple n’est écarté que si les métiers qu’on y lit AUJOURD’HUI sont
+  // ceux qui ont été jugés.
+  const lesMetiers = (l: string[]) => [...l].sort().join(',');
+  const jugements = new Map<string, Set<string>>();
+  if (TOUR >= 5) for (const x of Array.from({ length: TOUR - 1 }, (_, n) => fichierDuTour(n + 1)).filter(existsSync).flatMap((f) => JSON.parse(readFileSync(f, 'utf8')).echantillon))
+    jugements.set(`${x.titre}|${x.service}`, new Set([...(jugements.get(`${x.titre}|${x.service}`) ?? []), lesMetiers(x.ajoutes.map((a: any) => a.cle))]));
+  const dejaJuge = (x: any) => { const j = jugements.get(`${x.c.titre}|${x.c.service}`); return !!j && (TOUR < 6 || j.has(lesMetiers(x.ajoutes))); };
+  const population = lus.filter((x: any) => !dejaJuge(x));
+  const ecartes = lus.filter((x: any) => dejaJuge(x));
   const alea = (x: any) => (parseInt(createHash('sha256').update(`roles-lus-2026-09-29${TOUR > 1 ? `-t${TOUR}` : ''}|${x.c.titre}|${x.c.service}`).digest('hex').slice(0, 12), 16) + 1) / 2 ** 48;
   const e = population.map((x: any) => ({ x, k: Math.log(alea(x)) / x.c.offres })).sort((p: any, q: any) => q.k - p.k).slice(0, TAILLE)
     .map(({ x }: any) => ({ titre: x.c.titre, service: x.c.service, offres: x.c.offres, moteur: x.d.occupationCode, statut: x.d.occupationStatus,
       ajoutes: x.ajoutes.map((k: string) => ({ cle: k, libelle: libelle(k) })), verdictAssistant: null, verdictModele: null }));
-  writeFileSync(FICHIER, JSON.stringify({ tireLe: new Date().toISOString(), tour: TOUR, manifeste: m.id, empreinteManifeste: empreinte(),
+  writeFileSync(FICHIER, JSON.stringify({ tireLe: new Date().toISOString(), tour: TOUR, corpus: CORPUS, manifeste: m.id, empreinteManifeste: empreinte(),
     population: { couples: population.length, offres: population.reduce((n: number, x: any) => n + x.c.offres, 0) },
     ...(TOUR >= 5 ? { couplesDejaJugesEcartes: { couples: ecartes.length, offres: ecartes.reduce((n: number, x: any) => n + x.c.offres, 0),
       offresLues: lus.reduce((n: number, x: any) => n + x.c.offres, 0) } } : {}), echantillon: e }, null, 1));

@@ -71,8 +71,10 @@ const ecarts3c = lignes.filter((l) => { const t = ` ${phraseMoteur(l.titre)} `; 
 // une forme sans métier). Une perte qu'aucune correction n'explique reste hors plan.
 const e6h = existsSync(`${DOSSIER_SORTIE}6h-corrections-main.json`) ? lireEtape('6h-corrections-main.json') : { formesSansMetier: [], exclusions: [], expressions: [] };
 const porte = (l: Ligne, formes: string[]) => { const t = ` ${phraseMoteur(l.titre)} `; return formes.some((f) => t.includes(` ${phraseMoteur(f)} `)); };
+// Hors du métier exclu, une offre ne va nulle part ailleurs que vers le métier d’une expression de 6h (audit du 30/09/2026).
+const ciblesDe6h = new Set<string>(e6h.expressions.map((x: any) => x.metier));
 const corrige6h = (l: Ligne) => e6h.expressions.some((x: any) => l.v3 === x.metier && porte(l, x.formes))
-  || e6h.exclusions.some((x: any) => l.v1 === x.metier && l.v3 !== x.metier && porte(l, x.formes))
+  || e6h.exclusions.some((x: any) => l.v1 === x.metier && l.v3 !== x.metier && (!l.v3 || ciblesDe6h.has(l.v3)) && porte(l, x.formes))
   || e6h.formesSansMetier.some((x: any) => !l.v3 && porte(l, x.formes));
 const estPrevu = (l: Ligne) => (prevu.has(cle(l)) && prevu.get(cle(l)) === l.v3) || corrige6h(l);
 const gains = lignes.filter((l) => !l.v1 && l.v3), pertes = lignes.filter((l) => l.v1 && !l.v3);

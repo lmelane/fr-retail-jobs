@@ -121,7 +121,7 @@ describe("métiers lus dans un intitulé plus long (D-475 point 38)", () => {
 describe("la v3 de la passe de curation, sur les exemples de l'arbitrage, des mesures 6f et de l'audit", () => {
   // Copie du manifeste audité (audits/2026-09-28/curation-v3/6-manifeste-v3.json, après l'étape 6h du 30/09/2026) : le code
   // ne lit jamais les archives (check:layout) ; l'empreinte garde la copie identique à l'audit.
-  const EMPREINTE_V3 = "e6ae8bc125034ba28f19c8d5d8bf907bc99fcd4cb409254f330b5254fc7d969f";
+  const EMPREINTE_V3 = "e789492df4c8b17ae379818c81b2f588023ab56ce47a24fb83084391cb943850";
   const texte = readFileSync(new URL("./__fixtures__/manifeste-v3-20260928.json", import.meta.url), "utf8");
   it("la copie est celle de l'audit", () => { expect(createHash("sha256").update(texte).digest("hex")).toBe(EMPREINTE_V3); });
   const v3 = compileOccupationManifest(JSON.parse(texte));
@@ -161,14 +161,38 @@ describe("la v3 de la passe de curation, sur les exemples de l'arbitrage, des me
     expect(v3.classify(titre).occupationCode).toBeNull();
     expect(r(titre)).toEqual([]);
   });
+  // Les exclusions de 6h (copie des formes de audits/2026-09-28/curation-v3/6h-corrections-main.json : le code ne lit pas
+  // les archives). La prémisse se prouve EN MÉMOIRE : les mêmes formes retirées du manifeste, le métier revient.
+  const EXCLUSIONS_6H: Record<string, string[]> = {
+    "store-manager": ["assistent", "assistants", "assisterende", "assisterande", "stellvertretender", "stellvertretende", "stellv", "vice store manager", "アシスタント", "ställföreträdande"],
+    cook: ["assistent"], "designer-chaussures": ["assistant"], "assistant-merchandiser": ["visual merchandising"],
+    "financial-controller": ["responsable", "controlling solutions", "inventory controlling"],
+    "assistant-store-manager": ["adjoint comptabilite", "adjoint visual merchandising", "adjoint prevention des pertes"],
+    "collection-merchandiser": ["assistant"], "office-manager": ["programme office"], "assistant-designer": ["product manager assistant"],
+  };
+  const sansExclusions = (metier: string) => {
+    const m = JSON.parse(texte);
+    m.id = `sans-6h-${metier}`;
+    const garde = (l: string[]) => l.filter((v) => !EXCLUSIONS_6H[metier].includes(v));
+    for (const regle of m.rules) if (regle.occupation === metier && regle.exclude) {
+      regle.exclude = regle.exclude.map((c: any) => ({ ...c, any: garde(c.any) })).filter((c: any) => c.any.length);
+      if (!regle.exclude.length) delete regle.exclude;
+    }
+    for (const o of m.occupations) if (o.key === metier && o.titleReadingExclusions) o.titleReadingExclusions = garde(o.titleReadingExclusions);
+    return compileOccupationManifest(m);
+  };
+  const sort = (cat: ReturnType<typeof compileOccupationManifest>, t: string, k: string) => occupationTitleRoles(cat, t, cat.classify(t)).includes(k);
   it.each([
     ["Assistent Shopmanager", "Shopmanager", "store-manager", "assistant-store-manager"],
+    ["Assistent Store Manager Utrecht", "Store Manager", "store-manager", "assistant-store-manager"],
+    ["ASSISTANTS STORE MANAGER - MARBELLA CAÑADA TEEN", "Store Manager", "store-manager", "assistant-store-manager"],
     ["Stellvertretender Filialleiter (m/w/d)", "Filialleiter", "store-manager", "assistant-store-manager"],
     ["Stellvertretende/r Filialleiter/in - Innsbruck", "Filialleiter", "store-manager", "assistant-store-manager"],
     ["Stellv. Filialleiter München Theatinerstraße m/w/d", "Filialleiter", "store-manager", "assistant-store-manager"],
     ["Vice Store Manager - Antwerp", "Store Manager", "store-manager", "assistant-store-manager"],
     ["Assisterende butikschef", "Butikschef", "store-manager", "assistant-store-manager"],
-    ["【プーマアウトレット入間】アシスタントストアマネージャー募集！", "Store Manager", "store-manager", "assistant-store-manager"],
+    ["Ställföreträdande Butikschef till MQ Marqet", "Butikschef", "store-manager", "assistant-store-manager"],
+    ["【プーマアウトレット入間】アシスタントストアマネージャー募集！", "ストアマネージャー", "store-manager", "assistant-store-manager"],
     ["Assistent kok bij Asia Street Cooking", "Kok", "cook", "commis-de-cuisine"],
     ["Commis Cuisinier 18H H/F - Anglet - CAFE ONO", "Cuisinier", "cook", "commis-de-cuisine"],
     ["Stage - Assistant Key Account Manager Europe", "Account Manager", "responsable-de-comptes", "assistant-key-account-manager"],
@@ -177,23 +201,32 @@ describe("la v3 de la passe de curation, sur les exemples de l'arbitrage, des me
     expect(r(titre)).toEqual([attendu]);
   });
   it.each([
-    // [intitulé, métier écarté, intitulé voisin où ce métier sort toujours : la prémisse]
-    ["Optometric Technician - Training Provided!", "optometrist", null],
-    ["Functional Consultant Controlling Solutions (f/m/x)", "financial-controller", "Werkstudent Controlling (m/w/d)"],
-    ["ASSISTANT(E) FOOTWEAR DESIGNER - NEW CREATIONS", "designer-chaussures", "Footwear Designer"],
-    ["Visual Merchandising Assistant", "assistant-merchandiser", "Merchandising Assistant - Paris"],
-    ["CDI - Responsable Adjoint Visual Merchandising - 31 Rue Cambon - H/F/X", "assistant-store-manager", null],
-    ["CDI - Responsable adjoint Comptabilité Fournisseurs (H/F)", "assistant-store-manager", null],
-    ["Internship - Export Marketing Product Manager Assistant Designer Fragance Brands", "assistant-designer", null],
-    ["Responsable Controle de Gestion Industriel H/F", "financial-controller", null],
-  ])("« %s » ne sort plus sous %s (lecture retirée ou exclusion : autre métier, autre sens, encadrement)", (titre, ecarte, voisin) => {
-    const d = v3.classify(titre);
-    // Prémisse : le métier sort d'un intitulé voisin sans la forme corrigée, ou le résolveur le lit ici, ou une de ses
-    // règles s'applique ici puis s'exclut : c'est la correction qui le retire.
-    if (voisin) expect(r(voisin)).toContain(ecarte);
-    else expect(occupationTitleReadings(v3, titre, d).some((l) => l.role === ecarte) || v3.excludedOccupations(titre).has(ecarte)).toBe(true);
-    expect(d.occupationCode).not.toBe(ecarte);
+    ["Assistent Store Manager Utrecht", "store-manager"],
+    ["ASSISTANTS STORE MANAGER - MARBELLA CAÑADA TEEN", "store-manager"],
+    ["Assisterande Butikschef Gant Outlet Hede", "store-manager"],
+    ["Stellvertretende/r Filialleiter/in - Innsbruck", "store-manager"],
+    ["【プーマアウトレット入間】アシスタントストアマネージャー募集！", "store-manager"],
+    ["Assistent kok bij Asia Street Cooking", "cook"],
+    ["Functional Consultant Controlling Solutions (f/m/x)", "financial-controller"],
+    ["Lead, Inventory Controlling NA (Business Strategy)", "financial-controller"],
+    ["Responsable Controle de Gestion Industriel H/F", "financial-controller"],
+    ["ASSISTANT(E) FOOTWEAR DESIGNER - NEW CREATIONS", "designer-chaussures"],
+    ["Visual Merchandising Assistant", "assistant-merchandiser"],
+    ["CDI - Responsable Adjoint Visual Merchandising - 31 Rue Cambon - H/F/X", "assistant-store-manager"],
+    ["CDI - Responsable adjoint Comptabilité Fournisseurs (H/F)", "assistant-store-manager"],
+    ["CDI - Responsable Adjoint prévention des pertes (F/H)", "assistant-store-manager"],
+    ["Internship - Export Marketing Product Manager Assistant Designer Fragance Brands", "assistant-designer"],
+    ["Berluti Stage - Assistant(e) Collection Merchandiser (F/H)", "collection-merchandiser"],
+    ["Stage - Global IT Client Programme Office Manager - Corporate - Janvier 2027 - H/F/X", "office-manager"],
+  ])("« %s » ne sort plus sous %s ; sans l'exclusion de 6h, retirée en mémoire, il y revient", (titre, ecarte) => {
+    expect(sort(sansExclusions(ecarte), titre, ecarte)).toBe(true);
+    expect(v3.classify(titre).occupationCode).not.toBe(ecarte);
     expect(r(titre)).not.toContain(ecarte);
+  });
+  it("« Optometric Technician » : le résolveur lit encore l'Optométriste, la lecture retirée par 6h ne le retient plus", () => {
+    const titre = "Optometric Technician - Training Provided!";
+    expect(occupationTitleReadings(v3, titre, v3.classify(titre)).some((l) => l.role === "optometrist")).toBe(true);
+    expect(r(titre)).not.toContain("optometrist");
   });
   it("les corrections ne retirent rien de juste : le métier écarté se lit ou se classe encore là où il est", () => {
     expect(r("Store Manager - Hurstville")).toEqual(["store-manager"]);
