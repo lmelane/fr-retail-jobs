@@ -1,0 +1,138 @@
+cas                                            avant            restreinte restreinte+sans-index  résultats identiques à avant
+US Sales advisor                        898 ms (2)           670 ms (2)           623 ms (2)   oui
+US Beauty advisor                       303 ms (2)           229 ms (2)           349 ms (2)   oui
+US Hairdresser                          238 ms (2)           148 ms (2)           285 ms (2)   oui
+US Store manager                        297 ms (2)           174 ms (2)           238 ms (2)   NON {'avant': {'1268|a238efdca9da39830aa7aa7a18b0aa0d'}, 'restreinte': {'1268|4f9b42473347c61260b290009306b6d1'}, 'restreinte+sans-index': {'1268|4f9b42473347c61260b290009306b6d1'}}
+US Assistant store manager              272 ms (2)           219 ms (2)           246 ms (2)   oui
+US Retail stock associate               158 ms (2)            96 ms (2)           280 ms (2)   oui
+US Cashier                              150 ms (2)            60 ms (2)           209 ms (2)   oui
+US Visual merchandiser                   48 ms (2)            40 ms (2)           355 ms (2)   oui
+US Watchmaker                            41 ms (2)            28 ms (2)           264 ms (2)   oui
+US Pharmacist                            34 ms (2)            32 ms (2)           200 ms (2)   oui
+US Recruiter                            156 ms (2)           131 ms (2)           234 ms (2)   oui
+US Financial controller                 106 ms (2)            70 ms (2)           218 ms (2)   oui
+FR Conseiller de vente                  416 ms (2)           493 ms (2)           391 ms (2)   oui
+FR Conseiller beauté                    157 ms (2)            91 ms (2)           196 ms (2)   oui
+FR Coiffeur                              41 ms (2)            29 ms (2)           312 ms (2)   oui
+FR Responsable de boutique              220 ms (2)           125 ms (2)            98 ms (2)   oui
+FR Adjoint au responsable de boutique          237 ms (2)           213 ms (2)           172 ms (2)   oui
+FR Gestionnaire de stock en boutique          136 ms (2)            82 ms (2)            86 ms (2)   oui
+FR Hôte de caisse                       336 ms (2)            78 ms (2)           177 ms (2)   NON {'avant': {'525|4bbec14ffd4b23edbe3898a608347048'}, 'restreinte': {'521|4bbec14ffd4b23edbe3898a608347048'}, 'restreinte+sans-index': {'521|4bbec14ffd4b23edbe3898a608347048'}}
+FR Visual merchandiser                  226 ms (2)            29 ms (2)           138 ms (2)   oui
+FR Horloger                              44 ms (2)            25 ms (2)            80 ms (2)   oui
+FR Pharmacien                            30 ms (2)            27 ms (2)            79 ms (2)   oui
+FR Chargé de recrutement                 70 ms (2)           132 ms (2)            87 ms (2)   oui
+FR Contrôleur de gestion                181 ms (2)            83 ms (2)           166 ms (2)   oui
+GB Sales advisor                        521 ms (2)           337 ms (2)           112 ms (2)   oui
+GB Beauty advisor                       173 ms (2)           173 ms (2)            76 ms (2)   oui
+GB Hairdresser                           34 ms (2)            33 ms (2)            80 ms (2)   oui
+GB Store manager                        208 ms (2)           102 ms (2)           268 ms (2)   oui
+GB Assistant store manager              275 ms (2)           121 ms (2)            65 ms (2)   oui
+GB Retail stock associate               161 ms (2)            53 ms (2)           154 ms (2)   oui
+GB Cashier                              121 ms (2)            51 ms (2)            58 ms (2)   oui
+GB Visual merchandiser                  109 ms (2)            36 ms (2)            52 ms (2)   oui
+GB Watchmaker                            40 ms (2)            28 ms (2)            51 ms (2)   oui
+GB Pharmacist                            29 ms (2)           109 ms (2)            49 ms (2)   oui
+GB Recruiter                            154 ms (2)            38 ms (2)            48 ms (2)   oui
+GB Financial controller                 102 ms (2)            52 ms (2)            57 ms (2)   oui
+DE Verkaufsberater                      133 ms (2)           307 ms (2)           112 ms (2)   oui
+DE Beauty Advisor                       178 ms (2)           192 ms (2)           103 ms (2)   oui
+DE Friseur                              110 ms (2)           162 ms (2)            44 ms (2)   oui
+DE Store Manager                        178 ms (2)           100 ms (2)            60 ms (2)   NON {'avant': {'187|d1c3ed5e5433b365288f7937fbb7610c'}, 'restreinte': {'187|6b3c2bef12d0ee89dfcbdc6279f53ac5'}, 'restreinte+sans-index': {'187|6b3c2bef12d0ee89dfcbdc6279f53ac5'}}
+DE Assistant Store Manager              212 ms (2)           199 ms (2)            68 ms (2)   oui
+DE Stock Associate                      136 ms (2)            47 ms (2)            43 ms (2)   oui
+DE Kassierer                             69 ms (2)            94 ms (2)            45 ms (2)   oui
+DE Visual Merchandiser                   41 ms (2)            35 ms (2)            47 ms (2)   oui
+DE Uhrmacher                             27 ms (2)            44 ms (2)            51 ms (2)   oui
+DE Apotheker                             25 ms (2)            35 ms (2)            47 ms (2)   oui
+DE Recruiter                             59 ms (2)            37 ms (2)           119 ms (2)   oui
+DE Finanzcontroller                      91 ms (2)            58 ms (2)            50 ms (2)   oui
+IT Sales Assistant                      227 ms (2)           350 ms (2)           150 ms (2)   oui
+IT Beauty Advisor                       153 ms (2)            86 ms (2)            62 ms (2)   oui
+IT Parrucchiere                          43 ms (2)            34 ms (2)            43 ms (2)   oui
+IT Store Manager                        199 ms (2)           101 ms (2)            52 ms (2)   oui
+IT Assistant Store Manager              184 ms (2)           119 ms (2)            53 ms (2)   oui
+IT Stock associate                      121 ms (2)           137 ms (2)           120 ms (2)   oui
+IT Cassiere                              93 ms (2)            42 ms (2)           260 ms (2)   oui
+IT Visual merchandiser                   33 ms (2)           106 ms (2)            45 ms (2)   oui
+IT Orologiaio                            30 ms (2)            29 ms (2)            45 ms (2)   oui
+IT Farmacista                            39 ms (2)            27 ms (2)            49 ms (2)   oui
+IT Recruiter                             58 ms (2)            33 ms (2)            44 ms (2)   oui
+IT Financial Controller                 139 ms (2)            49 ms (2)           127 ms (2)   oui
+ES Asesor de ventas                     260 ms (2)           167 ms (2)           255 ms (2)   oui
+ES Consejero de belleza                 171 ms (2)           135 ms (2)            43 ms (2)   oui
+ES Peluquero                            128 ms (2)           288 ms (2)            38 ms (2)   oui
+ES Gerente de tienda                    165 ms (2)           110 ms (2)            46 ms (2)   oui
+ES Assistant Store Manager              175 ms (2)           111 ms (2)            44 ms (2)   oui
+ES Stockista                            161 ms (2)           120 ms (2)            37 ms (2)   oui
+ES Cajero                                82 ms (2)            46 ms (2)           117 ms (2)   oui
+ES Visual merchandiser                   36 ms (2)            30 ms (2)            74 ms (2)   oui
+ES Relojero                             101 ms (2)            26 ms (2)           125 ms (2)   oui
+ES Farmacéutico                          26 ms (2)            24 ms (2)           103 ms (2)   oui
+ES Reclutador                            53 ms (2)            31 ms (2)            41 ms (2)   oui
+ES Controlador de gestión                83 ms (2)           100 ms (2)            39 ms (2)   oui
+NL Verkoopmedewerker                    220 ms (2)           116 ms (2)           118 ms (2)   oui
+NL Beauty Advisor                       183 ms (2)            68 ms (2)            38 ms (2)   oui
+NL Kapper                                35 ms (2)            27 ms (2)            34 ms (2)   oui
+NL Store Manager                        170 ms (2)           101 ms (2)            41 ms (2)   oui
+NL Assistant Store Manager              196 ms (2)           112 ms (2)           101 ms (2)   oui
+NL Stock Associate                      154 ms (2)           112 ms (2)            56 ms (2)   oui
+NL Kassamedewerker                       67 ms (2)            49 ms (2)            43 ms (2)   oui
+NL Visual merchandiser                   31 ms (2)            35 ms (2)           112 ms (2)   oui
+NL Horlogemaker                          30 ms (2)            38 ms (2)            41 ms (2)   oui
+NL Apotheker                             26 ms (2)            26 ms (2)            38 ms (2)   oui
+NL Recruiter                             62 ms (2)            36 ms (2)            38 ms (2)   oui
+NL Financial Controller                  85 ms (2)            51 ms (2)            38 ms (2)   oui
+CH Conseiller de vente                  114 ms (2)           152 ms (2)            68 ms (2)   oui
+CH Conseiller beauté                    151 ms (2)            90 ms (2)            35 ms (2)   oui
+CH Coiffeur                              42 ms (2)            36 ms (2)            34 ms (2)   oui
+CH Responsable de boutique              166 ms (2)           129 ms (2)            96 ms (2)   oui
+CH Adjoint au responsable de boutique          193 ms (2)           125 ms (2)            35 ms (2)   oui
+CH Gestionnaire de stock en boutique          173 ms (2)            68 ms (2)            35 ms (2)   oui
+CH Hôte de caisse                        69 ms (2)           107 ms (2)            39 ms (2)   oui
+CH Visual merchandiser                   36 ms (2)            26 ms (2)            31 ms (2)   oui
+CH Horloger                              38 ms (2)            30 ms (2)           100 ms (2)   oui
+CH Pharmacien                            25 ms (2)            27 ms (2)            35 ms (2)   oui
+CH Chargé de recrutement                 55 ms (2)            42 ms (2)            36 ms (2)   oui
+CH Contrôleur de gestion                101 ms (2)            52 ms (2)            35 ms (2)   oui
+JP セールスアドバイザー                           128 ms (2)           124 ms (2)           104 ms (2)   oui
+JP ビューティーアドバイザー                         115 ms (2)            85 ms (2)           140 ms (2)   oui
+JP 美容師                                   40 ms (2)            29 ms (2)           186 ms (2)   oui
+JP ストアマネージャー                             41 ms (2)           162 ms (2)            32 ms (2)   oui
+JP 副店長                                   35 ms (2)           149 ms (2)            33 ms (2)   oui
+JP ストック担当                                31 ms (2)            44 ms (2)            31 ms (2)   oui
+JP キャッシャー                                72 ms (2)           114 ms (2)            30 ms (2)   oui
+JP ビジュアルマーチャンダイザー                        32 ms (2)            29 ms (2)            31 ms (2)   oui
+JP 時計職人                                  33 ms (2)            28 ms (2)            31 ms (2)   oui
+JP 薬剤師                                   28 ms (2)            23 ms (2)            27 ms (2)   oui
+JP リクルーター                                57 ms (2)            47 ms (2)           117 ms (2)   oui
+JP ファイナンシャルコントローラー                      124 ms (2)            82 ms (2)            33 ms (2)   oui
+CN 销售顾问                                 209 ms (2)           302 ms (2)            67 ms (2)   oui
+CN 美容顾问                                 315 ms (2)           108 ms (2)            50 ms (2)   oui
+CN 美发师                                   36 ms (2)            32 ms (2)            33 ms (2)   oui
+CN 店长                                   176 ms (2)           157 ms (2)            36 ms (2)   oui
+CN 副店长                                  189 ms (2)           218 ms (2)            37 ms (2)   oui
+CN 库存专员                                 149 ms (2)            50 ms (2)            31 ms (2)   oui
+CN 收银员                                   85 ms (2)            50 ms (2)            34 ms (2)   oui
+CN 陈列师                                   35 ms (2)            26 ms (2)            36 ms (2)   oui
+CN 钟表师                                   28 ms (2)            27 ms (2)            32 ms (2)   oui
+CN 药剂师                                   36 ms (2)            22 ms (2)            29 ms (2)   oui
+CN 招聘专员                                  61 ms (2)            35 ms (2)           105 ms (2)   oui
+CN 财务控制师                                104 ms (2)            53 ms (2)            36 ms (2)   oui
+BE Conseiller de vente                  189 ms (2)           150 ms (2)            99 ms (2)   oui
+BE Conseiller beauté                    121 ms (2)            83 ms (2)            46 ms (2)   oui
+BE Coiffeur                              39 ms (2)            31 ms (2)            30 ms (2)   oui
+BE Responsable de boutique              172 ms (2)           102 ms (2)            33 ms (2)   oui
+BE Adjoint au responsable de boutique          194 ms (2)           126 ms (2)            36 ms (2)   oui
+BE Gestionnaire de stock en boutique          117 ms (2)            78 ms (2)            31 ms (2)   oui
+BE Hôte de caisse                       163 ms (2)           127 ms (2)            28 ms (2)   oui
+BE Visual merchandiser                   34 ms (2)            25 ms (2)            36 ms (2)   oui
+BE Horloger                              32 ms (2)            24 ms (2)            33 ms (2)   oui
+BE Pharmacien                            30 ms (2)            24 ms (2)            28 ms (2)   oui
+BE Chargé de recrutement                 56 ms (2)            39 ms (2)            31 ms (2)   oui
+BE Contrôleur de gestion                 92 ms (2)            50 ms (2)           117 ms (2)   oui
+US chanel                               114 ms (2)            32 ms (2)            36 ms (2)   oui
+FR chanel                                37 ms (2)            35 ms (2)           126 ms (2)   oui
+FR stage marketing                       63 ms (2)            55 ms (2)            61 ms (2)   oui
+FR conseiller de vente chanel           313 ms (2)            49 ms (2)            42 ms (2)   oui
+US sales advisor new york               552 ms (2)           272 ms (2)           234 ms (2)   oui

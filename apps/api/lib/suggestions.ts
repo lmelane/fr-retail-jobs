@@ -1,5 +1,6 @@
 import { getSearchContext, requireSearchIndex, SEARCH_VERSION } from './search-index';
 import { searchSql } from './search-sql';
+import { metiersSansIndex, repartitionDuPerimetre } from './search-chemin';
 import { searchWords, validateSearchQuery } from './search-intent';
 import { publicJobSql } from '@catwalks/db/availability';
 import type { Perimetre } from '@catwalks/db/marches';
@@ -192,8 +193,12 @@ export async function suggestTitlesDetaillees(query: string, perimetre: Perimetr
     if (!candidates.length) return [];
     // Every suggestion is executed through the same interpretation and live
     // publication predicates as search. No global taxonomy label with zero jobs.
+    // D-488 : la même restriction aux langues du marché que la recherche, sinon une suggestion validée par une variante
+    // d'une autre langue mènerait à une recherche vide.
+    const repartition = await repartitionDuPerimetre(perimetre.pays);
     const queries = candidates.map((value, position) => {
-      const { condition } = searchSql(model.resolver.resolve(value));
+      const intention = model.intention(value, perimetre.marche);
+      const { condition } = searchSql(intention, { metiersSansIndex: !!repartition && metiersSansIndex(intention, repartition) });
       return Prisma.sql`SELECT ${value}::text AS value, ${position}::int AS position WHERE EXISTS (
         SELECT 1 FROM "SearchDocument" s JOIN "Job" j ON j.id=s.id
         WHERE s.version=${SEARCH_VERSION} AND ${condition} AND ${publicJobSql(Prisma.sql`j`, asOf)} AND j."countryCode" IN (${pays})

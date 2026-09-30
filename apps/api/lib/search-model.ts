@@ -1,6 +1,7 @@
 import { createIntentResolver, searchWords, type SearchCompany } from './search-intent';
 import { searchEvidence } from './search-evidence';
 import { searchConcepts } from './search-vocabulary';
+import { languesDuVocabulaire } from './search-langues';
 import type { OccupationManifest } from '@catwalks/db/occupations';
 
 export type Company = { id: string; name: string; parentGroup: string | null; parentGroupId: string | null; mergedIntoId: string | null; sectorCodes: string[] };
@@ -50,7 +51,13 @@ export function snapshotModel(metadata: SnapshotMetadata) {
   const resolver = createIntentResolver(concepts, names);
   // Employer aliases affect queries, never the role inferred from a native title.
   const nativeResolver = createIntentResolver(concepts, []);
+  // D-488 : une recherche par métier ne porte que les variantes des langues du marché (`search-langues.ts`).
+  const langues = languesDuVocabulaire(metadata.occupationRelease.manifest);
   return { resolver, concepts, names,
+    /** L'intention d'une requête, lue par le résolveur puis restreinte aux langues du marché (sans marché : entière). */
+    intention(q: string, marche: { readonly locales: readonly string[] } | undefined) {
+      return langues.restreindre(resolver.resolve(q), marche);
+    },
     document(j: NativeJob, direct = false): SearchDocument {
       const matchingNames = direct ? names.filter(n => n.names.some(name => normalized(name) === normalized(j.company))) : [];
       const c = j.companyId ? companies.get(j.companyId) : matchingNames.length === 1 ? companies.get(matchingNames[0].id) : undefined;

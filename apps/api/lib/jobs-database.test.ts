@@ -2,11 +2,14 @@ import { publicationFixture } from '../../aggregator/src/test/publication-fixtur
 import { randomUUID } from 'node:crypto';
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 import * as database from '@catwalks/db/occupations';
-import { prisma } from '@catwalks/db';
+import { Prisma, prisma } from '@catwalks/db';
+import { MARCHES } from '@catwalks/db/marches';
 import { getJobs as getJobsUnindexed, getJobStatus, getOfferState, resolveOfferParam, type JobFilters } from './jobs';
 import { offerPath } from './offer-url';
+import { searchSql } from './search-sql';
+import { repartitionDuPerimetre } from './search-chemin';
 
-import { initializeSearchIndex, drainSearchIndex, advanceSearchRequeue, SEARCH_VERSION } from './search-index';
+import { initializeSearchIndex, drainSearchIndex, advanceSearchRequeue, getSearchContext, SEARCH_VERSION } from './search-index';
 // Explicitly await the same durable projector as the API background loop.
 async function getJobs(filters: JobFilters) {
   await initializeSearchIndex();
@@ -135,6 +138,55 @@ describe.skipIf(!enabled)('search against a dedicated local database', () => {
     }finally{
       await prisma.job.update({where:{id},data:{titleRoles:[],titleRolesReleaseId:null}});
     }
+  });
+  it('D-488 : la recherche par métier ne porte que les variantes des langues du marché, jusqu’à la base', async () => {
+    const id = `${prefix}003`, catalogue = await database.loadOccupationTaxonomy(prisma);
+    const { model } = await getSearchContext();
+    const ids = async (f: JobFilters) => (await getJobs(f)).jobs.map((j) => j.id);
+    // L'offre n'a ni code ni métier lu (sa lecture par les mots est ouverte, `search-sql.ts`) et porte, en idéogrammes, une
+    // variante de « sales advisor ».
+    await prisma.job.update({ where: { id }, data: { title: 'Boutique Paris 销售顾问' } });
+    const offre = await prisma.job.findUniqueOrThrow({ where: { id } });
+    expect([offre.occupationCode, offre.titleRoles]).toEqual([null, []]);
+    expect(catalogue.manifest.id).toBeTruthy();
+    try {
+      await initializeSearchIndex(); while (await drainSearchIndex()) {}
+      const trouve = async (intention: ReturnType<typeof model.resolver.resolve>) => (await prisma.$queryRaw<{ n: number }[]>(Prisma.sql`
+        SELECT count(*)::int AS n FROM "SearchDocument" s WHERE s.version = ${SEARCH_VERSION} AND s.id = ${id} AND ${searchSql(intention).condition}`))[0].n;
+      // PRÉMISSE : la variante chinoise appartient au métier, et la requête entière (avant D-488) trouve l'offre par elle.
+      expect(model.resolver.resolve('sales advisor').clauses[0]).toMatchObject({ kind: 'role', keys: ['sales-advisor'] });
+      expect(model.resolver.resolve('sales advisor').clauses[0].phrases).toContain('销 售 顾 问');
+      expect(await trouve(model.resolver.resolve('sales advisor'))).toBe(1);
+      expect(await trouve(model.intention('sales advisor', MARCHES.FR))).toBe(0);
+      // Par la vraie chaîne : le marché français ne la trouve plus par une variante chinoise…
+      expect(await ids(fr({ q: 'sales advisor' }))).not.toContain(id);
+      // … mais la trouve quand la personne tape ces mots-là, et le marché chinois la trouve par sa langue.
+      expect(await ids(fr({ q: '销售顾问' }))).toContain(id);
+      await prisma.job.update({ where: { id }, data: { countryCode: 'CN' } });
+      while (await drainSearchIndex()) {}
+      expect(await ids({ marche: 'CN', q: 'sales advisor', filtres: { groupe: [group] } })).toContain(id);
+    } finally {
+      await prisma.job.update({ where: { id }, data: { title: 'Conseiller de vente', countryCode: 'FR' } });
+      while (await drainSearchIndex()) {}
+    }
+  });
+  it('D-488 : le chemin d’une clause de métier (index ou relecture du marché) ne change aucun résultat ni aucun score', async () => {
+    await initializeSearchIndex(); while (await drainSearchIndex()) {}
+    const { model } = await getSearchContext();
+    const lire = async (sql: ReturnType<typeof searchSql>) => prisma.$queryRaw<{ id: string; score: number }[]>(Prisma.sql`
+      SELECT s.id, ${sql.score} AS score FROM "SearchDocument" s WHERE s.version = ${SEARCH_VERSION} AND s.country IN ('FR', 'MC')
+        AND ${sql.condition} ORDER BY s.id`);
+    for (const q of ['conseiller de vente', 'sales advisor sans audit', 'vendeur audit facets 3', 'sans conseiller de vente']) {
+      const intention = model.intention(q, MARCHES.FR);
+      expect(intention.clauses.some((c) => c.kind === 'role')).toBe(true);
+      const [index, relecture] = [await lire(searchSql(intention)), await lire(searchSql(intention, { metiersSansIndex: true }))];
+      expect(relecture, q).toEqual(index);
+      if (q === 'conseiller de vente') expect(index.length).toBeGreaterThan(250);
+    }
+    // La répartition qui choisit le chemin compte les offres actives du périmètre, par métier.
+    const repartition = await repartitionDuPerimetre(['FR', 'MC']);
+    expect(repartition!.total).toBe(await prisma.job.count({ where: { isActive: true, mergedIntoId: null, countryCode: { in: ['FR', 'MC'] } } }));
+    expect(repartition!.total).toBeGreaterThanOrEqual(301);
   });
   it('returns the same offers when optional occupation presentation is unavailable',async()=>{
     const spy=vi.spyOn(database,'loadOccupationTaxonomy').mockRejectedValueOnce(new Error('Witness: occupation catalogue unavailable'));

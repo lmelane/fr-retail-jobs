@@ -13,14 +13,25 @@ function textQuery(c: SearchClause) {
   return Prisma.sql`to_tsquery('simple', ${query})`;
 }
 /** One GIN condition: each resolved intention is required, with native text OR
- * semantic evidence within it. Fixed alias s; user values are all bound. */
-export function searchSql(intent: SearchIntent) {
-  const clauses = intent.clauses.map(c => {
+ * semantic evidence within it. Fixed alias s; user values are all bound.
+ *
+ * D-488 : avec `metiersSansIndex`, chaque clause de métier devient une condition à part, vérifiée document par document
+ * dans le périmètre (`coalesce` rend l'index plein texte inutilisable pour elle) ; les autres clauses gardent la condition
+ * indexable. Les résultats sont les mêmes (`v @@ (A && B)` vaut `v @@ A AND v @@ B`, `v @@ !!A` vaut `NOT v @@ A`) ; seul
+ * le chemin change. Qui choisit, et pourquoi : `search-chemin.ts`. */
+export function searchSql(intent: SearchIntent, options: { metiersSansIndex?: boolean } = {}) {
+  const sansIndex = (c: SearchClause) => !!options.metiersSansIndex && c.kind === 'role';
+  const trouve = (c: SearchClause) => {
     const lexical = Prisma.sql`(${textQuery(c)})`;
     const native = c.kind === 'role' ? Prisma.sql`(${lexical} && !!to_tsquery('simple','cwhastitlerole'))` : lexical;
-    const found = c.kind === 'text' ? lexical : Prisma.sql`(${native} || ${identityQuery(c.kind, c.keys)})`;
-    return c.exclude ? Prisma.sql`!!(${found})` : found;
-  });
+    return c.kind === 'text' ? lexical : Prisma.sql`(${native} || ${identityQuery(c.kind, c.keys)})`;
+  };
+  const indexables = intent.clauses.filter(c => !sansIndex(c)).map(c => c.exclude ? Prisma.sql`!!(${trouve(c)})` : trouve(c));
+  const clauses = [
+    ...(indexables.length ? [Prisma.sql`s.vector @@ (${Prisma.join(indexables, ' && ')})`] : []),
+    ...intent.clauses.filter(sansIndex).map(c => c.exclude
+      ? Prisma.sql`NOT (coalesce(s.vector, ''::tsvector) @@ ${trouve(c)})` : Prisma.sql`coalesce(s.vector, ''::tsvector) @@ ${trouve(c)}`),
+  ];
   const scores = intent.clauses.filter(c => !c.exclude).map(c => {
     const lexical = Prisma.sql`ts_rank_cd(ARRAY[0.05,0.1,0.5,1.0]::real[],s.vector,(${textQuery(c)}),32)`;
     const keys = c.kind === 'text' ? c.preferCompanyKeys : c.keys;
@@ -28,7 +39,7 @@ export function searchSql(intent: SearchIntent) {
     return Prisma.sql`(${lexical} + ${bonus})`;
   });
   return {
-    condition: clauses.length ? Prisma.sql`s.vector @@ (${Prisma.join(clauses, ' && ')})` : Prisma.sql`false`,
+    condition: clauses.length === 1 ? clauses[0] : clauses.length ? Prisma.sql`(${Prisma.join(clauses, ' AND ')})` : Prisma.sql`false`,
     // Quantize once to a stable integer; JSON and PostgreSQL cursor ordering agree.
     score: scores.length ? Prisma.sql`round((${Prisma.join(scores, ' + ')})::numeric * 1000000)::int` : Prisma.sql`0`,
   };

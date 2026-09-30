@@ -1,5 +1,6 @@
 import { getSearchContext, requireSearchIndex, SEARCH_VERSION } from './search-index';
 import { searchSql } from './search-sql';
+import { metiersSansIndex, repartitionDuPerimetre } from './search-chemin';
 import { publicJobSql } from '@catwalks/db/availability';
 import { Prisma, prisma } from '@catwalks/db';
 import { echapperLike } from './like';
@@ -183,7 +184,11 @@ export async function searchSummary(
   const conditionsDirect: Prisma.Sql[] = [perimetreDirect(pays, asOf), ...conditionLieu(plan, 'd')];
 
   if (plan.q) await requireSearchIndex();
-  const search = plan.q ? searchSql((await getSearchContext()).model.resolver.resolve(plan.q)) : null;
+  // D-488 : les variantes d'un métier sont celles des langues du marché (`search-langues.ts`) ; le chemin d'une clause de
+  // métier (index plein texte ou relecture du marché) suit la taille du marché et la part du métier (`search-chemin.ts`).
+  const intention = plan.q ? (await getSearchContext()).model.intention(plan.q, plan.perimetre.marche) : null;
+  const repartition = intention?.clauses.some((c) => c.kind === 'role') ? await repartitionDuPerimetre(plan.perimetre.pays) : null;
+  const search = intention ? searchSql(intention, { metiersSansIndex: !!repartition && metiersSansIndex(intention, repartition) }) : null;
   if (search) { conditions.push(search.condition); conditionsDirect.push(search.condition); }
   const aggregateIndex = search ? Prisma.sql`JOIN "SearchDocument" s ON s.id=j.id AND s.version=${SEARCH_VERSION} AND s.country IN (${pays})` : Prisma.empty;
   const directIndex = search ? Prisma.sql`JOIN "SearchDocument" s ON s.id='cw_'||d.id AND s.version=${SEARCH_VERSION} AND s.country IN (${pays})` : Prisma.empty;

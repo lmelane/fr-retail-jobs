@@ -1,0 +1,12 @@
+cas                                            avant            restreinte     restreinte+chemin  résultats identiques à avant
+FR conseil                              730 ms (3)           567 ms (3)           123 ms (3)   oui
+FR vend                                7398 ms (3)          5981 ms (3)          3213 ms (3)   oui
+FR respons                              194 ms (3)           252 ms (3)           229 ms (3)   oui
+US sales                               1580 ms (3)           655 ms (3)           215 ms (3)   oui
+DE verk                                 729 ms (3)           499 ms (3)            75 ms (3)   oui
+IT addett                               185 ms (3)           133 ms (3)            63 ms (3)   oui
+JP セールス                                 397 ms (3)           287 ms (3)           115 ms (3)   oui
+FR coiff                                139 ms (3)           790 ms (3)          1595 ms (3)   oui
+US store                               4267 ms (3)          1675 ms (3)          1716 ms (3)   oui
+GB sales                               2958 ms (3)          2209 ms (3)          1923 ms (3)   oui
+CN 销售                                   327 ms (3)           218 ms (3)           173 ms (3)   oui

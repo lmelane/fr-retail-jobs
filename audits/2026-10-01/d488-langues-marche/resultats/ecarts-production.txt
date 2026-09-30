@@ -1,0 +1,3 @@
+FR|cashier|casier|8|employe service client f h ¦ operateur de production livreur h f ¦ operateur de production livreur h f ¦ operateur de production livreur h f ¦ operateur de production livreur h f ¦ operateur de production livreur h f ¦ operateur de production livreur h f ¦ employe e service client f h
+US|store-manager|responsable de boutique|1|responsable de boutique parfums new york
+DE|store-manager|responsable de boutique|1|responsable de boutique parfums berlin

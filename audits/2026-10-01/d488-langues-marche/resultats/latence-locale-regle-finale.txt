@@ -1,0 +1,16 @@
+cas                               total   avant ms (p1/p2)   après ms (p1/p2)   gain  mêmes offres, même ordre
+FR conseiller de vente             4915          2590/2759          1534/1673    40%  oui
+FR vendeur                         4915          2626/2716          1465/1668    41%  oui
+FR responsable de boutique          695            209/198              95/94    54%  oui
+FR hôte de caisse                   564            294/286            122/133    56%  oui
+FR visual merchandiser               55              29/29              17/16    43%  oui
+US sales advisor                   6678          3565/3765          2215/2253    39%  oui
+US store manager                    623            183/188              90/87    52%  oui
+GB sales advisor                   1292            781/959          1006/1206   -27%  oui
+DE Verkaufsberater                 1321            803/866          1074/1096   -30%  oui
+IT addetto vendite                 1080          1562/1551            843/905    44%  oui
+CH conseiller de vente              346            504/515            288/328    40%  oui
+JP セールスアドバイザー                       367            533/545            355/378    32%  oui
+CN 销售顾问                             198            292/298            187/199    35%  oui
+FR chanel                            52              13/13              13/14    -4%  oui
+FR stage marketing                  333              19/21              20/22    -5%  oui

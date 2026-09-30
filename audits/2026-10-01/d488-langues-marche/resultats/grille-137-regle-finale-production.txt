@@ -1,0 +1,138 @@
+cas                                            avant                 apres  résultats identiques à avant
+US Sales advisor                        882 ms (4)           618 ms (4)   oui
+US Beauty advisor                       304 ms (4)           204 ms (4)   oui
+US Hairdresser                          194 ms (4)           195 ms (4)   oui
+US Store manager                        242 ms (4)           175 ms (4)   NON {'avant': {'1268|a238efdca9da39830aa7aa7a18b0aa0d'}, 'apres': {'1268|4f9b42473347c61260b290009306b6d1'}}
+US Assistant store manager              252 ms (4)           170 ms (4)   oui
+US Retail stock associate               198 ms (4)            85 ms (4)   oui
+US Cashier                               99 ms (4)           115 ms (4)   oui
+US Visual merchandiser                   51 ms (4)            39 ms (4)   oui
+US Watchmaker                            37 ms (4)            28 ms (4)   oui
+US Pharmacist                            32 ms (4)            47 ms (4)   oui
+US Recruiter                             69 ms (4)            44 ms (4)   oui
+US Financial controller                 101 ms (4)            72 ms (4)   oui
+FR Conseiller de vente                  402 ms (4)           307 ms (4)   oui
+FR Conseiller beauté                    140 ms (4)           100 ms (4)   oui
+FR Coiffeur                              41 ms (4)            32 ms (4)   oui
+FR Responsable de boutique              222 ms (4)           127 ms (4)   oui
+FR Adjoint au responsable de boutique          249 ms (4)           178 ms (4)   oui
+FR Gestionnaire de stock en boutique          123 ms (4)            77 ms (4)   oui
+FR Hôte de caisse                       109 ms (4)            90 ms (4)   NON {'avant': {'525|4bbec14ffd4b23edbe3898a608347048'}, 'apres': {'521|4bbec14ffd4b23edbe3898a608347048'}}
+FR Visual merchandiser                  103 ms (4)            30 ms (4)   oui
+FR Horloger                              30 ms (4)            28 ms (4)   oui
+FR Pharmacien                            28 ms (4)            26 ms (4)   oui
+FR Chargé de recrutement                 64 ms (4)            46 ms (4)   oui
+FR Contrôleur de gestion                124 ms (4)            68 ms (4)   oui
+GB Sales advisor                        162 ms (4)           178 ms (4)   oui
+GB Beauty advisor                       173 ms (4)            72 ms (4)   oui
+GB Hairdresser                           34 ms (4)            48 ms (4)   oui
+GB Store manager                        195 ms (4)            69 ms (4)   oui
+GB Assistant store manager              185 ms (4)            64 ms (4)   oui
+GB Retail stock associate               116 ms (4)            57 ms (4)   oui
+GB Cashier                               67 ms (4)            43 ms (4)   oui
+GB Visual merchandiser                   37 ms (4)            54 ms (4)   oui
+GB Watchmaker                            29 ms (4)            98 ms (4)   oui
+GB Pharmacist                            23 ms (4)            51 ms (4)   oui
+GB Recruiter                             57 ms (4)            56 ms (4)   oui
+GB Financial controller                 103 ms (4)            53 ms (4)   oui
+DE Verkaufsberater                      128 ms (4)            96 ms (4)   oui
+DE Beauty Advisor                       124 ms (4)            53 ms (4)   oui
+DE Friseur                               33 ms (4)            47 ms (4)   oui
+DE Store Manager                        230 ms (4)            61 ms (4)   NON {'avant': {'187|d1c3ed5e5433b365288f7937fbb7610c'}, 'apres': {'187|6b3c2bef12d0ee89dfcbdc6279f53ac5'}}
+DE Assistant Store Manager              185 ms (4)           100 ms (4)   oui
+DE Stock Associate                      105 ms (4)            45 ms (4)   oui
+DE Kassierer                             72 ms (4)            43 ms (4)   oui
+DE Visual Merchandiser                   36 ms (4)            41 ms (4)   oui
+DE Uhrmacher                             27 ms (4)            45 ms (4)   oui
+DE Apotheker                             96 ms (4)            43 ms (4)   oui
+DE Recruiter                             61 ms (4)            42 ms (4)   oui
+DE Finanzcontroller                      91 ms (4)            45 ms (4)   oui
+IT Sales Assistant                      224 ms (4)           225 ms (4)   oui
+IT Beauty Advisor                       163 ms (4)            58 ms (4)   oui
+IT Parrucchiere                          34 ms (4)            41 ms (4)   oui
+IT Store Manager                        188 ms (4)            52 ms (4)   oui
+IT Assistant Store Manager              182 ms (4)            57 ms (4)   oui
+IT Stock associate                      119 ms (4)            44 ms (4)   oui
+IT Cassiere                              79 ms (4)            42 ms (4)   oui
+IT Visual merchandiser                   40 ms (4)            38 ms (4)   oui
+IT Orologiaio                            31 ms (4)            37 ms (4)   oui
+IT Farmacista                            28 ms (4)            42 ms (4)   oui
+IT Recruiter                             60 ms (4)            47 ms (4)   oui
+IT Financial Controller                  92 ms (4)            45 ms (4)   oui
+ES Asesor de ventas                     225 ms (4)           173 ms (4)   oui
+ES Consejero de belleza                 124 ms (4)           124 ms (4)   oui
+ES Peluquero                             39 ms (4)            66 ms (4)   oui
+ES Gerente de tienda                    190 ms (4)            48 ms (4)   oui
+ES Assistant Store Manager              183 ms (4)            43 ms (4)   oui
+ES Stockista                            118 ms (4)            38 ms (4)   oui
+ES Cajero                                76 ms (4)            37 ms (4)   oui
+ES Visual merchandiser                   35 ms (4)            34 ms (4)   oui
+ES Relojero                              34 ms (4)            37 ms (4)   oui
+ES Farmacéutico                          31 ms (4)            35 ms (4)   oui
+ES Reclutador                            64 ms (4)            38 ms (4)   oui
+ES Controlador de gestión               109 ms (4)            41 ms (4)   oui
+NL Verkoopmedewerker                    199 ms (4)           159 ms (4)   oui
+NL Beauty Advisor                       128 ms (4)            37 ms (4)   oui
+NL Kapper                                36 ms (4)            37 ms (4)   oui
+NL Store Manager                        178 ms (4)            44 ms (4)   oui
+NL Assistant Store Manager              180 ms (4)            48 ms (4)   oui
+NL Stock Associate                      126 ms (4)            39 ms (4)   oui
+NL Kassamedewerker                       69 ms (4)            37 ms (4)   oui
+NL Visual merchandiser                   32 ms (4)            37 ms (4)   oui
+NL Horlogemaker                          27 ms (4)            48 ms (4)   oui
+NL Apotheker                             24 ms (4)            43 ms (4)   oui
+NL Recruiter                             54 ms (4)            51 ms (4)   oui
+NL Financial Controller                  85 ms (4)            45 ms (4)   oui
+CH Conseiller de vente                  111 ms (4)            60 ms (4)   oui
+CH Conseiller beauté                    143 ms (4)            44 ms (4)   oui
+CH Coiffeur                              34 ms (4)            34 ms (4)   oui
+CH Responsable de boutique              157 ms (4)            35 ms (4)   oui
+CH Adjoint au responsable de boutique          200 ms (4)            31 ms (4)   oui
+CH Gestionnaire de stock en boutique          100 ms (4)            33 ms (4)   oui
+CH Hôte de caisse                        80 ms (4)            33 ms (4)   oui
+CH Visual merchandiser                   32 ms (4)            31 ms (4)   oui
+CH Horloger                              36 ms (4)            40 ms (4)   oui
+CH Pharmacien                            27 ms (4)            30 ms (4)   oui
+CH Chargé de recrutement                 58 ms (4)            38 ms (4)   oui
+CH Contrôleur de gestion                 86 ms (4)            32 ms (4)   oui
+JP セールスアドバイザー                           103 ms (4)            60 ms (4)   oui
+JP ビューティーアドバイザー                          28 ms (4)            28 ms (4)   oui
+JP 美容師                                   30 ms (4)            26 ms (4)   oui
+JP ストアマネージャー                             35 ms (4)            28 ms (4)   oui
+JP 副店長                                   32 ms (4)            30 ms (4)   oui
+JP ストック担当                                30 ms (4)            30 ms (4)   oui
+JP キャッシャー                                29 ms (4)            29 ms (4)   oui
+JP ビジュアルマーチャンダイザー                        29 ms (4)            26 ms (4)   oui
+JP 時計職人                                  29 ms (4)            29 ms (4)   oui
+JP 薬剤師                                   23 ms (4)            27 ms (4)   oui
+JP リクルーター                                54 ms (4)            26 ms (4)   oui
+JP ファイナンシャルコントローラー                       29 ms (4)            26 ms (4)   oui
+CN 销售顾问                                  84 ms (4)            69 ms (4)   oui
+CN 美容顾问                                 144 ms (4)            41 ms (4)   oui
+CN 美发师                                   38 ms (4)            32 ms (4)   oui
+CN 店长                                   174 ms (4)            51 ms (4)   oui
+CN 副店长                                  182 ms (4)            42 ms (4)   oui
+CN 库存专员                                 105 ms (4)            29 ms (4)   oui
+CN 收银员                                   71 ms (4)            29 ms (4)   oui
+CN 陈列师                                   32 ms (4)            33 ms (4)   oui
+CN 钟表师                                   29 ms (4)            34 ms (4)   oui
+CN 药剂师                                   26 ms (4)            29 ms (4)   oui
+CN 招聘专员                                  52 ms (4)            49 ms (4)   oui
+CN 财务控制师                                 89 ms (4)            36 ms (4)   oui
+BE Conseiller de vente                  126 ms (4)            67 ms (4)   oui
+BE Conseiller beauté                     39 ms (4)            29 ms (4)   oui
+BE Coiffeur                              36 ms (4)            27 ms (4)   oui
+BE Responsable de boutique               41 ms (4)            31 ms (4)   oui
+BE Adjoint au responsable de boutique           36 ms (4)            32 ms (4)   oui
+BE Gestionnaire de stock en boutique          109 ms (4)            33 ms (4)   oui
+BE Hôte de caisse                        73 ms (4)            26 ms (4)   oui
+BE Visual merchandiser                   32 ms (4)            27 ms (4)   oui
+BE Horloger                              27 ms (4)            28 ms (4)   oui
+BE Pharmacien                            27 ms (4)            27 ms (4)   oui
+BE Chargé de recrutement                128 ms (4)            27 ms (4)   oui
+BE Contrôleur de gestion                 83 ms (4)            31 ms (4)   oui
+US chanel                                34 ms (4)            33 ms (4)   oui
+FR chanel                                35 ms (4)            38 ms (4)   oui
+FR stage marketing                       53 ms (4)            58 ms (4)   oui
+FR conseiller de vente chanel           318 ms (4)            36 ms (4)   oui
+US sales advisor new york               544 ms (4)           212 ms (4)   oui

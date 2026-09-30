@@ -1,0 +1,12 @@
+cas                                            avant            restreinte  résultats identiques à avant
+FR conseil                              788 ms (3)           578 ms (3)   oui
+FR vend                                7640 ms (3)          6008 ms (3)   oui
+FR respons                              198 ms (3)           252 ms (3)   oui
+US sales                               1593 ms (3)           685 ms (3)   oui
+DE verk                                 693 ms (3)           489 ms (3)   oui
+IT addett                               200 ms (3)           117 ms (3)   oui
+JP セールス                                 401 ms (3)           267 ms (3)   oui
+FR coiff                               1583 ms (3)           801 ms (3)   oui
+US store                               3308 ms (3)          1673 ms (3)   oui
+GB sales                               2941 ms (3)          2310 ms (3)   oui
+CN 销售                                   389 ms (3)           245 ms (3)   oui
