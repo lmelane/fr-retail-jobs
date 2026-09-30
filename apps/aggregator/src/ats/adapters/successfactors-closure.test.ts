@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { applySuccessFactorsDetail, parseMicrodataDetail, retainedSuccessFactorsDetail } from './successfactors.js';
 import { publicationDisposition } from '../../pipeline/publicationDisposition.js';
@@ -23,6 +24,15 @@ describe('native SAP closure, including HTTP 200', () => {
       closed + '<div itemprop="description">We are hiring.</div>']) {
       expect(applySuccessFactorsDetail(job, parseMicrodataDetail(html, observedAt)).publicationHold).toBeUndefined();
     }
+  });
+  it('closes on the English native page too — Crocs 1412948000, RUN of 29/09/2026 (real page)', () => {
+    const html = readFileSync(new URL('./__fixtures__/successfactors-crocs-closed-20260929.html', import.meta.url), 'utf8');
+    const crocs = { externalId: '1412948000', title: 'Team Lead, Sales Part Time', url: 'https://careers.crocs.com/job/Destin-Team-Lead%2C-Sales-Part-Time-FL-32550/1412948000/', raw: {} };
+    const detail = parseMicrodataDetail(html, observedAt);
+    expect(detail.closure?.message).toBe('Sorry, this position has been filled.');
+    expect(applySuccessFactorsDetail(crocs, detail)).toMatchObject({ publicationHold: 'APPLICATION_EXPLICITLY_CLOSED', publicationWithdrawnAt: observedAt });
+    const replay = applySuccessFactorsDetail(crocs, JSON.parse(JSON.stringify(retainedSuccessFactorsDetail(detail))));
+    expect(replay.publicationHold).toBe('APPLICATION_EXPLICITLY_CLOSED');
   });
   it('rejects invalid retained closure evidence', () => {
     expect(() => applySuccessFactorsDetail(job, { closure: { message: 'Unknown', observedAt: observedAt.toISOString() } })).toThrow();

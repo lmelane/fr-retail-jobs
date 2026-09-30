@@ -600,15 +600,18 @@ export function parseSuccessFactorsVisibleDate(html: string): Date | undefined {
   return date.getUTCMonth()===month && date.getUTCDate()===Number(match[2]) ? date : undefined;
 }
 
+/** The whole native RMK closure block, verbatim, per language observed — a closed list, never a pattern. */
+const NATIVE_CLOSURE_MESSAGES = new Set(['Désolé, ce poste est déjà pourvu.', 'Sorry, this position has been filled.']);
+
 export function parseMicrodataDetail(html: string, observedAt = captureObservedAt()): SuccessFactorsDetail {
   const detail: SuccessFactorsDetail = {};
   const $ = cheerio.load(html, { scriptingEnabled: false });
-  // Native RMK closure page observed on Rocher and Puig (HTTP 200). A mention
+  // Native RMK closure page observed on Rocher and Puig (HTTP 200), and in English on Crocs (29/09/2026). A mention
   // inside an ordinary description, a menu, or an unreadable page cannot close a job.
   const content = $('.content .job');
-  if (content.length === 1 && content.text().replace(/\s+/g, ' ').trim() === 'Désolé, ce poste est déjà pourvu.' &&
-    !$('[itemprop="description"], [itemprop="title"]').text().trim()) {
-    return { closure: { message: 'Désolé, ce poste est déjà pourvu.', observedAt: observedAt.toISOString() } };
+  const message = content.text().replace(/\s+/g, ' ').trim();
+  if (content.length === 1 && NATIVE_CLOSURE_MESSAGES.has(message) && !$('[itemprop="description"], [itemprop="title"]').text().trim()) {
+    return { closure: { message, observedAt: observedAt.toISOString() } };
   }
 
   // Not every tenant page carries itemprop="title" (the Clarins FR pages do
@@ -736,7 +739,7 @@ export function retainedSuccessFactorsDetail(detail: SuccessFactorsDetail): Reta
 export function applySuccessFactorsDetail(job: NormalizedJob, detail: SuccessFactorsDetail | RetainedSuccessFactorsDetail, brandProperty?: string): NormalizedJob {
   if (detail.closure) {
     const observedAt = new Date(detail.closure.observedAt);
-    if (detail.closure.message !== 'Désolé, ce poste est déjà pourvu.' || !Number.isFinite(observedAt.getTime()))
+    if (!NATIVE_CLOSURE_MESSAGES.has(detail.closure.message) || !Number.isFinite(observedAt.getTime()))
       throw new Error('Invalid native SuccessFactors closure');
     return { ...job, publicationHold: 'APPLICATION_EXPLICITLY_CLOSED', publicationWithdrawnAt: observedAt };
   }

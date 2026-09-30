@@ -63,7 +63,8 @@ describe('deriveAccessScopes', () => {
     expect(scopes.filter(s => s.path.kind === 'PREFIX').map(s => s.path.value).sort()).toEqual(Array.from({ length: 30 }, (_, k) => `/job/Location-${k}/`).sort());
     expect(scopes.find(s => s.path.kind === 'EXACT')).toMatchObject({ path: { value: '/search/' },
       query: { fixed: { createNewAlert: 'false', q: '', locationsearch: '' }, variable: ['startrow'] } });
-    expect(derivation).toEqual({ exact: 1, prefix: 30, climbs: 2, origins: 1 });
+    // Règle 2 bis : les offres seules dans leur répertoire rejoignent leur lieu sans remontée de budget.
+    expect(derivation).toEqual({ exact: 1, prefix: 30, climbs: 0, origins: 1 });
     accepted(scopes, requests);
   });
 
@@ -74,8 +75,8 @@ describe('deriveAccessScopes', () => {
     expect(distinctParents(requests)).toBeGreaterThan(ACCESS_SCOPE_BUDGET);
     const { scopes, derivation } = deriveAccessScopeDocument('workday', requests);
     expect(paths(scopes)).toEqual([`EXACT POST ${base}/jobs`, `PREFIX GET ${base}/job/`]);
-    // Deux remontées : l'offre vers son répertoire de lieu, puis le lieu vers le répertoire des offres ; le POST n'a pas bougé.
-    expect(derivation).toEqual({ exact: 1, prefix: 1, climbs: 2, origins: 1 });
+    // Règle 2 bis : les offres, seules dans leur lieu, rejoignent directement le répertoire des offres ; le POST n'a pas bougé.
+    expect(derivation).toEqual({ exact: 1, prefix: 1, climbs: 0, origins: 1 });
     accepted(scopes, requests);
   });
 
@@ -150,9 +151,24 @@ describe('deriveAccessScopes', () => {
     const nested = Array.from({ length: ACCESS_SCOPE_BUDGET + 6 }, (_, i) => get(`https://deep.example/a/b${i}/c${i}`));
     const { scopes, derivation } = deriveAccessScopeDocument('generic-listing', nested);
     expect(paths(scopes)).toEqual(['PREFIX GET https://deep.example/a/']);
-    expect(derivation).toEqual({ exact: 0, prefix: 1, climbs: 2, origins: 1 });
+    expect(derivation).toEqual({ exact: 0, prefix: 1, climbs: 0, origins: 1 });
     accepted(scopes, nested);
     expect(() => deriveAccessScopes('generic-listing', [])).toThrow(/aucune requête observée/);
+  });
+
+  it('Selfridges (29/09/2026): offers each in their own directory, under the budget, are declared by their common directory — tomorrow\'s offer is covered', () => {
+    const origin = 'https://jobsearch.selfridges.com';
+    const requests = [1, 2, 3].map(page => get(`${origin}/jobs/search/-1/${page}`, 'text/html'));
+    for (let i = 0; i < 12; i++) requests.push(get(`${origin}/jobs/job/Title-${i}/${7200 + i}`, 'text/html'));
+    // Prémisse : chaque offre seule dans son répertoire, et moins de périmètres que le budget — la règle 4 ne remonte rien.
+    expect(distinctParents(requests)).toBeLessThan(ACCESS_SCOPE_BUDGET);
+    expect(new Set(requests.slice(3).map(r => parentDirectory(r.url.pathname))).size).toBe(12);
+    const { scopes, derivation } = deriveAccessScopeDocument('generic-listing', requests);
+    expect(paths(scopes)).toEqual([`PREFIX GET ${origin}/jobs/job/`, `PREFIX GET ${origin}/jobs/search/-1/`]);
+    expect(derivation.climbs).toBe(0);
+    accepted(scopes, requests);
+    // L'offre publiée le lendemain, jamais observée, reste dans le périmètre.
+    expect(() => matchingAccessScope(scopes, description(get(`${origin}/jobs/job/Internal-Auditor/7202-new`, 'text/html')))).not.toThrow();
   });
 
   it('classifies the served surface from the content type and the family', () => {

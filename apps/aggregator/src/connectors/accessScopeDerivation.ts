@@ -12,6 +12,8 @@ import type { AccessScope } from './accessScope.js';
  *   2. deux chemins frères ou plus sous un même répertoire (jamais la racine) sont déclarés par ce répertoire, en
  *      PRÉFIXE, même sous le budget : un chemin par offre (`/postings/{id}`, `/job/{slug}`) n'est pas un périmètre,
  *      et une décision qui énumérerait les identifiants d'aujourd'hui refuserait la première offre de demain ;
+ *      2 bis. deux chemins ou plus, chacun seul dans son répertoire, à la même profondeur sous un même grand-parent
+ *      (jamais la racine), sont déclarés par ce grand-parent (`mergeCousins`, 29/09/2026) ;
  *   3. un préfixe absorbe tout périmètre de sa famille qu'il couvre (chemin exact ou préfixe plus long, méthodes
  *      comprises dans les siennes) : deux périmètres qui se recouvrent sont une ambiguïté, et `matchingAccessScope`
  *      la refuse. Les vagues définitives F3b l'ont montré : Workday sert des offres avec et sans segment de lieu
@@ -97,6 +99,32 @@ function mergeSiblings(nodes: Node[]): Node[] {
   });
 }
 
+/**
+ * Règle 2 bis (29/09/2026) : une offre logée dans SON PROPRE répertoire (`/jobs/job/{titre}/{id}` chez Selfridges,
+ * `/job/{lieu}/{offre}` chez Workday quand un lieu n'a qu'une offre) n'a pas de frère, et la règle 2 l'énumérait :
+ * l'offre publiée le lendemain sortait du périmètre et arrêtait la source. Deux chemins exacts ou plus de la même
+ * famille, chacun seul dans son répertoire, à la même profondeur et sous un même grand-parent (jamais la racine), sont
+ * déclarés par ce grand-parent, en PRÉFIXE — un niveau, comme deux frères le sont par leur parent.
+ */
+function mergeCousins(nodes: Node[]): Node[] {
+  const perParent = new Map<string, number>();
+  for (const node of nodes) {
+    const key = `${familyOf(node)} ${parentDirectory(node.path)}`;
+    perParent.set(key, (perParent.get(key) ?? 0) + 1);
+  }
+  const lone = new Map<string, Node[]>();
+  for (const node of nodes) {
+    if (node.prefix || perParent.get(`${familyOf(node)} ${parentDirectory(node.path)}`) !== 1) continue;
+    const grand = parentDirectory(parentDirectory(node.path));
+    if (grand === '/' || grand === '') continue;
+    const key = `${familyOf(node)} ${grand} ${depthOf(node.path)}`;
+    lone.set(key, [...(lone.get(key) ?? []), node]);
+  }
+  const groups = [...lone.values()].filter(members => members.length >= 2);
+  const absorbed = new Set(groups.flat());
+  return [...nodes.filter(node => !absorbed.has(node)), ...groups.map(members => merged(members, parentDirectory(parentDirectory(members[0].path))))];
+}
+
 /** Règle 3 : un préfixe absorbe, dans sa famille ou une famille aux méthodes comprises dans les siennes, ce qu'il couvre. */
 function absorbCovered(nodes: Node[]): Node[] {
   let result = [...nodes];
@@ -158,7 +186,7 @@ export function deriveAccessScopeDocument(kind: string, requests: readonly Obser
     node.members.push(request); exact.set(key, node);
   }
   for (const node of exact.values()) node.methods = methodsOf(node.members);
-  let nodes = absorbCovered(mergeSiblings([...exact.values()]));
+  let nodes = absorbCovered(mergeCousins(mergeSiblings([...exact.values()])));
   let climbs = 0;
   while (nodes.length > budget) {
     const climbed = climbDeepest(nodes);

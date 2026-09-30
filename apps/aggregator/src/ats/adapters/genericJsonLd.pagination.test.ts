@@ -113,9 +113,11 @@ describe('fetchGenericJsonLdJobs — zéro silencieux sur les pages de détail',
       if (String(url).endsWith('/job/B')) throw new Error('HTTP 500');
       return '<p>rien</p>';
     });
-    const result = await fetchGenericJsonLdJobs({ listingUrl: 'https://www.michaelpage.fr/jobs', linkPattern: '/job/' });
+    const result = await fetchGenericJsonLdJobs({ listingUrl: 'https://www.michaelpage.fr/jobs', linkPattern: '/job/', detailRetryDelayMs: 1 });
     expect(result.jobs.map((j) => j.title)).toEqual(['Offer A']);
     expect(result.truncated).toBe(true);
     expect(result.complete).toBe(false);
+    // L'échec partiel est relu une fois, plus tard (Pandora, 29/09/2026) ; toujours en échec, il reste nommé.
+    expect(mockFetch.mock.calls.filter(([url]) => String(url).endsWith('/job/B'))).toHaveLength(2);
   });
 });

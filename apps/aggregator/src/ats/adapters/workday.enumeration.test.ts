@@ -54,6 +54,31 @@ describe('Workday — enumeration proof against the announced total', () => {
       expect(job.title).toBe(real.jobPostings[i].title);
     }
   });
+  it('knitwell (29/09/2026): a total at the 2 000 cap with more postings behind it is a cap — the board is NOT proven', async () => {
+    const full = (start: number, withTotal: boolean) => page(Array.from({ length: 20 }, (_, i) => start + i), withTotal ? 2000 : 0);
+    const mock = vi.mocked(fetchJson);
+    for (let p = 0; p < 100; p++) mock.mockResolvedValueOnce(full(p * 20, p === 0));
+    // Premise: page 101 serves postings never seen — the site holds more than the announced total.
+    mock.mockResolvedValueOnce(page([2000, 2001, 2002], 0));
+    const r = await fetchWorkdayJobs(config);
+    expect(fetchJson).toHaveBeenCalledTimes(101);
+    expect(r.enumeration?.termination).toBe('PUBLISHER_TOTAL_REACHED');
+    expect(r.complete).toBe(false);
+    expect(r.enumeration?.issues).toContain('PUBLISHER_TOTAL_CAPPED');
+    // What the publisher really served past the cap is collected, and named in the evidence.
+    expect(r.jobs).toHaveLength(2003);
+    expect(r.enumeration?.pageEvidence?.at(-1)?.componentCounters).toEqual(['capProbe=1', 'rows=3', 'unseen=3']);
+  });
+  it('Nordstrom: past a capped total the board wraps back to its first page — known ids only, still proven', async () => {
+    const full = (start: number, withTotal: boolean) => page(Array.from({ length: 20 }, (_, i) => start + i), withTotal ? 2000 : 0);
+    const mock = vi.mocked(fetchJson);
+    for (let p = 0; p < 100; p++) mock.mockResolvedValueOnce(full(p * 20, p === 0));
+    mock.mockResolvedValueOnce(full(0, false));
+    const r = await fetchWorkdayJobs(config);
+    expect(fetchJson).toHaveBeenCalledTimes(101);
+    expect(r.complete).toBe(true); expect(r.jobs).toHaveLength(2000);
+    expect(r.enumeration?.issues).not.toContain('PUBLISHER_TOTAL_CAPPED');
+  });
   it('keeps reading a short page while the publisher announces more, and counts rows without a path', async () => {
     vi.mocked(fetchJson).mockResolvedValueOnce(page(Array.from({ length: 20 }, (_, i) => i), 41)).mockResolvedValueOnce({ total: 0, jobPostings: [...[20, 21, 22].map(posting), { title: 'No path' } as any] }).mockResolvedValueOnce(page(Array.from({ length: 17 }, (_, i) => 23 + i), 0));
     const r = await fetchWorkdayJobs(config);
