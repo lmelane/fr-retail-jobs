@@ -1,4 +1,4 @@
-# Témoins Marc O'Polo sans leur garde, commit 8000513
+# Témoins Marc O'Polo sans leur garde, commit 0b58722
 
 ## témoin de la page publiée supprimé: ÉCHOUE (témoin valide)
    files: 1 failed (1) | tests: 3 ⎯⎯⎯⎯⎯⎯⎯
@@ -64,10 +64,42 @@
    files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
    - src/ats/adapters/marcOPolo.test.ts > Marc O'Polo — configuration, rejeu et reprise > capture puis rejeu hors réseau identiques ; chaque p
 
+## D-489 : nom lu non appliqué aux offres: ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 3 ⎯⎯⎯⎯⎯⎯⎯
+   - src/ats/adapters/marcOPolo.test.ts > Marc O'Polo — configuration, rejeu et reprise > capture puis rejeu hors réseau identiques ; chaque p
+   - src/ats/adapters/marcOPolo.test.ts > Marc O'Polo — l'employeur déclaré par le site (D-489) > la reprise ne rend le nom que s’il vient de 
+   - src/ats/adapters/marcOPolo.test.ts > Marc O'Polo — l'employeur déclaré par le site (D-489) > les deux pages lues déclarent « Marc O’Polo 
+
+## D-489 : page d’une autre offre acceptée: ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
+   - src/ats/adapters/marcOPolo.test.ts > Marc O'Polo — l'employeur déclaré par le site (D-489) > page d’une autre offre : aucun nom par défau
+
+## D-489 : pages en désaccord acceptées: ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
+   - src/ats/adapters/marcOPolo.test.ts > Marc O'Polo — l'employeur déclaré par le site (D-489) > deux pages qui déclarent deux noms différent
+
+## D-489 : page en échec ignorée (nom par défaut de l’autre page): ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 4 ⎯⎯⎯⎯⎯⎯⎯
+   - src/ats/adapters/marcOPolo.test.ts > Marc O'Polo — l'employeur déclaré par le site (D-489) > page d’offre en échec : aucun nom par défaut
+   - src/ats/adapters/marcOPolo.test.ts > Marc O'Polo — l'employeur déclaré par le site (D-489) > page d’une autre offre : aucun nom par défau
+   - src/ats/adapters/marcOPolo.test.ts > Marc O'Polo — l'employeur déclaré par le site (D-489) > page qui ne déclare pas d’employeur : aucun 
+   - src/ats/adapters/marcOPolo.test.ts > Marc O'Polo — l'employeur déclaré par le site (D-489) > page sans JSON-LD : aucun nom par défaut
+
+## D-489 : origine des pages non vérifiée à la reprise: ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
+   - src/ats/adapters/marcOPolo.test.ts > Marc O'Polo — l'employeur déclaré par le site (D-489) > la reprise ne rend le nom que s’il vient de 
+
+## D-489 : une seule page lue: ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 4 ⎯⎯⎯⎯⎯⎯⎯
+   - src/ats/adapters/marcOPolo.test.ts > Marc O'Polo — l'employeur déclaré par le site (D-489) > deux pages qui déclarent deux noms différent
+   - src/ats/adapters/marcOPolo.test.ts > Marc O'Polo — l'employeur déclaré par le site (D-489) > les deux pages lues déclarent « Marc O’Polo 
+   - src/ats/adapters/marcOPolo.test.ts > Marc O'Polo — l'employeur déclaré par le site (D-489) > page d’offre en échec : aucun nom par défaut
+   - src/ats/adapters/marcOPolo.test.ts > Marc O'Polo — l'employeur déclaré par le site (D-489) > page qui ne déclare pas d’employeur : aucun 
+
 ## cadence plancher de l’API supprimée: ÉCHOUE (témoin valide)
    files: 1 failed (1) | tests: 2 ⎯⎯⎯⎯⎯⎯⎯
    - src/lib/hostGate.marc-o-polo.test.ts > Marc O'Polo — la collecte reste sous le seuil mesuré du pare-feu de l'API > l'API de Marc O'Polo : a
    - src/lib/hostGate.marc-o-polo.test.ts > Marc O'Polo — la collecte reste sous le seuil mesuré du pare-feu de l'API > seul l'hôte exact de l'A
 
-## état committé restauré : exit 0 | files: 2 passed (2) | tests: 23 passed (23)
+## état committé restauré : exit 0 | files: 2 passed (2) | tests: 31 passed (31)
 tree clean: True
