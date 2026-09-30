@@ -33,6 +33,8 @@ import { CRAWLER_IDENTITY } from '../../lib/crawlerIdentity.js';
 const PAGE_SIZE = 100;
 /** Guard against a changed response shape paginating forever. */
 const MAX_PAGES = Number(process.env.PHENOM_MAX_PAGES ?? 80);
+/** Relectures au plus quand l'ordre instable du serveur a caché des offres (Hugo Boss, Skechers, 29/09/2026). */
+const RECONCILIATION_PASSES = 3;
 
 const USER_AGENT =
   CRAWLER_IDENTITY;
@@ -406,7 +408,9 @@ async function fetchCareerConnectJobs(origin: string, localePath?: string): Prom
   const seen = new Set<string>();
   const issues = new Set<string>();
   const pageEvidence: NonNullable<NonNullable<AdapterResult['enumeration']>['pageEvidence']> = [];
-  const size = 100;
+  // 500, le maximum servi par /widgets. À 100 l'ordre du serveur est instable : Hugo Boss 775 lignes pour 546
+  // identifiants au RUN du 29/09 (≈ 610 en relecture) ; à 500, 710 puis 775 sur deux relectures du même soir.
+  const size = 500;
   let declaredTotal: number | undefined;
   let pages = 0, rawCount = 0, repeatedIds = 0, anonymousRows = 0, termination = 'PAGE_BUDGET_EXHAUSTED';
 
@@ -418,8 +422,12 @@ async function fetchCareerConnectJobs(origin: string, localePath?: string): Prom
    * sur 784 annoncées, sans qu'aucune erreur ne soit levée. Un décalage de curseur ne se voit pas : il se
    * mesure au compteur de l'éditeur, et c'est ce que `complete=false` a signalé.
    */
-  let from = 0;
-  for (let page = 0; page < MAX_PAGES; page++) {
+  const rejectedIds = new Set<string>();
+  /**
+   * Une page lue et versée à la preuve. `pass` 1 est la lecture ; au-delà, une relecture de réconciliation, dont
+   * les identifiants déjà vus sont attendus (ni comptés comme répétés, ni rejetés deux fois). Rend le nombre de lignes.
+   */
+  const readAt = async (from: number, pass: number): Promise<number> => {
     const request = careerConnectRequest(origin, { from, size });
     const response = await fetchJson<{ refineSearch?: { totalHits?: number; data?: { jobs?: CareerConnectJob[] } } }>(
       request.url,
@@ -427,9 +435,9 @@ async function fetchCareerConnectJobs(origin: string, localePath?: string): Prom
     );
 
     const refine = response.refineSearch ?? {};
-    if (typeof refine.totalHits === 'number') declaredTotal = refine.totalHits;
+    if (pass === 1 && typeof refine.totalHits === 'number') declaredTotal = refine.totalHits;
     const batch = refine.data?.jobs ?? [];
-    pages++; rawCount += batch.length;
+    pages++; if (pass === 1) rawCount += batch.length;
     const pageIds: string[] = [];
     /**
      * L'identifiant CANONIQUE CareerConnect est `jobSeqNo`, celui que l'éditeur expose et que
@@ -437,30 +445,60 @@ async function fetchCareerConnectJobs(origin: string, localePath?: string): Prom
      * rejetée par son motif — jamais nommée par un identifiant fabriqué.
      */
     const pageCanonicalIds: string[] = [];
+    let fresh = 0;
 
     for (const entry of batch) {
       const canonicalId = entry.jobSeqNo ? String(entry.jobSeqNo) : null;
-      if (canonicalId) pageCanonicalIds.push(canonicalId); else anonymousRows++;
+      if (canonicalId) pageCanonicalIds.push(canonicalId); else if (pass === 1) anonymousRows++;
       const job = parseCareerConnectJob(entry, origin, { localePath });
       // Une ligne écartée porte sa cause et son identifiant quand il existe : sans disposition nommée, son
       // identifiant observé resterait orphelin dans la preuve et le contrat tomberait.
-      if (!job) { rejectedRows.push({ reason: 'MISSING_JOB_SEQ_NO_OR_TITLE', raw: entry, ...(canonicalId ? { canonicalId } : {}) }); continue; }
+      if (!job) {
+        if (pass === 1 || (canonicalId && !rejectedIds.has(canonicalId))) {
+          rejectedRows.push({ reason: 'MISSING_JOB_SEQ_NO_OR_TITLE', raw: entry, ...(canonicalId ? { canonicalId } : {}) });
+          if (canonicalId) rejectedIds.add(canonicalId);
+        }
+        continue;
+      }
       pageIds.push(job.externalId);
       // Un identifiant déjà vu est COMPTÉ et nommé, jamais écrasé en silence : c'est ce compte qui refuse la
       // preuve d'exhaustivité quand la pagination est instable.
-      if (seen.has(job.externalId)) { repeatedIds++; continue; }
+      if (seen.has(job.externalId)) { if (pass === 1) repeatedIds++; continue; }
       seen.add(job.externalId);
-      jobs.push(job);
+      jobs.push(job); fresh++;
     }
     pageEvidence.push({ url: request.url, checkedAt: captureObservedAt().toISOString(), offset: from,
       sha256: createHash('sha256').update(JSON.stringify(batch)).digest('hex'),
       ids: pageIds, canonicalIds: pageCanonicalIds, pagination: { start: from, end: from + batch.length, total: declaredTotal ?? -1 },
-      publisherCounter: `totalHits=${declaredTotal ?? -1}`,
-      componentCounters: [`returned=${batch.length}`, `unique=${pageIds.length}`, `anonymous=${anonymousRows}`] });
+      publisherCounter: pass === 1 ? `totalHits=${declaredTotal ?? -1}` : '',
+      componentCounters: [`returned=${batch.length}`, `unique=${pageIds.length}`, `anonymous=${anonymousRows}`, ...(pass > 1 ? [`pass=${pass}`, `fresh=${fresh}`] : [])] });
+    return batch.length;
+  };
 
-    from += batch.length;
-    if (batch.length === 0) { termination = 'EMPTY_PAGE'; break; }
+  let from = 0;
+  for (let page = 0; page < MAX_PAGES; page++) {
+    const returned = await readAt(from, 1);
+    from += returned;
+    if (returned === 0) { termination = 'EMPTY_PAGE'; break; }
     if (declaredTotal != null && seen.size >= declaredTotal) { termination = 'ANNOUNCED_TOTAL_REACHED'; break; }
+  }
+
+  /**
+   * Relectures de réconciliation (29/09/2026), sur le modèle de Workday (10/09). Même à 500 par page, l'ordre du
+   * serveur bouge d'une page à l'autre : une offre servie deux fois en cache une autre. Quand des identifiants se sont
+   * répétés et que l'annoncé n'est pas atteint, le tableau est relu, au plus trois fois ; il n'est prouvé que si
+   * l'union des lectures atteint le total annoncé. La répétition reste nommée.
+   */
+  let reconciled = false;
+  if (repeatedIds > 0 && declaredTotal != null && seen.size < declaredTotal && termination !== 'PAGE_BUDGET_EXHAUSTED') {
+    for (let pass = 2; pass <= 1 + RECONCILIATION_PASSES && seen.size < declaredTotal; pass++) {
+      for (let at = 0, reads = 0; at < declaredTotal && seen.size < declaredTotal && reads < MAX_PAGES; reads++) {
+        const returned = await readAt(at, pass);
+        if (!returned) break;
+        at += returned;
+      }
+    }
+    if (seen.size >= declaredTotal) { reconciled = true; termination = 'SECOND_SWEEP_RECONCILED'; issues.add('RECONCILED_BY_SECOND_SWEEP'); }
   }
 
   /**
@@ -483,7 +521,9 @@ async function fetchCareerConnectJobs(origin: string, localePath?: string): Prom
   }
 
   if (repeatedIds > 0) issues.add('REPEATED_IDS_ACROSS_PAGES');
-  const complete = declaredTotal != null && seen.size >= declaredTotal && issues.size === 0;
+  // Une répétition ne passe que réconciliée ; toute autre cause refuse la preuve.
+  const blocking = [...issues].filter((issue) => !(reconciled && (issue === 'REPEATED_IDS_ACROSS_PAGES' || issue === 'RECONCILED_BY_SECOND_SWEEP')));
+  const complete = declaredTotal != null && seen.size >= declaredTotal && blocking.length === 0;
   if (!complete) issues.add('ENUMERATION_NOT_PROVEN');
 
   return {

@@ -67,3 +67,41 @@ describe('Luxexperience (real page 1, 54 announced, 9 per page): the 6th page re
     expect(r.declaredTotal).toBe(54); expect(r.jobs).toHaveLength(54); expect(r.complete).toBe(true); expect(r.enumeration?.termination).toBe('PUBLISHER_COUNT_REACHED'); expect(r.enumeration?.pages).toBe(7);
   });
 });
+
+describe('Pandora (29/09/2026): detail pages refused for about fifty seconds are read again once, later', () => {
+  const base = 'https://www.beiersdorf.com/ajax/Jobboard/JobResultAjax?db=web&lang=en';
+  const listing = (url: string) => { const m = /[?&]page=(\d+)$/.exec(url); return m ? fx(`lot4-generic-beiersdorf-p${Math.min(Number(m[1]), 15)}.html`) : undefined; };
+  const config = { listingUrl: base, linkPattern: 'career/jobs/|karriere/jobs/', pageParam: 'page', pageStart: 1, maxPages: 40, detailRetryDelayMs: 1 };
+  /** Every detail page answers, except the chosen ones, refused `times` times before answering. */
+  const refusing = (count: number, times: number) => {
+    const refused = new Map<string, number>();
+    let chosen = 0;
+    vi.mocked(fetchText).mockImplementation(async (url: string) => {
+      const page = listing(url); if (page !== undefined) return page;
+      if (!refused.has(url) && chosen < count) { refused.set(url, 0); chosen++; }
+      if (refused.has(url) && refused.get(url)! < times) { refused.set(url, refused.get(url)! + 1); throw new Error('HTTP 403'); }
+      return detail(url);
+    });
+    return refused;
+  };
+  it('three pages refused once: read again after the delay, the board is proven', async () => {
+    const refused = refusing(3, 1);
+    const r = await fetchGenericJsonLdJobs(config);
+    // Premise: three detail pages really failed on the first pass.
+    expect([...refused.values()]).toEqual([1, 1, 1]);
+    expect(r.jobs).toHaveLength(135); expect(r.complete).toBe(true); expect(r.enumeration?.issues).toEqual([]);
+  });
+  it('a page still refused after the second read stays a named failure: not proven', async () => {
+    refusing(1, 5);
+    const r = await fetchGenericJsonLdJobs(config);
+    expect(r.jobs).toHaveLength(134); expect(r.complete).toBe(false);
+    expect(r.enumeration?.issues).toEqual(expect.arrayContaining(['DETAIL_FAILURES=1', 'ENUMERATION_NOT_PROVEN']));
+  });
+  it('more failures than the bound (a site down, a closed gate): no second read, the RUN is not lengthened', async () => {
+    const refused = refusing(12, 1);
+    const r = await fetchGenericJsonLdJobs(config);
+    expect([...refused.values()].every((n) => n === 1)).toBe(true);
+    expect(r.jobs).toHaveLength(123); expect(r.complete).toBe(false);
+    expect(r.enumeration?.issues).toContain('DETAIL_FAILURES=12');
+  });
+});

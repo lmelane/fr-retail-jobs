@@ -95,6 +95,8 @@ type BoardResult = {
 };
 
 const PARTITION_RULE = 'PARTITION_FACET_VALUE';
+/** Le `total` que Workday annonce ne dépasse jamais cette valeur, même quand le site tient davantage (knitwell, 3 463). */
+export const WORKDAY_TOTAL_CAP = 2000;
 
 async function readPage(shared: Shared, board: Board, offset: number): Promise<WorkdayPage> {
   return fetchJson<WorkdayPage>(shared.endpoint, {
@@ -196,10 +198,11 @@ async function enumerateBoard(shared: Shared, board: Board): Promise<BoardResult
     return true;
   };
 
+  let nextOffset = 0;
   for (let offset = 0; offset < 5000; offset += 20) {
     const page = await readPage(shared, board, offset);
     const postings = page.jobPostings ?? [];
-    pages += 1; rawCount += postings.length;
+    pages += 1; rawCount += postings.length; nextOffset = offset + 20;
     if (page.total) {
       if (!total) total = page.total;
       else if (page.total !== total) { totalChanged = true; shared.issues.add('SOURCE_TOTAL_CHANGED'); }
@@ -248,6 +251,31 @@ async function enumerateBoard(shared: Shared, board: Board): Promise<BoardResult
     if (postings.length < 20 && !total) { termination = 'SHORT_PAGE'; break; }
   }
   /**
+   * Plafond de l'éditeur (29/09/2026). Workday plafonne `total` à 2 000 : knitwell-us-retail en tient 3 463 (somme de
+   * ses facettes), la lecture s'arrêtait à 2 000 lignes et se déclarait prouvée, et 209 offres encore en ligne ont été
+   * fermées le 27/09. Quand la lecture s'arrête sur un total qui atteint le plafond, la page suivante est lue : un
+   * identifiant jamais vu prouve que le total est un plafond, et le tableau n'est PAS prouvé (aucune fermeture). Une
+   * page qui ne ressert que des identifiants connus est le retour en tête du tableau (Nordstrom), pas un plafond.
+   */
+  let capped = false;
+  if (total >= WORKDAY_TOTAL_CAP && (termination === 'PUBLISHER_TOTAL_REACHED' || termination === 'PUBLISHER_TOTAL_ROWS_READ')) {
+    const page = await readPage(shared, board, nextOffset);
+    const postings = page.jobPostings ?? [];
+    pages += 1;
+    const pageIds: string[] = [];
+    let unseen = 0;
+    for (const job of postings) {
+      if (!job.externalPath) continue;
+      const externalId = job.externalPath.split('/').filter(Boolean).pop() ?? job.externalPath;
+      pageIds.push(externalId);
+      if (!local.has(externalId)) unseen += 1;
+      take(job, externalId);
+    }
+    shared.pageEvidence.push({ url: `${shared.endpoint}#offset=${nextOffset}&capProbe=1${suffix}`, checkedAt: captureObservedAt().toISOString(), sha256: createHash('sha256').update(JSON.stringify(page)).digest('hex'), offset: nextOffset, pagination: null,
+      ids: pageIds, canonicalIds: pageIds, publisherCounter: '', componentCounters: ['capProbe=1', `rows=${postings.length}`, `unseen=${unseen}`] });
+    if (unseen) { capped = true; shared.issues.add('PUBLISHER_TOTAL_CAPPED'); }
+  }
+  /**
    * Second sweep (2026-09-10). An unstable sort can serve the same posting on two
    * consecutive pages while another posting slides between two page boundaries and
    * is never served (Levi's: 1 314 rows announced and read, 7 repeated, 1 306 unique).
@@ -284,7 +312,7 @@ async function enumerateBoard(shared: Shared, board: Board): Promise<BoardResult
   // 2026-09-09: 1 312 rows read of 1 312 announced, 3 of them path-less, 1 309
   // postings — the historical −3). A repetition across pages only passes when the
   // second sweep has reconciled every announced row.
-  const complete = total > 0 && local.size + localPathless.size === total && (repeatedIds === 0 || termination === 'SECOND_SWEEP_RECONCILED') && termination !== 'PAGE_BUDGET_EXHAUSTED' && !totalChanged;
+  const complete = total > 0 && local.size + localPathless.size === total && (repeatedIds === 0 || termination === 'SECOND_SWEEP_RECONCILED') && termination !== 'PAGE_BUDGET_EXHAUSTED' && !totalChanged && !capped;
   return { scope: board.scope, total, uniqueIds: local.size, pages, rawCount, repeatedIds, withoutPath: localPathless.size, overlap, fresh, termination, complete };
 }
 

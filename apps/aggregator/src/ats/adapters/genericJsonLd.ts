@@ -1,4 +1,4 @@
-import { sourceDeadlineReached } from '../../lib/sourceBudget.js';
+import { sourceDeadlineReached, sourceDelay } from '../../lib/sourceBudget.js';
 import { log } from '../../observability/logger.js';
 import * as cheerio from 'cheerio';
 import pLimit from 'p-limit';
@@ -10,6 +10,10 @@ import { briefError } from '../../lib/normalize.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
 import { CRAWLER_IDENTITY } from '../../lib/crawlerIdentity.js';
 import { fetchCaudalieJobs } from './caudalie.js';
+
+/** Relecture différée des fiches en échec : au plus ce nombre d'échecs (ou 5 % des liens), après ce délai. */
+const DETAIL_RETRY_MAX_FAILURES = 5;
+const DETAIL_RETRY_DELAY_MS = 75_000;
 
 /**
  * The publisher's own count of listed postings, read on a listing page: a data
@@ -216,31 +220,44 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
 
     const limit = pLimit(Number(config.concurrency ?? 4));
     let detailFailures = 0;
+    const readDetail = async (url: string) => parseJobPostings(await fetchText(url, { headers: { 'user-agent': CRAWLER_IDENTITY } }), url);
+    const listed = [...seen];
+    const failed: number[] = [];
     const pages = await Promise.all(
-      [...seen].map((url) =>
+      listed.map((url, index) =>
         limit(async () => {
           // Stop starting new detail fetches past the budget; what was already
           // fetched stays, the rest is picked up next run.
           if (sourceDeadlineReached()) { detailFailures++; return []; }
           try {
-            const parsed = parseJobPostings(
-              await fetchText(url, {
-                headers: {
-                  'user-agent':
-                    CRAWLER_IDENTITY,
-                },
-              }),
-              url,
-            );
-            if (parsed.length === 0) detailFailures++;
+            const parsed = await readDetail(url);
+            if (parsed.length === 0) failed.push(index);
             return parsed;
           } catch {
-            detailFailures++;
+            failed.push(index);
             return [];
           }
         }),
       ),
     );
+    /**
+     * Une seule relecture, différée, des fiches en échec (29/09/2026, Pandora) : l'éditeur répond 403 à tout pendant
+     * une cinquantaine de secondes, deux fois par passage, et les trois essais du transport (0,5 s puis 1 s) tombent
+     * tous dans la fenêtre — 3 à 4 offres perdues chaque jour sur 935. Bornée à quelques échecs : un site en panne ou
+     * une porte refusée n'allonge pas le RUN. Le rejeu hors réseau sert les réponses d'une même adresse dans l'ordre.
+     */
+    // Tout en échec est une panne entière, nommée plus bas : la relire ne ferait que retarder le RUN.
+    if (failed.length && failed.length < listed.length && failed.length <= Math.max(DETAIL_RETRY_MAX_FAILURES, Math.ceil(listed.length * 0.05)) && !sourceDeadlineReached()) {
+      await sourceDelay(Number(config.detailRetryDelayMs ?? DETAIL_RETRY_DELAY_MS));
+      for (const index of failed.sort((a, b) => a - b)) {
+        if (sourceDeadlineReached()) { detailFailures++; continue; }
+        try {
+          const parsed = await readDetail(listed[index]);
+          if (parsed.length === 0) detailFailures++;
+          pages[index] = parsed;
+        } catch { detailFailures++; }
+      }
+    } else detailFailures += failed.length;
     const jobs = pages.flat();
     /**
      * Zéro silencieux, deuxième forme (mesurée le 2026-09-06 sur Michael Page,

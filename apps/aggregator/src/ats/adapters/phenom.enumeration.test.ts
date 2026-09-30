@@ -8,6 +8,36 @@ const entry = (id: number) => ({ data: { jobId: String(id), title: `Sales Associ
 const page = (ids: number[], total: number) => ({ jobs: ids.map(entry), totalCount: total });
 beforeEach(() => vi.resetAllMocks());
 
+/** CareerConnect (/widgets) : Hugo Boss au RUN du 29/09/2026, 775 lignes servies pour 546 identifiants. */
+const cc = (ids: number[], total: number) => ({ refineSearch: { totalHits: total, data: { jobs: ids.map((i) => ({ jobSeqNo: `SEQ${i}`, title: `Client Advisor ${i}`, country: 'France' })) } } });
+const ccConfig = { origin: 'https://careers.hugoboss.com', dialect: 'CAREER_CONNECT_WIDGETS' };
+
+describe('Phenom CareerConnect — ordre instable, relecture de réconciliation', () => {
+  it('une offre servie deux fois en cachait une autre : la relecture la retrouve, le tableau est prouvé, la répétition reste nommée', async () => {
+    vi.mocked(fetchJson)
+      .mockResolvedValueOnce(cc([1, 2, 3, 4], 6)).mockResolvedValueOnce(cc([3, 4], 6)).mockResolvedValueOnce(cc([], 6))
+      // relecture : l'ordre a bougé, 5 et 6 apparaissent
+      .mockResolvedValueOnce(cc([5, 6, 1, 2], 6));
+    const r = await fetchPhenomJobs(ccConfig);
+    // Prémisse : la première lecture seule ne voit que 4 identifiants sur 6.
+    expect(r.enumeration?.pageEvidence?.slice(0, 3).flatMap((p) => p.ids)).toEqual(['SEQ1', 'SEQ2', 'SEQ3', 'SEQ4', 'SEQ3', 'SEQ4']);
+    expect(r.jobs).toHaveLength(6); expect(r.complete).toBe(true); expect(fetchJson).toHaveBeenCalledTimes(4);
+    expect(r.enumeration?.termination).toBe('SECOND_SWEEP_RECONCILED');
+    expect(r.enumeration?.issues).toEqual(expect.arrayContaining(['REPEATED_IDS_ACROSS_PAGES', 'RECONCILED_BY_SECOND_SWEEP']));
+    expect(r.enumeration?.issues).not.toContain('ENUMERATION_NOT_PROVEN');
+    expect(r.enumeration?.pageEvidence?.at(-1)?.componentCounters).toEqual(expect.arrayContaining(['pass=2', 'fresh=2']));
+  });
+  it('trois relectures sans l’offre manquante : jamais prouvé', async () => {
+    const mock = vi.mocked(fetchJson);
+    mock.mockResolvedValueOnce(cc([1, 2, 3], 4)).mockResolvedValueOnce(cc([3], 4)).mockResolvedValueOnce(cc([], 4));
+    for (let pass = 0; pass < 3; pass++) mock.mockResolvedValueOnce(cc([1, 2, 3], 4)).mockResolvedValueOnce(cc([2], 4));
+    const r = await fetchPhenomJobs(ccConfig);
+    expect(r.jobs).toHaveLength(3); expect(r.complete).toBe(false); expect(fetchJson).toHaveBeenCalledTimes(9);
+    expect(r.enumeration?.issues).toEqual(expect.arrayContaining(['REPEATED_IDS_ACROSS_PAGES', 'ENUMERATION_NOT_PROVEN']));
+    expect(r.enumeration?.issues).not.toContain('RECONCILED_BY_SECOND_SWEEP');
+  });
+});
+
 describe('Phenom — énumération prouvée contre le total éditeur', () => {
   it('continue après une page courte tant que le total n’est pas atteint, puis prouve l’énumération', async () => {
     vi.mocked(fetchJson)
