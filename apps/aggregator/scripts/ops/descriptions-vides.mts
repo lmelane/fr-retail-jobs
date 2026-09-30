@@ -27,14 +27,16 @@ try {
      WHERE b."sourceKey" = $1 AND b.purpose = 'JOBS' ORDER BY b."startedAt" DESC LIMIT 1`, source);
   if (!batch) { console.log(JSON.stringify({ source, capture: null })); process.exit(0); }
   const rows = await prisma.sourceExtraction.findMany({ where: { batchId: batch.id }, orderBy: { ordinal: 'asc' }, select: { externalId: true, outputHash: true } });
-  const vides: { externalId: string | null; url?: string; title?: string; longueur: number; description: string; employeur?: unknown; retenue?: string }[] = [];
+  const vides: { externalId: string | null; url?: string; title?: string; longueur: number; description: string; employeur?: unknown; retenue?: string; sameAs?: unknown }[] = [];
   for (const row of rows) {
     const job = JSON.parse((await readRawBlob(prisma, row.outputHash)).toString('utf8')) as { title?: string; url?: string; description?: string;
-      company?: string; employerEvidence?: unknown; publicationHold?: string };
+      company?: string; employerEvidence?: unknown; publicationHold?: string; raw?: { hiringOrganization?: { sameAs?: unknown } } };
     const text = (job.description ?? '').trim();
     const retenu = retenue ? job.publicationHold === retenue : text.length < min;
     if (retenu) vides.push({ externalId: row.externalId, url: job.url, title: job.title, longueur: text.length, description: text.slice(0, 80),
-      ...(retenue ? { employeur: job.company ?? job.employerEvidence ?? null, retenue: job.publicationHold } : {}) });
+      ...(retenue ? { employeur: job.company ?? job.employerEvidence ?? null, retenue: job.publicationHold,
+        // Le lien natif de l'organisation (PVH : site carrières de la marque, ou du groupe).
+        sameAs: job.raw?.hiringOrganization?.sameAs ?? null } : {}) });
   }
   console.log(JSON.stringify({ source, capture: batch.id, startedAt: batch.startedAt, admise: !!batch.accessDecisionId, offres: rows.length, [retenue ? 'retenues' : 'sansDescription']: vides.length, vides }, null, 1));
 } finally {
