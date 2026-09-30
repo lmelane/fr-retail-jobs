@@ -13,12 +13,36 @@ import { writeFileSync } from 'node:fs';
 import { gzipSync } from 'node:zlib';
 import { PrismaClient } from '@prisma/client';
 import { readRawBlob } from '../../../src/capture/store.js';
+import { readRequestData } from '../../../src/capture/requestDataRead.js';
 
 const arg = (n: string) => process.argv.find((a) => a.startsWith(`--${n}=`))?.slice(n.length + 3);
 const out = arg('out');
-if (!out || (!arg('hash') && !(arg('batch') && arg('motif')))) { console.error('usage: --hash=<sha> --out=<fichier.gz> | --batch=<id> --motif=<fragment> [--contient=<texte>] --out=<fichier.gz>'); process.exit(2); }
+if (!out || (!arg('hash') && !arg('lot') && !(arg('batch') && arg('motif')))) { console.error('usage: --hash=<sha> --out=<fichier.gz> | --batch=<id> --motif=<fragment> [--contient=<texte>] --out=<fichier.gz>'); process.exit(2); }
 const prisma = new PrismaClient({ log: [] });
 try {
+  /*
+   * `--lot=<id>[,<id>…] [--sequences=<lot>:<n>,…]` : plusieurs réponses en un seul fichier, un tableau JSON gzip de
+   * { capture, sequence, url, sha256, body } dans l'ordre des lots puis des séquences. `url` est l'adresse RÉELLE
+   * de la requête, lue dans son enveloppe native (`readRequestData`), pas l'adresse d'audit masquée.
+   */
+  if (arg('lot')) {
+    const wanted = arg('sequences')?.split(',').map((s) => s.split(':') as [string, string]);
+    const bundle: Array<{ capture: string; sequence: number; url: string; sha256: string; body: string }> = [];
+    for (const lot of arg('lot')!.split(',')) {
+      const rows = await prisma.rawCapture.findMany({ where: { batchId: { startsWith: lot }, blobHash: { not: null } }, orderBy: { sequence: 'asc' } });
+      for (const row of rows) {
+        if (wanted && !wanted.some(([l, n]) => row.batchId.startsWith(l) && Number(n) === row.sequence)) continue;
+        if (!wanted && arg('motif') && !row.requestUrl.includes(arg('motif')!)) continue;
+        const data = await readRequestData(prisma, row);
+        const body = (await readRawBlob(prisma, row.blobHash!)).toString('utf8');
+        if (createHash('sha256').update(body).digest('hex') !== row.blobHash) throw new Error('empreinte divergente');
+        bundle.push({ capture: row.batchId, sequence: row.sequence, url: data?.logical.url ?? row.requestUrl, sha256: row.blobHash!, body });
+      }
+    }
+    writeFileSync(out, gzipSync(JSON.stringify(bundle), { level: 9 }));
+    console.log(JSON.stringify({ out, reponses: bundle.length, octets: bundle.reduce((n, r) => n + r.body.length, 0) }));
+    process.exit(0);
+  }
   let hash = arg('hash');
   let origine: Record<string, unknown> = {};
   if (!hash) {
