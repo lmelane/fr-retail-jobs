@@ -11,7 +11,7 @@ import { applyNativeEmployerRules, nativeEmployerRules } from './nativeClaims.js
 type Company = Prisma.CompanyGetPayload<Record<string, never>>;
 export type EmployerResolution = {
   company: Company | null;
-  rule: 'REVIEWED_ALIAS' | 'REVIEWED_MERGE' | 'NATIVE_SOURCE_LABEL' | 'NATIVE_EMPLOYER_BRAND_RELATION' | 'LEGACY_UNREVIEWED' | 'REVIEW_REQUIRED' | 'GROUP_LABEL_KEPT_HOUSE' | 'CERTIFIED_SINGLE_BRAND_PORTAL';
+  rule: 'REVIEWED_ALIAS' | 'REVIEWED_MERGE' | 'NATIVE_SOURCE_LABEL' | 'NATIVE_EMPLOYER_BRAND_RELATION' | 'LEGACY_UNREVIEWED' | 'REVIEW_REQUIRED' | 'GROUP_LABEL_KEPT_HOUSE' | 'CERTIFIED_SINGLE_BRAND_PORTAL' | 'MULTI_BRAND_PORTAL_GROUP_OWNER';
   rawEmployerName: string;
   normalizedEmployerName: string;
   aliasId?: string;
@@ -40,7 +40,10 @@ export async function resolveEmployer(tx: Prisma.TransactionClient, candidate: C
   // Read the owner and its certification from the same SQL snapshot.
   if (isPortalEmployerOrigin(candidate.employerLabelOrigin)) {
     const identity = await certifiedPortalIdentity(tx, candidate.sourceKey);
-    if (!identity || identity.scope !== 'SINGLE_BRAND' || !identity.ownerName) {
+    // D-479 §2 (R-142 §3) : sur un portail relu MULTI_BRAND, l'offre qui ne nomme pas son enseigne publie sous le
+    // groupe propriétaire ; celle qui la nomme n'arrive jamais ici (son libellé est natif). Un portail non relu
+    // (périmètre NULL) reste refusé.
+    if (!identity || !identity.ownerName) {
       throw new EmployerIdentityReviewRequired(candidate.sourceKey, candidate.externalId, rawEmployerName, 'PORTAL_OWNER_NOT_CERTIFIED', 'PORTAL_OWNER_NOT_CERTIFIED');
     }
     const owner = await tx.company.findUnique({ where: { fashionjobsUrl: `resolved:${identity.ownerKey}` } });
@@ -50,10 +53,12 @@ export async function resolveEmployer(tx: Prisma.TransactionClient, candidate: C
     const previous = entry?.job ? await canonicalEmployer(tx, entry.job.company) : null;
     // Missing information cannot silently replace an already attributed employer.
     if (previous && previous.id !== root?.id) throw new EmployerIdentityReviewRequired(candidate.sourceKey, candidate.externalId, rawEmployerName, previous.name, 'PORTAL_OWNER_REPLACES_EMPLOYER');
-    return { company: root, rule: 'CERTIFIED_SINGLE_BRAND_PORTAL', rawEmployerName, normalizedEmployerName: normalized,
+    return { company: root, rule: identity.scope === 'SINGLE_BRAND' ? 'CERTIFIED_SINGLE_BRAND_PORTAL' : 'MULTI_BRAND_PORTAL_GROUP_OWNER',
+      rawEmployerName, normalizedEmployerName: normalized,
       // `reviewId` est nul quand l'employeur vient du registre relu (F5) : la traçabilité passe
       // alors par la révision de la source, portée par l'admission du lot.
-      reviewId: identity.reviewId ?? undefined, ...(!root ? { newKey: identity.ownerKey, newName: identity.ownerName } : {}) };
+      // Le nom créé suit la clé : sans la parenthèse du registre (« LVMH (toutes Maisons) » → « LVMH »).
+      reviewId: identity.reviewId ?? undefined, ...(!root ? { newKey: identity.ownerKey, newName: identity.ownerName.split('(')[0].trim() || identity.ownerName } : {}) };
   }
   const aliases = await tx.companyAlias.findMany({
     where: { sourceKey: { in: [candidate.sourceKey, '*'] }, normalizedName: normalized, reviewId: { not: null } },
