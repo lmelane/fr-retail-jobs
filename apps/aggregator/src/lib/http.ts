@@ -33,12 +33,41 @@ function withWafCookie(url: string, headers: Record<string, string>): Record<str
   return { ...headers, [existing[0]]: `${existing[1]}; ${cookie}` };
 }
 
-/** Statut HTTP définitif (4xx hors 403/405/429) : pas de nouvel essai. */
+/**
+ * Statut HTTP en échec, définitif (4xx hors 403/405/429) ou après les essais.
+ *
+ * `body` : les premiers octets du corps que l'éditeur a joints à son refus (au plus `ERROR_BODY_MAX_BYTES`), absent
+ * quand il n'a rien envoyé ou qu'on n'a pas pu le lire. Le message n'en dit rien (il reste « HTTP 403 for … ») : ce
+ * corps est une donnée de l'éditeur, lue par l'adaptateur qui sait la reconnaître — Workday nomme ainsi l'offre qu'il
+ * retire, `{"errorCode":"S22",…,"message":"permission denied"}` (D-484 §1, 30/09/2026). Collecte et rejeu le lisent
+ * dans les mêmes octets archivés. Non énumérable : le journal, qui recopie les propriétés d'une erreur dans
+ * `PipelineEvent`, n'en reçoit jamais une page d'éditeur.
+ */
 export class HttpStatusError extends Error {
-  constructor(public readonly status: number, public readonly url: string) {
+  declare readonly body?: string;
+  constructor(public readonly status: number, public readonly url: string, body?: string) {
     super(`HTTP ${status} for ${url}`);
     this.name = 'HttpStatusError';
+    Object.defineProperty(this, 'body', { value: body, enumerable: false });
   }
+}
+
+export const ERROR_BODY_MAX_BYTES = 4096;
+/** Les premiers octets du corps d'une réponse en échec, puis le flux est fermé. Ne lève jamais. */
+async function errorBodyExcerpt(response: Response): Promise<string | undefined> {
+  const reader = response.body?.getReader();
+  if (!reader) return undefined;
+  const chunks: Buffer[] = [];
+  let size = 0;
+  try {
+    while (size < ERROR_BODY_MAX_BYTES) {
+      const chunk = await reader.read();
+      if (chunk.done) break;
+      chunks.push(Buffer.from(chunk.value)); size += chunk.value.byteLength;
+    }
+    return Buffer.concat(chunks).subarray(0, ERROR_BODY_MAX_BYTES).toString('utf8') || undefined;
+  } catch { return undefined; }
+  finally { await reader.cancel().catch(() => undefined); }
 }
 
 const timeoutMs = Number(process.env.HTTP_TIMEOUT_MS ?? 20_000);
@@ -326,7 +355,7 @@ export async function fetchWithRetry(url: string, init: RequestInit = {}, attemp
         reportSuccess(url);
         return response;
       }
-      await response.body?.cancel();
+      const errorBody = await errorBodyExcerpt(response);
       /**
        * Transient statuses worth another attempt after a backoff. 403 and 405
        * are here because an anti-bot WAF returns them as a SOFT block, not a
@@ -339,12 +368,12 @@ export async function fetchWithRetry(url: string, init: RequestInit = {}, attemp
       if (![403, 405, 429, 500, 502, 503, 504, ...(policy.additionalTransientStatuses ?? [])].includes(response.status)) {
         // Un 404/410/400 ne changera pas au prochain essai : il était rejoué
         // 3 fois (3,9 s) parce que levé DANS le try — audit A2, 2026-09-06.
-        throw new HttpStatusError(response.status, url);
+        throw new HttpStatusError(response.status, url, errorBody);
       }
       // A soft block means we are being rude to this host — grow its gap so the
       // whole pool naturally slows down for it (and only it), not just this retry.
       reportThrottle(url);
-      lastError = new HttpStatusError(response.status, url);
+      lastError = new HttpStatusError(response.status, url, errorBody);
 
       /**
        * 429 is the host telling us to slow down, and a half-second retry is

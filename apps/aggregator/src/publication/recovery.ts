@@ -6,7 +6,7 @@ import { parseJibePage } from '../ats/adapters/jibe.js';
 import { careerConnectOptions, parseCareerConnectJob, parsePhenomJob, phenomDialect, type CareerConnectJob } from '../ats/adapters/phenom.js';
 import { parseLvmhHit } from '../ats/adapters/lvmhAlgolia.js';
 import { toNormalized as parseTeamtailorJob } from '../ats/adapters/teamtailor.js';
-import { parseWorkdayPublication } from '../ats/adapters/workday.js';
+import { parseWorkdayPublication, retainedWorkdayRefusal } from '../ats/adapters/workday.js';
 import { workdayDetailMatchesListing } from '../identity/workday.js';
 import { icimsDetailMatchesListing } from '../identity/icims.js';
 import { parseGreenhouseJob } from '../ats/adapters/greenhouse.js';
@@ -182,6 +182,9 @@ function readRetainedPublication(kind: string, raw: unknown, context: Context, r
         job = parseTeamtailorJob(raw, typeof config.jobOrigin === 'string' ? config.jobOrigin : undefined); break;
       case 'workday': {
         if (typeof raw.externalPath !== 'string' || !raw.externalPath.startsWith('/job/')) return failure('NATIVE_ID_MISSING');
+        // D-484 §1 : la fiche que l'éditeur a refusée en la nommant (403 S22) est une offre retirée. Le collecteur l'a
+        // retenue sur cette preuve, conservée telle quelle : même décision, jamais une republication sans fiche.
+        if (raw.detail === undefined && retainedWorkdayRefusal(raw)) return failure('PUBLICATION_HELD');
         if (!object(raw.detail) || !workdayDetailMatchesListing({ externalId: context.externalId, url: context.url, raw }, raw.detail)) return failure('DETAIL_IDENTITY_MISMATCH');
         job = parseWorkdayPublication(raw as Parameters<typeof parseWorkdayPublication>[0], config, context.observedAt);
         // lastSeenAt does not prove when this legacy relative-date string was

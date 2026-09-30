@@ -62,6 +62,26 @@ describe('fetchWithRetry — statuts définitifs', () => {
   });
 });
 
+describe('D-484 §1 : le corps d’un refus accompagne l’erreur, borné, jamais recopié au journal', () => {
+  it('403 aux trois essais : HttpStatusError porte le corps du dernier, sans l’exposer à une copie de ses propriétés', async () => {
+    fetchMock.mockImplementation(async () => new Response(JSON.stringify({ errorCode: 'S22', httpStatus: 403, message: 'permission denied' }), { status: 403 }));
+    const error = await fetchText('https://refus-s22.example/job/x').catch((e: unknown) => e) as HttpStatusError;
+    expect(error).toBeInstanceOf(HttpStatusError);
+    expect(fetchMock).toHaveBeenCalledTimes(3);
+    expect(error.message).toBe('HTTP 403 for https://refus-s22.example/job/x');
+    expect(JSON.parse(error.body!)).toMatchObject({ errorCode: 'S22', message: 'permission denied' });
+    // Le journal recopie les propriétés d'une erreur (`{ ...error }`, logger.ts) : le corps n'y entre jamais.
+    expect(Object.keys(error)).not.toContain('body');
+    expect(JSON.stringify({ ...error })).not.toContain('S22');
+  });
+  it('un corps au-delà de 4 Kio est tronqué ; un 404 garde le sien en un seul appel', async () => {
+    fetchMock.mockResolvedValue(new Response('x'.repeat(10_000), { status: 404 }));
+    const error = await fetchText('https://long-404.example/dead').catch((e: unknown) => e) as HttpStatusError;
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(error.body).toHaveLength(4096);
+  });
+});
+
 describe('source-specific transient HTTP 406', () => {
   it('does not retry a terminal 406 without an upstream-specific policy', async () => {
     fetchMock.mockResolvedValue(new Response('not acceptable', { status: 406 }));
