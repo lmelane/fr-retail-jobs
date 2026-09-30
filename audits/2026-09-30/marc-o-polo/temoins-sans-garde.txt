@@ -1,9 +1,14 @@
-# Témoins Marc O'Polo sans leur garde, commit 02d9dbd
+# Témoins Marc O'Polo sans leur garde, commit 8000513
 
 ## témoin de la page publiée supprimé: ÉCHOUE (témoin valide)
-   files: 1 failed (1) | tests: 2 ⎯⎯⎯⎯⎯⎯⎯
+   files: 1 failed (1) | tests: 3 ⎯⎯⎯⎯⎯⎯⎯
+   - src/ats/adapters/marcOPolo.test.ts > Marc O'Polo — lecture complète et preuve de fin de liste > budget épuisé avant de vérifier les offre
    - src/ats/adapters/marcOPolo.test.ts > Marc O'Polo — lecture complète et preuve de fin de liste > une offre que la page publie, que l’API o
    - src/ats/adapters/marcOPolo.test.ts > Marc O'Polo — lecture complète et preuve de fin de liste > une page en retard (06:45) : les trois of
+
+## budget épuisé : offres de la page comptées vérifiées: ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
+   - src/ats/adapters/marcOPolo.test.ts > Marc O'Polo — lecture complète et preuve de fin de liste > budget épuisé avant de vérifier les offre
 
 ## offre fermée chez l’éditeur non reconnue: ÉCHOUE (témoin valide)
    files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
@@ -64,5 +69,5 @@
    - src/lib/hostGate.marc-o-polo.test.ts > Marc O'Polo — la collecte reste sous le seuil mesuré du pare-feu de l'API > l'API de Marc O'Polo : a
    - src/lib/hostGate.marc-o-polo.test.ts > Marc O'Polo — la collecte reste sous le seuil mesuré du pare-feu de l'API > seul l'hôte exact de l'A
 
-## état committé restauré : exit 0 | files: 2 passed (2) | tests: 22 passed (22)
+## état committé restauré : exit 0 | files: 2 passed (2) | tests: 23 passed (23)
 tree clean: True
