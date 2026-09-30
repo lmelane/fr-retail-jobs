@@ -282,15 +282,16 @@ export function parseSwatchJobPage(html: string, url: string): NormalizedJob | n
  * `<a class="page-link" href="?page=34" aria-label="Dernier"><span aria-hidden="true"><i class="icon--last">`.
  */
 const LAST_PAGE_LINK = /href="\?page=(\d+)"[^>]*>\s*<span[^>]*>\s*<i class="icon--last"/;
-/** Relectures complètes du listing, au-delà de la première, pour réconcilier un ordre instable. */
-const RECONCILIATION_PASSES = 5;
 /**
- * Les langues du listing, dans l'ordre des relectures (la langue configurée est relue en dernier). Le décalage n'est pas
- * aléatoire : relue dans la même langue, la liste cache les mêmes offres (six lectures du 30/09 à 06:38, 340 distinctes
- * sur 348, les mêmes huit offres servies deux fois, toujours en fin de page puis en tête de la suivante). L'ordre du
- * listing dépend de la langue : le 30/09 à 07:10, en français 328 distinctes, en anglais 336, l'union 348, le total.
+ * Les langues du listing, dans l'ordre des relectures ; la langue configurée n'est pas relue (sauf si elle est la seule
+ * nommée). Le décalage n'est pas aléatoire : relue dans la même langue, la liste cache les mêmes offres (six lectures du
+ * 30/09 à 06:38, 340 distinctes sur 348, les mêmes huit offres servies deux fois, toujours en fin de page puis en tête
+ * de la suivante). L'ordre du listing dépend de la langue : le 30/09 à 07:10, en français 328 distinctes, en anglais
+ * 336, l'union 348, le total.
  */
 const RECONCILIATION_LANGS = ['en', 'de', 'it', 'fr'];
+/** Une page lue pour que l'ensemble des requêtes de listing reste le même d'une capture à l'autre, jamais comptée. */
+const STABILITY = Symbol('stability');
 
 export async function fetchSwatchGroupJobs(config: Record<string, unknown>): Promise<AdapterResult> {
   const origin = String(config.origin ?? DEFAULT_ORIGIN).replace(/\/$/, '');
@@ -306,12 +307,14 @@ export async function fetchSwatchGroupJobs(config: Record<string, unknown>): Pro
   // l'autre (en, fr, de, it sur la même page) et ne doit pas faire compter deux fois une offre qui en changerait
   // entre deux lectures. Rend le nombre d'offres distinctes de la page.
   // `admit` juge la page AVANT qu'elle ne compte : une page refusée (autre total annoncé) n'ajoute rien à l'union.
-  const readPage = async (page: number, pass: number, pageLang = lang, admit?: (html: string, count: number) => boolean): Promise<{ count: number; html: string; admitted: boolean }> => {
+  // Une page de STABILITÉ (`admit === STABILITY`) est lue et archivée sans jamais compter : voir plus bas.
+  const readPage = async (page: number, pass: number, pageLang = lang, admit?: ((html: string, count: number) => boolean) | typeof STABILITY): Promise<{ count: number; html: string; admitted: boolean }> => {
     const url = `${origin}/${pageLang}/job-finder?page=${page}`;
     const html = await fetchText(url);
     const inPage = new Map<string, string>();
     for (const m of html.matchAll(/href="(\/[a-z]{2}\/job\/(\d+))"/g)) if (!inPage.has(m[2])) inPage.set(m[2], `${origin}${m[1]}`);
-    const admitted = admit ? admit(html, inPage.size) : true;
+    const stability = admit === STABILITY;
+    const admitted = stability ? false : admit ? admit(html, inPage.size) : true;
     const fresh = admitted ? [...inPage].filter(([id]) => !seen.has(id)) : [];
     for (const [id, link] of fresh) {
       seen.add(id);
@@ -319,7 +322,8 @@ export async function fetchSwatchGroupJobs(config: Record<string, unknown>): Pro
     }
     pagesRead += 1;
     pageEvidence.push({ url, checkedAt: captureObservedAt().toISOString(), sha256: createHash('sha256').update(html).digest('hex'), offset: page, pagination: null,
-      ids: [...inPage.keys()], publisherCounter: '', componentCounters: [`pass=${pass}`, `lang=${pageLang}`, ...(admitted ? [] : ['refused=TOTAL_CHANGED']), `links=${inPage.size}`, `fresh=${fresh.length}`, `uniqueLinks=${seen.size}`] });
+      ids: [...inPage.keys()], publisherCounter: '', componentCounters: [`pass=${pass}`, `lang=${pageLang}`,
+        ...(stability ? ['role=STABILITY_NOT_COUNTED'] : admitted ? [] : ['refused=TOTAL_CHANGED']), `links=${inPage.size}`, `fresh=${fresh.length}`, `uniqueLinks=${seen.size}`] });
     return { count: inPage.size, html, admitted };
   };
 
@@ -334,9 +338,26 @@ export async function fetchSwatchGroupJobs(config: Record<string, unknown>): Pro
    * La preuve est désormais le total que l'éditeur publie par son pager : le lien « Dernier » de la première page
    * donne l'index de la dernière page ; toutes les pages avant elle portent le même nombre de liens (celui de la
    * première) ; la dernière en porte de 1 à ce nombre ; la page suivante n'en porte aucun. Total = index × taille +
-   * liens de la dernière. Le listing est relu, au plus cinq fois et chaque fois dans une autre langue, tant que l'union
-   * des lectures n'atteint pas ce total ; il n'est prouvé que si elle l'atteint exactement. Une langue qui annonce une
-   * autre dernière page (total changé en cours de lecture) arrête la réconciliation : non prouvé.
+   * liens de la dernière. Le listing est relu dans chaque autre langue, dans l'ordre, tant que l'union des lectures
+   * n'atteint pas ce total ; il n'est prouvé que si elle l'atteint exactement. Une langue qui annonce une autre dernière
+   * page (total changé en cours de lecture) arrête le comptage : non prouvé.
+   *
+   * L'ENSEMBLE DES REQUÊTES DE LISTING NE DÉPEND PAS DE CE QU'ELLES RENDENT (RUN du 30/09/2026, 16:58).
+   *
+   * Au RUN, la source est lue deux fois : la capture de validation, dont le périmètre d'accès est dérivé des requêtes
+   * EXACTES qu'elle a faites (`accessScopeDerivation.ts`), puis la capture d'ingestion, contrôlée contre ce périmètre.
+   * L'ancien lecteur s'arrêtait dès que l'union atteignait le total : la validation de 16:56 avait trouvé les offres
+   * manquantes dès la page 0 en anglais (périmètre `/en/job-finder` avec `page=0` FIXE, aucune autre langue),
+   * l'ingestion de 16:58 a dû lire la page 1 en anglais : hors périmètre, source arrêtée (ACCESS_SCOPE).
+   *
+   * Désormais, dès que le pager donne une dernière page dans le budget, CHAQUE langue de réconciliation est lue en
+   * entier, pages 0 à la dernière, quel que soit le résultat. Seules les lectures faites tant que la preuve se
+   * construit comptent, exactement comme avant (même union, même verdict) ; les suivantes sont archivées sans compter
+   * (`role=STABILITY_NOT_COUNTED`) : ajoutées à l'union, elles la feraient dépasser le total à la moindre différence de
+   * cache entre langues (le 30/09 à 18:30, quatre langues lues à la même minute annonçaient 350, 350, 360 et 348). Le
+   * prix : trois langues de 35 pages à chaque capture, soit 105 requêtes de listing après la lecture française, là où
+   * l'arrêt anticipé en faisait de 1 à 175. Une capture sans lien « Dernier », ou au-delà du budget de pages, ne relit
+   * aucune autre langue, comme avant : ces deux gabarits ne sont jamais prouvés.
    */
   const first = await readPage(0, 1);
   const lastIndex = Number(LAST_PAGE_LINK.exec(first.html)?.[1] ?? NaN);
@@ -371,34 +392,37 @@ export async function fetchSwatchGroupJobs(config: Record<string, unknown>): Pro
     if (beyond.count !== 0) shapeIssues.push('PAGE_BEYOND_LAST_NOT_EMPTY');
     if (shapeHolds && beyond.count === 0) publisherTotal = lastIndex * pageSize + lastCount;
   }
-  let passes = 1;
-  if (publisherTotal !== undefined) {
+  // Les relectures qui ont COMPTÉ (0 : la première lecture a suffi) ; les lectures de stabilité n'en sont pas.
+  let countingSweeps = 0;
+  if (Number.isInteger(lastIndex) && lastIndex >= 1 && lastIndex + 1 < maxPages) {
     const configured = Array.isArray(config.reconcileLangs) ? config.reconcileLangs.map(String) : RECONCILIATION_LANGS;
-    const sweepLangs = [...configured.filter((l) => l !== lang), lang];
-    for (; passes <= RECONCILIATION_PASSES && seen.size < publisherTotal; passes += 1) {
-      const sweepLang = sweepLangs[(passes - 1) % sweepLangs.length];
-      const head = await readPage(0, passes + 1, sweepLang, (html, count) => Number(LAST_PAGE_LINK.exec(html)?.[1] ?? NaN) === lastIndex && count === pageSize);
-      if (!head.admitted) {
-        shapeIssues.push('PUBLISHER_TOTAL_CHANGED');
-        passes += 1;
-        break;
-      }
-      // Chaque page de l'autre langue doit porter le nombre de liens attendu (celui de la première, ou de la dernière
-      // page lue) AVANT de compter : une page d'une autre forme est un listing changé, pas une relecture (audit adverse).
-      let changed = false;
-      for (let page = 1; page <= lastIndex && seen.size < publisherTotal; page += 1) {
+    const others = configured.filter((l) => l !== lang);
+    const sweepLangs = others.length ? others : configured.slice(0, 1);
+    // La preuve se construit tant qu'un total existe, qu'aucune langue ne l'a contredit et que l'union ne l'atteint pas.
+    let counting = publisherTotal !== undefined;
+    const stillCounting = () => counting && seen.size < publisherTotal!;
+    for (const [index, sweepLang] of sweepLangs.entries()) {
+      const pass = index + 2;
+      if (stillCounting()) countingSweeps += 1;
+      for (let page = 0; page <= lastIndex; page += 1) {
+        if (!stillCounting()) { await readPage(page, pass, sweepLang, STABILITY); continue; }
+        // La page 0 d'une autre langue doit annoncer la même dernière page ; chaque page doit porter le nombre de liens
+        // attendu (celui de la première, ou de la dernière page lue) AVANT de compter : une page d'une autre forme est
+        // un listing changé, pas une relecture (audit adverse).
         const expected = page < lastIndex ? pageSize : lastCount;
-        const read = await readPage(page, passes + 1, sweepLang, (_html, count) => count === expected);
-        if (!read.admitted) { changed = true; break; }
-      }
-      if (changed) {
-        shapeIssues.push('PUBLISHER_TOTAL_CHANGED');
-        passes += 1;
-        break;
+        const read = await readPage(page, pass, sweepLang, page === 0
+          ? (html, count) => Number(LAST_PAGE_LINK.exec(html)?.[1] ?? NaN) === lastIndex && count === pageSize
+          : (_html, count) => count === expected);
+        if (!read.admitted) {
+          shapeIssues.push('PUBLISHER_TOTAL_CHANGED');
+          counting = false;
+        }
       }
     }
-    if (seen.size === publisherTotal) termination = passes === 1 ? 'PUBLISHER_TOTAL_REACHED' : 'SECOND_SWEEP_RECONCILED';
-    else shapeIssues.push(seen.size > publisherTotal ? 'UNION_ABOVE_PUBLISHER_TOTAL' : 'PUBLISHER_TOTAL_NOT_REACHED');
+    if (publisherTotal !== undefined) {
+      if (seen.size === publisherTotal) termination = countingSweeps === 0 ? 'PUBLISHER_TOTAL_REACHED' : 'SECOND_SWEEP_RECONCILED';
+      else shapeIssues.push(seen.size > publisherTotal ? 'UNION_ABOVE_PUBLISHER_TOTAL' : 'PUBLISHER_TOTAL_NOT_REACHED');
+    }
   }
   if (links.length === 0) throw new Error(`Swatch Group ${origin}/${lang}/job-finder: aucun lien /job/ — gabarit ou listing cassé`);
 
@@ -425,7 +449,7 @@ export async function fetchSwatchGroupJobs(config: Record<string, unknown>): Pro
     ),
   );
   const issues: string[] = [...shapeIssues];
-  if (passes > 1) issues.push('RECONCILED_BY_SECOND_SWEEP');
+  if (countingSweeps > 0) issues.push('RECONCILED_BY_SECOND_SWEEP');
   if (rejectedRows.length) issues.push('DETAILS_REJECTED');
   // The board is proven when the union of the reads reaches exactly the total the pager publishes, and every listed
   // link was read into a posting.

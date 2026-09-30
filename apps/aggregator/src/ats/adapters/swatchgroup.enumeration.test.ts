@@ -6,6 +6,9 @@ vi.mock('../../lib/http.js', () => ({ fetchJson: vi.fn(), fetchText: vi.fn() }))
 vi.mock('../../observability/logger.js', () => ({ log: { error: vi.fn(async () => {}), info: vi.fn(async () => {}), warn: vi.fn(async () => {}) } }));
 import { fetchText } from '../../lib/http.js';
 import { fetchSwatchGroupJobs } from './swatchgroup.js';
+import { deriveAccessScopes, type ObservedRequest } from '../../connectors/accessScopeDerivation.js';
+import { matchingAccessScope, type AccessScope } from '../../connectors/accessScope.js';
+import { CRAWLER_IDENTITY } from '../../lib/crawlerIdentity.js';
 
 /** Le pager Drupal réel : le lien « Dernier » porte l'icône `icon--last`. */
 const pager = (last: number) => `<a class="page-link" href="?page=${last}" aria-label="Dernier"> <span aria-hidden="true"><i class="icon--last"></i></span></a>`;
@@ -100,14 +103,95 @@ describe('Swatch Group — listes réelles du 30/09/2026 à 06:57 : le français
   });
 });
 
+describe('Swatch Group — RUN du 30/09/2026, 16:58 : deux captures, le même ensemble de requêtes de listing (ACCESS_SCOPE)', () => {
+  /*
+   * Au RUN, la capture de validation fonde le périmètre d'accès (requêtes EXACTES observées), puis la capture
+   * d'ingestion est contrôlée contre lui. Décision `access-review:c67d2513…` : `/en/job-finder` EXACT avec `page=0`
+   * FIXE (la validation avait trouvé l'offre manquante en page 0 anglaise), aucune `/de/job-finder` ; l'ingestion a
+   * demandé la page 1 anglaise : refus, source arrêtée. Ici, les deux captures du même listing (total 4, le français
+   * cache l'offre 4) ne diffèrent que par l'ordre anglais : la validation la voit en page 0, l'ingestion en page 1.
+   */
+  const page = (ids: number[], last?: number) => ids.map((i) => `<a href="/en/job/${i}">x</a>`).join('') + (last === undefined ? '' : pager(last));
+  const serve = (en: Record<string, string>) => {
+    const fr: Record<string, string> = { '0': page([1, 2], 1), '1': page([2, 3]), '2': '' };
+    const other: Record<string, string> = { '0': page([1, 2], 1), '1': page([3, 4]) };
+    vi.mocked(fetchText).mockImplementation(async (url: string) => {
+      const listingOf = /\/([a-z]{2})\/job-finder\?page=(\d+)/.exec(url);
+      if (!listingOf) return detail(Number(/\/job\/(\d+)/.exec(url)?.[1]));
+      return ({ fr, en } as Record<string, Record<string, string>>)[listingOf[1]]?.[listingOf[2]] ?? other[listingOf[2]] ?? '';
+    });
+  };
+  const capture = async (en: Record<string, string>) => {
+    vi.resetAllMocks();
+    serve(en);
+    const r = await run();
+    const urls = vi.mocked(fetchText).mock.calls.map(([url]) => String(url));
+    return { r, urls, listing: urls.filter((u) => u.includes('/job-finder')) };
+  };
+  const observed = (urls: string[]): ObservedRequest[] => urls.map((u) => ({ method: 'GET', url: new URL(u), contentType: 'text/html; charset=UTF-8' }));
+  const outside = (scopes: AccessScope[], urls: string[]) => urls.filter((url) => {
+    try { matchingAccessScope(scopes, { url, method: 'GET', format: 'HTTP_RESPONSE', userAgent: CRAWLER_IDENTITY } as never); return false; }
+    catch { return true; }
+  });
+  /** Où l'offre cachée par le français a été trouvée : la page de la langue qui l'a ajoutée à l'union. */
+  const foundAt = (r: Awaited<ReturnType<typeof run>>) => r.enumeration?.pageEvidence?.filter((p) => p.componentCounters?.includes('fresh=1') && !p.componentCounters.includes('lang=fr'))
+    .map((p) => p.url);
+
+  it('prémisse : la validation trouve l\'offre cachée en page 0 anglaise, l\'ingestion en page 1 ; toutes deux prouvées', async () => {
+    const validation = await capture({ '0': page([1, 4], 1), '1': page([2, 3]) });
+    const ingestion = await capture({ '0': page([1, 2], 1), '1': page([4, 3]) });
+    expect(foundAt(validation.r)).toEqual(['https://www.swatchgroup.com/en/job-finder?page=0']);
+    expect(foundAt(ingestion.r)).toEqual(['https://www.swatchgroup.com/en/job-finder?page=1']);
+    for (const { r } of [validation, ingestion]) expect(r).toMatchObject({ declaredTotal: 4, complete: true, enumeration: { termination: 'SECOND_SWEEP_RECONCILED' } });
+  });
+
+  it('les deux captures font les mêmes requêtes de listing, et le périmètre de la première couvre toute la seconde', async () => {
+    const validation = await capture({ '0': page([1, 4], 1), '1': page([2, 3]) });
+    const ingestion = await capture({ '0': page([1, 2], 1), '1': page([4, 3]) });
+    expect(ingestion.listing).toEqual(validation.listing);
+    expect(validation.listing).toEqual([0, 1, 2].map((p) => `https://www.swatchgroup.com/fr/job-finder?page=${p}`)
+      .concat(...['en', 'de', 'it'].map((lang) => [0, 1].map((p) => `https://www.swatchgroup.com/${lang}/job-finder?page=${p}`))));
+    const scopes = deriveAccessScopes('swatchgroup', observed(validation.urls));
+    // Chaque langue relue est déclarée avec `page` VARIABLE — jamais `page=0` fixe comme le 30/09.
+    for (const lang of ['en', 'de', 'it']) {
+      expect(scopes.find((s) => s.path.value === `/${lang}/job-finder`)).toMatchObject({ path: { kind: 'EXACT' }, query: { fixed: {}, variable: ['page'] } });
+    }
+    expect(outside(scopes, ingestion.urls)).toEqual([]);
+    // Contre-témoins : une langue jamais lue, un paramètre jamais observé, un chemin voisin restent hors périmètre.
+    expect(outside(scopes, ['https://www.swatchgroup.com/es/job-finder?page=0', 'https://www.swatchgroup.com/en/job-finder?page=0&sort=date',
+      'https://www.swatchgroup.com/en/job-finder-archive?page=0'])).toHaveLength(3);
+  });
+
+  it('une lecture de stabilité ne compte jamais : une offre inconnue qu\'elle sert ne fait pas dépasser le total', async () => {
+    // Anglais complète l'union en page 0 ; l'allemand et l'italien (lus ensuite) servent une offre 9 : non comptée.
+    vi.mocked(fetchText).mockImplementation(async (url: string) => {
+      const listingOf = /\/([a-z]{2})\/job-finder\?page=(\d+)/.exec(url);
+      if (!listingOf) return detail(Number(/\/job\/(\d+)/.exec(url)?.[1]));
+      const pages: Record<string, Record<string, string>> = { fr: { '0': page([1, 2], 1), '1': page([2, 3]), '2': '' },
+        en: { '0': page([1, 4], 1), '1': page([2, 3]) } };
+      return pages[listingOf[1]]?.[listingOf[2]] ?? page([9, 1], 1);
+    });
+    const r = await run();
+    expect(r).toMatchObject({ declaredTotal: 4, complete: true });
+    expect(r.jobs.map((j) => j.externalId).sort()).toEqual(['1', '2', '3', '4']);
+    expect(r.enumeration?.issues).toEqual(['RECONCILED_BY_SECOND_SWEEP']);
+    // Prémisse : l'offre 9 a bien été servie par les lectures de stabilité.
+    expect(r.enumeration?.pageEvidence?.filter((p) => p.ids?.includes('9')).every((p) => p.componentCounters?.includes('role=STABILITY_NOT_COUNTED'))).toBe(true);
+    expect(r.enumeration?.pageEvidence?.filter((p) => p.ids?.includes('9'))).toHaveLength(4);
+  });
+});
+
 describe('Swatch Group — prouvé seulement quand l\'union des lectures atteint le total du pager', () => {
   it('un ordre stable : une lecture suffit, terminaison PUBLISHER_TOTAL_REACHED', async () => {
     const reads = route({ '0': [listing([1, 2], 1)], '1': [listing([3])], '2': [''] }, details(3));
     const r = await run();
     expect(r.jobs.map((j) => j.externalId).sort()).toEqual(['1', '2', '3']);
     expect(r).toMatchObject({ declaredTotal: 3, complete: true, truncated: false, rejectedRows: [] });
-    expect(r.enumeration).toMatchObject({ pages: 3, termination: 'PUBLISHER_TOTAL_REACHED', issues: [] });
-    expect([...reads.values()]).toEqual([1, 1, 1]);
+    // Depuis le 30/09 (ACCESS_SCOPE du RUN), les trois autres langues sont lues en entier même quand la première lecture
+    // suffit : 3 pages en français + 2 × 3 langues, lues sans compter. Avant : 3 pages, lues une fois chacune.
+    expect(r.enumeration).toMatchObject({ pages: 9, termination: 'PUBLISHER_TOTAL_REACHED', issues: [] });
+    expect([...reads.entries()].sort()).toEqual([['0', 4], ['1', 4], ['2', 1]]);
+    expect(r.enumeration?.pageEvidence?.slice(3).every((p) => p.componentCounters?.includes('role=STABILITY_NOT_COUNTED'))).toBe(true);
   });
 
   it('le défaut du 30/09 : une offre servie deux fois en cache une autre ; la relecture la retrouve', async () => {
@@ -117,7 +201,8 @@ describe('Swatch Group — prouvé seulement quand l\'union des lectures atteint
     expect(r.jobs.map((j) => j.externalId).sort()).toEqual(['1', '2', '3', '4']);
     expect(r).toMatchObject({ declaredTotal: 4, complete: true });
     expect(r.enumeration).toMatchObject({ termination: 'SECOND_SWEEP_RECONCILED', issues: ['RECONCILED_BY_SECOND_SWEEP'] });
-    expect(reads.get('0')).toBe(2);
+    // La preuve tient dès la page 0 relue (2e lecture) ; les deux autres langues sont lues ensuite sans compter (était 2).
+    expect(reads.get('0')).toBe(4);
   });
 
   it('une offre servie sous un autre préfixe de langue à la relecture reste une seule offre', async () => {
@@ -148,7 +233,7 @@ describe('Swatch Group — prouvé seulement quand l\'union des lectures atteint
     expect(same).toMatchObject({ declaredTotal: 4, complete: false });
   });
 
-  it('une langue qui annonce une autre dernière page : total changé, non prouvé, réconciliation arrêtée', async () => {
+  it('une langue qui annonce une autre dernière page : total changé, non prouvé, comptage arrêté, lecture poursuivie', async () => {
     const reads = new Map<string, number>();
     vi.mocked(fetchText).mockImplementation(async (url: string) => {
       const listingOf = /\/([a-z]{2})\/job-finder\?page=(\d+)/.exec(url);
@@ -160,7 +245,10 @@ describe('Swatch Group — prouvé seulement quand l\'union des lectures atteint
     const r = await run();
     expect(r.complete).toBe(false);
     expect(r.enumeration?.issues).toEqual(['PUBLISHER_TOTAL_CHANGED', 'PUBLISHER_TOTAL_NOT_REACHED', 'RECONCILED_BY_SECOND_SWEEP', 'ENUMERATION_NOT_PROVEN']);
-    expect([...reads.keys()].filter((u) => u.includes('/en/'))).toEqual(['https://www.swatchgroup.com/en/job-finder?page=0']);
+    // Le comptage s'arrête à la page 0 anglaise ; la lecture, elle, continue jusqu'à la dernière page du français, dans
+    // chaque langue, pour que l'ensemble des requêtes ne dépende pas de ce refus (avant le 30/09 : la page 0 seule).
+    expect([...reads.keys()].filter((u) => u.includes('/en/'))).toEqual(['https://www.swatchgroup.com/en/job-finder?page=0', 'https://www.swatchgroup.com/en/job-finder?page=1']);
+    expect(r.enumeration?.rawCount).toBe(3);
   });
 
   it('une page d\'une autre langue d\'une autre taille ne compte pas : total changé, non prouvé (audit adverse)', async () => {
@@ -179,13 +267,15 @@ describe('Swatch Group — prouvé seulement quand l\'union des lectures atteint
     expect(r.enumeration?.issues).toEqual(['PUBLISHER_TOTAL_CHANGED', 'PUBLISHER_TOTAL_NOT_REACHED', 'RECONCILED_BY_SECOND_SWEEP', 'ENUMERATION_NOT_PROVEN']);
   });
 
-  it('une offre jamais servie en six lectures : non prouvé, relectures bornées à cinq', async () => {
+  it('une offre jamais servie : non prouvé, chaque autre langue lue une fois, la langue configurée jamais relue', async () => {
+    // Avant le 30/09 : cinq relectures en tournant (en, de, it, fr, en). Relire la même langue ne montre rien de
+    // nouveau (six lectures du 30/09 à 06:38) ; l'ensemble des requêtes doit être fixe : en, de, it, une fois chacune.
     const reads = route({ '0': [listing([1, 2], 1)], '1': [listing([2, 3])], '2': [''] }, details(3));
     const r = await run();
     expect(r).toMatchObject({ declaredTotal: 4, complete: false });
     expect(r.enumeration?.issues).toEqual(['PUBLISHER_TOTAL_NOT_REACHED', 'RECONCILED_BY_SECOND_SWEEP', 'ENUMERATION_NOT_PROVEN']);
-    expect(reads.get('0')).toBe(6);
-    expect(reads.get('1')).toBe(6);
+    expect(reads.get('0')).toBe(4);
+    expect(reads.get('1')).toBe(4);
     expect(reads.get('2')).toBe(1);
   });
 
