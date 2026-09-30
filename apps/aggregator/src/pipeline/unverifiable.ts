@@ -38,7 +38,8 @@ export type UnverifiableKind =
   /**
    * La source publie elle-même la preuve que l'offre n'est pas à publier : candidature impossible sur son site
    * (close, page en erreur 404 ou 410, modèle expiré), retrait de son listing, publication de test, événement de
-   * recrutement. Retenue non bloquante au RUN (D-453 §1, D-456 §1) : rien n'est à réparer, la preuve se relit.
+   * recrutement, description laissée vide sur une fiche lue (D-481 §3, 30/09/2026). Retenue non bloquante au RUN
+   * (D-453 §1, D-456 §1, D-462, D-481 §3) : rien n'est à réparer, la preuve se relit.
    */
   | 'NATIVE_EVIDENCE'
   /**

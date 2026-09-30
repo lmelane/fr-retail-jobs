@@ -1,83 +1,73 @@
+# Témoins Eightfold sans leur correctif : exécution du 30/09/2026 sur le commit 3a3d8bb
+# python3 audits/2026-09-30/scripts/eightfold-temoins-sans-correctif.py
+# Chaque bloc : un correctif retiré dans la copie de travail, les témoins lancés, le fichier committé restauré.
+# « ÉCHOUE (témoin valide) » = au moins un témoin passe au rouge sans le correctif.
 
 ## relecture différée des fiches supprimée: ÉCHOUE (témoin valide)
-   files: 2 failed (2) | tests: 2 ⎯⎯⎯⎯⎯⎯⎯
-   - src/ats/adapters/eightfold.replay.test.ts > Eightfold — capture, rejeu hors réseau, rejeu des publications conservées > la fiche relue
-   - src/ats/adapters/eightfold.waf.test.ts > Eightfold — une fiche perdue dans une fenêtre du pare-feu est relue après elle > relit la 
+   files: 2 failed (2) | tests: 2 échoués
+   - eightfold.replay.test.ts > capture, rejeu hors réseau, rejeu des publications conservées
+   - eightfold.waf.test.ts > relit la fiche refusée : la description ET la Maison reviennent
 
 ## relecture de la page de liste supprimée: ÉCHOUE (témoin valide)
-   files: 1 failed (1) | tests: 2 ⎯⎯⎯⎯⎯⎯⎯
-   - src/ats/adapters/eightfold.waf.test.ts > Eightfold — une fiche perdue dans une fenêtre du pare-feu est relue après elle > une page 
+   files: 1 failed (1) | tests: 2 échoués
+   - eightfold.waf.test.ts > une page de liste refusée est relue après la fenêtre
 
 ## 404 relu comme un refus du pare-feu: ÉCHOUE (témoin valide)
-   files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
-   - src/ats/adapters/eightfold.waf.test.ts > Eightfold — une fiche perdue dans une fenêtre du pare-feu est relue après elle > ne relit 
+   files: 1 failed (1) | tests: 1 échoué
+   - eightfold.waf.test.ts > ne relit pas une position disparue (404)
 
 ## borne « portail en panne » supprimée: ÉCHOUE (témoin valide)
-   files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
-   - src/ats/adapters/eightfold.waf.test.ts > Eightfold — une fiche perdue dans une fenêtre du pare-feu est relue après elle > un portai
+   files: 1 failed (1) | tests: 1 échoué
+   - eightfold.waf.test.ts > un portail en panne n'est pas relu
 
 ## retenue non posée par le collecteur: ÉCHOUE (témoin valide)
-   files: 2 failed (2) | tests: 4 ⎯⎯⎯⎯⎯⎯⎯
-   - src/ats/adapters/eightfold.replay.test.ts > Eightfold — capture, rejeu hors réseau, rejeu des publications conservées > la fiche relue
-   - src/ats/adapters/eightfold.waf.test.ts > D-481 §3 — la description que l’éditeur laisse vide est une retenue sur SA preuve, jamais 
+   files: 2 failed (2) | tests: 4 échoués
+   - eightfold.replay.test.ts > capture, rejeu hors réseau, rejeu des publications conservées
+   - eightfold.waf.test.ts > D-481 §3 (les trois formes vides)
 
 ## classifieur : titres de rubrique non retirés (seul le vide strict): ÉCHOUE (témoin valide)
-   files: 2 failed (2) | tests: 3 ⎯⎯⎯⎯⎯⎯⎯
-   - src/ats/adapters/eightfold.replay.test.ts > Eightfold — capture, rejeu hors réseau, rejeu des publications conservées > la fiche relue
-   - src/ats/adapters/eightfold.waf.test.ts > D-481 §3 — la description que l’éditeur laisse vide est une retenue sur SA preuve, jamais 
+   files: 2 failed (2) | tests: 3 échoués
+   - eightfold.replay.test.ts ; eightfold.waf.test.ts > gabarit « Description / Qualifications » sans contenu
 
 ## classifieur : champ absent pris pour un vide: ÉCHOUE (témoin valide)
-   files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
-   - src/ats/adapters/eightfold.waf.test.ts > D-481 §3 — la description que l’éditeur laisse vide est une retenue sur SA preuve, jamais 
+   files: 1 failed (1) | tests: 1 échoué
+   - eightfold.waf.test.ts > une fiche lue au format inconnu n'est pas une preuve de vide
 
 ## classifieur : titre long pris pour un titre de rubrique: ÉCHOUE (témoin valide)
-   files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
-   - src/ats/adapters/eightfold.waf.test.ts > D-481 §3 — la description que l’éditeur laisse vide est une retenue sur SA preuve, jamais 
+   files: 1 failed (1) | tests: 1 échoué
+   - eightfold.waf.test.ts > une description réelle, même courte ou toute en titre long, n'est jamais retenue
 
 ## rejeu des publications : retenue non reproduite: ÉCHOUE (témoin valide)
-   files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
-   - src/ats/adapters/eightfold.replay.test.ts > Eightfold — capture, rejeu hors réseau, rejeu des publications conservées > la fiche relue
+   files: 1 failed (1) | tests: 1 échoué
+   - eightfold.replay.test.ts > recoverRetainedPublication rend PUBLICATION_HELD
 
 ## motif non enregistré comme preuve de la source: ÉCHOUE (témoin valide)
-   files: 3 failed (3) | tests: 7 ⎯⎯⎯⎯⎯⎯⎯
-   - src/ats/adapters/eightfold.waf.test.ts > D-481 §3 — la description que l’éditeur laisse vide est une retenue sur SA preuve, jamais 
-   - src/lib/nativeRetention.test.ts > D-481 §3: the description the publisher leaves empty, on the negative-proof guard like the
-   - src/lib/nativeRetention.test.ts > every non-blocking retention names the decision that settles it (D-453 §1, D-456, D-462) >
-   - src/pipeline/unverifiable.test.ts > classement des retenues par NATURE, pas par libellé > sépare un défaut TECHNIQUE d'un fait
+   files: 3 failed (3) | tests: 7 échoués
+   - eightfold.waf.test.ts ; nativeRetention.test.ts (non bloquant, décidé) ; unverifiable.test.ts (NATIVE_EVIDENCE)
 
 ## motif sans décision (D-481 §3) attachée: ÉCHOUE (témoin valide)
-   files: 2 failed (2) | tests: 4 ⎯⎯⎯⎯⎯⎯⎯
-   - src/ats/adapters/eightfold.waf.test.ts > D-481 §3 — la description que l’éditeur laisse vide est une retenue sur SA preuve, jamais 
-   - src/lib/nativeRetention.test.ts > every non-blocking retention names the decision that settles it (D-453 §1, D-456, D-462) >
+   files: 2 failed (2) | tests: 4 échoués
+   - eightfold.waf.test.ts ; nativeRetention.test.ts > every non-blocking retention names the decision
 
 ## garde de la preuve négative non étendue: ÉCHOUE (témoin valide)
-   files: 1 failed (1) | tests: 2 ⎯⎯⎯⎯⎯⎯⎯
-   - src/lib/nativeRetention.test.ts > D-481 §3: the description the publisher leaves empty, on the negative-proof guard like the
+   files: 1 failed (1) | tests: 2 échoués
+   - nativeRetention.test.ts > D-481 §3 on the negative-proof guard
 
 ## clé commune Eightfold supprimée: ÉCHOUE (témoin valide)
-   files: 1 failed (1) | tests: 4 ⎯⎯⎯⎯⎯⎯⎯
-   - src/lib/hostGate.eightfold.test.ts > Eightfold — la clé commune ne regroupe que ce qui a été mesuré > les deux portails, et eux
-   - src/lib/hostGate.eightfold.test.ts > Eightfold — la porte tient les deux sources sous le seuil mesuré du pare-feu > Estée Laude
-   - src/lib/hostGate.eightfold.test.ts > Eightfold — la porte tient les deux sources sous le seuil mesuré du pare-feu > un refus do
-   - src/lib/hostGate.eightfold.test.ts > Eightfold — la porte tient les deux sources sous le seuil mesuré du pare-feu > une requête
+   files: 1 failed (1) | tests: 4 échoués
+   - hostGate.eightfold.test.ts (seuil sur cinq minutes, budget commun, plancher, clé)
 
 ## careers.kering.com hors de la clé commune: ÉCHOUE (témoin valide)
-   files: 1 failed (1) | tests: 4 ⎯⎯⎯⎯⎯⎯⎯
-   - src/lib/hostGate.eightfold.test.ts > Eightfold — la clé commune ne regroupe que ce qui a été mesuré > les deux portails, et eux
-   - src/lib/hostGate.eightfold.test.ts > Eightfold — la porte tient les deux sources sous le seuil mesuré du pare-feu > Estée Laude
-   - src/lib/hostGate.eightfold.test.ts > Eightfold — la porte tient les deux sources sous le seuil mesuré du pare-feu > un refus do
-   - src/lib/hostGate.eightfold.test.ts > Eightfold — la porte tient les deux sources sous le seuil mesuré du pare-feu > une requête
+   files: 1 failed (1) | tests: 4 échoués
+   - hostGate.eightfold.test.ts (seuil sur cinq minutes, budget commun, plancher, clé)
 
 ## cadence plancher supprimée: ÉCHOUE (témoin valide)
-   files: 1 failed (1) | tests: 4 ⎯⎯⎯⎯⎯⎯⎯
-   - src/lib/hostGate.eightfold.test.ts > Eightfold — la clé commune ne regroupe que ce qui a été mesuré > les deux portails, et eux
-   - src/lib/hostGate.eightfold.test.ts > Eightfold — la porte tient les deux sources sous le seuil mesuré du pare-feu > Estée Laude
-   - src/lib/hostGate.eightfold.test.ts > Eightfold — la porte tient les deux sources sous le seuil mesuré du pare-feu > un refus do
-   - src/lib/hostGate.eightfold.test.ts > Eightfold — la porte tient les deux sources sous le seuil mesuré du pare-feu > une requête
+   files: 1 failed (1) | tests: 4 échoués
+   - hostGate.eightfold.test.ts (seuil sur cinq minutes, budget commun, plancher, clé)
 
 ## plancher oublié par la décroissance après succès: ÉCHOUE (témoin valide)
-   files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
-   - src/lib/hostGate.eightfold.test.ts > Eightfold — la porte tient les deux sources sous le seuil mesuré du pare-feu > un refus do
+   files: 1 failed (1) | tests: 1 échoué
+   - hostGate.eightfold.test.ts > un refus double la cadence à partir du plancher
 
 ## état committé restauré : exit 0 | files: 5 passed (5) | tests: 74 passed (74)
 tree clean: True

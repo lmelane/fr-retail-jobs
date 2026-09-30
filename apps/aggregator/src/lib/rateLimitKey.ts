@@ -80,9 +80,12 @@ export function rateLimitKeyFor(url: string, explicit?: string | null): string {
  * requêtes sur cinq minutes glissantes, ses deux clients ensemble (voir `tenant:eightfold`) ; le 29/09, rafales et
  * fenêtres de refus alternaient à 187 requêtes par minute en moyenne, et chaque fenêtre coûtait des fiches.
  *
- * 350 ms entre deux départs : au plus 171 requêtes par minute, 857 sur cinq minutes, 14 % sous le seuil mesuré. La
- * porte partage cette cadence entre les deux sources, relectures et pages de liste comprises. Aucune clé n'en reçoit
- * par précaution : une cadence de trop ralentit une source sans raison.
+ * 350 ms entre deux départs : au plus 171 requêtes par minute, 857 sur cinq minutes, 14 % sous le seuil ESTIMÉ (le
+ * pare-feu ne le publie pas : 1 000 est l'ordre de grandeur qui explique ses trois ouvertures et trois levées du
+ * 29/09 à 10-20 s près). La porte partage cette cadence entre les deux sources, relectures et pages de liste
+ * comprises — dans UN processus : le RUN les collecte dans le même, mais une collecte lancée en parallèle depuis un
+ * autre processus (même sortie réseau) s'ajouterait au compteur du pare-feu sans être vue ici. Aucune clé n'en
+ * reçoit par précaution : une cadence de trop ralentit une source sans raison.
  */
 const PACE_FLOOR_MS: Readonly<Record<string, number>> = {
   'tenant:eightfold': 350,

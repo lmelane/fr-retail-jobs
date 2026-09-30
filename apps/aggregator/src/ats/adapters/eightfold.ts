@@ -143,7 +143,10 @@ function brandOf(data: DetailResponse['data']): string | undefined {
  *   · le même gabarit titré « Description » et « Qualifications », sans rien dessous (16) — le texte lu faisait
  *     30 caractères, passait donc pour une description, et aurait été publié tel quel.
  * Relu en ligne le 30/09 : la fiche 1168275706359 rend, octet pour octet, le gabarit titré sans contenu ; la fiche
- * 1168275738003, refusée par le pare-feu le 29/09, porte 1 892 caractères de texte.
+ * 1168275738003, refusée par le pare-feu le 29/09, porte 1 892 caractères de texte. Et la capture du 28/09, avec
+ * ses propres fenêtres de refus, rend les mêmes vides : 27 des 28 sont identiques d'un jour à l'autre, la 28e
+ * (1168275762891) n'était pas encore publiée le 28/09. Un vide lu (200, JSON) n'est pas un refus du pare-feu, qui
+ * répond 405 en HTML.
  *
  * La règle est donc STRUCTURELLE : on retire les titres de rubrique (un `<h1>`…`<h6>` court) ; s'il ne reste aucun
  * texte, l'éditeur n'a rien publié sous ses rubriques. Un titre long reste un contenu. Un champ ABSENT ou d'un
