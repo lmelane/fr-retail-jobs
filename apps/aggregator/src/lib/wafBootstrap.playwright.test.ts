@@ -16,7 +16,8 @@ import { assertCaptureHealthy, withCaptureContext, type CaptureContext, type Cap
  */
 type Plan = { url: string; method?: string; type?: string; status: number; redirectTo?: string };
 const fx = vi.hoisted(() => ({ launches: 0, snapshot: null as null | ((fn: () => unknown) => unknown), plan: [] as Plan[],
-  webSocket: null as null | string, wsLeaked: [] as string[], lateRequest: null as null | string, continued: [] as string[] }));
+  webSocket: null as null | string, wsLeaked: [] as string[], lateRequest: null as null | string, lateRedirect: null as null | string,
+  continued: [] as string[], rawHeaders: [] as Record<string, string>[] }));
 vi.mock('playwright', () => ({ chromium: { launch: async () => {
   fx.launches++;
   fx.snapshot = AsyncLocalStorage.snapshot();
@@ -24,15 +25,19 @@ vi.mock('playwright', () => ({ chromium: { launch: async () => {
     const listeners = new Map<string, Set<(value: unknown) => void>>();
     let route: ((value: unknown) => unknown) | undefined; let wsRoute: ((socket: unknown) => unknown) | undefined;
     const emit = (event: string, value: unknown) => fx.snapshot!(() => { for (const fn of listeners.get(event) ?? []) fn(value); });
+    // Comme en HTTP/2 (mesuré au banc réel du second tour d'audit) : les en-têtes portent des pseudo-en-têtes.
     const makeRequest = (plan: Plan, from: unknown = null) => ({ url: () => plan.url, method: () => plan.method ?? 'GET',
       resourceType: () => plan.type ?? 'fetch', postDataBuffer: () => null, redirectedFrom: () => from,
-      allHeaders: async () => ({ 'user-agent': 'Browser fixture' }) });
+      allHeaders: async () => { const headers = { ':authority': new URL(plan.url).host, ':method': plan.method ?? 'GET',
+        ':path': new URL(plan.url).pathname, ':scheme': 'https', 'user-agent': 'Browser fixture' }; fx.rawHeaders.push(headers); return headers; } });
+    let sentFirst: unknown = null;
     /** Une requête de page : `route` (dans le contexte du lancement), puis, si elle part, sa réponse — et sa redirection. */
     const send = async (plan: Plan) => {
       const request = makeRequest(plan);
       emit('request', request);
       let sent = false;
       await fx.snapshot!(() => route!({ request: () => request, abort: async () => {}, continue: async () => { sent = true; fx.continued.push(plan.url); } }));
+      if (sent) sentFirst ??= request;
       if (!sent) { emit('requestfailed', request); return; }
       emit('response', { request: () => request, status: () => plan.status, headers: () => ({ 'content-type': 'text/html' }), body: async () => Buffer.from('corps') });
       if (plan.redirectTo) {
@@ -47,7 +52,11 @@ vi.mock('playwright', () => ({ chromium: { launch: async () => {
       on: (event: string, fn: (value: unknown) => void) => { if (!listeners.has(event)) listeners.set(event, new Set()); listeners.get(event)!.add(fn); },
       off: (event: string, fn: (value: unknown) => void) => { listeners.get(event)?.delete(fn); },
       cookies: async () => [{ name: 'aws-waf-token', value: 'final' }],
-      close: async () => { if (fx.lateRequest) await send({ url: fx.lateRequest, status: 200 }); },
+      close: async () => {
+        if (fx.lateRequest) await send({ url: fx.lateRequest, status: 200 });
+        // Une requête déjà partie redirigée pendant la fermeture : le navigateur la suit sans `route`.
+        if (fx.lateRedirect) { emit('request', makeRequest({ url: fx.lateRedirect, type: 'document', status: 200 }, sentFirst)); fx.continued.push(fx.lateRedirect); }
+      },
       newPage: async () => ({
         url: () => fx.plan[0]?.url ?? 'https://careers.ralphlauren.com/',
         waitForTimeout: async () => { await new Promise(resolve => setTimeout(resolve, 5)); },
@@ -78,7 +87,7 @@ const BOUNDED: Plan[] = [{ url: LISTING, type: 'document', status: 202 }, { url:
 const collection = (rows: CaptureRecord[]): CaptureContext => ({ sequence: 0, write: async record => { rows.push(record); },
   wafBootstrap: wafBootstrapPolicy('ralph-lauren-avature', null) });
 
-beforeEach(() => { vi.stubEnv('PIPELINE_PAUSED', '0'); clearWafTokens(); setWafPrimer(undefined); Object.assign(fx, { plan: BOUNDED, webSocket: null, wsLeaked: [], lateRequest: null, continued: [] }); });
+beforeEach(() => { vi.stubEnv('PIPELINE_PAUSED', '0'); clearWafTokens(); setWafPrimer(undefined); Object.assign(fx, { plan: BOUNDED, webSocket: null, wsLeaked: [], lateRequest: null, lateRedirect: null, continued: [], rawHeaders: [] }); });
 afterEach(async () => { vi.unstubAllEnvs(); await closeBrowser(); });
 
 describe('amorçage inscrit sous le vrai comportement de Playwright', () => {
@@ -92,6 +101,9 @@ describe('amorçage inscrit sous le vrai comportement de Playwright', () => {
     expect(q).toHaveLength(4); expect(i).toHaveLength(4);
     expect(Q.wafBootstrapped).toBe(true); expect(I.wafBootstrapped).toBe(true);
     expect(I.wafJournal?.bootstrap).toHaveLength(4); expect(Q.wafJournal?.bootstrap).toHaveLength(4);
+    // Prémisse HTTP/2 : les en-têtes observés portaient des pseudo-en-têtes, et l'inscription a gardé l'identité.
+    expect(fx.rawHeaders.some(headers => ':authority' in headers)).toBe(true);
+    expect(q.every(row => row.requestData.hops[0].request.userAgent === 'Browser fixture')).toBe(true);
   });
 
   it('une redirection de la page défiée vers une autre origine : inscrite, et l’amorçage échoue', async () => {
@@ -104,6 +116,18 @@ describe('amorçage inscrit sous le vrai comportement de Playwright', () => {
     // Prémisse : `route` n'a vu que la page défiée ; la requête redirigée est pourtant partie — et elle est au journal.
     expect(fx.continued).toContain('https://ailleurs.example/fuite');
     expect(rows.map(row => row.requestUrl)).toContain('https://ailleurs.example/fuite');
+  });
+
+  it('une redirection d’une requête déjà partie, pendant la fermeture : jamais inscrite, l’amorçage échoue', async () => {
+    fx.lateRedirect = 'https://ailleurs.example/apres-vidange';
+    const rows: CaptureRecord[] = []; const store = collection(rows);
+    await withCaptureContext(store, async () => {
+      await expect(primeWafCookie(LISTING)).rejects.toThrow(/after the journal was drained/);
+      expect(() => assertCaptureHealthy()).toThrow(/after the journal was drained/);
+    });
+    // Prémisse : la requête redirigée est partie après la vidange, et n'est pas au journal.
+    expect(fx.continued).toContain('https://ailleurs.example/apres-vidange');
+    expect(rows.map(row => row.requestUrl)).not.toContain('https://ailleurs.example/apres-vidange');
   });
 
   it('un WebSocket ouvert par la page est clos avant de joindre un serveur', async () => {

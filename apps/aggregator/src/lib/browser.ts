@@ -138,9 +138,12 @@ export type BootstrapObservation = BootstrapRequest & {
   status: number | null; responseHeaders: Record<string, string>; body: Buffer | null; failure: string | null;
 };
 /**
- * Le contrat d'un amorçage PROUVÉ (D-483) : `allow` décide, AVANT l'envoi, de chaque requête du navigateur — une
- * requête refusée n'est jamais envoyée ; `record` reçoit chacune de celles qui sont parties, attendu avant que le
- * contexte ne se ferme. Sans observateur, l'amorçage garde son comportement historique (hors collecte).
+ * Le contrat d'un amorçage PROUVÉ (D-483) : `allow` décide, AVANT l'envoi, de chaque requête que le navigateur
+ * soumet à `route` — une requête refusée n'est jamais envoyée. Une redirection, elle, est suivie par le navigateur
+ * sans repasser par `route` : la requête redirigée PART ; elle est inscrite si elle survient avant la vidange, et
+ * l'amorçage échoue si elle sort des bornes ou si elle survient une fois la vidange commencée (elle ne peut plus
+ * être inscrite). `record` reçoit chacune des requêtes parties avant la vidange, attendu avant la fermeture du
+ * contexte. Sans observateur, l'amorçage garde son comportement historique (hors collecte).
  */
 export type BootstrapObserver = {
   allow(request: BootstrapRequest): boolean;
@@ -204,7 +207,8 @@ async function primeWafTokenOnce(origin: string, url: string, observer?: Bootstr
     });
     const blocked = new WeakSet<object>();
     const sent = new Set<PlaywrightRequest>();
-    // Une fois la vidange commencée, plus rien ne part : une requête tardive ne pourrait plus être inscrite.
+    // Une fois la vidange commencée, `route` refuse tout : une requête tardive ne pourrait plus être inscrite. Une
+    // redirection, qui ne passe pas par `route`, est détectée jusqu'après la fermeture et fait échouer l'amorçage.
     let closing = false;
     const releaseGuard = await guardContext(context, observer ? request => !closing && observer.allow(request) : undefined, blocked,
       observer ? request => { sent.add(request); } : undefined);
@@ -218,13 +222,14 @@ async function primeWafTokenOnce(origin: string, url: string, observer?: Bootstr
       }
       token = await settledWafToken(context, page, origin);
     } finally {
-      // Toute requête partie est inscrite avant la fermeture, y compris celle restée sans réponse : un journal
-      // d'amorçage qui ne dirait pas tout ce qui a été envoyé ne prouverait rien (D-483).
+      // Toute requête partie avant la vidange est inscrite avant la fermeture, y compris celle restée sans réponse :
+      // un journal d'amorçage qui ne dirait pas tout ce qui a été envoyé ne prouverait rien (D-483).
       closing = true;
       const failure = await recording?.drain();
       releaseGuard();
       await context.close();
-      if (failure) throw failure;
+      const late = recording?.finish();
+      if (failure ?? late) throw failure ?? late;
     }
     return token;
   });
@@ -268,17 +273,26 @@ const withTimeout = <T>(work: Promise<T>, label: string): Promise<T> => {
 /**
  * Inscrit chaque requête partie du navigateur d'amorçage — réponse lue (corps borné) ou échec de transport — auprès
  * de l'observateur. Une requête refusée par `allow` n'est jamais partie : elle n'est pas un transport et n'est pas
- * inscrite. `drain` cesse d'écouter, attend chaque inscription, inscrit comme échec toute requête partie restée sans
- * issue, et rend la première erreur d'archivage (qui fait échouer l'amorçage).
+ * inscrite. `drain` cesse d'écouter les réponses, attend chaque inscription, inscrit comme échec toute requête partie
+ * restée sans issue, et rend la première erreur (archivage, ou requête redirigée hors bornes). L'écoute des requêtes
+ * reste active jusqu'à `finish`, appelé APRÈS la fermeture du contexte : toute requête redirigée apparue une fois la
+ * vidange commencée — partie sans `route`, jamais inscrite — y rend une erreur qui fait échouer l'amorçage.
  */
 function observeBootstrap(context: BrowserContext, observer: BootstrapObserver, blocked: WeakSet<object>, sent: Set<PlaywrightRequest>) {
   const settled = new Set<PlaywrightRequest>();
   const pending = new Set<Promise<void>>();
   let failure: unknown;
   // Une redirection est suivie par le navigateur sans repasser par `route` (mesuré le 30/09) : la requête redirigée
-  // est PARTIE. Elle est inscrite comme toute autre, et si elle sort des bornes l'amorçage échoue.
+  // est PARTIE. Avant la vidange, elle est inscrite comme toute autre, et si elle sort des bornes l'amorçage échoue ;
+  // après le début de la vidange, elle ne peut plus être inscrite : l'amorçage échoue (`finish`).
   const escaped = (request: PlaywrightRequest) => !observer.allow({ url: request.url(), method: request.method(), resourceType: request.resourceType() });
-  const onRequest = (request: PlaywrightRequest) => { if (request.redirectedFrom()) sent.add(request); };
+  let draining = false;
+  let late: Error | undefined;
+  const onRequest = (request: PlaywrightRequest) => {
+    if (!request.redirectedFrom()) return;
+    if (draining) late ??= new Error('WAF bootstrap redirect sent after the journal was drained');
+    else sent.add(request);
+  };
   const describe = (request: PlaywrightRequest) => ({ url: request.url(), method: request.method(), resourceType: request.resourceType(),
     postData: request.postDataBuffer() });
   const track = (request: PlaywrightRequest, work: () => Promise<BootstrapObservation>) => {
@@ -289,7 +303,11 @@ function observeBootstrap(context: BrowserContext, observer: BootstrapObserver, 
     pending.add(task);
     void task.finally(() => pending.delete(task));
   };
-  const headersOf = (request: PlaywrightRequest) => withTimeout(request.allHeaders(), 'Browser request headers timeout').catch(() => null);
+  // En HTTP/2, les en-têtes d'une requête (redirigée notamment) portent des pseudo-en-têtes (`:authority`…), qu'aucun
+  // `Headers` n'accepte : ils ne décrivent pas l'identité ni la négociation, ils sont écartés.
+  const headersOf = (request: PlaywrightRequest) => withTimeout(request.allHeaders(), 'Browser request headers timeout')
+    .then(headers => Object.fromEntries(Object.entries(headers).filter(([name]) => !name.startsWith(':'))))
+    .catch(() => null);
   const onResponse = (response: BrowserResponse) => {
     const request = response.request();
     track(request, async () => {
@@ -318,7 +336,7 @@ function observeBootstrap(context: BrowserContext, observer: BootstrapObserver, 
   context.on('requestfailed', onFailed);
   return {
     async drain(): Promise<unknown> {
-      context.off('request', onRequest);
+      draining = true;
       context.off('response', onResponse);
       context.off('requestfailed', onFailed);
       for (const request of sent) {
@@ -327,6 +345,10 @@ function observeBootstrap(context: BrowserContext, observer: BootstrapObserver, 
       }
       while (pending.size) await Promise.allSettled([...pending]);
       return failure;
+    },
+    finish(): Error | undefined {
+      context.off('request', onRequest);
+      return late;
     },
   };
 }

@@ -18,7 +18,9 @@ import { invalidAccess, type AccessScope } from './accessScope.js';
  *      `WafChallengeError`, sans navigateur — avant ce lot, sa collecte de qualification amorçait hors journal ;
  *   2. un seul fournisseur, le défi AWS WAF (jamais un captcha, jamais un autre anti-robot) ;
  *   3. le navigateur n'envoie que la requête défiée elle-même (GET de l'adresse exacte) et des requêtes vers
- *      l'infrastructure du défi (hôtes `*.awswaf.com`) ; tout le reste est refusé AVANT l'envoi ;
+ *      l'infrastructure du défi (hôtes `*.awswaf.com`) ; toute autre requête soumise à `route` est refusée AVANT
+ *      l'envoi ; une redirection, que le navigateur suit sans `route`, part — elle fait alors échouer l'amorçage
+ *      (inscrite si elle précède la vidange du journal, jamais inscrite sinon) et la collecte ;
  *   4. chaque requête partie est inscrite au journal de la collecte (`BROWSER_RESPONSE`), relue par l'inspection
  *      d'accès, et consommée à l'identique par le rejeu hors réseau ;
  *   5. dans le RUN, la décision d'accès courante doit déclarer l'amorçage (`bootstraps`) : origine et hôtes du défi,
