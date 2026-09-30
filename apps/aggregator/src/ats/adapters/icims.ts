@@ -5,6 +5,8 @@ import pLimit from 'p-limit';
 import { enrichPostingEvidence, postingEvidenceOptions } from '../../lib/postingEvidence.js';
 import { htmlToPlainText } from '../../lib/html.js';
 import { crashPointReached, CRASH_POINTS } from '../../lib/crashInjection.js';
+import { detailRetryAllowed, waitBeforeDetailRetry } from '../../lib/detailRetry.js';
+import { sourceDeadlineReached } from '../../lib/sourceBudget.js';
 import { icimsDetailOrigins, icimsPostingURL, icimsDetailMatchesListing } from '../../identity/icims.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
 
@@ -155,7 +157,11 @@ export async function fetchIcimsJobs(config: Record<string, unknown>): Promise<A
   if (!complete) issues.add('ENUMERATION_NOT_PROVEN');
 
   const limit = pLimit(Math.max(1, Math.min(4, Number(config.detailConcurrency) || 2)));
-  const jobs = await Promise.all(out.map(job => limit(async () => {
+  const failedDetail = (job: NormalizedJob, error: unknown): NormalizedJob =>
+    ({ ...job, publicationHold: 'ICIMS_DETAIL_FETCH_FAILED', raw: { ...(job.raw as object), detailReadError: String(error) } });
+  const failed: number[] = [];
+  let detailsRead = 0;
+  const jobs = await Promise.all(out.map((job, index) => limit(async () => {
     const page = icimsPostingURL(job.url);
     if (!page || page.id !== job.externalId || !detailOrigins.has(page.url.origin)) {
       return { ...job, publicationHold: 'ICIMS_DETAIL_ORIGIN_UNQUALIFIED' };
@@ -166,9 +172,26 @@ export async function fetchIcimsJobs(config: Record<string, unknown>): Promise<A
     if (crashPointReached(CRASH_POINTS.DURING_DETAIL_POOL)) {
       process.kill(process.pid, 'SIGKILL');
     }
+    detailsRead += 1;
     try { return mergeIcimsDetail(job, await fetchText(job.url), config); }
-    catch (error) { return { ...job, publicationHold: 'ICIMS_DETAIL_FETCH_FAILED', raw: { ...(job.raw as object), detailReadError: String(error) } }; }
+    catch (error) { failed.push(index); return failedDetail(job, error); }
   })));
+  /*
+   * UNE relecture, différée, des fiches en échec (30/09/2026), avec la règle et les bornes des listes génériques
+   * (`lib/detailRetry.ts`). urbn-hub, RUN du 28/09 : la fiche 31752 (stores-na-urbn) a répondu trois fois 502 en deux
+   * secondes, le même corps CloudFront « The origin closed the connection » daté de la même seconde — l'erreur mise en
+   * cache par le CDN, que les relances immédiates du transport relisent. La même fiche répondait 200 quinze minutes
+   * plus tôt dans le même RUN et le lendemain ; faute de relecture, l'offre est restée à instruire et le RUN rouge.
+   * Une fiche toujours en échec garde sa retenue ICIMS_DETAIL_FETCH_FAILED, comme avant.
+   */
+  if (detailRetryAllowed(failed.length, detailsRead)) {
+    await waitBeforeDetailRetry(config);
+    for (const index of failed.sort((a, b) => a - b)) {
+      if (sourceDeadlineReached()) break;
+      try { jobs[index] = mergeIcimsDetail(out[index], await fetchText(out[index].url), config); }
+      catch (error) { jobs[index] = failedDetail(out[index], error); }
+    }
+  }
   return { jobs, complete, truncated: termination === 'PAGE_BUDGET_EXHAUSTED' || (declaredPages !== undefined && pagesRead < declaredPages),
     enumeration: { method: 'PUBLISHER_PAGE_COUNT_HTML_PAGINATION', endpoint: `${origin}/jobs/search?ss=1&in_iframe=1`, pages: pagesRead, rawCount, termination, issues: [...issues],
       scopes: [{ scope: 'pages', declaredTotal: declaredPages ?? -1, uniqueIds: pagesRead, pages: pagesRead, complete }], pageEvidence } };
