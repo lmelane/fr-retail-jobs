@@ -146,13 +146,14 @@ marqué **existe** (lu ou mesuré le 28/09/2026) ou **décidé** (D-475, R-140 d
   métiers d'encadrement manquants (responsable comptable, directeur RH business partner…) ; « Lead » niveau
   d'expertise ou encadrement (« Lead Software Engineer », « Lead Accountant », environ 17 offres perdues), « chef de rayon » et « responsable de rayons » de la grande distribution (un
   métier d'encadrement propre, aujourd'hui Floor manager, 40 offres et plus), « Responsable contrôle de gestion » au
-  métier de base, « Dispenser » partagé entre Assistant et Préparateur en pharmacie (Boots, près de 400 offres), la forme
-  « Responsable adjoint·e » généralisée (« Responsable adjoint comptable » recevrait l'Adjoint de boutique ; aucun
-  cas dans le corpus, et la ramener à l'exact ferait perdre les « Assistant Manager (m/w/d), <centre> » justes),
+  métier de base (corrigé par 6h le 30/09/2026), « Dispenser » partagé entre Assistant et Préparateur en pharmacie (Boots, près de 400 offres), la forme
+  « Responsable adjoint·e » généralisée (« Responsable adjoint comptable » recevrait l'Adjoint de boutique ; 3 cas
+  trouvés depuis, Comptabilité, Visual Merchandising, Prévention des pertes, exclus par 6h le 30/09/2026 ; la ramener
+  à l'exact ferait perdre les « Assistant Manager (m/w/d), <centre> » justes),
   les marques de contrat et de genre sur les intitulés de niveau (« Superviseur H/F », « Lead - Part Time »,
   « Responsable Adjointe » sans métier : exigence (9) et (10) du moteur), « Sales Lead with Keys » partagé entre Premier vendeur et Floor manager chez UGG, « chef de rayon »
   de la grande distribution rattaché au Floor manager, les noms de « Conseiller de vente » dans 8 langues à confronter
-  à l'usage des offres (§34), « Stellvertretender Filialleiter » classé Store manager par une règle servie (29 offres).
+  à l'usage des offres (§34), « Stellvertretender Filialleiter » classé Store manager par une règle servie (corrigé par 6h le 30/09/2026 : Adjoint).
 - **Ce que la constitution impose au moteur (sous-lot 2B)** : (1) un intitulé validé par les juges vaut pour
   l'intitulé EXACT ; sa généralisation à tout intitulé qui le contient est un synonyme partagé, vérifié sur ce qu'il
   capte (R-66 §2, étape 6c : 187 expressions jugées sur leurs captures, 570 ramenées à l'intitulé exact) ; (2)
@@ -225,9 +226,11 @@ marqué **existe** (lu ou mesuré le 28/09/2026) ou **décidé** (D-475, R-140 d
   servie (`search-3`, `apps/api/lib/search-model.ts`) lit tout alias dans l'intitulé et le fait passer devant le code
   du moteur : aucune activation de la v3 (2C) tant qu'elle n'est pas remplacée par la lecture de la colonne (2B-4)** ;
   sinon 869 offres verraient leur métier remplacé (« Responsable vendeur » indexé Conseiller de vente).
-  **Défauts connus, entrées de la passe suivante** : l'alias servi « Optometric Technician » d'Optométriste ;
+  **Défauts connus, entrées de la passe suivante** : l'alias servi « Optometric Technician » d'Optométriste (sa lecture
+  est retirée par 6h le 30/09/2026 ; l'alias de recherche reste) ;
   « Säljare », « Πωλητής », « 销售助理 » portés par Commercial ou Assistant commercial ; adjoints suédois et japonais
-  lus Responsable de boutique (« Assisterande Butikschef Gant Outlet Hede », « アシスタントストアマネージャー ») ;
+  lus Responsable de boutique (« Assisterande Butikschef Gant Outlet Hede », « アシスタントストアマネージャー » ; corrigé par
+  6h le 30/09/2026) ;
   « area manager » lu sur des postes d'entrepôt ou de vente wholesale ; Chef de produit rangé en Développement
   produit & R&D (« chef de produit » ramené à l'exact : 53 offres non assistantes perdues) ; « Conseiller.e de
   ventes » au pluriel non lu (48 offres) ; libellés affichés de Premier vendeur et Keyholder en pl, cs, pt, ro, el.
@@ -236,7 +239,7 @@ marqué **existe** (lu ou mesuré le 28/09/2026) ou **décidé** (D-475, R-140 d
   aperçu 6b refait (63 % des offres classées contre 47,1 %, prémisse 100 %, 0 collision, hors plan 0,3 %) ; moteur,
   6d tour 7, 600 couples : 1,2 % de faux selon l'assistant, 1,8 % selon le juge (bornes hautes 2,4 % et 3,3 %),
   dont « Manager des ventes » (45 offres) classé Floor manager alors que le point 37 d laisse « Sales Manager » sans
-  métier : question au CEO ; métiers lus, 6f tour 4, 400 couples sur 979 (1 048 offres) : 2,8 % selon l'assistant,
+  métier : question au CEO (le contexte de D-486 le range sous le point 37 d ; corrigé par 6h le 30/09/2026, voir plus bas) ; métiers lus, 6f tour 4, 400 couples sur 979 (1 048 offres) : 2,8 % selon l'assistant,
   5,5 % selon le juge (qui compte aussi les Product Owner informatiques et les formateurs d'entrepôt comme d'autres
   métiers, par la famille). **Compatibilité des trois migrations avec le code servi (vérifiée dans le code de
   `main`)** : la disponibilité de l'API n'exige que ses propres migrations ; le code servi n'écrit ni `titleRoles` ni
@@ -251,8 +254,56 @@ marqué **existe** (lu ou mesuré le 28/09/2026) ou **décidé** (D-475, R-140 d
   migrations aurait écrit une observation par offre) ; les sondes de couverture mesurent le métier comme la facette
   (code ou métier lu, `packages/db/colonnes-facette.ts`). Défauts connus restants : la clé de l'intitulé et celle de
   l'alias ne passent pas par la même normalisation (le « ı » turc : 133 formes jamais lues, 4 offres) ; le lecteur
-  ignore les familles (« Visual Merchandising Assistant » lu Assistant merchandiser, 5 offres) ; `titleRoles` dépend
+  ignore les familles (« Visual Merchandising Assistant » lu Assistant merchandiser, 4 offres : exclu par 6h le
+  30/09/2026 ; le défaut général demeure) ; `titleRoles` dépend
   aussi du code du lecteur, que sa version ne date pas (à dater avant toute modification du lecteur une fois activé).
+- **Vocabulaire corrigé à la main avant l'activation (étape 6h, 30/09/2026, D-475 §39)**, fichier
+  `audits/2026-09-28/curation-v3/6h-corrections-main.json`, lu par l'assemblage (6) et l'aperçu (6b) : seulement des faux
+  mesurés (tours 6 et 7 du moteur, 4 et 5 des métiers lus, 8 du moteur) ; chaque correction dit sa nature :
+  **décision** (§37 d : « Manager des ventes », « Manager, Sales » sans métier ; §37 b : « Responsable adjoint » suivi de
+  Comptabilité, Visual Merchandising ou Prévention des pertes n'est pas l'adjoint de boutique ; §32 a : « Responsable
+  contrôle de gestion »), **frontière servie** (« assistant », « adjoint », « deputy » du Responsable de boutique, dans les
+  langues du corpus : Assistent, Assisterende/Assisterande, Ställföreträdande, Stellvertretender/Stellv., Vice,
+  アシスタント, qui vont à l'Adjoint par des expressions ajoutées) ou **lecture de l'assistant** (Commis de cuisine,
+  Assistant KAM, Designer chaussures et Collection Merchandiser pour leur niveau d'assistant, Visual Merchandising
+  Assistant, « controlling solutions », « inventory controlling », « programme office », « Product Manager Assistant
+  Designer », lecture « Optometric Technician » retirée). Effets recomptés par `6h-effets.mts` (`6h-effets.json`) :
+  116 couples et 183 offres changent sur le corpus du 29/09 (122 et 189 sur l'export du 30/09), aucun changement
+  inexpliqué ; le Responsable de boutique perd 93 offres, toutes à l'Adjoint ; le Floor manager 45 (« Manager des
+  ventes »), le Manager commercial 7, le Contrôleur de gestion 8, l'Optométriste 8 (lecture), le Cuisinier 6 (au Commis
+  de cuisine), l'Account Manager 4 (à l'Assistant KAM). L'assemblage refuse une forme sans métier qui en garde un, une
+  expression qui ne rend pas son métier, une lecture retirée encore vérifiée, et une exclusion non tenue ou inutile
+  (chaque forme, retirée en mémoire, doit rendre le métier à l'un de ses témoins, intitulés réels du corpus). Témoins :
+  `apps/aggregator/src/occupation/title-roles.test.ts`, prémisse prouvée en mémoire, 36 rouges sur le manifeste d'avant
+  6h. Aperçu refait : 62,9 % des offres classées, prémisse 100 %, hors plan 0,3 %, 58 offres perdent le métier servi,
+  0 collision ; bancs 6 338/6 338.
+  **Mesures (verdicts de l'assistant committés avant le juge `gemini-3.1-pro-preview`, même grille qu'aux tours 7 et
+  4)**, sur les seuls couples jamais jugés sous leur résultat actuel (écartés par le COUPLE, jamais par le titre : les
+  corrections ont été faites sur les couples déjà jugés, et les remesurer rendrait 0 faux par construction) :
+
+  | Tour | Version | Population mesurée | Assistant | Juge |
+  |---|---|---|---|---|
+  | moteur, 6d tour 8 | 6h, premier tour (`e6ae8bc1`) | corpus du 29/09 : 600 couples sur 3 286 (4 030 offres, 30 % des offres qui changent) | 2 F, 0,3 % (Wilson 1,2 %) | 11 F, 1,8 % (3,3 %) |
+  | lus, 6f tour 5 | idem | les 368 couples jamais jugés (377 des 1 024 offres lues) | 5 F, 1,4 % (3,1 %) | 12 F, 3,3 % (5,6 %) |
+  | moteur, 6d tour 9 | **finale** (`e789492d`) | export du 30/09 : 600 couples sur 3 182 (3 849 offres, 26 % des offres qui changent), dont 78 nouveaux | 8 F, 1,3 % (2,6 %) | 14 F, 2,3 % (3,9 %) |
+  | lus, 6f tour 6 | **finale** | les 135 couples lus apparus depuis le 29/09 (141 des 1 153 offres lues), qu'aucune correction n'a vus | 0 F (2,8 %) | 4 F, 3,0 % (7,4 %) |
+
+  Faux du tour 9 relevés par les deux : « Lead Sales Associate » qui perd le Conseiller de vente sans recevoir le
+  Premier vendeur (3 couples, 16 offres ; défaut connu du « Lead »), « Junior Sales Manager » au wholesale (§37 d, non
+  couvert par 6h), « Sales Representative » d'une boutique Omega au Commercial, « Employment Brand Manager » au Chef de
+  marque, « Sales & Client Advisor (Keyholder) » sans métier du moteur ; par le juge seul : chef de rayon (2), « Services
+  Manager, Stores » (2), « Chef d'équipe des services », « Regional Brand Ambassador », « Eladó (Tesco) » ; par
+  l'assistant seul : l'Account Manager d'un comptoir Clinique chez Boots. Faux du tour 6 selon le juge : un « assistant
+  X » et une alternance lus X, « Business Process Owner – Controlling », « Ingénieur amélioration continue Transport ».
+  Au tour 8, parmi les 11 du juge : 3 intitulés de niveau que le point 36 range au Floor manager (« Supervisor I-1 »,
+  « Lead Supervisor I-1 », « Acting Lead Supervisor I »), « Associate Manager » à l'Adjoint (8 offres, règle exacte),
+  2 « Replenishment Sales Associate », 2 « Eladó (Auchan) », un chef de rayon, « International Sales Manager » ; au
+  tour 5, parmi les 12 : 5 « assistant X » ou stages lus X sans métier distinct pour ce niveau, 3 par la famille
+  (Product Owner informatiques, formateur d'entrepôt), « Manager, Sales Controlling » et « Client Experience Training
+  Manager ». L'audit métier du 30/09 relit certains verdicts de l'assistant plus sévèrement (tour 8 : 0,8 % ; tour 5 :
+  1,6 %). **Aucune des deux lectures n'est sous 1 % selon le juge de mesure, ni le moteur selon l'assistant au tour 9 :
+  la condition de D-486 n'est pas remplie (§6).** Restent pour une passe suivante ou une carte : les faux ci-dessus,
+  les questions du §6.
 - **Référence ESCO** publiée et datée, somme de contrôle versionnée.
 
 ### 3.2 L'IA validatrice : passes de curation (D-475 §30, §31 a)
@@ -427,3 +478,18 @@ d'envoi, le regroupement d'une même offre entre plusieurs alertes, le suivi des
 
 Les GO de production du §4. Au lot 3 : l'heure d'envoi des alertes (07:30 heure de Paris, décidé par R-130 §1,
 non construit). Tout nouveau choix produit qu'un audit révélerait lui sera posé en carte de décision.
+
+**À arbitrer, relevé par les mesures et l'audit du 30/09/2026 (étape 6h, §3.1)** — rien n'en est tranché :
+- **D-486** (GO de l'activation « si la mesure finale passe sous 1 % ») : sur la version finale, le moteur mesure 2,3 %
+  de faux selon le juge (1,3 % selon l'assistant) et les métiers lus 3,0 % (0 selon l'assistant, sur 135 couples) ; la
+  condition n'est pas remplie (§3.1) : l'activation revient au CEO.
+- **« Un poste d'assistant X sort-il sous X ? »** en général (§38) : environ 75 offres lues aujourd'hui ; 6h ne l'a
+  appliqué qu'aux métiers dont la v3 porte un métier distinct pour ce niveau, en le disant (lecture de l'assistant).
+- **Chef de rayon et responsable de rayons de la grande distribution** rangés au Floor manager (plus de 50 offres) :
+  un métier d'encadrement propre, par analogie avec le point 35.
+- **« Replenishment Sales Associate »** (réassort de boutique, Primark) : rangé au rayon par les juges de 3c, au stock
+  en boutique ou sans métier selon la variante.
+- **« Account Manager » d'un comptoir de marque en magasin** (Clinique chez Boots, John Lewis) lu Account Manager du
+  wholesale ; **« Lead Sales Associate »** qui perd le Conseiller de vente sans recevoir le Premier vendeur.
+- **« Manager des ventes »** : rangé sous le point 37 d par 6h (forme française de « Sales Manager ») ; ses 45 offres
+  sont toutes de boutique, comme les 137 « Sales Manager » que le point 37 d laisse sans métier.
