@@ -7,10 +7,11 @@ type AlertReport = Pick<HealthReport, 'degraded' | 'broken' | 'incidents'>;
 
 /** The subject leads with what blocks; what is only visible follows. */
 export function alertSubject(report: AlertReport): string {
-  const { blocking, retentions, outages, retained } = alertSections(report.incidents);
+  const { blocking, retentions, outages, known, retained } = alertSections(report.incidents);
   return [`[Catwalks] ${count(blocking.length, 'source bloquante', 'sources bloquantes')}`,
     retentions.length ? `${count(retentions.length, 'source', 'sources')} avec retenues non bloquantes (${count(retained, 'offre', 'offres')})` : '',
-    outages.length ? `${count(outages.length, 'panne éditeur prouvée, non bloquante', 'pannes éditeur prouvées, non bloquantes')}` : ''].filter(Boolean).join(' · ');
+    outages.length ? `${count(outages.length, 'panne éditeur prouvée, non bloquante', 'pannes éditeur prouvées, non bloquantes')}` : '',
+    known.length ? `${count(known.length, 'échec connu, non bloquant', 'échecs connus, non bloquants')}` : ''].filter(Boolean).join(' · ');
 }
 
 /** Exposed for the witness: the digest exactly as it is sent. */
@@ -69,9 +70,11 @@ export function alertSections(incidents: readonly SourceHealth[]) {
   const blocking = incidents.filter(incident => incident.blocking !== false);
   const retentions = incidents.filter(incident => incident.blocking === false && incident.nonBlockingRetentionOnly)
     .sort((a, b) => (b.retained ?? 0) - (a.retained ?? 0) || a.source.localeCompare(b.source));
-  const outages = incidents.filter(incident => incident.blocking === false && !incident.nonBlockingRetentionOnly);
+  const outages = incidents.filter(incident => incident.blocking === false && !incident.nonBlockingRetentionOnly && !incident.knownFailure);
+  // D-480 §1 : un échec connu décidé par le CEO n'est ni bloquant ni une panne prouvée de l'éditeur.
+  const known = incidents.filter(incident => incident.blocking === false && !incident.nonBlockingRetentionOnly && incident.knownFailure);
   const retained = retentions.reduce((total, incident) => total + (incident.retained ?? 0), 0);
-  return { blocking, retentions, outages, retained };
+  return { blocking, retentions, outages, known, retained };
 }
 
 /**
@@ -117,7 +120,7 @@ function sourceBlock(incident: SourceHealth, blocks: boolean, lines: string[]): 
 }
 
 function buildHtml(report: AlertReport): string {
-  const { blocking, retentions, outages, retained } = alertSections(report.incidents);
+  const { blocking, retentions, outages, known, retained } = alertSections(report.incidents);
   const previous = (incident: SourceHealth) => incident.previous != null ? `${NUMBER.format(incident.previous)} au run précédent` : '';
   const volume = (incident: SourceHealth) => incident.notCollected
     ? [NOT_COLLECTED, previous(incident)].filter(Boolean).join(', ')
@@ -129,6 +132,8 @@ function buildHtml(report: AlertReport): string {
     volume(incident)])).join('');
   const outageBlocks = outages.map(incident => sourceBlock(incident, false,
     [...(incident.notCollected ? [volume(incident)] : []), ...(incident.note ? [incident.note] : [])])).join('');
+  const knownBlocks = known.map(incident => sourceBlock(incident, false,
+    [volume(incident), ...(incident.note ? [incident.note] : []), `décision ${incident.knownFailure}`])).join('');
   const heading = (text: string) => `<h3 style="font-weight:400;font-size:17px;margin:24px 0 4px">${text}</h3>`;
   // A source that failed before collecting is counted apart: its offers stay online, it is not « en panne » with none.
   const notCollected = report.incidents.filter(incident => incident.notCollected && incident.status === 'BROKEN').length;
@@ -146,6 +151,9 @@ function buildHtml(report: AlertReport): string {
     ${outages.length ? `${heading(`Non bloquant, pannes de l'éditeur prouvées : ${count(outages.length, 'source', 'sources')}`)}
     ${line('Réponse 5xx de la source, archivée : ce n’est pas une retenue.')}
     ${outageBlocks}` : ''}
+    ${known.length ? `${heading(`Non bloquant, échecs connus : ${count(known.length, 'source', 'sources')}`)}
+    ${line('Décidés par le CEO : la source reste collectée et publie ses offres, elle ne ferme aucune offre qu’elle ne sait pas prouver absente. Tout autre défaut de ces sources resterait bloquant.')}
+    ${knownBlocks}` : ''}
   </div>`;
 }
 

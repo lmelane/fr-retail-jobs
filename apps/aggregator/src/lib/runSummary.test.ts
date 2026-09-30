@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { summarizeOrchestration } from './runSummary.js';
+import { failureLine, summarizeOrchestration } from './runSummary.js';
 
 describe('completion signal', () => {
   const night = { total: 424, ok: 423, failed: 1, timedOut: 0,
@@ -35,5 +35,28 @@ describe('completion signal', () => {
     expect(summary.omittedFailures).toBe(404);
     expect(summary.incidents.broken).toBe(424);
     expect(result.incidents).toHaveLength(424);
+  });
+});
+
+describe('D-480 §1: named known failures do not fail the RUN, and nothing else is let through', () => {
+  const base = { total: 415, ok: 414, failed: 1, timedOut: 0, incidents: [] };
+  const run = (source: string, origin: 'UNKNOWN' | 'INTERNAL', code: string) =>
+    summarizeOrchestration({ ...base, failures: [failureLine(source, [{ origin, code, count: 1 }], 'erreurs d’ingestion')], issues: [{ source, origin, code, count: 1 }] });
+  it('a named source with its named defect: listed, non-blocking, the RUN is healthy', () => {
+    const summary = run('lumentee', 'UNKNOWN', 'ENUMERATION_NOT_PROVEN');
+    expect(summary).toMatchObject({ executionHealthy: true, blockingReasons: [], outcome: 'COMPLETED_WITH_ERRORS' });
+    expect(summary.knownFailures).toEqual({ decision: 'D-480', sources: ['lumentee'], bySource: [{ source: 'lumentee', codes: ['ENUMERATION_NOT_PROVEN'] }] });
+    expect(summary.failures).toEqual(['lumentee (non bloquant : échec connu ENUMERATION_NOT_PROVEN (D-480))']);
+    expect(run('l-oreal-professionnel', 'UNKNOWN', 'HttpStatusError')).toMatchObject({ executionHealthy: true });
+  });
+  it('the same source with ANOTHER defect still blocks', () => {
+    expect(run('lumentee', 'UNKNOWN', 'EmployerIdentityReviewRequired')).toMatchObject({ executionHealthy: false, blockingReasons: ['UNRESOLVED_FAILURE'] });
+    expect(run('on-running', 'INTERNAL', 'CaptureUnavailableError')).toMatchObject({ executionHealthy: false, blockingReasons: ['INTERNAL_FAILURE'] });
+  });
+  it('an unnamed source with the same defect still blocks', () => {
+    const summary = run('mango', 'UNKNOWN', 'ENUMERATION_REFUTED');
+    expect(summary).toMatchObject({ executionHealthy: false, blockingReasons: ['UNRESOLVED_FAILURE'] });
+    expect(summary.knownFailures.sources).toEqual([]);
+    expect(summary.failures).toEqual(['mango (bloquant : erreurs d’ingestion)']);
   });
 });

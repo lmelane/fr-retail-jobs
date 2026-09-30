@@ -46,6 +46,8 @@ export type SourceHealth = {
    * non bloquant.
    */
   nonBlockingRetentionOnly?: true;
+  /** Échec connu, non bloquant, par décision du CEO (D-480 §1) : la référence de la décision. */
+  knownFailure?: string;
   /**
    * Le code de l'incident quand la santé le nomme ; absent, l'attribution reste `SOURCE_HEALTH_REGRESSION`.
    * Une énumération NON PROUVÉE n'est pas RÉFUTÉE (D-453 §1) : deux codes, tous deux bloquants.

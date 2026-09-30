@@ -143,8 +143,9 @@ describe('everything else still fails the RUN', () => {
     expect(incidents.every(incident => incident.blocking)).toBe(true);
     return { issues, sourceRun, summary, incidents };
   };
-  it('a retention next to a refuted enumeration (tapestry, UNPARTITIONED_UNDER_CAP) — both named', async () => {
-    const { issues, sourceRun } = await blocking(retaining('tapestry', 2300, { WORKDAY_EMPLOYER_ABSENT_IN_DETAIL: 3 },
+  // Forme de tapestry au RUN 35ba463f, sous un autre nom : tapestry est un échec connu depuis D-480 §1 (voir plus bas).
+  it('a retention next to a refuted enumeration (tapestry shape, UNPARTITIONED_UNDER_CAP) — both named', async () => {
+    const { issues, sourceRun } = await blocking(retaining('capped-board', 2300, { WORKDAY_EMPLOYER_ABSENT_IN_DETAIL: 3 },
       { complete: false, enumerationReading: 'REFUTED', enumerationRefutedBy: ['UNPARTITIONED_UNDER_CAP'] }));
     expect(issues).toEqual([{ origin: 'UNKNOWN', code: 'ENUMERATION_REFUTED', count: 1 }]);
     expect(String(sourceRun.note)).toMatch(/énumération réfutée.*UNPARTITIONED_UNDER_CAP.*WORKDAY_EMPLOYER_ABSENT_IN_DETAIL=3/);
@@ -442,5 +443,25 @@ describe('every non-blocking retention names the decision that settles it (D-453
   it('a reason to instruct keeps blocking, with no decision attached', () => {
     expect(retentionClass('WORKDAY_DETAIL_FETCH_FAILED')).toBe('TO_INSTRUCT');
     expect(retentionStatus('WORKDAY_DETAIL_FETCH_FAILED')).toBe('à instruire');
+  });
+});
+
+describe('D-480 §1 (30/09/2026): a named known failure is collected, listed in its own alert section, and does not fail the RUN', () => {
+  it('lumentee, listing not provable: non-blocking, named by its decision, never among proven publisher outages', async () => {
+    const { issues, incidents, summary } = await runOne(stat('lumentee', 5, { complete: false, enumerationReading: 'NOT_PROVEN' }));
+    // Premise: the same unproven enumeration that blocks any other source.
+    expect(issues).toEqual([{ origin: 'UNKNOWN', code: 'ENUMERATION_NOT_PROVEN', count: 1 }]);
+    expect(incidents).toEqual([expect.objectContaining({ source: 'lumentee', blocking: false, knownFailure: 'D-480' })]);
+    expect(summary).toMatchObject({ executionHealthy: true, blockingReasons: [], knownFailures: { sources: ['lumentee'] } });
+    const report = { degraded: 1, broken: 0, incidents };
+    expect(alertSubject(report)).toBe('[Catwalks] 0 source bloquante · 1 échec connu, non bloquant');
+    expect(alertHtml(report)).toContain('Non bloquant, échecs connus : 1 source');
+    expect(alertHtml(report)).not.toContain('pannes de l\'éditeur prouvées');
+  });
+  it('the same defect on an unnamed source still blocks', async () => {
+    const { incidents, summary } = await runOne(stat('crawled', 5, { complete: false, enumerationReading: 'NOT_PROVEN' }));
+    expect(incidents).toEqual([expect.objectContaining({ blocking: true })]);
+    expect(incidents[0]).not.toHaveProperty('knownFailure');
+    expect(summary).toMatchObject({ executionHealthy: false, blockingReasons: ['UNRESOLVED_FAILURE'] });
   });
 });
