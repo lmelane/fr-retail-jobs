@@ -79,7 +79,57 @@ export type AttestationInput = {
   truncated?: boolean;
   /** Ce que le dernier run PRODUCTIF de cette source avait rendu. */
   previous?: number | null;
+  /** Ce que CE run a publié : seule base de la confirmation d'une chute par l'éditeur (D-484 §2). */
+  published?: number;
+  /** Le total que la source annonçait au run de `previous`, s'il était connu : l'autre moitié de cette confirmation. */
+  previousDeclaredTotal?: number | null;
 };
+
+/**
+ * D-484 §2 (arbitrage CEO du 30/09/2026) : UNE CHUTE CONFIRMÉE PAR L'ÉDITEUR N'EST PAS UN EFFONDREMENT.
+ *
+ * L'effondrement (moins de la moitié du run précédent) bloque le RUN et refuse l'attestation parce qu'il est ce
+ * que produisent une clé tournée, un chemin déplacé ou un anti-bot : des offres qui disparaissent sans que la source
+ * le dise. Il ne l'est pas quand la source le DIT, et seulement si les trois conditions de la décision tiennent :
+ *   1. le total qu'elle annonce baisse dans la même proportion que les offres publiées ;
+ *   2. la liste est prouvée complète (énumération prouvée, sans troncature ni erreur) ;
+ *   3. 100 % des offres annoncées sont lues (`fetched` = total annoncé).
+ * Tout autre cas reste un effondrement : compteur absent (aujourd'hui ou au run de référence), compteur stable,
+ * énumération non prouvée, lecture partielle.
+ *
+ * « Même proportion » : les deux proportions sont `publiées / publiées avant` et `annoncé / annoncé avant` ; leur
+ * rapport, `(publiées / annoncé) / (publiées avant / annoncé avant)`, doit rester à `CONFIRMED_DROP_TOLERANCE` de 1.
+ * Mesuré sur les runs de production du 20 au 29/09/2026 (`scripts/ops/mesures/stabilite-couverture-annoncee.mts`) :
+ * 1 053 couples de runs consécutifs de 166 sources, tous deux à énumération prouvée ; ce rapport s'écarte de 1 de
+ * moins de 0,32 % dans 95 % des cas, de plus de 1 % dans 29 cas seulement : 9 entre 1 et 2,8 % (une ou deux offres
+ * d'écart entre le compteur et la publication, un jour ordinaire) et 20 au-delà de 8 %, où la publication et le
+ * compteur divergent — offres qui remontent sans que le compteur bouge (reprises d'identité du 23/09 : 1 → 34 offres
+ * pour 34 annoncées), sources dont la plupart des offres sont retenues (Nike, Levi's) — exactement ce que la règle
+ * doit continuer à bloquer. 5 % couvre tout le bruit ordinaire et aucun de ces cas. Aigle, le 29/09 : 121 → 60
+ * publiées, 122 → 60 annoncées, rapport 1,008 (0,8 %).
+ *
+ * Limite assumée de la condition 3 : un éditeur qui compte des DIFFUSIONS là où nous lisons des annonces
+ * (DigitalRecruiters, une annonce diffusée en plusieurs lieux) peut tout lire sans que `fetched` égale son total ;
+ * sa chute reste alors bloquante. 1 277 des 1 353 runs prouvés de la même période lisent exactement leur total.
+ */
+export const CONFIRMED_DROP_TOLERANCE = 0.05;
+export type DropConfirmationInput = Pick<AttestationInput, 'complete' | 'errors' | 'truncated' | 'declaredTotal' | 'fetched' | 'previous' | 'previousDeclaredTotal'> & {
+  published: number;
+};
+
+/** Les trois conditions de D-484 §2 sur une chute de plus de moitié ; `false` pour tout ce qui n'est pas une telle chute. */
+export function isPublisherConfirmedDrop(run: DropConfirmationInput): boolean {
+  const { previous, previousDeclaredTotal: before, declaredTotal: after, published } = run;
+  if (!previous || previous <= 0 || !(published < previous * COLLAPSE_RATIO)) return false;
+  // 2. Liste prouvée complète.
+  if (run.complete !== true || run.truncated === true || (run.errors ?? 0) > 0) return false;
+  // 1. Un compteur des deux côtés — l'absence de l'un ou de l'autre ne confirme rien.
+  if (!Number.isInteger(before) || before! <= 0 || !Number.isInteger(after) || after! <= 0) return false;
+  // 3. Toutes les offres annoncées lues.
+  if (run.fetched !== after) return false;
+  // 1. La même proportion.
+  return Math.abs((published / after!) / (previous / before!) - 1) <= CONFIRMED_DROP_TOLERANCE;
+}
 
 /** An explicit publisher zero plus completed collection is different from a silent empty response. */
 export function isDeclaredEmptyEnumeration(run: Pick<AttestationInput, 'complete' | 'errors' | 'truncated' | 'declaredTotal' | 'fetched'>): boolean {
@@ -135,7 +185,9 @@ export function isTrustedForAttestation(run: AttestationInput): boolean {
    * sans la colonne cessent d'être lues comme un effondrement inventé.
    */
   if (!isDeclaredEmptyEnumeration(run) && run.previous && run.previous > 0 && run.fetched != null) {
-    if (run.fetched < run.previous * COLLAPSE_RATIO) return false;
+    // Sauf chute confirmée par l'éditeur (D-484 §2) : elle atteste comme toute liste prouvée.
+    if (run.fetched < run.previous * COLLAPSE_RATIO &&
+      !(run.published !== undefined && isPublisherConfirmedDrop({ ...run, published: run.published }))) return false;
   }
 
   return true;

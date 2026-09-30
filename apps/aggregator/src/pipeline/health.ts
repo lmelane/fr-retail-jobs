@@ -1,7 +1,7 @@
 import { log } from '../observability/logger.js';
 import type { PrismaClient } from '@prisma/client';
 import type { IngestStats } from './ingest.js';
-import { isTrustedForAttestation, isDeclaredEmptyEnumeration } from './attestation.js';
+import { isTrustedForAttestation, isDeclaredEmptyEnumeration, isPublisherConfirmedDrop } from './attestation.js';
 import { recordSourceRunSummary } from '../connectors/sourceStore.js';
 import { GUARDED_NEGATIVE_PROOFS, MASS_GUARDED_RETENTIONS, retentionClass, type RetentionClass } from './publicationDisposition.js';
 import { FULL_RUN_MARKER } from './fullRunMarker.js';
@@ -48,6 +48,13 @@ export type SourceHealth = {
   nonBlockingRetentionOnly?: true;
   /** Échec connu, non bloquant, par décision du CEO (D-480 §1) : la référence de la décision. */
   knownFailure?: string;
+  /**
+   * La chute de plus de moitié que l'éditeur confirme lui-même (D-484 §2, `isPublisherConfirmedDrop`) : signalée,
+   * non bloquante, et ce run atteste l'absence comme toute liste prouvée (le refresh ferme ensuite, après son délai de
+   * 48 h). Posé seulement quand la source n'a AUCUN autre défaut ; absent, une chute reste l'effondrement bloquant
+   * `SOURCE_HEALTH_REGRESSION`.
+   */
+  confirmedDrop?: { previousDeclaredTotal: number; declaredTotal: number };
   /**
    * Le code de l'incident quand la santé le nomme ; absent, l'attribution reste `SOURCE_HEALTH_REGRESSION`.
    * Une énumération NON PROUVÉE n'est pas RÉFUTÉE (D-453 §1) : deux codes, tous deux bloquants.
@@ -153,7 +160,7 @@ export async function checkSourceHealth(
   const previous = await previousCounts(prisma, stats.map(s => s.source));
   const results = stats.map(stat => {
     const before = previous.get(stat.source);
-    return evaluateSourceHealth(stat, before?.jobs ?? null, before?.retention ?? null);
+    return evaluateSourceHealth(stat, before?.jobs ?? null, before?.retention ?? null, before?.declaredTotal ?? null);
   });
 
   await recordRun(prisma, results, stats);
@@ -172,8 +179,11 @@ export async function checkSourceHealth(
  * The health of ONE source run, from its counters, the volume of its last productive run and — for the negative
  * proof only — what the last complete RUN left unpublished.
  * Pure: `checkSourceHealth` persists it, the replay of a past RUN re-reads it.
+ * `previousDeclaredTotal` is the total the source declared on the SAME run as `before` (`SourceRun.declaredTotal`);
+ * without it no drop can be confirmed by the publisher (D-484 §2) and a collapse blocks as before.
  */
-export function evaluateSourceHealth(stat: IngestStats, before: number | null, retentionBaseline: RetentionBaseline | null = null): SourceHealth {
+export function evaluateSourceHealth(stat: IngestStats, before: number | null, retentionBaseline: RetentionBaseline | null = null,
+  previousDeclaredTotal: number | null = null): SourceHealth {
   const jobs = stat.created + stat.merged + stat.updated;
   const retention = stat.held ? describeRetention(stat) : undefined;
   const base = { source: stat.source, jobs, previous: before, coverage: coverageOf(stat), rates: ratesOf(stat),
@@ -187,7 +197,7 @@ export function evaluateSourceHealth(stat: IngestStats, before: number | null, r
     return { ...base, status: jobs > 0 ? 'DEGRADED' : 'BROKEN', note: retention ? `${errors} · ${retention.note}` : errors,
       ...(notCollected ? { notCollected: true } : {}) };
   }
-  const collection = collectionHealth(stat, base, jobs, before);
+  const collection = collectionHealth(stat, base, jobs, before, previousDeclaredTotal);
   if (!retention) return collection;
   /**
    * D-453 §1 et D-456 : une retenue sur preuve de la source, ou écartée par l'équipe, reste visible mais ne fait
@@ -198,17 +208,21 @@ export function evaluateSourceHealth(stat: IngestStats, before: number | null, r
    * bloquants et nommés dans la même note. Seule une retenue sans aucun autre défaut, sans motif à instruire, et
    * que la garde de la preuve négative ne signale pas, est marquée non bloquante.
    */
-  const otherDefect = collection.status === 'BROKEN' || collection.status === 'DEGRADED';
+  // A drop the publisher confirms (D-484 §2) is no defect of the collection: it is named, and blocks nothing on its own.
+  const dropped = collection.confirmedDrop;
+  const otherDefect = (collection.status === 'BROKEN' || collection.status === 'DEGRADED') && !dropped;
   const guard = retention.nonBlocking && !otherDefect ? negativeProofGuard(stat, retentionBaseline) : undefined;
   const jumped = guard?.kind === 'JUMP';
   // D-484 §1 : au-delà de sa borne, un refus nommé par l'éditeur n'est plus un retrait d'offre mais une panne.
   const mass = retention.nonBlocking && !otherDefect ? refusalMassGuard(stat) : undefined;
   const note = otherDefect ? `${collection.note} · ${retention.note}`
-    : [`${retention.note} ; ${enumerationLabel(stat)}`, guard?.note, mass].filter(Boolean).join(' · ');
+    : [...(dropped ? [collection.note] : []), `${retention.note} ; ${enumerationLabel(stat)}`, guard?.note, mass].filter(Boolean).join(' · ');
   const finding = otherDefect ? collection.finding : jumped ? 'NATIVE_RETENTION_JUMP' as const : mass ? 'NATIVE_REFUSAL_MASS' as const : undefined;
   const nonBlockingOnly = retention.nonBlocking && !otherDefect && !jumped && !mass;
   return { ...base, status: jobs > 0 ? 'DEGRADED' : 'BROKEN', note, ...(finding ? { finding } : {}),
     ...(nonBlockingOnly ? { nonBlockingRetentionOnly: true } : {}),
+    // Carried only when nothing else blocks: a blocking incident never wears the non-blocking drop.
+    ...(nonBlockingOnly && dropped ? { confirmedDrop: dropped } : {}),
     // A team exclusion alone is no issue on ANY path (`issuesFromResult`): `ingest --source` exits 0 on it, so its
     // alert says non-blocking too. A native retention stays strict there: an issue, exit 1, listed as blocking.
     ...(nonBlockingOnly && retention.teamOnly ? { blocking: false } : {}),
@@ -328,7 +342,8 @@ function guardedShare(stat: IngestStats, baseline: RetentionBaseline | null, neg
 }
 
 /** Everything a run is judged on besides write errors and retentions: extent, volume, field coverage. */
-function collectionHealth(stat: IngestStats, base: Omit<SourceHealth, 'status'>, jobs: number, before: number | null): SourceHealth {
+function collectionHealth(stat: IngestStats, base: Omit<SourceHealth, 'status'>, jobs: number, before: number | null,
+  previousDeclaredTotal: number | null): SourceHealth {
   if (stat.truncated) {
     return { ...base, status: 'DEGRADED',
       note: `troncature : ${stat.fetched} collectées` +
@@ -379,20 +394,31 @@ function collectionHealth(stat: IngestStats, base: Omit<SourceHealth, 'status'>,
     };
   }
 
+  const fieldIncident = fieldCoverageIncident(stat);
   if (before != null && before > 0 && jobs < before * COLLAPSE_RATIO) {
+    const drop = `${Math.round((1 - jobs / before) * 100)} % d’offres en moins qu’au run précédent`;
+    /*
+     * D-484 §2 : la chute que l'éditeur confirme (son total baisse dans la même proportion, liste prouvée, tout lu)
+     * reste signalée mais ne bloque pas. Une couverture de champ effondrée en même temps reste, elle, bloquante.
+     */
+    const confirmed = isPublisherConfirmedDrop({ previous: before, previousDeclaredTotal, published: jobs, fetched: stat.fetched,
+      declaredTotal: stat.declaredTotal, complete: stat.complete, truncated: stat.truncated, errors: stat.errors });
+    const confirmation = confirmed ? `, confirmée par l’éditeur : total annoncé ${previousDeclaredTotal} → ${stat.declaredTotal}, ` +
+      `${stat.fetched} lues sur ${stat.declaredTotal}, énumération prouvée (D-484 §2, non bloquant)` : '';
     return {
       source: stat.source,
       status: 'DEGRADED',
       jobs,
       previous: before,
-      note: `${Math.round((1 - jobs / before) * 100)} % d’offres en moins qu’au run précédent`,
+      note: [`${drop}${confirmation}`, ...(confirmed && fieldIncident ? [fieldIncident] : [])].join(' · '),
+      // With a field incident too, the drop stays the blocking regression it was (no finding: never a D-480 known failure).
+      ...(confirmed && !fieldIncident ? { confirmedDrop: { previousDeclaredTotal: previousDeclaredTotal!, declaredTotal: stat.declaredTotal! } } : {}),
       coverage: coverageOf(stat),
       rates: ratesOf(stat),
     };
   }
 
   // Volume held — but did the FIELDS? (The Eightfold failure mode.)
-  const fieldIncident = fieldCoverageIncident(stat);
   if (fieldIncident) {
     return {
       source: stat.source,
@@ -453,12 +479,12 @@ function fieldCoverageIncident(stat: IngestStats): string | undefined {
  * itself, so the baseline is genuinely the previous run — not this one. A source
  * with no history returns nothing and is treated as NEW.
  */
-async function previousCounts(prisma: PrismaClient, sourceKeys: string[]): Promise<Map<string, { jobs: number; retention: RetentionBaseline | null }>> {
+async function previousCounts(prisma: PrismaClient, sourceKeys: string[]): Promise<Map<string, { jobs: number; declaredTotal: number | null; retention: RetentionBaseline | null }>> {
   // Most recent first; the first row seen per source is its last run.
   const rows = await prisma.sourceRun.findMany({
     where: { sourceKey: { in: sourceKeys } },
     orderBy: { ranAt: 'desc' },
-    select: { sourceKey: true, jobs: true, fetched: true, accepted: true, runId: true },
+    select: { sourceKey: true, jobs: true, fetched: true, accepted: true, runId: true, declaredTotal: true },
   });
   // The guard's reference: only a row of a COMPLETE production RUN counts, never a targeted, canary or --source run.
   const runIds = [...new Set(rows.flatMap(row => row.runId ? [row.runId] : []))];
@@ -472,17 +498,21 @@ async function previousCounts(prisma: PrismaClient, sourceKeys: string[]): Promi
    * leurs offres (audit A2, 2026-09-06). Une source qui a déjà tourné mais
    * n'a jamais produit vaut 0 : « toujours rien » reste une panne, pas un NEW.
    */
-  const latest = new Map<string, number>();
+  /*
+   * The total the publisher declared on THAT SAME run (`SourceRun.declaredTotal`, written by `recordRun` from the
+   * sealed extraction's `declaredTotal`): the other half of a drop the publisher confirms (D-484 §2). Taken from the
+   * row whose `jobs` is the reference, never from another run.
+   */
+  const latest = new Map<string, { jobs: number; declaredTotal: number | null }>();
   // The unpublished share of the last complete RUN that COLLECTED the source: a failed collection has no share.
   const retention = new Map<string, RetentionBaseline>();
   for (const row of rows) {
     const known = latest.get(row.sourceKey);
-    if (known === undefined) latest.set(row.sourceKey, row.jobs);
-    else if (known === 0 && row.jobs > 0) latest.set(row.sourceKey, row.jobs);
+    if (known === undefined || known.jobs === 0 && row.jobs > 0) latest.set(row.sourceKey, { jobs: row.jobs, declaredTotal: row.declaredTotal });
     if (!retention.has(row.sourceKey) && row.runId && completeRuns.has(row.runId) && (row.fetched ?? 0) > 0 && row.accepted != null)
       retention.set(row.sourceKey, { fetched: row.fetched!, accepted: row.accepted });
   }
-  return new Map([...latest].map(([key, jobs]) => [key, { jobs, retention: retention.get(key) ?? null }]));
+  return new Map([...latest].map(([key, run]) => [key, { ...run, retention: retention.get(key) ?? null }]));
 }
 
 async function recordRun(prisma: PrismaClient, results: SourceHealth[], stats: IngestStats[]): Promise<void> {
@@ -505,10 +535,13 @@ async function recordRun(prisma: PrismaClient, results: SourceHealth[], stats: I
           errors: stat.errors,
           // A declared and proven empty listing is not an unexplained loss of
           // writes. The refresh still requires its archived posting-ID proof.
+          // A drop the publisher confirms (D-484 §2) attests like any proven enumeration (closure after the refresh's 48 h).
           canAttestAbsence: (result.previous !== null || isDeclaredEmptyEnumeration(stat)) && isTrustedForAttestation({
             status: result.status, complete: stat.complete, errors: stat.errors, truncated: stat.truncated,
             declaredTotal: stat.declaredTotal, fetched: stat.fetched, previous: result.previous,
-          }) && (isDeclaredEmptyEnumeration(stat) || !(result.previous != null && result.previous > 0 && result.jobs < result.previous * COLLAPSE_RATIO)),
+            published: result.jobs, previousDeclaredTotal: result.confirmedDrop?.previousDeclaredTotal ?? null,
+          }) && (isDeclaredEmptyEnumeration(stat) || !!result.confirmedDrop ||
+            !(result.previous != null && result.previous > 0 && result.jobs < result.previous * COLLAPSE_RATIO)),
           // The coverage rates ride along on EVERY run, incident or not: they
           // are the trend the next regression gets caught against. Columns
           // carry the queryable numbers; the note stays human-readable.
