@@ -119,10 +119,11 @@ describe("métiers lus dans un intitulé plus long (D-475 point 38)", () => {
 });
 
 describe("la v3 de la passe de curation, sur les exemples de l'arbitrage, des mesures 6f et de l'audit", () => {
-  // Copie du manifeste audité (audits/2026-09-28/curation-v3/6-manifeste-v3.json, sha256 1010f684b3949fa9…) : le code ne lit
-  // jamais les archives (check:layout) ; l'empreinte garde la copie identique à l'audit.
+  // Copie du manifeste audité (audits/2026-09-28/curation-v3/6-manifeste-v3.json, après l'étape 6h du 30/09/2026) : le code
+  // ne lit jamais les archives (check:layout) ; l'empreinte garde la copie identique à l'audit.
+  const EMPREINTE_V3 = "e6ae8bc125034ba28f19c8d5d8bf907bc99fcd4cb409254f330b5254fc7d969f";
   const texte = readFileSync(new URL("./__fixtures__/manifeste-v3-20260928.json", import.meta.url), "utf8");
-  it("la copie est celle de l'audit", () => { expect(createHash("sha256").update(texte).digest("hex")).toBe("1010f684b3949fa9eaf59be1cf4ec027e4d71f880acb487900e95bc6c1b8a605"); });
+  it("la copie est celle de l'audit", () => { expect(createHash("sha256").update(texte).digest("hex")).toBe(EMPREINTE_V3); });
   const v3 = compileOccupationManifest(JSON.parse(texte));
   const r = (t: string) => occupationTitleRoles(v3, t, v3.classify(t));
   it.each([
@@ -145,5 +146,64 @@ describe("la v3 de la passe de curation, sur les exemples de l'arbitrage, des me
   it("« Responsable vendeur » reste le seul encadrement de la vente, « Assisterande butikschef » l'adjoint", () => {
     expect(r("Responsable vendeur")).toEqual(["retail-sales-lead"]);
     expect(r("Assisterande butikschef")).toEqual(["assistant-store-manager"]);
+  });
+
+  // Étape 6h (D-475 §39 : le vocabulaire se corrige à la main avant l'activation) : les faux mesurés aux tours 7 (moteur)
+  // et 4 (métiers lus) qui contredisaient une décision prise ou une frontière servie. Chaque témoin affirme d'abord que
+  // l'intitulé contient bien une expression du métier écarté (la prémisse du défaut), puis que ce métier n'en sort plus.
+  it.each([
+    ["Manager des Ventes (F/H) // Axe Caisse - Champs Elysées - CDI 35h"],
+    ["Manager des ventes H/F"],
+    ["Manager, Sales"],
+    ["Manager, Sales - Cosmetics"],
+  ])("« %s » reste sans métier, comme « Sales Manager » (§37 d)", (titre) => {
+    expect(v3.classify("Sales Manager").occupationCode).toBeNull();
+    expect(v3.classify(titre).occupationCode).toBeNull();
+    expect(r(titre)).toEqual([]);
+  });
+  it.each([
+    ["Assistent Shopmanager", "Shopmanager", "store-manager", "assistant-store-manager"],
+    ["Stellvertretender Filialleiter (m/w/d)", "Filialleiter", "store-manager", "assistant-store-manager"],
+    ["Stellvertretende/r Filialleiter/in - Innsbruck", "Filialleiter", "store-manager", "assistant-store-manager"],
+    ["Stellv. Filialleiter München Theatinerstraße m/w/d", "Filialleiter", "store-manager", "assistant-store-manager"],
+    ["Vice Store Manager - Antwerp", "Store Manager", "store-manager", "assistant-store-manager"],
+    ["Assisterende butikschef", "Butikschef", "store-manager", "assistant-store-manager"],
+    ["【プーマアウトレット入間】アシスタントストアマネージャー募集！", "Store Manager", "store-manager", "assistant-store-manager"],
+    ["Assistent kok bij Asia Street Cooking", "Kok", "cook", "commis-de-cuisine"],
+    ["Commis Cuisinier 18H H/F - Anglet - CAFE ONO", "Cuisinier", "cook", "commis-de-cuisine"],
+    ["Stage - Assistant Key Account Manager Europe", "Account Manager", "responsable-de-comptes", "assistant-key-account-manager"],
+  ])("« %s » : le métier distinct de ce niveau, pas celui de « %s » (§37 b, frontières servies « assistant », « deputy »)", (titre, contenu, seconde, attendu) => {
+    expect(v3.classify(contenu).occupationCode).toBe(seconde);
+    expect(r(titre)).toEqual([attendu]);
+  });
+  it.each([
+    // [intitulé, métier écarté, intitulé voisin où ce métier sort toujours : la prémisse]
+    ["Optometric Technician - Training Provided!", "optometrist", null],
+    ["Functional Consultant Controlling Solutions (f/m/x)", "financial-controller", "Werkstudent Controlling (m/w/d)"],
+    ["ASSISTANT(E) FOOTWEAR DESIGNER - NEW CREATIONS", "designer-chaussures", "Footwear Designer"],
+    ["Visual Merchandising Assistant", "assistant-merchandiser", "Merchandising Assistant - Paris"],
+    ["CDI - Responsable Adjoint Visual Merchandising - 31 Rue Cambon - H/F/X", "assistant-store-manager", null],
+    ["CDI - Responsable adjoint Comptabilité Fournisseurs (H/F)", "assistant-store-manager", null],
+    ["Internship - Export Marketing Product Manager Assistant Designer Fragance Brands", "assistant-designer", null],
+    ["Responsable Controle de Gestion Industriel H/F", "financial-controller", null],
+  ])("« %s » ne sort plus sous %s (lecture retirée ou exclusion : autre métier, autre sens, encadrement)", (titre, ecarte, voisin) => {
+    const d = v3.classify(titre);
+    // Prémisse : le métier sort d'un intitulé voisin sans la forme corrigée, ou le résolveur le lit ici, ou une de ses
+    // règles s'applique ici puis s'exclut : c'est la correction qui le retire.
+    if (voisin) expect(r(voisin)).toContain(ecarte);
+    else expect(occupationTitleReadings(v3, titre, d).some((l) => l.role === ecarte) || v3.excludedOccupations(titre).has(ecarte)).toBe(true);
+    expect(d.occupationCode).not.toBe(ecarte);
+    expect(r(titre)).not.toContain(ecarte);
+  });
+  it("les corrections ne retirent rien de juste : le métier écarté se lit ou se classe encore là où il est", () => {
+    expect(r("Store Manager - Hurstville")).toEqual(["store-manager"]);
+    expect(r("Filialleiter (m/w/d)")).toEqual(["store-manager"]);
+    expect(r("Assistant Store Manager Visual Merchandiser I")).toEqual(["assistant-store-manager"]);
+    expect(r("Responsable adjoint F/H")).toEqual(["assistant-store-manager"]);
+    expect(r("Footwear Designer")).toEqual(["designer-chaussures"]);
+    expect(r("Merchandising Assistant - Paris")).toContain("assistant-merchandiser");
+    expect(r("Werkstudent Controlling (m/w/d)")).toContain("financial-controller");
+    expect(r("Contrôleur de gestion H/F")).toEqual(["financial-controller"]);
+    expect(r("Account Manager")).toEqual(["responsable-de-comptes"]);
   });
 });

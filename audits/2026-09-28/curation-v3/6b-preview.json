@@ -1,27 +1,27 @@
 {
- "calculeLe": "2026-09-29T17:59:52.618Z",
+ "calculeLe": "2026-09-30T08:56:51.515Z",
  "bilan": {
   "manifeste": "catwalks-occupations-20260929-v3",
   "couples": 43168,
   "offres": 80741,
-  "compilationMs": 210,
-  "classementMs": 1599,
+  "compilationMs": 231,
+  "classementMs": 1608,
   "premisse": {
    "accordAvecLaProduction": 100,
    "seuil": 97
   },
   "offresClassees": {
    "v1": 38000,
-   "v3": 50830,
+   "v3": 50779,
    "v1Pct": 47.1,
-   "v3Pct": 63
+   "v3Pct": 62.9
   },
   "ambigues": {
    "v1": 48,
    "v3": 64
   },
-  "gains": 12888,
-  "changementsDeMetier": 659,
+  "gains": 12837,
+  "changementsDeMetier": 747,
   "pertes": 58,
   "horsPlan": {
    "offres": 53,
@@ -52,7 +52,7 @@
    "pays": "FR",
    "offres": 16521,
    "classesV1": 58,
-   "classesV3": 70
+   "classesV3": 69.7
   },
   {
    "pays": "CA",
@@ -94,7 +94,7 @@
    "pays": "NL",
    "offres": 5347,
    "classesV1": 75.4,
-   "classesV3": 87.5
+   "classesV3": 87.6
   },
   {
    "pays": "CH",
@@ -106,7 +106,7 @@
    "pays": "BE",
    "offres": 4799,
    "classesV1": 79.2,
-   "classesV3": 94.8
+   "classesV3": 94.7
   },
   {
    "pays": "KR",
@@ -136,7 +136,7 @@
    "pays": "JP",
    "offres": 4109,
    "classesV1": 84.1,
-   "classesV3": 92.8
+   "classesV3": 92.9
   },
   {
    "pays": "HK",
@@ -244,7 +244,7 @@
    "pays": "DK",
    "offres": 1012,
    "classesV1": 61.2,
-   "classesV3": 76.4
+   "classesV3": 76.6
   },
   {
    "pays": "MX",
@@ -256,7 +256,7 @@
    "pays": "SE",
    "offres": 802,
    "classesV1": 66.6,
-   "classesV3": 79.7
+   "classesV3": 79.9
   },
   {
    "pays": "RO",
@@ -1377,6 +1377,15 @@
    "libelle": "Conseiller de vente"
   },
   {
+   "titre": "Stellvertretender Filialleiter (m/w/d)",
+   "service": "assistant-shop-manager",
+   "offres": 29,
+   "avant": "store-manager",
+   "metier": "assistant-store-manager",
+   "statut": "CLASSIFIED",
+   "libelle": "Adjoint au responsable de boutique"
+  },
+  {
    "titre": "Account Manager, Travel & Lifestyle",
    "service": null,
    "offres": 1,
@@ -1755,15 +1764,6 @@
    "libelle": "Assistant en pharmacie"
   },
   {
-   "titre": "Manager, Sales",
-   "service": null,
-   "offres": 3,
-   "avant": null,
-   "metier": "manager-commercial",
-   "statut": "CLASSIFIED",
-   "libelle": "Manager commercial"
-  },
-  {
    "titre": "Full Time Key Holder- BOSS Fashion Valley, San Diego",
    "service": "Retail Store",
    "offres": 1,
@@ -2023,6 +2023,15 @@
    "metier": "modeliste",
    "statut": "CLASSIFIED",
    "libelle": "Modéliste"
+  },
+  {
+   "titre": "【プーマアウトレット滋賀竜王】アシスタントストアマネージャー募集！",
+   "service": null,
+   "offres": 1,
+   "avant": null,
+   "metier": "assistant-store-manager",
+   "statut": "CLASSIFIED",
+   "libelle": "Adjoint au responsable de boutique"
   },
   {
    "titre": "Asesor de ventas - Liverpool Insurgentes, CDMX",
@@ -3112,15 +3121,6 @@
    "metier": "sales-advisor",
    "statut": "CLASSIFIED",
    "libelle": "Conseiller de vente"
-  },
-  {
-   "titre": "Key Holder- Pine Ridge Square Rack",
-   "service": null,
-   "offres": 1,
-   "avant": null,
-   "metier": "keyholder",
-   "statut": "CLASSIFIED",
-   "libelle": "Keyholder"
   }
  ]
 }

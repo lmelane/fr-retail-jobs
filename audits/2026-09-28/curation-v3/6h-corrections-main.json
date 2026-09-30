@@ -1,0 +1,227 @@
+{
+ "etape": "6h",
+ "titre": "Vocabulaire de la v3 corrigé à la main avant l'activation (D-475 §39 : « D'ici là, le vocabulaire se corrige à la main »)",
+ "redigeLe": "2026-09-30",
+ "perimetre": "Seulement les défauts mesurés (6d tour 7, 6f tour 4, défauts connus du plan §3.1) qui contredisent une décision déjà prise ou une frontière déjà servie. Aucune règle produit nouvelle : la question « un poste d'assistant X sort-il sous X ? » reste ouverte là où la taxonomie ne porte pas de métier distinct pour ce niveau (plan §3.1). Captures vérifiées par l'assistant sur les 43 168 couples du corpus (entrees/offres-preview-2026-09-29.json.gz) ; comptes en offres.",
+ "formesSansMetier": [
+  {
+   "formes": [
+    "Manager des ventes",
+    "Manageuse des ventes",
+    "Manager, Sales",
+    "Manager, Sales - Cosmetics"
+   ],
+   "decision": "D-475 §37 d : « Sales Manager » et « Chef des ventes » restent sans métier",
+   "motif": "« Manager des ventes » est la forme française de « Sales Manager », « Manager, Sales » sa forme inversée ; la v3 les classait Floor manager (règle généralisée « manager des ventes », 45 offres) et Manager commercial (intitulés exacts « Manager, Sales » et « Manager, Sales - Cosmetics », 7 offres).",
+   "mesure": {
+    "offres": 52,
+    "source": "6d tour 7 : 3 faux (assistant et juge)"
+   }
+  }
+ ],
+ "exclusions": [
+  {
+   "metier": "store-manager",
+   "formes": [
+    "assistent",
+    "assistants",
+    "assisterende",
+    "assisterande",
+    "stellvertretender",
+    "stellvertretende",
+    "stellv",
+    "vice store manager",
+    "アシスタント"
+   ],
+   "decision": "Frontière servie « assistant », « adjoint », « deputy » des règles de store-manager ; D-475 §37 b (l'Adjoint au responsable de boutique est un métier distinct)",
+   "motif": "La frontière servie ne voyait pas le néerlandais (« Assistent Shopmanager » 22 offres, « Assistent Store Manager »), le pluriel (« ASSISTANTS STORE MANAGER »), le danois et le suédois (« Assisterende/Assisterande butikschef »), l'allemand (« Stellvertretender Filialleiter » 29 offres, « Stellv. »), l'italien et le belge (« Vice Store Manager ») ni le japonais (« アシスタントストアマネージャー ») : le moteur ou la lecture les rendaient Responsable de boutique.",
+   "mesure": {
+    "offres": 96,
+    "source": "6f tour 4 : 3 faux (assistant) ; défaut connu « Stellvertretender Filialleiter » (29 offres) et « adjoints suédois et japonais lus Responsable de boutique »"
+   }
+  },
+  {
+   "metier": "cook",
+   "formes": [
+    "assistent",
+    "commis"
+   ],
+   "decision": "Taxonomie v3 : « Commis de cuisine » est un métier distinct du Cuisinier",
+   "motif": "« Assistent kok » (néerlandais, 4 offres) était lu Cuisinier ; « Commis Cuisinier » (2 offres) classé Cuisinier par la règle servie.",
+   "mesure": {
+    "offres": 6,
+    "source": "6f tour 4 : 2 faux (assistant)"
+   }
+  },
+  {
+   "metier": "responsable-de-comptes",
+   "formes": [
+    "assistant",
+    "assistante"
+   ],
+   "decision": "Frontière servie « assistant », « assistante » de key-account-manager ; « Assistant Key Account Manager » est un métier distinct de la v3",
+   "motif": "La règle généralisée « Account Manager » classait « Stage - Assistant Key Account Manager … » Account Manager (3 couples, 4 offres).",
+   "mesure": {
+    "offres": 4,
+    "source": "6d tour 7 : 2 faux (assistant), proches (juge)"
+   }
+  },
+  {
+   "metier": "designer-chaussures",
+   "formes": [
+    "assistant",
+    "assistante"
+   ],
+   "decision": "Frontière servie « assistant » de fashion-designer ; « Assistant designer » est un métier distinct",
+   "motif": "« ASSISTANT(E) FOOTWEAR DESIGNER » était lu Designer chaussures (1 offre).",
+   "mesure": {
+    "offres": 1,
+    "source": "6f tour 4 : 1 faux (assistant)"
+   }
+  },
+  {
+   "metier": "designer-accessoires",
+   "formes": [
+    "assistant",
+    "assistante"
+   ],
+   "decision": "Frontière servie « assistant » de fashion-designer, étendue aux métiers de design de la même famille",
+   "motif": "Même frontière que Designer chaussures ; aucune capture dans le corpus aujourd'hui.",
+   "mesure": {
+    "offres": 0,
+    "source": "prévention, même nature"
+   }
+  },
+  {
+   "metier": "designer-bijoux-accessoires",
+   "formes": [
+    "assistant",
+    "assistante"
+   ],
+   "decision": "Frontière servie « assistant » de fashion-designer, étendue aux métiers de design de la même famille",
+   "motif": "Même frontière que Designer chaussures ; aucune capture dans le corpus aujourd'hui.",
+   "mesure": {
+    "offres": 0,
+    "source": "prévention, même nature"
+   }
+  },
+  {
+   "metier": "designer-maille",
+   "formes": [
+    "assistant",
+    "assistante"
+   ],
+   "decision": "Frontière servie « assistant » de fashion-designer, étendue aux métiers de design de la même famille",
+   "motif": "Même frontière que Designer chaussures ; aucune capture dans le corpus aujourd'hui.",
+   "mesure": {
+    "offres": 0,
+    "source": "prévention, même nature"
+   }
+  },
+  {
+   "metier": "assistant-merchandiser",
+   "formes": [
+    "visual merchandising",
+    "visual merchandiser"
+   ],
+   "decision": "Taxonomie v3 : « Assistant Visual Merchandiser » (famille Visual merchandising) est un métier distinct de l'Assistant merchandiser (Merchandising & achats)",
+   "motif": "« Visual Merchandising Assistant » était lu Assistant merchandiser (2 couples, 4 offres) : défaut connu « le lecteur ignore les familles ».",
+   "mesure": {
+    "offres": 4,
+    "source": "6f tour 4 : 1 faux (assistant et juge)"
+   }
+  },
+  {
+   "metier": "financial-controller",
+   "formes": [
+    "responsable",
+    "controlling solutions",
+    "functional consultant"
+   ],
+   "decision": "D-475 §32 a (un poste d'encadrement est un autre métier ; même exclusion que le Comptable) ; plan §3.1 (un mot du métier employé dans un autre sens est un autre métier)",
+   "motif": "« Responsable (du) contrôle de gestion » classé au métier de base (5 couples, 6 offres, défaut connu) ; « Functional Consultant Controlling Solutions » (conseil en logiciel) lu Contrôleur de gestion (1 offre).",
+   "mesure": {
+    "offres": 7,
+    "source": "6d tour 6 : 1 faux (assistant) ; 6f tour 4 : 1 faux (assistant et juge)"
+   }
+  },
+  {
+   "metier": "assistant-store-manager",
+   "formes": [
+    "adjoint comptabilite",
+    "adjointe comptabilite",
+    "adjoint comptable",
+    "adjointe comptable",
+    "adjoint visual merchandising",
+    "adjointe visual merchandising"
+   ],
+   "decision": "D-475 §37 b vise l'adjoint de boutique ; plan §3.1 (défaut connu : « Responsable adjoint comptable recevrait l'Adjoint de boutique »)",
+   "motif": "La règle généralisée « Responsable adjoint·e » classait l’Adjoint au responsable de boutique « Responsable adjoint Comptabilité Fournisseurs » et « Responsable Adjoint Visual Merchandising » (2 offres). La frontière porte sur « adjoint » suivi du domaine : « Assistant Store Manager (Visual Merchandising & Styling) » reste un adjoint de boutique (3 offres servies).",
+   "mesure": {
+    "offres": 2,
+    "source": "6d tour 7 : 1 faux (assistant et juge)"
+   }
+  },
+  {
+   "metier": "assistant-designer",
+   "formes": [
+    "product manager assistant"
+   ],
+   "decision": "D-475 §32 a (le métier contenu est celui que le résolveur lit à la portée la plus longue) ; « Product Manager Assistant » désigne l'assistant d'un chef de produit",
+   "motif": "« Internship - Export Marketing Product Manager Assistant Designer Fragance Brands » classé Assistant designer par la règle généralisée « Assistant Designer » (1 offre).",
+   "mesure": {
+    "offres": 1,
+    "source": "6d tour 7 : 1 faux (assistant et juge)"
+   }
+  }
+ ],
+ "expressions": [
+  {
+   "metier": "assistant-store-manager",
+   "formes": [
+    "Assistent Store Manager",
+    "Assistent Storemanager",
+    "Assistent Shopmanager",
+    "Assistants Store Manager",
+    "Assisterende butikschef",
+    "Assisterande butikschef",
+    "Stellvertretender Filialleiter",
+    "Stellvertretende Filialleiterin",
+    "Stellvertretende/r Filialleiter",
+    "Stellv. Filialleiter",
+    "Vice Store Manager",
+    "アシスタントストアマネージャー"
+   ],
+   "mode": "phrase",
+   "decision": "D-475 §37 b (« Assistant Manager » et « Responsable adjoint » reçoivent l'Adjoint au responsable de boutique) ; mêmes expressions que la règle servie « Assistant Store Manager », « Deputy Store Manager », dans les langues du corpus",
+   "motif": "Sans elles, les intitulés que la frontière servie retire du Responsable de boutique n'auraient plus de métier alors que le leur est évident. Captures vérifiées : les 41 couples du corpus que ces formes captent sont tous des postes d'adjoint de boutique."
+  },
+  {
+   "metier": "commis-de-cuisine",
+   "formes": [
+    "Commis cuisinier",
+    "Assistent kok"
+   ],
+   "mode": "phrase",
+   "decision": "Taxonomie v3 : « Commis de cuisine » (alias « Commis Chef », « Keukenhulp »)",
+   "motif": "Captures vérifiées : « Commis Cuisinier 18H … » (2 offres), « Assistent Kok … » (4 offres)."
+  },
+  {
+   "metier": "assistant-key-account-manager",
+   "formes": [
+    "Assistant Key Account Manager"
+   ],
+   "mode": "phrase",
+   "decision": "Taxonomie v3 : « Assistant Key Account Manager » est un métier",
+   "motif": "L'intitulé exact était jugé ; généralisé, il capte les 3 couples (4 offres) « Stage - Assistant Key Account Manager … », tous des postes d'assistant KAM."
+  }
+ ],
+ "lecturesRetirees": [
+  {
+   "metier": "optometrist",
+   "phrase": "optometric technician",
+   "decision": "Plan §3.1, défaut connu : « l'alias servi « Optometric Technician » d'Optométriste »",
+   "motif": "Un technicien d'optométrie n'est pas optométriste ; lu dans « Optometric Technician - Training Provided! » et ses variantes (5 couples, 8 offres). L'alias de recherche servi reste (aucune phrase servie perdue) : défaut connu de la recherche."
+  }
+ ]
+}

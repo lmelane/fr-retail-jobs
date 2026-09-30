@@ -49,6 +49,11 @@ const slug = (v: string) => v.normalize('NFKD').replace(/\p{M}/gu, '').toLowerCa
 const e1 = lireEtape('1-correspondance-backend.json'), e2 = lireEtape('2-familles.json'), e3 = lireEtape('3-intitules-offres.json');
 const e3b = lireEtape('3b-garde-unicite.json'), e4 = lireEtape('4-encadrement.json'), e5 = lireEtape('5-libelles.json');
 const e5b = lireEtape('5b-libelles-corrections.json'), e5c = lireEtape('5c-garde.json');
+// Étape 6h : le vocabulaire corrigé à la main avant l'activation (D-475 §39), pour les seuls défauts mesurés qui contredisent
+// une décision prise ou une frontière servie (formes sans métier, exclusions, expressions, lectures retirées). Jamais pour
+// le manifeste de base que juge 6c.
+const e6h = !BASE && existsSync(`${DOSSIER_SORTIE}6h-corrections-main.json`) ? lireEtape('6h-corrections-main.json')
+  : { formesSansMetier: [], exclusions: [], expressions: [], lecturesRetirees: [] };
 const e5ParCle = new Map<string, any>(e5.metiers.map((m: any) => [m.cle, m]));
 const servis = new Map<string, any>(servie.occupations.map((o: any) => [o.key, o]));
 const tous = conceptsV3({ avecOffres: true, avecEncadrement: true });
@@ -70,6 +75,12 @@ const cleStable = (cle: string) => {
 };
 const cleMetier = new Map<string, string>(concepts.map((c) => [c.cle, cleStable(c.cle)]));
 const cleDe = (cle: string) => cleMetier.get(racine(cle))!;
+// Les corrections de 6h nomment le métier par sa clé finale ; une clé inconnue arrête l'assemblage.
+const conceptDeCle = new Map<string, string>([...cleMetier].map(([c, k]) => [k, c]));
+const conceptCorrige = (k: string) => { const c = conceptDeCle.get(k); if (!c) throw new Error(`6h : métier inconnu « ${k} »`); return c; };
+for (const x of [...e6h.exclusions, ...e6h.expressions, ...e6h.lecturesRetirees]) conceptCorrige(x.metier);
+for (const x of [...e6h.formesSansMetier, ...e6h.exclusions, ...e6h.expressions]) if (!x.formes?.length || x.formes.some((v: string) => !phraseMoteur(v)))
+  throw new Error(`6h : forme vide (${x.metier ?? 'sans métier'})`);
 
 // Libellés : 5b (formes valides comprises) ; servis gardés sauf forme longue ; retirés là où ils désignent un autre métier.
 const formeLongue = (v?: string) => !!v && (/\s\/\s|\//.test(v) || /\s+et\s+/.test(v));
@@ -105,6 +116,8 @@ const FLOOR_MANAGER = concepts.find((c) => cleMetier.get(c.cle) === 'manager-flo
 if (!FLOOR_MANAGER) throw new Error('métier Floor manager absent');
 const DECIDES_37 = ['Supervisor', 'Superviseur', 'Superviseure', 'Superviseuse', 'Lead'];
 for (const v of DECIDES_37) ajouter(FLOOR_MANAGER, v);
+// 6h : les expressions ajoutées à la main (captures vérifiées sur le corpus, voir le fichier).
+for (const x of e6h.expressions) for (const v of x.formes) ajouter(conceptCorrige(x.metier), v);
 // D-475 §35 : l'étape 3c décide, pour chaque intitulé et chaque ancien nom d'« Employé de commerce » : vente, rayon, ou
 // aucun métier sans accord des juges ; les formes grammaticales d'un nom suivent son verdict. Elle fait autorité sur tout
 // ce qu'elle a jugé, anciens noms compris (retirés des libellés par le renommage).
@@ -129,6 +142,8 @@ for (const t of e3.intitules) if (t.decision === 'variante' && t.preuve?.choix?.
 for (const v of e3b.variantesAjoutees) juge.set(phraseMoteur(v.intitule), racine(v.concept));
 for (const t of e4.intitules) if (t.cible) juge.set(phraseMoteur(t.intitule), racine(t.cible));
 for (const d of scission.decisions) if (d.metier !== 'aucun') for (const t of textesDe(d)) juge.set(phraseMoteur(t), d.metier === 'vente' ? deVente : deRayon);
+// 6h : une expression corrigée à la main a la force d'un intitulé jugé.
+for (const x of e6h.expressions) for (const v of x.formes) juge.set(phraseMoteur(v), racine(conceptCorrige(x.metier)));
 // La règle garde l'expression BRUTE (le moteur la normalise une fois ; normalisée deux fois, « e-commerce » perdait son
 // « e », audit technique du 29/09/2026) ; la garde compare les formes normalisées.
 const brute = new Map<string, string>();
@@ -171,7 +186,9 @@ for (const [f, cles] of porteurs) {
 }
 // Formes vagues (§32 c), appliquées à TOUTES les expressions, pas seulement à celles que 5c a vues (« superviseur » restait).
 const interdites = new Set<string>([...VAGUES, ...e3.intitules.filter((t: any) => t.preuve?.choix?.decision === 'vague' && t.preuve?.second?.decision === 'vague').map((t: any) => phraseMoteur(t.intitule)),
-  ...e5c.attributions.filter((a: any) => a.motif === 'forme vague interdite').map((a: any) => a.forme)]);
+  ...e5c.attributions.filter((a: any) => a.motif === 'forme vague interdite').map((a: any) => a.forme),
+  // 6h : formes qu'une décision laisse sans métier (D-475 §37 d : « Manager des ventes », forme française de « Sales Manager »).
+  ...e6h.formesSansMetier.flatMap((x: any) => x.formes.map(phraseMoteur))]);
 // Une décision du CEO prime sur le jugement « vague » des juges de l'étape 3 (« lead », jugé vague, §37 a), pour le
 // seul métier qu'elle désigne (audit de clôture du 29/09/2026 : sans ce métier, la primauté ouvrait la forme à tous).
 const decidesCeo = new Set(DECIDES_37.map(phraseMoteur));
@@ -207,8 +224,12 @@ const exclusions: Record<string, string[]> = e4.bilan.exclusions;
 const exclusScission = (occupation: string): string[] => (occupation !== deVente && occupation !== deRayon ? []
   : [...scission.decisions.filter((d: any) => d.metier === 'aucun' || d.metier === (occupation === deVente ? 'rayon' : 'vente')).flatMap(textesDe),
     ...(occupation === deRayon ? EXCLUS_RAYON : [])]);
+// 6h : exclusions ajoutées à la main (frontières servies dans les autres langues du corpus, métiers distincts de la v3),
+// pour les règles du métier ET sa lecture dans l'intitulé (point 38).
+const exclusions6h = new Map<string, string[]>();
+for (const x of e6h.exclusions) exclusions6h.set(x.metier, [...(exclusions6h.get(x.metier) ?? []), ...x.formes]);
 const exclure = (occupation: string) => {
-  const l = [...(exclusions[occupation] ?? []), ...exclusScission(occupation)];
+  const l = [...(exclusions[occupation] ?? []), ...exclusScission(occupation), ...(exclusions6h.get(cleMetier.get(occupation) ?? occupation) ?? [])];
   return l.length ? [{ field: 'title' as const, any: l }] : [];
 };
 const exclusionsServies = (occupation: string) => servie.rules.filter((r: any) => r.occupation === occupation && r.all.every((c: any) => c.field === 'title'))
@@ -222,8 +243,12 @@ const exclusionsDeLecture = (occupation: string) => [...new Set([...exclusionsSe
 const cleRecherche = (v: string) => searchWords(v).join(' ');
 // Expressions lues dans un intitulé plus long (`titleRoles`, D-475 point 38) : seulement celles que l'étape 6g a vérifiées
 // sur ce qu'elles y captent (R-66 §2) ; un métier les porte parmi ses libellés et alias.
-const lues: { phrase: string; occupation: string }[] = !BASE && existsSync(`${DOSSIER_SORTIE}6g-lectures.json`)
+const luesDe6g: { phrase: string; occupation: string }[] = !BASE && existsSync(`${DOSSIER_SORTIE}6g-lectures.json`)
   ? lireEtape('6g-lectures.json').decisions.filter((d: any) => d.mode === 'lue') : [];
+// 6h : une lecture retirée à la main doit viser une lecture de 6g (sinon la correction ne corrige rien).
+const retirees = new Set<string>(e6h.lecturesRetirees.map((x: any) => `${x.metier}|${x.phrase}`));
+for (const r of retirees) if (!luesDe6g.some((d) => `${d.occupation}|${d.phrase}` === r)) throw new Error(`6h : lecture retirée absente de 6g (${r})`);
+const lues = luesDe6g.filter((d) => !retirees.has(`${d.occupation}|${d.phrase}`));
 const luesDe = (cle: string, noms: string[]) => { const p = new Set(lues.filter((d) => d.occupation === cle).map((d) => d.phrase)); return [...new Set(noms)].filter((x) => p.has(cleRecherche(x))).sort(); };
 const metiersV3 = concepts.map((c) => {
   const s = servis.get(c.cle);
@@ -257,6 +282,8 @@ const reglesServies = servie.rules.map((r: any) => ({ ...r,
 const dejaServie = (occupation: string, f: string) => servie.rules.some((r: any) => r.occupation === occupation && r.all.length === 1 && r.all[0].field === 'title' && r.all[0].any.some((v: string) => phraseMoteur(v) === f));
 const generalisables = new Set<string>(!BASE && existsSync(`${DOSSIER_SORTIE}6c-generalisations.json`)
   ? lireEtape('6c-generalisations.json').decisions.filter((d: any) => d.mode === 'generalisable').map((d: any) => `${d.occupation}|${d.expression}`) : []);
+// 6h : les expressions ajoutées à la main en mode phrase (captures vérifiées par l'assistant sur tout le corpus).
+for (const x of e6h.expressions) if (x.mode === 'phrase') for (const v of x.formes) generalisables.add(`${x.metier}|${phraseMoteur(v)}`);
 const reglesV3Brutes = concepts.flatMap((c) => [...expressions.get(c.cle)!].filter((f) => !interdite(f, c.cle) && !dejaServie(c.cle, f)).sort().map((f) => {
   const key = cleMetier.get(c.cle)!;
   const exclude = [...exclusionsServies(c.cle), ...exclure(c.cle)];
@@ -379,9 +406,17 @@ const ecartsScission = scission.decisions.flatMap((d: any) => textesDe(d).map((t
 validateOccupationSuccessor(servie, manifeste);
 // Chaque lecture vérifiée par 6g doit trouver son expression chez son métier : sinon le vocabulaire a changé depuis 6g.
 const luesPerdues = lues.filter((d) => !metiersV3.some((o: any) => o.key === d.occupation && (o.titleReadingAliases ?? []).some((a: string) => cleRecherche(a) === d.phrase)));
+// 6h tenue par le moteur : une forme sans métier n'en reçoit plus, une expression ajoutée rend son métier, une lecture
+// retirée n'est plus lue.
+const ecarts6h = [
+  ...e6h.formesSansMetier.flatMap((x: any) => x.formes.filter((v: string) => compile.classify(v, null).occupationCode).map((v: string) => `« ${v} » garde un métier`)),
+  ...e6h.expressions.flatMap((x: any) => x.formes.filter((v: string) => compile.classify(v, null).occupationCode !== x.metier).map((v: string) => `« ${v} » ne rend pas ${x.metier}`)),
+  ...e6h.lecturesRetirees.filter((x: any) => metiersV3.some((o: any) => o.key === x.metier && (o.titleReadingAliases ?? []).some((a: string) => cleRecherche(a) === x.phrase)))
+    .map((x: any) => `lecture « ${x.phrase} » encore vérifiée pour ${x.metier}`),
+];
 
 // Un manifeste refusé ne remplace jamais le bon : il s'écrit à part (audit du lot 2B-2).
-const refuse = luesPerdues.length + nonIdempotentes.length + libellesPartages.length + ecartsScission.length + collisionsV2.length + collisionsVocabulaire.length > 0;
+const refuse = luesPerdues.length + nonIdempotentes.length + libellesPartages.length + ecartsScission.length + collisionsV2.length + collisionsVocabulaire.length + ecarts6h.length > 0;
 const fichier = `${BASE ? '6-manifeste-base' : '6-manifeste-v3'}${refuse ? '.refuse' : ''}.json`;
 writeFileSync(`${DOSSIER_SORTIE}${fichier}`, JSON.stringify(manifeste, null, 1));
 if (!BASE && !refuse) writeFileSync(`${DOSSIER_SORTIE}6-correspondances.json`, JSON.stringify({ calculeLe: maintenant.toISOString(), manifeste: ID,
@@ -389,7 +424,10 @@ if (!BASE && !refuse) writeFileSync(`${DOSSIER_SORTIE}6-correspondances.json`, J
   familles: Object.fromEntries(famillesV3.map((f: any) => [f.key, f.key])), libellesRetires, arbitragesFinaux }, null, 1));
 const bilan = { fichier, id: ID, familles: famillesV3.length, metiers: metiersV3.length, absorbes: dans.size, regles: regles.length,
   reglesV3: reglesV3.length, reglesExactes: reglesV3.filter((r) => r.all[0].mode === 'exact').length, generalisables: generalisables.size,
-  lues: lues.length, luesPerdues: luesPerdues.length, arbitragesFinaux: arbitragesFinaux.length, arbitragesV2: arbitragesV2.length, libellesRetires: libellesRetires.length, libellesPartages: libellesPartages.length,
+  lues: lues.length, luesPerdues: luesPerdues.length,
+  corrections6h: { formesSansMetier: e6h.formesSansMetier.flatMap((x: any) => x.formes).length, exclusions: e6h.exclusions.flatMap((x: any) => x.formes).length,
+    expressions: e6h.expressions.flatMap((x: any) => x.formes).length, lecturesRetirees: e6h.lecturesRetirees.length, ecarts: ecarts6h.length },
+  arbitragesFinaux: arbitragesFinaux.length, arbitragesV2: arbitragesV2.length, libellesRetires: libellesRetires.length, libellesPartages: libellesPartages.length,
   nonIdempotentes: nonIdempotentes.length, ecartsScission: ecartsScission.length, collisionsV2: collisionsV2.length, collisionsVocabulaire: collisionsVocabulaire.length, preseances: arcs, preseancesRefuseesPourCycle: arcsRefuses, compile: compile.occupations.size, succession: 'conforme' };
 console.log(JSON.stringify(bilan, null, 1));
 for (const x of libellesPartages.slice(0, 10)) console.log(` libellé partagé : ${x}`);
@@ -399,6 +437,8 @@ for (const x of collisionsV2.slice(0, 15)) console.log(` collision v2 : « ${x.c
 if (collisionsV2.length) { console.error(`ASSEMBLAGE REFUSÉ : ${collisionsV2.length} clé(s) v2 pour plusieurs métiers`); process.exitCode = 1; }
 for (const x of ecartsScission.slice(0, 10)) console.log(` 3c non tenu : « ${x.texte} » décidé ${x.decision}, rendu ${x.rendu ?? 'aucun'}`);
 if (ecartsScission.length) { console.error(`ASSEMBLAGE REFUSÉ : ${ecartsScission.length} décision(s) de 3c non tenue(s) par le moteur`); process.exitCode = 1; }
+for (const x of ecarts6h.slice(0, 10)) console.log(` 6h non tenue : ${x}`);
+if (ecarts6h.length) { console.error(`ASSEMBLAGE REFUSÉ : ${ecarts6h.length} correction(s) de 6h non tenue(s) par le moteur`); process.exitCode = 1; }
 for (const x of luesPerdues.slice(0, 10)) console.log(` lecture perdue : « ${x.phrase} » → ${x.occupation}`);
 if (luesPerdues.length) { console.error(`ASSEMBLAGE REFUSÉ : ${luesPerdues.length} lecture(s) de 6g sans expression chez leur métier`); process.exitCode = 1; }
 if (nonIdempotentes.length || libellesPartages.length) { console.error(`ASSEMBLAGE REFUSÉ : ${nonIdempotentes.length} expression(s) non idempotente(s), ${libellesPartages.length} libellé(s) partagé(s)`); process.exitCode = 1; }

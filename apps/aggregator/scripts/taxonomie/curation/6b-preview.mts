@@ -19,7 +19,7 @@
  *   node --import tsx apps/aggregator/scripts/taxonomie/curation/6b-preview.mts
  */
 import { createHash } from 'node:crypto';
-import { readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { gunzipSync } from 'node:zlib';
 import { compileOccupationManifest } from '../../../../../packages/db/occupation-engine.ts';
 import { manifestVocabularyCollisions } from '../../../../../packages/db/occupation-vocabulary.ts';
@@ -66,7 +66,15 @@ const interdit = (m: string) => (m === 'aucun' ? [cleVente, cleRayon] : m === 'r
 const decisions3c = [...scission.decisions.flatMap((d: any) => [d.intitule, ...(d.formes ?? [])].map((t: string) => ({ f: ` ${phraseMoteur(t)} `, m: d.metier }))),
   ...EXCLUS_RAYON.map((t) => ({ f: ` ${phraseMoteur(t)} `, m: 'aucun' }))];
 const ecarts3c = lignes.filter((l) => { const t = ` ${phraseMoteur(l.titre)} `; return decisions3c.some((d: any) => t.includes(d.f) && interdit(d.m).includes(l.v3!)); });
-const estPrevu = (l: Ligne) => prevu.has(cle(l)) && prevu.get(cle(l)) === l.v3;
+// Étape 6h (vocabulaire corrigé à la main, D-475 §39) : un changement est prévu quand l'intitulé porte une forme corrigée
+// ET qu'il va là où la correction le dit (le métier d'une expression ajoutée ; hors du métier exclu ; aucun métier pour
+// une forme sans métier). Une perte qu'aucune correction n'explique reste hors plan.
+const e6h = existsSync(`${DOSSIER_SORTIE}6h-corrections-main.json`) ? lireEtape('6h-corrections-main.json') : { formesSansMetier: [], exclusions: [], expressions: [] };
+const porte = (l: Ligne, formes: string[]) => { const t = ` ${phraseMoteur(l.titre)} `; return formes.some((f) => t.includes(` ${phraseMoteur(f)} `)); };
+const corrige6h = (l: Ligne) => e6h.expressions.some((x: any) => l.v3 === x.metier && porte(l, x.formes))
+  || e6h.exclusions.some((x: any) => l.v1 === x.metier && l.v3 !== x.metier && porte(l, x.formes))
+  || e6h.formesSansMetier.some((x: any) => !l.v3 && porte(l, x.formes));
+const estPrevu = (l: Ligne) => (prevu.has(cle(l)) && prevu.get(cle(l)) === l.v3) || corrige6h(l);
 const gains = lignes.filter((l) => !l.v1 && l.v3), pertes = lignes.filter((l) => l.v1 && !l.v3);
 const changes = lignes.filter((l) => l.v1 && l.v3 && l.v1 !== l.v3);
 const horsPlan = [...changes, ...pertes].filter((l) => !estPrevu(l));

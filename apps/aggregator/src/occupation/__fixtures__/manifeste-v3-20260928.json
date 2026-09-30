@@ -391,6 +391,20 @@
       "area"
      ],
      "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "assistent",
+      "assistants",
+      "assisterende",
+      "assisterande",
+      "stellvertretender",
+      "stellvertretende",
+      "stellv",
+      "vice store manager",
+      "アシスタント"
+     ]
     }
    ],
    "evidence": "Reviewed role wording against the 2026-09-09 production title/department corpus. Department constraints retained for ambiguous labels; precise truth is not inferred from legacy jobFunction.",
@@ -416,7 +430,19 @@
      "field": "title"
     }
    ],
-   "exclude": [],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
+    }
+   ],
    "evidence": "Reviewed role wording against the 2026-09-09 production title/department corpus. Department constraints retained for ambiguous labels; precise truth is not inferred from legacy jobFunction.",
    "occupation": "assistant-store-manager",
    "supersedes": [
@@ -955,7 +981,10 @@
      "field": "title",
      "any": [
       "DIRECTEUR",
-      "DIRECTRICE"
+      "DIRECTRICE",
+      "responsable",
+      "controlling solutions",
+      "functional consultant"
      ]
     }
    ],
@@ -1496,6 +1525,13 @@
       "director"
      ],
      "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "assistent",
+      "commis"
+     ]
     }
    ],
    "evidence": "Reviewed role wording against the 2026-09-09 production title/department corpus. Department constraints retained for ambiguous labels; precise truth is not inferred from legacy jobFunction.",
@@ -27446,6 +27482,20 @@
       "area"
      ],
      "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "assistent",
+      "assistants",
+      "assisterende",
+      "assisterande",
+      "stellvertretender",
+      "stellvertretende",
+      "stellv",
+      "vice store manager",
+      "アシスタント"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -27474,6 +27524,20 @@
       "area"
      ],
      "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "assistent",
+      "assistants",
+      "assisterende",
+      "assisterande",
+      "stellvertretender",
+      "stellvertretende",
+      "stellv",
+      "vice store manager",
+      "アシスタント"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -27502,6 +27566,20 @@
       "area"
      ],
      "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "assistent",
+      "assistants",
+      "assisterende",
+      "assisterande",
+      "stellvertretender",
+      "stellvertretende",
+      "stellv",
+      "vice store manager",
+      "アシスタント"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -27530,6 +27608,20 @@
       "area"
      ],
      "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "assistent",
+      "assistants",
+      "assisterende",
+      "assisterande",
+      "stellvertretender",
+      "stellvertretende",
+      "stellv",
+      "vice store manager",
+      "アシスタント"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -27558,6 +27650,20 @@
       "area"
      ],
      "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "assistent",
+      "assistants",
+      "assisterende",
+      "assisterande",
+      "stellvertretender",
+      "stellvertretende",
+      "stellv",
+      "vice store manager",
+      "アシスタント"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -27586,6 +27692,20 @@
       "area"
      ],
      "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "assistent",
+      "assistants",
+      "assisterende",
+      "assisterande",
+      "stellvertretender",
+      "stellvertretende",
+      "stellv",
+      "vice store manager",
+      "アシスタント"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -27614,6 +27734,20 @@
       "area"
      ],
      "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "assistent",
+      "assistants",
+      "assisterende",
+      "assisterande",
+      "stellvertretender",
+      "stellvertretende",
+      "stellv",
+      "vice store manager",
+      "アシスタント"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -27642,6 +27776,20 @@
       "area"
      ],
      "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "assistent",
+      "assistants",
+      "assisterende",
+      "assisterande",
+      "stellvertretender",
+      "stellvertretende",
+      "stellv",
+      "vice store manager",
+      "アシスタント"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -27670,6 +27818,20 @@
       "area"
      ],
      "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "assistent",
+      "assistants",
+      "assisterende",
+      "assisterande",
+      "stellvertretender",
+      "stellvertretende",
+      "stellv",
+      "vice store manager",
+      "アシスタント"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -27698,6 +27860,20 @@
       "area"
      ],
      "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "assistent",
+      "assistants",
+      "assisterende",
+      "assisterande",
+      "stellvertretender",
+      "stellvertretende",
+      "stellv",
+      "vice store manager",
+      "アシスタント"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -27726,6 +27902,20 @@
       "area"
      ],
      "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "assistent",
+      "assistants",
+      "assisterende",
+      "assisterande",
+      "stellvertretender",
+      "stellvertretende",
+      "stellv",
+      "vice store manager",
+      "アシスタント"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -27754,6 +27944,20 @@
       "area"
      ],
      "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "assistent",
+      "assistants",
+      "assisterende",
+      "assisterande",
+      "stellvertretender",
+      "stellvertretende",
+      "stellv",
+      "vice store manager",
+      "アシスタント"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -27782,6 +27986,20 @@
       "area"
      ],
      "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "assistent",
+      "assistants",
+      "assisterende",
+      "assisterande",
+      "stellvertretender",
+      "stellvertretende",
+      "stellv",
+      "vice store manager",
+      "アシスタント"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -27810,6 +28028,20 @@
       "area"
      ],
      "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "assistent",
+      "assistants",
+      "assisterende",
+      "assisterande",
+      "stellvertretender",
+      "stellvertretende",
+      "stellv",
+      "vice store manager",
+      "アシスタント"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -27838,6 +28070,20 @@
       "area"
      ],
      "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "assistent",
+      "assistants",
+      "assisterende",
+      "assisterande",
+      "stellvertretender",
+      "stellvertretende",
+      "stellv",
+      "vice store manager",
+      "アシスタント"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -27866,6 +28112,20 @@
       "area"
      ],
      "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "assistent",
+      "assistants",
+      "assisterende",
+      "assisterande",
+      "stellvertretender",
+      "stellvertretende",
+      "stellv",
+      "vice store manager",
+      "アシスタント"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -27894,6 +28154,20 @@
       "area"
      ],
      "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "assistent",
+      "assistants",
+      "assisterende",
+      "assisterande",
+      "stellvertretender",
+      "stellvertretende",
+      "stellv",
+      "vice store manager",
+      "アシスタント"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -27922,6 +28196,20 @@
       "area"
      ],
      "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "assistent",
+      "assistants",
+      "assisterende",
+      "assisterande",
+      "stellvertretender",
+      "stellvertretende",
+      "stellv",
+      "vice store manager",
+      "アシスタント"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -27950,6 +28238,20 @@
       "area"
      ],
      "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "assistent",
+      "assistants",
+      "assisterende",
+      "assisterande",
+      "stellvertretender",
+      "stellvertretende",
+      "stellv",
+      "vice store manager",
+      "アシスタント"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -27978,6 +28280,20 @@
       "area"
      ],
      "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "assistent",
+      "assistants",
+      "assisterende",
+      "assisterande",
+      "stellvertretender",
+      "stellvertretende",
+      "stellv",
+      "vice store manager",
+      "アシスタント"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -28006,6 +28322,20 @@
       "area"
      ],
      "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "assistent",
+      "assistants",
+      "assisterende",
+      "assisterande",
+      "stellvertretender",
+      "stellvertretende",
+      "stellv",
+      "vice store manager",
+      "アシスタント"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -28034,6 +28364,20 @@
       "area"
      ],
      "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "assistent",
+      "assistants",
+      "assisterende",
+      "assisterande",
+      "stellvertretender",
+      "stellvertretende",
+      "stellv",
+      "vice store manager",
+      "アシスタント"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -28062,6 +28406,20 @@
       "area"
      ],
      "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "assistent",
+      "assistants",
+      "assisterende",
+      "assisterande",
+      "stellvertretender",
+      "stellvertretende",
+      "stellv",
+      "vice store manager",
+      "アシスタント"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -28090,6 +28448,20 @@
       "area"
      ],
      "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "assistent",
+      "assistants",
+      "assisterende",
+      "assisterande",
+      "stellvertretender",
+      "stellvertretende",
+      "stellv",
+      "vice store manager",
+      "アシスタント"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -28118,6 +28490,20 @@
       "area"
      ],
      "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "assistent",
+      "assistants",
+      "assisterende",
+      "assisterande",
+      "stellvertretender",
+      "stellvertretende",
+      "stellv",
+      "vice store manager",
+      "アシスタント"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -28146,6 +28532,20 @@
       "area"
      ],
      "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "assistent",
+      "assistants",
+      "assisterende",
+      "assisterande",
+      "stellvertretender",
+      "stellvertretende",
+      "stellv",
+      "vice store manager",
+      "アシスタント"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -28174,6 +28574,20 @@
       "area"
      ],
      "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "assistent",
+      "assistants",
+      "assisterende",
+      "assisterande",
+      "stellvertretender",
+      "stellvertretende",
+      "stellv",
+      "vice store manager",
+      "アシスタント"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -28202,6 +28616,20 @@
       "area"
      ],
      "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "assistent",
+      "assistants",
+      "assisterende",
+      "assisterande",
+      "stellvertretender",
+      "stellvertretende",
+      "stellv",
+      "vice store manager",
+      "アシスタント"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -28230,6 +28658,20 @@
       "area"
      ],
      "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "assistent",
+      "assistants",
+      "assisterende",
+      "assisterande",
+      "stellvertretender",
+      "stellvertretende",
+      "stellv",
+      "vice store manager",
+      "アシスタント"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -28244,6 +28686,19 @@
       "Adjoint au responsable de boutique"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
@@ -28263,6 +28718,19 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
     "v3-store-manager~2a12daad17"
@@ -28278,6 +28746,19 @@
       "Assistant Boutique Director"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
@@ -28297,6 +28778,19 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -28309,6 +28803,19 @@
       "assistant gérant / assistant manager"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -28325,6 +28832,19 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -28337,6 +28857,19 @@
       "🇬🇷 assistant manager / 2nd manager -"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -28353,6 +28886,19 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -28365,6 +28911,19 @@
       "assistant manager-ann"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -28381,6 +28940,19 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -28393,6 +28965,19 @@
       "assistant manager (m/w/d)"
      ],
      "mode": "phrase"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -28409,6 +28994,139 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
+   "supersedes": [
+    "store-manager-title"
+   ]
+  },
+  {
+   "id": "v3-assistant-store-manager~cfc2a79b23",
+   "occupation": "assistant-store-manager",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "Assistants Store Manager"
+     ],
+     "mode": "phrase"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
+   "supersedes": [
+    "store-manager-title"
+   ]
+  },
+  {
+   "id": "v3-assistant-store-manager~76261caa74",
+   "occupation": "assistant-store-manager",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "Assistent Shopmanager"
+     ],
+     "mode": "phrase"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
+   "supersedes": [
+    "store-manager-title"
+   ]
+  },
+  {
+   "id": "v3-assistant-store-manager~3776193417",
+   "occupation": "assistant-store-manager",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "Assistent Store Manager"
+     ],
+     "mode": "phrase"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
+   "supersedes": [
+    "store-manager-title"
+   ]
+  },
+  {
+   "id": "v3-assistant-store-manager~86bece2fa8",
+   "occupation": "assistant-store-manager",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "Assistent Storemanager"
+     ],
+     "mode": "phrase"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
     "store-manager-title"
@@ -28423,7 +29141,20 @@
      "any": [
       "assisterande butikschef"
      ],
-     "mode": "exact"
+     "mode": "phrase"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -28440,6 +29171,46 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
+   "id": "v3-assistant-store-manager~357f44cc74",
+   "occupation": "assistant-store-manager",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "Assisterende butikschef"
+     ],
+     "mode": "phrase"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -28452,6 +29223,19 @@
       "associate manager"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -28468,6 +29252,19 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -28480,6 +29277,19 @@
       "butikschefsaspirant"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -28496,6 +29306,19 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -28510,6 +29333,19 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -28522,6 +29358,19 @@
       "Deputy Boutique Director"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
@@ -28541,6 +29390,19 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
     "store-manager-title"
@@ -28558,6 +29420,19 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -28570,6 +29445,19 @@
       "Deputy Store Director"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
@@ -28589,6 +29477,19 @@
      "mode": "phrase"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -28601,6 +29502,19 @@
       "directeur/rice adjoint/e, cdi 35h"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -28617,6 +29531,19 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -28629,6 +29556,19 @@
       "directrice - directeur de magasin adjoint - f/h"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
@@ -28648,6 +29588,19 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -28660,6 +29613,19 @@
       "Mağaza Müdür Yardımcısı"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -28676,6 +29642,19 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -28688,6 +29667,19 @@
       "Manageră adjunctă magazin"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -28704,6 +29696,19 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -28716,6 +29721,19 @@
       "Phó cửa hàng trưởng"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -28732,6 +29750,19 @@
      "mode": "phrase"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -28744,6 +29775,19 @@
       "responsable adjoint/e, cdi 35h"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -28760,6 +29804,19 @@
      "mode": "phrase"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -28772,6 +29829,19 @@
       "responsable adjoint de magasin 36h (f/h) - cdi temps plein"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -28788,6 +29858,19 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -28800,6 +29883,19 @@
       "responsable adjoint de magasin  h/f"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -28816,6 +29912,19 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -28828,6 +29937,19 @@
       "responsable adjoint f/h"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -28844,6 +29966,19 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -28858,6 +29993,19 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -28870,6 +30018,19 @@
       "responsable de magasin adjoint - f/h"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
@@ -28889,6 +30050,19 @@
      "mode": "phrase"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
    "supersedes": [
     "store-manager-title"
@@ -28906,7 +30080,140 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
+   "id": "v3-assistant-store-manager~22c26f0704",
+   "occupation": "assistant-store-manager",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "Stellv. Filialleiter"
+     ],
+     "mode": "phrase"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
+   "supersedes": [
+    "store-manager-title"
+   ]
+  },
+  {
+   "id": "v3-assistant-store-manager~2f0657f6b5",
+   "occupation": "assistant-store-manager",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "Stellvertretende Filialleiterin"
+     ],
+     "mode": "phrase"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
+   "supersedes": [
+    "store-manager-title"
+   ]
+  },
+  {
+   "id": "v3-assistant-store-manager~fb20dc39af",
+   "occupation": "assistant-store-manager",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "Stellvertretende/r Filialleiter"
+     ],
+     "mode": "phrase"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
+   "supersedes": [
+    "store-manager-title"
+   ]
+  },
+  {
+   "id": "v3-assistant-store-manager~80c0fe1b5e",
+   "occupation": "assistant-store-manager",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "Stellvertretender Filialleiter"
+     ],
+     "mode": "phrase"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
+   "supersedes": [
+    "store-manager-title"
+   ]
   },
   {
    "id": "v3-assistant-store-manager~c783a5a9e5",
@@ -28918,6 +30225,19 @@
       "Subgerente de loja"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -28934,6 +30254,19 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -28946,6 +30279,19 @@
       "urban outfitters assistant manager"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -28962,7 +30308,50 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
+   "id": "v3-assistant-store-manager~7b4cb3e30d",
+   "occupation": "assistant-store-manager",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "Vice Store Manager"
+     ],
+     "mode": "phrase"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
+   "supersedes": [
+    "store-manager-title"
+   ]
   },
   {
    "id": "v3-assistant-store-manager~2d7bf346d2",
@@ -28974,6 +30363,19 @@
       "Zastępca kierownika sklepu"
      ],
      "mode": "phrase"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -28990,6 +30392,19 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -29002,6 +30417,19 @@
       "Zástupce vedoucího prodejny"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -29018,6 +30446,19 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -29030,6 +30471,19 @@
       "مساعد مدير متجر"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -29046,6 +30500,19 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -29058,6 +30525,46 @@
       "부매니저"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
+   "id": "v3-assistant-store-manager~6e77434f15",
+   "occupation": "assistant-store-manager",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "アシスタントストアマネージャー"
+     ],
+     "mode": "phrase"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -29074,6 +30581,19 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -29086,6 +30606,19 @@
       "副店长"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "adjoint comptabilite",
+      "adjointe comptabilite",
+      "adjoint comptable",
+      "adjointe comptable",
+      "adjoint visual merchandising",
+      "adjointe visual merchandising"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
@@ -40341,7 +41874,10 @@
      "field": "title",
      "any": [
       "DIRECTEUR",
-      "DIRECTRICE"
+      "DIRECTRICE",
+      "responsable",
+      "controlling solutions",
+      "functional consultant"
      ]
     }
    ],
@@ -40372,7 +41908,10 @@
      "field": "title",
      "any": [
       "DIRECTEUR",
-      "DIRECTRICE"
+      "DIRECTRICE",
+      "responsable",
+      "controlling solutions",
+      "functional consultant"
      ]
     }
    ],
@@ -40403,7 +41942,10 @@
      "field": "title",
      "any": [
       "DIRECTEUR",
-      "DIRECTRICE"
+      "DIRECTRICE",
+      "responsable",
+      "controlling solutions",
+      "functional consultant"
      ]
     }
    ],
@@ -40434,7 +41976,10 @@
      "field": "title",
      "any": [
       "DIRECTEUR",
-      "DIRECTRICE"
+      "DIRECTRICE",
+      "responsable",
+      "controlling solutions",
+      "functional consultant"
      ]
     }
    ],
@@ -40465,7 +42010,10 @@
      "field": "title",
      "any": [
       "DIRECTEUR",
-      "DIRECTRICE"
+      "DIRECTRICE",
+      "responsable",
+      "controlling solutions",
+      "functional consultant"
      ]
     }
    ],
@@ -40496,7 +42044,10 @@
      "field": "title",
      "any": [
       "DIRECTEUR",
-      "DIRECTRICE"
+      "DIRECTRICE",
+      "responsable",
+      "controlling solutions",
+      "functional consultant"
      ]
     }
    ],
@@ -40527,7 +42078,10 @@
      "field": "title",
      "any": [
       "DIRECTEUR",
-      "DIRECTRICE"
+      "DIRECTRICE",
+      "responsable",
+      "controlling solutions",
+      "functional consultant"
      ]
     }
    ],
@@ -40558,7 +42112,10 @@
      "field": "title",
      "any": [
       "DIRECTEUR",
-      "DIRECTRICE"
+      "DIRECTRICE",
+      "responsable",
+      "controlling solutions",
+      "functional consultant"
      ]
     }
    ],
@@ -40589,7 +42146,10 @@
      "field": "title",
      "any": [
       "DIRECTEUR",
-      "DIRECTRICE"
+      "DIRECTRICE",
+      "responsable",
+      "controlling solutions",
+      "functional consultant"
      ]
     }
    ],
@@ -40620,7 +42180,10 @@
      "field": "title",
      "any": [
       "DIRECTEUR",
-      "DIRECTRICE"
+      "DIRECTRICE",
+      "responsable",
+      "controlling solutions",
+      "functional consultant"
      ]
     }
    ],
@@ -40651,7 +42214,10 @@
      "field": "title",
      "any": [
       "DIRECTEUR",
-      "DIRECTRICE"
+      "DIRECTRICE",
+      "responsable",
+      "controlling solutions",
+      "functional consultant"
      ]
     }
    ],
@@ -40682,7 +42248,10 @@
      "field": "title",
      "any": [
       "DIRECTEUR",
-      "DIRECTRICE"
+      "DIRECTRICE",
+      "responsable",
+      "controlling solutions",
+      "functional consultant"
      ]
     }
    ],
@@ -40713,7 +42282,10 @@
      "field": "title",
      "any": [
       "DIRECTEUR",
-      "DIRECTRICE"
+      "DIRECTRICE",
+      "responsable",
+      "controlling solutions",
+      "functional consultant"
      ]
     }
    ],
@@ -40744,7 +42316,10 @@
      "field": "title",
      "any": [
       "DIRECTEUR",
-      "DIRECTRICE"
+      "DIRECTRICE",
+      "responsable",
+      "controlling solutions",
+      "functional consultant"
      ]
     }
    ],
@@ -40775,7 +42350,10 @@
      "field": "title",
      "any": [
       "DIRECTEUR",
-      "DIRECTRICE"
+      "DIRECTRICE",
+      "responsable",
+      "controlling solutions",
+      "functional consultant"
      ]
     }
    ],
@@ -40806,7 +42384,10 @@
      "field": "title",
      "any": [
       "DIRECTEUR",
-      "DIRECTRICE"
+      "DIRECTRICE",
+      "responsable",
+      "controlling solutions",
+      "functional consultant"
      ]
     }
    ],
@@ -40837,7 +42418,10 @@
      "field": "title",
      "any": [
       "DIRECTEUR",
-      "DIRECTRICE"
+      "DIRECTRICE",
+      "responsable",
+      "controlling solutions",
+      "functional consultant"
      ]
     }
    ],
@@ -40868,7 +42452,10 @@
      "field": "title",
      "any": [
       "DIRECTEUR",
-      "DIRECTRICE"
+      "DIRECTRICE",
+      "responsable",
+      "controlling solutions",
+      "functional consultant"
      ]
     }
    ],
@@ -40899,7 +42486,10 @@
      "field": "title",
      "any": [
       "DIRECTEUR",
-      "DIRECTRICE"
+      "DIRECTRICE",
+      "responsable",
+      "controlling solutions",
+      "functional consultant"
      ]
     }
    ],
@@ -40930,7 +42520,10 @@
      "field": "title",
      "any": [
       "DIRECTEUR",
-      "DIRECTRICE"
+      "DIRECTRICE",
+      "responsable",
+      "controlling solutions",
+      "functional consultant"
      ]
     }
    ],
@@ -40961,7 +42554,10 @@
      "field": "title",
      "any": [
       "DIRECTEUR",
-      "DIRECTRICE"
+      "DIRECTRICE",
+      "responsable",
+      "controlling solutions",
+      "functional consultant"
      ]
     }
    ],
@@ -40992,7 +42588,10 @@
      "field": "title",
      "any": [
       "DIRECTEUR",
-      "DIRECTRICE"
+      "DIRECTRICE",
+      "responsable",
+      "controlling solutions",
+      "functional consultant"
      ]
     }
    ],
@@ -41023,7 +42622,10 @@
      "field": "title",
      "any": [
       "DIRECTEUR",
-      "DIRECTRICE"
+      "DIRECTRICE",
+      "responsable",
+      "controlling solutions",
+      "functional consultant"
      ]
     }
    ],
@@ -41054,7 +42656,10 @@
      "field": "title",
      "any": [
       "DIRECTEUR",
-      "DIRECTRICE"
+      "DIRECTRICE",
+      "responsable",
+      "controlling solutions",
+      "functional consultant"
      ]
     }
    ],
@@ -50567,6 +52172,13 @@
       "director"
      ],
      "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "assistent",
+      "commis"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -50590,6 +52202,13 @@
       "director"
      ],
      "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "assistent",
+      "commis"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -50613,6 +52232,13 @@
       "director"
      ],
      "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "assistent",
+      "commis"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -50636,6 +52262,13 @@
       "director"
      ],
      "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "assistent",
+      "commis"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -50659,6 +52292,13 @@
       "director"
      ],
      "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "assistent",
+      "commis"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -50682,6 +52322,13 @@
       "director"
      ],
      "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "assistent",
+      "commis"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -50705,6 +52352,13 @@
       "director"
      ],
      "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "assistent",
+      "commis"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -50728,6 +52382,13 @@
       "director"
      ],
      "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "assistent",
+      "commis"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -50751,6 +52412,13 @@
       "director"
      ],
      "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "assistent",
+      "commis"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -50774,6 +52442,13 @@
       "director"
      ],
      "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "assistent",
+      "commis"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -50797,6 +52472,13 @@
       "director"
      ],
      "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "assistent",
+      "commis"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -50820,6 +52502,13 @@
       "director"
      ],
      "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "assistent",
+      "commis"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -50843,6 +52532,13 @@
       "director"
      ],
      "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "assistent",
+      "commis"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -50866,6 +52562,13 @@
       "director"
      ],
      "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "assistent",
+      "commis"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -50889,6 +52592,13 @@
       "director"
      ],
      "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "assistent",
+      "commis"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -50912,6 +52622,13 @@
       "director"
      ],
      "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "assistent",
+      "commis"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -50935,6 +52652,13 @@
       "director"
      ],
      "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "assistent",
+      "commis"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -50958,6 +52682,13 @@
       "director"
      ],
      "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "assistent",
+      "commis"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -50981,6 +52712,13 @@
       "director"
      ],
      "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "assistent",
+      "commis"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -51004,6 +52742,13 @@
       "director"
      ],
      "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "assistent",
+      "commis"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -51027,6 +52772,13 @@
       "director"
      ],
      "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "assistent",
+      "commis"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -51050,6 +52802,13 @@
       "director"
      ],
      "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "assistent",
+      "commis"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -51073,6 +52832,13 @@
       "director"
      ],
      "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "assistent",
+      "commis"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -51096,6 +52862,13 @@
       "director"
      ],
      "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "assistent",
+      "commis"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -51119,6 +52892,13 @@
       "director"
      ],
      "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "assistent",
+      "commis"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -51142,6 +52922,13 @@
       "director"
      ],
      "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "assistent",
+      "commis"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -51165,6 +52952,13 @@
       "director"
      ],
      "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "assistent",
+      "commis"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -51188,6 +52982,13 @@
       "director"
      ],
      "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "assistent",
+      "commis"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -51211,6 +53012,13 @@
       "director"
      ],
      "field": "title"
+    },
+    {
+     "field": "title",
+     "any": [
+      "assistent",
+      "commis"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -69262,6 +71070,14 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "product manager assistant"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -69274,6 +71090,14 @@
       "Asistent designéra"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "product manager assistant"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -69290,6 +71114,14 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "product manager assistant"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -69302,6 +71134,14 @@
       "Asistente de diseño"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "product manager assistant"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -69318,6 +71158,14 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "product manager assistant"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -69330,6 +71178,14 @@
       "assistant créatif"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "product manager assistant"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -69346,6 +71202,14 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "product manager assistant"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -69358,6 +71222,14 @@
       "assistant design et impression"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "product manager assistant"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -69374,6 +71246,14 @@
      "mode": "phrase"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "product manager assistant"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -69386,6 +71266,14 @@
       "assistant designer chaussures"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "product manager assistant"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -69402,6 +71290,14 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "product manager assistant"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -69414,6 +71310,14 @@
       "Assistante designer"
      ],
      "mode": "phrase"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "product manager assistant"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -69430,6 +71334,14 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "product manager assistant"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -69442,6 +71354,14 @@
       "Assistente designer"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "product manager assistant"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -69458,6 +71378,14 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "product manager assistant"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -69470,6 +71398,14 @@
       "Asystentka projektanta"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "product manager assistant"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -69486,6 +71422,14 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "product manager assistant"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -69498,6 +71442,14 @@
       "Designassistent"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "product manager assistant"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -69514,6 +71466,14 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "product manager assistant"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -69526,6 +71486,14 @@
       "fashion design internship"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "product manager assistant"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -69542,6 +71510,14 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "product manager assistant"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -69554,6 +71530,14 @@
       "intern at minoar clothing"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "product manager assistant"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -69570,6 +71554,14 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "product manager assistant"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -69582,6 +71574,14 @@
       "Tasarım Asistanı"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "product manager assistant"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -69598,6 +71598,14 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "product manager assistant"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -69610,6 +71618,14 @@
       "Trợ lý thiết kế"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "product manager assistant"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -69626,6 +71642,14 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "product manager assistant"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -69638,6 +71662,14 @@
       "Βοηθός σχεδιαστή"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "product manager assistant"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -69654,6 +71686,14 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "product manager assistant"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -69666,6 +71706,14 @@
       "مساعدة مصممة"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "product manager assistant"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -69682,6 +71730,14 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "product manager assistant"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -69694,6 +71750,14 @@
       "디자인 보조원"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "product manager assistant"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -69710,6 +71774,14 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "product manager assistant"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -69724,6 +71796,14 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "product manager assistant"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -69736,6 +71816,14 @@
       "设计助理"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "product manager assistant"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -72147,7 +74235,7 @@
      "any": [
       "Assistant Key Account Manager"
      ],
-     "mode": "exact"
+     "mode": "phrase"
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
@@ -74486,6 +76574,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "visual merchandising",
+      "visual merchandiser"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -74498,6 +76595,15 @@
       "Asistent merchandisingu"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "visual merchandising",
+      "visual merchandiser"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -74514,6 +76620,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "visual merchandising",
+      "visual merchandiser"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -74526,6 +76641,15 @@
       "Asistente de merchandising"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "visual merchandising",
+      "visual merchandiser"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -74542,6 +76666,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "visual merchandising",
+      "visual merchandiser"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -74554,6 +76687,15 @@
       "assistant·e achat retail merchandiser f/h"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "visual merchandising",
+      "visual merchandiser"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -74570,6 +76712,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "visual merchandising",
+      "visual merchandiser"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -74582,6 +76733,15 @@
       "Assistant Merchandiser"
      ],
      "mode": "phrase"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "visual merchandising",
+      "visual merchandiser"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -74598,6 +76758,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "visual merchandising",
+      "visual merchandiser"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -74610,6 +76779,15 @@
       "assistant merchandising planning"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "visual merchandising",
+      "visual merchandiser"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -74626,6 +76804,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "visual merchandising",
+      "visual merchandiser"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -74638,6 +76825,15 @@
       "assistant retail merchandiser"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "visual merchandising",
+      "visual merchandiser"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -74654,6 +76850,15 @@
      "mode": "phrase"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "visual merchandising",
+      "visual merchandiser"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -74666,6 +76871,15 @@
       "Assistente de merchandising"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "visual merchandising",
+      "visual merchandiser"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -74682,6 +76896,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "visual merchandising",
+      "visual merchandiser"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -74694,6 +76917,15 @@
       "Asystent ds. merchandisingu"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "visual merchandising",
+      "visual merchandiser"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -74710,6 +76942,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "visual merchandising",
+      "visual merchandiser"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -74722,6 +76963,15 @@
       "Merchandising Asistanı"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "visual merchandising",
+      "visual merchandiser"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -74738,6 +76988,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "visual merchandising",
+      "visual merchandiser"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -74750,6 +77009,15 @@
       "Merchandising asszisztens"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "visual merchandising",
+      "visual merchandiser"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -74766,6 +77034,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "visual merchandising",
+      "visual merchandiser"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -74778,6 +77055,15 @@
       "Pembantu Merchandising"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "visual merchandising",
+      "visual merchandiser"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -74794,6 +77080,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "visual merchandising",
+      "visual merchandiser"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -74806,6 +77101,15 @@
       "Βοηθός merchandiser"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "visual merchandising",
+      "visual merchandiser"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -74822,6 +77126,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "visual merchandising",
+      "visual merchandiser"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -74834,6 +77147,15 @@
       "مساعدة ترويج مبيعات"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "visual merchandising",
+      "visual merchandiser"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -74850,6 +77172,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "visual merchandising",
+      "visual merchandiser"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -74862,6 +77193,15 @@
       "머천다이징 어시스턴트"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "visual merchandising",
+      "visual merchandiser"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -74878,6 +77218,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "visual merchandising",
+      "visual merchandiser"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -74890,6 +77239,15 @@
       "商品助理"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "visual merchandising",
+      "visual merchandiser"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -89511,6 +91869,20 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
+   "id": "v3-commis-de-cuisine~e0673cfd46",
+   "occupation": "commis-de-cuisine",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "Assistent kok"
+     ],
+     "mode": "phrase"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
    "id": "v3-commis-de-cuisine~47455681e4",
    "occupation": "commis-de-cuisine",
    "all": [
@@ -89551,6 +91923,23 @@
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
+  },
+  {
+   "id": "v3-commis-de-cuisine~d94d52c495",
+   "occupation": "commis-de-cuisine",
+   "all": [
+    {
+     "field": "title",
+     "any": [
+      "Commis cuisinier"
+     ],
+     "mode": "phrase"
+    }
+   ],
+   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3.",
+   "supersedes": [
+    "cook-title"
+   ]
   },
   {
    "id": "v3-commis-de-cuisine~847f532352",
@@ -97604,6 +99993,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -97616,6 +100014,15 @@
       "Accessoires-Designer"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -97632,6 +100039,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -97644,6 +100060,15 @@
       "Accessories Designer"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -97660,6 +100085,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -97672,6 +100106,15 @@
       "consultant leather goods designer"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -97688,6 +100131,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -97700,6 +100152,15 @@
       "design accessoires"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -97716,6 +100177,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -97728,6 +100198,15 @@
       "Designer accesorii"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -97744,6 +100223,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -97756,6 +100244,15 @@
       "Designer accessoires"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -97772,6 +100269,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -97784,6 +100290,15 @@
       "Designer di accessori"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -97800,6 +100315,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -97812,6 +100336,15 @@
       "designer objet freelance"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -97828,6 +100361,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -97840,6 +100382,15 @@
       "Diseñador de accesorios"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -97856,6 +100407,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -97868,6 +100428,15 @@
       "Kiegészítő-tervező"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -97884,6 +100453,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -97896,6 +100474,15 @@
       "Pereka Aksesori"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -97912,6 +100499,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -97924,6 +100520,15 @@
       "Projektantka akcesoriów"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -97940,6 +100545,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -97952,6 +100566,15 @@
       "stage designer accessoires"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -97968,6 +100591,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -97980,6 +100612,15 @@
       "Σχεδιαστής αξεσουάρ"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -97996,6 +100637,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -98008,6 +100658,15 @@
       "مصمم إكسسوارات"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -98024,6 +100683,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -98036,6 +100704,15 @@
       "นักออกแบบแอคเซสเซอรี"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -98052,6 +100729,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -98064,6 +100750,15 @@
       "アクセサリーデザイナー"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -98080,6 +100775,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -98092,6 +100796,15 @@
       "饰品设计师"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -98108,6 +100821,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -98120,6 +100842,15 @@
       "designer bijou"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -98136,6 +100867,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -98148,6 +100888,15 @@
       "Designer Bijoux Accessoires"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -98164,6 +100913,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -98176,6 +100934,15 @@
       "Designer bijuterii și accesorii"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -98192,6 +100959,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -98204,6 +100980,15 @@
       "designer de bijoux"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -98220,6 +101005,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -98232,6 +101026,15 @@
       "Designer de joias e acessórios"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -98248,6 +101051,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -98260,6 +101072,15 @@
       "designer et consultant"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -98276,6 +101097,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -98288,6 +101118,15 @@
       "Designérka šperků a doplňků"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -98304,6 +101143,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -98316,6 +101164,15 @@
       "Diseñadora de joyas y accesorios"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -98332,6 +101189,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -98344,6 +101210,15 @@
       "fondatrice et designer"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -98360,6 +101235,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -98372,6 +101256,15 @@
       "Juwelen en accessoires designer"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -98388,6 +101281,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -98400,6 +101302,15 @@
       "Pereka Barangan Kemas dan Aksesori"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -98416,6 +101327,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -98428,6 +101348,15 @@
       "Projektantka biżuterii i akcesoriów"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -98444,6 +101373,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -98456,6 +101394,15 @@
       "Schmuck- und Accessoires-Designerin"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -98472,6 +101419,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -98484,6 +101440,15 @@
       "Smykke- og accessoriesdesigner"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -98500,6 +101465,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -98512,6 +101486,15 @@
       "styliste bijoux et accessoires"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -98528,6 +101511,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -98540,6 +101532,15 @@
       "Takı ve Aksesuar Tasarımcısı"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -98556,6 +101557,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -98568,6 +101578,15 @@
       "Σχεδιάστρια κοσμημάτων και αξεσουάρ"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -98584,6 +101603,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -98596,6 +101624,15 @@
       "مصممة مجوهرات وإكسسوارات"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -98612,6 +101649,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -98624,6 +101670,15 @@
       "주얼리 및 액세서리 디자이너"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -98640,6 +101695,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -98652,6 +101716,15 @@
       "珠宝配饰设计师"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -98668,6 +101741,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -98680,6 +101762,15 @@
       "Ayakkabı Tasarımcısı"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -98696,6 +101787,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -98708,6 +101808,15 @@
       "Designer Chaussures"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -98724,6 +101833,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -98736,6 +101854,15 @@
       "Designer de calçados"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -98752,6 +101879,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -98764,6 +101900,15 @@
       "Designer di calzature"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -98780,6 +101925,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -98792,6 +101946,15 @@
       "Designer încălțăminte"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -98808,6 +101971,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -98820,6 +101992,15 @@
       "Designeuse chaussures"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -98836,6 +102017,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -98848,6 +102038,15 @@
       "Diseñadora de calzado"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -98864,6 +102063,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -98876,6 +102084,15 @@
       "Návrhář obuvi"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -98892,6 +102109,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -98904,6 +102130,15 @@
       "Nhà thiết kế giày dép"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -98920,6 +102155,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -98932,6 +102176,15 @@
       "Projektant obuwia"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -98948,6 +102201,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -98960,6 +102222,15 @@
       "Schoenontwerper"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -98976,6 +102247,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -98988,6 +102268,15 @@
       "Schuhdesigner"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -99004,6 +102293,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -99016,6 +102314,15 @@
       "Skodesigner"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -99032,6 +102339,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -99044,6 +102360,15 @@
       "Σχεδιαστής υποδημάτων"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -99060,6 +102385,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -99072,6 +102406,15 @@
       "مصمم أحذية"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -99088,6 +102431,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -99100,6 +102452,15 @@
       "นักออกแบบรองเท้า"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -99116,6 +102477,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -99128,6 +102498,15 @@
       "シューズデザイナー"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -99144,6 +102523,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -99156,6 +102544,15 @@
       "鞋履设计师"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -99564,6 +102961,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -99576,6 +102982,15 @@
       "Breigoedontwerper"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -99592,6 +103007,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -99604,6 +103028,15 @@
       "designer de maille"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -99620,6 +103053,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -99632,6 +103074,15 @@
       "Designer de tricô"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -99648,6 +103099,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -99660,6 +103120,15 @@
       "Designer maille"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -99676,6 +103145,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -99688,6 +103166,15 @@
       "Designer tricotaje"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -99704,6 +103191,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -99716,6 +103212,15 @@
       "Diseñador de punto"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -99732,6 +103237,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -99744,6 +103258,15 @@
       "Knitwear Designer"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -99760,6 +103283,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -99772,6 +103304,15 @@
       "Návrhář úpletů"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -99788,6 +103329,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -99800,6 +103350,15 @@
       "Nhà thiết kế đồ dệt kim"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -99816,6 +103375,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -99828,6 +103396,15 @@
       "Projektant dzianin"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -99844,6 +103421,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -99856,6 +103442,15 @@
       "responsable maille"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -99872,6 +103467,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -99884,6 +103488,15 @@
       "Strickdesignerin"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -99900,6 +103513,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -99912,6 +103534,15 @@
       "Strikkedesigner"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -99928,6 +103559,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -99940,6 +103580,15 @@
       "Trikådesigner"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -99956,6 +103605,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -99968,6 +103626,15 @@
       "Σχεδιαστής πλεκτών"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -99984,6 +103651,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -99996,6 +103672,15 @@
       "مصمم حياكة"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -100012,6 +103697,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -100024,6 +103718,15 @@
       "นักออกแบบเสื้อผ้าถัก"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -100040,6 +103743,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -100052,6 +103764,15 @@
       "ニットデザイナー"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -100068,6 +103789,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -100080,6 +103810,15 @@
       "针织衫设计师"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -121749,34 +125488,6 @@
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
-   "id": "v3-manager-commercial~8c5eb7da31",
-   "occupation": "manager-commercial",
-   "all": [
-    {
-     "field": "title",
-     "any": [
-      "manager, sales"
-     ],
-     "mode": "exact"
-    }
-   ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
-  },
-  {
-   "id": "v3-manager-commercial~24949433f6",
-   "occupation": "manager-commercial",
-   "all": [
-    {
-     "field": "title",
-     "any": [
-      "manager, sales - cosmetics"
-     ],
-     "mode": "exact"
-    }
-   ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
-  },
-  {
    "id": "v3-manager-commercial~c1167203a7",
    "occupation": "manager-commercial",
    "all": [
@@ -123550,20 +127261,6 @@
       "Manager de floor"
      ],
      "mode": "exact"
-    }
-   ],
-   "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
-  },
-  {
-   "id": "v3-manager-floor~4777516ebd",
-   "occupation": "manager-floor",
-   "all": [
-    {
-     "field": "title",
-     "any": [
-      "manager des ventes"
-     ],
-     "mode": "phrase"
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -137095,6 +140792,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -137107,6 +140813,15 @@
       "Account Manager"
      ],
      "mode": "phrase"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -137123,6 +140838,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -137135,6 +140859,15 @@
       "account manager medior"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -137151,6 +140884,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -137163,6 +140905,15 @@
       "Gerente de conta"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -137179,6 +140930,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -137191,6 +140951,15 @@
       "Gestora de conta"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -137207,6 +140976,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -137219,6 +140997,15 @@
       "Müşteri Yöneticisi"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -137235,6 +141022,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -137247,6 +141043,15 @@
       "Quản lý tài khoản"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -137263,6 +141068,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -137275,6 +141089,15 @@
       "Responsable de comptes"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -137291,6 +141114,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -137303,6 +141135,15 @@
       "مسؤولة حسابات العملاء"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -137319,6 +141160,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -137331,6 +141181,15 @@
       "어카운트 매니저"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -137347,6 +141206,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -137361,6 +141229,15 @@
      "mode": "exact"
     }
    ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
+    }
+   ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
   },
   {
@@ -137373,6 +141250,15 @@
       "客户经理"
      ],
      "mode": "exact"
+    }
+   ],
+   "exclude": [
+    {
+     "field": "title",
+     "any": [
+      "assistant",
+      "assistante"
+     ]
     }
    ],
    "evidence": "Passe de curation v3 du 28-29/09/2026 (D-475 §30-§34) : variante validée par consensus de deux juges ou déjà servie, ou libellé relu ; audits/2026-09-28/curation-v3."
@@ -153236,7 +157122,7 @@
  ],
  "review": {
   "author": "Passe de curation v3 (IA seule, D-475 §30)",
-  "at": "2026-09-29T16:49:10.770Z",
+  "at": "2026-09-30T08:56:38.298Z",
   "basis": "Première passe de curation : 253 métiers (servis, backend, offres), 33 familles, 25 langues ; preuves : audits/2026-09-28/curation-v3."
  },
  "families": [
@@ -155366,7 +159252,16 @@
     "deputy",
     "district",
     "regional",
-    "area"
+    "area",
+    "assistent",
+    "assistants",
+    "assisterende",
+    "assisterande",
+    "stellvertretender",
+    "stellvertretende",
+    "stellv",
+    "vice store manager",
+    "アシスタント"
    ]
   },
   {
@@ -155433,6 +159328,14 @@
    ],
    "titleReadingAliases": [
     "Assistant Store Director"
+   ],
+   "titleReadingExclusions": [
+    "adjoint comptabilite",
+    "adjointe comptabilite",
+    "adjoint comptable",
+    "adjointe comptable",
+    "adjoint visual merchandising",
+    "adjointe visual merchandising"
    ]
   },
   {
@@ -156562,7 +160465,10 @@
     "director",
     "head",
     "DIRECTEUR",
-    "DIRECTRICE"
+    "DIRECTRICE",
+    "responsable",
+    "controlling solutions",
+    "functional consultant"
    ],
    "titleOnlyAliases": [
     "Financial Control",
@@ -157766,7 +161672,9 @@
    ],
    "titleReadingExclusions": [
     "manager",
-    "director"
+    "director",
+    "assistent",
+    "commis"
    ]
   },
   {
@@ -158157,9 +162065,6 @@
     "Optometristă",
     "Optometric Technician",
     "Optometry Technician"
-   ],
-   "titleReadingAliases": [
-    "Optometric Technician"
    ]
   },
   {
@@ -160029,6 +163934,9 @@
     "Design Assistant",
     "Design assistant"
    ],
+   "titleReadingExclusions": [
+    "product manager assistant"
+   ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/77bfd6e7-5598-4818-84cb-31e2651eb046"
    ]
@@ -160726,6 +164634,10 @@
    "titleReadingAliases": [
     "Merchandising Assistant",
     "Merchandising assistant"
+   ],
+   "titleReadingExclusions": [
+    "visual merchandising",
+    "visual merchandiser"
    ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/35eb0aa6-b40d-449d-9390-719be8912277"
@@ -163850,6 +167762,10 @@
     "Σχεδιάστρια αξεσουάρ",
     "Designérka doplňků"
    ],
+   "titleReadingExclusions": [
+    "assistant",
+    "assistante"
+   ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/a142a645-6e9e-4d86-accd-9816df857c90"
    ]
@@ -163914,6 +167830,10 @@
     "مصممة مجوهرات وإكسسوارات",
     "Σχεδιάστρια κοσμημάτων και αξεσουάρ",
     "Designérka šperků a doplňků"
+   ],
+   "titleReadingExclusions": [
+    "assistant",
+    "assistante"
    ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/34c57104-ff9b-4003-809e-56eece3cb4d5"
@@ -163983,6 +167903,10 @@
    ],
    "titleReadingAliases": [
     "Footwear Designer"
+   ],
+   "titleReadingExclusions": [
+    "assistant",
+    "assistante"
    ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/06f89f2c-c6e9-40c5-a4a5-0e34d5fbc184"
@@ -164112,6 +168036,10 @@
     "مصممة حياكة",
     "Σχεδιάστρια πλεκτών",
     "Návrhářka úpletů"
+   ],
+   "titleReadingExclusions": [
+    "assistant",
+    "assistante"
    ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/0f7c84c5-1c0d-4fc1-8949-07dbe8bd34ef"
@@ -168540,6 +172468,10 @@
     "Gestora de conta",
     "Gerente de conta",
     "مسؤولة حسابات العملاء"
+   ],
+   "titleReadingExclusions": [
+    "assistant",
+    "assistante"
    ],
    "externalRefs": [
     "http://data.europa.eu/esco/occupation/5e4d156a-1f05-4b2c-b0f0-5abb82d52ed6"

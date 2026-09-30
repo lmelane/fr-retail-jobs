@@ -1,5 +1,5 @@
 {
- "calculeLe": "2026-09-29T14:26:10.198Z",
+ "calculeLe": "2026-09-30T08:56:56.509Z",
  "manifeste": "catwalks-occupations-20260929-v3",
  "bilan": {
   "resolution": {
@@ -12,11 +12,11 @@
   },
   "memoireEtTemps": {
    "compilationV1Ms": 6,
-   "compilationV3Ms": 210,
-   "tasV1Mo": 4,
-   "tasV3Mo": 18,
-   "regles": 8200,
-   "classementsParSeconde": 40360
+   "compilationV3Ms": 215,
+   "tasV1Mo": 3,
+   "tasV3Mo": 23,
+   "regles": 8210,
+   "classementsParSeconde": 43007
   },
   "rappelParMarche": [
    {
@@ -29,7 +29,7 @@
     "pays": "FR",
     "offres": 16521,
     "classesV1": 58,
-    "classesV3": 70
+    "classesV3": 69.7
    },
    {
     "pays": "CA",
@@ -71,7 +71,7 @@
     "pays": "NL",
     "offres": 5347,
     "classesV1": 75.4,
-    "classesV3": 87.5
+    "classesV3": 87.6
    },
    {
     "pays": "CH",
@@ -83,7 +83,7 @@
     "pays": "BE",
     "offres": 4799,
     "classesV1": 79.2,
-    "classesV3": 94.8
+    "classesV3": 94.7
    },
    {
     "pays": "KR",
@@ -113,7 +113,7 @@
     "pays": "JP",
     "offres": 4109,
     "classesV1": 84.1,
-    "classesV3": 92.8
+    "classesV3": 92.9
    },
    {
     "pays": "HK",
@@ -221,7 +221,7 @@
     "pays": "DK",
     "offres": 1012,
     "classesV1": 61.2,
-    "classesV3": 76.4
+    "classesV3": 76.6
    },
    {
     "pays": "MX",
@@ -233,7 +233,7 @@
     "pays": "SE",
     "offres": 802,
     "classesV1": 66.6,
-    "classesV3": 79.7
+    "classesV3": 79.9
    },
    {
     "pays": "RO",
