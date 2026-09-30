@@ -318,7 +318,10 @@ async function discoverRmkLocales(origin: string, searchHtml: string): Promise<{
  * jusqu'à RMK_MAX_SWEEPS balayages ou l'échéance de la source ; par tirage parmi les balayages réels d'un même RUN,
  * 24 balayages atteignent le total dans 99,5 à 100 % des cas, 8 dans 79 à 96 %. Quand la preuve est devenue
  * impossible (total qui change, ligne illisible dans la langue), l'ancienne règle s'applique : un balayage qui
- * n'ajoute rien termine la langue.
+ * n'ajoute rien termine la langue. Limites connues : une langue dont le total n'est jamais atteignable paie les 24
+ * balayages (mesuré sur Douglas de_DE seulement : 31 pages, 744 requêtes au plus) ; et l'échéance, qui n'existe pas
+ * au rejeu (`sourceDeadlineReached`), rend une collecte arrêtée par elle impossible à rejouer — elle échoue au lieu
+ * de rester non prouvée, à moins de 90 s de la coupure, comme les autres relectures bornées par l'échéance.
  */
 const RMK_SORT = 'date';
 const RMK_MAX_SWEEPS = Number(process.env.SF_RMK_MAX_SWEEPS ?? 24);
