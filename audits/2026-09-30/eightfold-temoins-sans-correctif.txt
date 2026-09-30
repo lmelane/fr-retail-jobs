@@ -1,0 +1,83 @@
+
+## relecture différée des fiches supprimée: ÉCHOUE (témoin valide)
+   files: 2 failed (2) | tests: 2 ⎯⎯⎯⎯⎯⎯⎯
+   - src/ats/adapters/eightfold.replay.test.ts > Eightfold — capture, rejeu hors réseau, rejeu des publications conservées > la fiche relue
+   - src/ats/adapters/eightfold.waf.test.ts > Eightfold — une fiche perdue dans une fenêtre du pare-feu est relue après elle > relit la 
+
+## relecture de la page de liste supprimée: ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 2 ⎯⎯⎯⎯⎯⎯⎯
+   - src/ats/adapters/eightfold.waf.test.ts > Eightfold — une fiche perdue dans une fenêtre du pare-feu est relue après elle > une page 
+
+## 404 relu comme un refus du pare-feu: ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
+   - src/ats/adapters/eightfold.waf.test.ts > Eightfold — une fiche perdue dans une fenêtre du pare-feu est relue après elle > ne relit 
+
+## borne « portail en panne » supprimée: ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
+   - src/ats/adapters/eightfold.waf.test.ts > Eightfold — une fiche perdue dans une fenêtre du pare-feu est relue après elle > un portai
+
+## retenue non posée par le collecteur: ÉCHOUE (témoin valide)
+   files: 2 failed (2) | tests: 4 ⎯⎯⎯⎯⎯⎯⎯
+   - src/ats/adapters/eightfold.replay.test.ts > Eightfold — capture, rejeu hors réseau, rejeu des publications conservées > la fiche relue
+   - src/ats/adapters/eightfold.waf.test.ts > D-481 §3 — la description que l’éditeur laisse vide est une retenue sur SA preuve, jamais 
+
+## classifieur : titres de rubrique non retirés (seul le vide strict): ÉCHOUE (témoin valide)
+   files: 2 failed (2) | tests: 3 ⎯⎯⎯⎯⎯⎯⎯
+   - src/ats/adapters/eightfold.replay.test.ts > Eightfold — capture, rejeu hors réseau, rejeu des publications conservées > la fiche relue
+   - src/ats/adapters/eightfold.waf.test.ts > D-481 §3 — la description que l’éditeur laisse vide est une retenue sur SA preuve, jamais 
+
+## classifieur : champ absent pris pour un vide: ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
+   - src/ats/adapters/eightfold.waf.test.ts > D-481 §3 — la description que l’éditeur laisse vide est une retenue sur SA preuve, jamais 
+
+## classifieur : titre long pris pour un titre de rubrique: ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
+   - src/ats/adapters/eightfold.waf.test.ts > D-481 §3 — la description que l’éditeur laisse vide est une retenue sur SA preuve, jamais 
+
+## rejeu des publications : retenue non reproduite: ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
+   - src/ats/adapters/eightfold.replay.test.ts > Eightfold — capture, rejeu hors réseau, rejeu des publications conservées > la fiche relue
+
+## motif non enregistré comme preuve de la source: ÉCHOUE (témoin valide)
+   files: 3 failed (3) | tests: 7 ⎯⎯⎯⎯⎯⎯⎯
+   - src/ats/adapters/eightfold.waf.test.ts > D-481 §3 — la description que l’éditeur laisse vide est une retenue sur SA preuve, jamais 
+   - src/lib/nativeRetention.test.ts > D-481 §3: the description the publisher leaves empty, on the negative-proof guard like the
+   - src/lib/nativeRetention.test.ts > every non-blocking retention names the decision that settles it (D-453 §1, D-456, D-462) >
+   - src/pipeline/unverifiable.test.ts > classement des retenues par NATURE, pas par libellé > sépare un défaut TECHNIQUE d'un fait
+
+## motif sans décision (D-481 §3) attachée: ÉCHOUE (témoin valide)
+   files: 2 failed (2) | tests: 4 ⎯⎯⎯⎯⎯⎯⎯
+   - src/ats/adapters/eightfold.waf.test.ts > D-481 §3 — la description que l’éditeur laisse vide est une retenue sur SA preuve, jamais 
+   - src/lib/nativeRetention.test.ts > every non-blocking retention names the decision that settles it (D-453 §1, D-456, D-462) >
+
+## garde de la preuve négative non étendue: ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 2 ⎯⎯⎯⎯⎯⎯⎯
+   - src/lib/nativeRetention.test.ts > D-481 §3: the description the publisher leaves empty, on the negative-proof guard like the
+
+## clé commune Eightfold supprimée: ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 4 ⎯⎯⎯⎯⎯⎯⎯
+   - src/lib/hostGate.eightfold.test.ts > Eightfold — la clé commune ne regroupe que ce qui a été mesuré > les deux portails, et eux
+   - src/lib/hostGate.eightfold.test.ts > Eightfold — la porte tient les deux sources sous le seuil mesuré du pare-feu > Estée Laude
+   - src/lib/hostGate.eightfold.test.ts > Eightfold — la porte tient les deux sources sous le seuil mesuré du pare-feu > un refus do
+   - src/lib/hostGate.eightfold.test.ts > Eightfold — la porte tient les deux sources sous le seuil mesuré du pare-feu > une requête
+
+## careers.kering.com hors de la clé commune: ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 4 ⎯⎯⎯⎯⎯⎯⎯
+   - src/lib/hostGate.eightfold.test.ts > Eightfold — la clé commune ne regroupe que ce qui a été mesuré > les deux portails, et eux
+   - src/lib/hostGate.eightfold.test.ts > Eightfold — la porte tient les deux sources sous le seuil mesuré du pare-feu > Estée Laude
+   - src/lib/hostGate.eightfold.test.ts > Eightfold — la porte tient les deux sources sous le seuil mesuré du pare-feu > un refus do
+   - src/lib/hostGate.eightfold.test.ts > Eightfold — la porte tient les deux sources sous le seuil mesuré du pare-feu > une requête
+
+## cadence plancher supprimée: ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 4 ⎯⎯⎯⎯⎯⎯⎯
+   - src/lib/hostGate.eightfold.test.ts > Eightfold — la clé commune ne regroupe que ce qui a été mesuré > les deux portails, et eux
+   - src/lib/hostGate.eightfold.test.ts > Eightfold — la porte tient les deux sources sous le seuil mesuré du pare-feu > Estée Laude
+   - src/lib/hostGate.eightfold.test.ts > Eightfold — la porte tient les deux sources sous le seuil mesuré du pare-feu > un refus do
+   - src/lib/hostGate.eightfold.test.ts > Eightfold — la porte tient les deux sources sous le seuil mesuré du pare-feu > une requête
+
+## plancher oublié par la décroissance après succès: ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
+   - src/lib/hostGate.eightfold.test.ts > Eightfold — la porte tient les deux sources sous le seuil mesuré du pare-feu > un refus do
+
+## état committé restauré : exit 0 | files: 5 passed (5) | tests: 74 passed (74)
+tree clean: True
