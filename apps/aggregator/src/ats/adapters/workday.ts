@@ -214,8 +214,13 @@ async function readPass(shared: Shared, board: Board, memory: BoardMemory, pass:
   let total = 0, totalChanged = false;
   const local = new Set<string>();
   const occurrences: PathlessOccurrence[] = [];
-  /** A path-less row has no id: its content names it, one announced row per distinct content. */
-  const pathlessCount = () => new Set(occurrences.map((o) => o.hash)).size;
+  /** Contents whose occurrences kept their ranks on a re-read: distinct announced rows, counted by rank. */
+  const distinctByRank = new Set<string>();
+  const pathlessCount = () => {
+    const ranks = new Map<string, Set<number>>();
+    for (const o of occurrences) ranks.set(o.hash, (ranks.get(o.hash) ?? new Set()).add(o.offset + o.index));
+    return [...ranks].reduce((sum, [hash, at]) => sum + (distinctByRank.has(hash) ? at.size : 1), 0);
+  };
   let pages = 0, rawCount = 0, repeatedIds = 0, overlap = 0, fresh = 0, termination = 'PAGE_BUDGET_EXHAUSTED';
   const suffix = `${board.partition ? `&${board.partition.parameter}=${encodeURIComponent(board.partition.id)}` : ''}${pass > 1 ? `&pass=${pass}` : ''}`;
   const take = (job: WorkdayPosting, externalId: string): boolean => {
@@ -247,9 +252,9 @@ async function readPass(shared: Shared, board: Board, memory: BoardMemory, pass:
       // `undefined.split`. Richemont's tenant returned such rows, and the throw
       // lost all ~1300 of its offers ("cartier-3 failed: reading 'split'").
       if (!job.externalPath) {
-        // A path-less row has no id: the same row served twice (unstable sort — Mango, 2026-09-10: {"bulletFields":["Fix-Term"]}
-        // read on two pages) is one announced row, not two. Distinct rows are told apart by their content.
-        // Every occurrence is a witness in the rejects, recorded once per board even when a second pass serves it again.
+        // A path-less row has no id. Two occurrences of the same content are ONE row until a re-read proves that each
+        // keeps its rank (below): distinct rows then, counted by rank. Every occurrence is a witness in the rejects,
+        // recorded once per board even when a second pass serves it again.
         const hash = pathlessHash(job);
         occurrences.push({ hash, offset, index });
         const inPass = occurrences.filter((o) => o.hash === hash).length;
@@ -287,6 +292,48 @@ async function readPass(shared: Shared, board: Board, memory: BoardMemory, pass:
     // then the next offset is read, so a shortened page in the middle of the
     // board does not pass for its end.
     if (postings.length < 20 && !total) { termination = 'SHORT_PAGE'; break; }
+  }
+  /**
+   * LIGNES SANS CHEMIN AU CONTENU IDENTIQUE (D-482, 30/09/2026, Mango). `{"bulletFields":["Fix-Term"]}` servie deux
+   * fois : aux rangs 328 et 557 le 26/09, 307 et 326 le 29/09, en milieu de page, entre des voisins différents. Les
+   * deux lectures indépendantes du 26/09, à six minutes, servent le tableau dans le MÊME ordre, rang pour rang
+   * (0 différence sur 1 653), et ces deux lignes aux mêmes rangs : ce sont deux lignes annoncées, pas une ligne servie
+   * deux fois. Chaque jour, identifiants + occurrences = total exactement (1 651 + 2 = 1 653 ; 1 662 + 2 = 1 664), et
+   * les compter pour une seule réfutait le tableau (1 663 sur 1 664).
+   *
+   * Un tri instable peut pourtant servir UNE ligne deux fois, et faire sauter une offre à la frontière : les compter
+   * par occurrence sans preuve cacherait cette offre. Les pages où tombe un contenu répété sont donc relues une fois ;
+   * s'il se retrouve à CHACUN de ses rangs, ce sont des lignes distinctes, comptées par rang. Sinon il reste compté
+   * une fois, et le tableau n'est pas prouvé (`PATHLESS_ROW_RANK_UNSTABLE`) — c'est la lecture prudente d'avant.
+   * Seulement sur une passe sans identifiant répété : un tri qui a déjà répété une offre est instable, et la lecture
+   * prudente (contenu compté une fois, grille décalée plus bas) reste la règle — Mango du 10/09.
+   */
+  const byHash = new Map<string, PathlessOccurrence[]>();
+  for (const o of occurrences) byHash.set(o.hash, [...(byHash.get(o.hash) ?? []), o]);
+  const repeatedContent = [...byHash].filter(([, list]) => list.length > 1);
+  if (repeatedContent.length && repeatedIds === 0 && !totalChanged && termination !== 'PAGE_BUDGET_EXHAUSTED') {
+    const reread = new Map<number, WorkdayPosting[]>();
+    for (const offset of [...new Set(repeatedContent.flatMap(([, list]) => list.map((o) => o.offset)))].sort((a, b) => a - b)) {
+      const page = await readPage(shared, board, offset);
+      const postings = page.jobPostings ?? [];
+      pages += 1;
+      if (page.total && total && page.total !== total) { totalChanged = true; shared.issues.add('SOURCE_TOTAL_CHANGED'); }
+      const pageIds: string[] = [];
+      for (const job of postings) {
+        if (!job.externalPath) continue;
+        const externalId = workdayId(job.externalPath);
+        pageIds.push(externalId);
+        take(job, externalId);
+      }
+      reread.set(offset, postings);
+      shared.pageEvidence.push({ url: `${shared.endpoint}#offset=${offset}&pathlessRecheck=1${suffix}`, checkedAt: captureObservedAt().toISOString(), sha256: createHash('sha256').update(JSON.stringify(page)).digest('hex'), offset, pagination: null,
+        ids: pageIds, canonicalIds: pageIds, publisherCounter: page.total ? `total=${page.total}` : '', componentCounters: ['pathlessRecheck=1', `rows=${postings.length}`] });
+    }
+    for (const [hash, list] of repeatedContent) {
+      const kept = list.every((o) => { const row = reread.get(o.offset)?.[o.index]; return row !== undefined && !row.externalPath && pathlessHash(row) === hash; });
+      if (kept && !totalChanged) distinctByRank.add(hash); else shared.issues.add('PATHLESS_ROW_RANK_UNSTABLE');
+    }
+    if (distinctByRank.size) shared.issues.add('PATHLESS_ROWS_DISTINCT_BY_RANK');
   }
   /**
    * Plafond de l'éditeur (29/09/2026). Workday plafonne `total` à 2 000 : knitwell-us-retail en tient 3 463 (somme de

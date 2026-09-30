@@ -11,6 +11,7 @@ import { fetchWorkdayJobs } from './workday.js';
  * (`scripts/ops/extraire-pages-workday.mts`, corps exacts, empreinte de chaque corps et du fichier vérifiée).
  *
  *  · Nordstrom, 29/09 : le total change pendant la lecture (1 329 → 1 328) ; la seconde passe entière le prouve.
+ *  · Mango, 26/09 et 29/09 : deux lignes sans chemin au même contenu, à des rangs fixes, sont deux lignes annoncées.
  */
 type Page = { sequence: number; offset: number; sha256: string; body: string };
 type Posting = { externalPath?: string; bulletFields?: string[]; title?: string };
@@ -106,5 +107,81 @@ describe('Nordstrom, 29/09/2026 — le total change pendant la lecture : une sec
     expect(r.jobs.map((j) => j.externalId)).toContain('Sales_40');
     expect(r.jobs.map((j) => j.externalId)).toContain('Sales_25');
     expect(r.jobs).toHaveLength(61);
+  });
+});
+
+describe('Mango — deux lignes sans chemin au même contenu, à des rangs fixes, sont deux lignes annoncées', () => {
+  const config = { tenant: 'mango', site: 'Mango_Work_Your_Passion', origin: 'https://mango.wd3.myworkdayjobs.com', withDescriptions: false };
+  const FIX_TERM = JSON.stringify({ bulletFields: ['Fix-Term'] });
+  const ranksOf = (list: Page[]) => list.flatMap((p) => (parse(p).jobPostings ?? []).map((job, i) => ({ rank: p.offset + i, job })))
+    .filter(({ job }) => !job.externalPath).map(({ rank, job }) => ({ rank, content: JSON.stringify(job) }));
+
+  it('prémisse, 29/09 : 1 664 annoncées, 1 664 lignes servies sans répétition, 1 662 offres, « Fix-Term » aux rangs 307 et 326', () => {
+    const all = fixture('workday-mango-liste-20260929.json.gz', 'bd8ef6b2c66bd845241faf02127ac551e20399320022c004398e6891baadfeb8');
+    expect(all).toHaveLength(84);
+    expect(parse(all[0]!).total).toBe(1664);
+    const rows = all.flatMap((p) => parse(p).jobPostings ?? []);
+    expect(rows).toHaveLength(1664);
+    const ids = rows.map(idOf).filter(Boolean);
+    expect(ids).toHaveLength(1662); expect(new Set(ids).size).toBe(1662);
+    expect(ranksOf(all)).toEqual([{ rank: 307, content: FIX_TERM }, { rank: 326, content: FIX_TERM }]);
+  });
+
+  it('29/09 : les pages 300 et 320 relues gardent « Fix-Term » à ses deux rangs — tableau prouvé (1 662 + 2 = 1 664)', async () => {
+    const all = fixture('workday-mango-liste-20260929.json.gz', 'bd8ef6b2c66bd845241faf02127ac551e20399320022c004398e6891baadfeb8');
+    const byOffset = new Map(all.map((p) => [p.offset, parse(p)]));
+    const reads = serve((offset) => byOffset.get(offset)!);
+    const r = await fetchWorkdayJobs(config);
+    expect(r.complete).toBe(true);
+    expect(r.declaredTotal).toBe(1664);
+    expect(r.jobs).toHaveLength(1662);
+    expect(r.rejectedRows).toEqual([{ reason: 'ROW_WITHOUT_EXTERNAL_PATH', raw: { bulletFields: ['Fix-Term'] } }, { reason: 'ROW_WITHOUT_EXTERNAL_PATH', raw: { bulletFields: ['Fix-Term'] } }]);
+    expect(r.enumeration?.issues).toEqual(expect.arrayContaining(['ROWS_WITHOUT_EXTERNAL_PATH', 'PATHLESS_ROWS_DISTINCT_BY_RANK']));
+    expect(r.enumeration?.issues).not.toContain('ENUMERATION_NOT_PROVEN');
+    expect(fetchJson).toHaveBeenCalledTimes(86);
+    expect([...reads].filter(([, n]) => n > 1).map(([offset]) => offset).sort((a, b) => a - b)).toEqual([300, 320]);
+    // Aucune ligne n'est inventée : l'absence reste inattestable tant qu'une ligne n'a pas d'identifiant.
+    expect(r.enumeration?.canonicalAbsenceProofUsable).toBe(false);
+  });
+
+  it('26/09, entièrement réel : la collecte de 17:21 et la relecture INDÉPENDANTE de 17:27 servent « Fix-Term » aux mêmes rangs 328 et 557', async () => {
+    const first = fixture('workday-mango-liste-20260926-1721.json.gz', '0e17e6caf5fd0a7930528e0f24fc66574c15a0070cea5f2df5c9be19cecc926a');
+    const second = fixture('workday-mango-relecture-20260926-1727.json.gz', '5ec7beacbde4916d73b12957670279b321277c40f01263abffec62fe6f382334');
+    // Prémisse : 1 653 annoncées, 1 651 offres, les deux lignes aux rangs 328 et 557 dans chacune des deux captures.
+    expect(parse(first[0]!).total).toBe(1653);
+    expect(first.flatMap((p) => parse(p).jobPostings ?? []).filter((j) => j.externalPath)).toHaveLength(1651);
+    expect(ranksOf(first)).toEqual([{ rank: 328, content: FIX_TERM }, { rank: 557, content: FIX_TERM }]);
+    expect(second.map((p) => p.offset)).toEqual([320, 540]);
+    expect(ranksOf(second)).toEqual(ranksOf(first));
+    const byOffset = new Map(first.map((p) => [p.offset, parse(p)]));
+    const reread = new Map(second.map((p) => [p.offset, parse(p)]));
+    serve((offset, read) => read === 0 ? byOffset.get(offset)! : reread.get(offset)!);
+    const r = await fetchWorkdayJobs(config);
+    expect(r.complete).toBe(true);
+    expect(r.declaredTotal).toBe(1653);
+    expect(r.jobs).toHaveLength(1651);
+    expect(r.enumeration?.issues).not.toContain('ENUMERATION_NOT_PROVEN');
+  });
+
+  it("tri instable sans identifiant répété : la ligne servie deux fois ne garde pas ses rangs, l'offre sautée reste manquante — NON prouvé", async () => {
+    const posting = (id: number): Posting => ({ title: `Sales ${id}`, externalPath: `/job/Paris/Sales_${id}`, bulletFields: [`R-${id}`] });
+    const X: Posting = { bulletFields: ['Fix-Term'] };
+    // 60 lignes : Sales_0…59 sauf Sales_5, et X au rang 5. Après la lecture des pages 0 et 20, X passe au rang 45 :
+    // les lignes 6 à 45 remontent d'un rang, Sales_40 tombe en page 20 déjà lue et n'est jamais servie.
+    const before: Posting[] = Array.from({ length: 60 }, (_, i) => (i === 5 ? X : posting(i)));
+    const after: Posting[] = [...before.slice(0, 5), ...before.slice(6, 46), X, ...before.slice(46)];
+    serve((offset, read) => {
+      const list = read === 0 && offset < 40 ? before : after;
+      return { total: offset === 0 ? 60 : 0, jobPostings: list.slice(offset, offset + 20) };
+    });
+    const r = await fetchWorkdayJobs({ ...config, tenant: 't' });
+    // Prémisse : X a été servie aux rangs 5 et 45, aucune offre répétée, Sales_40 jamais servie, 60 lignes lues.
+    expect(r.enumeration?.rawCount).toBe(60);
+    expect(r.enumeration?.issues).not.toContain('REPEATED_IDS_ACROSS_PAGES');
+    expect(r.rejectedRows).toHaveLength(2);
+    expect(r.jobs.map((j) => j.externalId)).not.toContain('Sales_40');
+    // Compter X par occurrence donnerait 58 + 2 = 60 et prouverait à tort un tableau auquel manque Sales_40.
+    expect(r.complete).toBe(false);
+    expect(r.enumeration?.issues).toEqual(expect.arrayContaining(['PATHLESS_ROW_RANK_UNSTABLE', 'ENUMERATION_NOT_PROVEN']));
   });
 });
