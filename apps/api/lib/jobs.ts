@@ -8,7 +8,7 @@ import { MARCHES, localeServie, type Perimetre } from '@catwalks/db/marches';
 import { langueDesLibelles, type LangueLibelles } from '@catwalks/db/presentation';
 import { getOptionalOccupationPresentation, type OptionalOccupationPresentation } from './occupations';
 import { prisma, Prisma, canonicalJobId } from '@catwalks/db';
-import { ARITE_CLE_RECHERCHE, searchSummary, type CleRecherche } from './job-search-query';
+import { ARITE_CLE_RECHERCHE, examenNouveautes, searchSummary, type CleRecherche } from './job-search-query';
 import { CURSEUR_MAX, decoderCurseur, empreinteCriteres, encoderCurseur } from './curseur';
 import { directPubliable, directPubliableSql, directToRow, estIdDirect, estMandatCatwalks, idDirect, statutDirect } from './direct-offers';
 import { offerIdCandidates } from './offer-url';
@@ -630,6 +630,70 @@ function empreintePlan(plan: ReturnType<typeof planifierRecherche>): string {
   });
 }
 
+/**
+ * Les lignes servies d'une liste d'identifiants rendus par le SQL, dans SON ordre. La page mêle les deux origines ;
+ * chaque origine est relue dans sa table, et la ligne servie a la même forme pour les deux. Une offre dépubliée entre
+ * le SQL et cette relecture disparaît de la page, jamais servie périmée.
+ */
+async function lignesDansLOrdre(ids: string[], taxonomy: OptionalOccupationPresentation): Promise<JobRow[]> {
+  const idsDirects = ids.filter(estIdDirect).map(idDirect);
+  const [rows, directes] = await Promise.all([
+    prisma.job.findMany({
+      where: { ...publicJobWhere(), id: { in: ids.filter((id) => !estIdDirect(id)) } },
+      omit: { raw: true, searchText: true },
+      include: { company: true, sources: publicSources() },
+    }),
+    idsDirects.length ? prisma.directOffer.findMany({ where: { ...directPubliable(), id: { in: idsDirects } } }) : [],
+  ]);
+  const byId = new Map<string, JobRow>([
+    ...rows.map((row): [string, JobRow] => [row.id, toRow(row, taxonomy)]),
+    ...directes.map((d): [string, JobRow] => {
+      const ligne = directToRow(d);
+      return [ligne.id, ligne];
+    }),
+  ]);
+  return ids.flatMap((id) => {
+    const ligne = byId.get(id);
+    return ligne ? [ligne] : [];
+  });
+}
+
+/** R-130 §3 — au plus 50 nouvelles lues par examen : l'e-mail en montre 3, le reste sert l'anti-doublon. */
+export const NOUVELLES_MAX = 50;
+
+export type ExamenAlerte = {
+  total: number;
+  nouvelles: number;
+  jobs: JobRow[];
+  perimetre: PerimetreServi;
+  filtresRefuses: FiltreRefuse[];
+};
+
+/**
+ * L'EXAMEN D'UNE ALERTE (R-128 §2, R-130 §3 ; D-464 §1, §3) : la recherche de `/emplois` — même `parseFilters`, même
+ * plan, même base SQL — et, parmi ses offres, celles entrées au catalogue après `entreeApres` et publiées après
+ * `publieeApres` (ou sans date). Le backend fixe les deux bornes : le filigrane de l'alerte et « il y a 30 jours ».
+ */
+export async function examinerAlerte(filters: JobFilters, entreeApres: Date, publieeApres: Date): Promise<ExamenAlerte> {
+  const perimetre = exigerPerimetre(filters.marche);
+  if (!process.env.DATABASE_URL) throw new DatabaseUnavailableError();
+  // Une alerte ne connaît ni le pays du visiteur ni un curseur (R-128 §1).
+  const plan = planifierRecherche(perimetre, { ...filters, prioritePays: undefined });
+  try {
+    const taxonomy = await getOptionalOccupationPresentation(langueDesLibelles(localeAffichage(filters.locale, perimetre)));
+    const examen = await examenNouveautes(plan, entreeApres, publieeApres, NOUVELLES_MAX);
+    return {
+      total: examen.total,
+      nouvelles: examen.nouvelles,
+      jobs: await lignesDansLOrdre(examen.ids, taxonomy),
+      perimetre: perimetreServi(perimetre, filters.locale),
+      filtresRefuses: plan.refus,
+    };
+  } catch (error) {
+    throw new DatabaseUnavailableError(error);
+  }
+}
+
 export async function getJobs(filters: JobFilters): Promise<JobsResult> {
   const perimetre = exigerPerimetre(filters.marche);
   if (!process.env.DATABASE_URL) throw new DatabaseUnavailableError();
@@ -641,28 +705,7 @@ export async function getJobs(filters: JobFilters): Promise<JobsResult> {
   try {
     const taxonomy = await getOptionalOccupationPresentation(langueDesLibelles(localeAffichage(filters.locale, perimetre)));
     const summary = await searchSummary(plan, curseur, PAGE_SIZE);
-    // La page mêle les deux origines dans l'ordre du SQL ; chaque origine est
-    // relue dans sa table, et la ligne servie a la même forme pour les deux.
-    const idsDirects = summary.ids.filter(estIdDirect).map(idDirect);
-    const [rows, directes] = await Promise.all([
-      prisma.job.findMany({
-        where: { ...publicJobWhere(), id: { in: summary.ids.filter((id) => !estIdDirect(id)) } },
-        omit: { raw: true, searchText: true },
-        include: { company: true, sources: publicSources() },
-      }),
-      idsDirects.length ? prisma.directOffer.findMany({ where: { ...directPubliable(), id: { in: idsDirects } } }) : [],
-    ]);
-    const byId = new Map<string, JobRow>([
-      ...rows.map((row): [string, JobRow] => [row.id, toRow(row, taxonomy)]),
-      ...directes.map((d): [string, JobRow] => {
-        const ligne = directToRow(d);
-        return [ligne.id, ligne];
-      }),
-    ]);
-    const jobs = summary.ids.flatMap((id) => {
-      const ligne = byId.get(id);
-      return ligne ? [{ ...ligne, correspondance: { statut: 'CONFIRMEE' as const } }] : [];
-    });
+    const jobs = (await lignesDansLOrdre(summary.ids, taxonomy)).map((ligne) => ({ ...ligne, correspondance: { statut: 'CONFIRMEE' as const } }));
     return {
       jobs,
       occupationEnrichmentAvailable: taxonomy.available,

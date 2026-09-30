@@ -172,12 +172,13 @@ function compterPerimetre(paysDuPerimetre: readonly string[], asOf: Date): Promi
   return valeur;
 }
 
-export async function searchSummary(
-  plan: PlanRecherche,
-  curseur: CleRecherche | null,
-  pageSize: number,
-): Promise<SearchSummary> {
-  const asOf = new Date();
+/**
+ * LA BASE D'UNE RECHERCHE : les offres des deux origines que le périmètre, le lieu et le texte retiennent, avant les
+ * filtres de dimension. Partagée par la recherche de `/emplois` (`searchSummary`) et l'examen d'une alerte
+ * (`examenNouveautes`) : une alerte rejoue EXACTEMENT la recherche de la page (R-128 §2), donc le même SQL, jamais une
+ * copie. La colonne `firstSeenAt` porte l'entrée au catalogue des deux origines (`receivedAt` d'une offre directe).
+ */
+async function sqlBase(plan: PlanRecherche, asOf: Date): Promise<Prisma.Sql> {
   const pays = Prisma.join(plan.perimetre.pays.map((p) => Prisma.sql`${p}`));
   const perimetre = Prisma.sql`${publicJobSql(Prisma.sql`j`, asOf)} AND j."countryCode" IN (${pays})`;
   const conditions: Prisma.Sql[] = [perimetre, ...conditionLieu(plan, 'j')];
@@ -192,16 +193,7 @@ export async function searchSummary(
   if (search) { conditions.push(search.condition); conditionsDirect.push(search.condition); }
   const aggregateIndex = search ? Prisma.sql`JOIN "SearchDocument" s ON s.id=j.id AND s.version=${SEARCH_VERSION} AND s.country IN (${pays})` : Prisma.empty;
   const directIndex = search ? Prisma.sql`JOIN "SearchDocument" s ON s.id='cw_'||d.id AND s.version=${SEARCH_VERSION} AND s.country IN (${pays})` : Prisma.empty;
-
-  // Un filtre sélectionné exige une valeur attestée. Aucun élargissement aux valeurs absentes.
-  // D-419 §2 : le pays du visiteur d'abord, à l'intérieur du périmètre. Jamais un filtre.
-  const priorite = plan.prioritePays ? Prisma.sql`(CASE WHEN b."countryCode" = ${plan.prioritePays} THEN 0 ELSE 1 END)` : Prisma.sql`0`;
-  const apres = curseur
-    ? Prisma.sql`WHERE (origine, nc, pri, ns, np, nf, id) > (${curseur[0]}::int, ${curseur[1]}::int, ${curseur[2]}::int, ${curseur[3]}::int, ${curseur[4]}::float8, ${curseur[5]}::float8, ${curseur[6]}::text)`
-    : Prisma.empty;
-
-  const [[summary], totalPerimetre] = await Promise.all([prisma.$queryRaw<Array<Omit<SearchSummary, 'ids' | 'suivant' | 'totalPerimetre'> & { page: Array<{ id: string; k: CleRecherche }> | null }>>(Prisma.sql`
-    WITH base AS MATERIALIZED (
+  return Prisma.sql`
       SELECT j.id, 1 AS origine, j."occupationCode", j."titleRoles", j."countryCode", lower(trim(j.city)) AS ville, j."employmentTerm", j."workTime",
         j."programType", j."engagementType", j."postedAt", j."firstSeenAt", j.language, c.id AS "companyId", c.name AS maison, c."sectorCodes", c."parentGroup" AS groupe,
         ${search?.score ?? Prisma.sql`0`} AS score
@@ -212,8 +204,61 @@ export async function searchSummary(
         d."programType", d."engagementType", d."postedAt", d."receivedAt", d.language, d."companyId", COALESCE(dc.name, d.company), d."sectorCodes", dc."parentGroup",
         ${search?.score ?? Prisma.sql`0`}
       FROM "DirectOffer" d LEFT JOIN "Company" dc ON dc.id = d."companyId" ${directIndex}
-      WHERE ${Prisma.join(conditionsDirect, ' AND ')}
-    ), scoped AS MATERIALIZED (
+      WHERE ${Prisma.join(conditionsDirect, ' AND ')}`;
+}
+
+export type ExamenNouveautes = {
+  /** Toutes les offres que la recherche retient, comme le total de `/emplois`. */
+  total: number;
+  /** Celles entrées au catalogue après `entreeApres` ET publiées après `publieeApres` ou sans date (R-130 §3). */
+  nouvelles: number;
+  /** Les premières nouvelles, dans l'ordre de `/emplois` (R-126) : Catwalks d'abord, score, publication, entrée. */
+  ids: string[];
+};
+
+/**
+ * R-130 §3 (D-464 §1) — L'EXAMEN D'UNE ALERTE : la recherche de la page, plus deux bornes de date sur les seules
+ * nouvelles. Pas de facettes ni de curseur : un compte, un compte filtré, une page.
+ */
+export async function examenNouveautes(
+  plan: PlanRecherche,
+  entreeApres: Date,
+  publieeApres: Date,
+  limite: number,
+): Promise<ExamenNouveautes> {
+  const asOf = new Date();
+  const base = await sqlBase(plan, asOf);
+  const [r] = await prisma.$queryRaw<Array<{ total: number; nouvelles: number; ids: string[] | null }>>(Prisma.sql`
+    WITH base AS MATERIALIZED (${base}),
+    scoped AS MATERIALIZED (SELECT b.id, b.origine, b."postedAt", b."firstSeenAt", b.score FROM base b WHERE ${restriction(plan)}),
+    nouvelles AS MATERIALIZED (
+      SELECT id, origine, -score AS ns, coalesce(-extract(epoch FROM "postedAt"), 1e15)::float8 AS np,
+        (-extract(epoch FROM "firstSeenAt"))::float8 AS nf
+      FROM scoped WHERE "firstSeenAt" > ${entreeApres} AND ("postedAt" IS NULL OR "postedAt" >= ${publieeApres})
+    )
+    SELECT (SELECT count(*)::int FROM scoped) AS total,
+      (SELECT count(*)::int FROM nouvelles) AS nouvelles,
+      (SELECT jsonb_agg(id ORDER BY origine, ns, np, nf, id) FROM (SELECT * FROM nouvelles ORDER BY origine, ns, np, nf, id LIMIT ${limite}) p) AS ids`);
+  return { total: r.total, nouvelles: r.nouvelles, ids: r.ids ?? [] };
+}
+
+export async function searchSummary(
+  plan: PlanRecherche,
+  curseur: CleRecherche | null,
+  pageSize: number,
+): Promise<SearchSummary> {
+  const asOf = new Date();
+  const base = await sqlBase(plan, asOf);
+
+  // Un filtre sélectionné exige une valeur attestée. Aucun élargissement aux valeurs absentes.
+  // D-419 §2 : le pays du visiteur d'abord, à l'intérieur du périmètre. Jamais un filtre.
+  const priorite = plan.prioritePays ? Prisma.sql`(CASE WHEN b."countryCode" = ${plan.prioritePays} THEN 0 ELSE 1 END)` : Prisma.sql`0`;
+  const apres = curseur
+    ? Prisma.sql`WHERE (origine, nc, pri, ns, np, nf, id) > (${curseur[0]}::int, ${curseur[1]}::int, ${curseur[2]}::int, ${curseur[3]}::int, ${curseur[4]}::float8, ${curseur[5]}::float8, ${curseur[6]}::text)`
+    : Prisma.empty;
+
+  const [[summary], totalPerimetre] = await Promise.all([prisma.$queryRaw<Array<Omit<SearchSummary, 'ids' | 'suivant' | 'totalPerimetre'> & { page: Array<{ id: string; k: CleRecherche }> | null }>>(Prisma.sql`
+    WITH base AS MATERIALIZED (${base}), scoped AS MATERIALIZED (
       SELECT b.id, b.origine, b."countryCode", b."postedAt", b."firstSeenAt", true AS confirme, ${priorite} AS pri, b.score
       FROM base b WHERE ${restriction(plan)}
     ), cles AS (

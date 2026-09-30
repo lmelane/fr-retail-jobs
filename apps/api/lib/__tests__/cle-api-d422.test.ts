@@ -72,7 +72,7 @@ describe('le garde de clé (D-422)', () => {
  * ouverte, et personne ne le verrait. Il ÉCHOUE si une route oublie le garde.
  */
 describe('aucune route ne peut oublier le garde', () => {
-  it('les 11 routes protégées appellent refuserSiCleInvalide, /api/health non (D-422 §3)', () => {
+  it('les 12 routes protégées appellent refuserSiCleInvalide, /api/health non (D-422 §3)', () => {
     const racine = join(__dirname, '..', '..', 'app', 'api');
     const routes: string[] = [];
     const parcourir = (dossier: string) => {
@@ -84,9 +84,10 @@ describe('aucune route ne peut oublier le garde', () => {
     };
     parcourir(racine);
 
-    // Prémisse : il y a bien 12 routes (dont `/api/marches`, lot 6, `/api/sitemap/emplois`, lot 9, `/api/registre/societes`,
-    // D-471, `/api/taxonomie/export` et `/api/metiers/signalements`, lot 2E de D-475), sinon ce témoin ne teste rien.
-    expect(routes).toHaveLength(12);
+    // Prémisse : il y a bien 13 routes (dont `/api/marches`, lot 6, `/api/sitemap/emplois`, lot 9, `/api/registre/societes`,
+    // D-471, `/api/taxonomie/export` et `/api/metiers/signalements`, lot 2E de D-475, et `/api/alertes/examen`, R-130),
+    // sinon ce témoin ne teste rien.
+    expect(routes).toHaveLength(13);
 
     for (const chemin of routes) {
       const source = readFileSync(chemin, 'utf8');
@@ -102,7 +103,7 @@ describe('aucune route ne peut oublier le garde', () => {
  * une surface publique.
  */
 describe('les routes du backend seul (lot 2E)', () => {
-  it.each(['taxonomie/export', 'metiers/signalements', 'registre/societes'])('%s ne nomme que le backend', (route) => {
+  it.each(['taxonomie/export', 'metiers/signalements', 'registre/societes', 'alertes/examen'])('%s ne nomme que le backend', (route) => {
     const source = readFileSync(join(__dirname, '..', '..', 'app', 'api', route, 'route.ts'), 'utf8');
     expect(source).toMatch(/refuserSiCleInvalide\(request, requestId, \['backend'\]\)/);
   });
