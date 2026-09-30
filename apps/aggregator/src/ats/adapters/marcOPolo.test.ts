@@ -9,7 +9,7 @@ vi.mock('../../lib/hostGate.js', () => ({ withHostGate: async (_url: string, run
 vi.mock('../../lib/sourceBudget.js', async (importOriginal) => ({
   ...(await importOriginal<typeof import('../../lib/sourceBudget.js')>()), sourceDelay: vi.fn(async () => undefined) }));
 
-import { fetchMarcOPoloJobs, marcOPoloSettings, readPublishedList, vacancyExternalId, vacancyPageUrl } from './marcOPolo.js';
+import { fetchMarcOPoloJobs, marcOPoloSettings, readMarcOPoloRaw, readPublishedList, vacancyExternalId, vacancyPageUrl } from './marcOPolo.js';
 import { fetchAtsJobs, normalizeAdapterResult } from '../index.js';
 import { recoverRetainedPublication } from '../../publication/recovery.js';
 import { readLocations } from '../../facts/locations.js';
@@ -260,6 +260,10 @@ describe("Marc O'Polo — configuration, rejeu et reprise", () => {
       listing: apiList.find((row) => row.id === '2026-4345'), detail: JSON.parse(byUrl.get(detailUrl('2026-4345'))!.body) };
     expect(recoverRetainedPublication('generic-listing', raw, { externalId: vacancyExternalId(raw.pageUrl), url: raw.pageUrl,
       observedAt: new Date(), config })).toMatchObject({ status: 'RECOLLECT_OR_REVIEW' });
+    // La reprise refuse aussi par son contrôle d'identité ; la lecture du RAW, elle, ne rend jamais une offre dont
+    // l'adresse contredit celle qu'il retient (elle serait publiée sous une autre adresse par tout autre appelant).
+    expect(readMarcOPoloRaw(raw)).toBeNull();
+    expect(readMarcOPoloRaw({ ...raw, pageUrl: vacancyPageUrl('en', raw.listing!.title, '2026-4345') })).not.toBeNull();
   });
 });
 
