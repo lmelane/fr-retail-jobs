@@ -1,0 +1,61 @@
+apps/aggregator/src/ats/adapters/workday.ts restauré depuis la mémoire à chaque cas, sha256 9065852d56054f7f206bc338b32ec2e2a54b3d6ae3447904300661c7d5f25baf
+apps/aggregator/src/lib/http.ts restauré depuis la mémoire à chaque cas, sha256 126da38f7ec5194290c8b3e6cd3bd93d723f71e69e9d947094cadeeea31c8994
+apps/aggregator/src/pipeline/health.ts restauré depuis la mémoire à chaque cas, sha256 b01ec2c407e347fb545bc3c34f222f38c928fb42c362d2fd8e7862f10b44ef70
+apps/aggregator/src/pipeline/publicationDisposition.ts restauré depuis la mémoire à chaque cas, sha256 24e99eeb0fc91a19d7d50e6faa3d10d18c99eb7e276281e2289886d7390d972f
+apps/aggregator/src/publication/recovery.ts restauré depuis la mémoire à chaque cas, sha256 7c3fea7017f7200b1ae08cd426647b80ea1f26fdc567424d3a4c4b8f6266baef
+
+## adaptateur : refus S22 non reconnu (retenue à instruire comme avant): ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
+   - src/ats/adapters/workday.s22.test.ts > D-484 §1 — Swarovski, 29/09 : la fiche refusée « S22 permission denied » est une offre retirée par l
+
+## adaptateur : preuve réduite au seul statut 403: ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 2 ⎯⎯⎯⎯⎯⎯⎯
+   - src/ats/adapters/workday.s22.test.ts > D-484 §1 — Swarovski, 29/09 : la fiche refusée « S22 permission denied » est une offre retirée par l
+
+## adaptateur : statut non vérifié (corps S22 sous 500 accepté): ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
+   - src/ats/adapters/workday.s22.test.ts > D-484 §1 — Swarovski, 29/09 : la fiche refusée « S22 permission denied » est une offre retirée par l
+
+## transport : corps du refus non gardé: ÉCHOUE (témoin valide)
+   files: 2 failed (2) | tests: 3 ⎯⎯⎯⎯⎯⎯⎯
+   - src/ats/adapters/workday.s22.test.ts > D-484 §1 — Swarovski, 29/09 : la fiche refusée « S22 permission denied » est une offre retirée par l
+   - src/lib/http.retry.test.ts > D-484 §1 : le corps d’un refus accompagne l’erreur, borné, jamais recopié au journal > 403 aux trois
+   - src/lib/http.retry.test.ts > D-484 §1 : le corps d’un refus accompagne l’erreur, borné, jamais recopié au journal > un corps au-d
+
+## transport : corps énumérable (recopié au journal): ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
+   - src/lib/http.retry.test.ts > D-484 §1 : le corps d’un refus accompagne l’erreur, borné, jamais recopié au journal > 403 aux trois
+
+## transport : corps non borné: ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
+   - src/lib/http.retry.test.ts > D-484 §1 : le corps d’un refus accompagne l’erreur, borné, jamais recopié au journal > un corps au-d
+
+## classement : motif absent des preuves de la source: ÉCHOUE (témoin valide)
+   files: 2 failed (2) | tests: 7 ⎯⎯⎯⎯⎯⎯⎯
+   - src/lib/nativeRetention.test.ts > D-484 §1: a Workday detail the publisher refuses by name (403 S22) is a posting it withdraws, under 
+   - src/lib/nativeRetention.test.ts > every non-blocking retention names the decision that settles it (D-453 §1, D-456, D-462) > WORKDAY_D
+   - src/pipeline/unverifiable.test.ts > classement des retenues par NATURE, pas par libellé > sépare un défaut TECHNIQUE d'un fait manquant,
+
+## classement : décision D-484 §1 non attachée: ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 2 ⎯⎯⎯⎯⎯⎯⎯
+   - src/lib/nativeRetention.test.ts > D-484 §1: a Workday detail the publisher refuses by name (403 S22) is a posting it withdraws, under 
+   - src/lib/nativeRetention.test.ts > every non-blocking retention names the decision that settles it (D-453 §1, D-456, D-462) > WORKDAY_D
+
+## garde de masse supprimée: ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 2 ⎯⎯⎯⎯⎯⎯⎯
+   - src/lib/nativeRetention.test.ts > D-484 §1: a Workday detail the publisher refuses by name (403 S22) is a posting it withdraws, under 
+
+## garde de masse à la borne incluse (5 sur 100 bloquant): ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
+   - src/lib/nativeRetention.test.ts > D-484 §1: a Workday detail the publisher refuses by name (403 S22) is a posting it withdraws, under 
+
+## lecteur hors ligne : preuve conservée ignorée: ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
+   - src/ats/adapters/workday.s22.test.ts > D-484 §1 — Swarovski, 29/09 : la fiche refusée « S22 permission denied » est une offre retirée par l
+
+## lecteur hors ligne : toute trace de refus acceptée comme preuve: ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
+   - src/ats/adapters/workday.s22.test.ts > D-484 §1 — Swarovski, 29/09 : la fiche refusée « S22 permission denied » est une offre retirée par l
+
+## état committé : exit 0 | files: 4 passed (4) | tests: 82 passed (82)
+tree clean: True
