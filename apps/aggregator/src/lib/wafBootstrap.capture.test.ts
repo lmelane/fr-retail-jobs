@@ -67,7 +67,8 @@ function browser() {
       sent.push(`${request.method} ${target.url}`);
       await observer.record({ ...target, postData: request.method === 'POST' ? Buffer.from('{"solution":"preuve"}') : null,
         requestHeaders: { 'user-agent': BROWSER_USER_AGENT, 'accept-language': 'fr-FR,fr;q=0.9,en;q=0.7', cookie: 'jamais-archive' },
-        status: request.status, responseHeaders: { 'content-type': 'text/plain' }, body: Buffer.from(`corps ${request.url}`), failure: null });
+        status: request.status, responseHeaders: { 'content-type': 'text/plain' },
+        body: Buffer.from(request.url.includes('mp_verify') ? `{"token":"${COOKIE.split('=')[1]}"}` : `corps ${request.url}`), failure: null });
     }
     const solved = ['challenge.js', 'inputs', 'mp_verify'].every(name => sent.some(line => line.includes(`${AWS}/`) && line.includes(name)));
     return solved ? COOKIE : undefined;
@@ -115,6 +116,11 @@ describe('collecte de qualification (aucune décision) : l’amorçage borné es
       ['BROWSER_RESPONSE', measured.borne.requests[i].status]), ['HTTP_RESPONSE', 200]]);
     expect(records.slice(1, 6).every(row => row.requestData.origin === 'BROWSER_TRANSPORT' && row.requestData.hops[0].request.userAgent === BROWSER_USER_AGENT)).toBe(true);
     expect(JSON.stringify(records.map(row => row.requestData))).not.toContain('jamais-archive');
+    // Le jeton rendu par l'infrastructure du défi n'entre jamais dans l'archive ; le script public du défi, si.
+    const aws = records.filter(row => row.requestUrl.startsWith(AWS));
+    expect(aws.map(row => [row.requestUrl.split('/').pop()!.split('?')[0], row.bytes === null, row.failure]))
+      .toEqual([['challenge.js', false, null], ['inputs', true, 'CredentialNotArchived'], ['mp_verify', true, 'CredentialNotArchived']]);
+    expect(records.some(row => row.bytes && Buffer.from(row.bytes).toString('utf8').includes('jeton-du-test'))).toBe(false);
     expect(context.wafBootstrapped).toBe(true); expect(context.unsupportedTransport).toBeUndefined();
     // La requête rejouée porte le jeton de CETTE collecte ; la première n'en portait aucun.
     expect(new Headers(transport.mock.calls[0][1]?.headers).get('cookie')).toBeNull();
@@ -197,9 +203,14 @@ describe('aucun contournement général', () => {
     await withCaptureContext(store, () => captureResponse({ ...request, transport: { origin: 'BROWSER_TRANSPORT', hops: [hop] } },
       { status: 200, headers: new Headers(), bytes: Buffer.from('page'), complete: true }));
     expect(store.unsupportedTransport).toBe(true); expect(store.wafBootstrapped).toBeUndefined();
-    // Contre-épreuve : la même requête marquée comme requête d'amorçage est un transport inscrit.
+    // Contre-épreuve : la même requête marquée par l'amorçage de CETTE collecte est un transport inscrit ; la marque
+    // d'un autre amorçage ne l'est pas.
+    const foreign: CaptureContext = { ...store, unsupportedTransport: undefined };
+    await withCaptureContext(foreign, () => captureResponse({ ...request, wafBootstrap: { origin: ORIGIN, cookie: Promise.resolve(undefined) }, transport: { origin: 'BROWSER_TRANSPORT', hops: [hop] } },
+      { status: 200, headers: new Headers(), bytes: Buffer.from('page'), complete: true }));
+    expect(foreign.unsupportedTransport).toBe(true); expect(foreign.wafBootstrapped).toBeUndefined();
     const marked: CaptureContext = { ...store, unsupportedTransport: undefined };
-    await withCaptureContext(marked, () => captureResponse({ ...request, wafBootstrap: true, transport: { origin: 'BROWSER_TRANSPORT', hops: [hop] } },
+    await withCaptureContext(marked, () => captureResponse({ ...request, wafBootstrap: marked.wafBootstrapRun, transport: { origin: 'BROWSER_TRANSPORT', hops: [hop] } },
       { status: 200, headers: new Headers(), bytes: Buffer.from('page'), complete: true }));
     expect(marked.unsupportedTransport).toBeUndefined(); expect(marked.wafBootstrapped).toBe(true);
   });

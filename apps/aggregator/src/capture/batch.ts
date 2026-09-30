@@ -14,7 +14,7 @@ import { captureReaderRevision } from './revision.js';
 import { readRequestData } from './requestDataRead.js';
 import { requireSourceAccess } from '../connectors/sourceAccess.js';
 import { matchingAccessScope, SourceAccessGateError } from '../connectors/accessScope.js';
-import { bootstrapAuthorizedFor, grantedAllow, observeModeAllow } from '../connectors/wafBootstrap.js';
+import { assertJournaledBootstrap, bootstrapAuthorizedFor, grantedAllow, observeModeAllow } from '../connectors/wafBootstrap.js';
 import { offlineReplay } from './offlineReplay.js';
 import { ingestionQualifications, SOURCE_ADMISSION_POLICY } from '../connectors/sourceAdmission.js';
 import { lockSourceWrites, SOURCE_WRITE_TRANSACTION } from '../lib/writeLocks.js';
@@ -58,6 +58,10 @@ export async function captureExtraction(db: PrismaClient, sourceKey: string, con
     try {
       const result = await work(settings);
       assertCaptureHealthy();
+      if (context.wafBootstrapped) {
+        try { assertJournaledBootstrap(sourceKey, access ? access.document.bootstraps ?? [] : null, context.wafJournal?.challenges ?? [], context.wafJournal?.bootstrap ?? []); }
+        catch (error) { throw new SourceAccessGateError('ACCESS_SCOPE', error instanceof Error ? error.message : String(error)); }
+      }
       const evidence = await db.rawCapture.count({ where: { batchId: batch.id, complete: true, blobHash: { not: null } } });
       if (!evidence) throw new Error('Extraction has no captured native response');
       if (result.jobs.length > MAX_MANIFEST_OUTPUTS) throw new Error('Extraction exceeds its output count budget');
@@ -90,7 +94,8 @@ export async function captureExtraction(db: PrismaClient, sourceKey: string, con
 
 /**
  * D-483 — qui peut amorcer un défi AWS dans cette collecte. Une source hors de la liste nommée : personne (le défi
- * échoue comme avant, sans navigateur). Sans décision d'accès (collecte de qualification) : l'adresse défiée et
+ * n'est pas amorcé, la collecte échoue sur `WafChallengeError`, sans navigateur — y compris en qualification, où
+ * l'amorçage partait jusqu'ici hors journal). Sans décision d'accès (collecte de qualification) : l'adresse défiée et
  * l'infrastructure du défi, que la dérivation observera. Sous décision (RUN) : la décision doit déclarer l'amorçage
  * de cette origine, et le navigateur ne joint que les hôtes du défi qu'elle nomme — sinon la collecte s'arrête.
  */

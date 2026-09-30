@@ -14,7 +14,8 @@ import { invalidAccess, type AccessScope } from './accessScope.js';
  * Ce module borne l'amorçage à ce qui a été mesuré et autorisé, et à rien d'autre :
  *
  *   1. une LISTE NOMMÉE de sources et d'origines (`WAF_BOOTSTRAP_SOURCES`) — la seule entrée est celle que D-483
- *      a tranchée ; une autre source défiée échoue comme avant (`WafChallengeError`), sans navigateur ;
+ *      a tranchée ; une autre source défiée n'amorce dans AUCUNE collecte (qualification comprise) et échoue sur
+ *      `WafChallengeError`, sans navigateur — avant ce lot, sa collecte de qualification amorçait hors journal ;
  *   2. un seul fournisseur, le défi AWS WAF (jamais un captcha, jamais un autre anti-robot) ;
  *   3. le navigateur n'envoie que la requête défiée elle-même (GET de l'adresse exacte) et des requêtes vers
  *      l'infrastructure du défi (hôtes `*.awswaf.com`) ; tout le reste est refusé AVANT l'envoi ;
@@ -87,7 +88,7 @@ export function grantedAllow(challenged: string, bootstrap: AccessBootstrap): (r
 }
 
 /** Le contrat de `document.bootstraps` : borné, exact, dérivé d'une origine qui a un périmètre HTTP revu. */
-export function parseAccessBootstraps(value: unknown, scopes: readonly AccessScope[]): AccessBootstrap[] {
+export function parseAccessBootstraps(value: unknown, scopes: readonly AccessScope[], sourceKey?: string): AccessBootstrap[] {
   if (!Array.isArray(value) || value.length > MAX_ACCESS_BOOTSTRAPS) return invalidAccess('Access bootstraps require a bounded explicit list');
   for (const item of value as AccessBootstrap[]) {
     if (!item || typeof item !== 'object' || Array.isArray(item) || Object.keys(item).length !== 3 ||
@@ -98,6 +99,8 @@ export function parseAccessBootstraps(value: unknown, scopes: readonly AccessSco
       item.challengeHosts.join('\n') !== [...new Set(item.challengeHosts)].sort().join('\n')) return invalidAccess('Invalid WAF bootstrap authorization');
     // Un amorçage ne rejoue qu'une requête défiée : son origine doit avoir un périmètre HTTP GET revu.
     if (!scopes.some(scope => scope.origin === item.origin && scope.methods.includes('GET'))) return invalidAccess('A WAF bootstrap needs a reviewed HTTP scope on its origin');
+    // Défense en profondeur : même un document forgé ne déclare d'amorçage que pour la source et l'origine nommées.
+    if (sourceKey !== undefined && !bootstrapAuthorizedFor(sourceKey, item.origin)) return invalidAccess('This source is not authorized to bootstrap a WAF challenge (D-483)');
   }
   return value as AccessBootstrap[];
 }
@@ -120,10 +123,13 @@ export function deriveAccessBootstrap(sourceKey: string, challenges: readonly Ob
   requests: readonly ObservedBootstrapRequest[]): AccessBootstrap | null {
   if (!requests.length) return null;
   const ordered = [...requests].sort((a, b) => a.sequence - b.sequence);
-  const first = ordered[0];
-  const trigger = challenges.find(challenge => challenge.sequence < first.sequence && originOf(challenge.url) === first.url.origin);
+  // L'origine défiée se lit sur la requête cible, jamais sur l'ordre d'inscription : les réponses du navigateur
+  // s'inscrivent dans l'ordre où elles se terminent, pas dans celui où elles sont parties.
+  const targets = new Set(ordered.filter(request => !isChallengeHost(request.url.origin)).map(request => request.url.origin));
+  if (targets.size !== 1) throw new Error('ACCESS_BOOTSTRAP: un amorçage charge la page défiée d\'une seule origine');
+  const [origin] = targets;
+  const trigger = challenges.find(challenge => challenge.sequence < ordered[0].sequence && originOf(challenge.url) === origin);
   if (!trigger) throw new Error('ACCESS_BOOTSTRAP: amorçage sans défi AWS archivé qui le précède sur son origine');
-  const origin = first.url.origin;
   if (!bootstrapAuthorizedFor(sourceKey, origin)) throw new Error(`ACCESS_BOOTSTRAP: ${sourceKey} n'est pas autorisée à lever un défi sur ${origin} (D-483)`);
   const challenged = challenges.filter(challenge => originOf(challenge.url) === origin).map(challenge => challenge.url);
   const hosts = new Set<string>();
@@ -148,4 +154,21 @@ export function bootstrapRequestCovered(bootstrap: AccessBootstrap, challenged: 
   if (request.url.origin === bootstrap.origin) return challenged.some(url => originOf(url) === bootstrap.origin &&
     isTarget({ url: request.url.toString(), method: request.method }, url));
   return bootstrap.challengeHosts.includes(request.url.origin);
+}
+
+/**
+ * Fin de collecte (D-483) : le journal de l'amorçage que cette collecte a inscrit tient-il dans son autorisation ?
+ * Sous décision, chaque requête doit être couverte par l'amorçage déclaré ; sans décision (qualification), l'amorçage
+ * doit pouvoir être dérivé. Une requête qui a échappé au filtre du navigateur (redirection suivie par le navigateur,
+ * que `route` ne voit pas) arrête ici la collecte : jamais de publication sur un transport hors bornes.
+ */
+export function assertJournaledBootstrap(sourceKey: string, bootstraps: readonly AccessBootstrap[] | null,
+  challenges: readonly ObservedChallenge[], requests: readonly ObservedBootstrapRequest[]): void {
+  if (!requests.length) return;
+  if (!bootstraps) { deriveAccessBootstrap(sourceKey, challenges, requests); return; }
+  const origins = new Set(requests.filter(request => !isChallengeHost(request.url.origin)).map(request => request.url.origin));
+  const grant = origins.size === 1 ? bootstraps.find(item => origins.has(item.origin)) : undefined;
+  const challenged = challenges.map(challenge => challenge.url);
+  if (!grant || !bootstrapAuthorizedFor(sourceKey, grant.origin) || requests.some(request => !bootstrapRequestCovered(grant, challenged, request)))
+    throw new Error('ACCESS_BOOTSTRAP: une requête d\'amorçage inscrite sort de l\'autorisation de la collecte');
 }

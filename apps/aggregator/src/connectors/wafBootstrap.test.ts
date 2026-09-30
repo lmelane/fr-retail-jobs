@@ -4,7 +4,7 @@ import { CRAWLER_IDENTITY } from '../lib/crawlerIdentity.js';
 import { BROWSER_USER_AGENT } from '../lib/browser.js';
 import { parseAccessDocument, type AccessScope } from './accessScope.js';
 import {
-  bootstrapAuthorizedFor, bootstrapRequestCovered, deriveAccessBootstrap, grantedAllow, isChallengeHost, observeModeAllow,
+  assertJournaledBootstrap, bootstrapAuthorizedFor, bootstrapRequestCovered, deriveAccessBootstrap, grantedAllow, isChallengeHost, observeModeAllow,
   parseAccessBootstraps, WAF_BOOTSTRAP_SOURCES, type AccessBootstrap, type ObservedBootstrapRequest,
 } from './wafBootstrap.js';
 
@@ -88,6 +88,13 @@ describe('la dérivation : l’autorisation déclare ce que le journal prouve, j
       .toEqual({ vendor: 'AWS_WAF_CHALLENGE', origin: ORIGIN, challengeHosts: [AWS] });
     expect(deriveAccessBootstrap('ralph-lauren-avature', [challenge], [])).toBeNull();
   });
+  it('lit l’origine défiée sur la page, pas sur l’ordre d’inscription (les réponses du défi peuvent s’inscrire avant)', () => {
+    const order = [3, 1, 2, 4, 5];
+    const shuffled = observed(fixture.borne.requests).map((request, index) => ({ ...request, sequence: order[index] }));
+    // Prémisse : la première ligne inscrite est une requête vers l'infrastructure du défi.
+    expect([...shuffled].sort((a, b) => a.sequence - b.sequence)[0].url.origin).toBe(AWS);
+    expect(deriveAccessBootstrap('ralph-lauren-avature', [challenge], shuffled)).toEqual({ vendor: 'AWS_WAF_CHALLENGE', origin: ORIGIN, challengeHosts: [AWS] });
+  });
   it('refuse l’amorçage historique entier : il a joint Google Maps et chargé la page entière', () => {
     expect(() => deriveAccessBootstrap('ralph-lauren-avature', [challenge], observed(fixture.observateur.requests))).toThrow(/ACCESS_BOOTSTRAP/);
   });
@@ -114,6 +121,23 @@ describe('la dérivation : l’autorisation déclare ce que le journal prouve, j
   });
 });
 
+describe('fin de collecte : le journal de l’amorçage tient dans son autorisation', () => {
+  const requests = observed(fixture.borne.requests);
+  const escaped = observed([...fixture.borne.requests, { method: 'GET', url: 'https://ailleurs.example/fuite', resourceType: 'document', status: 200, userAgent: BROWSER_USER_AGENT }]);
+  it('accepte l’amorçage borné, sous décision comme en qualification', () => {
+    expect(() => assertJournaledBootstrap('ralph-lauren-avature', [granted], [challenge], requests)).not.toThrow();
+    expect(() => assertJournaledBootstrap('ralph-lauren-avature', null, [challenge], requests)).not.toThrow();
+    expect(() => assertJournaledBootstrap('pvh', null, [], [])).not.toThrow();
+  });
+  it.each([['sous décision', [granted]], ['en qualification', null]] as const)('refuse une requête échappée (redirection) %s', (_label, bootstraps) => {
+    expect(() => assertJournaledBootstrap('ralph-lauren-avature', bootstraps ? [...bootstraps] : null, [challenge], escaped)).toThrow(/ACCESS_BOOTSTRAP/);
+  });
+  it('refuse un amorçage que la décision ne déclare pas, ou pour une source non nommée', () => {
+    expect(() => assertJournaledBootstrap('ralph-lauren-avature', [], [challenge], requests)).toThrow(/ACCESS_BOOTSTRAP/);
+    expect(() => assertJournaledBootstrap('pvh', [granted], [challenge], requests)).toThrow(/ACCESS_BOOTSTRAP/);
+  });
+});
+
 describe('document.bootstraps : borné, exact, jamais sans son périmètre HTTP', () => {
   const document = (bootstraps?: unknown) => ({ sourceKey: 'ralph-lauren-avature', sourceRevisionId: 'revision', captureBatchId: 'native-batch',
     verdict: 'ALLOWED', scopes: [structuredClone(scope)], robotsCaptureIds: ['robots'], reviewer: 'reviewer',
@@ -135,6 +159,10 @@ describe('document.bootstraps : borné, exact, jamais sans son périmètre HTTP'
     ['un objet au lieu d’une liste', granted],
   ])('refuse %s', (_label, bootstraps) => {
     expect(() => parseAccessDocument(document(bootstraps))).toThrow();
+  });
+  it('refuse un amorçage déclaré pour une source que D-483 ne nomme pas (document forgé)', () => {
+    expect(() => parseAccessDocument({ ...document([granted]), sourceKey: 'pvh' })).toThrow(/not authorized/);
+    expect(parseAccessDocument({ ...document(), sourceKey: 'pvh' }).sourceKey).toBe('pvh');
   });
   it('refuse un amorçage sur un refus d’accès', () => {
     expect(() => parseAccessDocument({ ...document([granted]), verdict: 'NOT_AUTHORIZED', captureBatchId: null, scopes: [], robotsCaptureIds: [] })).toThrow();

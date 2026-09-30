@@ -7,10 +7,10 @@ export { digestBytes } from '../lib/evidenceHash.js';
 export type CaptureRequest = { url: string; method?: string; body?: RequestInit['body']; headers?: RequestInit['headers']; format: 'HTTP_RESPONSE' | 'BROWSER_RESPONSE' | 'RENDERED_DOM';
   transport?: { origin: 'HTTP_TRANSPORT' | 'BROWSER_TRANSPORT'; hops: TransportHop[] };
   /** Une requête du navigateur d'amorçage WAF autorisé de cette collecte (D-483), jamais un collecteur navigateur. */
-  wafBootstrap?: true };
+  wafBootstrap?: object };
 /**
  * L'autorisation d'amorcer un défi WAF pour l'adresse défiée `url` dans cette collecte : le filtre de ce que le
- * navigateur a le droit d'envoyer, ou `null` si la source n'est pas autorisée (le défi échoue alors comme avant,
+ * navigateur a le droit d'envoyer, ou `null` si la source n'est pas autorisée (le défi n'est alors pas amorcé,
  * sans navigateur). Une autorisation refusée par la décision d'accès lève `SourceAccessGateError`.
  */
 export type WafBootstrapPolicy = (url: string) => { allow: (request: { url: string; method: string }) => boolean } | null;
@@ -39,6 +39,8 @@ export type CaptureContext = {
   wafBootstrapRun?: { origin: string; cookie: Promise<string | undefined>; value?: string };
   /** Au moins une requête d'amorçage autorisé a été inscrite : la couverture devient `HTTP_WITH_WAF_BOOTSTRAP`. */
   wafBootstrapped?: boolean;
+  /** Ce que le journal de cette collecte a inscrit, relu en fin de collecte contre l'autorisation (D-483). */
+  wafJournal?: { challenges: { sequence: number; url: string }[]; bootstrap: { sequence: number; url: URL; method: string; userAgent: string | null }[] };
   /** Rejeu : consomme les requêtes d'amorçage inscrites pour cette origine, ou rend `false` si la collecte n'en a pas. */
   replayBootstrap?: (origin: string) => boolean;
 };
@@ -170,9 +172,15 @@ export async function captureResponse(request: CaptureRequest, response: {
     if (record.requestData.origin !== 'HTTP_TRANSPORT') {
       // Une requête du navigateur d'amorçage n'est un transport inscrit que pendant l'amorçage AUTORISÉ de cette
       // collecte (D-483) ; toute autre requête navigateur reste un transport non certifié.
-      if (request.wafBootstrap && context.wafBootstrapRun && record.format === 'BROWSER_RESPONSE' &&
-        record.requestData.origin === 'BROWSER_TRANSPORT') context.wafBootstrapped = true;
+      if (request.wafBootstrap !== undefined && request.wafBootstrap === context.wafBootstrapRun && record.format === 'BROWSER_RESPONSE' &&
+        record.requestData.origin === 'BROWSER_TRANSPORT' && record.requestData.hops.length === 1) {
+        context.wafBootstrapped = true;
+        const hop = record.requestData.hops[0].request;
+        (context.wafJournal ??= { challenges: [], bootstrap: [] }).bootstrap.push({ sequence: record.sequence, url: new URL(hop.url), method: hop.method, userAgent: hop.userAgent });
+      }
       else noteUnsupportedTransport();
+    } else if (record.status === 202 && headers['x-amzn-waf-action'] === 'challenge' && record.requestData.hops.length) {
+      (context.wafJournal ??= { challenges: [], bootstrap: [] }).challenges.push({ sequence: record.sequence, url: record.requestData.hops.at(-1)!.request.url });
     }
     await context.write(record);
   } catch (cause) {

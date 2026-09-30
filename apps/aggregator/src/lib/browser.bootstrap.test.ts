@@ -15,6 +15,7 @@ const fixture = vi.hoisted(() => ({
 }));
 vi.mock('playwright', () => ({ chromium: { launch: async () => ({ close: async () => {}, newContext: async () => ({
   route: async (_pattern: string, handler: (route: unknown) => unknown) => { fixture.route = handler; },
+  routeWebSocket: async () => {},
   on: (event: string, fn: (value: unknown) => void) => { if (!fixture.listeners.has(event)) fixture.listeners.set(event, new Set()); fixture.listeners.get(event)!.add(fn); },
   off: (event: string, fn: (value: unknown) => void) => { fixture.listeners.get(event)?.delete(fn); },
   cookies: async () => [{ name: 'aws-waf-token', value: 'final' }],
@@ -26,7 +27,7 @@ vi.mock('playwright', () => ({ chromium: { launch: async () => ({ close: async (
     goto: async () => {
       for (const planned of fixture.plan) {
         const request = { url: () => planned.url, method: () => planned.method ?? 'GET', resourceType: () => planned.type ?? 'script',
-          postDataBuffer: () => null, allHeaders: async () => ({ 'user-agent': 'Browser fixture', cookie: 'secret' }) };
+          postDataBuffer: () => null, redirectedFrom: () => null, allHeaders: async () => ({ 'user-agent': 'Browser fixture', cookie: 'secret' }) };
         let sent = false;
         await fixture.route!({ request: () => request, abort: async () => { fixture.aborted.push(planned.url); },
           continue: async () => { sent = true; fixture.continued.push(planned.url); } });

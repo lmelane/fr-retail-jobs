@@ -93,7 +93,7 @@ export function parseAccessDocument(input: unknown, now = new Date()): Readonly<
     document.robotsCaptureIds.some(id => typeof id !== 'string' || !id || id.length > 300)) return invalidAccess('Invalid access decision or observation references');
   parseAccessScopes(document.scopes);
   if (Object.hasOwn(document, 'bootstraps') && (document.verdict !== 'ALLOWED' || !Array.isArray(document.bootstraps) ||
-    !document.bootstraps.length || !parseAccessBootstraps(document.bootstraps, document.scopes))) return invalidAccess('A WAF bootstrap is declared only by a grant that observed one');
+    !document.bootstraps.length || !parseAccessBootstraps(document.bootstraps, document.scopes, document.sourceKey))) return invalidAccess('A WAF bootstrap is declared only by a grant that observed one');
   if (document.verdict === 'ALLOWED' ?
     typeof document.captureBatchId !== 'string' || !document.captureBatchId || document.captureBatchId.length > 300 || !document.scopes.length || !document.robotsCaptureIds.length :
     document.captureBatchId !== null || document.scopes.length !== 0 || document.robotsCaptureIds.length !== 0) return invalidAccess('A grant requires native evidence; a denial grants no request scope');

@@ -47,10 +47,11 @@ function network() {
       : new Response(null, { status: 202, headers: { 'content-type': 'text/html; charset=UTF-8', 'x-amzn-waf-action': 'challenge' } });
   }));
 }
-function browser(requests = BOUNDED) {
+function browser(requests = BOUNDED, escaped: typeof BOUNDED = []) {
   const primer = vi.fn(async (_url: string, observer?: BootstrapObserver) => {
-    for (const request of requests) {
-      if (!observer!.allow(request)) continue;
+    // `escaped` : des requêtes parties sans passer par le filtre (une redirection suivie par le navigateur).
+    for (const request of [...requests, ...escaped]) {
+      if (!escaped.includes(request) && !observer!.allow(request)) continue;
       await observer!.record({ ...request, postData: request.method === 'POST' ? Buffer.from('{"solution":"preuve"}') : null,
         requestHeaders: { 'user-agent': BROWSER_USER_AGENT, 'accept-language': 'fr-FR,fr;q=0.9,en;q=0.7' },
         status: request.status, responseHeaders: { 'content-type': 'text/plain' }, body: Buffer.from(`corps ${request.url}`), failure: null });
@@ -135,6 +136,16 @@ describe('D-483 — une collecte amorcée devient une preuve d’accès', () => 
     expect(await db.rawCapture.count({ where: { batchId: batch.captureBatchId, format: 'BROWSER_RESPONSE' } })).toBe(6);
     await expect(recordSourceAccessDecision(db, { ...document, captureBatchId: batch.captureBatchId, checkedAt: new Date().toISOString() }))
       .rejects.toThrow(/outside its reviewed authorization/);
+  });
+
+  it('une requête d’amorçage échappée au filtre arrête la collecte (qualification, en base)', async () => {
+    const leak = [{ url: 'https://ailleurs.example/fuite', method: 'GET', resourceType: 'document', status: 200 }];
+    network(); browser(BOUNDED, leak);
+    await expect(collect(source)).rejects.toMatchObject({ code: 'ACCESS_SCOPE' });
+    const failed = await db.captureBatch.findFirstOrThrow({ where: { sourceKey: KEY, purpose: 'JOBS' }, orderBy: { startedAt: 'desc' }, include: { outcome: true } });
+    expect(failed.outcome?.status).toBe('FAILED');
+    // Prémisse : la requête échappée est bien au journal de la collecte refusée.
+    expect(await db.rawCapture.count({ where: { batchId: failed.id, requestUrl: 'https://ailleurs.example/fuite' } })).toBe(1);
   });
 
   it('une source que D-483 ne nomme pas n’amorce rien : la collecte échoue sur le défi, sans navigateur', async () => {

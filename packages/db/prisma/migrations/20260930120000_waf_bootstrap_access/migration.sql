@@ -6,7 +6,8 @@
 --  2. Le garde des décisions d'accès (bind_source_access_decision) accepte une dixième clé optionnelle du document,
 --     `bootstraps` (un amorçage, jamais sur un refus), et alors seulement une collecte HTTP_WITH_WAF_BOOTSTRAP dont
 --     les lignes BROWSER_RESPONSE sont comptées à part (`bootstrapRequestCount`). Toutes les règles existantes sont
---     reprises à l'identique : une décision sans `bootstraps` est jugée exactement comme avant.
+--     reprises à l'identique : une décision sans `bootstraps` est jugée exactement comme avant. Un amorçage n'est
+--     accepté que pour la liste nommée par D-483 (ralph-lauren-avature, https://careers.ralphlauren.com).
 -- Ordre de livraison : cette migration AVANT le code. L'ancien code n'écrit jamais la nouvelle valeur ni la
 -- dixième clé ; la base en avance reste compatible avec lui.
 BEGIN;
@@ -64,6 +65,8 @@ BEGIN
       FOR item IN SELECT value FROM jsonb_array_elements(doc->'bootstraps') LOOP
         IF jsonb_typeof(item) IS DISTINCT FROM 'object' OR (SELECT count(*) FROM jsonb_object_keys(item))<>3 OR
           item->>'vendor' IS DISTINCT FROM 'AWS_WAF_CHALLENGE' OR coalesce(item->>'origin','') !~ '^https://[a-z0-9.-]+$' OR
+          -- Défense en profondeur : la liste nommée par D-483 (wafBootstrap.ts), une source et une origine.
+          (NEW."sourceKey", item->>'origin') IS DISTINCT FROM ('ralph-lauren-avature', 'https://careers.ralphlauren.com') OR
           NOT EXISTS (SELECT 1 FROM jsonb_array_elements(doc->'scopes') s WHERE s.value->>'origin'=item->>'origin') OR
           jsonb_typeof(item->'challengeHosts') IS DISTINCT FROM 'array' OR jsonb_array_length(item->'challengeHosts') NOT BETWEEN 1 AND 8 THEN
           RAISE EXCEPTION 'Access grant declares an invalid WAF bootstrap' USING ERRCODE='23514';

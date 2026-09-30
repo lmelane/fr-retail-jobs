@@ -189,13 +189,15 @@ async function scopeOutgrown(db: PrismaClient, sourceKey: string, document: Read
 /**
  * D-483 : la capture du jour a-t-elle dû amorcer un défi que l'autorisation en vigueur ne déclare pas (aucun
  * amorçage, autre origine, hôte du défi nouveau) ? L'autorisation est alors redérivée d'elle, comme pour un chemin.
- * Un amorçage que la dérivation refuserait (source non nommée, requête hors bornes) ne déclenche rien ici : la
- * collecte suivante échouera à l'amorçage, sur un motif nommé.
+ * Un amorçage que la dérivation refuse (source non nommée, requête hors bornes) compte comme dépassé : la
+ * redérivation qui suit échoue sur son motif nommé, et la source s'arrête avant sa collecte.
  */
 function bootstrapOutgrown(sourceKey: string, document: Readonly<AccessDocument>, journal: Awaited<ReturnType<typeof observedJournal>>): boolean {
   let observed: ReturnType<typeof deriveAccessBootstrap>;
+  // Un amorçage que la dérivation refuse n'est jamais « couvert » : l'autorisation est redérivée, et cette
+  // redérivation échoue sur son motif nommé (la collecte ne part pas sous une autorisation qui ne la couvre plus).
   try { observed = deriveAccessBootstrap(sourceKey, journal.challenges, journal.bootstrap); }
-  catch { return false; }
+  catch { return true; }
   if (!observed) return false;
   const current = document.bootstraps?.find(item => item.origin === observed.origin);
   return !current || observed.challengeHosts.some(host => !current.challengeHosts.includes(host));

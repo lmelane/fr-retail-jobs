@@ -50,6 +50,9 @@ async function guardContext(context: BrowserContext, allow?: (request: Bootstrap
   signal?.addEventListener('abort', cancel, { once: true });
   try {
     assertSourceRunning();
+    // Un WebSocket ne passe pas par `route` (mesuré avec Playwright le 30/09 : la connexion part sans être vue) :
+    // sous un amorçage borné, toute ouverture est close avant de joindre un serveur.
+    if (allow) await context.routeWebSocket(/.*/, socket => socket.close());
     await context.route('**/*', route => {
       const request = route.request();
       if (signal?.aborted || !isPublicHttpUrl(request.url()) ||
@@ -201,7 +204,9 @@ async function primeWafTokenOnce(origin: string, url: string, observer?: Bootstr
     });
     const blocked = new WeakSet<object>();
     const sent = new Set<PlaywrightRequest>();
-    const releaseGuard = await guardContext(context, observer ? request => observer.allow(request) : undefined, blocked,
+    // Une fois la vidange commencée, plus rien ne part : une requête tardive ne pourrait plus être inscrite.
+    let closing = false;
+    const releaseGuard = await guardContext(context, observer ? request => !closing && observer.allow(request) : undefined, blocked,
       observer ? request => { sent.add(request); } : undefined);
     const recording = observer ? observeBootstrap(context, observer, blocked, sent) : undefined;
     let token: string | undefined;
@@ -215,6 +220,7 @@ async function primeWafTokenOnce(origin: string, url: string, observer?: Bootstr
     } finally {
       // Toute requête partie est inscrite avant la fermeture, y compris celle restée sans réponse : un journal
       // d'amorçage qui ne dirait pas tout ce qui a été envoyé ne prouverait rien (D-483).
+      closing = true;
       const failure = await recording?.drain();
       releaseGuard();
       await context.close();
@@ -269,11 +275,16 @@ function observeBootstrap(context: BrowserContext, observer: BootstrapObserver, 
   const settled = new Set<PlaywrightRequest>();
   const pending = new Set<Promise<void>>();
   let failure: unknown;
+  // Une redirection est suivie par le navigateur sans repasser par `route` (mesuré le 30/09) : la requête redirigée
+  // est PARTIE. Elle est inscrite comme toute autre, et si elle sort des bornes l'amorçage échoue.
+  const escaped = (request: PlaywrightRequest) => !observer.allow({ url: request.url(), method: request.method(), resourceType: request.resourceType() });
+  const onRequest = (request: PlaywrightRequest) => { if (request.redirectedFrom()) sent.add(request); };
   const describe = (request: PlaywrightRequest) => ({ url: request.url(), method: request.method(), resourceType: request.resourceType(),
     postData: request.postDataBuffer() });
   const track = (request: PlaywrightRequest, work: () => Promise<BootstrapObservation>) => {
     if (settled.has(request)) return;
     settled.add(request);
+    if (escaped(request)) failure ??= new Error('WAF bootstrap request escaped its authorization (redirect)');
     const task = work().then(observation => observer.record(observation)).catch(error => { failure ??= error; });
     pending.add(task);
     void task.finally(() => pending.delete(task));
@@ -302,10 +313,12 @@ function observeBootstrap(context: BrowserContext, observer: BootstrapObserver, 
     track(request, async () => ({ ...describe(request), requestHeaders: await headersOf(request), status: null, responseHeaders: {},
       body: null, failure: 'BrowserTransportError' }));
   };
+  context.on('request', onRequest);
   context.on('response', onResponse);
   context.on('requestfailed', onFailed);
   return {
     async drain(): Promise<unknown> {
+      context.off('request', onRequest);
       context.off('response', onResponse);
       context.off('requestfailed', onFailed);
       for (const request of sent) {

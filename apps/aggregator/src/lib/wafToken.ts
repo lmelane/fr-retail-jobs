@@ -1,7 +1,8 @@
-import { captureResponse, currentCaptureContext, describeRequest, noteUnsupportedTransport, replayWafCookie, type CaptureContext, type CaptureRequest } from '../capture/context.js';
+import { captureResponse, currentCaptureContext, describeRequest, noteUnsupportedTransport, replayWafCookie, withCaptureContext, type CaptureContext, type CaptureRequest } from '../capture/context.js';
 import { observedHop } from '../capture/requestData.js';
 import { log } from '../observability/logger.js';
 import type { BootstrapObservation, BootstrapObserver } from './browser.js';
+import { isChallengeHost } from '../connectors/wafBootstrap.js';
 /**
  * Jetons WAF par origine — la table que `fetchWithRetry` consulte pour joindre
  * un cookie amorcé à TOUTE requête sortante vers un hôte protégé (règle D25 :
@@ -148,12 +149,19 @@ function responseHeaders(values: Record<string, string>): Headers {
   return headers;
 }
 
+const CREDENTIAL_NOT_ARCHIVED = 'CredentialNotArchived';
+
 /** Inscrit une requête du navigateur d'amorçage au journal de la collecte, comme un transport navigateur observé. */
-async function recordBootstrapRequest(observation: BootstrapObservation): Promise<void> {
+async function recordBootstrapRequest(observation: BootstrapObservation, run: NonNullable<CaptureContext['wafBootstrapRun']>): Promise<void> {
   const target = new URL(observation.url); target.hash = '';
   const request: CaptureRequest = { url: target.toString(), method: observation.method, body: observation.postData ?? undefined,
-    headers: observation.requestHeaders ?? {}, format: 'BROWSER_RESPONSE', wafBootstrap: true };
+    headers: observation.requestHeaders ?? {}, format: 'BROWSER_RESPONSE', wafBootstrap: run };
   const headers = responseHeaders(observation.responseHeaders);
+  // Les réponses de l'infrastructure du défi autres que son script (`inputs`, `mp_verify`…) portent le jeton lui-même :
+  // un jeton est une valeur de cookie, qui n'entre jamais dans l'archive. La réponse est inscrite sans son corps.
+  if (isChallengeHost(target.origin) && observation.resourceType !== 'script' && observation.body !== null) {
+    observation = { ...observation, body: null, failure: observation.failure ?? CREDENTIAL_NOT_ARCHIVED };
+  }
   const failure = observation.failure ? Object.assign(new Error(observation.failure), { name: observation.failure }) : undefined;
   const hop = observedHop(describeRequest(request), observation.status === null ? null : { status: observation.status, headers },
     observation.status === null ? failure : undefined);
@@ -164,7 +172,7 @@ async function recordBootstrapRequest(observation: BootstrapObservation): Promis
 
 /**
  * L'amorçage d'une collecte (D-483). Au plus un par collecte, sur une seule origine : une requête défiée sur une
- * autre origine échoue comme avant. Un amorçage refusé par la décision d'accès, ou qui n'obtient pas de jeton,
+ * autre origine n'est pas amorcée (`WafChallengeError`). Un amorçage refusé par la décision d'accès, ou qui n'obtient pas de jeton,
  * arrête la collecte entière (échec collant) : aucune publication ne peut reposer sur une lecture partielle.
  */
 function captureBootstrap(context: CaptureContext, url: string, vendor: string): Promise<string | undefined> {
@@ -187,7 +195,11 @@ function captureBootstrap(context: CaptureContext, url: string, vendor: string):
   // Installé AVANT de lancer l'amorceur : ses premières requêtes peuvent être inscrites avant qu'il ne rende la main,
   // et `captureResponse` ne reconnaît une requête d'amorçage que pendant l'amorçage de cette collecte.
   context.wafBootstrapRun = run;
-  run.cookie = (primer ?? defaultPrimer)(url, { allow: request => allow(request), record: recordBootstrapRequest })
+  // Les événements du navigateur arrivent dans le contexte asynchrone de SON LANCEMENT (navigateur partagé par le
+  // process, mesuré avec Playwright le 30/09) — celui d'une autre collecte, ou d'aucune. L'inscription est donc
+  // rattachée explicitement à CETTE collecte, et marquée par CET amorçage (`captureResponse` refuse toute autre marque).
+  const record = (observation: BootstrapObservation) => withCaptureContext(context, () => recordBootstrapRequest(observation, run));
+  run.cookie = (primer ?? defaultPrimer)(url, { allow: request => allow(request), record })
     .then(async cookie => {
       await log.info('waf.bootstrap_completed', `[waf] ${origin}: amorçage inscrit ${cookie ? 'réussi' : 'sans jeton'} en ${Date.now() - started} ms`);
       if (!cookie) throw new WafChallengeError(url);
