@@ -4,10 +4,9 @@ import { ObservabilityUnavailableError } from './observability/logger.js';
 import { log } from './observability/logger.js';
 import { summarizeOrchestration } from './lib/runSummary.js';
 import type { CompletionStatus, RunCompletion } from './lib/runCompletion.js';
-import { issuesFromResult } from './lib/ingestionIssue.js';
 import { PrismaClient } from '@prisma/client';
 import { runIngest } from './pipeline/ingest.js';
-import { ingestAllBySource, runQualifiedIngest } from './pipeline/ingestOrchestrator.js';
+import { ingestAllBySource, ingestCommandVerdict, runQualifiedIngest } from './pipeline/ingestOrchestrator.js';
 import { checkSourceHealth } from './pipeline/health.js';
 import { sendHealthAlert } from './pipeline/alert.js';
 import { submitOfferChanges } from './pipeline/googleIndexing.js';
@@ -78,13 +77,14 @@ try {
      * Exiting non-zero is what makes the scheduler show it.
      */
     const health = await checkSourceHealth(prisma, stats);
-    const alerted = await sendHealthAlert(health);
-    const issues = issuesFromResult(stats, health.incidents);
-    await log.info('command.result', { ok: stats.length > 0 && issues.length === 0, command, sources: stats, issues, geo, health, alerted });
+    // La règle du RUN (D-453 §1, D-480 §1) : l'alerte et le verdict séparent ce qui bloque de ce qui reste visible.
+    const verdict = ingestCommandVerdict(stats, health.incidents);
+    const alerted = await sendHealthAlert({ ...health, incidents: verdict.incidents });
+    await log.info('command.result', { ok: verdict.ok, command, sources: stats, issues: verdict.issues, blocking: verdict.blocking, geo, health, alerted });
 
-    if (!stats.length || issues.length > 0) {
+    if (!verdict.ok) {
       fatalFailure = true;
-      for (const incident of health.incidents) {
+      for (const incident of verdict.incidents.filter(incident => incident.blocking !== false)) {
         await log.error('command.failed', `[health] ${incident.source}: ${incident.status} — ${incident.note}`);
       }
       // The data already written is kept; the run is flagged so someone looks.

@@ -4,7 +4,7 @@ import { checkSourceHealth, FULL_RUN_MARKER, type SourceHealth } from '../pipeli
 import type { IngestStats } from '../pipeline/ingest.js';
 import { issuesFromResult, type IngestionIssue } from './ingestionIssue.js';
 import { failureLine, summarizeOrchestration } from './runSummary.js';
-import { classifySourceRun, type OrchestratorResult } from '../pipeline/ingestOrchestrator.js';
+import { classifySourceRun, ingestCommandVerdict, type OrchestratorResult } from '../pipeline/ingestOrchestrator.js';
 import { alertHtml, alertSubject } from '../pipeline/alert.js';
 import { retentionClass, retentionStatus } from '../pipeline/publicationDisposition.js';
 
@@ -474,5 +474,24 @@ describe('D-480 §1 (30/09/2026): a named known failure is collected, listed in 
     expect(incidents).toEqual([expect.objectContaining({ blocking: true })]);
     expect(incidents[0]).not.toHaveProperty('knownFailure');
     expect(summary).toMatchObject({ executionHealthy: false, blockingReasons: ['UNRESOLVED_FAILURE'] });
+  });
+});
+
+describe('ingest --source (30/09/2026): the targeted command judges like the RUN', () => {
+  it('LVMH, one test posting retained on the publisher proof: the command succeeds and the alert does not call it blocking', async () => {
+    const lvmh = retaining('lvmh', 6233, { NATIVE_TEST_PUBLICATION: 1 });
+    const { db } = fakeDb({ lvmh: [{ jobs: 6233, fetched: 6234, accepted: 6233 }] });
+    const health = await checkSourceHealth(db, [lvmh]);
+    // Premise: the incident exists and the former rule (any issue fails the command) would have failed it.
+    expect(health.incidents).toHaveLength(1);
+    expect(issuesFromResult([lvmh], health.incidents).length).toBeGreaterThan(0);
+    const verdict = ingestCommandVerdict([lvmh], health.incidents);
+    expect(verdict).toMatchObject({ ok: true, blocking: [] });
+    expect(verdict.incidents).toEqual([expect.objectContaining({ blocking: false })]);
+  });
+  it('an unproven enumeration still fails the command; a named known failure does not', async () => {
+    const run = async (s: IngestStats) => { const { db } = fakeDb({ [s.source]: [{ jobs: s.inSector }] }); return ingestCommandVerdict([s], (await checkSourceHealth(db, [s])).incidents); };
+    expect(await run(stat('crawled', 12, { complete: false, enumerationReading: 'NOT_PROVEN' }))).toMatchObject({ ok: false });
+    expect(await run(stat('lumentee', 5, { complete: false, enumerationReading: 'NOT_PROVEN' }))).toMatchObject({ ok: true });
   });
 });
