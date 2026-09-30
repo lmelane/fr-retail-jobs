@@ -38,17 +38,27 @@ if (mode === '--tirer') {
   const m = lireEtape('6-manifeste-v3.json'), v3 = compileOccupationManifest(m);
   const { couples } = JSON.parse(gunzipSync(readFileSync(`${D}entrees/offres-preview-2026-09-29.json.gz`)).toString('utf8'));
   const libelle = (k: string) => m.occupations.find((o: any) => o.key === k)?.labels.fr ?? k;
-  const population = couples.map((c: any) => {
+  const lus = couples.map((c: any) => {
     const d = v3.classify(c.titre, c.service);
     const ajoutes = occupationTitleRoles(v3, c.titre, d).filter((r) => !d.occupationEvidence.candidates.includes(r));
     return { c, d, ajoutes };
   }).filter((x: any) => x.ajoutes.length);
+  // Tour 5 et suivants (après les corrections à la main de l'étape 6h, 30/09/2026) : les COUPLES (intitulé, service) déjà
+  // jugés à un tour précédent sont écartés, par le couple et jamais par le seul titre : les corrections ont été faites sur
+  // eux, les remesurer rendrait 0 faux par construction. La part d'offres écartées est enregistrée.
+  const fichierDuTour = (t: number) => `${D}6f-roles-lus${t > 1 ? `-t${t}` : ''}.json`;
+  const couplesJuges = new Set<string>(TOUR >= 5 ? Array.from({ length: TOUR - 1 }, (_, n) => fichierDuTour(n + 1)).filter(existsSync)
+    .flatMap((f) => JSON.parse(readFileSync(f, 'utf8')).echantillon).map((x: any) => `${x.titre}|${x.service}`) : []);
+  const population = lus.filter((x: any) => !couplesJuges.has(`${x.c.titre}|${x.c.service}`));
+  const ecartes = lus.filter((x: any) => couplesJuges.has(`${x.c.titre}|${x.c.service}`));
   const alea = (x: any) => (parseInt(createHash('sha256').update(`roles-lus-2026-09-29${TOUR > 1 ? `-t${TOUR}` : ''}|${x.c.titre}|${x.c.service}`).digest('hex').slice(0, 12), 16) + 1) / 2 ** 48;
   const e = population.map((x: any) => ({ x, k: Math.log(alea(x)) / x.c.offres })).sort((p: any, q: any) => q.k - p.k).slice(0, TAILLE)
     .map(({ x }: any) => ({ titre: x.c.titre, service: x.c.service, offres: x.c.offres, moteur: x.d.occupationCode, statut: x.d.occupationStatus,
       ajoutes: x.ajoutes.map((k: string) => ({ cle: k, libelle: libelle(k) })), verdictAssistant: null, verdictModele: null }));
   writeFileSync(FICHIER, JSON.stringify({ tireLe: new Date().toISOString(), tour: TOUR, manifeste: m.id, empreinteManifeste: empreinte(),
-    population: { couples: population.length, offres: population.reduce((n: number, x: any) => n + x.c.offres, 0) }, echantillon: e }, null, 1));
+    population: { couples: population.length, offres: population.reduce((n: number, x: any) => n + x.c.offres, 0) },
+    ...(TOUR >= 5 ? { couplesDejaJugesEcartes: { couples: ecartes.length, offres: ecartes.reduce((n: number, x: any) => n + x.c.offres, 0),
+      offresLues: lus.reduce((n: number, x: any) => n + x.c.offres, 0) } } : {}), echantillon: e }, null, 1));
   console.log(`tiré : ${e.length} sur ${population.length} couples (${population.reduce((n: number, x: any) => n + x.c.offres, 0)} offres)`);
 }
 

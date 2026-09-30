@@ -65,14 +65,24 @@ if (mode === '--tirer') {
   // Tours 1 et 2 : intitulés déjà jugés écartés par leur titre (tirages committés, rejouables tels quels) ; tour 3 et
   // suivants : aucun écart, voir l'en-tête.
   const vus = new Set(TOUR <= 2 ? [...deja.tour1.verdicts, ...deja.echantillonNeuf.verdicts, ...precedents.flat()].map((x: any) => x.titre.toLowerCase().trim()) : []);
-  const cand = couples.map((c: any) => ({ c, a: v1.classify(c.titre, c.service).occupationCode, b: v3.classify(c.titre, c.service) }))
-    .filter((x: any) => (PERTES ? x.a && !x.b.occupationCode : x.a !== x.b.occupationCode) && !vus.has(x.c.titre.toLowerCase().trim()));
+  // Tour 8 et suivants (après les corrections à la main de l'étape 6h, 30/09/2026) : les COUPLES (intitulé, service) déjà
+  // jugés à un tour précédent, pertes comprises, sont écartés — par le couple, jamais par le seul titre (piège du tour 3) :
+  // les corrections ont été faites sur eux, les remesurer rendrait 0 faux par construction. La mesure porte sur les
+  // couples jamais jugés ; la part d'offres écartées est enregistrée.
+  const pertesJugees = Array.from({ length: TOUR - 1 }, (_, n) => `${D}6d-pertes-${n + 1}.json`).filter(existsSync).flatMap((f) => JSON.parse(readFileSync(f, 'utf8')).echantillon);
+  const couplesJuges = new Set<string>(TOUR >= 8 ? [...deja.tour1.verdicts, ...deja.echantillonNeuf.verdicts, ...precedents.flat(), ...pertesJugees].map((x: any) => `${x.titre}|${x.service}`) : []);
+  const changent = couples.map((c: any) => ({ c, a: v1.classify(c.titre, c.service).occupationCode, b: v3.classify(c.titre, c.service) }))
+    .filter((x: any) => (PERTES ? x.a && !x.b.occupationCode : x.a !== x.b.occupationCode));
+  const cand = changent.filter((x: any) => !vus.has(x.c.titre.toLowerCase().trim()) && !couplesJuges.has(`${x.c.titre}|${x.c.service}`));
+  const ecartes = changent.filter((x: any) => couplesJuges.has(`${x.c.titre}|${x.c.service}`));
   const alea = (x: any) => (parseInt(createHash('sha256').update(`final-2026-09-29${TOUR === 1 ? '' : `-tour${TOUR}`}|${x.c.titre}|${x.c.service}`).digest('hex').slice(0, 12), 16) + 1) / 2 ** 48;
   const e = cand.map((x: any) => ({ x, k: Math.log(alea(x)) / x.c.offres })).sort((p: any, q: any) => q.k - p.k).slice(0, PERTES ? cand.length : TAILLE)
     .map(({ x }: any) => ({ titre: x.c.titre, service: x.c.service, offres: x.c.offres, avant: x.a, metier: x.b.occupationCode, statut: x.b.occupationStatus,
       libelle: m.occupations.find((o: any) => o.key === x.b.occupationCode)?.labels.fr ?? null, verdictModele: null, verdictAssistant: null }));
   writeFileSync(FICHIER, JSON.stringify({ tireLe: new Date().toISOString(), tour: TOUR, ...(PERTES ? { exhaustif: true } : {}), manifeste: m.id, ...(TOUR >= 3 ? { empreinteManifeste: empreinte() } : {}),
-    candidats: cand.length, offresCandidates: cand.reduce((n: number, x: any) => n + x.c.offres, 0), dejaJuges: vus.size, echantillon: e }, null, 1));
+    candidats: cand.length, offresCandidates: cand.reduce((n: number, x: any) => n + x.c.offres, 0), dejaJuges: vus.size,
+    ...(TOUR >= 8 ? { couplesDejaJugesEcartes: { couples: ecartes.length, offres: ecartes.reduce((n: number, x: any) => n + x.c.offres, 0),
+      offresQuiChangent: changent.reduce((n: number, x: any) => n + x.c.offres, 0) } } : {}), echantillon: e }, null, 1));
   console.log(`tiré : ${e.length} sur ${cand.length} candidats neufs`);
   e.forEach((x: any, n: number) => console.log(n + 1, '|', x.titre.replace(/\s+/g, ' ').slice(0, 60), '|', (x.service ?? '').slice(0, 14), '|', x.avant ?? '—', '→', x.libelle ?? `aucun (${x.statut})`));
 }
