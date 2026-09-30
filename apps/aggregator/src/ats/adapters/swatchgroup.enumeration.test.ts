@@ -163,6 +163,22 @@ describe('Swatch Group — prouvé seulement quand l\'union des lectures atteint
     expect([...reads.keys()].filter((u) => u.includes('/en/'))).toEqual(['https://www.swatchgroup.com/en/job-finder?page=0']);
   });
 
+  it('une page d\'une autre langue d\'une autre taille ne compte pas : total changé, non prouvé (audit adverse)', async () => {
+    // Total annoncé : 4. En anglais, la page 0 a la bonne forme, mais la page 1 ne porte qu'un lien, inconnu du
+    // français : compté, il ferait atteindre 4 à l'union sans que l'offre cachée en français ait été vue.
+    vi.mocked(fetchText).mockImplementation(async (url: string) => {
+      const listingOf = /\/([a-z]{2})\/job-finder\?page=(\d+)/.exec(url);
+      if (!listingOf) return detail(Number(/\/job\/(\d+)/.exec(url)?.[1]));
+      const pages: Record<string, Record<string, string>> = { fr: { '0': listing([1, 2], 1), '1': listing([2, 3]), '2': '' },
+        en: { '0': listing([1, 2], 1), '1': listing([5]) } };
+      return pages[listingOf[1]]?.[listingOf[2]] ?? '';
+    });
+    const r = await run();
+    expect(r.complete).toBe(false);
+    expect(r.enumeration?.rawCount).toBe(3);
+    expect(r.enumeration?.issues).toEqual(['PUBLISHER_TOTAL_CHANGED', 'PUBLISHER_TOTAL_NOT_REACHED', 'RECONCILED_BY_SECOND_SWEEP', 'ENUMERATION_NOT_PROVEN']);
+  });
+
   it('une offre jamais servie en six lectures : non prouvé, relectures bornées à cinq', async () => {
     const reads = route({ '0': [listing([1, 2], 1)], '1': [listing([2, 3])], '2': [''] }, details(3));
     const r = await run();
