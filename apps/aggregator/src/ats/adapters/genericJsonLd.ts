@@ -10,6 +10,7 @@ import { briefError } from '../../lib/normalize.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
 import { CRAWLER_IDENTITY } from '../../lib/crawlerIdentity.js';
 import { fetchCaudalieJobs } from './caudalie.js';
+import { joinSpontaneousApplicationCards, SPONTANEOUS_APPLICATION_CARD } from './joinSpontaneousCard.js';
 
 /** Relecture différée des fiches en échec : au plus ce nombre d'échecs (ou 5 % des liens), après ce délai. */
 const DETAIL_RETRY_MAX_FAILURES = 5;
@@ -111,6 +112,8 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
     const escaped = linkPattern.split('|').map((f) => f.trim()).filter(Boolean).map((f) => f.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|');
     const linkRe = new RegExp(`href="([^"]*(?:${escaped})[^"]*)"`, 'g');
     const seen = new Set<string>();
+    /** Les liens listés et comptés par l'éditeur qui ne sont pas des offres : jamais lus comme des fiches. */
+    const cards = new Set<string>();
     const origin = new URL(listingPagedUrl).origin;
 
     let reachedEnd = false;
@@ -138,20 +141,20 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
       // every offer already collected — the live "michael-page-france failed".
       // A non-404 error (an exhausted-retry blip) also stops the sweep rather
       // than losing the whole source; the pages already collected still ingest.
+      /**
+       * Deux formes de pagination : en QUERY (`/jobs?page=N`, Michael Page,
+       * 0-based) ou en CHEMIN (`/jobs/page/N`, Pandora sur TalentHub, 1-based).
+       * Un `{page}` dans l'URL de listing désigne la seconde ; sans lui, on
+       * ajoute le paramètre comme avant. Mesuré le 2026-09-05 : Pandora
+       * rendait 10 offres — la page 1 seule — quand elle en a ~1 800 sur 180
+       * pages. `pageStart` (défaut 0) porte l'origine de la numérotation.
+       */
+      const pageNumber = page + Number(config.pageStart ?? 0);
+      const pageUrl = listingPagedUrl.includes('{page}')
+        ? listingPagedUrl.replace('{page}', String(pageNumber))
+        : `${listingPagedUrl}${sep}${pageParam}=${pageNumber}`;
       let html: string;
       try {
-        /**
-         * Deux formes de pagination : en QUERY (`/jobs?page=N`, Michael Page,
-         * 0-based) ou en CHEMIN (`/jobs/page/N`, Pandora sur TalentHub, 1-based).
-         * Un `{page}` dans l'URL de listing désigne la seconde ; sans lui, on
-         * ajoute le paramètre comme avant. Mesuré le 2026-09-05 : Pandora
-         * rendait 10 offres — la page 1 seule — quand elle en a ~1 800 sur 180
-         * pages. `pageStart` (défaut 0) porte l'origine de la numérotation.
-         */
-        const pageNumber = page + Number(config.pageStart ?? 0);
-        const pageUrl = listingPagedUrl.includes('{page}')
-          ? listingPagedUrl.replace('{page}', String(pageNumber))
-          : `${listingPagedUrl}${sep}${pageParam}=${pageNumber}`;
         html = await fetchText(pageUrl, {
           headers: {
             'user-agent':
@@ -172,6 +175,9 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
       if (publisherCount === undefined) publisherCount = parseListingCount(html, config.countPattern);
       const pageLinks = [...html.matchAll(linkRe)]
         .map((m) => new URL(m[1], origin).toString().split('#')[0]);
+      // La carte de candidature spontanée que l'éditeur compte dans son total (join.com, 30/09/2026) : un lien listé et
+      // compté, jamais lu comme une fiche (`joinSpontaneousCard.ts`).
+      for (const card of joinSpontaneousApplicationCards(html, pageUrl, pageLinks)) cards.add(card);
       rawLinks += pageLinks.length;
       const links = pageLinks.filter(u => !seen.has(u));
       // A byte-identical page. Once the publisher's count is met it is the clamped
@@ -221,7 +227,7 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
     const limit = pLimit(Number(config.concurrency ?? 4));
     let detailFailures = 0;
     const readDetail = async (url: string) => parseJobPostings(await fetchText(url, { headers: { 'user-agent': CRAWLER_IDENTITY } }), url);
-    const listed = [...seen];
+    const listed = [...seen].filter(url => !cards.has(url));
     const failed: number[] = [];
     const pages = await Promise.all(
       listed.map((url, index) =>
@@ -280,12 +286,20 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
     const belowCount = publisherCount !== undefined && seen.size < publisherCount;
     const complete = reachedEnd && detailFailures === 0 && !belowCount;
     const issues = complete ? [] : [termination === 'REPEATED_PAGE' ? 'BROKEN_PAGER_REPEATS_LAST_PAGE' : termination, ...(belowCount ? [`LINKS_BELOW_PUBLISHER_COUNT=${seen.size}/${publisherCount}`] : []), ...(detailFailures ? [`DETAIL_FAILURES=${detailFailures}`] : []), 'ENUMERATION_NOT_PROVEN'].filter((v, i, a) => a.indexOf(v) === i);
-    return { jobs, declaredTotal: publisherCount ?? seen.size, complete, truncated: !reachedEnd || detailFailures > 0 || belowCount,
+    /*
+     * Le total de l'éditeur compte ses cartes (join.com : 5 = 4 offres + la carte) : le lien compté réconcilie le
+     * parcours, et le total d'OFFRES déclaré en retire la carte — sans quoi 4 offres lues sur 5 « déclarées » passeraient
+     * sous le seuil de couverture de l'attestation. La carte reste une ligne nommée, jamais une offre ni un échec.
+     */
+    const nonPosting = [...cards].filter(url => seen.has(url));
+    return { jobs, declaredTotal: (publisherCount ?? seen.size) - nonPosting.length, complete, truncated: !reachedEnd || detailFailures > 0 || belowCount,
+      ...(nonPosting.length ? { rejectedRows: nonPosting.map(url => ({ reason: SPONTANEOUS_APPLICATION_CARD, raw: { url } })) } : {}),
       enumeration: { method: 'PAGINATED_LISTING_WITH_DETAIL_READ', endpoint: listingPagedUrl, pages: pagesRead, rawCount: rawLinks, termination, issues,
         scopes: [
           ...(publisherCount !== undefined ? [{ scope: 'publisherCount', declaredTotal: publisherCount, uniqueIds: seen.size, pages: pagesRead, complete: seen.size >= publisherCount }] : []),
           { scope: 'listedLinks', declaredTotal: publisherCount ?? seen.size, uniqueIds: seen.size, pages: pagesRead, complete: reachedEnd && !belowCount },
-          { scope: 'postingsParsed', declaredTotal: seen.size, uniqueIds: jobs.length, pages: pagesRead, complete }] } };
+          ...(nonPosting.length ? [{ scope: 'publisherNonPostingCards', declaredTotal: nonPosting.length, uniqueIds: nonPosting.length, pages: pagesRead, complete: true }] : []),
+          { scope: 'postingsParsed', declaredTotal: listed.length, uniqueIds: jobs.length, pages: pagesRead, complete }] } };
   }
 
   const sitemapUrl = String(config.sitemapUrl ?? '');
