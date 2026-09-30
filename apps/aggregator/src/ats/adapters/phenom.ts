@@ -172,7 +172,7 @@ export async function fetchPhenomJobs(config: Record<string, unknown>): Promise<
   // Foot Locker, qui lui rend 500 et ferait diagnostiquer une source cassée.
   if (phenomDialect(config) === 'CAREER_CONNECT_WIDGETS') {
     // Le préfixe de locale du portail : sans lui l'URL publique redirige vers l'accueil (mesuré).
-    return fetchCareerConnectJobs(origin, typeof config.localePath === 'string' ? config.localePath : undefined);
+    return fetchCareerConnectJobs(origin, careerConnectOptions(config));
   }
 
   const jobs: NormalizedJob[] = [];
@@ -300,20 +300,45 @@ export function phenomDialect(config: Record<string, unknown>): PhenomDialect {
 }
 
 /**
- * La requête CareerConnect. `country: 'global'` est demandé EXPLICITEMENT : mesuré sur Skechers, le backend
- * rend 1 656 offres que la locale soit `fr/France` ou `en/global` — on ne veut pas dépendre de ce
- * comportement pour ne pas réduire un jour la source à un marché.
+ * Les réglages d'un portail CareerConnect, lus de la configuration : les MÊMES pour la collecte et pour la relecture
+ * hors réseau du RAW retenu, pour qu'elles ne puissent pas diverger.
+ *
+ * `widgetsLang` / `widgetsCountry` — l'index que le site interroge lui-même (PVH, 30/09/2026). Par défaut
+ * `en` / `global`, comme avant. Mais chez PVH l'index `global` est un index FIGÉ : 1 644 offres, toutes datées de
+ * mars 2024, identifiants `PVH1US…WDINTERNAL…` ; le site `/us/en` interroge `en_us` / `us` (valeurs de sa propre
+ * page de recherche) et sert 1 574 offres courantes, identifiants `PCAPCAUS…` — la famille de son plan de site.
+ * La valeur se relit sur la page du site, elle ne se devine pas.
+ *
+ * `brandField` — le champ de l'offre qui porte la marque publiée par l'éditeur (PVH : `brand`, affiché « Company »
+ * sur le site : Tommy Hilfiger, Calvin Klein, ou PVH pour les postes du groupe). Opt-in par source, comme
+ * `brandTag` pour le dialecte Foot Locker.
  */
-export function careerConnectRequest(origin: string, page: { from: number; size: number }): {
+export type CareerConnectOptions = { localePath?: string; lang: string; country: string; brandField?: string };
+export function careerConnectOptions(config: Record<string, unknown>): CareerConnectOptions {
+  const text = (key: string) => typeof config[key] === 'string' && (config[key] as string).trim() ? (config[key] as string).trim() : undefined;
+  const lang = text('widgetsLang') ?? 'en', country = text('widgetsCountry') ?? 'global', brandField = text('brandField');
+  if (!/^[a-z]{2}(?:_[a-z]{2})?$/i.test(lang) || !/^(?:[a-z]{2}|global)$/i.test(country) || (brandField !== undefined && !/^[A-Za-z][A-Za-z0-9_]{0,39}$/.test(brandField)))
+    throw new Error('phenom: réglages CareerConnect invalides (widgetsLang, widgetsCountry, brandField)');
+  return { localePath: typeof config.localePath === 'string' ? config.localePath : undefined, lang, country, ...(brandField ? { brandField } : {}) };
+}
+
+/**
+ * La requête CareerConnect. `country: 'global'` est demandé par défaut : mesuré sur Skechers, le backend rend
+ * 1 656 offres que la locale soit `fr/France` ou `en/global`. Un portail dont l'index `global` n'est pas celui du
+ * site déclare le sien (`widgetsLang`, `widgetsCountry` : PVH). Le champ de marque configuré est demandé en facette :
+ * son décompte par valeur est la preuve de l'attribution.
+ */
+export function careerConnectRequest(origin: string, page: { from: number; size: number },
+  options: Pick<CareerConnectOptions, 'lang' | 'country' | 'brandField'> = { lang: 'en', country: 'global' }): {
   url: string; method: 'POST'; body: Record<string, unknown>;
 } {
   return {
     url: `${origin}/widgets`,
     method: 'POST',
     body: {
-      lang: 'en', deviceType: 'desktop', country: 'global', pageName: 'search-results',
+      lang: options.lang, deviceType: 'desktop', country: options.country, pageName: 'search-results',
       ddoKey: 'refineSearch', jdsource: 'facets', isSliderEnable: false,
-      jobs: true, counts: true, all_fields: ['category', 'country', 'state', 'city'],
+      jobs: true, counts: true, all_fields: ['category', 'country', 'state', 'city', ...(options.brandField ? [options.brandField] : [])],
       from: page.from, size: page.size,
     },
   };
@@ -346,7 +371,7 @@ function slugify(title: string): string {
 export function parseCareerConnectJob(
   data: CareerConnectJob,
   origin: string,
-  options: { localePath?: string } = {},
+  options: { localePath?: string; brandField?: string } = {},
 ): NormalizedJob | null {
   const externalId = data.jobSeqNo ? String(data.jobSeqNo) : '';
   if (!externalId || !data.title) return null;
@@ -355,6 +380,14 @@ export function parseCareerConnectJob(
   const postedAt = posted ? new Date(posted) : undefined;
   const terms = employmentTermsFrom([data.hiringType, data.type]);
   const num = (v: unknown) => (Number.isFinite(Number(v)) ? Number(v) : undefined);
+  /**
+   * La marque que l'éditeur publie sur l'offre, quand la source déclare son champ (PVH, 30/09/2026 : `brand`, le filtre
+   * « Company » du site). Elle passe avant l'entité juridique, comme la propriété de marque configurée de SuccessFactors :
+   * un candidat postule chez Calvin Klein, pas chez « PVH France SAS ». Une offre sans valeur garde l'employeur natif.
+   */
+  const brandValue = options.brandField ? (data as Record<string, unknown>)[options.brandField] : undefined;
+  const brand = typeof brandValue === 'string' && brandValue.trim() ? brandValue.trim() : undefined;
+  const companyName = typeof data.companyName === 'string' && data.companyName.trim() ? data.companyName.trim() : undefined;
 
   return {
     externalId,
@@ -372,9 +405,12 @@ export function parseCareerConnectJob(
     department: data.category,
     // Native per-publication employer, also present in the detail JobPosting.
     // Keep legal entities verbatim; never replace them with the registry label.
-    ...(typeof data.companyName === 'string' && data.companyName.trim() ? {
-      company: data.companyName.trim(),
-      employerEvidence: { rawName: data.companyName.trim(), path: 'companyName', rule: 'EXPLICIT_JOBPOSTING_EMPLOYER' },
+    ...(brand ? {
+      company: brand,
+      employerEvidence: { rawName: brand, path: `listing.${options.brandField}`, rule: 'CONFIGURED_BRAND_PROPERTY' },
+    } : companyName ? {
+      company: companyName,
+      employerEvidence: { rawName: companyName, path: 'companyName', rule: 'EXPLICIT_JOBPOSTING_EMPLOYER' },
     } : {}),
     /**
      * L'URL publique EXIGE le préfixe de locale du portail.
@@ -402,7 +438,10 @@ export function parseCareerConnectJob(
  * observés page par page, terminaison nommée. Sans cela une source ne peut pas attester une absence (P7), et
  * un dialecte qui collecte sans prouver serait un recul déguisé en ajout.
  */
-async function fetchCareerConnectJobs(origin: string, localePath?: string): Promise<AdapterResult> {
+async function fetchCareerConnectJobs(origin: string, options: CareerConnectOptions): Promise<AdapterResult> {
+  const { localePath, brandField } = options;
+  /** Le décompte par marque que l'éditeur annonce (facette du champ configuré), lu sur la première page. */
+  let brandFacet: Record<string, number> | undefined;
   const jobs: NormalizedJob[] = [];
   const rejectedRows: NonNullable<AdapterResult['rejectedRows']> = [];
   const seen = new Set<string>();
@@ -428,14 +467,20 @@ async function fetchCareerConnectJobs(origin: string, localePath?: string): Prom
    * les identifiants déjà vus sont attendus (ni comptés comme répétés, ni rejetés deux fois). Rend le nombre de lignes.
    */
   const readAt = async (from: number, pass: number): Promise<number> => {
-    const request = careerConnectRequest(origin, { from, size });
-    const response = await fetchJson<{ refineSearch?: { totalHits?: number; data?: { jobs?: CareerConnectJob[] } } }>(
+    const request = careerConnectRequest(origin, { from, size }, options);
+    const response = await fetchJson<{ refineSearch?: { totalHits?: number; data?: { jobs?: CareerConnectJob[];
+      aggregations?: { field?: unknown; value?: unknown }[] } } }>(
       request.url,
       { method: request.method, headers: { ...HEADERS, 'content-type': 'application/json' }, body: JSON.stringify(request.body) },
     );
 
     const refine = response.refineSearch ?? {};
     if (pass === 1 && typeof refine.totalHits === 'number') declaredTotal = refine.totalHits;
+    if (brandField && pass === 1 && from === 0) {
+      const facet = Array.isArray(refine.data?.aggregations) ? refine.data.aggregations.find((a) => a?.field === brandField)?.value : undefined;
+      if (facet && typeof facet === 'object' && !Array.isArray(facet) && Object.values(facet).every((n) => Number.isSafeInteger(n) && (n as number) >= 0))
+        brandFacet = Object.fromEntries(Object.entries(facet as Record<string, number>).map(([name, n]) => [name.trim(), n]));
+    }
     const batch = refine.data?.jobs ?? [];
     pages++; if (pass === 1) rawCount += batch.length;
     const pageIds: string[] = [];
@@ -450,7 +495,7 @@ async function fetchCareerConnectJobs(origin: string, localePath?: string): Prom
     for (const entry of batch) {
       const canonicalId = entry.jobSeqNo ? String(entry.jobSeqNo) : null;
       if (canonicalId) pageCanonicalIds.push(canonicalId); else if (pass === 1) anonymousRows++;
-      const job = parseCareerConnectJob(entry, origin, { localePath });
+      const job = parseCareerConnectJob(entry, origin, { localePath, brandField });
       // Une ligne écartée porte sa cause et son identifiant quand il existe : sans disposition nommée, son
       // identifiant observé resterait orphelin dans la preuve et le contrat tomberait.
       if (!job) {
@@ -502,6 +547,31 @@ async function fetchCareerConnectJobs(origin: string, localePath?: string): Prom
   }
 
   /**
+   * LA PREUVE DE L'ATTRIBUTION (PVH, 30/09/2026). Quand la source déclare le champ de marque, l'éditeur en publie aussi
+   * le décompte par valeur (facette : Tommy Hilfiger 866, Calvin Klein 579, PVH 129 = 1 574 annoncées). Chaque valeur
+   * doit compter exactement autant d'offres lues que l'éditeur en annonce, et aucune offre lue ne peut porter une valeur
+   * absente de la facette. Sinon l'attribution n'est pas celle de l'éditeur : le parcours n'est pas prouvé, l'écart
+   * est nommé.
+   */
+  const brandScopes: NonNullable<NonNullable<AdapterResult['enumeration']>['scopes']> = [];
+  if (brandField) {
+    const read = new Map<string, number>();
+    for (const job of jobs) {
+      const value = job.employerEvidence?.rule === 'CONFIGURED_BRAND_PROPERTY' ? job.employerEvidence.rawName : '';
+      read.set(value, (read.get(value) ?? 0) + 1);
+    }
+    if (!brandFacet) issues.add('BRAND_FACET_ABSENT');
+    else {
+      const withoutBrand = read.get('') ?? 0;
+      const announced = Object.values(brandFacet).reduce((sum, n) => sum + n, 0);
+      for (const [value, count] of Object.entries(brandFacet)) brandScopes.push({ scope: `${brandField}=${value}`, declaredTotal: count, uniqueIds: read.get(value) ?? 0, pages, complete: read.get(value) === count });
+      const outside = [...read.keys()].filter((value) => value && !Object.hasOwn(brandFacet!, value));
+      if (withoutBrand) brandScopes.push({ scope: `${brandField}:absent`, declaredTotal: Math.max((declaredTotal ?? 0) - announced, 0), uniqueIds: withoutBrand, pages, complete: withoutBrand === (declaredTotal ?? 0) - announced });
+      if (brandScopes.some((scope) => !scope.complete) || outside.length) issues.add('BRAND_FACET_COUNT_MISMATCH');
+    }
+  }
+
+  /**
    * La description complète, une fiche à la fois, sous la porte par hôte partagée.
    *
    * Le pool est BORNÉ à la concurrence de détail commune : ce chemin ajoute une requête par offre, et un
@@ -534,7 +604,7 @@ async function fetchCareerConnectJobs(origin: string, localePath?: string): Prom
       pages, rawCount, termination, issues: [...issues],
       // Une ligne servie sans `jobSeqNo` reste innommable : elle interdit de déclarer une absence.
       canonicalAbsenceProofUsable: anonymousRows === 0,
-      scopes: [{ scope: 'global', declaredTotal: declaredTotal ?? -1, uniqueIds: seen.size, pages, complete }],
+      scopes: [{ scope: 'global', declaredTotal: declaredTotal ?? -1, uniqueIds: seen.size, pages, complete }, ...brandScopes],
       pageEvidence,
     },
   };

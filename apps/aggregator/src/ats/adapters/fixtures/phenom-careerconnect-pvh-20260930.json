@@ -1,0 +1,334 @@
+{
+ "capturedAt": "2026-09-30",
+ "note": "careers.pvh.com, réponses réelles de POST /widgets du 30/09/2026. `site` : la requête du site /us/en (lang en_us, country us, lue sur sa page de recherche) — 1 574 annoncées, facette brand = Tommy Hilfiger 866, Calvin Klein 579, PVH 129 ; trois entrées telles que servies (une par marque). `globalIndex` : la requête historique du lecteur (lang en, country global) — 1 644 annoncées, aucune entrée ne porte brand, toutes créées entre 2018 et 2024 ; une entrée telle que servie. `detailJobPosting` : le bloc JSON-LD de la fiche publique /us/en/job/R60080/… lue le 30/09.",
+ "site": {
+  "totalHits": 1574,
+  "brandFacet": {
+   "Tommy Hilfiger": 866,
+   "Calvin Klein": 579,
+   "PVH": 129
+  },
+  "jobs": [
+   {
+    "ml_skills": [
+     "driving sales",
+     "loss prevention",
+     "inventory controls",
+     "retail store management",
+     "oversight",
+     "consumer engagement",
+     "customer insights",
+     "drive results",
+     "positive"
+    ],
+    "type": "Full time",
+    "descriptionTeaser": "Nous recherchons un Assistant Responsable de Magasin passionné pour rejoindre notre équipe chez Calvin Klein. Vous jouerez un rôle clé dans l'ouverture et le développement d'un nouveau concept, tout en soutenant une équipe dédiée à offrir un service exceptionnel et à atteindre des résultats.",
+    "state": "",
+    "brand": "Calvin Klein",
+    "siteType": "external",
+    "multi_category": [
+     "Retail Management"
+    ],
+    "reqId": "R60080",
+    "city": "Puteaux",
+    "latitude": "48.88341",
+    "multi_location": [
+     "Puteaux, France"
+    ],
+    "address": "15 Parvis de la Défense, 93117 Puteaux, France",
+    "applyUrl": "https://pvh.wd1.myworkdayjobs.com/PVH_Careers/job/Calvin-Klein-La-Dfense/Assistant-Store-Manager---Calvin-Klein---Pop-up-Les-4-Temps---La-Dfense---CDD-35h_R60080/apply",
+    "ml_job_parser": {
+     "descriptionTeaser": "Nous recherchons un Assistant Responsable de Magasin passionné pour rejoindre notre équipe chez Calvin Klein. Vous jouerez un rôle clé dans l'ouverture et le développement d'un nouveau concept, tout en soutenant une équipe dédiée à offrir un service exceptionnel et à atteindre des résultats.",
+     "descriptionTeaser_ats": "Prenez part à une histoire emblématique.Chez Calvin Klein, nous croyons à une culture inclusive et collaborative qui valorise la diversité des perspectives, des parcours et des convictions afin de cré",
+     "descriptionTeaser_keyword": "Prenez part à une histoire emblématique. Chez Calvin Klein, nous croyons à une culture inclusive et collaborative qui valorise la diversité des perspectives, des parcours et des convictions afin de cr...",
+     "descriptionTeaser_first200": "Prenez part à une histoire emblématique. Chez Calvin Klein, nous croyons à une culture inclusive et collaborative qui valorise la diversité des perspectives, des parcours et des convictions afin de..."
+    },
+    "externalApply": true,
+    "cityState": "Puteaux",
+    "country": "France",
+    "visibilityType": "External",
+    "longitude": "2.23894",
+    "jobId": "R60080",
+    "workplaceType": "Retail",
+    "locale": "en_US",
+    "title": "Assistant Store Manager - Calvin Klein Underwear - Les 4 Temps / La Défense",
+    "jobSeqNo": "PCAPCAUSR60080EXTERNALENUS",
+    "postedDate": "2026-09-11T00:00:00.000+0000",
+    "dateCreated": "2026-09-02T20:13:27.222+0000",
+    "company": "PVH",
+    "cityStateCountry": "Puteaux, France",
+    "jobVisibility": [
+     "external",
+     "internal"
+    ],
+    "location": "Puteaux, France",
+    "category": "Retail Management",
+    "isMultiLocation": false,
+    "multi_location_array": [
+     {
+      "latlong": {
+       "lon": 2.23894,
+       "lat": 48.88341
+      },
+      "location": "Puteaux, France"
+     }
+    ],
+    "isMultiCategory": false,
+    "multi_category_array": [
+     {
+      "category": "Retail Management"
+     }
+    ],
+    "badge": ""
+   },
+   {
+    "ml_skills": [
+     "vip",
+     "français",
+     "anglais",
+     "campagnes de marketing",
+     "lancement",
+     "monitoring",
+     "excel"
+    ],
+    "type": "Full time",
+    "descriptionTeaser": "We are brand builders who focus our passion and creativity to build Calvin Klein and TOMMY HILFIGER into the most desirable lifestyle brands in the world and at the same time position PVH as one of th...",
+    "state": "",
+    "brand": "Tommy Hilfiger",
+    "siteType": "external",
+    "multi_category": [
+     "Temporary"
+    ],
+    "reqId": "R61020",
+    "city": "Paris",
+    "latitude": "48.85341",
+    "multi_location": [
+     "Paris, France"
+    ],
+    "address": "137 Rue du Faubourg Saint Honoré, 75008 Paris, France",
+    "applyUrl": "https://pvh.wd1.myworkdayjobs.com/PVH_Careers/job/Paris/Press---Influence-Assistant--m-f-d-----Tommy-Hilfiger---Stage-Janvier-2027--6-mois-_R61020/apply",
+    "ml_job_parser": {
+     "descriptionTeaser_keyword": "Be part of an iconic story. TOMMY HILFIGER is one of the world’s most recognized global lifestyle brands, confidently welcoming and inspiring consumers since 1985. Originally established in New York C...",
+     "descriptionTeaser_first200": "Be part of an iconic story. TOMMY HILFIGER is one of the world’s most recognized global lifestyle brands, confidently welcoming and inspiring consumers since 1985. Originally established in New Yor...",
+     "descriptionTeaser_ats": "Be part of an iconic story. TOMMY HILFIGER is one of the world’s most recognized global lifestyle brands, confidently welcoming and inspiring consumers since 1985. Originally established in New York C",
+     "descriptionTeaser": "We are brand builders who focus our passion and creativity to build Calvin Klein and TOMMY HILFIGER into the most desirable lifestyle brands in the world and at the same time position PVH as one of th..."
+    },
+    "externalApply": false,
+    "cityState": "Paris",
+    "country": "France",
+    "visibilityType": "External",
+    "longitude": "2.3488",
+    "jobId": "R61020",
+    "workplaceType": "Non-Retail",
+    "locale": "en_US",
+    "title": "Press & Influence Assistant (m/f/d*) – Tommy Hilfiger – Stage Janvier 2027 (6 mois)",
+    "jobSeqNo": "PCAPCAUSR61020EXTERNALENUS",
+    "postedDate": "2026-08-06T00:00:00.000+0000",
+    "dateCreated": "2026-09-02T20:13:28.423+0000",
+    "company": "PVH",
+    "cityStateCountry": "Paris, France",
+    "jobVisibility": [
+     "external",
+     "internal"
+    ],
+    "location": "Paris, France",
+    "category": "Temporary",
+    "isMultiLocation": false,
+    "multi_location_array": [
+     {
+      "latlong": {
+       "lon": 2.3488,
+       "lat": 48.85341
+      },
+      "location": "Paris, France"
+     }
+    ],
+    "isMultiCategory": false,
+    "multi_category_array": [
+     {
+      "category": "Temporary"
+     }
+    ],
+    "badge": ""
+   },
+   {
+    "ml_skills": [
+     "merchandising visuel",
+     "gestion des stocks",
+     "service client",
+     "passion pour la mode",
+     "créativité",
+     "communication",
+     "anglais",
+     "vente",
+     "gestion des livraisons",
+     "expérience client",
+     "esprit d'équipe",
+     "curiosité"
+    ],
+    "type": "Full time",
+    "descriptionTeaser": "Nous recherchons un démonstrateur passionné pour rejoindre notre équipe Tommy Hilfiger & Calvin Klein au Printemps de Vélizy. Ce stage de 2 mois vous permettra de vivre une expérience client unique tout en développant vos compétences dans le secteur de la mode. Postulez dès maintenant !",
+    "state": "",
+    "brand": "PVH",
+    "siteType": "external",
+    "multi_category": [
+     "Retail Management"
+    ],
+    "reqId": "R57555",
+    "city": "Vélizy-Villacoublay",
+    "latitude": "48.7836",
+    "multi_location": [
+     "Vélizy-Villacoublay, France"
+    ],
+    "address": "2 Avenue de l'Europe, 78140 Vélizy-Villacoublay, France",
+    "applyUrl": "https://pvh.wd1.myworkdayjobs.com/PVH_Careers/job/Printemps-Velizy/Dmonstrateur--m-f-d-----Tommy-Hilfiger---Calvin-Klein---Printemps-Vlizy---stage-2-mois_R57555/apply",
+    "ml_job_parser": {
+     "descriptionTeaser": "Nous recherchons un démonstrateur passionné pour rejoindre notre équipe Tommy Hilfiger & Calvin Klein au Printemps de Vélizy. Ce stage de 2 mois vous permettra de vivre une expérience client unique tout en développant vos compétences dans le secteur de la mode. Postulez dès maintenant !",
+     "descriptionTeaser_first200": "Prenez part à une histoire emblématique. Nous sommes des bâtisseurs de marques qui mettons notre passion et notre créativité au service de Calvin Klein et TOMMY HILFIGER, afin d'en faire les marque...",
+     "descriptionTeaser_keyword": "Prenez part à une histoire emblématique. Nous sommes des bâtisseurs de marques qui mettons notre passion et notre créativité au service de Calvin Klein et TOMMY HILFIGER, afin d'en faire les marques l...",
+     "descriptionTeaser_ats": "Prenez part à une histoire emblématique.Nous sommes des bâtisseurs de marques qui mettons notre passion et notre créativité au service de Calvin Klein et TOMMY HILFIGER, afin d'en faire les marques li"
+    },
+    "externalApply": true,
+    "cityState": "Vélizy-Villacoublay",
+    "country": "France",
+    "visibilityType": "External",
+    "longitude": "2.1887",
+    "jobId": "R57555",
+    "workplaceType": "Retail",
+    "locale": "en_US",
+    "title": "Démonstrateur (m/f/d*) - Tommy Hilfiger & Calvin Klein - Printemps Vélizy - stage 2 mois",
+    "jobSeqNo": "PCAPCAUSR57555EXTERNALENUS",
+    "postedDate": "2026-09-11T00:00:00.000+0000",
+    "dateCreated": "2026-09-02T20:13:27.374+0000",
+    "company": "PVH",
+    "cityStateCountry": "Vélizy-Villacoublay, France",
+    "jobVisibility": [
+     "external",
+     "internal"
+    ],
+    "location": "Vélizy-Villacoublay, France",
+    "category": "Retail Management",
+    "isMultiLocation": false,
+    "multi_location_array": [
+     {
+      "latlong": {
+       "lon": 2.1887,
+       "lat": 48.7836
+      },
+      "location": "Vélizy-Villacoublay, France"
+     }
+    ],
+    "isMultiCategory": false,
+    "multi_category_array": [
+     {
+      "category": "Retail Management"
+     }
+    ],
+    "badge": ""
+   }
+  ]
+ },
+ "globalIndex": {
+  "totalHits": 1644,
+  "brandFacet": {
+   "Tommy Hilfiger": 915,
+   "Calvin Klein": 545,
+   "Business Operations": 86,
+   "Multi-brand": 72,
+   "Corporate": 22,
+   "W&D (inactive)": 3,
+   "DFG": 1
+  },
+  "jobs": [
+   {
+    "ml_skills": [
+     "la caisse",
+     "des produits",
+     "produits",
+     "ouverture",
+     "grâce",
+     "procédures",
+     "fermeture",
+     "espace",
+     "commerce",
+     "clientèle",
+     "vente",
+     "carrière",
+     "anglais",
+     "encaissement",
+     "développer",
+     "caisse",
+     "goût pour la mode",
+     "image de marque",
+     "retail",
+     "expérience client",
+     "vendre",
+     "fidéliser la clientèle",
+     "tre",
+     "indicateurs de",
+     "qualité de service"
+    ],
+    "type": "Full Time",
+    "descriptionTeaser": "Assurer l'ouverture et la fermeture des caisses. * Vendre les produits de la marque grâce à votre goût pour la mode et à votre connaissance des différentes collections. Nous encourageons la diversité...",
+    "state": "",
+    "siteType": "external",
+    "multi_category": [
+     "Retail Management"
+    ],
+    "reqId": "R39034",
+    "city": "Pont-Sainte Marie",
+    "latitude": "48.319107",
+    "industry": "Retail",
+    "multi_location": [
+     "Pont-Sainte Marie, France"
+    ],
+    "applyUrl": "https://pvh.wd1.myworkdayjobs.com/PVH_Careers/job/Tommy-Hilfiger-Outlet-Troyes/Hte-de-Caisse--m-f-d-----Tommy-Hilfiger---Troyes---CDI-35h_R39034/apply",
+    "ml_job_parser": {
+     "descriptionTeaser": "Assurer l'ouverture et la fermeture des caisses. * Vendre les produits de la marque grâce à votre goût pour la mode et à votre connaissance des différentes collections. Nous encourageons la diversité...",
+     "descriptionTeaser_keyword": "A propos de PVH. Créée en 1881, PVH est l'une des plus importantes entreprises textiles au monde. Parmi ses marques figurent Calvin Klein, acquise en 2003, et Tommy Hilfiger en 2010. A propos de ce poste....",
+     "descriptionTeaser_first200": "A propos de PVH. Créée en 1881, PVH est l'une des plus importantes entreprises textiles au monde. Parmi ses marques figurent Calvin Klein, acquise en 2003, et Tommy Hilfiger en 2010. A propos de ce poste....",
+     "descriptionTeaser_ats": ""
+    },
+    "externalApply": false,
+    "country": "France",
+    "cityState": "Pont-Sainte Marie",
+    "visibilityType": "Internal/External",
+    "longitude": "4.0986459",
+    "hiringManager": "1007345",
+    "jobId": "R39034",
+    "title": "Hôte de Caisse (m/f/d*) - Tommy Hilfiger - Troyes - CDI 35h",
+    "locale": "en_GLOBAL",
+    "postedDate": "2024-03-01T00:00:00.000+0000",
+    "jobSeqNo": "PVH1USR39034WDINTERNALENGLOBALEXTERNAL",
+    "dateCreated": "2023-08-25T16:22:13.116+0000",
+    "cityStateCountry": "Pont-Sainte Marie, France",
+    "jobVisibility": [
+     "external",
+     "internal",
+     "external"
+    ],
+    "teamId": "SUP_1007345_JM",
+    "location": "Pont-Sainte Marie, France",
+    "category": "Retail Management",
+    "isMultiLocation": true,
+    "multi_location_array": [
+     {
+      "latlong": {
+       "lon": 4.0986459,
+       "lat": 48.319107
+      },
+      "location": "Pont-Sainte Marie, France"
+     }
+    ],
+    "isMultiCategory": false,
+    "multi_category_array": [
+     {
+      "category": "Retail Management"
+     }
+    ],
+    "badge": ""
+   }
+  ]
+ },
+ "detailJobPosting": "{\"identifier\":{\"@type\":\"PropertyValue\",\"name\":\"PVH France SAS\",\"value\":\"R60080\"},\"hiringOrganization\":{\"@type\":\"Organization\",\"name\":\"PVH France SAS\",\"sameAs\":\"https://careers.pvh.com/calvinklein/us/en\",\"url\":\"https://careers.pvh.com/us/en/job/PCAPCAUSR60080EXTERNALENUS/Assistant-Store-Manager-Calvin-Klein-Underwear-Les-4-Temps-La-Défense\",\"logo\":\"https://assets.phenompeople.com/CareerConnectResources/pp/PCAPCAUS/images/job_logo_config--1779914339279.png\"},\"jobLocation\":{\"geo\":{\"@type\":\"GeoCoordinates\",\"latitude\":\"48.88341\",\"longitude\":\"2.23894\"},\"address\":{\"@type\":\"PostalAddress\",\"postalCode\":\"93117\",\"addressCountry\":\"France\",\"addressLocality\":\"Puteaux\",\"addressRegion\":\"\"},\"@type\":\"Place\"},\"employmentType\":[\"FULL_TIME\"],\"@type\":\"JobPosting\",\"workHours\":\"40 hours per week\",\"description\":\"&lt;p&gt;&lt;b&gt;Prenez part à une histoire emblématique.&lt;/b&gt;&lt;/p&gt;&lt;br /&gt;&lt;p&gt;Chez Calvin Klein, nous croyons à une culture inclusive et collaborative qui valorise la diversité des perspectives, des parcours et des convictions afin de créer un lien authentique avec nos associates et nos consommateurs. Rejoignez-nous pour avoir un impact significatif sur le monde et bénéficier d&#39;innombrables possibilités de façonner votre avenir. Découvrez l&#39;univers de Calvin Klein ici : YouTube, Instagram, TikTok.&lt;a target=\\\"_blank\\\" href=\\\"https://www.youtube.com/calvinklein\\\"&gt;&lt;span style=\\\"color:#0875e1\\\"&gt;&lt;b&gt;&lt;u&gt;YouTube&lt;/u&gt;&lt;/b&gt;&lt;/span&gt;&lt;/a&gt;&lt;a target=\\\"_blank\\\" href=\\\"https://www.instagram.com/calvinklein/\\\"&gt;&lt;span style=\\\"color:#0875e1\\\"&gt;&lt;b&gt;&lt;u&gt;Instagram&lt;/u&gt;&lt;/b&gt;&lt;/span&gt;&lt;/a&gt;&lt;a target=\\\"_blank\\\" href=\\\"https://www.tiktok.com/&#64;calvinklein?lang&#61;en\\\"&gt;&lt;span style=\\\"color:#0875e1\\\"&gt;&lt;b&gt;&lt;u&gt;TikTok&lt;/u&gt;&lt;/b&gt;&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;br /&gt;&lt;br /&gt;&lt;/p&gt;&lt;p&gt;&lt;span&gt;This is a unique opportunity to join a pop-up project with an expected duration of 2 years. We are looking for a candidate who can be ideally available to start in August and play a key role in the successful opening and development of the concept&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;What You’ll Do&lt;/b&gt;&lt;/p&gt;&lt;p&gt;As an Assistant Store Manager, you’ll help lead the store to success by supporting a team that delivers standout service and results every day. Working closely with the Store Manager, you’ll play a key role in coaching talent, driving sales and creating a positive, high-performing environment. When the Store Manager is away, you’ll confidently step in to guide the team and keep the store running smoothly.&lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Consumer Engagement&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Welcomes customers and supports the team with real-time coaching.&lt;/li&gt;&lt;li&gt;Builds strong product and promotion knowledge to highlight value and drive loyalty.&lt;/li&gt;&lt;li&gt;Partners with the Store Manager to uphold service and brand standards.&lt;/li&gt;&lt;li&gt;Maintains a customer-first mindset and stays aware of market and in-store trends.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;Operational Excellence&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Leads merchandising execution and uses sales insights to guide floor decisions.&lt;/li&gt;&lt;li&gt;Ensures policies, inventory controls, and loss prevention practices are followed.&lt;/li&gt;&lt;li&gt;Creates schedules aligned with business needs and supports expense and inventory oversight.&lt;/li&gt;&lt;li&gt;Contributes to planning and shares customer insights and opportunities.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;People and Culture&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;Recruits and onboards talent; supports succession planning and performance decisions.&lt;/li&gt;&lt;li&gt;Motivates, coaches, and recognizes the team to drive results and growth.&lt;/li&gt;&lt;li&gt;Models professionalism, respect, and pride in the brand.&lt;/li&gt;&lt;li&gt;Fosters inclusion, collaboration, and continuous learning.&lt;/li&gt;&lt;li&gt;Supports company initiatives and promotes a culture of improvement.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;&lt;b&gt;What You’ll Bring&lt;/b&gt;&lt;/p&gt;&lt;ul&gt;&lt;li&gt;3&#43; years of retail store management experience.&lt;/li&gt;&lt;li&gt;Flexible availability to support varying business needs.&lt;/li&gt;&lt;li&gt;Strong communication that builds trust with teams.&lt;/li&gt;&lt;li&gt;Ability to coach peers and newer staff members.&lt;/li&gt;&lt;li&gt;Skilled at managing priorities during busy periods.&lt;/li&gt;&lt;li&gt;Reliable follow through on commitments and deadlines.&lt;/li&gt;&lt;li&gt;Consistently models brand behaviors for the team.&lt;/li&gt;&lt;/ul&gt;&lt;p&gt;&lt;br /&gt;&lt;b&gt;Soyez reconnu(e) à votre juste valeur.&lt;/b&gt;&lt;/p&gt;&lt;br /&gt;&lt;p&gt;Chez PVH, nous savons que nos collaborateurs constituent notre plus grand atout. C&#39;est pourquoi nous accordons la priorité à leur santé, leur épanouissement et leur bien-être en proposant un ensemble complet d&#39;avantages allant au-delà de l&#39;essentiel. Nous souhaitons instaurer une culture de l&#39;attention qui favorise la fidélité, l&#39;engagement et le sentiment d&#39;appartenance, et nous en sommes fiers.&lt;br /&gt;&lt;/p&gt;&lt;br /&gt;&lt;p&gt;&lt;b&gt;Prenez part à cette aventure&lt;/b&gt;&lt;/p&gt;&lt;br /&gt;&lt;p&gt;PVH Europe et nos marques, TOMMY HILFIGER et CALVIN KLEIN, s&#39;engagent à créer une communauté de collaborateurs inclusive et diverse, animée par un fort sentiment d&#39;appartenance. Nous sommes convaincus que toutes les formes de diversité nous enrichissent et sommes fiers de travailler avec les meilleurs talents, quels que soient leur parcours ou leur origine. Dans cet esprit d&#39;inclusion, les candidatures qualifiées seront examinées sans distinction d&#39;âge, d&#39;origine ethnique, de handicap, de genre, d&#39;expression de genre, d&#39;identité de genre, de nationalité, de couleur de peau, de religion ou d&#39;orientation sexuelle.&lt;/p&gt;\",\"title\":\"Assistant Store Manager - Calvin Klein Underwear - Les 4 Temps / La Défense\",\"datePosted\":\"2026-09-16\",\"@context\":\"http://schema.org\",\"occupationalCategory\":\"Retail Management\",\"directApply\":false}"
+}
