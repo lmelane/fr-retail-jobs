@@ -437,6 +437,16 @@ cette alerte reste muette. Les alertes des passes de curation et des juges viend
 - **Offres Catwalks** : identifiant en champ additif du contrat v1 ; agrégateur livré avant le backend ; libellé
   dans la langue du marché.
 - **Ordre en 2E** : backend, puis back-office, puis site, puis Média (qui lit le libellé du métier des offres).
+- **Construit en 2E (30/09/2026, branches `v2-lot-2e-taxonomie-v3`, pas déployé ; lectures D-492 dans `DECISIONS.md` du
+  backend)** : côté agrégateur, `GET /api/taxonomie/export` (clé du backend seule ; parties `entete`, `concepts`,
+  `apprise`, `signalements` ; chaque page porte la version et l'empreinte qu'elle sert, un curseur périmé rend 409),
+  `POST /api/metiers/signalements` (clé du backend seule, idempotent, 8 Ko) et la table `OccupationMissingSignal`
+  (migration additive `20260930210000_occupation_missing_signal`, non appliquée ; une résolution nomme un métier que sa
+  version publie, sinon la base la refuse) ; la liste publique porte `occupationCode` (additif) et la projection des
+  offres directes le fait primer sur l'intitulé quand la version active le publie (`occupationDecisionSource =
+  'backoffice'`, correspondance directe v7). La résolution d'un signal est écrite par la passe de curation (2C bis),
+  pas encore construite : jusque-là, les signaux restent ouverts. Preuve de bout en bout sur deux bases jetables : le
+  backend tire la v3 réelle (253 métiers, 33 familles, 4 domaines) par l'API servie en local et remet un signal.
 
 ### 3.8 Retrait complet
 

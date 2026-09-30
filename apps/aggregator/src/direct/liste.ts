@@ -1,6 +1,6 @@
 import { assertBusinessUrl } from '@catwalks/runtime';
 import { assertPipelineRunning } from '../lib/pipelinePause.js';
-import { ContratInvalideError, domaineOuNull, idRegistreOuNull, lireOffre, type MaisonCatalogue, type OffreCatalogueV1 } from './contrat.js';
+import { ContratInvalideError, codeMetier, domaineOuNull, idRegistreOuNull, lireOffre, type MaisonCatalogue, type OffreCatalogueV1 } from './contrat.js';
 
 /**
  * LA LISTE PUBLIQUE DES OFFRES CATWALKS, TELLE QUE L'AGRÉGATEUR LA LIT (D-444).
@@ -59,7 +59,12 @@ export type ItemListe = {
   specialisations: string[];
   contrat: string;
   tempsDeTravail: string;
-  metier: { slug: string; libelle: string } | null;
+  /**
+   * Lot 2E de D-475 : `code` est le métier de la taxonomie choisi au back-office (`occupationCode` de la liste), `null`
+   * quand la liste ne le sert pas. Une offre dont le métier n'a pas d'équivalent dans l'ancien référentiel du backend
+   * n'a pas de `jobCategoryRef` : son métier vient alors du seul code, avec le libellé que la liste sert.
+   */
+  metier: { slug: string; libelle: string; code: string | null } | null;
   /** D-471 : avec le domaine et le lien au registre que l'équipe a saisis ; `null` quand la liste ne les sert pas. */
   maison: MaisonCatalogue | null;
   /**
@@ -166,7 +171,7 @@ export function lireItemListe(v: unknown, chemin = 'offre'): ItemListe {
     specialisations: liste(o.specializations, `${chemin}.specializations`),
     contrat: texte(o.contractType, `${chemin}.contractType`, 50),
     tempsDeTravail: texte(o.workTime, `${chemin}.workTime`, 50),
-    metier: metier && { slug: identifiant(metier.slug, `${chemin}.jobCategoryRef.slug`), libelle: texte(metier.label, `${chemin}.jobCategoryRef.label`, 200) },
+    metier: metierDeLaListe(o, metier, chemin, facultatif),
     maison: maison && {
       nom: texte(maison.name, `${chemin}.maison.name`, 200),
       slug: identifiant(maison.slug, `${chemin}.maison.slug`),
@@ -177,6 +182,22 @@ export function lireItemListe(v: unknown, chemin = 'offre'): ItemListe {
     },
     ecarts,
   };
+}
+
+/**
+ * Lot 2E de D-475 : le métier d'une offre de la liste. L'ancien référentiel (`jobCategoryRef`) donne le slug et le
+ * libellé ; le code de la taxonomie (`occupationCode`, additif) s'y ajoute. Le code est FACULTATIF comme le domaine de la
+ * Maison (D-471) : hors forme, il est ignoré et signalé (`ecarts`), l'offre restant lue et classée par son intitulé.
+ */
+function metierDeLaListe(o: Brut, ref: Brut | null, chemin: string,
+  facultatif: (lire: (v: unknown, c: string) => string | null, v: unknown, c: string) => string | null): ItemListe['metier'] {
+  const code = o.occupationCode === undefined || o.occupationCode === null ? null
+    : facultatif((v, c) => codeMetier(v, c), o.occupationCode, `${chemin}.occupationCode`);
+  if (ref) return { slug: identifiant(ref.slug, `${chemin}.jobCategoryRef.slug`), libelle: texte(ref.label, `${chemin}.jobCategoryRef.label`, 200), code };
+  if (!code) return null;
+  const libelle = o.occupationLabel === undefined || o.occupationLabel === null ? null
+    : facultatif((v, c) => texte(v, c, 200), o.occupationLabel, `${chemin}.occupationLabel`);
+  return { slug: code, libelle: libelle ?? code, code };
 }
 
 /**

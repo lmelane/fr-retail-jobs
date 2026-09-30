@@ -1061,6 +1061,7 @@ model OccupationRelease {
   jobTitleRoles          Job[]                      @relation("JobTitleRolesRelease")
   directOfferTitleRoles  DirectOffer[]              @relation("DirectOfferTitleRolesRelease")
   learnedReleases        OccupationLearnedRelease[]
+  missingSignals         OccupationMissingSignal[]
 }
 
 /// Lot 2B de D-475 : une version de la table apprise, immuable (déclencheur), avec son reçu et la version précédente.
@@ -1111,6 +1112,29 @@ model OccupationReleaseConcept {
   domain    String?
 
   @@id([releaseId, kind, key])
+}
+
+/// Lot 2E de D-475 (plan §3.7, D-475 §31 b et §32) : le signal « métier manquant » d'un recruteur Catwalks, remis par le
+/// backend avec sa clé. La passe de curation suivante le lit (il suffit, sans preuve de volume) et y inscrit sa
+/// résolution ; le backend la relit pour réécrire le métier de l'offre. Idempotent sur l'identifiant du backend.
+model OccupationMissingSignal {
+  id                 String             @id
+  source             String
+  externalId         String
+  offerId            String
+  title              String
+  chosenOccupation   String?
+  comment            String?
+  signaledAt         DateTime
+  receivedAt         DateTime           @default(now())
+  status             String             @default("OPEN")
+  resolvedOccupation String?
+  resolvedReleaseId  String?
+  resolvedRelease    OccupationRelease? @relation(fields: [resolvedReleaseId], references: [id], onDelete: Restrict)
+  resolvedAt         DateTime?
+
+  @@unique([source, externalId])
+  @@index([status, receivedAt])
 }
 
 model OccupationObservation {

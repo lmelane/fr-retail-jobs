@@ -6,7 +6,7 @@ import { NextResponse, type NextRequest } from 'next/server';
  *
  * Les appelants légitimes sont des SERVEURS, chacun avec sa clé : le rendu de
  * catwalks.io sur Vercel (`CATALOGUE_API_KEY`, toutes les routes publiques) et,
- * depuis D-471, le backend (`CATALOGUE_API_KEY_BACKEND`, deux routes seulement,
+ * depuis D-471, le backend (`CATALOGUE_API_KEY_BACKEND`, quatre routes seulement,
  * voir plus bas). Pas de comptes, pas de portail : une clé par appelant, portée
  * par `Authorization: Bearer …`.
  *
@@ -19,8 +19,10 @@ import { NextResponse, type NextRequest } from 'next/server';
  *
  * D-464 §3 / D-471 — UN SECOND APPELANT, LE BACKEND, AVEC SA PROPRE CLÉ
  * (`CATALOGUE_API_KEY_BACKEND`), révocable seule. Il ne reçoit que les routes
- * dont il a besoin : la fiche d'une offre (les démarches, R-133) et la
- * recherche du registre (le sélecteur du back-office). Une route qui ne le
+ * dont il a besoin : la fiche d'une offre (les démarches, R-133), la
+ * recherche du registre (le sélecteur du back-office) et, depuis le lot 2E de
+ * D-475, l'export de la taxonomie des métiers et la remise des signaux
+ * « métier manquant » (ces deux-là au backend seul). Une route qui ne le
  * nomme pas reste réservée au site : par défaut, `appelants = ['site']`.
  */
 

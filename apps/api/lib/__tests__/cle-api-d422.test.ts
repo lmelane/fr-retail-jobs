@@ -72,7 +72,7 @@ describe('le garde de clé (D-422)', () => {
  * ouverte, et personne ne le verrait. Il ÉCHOUE si une route oublie le garde.
  */
 describe('aucune route ne peut oublier le garde', () => {
-  it('les 9 routes protégées appellent refuserSiCleInvalide, /api/health non (D-422 §3)', () => {
+  it('les 11 routes protégées appellent refuserSiCleInvalide, /api/health non (D-422 §3)', () => {
     const racine = join(__dirname, '..', '..', 'app', 'api');
     const routes: string[] = [];
     const parcourir = (dossier: string) => {
@@ -84,14 +84,37 @@ describe('aucune route ne peut oublier le garde', () => {
     };
     parcourir(racine);
 
-    // Prémisse : il y a bien 10 routes (dont `/api/marches`, lot 6, `/api/sitemap/emplois`, lot 9, et `/api/registre/societes`,
-    // D-471), sinon ce témoin ne teste rien.
-    expect(routes).toHaveLength(10);
+    // Prémisse : il y a bien 12 routes (dont `/api/marches`, lot 6, `/api/sitemap/emplois`, lot 9, `/api/registre/societes`,
+    // D-471, `/api/taxonomie/export` et `/api/metiers/signalements`, lot 2E de D-475), sinon ce témoin ne teste rien.
+    expect(routes).toHaveLength(12);
 
     for (const chemin of routes) {
       const source = readFileSync(chemin, 'utf8');
       const estSante = chemin.includes('health');
       expect(source.includes('refuserSiCleInvalide'), `${chemin} : garde ${estSante ? 'interdit' : 'manquant'}`).toBe(!estSante);
+    }
+  });
+});
+
+/**
+ * Lot 2E de D-475 (plan §3.7) : l'export de la taxonomie et la remise des signaux « métier manquant » sont réservés au
+ * BACKEND. La clé du site y est refusée : elle vit dans le rendu de catwalks.io, et le signal ne doit jamais passer par
+ * une surface publique.
+ */
+describe('les routes du backend seul (lot 2E)', () => {
+  it.each(['taxonomie/export', 'metiers/signalements', 'registre/societes'])('%s ne nomme que le backend', (route) => {
+    const source = readFileSync(join(__dirname, '..', '..', 'app', 'api', route, 'route.ts'), 'utf8');
+    expect(source).toMatch(/refuserSiCleInvalide\(request, requestId, \['backend'\]\)/);
+  });
+
+  it('la clé du site est refusée là où seul le backend est admis', () => {
+    process.env.CATALOGUE_API_KEY = 'cle-du-site';
+    process.env.CATALOGUE_API_KEY_BACKEND = 'cle-du-backend';
+    try {
+      expect(refuserSiCleInvalide(requete('Bearer cle-du-site'), 'r', ['backend'])!.status).toBe(401);
+      expect(refuserSiCleInvalide(requete('Bearer cle-du-backend'), 'r', ['backend'])).toBeNull();
+    } finally {
+      delete process.env.CATALOGUE_API_KEY_BACKEND;
     }
   });
 });

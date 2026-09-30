@@ -38,7 +38,12 @@ export type OffreCatalogueV1 = {
   maison: MaisonCatalogue | null;
   univers: string[];
   specialisations: string[];
-  metier: { slug: string; libelle: string } | null;
+  /**
+   * Lot 2E de D-475 (plan §3.7) : `code`, champ ADDITIF, est le métier de la taxonomie que l'équipe a choisi au
+   * back-office. Il prime sur l'intitulé (D-475 §20, §32) quand la version active le connaît. Absent (ancien backend,
+   * offre sans choix) : l'offre est classée par son intitulé, comme avant.
+   */
+  metier: { slug: string; libelle: string; code?: string | null } | null;
   contrat: string;
   tempsDeTravail: string;
   experience: string | null;
@@ -115,6 +120,13 @@ export const idRegistreOuNull = (v: unknown, chemin: string): string | null => {
   if (!ID_REGISTRE.test(s)) throw new ContratInvalideError(chemin, 'identifiant du registre attendu');
   return s;
 };
+/** Lot 2E : une clé de métier de la taxonomie (`sales-advisor`) : minuscules, chiffres et tirets. */
+export const CLE_METIER = /^[a-z0-9][a-z0-9-]{0,99}$/;
+export const codeMetier = (v: unknown, chemin: string): string => {
+  const s = texte(v, chemin, 100);
+  if (!CLE_METIER.test(s)) throw new ContratInvalideError(chemin, 'clé de métier attendue');
+  return s;
+};
 const dateIso = (v: unknown, chemin: string): string => {
   const s = texte(v, chemin, 40);
   if (Number.isNaN(Date.parse(s))) throw new ContratInvalideError(chemin, 'date ISO attendue');
@@ -156,7 +168,12 @@ export function lireOffre(v: unknown, chemin = 'offre'): OffreCatalogueV1 {
     },
     univers: liste(o.univers, `${chemin}.univers`),
     specialisations: liste(o.specialisations, `${chemin}.specialisations`),
-    metier: metier && { slug: identifiant(metier.slug, `${chemin}.metier.slug`), libelle: texte(metier.libelle, `${chemin}.metier.libelle`, 200) },
+    metier: metier && {
+      slug: identifiant(metier.slug, `${chemin}.metier.slug`),
+      libelle: texte(metier.libelle, `${chemin}.metier.libelle`, 200),
+      // Posé seulement quand il existe : une offre sans code garde exactement son contrat (et son empreinte) d'avant.
+      ...(metier.code === undefined || metier.code === null ? {} : { code: codeMetier(metier.code, `${chemin}.metier.code`) }),
+    },
     contrat: texte(o.contrat, `${chemin}.contrat`, 50),
     tempsDeTravail: texte(o.tempsDeTravail, `${chemin}.tempsDeTravail`, 50),
     experience: texteOuNull(o.experience, `${chemin}.experience`, 50),

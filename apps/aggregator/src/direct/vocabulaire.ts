@@ -32,8 +32,12 @@
  *       (`companyId`), et l'offre porte le domaine de son logo
  *       (`companyDomain` : celui de la Maison, sinon celui de la société
  *       rattachée).
+ *   7 — lot 2E de D-475 (plan §3.7) : le métier choisi au back-office
+ *       (`metier.code`, champ additif de la liste) prime sur l'intitulé quand
+ *       la version active le publie (`occupationDecisionSource` =
+ *       'backoffice') ; sinon, l'intitulé comme avant.
  */
-export const CORRESPONDANCE_DIRECTE_VERSION = 6;
+export const CORRESPONDANCE_DIRECTE_VERSION = 7;
 
 export type DimensionsEmploi = {
   employmentTerm: string | null;

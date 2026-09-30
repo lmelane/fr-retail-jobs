@@ -77,6 +77,13 @@ export function colonnesProjetees(offre: OffreCatalogueV1, contexte: ContextePro
   const description = descriptionServie(offre);
   const salaire = offre.salaire;
   const metier = contexte.metier(offre.titre);
+  // Lot 2E de D-475 (§20, §32 ; plan §3.7) : le métier choisi au back-office prime sur l'intitulé, s'il est publié par la
+  // version active. Les métiers lus dans le titre restent ceux de l'intitulé (ce sont des lectures, pas le choix).
+  const choisi = offre.metier?.code ?? null;
+  const releaseChoisie = choisi ? contexte.releaseDuMetier(choisi) : null;
+  const decision = choisi && releaseChoisie
+    ? { occupationCode: choisi, occupationReleaseId: releaseChoisie, occupationDecisionSource: 'backoffice' as const }
+    : { occupationCode: metier.occupationCode, occupationReleaseId: metier.occupationReleaseId, occupationDecisionSource: null };
   // D-444 / D-471 : la Maison publique rattachée au registre, par le lien du back-office sinon par le nom ; un mandat, jamais.
   const companyId = contexte.rattacher(offre.maison?.nom, offre.maison?.catalogueId);
   const colonnes = {
@@ -105,8 +112,10 @@ export function colonnesProjetees(offre: OffreCatalogueV1, contexte: ContextePro
     workplaceType: emploi.workplaceType,
     sectorCodes: codesSecteur(offre.univers, offre.specialisations),
     // D-444 : le métier de la taxonomie active, appliquée à l'intitulé (filtre « métier ») ; le libellé du backend reste affiché.
-    occupationCode: metier.occupationCode,
-    occupationReleaseId: metier.occupationReleaseId,
+    // Lot 2E : sauf quand l'équipe l'a choisi au back-office (`occupationDecisionSource` = 'backoffice').
+    occupationCode: decision.occupationCode,
+    occupationReleaseId: decision.occupationReleaseId,
+    occupationDecisionSource: decision.occupationDecisionSource,
     // Lot 2B : dans les colonnes projetées, donc dans l'empreinte (plan §3.3 : l'empreinte inclut la version).
     titleRoles: metier.titleRoles,
     titleRolesReleaseId: metier.titleRolesReleaseId,

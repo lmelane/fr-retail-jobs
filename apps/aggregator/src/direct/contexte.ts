@@ -34,6 +34,12 @@ export type ContexteProjection = {
   /** Les liens du back-office qui ne désignent aucune société du registre, vus depuis le chargement du contexte. */
   liensInconnus(): string[];
   metier(titre: string): MetierProjete;
+  /**
+   * Lot 2E de D-475 : la version active, si elle publie ce métier. `null` sinon : un code inconnu (version plus ancienne
+   * que celle du back-office, faute de frappe) ne s'écrit jamais, le déclencheur d'intégrité le refuserait (plan §3.7 :
+   * l'offre reste classée par son intitulé).
+   */
+  releaseDuMetier(code: string): string | null;
   pays(latitude: number | null, longitude: number | null): VerdictPays;
 };
 
@@ -106,6 +112,7 @@ export function contexteDepuis(societes: readonly SocieteRegistre[], alias: read
     domaine: (companyId) => (companyId ? domaines.get(companyId) ?? null : null),
     liensInconnus: () => [...inconnus].sort(),
     metier,
+    releaseDuMetier: (code) => (taxonomie.occupations.has(code) ? taxonomie.manifest.id : null),
     pays: (latitude, longitude) => paysDesCoordonnees(latitude, longitude, frontieres),
   };
 }

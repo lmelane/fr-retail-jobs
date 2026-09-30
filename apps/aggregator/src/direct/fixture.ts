@@ -59,6 +59,8 @@ export function page(evenements: unknown[], suivant: string | null = evenements.
 export function contexteTemoin(options: {
   maisons?: Record<string, string>; metiers?: Record<string, string>; liens?: Record<string, string>; domaines?: Record<string, string>;
   pays?: (latitude: number | null, longitude: number | null) => VerdictPays;
+  /** Lot 2E : les métiers que la version fictive publie (le code choisi au back-office n'est retenu que s'il en fait partie). */
+  publies?: readonly string[];
 } = {}): ContexteProjection {
   const maisons = options.maisons ?? {}, metiers = options.metiers ?? {}, liens = options.liens ?? {}, domaines = options.domaines ?? {};
   const inconnus = new Set<string>();
@@ -75,6 +77,7 @@ export function contexteTemoin(options: {
     // Version fictive : pas de rôles lus dans le titre (leur version est une clé étrangère réelle, lot 2B).
     metier: (titre) => ({ occupationCode: Object.hasOwn(metiers, titre) ? metiers[titre] : null, occupationReleaseId: 'release-temoin',
       titleRoles: [], titleRolesReleaseId: null }),
+    releaseDuMetier: (code) => ((options.publies ?? []).includes(code) ? 'release-temoin' : null),
     pays: options.pays ?? ((latitude, longitude) => paysDesCoordonnees(latitude, longitude)),
   };
 }
