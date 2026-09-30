@@ -1,3 +1,6 @@
+import { createHash } from 'node:crypto';
+import { readFileSync } from 'node:fs';
+import { gunzipSync } from 'node:zlib';
 import { describe, expect, it } from 'vitest';
 import { ACCESS_SCOPE_BUDGET, AccessScopeBudgetError, deriveAccessScopeDocument, deriveAccessScopes, observedSurface, parentDirectory, type ObservedRequest } from './accessScopeDerivation.js';
 import { matchingAccessScope, parseAccessScopes, type AccessScope } from './accessScope.js';
@@ -171,6 +174,41 @@ describe('deriveAccessScopes', () => {
     expect(() => matchingAccessScope(scopes, description(get(`${origin}/jobs/job/Internal-Auditor/7202-new`, 'text/html')))).not.toThrow();
   });
 
+  it('règle 2 ter, iCIMS : chaque fiche dans son propre grand-parent, déclarées par `/jobs/` ; la recherche absorbée garde son contrat', () => {
+    const origin = 'https://careers-aeropostale.icims.com';
+    const requests = [get(`${origin}/jobs/search?pr=0&ss=1&in_iframe=1`, 'text/html'),
+      ...[[8647, 'associate-designer'], [9271, 'wholesale-planner-%28full-price-channel%29'], [9661, 'store-manager---cal']]
+        .map(([id, slug]) => get(`${origin}/jobs/${id}/${slug}/job?in_iframe=1`, 'text/html'))];
+    // Prémisse : trois fiches, trois grands-parents distincts — ni frère (règle 2) ni cousin (règle 2 bis).
+    expect(new Set(requests.slice(1).map(r => parentDirectory(parentDirectory(r.url.pathname)))).size).toBe(3);
+    const scopes = deriveAccessScopes('icims', requests);
+    expect(paths(scopes)).toEqual([`PREFIX GET ${origin}/jobs/`]);
+    expect(scopes[0].query).toEqual({ fixed: { in_iframe: '1' }, variable: ['pr', 'ss'] });
+    accepted(scopes, requests);
+    // La fiche publiée le lendemain est couverte ; un chemin hors du dossier des fiches ne l'est pas.
+    expect(() => matchingAccessScope(scopes, description(get(`${origin}/jobs/9800/store-manager/job?in_iframe=1`)))).not.toThrow();
+    for (const outside of [`${origin}/connect/login?in_iframe=1`, `${origin}/jobs?in_iframe=1`, `${origin}/jobs/9800/job?in_iframe=1&token=x`, `${origin}/jobs/9800/job`])
+      expect(() => matchingAccessScope(scopes, description(get(outside)))).toThrow(/outside the reviewed/);
+  });
+
+  it('règle 2 ter, bornes : jamais la racine, jamais deux premiers répertoires différents, une offre seule reste EXACTE', () => {
+    const origin = 'https://jobs.sephora.example';
+    // SuccessFactors (sephora-france, 30/09) : une offre par pays, chacune sous son propre premier répertoire.
+    const lone = [get(`${origin}/Greece/job/ATHENS-SPECIALIST/1369481155/`, 'text/html'), get(`${origin}/Thailand/job/Bangkok-Advisor/1362671155/`, 'text/html')];
+    expect(paths(deriveAccessScopes('successfactors', lone))).toEqual([`EXACT GET ${origin}/Greece/job/ATHENS-SPECIALIST/1369481155/`,
+      `EXACT GET ${origin}/Thailand/job/Bangkok-Advisor/1362671155/`]);
+    // Pages à la racine (globus) : aucun premier répertoire, rien ne se regroupe.
+    const flat = [get('https://jobs.globus.example/Verkauf-de-j2535.html', 'text/html'), get('https://jobs.globus.example/Vente-fr-j2530.html', 'text/html')];
+    expect(deriveAccessScopes('generic-listing', flat).every(scope => scope.path.kind === 'EXACT')).toBe(true);
+    // Une seule fiche iCIMS sur une source d'une seule origine : aucun gabarit ailleurs, elle reste EXACTE.
+    expect(paths(deriveAccessScopes('icims', [get('https://careers-x.icims.example/jobs/1/a/job', 'text/html')])))
+      .toEqual(['EXACT GET https://careers-x.icims.example/jobs/1/a/job']);
+    // Le gabarit d'une autre origine ne vaut qu'au même niveau : une page isolée moins profonde reste EXACTE.
+    const mixed = [get('https://a.icims.example/jobs/1/a/job', 'text/html'), get('https://a.icims.example/jobs/2/b/job', 'text/html'),
+      get('https://b.icims.example/jobs/intro/page', 'text/html')];
+    expect(paths(deriveAccessScopes('icims', mixed))).toEqual(['EXACT GET https://b.icims.example/jobs/intro/page', 'PREFIX GET https://a.icims.example/jobs/']);
+  });
+
   it('classifies the served surface from the content type and the family', () => {
     expect(observedSurface('teamtailor', '/jobs.json', ['application/json; charset=utf-8'])).toBe('PUBLIC_ATS_JOB_API');
     expect(observedSurface('generic-listing', '/jobs-sitemap1.xml', ['application/xml'])).toBe('PUBLIC_SITEMAP');
@@ -179,5 +217,52 @@ describe('deriveAccessScopes', () => {
     expect(observedSurface('workday', '/en-US/careers', ['text/html'])).toBe('PUBLIC_ATS_HTML');
     expect(observedSurface('generic-listing', '/api', [''])).toBe('PUBLIC_PORTAL_JSON');
     expect(observedSurface('generic-listing', '/api', [])).toBe('PUBLIC_PORTAL_JSON');
+  });
+});
+
+describe('urbn-hub, adresses réelles de production (captures du 29/09 à 17:15 et du 30/09 à 09:16)', () => {
+  /*
+   * RUN du 30/09 à 18:04 : urbn-hub arrêtée en ACCESS_SCOPE. Son autorisation (09:16) déclarait en EXACT chacune des
+   * fiches de `homeoffice-eu-urbn.icims.com` et l'unique fiche de `supplychain-eu-urbn.icims.com` : iCIMS loge chaque
+   * offre dans `/jobs/{id}/{titre}/job`, son propre grand-parent, et seules les origines assez peuplées pour la
+   * remontée de budget (règle 4) recevaient `/jobs/`. Les requêtes ci-dessous sont celles réellement observées par deux
+   * captures d'offres (enveloppes natives, adresses réelles), exportées en lecture seule par
+   * `scripts/ops/mesures/perimetre-reutilise.mts --exporter=…`.
+   */
+  const raw = gunzipSync(readFileSync(new URL('./__fixtures__/urbn-hub-requetes-20260929-20260930.json.gz', import.meta.url))).toString('utf8');
+  const rows = JSON.parse(raw) as { lot: string; method: string; url: string; contentType: string }[];
+  const of = (lot: string) => rows.filter(row => row.lot === lot).map(row => ({ method: row.method, url: new URL(row.url), contentType: row.contentType }));
+  const [veille, jour] = [of('c6022623-6db4-48d3-b801-9943a5c5cc2c'), of('3881953a-c64c-44a0-8c5b-490f2e57f820')];
+  const eu = 'https://homeoffice-eu-urbn.icims.com';
+  const refused = (scopes: AccessScope[], requests: ObservedRequest[]) => requests.filter(request => {
+    try { matchingAccessScope(scopes, description(request)); return false; } catch { return true; }
+  });
+
+  it('prémisse : export intègre ; fiches de homeoffice-eu toutes dans leur propre grand-parent ; une fiche nouvelle le lendemain', () => {
+    expect(createHash('sha256').update(raw).digest('hex')).toBe('583db38e7f2a390c80d87437e8168401a277a847f55acfce5028bb3982ff3b45');
+    expect([veille.length, jour.length]).toEqual([1533, 1531]);
+    const fiches = veille.filter(r => r.url.origin === eu && /^\/jobs\/\d+\//.test(r.url.pathname));
+    expect(fiches).toHaveLength(29);
+    expect(new Set(fiches.map(r => parentDirectory(parentDirectory(r.url.pathname)))).size).toBe(29);
+    expect(veille.filter(r => r.url.origin === 'https://supplychain-eu-urbn.icims.com')).toHaveLength(1);
+    const vues = new Set(veille.map(r => `${r.url.origin}${r.url.pathname}`));
+    expect(jour.filter(r => r.url.origin === eu && !vues.has(`${r.url.origin}${r.url.pathname}`)).map(r => r.url.pathname))
+      .toEqual(['/jobs/32674/urban-outfitters-retail-store-design-coordinator/job']);
+  });
+
+  it('le périmètre dérivé de la veille couvre toute la capture du lendemain, par `/jobs/` sur chaque origine des fiches', () => {
+    const scopes = deriveAccessScopes('icims', veille);
+    expect(refused(scopes, jour)).toEqual([]);
+    expect(paths(scopes)).toEqual(['EXACT GET https://hub-urbn.icims.com/jobs/search', ...['homeoffice-eu', 'homeoffice-na', 'menusandvenues-na', 'stores-eu',
+      'stores-na', 'supplychain-eu', 'supplychain-na'].map(o => `PREFIX GET https://${o}-urbn.icims.com/jobs/`)].sort());
+    expect(scopes.filter(s => s.path.kind === 'PREFIX').every(s => JSON.stringify(s.query) === '{"fixed":{"hub":"15","in_iframe":"1"},"variable":[]}')).toBe(true);
+  });
+
+  it('contre-témoins : hors du dossier des fiches, sur une origine jamais observée, ou sans le contrat de requête, refusé', () => {
+    const scopes = deriveAccessScopes('icims', veille);
+    const outside = [`${eu}/connect/login?hub=15&in_iframe=1`, `${eu}/jobs?hub=15&in_iframe=1`, `${eu}/jobs/intro?hub=15&in_iframe=1&mobile=1`,
+      `${eu}/jobs/1/x/job?hub=16&in_iframe=1`, `${eu}/jobs/1/x/job?in_iframe=1`, 'https://careers-other.icims.com/jobs/1/x/job?hub=15&in_iframe=1',
+      'https://hub-urbn.icims.com/jobs/1/x/job?hub=15&in_iframe=1'].map(url => get(url, 'text/html'));
+    expect(refused(scopes, outside)).toHaveLength(outside.length);
   });
 });
