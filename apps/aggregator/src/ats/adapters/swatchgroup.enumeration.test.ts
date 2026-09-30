@@ -61,6 +61,45 @@ describe('Swatch Group — le total publié par le pager, sur les pages réelles
   });
 });
 
+describe('Swatch Group — listes réelles du 30/09/2026 à 06:57 : le français et l\'anglais cachent des offres différentes', () => {
+  const raw = gunzipSync(readFileSync(new URL('./__fixtures__/swatchgroup-listes-fr-en-20260930.json.gz', import.meta.url))).toString('utf8');
+  const fx = JSON.parse(raw) as Record<'fr' | 'en', { last: number; pages: string[][] }>;
+  /** Sert, pour chaque langue, les pages réelles dans l'ordre servi, le lien « Dernier » sur la page 0, rien au-delà. */
+  const serveReal = () => vi.mocked(fetchText).mockImplementation(async (url: string) => {
+    const listingOf = /\/([a-z]{2})\/job-finder\?page=(\d+)/.exec(url);
+    if (!listingOf) return detail(Number(/\/job\/(\d+)/.exec(url)?.[1]));
+    const list = fx[listingOf[1] as 'fr' | 'en'];
+    const page = Number(listingOf[2]);
+    const ids = list?.pages[page];
+    return ids ? listing(ids.map(Number), page === 0 ? list.last : undefined) : '';
+  });
+
+  it('prémisse : 348 annoncées (34 × 10 + 8) dans les deux langues ; 340 distinctes en français, 336 en anglais, 348 à l\'union', () => {
+    expect(createHash('sha256').update(raw).digest('hex')).toBe('03cd9e932ec3488b4c5a4fd0273b20af25f895c887dbf110dc28c195a44322de');
+    for (const lang of ['fr', 'en'] as const) {
+      expect(fx[lang].last).toBe(34);
+      expect(fx[lang].pages.map((p) => p.length)).toEqual([...Array(34).fill(10), 8]);
+    }
+    expect(new Set(fx.fr.pages.flat()).size).toBe(340);
+    expect(new Set(fx.en.pages.flat()).size).toBe(336);
+    expect(new Set([...fx.fr.pages.flat(), ...fx.en.pages.flat()]).size).toBe(348);
+  });
+
+  it('relu en anglais, le listing est prouvé : 348 offres sur 348', async () => {
+    serveReal();
+    const r = await run();
+    expect(r).toMatchObject({ declaredTotal: 348, complete: true });
+    expect(r.enumeration).toMatchObject({ rawCount: 348, termination: 'SECOND_SWEEP_RECONCILED' });
+  });
+
+  it('relu dans la même langue, jamais : 340 sur 348, comme en production le 30/09 à 06:38', async () => {
+    serveReal();
+    const r = await fetchSwatchGroupJobs({ origin: 'https://www.swatchgroup.com', lang: 'fr', reconcileLangs: ['fr'] });
+    expect(r).toMatchObject({ declaredTotal: 348, complete: false });
+    expect(r.enumeration?.rawCount).toBe(340);
+  });
+});
+
 describe('Swatch Group — prouvé seulement quand l\'union des lectures atteint le total du pager', () => {
   it('un ordre stable : une lecture suffit, terminaison PUBLISHER_TOTAL_REACHED', async () => {
     const reads = route({ '0': [listing([1, 2], 1)], '1': [listing([3])], '2': [''] }, details(3));
@@ -88,6 +127,40 @@ describe('Swatch Group — prouvé seulement quand l\'union des lectures atteint
     const r = await run();
     expect(r).toMatchObject({ declaredTotal: 4, complete: true });
     expect(r.enumeration).toMatchObject({ rawCount: 4, termination: 'SECOND_SWEEP_RECONCILED' });
+  });
+
+  it('le décalage du 30/09 ne dépend pas de l\'heure mais de la langue : relu en anglais, l\'offre cachée en français apparaît', async () => {
+    // Total annoncé : 4. En français, la page 1 ressert toujours 2 et cache 4 ; en anglais, l'ordre diffère.
+    const byLang = (pages: Record<string, Record<string, string>>) => vi.mocked(fetchText).mockImplementation(async (url: string) => {
+      const listingOf = /\/([a-z]{2})\/job-finder\?page=(\d+)/.exec(url);
+      if (listingOf) return pages[listingOf[1]]?.[listingOf[2]] ?? '';
+      return detail(Number(/\/job\/(\d+)/.exec(url)?.[1]));
+    });
+    const fr = { '0': listing([1, 2], 1), '1': listing([2, 3]), '2': '' };
+    byLang({ fr, en: { '0': listing([1, 4], 1), '1': listing([2, 3]) } });
+    const r = await run();
+    expect(r).toMatchObject({ declaredTotal: 4, complete: true });
+    expect(r.enumeration).toMatchObject({ rawCount: 4, termination: 'SECOND_SWEEP_RECONCILED' });
+    // Prémisse : relu dans la même langue, jamais prouvé (le défaut est déterministe).
+    vi.resetAllMocks();
+    byLang({ fr, en: { '0': listing([1, 4], 1), '1': listing([2, 3]) } });
+    const same = await fetchSwatchGroupJobs({ origin: 'https://www.swatchgroup.com', lang: 'fr', reconcileLangs: ['fr'] });
+    expect(same).toMatchObject({ declaredTotal: 4, complete: false });
+  });
+
+  it('une langue qui annonce une autre dernière page : total changé, non prouvé, réconciliation arrêtée', async () => {
+    const reads = new Map<string, number>();
+    vi.mocked(fetchText).mockImplementation(async (url: string) => {
+      const listingOf = /\/([a-z]{2})\/job-finder\?page=(\d+)/.exec(url);
+      if (!listingOf) return detail(Number(/\/job\/(\d+)/.exec(url)?.[1]));
+      reads.set(url, (reads.get(url) ?? 0) + 1);
+      const fr: Record<string, string> = { '0': listing([1, 2], 1), '1': listing([2, 3]), '2': '' };
+      return listingOf[1] === 'fr' ? fr[listingOf[2]] ?? '' : listing([1, 4], 2);
+    });
+    const r = await run();
+    expect(r.complete).toBe(false);
+    expect(r.enumeration?.issues).toEqual(['PUBLISHER_TOTAL_CHANGED', 'PUBLISHER_TOTAL_NOT_REACHED', 'RECONCILED_BY_SECOND_SWEEP', 'ENUMERATION_NOT_PROVEN']);
+    expect([...reads.keys()].filter((u) => u.includes('/en/'))).toEqual(['https://www.swatchgroup.com/en/job-finder?page=0']);
   });
 
   it('une offre jamais servie en six lectures : non prouvé, relectures bornées à cinq', async () => {
