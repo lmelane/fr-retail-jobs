@@ -133,7 +133,7 @@ function sourceBlock(incident: SourceHealth, blocks: boolean, lines: string[]): 
 
 function buildHtml(report: AlertReport): string {
   const { blocking, retentions, outages, known, drops, minorDrops, retained } = alertSections(report.incidents);
-  const previous =(incident: SourceHealth) => incident.previous != null ? `${NUMBER.format(incident.previous)} au run précédent` : '';
+  const previous = (incident: SourceHealth) => incident.previous != null ? `${NUMBER.format(incident.previous)} au run précédent` : '';
   const volume = (incident: SourceHealth) => incident.notCollected
     ? [NOT_COLLECTED, previous(incident)].filter(Boolean).join(', ')
     : [count(incident.jobs, 'offre publiée par ce RUN', 'offres publiées par ce RUN'), previous(incident)].filter(Boolean).join(', ');
