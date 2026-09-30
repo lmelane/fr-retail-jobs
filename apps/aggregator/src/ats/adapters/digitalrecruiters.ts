@@ -2,6 +2,8 @@ import pLimit from 'p-limit';
 import { captureObservedAt } from '../../capture/context.js';
 import { createHash } from 'node:crypto';
 import { fetchJson, fetchText } from '../../lib/http.js';
+import { detailRetryAllowed, waitBeforeDetailRetry } from '../../lib/detailRetry.js';
+import { sourceDeadlineReached } from '../../lib/sourceBudget.js';
 import { enrichPostingEvidence, postingEvidenceOptions, type PostingEvidenceOptions } from '../../lib/postingEvidence.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
 import { CRAWLER_IDENTITY } from '../../lib/crawlerIdentity.js';
@@ -112,24 +114,43 @@ async function attachDescriptions(
   jobs: NormalizedJob[],
   concurrency: number,
   options: PostingEvidenceOptions,
+  config: Record<string, unknown>,
 ): Promise<NormalizedJob[]> {
   const limit = pLimit(concurrency);
-
-  return Promise.all(
-    jobs.map((job) =>
+  // The detail page's single JobPosting (description, country, location, date) is applied AND retained in
+  // RAW (`postingEvidence`, lot F3b): the retained publication is rebuilt offline by the same reader.
+  const readDetail = async (job: NormalizedJob) => enrichPostingEvidence(job, await fetchText(job.url, { headers: { 'user-agent': USER_AGENT } }), options);
+  const failed: number[] = [];
+  const read = await Promise.all(
+    jobs.map((job, index) =>
       limit(async () => {
         try {
-          const html = await fetchText(job.url, { headers: { 'user-agent': USER_AGENT } });
-          // The detail page's single JobPosting (description, country, location, date) is applied AND retained in
-          // RAW (`postingEvidence`, lot F3b): the retained publication is rebuilt offline by the same reader.
-          return enrichPostingEvidence(job, html, options);
+          return await readDetail(job);
         } catch {
           // A failed detail fetch must not lose the listing entry.
+          failed.push(index);
           return job;
         }
       }),
     ),
   );
+  /*
+   * UNE relecture, différée, des fiches en échec (30/09/2026), avec la règle et les bornes des listes génériques
+   * (`lib/detailRetry.ts`). Le front DigitalRecruiters répond parfois 404 « Not found » à la fiche d'une annonce que
+   * son API liste, puis la sert deux minutes plus tard : Monoprix 25/09 (4263155), Lacoste 28/09 (4583401), revenues
+   * à 200 à la collecte suivante ; Monoprix 29/09 (4438631, en ligne le soir même), sans relecture, a perdu sa
+   * description et son employeur (`Groupe MONOPRIX`, lu dans le JSON-LD) et a été refusée pour identité, RUN rouge.
+   * Le transport ne relit pas un 404 (statut définitif) : c'est ici, plus tard, qu'il l'est. Une fiche toujours en
+   * échec garde l'entrée de liste, comme avant.
+   */
+  if (detailRetryAllowed(failed.length, jobs.length)) {
+    await waitBeforeDetailRetry(config);
+    for (const index of failed.sort((a, b) => a - b)) {
+      if (sourceDeadlineReached()) break;
+      try { read[index] = await readDetail(jobs[index]); } catch { /* the listing entry stays */ }
+    }
+  }
+  return read;
 }
 
 /**
@@ -161,7 +182,7 @@ export async function fetchDigitalRecruitersJobs(
   }
   const listing = result!;
   if (config.withDescriptions === false) return listing;
-  return { ...listing, jobs: await attachDescriptions(listing.jobs, Number(config.detailConcurrency ?? 4), postingEvidenceOptions(config)) };
+  return { ...listing, jobs: await attachDescriptions(listing.jobs, Number(config.detailConcurrency ?? 4), postingEvidenceOptions(config), config) };
 }
 
 async function fetchAllPages(domainName: string, locale: string): Promise<AdapterResult> {
