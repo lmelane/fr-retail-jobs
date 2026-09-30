@@ -30,7 +30,7 @@ le maintien du blocage n'autorise pas à déclarer la livraison terminée.
 
 ### Contrat de statut après D-453 et D-456 (24-25/09/2026)
 
-Statuts employés ci-dessous : **décidé** = tranché par le CEO (D-453, D-456, D-462, `docs/governance/DECISIONS.md`
+Statuts employés ci-dessous : **décidé** = tranché par le CEO (D-453, D-456, D-462, D-481, `docs/governance/DECISIONS.md`
 du dépôt backend) ; **application non arbitrée** = lecture d'une décision retenue par l'équipe sans arbitrage
 propre (aucun motif dans ce cas depuis D-462, le 25/09) ; **garde technique** = protection du code, pas une
 décision produit. Cette section décrit le classement du code de ce dépôt. Livraison du 25/09 : voir
@@ -73,7 +73,9 @@ d'historique (`HISTORY`, `pipeline/health.ts`) : au-delà du 04/10/2026, seul le
   explicitement (exemple de D-453), page de candidature en erreur 404 ou marquée « modèle expiré » (D-456 §1),
   page supprimée en 410 (D-462, aucune offre le 24/09) — ; l'employeur
   absent de l'annonce Workday sous la politique revue du 09/09 (exemple de D-453) ; le retrait de son listing,
-  la publication de test, l'événement de recrutement ou job dating (D-462, 25/09). La source reçoit l'attribution `SOURCE` / `NATIVE_RETENTION`, avec pour preuve le rapport
+  la publication de test, l'événement de recrutement ou job dating (D-462, 25/09) ; la description laissée
+  vide par l'éditeur sur une fiche Eightfold réellement lue, vide ou réduite à ses titres de rubrique
+  (`NATIVE_DESCRIPTION_EMPTY`, D-481 §3, 30/09 ; une fiche non lue n'en est jamais une et reste refusée). La source reçoit l'attribution `SOURCE` / `NATIVE_RETENTION`, avec pour preuve le rapport
   scellé de fin d'ingestion (`completionReportHash`) de sa capture admise ; elle reste DEGRADED dans SourceRun
   et, seule, donne COMPLETED_WITH_ERRORS. La garde de masse de JobAffinity (plus de la moitié des pages
   retirées sur 50 offres ou plus = collecte refusée, `jobaffinityWordpress.ts`) reste en place.
@@ -81,7 +83,7 @@ d'historique (`HISTORY`, `pipeline/health.ts`) : au-delà du 04/10/2026, seul le
   une publication antérieure que si son motif porte une disposition (candidature close, 404, 410, retrait du
   listing, exclusion de périmètre) et que la source en a daté le retrait (`publicationHold.ts`). Sans
   disposition (employeur absent de l'annonce Workday, modèle expiré, publication de test, événement de
-  recrutement), l'offre déjà publiée reste en ligne (`PRESENT_BUT_HELD`, `refreshPlan.ts`). L'ingestion compte,
+  recrutement, description vide chez l'éditeur), l'offre déjà publiée reste en ligne (`PRESENT_BUT_HELD`, `refreshPlan.ts`). L'ingestion compte,
   après avoir archivé ses retenues, celles qui restent en ligne telles que le site les voit (représentation
   disponible, offre active et non fusionnée) ; l'alerte le dit par motif et par source (« non publiées par ce
   RUN ; N restent en ligne depuis une collecte antérieure », « maintien en ligne non mesuré » si la lecture a
@@ -101,8 +103,9 @@ d'historique (`HISTORY`, `pipeline/health.ts`) : au-delà du 04/10/2026, seul le
   même note. Un refus d'identité (`EmployerIdentityReviewRequired`) est un refus d'écriture : il bloque, et les
   retenues de la même source restent nommées à côté (note du SourceRun, bilan `retainedOnBlockingSources`).
 - **Garde de la preuve négative** (garde technique, pas une décision). « L'annonce ne nomme pas d'employeur »
-  ne distingue pas un portail multi-marques d'une page dont le format a changé. Seul ce motif Workday est
-  surveillé : il devient bloquant (`UNKNOWN` / `NATIVE_RETENTION_JUMP`) si la part des offres de la source
+  ne distingue pas un portail multi-marques d'une page dont le format a changé. Ce motif Workday est surveillé,
+  et depuis le 30/09 la description vide chez l'éditeur (`NATIVE_DESCRIPTION_EMPTY`, même défaut possible : un
+  gabarit vidé par un changement de format), chacun sur sa propre part (`GUARDED_NEGATIVE_PROOFS`) : il devient bloquant (`UNKNOWN` / `NATIVE_RETENTION_JUMP`) si la part des offres de la source
   qu'il laisse non publiées dépasse de plus de 10 points, et d'au moins 10 offres, la part non publiée au
   RUN COMPLET de référence. La référence est le dernier RUN complet de production où la source a été collectée,
   reconnu à l'événement `sectors.qualification` qu'émet seul un RUN non ciblé qui a fini sa boucle

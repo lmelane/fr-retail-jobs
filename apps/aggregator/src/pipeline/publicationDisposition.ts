@@ -23,7 +23,7 @@ export function publicationDisposition(reason: string): DeactivationDisposition 
  *   · la candidature impossible sur son site : close explicitement (exemple cité par D-453), page de
  *     candidature en erreur 404 ou marquée « modèle expiré » (D-456 §1), page supprimée en 410 (D-462) ;
  *   · l'employeur absent de l'annonce Workday, sous la politique revue du 09/09 (portail non certifié
- *     mono-marque ; exemple cité par D-453). C'est la seule preuve NÉGATIVE : la garde technique de `health.ts`
+ *     mono-marque ; exemple cité par D-453). C'est une preuve NÉGATIVE : la garde technique de `health.ts`
  *     la surveille ;
  *   · le retrait de son listing, la publication de test, l'événement de recrutement ou job dating (D-462) ;
  *   · la description que l'éditeur laisse lui-même vide, sur une fiche LUE (D-481 §3, 30/09/2026) — jamais une
