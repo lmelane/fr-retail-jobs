@@ -28,7 +28,10 @@ export function publicationDisposition(reason: string): DeactivationDisposition 
  *   · le retrait de son listing, la publication de test, l'événement de recrutement ou job dating (D-462) ;
  *   · la description que l'éditeur laisse lui-même vide, sur une fiche LUE (D-481 §3, 30/09/2026) — jamais une
  *     fiche que nous n'avons pas su lire, qui reste refusée et comptée. C'est la seconde preuve NÉGATIVE : la garde
- *     technique de `health.ts` la surveille aussi.
+ *     technique de `health.ts` la surveille aussi ;
+ *   · la fiche Workday que l'éditeur refuse en la nommant, `403 {"errorCode":"S22",…,"message":"permission denied"}`
+ *     (D-484 §1, 30/09/2026) : l'offre qu'il retire. La preuve est ce corps, jamais le seul statut ; sous la garde
+ *     de masse de `health.ts` (`MASS_GUARDED_RETENTIONS`).
  *
  * DÉCISION DE L'ÉQUIPE — l'exclusion de périmètre revue (`SCOPE_OUT_OF_PERIMETER`) : ce n'est pas une preuve
  * de la source, c'est un choix de Catwalks ; visible, non bloquant (D-456 §2), nommé comme tel.
@@ -42,7 +45,7 @@ export function publicationDisposition(reason: string): DeactivationDisposition 
 const NATIVE_EVIDENCE_RETENTIONS: ReadonlySet<string> = new Set([
   'APPLICATION_EXPLICITLY_CLOSED', 'APPLICATION_HTTP_404', 'APPLICATION_HTTP_410', 'APPLICATION_TEMPLATE_EXPIRY_CONTRADICTION',
   'SOURCE_UNLISTED', 'WORKDAY_EMPLOYER_ABSENT_IN_DETAIL', 'NATIVE_TEST_PUBLICATION', 'NATIVE_RECRUITMENT_EVENT',
-  'NATIVE_DESCRIPTION_EMPTY',
+  'NATIVE_DESCRIPTION_EMPTY', 'WORKDAY_DETAIL_PERMISSION_DENIED',
 ]);
 const TEAM_DECISION_RETENTIONS: ReadonlySet<string> = new Set(['SCOPE_OUT_OF_PERIMETER']);
 /** The Workday NEGATIVE native proof: the page does not name its employer (its registry entry stays to instruct). */
@@ -58,6 +61,16 @@ export const NEGATIVE_PROOF_RETENTION = 'WORKDAY_EMPLOYER_ABSENT_IN_DETAIL';
 export const GUARDED_NEGATIVE_PROOFS: Readonly<Record<string, string>> = {
   WORKDAY_EMPLOYER_ABSENT_IN_DETAIL: 'employeur absent',
   NATIVE_DESCRIPTION_EMPTY: 'description vide chez l’éditeur',
+};
+
+/**
+ * LA GARDE DE MASSE (D-484 §1) : un refus nommé par l'éditeur prouve le retrait d'UNE offre ; le même refus sur une
+ * part de la source est une panne ou un blocage, pas une vague de retraits. Au-delà de max(`floor`, `share` × fiches
+ * collectées), la source est bloquante (`health.ts`, `NATIVE_REFUSAL_MASS`). 16 refus mesurés en 12 jours sur 976
+ * captures, jamais plus de 2 par capture.
+ */
+export const MASS_GUARDED_RETENTIONS: Readonly<Record<string, { label: string; floor: number; share: number }>> = {
+  WORKDAY_DETAIL_PERMISSION_DENIED: { label: 'fiches refusées par l’éditeur (Workday S22)', floor: 5, share: 0.05 },
 };
 
 export function isNativeEvidenceRetention(reason: string): boolean {
@@ -84,6 +97,7 @@ const RETENTION_TEXT: Readonly<Record<string, string>> = {
   NATIVE_TEST_PUBLICATION: 'publication de test déclarée par la source',
   NATIVE_RECRUITMENT_EVENT: 'événement de recrutement déclaré par la source',
   NATIVE_DESCRIPTION_EMPTY: 'la source publie l’offre sans description (fiche lue, vide ou réduite à ses titres de rubrique)',
+  WORKDAY_DETAIL_PERMISSION_DENIED: 'refusée par l’éditeur (Workday S22)',
   SCOPE_OUT_OF_PERIMETER: 'écartée par l’équipe (hors périmètre)',
 };
 /**
@@ -105,6 +119,7 @@ const DECIDED: Readonly<Record<string, string>> = {
   NATIVE_TEST_PUBLICATION: 'D-462',
   NATIVE_RECRUITMENT_EVENT: 'D-462',
   NATIVE_DESCRIPTION_EMPTY: 'D-481 §3',
+  WORKDAY_DETAIL_PERMISSION_DENIED: 'D-484 §1',
 };
 export type RetentionStatus = 'décidé' | 'application non arbitrée' | 'à instruire';
 export function retentionStatus(reason: string): RetentionStatus {

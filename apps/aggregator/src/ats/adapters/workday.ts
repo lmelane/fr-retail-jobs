@@ -568,6 +568,40 @@ export function postedAtFromWorkday(postedOn?: string, observedAt = captureObser
 
 
 /**
+ * LA FICHE QUE L'ÉDITEUR RETIRE (D-484 §1, décision CEO du 30/09/2026).
+ *
+ * Mesuré sur les 976 captures Workday du 18 au 29/09 (`scripts/ops/workday-fiches-en-echec.mts`) : 16 fiches ont
+ * rendu, aux trois essais du transport, `403 {"errorCode":"S22",…,"httpStatus":403,…,"message":"permission denied"}`.
+ * Aucune n'est jamais revenue en 200 ; 11 des 13 suivies ont quitté la liste à la capture suivante, les deux autres
+ * sept minutes plus tard, encore refusées. C'est l'offre que l'éditeur retire alors que son index la liste encore :
+ * une retenue sur preuve de la source, non publiée, visible au bilan, non bloquante (`publicationDisposition.ts`),
+ * sous la garde de masse de `health.ts` (au-delà de max(5, 5 %) des fiches d'une source, panne ou blocage).
+ *
+ * La preuve est le CORPS du refus, jamais le seul statut : un 403 sans ce corps (pare-feu, page HTML, autre code)
+ * reste `WORKDAY_DETAIL_FETCH_FAILED`, à instruire. On garde de ce corps ce qui le rend reconnaissable, sans
+ * l'identifiant de cas que Workday change à chaque réponse ; collecte et rejeu le lisent dans les mêmes octets.
+ */
+export const WORKDAY_DETAIL_PERMISSION_DENIED = 'WORKDAY_DETAIL_PERMISSION_DENIED';
+export type WorkdayDetailRefusal = { status: 403; errorCode: 'S22'; message: 'permission denied' };
+const S22: WorkdayDetailRefusal = { status: 403, errorCode: 'S22', message: 'permission denied' };
+
+export function workdayDetailRefusal(error: unknown): WorkdayDetailRefusal | undefined {
+  const { status, body } = (error ?? {}) as { status?: unknown; body?: unknown };
+  if (status !== 403 || typeof body !== 'string') return undefined;
+  try {
+    const native = JSON.parse(body) as { errorCode?: unknown; message?: unknown; httpStatus?: unknown } | null;
+    return native?.errorCode === 'S22' && native.message === 'permission denied' && native.httpStatus === 403 ? { ...S22 } : undefined;
+  } catch { return undefined; }
+}
+
+/** La preuve telle que la retenue la conserve (`raw.detailRefusal`) : le lecteur hors ligne ne relit qu'elle. */
+export function retainedWorkdayRefusal(raw: unknown): boolean {
+  const refusal = (raw as { detailRefusal?: Record<string, unknown> } | null)?.detailRefusal;
+  return !!refusal && typeof refusal === 'object' && Object.keys(refusal).length === 3
+    && refusal.status === S22.status && refusal.errorCode === S22.errorCode && refusal.message === S22.message;
+}
+
+/**
  * The listing endpoint returns no description; the detail one does, at
  * {cxsBase}{externalPath}. The path must be the FULL externalPath from the
  * listing — a shortened one 404s with "not found: Job_Posting_Anchor_ID".
@@ -590,6 +624,9 @@ export async function attachWorkdayDescriptions(
           const detail = await fetchJson<WorkdayDetail>(`${cxsBase}${path}`, { headers: { ...EN_US } });
           return mergeWorkdayDetail(job, detail);
         } catch (error) {
+          // D-484 §1 : l'éditeur refuse la fiche en la nommant (403 S22) — l'offre qu'il retire. Sa preuve est gardée.
+          const refusal = workdayDetailRefusal(error);
+          if (refusal) return { ...job, publicationHold: WORKDAY_DETAIL_PERMISSION_DENIED, raw: { ...(job.raw as Record<string, unknown>), detailRefusal: refusal } };
           // A failed detail is not evidence that the listing belongs to the
           // GROUP printed in the catalogue. Keep the listing and the exact
           // diagnostic as a publication hold; it cannot attest absence.

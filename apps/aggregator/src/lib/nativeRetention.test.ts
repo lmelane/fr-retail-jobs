@@ -244,6 +244,46 @@ describe('D-481 §3: the description the publisher leaves empty, on the negative
   });
 });
 
+describe('D-484 §1: a Workday detail the publisher refuses by name (403 S22) is a posting it withdraws, under a mass guard', () => {
+  it('swarovski as collected on 29/09 (2 refused S22, 30 without employer): non-blocking, attributed to the source, named in the note', async () => {
+    const swarovski = retaining('swarovski', 660, { WORKDAY_EMPLOYER_ABSENT_IN_DETAIL: 30, WORKDAY_DETAIL_PERMISSION_DENIED: 2 });
+    // Premise: the shape of the SourceRun of 29/09 (692 collected, 660 published), which blocked with the refusals « à instruire ».
+    expect(swarovski.fetched).toBe(692);
+    const { issues, incidents, summary, sourceRun } = await runOne(swarovski);
+    expect(issues).toEqual([{ origin: 'SOURCE', code: 'NATIVE_RETENTION', count: 32, captureBatchId: 'batch-swarovski', completionReportHash: 'report-swarovski' }]);
+    expect(incidents).toMatchObject([{ blocking: false, nonBlockingRetentionOnly: true }]);
+    expect(summary.outcome).toBe('COMPLETED_WITH_ERRORS');
+    expect(String(sourceRun.note)).toContain('32 sur preuve de la source (WORKDAY_DETAIL_PERMISSION_DENIED=2, WORKDAY_EMPLOYER_ABSENT_IN_DETAIL=30)');
+    expect(String(sourceRun.note)).not.toContain('garde de masse');
+    expect(retentionStatus('WORKDAY_DETAIL_PERMISSION_DENIED')).toBe('décidé');
+  });
+  it('6 refused of 100 collected is beyond max(5, 5 %): a breakdown or a block, the source blocks the RUN', async () => {
+    const s = retaining('refus-en-masse', 94, { WORKDAY_DETAIL_PERMISSION_DENIED: 6 });
+    // Premise: 100 collected, so the bound is max(5, 5) = 5.
+    expect(s.fetched).toBe(100);
+    const { issues, incidents, summary, sourceRun } = await runOne(s);
+    expect(issues).toEqual([{ origin: 'UNKNOWN', code: 'NATIVE_REFUSAL_MASS', count: 1 }]);
+    expect(incidents[0]?.nonBlockingRetentionOnly).toBeUndefined();
+    expect(summary.outcome).toBe('FAILED');
+    expect(String(sourceRun.note)).toContain('garde de masse : 6 fiches refusées par l’éditeur (Workday S22) sur 100 collectées');
+  });
+  it('5 refused of 100 is at the bound, not beyond: non-blocking', async () => {
+    const { issues, summary } = await runOne(retaining('refus-a-la-borne', 95, { WORKDAY_DETAIL_PERMISSION_DENIED: 5 }));
+    expect(issues.map((issue) => issue.code)).toEqual(['NATIVE_RETENTION']);
+    expect(summary.outcome).toBe('COMPLETED_WITH_ERRORS');
+  });
+  it('the share takes over above 100 collected: 60 of 1 400 (4,3 %) pass, 71 of 1 400 (5,1 %) block', async () => {
+    expect((await runOne(retaining('grand-portail', 1340, { WORKDAY_DETAIL_PERMISSION_DENIED: 60 }))).issues.map((i) => i.code)).toEqual(['NATIVE_RETENTION']);
+    expect((await runOne(retaining('grand-portail', 1329, { WORKDAY_DETAIL_PERMISSION_DENIED: 71 }))).issues.map((i) => i.code)).toEqual(['NATIVE_REFUSAL_MASS']);
+  });
+  it('a refusal NOT recognised as S22 stays WORKDAY_DETAIL_FETCH_FAILED: to instruct, blocking, even next to S22 refusals', async () => {
+    const { issues, summary, sourceRun } = await runOne(retaining('knitwell-us-retail', 1995, { WORKDAY_DETAIL_PERMISSION_DENIED: 1, WORKDAY_DETAIL_FETCH_FAILED: 1 }));
+    expect(issues.map((issue) => issue.code)).toEqual(['SOURCE_HEALTH_REGRESSION']);
+    expect(summary.outcome).toBe('FAILED');
+    expect(String(sourceRun.note)).toContain('1 à instruire (WORKDAY_DETAIL_FETCH_FAILED=1)');
+  });
+});
+
 describe('the negative-proof guard (technical): only the negative proofs, against the last complete RUN', () => {
   const jumping = () => retaining('workday-format', 700, { WORKDAY_EMPLOYER_ABSENT_IN_DETAIL: 310 });
   it('a Workday share that jumps (1 % → 31 %) is to be instructed, not accepted on trust', async () => {
@@ -456,7 +496,7 @@ describe('every non-blocking retention names the decision that settles it (D-453
   const NON_BLOQUANTS = [
     'APPLICATION_EXPLICITLY_CLOSED', 'APPLICATION_HTTP_404', 'APPLICATION_HTTP_410', 'APPLICATION_TEMPLATE_EXPIRY_CONTRADICTION',
     'SOURCE_UNLISTED', 'WORKDAY_EMPLOYER_ABSENT_IN_DETAIL', 'NATIVE_TEST_PUBLICATION', 'NATIVE_RECRUITMENT_EVENT',
-    'SCOPE_OUT_OF_PERIMETER', 'NATIVE_DESCRIPTION_EMPTY',
+    'SCOPE_OUT_OF_PERIMETER', 'NATIVE_DESCRIPTION_EMPTY', 'WORKDAY_DETAIL_PERMISSION_DENIED',
   ];
 
   it.each(NON_BLOQUANTS)('%s does not block the RUN and is decided', (reason) => {

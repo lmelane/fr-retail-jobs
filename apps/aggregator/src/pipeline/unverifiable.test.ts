@@ -13,7 +13,9 @@ describe('classement des retenues par NATURE, pas par libellé', () => {
     for (const reason of ['APPLICATION_EXPLICITLY_CLOSED', 'APPLICATION_HTTP_404', 'APPLICATION_HTTP_410', 'APPLICATION_TEMPLATE_EXPIRY_CONTRADICTION',
       'SOURCE_UNLISTED', 'NATIVE_TEST_PUBLICATION', 'NATIVE_RECRUITMENT_EVENT',
       // D-481 §3 : la description que l'éditeur laisse vide — rien à réparer chez nous, la preuve se relit.
-      'NATIVE_DESCRIPTION_EMPTY'])
+      'NATIVE_DESCRIPTION_EMPTY',
+      // D-484 §1 : la fiche Workday refusée « S22 permission denied » — l'offre que l'éditeur retire.
+      'WORKDAY_DETAIL_PERMISSION_DENIED'])
       expect(classifyHold(reason)).toBe('NATIVE_EVIDENCE');
     // D-456 §2 : une décision de l'équipe, non bloquante.
     expect(classifyHold('SCOPE_OUT_OF_PERIMETER')).toBe('OUT_OF_PERIMETER');
@@ -24,7 +26,8 @@ describe('classement des retenues par NATURE, pas par libellé', () => {
   it('parle le vocabulaire du RUN : décidé au registre si et seulement si non bloquant au RUN', () => {
     const reasons = ['APPLICATION_EXPLICITLY_CLOSED', 'SOURCE_UNLISTED', 'NATIVE_TEST_PUBLICATION', 'NATIVE_RECRUITMENT_EVENT',
       'WORKDAY_EMPLOYER_ABSENT_IN_DETAIL', 'APPLICATION_HTTP_404', 'APPLICATION_HTTP_410', 'APPLICATION_TEMPLATE_EXPIRY_CONTRADICTION',
-      'WORKDAY_DETAIL_FETCH_FAILED', 'ICIMS_DETAIL_FETCH_FAILED', 'SCOPE_OUT_OF_PERIMETER', 'UNRECOGNISED_PROJECT_TYPE', 'SOMETHING_NEW'];
+      'WORKDAY_DETAIL_FETCH_FAILED', 'ICIMS_DETAIL_FETCH_FAILED', 'SCOPE_OUT_OF_PERIMETER', 'UNRECOGNISED_PROJECT_TYPE', 'SOMETHING_NEW',
+      'WORKDAY_DETAIL_PERMISSION_DENIED'];
     for (const reason of reasons) {
       const kind = classifyHold(reason);
       const decided = kind === 'NATIVE_EVIDENCE' || kind === 'OUT_OF_PERIMETER';

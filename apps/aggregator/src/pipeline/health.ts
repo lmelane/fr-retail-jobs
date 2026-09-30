@@ -3,7 +3,7 @@ import type { PrismaClient } from '@prisma/client';
 import type { IngestStats } from './ingest.js';
 import { isTrustedForAttestation, isDeclaredEmptyEnumeration } from './attestation.js';
 import { recordSourceRunSummary } from '../connectors/sourceStore.js';
-import { GUARDED_NEGATIVE_PROOFS, retentionClass, type RetentionClass } from './publicationDisposition.js';
+import { GUARDED_NEGATIVE_PROOFS, MASS_GUARDED_RETENTIONS, retentionClass, type RetentionClass } from './publicationDisposition.js';
 import { FULL_RUN_MARKER } from './fullRunMarker.js';
 
 /**
@@ -78,8 +78,9 @@ export type SourceHealth = {
   blocking?: boolean;
 };
 
-/** `DESCRIPTION_COVERAGE_BELOW_FLOOR` (30/09/2026) : nommé pour que D-480 §1 ne reconnaisse QUE ce défaut chez On Running. */
-export type HealthFinding = 'ENUMERATION_NOT_PROVEN' | 'ENUMERATION_REFUTED' | 'NATIVE_RETENTION_JUMP' | 'DESCRIPTION_COVERAGE_BELOW_FLOOR';
+/** `DESCRIPTION_COVERAGE_BELOW_FLOOR` (30/09/2026) : nommé pour que D-480 §1 ne reconnaisse QUE ce défaut chez On Running.
+ * `NATIVE_REFUSAL_MASS` (D-484 §1) : la garde de masse d'un refus nommé par l'éditeur (`MASS_GUARDED_RETENTIONS`). */
+export type HealthFinding = 'ENUMERATION_NOT_PROVEN' | 'ENUMERATION_REFUTED' | 'NATIVE_RETENTION_JUMP' | 'DESCRIPTION_COVERAGE_BELOW_FLOOR' | 'NATIVE_REFUSAL_MASS';
 
 /**
  * LA GARDE DE LA PREUVE NÉGATIVE — garde TECHNIQUE, pas une décision (demandée le 25/09/2026).
@@ -200,10 +201,12 @@ export function evaluateSourceHealth(stat: IngestStats, before: number | null, r
   const otherDefect = collection.status === 'BROKEN' || collection.status === 'DEGRADED';
   const guard = retention.nonBlocking && !otherDefect ? negativeProofGuard(stat, retentionBaseline) : undefined;
   const jumped = guard?.kind === 'JUMP';
+  // D-484 §1 : au-delà de sa borne, un refus nommé par l'éditeur n'est plus un retrait d'offre mais une panne.
+  const mass = retention.nonBlocking && !otherDefect ? refusalMassGuard(stat) : undefined;
   const note = otherDefect ? `${collection.note} · ${retention.note}`
-    : [`${retention.note} ; ${enumerationLabel(stat)}`, guard?.note].filter(Boolean).join(' · ');
-  const finding = otherDefect ? collection.finding : jumped ? 'NATIVE_RETENTION_JUMP' as const : undefined;
-  const nonBlockingOnly = retention.nonBlocking && !otherDefect && !jumped;
+    : [`${retention.note} ; ${enumerationLabel(stat)}`, guard?.note, mass].filter(Boolean).join(' · ');
+  const finding = otherDefect ? collection.finding : jumped ? 'NATIVE_RETENTION_JUMP' as const : mass ? 'NATIVE_REFUSAL_MASS' as const : undefined;
+  const nonBlockingOnly = retention.nonBlocking && !otherDefect && !jumped && !mass;
   return { ...base, status: jobs > 0 ? 'DEGRADED' : 'BROKEN', note, ...(finding ? { finding } : {}),
     ...(nonBlockingOnly ? { nonBlockingRetentionOnly: true } : {}),
     // A team exclusion alone is no issue on ANY path (`issuesFromResult`): `ingest --source` exits 0 on it, so its
@@ -290,6 +293,22 @@ function negativeProofGuard(stat: IngestStats, baseline: RetentionBaseline | nul
     .map(([reason, label]) => guardedShare(stat, baseline, stat.heldReasons?.[reason] ?? 0, label))
     .filter((verdict) => verdict !== undefined);
   return verdicts.find((verdict) => verdict.kind === 'JUMP') ?? verdicts[0];
+}
+
+/**
+ * LA GARDE DE MASSE D'UN REFUS NOMMÉ PAR L'ÉDITEUR (D-484 §1). Une fiche Workday refusée `S22` est une offre retirée ;
+ * au-delà de max(`floor`, `share` × fiches collectées) d'une même source, c'est une panne ou un blocage : la source est
+ * bloquante, le refus reste nommé. Strictement au-delà : 5 refus sur 100 passent, 6 bloquent.
+ */
+function refusalMassGuard(stat: IngestStats): string | undefined {
+  for (const [reason, { label, floor, share }] of Object.entries(MASS_GUARDED_RETENTIONS)) {
+    const refused = stat.heldReasons?.[reason] ?? 0;
+    const bound = Math.max(floor, share * stat.fetched);
+    if (refused > bound) {
+      return `garde de masse : ${refused} ${label} sur ${stat.fetched} collectées, au-delà de max(${floor}, ${share * 100} %) — panne ou blocage à instruire`;
+    }
+  }
+  return undefined;
 }
 
 function guardedShare(stat: IngestStats, baseline: RetentionBaseline | null, negative: number, label: string): { kind: 'NO_REFERENCE' | 'JUMP'; note: string } | undefined {
