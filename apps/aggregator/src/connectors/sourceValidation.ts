@@ -40,6 +40,14 @@ export type SourceValidationReport = {
   allowance?: { floor: number; ratio: number; count: number; applied: number };
 };
 
+/**
+ * Navigation pages and previews already read from their native detail URL are retained evidence, not malformed or
+ * missing publications. Nor is the spontaneous-application card a publisher lists and counts beside its postings
+ * (join.com, 30/09/2026: recognised on the listing's own state, `joinSpontaneousCard.ts`).
+ */
+export const EXPLAINED_NATIVE_ROWS: ReadonlySet<string> = new Set(['LISTED_PAGE_WITHOUT_JOBPOSTING', 'LISTED_POSTING_PREVIEW',
+  'LISTED_SPONTANEOUS_APPLICATION_CARD']);
+
 /** An empty collector is insufficient: require one complete native response
  * with the protocol's explicit end/zero marker. Greenhouse additionally requires
  * meta.total=0, as observed in the production RAW on 2026-09-23. */
@@ -88,10 +96,7 @@ export async function validateCapturedSource(db: PrismaClient, batchId: string, 
       if (new Set(replayed.jobs.map(job => job.externalId)).size !== replayed.jobs.length) reason('DUPLICATE_PUBLICATION_IDS');
       report.inputRejected = replayed.rejectedRows?.length ?? 0;
       if (report.inputRejected) report.reasons.REJECTED_NATIVE_ROWS = report.inputRejected;
-      // Navigation pages and previews already read from their native detail URL
-      // are retained evidence, not malformed or missing publications.
-      report.inputUnqualified = (replayed.rejectedRows ?? []).filter(row =>
-        !['LISTED_PAGE_WITHOUT_JOBPOSTING', 'LISTED_POSTING_PREVIEW'].includes(row.reason)).length;
+      report.inputUnqualified = (replayed.rejectedRows ?? []).filter(row => !EXPLAINED_NATIVE_ROWS.has(row.reason)).length;
       for (const job of replayed.jobs) {
         const eligible = portal ? employerFromCertifiedScope(job, portal.ownerName, portal.scope) : job;
         if (eligible.publicationHold || eligible.publicationWithdrawnAt) { report.held++; continue; }
