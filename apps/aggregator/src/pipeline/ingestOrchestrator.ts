@@ -26,11 +26,18 @@ import { failureLine } from '../lib/runSummary.js';
  * the base, plus a write allowance for the source's recent volume (`lib/sourceTimeout.ts`, D-482). */
 const PER_SOURCE_TIMEOUT_MS = BASE_SOURCE_TIMEOUT_MS;
 
-/** Le budget de cette source : sa base, plus l'écriture de ce que ses collectes des huit derniers jours ont rendu. */
+/**
+ * Le budget de cette source : sa base, plus l'écriture de ce qu'elle porte. Le volume attendu est le plus grand de
+ * ce que ses collectes des huit derniers jours ont rendu et de ses publications encore actives — une coupure écrit
+ * `jobs: 0` et laisse ses offres ouvertes : plusieurs coupures de suite ne ramènent donc pas le budget à la base.
+ */
 async function sourceTimeoutFor(prisma: PrismaClient, key: string): Promise<number> {
   const since = new Date(Date.now() - EXPECTED_VOLUME_WINDOW_DAYS * 24 * 3_600_000);
-  const runs = await prisma.sourceRun.findMany({ where: { sourceKey: key, ranAt: { gte: since } }, select: { jobs: true } });
-  return sourceTimeoutMs(expectedVolume(runs.map(run => run.jobs)));
+  const [runs, active] = await Promise.all([
+    prisma.sourceRun.findMany({ where: { sourceKey: key, ranAt: { gte: since } }, select: { jobs: true } }),
+    prisma.jobSource.count({ where: { sourceKey: key, isActive: true } }),
+  ]);
+  return sourceTimeoutMs(expectedVolume([...runs.map(run => run.jobs), active]));
 }
 
 /**
@@ -112,7 +119,7 @@ export function onlyRequested(keys: string[], raw = process.env.INGEST_ONLY_KEYS
 export async function ingestAllBySource(prisma: PrismaClient): Promise<OrchestratorResult> {
   assertPipelineRunning();
   const keys = await allSourceKeys(prisma);
-  await log.info('run.sources_selected', { sources: keys.length, sourceKeys: keys, concurrency: SOURCE_CONCURRENCY, timeoutMs: PER_SOURCE_TIMEOUT_MS });
+  await log.info('run.sources_selected', { sources: keys.length, sourceKeys: keys, concurrency: SOURCE_CONCURRENCY, baseTimeoutMs: PER_SOURCE_TIMEOUT_MS });
 
   const result: OrchestratorResult = { total: keys.length, ok: 0, failed: 0, timedOut: 0, failures: [], incidents: [], issues: [] };
 
@@ -215,7 +222,7 @@ async function ingestOne(prisma: PrismaClient, key: string, result: Orchestrator
     if (timedOut) {
       result.timedOut++;
       result.failures.push(failureLine(key, [issue], 'délai dépassé'));
-      await log.error('source.timed_out', `[orchestrator] ${key}: timed out after ${timeoutMs / 1000}s, moving on`, { error });
+      await log.error('source.timed_out', `[orchestrator] ${key}: timed out after ${Math.round(timeoutMs / 1000)}s, moving on`, { error });
     } else if (challenged) {
       result.failed++;
       result.failures.push(failureLine(key, [issue], 'anti-bot'));
@@ -242,7 +249,7 @@ async function ingestOne(prisma: PrismaClient, key: string, result: Orchestrator
           jobs: 0,
           canAttestAbsence: false,
           note: timedOut
-            ? `cut at ${timeoutMs / 1000}s`
+            ? `cut at ${Math.round(timeoutMs / 1000)}s`
             : challenged
               ? `anti-bot ${(error as WafChallengeError).vendor} : page d'attente servie, aucune offre lue`
               : briefError(error),

@@ -12,9 +12,9 @@
  *
  * Le budget garde sa base (INGEST_SOURCE_TIMEOUT_MS, 40 minutes : collecte, qualification, validations) et reçoit
  * une allocation d'écriture par offre attendue, au rythme d'un jour lent mesuré (250 ms), bornée à deux heures. Une
- * petite source garde presque sa base (300 offres : + 75 s). Le volume attendu est le plus grand nombre d'offres qu'une collecte
- * de la source a rendu sur les huit derniers jours : une source coupée enregistre 0 offre, et son budget ne doit pas
- * retomber à la base le lendemain.
+ * petite source garde presque sa base (300 offres : + 75 s). Le volume attendu est le plus grand du nombre d'offres
+ * qu'une collecte de la source a rendu sur les huit derniers jours et de ses publications encore actives : une source
+ * coupée enregistre 0 offre et garde ses offres ouvertes, et son budget ne doit pas retomber à la base le lendemain.
  */
 export const BASE_SOURCE_TIMEOUT_MS = Number(process.env.INGEST_SOURCE_TIMEOUT_MS ?? 40 * 60_000);
 /** L'écriture d'une offre un jour lent : 250 ms mesurées pour ulta-jibe au RUN du 28/09/2026. */

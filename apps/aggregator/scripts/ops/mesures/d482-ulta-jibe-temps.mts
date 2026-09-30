@@ -65,7 +65,7 @@ query(`3. Progression de l'écriture de ${source} (ordinal des observations nouv
   FROM "SourceObservation" so JOIN "SourceExtraction" se ON se.id=so."captureOutputId" AND se."batchId"=so."captureBatchId"
   JOIN "CaptureBatch" b ON b.id=so."captureBatchId"
   WHERE so."sourceKey"='${source}' AND b."runId" IN (${inRuns}) AND b.purpose='JOBS'
-    AND (b."executionBudget"->>'softTimeoutMs')::int < 2370000 GROUP BY 1,2 ORDER BY 1,2`);
+    AND (b."executionBudget"->>'timeoutMs')::bigint - (b."executionBudget"->>'softTimeoutMs')::bigint > 30000 GROUP BY 1,2 ORDER BY 1,2`);
 
 query('4. Par RUN, toutes sources : écriture par offre et CPU du worker', `WITH s AS (SELECT e."runId",
     sum((e.payload->'stats'->0->>'upsertMs')::bigint) AS ups,
