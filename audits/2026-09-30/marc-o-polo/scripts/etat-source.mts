@@ -15,7 +15,11 @@ const KEY = 'marc-o-polo';
 const prisma = new PrismaClient({ log: [] });
 try {
   const source = await prisma.$queryRawUnsafe<Array<Record<string, unknown>>>(
-    `SELECT key, maison, kind, config, status, tier, "tenantKey", "careersDomain", "currentRevisionId", "updatedAt" FROM "Source" WHERE key = $1`, KEY);
+    `SELECT key, maison, kind, config, status, tier, "tenantKey", "careersDomain", "currentRevisionId", "portalScope", "updatedAt" FROM "Source" WHERE key = $1`, KEY);
+  // L'employeur des offres en ligne : sans libellé natif, le lecteur dédié passe par le portail certifié (`portalScope`).
+  const employeurs = await prisma.$queryRawUnsafe<Array<{ name: string; n: bigint }>>(
+    `SELECT c.name, count(*) AS n FROM "JobSource" s JOIN "Job" j ON j.id = s."jobId" JOIN "Company" c ON c.id = j."companyId"
+      WHERE s."sourceKey" = $1 AND s."isActive" GROUP BY c.name`, KEY);
   const publications = await prisma.$queryRawUnsafe<Array<{ externalId: string; url: string; title: string | null; isActive: boolean; jobId: string | null;
     firstSeenAt: Date; lastSeenAt: Date; quarantinedAt: Date | null }>>(
     `SELECT "externalId", url, title, "isActive", "jobId", "firstSeenAt", "lastSeenAt", "quarantinedAt" FROM "JobSource" WHERE "sourceKey" = $1 ORDER BY "firstSeenAt"`, KEY);
@@ -33,6 +37,7 @@ try {
     publications: { total: publications.length, formes,
       actives: publications.filter((p) => p.isActive).map((p) => ({ externalId: p.externalId, url: p.url, title: p.title, jobId: p.jobId,
         firstSeenAt: p.firstSeenAt, lastSeenAt: p.lastSeenAt, quarantinedAt: p.quarantinedAt })) },
+    employeurs: employeurs.map((e) => ({ name: e.name, n: Number(e.n) })),
     offresRattachees: jobs.map((j) => ({ status: j.status, n: Number(j.n) })),
     derniersRuns: runs,
   }, null, 1));
