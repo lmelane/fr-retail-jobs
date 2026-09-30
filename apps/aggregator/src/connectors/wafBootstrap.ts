@@ -126,7 +126,7 @@ export function deriveAccessBootstrap(sourceKey: string, challenges: readonly Ob
   // L'origine défiée se lit sur la requête cible, jamais sur l'ordre d'inscription : les réponses du navigateur
   // s'inscrivent dans l'ordre où elles se terminent, pas dans celui où elles sont parties.
   const targets = new Set(ordered.filter(request => !isChallengeHost(request.url.origin)).map(request => request.url.origin));
-  if (targets.size !== 1) throw new Error('ACCESS_BOOTSTRAP: un amorçage charge la page défiée d\'une seule origine');
+  if (targets.size !== 1) throw new Error('ACCESS_BOOTSTRAP: un amorçage ne joint que la page défiée d\'une seule origine et l\'infrastructure du défi');
   const [origin] = targets;
   const trigger = challenges.find(challenge => challenge.sequence < ordered[0].sequence && originOf(challenge.url) === origin);
   if (!trigger) throw new Error('ACCESS_BOOTSTRAP: amorçage sans défi AWS archivé qui le précède sur son origine');
@@ -138,8 +138,8 @@ export function deriveAccessBootstrap(sourceKey: string, challenges: readonly Ob
     if (request.url.origin === origin) {
       if (!challenged.some(url => isTarget({ url: request.url.toString(), method: request.method }, url)))
         throw new Error('ACCESS_BOOTSTRAP: requête d\'amorçage hors de l\'adresse défiée');
-    } else if (isChallengeHost(request.url.origin)) hosts.add(request.url.origin);
-    else throw new Error('ACCESS_BOOTSTRAP: requête d\'amorçage hors de l\'infrastructure du défi');
+    // Toute autre origine hors de l'infrastructure du défi a déjà été refusée (une seule origine cible, ci-dessus).
+    } else hosts.add(request.url.origin);
   }
   if (!hosts.size || hosts.size > MAX_CHALLENGE_HOSTS) throw new Error('ACCESS_BOOTSTRAP: infrastructure du défi non observée ou trop étendue');
   return { vendor: WAF_BOOTSTRAP_VENDOR, origin, challengeHosts: [...hosts].sort() };

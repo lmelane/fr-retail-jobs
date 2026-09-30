@@ -8,7 +8,7 @@ import { captureExtraction } from '../capture/batch.js';
 import { fetchAtsJobs } from '../ats/index.js';
 import { validateCapturedSource } from '../connectors/sourceValidation.js';
 import { qualifySourceAccess } from '../connectors/sourceAccessQualification.js';
-import { recordSourceAccessDecision, requireSourceAccess } from '../connectors/sourceAccess.js';
+import { assertSourceAccess, recordSourceAccessDecision, requireSourceAccess } from '../connectors/sourceAccess.js';
 import type { AccessDocument } from '../connectors/accessScope.js';
 import { BROWSER_USER_AGENT } from '../lib/browser.js';
 import { setWafPrimer } from '../lib/wafToken.js';
@@ -111,6 +111,9 @@ describe('D-483 — une collecte amorcée devient une preuve d’accès', () => 
     const doc = decision.document as unknown as AccessDocument;
     const insert = (document: unknown, proof: unknown) => db.sourceAccessDecision.create({ data: { ...decision, sequence: undefined, id: randomUUID(),
       document: document as Prisma.InputJsonValue, report: proof as Prisma.InputJsonValue } });
+    // Relue par l'application, une projection dont le compte d'amorçage n'est pas un entier est refusée — même quand
+    // la soustraction de JavaScript le convertirait (« '5' ») et que les autres comptes tiennent.
+    expect(() => assertSourceAccess(source, { ...decision, report: { ...report, bootstrapRequestCount: '5' } })).toThrow(/differs/);
     // Contre-épreuve : la même ligne, recopiée, est acceptée par le garde (seul l'identifiant change).
     await expect(insert(doc, report)).resolves.toBeTruthy();
     const { bootstraps: _declared, ...undeclared } = doc;
