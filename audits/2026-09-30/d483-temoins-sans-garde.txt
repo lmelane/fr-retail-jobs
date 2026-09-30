@@ -1,4 +1,4 @@
-24 gardes retirées une à une, chaque fichier restauré depuis la mémoire (empreinte vérifiée)
+26 gardes retirées une à une, chaque fichier restauré depuis la mémoire (empreinte vérifiée)
 
 ## filtre de qualification ouvert (le navigateur charge toute la page) [apps/aggregator/src/connectors/wafBootstrap.ts]: ÉCHOUE (témoin valide)
    files: 2 failed (2) | tests: 5 ⎯⎯⎯⎯⎯⎯⎯
@@ -70,7 +70,19 @@
    files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
    - src/lib/wafBootstrap.capture.test.ts > aucun contournement général > pendant l’amorçage, une requête navigateur qui n’en fait pas partie reste un tra
 
-## redirection échappée non détectée (audit : HIGH) [apps/aggregator/src/lib/browser.ts]: ÉCHOUE (témoin valide)
+## pseudo-en-têtes HTTP/2 conservés (second tour : MEDIUM) [apps/aggregator/src/lib/browser.ts]: ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 5 ⎯⎯⎯⎯⎯⎯⎯
+   - src/lib/wafBootstrap.playwright.test.ts > amorçage inscrit sous le vrai comportement de Playwright > deux collectes successives du même process : chacun
+   - src/lib/wafBootstrap.playwright.test.ts > amorçage inscrit sous le vrai comportement de Playwright > un WebSocket ouvert par la page est clos avant de j
+   - src/lib/wafBootstrap.playwright.test.ts > amorçage inscrit sous le vrai comportement de Playwright > une redirection de la page défiée vers une autre or
+   - src/lib/wafBootstrap.playwright.test.ts > amorçage inscrit sous le vrai comportement de Playwright > une redirection d’une requête déjà partie, pendant 
+   - src/lib/wafBootstrap.playwright.test.ts > amorçage inscrit sous le vrai comportement de Playwright > une requête émise pendant la fermeture ne part pas 
+
+## redirection après le début de la vidange non détectée (second tour : MEDIUM) [apps/aggregator/src/lib/browser.ts]: ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
+   - src/lib/wafBootstrap.playwright.test.ts > amorçage inscrit sous le vrai comportement de Playwright > une redirection d’une requête déjà partie, pendant 
+
+## redirection avant la vidange, hors bornes, non détectée (audit : HIGH) [apps/aggregator/src/lib/browser.ts]: ÉCHOUE (témoin valide)
    files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
    - src/lib/wafBootstrap.playwright.test.ts > amorçage inscrit sous le vrai comportement de Playwright > une redirection de la page défiée vers une autre or
 
@@ -107,5 +119,5 @@
    files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
    - src/pipeline/sourceAccessWafBootstrap.test.ts > D-483 — une collecte amorcée devient une preuve d’accès > SQL refuse une projection d’amorçage falsifiée et un
 
-Contre-épreuve sur l’état committé : files: 5 passed (5) | tests: 67 passed (67) (code 0)
+Contre-épreuve sur l’état committé : files: 5 passed (5) | tests: 68 passed (68) (code 0)
 Copie de travail propre après la preuve.
