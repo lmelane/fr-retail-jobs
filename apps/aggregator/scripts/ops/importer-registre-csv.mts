@@ -19,6 +19,9 @@
  *                                 revue d'identité, dont la preuve reste la capture archivée.
  *   `statut` = RETIRED          → `Source.status`. SEUL changement destructif de cet import : une
  *                                 source retirée cesse d'être collectée et ne revient pas seule.
+ *   `statut` = PAUSED           → `Source.status`, depuis ACTIVE seulement (D-483, 30/09/2026) : la
+ *                                 source n'est plus collectée, ses offres publiées restent en ligne
+ *                                 (`cli.ts`), et la promotion la rend ACTIVE avec ses contrôles.
  *
  *   `identite` = VERIFIED       → JAMAIS IMPORTÉ. Dans ce système une identité ne se déclare pas,
  *                                 elle se prouve par une capture (page officielle → lien vers le
@@ -64,6 +67,7 @@ const base = new Map<string, Source>(
 
 const scopes: Array<{ key: string; valeur: string }> = [];
 const retraits: Array<{ key: string; avant: string }> = [];
+const pauses: Array<{ key: string; avant: string }> = [];
 const domaines = new Map<string, string>();
 const refuses: string[] = [];
 
@@ -78,6 +82,11 @@ for (const r of csv) {
   }
 
   if (r.statut === 'RETIRED' && s.status !== 'RETIRED') retraits.push({ key: r.cle, avant: s.status });
+  if (r.statut === 'PAUSED') {
+    if (s.status === 'ACTIVE') pauses.push({ key: r.cle, avant: s.status });
+    else if (s.status !== 'PAUSED') refuses.push(`${r.cle} : pause refusée depuis le statut ${s.status}`);
+  }
+  if (r.statut && !['RETIRED', 'PAUSED'].includes(r.statut)) refuses.push(`${r.cle} : statut « ${r.statut} » non importable`);
 
   /*
    * Le domaine officiel vit sur la Maison, pas sur la source : plusieurs sources d'une même Maison
@@ -94,12 +103,14 @@ for (const r of csv) {
 console.log(`\nIMPORT DU TABLEAU — ${csv.length} ligne(s) lue(s), ${base.size} source(s) en base\n`);
 console.log(`   ${scopes.length} portalScope à écrire`);
 console.log(`   ${retraits.length} source(s) à RETIRER  ← seul changement destructif`);
+console.log(`   ${pauses.length} source(s) à mettre en PAUSE (réversible)`);
 console.log(`   ${domaines.size} Maison(s) avec un domaine officiel déclaré`);
 if (refuses.length) {
   console.log(`\n   ${refuses.length} REFUS (rien ne sera écrit pour ces lignes) :`);
   for (const m of refuses.slice(0, 25)) console.log(`      ${m}`);
 }
 for (const r of retraits) console.log(`   RETIRE ${r.key.padEnd(28)} (était ${r.avant})`);
+for (const r of pauses) console.log(`   PAUSE  ${r.key.padEnd(28)} (était ${r.avant})`);
 
 if (!ECRIRE) {
   console.log(`\nINSPECTION SEULEMENT — rien n'a été écrit. Ajouter --ecrire pour appliquer.\n`);
@@ -107,7 +118,7 @@ if (!ECRIRE) {
   process.exit(0);
 }
 
-let nScope = 0, nRetrait = 0, nDomaine = 0;
+let nScope = 0, nRetrait = 0, nPause = 0, nDomaine = 0;
 /* Les lignes relues qu'aucune Maison ne reçoit : elles doivent apparaître, pas disparaître. */
 const sansCorrespondance: string[] = [];
 await prisma.$transaction(async (tx) => {
@@ -118,6 +129,10 @@ await prisma.$transaction(async (tx) => {
     // `status <> 'RETIRED'` dans le WHERE : si une autre exécution l'a déjà retirée, on ne rejoue rien.
     nRetrait += await tx.$executeRawUnsafe(
       `UPDATE "Source" SET status = 'RETIRED' WHERE key = $1 AND status <> 'RETIRED'`, r.key);
+  }
+  for (const r of pauses) {
+    // Depuis ACTIVE seulement, relu sous la transaction : une source retirée entre-temps n'est pas « rouverte » en pause.
+    nPause += await tx.$executeRawUnsafe(`UPDATE "Source" SET status = 'PAUSED' WHERE key = $1 AND status = 'ACTIVE'`, r.key);
   }
   for (const [maison, domaine] of domaines) {
     /*
@@ -148,6 +163,7 @@ await prisma.$transaction(async (tx) => {
 
 console.log(`\n   ${nScope} portalScope écrits`);
 console.log(`   ${nRetrait} source(s) retirée(s)`);
+console.log(`   ${nPause} source(s) mise(s) en pause`);
 console.log(`   ${nDomaine} domaine(s) officiel(s) écrit(s) sur des Maisons qui n'en avaient pas`);
 if (sansCorrespondance.length) {
   console.log(`\n   ${sansCorrespondance.length} domaine(s) relu(s) SANS Maison correspondante — rien écrit pour eux :`);
