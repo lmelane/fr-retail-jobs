@@ -175,23 +175,22 @@ export async function fetchPhenomJobs(config: Record<string, unknown>): Promise<
     return fetchCareerConnectJobs(origin, careerConnectOptions(config));
   }
 
-  const jobs: NormalizedJob[] = [];
-  const rejectedRows: NonNullable<AdapterResult['rejectedRows']> = [];
-  const seen = new Set<string>();
-  let declaredTotal: number | undefined;
-  const issues = new Set<string>();
-  let pages = 0, rawCount = 0, withoutData = 0, repeatedIds = 0, languageVariants = 0, termination = 'PAGE_BUDGET_EXHAUSTED';
-  /** Lignes servies qu'aucun `slug` ni `req_id` ne nomme : aucun identifiant historique ne peut être déclaré absent. */
-  let anonymousRows = 0;
-  const languageOf = new Map<string, string>();
-  const pageEvidence: NonNullable<NonNullable<AdapterResult['enumeration']>['pageEvidence']> = [];
+  /** L'état d'une lecture du listing, reconstruit à l'identique quand des pages ont été relues. */
+  const newListing = () => ({
+    jobs: [] as NormalizedJob[], rejectedRows: [] as NonNullable<AdapterResult['rejectedRows']>, seen: new Set<string>(),
+    languageOf: new Map<string, string>(), pageEvidence: [] as NonNullable<NonNullable<AdapterResult['enumeration']>['pageEvidence']>,
+    rawCount: 0, withoutData: 0, repeatedIds: 0, languageVariants: 0,
+    /** Lignes servies qu'aucun `slug` ni `req_id` ne nomme : aucun identifiant historique ne peut être déclaré absent. */
+    anonymousRows: 0,
+  });
+  type Listing = ReturnType<typeof newListing>;
+  const pageUrl = (page: number) => `${origin}/api/jobs?limit=${PAGE_SIZE}&page=${page}`;
+  const totalOf = (response: PhenomResponse) => response.totalCount ?? response.count;
 
-  for (let page = 1; page <= MAX_PAGES; page++) {
-    const url = `${origin}/api/jobs?limit=${PAGE_SIZE}&page=${page}`;
-    const response = await fetchJson<PhenomResponse>(url, { headers: HEADERS });
-
+  /** Une page lue, versée dans l'état : ses offres neuves, ses variantes de langue, ses répétitions, sa preuve. */
+  const consume = (listing: Listing, page: number, response: PhenomResponse): number => {
     const batch = response.jobs ?? [];
-    pages++; rawCount += batch.length;
+    listing.rawCount += batch.length;
     let fresh = 0;
     const pageIds: string[] = [];
     /**
@@ -205,47 +204,63 @@ export async function fetchPhenomJobs(config: Record<string, unknown>): Promise<
 
     for (const entry of batch) {
       // Une entrée sans `data` ne porte aucun identifiant lisible : elle est vue, comptée, et jamais nommée.
-      if (!entry.data) { withoutData++; anonymousRows++; continue; }
+      if (!entry.data) { listing.withoutData++; listing.anonymousRows++; continue; }
       const canonicalId = phenomCanonicalId(entry.data);
-      if (canonicalId) pageCanonicalIds.push(canonicalId); else anonymousRows++;
+      if (canonicalId) pageCanonicalIds.push(canonicalId); else listing.anonymousRows++;
       const job = parsePhenomJob(entry.data, origin, config);
       /**
        * Une ligne VUE puis écartée faute de titre est une DISPOSITION nommée, jamais un trou silencieux : sans
        * elle, son identifiant canonique resterait observé sans offre ni motif, et le contrat tomberait à juste
        * titre. Elle ne portait aucun nom avant ce lot — la ligne disparaissait du décompte.
        */
-      if (!job) { rejectedRows.push({ reason: 'MISSING_TITLE', raw: entry.data, ...(canonicalId ? { canonicalId } : {}) }); continue; }
+      if (!job) { listing.rejectedRows.push({ reason: 'MISSING_TITLE', raw: entry.data, ...(canonicalId ? { canonicalId } : {}) }); continue; }
       pageIds.push(job.externalId);
       // Foot Locker, 2026-09-09 : 2 850 entrées servies pour 2 850 annoncées,
       // 2 839 identifiants distincts — 11 offres revenaient sur deux pages
       // (pagination instable) et 11 autres n'ont donc jamais été servies. Le
       // doublon est compté et nommé ; il refuse la preuve, il ne la remplace pas.
-      if (seen.has(job.externalId)) {
+      if (listing.seen.has(job.externalId)) {
         // Foot Locker, 2026-09-10 (29 real pages): the 11 "repeated" ids were the
         // SAME requisition served in a second LANGUAGE (fr-fr then en-us, en-us then
         // nl-be) — totalCount 2 861 sums the language counts, 2 850 requisitions.
         // A language variant is a row the publisher announced and we accounted
         // for, not a posting lost to an unstable sort; the two stay distinct.
         const language = String(entry.data.language ?? '');
-        if (language && languageOf.get(job.externalId) && languageOf.get(job.externalId) !== language) { languageVariants++; continue; }
-        repeatedIds++; continue;
+        if (language && listing.languageOf.get(job.externalId) && listing.languageOf.get(job.externalId) !== language) { listing.languageVariants++; continue; }
+        listing.repeatedIds++; continue;
       }
-      seen.add(job.externalId);
-      languageOf.set(job.externalId, String(entry.data.language ?? ''));
-      jobs.push(job);
+      listing.seen.add(job.externalId);
+      listing.languageOf.set(job.externalId, String(entry.data.language ?? ''));
+      listing.jobs.push(job);
       fresh++;
     }
-    const pageTotal = response.totalCount ?? response.count;
-    pageEvidence.push({ url, checkedAt: captureObservedAt().toISOString(), sha256: createHash('sha256').update(JSON.stringify(response)).digest('hex'), offset: (page - 1) * PAGE_SIZE, pagination: null,
-      ids: pageIds, canonicalIds: pageCanonicalIds, publisherCounter: pageTotal === undefined ? '' : `total=${pageTotal}`, componentCounters: [`entries=${batch.length}`, `languageVariants=${languageVariants}`, `uniqueIds=${seen.size}`, `repeated=${repeatedIds}`, `withoutData=${withoutData}`, `anonymous=${anonymousRows}`] });
+    const pageTotal = totalOf(response);
+    listing.pageEvidence.push({ url: pageUrl(page), checkedAt: captureObservedAt().toISOString(), sha256: createHash('sha256').update(JSON.stringify(response)).digest('hex'), offset: (page - 1) * PAGE_SIZE, pagination: null,
+      ids: pageIds, canonicalIds: pageCanonicalIds, publisherCounter: pageTotal === undefined ? '' : `total=${pageTotal}`, componentCounters: [`entries=${batch.length}`, `languageVariants=${listing.languageVariants}`, `uniqueIds=${listing.seen.size}`, `repeated=${listing.repeatedIds}`, `withoutData=${listing.withoutData}`, `anonymous=${listing.anonymousRows}`] });
+    return fresh;
+  };
 
-    const total = response.totalCount ?? response.count;
+  let listing = newListing();
+  let declaredTotal: number | undefined;
+  const issues = new Set<string>();
+  let pages = 0, termination = 'PAGE_BUDGET_EXHAUSTED';
+  /** Chaque réponse lue, par page (index = page - 1) : la matière d'une relecture. */
+  const responses: PhenomResponse[] = [];
+
+  for (let page = 1; page <= MAX_PAGES; page++) {
+    const response = await fetchJson<PhenomResponse>(pageUrl(page), { headers: HEADERS });
+    responses.push(response);
+    const batch = response.jobs ?? [];
+    pages++;
+    const fresh = consume(listing, page, response);
+
+    const total = totalOf(response);
     if (total !== undefined) {
       if (declaredTotal === undefined) declaredTotal = total;
       else if (declaredTotal !== total) issues.add('SOURCE_TOTAL_CHANGED');
     }
 
-    if (total !== undefined && jobs.length + languageVariants >= total) { termination = 'PUBLISHER_TOTAL_REACHED'; break; }
+    if (total !== undefined && listing.jobs.length + listing.languageVariants >= total) { termination = 'PUBLISHER_TOTAL_REACHED'; break; }
     // A page that adds nothing new is the end of the board (or a loop).
     if (fresh === 0) { termination = batch.length ? 'REPEATED_PAGE' : 'EMPTY_PAGE'; break; }
     /**
@@ -257,10 +272,62 @@ export async function fetchPhenomJobs(config: Record<string, unknown>): Promise<
     if (total === undefined && batch.length < PAGE_SIZE) { termination = 'SHORT_PAGE'; break; }
   }
 
+  /**
+   * LE TOTAL QUI CLIGNOTE (D-482, Foot Locker, RUN du 28/09/2026). Pendant la collecte, l'API annonçait tantôt 3 033,
+   * tantôt 3 031 entrées, d'une seconde à l'autre, sur des requêtes identiques : 3 pages sur 31 dans la capture du
+   * RUN, 7 sur 32 dans celle de la requalification deux minutes plus tôt. Les pages à 3 031 viennent d'un état en
+   * retard (une offre encore en ligne le 29/09 y manque, et l'ordre y est décalé : doublon puis dernière page courte).
+   * Le seul motif SOURCE_TOTAL_CHANGED refusait la preuve, alors que la capture du RUN avait tout lu (3 021 offres
+   * + 12 variantes de langue = 3 033).
+   *
+   * Les pages dont le total diffère du total de référence (celui qu'annonce la majorité des pages) sont relues, au
+   * plus RECONCILIATION_PASSES fois chacune, jusqu'à l'annoncer. Le listing n'est prouvé que si TOUTES ses pages
+   * (au moins jusqu'à la dernière que ce total exige) viennent d'un même état au même total, et que ce total est
+   * atteint exactement, sans identifiant répété, et qu'aucune réponse écartée ne nomme une offre absente de ce listing
+   * (TOTAL_STATES_DISAGREE). Sinon rien ne change : la preuve reste refusée. Un vrai changement pendant la lecture
+   * (le total ne revient pas) n'est jamais réconcilié. Le changement reste nommé.
+   */
+  let reconciled = false;
+  if (issues.has('SOURCE_TOTAL_CHANGED') && (termination === 'PUBLISHER_TOTAL_REACHED' || termination === 'EMPTY_PAGE')) {
+    const counts = new Map<number, number>();
+    for (const response of responses) { const t = totalOf(response); if (t !== undefined) counts.set(t, (counts.get(t) ?? 0) + 1); }
+    const first = totalOf(responses[0]);
+    const reference = [...counts.entries()].sort((a, b) => b[1] - a[1] || (a[0] === first ? -1 : b[0] === first ? 1 : 0))[0]?.[0];
+    if (reference !== undefined && reference > 0) {
+      const assembled = [...responses];
+      /** Les réponses écartées (d'un autre total) : ce qu'elles nomment doit rester dans le listing prouvé. */
+      const discarded: PhenomResponse[] = [];
+      const lastPage = Math.max(assembled.length, Math.ceil(reference / PAGE_SIZE));
+      for (let page = 1; page <= lastPage && page <= MAX_PAGES; page++) {
+        for (let reread = 0; reread < RECONCILIATION_PASSES && (assembled[page - 1] === undefined || totalOf(assembled[page - 1]) !== reference); reread++) {
+          if (assembled[page - 1] !== undefined) discarded.push(assembled[page - 1]);
+          assembled[page - 1] = await fetchJson<PhenomResponse>(pageUrl(page), { headers: HEADERS });
+          pages++;
+        }
+      }
+      if (assembled.length >= lastPage && assembled.every((response) => totalOf(response) === reference)) {
+        const rebuilt = newListing();
+        assembled.forEach((response, index) => consume(rebuilt, index + 1, response));
+        // Une offre lue dans une réponse écartée et absente du listing prouvé : les deux états ne listent pas les mêmes
+        // offres. Prouver ce listing permettrait de déclarer absente une offre qu'on vient de voir servie — refusé.
+        const elsewhere = newListing();
+        discarded.forEach((response) => consume(elsewhere, 0, response));
+        const disagree = [...elsewhere.seen].some((id) => !rebuilt.seen.has(id));
+        if (disagree) issues.add('TOTAL_STATES_DISAGREE');
+        if (!disagree && rebuilt.jobs.length + rebuilt.languageVariants === reference && rebuilt.repeatedIds === 0) {
+          listing = rebuilt; declaredTotal = reference; reconciled = true;
+          termination = 'TOTAL_RECONCILED_BY_PAGE_REREAD'; issues.add('RECONCILED_BY_PAGE_REREAD');
+        }
+      }
+    }
+  }
+
+  const { jobs, rejectedRows, rawCount, withoutData, repeatedIds, languageVariants, anonymousRows, pageEvidence } = listing;
   if (repeatedIds) issues.add('REPEATED_IDS_ACROSS_PAGES');
   if (languageVariants) issues.add('LANGUAGE_VARIANTS_DEDUPLICATED');
   // Proven when every announced entry is accounted for: a distinct requisition, or a language variant of one already kept.
-  const complete = declaredTotal !== undefined && jobs.length + languageVariants === declaredTotal && repeatedIds === 0 && !issues.has('SOURCE_TOTAL_CHANGED') && termination !== 'PAGE_BUDGET_EXHAUSTED';
+  const complete = declaredTotal !== undefined && jobs.length + languageVariants === declaredTotal && repeatedIds === 0 &&
+    (reconciled || !issues.has('SOURCE_TOTAL_CHANGED')) && termination !== 'PAGE_BUDGET_EXHAUSTED';
   if (!complete) issues.add('ENUMERATION_NOT_PROVEN');
   return { jobs, declaredTotal, complete, rejectedRows, truncated: termination === 'PAGE_BUDGET_EXHAUSTED' || (declaredTotal !== undefined && jobs.length + languageVariants < declaredTotal),
     enumeration: { method: 'PUBLISHER_TOTAL_COUNT_JSON_PAGINATION', endpoint: `${origin}/api/jobs`, pages, rawCount, termination, issues: [...issues],
