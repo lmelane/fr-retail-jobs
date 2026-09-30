@@ -1,0 +1,68 @@
+# Témoins Marc O'Polo sans leur garde, commit 02d9dbd
+
+## témoin de la page publiée supprimé: ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 2 ⎯⎯⎯⎯⎯⎯⎯
+   - src/ats/adapters/marcOPolo.test.ts > Marc O'Polo — lecture complète et preuve de fin de liste > une offre que la page publie, que l’API o
+   - src/ats/adapters/marcOPolo.test.ts > Marc O'Polo — lecture complète et preuve de fin de liste > une page en retard (06:45) : les trois of
+
+## offre fermée chez l’éditeur non reconnue: ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
+   - src/ats/adapters/marcOPolo.test.ts > Marc O'Polo — lecture complète et preuve de fin de liste > une page en retard (06:45) : les trois of
+
+## API déclarée par le site non comparée: ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
+   - src/ats/adapters/marcOPolo.test.ts > Marc O'Polo — lecture complète et preuve de fin de liste > une API qui n’est plus celle que le site 
+
+## page illisible sans motif: ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 2 ⎯⎯⎯⎯⎯⎯⎯
+   - src/ats/adapters/marcOPolo.test.ts > Marc O'Polo — lecture complète et preuve de fin de liste > une page de la liste en échec (403) ne pr
+   - src/ats/adapters/marcOPolo.test.ts > Marc O'Polo — lecture complète et preuve de fin de liste > une page sans liste embarquée ne prouve r
+
+## fiche vide `{}` non distinguée: ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 2 ⎯⎯⎯⎯⎯⎯⎯
+   - src/ats/adapters/marcOPolo.test.ts > Marc O'Polo — fiches > une fiche vide chez l’éditeur (offre fermée entre la liste et la fiche) : non
+   - src/ats/adapters/marcOPolo.test.ts > Marc O'Polo — lecture complète et preuve de fin de liste > une page en retard (06:45) : les trois of
+
+## identité de la fiche non vérifiée (collecte et reprise): ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
+   - src/ats/adapters/marcOPolo.test.ts > Marc O'Polo — fiches > une fiche qui répond pour une autre offre est refusée, jamais publiée sous le
+
+## relecture différée des fiches supprimée: ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
+   - src/ats/adapters/marcOPolo.test.ts > Marc O'Polo — fiches > une fiche refusée (403) est relue une fois plus tard, et l’offre revient
+
+## identifiant répété accepté: ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
+   - src/ats/adapters/marcOPolo.test.ts > Marc O'Polo — lecture complète et preuve de fin de liste > un identifiant répété dans la liste de l’
+
+## toutes les fiches en échec rendues comme une source vide: ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
+   - src/ats/adapters/marcOPolo.test.ts > Marc O'Polo — fiches > toutes les fiches en échec : la collecte échoue, elle ne rend pas une source 
+
+## adresse retenue non recalculée à la reprise: ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
+   - src/ats/adapters/marcOPolo.test.ts > Marc O'Polo — configuration, rejeu et reprise > un RAW retenu dont l’adresse ne reproduit pas celle 
+
+## adresse sans minuscules (≠ lien du site): ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
+   - src/ats/adapters/marcOPolo.test.ts > Marc O'Polo — lecture complète et preuve de fin de liste > 116 offres, preuve FULL_RESPONSE, compteu
+
+## code pays du site ignoré: ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
+   - src/ats/adapters/marcOPolo.test.ts > Marc O'Polo — lecture complète et preuve de fin de liste > 116 offres, preuve FULL_RESPONSE, compteu
+
+## configuration hors du site acceptée: ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
+   - src/ats/adapters/marcOPolo.test.ts > Marc O'Polo — configuration, rejeu et reprise > le lecteur est choisi par la famille generic-listing
+
+## lieu du RAW retenu non lu (faits): ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 1 ⎯⎯⎯⎯⎯⎯⎯
+   - src/ats/adapters/marcOPolo.test.ts > Marc O'Polo — configuration, rejeu et reprise > capture puis rejeu hors réseau identiques ; chaque p
+
+## cadence plancher de l’API supprimée: ÉCHOUE (témoin valide)
+   files: 1 failed (1) | tests: 2 ⎯⎯⎯⎯⎯⎯⎯
+   - src/lib/hostGate.marc-o-polo.test.ts > Marc O'Polo — la collecte reste sous le seuil mesuré du pare-feu de l'API > l'API de Marc O'Polo : a
+   - src/lib/hostGate.marc-o-polo.test.ts > Marc O'Polo — la collecte reste sous le seuil mesuré du pare-feu de l'API > seul l'hôte exact de l'A
+
+## état committé restauré : exit 0 | files: 2 passed (2) | tests: 22 passed (22)
+tree clean: True
