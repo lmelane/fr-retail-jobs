@@ -81,6 +81,15 @@ describe('Swatch Group — prouvé seulement quand l\'union des lectures atteint
     expect(reads.get('0')).toBe(2);
   });
 
+  it('une offre servie sous un autre préfixe de langue à la relecture reste une seule offre', async () => {
+    // Prémisse : les pages réelles mêlent les préfixes (en, fr, de, it) d'une offre à l'autre.
+    const fr = (ids: number[], last?: number) => listing(ids, last).replaceAll('/en/job/', '/fr/job/');
+    route({ '0': [listing([1, 2], 1), fr([1, 4], 1)], '1': [listing([2, 3])], '2': [''] }, details(4));
+    const r = await run();
+    expect(r).toMatchObject({ declaredTotal: 4, complete: true });
+    expect(r.enumeration).toMatchObject({ rawCount: 4, termination: 'SECOND_SWEEP_RECONCILED' });
+  });
+
   it('une offre jamais servie en six lectures : non prouvé, relectures bornées à cinq', async () => {
     const reads = route({ '0': [listing([1, 2], 1)], '1': [listing([2, 3])], '2': [''] }, details(3));
     const r = await run();
