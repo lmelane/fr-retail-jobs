@@ -606,11 +606,13 @@ const NATIVE_CLOSURE_MESSAGES = new Set(['Désolé, ce poste est déjà pourvu.'
 export function parseMicrodataDetail(html: string, observedAt = captureObservedAt()): SuccessFactorsDetail {
   const detail: SuccessFactorsDetail = {};
   const $ = cheerio.load(html, { scriptingEnabled: false });
-  // Native RMK closure page observed on Rocher and Puig (HTTP 200), and in English on Crocs (29/09/2026). A mention
-  // inside an ordinary description, a menu, or an unreadable page cannot close a job.
+  // Native RMK closure page observed on Rocher and Puig (HTTP 200), and in English on Crocs and Sephora (29/09/2026). A
+  // mention inside an ordinary description, a menu, or an unreadable page cannot close a job: the whole job block must
+  // be the native message and the page must carry no description. The page MAY keep the posting's title: Aptar
+  // 1418020933 (25/09/2026) shows `itemprop="title"` above the same closure block, and was read as an empty offer.
   const content = $('.content .job');
   const message = content.text().replace(/\s+/g, ' ').trim();
-  if (content.length === 1 && NATIVE_CLOSURE_MESSAGES.has(message) && !$('[itemprop="description"], [itemprop="title"]').text().trim()) {
+  if (content.length === 1 && NATIVE_CLOSURE_MESSAGES.has(message) && !$('[itemprop="description"]').text().trim()) {
     return { closure: { message, observedAt: observedAt.toISOString() } };
   }
 
