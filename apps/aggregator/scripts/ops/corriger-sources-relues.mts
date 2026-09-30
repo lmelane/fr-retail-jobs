@@ -22,7 +22,9 @@
  *
  * Il ne corrige QUE les sources dont l'ATS relu diffère de celui en base : ce sont les boards
  * usurpés, identifiés un par un. Pour chacune, il écrit la famille et la configuration dérivée du
- * portail relu — l'URL que le relecteur a vérifiée lui-même.
+ * portail relu — l'URL que le relecteur a vérifiée lui-même —, complétée des réglages relus de la
+ * colonne facultative `config_relue` (JSON), que le portail ne dit pas (dialecte Phenom, index du
+ * site, champ de marque : PVH, 30/09/2026).
  *
  * Le déclencheur `Source_record_revision` crée une nouvelle révision à chaque écriture : c'est
  * voulu. Changer l'ATS d'une source change ce qu'elle collecte, et les preuves d'identité
@@ -34,6 +36,7 @@ import { PrismaClient } from '@prisma/client';
 import { readFileSync } from 'node:fs';
 import { parseSourceCandidate } from '../../src/connectors/sourceCandidate.js';
 import { tenantKeyOf } from '../../src/connectors/sourceStore.js';
+import { careerConnectOptions, phenomDialect } from '../../src/ats/adapters/phenom.js';
 
 const ECRIRE = process.argv.includes('--ecrire');
 const fichier = process.argv.slice(2).find((a) => !a.startsWith('-'));
@@ -79,6 +82,26 @@ function configPour(ats: string, portail: string): Record<string, unknown> | nul
   }
 }
 
+/**
+ * LES RÉGLAGES RELUS QUE LE PORTAIL NE DIT PAS (PVH, 30/09/2026). Un portail Phenom CareerConnect exige son dialecte,
+ * l'index que le site interroge et le champ de marque (`careerConnectOptions`, `phenom.ts`) : dérivé du seul portail,
+ * `pvh` aurait reçu le dialecte Foot Locker, qui rend HTTP 500 sur ce portail. La colonne facultative `config_relue`
+ * porte ces réglages en JSON. Elle COMPLÈTE la configuration dérivée du portail relu, sans jamais en changer une valeur,
+ * et un réglage que le lecteur refuse est refusé ici, avant toute écriture.
+ */
+function completer(kind: string, config: Record<string, unknown>, relue: string): Record<string, unknown> | string {
+  if (!relue) return config;
+  let extra: unknown;
+  try { extra = JSON.parse(relue); } catch { return 'config_relue illisible (JSON attendu)'; }
+  if (!extra || typeof extra !== 'object' || Array.isArray(extra)) return 'config_relue doit être un objet JSON';
+  for (const [cle, valeur] of Object.entries(extra)) if (Object.hasOwn(config, cle) && config[cle] !== valeur) return `config_relue ne peut pas changer « ${cle} », dérivé du portail relu`;
+  const complete = { ...config, ...(extra as Record<string, unknown>) };
+  if (kind === 'phenom') {
+    try { if (phenomDialect(complete) === 'CAREER_CONNECT_WIDGETS') careerConnectOptions(complete); } catch (error) { return `réglages Phenom refusés par le lecteur : ${(error as Error).message}`; }
+  }
+  return complete;
+}
+
 type Correction = { key: string; maison: string; avant: string; apres: string; portail: string; config: Record<string, unknown>; careersDomain: string; tenantKey: string; revisionId: string | null };
 const corrections: Correction[] = [];
 const refus: string[] = [];
@@ -91,8 +114,10 @@ for (const r of csv) {
   const kind = r.ats === 'oracle_hcm' ? 'oraclehcm' : r.ats;
   if (!s || !kind || kind === s.kind) continue;
   if (!r.portail_url) { refus.push(`${r.cle} : ATS relu « ${r.ats} » mais aucun portail_url`); continue; }
-  const config = configPour(kind, r.portail_url);
-  if (!config) { refus.push(`${r.cle} : famille « ${r.ats} » sans forme de configuration connue — à traiter à la main`); continue; }
+  const derivee = configPour(kind, r.portail_url);
+  if (!derivee) { refus.push(`${r.cle} : famille « ${r.ats} » sans forme de configuration connue — à traiter à la main`); continue; }
+  const config = completer(kind, derivee, r.config_relue ?? '');
+  if (typeof config === 'string') { refus.push(`${r.cle} : ${config}`); continue; }
   try {
     const careersDomain = new URL(r.portail_url).hostname;
     const candidate = parseSourceCandidate({ key: s.key, maison: s.maison, kind, config, careersDomain, tier: s.tier });
