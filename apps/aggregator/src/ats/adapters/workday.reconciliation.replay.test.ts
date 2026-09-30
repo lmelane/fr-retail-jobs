@@ -10,7 +10,7 @@ vi.mock('../../lib/sourceBudget.js', async (importOriginal) => ({
 import { fetchWorkdayJobs } from './workday.js';
 
 /**
- * LA SECONDE PASSE SE REJOUE HORS RÉSEAU (D-482, 30/09/2026).
+ * LA SECONDE PASSE ET LA RELECTURE DES LIGNES SANS CHEMIN SE REJOUENT HORS RÉSEAU (D-482, 30/09/2026).
  *
  * La qualification rejoue chaque capture avec le lecteur du jour (`sourceValidation.ts`) : les requêtes répétées d'un
  * même offset y sont servies dans l'ordre de leur capture, par empreinte (`capture/batch.ts`). Ce témoin passe par le
@@ -50,7 +50,7 @@ async function collectThenReplay(config: Record<string, unknown>, plan: (offset:
 beforeEach(() => vi.stubEnv('PIPELINE_PAUSED', '0'));
 afterEach(() => { vi.unstubAllGlobals(); vi.unstubAllEnvs(); });
 
-describe('Workday — capture puis rejeu hors réseau de la seconde passe D-482', () => {
+describe('Workday — capture puis rejeu hors réseau des relectures D-482', () => {
   it('Nordstrom 29/09 : la seconde passe entière, archivée, se rejoue à l’identique', async () => {
     const byOffset = new Map(pages('workday-nordstrom-liste-20260929.json.gz').map((p) => [p.offset, p.body]));
     const { live, replay, records, reads, left, networkAfterReplay } = await collectThenReplay(
@@ -59,6 +59,19 @@ describe('Workday — capture puis rejeu hors réseau de la seconde passe D-482'
     // Prémisse : la page 0 a été demandée deux fois (deux passes), 135 réponses archivées.
     expect(reads.get(0)).toBe(2);
     expect(records).toHaveLength(135);
+    expect(live.complete).toBe(true);
+    expect(replay).toEqual(live);
+    expect(left).toBe(0);
+    expect(networkAfterReplay).toBe(0);
+  });
+
+  it('Mango 29/09 : la relecture des pages 300 et 320, archivée, se rejoue à l’identique', async () => {
+    const byOffset = new Map(pages('workday-mango-liste-20260929.json.gz').map((p) => [p.offset, p.body]));
+    const { live, replay, records, reads, left, networkAfterReplay } = await collectThenReplay(
+      { tenant: 'mango', site: 'Mango_Work_Your_Passion', origin: 'https://mango.wd3.myworkdayjobs.com', withDescriptions: false },
+      (offset) => byOffset.get(offset)!);
+    expect(reads.get(300)).toBe(2); expect(reads.get(320)).toBe(2);
+    expect(records).toHaveLength(86);
     expect(live.complete).toBe(true);
     expect(replay).toEqual(live);
     expect(left).toBe(0);
