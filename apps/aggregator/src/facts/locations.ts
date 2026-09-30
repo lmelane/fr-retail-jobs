@@ -62,7 +62,11 @@ export function readLocations(type: string, raw: unknown): Fact<SourceLocation[]
     postalCode: 'address/postalCode', country: 'address/addressCountry', latitude: 'geo/latitude', longitude: 'geo/longitude' });
   const named: Fields = { label: 'full_location', city: 'city', region: 'state', postalCode: 'postal_code', country: 'country', latitude: 'latitude', longitude: 'longitude' };
   switch (kind) {
-    case 'GENERIC_JSONLD': jsonLd('/jobLocation'); break;
+    case 'GENERIC_JSONLD':
+      // Marc O'Polo (D-485) : la fiche de l'API, retenue telle quelle (`marcOPolo.ts`), porte le lieu hors JSON-LD.
+      if (at(raw, '/source') === 'marc-o-polo-vacancies-v1') add('/detail', { label: 'location', city: 'location', region: 'region', postalCode: 'zipCode', country: 'country' });
+      else jsonLd('/jobLocation');
+      break;
     case 'TEAMTAILOR': jsonLd('/_jobposting/jobLocation'); break;
     case 'ICIMS': case 'ALTAMIRA': jsonLd('/postingEvidence/jobPosting/jobLocation'); break;
     case 'SWATCH_GROUP': jsonLd('/jsonLd/jobLocation'); break;

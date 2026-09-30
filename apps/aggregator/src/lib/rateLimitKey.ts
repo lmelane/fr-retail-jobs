@@ -90,17 +90,20 @@ export function rateLimitKeyFor(url: string, explicit?: string | null): string {
 const PACE_FLOOR_MS: Readonly<Record<string, number>> = {
   'tenant:eightfold': 350,
   /*
-   * L'API d'offres de Marc O'Polo (D-485, mesuré le 30/09/2026 en lecture directe, archive
-   * `audits/2026-09-30/marc-o-polo/`). Son pare-feu AWS a laissé passer 98 requêtes en 49 s (09:32:12 → 09:33:01), puis
-   * a répondu 403 `{"message":"Forbidden"}` à toutes les suivantes pendant près de cinq minutes (dernier refus 09:37:49,
-   * lectures rendues à 09:38) : environ 100 requêtes sur cinq minutes glissantes, pour une même adresse. Le site lui-même
-   * ne le subit pas : son serveur signe ses appels d'un en-tête de contournement que nous n'envoyons pas. Une collecte
-   * complète en demande environ 118 (liste et fiches), deux fois par RUN quand la qualification est renouvelée.
-   * 3,5 s entre deux départs : au plus 85 requêtes sur cinq minutes, 14 % sous le seuil estimé, comme pour Eightfold ;
-   * environ sept minutes par lecture. La clé est l'hôte exact de l'API déclarée par le site : si le site en change, la
-   * collecte le signale (`PUBLISHED_API_URL_CHANGED`) et cette cadence suit la nouvelle configuration relue.
+   * L'API d'offres de Marc O'Polo (D-485, mesuré le 30/09/2026 en deux lectures directes, archive
+   * `audits/2026-09-30/marc-o-polo/`). Son pare-feu AWS répond 403 `{"message":"Forbidden"}` à toutes les requêtes
+   * pendant plusieurs minutes une fois un seuil franchi :
+   *  - 1re lecture, cadence de base : 98 requêtes acceptées en 49 s (09:32:12 → 09:33:01), puis refus jusqu'à 09:37:49 ;
+   *  - 2e lecture, 3,5 s entre deux départs (17 par minute) : 56 requêtes acceptées (11:16:17 → 11:19:33), refus
+   *    jusqu'à 11:22, 47 acceptées, refus de 11:25:33 à 11:28:34.
+   * Les deux s'expliquent par une règle d'environ 50 requêtes sur cinq minutes glissantes, que le pare-feu applique avec
+   * une à deux minutes de retard (d'où les 98 de la rafale) ; il ne le publie pas. Le site lui-même ne le subit pas :
+   * son serveur signe ses appels d'un en-tête de contournement que nous n'envoyons pas. Une collecte complète en demande
+   * environ 118 (liste et fiches). 7 s entre deux départs : au plus 43 requêtes sur cinq minutes, 14 % sous le seuil
+   * estimé, comme pour Eightfold ; environ quatorze minutes par lecture. La clé est l'hôte exact de l'API déclarée par le
+   * site : si le site en change, la collecte le signale (`PUBLISHED_API_URL_CHANGED`) et la configuration est relue.
    */
-  'host:vhfco59ro6.execute-api.eu-central-1.amazonaws.com': 3_500,
+  'host:vhfco59ro6.execute-api.eu-central-1.amazonaws.com': 7_000,
 };
 
 /** L'écart minimal imposé à une clé de limitation, 0 quand l'éditeur n'a pas de seuil mesuré. */

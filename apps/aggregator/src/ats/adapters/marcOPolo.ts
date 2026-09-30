@@ -220,7 +220,8 @@ export async function fetchMarcOPoloJobs(config: Record<string, unknown>): Promi
   try { published = readPublishedList(await fetchText(settings.startUrl)); }
   catch (error) { rethrowUnlessPublisherFailure(error); published = { problem: 'PAGE_FETCH_FAILED' }; }
   if (published.problem) issues.push(`PUBLISHED_LIST_UNREADABLE:${published.problem}`);
-  if (published.declaredApiUrl !== settings.apiUrl) issues.push('PUBLISHED_API_URL_CHANGED');
+  // Une page non reçue ne déclare rien : son échec est déjà nommé, il ne devient pas un changement d'API.
+  if (published.problem !== 'PAGE_FETCH_FAILED' && published.declaredApiUrl !== settings.apiUrl) issues.push('PUBLISHED_API_URL_CHANGED');
 
   // 2. La liste entière, en une réponse.
   const endpoint = `${settings.apiUrl}/vacancies?language=${settings.language}`;

@@ -26,6 +26,10 @@
  * colonne facultative `config_relue` (JSON), que le portail ne dit pas (dialecte Phenom, index du
  * site, champ de marque : PVH, 30/09/2026).
  *
+ * Depuis D-485 (Marc O'Polo, 30/09/2026), une source qui GARDE sa famille est aussi corrigée quand sa ligne porte
+ * `config_relue` et que la configuration obtenue diffère de celle en base : un lecteur dédié choisi dans la famille
+ * `generic-listing` (`reader`), validé par le parseur de ce lecteur avant toute écriture.
+ *
  * Le déclencheur `Source_record_revision` crée une nouvelle révision à chaque écriture : c'est
  * voulu. Changer l'ATS d'une source change ce qu'elle collecte, et les preuves d'identité
  * antérieures ne valent plus pour cette configuration.
@@ -37,6 +41,8 @@ import { readFileSync } from 'node:fs';
 import { parseSourceCandidate } from '../../src/connectors/sourceCandidate.js';
 import { tenantKeyOf } from '../../src/connectors/sourceStore.js';
 import { careerConnectOptions, phenomDialect } from '../../src/ats/adapters/phenom.js';
+import { MARC_O_POLO_READER, marcOPoloSettings } from '../../src/ats/adapters/marcOPolo.js';
+import { evidenceHash } from '../../src/lib/evidenceHash.js';
 
 const ECRIRE = process.argv.includes('--ecrire');
 const fichier = process.argv.slice(2).find((a) => !a.startsWith('-'));
@@ -101,6 +107,11 @@ function completer(kind: string, config: Record<string, unknown>, relue: string)
   if (kind === 'phenom') {
     try { if (phenomDialect(complete) === 'CAREER_CONNECT_WIDGETS') careerConnectOptions(complete); } catch (error) { return `réglages Phenom refusés par le lecteur : ${(error as Error).message}`; }
   }
+  // Un lecteur dédié choisi dans la même famille (Marc O'Polo, D-485) : ses réglages passent par le parseur du lecteur.
+  if ((kind === 'generic-listing' || kind === 'generic-jsonld') && complete.reader !== undefined) {
+    if (complete.reader !== MARC_O_POLO_READER) return `lecteur « ${String(complete.reader)} » inconnu de ce script`;
+    try { marcOPoloSettings(complete); } catch (error) { return `réglages refusés par le lecteur Marc O'Polo : ${(error as Error).message}`; }
+  }
   return complete;
 }
 
@@ -114,7 +125,12 @@ const base = new Map((await prisma.$queryRawUnsafe<Array<{ key: string; kind: st
 for (const r of csv) {
   const s = base.get(r.cle);
   const kind = r.ats === 'oracle_hcm' ? 'oraclehcm' : r.ats;
-  if (!s || !kind || kind === s.kind) continue;
+  /**
+   * Même famille : la ligne n'est une correction que si elle porte des réglages relus (`config_relue`) — un lecteur
+   * dédié choisi dans la famille (Marc O'Polo, D-485). Sans eux, comme avant, rien n'est touché ; avec eux, la ligne
+   * n'est écrite que si la configuration obtenue diffère de celle en base (plus bas).
+   */
+  if (!s || !kind || (kind === s.kind && !r.config_relue)) continue;
   if (!r.portail_url) { refus.push(`${r.cle} : ATS relu « ${r.ats} » mais aucun portail_url`); continue; }
   const derivee = configPour(kind, r.portail_url);
   if (!derivee) { refus.push(`${r.cle} : famille « ${r.ats} » sans forme de configuration connue — à traiter à la main`); continue; }
@@ -124,6 +140,9 @@ for (const r of csv) {
   try {
     const careersDomain = new URL(r.portail_url).hostname;
     const candidate = parseSourceCandidate({ key: s.key, maison: s.maison, kind, config, careersDomain, tier: s.tier });
+    // Comparées à l'ordre des clés près : PostgreSQL range les clés d'un jsonb, une ligne déjà appliquée (PVH) doit
+    // être reconnue comme telle et ne jamais créer de révision.
+    if (kind === s.kind && evidenceHash(candidate.config) === evidenceHash(s.config)) continue;
     corrections.push({ key: r.cle, maison: s.maison, avant: s.kind, apres: candidate.kind, portail: r.portail_url,
       config: candidate.config, careersDomain, tenantKey: tenantKeyOf(kind, JSON.stringify(candidate.config), careersDomain, s.maison),
       revisionId: s.currentRevisionId });
