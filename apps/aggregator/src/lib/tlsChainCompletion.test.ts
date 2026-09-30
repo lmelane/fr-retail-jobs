@@ -163,6 +163,9 @@ describe('la chaîne incomplète est complétée comme un navigateur', () => {
     const { port } = await serve('leaf', 'leaf', 'leaf-wrong-host');
     const h = harness();
     expect(await h.get(port)).toEqual({ code: 'ERR_TLS_CERT_ALTNAME_INVALID' });
+    // Une reprise de session sauterait le contrôle du nom : aucune session n'est retenue d'un refus
+    // (Node n'émet `session` qu'après vérification, mesuré le 30/09/2026 en TLS 1.2 et 1.3).
+    expect(await h.get(port)).toEqual({ code: 'ERR_TLS_CERT_ALTNAME_INVALID' });
   });
   it('une feuille renouvelée par un autre émetteur n’hérite pas de l’ancienne complétion', async () => {
     const h = harness();
@@ -226,6 +229,17 @@ describe('périmètre — rien ne change hors de la décision', () => {
     expect(h.fetched).toEqual([]);
     expect(h.refused).toEqual([]);
   });
+  it('une origine hors liste reçoit le Pool d’undici avec les options de l’Agent, pas notre connecteur', async () => {
+    // Les options de l'Agent et celles de la fabrique diffèrent ICI (en production, c'est le même objet) :
+    // seule la résolution de l'Agent est appelée si la fabrique laisse l'origine à undici.
+    const { port } = await serve('leaf');
+    const resolved: string[] = [];
+    const agentLookup: LookupFunction = (host, options, callback) => { resolved.push(host); loopback(host, options, callback); };
+    const agent = new Agent({ connect: { lookup: agentLookup, timeout: 5_000 }, factory: chainCompletingFactory(BASE, { hosts: new Set([HOST]), roots: ROOTS }) });
+    cleanups.push(() => agent.destroy());
+    await expect(request(`https://unlisted.test:${port}/`, { dispatcher: agent })).rejects.toMatchObject({ code: LEAF_ONLY });
+    expect(resolved).toEqual(['unlisted.test']);
+  });
   it('une autre erreur TLS n’est jamais complétée (feuille auto-signée)', async () => {
     const { port } = await serve('leaf-self-signed');
     const h = harness();
@@ -234,13 +248,18 @@ describe('périmètre — rien ne change hors de la décision', () => {
     expect(h.refused).toEqual([]);
   });
   it('le connecteur seul applique aussi la liste (défense si la fabrique changeait)', async () => {
-    const { port } = await serve('leaf');
+    // Une feuille qui NOMME l'hôte hors liste : sans la liste du connecteur, rien d'autre ne l'arrêterait.
+    const server = await serve('leaf-wrong-host');
     const fetched: string[] = [];
-    const connect = chainCompletingConnector(BASE, { hosts: new Set([HOST]), roots: ROOTS, fetchIssuer: async url => { fetched.push(url); return der('inter'); } });
-    const code = await new Promise<string | undefined>(resolve => connect({ protocol: 'https:', hostname: 'unlisted.test', port: String(port) },
+    const refused: ChainRefused[] = [];
+    const connect = chainCompletingConnector(BASE, { hosts: new Set([HOST]), roots: ROOTS,
+      fetchIssuer: async url => { fetched.push(url); return der('inter'); }, onRefused: event => { refused.push(event); } });
+    const code = await new Promise<string | undefined>(resolve => connect({ protocol: 'https:', hostname: 'other.test', port: String(server.port) },
       (error, socket) => { socket?.destroy(); resolve(codeOf(error)); }));
     expect(code).toBe(LEAF_ONLY);
+    expect(server.connections()).toBe(1); // l'essai normal, et aucune sonde
     expect(fetched).toEqual([]);
+    expect(refused).toEqual([]);
   });
 });
 
@@ -289,8 +308,9 @@ describe('téléchargement AIA — garde SSRF, bornes de taille et de temps', ()
     await expect(issuerFetcher({ lookup: privateDns, timeout: 1_000 })(server.url('/inter.crt'))).rejects.toThrow('DNS:aia.test');
     expect(server.requests()).toBe(0);
   });
-  it('refuse une taille annoncée trop grande', async () => {
-    const server = await aiaServer((_req, res) => { res.setHeader('content-length', '100000'); res.end(Buffer.alloc(100_000)); });
+  it('refuse une taille annoncée trop grande sans attendre le corps', async () => {
+    // Les en-têtes seuls, jamais le corps : seule la longueur annoncée permet de refuser à temps.
+    const server = await aiaServer((_req, res) => { res.writeHead(200, { 'content-length': '100000' }); res.flushHeaders(); });
     await expect(fetcher()(server.url('/big'))).rejects.toThrow('issuer: over 4096 bytes');
   });
   it('coupe un corps sans longueur qui dépasse la borne', async () => {

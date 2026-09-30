@@ -34,9 +34,9 @@ const MUTATIONS = [
   ['M6', 'la feuille nomme l’hôte', [['if (!leaf.checkHost(host)) refuse(', 'if (false) refuse(']]],
   ['M7', 'seul l’échec « feuille seule » déclenche la complétion', [['if (errorCode(args[0]) !== LEAF_ONLY) return callback(...args);', 'if (!args[0]) return callback(...args);']]],
   ['M8', 'liste des hôtes (connecteur ET fabrique)', [
-    ["if (opts.protocol !== 'https:' || !hosts.has(host)) return plain(opts, callback);", "if (opts.protocol !== 'https:') return plain(opts, callback);"],
+    ["if (opts.protocol !== 'https:' || !hosts.has(host)) return plain(opts, reply);", "if (opts.protocol !== 'https:') return plain(opts, reply);"],
     ["protocol === 'https:' && hosts.has(hostname)", "protocol === 'https:'"]]],
-  ['M8a', 'liste des hôtes (connecteur seul)', [["if (opts.protocol !== 'https:' || !hosts.has(host)) return plain(opts, callback);", "if (opts.protocol !== 'https:') return plain(opts, callback);"]]],
+  ['M8a', 'liste des hôtes (connecteur seul)', [["if (opts.protocol !== 'https:' || !hosts.has(host)) return plain(opts, reply);", "if (opts.protocol !== 'https:') return plain(opts, reply);"]]],
   ['M8b', 'liste des hôtes (fabrique seule)', [["protocol === 'https:' && hosts.has(hostname)", "protocol === 'https:'"]]],
   ['M9', 'garde SSRF de l’URL AIA', [['    assertPublicUrl(url);\n', '    void url;\n']]],
   ['M10', 'résolution DNS publique du téléchargement AIA', [['connect: { lookup: base.lookup, timeout: base.timeout } });\n  return async url', 'connect: { timeout: base.timeout } });\n  return async url']]],

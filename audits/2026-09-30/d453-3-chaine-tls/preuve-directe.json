@@ -1,0 +1,51 @@
+{
+  "node": "v22.23.3",
+  "at": "2026-09-30T04:48:17.058Z",
+  "host": "careers.ralphlauren.com",
+  "listing": "https://careers.ralphlauren.com/en_US/CareersCorporate/SearchJobsCorporate/?jobOffset=0&listFilterMode=1",
+  "premise": "UNABLE_TO_VERIFY_LEAF_SIGNATURE",
+  "transport": {
+    "status": 202,
+    "wafAction": "challenge",
+    "contentType": "text/html; charset=UTF-8",
+    "bytes": 0,
+    "cards": 0,
+    "declaredTotal": null
+  },
+  "robots": {
+    "status": 200,
+    "wafAction": null,
+    "contentType": "text/plain; charset=UTF-8",
+    "bytes": 1221
+  },
+  "underAccessPolicy": {
+    "failed": {
+      "name": "CaptureUnavailableError",
+      "message": "Native response capture unavailable; extraction stopped"
+    }
+  },
+  "adapterPath": {
+    "bytes": 132678,
+    "cards": 6,
+    "declaredTotal": 224
+  },
+  "events": [
+    {
+      "event": "tls.chain_completed",
+      "data": {
+        "host": "careers.ralphlauren.com",
+        "url": "http://crt.sectigo.com/SectigoPublicServerAuthenticationCAOVR36.crt",
+        "issuer": "C=GB, O=Sectigo Limited, CN=Sectigo Public Server Authentication CA OV R36",
+        "fingerprint256": "65:42:D1:76:BE:D5:0F:19:3C:0C:E2:97:AE:44:EC:D8:A0:A8:6B:EC:2E:DE:68:27:69:34:40:59:B4:E7:85:30"
+      }
+    },
+    {
+      "event": "waf.bootstrap_completed",
+      "data": {
+        "message": "[waf] https://careers.ralphlauren.com: amorçage réussi en 8204 ms",
+        "details": []
+      }
+    }
+  ],
+  "verdict": "CHAINE_COMPLETEE"
+}

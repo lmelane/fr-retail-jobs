@@ -1,0 +1,104 @@
+Témoin sans mutation : 46 tests, 0 en échec
+
+M1 — sans « intermédiaire qui n’est pas une AC (CA:TRUE, keyCertSign) » : 2 témoin(s) ROUGE(S)
+   ✗ attaques — l’intermédiaire servi par l’AIA est refusé, la source échoue comme avant certificat qui n’est pas une AC
+   ✗ attaques — l’intermédiaire servi par l’AIA est refusé, la source échoue comme avant AC sans keyCertSign
+
+M2 — sans « intermédiaire auto-émis ou auto-signé » : 1 témoin(s) ROUGE(S)
+   ✗ attaques — l’intermédiaire servi par l’AIA est refusé, la source échoue comme avant AC auto-signée (deviendrait une ancre)
+
+M3 — sans « validité de l’intermédiaire » : 2 témoin(s) ROUGE(S)
+   ✗ attaques — l’intermédiaire servi par l’AIA est refusé, la source échoue comme avant intermédiaire expiré
+   ✗ lecture de l’AIA et contrôles unitaires accepte l’intermédiaire sain ; sans ancre, ou hors de sa validité, il est refusé
+
+M4 — sans « l’intermédiaire a signé la feuille » : 1 témoin(s) ROUGE(S)
+   ✗ attaques — l’intermédiaire servi par l’AIA est refusé, la source échoue comme avant intermédiaire au même nom qui n’a pas signé la feuille
+
+M5 — sans « l’intermédiaire est signé par une racine de confiance » : 4 témoin(s) ROUGE(S)
+   ✗ la chaîne incomplète est complétée comme un navigateur une feuille renouvelée par un autre émetteur n’hérite pas de l’ancienne complétion
+   ✗ attaques — l’intermédiaire servi par l’AIA est refusé, la source échoue comme avant intermédiaire chaîné à une racine non reconnue
+   ✗ attaques — l’intermédiaire servi par l’AIA est refusé, la source échoue comme avant après un refus, l’hôte échoue comme avant sans nouveau téléchargement, puis réessaie
+   ✗ lecture de l’AIA et contrôles unitaires accepte l’intermédiaire sain ; sans ancre, ou hors de sa validité, il est refusé
+
+M2+M5 — sans « auto-signé ET racine de confiance (seuls remparts contre l’AC d’un attaquant) » : 5 témoin(s) ROUGE(S)
+   ✗ la chaîne incomplète est complétée comme un navigateur une feuille renouvelée par un autre émetteur n’hérite pas de l’ancienne complétion
+   ✗ attaques — l’intermédiaire servi par l’AIA est refusé, la source échoue comme avant AC auto-signée (deviendrait une ancre)
+   ✗ attaques — l’intermédiaire servi par l’AIA est refusé, la source échoue comme avant intermédiaire chaîné à une racine non reconnue
+   ✗ attaques — l’intermédiaire servi par l’AIA est refusé, la source échoue comme avant après un refus, l’hôte échoue comme avant sans nouveau téléchargement, puis réessaie
+   ✗ lecture de l’AIA et contrôles unitaires accepte l’intermédiaire sain ; sans ancre, ou hors de sa validité, il est refusé
+
+M6 — sans « la feuille nomme l’hôte » : 1 témoin(s) ROUGE(S)
+   ✗ attaques — l’intermédiaire servi par l’AIA est refusé, la source échoue comme avant feuille au mauvais nom d’hôte : refusé AVANT tout téléchargement
+
+M7 — sans « seul l’échec « feuille seule » déclenche la complétion » : 1 témoin(s) ROUGE(S)
+   ✗ périmètre — rien ne change hors de la décision une autre erreur TLS n’est jamais complétée (feuille auto-signée)
+
+M8 — sans « liste des hôtes (connecteur ET fabrique) » : 3 témoin(s) ROUGE(S)
+   ✗ périmètre — rien ne change hors de la décision un hôte absent de la liste échoue exactement comme avant, sans téléchargement
+   ✗ périmètre — rien ne change hors de la décision une origine hors liste reçoit le Pool d’undici avec les options de l’Agent, pas notre connecteur
+   ✗ périmètre — rien ne change hors de la décision le connecteur seul applique aussi la liste (défense si la fabrique changeait)
+
+M8a — sans « liste des hôtes (connecteur seul) » : 1 témoin(s) ROUGE(S)
+   ✗ périmètre — rien ne change hors de la décision le connecteur seul applique aussi la liste (défense si la fabrique changeait)
+
+M8b — sans « liste des hôtes (fabrique seule) » : 1 témoin(s) ROUGE(S)
+   ✗ périmètre — rien ne change hors de la décision une origine hors liste reçoit le Pool d’undici avec les options de l’Agent, pas notre connecteur
+
+M9 — sans « garde SSRF de l’URL AIA » : 9 témoin(s) ROUGE(S)
+   ✗ téléchargement AIA — garde SSRF, bornes de taille et de temps refuse http://169.254.169.254/latest/meta-data/ avant toute connexion
+   ✗ téléchargement AIA — garde SSRF, bornes de taille et de temps refuse http://127.0.0.1/inter.crt avant toute connexion
+   ✗ téléchargement AIA — garde SSRF, bornes de taille et de temps refuse http://localhost/inter.crt avant toute connexion
+   ✗ téléchargement AIA — garde SSRF, bornes de taille et de temps refuse http://[::1]/inter.crt avant toute connexion
+   ✗ téléchargement AIA — garde SSRF, bornes de taille et de temps refuse http://metadata.google.internal/ avant toute connexion
+   ✗ téléchargement AIA — garde SSRF, bornes de taille et de temps refuse ldap://aia.test/cn=inter avant toute connexion
+   ✗ téléchargement AIA — garde SSRF, bornes de taille et de temps refuse file:///etc/passwd avant toute connexion
+   ✗ téléchargement AIA — garde SSRF, bornes de taille et de temps refuse http://user:pass@aia.test/inter.crt avant toute connexion
+   ✗ téléchargement AIA — garde SSRF, bornes de taille et de temps bout en bout : une feuille dont l’AIA vise l’adresse de métadonnées est refusée
+
+M10 — sans « résolution DNS publique du téléchargement AIA » : 6 témoin(s) ROUGE(S)
+   ✗ téléchargement AIA — garde SSRF, bornes de taille et de temps rend les octets d’une réponse 200 bornée
+   ✗ téléchargement AIA — garde SSRF, bornes de taille et de temps refuse un nom qui résout vers une adresse privée (DNS épinglé, pas de seconde résolution)
+   ✗ téléchargement AIA — garde SSRF, bornes de taille et de temps refuse une taille annoncée trop grande sans attendre le corps
+   ✗ téléchargement AIA — garde SSRF, bornes de taille et de temps coupe un corps sans longueur qui dépasse la borne
+   ✗ téléchargement AIA — garde SSRF, bornes de taille et de temps ne suit aucune redirection et refuse tout statut autre que 200
+   ✗ téléchargement AIA — garde SSRF, bornes de taille et de temps bout en bout : une feuille dont l’AIA vise un nom qui résout vers une adresse privée est refusée
+
+M11 — sans « borne de taille en flux » : 1 témoin(s) ROUGE(S)
+   ✗ téléchargement AIA — garde SSRF, bornes de taille et de temps coupe un corps sans longueur qui dépasse la borne
+
+M11b — sans « borne de taille annoncée (sortie anticipée) » : 1 témoin(s) ROUGE(S)
+   ✗ téléchargement AIA — garde SSRF, bornes de taille et de temps refuse une taille annoncée trop grande sans attendre le corps
+
+M12 — sans « délai total du téléchargement » : 2 témoin(s) ROUGE(S)
+   ✗ téléchargement AIA — garde SSRF, bornes de taille et de temps abandonne un corps qui traîne au-delà du délai total
+   ✗ téléchargement AIA — garde SSRF, bornes de taille et de temps abandonne un hôte qui ne répond jamais
+
+M13 — sans « statut 200 seulement (pas de redirection) » : 1 témoin(s) ROUGE(S)
+   ✗ téléchargement AIA — garde SSRF, bornes de taille et de temps ne suit aucune redirection et refuse tout statut autre que 200
+
+M14 — sans « le rejeu revérifie tout (rejectUnauthorized) » : 2 témoin(s) ROUGE(S)
+   ✗ la chaîne incomplète est complétée comme un navigateur le rejeu revérifie TOUT : une feuille changée après la sonde est refusée (nom d’hôte)
+   ✗ la chaîne incomplète est complétée comme un navigateur une feuille renouvelée par un autre émetteur n’hérite pas de l’ancienne complétion
+
+M15 — sans « la chaîne rejouée finit sur les racines » : 6 témoin(s) ROUGE(S)
+   ✗ la chaîne incomplète est complétée comme un navigateur télécharge l’intermédiaire désigné par l’AIA, le vérifie, et la requête aboutit
+   ✗ la chaîne incomplète est complétée comme un navigateur lit aussi un intermédiaire servi en PEM
+   ✗ la chaîne incomplète est complétée comme un navigateur une connexion suivante réutilise la complétion : ni sonde ni téléchargement
+   ✗ la chaîne incomplète est complétée comme un navigateur au-delà du TTL, l’intermédiaire est téléchargé à nouveau
+   ✗ la chaîne incomplète est complétée comme un navigateur le rejeu revérifie TOUT : une feuille changée après la sonde est refusée (nom d’hôte)
+   ✗ la chaîne incomplète est complétée comme un navigateur une feuille renouvelée par un autre émetteur n’hérite pas de l’ancienne complétion
+
+M16 — sans « une feuille renouvelée oublie la complétion » : 1 témoin(s) ROUGE(S)
+   ✗ la chaîne incomplète est complétée comme un navigateur une feuille renouvelée par un autre émetteur n’hérite pas de l’ancienne complétion
+
+M17 — sans « cache négatif après refus » : 1 témoin(s) ROUGE(S)
+   ✗ attaques — l’intermédiaire servi par l’AIA est refusé, la source échoue comme avant après un refus, l’hôte échoue comme avant sans nouveau téléchargement, puis réessaie
+
+M18 — sans « TTL du cache par URL » : 1 témoin(s) ROUGE(S)
+   ✗ la chaîne incomplète est complétée comme un navigateur au-delà du TTL, l’intermédiaire est téléchargé à nouveau
+
+M19 — sans « un seul certificat PEM » : 1 témoin(s) ROUGE(S)
+   ✗ attaques — l’intermédiaire servi par l’AIA est refusé, la source échoue comme avant plusieurs certificats servis d’un coup
+
+Source restaurée à l’identique (sha256 1480e70cec89). Mutations sans témoin rouge : 0.
+exit=0
