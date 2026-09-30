@@ -8,6 +8,7 @@ import { paramsMultiples } from '@/lib/params-multiples';
 import { projeterLignes } from '@/lib/projection';
 import { SearchQueryError } from '@/lib/search-intent';
 import { lireBornesExamen } from '@/lib/examen-alerte';
+import { offerPath } from '@/lib/offer-url';
 
 /**
  * L'EXAMEN D'UNE ALERTE, pour le moteur d'alertes du BACKEND (R-130 §3, §10 ; D-464 §1, §3).
@@ -17,7 +18,8 @@ import { lireBornesExamen } from '@/lib/examen-alerte';
  *
  * Mêmes paramètres que `/api/jobs` (le contrat de `/emplois`), plus `entreeApres` et `publieeApres` (ISO 8601).
  * Réponse : `total` (toute la recherche, comme le nombre affiché sur `/emplois`), `nouvelles` (entrées après le
- * filigrane et publiées après la borne, ou sans date), et les 50 premières nouvelles dans l'ordre de `/emplois`.
+ * filigrane et publiées après la borne, ou sans date), et les 50 premières nouvelles dans l'ordre de `/emplois`, chacune
+ * avec le `chemin` de sa fiche sur le site.
  */
 export const dynamic = 'force-dynamic';
 
@@ -41,7 +43,9 @@ export async function GET(request: NextRequest) {
       total: examen.total,
       nouvelles: examen.nouvelles,
       filtresRefuses: examen.filtresRefuses,
-      jobs: projeterLignes(examen.jobs, examen.perimetre.langueDesLibelles),
+      // Le chemin de la fiche, calculé ICI par l'algorithme unique (`offerPath`) : le backend le colle derrière l'hôte
+      // du site sans jamais recopier la règle du slug.
+      jobs: projeterLignes(examen.jobs, examen.perimetre.langueDesLibelles).map((j) => ({ ...j, chemin: offerPath(j) })),
     }, { headers: entetes });
   } catch (error) {
     if (error instanceof PerimetreRequisError || error instanceof CurseurInvalideError || error instanceof SearchQueryError) {

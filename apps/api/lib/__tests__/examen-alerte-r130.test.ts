@@ -132,6 +132,22 @@ describe.skipIf(!enabled)('l’examen sur une base locale dédiée', () => {
     }
   });
 
+  it('la route rend le chemin de chaque fiche, calculé par offerPath', async () => {
+    vi.stubEnv('CATALOGUE_API_KEY_BACKEND', 'cle-du-backend');
+    try {
+      const { GET } = await import('../../app/api/alertes/examen/route');
+      const qs = new URLSearchParams({ marche: 'FR', groupe: groupe, entreeApres: FILIGRANE.toISOString(), publieeApres: IL_Y_A_30_JOURS.toISOString() });
+      const r = await GET(new NextRequest(`http://catalogue.test/api/alertes/examen?${qs}`, { headers: { authorization: 'Bearer cle-du-backend' } }));
+      expect(r.status).toBe(200);
+      const corps = await r.json();
+      expect(corps.nouvelles).toBe(3);
+      expect(corps.jobs.map((j: { chemin: string }) => j.chemin).sort()).toEqual(
+        CAS.filter((c) => c.nouvelle).map((c) => `/emplois/conseiller-de-vente-${prefixe}${c.id}`).sort());
+    } finally {
+      vi.unstubAllEnvs();
+    }
+  });
+
   it('un filigrane postérieur à toutes les entrées ne rend aucune nouvelle', async () => {
     const r = await examinerAlerte(filtres(), EXAMEN, IL_Y_A_30_JOURS);
     expect(r.nouvelles).toBe(0);
