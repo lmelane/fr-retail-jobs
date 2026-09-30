@@ -4,6 +4,8 @@ import { captureObservedAt } from '../../capture/context.js';
 import { createHash } from 'node:crypto';
 import pLimit from 'p-limit';
 import { fetchText } from '../../lib/http.js';
+import { detailRetryAllowed, waitBeforeDetailRetry } from '../../lib/detailRetry.js';
+import { sourceDeadlineReached } from '../../lib/sourceBudget.js';
 import { htmlToPlainText } from '../../lib/html.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
 
@@ -403,19 +405,41 @@ export async function fetchTalentsoftJobs(config: Record<string, unknown>): Prom
       typeof condition.path === 'string' && condition.path.startsWith('talentsoftDetail.')));
   if (config.withDescriptions !== false || identityDetail) {
     const limit = pLimit(Number(config.detailConcurrency ?? 4));
+    /*
+     * Une fiche lue sans AUCUN contenu d'offre — ni « Description du poste », ni bloc d'entité — est l'accueil du
+     * portail servi après redirection, pas la fiche (29/09/2026, Groupe Chantelle : 13 des 29 liens redirigés vers
+     * l'accueil en 2,3 secondes, alors que les offres étaient en ligne ; aucune fiche vide sur les autres collectes
+     * Talentsoft du même jour). Comme une fiche en échec, elle est relue une fois, plus tard, avec la règle et les
+     * bornes des listes génériques (`lib/detailRetry.ts`). Faute de relecture, ou si elle échoue, la première lecture
+     * s'applique comme avant.
+     */
+    const firstReads = new Map<number, TalentsoftDetail | undefined>();
+    let read = 0;
     await Promise.all(
       jobs.map((job, index) =>
         limit(async () => {
           if (job.description && !identityDetail) return;
+          read++;
           try {
-            const html = await fetchText(job.url);
-            jobs[index] = applyTalentsoftDetail(jobs[index], readTalentsoftDetail(html, job.url));
+            const detail = readTalentsoftDetail(await fetchText(job.url), job.url);
+            if (!detail.description && detail.entityDescription === undefined) { firstReads.set(index, detail); return; }
+            jobs[index] = applyTalentsoftDetail(jobs[index], detail);
           } catch {
             // A failed detail fetch must not lose the listing entry.
+            firstReads.set(index, undefined);
           }
         }),
       ),
     );
+    const retry = detailRetryAllowed(firstReads.size, read);
+    if (retry) await waitBeforeDetailRetry(config);
+    for (const [index, first] of [...firstReads].sort(([a], [b]) => a - b)) {
+      let detail = first;
+      if (retry && !sourceDeadlineReached()) {
+        try { detail = readTalentsoftDetail(await fetchText(jobs[index].url), jobs[index].url); } catch { /* the first read stays */ }
+      }
+      try { if (detail) jobs[index] = applyTalentsoftDetail(jobs[index], detail); } catch { /* the listing entry stays */ }
+    }
   }
 
   /**

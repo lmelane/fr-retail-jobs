@@ -1,4 +1,5 @@
-import { sourceDeadlineReached, sourceDelay } from '../../lib/sourceBudget.js';
+import { sourceDeadlineReached } from '../../lib/sourceBudget.js';
+import { detailRetryAllowed, waitBeforeDetailRetry } from '../../lib/detailRetry.js';
 import { log } from '../../observability/logger.js';
 import * as cheerio from 'cheerio';
 import pLimit from 'p-limit';
@@ -11,10 +12,6 @@ import type { AdapterResult, NormalizedJob } from '../../types.js';
 import { CRAWLER_IDENTITY } from '../../lib/crawlerIdentity.js';
 import { fetchCaudalieJobs } from './caudalie.js';
 import { joinSpontaneousApplicationCards, SPONTANEOUS_APPLICATION_CARD } from './joinSpontaneousCard.js';
-
-/** Relecture différée des fiches en échec : au plus ce nombre d'échecs (ou 5 % des liens), après ce délai. */
-const DETAIL_RETRY_MAX_FAILURES = 5;
-const DETAIL_RETRY_DELAY_MS = 75_000;
 
 /**
  * The publisher's own count of listed postings, read on a listing page: a data
@@ -252,9 +249,10 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
      * tous dans la fenêtre — 3 à 4 offres perdues chaque jour sur 935. Bornée à quelques échecs : un site en panne ou
      * une porte refusée n'allonge pas le RUN. Le rejeu hors réseau sert les réponses d'une même adresse dans l'ordre.
      */
-    // Tout en échec est une panne entière, nommée plus bas : la relire ne ferait que retarder le RUN.
-    if (failed.length && failed.length < listed.length && failed.length <= Math.max(DETAIL_RETRY_MAX_FAILURES, Math.ceil(listed.length * 0.05)) && !sourceDeadlineReached()) {
-      await sourceDelay(Number(config.detailRetryDelayMs ?? DETAIL_RETRY_DELAY_MS));
+    // Tout en échec est une panne entière, nommée plus bas : la relire ne ferait que retarder le RUN. Bornes et délai
+    // partagés avec Talentsoft (`lib/detailRetry.ts`, 30/09/2026).
+    if (detailRetryAllowed(failed.length, listed.length)) {
+      await waitBeforeDetailRetry(config);
       for (const index of failed.sort((a, b) => a - b)) {
         if (sourceDeadlineReached()) { detailFailures++; continue; }
         try {
