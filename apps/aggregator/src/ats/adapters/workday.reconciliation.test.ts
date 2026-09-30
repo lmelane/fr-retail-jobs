@@ -108,6 +108,20 @@ describe('Nordstrom, 29/09/2026 — le total change pendant la lecture : une sec
     expect(r.jobs.map((j) => j.externalId)).toContain('Sales_25');
     expect(r.jobs).toHaveLength(61);
   });
+
+  it('une ligne sans chemin servie par les deux passes reste UN témoin de rejet, et compte dans la preuve de la seconde', async () => {
+    const posting = (id: number): Posting => ({ title: `Sales ${id}`, externalPath: `/job/Paris/Sales_${id}`, bulletFields: [`R-${id}`] });
+    const head = Array.from({ length: 20 }, (_, i) => posting(i));
+    const X: Posting = { bulletFields: ['Fix-Term'] };
+    // Passe 1 : 23 annoncées, 22 servies (tête, puis X et Sales_20), la page 40 ressert la tête sous 22 ; passe 2 : 22.
+    serve((offset, read) => offset === 0 ? { total: read === 0 ? 23 : 22, jobPostings: head }
+      : offset === 20 ? { total: 0, jobPostings: [X, posting(20)] } : { total: 22, jobPostings: head });
+    const r = await fetchWorkdayJobs({ ...config, tenant: 't' });
+    expect(r.enumeration?.issues).toContain('SOURCE_TOTAL_CHANGED');
+    expect(r.complete).toBe(true);
+    expect(r.jobs).toHaveLength(21);
+    expect(r.rejectedRows).toEqual([{ reason: 'ROW_WITHOUT_EXTERNAL_PATH', raw: X }]);
+  });
 });
 
 describe('Mango — deux lignes sans chemin au même contenu, à des rangs fixes, sont deux lignes annoncées', () => {
