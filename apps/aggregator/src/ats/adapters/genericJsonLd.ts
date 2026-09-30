@@ -11,6 +11,7 @@ import { briefError } from '../../lib/normalize.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
 import { CRAWLER_IDENTITY } from '../../lib/crawlerIdentity.js';
 import { fetchCaudalieJobs } from './caudalie.js';
+import { fetchMarcOPoloJobs, MARC_O_POLO_READER } from './marcOPolo.js';
 import { joinSpontaneousApplicationCards, joinUnreachableSpontaneousCard, SPONTANEOUS_APPLICATION_CARD } from './joinSpontaneousCard.js';
 
 /**
@@ -61,6 +62,8 @@ const CHALLENGE_PAGE = /just a moment|cf-chl|cf_chl|challenge-platform|_Incapsul
 
 export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): Promise<AdapterResult> {
   if (config.reader === 'caudalie-ajax') return fetchCaudalieJobs(config);
+  // Marc O'Polo (D-485) : la liste entière vient de l'API que le site déclare, témoin : la page publiée (`marcOPolo.ts`).
+  if (config.reader === MARC_O_POLO_READER) return fetchMarcOPoloJobs(config);
   /**
    * An RSS/Atom careers feed, when the site publishes one — the cheapest generic
    * path (no page crawl at all). Many small brands and TalentSoft/WordPress sites

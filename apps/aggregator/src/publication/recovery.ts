@@ -13,6 +13,7 @@ import { parseGreenhouseJob } from '../ats/adapters/greenhouse.js';
 import { parseRecruiteeJob } from '../ats/adapters/recruitee.js';
 import { normalizeGenericPosting } from '../ats/adapters/genericJsonLd.js';
 import { readCaudalieRaw } from '../ats/adapters/caudalie.js';
+import { MARC_O_POLO_READER, readMarcOPoloRaw } from '../ats/adapters/marcOPolo.js';
 import { applySmartRecruitersJobAd, parseSmartRecruitersPosting, type PostingDetail, type SmartRecruitersPosting } from '../ats/adapters/smartrecruiters.js';
 import { applySuccessFactorsDetail, brandPropertyOf, normalizeRmkItem, splitSlug, type RetainedSuccessFactorsDetail, type RmkV2Item } from '../ats/adapters/successfactors.js';
 import { normalizeAnnouncement, type DrItem } from '../ats/adapters/digitalrecruiters.js';
@@ -201,6 +202,10 @@ function readRetainedPublication(kind: string, raw: unknown, context: Context, r
       case 'generic-listing': case 'generic-jsonld': case 'radancy': {
         if (config.reader === 'caudalie-ajax' && raw.source === 'caudalie-ajax-v1') {
           job = readCaudalieRaw(raw); break;
+        }
+        // Marc O'Polo (D-485) : la liste et la fiche retenues sont relues par la même fonction que la collecte.
+        if (config.reader === MARC_O_POLO_READER && raw.source === 'marc-o-polo-vacancies-v1') {
+          job = readMarcOPoloRaw(raw); break;
         }
         if (typeof config.feedUrl === 'string' && typeof raw.feedItem === 'string') {
           const items = parseFeed(raw.feedItem);
