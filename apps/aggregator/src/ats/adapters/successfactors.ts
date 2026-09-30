@@ -6,7 +6,7 @@ import { fetchJson, fetchText } from '../../lib/http.js';
 import { readPostingEvidence } from '../../lib/postingEvidence.js';
 import { htmlToPlainText } from '../../lib/html.js';
 import { microdataDescriptionHtml } from '../../connectors/generic/jsonLdSitemap.js';
-import { assertSourceRunning } from '../../lib/sourceBudget.js';
+import { assertSourceRunning, sourceDeadlineReached } from '../../lib/sourceBudget.js';
 import { withHttpSession } from '../../lib/httpSession.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
 import { CRAWLER_IDENTITY } from '../../lib/crawlerIdentity.js';
@@ -306,10 +306,22 @@ async function discoverRmkLocales(origin: string, searchHtml: string): Promise<{
  * de_DE rows returned 106 then 110 distinct ids — pages overlap and skip
  * (measured with every `sortBy` tried; "date" is the least bad, 121/126; no
  * page-size field is honoured, 10 is fixed). So a locale is swept again until
- * the union of ids reaches `totalJobs`, or a sweep adds nothing.
+ * the union of ids reaches `totalJobs`.
+ *
+ * UN BALAYAGE QUI N'AJOUTE RIEN N'EST PAS LA FIN (D-482, 30/09/2026). Douglas de_DE, RUN des 27 et 28/09 : la
+ * lecture s'arrêtait au premier balayage sans nouvel identifiant — 308/313 après 3 balayages, 305/308 après 4 — et
+ * la source passait en DEGRADED « troncature ». Les identifiants manquants n'étaient pas cachés par l'éditeur : ils
+ * sont tirés au sort par l'ordre instable. Sur les captures du 24 au 29/09, un balayage complet rend 267 à 309
+ * identifiants distincts, et certains n'apparaissent que dans 1 balayage sur 3 ou 4 ; l'autre capture du même RUN
+ * du 28/09, deux minutes plus tôt, a atteint 308/308 au 5e balayage après trois balayages à +17, +1 et +2
+ * (`scripts/ops/mesures/rmk-balayages.mts --pool`). La lecture continue donc tant que le total n'est pas atteint,
+ * jusqu'à RMK_MAX_SWEEPS balayages ou l'échéance de la source ; par tirage parmi les balayages réels d'un même RUN,
+ * 24 balayages atteignent le total dans 99,5 à 100 % des cas, 8 dans 79 à 96 %. Quand la preuve est devenue
+ * impossible (total qui change, ligne illisible dans la langue), l'ancienne règle s'applique : un balayage qui
+ * n'ajoute rien termine la langue.
  */
 const RMK_SORT = 'date';
-const RMK_MAX_SWEEPS = Number(process.env.SF_RMK_MAX_SWEEPS ?? 8);
+const RMK_MAX_SWEEPS = Number(process.env.SF_RMK_MAX_SWEEPS ?? 24);
 
 async function postRmkPage(origin: string, locale: string, page: number): Promise<RmkV2Response> {
   return fetchJson<RmkV2Response>(`${origin}/services/recruiting/v1/jobs`, {
@@ -346,6 +358,7 @@ export async function fetchRmkV2Jobs(origin: string, locales: string[], brandPro
     const perLocale = new Set<string>();
     let total: number | undefined, scopePages = 0;
     let changed = false;
+    const rejectedBefore = rejectedRows.length;
     for (let sweep = 0; sweep < RMK_MAX_SWEEPS; sweep++) {
       const before = perLocale.size;
       for (let page = 0; page < RMK_MAX_PAGES; page++) {
@@ -364,7 +377,10 @@ export async function fetchRmkV2Jobs(origin: string, locales: string[], brandPro
         }
         if (records.length < RMK_PAGE_SIZE || perLocale.size >= total!) break;
       }
-      if (perLocale.size >= total! || perLocale.size === before) break;
+      // Total changé ou ligne illisible : la langue ne sera pas prouvée ; on garde alors l'ancienne règle (on
+      // s'arrête au balayage qui n'ajoute rien) pour ne pas payer 24 balayages sans preuve possible.
+      const unprovable = changed || rejectedRows.length > rejectedBefore;
+      if (perLocale.size >= total! || (unprovable && perLocale.size === before) || sourceDeadlineReached()) break;
     }
     const complete = total !== undefined && perLocale.size === total && !changed;
     if (!complete) issues.add(`LOCALE_ENUMERATION_UNPROVEN:${locale}`);
