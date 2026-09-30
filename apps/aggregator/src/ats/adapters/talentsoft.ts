@@ -4,7 +4,7 @@ import { captureObservedAt } from '../../capture/context.js';
 import { createHash } from 'node:crypto';
 import pLimit from 'p-limit';
 import { fetchText } from '../../lib/http.js';
-import { detailRetryAllowed, waitBeforeDetailRetry } from '../../lib/detailRetry.js';
+import { detailRetryAllowed, TALENTSOFT_RETRY_MAX_RATIO, waitBeforeDetailRetry } from '../../lib/detailRetry.js';
 import { sourceDeadlineReached } from '../../lib/sourceBudget.js';
 import { htmlToPlainText } from '../../lib/html.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
@@ -409,9 +409,9 @@ export async function fetchTalentsoftJobs(config: Record<string, unknown>): Prom
      * Une fiche lue sans AUCUN contenu d'offre — ni « Description du poste », ni bloc d'entité — est l'accueil du
      * portail servi après redirection, pas la fiche (29/09/2026, Groupe Chantelle : 13 des 29 liens redirigés vers
      * l'accueil en 2,3 secondes, alors que les offres étaient en ligne ; aucune fiche vide sur les autres collectes
-     * Talentsoft du même jour). Comme une fiche en échec, elle est relue une fois, plus tard, avec la règle et les
-     * bornes des listes génériques (`lib/detailRetry.ts`). Faute de relecture, ou si elle échoue, la première lecture
-     * s'applique comme avant.
+     * Talentsoft du même jour). Comme une fiche en échec, elle est relue une fois, plus tard, avec la règle des listes
+     * génériques (`lib/detailRetry.ts`) et sa borne Talentsoft (moins de la moitié des fiches). Faute de relecture, ou
+     * si elle échoue, la première lecture s'applique comme avant.
      */
     const firstReads = new Map<number, TalentsoftDetail | undefined>();
     let read = 0;
@@ -431,7 +431,8 @@ export async function fetchTalentsoftJobs(config: Record<string, unknown>): Prom
         }),
       ),
     );
-    const retry = detailRetryAllowed(firstReads.size, read);
+    // Borne propre à Talentsoft (moins de la moitié des fiches lues) : la rafale du 29/09 en comptait 13 sur 29.
+    const retry = detailRetryAllowed(firstReads.size, read, TALENTSOFT_RETRY_MAX_RATIO);
     if (retry) await waitBeforeDetailRetry(config);
     for (const [index, first] of [...firstReads].sort(([a], [b]) => a - b)) {
       let detail = first;

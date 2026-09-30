@@ -57,12 +57,13 @@ describe('Talentsoft : une fiche redirigée vers l\'accueil est relue une fois, 
     expect(sha256(offer)).toBe('e5081388c9bf045f7a947b80e0d5fc69857840a0e3527455feb79dc5adb4d10c');
     expect(readTalentsoftDetail(home, 'x')).toMatchObject({ description: '', entityDescription: undefined });
     expect(readTalentsoftDetail(offer, 'x').description.length).toBeGreaterThan(200);
-    // Le 29/09 tel qu'il s'est passé : 13 accueils à la première lecture, jamais plus de lecture ensuite.
+    // Le 29/09 si l'accueil persiste : 13 accueils, relus une fois sous la borne Talentsoft, toujours l'accueil — les 6
+    // offres sans description de RSS restent sans description, comme en production ce jour-là.
     const calls = serve(id => HOME_0929.includes(id) ? ['accueil'] : ['fiche']);
     const r = await fetchTalentsoftJobs(config);
     expect(r.jobs).toHaveLength(29);
     expect(withoutDescription(r.jobs)).toEqual(WITHOUT_RSS_DESCRIPTION);
-    expect([...calls.values()].every(n => n === 1)).toBe(true);
+    expect(HOME_0929.every(id => calls.get(id) === 2)).toBe(true);
   });
 
   it('cinq accueils, relus plus tard : chaque offre retrouve sa fiche, et la fiche retenue est celle relue', async () => {
@@ -94,8 +95,19 @@ describe('Talentsoft : une fiche redirigée vers l\'accueil est relue une fois, 
     expect((job.raw as { talentsoftDetail: { htmlSha256: string } }).talentsoftDetail.htmlSha256).toBe(sha256(home));
   });
 
-  it('au-delà de la borne des listes génériques (13 sur 29 le 29/09, borne 5), ou quand tout échoue, aucune relecture', async () => {
-    for (const plan of [(id: string) => HOME_0929.includes(id) ? ['accueil', 'fiche'] : ['fiche'], () => ['accueil', 'fiche']] as const) {
+  it('la rafale du 29/09 (13 sur 29 vers l\'accueil) est relue, sous la borne Talentsoft (moins de la moitié)', async () => {
+    const calls = serve(id => HOME_0929.includes(id) ? ['accueil', 'fiche'] : ['fiche']);
+    const r = await fetchTalentsoftJobs(config);
+    // Prémisse : treize fiches servies une première fois comme l'accueil, au-delà de la borne des listes génériques (5).
+    expect(HOME_0929).toHaveLength(13);
+    expect(HOME_0929.every(id => calls.get(id) === 2)).toBe(true);
+    expect(withoutDescription(r.jobs)).toEqual([]);
+  });
+
+  it('la moitié ou plus des fiches vers l\'accueil, ou toutes : panne du portail, aucune relecture', async () => {
+    const half = (id: string) => Number(id) % 2 === 0;
+    const ids = [...new Set([...HOME_0929])];
+    for (const plan of [(id: string) => (half(id) || ids.includes(id)) ? ['accueil', 'fiche'] : ['fiche'], () => ['accueil', 'fiche']] as const) {
       vi.resetAllMocks();
       const calls = serve(plan as (id: string) => Array<'accueil' | 'fiche'>);
       await fetchTalentsoftJobs(config);
