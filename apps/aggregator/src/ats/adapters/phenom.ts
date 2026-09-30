@@ -289,7 +289,7 @@ export async function fetchPhenomJobs(config: Record<string, unknown>): Promise<
    *
    * Les pages dont le total diffère du total de référence (le PLUS GRAND total annoncé) sont relues, au
    * plus RECONCILIATION_PASSES fois chacune, jusqu'à l'annoncer. Le listing n'est prouvé que si TOUTES ses pages
-   * (au moins jusqu'à la dernière que ce total exige) viennent d'un même état au même total, et que ce total est
+   * (au moins jusqu'à la dernière que ce total exige) viennent du même total (un même total ne prouve pas un même état : c'est pourquoi cette terminaison ne ferme rien), et que ce total est
    * atteint exactement, sans identifiant répété, et qu'aucune réponse écartée ne nomme une offre absente de ce listing
    * (TOTAL_STATES_DISAGREE). Sinon rien ne change : la preuve reste refusée. Un vrai changement pendant la lecture
    * (le total ne revient pas) n'est jamais réconcilié. Le changement reste nommé.

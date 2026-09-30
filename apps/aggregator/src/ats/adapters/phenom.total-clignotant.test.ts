@@ -111,6 +111,8 @@ describe('Phenom Foot Locker — bornes de la relecture (listes construites)', (
     // État à jour : 251 offres (dont 999, page 2) ; état en retard : 250, sans 999. La page 1 est lue à jour, les pages
     // 2 et 3 en retard, et une relecture de la page 1 rend l'état en retard : la majorité dit 250.
     const fresh = [...range(0, 100), 999, ...range(100, 150)];
+    // Prémisse : première lecture 251, 250, 250 — la majorité est l'état en retard, qui ne liste pas 999.
+    expect(fresh).toHaveLength(251); expect(range(0, 250)).not.toContain(999);
     route({ 1: [page(range(0, 100), 251), page(range(0, 100), 250)], 2: [page(range(100, 100), 250), page(fresh.slice(100, 200), 251)],
       3: [page(range(200, 50), 250), page(fresh.slice(200), 251)], 4: [page([], 250), page([], 251)] });
     const r = await fetchPhenomJobs({ origin: 'https://careers.example.com' });
@@ -136,6 +138,8 @@ describe('Phenom Foot Locker — bornes de la relecture (listes construites)', (
       return { jobs: [], totalCount: 250 };
     });
     const r = await fetchPhenomJobs({ origin: 'https://careers.example.com' });
+    // Prémisse : 250 entrées servies pour 250 annoncées — la règle des variantes seule atteignait le total.
+    expect(r.enumeration?.rawCount).toBe(250); expect(r.declaredTotal).toBe(250);
     expect(r.jobs).toHaveLength(248);
     expect(r.complete).toBe(false);
     expect(r.enumeration?.issues).toContain('REPEATED_IDS_ACROSS_PAGES');
