@@ -295,20 +295,23 @@ export async function fetchSwatchGroupJobs(config: Record<string, unknown>): Pro
   const pageEvidence: NonNullable<NonNullable<AdapterResult['enumeration']>['pageEvidence']> = [];
   let pagesRead = 0;
   // Chaque carte porte le lien 3 fois (image, titre, « En savoir plus ») : dédoublonner dans la page, puis contre les
-  // pages déjà lues. Rend le nombre de liens distincts de la page.
+  // pages déjà lues, par l'identifiant de l'offre et non par l'adresse : le préfixe de langue varie d'une offre à
+  // l'autre (en, fr, de, it sur la même page) et ne doit pas faire compter deux fois une offre qui en changerait
+  // entre deux lectures. Rend le nombre d'offres distinctes de la page.
   const readPage = async (page: number, pass: number): Promise<{ count: number; html: string }> => {
     const url = `${origin}/${lang}/job-finder?page=${page}`;
     const html = await fetchText(url);
-    const inPage = [...new Set([...html.matchAll(/href="(\/[a-z]{2}\/job\/\d+)"/g)].map((m) => `${origin}${m[1]}`))];
-    const fresh = inPage.filter((link) => !seen.has(link));
-    for (const link of fresh) {
-      seen.add(link);
+    const inPage = new Map<string, string>();
+    for (const m of html.matchAll(/href="(\/[a-z]{2}\/job\/(\d+))"/g)) if (!inPage.has(m[2])) inPage.set(m[2], `${origin}${m[1]}`);
+    const fresh = [...inPage].filter(([id]) => !seen.has(id));
+    for (const [id, link] of fresh) {
+      seen.add(id);
       links.push(link);
     }
     pagesRead += 1;
     pageEvidence.push({ url, checkedAt: captureObservedAt().toISOString(), sha256: createHash('sha256').update(html).digest('hex'), offset: page, pagination: null,
-      ids: inPage.map((l) => l.split('/').pop() ?? l), publisherCounter: '', componentCounters: [`pass=${pass}`, `links=${inPage.length}`, `fresh=${fresh.length}`, `uniqueLinks=${seen.size}`] });
-    return { count: inPage.length, html };
+      ids: [...inPage.keys()], publisherCounter: '', componentCounters: [`pass=${pass}`, `links=${inPage.size}`, `fresh=${fresh.length}`, `uniqueLinks=${seen.size}`] });
+    return { count: inPage.size, html };
   };
 
   /*
