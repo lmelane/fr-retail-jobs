@@ -38,6 +38,7 @@ import { parseEasycruitVacancy } from '../ats/adapters/easycruit.js';
 import { parseHarriPublication } from '../ats/adapters/harri.js';
 import { parseTalentRecruiterPosition } from '../ats/adapters/talentRecruiter.js';
 import { toNormalized as toEightfoldJob } from '../ats/adapters/eightfold.js';
+import { ALTAMIRA_DETAIL_CELLS, altamiraJobFromDetail, type AltamiraDetail } from '../ats/adapters/altamira.js';
 import { parseBashListing, parseBashDetail } from '../ats/adapters/bashTalents.js';
 import { parseTaleoListing, applyTaleoDetail } from '../ats/adapters/taleo.js';
 import { parseWttjHit, wttjCanonicalId, descriptionFromApi, type WttjHit } from '../ats/adapters/wttj.js';
@@ -208,6 +209,26 @@ function readRetainedPublication(kind: string, raw: unknown, context: Context, r
       }
       case 'icims': case 'altamira': {
         const evidence = raw.postingEvidence;
+        /*
+         * Altamira (30/09/2026, Zegna : 4 fiches sur 65) : une fiche lue SANS aucun JobPosting se relit sur ses cellules
+         * retenues (`altamiraDetail`), avec l'assemblage même du collecteur. Les cellules doivent être liées à la page de la
+         * preuve (même adresse, même empreinte) et la preuve dire qu'elle n'a vu aucun JobPosting ; l'identité de la page
+         * se contrôle ensuite comme pour le JSON-LD. Un RAW portant un JobPosting ne prend jamais ce chemin.
+         */
+        if (kind === 'altamira' && raw.altamiraDetail !== undefined) {
+          const cells = raw.altamiraDetail;
+          if (raw.source !== kind || !object(evidence) || evidence.jobPostingCount !== 0 || evidence.jobPosting != null ||
+            typeof evidence.htmlSha256 !== 'string' || !/^[a-f0-9]{64}$/.test(evidence.htmlSha256) || evidence.geographyConflict === true ||
+            !object(cells) || cells.htmlSha256 !== evidence.htmlSha256 || cells.pageUrl !== evidence.pageUrl ||
+            ALTAMIRA_DETAIL_CELLS.some(key => typeof cells[key] !== 'string') || cells.locations !== raw.locations ||
+            typeof raw.team !== 'string') return failure('DETAIL_EVIDENCE_UNUSABLE');
+          if (typeof evidence.pageUrl !== 'string' || typeof config.origin !== 'string') return failure('DETAIL_IDENTITY_MISMATCH');
+          const page = new URL(evidence.pageUrl);
+          const id = detailIdentity(kind, page, raw);
+          if (!id || page.href !== new URL(context.url).href || page.origin !== new URL(config.origin).origin) return failure('DETAIL_IDENTITY_MISMATCH');
+          job = altamiraJobFromDetail({ externalId: id, team: raw.team, title: cells.title }, cells as AltamiraDetail);
+          break;
+        }
         if (raw.source !== kind || !object(evidence) || !object(evidence.jobPosting) ||
           evidence.jobPostingCount !== 1 || !jobPosting(evidence.jobPosting) ||
           typeof evidence.htmlSha256 !== 'string' || !/^[a-f0-9]{64}$/.test(evidence.htmlSha256) ||
