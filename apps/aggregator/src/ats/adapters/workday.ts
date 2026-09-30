@@ -165,12 +165,40 @@ function toJob(shared: Pick<Shared, 'origin' | 'site' | 'prefixRule'>, board: Pi
   };
 }
 
+/** What one board keeps across its passes: the ids it read, and the path-less witnesses already recorded per content. */
+type BoardMemory = { ids: Set<string>; pathlessWitnesses: Map<string, number> };
+type PassResult = BoardResult & { totalChanged: boolean };
+/** One path-less row as served: its content (hash) and its rank in the board, `offset + index`. */
+type PathlessOccurrence = { hash: string; offset: number; index: number };
+const pathlessHash = (job: WorkdayPosting) => createHash('sha256').update(JSON.stringify(job)).digest('hex');
+const workdayId = (externalPath: string) => externalPath.split('/').filter(Boolean).pop() ?? externalPath;
+
 /**
  * Enumerate one board page by page, with the second sweep when an unstable sort
  * repeated ids. Postings go to the shared list unless an earlier board already
  * read them (overlap, counted and named, never pushed twice).
+ *
+ * UNE SECONDE PASSE ENTIÈRE QUAND LE TOTAL CHANGE PENDANT LA LECTURE (D-482, 30/09/2026, Nordstrom du 29/09).
+ * La page 0 annonçait 1 329 offres ; les 67 pages en ont servi 1 328, toutes distinctes, sans ligne sans chemin ; la
+ * page lue au-delà de la fin (offset 1 340) ressert la tête du tableau avec un total de 1 328 : une offre a été
+ * retirée pendant la lecture. Aucun compte de cette passe ne prouve le tableau — si l'offre retirée était déjà lue,
+ * le décalage a fait sauter une offre vivante à une frontière de page, et 1 328 identifiants distincts en cachent
+ * une morte et en perdent une. Le tableau est donc relu en entier, une fois : la preuve se juge sur cette seconde
+ * passe seule, sous son propre total. Les offres de la première restent collectées (union) : une offre retirée
+ * entre-temps reste un jour de plus, aucune offre en ligne n'est fermée à tort. Un second changement reste non
+ * prouvé. Le rejeu hors réseau sert les pages d'un même offset dans l'ordre de leur capture : il relit la même passe.
  */
 async function enumerateBoard(shared: Shared, board: Board): Promise<BoardResult> {
+  const memory: BoardMemory = { ids: new Set(), pathlessWitnesses: new Map() };
+  const first = await readPass(shared, board, memory, 1);
+  if (!first.totalChanged || first.termination === 'PAGE_BUDGET_EXHAUSTED') return first;
+  const second = await readPass(shared, board, memory, 2);
+  if (second.complete) shared.issues.add('RECONCILED_BY_FRESH_PASS');
+  return { ...second, pages: first.pages + second.pages, rawCount: first.rawCount + second.rawCount,
+    overlap: first.overlap + second.overlap, fresh: first.fresh + second.fresh };
+}
+
+async function readPass(shared: Shared, board: Board, memory: BoardMemory, pass: number): Promise<PassResult> {
   /**
    * Workday reports `total` ONLY on the first page — every later page returns
    * total: 0. Comparing against it each time stops the loop at 40 of 1088, so
@@ -185,12 +213,17 @@ async function enumerateBoard(shared: Shared, board: Board): Promise<BoardResult
    */
   let total = 0, totalChanged = false;
   const local = new Set<string>();
-  const localPathless = new Set<string>();
+  const occurrences: PathlessOccurrence[] = [];
+  /** A path-less row has no id: its content names it, one announced row per distinct content. */
+  const pathlessCount = () => new Set(occurrences.map((o) => o.hash)).size;
   let pages = 0, rawCount = 0, repeatedIds = 0, overlap = 0, fresh = 0, termination = 'PAGE_BUDGET_EXHAUSTED';
-  const suffix = board.partition ? `&${board.partition.parameter}=${encodeURIComponent(board.partition.id)}` : '';
+  const suffix = `${board.partition ? `&${board.partition.parameter}=${encodeURIComponent(board.partition.id)}` : ''}${pass > 1 ? `&pass=${pass}` : ''}`;
   const take = (job: WorkdayPosting, externalId: string): boolean => {
     if (local.has(externalId)) return false;
     local.add(externalId);
+    // Read by an earlier pass of this board: already collected, neither an overlap nor a new posting.
+    if (memory.ids.has(externalId)) return true;
+    memory.ids.add(externalId);
     // The remainder board re-reads what the partitions read: expected, not an overlap.
     if (shared.seen.has(externalId)) { if (!board.remainder) overlap += 1; return true; }
     shared.seen.add(externalId); fresh += 1;
@@ -208,7 +241,7 @@ async function enumerateBoard(shared: Shared, board: Board): Promise<BoardResult
       else if (page.total !== total) { totalChanged = true; shared.issues.add('SOURCE_TOTAL_CHANGED'); }
     }
     const pageIds: string[] = [];
-    for (const job of postings) {
+    for (const [index, job] of postings.entries()) {
       // A posting without an externalPath has neither a stable id nor a URL to
       // send a candidate to — skip it rather than crash the whole source on
       // `undefined.split`. Richemont's tenant returned such rows, and the throw
@@ -216,16 +249,21 @@ async function enumerateBoard(shared: Shared, board: Board): Promise<BoardResult
       if (!job.externalPath) {
         // A path-less row has no id: the same row served twice (unstable sort — Mango, 2026-09-10: {"bulletFields":["Fix-Term"]}
         // read on two pages) is one announced row, not two. Distinct rows are told apart by their content.
-        // Every occurrence is a witness in the rejects; the COUNT of announced rows is by distinct content.
-        const hash = createHash('sha256').update(JSON.stringify(job)).digest('hex');
-        // Aucun identifiant canonique n'est FABRIQUÉ à partir du titre ou d'un hachage : ce serait
-        // inventer une preuve. La ligne est archivée telle quelle, et le cycle perd le droit d'attester
-        // une absence — un identifiant historique disparu pourrait être précisément celle-ci.
-        shared.rejectedRows.push({ reason: 'ROW_WITHOUT_EXTERNAL_PATH', raw: job });
-        shared.pathlessRows.add(hash); localPathless.add(hash);
+        // Every occurrence is a witness in the rejects, recorded once per board even when a second pass serves it again.
+        const hash = pathlessHash(job);
+        occurrences.push({ hash, offset, index });
+        const inPass = occurrences.filter((o) => o.hash === hash).length;
+        if (inPass > (memory.pathlessWitnesses.get(hash) ?? 0)) {
+          // Aucun identifiant canonique n'est FABRIQUÉ à partir du titre ou d'un hachage : ce serait
+          // inventer une preuve. La ligne est archivée telle quelle, et le cycle perd le droit d'attester
+          // une absence — un identifiant historique disparu pourrait être précisément celle-ci.
+          shared.rejectedRows.push({ reason: 'ROW_WITHOUT_EXTERNAL_PATH', raw: job });
+          memory.pathlessWitnesses.set(hash, inPass);
+        }
+        shared.pathlessRows.add(hash);
         continue;
       }
-      const externalId = job.externalPath.split('/').filter(Boolean).pop() ?? job.externalPath;
+      const externalId = workdayId(job.externalPath);
       pageIds.push(externalId);
       if (!take(job, externalId)) repeatedIds += 1;
     }
@@ -239,7 +277,7 @@ async function enumerateBoard(shared: Shared, board: Board): Promise<BoardResult
        * pas figurer ici. Son absence est comptée dans `withoutPath`, jamais confondue avec une disparition.
        */
       ids: pageIds, canonicalIds: pageIds,
-      publisherCounter: page.total ? `total=${page.total}` : '', componentCounters: [`rows=${postings.length}`, `uniqueIds=${local.size}`, `repeated=${repeatedIds}`, `withoutPath=${localPathless.size}`, ...(board.partition ? [`partition=${board.scope}`] : [])] });
+      publisherCounter: page.total ? `total=${page.total}` : '', componentCounters: [`rows=${postings.length}`, `uniqueIds=${local.size}`, `repeated=${repeatedIds}`, `withoutPath=${pathlessCount()}`, ...(board.partition ? [`partition=${board.scope}`] : []), ...(pass > 1 ? [`pass=${pass}`] : [])] });
     if (postings.length === 0) { termination = 'EMPTY_PAGE'; break; }
     // The announced total counts ROWS (a path-less row included): once that many
     // rows are read the board is exhausted, whether or not every row was a
@@ -266,7 +304,7 @@ async function enumerateBoard(shared: Shared, board: Board): Promise<BoardResult
     let unseen = 0;
     for (const job of postings) {
       if (!job.externalPath) continue;
-      const externalId = job.externalPath.split('/').filter(Boolean).pop() ?? job.externalPath;
+      const externalId = workdayId(job.externalPath);
       pageIds.push(externalId);
       if (!local.has(externalId)) unseen += 1;
       take(job, externalId);
@@ -285,8 +323,8 @@ async function enumerateBoard(shared: Shared, board: Board): Promise<BoardResult
    * The board is proven only when every announced row is then accounted for — as a
    * unique posting or as a rejected path-less row; the repetition stays named.
    */
-  if (total > 0 && repeatedIds > 0 && local.size + localPathless.size < total && termination !== 'PAGE_BUDGET_EXHAUSTED' && !totalChanged) {
-    for (let offset = 10, sweepPages = 0; offset < total && local.size + localPathless.size < total && sweepPages < 250; offset += 20, sweepPages += 1) {
+  if (total > 0 && repeatedIds > 0 && local.size + pathlessCount() < total && termination !== 'PAGE_BUDGET_EXHAUSTED' && !totalChanged) {
+    for (let offset = 10, sweepPages = 0; offset < total && local.size + pathlessCount() < total && sweepPages < 250; offset += 20, sweepPages += 1) {
       const page = await readPage(shared, board, offset);
       const postings = page.jobPostings ?? [];
       pages += 1;
@@ -295,7 +333,7 @@ async function enumerateBoard(shared: Shared, board: Board): Promise<BoardResult
       for (const job of postings) {
         // Path-less rows were already counted (and rejected) by the first sweep; they carry no id to reconcile.
         if (!job.externalPath) continue;
-        const externalId = job.externalPath.split('/').filter(Boolean).pop() ?? job.externalPath;
+        const externalId = workdayId(job.externalPath);
         pageIds.push(externalId);
         if (take(job, externalId)) freshInSweep += 1;
       }
@@ -303,17 +341,18 @@ async function enumerateBoard(shared: Shared, board: Board): Promise<BoardResult
         ids: pageIds, canonicalIds: pageIds, publisherCounter: '', componentCounters: [`sweep=2`, `rows=${postings.length}`, `uniqueIds=${local.size}`, `freshInSweep=${freshInSweep}`] });
       if (postings.length === 0) break;
     }
-    if (local.size + localPathless.size >= total) { termination = 'SECOND_SWEEP_RECONCILED'; shared.issues.add('RECONCILED_BY_SECOND_SWEEP'); }
+    if (local.size + pathlessCount() >= total) { termination = 'SECOND_SWEEP_RECONCILED'; shared.issues.add('RECONCILED_BY_SECOND_SWEEP'); }
   }
   if (repeatedIds) shared.issues.add('REPEATED_IDS_ACROSS_PAGES');
-  if (localPathless.size) shared.issues.add('ROWS_WITHOUT_EXTERNAL_PATH');
+  if (occurrences.length) shared.issues.add('ROWS_WITHOUT_EXTERNAL_PATH');
+  const withoutPath = pathlessCount();
   // Proven when every announced row is accounted for exactly once — as a unique
   // posting, or as a REJECTED path-less row with its raw witness (Nordstrom,
   // 2026-09-09: 1 312 rows read of 1 312 announced, 3 of them path-less, 1 309
   // postings — the historical −3). A repetition across pages only passes when the
   // second sweep has reconciled every announced row.
-  const complete = total > 0 && local.size + localPathless.size === total && (repeatedIds === 0 || termination === 'SECOND_SWEEP_RECONCILED') && termination !== 'PAGE_BUDGET_EXHAUSTED' && !totalChanged && !capped;
-  return { scope: board.scope, total, uniqueIds: local.size, pages, rawCount, repeatedIds, withoutPath: localPathless.size, overlap, fresh, termination, complete };
+  const complete = total > 0 && local.size + withoutPath === total && (repeatedIds === 0 || termination === 'SECOND_SWEEP_RECONCILED') && termination !== 'PAGE_BUDGET_EXHAUSTED' && !totalChanged && !capped;
+  return { scope: board.scope, total, uniqueIds: local.size, pages, rawCount, repeatedIds, withoutPath, overlap, fresh, termination, complete, totalChanged };
 }
 
 export async function fetchWorkdayJobs(config: Record<string, unknown>): Promise<AdapterResult> {
