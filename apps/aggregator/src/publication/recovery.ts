@@ -37,7 +37,7 @@ import { parseVolcanicPage } from '../ats/adapters/volcanic.js';
 import { parseEasycruitVacancy } from '../ats/adapters/easycruit.js';
 import { parseHarriPublication } from '../ats/adapters/harri.js';
 import { parseTalentRecruiterPosition } from '../ats/adapters/talentRecruiter.js';
-import { toNormalized as toEightfoldJob } from '../ats/adapters/eightfold.js';
+import { toNormalized as toEightfoldJob, nativeDescriptionEmpty, NATIVE_DESCRIPTION_EMPTY } from '../ats/adapters/eightfold.js';
 import { ALTAMIRA_DETAIL_CELLS, altamiraJobFromDetail, type AltamiraDetail } from '../ats/adapters/altamira.js';
 import { parseBashListing, parseBashDetail } from '../ats/adapters/bashTalents.js';
 import { parseTaleoListing, applyTaleoDetail } from '../ats/adapters/taleo.js';
@@ -524,6 +524,13 @@ function readRetainedPublication(kind: string, raw: unknown, context: Context, r
         if (job && object(eightfoldDetail)) {
           const texte = eightfoldDetail.jobDescription ?? eightfoldDetail.job_description;
           if (typeof texte === 'string') job = { ...job, description: htmlToPlainText(texte) };
+          /*
+           * D-481 §3 (30/09/2026) : la fiche conservée a été LUE et l'éditeur n'y publie rien. Le rejeu pose la
+           * même retenue que le collecteur, avec le même lecteur : PUBLICATION_HELD, jamais une description de
+           * gabarit (« Description / Qualifications ») republiée. Sans fiche conservée (lecture en échec), il
+           * n'y a pas de preuve : l'offre reste refusée en CONTENT_MISSING.
+           */
+          if (nativeDescriptionEmpty(eightfoldDetail)) job = { ...job, publicationHold: NATIVE_DESCRIPTION_EMPTY };
         }
         break;
       }

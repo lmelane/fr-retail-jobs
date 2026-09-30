@@ -221,7 +221,30 @@ describe('everything else still fails the RUN', () => {
   });
 });
 
-describe('the negative-proof guard (technical): only the Workday reason, against the last complete RUN', () => {
+describe('D-481 §3: the description the publisher leaves empty, on the negative-proof guard like the Workday employer', () => {
+  it('estee-lauder-companies as captured on 29/09 (28 of 1 890 read and empty): non-blocking, and the guard says it has no reference', async () => {
+    // Premise: the capture's measured shape (`scripts/ops/eightfold-descriptions.mts`), and no complete RUN ever collected the source.
+    const elc = retaining('estee-lauder-companies', 1862, { NATIVE_DESCRIPTION_EMPTY: 28 });
+    expect(elc.fetched).toBe(1890);
+    const { issues, incidents, summary, sourceRun } = await runOne(elc, [{ jobs: 0, fetched: null, accepted: null }]);
+    expect(issues.map(issue => issue.code)).toEqual(['NATIVE_RETENTION']);
+    expect(incidents).toMatchObject([{ blocking: false, guardWithoutReference: true }]);
+    expect(summary.outcome).toBe('COMPLETED_WITH_ERRORS');
+    expect(String(sourceRun.note)).toContain('28 sur preuve de la source (NATIVE_DESCRIPTION_EMPTY=28)');
+    expect(String(sourceRun.note)).toContain('description vide chez l’éditeur : 1,5 % des offres collectées');
+  });
+  it('a jump of that share (1 % → 31 %: a template emptied by a format change) is to be instructed, not accepted on trust', async () => {
+    const s = retaining('eightfold-format', 700, { NATIVE_DESCRIPTION_EMPTY: 310 });
+    // Premise: above half the reference volume, so the volume-collapse check alone would NOT have raised it.
+    expect(s.inSector).toBeGreaterThanOrEqual(1000 * 0.5);
+    const { issues, summary, sourceRun } = await runOne(s, [{ jobs: 1000, fetched: 1010, accepted: 1000 }]);
+    expect(issues).toEqual([{ origin: 'UNKNOWN', code: 'NATIVE_RETENTION_JUMP', count: 1 }]);
+    expect(summary.outcome).toBe('FAILED');
+    expect(String(sourceRun.note)).toMatch(/description vide chez l’éditeur sur 30,7 % des offres contre 1,0 % .*\(\+300 offres\)/);
+  });
+});
+
+describe('the negative-proof guard (technical): only the negative proofs, against the last complete RUN', () => {
   const jumping = () => retaining('workday-format', 700, { WORKDAY_EMPLOYER_ABSENT_IN_DETAIL: 310 });
   it('a Workday share that jumps (1 % → 31 %) is to be instructed, not accepted on trust', async () => {
     // Premise: the complete RUN of reference published 1 000 of 1 010 collected postings (1 % unpublished), and this
@@ -427,12 +450,13 @@ describe('issuesFromResult alone', () => {
 });
 
 describe('every non-blocking retention names the decision that settles it (D-453 §1, D-456, D-462)', () => {
-  // The nine reasons that do not fail the RUN on 25/09/2026. A new non-blocking reason without a decision would
-  // print « application non arbitrée » in the operator's alert: this witness fails first.
+  // The nine reasons that do not fail the RUN on 25/09/2026, and the description the publisher leaves empty
+  // (D-481 §3, 30/09). A new non-blocking reason without a decision would print « application non arbitrée » in the
+  // operator's alert: this witness fails first.
   const NON_BLOQUANTS = [
     'APPLICATION_EXPLICITLY_CLOSED', 'APPLICATION_HTTP_404', 'APPLICATION_HTTP_410', 'APPLICATION_TEMPLATE_EXPIRY_CONTRADICTION',
     'SOURCE_UNLISTED', 'WORKDAY_EMPLOYER_ABSENT_IN_DETAIL', 'NATIVE_TEST_PUBLICATION', 'NATIVE_RECRUITMENT_EVENT',
-    'SCOPE_OUT_OF_PERIMETER',
+    'SCOPE_OUT_OF_PERIMETER', 'NATIVE_DESCRIPTION_EMPTY',
   ];
 
   it.each(NON_BLOQUANTS)('%s does not block the RUN and is decided', (reason) => {
