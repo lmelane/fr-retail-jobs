@@ -566,6 +566,8 @@ async function fetchCareerConnectJobs(origin: string, options: CareerConnectOpti
       const announced = Object.values(brandFacet).reduce((sum, n) => sum + n, 0);
       for (const [value, count] of Object.entries(brandFacet)) brandScopes.push({ scope: `${brandField}=${value}`, declaredTotal: count, uniqueIds: read.get(value) ?? 0, pages, complete: read.get(value) === count });
       const outside = [...read.keys()].filter((value) => value && !Object.hasOwn(brandFacet!, value));
+      // Une valeur lue que la facette n'annonce pas est nommée, avec son décompte.
+      for (const value of outside) brandScopes.push({ scope: `${brandField}=${value}`, declaredTotal: 0, uniqueIds: read.get(value)!, pages, complete: false });
       if (withoutBrand) brandScopes.push({ scope: `${brandField}:absent`, declaredTotal: Math.max((declaredTotal ?? 0) - announced, 0), uniqueIds: withoutBrand, pages, complete: withoutBrand === (declaredTotal ?? 0) - announced });
       if (brandScopes.some((scope) => !scope.complete) || outside.length) issues.add('BRAND_FACET_COUNT_MISMATCH');
     }

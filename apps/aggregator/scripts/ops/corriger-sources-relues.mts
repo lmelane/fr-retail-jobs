@@ -51,7 +51,9 @@ const lignes = texte.split(/\r?\n/).filter((l) => l.trim());
 const entetes = lignes[0].split(';').map((h) => h.trim());
 const csv = lignes.slice(1).map((l) => {
   const cases = l.split(';');
-  return Object.fromEntries(entetes.map((h, i) => [h, (cases[i] ?? '').trim()])) as Record<string, string>;
+  // Le JSON de `config_relue` ne se découpe pas : une ligne qui porte des cases en trop est refusée plus bas,
+  // jamais relue avec des colonnes décalées.
+  return { ...Object.fromEntries(entetes.map((h, i) => [h, (cases[i] ?? '').trim()])), __cases: String(cases.length) } as Record<string, string>;
 });
 
 /**
@@ -116,6 +118,7 @@ for (const r of csv) {
   if (!r.portail_url) { refus.push(`${r.cle} : ATS relu « ${r.ats} » mais aucun portail_url`); continue; }
   const derivee = configPour(kind, r.portail_url);
   if (!derivee) { refus.push(`${r.cle} : famille « ${r.ats} » sans forme de configuration connue — à traiter à la main`); continue; }
+  if (r.config_relue && Number(r.__cases) !== entetes.length) { refus.push(`${r.cle} : ${r.__cases} cases pour ${entetes.length} colonnes — un « ; » dans config_relue ?`); continue; }
   const config = completer(kind, derivee, r.config_relue ?? '');
   if (typeof config === 'string') { refus.push(`${r.cle} : ${config}`); continue; }
   try {

@@ -107,6 +107,8 @@ describe('PVH : la requête est celle du site, et le décompte par marque prouve
     expect(r.complete).toBe(false);
     expect(r.enumeration?.issues).toEqual(expect.arrayContaining(['BRAND_FACET_COUNT_MISMATCH', 'ENUMERATION_NOT_PROVEN']));
     expect(r.enumeration?.scopes).toContainEqual({ scope: 'brand=Calvin Klein', declaredTotal: 2, uniqueIds: 1, pages: 1, complete: false });
+    // La valeur lue que la facette n'annonce pas est nommée.
+    expect(r.enumeration?.scopes).toContainEqual({ scope: 'brand=PVH', declaredTotal: 0, uniqueIds: 1, pages: 1, complete: false });
   });
 
   it('l\'index figé (en, global) ne porte aucune marque : rien n\'est attribué, rien n\'est prouvé', async () => {
