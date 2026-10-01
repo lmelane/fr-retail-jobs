@@ -44,7 +44,8 @@ export async function GET(request: NextRequest) {
   const entetes = { 'x-request-id': requestId, 'cache-control': 'no-store' };
   const sp = request.nextUrl.searchParams;
   const partie = sp.get('partie') ?? 'entete';
-  const apres = sp.get('apres')?.slice(0, 300) || null;
+  // Borne large : une clé d'intitulé de la table apprise peut être longue ; tronquée, le curseur re-servirait des entrées.
+  const apres = sp.get('apres')?.slice(0, 10_000) || null;
   const erreur = (statut: number, message: string, extra: Record<string, string> = {}) =>
     NextResponse.json({ error: message, requestId }, { status: statut, headers: { ...entetes, ...extra } });
 
