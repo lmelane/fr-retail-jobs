@@ -76,20 +76,25 @@ export async function fetchEasycruitJobs(config: Record<string, unknown>): Promi
     seen.add(id);entries.push({raw:publicVacancy(row),id,url,version});
   }
   const limit=pLimit(2);
-  const jobs=await Promise.all(entries.map(entry=>limit(async():Promise<NormalizedJob>=>{
+  // Les motifs d'une fiche rejoignent la preuve dans l'ordre des offres, pas dans l'ordre d'arrivée des réponses :
+  // le rejeu hors réseau ne sert pas les fiches dans le même ordre (GANNI sur TalentRecruiter, RUN du 01/10/2026).
+  const read=await Promise.all(entries.map(entry=>limit(async():Promise<{job:NormalizedJob;issues:string[]}>=>{
     assertSourceRunning();
+    const own:string[]=[];
     let detail:Xml|undefined,detailError:string|undefined,publicPageError:string|undefined,detailBody:string|undefined,detailFailurePayload:string|undefined;
     try {
       detailBody=await fetchText(`${origin}/export/xml/vacancy/${entry.id}.xml`);
       detail=publicVacancy(parse(detailBody,'Vacancy'));
       if (detail['@_id']!==entry.id || !versionOf(detail,entry.version['@_language']) || !text(versionOf(detail,entry.version['@_language'])?.Title)) throw Error('EASYCRUIT_DETAIL_ID_OR_TITLE_MISMATCH');
-    } catch(error) {assertSourceRunning();detail=undefined;detailFailurePayload=detailBody;detailError=String(error).slice(0,500);issues.push(`DETAIL_READ_FAILED:${entry.id}`);}
+    } catch(error) {assertSourceRunning();detail=undefined;detailFailurePayload=detailBody;detailError=String(error).slice(0,500);own.push(`DETAIL_READ_FAILED:${entry.id}`);}
     const job = parseEasycruitVacancy(entry.raw, detail, config);
     job.raw = { ...(job.raw as object), detailError, detailFailurePayload };
-    try { return enrichPostingEvidence(job,await fetchText(entry.url)); }
-    catch(error) {assertSourceRunning();publicPageError=String(error).slice(0,500);issues.push(`PUBLIC_PAGE_READ_FAILED:${entry.id}`);}
-    return {...job,raw:{...(job.raw as object),publicPageError}};
+    try { return {job:enrichPostingEvidence(job,await fetchText(entry.url)),issues:own}; }
+    catch(error) {assertSourceRunning();publicPageError=String(error).slice(0,500);own.push(`PUBLIC_PAGE_READ_FAILED:${entry.id}`);}
+    return {job:{...job,raw:{...(job.raw as object),publicPageError}},issues:own};
   })));
+  for (const entry of read) issues.push(...entry.issues);
+  const jobs=read.map(entry=>entry.job);
   return {jobs,rejectedRows,complete:enumerationComplete(true,issues,rejectedRows),
     enumeration:{method:'DOCUMENTED_COMPLETE_XML_FEED_AND_DETAILS',endpoint,documentation:DOCUMENTATION,pages:1,rawCount:vacancies.length,
       termination:'FULL_XML_DOCUMENT',blockers:enumerationBlockers(issues),issues,

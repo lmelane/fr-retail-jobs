@@ -32,6 +32,25 @@ describe('Harri native career portal protocol',()=>{
   expect(r.jobs).toHaveLength(1);expect(r.complete).toBe(false);expect(r.jobs[0].postedAt).toEqual(new Date('2026-09-08T20:16:32Z'));
   expect(r.enumeration?.issues).toContain('DETAIL_READ_FAILED:2812433');expect((r.jobs[0].raw as any).detailReadError).toContain('503');
  });
+ // RUN du 01/10/2026 (GANNI, même motif) : un motif de fiche poussé à l'arrivée de la réponse suivait l'ordre du réseau,
+ // que le rejeu ne reproduit pas ; la capture tombait en REPLAY_RESULT_CHANGED.
+ it('range les motifs des fiches dans l\'ordre des offres, quel que soit l\'ordre d\'arrivée des réponses',async()=>{
+  const ids=[2812433,2812434,2812435];
+  const read=async(delays:number[])=>{
+   vi.resetAllMocks();const finished:number[]=[];
+   api([feed(ids.map(listing))],()=>{throw Error('HTTP 503')});
+   const fail=fetch.getMockImplementation()!;
+   fetch.mockImplementation(async(url,init)=>{const id=Number(String(url).split('/').pop());
+    if(ids.includes(id)){await new Promise(r=>setTimeout(r,delays[ids.indexOf(id)]));finished.push(id);}
+    return fail(url,init);});
+   return{finished,issues:(await fetchHarriJobs(config)).enumeration?.issues};
+  };
+  const capture=await read([30,15,1]),replay=await read([1,15,30]);
+  // Prémisse : les deux lectures finissent dans des ordres opposés, sinon le témoin ne teste rien.
+  expect(capture.finished).toEqual([2812435,2812434,2812433]);expect(replay.finished).toEqual([2812433,2812434,2812435]);
+  expect(capture.issues).toEqual(['DETAIL_READ_FAILED:2812433','DETAIL_READ_FAILED:2812434','DETAIL_READ_FAILED:2812435']);
+  expect(replay.issues).toEqual(capture.issues);
+ });
  it('treats the image brand ID only as a candidate and refuses a different native portal identity',async()=>{
   text.mockResolvedValue('<meta property="og:image" content="https://media-cdn.harri.com/brands/8522347/brand_profile/image.jpg">');
   fetch.mockResolvedValue({...profile,data:{...profile.data,slug:'different-employer'}});

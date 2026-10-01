@@ -24,6 +24,25 @@ describe('EasyCruit public XML protocol',()=>{
   const r=await fetchEasycruitJobs({host,language:'fr'});expect(r.jobs).toHaveLength(1);expect(r.jobs[0].title).toBe('Conseiller de vente');expect(r.jobs[0].country).toBeUndefined();
   expect((r.jobs[0].raw as any).detail.Versions.Version).toHaveLength(2);
  });
+ // RUN du 01/10/2026 (GANNI, même motif) : un motif de fiche poussé à l'arrivée de la réponse suivait l'ordre du réseau,
+ // que le rejeu ne reproduit pas ; la capture tombait en REPLAY_RESULT_CHANGED.
+ it('range les motifs des fiches dans l\'ordre des offres, quel que soit l\'ordre d\'arrivée des réponses',async()=>{
+  const ids=['101','102'];
+  const read=async(delays:number[])=>{
+   const finished:string[]=[];
+   vi.mocked(fetchText).mockImplementation(async url=>{const u=String(url);
+    if(u.endsWith('list.xml'))return feed(ids.map(id=>vacancy(id)).join(''));
+    const id=/\/(\d+)\.xml$/.exec(u)?.[1];
+    if(id){await new Promise(r=>setTimeout(r,delays[ids.indexOf(id)]));finished.push(id);throw Error('HTTP 503');}
+    return '<html/>';});
+   return{finished,issues:(await fetchEasycruitJobs({host})).enumeration?.issues};
+  };
+  const capture=await read([30,1]),replay=await read([1,30]);
+  // Prémisse : les deux lectures finissent dans des ordres opposés, sinon le témoin ne teste rien.
+  expect(capture.finished).toEqual(['102','101']);expect(replay.finished).toEqual(['101','102']);
+  expect(capture.issues).toEqual(['DETAIL_READ_FAILED:101','DETAIL_READ_FAILED:102']);
+  expect(replay.issues).toEqual(capture.issues);
+ });
  it('fails completion on duplicate native IDs and preserves rejected evidence',async()=>{
   vi.mocked(fetchText).mockImplementation(async url=>String(url).endsWith('list.xml')?feed(vacancy()+vacancy()):String(url).endsWith('.xml')?vacancy():'<html/>');
   const r=await fetchEasycruitJobs({host});expect(r.complete).toBe(false);expect(r.jobs).toHaveLength(1);expect(r.rejectedRows?.[0].reason).toBe('DUPLICATE_NATIVE_ID');

@@ -107,7 +107,10 @@ export async function fetchHarriJobs(config: Record<string, unknown>): Promise<A
   }
   if (!terminated && !issues.length && !rejectedRows.length) issues.push('PAGE_BUDGET_EXHAUSTED');
   const limit = pLimit(DEFAULT_DETAIL_CONCURRENCY);
-  const jobs = await Promise.all([...listings.values()].map(listing => limit(async (): Promise<NormalizedJob> => {
+  // Les motifs d'une fiche rejoignent la preuve dans l'ordre des offres, pas dans l'ordre d'arrivée des réponses :
+  // le rejeu hors réseau ne sert pas les fiches dans le même ordre (GANNI sur TalentRecruiter, RUN du 01/10/2026).
+  const read = await Promise.all([...listings.values()].map(listing => limit(async (): Promise<{ job: NormalizedJob; issues: string[] }> => {
+    const own: string[] = [];
     const detailUrl = `${API}/core-reader/api/v1/profile/job/${listing.id}`;
     let detail: Detail | undefined, detailReadError: string | undefined;
     const observedAt = captureObservedAt();
@@ -119,11 +122,13 @@ export async function fetchHarriJobs(config: Record<string, unknown>): Promise<A
       // needed for job evidence and is never persisted by this adapter.
       const fields: Array<keyof Detail> = ['id','alias_position','title','description','publish_date','end_date','status','deleted','access_mode','post_type','experience_from','language','Position','Timing','JobLocation'];
       detail = Object.fromEntries(fields.filter(k => native[k] !== undefined).map(k => [k, native[k]])) as Detail;
-    } catch (error) { assertSourceRunning(); detailReadError = String(error).slice(0,500); issues.push(`DETAIL_READ_FAILED:${listing.id}`); }
+    } catch (error) { assertSourceRunning(); detailReadError = String(error).slice(0,500); own.push(`DETAIL_READ_FAILED:${listing.id}`); }
     const job = parseHarriPublication(listing, detail, profile, String(mode), observedAt);
-    if (job.publicationHold === 'UNRECOGNISED_PUBLICATION_STATE') issues.push(`UNRECOGNISED_PUBLICATION_STATE:${listing.id}`);
-    return {...job,raw:{...(job.raw as object),detailReadError,portalEvidence}};
+    if (job.publicationHold === 'UNRECOGNISED_PUBLICATION_STATE') own.push(`UNRECOGNISED_PUBLICATION_STATE:${listing.id}`);
+    return { job: {...job,raw:{...(job.raw as object),detailReadError,portalEvidence}}, issues: own };
   })));
+  for (const entry of read) issues.push(...entry.issues);
+  const jobs = read.map(entry => entry.job);
   return { jobs, declaredTotal: total, complete: terminated && issues.length === 0 && rejectedRows.length === 0, rejectedRows,
     enumeration: { method: 'NATIVE_OFFSET_AND_UNIQUE_IDS', endpoint: SEARCH, pages: pageEvidence.length, rawCount,
       termination: terminated ? 'DECLARED_TOTAL_REACHED' : 'INCOMPLETE', issues,
