@@ -1,0 +1,86 @@
+{
+ "auteur": "assistant (D-492), avant tout juge",
+ "protocole": "D-487 : verdicts committés avant le juge indépendant ; offres fermées, jamais lues au tour 1",
+ "verdicts": [
+  {
+   "n": 1,
+   "id": "cmu6yfjzr003sn2qotfmttrao",
+   "titre": "Seasonal Sales Associates - White City Store , London",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 2,
+   "id": "cmu9j6ner003eo5c44d7jbd7c",
+   "titre": "Seasonal Sales Associates - Food, Kids & Toys - Full Time",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 3,
+   "id": "cmu6x35m900kwpq61fn5yuohh",
+   "titre": "Vendeurs.ses Bruxelles -30h/sem - CDD",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 4,
+   "id": "cmu9j6oxc00b6o5c4g58gox78",
+   "titre": "Buyers Admin- Beauty",
+   "metier": "buyer",
+   "verdict": "FAUX",
+   "motif": "« Buyers Admin » : un poste administratif au service des acheteurs, pas un acheteur"
+  },
+  {
+   "n": 5,
+   "id": "cmu7zr0gg006bp8ddreb35bj3",
+   "titre": "Vendeurs.ses Bruxelles -30h/sem - CDD",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 6,
+   "id": "cmueasi900eh4oi35r78k32ws",
+   "titre": "Conseiller de ventes F/H - CDD Temps Plein",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 7,
+   "id": "cmu6yfjtr003ln2qoo673sn15",
+   "titre": "Seasonal Sales Associates - Stratford Store , London",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 8,
+   "id": "cmueksfb800ggmr5o7v4bwe88",
+   "titre": "2026 Seasonal Casual Sales Associates - Westgate",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 9,
+   "id": "cmu9j6mry0003o5c47g5ryjgt",
+   "titre": "Seasonal Sales Associates - Fashion - Full Time & Part Time",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 10,
+   "id": "cmu84kbfp033ipc87n3miiynw",
+   "titre": "Vendeurs (H/F)",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  }
+ ]
+}

@@ -12,7 +12,9 @@
  *    sans aucun verdict.
  *
  *   CATWALKS_DB_ACCESS=<accès> npx tsx audits/2026-10-01/d500-requete/q5/manifeste-v3-1.mts
- *   CATWALKS_DB_ACCESS=<accès> npx tsx audits/2026-10-01/d500-requete/q5/a-blanc.mts [taille de l'échantillon]
+ *   CATWALKS_DB_ACCESS=<accès> npx tsx audits/2026-10-01/d500-requete/q5/a-blanc.mts <dossier de sortie> [taille] [actives|fermees]
+ * `fermees` : les offres FERMÉES du stock (jamais lues par le tour précédent), pour un échantillon neuf ; le reclassement
+ * (`classify-jobs`) les relit aussi.
  */
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
@@ -21,10 +23,11 @@ import { executer } from '../client-mesure.mts';
 import { compileOccupationManifest, occupationTitleRoles } from '@catwalks/db/occupations';
 
 const ICI = new URL('.', import.meta.url).pathname;
-const SORTIE = join(ICI, 'resultats');
+const SORTIE = join(ICI, process.argv[2] ?? 'resultats');
 mkdirSync(SORTIE, { recursive: true });
-const TAILLE = Number(process.argv[2] ?? 200);
-const GRAINE = 'd500-q5-2026-10-01';
+const TAILLE = Number(process.argv[3] ?? 200);
+const POPULATION = process.argv[4] === 'fermees' ? 'fermees' : 'actives';
+const GRAINE = `d500-q5-2026-10-01-${POPULATION}`;
 const lire = (f: string) => JSON.parse(readFileSync(f, 'utf8'));
 const v3 = compileOccupationManifest(lire(join(ICI, '..', '..', '..', '2026-09-28', 'curation-v3', '6-manifeste-v3.json')));
 const v31 = compileOccupationManifest(lire(join(ICI, 'manifeste-v3-1.json')));
@@ -34,7 +37,7 @@ type Offre = { id: string; pays: string | null; title: string; code: string | nu
 const offres = executer(`SELECT j.id, j."countryCode" AS pays, j.title, j."occupationCode" AS code, j."occupationStatus" AS statut,
     j."occupationEvidence"->'candidates' AS candidates, j."occupationEvidence"->'matchedRules' AS regles, j."titleRoles" AS stockes,
     j."titleRolesReleaseId" AS release
-  FROM "Job" j WHERE j."isActive" AND j."mergedIntoId" IS NULL`).lignes as Offre[];
+  FROM "Job" j WHERE ${POPULATION === 'actives' ? 'j."isActive"' : 'NOT j."isActive"'} AND j."mergedIntoId" IS NULL`).lignes as Offre[];
 const decision = (o: Offre) => ({ occupationCode: o.code, occupationStatus: o.statut,
   occupationEvidence: { candidates: o.candidates ?? [], matchedRules: o.regles ?? [] } });
 
@@ -80,7 +83,7 @@ for (const g of gains) {
 const tri = (m: Map<string, number>) => [...m].sort((a, b) => b[1] - a[1]);
 const lecture = [
   `# Q5 à blanc — ${new Date().toISOString()} — ${v3.manifest.id} → ${v31.manifest.id}`,
-  `Offres actives lues : ${offres.length}`,
+  `Offres ${POPULATION} lues : ${offres.length}`,
   `Contrôle : titleRoles stockés (version ${v3.manifest.id}) = recalculés ici : ${controleOk} ; différents : ${controleKo}${exemplesKo.length ? ` (${exemplesKo.join(' ‖ ')})` : ''}`,
   `Offres qui gagnent au moins un métier lu : ${gains.length} ; offres qui en perdent un : ${perdus}`,
   `Par métier gagné : ${tri(parMetier).slice(0, 25).map(([k, n]) => `${k} ${n}`).join(', ')}`,
@@ -93,7 +96,7 @@ const lecture = [
   '',
   `Échantillon de justesse : ${echantillon.length} couples, graine « ${GRAINE} » (echantillon.json, sans verdict)`,
 ];
-writeFileSync(join(SORTIE, 'bilan.txt'), lecture.join('\n') + '\n');
+writeFileSync(join(SORTIE, 'bilan-a-blanc.txt'), lecture.join('\n') + '\n');
 writeFileSync(join(SORTIE, 'gains.json'), JSON.stringify(gains, null, 1));
 writeFileSync(join(SORTIE, 'echantillon.json'), JSON.stringify(echantillon, null, 1));
 console.log(lecture.join('\n'));

@@ -35,6 +35,8 @@ type Lecteur = {
   resolveur: ReturnType<typeof createIntentResolver>;
   /** [[D-500]] Q5, lecture 2 : les mots des expressions de métier (singulier d'un pluriel) ; vide en lecture 1. */
   lexique: Set<string>;
+  /** Lecture 2 : par métier, les expressions vérifiées ramenées au masculin (« conseillere de vente » se lit). */
+  verifieesMasc: Map<string, Set<string>>;
   lecture: 1 | 2;
   /** Par métier, les expressions vérifiées pour un intitulé plus long (mots de la recherche). */
   verifiees: Map<string, Set<string>>;
@@ -67,8 +69,8 @@ function lecteur(catalogue: CompiledOccupationTaxonomy): Lecteur {
   const lecture = catalogue.manifest.titleReadingVersion ?? 1;
   const lexique = lecture === 2 ? new Set(concepts.flatMap((c) => c.aliases.flatMap((a) => searchWords(a)))) : new Set<string>();
   // Lecture 2 : une expression vérifiée vaut aussi à l'autre genre (« conseillere de vente » pour « conseiller de vente »).
-  if (lecture === 2) for (const [role, cles] of verifiees) for (const c of [...cles]) cles.add(auMasculin(c));
-  const cree = { resolveur: createIntentResolver(concepts, []), verifiees, exclusions, exactes, version, lexique, lecture };
+  const verifieesMasc = new Map([...verifiees].map(([role, cles]) => [role, new Set([...cles].map(auMasculin))]));
+  const cree = { resolveur: createIntentResolver(concepts, []), verifiees, verifieesMasc, exclusions, exactes, version, lexique, lecture };
   lecteurs.set(catalogue.manifest, cree);
   return cree;
 }
@@ -102,13 +104,16 @@ const contient = (mots: string[], m: string[], hors: [number, number]) => {
   return false;
 };
 
+/** Une lecture : le métier, l'expression lue, sa place dans son segment, et si seule la lecture 2 (singulier) l'a trouvée. */
+export type LectureIntitule = { role: string; phrase: string; debut: number; avant: string[]; auSingulier: boolean };
+
 /** Ce que le résolveur lit dans un intitulé plus long, AVANT vérification (étape 6g : chaque expression s'y vérifie sur
  * ce qu'elle capte), après les mots d'encadrement, les formes décidées et la préséance d'une règle exacte. */
 export function occupationTitleReadings(
   catalogue: CompiledOccupationTaxonomy,
   title: string | null | undefined,
   decision: TitleDecision,
-): { role: string; phrase: string }[] {
+): LectureIntitule[] {
   if (!title?.trim()) return [];
   const { resolveur, exclusions, exactes, version, lexique, lecture } = lecteur(catalogue);
   if (decision.occupationStatus === "CLASSIFIED"
@@ -116,15 +121,7 @@ export function occupationTitleReadings(
   // Lecture 2 : les formes exclues se cherchent aussi dans l'intitulé ramené au singulier (« PREMIERES VENDEUSES »).
   const cle = ` ${occupationMatchKey(title, version)} ${lecture === 2 ? `${occupationMatchKey(auSingulier(normalizeOccupationTitle(title), lexique), version)} ` : ""}`;
   const parts = segments(title);
-  // Lecture 2 : le segment tel quel, puis ramené au singulier s'il change (« CHARGE D AFFAIRES » se lit toujours tel quel) ;
-  // les lectures s'ajoutent, aucune ne se perd.
-  const lectures = (segment: string) => {
-    const norme = normalizeOccupationTitle(segment);
-    const singulier = lecture === 2 ? auSingulier(norme, lexique) : norme;
-    return singulier === norme ? [norme] : [norme, singulier];
-  };
-  const vues = new Set<string>();
-  return parts.flatMap((segment) => lectures(segment)).flatMap((norme) => {
+  const lire = (norme: string, auSingulier: boolean): LectureIntitule[] => {
     const mots = searchWords(norme);
     return resolveur.titleMatches(norme)
       .filter((m) => m.kind === "role" && !(m.whole && parts.length === 1))
@@ -132,18 +129,45 @@ export function occupationTitleReadings(
         const span: [number, number] = [m.start, m.start + m.phrase.split(" ").length];
         return !ENCADREMENT.some((e) => contient(mots, e, span));
       })
-      .flatMap((m) => m.keys.filter((r) => !exclusions.get(r)?.some((x) => cle.includes(` ${x} `))).map((role) => ({ role, phrase: m.phrase })));
-  }).filter((l) => (vues.has(`${l.role}|${l.phrase}`) ? false : (vues.add(`${l.role}|${l.phrase}`), true)));
+      .flatMap((m) => m.keys.filter((r) => !exclusions.get(r)?.some((x) => cle.includes(` ${x} `)))
+        .map((role) => ({ role, phrase: m.phrase, debut: m.start, avant: mots.slice(0, m.start), auSingulier })));
+  };
+  // Lecture 2 : le segment tel quel, puis ramené au singulier s'il change (« CHARGE D AFFAIRES » se lit toujours tel quel) ;
+  // les lectures s'ajoutent, aucune ne se perd ; une lecture que le segment tel quel donne déjà n'est pas « au singulier ».
+  return parts.flatMap((segment) => {
+    const norme = normalizeOccupationTitle(segment);
+    const telles = lire(norme, false);
+    const singulier = lecture === 2 ? auSingulier(norme, lexique) : norme;
+    if (singulier === norme) return telles;
+    const deja = new Set(telles.map((l) => `${l.role}|${l.phrase}`));
+    return [...telles, ...lire(singulier, true).filter((l) => !deja.has(`${l.role}|${l.phrase}`))];
+  });
 }
+
+/**
+ * [[D-500]] Q5 — les garde-fous d'une lecture que seule la lecture 2 donne (au singulier, ou à l'autre genre), mesurés
+ * au tour 1 (`audits/2026-10-01/d500-requete/q5/`) : elle ne s'ajoute qu'à une offre que le moteur a laissée sans métier
+ * (« Store Manager - Opticians » est un responsable de boutique, pas un opticien) ; une lecture d'un seul mot au singulier
+ * ouvre son segment (« Vendeurs (f/h) », jamais « Boots Opticians ») ; et un assistant, un adjoint ou un stagiaire d'un
+ * métier n'est pas ce métier ([[D-475]] §37 b).
+ */
+const AVANT_EXCLUS = new Set(["assistant", "assistante", "adjoint", "adjointe", "stagiaire", "apprenti", "apprentie"]);
+const lectureDeuxAdmise = (l: LectureIntitule, decision: TitleDecision) =>
+  !decision.occupationCode && !l.avant.some((m) => AVANT_EXCLUS.has(m))
+  && !(l.auSingulier && l.phrase.split(" ").length === 1 && l.debut > 0);
 
 export function occupationTitleRoles(
   catalogue: CompiledOccupationTaxonomy,
   title: string | null | undefined,
   decision: TitleDecision,
 ): string[] {
-  const { verifiees } = lecteur(catalogue);
-  const { lecture } = lecteur(catalogue);
-  const lus = occupationTitleReadings(catalogue, title, decision)
-    .filter(({ role, phrase }) => verifiees.get(role)?.has(phrase) || (lecture === 2 && !!verifiees.get(role)?.has(auMasculin(phrase))));
+  const { verifiees, verifieesMasc, lecture } = lecteur(catalogue);
+  const lus = occupationTitleReadings(catalogue, title, decision).filter((l) => {
+    const verifiee = !!verifiees.get(l.role)?.has(l.phrase);
+    if (verifiee && !l.auSingulier) return true;
+    if (lecture !== 2) return false;
+    const lueEnLecture2 = verifiee || !!verifieesMasc.get(l.role)?.has(auMasculin(l.phrase));
+    return lueEnLecture2 && lectureDeuxAdmise(l, decision);
+  });
   return [...new Set([...decision.occupationEvidence.candidates, ...lus.map((l) => l.role)])].sort();
 }
