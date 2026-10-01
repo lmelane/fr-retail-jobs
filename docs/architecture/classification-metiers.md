@@ -451,7 +451,8 @@ cette alerte reste muette. Les alertes des passes de curation et des juges viend
 ### 3.8 Retrait complet
 
 Après bascule vérifiée de chaque surface : retrait du moteur v1 et de son drapeau, du chemin IA inerte de
-`mapJobCategory`, de la création de métier au back-office, des écritures dans `JobCategoryRef`, puis des
+`mapJobCategory`, du code de la création de métier au back-office (refusée depuis 2E : l'écran ne la propose plus,
+le backend répond 410), des écritures dans `JobCategoryRef`, puis des
 anciennes colonnes (suppression : GO, confirmation, sauvegarde), et de `/api/job-categories` sans client.
 Mise à jour du `CLAUDE.md` de l'agrégateur (D-475 §20, §26 a).
 
