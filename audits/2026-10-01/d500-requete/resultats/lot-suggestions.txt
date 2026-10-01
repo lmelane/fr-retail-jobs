@@ -1,43 +1,43 @@
-# lot-suggestions — 2026-10-01T19:25:24.498421+00:00 — catwalks-occupations-20260929-v3 — search-5-20260924-v2
-Bilan : {"frappes":20,"suggestions":48,"bruit":0,"villes":0,"majuscules":0,"zero":0,"doublons":0,"medianeMs":126.068,"p95Ms":175.869,"maxMs":244.935,"sous300":20,"allerRetourMs":17.662,"sous300CoteBase":20,"p95CoteBaseMs":115.524}
+# lot-suggestions — 2026-10-01T20:01:40.088046+00:00 — catwalks-occupations-20260929-v3 — search-5-20260924-v2
+Bilan : {"frappes":20,"suggestions":47,"bruit":0,"villes":0,"majuscules":0,"zero":0,"doublons":0,"medianeMs":117.69,"p95Ms":152.45600000000002,"maxMs":202.985,"sous300":20,"allerRetourMs":17.817,"sous300CoteBase":20,"p95CoteBaseMs":81.18800000000002}
 Durée d'une frappe : la somme des durées serveur de ses requêtes (psql \timing), mémos du marché déjà remplis ; les requêtes parallèles du code sont comptées bout à bout (majorant).
 
-# FR : mémos du marché (offres par métier, villes), une fois toutes les 10 minutes à une heure : 358 ms
+# FR : mémos du marché (offres par métier, villes), une fois toutes les 10 minutes à une heure : 320 ms
 
-## FR « conseill » — 129 ms (3 requêtes) ; 0 doublon(s)
+## FR « conseill » — 130 ms (3 requêtes) ; 0 doublon(s)
 - Conseiller de vente [metier] → metier=sales-advisor : 4569 offres
 - Conseiller beauté [metier] → metier=beauty-consultant : 132 offres
 - Conseiller en image [metier] → metier=conseiller-en-image : 4 offres
 - Conseiller service client [metier] → metier=customer-service-advisor : 3 offres
 
-## FR « conseillère » — 245 ms (3 requêtes) ; 0 doublon(s)
+## FR « conseillère » — 115 ms (3 requêtes) ; 0 doublon(s)
 - Conseillère de vente [metier] → metier=sales-advisor : 4569 offres
 - Conseillère beauté [metier] → metier=beauty-consultant : 132 offres
 
-## FR « vendeu » — 152 ms (4 requêtes) ; 0 doublon(s)
+## FR « vendeu » — 148 ms (4 requêtes) ; 0 doublon(s)
 - Vendeur [metier] → metier=sales-advisor : 4569 offres
 - Premier vendeur [metier] → metier=retail-sales-lead : 22 offres
 - Vendeur polyvalent [intitule] → q (texte compris) : 584 offres
 
-## FR « store man » — 126 ms (3 requêtes) ; 0 doublon(s)
+## FR « store man » — 112 ms (3 requêtes) ; 0 doublon(s)
 - Store manager [metier] → metier=store-manager : 589 offres
 - Assistant store manager [metier] → metier=assistant-store-manager : 414 offres
 
-## FR « responsable bout » — 169 ms (3 requêtes) ; 0 doublon(s)
+## FR « responsable bout » — 118 ms (3 requêtes) ; 0 doublon(s)
 - Responsable de boutique [metier] → metier=store-manager : 589 offres
 - Adjoint au responsable de boutique [metier] → metier=assistant-store-manager : 414 offres
 
-## FR « visual » — 111 ms (3 requêtes) ; 0 doublon(s)
+## FR « visual » — 118 ms (3 requêtes) ; 0 doublon(s)
 - Visual merchandiser [metier] → metier=visual-merchandiser : 50 offres
 - Responsable visual merchandising [metier] → metier=responsable-vm : 34 offres
 
 ## FR « make up » — 111 ms (3 requêtes) ; 0 doublon(s)
 - Makeup artist [metier] → metier=makeup-artist : 14 offres
 
-## FR « sales ad » — 106 ms (3 requêtes) ; 0 doublon(s)
+## FR « sales ad » — 119 ms (3 requêtes) ; 0 doublon(s)
 - Sales advisor [metier] → metier=sales-advisor : 4569 offres
 
-## FR « assistant » — 143 ms (4 requêtes) ; 0 doublon(s)
+## FR « assistant » — 152 ms (4 requêtes) ; 0 doublon(s)
 - Sales assistant [metier] → metier=sales-advisor : 4569 offres
 - Assistant store manager [metier] → metier=assistant-store-manager : 414 offres
 - Stock assistant [metier] → metier=stock-associate : 189 offres
@@ -47,7 +47,7 @@ Durée d'une frappe : la somme des durées serveur de ses requêtes (psql \timin
 - Assistant de direction [metier] → metier=executive-assistant : 15 offres
 - Assistant formation retail [intitule] → q (texte compris) : 515 offres
 
-## FR « directeur » — 137 ms (4 requêtes) ; 0 doublon(s)
+## FR « directeur » — 140 ms (4 requêtes) ; 0 doublon(s)
 - Directeur de magasin [metier] → metier=store-manager : 589 offres
 - Directeur adjoint de magasin [metier] → metier=assistant-store-manager : 414 offres
 - Directeur artistique [metier] → metier=direction-artistique : 7 offres
@@ -58,31 +58,30 @@ Durée d'une frappe : la somme des durées serveur de ses requêtes (psql \timin
 
 # GB : mémos du marché (offres par métier, villes), une fois toutes les 10 minutes à une heure : 185 ms
 
-## GB « conseill » — 100 ms (3 requêtes) ; 0 doublon(s)
+## GB « conseill » — 102 ms (3 requêtes) ; 0 doublon(s)
 
-## GB « conseillère » — 92 ms (3 requêtes) ; 0 doublon(s)
+## GB « conseillère » — 104 ms (3 requêtes) ; 0 doublon(s)
 
-## GB « vendeu » — 106 ms (3 requêtes) ; 0 doublon(s)
+## GB « vendeu » — 97 ms (3 requêtes) ; 0 doublon(s)
 
-## GB « store man » — 94 ms (3 requêtes) ; 0 doublon(s)
+## GB « store man » — 98 ms (3 requêtes) ; 0 doublon(s)
 - Store manager [metier] → metier=store-manager : 174 offres
 - Assistant store manager [metier] → metier=assistant-store-manager : 163 offres
 
-## GB « responsable bout » — 92 ms (3 requêtes) ; 0 doublon(s)
+## GB « responsable bout » — 93 ms (3 requêtes) ; 0 doublon(s)
 
-## GB « visual » — 176 ms (4 requêtes) ; 0 doublon(s)
+## GB « visual » — 203 ms (4 requêtes) ; 0 doublon(s)
 - Visual merchandiser [metier] → metier=visual-merchandiser : 81 offres
 - Visual Merchandising Manager [metier] → metier=responsable-vm : 8 offres
 - Centre visual merchandiser [intitule] → q (texte compris) : 4 offres
 
-## GB « make up » — 94 ms (3 requêtes) ; 0 doublon(s)
+## GB « make up » — 107 ms (3 requêtes) ; 0 doublon(s)
 - Makeup artist [metier] → metier=makeup-artist : 47 offres
 
-## GB « sales ad » — 131 ms (4 requêtes) ; 0 doublon(s)
+## GB « sales ad » — 102 ms (3 requêtes) ; 0 doublon(s)
 - Sales advisor [metier] → metier=sales-advisor : 1251 offres
-- Christmas sales advisor [intitule] → q (texte compris) : 170 offres
 
-## GB « assistant » — 160 ms (4 requêtes) ; 0 doublon(s)
+## GB « assistant » — 136 ms (4 requêtes) ; 0 doublon(s)
 - Sales assistant [metier] → metier=sales-advisor : 1251 offres
 - Assistant store manager [metier] → metier=assistant-store-manager : 163 offres
 - Stock assistant [metier] → metier=stock-associate : 58 offres
@@ -92,4 +91,4 @@ Durée d'une frappe : la somme des durées serveur de ses requêtes (psql \timin
 - Sales Support Assistant [metier] → metier=assistant-commercial : 2 offres
 - Retail assistant [intitule] → q (texte compris) : 821 offres
 
-## GB « directeur » — 123 ms (3 requêtes) ; 0 doublon(s)
+## GB « directeur » — 122 ms (3 requêtes) ; 0 doublon(s)

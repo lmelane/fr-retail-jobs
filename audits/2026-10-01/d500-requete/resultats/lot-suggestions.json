@@ -2,43 +2,43 @@
  "etat": {
   "release": "catwalks-occupations-20260929-v3",
   "generation": "search-5-20260924-v2",
-  "mesureA": "2026-10-01T19:25:24.498421+00:00"
+  "mesureA": "2026-10-01T20:01:40.088046+00:00"
  },
  "donnees": {
   "bilan": {
    "frappes": 20,
-   "suggestions": 48,
+   "suggestions": 47,
    "bruit": 0,
    "villes": 0,
    "majuscules": 0,
    "zero": 0,
    "doublons": 0,
-   "medianeMs": 126.068,
-   "p95Ms": 175.869,
-   "maxMs": 244.935,
+   "medianeMs": 117.69,
+   "p95Ms": 152.45600000000002,
+   "maxMs": 202.985,
    "sous300": 20,
-   "allerRetourMs": 17.662,
+   "allerRetourMs": 17.817,
    "sous300CoteBase": 20,
-   "p95CoteBaseMs": 115.524
+   "p95CoteBaseMs": 81.18800000000002
   },
   "donnees": [
    {
     "marche": "FR",
     "frappe": "conseill",
-    "ms": 128.561,
+    "ms": 130.39,
     "requetes": 3,
     "releves": [
      {
-      "ms": 21.585,
+      "ms": 20.566,
       "sql": "\n    SELECT EXISTS(SELECT 1 FROM \"SearchGeneration\" WHERE version='search-5-20260924-v2' AND \"readyAt\" IS NOT NULL) ready,\n      EXISTS(SELECT 1 FROM \"SearchPending\" WHERE version='search-5-20260924-v2' AND \"queuedAt\" < now()-interval '300 seconds') stale"
      },
      {
-      "ms": 18.009,
+      "ms": 19.091,
       "sql": "SELECT revision FROM \"SearchMetadata\" WHERE id='active'"
      },
      {
-      "ms": 88.967,
-      "sql": "\n    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids,\n      array_agg(array_to_string(maisons, ',')) AS maisons FROM (\n      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id, (array_agg(DISTINCT j.\"companyId\"))[1:3]::text[] AS maisons FROM \"Job\" j\n       WHERE j.\"isActive\" AND j.\"mergedIntoId\" IS NULL AND EXISTS (\n    SELECT 1 FROM \"JobSource\" available_source WHERE available_source.\"jobId\" = j.id\n      AND available_source.\"isActive\" AND (available_source.\"expiresAt\" IS NULL OR available_source.\"expiresAt\" > ('2026-10-01T19:25:40.919Z'::timestamptz AT TIME ZONE 'UTC'))) AND j.\"countryCode\" IN ('FR','MC') AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte('%conseill%') GROUP BY j.title\n      UNION ALL\n      SELECT d.title, count(*), 'cw_' || min(d.id), (array_agg(DISTINCT coalesce(d.\"companyId\", d.company)))[1:3]::text[] FROM \"DirectOffer\" d\n       WHERE d.eligible AND (d.\"validThrough\" IS NULL OR d.\"validThrough\" > ('2026-10-01T19:25:40.919Z'::timestamptz AT TIME ZONE 'UTC')) AND d.\"countryCode\" IN ('FR','MC') AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte('%conseill%') GROUP BY d.title\n    ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40"
+      "ms": 90.733,
+      "sql": "\n    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids,\n      array_agg(array_to_string(maisons, ',')) AS maisons FROM (\n      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id, (array_agg(DISTINCT j.\"companyId\"))[1:3]::text[] AS maisons FROM \"Job\" j\n       WHERE j.\"isActive\" AND j.\"mergedIntoId\" IS NULL AND EXISTS (\n    SELECT 1 FROM \"JobSource\" available_source WHERE available_source.\"jobId\" = j.id\n      AND available_source.\"isActive\" AND (available_source.\"expiresAt\" IS NULL OR available_source.\"expiresAt\" > ('2026-10-01T20:01:45.417Z'::timestamptz AT TIME ZONE 'UTC'))) AND j.\"countryCode\" IN ('FR','MC') AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte('%conseill%') GROUP BY j.title\n      UNION ALL\n      SELECT d.title, count(*), 'cw_' || min(d.id), (array_agg(DISTINCT coalesce(d.\"companyId\", d.company)))[1:3]::text[] FROM \"DirectOffer\" d\n       WHERE d.eligible AND (d.\"validThrough\" IS NULL OR d.\"validThrough\" > ('2026-10-01T20:01:45.417Z'::timestamptz AT TIME ZONE 'UTC')) AND d.\"countryCode\" IN ('FR','MC') AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte('%conseill%') GROUP BY d.title\n    ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40"
      }
     ],
     "suggestions": [
@@ -96,20 +96,20 @@
    {
     "marche": "FR",
     "frappe": "conseillère",
-    "ms": 244.935,
+    "ms": 115.33699999999999,
     "requetes": 3,
     "releves": [
      {
-      "ms": 18.974,
+      "ms": 19.783,
       "sql": "\n    SELECT EXISTS(SELECT 1 FROM \"SearchGeneration\" WHERE version='search-5-20260924-v2' AND \"readyAt\" IS NOT NULL) ready,\n      EXISTS(SELECT 1 FROM \"SearchPending\" WHERE version='search-5-20260924-v2' AND \"queuedAt\" < now()-interval '300 seconds') stale"
      },
      {
-      "ms": 95.452,
+      "ms": 18.975,
       "sql": "SELECT revision FROM \"SearchMetadata\" WHERE id='active'"
      },
      {
-      "ms": 130.509,
-      "sql": "\n    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids,\n      array_agg(array_to_string(maisons, ',')) AS maisons FROM (\n      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id, (array_agg(DISTINCT j.\"companyId\"))[1:3]::text[] AS maisons FROM \"Job\" j\n       WHERE j.\"isActive\" AND j.\"mergedIntoId\" IS NULL AND EXISTS (\n    SELECT 1 FROM \"JobSource\" available_source WHERE available_source.\"jobId\" = j.id\n      AND available_source.\"isActive\" AND (available_source.\"expiresAt\" IS NULL OR available_source.\"expiresAt\" > ('2026-10-01T19:25:43.353Z'::timestamptz AT TIME ZONE 'UTC'))) AND j.\"countryCode\" IN ('FR','MC') AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte('%conseillère%') GROUP BY j.title\n      UNION ALL\n      SELECT d.title, count(*), 'cw_' || min(d.id), (array_agg(DISTINCT coalesce(d.\"companyId\", d.company)))[1:3]::text[] FROM \"DirectOffer\" d\n       WHERE d.eligible AND (d.\"validThrough\" IS NULL OR d.\"validThrough\" > ('2026-10-01T19:25:43.353Z'::timestamptz AT TIME ZONE 'UTC')) AND d.\"countryCode\" IN ('FR','MC') AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte('%conseillère%') GROUP BY d.title\n    ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40"
+      "ms": 76.579,
+      "sql": "\n    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids,\n      array_agg(array_to_string(maisons, ',')) AS maisons FROM (\n      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id, (array_agg(DISTINCT j.\"companyId\"))[1:3]::text[] AS maisons FROM \"Job\" j\n       WHERE j.\"isActive\" AND j.\"mergedIntoId\" IS NULL AND EXISTS (\n    SELECT 1 FROM \"JobSource\" available_source WHERE available_source.\"jobId\" = j.id\n      AND available_source.\"isActive\" AND (available_source.\"expiresAt\" IS NULL OR available_source.\"expiresAt\" > ('2026-10-01T20:01:47.690Z'::timestamptz AT TIME ZONE 'UTC'))) AND j.\"countryCode\" IN ('FR','MC') AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte('%conseillère%') GROUP BY j.title\n      UNION ALL\n      SELECT d.title, count(*), 'cw_' || min(d.id), (array_agg(DISTINCT coalesce(d.\"companyId\", d.company)))[1:3]::text[] FROM \"DirectOffer\" d\n       WHERE d.eligible AND (d.\"validThrough\" IS NULL OR d.\"validThrough\" > ('2026-10-01T20:01:47.690Z'::timestamptz AT TIME ZONE 'UTC')) AND d.\"countryCode\" IN ('FR','MC') AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte('%conseillère%') GROUP BY d.title\n    ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40"
      }
     ],
     "suggestions": [
@@ -143,23 +143,23 @@
    {
     "marche": "FR",
     "frappe": "vendeu",
-    "ms": 151.78,
+    "ms": 147.56900000000002,
     "requetes": 4,
     "releves": [
      {
-      "ms": 20.407,
+      "ms": 19.405,
       "sql": "\n    SELECT EXISTS(SELECT 1 FROM \"SearchGeneration\" WHERE version='search-5-20260924-v2' AND \"readyAt\" IS NOT NULL) ready,\n      EXISTS(SELECT 1 FROM \"SearchPending\" WHERE version='search-5-20260924-v2' AND \"queuedAt\" < now()-interval '300 seconds') stale"
      },
      {
-      "ms": 18.648,
+      "ms": 19.203,
       "sql": "SELECT revision FROM \"SearchMetadata\" WHERE id='active'"
      },
      {
-      "ms": 92.068,
-      "sql": "\n    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids,\n      array_agg(array_to_string(maisons, ',')) AS maisons FROM (\n      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id, (array_agg(DISTINCT j.\"companyId\"))[1:3]::text[] AS maisons FROM \"Job\" j\n       WHERE j.\"isActive\" AND j.\"mergedIntoId\" IS NULL AND EXISTS (\n    SELECT 1 FROM \"JobSource\" available_source WHERE available_source.\"jobId\" = j.id\n      AND available_source.\"isActive\" AND (available_source.\"expiresAt\" IS NULL OR available_source.\"expiresAt\" > ('2026-10-01T19:25:45.391Z'::timestamptz AT TIME ZONE 'UTC'))) AND j.\"countryCode\" IN ('FR','MC') AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte('%vendeu%') GROUP BY j.title\n      UNION ALL\n      SELECT d.title, count(*), 'cw_' || min(d.id), (array_agg(DISTINCT coalesce(d.\"companyId\", d.company)))[1:3]::text[] FROM \"DirectOffer\" d\n       WHERE d.eligible AND (d.\"validThrough\" IS NULL OR d.\"validThrough\" > ('2026-10-01T19:25:45.391Z'::timestamptz AT TIME ZONE 'UTC')) AND d.\"countryCode\" IN ('FR','MC') AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte('%vendeu%') GROUP BY d.title\n    ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40"
+      "ms": 86.304,
+      "sql": "\n    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids,\n      array_agg(array_to_string(maisons, ',')) AS maisons FROM (\n      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id, (array_agg(DISTINCT j.\"companyId\"))[1:3]::text[] AS maisons FROM \"Job\" j\n       WHERE j.\"isActive\" AND j.\"mergedIntoId\" IS NULL AND EXISTS (\n    SELECT 1 FROM \"JobSource\" available_source WHERE available_source.\"jobId\" = j.id\n      AND available_source.\"isActive\" AND (available_source.\"expiresAt\" IS NULL OR available_source.\"expiresAt\" > ('2026-10-01T20:01:49.455Z'::timestamptz AT TIME ZONE 'UTC'))) AND j.\"countryCode\" IN ('FR','MC') AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte('%vendeu%') GROUP BY j.title\n      UNION ALL\n      SELECT d.title, count(*), 'cw_' || min(d.id), (array_agg(DISTINCT coalesce(d.\"companyId\", d.company)))[1:3]::text[] FROM \"DirectOffer\" d\n       WHERE d.eligible AND (d.\"validThrough\" IS NULL OR d.\"validThrough\" > ('2026-10-01T20:01:49.455Z'::timestamptz AT TIME ZONE 'UTC')) AND d.\"countryCode\" IN ('FR','MC') AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte('%vendeu%') GROUP BY d.title\n    ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40"
      },
      {
-      "ms": 20.657,
+      "ms": 22.657,
       "sql": "SELECT position FROM (SELECT 0::int AS position WHERE EXISTS (SELECT 1 FROM \"SearchDocument\" s\n        WHERE s.version = 'search-5-20260924-v2' AND s.id = ANY(ARRAY['cmuekhqpx00i7na5nu5lvmlbi','cmu9mkyyo00qqmb9zj5760wxh','cmuekhiq7006cna5n37hgm0b8']::text[]::text[]) AND (s.vector @@ ((to_tsquery('simple', '(''polyvalent'')'))) AND coalesce(s.vector, ''::tsvector) @@ (((to_tsquery('simple', '(''sales'':AC <-> ''advisor'':AC) | (''conseiller'':AC <-> ''de'':AC <-> ''vente'':AC) | (''sales'':AC <-> ''assistant'':AC) | (''client'':AC <-> ''advisor'':AC) | (''luxury'':AC <-> ''sales'':AC <-> ''advisor'':AC) | (''conseillere'':AC <-> ''de'':AC <-> ''vente'':AC) | (''conseiller'':AC <-> ''vente'':AC) | (''conseillere'':AC <-> ''vente'':AC) | (''fashion'':AC <-> ''advisor'':AC) | (''sales'':AC <-> ''associate'':AC) | (''selling'':AC <-> ''associate'':AC) | (''vendeur'':AC) | (''vendeuse'':AC) | (''conseillers'':AC <-> ''de'':AC <-> ''vente'':AC) | (''conseiller'':AC <-> ''vendeur'':AC) | (''conseillere'':AC <-> ''vendeuse'':AC) | (''associe'':AC <-> ''aux'':AC <-> ''ventes'':AC) | (''associee'':AC <-> ''aux'':AC <-> ''ventes'':AC) | (''addetto'':AC <-> ''vendite'':AC) | (''addetta'':AC <-> ''vendite'':AC) | (''addetti'':AC <-> ''vendite'':AC) | (''addett'':AC <-> ''vendite'':AC) | (''vendedor'':AC) | (''vendedora'':AC) | (''verkaufer'':AC) | (''verkauferin'':AC) | (''verkaufsberaterin'':AC) | (''asesora'':AC <-> ''de'':AC <-> ''ventas'':AC) | (''consultora'':AC <-> ''de'':AC <-> ''vendas'':AC) | (''prodejni'':AC <-> ''poradkyne'':AC) | (''butiksassistent'':AC) | (''lucrator'':AC <-> ''comercial'':AC) | (''lucratoare'':AC <-> ''comerciala'':AC) | (''addetto'':AC <-> ''alle'':AC <-> ''vendite'':AC) | (''addetta'':AC <-> ''alle'':AC <-> ''vendite'':AC) | (''dependiente'':AC) | (''dependienta'':AC) | (''winkelmedewerker'':AC) | (''assistente'':AC <-> ''de'':AC <-> ''loja'':AC) | (''vendedor'':AC <-> ''de'':AC <-> ''loja'':AC) | (''vendedora'':AC <-> ''de'':AC <-> ''loja'':AC) | (''sprzedawca'':AC) | (''sprzedawczyni'':AC) | (''butikssaljare'':AC) | (''satıs'':AC <-> ''elemanı'':AC) | (''pembantu'':AC <-> ''kedai'':AC) | (''butikkmedarbeider'':AC) | (''nhan'':AC <-> ''vien'':AC <-> ''ban'':AC <-> ''hang'':AC) | (''prodavac'':AC) | (''prodavacka'':AC) | (''bolti'':AC <-> ''elado'':AC)')) && !!to_tsquery('simple','cwhastitlerole')) || to_tsquery('simple', 'cwif71763319951812f7b29027c793b48d5'))))) v"
      }
     ],
@@ -203,20 +203,20 @@
    {
     "marche": "FR",
     "frappe": "store man",
-    "ms": 126.068,
+    "ms": 111.726,
     "requetes": 3,
     "releves": [
      {
-      "ms": 19.947,
+      "ms": 18.643,
       "sql": "\n    SELECT EXISTS(SELECT 1 FROM \"SearchGeneration\" WHERE version='search-5-20260924-v2' AND \"readyAt\" IS NOT NULL) ready,\n      EXISTS(SELECT 1 FROM \"SearchPending\" WHERE version='search-5-20260924-v2' AND \"queuedAt\" < now()-interval '300 seconds') stale"
      },
      {
-      "ms": 17.886,
+      "ms": 18.68,
       "sql": "SELECT revision FROM \"SearchMetadata\" WHERE id='active'"
      },
      {
-      "ms": 88.235,
-      "sql": "\n    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids,\n      array_agg(array_to_string(maisons, ',')) AS maisons FROM (\n      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id, (array_agg(DISTINCT j.\"companyId\"))[1:3]::text[] AS maisons FROM \"Job\" j\n       WHERE j.\"isActive\" AND j.\"mergedIntoId\" IS NULL AND EXISTS (\n    SELECT 1 FROM \"JobSource\" available_source WHERE available_source.\"jobId\" = j.id\n      AND available_source.\"isActive\" AND (available_source.\"expiresAt\" IS NULL OR available_source.\"expiresAt\" > ('2026-10-01T19:25:48.005Z'::timestamptz AT TIME ZONE 'UTC'))) AND j.\"countryCode\" IN ('FR','MC') AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte('%store man%') GROUP BY j.title\n      UNION ALL\n      SELECT d.title, count(*), 'cw_' || min(d.id), (array_agg(DISTINCT coalesce(d.\"companyId\", d.company)))[1:3]::text[] FROM \"DirectOffer\" d\n       WHERE d.eligible AND (d.\"validThrough\" IS NULL OR d.\"validThrough\" > ('2026-10-01T19:25:48.005Z'::timestamptz AT TIME ZONE 'UTC')) AND d.\"countryCode\" IN ('FR','MC') AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte('%store man%') GROUP BY d.title\n    ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40"
+      "ms": 74.403,
+      "sql": "\n    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids,\n      array_agg(array_to_string(maisons, ',')) AS maisons FROM (\n      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id, (array_agg(DISTINCT j.\"companyId\"))[1:3]::text[] AS maisons FROM \"Job\" j\n       WHERE j.\"isActive\" AND j.\"mergedIntoId\" IS NULL AND EXISTS (\n    SELECT 1 FROM \"JobSource\" available_source WHERE available_source.\"jobId\" = j.id\n      AND available_source.\"isActive\" AND (available_source.\"expiresAt\" IS NULL OR available_source.\"expiresAt\" > ('2026-10-01T20:01:52.153Z'::timestamptz AT TIME ZONE 'UTC'))) AND j.\"countryCode\" IN ('FR','MC') AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte('%store man%') GROUP BY j.title\n      UNION ALL\n      SELECT d.title, count(*), 'cw_' || min(d.id), (array_agg(DISTINCT coalesce(d.\"companyId\", d.company)))[1:3]::text[] FROM \"DirectOffer\" d\n       WHERE d.eligible AND (d.\"validThrough\" IS NULL OR d.\"validThrough\" > ('2026-10-01T20:01:52.153Z'::timestamptz AT TIME ZONE 'UTC')) AND d.\"countryCode\" IN ('FR','MC') AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte('%store man%') GROUP BY d.title\n    ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40"
      }
     ],
     "suggestions": [
@@ -250,20 +250,20 @@
    {
     "marche": "FR",
     "frappe": "responsable bout",
-    "ms": 168.51,
+    "ms": 117.96,
     "requetes": 3,
     "releves": [
      {
-      "ms": 20.143,
+      "ms": 19.542,
       "sql": "\n    SELECT EXISTS(SELECT 1 FROM \"SearchGeneration\" WHERE version='search-5-20260924-v2' AND \"readyAt\" IS NOT NULL) ready,\n      EXISTS(SELECT 1 FROM \"SearchPending\" WHERE version='search-5-20260924-v2' AND \"queuedAt\" < now()-interval '300 seconds') stale"
      },
      {
-      "ms": 50.257,
+      "ms": 20.83,
       "sql": "SELECT revision FROM \"SearchMetadata\" WHERE id='active'"
      },
      {
-      "ms": 98.11,
-      "sql": "\n    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids,\n      array_agg(array_to_string(maisons, ',')) AS maisons FROM (\n      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id, (array_agg(DISTINCT j.\"companyId\"))[1:3]::text[] AS maisons FROM \"Job\" j\n       WHERE j.\"isActive\" AND j.\"mergedIntoId\" IS NULL AND EXISTS (\n    SELECT 1 FROM \"JobSource\" available_source WHERE available_source.\"jobId\" = j.id\n      AND available_source.\"isActive\" AND (available_source.\"expiresAt\" IS NULL OR available_source.\"expiresAt\" > ('2026-10-01T19:25:49.819Z'::timestamptz AT TIME ZONE 'UTC'))) AND j.\"countryCode\" IN ('FR','MC') AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte('%responsable bout%') GROUP BY j.title\n      UNION ALL\n      SELECT d.title, count(*), 'cw_' || min(d.id), (array_agg(DISTINCT coalesce(d.\"companyId\", d.company)))[1:3]::text[] FROM \"DirectOffer\" d\n       WHERE d.eligible AND (d.\"validThrough\" IS NULL OR d.\"validThrough\" > ('2026-10-01T19:25:49.819Z'::timestamptz AT TIME ZONE 'UTC')) AND d.\"countryCode\" IN ('FR','MC') AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte('%responsable bout%') GROUP BY d.title\n    ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40"
+      "ms": 77.588,
+      "sql": "\n    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids,\n      array_agg(array_to_string(maisons, ',')) AS maisons FROM (\n      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id, (array_agg(DISTINCT j.\"companyId\"))[1:3]::text[] AS maisons FROM \"Job\" j\n       WHERE j.\"isActive\" AND j.\"mergedIntoId\" IS NULL AND EXISTS (\n    SELECT 1 FROM \"JobSource\" available_source WHERE available_source.\"jobId\" = j.id\n      AND available_source.\"isActive\" AND (available_source.\"expiresAt\" IS NULL OR available_source.\"expiresAt\" > ('2026-10-01T20:01:53.972Z'::timestamptz AT TIME ZONE 'UTC'))) AND j.\"countryCode\" IN ('FR','MC') AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte('%responsable bout%') GROUP BY j.title\n      UNION ALL\n      SELECT d.title, count(*), 'cw_' || min(d.id), (array_agg(DISTINCT coalesce(d.\"companyId\", d.company)))[1:3]::text[] FROM \"DirectOffer\" d\n       WHERE d.eligible AND (d.\"validThrough\" IS NULL OR d.\"validThrough\" > ('2026-10-01T20:01:53.972Z'::timestamptz AT TIME ZONE 'UTC')) AND d.\"countryCode\" IN ('FR','MC') AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte('%responsable bout%') GROUP BY d.title\n    ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40"
      }
     ],
     "suggestions": [
@@ -297,20 +297,20 @@
    {
     "marche": "FR",
     "frappe": "visual",
-    "ms": 110.615,
+    "ms": 117.69,
     "requetes": 3,
     "releves": [
      {
-      "ms": 18.616,
+      "ms": 19.955,
       "sql": "\n    SELECT EXISTS(SELECT 1 FROM \"SearchGeneration\" WHERE version='search-5-20260924-v2' AND \"readyAt\" IS NOT NULL) ready,\n      EXISTS(SELECT 1 FROM \"SearchPending\" WHERE version='search-5-20260924-v2' AND \"queuedAt\" < now()-interval '300 seconds') stale"
      },
      {
-      "ms": 17.8,
+      "ms": 18.911,
       "sql": "SELECT revision FROM \"SearchMetadata\" WHERE id='active'"
      },
      {
-      "ms": 74.199,
-      "sql": "\n    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids,\n      array_agg(array_to_string(maisons, ',')) AS maisons FROM (\n      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id, (array_agg(DISTINCT j.\"companyId\"))[1:3]::text[] AS maisons FROM \"Job\" j\n       WHERE j.\"isActive\" AND j.\"mergedIntoId\" IS NULL AND EXISTS (\n    SELECT 1 FROM \"JobSource\" available_source WHERE available_source.\"jobId\" = j.id\n      AND available_source.\"isActive\" AND (available_source.\"expiresAt\" IS NULL OR available_source.\"expiresAt\" > ('2026-10-01T19:25:51.693Z'::timestamptz AT TIME ZONE 'UTC'))) AND j.\"countryCode\" IN ('FR','MC') AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte('%visual%') GROUP BY j.title\n      UNION ALL\n      SELECT d.title, count(*), 'cw_' || min(d.id), (array_agg(DISTINCT coalesce(d.\"companyId\", d.company)))[1:3]::text[] FROM \"DirectOffer\" d\n       WHERE d.eligible AND (d.\"validThrough\" IS NULL OR d.\"validThrough\" > ('2026-10-01T19:25:51.693Z'::timestamptz AT TIME ZONE 'UTC')) AND d.\"countryCode\" IN ('FR','MC') AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte('%visual%') GROUP BY d.title\n    ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40"
+      "ms": 78.824,
+      "sql": "\n    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids,\n      array_agg(array_to_string(maisons, ',')) AS maisons FROM (\n      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id, (array_agg(DISTINCT j.\"companyId\"))[1:3]::text[] AS maisons FROM \"Job\" j\n       WHERE j.\"isActive\" AND j.\"mergedIntoId\" IS NULL AND EXISTS (\n    SELECT 1 FROM \"JobSource\" available_source WHERE available_source.\"jobId\" = j.id\n      AND available_source.\"isActive\" AND (available_source.\"expiresAt\" IS NULL OR available_source.\"expiresAt\" > ('2026-10-01T20:01:55.793Z'::timestamptz AT TIME ZONE 'UTC'))) AND j.\"countryCode\" IN ('FR','MC') AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte('%visual%') GROUP BY j.title\n      UNION ALL\n      SELECT d.title, count(*), 'cw_' || min(d.id), (array_agg(DISTINCT coalesce(d.\"companyId\", d.company)))[1:3]::text[] FROM \"DirectOffer\" d\n       WHERE d.eligible AND (d.\"validThrough\" IS NULL OR d.\"validThrough\" > ('2026-10-01T20:01:55.793Z'::timestamptz AT TIME ZONE 'UTC')) AND d.\"countryCode\" IN ('FR','MC') AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte('%visual%') GROUP BY d.title\n    ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40"
      }
     ],
     "suggestions": [
@@ -344,20 +344,20 @@
    {
     "marche": "FR",
     "frappe": "make up",
-    "ms": 111.068,
+    "ms": 110.974,
     "requetes": 3,
     "releves": [
      {
-      "ms": 21.513,
+      "ms": 22.318,
       "sql": "\n    SELECT EXISTS(SELECT 1 FROM \"SearchGeneration\" WHERE version='search-5-20260924-v2' AND \"readyAt\" IS NOT NULL) ready,\n      EXISTS(SELECT 1 FROM \"SearchPending\" WHERE version='search-5-20260924-v2' AND \"queuedAt\" < now()-interval '300 seconds') stale"
      },
      {
-      "ms": 17.525,
+      "ms": 20.206,
       "sql": "SELECT revision FROM \"SearchMetadata\" WHERE id='active'"
      },
      {
-      "ms": 72.03,
-      "sql": "\n    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids,\n      array_agg(array_to_string(maisons, ',')) AS maisons FROM (\n      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id, (array_agg(DISTINCT j.\"companyId\"))[1:3]::text[] AS maisons FROM \"Job\" j\n       WHERE j.\"isActive\" AND j.\"mergedIntoId\" IS NULL AND EXISTS (\n    SELECT 1 FROM \"JobSource\" available_source WHERE available_source.\"jobId\" = j.id\n      AND available_source.\"isActive\" AND (available_source.\"expiresAt\" IS NULL OR available_source.\"expiresAt\" > ('2026-10-01T19:25:53.673Z'::timestamptz AT TIME ZONE 'UTC'))) AND j.\"countryCode\" IN ('FR','MC') AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte('%make up%') GROUP BY j.title\n      UNION ALL\n      SELECT d.title, count(*), 'cw_' || min(d.id), (array_agg(DISTINCT coalesce(d.\"companyId\", d.company)))[1:3]::text[] FROM \"DirectOffer\" d\n       WHERE d.eligible AND (d.\"validThrough\" IS NULL OR d.\"validThrough\" > ('2026-10-01T19:25:53.673Z'::timestamptz AT TIME ZONE 'UTC')) AND d.\"countryCode\" IN ('FR','MC') AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte('%make up%') GROUP BY d.title\n    ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40"
+      "ms": 68.45,
+      "sql": "\n    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids,\n      array_agg(array_to_string(maisons, ',')) AS maisons FROM (\n      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id, (array_agg(DISTINCT j.\"companyId\"))[1:3]::text[] AS maisons FROM \"Job\" j\n       WHERE j.\"isActive\" AND j.\"mergedIntoId\" IS NULL AND EXISTS (\n    SELECT 1 FROM \"JobSource\" available_source WHERE available_source.\"jobId\" = j.id\n      AND available_source.\"isActive\" AND (available_source.\"expiresAt\" IS NULL OR available_source.\"expiresAt\" > ('2026-10-01T20:01:57.632Z'::timestamptz AT TIME ZONE 'UTC'))) AND j.\"countryCode\" IN ('FR','MC') AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte('%make up%') GROUP BY j.title\n      UNION ALL\n      SELECT d.title, count(*), 'cw_' || min(d.id), (array_agg(DISTINCT coalesce(d.\"companyId\", d.company)))[1:3]::text[] FROM \"DirectOffer\" d\n       WHERE d.eligible AND (d.\"validThrough\" IS NULL OR d.\"validThrough\" > ('2026-10-01T20:01:57.632Z'::timestamptz AT TIME ZONE 'UTC')) AND d.\"countryCode\" IN ('FR','MC') AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte('%make up%') GROUP BY d.title\n    ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40"
      }
     ],
     "suggestions": [
@@ -379,20 +379,20 @@
    {
     "marche": "FR",
     "frappe": "sales ad",
-    "ms": 106.44,
+    "ms": 118.66499999999999,
     "requetes": 3,
     "releves": [
      {
-      "ms": 18.447,
+      "ms": 24.264,
       "sql": "\n    SELECT EXISTS(SELECT 1 FROM \"SearchGeneration\" WHERE version='search-5-20260924-v2' AND \"readyAt\" IS NOT NULL) ready,\n      EXISTS(SELECT 1 FROM \"SearchPending\" WHERE version='search-5-20260924-v2' AND \"queuedAt\" < now()-interval '300 seconds') stale"
      },
      {
-      "ms": 21.288,
+      "ms": 19.863,
       "sql": "SELECT revision FROM \"SearchMetadata\" WHERE id='active'"
      },
      {
-      "ms": 66.705,
-      "sql": "\n    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids,\n      array_agg(array_to_string(maisons, ',')) AS maisons FROM (\n      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id, (array_agg(DISTINCT j.\"companyId\"))[1:3]::text[] AS maisons FROM \"Job\" j\n       WHERE j.\"isActive\" AND j.\"mergedIntoId\" IS NULL AND EXISTS (\n    SELECT 1 FROM \"JobSource\" available_source WHERE available_source.\"jobId\" = j.id\n      AND available_source.\"isActive\" AND (available_source.\"expiresAt\" IS NULL OR available_source.\"expiresAt\" > ('2026-10-01T19:25:55.248Z'::timestamptz AT TIME ZONE 'UTC'))) AND j.\"countryCode\" IN ('FR','MC') AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte('%sales ad%') GROUP BY j.title\n      UNION ALL\n      SELECT d.title, count(*), 'cw_' || min(d.id), (array_agg(DISTINCT coalesce(d.\"companyId\", d.company)))[1:3]::text[] FROM \"DirectOffer\" d\n       WHERE d.eligible AND (d.\"validThrough\" IS NULL OR d.\"validThrough\" > ('2026-10-01T19:25:55.248Z'::timestamptz AT TIME ZONE 'UTC')) AND d.\"countryCode\" IN ('FR','MC') AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte('%sales ad%') GROUP BY d.title\n    ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40"
+      "ms": 74.538,
+      "sql": "\n    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids,\n      array_agg(array_to_string(maisons, ',')) AS maisons FROM (\n      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id, (array_agg(DISTINCT j.\"companyId\"))[1:3]::text[] AS maisons FROM \"Job\" j\n       WHERE j.\"isActive\" AND j.\"mergedIntoId\" IS NULL AND EXISTS (\n    SELECT 1 FROM \"JobSource\" available_source WHERE available_source.\"jobId\" = j.id\n      AND available_source.\"isActive\" AND (available_source.\"expiresAt\" IS NULL OR available_source.\"expiresAt\" > ('2026-10-01T20:01:59.436Z'::timestamptz AT TIME ZONE 'UTC'))) AND j.\"countryCode\" IN ('FR','MC') AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte('%sales ad%') GROUP BY j.title\n      UNION ALL\n      SELECT d.title, count(*), 'cw_' || min(d.id), (array_agg(DISTINCT coalesce(d.\"companyId\", d.company)))[1:3]::text[] FROM \"DirectOffer\" d\n       WHERE d.eligible AND (d.\"validThrough\" IS NULL OR d.\"validThrough\" > ('2026-10-01T20:01:59.436Z'::timestamptz AT TIME ZONE 'UTC')) AND d.\"countryCode\" IN ('FR','MC') AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte('%sales ad%') GROUP BY d.title\n    ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40"
      }
     ],
     "suggestions": [
@@ -414,23 +414,23 @@
    {
     "marche": "FR",
     "frappe": "assistant",
-    "ms": 142.958,
+    "ms": 152.45600000000002,
     "requetes": 4,
     "releves": [
      {
-      "ms": 19.354,
+      "ms": 21.022,
       "sql": "\n    SELECT EXISTS(SELECT 1 FROM \"SearchGeneration\" WHERE version='search-5-20260924-v2' AND \"readyAt\" IS NOT NULL) ready,\n      EXISTS(SELECT 1 FROM \"SearchPending\" WHERE version='search-5-20260924-v2' AND \"queuedAt\" < now()-interval '300 seconds') stale"
      },
      {
-      "ms": 20.381,
+      "ms": 18.982,
       "sql": "SELECT revision FROM \"SearchMetadata\" WHERE id='active'"
      },
      {
-      "ms": 83.175,
-      "sql": "\n    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids,\n      array_agg(array_to_string(maisons, ',')) AS maisons FROM (\n      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id, (array_agg(DISTINCT j.\"companyId\"))[1:3]::text[] AS maisons FROM \"Job\" j\n       WHERE j.\"isActive\" AND j.\"mergedIntoId\" IS NULL AND EXISTS (\n    SELECT 1 FROM \"JobSource\" available_source WHERE available_source.\"jobId\" = j.id\n      AND available_source.\"isActive\" AND (available_source.\"expiresAt\" IS NULL OR available_source.\"expiresAt\" > ('2026-10-01T19:25:56.833Z'::timestamptz AT TIME ZONE 'UTC'))) AND j.\"countryCode\" IN ('FR','MC') AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte('%assistant%') GROUP BY j.title\n      UNION ALL\n      SELECT d.title, count(*), 'cw_' || min(d.id), (array_agg(DISTINCT coalesce(d.\"companyId\", d.company)))[1:3]::text[] FROM \"DirectOffer\" d\n       WHERE d.eligible AND (d.\"validThrough\" IS NULL OR d.\"validThrough\" > ('2026-10-01T19:25:56.833Z'::timestamptz AT TIME ZONE 'UTC')) AND d.\"countryCode\" IN ('FR','MC') AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte('%assistant%') GROUP BY d.title\n    ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40"
+      "ms": 91.772,
+      "sql": "\n    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids,\n      array_agg(array_to_string(maisons, ',')) AS maisons FROM (\n      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id, (array_agg(DISTINCT j.\"companyId\"))[1:3]::text[] AS maisons FROM \"Job\" j\n       WHERE j.\"isActive\" AND j.\"mergedIntoId\" IS NULL AND EXISTS (\n    SELECT 1 FROM \"JobSource\" available_source WHERE available_source.\"jobId\" = j.id\n      AND available_source.\"isActive\" AND (available_source.\"expiresAt\" IS NULL OR available_source.\"expiresAt\" > ('2026-10-01T20:02:01.032Z'::timestamptz AT TIME ZONE 'UTC'))) AND j.\"countryCode\" IN ('FR','MC') AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte('%assistant%') GROUP BY j.title\n      UNION ALL\n      SELECT d.title, count(*), 'cw_' || min(d.id), (array_agg(DISTINCT coalesce(d.\"companyId\", d.company)))[1:3]::text[] FROM \"DirectOffer\" d\n       WHERE d.eligible AND (d.\"validThrough\" IS NULL OR d.\"validThrough\" > ('2026-10-01T20:02:01.032Z'::timestamptz AT TIME ZONE 'UTC')) AND d.\"countryCode\" IN ('FR','MC') AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte('%assistant%') GROUP BY d.title\n    ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40"
      },
      {
-      "ms": 20.048,
+      "ms": 20.68,
       "sql": "SELECT position FROM (SELECT 0::int AS position WHERE EXISTS (SELECT 1 FROM \"SearchDocument\" s\n        WHERE s.version = 'search-5-20260924-v2' AND s.id = ANY(ARRAY['cmu8ac9bi005xl9f657gpbzbo']::text[]::text[]) AND s.vector @@ ((to_tsquery('simple', '(''assistant'')')) && (to_tsquery('simple', '(''formation'')')) && ((to_tsquery('simple', '(''retail'' <-> ''distribution'' <-> ''as'' <-> ''an'' <-> ''employer'' <-> ''activity'') | (''retail'')')) || to_tsquery('simple', 'cwicef51e0515d9255c8f9539b0a1d6221c'))))) v"
      }
     ],
@@ -534,23 +534,23 @@
    {
     "marche": "FR",
     "frappe": "directeur",
-    "ms": 137.49200000000002,
+    "ms": 139.514,
     "requetes": 4,
     "releves": [
      {
-      "ms": 18.84,
+      "ms": 20.547,
       "sql": "\n    SELECT EXISTS(SELECT 1 FROM \"SearchGeneration\" WHERE version='search-5-20260924-v2' AND \"readyAt\" IS NOT NULL) ready,\n      EXISTS(SELECT 1 FROM \"SearchPending\" WHERE version='search-5-20260924-v2' AND \"queuedAt\" < now()-interval '300 seconds') stale"
      },
      {
-      "ms": 18.852,
+      "ms": 19.356,
       "sql": "SELECT revision FROM \"SearchMetadata\" WHERE id='active'"
      },
      {
-      "ms": 81.523,
-      "sql": "\n    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids,\n      array_agg(array_to_string(maisons, ',')) AS maisons FROM (\n      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id, (array_agg(DISTINCT j.\"companyId\"))[1:3]::text[] AS maisons FROM \"Job\" j\n       WHERE j.\"isActive\" AND j.\"mergedIntoId\" IS NULL AND EXISTS (\n    SELECT 1 FROM \"JobSource\" available_source WHERE available_source.\"jobId\" = j.id\n      AND available_source.\"isActive\" AND (available_source.\"expiresAt\" IS NULL OR available_source.\"expiresAt\" > ('2026-10-01T19:26:00.544Z'::timestamptz AT TIME ZONE 'UTC'))) AND j.\"countryCode\" IN ('FR','MC') AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte('%directeur%') GROUP BY j.title\n      UNION ALL\n      SELECT d.title, count(*), 'cw_' || min(d.id), (array_agg(DISTINCT coalesce(d.\"companyId\", d.company)))[1:3]::text[] FROM \"DirectOffer\" d\n       WHERE d.eligible AND (d.\"validThrough\" IS NULL OR d.\"validThrough\" > ('2026-10-01T19:26:00.544Z'::timestamptz AT TIME ZONE 'UTC')) AND d.\"countryCode\" IN ('FR','MC') AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte('%directeur%') GROUP BY d.title\n    ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40"
+      "ms": 79.134,
+      "sql": "\n    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids,\n      array_agg(array_to_string(maisons, ',')) AS maisons FROM (\n      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id, (array_agg(DISTINCT j.\"companyId\"))[1:3]::text[] AS maisons FROM \"Job\" j\n       WHERE j.\"isActive\" AND j.\"mergedIntoId\" IS NULL AND EXISTS (\n    SELECT 1 FROM \"JobSource\" available_source WHERE available_source.\"jobId\" = j.id\n      AND available_source.\"isActive\" AND (available_source.\"expiresAt\" IS NULL OR available_source.\"expiresAt\" > ('2026-10-01T20:02:04.706Z'::timestamptz AT TIME ZONE 'UTC'))) AND j.\"countryCode\" IN ('FR','MC') AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte('%directeur%') GROUP BY j.title\n      UNION ALL\n      SELECT d.title, count(*), 'cw_' || min(d.id), (array_agg(DISTINCT coalesce(d.\"companyId\", d.company)))[1:3]::text[] FROM \"DirectOffer\" d\n       WHERE d.eligible AND (d.\"validThrough\" IS NULL OR d.\"validThrough\" > ('2026-10-01T20:02:04.706Z'::timestamptz AT TIME ZONE 'UTC')) AND d.\"countryCode\" IN ('FR','MC') AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte('%directeur%') GROUP BY d.title\n    ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40"
      },
      {
-      "ms": 18.277,
+      "ms": 20.477,
       "sql": "SELECT position FROM (SELECT 0::int AS position WHERE EXISTS (SELECT 1 FROM \"SearchDocument\" s\n        WHERE s.version = 'search-5-20260924-v2' AND s.id = ANY(ARRAY['cmudvmp9l357ioa34qg7g38cj','cmuduasti1lm9oa344xo0du1e']::text[]::text[]) AND s.vector @@ ((to_tsquery('simple', '(''directeur'')')) && (to_tsquery('simple', '(''adjoint'')'))))) v"
      }
     ],
@@ -642,20 +642,20 @@
    {
     "marche": "GB",
     "frappe": "conseill",
-    "ms": 100.021,
+    "ms": 102.37100000000001,
     "requetes": 3,
     "releves": [
      {
-      "ms": 20.259,
+      "ms": 21.088,
       "sql": "\n    SELECT EXISTS(SELECT 1 FROM \"SearchGeneration\" WHERE version='search-5-20260924-v2' AND \"readyAt\" IS NOT NULL) ready,\n      EXISTS(SELECT 1 FROM \"SearchPending\" WHERE version='search-5-20260924-v2' AND \"queuedAt\" < now()-interval '300 seconds') stale"
      },
      {
-      "ms": 18.893,
+      "ms": 18.818,
       "sql": "SELECT revision FROM \"SearchMetadata\" WHERE id='active'"
      },
      {
-      "ms": 60.869,
-      "sql": "\n    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids,\n      array_agg(array_to_string(maisons, ',')) AS maisons FROM (\n      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id, (array_agg(DISTINCT j.\"companyId\"))[1:3]::text[] AS maisons FROM \"Job\" j\n       WHERE j.\"isActive\" AND j.\"mergedIntoId\" IS NULL AND EXISTS (\n    SELECT 1 FROM \"JobSource\" available_source WHERE available_source.\"jobId\" = j.id\n      AND available_source.\"isActive\" AND (available_source.\"expiresAt\" IS NULL OR available_source.\"expiresAt\" > ('2026-10-01T19:26:06.052Z'::timestamptz AT TIME ZONE 'UTC'))) AND j.\"countryCode\" IN ('GB','IE') AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte('%conseill%') GROUP BY j.title\n      UNION ALL\n      SELECT d.title, count(*), 'cw_' || min(d.id), (array_agg(DISTINCT coalesce(d.\"companyId\", d.company)))[1:3]::text[] FROM \"DirectOffer\" d\n       WHERE d.eligible AND (d.\"validThrough\" IS NULL OR d.\"validThrough\" > ('2026-10-01T19:26:06.052Z'::timestamptz AT TIME ZONE 'UTC')) AND d.\"countryCode\" IN ('GB','IE') AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte('%conseill%') GROUP BY d.title\n    ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40"
+      "ms": 62.465,
+      "sql": "\n    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids,\n      array_agg(array_to_string(maisons, ',')) AS maisons FROM (\n      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id, (array_agg(DISTINCT j.\"companyId\"))[1:3]::text[] AS maisons FROM \"Job\" j\n       WHERE j.\"isActive\" AND j.\"mergedIntoId\" IS NULL AND EXISTS (\n    SELECT 1 FROM \"JobSource\" available_source WHERE available_source.\"jobId\" = j.id\n      AND available_source.\"isActive\" AND (available_source.\"expiresAt\" IS NULL OR available_source.\"expiresAt\" > ('2026-10-01T20:02:10.285Z'::timestamptz AT TIME ZONE 'UTC'))) AND j.\"countryCode\" IN ('GB','IE') AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte('%conseill%') GROUP BY j.title\n      UNION ALL\n      SELECT d.title, count(*), 'cw_' || min(d.id), (array_agg(DISTINCT coalesce(d.\"companyId\", d.company)))[1:3]::text[] FROM \"DirectOffer\" d\n       WHERE d.eligible AND (d.\"validThrough\" IS NULL OR d.\"validThrough\" > ('2026-10-01T20:02:10.285Z'::timestamptz AT TIME ZONE 'UTC')) AND d.\"countryCode\" IN ('GB','IE') AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte('%conseill%') GROUP BY d.title\n    ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40"
      }
     ],
     "suggestions": [],
@@ -664,20 +664,20 @@
    {
     "marche": "GB",
     "frappe": "conseillère",
-    "ms": 91.66300000000001,
+    "ms": 104.362,
     "requetes": 3,
     "releves": [
      {
-      "ms": 18.343,
+      "ms": 21.579,
       "sql": "\n    SELECT EXISTS(SELECT 1 FROM \"SearchGeneration\" WHERE version='search-5-20260924-v2' AND \"readyAt\" IS NOT NULL) ready,\n      EXISTS(SELECT 1 FROM \"SearchPending\" WHERE version='search-5-20260924-v2' AND \"queuedAt\" < now()-interval '300 seconds') stale"
      },
      {
-      "ms": 19.64,
+      "ms": 18.215,
       "sql": "SELECT revision FROM \"SearchMetadata\" WHERE id='active'"
      },
      {
-      "ms": 53.68,
-      "sql": "\n    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids,\n      array_agg(array_to_string(maisons, ',')) AS maisons FROM (\n      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id, (array_agg(DISTINCT j.\"companyId\"))[1:3]::text[] AS maisons FROM \"Job\" j\n       WHERE j.\"isActive\" AND j.\"mergedIntoId\" IS NULL AND EXISTS (\n    SELECT 1 FROM \"JobSource\" available_source WHERE available_source.\"jobId\" = j.id\n      AND available_source.\"isActive\" AND (available_source.\"expiresAt\" IS NULL OR available_source.\"expiresAt\" > ('2026-10-01T19:26:07.413Z'::timestamptz AT TIME ZONE 'UTC'))) AND j.\"countryCode\" IN ('GB','IE') AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte('%conseillère%') GROUP BY j.title\n      UNION ALL\n      SELECT d.title, count(*), 'cw_' || min(d.id), (array_agg(DISTINCT coalesce(d.\"companyId\", d.company)))[1:3]::text[] FROM \"DirectOffer\" d\n       WHERE d.eligible AND (d.\"validThrough\" IS NULL OR d.\"validThrough\" > ('2026-10-01T19:26:07.413Z'::timestamptz AT TIME ZONE 'UTC')) AND d.\"countryCode\" IN ('GB','IE') AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte('%conseillère%') GROUP BY d.title\n    ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40"
+      "ms": 64.568,
+      "sql": "\n    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids,\n      array_agg(array_to_string(maisons, ',')) AS maisons FROM (\n      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id, (array_agg(DISTINCT j.\"companyId\"))[1:3]::text[] AS maisons FROM \"Job\" j\n       WHERE j.\"isActive\" AND j.\"mergedIntoId\" IS NULL AND EXISTS (\n    SELECT 1 FROM \"JobSource\" available_source WHERE available_source.\"jobId\" = j.id\n      AND available_source.\"isActive\" AND (available_source.\"expiresAt\" IS NULL OR available_source.\"expiresAt\" > ('2026-10-01T20:02:11.509Z'::timestamptz AT TIME ZONE 'UTC'))) AND j.\"countryCode\" IN ('GB','IE') AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte('%conseillère%') GROUP BY j.title\n      UNION ALL\n      SELECT d.title, count(*), 'cw_' || min(d.id), (array_agg(DISTINCT coalesce(d.\"companyId\", d.company)))[1:3]::text[] FROM \"DirectOffer\" d\n       WHERE d.eligible AND (d.\"validThrough\" IS NULL OR d.\"validThrough\" > ('2026-10-01T20:02:11.509Z'::timestamptz AT TIME ZONE 'UTC')) AND d.\"countryCode\" IN ('GB','IE') AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte('%conseillère%') GROUP BY d.title\n    ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40"
      }
     ],
     "suggestions": [],
@@ -686,20 +686,20 @@
    {
     "marche": "GB",
     "frappe": "vendeu",
-    "ms": 106.15100000000001,
+    "ms": 97.15899999999999,
     "requetes": 3,
     "releves": [
      {
-      "ms": 19.214,
+      "ms": 26.051,
       "sql": "\n    SELECT EXISTS(SELECT 1 FROM \"SearchGeneration\" WHERE version='search-5-20260924-v2' AND \"readyAt\" IS NOT NULL) ready,\n      EXISTS(SELECT 1 FROM \"SearchPending\" WHERE version='search-5-20260924-v2' AND \"queuedAt\" < now()-interval '300 seconds') stale"
      },
      {
-      "ms": 19.674,
+      "ms": 19.25,
       "sql": "SELECT revision FROM \"SearchMetadata\" WHERE id='active'"
      },
      {
-      "ms": 67.263,
-      "sql": "\n    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids,\n      array_agg(array_to_string(maisons, ',')) AS maisons FROM (\n      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id, (array_agg(DISTINCT j.\"companyId\"))[1:3]::text[] AS maisons FROM \"Job\" j\n       WHERE j.\"isActive\" AND j.\"mergedIntoId\" IS NULL AND EXISTS (\n    SELECT 1 FROM \"JobSource\" available_source WHERE available_source.\"jobId\" = j.id\n      AND available_source.\"isActive\" AND (available_source.\"expiresAt\" IS NULL OR available_source.\"expiresAt\" > ('2026-10-01T19:26:08.639Z'::timestamptz AT TIME ZONE 'UTC'))) AND j.\"countryCode\" IN ('GB','IE') AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte('%vendeu%') GROUP BY j.title\n      UNION ALL\n      SELECT d.title, count(*), 'cw_' || min(d.id), (array_agg(DISTINCT coalesce(d.\"companyId\", d.company)))[1:3]::text[] FROM \"DirectOffer\" d\n       WHERE d.eligible AND (d.\"validThrough\" IS NULL OR d.\"validThrough\" > ('2026-10-01T19:26:08.639Z'::timestamptz AT TIME ZONE 'UTC')) AND d.\"countryCode\" IN ('GB','IE') AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte('%vendeu%') GROUP BY d.title\n    ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40"
+      "ms": 51.858,
+      "sql": "\n    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids,\n      array_agg(array_to_string(maisons, ',')) AS maisons FROM (\n      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id, (array_agg(DISTINCT j.\"companyId\"))[1:3]::text[] AS maisons FROM \"Job\" j\n       WHERE j.\"isActive\" AND j.\"mergedIntoId\" IS NULL AND EXISTS (\n    SELECT 1 FROM \"JobSource\" available_source WHERE available_source.\"jobId\" = j.id\n      AND available_source.\"isActive\" AND (available_source.\"expiresAt\" IS NULL OR available_source.\"expiresAt\" > ('2026-10-01T20:02:12.852Z'::timestamptz AT TIME ZONE 'UTC'))) AND j.\"countryCode\" IN ('GB','IE') AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte('%vendeu%') GROUP BY j.title\n      UNION ALL\n      SELECT d.title, count(*), 'cw_' || min(d.id), (array_agg(DISTINCT coalesce(d.\"companyId\", d.company)))[1:3]::text[] FROM \"DirectOffer\" d\n       WHERE d.eligible AND (d.\"validThrough\" IS NULL OR d.\"validThrough\" > ('2026-10-01T20:02:12.852Z'::timestamptz AT TIME ZONE 'UTC')) AND d.\"countryCode\" IN ('GB','IE') AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte('%vendeu%') GROUP BY d.title\n    ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40"
      }
     ],
     "suggestions": [],
@@ -708,20 +708,20 @@
    {
     "marche": "GB",
     "frappe": "store man",
-    "ms": 94.312,
+    "ms": 98.269,
     "requetes": 3,
     "releves": [
      {
-      "ms": 17.735,
+      "ms": 21.489,
       "sql": "\n    SELECT EXISTS(SELECT 1 FROM \"SearchGeneration\" WHERE version='search-5-20260924-v2' AND \"readyAt\" IS NOT NULL) ready,\n      EXISTS(SELECT 1 FROM \"SearchPending\" WHERE version='search-5-20260924-v2' AND \"queuedAt\" < now()-interval '300 seconds') stale"
      },
      {
-      "ms": 19.449,
+      "ms": 19.783,
       "sql": "SELECT revision FROM \"SearchMetadata\" WHERE id='active'"
      },
      {
-      "ms": 57.128,
-      "sql": "\n    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids,\n      array_agg(array_to_string(maisons, ',')) AS maisons FROM (\n      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id, (array_agg(DISTINCT j.\"companyId\"))[1:3]::text[] AS maisons FROM \"Job\" j\n       WHERE j.\"isActive\" AND j.\"mergedIntoId\" IS NULL AND EXISTS (\n    SELECT 1 FROM \"JobSource\" available_source WHERE available_source.\"jobId\" = j.id\n      AND available_source.\"isActive\" AND (available_source.\"expiresAt\" IS NULL OR available_source.\"expiresAt\" > ('2026-10-01T19:26:10.024Z'::timestamptz AT TIME ZONE 'UTC'))) AND j.\"countryCode\" IN ('GB','IE') AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte('%store man%') GROUP BY j.title\n      UNION ALL\n      SELECT d.title, count(*), 'cw_' || min(d.id), (array_agg(DISTINCT coalesce(d.\"companyId\", d.company)))[1:3]::text[] FROM \"DirectOffer\" d\n       WHERE d.eligible AND (d.\"validThrough\" IS NULL OR d.\"validThrough\" > ('2026-10-01T19:26:10.024Z'::timestamptz AT TIME ZONE 'UTC')) AND d.\"countryCode\" IN ('GB','IE') AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte('%store man%') GROUP BY d.title\n    ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40"
+      "ms": 56.997,
+      "sql": "\n    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids,\n      array_agg(array_to_string(maisons, ',')) AS maisons FROM (\n      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id, (array_agg(DISTINCT j.\"companyId\"))[1:3]::text[] AS maisons FROM \"Job\" j\n       WHERE j.\"isActive\" AND j.\"mergedIntoId\" IS NULL AND EXISTS (\n    SELECT 1 FROM \"JobSource\" available_source WHERE available_source.\"jobId\" = j.id\n      AND available_source.\"isActive\" AND (available_source.\"expiresAt\" IS NULL OR available_source.\"expiresAt\" > ('2026-10-01T20:02:14.128Z'::timestamptz AT TIME ZONE 'UTC'))) AND j.\"countryCode\" IN ('GB','IE') AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte('%store man%') GROUP BY j.title\n      UNION ALL\n      SELECT d.title, count(*), 'cw_' || min(d.id), (array_agg(DISTINCT coalesce(d.\"companyId\", d.company)))[1:3]::text[] FROM \"DirectOffer\" d\n       WHERE d.eligible AND (d.\"validThrough\" IS NULL OR d.\"validThrough\" > ('2026-10-01T20:02:14.128Z'::timestamptz AT TIME ZONE 'UTC')) AND d.\"countryCode\" IN ('GB','IE') AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte('%store man%') GROUP BY d.title\n    ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40"
      }
     ],
     "suggestions": [
@@ -755,20 +755,20 @@
    {
     "marche": "GB",
     "frappe": "responsable bout",
-    "ms": 92.114,
+    "ms": 93.07,
     "requetes": 3,
     "releves": [
      {
-      "ms": 18.664,
+      "ms": 20.431,
       "sql": "\n    SELECT EXISTS(SELECT 1 FROM \"SearchGeneration\" WHERE version='search-5-20260924-v2' AND \"readyAt\" IS NOT NULL) ready,\n      EXISTS(SELECT 1 FROM \"SearchPending\" WHERE version='search-5-20260924-v2' AND \"queuedAt\" < now()-interval '300 seconds') stale"
      },
      {
-      "ms": 18.418,
+      "ms": 19.745,
       "sql": "SELECT revision FROM \"SearchMetadata\" WHERE id='active'"
      },
      {
-      "ms": 55.032,
-      "sql": "\n    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids,\n      array_agg(array_to_string(maisons, ',')) AS maisons FROM (\n      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id, (array_agg(DISTINCT j.\"companyId\"))[1:3]::text[] AS maisons FROM \"Job\" j\n       WHERE j.\"isActive\" AND j.\"mergedIntoId\" IS NULL AND EXISTS (\n    SELECT 1 FROM \"JobSource\" available_source WHERE available_source.\"jobId\" = j.id\n      AND available_source.\"isActive\" AND (available_source.\"expiresAt\" IS NULL OR available_source.\"expiresAt\" > ('2026-10-01T19:26:11.865Z'::timestamptz AT TIME ZONE 'UTC'))) AND j.\"countryCode\" IN ('GB','IE') AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte('%responsable bout%') GROUP BY j.title\n      UNION ALL\n      SELECT d.title, count(*), 'cw_' || min(d.id), (array_agg(DISTINCT coalesce(d.\"companyId\", d.company)))[1:3]::text[] FROM \"DirectOffer\" d\n       WHERE d.eligible AND (d.\"validThrough\" IS NULL OR d.\"validThrough\" > ('2026-10-01T19:26:11.865Z'::timestamptz AT TIME ZONE 'UTC')) AND d.\"countryCode\" IN ('GB','IE') AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte('%responsable bout%') GROUP BY d.title\n    ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40"
+      "ms": 52.894,
+      "sql": "\n    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids,\n      array_agg(array_to_string(maisons, ',')) AS maisons FROM (\n      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id, (array_agg(DISTINCT j.\"companyId\"))[1:3]::text[] AS maisons FROM \"Job\" j\n       WHERE j.\"isActive\" AND j.\"mergedIntoId\" IS NULL AND EXISTS (\n    SELECT 1 FROM \"JobSource\" available_source WHERE available_source.\"jobId\" = j.id\n      AND available_source.\"isActive\" AND (available_source.\"expiresAt\" IS NULL OR available_source.\"expiresAt\" > ('2026-10-01T20:02:15.966Z'::timestamptz AT TIME ZONE 'UTC'))) AND j.\"countryCode\" IN ('GB','IE') AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte('%responsable bout%') GROUP BY j.title\n      UNION ALL\n      SELECT d.title, count(*), 'cw_' || min(d.id), (array_agg(DISTINCT coalesce(d.\"companyId\", d.company)))[1:3]::text[] FROM \"DirectOffer\" d\n       WHERE d.eligible AND (d.\"validThrough\" IS NULL OR d.\"validThrough\" > ('2026-10-01T20:02:15.966Z'::timestamptz AT TIME ZONE 'UTC')) AND d.\"countryCode\" IN ('GB','IE') AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte('%responsable bout%') GROUP BY d.title\n    ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40"
      }
     ],
     "suggestions": [],
@@ -777,23 +777,23 @@
    {
     "marche": "GB",
     "frappe": "visual",
-    "ms": 175.869,
+    "ms": 202.985,
     "requetes": 4,
     "releves": [
      {
-      "ms": 18.528,
+      "ms": 20.281,
       "sql": "\n    SELECT EXISTS(SELECT 1 FROM \"SearchGeneration\" WHERE version='search-5-20260924-v2' AND \"readyAt\" IS NOT NULL) ready,\n      EXISTS(SELECT 1 FROM \"SearchPending\" WHERE version='search-5-20260924-v2' AND \"queuedAt\" < now()-interval '300 seconds') stale"
      },
      {
-      "ms": 18.466,
+      "ms": 19.886,
       "sql": "SELECT revision FROM \"SearchMetadata\" WHERE id='active'"
      },
      {
-      "ms": 117.568,
-      "sql": "\n    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids,\n      array_agg(array_to_string(maisons, ',')) AS maisons FROM (\n      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id, (array_agg(DISTINCT j.\"companyId\"))[1:3]::text[] AS maisons FROM \"Job\" j\n       WHERE j.\"isActive\" AND j.\"mergedIntoId\" IS NULL AND EXISTS (\n    SELECT 1 FROM \"JobSource\" available_source WHERE available_source.\"jobId\" = j.id\n      AND available_source.\"isActive\" AND (available_source.\"expiresAt\" IS NULL OR available_source.\"expiresAt\" > ('2026-10-01T19:26:13.260Z'::timestamptz AT TIME ZONE 'UTC'))) AND j.\"countryCode\" IN ('GB','IE') AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte('%visual%') GROUP BY j.title\n      UNION ALL\n      SELECT d.title, count(*), 'cw_' || min(d.id), (array_agg(DISTINCT coalesce(d.\"companyId\", d.company)))[1:3]::text[] FROM \"DirectOffer\" d\n       WHERE d.eligible AND (d.\"validThrough\" IS NULL OR d.\"validThrough\" > ('2026-10-01T19:26:13.260Z'::timestamptz AT TIME ZONE 'UTC')) AND d.\"countryCode\" IN ('GB','IE') AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte('%visual%') GROUP BY d.title\n    ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40"
+      "ms": 141.965,
+      "sql": "\n    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids,\n      array_agg(array_to_string(maisons, ',')) AS maisons FROM (\n      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id, (array_agg(DISTINCT j.\"companyId\"))[1:3]::text[] AS maisons FROM \"Job\" j\n       WHERE j.\"isActive\" AND j.\"mergedIntoId\" IS NULL AND EXISTS (\n    SELECT 1 FROM \"JobSource\" available_source WHERE available_source.\"jobId\" = j.id\n      AND available_source.\"isActive\" AND (available_source.\"expiresAt\" IS NULL OR available_source.\"expiresAt\" > ('2026-10-01T20:02:17.227Z'::timestamptz AT TIME ZONE 'UTC'))) AND j.\"countryCode\" IN ('GB','IE') AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte('%visual%') GROUP BY j.title\n      UNION ALL\n      SELECT d.title, count(*), 'cw_' || min(d.id), (array_agg(DISTINCT coalesce(d.\"companyId\", d.company)))[1:3]::text[] FROM \"DirectOffer\" d\n       WHERE d.eligible AND (d.\"validThrough\" IS NULL OR d.\"validThrough\" > ('2026-10-01T20:02:17.227Z'::timestamptz AT TIME ZONE 'UTC')) AND d.\"countryCode\" IN ('GB','IE') AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte('%visual%') GROUP BY d.title\n    ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40"
      },
      {
-      "ms": 21.307,
+      "ms": 20.853,
       "sql": "SELECT position FROM (SELECT 0::int AS position WHERE EXISTS (SELECT 1 FROM \"SearchDocument\" s\n        WHERE s.version = 'search-5-20260924-v2' AND s.id = ANY(ARRAY['cmunsqsin02kbmu6inlpcbn8g','cmunsqpuv02gmmu6ilx8lbutt','cmunsq81r020hmu6irz2gadyb']::text[]::text[]) AND (s.vector @@ ((to_tsquery('simple', '(''centre'')'))) AND coalesce(s.vector, ''::tsvector) @@ (((to_tsquery('simple', '(''visual'':AC <-> ''merchandiser'':AC) | (''marchandiseur'':AC <-> ''visuel'':AC) | (''marchandiseuse'':AC <-> ''visuelle'':AC) | (''vitriniste'':AC) | (''window'':AC <-> ''dresser'':AC)')) && !!to_tsquery('simple','cwhastitlerole')) || to_tsquery('simple', 'cwif2a853eb7be75af34106cd53740dffc7'))))) v"
      }
     ],
@@ -837,20 +837,20 @@
    {
     "marche": "GB",
     "frappe": "make up",
-    "ms": 93.611,
+    "ms": 106.60300000000001,
     "requetes": 3,
     "releves": [
      {
-      "ms": 20.276,
+      "ms": 20.905,
       "sql": "\n    SELECT EXISTS(SELECT 1 FROM \"SearchGeneration\" WHERE version='search-5-20260924-v2' AND \"readyAt\" IS NOT NULL) ready,\n      EXISTS(SELECT 1 FROM \"SearchPending\" WHERE version='search-5-20260924-v2' AND \"queuedAt\" < now()-interval '300 seconds') stale"
      },
      {
-      "ms": 17.699,
+      "ms": 23.433,
       "sql": "SELECT revision FROM \"SearchMetadata\" WHERE id='active'"
      },
      {
-      "ms": 55.636,
-      "sql": "\n    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids,\n      array_agg(array_to_string(maisons, ',')) AS maisons FROM (\n      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id, (array_agg(DISTINCT j.\"companyId\"))[1:3]::text[] AS maisons FROM \"Job\" j\n       WHERE j.\"isActive\" AND j.\"mergedIntoId\" IS NULL AND EXISTS (\n    SELECT 1 FROM \"JobSource\" available_source WHERE available_source.\"jobId\" = j.id\n      AND available_source.\"isActive\" AND (available_source.\"expiresAt\" IS NULL OR available_source.\"expiresAt\" > ('2026-10-01T19:26:15.469Z'::timestamptz AT TIME ZONE 'UTC'))) AND j.\"countryCode\" IN ('GB','IE') AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte('%make up%') GROUP BY j.title\n      UNION ALL\n      SELECT d.title, count(*), 'cw_' || min(d.id), (array_agg(DISTINCT coalesce(d.\"companyId\", d.company)))[1:3]::text[] FROM \"DirectOffer\" d\n       WHERE d.eligible AND (d.\"validThrough\" IS NULL OR d.\"validThrough\" > ('2026-10-01T19:26:15.469Z'::timestamptz AT TIME ZONE 'UTC')) AND d.\"countryCode\" IN ('GB','IE') AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte('%make up%') GROUP BY d.title\n    ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40"
+      "ms": 62.265,
+      "sql": "\n    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids,\n      array_agg(array_to_string(maisons, ',')) AS maisons FROM (\n      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id, (array_agg(DISTINCT j.\"companyId\"))[1:3]::text[] AS maisons FROM \"Job\" j\n       WHERE j.\"isActive\" AND j.\"mergedIntoId\" IS NULL AND EXISTS (\n    SELECT 1 FROM \"JobSource\" available_source WHERE available_source.\"jobId\" = j.id\n      AND available_source.\"isActive\" AND (available_source.\"expiresAt\" IS NULL OR available_source.\"expiresAt\" > ('2026-10-01T20:02:19.927Z'::timestamptz AT TIME ZONE 'UTC'))) AND j.\"countryCode\" IN ('GB','IE') AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte('%make up%') GROUP BY j.title\n      UNION ALL\n      SELECT d.title, count(*), 'cw_' || min(d.id), (array_agg(DISTINCT coalesce(d.\"companyId\", d.company)))[1:3]::text[] FROM \"DirectOffer\" d\n       WHERE d.eligible AND (d.\"validThrough\" IS NULL OR d.\"validThrough\" > ('2026-10-01T20:02:19.927Z'::timestamptz AT TIME ZONE 'UTC')) AND d.\"countryCode\" IN ('GB','IE') AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte('%make up%') GROUP BY d.title\n    ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40"
      }
     ],
     "suggestions": [
@@ -872,24 +872,20 @@
    {
     "marche": "GB",
     "frappe": "sales ad",
-    "ms": 131.10500000000002,
-    "requetes": 4,
+    "ms": 102.071,
+    "requetes": 3,
     "releves": [
      {
-      "ms": 19.728,
+      "ms": 21.076,
       "sql": "\n    SELECT EXISTS(SELECT 1 FROM \"SearchGeneration\" WHERE version='search-5-20260924-v2' AND \"readyAt\" IS NOT NULL) ready,\n      EXISTS(SELECT 1 FROM \"SearchPending\" WHERE version='search-5-20260924-v2' AND \"queuedAt\" < now()-interval '300 seconds') stale"
      },
      {
-      "ms": 21.198,
+      "ms": 18.775,
       "sql": "SELECT revision FROM \"SearchMetadata\" WHERE id='active'"
      },
      {
-      "ms": 69.245,
-      "sql": "\n    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids,\n      array_agg(array_to_string(maisons, ',')) AS maisons FROM (\n      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id, (array_agg(DISTINCT j.\"companyId\"))[1:3]::text[] AS maisons FROM \"Job\" j\n       WHERE j.\"isActive\" AND j.\"mergedIntoId\" IS NULL AND EXISTS (\n    SELECT 1 FROM \"JobSource\" available_source WHERE available_source.\"jobId\" = j.id\n      AND available_source.\"isActive\" AND (available_source.\"expiresAt\" IS NULL OR available_source.\"expiresAt\" > ('2026-10-01T19:26:16.969Z'::timestamptz AT TIME ZONE 'UTC'))) AND j.\"countryCode\" IN ('GB','IE') AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte('%sales ad%') GROUP BY j.title\n      UNION ALL\n      SELECT d.title, count(*), 'cw_' || min(d.id), (array_agg(DISTINCT coalesce(d.\"companyId\", d.company)))[1:3]::text[] FROM \"DirectOffer\" d\n       WHERE d.eligible AND (d.\"validThrough\" IS NULL OR d.\"validThrough\" > ('2026-10-01T19:26:16.969Z'::timestamptz AT TIME ZONE 'UTC')) AND d.\"countryCode\" IN ('GB','IE') AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte('%sales ad%') GROUP BY d.title\n    ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40"
-     },
-     {
-      "ms": 20.934,
-      "sql": "SELECT position FROM (SELECT 0::int AS position WHERE EXISTS (SELECT 1 FROM \"SearchDocument\" s\n        WHERE s.version = 'search-5-20260924-v2' AND s.id = ANY(ARRAY['cmueasmzg0f85oi35eoosn61y']::text[]::text[]) AND (s.vector @@ ((to_tsquery('simple', '(''christmas'')'))) AND coalesce(s.vector, ''::tsvector) @@ (((to_tsquery('simple', '(''sales'':AC <-> ''advisor'':AC) | (''sales'':AC <-> ''assistant'':AC) | (''client'':AC <-> ''advisor'':AC) | (''luxury'':AC <-> ''sales'':AC <-> ''advisor'':AC) | (''conseillere'':AC <-> ''de'':AC <-> ''vente'':AC) | (''conseiller'':AC <-> ''vente'':AC) | (''conseillere'':AC <-> ''vente'':AC) | (''fashion'':AC <-> ''advisor'':AC) | (''sales'':AC <-> ''associate'':AC) | (''selling'':AC <-> ''associate'':AC) | (''vendeur'':AC) | (''vendeuse'':AC) | (''conseillers'':AC <-> ''de'':AC <-> ''vente'':AC) | (''conseiller'':AC <-> ''vendeur'':AC) | (''conseillere'':AC <-> ''vendeuse'':AC) | (''associe'':AC <-> ''aux'':AC <-> ''ventes'':AC) | (''associee'':AC <-> ''aux'':AC <-> ''ventes'':AC) | (''addetto'':AC <-> ''vendite'':AC) | (''addetta'':AC <-> ''vendite'':AC) | (''addetti'':AC <-> ''vendite'':AC) | (''addett'':AC <-> ''vendite'':AC) | (''vendedor'':AC) | (''vendedora'':AC) | (''verkaufer'':AC) | (''verkauferin'':AC) | (''verkaufsberaterin'':AC) | (''asesora'':AC <-> ''de'':AC <-> ''ventas'':AC) | (''consultora'':AC <-> ''de'':AC <-> ''vendas'':AC) | (''prodejni'':AC <-> ''poradkyne'':AC) | (''butiksassistent'':AC) | (''lucrator'':AC <-> ''comercial'':AC) | (''lucratoare'':AC <-> ''comerciala'':AC) | (''addetto'':AC <-> ''alle'':AC <-> ''vendite'':AC) | (''addetta'':AC <-> ''alle'':AC <-> ''vendite'':AC) | (''dependiente'':AC) | (''dependienta'':AC) | (''winkelmedewerker'':AC) | (''assistente'':AC <-> ''de'':AC <-> ''loja'':AC) | (''vendedor'':AC <-> ''de'':AC <-> ''loja'':AC) | (''vendedora'':AC <-> ''de'':AC <-> ''loja'':AC) | (''sprzedawca'':AC) | (''sprzedawczyni'':AC) | (''butikssaljare'':AC) | (''satıs'':AC <-> ''elemanı'':AC) | (''pembantu'':AC <-> ''kedai'':AC) | (''butikkmedarbeider'':AC) | (''nhan'':AC <-> ''vien'':AC <-> ''ban'':AC <-> ''hang'':AC) | (''prodavac'':AC) | (''prodavacka'':AC) | (''bolti'':AC <-> ''elado'':AC)')) && !!to_tsquery('simple','cwhastitlerole')) || to_tsquery('simple', 'cwif71763319951812f7b29027c793b48d5'))))) v"
+      "ms": 62.22,
+      "sql": "\n    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids,\n      array_agg(array_to_string(maisons, ',')) AS maisons FROM (\n      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id, (array_agg(DISTINCT j.\"companyId\"))[1:3]::text[] AS maisons FROM \"Job\" j\n       WHERE j.\"isActive\" AND j.\"mergedIntoId\" IS NULL AND EXISTS (\n    SELECT 1 FROM \"JobSource\" available_source WHERE available_source.\"jobId\" = j.id\n      AND available_source.\"isActive\" AND (available_source.\"expiresAt\" IS NULL OR available_source.\"expiresAt\" > ('2026-10-01T20:02:21.484Z'::timestamptz AT TIME ZONE 'UTC'))) AND j.\"countryCode\" IN ('GB','IE') AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte('%sales ad%') GROUP BY j.title\n      UNION ALL\n      SELECT d.title, count(*), 'cw_' || min(d.id), (array_agg(DISTINCT coalesce(d.\"companyId\", d.company)))[1:3]::text[] FROM \"DirectOffer\" d\n       WHERE d.eligible AND (d.\"validThrough\" IS NULL OR d.\"validThrough\" > ('2026-10-01T20:02:21.484Z'::timestamptz AT TIME ZONE 'UTC')) AND d.\"countryCode\" IN ('GB','IE') AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte('%sales ad%') GROUP BY d.title\n    ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40"
      }
     ],
     "suggestions": [
@@ -904,15 +900,6 @@
       "bruit": false,
       "ville": null,
       "majuscules": false
-     },
-     {
-      "valeur": "Christmas sales advisor",
-      "metier": null,
-      "nature": "intitule",
-      "offresAuChoix": 170,
-      "bruit": false,
-      "ville": null,
-      "majuscules": false
      }
     ],
     "doublons": 0
@@ -920,23 +907,23 @@
    {
     "marche": "GB",
     "frappe": "assistant",
-    "ms": 159.995,
+    "ms": 135.752,
     "requetes": 4,
     "releves": [
      {
-      "ms": 19.425,
+      "ms": 18.601,
       "sql": "\n    SELECT EXISTS(SELECT 1 FROM \"SearchGeneration\" WHERE version='search-5-20260924-v2' AND \"readyAt\" IS NOT NULL) ready,\n      EXISTS(SELECT 1 FROM \"SearchPending\" WHERE version='search-5-20260924-v2' AND \"queuedAt\" < now()-interval '300 seconds') stale"
      },
      {
-      "ms": 38.111,
+      "ms": 17.974,
       "sql": "SELECT revision FROM \"SearchMetadata\" WHERE id='active'"
      },
      {
-      "ms": 83.305,
-      "sql": "\n    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids,\n      array_agg(array_to_string(maisons, ',')) AS maisons FROM (\n      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id, (array_agg(DISTINCT j.\"companyId\"))[1:3]::text[] AS maisons FROM \"Job\" j\n       WHERE j.\"isActive\" AND j.\"mergedIntoId\" IS NULL AND EXISTS (\n    SELECT 1 FROM \"JobSource\" available_source WHERE available_source.\"jobId\" = j.id\n      AND available_source.\"isActive\" AND (available_source.\"expiresAt\" IS NULL OR available_source.\"expiresAt\" > ('2026-10-01T19:26:19.330Z'::timestamptz AT TIME ZONE 'UTC'))) AND j.\"countryCode\" IN ('GB','IE') AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte('%assistant%') GROUP BY j.title\n      UNION ALL\n      SELECT d.title, count(*), 'cw_' || min(d.id), (array_agg(DISTINCT coalesce(d.\"companyId\", d.company)))[1:3]::text[] FROM \"DirectOffer\" d\n       WHERE d.eligible AND (d.\"validThrough\" IS NULL OR d.\"validThrough\" > ('2026-10-01T19:26:19.330Z'::timestamptz AT TIME ZONE 'UTC')) AND d.\"countryCode\" IN ('GB','IE') AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte('%assistant%') GROUP BY d.title\n    ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40"
+      "ms": 75.827,
+      "sql": "\n    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids,\n      array_agg(array_to_string(maisons, ',')) AS maisons FROM (\n      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id, (array_agg(DISTINCT j.\"companyId\"))[1:3]::text[] AS maisons FROM \"Job\" j\n       WHERE j.\"isActive\" AND j.\"mergedIntoId\" IS NULL AND EXISTS (\n    SELECT 1 FROM \"JobSource\" available_source WHERE available_source.\"jobId\" = j.id\n      AND available_source.\"isActive\" AND (available_source.\"expiresAt\" IS NULL OR available_source.\"expiresAt\" > ('2026-10-01T20:02:23.073Z'::timestamptz AT TIME ZONE 'UTC'))) AND j.\"countryCode\" IN ('GB','IE') AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte('%assistant%') GROUP BY j.title\n      UNION ALL\n      SELECT d.title, count(*), 'cw_' || min(d.id), (array_agg(DISTINCT coalesce(d.\"companyId\", d.company)))[1:3]::text[] FROM \"DirectOffer\" d\n       WHERE d.eligible AND (d.\"validThrough\" IS NULL OR d.\"validThrough\" > ('2026-10-01T20:02:23.073Z'::timestamptz AT TIME ZONE 'UTC')) AND d.\"countryCode\" IN ('GB','IE') AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte('%assistant%') GROUP BY d.title\n    ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40"
      },
      {
-      "ms": 19.154,
+      "ms": 23.35,
       "sql": "SELECT position FROM (SELECT 0::int AS position WHERE EXISTS (SELECT 1 FROM \"SearchDocument\" s\n        WHERE s.version = 'search-5-20260924-v2' AND s.id = ANY(ARRAY['cmu9mku70001nmb9zmgtqdj1a','cmu9mku89001umb9zur8wn0vv','cmu9mkxej00idmb9zqc3dw17i','cmu9mkxtt00kpmb9z7agsb2i3','cmu7e6ngu001gjxk89dsshta2','cmuft8yiy2lcgmy33vs91ntng']::text[]::text[]) AND s.vector @@ (((to_tsquery('simple', '(''retail'' <-> ''distribution'' <-> ''as'' <-> ''an'' <-> ''employer'' <-> ''activity'') | (''retail'')')) || to_tsquery('simple', 'cwicef51e0515d9255c8f9539b0a1d6221c')) && (to_tsquery('simple', '(''assistant'')'))))) v"
      }
     ],
@@ -1040,20 +1027,20 @@
    {
     "marche": "GB",
     "frappe": "directeur",
-    "ms": 122.71600000000001,
+    "ms": 121.825,
     "requetes": 3,
     "releves": [
      {
-      "ms": 19.888,
+      "ms": 20.794,
       "sql": "\n    SELECT EXISTS(SELECT 1 FROM \"SearchGeneration\" WHERE version='search-5-20260924-v2' AND \"readyAt\" IS NOT NULL) ready,\n      EXISTS(SELECT 1 FROM \"SearchPending\" WHERE version='search-5-20260924-v2' AND \"queuedAt\" < now()-interval '300 seconds') stale"
      },
      {
-      "ms": 21.485,
+      "ms": 21.65,
       "sql": "SELECT revision FROM \"SearchMetadata\" WHERE id='active'"
      },
      {
-      "ms": 81.343,
-      "sql": "\n    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids,\n      array_agg(array_to_string(maisons, ',')) AS maisons FROM (\n      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id, (array_agg(DISTINCT j.\"companyId\"))[1:3]::text[] AS maisons FROM \"Job\" j\n       WHERE j.\"isActive\" AND j.\"mergedIntoId\" IS NULL AND EXISTS (\n    SELECT 1 FROM \"JobSource\" available_source WHERE available_source.\"jobId\" = j.id\n      AND available_source.\"isActive\" AND (available_source.\"expiresAt\" IS NULL OR available_source.\"expiresAt\" > ('2026-10-01T19:26:23.277Z'::timestamptz AT TIME ZONE 'UTC'))) AND j.\"countryCode\" IN ('GB','IE') AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte('%directeur%') GROUP BY j.title\n      UNION ALL\n      SELECT d.title, count(*), 'cw_' || min(d.id), (array_agg(DISTINCT coalesce(d.\"companyId\", d.company)))[1:3]::text[] FROM \"DirectOffer\" d\n       WHERE d.eligible AND (d.\"validThrough\" IS NULL OR d.\"validThrough\" > ('2026-10-01T19:26:23.277Z'::timestamptz AT TIME ZONE 'UTC')) AND d.\"countryCode\" IN ('GB','IE') AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte('%directeur%') GROUP BY d.title\n    ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40"
+      "ms": 79.381,
+      "sql": "\n    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids,\n      array_agg(array_to_string(maisons, ',')) AS maisons FROM (\n      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id, (array_agg(DISTINCT j.\"companyId\"))[1:3]::text[] AS maisons FROM \"Job\" j\n       WHERE j.\"isActive\" AND j.\"mergedIntoId\" IS NULL AND EXISTS (\n    SELECT 1 FROM \"JobSource\" available_source WHERE available_source.\"jobId\" = j.id\n      AND available_source.\"isActive\" AND (available_source.\"expiresAt\" IS NULL OR available_source.\"expiresAt\" > ('2026-10-01T20:02:26.677Z'::timestamptz AT TIME ZONE 'UTC'))) AND j.\"countryCode\" IN ('GB','IE') AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte('%directeur%') GROUP BY j.title\n      UNION ALL\n      SELECT d.title, count(*), 'cw_' || min(d.id), (array_agg(DISTINCT coalesce(d.\"companyId\", d.company)))[1:3]::text[] FROM \"DirectOffer\" d\n       WHERE d.eligible AND (d.\"validThrough\" IS NULL OR d.\"validThrough\" > ('2026-10-01T20:02:26.677Z'::timestamptz AT TIME ZONE 'UTC')) AND d.\"countryCode\" IN ('GB','IE') AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte('%directeur%') GROUP BY d.title\n    ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40"
      }
     ],
     "suggestions": [],
