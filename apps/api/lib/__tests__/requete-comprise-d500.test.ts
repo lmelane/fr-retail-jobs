@@ -86,6 +86,11 @@ describe('D-500 (Q1) : la requête comprise', () => {
     expect(replierRequete('linked.in')).toBe('linked.in');
     expect(replierRequete('Conseiller de vente (stage)')).toBe('Conseiller de vente (stage)');
     expect(replierRequete('R&D')).toBe('R&D');
+    // Deux mots au début commun qui ne sont pas deux genres d'un même mot restent deux mots (audit technique).
+    expect(replierRequete('communication/community manager')).toBe('communication/community manager');
+    expect(replierRequete('commercial/communication')).toBe('commercial/communication');
+    expect(replierRequete('marketing/marketplace')).toBe('marketing/marketplace');
+    expect(roles(compris('communication/community manager'))).toEqual(roles(avant('communication/community manager')));
   });
 
   it('une forme de base n’est ajoutée que si le vocabulaire des métiers la connaît (« paris » ne devient pas « pari »)', () => {

@@ -11,7 +11,7 @@ import { exigerPerimetre } from '../perimetre';
 import { drainSearchIndex, initializeSearchIndex } from '../search-index';
 import { correspond, suggestTitlesCanoniques, nettoyerIntitule } from '../suggestions-canoniques';
 import { suggestLieuxDeTete } from '../suggestions';
-import { enregistrerRequete, formeGardee, purgerRequetes, SEUIL_POPULAIRE, PURGE_JOURS } from '../requetes-tapees';
+import { CONSERVATION_MAX_JOURS, enregistrerRequete, formeGardee, JOURS_MIN_POPULAIRE, purgerRequetes, SEUIL_POPULAIRE, PURGE_JOURS } from '../requetes-tapees';
 import { semerVilles, viderVilles } from '../__fixtures__/villes';
 
 /**
@@ -22,10 +22,10 @@ import { semerVilles, viderVilles } from '../__fixtures__/villes';
 const url = process.env.DATABASE_URL ? new URL(process.env.DATABASE_URL) : undefined;
 const enabled = !!url && ['localhost', '127.0.0.1', '[::1]'].includes(url.hostname) && /test/i.test(url.pathname);
 const P = 'd500-';
-const MAISON = `${P}maison`;
+const MAISON = `${P}maison`, MAISON2 = `${P}maison-2`;
 const GROUPE = 'Groupe Temoin D500';
 
-type Offre = { titre: string; classeComme?: string; ville?: string; description?: string; n?: number };
+type Offre = { titre: string; classeComme?: string; ville?: string; description?: string; n?: number; autreMaison?: boolean };
 const OFFRES: readonly Offre[] = [
   { titre: 'Conseiller de vente H/F', classeComme: 'Conseiller de vente', n: 3 },
   { titre: 'CONSEILLER DE VENTE /NB', classeComme: 'Conseiller de vente', n: 2 },
@@ -34,13 +34,21 @@ const OFFRES: readonly Offre[] = [
   // Une offre du métier dont l'intitulé ne nomme pas le métier : elle passe après celles qui le nomment (Q4).
   { titre: 'Talent de la maison', classeComme: 'Conseiller de vente' },
   { titre: 'Responsable boutique', classeComme: 'Responsable de boutique', n: 2 },
+  // Trois offres « Responsable Boutique Adjoint » : un intitulé qui nomme l'adjoint dans un autre ordre (Q2).
+  { titre: 'Responsable Boutique Adjoint', n: 2 },
+  { titre: 'Responsable Boutique Adjoint', autreMaison: true },
   // Trois offres de la même expression, avec contrat, ville et marque : « Vendeur polyvalent » (Q2, intitulé nettoyé).
   { titre: 'Vendeur polyvalent CDD Toulouse', ville: 'Toulouse', n: 2 },
-  { titre: 'Vendeur polyvalent (H/F)', ville: 'Toulouse' },
+  { titre: 'Vendeur polyvalent (H/F)', ville: 'Toulouse', autreMaison: true },
+  // Trois offres d'un intitulé qui se lirait comme un critère de sexe, chez deux Maisons : jamais suggéré (audit métier).
+  { titre: 'Directeur de Magasin Femme H/F', n: 2 },
+  { titre: 'Directeur de Magasin Femme H/F', autreMaison: true },
   // Sans métier, écrite en écriture inclusive : trouvée par la forme tapée, comme avant (Q1).
   { titre: 'Conseiller(ère) de vente' },
   // Trouvée par sa seule description : après toutes celles dont l'intitulé contient la requête (Q4).
   { titre: 'Styliste', description: 'Vous travaillerez avec chaque conseiller de la boutique.' },
+  // Trois offres d'un intitulé d'une seule Maison : son intitulé maison, jamais une suggestion (audit métier).
+  { titre: 'Vendeur expert huiles essentielles', n: 3 },
   // Une requête populaire n'est suggérée que si une offre l'écrit dans son intitulé (D-501).
   { titre: 'Conseillère de vente luxe', classeComme: 'Conseiller de vente' },
 ];
@@ -75,16 +83,17 @@ describe.skipIf(!enabled)('D-500, D-501 : la recherche comprend la requête', ()
     await nettoyer();
     await semerVilles(prisma);
     const catalogue = await database.loadOccupationTaxonomy(prisma);
-    await prisma.company.create({ data: { id: MAISON, name: MAISON, canonicalKey: MAISON, fashionjobsUrl: `resolved:${MAISON}`, sector: 'LUXURY', parentGroup: GROUPE } });
+    for (const m of [MAISON, MAISON2])
+      await prisma.company.create({ data: { id: m, name: m, canonicalKey: m, fashionjobsUrl: `resolved:${m}`, sector: 'LUXURY', parentGroup: GROUPE } });
     let i = 0;
     for (const o of OFFRES) for (let k = 0; k < (o.n ?? 1); k++) {
       const id = `${P}${String(i++).padStart(2, '0')}`;
       ids.push(id);
       const lien = `https://example.com/${id}`;
       const decision = o.classeComme ? database.persistedOccupationDecision(catalogue.classify(o.classeComme)) : {};
-      await prisma.job.create({ data: { id, companyId: MAISON, externalId: id, source: 'GENERIC_JSONLD', title: o.titre, url: lien, isActive: true,
+      await prisma.job.create({ data: { id, companyId: o.autreMaison ? MAISON2 : MAISON, externalId: id, source: 'GENERIC_JSONLD', title: o.titre, url: lien, isActive: true,
         countryCode: 'FR', city: o.ville ?? 'Paris', location: o.ville ?? 'Paris', description: o.description ?? null, ...decision,
-        postedAt: new Date(`2026-09-${String(10 + i).padStart(2, '0')}T08:00:00Z`), firstSeenAt: new Date('2026-09-01T09:00:00Z'),
+        postedAt: new Date(Date.UTC(2026, 8, 1 + (i % 28), 8)), firstSeenAt: new Date('2026-09-01T09:00:00Z'),
         lastSeenAt: new Date('2026-09-30T00:00:00Z') } });
       await prisma.jobSource.create({ data: { jobId: id, sourceKey: 'd500', sourceTier: 'ATS_OFFICIAL', externalId: id, url: lien, isActive: true,
         ...publicationFixture({ sourceKey: 'd500', sourceTier: 'ATS_OFFICIAL', externalId: id, url: lien, title: o.titre, country: 'FR' }) } });
@@ -108,14 +117,14 @@ describe.skipIf(!enabled)('D-500, D-501 : la recherche comprend la requête', ()
   });
 
   it('Q1 : au contrat 2, « conseiller(ère) de vente » et « …/NB » rendent toutes les offres du métier, et l’offre sans métier qui l’écrit', async () => {
-    // La référence : la forme que la taxonomie connaît. Elle rend les 10 offres du métier, plus les 3 « Vendeur polyvalent »
-    // sans métier dont l'intitulé écrit une expression du métier (D-475 §27 e).
+    // La référence : la forme que la taxonomie connaît. Elle rend les 10 offres du métier, plus les 6 offres sans métier dont
+    // l'intitulé écrit une expression du métier (« Vendeur polyvalent », « Vendeur expert… » ; D-475 §27 e).
     const reference = await getJobs(fr({ q: 'conseiller de vente', comprendre: true }));
-    expect(reference.total).toBe(13);
+    expect(reference.total).toBe(16);
     for (const q of ['conseiller(ère) de vente', 'CONSEILLER DE VENTE /NB', 'conseillère de vente H/F']) {
       const r = await getJobs(fr({ q, comprendre: true }));
       // Toutes celles de la référence ; « conseiller(ère) » trouve en plus l'offre sans métier qui l'écrit telle quelle.
-      expect(r.total, q).toBe(q.startsWith('conseiller(') ? 14 : 13);
+      expect(r.total, q).toBe(q.startsWith('conseiller(') ? 17 : 16);
     }
     // « luxe » reste un mot de la requête : une recherche précise reste précise.
     expect((await getJobs(fr({ q: 'conseillère de vente luxe', comprendre: true }))).total).toBe(1);
@@ -163,11 +172,17 @@ describe.skipIf(!enabled)('D-500, D-501 : la recherche comprend la requête', ()
     const vendeu = await suggestTitlesCanoniques('vendeu', fr, 'fr');
     expect(vendeu.filter((s) => s.metier?.identifiant === 'sales-advisor')).toHaveLength(1);
     expect(vendeu).toContainEqual({ valeur: 'Vendeur polyvalent', metier: null, nature: 'intitule' });
+    expect(vendeu.map((x) => x.valeur)).not.toContain('Vendeur expert huiles essentielles');
     // Une variante qu'aucun intitulé du marché n'écrit n'est pas proposée (« Verkäufer » est une variante du métier, gardée
     // pour le marché français par son écriture, et aucune offre française ne l'écrit).
     expect((await suggestTitlesCanoniques('verkauf', fr, 'fr')).map((x) => x.valeur)).toEqual([]);
     const boutique = await suggestTitlesCanoniques('responsable bout', fr, 'fr');
+    // PRÉMISSE : trois offres « Directeur de Magasin Femme H/F » chez deux Maisons ; jamais une suggestion.
+    expect((await suggestTitlesCanoniques('directeur', fr, 'fr')).map((x) => x.valeur.toLowerCase()).join(' | ')).not.toContain('femme');
     expect(boutique[0]).toMatchObject({ metier: { identifiant: 'store-manager' }, nature: 'metier' });
+    // Un intitulé dont les mots sont ceux d'une expression de métier, dans un autre ordre, rejoint la ligne de ce métier
+    // (« Responsable boutique adjoint » est l'adjoint, que nomme « Responsable adjoint de boutique »).
+    expect(boutique.map((x) => x.valeur)).not.toContain('Responsable boutique adjoint');
     for (const s of [...conseill, ...conseillere, ...vendeu, ...boutique]) {
       expect(s.valeur, s.valeur).not.toMatch(/\b(CDD|CDI|H\/F|NB)\b|\/|\(|Toulouse/i);
       expect(s.valeur === s.valeur.toUpperCase(), s.valeur).toBe(false);
@@ -199,6 +214,12 @@ describe.skipIf(!enabled)('D-500, D-501 : la recherche comprend la requête', ()
     expect(nettoyerIntitule('Store Manager (37.5 hours)', villes)).toBe('Store manager');
     expect(nettoyerIntitule('Directrice, Directeur de Magasin', villes)).toBe('Directeur de magasin');
     expect(nettoyerIntitule('CRM Manager', villes)).toBe('CRM manager');
+    expect(nettoyerIntitule('CRM MANAGER', villes)).toBe('CRM manager');
+    // Un sigle en fin d'intitulé reste (audit technique) ; les marques de contrat d'étudiant partent (audit métier).
+    expect(nettoyerIntitule('Responsable RH', villes)).toBe('Responsable RH');
+    expect(nettoyerIntitule('Directeur IT', villes)).toBe('Directeur IT');
+    expect(nettoyerIntitule('Vendeur étudiant week-end', villes)).toBe('Vendeur');
+    expect(nettoyerIntitule('Vendeuse extra soldes', villes)).toBe('Vendeuse');
     // Le lieu vient après le métier : tout ce qui le suit part, avec le mot qui l'introduit (mesure du 01/10/2026).
     expect(nettoyerIntitule('Vendeur.se Val Thoiry - 35 h/sem - CDI', new Set([...villes, 'thoiry']))).toBe('Vendeur');
     expect(nettoyerIntitule('Responsable boutique H.F', villes)).toBe('Responsable boutique');
@@ -209,17 +230,28 @@ describe.skipIf(!enabled)('D-500, D-501 : la recherche comprend la requête', ()
   });
 
   it('D-501 : une requête populaire au-delà du seuil, écrite dans un intitulé du marché ; jamais en dessous, jamais inventée', async () => {
-    await prisma.$executeRaw(Prisma.sql`INSERT INTO "RequeteTapee"("marche", "cle", "libelle", "occurrences") VALUES
-      ('FR', 'conseillere de vente luxe', 'conseillère de vente luxe', ${SEUIL_POPULAIRE}),
-      ('FR', 'conseiller vente styliste', 'conseiller vente styliste', ${SEUIL_POPULAIRE - 1}),
-      ('FR', 'conseiller ignoble', 'conseiller ignoble', ${SEUIL_POPULAIRE * 50}),
-      ('FR', 'travaillerez boutique', 'travaillerez boutique', ${SEUIL_POPULAIRE * 50})`);
+    const j = JOURS_MIN_POPULAIRE;
+    await prisma.$executeRaw(Prisma.sql`INSERT INTO "RequeteTapee"("marche", "cle", "libelle", "occurrences", "jours") VALUES
+      ('FR', 'conseillere de vente luxe', 'conseillère de vente luxe', ${SEUIL_POPULAIRE}, ${j}),
+      ('FR', 'conseiller vente styliste', 'conseiller vente styliste', ${SEUIL_POPULAIRE - 1}, ${j}),
+      ('FR', 'conseiller ignoble', 'conseiller ignoble', ${SEUIL_POPULAIRE * 50}, ${j}),
+      ('FR', 'travaillerez boutique', 'travaillerez boutique', ${SEUIL_POPULAIRE * 50}, ${j}),
+      ('FR', 'vendeur polyvalent toulouse', 'vendeur polyvalent toulouse', ${SEUIL_POPULAIRE * 50}, ${j - 1}),
+      ('FR', 'conseillere de vente sans boutique', 'conseillère de vente sans boutique', ${SEUIL_POPULAIRE * 50}, ${j})`);
     // PRÉMISSE : « travaillerez boutique » mène à une offre (« Styliste », par sa description), mais aucun intitulé ne porte
     // ses deux mots.
     expect((await getJobs({ marche: 'FR', q: 'travaillerez boutique', comprendre: true, filtres: {} })).total).toBeGreaterThan(0);
     const s = await suggestTitlesCanoniques('conseill', exigerPerimetre('FR'), 'fr');
     expect(s).toContainEqual({ valeur: 'conseillère de vente luxe', metier: null, nature: 'populaire' });
     expect(s.map((x) => x.valeur)).not.toContain('conseiller vente styliste');
+    // Une insistance sur moins de jours que le minimum ne fait pas une recherche populaire, même à 500 occurrences ; la même
+    // requête, tapée sur assez de jours, en est une (prémisse : elle passe toutes les autres vérifications).
+    const vendeur = async () => (await suggestTitlesCanoniques('vendeur', exigerPerimetre('FR'), 'fr')).map((x) => x.valeur);
+    expect(await vendeur()).not.toContain('vendeur polyvalent toulouse');
+    await prisma.$executeRaw(Prisma.sql`UPDATE "RequeteTapee" SET "jours" = ${j} WHERE "marche" = 'FR' AND "cle" = 'vendeur polyvalent toulouse'`);
+    expect(await vendeur()).toContain('vendeur polyvalent toulouse');
+    // Une négation n'est jamais suggérée : rien ne prouverait le mot exclu (audit technique).
+    expect(s.map((x) => x.valeur)).not.toContain('conseillère de vente sans boutique');
     // Poussée au-delà du seuil, une suite de mots qu'aucun intitulé n'écrit ne devient pas une suggestion, même quand une
     // description la contient.
     expect(s.map((x) => x.valeur)).not.toContain('conseiller ignoble');
@@ -237,14 +269,30 @@ describe.skipIf(!enabled)('D-500, D-501 : la recherche comprend la requête', ()
     expect(ligne).toEqual({ occurrences: 2, libelle: 'vendeuse chanel' });
     // Aucune colonne ne peut porter une personne : marché, requête, compte, deux jours.
     const colonnes = await prisma.$queryRaw<{ c: string }[]>`SELECT column_name AS c FROM information_schema.columns WHERE table_name = 'RequeteTapee' ORDER BY ordinal_position`;
-    expect(colonnes.map((c) => c.c)).toEqual(['marche', 'cle', 'libelle', 'occurrences', 'premiereLe', 'derniereLe']);
+    expect(colonnes.map((c) => c.c)).toEqual(['marche', 'cle', 'libelle', 'occurrences', 'jours', 'premiereLe', 'derniereLe']);
+    // Les jours distincts : deux occurrences le même jour comptent un jour.
+    const [jour] = await prisma.$queryRaw<{ jours: number }[]>`SELECT "jours" FROM "RequeteTapee" WHERE "marche" = 'FR' AND "cle" = 'vendeuse chanel'`;
+    expect(jour.jours).toBe(1);
+    // Refusées à l'enregistrement : une négation, un critère de sexe, de grossesse ou de religion, un téléphone espacé.
+    for (const refusee of ['vendeuse sans voile', 'vendeur homme', 'vendeuse enceinte', 'sales advisor not muslim', '06 12 34 56', 'ß'])
+      expect(formeGardee(refusee), refusee).toBeNull();
     await prisma.$executeRaw(Prisma.sql`INSERT INTO "RequeteTapee"("marche", "cle", "libelle", "occurrences", "premiereLe", "derniereLe") VALUES
       ('BE', 'vieille rare', 'vieille rare', 2, CURRENT_DATE - ${PURGE_JOURS + 10}::int, CURRENT_DATE - ${PURGE_JOURS + 1}::int),
       ('BE', 'vieille populaire', 'vieille populaire', ${SEUIL_POPULAIRE}, CURRENT_DATE - ${PURGE_JOURS + 10}::int, CURRENT_DATE - ${PURGE_JOURS + 1}::int),
-      ('BE', 'recente rare', 'recente rare', 2, CURRENT_DATE - ${PURGE_JOURS + 10}::int, CURRENT_DATE - ${PURGE_JOURS - 1}::int)`);
-    expect(await purgerRequetes()).toBe(1);
+      ('BE', 'recente rare', 'recente rare', 2, CURRENT_DATE - ${PURGE_JOURS + 10}::int, CURRENT_DATE - ${PURGE_JOURS - 1}::int),
+      ('BE', 'oubliee populaire', 'oubliee populaire', ${SEUIL_POPULAIRE * 5}, CURRENT_DATE - ${CONSERVATION_MAX_JOURS + 30}::int, CURRENT_DATE - ${CONSERVATION_MAX_JOURS + 1}::int)`);
+    expect(await purgerRequetes()).toBe(2);
     const restent = await prisma.$queryRaw<{ cle: string }[]>`SELECT "cle" FROM "RequeteTapee" WHERE "marche" = 'BE' ORDER BY "cle"`;
     expect(restent.map((r) => r.cle)).toEqual(['recente rare', 'vieille populaire']);
+    // La garde de l'agrégateur : en production, rien n'est enregistré tant que la constante n'est pas levée (D-501).
+    vi.stubEnv('NODE_ENV', 'production');
+    try {
+      expect(await enregistrerRequete('FR', 'vendeuse chanel')).toBe(false);
+    } finally {
+      vi.unstubAllEnvs();
+    }
+    const [apres] = await prisma.$queryRaw<{ occurrences: number }[]>`SELECT "occurrences" FROM "RequeteTapee" WHERE "marche" = 'FR' AND "cle" = 'vendeuse chanel'`;
+    expect(apres.occurrences).toBe(2);
   });
 
   it('Q2 : les lieux de tête viennent de la base de lieux (« Paris (75) »), au contrat 2 seulement', async () => {

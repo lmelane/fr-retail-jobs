@@ -6,6 +6,7 @@ export async function register() {
     if (process.env.NEXT_PHASE === 'phase-production-build' || !process.env.DATABASE_URL) return;
     const { initializeSearchIndex, drainSearchIndex, advanceSearchRequeue } = await import('./lib/search-index');
     const { surveillerFileRecherche } = await import('./lib/search-alert');
+    const { purgerRequetesSiDue } = await import('./lib/requetes-tapees');
     const state = globalThis as typeof globalThis & { catwalksSearchLoop?: boolean };
     if (state.catwalksSearchLoop) return;
     state.catwalksSearchLoop = true;
@@ -19,6 +20,8 @@ export async function register() {
         if (!worked) worked = (await advanceSearchRequeue()) > 0;
         // Une fois par minute au plus : l'âge de la file, et l'alerte par e-mail au-delà de 60 s (D-475, plan §3.2).
         await surveillerFileRecherche();
+        // D-501 : une fois par heure au plus, la purge des requêtes tapées (sous le seuil après 30 jours, toutes après un an).
+        await purgerRequetesSiDue();
       } catch (error) {
         console.error(JSON.stringify({ event: 'search.projection_failed', error: error instanceof Error ? error.name : 'unknown' }));
       }

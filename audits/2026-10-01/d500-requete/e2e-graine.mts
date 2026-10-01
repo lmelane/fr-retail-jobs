@@ -29,27 +29,27 @@ await viderVilles(prisma);
 await semerVilles(prisma);
 const catalogue = await database.loadOccupationTaxonomy(prisma);
 
-type Offre = { titre: string; classe?: string; ville: string; pays: string; n?: number };
+type Offre = { titre: string; classe?: string; ville: string; pays: string; n?: number; autreMaison?: boolean };
 const OFFRES: Offre[] = [
   { titre: 'Conseiller de vente H/F', classe: 'Conseiller de vente', ville: 'Paris', pays: 'FR', n: 6 },
   { titre: 'CONSEILLER DE VENTE /NB', classe: 'Conseiller de vente', ville: 'Paris', pays: 'FR', n: 2 },
   { titre: 'Conseillère de vente', classe: 'Conseiller de vente', ville: 'Lyon', pays: 'FR', n: 3 },
   { titre: 'Conseillère beauté', classe: 'Conseiller beauté', ville: 'Paris', pays: 'FR', n: 2 },
   { titre: 'Vendeur polyvalent CDD Toulouse', ville: 'Toulouse', pays: 'FR', n: 2 },
-  { titre: 'Vendeur polyvalent (H/F)', ville: 'Toulouse', pays: 'FR' },
+  { titre: 'Vendeur polyvalent (H/F)', ville: 'Toulouse', pays: 'FR', autreMaison: true },
   { titre: 'Responsable boutique', classe: 'Responsable de boutique', ville: 'Paris', pays: 'FR', n: 2 },
   { titre: 'Sales Advisor', classe: 'Sales advisor', ville: 'Dubai', pays: 'AE', n: 3 },
   { titre: 'Senior Sales Advisor - Dubai Mall', classe: 'Sales advisor', ville: 'Dubai', pays: 'AE', n: 2 },
   { titre: 'Store Manager', classe: 'Store manager', ville: 'Dubai', pays: 'AE' },
 ];
-for (const [c, nom] of [[`${P}maison`, 'Maison Témoin D500']] as const)
+for (const [c, nom] of [[`${P}maison`, 'Maison Témoin D500'], [`${P}maison-2`, 'Seconde Maison Témoin D500']] as const)
   await prisma.company.create({ data: { id: c, name: nom, canonicalKey: c, fashionjobsUrl: `resolved:${c}`, sector: 'LUXURY' } });
 let i = 0;
 for (const o of OFFRES) for (let k = 0; k < (o.n ?? 1); k++) {
   const id = `${P}${String(i++).padStart(2, '0')}`;
   const lien = `https://example.com/${id}`;
   const decision = o.classe ? database.persistedOccupationDecision(catalogue.classify(o.classe)) : {};
-  await prisma.job.create({ data: { id, companyId: `${P}maison`, externalId: id, source: 'GENERIC_JSONLD', title: o.titre, url: lien, isActive: true,
+  await prisma.job.create({ data: { id, companyId: o.autreMaison ? `${P}maison-2` : `${P}maison`, externalId: id, source: 'GENERIC_JSONLD', title: o.titre, url: lien, isActive: true,
     countryCode: o.pays, city: o.ville, location: o.ville, ...decision, postedAt: new Date(Date.UTC(2026, 8, 1 + i, 8)),
     firstSeenAt: new Date('2026-09-01T09:00:00Z'), lastSeenAt: new Date() } });
   await prisma.jobSource.create({ data: { jobId: id, sourceKey: 'e2e-d500', sourceTier: 'ATS_OFFICIAL', externalId: id, url: lien, isActive: true,

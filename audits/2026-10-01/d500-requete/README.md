@@ -49,3 +49,29 @@ sh audits/2026-10-01/d500-requete/indeed-autocomplete.sh > audits/2026-10-01/d50
   et aucune source ne la porte aujourd'hui.
 - Les drapeaux « marqueur brut » et « ville » sont des heuristiques (`BRUIT` dans `mesure.mts`, villes d'au moins
   3 offres du marché) : ils servent à compter, pas à filtrer.
+
+## Le lot construit, mesuré contre le cahier (production, lecture seule, 01/10/2026 au soir)
+
+*Code : `development` de l'agrégateur (commits du lot D-500 / D-501) et du site ; tout est servi au seul client qui envoie
+`x-catwalks-client: 2`. Scripts : `client-mesure.mts` (le client Prisma remplacé par psql en lecture seule, chaque
+requête relevée), `mesure-lot.mts` (parties `comprise`, `suggestions`, `classement`, `grille`), `q5-hors-metier.mts`,
+`q5/` (reclassement à blanc et justesse). Aucune écriture en production.*
+
+```sh
+CATWALKS_DB_ACCESS=<accès> npx tsx audits/2026-10-01/d500-requete/mesure-lot.mts comprise,suggestions,classement
+CATWALKS_DB_ACCESS=<accès> TOURS=8 npx tsx audits/2026-10-01/d500-requete/mesure-lot.mts grille   # écrit lot-grille-137.sql (11 Mo, non versé)
+python3 apps/aggregator/scripts/ops/db.py readonly sh -c 'psql "$DATABASE_URL" -X -At -f audits/2026-10-01/d500-requete/resultats/lot-grille-137.sql' \
+  | grep -v '^SET$\|^Pager\|^Tuples only\|^Timing' > sortie.txt
+python3 audits/2026-10-01/d488-langues-marche/bilan-servie.py sortie.txt 137 avant,apres
+```
+
+| Critère (cahier §3.5) | Résultat | Fichier |
+|---|---|---|
+| Q1 : formes de `taxonomie.txt` | 38 sur 39 trouvent le métier ; « conseillère » seul reste un mot, cherché aussi comme « conseiller » ; aucune clause « ere », « e », « se », « nb », « h », « f » (témoin pur sur le manifeste actif) | `apps/api/lib/__tests__/requete-comprise-d500.test.ts` |
+| Q1 : « conseiller(ère) de vente », « …/NB » ≥ 99 % de `metier=sales-advisor` | France 4 635 / 4 635 (100 %) les deux ; Royaume-Uni 1 271 / 1 271 (100 %) | `resultats/lot-comprise.txt` |
+| Q1 : « conseillère de vente luxe » ≤ 15 % | 10,1 % (469 / 4 635), inchangé | idem |
+| Q2 : 20 frappes, ni contrat, H/F, /NB, ville, capitales ; ni doublon ; ni 0 offre | 65 suggestions : 0, 0, 0, 0, 0 | `resultats/lot-suggestions.txt` |
+| Q2 : 95 % des frappes en 300 ms au plus | 20 / 20 ; médiane 139 ms, p95 173 ms, max 215 ms (via le proxy TCP, un aller-retour de 17 ms par requête compris) | idem |
+| Q4 : « conseillère de vente » France, 20 premières nomment le métier ; « responsable de boutique », aucun « Vendeur… » | 20 / 20 ; 0 (le contrat d'avant tenait déjà ces deux critères sur les 20 premières : les offres Catwalks y sont devant) | `resultats/lot-classement.txt` |
+| Vitesse : 137 recherches de D-488, total ≤ 8,5 s + 10 % | avant 8,81 s, après 8,50 s (médianes de 4 tours alternés chacun) ; 137 totaux identiques, pages réordonnées par le rang | `resultats/lot-grille-137-production.txt` |
+| Q5 | voir `q5/` : 157 offres actives gagnent un métier lu (155 Conseiller de vente) ; 84 des 94 offres françaises du constat dont l'intitulé nomme le métier au pluriel ou en écriture inclusive (89,4 %), les 10 autres arrêtées par des frontières décidées (parfumerie, encadrement) ; 42 des 136 sont d'autres métiers trouvés par leurs missions | `q5/apres-gardes/bilan-a-blanc.txt` |

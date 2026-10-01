@@ -1154,6 +1154,7 @@ model RequeteTapee {
   cle         String
   libelle     String
   occurrences Int      @default(1)
+  jours       Int      @default(1)
   premiereLe  DateTime @default(dbgenerated("CURRENT_DATE")) @db.Date
   derniereLe  DateTime @default(dbgenerated("CURRENT_DATE")) @db.Date
 

@@ -25,11 +25,10 @@ const SUFFIXES_ALLEMANDS = ['in', 'innen'];
 
 const sansAccents = (v: string) => v.normalize('NFKD').replace(/\p{M}/gu, '').toLowerCase();
 const estSuffixe = (v: string, liste: readonly string[]) => liste.includes(sansAccents(v.trim()));
-const prefixeCommun = (a: string, b: string) => {
-  const x = sansAccents(a), y = sansAccents(b);
-  let i = 0;
-  while (i < x.length && i < y.length && x[i] === y[i]) i++;
-  return i;
+/** `autre` est-il une forme genrée (ou plurielle) de `mot` ? « conseillère » de « conseiller », « directrice » de « directeur ». */
+const formeGenree = (mot: string, autre: string) => {
+  const m = sansAccents(mot), a = sansAccents(autre);
+  return m !== a && (formesDeBase(a).includes(m) || formesDeBase(m).includes(a));
 };
 
 /** Une marque de genre : une lettre (h, f, m, w, d, x), « nb », « div », « all ». */
@@ -66,9 +65,11 @@ export function replierRequete(texte: string): string {
     .replace(/(\p{L}{3,})[*:_](\p{L}{2,5})(?![\p{L}\p{N}])/gu, (tout, mot: string, fin: string) => (estSuffixe(fin, SUFFIXES_ALLEMANDS) ? mot : tout))
     // « chargé-e », « conseiller-ère » (jamais « make-up » : la fin doit être une terminaison)
     .replace(/(\p{L}{3,})-(\p{L}{1,6})(?![\p{L}\p{N}])/gu, (tout, mot: string, fin: string) => (estSuffixe(fin, SUFFIXES_TIRET) ? mot : tout))
-    // « directeur/rice », « vendeur / se », « addetto/a », « Verkäufer/in », puis « conseiller/conseillère »
+    // « directeur/rice », « vendeur / se », « addetto/a », « Verkäufer/in », puis « conseiller/conseillère » : le second
+    // mot n'est replié que s'il est une forme genrée du premier (« communication/community », « marketing/marketplace »
+    // restent deux mots ; audit technique du 01/10/2026).
     .replace(/(\p{L}{3,})\s*\/\s*(\p{L}{1,})(?![\p{L}\p{N}])/gu, (tout, mot: string, autre: string) =>
-      estSuffixe(autre, [...SUFFIXES, ...SUFFIXES_ALLEMANDS]) || (autre.length >= 3 && prefixeCommun(mot, autre) >= 4) ? mot : tout);
+      estSuffixe(autre, [...SUFFIXES, ...SUFFIXES_ALLEMANDS]) || (autre.length >= 3 && formeGenree(mot, autre)) ? mot : tout);
   return s.replace(/\s+/g, ' ').trim();
 }
 

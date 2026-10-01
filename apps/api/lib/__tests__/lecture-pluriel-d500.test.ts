@@ -17,8 +17,9 @@ v31.titleReadingVersion = 2;
 const vente = v31.occupations.find((o) => o.key === 'sales-advisor')!;
 vente.titleReadingAliases = [...new Set([...(vente.titleReadingAliases ?? []), 'Vendeur'])];
 const avant = compileOccupationManifest(manifestV3), apres = compileOccupationManifest(v31);
-const sansMetier = { occupationCode: null, occupationStatus: 'FAMILY_ONLY', occupationEvidence: { candidates: [], matchedRules: [] } };
-const lus = (c: typeof avant, titre: string, d = sansMetier) => occupationTitleRoles(c, titre, d);
+type Decision = Parameters<typeof occupationTitleRoles>[2];
+const sansMetier: Decision = { occupationCode: null, occupationStatus: 'FAMILY_ONLY', occupationEvidence: { candidates: [], matchedRules: [] } };
+const lus = (c: typeof avant, titre: string, d: Decision = sansMetier) => occupationTitleRoles(c, titre, d);
 
 describe('D-500 (Q5) : les métiers lus au pluriel et aux deux genres', () => {
   const RATTACHES: [string, string][] = [
@@ -39,7 +40,7 @@ describe('D-500 (Q5) : les métiers lus au pluriel et aux deux genres', () => {
   });
 
   it('les garde-fous mesurés : enseigne, encadrement, assistant, nom de tête (tour 1 : 8 faux, tour 2 : 1 faux)', () => {
-    const magasin = { occupationCode: 'store-manager', occupationStatus: 'CLASSIFIED', occupationEvidence: { candidates: ['store-manager'], matchedRules: [] } };
+    const magasin: Decision = { occupationCode: 'store-manager', occupationStatus: 'CLASSIFIED', occupationEvidence: { candidates: ['store-manager'], matchedRules: [] } };
     // PRÉMISSE : sans garde-fou, la lecture 2 lirait l'opticien dans « Opticians » (le pluriel d'un métier connu).
     expect(lus(apres, 'Opticians - Paris')).toContain('dispensing-optician');
     expect(lus(apres, 'Store Manager - Opticians', magasin)).not.toContain('dispensing-optician');

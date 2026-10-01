@@ -12,7 +12,7 @@ import { searchWords, validateSearchQuery, type SearchClause } from './search-in
 import { languesDuMarche } from './search-langues';
 import { metiersSansIndex, repartitionDuPerimetre } from './search-chemin';
 import { searchSql } from './search-sql';
-import { requetesPopulaires } from './requetes-tapees';
+import { requeteRefusee, requetesPopulaires } from './requetes-tapees';
 import type { MetierSuggere } from './suggestions';
 
 /**
@@ -61,10 +61,23 @@ export function correspond(expression: string, frappe: string): boolean {
 }
 
 // ── Mémos par instance ─────────────────────────────────────────────────────────────────────────────────────────────
-type Memo<T> = Map<string, { valeur: Promise<T>; expire: number }>;
+type Memo<T> = Map<string, { valeur: Promise<T>; expire: number; enCours?: boolean }>;
+/**
+ * Un mémo qui sert sa valeur périmée pendant qu'il se relit (audit de réconciliation du 01/10/2026 : relire les offres
+ * par métier du marché français coûte environ 1,7 s ; la frappe qui tombait sur l'expiration les payait). Seule la
+ * première lecture d'une instance attend.
+ */
 function memoriser<T>(memo: Memo<T>, cle: string, ttl: number, calcul: () => Promise<T>): Promise<T> {
   const connu = memo.get(cle);
   if (connu && connu.expire > Date.now()) return connu.valeur;
+  if (connu) {
+    if (!connu.enCours) {
+      connu.enCours = true;
+      const relue = calcul();
+      relue.then(() => memo.set(cle, { valeur: relue, expire: Date.now() + ttl }), () => { connu.enCours = false; });
+    }
+    return connu.valeur;
+  }
   const valeur = calcul();
   memo.set(cle, { valeur, expire: Date.now() + ttl });
   valeur.catch(() => memo.delete(cle));
@@ -108,13 +121,16 @@ type Forme = { texte: string; e: string; libelleDuMarche: boolean };
 type Modele = Awaited<ReturnType<typeof getSearchContext>>['model'];
 const accentue = (v: string) => /[^\p{ASCII}]/u.test(v);
 /** Une variante s'affiche avec ses majuscules d'origine, sauf une casse de titre (« Make-up Artist » → « Make-up artist »). */
+/** Des sigles courants des intitulés, gardés en capitales même dans un intitulé tout en capitales (« CRM MANAGER »). */
+const SIGLES = new Set(['CRM', 'RH', 'HR', 'IT', 'VM', 'B2B', 'B2C', 'SAV', 'KAM', 'CEO', 'CFO', 'COO', 'CTO', 'CMO', 'DRH', 'DAF', 'PR', 'RP',
+  'UX', 'UI', 'SEO', 'SEA', 'QA', 'QHSE', 'HSE', 'R&D', 'L&D', 'ADV', 'BI', 'ERP', 'SAP', 'PLM', '3D', '2D', 'CDP', 'PMO', 'TV', 'DJ']);
 export function casse(texte: string): string {
   const mots = texte.split(/(\s+)/);
   const toutEnCapitales = !/\p{Ll}/u.test(texte);
   let premier = true;
   return mots.map((m) => {
     if (/^\s+$/.test(m)) return m;
-    const sigle = /^[\p{Lu}\d&]{2,4}$/u.test(m) && !toutEnCapitales;
+    const sigle = (/^[\p{Lu}\d&]{2,4}$/u.test(m) && !toutEnCapitales) || SIGLES.has(m.toUpperCase().replace(/[^\p{L}\d&]/gu, '')) && /^[\p{Lu}\d&]+$/u.test(m);
     let r = sigle ? m : m.toLocaleLowerCase('fr');
     if (premier && !sigle) r = r.charAt(0).toLocaleUpperCase('fr') + r.slice(1);
     premier = false;
@@ -196,19 +212,28 @@ async function lignesDeMetier(model: Modele, perimetre: Perimetre, frappe: strin
   const aVerifier = choix.flatMap((x) => x.formes.filter((f) => !f.libelleDuMarche).map((f) => f.e));
   const ecrites = ecritesDansLesIntitules(aVerifier, intitules);
   const lignes: SuggestionCanonique[] = [];
+  const textes = new Set<string>();
+  // Deux métiers peuvent partager une variante (« Brand manager ») : une seule ligne par texte, celle du métier le plus porté.
+  const pousser = (valeur: string, metier: MetierSuggere) => {
+    if (textes.has(normal(valeur))) return;
+    textes.add(normal(valeur));
+    lignes.push({ valeur, metier, nature: 'metier' });
+  };
   for (const { c, formes, libelleRepond } of choix) {
     const metier = { identifiant: c.cle, libelle: c.libelle };
-    if (libelleRepond) { lignes.push({ valeur: c.libelle, metier, nature: 'metier' }); continue; }
+    if (libelleRepond) { pousser(c.libelle, metier); continue; }
     const f = formes.find((x) => x.libelleDuMarche || ecrites.has(x.e));
-    if (f) lignes.push({ valeur: casse(f.texte), metier, nature: 'metier' });
+    if (f) pousser(casse(f.texte), metier);
   }
   return lignes;
 }
 
 // ── 2. Les intitulés nettoyés ──────────────────────────────────────────────────────────────────────────────────────
-const CONTRATS = new Set(['cdi', 'cdd', 'stage', 'alternance', 'apprentissage', 'interim', 'freelance', 'vie', 'ftc', 'permanent',
-  'temporaire', 'temporary', 'saisonnier', 'saisonniere', 'h', 'hrs', 'hours', 'heures', 'month', 'months', 'mois', 'm', 'w', 'f', 'x', 'nb']);
-const CONTRATS_EN_DEUX_MOTS = ['temps partiel', 'temps plein', 'mi temps', 'part time', 'full time', 'fixed term', 'tiempo parcial', 'teilzeit', 'vollzeit'];
+const CONTRATS = new Set(['cdi', 'cdd', 'stage', 'alternance', 'alternant', 'alternante', 'apprentissage', 'apprenti', 'apprentie', 'interim',
+  'freelance', 'vie', 'ftc', 'permanent', 'temporaire', 'temporary', 'saisonnier', 'saisonniere', 'etudiant', 'etudiante', 'extra', 'extras',
+  'renfort', 'soldes', 'weekend', 'samedi', 'dimanche', 'h', 'hrs', 'hours', 'heures', 'month', 'months', 'mois', 'm', 'w', 'f', 'x', 'nb']);
+const CONTRATS_EN_DEUX_MOTS = ['temps partiel', 'temps plein', 'mi temps', 'part time', 'full time', 'fixed term', 'tiempo parcial', 'teilzeit', 'vollzeit',
+  'week end', 'jeune diplome', 'jeune diplomee'];
 const NIVEAUX = new Set(['junior', 'jr', 'senior', 'sr', 'confirme', 'confirmee', 'experimente', 'experimentee', 'experimentes', 'experienced', 'debutant',
   'debutante', 'midweight']);
 /** Le mot qui introduit un lieu part avec lui (« Val » de « Val Thoiry », « Saint » d'un lieu que la base n'écrit pas). */
@@ -250,12 +275,15 @@ export function nettoyerIntitule(titre: string, villes: ReadonlySet<string>): st
   const garde = jetons.map(() => true);
   for (let i = 0; i < jetons.length; i++) {
     if (i + 1 < jetons.length && CONTRATS_EN_DEUX_MOTS.includes(`${n[i]} ${n[i + 1]}`)) { garde[i] = false; garde[i + 1] = false; }
+    if (CONTRATS_EN_DEUX_MOTS.includes(n[i])) garde[i] = false;
     const mot = n[i];
     if (CONTRATS.has(mot) || NIVEAUX.has(mot) || /^\d/.test(mot) || /^\d+(?:[.,]\d+)?h$/.test(mot)) garde[i] = false;
   }
   const restants = jetons.filter((_, i) => garde[i]);
   // Les mots orphelins de fin (« en », « de ») et un dernier mot d'une ou deux lettres, que le nettoyage a laissés.
-  while (restants.length > 1 && (FINS_ORPHELINES.has(normal(restants.at(-1)!)) || normal(restants.at(-1)!).length <= 2)) restants.pop();
+  // Un sigle en capitales (« RH », « IT », « 3D ») n'est pas orphelin (audit technique du 01/10/2026).
+  const orphelin = (j: string) => FINS_ORPHELINES.has(normal(j)) || (normal(j).length <= 2 && !/^[\p{Lu}\d&]{2,4}$/u.test(j));
+  while (restants.length > 1 && orphelin(restants.at(-1)!)) restants.pop();
   const reste = restants.join(' ')
     .replace(/\s+/g, ' ').replace(/^[\s\-–—,.:;/|*•·_&+]+|[\s\-–—,.:;/|*•·_&+]+$/g, '').trim();
   if (normal(reste).length < 2) return null;
@@ -304,42 +332,75 @@ function accentuer(model: Modele, texte: string): string {
   });
 }
 
-type Intitule = { valeur: string | null; n: number; ids: string[] };
+type Intitule = { valeur: string | null; n: number; ids: string[]; maisons: string[] };
 /** Les 40 intitulés d'offres du marché qui contiennent la frappe, les plus portés d'abord, avec quelques-unes de leurs offres. */
 async function lireIntitules(perimetre: Perimetre, q: string): Promise<Intitule[]> {
   const motif = `%${echapperLike(q)}%`;
   const asOf = new Date();
   const pays = paysSql(perimetre.pays);
   return prisma.$queryRaw<Intitule[]>`
-    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids FROM (
-      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id FROM "Job" j
+    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids,
+      array_agg(array_to_string(maisons, ',')) AS maisons FROM (
+      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id, (array_agg(DISTINCT j."companyId"))[1:3]::text[] AS maisons FROM "Job" j
        WHERE ${publicJobSql(Prisma.sql`j`, asOf)} AND j."countryCode" IN (${pays}) AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte(${motif}) GROUP BY j.title
       UNION ALL
-      SELECT d.title, count(*), 'cw_' || min(d.id) FROM "DirectOffer" d
+      SELECT d.title, count(*), 'cw_' || min(d.id), (array_agg(DISTINCT coalesce(d."companyId", d.company)))[1:3]::text[] FROM "DirectOffer" d
        WHERE ${directPubliableSql(Prisma.sql`d`, asOf)} AND d."countryCode" IN (${pays}) AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte(${motif}) GROUP BY d.title
     ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40`;
 }
 
+/** Une expression d'offres n'est proposée que portée par au moins ce nombre de Maisons (audit métier : une ligne d'un seul
+ * employeur, « Conseiller vente expert huiles essentielles », est son intitulé maison, pas une recherche). */
+export const MAISONS_MIN_EXPRESSION = 2;
+
 function intitulesNettoyes(model: Modele, rows: readonly Intitule[], villes: ReadonlySet<string>, frappe: string): { valeur: string; e: string; n: number; ids: string[] }[] {
-  const groupes = new Map<string, { valeur: string; e: string; n: number; meilleur: number; ids: string[] }>();
+  const groupes = new Map<string, { valeur: string; e: string; n: number; meilleur: number; ids: string[]; maisons: Set<string> }>();
   for (const r of rows) {
     if (!r.valeur) continue;
     const nettoye = nettoyerIntitule(r.valeur, villes);
     if (!nettoye) continue;
-    const valeur = accentuer(model, nettoye);
+    const valeur = remettreLesMaisons(model, accentuer(model, nettoye));
     const e = normal(valeur);
-    if (!correspond(e, frappe)) continue;
+    // Jamais un critère de sexe, d'âge ou de religion, ni une négation (« Directeur de magasin femme ») : audit métier.
+    if (!correspond(e, frappe) || requeteRefusee(e.split(' '))) continue;
     const cle = cleAuMasculin(e);
+    const maisons = (r.maisons ?? []).flatMap((m) => (m ? m.split(',') : [])).filter(Boolean);
     const g = groupes.get(cle);
-    if (!g) groupes.set(cle, { valeur, e, n: r.n, meilleur: r.n, ids: [...r.ids] });
+    if (!g) groupes.set(cle, { valeur, e, n: r.n, meilleur: r.n, ids: [...r.ids], maisons: new Set(maisons) });
     else {
       g.n += r.n;
       g.ids.push(...r.ids);
+      for (const m of maisons) g.maisons.add(m);
       // La graphie de l'intitulé le plus porté ; à égalité, celle qui porte ses accents.
       if (r.n > g.meilleur || (r.n === g.meilleur && accentue(valeur) && !accentue(g.valeur))) { g.valeur = valeur; g.e = e; g.meilleur = r.n; }
     }
   }
-  return [...groupes.values()].filter((g) => g.n >= OFFRES_MIN_EXPRESSION).sort((a, b) => b.n - a.n || a.e.localeCompare(b.e));
+  return [...groupes.values()].filter((g) => g.n >= OFFRES_MIN_EXPRESSION && g.maisons.size >= MAISONS_MIN_EXPRESSION)
+    .sort((a, b) => b.n - a.n || a.e.localeCompare(b.e));
+}
+
+/** Les noms de Maisons retrouvent leur graphie (« dior » → « Dior », « louis vuitton » → « Louis Vuitton ») : audit métier. */
+const maisonsMemo = new WeakMap<object, Map<string, string>>();
+function remettreLesMaisons(model: Modele, texte: string): string {
+  let carte = maisonsMemo.get(model);
+  if (!carte) {
+    carte = new Map();
+    for (const c of model.names) for (const n of c.names) {
+      const cle = normal(n);
+      // Un nom trop court ou ambigu (« on », « next ») n'est pas réécrit.
+      if (cle.length >= 3 && !carte.has(cle)) carte.set(cle, n.trim());
+    }
+    maisonsMemo.set(model, carte);
+  }
+  const jetons = texte.split(' ');
+  const n = jetons.map(normal);
+  const sortie: string[] = [];
+  for (let i = 0; i < jetons.length;) {
+    const longueur = [4, 3, 2, 1].find((l) => i + l <= jetons.length && carte!.has(n.slice(i, i + l).join(' ')));
+    if (longueur) { sortie.push(carte.get(n.slice(i, i + longueur).join(' '))!); i += longueur; }
+    else { sortie.push(jetons[i]); i += 1; }
+  }
+  return sortie.join(' ');
 }
 
 // ── La recherche que lance le choix d'une ligne de texte ───────────────────────────────────────────────────────────
@@ -357,6 +418,8 @@ async function verifiees(model: Modele, perimetre: Perimetre, candidats: readonl
   const repartition = candidats.some((c) => !c.ids) ? await repartitionDuPerimetre(perimetre.pays) : null;
   const requetes = candidats.map(({ valeur, ids }, position) => {
     const intention = model.intention(valeur, perimetre.marche, { comprendre: true });
+    // Une clause exclue (« vendeuse sans … ») n'est jamais une suggestion : rien ne prouverait le mot exclu (audit technique).
+    if (intention.clauses.some((c) => c.exclude)) return Prisma.sql`SELECT NULL::int AS position WHERE false`;
     if (ids) {
       const { condition } = searchSql(intention, { metiersSansIndex: true });
       return Prisma.sql`SELECT ${position}::int AS position WHERE EXISTS (SELECT 1 FROM "SearchDocument" s
@@ -377,11 +440,31 @@ async function verifiees(model: Modele, perimetre: Perimetre, candidats: readonl
   return new Set(trouvees.map((r) => candidats[r.position].valeur));
 }
 
-/** Le métier qu'une chaîne nomme exactement, lue comme la requête comprise : une clause, un métier, rien d'autre. */
+/** Les mots d'une expression, sans liaison, triés : « responsable boutique adjoint » et « responsable adjoint de boutique »
+ * ont la même clé. */
+const cleDesMots = (e: string) => sansLiaison(e).split(' ').filter(Boolean).sort().join(' ');
+const motsDesMetiers = new WeakMap<object, Map<string, string | null>>();
+/** Par modèle : la clé des mots de chaque expression de métier, et son métier (`null` si deux métiers la partagent). */
+function metiersParMots(model: Modele): Map<string, string | null> {
+  const connu = motsDesMetiers.get(model);
+  if (connu) return connu;
+  const carte = new Map<string, string | null>();
+  for (const c of model.concepts) if (c.kind === 'role') for (const a of c.aliases) {
+    const cle = cleDesMots(normal(a));
+    if (!cle) continue;
+    carte.set(cle, carte.has(cle) && carte.get(cle) !== c.key ? null : c.key);
+  }
+  motsDesMetiers.set(model, carte);
+  return carte;
+}
+
+/** Le métier qu'une chaîne nomme exactement, lue comme la requête comprise (une clause, un métier, rien d'autre), ou
+ * dont les mots sont ceux d'une expression de métier dans un autre ordre (« Responsable boutique adjoint » est l'adjoint). */
 function metierNomme(model: Modele, valeur: string): string | null {
   const { clauses } = model.intention(valeur, undefined, { comprendre: true });
   const [c] = clauses;
-  return clauses.length === 1 && c.kind === 'role' && !c.exclude && c.keys.length === 1 ? c.keys[0] : null;
+  if (clauses.length === 1 && c.kind === 'role' && !c.exclude && c.keys.length === 1) return c.keys[0];
+  return metiersParMots(model).get(cleDesMots(normal(replierRequete(valeur)))) ?? null;
 }
 
 /** Au plus ce nombre de requêtes populaires vérifiées par frappe (une recherche du marché chacune). */
@@ -408,7 +491,19 @@ export async function suggestTitlesCanoniques(query: string, perimetre: Perimetr
     const lignes = await lignesDeMetier(model, perimetre, frappe, libelle, intitules);
     const vues = new Set(lignes.map((l) => cleAuMasculin(normal(l.valeur))));
     // Un intitulé ou une requête qui nomme exactement un métier ne fait pas une ligne de plus : la ligne du métier suffit.
-    const libres = (e: string, valeur: string) => !vues.has(cleAuMasculin(e)) && !metierNomme(model, valeur);
+    // Une ligne de texte libre : pas déjà vue ; qui ne nomme pas exactement un métier ; dont le métier que la classification
+    // y lit est bien celui que cherche sa recherche (« Retail sales advisor » se lirait Conseiller de vente mais chercherait
+    // une famille et le mot « advisor ») : audit métier. Un candidat illisible (plus de 64 mots…) est écarté, seul.
+    const libres = (e: string, valeur: string) => {
+      try {
+        if (vues.has(cleAuMasculin(e)) || metierNomme(model, valeur)) return false;
+        const lus = model.resolver.titleConcepts(valeur).roles;
+        const cherches = new Set(model.intention(valeur, perimetre.marche, { comprendre: true }).clauses.filter((c) => c.kind === 'role').flatMap((c) => c.keys));
+        return lus.every((r) => cherches.has(r));
+      } catch {
+        return false;
+      }
+    };
     const reste = () => LIMITE - lignes.length;
     if (reste() > 0) {
       const proposes = intitulesNettoyes(model, rows, villes, frappe).filter((x) => libres(x.e, x.valeur)).slice(0, reste());
@@ -427,7 +522,9 @@ export async function suggestTitlesCanoniques(query: string, perimetre: Perimetr
       }
     }
     return lignes.slice(0, LIMITE);
-  } catch {
+  } catch (error) {
+    // Une autocomplétion cassée ne casse jamais la barre, mais elle se voit dans les journaux.
+    console.error(JSON.stringify({ event: 'suggestions.canoniques_echec', error: error instanceof Error ? error.name : 'unknown' }));
     return [];
   }
 }
