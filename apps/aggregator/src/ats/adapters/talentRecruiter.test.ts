@@ -134,6 +134,31 @@ describe('Talent Recruiter — rejets identifiables observés avant validation',
     expect(r.enumeration?.canonicalIdViolations).toBeUndefined();
   });
 
+  /**
+   * RUN du 01/10/2026 (GANNI) : 10 offres sans annonce, leurs 10 `DESCRIPTION_MISSING` poussés dans l'ordre d'arrivée
+   * des fiches ; le rejeu les servait dans un autre ordre et la capture tombait en `REPLAY_RESULT_CHANGED`.
+   */
+  it('range les motifs des fiches dans l\'ordre des offres, quel que soit l\'ordre d\'arrivée des fiches', async () => {
+    const ids = [144691, 144692, 144695];
+    const read = async (delays: number[]) => {
+      const finished: string[] = [];
+      api.mockResolvedValue(feed(ids.map(id => position(id, { Advertisements: [] }))));
+      text.mockImplementation(async url => {
+        const id = new URL(url).searchParams.get('ProjectId')!;
+        await new Promise(resolve => setTimeout(resolve, delays[ids.indexOf(Number(id))]));
+        finished.push(id);
+        return '';
+      });
+      return { finished, issues: (await fetchTalentRecruiterJobs({ customer: 'ganni' })).enumeration?.issues };
+    };
+    const capture = await read([30, 15, 1]), replay = await read([1, 15, 30]);
+    // Prémisse : les deux lectures finissent bien dans des ordres opposés, sinon le témoin ne teste rien.
+    expect(capture.finished).toEqual(['144695', '144692', '144691']);
+    expect(replay.finished).toEqual(['144691', '144692', '144695']);
+    expect(capture.issues).toEqual(['DESCRIPTION_MISSING:144691', 'DESCRIPTION_MISSING:144692', 'DESCRIPTION_MISSING:144695']);
+    expect(replay.issues).toEqual(capture.issues);
+  });
+
   /** Une ligne sans identifiant exploitable ne peut être ni observée ni disposée : la preuve tombe. */
   it('une ligne SANS Id exploitable rend l\'énumération non probante', async () => {
     api.mockResolvedValue(feed([position(1), { ...position(2), Id: 0 }]));

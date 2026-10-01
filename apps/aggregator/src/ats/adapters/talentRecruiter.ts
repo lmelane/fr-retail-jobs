@@ -108,8 +108,18 @@ export async function fetchTalentRecruiterJobs(config: Record<string, unknown>):
   }
   if (!terminated && !issues.length && !rejectedRows.length) issues.push('PAGE_BUDGET_EXHAUSTED');
   const limit=pLimit(DEFAULT_DETAIL_CONCURRENCY);
-  const jobs=await Promise.all([...positions.values()].map(p=>limit(async():Promise<NormalizedJob>=>{
+  /**
+   * LES MOTIFS D'UNE OFFRE S'AJOUTENT DANS L'ORDRE DES OFFRES, JAMAIS DANS L'ORDRE D'ARRIVÉE DES FICHES.
+   *
+   * Les fiches se lisent en parallèle ; poussés depuis chaque lecture, les motifs suivaient l'ordre dans lequel les
+   * réponses arrivaient. Le rejeu hors réseau ne les sert pas dans le même ordre : les mêmes dix motifs, permutés,
+   * rendaient des métadonnées différentes de celles scellées, et la capture tombait en `REPLAY_RESULT_CHANGED`
+   * (GANNI, RUN du 01/10/2026 : 20 offres identiques, 10 `DESCRIPTION_MISSING` dans un autre ordre). Chaque lecture
+   * rend ses motifs ; ils rejoignent la preuve après, offre par offre, dans l'ordre de la liste de l'éditeur.
+   */
+  const read=await Promise.all([...positions.values()].map(p=>limit(async():Promise<{job:NormalizedJob;issues:string[]}>=>{
     const url=p.AdvertisementUrlSecure || p.AdvertisementUrl!;
+    const own: string[] = [];
     let mapAddress: string | undefined, detailError: string | undefined;
     try {
       const html=await fetchText(url), $=cheerio.load(html);
@@ -121,12 +131,14 @@ export async function fetchTalentRecruiterJobs(config: Record<string, unknown>):
           if (address) {mapAddress=address;break;}
         }
       }
-    } catch(error) {assertSourceRunning();detailError=String(error).slice(0,500);issues.push(`DETAIL_READ_FAILED:${p.Id}`);}
+    } catch(error) {assertSourceRunning();detailError=String(error).slice(0,500);own.push(`DETAIL_READ_FAILED:${p.Id}`);}
     const job = parseTalentRecruiterPosition(p, customer, mapAddress);
-    if (!job.opportunityType) issues.push(`UNRECOGNISED_PROJECT_TYPE:${p.Id}`);
-    if (!job.description && job.opportunityType !== 'OPEN_APPLICATION') issues.push(`DESCRIPTION_MISSING:${p.Id}`);
-    return {...job,raw:{...(job.raw as object),detailError}};
+    if (!job.opportunityType) own.push(`UNRECOGNISED_PROJECT_TYPE:${p.Id}`);
+    if (!job.description && job.opportunityType !== 'OPEN_APPLICATION') own.push(`DESCRIPTION_MISSING:${p.Id}`);
+    return {job:{...job,raw:{...(job.raw as object),detailError}},issues:own};
   })));
+  for (const entry of read) issues.push(...entry.issues);
+  const jobs=read.map(entry=>entry.job);
   return {jobs,rejectedRows,declaredTotal:total,complete:enumerationComplete(terminated,issues,rejectedRows),
     enumeration:{method:'DOCUMENTED_SKIP_TAKE_AND_NATIVE_COUNTERS',endpoint:`${API}/${customer}/positionlist/json/`,documentation:DOCUMENTATION,
       pages:pageEvidence.length,rawCount,termination:terminated?'DECLARED_TOTAL_REACHED':'INCOMPLETE',blockers:enumerationBlockers(issues),issues,pageEvidence}};
