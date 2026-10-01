@@ -1,0 +1,13 @@
+# Q5 à blanc — 2026-10-01T19:02:36.991Z — catwalks-occupations-20260929-v3 → catwalks-occupations-20261001-v3-1
+Offres actives lues : 89701
+Contrôle : titleRoles stockés (version catwalks-occupations-20260929-v3) = recalculés ici : 89701 ; différents : 0
+Offres qui gagnent au moins un métier lu : 157 ; offres qui en perdent un : 0
+Par métier gagné : sales-advisor 155, assistant-administratif 1, store-manager 1
+Par pays : FR 105, AU 17, NZ 7, GB 7, US 6, - 4, DK 3, DE 3, ES 2, NL 1, IE 1, GR 1
+
+Offres françaises que le texte trouve et que metier=sales-advisor ne retient pas : 136
+  rattachées au Conseiller de vente par la v3.1 : 84 (61.8 %)
+  dont l'intitulé nomme le métier au pluriel ou en écriture inclusive : 94 ; rattachées : 84 (89.4 %)
+  non rattachées parmi elles : Conseiller de vente expert beauté H/F Grands Magasins [CDI/CDD] ‖ CDD TP- CONSEILLER DE VENTE PARFUMERIE F/H ‖ Stage Renfort Eté - Conseiller de Vente Parfum Beauté ‖ KERING BEAUTE _ Creed Vendeur ‖ CONSEILLERE VENDEUSE EN PARFUMERIE SELECTIVE H/F ‖ CONSEILLERE VENDEUSE H/F EN PARFUMERIE SELECTIVE ‖ Manager Rayon Cycle/ Vendeur expert cycle profil évolutif H/F ‖ CONSEILLERE VENDEUSE EN PARFUMERIE SELECTIVE H/F ‖ CONSEILLERE VENDEUSE EN PARFUMERIE SELECTIVE H/F ‖ CONSEILLERE VENDEUSE EN PARFUMERIE SELECTIVE H/F
+
+Échantillon de justesse : 157 couples, graine « d500-q5-2026-10-01-actives » (echantillon.json, sans verdict)

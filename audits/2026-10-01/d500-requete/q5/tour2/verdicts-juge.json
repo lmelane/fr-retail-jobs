@@ -1,0 +1,61 @@
+{
+ "juge": "sous-agent indépendant, même grille, sans accès aux verdicts de l'assistant",
+ "compte": {
+  "JUSTE": 9,
+  "FAUX": 1,
+  "DOUTE": 0,
+  "total": 10
+ },
+ "verdicts": [
+  {
+   "n": 1,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 2,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 3,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 4,
+   "verdict": "FAUX",
+   "motif": "« Buyers Admin » est un poste d'appui administratif rattaché aux acheteurs, pas un acheteur"
+  },
+  {
+   "n": 5,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 6,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 7,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 8,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 9,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 10,
+   "verdict": "JUSTE",
+   "motif": null
+  }
+ ]
+}

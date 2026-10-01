@@ -105,7 +105,7 @@ const contient = (mots: string[], m: string[], hors: [number, number]) => {
 };
 
 /** Une lecture : le métier, l'expression lue, sa place dans son segment, et si seule la lecture 2 (singulier) l'a trouvée. */
-export type LectureIntitule = { role: string; phrase: string; debut: number; avant: string[]; auSingulier: boolean };
+export type LectureIntitule = { role: string; phrase: string; debut: number; avant: string[]; apres: string[]; auSingulier: boolean };
 
 /** Ce que le résolveur lit dans un intitulé plus long, AVANT vérification (étape 6g : chaque expression s'y vérifie sur
  * ce qu'elle capte), après les mots d'encadrement, les formes décidées et la préséance d'une règle exacte. */
@@ -130,7 +130,8 @@ export function occupationTitleReadings(
         return !ENCADREMENT.some((e) => contient(mots, e, span));
       })
       .flatMap((m) => m.keys.filter((r) => !exclusions.get(r)?.some((x) => cle.includes(` ${x} `)))
-        .map((role) => ({ role, phrase: m.phrase, debut: m.start, avant: mots.slice(0, m.start), auSingulier })));
+        .map((role) => ({ role, phrase: m.phrase, debut: m.start, avant: mots.slice(0, m.start),
+          apres: mots.slice(m.start + m.phrase.split(" ").length), auSingulier })));
   };
   // Lecture 2 : le segment tel quel, puis ramené au singulier s'il change (« CHARGE D AFFAIRES » se lit toujours tel quel) ;
   // les lectures s'ajoutent, aucune ne se perd ; une lecture que le segment tel quel donne déjà n'est pas « au singulier ».
@@ -148,12 +149,16 @@ export function occupationTitleReadings(
  * [[D-500]] Q5 — les garde-fous d'une lecture que seule la lecture 2 donne (au singulier, ou à l'autre genre), mesurés
  * au tour 1 (`audits/2026-10-01/d500-requete/q5/`) : elle ne s'ajoute qu'à une offre que le moteur a laissée sans métier
  * (« Store Manager - Opticians » est un responsable de boutique, pas un opticien) ; une lecture d'un seul mot au singulier
- * ouvre son segment (« Vendeurs (f/h) », jamais « Boots Opticians ») ; et un assistant, un adjoint ou un stagiaire d'un
- * métier n'est pas ce métier ([[D-475]] §37 b).
+ * ouvre son segment (« Vendeurs (f/h) », jamais « Boots Opticians ») ; un assistant, un adjoint ou un stagiaire d'un
+ * métier n'est pas ce métier ([[D-475]] §37 b) ; et un nom qui suit le métier en est la tête (« Buyers Admin », tour 2).
  */
 const AVANT_EXCLUS = new Set(["assistant", "assistante", "adjoint", "adjointe", "stagiaire", "apprenti", "apprentie"]);
+/** Tour 2 (offres fermées) : un nom qui suit le métier en est la tête (« Buyers Admin » est un poste administratif). */
+const APRES_EXCLUS = new Set(["admin", "administrator", "administrateur", "administratrice", "assistant", "assistante", "coordinator",
+  "coordinateur", "coordinatrice", "support", "partner", "analyst", "analyste", "officer", "specialist", "executive", "trainer", "formateur",
+  "formatrice", "team"]);
 const lectureDeuxAdmise = (l: LectureIntitule, decision: TitleDecision) =>
-  !decision.occupationCode && !l.avant.some((m) => AVANT_EXCLUS.has(m))
+  !decision.occupationCode && !l.avant.some((m) => AVANT_EXCLUS.has(m)) && !l.apres.some((m) => APRES_EXCLUS.has(m))
   && !(l.auSingulier && l.phrase.split(" ").length === 1 && l.debut > 0);
 
 export function occupationTitleRoles(

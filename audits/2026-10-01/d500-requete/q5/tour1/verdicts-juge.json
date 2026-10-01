@@ -1,0 +1,837 @@
+{
+ "juge": "sous-agent indépendant, grille tirée des décisions (pluriel, genre, contrat, lieu sans effet ; encadrement et assistant sont d'autres métiers), sans accès aux verdicts de l'assistant",
+ "compte": {
+  "JUSTE": 157,
+  "FAUX": 8,
+  "DOUTE": 0,
+  "total": 165
+ },
+ "remarque": "n° 25 et 110 (« senior », « expérimenté.e ») jugés JUSTE ; le manifeste range « Senior Verkaufsberater » sous Premier vendeur",
+ "verdicts": [
+  {
+   "n": 1,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 2,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 3,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 4,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 5,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 6,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 7,
+   "verdict": "FAUX",
+   "motif": "Store Manager : encadrement d'un magasin d'optique, pas un opticien"
+  },
+  {
+   "n": 8,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 9,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 10,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 11,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 12,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 13,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 14,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 15,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 16,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 17,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 18,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 19,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 20,
+   "verdict": "FAUX",
+   "motif": "Store Manager : encadrement d'un magasin d'optique, pas un opticien"
+  },
+  {
+   "n": 21,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 22,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 23,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 24,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 25,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 26,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 27,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 28,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 29,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 30,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 31,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 32,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 33,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 34,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 35,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 36,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 37,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 38,
+   "verdict": "FAUX",
+   "motif": "Multisite Store Manager : encadrement de plusieurs magasins d'optique, pas un opticien"
+  },
+  {
+   "n": 39,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 40,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 41,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 42,
+   "verdict": "FAUX",
+   "motif": "Store Manager : encadrement d'un magasin d'optique, pas un opticien"
+  },
+  {
+   "n": 43,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 44,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 45,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 46,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 47,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 48,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 49,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 50,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 51,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 52,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 53,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 54,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 55,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 56,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 57,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 58,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 59,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 60,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 61,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 62,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 63,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 64,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 65,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 66,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 67,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 68,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 69,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 70,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 71,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 72,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 73,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 74,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 75,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 76,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 77,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 78,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 79,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 80,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 81,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 82,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 83,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 84,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 85,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 86,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 87,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 88,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 89,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 90,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 91,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 92,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 93,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 94,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 95,
+   "verdict": "FAUX",
+   "motif": "Store Manager : encadrement d'un magasin d'optique, pas un opticien"
+  },
+  {
+   "n": 96,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 97,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 98,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 99,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 100,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 101,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 102,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 103,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 104,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 105,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 106,
+   "verdict": "FAUX",
+   "motif": "Assistant Chef de projets Supply Chain : l'assistant d'un métier n'est pas ce métier"
+  },
+  {
+   "n": 107,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 108,
+   "verdict": "FAUX",
+   "motif": "Store Manager : encadrement d'un magasin d'optique, pas un opticien"
+  },
+  {
+   "n": 109,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 110,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 111,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 112,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 113,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 114,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 115,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 116,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 117,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 118,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 119,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 120,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 121,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 122,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 123,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 124,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 125,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 126,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 127,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 128,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 129,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 130,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 131,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 132,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 133,
+   "verdict": "FAUX",
+   "motif": "L&D Capability Partner : poste RH de formation dans une enseigne d'optique, pas un opticien"
+  },
+  {
+   "n": 134,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 135,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 136,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 137,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 138,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 139,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 140,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 141,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 142,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 143,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 144,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 145,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 146,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 147,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 148,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 149,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 150,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 151,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 152,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 153,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 154,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 155,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 156,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 157,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 158,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 159,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 160,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 161,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 162,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 163,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 164,
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 165,
+   "verdict": "JUSTE",
+   "motif": null
+  }
+ ]
+}
