@@ -172,6 +172,45 @@ export async function suggestLieux(query: string, perimetre: Perimetre, locale?:
 }
 
 /**
+ * D-500 (Q2) — LES LIEUX DE TÊTE, au focus d'un champ de lieu vide ([[D-495]] §1) : les lieux reconnus de la base (même
+ * libellé « Paris (75) » que les suggestions à la frappe), rangés par le nombre d'offres publiables qui leur sont
+ * rattachées (`geoCityId`, deux origines), au moins `OFFRES_MIN_LIEU_DE_TETE` chacun. Remplace, pour le client du
+ * contrat 2, la facette « Ville » (texte brut des offres, sans subdivision : « Londres » sur le marché britannique) que le
+ * site lisait (écart du point 13 de la lecture D-496). Mémorisés une heure par marché et par langue.
+ */
+export const LIEUX_DE_TETE = 5, OFFRES_MIN_LIEU_DE_TETE = 2;
+const lieuxDeTete = new Map<string, { valeur: Promise<string[]>; expire: number }>();
+export async function suggestLieuxDeTete(perimetre: Perimetre, locale?: string): Promise<string[]> {
+  if (!process.env.DATABASE_URL) return [];
+  const pays = [...perimetre.pays];
+  const langue = langueDesVilles(locale, perimetre);
+  const cle = `${[...pays].sort().join(',')}|${langue}`;
+  const memo = lieuxDeTete.get(cle);
+  if (memo && memo.expire > Date.now()) return memo.valeur;
+  const asOf = new Date();
+  const valeur = prisma.$queryRaw<Array<{ name: string; label: string | null; subdivision: string | null }>>(Prisma.sql`
+    WITH offres AS (
+      SELECT j."geoCityId" AS id, count(*) AS n FROM "Job" j
+       WHERE ${publicJobSql(Prisma.sql`j`, asOf)} AND j."geoCityId" IS NOT NULL AND j."countryCode" = ANY(${pays}::text[]) GROUP BY 1
+      UNION ALL
+      SELECT d."geoCityId", count(*) FROM "DirectOffer" d
+       WHERE ${directPubliable(asOf)} AND d."geoCityId" IS NOT NULL AND d."countryCode" = ANY(${pays}::text[]) GROUP BY 1
+    ), parLieu AS (SELECT id, sum(n) AS n FROM offres GROUP BY id HAVING sum(n) >= ${OFFRES_MIN_LIEU_DE_TETE})
+    SELECT v."name", l."label", v."subdivision" FROM parLieu o JOIN "GeoCity" v ON v."id" = o.id AND v."suggestible"
+      LEFT JOIN "GeoCityLabel" l ON l."cityId" = v."id" AND l."language" = ${langue}
+     ORDER BY o.n DESC, v."population" DESC, v."id" LIMIT ${LIEUX_DE_TETE * 2}`)
+    .then((rows) => {
+      const lieux = dedupliquer(rows.map(libelleVille), LIEUX_DE_TETE);
+      // Une liste vide (base de lieux pas encore chargée, marché sans offre située) n'est pas retenue : le focus suivant relit.
+      if (!lieux.length) lieuxDeTete.delete(cle);
+      return lieux;
+    });
+  lieuxDeTete.set(cle, { valeur, expire: Date.now() + 60 * 60_000 });
+  valeur.catch(() => lieuxDeTete.delete(cle));
+  return valeur.catch(() => []);
+}
+
+/**
  * D-499 — les codes postaux qui commencent par la frappe (« 9443 », « SW1 », « 75015 Par »), chacun avec le lieu qu'il
  * dessert et sa subdivision : « 94430 Chennevières-sur-Marne (94) ».
  */

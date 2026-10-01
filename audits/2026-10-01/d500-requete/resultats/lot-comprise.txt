@@ -1,0 +1,26 @@
+# lot-comprise — 2026-10-01T18:09:38.063282+00:00 — catwalks-occupations-20260929-v3 — search-5-20260924-v2
+marché | requête | comprise (contrat 2) | offres texte avant | offres texte contrat 2 | offres metier= | metier= trouvées (contrat 2) | perdues par rapport à avant | titres « Conseiller … » trouvés
+FR | conseiller(ère) de vente | role:sales-advisor | 1176 | 4794 | 4635 | 4635 (100.0 %) | 220 (Conseiller de boutique Toulouse Blagnac – 35 h (F/H) ‖ Manager des Ventes (F/H) - Lyon - CDI 35H ‖ Manager des Ventes (F/H) - Marseille Terrasses du Port - CDI 35H ‖ Manager des Ventes (F/H) - Marseille La Valentine - CDI 35H ‖ Manager des Ventes (F/H) - Avignon Le Pontet - CDI 35h) | 987
+FR | CONSEILLER DE VENTE /NB | role:sales-advisor | 169 | 4773 | 4635 | 4635 (100.0 %) | 0 | 982
+FR | conseiller·ère de vente | role:sales-advisor | 1176 | 4794 | 4635 | 4635 (100.0 %) | 220 (Conseiller de boutique Toulouse Blagnac – 35 h (F/H) ‖ Manager des Ventes (F/H) - Lyon - CDI 35H ‖ Manager des Ventes (F/H) - Marseille Terrasses du Port - CDI 35H ‖ Manager des Ventes (F/H) - Marseille La Valentine - CDI 35H ‖ Manager des Ventes (F/H) - Avignon Le Pontet - CDI 35h) | 987
+FR | conseiller.e de vente | role:sales-advisor | 3162 | 4782 | 4635 | 4635 (100.0 %) | 673 (Conseiller de boutique Toulouse Blagnac – 35 h (F/H) ‖ Conseiller de Beauté L'Oréal Luxe - Paris - CDD 35H - H/F ‖ Responsable de Boutique (H/F) - CDI - 39H - Paris ‖ Responsable adjoint.e de magasin ‖ CONSEILLER.E ESTHETICIEN.NE POLYVALENT.E H/F) | 982
+FR | conseillère de vente H/F | role:sales-advisor | 3545 | 4773 | 4635 | 4635 (100.0 %) | 0 | 982
+FR | conseillère de vente | role:sales-advisor | 4773 | 4773 | 4635 | 4635 (100.0 %) | 0 | 982
+FR | vendeur/vendeuse | role:sales-advisor | 4773 | 4773 | 4635 | 4635 (100.0 %) | 0 | 982
+FR | conseillère de vente luxe | role:sales-advisor & text:luxe | 488 | 488 | 4635 | 469 (10.1 %) | 0 | 144
+FR | conseillère | text:conseillere|conseiller | 113 | 4377 | 4635 | 3301 (71.2 %) | 0 | 1100
+FR | responsable boutique | role:store-manager | 1349 | 720 | 594 | 594 (100.0 %) | 1081 (Designer Joaillerie Junior F/H ‖ Responsable de stand - Galeries Lafayette Nice Cap 3000 H/F ‖ CDD - Vendeur.euse 35h (Paris) ‖ Vendeur.se Marseille Cabriès - 35h/sem - CDI ‖ adjoint·e responsable f/h - grands magasins parisiens - cdi 39h) | 2
+FR | responsable de boutique | role:store-manager | 712 | 712 | 594 | 594 (100.0 %) | 0 | 2
+FR | sales advisor | role:sales-advisor | 4773 | 4773 | 4635 | 4635 (100.0 %) | 0 | 982
+GB | conseiller(ère) de vente | role:sales-advisor | 6 | 1285 | 1271 | 1271 (100.0 %) | 0 | 0
+GB | CONSEILLER DE VENTE /NB | role:sales-advisor | 0 | 1284 | 1271 | 1271 (100.0 %) | 0 | 0
+GB | conseiller·ère de vente | role:sales-advisor | 6 | 1285 | 1271 | 1271 (100.0 %) | 0 | 0
+GB | conseiller.e de vente | role:sales-advisor | 6 | 1284 | 1271 | 1271 (100.0 %) | 1 (Conseiller·ère de vente parfumerie — Londres) | 0
+GB | conseillère de vente H/F | role:sales-advisor | 1 | 1284 | 1271 | 1271 (100.0 %) | 0 | 0
+GB | conseillère de vente | role:sales-advisor | 1284 | 1284 | 1271 | 1271 (100.0 %) | 0 | 0
+GB | vendeur/vendeuse | role:sales-advisor | 1284 | 1284 | 1271 | 1271 (100.0 %) | 0 | 0
+GB | conseillère de vente luxe | role:sales-advisor & text:luxe | 0 | 0 | 1271 | 0 (0.0 %) | 0 | 0
+GB | conseillère | text:conseillere|conseiller | 0 | 6 | 1271 | 5 (0.4 %) | 0 | 0
+GB | responsable boutique | role:store-manager | 0 | 251 | 178 | 178 (100.0 %) | 0 | 0
+GB | responsable de boutique | role:store-manager | 251 | 251 | 178 | 178 (100.0 %) | 0 | 0
+GB | sales advisor | role:sales-advisor | 1284 | 1284 | 1271 | 1271 (100.0 %) | 0 | 0

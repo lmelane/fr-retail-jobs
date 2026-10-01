@@ -1,0 +1,437 @@
+{
+ "etat": {
+  "release": "catwalks-occupations-20260929-v3",
+  "generation": "search-5-20260924-v2",
+  "mesureA": "2026-10-01T18:24:56.501565+00:00"
+ },
+ "donnees": [
+  {
+   "q": "conseillère de vente",
+   "comprendre": false,
+   "total": 4776,
+   "titres": [
+    {
+     "id": "cw_cmuckslrj0003l504mebrko9w",
+     "title": "Conseiller de Vente Prêt-À-Porter Féminin Contemporain H/F - Temps partiel",
+     "du_metier": true
+    },
+    {
+     "id": "cw_cmuckq8uy0001l504yyq35822",
+     "title": "Conseiller de Vente Prêt-À-Porter Féminin Contemporain H/F",
+     "du_metier": true
+    },
+    {
+     "id": "cw_cmnokf5d70000jt041mxtoeaf",
+     "title": "Conseiller de Vente Prêt-À-Porter Féminin Contemporain H/F",
+     "du_metier": true
+    },
+    {
+     "id": "cw_cmnoi8r2m0000l704tdyfgtcg",
+     "title": "Conseiller de Vente Prêt à Porter Premium Féminin",
+     "du_metier": true
+    },
+    {
+     "id": "cw_cmsxlvwfp000bl6044kq7slr1",
+     "title": "Conseiller·ère de vente en alternance — Paris",
+     "du_metier": true
+    },
+    {
+     "id": "cw_cmsxlwe6z0015l604dh9ww9f7",
+     "title": "Conseiller·ère de vente joaillerie — Nice",
+     "du_metier": true
+    },
+    {
+     "id": "cw_cmsxlwy4g0025l604qodxxter",
+     "title": "Conseiller·ère de vente joaillerie — Paris Vendôme",
+     "du_metier": true
+    },
+    {
+     "id": "cw_cmshtx2qg00012czdfutb2ri9",
+     "title": "Conseiller·ère de vente",
+     "du_metier": true
+    },
+    {
+     "id": "cw_cmo00or08000h2ccs7k6xy75x",
+     "title": "Conseiller·ère de vente",
+     "du_metier": true
+    },
+    {
+     "id": "cw_cmo00og0c000g2ccsiw0jwcpk",
+     "title": "Conseiller·ère de vente",
+     "du_metier": true
+    },
+    {
+     "id": "cw_cmo00mvpn00092ccsauedwnad",
+     "title": "Conseiller·ère de vente",
+     "du_metier": true
+    },
+    {
+     "id": "cw_cmo00mn6r00082ccsk9382k3v",
+     "title": "Conseiller·ère de vente",
+     "du_metier": true
+    },
+    {
+     "id": "cw_cmo00kvum00002ccsf6qv8da3",
+     "title": "Conseiller·ère de vente",
+     "du_metier": true
+    },
+    {
+     "id": "cw_cmnohaudq0000jx04eo3cgp0d",
+     "title": "Conseiller(e) de vente en Prêt à Porter Haut de Gamme",
+     "du_metier": true
+    },
+    {
+     "id": "cw_cmta2eyj20001k204inaw5n47",
+     "title": "Conseiller de vente en beauté capillaire",
+     "du_metier": null
+    },
+    {
+     "id": "cmuprh8n91t08l73478hhavd1",
+     "title": "Vendeur/Vendeuse Temps Partiel CDD - Saint Laurent du Var",
+     "du_metier": true
+    },
+    {
+     "id": "cmudu8d7k1ggsoa34s44z61cj",
+     "title": "Vendeur/Vendeuse Chaussures",
+     "du_metier": true
+    },
+    {
+     "id": "cmudu8exd1gnvoa34wfvmjqat",
+     "title": "Vendeur/Vendeuse Textile",
+     "du_metier": true
+    },
+    {
+     "id": "cmudu8ppa1ig7oa34r7abyr3g",
+     "title": "Vendeur/Vendeuse",
+     "du_metier": true
+    },
+    {
+     "id": "cmudu8pr41igioa34nrquvcpo",
+     "title": "Vendeur/Vendeuse",
+     "du_metier": true
+    }
+   ]
+  },
+  {
+   "q": "conseillère de vente",
+   "comprendre": true,
+   "total": 4776,
+   "titres": [
+    {
+     "id": "cw_cmuckslrj0003l504mebrko9w",
+     "title": "Conseiller de Vente Prêt-À-Porter Féminin Contemporain H/F - Temps partiel",
+     "du_metier": true
+    },
+    {
+     "id": "cw_cmuckq8uy0001l504yyq35822",
+     "title": "Conseiller de Vente Prêt-À-Porter Féminin Contemporain H/F",
+     "du_metier": true
+    },
+    {
+     "id": "cw_cmnokf5d70000jt041mxtoeaf",
+     "title": "Conseiller de Vente Prêt-À-Porter Féminin Contemporain H/F",
+     "du_metier": true
+    },
+    {
+     "id": "cw_cmnoi8r2m0000l704tdyfgtcg",
+     "title": "Conseiller de Vente Prêt à Porter Premium Féminin",
+     "du_metier": true
+    },
+    {
+     "id": "cw_cmta2eyj20001k204inaw5n47",
+     "title": "Conseiller de vente en beauté capillaire",
+     "du_metier": null
+    },
+    {
+     "id": "cw_cmsxlvwfp000bl6044kq7slr1",
+     "title": "Conseiller·ère de vente en alternance — Paris",
+     "du_metier": true
+    },
+    {
+     "id": "cw_cmsxlwe6z0015l604dh9ww9f7",
+     "title": "Conseiller·ère de vente joaillerie — Nice",
+     "du_metier": true
+    },
+    {
+     "id": "cw_cmsxlwy4g0025l604qodxxter",
+     "title": "Conseiller·ère de vente joaillerie — Paris Vendôme",
+     "du_metier": true
+    },
+    {
+     "id": "cw_cmshtx2qg00012czdfutb2ri9",
+     "title": "Conseiller·ère de vente",
+     "du_metier": true
+    },
+    {
+     "id": "cw_cmo00or08000h2ccs7k6xy75x",
+     "title": "Conseiller·ère de vente",
+     "du_metier": true
+    },
+    {
+     "id": "cw_cmo00og0c000g2ccsiw0jwcpk",
+     "title": "Conseiller·ère de vente",
+     "du_metier": true
+    },
+    {
+     "id": "cw_cmo00mvpn00092ccsauedwnad",
+     "title": "Conseiller·ère de vente",
+     "du_metier": true
+    },
+    {
+     "id": "cw_cmo00mn6r00082ccsk9382k3v",
+     "title": "Conseiller·ère de vente",
+     "du_metier": true
+    },
+    {
+     "id": "cw_cmo00kvum00002ccsf6qv8da3",
+     "title": "Conseiller·ère de vente",
+     "du_metier": true
+    },
+    {
+     "id": "cw_cmnohaudq0000jx04eo3cgp0d",
+     "title": "Conseiller(e) de vente en Prêt à Porter Haut de Gamme",
+     "du_metier": true
+    },
+    {
+     "id": "cmuprh8n91t08l73478hhavd1",
+     "title": "Vendeur/Vendeuse Temps Partiel CDD - Saint Laurent du Var",
+     "du_metier": true
+    },
+    {
+     "id": "cmudu8d7k1ggsoa34s44z61cj",
+     "title": "Vendeur/Vendeuse Chaussures",
+     "du_metier": true
+    },
+    {
+     "id": "cmudu8exd1gnvoa34wfvmjqat",
+     "title": "Vendeur/Vendeuse Textile",
+     "du_metier": true
+    },
+    {
+     "id": "cmudu8ppa1ig7oa34r7abyr3g",
+     "title": "Vendeur/Vendeuse",
+     "du_metier": true
+    },
+    {
+     "id": "cmudu8pr41igioa34nrquvcpo",
+     "title": "Vendeur/Vendeuse",
+     "du_metier": true
+    }
+   ]
+  },
+  {
+   "q": "responsable de boutique",
+   "comprendre": false,
+   "total": 712,
+   "titres": [
+    {
+     "id": "cw_cmnokpopx0000l7046fun4c4v",
+     "title": "Store manager",
+     "du_metier": true
+    },
+    {
+     "id": "cw_cmta2pvxt0003k204xegp2x8f",
+     "title": "Responsable de boutique",
+     "du_metier": true
+    },
+    {
+     "id": "cw_cmo00o6d4000f2ccs3gvzcff4",
+     "title": "Responsable de boutique",
+     "du_metier": true
+    },
+    {
+     "id": "cw_cmo00l4u600012ccs3m4jbcjc",
+     "title": "Responsable de boutique",
+     "du_metier": true
+    },
+    {
+     "id": "cw_cmubcmbtf0001l0042ges9nhm",
+     "title": "Directeur·rice de boutique",
+     "du_metier": true
+    },
+    {
+     "id": "cw_cmo00lc2r00022ccs1vtwh973",
+     "title": "Directeur·rice de boutique",
+     "du_metier": true
+    },
+    {
+     "id": "cmue51y8x09ljo234n5ohu4ao",
+     "title": "Responsable de Boutique / Store Manager confirmé(e) – Skincare & Beauté",
+     "du_metier": true
+    },
+    {
+     "id": "cmu89po0a001joca5zvkjmh8h",
+     "title": "STORE MANAGER",
+     "du_metier": true
+    },
+    {
+     "id": "cmu8aafh301z2l9df54ypvo9k",
+     "title": "Senior Store Manager - La Vallee Village",
+     "du_metier": true
+    },
+    {
+     "id": "cmue529td0alno234uvihqaay",
+     "title": "Responsable de Boutique (H/F) - CDI - 39H - Paris",
+     "du_metier": true
+    },
+    {
+     "id": "cmue4z7wz00x7o234a4hm43lt",
+     "title": "Responsable de magasin F/H/N - CDD 4 mois",
+     "du_metier": true
+    },
+    {
+     "id": "cmueasehn0dzvoi351dc50jzd",
+     "title": "Louis Pion Responsable de magasin - CDD 35h 6 mois Fenouillet F/H",
+     "du_metier": true
+    },
+    {
+     "id": "cmue50j5y058zo234nhjo3sfz",
+     "title": "Store Director / Directeur(trice) de magasin - Montréal",
+     "du_metier": true
+    },
+    {
+     "id": "cmueashg00ecboi3572ud37xq",
+     "title": "Responsable de Boutique - Louis Pion Nantes St-Sébastien F/H",
+     "du_metier": true
+    },
+    {
+     "id": "cmue4z82k00xso234zm90514d",
+     "title": "Responsable de magasin F/H/N - CDD 8 mois",
+     "du_metier": true
+    },
+    {
+     "id": "cmue52a5c0ammo234ar88vvl2",
+     "title": "Responsable de Boutique (H/F) - CDI - Annecy",
+     "du_metier": true
+    },
+    {
+     "id": "cmu6xmtxl0003polux2yw2vl5",
+     "title": "Responsable de Boutique (H/F) - CDI - 39H - Paris",
+     "du_metier": true
+    },
+    {
+     "id": "cmu6xmuvo0055polu5zet5vq8",
+     "title": "Responsable de Boutique (H/F) - CDI - Annecy",
+     "du_metier": true
+    },
+    {
+     "id": "cmuegvi9j081tqo343ihvcauo",
+     "title": "Store Manager H/F",
+     "du_metier": true
+    },
+    {
+     "id": "cmupu1xo64hpwl734kooli3hk",
+     "title": "Responsable de boutique à Bordeaux",
+     "du_metier": true
+    }
+   ]
+  },
+  {
+   "q": "responsable de boutique",
+   "comprendre": true,
+   "total": 712,
+   "titres": [
+    {
+     "id": "cw_cmnokpopx0000l7046fun4c4v",
+     "title": "Store manager",
+     "du_metier": true
+    },
+    {
+     "id": "cw_cmta2pvxt0003k204xegp2x8f",
+     "title": "Responsable de boutique",
+     "du_metier": true
+    },
+    {
+     "id": "cw_cmo00o6d4000f2ccs3gvzcff4",
+     "title": "Responsable de boutique",
+     "du_metier": true
+    },
+    {
+     "id": "cw_cmo00l4u600012ccs3m4jbcjc",
+     "title": "Responsable de boutique",
+     "du_metier": true
+    },
+    {
+     "id": "cw_cmubcmbtf0001l0042ges9nhm",
+     "title": "Directeur·rice de boutique",
+     "du_metier": true
+    },
+    {
+     "id": "cw_cmo00lc2r00022ccs1vtwh973",
+     "title": "Directeur·rice de boutique",
+     "du_metier": true
+    },
+    {
+     "id": "cmue51y8x09ljo234n5ohu4ao",
+     "title": "Responsable de Boutique / Store Manager confirmé(e) – Skincare & Beauté",
+     "du_metier": true
+    },
+    {
+     "id": "cmu89po0a001joca5zvkjmh8h",
+     "title": "STORE MANAGER",
+     "du_metier": true
+    },
+    {
+     "id": "cmu8aafh301z2l9df54ypvo9k",
+     "title": "Senior Store Manager - La Vallee Village",
+     "du_metier": true
+    },
+    {
+     "id": "cmue529td0alno234uvihqaay",
+     "title": "Responsable de Boutique (H/F) - CDI - 39H - Paris",
+     "du_metier": true
+    },
+    {
+     "id": "cmue4z7wz00x7o234a4hm43lt",
+     "title": "Responsable de magasin F/H/N - CDD 4 mois",
+     "du_metier": true
+    },
+    {
+     "id": "cmueasehn0dzvoi351dc50jzd",
+     "title": "Louis Pion Responsable de magasin - CDD 35h 6 mois Fenouillet F/H",
+     "du_metier": true
+    },
+    {
+     "id": "cmue50j5y058zo234nhjo3sfz",
+     "title": "Store Director / Directeur(trice) de magasin - Montréal",
+     "du_metier": true
+    },
+    {
+     "id": "cmueashg00ecboi3572ud37xq",
+     "title": "Responsable de Boutique - Louis Pion Nantes St-Sébastien F/H",
+     "du_metier": true
+    },
+    {
+     "id": "cmue4z82k00xso234zm90514d",
+     "title": "Responsable de magasin F/H/N - CDD 8 mois",
+     "du_metier": true
+    },
+    {
+     "id": "cmue52a5c0ammo234ar88vvl2",
+     "title": "Responsable de Boutique (H/F) - CDI - Annecy",
+     "du_metier": true
+    },
+    {
+     "id": "cmu6xmtxl0003polux2yw2vl5",
+     "title": "Responsable de Boutique (H/F) - CDI - 39H - Paris",
+     "du_metier": true
+    },
+    {
+     "id": "cmu6xmuvo0055polu5zet5vq8",
+     "title": "Responsable de Boutique (H/F) - CDI - Annecy",
+     "du_metier": true
+    },
+    {
+     "id": "cmuegvi9j081tqo343ihvcauo",
+     "title": "Store Manager H/F",
+     "du_metier": true
+    },
+    {
+     "id": "cmupu1xo64hpwl734kooli3hk",
+     "title": "Responsable de boutique à Bordeaux",
+     "du_metier": true
+    }
+   ]
+  }
+ ]
+}

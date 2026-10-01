@@ -1,0 +1,138 @@
+cas                                            avant                 apres  résultats identiques à avant
+US Sales advisor                        715 ms (4)           684 ms (4)   NON {'avant': {'10286|05bb9b9ee3d5023909ede381ba0ecc5b'}, 'apres': {'10286|ecd93bd2fc358184ae188bacd767aa18'}}
+US Beauty advisor                       205 ms (4)           224 ms (4)   NON {'avant': {'4409|3406fed6e560969d85c6350a86930f89'}, 'apres': {'4409|d65ef7c58759fd88e0ca5ef5d29aa03a'}}
+US Hairdresser                          132 ms (4)           140 ms (4)   NON {'avant': {'4670|affc93b5c3e7d8b8ae4f6741526fc43c'}, 'apres': {'4670|8e307156d4fcae3a428d0e6b2a22f9be'}}
+US Store manager                        177 ms (4)           180 ms (4)   NON {'avant': {'1290|52d68788bc2dad2fc203b4bed927268a'}, 'apres': {'1290|48b5b09e7b02bffc30080947ebbb9f6c'}}
+US Assistant store manager              149 ms (4)           166 ms (4)   NON {'avant': {'1380|b6be4a66acf84c830ffc3c1b8861d48e'}, 'apres': {'1380|4ae14c2d0646d8ec1207b1b3cc1c44ce'}}
+US Retail stock associate               100 ms (4)            99 ms (4)   NON {'avant': {'818|4063a789391ac85b0bede888b68711ed'}, 'apres': {'818|8b8f6e980b21af9017cbcd51d8b8629a'}}
+US Cashier                               48 ms (4)            50 ms (4)   NON {'avant': {'173|c0dd50c779a574d3f749456ffcf270ed'}, 'apres': {'173|87695c8612c7d482c14690a77fbe0321'}}
+US Visual merchandiser                   39 ms (4)            39 ms (4)   NON {'avant': {'254|03a1e510a11289f63a2bf2f1a1b2f23f'}, 'apres': {'254|ccb8919e0bbf59bb0019a689a961b987'}}
+US Watchmaker                            26 ms (4)            25 ms (4)   NON {'avant': {'14|44e5624dbc4d090529c3cde904de5801'}, 'apres': {'14|6d8a976f50036b08e589a83a3d7a8deb'}}
+US Pharmacist                            24 ms (4)            23 ms (4)   oui
+US Recruiter                             37 ms (4)           111 ms (4)   NON {'avant': {'102|53dc31570bf0fbe4ce2b207904ccb3bf'}, 'apres': {'102|5593de7a6aaa08150e9dcb695ff63cde'}}
+US Financial controller                  94 ms (4)            56 ms (4)   NON {'avant': {'42|83b8f950ca2cbc50498ed0c1abd7a2da'}, 'apres': {'42|fb74089b957de5370d4e016085c9c865'}}
+FR Conseiller de vente                  315 ms (4)           312 ms (4)   NON {'avant': {'4706|551b6edb64483b6b0e5464823b7ee78c'}, 'apres': {'4706|4b957c56adb40f1aea315232acda5b7a'}}
+FR Conseiller beauté                     83 ms (4)            77 ms (4)   NON {'avant': {'133|4c1cc3796a344ca252b34c7fd6ec8ecf'}, 'apres': {'133|68bcc79ffd5180f5c50160509867cb8b'}}
+FR Coiffeur                              29 ms (4)            31 ms (4)   NON {'avant': {'3|7d74aeec47f4fd98daa057d10210a407'}, 'apres': {'3|d8ea1e3d21a09a21eddb02529319ba4f'}}
+FR Responsable de boutique              147 ms (4)           138 ms (4)   NON {'avant': {'706|ca9a3cb6c128f1b9e268a5215d5bb6bc'}, 'apres': {'706|10c88428a5f377dab09418e0a996c28b'}}
+FR Adjoint au responsable de boutique          169 ms (4)           148 ms (4)   NON {'avant': {'425|39022304a9119dda4a37eb65dc6a7447'}, 'apres': {'425|57fb8282819562128331f97fb5effa08'}}
+FR Gestionnaire de stock en boutique           79 ms (4)            78 ms (4)   NON {'avant': {'191|04dcebf3df9dd6e93beeb51d14e7fa0a'}, 'apres': {'191|0325e81833600b7ce780b7d6132618b0'}}
+FR Hôte de caisse                        60 ms (4)            66 ms (4)   NON {'avant': {'544|4bbec14ffd4b23edbe3898a608347048'}, 'apres': {'544|d03cc3a0b792273cf597951be7fe8427'}}
+FR Visual merchandiser                   28 ms (4)            31 ms (4)   NON {'avant': {'51|e559c9e517e09163ab13f77a31e8091a'}, 'apres': {'51|b110fa374ce9512348c411a1d0a04fe9'}}
+FR Horloger                              25 ms (4)            25 ms (4)   NON {'avant': {'8|48b8dfb870e4b9f67a5a47704a7062c7'}, 'apres': {'8|ea6599ef27be29d3f2d7720a463d90ea'}}
+FR Pharmacien                            24 ms (4)            26 ms (4)   NON {'avant': {'15|55f8b6c9a27d923fadec3f62b0d73b01'}, 'apres': {'15|ae92ba1c0afc17320d9c036e58622c98'}}
+FR Chargé de recrutement                 46 ms (4)            41 ms (4)   NON {'avant': {'31|6de4c151409851d01b6ff7a71a7553f4'}, 'apres': {'31|dc3bbd19d7c4fb6e90ded1db03083067'}}
+FR Contrôleur de gestion                 65 ms (4)            66 ms (4)   NON {'avant': {'189|099bf320f558b49c491461ded4db9ec9'}, 'apres': {'189|08e7be14ce4e6565d6a2c593e02c0109'}}
+GB Sales advisor                        111 ms (4)           121 ms (4)   NON {'avant': {'1264|910b6e36e43869858c5597c8c66437e5'}, 'apres': {'1264|67973462059e4729957655f467bc0a7f'}}
+GB Beauty advisor                       161 ms (4)            94 ms (4)   NON {'avant': {'343|7ec1ec13d45ac20e847d1bccc1c1f740'}, 'apres': {'343|adf8905b827ac825b88b024f2b25b463'}}
+GB Hairdresser                           46 ms (4)            47 ms (4)   NON {'avant': {'1|679128edf7d0dce57aed50af2184b978'}, 'apres': {'1|10fba36b4e64f89556b48effdfac2610'}}
+GB Store manager                         63 ms (4)            96 ms (4)   NON {'avant': {'246|1326a6616bbeabe61cfd770a65a3d8ce'}, 'apres': {'246|6fee191461772b55accf6e9b34829da6'}}
+GB Assistant store manager               64 ms (4)            67 ms (4)   NON {'avant': {'179|93e31c12e256b32572daf793e45ae13a'}, 'apres': {'179|be5cc9e424d5cbc02b16a00ee74c8a43'}}
+GB Retail stock associate                55 ms (4)            57 ms (4)   NON {'avant': {'63|0441aa4b0ebd52b577ebb12378072304'}, 'apres': {'63|6a24eebebd3fa83a5f96ebd3544a73ed'}}
+GB Cashier                               50 ms (4)            47 ms (4)   NON {'avant': {'6|d51cfff9d4a63534df51b3271a6b2362'}, 'apres': {'6|ec0fe417484b3046c3e5eeae5a4fb7c5'}}
+GB Visual merchandiser                   53 ms (4)            56 ms (4)   NON {'avant': {'87|a16f695f9fca999b611f9012beabcd65'}, 'apres': {'87|b29494f816f9e4bc34d5c5750daa653f'}}
+GB Watchmaker                            57 ms (4)            55 ms (4)   NON {'avant': {'1|eccec5c4a6b4094463a5974a4f91feec'}, 'apres': {'1|42a89f9441d02f02208311832e2ce183'}}
+GB Pharmacist                            46 ms (4)            48 ms (4)   oui
+GB Recruiter                             50 ms (4)            56 ms (4)   NON {'avant': {'14|4cdc27d7e12b8fad9e17914ee293b7b2'}, 'apres': {'14|bc00b6d1883954678d418dcf17b005c9'}}
+GB Financial controller                  49 ms (4)            54 ms (4)   NON {'avant': {'9|059e3b9eeae0a7f4ab46ee023f545228'}, 'apres': {'9|1dfeed8ca062ff589a9194abcc4c6721'}}
+DE Verkaufsberater                      104 ms (4)           102 ms (4)   NON {'avant': {'1127|52e9e4fff82cc150ac2ba49833bad0cb'}, 'apres': {'1127|fe8c23c6af7bb59db3786cbcf2f5c287'}}
+DE Beauty Advisor                       102 ms (4)            62 ms (4)   NON {'avant': {'53|b24a5fec3b3036f0dfd430e83a854989'}, 'apres': {'53|137e1c96ed8491a67b1a299a6a3082d2'}}
+DE Friseur                               75 ms (4)            43 ms (4)   NON {'avant': {'4|009211dba34b282c971aca7b4e0b58ac'}, 'apres': {'4|59712a4c8d4a1006d6b381880cf0793e'}}
+DE Store Manager                         59 ms (4)            54 ms (4)   NON {'avant': {'188|30de08bf0d2b4a0c4f63318ea6af0994'}, 'apres': {'188|b485bb7a002b49824a21be55f3f61908'}}
+DE Assistant Store Manager               62 ms (4)            59 ms (4)   NON {'avant': {'199|f2356ad9b22b2a6407509625a6d74d42'}, 'apres': {'199|61148f759f0eb85c9dea9afa9b49abc4'}}
+DE Stock Associate                       47 ms (4)            44 ms (4)   NON {'avant': {'35|65d57e75ed7f9a11485e47464a600903'}, 'apres': {'35|b61d2f07753e4b7bca71134bd2820a8a'}}
+DE Kassierer                             47 ms (4)            42 ms (4)   NON {'avant': {'7|4db8be3affcd76eb4d566dcc6a2e0ef2'}, 'apres': {'7|f15605f81ad30ae1eebda63097265c03'}}
+DE Visual Merchandiser                   44 ms (4)            52 ms (4)   NON {'avant': {'65|a6258d351875d6b220ff3b526ba8a58e'}, 'apres': {'65|30301075e000b79a61e73373c42a006f'}}
+DE Uhrmacher                             44 ms (4)            44 ms (4)   NON {'avant': {'5|2da426e92bf1e7063d7f9b659546142b'}, 'apres': {'5|b955222845151db7aeb5c7a4a3aff49d'}}
+DE Apotheker                             43 ms (4)           128 ms (4)   oui
+DE Recruiter                             42 ms (4)            43 ms (4)   oui
+DE Finanzcontroller                     141 ms (4)            46 ms (4)   NON {'avant': {'20|b746334acee7be09b998665eb687e761'}, 'apres': {'20|7d3b48bedfb867f11deb56538d37730f'}}
+IT Sales Assistant                      190 ms (4)           180 ms (4)   NON {'avant': {'1000|9fac19f1b076b768c40a963a9fcb3444'}, 'apres': {'1000|5800115fbb30fadcbfd060df03878f52'}}
+IT Beauty Advisor                        66 ms (4)            65 ms (4)   NON {'avant': {'305|72faebce7ea802c114cfa5a477abcf5d'}, 'apres': {'305|c51ff2e089d97d1df1521856fc77299d'}}
+IT Parrucchiere                          49 ms (4)            52 ms (4)   oui
+IT Store Manager                         50 ms (4)            51 ms (4)   NON {'avant': {'177|d6d057e44cc7fce6d414772eb47201f6'}, 'apres': {'177|2b0268e646888bd5d2c073df363c6444'}}
+IT Assistant Store Manager               52 ms (4)            53 ms (4)   NON {'avant': {'96|e4e0d5fd3cac6992c7ae3265d4e83919'}, 'apres': {'96|529b552f7bf4f06bd6212c29c5bb7ad3'}}
+IT Stock associate                       44 ms (4)            40 ms (4)   NON {'avant': {'45|c176298e7828d78762e6954f6ca49989'}, 'apres': {'45|c0fbdd04eec26256b576cc715e55e91e'}}
+IT Cassiere                              44 ms (4)            39 ms (4)   NON {'avant': {'4|402cec5619a526d5ffb1cfe24fe54966'}, 'apres': {'4|55adb0c36ae0df1892904619d3005935'}}
+IT Visual merchandiser                   41 ms (4)            41 ms (4)   NON {'avant': {'34|85b643f80fdad5e78ef897235292aefe'}, 'apres': {'34|85eab8b875da5596d84e71250e550cab'}}
+IT Orologiaio                            43 ms (4)            40 ms (4)   oui
+IT Farmacista                            44 ms (4)            39 ms (4)   oui
+IT Recruiter                             52 ms (4)            43 ms (4)   oui
+IT Financial Controller                 101 ms (4)            42 ms (4)   NON {'avant': {'36|06ab2df910b301a57769ed5adc6ae43f'}, 'apres': {'36|a42dde1f255d456da861f4b3b0efc2f7'}}
+ES Asesor de ventas                     207 ms (4)           194 ms (4)   NON {'avant': {'1127|75c318a407bf9e240460fdd906e67f02'}, 'apres': {'1127|450ff6d17957a17ee463ca2eae6cb488'}}
+ES Consejero de belleza                  50 ms (4)            43 ms (4)   NON {'avant': {'64|4971224e29a369bf84fe675f990dc5e1'}, 'apres': {'64|5228a129c8b147ddec371bf1199e78ee'}}
+ES Peluquero                             41 ms (4)            40 ms (4)   oui
+ES Gerente de tienda                     46 ms (4)            46 ms (4)   NON {'avant': {'108|068435345628c9af07ad64e44e841cad'}, 'apres': {'108|6628c8b33505f122bd2703a53b53f9f8'}}
+ES Assistant Store Manager               46 ms (4)            44 ms (4)   NON {'avant': {'64|8895c909a562240eba401491a302dd1b'}, 'apres': {'64|776455e5b9a629cfebcb85b3d3519970'}}
+ES Stockista                             44 ms (4)            37 ms (4)   NON {'avant': {'13|4541a9d7cb801e8f1a0c629b5d1370d5'}, 'apres': {'13|7c8ee256edab7172fed046c1e2a66ece'}}
+ES Cajero                                40 ms (4)            37 ms (4)   NON {'avant': {'1|b8cd8d4cf78a4789ff06b80945317ff2'}, 'apres': {'1|497fafdc21c80ccdec46325660e55d01'}}
+ES Visual merchandiser                   45 ms (4)           105 ms (4)   NON {'avant': {'58|45cfcec7f7b718f3b3f529fe7d25a1eb'}, 'apres': {'58|b0a1c656f81dac009cc0546ce453d320'}}
+ES Relojero                              41 ms (4)            37 ms (4)   NON {'avant': {'1|04441a86568b4ed544b10037307b0fa4'}, 'apres': {'1|c44b89b99c694388531b4d6dcb9e1765'}}
+ES Farmacéutico                          38 ms (4)            35 ms (4)   oui
+ES Reclutador                            40 ms (4)            40 ms (4)   NON {'avant': {'3|8ead9d4a09b63cc072018c3e908a783c'}, 'apres': {'3|b836e36e6b8076874810712a5a9e486f'}}
+ES Controlador de gestión                36 ms (4)            51 ms (4)   NON {'avant': {'6|d751ad5fff73ff90027205f197493b94'}, 'apres': {'6|aa7151939c53b3c71eb39b0e722e85cc'}}
+NL Verkoopmedewerker                    138 ms (4)           144 ms (4)   NON {'avant': {'791|075bebf91f38109c7d43b97d08d878f1'}, 'apres': {'791|bbea6e6f70d24286765bb4fd8c66163a'}}
+NL Beauty Advisor                        40 ms (4)            37 ms (4)   NON {'avant': {'12|94a59d0927b6edc5eb0f28cb5bc9093e'}, 'apres': {'12|9cb8385de014c78374850cff9d639076'}}
+NL Kapper                                42 ms (4)            34 ms (4)   oui
+NL Store Manager                         47 ms (4)           118 ms (4)   NON {'avant': {'166|f351079e0855378df2ab940ce2fd1331'}, 'apres': {'166|3e4b133085245e449fae331629677907'}}
+NL Assistant Store Manager              107 ms (4)            43 ms (4)   NON {'avant': {'97|43afc6136a5b69a5a7b9008624ec325a'}, 'apres': {'97|a539c54adcec50975d13dbf350f14c9d'}}
+NL Stock Associate                       39 ms (4)            36 ms (4)   NON {'avant': {'38|c2d5cd26cc094405481dea4bcb568371'}, 'apres': {'38|307c066f9e6f3c571e997a3e63db7344'}}
+NL Kassamedewerker                       35 ms (4)            33 ms (4)   NON {'avant': {'9|5d685912cd2296fe561febb1a1243a24'}, 'apres': {'9|5092c8e0264882e5b671c44a2607d73c'}}
+NL Visual merchandiser                   33 ms (4)            34 ms (4)   NON {'avant': {'35|86daf4899934540399e78151717d1d73'}, 'apres': {'35|3759093ca7260165bd98051de8f02822'}}
+NL Horlogemaker                          34 ms (4)            36 ms (4)   oui
+NL Apotheker                             31 ms (4)            35 ms (4)   oui
+NL Recruiter                             35 ms (4)            34 ms (4)   oui
+NL Financial Controller                  34 ms (4)            33 ms (4)   NON {'avant': {'6|f22bb2aafb5979ebc71e8fd0043f3dbb'}, 'apres': {'6|9f9f54c39b99757bc63bc059c85fa0f2'}}
+CH Conseiller de vente                   64 ms (4)            65 ms (4)   NON {'avant': {'214|5330b6d3ab074de8b14e0febeb21acbc'}, 'apres': {'214|8fbf199840a7694dcfd442539a187d7b'}}
+CH Conseiller beauté                     35 ms (4)            35 ms (4)   NON {'avant': {'50|b5c9e9661bbcf9062f5f384fded47ed2'}, 'apres': {'50|de237acaa807d694371fb24d67a00c5d'}}
+CH Coiffeur                              30 ms (4)            32 ms (4)   oui
+CH Responsable de boutique               35 ms (4)            34 ms (4)   NON {'avant': {'35|7947636116c0d49d5092bcbb6ff3c44f'}, 'apres': {'35|609a9075730bc55cf368ab3329c76693'}}
+CH Adjoint au responsable de boutique           38 ms (4)            32 ms (4)   NON {'avant': {'7|15403f5b60641e950a0cf10e8a4382a8'}, 'apres': {'7|3bfa143fa26511c09b1c04f9114ecaaf'}}
+CH Gestionnaire de stock en boutique           96 ms (4)            33 ms (4)   NON {'avant': {'2|73e8e37525bd12f3dfcab6fefe5d9d45'}, 'apres': {'2|f6cb1939af861f2dae45d386a4dcbf96'}}
+CH Hôte de caisse                        31 ms (4)            30 ms (4)   NON {'avant': {'2|ad9774307b23caf468259edcc31fe644'}, 'apres': {'2|f2bd7ec46f56e09fefcf3565813e6961'}}
+CH Visual merchandiser                   30 ms (4)            30 ms (4)   NON {'avant': {'12|062ce2a323afeb713312ea0de6748712'}, 'apres': {'12|141687c4dc845e77a5e03a6fd6fc32fd'}}
+CH Horloger                              34 ms (4)            37 ms (4)   NON {'avant': {'80|89cb61c82a7c88fa3e73f208444706db'}, 'apres': {'80|0a1f717b7b0a92540d028abcdfd93868'}}
+CH Pharmacien                            31 ms (4)            30 ms (4)   oui
+CH Chargé de recrutement                 31 ms (4)            28 ms (4)   oui
+CH Contrôleur de gestion                 31 ms (4)            33 ms (4)   NON {'avant': {'6|3b4a154bc6edef7bed3d2e3010535278'}, 'apres': {'6|aa7ee03689407a7e149e5a965e30c891'}}
+JP セールスアドバイザー                            73 ms (4)            97 ms (4)   NON {'avant': {'243|b5abaac7bebdcddba0250ad954a151a6'}, 'apres': {'243|fa862750347c5cded1ce6e5ecb11c742'}}
+JP ビューティーアドバイザー                          27 ms (4)            32 ms (4)   NON {'avant': {'3|39f55c9581e04434d40389f176a60eee'}, 'apres': {'3|c1613251fdbeb753d2f2d1cd21e8b718'}}
+JP 美容師                                   67 ms (4)            25 ms (4)   oui
+JP ストアマネージャー                             31 ms (4)            33 ms (4)   NON {'avant': {'34|8d35ccc23a2c2a2e2a204efeb8e0ab07'}, 'apres': {'34|6ba4a3688aec9298ddbe37109aa6c816'}}
+JP 副店長                                   27 ms (4)            33 ms (4)   NON {'avant': {'10|ae725aec186318d44bcd5fe7923a2775'}, 'apres': {'10|27f71746c3eaa78fb6e000f998c48f4d'}}
+JP ストック担当                                29 ms (4)            29 ms (4)   NON {'avant': {'1|c55f7465cfb5b8eb3de5ae42080eb05f'}, 'apres': {'1|b796fd08f4a554a1dac03b7d19b725a9'}}
+JP キャッシャー                               100 ms (4)            29 ms (4)   oui
+JP ビジュアルマーチャンダイザー                        26 ms (4)            29 ms (4)   NON {'avant': {'3|efebe1abb6101ed39236ecf089ac2a1c'}, 'apres': {'3|d5365f5f55022473c95dee0aee7be170'}}
+JP 時計職人                                  28 ms (4)            26 ms (4)   NON {'avant': {'2|20cdbc65bf94937beee6a1910c3f4d84'}, 'apres': {'2|05630cf1fdbe3a8f96b341cddeb79a5b'}}
+JP 薬剤師                                   26 ms (4)            27 ms (4)   oui
+JP リクルーター                                26 ms (4)            59 ms (4)   NON {'avant': {'3|ba90a658d83623542a87fce7e0d3492f'}, 'apres': {'3|48ef3a5609a4f7d0d2dcc7c7c4019181'}}
+JP ファイナンシャルコントローラー                       28 ms (4)            27 ms (4)   NON {'avant': {'2|aa0090be0adc742297d9d1fee5004ade'}, 'apres': {'2|3ebdf68e672da0dcb05f50c2f27d1fa9'}}
+CN 销售顾问                                  64 ms (4)            67 ms (4)   NON {'avant': {'159|80fb6e1ff629ade38f3d08f061fb9114'}, 'apres': {'159|bcf917bf7ca287c6da1634e9ed581a6e'}}
+CN 美容顾问                                  44 ms (4)            73 ms (4)   NON {'avant': {'198|236044ff737abcef58dc3514444a697e'}, 'apres': {'198|5d6ada197aa429f3a845161f89d2336f'}}
+CN 美发师                                   31 ms (4)            29 ms (4)   oui
+CN 店长                                    32 ms (4)            35 ms (4)   NON {'avant': {'53|27b9ae28582c7ebec8fc21d04b46d09f'}, 'apres': {'53|90294ef1afa96e4d2192b743e8abd230'}}
+CN 副店长                                   31 ms (4)            37 ms (4)   NON {'avant': {'14|e336282b85f11ebd3d72de284d588866'}, 'apres': {'14|609e6f28f3fe84b0aefab449c689d9a9'}}
+CN 库存专员                                  30 ms (4)            31 ms (4)   NON {'avant': {'2|38dceb4f708c55832f4104f50c232c3e'}, 'apres': {'2|d52786666ebd8fa30cf954a8eb534424'}}
+CN 收银员                                   31 ms (4)            31 ms (4)   oui
+CN 陈列师                                   32 ms (4)            29 ms (4)   NON {'avant': {'2|d4f93637699fe6c46f02049ef796e34b'}, 'apres': {'2|f96275b720622f45820bab2645e64178'}}
+CN 钟表师                                  100 ms (4)            31 ms (4)   oui
+CN 药剂师                                   29 ms (4)            29 ms (4)   oui
+CN 招聘专员                                  29 ms (4)            30 ms (4)   oui
+CN 财务控制师                                 30 ms (4)            35 ms (4)   NON {'avant': {'4|9b22f897fac9deac4d388d9a079c129a'}, 'apres': {'4|4a06d3ded405f0da943ec18167e18265'}}
+BE Conseiller de vente                   68 ms (4)            80 ms (4)   NON {'avant': {'321|efe3bf1ccb75b114fdaaae9c7f7911fd'}, 'apres': {'321|1591809621bebbad424adff325fc37ed'}}
+BE Conseiller beauté                     28 ms (4)            29 ms (4)   NON {'avant': {'8|f2c81f731b81fa1bfb0f4bc995bf3d97'}, 'apres': {'8|4f8a4868267300b08925c57cf1e6b943'}}
+BE Coiffeur                              27 ms (4)            27 ms (4)   oui
+BE Responsable de boutique               32 ms (4)            32 ms (4)   NON {'avant': {'67|78da37a1e97bc5fdfb314d9a76e6e37a'}, 'apres': {'67|bfd5e8218a409dfe8e3d43611c9c1d37'}}
+BE Adjoint au responsable de boutique           29 ms (4)            30 ms (4)   NON {'avant': {'36|64b3934584cdd22ad1448278b0b95680'}, 'apres': {'36|a85aca640aaec55fb5e14ecabaa7a462'}}
+BE Gestionnaire de stock en boutique           29 ms (4)            28 ms (4)   NON {'avant': {'9|c796394286e4804158102bf4c783a9da'}, 'apres': {'9|71c82ef5be56fcd28fb4bad6e4329a00'}}
+BE Hôte de caisse                        27 ms (4)            31 ms (4)   oui
+BE Visual merchandiser                   28 ms (4)            26 ms (4)   NON {'avant': {'16|bbf03f6c205708617f6e7d690f92b25c'}, 'apres': {'16|79552abe84b43af76ee26384fe0d0340'}}
+BE Horloger                              27 ms (4)            29 ms (4)   oui
+BE Pharmacien                            27 ms (4)            26 ms (4)   oui
+BE Chargé de recrutement                101 ms (4)            28 ms (4)   oui
+BE Contrôleur de gestion                 34 ms (4)            26 ms (4)   NON {'avant': {'3|ed8130179024683ee17d5adea422fcb6'}, 'apres': {'3|366de37554e6136af30fa23fea5cd22b'}}
+US chanel                                33 ms (4)            29 ms (4)   oui
+FR chanel                                40 ms (4)            36 ms (4)   oui
+FR stage marketing                       58 ms (4)            59 ms (4)   NON {'avant': {'997|5d3d6406fc93c145f791a3d4b466398f'}, 'apres': {'997|5d6916ec46771308160274e11d3c1ac1'}}
+FR conseiller de vente chanel            33 ms (4)            36 ms (4)   NON {'avant': {'26|d966a5eaf097f81d2ae53d557ce9c21b'}, 'apres': {'26|f57e78c7c41c909ac71c73168ccc6411'}}
+US sales advisor new york               234 ms (4)           264 ms (4)   NON {'avant': {'1668|5b8d214d26c25153779d42de67aeb20d'}, 'apres': {'1668|540231bdf37a77529f6391a38d7e53ef'}}

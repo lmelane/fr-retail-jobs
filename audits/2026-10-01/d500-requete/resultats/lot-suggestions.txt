@@ -1,0 +1,112 @@
+# lot-suggestions — 2026-10-01T18:38:46.462712+00:00 — catwalks-occupations-20260929-v3 — search-5-20260924-v2
+Bilan : {"frappes":20,"suggestions":65,"bruit":0,"villes":0,"majuscules":0,"zero":0,"doublons":0,"medianeMs":139.21499999999997,"p95Ms":172.588,"maxMs":214.692,"sous300":20,"allerRetourMs":16.88,"sous300CoteBase":20,"p95CoteBaseMs":110.60599999999998}
+Durée d'une frappe : la somme des durées serveur de ses requêtes (psql \timing), mémos du marché déjà remplis ; les requêtes parallèles du code sont comptées bout à bout (majorant).
+
+# FR : mémos du marché (offres par métier, villes), une fois toutes les 10 minutes à une heure : 1720 ms
+
+## FR « conseill » — 165 ms (4 requêtes) ; 0 doublon(s)
+- Conseiller de vente [metier] → metier=sales-advisor : 4569 offres
+- Conseiller beauté [metier] → metier=beauty-consultant : 132 offres
+- Conseiller en image [metier] → metier=conseiller-en-image : 4 offres
+- Conseiller service client [metier] → metier=customer-service-advisor : 3 offres
+- Conseiller esthéticien polyvalent [intitule] → q (texte compris) : 66 offres
+- Conseiller de vente noël [intitule] → q (texte compris) : 452 offres
+- Conseiller vente expert huiles essentielles [intitule] → q (texte compris) : 37 offres
+
+## FR « conseillère » — 141 ms (4 requêtes) ; 0 doublon(s)
+- Conseillère de vente [metier] → metier=sales-advisor : 4569 offres
+- Conseillère beauté [metier] → metier=beauty-consultant : 132 offres
+- Conseillère esthéticienne polyvalente [intitule] → q (texte compris) : 41 offres
+- Conseillère de mode [intitule] → q (texte compris) : 2146 offres
+- Conseillère vendeuse en parfumerie selective [intitule] → q (texte compris) : 6 offres
+
+## FR « vendeu » — 152 ms (4 requêtes) ; 0 doublon(s)
+- Vendeur [metier] → metier=sales-advisor : 4569 offres
+- Premier vendeur [metier] → metier=retail-sales-lead : 22 offres
+- Technicien vendeur cycle [intitule] → q (texte compris) : 72 offres
+- Vendeur polyvalent [intitule] → q (texte compris) : 584 offres
+- Vendeur textile [intitule] → q (texte compris) : 255 offres
+- Vendeur alternant [intitule] → q (texte compris) : 42 offres
+
+## FR « store man » — 119 ms (3 requêtes) ; 0 doublon(s)
+- Store manager [metier] → metier=store-manager : 589 offres
+- Assistant store manager [metier] → metier=assistant-store-manager : 414 offres
+
+## FR « responsable bout » — 160 ms (4 requêtes) ; 0 doublon(s)
+- Responsable de boutique [metier] → metier=store-manager : 589 offres
+- Adjoint au responsable de boutique [metier] → metier=assistant-store-manager : 414 offres
+- Responsable boutique adjoint [intitule] → q (texte compris) : 84 offres
+
+## FR « visual » — 142 ms (4 requêtes) ; 0 doublon(s)
+- Visual merchandiser [metier] → metier=visual-merchandiser : 50 offres
+- Responsable visual merchandising [metier] → metier=responsable-vm : 34 offres
+- Visual merchandising specialist adidas [intitule] → q (texte compris) : 6 offres
+
+## FR « make up » — 121 ms (3 requêtes) ; 0 doublon(s)
+- Makeup artist [metier] → metier=makeup-artist : 14 offres
+
+## FR « sales ad » — 141 ms (3 requêtes) ; 0 doublon(s)
+- Sales advisor [metier] → metier=sales-advisor : 4569 offres
+
+## FR « assistant » — 173 ms (4 requêtes) ; 0 doublon(s)
+- Sales assistant [metier] → metier=sales-advisor : 4569 offres
+- Assistant store manager [metier] → metier=assistant-store-manager : 414 offres
+- Stock assistant [metier] → metier=stock-associate : 189 offres
+- Assistant commercial [metier] → metier=assistant-commercial : 19 offres
+- Assistant qualité [metier] → metier=assistant-qualite : 18 offres
+- Assistant administratif [metier] → metier=assistant-administratif : 15 offres
+- Assistant de direction [metier] → metier=executive-assistant : 15 offres
+- Assistant achat retail merchandiser [intitule] → q (texte compris) : 17 offres
+
+## FR « directeur » — 139 ms (4 requêtes) ; 0 doublon(s)
+- Directeur de magasin [metier] → metier=store-manager : 589 offres
+- Directeur adjoint de magasin [metier] → metier=assistant-store-manager : 414 offres
+- Directeur artistique [metier] → metier=direction-artistique : 7 offres
+- Directeur de réseau [metier] → metier=directeur-reseau : 3 offres
+- Directeur de production [metier] → metier=directeur-production : 1 offres
+- Directeur des ressources humaines [metier] → metier=directeur-des-ressources-humaines : 1 offres
+- Directeur adjoint [intitule] → q (texte compris) : 373 offres
+- Directeur de magasin femme [intitule] → q (texte compris) : 103 offres
+
+# GB : mémos du marché (offres par métier, villes), une fois toutes les 10 minutes à une heure : 185 ms
+
+## GB « conseill » — 161 ms (3 requêtes) ; 0 doublon(s)
+
+## GB « conseillère » — 87 ms (3 requêtes) ; 0 doublon(s)
+
+## GB « vendeu » — 94 ms (3 requêtes) ; 0 doublon(s)
+
+## GB « store man » — 114 ms (4 requêtes) ; 0 doublon(s)
+- Store manager [metier] → metier=store-manager : 174 offres
+- Assistant store manager [metier] → metier=assistant-store-manager : 163 offres
+- Anthropologie assistant store manager [intitule] → q (texte compris) : 3 offres
+
+## GB « responsable bout » — 96 ms (3 requêtes) ; 0 doublon(s)
+
+## GB « visual » — 118 ms (4 requêtes) ; 0 doublon(s)
+- Visual merchandiser [metier] → metier=visual-merchandiser : 81 offres
+- Visual Merchandising Manager [metier] → metier=responsable-vm : 8 offres
+- Centre visual merchandiser [intitule] → q (texte compris) : 4 offres
+- Visual merchandising assistant [intitule] → q (texte compris) : 56 offres
+
+## GB « make up » — 96 ms (3 requêtes) ; 0 doublon(s)
+- Makeup artist [metier] → metier=makeup-artist : 47 offres
+
+## GB « sales ad » — 215 ms (4 requêtes) ; 0 doublon(s)
+- Sales advisor [metier] → metier=sales-advisor : 1251 offres
+- Christmas sales advisor [intitule] → q (texte compris) : 170 offres
+- Seasonal sales advisor [intitule] → q (texte compris) : 243 offres
+- Gifting & sales advisor [intitule] → q (texte compris) : 4 offres
+- Retail sales advisor [intitule] → q (texte compris) : 306 offres
+
+## GB « assistant » — 139 ms (4 requêtes) ; 0 doublon(s)
+- Sales assistant [metier] → metier=sales-advisor : 1251 offres
+- Assistant store manager [metier] → metier=assistant-store-manager : 163 offres
+- Stock assistant [metier] → metier=stock-associate : 58 offres
+- Merchandising Assistant [metier] → metier=assistant-merchandiser : 15 offres
+- Executive assistant [metier] → metier=executive-assistant : 6 offres
+- Design Assistant [metier] → metier=assistant-designer : 3 offres
+- Sales Support Assistant [metier] → metier=assistant-commercial : 2 offres
+- Retail assistant [intitule] → q (texte compris) : 821 offres
+
+## GB « directeur » — 92 ms (3 requêtes) ; 0 doublon(s)

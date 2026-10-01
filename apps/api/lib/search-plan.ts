@@ -41,6 +41,8 @@ export type CriteresRecherche = {
   filtres: Selections;
   source?: string;
   prioritePays?: string;
+  /** D-500 : le client annonce le contrat 2 (`contrat-client.ts`) ; posé par la route, jamais lu dans l'URL. */
+  comprendre?: boolean;
 };
 
 export type PlanRecherche = {
@@ -63,6 +65,11 @@ export type PlanRecherche = {
    * `localiserPlan` (geo.ts, une requête), jamais ici : ce plan reste pur. Absente : la recherche d'avant.
    */
   proximite?: Proximite;
+  /**
+   * D-500 (Q1, Q4) : la requête comprise (écriture inclusive, marques de genre, liaisons, formes de base d'un mot seul) et
+   * le classement par le titre, au seul client du contrat 2. Absente : la lecture et l'ordre d'avant, à l'identique.
+   */
+  comprendre?: boolean;
 };
 
 export function planifierRecherche(perimetre: Perimetre, criteres: CriteresRecherche): PlanRecherche {
@@ -118,5 +125,6 @@ export function planifierRecherche(perimetre: Perimetre, criteres: CriteresReche
     facettes,
     source: criteres.source,
     prioritePays: criteres.prioritePays && perimetre.pays.includes(criteres.prioritePays) ? criteres.prioritePays : undefined,
+    ...(criteres.comprendre ? { comprendre: true } : {}),
   };
 }

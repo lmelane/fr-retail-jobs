@@ -38,6 +38,8 @@ const phrase = (value: string) => searchWords(value).join(' ');
 // An exact whole-query company name remains searchable through native text.
 const AMBIGUOUS_COMPANIES = new Set(['on', 'normal', 'coach', 'next', 'boss', 'cos', 'closed', 'only', 'theory', 'head', 'alo']);
 const NEGATION = new Set(['sans', 'without', 'excluding', 'except', 'not', 'hors']);
+/** D-500 (Q1, cahier §3.2.4) : les mots de liaison qu'une variante peut perdre sans changer de sens (« responsable boutique »). */
+export const MOTS_DE_LIAISON: ReadonlySet<string> = new Set(['de', 'du', 'des', 'd', 'of']);
 const CONNECTOR = new Set(['chez', 'at', 'pour', 'for']);
 
 /** Damerau distance <= 1, bounded to a single sufficiently long word. */
@@ -56,7 +58,18 @@ function oneEdit(a: string, b: string): boolean {
 
 type Entry = { kind: SearchClause['kind']; keys: string[]; phrases: string[]; words: string[]; titleOnlyPhrases?: string[] };
 
-export function createIntentResolver(concepts: readonly SearchConcept[], companies: readonly SearchCompany[]) {
+export type OptionsResolveur = {
+  /**
+   * D-500 (Q1, cahier §3.2.4) — pour les REQUÊTES du contrat 2 seulement, jamais pour lire un intitulé : une variante de
+   * métier ou de famille est aussi reconnue sans ses mots de liaison (« responsable boutique » → Responsable de
+   * boutique), quand la forme raccourcie a au moins deux mots, n'est déjà le nom d'aucun concept ni d'aucune Maison et
+   * ne désigne qu'un seul concept. Une forme qui en désignerait deux n'est pas ajoutée (`liaisonsEnCollision`) : jamais un
+   * métier gagné par une collision.
+   */
+  liaisonsFacultatives?: boolean;
+};
+
+export function createIntentResolver(concepts: readonly SearchConcept[], companies: readonly SearchCompany[], options: OptionsResolveur = {}) {
   const entries = new Map<string, Entry[]>();
   const ambiguousCompanies = new Map<string, Entry[]>();
   const add = (raw: string, e: Omit<Entry, 'words'>) => {
@@ -82,7 +95,27 @@ export function createIntentResolver(concepts: readonly SearchConcept[], compani
   const maxWords = Math.max(1, ...unique.map(x => x.words.length));
   // Corrections are role/family aliases only: never rewrite a Maison or a
   // free-text term to the closest entity. Competing corrections abstain.
+  // D-500 : calculées AVANT les formes sans liaison, qui ne se corrigent jamais (une faute ET une liaison omise : trop loin).
   const corrections = unique.filter(e => e.kind === 'role');
+  const liaisonsEnCollision: string[] = [];
+  if (options.liaisonsFacultatives) {
+    const raccourcies = new Map<string, Entry[]>();
+    for (const [p, es] of entries) {
+      const mots = p.split(' ');
+      const court = mots.filter(m => !MOTS_DE_LIAISON.has(m));
+      if (court.length < 2 || court.length === mots.length) continue;
+      const cp = court.join(' ');
+      if (entries.has(cp) || ambiguousCompanies.has(cp)) continue;
+      const liste = raccourcies.get(cp) ?? [];
+      for (const e of es) if (!liste.some(x => x.kind === e.kind && x.keys.join('\0') === e.keys.join('\0'))) liste.push(e);
+      raccourcies.set(cp, liste);
+    }
+    for (const [cp, es] of raccourcies) {
+      if (es.length !== 1 || !['role', 'family'].includes(es[0].kind)) { liaisonsEnCollision.push(cp); continue; }
+      // La forme raccourcie tapée reste une expression de la clause : une offre sans métier qui l'écrit est trouvée.
+      entries.set(cp, [{ ...es[0], phrases: [...new Set([...es[0].phrases, cp])], words: cp.split(' ') }]);
+    }
+  }
 
   function find(words: string[], offset: number, correct: boolean): { entry: Entry; length: number; corrected: boolean } | undefined {
     for (let n = Math.min(maxWords, words.length - offset); n > 0; n--) {
@@ -119,6 +152,7 @@ export function createIntentResolver(concepts: readonly SearchConcept[], compani
   }
 
   return {
+    liaisonsEnCollision,
     titleMatches,
     resolve(original: string): SearchIntent {
       // Reject excessive input explicitly; never drop trailing intent silently.

@@ -14,8 +14,18 @@ export const ENTETE_CONTRAT_CLIENT = 'x-catwalks-client';
 /** La première version du contrat qui sert la proximité. */
 export const CONTRAT_PROXIMITE = 2;
 
-/** Le client annonce-t-il un contrat qui connaît la proximité ? Toute autre valeur, ou rien : le contrat d'avant. */
+/**
+ * Le client annonce-t-il un contrat qui connaît la proximité ? Toute autre valeur, ou rien : le contrat d'avant.
+ *
+ * D-500, D-501 : le même contrat porte aussi la requête comprise, le classement par le titre, les suggestions canoniques
+ * et les lieux de tête (`annonceComprehension`) : catwalks.io ne voit rien changer avant la promotion du site (D-490).
+ */
 export function annonceProximite(entetes: Pick<Headers, 'get'>): boolean {
   const brut = entetes.get(ENTETE_CONTRAT_CLIENT)?.trim() ?? '';
   return /^\d{1,3}$/.test(brut) && Number(brut) >= CONTRAT_PROXIMITE;
+}
+
+/** D-500, D-501 : la requête comprise, le classement par le titre et les suggestions canoniques, au même client. */
+export function annonceComprehension(entetes: Pick<Headers, 'get'>): boolean {
+  return annonceProximite(entetes);
 }

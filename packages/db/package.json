@@ -8,6 +8,7 @@
     ".": "./index.ts",
     "./occupations": "./occupations.ts",
     "./search-intent": "./search-intent.ts",
+    "./search-comprendre": "./search-comprendre.ts",
     "./search-vocabulary": "./search-vocabulary.ts",
     "./presentation": "./presentation.ts",
     "./marches": "./marches.ts",

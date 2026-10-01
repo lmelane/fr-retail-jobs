@@ -274,9 +274,10 @@ async function sqlBase(plan: PlanRecherche, asOf: Date): Promise<Prisma.Sql> {
   if (plan.q) await requireSearchIndex();
   // D-488 : les variantes d'un métier sont celles des langues du marché (`search-langues.ts`) ; le chemin d'une clause de
   // métier (index plein texte ou relecture du marché) suit la taille du marché et la part du métier (`search-chemin.ts`).
-  const intention = plan.q ? (await getSearchContext()).model.intention(plan.q, plan.perimetre.marche) : null;
+  // D-500 : au client du contrat 2, la requête comprise (Q1) et le classement par le titre (Q4).
+  const intention = plan.q ? (await getSearchContext()).model.intention(plan.q, plan.perimetre.marche, { comprendre: plan.comprendre }) : null;
   const repartition = intention?.clauses.some((c) => c.kind === 'role') ? await repartitionDuPerimetre(plan.perimetre.pays) : null;
-  const search = intention ? searchSql(intention, { metiersSansIndex: !!repartition && metiersSansIndex(intention, repartition) }) : null;
+  const search = intention ? searchSql(intention, { metiersSansIndex: !!repartition && metiersSansIndex(intention, repartition), classement: !!plan.comprendre }) : null;
   if (search) { conditions.push(search.condition); conditionsDirect.push(search.condition); }
   const aggregateIndex = search ? Prisma.sql`JOIN "SearchDocument" s ON s.id=j.id AND s.version=${SEARCH_VERSION} AND s.country IN (${pays})` : Prisma.empty;
   const directIndex = search ? Prisma.sql`JOIN "SearchDocument" s ON s.id='cw_'||d.id AND s.version=${SEARCH_VERSION} AND s.country IN (${pays})` : Prisma.empty;

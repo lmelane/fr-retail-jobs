@@ -1,0 +1,1237 @@
+{
+ "etat": {
+  "release": "catwalks-occupations-20260929-v3",
+  "generation": "search-5-20260924-v2",
+  "mesureA": "2026-10-01T18:38:46.462712+00:00"
+ },
+ "donnees": {
+  "bilan": {
+   "frappes": 20,
+   "suggestions": 65,
+   "bruit": 0,
+   "villes": 0,
+   "majuscules": 0,
+   "zero": 0,
+   "doublons": 0,
+   "medianeMs": 139.21499999999997,
+   "p95Ms": 172.588,
+   "maxMs": 214.692,
+   "sous300": 20,
+   "allerRetourMs": 16.88,
+   "sous300CoteBase": 20,
+   "p95CoteBaseMs": 110.60599999999998
+  },
+  "donnees": [
+   {
+    "marche": "FR",
+    "frappe": "conseill",
+    "ms": 164.577,
+    "requetes": 4,
+    "releves": [
+     {
+      "ms": 20.843,
+      "sql": "\n    SELECT EXISTS(SELECT 1 FROM \"SearchGeneration\" WHERE version='search-5-20260924-v2' AND \"readyAt\" IS NOT NULL) ready,\n      EXISTS(SELECT 1 FROM \"SearchPending\" WHERE version='search-5-20260924-v2' AND \"queuedAt\" < now()-interval '300 seconds') stale"
+     },
+     {
+      "ms": 18.16,
+      "sql": "SELECT revision FROM \"SearchMetadata\" WHERE id='active'"
+     },
+     {
+      "ms": 91.48,
+      "sql": "\n    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids FROM (\n      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id FROM \"Job\" j\n       WHERE j.\"isActive\" AND j.\"mergedIntoId\" IS NULL AND EXISTS (\n    SELECT 1 FROM \"JobSource\" available_source WHERE available_source.\"jobId\" = j.id\n      AND available_source.\"isActive\" AND (available_source.\"expiresAt\" IS NULL OR available_source.\"expiresAt\" > ('2026-10-01T18:38:53.501Z'::timestamptz AT TIME ZONE 'UTC'))) AND j.\"countryCode\" IN ('FR','MC') AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte('%conseill%') GROUP BY j.title\n      UNION ALL\n      SELECT d.title, count(*), 'cw_' || min(d.id) FROM \"DirectOffer\" d\n       WHERE d.eligible AND (d.\"validThrough\" IS NULL OR d.\"validThrough\" > ('2026-10-01T18:38:53.501Z'::timestamptz AT TIME ZONE 'UTC')) AND d.\"countryCode\" IN ('FR','MC') AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte('%conseill%') GROUP BY d.title\n    ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40"
+     },
+     {
+      "ms": 34.094,
+      "sql": "SELECT position FROM (SELECT 0::int AS position WHERE EXISTS (SELECT 1 FROM \"SearchDocument\" s\n        WHERE s.version = 'search-5-20260924-v2' AND s.id = ANY(ARRAY['cmunqzdfe0003le35m9sqayj1','cmunqzga100a0le35fneat8oj','cmunqzdk4000ole35fh9refox']::text[]::text[]) AND (s.vector @@ ((to_tsquery('simple', '(''conseiller'')')) && (to_tsquery('simple', '(''polyvalent'')'))) AND coalesce(s.vector, ''::tsvector) @@ (((to_tsquery('simple', '(''beauty'':AC <-> ''therapist'':AC) | (''estheticien'':AC) | (''estheticienne'':AC) | (''esthetician'':AC) | (''kosmetikerin'':AC) | (''spa'':AC <-> ''therapist'':AC) | (''schoonheidsspecialiste'':AC) | (''kosmeticka'':AC) | (''cosmeticiana'':AC)')) && !!to_tsquery('simple','cwhastitlerole')) || to_tsquery('simple', 'cwi50deb3def769cba1082b26f899e2330a')))) UNION ALL SELECT 1::int AS position WHERE EXISTS (SELECT 1 FROM \"SearchDocument\" s\n        WHERE s.version = 'search-5-20260924-v2' AND s.id = ANY(ARRAY['cmuebnysb11qtoi35lhcl7p9x']::text[]::text[]) AND (s.vector @@ ((to_tsquery('simple', '(''noel'')'))) AND coalesce(s.vector, ''::tsvector) @@ (((to_tsquery('simple', '(''sales'':AC <-> ''advisor'':AC) | (''conseiller'':AC <-> ''de'':AC <-> ''vente'':AC) | (''sales'':AC <-> ''assistant'':AC) | (''client'':AC <-> ''advisor'':AC) | (''luxury'':AC <-> ''sales'':AC <-> ''advisor'':AC) | (''conseillere'':AC <-> ''de'':AC <-> ''vente'':AC) | (''conseiller'':AC <-> ''vente'':AC) | (''conseillere'':AC <-> ''vente'':AC) | (''fashion'':AC <-> ''advisor'':AC) | (''sales'':AC <-> ''associate'':AC) | (''selling'':AC <-> ''associate'':AC) | (''vendeur'':AC) | (''vendeuse'':AC) | (''conseillers'':AC <-> ''de'':AC <-> ''vente'':AC) | (''conseiller'':AC <-> ''vendeur'':AC) | (''conseillere'':AC <-> ''vendeuse'':AC) | (''associe'':AC <-> ''aux'':AC <-> ''ventes'':AC) | (''associee'':AC <-> ''aux'':AC <-> ''ventes'':AC) | (''addetto'':AC <-> ''vendite'':AC) | (''addetta'':AC <-> ''vendite'':AC) | (''addetti'':AC <-> ''vendite'':AC) | (''addett'':AC <-> ''vendite'':AC) | (''vendedor'':AC) | (''vendedora'':AC) | (''verkaufer'':AC) | (''verkauferin'':AC) | (''verkaufsberaterin'':AC) | (''asesora'':AC <-> ''de'':AC <-> ''ventas'':AC) | (''consultora'':AC <-> ''de'':AC <-> ''vendas'':AC) | (''prodejni'':AC <-> ''poradkyne'':AC) | (''butiksassistent'':AC) | (''lucrator'':AC <-> ''comercial'':AC) | (''lucratoare'':AC <-> ''comerciala'':AC) | (''addetto'':AC <-> ''alle'':AC <-> ''vendite'':AC) | (''addetta'':AC <-> ''alle'':AC <-> ''vendite'':AC) | (''dependiente'':AC) | (''dependienta'':AC) | (''winkelmedewerker'':AC) | (''assistente'':AC <-> ''de'':AC <-> ''loja'':AC) | (''vendedor'':AC <-> ''de'':AC <-> ''loja'':AC) | (''vendedora'':AC <-> ''de'':AC <-> ''loja'':AC) | (''sprzedawca'':AC) | (''sprzedawczyni'':AC) | (''butikssaljare'':AC) | (''satıs'':AC <-> ''elemanı'':AC) | (''pembantu'':AC <-> ''kedai'':AC) | (''butikkmedarbeider'':AC) | (''nhan'':AC <-> ''vien'':AC <-> ''ban'':AC <-> ''hang'':AC) | (''prodavac'':AC) | (''prodavacka'':AC) | (''bolti'':AC <-> ''elado'':AC)')) && !!to_tsquery('simple','cwhastitlerole')) || to_tsquery('simple', 'cwif71763319951812f7b29027c793b48d5')))) UNION ALL SELECT 2::int AS position WHERE EXISTS (SELECT 1 FROM \"SearchDocument\" s\n        WHERE s.version = 'search-5-20260924-v2' AND s.id = ANY(ARRAY['cmu7e653l0019jxbmj16wv61m']::text[]::text[]) AND (s.vector @@ ((to_tsquery('simple', '(''expert'')')) && (to_tsquery('simple', '(''huiles'')')) && (to_tsquery('simple', '(''essentielles'')'))) AND coalesce(s.vector, ''::tsvector) @@ (((to_tsquery('simple', '(''sales'':AC <-> ''advisor'':AC) | (''conseiller'':AC <-> ''de'':AC <-> ''vente'':AC) | (''sales'':AC <-> ''assistant'':AC) | (''client'':AC <-> ''advisor'':AC) | (''luxury'':AC <-> ''sales'':AC <-> ''advisor'':AC) | (''conseillere'':AC <-> ''de'':AC <-> ''vente'':AC) | (''conseiller'':AC <-> ''vente'':AC) | (''conseillere'':AC <-> ''vente'':AC) | (''fashion'':AC <-> ''advisor'':AC) | (''sales'':AC <-> ''associate'':AC) | (''selling'':AC <-> ''associate'':AC) | (''vendeur'':AC) | (''vendeuse'':AC) | (''conseillers'':AC <-> ''de'':AC <-> ''vente'':AC) | (''conseiller'':AC <-> ''vendeur'':AC) | (''conseillere'':AC <-> ''vendeuse'':AC) | (''associe'':AC <-> ''aux'':AC <-> ''ventes'':AC) | (''associee'':AC <-> ''aux'':AC <-> ''ventes'':AC) | (''addetto'':AC <-> ''vendite'':AC) | (''addetta'':AC <-> ''vendite'':AC) | (''addetti'':AC <-> ''vendite'':AC) | (''addett'':AC <-> ''vendite'':AC) | (''vendedor'':AC) | (''vendedora'':AC) | (''verkaufer'':AC) | (''verkauferin'':AC) | (''verkaufsberaterin'':AC) | (''asesora'':AC <-> ''de'':AC <-> ''ventas'':AC) | (''consultora'':AC <-> ''de'':AC <-> ''vendas'':AC) | (''prodejni'':AC <-> ''poradkyne'':AC) | (''butiksassistent'':AC) | (''lucrator'':AC <-> ''comercial'':AC) | (''lucratoare'':AC <-> ''comerciala'':AC) | (''addetto'':AC <-> ''alle'':AC <-> ''vendite'':AC) | (''addetta'':AC <-> ''alle'':AC <-> ''vendite'':AC) | (''dependiente'':AC) | (''dependienta'':AC) | (''winkelmedewerker'':AC) | (''assistente'':AC <-> ''de'':AC <-> ''loja'':AC) | (''vendedor'':AC <-> ''de'':AC <-> ''loja'':AC) | (''vendedora'':AC <-> ''de'':AC <-> ''loja'':AC) | (''sprzedawca'':AC) | (''sprzedawczyni'':AC) | (''butikssaljare'':AC) | (''satıs'':AC <-> ''elemanı'':AC) | (''pembantu'':AC <-> ''kedai'':AC) | (''butikkmedarbeider'':AC) | (''nhan'':AC <-> ''vien'':AC <-> ''ban'':AC <-> ''hang'':AC) | (''prodavac'':AC) | (''prodavacka'':AC) | (''bolti'':AC <-> ''elado'':AC)')) && !!to_tsquery('simple','cwhastitlerole')) || to_tsquery('simple', 'cwif71763319951812f7b29027c793b48d5')))) UNION ALL SELECT 3::int AS position WHERE EXISTS (SELECT 1 FROM \"SearchDocument\" s\n        WHERE s.version = 'search-5-20260924-v2' AND s.id = ANY(ARRAY['cmu7e657x0021jxbmid77mmt4']::text[]::text[]) AND (s.vector @@ ((to_tsquery('simple', '(''expert'')')) && ((to_tsquery('simple', '(''cosmetics'' <-> ''makeup'' <-> ''and'' <-> ''skin'' <-> ''or'' <-> ''hair'' <-> ''care'') | (''beaute'')')) || to_tsquery('simple', 'cwi333a338d64afbdd51fb899a0a6654828')) && (to_tsquery('simple', '(''skincare'')'))) AND coalesce(s.vector, ''::tsvector) @@ (((to_tsquery('simple', '(''sales'':AC <-> ''advisor'':AC) | (''conseiller'':AC <-> ''de'':AC <-> ''vente'':AC) | (''sales'':AC <-> ''assistant'':AC) | (''client'':AC <-> ''advisor'':AC) | (''luxury'':AC <-> ''sales'':AC <-> ''advisor'':AC) | (''conseillere'':AC <-> ''de'':AC <-> ''vente'':AC) | (''conseiller'':AC <-> ''vente'':AC) | (''conseillere'':AC <-> ''vente'':AC) | (''fashion'':AC <-> ''advisor'':AC) | (''sales'':AC <-> ''associate'':AC) | (''selling'':AC <-> ''associate'':AC) | (''vendeur'':AC) | (''vendeuse'':AC) | (''conseillers'':AC <-> ''de'':AC <-> ''vente'':AC) | (''conseiller'':AC <-> ''vendeur'':AC) | (''conseillere'':AC <-> ''vendeuse'':AC) | (''associe'':AC <-> ''aux'':AC <-> ''ventes'':AC) | (''associee'':AC <-> ''aux'':AC <-> ''ventes'':AC) | (''addetto'':AC <-> ''vendite'':AC) | (''addetta'':AC <-> ''vendite'':AC) | (''addetti'':AC <-> ''vendite'':AC) | (''addett'':AC <-> ''vendite'':AC) | (''vendedor'':AC) | (''vendedora'':AC) | (''verkaufer'':AC) | (''verkauferin'':AC) | (''verkaufsberaterin'':AC) | (''asesora'':AC <-> ''de'':AC <-> ''ventas'':AC) | (''consultora'':AC <-> ''de'':AC <-> ''vendas'':AC) | (''prodejni'':AC <-> ''poradkyne'':AC) | (''butiksassistent'':AC) | (''lucrator'':AC <-> ''comercial'':AC) | (''lucratoare'':AC <-> ''comerciala'':AC) | (''addetto'':AC <-> ''alle'':AC <-> ''vendite'':AC) | (''addetta'':AC <-> ''alle'':AC <-> ''vendite'':AC) | (''dependiente'':AC) | (''dependienta'':AC) | (''winkelmedewerker'':AC) | (''assistente'':AC <-> ''de'':AC <-> ''loja'':AC) | (''vendedor'':AC <-> ''de'':AC <-> ''loja'':AC) | (''vendedora'':AC <-> ''de'':AC <-> ''loja'':AC) | (''sprzedawca'':AC) | (''sprzedawczyni'':AC) | (''butikssaljare'':AC) | (''satıs'':AC <-> ''elemanı'':AC) | (''pembantu'':AC <-> ''kedai'':AC) | (''butikkmedarbeider'':AC) | (''nhan'':AC <-> ''vien'':AC <-> ''ban'':AC <-> ''hang'':AC) | (''prodavac'':AC) | (''prodavacka'':AC) | (''bolti'':AC <-> ''elado'':AC)')) && !!to_tsquery('simple','cwhastitlerole')) || to_tsquery('simple', 'cwif71763319951812f7b29027c793b48d5'))))) v"
+     }
+    ],
+    "suggestions": [
+     {
+      "valeur": "Conseiller de vente",
+      "metier": {
+       "identifiant": "sales-advisor",
+       "libelle": "Conseiller de vente"
+      },
+      "nature": "metier",
+      "offresAuChoix": 4569,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     },
+     {
+      "valeur": "Conseiller beauté",
+      "metier": {
+       "identifiant": "beauty-consultant",
+       "libelle": "Conseiller beauté"
+      },
+      "nature": "metier",
+      "offresAuChoix": 132,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     },
+     {
+      "valeur": "Conseiller en image",
+      "metier": {
+       "identifiant": "conseiller-en-image",
+       "libelle": "Conseiller en image"
+      },
+      "nature": "metier",
+      "offresAuChoix": 4,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     },
+     {
+      "valeur": "Conseiller service client",
+      "metier": {
+       "identifiant": "customer-service-advisor",
+       "libelle": "Conseiller service client"
+      },
+      "nature": "metier",
+      "offresAuChoix": 3,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     },
+     {
+      "valeur": "Conseiller esthéticien polyvalent",
+      "metier": null,
+      "nature": "intitule",
+      "offresAuChoix": 66,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     },
+     {
+      "valeur": "Conseiller de vente noël",
+      "metier": null,
+      "nature": "intitule",
+      "offresAuChoix": 452,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     },
+     {
+      "valeur": "Conseiller vente expert huiles essentielles",
+      "metier": null,
+      "nature": "intitule",
+      "offresAuChoix": 37,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     }
+    ],
+    "doublons": 0
+   },
+   {
+    "marche": "FR",
+    "frappe": "conseillère",
+    "ms": 140.876,
+    "requetes": 4,
+    "releves": [
+     {
+      "ms": 19.595,
+      "sql": "\n    SELECT EXISTS(SELECT 1 FROM \"SearchGeneration\" WHERE version='search-5-20260924-v2' AND \"readyAt\" IS NOT NULL) ready,\n      EXISTS(SELECT 1 FROM \"SearchPending\" WHERE version='search-5-20260924-v2' AND \"queuedAt\" < now()-interval '300 seconds') stale"
+     },
+     {
+      "ms": 19.551,
+      "sql": "SELECT revision FROM \"SearchMetadata\" WHERE id='active'"
+     },
+     {
+      "ms": 80.33,
+      "sql": "\n    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids FROM (\n      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id FROM \"Job\" j\n       WHERE j.\"isActive\" AND j.\"mergedIntoId\" IS NULL AND EXISTS (\n    SELECT 1 FROM \"JobSource\" available_source WHERE available_source.\"jobId\" = j.id\n      AND available_source.\"isActive\" AND (available_source.\"expiresAt\" IS NULL OR available_source.\"expiresAt\" > ('2026-10-01T18:38:57.485Z'::timestamptz AT TIME ZONE 'UTC'))) AND j.\"countryCode\" IN ('FR','MC') AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte('%conseillère%') GROUP BY j.title\n      UNION ALL\n      SELECT d.title, count(*), 'cw_' || min(d.id) FROM \"DirectOffer\" d\n       WHERE d.eligible AND (d.\"validThrough\" IS NULL OR d.\"validThrough\" > ('2026-10-01T18:38:57.485Z'::timestamptz AT TIME ZONE 'UTC')) AND d.\"countryCode\" IN ('FR','MC') AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte('%conseillère%') GROUP BY d.title\n    ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40"
+     },
+     {
+      "ms": 21.4,
+      "sql": "SELECT position FROM (SELECT 0::int AS position WHERE EXISTS (SELECT 1 FROM \"SearchDocument\" s\n        WHERE s.version = 'search-5-20260924-v2' AND s.id = ANY(ARRAY['cmunqzga100a0le35fneat8oj','cmunqzdk4000ole35fh9refox']::text[]::text[]) AND (s.vector @@ ((to_tsquery('simple', '(''conseillere'') | (''conseiller'')')) && (to_tsquery('simple', '(''polyvalente'')'))) AND coalesce(s.vector, ''::tsvector) @@ (((to_tsquery('simple', '(''beauty'':AC <-> ''therapist'':AC) | (''estheticien'':AC) | (''estheticienne'':AC) | (''esthetician'':AC) | (''kosmetikerin'':AC) | (''spa'':AC <-> ''therapist'':AC) | (''schoonheidsspecialiste'':AC) | (''kosmeticka'':AC) | (''cosmeticiana'':AC)')) && !!to_tsquery('simple','cwhastitlerole')) || to_tsquery('simple', 'cwi50deb3def769cba1082b26f899e2330a')))) UNION ALL SELECT 1::int AS position WHERE EXISTS (SELECT 1 FROM \"SearchDocument\" s\n        WHERE s.version = 'search-5-20260924-v2' AND s.id = ANY(ARRAY['cmuduawai1lvzoa34evt2k5n4','cmuduarjm1lhloa34vonr2d88']::text[]::text[]) AND s.vector @@ ((to_tsquery('simple', '(''conseillere'') | (''conseiller'')')) && (to_tsquery('simple', '(''de'')')) && ((to_tsquery('simple', '(''clothing'' <-> ''and'' <-> ''fashion'' <-> ''collections'') | (''mode'')')) || to_tsquery('simple', 'cwi9493e4dece9328d9b7ea3ebba238de7b')))) UNION ALL SELECT 2::int AS position WHERE EXISTS (SELECT 1 FROM \"SearchDocument\" s\n        WHERE s.version = 'search-5-20260924-v2' AND s.id = ANY(ARRAY['cmunqzf8x007vle35hk2vom2t','cmunqzh6b00e3le35c6fowr95']::text[]::text[]) AND (s.vector @@ ((to_tsquery('simple', '(''en'')')) && ((to_tsquery('simple', '(''perfumes'' <-> ''and'' <-> ''fragrances'') | (''parfumerie'')')) || to_tsquery('simple', 'cwibf54b27359f407a16d53b9946df0dce5')) && (to_tsquery('simple', '(''selective'')'))) AND coalesce(s.vector, ''::tsvector) @@ (((to_tsquery('simple', '(''sales'':AC <-> ''advisor'':AC) | (''conseiller'':AC <-> ''de'':AC <-> ''vente'':AC) | (''sales'':AC <-> ''assistant'':AC) | (''client'':AC <-> ''advisor'':AC) | (''luxury'':AC <-> ''sales'':AC <-> ''advisor'':AC) | (''conseillere'':AC <-> ''de'':AC <-> ''vente'':AC) | (''conseiller'':AC <-> ''vente'':AC) | (''conseillere'':AC <-> ''vente'':AC) | (''fashion'':AC <-> ''advisor'':AC) | (''sales'':AC <-> ''associate'':AC) | (''selling'':AC <-> ''associate'':AC) | (''vendeur'':AC) | (''vendeuse'':AC) | (''conseillers'':AC <-> ''de'':AC <-> ''vente'':AC) | (''conseiller'':AC <-> ''vendeur'':AC) | (''conseillere'':AC <-> ''vendeuse'':AC) | (''associe'':AC <-> ''aux'':AC <-> ''ventes'':AC) | (''associee'':AC <-> ''aux'':AC <-> ''ventes'':AC) | (''addetto'':AC <-> ''vendite'':AC) | (''addetta'':AC <-> ''vendite'':AC) | (''addetti'':AC <-> ''vendite'':AC) | (''addett'':AC <-> ''vendite'':AC) | (''vendedor'':AC) | (''vendedora'':AC) | (''verkaufer'':AC) | (''verkauferin'':AC) | (''verkaufsberaterin'':AC) | (''asesora'':AC <-> ''de'':AC <-> ''ventas'':AC) | (''consultora'':AC <-> ''de'':AC <-> ''vendas'':AC) | (''prodejni'':AC <-> ''poradkyne'':AC) | (''butiksassistent'':AC) | (''lucrator'':AC <-> ''comercial'':AC) | (''lucratoare'':AC <-> ''comerciala'':AC) | (''addetto'':AC <-> ''alle'':AC <-> ''vendite'':AC) | (''addetta'':AC <-> ''alle'':AC <-> ''vendite'':AC) | (''dependiente'':AC) | (''dependienta'':AC) | (''winkelmedewerker'':AC) | (''assistente'':AC <-> ''de'':AC <-> ''loja'':AC) | (''vendedor'':AC <-> ''de'':AC <-> ''loja'':AC) | (''vendedora'':AC <-> ''de'':AC <-> ''loja'':AC) | (''sprzedawca'':AC) | (''sprzedawczyni'':AC) | (''butikssaljare'':AC) | (''satıs'':AC <-> ''elemanı'':AC) | (''pembantu'':AC <-> ''kedai'':AC) | (''butikkmedarbeider'':AC) | (''nhan'':AC <-> ''vien'':AC <-> ''ban'':AC <-> ''hang'':AC) | (''prodavac'':AC) | (''prodavacka'':AC) | (''bolti'':AC <-> ''elado'':AC)')) && !!to_tsquery('simple','cwhastitlerole')) || to_tsquery('simple', 'cwif71763319951812f7b29027c793b48d5'))))) v"
+     }
+    ],
+    "suggestions": [
+     {
+      "valeur": "Conseillère de vente",
+      "metier": {
+       "identifiant": "sales-advisor",
+       "libelle": "Conseiller de vente"
+      },
+      "nature": "metier",
+      "offresAuChoix": 4569,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     },
+     {
+      "valeur": "Conseillère beauté",
+      "metier": {
+       "identifiant": "beauty-consultant",
+       "libelle": "Conseiller beauté"
+      },
+      "nature": "metier",
+      "offresAuChoix": 132,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     },
+     {
+      "valeur": "Conseillère esthéticienne polyvalente",
+      "metier": null,
+      "nature": "intitule",
+      "offresAuChoix": 41,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     },
+     {
+      "valeur": "Conseillère de mode",
+      "metier": null,
+      "nature": "intitule",
+      "offresAuChoix": 2146,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     },
+     {
+      "valeur": "Conseillère vendeuse en parfumerie selective",
+      "metier": null,
+      "nature": "intitule",
+      "offresAuChoix": 6,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     }
+    ],
+    "doublons": 0
+   },
+   {
+    "marche": "FR",
+    "frappe": "vendeu",
+    "ms": 152.285,
+    "requetes": 4,
+    "releves": [
+     {
+      "ms": 19.357,
+      "sql": "\n    SELECT EXISTS(SELECT 1 FROM \"SearchGeneration\" WHERE version='search-5-20260924-v2' AND \"readyAt\" IS NOT NULL) ready,\n      EXISTS(SELECT 1 FROM \"SearchPending\" WHERE version='search-5-20260924-v2' AND \"queuedAt\" < now()-interval '300 seconds') stale"
+     },
+     {
+      "ms": 18.07,
+      "sql": "SELECT revision FROM \"SearchMetadata\" WHERE id='active'"
+     },
+     {
+      "ms": 93.964,
+      "sql": "\n    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids FROM (\n      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id FROM \"Job\" j\n       WHERE j.\"isActive\" AND j.\"mergedIntoId\" IS NULL AND EXISTS (\n    SELECT 1 FROM \"JobSource\" available_source WHERE available_source.\"jobId\" = j.id\n      AND available_source.\"isActive\" AND (available_source.\"expiresAt\" IS NULL OR available_source.\"expiresAt\" > ('2026-10-01T18:39:00.547Z'::timestamptz AT TIME ZONE 'UTC'))) AND j.\"countryCode\" IN ('FR','MC') AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte('%vendeu%') GROUP BY j.title\n      UNION ALL\n      SELECT d.title, count(*), 'cw_' || min(d.id) FROM \"DirectOffer\" d\n       WHERE d.eligible AND (d.\"validThrough\" IS NULL OR d.\"validThrough\" > ('2026-10-01T18:39:00.547Z'::timestamptz AT TIME ZONE 'UTC')) AND d.\"countryCode\" IN ('FR','MC') AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte('%vendeu%') GROUP BY d.title\n    ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40"
+     },
+     {
+      "ms": 20.894,
+      "sql": "SELECT position FROM (SELECT 0::int AS position WHERE EXISTS (SELECT 1 FROM \"SearchDocument\" s\n        WHERE s.version = 'search-5-20260924-v2' AND s.id = ANY(ARRAY['cmudu7uy81dc1oa34gizggnm8','cmudu862j1feioa34wr0uums7']::text[]::text[]) AND (s.vector @@ ((to_tsquery('simple', '(''technicien'')')) && (to_tsquery('simple', '(''cycle'')'))) AND coalesce(s.vector, ''::tsvector) @@ (((to_tsquery('simple', '(''sales'':AC <-> ''advisor'':AC) | (''conseiller'':AC <-> ''de'':AC <-> ''vente'':AC) | (''sales'':AC <-> ''assistant'':AC) | (''client'':AC <-> ''advisor'':AC) | (''luxury'':AC <-> ''sales'':AC <-> ''advisor'':AC) | (''conseillere'':AC <-> ''de'':AC <-> ''vente'':AC) | (''conseiller'':AC <-> ''vente'':AC) | (''conseillere'':AC <-> ''vente'':AC) | (''fashion'':AC <-> ''advisor'':AC) | (''sales'':AC <-> ''associate'':AC) | (''selling'':AC <-> ''associate'':AC) | (''vendeur'':AC) | (''vendeuse'':AC) | (''conseillers'':AC <-> ''de'':AC <-> ''vente'':AC) | (''conseiller'':AC <-> ''vendeur'':AC) | (''conseillere'':AC <-> ''vendeuse'':AC) | (''associe'':AC <-> ''aux'':AC <-> ''ventes'':AC) | (''associee'':AC <-> ''aux'':AC <-> ''ventes'':AC) | (''addetto'':AC <-> ''vendite'':AC) | (''addetta'':AC <-> ''vendite'':AC) | (''addetti'':AC <-> ''vendite'':AC) | (''addett'':AC <-> ''vendite'':AC) | (''vendedor'':AC) | (''vendedora'':AC) | (''verkaufer'':AC) | (''verkauferin'':AC) | (''verkaufsberaterin'':AC) | (''asesora'':AC <-> ''de'':AC <-> ''ventas'':AC) | (''consultora'':AC <-> ''de'':AC <-> ''vendas'':AC) | (''prodejni'':AC <-> ''poradkyne'':AC) | (''butiksassistent'':AC) | (''lucrator'':AC <-> ''comercial'':AC) | (''lucratoare'':AC <-> ''comerciala'':AC) | (''addetto'':AC <-> ''alle'':AC <-> ''vendite'':AC) | (''addetta'':AC <-> ''alle'':AC <-> ''vendite'':AC) | (''dependiente'':AC) | (''dependienta'':AC) | (''winkelmedewerker'':AC) | (''assistente'':AC <-> ''de'':AC <-> ''loja'':AC) | (''vendedor'':AC <-> ''de'':AC <-> ''loja'':AC) | (''vendedora'':AC <-> ''de'':AC <-> ''loja'':AC) | (''sprzedawca'':AC) | (''sprzedawczyni'':AC) | (''butikssaljare'':AC) | (''satıs'':AC <-> ''elemanı'':AC) | (''pembantu'':AC <-> ''kedai'':AC) | (''butikkmedarbeider'':AC) | (''nhan'':AC <-> ''vien'':AC <-> ''ban'':AC <-> ''hang'':AC) | (''prodavac'':AC) | (''prodavacka'':AC) | (''bolti'':AC <-> ''elado'':AC)')) && !!to_tsquery('simple','cwhastitlerole')) || to_tsquery('simple', 'cwif71763319951812f7b29027c793b48d5')))) UNION ALL SELECT 1::int AS position WHERE EXISTS (SELECT 1 FROM \"SearchDocument\" s\n        WHERE s.version = 'search-5-20260924-v2' AND s.id = ANY(ARRAY['cmuekhqpx00i7na5nu5lvmlbi','cmu9mkyyo00qqmb9zj5760wxh','cmuekhiq7006cna5n37hgm0b8']::text[]::text[]) AND (s.vector @@ ((to_tsquery('simple', '(''polyvalent'')'))) AND coalesce(s.vector, ''::tsvector) @@ (((to_tsquery('simple', '(''sales'':AC <-> ''advisor'':AC) | (''conseiller'':AC <-> ''de'':AC <-> ''vente'':AC) | (''sales'':AC <-> ''assistant'':AC) | (''client'':AC <-> ''advisor'':AC) | (''luxury'':AC <-> ''sales'':AC <-> ''advisor'':AC) | (''conseillere'':AC <-> ''de'':AC <-> ''vente'':AC) | (''conseiller'':AC <-> ''vente'':AC) | (''conseillere'':AC <-> ''vente'':AC) | (''fashion'':AC <-> ''advisor'':AC) | (''sales'':AC <-> ''associate'':AC) | (''selling'':AC <-> ''associate'':AC) | (''vendeur'':AC) | (''vendeuse'':AC) | (''conseillers'':AC <-> ''de'':AC <-> ''vente'':AC) | (''conseiller'':AC <-> ''vendeur'':AC) | (''conseillere'':AC <-> ''vendeuse'':AC) | (''associe'':AC <-> ''aux'':AC <-> ''ventes'':AC) | (''associee'':AC <-> ''aux'':AC <-> ''ventes'':AC) | (''addetto'':AC <-> ''vendite'':AC) | (''addetta'':AC <-> ''vendite'':AC) | (''addetti'':AC <-> ''vendite'':AC) | (''addett'':AC <-> ''vendite'':AC) | (''vendedor'':AC) | (''vendedora'':AC) | (''verkaufer'':AC) | (''verkauferin'':AC) | (''verkaufsberaterin'':AC) | (''asesora'':AC <-> ''de'':AC <-> ''ventas'':AC) | (''consultora'':AC <-> ''de'':AC <-> ''vendas'':AC) | (''prodejni'':AC <-> ''poradkyne'':AC) | (''butiksassistent'':AC) | (''lucrator'':AC <-> ''comercial'':AC) | (''lucratoare'':AC <-> ''comerciala'':AC) | (''addetto'':AC <-> ''alle'':AC <-> ''vendite'':AC) | (''addetta'':AC <-> ''alle'':AC <-> ''vendite'':AC) | (''dependiente'':AC) | (''dependienta'':AC) | (''winkelmedewerker'':AC) | (''assistente'':AC <-> ''de'':AC <-> ''loja'':AC) | (''vendedor'':AC <-> ''de'':AC <-> ''loja'':AC) | (''vendedora'':AC <-> ''de'':AC <-> ''loja'':AC) | (''sprzedawca'':AC) | (''sprzedawczyni'':AC) | (''butikssaljare'':AC) | (''satıs'':AC <-> ''elemanı'':AC) | (''pembantu'':AC <-> ''kedai'':AC) | (''butikkmedarbeider'':AC) | (''nhan'':AC <-> ''vien'':AC <-> ''ban'':AC <-> ''hang'':AC) | (''prodavac'':AC) | (''prodavacka'':AC) | (''bolti'':AC <-> ''elado'':AC)')) && !!to_tsquery('simple','cwhastitlerole')) || to_tsquery('simple', 'cwif71763319951812f7b29027c793b48d5')))) UNION ALL SELECT 2::int AS position WHERE EXISTS (SELECT 1 FROM \"SearchDocument\" s\n        WHERE s.version = 'search-5-20260924-v2' AND s.id = ANY(ARRAY['cmudu7vgx1dg6oa34x1122ixc','cmudu7u7m1d6goa34fkvcbes9']::text[]::text[]) AND (s.vector @@ ((to_tsquery('simple', '(''textile'') | (''textil'')'))) AND coalesce(s.vector, ''::tsvector) @@ (((to_tsquery('simple', '(''sales'':AC <-> ''advisor'':AC) | (''conseiller'':AC <-> ''de'':AC <-> ''vente'':AC) | (''sales'':AC <-> ''assistant'':AC) | (''client'':AC <-> ''advisor'':AC) | (''luxury'':AC <-> ''sales'':AC <-> ''advisor'':AC) | (''conseillere'':AC <-> ''de'':AC <-> ''vente'':AC) | (''conseiller'':AC <-> ''vente'':AC) | (''conseillere'':AC <-> ''vente'':AC) | (''fashion'':AC <-> ''advisor'':AC) | (''sales'':AC <-> ''associate'':AC) | (''selling'':AC <-> ''associate'':AC) | (''vendeur'':AC) | (''vendeuse'':AC) | (''conseillers'':AC <-> ''de'':AC <-> ''vente'':AC) | (''conseiller'':AC <-> ''vendeur'':AC) | (''conseillere'':AC <-> ''vendeuse'':AC) | (''associe'':AC <-> ''aux'':AC <-> ''ventes'':AC) | (''associee'':AC <-> ''aux'':AC <-> ''ventes'':AC) | (''addetto'':AC <-> ''vendite'':AC) | (''addetta'':AC <-> ''vendite'':AC) | (''addetti'':AC <-> ''vendite'':AC) | (''addett'':AC <-> ''vendite'':AC) | (''vendedor'':AC) | (''vendedora'':AC) | (''verkaufer'':AC) | (''verkauferin'':AC) | (''verkaufsberaterin'':AC) | (''asesora'':AC <-> ''de'':AC <-> ''ventas'':AC) | (''consultora'':AC <-> ''de'':AC <-> ''vendas'':AC) | (''prodejni'':AC <-> ''poradkyne'':AC) | (''butiksassistent'':AC) | (''lucrator'':AC <-> ''comercial'':AC) | (''lucratoare'':AC <-> ''comerciala'':AC) | (''addetto'':AC <-> ''alle'':AC <-> ''vendite'':AC) | (''addetta'':AC <-> ''alle'':AC <-> ''vendite'':AC) | (''dependiente'':AC) | (''dependienta'':AC) | (''winkelmedewerker'':AC) | (''assistente'':AC <-> ''de'':AC <-> ''loja'':AC) | (''vendedor'':AC <-> ''de'':AC <-> ''loja'':AC) | (''vendedora'':AC <-> ''de'':AC <-> ''loja'':AC) | (''sprzedawca'':AC) | (''sprzedawczyni'':AC) | (''butikssaljare'':AC) | (''satıs'':AC <-> ''elemanı'':AC) | (''pembantu'':AC <-> ''kedai'':AC) | (''butikkmedarbeider'':AC) | (''nhan'':AC <-> ''vien'':AC <-> ''ban'':AC <-> ''hang'':AC) | (''prodavac'':AC) | (''prodavacka'':AC) | (''bolti'':AC <-> ''elado'':AC)')) && !!to_tsquery('simple','cwhastitlerole')) || to_tsquery('simple', 'cwif71763319951812f7b29027c793b48d5')))) UNION ALL SELECT 3::int AS position WHERE EXISTS (SELECT 1 FROM \"SearchDocument\" s\n        WHERE s.version = 'search-5-20260924-v2' AND s.id = ANY(ARRAY['cmudt3qt103mfoa344230lsog']::text[]::text[]) AND (s.vector @@ ((to_tsquery('simple', '(''alternant'')'))) AND coalesce(s.vector, ''::tsvector) @@ (((to_tsquery('simple', '(''sales'':AC <-> ''advisor'':AC) | (''conseiller'':AC <-> ''de'':AC <-> ''vente'':AC) | (''sales'':AC <-> ''assistant'':AC) | (''client'':AC <-> ''advisor'':AC) | (''luxury'':AC <-> ''sales'':AC <-> ''advisor'':AC) | (''conseillere'':AC <-> ''de'':AC <-> ''vente'':AC) | (''conseiller'':AC <-> ''vente'':AC) | (''conseillere'':AC <-> ''vente'':AC) | (''fashion'':AC <-> ''advisor'':AC) | (''sales'':AC <-> ''associate'':AC) | (''selling'':AC <-> ''associate'':AC) | (''vendeur'':AC) | (''vendeuse'':AC) | (''conseillers'':AC <-> ''de'':AC <-> ''vente'':AC) | (''conseiller'':AC <-> ''vendeur'':AC) | (''conseillere'':AC <-> ''vendeuse'':AC) | (''associe'':AC <-> ''aux'':AC <-> ''ventes'':AC) | (''associee'':AC <-> ''aux'':AC <-> ''ventes'':AC) | (''addetto'':AC <-> ''vendite'':AC) | (''addetta'':AC <-> ''vendite'':AC) | (''addetti'':AC <-> ''vendite'':AC) | (''addett'':AC <-> ''vendite'':AC) | (''vendedor'':AC) | (''vendedora'':AC) | (''verkaufer'':AC) | (''verkauferin'':AC) | (''verkaufsberaterin'':AC) | (''asesora'':AC <-> ''de'':AC <-> ''ventas'':AC) | (''consultora'':AC <-> ''de'':AC <-> ''vendas'':AC) | (''prodejni'':AC <-> ''poradkyne'':AC) | (''butiksassistent'':AC) | (''lucrator'':AC <-> ''comercial'':AC) | (''lucratoare'':AC <-> ''comerciala'':AC) | (''addetto'':AC <-> ''alle'':AC <-> ''vendite'':AC) | (''addetta'':AC <-> ''alle'':AC <-> ''vendite'':AC) | (''dependiente'':AC) | (''dependienta'':AC) | (''winkelmedewerker'':AC) | (''assistente'':AC <-> ''de'':AC <-> ''loja'':AC) | (''vendedor'':AC <-> ''de'':AC <-> ''loja'':AC) | (''vendedora'':AC <-> ''de'':AC <-> ''loja'':AC) | (''sprzedawca'':AC) | (''sprzedawczyni'':AC) | (''butikssaljare'':AC) | (''satıs'':AC <-> ''elemanı'':AC) | (''pembantu'':AC <-> ''kedai'':AC) | (''butikkmedarbeider'':AC) | (''nhan'':AC <-> ''vien'':AC <-> ''ban'':AC <-> ''hang'':AC) | (''prodavac'':AC) | (''prodavacka'':AC) | (''bolti'':AC <-> ''elado'':AC)')) && !!to_tsquery('simple','cwhastitlerole')) || to_tsquery('simple', 'cwif71763319951812f7b29027c793b48d5'))))) v"
+     }
+    ],
+    "suggestions": [
+     {
+      "valeur": "Vendeur",
+      "metier": {
+       "identifiant": "sales-advisor",
+       "libelle": "Conseiller de vente"
+      },
+      "nature": "metier",
+      "offresAuChoix": 4569,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     },
+     {
+      "valeur": "Premier vendeur",
+      "metier": {
+       "identifiant": "retail-sales-lead",
+       "libelle": "Premier vendeur"
+      },
+      "nature": "metier",
+      "offresAuChoix": 22,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     },
+     {
+      "valeur": "Technicien vendeur cycle",
+      "metier": null,
+      "nature": "intitule",
+      "offresAuChoix": 72,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     },
+     {
+      "valeur": "Vendeur polyvalent",
+      "metier": null,
+      "nature": "intitule",
+      "offresAuChoix": 584,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     },
+     {
+      "valeur": "Vendeur textile",
+      "metier": null,
+      "nature": "intitule",
+      "offresAuChoix": 255,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     },
+     {
+      "valeur": "Vendeur alternant",
+      "metier": null,
+      "nature": "intitule",
+      "offresAuChoix": 42,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     }
+    ],
+    "doublons": 0
+   },
+   {
+    "marche": "FR",
+    "frappe": "store man",
+    "ms": 118.64,
+    "requetes": 3,
+    "releves": [
+     {
+      "ms": 20.715,
+      "sql": "\n    SELECT EXISTS(SELECT 1 FROM \"SearchGeneration\" WHERE version='search-5-20260924-v2' AND \"readyAt\" IS NOT NULL) ready,\n      EXISTS(SELECT 1 FROM \"SearchPending\" WHERE version='search-5-20260924-v2' AND \"queuedAt\" < now()-interval '300 seconds') stale"
+     },
+     {
+      "ms": 17.292,
+      "sql": "SELECT revision FROM \"SearchMetadata\" WHERE id='active'"
+     },
+     {
+      "ms": 80.633,
+      "sql": "\n    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids FROM (\n      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id FROM \"Job\" j\n       WHERE j.\"isActive\" AND j.\"mergedIntoId\" IS NULL AND EXISTS (\n    SELECT 1 FROM \"JobSource\" available_source WHERE available_source.\"jobId\" = j.id\n      AND available_source.\"isActive\" AND (available_source.\"expiresAt\" IS NULL OR available_source.\"expiresAt\" > ('2026-10-01T18:39:03.986Z'::timestamptz AT TIME ZONE 'UTC'))) AND j.\"countryCode\" IN ('FR','MC') AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte('%store man%') GROUP BY j.title\n      UNION ALL\n      SELECT d.title, count(*), 'cw_' || min(d.id) FROM \"DirectOffer\" d\n       WHERE d.eligible AND (d.\"validThrough\" IS NULL OR d.\"validThrough\" > ('2026-10-01T18:39:03.986Z'::timestamptz AT TIME ZONE 'UTC')) AND d.\"countryCode\" IN ('FR','MC') AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte('%store man%') GROUP BY d.title\n    ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40"
+     }
+    ],
+    "suggestions": [
+     {
+      "valeur": "Store manager",
+      "metier": {
+       "identifiant": "store-manager",
+       "libelle": "Responsable de boutique"
+      },
+      "nature": "metier",
+      "offresAuChoix": 589,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     },
+     {
+      "valeur": "Assistant store manager",
+      "metier": {
+       "identifiant": "assistant-store-manager",
+       "libelle": "Adjoint au responsable de boutique"
+      },
+      "nature": "metier",
+      "offresAuChoix": 414,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     }
+    ],
+    "doublons": 0
+   },
+   {
+    "marche": "FR",
+    "frappe": "responsable bout",
+    "ms": 160.307,
+    "requetes": 4,
+    "releves": [
+     {
+      "ms": 19.812,
+      "sql": "\n    SELECT EXISTS(SELECT 1 FROM \"SearchGeneration\" WHERE version='search-5-20260924-v2' AND \"readyAt\" IS NOT NULL) ready,\n      EXISTS(SELECT 1 FROM \"SearchPending\" WHERE version='search-5-20260924-v2' AND \"queuedAt\" < now()-interval '300 seconds') stale"
+     },
+     {
+      "ms": 18.817,
+      "sql": "SELECT revision FROM \"SearchMetadata\" WHERE id='active'"
+     },
+     {
+      "ms": 101.064,
+      "sql": "\n    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids FROM (\n      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id FROM \"Job\" j\n       WHERE j.\"isActive\" AND j.\"mergedIntoId\" IS NULL AND EXISTS (\n    SELECT 1 FROM \"JobSource\" available_source WHERE available_source.\"jobId\" = j.id\n      AND available_source.\"isActive\" AND (available_source.\"expiresAt\" IS NULL OR available_source.\"expiresAt\" > ('2026-10-01T18:39:05.964Z'::timestamptz AT TIME ZONE 'UTC'))) AND j.\"countryCode\" IN ('FR','MC') AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte('%responsable bout%') GROUP BY j.title\n      UNION ALL\n      SELECT d.title, count(*), 'cw_' || min(d.id) FROM \"DirectOffer\" d\n       WHERE d.eligible AND (d.\"validThrough\" IS NULL OR d.\"validThrough\" > ('2026-10-01T18:39:05.964Z'::timestamptz AT TIME ZONE 'UTC')) AND d.\"countryCode\" IN ('FR','MC') AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte('%responsable bout%') GROUP BY d.title\n    ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40"
+     },
+     {
+      "ms": 20.614,
+      "sql": "SELECT position FROM (SELECT 0::int AS position WHERE EXISTS (SELECT 1 FROM \"SearchDocument\" s\n        WHERE s.version = 'search-5-20260924-v2' AND s.id = ANY(ARRAY['cmu7e65a6002fjxbmgpmf3gdz']::text[]::text[]) AND (s.vector @@ ((to_tsquery('simple', '(''adjoint'')'))) AND coalesce(s.vector, ''::tsvector) @@ (((to_tsquery('simple', '(''store'':AC <-> ''manager'':AC) | (''responsable'':AC <-> ''de'':AC <-> ''boutique'':AC) | (''storemanager'':AC) | (''shop'':AC <-> ''manager'':AC) | (''shopmanager'':AC) | (''boutique'':AC <-> ''manager'':AC) | (''responsable'':AC <-> ''de'':AC <-> ''magasin'':AC) | (''directeur'':AC <-> ''de'':AC <-> ''magasin'':AC) | (''directrice'':AC <-> ''de'':AC <-> ''magasin'':AC) | (''directeur'':AC <-> ''de'':AC <-> ''boutique'':AC) | (''directrice'':AC <-> ''de'':AC <-> ''boutique'':AC) | (''store'':AC <-> ''director'':AC) | (''manager'':AC <-> ''di'':AC <-> ''store'':AC) | (''filialleiter'':AC) | (''filialleiterin'':AC) | (''responsable'':AC <-> ''boutique'':AC)')) && !!to_tsquery('simple','cwhastitlerole')) || to_tsquery('simple', 'cwifd14f2280528ede02898e9dd1dd76bc0')))) UNION ALL SELECT 1::int AS position WHERE EXISTS (SELECT 1 FROM \"SearchDocument\" s\n        WHERE s.version = 'search-5-20260924-v2' AND s.id = ANY(ARRAY['cmue8efw901brqy34e5vnn6zm','cmue8eefo013rqy3492axjz0t','cmue8eg4x01d4qy34loh9ympd','cmue8efv701bkqy34de5ogx2o']::text[]::text[]) AND (s.vector @@ ((to_tsquery('simple', '(''adjoint'')'))) AND coalesce(s.vector, ''::tsvector) @@ (((to_tsquery('simple', '(''store'':AC <-> ''manager'':AC) | (''responsable'':AC <-> ''de'':AC <-> ''boutique'':AC) | (''storemanager'':AC) | (''shop'':AC <-> ''manager'':AC) | (''shopmanager'':AC) | (''boutique'':AC <-> ''manager'':AC) | (''responsable'':AC <-> ''de'':AC <-> ''magasin'':AC) | (''directeur'':AC <-> ''de'':AC <-> ''magasin'':AC) | (''directrice'':AC <-> ''de'':AC <-> ''magasin'':AC) | (''directeur'':AC <-> ''de'':AC <-> ''boutique'':AC) | (''directrice'':AC <-> ''de'':AC <-> ''boutique'':AC) | (''store'':AC <-> ''director'':AC) | (''manager'':AC <-> ''di'':AC <-> ''store'':AC) | (''filialleiter'':AC) | (''filialleiterin'':AC) | (''responsable'':AC <-> ''boutique'':AC)')) && !!to_tsquery('simple','cwhastitlerole')) || to_tsquery('simple', 'cwifd14f2280528ede02898e9dd1dd76bc0'))))) v"
+     }
+    ],
+    "suggestions": [
+     {
+      "valeur": "Responsable de boutique",
+      "metier": {
+       "identifiant": "store-manager",
+       "libelle": "Responsable de boutique"
+      },
+      "nature": "metier",
+      "offresAuChoix": 589,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     },
+     {
+      "valeur": "Adjoint au responsable de boutique",
+      "metier": {
+       "identifiant": "assistant-store-manager",
+       "libelle": "Adjoint au responsable de boutique"
+      },
+      "nature": "metier",
+      "offresAuChoix": 414,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     },
+     {
+      "valeur": "Responsable boutique adjoint",
+      "metier": null,
+      "nature": "intitule",
+      "offresAuChoix": 84,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     }
+    ],
+    "doublons": 0
+   },
+   {
+    "marche": "FR",
+    "frappe": "visual",
+    "ms": 141.833,
+    "requetes": 4,
+    "releves": [
+     {
+      "ms": 17.97,
+      "sql": "\n    SELECT EXISTS(SELECT 1 FROM \"SearchGeneration\" WHERE version='search-5-20260924-v2' AND \"readyAt\" IS NOT NULL) ready,\n      EXISTS(SELECT 1 FROM \"SearchPending\" WHERE version='search-5-20260924-v2' AND \"queuedAt\" < now()-interval '300 seconds') stale"
+     },
+     {
+      "ms": 19.896,
+      "sql": "SELECT revision FROM \"SearchMetadata\" WHERE id='active'"
+     },
+     {
+      "ms": 84.253,
+      "sql": "\n    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids FROM (\n      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id FROM \"Job\" j\n       WHERE j.\"isActive\" AND j.\"mergedIntoId\" IS NULL AND EXISTS (\n    SELECT 1 FROM \"JobSource\" available_source WHERE available_source.\"jobId\" = j.id\n      AND available_source.\"isActive\" AND (available_source.\"expiresAt\" IS NULL OR available_source.\"expiresAt\" > ('2026-10-01T18:39:08.195Z'::timestamptz AT TIME ZONE 'UTC'))) AND j.\"countryCode\" IN ('FR','MC') AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte('%visual%') GROUP BY j.title\n      UNION ALL\n      SELECT d.title, count(*), 'cw_' || min(d.id) FROM \"DirectOffer\" d\n       WHERE d.eligible AND (d.\"validThrough\" IS NULL OR d.\"validThrough\" > ('2026-10-01T18:39:08.195Z'::timestamptz AT TIME ZONE 'UTC')) AND d.\"countryCode\" IN ('FR','MC') AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte('%visual%') GROUP BY d.title\n    ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40"
+     },
+     {
+      "ms": 19.714,
+      "sql": "SELECT position FROM (SELECT 0::int AS position WHERE EXISTS (SELECT 1 FROM \"SearchDocument\" s\n        WHERE s.version = 'search-5-20260924-v2' AND s.id = ANY(ARRAY['cmudvlzcj31w9oa34vehltwuj','cmudvmker34onoa34ik7mpsbs','cmudvm5gu3324oa34jqf5f9ge','cmudvnb6e381qoa343hlg9c5p']::text[]::text[]) AND (s.vector @@ ((to_tsquery('simple', '(''manager'')'))) AND coalesce(s.vector, ''::tsvector) @@ (((to_tsquery('simple', '(''visual'':AC <-> ''merchandiser'':AC) | (''marchandiseur'':AC <-> ''visuel'':AC) | (''marchandiseuse'':AC <-> ''visuelle'':AC) | (''vitriniste'':AC) | (''window'':AC <-> ''dresser'':AC)')) && !!to_tsquery('simple','cwhastitlerole')) || to_tsquery('simple', 'cwif2a853eb7be75af34106cd53740dffc7')))) UNION ALL SELECT 1::int AS position WHERE EXISTS (SELECT 1 FROM \"SearchDocument\" s\n        WHERE s.version = 'search-5-20260924-v2' AND s.id = ANY(ARRAY['cmuefp6bn01vkpm336d2pjill']::text[]::text[]) AND s.vector @@ (((to_tsquery('simple', '(''التنسيق'':AC <-> ''البصري'':AC) | (''visual'':AC <-> ''merchandising'':AC) | (''ヒ'':AC <-> ''シ'':AC <-> ''ュ'':AC <-> ''ア'':AC <-> ''ル'':AC <-> ''マ'':AC <-> ''ー'':AC <-> ''チ'':AC <-> ''ャ'':AC <-> ''ン'':AC <-> ''タ'':AC <-> ''イ'':AC <-> ''シ'':AC <-> ''ン'':AC <-> ''ク'':AC) | (''비주얼'':AC <-> ''머천다이징'':AC) | (''การจดดสเพลยหนาราน'':AC) | (''trung'':AC <-> ''bay'':AC <-> ''san'':AC <-> ''pham'':AC) | (''视'':AC <-> ''觉'':AC <-> ''陈'':AC <-> ''列'':AC) | (''視'':AC <-> ''覺'':AC <-> ''陳'':AC <-> ''列'':AC)')) || to_tsquery('simple', 'cwi629a6aced963b7040c2c5468fd422ea0')) && (to_tsquery('simple', '(''specialist'')')) && ((to_tsquery('simple', '(''adidas'':AB)')) || to_tsquery('simple', 'cwie1b6a9d69cf3e0c3b78e61859244ff1c'))))) v"
+     }
+    ],
+    "suggestions": [
+     {
+      "valeur": "Visual merchandiser",
+      "metier": {
+       "identifiant": "visual-merchandiser",
+       "libelle": "Visual merchandiser"
+      },
+      "nature": "metier",
+      "offresAuChoix": 50,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     },
+     {
+      "valeur": "Responsable visual merchandising",
+      "metier": {
+       "identifiant": "responsable-vm",
+       "libelle": "Responsable visual merchandising"
+      },
+      "nature": "metier",
+      "offresAuChoix": 34,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     },
+     {
+      "valeur": "Visual merchandising specialist adidas",
+      "metier": null,
+      "nature": "intitule",
+      "offresAuChoix": 6,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     }
+    ],
+    "doublons": 0
+   },
+   {
+    "marche": "FR",
+    "frappe": "make up",
+    "ms": 121.13,
+    "requetes": 3,
+    "releves": [
+     {
+      "ms": 19.419,
+      "sql": "\n    SELECT EXISTS(SELECT 1 FROM \"SearchGeneration\" WHERE version='search-5-20260924-v2' AND \"readyAt\" IS NOT NULL) ready,\n      EXISTS(SELECT 1 FROM \"SearchPending\" WHERE version='search-5-20260924-v2' AND \"queuedAt\" < now()-interval '300 seconds') stale"
+     },
+     {
+      "ms": 20.809,
+      "sql": "SELECT revision FROM \"SearchMetadata\" WHERE id='active'"
+     },
+     {
+      "ms": 80.902,
+      "sql": "\n    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids FROM (\n      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id FROM \"Job\" j\n       WHERE j.\"isActive\" AND j.\"mergedIntoId\" IS NULL AND EXISTS (\n    SELECT 1 FROM \"JobSource\" available_source WHERE available_source.\"jobId\" = j.id\n      AND available_source.\"isActive\" AND (available_source.\"expiresAt\" IS NULL OR available_source.\"expiresAt\" > ('2026-10-01T18:39:10.585Z'::timestamptz AT TIME ZONE 'UTC'))) AND j.\"countryCode\" IN ('FR','MC') AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte('%make up%') GROUP BY j.title\n      UNION ALL\n      SELECT d.title, count(*), 'cw_' || min(d.id) FROM \"DirectOffer\" d\n       WHERE d.eligible AND (d.\"validThrough\" IS NULL OR d.\"validThrough\" > ('2026-10-01T18:39:10.585Z'::timestamptz AT TIME ZONE 'UTC')) AND d.\"countryCode\" IN ('FR','MC') AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte('%make up%') GROUP BY d.title\n    ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40"
+     }
+    ],
+    "suggestions": [
+     {
+      "valeur": "Makeup artist",
+      "metier": {
+       "identifiant": "makeup-artist",
+       "libelle": "Maquilleur"
+      },
+      "nature": "metier",
+      "offresAuChoix": 14,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     }
+    ],
+    "doublons": 0
+   },
+   {
+    "marche": "FR",
+    "frappe": "sales ad",
+    "ms": 140.937,
+    "requetes": 3,
+    "releves": [
+     {
+      "ms": 23.367,
+      "sql": "\n    SELECT EXISTS(SELECT 1 FROM \"SearchGeneration\" WHERE version='search-5-20260924-v2' AND \"readyAt\" IS NOT NULL) ready,\n      EXISTS(SELECT 1 FROM \"SearchPending\" WHERE version='search-5-20260924-v2' AND \"queuedAt\" < now()-interval '300 seconds') stale"
+     },
+     {
+      "ms": 19.452,
+      "sql": "SELECT revision FROM \"SearchMetadata\" WHERE id='active'"
+     },
+     {
+      "ms": 98.118,
+      "sql": "\n    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids FROM (\n      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id FROM \"Job\" j\n       WHERE j.\"isActive\" AND j.\"mergedIntoId\" IS NULL AND EXISTS (\n    SELECT 1 FROM \"JobSource\" available_source WHERE available_source.\"jobId\" = j.id\n      AND available_source.\"isActive\" AND (available_source.\"expiresAt\" IS NULL OR available_source.\"expiresAt\" > ('2026-10-01T18:39:12.165Z'::timestamptz AT TIME ZONE 'UTC'))) AND j.\"countryCode\" IN ('FR','MC') AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte('%sales ad%') GROUP BY j.title\n      UNION ALL\n      SELECT d.title, count(*), 'cw_' || min(d.id) FROM \"DirectOffer\" d\n       WHERE d.eligible AND (d.\"validThrough\" IS NULL OR d.\"validThrough\" > ('2026-10-01T18:39:12.165Z'::timestamptz AT TIME ZONE 'UTC')) AND d.\"countryCode\" IN ('FR','MC') AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte('%sales ad%') GROUP BY d.title\n    ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40"
+     }
+    ],
+    "suggestions": [
+     {
+      "valeur": "Sales advisor",
+      "metier": {
+       "identifiant": "sales-advisor",
+       "libelle": "Conseiller de vente"
+      },
+      "nature": "metier",
+      "offresAuChoix": 4569,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     }
+    ],
+    "doublons": 0
+   },
+   {
+    "marche": "FR",
+    "frappe": "assistant",
+    "ms": 172.588,
+    "requetes": 4,
+    "releves": [
+     {
+      "ms": 18.705,
+      "sql": "\n    SELECT EXISTS(SELECT 1 FROM \"SearchGeneration\" WHERE version='search-5-20260924-v2' AND \"readyAt\" IS NOT NULL) ready,\n      EXISTS(SELECT 1 FROM \"SearchPending\" WHERE version='search-5-20260924-v2' AND \"queuedAt\" < now()-interval '300 seconds') stale"
+     },
+     {
+      "ms": 18.759,
+      "sql": "SELECT revision FROM \"SearchMetadata\" WHERE id='active'"
+     },
+     {
+      "ms": 114.315,
+      "sql": "\n    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids FROM (\n      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id FROM \"Job\" j\n       WHERE j.\"isActive\" AND j.\"mergedIntoId\" IS NULL AND EXISTS (\n    SELECT 1 FROM \"JobSource\" available_source WHERE available_source.\"jobId\" = j.id\n      AND available_source.\"isActive\" AND (available_source.\"expiresAt\" IS NULL OR available_source.\"expiresAt\" > ('2026-10-01T18:39:13.793Z'::timestamptz AT TIME ZONE 'UTC'))) AND j.\"countryCode\" IN ('FR','MC') AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte('%assistant%') GROUP BY j.title\n      UNION ALL\n      SELECT d.title, count(*), 'cw_' || min(d.id) FROM \"DirectOffer\" d\n       WHERE d.eligible AND (d.\"validThrough\" IS NULL OR d.\"validThrough\" > ('2026-10-01T18:39:13.793Z'::timestamptz AT TIME ZONE 'UTC')) AND d.\"countryCode\" IN ('FR','MC') AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte('%assistant%') GROUP BY d.title\n    ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40"
+     },
+     {
+      "ms": 20.809,
+      "sql": "SELECT position FROM (SELECT 0::int AS position WHERE EXISTS (SELECT 1 FROM \"SearchDocument\" s\n        WHERE s.version = 'search-5-20260924-v2' AND s.id = ANY(ARRAY['cmudzxx38000on334vi6bqonp']::text[]::text[]) AND s.vector @@ ((to_tsquery('simple', '(''assistant'')')) && (to_tsquery('simple', '(''achat'')')) && ((to_tsquery('simple', '(''retail'' <-> ''distribution'' <-> ''as'' <-> ''an'' <-> ''employer'' <-> ''activity'') | (''retail'')')) || to_tsquery('simple', 'cwicef51e0515d9255c8f9539b0a1d6221c')) && (to_tsquery('simple', '(''merchandiser'')'))))) v"
+     }
+    ],
+    "suggestions": [
+     {
+      "valeur": "Sales assistant",
+      "metier": {
+       "identifiant": "sales-advisor",
+       "libelle": "Conseiller de vente"
+      },
+      "nature": "metier",
+      "offresAuChoix": 4569,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     },
+     {
+      "valeur": "Assistant store manager",
+      "metier": {
+       "identifiant": "assistant-store-manager",
+       "libelle": "Adjoint au responsable de boutique"
+      },
+      "nature": "metier",
+      "offresAuChoix": 414,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     },
+     {
+      "valeur": "Stock assistant",
+      "metier": {
+       "identifiant": "stock-associate",
+       "libelle": "Gestionnaire de stock en boutique"
+      },
+      "nature": "metier",
+      "offresAuChoix": 189,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     },
+     {
+      "valeur": "Assistant commercial",
+      "metier": {
+       "identifiant": "assistant-commercial",
+       "libelle": "Assistant commercial"
+      },
+      "nature": "metier",
+      "offresAuChoix": 19,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     },
+     {
+      "valeur": "Assistant qualité",
+      "metier": {
+       "identifiant": "assistant-qualite",
+       "libelle": "Assistant qualité"
+      },
+      "nature": "metier",
+      "offresAuChoix": 18,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     },
+     {
+      "valeur": "Assistant administratif",
+      "metier": {
+       "identifiant": "assistant-administratif",
+       "libelle": "Assistant administratif"
+      },
+      "nature": "metier",
+      "offresAuChoix": 15,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     },
+     {
+      "valeur": "Assistant de direction",
+      "metier": {
+       "identifiant": "executive-assistant",
+       "libelle": "Assistant de direction"
+      },
+      "nature": "metier",
+      "offresAuChoix": 15,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     },
+     {
+      "valeur": "Assistant achat retail merchandiser",
+      "metier": null,
+      "nature": "intitule",
+      "offresAuChoix": 17,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     }
+    ],
+    "doublons": 0
+   },
+   {
+    "marche": "FR",
+    "frappe": "directeur",
+    "ms": 138.742,
+    "requetes": 4,
+    "releves": [
+     {
+      "ms": 17.757,
+      "sql": "\n    SELECT EXISTS(SELECT 1 FROM \"SearchGeneration\" WHERE version='search-5-20260924-v2' AND \"readyAt\" IS NOT NULL) ready,\n      EXISTS(SELECT 1 FROM \"SearchPending\" WHERE version='search-5-20260924-v2' AND \"queuedAt\" < now()-interval '300 seconds') stale"
+     },
+     {
+      "ms": 19.044,
+      "sql": "SELECT revision FROM \"SearchMetadata\" WHERE id='active'"
+     },
+     {
+      "ms": 81.741,
+      "sql": "\n    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids FROM (\n      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id FROM \"Job\" j\n       WHERE j.\"isActive\" AND j.\"mergedIntoId\" IS NULL AND EXISTS (\n    SELECT 1 FROM \"JobSource\" available_source WHERE available_source.\"jobId\" = j.id\n      AND available_source.\"isActive\" AND (available_source.\"expiresAt\" IS NULL OR available_source.\"expiresAt\" > ('2026-10-01T18:39:17.645Z'::timestamptz AT TIME ZONE 'UTC'))) AND j.\"countryCode\" IN ('FR','MC') AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte('%directeur%') GROUP BY j.title\n      UNION ALL\n      SELECT d.title, count(*), 'cw_' || min(d.id) FROM \"DirectOffer\" d\n       WHERE d.eligible AND (d.\"validThrough\" IS NULL OR d.\"validThrough\" > ('2026-10-01T18:39:17.645Z'::timestamptz AT TIME ZONE 'UTC')) AND d.\"countryCode\" IN ('FR','MC') AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte('%directeur%') GROUP BY d.title\n    ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40"
+     },
+     {
+      "ms": 20.2,
+      "sql": "SELECT position FROM (SELECT 0::int AS position WHERE EXISTS (SELECT 1 FROM \"SearchDocument\" s\n        WHERE s.version = 'search-5-20260924-v2' AND s.id = ANY(ARRAY['cmudvmp9l357ioa34qg7g38cj','cmuduasti1lm9oa344xo0du1e']::text[]::text[]) AND s.vector @@ ((to_tsquery('simple', '(''directeur'')')) && (to_tsquery('simple', '(''adjoint'')')))) UNION ALL SELECT 1::int AS position WHERE EXISTS (SELECT 1 FROM \"SearchDocument\" s\n        WHERE s.version = 'search-5-20260924-v2' AND s.id = ANY(ARRAY['cmudt3pm103ijoa340rr09pck','cmudt3pg503hyoa34x5496gz8']::text[]::text[]) AND (s.vector @@ ((to_tsquery('simple', '(''femme'')'))) AND coalesce(s.vector, ''::tsvector) @@ (((to_tsquery('simple', '(''store'':AC <-> ''manager'':AC) | (''responsable'':AC <-> ''de'':AC <-> ''boutique'':AC) | (''storemanager'':AC) | (''shop'':AC <-> ''manager'':AC) | (''shopmanager'':AC) | (''boutique'':AC <-> ''manager'':AC) | (''responsable'':AC <-> ''de'':AC <-> ''magasin'':AC) | (''directeur'':AC <-> ''de'':AC <-> ''magasin'':AC) | (''directrice'':AC <-> ''de'':AC <-> ''magasin'':AC) | (''directeur'':AC <-> ''de'':AC <-> ''boutique'':AC) | (''directrice'':AC <-> ''de'':AC <-> ''boutique'':AC) | (''store'':AC <-> ''director'':AC) | (''manager'':AC <-> ''di'':AC <-> ''store'':AC) | (''filialleiter'':AC) | (''filialleiterin'':AC)')) && !!to_tsquery('simple','cwhastitlerole')) || to_tsquery('simple', 'cwifd14f2280528ede02898e9dd1dd76bc0'))))) v"
+     }
+    ],
+    "suggestions": [
+     {
+      "valeur": "Directeur de magasin",
+      "metier": {
+       "identifiant": "store-manager",
+       "libelle": "Responsable de boutique"
+      },
+      "nature": "metier",
+      "offresAuChoix": 589,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     },
+     {
+      "valeur": "Directeur adjoint de magasin",
+      "metier": {
+       "identifiant": "assistant-store-manager",
+       "libelle": "Adjoint au responsable de boutique"
+      },
+      "nature": "metier",
+      "offresAuChoix": 414,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     },
+     {
+      "valeur": "Directeur artistique",
+      "metier": {
+       "identifiant": "direction-artistique",
+       "libelle": "Directeur artistique"
+      },
+      "nature": "metier",
+      "offresAuChoix": 7,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     },
+     {
+      "valeur": "Directeur de réseau",
+      "metier": {
+       "identifiant": "directeur-reseau",
+       "libelle": "Directeur de réseau"
+      },
+      "nature": "metier",
+      "offresAuChoix": 3,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     },
+     {
+      "valeur": "Directeur de production",
+      "metier": {
+       "identifiant": "directeur-production",
+       "libelle": "Directeur de production"
+      },
+      "nature": "metier",
+      "offresAuChoix": 1,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     },
+     {
+      "valeur": "Directeur des ressources humaines",
+      "metier": {
+       "identifiant": "directeur-des-ressources-humaines",
+       "libelle": "Directeur des ressources humaines"
+      },
+      "nature": "metier",
+      "offresAuChoix": 1,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     },
+     {
+      "valeur": "Directeur adjoint",
+      "metier": null,
+      "nature": "intitule",
+      "offresAuChoix": 373,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     },
+     {
+      "valeur": "Directeur de magasin femme",
+      "metier": null,
+      "nature": "intitule",
+      "offresAuChoix": 103,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     }
+    ],
+    "doublons": 0
+   },
+   {
+    "marche": "GB",
+    "frappe": "conseill",
+    "ms": 161.24599999999998,
+    "requetes": 3,
+    "releves": [
+     {
+      "ms": 19.731,
+      "sql": "\n    SELECT EXISTS(SELECT 1 FROM \"SearchGeneration\" WHERE version='search-5-20260924-v2' AND \"readyAt\" IS NOT NULL) ready,\n      EXISTS(SELECT 1 FROM \"SearchPending\" WHERE version='search-5-20260924-v2' AND \"queuedAt\" < now()-interval '300 seconds') stale"
+     },
+     {
+      "ms": 19.189,
+      "sql": "SELECT revision FROM \"SearchMetadata\" WHERE id='active'"
+     },
+     {
+      "ms": 122.326,
+      "sql": "\n    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids FROM (\n      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id FROM \"Job\" j\n       WHERE j.\"isActive\" AND j.\"mergedIntoId\" IS NULL AND EXISTS (\n    SELECT 1 FROM \"JobSource\" available_source WHERE available_source.\"jobId\" = j.id\n      AND available_source.\"isActive\" AND (available_source.\"expiresAt\" IS NULL OR available_source.\"expiresAt\" > ('2026-10-01T18:39:23.696Z'::timestamptz AT TIME ZONE 'UTC'))) AND j.\"countryCode\" IN ('GB','IE') AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte('%conseill%') GROUP BY j.title\n      UNION ALL\n      SELECT d.title, count(*), 'cw_' || min(d.id) FROM \"DirectOffer\" d\n       WHERE d.eligible AND (d.\"validThrough\" IS NULL OR d.\"validThrough\" > ('2026-10-01T18:39:23.696Z'::timestamptz AT TIME ZONE 'UTC')) AND d.\"countryCode\" IN ('GB','IE') AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte('%conseill%') GROUP BY d.title\n    ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40"
+     }
+    ],
+    "suggestions": [],
+    "doublons": 0
+   },
+   {
+    "marche": "GB",
+    "frappe": "conseillère",
+    "ms": 87.471,
+    "requetes": 3,
+    "releves": [
+     {
+      "ms": 18.603,
+      "sql": "\n    SELECT EXISTS(SELECT 1 FROM \"SearchGeneration\" WHERE version='search-5-20260924-v2' AND \"readyAt\" IS NOT NULL) ready,\n      EXISTS(SELECT 1 FROM \"SearchPending\" WHERE version='search-5-20260924-v2' AND \"queuedAt\" < now()-interval '300 seconds') stale"
+     },
+     {
+      "ms": 18.722,
+      "sql": "SELECT revision FROM \"SearchMetadata\" WHERE id='active'"
+     },
+     {
+      "ms": 50.146,
+      "sql": "\n    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids FROM (\n      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id FROM \"Job\" j\n       WHERE j.\"isActive\" AND j.\"mergedIntoId\" IS NULL AND EXISTS (\n    SELECT 1 FROM \"JobSource\" available_source WHERE available_source.\"jobId\" = j.id\n      AND available_source.\"isActive\" AND (available_source.\"expiresAt\" IS NULL OR available_source.\"expiresAt\" > ('2026-10-01T18:39:24.936Z'::timestamptz AT TIME ZONE 'UTC'))) AND j.\"countryCode\" IN ('GB','IE') AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte('%conseillère%') GROUP BY j.title\n      UNION ALL\n      SELECT d.title, count(*), 'cw_' || min(d.id) FROM \"DirectOffer\" d\n       WHERE d.eligible AND (d.\"validThrough\" IS NULL OR d.\"validThrough\" > ('2026-10-01T18:39:24.936Z'::timestamptz AT TIME ZONE 'UTC')) AND d.\"countryCode\" IN ('GB','IE') AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte('%conseillère%') GROUP BY d.title\n    ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40"
+     }
+    ],
+    "suggestions": [],
+    "doublons": 0
+   },
+   {
+    "marche": "GB",
+    "frappe": "vendeu",
+    "ms": 93.923,
+    "requetes": 3,
+    "releves": [
+     {
+      "ms": 18.792,
+      "sql": "\n    SELECT EXISTS(SELECT 1 FROM \"SearchGeneration\" WHERE version='search-5-20260924-v2' AND \"readyAt\" IS NOT NULL) ready,\n      EXISTS(SELECT 1 FROM \"SearchPending\" WHERE version='search-5-20260924-v2' AND \"queuedAt\" < now()-interval '300 seconds') stale"
+     },
+     {
+      "ms": 20.699,
+      "sql": "SELECT revision FROM \"SearchMetadata\" WHERE id='active'"
+     },
+     {
+      "ms": 54.432,
+      "sql": "\n    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids FROM (\n      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id FROM \"Job\" j\n       WHERE j.\"isActive\" AND j.\"mergedIntoId\" IS NULL AND EXISTS (\n    SELECT 1 FROM \"JobSource\" available_source WHERE available_source.\"jobId\" = j.id\n      AND available_source.\"isActive\" AND (available_source.\"expiresAt\" IS NULL OR available_source.\"expiresAt\" > ('2026-10-01T18:39:26.312Z'::timestamptz AT TIME ZONE 'UTC'))) AND j.\"countryCode\" IN ('GB','IE') AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte('%vendeu%') GROUP BY j.title\n      UNION ALL\n      SELECT d.title, count(*), 'cw_' || min(d.id) FROM \"DirectOffer\" d\n       WHERE d.eligible AND (d.\"validThrough\" IS NULL OR d.\"validThrough\" > ('2026-10-01T18:39:26.312Z'::timestamptz AT TIME ZONE 'UTC')) AND d.\"countryCode\" IN ('GB','IE') AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte('%vendeu%') GROUP BY d.title\n    ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40"
+     }
+    ],
+    "suggestions": [],
+    "doublons": 0
+   },
+   {
+    "marche": "GB",
+    "frappe": "store man",
+    "ms": 113.628,
+    "requetes": 4,
+    "releves": [
+     {
+      "ms": 19.029,
+      "sql": "\n    SELECT EXISTS(SELECT 1 FROM \"SearchGeneration\" WHERE version='search-5-20260924-v2' AND \"readyAt\" IS NOT NULL) ready,\n      EXISTS(SELECT 1 FROM \"SearchPending\" WHERE version='search-5-20260924-v2' AND \"queuedAt\" < now()-interval '300 seconds') stale"
+     },
+     {
+      "ms": 19.281,
+      "sql": "SELECT revision FROM \"SearchMetadata\" WHERE id='active'"
+     },
+     {
+      "ms": 56.675,
+      "sql": "\n    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids FROM (\n      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id FROM \"Job\" j\n       WHERE j.\"isActive\" AND j.\"mergedIntoId\" IS NULL AND EXISTS (\n    SELECT 1 FROM \"JobSource\" available_source WHERE available_source.\"jobId\" = j.id\n      AND available_source.\"isActive\" AND (available_source.\"expiresAt\" IS NULL OR available_source.\"expiresAt\" > ('2026-10-01T18:39:27.559Z'::timestamptz AT TIME ZONE 'UTC'))) AND j.\"countryCode\" IN ('GB','IE') AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte('%store man%') GROUP BY j.title\n      UNION ALL\n      SELECT d.title, count(*), 'cw_' || min(d.id) FROM \"DirectOffer\" d\n       WHERE d.eligible AND (d.\"validThrough\" IS NULL OR d.\"validThrough\" > ('2026-10-01T18:39:27.559Z'::timestamptz AT TIME ZONE 'UTC')) AND d.\"countryCode\" IN ('GB','IE') AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte('%store man%') GROUP BY d.title\n    ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40"
+     },
+     {
+      "ms": 18.643,
+      "sql": "SELECT position FROM (SELECT 0::int AS position WHERE EXISTS (SELECT 1 FROM \"SearchDocument\" s\n        WHERE s.version = 'search-5-20260924-v2' AND s.id = ANY(ARRAY['cmue2bvga0467pc34sv35p9vn','cmuh8kxmf3n28p4346ha85c08','cmueduxaj5gfroi359dmza3hz']::text[]::text[]) AND (s.vector @@ (((to_tsquery('simple', '(''anthropologie'':AB)')) || to_tsquery('simple', 'cwif48c325867ce1aa54f15a295d628e5ac'))) AND coalesce(s.vector, ''::tsvector) @@ (((to_tsquery('simple', '(''assistant'':AC <-> ''store'':AC <-> ''manager'':AC) | (''assistant'':AC <-> ''shop'':AC <-> ''manager'':AC) | (''assistant'':AC <-> ''boutique'':AC <-> ''manager'':AC) | (''deputy'':AC <-> ''store'':AC <-> ''manager'':AC) | (''directeur'':AC <-> ''adjoint'':AC <-> ''de'':AC <-> ''magasin'':AC) | (''directrice'':AC <-> ''adjointe'':AC <-> ''de'':AC <-> ''magasin'':AC) | (''responsable'':AC <-> ''adjoint'':AC <-> ''de'':AC <-> ''boutique'':AC) | (''responsable'':AC <-> ''adjointe'':AC <-> ''de'':AC <-> ''boutique'':AC) | (''assistant'':AC <-> ''store'':AC <-> ''leader'':AC) | (''managera'':AC <-> ''adjuncta'':AC <-> ''magazin'':AC) | (''assistant'':AC <-> ''store'':AC <-> ''director'':AC) | (''deputy'':AC <-> ''store'':AC <-> ''director'':AC) | (''assistant'':AC <-> ''boutique'':AC <-> ''director'':AC) | (''deputy'':AC <-> ''boutique'':AC <-> ''director'':AC)')) && !!to_tsquery('simple','cwhastitlerole')) || to_tsquery('simple', 'cwif874a79913958de1e30f4fcaf21d4d8b'))))) v"
+     }
+    ],
+    "suggestions": [
+     {
+      "valeur": "Store manager",
+      "metier": {
+       "identifiant": "store-manager",
+       "libelle": "Store manager"
+      },
+      "nature": "metier",
+      "offresAuChoix": 174,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     },
+     {
+      "valeur": "Assistant store manager",
+      "metier": {
+       "identifiant": "assistant-store-manager",
+       "libelle": "Assistant store manager"
+      },
+      "nature": "metier",
+      "offresAuChoix": 163,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     },
+     {
+      "valeur": "Anthropologie assistant store manager",
+      "metier": null,
+      "nature": "intitule",
+      "offresAuChoix": 3,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     }
+    ],
+    "doublons": 0
+   },
+   {
+    "marche": "GB",
+    "frappe": "responsable bout",
+    "ms": 95.733,
+    "requetes": 3,
+    "releves": [
+     {
+      "ms": 20.566,
+      "sql": "\n    SELECT EXISTS(SELECT 1 FROM \"SearchGeneration\" WHERE version='search-5-20260924-v2' AND \"readyAt\" IS NOT NULL) ready,\n      EXISTS(SELECT 1 FROM \"SearchPending\" WHERE version='search-5-20260924-v2' AND \"queuedAt\" < now()-interval '300 seconds') stale"
+     },
+     {
+      "ms": 17.589,
+      "sql": "SELECT revision FROM \"SearchMetadata\" WHERE id='active'"
+     },
+     {
+      "ms": 57.578,
+      "sql": "\n    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids FROM (\n      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id FROM \"Job\" j\n       WHERE j.\"isActive\" AND j.\"mergedIntoId\" IS NULL AND EXISTS (\n    SELECT 1 FROM \"JobSource\" available_source WHERE available_source.\"jobId\" = j.id\n      AND available_source.\"isActive\" AND (available_source.\"expiresAt\" IS NULL OR available_source.\"expiresAt\" > ('2026-10-01T18:39:30.400Z'::timestamptz AT TIME ZONE 'UTC'))) AND j.\"countryCode\" IN ('GB','IE') AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte('%responsable bout%') GROUP BY j.title\n      UNION ALL\n      SELECT d.title, count(*), 'cw_' || min(d.id) FROM \"DirectOffer\" d\n       WHERE d.eligible AND (d.\"validThrough\" IS NULL OR d.\"validThrough\" > ('2026-10-01T18:39:30.400Z'::timestamptz AT TIME ZONE 'UTC')) AND d.\"countryCode\" IN ('GB','IE') AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte('%responsable bout%') GROUP BY d.title\n    ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40"
+     }
+    ],
+    "suggestions": [],
+    "doublons": 0
+   },
+   {
+    "marche": "GB",
+    "frappe": "visual",
+    "ms": 117.78999999999999,
+    "requetes": 4,
+    "releves": [
+     {
+      "ms": 19.223,
+      "sql": "\n    SELECT EXISTS(SELECT 1 FROM \"SearchGeneration\" WHERE version='search-5-20260924-v2' AND \"readyAt\" IS NOT NULL) ready,\n      EXISTS(SELECT 1 FROM \"SearchPending\" WHERE version='search-5-20260924-v2' AND \"queuedAt\" < now()-interval '300 seconds') stale"
+     },
+     {
+      "ms": 19.148,
+      "sql": "SELECT revision FROM \"SearchMetadata\" WHERE id='active'"
+     },
+     {
+      "ms": 57.835,
+      "sql": "\n    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids FROM (\n      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id FROM \"Job\" j\n       WHERE j.\"isActive\" AND j.\"mergedIntoId\" IS NULL AND EXISTS (\n    SELECT 1 FROM \"JobSource\" available_source WHERE available_source.\"jobId\" = j.id\n      AND available_source.\"isActive\" AND (available_source.\"expiresAt\" IS NULL OR available_source.\"expiresAt\" > ('2026-10-01T18:39:31.945Z'::timestamptz AT TIME ZONE 'UTC'))) AND j.\"countryCode\" IN ('GB','IE') AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte('%visual%') GROUP BY j.title\n      UNION ALL\n      SELECT d.title, count(*), 'cw_' || min(d.id) FROM \"DirectOffer\" d\n       WHERE d.eligible AND (d.\"validThrough\" IS NULL OR d.\"validThrough\" > ('2026-10-01T18:39:31.945Z'::timestamptz AT TIME ZONE 'UTC')) AND d.\"countryCode\" IN ('GB','IE') AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte('%visual%') GROUP BY d.title\n    ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40"
+     },
+     {
+      "ms": 21.584,
+      "sql": "SELECT position FROM (SELECT 0::int AS position WHERE EXISTS (SELECT 1 FROM \"SearchDocument\" s\n        WHERE s.version = 'search-5-20260924-v2' AND s.id = ANY(ARRAY['cmunsqsin02kbmu6inlpcbn8g','cmunsqpuv02gmmu6ilx8lbutt','cmunsq81r020hmu6irz2gadyb']::text[]::text[]) AND (s.vector @@ ((to_tsquery('simple', '(''centre'')'))) AND coalesce(s.vector, ''::tsvector) @@ (((to_tsquery('simple', '(''visual'':AC <-> ''merchandiser'':AC) | (''marchandiseur'':AC <-> ''visuel'':AC) | (''marchandiseuse'':AC <-> ''visuelle'':AC) | (''vitriniste'':AC) | (''window'':AC <-> ''dresser'':AC)')) && !!to_tsquery('simple','cwhastitlerole')) || to_tsquery('simple', 'cwif2a853eb7be75af34106cd53740dffc7')))) UNION ALL SELECT 1::int AS position WHERE EXISTS (SELECT 1 FROM \"SearchDocument\" s\n        WHERE s.version = 'search-5-20260924-v2' AND s.id = ANY(ARRAY['cmueasmnb0f4soi35txyeip2b']::text[]::text[]) AND s.vector @@ (((to_tsquery('simple', '(''التنسيق'':AC <-> ''البصري'':AC) | (''visual'':AC <-> ''merchandising'':AC) | (''ヒ'':AC <-> ''シ'':AC <-> ''ュ'':AC <-> ''ア'':AC <-> ''ル'':AC <-> ''マ'':AC <-> ''ー'':AC <-> ''チ'':AC <-> ''ャ'':AC <-> ''ン'':AC <-> ''タ'':AC <-> ''イ'':AC <-> ''シ'':AC <-> ''ン'':AC <-> ''ク'':AC) | (''비주얼'':AC <-> ''머천다이징'':AC) | (''การจดดสเพลยหนาราน'':AC) | (''trung'':AC <-> ''bay'':AC <-> ''san'':AC <-> ''pham'':AC) | (''视'':AC <-> ''觉'':AC <-> ''陈'':AC <-> ''列'':AC) | (''視'':AC <-> ''覺'':AC <-> ''陳'':AC <-> ''列'':AC)')) || to_tsquery('simple', 'cwi629a6aced963b7040c2c5468fd422ea0')) && (to_tsquery('simple', '(''assistant'')'))))) v"
+     }
+    ],
+    "suggestions": [
+     {
+      "valeur": "Visual merchandiser",
+      "metier": {
+       "identifiant": "visual-merchandiser",
+       "libelle": "Visual merchandiser"
+      },
+      "nature": "metier",
+      "offresAuChoix": 81,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     },
+     {
+      "valeur": "Visual Merchandising Manager",
+      "metier": {
+       "identifiant": "responsable-vm",
+       "libelle": "Visual Merchandising Manager"
+      },
+      "nature": "metier",
+      "offresAuChoix": 8,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     },
+     {
+      "valeur": "Centre visual merchandiser",
+      "metier": null,
+      "nature": "intitule",
+      "offresAuChoix": 4,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     },
+     {
+      "valeur": "Visual merchandising assistant",
+      "metier": null,
+      "nature": "intitule",
+      "offresAuChoix": 56,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     }
+    ],
+    "doublons": 0
+   },
+   {
+    "marche": "GB",
+    "frappe": "make up",
+    "ms": 95.947,
+    "requetes": 3,
+    "releves": [
+     {
+      "ms": 20.616,
+      "sql": "\n    SELECT EXISTS(SELECT 1 FROM \"SearchGeneration\" WHERE version='search-5-20260924-v2' AND \"readyAt\" IS NOT NULL) ready,\n      EXISTS(SELECT 1 FROM \"SearchPending\" WHERE version='search-5-20260924-v2' AND \"queuedAt\" < now()-interval '300 seconds') stale"
+     },
+     {
+      "ms": 21.7,
+      "sql": "SELECT revision FROM \"SearchMetadata\" WHERE id='active'"
+     },
+     {
+      "ms": 53.631,
+      "sql": "\n    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids FROM (\n      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id FROM \"Job\" j\n       WHERE j.\"isActive\" AND j.\"mergedIntoId\" IS NULL AND EXISTS (\n    SELECT 1 FROM \"JobSource\" available_source WHERE available_source.\"jobId\" = j.id\n      AND available_source.\"isActive\" AND (available_source.\"expiresAt\" IS NULL OR available_source.\"expiresAt\" > ('2026-10-01T18:39:34.721Z'::timestamptz AT TIME ZONE 'UTC'))) AND j.\"countryCode\" IN ('GB','IE') AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte('%make up%') GROUP BY j.title\n      UNION ALL\n      SELECT d.title, count(*), 'cw_' || min(d.id) FROM \"DirectOffer\" d\n       WHERE d.eligible AND (d.\"validThrough\" IS NULL OR d.\"validThrough\" > ('2026-10-01T18:39:34.721Z'::timestamptz AT TIME ZONE 'UTC')) AND d.\"countryCode\" IN ('GB','IE') AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte('%make up%') GROUP BY d.title\n    ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40"
+     }
+    ],
+    "suggestions": [
+     {
+      "valeur": "Makeup artist",
+      "metier": {
+       "identifiant": "makeup-artist",
+       "libelle": "Makeup artist"
+      },
+      "nature": "metier",
+      "offresAuChoix": 47,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     }
+    ],
+    "doublons": 0
+   },
+   {
+    "marche": "GB",
+    "frappe": "sales ad",
+    "ms": 214.692,
+    "requetes": 4,
+    "releves": [
+     {
+      "ms": 20.582,
+      "sql": "\n    SELECT EXISTS(SELECT 1 FROM \"SearchGeneration\" WHERE version='search-5-20260924-v2' AND \"readyAt\" IS NOT NULL) ready,\n      EXISTS(SELECT 1 FROM \"SearchPending\" WHERE version='search-5-20260924-v2' AND \"queuedAt\" < now()-interval '300 seconds') stale"
+     },
+     {
+      "ms": 15.704,
+      "sql": "SELECT revision FROM \"SearchMetadata\" WHERE id='active'"
+     },
+     {
+      "ms": 67.051,
+      "sql": "\n    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids FROM (\n      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id FROM \"Job\" j\n       WHERE j.\"isActive\" AND j.\"mergedIntoId\" IS NULL AND EXISTS (\n    SELECT 1 FROM \"JobSource\" available_source WHERE available_source.\"jobId\" = j.id\n      AND available_source.\"isActive\" AND (available_source.\"expiresAt\" IS NULL OR available_source.\"expiresAt\" > ('2026-10-01T18:39:36.283Z'::timestamptz AT TIME ZONE 'UTC'))) AND j.\"countryCode\" IN ('GB','IE') AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte('%sales ad%') GROUP BY j.title\n      UNION ALL\n      SELECT d.title, count(*), 'cw_' || min(d.id) FROM \"DirectOffer\" d\n       WHERE d.eligible AND (d.\"validThrough\" IS NULL OR d.\"validThrough\" > ('2026-10-01T18:39:36.283Z'::timestamptz AT TIME ZONE 'UTC')) AND d.\"countryCode\" IN ('GB','IE') AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte('%sales ad%') GROUP BY d.title\n    ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40"
+     },
+     {
+      "ms": 111.355,
+      "sql": "SELECT position FROM (SELECT 0::int AS position WHERE EXISTS (SELECT 1 FROM \"SearchDocument\" s\n        WHERE s.version = 'search-5-20260924-v2' AND s.id = ANY(ARRAY['cmueasmzg0f85oi35eoosn61y']::text[]::text[]) AND (s.vector @@ ((to_tsquery('simple', '(''christmas'')'))) AND coalesce(s.vector, ''::tsvector) @@ (((to_tsquery('simple', '(''sales'':AC <-> ''advisor'':AC) | (''sales'':AC <-> ''assistant'':AC) | (''client'':AC <-> ''advisor'':AC) | (''luxury'':AC <-> ''sales'':AC <-> ''advisor'':AC) | (''conseillere'':AC <-> ''de'':AC <-> ''vente'':AC) | (''conseiller'':AC <-> ''vente'':AC) | (''conseillere'':AC <-> ''vente'':AC) | (''fashion'':AC <-> ''advisor'':AC) | (''sales'':AC <-> ''associate'':AC) | (''selling'':AC <-> ''associate'':AC) | (''vendeur'':AC) | (''vendeuse'':AC) | (''conseillers'':AC <-> ''de'':AC <-> ''vente'':AC) | (''conseiller'':AC <-> ''vendeur'':AC) | (''conseillere'':AC <-> ''vendeuse'':AC) | (''associe'':AC <-> ''aux'':AC <-> ''ventes'':AC) | (''associee'':AC <-> ''aux'':AC <-> ''ventes'':AC) | (''addetto'':AC <-> ''vendite'':AC) | (''addetta'':AC <-> ''vendite'':AC) | (''addetti'':AC <-> ''vendite'':AC) | (''addett'':AC <-> ''vendite'':AC) | (''vendedor'':AC) | (''vendedora'':AC) | (''verkaufer'':AC) | (''verkauferin'':AC) | (''verkaufsberaterin'':AC) | (''asesora'':AC <-> ''de'':AC <-> ''ventas'':AC) | (''consultora'':AC <-> ''de'':AC <-> ''vendas'':AC) | (''prodejni'':AC <-> ''poradkyne'':AC) | (''butiksassistent'':AC) | (''lucrator'':AC <-> ''comercial'':AC) | (''lucratoare'':AC <-> ''comerciala'':AC) | (''addetto'':AC <-> ''alle'':AC <-> ''vendite'':AC) | (''addetta'':AC <-> ''alle'':AC <-> ''vendite'':AC) | (''dependiente'':AC) | (''dependienta'':AC) | (''winkelmedewerker'':AC) | (''assistente'':AC <-> ''de'':AC <-> ''loja'':AC) | (''vendedor'':AC <-> ''de'':AC <-> ''loja'':AC) | (''vendedora'':AC <-> ''de'':AC <-> ''loja'':AC) | (''sprzedawca'':AC) | (''sprzedawczyni'':AC) | (''butikssaljare'':AC) | (''satıs'':AC <-> ''elemanı'':AC) | (''pembantu'':AC <-> ''kedai'':AC) | (''butikkmedarbeider'':AC) | (''nhan'':AC <-> ''vien'':AC <-> ''ban'':AC <-> ''hang'':AC) | (''prodavac'':AC) | (''prodavacka'':AC) | (''bolti'':AC <-> ''elado'':AC)')) && !!to_tsquery('simple','cwhastitlerole')) || to_tsquery('simple', 'cwif71763319951812f7b29027c793b48d5')))) UNION ALL SELECT 1::int AS position WHERE EXISTS (SELECT 1 FROM \"SearchDocument\" s\n        WHERE s.version = 'search-5-20260924-v2' AND s.id = ANY(ARRAY['cmu86yzeu000aqf6eh88kefx6']::text[]::text[]) AND (coalesce(s.vector, ''::tsvector) @@ (((to_tsquery('simple', '(''sales'':AC <-> ''advisor'':AC) | (''sales'':AC <-> ''assistant'':AC) | (''client'':AC <-> ''advisor'':AC) | (''luxury'':AC <-> ''sales'':AC <-> ''advisor'':AC) | (''conseillere'':AC <-> ''de'':AC <-> ''vente'':AC) | (''conseiller'':AC <-> ''vente'':AC) | (''conseillere'':AC <-> ''vente'':AC) | (''fashion'':AC <-> ''advisor'':AC) | (''sales'':AC <-> ''associate'':AC) | (''selling'':AC <-> ''associate'':AC) | (''vendeur'':AC) | (''vendeuse'':AC) | (''conseillers'':AC <-> ''de'':AC <-> ''vente'':AC) | (''conseiller'':AC <-> ''vendeur'':AC) | (''conseillere'':AC <-> ''vendeuse'':AC) | (''associe'':AC <-> ''aux'':AC <-> ''ventes'':AC) | (''associee'':AC <-> ''aux'':AC <-> ''ventes'':AC) | (''addetto'':AC <-> ''vendite'':AC) | (''addetta'':AC <-> ''vendite'':AC) | (''addetti'':AC <-> ''vendite'':AC) | (''addett'':AC <-> ''vendite'':AC) | (''vendedor'':AC) | (''vendedora'':AC) | (''verkaufer'':AC) | (''verkauferin'':AC) | (''verkaufsberaterin'':AC) | (''asesora'':AC <-> ''de'':AC <-> ''ventas'':AC) | (''consultora'':AC <-> ''de'':AC <-> ''vendas'':AC) | (''prodejni'':AC <-> ''poradkyne'':AC) | (''butiksassistent'':AC) | (''lucrator'':AC <-> ''comercial'':AC) | (''lucratoare'':AC <-> ''comerciala'':AC) | (''addetto'':AC <-> ''alle'':AC <-> ''vendite'':AC) | (''addetta'':AC <-> ''alle'':AC <-> ''vendite'':AC) | (''dependiente'':AC) | (''dependienta'':AC) | (''winkelmedewerker'':AC) | (''assistente'':AC <-> ''de'':AC <-> ''loja'':AC) | (''vendedor'':AC <-> ''de'':AC <-> ''loja'':AC) | (''vendedora'':AC <-> ''de'':AC <-> ''loja'':AC) | (''sprzedawca'':AC) | (''sprzedawczyni'':AC) | (''butikssaljare'':AC) | (''satıs'':AC <-> ''elemanı'':AC) | (''pembantu'':AC <-> ''kedai'':AC) | (''butikkmedarbeider'':AC) | (''nhan'':AC <-> ''vien'':AC <-> ''ban'':AC <-> ''hang'':AC) | (''prodavac'':AC) | (''prodavacka'':AC) | (''bolti'':AC <-> ''elado'':AC)')) && !!to_tsquery('simple','cwhastitlerole')) || to_tsquery('simple', 'cwif71763319951812f7b29027c793b48d5')) AND coalesce(s.vector, ''::tsvector) @@ (((to_tsquery('simple', '(''keyholder'':AC) | (''schlusseltragerin'':AC) | (''encargada'':AC <-> ''de'':AC <-> ''llaves'':AC)')) && !!to_tsquery('simple','cwhastitlerole')) || to_tsquery('simple', 'cwi1d5758091a6d44c2e27753a7567d8ce4')))) UNION ALL SELECT 2::int AS position WHERE EXISTS (SELECT 1 FROM \"SearchDocument\" s\n        WHERE s.version = 'search-5-20260924-v2' AND s.id = ANY(ARRAY['cmueb11px0n5yoi35s04fzrtw','cmueb0lj70l94oi35yvn11ns3']::text[]::text[]) AND (s.vector @@ ((to_tsquery('simple', '(''team'')')) && (to_tsquery('simple', '(''leader'')'))) AND coalesce(s.vector, ''::tsvector) @@ (((to_tsquery('simple', '(''sales'':AC <-> ''advisor'':AC) | (''sales'':AC <-> ''assistant'':AC) | (''client'':AC <-> ''advisor'':AC) | (''luxury'':AC <-> ''sales'':AC <-> ''advisor'':AC) | (''conseillere'':AC <-> ''de'':AC <-> ''vente'':AC) | (''conseiller'':AC <-> ''vente'':AC) | (''conseillere'':AC <-> ''vente'':AC) | (''fashion'':AC <-> ''advisor'':AC) | (''sales'':AC <-> ''associate'':AC) | (''selling'':AC <-> ''associate'':AC) | (''vendeur'':AC) | (''vendeuse'':AC) | (''conseillers'':AC <-> ''de'':AC <-> ''vente'':AC) | (''conseiller'':AC <-> ''vendeur'':AC) | (''conseillere'':AC <-> ''vendeuse'':AC) | (''associe'':AC <-> ''aux'':AC <-> ''ventes'':AC) | (''associee'':AC <-> ''aux'':AC <-> ''ventes'':AC) | (''addetto'':AC <-> ''vendite'':AC) | (''addetta'':AC <-> ''vendite'':AC) | (''addetti'':AC <-> ''vendite'':AC) | (''addett'':AC <-> ''vendite'':AC) | (''vendedor'':AC) | (''vendedora'':AC) | (''verkaufer'':AC) | (''verkauferin'':AC) | (''verkaufsberaterin'':AC) | (''asesora'':AC <-> ''de'':AC <-> ''ventas'':AC) | (''consultora'':AC <-> ''de'':AC <-> ''vendas'':AC) | (''prodejni'':AC <-> ''poradkyne'':AC) | (''butiksassistent'':AC) | (''lucrator'':AC <-> ''comercial'':AC) | (''lucratoare'':AC <-> ''comerciala'':AC) | (''addetto'':AC <-> ''alle'':AC <-> ''vendite'':AC) | (''addetta'':AC <-> ''alle'':AC <-> ''vendite'':AC) | (''dependiente'':AC) | (''dependienta'':AC) | (''winkelmedewerker'':AC) | (''assistente'':AC <-> ''de'':AC <-> ''loja'':AC) | (''vendedor'':AC <-> ''de'':AC <-> ''loja'':AC) | (''vendedora'':AC <-> ''de'':AC <-> ''loja'':AC) | (''sprzedawca'':AC) | (''sprzedawczyni'':AC) | (''butikssaljare'':AC) | (''satıs'':AC <-> ''elemanı'':AC) | (''pembantu'':AC <-> ''kedai'':AC) | (''butikkmedarbeider'':AC) | (''nhan'':AC <-> ''vien'':AC <-> ''ban'':AC <-> ''hang'':AC) | (''prodavac'':AC) | (''prodavacka'':AC) | (''bolti'':AC <-> ''elado'':AC)')) && !!to_tsquery('simple','cwhastitlerole')) || to_tsquery('simple', 'cwif71763319951812f7b29027c793b48d5')))) UNION ALL SELECT 3::int AS position WHERE EXISTS (SELECT 1 FROM \"SearchDocument\" s\n        WHERE s.version = 'search-5-20260924-v2' AND s.id = ANY(ARRAY['cmudw5xk83pu8oa34c2shjn16']::text[]::text[]) AND (s.vector @@ ((to_tsquery('simple', '(''seasonal'')'))) AND coalesce(s.vector, ''::tsvector) @@ (((to_tsquery('simple', '(''sales'':AC <-> ''advisor'':AC) | (''sales'':AC <-> ''assistant'':AC) | (''client'':AC <-> ''advisor'':AC) | (''luxury'':AC <-> ''sales'':AC <-> ''advisor'':AC) | (''conseillere'':AC <-> ''de'':AC <-> ''vente'':AC) | (''conseiller'':AC <-> ''vente'':AC) | (''conseillere'':AC <-> ''vente'':AC) | (''fashion'':AC <-> ''advisor'':AC) | (''sales'':AC <-> ''associate'':AC) | (''selling'':AC <-> ''associate'':AC) | (''vendeur'':AC) | (''vendeuse'':AC) | (''conseillers'':AC <-> ''de'':AC <-> ''vente'':AC) | (''conseiller'':AC <-> ''vendeur'':AC) | (''conseillere'':AC <-> ''vendeuse'':AC) | (''associe'':AC <-> ''aux'':AC <-> ''ventes'':AC) | (''associee'':AC <-> ''aux'':AC <-> ''ventes'':AC) | (''addetto'':AC <-> ''vendite'':AC) | (''addetta'':AC <-> ''vendite'':AC) | (''addetti'':AC <-> ''vendite'':AC) | (''addett'':AC <-> ''vendite'':AC) | (''vendedor'':AC) | (''vendedora'':AC) | (''verkaufer'':AC) | (''verkauferin'':AC) | (''verkaufsberaterin'':AC) | (''asesora'':AC <-> ''de'':AC <-> ''ventas'':AC) | (''consultora'':AC <-> ''de'':AC <-> ''vendas'':AC) | (''prodejni'':AC <-> ''poradkyne'':AC) | (''butiksassistent'':AC) | (''lucrator'':AC <-> ''comercial'':AC) | (''lucratoare'':AC <-> ''comerciala'':AC) | (''addetto'':AC <-> ''alle'':AC <-> ''vendite'':AC) | (''addetta'':AC <-> ''alle'':AC <-> ''vendite'':AC) | (''dependiente'':AC) | (''dependienta'':AC) | (''winkelmedewerker'':AC) | (''assistente'':AC <-> ''de'':AC <-> ''loja'':AC) | (''vendedor'':AC <-> ''de'':AC <-> ''loja'':AC) | (''vendedora'':AC <-> ''de'':AC <-> ''loja'':AC) | (''sprzedawca'':AC) | (''sprzedawczyni'':AC) | (''butikssaljare'':AC) | (''satıs'':AC <-> ''elemanı'':AC) | (''pembantu'':AC <-> ''kedai'':AC) | (''butikkmedarbeider'':AC) | (''nhan'':AC <-> ''vien'':AC <-> ''ban'':AC <-> ''hang'':AC) | (''prodavac'':AC) | (''prodavacka'':AC) | (''bolti'':AC <-> ''elado'':AC)')) && !!to_tsquery('simple','cwhastitlerole')) || to_tsquery('simple', 'cwif71763319951812f7b29027c793b48d5')))) UNION ALL SELECT 4::int AS position WHERE EXISTS (SELECT 1 FROM \"SearchDocument\" s\n        WHERE s.version = 'search-5-20260924-v2' AND s.id = ANY(ARRAY['cmuoawhtn05rtof34ktcy6764','cmuoawi5d05sfof34tt8j9gq6','cmuoawhzb05s4of34i5f8yup6']::text[]::text[]) AND (s.vector @@ ((to_tsquery('simple', '(''gifting'')'))) AND coalesce(s.vector, ''::tsvector) @@ (((to_tsquery('simple', '(''sales'':AC <-> ''advisor'':AC) | (''sales'':AC <-> ''assistant'':AC) | (''client'':AC <-> ''advisor'':AC) | (''luxury'':AC <-> ''sales'':AC <-> ''advisor'':AC) | (''conseillere'':AC <-> ''de'':AC <-> ''vente'':AC) | (''conseiller'':AC <-> ''vente'':AC) | (''conseillere'':AC <-> ''vente'':AC) | (''fashion'':AC <-> ''advisor'':AC) | (''sales'':AC <-> ''associate'':AC) | (''selling'':AC <-> ''associate'':AC) | (''vendeur'':AC) | (''vendeuse'':AC) | (''conseillers'':AC <-> ''de'':AC <-> ''vente'':AC) | (''conseiller'':AC <-> ''vendeur'':AC) | (''conseillere'':AC <-> ''vendeuse'':AC) | (''associe'':AC <-> ''aux'':AC <-> ''ventes'':AC) | (''associee'':AC <-> ''aux'':AC <-> ''ventes'':AC) | (''addetto'':AC <-> ''vendite'':AC) | (''addetta'':AC <-> ''vendite'':AC) | (''addetti'':AC <-> ''vendite'':AC) | (''addett'':AC <-> ''vendite'':AC) | (''vendedor'':AC) | (''vendedora'':AC) | (''verkaufer'':AC) | (''verkauferin'':AC) | (''verkaufsberaterin'':AC) | (''asesora'':AC <-> ''de'':AC <-> ''ventas'':AC) | (''consultora'':AC <-> ''de'':AC <-> ''vendas'':AC) | (''prodejni'':AC <-> ''poradkyne'':AC) | (''butiksassistent'':AC) | (''lucrator'':AC <-> ''comercial'':AC) | (''lucratoare'':AC <-> ''comerciala'':AC) | (''addetto'':AC <-> ''alle'':AC <-> ''vendite'':AC) | (''addetta'':AC <-> ''alle'':AC <-> ''vendite'':AC) | (''dependiente'':AC) | (''dependienta'':AC) | (''winkelmedewerker'':AC) | (''assistente'':AC <-> ''de'':AC <-> ''loja'':AC) | (''vendedor'':AC <-> ''de'':AC <-> ''loja'':AC) | (''vendedora'':AC <-> ''de'':AC <-> ''loja'':AC) | (''sprzedawca'':AC) | (''sprzedawczyni'':AC) | (''butikssaljare'':AC) | (''satıs'':AC <-> ''elemanı'':AC) | (''pembantu'':AC <-> ''kedai'':AC) | (''butikkmedarbeider'':AC) | (''nhan'':AC <-> ''vien'':AC <-> ''ban'':AC <-> ''hang'':AC) | (''prodavac'':AC) | (''prodavacka'':AC) | (''bolti'':AC <-> ''elado'':AC)')) && !!to_tsquery('simple','cwhastitlerole')) || to_tsquery('simple', 'cwif71763319951812f7b29027c793b48d5')))) UNION ALL SELECT 5::int AS position WHERE EXISTS (SELECT 1 FROM \"SearchDocument\" s\n        WHERE s.version = 'search-5-20260924-v2' AND s.id = ANY(ARRAY['cmulift191hrrt2340mfvmn81','cmufr5vh20p21my33lry6m37e','cmumx1ppi29wrtj35zq6wkbsg']::text[]::text[]) AND s.vector @@ (((to_tsquery('simple', '(''استشارات'':AC <-> ''المبيعات'':AC) | (''prodejni'':AC <-> ''poradenstvi'':AC) | (''salgsradgivning'':AC) | (''verkaufsberatung'':AC) | (''συμβουλευτικη'':AC <-> ''πωλησεων'':AC) | (''retail'':AC <-> ''sales'':AC) | (''asesoria'':AC <-> ''de'':AC <-> ''ventas'':AC) | (''conseil'':AC <-> ''de'':AC <-> ''vente'':AC) | (''ertekesitesi'':AC <-> ''tanacsadas'':AC) | (''consulenza'':AC <-> ''di'':AC <-> ''vendita'':AC) | (''販'':AC <-> ''売'':AC <-> ''接'':AC <-> ''客'':AC) | (''판매'':AC <-> ''컨설팅'':AC) | (''bidang'':AC <-> ''jualan'':AC) | (''verkoopadvies'':AC) | (''doradztwo'':AC <-> ''sprzedazy'':AC) | (''aconselhamento'':AC <-> ''de'':AC <-> ''vendas'':AC) | (''consultanta'':AC <-> ''de'':AC <-> ''vanzari'':AC) | (''saljradgivning'':AC) | (''งานขายปลก'':AC) | (''satıs'':AC <-> ''danısmanlıgı'':AC) | (''tu'':AC <-> ''van'':AC <-> ''ban'':AC <-> ''hang'':AC) | (''consultoria'':AC <-> ''de'':AC <-> ''vendas'':AC) | (''销'':AC <-> ''售'':AC <-> ''咨'':AC <-> ''询'':AC <-> ''类'':AC) | (''銷'':AC <-> ''售'':AC <-> ''諮'':AC <-> ''詢'':AC <-> ''類'':AC) | (''sales'':AC <-> ''advisory'':AC)')) || to_tsquery('simple', 'cwi3da60edf22daa93b17672e07f4202f23')) && (to_tsquery('simple', '(''advisor'')'))))) v"
+     }
+    ],
+    "suggestions": [
+     {
+      "valeur": "Sales advisor",
+      "metier": {
+       "identifiant": "sales-advisor",
+       "libelle": "Sales advisor"
+      },
+      "nature": "metier",
+      "offresAuChoix": 1251,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     },
+     {
+      "valeur": "Christmas sales advisor",
+      "metier": null,
+      "nature": "intitule",
+      "offresAuChoix": 170,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     },
+     {
+      "valeur": "Seasonal sales advisor",
+      "metier": null,
+      "nature": "intitule",
+      "offresAuChoix": 243,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     },
+     {
+      "valeur": "Gifting & sales advisor",
+      "metier": null,
+      "nature": "intitule",
+      "offresAuChoix": 4,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     },
+     {
+      "valeur": "Retail sales advisor",
+      "metier": null,
+      "nature": "intitule",
+      "offresAuChoix": 306,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     }
+    ],
+    "doublons": 0
+   },
+   {
+    "marche": "GB",
+    "frappe": "assistant",
+    "ms": 139.21499999999997,
+    "requetes": 4,
+    "releves": [
+     {
+      "ms": 19.186,
+      "sql": "\n    SELECT EXISTS(SELECT 1 FROM \"SearchGeneration\" WHERE version='search-5-20260924-v2' AND \"readyAt\" IS NOT NULL) ready,\n      EXISTS(SELECT 1 FROM \"SearchPending\" WHERE version='search-5-20260924-v2' AND \"queuedAt\" < now()-interval '300 seconds') stale"
+     },
+     {
+      "ms": 21.569,
+      "sql": "SELECT revision FROM \"SearchMetadata\" WHERE id='active'"
+     },
+     {
+      "ms": 76.957,
+      "sql": "\n    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids FROM (\n      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id FROM \"Job\" j\n       WHERE j.\"isActive\" AND j.\"mergedIntoId\" IS NULL AND EXISTS (\n    SELECT 1 FROM \"JobSource\" available_source WHERE available_source.\"jobId\" = j.id\n      AND available_source.\"isActive\" AND (available_source.\"expiresAt\" IS NULL OR available_source.\"expiresAt\" > ('2026-10-01T18:39:39.441Z'::timestamptz AT TIME ZONE 'UTC'))) AND j.\"countryCode\" IN ('GB','IE') AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte('%assistant%') GROUP BY j.title\n      UNION ALL\n      SELECT d.title, count(*), 'cw_' || min(d.id) FROM \"DirectOffer\" d\n       WHERE d.eligible AND (d.\"validThrough\" IS NULL OR d.\"validThrough\" > ('2026-10-01T18:39:39.441Z'::timestamptz AT TIME ZONE 'UTC')) AND d.\"countryCode\" IN ('GB','IE') AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte('%assistant%') GROUP BY d.title\n    ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40"
+     },
+     {
+      "ms": 21.503,
+      "sql": "SELECT position FROM (SELECT 0::int AS position WHERE EXISTS (SELECT 1 FROM \"SearchDocument\" s\n        WHERE s.version = 'search-5-20260924-v2' AND s.id = ANY(ARRAY['cmu9mku70001nmb9zmgtqdj1a','cmu9mku89001umb9zur8wn0vv','cmu9mkxej00idmb9zqc3dw17i','cmu9mkxtt00kpmb9z7agsb2i3','cmu7e6ngu001gjxk89dsshta2','cmuft8yiy2lcgmy33vs91ntng']::text[]::text[]) AND s.vector @@ (((to_tsquery('simple', '(''retail'' <-> ''distribution'' <-> ''as'' <-> ''an'' <-> ''employer'' <-> ''activity'') | (''retail'')')) || to_tsquery('simple', 'cwicef51e0515d9255c8f9539b0a1d6221c')) && (to_tsquery('simple', '(''assistant'')'))))) v"
+     }
+    ],
+    "suggestions": [
+     {
+      "valeur": "Sales assistant",
+      "metier": {
+       "identifiant": "sales-advisor",
+       "libelle": "Sales advisor"
+      },
+      "nature": "metier",
+      "offresAuChoix": 1251,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     },
+     {
+      "valeur": "Assistant store manager",
+      "metier": {
+       "identifiant": "assistant-store-manager",
+       "libelle": "Assistant store manager"
+      },
+      "nature": "metier",
+      "offresAuChoix": 163,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     },
+     {
+      "valeur": "Stock assistant",
+      "metier": {
+       "identifiant": "stock-associate",
+       "libelle": "Retail stock associate"
+      },
+      "nature": "metier",
+      "offresAuChoix": 58,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     },
+     {
+      "valeur": "Merchandising Assistant",
+      "metier": {
+       "identifiant": "assistant-merchandiser",
+       "libelle": "Merchandising Assistant"
+      },
+      "nature": "metier",
+      "offresAuChoix": 15,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     },
+     {
+      "valeur": "Executive assistant",
+      "metier": {
+       "identifiant": "executive-assistant",
+       "libelle": "Executive assistant"
+      },
+      "nature": "metier",
+      "offresAuChoix": 6,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     },
+     {
+      "valeur": "Design Assistant",
+      "metier": {
+       "identifiant": "assistant-designer",
+       "libelle": "Design Assistant"
+      },
+      "nature": "metier",
+      "offresAuChoix": 3,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     },
+     {
+      "valeur": "Sales Support Assistant",
+      "metier": {
+       "identifiant": "assistant-commercial",
+       "libelle": "Sales Support Assistant"
+      },
+      "nature": "metier",
+      "offresAuChoix": 2,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     },
+     {
+      "valeur": "Retail assistant",
+      "metier": null,
+      "nature": "intitule",
+      "offresAuChoix": 821,
+      "bruit": false,
+      "ville": null,
+      "majuscules": false
+     }
+    ],
+    "doublons": 0
+   },
+   {
+    "marche": "GB",
+    "frappe": "directeur",
+    "ms": 91.728,
+    "requetes": 3,
+    "releves": [
+     {
+      "ms": 19.406,
+      "sql": "\n    SELECT EXISTS(SELECT 1 FROM \"SearchGeneration\" WHERE version='search-5-20260924-v2' AND \"readyAt\" IS NOT NULL) ready,\n      EXISTS(SELECT 1 FROM \"SearchPending\" WHERE version='search-5-20260924-v2' AND \"queuedAt\" < now()-interval '300 seconds') stale"
+     },
+     {
+      "ms": 18.373,
+      "sql": "SELECT revision FROM \"SearchMetadata\" WHERE id='active'"
+     },
+     {
+      "ms": 53.949,
+      "sql": "\n    SELECT valeur, sum(n)::int AS n, (array_agg(id ORDER BY id))[1:3] AS ids FROM (\n      SELECT j.title AS valeur, count(*) AS n, min(j.id) AS id FROM \"Job\" j\n       WHERE j.\"isActive\" AND j.\"mergedIntoId\" IS NULL AND EXISTS (\n    SELECT 1 FROM \"JobSource\" available_source WHERE available_source.\"jobId\" = j.id\n      AND available_source.\"isActive\" AND (available_source.\"expiresAt\" IS NULL OR available_source.\"expiresAt\" > ('2026-10-01T18:39:43.115Z'::timestamptz AT TIME ZONE 'UTC'))) AND j.\"countryCode\" IN ('GB','IE') AND catwalks_normaliser_texte(j.title) LIKE catwalks_normaliser_texte('%directeur%') GROUP BY j.title\n      UNION ALL\n      SELECT d.title, count(*), 'cw_' || min(d.id) FROM \"DirectOffer\" d\n       WHERE d.eligible AND (d.\"validThrough\" IS NULL OR d.\"validThrough\" > ('2026-10-01T18:39:43.115Z'::timestamptz AT TIME ZONE 'UTC')) AND d.\"countryCode\" IN ('GB','IE') AND catwalks_normaliser_texte(d.title) LIKE catwalks_normaliser_texte('%directeur%') GROUP BY d.title\n    ) t GROUP BY valeur ORDER BY n DESC, valeur ASC LIMIT 40"
+     }
+    ],
+    "suggestions": [],
+    "doublons": 0
+   }
+  ]
+ }
+}

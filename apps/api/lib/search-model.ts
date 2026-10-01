@@ -1,4 +1,5 @@
-import { createIntentResolver, searchWords, type SearchCompany } from './search-intent';
+import { createIntentResolver, searchWords, type SearchCompany, type SearchIntent } from './search-intent';
+import { formesDeBase, lexiqueDe, replierRequete } from '@catwalks/db/search-comprendre';
 import { searchEvidence } from './search-evidence';
 import { searchConcepts } from './search-vocabulary';
 import { languesDuVocabulaire } from './search-langues';
@@ -53,10 +54,32 @@ export function snapshotModel(metadata: SnapshotMetadata) {
   const nativeResolver = createIntentResolver(concepts, []);
   // D-488 : une recherche par métier ne porte que les variantes des langues du marché (`search-langues.ts`).
   const langues = languesDuVocabulaire(metadata.occupationRelease.manifest);
-  return { resolver, concepts, names,
-    /** L'intention d'une requête, lue par le résolveur puis restreinte aux langues du marché (sans marché : entière). */
-    intention(q: string, marche: { readonly locales: readonly string[] } | undefined) {
-      return langues.restreindre(resolver.resolve(q), marche);
+  // D-500 (Q1) : le résolveur des requêtes du contrat 2, qui reconnaît aussi une variante sans ses mots de liaison ; et le
+  // lexique des métiers et des familles, qui borne les formes de base d'un mot tapé seul.
+  const resolverCompris = createIntentResolver(concepts, names, { liaisonsFacultatives: true });
+  const lexique = lexiqueDe(concepts.filter((c) => c.kind !== 'sector').flatMap((c) => c.aliases));
+  /** D-500 (Q1, cahier §3.2) : la requête comprise. Repliée (écriture inclusive, marques de genre), lue avec les liaisons
+   * facultatives ; un mot resté libre cherche aussi ses formes de base que le vocabulaire connaît (« conseillère » →
+   * « conseiller », « vendeuses » → « vendeuse », « vendeur »). Une requête faite de seules marques reste lue telle quelle. */
+  const comprendre = (q: string): SearchIntent => {
+    const repliee = replierRequete(q);
+    const intent = resolverCompris.resolve(searchWords(repliee).length ? repliee : q);
+    // Une requête repliée en un seul métier garde aussi sa forme tapée comme expression : une offre sans métier dont
+    // l'intitulé l'écrit telle quelle (« Conseiller(ère) de vente ») reste trouvée, comme par la lecture d'avant.
+    const tapee = searchWords(q).join(' ');
+    const seulMetier = intent.clauses.length === 1 && intent.clauses[0].kind === 'role' && repliee !== q && tapee;
+    return { ...intent, original: q, clauses: intent.clauses.map((c) => {
+      if (seulMetier && c.kind === 'role' && !c.phrases.includes(tapee)) return { ...c, phrases: [...c.phrases, tapee] };
+      if (c.kind !== 'text' || c.phrases.length !== 1) return c;
+      const bases = formesDeBase(c.phrases[0]).filter((f) => lexique.has(f));
+      return bases.length ? { ...c, phrases: [c.phrases[0], ...bases] } : c;
+    }) };
+  };
+  return { resolver, resolverCompris, concepts, names, langues, manifest: metadata.occupationRelease.manifest,
+    /** L'intention d'une requête, lue par le résolveur puis restreinte aux langues du marché (sans marché : entière).
+     * `comprendre` (contrat 2, D-500) : la requête comprise ; sans lui, la lecture d'avant, à l'identique. */
+    intention(q: string, marche: { readonly locales: readonly string[] } | undefined, options: { comprendre?: boolean } = {}) {
+      return langues.restreindre(options.comprendre ? comprendre(q) : resolver.resolve(q), marche);
     },
     document(j: NativeJob, direct = false): SearchDocument {
       const matchingNames = direct ? names.filter(n => n.names.some(name => normalized(name) === normalized(j.company))) : [];

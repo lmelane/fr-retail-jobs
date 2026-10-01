@@ -72,7 +72,7 @@ describe('le garde de clé (D-422)', () => {
  * ouverte, et personne ne le verrait. Il ÉCHOUE si une route oublie le garde.
  */
 describe('aucune route ne peut oublier le garde', () => {
-  it('les 12 routes protégées appellent refuserSiCleInvalide, /api/health non (D-422 §3)', () => {
+  it('les 13 routes protégées appellent refuserSiCleInvalide, /api/health non (D-422 §3)', () => {
     const racine = join(__dirname, '..', '..', 'app', 'api');
     const routes: string[] = [];
     const parcourir = (dossier: string) => {
@@ -84,10 +84,10 @@ describe('aucune route ne peut oublier le garde', () => {
     };
     parcourir(racine);
 
-    // Prémisse : il y a bien 13 routes (dont `/api/marches`, lot 6, `/api/sitemap/emplois`, lot 9, `/api/registre/societes`,
-    // D-471, `/api/taxonomie/export` et `/api/metiers/signalements`, lot 2E de D-475, et `/api/alertes/examen`, R-130),
-    // sinon ce témoin ne teste rien.
-    expect(routes).toHaveLength(13);
+    // Prémisse : il y a bien 14 routes (dont `/api/marches`, lot 6, `/api/sitemap/emplois`, lot 9, `/api/registre/societes`,
+    // D-471, `/api/taxonomie/export` et `/api/metiers/signalements`, lot 2E de D-475, `/api/alertes/examen`, R-130, et
+    // `/api/requetes`, D-501), sinon ce témoin ne teste rien.
+    expect(routes).toHaveLength(14);
 
     for (const chemin of routes) {
       const source = readFileSync(chemin, 'utf8');

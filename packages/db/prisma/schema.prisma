@@ -1147,6 +1147,20 @@ model OccupationMissingSignal {
   @@index([status, receivedAt])
 }
 
+/// D-501 : les requêtes tapées, anonymes et agrégées par marché et par requête normalisée (migration
+/// 20261001200000_requetes_tapees ; lecture et écriture dans apps/api/lib/requetes-tapees.ts).
+model RequeteTapee {
+  marche      String
+  cle         String
+  libelle     String
+  occurrences Int      @default(1)
+  premiereLe  DateTime @default(dbgenerated("CURRENT_DATE")) @db.Date
+  derniereLe  DateTime @default(dbgenerated("CURRENT_DATE")) @db.Date
+
+  @@id([marche, cle])
+  @@index([marche, occurrences(sort: Desc)])
+}
+
 model OccupationObservation {
   id        String            @id
   jobId     String

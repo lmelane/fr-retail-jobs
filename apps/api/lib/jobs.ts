@@ -63,6 +63,7 @@ export type JobFilters = CriteresRecherche & {
    * Absent : la recherche d'avant le lot, à l'identique.
    */
   proximite?: boolean;
+  // D-500 : `comprendre` (CriteresRecherche), posé par la route avec le même signal du client que la proximité.
 };
 
 /**
@@ -639,6 +640,8 @@ function empreintePlan(plan: ReturnType<typeof planifierRecherche>): string {
     version: `${SEARCH_VERSION}-strict-filters-fr-2`, perimetre: plan.perimetre.code, q: plan.q, lieu: plan.lieu ?? null,
     selections: Object.fromEntries(DIMENSIONS.flatMap((d) => (plan.selections[d]?.length ? [[d, [...plan.selections[d]!].sort()]] : []))),
     prioritePays: plan.prioritePays ?? null, source: plan.source ?? null,
+    // D-500 : la requête comprise et le classement par le titre changent l'ordre ; sans eux, l'empreinte d'avant.
+    ...(plan.comprendre ? { comprendre: 1 } : {}),
     ...(p ? { proximite: { lieu: p.lieu ? point(p.lieu) : null, villes: p.villes ? p.villes.resolues.map(point).sort((x, y) => String(x[0]).localeCompare(String(y[0]))) : null } } : {}),
   });
 }
