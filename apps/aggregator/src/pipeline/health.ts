@@ -254,6 +254,7 @@ const IDENTITY_MOTIF: Readonly<Record<string, string>> = {
   ALIAS_SOURCE_OR_TENANT_CHANGED: 'alias qui ne vaut plus pour cette source',
   EMPLOYER_SPELLING_DIVERGED: 'nouvelle graphie de l’employeur',
   EMPLOYER_TARGET_MISMATCH: 'employeur différent de celui déjà attribué',
+  EMPLOYER_CHANGE_MASS: 'changements d’employeur en masse chez l’éditeur, revue humaine (garde D-506 §3)',
   SOURCE_NEVER_PUBLISHED_FOR_HOUSE: 'source jamais publiée pour cette Maison',
 };
 

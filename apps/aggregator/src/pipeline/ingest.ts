@@ -37,6 +37,9 @@ import { SourceAdmissionGateError } from '../connectors/sourceAdmission.js';
 import { requireCurrentCaptureRevision } from '../connectors/sourceRevision.js';
 import { lockSourceWrites, SOURCE_WRITE_TRANSACTION } from '../lib/writeLocks.js';
 import { addIssue, ingestionIssue, type IngestionIssue } from '../lib/ingestionIssue.js';
+import { collectionEmployerLabels, PublisherFollowDeferred, publisherFollowBound, type PublisherFollowMode } from '../identity/publisherFollow.js';
+import { normalizedEmployerName } from '../normalize/employerName.js';
+import { EmployerIdentityReviewRequired } from '../identity/errors.js';
 
 /**
  * INGEST — picks up new and updated offers.
@@ -141,6 +144,14 @@ export function noteFieldCoverage(stats: IngestStats, job: NormalizedJob): void 
   if (/^https?:\/\//.test(job.url ?? '')) stats.withUrl++;
 }
 
+/**
+ * The employer label a posting carries into identity resolution: the native name the page gives, else the company the
+ * feed or catalogue supplies. One definition for `toCandidate` and for the collection index of D-506 §3.
+ */
+export function postingEmployerLabel(job: Pick<NormalizedJob, 'employerEvidence'>, companyName: string): string {
+  return job.employerEvidence?.rawName ?? companyName;
+}
+
 export function toCandidate(
   job: NormalizedJob,
   source: SourceDef,
@@ -221,7 +232,7 @@ export function toCandidate(
     ...(() => {
       const identity = resolveCompany(companyName);
       return {
-        rawEmployerName: job.employerEvidence?.rawName ?? companyName,
+        rawEmployerName: postingEmployerLabel(job, companyName),
         employerLabelOrigin: job.employerEvidence ? `${job.employerEvidence.path}:${job.employerEvidence.rule}` : job.company ? 'ADAPTER_COMPANY' : 'SOURCE_CATALOGUE_LABEL',
         company: identity.displayName,
         companyId: identity.companyId,
@@ -364,8 +375,75 @@ async function ingestApiSource(
   const fates: OutputFate[] = [];
   // Every held posting, to count after the loop those an earlier collection still keeps online.
   const heldPostings: { externalId: string; reason: string }[] = [];
-  for (const [ordinal, rawJob] of jobs.entries()) {
-    const job = applyScopeExclusion(employerFromCertifiedScope(rawJob, sourceDef.company, scope), scopeExclusions);
+  // Group feeds carry the Maison per offer (LVMH: Sephora, Dior…); a single-house feed falls back to the catalogue label.
+  const employerOf = (job: NormalizedJob) => job.company || sourceDef.company;
+  const prepared = jobs.map(rawJob => applyScopeExclusion(employerFromCertifiedScope(rawJob, sourceDef.company, scope), scopeExclusions));
+  /**
+   * D-506 §3 — the proof is frozen before the first write: when this collection started, and which native label the
+   * publisher gives each publishable posting in it. « The source already publishes B » then reads the same for every
+   * posting, whatever the publisher's order and whatever the loop has already written. The postings that would follow
+   * their publisher are written after the count of the whole source, with the other employer changes the publisher
+   * made in this collection (refused: never seen in the source): the mass guard counts both.
+   */
+  const witnessesBefore = (await prisma.captureBatch.findUniqueOrThrow({ where: { id: captureBatchId }, select: { startedAt: true } })).startedAt;
+  const publishedUnder = collectionEmployerLabels(prepared.filter(job => !job.publicationHold)
+    .map(job => ({ externalId: job.externalId, label: normalizedEmployerName(postingEmployerLabel(job, employerOf(job))) })));
+  const deferredFollows: { ordinal: number; job: NormalizedJob; employer: string }[] = [];
+  let refusedEmployerChanges = 0;
+
+  /**
+   * PHASE 2 — l'ÉCRITURE d'une offre : normalisation, identité, déduplication, upsert. Cumulée offre par offre. Tout
+   * refus est compté et scellé ici ; seul un report du suivi de l'éditeur (`DEFER`, D-506 §3) n'est ni une erreur ni
+   * un devenir : l'offre est réécrite après la boucle.
+   */
+  const writePosting = async (ordinal: number, job: NormalizedJob, employer: string, publisherFollow: PublisherFollowMode): Promise<'WRITTEN' | 'FAILED' | 'DEFERRED'> => {
+    try {
+      // The catalogue feed carries its real vendor ATS (WORKDAY, GREENHOUSE…).
+      const upsertStartedAt = Date.now();
+      const result = await upsertDeduplicated(
+        prisma,
+        toCandidate(job, sourceDef, employer, type as AtsType, trust),
+        occupationTaxonomy,
+        { publisherFollow: { mode: publisherFollow, witnessesBefore, publishedUnder } },
+      );
+      stats.upsertMs = (stats.upsertMs ?? 0) + (Date.now() - upsertStartedAt);
+      stats.occupationStatuses![result.occupationStatus] = (stats.occupationStatuses![result.occupationStatus] ?? 0) + 1;
+      stats.occupationReleases![result.occupationReleaseId] = (stats.occupationReleases![result.occupationReleaseId] ?? 0) + 1;
+      if (result.outcome === 'CREATED') stats.created++;
+      else if (result.outcome === 'MERGED') stats.merged++;
+      else stats.updated++;
+      // The traceability of an employer change made without human review: who it left, who it joined, on which label.
+      if (result.employerFollowed) {
+        await log.info('employer.followed_publisher', { sourceKey: stats.source, connectorId: source.kind, jobId: job.externalId,
+          catwalksJobId: result.jobId, ...result.employerFollowed, decision: 'D-506 §3' });
+      }
+      return 'WRITTEN';
+    } catch (error) {
+      log.assertHealthy();
+      if (error instanceof PublisherFollowDeferred && publisherFollow === 'DEFER') return 'DEFERRED';
+      if (publisherFollow === 'DEFER' && error instanceof EmployerIdentityReviewRequired && error.employerChange) refusedEmployerChanges++;
+      stats.errors++;
+      addIssue(stats, { ...ingestionIssue(error), captureBatchId });
+      /*
+       * Le fate scellé ne garde qu'un CODE BORNÉ : les messages peuvent porter des URLs ou des
+       * paramètres. La classe seule ne suffisait pourtant pas — `EmployerIdentityReviewRequired`
+       * a six causes distinctes, et le rapport les rendait indiscernables (9 386 occurrences sous
+       * un seul libellé le 2026-09-21, dont 27 sources bloquées par une simple configuration
+       * absente). Les erreurs qui portent un `motif` de leur liste fermée l'exposent donc ici,
+       * qualifié par la classe pour rester lisible sans ambiguïté.
+       */
+      fates.push({ ordinal, externalId: job.externalId, disposition: 'WRITE_FAILED', reason: fateReason(error) });
+      // The same bounded code, counted so the health note names the cause (identity refusal motifs).
+      const failure = fateReason(error);
+      (stats.writeFailures ??= {})[failure] = (stats.writeFailures[failure] ?? 0) + 1;
+      // Journal every failure, with its upstream posting ID. Console repeats
+      // are aggregated centrally only AFTER durable recording.
+      await log.error('job.write_failed', { sourceKey: stats.source, connectorId: source.kind, jobId: job.externalId, error });
+      return 'FAILED';
+    }
+  };
+
+  for (const [ordinal, job] of prepared.entries()) {
     assertSourceRunning();
     if (job.publicationHold) {
       stats.held = (stats.held ?? 0) + 1;
@@ -393,9 +471,7 @@ async function ingestApiSource(
       await log.warn('job.publication_held', { sourceKey: stats.source, connectorId: source.kind, jobId: job.externalId, reason: job.publicationHold, evidence: 'SourceObservation' });
       continue;
     }
-    // Group feeds carry the Maison per offer (LVMH: Sephora, Dior…); a
-    // single-house feed falls back to the catalogue label.
-    const employer = job.company || sourceDef.company;
+    const employer = employerOf(job);
 
     /**
      * Un JOBBOARD ou un cabinet publie tous les secteurs : Michael Page rendait
@@ -424,40 +500,29 @@ async function ingestApiSource(
     if (isFranceJob(job.country, job.location)) stats.france++;
     noteFieldCoverage(stats, job);
 
-    try {
-      // The catalogue feed carries its real vendor ATS (WORKDAY, GREENHOUSE…).
-      // PHASE 2 — l'ÉCRITURE : normalisation, identité, déduplication, upsert. Cumulée offre par offre.
-      const upsertStartedAt = Date.now();
-      const result = await upsertDeduplicated(
-        prisma,
-        toCandidate(job, sourceDef, employer, type as AtsType, trust),
-        occupationTaxonomy,
-      );
-      stats.upsertMs = (stats.upsertMs ?? 0) + (Date.now() - upsertStartedAt);
-      stats.occupationStatuses[result.occupationStatus] = (stats.occupationStatuses[result.occupationStatus] ?? 0) + 1;
-      stats.occupationReleases[result.occupationReleaseId] = (stats.occupationReleases[result.occupationReleaseId] ?? 0) + 1;
-      if (result.outcome === 'CREATED') stats.created++;
-      else if (result.outcome === 'MERGED') stats.merged++;
-      else stats.updated++;
-    } catch (error) {
-      log.assertHealthy();
-      stats.errors++;
-      addIssue(stats, { ...ingestionIssue(error), captureBatchId });
-      /*
-       * Le fate scellé ne garde qu'un CODE BORNÉ : les messages peuvent porter des URLs ou des
-       * paramètres. La classe seule ne suffisait pourtant pas — `EmployerIdentityReviewRequired`
-       * a six causes distinctes, et le rapport les rendait indiscernables (9 386 occurrences sous
-       * un seul libellé le 2026-09-21, dont 27 sources bloquées par une simple configuration
-       * absente). Les erreurs qui portent un `motif` de leur liste fermée l'exposent donc ici,
-       * qualifié par la classe pour rester lisible sans ambiguïté.
-       */
-      fates.push({ ordinal, externalId: job.externalId, disposition: 'WRITE_FAILED', reason: fateReason(error) });
-      // The same bounded code, counted so the health note names the cause (identity refusal motifs).
-      const failure = fateReason(error);
-      (stats.writeFailures ??= {})[failure] = (stats.writeFailures[failure] ?? 0) + 1;
-      // Journal every failure, with its upstream posting ID. Console repeats
-      // are aggregated centrally only AFTER durable recording.
-      await log.error('job.write_failed', { sourceKey: stats.source, connectorId: source.kind, jobId: job.externalId, error });
+    // A posting that would follow its publisher to an employer its source already publishes waits for the count of
+    // the whole source: nothing of it is written yet (D-506 §3, `identity/publisherFollow.ts`).
+    if (await writePosting(ordinal, job, employer, 'DEFER') === 'DEFERRED') deferredFollows.push({ ordinal, job, employer });
+  }
+
+  /**
+   * D-506 §3 — LA GARDE DE MASSE DU SUIVI DE L'ÉDITEUR. Le compte est complet : si plus de max(5, 5 % des offres
+   * collectées) offres de la source changent d'employeur chez l'éditeur dans cette collecte (qu'elles puissent le suivre
+   * ou non), AUCUNE ne le suit, toutes restent en revue humaine (`EMPLOYER_CHANGE_MASS` pour celles qui l'auraient
+   * suivi). Chaque offre reportée est ré-écrite ici, sous son mode, avec toutes ses vérifications : une offre qui ne
+   * remplit plus la règle retombe dans la revue ordinaire.
+   */
+  if (deferredFollows.length) {
+    const bound = publisherFollowBound(stats.fetched);
+    const employerChanges = deferredFollows.length + refusedEmployerChanges;
+    const massGuarded = employerChanges > bound;
+    if (massGuarded) {
+      await log.warn('employer.follow_mass_guarded', { sourceKey: stats.source, connectorId: source.kind, postings: deferredFollows.length,
+        employerChanges, collected: stats.fetched, bound, decision: 'D-506 §3' });
+    }
+    for (const deferred of deferredFollows) {
+      assertSourceRunning();
+      await writePosting(deferred.ordinal, deferred.job, deferred.employer, massGuarded ? 'MASS_GUARDED' : 'FOLLOW');
     }
   }
 

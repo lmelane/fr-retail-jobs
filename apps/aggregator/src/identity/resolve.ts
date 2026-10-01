@@ -7,17 +7,24 @@ import type { CandidateJob } from '../dedup/match.js';
 import { normalizedEmployerName, sameEmployerTypography } from '../normalize/employerName.js';
 import { PIPELINE_VERSION } from '../pipeline/version.js';
 import { applyNativeEmployerRules, nativeEmployerRules } from './nativeClaims.js';
+import { followsPublisherTier, PublisherFollowDeferred, sourcePublishesEmployer, type PublisherFollow } from './publisherFollow.js';
 
 type Company = Prisma.CompanyGetPayload<Record<string, never>>;
 export type EmployerResolution = {
   company: Company | null;
-  rule: 'REVIEWED_ALIAS' | 'REVIEWED_MERGE' | 'NATIVE_SOURCE_LABEL' | 'NATIVE_EMPLOYER_BRAND_RELATION' | 'LEGACY_UNREVIEWED' | 'REVIEW_REQUIRED' | 'GROUP_LABEL_KEPT_HOUSE' | 'CERTIFIED_SINGLE_BRAND_PORTAL' | 'MULTI_BRAND_PORTAL_GROUP_OWNER';
+  rule: 'REVIEWED_ALIAS' | 'REVIEWED_MERGE' | 'NATIVE_SOURCE_LABEL' | 'NATIVE_EMPLOYER_BRAND_RELATION' | 'LEGACY_UNREVIEWED' | 'REVIEW_REQUIRED' | 'GROUP_LABEL_KEPT_HOUSE' | 'CERTIFIED_SINGLE_BRAND_PORTAL' | 'MULTI_BRAND_PORTAL_GROUP_OWNER' | 'PUBLISHER_FOLLOWED';
   rawEmployerName: string;
   normalizedEmployerName: string;
   aliasId?: string;
   reviewId?: string;
   newKey?: string;
   newName?: string;
+  /** `PUBLISHER_FOLLOWED` seulement (D-506 §3) : l'employeur que l'offre quitte et le libellé que l'éditeur lui donnait. */
+  followedFrom?: { companyId: string; name: string; previousLabel: string };
+};
+export type ResolveEmployerOptions = {
+  /** D-506 §3 : absent, une offre qui change d'employeur reste en revue humaine (`publisherFollow.ts`). */
+  publisherFollow?: PublisherFollow;
 };
 
 /** Resolve redirects explicitly and fail on corrupt/cyclic identity data. */
@@ -32,7 +39,8 @@ export async function canonicalEmployer(tx: Prisma.TransactionClient, company: C
 }
 
 /** Reviewed, source-scoped decisions outrank every historical spelling heuristic. */
-export async function resolveEmployer(tx: Prisma.TransactionClient, candidate: CandidateJob & { companyId: string }): Promise<EmployerResolution> {
+export async function resolveEmployer(tx: Prisma.TransactionClient, candidate: CandidateJob & { companyId: string },
+  options: ResolveEmployerOptions = {}): Promise<EmployerResolution> {
   const rawEmployerName = candidate.rawEmployerName ?? candidate.company;
   const normalized = normalizedEmployerName(rawEmployerName);
   if (!normalized) throw new Error(`Empty employer label: ${candidate.sourceKey}/${candidate.externalId}`);
@@ -149,7 +157,23 @@ export async function resolveEmployer(tx: Prisma.TransactionClient, candidate: C
       // previous observation carried the image's word, the company never did).
       const convergesOnCurrent = normalized === normalizedEmployerName(current.name);
       if (previous && previous.normalizedEmployerName !== normalized && !convergesOnCurrent) {
-        throw new EmployerIdentityReviewRequired(candidate.sourceKey, candidate.externalId, rawEmployerName, current.name, 'EMPLOYER_SPELLING_DIVERGED');
+        // D-506 §3 : l'éditeur nommait A, il nomme B, et nomme B d'autres offres de cette collecte, déjà attribuées à cet
+        // employeur avant elle : l'offre le suit. Un précédent du registre n'est pas un employeur nommé par l'éditeur
+        // (ci-dessus) ; un employeur jamais publié par la source, ou la même racine, reste en revue. Tout changement d'un
+        // employeur nommé vers un autre est signalé à la garde de masse de l'ingestion, qu'il puisse suivre ou non.
+        const employerChange = !isPortalEmployerOrigin(previous.labelOrigin) && (!target || target.id !== current.id);
+        const follow = options.publisherFollow;
+        const witnesses = (follow?.publishedUnder.get(normalized) ?? []).filter(id => id !== candidate.externalId);
+        if (follow && employerChange && target && followsPublisherTier(candidate.sourceTier) &&
+          await sourcePublishesEmployer(tx, candidate.sourceKey, witnesses, normalized, target.id, follow.witnessesBefore)) {
+          if (follow.mode === 'DEFER') throw new PublisherFollowDeferred(candidate.sourceKey, candidate.externalId);
+          if (follow.mode === 'MASS_GUARDED') {
+            throw new EmployerIdentityReviewRequired(candidate.sourceKey, candidate.externalId, rawEmployerName, current.name, 'EMPLOYER_CHANGE_MASS', true);
+          }
+          return { company: target, rule: 'PUBLISHER_FOLLOWED', rawEmployerName, normalizedEmployerName: normalized,
+            followedFrom: { companyId: current.id, name: current.name, previousLabel: previous.normalizedEmployerName } };
+        }
+        throw new EmployerIdentityReviewRequired(candidate.sourceKey, candidate.externalId, rawEmployerName, current.name, 'EMPLOYER_SPELLING_DIVERGED', employerChange);
       }
     }
     if (current && (!target || current.id !== target.id)) {

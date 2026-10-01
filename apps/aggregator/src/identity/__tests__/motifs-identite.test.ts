@@ -71,6 +71,7 @@ describe('motifs d\'identité employeur', () => {
         'ALIAS_SOURCE_OR_TENANT_CHANGED',  // :68 — l'alias ne vaut plus pour cette source
         'EMPLOYER_SPELLING_DIVERGED',      // :107 — nouvelle graphie, sans convergence
         'EMPLOYER_TARGET_MISMATCH',        // :111 — l'employeur courant n'est pas la cible
+        'EMPLOYER_CHANGE_MASS',            // D-506 §3 — suivi de l'éditeur au-delà de la garde de masse
         'SOURCE_NEVER_PUBLISHED_FOR_HOUSE', // :139 — première publication sous un libellé tiers
       ];
       for (const m of attendus) expect(MOTIFS_IDENTITE, m).toContain(m);

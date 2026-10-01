@@ -13,7 +13,7 @@ import { recordOccupationObservation } from '../occupation/persist.js';
 import { EmployerIdentityReviewRequired } from '../identity/errors.js';
 import { normalizedEmployerName } from '../normalize/employerName.js';
 import { lockEmployerCatalogue } from '../lib/writeLocks.js';
-import { resolveEmployer, recordEmployerObservation, type EmployerResolution } from '../identity/resolve.js';
+import { resolveEmployer, recordEmployerObservation, type EmployerResolution, type ResolveEmployerOptions } from '../identity/resolve.js';
 import { assertSourceRunning } from '../lib/sourceBudget.js';
 import { requireCurrentCaptureRevision } from '../connectors/sourceRevision.js';
 import { lockCompanyRows, lockSourceWrites, SOURCE_WRITE_TRANSACTION } from '../lib/writeLocks.js';
@@ -47,6 +47,13 @@ export type UpsertResult = {
   promoted: boolean;
   occupationStatus: string;
   occupationReleaseId: string;
+  /**
+   * D-506 §3 : l'offre a suivi l'éditeur vers un employeur que sa source publie déjà. `jobCompanyChanged` dit si l'offre
+   * affichée a changé d'employeur : elle ne le fait que si cette publication porte son lien de candidature (la
+   * publication qui fait autorité, `attachToExisting`) ; sinon seule l'observation de la publication change.
+   */
+  employerFollowed?: { fromCompanyId: string; fromName: string; toCompanyId: string; toName: string;
+    previousLabel: string; rawEmployerName: string; jobCompanyChanged: boolean };
 };
 
 /**
@@ -57,6 +64,8 @@ export async function upsertDeduplicated(
   prisma: PrismaClient,
   candidate: CandidateJob & { companyId: string },
   catalogue?: CompiledOccupationTaxonomy,
+  /** D-506 §3 : seule l'ingestion, qui tient la garde de masse de la source, le renseigne (`identity/publisherFollow.ts`). */
+  identity: ResolveEmployerOptions = {},
 ): Promise<UpsertResult> {
   candidate = structuredClone(candidate);
   const nativeCapture = await archiveAdapterOutput(prisma, candidate);
@@ -74,7 +83,7 @@ export async function upsertDeduplicated(
         // posting; another writer may otherwise create it between lookup and lock.
         const entryKey = JSON.stringify(['entry', candidate.sourceKey, candidate.externalId]);
         await tx.$queryRaw`SELECT 1 AS locked FROM pg_advisory_xact_lock(hashtextextended(${entryKey}, 0))`;
-        const resolution = await resolveEmployer(tx, candidate);
+        const resolution = await resolveEmployer(tx, candidate, identity);
         const resolved = resolution.company ? {
           ...candidate, company: resolution.company.name,
           companyId: resolution.company.canonicalKey,
@@ -97,7 +106,8 @@ export async function upsertDeduplicated(
         const currentTaxonomy = await lockOccupationTaxonomy(tx, taxonomy);
         await requireCurrentCaptureRevision(tx, nativeCapture.batch);
         await enforcePublicationPolicy(tx, nativeCapture, candidate, 'PUBLISH');
-        const result = await upsertInTransaction(tx, resolved, resolution, currentTaxonomy, nativeCapture);
+        const written = await upsertInTransaction(tx, resolved, resolution, currentTaxonomy, nativeCapture);
+        const result = resolution.rule === 'PUBLISHER_FOLLOWED' ? await followedPublisher(tx, written, resolution) : written;
         assertSourceRunning(); // Throw inside the transaction so cancellation rolls writes back.
         return result;
       }, SOURCE_WRITE_TRANSACTION);
@@ -118,6 +128,15 @@ export async function upsertDeduplicated(
       if (attempt >= 2 || (code !== 'P2034' && code !== 'P2002')) throw error;
     }
   }
+}
+
+/** What the traceability event says of a posting that followed its publisher (D-506 §3), read in the same transaction. */
+async function followedPublisher(tx: Prisma.TransactionClient, written: UpsertResult, resolution: EmployerResolution): Promise<UpsertResult> {
+  if (!resolution.company || !resolution.followedFrom) throw new Error('PUBLISHER_FOLLOWED requires both employers');
+  const job = await tx.job.findUniqueOrThrow({ where: { id: written.jobId }, select: { companyId: true } });
+  return { ...written, employerFollowed: { fromCompanyId: resolution.followedFrom.companyId, fromName: resolution.followedFrom.name,
+    toCompanyId: resolution.company.id, toName: resolution.company.name, previousLabel: resolution.followedFrom.previousLabel,
+    rawEmployerName: resolution.rawEmployerName, jobCompanyChanged: job.companyId === resolution.company.id } };
 }
 
 async function upsertInTransaction(

@@ -30,8 +30,8 @@ async function captured<T extends NormalizedJob>(db: PrismaClient, sourceKey: st
   return { ...job, captureBatchId: batch.id, captureOutputId: outputId };
 }
 
-export async function upsertDeduplicated(...[db, candidate, taxonomy]: Parameters<typeof write>) {
-  return write(db, await captured(db, candidate.sourceKey, candidate), taxonomy);
+export async function upsertDeduplicated(...[db, candidate, taxonomy, identity]: Parameters<typeof write>) {
+  return write(db, await captured(db, candidate.sourceKey, candidate), taxonomy, identity);
 }
 export async function archivePublicationHold(db: PrismaClient, sourceKey: string, job: NormalizedJob) {
   return hold(db, sourceKey, await captured(db, sourceKey, job));
