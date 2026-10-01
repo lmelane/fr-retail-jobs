@@ -11,7 +11,7 @@ import { briefError } from '../../lib/normalize.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
 import { CRAWLER_IDENTITY } from '../../lib/crawlerIdentity.js';
 import { fetchCaudalieJobs } from './caudalie.js';
-import { joinSpontaneousApplicationCards, SPONTANEOUS_APPLICATION_CARD } from './joinSpontaneousCard.js';
+import { joinSpontaneousApplicationCards, joinUnreachableSpontaneousCard, SPONTANEOUS_APPLICATION_CARD } from './joinSpontaneousCard.js';
 
 /**
  * The publisher's own count of listed postings, read on a listing page: a data
@@ -111,6 +111,8 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
     const seen = new Set<string>();
     /** Les liens listés et comptés par l'éditeur qui ne sont pas des offres : jamais lus comme des fiches. */
     const cards = new Set<string>();
+    /** Cards counted from the page state on a last page the publisher never serves (`joinUnreachableSpontaneousCard`). */
+    const unreadCards = new Set<string>();
     const origin = new URL(listingPagedUrl).origin;
 
     let reachedEnd = false;
@@ -175,6 +177,9 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
       // La carte de candidature spontanée que l'éditeur compte dans son total (join.com, 30/09/2026) : un lien listé et
       // compté, jamais lu comme une fiche (`joinSpontaneousCard.ts`).
       for (const card of joinSpontaneousApplicationCards(html, pageUrl, pageLinks)) cards.add(card);
+      // La carte seule sur une dernière page que join.com ne sert pas (01/10/2026) : comptée, jamais lue ni visitée.
+      const unreadCard = joinUnreachableSpontaneousCard(html, pageUrl, pageLinks);
+      if (unreadCard) { cards.add(unreadCard); unreadCards.add(unreadCard); seen.add(unreadCard); }
       rawLinks += pageLinks.length;
       const links = pageLinks.filter(u => !seen.has(u));
       // A byte-identical page. Once the publisher's count is met it is the clamped
@@ -291,7 +296,7 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
      */
     const nonPosting = [...cards].filter(url => seen.has(url));
     return { jobs, declaredTotal: (publisherCount ?? seen.size) - nonPosting.length, complete, truncated: !reachedEnd || detailFailures > 0 || belowCount,
-      ...(nonPosting.length ? { rejectedRows: nonPosting.map(url => ({ reason: SPONTANEOUS_APPLICATION_CARD, raw: { url } })) } : {}),
+      ...(nonPosting.length ? { rejectedRows: nonPosting.map(url => ({ reason: SPONTANEOUS_APPLICATION_CARD, raw: { url, ...(unreadCards.has(url) ? { unreadLastPage: true } : {}) } })) } : {}),
       enumeration: { method: 'PAGINATED_LISTING_WITH_DETAIL_READ', endpoint: listingPagedUrl, pages: pagesRead, rawCount: rawLinks, termination, issues,
         scopes: [
           ...(publisherCount !== undefined ? [{ scope: 'publisherCount', declaredTotal: publisherCount, uniqueIds: seen.size, pages: pagesRead, complete: seen.size >= publisherCount }] : []),

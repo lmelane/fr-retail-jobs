@@ -99,3 +99,47 @@ describe('join.com : la carte « Candidature spontanée » comptée par l\'édit
     expect(r).not.toHaveProperty('rejectedRows');
   });
 });
+
+/*
+ * RUN du 01/10/2026 : 5 offres remplissent la page de 5, la carte passe seule en page 2, que join.com ne sert jamais (la
+ * réponse à `page=2` est la page 1, mêmes 139 075 octets dans la capture). Pièce : la page 1 archivée par le RUN
+ * (lot 18f6c805, empreinte du corps ci-dessous).
+ */
+const oct1 = fixture('join-gemmyo-liste-20261001.html.gz');
+const serve = (listing: string) => vi.mocked(fetchText).mockImplementation(async (url: string) =>
+  url.startsWith(`${config.listingUrl}?page=`) ? listing : url === card ? cardPage : detail(url));
+
+describe('join.com : la carte seule sur une dernière page que l\'éditeur ne sert pas (Gemmyo, RUN du 01/10/2026)', () => {
+  it('prémisse : la page archivée annonce 6 éléments sur 2 pages de 5, montre 5 offres et pas la carte', () => {
+    expect(sha256(oct1)).toBe('718d8dff4d5749b21529ae028cf699676b4219e80618836e75831cc8cdc3fc43');
+    expect(oct1).toContain('"pagination":{"page":1,"pageCount":2,"pageSize":5,"perPage":5,"total":6}');
+    expect(oct1).toContain('"isSpontaneousApplicationEnabled":true');
+    expect(new Set(links(oct1)).size).toBe(5);
+    expect(links(oct1)).not.toContain(card);
+  });
+
+  it('compte la carte sans la lire ni la visiter : 5 offres sur 5, énumération prouvée', async () => {
+    serve(oct1);
+    const r = await fetchGenericJsonLdJobs(config);
+    expect(vi.mocked(fetchText).mock.calls.map(([url]) => url)).not.toContain(card);
+    expect(r.jobs).toHaveLength(5); expect(r.declaredTotal).toBe(5);
+    expect(r.complete).toBe(true); expect(r.truncated).toBe(false);
+    expect(r.enumeration?.termination).toBe('PUBLISHER_COUNT_REACHED');
+    expect(r.rejectedRows).toEqual([{ reason: SPONTANEOUS_APPLICATION_CARD, raw: { url: card, unreadLastPage: true } }]);
+    expect(readEnumeration(normalizeAdapterResult(r)).enumerationReading).toBe('PROVEN');
+  });
+
+  it.each([
+    ['un sixième élément qui serait une offre (total 7)', (html: string) => html.replace('"pageCount":2,"pageSize":5,"perPage":5,"total":6', '"pageCount":2,"pageSize":5,"perPage":5,"total":7')],
+    ['une entreprise qui ne prend pas de candidature spontanée', (html: string) => html.replace('"isSpontaneousApplicationEnabled":true', '"isSpontaneousApplicationEnabled":false')],
+    ['une offre de l\'état absente des liens lus', (html: string) => html.replace(/href="[^"]*16743474-charge-e-de-service-client"/g, 'href="/autre"')],
+  ])('ne reconnaît rien devant %s : la source reste tronquée', async (_label, mutate) => {
+    const mutated = mutate(oct1);
+    // Prémisse : la mutation a bien porté.
+    expect(mutated).not.toBe(oct1);
+    serve(mutated);
+    const r = await fetchGenericJsonLdJobs(config);
+    expect(r.complete).toBe(false); expect(r.truncated).toBe(true);
+    expect(r.rejectedRows ?? []).toEqual([]);
+  });
+});
