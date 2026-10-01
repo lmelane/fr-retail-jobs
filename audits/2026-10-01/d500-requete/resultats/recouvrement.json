@@ -1,0 +1,702 @@
+{
+ "contexte": {
+  "release": "catwalks-occupations-20260929-v3",
+  "hash": "d268258f54bf9fb349a02cfe30ca6ed53a82c9afaf9f43d6833cefb27df60a33",
+  "generation": "search-5-20260924-v2",
+  "mesureA": "2026-10-01T14:25:31.14641+00:00"
+ },
+ "donnees": [
+  {
+   "marche": "FR",
+   "q": 4670,
+   "cle": "sales-advisor",
+   "comprise": "role:sales-advisor",
+   "m": 4541,
+   "communes": 4541,
+   "manquees": 0,
+   "enPlus": 129,
+   "exemplesManquees": [],
+   "exemplesEnPlus": [
+    "[Fashion] - Conseiller.e de ventes CDI 21h - Marseille Terrasses du port H/F",
+    "Digital Client Advisor - Italian Speaker",
+    "[Fashion] - Conseiller.e de ventes - Lyon - CDI 35h - H/F",
+    "Vendeurs (f/h) - CDI 25h - Rouen les Docks",
+    "Vendeurs polyvalents (CDI 35h)",
+    "[Fashion] - Conseiller.e de ventes - Galeries Lafayette Haussmann Paris - CDD 35h - H/F",
+    "Vendeurs (f/h) - CDI 35h/25h - Toulouse Labège",
+    "Manager Rayon Cycle/ Vendeur expert cycle profil évolutif H/F"
+   ],
+   "msQ": [
+    116.35,
+    120.938,
+    136.533
+   ],
+   "msM": [
+    51.254,
+    63.544,
+    71.926
+   ]
+  },
+  {
+   "marche": "FR",
+   "q": 4670,
+   "cle": "sales-advisor",
+   "comprise": "role:sales-advisor",
+   "m": 4541,
+   "communes": 4541,
+   "manquees": 0,
+   "enPlus": 129,
+   "exemplesManquees": [],
+   "exemplesEnPlus": [
+    "[Fashion] - Conseiller.e de ventes CDI 21h - Marseille Terrasses du port H/F",
+    "Digital Client Advisor - Italian Speaker",
+    "[Fashion] - Conseiller.e de ventes - Lyon - CDI 35h - H/F",
+    "Vendeurs (f/h) - CDI 25h - Rouen les Docks",
+    "Vendeurs polyvalents (CDI 35h)",
+    "[Fashion] - Conseiller.e de ventes - Galeries Lafayette Haussmann Paris - CDD 35h - H/F",
+    "Vendeurs (f/h) - CDI 35h/25h - Toulouse Labège",
+    "Manager Rayon Cycle/ Vendeur expert cycle profil évolutif H/F"
+   ],
+   "msQ": [
+    135.206,
+    146.506,
+    165.347
+   ],
+   "msM": [
+    54.438,
+    62.917,
+    66.124
+   ]
+  },
+  {
+   "marche": "FR",
+   "q": 1143,
+   "cle": "sales-advisor",
+   "comprise": "text:conseiller & text:ere & text:de & text:vente",
+   "m": 4541,
+   "communes": 890,
+   "manquees": 3651,
+   "enPlus": 253,
+   "exemplesManquees": [
+    "Technicien vendeur cycle H/F",
+    "NOËL Conseiller de Vente H/F - Perigueux La Feuilleraie",
+    "Vendeur (H/F) - CDI 10h - Strasbourg AuShopping",
+    "Conseiller de Vente H/F - CDI 7h - Le Chesnay",
+    "Vendeuse / Vendeur - F/H",
+    "Vendeur H/F",
+    "Vendeur H/F CDI",
+    "Conseiller(e) de vente - CDI ou auto-entrepreneur - temps plein ou partiel"
+   ],
+   "exemplesEnPlus": [
+    "Conseiller de beauté F/H",
+    "Conseiller de beauté F/H",
+    "CDD Conseiller(e) de mode Remplacement congé maternité",
+    "CONSEILLERE ESTHETICIENNE POLYVALENTE EN ALTERNANCE – H/F",
+    "Conseiller de beauté F/H",
+    "conseiller de mode KIABI Châlons en Champagne",
+    "[Fashion] - Conseiller.e de ventes - Galeries Lafayette Haussmann Paris - CDD 35h - H/F",
+    "Pop Up at Galeries Lafayette Conseille(ère) de vente"
+   ],
+   "msQ": [
+    63.95,
+    65.823,
+    111.109
+   ],
+   "msM": [
+    64.773,
+    106.346,
+    139.58
+   ]
+  },
+  {
+   "marche": "FR",
+   "q": 4670,
+   "cle": "sales-advisor",
+   "comprise": "role:sales-advisor",
+   "m": 4541,
+   "communes": 4541,
+   "manquees": 0,
+   "enPlus": 129,
+   "exemplesManquees": [],
+   "exemplesEnPlus": [
+    "[Fashion] - Conseiller.e de ventes CDI 21h - Marseille Terrasses du port H/F",
+    "Digital Client Advisor - Italian Speaker",
+    "[Fashion] - Conseiller.e de ventes - Lyon - CDI 35h - H/F",
+    "Vendeurs (f/h) - CDI 25h - Rouen les Docks",
+    "Vendeurs polyvalents (CDI 35h)",
+    "[Fashion] - Conseiller.e de ventes - Galeries Lafayette Haussmann Paris - CDD 35h - H/F",
+    "Vendeurs (f/h) - CDI 35h/25h - Toulouse Labège",
+    "Manager Rayon Cycle/ Vendeur expert cycle profil évolutif H/F"
+   ],
+   "msQ": [
+    120.413,
+    129.89,
+    164.809
+   ],
+   "msM": [
+    58.72,
+    60.463,
+    60.496
+   ]
+  },
+  {
+   "marche": "FR",
+   "q": 4670,
+   "cle": "sales-advisor",
+   "comprise": "role:sales-advisor",
+   "m": 4541,
+   "communes": 4541,
+   "manquees": 0,
+   "enPlus": 129,
+   "exemplesManquees": [],
+   "exemplesEnPlus": [
+    "[Fashion] - Conseiller.e de ventes CDI 21h - Marseille Terrasses du port H/F",
+    "Digital Client Advisor - Italian Speaker",
+    "[Fashion] - Conseiller.e de ventes - Lyon - CDI 35h - H/F",
+    "Vendeurs (f/h) - CDI 25h - Rouen les Docks",
+    "Vendeurs polyvalents (CDI 35h)",
+    "[Fashion] - Conseiller.e de ventes - Galeries Lafayette Haussmann Paris - CDD 35h - H/F",
+    "Vendeurs (f/h) - CDI 35h/25h - Toulouse Labège",
+    "Manager Rayon Cycle/ Vendeur expert cycle profil évolutif H/F"
+   ],
+   "msQ": [
+    114.439,
+    129.439,
+    137.997
+   ],
+   "msM": [
+    56.946,
+    66.219,
+    124.893
+   ]
+  },
+  {
+   "marche": "FR",
+   "q": 163,
+   "cle": "sales-advisor",
+   "comprise": "role:sales-advisor & text:nb",
+   "m": 4541,
+   "communes": 162,
+   "manquees": 4379,
+   "enPlus": 1,
+   "exemplesManquees": [
+    "Conseiller.ère de vente - CDD - 24h - Abbesses",
+    "Technicien vendeur cycle H/F",
+    "NOËL Conseiller de Vente H/F - Perigueux La Feuilleraie",
+    "Vendeur (H/F) - CDI 10h - Strasbourg AuShopping",
+    "Conseiller de Vente H/F - CDI 7h - Le Chesnay",
+    "Vendeuse / Vendeur - F/H",
+    "Vendeur H/F",
+    "CDD - Conseiller de Vente (H/F/X)- 35H - Rosny2"
+   ],
+   "exemplesEnPlus": [
+    "Vendeurs polyvalents (CDI 35h)"
+   ],
+   "msQ": [
+    29.671,
+    31.159,
+    32.852
+   ],
+   "msM": [
+    58.46,
+    64.889,
+    126.932
+   ]
+  },
+  {
+   "marche": "FR",
+   "q": 687,
+   "cle": "store-manager",
+   "comprise": "role:store-manager",
+   "m": 574,
+   "communes": 574,
+   "manquees": 0,
+   "enPlus": 113,
+   "exemplesManquees": [],
+   "exemplesEnPlus": [
+    "Responsable de magasin adjoint.e - CDI - 35h - Rennes Alma",
+    "Vendeurs (f/h) - CDI 25h - Rouen les Docks",
+    "Vendeurs (f/h) - CDI 35h/25h - Toulouse Labège",
+    "Adjoint(e) de magasin de tissus et décoration intérieure - Angers",
+    "_Directeur Magasin Soissons (h/f/nb)",
+    "Manager visuel merchandiser",
+    "_Directeur Magasin Soissons (h/f/nb)",
+    "Adjoint au directeur magasin H/F"
+   ],
+   "msQ": [
+    106.971,
+    108.056,
+    138.63
+   ],
+   "msM": [
+    32.243,
+    33.255,
+    41.089
+   ]
+  },
+  {
+   "marche": "FR",
+   "q": 687,
+   "cle": "store-manager",
+   "comprise": "role:store-manager",
+   "m": 574,
+   "communes": 574,
+   "manquees": 0,
+   "enPlus": 113,
+   "exemplesManquees": [],
+   "exemplesEnPlus": [
+    "Responsable de magasin adjoint.e - CDI - 35h - Rennes Alma",
+    "Vendeurs (f/h) - CDI 25h - Rouen les Docks",
+    "Vendeurs (f/h) - CDI 35h/25h - Toulouse Labège",
+    "Adjoint(e) de magasin de tissus et décoration intérieure - Angers",
+    "_Directeur Magasin Soissons (h/f/nb)",
+    "Manager visuel merchandiser",
+    "_Directeur Magasin Soissons (h/f/nb)",
+    "Adjoint au directeur magasin H/F"
+   ],
+   "msQ": [
+    108.411,
+    133.943,
+    152.973
+   ],
+   "msM": [
+    33.752,
+    36.153,
+    125.226
+   ]
+  },
+  {
+   "marche": "FR",
+   "q": 687,
+   "cle": "store-manager",
+   "comprise": "role:store-manager",
+   "m": 574,
+   "communes": 574,
+   "manquees": 0,
+   "enPlus": 113,
+   "exemplesManquees": [],
+   "exemplesEnPlus": [
+    "Responsable de magasin adjoint.e - CDI - 35h - Rennes Alma",
+    "Vendeurs (f/h) - CDI 25h - Rouen les Docks",
+    "Vendeurs (f/h) - CDI 35h/25h - Toulouse Labège",
+    "Adjoint(e) de magasin de tissus et décoration intérieure - Angers",
+    "_Directeur Magasin Soissons (h/f/nb)",
+    "Manager visuel merchandiser",
+    "_Directeur Magasin Soissons (h/f/nb)",
+    "Adjoint au directeur magasin H/F"
+   ],
+   "msQ": [
+    101.747,
+    105.135,
+    105.223
+   ],
+   "msM": [
+    35.959,
+    36.114,
+    37.68
+   ]
+  },
+  {
+   "marche": "FR",
+   "q": 15,
+   "cle": "makeup-artist",
+   "comprise": "role:makeup-artist",
+   "m": 14,
+   "communes": 14,
+   "manquees": 0,
+   "enPlus": 1,
+   "exemplesManquees": [],
+   "exemplesEnPlus": [
+    "Stage – Assistant.e Relations Célébrités (F/H) – Janvier 2027"
+   ],
+   "msQ": [
+    26.252,
+    28.585,
+    106.65
+   ],
+   "msM": [
+    25.395,
+    26.047,
+    537.864
+   ]
+  },
+  {
+   "marche": "FR",
+   "q": 476,
+   "cle": "sales-advisor",
+   "comprise": "role:sales-advisor & text:luxe",
+   "m": 4541,
+   "communes": 458,
+   "manquees": 4083,
+   "enPlus": 18,
+   "exemplesManquees": [
+    "Conseiller.ère de vente - CDD - 24h - Abbesses",
+    "Technicien vendeur cycle H/F",
+    "NOËL Conseiller de Vente H/F - Perigueux La Feuilleraie",
+    "Vendeur (H/F) - CDI 10h - Strasbourg AuShopping",
+    "Conseiller de Vente H/F - CDI 7h - Le Chesnay",
+    "Vendeuse / Vendeur - F/H",
+    "Vendeur H/F",
+    "Vendeur H/F CDI"
+   ],
+   "exemplesEnPlus": [
+    "Responsable de département (concession) h/f/x 39h",
+    "Responsable de Secteur Off Trade – Dijon (F/H/X)",
+    "CDI - Conseiller de Ventes H/F",
+    "Head of Sales France & Belux H/F",
+    "Adjoint·e Responsable de Boutique – Expert·e Spiritueux Senior (H/F)",
+    "SAINT LAURENT Department Manager H/F - Nice",
+    "CHEF DE SECTEUR PARIS/Région Parisienne",
+    "Stage Hôte d'accueil - Rolex Haussmann H/F"
+   ],
+   "msQ": [
+    55.288,
+    67.858,
+    138.576
+   ],
+   "msM": [
+    53.53,
+    66.485,
+    71.669
+   ]
+  },
+  {
+   "marche": "GB",
+   "q": 1141,
+   "cle": "sales-advisor",
+   "comprise": "role:sales-advisor",
+   "m": 1129,
+   "communes": 1129,
+   "manquees": 0,
+   "enPlus": 12,
+   "exemplesManquees": [],
+   "exemplesEnPlus": [
+    "Christmas Sales Associate - Beauty (Full-time)",
+    "Senior Client Advisor | Beauty | Harrods",
+    "Christmas Sales Associates (all departments and various hours)",
+    "Part Time Sales Associate (stockroom), Tommy Hilfiger - Galway",
+    "Seasonal Sales Associates - Parttime (Manchester Trafford)",
+    "Client Relations Centre Advisor",
+    "CRM & Clienteling Specialist",
+    "SALES MULTIFUNCTIONAL ASSOCIATE (Full-Time, Oxford St.)"
+   ],
+   "msQ": [
+    52.837,
+    56.923,
+    61.47
+   ],
+   "msM": [
+    35.318,
+    36.708,
+    38.624
+   ]
+  },
+  {
+   "marche": "GB",
+   "q": 1141,
+   "cle": "sales-advisor",
+   "comprise": "role:sales-advisor",
+   "m": 1129,
+   "communes": 1129,
+   "manquees": 0,
+   "enPlus": 12,
+   "exemplesManquees": [],
+   "exemplesEnPlus": [
+    "Christmas Sales Associate - Beauty (Full-time)",
+    "Senior Client Advisor | Beauty | Harrods",
+    "Christmas Sales Associates (all departments and various hours)",
+    "Part Time Sales Associate (stockroom), Tommy Hilfiger - Galway",
+    "Seasonal Sales Associates - Parttime (Manchester Trafford)",
+    "Client Relations Centre Advisor",
+    "CRM & Clienteling Specialist",
+    "SALES MULTIFUNCTIONAL ASSOCIATE (Full-Time, Oxford St.)"
+   ],
+   "msQ": [
+    52.17,
+    60.822,
+    140.176
+   ],
+   "msM": [
+    34.677,
+    37.855,
+    40.395
+   ]
+  },
+  {
+   "marche": "GB",
+   "q": 6,
+   "cle": "sales-advisor",
+   "comprise": "text:conseiller & text:ere & text:de & text:vente",
+   "m": 1129,
+   "communes": 5,
+   "manquees": 1124,
+   "enPlus": 1,
+   "exemplesManquees": [
+    "RETAIL ASSISTANT",
+    "Product Guide (Sales Associate) – Seasonal Part-Time (m/f/d) – Manchester",
+    "RETAIL ASSISTANT",
+    "Sales associate Kings Road 24h/week",
+    "RETAIL ASSISTANT",
+    "Sales Associate",
+    "Sales Associate - Full Time Temporary",
+    "Cartier, Sales Associate (Seasonal FTC)"
+   ],
+   "exemplesEnPlus": [
+    "Conseiller·ère de vente parfumerie — Londres"
+   ],
+   "msQ": [
+    31.855,
+    39.479,
+    43.643
+   ],
+   "msM": [
+    36.295,
+    38.586,
+    40.573
+   ]
+  },
+  {
+   "marche": "GB",
+   "q": 1141,
+   "cle": "sales-advisor",
+   "comprise": "role:sales-advisor",
+   "m": 1129,
+   "communes": 1129,
+   "manquees": 0,
+   "enPlus": 12,
+   "exemplesManquees": [],
+   "exemplesEnPlus": [
+    "Christmas Sales Associate - Beauty (Full-time)",
+    "Senior Client Advisor | Beauty | Harrods",
+    "Christmas Sales Associates (all departments and various hours)",
+    "Part Time Sales Associate (stockroom), Tommy Hilfiger - Galway",
+    "Seasonal Sales Associates - Parttime (Manchester Trafford)",
+    "Client Relations Centre Advisor",
+    "CRM & Clienteling Specialist",
+    "SALES MULTIFUNCTIONAL ASSOCIATE (Full-Time, Oxford St.)"
+   ],
+   "msQ": [
+    60.89,
+    70.82,
+    123.855
+   ],
+   "msM": [
+    37.273,
+    51.815,
+    119.451
+   ]
+  },
+  {
+   "marche": "GB",
+   "q": 1141,
+   "cle": "sales-advisor",
+   "comprise": "role:sales-advisor",
+   "m": 1129,
+   "communes": 1129,
+   "manquees": 0,
+   "enPlus": 12,
+   "exemplesManquees": [],
+   "exemplesEnPlus": [
+    "Christmas Sales Associate - Beauty (Full-time)",
+    "Senior Client Advisor | Beauty | Harrods",
+    "Christmas Sales Associates (all departments and various hours)",
+    "Part Time Sales Associate (stockroom), Tommy Hilfiger - Galway",
+    "Seasonal Sales Associates - Parttime (Manchester Trafford)",
+    "Client Relations Centre Advisor",
+    "CRM & Clienteling Specialist",
+    "SALES MULTIFUNCTIONAL ASSOCIATE (Full-Time, Oxford St.)"
+   ],
+   "msQ": [
+    58.315,
+    63.499,
+    141.501
+   ],
+   "msM": [
+    35.061,
+    37.56,
+    120.857
+   ]
+  },
+  {
+   "marche": "GB",
+   "q": 0,
+   "cle": "sales-advisor",
+   "comprise": "role:sales-advisor & text:nb",
+   "m": 1129,
+   "communes": 0,
+   "manquees": 1129,
+   "enPlus": 0,
+   "exemplesManquees": [
+    "RETAIL ASSISTANT",
+    "Product Guide (Sales Associate) – Seasonal Part-Time (m/f/d) – Manchester",
+    "RETAIL ASSISTANT",
+    "Sales associate Kings Road 24h/week",
+    "RETAIL ASSISTANT",
+    "Sales Associate",
+    "Sales Associate - Full Time Temporary",
+    "Cartier, Sales Associate (Seasonal FTC)"
+   ],
+   "exemplesEnPlus": [],
+   "msQ": [
+    23.742,
+    25.245,
+    25.348
+   ],
+   "msM": [
+    37.149,
+    39.614,
+    40.512
+   ]
+  },
+  {
+   "marche": "GB",
+   "q": 245,
+   "cle": "store-manager",
+   "comprise": "role:store-manager",
+   "m": 174,
+   "communes": 174,
+   "manquees": 0,
+   "enPlus": 71,
+   "exemplesManquees": [],
+   "exemplesEnPlus": [
+    "Sales and Service Ambassador Jewellery Harrods",
+    "Clinique Counter Manager 30hrs John Lewis Chelmsford",
+    "BRIONI - Bespoke Ambassador - Bruton St",
+    "Anthropologie Service and Selling Manager (12 Month FTC) - Guildford, UK",
+    "Sales and Service Ambassador Jewellery Harrods",
+    "Estee Lauder - Counter Manager - Sephora White City",
+    "Department Manager Harrods Accessories Maternity Cover FTC",
+    "Store Advisor London - part time 30h"
+   ],
+   "msQ": [
+    57.459,
+    129.857,
+    309.031
+   ],
+   "msM": [
+    31.962,
+    31.99,
+    32.768
+   ]
+  },
+  {
+   "marche": "GB",
+   "q": 245,
+   "cle": "store-manager",
+   "comprise": "role:store-manager",
+   "m": 174,
+   "communes": 174,
+   "manquees": 0,
+   "enPlus": 71,
+   "exemplesManquees": [],
+   "exemplesEnPlus": [
+    "Sales and Service Ambassador Jewellery Harrods",
+    "Clinique Counter Manager 30hrs John Lewis Chelmsford",
+    "BRIONI - Bespoke Ambassador - Bruton St",
+    "Anthropologie Service and Selling Manager (12 Month FTC) - Guildford, UK",
+    "Sales and Service Ambassador Jewellery Harrods",
+    "Estee Lauder - Counter Manager - Sephora White City",
+    "Department Manager Harrods Accessories Maternity Cover FTC",
+    "Store Advisor London - part time 30h"
+   ],
+   "msQ": [
+    64.493,
+    66.008,
+    70.719
+   ],
+   "msM": [
+    31.765,
+    93.459,
+    103.173
+   ]
+  },
+  {
+   "marche": "GB",
+   "q": 245,
+   "cle": "store-manager",
+   "comprise": "role:store-manager",
+   "m": 174,
+   "communes": 174,
+   "manquees": 0,
+   "enPlus": 71,
+   "exemplesManquees": [],
+   "exemplesEnPlus": [
+    "Sales and Service Ambassador Jewellery Harrods",
+    "Clinique Counter Manager 30hrs John Lewis Chelmsford",
+    "BRIONI - Bespoke Ambassador - Bruton St",
+    "Anthropologie Service and Selling Manager (12 Month FTC) - Guildford, UK",
+    "Sales and Service Ambassador Jewellery Harrods",
+    "Estee Lauder - Counter Manager - Sephora White City",
+    "Department Manager Harrods Accessories Maternity Cover FTC",
+    "Store Advisor London - part time 30h"
+   ],
+   "msQ": [
+    71.542,
+    75.647,
+    106.321
+   ],
+   "msM": [
+    32.832,
+    32.944,
+    35.563
+   ]
+  },
+  {
+   "marche": "GB",
+   "q": 50,
+   "cle": "makeup-artist",
+   "comprise": "role:makeup-artist",
+   "m": 47,
+   "communes": 47,
+   "manquees": 0,
+   "enPlus": 3,
+   "exemplesManquees": [],
+   "exemplesEnPlus": [
+    "NARS Resident Senior Artist - Glasgow Boutique (37.5 Hours)",
+    "NARS Assistant Business Manager - Selfridges Manchester Trafford (FTC 12 Months, 37.5 Hours)",
+    "NARS Resident Senior Artist - Harrods, London (37.5 Hours)"
+   ],
+   "msQ": [
+    44.22,
+    44.336,
+    50.519
+   ],
+   "msM": [
+    24.256,
+    24.684,
+    24.773
+   ]
+  },
+  {
+   "marche": "GB",
+   "q": 0,
+   "cle": "sales-advisor",
+   "comprise": "role:sales-advisor & text:luxe",
+   "m": 1129,
+   "communes": 0,
+   "manquees": 1129,
+   "enPlus": 0,
+   "exemplesManquees": [
+    "RETAIL ASSISTANT",
+    "Product Guide (Sales Associate) – Seasonal Part-Time (m/f/d) – Manchester",
+    "RETAIL ASSISTANT",
+    "Sales associate Kings Road 24h/week",
+    "RETAIL ASSISTANT",
+    "Sales Associate",
+    "Sales Associate - Full Time Temporary",
+    "Cartier, Sales Associate (Seasonal FTC)"
+   ],
+   "exemplesEnPlus": [],
+   "msQ": [
+    26.872,
+    27.034,
+    27.207
+   ],
+   "msM": [
+    39.526,
+    40.455,
+    43.888
+   ]
+  }
+ ]
+}

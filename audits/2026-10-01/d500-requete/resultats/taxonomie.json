@@ -1,0 +1,390 @@
+{
+ "contexte": {
+  "release": "catwalks-occupations-20260929-v3",
+  "hash": "d268258f54bf9fb349a02cfe30ca6ed53a82c9afaf9f43d6833cefb27df60a33",
+  "generation": "search-5-20260924-v2",
+  "mesureA": "2026-10-01T14:23:42.596639+00:00"
+ },
+ "donnees": {
+  "langues": {
+   "fr": 253,
+   "en": 253,
+   "de": 253,
+   "it": 252,
+   "es": 253,
+   "nl": 253,
+   "zh-CN": 253,
+   "ja": 253,
+   "ko": 252,
+   "pt": 253,
+   "pt-BR": 253,
+   "da": 252,
+   "zh-Hant": 253,
+   "pl": 253,
+   "sv": 253,
+   "tr": 253,
+   "th": 253,
+   "ms": 253,
+   "ar": 253,
+   "nb": 253,
+   "el": 253,
+   "vi": 253,
+   "cs": 253,
+   "hu": 253,
+   "ro": 253
+  },
+  "identiquesAnglais": 839,
+  "libellesEtrangers": 6069,
+  "formes": [
+   {
+    "forme": "conseiller de vente",
+    "attendu": "sales-advisor",
+    "comprise": "role:sales-advisor",
+    "metierSeul": "sales-advisor",
+    "metierAttenduTrouve": true,
+    "motsObligatoires": []
+   },
+   {
+    "forme": "conseillère de vente",
+    "attendu": "sales-advisor",
+    "comprise": "role:sales-advisor",
+    "metierSeul": "sales-advisor",
+    "metierAttenduTrouve": true,
+    "motsObligatoires": []
+   },
+   {
+    "forme": "conseillere de vente",
+    "attendu": "sales-advisor",
+    "comprise": "role:sales-advisor",
+    "metierSeul": "sales-advisor",
+    "metierAttenduTrouve": true,
+    "motsObligatoires": []
+   },
+   {
+    "forme": "CONSEILLERE DE VENTE",
+    "attendu": "sales-advisor",
+    "comprise": "role:sales-advisor",
+    "metierSeul": "sales-advisor",
+    "metierAttenduTrouve": true,
+    "motsObligatoires": []
+   },
+   {
+    "forme": "conseillers de vente",
+    "attendu": "sales-advisor",
+    "comprise": "role:sales-advisor",
+    "metierSeul": "sales-advisor",
+    "metierAttenduTrouve": true,
+    "motsObligatoires": []
+   },
+   {
+    "forme": "conseillères de vente",
+    "attendu": "sales-advisor",
+    "comprise": "role:sales-advisor",
+    "metierSeul": "sales-advisor",
+    "metierAttenduTrouve": true,
+    "motsObligatoires": []
+   },
+   {
+    "forme": "conseiller(ère) de vente",
+    "attendu": "sales-advisor",
+    "comprise": "text:conseiller & text:ere & text:de & text:vente",
+    "metierSeul": null,
+    "metierAttenduTrouve": false,
+    "motsObligatoires": [
+     "conseiller",
+     "ere",
+     "de",
+     "vente"
+    ]
+   },
+   {
+    "forme": "conseiller/conseillère de vente",
+    "attendu": "sales-advisor",
+    "comprise": "text:conseiller & role:sales-advisor",
+    "metierSeul": null,
+    "metierAttenduTrouve": true,
+    "motsObligatoires": [
+     "conseiller"
+    ]
+   },
+   {
+    "forme": "conseiller·ère de vente",
+    "attendu": "sales-advisor",
+    "comprise": "text:conseiller & text:ere & text:de & text:vente",
+    "metierSeul": null,
+    "metierAttenduTrouve": false,
+    "motsObligatoires": [
+     "conseiller",
+     "ere",
+     "de",
+     "vente"
+    ]
+   },
+   {
+    "forme": "conseiller.e de vente",
+    "attendu": "sales-advisor",
+    "comprise": "text:conseiller & text:e & text:de & text:vente",
+    "metierSeul": null,
+    "metierAttenduTrouve": false,
+    "motsObligatoires": [
+     "conseiller",
+     "e",
+     "de",
+     "vente"
+    ]
+   },
+   {
+    "forme": "conseillère",
+    "attendu": "sales-advisor",
+    "comprise": "text:conseillere",
+    "metierSeul": null,
+    "metierAttenduTrouve": false,
+    "motsObligatoires": [
+     "conseillere"
+    ]
+   },
+   {
+    "forme": "vendeur",
+    "attendu": "sales-advisor",
+    "comprise": "role:sales-advisor",
+    "metierSeul": "sales-advisor",
+    "metierAttenduTrouve": true,
+    "motsObligatoires": []
+   },
+   {
+    "forme": "vendeuse",
+    "attendu": "sales-advisor",
+    "comprise": "role:sales-advisor",
+    "metierSeul": "sales-advisor",
+    "metierAttenduTrouve": true,
+    "motsObligatoires": []
+   },
+   {
+    "forme": "vendeuses",
+    "attendu": "sales-advisor",
+    "comprise": "role:sales-advisor",
+    "metierSeul": "sales-advisor",
+    "metierAttenduTrouve": true,
+    "motsObligatoires": []
+   },
+   {
+    "forme": "vendeur(se)",
+    "attendu": "sales-advisor",
+    "comprise": "role:sales-advisor & text:se",
+    "metierSeul": null,
+    "metierAttenduTrouve": true,
+    "motsObligatoires": [
+     "se"
+    ]
+   },
+   {
+    "forme": "vendeur/vendeuse",
+    "attendu": "sales-advisor",
+    "comprise": "role:sales-advisor & role:sales-advisor",
+    "metierSeul": null,
+    "metierAttenduTrouve": true,
+    "motsObligatoires": []
+   },
+   {
+    "forme": "sales advisor",
+    "attendu": "sales-advisor",
+    "comprise": "role:sales-advisor",
+    "metierSeul": "sales-advisor",
+    "metierAttenduTrouve": true,
+    "motsObligatoires": []
+   },
+   {
+    "forme": "sales advisors",
+    "attendu": "sales-advisor",
+    "comprise": "role:sales-advisor",
+    "metierSeul": "sales-advisor",
+    "metierAttenduTrouve": true,
+    "motsObligatoires": []
+   },
+   {
+    "forme": "client advisor",
+    "attendu": "sales-advisor",
+    "comprise": "role:sales-advisor",
+    "metierSeul": "sales-advisor",
+    "metierAttenduTrouve": true,
+    "motsObligatoires": []
+   },
+   {
+    "forme": "conseillère de vente luxe",
+    "attendu": "sales-advisor",
+    "comprise": "role:sales-advisor & text:luxe",
+    "metierSeul": null,
+    "metierAttenduTrouve": true,
+    "motsObligatoires": [
+     "luxe"
+    ]
+   },
+   {
+    "forme": "CONSEILLER DE VENTE /NB",
+    "attendu": "sales-advisor",
+    "comprise": "role:sales-advisor & text:nb",
+    "metierSeul": null,
+    "metierAttenduTrouve": true,
+    "motsObligatoires": [
+     "nb"
+    ]
+   },
+   {
+    "forme": "conseillère de vente CDD",
+    "attendu": "sales-advisor",
+    "comprise": "role:sales-advisor & text:cdd",
+    "metierSeul": null,
+    "metierAttenduTrouve": true,
+    "motsObligatoires": [
+     "cdd"
+    ]
+   },
+   {
+    "forme": "conseillère de vente H/F",
+    "attendu": "sales-advisor",
+    "comprise": "role:sales-advisor & text:h & text:f",
+    "metierSeul": null,
+    "metierAttenduTrouve": true,
+    "motsObligatoires": [
+     "h",
+     "f"
+    ]
+   },
+   {
+    "forme": "conseillère de vente Toulouse",
+    "attendu": "sales-advisor",
+    "comprise": "role:sales-advisor & text:toulouse",
+    "metierSeul": null,
+    "metierAttenduTrouve": true,
+    "motsObligatoires": [
+     "toulouse"
+    ]
+   },
+   {
+    "forme": "conseillère de vente expérimentée",
+    "attendu": "sales-advisor",
+    "comprise": "role:sales-advisor & text:experimentee",
+    "metierSeul": null,
+    "metierAttenduTrouve": true,
+    "motsObligatoires": [
+     "experimentee"
+    ]
+   },
+   {
+    "forme": "responsable de boutique",
+    "attendu": "store-manager",
+    "comprise": "role:store-manager",
+    "metierSeul": "store-manager",
+    "metierAttenduTrouve": true,
+    "motsObligatoires": []
+   },
+   {
+    "forme": "responsable boutique",
+    "attendu": "store-manager",
+    "comprise": "text:responsable & text:boutique",
+    "metierSeul": null,
+    "metierAttenduTrouve": false,
+    "motsObligatoires": [
+     "responsable",
+     "boutique"
+    ]
+   },
+   {
+    "forme": "directrice de magasin",
+    "attendu": "store-manager",
+    "comprise": "role:store-manager",
+    "metierSeul": "store-manager",
+    "metierAttenduTrouve": true,
+    "motsObligatoires": []
+   },
+   {
+    "forme": "directeur de magasin",
+    "attendu": "store-manager",
+    "comprise": "role:store-manager",
+    "metierSeul": "store-manager",
+    "metierAttenduTrouve": true,
+    "motsObligatoires": []
+   },
+   {
+    "forme": "directrice de boutique",
+    "attendu": "store-manager",
+    "comprise": "role:store-manager",
+    "metierSeul": "store-manager",
+    "metierAttenduTrouve": true,
+    "motsObligatoires": []
+   },
+   {
+    "forme": "store manager",
+    "attendu": "store-manager",
+    "comprise": "role:store-manager",
+    "metierSeul": "store-manager",
+    "metierAttenduTrouve": true,
+    "motsObligatoires": []
+   },
+   {
+    "forme": "store managers",
+    "attendu": "store-manager",
+    "comprise": "role:store-manager",
+    "metierSeul": "store-manager",
+    "metierAttenduTrouve": true,
+    "motsObligatoires": []
+   },
+   {
+    "forme": "make-up artist",
+    "attendu": "makeup-artist",
+    "comprise": "role:makeup-artist",
+    "metierSeul": "makeup-artist",
+    "metierAttenduTrouve": true,
+    "motsObligatoires": []
+   },
+   {
+    "forme": "make up artist",
+    "attendu": "makeup-artist",
+    "comprise": "role:makeup-artist",
+    "metierSeul": "makeup-artist",
+    "metierAttenduTrouve": true,
+    "motsObligatoires": []
+   },
+   {
+    "forme": "makeup artist",
+    "attendu": "makeup-artist",
+    "comprise": "role:makeup-artist",
+    "metierSeul": "makeup-artist",
+    "metierAttenduTrouve": true,
+    "motsObligatoires": []
+   },
+   {
+    "forme": "maquilleuse",
+    "attendu": "makeup-artist",
+    "comprise": "role:makeup-artist",
+    "metierSeul": "makeup-artist",
+    "metierAttenduTrouve": true,
+    "motsObligatoires": []
+   },
+   {
+    "forme": "maquilleur",
+    "attendu": "makeup-artist",
+    "comprise": "role:makeup-artist",
+    "metierSeul": "makeup-artist",
+    "metierAttenduTrouve": true,
+    "motsObligatoires": []
+   },
+   {
+    "forme": "conseillère beauté",
+    "attendu": "beauty-consultant",
+    "comprise": "role:beauty-consultant",
+    "metierSeul": "beauty-consultant",
+    "metierAttenduTrouve": true,
+    "motsObligatoires": []
+   },
+   {
+    "forme": "visual merchandiser",
+    "attendu": "visual-merchandiser",
+    "comprise": "role:visual-merchandiser",
+    "metierSeul": "visual-merchandiser",
+    "metierAttenduTrouve": true,
+    "motsObligatoires": []
+   }
+  ]
+ }
+}

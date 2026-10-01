@@ -1,0 +1,175 @@
+# suggestions — 2026-10-01T14:24:09.121739+00:00 — catwalks-occupations-20260929-v3 — search-5-20260924-v2
+
+## FR « conseill » — 92 + 165 ms ; 24 candidats ; 0 doublon(s) du même métier
+- Conseiller de beauté [intitulé d'offre] → metier=beauty-consultant (« Conseiller beauté ») : 129 offres
+- Conseiller de Vente CDD Noël [intitulé d'offre] → q (texte) : 452 offres · BRUIT
+- CONSEILLER.E ESTHETICIEN.NE POLYVALENT.E [intitulé d'offre] → q (texte) : 55 offres · MAJUSCULES
+- Conseiller de Vente [intitulé d'offre] → metier=sales-advisor (« Conseiller de vente ») : 4541 offres
+- Conseiller de vente  (stage) [intitulé d'offre] → q (texte) : 161 offres · BRUIT
+- Conseiller Vente Expert Huiles Essentielles [intitulé d'offre] → q (texte) : 36 offres
+- Conseiller de Vente CDD [intitulé d'offre] → q (texte) : 1552 offres · BRUIT
+- CONSEILLERE ESTHETICIENNE POLYVALENTE [intitulé d'offre] → q (texte) : 32 offres · MAJUSCULES
+
+## FR « conseillère » — 79 + 1547 ms ; 24 candidats ; 0 doublon(s) du même métier
+- CONSEILLERE ESTHETICIENNE POLYVALENTE [intitulé d'offre] → q (texte) : 32 offres · MAJUSCULES
+- CONSEILLERE ESTHETICIENNE POLYVALENTE EN ALTERNANCE [intitulé d'offre] → q (texte) : 12 offres · BRUIT · MAJUSCULES
+- CONSEILLERE DE MODE CDD [intitulé d'offre] → q (texte) : 10 offres · BRUIT · MAJUSCULES
+- Conseillère, conseiller vente [intitulé d'offre] → q (texte) : 67 offres
+- CONSEILLERE DE MODE (CDD ) [intitulé d'offre] → q (texte) : 10 offres · BRUIT · MAJUSCULES
+- Conseillère Beauté /X [intitulé d'offre] → q (texte) : 3 offres · BRUIT
+- Conseillère de Vente Paris [intitulé d'offre] → q (texte) : 915 offres · VILLE paris
+- Conseiller/Conseillère de vente [intitulé d'offre] → q (texte) : 3290 offres · BRUIT
+
+## FR « vendeu » — 86 + 3442 ms ; 20 candidats ; 1 doublon(s) du même métier
+- Vendeuse [intitulé d'offre] → metier=sales-advisor (« Conseiller de vente ») : 4541 offres
+- Vendeur [intitulé d'offre] → metier=sales-advisor (« Conseiller de vente ») : 4541 offres
+- Vendeur  CDD [intitulé d'offre] → q (texte) : 1552 offres · BRUIT
+- Vendeur  CDI [intitulé d'offre] → q (texte) : 1744 offres · BRUIT
+- Technicien vendeur cycle [intitulé d'offre] → q (texte) : 72 offres
+- Vendeur(euse) en CDD [intitulé d'offre] → q (texte) : 165 offres · BRUIT
+- Vendeur polyvalent [intitulé d'offre] → q (texte) : 577 offres
+- Vendeur.se [intitulé d'offre] → q (texte) : 1702 offres
+
+## FR « store man » — 87 + 662 ms ; 15 candidats ; 0 doublon(s) du même métier
+- Assistant Store Manager [intitulé d'offre] → metier=assistant-store-manager (« Adjoint au responsable de boutique ») : 413 offres
+- Store Manager [intitulé d'offre] → metier=store-manager (« Responsable de boutique ») : 574 offres
+- Assistant Store Manager /d) [intitulé d'offre] → q (texte) : 413 offres · BRUIT
+- Assistant Store Manager (m//d) [intitulé d'offre] → q (texte) : 5 offres · BRUIT
+- Assistant Store Manager (m//d*) [intitulé d'offre] → q (texte) : 5 offres · BRUIT
+- Assistant Store Manager, Valvert Outlet [intitulé d'offre] → q (texte) : 1 offres
+- BOTTEGA VENETA Assistant Store Manager Avenue Montaigne [intitulé d'offre] → q (texte) : 1 offres
+- Assistant.e Store Manager [intitulé d'offre] → q (texte) : 8 offres
+
+## FR « responsable bout » — 86 + 158 ms ; 14 candidats ; 0 doublon(s) du même métier
+- Adjoint Responsable Boutique [intitulé d'offre] → q (texte) : 242 offres
+- Responsable Boutique [intitulé d'offre] → q (texte) : 1324 offres
+- Responsable boutique . [intitulé d'offre] → q (texte) : 1324 offres
+- CDD Responsable boutique [intitulé d'offre] → q (texte) : 303 offres · BRUIT
+- [Fashion] Responsable Boutique [intitulé d'offre] → q (texte) : 47 offres
+- [Fashion] Responsable Boutique Flagship [intitulé d'offre] → q (texte) : 2 offres
+- Responsable Boutique Adjoint [intitulé d'offre] → q (texte) : 242 offres
+- Responsable Boutique Itinérant [intitulé d'offre] → q (texte) : 8 offres
+
+## FR « visual » — 72 + 764 ms ; 24 candidats ; 0 doublon(s) du même métier
+- VISUAL MERCHANDISER MANAGER, CDI [intitulé d'offre] → q (texte) : 14 offres · BRUIT · MAJUSCULES
+- VISUAL MERCHANDISER MANAGER [intitulé d'offre] → q (texte) : 20 offres · MAJUSCULES
+- Visual Merchandising Specialist adidas /D) [intitulé d'offre] → q (texte) : 6 offres · BRUIT
+- Designer Visual Merchandising EMEA [intitulé d'offre] → q (texte) : 3 offres
+- Visual Merchandiser [intitulé d'offre] → metier=visual-merchandiser (« Visual merchandiser ») : 49 offres
+- VISUAL MERCHANDISER MANAGER, CDD [intitulé d'offre] → q (texte) : 3 offres · BRUIT · MAJUSCULES
+- VISUAL MERCHANDISER MANAGER // CDI [intitulé d'offre] → q (texte) : 14 offres · BRUIT · MAJUSCULES
+- Assistant(e) Chef de Projet Visual Merchandising [intitulé d'offre] → q (texte) : 14 offres · BRUIT
+
+## FR « make up » — 86 + 831 ms ; 5 candidats ; 1 doublon(s) du même métier
+- Chef de Projet Catalogue Make Up /X [intitulé d'offre] → q (texte) : 3 offres · BRUIT
+- Make Up Artist Itinérant [intitulé d'offre] → q (texte) : 1 offres
+- - FORMATEUR-COACH MAKE UP FRANCE [intitulé d'offre] → q (texte) : 1 offres · MAJUSCULES
+- Make up Artist [variante de la taxonomie] → metier=makeup-artist (« Maquilleur ») : 14 offres
+- Make-up Artist [variante de la taxonomie] → metier=makeup-artist (« Maquilleur ») : 14 offres
+
+## FR « sales ad » — 79 + 1356 ms ; 6 candidats ; 0 doublon(s) du même métier
+- Sales Advisor [intitulé d'offre] → metier=sales-advisor (« Conseiller de vente ») : 4541 offres
+- Senior Sales Advisor [intitulé d'offre] → q (texte) : 79 offres
+- Sales Advisor Lyon [intitulé d'offre] → q (texte) : 192 offres · VILLE lyon
+- Sales Advisor Saint Tropez [intitulé d'offre] → q (texte) : 17 offres · VILLE saint tropez
+- Sales advisory [variante de la taxonomie] → q (texte) : 4929 offres
+
+## FR « assistant » — 96 + 158 ms ; 24 candidats ; 0 doublon(s) du même métier
+- STOCK ASSISTANT [intitulé d'offre] → metier=stock-associate (« Gestionnaire de stock en boutique ») : 189 offres · MAJUSCULES
+- Sales Assistant [intitulé d'offre] → metier=sales-advisor (« Conseiller de vente ») : 4541 offres
+- assistant·e achat retail merchandiser [intitulé d'offre] → q (texte) : 15 offres
+- Assistant Store Manager [intitulé d'offre] → metier=assistant-store-manager (« Adjoint au responsable de boutique ») : 413 offres
+- Assistant(e) Chargé(e) de Production Image /X) [intitulé d'offre] → q (texte) : 12 offres · BRUIT
+- assistant·e visuel merchandising [intitulé d'offre] → q (texte) : 62 offres
+- Assistant Formation Retail [intitulé d'offre] → q (texte) : 509 offres
+- Assistant Trade Marketing Retail France [intitulé d'offre] → q (texte) : 51 offres
+
+## FR « directeur » — 132 + 109 ms ; 24 candidats ; 0 doublon(s) du même métier
+- Directeur de magasin [intitulé d'offre] → metier=store-manager (« Responsable de boutique ») : 574 offres
+- Directeur Adjoint de Magasin [intitulé d'offre] → metier=assistant-store-manager (« Adjoint au responsable de boutique ») : 413 offres
+- _Directeur Adjoint Magasin /nb) [intitulé d'offre] → q (texte) : 41 offres · BRUIT
+- Directrice, Directeur de Magasin [intitulé d'offre] → q (texte) : 40 offres
+- DIRECTEUR/RICE ADJOINT/E, CDI [intitulé d'offre] → q (texte) : 8 offres · BRUIT · MAJUSCULES
+- Directeur Adjoint Magasin /nb) [intitulé d'offre] → q (texte) : 41 offres · BRUIT
+- Adjoint au directeur magasin [intitulé d'offre] → q (texte) : 361 offres
+- Assistant Head Coach Nike (Directeur Adjoint) [intitulé d'offre] → q (texte) : 3 offres · BRUIT
+
+## GB « conseill » — 58 + 3930 ms ; 24 candidats ; 6 doublon(s) du même métier
+- Conseiller·ère de vente parfumerie [intitulé d'offre] → q (texte) : 1 offres
+- Conseiller de vente [variante de la taxonomie] → metier=sales-advisor (« Sales advisor ») : 1129 offres
+- Conseillère de vente [variante de la taxonomie] → metier=sales-advisor (« Sales advisor ») : 1129 offres
+- Conseiller vente [variante de la taxonomie] → metier=sales-advisor (« Sales advisor ») : 1129 offres
+- Conseillere vente [variante de la taxonomie] → metier=sales-advisor (« Sales advisor ») : 1129 offres
+- Conseillers de vente [variante de la taxonomie] → metier=sales-advisor (« Sales advisor ») : 1129 offres
+- Conseiller Vendeur [variante de la taxonomie] → metier=sales-advisor (« Sales advisor ») : 1129 offres
+- Conseillere Vendeuse [variante de la taxonomie] → metier=sales-advisor (« Sales advisor ») : 1129 offres
+
+## GB « conseillère » — 55 + 3473 ms ; 12 candidats ; 5 doublon(s) du même métier
+- Conseillère de vente [variante de la taxonomie] → metier=sales-advisor (« Sales advisor ») : 1129 offres
+- Conseillere vente [variante de la taxonomie] → metier=sales-advisor (« Sales advisor ») : 1129 offres
+- Conseillere Vendeuse [variante de la taxonomie] → metier=sales-advisor (« Sales advisor ») : 1129 offres
+- Conseillère beauté [variante de la taxonomie] → metier=beauty-consultant (« Beauty advisor ») : 330 offres
+- Conseillère de beauté [variante de la taxonomie] → metier=beauty-consultant (« Beauty advisor ») : 330 offres
+- Conseillère en parfumerie [variante de la taxonomie] → metier=beauty-consultant (« Beauty advisor ») : 330 offres
+- Conseillere clientele a distance [variante de la taxonomie] → metier=customer-service-advisor (« Customer service advisor ») : 2 offres
+- Conseillère service client [variante de la taxonomie] → metier=customer-service-advisor (« Customer service advisor ») : 2 offres
+
+## GB « vendeu » — 99 + 3465 ms ; 6 candidats ; 1 doublon(s) du même métier
+- Vendeur [variante de la taxonomie] → metier=sales-advisor (« Sales advisor ») : 1129 offres
+- Vendeuse [variante de la taxonomie] → metier=sales-advisor (« Sales advisor ») : 1129 offres
+
+## GB « store man » — 60 + 262 ms ; 21 candidats ; 0 doublon(s) du même métier
+- Store Manager [intitulé d'offre] → metier=store-manager (« Store manager ») : 174 offres
+- Assistant Store Manager [intitulé d'offre] → metier=assistant-store-manager (« Assistant store manager ») : 164 offres
+- Store Manager (37.5 hours) [intitulé d'offre] → q (texte) : 30 offres · BRUIT
+- Store Manager London [intitulé d'offre] → q (texte) : 99 offres
+- Acting MAC Store Manager [intitulé d'offre] → q (texte) : 1 offres
+- Anthropologie Assistant Store Manager [intitulé d'offre] → q (texte) : 3 offres
+- Asisstant Store Manager, Tommy Hilfiger [intitulé d'offre] → q (texte) : 6 offres
+- Assistant Head Coach (Assistant Store Manager) [intitulé d'offre] → q (texte) : 5 offres · BRUIT
+
+## GB « responsable bout » — 50 + - ms ; 0 candidats ; 0 doublon(s) du même métier
+
+## GB « visual » — 134 + 1078 ms ; 24 candidats ; 0 doublon(s) du même métier
+- VISUAL MERCHANDISER [intitulé d'offre] → metier=visual-merchandiser (« Visual merchandiser ») : 77 offres · MAJUSCULES
+- Visual Merchandiser, Dublin [intitulé d'offre] → q (texte) : 6 offres · VILLE dublin
+- Visual Merchandising Assistant [intitulé d'offre] → q (texte) : 55 offres
+- Visual Merchandising Manager [intitulé d'offre] → metier=responsable-vm (« Visual Merchandising Manager ») : 7 offres
+- Visual Merchandiser, Oxford City [intitulé d'offre] → q (texte) : 2 offres · VILLE oxford
+- Anthropologie Visual Coordinator (10 month FTC) [intitulé d'offre] → q (texte) : 1 offres · BRUIT
+- Assistant Store Manager (Visual Merchandising & Styling AHC) [intitulé d'offre] → q (texte) : 1 offres · BRUIT
+- Brand Visual Merchandiser, Tommy Hilfiger Regent Street [intitulé d'offre] → q (texte) : 1 offres
+
+## GB « make up » — 63 + 28 ms ; 2 candidats ; 1 doublon(s) du même métier
+- Make up Artist [variante de la taxonomie] → metier=makeup-artist (« Makeup artist ») : 47 offres
+- Make-up Artist [variante de la taxonomie] → metier=makeup-artist (« Makeup artist ») : 47 offres
+
+## GB « sales ad » — 65 + 2282 ms ; 21 candidats ; 0 doublon(s) du même métier
+- Christmas Sales Advisor [intitulé d'offre] → q (texte) : 82 offres
+- Sales Advisor [intitulé d'offre] → metier=sales-advisor (« Sales advisor ») : 1129 offres
+- Seasonal Sales Advisor [intitulé d'offre] → q (texte) : 155 offres
+- Temporary Sales Advisor [intitulé d'offre] → q (texte) : 114 offres
+- Sales Advisor- Ballymena [intitulé d'offre] → q (texte) : 2 offres · VILLE ballymena
+- Sales Advisor- Birmingham Bullring [intitulé d'offre] → q (texte) : 10 offres · VILLE birmingham
+- Gifting and Sales Advisor [intitulé d'offre] → q (texte) : 4 offres
+- Gifting & Sales Advisor (16 Hour Contract) [intitulé d'offre] → q (texte) : 1 offres · BRUIT
+
+## GB « assistant » — 57 + 1148 ms ; 24 candidats ; 0 doublon(s) du même métier
+- RETAIL ASSISTANT [intitulé d'offre] → q (texte) : 699 offres · MAJUSCULES
+- Assistant Store Manager [intitulé d'offre] → metier=assistant-store-manager (« Assistant store manager ») : 164 offres
+- Sales Assistant [intitulé d'offre] → metier=sales-advisor (« Sales advisor ») : 1129 offres
+- Seasonal Sales Assistant [intitulé d'offre] → q (texte) : 155 offres
+- Assistant Manager [intitulé d'offre] → q (texte) : 385 offres
+- Assistant Manager Counter Lead [intitulé d'offre] → q (texte) : 39 offres
+- Assistant Manager (37.5 hours) [intitulé d'offre] → q (texte) : 36 offres · BRUIT
+- Assistant Merchandiser [intitulé d'offre] → metier=assistant-merchandiser (« Merchandising Assistant ») : 15 offres
+
+## GB « directeur » — 125 + 6251 ms ; 16 candidats ; 1 doublon(s) du même métier
+- Directeur de magasin [variante de la taxonomie] → metier=store-manager (« Store manager ») : 174 offres
+- Directeur de boutique [variante de la taxonomie] → metier=store-manager (« Store manager ») : 174 offres
+- Directeur adjoint de magasin [variante de la taxonomie] → metier=assistant-store-manager (« Assistant store manager ») : 164 offres
+- Directeur regional retail [variante de la taxonomie] → metier=regional-retail-manager (« Regional retail manager ») : 8 offres
+- Directeur de clientèle [variante de la taxonomie] → metier=directeur-de-clientele (« Account Director ») : 1 offres
+- Directeur de production [variante de la taxonomie] → metier=directeur-production (« Production Director ») : 1 offres
+- Directeur de réseau [variante de la taxonomie] → metier=directeur-reseau (« Retail Director ») : 2 offres
+- Directeur Supply Chain [variante de la taxonomie] → metier=directeur-supply-chain (« Supply Chain Director ») : 0 offres

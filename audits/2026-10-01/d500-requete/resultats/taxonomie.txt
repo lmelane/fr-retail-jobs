@@ -1,0 +1,47 @@
+# taxonomie — 2026-10-01T14:23:42.596639+00:00 — catwalks-occupations-20260929-v3 — search-5-20260924-v2
+Métiers : 253 ; familles : 33 ; variantes de métier : 6601 (médiane 28 par métier)
+Libellés par langue : fr 253, en 253, de 253, it 252, es 253, nl 253, zh-CN 253, ja 253, ko 252, pt 253, pt-BR 253, da 252, zh-Hant 253, pl 253, sv 253, tr 253, th 253, ms 253, ar 253, nb 253, el 253, vi 253, cs 253, hu 253, ro 253
+Libellés hors anglais identiques au libellé anglais : 839 sur 6069
+Variantes de famille : 58 (8 familles sans variante)
+Les variantes de métier ne portent pas de langue (champ absent du manifeste catwalks-occupations-20260929-v3).
+
+Formes tapées (marché FR) → ce que comprend le résolveur | métier attendu trouvé | mots rendus obligatoires
+conseiller de vente → role:sales-advisor | oui | -
+conseillère de vente → role:sales-advisor | oui | -
+conseillere de vente → role:sales-advisor | oui | -
+CONSEILLERE DE VENTE → role:sales-advisor | oui | -
+conseillers de vente → role:sales-advisor | oui | -
+conseillères de vente → role:sales-advisor | oui | -
+conseiller(ère) de vente → text:conseiller & text:ere & text:de & text:vente | NON | conseiller, ere, de, vente
+conseiller/conseillère de vente → text:conseiller & role:sales-advisor | oui | conseiller
+conseiller·ère de vente → text:conseiller & text:ere & text:de & text:vente | NON | conseiller, ere, de, vente
+conseiller.e de vente → text:conseiller & text:e & text:de & text:vente | NON | conseiller, e, de, vente
+conseillère → text:conseillere | NON | conseillere
+vendeur → role:sales-advisor | oui | -
+vendeuse → role:sales-advisor | oui | -
+vendeuses → role:sales-advisor | oui | -
+vendeur(se) → role:sales-advisor & text:se | oui | se
+vendeur/vendeuse → role:sales-advisor & role:sales-advisor | oui | -
+sales advisor → role:sales-advisor | oui | -
+sales advisors → role:sales-advisor | oui | -
+client advisor → role:sales-advisor | oui | -
+conseillère de vente luxe → role:sales-advisor & text:luxe | oui | luxe
+CONSEILLER DE VENTE /NB → role:sales-advisor & text:nb | oui | nb
+conseillère de vente CDD → role:sales-advisor & text:cdd | oui | cdd
+conseillère de vente H/F → role:sales-advisor & text:h & text:f | oui | h, f
+conseillère de vente Toulouse → role:sales-advisor & text:toulouse | oui | toulouse
+conseillère de vente expérimentée → role:sales-advisor & text:experimentee | oui | experimentee
+responsable de boutique → role:store-manager | oui | -
+responsable boutique → text:responsable & text:boutique | NON | responsable, boutique
+directrice de magasin → role:store-manager | oui | -
+directeur de magasin → role:store-manager | oui | -
+directrice de boutique → role:store-manager | oui | -
+store manager → role:store-manager | oui | -
+store managers → role:store-manager | oui | -
+make-up artist → role:makeup-artist | oui | -
+make up artist → role:makeup-artist | oui | -
+makeup artist → role:makeup-artist | oui | -
+maquilleuse → role:makeup-artist | oui | -
+maquilleur → role:makeup-artist | oui | -
+conseillère beauté → role:beauty-consultant | oui | -
+visual merchandiser → role:visual-merchandiser | oui | -

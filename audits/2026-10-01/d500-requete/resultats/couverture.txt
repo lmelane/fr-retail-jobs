@@ -1,0 +1,6 @@
+# couverture — 2026-10-01T14:23:42.596639+00:00 — catwalks-occupations-20260929-v3 — search-5-20260924-v2
+marché | offres publiables | code métier | métiers lus dans l'intitulé | au moins un métier | famille seule | rien
+FR | 13404 | 59.1 % | 61.0 % | 61.0 % | 34.3 % | 4.7 %
+GB | 4171 | 56.6 % | 58.2 % | 58.2 % | 36.8 % | 5.1 %
+US | 39911 | 68.5 % | 69.6 % | 69.6 % | 27.1 % | 3.2 %
+ALL | 88016 | 62.1 % | 63.5 % | 63.5 % | 30.8 % | 5.6 %

@@ -1,0 +1,68 @@
+# recouvrement — 2026-10-01T14:25:31.14641+00:00 — catwalks-occupations-20260929-v3 — search-5-20260924-v2
+marché | requête | comprise | offres q | offres metier= | communes | metier= absentes de q (% du métier) | q hors metier= | ms q (3 tours) | ms metier
+FR | conseillère de vente | role:sales-advisor | 4670 | 4541 | 4541 | 0 (0.0 %) | 129 | 116/121/137 | 64
+    manquées, par ex. : 
+    en plus, par ex. : [Fashion] - Conseiller.e de ventes CDI 21h - Marseille Terrasses du port H/F ‖ Digital Client Advisor - Italian Speaker ‖ [Fashion] - Conseiller.e de ventes - Lyon - CDI 35h - H/F ‖ Vendeurs (f/h) - CDI 25h - Rouen les Docks ‖ Vendeurs polyvalents (CDI 35h)
+FR | conseiller de vente | role:sales-advisor | 4670 | 4541 | 4541 | 0 (0.0 %) | 129 | 135/147/165 | 63
+    manquées, par ex. : 
+    en plus, par ex. : [Fashion] - Conseiller.e de ventes CDI 21h - Marseille Terrasses du port H/F ‖ Digital Client Advisor - Italian Speaker ‖ [Fashion] - Conseiller.e de ventes - Lyon - CDI 35h - H/F ‖ Vendeurs (f/h) - CDI 25h - Rouen les Docks ‖ Vendeurs polyvalents (CDI 35h)
+FR | conseiller(ère) de vente | text:conseiller & text:ere & text:de & text:vente | 1143 | 4541 | 890 | 3651 (80.4 %) | 253 | 64/66/111 | 106
+    manquées, par ex. : Technicien vendeur cycle H/F ‖ NOËL Conseiller de Vente H/F - Perigueux La Feuilleraie ‖ Vendeur (H/F) - CDI 10h - Strasbourg AuShopping ‖ Conseiller de Vente H/F - CDI 7h - Le Chesnay ‖ Vendeuse / Vendeur - F/H
+    en plus, par ex. : Conseiller de beauté F/H ‖ Conseiller de beauté F/H ‖ CDD Conseiller(e) de mode Remplacement congé maternité ‖ CONSEILLERE ESTHETICIENNE POLYVALENTE EN ALTERNANCE – H/F ‖ Conseiller de beauté F/H
+FR | sales advisor | role:sales-advisor | 4670 | 4541 | 4541 | 0 (0.0 %) | 129 | 120/130/165 | 60
+    manquées, par ex. : 
+    en plus, par ex. : [Fashion] - Conseiller.e de ventes CDI 21h - Marseille Terrasses du port H/F ‖ Digital Client Advisor - Italian Speaker ‖ [Fashion] - Conseiller.e de ventes - Lyon - CDI 35h - H/F ‖ Vendeurs (f/h) - CDI 25h - Rouen les Docks ‖ Vendeurs polyvalents (CDI 35h)
+FR | vendeuse | role:sales-advisor | 4670 | 4541 | 4541 | 0 (0.0 %) | 129 | 114/129/138 | 66
+    manquées, par ex. : 
+    en plus, par ex. : [Fashion] - Conseiller.e de ventes CDI 21h - Marseille Terrasses du port H/F ‖ Digital Client Advisor - Italian Speaker ‖ [Fashion] - Conseiller.e de ventes - Lyon - CDI 35h - H/F ‖ Vendeurs (f/h) - CDI 25h - Rouen les Docks ‖ Vendeurs polyvalents (CDI 35h)
+FR | CONSEILLER DE VENTE /NB | role:sales-advisor & text:nb | 163 | 4541 | 162 | 4379 (96.4 %) | 1 | 30/31/33 | 65
+    manquées, par ex. : Conseiller.ère de vente - CDD - 24h - Abbesses ‖ Technicien vendeur cycle H/F ‖ NOËL Conseiller de Vente H/F - Perigueux La Feuilleraie ‖ Vendeur (H/F) - CDI 10h - Strasbourg AuShopping ‖ Conseiller de Vente H/F - CDI 7h - Le Chesnay
+    en plus, par ex. : Vendeurs polyvalents (CDI 35h)
+FR | responsable de boutique | role:store-manager | 687 | 574 | 574 | 0 (0.0 %) | 113 | 107/108/139 | 33
+    manquées, par ex. : 
+    en plus, par ex. : Responsable de magasin adjoint.e - CDI - 35h - Rennes Alma ‖ Vendeurs (f/h) - CDI 25h - Rouen les Docks ‖ Vendeurs (f/h) - CDI 35h/25h - Toulouse Labège ‖ Adjoint(e) de magasin de tissus et décoration intérieure - Angers ‖ _Directeur Magasin Soissons (h/f/nb)
+FR | store manager | role:store-manager | 687 | 574 | 574 | 0 (0.0 %) | 113 | 108/134/153 | 36
+    manquées, par ex. : 
+    en plus, par ex. : Responsable de magasin adjoint.e - CDI - 35h - Rennes Alma ‖ Vendeurs (f/h) - CDI 25h - Rouen les Docks ‖ Vendeurs (f/h) - CDI 35h/25h - Toulouse Labège ‖ Adjoint(e) de magasin de tissus et décoration intérieure - Angers ‖ _Directeur Magasin Soissons (h/f/nb)
+FR | directrice de magasin | role:store-manager | 687 | 574 | 574 | 0 (0.0 %) | 113 | 102/105/105 | 36
+    manquées, par ex. : 
+    en plus, par ex. : Responsable de magasin adjoint.e - CDI - 35h - Rennes Alma ‖ Vendeurs (f/h) - CDI 25h - Rouen les Docks ‖ Vendeurs (f/h) - CDI 35h/25h - Toulouse Labège ‖ Adjoint(e) de magasin de tissus et décoration intérieure - Angers ‖ _Directeur Magasin Soissons (h/f/nb)
+FR | make-up artist | role:makeup-artist | 15 | 14 | 14 | 0 (0.0 %) | 1 | 26/29/107 | 26
+    manquées, par ex. : 
+    en plus, par ex. : Stage – Assistant.e Relations Célébrités (F/H) – Janvier 2027
+FR | conseillère de vente luxe | role:sales-advisor & text:luxe | 476 | 4541 | 458 | 4083 (89.9 %) | 18 | 55/68/139 | 66
+    manquées, par ex. : Conseiller.ère de vente - CDD - 24h - Abbesses ‖ Technicien vendeur cycle H/F ‖ NOËL Conseiller de Vente H/F - Perigueux La Feuilleraie ‖ Vendeur (H/F) - CDI 10h - Strasbourg AuShopping ‖ Conseiller de Vente H/F - CDI 7h - Le Chesnay
+    en plus, par ex. : Responsable de département (concession) h/f/x 39h ‖ Responsable de Secteur Off Trade – Dijon (F/H/X) ‖ CDI - Conseiller de Ventes H/F ‖ Head of Sales France & Belux H/F ‖ Adjoint·e Responsable de Boutique – Expert·e Spiritueux Senior (H/F)
+GB | conseillère de vente | role:sales-advisor | 1141 | 1129 | 1129 | 0 (0.0 %) | 12 | 53/57/61 | 37
+    manquées, par ex. : 
+    en plus, par ex. : Christmas Sales Associate - Beauty (Full-time) ‖ Senior Client Advisor | Beauty | Harrods ‖ Christmas Sales Associates (all departments and various hours) ‖ Part Time Sales Associate (stockroom), Tommy Hilfiger - Galway ‖ Seasonal Sales Associates - Parttime (Manchester Trafford)
+GB | conseiller de vente | role:sales-advisor | 1141 | 1129 | 1129 | 0 (0.0 %) | 12 | 52/61/140 | 38
+    manquées, par ex. : 
+    en plus, par ex. : Christmas Sales Associate - Beauty (Full-time) ‖ Senior Client Advisor | Beauty | Harrods ‖ Christmas Sales Associates (all departments and various hours) ‖ Part Time Sales Associate (stockroom), Tommy Hilfiger - Galway ‖ Seasonal Sales Associates - Parttime (Manchester Trafford)
+GB | conseiller(ère) de vente | text:conseiller & text:ere & text:de & text:vente | 6 | 1129 | 5 | 1124 (99.6 %) | 1 | 32/39/44 | 39
+    manquées, par ex. : RETAIL ASSISTANT ‖ Product Guide (Sales Associate) – Seasonal Part-Time (m/f/d) – Manchester ‖ RETAIL ASSISTANT ‖ Sales associate Kings Road 24h/week ‖ RETAIL ASSISTANT
+    en plus, par ex. : Conseiller·ère de vente parfumerie — Londres
+GB | sales advisor | role:sales-advisor | 1141 | 1129 | 1129 | 0 (0.0 %) | 12 | 61/71/124 | 52
+    manquées, par ex. : 
+    en plus, par ex. : Christmas Sales Associate - Beauty (Full-time) ‖ Senior Client Advisor | Beauty | Harrods ‖ Christmas Sales Associates (all departments and various hours) ‖ Part Time Sales Associate (stockroom), Tommy Hilfiger - Galway ‖ Seasonal Sales Associates - Parttime (Manchester Trafford)
+GB | vendeuse | role:sales-advisor | 1141 | 1129 | 1129 | 0 (0.0 %) | 12 | 58/63/142 | 38
+    manquées, par ex. : 
+    en plus, par ex. : Christmas Sales Associate - Beauty (Full-time) ‖ Senior Client Advisor | Beauty | Harrods ‖ Christmas Sales Associates (all departments and various hours) ‖ Part Time Sales Associate (stockroom), Tommy Hilfiger - Galway ‖ Seasonal Sales Associates - Parttime (Manchester Trafford)
+GB | CONSEILLER DE VENTE /NB | role:sales-advisor & text:nb | 0 | 1129 | 0 | 1129 (100.0 %) | 0 | 24/25/25 | 40
+    manquées, par ex. : RETAIL ASSISTANT ‖ Product Guide (Sales Associate) – Seasonal Part-Time (m/f/d) – Manchester ‖ RETAIL ASSISTANT ‖ Sales associate Kings Road 24h/week ‖ RETAIL ASSISTANT
+    en plus, par ex. : 
+GB | responsable de boutique | role:store-manager | 245 | 174 | 174 | 0 (0.0 %) | 71 | 57/130/309 | 32
+    manquées, par ex. : 
+    en plus, par ex. : Sales and Service Ambassador Jewellery Harrods ‖ Clinique Counter Manager 30hrs John Lewis Chelmsford ‖ BRIONI - Bespoke Ambassador - Bruton St ‖ Anthropologie Service and Selling Manager (12 Month FTC) - Guildford, UK ‖ Sales and Service Ambassador Jewellery Harrods
+GB | store manager | role:store-manager | 245 | 174 | 174 | 0 (0.0 %) | 71 | 64/66/71 | 93
+    manquées, par ex. : 
+    en plus, par ex. : Sales and Service Ambassador Jewellery Harrods ‖ Clinique Counter Manager 30hrs John Lewis Chelmsford ‖ BRIONI - Bespoke Ambassador - Bruton St ‖ Anthropologie Service and Selling Manager (12 Month FTC) - Guildford, UK ‖ Sales and Service Ambassador Jewellery Harrods
+GB | directrice de magasin | role:store-manager | 245 | 174 | 174 | 0 (0.0 %) | 71 | 72/76/106 | 33
+    manquées, par ex. : 
+    en plus, par ex. : Sales and Service Ambassador Jewellery Harrods ‖ Clinique Counter Manager 30hrs John Lewis Chelmsford ‖ BRIONI - Bespoke Ambassador - Bruton St ‖ Anthropologie Service and Selling Manager (12 Month FTC) - Guildford, UK ‖ Sales and Service Ambassador Jewellery Harrods
+GB | make-up artist | role:makeup-artist | 50 | 47 | 47 | 0 (0.0 %) | 3 | 44/44/51 | 25
+    manquées, par ex. : 
+    en plus, par ex. : NARS Resident Senior Artist - Glasgow Boutique (37.5 Hours) ‖ NARS Assistant Business Manager - Selfridges Manchester Trafford (FTC 12 Months, 37.5 Hours) ‖ NARS Resident Senior Artist - Harrods, London (37.5 Hours)
+GB | conseillère de vente luxe | role:sales-advisor & text:luxe | 0 | 1129 | 0 | 1129 (100.0 %) | 0 | 27/27/27 | 40
+    manquées, par ex. : RETAIL ASSISTANT ‖ Product Guide (Sales Associate) – Seasonal Part-Time (m/f/d) – Manchester ‖ RETAIL ASSISTANT ‖ Sales associate Kings Road 24h/week ‖ RETAIL ASSISTANT
+    en plus, par ex. : 

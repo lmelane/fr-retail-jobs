@@ -1,0 +1,46 @@
+{
+ "contexte": {
+  "release": "catwalks-occupations-20260929-v3",
+  "hash": "d268258f54bf9fb349a02cfe30ca6ed53a82c9afaf9f43d6833cefb27df60a33",
+  "generation": "search-5-20260924-v2",
+  "mesureA": "2026-10-01T14:23:42.596639+00:00"
+ },
+ "donnees": [
+  {
+   "marche": "FR",
+   "offres": 13404,
+   "avec_code": 7924,
+   "avec_metiers_lus": 8178,
+   "avec_un_metier": 8178,
+   "famille_seule": 4591,
+   "rien": 635
+  },
+  {
+   "marche": "GB",
+   "offres": 4171,
+   "avec_code": 2362,
+   "avec_metiers_lus": 2426,
+   "avec_un_metier": 2426,
+   "famille_seule": 1534,
+   "rien": 211
+  },
+  {
+   "marche": "US",
+   "offres": 39911,
+   "avec_code": 27350,
+   "avec_metiers_lus": 27788,
+   "avec_un_metier": 27788,
+   "famille_seule": 10834,
+   "rien": 1289
+  },
+  {
+   "marche": "ALL",
+   "offres": 88016,
+   "avec_code": 54692,
+   "avec_metiers_lus": 55908,
+   "avec_un_metier": 55908,
+   "famille_seule": 27148,
+   "rien": 4960
+  }
+ ]
+}

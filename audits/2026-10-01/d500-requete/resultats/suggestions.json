@@ -1,0 +1,1918 @@
+{
+ "contexte": {
+  "release": "catwalks-occupations-20260929-v3",
+  "hash": "d268258f54bf9fb349a02cfe30ca6ed53a82c9afaf9f43d6833cefb27df60a33",
+  "generation": "search-5-20260924-v2",
+  "mesureA": "2026-10-01T14:24:09.121739+00:00"
+ },
+ "donnees": [
+  {
+   "marche": "FR",
+   "frappe": "conseill",
+   "brutes": 40,
+   "candidats": [
+    "Conseiller de beauté",
+    "Conseiller de Vente CDD Noël",
+    "CONSEILLER.E ESTHETICIEN.NE POLYVALENT.E",
+    "Conseiller de Vente",
+    "Conseiller de vente  (stage)",
+    "Conseiller Vente Expert Huiles Essentielles",
+    "Conseiller de Vente CDD",
+    "CONSEILLERE ESTHETICIENNE POLYVALENTE",
+    "Conseiller de Vente  CDI",
+    "_CONSEILLER DE VENTE /NB)",
+    "Conseiller Vente Expert Beauté/Skincare",
+    "Conseiller de Vente CDD Temps partiel",
+    "Conseiller Vente Expert Capillaire",
+    "Conseiller Vente",
+    "Conseiller de Vente CDI",
+    "CONSEILLERE ESTHETICIENNE POLYVALENTE EN ALTERNANCE",
+    "Conseiller/ère de vente",
+    "Conseiller(ère) de Vente",
+    "Conseiller de mode",
+    "Conseiller de Vente  CDD",
+    "Conseiller.e de Vente",
+    "Conseiller·ère de vente",
+    "Conseiller de Vente Textile Loisir et Multisport",
+    "Conseiller.ère de vente"
+   ],
+   "msTitres": 91.847,
+   "msValidation": 165.42,
+   "servies": [
+    {
+     "valeur": "Conseiller de beauté",
+     "origine": "intitulé d'offre",
+     "metier": "beauty-consultant",
+     "libelle": "Conseiller beauté",
+     "offresAuChoix": 129,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Conseiller de Vente CDD Noël",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 452,
+     "bruit": true,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "CONSEILLER.E ESTHETICIEN.NE POLYVALENT.E",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 55,
+     "bruit": null,
+     "ville": null,
+     "majuscules": true
+    },
+    {
+     "valeur": "Conseiller de Vente",
+     "origine": "intitulé d'offre",
+     "metier": "sales-advisor",
+     "libelle": "Conseiller de vente",
+     "offresAuChoix": 4541,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Conseiller de vente  (stage)",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 161,
+     "bruit": true,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Conseiller Vente Expert Huiles Essentielles",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 36,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Conseiller de Vente CDD",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 1552,
+     "bruit": true,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "CONSEILLERE ESTHETICIENNE POLYVALENTE",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 32,
+     "bruit": null,
+     "ville": null,
+     "majuscules": true
+    }
+   ],
+   "doublonsMemeMetier": 0
+  },
+  {
+   "marche": "FR",
+   "frappe": "conseillère",
+   "brutes": 22,
+   "candidats": [
+    "CONSEILLERE ESTHETICIENNE POLYVALENTE",
+    "CONSEILLERE ESTHETICIENNE POLYVALENTE EN ALTERNANCE",
+    "CONSEILLERE DE MODE CDD",
+    "Conseillère, conseiller vente",
+    "CONSEILLERE DE MODE (CDD )",
+    "Conseillère Beauté /X",
+    "Conseillère de Vente Paris",
+    "Conseiller/Conseillère de vente",
+    "CONSEILLÈRE/CONSEILLER DE VENTE",
+    "Conseillère",
+    "Conseillère de vente",
+    "Conseillère de vente expérimentée  Toulouse CDD",
+    "conseillère de vente txt femme",
+    "Conseillère Textile",
+    "CONSEILLERE VENDEUSE EN PARFUMERIE SELECTIVE",
+    "CONSEILLERE VENDEUSE  EN PARFUMERIE SELECTIVE",
+    "Conseillere vente",
+    "Conseillere Vendeuse",
+    "Conseillère beauté",
+    "Conseillère de beauté",
+    "Conseillère en parfumerie",
+    "Conseillere clientele a distance",
+    "Conseillère service client",
+    "Conseillère clientèle bancaire"
+   ],
+   "msTitres": 78.732,
+   "msValidation": 1546.792,
+   "servies": [
+    {
+     "valeur": "CONSEILLERE ESTHETICIENNE POLYVALENTE",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 32,
+     "bruit": null,
+     "ville": null,
+     "majuscules": true
+    },
+    {
+     "valeur": "CONSEILLERE ESTHETICIENNE POLYVALENTE EN ALTERNANCE",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 12,
+     "bruit": true,
+     "ville": null,
+     "majuscules": true
+    },
+    {
+     "valeur": "CONSEILLERE DE MODE CDD",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 10,
+     "bruit": true,
+     "ville": null,
+     "majuscules": true
+    },
+    {
+     "valeur": "Conseillère, conseiller vente",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 67,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "CONSEILLERE DE MODE (CDD )",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 10,
+     "bruit": true,
+     "ville": null,
+     "majuscules": true
+    },
+    {
+     "valeur": "Conseillère Beauté /X",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 3,
+     "bruit": true,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Conseillère de Vente Paris",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 915,
+     "bruit": null,
+     "ville": "paris",
+     "majuscules": false
+    },
+    {
+     "valeur": "Conseiller/Conseillère de vente",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 3290,
+     "bruit": true,
+     "ville": null,
+     "majuscules": false
+    }
+   ],
+   "doublonsMemeMetier": 0
+  },
+  {
+   "marche": "FR",
+   "frappe": "vendeu",
+   "brutes": 40,
+   "candidats": [
+    "Vendeuse",
+    "Vendeur",
+    "Vendeur  CDD",
+    "Vendeur  CDI",
+    "Technicien vendeur cycle",
+    "Vendeur(euse) en CDD",
+    "Vendeur polyvalent",
+    "Vendeur.se",
+    "Vendeur(euse) CDI",
+    "Vendeur Textile",
+    "Vendeur/se Alternant/e",
+    "Vendeur(euse) en CDI",
+    "Vendeur polyvalent 13.25",
+    "Vendeur 30 heures",
+    "Vendeur(euse) CDD",
+    "Vendeur.se Val Thoiry",
+    "Vendeur automobile",
+    "Vendeuse automobile",
+    "Vendeur en ligne",
+    "Vendeuse en ligne"
+   ],
+   "msTitres": 86.332,
+   "msValidation": 3441.883,
+   "servies": [
+    {
+     "valeur": "Vendeuse",
+     "origine": "intitulé d'offre",
+     "metier": "sales-advisor",
+     "libelle": "Conseiller de vente",
+     "offresAuChoix": 4541,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Vendeur",
+     "origine": "intitulé d'offre",
+     "metier": "sales-advisor",
+     "libelle": "Conseiller de vente",
+     "offresAuChoix": 4541,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Vendeur  CDD",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 1552,
+     "bruit": true,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Vendeur  CDI",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 1744,
+     "bruit": true,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Technicien vendeur cycle",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 72,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Vendeur(euse) en CDD",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 165,
+     "bruit": true,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Vendeur polyvalent",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 577,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Vendeur.se",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 1702,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    }
+   ],
+   "doublonsMemeMetier": 1
+  },
+  {
+   "marche": "FR",
+   "frappe": "store man",
+   "brutes": 40,
+   "candidats": [
+    "Assistant Store Manager",
+    "Store Manager",
+    "Assistant Store Manager /d)",
+    "Assistant Store Manager (m//d)",
+    "Assistant Store Manager (m//d*)",
+    "Assistant Store Manager, Valvert Outlet",
+    "BOTTEGA VENETA Assistant Store Manager Avenue Montaigne",
+    "Assistant.e Store Manager",
+    "CHURCH'S Assistant Store Manager Paris",
+    "*Future Store Manager Opportunities in Paris*",
+    "Senior Store Manager",
+    "Store Manager adidas /D)",
+    "Store Manager Beaugrenelle",
+    "Store Management",
+    "Store-Management"
+   ],
+   "msTitres": 87.406,
+   "msValidation": 661.571,
+   "servies": [
+    {
+     "valeur": "Assistant Store Manager",
+     "origine": "intitulé d'offre",
+     "metier": "assistant-store-manager",
+     "libelle": "Adjoint au responsable de boutique",
+     "offresAuChoix": 413,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Store Manager",
+     "origine": "intitulé d'offre",
+     "metier": "store-manager",
+     "libelle": "Responsable de boutique",
+     "offresAuChoix": 574,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Assistant Store Manager /d)",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 413,
+     "bruit": true,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Assistant Store Manager (m//d)",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 5,
+     "bruit": true,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Assistant Store Manager (m//d*)",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 5,
+     "bruit": true,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Assistant Store Manager, Valvert Outlet",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 1,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "BOTTEGA VENETA Assistant Store Manager Avenue Montaigne",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 1,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Assistant.e Store Manager",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 8,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    }
+   ],
+   "doublonsMemeMetier": 0
+  },
+  {
+   "marche": "FR",
+   "frappe": "responsable bout",
+   "brutes": 35,
+   "candidats": [
+    "Adjoint Responsable Boutique",
+    "Responsable Boutique",
+    "Responsable boutique .",
+    "CDD Responsable boutique",
+    "[Fashion] Responsable Boutique",
+    "[Fashion] Responsable Boutique Flagship",
+    "Responsable Boutique Adjoint",
+    "Responsable Boutique Itinérant",
+    "Responsable Boutique LUSH Cc Val d'Europe",
+    "Responsable boutique Lyon (CDD)",
+    "Responsable Boutique Parfums Christian Dior Paris",
+    "Responsable Boutique Paris",
+    "Responsable Boutique Toulouse Blagnac",
+    "Responsable Boutique Volant"
+   ],
+   "msTitres": 86.171,
+   "msValidation": 158.364,
+   "servies": [
+    {
+     "valeur": "Adjoint Responsable Boutique",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 242,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Responsable Boutique",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 1324,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Responsable boutique .",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 1324,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "CDD Responsable boutique",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 303,
+     "bruit": true,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "[Fashion] Responsable Boutique",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 47,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "[Fashion] Responsable Boutique Flagship",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 2,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Responsable Boutique Adjoint",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 242,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Responsable Boutique Itinérant",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 8,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    }
+   ],
+   "doublonsMemeMetier": 0
+  },
+  {
+   "marche": "FR",
+   "frappe": "visual",
+   "brutes": 40,
+   "candidats": [
+    "VISUAL MERCHANDISER MANAGER, CDI",
+    "VISUAL MERCHANDISER MANAGER",
+    "Visual Merchandising Specialist adidas /D)",
+    "Designer Visual Merchandising EMEA",
+    "Visual Merchandiser",
+    "VISUAL MERCHANDISER MANAGER, CDD",
+    "VISUAL MERCHANDISER MANAGER // CDI",
+    "Assistant(e) Chef de Projet Visual Merchandising",
+    "Assistant(e) Retail Design & Visual Merchandising (Stage)",
+    "Assistant.e Visual Merchandising",
+    "Assistant Visual Merchandising Event",
+    "Assistant Visual Merchandising Image Femme",
+    "Responsable Visual Merchandising",
+    "Chef de projet visual merchandising Europe /NB",
+    "CHEF DE PROJET VISUAL MERCHANDISING /NB",
+    "Responsable Adjoint Visual Merchandising",
+    "Visual Merchandising Manager France",
+    "City Visual Merchandiser",
+    "Head of Visual Merchandising & Retail Experience",
+    "In-Store Visual Merchandiser (m//d*)",
+    "Manager, Visual Merchandising & Trade",
+    "Manager visual merch",
+    "MIU MIU Instore Visual Merchandiser Paris",
+    "SAINT LAURENT Stage Digital Visual Project Manager Assistant"
+   ],
+   "msTitres": 71.863,
+   "msValidation": 764.317,
+   "servies": [
+    {
+     "valeur": "VISUAL MERCHANDISER MANAGER, CDI",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 14,
+     "bruit": true,
+     "ville": null,
+     "majuscules": true
+    },
+    {
+     "valeur": "VISUAL MERCHANDISER MANAGER",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 20,
+     "bruit": null,
+     "ville": null,
+     "majuscules": true
+    },
+    {
+     "valeur": "Visual Merchandising Specialist adidas /D)",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 6,
+     "bruit": true,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Designer Visual Merchandising EMEA",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 3,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Visual Merchandiser",
+     "origine": "intitulé d'offre",
+     "metier": "visual-merchandiser",
+     "libelle": "Visual merchandiser",
+     "offresAuChoix": 49,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "VISUAL MERCHANDISER MANAGER, CDD",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 3,
+     "bruit": true,
+     "ville": null,
+     "majuscules": true
+    },
+    {
+     "valeur": "VISUAL MERCHANDISER MANAGER // CDI",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 14,
+     "bruit": true,
+     "ville": null,
+     "majuscules": true
+    },
+    {
+     "valeur": "Assistant(e) Chef de Projet Visual Merchandising",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 14,
+     "bruit": true,
+     "ville": null,
+     "majuscules": false
+    }
+   ],
+   "doublonsMemeMetier": 0
+  },
+  {
+   "marche": "FR",
+   "frappe": "make up",
+   "brutes": 3,
+   "candidats": [
+    "Chef de Projet Catalogue Make Up /X",
+    "Make Up Artist Itinérant",
+    "- FORMATEUR-COACH MAKE UP FRANCE",
+    "Make up Artist",
+    "Make-up Artist"
+   ],
+   "msTitres": 85.958,
+   "msValidation": 831.228,
+   "servies": [
+    {
+     "valeur": "Chef de Projet Catalogue Make Up /X",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 3,
+     "bruit": true,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Make Up Artist Itinérant",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 1,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "- FORMATEUR-COACH MAKE UP FRANCE",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 1,
+     "bruit": null,
+     "ville": null,
+     "majuscules": true
+    },
+    {
+     "valeur": "Make up Artist",
+     "origine": "variante de la taxonomie",
+     "metier": "makeup-artist",
+     "libelle": "Maquilleur",
+     "offresAuChoix": 14,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Make-up Artist",
+     "origine": "variante de la taxonomie",
+     "metier": "makeup-artist",
+     "libelle": "Maquilleur",
+     "offresAuChoix": 14,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    }
+   ],
+   "doublonsMemeMetier": 1
+  },
+  {
+   "marche": "FR",
+   "frappe": "sales ad",
+   "brutes": 10,
+   "candidats": [
+    "Sales Advisor",
+    "Senior Sales Advisor",
+    "Sales Advisor Lyon",
+    "Sales Advisor Saint Tropez",
+    "Sales Administration Manager",
+    "Sales advisory"
+   ],
+   "msTitres": 78.923,
+   "msValidation": 1356.355,
+   "servies": [
+    {
+     "valeur": "Sales Advisor",
+     "origine": "intitulé d'offre",
+     "metier": "sales-advisor",
+     "libelle": "Conseiller de vente",
+     "offresAuChoix": 4541,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Senior Sales Advisor",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 79,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Sales Advisor Lyon",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 192,
+     "bruit": null,
+     "ville": "lyon",
+     "majuscules": false
+    },
+    {
+     "valeur": "Sales Advisor Saint Tropez",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 17,
+     "bruit": null,
+     "ville": "saint tropez",
+     "majuscules": false
+    },
+    {
+     "valeur": "Sales advisory",
+     "origine": "variante de la taxonomie",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 4929,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    }
+   ],
+   "doublonsMemeMetier": 0
+  },
+  {
+   "marche": "FR",
+   "frappe": "assistant",
+   "brutes": 40,
+   "candidats": [
+    "STOCK ASSISTANT",
+    "Sales Assistant",
+    "assistant·e achat retail merchandiser",
+    "Assistant Store Manager",
+    "Assistant(e) Chargé(e) de Production Image /X)",
+    "assistant·e visuel merchandising",
+    "Assistant Formation Retail",
+    "Assistant Trade Marketing Retail France",
+    "Assistant Coordination Studio Architecture",
+    "Assistant(e) Category Manager MakeUp Europe /X)",
+    "Assistant Global Digital Media",
+    "Assistant Project Management Office IT",
+    "Assistant Qualité /NB- OCTOBRE 2026",
+    "Assistant RH (",
+    "ASSISTANT ATTACHÉ DE PRESSE INTERNATIONAL JOAILLERIE ET HORLOGERIE",
+    "Assistant Back Office",
+    "Assistant Comptable Client Caisse",
+    "Assistant Contrôle de Gestion Europe",
+    "Assistant Coordinateur Retail .",
+    "Assistant.e Achats",
+    "Assistant(e) administratif(ve) travaux et moyens généraux",
+    "Assistant(e) Administration du Personnel International",
+    "assistant·e administration du personnel retail",
+    "Assistant.e Area Manager International"
+   ],
+   "msTitres": 96.377,
+   "msValidation": 157.863,
+   "servies": [
+    {
+     "valeur": "STOCK ASSISTANT",
+     "origine": "intitulé d'offre",
+     "metier": "stock-associate",
+     "libelle": "Gestionnaire de stock en boutique",
+     "offresAuChoix": 189,
+     "bruit": null,
+     "ville": null,
+     "majuscules": true
+    },
+    {
+     "valeur": "Sales Assistant",
+     "origine": "intitulé d'offre",
+     "metier": "sales-advisor",
+     "libelle": "Conseiller de vente",
+     "offresAuChoix": 4541,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "assistant·e achat retail merchandiser",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 15,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Assistant Store Manager",
+     "origine": "intitulé d'offre",
+     "metier": "assistant-store-manager",
+     "libelle": "Adjoint au responsable de boutique",
+     "offresAuChoix": 413,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Assistant(e) Chargé(e) de Production Image /X)",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 12,
+     "bruit": true,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "assistant·e visuel merchandising",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 62,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Assistant Formation Retail",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 509,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Assistant Trade Marketing Retail France",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 51,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    }
+   ],
+   "doublonsMemeMetier": 0
+  },
+  {
+   "marche": "FR",
+   "frappe": "directeur",
+   "brutes": 40,
+   "candidats": [
+    "Directeur de magasin",
+    "Directeur Adjoint de Magasin",
+    "_Directeur Adjoint Magasin /nb)",
+    "Directrice, Directeur de Magasin",
+    "DIRECTEUR/RICE ADJOINT/E, CDI",
+    "Directeur Adjoint Magasin /nb)",
+    "Adjoint au directeur magasin",
+    "Assistant Head Coach Nike (Directeur Adjoint)",
+    "Directeur Atelier Couture",
+    "Directeur Contrôleur de Gestion",
+    "Directeur Data Analytics /X)",
+    "Directeur Data Science & IA /X)",
+    "Directeur d'Etablissement",
+    "Directeur Développement Matières et Composants",
+    "Directeur Omnicanal Media France /X)",
+    "Directeur RGM France /X)",
+    "Directeur Stratégie IA /X)",
+    "_Directeur Adjoint Herblay /nb)",
+    "Directeur",
+    "DIRECTEUR-ICE ADJOINT-E Magasin /nb)",
+    "Directeur/ice de magasin Femme",
+    "Directeur/ice de Magasin",
+    "_Directeur Magasin Château Thierry /nb)",
+    "Directeur Magasin"
+   ],
+   "msTitres": 131.861,
+   "msValidation": 109.34,
+   "servies": [
+    {
+     "valeur": "Directeur de magasin",
+     "origine": "intitulé d'offre",
+     "metier": "store-manager",
+     "libelle": "Responsable de boutique",
+     "offresAuChoix": 574,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Directeur Adjoint de Magasin",
+     "origine": "intitulé d'offre",
+     "metier": "assistant-store-manager",
+     "libelle": "Adjoint au responsable de boutique",
+     "offresAuChoix": 413,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "_Directeur Adjoint Magasin /nb)",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 41,
+     "bruit": true,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Directrice, Directeur de Magasin",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 40,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "DIRECTEUR/RICE ADJOINT/E, CDI",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 8,
+     "bruit": true,
+     "ville": null,
+     "majuscules": true
+    },
+    {
+     "valeur": "Directeur Adjoint Magasin /nb)",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 41,
+     "bruit": true,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Adjoint au directeur magasin",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 361,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Assistant Head Coach Nike (Directeur Adjoint)",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 3,
+     "bruit": true,
+     "ville": null,
+     "majuscules": false
+    }
+   ],
+   "doublonsMemeMetier": 0
+  },
+  {
+   "marche": "GB",
+   "frappe": "conseill",
+   "brutes": 1,
+   "candidats": [
+    "Conseiller·ère de vente parfumerie",
+    "Conseiller de vente",
+    "Conseillère de vente",
+    "Conseiller vente",
+    "Conseillere vente",
+    "Conseillers de vente",
+    "Conseiller Vendeur",
+    "Conseillere Vendeuse",
+    "Conseiller beauté",
+    "Conseillère beauté",
+    "Conseiller de beauté",
+    "Conseillère de beauté",
+    "Conseiller en parfumerie",
+    "Conseillère en parfumerie",
+    "Conseiller de vente beauté",
+    "Conseiller service client",
+    "Conseiller clientèle à distance",
+    "Conseillere clientele a distance",
+    "Conseillère service client",
+    "Conseiller clientèle bancaire",
+    "Conseillère clientèle bancaire",
+    "Conseiller en gestion de patrimoine",
+    "Conseillère en gestion de patrimoine",
+    "Conseiller en image"
+   ],
+   "msTitres": 57.976,
+   "msValidation": 3930.056,
+   "servies": [
+    {
+     "valeur": "Conseiller·ère de vente parfumerie",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 1,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Conseiller de vente",
+     "origine": "variante de la taxonomie",
+     "metier": "sales-advisor",
+     "libelle": "Sales advisor",
+     "offresAuChoix": 1129,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Conseillère de vente",
+     "origine": "variante de la taxonomie",
+     "metier": "sales-advisor",
+     "libelle": "Sales advisor",
+     "offresAuChoix": 1129,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Conseiller vente",
+     "origine": "variante de la taxonomie",
+     "metier": "sales-advisor",
+     "libelle": "Sales advisor",
+     "offresAuChoix": 1129,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Conseillere vente",
+     "origine": "variante de la taxonomie",
+     "metier": "sales-advisor",
+     "libelle": "Sales advisor",
+     "offresAuChoix": 1129,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Conseillers de vente",
+     "origine": "variante de la taxonomie",
+     "metier": "sales-advisor",
+     "libelle": "Sales advisor",
+     "offresAuChoix": 1129,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Conseiller Vendeur",
+     "origine": "variante de la taxonomie",
+     "metier": "sales-advisor",
+     "libelle": "Sales advisor",
+     "offresAuChoix": 1129,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Conseillere Vendeuse",
+     "origine": "variante de la taxonomie",
+     "metier": "sales-advisor",
+     "libelle": "Sales advisor",
+     "offresAuChoix": 1129,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    }
+   ],
+   "doublonsMemeMetier": 6
+  },
+  {
+   "marche": "GB",
+   "frappe": "conseillère",
+   "brutes": 0,
+   "candidats": [
+    "Conseillère de vente",
+    "Conseillere vente",
+    "Conseillere Vendeuse",
+    "Conseillère beauté",
+    "Conseillère de beauté",
+    "Conseillère en parfumerie",
+    "Conseillere clientele a distance",
+    "Conseillère service client",
+    "Conseillère clientèle bancaire",
+    "Conseillère en gestion de patrimoine",
+    "Conseillère en image",
+    "Conseillère immobilière"
+   ],
+   "msTitres": 54.589,
+   "msValidation": 3472.812,
+   "servies": [
+    {
+     "valeur": "Conseillère de vente",
+     "origine": "variante de la taxonomie",
+     "metier": "sales-advisor",
+     "libelle": "Sales advisor",
+     "offresAuChoix": 1129,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Conseillere vente",
+     "origine": "variante de la taxonomie",
+     "metier": "sales-advisor",
+     "libelle": "Sales advisor",
+     "offresAuChoix": 1129,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Conseillere Vendeuse",
+     "origine": "variante de la taxonomie",
+     "metier": "sales-advisor",
+     "libelle": "Sales advisor",
+     "offresAuChoix": 1129,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Conseillère beauté",
+     "origine": "variante de la taxonomie",
+     "metier": "beauty-consultant",
+     "libelle": "Beauty advisor",
+     "offresAuChoix": 330,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Conseillère de beauté",
+     "origine": "variante de la taxonomie",
+     "metier": "beauty-consultant",
+     "libelle": "Beauty advisor",
+     "offresAuChoix": 330,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Conseillère en parfumerie",
+     "origine": "variante de la taxonomie",
+     "metier": "beauty-consultant",
+     "libelle": "Beauty advisor",
+     "offresAuChoix": 330,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Conseillere clientele a distance",
+     "origine": "variante de la taxonomie",
+     "metier": "customer-service-advisor",
+     "libelle": "Customer service advisor",
+     "offresAuChoix": 2,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Conseillère service client",
+     "origine": "variante de la taxonomie",
+     "metier": "customer-service-advisor",
+     "libelle": "Customer service advisor",
+     "offresAuChoix": 2,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    }
+   ],
+   "doublonsMemeMetier": 5
+  },
+  {
+   "marche": "GB",
+   "frappe": "vendeu",
+   "brutes": 0,
+   "candidats": [
+    "Vendeur",
+    "Vendeuse",
+    "Vendeur automobile",
+    "Vendeuse automobile",
+    "Vendeur en ligne",
+    "Vendeuse en ligne"
+   ],
+   "msTitres": 98.638,
+   "msValidation": 3465.366,
+   "servies": [
+    {
+     "valeur": "Vendeur",
+     "origine": "variante de la taxonomie",
+     "metier": "sales-advisor",
+     "libelle": "Sales advisor",
+     "offresAuChoix": 1129,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Vendeuse",
+     "origine": "variante de la taxonomie",
+     "metier": "sales-advisor",
+     "libelle": "Sales advisor",
+     "offresAuChoix": 1129,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    }
+   ],
+   "doublonsMemeMetier": 1
+  },
+  {
+   "marche": "GB",
+   "frappe": "store man",
+   "brutes": 40,
+   "candidats": [
+    "Store Manager",
+    "Assistant Store Manager",
+    "Store Manager (37.5 hours)",
+    "Store Manager London",
+    "Acting MAC Store Manager",
+    "Anthropologie Assistant Store Manager",
+    "Asisstant Store Manager, Tommy Hilfiger",
+    "Assistant Head Coach (Assistant Store Manager)",
+    "Assistant Manager Assistant Store Manager",
+    "Assistant Manager Assistant Store Manager Mac Cosmetics White City FSS",
+    "Assistant Store Manager (12 month FTC)",
+    "Assistant Store Manager (38 hours",
+    "ASSISTANT STORE MANAGER (40 Hours",
+    "ASSISTANT STORE MANAGER (40 hours, Belfast)",
+    "ASSISTANT STORE MANAGER (40 Hours, Bull Ring SC)",
+    "ASSISTANT STORE MANAGER (40 hours- Chester)",
+    "ASSISTANT STORE MANAGER (40 hours, Manchester Mkt St.)",
+    "ASSISTANT STORE MANAGER (40 hours, White City)",
+    "Assistant Store Manager, Calvin Klein Underwear",
+    "Store Management",
+    "Store-Management"
+   ],
+   "msTitres": 60.345,
+   "msValidation": 261.504,
+   "servies": [
+    {
+     "valeur": "Store Manager",
+     "origine": "intitulé d'offre",
+     "metier": "store-manager",
+     "libelle": "Store manager",
+     "offresAuChoix": 174,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Assistant Store Manager",
+     "origine": "intitulé d'offre",
+     "metier": "assistant-store-manager",
+     "libelle": "Assistant store manager",
+     "offresAuChoix": 164,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Store Manager (37.5 hours)",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 30,
+     "bruit": true,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Store Manager London",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 99,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Acting MAC Store Manager",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 1,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Anthropologie Assistant Store Manager",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 3,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Asisstant Store Manager, Tommy Hilfiger",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 6,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Assistant Head Coach (Assistant Store Manager)",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 5,
+     "bruit": true,
+     "ville": null,
+     "majuscules": false
+    }
+   ],
+   "doublonsMemeMetier": 0
+  },
+  {
+   "marche": "GB",
+   "frappe": "responsable bout",
+   "brutes": 0,
+   "candidats": [],
+   "msTitres": 50.013,
+   "msValidation": null,
+   "servies": [],
+   "doublonsMemeMetier": 0
+  },
+  {
+   "marche": "GB",
+   "frappe": "visual",
+   "brutes": 40,
+   "candidats": [
+    "VISUAL MERCHANDISER",
+    "Visual Merchandiser, Dublin",
+    "Visual Merchandising Assistant",
+    "Visual Merchandising Manager",
+    "Visual Merchandiser, Oxford City",
+    "Anthropologie Visual Coordinator (10 month FTC)",
+    "Assistant Store Manager (Visual Merchandising & Styling AHC)",
+    "Brand Visual Merchandiser, Tommy Hilfiger Regent Street",
+    "Centre Visual Merchandiser, Tommy Hilfiger & Calvin Klein",
+    "Centre Visual Merchandiser, Tommy Hilfiger & Calvin Klein, Frasers Glasgow",
+    "Centre Visual Merchandiser, Tommy Hilfiger & Calvin Klein, Frasers Manchester",
+    "Creative Visual Associate",
+    "Field Visual Merchandiser (South)",
+    "Flagship Visual Merchandiser Expert, adidas LDN Flagship Store, Oxford St.",
+    "Floor Manager (Visual Merchandising & Styling Coach)",
+    "Free People Assistant Visual Manager",
+    "Full Time Visual Merchandising Specialist, Tommy Hilfiger",
+    "Full Time Visual Merchandising Supervisor, Tommy Hilfiger",
+    "HEAD VISUAL MERCHANDISER (40 Hours, Oxford St.)",
+    "Head Visual Merchandising (40 Hours, Oxford 415 St.)",
+    "In Store Visual Merchandiser, Heathrow",
+    "SENIOR VISUAL MERCHANDISER",
+    "Senior Visual Merchandising Executive",
+    "Senior Visual Merchandising Manager"
+   ],
+   "msTitres": 133.951,
+   "msValidation": 1078.241,
+   "servies": [
+    {
+     "valeur": "VISUAL MERCHANDISER",
+     "origine": "intitulé d'offre",
+     "metier": "visual-merchandiser",
+     "libelle": "Visual merchandiser",
+     "offresAuChoix": 77,
+     "bruit": null,
+     "ville": null,
+     "majuscules": true
+    },
+    {
+     "valeur": "Visual Merchandiser, Dublin",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 6,
+     "bruit": null,
+     "ville": "dublin",
+     "majuscules": false
+    },
+    {
+     "valeur": "Visual Merchandising Assistant",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 55,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Visual Merchandising Manager",
+     "origine": "intitulé d'offre",
+     "metier": "responsable-vm",
+     "libelle": "Visual Merchandising Manager",
+     "offresAuChoix": 7,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Visual Merchandiser, Oxford City",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 2,
+     "bruit": null,
+     "ville": "oxford",
+     "majuscules": false
+    },
+    {
+     "valeur": "Anthropologie Visual Coordinator (10 month FTC)",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 1,
+     "bruit": true,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Assistant Store Manager (Visual Merchandising & Styling AHC)",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 1,
+     "bruit": true,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Brand Visual Merchandiser, Tommy Hilfiger Regent Street",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 1,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    }
+   ],
+   "doublonsMemeMetier": 0
+  },
+  {
+   "marche": "GB",
+   "frappe": "make up",
+   "brutes": 1,
+   "candidats": [
+    "Make up Artist",
+    "Make-up Artist"
+   ],
+   "msTitres": 62.827,
+   "msValidation": 27.851,
+   "servies": [
+    {
+     "valeur": "Make up Artist",
+     "origine": "variante de la taxonomie",
+     "metier": "makeup-artist",
+     "libelle": "Makeup artist",
+     "offresAuChoix": 47,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Make-up Artist",
+     "origine": "variante de la taxonomie",
+     "metier": "makeup-artist",
+     "libelle": "Makeup artist",
+     "offresAuChoix": 47,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    }
+   ],
+   "doublonsMemeMetier": 1
+  },
+  {
+   "marche": "GB",
+   "frappe": "sales ad",
+   "brutes": 40,
+   "candidats": [
+    "Christmas Sales Advisor",
+    "Sales Advisor",
+    "Sales Advisor/Keyholder",
+    "Seasonal Sales Advisor",
+    "Temporary Sales Advisor",
+    "Sales Advisor- Ballymena",
+    "Sales Advisor- Birmingham Bullring",
+    "Gifting and Sales Advisor",
+    "Gifting & Sales Advisor (16 Hour Contract)",
+    "Gifting & Sales Advisor (24 Hour Contract)",
+    "Gifting & Sales Advisor (32 Hour Contract)",
+    "&M Home Sales Advisor Part Time",
+    "Part Time Sales Advisor",
+    "Retail Sales Advisor",
+    "Sales Advisor  and  (Temporary)",
+    "Sales Advisor, Bicester Village",
+    "Sales Advisor (Fixed Term Contract)",
+    "Sales Advisor (Full-time)",
+    "Sales Advisor, Harrods",
+    "Sales Administration Manager",
+    "Sales advisory"
+   ],
+   "msTitres": 65.219,
+   "msValidation": 2282.222,
+   "servies": [
+    {
+     "valeur": "Christmas Sales Advisor",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 82,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Sales Advisor",
+     "origine": "intitulé d'offre",
+     "metier": "sales-advisor",
+     "libelle": "Sales advisor",
+     "offresAuChoix": 1129,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Seasonal Sales Advisor",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 155,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Temporary Sales Advisor",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 114,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Sales Advisor- Ballymena",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 2,
+     "bruit": null,
+     "ville": "ballymena",
+     "majuscules": false
+    },
+    {
+     "valeur": "Sales Advisor- Birmingham Bullring",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 10,
+     "bruit": null,
+     "ville": "birmingham",
+     "majuscules": false
+    },
+    {
+     "valeur": "Gifting and Sales Advisor",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 4,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Gifting & Sales Advisor (16 Hour Contract)",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 1,
+     "bruit": true,
+     "ville": null,
+     "majuscules": false
+    }
+   ],
+   "doublonsMemeMetier": 0
+  },
+  {
+   "marche": "GB",
+   "frappe": "assistant",
+   "brutes": 40,
+   "candidats": [
+    "RETAIL ASSISTANT",
+    "Assistant Store Manager",
+    "Sales Assistant",
+    "Seasonal Sales Assistant",
+    "Assistant Manager",
+    "Assistant Manager Counter Lead",
+    "Assistant Manager (37.5 hours)",
+    "Assistant Merchandiser",
+    "Assistant Store Leader",
+    "Retail Assistant (Fitting Consultant)",
+    "Executive Assistant",
+    "Visual Merchandising Assistant",
+    "Assistant Buyer",
+    "Assistant Management Accountant",
+    "Food Service Assistant",
+    "Merchandising Admin Assistant",
+    "Sales Assistant PT (12-hour)",
+    "Senior Sales Assistant",
+    "Stock Assistant",
+    "Stock Room Assistant",
+    "40hr Stockroom Assistant (Footwear)",
+    "Accounts Payable Assistant",
+    "Administrative Assistant",
+    "Anthropologie Assistant Merchandiser"
+   ],
+   "msTitres": 57.495,
+   "msValidation": 1147.719,
+   "servies": [
+    {
+     "valeur": "RETAIL ASSISTANT",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 699,
+     "bruit": null,
+     "ville": null,
+     "majuscules": true
+    },
+    {
+     "valeur": "Assistant Store Manager",
+     "origine": "intitulé d'offre",
+     "metier": "assistant-store-manager",
+     "libelle": "Assistant store manager",
+     "offresAuChoix": 164,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Sales Assistant",
+     "origine": "intitulé d'offre",
+     "metier": "sales-advisor",
+     "libelle": "Sales advisor",
+     "offresAuChoix": 1129,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Seasonal Sales Assistant",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 155,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Assistant Manager",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 385,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Assistant Manager Counter Lead",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 39,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Assistant Manager (37.5 hours)",
+     "origine": "intitulé d'offre",
+     "metier": null,
+     "libelle": null,
+     "offresAuChoix": 36,
+     "bruit": true,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Assistant Merchandiser",
+     "origine": "intitulé d'offre",
+     "metier": "assistant-merchandiser",
+     "libelle": "Merchandising Assistant",
+     "offresAuChoix": 15,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    }
+   ],
+   "doublonsMemeMetier": 0
+  },
+  {
+   "marche": "GB",
+   "frappe": "directeur",
+   "brutes": 0,
+   "candidats": [
+    "Directeur de magasin",
+    "Directeur de boutique",
+    "Directeur adjoint de magasin",
+    "Directeur regional retail",
+    "Directeur de centre esthétique",
+    "Directeur des ressources humaines",
+    "Directeur de casting",
+    "Directeur de clientèle",
+    "Directeur de galerie",
+    "Directeur de production",
+    "Directeur de réseau",
+    "Directeur Supply Chain",
+    "Directeur général",
+    "Directeur artistique",
+    "Directeur commercial",
+    "Directeur de marque"
+   ],
+   "msTitres": 125.141,
+   "msValidation": 6250.72,
+   "servies": [
+    {
+     "valeur": "Directeur de magasin",
+     "origine": "variante de la taxonomie",
+     "metier": "store-manager",
+     "libelle": "Store manager",
+     "offresAuChoix": 174,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Directeur de boutique",
+     "origine": "variante de la taxonomie",
+     "metier": "store-manager",
+     "libelle": "Store manager",
+     "offresAuChoix": 174,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Directeur adjoint de magasin",
+     "origine": "variante de la taxonomie",
+     "metier": "assistant-store-manager",
+     "libelle": "Assistant store manager",
+     "offresAuChoix": 164,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Directeur regional retail",
+     "origine": "variante de la taxonomie",
+     "metier": "regional-retail-manager",
+     "libelle": "Regional retail manager",
+     "offresAuChoix": 8,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Directeur de clientèle",
+     "origine": "variante de la taxonomie",
+     "metier": "directeur-de-clientele",
+     "libelle": "Account Director",
+     "offresAuChoix": 1,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Directeur de production",
+     "origine": "variante de la taxonomie",
+     "metier": "directeur-production",
+     "libelle": "Production Director",
+     "offresAuChoix": 1,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Directeur de réseau",
+     "origine": "variante de la taxonomie",
+     "metier": "directeur-reseau",
+     "libelle": "Retail Director",
+     "offresAuChoix": 2,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    },
+    {
+     "valeur": "Directeur Supply Chain",
+     "origine": "variante de la taxonomie",
+     "metier": "directeur-supply-chain",
+     "libelle": "Supply Chain Director",
+     "offresAuChoix": 0,
+     "bruit": null,
+     "ville": null,
+     "majuscules": false
+    }
+   ],
+   "doublonsMemeMetier": 1
+  }
+ ]
+}
