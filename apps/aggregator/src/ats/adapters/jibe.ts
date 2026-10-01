@@ -177,8 +177,8 @@ export async function fetchJibeJobs(config: Record<string, unknown>): Promise<Ad
   let rawCount = 0, anonymousRows = 0;
 
   /**
-   * UNE SECONDE PASSE ENTIÈRE QUAND LE TOTAL CHANGE PENDANT LA LECTURE (RUN du 01/10/2026, même règle que Workday
-   * et SuccessFactors). Ulta : 9 932 annoncées en tête, 9 933 sur les pages 95, 97, 98 et 99, de nouveau 9 932 en
+   * UNE SECONDE PASSE ENTIÈRE QUAND LE TOTAL CHANGE PENDANT LA LECTURE (RUN du 01/10/2026, même relecture que
+   * Workday et SuccessFactors ; comme SuccessFactors et contrairement à Workday, sans droit de fermer ce jour-là). Ulta : 9 932 annoncées en tête, 9 933 sur les pages 95, 97, 98 et 99, de nouveau 9 932 en
    * page 100 ; la page 97 recommençait par la dernière offre de la page 96. Deux offres sautées aux frontières,
    * 9 930 lues. Le tableau est relu en entier, une fois ; il n'est tenu pour lu que si la seconde passe atteint son
    * propre total, sans qu'il change. Les offres de la première restent collectées (union) ; une offre retirée

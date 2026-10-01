@@ -572,7 +572,8 @@ const passProven = (pass: HtmlPass) => pass.declaredTotal !== undefined && !pass
   pass.seenIds.size === pass.declaredTotal;
 
 /**
- * UNE SECONDE PASSE ENTIÈRE QUAND LE TOTAL CHANGE PENDANT LA LECTURE (RUN du 01/10/2026, même règle que Workday).
+ * UNE SECONDE PASSE ENTIÈRE QUAND LE TOTAL CHANGE PENDANT LA LECTURE (RUN du 01/10/2026, même relecture que Workday,
+ * sans son droit de fermer : voir la terminaison ci-dessous).
  *
  * Crocs : 525 annoncées, la page de l'offset 420 en annonçait 526 et commençait par la dernière offre de la page
  * précédente, celle de l'offset 440 de nouveau 525 ; 524 offres lues. Sephora (en_US) : 1 684 puis 1 687 à l'offset
@@ -582,7 +583,8 @@ const passProven = (pass: HtmlPass) => pass.declaredTotal !== undefined && !pass
  * restent collectées (union) : une offre retirée entre-temps reste un jour de plus, aucune n'est fermée à tort.
  *
  * La terminaison `RECONCILED_BY_FRESH_PASS` n'est PAS probante pour le refresh (`refreshPlan.ts`) : la source est
- * saine, mais ce jour-là ses absences ne ferment rien, comme la relecture de Phenom. Un second changement reste non
+ * saine, mais ce jour-là ses absences ne ferment rien, comme la relecture de Phenom. Workday, lui, garde la
+ * terminaison probante de sa seconde passe et ferme : aligner les deux est une décision sur ce qui fait preuve. Un second changement reste non
  * prouvé. Le rejeu hors réseau sert les réponses d'une même adresse dans l'ordre de leur capture : il relit la même passe.
  */
 async function fetchHtmlJobs(origin: string, firstUrl: string, firstHtml: string): Promise<AdapterResult> {

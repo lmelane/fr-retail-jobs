@@ -100,7 +100,7 @@ export async function upsertDeduplicated(
         const result = await upsertInTransaction(tx, resolved, resolution, currentTaxonomy, nativeCapture);
         assertSourceRunning(); // Throw inside the transaction so cancellation rolls writes back.
         return result;
-      }, { maxWait: 10_000, timeout: 30_000 });
+      }, SOURCE_WRITE_TRANSACTION);
     } catch (error) {
       if (error instanceof EmployerIdentityReviewRequired) {
         // The failed canonical write rolled back. Archive the rejected evidence

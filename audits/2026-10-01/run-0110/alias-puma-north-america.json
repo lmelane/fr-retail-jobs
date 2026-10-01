@@ -2,12 +2,20 @@
   "batchId": "20261001-RUN-PUMA-NORTH-AMERICA-v1",
   "reviewedBy": "Claude (CTO produit) : relecture de la preuve officielle du 01/10/2026 ; à appliquer seulement sur GO du CEO",
   "reviewedAt": "2026-10-01T19:30:00Z",
-  "statement": "Le portail Workday de Puma (source puma) rattache désormais l'offre R43416 « Entertainment Marketing Manager » à l'entité PUMA North America, Inc. (hiringOrganization de l'API publique, republiée le 01/10/2026, PUMA Studio LA, États-Unis) ; elle était publiée sous PUMA SE jusqu'au 30/09. PUMA North America, Inc. est déjà l'employeur publié de 151 offres de la même source sous ce libellé exact. Alias limité à la source, libellé exact, aucune fusion : l'offre suit l'employeur que l'éditeur lui donne.",
-  "aliases": [{ "sourceKey": "puma", "rawName": "PUMA North America, Inc.", "targetCompany": "PUMA North America, Inc." }],
+  "statement": "Le portail Workday de Puma (source puma) rattache désormais l'offre R43416 « Entertainment Marketing Manager » à l'entité PUMA North America, Inc. (hiringOrganization de l'API publique, republiée le 01/10/2026, PUMA Studio LA, États-Unis) ; elle était publiée sous PUMA SE jusqu'au 30/09. PUMA North America, Inc. est déjà l'employeur publié de 151 offres de la même source sous ce libellé exact. Alias limité à la source puma et au libellé exact, aucune fusion : il vaut pour toute offre de cette source ainsi libellée, présente ou future, et passe avant le garde-fou de changement d'identité ; l'offre R43416 suit l'employeur que l'éditeur lui donne.",
+  "aliases": [
+    {
+      "sourceKey": "puma",
+      "rawName": "PUMA North America, Inc.",
+      "targetCompany": "PUMA North America, Inc."
+    }
+  ],
   "merges": [],
-  "evidence": [{
-    "url": "https://puma.wd502.myworkdayjobs.com/wday/cxs/puma/Jobs_at_Puma/job/PUMA-Boston-International-Office/Entertainment-Marketing-Manager_R43416",
-    "artifactFile": "audits/2026-10-01/run-0110/puma-R43416.json",
-    "explanation": "API publique Workday de Puma pour l'offre R43416 : hiringOrganization « PUMA North America, Inc. », lieu PUMA Studio LA (BOS), États-Unis, startDate 2026-10-01."
-  }]
+  "evidence": [
+    {
+      "url": "https://puma.wd502.myworkdayjobs.com/wday/cxs/puma/Jobs_at_Puma/job/PUMA-Boston-International-Office/Entertainment-Marketing-Manager_R43416",
+      "artifactFile": "audits/2026-10-01/run-0110/puma-R43416.json",
+      "explanation": "API publique Workday de Puma pour l'offre R43416 : hiringOrganization « PUMA North America, Inc. », lieu PUMA Studio LA (BOS), États-Unis, startDate 2026-10-01."
+    }
+  ]
 }
