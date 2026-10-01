@@ -144,3 +144,49 @@ describe('Jibe — identifiants canoniques', () => {
     expect(r.enumeration?.canonicalAbsenceProofUsable).toBe(false);
   });
 });
+
+// ---------------------------------------------------------------------------
+// RUN du 01/10/2026, Ulta : 9 932 annoncées, 9 933 sur quelques pages, de nouveau 9 932 en fin de liste ; une page
+// recommençait par la dernière offre de la précédente. Deux offres sautées, 9 930 lues, la source tronquée.
+// ---------------------------------------------------------------------------
+import { PROVING_TERMINATIONS } from '../../pipeline/refreshPlan.js';
+
+describe('Jibe — total qui change pendant la lecture', () => {
+  beforeEach(() => api.mockReset());
+  const page = (totalCount: number, ...ids: string[]) => ({ totalCount, jobs: ids.map((id) => entry({ req_id: id, slug: id.toLowerCase() })) }) as never;
+
+  it('relit le tableau en entier et le tient pour lu sur la seconde passe seule, sans terminaison qui ferme', async () => {
+    // Première passe : un total à 5 en page 2, qui commence par la dernière offre de la page 1 ; D est sautée, et le
+    // compte atteint pourtant le total annoncé (A, B, C, E) : sans relecture, la troncature serait même invisible.
+    api.mockResolvedValueOnce(page(4, 'A', 'B')).mockResolvedValueOnce(page(5, 'B', 'C')).mockResolvedValueOnce(page(4, 'E'))
+      // Seconde passe, stable.
+      .mockResolvedValueOnce(page(4, 'A', 'B')).mockResolvedValueOnce(page(4, 'C', 'D'));
+    const r = await fetchJibeJobs({ origin: 'https://careers.ulta.com', pageSize: 2 });
+    const firstPass = r.enumeration!.pageEvidence!.filter((pe) => !pe.url.includes('#pass=2'));
+    // PRÉMISSE : la première passe seule a bien sauté D sous un total changeant, sinon ce témoin ne teste rien.
+    expect(new Set(firstPass.flatMap((pe) => pe.ids))).toEqual(new Set(['A', 'B', 'C', 'E']));
+    expect(new Set(firstPass.map((pe) => pe.pagination?.total))).toEqual(new Set([4, 5]));
+    expect(r.truncated).toBe(false);
+    expect(r.jobs.map((j) => j.externalId).sort()).toEqual(['A', 'B', 'C', 'D', 'E']);
+    expect(r.enumeration?.termination).toBe('RECONCILED_BY_FRESH_PASS');
+    expect(PROVING_TERMINATIONS.has('RECONCILED_BY_FRESH_PASS')).toBe(false);
+    expect(r.enumeration!.pageEvidence!.filter((pe) => pe.url.endsWith('#pass=2'))).toHaveLength(2);
+    // La seconde passe relit les mêmes adresses.
+    expect(api.mock.calls[3][0]).toBe(api.mock.calls[0][0]);
+  });
+
+  it('reste tronquée quand le total change encore pendant la seconde passe', async () => {
+    api.mockResolvedValueOnce(page(4, 'A', 'B')).mockResolvedValueOnce(page(5, 'B', 'C')).mockResolvedValueOnce(page(4))
+      .mockResolvedValueOnce(page(4, 'A', 'B')).mockResolvedValueOnce(page(5, 'B', 'C')).mockResolvedValueOnce(page(4));
+    const r = await fetchJibeJobs({ origin: 'https://careers.ulta.com', pageSize: 2 });
+    expect(r.truncated).toBe(true);
+    expect(r.enumeration?.termination).not.toBe('RECONCILED_BY_FRESH_PASS');
+  });
+
+  it('ne relit rien quand le total ne change pas', async () => {
+    api.mockResolvedValueOnce(page(3, 'A', 'B')).mockResolvedValueOnce(page(3, 'C'));
+    const r = await fetchJibeJobs({ origin: 'https://careers.ulta.com', pageSize: 2 });
+    expect(api).toHaveBeenCalledTimes(2);
+    expect(r).toMatchObject({ truncated: false, enumeration: { termination: 'DECLARED_TOTAL_REACHED' } });
+  });
+});

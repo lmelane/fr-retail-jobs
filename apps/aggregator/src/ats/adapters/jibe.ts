@@ -173,52 +173,80 @@ export async function fetchJibeJobs(config: Record<string, unknown>): Promise<Ad
     ...(cookie ? { cookie } : {}),
   };
 
-  const out: NormalizedJob[] = [];
-  const seen = new Set<string>();
   const pageEvidence: NonNullable<NonNullable<AdapterResult['enumeration']>['pageEvidence']> = [];
-  let declaredTotal: number | undefined;
   let rawCount = 0, anonymousRows = 0;
-  let termination = 'PAGE_BUDGET_EXHAUSTED';
 
-  for (let page = 1; page <= MAX_PAGES; page += 1) {
-    const url = `${origin}/api/jobs?page=${page}&limit=${pageSize}&sortBy=relevance&descending=false&internal=false`;
-    const data = await fetchJson<JibePage>(url, { headers });
-    if (typeof data.totalCount === 'number') declaredTotal = data.totalCount;
+  /**
+   * UNE SECONDE PASSE ENTIÈRE QUAND LE TOTAL CHANGE PENDANT LA LECTURE (RUN du 01/10/2026, même règle que Workday
+   * et SuccessFactors). Ulta : 9 932 annoncées en tête, 9 933 sur les pages 95, 97, 98 et 99, de nouveau 9 932 en
+   * page 100 ; la page 97 recommençait par la dernière offre de la page 96. Deux offres sautées aux frontières,
+   * 9 930 lues. Le tableau est relu en entier, une fois ; il n'est tenu pour lu que si la seconde passe atteint son
+   * propre total, sans qu'il change. Les offres de la première restent collectées (union) ; une offre retirée
+   * entre-temps reste un jour de plus. La terminaison `RECONCILED_BY_FRESH_PASS` n'est pas probante pour le refresh :
+   * ce jour-là, aucune absence ne ferme d'offre. Un second changement reste une troncature.
+   */
+  const readPass = async (pass: number) => {
+    const out: NormalizedJob[] = [];
+    const seen = new Set<string>();
+    let declaredTotal: number | undefined, firstTotal: number | undefined, totalChanged = false;
+    let termination = 'PAGE_BUDGET_EXHAUSTED';
+    for (let page = 1; page <= MAX_PAGES; page += 1) {
+      const url = `${origin}/api/jobs?page=${page}&limit=${pageSize}&sortBy=relevance&descending=false&internal=false`;
+      const data = await fetchJson<JibePage>(url, { headers });
+      if (typeof data.totalCount === 'number') {
+        declaredTotal = data.totalCount;
+        if (firstTotal === undefined) firstTotal = data.totalCount;
+        else if (firstTotal !== data.totalCount) totalChanged = true;
+      }
 
-    /**
-     * LE CONTRAT DES IDENTIFIANTS CANONIQUES.
-     *
-     * L'identifiant est lu par `jibeCanonicalId`, le MÊME chemin que `externalId` — pas une seconde
-     * dérivation qui pourrait diverger. Il entre dans la preuve AVANT le filtre sur le titre : une entrée
-     * dotée d'un `req_id` a été OBSERVÉE, et l'omettre ferait paraître ABSENTE, au refresh suivant, une
-     * JobSource historique portant ce même identifiant.
-     */
-    const rows = data.jobs ?? [];
-    rawCount += rows.length;
-    const ids: string[] = [];
-    for (const entry of rows) {
-      const id = jibeCanonicalId(entry?.data);
-      if (id) ids.push(id); else anonymousRows++;
+      /**
+       * LE CONTRAT DES IDENTIFIANTS CANONIQUES.
+       *
+       * L'identifiant est lu par `jibeCanonicalId`, le MÊME chemin que `externalId` — pas une seconde
+       * dérivation qui pourrait diverger. Il entre dans la preuve AVANT le filtre sur le titre : une entrée
+       * dotée d'un `req_id` a été OBSERVÉE, et l'omettre ferait paraître ABSENTE, au refresh suivant, une
+       * JobSource historique portant ce même identifiant.
+       */
+      const rows = data.jobs ?? [];
+      rawCount += rows.length;
+      const ids: string[] = [];
+      for (const entry of rows) {
+        const id = jibeCanonicalId(entry?.data);
+        if (id) ids.push(id); else anonymousRows++;
+      }
+
+      const batch = parseJibePage(data, origin);
+      // The second pass reads the same addresses: its evidence is told apart by a fragment, never by another request.
+      pageEvidence.push({ url: pass > 1 ? `${url}#pass=${pass}` : url, checkedAt: captureObservedAt().toISOString(),
+        sha256: createHash('sha256').update(JSON.stringify(data)).digest('hex'), offset: (page - 1) * pageSize,
+        pagination: declaredTotal === undefined ? null
+          : { start: (page - 1) * pageSize + 1, end: (page - 1) * pageSize + rows.length, total: declaredTotal },
+        ids, canonicalIds: ids, publisherCounter: declaredTotal === undefined ? '' : String(declaredTotal),
+        componentCounters: [`rows=${rows.length}`, `parsed=${batch.length}`] });
+
+      const fresh = batch.filter((job) => !seen.has(job.externalId));
+      for (const job of fresh) {
+        seen.add(job.externalId);
+        out.push(job);
+      }
+      // Une page sans offre NOUVELLE termine la lecture (page vide en fin de
+      // liste, ou un pager qui rejoue la dernière page).
+      if (fresh.length === 0) { termination = rows.length ? 'REPEATED_OR_UNUSABLE_PAGE' : 'EMPTY_PAGE'; break; }
+      if (declaredTotal !== undefined && out.length >= declaredTotal) { termination = 'DECLARED_TOTAL_REACHED'; break; }
     }
+    return { out, declaredTotal, totalChanged, termination };
+  };
 
-    const batch = parseJibePage(data, origin);
-    pageEvidence.push({ url, checkedAt: captureObservedAt().toISOString(),
-      sha256: createHash('sha256').update(JSON.stringify(data)).digest('hex'), offset: (page - 1) * pageSize,
-      pagination: declaredTotal === undefined ? null
-        : { start: (page - 1) * pageSize + 1, end: (page - 1) * pageSize + rows.length, total: declaredTotal },
-      ids, canonicalIds: ids, publisherCounter: declaredTotal === undefined ? '' : String(declaredTotal),
-      componentCounters: [`rows=${rows.length}`, `parsed=${batch.length}`] });
-
-    const fresh = batch.filter((job) => !seen.has(job.externalId));
-    for (const job of fresh) {
-      seen.add(job.externalId);
-      out.push(job);
-    }
-    // Une page sans offre NOUVELLE termine la lecture (page vide en fin de
-    // liste, ou un pager qui rejoue la dernière page).
-    if (fresh.length === 0) { termination = rows.length ? 'REPEATED_OR_UNUSABLE_PAGE' : 'EMPTY_PAGE'; break; }
-    if (declaredTotal !== undefined && out.length >= declaredTotal) { termination = 'DECLARED_TOTAL_REACHED'; break; }
-  }
+  const first = await readPass(1);
+  const passes = [first];
+  if (first.totalChanged && first.termination !== 'PAGE_BUDGET_EXHAUSTED') passes.push(await readPass(2));
+  const last = passes[passes.length - 1];
+  const declaredTotal = last.declaredTotal;
+  const reconciled = passes.length > 1 && !last.totalChanged && declaredTotal !== undefined && last.out.length >= declaredTotal;
+  const out: NormalizedJob[] = [];
+  const kept = new Set<string>();
+  for (const pass of passes) for (const job of pass.out) if (!kept.has(job.externalId)) { kept.add(job.externalId); out.push(job); }
+  const termination = reconciled ? 'RECONCILED_BY_FRESH_PASS' : last.termination;
 
   // F-06 : une première page vide sur un portail qui annonce des offres est
   // le cookie de session qui n'a pas pris, pas un employeur sans poste.
@@ -240,7 +268,8 @@ export async function fetchJibeJobs(config: Record<string, unknown>): Promise<Ad
     jobs: out,
     declaredTotal,
     rejectedRows,
-    truncated: declaredTotal !== undefined && out.length < declaredTotal,
+    // Judged on the last pass alone: the union of two passes can reach a total that no single reading proved.
+    truncated: passes.length > 1 ? !reconciled : declaredTotal !== undefined && first.out.length < declaredTotal,
     enumeration: { method: 'SESSION_COOKIE_JSON_API', endpoint: `${origin}/api/jobs`, pages: pageEvidence.length,
       rawCount, termination,
       // Une entrée sans `req_id` ni `slug` a été vue mais ne peut être nommée : aucun identifiant
