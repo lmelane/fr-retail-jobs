@@ -76,14 +76,17 @@ Chaque étape est rejouable. Les commandes partent de la racine du dépôt.
    déclenche. Répétition sur base jetable avec les lieux des 93 288 offres de production (01/10/2026) : 83 431 offres
    écrites, 67 noms appris, second passage sans écriture, et sur 5 000 offres le point écrit est exactement celui que
    calcule la fonction du déclencheur (`audits/2026-10-01/localisation/resultats/`).
-4. **Le site, puis l'API, ou les deux ensemble.** Le site de ce lot compare une ville suggérée sans sa subdivision
-   (`nomDeVille`) : il fonctionne avec l'API d'avant comme avec celle-ci. Le site d'avant, face à la nouvelle API
-   (« Paris (75) »), ne retrouverait plus la ville du CV à l'onboarding ni la pastille « ville » des préférences
-   enregistrées au nouveau format : il ne doit pas la rencontrer.
-5. **L'API** (promotion `development` → `main`, image `[runtime-images]`) : elle exige les migrations de son contrat
-   (`/api/health`).
+4. **L'API** (promotion `development` → `main`, image `[runtime-images]`) : elle exige les migrations de son contrat
+   (`/api/health`). **Elle ne change rien pour catwalks.io** : la proximité, les lieux « Paris (75) », l'ordre par
+   distance et l'examen de proximité ne sont servis qu'au client qui envoie `x-catwalks-client: 2`
+   (`apps/api/lib/contrat-client.ts`) ; sans lui, la réponse est celle d'avant le lot, à l'identique
+   (`apps/api/lib/__tests__/contrat-v1-d496.test.ts`, témoin différentiel écrit par le code d'avant). La préversion du
+   site de `development`, qui envoie l'en-tête, la teste alors sur la production.
+5. **La bascule de catwalks.io** se fait à la promotion du site (D-490) : le site promu envoie l'en-tête. Le
+   backend promu l'envoie sur l'examen des alertes, qui passent alors à la proximité. Aucun ordre n'est imposé entre
+   l'API, le site et le backend.
 
-Retour arrière : l'API précédente ignore les tables et colonnes neuves ; aucune donnée existante n'est modifiée par
+Retour arrière : l'API précédente ignore les tables, colonnes et en-tête neufs ; aucune donnée existante n'est modifiée par
 les étapes 1 à 3 en dehors des colonnes `geo*`.
 
 ## Après un nouveau chargement de GeoNames

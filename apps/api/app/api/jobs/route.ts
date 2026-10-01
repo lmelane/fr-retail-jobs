@@ -7,6 +7,7 @@ import { PerimetreRequisError } from '@/lib/perimetre';
 import { CurseurInvalideError } from '@/lib/curseur';
 import { refuserSiCleInvalide } from '@/lib/cle-api';
 import { paramsMultiples } from '@/lib/params-multiples';
+import { annonceProximite } from '@/lib/contrat-client';
 
 /**
  * LA RECHERCHE, servie à catwalks.io (D-417, lot 6).
@@ -45,7 +46,8 @@ export async function GET(request: NextRequest) {
   const entetes = { 'x-request-id': requestId };
   // D-426 : PAS `Object.fromEntries` — il ne garde qu'une valeur par clé et
   // annulerait le multi-valeurs avant même d'atteindre le parseur.
-  const filters = parseFilters(paramsMultiples(request.nextUrl.searchParams));
+  // D-496 : la proximité au seul client qui l'annonce (`x-catwalks-client: 2`) ; sans lui, le contrat d'avant.
+  const filters = { ...parseFilters(paramsMultiples(request.nextUrl.searchParams)), proximite: annonceProximite(request.headers) };
 
   try {
     const result = await getJobs(filters);

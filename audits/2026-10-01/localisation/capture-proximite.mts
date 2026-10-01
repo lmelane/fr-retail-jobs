@@ -53,7 +53,8 @@ export const CAS: { nom: string; filtres: Record<string, string | string[]> }[] 
 const sortie: string[] = ['\\timing on', '\\pset tuples_only on'];
 for (const c of CAS) {
   derniere = undefined;
-  await jobs.getJobs(jobs.parseFilters(c.filtres));
+  // Le client annonce le contrat de proximité (`x-catwalks-client: 2`) ; le code d'avant le lot ignore la clé.
+  await jobs.getJobs({ ...jobs.parseFilters(c.filtres), proximite: true });
   if (!derniere) throw new Error(`Requête servie non capturée : ${c.nom}`);
   const params = JSON.parse(derniere.params) as unknown[];
   // Du plus grand indice au plus petit : $12 avant $1.

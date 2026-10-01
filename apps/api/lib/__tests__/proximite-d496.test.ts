@@ -5,7 +5,7 @@ import { prisma } from '@catwalks/db';
 import { exigerPerimetre } from '../perimetre';
 import { publicationFixture } from '../../../aggregator/src/test/publication-fixture';
 import { examinerAlerte, getJobs, type JobFilters } from '../jobs';
-import { suggestCities } from '../suggestions';
+import { suggestLieux } from '../suggestions';
 import { Prisma } from '@catwalks/db';
 import { ANNEAUX_KM, boiteSql, lireSaisieLieu, oublierVilles } from '../geo';
 import { semerCodesPostaux, semerVilles, viderVilles, VILLES_TEMOINS } from '../__fixtures__/villes';
@@ -13,7 +13,7 @@ import { drainSearchIndex, initializeSearchIndex } from '../search-index';
 
 /**
  * D-496 (01/10/2026) — LA RECHERCHE DE PROXIMITÉ, sur une vraie base, par la vraie chaîne (`getJobs`, `examinerAlerte`,
- * `suggestCities`, le déclencheur du point, la fonction de rattrapage), avec un extrait réel de GeoNames.
+ * `suggestLieux`, le déclencheur du point, la fonction de rattrapage), avec un extrait réel de GeoNames.
  *
  * Le témoin clé : « Chennevières-sur-Marne » rend des offres triées par distance croissante, non vides. Sa PRÉMISSE est
  * le défaut mesuré en production : une seule offre porte la ville à son nom, les autres sont autour (Champigny 4 km,
@@ -132,7 +132,8 @@ describe.skipIf(!enabled)('la recherche de proximité sur une base locale dédi�
   }, 120_000);
   afterAll(nettoyer);
 
-  const filtres = (extra: Partial<JobFilters> = {}): JobFilters => ({ marche: 'FR', ...extra, filtres: { groupe: [GROUPE], ...extra.filtres } });
+  // Le client annonce le contrat de proximité (`x-catwalks-client: 2`, contrat-client.ts) : la route pose `proximite`.
+  const filtres = (extra: Partial<JobFilters> = {}): JobFilters => ({ marche: 'FR', proximite: true, ...extra, filtres: { groupe: [GROUPE], ...extra.filtres } });
   /** Toutes les pages d'une recherche, dans l'ordre servi. */
   const toutes = async (f: JobFilters) => {
     const ids: string[] = [];
@@ -195,6 +196,14 @@ describe.skipIf(!enabled)('la recherche de proximité sur une base locale dédi�
     expect(villes).toEqual(new Set(['Chennevières-sur-Marne', 'Champigny-sur-Marne', 'Créteil', 'Paris', 'Paris 9e Arrondissement', 'La Défense']));
     expect(total).toBe(1 + 3 + 4 + 15 + 1 + 2 + 2 + 1);
     expect(Math.max(...distances)).toBeLessThanOrEqual(ANNEAUX_KM[1]);
+  });
+
+  it('SANS LE SIGNAL du client, le contrat d’avant : la comparaison au mot près, une seule offre à Chennevières-sur-Marne', async () => {
+    const avant = await toutes(filtres({ lieu: 'Chennevières-sur-Marne', proximite: undefined }));
+    expect(avant.ids.map((id) => villeDe.get(id))).toEqual(['Chennevières-sur-Marne']);
+    expect(avant.total).toBe(1);
+    // Et le même lieu, annoncé par le client, rend les offres autour.
+    expect((await toutes(filtres({ lieu: 'Chennevières-sur-Marne' }))).total).toBeGreaterThan(1);
   });
 
   it('le lieu compris se dit comme la base l’écrit, avec sa subdivision', async () => {
@@ -287,11 +296,11 @@ describe.skipIf(!enabled)('la recherche de proximité sur une base locale dédi�
   });
 
   it('une région du marché garde sa recherche par subdivision (« Texas ») ; le pays, le code postal et le télétravail, la leur', async () => {
-    const texas = await getJobs({ marche: 'US', lieu: 'Texas', filtres: { maison: [MAISON] } });
+    const texas = await getJobs({ marche: 'US', proximite: true, lieu: 'Texas', filtres: { maison: [MAISON] } });
     expect(texas.lieu?.type).toBe('ville');
     expect(texas.jobs.map((j) => villeDe.get(j.id))).toEqual(['Austin', 'Austin', 'Austin']);
     // Une ville dans la région de son nom reste une ville (« New York » n'est pas tout l'État).
-    expect((await getJobs({ marche: 'US', lieu: 'New York', filtres: { maison: [MAISON] } })).lieu).toEqual({ type: 'ville', libelle: 'New York City (NY)' });
+    expect((await getJobs({ marche: 'US', proximite: true, lieu: 'New York', filtres: { maison: [MAISON] } })).lieu).toEqual({ type: 'ville', libelle: 'New York City (NY)' });
     // Une région nommée dans la langue de l'interface (« Bourgogne ») l'emporte sur une petite commune homonyme hors d'elle ;
     // la commune reste cherchable par sa subdivision.
     expect((await getJobs(filtres({ lieu: 'Bourgogne' }))).lieu).toEqual({ type: 'ville', libelle: 'Bourgogne' });
@@ -320,7 +329,7 @@ describe.skipIf(!enabled)('la recherche de proximité sur une base locale dédi�
 
   it('une offre sans point : retenue par le nom de sa ville et rangée après les offres situées ; jamais un homonyme refusé', async () => {
     // « Austin, Ohio » (sans point : le déclencheur a refusé de la placer au Texas) n'est pas retenue pour Austin (TX).
-    const texas = await getJobs({ marche: 'US', lieu: 'Austin', filtres: { maison: [MAISON] } });
+    const texas = await getJobs({ marche: 'US', proximite: true, lieu: 'Austin', filtres: { maison: [MAISON] } });
     expect(texas.jobs.map((j) => villeDe.get(j.id))).toEqual(['Austin', 'Austin', 'Austin']);
     expect(await prisma.job.count({ where: { id: { in: texas.jobs.map((j) => j.id) }, geoSource: null } })).toBe(0);
     // Une offre de Créteil pas encore rattrapée (sans point, sans subdivision) : retenue, et en dernier.
@@ -422,25 +431,25 @@ describe.skipIf(!enabled)('la recherche de proximité sur une base locale dédi�
 
   it('les suggestions sont des lieux reconnus avec leur subdivision : la ville, puis ses arrondissements ; les codes postaux', async () => {
     const fr = exigerPerimetre('FR');
-    expect(await suggestCities('Chenn', fr)).toEqual(['Chennevières-sur-Marne (94)']);
+    expect(await suggestLieux('Chenn', fr)).toEqual(['Chennevières-sur-Marne (94)']);
     // D-499 : « paris » : Paris d'abord (le plus d'offres), puis ses arrondissements (le 9e porte une offre, le 15e aucune).
-    expect(await suggestCities('Paris', fr)).toEqual(['Paris (75)', 'Paris 9e (75)', 'Paris 15e (75)']);
-    expect(await suggestCities('9443', fr)).toEqual(['94430 Chennevières-sur-Marne (94)']);
-    expect(await suggestCities('75015', fr)).toEqual(['75015 Paris 15e (75)']);
-    expect(await suggestCities('100', exigerPerimetre('US'))).toEqual(['10001 New York (NY)']);
-    expect(await suggestCities('100', fr)).toEqual([]);
+    expect(await suggestLieux('Paris', fr)).toEqual(['Paris (75)', 'Paris 9e (75)', 'Paris 15e (75)']);
+    expect(await suggestLieux('9443', fr)).toEqual(['94430 Chennevières-sur-Marne (94)']);
+    expect(await suggestLieux('75015', fr)).toEqual(['75015 Paris 15e (75)']);
+    expect(await suggestLieux('100', exigerPerimetre('US'))).toEqual(['10001 New York (NY)']);
+    expect(await suggestLieux('100', fr)).toEqual([]);
     // Sans offre à leur nom, deux homonymes se rangent par population ; la subdivision les distingue.
-    expect(await suggestCities('Vale', fr)).toEqual(['Valence (26)', 'Valence (82)']);
+    expect(await suggestLieux('Vale', fr)).toEqual(['Valence (26)', 'Valence (82)']);
     // Le nombre d'offres d'abord : Champigny-sur-Marne (3 offres) devant Chennevières-sur-Marne (1), avant toute population.
-    expect(await suggestCities('Ch', fr)).toEqual(['Champigny-sur-Marne (94)', 'Chennevières-sur-Marne (94)']);
+    expect(await suggestLieux('Ch', fr)).toEqual(['Champigny-sur-Marne (94)', 'Chennevières-sur-Marne (94)']);
     // Un quartier est un lieu reconnu (D-499) : proposé après la commune homonyme plus peuplée.
-    expect(await suggestCities('La Def', fr)).toEqual(['La Défense (92)']);
-    expect(await suggestCities('Saint-Lo', fr)).toEqual(['Saint-Louis (68)', 'Saint-Louis (13)']);
+    expect(await suggestLieux('La Def', fr)).toEqual(['La Défense (92)']);
+    expect(await suggestLieux('Saint-Lo', fr)).toEqual(['Saint-Louis (68)', 'Saint-Louis (13)']);
     // Le cloisonnement par marché tient.
-    expect(await suggestCities('Aus', fr)).toEqual([]);
-    expect(await suggestCities('Paris', exigerPerimetre('US'))).toEqual(['Paris (TX)', 'Paris (KY)']);
+    expect(await suggestLieux('Aus', fr)).toEqual([]);
+    expect(await suggestLieux('Paris', exigerPerimetre('US'))).toEqual(['Paris (TX)', 'Paris (KY)']);
     // Le nom dans la langue de l'interface servie par le marché.
-    expect(await suggestCities('Mün', exigerPerimetre('DE'), 'de-DE')).toEqual(['München']);
+    expect(await suggestLieux('Mün', exigerPerimetre('DE'), 'de-DE')).toEqual(['München']);
   });
 
   it('le rattrapage du stock (scripts/geo/rattrapage-ecriture.sql) donne leur point aux offres d’avant la base de villes, et ne réécrit rien au second passage', async () => {

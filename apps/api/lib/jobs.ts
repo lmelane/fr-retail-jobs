@@ -56,7 +56,14 @@ export class DatabaseUnavailableError extends Error {
  * curseur de la page suivante (lot 7), tel que la réponse précédente l'a
  * rendu dans `suivant`.
  */
-export type JobFilters = CriteresRecherche & { marche?: string; apres?: string; locale?: string };
+export type JobFilters = CriteresRecherche & {
+  marche?: string; apres?: string; locale?: string;
+  /**
+   * D-496 : le client annonce le contrat de proximité (`contrat-client.ts`) ; posé par la route, jamais lu dans l'URL.
+   * Absent : la recherche d'avant le lot, à l'identique.
+   */
+  proximite?: boolean;
+};
 
 /**
  * D-426 — plafond du nombre de valeurs par filtre.
@@ -687,7 +694,7 @@ export async function examinerAlerte(filters: JobFilters, entreeApres: Date, pub
   const planTexte = planifierRecherche(perimetre, { ...filters, prioritePays: undefined });
   try {
     // D-496 : la même proximité que la page (le lieu et les villes trouvés dans la base de villes).
-    const plan = await localiserPlan(planTexte, filters.locale);
+    const plan = filters.proximite ? await localiserPlan(planTexte, filters.locale) : planTexte;
     const taxonomy = await getOptionalOccupationPresentation(langueDesLibelles(localeAffichage(filters.locale, perimetre)));
     const examen = await examenNouveautes(plan, entreeApres, publieeApres, NOUVELLES_MAX);
     return {
@@ -710,7 +717,7 @@ export async function getJobs(filters: JobFilters): Promise<JobsResult> {
   // D-496 : le lieu et les villes cherchés, trouvés dans la base de villes (une requête, mémorisée par instance).
   let plan: typeof planTexte;
   try {
-    plan = await localiserPlan(planTexte, filters.locale);
+    plan = filters.proximite ? await localiserPlan(planTexte, filters.locale) : planTexte;
   } catch (error) {
     throw new DatabaseUnavailableError(error);
   }

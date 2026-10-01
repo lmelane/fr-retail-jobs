@@ -9,6 +9,7 @@ import { projeterLignes } from '@/lib/projection';
 import { SearchQueryError } from '@/lib/search-intent';
 import { lireBornesExamen } from '@/lib/examen-alerte';
 import { offerPath } from '@/lib/offer-url';
+import { annonceProximite } from '@/lib/contrat-client';
 
 /**
  * L'EXAMEN D'UNE ALERTE, pour le moteur d'alertes du BACKEND (R-130 §3, §10 ; D-464 §1, §3).
@@ -33,7 +34,9 @@ export async function GET(request: NextRequest) {
 
   const bornes = lireBornesExamen(request.nextUrl.searchParams);
   if (!bornes.ok) return NextResponse.json({ error: bornes.erreur, requestId }, { status: 400, headers: entetes });
-  const filtres = parseFilters(paramsMultiples(request.nextUrl.searchParams));
+  // D-496 : la proximité au seul appelant qui l'annonce (le backend qui enregistre des lieux « Paris (75) ») ; sans lui,
+  // l'examen d'avant.
+  const filtres = { ...parseFilters(paramsMultiples(request.nextUrl.searchParams)), proximite: annonceProximite(request.headers) };
 
   try {
     const examen = await examinerAlerte(filtres, bornes.entreeApres, bornes.publieeApres);

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { suggestCities, suggestCompanies, suggestOccupations, suggestTitlesDetaillees } from '@/lib/suggestions';
+import { suggestCities, suggestCompanies, suggestLieux, suggestOccupations, suggestTitlesDetaillees } from '@/lib/suggestions';
+import { annonceProximite } from '@/lib/contrat-client';
 import { PerimetreRequisError, exigerPerimetre } from '@/lib/perimetre';
 import { refuserSiCleInvalide } from '@/lib/cle-api';
 import { SearchQueryError } from '@/lib/search-intent';
@@ -36,7 +37,10 @@ export async function GET(request: NextRequest) {
 
   try {
     const locale = request.nextUrl.searchParams.get('locale') ?? undefined;
-    if (type === 'city') return NextResponse.json({ suggestions: await suggestCities(q, perimetre, locale) });
+    // D-496, D-499 : les lieux reconnus (« Paris (75) ») au seul client qui annonce le contrat de proximité.
+    if (type === 'city') {
+      return NextResponse.json({ suggestions: annonceProximite(request.headers) ? await suggestLieux(q, perimetre, locale) : await suggestCities(q, perimetre) });
+    }
     if (type === 'company') return NextResponse.json({ suggestions: await suggestCompanies(q, perimetre) });
     if (type === 'metier') {
       const metiers = await suggestOccupations(q, perimetre, locale);

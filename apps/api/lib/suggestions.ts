@@ -36,6 +36,78 @@ const paysSql = (perimetre: Perimetre) => Prisma.join(perimetre.pays.map((p) => 
 const directPubliable = (asOf: Date) => directPubliableSql(Prisma.sql`d`, asOf);
 
 /**
+ * LE CLOISONNEMENT DES VILLES PAR MARCHÉ (arbitrage CEO, option A).
+ *
+ * « Je sélectionne FR → je ne vois que des villes FR ; je sélectionne US →
+ * uniquement des villes US. » Cloisonnement STRICT, comme Indeed.
+ *
+ * Mesuré en production le 2026-09-15 : sur 6 824 villes distinctes portant au
+ * moins un pays, 370 (5,4 %) existent dans PLUSIEURS pays — PARIS (BE ES FR
+ * US), NEW YORK (CA US), LONDRES (CA GB IT US), LOS ANGELES (CA CL US).
+ *
+ * ── LES OFFRES SANS PAYS : DÉDUCTION QUAND ELLE NE LAISSE AUCUN DOUTE ──────
+ *
+ * 4 811 offres publiables n'ont aucun `countryCode` (16/09/2026). Une ville
+ * sans pays dont le nom n'apparaît ailleurs qu'avec UN SEUL pays prend ce
+ * pays (487 villes mesurées) ; une ville ambiguë (ABERDEEN GB/SD, BEDFORD
+ * CA/GB/US) ou sans occurrence ailleurs reste hors suggestions : deviner le
+ * pays d'une ville, c'est envoyer un candidat vers un marché qui n'est pas le
+ * sien, sans qu'il puisse s'en apercevoir.
+ *
+ * La déduction vit dans LA REQUÊTE : la CTE `candidates` est bornée par le
+ * préfixe AVANT tout calcul, donc elle ne raisonne que sur les quelques
+ * centaines de lignes que la frappe a déjà sélectionnées. Mesuré 11 passes sur
+ * le catalogue de production : surcoût inférieur à ~8 ms, indiscernable du
+ * bruit réseau.
+ *
+ * `COALESCE(c.pays, d.p) = ANY(périmètre)` : le pays de l'offre s'il existe,
+ * sinon celui déduit ; une offre sans pays dont la ville est ambiguë garde
+ * `NULL`, et `NULL = ANY(...)` est faux — l'abstention est portée par la
+ * logique ternaire de SQL, pas par un `if` ajouté à côté.
+ */
+export async function suggestCities(query: string, perimetre: Perimetre): Promise<string[]> {
+  if (!process.env.DATABASE_URL) return [];
+  validateSearchQuery(query);
+  const q = query.trim();
+  if (q.length < 2) return [];
+  try {
+    const prefixe = `${echapperLike(q)}%`;
+    const asOf = new Date();
+    // Plus large que la limite : la colonne mélange les casses (« Paris » /
+    // « PARIS » sont des groupes distincts) — on déduplique ensuite en JS.
+    const brut = SUGGEST_LIMIT * 3;
+    const rows = await prisma.$queryRaw<Ligne[]>`
+      WITH candidates AS (
+        SELECT "city" AS valeur, UPPER(TRIM("city")) AS cle, "countryCode" AS pays
+          FROM "Job" j
+         WHERE ${publicJobSql(Prisma.sql`j`, asOf)} AND catwalks_normaliser_texte("city") LIKE catwalks_normaliser_texte(${prefixe})
+        UNION ALL
+        SELECT d.city, UPPER(TRIM(d.city)), d."countryCode"
+          FROM "DirectOffer" d
+         WHERE ${directPubliable(asOf)} AND catwalks_normaliser_texte(d.city) LIKE catwalks_normaliser_texte(${prefixe})
+      ),
+      deduit AS (
+        SELECT cle, MIN(pays) AS p
+          FROM candidates
+         WHERE pays IS NOT NULL
+         GROUP BY cle
+        HAVING COUNT(DISTINCT pays) = 1
+      )
+      SELECT c.valeur, COUNT(*)::int AS n
+        FROM candidates c
+        LEFT JOIN deduit d ON d.cle = c.cle
+       WHERE COALESCE(c.pays, d.p) = ANY(${[...perimetre.pays]})
+       GROUP BY c.valeur
+       ORDER BY COUNT(*) DESC, c.valeur ASC
+       LIMIT ${brut}
+    `;
+    return dedupliquer(rows.map((r) => r.valeur));
+  } catch {
+    return [];
+  }
+}
+
+/**
  * LES LIEUX DE LA BARRE (D-496, D-499), comme Indeed : des lieux reconnus — villes, arrondissements, communes de la base
  * mondiale (`GeoCity`, GeoNames) et codes postaux (`GeoPostalCode`) —, jamais le texte brut des offres.
  *
@@ -53,8 +125,11 @@ const directPubliable = (asOf: Date) => directPubliableSql(Prisma.sql`d`, asOf);
  * - Le nom dans la langue de l'interface quand la base le connaît (« München » en allemand, « Munich » en français).
  * - La frappe se compare sous la clé de lieu de la base (`catwalks_lieu_cle` : sans accents, casse ni ponctuation),
  *   sur le nom principal et toutes ses variantes (« Londres » trouve London).
+ *
+ * Servie au seul client qui l'annonce (`x-catwalks-client: 2`, `contrat-client.ts`) ; sans ce signal, `suggestCities`,
+ * le contrat d'avant, inchangé.
  */
-export async function suggestCities(query: string, perimetre: Perimetre, locale?: string): Promise<string[]> {
+export async function suggestLieux(query: string, perimetre: Perimetre, locale?: string): Promise<string[]> {
   if (!process.env.DATABASE_URL) return [];
   validateSearchQuery(query);
   const q = query.trim();
