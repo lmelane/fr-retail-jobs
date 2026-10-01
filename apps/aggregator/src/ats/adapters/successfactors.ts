@@ -485,6 +485,8 @@ async function fetchSuccessFactorsInSession(config: Record<string, unknown>): Pr
     const scopes: NonNullable<NonNullable<AdapterResult['enumeration']>['scopes']> = [];
     const evidence: NonNullable<NonNullable<AdapterResult['enumeration']>['pageEvidence']> = [];
     let pages = 0, rawCount = 0;
+    /** Locales proven by a fresh second pass (`fetchHtmlJobs`): named, never a defect, never a proving termination. */
+    const reconciled: string[] = [];
     for (const locale of locales.length ? locales : [undefined]) {
       try {
         const url = new URL(firstUrl);
@@ -496,8 +498,10 @@ async function fetchSuccessFactorsInSession(config: Record<string, unknown>): Pr
         evidence.push(...(result.enumeration!.pageEvidence ?? []));
         if (result.declaredTotal !== undefined) scopes.push({ scope: locale ?? 'default', declaredTotal: result.declaredTotal,
           uniqueIds: result.jobs.length, pages: result.enumeration!.pages, complete: result.complete === true });
-        if (!result.complete) issues.add(`HTML_LOCALE_INCOMPLETE:${locale ?? 'default'}`);
-        for (const issue of result.enumeration!.issues ?? []) issues.add(`${locale ?? 'default'}:${issue}`);
+        if (!result.complete) {
+          issues.add(`HTML_LOCALE_INCOMPLETE:${locale ?? 'default'}`);
+          for (const issue of result.enumeration!.issues ?? []) issues.add(`${locale ?? 'default'}:${issue}`);
+        } else if (result.enumeration!.termination === 'RECONCILED_BY_FRESH_PASS') reconciled.push(locale ?? 'default');
       } catch (error) {
         assertSourceRunning(); issues.add(`HTML_LOCALE_FAILED:${locale}:${String(error).slice(0, 300)}`);
       }
@@ -505,21 +509,27 @@ async function fetchSuccessFactorsInSession(config: Record<string, unknown>): Pr
     const complete = issues.size === 0 && scopes.length === locales.length;
     return finish({ jobs: [...byId.values()], complete, truncated: !complete,
       enumeration: { method: 'PUBLISHER_HTML_PER_LOCALE_TOTALS', endpoint: firstUrl, pages, rawCount,
-        termination: complete ? 'ALL_LOCALE_TOTALS_REACHED' : 'INCOMPLETE_LOCALE_ENUMERATION',
-        scopes, pageEvidence: evidence, issues: [...issues] } });
+        // A reconciled locale closes nothing that day: the board's termination stays non-proving for the refresh.
+        termination: !complete ? 'INCOMPLETE_LOCALE_ENUMERATION' : reconciled.length ? 'ALL_LOCALE_TOTALS_RECONCILED_BY_FRESH_PASS' : 'ALL_LOCALE_TOTALS_REACHED',
+        scopes, pageEvidence: evidence, issues: [...issues, ...reconciled.map(locale => `${locale}:RECONCILED_BY_FRESH_PASS`)] } });
   }
   const result = await fetchHtmlJobs(origin, firstUrl, firstHtml);
   if (!result.jobs.length && result.declaredTotal === undefined) return rmk(firstHtml);
   return finish(result);
 }
 
-async function fetchHtmlJobs(origin: string, firstUrl: string, firstHtml: string): Promise<AdapterResult> {
+type PageEvidence = NonNullable<NonNullable<AdapterResult['enumeration']>['pageEvidence']>;
+type HtmlPass = { jobs: NormalizedJob[]; seenIds: Set<string>; declaredTotal?: number; totalChanged: boolean; pages: number; rawCount: number;
+  termination: string; issues: Set<string>; pageEvidence: PageEvidence };
+
+/** One pass over the publisher's HTML pagination, from its first page. */
+async function readHtmlPass(origin: string, firstUrl: string, firstHtml: string, pass: number): Promise<HtmlPass> {
   const jobs: NormalizedJob[] = [];
   const seenIds = new Set<string>();
-  let offset = 0, pages = 0, rawCount = 0, declaredTotal: number | undefined;
+  let offset = 0, pages = 0, rawCount = 0, declaredTotal: number | undefined, totalChanged = false;
   let termination = 'PAGE_BUDGET_EXHAUSTED';
   const issues = new Set<string>();
-  const pageEvidence: NonNullable<NonNullable<AdapterResult['enumeration']>['pageEvidence']> = [];
+  const pageEvidence: PageEvidence = [];
   for (let page = 0; page < MAX_PAGES; page++) {
     const pageUrl = new URL(firstUrl);
     pageUrl.searchParams.set('startrow', String(offset));
@@ -529,11 +539,12 @@ async function fetchHtmlJobs(origin: string, firstUrl: string, firstHtml: string
     const pagination = parseSuccessFactorsPagination(html, offset);
     if (pagination) {
       if (declaredTotal === undefined) declaredTotal = pagination.total;
-      else if (declaredTotal !== pagination.total) issues.add('SOURCE_TOTAL_CHANGED');
+      else if (declaredTotal !== pagination.total) { totalChanged = true; issues.add('SOURCE_TOTAL_CHANGED'); }
     }
     const listing = parseListing(html, origin);
     const $ = cheerio.load(html, { scriptingEnabled: false });
-    pageEvidence.push({ url, checkedAt: captureObservedAt().toISOString(), sha256: createHash('sha256').update(html).digest('hex'), offset,
+    // The second pass reads the same addresses: its evidence is told apart by a fragment, never by another request.
+    pageEvidence.push({ url: pass > 1 ? `${url}#pass=${pass}` : url, checkedAt: captureObservedAt().toISOString(), sha256: createHash('sha256').update(html).digest('hex'), offset,
       pagination, ids: listing.map(job => job.externalId),
       publisherCounter: $('.paginationLabel,#tile-search-results-label').first().text().trim(),
       componentCounters: [...html.matchAll(/\bjobRecords(?:Found|PerPage)\s*:\s*parseInt\(\s*["']\d+["']\s*\)/g)].map(m => m[0]) });
@@ -553,10 +564,45 @@ async function fetchHtmlJobs(origin: string, firstUrl: string, firstHtml: string
     if (next <= offset) { termination = 'NON_ADVANCING_OFFSET'; break; }
     offset = next;
   }
-  const complete = declaredTotal !== undefined && jobs.length === declaredTotal && issues.size === 0;
+  return { jobs, seenIds, declaredTotal, totalChanged, pages, rawCount, termination, issues, pageEvidence };
+}
+
+/** The pass read every posting its own, unchanging total announces, without any other defect. */
+const passProven = (pass: HtmlPass) => pass.declaredTotal !== undefined && !pass.totalChanged && pass.issues.size === 0 &&
+  pass.seenIds.size === pass.declaredTotal;
+
+/**
+ * UNE SECONDE PASSE ENTIÈRE QUAND LE TOTAL CHANGE PENDANT LA LECTURE (RUN du 01/10/2026, même règle que Workday).
+ *
+ * Crocs : 525 annoncées, la page de l'offset 420 en annonçait 526 et commençait par la dernière offre de la page
+ * précédente, celle de l'offset 440 de nouveau 525 ; 524 offres lues. Sephora (en_US) : 1 684 puis 1 687 à l'offset
+ * 800, 1 685 lues. Une offre publiée ou retirée pendant la lecture décale les pages suivantes et en fait sauter une à
+ * une frontière : aucun compte de cette passe ne prouve le tableau. Le tableau est relu en entier, une fois ; la preuve
+ * se juge sur cette seconde passe seule, sous son propre total, qui ne doit pas changer. Les offres de la première
+ * restent collectées (union) : une offre retirée entre-temps reste un jour de plus, aucune n'est fermée à tort.
+ *
+ * La terminaison `RECONCILED_BY_FRESH_PASS` n'est PAS probante pour le refresh (`refreshPlan.ts`) : la source est
+ * saine, mais ce jour-là ses absences ne ferment rien, comme la relecture de Phenom. Un second changement reste non
+ * prouvé. Le rejeu hors réseau sert les réponses d'une même adresse dans l'ordre de leur capture : il relit la même passe.
+ */
+async function fetchHtmlJobs(origin: string, firstUrl: string, firstHtml: string): Promise<AdapterResult> {
+  const first = await readHtmlPass(origin, firstUrl, firstHtml, 1);
+  const passes = [first];
+  if (first.totalChanged && first.termination !== 'PAGE_BUDGET_EXHAUSTED')
+    passes.push(await readHtmlPass(origin, firstUrl, await fetchText(firstUrl, { headers: HEADERS }), 2));
+  const last = passes[passes.length - 1];
+  const jobs: NormalizedJob[] = [];
+  const kept = new Set<string>();
+  for (const pass of passes) for (const job of pass.jobs) if (!kept.has(job.externalId)) { kept.add(job.externalId); jobs.push(job); }
+  const reconciled = passes.length > 1 && passProven(last);
+  const complete = passProven(last) && (passes.length === 1 || reconciled);
+  const issues = new Set([...passes.flatMap(pass => [...pass.issues])]);
+  if (reconciled) issues.add('RECONCILED_BY_FRESH_PASS');
   if (!complete) issues.add('ENUMERATION_NOT_PROVEN');
-  return { jobs, declaredTotal, complete, truncated: !complete,
-    enumeration: { method: 'PUBLISHER_HTML_PAGINATION', endpoint: firstUrl, pages, rawCount, termination, issues: [...issues], pageEvidence } };
+  return { jobs, declaredTotal: last.declaredTotal, complete, truncated: !complete,
+    enumeration: { method: 'PUBLISHER_HTML_PAGINATION', endpoint: firstUrl, pages: passes.reduce((n, pass) => n + pass.pages, 0),
+      rawCount: passes.reduce((n, pass) => n + pass.rawCount, 0), termination: reconciled ? 'RECONCILED_BY_FRESH_PASS' : last.termination,
+      issues: [...issues], pageEvidence: passes.flatMap(pass => pass.pageEvidence) } };
 }
 
 /**

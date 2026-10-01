@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 vi.mock('../../lib/http.js', () => ({ fetchText: vi.fn(), fetchJson: vi.fn() }));
 import { fetchText } from '../../lib/http.js';
 import { fetchSuccessFactorsResult, parseSuccessFactorsPagination, parsePublishedHtmlLocales } from './successfactors.js';
+import { PROVING_TERMINATIONS } from '../../pipeline/refreshPlan.js';
 const text = vi.mocked(fetchText);
 const listing = (start: number, end: number, total: number) => `<span class="paginationLabel">Results <b>${start} – ${end}</b> of <b>${total}</b></span>` + Array.from({ length: end - start + 1 }, (_, i) => `<a href="/job/Paris-Advisor/${start + i}/">Advisor</a>`).join('');
 describe('Worldwide SAP HTML locales', () => {
@@ -28,6 +29,25 @@ describe('Worldwide SAP HTML locales', () => {
       { scope: 'it_IT', declaredTotal: 2, uniqueIds: 2, pages: 1, complete: true },
     ]);
     expect(r.enumeration?.pageEvidence?.every(p => new URL(p.url).searchParams.has('locale'))).toBe(true);
+  });
+  /** RUN du 01/10/2026, Sephora (en_US) : 1 684 puis 1 687 annoncées pendant la lecture, 1 685 lues. */
+  it('certifie une langue relue en entier après un total changeant, sans terminaison qui autorise une fermeture', async () => {
+    const frFirst = [listing(1, 2, 3), listing(3, 4, 4)];
+    text.mockImplementation(async raw => {
+      const u = new URL(String(raw)), locale = u.searchParams.get('locale');
+      if (u.pathname === '/') return '<a href="/France/?locale=fr_FR">FR</a><a href="/Italy/?locale=it_IT">IT</a>';
+      if (!locale) return listing(1, 1, 1);
+      if (locale === 'it_IT') return listing(1, 1, 1).replace('/1/', '/9/');
+      return frFirst.shift() ?? (u.searchParams.get('startrow') === '0' ? listing(1, 2, 4) : listing(3, 4, 4));
+    });
+    const r = await fetchSuccessFactorsResult({ origin: 'https://jobs.example.com', allLocales: true, withDescriptions: false });
+    expect(r.complete).toBe(true);
+    expect(r.enumeration?.termination).toBe('ALL_LOCALE_TOTALS_RECONCILED_BY_FRESH_PASS');
+    expect(r.enumeration?.issues).toEqual(['fr_FR:RECONCILED_BY_FRESH_PASS']);
+    expect(r.jobs.map(j => j.externalId)).toEqual(['1', '2', '3', '4', '9']);
+    // Ni la langue ni le tableau réconciliés ne ferment d'offre ce jour-là.
+    expect(PROVING_TERMINATIONS.has('ALL_LOCALE_TOTALS_RECONCILED_BY_FRESH_PASS')).toBe(false);
+    expect(PROVING_TERMINATIONS.has('RECONCILED_BY_FRESH_PASS')).toBe(false);
   });
   it('preserves successful languages but cannot certify the union when another language fails', async () => {
     text.mockImplementation(async raw => {

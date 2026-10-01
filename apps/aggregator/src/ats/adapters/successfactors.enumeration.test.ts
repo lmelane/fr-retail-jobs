@@ -34,11 +34,36 @@ describe('SAP enumeration evidence', () => {
       expect.objectContaining({ offset: 2, pagination: { start: 3, end: 4, total: 4 }, ids: ['3', '4'] }),
     ]);
   });
-  it('retains all collected postings and records a total that changes during pagination', async () => {
-    text.mockResolvedValueOnce(listing(1, 2, 4)).mockResolvedValueOnce(listing(3, 5, 5));
+  /** A page that serves the given IDs under the given window and total (the shape of a shifted page). */
+  const served = (start: number, end: number, total: number, ids: string[]) =>
+    `<span class="paginationLabel">Results <b>${start} – ${end}</b> of <b>${total}</b></span>` + ids.map(id => `<a href="/job/Paris-Advisor/${id}/">Advisor</a>`).join('');
+  /**
+   * RUN du 01/10/2026, Crocs : 525 annoncées, une page à 526 qui recommence par la dernière offre de la page précédente,
+   * puis de nouveau 525 ; une offre sautée à une frontière de page, 524 lues. Une seconde passe stable la retrouve.
+   */
+  it('relit le tableau en entier quand le total change pendant la lecture, et prouve la seconde passe seule', async () => {
+    const firstPass = [served(1, 2, 6, ['1', '2']), served(3, 4, 7, ['2', '3']), served(5, 6, 6, ['5', '6']), served(5, 6, 6, ['5', '6'])];
+    const freshPass = [served(1, 2, 6, ['1', '2']), served(3, 4, 6, ['3', '4']), served(5, 6, 6, ['5', '6'])];
+    text.mockImplementation(async () => (firstPass.length ? firstPass : freshPass).shift()!);
     const r = await fetchSuccessFactorsResult({ origin: 'https://jobs.example.com', withDescriptions: false });
-    expect(r.jobs).toHaveLength(5); expect(r.complete).toBe(false);
-    expect(r.enumeration?.issues).toContain('SOURCE_TOTAL_CHANGED');
+    const pass1 = r.enumeration!.pageEvidence!.filter(page => !page.url.includes('#pass=2'));
+    // Prémisse : la première passe seule a bien sauté l'offre 4 sous un total changeant, sinon le témoin ne teste rien.
+    expect(new Set(pass1.flatMap(page => page.ids))).toEqual(new Set(['1', '2', '3', '5', '6']));
+    expect(r.complete).toBe(true); expect(r.declaredTotal).toBe(6);
+    expect(r.jobs.map(job => job.externalId).sort()).toEqual(['1', '2', '3', '4', '5', '6']);
+    expect(r.enumeration).toMatchObject({ termination: 'RECONCILED_BY_FRESH_PASS', pages: 7 });
+    expect(r.enumeration?.issues).toEqual(expect.arrayContaining(['SOURCE_TOTAL_CHANGED', 'RECONCILED_BY_FRESH_PASS']));
+    // La seconde passe relit les mêmes adresses : seule la preuve les distingue.
+    expect(text.mock.calls[4][0]).toBe(text.mock.calls[0][0]);
+    expect(r.enumeration?.pageEvidence?.filter(page => page.url.endsWith('#pass=2'))).toHaveLength(3);
+  });
+  it('garde toutes les offres lues mais ne prouve rien quand le total change aussi pendant la seconde passe', async () => {
+    const pages = [listing(1, 2, 4), listing(3, 5, 5), listing(1, 2, 5), listing(3, 6, 6)];
+    text.mockImplementation(async () => pages.shift()!);
+    const r = await fetchSuccessFactorsResult({ origin: 'https://jobs.example.com', withDescriptions: false });
+    expect(r.jobs).toHaveLength(6); expect(r.complete).toBe(false);
+    expect(r.enumeration?.issues).toEqual(expect.arrayContaining(['SOURCE_TOTAL_CHANGED', 'ENUMERATION_NOT_PROVEN']));
+    expect(r.enumeration?.issues).not.toContain('RECONCILED_BY_FRESH_PASS');
   });
   it('cannot certify a repeating page as complete when the publisher announces more jobs', async () => {
     text.mockResolvedValue(listing(1, 2, 5));
