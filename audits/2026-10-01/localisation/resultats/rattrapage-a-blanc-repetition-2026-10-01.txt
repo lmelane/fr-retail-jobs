@@ -1,0 +1,181 @@
+SET
+Base de villes chargée
+ chargement |        loadedAt         | villes |  noms   | libelles |                        attribution                         
+------------+-------------------------+--------+---------+----------+------------------------------------------------------------
+          3 | 2026-10-01 14:41:06.983 | 235824 | 1263239 |   144207 | Données géographiques : GeoNames (geonames.org), CC BY 4.0
+
+Noms ambigus appris des coordonnées natives (exceptions à la règle par nom), les plus portés
+ pays |      nom      |     ville     | subdivision | offres_natives | selon_le_nom  | subdivision_selon_le_nom 
+------+---------------+---------------+-------------+----------------+---------------+--------------------------
+ US   | garden city   | Garden City   | NY          |             51 | Garden City   | KS
+ US   | glendale      | Glendale      | CA          |             43 | Glendale      | AZ
+ US   | aurora        | Aurora        | IL          |             20 | Aurora        | CO
+ US   | springfield   | Springfield   | VA          |             20 | Springfield   | MO
+ US   | norwalk       | Norwalk       | CT          |             15 | Norwalk       | CA
+ US   | concord       | Concord       | NC          |             14 | Concord       | CA
+ US   | woodbridge    | Woodbridge    | VA          |             12 | Woodbridge    | NJ
+ US   | arlington     | Arlington     | VA          |             12 | Arlington     | TX
+ US   | greenville    | Greenville    | SC          |             12 | Greenville    | NC
+ US   | shrewsbury    | Shrewsbury    | NJ          |             11 | Shrewsbury    | MA
+ US   | newark        | Newark        | DE          |             10 | Newark        | NJ
+ FR   | saint ouen    | Saint-Ouen    | 41          |             10 | Saint-Ouen    | 93
+ US   | burlington    | Burlington    | MA          |             10 | Burlington    | NC
+ US   | lawrenceville | Lawrenceville | NJ          |              9 | Lawrenceville | GA
+ US   | decatur       | Decatur       | GA          |              7 | Decatur       | IL
+ US   | lancaster     | Lancaster     | PA          |              6 | Lancaster     | CA
+ US   | northridge    | Northridge    | CA          |              6 | Northridge    | OH
+ DE   | sulzbach      | Sulzbach      | Hesse       |              6 | Sulzbach      | Saarland
+ US   | canton        | Canton        | OH          |              6 | Canton        | MI
+ US   | pineville     | Pineville     | NC          |              6 | Pineville     | LA
+
+Lignes que l'écriture modifierait (offres absorbées exclues)
+ origine | lignes | actives | point_natif | point_ville | point_retire 
+---------+--------+---------+-------------+-------------+--------------
+ job     |  83431 |   79286 |       35466 |       47965 |            0
+
+Couverture des offres actives par pays : coordonnées natives, point de recherche avant et après, ville rattachée
+    pays     | actives | pct_coord_natives | pct_point_avant | pct_point_apres | pct_ville_renseignee | pct_ville_rattachee 
+-------------+---------+-------------------+-----------------+-----------------+----------------------+---------------------
+ US          |   39982 |              37.6 |             0.0 |            89.6 |                 90.9 |                88.3
+ FR          |   13322 |              97.3 |             0.0 |            98.5 |                 99.3 |                96.2
+ GB          |    3845 |               9.3 |             0.0 |            92.2 |                 98.4 |                91.9
+ CA          |    3428 |              14.7 |             0.0 |            91.2 |                 97.7 |                90.7
+ DE          |    3122 |              25.1 |             0.0 |            93.2 |                 98.2 |                92.8
+ (sans pays) |    3117 |              60.7 |             0.0 |            60.7 |                 91.5 |                 0.0
+ IT          |    2902 |              18.7 |             0.0 |            93.6 |                 96.7 |                92.8
+ ES          |    2221 |               6.2 |             0.0 |            86.6 |                 97.4 |                86.3
+ NL          |    1865 |              24.7 |             0.0 |            92.0 |                 95.5 |                91.2
+ AU          |    1492 |              13.9 |             0.0 |            83.8 |                 89.1 |                83.1
+ CH          |    1291 |               7.4 |             0.0 |            83.7 |                 90.2 |                83.0
+ CN          |    1238 |               0.1 |             0.0 |            91.8 |                 95.5 |                91.8
+ BE          |     708 |              16.2 |             0.0 |            95.2 |                 96.8 |                95.1
+ JP          |     588 |              12.9 |             0.0 |            80.3 |                 94.0 |                80.3
+ KR          |     535 |              12.9 |             0.0 |            85.4 |                 93.5 |                75.1
+ IN          |     529 |               0.9 |             0.0 |            62.9 |                 66.7 |                62.9
+ MX          |     516 |              14.0 |             0.0 |            84.5 |                 93.2 |                84.5
+ SG          |     511 |               0.8 |             0.0 |            94.5 |                 96.1 |                94.5
+ PT          |     443 |               7.2 |             0.0 |            82.4 |                 98.2 |                82.2
+ DK          |     370 |               8.4 |             0.0 |            81.1 |                 98.9 |                80.3
+ HK          |     362 |               1.9 |             0.0 |            96.4 |                 99.2 |                96.4
+ PL          |     361 |              28.3 |             0.0 |            96.7 |                 98.9 |                94.7
+ AT          |     358 |              32.4 |             0.0 |            94.4 |                 99.2 |                92.2
+ IE          |     356 |              16.6 |             0.0 |            95.2 |                 98.6 |                94.4
+ CL          |     310 |               0.3 |             0.0 |            76.8 |                 93.5 |                76.8
+ TH          |     293 |               0.3 |             0.0 |            98.3 |                 99.7 |                98.3
+ MY          |     289 |               5.9 |             0.0 |            87.5 |                 97.6 |                87.5
+ SE          |     282 |              33.3 |             0.0 |            92.6 |                 98.2 |                92.2
+ AE          |     264 |               0.0 |             0.0 |            83.7 |                 98.5 |                83.7
+ TR          |     261 |               1.9 |             0.0 |            89.7 |                 93.9 |                89.3
+ NO          |     231 |              31.6 |             0.0 |            88.3 |                 98.7 |                83.1
+ BR          |     218 |               0.5 |             0.0 |            79.8 |                 85.3 |                79.8
+ NZ          |     216 |              15.3 |             0.0 |            78.2 |                 90.3 |                77.8
+ TW          |     204 |               1.5 |             0.0 |            93.1 |                 98.5 |                92.6
+ GR          |     202 |              19.3 |             0.0 |            95.5 |                 98.0 |                94.1
+ VN          |     183 |               6.6 |             0.0 |            71.6 |                 87.4 |                71.6
+ ZA          |     181 |               3.3 |             0.0 |            82.9 |                 95.6 |                82.9
+ PE          |     173 |               1.7 |             0.0 |            87.9 |                 96.0 |                87.9
+ CO          |     134 |               1.5 |             0.0 |            95.5 |                100.0 |                95.5
+ CZ          |     125 |              41.6 |             0.0 |            96.0 |                 97.6 |                92.0
+ HU          |     103 |              56.3 |             0.0 |            92.2 |                 97.1 |                92.2
+ SA          |      97 |               1.0 |             0.0 |            96.9 |                 97.9 |                96.9
+ PR          |      96 |              46.9 |             0.0 |            90.6 |                 91.7 |                90.6
+ RO          |      90 |              17.8 |             0.0 |           100.0 |                100.0 |               100.0
+ PH          |      72 |              11.1 |             0.0 |            65.3 |                 70.8 |                63.9
+ ID          |      62 |               0.0 |             0.0 |            61.3 |                 95.2 |                61.3
+ LU          |      57 |              36.8 |             0.0 |            89.5 |                 98.2 |                87.7
+ IL          |      48 |               0.0 |             0.0 |            79.2 |                100.0 |                79.2
+ MC          |      46 |               8.7 |             0.0 |           100.0 |                100.0 |               100.0
+ EG          |      39 |               0.0 |             0.0 |            92.3 |                100.0 |                92.3
+ FI          |      38 |              18.4 |             0.0 |            84.2 |                 97.4 |                84.2
+ HR          |      38 |              23.7 |             0.0 |           100.0 |                100.0 |               100.0
+ SK          |      37 |              75.7 |             0.0 |            94.6 |                 94.6 |                89.2
+ BG          |      36 |              36.1 |             0.0 |            97.2 |                 97.2 |                97.2
+ MO          |      35 |               2.9 |             0.0 |            71.4 |                100.0 |                71.4
+ AR          |      35 |               0.0 |             0.0 |            77.1 |                 97.1 |                77.1
+ LT          |      28 |              78.6 |             0.0 |            96.4 |                 96.4 |                96.4
+ SC          |      22 |               0.0 |             0.0 |           100.0 |                100.0 |               100.0
+ QA          |      19 |               0.0 |             0.0 |            94.7 |                 94.7 |                94.7
+ KH          |      14 |               0.0 |             0.0 |            71.4 |                100.0 |                71.4
+ RS          |      12 |              50.0 |             0.0 |           100.0 |                100.0 |               100.0
+ BH          |      11 |               0.0 |             0.0 |             9.1 |                 54.5 |                 9.1
+ PA          |      11 |               0.0 |             0.0 |            81.8 |                100.0 |                81.8
+ SI          |      10 |               0.0 |             0.0 |           100.0 |                100.0 |               100.0
+ BD          |       9 |               0.0 |             0.0 |            22.2 |                 22.2 |                22.2
+ CY          |       8 |              50.0 |             0.0 |            87.5 |                100.0 |                87.5
+ VI          |       8 |             100.0 |             0.0 |           100.0 |                100.0 |               100.0
+ EC          |       8 |              87.5 |             0.0 |           100.0 |                100.0 |                87.5
+ KW          |       6 |               0.0 |             0.0 |            33.3 |                 33.3 |                33.3
+ JE          |       6 |              83.3 |             0.0 |            83.3 |                 16.7 |                 0.0
+ RU          |       6 |              16.7 |             0.0 |            66.7 |                 66.7 |                66.7
+ GG          |       6 |              33.3 |             0.0 |            33.3 |                  0.0 |                 0.0
+ MV          |       6 |               0.0 |             0.0 |             0.0 |                100.0 |                 0.0
+ JO          |       6 |               0.0 |             0.0 |           100.0 |                100.0 |               100.0
+ NA          |       5 |               0.0 |             0.0 |           100.0 |                100.0 |               100.0
+ EE          |       4 |              25.0 |             0.0 |           100.0 |                100.0 |               100.0
+ LV          |       4 |              75.0 |             0.0 |           100.0 |                100.0 |               100.0
+ AD          |       4 |               0.0 |             0.0 |           100.0 |                100.0 |               100.0
+ UA          |       4 |               0.0 |             0.0 |            50.0 |                100.0 |                50.0
+ MA          |       3 |               0.0 |             0.0 |            66.7 |                100.0 |                66.7
+ GE          |       3 |               0.0 |             0.0 |            33.3 |                 33.3 |                33.3
+ PK          |       3 |               0.0 |             0.0 |           100.0 |                100.0 |               100.0
+ NF          |       3 |             100.0 |             0.0 |           100.0 |                 66.7 |                 0.0
+ LS          |       3 |               0.0 |             0.0 |           100.0 |                100.0 |               100.0
+ KZ          |       3 |              33.3 |             0.0 |           100.0 |                100.0 |               100.0
+ MU          |       3 |               0.0 |             0.0 |            33.3 |                100.0 |                33.3
+ BL          |       2 |               0.0 |             0.0 |             0.0 |                100.0 |                 0.0
+ TN          |       2 |               0.0 |             0.0 |           100.0 |                100.0 |               100.0
+ IM          |       2 |             100.0 |             0.0 |           100.0 |                100.0 |               100.0
+ SZ          |       2 |               0.0 |             0.0 |           100.0 |                100.0 |               100.0
+ LB          |       2 |             100.0 |             0.0 |           100.0 |                100.0 |               100.0
+ SV          |       2 |              50.0 |             0.0 |            50.0 |                100.0 |                 0.0
+ DO          |       2 |               0.0 |             0.0 |           100.0 |                100.0 |               100.0
+ AW          |       2 |               0.0 |             0.0 |           100.0 |                100.0 |               100.0
+ BA          |       2 |              50.0 |             0.0 |            50.0 |                100.0 |                50.0
+ BS          |       2 |               0.0 |             0.0 |             0.0 |                 50.0 |                 0.0
+ OM          |       2 |               0.0 |             0.0 |             0.0 |                  0.0 |                 0.0
+ MT          |       1 |               0.0 |             0.0 |             0.0 |                  0.0 |                 0.0
+ MF          |       1 |               0.0 |             0.0 |             0.0 |                100.0 |                 0.0
+ UY          |       1 |               0.0 |             0.0 |           100.0 |                100.0 |               100.0
+ LK          |       1 |               0.0 |             0.0 |           100.0 |                100.0 |               100.0
+ AL          |       1 |             100.0 |             0.0 |           100.0 |                100.0 |               100.0
+ GU          |       1 |             100.0 |             0.0 |           100.0 |                100.0 |                 0.0
+ KE          |       1 |               0.0 |             0.0 |           100.0 |                100.0 |               100.0
+ MK          |       1 |             100.0 |             0.0 |           100.0 |                100.0 |               100.0
+ AM          |       1 |               0.0 |             0.0 |           100.0 |                100.0 |               100.0
+ ZM          |       1 |               0.0 |             0.0 |           100.0 |                100.0 |               100.0
+ XK          |       1 |               0.0 |             0.0 |           100.0 |                100.0 |               100.0
+
+Les villes d'offres actives que la base ne reconnaît pas (les plus portées)
+ pays |          ville           | offres 
+------+--------------------------+--------
+ ES   | Palau-Solità i Plegamans |     83
+ DE   | PUMA Way                 |     71
+ PT   | Moscavide                |     42
+ CA   | Londres                  |     39
+ GB   | The Adelphi              |     38
+ AE   | Abou Dhabi               |     38
+ FR   | Haute Garonne            |     36
+ DK   | Copenhagen V             |     31
+ CA   | Rocky View               |     31
+ US   | Édimbourg                |     27
+ CA   | North York               |     26
+ US   | Coach                    |     25
+ AU   | Victoria                 |     25
+ CH   | Le Brassus               |     24
+ US   | Staten                   |     23
+ US   | Rancho Belago            |     20
+ JP   | Minato-Ku                |     20
+ DK   | Paarup                   |     16
+ NL   | Leidschendam             |     15
+ US   | Mashantucket             |     15
+ GB   | Cheshire Oaks            |     14
+ US   | East Windsor             |     14
+ US   | Barceloneta              |     14
+ KR   | Coach                    |     13
+ FR   | Loiret                   |     13
+ CA   | Scarborough              |     13
+ US   | Palisades                |     13
+ US   | Remote New York          |     13
+ CN   | Pgs                      |     13
+ US   | Lake Buena Vista         |     12
+

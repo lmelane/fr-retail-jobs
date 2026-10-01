@@ -1,0 +1,16 @@
+cas                                                   avant méd     p95  après méd     p95  offres avant → après
+FR conseiller de vente (référence D-488, sans lieu)       315ms   340ms      315ms   367ms  4670 → 4670
+FR sans critère                                           140ms   150ms      145ms   222ms  13404 → 13404
+FR Chennevières-sur-Marne                                 102ms   109ms       88ms   112ms  1 → 551
+FR conseiller de vente, Chennevières-sur-Marne            220ms   291ms      250ms   291ms  0 → 129
+FR Paris                                                  120ms   185ms       86ms   150ms  4529 → 5989
+FR conseiller de vente, Paris                             258ms   411ms      242ms   300ms  751 → 967
+FR Lyon                                                   120ms   217ms       69ms   190ms  336 → 427
+FR Paris 15e (75) (D-499)                                 102ms   163ms       79ms   317ms  0 → 6052
+FR 94430 (code postal, D-499)                              40ms    96ms       72ms   402ms  1 → 551
+FR accueil : métier + 3 villes (filtre ville)             118ms   182ms      104ms   328ms  909 → 1242
+FR lieu inconnu (repli texte)                             130ms   186ms      110ms   116ms  0 → 0
+US sales advisor, New York                                299ms   305ms      246ms   312ms  727 → 182
+US New York                                               258ms   287ms      127ms   182ms  3072 → 428
+GB London                                                 101ms   147ms       53ms    57ms  1625 → 185
+DE München                                                 80ms   139ms       45ms    50ms  111 → 221

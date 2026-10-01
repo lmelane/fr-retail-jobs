@@ -1,0 +1,47 @@
+Timing is on.
+Le point stocké par le rattrapage = celui que calcule la fonction du déclencheur (échantillon de 5 000 offres)
+ echantillon | divergences 
+-------------+-------------
+        5000 |           0
+
+Time: 1551.494 ms (00:01.551)
+Coût du déclencheur : 2 000 offres insérées, avec puis sans lui (transactions annulées)
+SELECT 2000
+Time: 71.373 ms
+UPDATE 2000
+Time: 2.564 ms
+BEGIN
+Time: 0.048 ms
+INSERT 0 2000
+Time: 959.546 ms
+ROLLBACK
+Time: 0.223 ms
+BEGIN
+Time: 0.068 ms
+ALTER TABLE
+Time: 0.471 ms
+INSERT 0 2000
+Time: 293.598 ms
+ROLLBACK
+Time: 0.131 ms
+BEGIN
+Time: 0.052 ms
+INSERT 0 2000
+Time: 911.703 ms
+ROLLBACK
+Time: 0.188 ms
+BEGIN
+Time: 0.027 ms
+ALTER TABLE
+Time: 0.304 ms
+INSERT 0 2000
+Time: 321.982 ms
+ROLLBACK
+Time: 0.113 ms
+Mise à jour sans changement de lieu (le pipeline réécrit la ville à chaque observation) : 2 000 offres
+BEGIN
+Time: 0.036 ms
+UPDATE 2000
+Time: 433.187 ms
+ROLLBACK
+Time: 0.116 ms

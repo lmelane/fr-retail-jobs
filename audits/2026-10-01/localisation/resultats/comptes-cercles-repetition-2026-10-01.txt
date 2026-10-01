@@ -1,0 +1,22 @@
+CREATE TABLE
+INSERT 0 17
+ marche |         saisie          |         ville          | avant_texte | n15  | n30  | n50  | n100 | apres | cercle_km 
+--------+-------------------------+------------------------+-------------+------+------+------+------+-------+-----------
+ CH     | Genève                  | Geneva                 |         283 |  378 |  383 |  393 |  478 |   378 |        15
+ CN     | Shanghai                | Shanghai               |         458 |  458 |  458 |  458 |  472 |   458 |        15
+ DE     | München                 | Munich                 |           3 |  251 |  262 |  264 |  362 |   251 |        15
+ ES     | Madrid                  | Madrid                 |         435 |  462 |  543 |  544 |  558 |   462 |        15
+ FR     | Annecy                  | Annecy                 |         133 |  162 |  201 |  353 |  708 |   162 |        15
+ FR     | Chennevières-sur-Marne  | Chennevières-sur-Marne |           1 |  557 | 6411 | 6777 | 6945 |   557 |        15
+ FR     | Lyon                    | Lyon                   |         322 |  426 |  510 |  556 |  847 |   426 |        15
+ FR     | Paris                   | Paris                  |        4442 | 5992 | 6559 | 6793 | 6977 |  5992 |        15
+ FR     | Paris 15e               | Paris 15e              |           0 | 6056 | 6573 | 6789 | 6972 |  6056 |        15
+ FR     | Paris 9e Arrondissement | Paris 9e               |           1 | 5993 | 6527 | 6794 | 6973 |  5993 |        15
+ GB     | London                  | London                 |           8 | 1579 | 1682 | 1806 | 2178 |  1579 |        15
+ GB     | Londres                 | London                 |        1528 | 1579 | 1682 | 1806 | 2178 |  1579 |        15
+ IT     | Milano                  | Milan                  |           2 |  698 |  760 |  882 | 1024 |   698 |        15
+ JP     | Tokyo                   | Tokyo                  |         275 |  289 |  302 |  316 |  330 |   289 |        15
+ US     | Austin                  | Austin                 |         206 |  201 |  303 |  398 |  447 |   201 |        15
+ US     | Beverly Hills           | Beverly Hills          |         138 |  833 | 1367 | 1683 | 2454 |   833 |        15
+ US     | New York                | New York City          |        2696 | 2337 | 2974 | 3777 | 4574 |  2337 |        15
+

@@ -1,0 +1,19 @@
+résolution FR « Chennevières-sur-Marne » : 2 ms (max 2) → "Chennevières-sur-Marne (94)"
+résolution FR « Paris (75) » : 3 ms (max 4) → "Paris (75)"
+résolution FR « Paris 9e Arrondissement » : 2 ms (max 2) → "Paris 9e (75)"
+résolution FR « Paris 15e (75) » : 3 ms (max 3) → "Paris 15e (75)"
+résolution FR « 94430 Chennevières-sur-Marne (94) » : 3 ms (max 4) → "94430 Chennevières-sur-Marne (94)"
+résolution US « Beverly Hills » : 2 ms (max 2) → "Beverly Hills (CA)"
+résolution US « Texas » : 2 ms (max 2) → null
+résolution DE « München » : 2 ms (max 2) → "Munich"
+résolution GB « Londres » : 2 ms (max 2) → "London"
+code postal FR « 94430 » → "94430 Chennevières-sur-Marne (94)"
+suggestions FR « Pa » : 14 ms (max 17) → ["Paris (75)","Pantin (93)","Pau (64)","Paimpol (22)","Pamiers (09)","Parthenay (79)","Paris 9e (75)","Pacé (35)"]
+suggestions FR « Paris » : 13 ms (max 19) → ["Paris (75)","Paris 9e (75)","Paris 15e (75)","Paris 20e (75)","Paris 18e (75)","Paris 13e (75)","Paris 19e (75)","Paris 16e (75)"]
+suggestions FR « Chenn » : 11 ms (max 11) → ["Chennevières-sur-Marne (94)"]
+suggestions FR « 9443 » : 3 ms (max 3) → ["94430 Chennevières-sur-Marne (94)"]
+suggestions FR « 7501 » : 4 ms (max 5) → ["75010 Paris 10e (75)","75011 Paris 11e (75)","75012 Paris 12e (75)","75013 Paris 13e (75)","75014 Paris 14e (75)","75015 Paris 15e (75)","75016 Paris 16e (75)","75017 Paris 17e (75)"]
+suggestions US « Bev » : 36 ms (max 38) → ["Beverly Hills (CA)","Beverly (MA)","Beverly Cove (MA)","Beverly Hills (MI)","Beverly Hills (FL)","Beverly (NJ)","Beverly (TX)","Beverly Hills (TX)"]
+suggestions DE « Mün » : 7 ms (max 7) → ["München","Münster (North Rhine-Westphalia)","Munster (Lower Saxony)","Münsingen","Münster (Hesse)","Münchberg","Münnerstadt","Müncheberg"]
+suggestions GB « Lon » : 4 ms (max 4) → ["London","London Colney","Long Eaton","Longton","Longfield","Longsight","Longford","Longdendale"]
+suggestions GB « SW1 » : 3 ms (max 4) → ["SW1 Belgravia","SW1 Buckingham Palace","SW1 Green Park","SW1 Horseferry Road","SW1 Hyde Park Corner","SW1 Knightsbridge","SW1 Pimlico","SW1 Sloane Square"]

@@ -1,0 +1,125 @@
+CREATE TABLE
+COPY 93288
+SELECT 7941
+SELECT 93288
+Couverture des offres actives par pays (marché) : coordonnées natives avant, point de recherche après
+    pays     | actives | pct_avant | pct_apres | pct_ville_renseignee | pct_ville_rattachee 
+-------------+---------+-----------+-----------+----------------------+---------------------
+ US          |   39982 |      37.6 |      89.6 |                 90.9 |                88.3
+ FR          |   13322 |      97.3 |      98.5 |                 99.3 |                96.2
+ GB          |    3845 |       9.3 |      92.2 |                 98.4 |                91.9
+ CA          |    3428 |      14.7 |      91.2 |                 97.7 |                90.7
+ DE          |    3122 |      25.1 |      93.2 |                 98.2 |                92.8
+ (sans pays) |    3117 |      60.7 |      60.7 |                 91.5 |                 0.0
+ IT          |    2902 |      18.7 |      93.6 |                 96.7 |                92.8
+ ES          |    2221 |       6.2 |      86.6 |                 97.4 |                86.3
+ NL          |    1865 |      24.7 |      92.0 |                 95.5 |                91.2
+ AU          |    1492 |      13.9 |      83.8 |                 89.1 |                83.1
+ CH          |    1291 |       7.4 |      83.7 |                 90.2 |                83.0
+ CN          |    1238 |       0.1 |      91.8 |                 95.5 |                91.8
+ BE          |     708 |      16.2 |      95.2 |                 96.8 |                95.1
+ JP          |     588 |      12.9 |      80.3 |                 94.0 |                80.3
+ KR          |     535 |      12.9 |      85.4 |                 93.5 |                75.1
+ IN          |     529 |       0.9 |      62.9 |                 66.7 |                62.9
+ MX          |     516 |      14.0 |      84.5 |                 93.2 |                84.5
+ SG          |     511 |       0.8 |      94.5 |                 96.1 |                94.5
+ PT          |     443 |       7.2 |      82.4 |                 98.2 |                82.2
+ DK          |     370 |       8.4 |      81.1 |                 98.9 |                80.3
+ HK          |     362 |       1.9 |      96.4 |                 99.2 |                96.4
+ PL          |     361 |      28.3 |      96.7 |                 98.9 |                94.7
+ AT          |     358 |      32.4 |      94.4 |                 99.2 |                92.2
+ IE          |     356 |      16.6 |      95.2 |                 98.6 |                94.4
+ CL          |     310 |       0.3 |      76.8 |                 93.5 |                76.8
+ TH          |     293 |       0.3 |      98.3 |                 99.7 |                98.3
+ MY          |     289 |       5.9 |      87.5 |                 97.6 |                87.5
+ SE          |     282 |      33.3 |      92.6 |                 98.2 |                92.2
+ AE          |     264 |       0.0 |      83.7 |                 98.5 |                83.7
+ TR          |     261 |       1.9 |      89.7 |                 93.9 |                89.3
+
+Ensemble des offres actives
+ actives | pct_avant | pct_apres 
+---------+-----------+-----------
+   88228 |      38.9 |      89.9
+
+Justesse du rattachement : distance entre les coordonnées natives et le centre de la ville rattachée (offres actives qui ont les deux)
+ pays | offres | mediane_km | p95_km | plus_de_30_km 
+------+--------+------------+--------+---------------
+ US   |  14476 |        3.6 |   18.1 |           285
+ FR   |  12659 |        0.6 |    2.9 |            80
+ DE   |    772 |        0.6 |    9.3 |             0
+ IT   |    521 |        1.0 |    7.5 |             3
+ CA   |    487 |        4.1 |   11.1 |             6
+ NL   |    446 |        0.6 |    6.9 |             0
+ GB   |    342 |        0.7 |    4.0 |             2
+ AU   |    196 |        0.6 |   11.1 |             5
+ ES   |    130 |        1.2 |    9.9 |             3
+ BE   |    114 |        0.8 |    4.3 |             3
+ AT   |    108 |        1.0 |    4.7 |             1
+ PL   |     95 |        2.1 |    8.5 |             0
+ SE   |     93 |        0.5 |    3.1 |             0
+ CH   |     86 |        0.7 |    5.3 |             0
+ JP   |     76 |        3.0 |    7.3 |             1
+
+Les rattachements les plus éloignés des coordonnées natives (à relire)
+ pays |      ville       |   indice   |       ville_base        | subdivision | offres |  km  
+------+------------------+------------+-------------------------+-------------+--------+------
+ FR   | Saint-Barthélemy |            | Saint-Barthélemy        | 70          |     21 | 7016
+ FR   | Épagny           |            | Épagny                  | 74          |     10 |  446
+ US   | Palm Coast       | Florida    | Palm Coast              | FL          |      9 |  111
+ US   | Owasso           | Oklahoma   | Owasso                  | OK          |      8 |   54
+ US   | Mission Hills    | California | Mission Hills           | CA          |      8 |  187
+ US   | Hamilton         | New Jersey | Mays Landing            | NJ          |      7 |   92
+ US   | Cummings         | Georgia    | Cumming                 | GA          |      7 | 1096
+ US   | Antioch          | Tennessee  | New Hope                | TN          |      6 |  148
+ US   | Pittsburgh       | Kansas     | Pittsburg               | KS          |      4 |  134
+ FR   | Ingrandes        |            | Ingrandes               | 49          |      4 |  129
+ FR   | Aix              |            | Aix-en-Provence         | 13          |      3 |  335
+ FR   | Longueil         |            | Longueil                | 76          |      3 |  139
+ US   | Dartmouth        |            | Jefferson               | NH          |      2 |  311
+ MX   | San Nicolás      |            | San Nicolás             | Querétaro   |      2 |  585
+ TR   | Sarıyer          |            | Sarıyer                 |             |      2 |  195
+ US   | Nottingham       |            | Nottingham              | NH          |      2 |  612
+ US   | Flushing         |            | Flushing                | MI          |      2 |  867
+ CA   | Lasalle          |            | LaSalle                 |             |      2 |  836
+ US   | Pierce           |            | Pierce                  | NE          |      2 | 2038
+ JP   | Koto City        |            | Kotō                    |             |      1 |  890
+ ES   | Tenerife         |            | Santa Cruz de Tenerife  |             |      1 |   64
+ PT   | Montijo          |            | Montijo                 |             |      1 |  393
+ IT   | Lodi             |            | Lodi                    |             |      1 |  132
+ SK   | Staré Mesto      |            | Staré Mesto             |             |      1 |  314
+ FR   | Saint Pons       |            | Saint-Pons-de-Mauchiens | 34          |      1 |  268
+
+Villes d'offres actives sans point après rattrapage (les plus portées)
+ pays |          ville           | offres 
+------+--------------------------+--------
+ US   |                          |   3499
+      |                          |    249
+ IN   |                          |    176
+ AU   |                          |    159
+ CH   |                          |    127
+ IT   |                          |     96
+ FR   |                          |     93
+ NL   |                          |     84
+ ES   | Palau-Solità i Plegamans |     83
+ CA   |                          |     78
+ DE   | PUMA Way                 |     71
+ GB   |                          |     60
+      | Brown Thomas             |     57
+ ES   |                          |     57
+ CN   |                          |     56
+ DE   |                          |     54
+      | New York                 |     42
+ PT   | Moscavide                |     42
+ CA   | Londres                  |     39
+ GB   | The Adelphi              |     38
+ AE   | Abou Dhabi               |     38
+      | Vanves                   |     37
+      | Shanghai                 |     37
+ FR   | Haute Garonne            |     36
+ KR   |                          |     35
+ MX   |                          |     35
+ JP   |                          |     35
+ BR   |                          |     32
+      | Dubaï                    |     32
+ CA   | Rocky View               |     31
+

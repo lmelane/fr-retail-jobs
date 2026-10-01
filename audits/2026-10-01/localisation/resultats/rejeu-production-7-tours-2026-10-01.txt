@@ -1,0 +1,841 @@
+Timing is on.
+FR conseiller de vente (référence D-488, sans lieu)
+  4670 | 09f81c5c8da016e3fcdcc66dc174c9ab
+
+Time: 300.643 ms
+FR sans critère
+ 13404 | 6fc4ac46f78e73a4f9f779fb0e001961
+
+Time: 121.464 ms
+FR Chennevières-sur-Marne
+     1 | 341504f2ef759a625b5aee43a865772d
+
+Time: 108.518 ms
+FR conseiller de vente, Chennevières-sur-Marne
+     0 | 
+
+Time: 209.551 ms
+FR Paris
+  4529 | a010074b16cd961050bc707ed0f36aa8
+
+Time: 114.954 ms
+FR conseiller de vente, Paris
+   751 | 329f7fd1fb2518d029608078112b0e77
+
+Time: 410.809 ms
+FR Lyon
+   336 | 8f866b9a5efe99099d3720ffc791354b
+
+Time: 111.930 ms
+FR Paris 15e (75) (D-499)
+     0 | 
+
+Time: 100.615 ms
+FR 94430 (code postal, D-499)
+     1 | 341504f2ef759a625b5aee43a865772d
+
+Time: 38.431 ms
+FR accueil : métier + 3 villes (filtre ville)
+   909 | 4e9966e3a41aaf6f44f77757d4dab8cb
+
+Time: 181.930 ms
+FR lieu inconnu (repli texte)
+     0 | 
+
+Time: 185.578 ms
+US sales advisor, New York
+   727 | 187df3c0f1fb9c8b066f29ace17c4fcb
+
+Time: 305.134 ms
+US New York
+  3072 | a7ebaeee49428129e6191fd8fedc1426
+
+Time: 238.584 ms
+GB London
+  1625 | 3899c0563a37c2aad74d51cd5b254115
+
+Time: 100.616 ms
+DE München
+   111 | 1ce9c342e5b433a8e0eac41d78c33ab3
+
+Time: 70.525 ms
+FR conseiller de vente (référence D-488, sans lieu)
+  4670 | 09f81c5c8da016e3fcdcc66dc174c9ab
+
+Time: 285.266 ms
+FR sans critère
+ 13404 | 6fc4ac46f78e73a4f9f779fb0e001961
+
+Time: 153.389 ms
+FR Chennevières-sur-Marne
+   551 | ae4f3925361a0e7bc12452572d93b153
+
+Time: 88.623 ms
+FR conseiller de vente, Chennevières-sur-Marne
+   129 | 9a4c409f725431d1cb23646063b4755d
+
+Time: 245.818 ms
+FR Paris
+  5989 | c857690ae721afbf39fc2ed5b26be62b
+
+Time: 86.424 ms
+FR conseiller de vente, Paris
+   967 | b544caabbc8d6b04c9c8c09cb63dade5
+
+Time: 299.768 ms
+FR Lyon
+   427 | eebf2028ebf8f2533237063f3ba65381
+
+Time: 124.749 ms
+FR Paris 15e (75) (D-499)
+  6052 | fa1b07cd259d34f7c2dc5651c7467160
+
+Time: 75.696 ms
+FR 94430 (code postal, D-499)
+   551 | ae4f3925361a0e7bc12452572d93b153
+
+Time: 67.159 ms
+FR accueil : métier + 3 villes (filtre ville)
+  1242 | df23c0f63db29f4a54e93e7adcaa6fe8
+
+Time: 96.024 ms
+FR lieu inconnu (repli texte)
+     0 | 
+
+Time: 102.465 ms
+US sales advisor, New York
+   182 | ce64b82e799c7fbdc5f5190c2c2202ad
+
+Time: 264.517 ms
+US New York
+   428 | 25c71f04b4229218d3a15495657f6d8d
+
+Time: 130.793 ms
+GB London
+   185 | 1535b957afaf6bb24419560bfd29dac4
+
+Time: 52.731 ms
+DE München
+   221 | 581416865f7f5443f3bd3b81a80a394c
+
+Time: 45.055 ms
+FR conseiller de vente (référence D-488, sans lieu)
+  4670 | 09f81c5c8da016e3fcdcc66dc174c9ab
+
+Time: 339.720 ms
+FR sans critère
+ 13404 | 6fc4ac46f78e73a4f9f779fb0e001961
+
+Time: 141.365 ms
+FR Chennevières-sur-Marne
+     1 | 341504f2ef759a625b5aee43a865772d
+
+Time: 94.867 ms
+FR conseiller de vente, Chennevières-sur-Marne
+     0 | 
+
+Time: 219.548 ms
+FR Paris
+  4529 | a010074b16cd961050bc707ed0f36aa8
+
+Time: 119.707 ms
+FR conseiller de vente, Paris
+   751 | 329f7fd1fb2518d029608078112b0e77
+
+Time: 346.240 ms
+FR Lyon
+   336 | 8f866b9a5efe99099d3720ffc791354b
+
+Time: 113.561 ms
+FR Paris 15e (75) (D-499)
+     0 | 
+
+Time: 106.126 ms
+FR 94430 (code postal, D-499)
+     1 | 341504f2ef759a625b5aee43a865772d
+
+Time: 42.861 ms
+FR accueil : métier + 3 villes (filtre ville)
+   909 | 4e9966e3a41aaf6f44f77757d4dab8cb
+
+Time: 132.380 ms
+FR lieu inconnu (repli texte)
+     0 | 
+
+Time: 129.852 ms
+US sales advisor, New York
+   727 | 187df3c0f1fb9c8b066f29ace17c4fcb
+
+Time: 298.811 ms
+US New York
+  3072 | a7ebaeee49428129e6191fd8fedc1426
+
+Time: 271.625 ms
+GB London
+  1625 | 3899c0563a37c2aad74d51cd5b254115
+
+Time: 101.325 ms
+DE München
+   111 | 1ce9c342e5b433a8e0eac41d78c33ab3
+
+Time: 83.611 ms
+FR conseiller de vente (référence D-488, sans lieu)
+  4670 | 09f81c5c8da016e3fcdcc66dc174c9ab
+
+Time: 315.427 ms
+FR sans critère
+ 13404 | 6fc4ac46f78e73a4f9f779fb0e001961
+
+Time: 145.451 ms
+FR Chennevières-sur-Marne
+   551 | ae4f3925361a0e7bc12452572d93b153
+
+Time: 81.041 ms
+FR conseiller de vente, Chennevières-sur-Marne
+   129 | 9a4c409f725431d1cb23646063b4755d
+
+Time: 272.455 ms
+FR Paris
+  5989 | c857690ae721afbf39fc2ed5b26be62b
+
+Time: 91.499 ms
+FR conseiller de vente, Paris
+   967 | b544caabbc8d6b04c9c8c09cb63dade5
+
+Time: 242.466 ms
+FR Lyon
+   427 | eebf2028ebf8f2533237063f3ba65381
+
+Time: 189.520 ms
+FR Paris 15e (75) (D-499)
+  6052 | fa1b07cd259d34f7c2dc5651c7467160
+
+Time: 316.844 ms
+FR 94430 (code postal, D-499)
+   551 | ae4f3925361a0e7bc12452572d93b153
+
+Time: 402.084 ms
+FR accueil : métier + 3 villes (filtre ville)
+  1242 | df23c0f63db29f4a54e93e7adcaa6fe8
+
+Time: 328.155 ms
+FR lieu inconnu (repli texte)
+     0 | 
+
+Time: 114.623 ms
+US sales advisor, New York
+   182 | ce64b82e799c7fbdc5f5190c2c2202ad
+
+Time: 242.483 ms
+US New York
+   428 | 25c71f04b4229218d3a15495657f6d8d
+
+Time: 167.021 ms
+GB London
+   185 | 1535b957afaf6bb24419560bfd29dac4
+
+Time: 48.595 ms
+DE München
+   221 | 581416865f7f5443f3bd3b81a80a394c
+
+Time: 47.349 ms
+FR conseiller de vente (référence D-488, sans lieu)
+  4670 | 09f81c5c8da016e3fcdcc66dc174c9ab
+
+Time: 306.118 ms
+FR sans critère
+ 13404 | 6fc4ac46f78e73a4f9f779fb0e001961
+
+Time: 149.503 ms
+FR Chennevières-sur-Marne
+     1 | 341504f2ef759a625b5aee43a865772d
+
+Time: 101.827 ms
+FR conseiller de vente, Chennevières-sur-Marne
+     0 | 
+
+Time: 210.418 ms
+FR Paris
+  4529 | a010074b16cd961050bc707ed0f36aa8
+
+Time: 184.827 ms
+FR conseiller de vente, Paris
+   751 | 329f7fd1fb2518d029608078112b0e77
+
+Time: 239.297 ms
+FR Lyon
+   336 | 8f866b9a5efe99099d3720ffc791354b
+
+Time: 120.266 ms
+FR Paris 15e (75) (D-499)
+     0 | 
+
+Time: 162.880 ms
+FR 94430 (code postal, D-499)
+     1 | 341504f2ef759a625b5aee43a865772d
+
+Time: 40.112 ms
+FR accueil : métier + 3 villes (filtre ville)
+   909 | 4e9966e3a41aaf6f44f77757d4dab8cb
+
+Time: 109.037 ms
+FR lieu inconnu (repli texte)
+     0 | 
+
+Time: 102.679 ms
+US sales advisor, New York
+   727 | 187df3c0f1fb9c8b066f29ace17c4fcb
+
+Time: 300.350 ms
+US New York
+  3072 | a7ebaeee49428129e6191fd8fedc1426
+
+Time: 258.411 ms
+GB London
+  1625 | 3899c0563a37c2aad74d51cd5b254115
+
+Time: 96.604 ms
+DE München
+   111 | 1ce9c342e5b433a8e0eac41d78c33ab3
+
+Time: 139.233 ms
+FR conseiller de vente (référence D-488, sans lieu)
+  4670 | 09f81c5c8da016e3fcdcc66dc174c9ab
+
+Time: 302.873 ms
+FR sans critère
+ 13404 | 6fc4ac46f78e73a4f9f779fb0e001961
+
+Time: 222.118 ms
+FR Chennevières-sur-Marne
+   551 | ae4f3925361a0e7bc12452572d93b153
+
+Time: 87.675 ms
+FR conseiller de vente, Chennevières-sur-Marne
+   129 | 9a4c409f725431d1cb23646063b4755d
+
+Time: 249.857 ms
+FR Paris
+  5989 | c857690ae721afbf39fc2ed5b26be62b
+
+Time: 83.830 ms
+FR conseiller de vente, Paris
+   967 | b544caabbc8d6b04c9c8c09cb63dade5
+
+Time: 246.280 ms
+FR Lyon
+   427 | eebf2028ebf8f2533237063f3ba65381
+
+Time: 68.873 ms
+FR Paris 15e (75) (D-499)
+  6052 | fa1b07cd259d34f7c2dc5651c7467160
+
+Time: 78.816 ms
+FR 94430 (code postal, D-499)
+   551 | ae4f3925361a0e7bc12452572d93b153
+
+Time: 67.247 ms
+FR accueil : métier + 3 villes (filtre ville)
+  1242 | df23c0f63db29f4a54e93e7adcaa6fe8
+
+Time: 165.814 ms
+FR lieu inconnu (repli texte)
+     0 | 
+
+Time: 106.777 ms
+US sales advisor, New York
+   182 | ce64b82e799c7fbdc5f5190c2c2202ad
+
+Time: 232.181 ms
+US New York
+   428 | 25c71f04b4229218d3a15495657f6d8d
+
+Time: 182.343 ms
+GB London
+   185 | 1535b957afaf6bb24419560bfd29dac4
+
+Time: 55.538 ms
+DE München
+   221 | 581416865f7f5443f3bd3b81a80a394c
+
+Time: 42.524 ms
+FR conseiller de vente (référence D-488, sans lieu)
+  4670 | 09f81c5c8da016e3fcdcc66dc174c9ab
+
+Time: 332.546 ms
+FR sans critère
+ 13404 | 6fc4ac46f78e73a4f9f779fb0e001961
+
+Time: 139.510 ms
+FR Chennevières-sur-Marne
+     1 | 341504f2ef759a625b5aee43a865772d
+
+Time: 101.773 ms
+FR conseiller de vente, Chennevières-sur-Marne
+     0 | 
+
+Time: 232.961 ms
+FR Paris
+  4529 | a010074b16cd961050bc707ed0f36aa8
+
+Time: 142.537 ms
+FR conseiller de vente, Paris
+   751 | 329f7fd1fb2518d029608078112b0e77
+
+Time: 233.406 ms
+FR Lyon
+   336 | 8f866b9a5efe99099d3720ffc791354b
+
+Time: 105.027 ms
+FR Paris 15e (75) (D-499)
+     0 | 
+
+Time: 89.794 ms
+FR 94430 (code postal, D-499)
+     1 | 341504f2ef759a625b5aee43a865772d
+
+Time: 96.342 ms
+FR accueil : métier + 3 villes (filtre ville)
+   909 | 4e9966e3a41aaf6f44f77757d4dab8cb
+
+Time: 122.361 ms
+FR lieu inconnu (repli texte)
+     0 | 
+
+Time: 113.617 ms
+US sales advisor, New York
+   727 | 187df3c0f1fb9c8b066f29ace17c4fcb
+
+Time: 288.242 ms
+US New York
+  3072 | a7ebaeee49428129e6191fd8fedc1426
+
+Time: 263.480 ms
+GB London
+  1625 | 3899c0563a37c2aad74d51cd5b254115
+
+Time: 98.389 ms
+DE München
+   111 | 1ce9c342e5b433a8e0eac41d78c33ab3
+
+Time: 70.923 ms
+FR conseiller de vente (référence D-488, sans lieu)
+  4670 | 09f81c5c8da016e3fcdcc66dc174c9ab
+
+Time: 366.962 ms
+FR sans critère
+ 13404 | 6fc4ac46f78e73a4f9f779fb0e001961
+
+Time: 139.407 ms
+FR Chennevières-sur-Marne
+   551 | ae4f3925361a0e7bc12452572d93b153
+
+Time: 111.926 ms
+FR conseiller de vente, Chennevières-sur-Marne
+   129 | 9a4c409f725431d1cb23646063b4755d
+
+Time: 230.153 ms
+FR Paris
+  5989 | c857690ae721afbf39fc2ed5b26be62b
+
+Time: 77.192 ms
+FR conseiller de vente, Paris
+   967 | b544caabbc8d6b04c9c8c09cb63dade5
+
+Time: 226.603 ms
+FR Lyon
+   427 | eebf2028ebf8f2533237063f3ba65381
+
+Time: 56.833 ms
+FR Paris 15e (75) (D-499)
+  6052 | fa1b07cd259d34f7c2dc5651c7467160
+
+Time: 74.523 ms
+FR 94430 (code postal, D-499)
+   551 | ae4f3925361a0e7bc12452572d93b153
+
+Time: 69.480 ms
+FR accueil : métier + 3 villes (filtre ville)
+  1242 | df23c0f63db29f4a54e93e7adcaa6fe8
+
+Time: 100.075 ms
+FR lieu inconnu (repli texte)
+     0 | 
+
+Time: 106.133 ms
+US sales advisor, New York
+   182 | ce64b82e799c7fbdc5f5190c2c2202ad
+
+Time: 236.861 ms
+US New York
+   428 | 25c71f04b4229218d3a15495657f6d8d
+
+Time: 113.233 ms
+GB London
+   185 | 1535b957afaf6bb24419560bfd29dac4
+
+Time: 57.013 ms
+DE München
+   221 | 581416865f7f5443f3bd3b81a80a394c
+
+Time: 50.178 ms
+FR conseiller de vente (référence D-488, sans lieu)
+  4670 | 09f81c5c8da016e3fcdcc66dc174c9ab
+
+Time: 300.892 ms
+FR sans critère
+ 13404 | 6fc4ac46f78e73a4f9f779fb0e001961
+
+Time: 139.814 ms
+FR Chennevières-sur-Marne
+     1 | 341504f2ef759a625b5aee43a865772d
+
+Time: 101.388 ms
+FR conseiller de vente, Chennevières-sur-Marne
+     0 | 
+
+Time: 218.895 ms
+FR Paris
+  4529 | a010074b16cd961050bc707ed0f36aa8
+
+Time: 107.590 ms
+FR conseiller de vente, Paris
+   751 | 329f7fd1fb2518d029608078112b0e77
+
+Time: 257.831 ms
+FR Lyon
+   336 | 8f866b9a5efe99099d3720ffc791354b
+
+Time: 195.891 ms
+FR Paris 15e (75) (D-499)
+     0 | 
+
+Time: 101.899 ms
+FR 94430 (code postal, D-499)
+     1 | 341504f2ef759a625b5aee43a865772d
+
+Time: 36.860 ms
+FR accueil : métier + 3 villes (filtre ville)
+   909 | 4e9966e3a41aaf6f44f77757d4dab8cb
+
+Time: 106.084 ms
+FR lieu inconnu (repli texte)
+     0 | 
+
+Time: 174.010 ms
+US sales advisor, New York
+   727 | 187df3c0f1fb9c8b066f29ace17c4fcb
+
+Time: 286.009 ms
+US New York
+  3072 | a7ebaeee49428129e6191fd8fedc1426
+
+Time: 287.478 ms
+GB London
+  1625 | 3899c0563a37c2aad74d51cd5b254115
+
+Time: 119.578 ms
+DE München
+   111 | 1ce9c342e5b433a8e0eac41d78c33ab3
+
+Time: 79.711 ms
+FR conseiller de vente (référence D-488, sans lieu)
+  4670 | 09f81c5c8da016e3fcdcc66dc174c9ab
+
+Time: 323.500 ms
+FR sans critère
+ 13404 | 6fc4ac46f78e73a4f9f779fb0e001961
+
+Time: 130.266 ms
+FR Chennevières-sur-Marne
+   551 | ae4f3925361a0e7bc12452572d93b153
+
+Time: 89.600 ms
+FR conseiller de vente, Chennevières-sur-Marne
+   129 | 9a4c409f725431d1cb23646063b4755d
+
+Time: 257.256 ms
+FR Paris
+  5989 | c857690ae721afbf39fc2ed5b26be62b
+
+Time: 81.150 ms
+FR conseiller de vente, Paris
+   967 | b544caabbc8d6b04c9c8c09cb63dade5
+
+Time: 229.265 ms
+FR Lyon
+   427 | eebf2028ebf8f2533237063f3ba65381
+
+Time: 52.720 ms
+FR Paris 15e (75) (D-499)
+  6052 | fa1b07cd259d34f7c2dc5651c7467160
+
+Time: 160.088 ms
+FR 94430 (code postal, D-499)
+   551 | ae4f3925361a0e7bc12452572d93b153
+
+Time: 72.189 ms
+FR accueil : métier + 3 villes (filtre ville)
+  1242 | df23c0f63db29f4a54e93e7adcaa6fe8
+
+Time: 104.292 ms
+FR lieu inconnu (repli texte)
+     0 | 
+
+Time: 110.199 ms
+US sales advisor, New York
+   182 | ce64b82e799c7fbdc5f5190c2c2202ad
+
+Time: 245.737 ms
+US New York
+   428 | 25c71f04b4229218d3a15495657f6d8d
+
+Time: 120.912 ms
+GB London
+   185 | 1535b957afaf6bb24419560bfd29dac4
+
+Time: 49.425 ms
+DE München
+   221 | 581416865f7f5443f3bd3b81a80a394c
+
+Time: 44.691 ms
+FR conseiller de vente (référence D-488, sans lieu)
+  4670 | 09f81c5c8da016e3fcdcc66dc174c9ab
+
+Time: 330.622 ms
+FR sans critère
+ 13404 | 6fc4ac46f78e73a4f9f779fb0e001961
+
+Time: 145.074 ms
+FR Chennevières-sur-Marne
+     1 | 341504f2ef759a625b5aee43a865772d
+
+Time: 101.928 ms
+FR conseiller de vente, Chennevières-sur-Marne
+     0 | 
+
+Time: 262.345 ms
+FR Paris
+  4529 | a010074b16cd961050bc707ed0f36aa8
+
+Time: 135.350 ms
+FR conseiller de vente, Paris
+   751 | 329f7fd1fb2518d029608078112b0e77
+
+Time: 280.764 ms
+FR Lyon
+   336 | 8f866b9a5efe99099d3720ffc791354b
+
+Time: 216.615 ms
+FR Paris 15e (75) (D-499)
+     0 | 
+
+Time: 99.519 ms
+FR 94430 (code postal, D-499)
+     1 | 341504f2ef759a625b5aee43a865772d
+
+Time: 37.615 ms
+FR accueil : métier + 3 villes (filtre ville)
+   909 | 4e9966e3a41aaf6f44f77757d4dab8cb
+
+Time: 101.580 ms
+FR lieu inconnu (repli texte)
+     0 | 
+
+Time: 155.261 ms
+US sales advisor, New York
+   727 | 187df3c0f1fb9c8b066f29ace17c4fcb
+
+Time: 301.970 ms
+US New York
+  3072 | a7ebaeee49428129e6191fd8fedc1426
+
+Time: 249.740 ms
+GB London
+  1625 | 3899c0563a37c2aad74d51cd5b254115
+
+Time: 93.389 ms
+DE München
+   111 | 1ce9c342e5b433a8e0eac41d78c33ab3
+
+Time: 72.596 ms
+FR conseiller de vente (référence D-488, sans lieu)
+  4670 | 09f81c5c8da016e3fcdcc66dc174c9ab
+
+Time: 330.293 ms
+FR sans critère
+ 13404 | 6fc4ac46f78e73a4f9f779fb0e001961
+
+Time: 131.278 ms
+FR Chennevières-sur-Marne
+   551 | ae4f3925361a0e7bc12452572d93b153
+
+Time: 76.101 ms
+FR conseiller de vente, Chennevières-sur-Marne
+   129 | 9a4c409f725431d1cb23646063b4755d
+
+Time: 220.259 ms
+FR Paris
+  5989 | c857690ae721afbf39fc2ed5b26be62b
+
+Time: 101.300 ms
+FR conseiller de vente, Paris
+   967 | b544caabbc8d6b04c9c8c09cb63dade5
+
+Time: 234.906 ms
+FR Lyon
+   427 | eebf2028ebf8f2533237063f3ba65381
+
+Time: 57.413 ms
+FR Paris 15e (75) (D-499)
+  6052 | fa1b07cd259d34f7c2dc5651c7467160
+
+Time: 77.467 ms
+FR 94430 (code postal, D-499)
+   551 | ae4f3925361a0e7bc12452572d93b153
+
+Time: 148.558 ms
+FR accueil : métier + 3 villes (filtre ville)
+  1242 | df23c0f63db29f4a54e93e7adcaa6fe8
+
+Time: 100.540 ms
+FR lieu inconnu (repli texte)
+     0 | 
+
+Time: 112.644 ms
+US sales advisor, New York
+   182 | ce64b82e799c7fbdc5f5190c2c2202ad
+
+Time: 312.408 ms
+US New York
+   428 | 25c71f04b4229218d3a15495657f6d8d
+
+Time: 113.971 ms
+GB London
+   185 | 1535b957afaf6bb24419560bfd29dac4
+
+Time: 46.212 ms
+DE München
+   221 | 581416865f7f5443f3bd3b81a80a394c
+
+Time: 48.288 ms
+FR conseiller de vente (référence D-488, sans lieu)
+  4670 | 09f81c5c8da016e3fcdcc66dc174c9ab
+
+Time: 315.118 ms
+FR sans critère
+ 13404 | 6fc4ac46f78e73a4f9f779fb0e001961
+
+Time: 122.012 ms
+FR Chennevières-sur-Marne
+     1 | 341504f2ef759a625b5aee43a865772d
+
+Time: 108.903 ms
+FR conseiller de vente, Chennevières-sur-Marne
+     0 | 
+
+Time: 290.665 ms
+FR Paris
+  4529 | a010074b16cd961050bc707ed0f36aa8
+
+Time: 114.394 ms
+FR conseiller de vente, Paris
+   751 | 329f7fd1fb2518d029608078112b0e77
+
+Time: 244.502 ms
+FR Lyon
+   336 | 8f866b9a5efe99099d3720ffc791354b
+
+Time: 161.887 ms
+FR Paris 15e (75) (D-499)
+     0 | 
+
+Time: 102.168 ms
+FR 94430 (code postal, D-499)
+     1 | 341504f2ef759a625b5aee43a865772d
+
+Time: 41.243 ms
+FR accueil : métier + 3 villes (filtre ville)
+   909 | 4e9966e3a41aaf6f44f77757d4dab8cb
+
+Time: 117.807 ms
+FR lieu inconnu (repli texte)
+     0 | 
+
+Time: 102.356 ms
+US sales advisor, New York
+   727 | 187df3c0f1fb9c8b066f29ace17c4fcb
+
+Time: 290.215 ms
+US New York
+  3072 | a7ebaeee49428129e6191fd8fedc1426
+
+Time: 247.275 ms
+GB London
+  1625 | 3899c0563a37c2aad74d51cd5b254115
+
+Time: 146.588 ms
+DE München
+   111 | 1ce9c342e5b433a8e0eac41d78c33ab3
+
+Time: 81.441 ms
+FR conseiller de vente (référence D-488, sans lieu)
+  4670 | 09f81c5c8da016e3fcdcc66dc174c9ab
+
+Time: 301.021 ms
+FR sans critère
+ 13404 | 6fc4ac46f78e73a4f9f779fb0e001961
+
+Time: 147.384 ms
+FR Chennevières-sur-Marne
+   551 | ae4f3925361a0e7bc12452572d93b153
+
+Time: 78.624 ms
+FR conseiller de vente, Chennevières-sur-Marne
+   129 | 9a4c409f725431d1cb23646063b4755d
+
+Time: 291.144 ms
+FR Paris
+  5989 | c857690ae721afbf39fc2ed5b26be62b
+
+Time: 149.584 ms
+FR conseiller de vente, Paris
+   967 | b544caabbc8d6b04c9c8c09cb63dade5
+
+Time: 261.557 ms
+FR Lyon
+   427 | eebf2028ebf8f2533237063f3ba65381
+
+Time: 68.589 ms
+FR Paris 15e (75) (D-499)
+  6052 | fa1b07cd259d34f7c2dc5651c7467160
+
+Time: 81.669 ms
+FR 94430 (code postal, D-499)
+   551 | ae4f3925361a0e7bc12452572d93b153
+
+Time: 112.131 ms
+FR accueil : métier + 3 villes (filtre ville)
+  1242 | df23c0f63db29f4a54e93e7adcaa6fe8
+
+Time: 110.110 ms
+FR lieu inconnu (repli texte)
+     0 | 
+
+Time: 115.871 ms
+US sales advisor, New York
+   182 | ce64b82e799c7fbdc5f5190c2c2202ad
+
+Time: 296.310 ms
+US New York
+   428 | 25c71f04b4229218d3a15495657f6d8d
+
+Time: 126.561 ms
+GB London
+   185 | 1535b957afaf6bb24419560bfd29dac4
+
+Time: 53.038 ms
+DE München
+   221 | 581416865f7f5443f3bd3b81a80a394c
+
+Time: 44.008 ms
