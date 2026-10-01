@@ -29,12 +29,27 @@ describe('iCIMS native detail identity and explicit regional scope', () => {
     expect(icimsPublicationIdentity(a)).toBeUndefined();
     expect(publicationIdentityProof(a,icimsPublication('direct'))).toBeNull();
   });
+  /**
+   * urbn-hub, RUN du 01/10/2026 : la liste lie encore l'ancien chemin d'un poste renommé, la fiche déclare le nouveau.
+   * Même portail, même réquisition : la même offre. Le libellé du chemin n'est pas une identité.
+   */
+  it('reconnaît la fiche d\'un poste renommé dont la liste garde l\'ancien chemin, et elle seule', () => {
+    const renamed = publication();
+    (renamed.raw.postingEvidence.jobPosting as any).url = `${origin}/jobs/42/senior-client-advisor/job`;
+    // Prémisse : les deux chemins diffèrent bien, sur le seul libellé.
+    expect(new URL((renamed.raw.postingEvidence.jobPosting as any).url).pathname).not.toBe(new URL(renamed.url).pathname);
+    expect(icimsDetailMatchesListing(renamed, config)).toBe(true);
+    expect(icimsPublicationIdentity(renamed)).toEqual({ tenant: `icims:${origin}`, requisition: '42' });
+    for (const other of [`${origin}/jobs/43/senior-client-advisor/job`, 'https://other-brand.icims.com/jobs/42/senior-client-advisor/job']) {
+      const p = publication(); (p.raw.postingEvidence.jobPosting as any).url = other;
+      expect(icimsDetailMatchesListing(p, config)).toBe(false);
+    }
+  });
   it.each([
     (p:any)=>{p.externalId='43';}, (p:any)=>{p.raw.reference='2026-43';},
     (p:any)=>{p.raw.postingEvidence.pageUrl=p.url.replace('/42/','/43/');},
     (p:any)=>{p.raw.postingEvidence.jobPosting.url=p.url.replace('/42/','/43/');},
     (p:any)=>{p.raw.postingEvidence.jobPosting.url=p.url.replace('stores-brand','another');},
-    (p:any)=>{p.raw.postingEvidence.jobPosting.url=p.url.replace('client-advisor','different-posting');},
     (p:any)=>{p.raw.postingEvidence.jobPostingCount=2;}, (p:any)=>{p.raw.postingEvidence.htmlSha256='invalid';},
     (p:any)=>{p.raw.postingEvidence.geographyConflict=true;}, (p:any)=>{p.raw.postingEvidence.jobPosting['@type']='WebPage';},
   ])('rejects contradictory or unbound native evidence (%#)', mutate => {

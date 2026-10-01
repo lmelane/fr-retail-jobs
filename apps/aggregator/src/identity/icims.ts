@@ -45,9 +45,18 @@ export function icimsDetailIdentity(publication: Pick<NormalizedJob, 'externalId
     !(node['@type'] === 'JobPosting' || Array.isArray(node['@type']) && node['@type'].includes('JobPosting')) ||
     evidence.geographyConflict !== undefined && evidence.geographyConflict !== false) return;
   if (raw.reference != null && (typeof raw.reference !== 'string' || !new RegExp(`^\\d{4}-${page.id}$`).test(raw.reference))) return;
+  /**
+   * La fiche déclare SA publication par son portail et son numéro de réquisition, jamais par le libellé du chemin.
+   *
+   * Le segment entre le numéro et `/job` est le titre mis en forme : l'éditeur le refait quand il renomme le poste,
+   * et l'ancien chemin sert toujours la même réquisition. urbn-hub, RUN du 01/10/2026 : la liste lie encore
+   * `/jobs/30772/free-people-buyer---accessories/job`, la fiche renommée déclare
+   * `/jobs/30772/free-people-associate-buyer---accessories/job` ; même portail, même réquisition, même offre, retenue
+   * « à instruire » et RUN rouge. La forme des deux adresses reste vérifiée par `icimsPostingURL`.
+   */
   if (node.url != null || requireDeclaredUrl) {
     const declared = icimsPostingURL(node.url);
-    if (!declared || declared.url.origin !== page.url.origin || declared.id !== page.id || declared.url.pathname !== page.url.pathname) return;
+    if (!declared || declared.url.origin !== page.url.origin || declared.id !== page.id) return;
   }
   return { tenant: `icims:${page.url.origin}`, requisition: page.id };
 }
