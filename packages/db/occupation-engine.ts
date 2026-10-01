@@ -51,6 +51,10 @@ export type OccupationManifest = {
   /** Présent quand le manifeste porte tout le vocabulaire de recherche (alias de l'API versés, lot 2B) : l'API n'y
    * ajoute plus rien. Absent (version servie v1) : l'API complète avec ses alias historiques. */
   searchVocabularyVersion?: string;
+  /** Lecture des métiers dans un intitulé (`occupation-title-roles.ts`) : 1 (défaut, la lecture de la v3) ou 2 ([[D-500]]
+   * Q5 : un mot au pluriel se lit au singulier quand le vocabulaire des métiers connaît ce singulier, et une expression
+   * vérifiée vaut aussi à l'autre genre ; « Conseiller.e de ventes », « Vendeurs (f/h) », « Conseillère de vente »). */
+  titleReadingVersion?: 1 | 2;
   id: string;
   review: { author: string; at: string; basis: string };
   groups: Definition[];
@@ -209,6 +213,8 @@ export function compileOccupationManifest(raw: unknown) {
     throw new Error("Invalid occupation review");
   if (![undefined, 1, 2].includes(manifest.matchingVersion))
     throw new Error("Invalid occupation matching version");
+  if (![undefined, 1, 2].includes(manifest.titleReadingVersion))
+    throw new Error("Invalid occupation title reading version");
   const version = manifest.matchingVersion ?? 1;
   const cle = (v: string) => occupationMatchKey(v, version);
   const cleValeur = (c: Clause, v: string) => (c.mode === "exact" ? occupationExactKey(v, version) : cle(v));

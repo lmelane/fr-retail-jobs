@@ -1,0 +1,1326 @@
+{
+ "auteur": "assistant (D-492), avant tout juge",
+ "protocole": "D-487 : verdicts committés avant le juge indépendant",
+ "verdicts": [
+  {
+   "n": 1,
+   "id": "cmumx6mq62oawtj35e8ihe2wu",
+   "titre": "STAGE 2 mois - Conseiller.e de ventes - Marseille - H/F",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 2,
+   "id": "cmunsqrs802jcmu6il9qn2igh",
+   "titre": "Part Time Sales Associates, Tommy Hilfiger - Arnotts",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 3,
+   "id": "cmu9mlrgl04t5mb9zkqypoll9",
+   "titre": "Sales Associates - Hiring Summer 2026!",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 4,
+   "id": "cmueb0x5d0mlcoi35fkngqx0y",
+   "titre": "Vendeurs (f/h) - CDI 16h - La Rochelle",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 5,
+   "id": "cmue7w7ik00ryqf6eitprv8e2",
+   "titre": "[Fashion] - Conseiller.e de ventes CDI 35h - Lyon Herriot - H/F",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 6,
+   "id": "cmue8e7ot008hqy34t0xpqe72",
+   "titre": "[Fashion] - Conseiller.e de ventes - Beaugrenelle - CDI 35h - H/F",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 7,
+   "id": "cmufa1ogy0259p134hdap3640",
+   "titre": "Store Manager - Opticians",
+   "metier": "dispensing-optician",
+   "verdict": "FAUX",
+   "motif": "« Opticians » est l’enseigne (Store Manager d’un magasin d’optique), pas le métier d’opticien"
+  },
+  {
+   "n": 8,
+   "id": "cmue8e7n6008aqy34xtbxkhxz",
+   "titre": "[Fashion] - Conseiller.e de ventes CDI 21h - Marseille Terrasses du port H/F",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 9,
+   "id": "cmu8eq0tv00fgnu6p79igaxqj",
+   "titre": "Conseiller de ventes H/F 30h",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 10,
+   "id": "cmumx96ml2tx0tj35s7hdfzon",
+   "titre": "2026 Seasonal Casual Sales Associates - Westgate",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 11,
+   "id": "cmue8egar01e3qy349ycpbm9d",
+   "titre": "[Fashion] - Conseiller.e de ventes - Bon Marché Paris - CDD 35h - H/F",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 12,
+   "id": "cmue8ejkz01vxqy34msplw57v",
+   "titre": "STAGE - Conseiller.e de ventes - Nice - H/F",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 13,
+   "id": "cmumx6mn62oa2tj35gm9w9zmh",
+   "titre": "STAGE 2 mois - Conseiller.e de ventes - Lille - H/F",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 14,
+   "id": "cmue8eatu00lcqy34k3p47xwi",
+   "titre": "[Job Dating Claudie Pierlot - 18 septembre 2026] - Conseiller.e de ventes CDI/CDD 35h - PARIS - H/F",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 15,
+   "id": "cmumx6n392oektj35saxncn2z",
+   "titre": "[Fashion] - Conseiller.e de ventes - Outlet Giverny - CDD 35h - H/F",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 16,
+   "id": "cmullmzmn3njst234cj6990zp",
+   "titre": "Vendeurs (f/h) - CDI 8h - Charleville Mezières",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 17,
+   "id": "cmueksfg200gnmr5o5b2amzku",
+   "titre": "2026 Seasonal Casual Sales Associates - Cheltenham",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 18,
+   "id": "cmue2co6u07nmpc343gjtcoc3",
+   "titre": "Urban Outfitters Sales Associates (Part-Time & Full-Time) / Butiksassistenter / Salgsassistenter - Copenhagen, Ostergade DK",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 19,
+   "id": "cmueb1kwn0pfmoi3560sy2f79",
+   "titre": "Vendeurs (f/h) - CDD 35h - 3 mois - Ajaccio",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 20,
+   "id": "cmuf5c0mj02u6ms6fqrmug0x7",
+   "titre": "Store Manager - Opticians",
+   "metier": "dispensing-optician",
+   "verdict": "FAUX",
+   "motif": "idem : Store Manager d’une enseigne d’optique"
+  },
+  {
+   "n": 21,
+   "id": "cmufukaad3qk5my3372lxesjz",
+   "titre": "Vendeurs (f/h) - CDI 35h - Tolbiac",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 22,
+   "id": "cmueb0ifb0kssoi35oltg40w3",
+   "titre": "Alternance - Vendeurs (f/h) - Mont St Martin",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 23,
+   "id": "cmulln01f3nk6t234uk2z4mxh",
+   "titre": "Vendeurs (f/h) - CDI 35h - Nice Massena",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 24,
+   "id": "cmueehmut01gwpm340w6szn24",
+   "titre": "BOSS Outlet Ringsted - Sales Associates (Part Time - 10 Hour)",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 25,
+   "id": "cmue8ea6p00hmqy344d82evze",
+   "titre": "[Fashion] - Conseiller.e de ventes expérimenté.e - CDI 35h - Le Marais - H/F",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 26,
+   "id": "cmuiny6jc3nb0mt34gj6ak8rz",
+   "titre": "Vendeurs (f/h) - CDI 25h/8h - Bourg en Bresse",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 27,
+   "id": "cmunsskos04x3mu6ib4edh7df",
+   "titre": "Part Time Sales Associates, Tommy Hilfiger Kids - The O2",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 28,
+   "id": "cmumy2h9a4g93tj351g9fiir9",
+   "titre": "Vendeurs (f/h) - CDI 25h - La Roche sur Yon",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 29,
+   "id": "cmudv4p0n2fmooa34yv9qry7h",
+   "titre": "SALES ASSOCIATES- STUDENTS WELCOME TO APPLY!",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 30,
+   "id": "cmueksgeg00i7mr5ov1n9b6pj",
+   "titre": "2026 Seasonal Casual Sales Associates - Perth DFO",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 31,
+   "id": "cmu7f8que0019qmbnjru01qa9",
+   "titre": "SALES ASSOCIATES – EXTRA / ON-CALL TILBURG - NEW STORE OPENING",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 32,
+   "id": "cmunstjbd06c8mu6iv8o8hia0",
+   "titre": "Temporary Sales Associates- Part Time",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 33,
+   "id": "cmuh8ryyr3x38p434hilooyr5",
+   "titre": "Alternance - Vendeurs (f/h) - Saint Nazaire",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 34,
+   "id": "cmumx6nbp2ogktj35pobqlip9",
+   "titre": "[Fashion] - Conseiller.e de ventes - Cannes - CDD 35h - H/F",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 35,
+   "id": "cmue7w60f00o9qf6esvgu7xrg",
+   "titre": "[Fashion] - Conseiller.e de ventes CDD 35h - Nice Cap 3000 - H/F",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 36,
+   "id": "cmuebup2s18zdoi356snqeavh",
+   "titre": "Conseiller de Ventes - Saint Honoré (H/F)",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 37,
+   "id": "cmunsq6ea01ycmu6ip2guuhcp",
+   "titre": "Part Time Sales Associates, Calvin Klein - Swindon",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 38,
+   "id": "cmuf5cdwp04rzms6fjx2cyqgr",
+   "titre": "Multisite Store Manager - Opticians",
+   "metier": "dispensing-optician",
+   "verdict": "FAUX",
+   "motif": "idem : Store Manager multisite d’une enseigne d’optique"
+  },
+  {
+   "n": 39,
+   "id": "cmuptgk21403al7348x8nu6bs",
+   "titre": "Vendeurs (f/h) - CDI 8h - Strasbourg Rivetoile",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 40,
+   "id": "cmueksgy500j6mr5oocg0g3hx",
+   "titre": "2026 Seasonal Casual Sales Associates - Moorabbin",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 41,
+   "id": "cmuod18as1u8iof344thv9dxo",
+   "titre": "STAGE 2 mois - Conseiller.e de ventes - One Nation - H/F",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 42,
+   "id": "cmuf5c21r031rms6fjy1a175t",
+   "titre": "Store Manager - Opticians",
+   "metier": "dispensing-optician",
+   "verdict": "FAUX",
+   "motif": "idem"
+  },
+  {
+   "n": 43,
+   "id": "cmueb18vg0o28oi35d1zgpo2z",
+   "titre": "Vendeurs (f/h) - CDI 25h - Anglet",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 44,
+   "id": "cmue8ejx301xhqy34zw6olfic",
+   "titre": "[Fashion] - Conseiller.e de ventes CDD 35h - Victor Hugo - H/F",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 45,
+   "id": "cmu8eq13l00gtnu6p25bwaplh",
+   "titre": "Conseiller de ventes H/F 15h",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 46,
+   "id": "cmueksfzw00hmmr5ocqh11w4c",
+   "titre": "2026 Seasonal Casual Sales Associates - Hornby",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 47,
+   "id": "cmumx6mrk2ob9tj351ud2xoit",
+   "titre": "STAGE 2 mois - Conseiller.e de ventes - Lyon - H/F",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 48,
+   "id": "cmumx6mt12obptj350ajheboq",
+   "titre": "STAGE 2 mois - Conseiller.e de ventes - Grands Magasins Parisiens - H/F",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 49,
+   "id": "cmu9mlkjx03x2mb9z1euqnudi",
+   "titre": "Sales Associates - Coming Summer 2027",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 50,
+   "id": "cmueb0mdo0ld7oi35n3xmtcp8",
+   "titre": "Vendeurs (f/h) - CDI 25h/16h - Val Thoiry",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 51,
+   "id": "cmue8ekyh022hqy34eo5c7ebk",
+   "titre": "STAGE - Conseiller.e de ventes - Lyon - H/F",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 52,
+   "id": "cmueb18yk0o2moi35g3wyugl3",
+   "titre": "Vendeurs (f/h) - CDI 25h - Cholet",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 53,
+   "id": "cmu7fb300006iqm1iijhj1vim",
+   "titre": "Sales Associates - Future Opportunities",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 54,
+   "id": "cmu9mlkfv03whmb9zp9sll2uk",
+   "titre": "Vendeurs polyvalents (CDI 35h)",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 55,
+   "id": "cmue8e88j00auqy34y4fo0sy7",
+   "titre": "[Fashion] - Conseiller.e de ventes - Tours - CDI 30h - H/F",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 56,
+   "id": "cmue8ejmk01w4qy349ixzxkrq",
+   "titre": "STAGE - Conseiller.e de ventes - Paris - H/F",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 57,
+   "id": "cmue8ejc101urqy34kh9gzcmw",
+   "titre": "[Fashion] - Conseiller.e de ventes CDD 35h - Parly 2 - H/F",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 58,
+   "id": "cmueazxx20i1moi35074dod3u",
+   "titre": "Vendeurs (f/h) - CDI 25h/8h - Euralille",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 59,
+   "id": "cmunq9s1605m4qd34g41mtl09",
+   "titre": "SAINT LAURENT Assistante Administrative H/F - Paris",
+   "metier": "assistant-administratif",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 60,
+   "id": "cmu9j6oyy00bdo5c4owszuzc3",
+   "titre": "Seasonal Sales Associates - Parttime (Manchester Trafford)",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 61,
+   "id": "cmueksfrn00h8mr5ol3rmq0c0",
+   "titre": "2026 Seasonal Casual Sales Associates - University Hill",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 62,
+   "id": "cmunsq6zz01z4mu6ij7xaj9z7",
+   "titre": "Part Time Sales Associates, Tommy Hilfiger - West Midlands",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 63,
+   "id": "cmulln7543nrrt234fujkkbw8",
+   "titre": "Vendeurs (f/h) - CDI 16h/8h - Le Havre",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 64,
+   "id": "cmueb01g40ijboi351szrom03",
+   "titre": "Vendeurs (f/h) - CDI 25h/8h - Aeroville",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 65,
+   "id": "cmullnirb3o56t234eoi45yzq",
+   "titre": "Vendeurs (f/h) - CDI 35h - Villeneuve la Garenne",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 66,
+   "id": "cmu9fymj703xvofadvx0f038s",
+   "titre": "CDI - Conseiller de Ventes H/F",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 67,
+   "id": "cmumy2fsw4g2vtj3544u4r9hs",
+   "titre": "Vendeurs (f/h) - CDI 35h - Carré Sénart",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 68,
+   "id": "cmue8ejyl01xoqy3416ysk0na",
+   "titre": "Conseiller.e de ventes Anglophone CDD 35h - Saint Germain des Près - H/F",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 69,
+   "id": "cmueksf6m00g8mr5os9d0drew",
+   "titre": "2026 Seasonal Casual Sales Associates - Homebush",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 70,
+   "id": "cmu8epyys0055nu6pl4ui67mu",
+   "titre": "ASESOR-A DE VENTAS / SALES ASSOCIATES W/M - 20H FIJO DISCONTINUO",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 71,
+   "id": "cmuh8rx403wvgp434dfp0n3gq",
+   "titre": "Vendeurs (f/h) - CDI 25h - Carré Sénart",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 72,
+   "id": "cmueb016n0ihyoi358uv6e2wv",
+   "titre": "Vendeurs (f/h) - CDI 25h - Rennes St Gregoire",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 73,
+   "id": "cmue8el11022vqy34rxprs843",
+   "titre": "STAGE - Conseiller.e de ventes - Lille - H/F",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 74,
+   "id": "cmuod0sf41u4gof3468ebmmfv",
+   "titre": "[Fashion] - Conseiller.e de ventes - Vavin - CDI 35h - H/F",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 75,
+   "id": "cmuptgty7418pl734eyzxc4dm",
+   "titre": "Vendeurs (f/h) - CDI 25h - Poitiers",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 76,
+   "id": "cmullnjsy3o6jt2345dfpe4up",
+   "titre": "Vendeurs (f/h) - CDI 16h - Sarcelles",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 77,
+   "id": "cmueksfke00gumr5o4jiig231",
+   "titre": "2026 Seasonal Casual Sales Associates - Manawa Bay",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 78,
+   "id": "cmue8eg3p01cxqy34qipjb2zk",
+   "titre": "[Fashion] - Conseiller.e de ventes - Galeries Lafayette Nice Massena - CDD 35h - H/F",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 79,
+   "id": "cmueksgma00ilmr5owdte4f40",
+   "titre": "2026 Seasonal Casual Sales Associates - Papamoa",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 80,
+   "id": "cmumx6muf2oc3tj35mrj00cpu",
+   "titre": "STAGE 2 mois - Conseiller.e de ventes - La Vallée Village - H/F",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 81,
+   "id": "cmue7vvs8001jqf6ehryyxjgf",
+   "titre": "Conseiller.e de ventes - CDI 35h - Galeries Lafayette Nîmes",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 82,
+   "id": "cmueksegs00f9mr5olkw8hoct",
+   "titre": "2026 Seasonal Casual Sales Associates - Canberra",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 83,
+   "id": "cmue8ehtr01n1qy34p6co348t",
+   "titre": "[Fashion] - Conseiller.e de ventes - Roubaix - CDI 35h - H/F",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 84,
+   "id": "cmueksgpz00ismr5o70czb6sw",
+   "titre": "2026 Seasonal Casual Sales Associates - Essendon",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 85,
+   "id": "cmuecknhv353woi35nlsxy0s3",
+   "titre": "Seasonal Sales Associates - Trafford, Manchester",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 86,
+   "id": "cmuecppcv3kkgoi357mr9p5d3",
+   "titre": "ASESOR-A DE VENTAS / SALES ASSOCIATES W/M - 20H Fijo Discontinuo - ECI Sanchinarro",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 87,
+   "id": "cmuh8rwz53wuvp4340uw604vb",
+   "titre": "Vendeurs (f/h) - CDI 25h - Rouen les Docks",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 88,
+   "id": "cmue6mu9300mnkd33sqew7rd4",
+   "titre": "Sales Associates - Permanent Contract Part-Time (20h/week) - Hamburg",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 89,
+   "id": "cmufvm8ai4mz8my33gb70o6nf",
+   "titre": "Conseiller.ère de ventes (chinois/mandarin)",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 90,
+   "id": "cmue6mtza00mgkd33h2o1ddet",
+   "titre": "Sales Associates - Permanent Contract Full-Time - Berlin",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 91,
+   "id": "cmu9j6p0r00bko5c4d6k5b9qw",
+   "titre": "Seasonal Sales Associates - Fulltime (Manchester Trafford)",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 92,
+   "id": "cmuh8rx0q3wv2p434a8of0wm3",
+   "titre": "Vendeurs (f/h) - CDI 25h - La Roche sur Yon",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 93,
+   "id": "cmue8ea2300guqy34tutes1ln",
+   "titre": "[Fashion] - Conseiller.e de ventes - La Défense - CDI 35h - H/F",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 94,
+   "id": "cmuod10ya1u6mof348aiuwygo",
+   "titre": "STAGE 2 mois - Conseiller.e de ventes - Outlet Lyon The Village - H/F",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 95,
+   "id": "cmuf5bmdd00w6ms6feh30w37w",
+   "titre": "Store Manager - Opticians",
+   "metier": "dispensing-optician",
+   "verdict": "FAUX",
+   "motif": "idem"
+  },
+  {
+   "n": 96,
+   "id": "cmueksesr00fnmr5onnlqppzd",
+   "titre": "2026 Seasonal Casual Sales Associates - Birkenhead Point",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 97,
+   "id": "cmue8e603000aqy348un241zz",
+   "titre": "[Fashion] - Conseiller.e de ventes - Lyon - CDI 35h - H/F",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 98,
+   "id": "cmu9j6p2d00bro5c4g4vfrlpz",
+   "titre": "Christmas Sales Associates (all departments and various hours)",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 99,
+   "id": "cmuoft2k63qwoof34a3fajea5",
+   "titre": "VENDEURS POLYVALENTS H/F, CDI 24H",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 100,
+   "id": "cmueksecf00f2mr5oc5cectg6",
+   "titre": "2026 Seasonal Casual Sales Associates - South Wharf",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 101,
+   "id": "cmunssdx904mzmu6ijfpnhr6l",
+   "titre": "Part Time Sales Associates, Tommy Hilfiger Kids - The O2",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 102,
+   "id": "cmumx6mvk2ocftj35fuaz5jcc",
+   "titre": "STAGE 2 mois - Conseiller.e de ventes - Paris - H/F",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 103,
+   "id": "cmuecppbe3kk1oi357dgvj4wi",
+   "titre": "Conseiller de ventes H/F 20h",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 104,
+   "id": "cmueksexw00fumr5o53nr8gbi",
+   "titre": "2026 Seasonal Casual Sales Associates - Harbourtown",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 105,
+   "id": "cmunr6rml000hoc35jj9uw3kz",
+   "titre": "2026-10266 - Conseiller de ventes - Gastronomie, vins & spiritueux - Aéroport de Nice H/F",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 106,
+   "id": "cmufvaagi4bedmy33ij7253js",
+   "titre": "STAGE - Assistant Chef de Projets Supply Chain (H/F)",
+   "metier": "chef-de-projet-supply-chain",
+   "verdict": "FAUX",
+   "motif": "stage d’assistant au chef de projet : « assistant X » n’est pas X (D-486, D-475 §37 b)"
+  },
+  {
+   "n": 107,
+   "id": "cmueb0amj0jq3oi359wg8gjz4",
+   "titre": "Vendeurs (f/h) - CDI 25h - Caen Mondeville",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 108,
+   "id": "cmuf5bt4801o6ms6fm0i5o1hq",
+   "titre": "Store Manager - Opticians",
+   "metier": "dispensing-optician",
+   "verdict": "FAUX",
+   "motif": "idem"
+  },
+  {
+   "n": 109,
+   "id": "cmueksg3m00htmr5o1jix1ll3",
+   "titre": "2026 Seasonal Casual Sales Associates - Te Rapa",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 110,
+   "id": "cmue8el4s023gqy34k0xcnq9y",
+   "titre": "Conseiller.e de ventes senior - Flagship Parisien - CDI 35h - H/F",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 111,
+   "id": "cmueb0b010jruoi35dd42fktd",
+   "titre": "Vendeurs (f/h) - CDI 16h/8h - Auxerre",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 112,
+   "id": "cmueehxvc02udpm34w7ecqqi5",
+   "titre": "BOSS Outlet Ringsted - Sales Associates (Full Time)",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 113,
+   "id": "cmue8e85c00ajqy34q05jsuvh",
+   "titre": "[Fashion] - Conseiller.e de ventes CDI 35h - Lyon The Village Outlet - H/F",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 114,
+   "id": "cmufukdns3qrwmy336ojn5fsn",
+   "titre": "Vendeurs (f/h) - CDI 35h/8h - Chambourcy",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 115,
+   "id": "cmueb012v0ihdoi3583b4jqhp",
+   "titre": "Vendeurs (f/h) - CDI 16h/8h - Cergy Pontoise",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 116,
+   "id": "cmumy2h2g4g84tj35n99rdzz8",
+   "titre": "Vendeurs (f/h) - CDI 8h - Dijon Quétigny",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 117,
+   "id": "cmu9mlrf204symb9zjf9jlxog",
+   "titre": "Sales Associates - Hiring Spring 2026!",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 118,
+   "id": "cmuliw5sy1wcjt234bxlsa08l",
+   "titre": "[Fashion] - Conseiller.e de ventes CDI 20h - Bon Marché - H/F (Anglais et Espagnol courant)",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 119,
+   "id": "cmumx6n9v2og5tj35uf0ybfa0",
+   "titre": "[Fashion] - Conseiller.e de ventes CDI 35h - Sévigné - H/F",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 120,
+   "id": "cmu8ccaii0dnomn48j98sgnwg",
+   "titre": "Conseiller(e) de Ventes (H/F)",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 121,
+   "id": "cmue8eilr01rfqy34041csojn",
+   "titre": "[Fashion] Conseiller.e de ventes CDI 35h - Outlet Mc Arthur Glen Troyes - H/F",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 122,
+   "id": "cmue8ekzu022oqy345ua7a0lf",
+   "titre": "STAGE - Conseiller.e de ventes - Toulouse - H/F",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 123,
+   "id": "cmuekselk00fgmr5o91lexmly",
+   "titre": "2026 Seasonal Casual Sales Associates - Liverpool",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 124,
+   "id": "cmueksfo100h1mr5o40t19st0",
+   "titre": "2026 Seasonal Casual Sales Associates - Tawa",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 125,
+   "id": "cmudu8w9x1jjwoa34yy3gzz6b",
+   "titre": "Conseiller de ventes Chaussures Loisirs / Sports Collectifs / Running",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 126,
+   "id": "cmue8e78r006fqy34h37n8tqo",
+   "titre": "[Job Dating Claudie Pierlot - 1er octobre 2026] - Conseiller.e de ventes CDI/CDD 35h - PARIS - H/F",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 127,
+   "id": "cmue8eery015pqy34dtpv0dfz",
+   "titre": "[Fashion] - Conseiller.e de ventes - Galeries Lafayette Tours - CDD 35h - H/F",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 128,
+   "id": "cmumy2h3t4g8btj352095vnk4",
+   "titre": "Vendeurs (f/h) - CDI 35h - Lafayette",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 129,
+   "id": "cmumx6mol2oahtj35pynr8gq9",
+   "titre": "STAGE 2 mois - Conseiller.e de ventes - Nice/Cannes - H/F",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 130,
+   "id": "cmue8ekbv01zmqy34h5962p1g",
+   "titre": "[Fashion] - Conseiller.e de ventes CDD 35h - Galeries Lafayette Nimes- H/F",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 131,
+   "id": "cmufukay53qlomy3378itrlly",
+   "titre": "Vendeurs (f/h) - CDI 25h - Rouen les Docks",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 132,
+   "id": "cmullnekj3o04t234uffhqfy6",
+   "titre": "Vendeurs (f/h) - CDD 35h - Reims",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 133,
+   "id": "cmuf5brs401h6ms6fkbzu0314",
+   "titre": "L&D Capability Partner - Boots Opticians",
+   "metier": "dispensing-optician",
+   "verdict": "FAUX",
+   "motif": "« Boots Opticians » est l’enseigne ; le poste est en formation (L&D)"
+  },
+  {
+   "n": 134,
+   "id": "cmueb05go0j2koi35as3an6qu",
+   "titre": "Vendeurs (f/h) - CDI 25h/16h -Niort Centre",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 135,
+   "id": "cmuh8rxyf3wykp434crnhs3us",
+   "titre": "Vendeurs (f/h) - CDI 35h/25h - Toulouse Labège",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 136,
+   "id": "cmue8eimw01rmqy34l3cfzjkw",
+   "titre": "STAGE - Conseiller.e de ventes -La Vallée Village - H/F",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 137,
+   "id": "cmueksfvw00hfmr5ojp87588k",
+   "titre": "2026 Seasonal Casual Sales Associates - Parafield",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 138,
+   "id": "cmue8egbu01eaqy34opc1fnkx",
+   "titre": "[Fashion] - Conseiller.e de ventes - Galeries Lafayette Haussmann Paris - CDD 35h - H/F",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 139,
+   "id": "cmue7w2es00g0qf6eoj8886e8",
+   "titre": "[Fashion] - Conseiller.e de ventes CDD 35h - Nice Cap 3000 - H/F",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 140,
+   "id": "cmufuk8dt3qghmy33tx0kbw50",
+   "titre": "Vendeurs (f/h) - CDI 35h/16h/8h - Nancy",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 141,
+   "id": "cmuogdl3k41xrof346zmkcsm6",
+   "titre": "Vendeurs (f/h) - CDI 25h - Lorient Lanester",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 142,
+   "id": "cmuptgiu23zx2l734x5puvs20",
+   "titre": "Vendeurs (f/h) - CDI 25h - Ormesson",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 143,
+   "id": "cmue8ejvp01xaqy34r97ajgum",
+   "titre": "[Fashion] Conseiller.e de ventes CDD 35h - Pierre Charron - H/F",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 144,
+   "id": "cmueksf2d00g1mr5oyyqqd4qt",
+   "titre": "2026 Seasonal Casual Sales Associates - Eastern Creek Quarter",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 145,
+   "id": "cmueb0e5c0k6moi35s6zfpz5x",
+   "titre": "Vendeurs (f/h) - CDI 25h - Vannes",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 146,
+   "id": "cmue521ne09rto234vcjgqluw",
+   "titre": "Responsables de Boutique H/F",
+   "metier": "store-manager",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 147,
+   "id": "cmueb1bge0odboi35e4747e4d",
+   "titre": "Vendeurs (f/h) - CDI 25h - La Roche sur Yon",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 148,
+   "id": "cmue8eiwk01szqy347gm43zis",
+   "titre": "[Fashion] - Conseiller.e de ventes CDI 15h - Marseille Paradis - H/F",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 149,
+   "id": "cmue8ejdo01uyqy34e3ngqf10",
+   "titre": "[Fashion] - Conseiller.e de ventes CDD 35h - Parly 2 - H/F",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 150,
+   "id": "cmuh8ryv73x2np43470avmmm9",
+   "titre": "Vendeurs (f/h) - CDI 35h/25h - Creteil",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 151,
+   "id": "cmuptgpx540rsl734za1ljnvg",
+   "titre": "Vendeurs (f/h) - CDI 25h / CDD 35h - H&M Home - Paris",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 152,
+   "id": "cmunst0im05ivmu6ix12wtuil",
+   "titre": "Part Time Sales Associates, Tommy Hilfiger Plymouth (Pop-Up)",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 153,
+   "id": "cmueksgic00iemr5ojv0vthcq",
+   "titre": "2026 Seasonal Casual Sales Associates - Watertown",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 154,
+   "id": "cmue8eapw00kuqy34was9re7b",
+   "titre": "[Fashion] - Conseiller.e de ventes - Galeries Lafayette Nantes - CDI 35h - H/F",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 155,
+   "id": "cmuekse3r00eomr5oa8ycpn5q",
+   "titre": "2026 Seasonal Casual Sales Associates - Jindalee",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 156,
+   "id": "cmumx6n642ofctj359gi2uh65",
+   "titre": "[Fashion] - Conseiller.e de ventes - Strasbourg - CDI 7h - H/F",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 157,
+   "id": "cmue51k2808ieo234yo1aan9b",
+   "titre": "Conseiller.ère de ventes CDD 20 H",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 158,
+   "id": "cmuobutdq0wc4of34u8nkcayd",
+   "titre": "Sales Associates - Permanent Contract Part-Time (20h/week) - Düsseldorf",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 159,
+   "id": "cmue8eeud0163qy347d04kr27",
+   "titre": "[Fashion] Conseiller.e de ventes Polyglotte - Pierre Charron - CDI 35h - H/F",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 160,
+   "id": "cmueksg8j00i0mr5or1n23yv9",
+   "titre": "2026 Seasonal Casual Sales Associates - Adelaide",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 161,
+   "id": "cmue7w15r00d8qf6es1hmazoa",
+   "titre": "[Fashion] - Conseiller.e de ventes CDI 21h - La Défense - H/F",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 162,
+   "id": "cmuekse7z00evmr5o017secw9",
+   "titre": "2026 Seasonal Casual Sales Associates - Brisbane",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 163,
+   "id": "cmu8cejqb0ozvmn48zmmupnmv",
+   "titre": "Sales Associates - Athens",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 164,
+   "id": "cmueksguh00izmr5oryoyequc",
+   "titre": "2026 Seasonal Casual Sales Associates - Onehunga",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  },
+  {
+   "n": 165,
+   "id": "cmu8aa8o300zal9df5cf8r6li",
+   "titre": "Seasonal Sales Associates, UGG",
+   "metier": "sales-advisor",
+   "verdict": "JUSTE",
+   "motif": null
+  }
+ ]
+}
