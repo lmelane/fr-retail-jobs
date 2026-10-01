@@ -215,9 +215,11 @@ try {
   } else if (command === 'retire-source') {
     /**
      * Cleans up after a catalogue line is removed (a robots-forbidden route, an
-     * abandoned Flux B board): detaches the retired source's JobSource rows,
-     * deletes jobs nothing else backs, reassigns canonical URLs it owned.
-     * Guarded: destructive on purpose, so the key must be explicit.
+     * abandoned Flux B board): marks the source RETIRED, deactivates its JobSource
+     * rows, withdraws (`WITHDRAWN`, `SOURCE_RETIRED`) the jobs nothing else backs and
+     * reassigns canonical URLs it owned. No row is deleted (`withdrawRetiredSource`),
+     * but the withdrawal is administrative: a later collection does not republish
+     * the job by itself (`administrativeWithdrawal`, dedup/upsert.ts). The key must be explicit.
      */
     const key = process.argv[3];
     if (!key || key.startsWith('--')) throw new Error('retire-source needs the sourceKey to retire');
