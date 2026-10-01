@@ -15,6 +15,7 @@ import { offerIdCandidates } from './offer-url';
 import { localeAffichage } from './presentation-locale';
 import { libellerFacettes, type FacetteServie } from './facettes';
 import { exigerPerimetre, resoudrePerimetre } from './perimetre';
+import { localiserPlan } from './geo';
 import { DIMENSIONS, planifierRecherche, type CriteresRecherche, type Dimension, type FiltreRefuse, type Selections } from './search-plan';
 import type { LieuResolu } from './lieu';
 
@@ -623,10 +624,15 @@ export async function getSimilarJobs(job: JobRow, limit = 6, langue: LangueLibel
  * le périmètre, les termes, le lieu honoré, les sélections, le pays prioritaire.
  */
 function empreintePlan(plan: ReturnType<typeof planifierRecherche>): string {
+  // D-496 : les villes trouvées entrent dans l'empreinte (un autre point, un autre ordre) ; sans ville trouvée, la clé
+  // `proximite` est absente et l'empreinte reste celle d'avant (les curseurs déjà servis restent lisibles).
+  const p = plan.proximite;
+  const point = (v: { id: string; latitude: number; longitude: number }) => [v.id, v.latitude, v.longitude];
   return empreinteCriteres({
     version: `${SEARCH_VERSION}-strict-filters-fr-2`, perimetre: plan.perimetre.code, q: plan.q, lieu: plan.lieu ?? null,
     selections: Object.fromEntries(DIMENSIONS.flatMap((d) => (plan.selections[d]?.length ? [[d, [...plan.selections[d]!].sort()]] : []))),
     prioritePays: plan.prioritePays ?? null, source: plan.source ?? null,
+    ...(p ? { proximite: { lieu: p.lieu ? point(p.lieu) : null, villes: p.villes ? p.villes.resolues.map(point).sort((x, y) => String(x[0]).localeCompare(String(y[0]))) : null } } : {}),
   });
 }
 
@@ -678,8 +684,10 @@ export async function examinerAlerte(filters: JobFilters, entreeApres: Date, pub
   const perimetre = exigerPerimetre(filters.marche);
   if (!process.env.DATABASE_URL) throw new DatabaseUnavailableError();
   // Une alerte ne connaît ni le pays du visiteur ni un curseur (R-128 §1).
-  const plan = planifierRecherche(perimetre, { ...filters, prioritePays: undefined });
+  const planTexte = planifierRecherche(perimetre, { ...filters, prioritePays: undefined });
   try {
+    // D-496 : la même proximité que la page (le lieu et les villes trouvés dans la base de villes).
+    const plan = await localiserPlan(planTexte, filters.locale);
     const taxonomy = await getOptionalOccupationPresentation(langueDesLibelles(localeAffichage(filters.locale, perimetre)));
     const examen = await examenNouveautes(plan, entreeApres, publieeApres, NOUVELLES_MAX);
     return {
@@ -687,7 +695,7 @@ export async function examinerAlerte(filters: JobFilters, entreeApres: Date, pub
       nouvelles: examen.nouvelles,
       jobs: await lignesDansLOrdre(examen.ids, taxonomy),
       perimetre: perimetreServi(perimetre, filters.locale),
-      filtresRefuses: plan.refus,
+      filtresRefuses: planTexte.refus,
     };
   } catch (error) {
     throw new DatabaseUnavailableError(error);
@@ -698,9 +706,16 @@ export async function getJobs(filters: JobFilters): Promise<JobsResult> {
   const perimetre = exigerPerimetre(filters.marche);
   if (!process.env.DATABASE_URL) throw new DatabaseUnavailableError();
 
-  const plan = planifierRecherche(perimetre, filters);
+  const planTexte = planifierRecherche(perimetre, filters);
+  // D-496 : le lieu et les villes cherchés, trouvés dans la base de villes (une requête, mémorisée par instance).
+  let plan: typeof planTexte;
+  try {
+    plan = await localiserPlan(planTexte, filters.locale);
+  } catch (error) {
+    throw new DatabaseUnavailableError(error);
+  }
   const empreinte = empreintePlan(plan);
-  // Un curseur d'autres critères est refusé AVANT toute requête (400 CURSEUR_INVALIDE).
+  // Un curseur d'autres critères est refusé AVANT la recherche (400 CURSEUR_INVALIDE).
   const curseur = filters.apres ? (decoderCurseur(filters.apres, empreinte, ARITE_CLE_RECHERCHE) as CleRecherche) : null;
   try {
     const taxonomy = await getOptionalOccupationPresentation(langueDesLibelles(localeAffichage(filters.locale, perimetre)));
@@ -716,7 +731,8 @@ export async function getJobs(filters: JobFilters): Promise<JobsResult> {
       perimetre: perimetreServi(perimetre, filters.locale),
       facettes: await libellerFacettes(plan, summary.facettes, taxonomy, filters.locale),
       filtresRefuses: plan.refus,
-      lieu: plan.lieuCompris ?? null,
+      // Une ville trouvée se dit comme la base l'écrit (« Chennevières-sur-Marne (94) ») ; sinon ce que le texte a compris.
+      lieu: plan.proximite?.lieu && plan.lieuCompris ? { type: plan.lieuCompris.type, libelle: plan.proximite.lieu.libelle } : plan.lieuCompris ?? null,
     };
   } catch (error) {
     throw new DatabaseUnavailableError(error);

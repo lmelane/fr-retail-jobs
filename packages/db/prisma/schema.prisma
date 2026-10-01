@@ -484,6 +484,16 @@ model Job {
   postalCode String?
   latitude   Float?
   longitude  Float?
+  /**
+   * D-496 — le point de recherche de proximité : les coordonnées natives valides, sinon le centre de la ville de
+   * l'offre dans la base de villes (`GeoCity`). Écrit par les déclencheurs `catwalks_geo_job*` à l'insertion et quand la
+   * ville, le pays, la subdivision ou les coordonnées changent ; le stock se rattrape par `catwalks_geo_rattrapage()`.
+   * `geoSource` : NATIVE ou CITY ; `geoCityId` : la ville rattachée, même quand le point est natif.
+   */
+  geoCityId    Int?
+  geoLatitude  Float?
+  geoLongitude Float?
+  geoSource    String?
 
   /** Replaceable search dimensions with employmentEvidence; native labels stay in rawContract / rawWorkingTime. */
   /** Native contract label from the selected publication. */
@@ -1436,6 +1446,11 @@ model DirectOffer {
   location              String
   latitude              Float?
   longitude             Float?
+  /** D-496 — le point de recherche, comme `Job.geo*` (déclencheurs `catwalks_geo_offre_directe*`). */
+  geoCityId             Int?
+  geoLatitude           Float?
+  geoLongitude          Float?
+  geoSource             String?
   employmentTerm        String?
   workTime              String?
   programType           String?
@@ -1547,4 +1562,66 @@ model SearchPending {
   generation SearchGeneration @relation(fields: [version], references: [version], onDelete: Cascade, onUpdate: NoAction)
   @@id([version, id])
   @@index([version, queuedAt])
+}
+
+/**
+ * D-496 — LA BASE MONDIALE DE VILLES (GeoNames `cities500`, CC BY 4.0 ; chargée par
+ * apps/aggregator/scripts/geo/villes.py). L'identifiant est celui de GeoNames.
+ */
+model GeoCity {
+  id              Int            @id
+  name            String
+  countryCode     String
+  admin1Code      String?
+  admin2Code      String?
+  admin1Name      String?
+  /** Ce que la suggestion écrit entre parenthèses : département (FR), État (US), sinon la région d'un homonyme. */
+  subdivision     String?
+  subdivisionKeys String[]       @default([])
+  latitude        Float
+  longitude       Float
+  population      BigInt         @default(0)
+  featureCode     String
+  /** Ni quartier ni arrondissement : proposable en suggestion. */
+  suggestible     Boolean        @default(true)
+  releaseId       Int
+  release         GeoCityRelease @relation(fields: [releaseId], references: [id], onDelete: Restrict)
+  names           GeoCityName[]
+  labels          GeoCityLabel[]
+}
+
+/** Un nom d'une ville (principal, ASCII ou variante), sous sa clé de lieu (`catwalks_lieu_cle`, collation C). */
+model GeoCityName {
+  countryCode String
+  nameKey     String
+  cityId      Int
+  primary     Boolean
+  city        GeoCity @relation(fields: [cityId], references: [id], onDelete: Cascade)
+
+  @@id([countryCode, nameKey, cityId])
+  @@index([cityId])
+}
+
+/** Le nom d'une ville dans une langue de l'interface, quand il diffère du nom principal. */
+model GeoCityLabel {
+  cityId   Int
+  language String
+  label    String
+  city     GeoCity @relation(fields: [cityId], references: [id], onDelete: Cascade)
+
+  @@id([cityId, language])
+}
+
+/** Un chargement de la base de villes : source, empreintes des fichiers, licence et attribution. */
+model GeoCityRelease {
+  id          Int       @id @default(autoincrement())
+  loadedAt    DateTime  @default(now())
+  source      String
+  licence     String
+  attribution String
+  files       Json
+  cities      Int
+  names       Int
+  labels      Int
+  villes      GeoCity[]
 }

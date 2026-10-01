@@ -5,6 +5,7 @@ import { getJobs, type JobFilters } from '../jobs';
 import { initializeSearchIndex, drainSearchIndex } from '../search-index';
 import { CurseurInvalideError, decoderCurseur, empreinteCriteres, encoderCurseur } from '../curseur';
 import { suggestCities, suggestTitles } from '../suggestions';
+import { semerVilles, viderVilles, VILLES_TEMOINS } from '../__fixtures__/villes';
 import { resoudrePerimetre } from '../perimetre';
 
 /**
@@ -224,6 +225,12 @@ describe.skipIf(!enabled)('pertinence multilingue et curseur (lot 7)', () => {
     const fr = resoudrePerimetre('FR')!;
     expect(await suggestTitles('ecole', fr)).toContain('École de vente');
     expect(await suggestTitles('ÉCOLE', fr)).toContain('École de vente');
-    expect(await suggestCities('pari', fr)).toContain('Paris');
+    // D-496 : les villes viennent de la base de villes, dont la clé ignore accents et casse (proximite-d496.test.ts).
+    await semerVilles(prisma, VILLES_TEMOINS);
+    try {
+      expect((await suggestCities('PARÏ', fr))[0]).toBe('Paris (75)');
+    } finally {
+      await viderVilles(prisma);
+    }
   });
 });

@@ -1,6 +1,7 @@
 import { initializeSearchIndex, drainSearchIndex } from '../search-index';
 import { publicationFixture } from '../../../aggregator/src/test/publication-fixture';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { semerVilles, viderVilles } from '../__fixtures__/villes';
 import { prisma } from '@catwalks/db';
 import { publicJobWhere } from '@catwalks/db/availability';
 import { getCompanyAside, getJobStatus, getJobs, getOfferState, getSimilarJobs, resolveOfferParam, type JobFilters } from '../jobs';
@@ -61,9 +62,14 @@ describe.skipIf(!enabled)('deux origines, une recherche (lot 6)', () => {
     await prisma.job.deleteMany({ where: { id: { startsWith: M } } });
     await prisma.company.deleteMany({ where: { id: { startsWith: M } } });
     await prisma.directOffer.deleteMany({ where: { id: { startsWith: D } } });
+    await viderVilles(prisma);
   };
   beforeAll(async () => {
     await nettoyer();
+    // D-496 : les villes suggérées viennent de la base de villes ; Marseille y est semée avant les offres, pour que le
+    // déclencheur rattache l'offre directe à sa ville.
+    await semerVilles(prisma, [{ id: 2995469, name: 'Marseille', pays: 'FR', a1: '93', a2: '13', a1nom: "Provence-Alpes-Côte d'Azur",
+      subdivision: '13', lat: 43.29695, lon: 5.38107, pop: 870731, fc: 'PPLA' }]);
     // `sectorCodes` d'une Maison est protégé par un manifeste revu (lot 4D) : la Maison agrégée reste « non classée »,
     // ce qui rend le secteur FASHION ci-dessous attribuable à la seule origine directe.
     await prisma.company.create({ data: { id: companyId, name: MAISON, canonicalKey: companyId, fashionjobsUrl: `resolved:${companyId}` } });
@@ -182,8 +188,13 @@ describe.skipIf(!enabled)('deux origines, une recherche (lot 6)', () => {
     expect(await suggestTitles('Visual', perimetreFR())).toContain('Visual Merchandiser');
     expect(await suggestTitles('Visual', resoudrePerimetre('US')!)).not.toContain('Visual Merchandiser');
     expect(await suggestCompanies('Directe Seule', perimetreFR())).toContain(SEULE);
-    expect(await suggestCities('Marse', perimetreFR())).toContain('Marseille');
-    expect(await suggestCities('Marse', resoudrePerimetre('US')!)).not.toContain('Marseille');
+    expect(await suggestCities('Marse', perimetreFR())).toEqual(['Marseille (13)']);
+    expect(await suggestCities('Marse', resoudrePerimetre('US')!)).toEqual([]);
+    // L'offre directe porte le point de sa ville (déclencheur `catwalks_geo_offre_directe`) : elle compte dans l'ordre des
+    // suggestions et entre dans la recherche de proximité.
+    expect(await prisma.directOffer.findUniqueOrThrow({ where: { id: `${D}Seule` }, select: { geoCityId: true, geoSource: true } }))
+      .toEqual({ geoCityId: 2995469, geoSource: 'CITY' });
+    expect(ids(await chercher('FR', {}, { lieu: 'Marseille (13)' }))).toContain(cw('Seule'));
   });
 
   it('le contrat des marchés compte les offres directes publiables par pays, et les offres sans pays à part', async () => {

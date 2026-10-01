@@ -2,6 +2,7 @@ import { FACET_LABELS, langueDesLibelles } from '@catwalks/db/presentation';
 import { validateSearchQuery } from './search-intent';
 import { facettesContrat, type CleFacette, type FacetteContrat, type Perimetre } from '@catwalks/db/marches';
 import { resolveLieu, type LieuResolu } from './lieu';
+import type { Proximite } from './geo';
 
 /**
  * LE PLAN DE RECHERCHE — ce que le moteur va réellement demander au SQL, décidé
@@ -57,6 +58,11 @@ export type PlanRecherche = {
   source: string | undefined;
   /** Le pays du visiteur, s'il appartient au périmètre : ses offres d'abord (D-419 §2). */
   prioritePays: string | undefined;
+  /**
+   * D-496 : les villes cherchées que la base de villes connaît (lieu de la barre, valeurs du filtre `ville`). Posée par
+   * `localiserPlan` (geo.ts, une requête), jamais ici : ce plan reste pur. Absente : la recherche d'avant.
+   */
+  proximite?: Proximite;
 };
 
 export function planifierRecherche(perimetre: Perimetre, criteres: CriteresRecherche): PlanRecherche {

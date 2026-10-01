@@ -11,6 +11,7 @@ import { getOptionalOccupationPresentation } from './occupations';
 import { localeAffichage } from './presentation-locale';
 import { langueDesLibelles } from '@catwalks/db/presentation';
 import { searchConcepts } from './search-vocabulary';
+import { langueDesVilles, libelleVille, lireSaisieLieu } from './geo';
 
 /**
  * L'AUTOCOMPLÉTION DE LA BARRE, DEPUIS NOS DONNÉES ET DANS LE PÉRIMÈTRE (lot 6).
@@ -35,75 +36,83 @@ const paysSql = (perimetre: Perimetre) => Prisma.join(perimetre.pays.map((p) => 
 const directPubliable = (asOf: Date) => directPubliableSql(Prisma.sql`d`, asOf);
 
 /**
- * LE CLOISONNEMENT DES VILLES PAR MARCHÉ (arbitrage CEO, option A).
+ * LES LIEUX DE LA BARRE (D-496, D-499), comme Indeed : des lieux reconnus — villes, arrondissements, communes de la base
+ * mondiale (`GeoCity`, GeoNames) et codes postaux (`GeoPostalCode`) —, jamais le texte brut des offres.
  *
- * « Je sélectionne FR → je ne vois que des villes FR ; je sélectionne US →
- * uniquement des villes US. » Cloisonnement STRICT, comme Indeed.
- *
- * Mesuré en production le 2026-09-15 : sur 6 824 villes distinctes portant au
- * moins un pays, 370 (5,4 %) existent dans PLUSIEURS pays — PARIS (BE ES FR
- * US), NEW YORK (CA US), LONDRES (CA GB IT US), LOS ANGELES (CA CL US).
- *
- * ── LES OFFRES SANS PAYS : DÉDUCTION QUAND ELLE NE LAISSE AUCUN DOUTE ──────
- *
- * 4 811 offres publiables n'ont aucun `countryCode` (16/09/2026). Une ville
- * sans pays dont le nom n'apparaît ailleurs qu'avec UN SEUL pays prend ce
- * pays (487 villes mesurées) ; une ville ambiguë (ABERDEEN GB/SD, BEDFORD
- * CA/GB/US) ou sans occurrence ailleurs reste hors suggestions : deviner le
- * pays d'une ville, c'est envoyer un candidat vers un marché qui n'est pas le
- * sien, sans qu'il puisse s'en apercevoir.
- *
- * La déduction vit dans LA REQUÊTE : la CTE `candidates` est bornée par le
- * préfixe AVANT tout calcul, donc elle ne raisonne que sur les quelques
- * centaines de lignes que la frappe a déjà sélectionnées. Mesuré 11 passes sur
- * le catalogue de production : surcoût inférieur à ~8 ms, indiscernable du
- * bruit réseau.
- *
- * `COALESCE(c.pays, d.p) = ANY(périmètre)` : le pays de l'offre s'il existe,
- * sinon celui déduit ; une offre sans pays dont la ville est ambiguë garde
- * `NULL`, et `NULL = ANY(...)` est faux — l'abstention est portée par la
- * logique ternaire de SQL, pas par un `if` ajouté à côté.
+ * - Le cloisonnement par marché tient (arbitrage CEO, option A) : seulement les lieux des pays du périmètre (« Paris »
+ *   sur le marché américain, c'est Paris, Texas).
+ * - Chaque lieu s'écrit avec sa subdivision entre parenthèses quand la base en donne une : « Paris (75) », « Paris 15e
+ *   (75) », « Chennevières-sur-Marne (94) », « Austin (TX) », « 94430 Chennevières-sur-Marne (94) ». Ce texte est aussi
+ *   ce que la barre renvoie au moteur, qui y relit le lieu (`geo.ts`, `lireSaisieLieu`) : chaque lieu est un point.
+ * - Une frappe qui porte un chiffre propose d'abord les codes postaux qui commencent par elle.
+ * - L'ordre des villes : le nom affiché qui commence par la frappe, puis le nombre d'offres actives rattachées au lieu
+ *   (`Job.geoCityId`, deux origines), puis la population. « paris » : Paris (75), puis ses arrondissements. Un lieu sans
+ *   offre à son nom reste proposé : la recherche de proximité trouve les offres autour de lui (Chennevières-sur-Marne :
+ *   1 offre à son nom, 166 à moins de 10 km). Jamais un doublon de GeoNames ni une entité administrative
+ *   (`suggestible`).
+ * - Le nom dans la langue de l'interface quand la base le connaît (« München » en allemand, « Munich » en français).
+ * - La frappe se compare sous la clé de lieu de la base (`catwalks_lieu_cle` : sans accents, casse ni ponctuation),
+ *   sur le nom principal et toutes ses variantes (« Londres » trouve London).
  */
-export async function suggestCities(query: string, perimetre: Perimetre): Promise<string[]> {
+export async function suggestCities(query: string, perimetre: Perimetre, locale?: string): Promise<string[]> {
   if (!process.env.DATABASE_URL) return [];
   validateSearchQuery(query);
   const q = query.trim();
   if (q.length < 2) return [];
   try {
-    const prefixe = `${echapperLike(q)}%`;
+    const pays = [...perimetre.pays];
+    const langue = langueDesVilles(locale, perimetre);
     const asOf = new Date();
-    // Plus large que la limite : la colonne mélange les casses (« Paris » /
-    // « PARIS » sont des groupes distincts) — on déduplique ensuite en JS.
-    const brut = SUGGEST_LIMIT * 3;
-    const rows = await prisma.$queryRaw<Ligne[]>`
-      WITH candidates AS (
-        SELECT "city" AS valeur, UPPER(TRIM("city")) AS cle, "countryCode" AS pays
-          FROM "Job" j
-         WHERE ${publicJobSql(Prisma.sql`j`, asOf)} AND catwalks_normaliser_texte("city") LIKE catwalks_normaliser_texte(${prefixe})
-        UNION ALL
-        SELECT d.city, UPPER(TRIM(d.city)), d."countryCode"
-          FROM "DirectOffer" d
-         WHERE ${directPubliable(asOf)} AND catwalks_normaliser_texte(d.city) LIKE catwalks_normaliser_texte(${prefixe})
+    const postaux = /\d/.test(q) ? await suggererCodesPostaux(q, pays) : [];
+    const lue = lireSaisieLieu(q);
+    const rows = lue.nom && !lue.code ? await prisma.$queryRaw<Array<{ name: string; label: string | null; subdivision: string | null }>>(Prisma.sql`
+      WITH cle AS (SELECT catwalks_lieu_cle(${lue.nom}) AS k),
+      candidates AS (
+        SELECT DISTINCT n."cityId" AS id FROM "GeoCityName" n, cle
+         WHERE char_length(cle.k) >= 2 AND n."countryCode" = ANY(${pays}::text[])
+           AND n."nameKey" LIKE cle.k || '%' -- une clé de lieu n'a ni « % » ni « _ » (ponctuation retirée)
       ),
-      deduit AS (
-        SELECT cle, MIN(pays) AS p
-          FROM candidates
-         WHERE pays IS NOT NULL
-         GROUP BY cle
-        HAVING COUNT(DISTINCT pays) = 1
+      villes AS (SELECT c.* FROM "GeoCity" c JOIN candidates USING ("id") WHERE c."suggestible"),
+      offres AS (
+        SELECT j."geoCityId" AS id, count(*) AS n FROM "Job" j
+         WHERE j."isActive" AND j."mergedIntoId" IS NULL AND j."geoCityId" IN (SELECT "id" FROM villes) AND j."countryCode" = ANY(${pays}::text[])
+         GROUP BY 1
+        UNION ALL
+        SELECT d."geoCityId", count(*) FROM "DirectOffer" d
+         WHERE ${directPubliable(asOf)} AND d."geoCityId" IN (SELECT "id" FROM villes) AND d."countryCode" = ANY(${pays}::text[])
+         GROUP BY 1
       )
-      SELECT c.valeur, COUNT(*)::int AS n
-        FROM candidates c
-        LEFT JOIN deduit d ON d.cle = c.cle
-       WHERE COALESCE(c.pays, d.p) = ANY(${[...perimetre.pays]})
-       GROUP BY c.valeur
-       ORDER BY COUNT(*) DESC, c.valeur ASC
-       LIMIT ${brut}
-    `;
-    return dedupliquer(rows.map((r) => r.valeur));
+      SELECT v."name", l."label", v."subdivision" FROM villes v
+        LEFT JOIN (SELECT id, sum(n) AS n FROM offres GROUP BY id) o ON o.id = v."id"
+        LEFT JOIN "GeoCityLabel" l ON l."cityId" = v."id" AND l."language" = ${langue}
+       CROSS JOIN cle
+       -- Le nom affiché qui commence par la frappe d'abord (« Lon » : London avant Hounslow, que nomme aussi « London
+       -- Borough of Hounslow ») ; puis le nombre d'offres, puis la population.
+       ORDER BY (catwalks_lieu_cle(coalesce(l."label", v."name")) LIKE cle.k || '%') DESC, coalesce(o.n, 0) DESC, v."population" DESC, v."id"
+       LIMIT ${SUGGEST_LIMIT * 3}`) : [];
+    return dedupliquer([...postaux, ...rows.map(libelleVille)]);
   } catch {
     return [];
   }
+}
+
+/**
+ * D-499 — les codes postaux qui commencent par la frappe (« 9443 », « SW1 », « 75015 Par »), chacun avec le lieu qu'il
+ * dessert et sa subdivision : « 94430 Chennevières-sur-Marne (94) ».
+ */
+async function suggererCodesPostaux(q: string, pays: readonly string[]): Promise<string[]> {
+  const lue = lireSaisieLieu(q);
+  const code = lue.code ?? (/^[0-9A-Z][0-9A-Z -]{0,9}$/i.test(q) ? q : null);
+  if (!code) return [];
+  const rows = await prisma.$queryRaw<Array<{ code: string; lieu: string; sub: string | null }>>(Prisma.sql`
+    SELECT pc."postalCode" AS code, pc."placeName" AS lieu, pc."subdivision" AS sub FROM "GeoPostalCode" pc
+     WHERE pc."countryCode" = ANY(${[...pays]}::text[]) AND char_length(catwalks_code_postal_cle(${code})) >= 2
+       AND pc."postalKey" LIKE catwalks_code_postal_cle(${code}) || '%'
+       AND (${lue.code ? lue.nom : null}::text IS NULL OR pc."placeKey" LIKE catwalks_lieu_cle(${lue.code ? lue.nom : null}::text) || '%')
+       AND NOT EXISTS (SELECT 1 FROM "GeoPostalCode" fin WHERE fin."countryCode" = pc."countryCode"
+         AND fin."postalKey" = pc."postalKey" AND fin."placeKey" LIKE pc."placeKey" || ' %')
+     ORDER BY pc."postalKey", pc."placeName" LIMIT ${SUGGEST_LIMIT}`);
+  return rows.map((r) => `${r.code} ${r.lieu}${r.sub ? ` (${r.sub})` : ''}`);
 }
 
 /**

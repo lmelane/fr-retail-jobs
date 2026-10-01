@@ -36,7 +36,7 @@ export async function GET(request: NextRequest) {
 
   try {
     const locale = request.nextUrl.searchParams.get('locale') ?? undefined;
-    if (type === 'city') return NextResponse.json({ suggestions: await suggestCities(q, perimetre) });
+    if (type === 'city') return NextResponse.json({ suggestions: await suggestCities(q, perimetre, locale) });
     if (type === 'company') return NextResponse.json({ suggestions: await suggestCompanies(q, perimetre) });
     if (type === 'metier') {
       const metiers = await suggestOccupations(q, perimetre, locale);

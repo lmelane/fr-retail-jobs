@@ -4,7 +4,7 @@ import { afterAll, beforeEach, describe, expect, it } from 'vitest';
 import { prisma, Prisma } from '@catwalks/db';
 import { publicJobSql, publicJobWhere } from '@catwalks/db/availability';
 import { DatabaseUnavailableError, getJobs, getJobStatus, getOfferState, getSimilarJobs, getCompanyAside } from './jobs';
-import { suggestCities, suggestTitles } from './suggestions';
+import { suggestTitles } from './suggestions';
 import { exigerPerimetre } from './perimetre';
 
 /** Les offres témoins sont françaises : la recherche se fait sur le marché FR, restreinte à la Maison témoin. */
@@ -106,7 +106,9 @@ describe.skipIf(!enabled)('public availability from source publications', () => 
     const live = await create('live', future);
     await initializeSearchIndex();
     while (await drainSearchIndex()) {}
-    expect(await suggestCities('Expirycity', exigerPerimetre('FR'))).toEqual(['Expirycitylive']);
+    // D-496 : les villes suggérées viennent de la base de villes, plus des offres (proximite-d496.test.ts). Le nombre
+    // d'offres d'une ville n'y est qu'un critère d'ordre, compté sur l'état actif de l'offre, pas sur l'échéance de ses
+    // publications.
     expect(await suggestTitles('ExpiryWitness', exigerPerimetre('FR'))).toEqual(['ExpiryWitness live']);
     const ids = (await recherche()).jobs.map((job) => job.id);
     expect(ids).toContain(live.id);
