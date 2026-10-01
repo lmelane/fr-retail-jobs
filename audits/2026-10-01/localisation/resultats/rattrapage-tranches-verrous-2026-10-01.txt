@@ -1,0 +1,20 @@
+# Rattrapage en tranches sur la même base : 90 000 offres agrégées et 60 directes sans point (stock d'avant la migration)
+# rattrapage-a-blanc.sql : real 88 s (lecture seule)
+# rattrapage-ecriture.sql (tranches de 1 000) :
+INSERT 0 394
+COMMIT
+NOTICE:  rattrapage : 85092 offres agrégées et 60 offres directes écrites, 86 tranches de 1000
+CALL
+Reste à rattraper après écriture (attendu : 0, sauf écriture concurrente)
+ reste 
+-------
+     0
+
+real 103.84
+user 0.00
+sys 0.00
+# Sonde concurrente toutes les 0,3 s (UPDATE d'une offre directe et d'une offre agrégée tirée au hasard) : 578 écritures, les plus longues :
+34.094 ms
+47.945 ms
+63.130 ms
+# villes.py charger --ecrire (base vide) : real 164 s ; aucun verrou sur Job ni DirectOffer relevé (pg_locks échantillonné toutes les 3 s)

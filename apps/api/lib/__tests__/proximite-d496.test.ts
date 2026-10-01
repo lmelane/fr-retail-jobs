@@ -466,8 +466,13 @@ describe.skipIf(!enabled)('la recherche de proximité sur une base locale dédi�
     const ecrire = async () => {
       const script = readFileSync(join(__dirname, '..', '..', '..', 'aggregator', 'scripts', 'geo', 'rattrapage-ecriture.sql'), 'utf8')
         .split('\n').filter((l) => !l.startsWith('\\') && !l.startsWith('--')).join('\n');
-      const instructions = script.split(/;\s*\n/).map((s) => s.trim()).filter((s) => s && !/^(BEGIN|COMMIT)$/i.test(s));
-      await prisma.$transaction(async (tx) => { for (const sql of instructions) await tx.$executeRawUnsafe(sql); }, { timeout: 30_000 });
+      // Les réglages de session (`SET`) restent au script : sur la connexion partagée du témoin, ils survivraient à lui.
+      const instructions = script.split(/;\s*\n/).map((s) => s.trim()).filter((s) => s && !/^(BEGIN|COMMIT|SET\b)/i.test(s));
+      const appels = instructions.filter((s) => /^CALL\b/i.test(s));
+      // PRÉMISSE : le script écrit le point par la procédure en tranches, hors de toute transaction.
+      expect(appels).toEqual(['CALL catwalks_geo_rattrapage_ecrire(1000)']);
+      await prisma.$transaction(async (tx) => { for (const sql of instructions.filter((s) => !appels.includes(s))) await tx.$executeRawUnsafe(sql); }, { timeout: 30_000 });
+      for (const appel of appels) await prisma.$executeRawUnsafe(appel);
     };
     await ecrire();
     expect(await prisma.job.findUniqueOrThrow({ where: { id }, select: { geoSource: true, geoCityId: true } })).toEqual({ geoSource: 'CITY', geoCityId: 3022530 });

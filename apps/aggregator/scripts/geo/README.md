@@ -71,11 +71,28 @@ Chaque étape est rejouable. Les commandes partent de la racine du dépôt.
    python3 apps/aggregator/scripts/ops/db.py readonly sh -c 'psql "$DATABASE_URL" -X -v ON_ERROR_STOP=1 -f apps/aggregator/scripts/geo/rattrapage-a-blanc.sql'
    python3 apps/aggregator/scripts/ops/db.py production sh -c 'psql "$DATABASE_URL" -X -v ON_ERROR_STOP=1 -f apps/aggregator/scripts/geo/rattrapage-ecriture.sql'
    ```
-   Le passage écrit remplace `GeoCityLearned` par l'apprentissage du jour, puis écrit le point des offres ; il finit par
-   `reste = 0`. Seules les colonnes `geo*` des offres sont écrites : aucun déclencheur de l'index de recherche ne se
-   déclenche. Répétition sur base jetable avec les lieux des 93 288 offres de production (01/10/2026) : 83 431 offres
-   écrites, 67 noms appris, second passage sans écriture, et sur 5 000 offres le point écrit est exactement celui que
-   calcule la fonction du déclencheur (`audits/2026-10-01/localisation/resultats/`).
+   Le passage écrit remplace `GeoCityLearned` par l'apprentissage du jour (transaction courte, cette table seule), puis
+   écrit le point des offres EN TRANCHES de 1 000 (`CALL catwalks_geo_rattrapage_ecrire(1000)`) : chaque tranche est
+   validée à part et rend ses verrous de ligne ; `lock_timeout` 2 s, le script s'arrête plutôt que d'attendre une ligne
+   tenue, et se relance. Il finit par `reste = 0`. Seules les colonnes `geo*` sont écrites : aucun déclencheur ne se
+   déclenche. Répétitions sur base jetable :
+   - lieux des 93 288 offres de production : 83 431 offres écrites, 67 noms appris, second passage sans écriture, et
+     sur 5 000 offres le point écrit est exactement celui du déclencheur ;
+   - 90 000 offres agrégées et 60 directes sans point : à blanc 88 s, écriture 104 s (calcul compris) ; une écriture
+     concurrente toutes les 0,3 s sur une offre directe et une offre agrégée, 578 écritures, 63 ms au plus
+     (`audits/2026-10-01/localisation/resultats/rattrapage-tranches-verrous-2026-10-01.txt`).
+
+   **Verrous.** Le chargement de la base de villes (étape 2, 164 s sur base jetable) n'écrit que les tables `Geo*` :
+   aucun verrou sur `Job` ni `DirectOffer`. Le rattrapage ne tient une ligne d'offre que le temps de sa tranche. La
+   migration prend un verrou exclusif bref sur `Job` et `DirectOffer` (colonnes nullables sans défaut, déclencheurs,
+   `lock_timeout` 5 s) ; les deux index sont construits `CONCURRENTLY`, sans bloquer les écritures.
+
+   **Coût du déclencheur pour le RUN** : 0,27 ms par offre NOUVELLE (90 000 insertions : 44,6 s au lieu de 19,5 s),
+   rien pour une offre observée dont le lieu ne change pas (mise à jour d'observation : mêmes temps), 0,23 ms par
+   offre déplacée. Avec 300 à 7 500 offres nouvelles par jour (production, 24-30/09/2026), 0,1 à 2 s par RUN ; au
+   pire, 90 000 offres toutes nouvelles, 25 s (`resultats/cout-declencheur-2026-10-01.txt`). Le calcul est gardé :
+   une erreur laisse le point vide (WARNING `catwalks_geo`), jamais l'écriture de l'offre en échec.
+
 4. **L'API** (promotion `development` → `main`, image `[runtime-images]`) : elle exige les migrations de son contrat
    (`/api/health`). **Elle ne change rien pour catwalks.io** : la proximité, les lieux « Paris (75) », l'ordre par
    distance et l'examen de proximité ne sont servis qu'au client qui envoie `x-catwalks-client: 2`

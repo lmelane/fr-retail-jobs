@@ -1,0 +1,45 @@
+# Coût des déclencheurs du point (base jetable, base de villes complète, 90 000 offres synthétiques : 40 % de coordonnées natives, 9 % de lieux inconnus), 01/10/2026
+# Deux tours alternés, déclencheurs du point désactivés (sans) puis actifs (avec) ; les autres déclencheurs de Job actifs.
+### tour 1 sans
+Time: 0.270 ms
+== INSERT 90 000
+Time: 20964.946 ms (00:20.965)
+== UPDATE observation (ville réécrite à l identique) 90 000
+Time: 18051.503 ms (00:18.052)
+== UPDATE 10 % déplacées
+Time: 1911.834 ms (00:01.912)
+           | 90000
+### tour 1 avec
+Time: 0.112 ms
+== INSERT 90 000
+Time: 45149.250 ms (00:45.149)
+== UPDATE observation (ville réécrite à l identique) 90 000
+Time: 15947.948 ms (00:15.948)
+== UPDATE 10 % déplacées
+Time: 3873.479 ms (00:03.873)
+ CITY      | 58092
+ NATIVE    | 27000
+           |  4908
+### tour 2 sans
+Time: 0.111 ms
+== INSERT 90 000
+Time: 18051.233 ms (00:18.051)
+== UPDATE observation (ville réécrite à l identique) 90 000
+Time: 15990.394 ms (00:15.990)
+== UPDATE 10 % déplacées
+Time: 1900.335 ms (00:01.900)
+           | 90000
+### tour 2 avec
+Time: 0.095 ms
+== INSERT 90 000
+Time: 44055.975 ms (00:44.056)
+== UPDATE observation (ville réécrite à l identique) 90 000
+Time: 15755.819 ms (00:15.756)
+== UPDATE 10 % déplacées
+Time: 4068.629 ms (00:04.069)
+ CITY      | 58092
+ NATIVE    | 27000
+           |  4908
+
+# Offres nouvelles par jour en production (lecture seule, 01/10/2026 15:5x UTC)
+2026-09-24 2607 ; 09-25 1888 ; 09-26 844 ; 09-27 303 ; 09-28 2087 ; 09-29 1976 ; 09-30 7486

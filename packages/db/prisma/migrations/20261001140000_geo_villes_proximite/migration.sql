@@ -211,11 +211,22 @@ BEGIN
 END;
 $$;
 
+-- LE GARDE : le point d'une offre ne fait JAMAIS échouer son écriture. Toute erreur du calcul (lieu inattendu, clé,
+-- `unaccent`, conversion, verrou…) laisse le point vide, que le rattrapage reprendra, et le dit par un WARNING (code,
+-- offre) ; l'ingestion et la synchronisation directe continuent. Seule l'annulation de la requête ENTIÈRE
+-- (`statement_timeout`, annulation de l'appelant), que `WHEN OTHERS` n'attrape pas par construction, reste celle de
+-- l'appelant. Le bloc ne fait que lire : sa sous-transaction ne prend pas d'identifiant de transaction.
 CREATE FUNCTION catwalks_geo_job() RETURNS trigger LANGUAGE plpgsql AS $$
-DECLARE p RECORD;
+DECLARE p RECORD; etat TEXT; message TEXT;
 BEGIN
-  p := catwalks_point_offre(NEW."countryCode", NEW."city", NEW."adminArea1", NEW."latitude", NEW."longitude");
-  NEW."geoCityId" := p."cityId"; NEW."geoLatitude" := p."latitude"; NEW."geoLongitude" := p."longitude"; NEW."geoSource" := p."source";
+  BEGIN
+    p := catwalks_point_offre(NEW."countryCode", NEW."city", NEW."adminArea1", NEW."latitude", NEW."longitude");
+    NEW."geoCityId" := p."cityId"; NEW."geoLatitude" := p."latitude"; NEW."geoLongitude" := p."longitude"; NEW."geoSource" := p."source";
+  EXCEPTION WHEN OTHERS THEN
+    GET STACKED DIAGNOSTICS etat = RETURNED_SQLSTATE, message = MESSAGE_TEXT;
+    NEW."geoCityId" := NULL; NEW."geoLatitude" := NULL; NEW."geoLongitude" := NULL; NEW."geoSource" := NULL;
+    RAISE WARNING 'catwalks_geo: point non calculé, offre % (Job), SQLSTATE % : %', NEW."id", etat, message;
+  END;
   RETURN NEW;
 END;
 $$;
@@ -228,11 +239,18 @@ CREATE TRIGGER catwalks_geo_job_update BEFORE UPDATE OF "city", "countryCode", "
     OR NEW."longitude" IS DISTINCT FROM OLD."longitude")
   EXECUTE FUNCTION catwalks_geo_job();
 
+-- Le même garde que `catwalks_geo_job` : la synchronisation directe n'échoue jamais sur le point.
 CREATE FUNCTION catwalks_geo_offre_directe() RETURNS trigger LANGUAGE plpgsql AS $$
-DECLARE p RECORD;
+DECLARE p RECORD; etat TEXT; message TEXT;
 BEGIN
-  p := catwalks_point_offre(NEW."countryCode", NEW."city", NULL, NEW."latitude", NEW."longitude");
-  NEW."geoCityId" := p."cityId"; NEW."geoLatitude" := p."latitude"; NEW."geoLongitude" := p."longitude"; NEW."geoSource" := p."source";
+  BEGIN
+    p := catwalks_point_offre(NEW."countryCode", NEW."city", NULL, NEW."latitude", NEW."longitude");
+    NEW."geoCityId" := p."cityId"; NEW."geoLatitude" := p."latitude"; NEW."geoLongitude" := p."longitude"; NEW."geoSource" := p."source";
+  EXCEPTION WHEN OTHERS THEN
+    GET STACKED DIAGNOSTICS etat = RETURNED_SQLSTATE, message = MESSAGE_TEXT;
+    NEW."geoCityId" := NULL; NEW."geoLatitude" := NULL; NEW."geoLongitude" := NULL; NEW."geoSource" := NULL;
+    RAISE WARNING 'catwalks_geo: point non calculé, offre % (DirectOffer), SQLSTATE % : %', NEW."id", etat, message;
+  END;
   RETURN NEW;
 END;
 $$;
@@ -323,6 +341,42 @@ LANGUAGE sql STABLE AS $$
     FROM points p
    WHERE (p.cible, p.nouvelle_lat, p.nouvelle_lon, p.nouvelle_source)
          IS DISTINCT FROM (p."geoCityId", p."geoLatitude", p."geoLongitude", p."geoSource")
+$$;
+
+-- L'ÉCRITURE DU RATTRAPAGE, EN TRANCHES : chaque tranche de `tranche` offres est validée à part, et ses verrous de ligne
+-- sont rendus aussitôt. Une offre agrégée ou directe n'est jamais tenue plus longtemps qu'une tranche : la
+-- synchronisation directe (toutes les 5 minutes) et l'ingestion ne peuvent attendre que quelques dizaines de
+-- millisecondes. Le calcul (lecture seule) est fait une fois, avant la première écriture. Une offre n'est écrite que si
+-- ses entrées n'ont pas changé depuis le calcul : une écriture concurrente a déjà recalculé son point par le
+-- déclencheur. Seules les colonnes `geo*` sont écrites : ni le déclencheur du point ni ceux de la recherche ne se
+-- déclenchent. Appelée hors transaction (`CALL`), par scripts/geo/rattrapage-ecriture.sql ; rejouable.
+CREATE PROCEDURE catwalks_geo_rattrapage_ecrire(tranche INTEGER DEFAULT 1000)
+LANGUAGE plpgsql AS $$
+DECLARE
+  c RECORD; n INTEGER; vues INTEGER := 0; jobs INTEGER := 0; directes INTEGER := 0; tranches INTEGER := 0;
+BEGIN
+  IF tranche IS NULL OR tranche < 1 THEN RAISE EXCEPTION 'tranche invalide : %', tranche; END IF;
+  FOR c IN SELECT * FROM catwalks_geo_rattrapage() r ORDER BY r.origine, r."id" LOOP
+    IF c.origine = 'job' THEN
+      UPDATE "Job" j SET "geoCityId" = c."cityId", "geoLatitude" = c.latitude, "geoLongitude" = c.longitude, "geoSource" = c.source
+       WHERE j."id" = c."id" AND j."mergedIntoId" IS NULL
+         AND j."countryCode" IS NOT DISTINCT FROM c.pays AND j."city" IS NOT DISTINCT FROM c.ville
+         AND j."adminArea1" IS NOT DISTINCT FROM c.indice
+         AND j."latitude" IS NOT DISTINCT FROM c.lat AND j."longitude" IS NOT DISTINCT FROM c.lon;
+      GET DIAGNOSTICS n = ROW_COUNT; jobs := jobs + n;
+    ELSE
+      UPDATE "DirectOffer" d SET "geoCityId" = c."cityId", "geoLatitude" = c.latitude, "geoLongitude" = c.longitude, "geoSource" = c.source
+       WHERE d."id" = c."id"
+         AND d."countryCode" IS NOT DISTINCT FROM c.pays AND d."city" IS NOT DISTINCT FROM c.ville
+         AND d."latitude" IS NOT DISTINCT FROM c.lat AND d."longitude" IS NOT DISTINCT FROM c.lon;
+      GET DIAGNOSTICS n = ROW_COUNT; directes := directes + n;
+    END IF;
+    vues := vues + 1;
+    IF vues % tranche = 0 THEN COMMIT; tranches := tranches + 1; END IF;
+  END LOOP;
+  COMMIT;
+  RAISE NOTICE 'rattrapage : % offres agrégées et % offres directes écrites, % tranches de %', jobs, directes, tranches + 1, tranche;
+END;
 $$;
 
 COMMIT;
