@@ -15,6 +15,7 @@ import { describeRequest } from '../capture/context.js';
 import { CRAWLER_IDENTITY } from '../lib/crawlerIdentity.js';
 import { requireSourceValidation, SourceValidationGateError } from './sourceCertification.js';
 import { SourceAdmissionGateError } from './sourceAdmission.js';
+import { isDatabaseFailure } from '../lib/ingestionIssue.js';
 
 const message = (error: unknown) => (error instanceof Error ? error.message : String(error)).replace(/\s+/g, ' ').replace(/(https?:\/\/[^\s'")?]+)\?[^\s'")]*/g, '$1?…').slice(0, 400);
 
@@ -51,6 +52,10 @@ export async function qualifySourceAccess(db: PrismaClient, c: { key: string; ki
     if (decision.verdict === 'ALLOWED' && (decision.written === 1 || (decision as { isLatestDecision?: boolean }).isLatestDecision)) return { allowed: true, reason: null as string | null };
     return { allowed: false, reason: decision.reason ?? JSON.stringify(decision).slice(0, 300) };
   } catch (error) {
+    // A database failure is ours, not a refused access: it keeps its own class (INTERNAL/DATABASE_FAILURE).
+    // RUN du 01/10/2026 : diptyque-workday, une transaction close à 7 446 ms, était rapportée en
+    // `SourceAccessGateError` « Access qualification refused », comme si l'éditeur avait refusé l'accès.
+    if (isDatabaseFailure(error)) throw error;
     const reason = message(error);
     // A failed inspection blocks this attempt. It is not an explicit revocation:
     // do not turn a temporary HTTP/parser/scope error into a permanent denial.

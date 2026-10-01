@@ -14,6 +14,7 @@ import { maintainSourceAccess } from '../connectors/sourceAccessQualification.js
 import { WafChallengeError } from '../lib/wafToken.js';
 import { ingestionIssue, isDecidedKnownFailure, isNonBlockingIssue, isProvenSourceIssue, issuesFromResult, KNOWN_FAILURE_DECISION, type IngestionIssue } from '../lib/ingestionIssue.js';
 import { failureLine } from '../lib/runSummary.js';
+import { SOURCE_WRITE_TRANSACTION } from '../lib/writeLocks.js';
 
 /**
  * Bounded source concurrency with cooperative cancellation. A timed-out source
@@ -242,7 +243,7 @@ async function ingestOne(prisma: PrismaClient, key: string, result: Orchestrator
         },
       });
       await recordSourceRunSummary(tx, key, { status, jobs: 0 });
-    }).catch(async (error) => {
+    }, SOURCE_WRITE_TRANSACTION).catch(async (error) => {
       await log.error('source.record_failed', `[orchestrator] ${key}: failed to record run — ${briefError(error)}`, { error });
       throw error;
     });

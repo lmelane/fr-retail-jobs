@@ -16,7 +16,7 @@ import { lockEmployerCatalogue } from '../lib/writeLocks.js';
 import { resolveEmployer, recordEmployerObservation, type EmployerResolution } from '../identity/resolve.js';
 import { assertSourceRunning } from '../lib/sourceBudget.js';
 import { requireCurrentCaptureRevision } from '../connectors/sourceRevision.js';
-import { lockCompanyRows, lockSourceWrites } from '../lib/writeLocks.js';
+import { lockCompanyRows, lockSourceWrites, SOURCE_WRITE_TRANSACTION } from '../lib/writeLocks.js';
 import { Prisma, type PrismaClient } from '@prisma/client';
 import { selectApplySource, SOURCE_PRIORITY } from '@catwalks/db/publications';
 import { hasRequisitionConflict } from './postingIdentity.js';
@@ -110,7 +110,7 @@ export async function upsertDeduplicated(
             company: null, rule: 'REVIEW_REQUIRED', rawEmployerName: error.rawEmployerName,
             normalizedEmployerName: normalizedEmployerName(error.rawEmployerName),
           });
-        });
+        }, SOURCE_WRITE_TRANSACTION);
         throw error;
       }
       // Retry the entire transaction, never query inside an aborted transaction.

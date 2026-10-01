@@ -15,7 +15,7 @@ import { readRequestData } from './requestDataRead.js';
 import { requireSourceAccess } from '../connectors/sourceAccess.js';
 import { matchingAccessScope, SourceAccessGateError } from '../connectors/accessScope.js';
 import { ingestionQualifications, SOURCE_ADMISSION_POLICY } from '../connectors/sourceAdmission.js';
-import { lockSourceWrites } from '../lib/writeLocks.js';
+import { lockSourceWrites, SOURCE_WRITE_TRANSACTION } from '../lib/writeLocks.js';
 import { HttpStatusError } from '../lib/http.js';
 import { attestNativeFailure } from '../lib/ingestionIssue.js';
 import { captureFailureLabel } from '../lib/transportFailure.js';
@@ -45,7 +45,7 @@ export async function captureExtraction(db: PrismaClient, sourceKey: string, con
       identityReviewId: null, sourceValidationId: qualifications.validation.id,
       policyVersion: SOURCE_ADMISSION_POLICY } });
     return { batch, access };
-  });
+  }, SOURCE_WRITE_TRANSACTION);
   const context: CaptureContext = { sequence: 0, observedAt: batch.startedAt, write: record => persistCapture(db, batch.id, record),
     requestAccess: access ? request => {
       if (Date.now() > access.decision.validUntil!.getTime()) throw new SourceAccessGateError('ACCESS_STALE', 'Access evidence expired during collection');

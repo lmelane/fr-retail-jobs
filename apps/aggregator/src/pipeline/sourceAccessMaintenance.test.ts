@@ -1,11 +1,12 @@
 import '../test/setup-integration.js';
 import { afterAll, afterEach, describe, expect, it, vi } from 'vitest';
-import { PrismaClient, type Source } from '@prisma/client';
+import { Prisma, PrismaClient, type Source } from '@prisma/client';
 import { randomUUID } from 'node:crypto';
 import { maintainSourceAccess } from '../connectors/sourceAccessQualification.js';
 import { recordSourceAccessDecision, requireSourceAccess } from '../connectors/sourceAccess.js';
 import * as certification from '../connectors/sourceCertification.js';
 import * as revision from '../capture/revision.js';
+import * as accessModule from '../connectors/sourceAccess.js';
 import { captureExtraction } from '../capture/batch.js';
 import { fetchAtsJobs } from '../ats/index.js';
 import { ingestAllBySource } from './ingestOrchestrator.js';
@@ -222,5 +223,59 @@ describe('normal run maintains its access prerequisite through the Golden Path',
       descriptionRate: null, dateRate: null, countryRate: null, urlRate: null });
     expect(summary.lastRunAt!.getTime()).toBeGreaterThan(previous.getTime());
     await expect(requireSourceAccess(db, allowed)).resolves.toMatchObject({ decision: { verdict: 'ALLOWED' } });
+  });
+});
+
+/**
+ * RUN du 01/10/2026 : deux sources tombées pour une transaction courte close par le délai par défaut de Prisma (5 s) —
+ * browns-shoes à 5 066 ms, diptyque-workday à 7 446 ms, la seconde rapportée comme un refus d'accès.
+ */
+describe('les transactions du chemin d\'une source survivent à une attente de quelques secondes (RUN du 01/10/2026)', () => {
+  const sourceLock = (key: string) => JSON.stringify(['source-write', key]);
+
+  it('une autre session tient le verrou de la source 6 s : la qualification attend et aboutit', async () => {
+    const source = await create(); native();
+    const holder = new PrismaClient();
+    let release!: () => void, locked!: () => void;
+    const gate = new Promise<void>(resolve => { release = resolve; });
+    const acquired = new Promise<void>(resolve => { locked = resolve; });
+    const holding = holder.$transaction(async tx => {
+      await tx.$queryRaw`SELECT 1 FROM pg_advisory_xact_lock(hashtextextended(${sourceLock(source.key)}, 0))`;
+      locked(); await gate;
+    }, { timeout: 60_000 });
+    try {
+      await acquired;
+      // Prémisse : le verrou de la source est bien tenu ailleurs quand la qualification commence.
+      const [{ free }] = await db.$transaction(tx => tx.$queryRaw<{ free: boolean }[]>`
+        SELECT pg_try_advisory_xact_lock_shared(hashtextextended(${sourceLock(source.key)}, 0)) AS free`);
+      expect(free).toBe(false);
+      const started = Date.now();
+      setTimeout(release, 6_000);
+      await expect(maintain(source)).resolves.toMatchObject({ renewed: true });
+      // Prémisse : la qualification a réellement attendu plus que le délai par défaut de Prisma.
+      expect(Date.now() - started).toBeGreaterThan(5_500);
+    } finally { release(); await holding; await holder.$disconnect(); }
+  }, 30_000);
+
+  it('aucune transaction interactive de la qualification et de la collecte ne tourne au délai par défaut', async () => {
+    const source = await create(); native();
+    const spy = vi.spyOn(db, '$transaction');
+    await maintain(source); await collect(source);
+    const interactive = spy.mock.calls.filter(([work]) => typeof work === 'function');
+    // Prémisse : le chemin a bien ouvert ses transactions (capture, validation, décision d'accès, preuve, collecte).
+    expect(interactive.length).toBeGreaterThanOrEqual(5);
+    const unbounded = interactive.filter(([, options]) => !((options as { timeout?: number } | undefined)?.timeout! >= 30_000));
+    expect(unbounded.map(([work]) => String(work).slice(0, 160))).toEqual([]);
+  });
+
+  it('une panne de base pendant la décision d\'accès reste une panne interne, jamais un refus d\'accès', async () => {
+    const source = await create(); native();
+    const expired = new Prisma.PrismaClientKnownRequestError(
+      'Transaction already closed: A commit cannot be executed on an expired transaction.', { code: 'P2028', clientVersion: Prisma.prismaVersion.client });
+    vi.spyOn(accessModule, 'recordSourceAccessDecision').mockRejectedValueOnce(expired);
+    let failure: unknown;
+    try { await maintain(source); } catch (error) { failure = error; }
+    expect(failure).toBe(expired);
+    expect(ingestionIssue(failure)).toEqual({ origin: 'INTERNAL', code: 'DATABASE_FAILURE', count: 1 });
   });
 });

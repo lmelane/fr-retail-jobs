@@ -19,6 +19,7 @@ import { captureReaderRevision } from './revision.js';
 import { captureFailureLabel } from '../lib/transportFailure.js';
 import { persistCapture, readRawBlob, storeRawBlob } from './store.js';
 import type { ObjectStore } from '../retention/objectStore.js';
+import { SOURCE_WRITE_TRANSACTION } from '../lib/writeLocks.js';
 
 export type SourceEvidencePurpose = 'SOURCE_IDENTITY' | 'SOURCE_ACCESS';
 const ACCEPT = 'text/html,application/xhtml+xml,text/plain;q=0.9,*/*;q=0.1';
@@ -97,7 +98,7 @@ export async function captureSourceEvidence(db: PrismaClient, sourceKey: string,
       return tx.captureBatch.create({ data: { id: randomUUID(), purpose: options.purpose, sourceKey, sourceRevisionId, runId: log.runId(),
         sourceKind: kind, configHash: evidenceHash(config), executionBudget: sourceExecutionBudget(),
         readerRevision: captureReaderRevision(), formatVersion: 3 } });
-    });
+    }, SOURCE_WRITE_TRANSACTION);
     return withCaptureContext({ sequence: 0, observedAt: batch.startedAt, captureRedirectLocations: true,
       write: record => persistCapture(db, batch.id, record) }, async () => {
       try {

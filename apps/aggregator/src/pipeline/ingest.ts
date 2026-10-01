@@ -35,7 +35,7 @@ import { recordIngestionCompletion, type OutputFate } from '../capture/completio
 import { validateCapturedSource } from '../connectors/sourceValidation.js';
 import { SourceAdmissionGateError } from '../connectors/sourceAdmission.js';
 import { requireCurrentCaptureRevision } from '../connectors/sourceRevision.js';
-import { lockSourceWrites } from '../lib/writeLocks.js';
+import { lockSourceWrites, SOURCE_WRITE_TRANSACTION } from '../lib/writeLocks.js';
 import { addIssue, ingestionIssue, type IngestionIssue } from '../lib/ingestionIssue.js';
 
 /**
@@ -297,7 +297,7 @@ async function ingestApiSource(
   await prisma.$transaction(async tx => {
     await lockSourceWrites(tx, stats.source);
     await requireCurrentCaptureRevision(tx, await tx.captureBatch.findUniqueOrThrow({ where: { id: captureBatchId } }));
-  });
+  }, SOURCE_WRITE_TRANSACTION);
   stats.captureBatchId = captureBatchId;
   // A bounded diagnostic envelope only. The enumeration proof itself lives in the
   // sealed manifest of the capture; the refresh reads it there, never from this log.

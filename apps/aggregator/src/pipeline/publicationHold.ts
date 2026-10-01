@@ -2,7 +2,7 @@ import { deactivateCapturedPublication } from './deactivateSources.js';
 import { publicationDisposition } from './publicationDisposition.js';
 import type { PrismaClient } from '@prisma/client';
 import type { NormalizedJob } from '../types.js';
-import { lockSourceWrites } from '../lib/writeLocks.js';
+import { lockSourceWrites, SOURCE_WRITE_TRANSACTION } from '../lib/writeLocks.js';
 import { assertSourceRunning } from '../lib/sourceBudget.js';
 import { requireCurrentCaptureRevision } from '../connectors/sourceRevision.js';
 import { archiveAdapterOutput } from '../capture/observations.js';
@@ -20,7 +20,7 @@ export async function archivePublicationHold(db: PrismaClient, sourceKey: string
     await requireCurrentCaptureRevision(tx, capture.batch);
     await enforcePublicationPolicy(tx, capture, input, 'HOLD');
     assertSourceRunning();
-  });
+  }, SOURCE_WRITE_TRANSACTION);
   if (input.publicationWithdrawnAt && publicationDisposition(input.publicationHold)) {
     await deactivateCapturedPublication(db, input);
   }

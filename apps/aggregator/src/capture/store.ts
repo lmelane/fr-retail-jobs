@@ -6,6 +6,7 @@ import type { PrismaClient, Prisma } from '@prisma/client';
 import type { ObjectStore } from '../retention/objectStore.js';
 import { digestBytes, type CaptureRecord } from './context.js';
 import { validateRequestData } from './requestData.js';
+import { SOURCE_WRITE_TRANSACTION } from '../lib/writeLocks.js';
 
 const gzip = promisify(gzipCallback), gunzip = promisify(gunzipCallback);
 export const MAX_CAPTURE_BYTES = 20_000_000;
@@ -14,7 +15,8 @@ export async function storeRawBlob(db: PrismaClient, bytes: Uint8Array): Promise
   if (bytes.byteLength > MAX_CAPTURE_BYTES) throw new Error('Capture exceeds the bounded body size');
   const hash = digestBytes(bytes);
   const payload = await gzip(bytes, { level: 6 });
-  await db.$transaction(tx => ensureBlob(tx, hash, bytes.byteLength, payload));
+  // A body can weigh megabytes and waits on its hash lock: the source write budget, not Prisma's 5 s default.
+  await db.$transaction(tx => ensureBlob(tx, hash, bytes.byteLength, payload), SOURCE_WRITE_TRANSACTION);
   return hash;
 }
 

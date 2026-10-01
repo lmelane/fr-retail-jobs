@@ -11,7 +11,7 @@ import { readRawBlob } from '../capture/store.js';
 import { recoverRetainedPublication, PER_PUBLICATION_REASONS } from '../publication/recovery.js';
 import { evidenceHash } from '../lib/evidenceHash.js';
 import { effectiveSourceConfig } from './sourceConfig.js';
-import { lockSourceWrites } from '../lib/writeLocks.js';
+import { lockSourceWrites, SOURCE_WRITE_TRANSACTION } from '../lib/writeLocks.js';
 import { withSourceBudget } from '../lib/sourceBudget.js';
 import { certifiedPortalIdentity, type CertifiedPortalIdentity } from './sourceIdentity.js';
 import { employerFromCertifiedScope } from '../identity/portalEmployer.js';
@@ -144,7 +144,7 @@ export async function validateCapturedSource(db: PrismaClient, batchId: string, 
     }
     return tx.sourceValidation.create({ data: { sourceRevisionId: batch.sourceRevisionId!, captureBatchId: batch.id,
       readerRevision, policyVersion: SOURCE_VALIDATION_POLICY, verdict, report: report as unknown as Prisma.InputJsonValue } });
-  });
+  }, SOURCE_WRITE_TRANSACTION);
 }
 
 /** Capture the currently registered settings, then validate their sealed native

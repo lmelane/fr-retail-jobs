@@ -72,12 +72,16 @@ export function attestNativeFailure(error: Error, evidence: { captureBatchId: st
     captureBatchId: evidence.captureBatchId, rawCaptureId: evidence.rawCaptureId });
 }
 
+/** A failure raised by our database client: ours, whatever the step that met it. */
+export function isDatabaseFailure(error: unknown): boolean {
+  return error instanceof Prisma.PrismaClientKnownRequestError || error instanceof Prisma.PrismaClientUnknownRequestError ||
+    error instanceof Prisma.PrismaClientInitializationError || error instanceof Prisma.PrismaClientRustPanicError ||
+    error instanceof Prisma.PrismaClientValidationError;
+}
+
 export function ingestionIssue(error: unknown): IngestionIssue {
   if (error instanceof Error && nativeFailures.has(error)) return { ...nativeFailures.get(error)! };
-  if (error instanceof Prisma.PrismaClientKnownRequestError || error instanceof Prisma.PrismaClientUnknownRequestError ||
-      error instanceof Prisma.PrismaClientInitializationError || error instanceof Prisma.PrismaClientRustPanicError ||
-      error instanceof Prisma.PrismaClientValidationError)
-    return { origin: 'INTERNAL', code: 'DATABASE_FAILURE', count: 1 };
+  if (isDatabaseFailure(error)) return { origin: 'INTERNAL', code: 'DATABASE_FAILURE', count: 1 };
   if (error instanceof CaptureUnavailableError || error instanceof OfflineReplayError || error instanceof ObservabilityUnavailableError)
     return { origin: 'INTERNAL', code: error.name, count: 1 };
   // D-453: undici raises every network/TLS failure as TypeError('fetch failed', { cause }). The class

@@ -2,7 +2,7 @@ import { Prisma, type PrismaClient, type SourceAccessDecision } from '@prisma/cl
 import { captureReaderRevision } from '../capture/revision.js';
 import { evidenceHash } from '../lib/evidenceHash.js';
 import { OWNER_DECISION_AT, OWNER_DECISION_SCOPE } from '../lib/accessDecision.js';
-import { lockSourceWrites } from '../lib/writeLocks.js';
+import { lockSourceWrites, SOURCE_WRITE_TRANSACTION } from '../lib/writeLocks.js';
 import { assertPipelineRunning } from '../lib/pipelinePause.js';
 import { assertSourceRunning } from '../lib/sourceBudget.js';
 import type { ObjectStore } from '../retention/objectStore.js';
@@ -106,5 +106,5 @@ export async function recordSourceAccessDecision(db: PrismaClient, input: unknow
     return { sourceKey: current.key, sourceRevisionId: current.currentRevisionId, decisionId: id, verdict: document.verdict,
       captureBatchId: document.captureBatchId, requestCount: report?.requestCount ?? 0, observations: report?.observations ?? null,
       validUntil: report?.validUntil ?? null, written, isLatestDecision: apply ? latest?.id === id : null };
-  });
+  }, SOURCE_WRITE_TRANSACTION);
 }
