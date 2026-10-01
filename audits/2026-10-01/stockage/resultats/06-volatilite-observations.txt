@@ -1,0 +1,35 @@
+Timing is on.
+    cle_qui_change    | paires | sources 
+----------------------+--------+---------
+ detail               |    385 |      16
+ postedOn             |    246 |      10
+ postingEvidence      |    206 |      16
+ updatedDate          |     47 |       1
+ isNew                |     35 |       1
+ meta_data            |     31 |       1
+ isApplyFlowJob       |     31 |       1
+ update_date          |     31 |       1
+ personioDetail       |     11 |       4
+ metaCityData         |      6 |       1
+ organization         |      4 |       1
+ successfactorsDetail |      3 |       2
+ datePosted           |      2 |       1
+ _highlightResult     |      2 |       1
+ posted_date          |      1 |       1
+ createdDate          |      1 |       1
+ profile              |      1 |       1
+ street_address       |      1 |       1
+ summary              |      1 |       1
+ title                |      1 |       1
+ _geoloc              |      1 |       1
+ create_date          |      1 |       1
+ jobDescriptions      |      1 |       1
+ key_missions         |      1 |       1
+ listingEvidence      |      1 |       1
+
+Time: 1607.525 ms (00:01.608)
+ echantillon | avec_version_precedente 
+-------------+-------------------------
+        1247 |                    1117
+
+Time: 37.514 ms

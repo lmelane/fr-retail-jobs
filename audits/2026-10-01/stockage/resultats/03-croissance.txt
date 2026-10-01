@@ -1,0 +1,217 @@
+Timing is on.
+== Fenêtre : première et dernière création de blob
+    premier_blob     |    dernier_blob     
+---------------------+---------------------
+ 2026-09-18 10:28:29 | 2026-10-01 18:03:22
+
+Time: 58.899 ms
+== RawBlob/RawBlobBody : blobs NOUVEAUX par jour et octets gzip ajoutés (exact)
+    jour    | blobs_nouveaux | gzip_mo | disque_mo_estime | decompresse_mo 
+------------+----------------+---------+------------------+----------------
+ 2026-09-18 |          50692 |     366 |              399 |           2346
+ 2026-09-19 |         134099 |    1091 |             1189 |           5503
+ 2026-09-20 |          83974 |     660 |              719 |           3466
+ 2026-09-22 |              5 |       0 |                0 |              0
+ 2026-09-23 |         271949 |    2553 |             2783 |          12964
+ 2026-09-24 |         124105 |    1392 |             1517 |           7250
+ 2026-09-25 |         115637 |    1170 |             1275 |           5983
+ 2026-09-26 |         112036 |    1149 |             1253 |           5885
+ 2026-09-27 |          82219 |     813 |              886 |           4205
+ 2026-09-28 |         117125 |    1189 |             1296 |           6239
+ 2026-09-29 |          86520 |     828 |              902 |           4255
+ 2026-09-30 |         180327 |    1930 |             2104 |           9788
+ 2026-10-01 |         116159 |    1164 |             1269 |           5716
+
+Time: 356.220 ms
+== Nature des blobs : réponse native, enveloppe de requête, sortie d extraction, manifeste, rapport — 5 % des blocs
+       nature        | echantillon | gzip_moy | pct_octets | go_extrapoles 
+---------------------+-------------+----------+------------+---------------
+ 1-reponse-native    |       35416 |    16412 |       82.0 |         11.63
+ 2-sortie-extraction |       31488 |     3795 |       16.9 |          2.39
+ 3-enveloppe-requete |        4059 |      429 |        0.2 |          0.03
+ 4-manifeste         |        1098 |     5895 |        0.9 |          0.13
+ 5-rapport-ingestion |         286 |      394 |        0.0 |          0.00
+
+Time: 908.311 ms
+== Même partage, par jour (5 % des blocs, Mo extrapolés × 20)
+    jour    | reponse_mo | extraction_mo | autre_mo 
+------------+------------+---------------+----------
+ 2026-09-18 |        265 |           116 |        8
+ 2026-09-19 |       1066 |           152 |       13
+ 2026-09-20 |        584 |            87 |       11
+ 2026-09-23 |       2356 |           547 |       42
+ 2026-09-24 |       1349 |           186 |        8
+ 2026-09-25 |        978 |           235 |        6
+ 2026-09-26 |        904 |           179 |       16
+ 2026-09-27 |        714 |           136 |        8
+ 2026-09-28 |       1007 |           180 |        4
+ 2026-09-29 |        739 |           164 |        8
+ 2026-09-30 |       1565 |           308 |       21
+ 2026-10-01 |        885 |           193 |        9
+
+Time: 2851.628 ms (00:02.852)
+== RawCapture : captures par jour (5 % des blocs × 20) et Mo (table + index) au coût moyen par ligne
+    jour    | captures_estimees | mo_estimes 
+------------+-------------------+------------
+ 2026-09-18 |             10660 |         11
+ 2026-09-19 |             67360 |         69
+ 2026-09-20 |             60160 |         61
+ 2026-09-23 |            221820 |        227
+ 2026-09-24 |            110100 |        112
+ 2026-09-25 |             99880 |        102
+ 2026-09-26 |            111940 |        114
+ 2026-09-27 |             64040 |         65
+ 2026-09-28 |            108920 |        111
+ 2026-09-29 |             70240 |         72
+ 2026-09-30 |            165820 |        169
+ 2026-10-01 |             99360 |        102
+
+Time: 42.735 ms
+== SourceExtraction : sorties par jour (5 % des blocs × 20) et Mo (table + index)
+    jour    | sorties_estimees | mo_estimes 
+------------+------------------+------------
+ 2026-09-18 |            53520 |         32
+ 2026-09-19 |            79800 |         48
+ 2026-09-20 |           106460 |         64
+ 2026-09-23 |           307740 |        185
+ 2026-09-24 |           154980 |         93
+ 2026-09-25 |           140020 |         84
+ 2026-09-26 |           172820 |        104
+ 2026-09-27 |            95060 |         57
+ 2026-09-28 |           166340 |        100
+ 2026-09-29 |            80800 |         49
+ 2026-09-30 |           230620 |        139
+ 2026-10-01 |           137360 |         83
+
+Time: 207.611 ms
+== SourceObservation : observations par jour (exact) et Mo de JSON stocké + coût fixe de ligne et d index
+    jour    | observations | raw_mo | total_mo 
+------------+--------------+--------+----------
+ 2026-09-18 |         8569 |     40 |       47
+ 2026-09-19 |        14692 |     64 |       76
+ 2026-09-20 |        25503 |    165 |      185
+ 2026-09-23 |        82469 |    515 |      582
+ 2026-09-24 |        37694 |    194 |      224
+ 2026-09-25 |        34912 |    181 |      210
+ 2026-09-26 |        33681 |    177 |      204
+ 2026-09-27 |        32877 |    173 |      199
+ 2026-09-28 |        33069 |    177 |      204
+ 2026-09-29 |        32101 |    174 |      200
+ 2026-09-30 |        53649 |    270 |      313
+ 2026-10-01 |        33178 |    176 |      203
+
+Time: 130.296 ms
+== Job : offres créées par jour (exact) — les mises à jour, elles, ne se datent pas : voir le gonflement en 02
+    jour    | offres_creees 
+------------+---------------
+ 2026-09-18 |          6156
+ 2026-09-19 |         11673
+ 2026-09-20 |         17054
+ 2026-09-23 |         39702
+ 2026-09-24 |          4119
+ 2026-09-25 |          1888
+ 2026-09-26 |           844
+ 2026-09-27 |           303
+ 2026-09-28 |          2087
+ 2026-09-29 |          1976
+ 2026-09-30 |          7486
+ 2026-10-01 |          2078
+
+Time: 143.799 ms
+== JobSource : publications vues pour la première fois par jour (exact)
+    jour    | publications 
+------------+--------------
+ 2026-09-18 |         6156
+ 2026-09-19 |        11674
+ 2026-09-20 |        17519
+ 2026-09-23 |        39785
+ 2026-09-24 |         4130
+ 2026-09-25 |         1895
+ 2026-09-26 |          845
+ 2026-09-27 |          303
+ 2026-09-28 |         2103
+ 2026-09-29 |         1988
+ 2026-09-30 |         7943
+ 2026-10-01 |         2085
+
+Time: 97.803 ms
+== Petites tables d observation et de journal : lignes par jour (exact)
+           t           |    jour    | count  
+-----------------------+------------+--------
+ EmployerObservation   | 2026-09-18 |  11066
+ EmployerObservation   | 2026-09-19 |  14995
+ EmployerObservation   | 2026-09-20 |  25036
+ EmployerObservation   | 2026-09-23 | 106042
+ EmployerObservation   | 2026-09-24 |  40752
+ EmployerObservation   | 2026-09-25 |  34722
+ EmployerObservation   | 2026-09-26 |  32953
+ EmployerObservation   | 2026-09-27 |  31713
+ EmployerObservation   | 2026-09-28 |  31770
+ EmployerObservation   | 2026-09-29 |  31350
+ EmployerObservation   | 2026-09-30 |  56188
+ EmployerObservation   | 2026-10-01 |  32157
+ OccupationObservation | 2026-09-18 |   6221
+ OccupationObservation | 2026-09-19 |  11675
+ OccupationObservation | 2026-09-20 |  17519
+ OccupationObservation | 2026-09-23 |  39856
+ OccupationObservation | 2026-09-24 |   4223
+ OccupationObservation | 2026-09-25 |   2020
+ OccupationObservation | 2026-09-26 |    866
+ OccupationObservation | 2026-09-27 |    307
+ OccupationObservation | 2026-09-28 |   2211
+ OccupationObservation | 2026-09-29 |   2071
+ OccupationObservation | 2026-09-30 | 100893
+ OccupationObservation | 2026-10-01 |   2168
+ PipelineEvent         | 2026-09-18 |   8047
+ PipelineEvent         | 2026-09-19 |   5602
+ PipelineEvent         | 2026-09-20 |   7200
+ PipelineEvent         | 2026-09-22 |     22
+ PipelineEvent         | 2026-09-23 |  29280
+ PipelineEvent         | 2026-09-24 |   6962
+ PipelineEvent         | 2026-09-25 |   6648
+ PipelineEvent         | 2026-09-26 |   6832
+ PipelineEvent         | 2026-09-27 |   7500
+ PipelineEvent         | 2026-09-28 |   8273
+ PipelineEvent         | 2026-09-29 |   7875
+ PipelineEvent         | 2026-09-30 |   9850
+ PipelineEvent         | 2026-10-01 |   6391
+
+Time: 951.018 ms
+== CaptureBatch : tentatives par jour et par finalité (exact)
+    jour    |     purpose     | count 
+------------+-----------------+-------
+ 2026-09-18 | JOBS            |   736
+ 2026-09-18 | SOURCE_IDENTITY |  1634
+ 2026-09-18 | SOURCE_ACCESS   |   391
+ 2026-09-19 | JOBS            |   794
+ 2026-09-19 | SOURCE_IDENTITY |  2522
+ 2026-09-19 | SOURCE_ACCESS   |   390
+ 2026-09-20 | JOBS            |   611
+ 2026-09-20 | SOURCE_IDENTITY |  1761
+ 2026-09-20 | SOURCE_ACCESS   |   325
+ 2026-09-22 | JOBS            |     2
+ 2026-09-22 | SOURCE_IDENTITY |     1
+ 2026-09-22 | SOURCE_ACCESS   |     1
+ 2026-09-23 | JOBS            |  1671
+ 2026-09-23 | SOURCE_IDENTITY |   191
+ 2026-09-23 | SOURCE_ACCESS   |   854
+ 2026-09-24 | JOBS            |   833
+ 2026-09-24 | SOURCE_IDENTITY |    21
+ 2026-09-24 | SOURCE_ACCESS   |   442
+ 2026-09-25 | JOBS            |   822
+ 2026-09-25 | SOURCE_ACCESS   |   437
+ 2026-09-26 | JOBS            |   822
+ 2026-09-26 | SOURCE_ACCESS   |   437
+ 2026-09-27 | JOBS            |   783
+ 2026-09-28 | JOBS            |   825
+ 2026-09-28 | SOURCE_IDENTITY |     2
+ 2026-09-28 | SOURCE_ACCESS   |   438
+ 2026-09-29 | JOBS            |   747
+ 2026-09-29 | SOURCE_ACCESS   |     2
+ 2026-09-30 | JOBS            |   942
+ 2026-09-30 | SOURCE_IDENTITY |    11
+ 2026-09-30 | SOURCE_ACCESS   |   509
+ 2026-10-01 | JOBS            |   816
+ 2026-10-01 | SOURCE_ACCESS   |   434
+
+Time: 34.514 ms

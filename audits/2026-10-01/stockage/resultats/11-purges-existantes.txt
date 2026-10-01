@@ -1,0 +1,23 @@
+== SourceRun : élagué à 10 jours à chaque RUN (apps/aggregator/src/pipeline/health.ts, HISTORY = 10)
+    plus_ancienne    |    plus_recente     | count 
+---------------------+---------------------+-------
+ 2026-09-22 21:57:25 | 2026-10-01 18:08:01 |  4625
+
+== Archive des corps bruts (src/retention, script manuel scripts/ops/retention.mts) : pointeurs écrits
+ archives | premiere 
+----------+----------
+        0 | 
+
+== Tables sans aucune purge : plus ancienne ligne
+           t           |    plus_ancienne    | count  
+-----------------------+---------------------+--------
+ PipelineEvent         | 2026-09-18 04:45:07 | 110518
+ OccupationObservation | 2026-09-18 07:10:31 | 190092
+ EmployerObservation   | 2026-09-18 10:28:33 | 451126
+ SourceObservation     | 2026-09-18 05:39:29 | 424781
+
+== File de recherche par génération (la génération non servie n est vidée par personne)
+       version        | en_attente 
+----------------------+------------
+ search-4-20260924-v2 |      23047
+

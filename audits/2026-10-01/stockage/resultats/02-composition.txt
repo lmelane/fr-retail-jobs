@@ -1,0 +1,56 @@
+Timing is on.
+== RawBlobBody : corps gzip. Taille stockée vs octets gzip déclarés (RawBlob.gzipLength) — 1 % des blocs
+ echantillon | moy_stocke | moy_gzip_declare | moy_decompresse | ratio_gzip 
+-------------+------------+------------------+-----------------+------------
+       14836 |      10468 |            10467 |           57299 |        5.5
+
+Time: 683.258 ms
+== RawBlob : somme exacte des octets gzip encore chauds (corps présent) et archivés (pointeur distant)
+   (RawBlob est un tas de 257 Mo sans TOAST ; le parcours est borné par le délai de 25 s de db.py readonly)
+  blobs  | corps_presents_stat | gzip_octets | gzip_total | decompresse_total | archives 
+---------+---------------------+-------------+------------+-------------------+----------
+ 1474096 |             1474085 | 14281626461 | 13 GB      | 68 GB             |        0
+
+Time: 132.002 ms
+== Job : taille stockée par colonne lourde — 10 % des blocs
+ echantillon | description | raw  | search_text | search_vector | title_vector | occupation_evidence | employment_evidence | lourdes_par_ligne | lourdes_vivant_estime | tas_plus_toast_fichier 
+-------------+-------------+------+-------------+---------------+--------------+---------------------+---------------------+-------------------+-----------------------+------------------------
+        9433 |        2732 | 5475 |        2658 |          3573 |          101 |                 648 |                 456 |             15642 | 1421 MB               | 2283 MB
+
+Time: 33.171 ms
+== JobSource : raw / presentation / sourceFacts / expiryEvidence — 10 % des blocs
+ echantillon | raw  | presentation | source_facts | expiry_evidence | lourdes_vivant_estime | tas_plus_toast_fichier 
+-------------+------+--------------+--------------+-----------------+-----------------------+------------------------
+        9296 | 5479 |         4078 |         1073 |             274 | 978 MB                | 1285 MB
+
+Time: 33.762 ms
+== SourceObservation : raw (sortie d adaptateur) — 5 % des blocs ; part déjà déplacée vers un blob
+ echantillon | raw_vide | avec_pointeur_blob | avec_capture | raw_moy | raw_vivant_estime | tas_plus_toast_fichier 
+-------------+----------+--------------------+--------------+---------+-------------------+------------------------
+       21896 |        0 |                  0 |        21896 |    5641 | 2200 MB           | 2564 MB
+
+Time: 26.615 ms
+== SearchDocument : par génération — 10 % des blocs
+       version        | echantillon | document_moy | vector_moy 
+----------------------+-------------+--------------+------------
+ search-4-20260924-v2 |        8852 |         3298 |       6261
+ search-5-20260924-v2 |        9793 |         3288 |       6267
+
+Time: 40.517 ms
+ vivant_estime | tas_plus_toast_fichier 
+---------------+------------------------
+ 1746 MB       | 2847 MB
+
+Time: 29.502 ms
+== RawCapture : ce qui pèse dans une ligne de capture (pas de TOAST : tout est dans le tas) — 2 % des blocs
+ echantillon | headers | request_url | cookie_names | failure | sans_corps 
+-------------+---------+-------------+--------------+---------+------------
+       24042 |     129 |         120 |           53 |      18 |          4
+
+Time: 30.473 ms
+== OccupationObservation : decision / before — 10 % des blocs
+ echantillon | decision | before 
+-------------+----------+--------
+       18922 |      861 |    477
+
+Time: 42.419 ms

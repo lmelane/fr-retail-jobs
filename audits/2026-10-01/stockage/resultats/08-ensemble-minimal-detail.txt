@@ -1,0 +1,11 @@
+Timing is on.
+                      famille                       | tentatives | plus_ancienne | blobs  | go_gzip 
+----------------------------------------------------+------------+---------------+--------+---------
+ a-derniere par source et finalite: JOBS            |        427 | 2026-09-23    | 125748 |    0.86
+ a-derniere par source et finalite: SOURCE_ACCESS   |        424 | 2026-09-18    |    246 |    0.00
+ a-derniere par source et finalite: SOURCE_IDENTITY |        420 | 2026-09-18    |    428 |    0.02
+ b-derniere JOBS achevee                            |        417 | 2026-09-18    | 139054 |    0.92
+ c-derniere validation par revision                 |        450 | 2026-09-18    | 161252 |    1.23
+ d-citee par publication active                     |       1300 | 2026-09-18    | 523127 |    5.05
+
+Time: 2529.521 ms (00:02.530)

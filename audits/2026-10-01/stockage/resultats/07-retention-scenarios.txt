@@ -1,0 +1,24 @@
+Timing is on.
+== A. Octets gzip par âge de la dernière référence (5 % des blocs de RawBlob, × 20)
+ age_derniere_reference | blobs_estimes | go_gzip_estimes 
+------------------------+---------------+-----------------
+ 0-moins de 1 j         |        270640 |            1.69
+ 1-1 à 3 j              |        274400 |            3.09
+ 2-3 à 7 j              |        382820 |            3.94
+ 3-7 à 14 j             |        516680 |            5.71
+
+Time: 5380.230 ms (00:05.380)
+== B. Ensemble chaud MINIMAL : blobs cités par les tentatives qui décident encore quelque chose (exact)
+   = dernière tentative par (source, finalité) + dernière tentative JOBS achevée par source
+   + tentative de la dernière validation de chaque révision + tentative citée par une publication active
+ tentatives_retenues | blobs  | go_gzip | pct_du_total 
+---------------------+--------+---------+--------------
+                2194 | 622232 |    5.39 |         37.6
+
+Time: 3739.020 ms (00:03.739)
+== C. Pour comparaison : les tentatives des 3 et 7 derniers jours (exact sur CaptureBatch, blobs dédupliqués)
+ go_gzip_3_jours | go_gzip_7_jours 
+-----------------+-----------------
+            4.84 |            8.86
+
+Time: 9941.456 ms (00:09.941)

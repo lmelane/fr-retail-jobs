@@ -1,0 +1,23 @@
+Timing is on.
+ isActive | absorbee | offres 
+----------+----------+--------
+ f        | f        |   5019
+ t        | f        |  90404
+
+Time: 94.773 ms
+ isActive | publications 
+----------+--------------
+ f        |         5092
+ t        |        91391
+
+Time: 32.139 ms
+ sources_avec_collecte_14j 
+---------------------------
+                       427
+
+Time: 37.055 ms
+ octets_base_maintenant |          a          
+------------------------+---------------------
+            29676779199 | 2026-10-01 18:10:04
+
+Time: 22.048 ms

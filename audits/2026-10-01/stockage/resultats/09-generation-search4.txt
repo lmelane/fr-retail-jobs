@@ -1,0 +1,19 @@
+Timing is on.
+       version        |            readyAt            
+----------------------+-------------------------------
+ search-4-20260924-v2 | 2026-09-26 07:33:53.480505+00
+ search-5-20260924-v2 | 2026-09-30 20:46:30.356968+00
+
+Time: 19.289 ms
+       version        | en_attente |    plus_ancienne    
+----------------------+------------+---------------------
+ search-4-20260924-v2 |      23041 | 2026-09-30 21:10:17
+
+Time: 26.500 ms
+== Part de chaque génération dans la charge vivante de SearchDocument (10 % des blocs, × 10)
+       version        | documents_estimes | go_charge_vivante | go_de_la_table_au_prorata 
+----------------------+-------------------+-------------------+---------------------------
+ search-4-20260924-v2 |             98190 |              0.97 |                      1.71
+ search-5-20260924-v2 |             92150 |              0.89 |                      1.56
+
+Time: 29.590 ms

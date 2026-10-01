@@ -1,0 +1,6 @@
+Timing is on.
+ publications | canoniques | job_raw_egal_jobsource_raw | avec_observation | derniere_observation_egale_jobsource_raw | observations_par_publication | max_observations 
+--------------+------------+----------------------------+------------------+------------------------------------------+------------------------------+------------------
+          524 |        516 |                        516 |              524 |                                      521 |                         4.29 |               13
+
+Time: 700.446 ms
