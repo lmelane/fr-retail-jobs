@@ -1,0 +1,20 @@
+cas                                            avant                 apres  résultats identiques à avant
+FR Conseiller de vente                  419 ms (9)           284 ms (9)   oui
+Time: 9170.112 ms (00:09.170)
+Time: 386.083 ms
+Time: 423.294 ms
+Time: 276.486 ms
+Time: 418.933 ms
+Time: 283.887 ms
+Time: 570.622 ms
+Time: 283.013 ms
+Time: 418.052 ms
+Time: 279.663 ms
+Time: 398.143 ms
+Time: 316.086 ms
+Time: 373.259 ms
+Time: 273.084 ms
+Time: 432.551 ms
+Time: 296.356 ms
+Time: 402.437 ms
+Time: 317.451 ms
