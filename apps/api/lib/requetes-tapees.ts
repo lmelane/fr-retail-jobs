@@ -16,10 +16,10 @@ import { searchWords } from './search-intent';
  * recherches d'un visiteur (le site interroge le catalogue directement) ; il n'aurait rien à y ajouter.
  *
  * Une requête n'est suggérée qu'à partir de `SEUIL_POPULAIRE` occurrences tapées sur `JOURS_MIN_POPULAIRE` jours
- * distincts, sans négation ni critère refusé, et seulement si chacun de ses mots est écrit dans l'intitulé d'une même offre
- * du marché (`suggestions-canoniques.ts`) : une suite de mots poussée à la main au-delà du seuil ne devient pas une
- * suggestion si aucune offre ne la porte. Une requête restée sous le seuil s'efface
- * `PURGE_JOURS` jours après sa dernière occurrence ; toute requête, `CONSERVATION_MAX_JOURS` jours après.
+ * distincts, sans négation ni critère refusé, sans contrat, niveau ni lieu, et seulement si ses mots (métier, famille, mots
+ * libres) sont écrits dans l'intitulé d'une même offre du marché (`suggestions-canoniques.ts`) : une suite de mots poussée à
+ * la main au-delà du seuil ne devient pas une suggestion si aucune offre ne la porte. Une requête jamais devenue populaire
+ * s'efface `PURGE_JOURS` jours après sa dernière occurrence ; toute requête, `CONSERVATION_MAX_JOURS` jours après.
  */
 export const SEUIL_POPULAIRE = 10;
 /** Et tapée au moins ces jours distincts : une seule personne qui insiste un soir ne fait pas une recherche populaire. */
@@ -27,15 +27,27 @@ export const JOURS_MIN_POPULAIRE = 3;
 
 /**
  * LES REQUÊTES QUI NE SONT NI GARDÉES NI SUGGÉRÉES (audits métier et technique du 01/10/2026) : une négation (« vendeuse
- * sans … » ferait suggérer n'importe quel mot exclu) ; un critère de sexe, d'âge, de grossesse, de religion ou d'origine,
- * qu'une offre ne peut pas exiger (Code du travail, L1132-1, L1142-1) et que Catwalks ne suggère jamais. Mots normalisés
- * (`searchWords` : minuscules, sans accents).
+ * sans … » ferait suggérer n'importe quel mot exclu) ; un mot qui désigne une personne par son sexe, son âge, une grossesse
+ * ou une religion, en français, anglais, allemand, italien et espagnol (Code du travail, L1132-1, L1142-1) : Catwalks ne
+ * suggère jamais une recherche qui se lirait comme ce critère. C'est une LISTE, pas une compréhension : l'origine n'y est
+ * pas (« français », « arabe » sont aussi des langues demandées), ni un âge écrit en chiffres ; « féminin » et
+ * « masculin » n'y sont pas, ils qualifient une collection (« prêt-à-porter féminin »). Mots normalisés (`searchWords` :
+ * minuscules, sans accents).
  */
 export const NEGATIONS: ReadonlySet<string> = new Set(['sans', 'without', 'excluding', 'except', 'not', 'hors', 'pas', 'non', 'no', 'ohne', 'senza', 'sin']);
-export const CRITERES_REFUSES: ReadonlySet<string> = new Set(['homme', 'hommes', 'femme', 'femmes', 'men', 'mens', 'women', 'womens', 'man',
-  'woman', 'male', 'female', 'males', 'females', 'masculin', 'masculine', 'feminin', 'feminine', 'garcon', 'garcons', 'fille', 'filles',
-  'monsieur', 'madame', 'mademoiselle', 'jeune', 'jeunes', 'vieux', 'vieille', 'enceinte', 'enceintes', 'grossesse', 'voile', 'voilee',
-  'musulman', 'musulmane', 'muslim', 'juif', 'juive', 'jewish', 'chretien', 'chretienne', 'catholique', 'religion', 'ethnie', 'race']);
+export const CRITERES_REFUSES: ReadonlySet<string> = new Set([
+  // Le sexe : français, anglais, allemand, italien, espagnol.
+  'homme', 'hommes', 'femme', 'femmes', 'garcon', 'garcons', 'fille', 'filles', 'monsieur', 'madame', 'mademoiselle',
+  'man', 'men', 'mens', 'woman', 'women', 'womens', 'male', 'males', 'female', 'females', 'lady', 'ladies', 'gentleman', 'gentlemen',
+  'girl', 'girls', 'boy', 'boys', 'frau', 'frauen', 'mann', 'manner', 'damen', 'herren', 'donna', 'donne', 'uomo', 'uomini', 'ragazza',
+  'ragazze', 'ragazzo', 'ragazzi', 'mujer', 'mujeres', 'hombre', 'hombres', 'chica', 'chicas', 'chico', 'chicos',
+  // L'âge.
+  'jeune', 'jeunes', 'vieux', 'vieille', 'young', 'jung', 'junge', 'giovane', 'giovani', 'joven', 'jovenes',
+  // La grossesse.
+  'enceinte', 'enceintes', 'grossesse', 'pregnant', 'schwanger', 'incinta', 'embarazada',
+  // La religion.
+  'voile', 'voilee', 'hijab', 'kopftuch', 'musulman', 'musulmane', 'muslim', 'muslima', 'musulmana', 'juif', 'juive', 'jewish', 'ebreo',
+  'judio', 'judia', 'chretien', 'chretienne', 'christian', 'cristiano', 'cristiana', 'catholique', 'religion', 'ethnie', 'race']);
 /** La requête (mots normalisés) porte-t-elle une négation ou un critère refusé ? */
 export const requeteRefusee = (mots: readonly string[]) => mots.some((m) => NEGATIONS.has(m) || CRITERES_REFUSES.has(m));
 export const PURGE_JOURS = 30;
@@ -89,17 +101,18 @@ export async function enregistrerRequete(marche: string, q: string): Promise<boo
 }
 
 /**
- * Efface les requêtes restées sous le seuil `PURGE_JOURS` jours après leur dernière occurrence, et toute requête que
- * personne n'a tapée depuis `CONSERVATION_MAX_JOURS`. Rend leur nombre.
+ * Efface les requêtes jamais devenues populaires (sous le seuil d'occurrences OU de jours distincts) `PURGE_JOURS` jours
+ * après leur dernière occurrence, et toute requête que personne n'a tapée depuis `CONSERVATION_MAX_JOURS`. Rend leur
+ * nombre. Une insistance d'un seul soir (500 occurrences, un jour) n'est pas populaire : elle part à 30 jours (audit 2).
  */
 export async function purgerRequetes(): Promise<number> {
   return prisma.$executeRaw(Prisma.sql`DELETE FROM "RequeteTapee"
-    WHERE ("occurrences" < ${SEUIL_POPULAIRE} AND "derniereLe" < CURRENT_DATE - ${PURGE_JOURS}::int)
+    WHERE (("occurrences" < ${SEUIL_POPULAIRE} OR "jours" < ${JOURS_MIN_POPULAIRE}) AND "derniereLe" < CURRENT_DATE - ${PURGE_JOURS}::int)
        OR "derniereLe" < CURRENT_DATE - ${CONSERVATION_MAX_JOURS}::int`);
 }
 
-/** La purge de la boucle de l'API : au plus une fois par heure, qu'il y ait eu des enregistrements ou non. Silencieuse si
- * la table n'existe pas encore (migration à venir). */
+/** La purge de la boucle de l'API : au plus une fois par heure, qu'il y ait eu des enregistrements ou non. Un échec (table
+ * absente, base indisponible) ne casse rien : il est journalisé, au plus une fois par heure. */
 export async function purgerRequetesSiDue(): Promise<void> {
   if (Date.now() - dernierePurge < PURGE_INTERVALLE_MS) return;
   dernierePurge = Date.now();

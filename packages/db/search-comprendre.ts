@@ -16,12 +16,16 @@ export { MOTS_DE_LIAISON };
  * d'une offre, qui reste tel que l'employeur l'a écrit ([[D-500]] §3).
  */
 
-/** Les terminaisons d'une écriture inclusive : « (ère) », « ·rice », « .e », « /se », « *in »… (sans accents ni casse). */
-const SUFFIXES = ['e', 'es', 'ere', 'eres', 'euse', 'euses', 'se', 'ses', 'rice', 'rices', 'trice', 'trices', 'ice', 'ienne',
-  'iennes', 'enne', 'ne', 'le', 'te', 'fe', 've', 'a', 'as'];
+/** Les terminaisons d'une écriture inclusive : « (ère) », « ·rice », « .e », « /se », « (sse) », « *in »… (sans accents ni casse). */
+const SUFFIXES = ['e', 'es', 'ere', 'eres', 'euse', 'euses', 'se', 'ses', 'sse', 'sses', 'rice', 'rices', 'trice', 'trices', 'ice',
+  'ienne', 'iennes', 'enne', 'ne', 'le', 'te', 'fe', 've', 'a', 'as'];
 const SUFFIXES_PARENTHESE = [...SUFFIXES, 's', 'x', 'in', 'innen'];
 const SUFFIXES_TIRET = ['e', 'ere', 'euse', 'rice', 'trice', 'ienne'];
 const SUFFIXES_ALLEMANDS = ['in', 'innen'];
+/** « in » et « innen » ne sont une terminaison allemande qu'après un nom de personne (« Verkäufer/in », « Student*in ») :
+ * « Visual/In store » reste deux mots (audit du 01/10/2026). */
+const NOM_ALLEMAND = /(?:er|or|ent|ant|ist|at|eur)$/;
+const finAllemande = (mot: string, fin: string) => !estSuffixe(fin, SUFFIXES_ALLEMANDS) || NOM_ALLEMAND.test(sansAccents(mot));
 
 const sansAccents = (v: string) => v.normalize('NFKD').replace(/\p{M}/gu, '').toLowerCase();
 const estSuffixe = (v: string, liste: readonly string[]) => liste.includes(sansAccents(v.trim()));
@@ -58,18 +62,18 @@ export function replierRequete(texte: string): string {
   for (const m of MARQUES) s = s.replace(m, ' ');
   s = s
     // « conseiller(ère) », « vendeur (se) », « vendeur(s) »
-    .replace(/(\p{L}{3,})\s?\(\s*(\p{L}{1,6})\s*\)/gu, (tout, mot: string, fin: string) => (estSuffixe(fin, SUFFIXES_PARENTHESE) ? mot : tout))
+    .replace(/(\p{L}{3,})\s?\(\s*(\p{L}{1,6})\s*\)/gu, (tout, mot: string, fin: string) => (estSuffixe(fin, SUFFIXES_PARENTHESE) && finAllemande(mot, fin) ? mot : tout))
     // « conseiller·ère », « conseiller.e.s », « vendeur.se » (le point seul ne porte jamais « in » : « linked.in »)
     .replace(/(\p{L}{3,})[·•⋅∙.](\p{L}{1,6})(?:[·•⋅∙.](?:s|es))?(?![\p{L}\p{N}])/gu, (tout, mot: string, fin: string) => (estSuffixe(fin, SUFFIXES) ? mot : tout))
     // « Verkäufer*in », « Verkäufer:innen », « Verkäufer_in »
-    .replace(/(\p{L}{3,})[*:_](\p{L}{2,5})(?![\p{L}\p{N}])/gu, (tout, mot: string, fin: string) => (estSuffixe(fin, SUFFIXES_ALLEMANDS) ? mot : tout))
+    .replace(/(\p{L}{3,})[*:_](\p{L}{2,5})(?![\p{L}\p{N}])/gu, (tout, mot: string, fin: string) => (estSuffixe(fin, SUFFIXES_ALLEMANDS) && finAllemande(mot, fin) ? mot : tout))
     // « chargé-e », « conseiller-ère » (jamais « make-up » : la fin doit être une terminaison)
     .replace(/(\p{L}{3,})-(\p{L}{1,6})(?![\p{L}\p{N}])/gu, (tout, mot: string, fin: string) => (estSuffixe(fin, SUFFIXES_TIRET) ? mot : tout))
     // « directeur/rice », « vendeur / se », « addetto/a », « Verkäufer/in », puis « conseiller/conseillère » : le second
     // mot n'est replié que s'il est une forme genrée du premier (« communication/community », « marketing/marketplace »
     // restent deux mots ; audit technique du 01/10/2026).
     .replace(/(\p{L}{3,})\s*\/\s*(\p{L}{1,})(?![\p{L}\p{N}])/gu, (tout, mot: string, autre: string) =>
-      estSuffixe(autre, [...SUFFIXES, ...SUFFIXES_ALLEMANDS]) || (autre.length >= 3 && formeGenree(mot, autre)) ? mot : tout);
+      (estSuffixe(autre, [...SUFFIXES, ...SUFFIXES_ALLEMANDS]) && finAllemande(mot, autre)) || (autre.length >= 3 && formeGenree(mot, autre)) ? mot : tout);
   return s.replace(/\s+/g, ' ').trim();
 }
 
@@ -84,7 +88,7 @@ export const sansLiaisons = (mots: readonly string[]) => mots.filter((m) => !MOT
  */
 const FEMININS: [RegExp, string][] = [
   [/trice$/, 'teur'], [/ienne$/, 'ien'], [/enne$/, 'en'], [/iere$/, 'ier'], [/ere$/, 'er'], [/euse$/, 'eur'], [/effe$/, 'ef'],
-  [/elle$/, 'el'], [/ive$/, 'if'], [/ante$/, 'ant'], [/ente$/, 'ent'], [/ointe$/, 'oint'], [/ee$/, 'e'], [/erin$/, 'er'],
+  [/esse$/, 'e'], [/elle$/, 'el'], [/ive$/, 'if'], [/ante$/, 'ant'], [/ente$/, 'ent'], [/ointe$/, 'oint'], [/ee$/, 'e'], [/erin$/, 'er'],
   [/innen$/, ''], [/in$/, ''], [/frau$/, 'mann'], [/ora$/, 'or'], [/etta$/, 'etto'], [/essa$/, 'esso'], [/ata$/, 'ato'],
   [/ada$/, 'ado'], [/a$/, 'o'], [/e$/, ''],
 ];

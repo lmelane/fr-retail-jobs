@@ -123,14 +123,18 @@ const accentue = (v: string) => /[^\p{ASCII}]/u.test(v);
 /** Une variante s'affiche avec ses majuscules d'origine, sauf une casse de titre (« Make-up Artist » → « Make-up artist »). */
 /** Des sigles courants des intitulés, gardés en capitales même dans un intitulé tout en capitales (« CRM MANAGER »). */
 const SIGLES = new Set(['CRM', 'RH', 'HR', 'IT', 'VM', 'B2B', 'B2C', 'SAV', 'KAM', 'CEO', 'CFO', 'COO', 'CTO', 'CMO', 'DRH', 'DAF', 'PR', 'RP',
-  'UX', 'UI', 'SEO', 'SEA', 'QA', 'QHSE', 'HSE', 'R&D', 'L&D', 'ADV', 'BI', 'ERP', 'SAP', 'PLM', '3D', '2D', 'CDP', 'PMO', 'TV', 'DJ']);
+  'UX', 'UI', 'SEO', 'SEA', 'QA', 'QHSE', 'HSE', 'R&D', 'L&D', 'ADV', 'BI', 'ERP', 'SAP', 'PLM', '3D', '2D', 'CDP', 'PMO', 'TV', 'DJ',
+  'PAP', 'VIP', 'VIC', 'RTW', 'PLV', 'LVMH']);
+/** Dans un intitulé en casse mêlée, un mot en capitales de 2 ou 3 lettres est un sigle (« Vendeur PAP ») ; de 4, seulement
+ * s'il est connu ou sans voyelle (« LVMH », mais « Vendeur LUXE » → « Vendeur luxe ») : audit 2. */
+const sigleEnCasseMelee = (m: string) => /^[\p{Lu}\d&]{2,4}$/u.test(m) && (m.length <= 3 || !/[AEIOUYÀÂÄÉÈÊËÎÏÔÖÙÛÜ]/u.test(m));
 export function casse(texte: string): string {
   const mots = texte.split(/(\s+)/);
   const toutEnCapitales = !/\p{Ll}/u.test(texte);
   let premier = true;
   return mots.map((m) => {
     if (/^\s+$/.test(m)) return m;
-    const sigle = (/^[\p{Lu}\d&]{2,4}$/u.test(m) && !toutEnCapitales) || SIGLES.has(m.toUpperCase().replace(/[^\p{L}\d&]/gu, '')) && /^[\p{Lu}\d&]+$/u.test(m);
+    const sigle = (sigleEnCasseMelee(m) && !toutEnCapitales) || SIGLES.has(m.toUpperCase().replace(/[^\p{L}\d&]/gu, '')) && /^[\p{Lu}\d&]+$/u.test(m);
     let r = sigle ? m : m.toLocaleLowerCase('fr');
     if (premier && !sigle) r = r.charAt(0).toLocaleUpperCase('fr') + r.slice(1);
     premier = false;
@@ -229,9 +233,14 @@ async function lignesDeMetier(model: Modele, perimetre: Perimetre, frappe: strin
 }
 
 // ── 2. Les intitulés nettoyés ──────────────────────────────────────────────────────────────────────────────────────
-const CONTRATS = new Set(['cdi', 'cdd', 'stage', 'alternance', 'alternant', 'alternante', 'apprentissage', 'apprenti', 'apprentie', 'interim',
-  'freelance', 'vie', 'ftc', 'permanent', 'temporaire', 'temporary', 'saisonnier', 'saisonniere', 'etudiant', 'etudiante', 'extra', 'extras',
-  'renfort', 'soldes', 'weekend', 'samedi', 'dimanche', 'h', 'hrs', 'hours', 'heures', 'month', 'months', 'mois', 'm', 'w', 'f', 'x', 'nb']);
+const CONTRATS = new Set(['cdi', 'cdd', 'stage', 'stagiaire', 'alternance', 'alternant', 'alternante', 'apprentissage', 'apprenti', 'apprentie',
+  'interim', 'freelance', 'ftc', 'permanent', 'temporaire', 'temporary', 'saisonnier', 'saisonniere', 'etudiant', 'etudiante', 'extra', 'extras',
+  'renfort', 'soldes', 'noel', 'ete', 'weekend', 'samedi', 'dimanche', 'h', 'hrs', 'hours', 'heures', 'month', 'months', 'mois', 'm', 'w', 'f',
+  'x', 'nb',
+  // Les saisons et contrats des autres langues des marchés (audit 2 : « Christmas sales advisor » était servi).
+  'christmas', 'xmas', 'seasonal', 'holiday', 'holidays', 'summer', 'saturday', 'sunday', 'casual', 'graduate', 'intern', 'internship',
+  'apprentice', 'apprenticeship', 'werkstudent', 'werkstudentin', 'praktikant', 'praktikantin', 'praktikum', 'aushilfe', 'minijob', 'befristet',
+  'stagista', 'tirocinio', 'tirocinante', 'becario', 'becaria', 'practicas', 'temporal']);
 const CONTRATS_EN_DEUX_MOTS = ['temps partiel', 'temps plein', 'mi temps', 'part time', 'full time', 'fixed term', 'tiempo parcial', 'teilzeit', 'vollzeit',
   'week end', 'jeune diplome', 'jeune diplomee'];
 const NIVEAUX = new Set(['junior', 'jr', 'senior', 'sr', 'confirme', 'confirmee', 'experimente', 'experimentee', 'experimentes', 'experienced', 'debutant',
@@ -278,6 +287,8 @@ export function nettoyerIntitule(titre: string, villes: ReadonlySet<string>): st
     if (CONTRATS_EN_DEUX_MOTS.includes(n[i])) garde[i] = false;
     const mot = n[i];
     if (CONTRATS.has(mot) || NIVEAUX.has(mot) || /^\d/.test(mot) || /^\d+(?:[.,]\d+)?h$/.test(mot)) garde[i] = false;
+    // Le volontariat international en entreprise s'écrit « VIE » ; « cycle de vie », « assurance Vie » restent (audit 2).
+    if (/^V\.?I\.?E\.?$/.test(jetons[i]) && !['de', 'du', 'la', 'en'].includes(n[i - 1] ?? '')) garde[i] = false;
   }
   const restants = jetons.filter((_, i) => garde[i]);
   // Les mots orphelins de fin (« en », « de ») et un dernier mot d'une ou deux lettres, que le nettoyage a laissés.
@@ -291,7 +302,7 @@ export function nettoyerIntitule(titre: string, villes: ReadonlySet<string>): st
 }
 
 /** La clé d'un intitulé, au masculin (« Conseillère esthéticienne polyvalente » et sa forme masculine ne font qu'une ligne). */
-const MASCULINS: [RegExp, string][] = [[/trice$/, 'teur'], [/ienne$/, 'ien'], [/enne$/, 'en'], [/iere$/, 'ier'], [/ere$/, 'er'], [/euse$/, 'eur'],
+const MASCULINS: [RegExp, string][] = [[/trice$/, 'teur'], [/ienne$/, 'ien'], [/enne$/, 'en'], [/iere$/, 'ier'], [/ere$/, 'er'], [/euse$/, 'eur'], [/esse$/, 'e'],
   [/ive$/, 'if'], [/ante$/, 'ant'], [/ente$/, 'ent'], [/ointe$/, 'oint'], [/elle$/, 'el'], [/ee$/, 'e']];
 export const cleAuMasculin = (e: string) => e.split(' ').map((m) => {
   if (m.length < 6) return m;
@@ -490,17 +501,14 @@ export async function suggestTitlesCanoniques(query: string, perimetre: Perimetr
     const intitules = rows.flatMap((r) => (r.valeur ? [normal(r.valeur)] : []));
     const lignes = await lignesDeMetier(model, perimetre, frappe, libelle, intitules);
     const vues = new Set(lignes.map((l) => cleAuMasculin(normal(l.valeur))));
-    // Un intitulé ou une requête qui nomme exactement un métier ne fait pas une ligne de plus : la ligne du métier suffit.
-    // Une ligne de texte libre : pas déjà vue ; qui ne nomme pas exactement un métier ; dont le métier que la classification
-    // y lit est bien celui que cherche sa recherche (« Retail sales advisor » se lirait Conseiller de vente mais chercherait
-    // une famille et le mot « advisor ») : audit métier. Un candidat illisible (plus de 64 mots…) est écarté, seul.
+    // Un intitulé ou une requête qui nomme un métier, ou les mots d'une de ses expressions dans un autre ordre, ne fait pas
+    // une ligne de plus : la ligne du métier suffit (audit métier). Un candidat illisible (plus de 64 mots…) est écarté, seul,
+    // et journalisé.
     const libres = (e: string, valeur: string) => {
       try {
-        if (vues.has(cleAuMasculin(e)) || metierNomme(model, valeur)) return false;
-        const lus = model.resolver.titleConcepts(valeur).roles;
-        const cherches = new Set(model.intention(valeur, perimetre.marche, { comprendre: true }).clauses.filter((c) => c.kind === 'role').flatMap((c) => c.keys));
-        return lus.every((r) => cherches.has(r));
-      } catch {
+        return !vues.has(cleAuMasculin(e)) && !metierNomme(model, valeur);
+      } catch (error) {
+        console.warn(JSON.stringify({ event: 'suggestions.candidat_ecarte', error: error instanceof Error ? error.name : 'unknown' }));
         return false;
       }
     };
@@ -514,10 +522,16 @@ export async function suggestTitlesCanoniques(query: string, perimetre: Perimetr
       }
     }
     if (reste() > 0 && populaires.length) {
-      const proposes = populaires.filter((p) => libres(p.cle, p.libelle)).slice(0, Math.min(reste(), POPULAIRES_VERIFIEES));
-      const ok = await verifiees(model, perimetre, proposes.map((p) => ({ valeur: p.libelle })));
-      for (const p of proposes) if (ok.has(p.libelle) && reste() > 0 && !vues.has(cleAuMasculin(p.cle))) {
-        lignes.push({ valeur: p.libelle, metier: null, nature: 'populaire' });
+      // Une recherche populaire suit les règles d'un intitulé : sans contrat, niveau ni lieu (celle qui en porte n'est pas
+      // proposée, elle n'est pas réécrite), en casse de phrase, noms de Maisons dans leur graphie (audit 2).
+      const propres = populaires.flatMap((p) => {
+        const net = nettoyerIntitule(p.libelle, villes);
+        return net && normal(net) === normal(p.libelle) ? [{ ...p, valeur: remettreLesMaisons(model, accentuer(model, net)) }] : [];
+      });
+      const proposes = propres.filter((p) => libres(p.cle, p.valeur)).slice(0, Math.min(reste(), POPULAIRES_VERIFIEES));
+      const ok = await verifiees(model, perimetre, proposes.map((p) => ({ valeur: p.valeur })));
+      for (const p of proposes) if (ok.has(p.valeur) && reste() > 0 && !vues.has(cleAuMasculin(p.cle))) {
+        lignes.push({ valeur: p.valeur, metier: null, nature: 'populaire' });
         vues.add(cleAuMasculin(p.cle));
       }
     }

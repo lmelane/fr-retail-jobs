@@ -5,7 +5,7 @@
 -- normalisée, avec son nombre d'occurrences, le nombre de jours distincts où elle a été tapée et deux DATES (jour, sans
 -- heure). Aucun identifiant de compte ni d'appareil, aucune adresse IP, aucun horodatage par recherche : rien ne relie
 -- une ligne à une personne. Une requête n'est suggérée qu'au-delà d'un seuil d'occurrences et de jours distincts ;
--- celles restées sous le seuil sont purgées après 30 jours, toutes après un an sans occurrence
+-- celles jamais devenues populaires sont purgées après 30 jours, toutes après un an sans occurrence
 -- (`apps/api/lib/requetes-tapees.ts`). Rien ne s'y écrit en production tant que l'agrégateur n'a pas levé sa garde
 -- (`ENREGISTREMENT_EN_PRODUCTION`) et que le site n'a pas posé `REQUETES_TAPEES_ACTIF=1`, après la validation juridique.
 SET lock_timeout = '5s';

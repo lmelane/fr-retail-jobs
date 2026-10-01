@@ -206,7 +206,20 @@ describe.skipIf(!enabled)('D-500, D-501 : la recherche comprend la requête', ()
 
   it('Q2 : un intitulé nettoyé perd contrat, durée, marque, crochets, ville et niveau ; le titre natif reste intact', async () => {
     const villes = new Set(['toulouse', 'paris', 'saint tropez']);
-    expect(nettoyerIntitule('Conseiller de Vente CDD Noël', villes)).toBe('Conseiller de vente noël');
+    expect(nettoyerIntitule('Conseiller de Vente CDD Noël', villes)).toBe('Conseiller de vente');
+    // Les saisons et contrats des autres langues ; « VIE » (volontariat) part, « cycle de vie » reste (audit 2).
+    expect(nettoyerIntitule('Christmas Sales Advisor', villes)).toBe('Sales advisor');
+    expect(nettoyerIntitule('Seasonal Casual Sales Associate', villes)).toBe('Sales associate');
+    expect(nettoyerIntitule('Verkäufer Aushilfe', villes)).toBe('Verkäufer');
+    expect(nettoyerIntitule('Business Developer VIE', villes)).toBe('Business developer');
+    expect(nettoyerIntitule('Responsable cycle de vie client', villes)).toBe('Responsable cycle de vie client');
+    expect(nettoyerIntitule('RESPONSABLE CYCLE DE VIE CLIENT', villes)).toBe('Responsable cycle de vie client');
+    // Les sigles du luxe restent en capitales ; un mot en capitales n'est pas un sigle (« Vendeur LUXE ») : audit 2.
+    expect(nettoyerIntitule('VENDEUR PAP', villes)).toBe('Vendeur PAP');
+    expect(nettoyerIntitule('RESPONSABLE VIP', villes)).toBe('Responsable VIP');
+    expect(nettoyerIntitule('Vendeur LUXE', villes)).toBe('Vendeur luxe');
+    expect(nettoyerIntitule('Conseiller de vente MODE', villes)).toBe('Conseiller de vente mode');
+    expect(nettoyerIntitule('Hôte(sse) de caisse', villes)).toBe('Hôte de caisse');
     expect(nettoyerIntitule('[Fashion] Responsable Boutique Flagship', villes)).toBe('Responsable boutique flagship');
     expect(nettoyerIntitule('VISUAL MERCHANDISER MANAGER // CDI', villes)).toBe('Visual merchandiser manager');
     expect(nettoyerIntitule('Sales Advisor Saint Tropez', villes)).toBe('Sales advisor');
@@ -236,20 +249,25 @@ describe.skipIf(!enabled)('D-500, D-501 : la recherche comprend la requête', ()
       ('FR', 'conseiller vente styliste', 'conseiller vente styliste', ${SEUIL_POPULAIRE - 1}, ${j}),
       ('FR', 'conseiller ignoble', 'conseiller ignoble', ${SEUIL_POPULAIRE * 50}, ${j}),
       ('FR', 'travaillerez boutique', 'travaillerez boutique', ${SEUIL_POPULAIRE * 50}, ${j}),
-      ('FR', 'vendeur polyvalent toulouse', 'vendeur polyvalent toulouse', ${SEUIL_POPULAIRE * 50}, ${j - 1}),
+      ('FR', 'vendeur huiles essentielles', 'vendeur huiles essentielles', ${SEUIL_POPULAIRE * 50}, ${j - 1}),
+      ('FR', 'vendeur polyvalent toulouse', 'vendeur polyvalent toulouse', ${SEUIL_POPULAIRE * 50}, ${j}),
       ('FR', 'conseillere de vente sans boutique', 'conseillère de vente sans boutique', ${SEUIL_POPULAIRE * 50}, ${j})`);
     // PRÉMISSE : « travaillerez boutique » mène à une offre (« Styliste », par sa description), mais aucun intitulé ne porte
     // ses deux mots.
     expect((await getJobs({ marche: 'FR', q: 'travaillerez boutique', comprendre: true, filtres: {} })).total).toBeGreaterThan(0);
     const s = await suggestTitlesCanoniques('conseill', exigerPerimetre('FR'), 'fr');
-    expect(s).toContainEqual({ valeur: 'conseillère de vente luxe', metier: null, nature: 'populaire' });
+    // Affichée comme un intitulé : en casse de phrase (audit 2).
+    expect(s).toContainEqual({ valeur: 'Conseillère de vente luxe', metier: null, nature: 'populaire' });
     expect(s.map((x) => x.valeur)).not.toContain('conseiller vente styliste');
     // Une insistance sur moins de jours que le minimum ne fait pas une recherche populaire, même à 500 occurrences ; la même
     // requête, tapée sur assez de jours, en est une (prémisse : elle passe toutes les autres vérifications).
     const vendeur = async () => (await suggestTitlesCanoniques('vendeur', exigerPerimetre('FR'), 'fr')).map((x) => x.valeur);
-    expect(await vendeur()).not.toContain('vendeur polyvalent toulouse');
-    await prisma.$executeRaw(Prisma.sql`UPDATE "RequeteTapee" SET "jours" = ${j} WHERE "marche" = 'FR' AND "cle" = 'vendeur polyvalent toulouse'`);
-    expect(await vendeur()).toContain('vendeur polyvalent toulouse');
+    expect(await vendeur()).not.toContain('Vendeur huiles essentielles');
+    await prisma.$executeRaw(Prisma.sql`UPDATE "RequeteTapee" SET "jours" = ${j} WHERE "marche" = 'FR' AND "cle" = 'vendeur huiles essentielles'`);
+    expect(await vendeur()).toContain('Vendeur huiles essentielles');
+    // Une recherche populaire qui porte un lieu (ou un contrat) n'est pas proposée, et n'est pas réécrite (audit 2) ;
+    // PRÉMISSE : elle passe le seuil et les jours, et une offre écrit ses trois mots (« Vendeur polyvalent CDD Toulouse »).
+    expect((await vendeur()).join(' | ').toLowerCase()).not.toContain('toulouse');
     // Une négation n'est jamais suggérée : rien ne prouverait le mot exclu (audit technique).
     expect(s.map((x) => x.valeur)).not.toContain('conseillère de vente sans boutique');
     // Poussée au-delà du seuil, une suite de mots qu'aucun intitulé n'écrit ne devient pas une suggestion, même quand une
@@ -274,14 +292,20 @@ describe.skipIf(!enabled)('D-500, D-501 : la recherche comprend la requête', ()
     const [jour] = await prisma.$queryRaw<{ jours: number }[]>`SELECT "jours" FROM "RequeteTapee" WHERE "marche" = 'FR' AND "cle" = 'vendeuse chanel'`;
     expect(jour.jours).toBe(1);
     // Refusées à l'enregistrement : une négation, un critère de sexe, de grossesse ou de religion, un téléphone espacé.
-    for (const refusee of ['vendeuse sans voile', 'vendeur homme', 'vendeuse enceinte', 'sales advisor not muslim', '06 12 34 56', 'ß'])
+    for (const refusee of ['vendeuse sans dior', 'sales advisor without chanel', 'vendeur homme', 'vendeuse enceinte', 'sales advisor muslim',
+      'vendedora mujer', 'verkäuferin jung', 'commessa donna', '06 12 34 56', 'ß'])
       expect(formeGardee(refusee), refusee).toBeNull();
+    // Une collection n'est pas un critère : « prêt-à-porter féminin » est gardé (audit 2).
+    expect(formeGardee('Vendeuse prêt-à-porter féminin')).not.toBeNull();
     await prisma.$executeRaw(Prisma.sql`INSERT INTO "RequeteTapee"("marche", "cle", "libelle", "occurrences", "premiereLe", "derniereLe") VALUES
       ('BE', 'vieille rare', 'vieille rare', 2, CURRENT_DATE - ${PURGE_JOURS + 10}::int, CURRENT_DATE - ${PURGE_JOURS + 1}::int),
       ('BE', 'vieille populaire', 'vieille populaire', ${SEUIL_POPULAIRE}, CURRENT_DATE - ${PURGE_JOURS + 10}::int, CURRENT_DATE - ${PURGE_JOURS + 1}::int),
+      ('BE', 'insistance d un soir', 'insistance d un soir', ${SEUIL_POPULAIRE * 50}, CURRENT_DATE - ${PURGE_JOURS + 1}::int, CURRENT_DATE - ${PURGE_JOURS + 1}::int),
       ('BE', 'recente rare', 'recente rare', 2, CURRENT_DATE - ${PURGE_JOURS + 10}::int, CURRENT_DATE - ${PURGE_JOURS - 1}::int),
       ('BE', 'oubliee populaire', 'oubliee populaire', ${SEUIL_POPULAIRE * 5}, CURRENT_DATE - ${CONSERVATION_MAX_JOURS + 30}::int, CURRENT_DATE - ${CONSERVATION_MAX_JOURS + 1}::int)`);
-    expect(await purgerRequetes()).toBe(2);
+    // Une populaire a ses jours ; l'insistance d'un soir (500 occurrences, un jour) n'en a pas et part à 30 jours (audit 2).
+    await prisma.$executeRaw(Prisma.sql`UPDATE "RequeteTapee" SET "jours" = ${JOURS_MIN_POPULAIRE} WHERE "marche" = 'BE' AND "cle" IN ('vieille populaire', 'oubliee populaire')`);
+    expect(await purgerRequetes()).toBe(3);
     const restent = await prisma.$queryRaw<{ cle: string }[]>`SELECT "cle" FROM "RequeteTapee" WHERE "marche" = 'BE' ORDER BY "cle"`;
     expect(restent.map((r) => r.cle)).toEqual(['recente rare', 'vieille populaire']);
     // La garde de l'agrégateur : en production, rien n'est enregistré tant que la constante n'est pas levée (D-501).

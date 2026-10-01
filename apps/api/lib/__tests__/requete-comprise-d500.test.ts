@@ -91,6 +91,13 @@ describe('D-500 (Q1) : la requête comprise', () => {
     expect(replierRequete('commercial/communication')).toBe('commercial/communication');
     expect(replierRequete('marketing/marketplace')).toBe('marketing/marketplace');
     expect(roles(compris('communication/community manager'))).toEqual(roles(avant('communication/community manager')));
+    // Le féminin en « -esse » (audit 2) ; « in » n'est une terminaison allemande qu'après un nom de personne.
+    expect(replierRequete('hôte(sse) de caisse')).toBe('hôte de caisse');
+    expect(replierRequete('hôte/hôtesse de caisse')).toBe('hôte de caisse');
+    expect(replierRequete("maître/maîtresse d'hôtel")).toBe("maître d'hôtel");
+    expect(replierRequete('Verkäufer/in')).toBe('Verkäufer');
+    expect(replierRequete('Berater/In')).toBe('Berater');
+    expect(replierRequete('Visual/In store')).toBe('Visual/In store');
   });
 
   it('une forme de base n’est ajoutée que si le vocabulaire des métiers la connaît (« paris » ne devient pas « pari »)', () => {

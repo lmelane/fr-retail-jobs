@@ -129,6 +129,10 @@ describe.skipIf(!enabled)('sans le signal du client, le contrat d’avant ce lot
   };
 
   it('PRÉMISSE : le témoin exerce les formes du défaut (écriture inclusive, marque, liaison omise) et un curseur', async () => {
+    // Les frappes et le lieu au focus lisent tout le marché français : le document n'est comparable que sur une base où
+    // le témoin est seul (`npm run test:local` en crée une neuve). Une autre offre française le rendrait rouge sans défaut.
+    const autres = await prisma.job.count({ where: { isActive: true, countryCode: { in: ['FR', 'MC'] }, NOT: { id: { startsWith: P } } } });
+    expect(autres, 'base non vierge : d’autres offres françaises actives que celles du témoin').toBe(0);
     expect((await getJobs(avecGroupe({ q: 'conseiller de vente' }))).suivant).not.toBeNull();
     expect((await getJobs(avecGroupe({ q: 'conseiller(ère) de vente' }))).total).toBeLessThan((await getJobs(avecGroupe({ q: 'conseiller de vente' }))).total);
   });
