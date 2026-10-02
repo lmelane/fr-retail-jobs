@@ -19,6 +19,8 @@ import { incrementalPassActive } from '../lib/incrementalReading.js';
 import { inRunWindow, LIGHT_PASS_HOURS_UTC } from '@catwalks/runtime';
 import { WAF_BOOTSTRAP_SOURCES } from '../connectors/wafBootstrap.js';
 import { remediationLine, remediationNote, remediationOf, transientKind, type Remediation, type TransientKind } from './ordinaryCauses.js';
+import { recordCollectionState } from './sourceStateStore.js';
+import type { CollectionKind, CollectionOutcome, SourceState } from './sourceState.js';
 
 /**
  * Bounded source concurrency with cooperative cancellation. A timed-out source
@@ -71,6 +73,12 @@ export type OrchestratorResult = {
   pendingRetry?: { source: string; cause: TransientKind }[];
   /** D-520 : les reprises faites dans ce RUN, et si elles ont absorbé l'échec. */
   retries?: { source: string; cause: TransientKind; absorbed: boolean }[];
+  /** D-520 : l'état opérationnel calculé et écrit après chaque collecte de ce run. */
+  states?: SourceState[];
+  /** D-520 : les sources dont l'état n'a pas pu être écrit ; une panne du système pour la réconciliation du RUN. */
+  stateFailures?: string[];
+  /** D-520 : la nature de la collecte pour l'état ; par défaut RUN, ou PASSE sous une passe incrémentale. */
+  collectionKind?: CollectionKind;
 };
 
 /**
@@ -201,6 +209,23 @@ async function remediationsOf(prisma: PrismaClient, key: string, issues: readonl
 }
 const notes = (remediations: readonly Remediation[]) => [...new Set(remediations.map(remediationNote))].join(' ; ');
 const alertLines = (remediations: readonly Remediation[]) => [...new Set(remediations.map(remediationLine))];
+
+
+/**
+ * D-520 : l'état opérationnel de la source, recalculé et écrit juste après sa collecte (RUN ou passe incrémentale D-517).
+ * Une écriture refusée n'interrompt pas la collecte : elle est journalisée et comptée, et le RUN la lit comme une panne
+ * du système (`cli.ts`, réconciliation).
+ */
+async function recordState(prisma: PrismaClient, key: string, result: OrchestratorResult, outcome: Omit<CollectionOutcome, 'kind' | 'at' | 'runId'>) {
+  try {
+    const state = await recordCollectionState(prisma, key, { ...outcome, kind: result.collectionKind ?? (incrementalPassActive() ? 'PASSE' : 'RUN'), at: new Date(), runId: log.runId() ?? null });
+    (result.states ??= []).push(state);
+  } catch (error) {
+    log.assertHealthy();
+    (result.stateFailures ??= []).push(key);
+    await log.error('source.state_failed', `[orchestrator] ${key}: operational state not recorded — ${briefError(error)}`, { error });
+  }
+}
 
 /**
  * Every source key, API feeds first then sitemap sources — and within the API
@@ -340,6 +365,9 @@ export async function ingestOne(prisma: PrismaClient, key: string, result: Orche
       if (attempt === 'first' && !incrementalPassActive() && remediation.every(r => r.retry))
         (result.pendingRetry ??= []).push({ source: key, cause: remediation[0].transient! });
     } else result.ok++;
+    const own = health.incidents.find(incident => incident.source === key);
+    await recordState(prisma, key, result, { runStatus: own?.status ?? 'OK', note: own?.note ?? null, issues,
+      jobs: own?.jobs ?? stats.reduce((n, s) => n + s.created + s.merged + s.updated, 0) });
   } catch (error) {
     log.assertHealthy();
     const message = error instanceof Error ? error.message : String(error);
@@ -405,6 +433,7 @@ export async function ingestOne(prisma: PrismaClient, key: string, result: Orche
       await log.error('source.record_failed', `[orchestrator] ${key}: failed to record run — ${briefError(error)}`, { error });
       throw error;
     });
+    await recordState(prisma, key, result, { runStatus: status, jobs: 0, issues: [issue], note: briefError(error) });
   } finally {
     await log.flush(key);
   }

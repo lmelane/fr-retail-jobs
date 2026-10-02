@@ -283,6 +283,23 @@ const OUR_SIDE: ReadonlySet<CauseClass> = new Set(['DEFAUT_INTERNE', 'QUALIFICAT
 
 export type RunVerdict = { green: boolean; reasons: Array<{ reason: VerdictReason; detail: string; sources: string[] }> };
 
+/** Les motifs de blocage de `lib/runSummary.ts` qui disent une panne du RUN lui-même, jamais celle d'une source. */
+export const SYSTEM_BLOCKING_REASONS: ReadonlySet<string> = new Set(['INVALID_COUNTS', 'INCOMPLETE_RUN', 'NO_ACTIVE_SOURCE', 'ALL_SOURCES_FAILED']);
+
+/** La panne du système lui-même, lue sur le RUN : ses comptes, le refresh, le bilan et le bulletin, l'état des sources. */
+export function systemFailuresOf(input: { blockingReasons: readonly string[]; refreshRefused?: boolean; alertDeliveryFailed?: boolean;
+  coverageFailed?: boolean; stateFailures?: readonly string[]; statesUnavailable?: boolean }): string[] {
+  return [...input.blockingReasons.filter(reason => SYSTEM_BLOCKING_REASONS.has(reason)),
+    ...(input.refreshRefused ? ['REFRESH_REFUSED'] : []), ...(input.alertDeliveryFailed ? ['ALERT_NOT_DELIVERED'] : []),
+    ...(input.coverageFailed ? ['COVERAGE_FAILED'] : []), ...(input.stateFailures?.length ? ['SOURCE_STATE_NOT_RECORDED'] : []),
+    ...(input.statesUnavailable ? ['SOURCE_STATES_UNAVAILABLE'] : [])];
+}
+
+/** Les pertes de couverture qui réveillent sans cause trouvée (`coverage/coverageAlert.ts`, cause INEXPLIQUEE). */
+export function unexplainedCoverageOf(findings: readonly { scope: string; key: string; label?: string; cause: string; gravity: string }[]): string[] {
+  return findings.filter(f => f.cause === 'INEXPLIQUEE' && f.gravity !== 'INFORMATION').map(f => `${f.scope}:${f.label ?? f.key}`);
+}
+
 /**
  * Le verdict du RUN est une RÉCONCILIATION (D-520 §4) : vert quand chaque source est dans un état expliqué (cause
  * classée, trajectoire) et que l'alerte de couverture n'a rien d'inexpliqué. Rouge pour une cause non classée, une

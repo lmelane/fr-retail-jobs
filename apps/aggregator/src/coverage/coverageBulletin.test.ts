@@ -138,3 +138,14 @@ describe('D-520 §2 — le registre explicite dans le bulletin du RUN : un réex
     expect(registryLines({ error: 'column "statusReviewId" does not exist' })).toEqual(['Registre des sources illisible : column "statusReviewId" does not exist.']);
   });
 });
+
+describe('D-520 — l’état des sources en tête du bulletin', () => {
+  const evaluation = evaluateCoverage({ history: [], knownSources: [], entities: [] });
+  it('la synthèse passée par le RUN ouvre le bulletin ; sans elle, rien', () => {
+    const html = bulletinHtml(evaluation, [], { at: new Date('2026-10-02T18:00:00Z'), header: ['Réconciliation : vert, chaque source a un état expliqué.',
+      'Sources : 543 ; 400 normales.'] });
+    expect(html).toContain('data-section="etat-sources"');
+    expect(html.indexOf('Réconciliation : vert')).toBeLessThan(html.indexOf('7. Couverture'));
+    expect(bulletinHtml(evaluation, [], { at: new Date('2026-10-02T18:00:00Z') })).not.toContain('etat-sources');
+  });
+});

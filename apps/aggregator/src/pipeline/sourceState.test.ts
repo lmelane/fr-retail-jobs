@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { ageState, CAUSE_CLASSES, CAUSES, computeSourceState, ESCALATION, issueCause, reconcileRun, summarizeStates, summaryLines,
-  SYSTEMIC_NEW_BLOCKED, type CollectionOutcome, type SourceState } from './sourceState.js';
+  SYSTEMIC_NEW_BLOCKED, systemFailuresOf, unexplainedCoverageOf, type CollectionOutcome, type SourceState } from './sourceState.js';
+import { summarizeOrchestration } from '../lib/runSummary.js';
 
 const H = 3_600_000;
 const T0 = new Date('2026-10-01T16:00:00Z');
@@ -182,5 +183,26 @@ describe('D-520 — verdict du RUN = réconciliation', () => {
     expect(lines[0]).toMatch(/^Réconciliation : vert/);
     expect(lines.some(l => l.startsWith('ko : bloquée, défaut interne'))).toBe(true);
     expect(lines.join('\n')).not.toContain('—');
+  });
+
+  it('le RUN du 01/10 rejoué : une identité à revoir rendait le RUN rouge (UNRESOLVED_FAILURE) ; classée, elle ne le rend plus', () => {
+    const issue = { origin: 'UNKNOWN' as const, code: 'EmployerIdentityReviewRequired', count: 1 };
+    const summary = summarizeOrchestration({ total: 2, ok: 1, failed: 1, timedOut: 0, failures: ['richemont (bloquant : erreurs d’ingestion)'],
+      incidents: [], issues: [{ ...issue, source: 'richemont' }] });
+    // Prémisse : l'ancien verdict était rouge pour cette seule source.
+    expect(summary.executionHealthy).toBe(false);
+    expect(summary.blockingReasons).toEqual(['UNRESOLVED_FAILURE']);
+    const states = [computeSourceState({ source: active('richemont'), outcome: run({ runStatus: 'DEGRADED', jobs: 486, issues: [issue] }), previous: null, now: T0 }),
+      computeSourceState({ source: active('ok'), outcome: run(), previous: null, now: T0 })];
+    expect(systemFailuresOf({ blockingReasons: summary.blockingReasons })).toEqual([]);
+    expect(reconcileRun({ states, now: T0, runStartedAt: at(-1), systemFailures: systemFailuresOf({ blockingReasons: summary.blockingReasons }), unexplainedCoverage: [] }).green).toBe(true);
+  });
+
+  it('un RUN incomplet, un bilan non remis, un état non écrit : panne du système', () => {
+    expect(systemFailuresOf({ blockingReasons: ['INCOMPLETE_RUN', 'UNRESOLVED_FAILURE'], alertDeliveryFailed: true, stateFailures: ['x'] }))
+      .toEqual(['INCOMPLETE_RUN', 'ALERT_NOT_DELIVERED', 'SOURCE_STATE_NOT_RECORDED']);
+    expect(unexplainedCoverageOf([{ scope: 'MAISON', key: 'm', label: 'Dior', cause: 'INEXPLIQUEE', gravity: 'A_REPARER' },
+      { scope: 'MAISON', key: 'n', cause: 'COLLECTE', gravity: 'A_REPARER' }, { scope: 'MARCHE', key: 'FR', cause: 'INEXPLIQUEE', gravity: 'INFORMATION' }]))
+      .toEqual(['MAISON:Dior']);
   });
 });

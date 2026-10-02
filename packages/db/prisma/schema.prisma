@@ -1176,6 +1176,34 @@ model OccupationMissingSignal {
   @@index([status, receivedAt])
 }
 
+/// D-520 — l'ÉTAT OPÉRATIONNEL de chaque source, calculé après chaque collecte (RUN, passe incrémentale D-517, vérification
+/// ciblée) par `apps/aggregator/src/pipeline/sourceState.ts` ; l'intention reste `Source.status`. Une ligne par source,
+/// remplacée à chaque calcul (l'historique des collectes reste dans `SourceRun` et `PipelineEvent`). Vocabulaires fermés :
+/// `state`, `cause`, `trajectory` et `lastCollectionKind` portent les valeurs de `sourceState.ts`, gardées par contrainte.
+model SourceOperationalState {
+  sourceKey          String    @id
+  state              String
+  cause              String?
+  trajectory         String?
+  /// La prochaine action concrète pour revenir à la normale.
+  missing            String?
+  since              DateTime
+  /// Échéance d'un état temporaire (AUTO) : à cette date, l'état s'escalade de lui-même.
+  deadline           DateTime?
+  attempts           Int       @default(0)
+  escalated          Boolean   @default(false)
+  /// La décision qui porte l'état (pause, exclusion, échec connu D-480).
+  decision           String?
+  /// Les codes d'échec de la dernière collecte (`origin/code[/detail]`).
+  codes              String[]  @default([])
+  lastCollectionAt   DateTime?
+  lastCollectionKind String?
+  lastRunId          String?
+  computedAt         DateTime
+
+  @@index([state, trajectory])
+}
+
 /// R-143 §11, D-515 §5, D-516 §2 — la photographie de couverture de chaque RUN : une ligne par RUN et par entité
 /// (Maison, marché, ou source qualifiée qui ne sert rien), avec les offres servies, la référence comparée et l'alerte
 /// posée. Lue par le RUN suivant (`apps/aggregator/src/coverage/`) ; écrite seulement par la revue de couverture.

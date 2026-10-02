@@ -57,7 +57,9 @@ async function runStartedAt(prisma: PrismaClient, runId: string | null): Promise
 }
 
 export async function runCoverageReview(prisma: PrismaClient, options: { runId?: string | null; probe?: ProbeSummary | null;
-  before?: CoverageBefore | null; dryRun?: boolean } = {}): Promise<CoverageReview> {
+  before?: CoverageBefore | null; dryRun?: boolean;
+  /** D-520 : la synthèse de l'état des sources, en tête du bulletin ; elle lit l'évaluation (couverture inexpliquée). */
+  header?: (evaluation: CoverageEvaluation) => string[] } = {}): Promise<CoverageReview> {
   const at = new Date();
   const dryRun = options.dryRun === true;
   const history = await readCoverageHistory(prisma, at);
@@ -85,7 +87,7 @@ export async function runCoverageReview(prisma: PrismaClient, options: { runId?:
   const indicators = await readLoopIndicators(prisma, { at, probe: options.probe ?? null, prisma });
   const registry = await readRegistry(prisma, at);
   // L'envoi d'abord : une photographie ne marque une alerte « posée » que si le bulletin qui la porte est parti.
-  const sent = dryRun ? false : await sendOperatorEmail({ subject: bulletinSubject(evaluation), html: bulletinHtml(evaluation, indicators, { at, masked: state.masked, registry, exposure }),
+  const sent = dryRun ? false : await sendOperatorEmail({ subject: bulletinSubject(evaluation), html: bulletinHtml(evaluation, indicators, { at, masked: state.masked, registry, exposure, header: options.header?.(evaluation) }),
     context: { findings: evaluation.findings.length, newAlerts: newAlerts(evaluation).length } });
   const rows = sent ? evaluation.rows : evaluation.rows.map(row => ({ ...row, cause: null, gravity: null }));
   const written = dryRun ? 0 : await writeCoverageSnapshot(prisma, { runId: options.runId ?? null, takenAt: at, rows });

@@ -158,7 +158,9 @@ export function registryLines(registry: RegistryReading | null | undefined): str
 }
 
 export function bulletinHtml(evaluation: CoverageEvaluation, indicators: readonly Indicator[],
-  meta: { at: Date; masked?: MaskedStock | null; registry?: RegistryReading | null; exposure?: ExposureSummary | null }): string {
+  meta: { at: Date; masked?: MaskedStock | null; registry?: RegistryReading | null; exposure?: ExposureSummary | null;
+  /** D-520 : l'état des sources (`pipeline/sourceState.ts`, `summaryLines`), court, en tête. */
+  header?: readonly string[] }): string {
   const events = evaluation.findings.filter(f => f.kind === 'SYNTHESE');
   const section = (gravity: Gravity, intro: string) => {
     const list = evaluation.findings.filter(f => f.gravity === gravity && f.kind !== 'SYNTHESE');
@@ -181,6 +183,7 @@ export function bulletinHtml(evaluation: CoverageEvaluation, indicators: readonl
     `Dénominateur : ${i.denominator}`], `indicateur:${i.question}`)).join('');
   return `<div style="font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:#000;max-width:600px;font-size:14px;line-height:1.45">
     <h2 style="font-weight:400;font-size:20px">Boucle candidat : RUN du ${esc(utc(meta.at))}</h2>
+    ${meta.header?.length ? `<div data-section="etat-sources">${heading('État des sources')}${meta.header.map((text, i) => line(esc(text), i > 1)).join('')}</div>` : ''}
     ${summaryLines(evaluation, meta.masked ?? null).map(text => line(esc(text), false)).join('')}
     ${heading('7. Couverture : ce qu’on perd')}
     ${line(esc(reference))}

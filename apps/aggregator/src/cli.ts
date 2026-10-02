@@ -43,7 +43,7 @@ import { validateCliArguments } from './lib/cliArguments.js';
 const command = process.argv[2] ?? 'ingest';
 try { validateCliArguments(command, process.argv.slice(3)); }
 catch (error) { await log.error('command.invalid_arguments', { message: error instanceof Error ? error.message : 'Invalid arguments', workStarted: false }); process.exit(2); }
-if (!['health-report', 'stats', 'export-companies', 'occupation-review-queue', 'coverage'].includes(command)) exitIfPipelinePaused(command);
+if (!['health-report', 'stats', 'export-companies', 'occupation-review-queue', 'coverage', 'etat-sources'].includes(command)) exitIfPipelinePaused(command);
 const prisma = new PrismaClient({ errorFormat: 'minimal', log: [] });
 
 /** L'avant d'une étape qui masque (R-143 §11) ; null si la lecture échoue : la revue de couverture le dira. */
@@ -87,7 +87,11 @@ try {
     // skipGeocode passé AUSSI à runIngest : sans lui, une passe de géocodage
     // suivait chaque source (7 775 offres en attente = minutes) même avec le
     // flag, qui ne sautait que la passe finale.
-    const stats = only ? await runQualifiedIngest(prisma, only, skipGeocode, undefined, captureHandoffFromEnv()) : await runIngest(prisma, { skipGeocode });
+    const { recordVerification } = await import('./pipeline/sourceStateStore.js');
+    const stats = only
+      ? await runQualifiedIngest(prisma, only, skipGeocode, undefined, captureHandoffFromEnv())
+        .catch(async (error: unknown) => { await recordVerification(prisma, only, { error }); throw error; })
+      : await runIngest(prisma, { skipGeocode });
     const geo = skipGeocode
       ? { pending: 0, lookedUp: 0, jobsLocated: 0, remaining: 0 }
       : await runGeocode(prisma);
@@ -103,6 +107,9 @@ try {
     const health = await checkSourceHealth(prisma, stats);
     // La règle du RUN (D-453 §1, D-480 §1) : l'alerte et le verdict séparent ce qui bloque de ce qui reste visible.
     const verdict = ingestCommandVerdict(stats, health.incidents);
+    // D-520 : la collecte ciblée d'une source (campagne, vérification) met son état opérationnel à jour tout de suite.
+    if (only) await recordVerification(prisma, only, { incident: health.incidents.find(incident => incident.source === only) ?? null,
+      issues: verdict.issues.filter(issue => issue.source === only), stats });
     const alerted = await sendHealthAlert({ ...health, incidents: verdict.incidents });
     await log.info('command.result', { ok: verdict.ok, command, sources: stats, issues: verdict.issues, blocking: verdict.blocking, geo, health, alerted });
 
@@ -126,7 +133,20 @@ try {
      * work, never corruption. A session advisory lock, by contrast, could stay
      * stuck after a killed container and block every later run — which it did.
      */
+    const runStartedAt = new Date();
     const orchestration = await ingestAllBySource(prisma);
+    // D-520 : chaque source du registre reçoit son état opérationnel ; une source active que ce RUN n'a pas collectée
+    // devient NON_COLLECTEE, une échéance passée s'escalade. Le verdict du RUN est la réconciliation de ces états.
+    const { reconcileRun, summarizeStates, summaryLines: stateLines, systemFailuresOf, unexplainedCoverageOf } = await import('./pipeline/sourceState.js');
+    let sourceStates: Awaited<ReturnType<typeof import('./pipeline/sourceStateStore.js').reconcileSourceStates>> | null = null;
+    try {
+      const { reconcileSourceStates } = await import('./pipeline/sourceStateStore.js');
+      sourceStates = await reconcileSourceStates(prisma, { collected: new Set([...(orchestration.states ?? []).map(state => state.sourceKey),
+        ...(orchestration.stateFailures ?? [])]), partial: !!process.env.INGEST_ONLY_KEYS?.trim() });
+    } catch (error) {
+      log.assertHealthy();
+      await log.error('source.states_failed', { error });
+    }
     const geo = await runGeocode(prisma);
     // R-143 §11, D-516 §2 : ce que le candidat voit AVANT les étapes qui retirent (refresh, disponibilité, sonde), pour
     // que la revue de couverture mesure exactement ce qu'elles retirent, dès le premier RUN qui masque.
@@ -162,10 +182,18 @@ try {
     // retenues sont lues en direct par la recherche ; le bulletin part quelques minutes après). Le masquage ne part
     // jamais sans lui : un bulletin non calculé ou non remis rend le RUN rouge.
     let coverageFailed = false;
+    let unexplainedCoverage: string[] = [];
+    // La réconciliation telle qu'elle se lit au moment du bulletin ; le verdict final y ajoute la remise du bilan.
+    const reconcile = (unexplained: string[], extra: { alertDeliveryFailed?: boolean; coverageFailed?: boolean } = {}) => reconcileRun({
+      states: sourceStates ?? [], now: new Date(), runStartedAt, unexplainedCoverage: unexplained,
+      systemFailures: systemFailuresOf({ blockingReasons: summarizeOrchestration(orchestration).blockingReasons, refreshRefused: refresh.refused,
+        stateFailures: orchestration.stateFailures, statesUnavailable: !sourceStates, ...extra }) });
     try {
       const { runCoverageReview } = await import('./coverage/coverageReview.js');
       if (!coverageBefore) throw new Error('coverage: the state before the RUN steps could not be read');
-      const coverage = await runCoverageReview(prisma, { runId: log.runId() ?? null, probe, before: coverageBefore });
+      const coverage = await runCoverageReview(prisma, { runId: log.runId() ?? null, probe, before: coverageBefore,
+        header: evaluation => stateLines(summarizeStates(sourceStates ?? [], new Date()), reconcile(unexplainedCoverageOf(evaluation.findings))) });
+      unexplainedCoverage = unexplainedCoverageOf(coverage.evaluation.findings);
       coverageFailed = !coverage.sent;
       await log.info('coverage.reviewed', { written: coverage.written, sent: coverage.sent, referenceRuns: coverage.evaluation.referenceRuns,
         findings: coverage.evaluation.findings.map(f => ({ scope: f.scope, key: f.key, label: f.label, kind: f.kind, cause: f.cause,
@@ -205,12 +233,36 @@ try {
     sourceIncidents = orchestration.failed + orchestration.timedOut > 0;
     await log.info('ingest.completed', { command,
       ...summary, geo, refresh, alerted, indexing });
-    if (!summary.executionHealthy || (orchestration.incidents.length > 0 && !alerted) || coverageFailed) {
+    // D-520 §4 : le verdict du RUN est la réconciliation. Une source dont l'état est classé (cause, trajectoire) ne le
+    // rend plus rouge ; une cause non classée, une pause sans motif, une échéance passée sans escalade, une couverture
+    // perdue sans cause ou une panne du système lui-même (comptes, refresh, bilan, bulletin, état non écrit) le rendent rouge.
+    const alertDeliveryFailed = orchestration.incidents.length > 0 && !alerted;
+    const reconciliation = reconcile(unexplainedCoverage, { alertDeliveryFailed, coverageFailed });
+    const states = summarizeStates(sourceStates ?? [], new Date());
+    await log.info('run.reconciled', { green: reconciliation.green, reasons: reconciliation.reasons, byState: states.byState,
+      byTrajectory: states.byTrajectory, byCause: states.byCause });
+    if (!reconciliation.green) {
       fatalFailure = true;
-      await log.error('command.failed', { blockingReasons: summary.blockingReasons,
-        alertDeliveryFailed: orchestration.incidents.length > 0 && !alerted, coverageFailed });
+      await log.error('command.failed', { blockingReasons: summary.blockingReasons, reconciliation: reconciliation.reasons,
+        alertDeliveryFailed, coverageFailed });
       process.exitCode = 1;
     }
+  } else if (command === 'etat-sources') {
+    /** D-520 — l'état opérationnel de toutes les sources, lu sans rien écrire ; `--json` rend le rapport pour le back-office. */
+    const { readSourceStatesReport } = await import('./pipeline/sourceStateStore.js');
+    const { stateReportText } = await import('./pipeline/sourceStateReport.js');
+    const report = await readSourceStatesReport(prisma);
+    if (process.argv.includes('--json')) await log.info('command.result', { ok: true, command, report });
+    else {
+      await log.info('command.result', { ok: true, command, summary: report.summary, neverComputed: report.neverComputed });
+      process.stdout.write(`${stateReportText(report).join('\n')}\n`);
+    }
+  } else if (command === 'verifier-source') {
+    /** D-520 §4 — la vérification ciblée d'une source, hors RUN et hors fenêtre 15:30-18:30 UTC ; son état est écrit tout de suite. */
+    const { verifySource } = await import('./pipeline/verifySource.js');
+    const verification = await verifySource(prisma, process.argv[3]!, { runId: observation.runId });
+    await log.info('command.result', { command, ...verification });
+    if (!verification.ok) process.exitCode = 1;
   } else if (command === 'ingest-light') {
     /**
      * R-143 §1, D-517 — la passe de découverte (`pipeline/lightPass.ts`) : chaque source significative (au moins une
@@ -518,7 +570,7 @@ try {
     try { await closeBrowser(); }
     catch (error) { fatalFailure = true; process.exitCode = 1; await log.error('browser.cleanup_failed', { error }); }
     // La surveillance Healthchecks est celle du RUN : une passe légère (R-143 §1) ne la touche jamais.
-    if (observation && !['health-report', 'stats', 'export-companies', 'occupation-review-queue', 'consolidate-publications', 'attach-maisons', 'qualify-sectors', 'registry-review', 'ingest-light', 'coverage'].includes(command)) {
+    if (observation && !['health-report', 'stats', 'export-companies', 'occupation-review-queue', 'consolidate-publications', 'attach-maisons', 'qualify-sectors', 'registry-review', 'ingest-light', 'coverage', 'etat-sources', 'verifier-source'].includes(command)) {
       const heartbeat = await pingHeartbeat(!fatalFailure && !process.exitCode);
       await log.info('pipeline.heartbeat', { heartbeat, command });
       if (heartbeat === 'failed') { fatalFailure = true; process.exitCode = 1; }

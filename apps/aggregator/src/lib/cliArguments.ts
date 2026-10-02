@@ -6,6 +6,8 @@ const COMMANDS: Record<string, CommandOptions> = {
   'ingest-all': {}, 'ingest-light': {}, refresh: {}, 'health-report': {},
   availability: { flags: ['dry-run'] },
   coverage: {},
+  'etat-sources': { flags: ['json'] },
+  'verifier-source': { positional: 'required' },
   'probe-apply-links': { values: ['limit'], flags: ['dry-run'] },
   'direct-sync': { values: ['depuis', 'limite'] },
   'direct-liste': {},
