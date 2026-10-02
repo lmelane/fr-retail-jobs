@@ -9,6 +9,9 @@ import { announcedLastPage, fetchSwatchGroupJobs, selectOptionValues } from './s
 import { deriveAccessScopes, type ObservedRequest } from '../../connectors/accessScopeDerivation.js';
 import { matchingAccessScope, type AccessScope } from '../../connectors/accessScope.js';
 import { CRAWLER_IDENTITY } from '../../lib/crawlerIdentity.js';
+import { normalizeAdapterResult } from '../index.js';
+import { attestationFacts } from '../../pipeline/attestingCapture.js';
+import { enumerationEvidence, identifiersComparable, planRefresh, representationState, sourceEligibility, type Representation } from '../../pipeline/refreshPlan.js';
 
 /*
  * D-493 (02/10/2026) — le listing complet, puis le même listing partitionné par le filtre public `time` du formulaire.
@@ -155,6 +158,99 @@ describe('Swatch Group — lectures réelles du 02/10/2026 : le listing complet 
     expect(r.enumeration?.rawCount).toBe(331);
     expect(r.complete).toBe(false);
     expect(r.enumeration?.issues).toEqual(['LAST_PAGE_ANNOUNCEMENT_CHANGED', 'ENUMERATION_NOT_PROVEN']);
+  });
+  /*
+   * D-508 §6 (02/10/2026) — LA FERMETURE AUTOMATIQUE. La chaîne réelle de décision, sans base : sortie de l'adaptateur,
+   * contrat des identifiants (`normalizeAdapterResult`), faits d'attestation, preuve d'énumération, état de la
+   * représentation, plan de refresh. Seule la base (capture scellée, rapport de fin d'ingestion) est remplacée par les
+   * mêmes faits, construits depuis les deux lectures réelles du 02/10.
+   */
+  describe('D-508 §6 — une offre retirée du site se ferme sur une énumération prouvée, jamais sur une autre', () => {
+    const KEY = 'swatch-group';
+    const GONE = '29999';
+    const KEPT = '18551';
+    const stored = (externalId: string): Representation => ({ sourceKey: KEY, externalId, jobId: `job-${externalId}`, jobSourceId: `js-${externalId}`,
+      lastSeenAt: new Date('2026-09-30T21:10:33Z'), held: false, writeFailed: false });
+    const read = async (n: '1' | '2', alter?: (time: string, page: number, html: string) => string) => {
+      vi.resetAllMocks();
+      serveLecture(n, n === '2', alter);
+      return normalizeAdapterResult(await run());
+    };
+    const decide = (current: Awaited<ReturnType<typeof read>>, previous: Awaited<ReturnType<typeof read>> | null, batch = 'b-2') => {
+      const evidence = enumerationEvidence(KEY, batch, { enumeration: current.enumeration });
+      const unreadable = (current.rejectedRows ?? []).length;
+      const facts = attestationFacts({ sourceKey: KEY, captureBatchId: batch, startedAt: new Date('2026-10-02T05:06:00Z'),
+        metadata: { complete: current.complete, truncated: current.truncated, declaredTotal: current.declaredTotal }, outputs: current.jobs.length,
+        counts: { published: current.jobs.length, held: 0, writeFailed: 0, skipped: 0 }, unreadableRows: unreadable,
+        previousPublished: previous ? previous.jobs.length : null, previousDeclaredTotal: previous?.declaredTotal ?? null });
+      const eligibility = sourceEligibility(facts, evidence);
+      const observed = evidence.canonicalContractDeclared ? new Set(evidence.canonicalSet) : null;
+      const reps = [stored(GONE), stored(KEPT)];
+      const states = new Map(reps.map((rep) => [rep.jobSourceId, representationState(rep, observed, eligibility.eligible)]));
+      const plan = planRefresh(reps, states, new Map(reps.map((rep) => [rep.jobId!, [rep.jobSourceId]])));
+      return { evidence, facts, eligibility, states, plan };
+    };
+
+    it('deux lectures réelles prouvées : identifiants déclarés sur chaque page, l\'offre absente des deux est fermée, la présente reste', async () => {
+      const first = await read('1');
+      const second = await read('2');
+      // Prémisse : les deux lectures sont prouvées, l'offre « disparue » n'est dans aucune, l'autre est dans les deux.
+      for (const r of [first, second]) {
+        expect(r).toMatchObject({ complete: true, enumeration: { termination: 'PARTITIONS_RECONCILED' } });
+        const ids = new Set(r.jobs.map((j) => j.externalId));
+        expect([ids.size, ids.has(GONE), ids.has(KEPT)]).toEqual([331, false, true]);
+        expect(r.enumeration?.issues ?? []).not.toContain('CANONICAL_ID_CONTRACT_BROKEN');
+        expect(r.enumeration?.pageEvidence?.every((p) => Array.isArray(p.canonicalIds) && p.canonicalIds.join() === p.ids.join())).toBe(true);
+      }
+      const { evidence, facts, eligibility, states, plan } = decide(second, first);
+      expect(evidence).toMatchObject({ canonicalContractDeclared: true, canonicalContractBroken: false, termination: 'PARTITIONS_RECONCILED' });
+      expect(evidence.canonicalSet).toHaveLength(331);
+      expect(identifiersComparable(new Set(evidence.canonicalSet), [GONE, KEPT])).toBe(true);
+      expect(facts).toMatchObject({ status: 'OK', canAttestAbsence: true });
+      expect(eligibility).toEqual({ eligible: true, reasons: [] });
+      expect(states.get(`js-${GONE}`)).toBe('ABSENT_FROM_PROVEN_ENUMERATION');
+      expect(states.get(`js-${KEPT}`)).toBe('PRESENT_AND_REATTESTED');
+      expect(plan.deactivations.map((d) => d.externalId)).toEqual([GONE]);
+      expect([...plan.jobs]).toEqual([[`job-${GONE}`, 'JOB_CANDIDATE_FOR_CLOSURE']]);
+    });
+
+    it('une lecture non prouvée (filtre absent, ou page d\'un autre état du cache) ne déclare rien et ne ferme rien', async () => {
+      const first = await read('1');
+      const withoutFilter = await read('2', (time, page, html) => (time === 'All' && page === 0 ? html.replace(/<select[^>]*name="time"[\s\S]*?<\/select>/, '') : html));
+      const staleCache = await read('2', (time, page, html) => (time === 'All' && page === 3 ? html.replace(/time=All&amp;page=33" aria-label/, 'time=All&amp;page=32" aria-label') : html));
+      for (const r of [withoutFilter, staleCache]) {
+        // Prémisse : la lecture a bien vu des offres (dont celle qui reste), et l'offre « disparue » n'y est pas.
+        const ids = new Set(r.jobs.map((j) => j.externalId));
+        expect([ids.size >= 329, ids.has(GONE), ids.has(KEPT), r.complete]).toEqual([true, false, true, false]);
+        expect(r.enumeration?.pageEvidence?.some((p) => Object.hasOwn(p, 'canonicalIds'))).toBe(false);
+        const { eligibility, states, plan } = decide(r, first);
+        expect(eligibility.eligible).toBe(false);
+        expect(eligibility.reasons.join(' ')).toMatch(/ne déclare pas le contrat canonique/);
+        expect(states.get(`js-${GONE}`)).toBe('UNVERIFIABLE');
+        expect(plan.deactivations).toEqual([]);
+      }
+    });
+
+    it('une lecture prouvée avec une fiche illisible : la ligne reste nommée, le contrat tient, la source n\'atteste rien', async () => {
+      vi.resetAllMocks();
+      serve({ All: sweepOf('All', [[1, 2], [3], []]), 20: sweepOf('20', [[1, 2], []]), 21: sweepOf('21', [[3], []]) }, { 3: new Error('HTTP 503') });
+      const r = normalizeAdapterResult(await run());
+      expect(r.enumeration?.termination).toBe('PARTITIONS_RECONCILED');
+      expect(r.rejectedRows).toEqual([expect.objectContaining({ reason: 'DETAIL_FETCH_FAILED', canonicalId: '3' })]);
+      expect(r.enumeration?.issues ?? []).not.toContain('CANONICAL_ID_CONTRACT_BROKEN');
+      expect(r.complete).toBe(false);
+      const { facts, eligibility } = decide(r, r);
+      expect(facts.canAttestAbsence).toBe(false);
+      expect(eligibility.eligible).toBe(false);
+    });
+
+    it('première lecture sans passé : elle n\'atteste rien (statut NEW), même prouvée', async () => {
+      const only = await read('2');
+      const { facts, eligibility, plan } = decide(only, null);
+      expect(facts).toMatchObject({ status: 'NEW', canAttestAbsence: false });
+      expect(eligibility.eligible).toBe(false);
+      expect(plan.deactivations).toEqual([]);
+    });
   });
 });
 

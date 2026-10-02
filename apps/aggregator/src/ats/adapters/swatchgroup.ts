@@ -430,16 +430,19 @@ export async function fetchSwatchGroupJobs(config: Record<string, unknown>): Pro
    */
   const rejectedRows: NonNullable<AdapterResult['rejectedRows']> = [];
   const limit = pLimit(Number(config.concurrency ?? 4));
+  // L'identifiant de la fiche, le même que `parseSwatchJobPage` donne à l'offre : une ligne rejetée reste NOMMÉE (D-508 §6).
+  const canonicalIdOf = (url: string) => url.match(/\/job\/(\d+)$/)?.[1];
   const jobs = await Promise.all(
     links.map((url) =>
       limit(async () => {
+        const canonicalId = canonicalIdOf(url);
         try {
           const job = parseSwatchJobPage(await fetchText(url), url);
-          if (!job) rejectedRows.push({ reason: 'DETAIL_UNPARSED', raw: { url } });
+          if (!job) rejectedRows.push({ reason: 'DETAIL_UNPARSED', raw: { url }, ...(canonicalId ? { canonicalId } : {}) });
           return job;
         } catch (error) {
           await log.error('adapter.detail_failed', `[swatchgroup] ${url}: ${(error as Error).message.slice(0, 120)}`, { error });
-          rejectedRows.push({ reason: 'DETAIL_FETCH_FAILED', raw: { url, error: String(error).slice(0, 200) } });
+          rejectedRows.push({ reason: 'DETAIL_FETCH_FAILED', raw: { url, error: String(error).slice(0, 200) }, ...(canonicalId ? { canonicalId } : {}) });
           return null;
         }
       }),
@@ -452,11 +455,23 @@ export async function fetchSwatchGroupJobs(config: Record<string, unknown>): Pro
   const complete = linksProven && rejectedRows.length === 0;
   if (!complete) issues.push('ENUMERATION_NOT_PROVEN');
   const declaredTotal = publisherTotal ?? links.length;
+  /*
+   * D-508 §6 (02/10/2026) : LES IDENTIFIANTS CANONIQUES, SEULEMENT QUAND L'ÉNUMÉRATION EST PROUVÉE.
+   *
+   * Sans `canonicalIds`, le refresh tient la source pour `UNVERIFIABLE` (`pipeline/refreshPlan.ts`) : une offre
+   * retirée du site restait en ligne, 380 au catalogue pour 331 publiées le 02/10. Les identifiants d'une page sont
+   * ceux de ses liens `/job/<id>`, le chemin même de `externalId` (`parseSwatchJobPage`). Ils ne sont déclarés que si
+   * la preuve tient (`linksProven` : formes, somme des partitions, partitions disjointes, union égale au total), et
+   * alors sur TOUTES les pages : une lecture non prouvée ne déclare rien et ne peut faire disparaître aucune offre,
+   * en plus de sa terminaison non probante. La fermeture exige encore `complete` (toutes les fiches lues) et le reste
+   * des conditions du refresh.
+   */
+  const evidence = linksProven ? pageEvidence.map((page) => ({ ...page, canonicalIds: [...page.ids] })) : pageEvidence;
   return { jobs: jobs.filter((job): job is NormalizedJob => job !== null), declaredTotal, complete, truncated: shapeIssues.includes('PAGE_BUDGET_EXHAUSTED'), rejectedRows,
     enumeration: { method: 'DRUPAL_PAGER_TOTAL_PARTITIONED_THEN_EVERY_DETAIL', endpoint: `${origin}/${lang}/job-finder`, pages: pagesRead, rawCount: links.length, termination, issues,
       scopes: [
         { scope: 'links', declaredTotal, uniqueIds: links.length, pages: pagesRead, complete: linksProven },
         ...[full, ...partitions].map((s) => ({ scope: `listing:${PARTITION_FILTER}=${s.value}`, declaredTotal: s.total ?? s.ids.size, uniqueIds: s.ids.size, pages: s.pages, complete: s.total !== undefined && s.ids.size === s.total })),
         { scope: 'details', declaredTotal: links.length, uniqueIds: links.length - rejectedRows.length, pages: links.length, complete: rejectedRows.length === 0 },
-      ], pageEvidence } };
+      ], pageEvidence: evidence } };
 }
