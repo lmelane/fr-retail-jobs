@@ -18,7 +18,7 @@ import { SOURCE_WRITE_TRANSACTION } from '../lib/writeLocks.js';
 import { incrementalPassActive } from '../lib/incrementalReading.js';
 import { inRunWindow, LIGHT_PASS_HOURS_UTC } from '@catwalks/runtime';
 import { WAF_BOOTSTRAP_SOURCES } from '../connectors/wafBootstrap.js';
-import { causeOf, remediationLine, remediationNote, remediationOf, retriesInRun, type Cause, type Remediation } from './ordinaryCauses.js';
+import { remediationLine, remediationNote, remediationOf, transientKind, type Remediation, type TransientKind } from './ordinaryCauses.js';
 
 /**
  * Bounded source concurrency with cooperative cancellation. A timed-out source
@@ -68,15 +68,15 @@ export type OrchestratorResult = {
   incidents: SourceHealth[];
   issues?: (IngestionIssue & { source: string })[];
   /** D-520 : les sources dont l'échec est passager à sa première occurrence, reprises une fois en fin de RUN. */
-  pendingRetry?: { source: string; cause: Cause }[];
+  pendingRetry?: { source: string; cause: TransientKind }[];
   /** D-520 : les reprises faites dans ce RUN, et si elles ont absorbé l'échec. */
-  retries?: { source: string; cause: Cause; absorbed: boolean }[];
+  retries?: { source: string; cause: TransientKind; absorbed: boolean }[];
 };
 
 /**
  * D-520 — LA REPRISE UNIQUE DES ÉCHECS PASSAGERS DANS LE RUN.
  *
- * Seules les pannes passagères par leur CLASSE d'erreur (base Prisma, transport : `ordinaryCauses.ts`, `retriesInRun`),
+ * Seules les pannes passagères par leur CLASSE d'erreur (base Prisma, transport : `ordinaryCauses.ts`, `transientKind`),
  * à leur première occurrence, sont relues UNE fois, après toutes les autres sources, par l'étape exacte du RUN
  * (`ingestOne` : accès, qualification, collecte scellée, écriture). Mesuré sur les 8 RUN du 24/09 au 01/10/2026
  * (`audits/2026-10-02/remediation-auto/`) : peu nombreuses (browns-shoes et diptyque-workday le 01/10, une connexion
@@ -162,12 +162,12 @@ export async function retryTransientFailures(prisma: PrismaClient, result: Orche
 }
 
 /**
- * Les causes que la source portait au dernier RUN complet avant celui-ci : ce qui fait passer une cause ordinaire
- * persistante « à réparer » (`ordinaryCauses.ts`). Lues dans `source.issue_classified` (la cause inscrite depuis D-520,
- * sinon reclassée depuis l'issue). Le RUN complet de référence est lu une fois par run.
+ * Les familles de panne passagère que la source portait au dernier RUN complet avant celui-ci : une panne qui revient
+ * n'est plus reprise (`ordinaryCauses.ts`). Lues dans `source.issue_classified` (la famille inscrite depuis D-520, sinon
+ * relue depuis l'issue). Le RUN complet de référence est lu une fois par run journalisé.
  */
 const previousCompleteRun = new Map<string, Promise<string | null>>();
-export async function previousRunCauses(prisma: PrismaClient, key: string, currentRunId: string | null = log.runId() ?? null): Promise<Set<Cause>> {
+export async function previousRunTransient(prisma: PrismaClient, key: string, currentRunId: string | null = log.runId() ?? null): Promise<Set<TransientKind>> {
   try {
     const cacheKey = currentRunId ?? '';
     const lookup = () => prisma.$queryRaw<{ id: string }[]>`
@@ -179,26 +179,25 @@ export async function previousRunCauses(prisma: PrismaClient, key: string, curre
     const runId = await (currentRunId ? previousCompleteRun.get(cacheKey)! : lookup());
     if (!runId) return new Set();
     const events = await prisma.pipelineEvent.findMany({ where: { runId, sourceKey: key, event: 'source.issue_classified' }, select: { payload: true } });
-    const causes = new Set<Cause>();
+    const kinds = new Set<TransientKind>();
     for (const { payload } of events) {
-      const p = payload as { issues?: IngestionIssue[]; remediation?: { cause: Cause }[] };
-      if (Array.isArray(p.remediation)) p.remediation.forEach(r => causes.add(r.cause));
-      else (p.issues ?? []).forEach(issue => causes.add(causeOf(issue)));
+      const p = payload as { issues?: IngestionIssue[]; remediation?: { transient?: TransientKind | null }[] };
+      if (Array.isArray(p.remediation)) p.remediation.forEach(r => { if (r.transient) kinds.add(r.transient); });
+      else (p.issues ?? []).forEach(issue => { const kind = transientKind(issue); if (kind) kinds.add(kind); });
     }
-    return causes;
+    return kinds;
   } catch (error) {
     previousCompleteRun.delete(currentRunId ?? '');
-    // Sans l'historique, aucune escalade : la cause garde sa trajectoire de première occurrence, et l'absence se voit.
+    // Sans l'historique, la panne est traitée comme une première occurrence ; l'absence d'historique se voit au journal.
     await log.warn('source.remediation_history_unavailable', { sourceKey: key, error: briefError(error) });
     return new Set();
   }
 }
 
-/** La trajectoire de chaque issue d'une source, pour le journal et la ligne du bilan. */
-async function remediationsOf(prisma: PrismaClient, key: string, issues: readonly IngestionIssue[], message = '', errorCode?: string,
-  retried = false): Promise<Remediation[]> {
-  const previous = await previousRunCauses(prisma, key);
-  return issues.map(issue => remediationOf(key, issue, message, previous, errorCode, retried));
+/** La remédiation de chaque issue d'une source, pour le journal, la ligne du bilan et l'alerte. */
+async function remediationsOf(prisma: PrismaClient, key: string, issues: readonly IngestionIssue[], note: string | null, retried: boolean): Promise<Remediation[]> {
+  const previous = await previousRunTransient(prisma, key);
+  return issues.map(issue => remediationOf(key, issue, note, previous, retried));
 }
 const notes = (remediations: readonly Remediation[]) => [...new Set(remediations.map(remediationNote))].join(' ; ');
 const alertLines = (remediations: readonly Remediation[]) => [...new Set(remediations.map(remediationLine))];
@@ -328,7 +327,7 @@ export async function ingestOne(prisma: PrismaClient, key: string, result: Orche
     result.incidents.push(...incidents);
     result.issues!.push(...issues.map(issue => ({ ...issue, source: key })));
     // L'erreur de collecte est absorbée par `runIngest` (`source.ingest_failed`) : son message est la note de la source.
-    const remediation = issues.length ? await remediationsOf(prisma, key, issues, stats[0].errorNote ?? '', undefined, attempt === 'retry') : [];
+    const remediation = issues.length ? await remediationsOf(prisma, key, issues, stats[0].errorNote ?? null, attempt === 'retry') : [];
     if (remediation.length) incidents.forEach(incident => { incident.remediation = alertLines(remediation); });
     if (issues.length) await log.warn('source.issue_classified', { sourceKey: key, issues, acceptedNativeOnly: issues.every(isProvenSourceIssue),
       knownFailure: issues.some(issue => isDecidedKnownFailure(key, issue)), remediation, attempt });
@@ -338,8 +337,8 @@ export async function ingestOne(prisma: PrismaClient, key: string, result: Orche
       result.failed++;
       result.failures.push(failureLine(key, issues, `erreurs d’ingestion · ${notes(remediation)}`));
       // D-520 : une source dont TOUTES les issues sont passagères à leur première occurrence est reprise une fois.
-      if (attempt === 'first' && !incrementalPassActive() && remediation.every(retriesInRun))
-        (result.pendingRetry ??= []).push({ source: key, cause: remediation[0].cause });
+      if (attempt === 'first' && !incrementalPassActive() && remediation.every(r => r.retry))
+        (result.pendingRetry ??= []).push({ source: key, cause: remediation[0].transient! });
     } else result.ok++;
   } catch (error) {
     log.assertHealthy();
@@ -354,12 +353,11 @@ export async function ingestOne(prisma: PrismaClient, key: string, result: Orche
      */
     const challenged = error instanceof WafChallengeError;
     const issue = ingestionIssue(error);
-    const errorCode = typeof (error as { code?: unknown })?.code === 'string' ? (error as { code: string }).code : undefined;
-    const remediation = await remediationsOf(prisma, key, [issue], message, errorCode, attempt === 'retry');
+    const remediation = await remediationsOf(prisma, key, [issue], message, attempt === 'retry');
     result.issues!.push({ ...issue, source: key });
     // D-520 : un échec passager à sa première occurrence est repris une fois en fin de RUN (jamais dans une passe).
-    if (attempt === 'first' && !timedOut && !challenged && !incrementalPassActive() && retriesInRun(remediation[0]))
-      (result.pendingRetry ??= []).push({ source: key, cause: remediation[0].cause });
+    if (attempt === 'first' && !timedOut && !challenged && !incrementalPassActive() && remediation[0].retry)
+      (result.pendingRetry ??= []).push({ source: key, cause: remediation[0].transient! });
     // Nothing collected to the end: the refresh leaves the source's offers open (L-01), the alert says so.
     result.incidents.push({ source: key, status: 'BROKEN', jobs: 0, previous: null, blocking: !isNonBlockingIssue(key, issue),
       ...(isDecidedKnownFailure(key, issue) ? { knownFailure: KNOWN_FAILURE_DECISION } : {}),

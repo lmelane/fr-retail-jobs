@@ -16,21 +16,21 @@ La population compte une ligne par source et par RUN complet. Il y a 8 RUN avec 
 
 ## Catalogue des causes
 
-| Classe | Occurrences (source × RUN) | Sources | Offres en jeu | Disparue au RUN suivant | Trajectoire (`ordinaryCauses.ts`) |
-|---|---|---|---|---|---|
-| Retenue prouvée par la source | 142 | 28 | 22 419 | 12 | normale, non bloquante |
-| Identité d'employeur en revue | 106 | 27 | 17 300 | 27 sur 104 | revue humaine |
-| Régression de volume ou de champs | 63 | 40 | 30 711 | 39 sur 57 | à instruire (D-453 §1) |
-| Liste incomplète ou non prouvée | 56 | 13 | 13 300 | 11 sur 50 | à instruire, sauf D-480 (décidée) |
-| Capture de qualification rejetée, admission sans résultat qualifié | 26 | 7 | 6 918 | 7 sur 25 | à instruire (lecteur) |
-| Capture native refusée (15) et base indisponible (2) | 17 | 16 | 941 | 15 sur 15 | capture : à instruire ; base : **reprise dans le RUN** |
-| Refus 406 Avature | 8 | 1 | 0 | 0 sur 7 | décidée (D-480) |
-| Transport (2), délai (1) | 8 | 3 | 10 256 | 3 sur 8 | transport : **reprise dans le RUN**, sauf Avature ; délai : à instruire |
-| Refus d'accès explicite en vigueur | 6 | 1 | 40 | 1 sur 6 | revue humaine |
-| Autre 4xx (405 Kering) | 2 | 1 | 1 080 | 2 sur 2 | à instruire (cause absente du catalogue) |
-| Hors périmètre qualifié | 2 | 2 | 1 861 | 2 sur 2 | revue humaine |
-| Refus 403 | 1 | 1 | 52 | dernier RUN | à instruire |
-| Inclassés (Selfridges 0 offre lue, lignes rejetées) | 3 | 2 | 419 | 2 sur 3 | à instruire |
+| Classe mesurée | Occurrences (source × RUN) | Sources | Offres en jeu | Disparue au RUN suivant | Classe de `sourceState.ts` | Reprise dans le RUN |
+|---|---|---|---|---|---|---|
+| Retenue prouvée par la source | 142 | 28 | 22 419 | 12 | pas un défaut | non |
+| Identité d'employeur en revue | 106 | 27 | 17 300 | 27 sur 104 | IDENTITE_EMPLOYEUR | non |
+| Régression de volume ou de champs | 63 | 40 | 30 711 | 39 sur 57 | ANOMALIE_VOLUME | non |
+| Liste incomplète ou non prouvée | 56 | 13 | 13 300 | 11 sur 50 | LISTE_NON_PROUVEE (D-480 : décision) | non |
+| Capture de qualification rejetée, admission sans résultat qualifié | 26 | 7 | 6 918 | 7 sur 25 | QUALIFICATION_REFUSEE | non |
+| Capture native refusée (15) et base indisponible (2) | 17 | 16 | 941 | 15 sur 15 | DEFAUT_INTERNE | **base seulement** |
+| Refus 406 Avature | 8 | 1 | 0 | 0 sur 7 | ACCES_REFUSE (D-480 : décision) | non |
+| Transport (2), délai (1) | 8 | 3 | 10 256 | 3 sur 8 | INDISPONIBILITE_PASSAGERE / LECTEUR | **transport seulement, jamais Avature** |
+| Refus d'accès explicite en vigueur | 6 | 1 | 40 | 1 sur 6 | QUALIFICATION_REFUSEE | non |
+| Autre 4xx (405 Kering) | 2 | 1 | 1 080 | 2 sur 2 | LECTEUR | non |
+| Hors périmètre qualifié | 2 | 2 | 1 861 | 2 sur 2 | QUALIFICATION_REFUSEE | non |
+| Refus 403 | 1 | 1 | 52 | dernier RUN | ACCES_REFUSE | non |
+| Inclassés (Selfridges 0 offre lue, lignes rejetées) | 3 | 2 | 419 | 2 sur 3 | LECTEUR, CONTENU_INCOMPLET | non |
 
 **Correction de prémisse.** Les 15 « captures indisponibles » des RUN du 27 et du 29/09 enveloppaient toutes « This access policy certifies only native HTTP requests » (`captures-refusees.out`). C'est un refus de la politique d'accès, déterministe. La requalification d'après déploiement le masquait, et `scopeOutgrown` l'a corrigé ensuite. Leur « disparition au RUN suivant, 15 sur 15 » prouve ce masquage, pas un incident passager. Une première version de ce lot les reprenait dans le RUN : l'audit l'a refusé.
 
@@ -42,12 +42,12 @@ Chaque RUN qui suit une release renouvelle seul les décisions d'accès de 406 �
 
 ## Ce que ce lot ajoute
 
-1. **Vocabulaire unique** (`ordinaryCauses.ts`) : 16 causes, chacune avec une trajectoire (`NORMALE`, `REVIENT_SEULE`, `A_REPARER` affiché « à instruire », `REVUE_HUMAINE`, `DECIDEE`) et ce qui est attendu. Aucune issue bloquante non reprise n'est présentée comme « rien à faire » (D-453 §1). Le vocabulaire est inscrit dans `source.issue_classified.remediation`, dans la ligne du bilan et dans le bloc de chaque source bloquante de l'alerte.
+1. **Branché sur le vocabulaire unique** de l'état des sources (`sourceState.ts`, D-520 §2, construit par ailleurs et arrivé sur `development` pendant ce lot). La classe, la trajectoire et « ce qui manque » de chaque issue viennent de `issueCause` et `CAUSES`, sans redéfinition. `ordinaryCauses.ts` n'ajoute que la décision de reprise. L'ensemble est inscrit dans `source.issue_classified.remediation`, dans la ligne du bilan et dans le bloc de chaque source bloquante de l'alerte.
 2. **Reprise unique dans le RUN**, seulement pour les deux causes passagères par leur **classe** d'erreur : base Prisma (`DATABASE_FAILURE`) et transport (`TRANSPORT_*`).
    - Conditions : à la première occurrence, sur les deux chemins d'échec (l'erreur absorbée par `runIngest`, et celle levée hors de la collecte), après toutes les sources.
    - Exclusions : jamais un refus, un délai, une capture refusée, Avature ni une source à amorçage anti-robot.
    - Bornes : au plus 20 sources, sinon aucune ; chaque reprise finit avant la fin de la fenêtre du RUN (18:30 UTC) et avant la prochaine passe ; aucune n'est commencée à moins de 2 minutes de cette échéance.
-   - Une reprise échouée, ou une cause déjà là au RUN complet précédent : à instruire.
+   - Une reprise échouée, ou une famille passagère déjà là au RUN complet précédent : à réparer, plus de reprise.
    - Journal : la ligne `SourceRun` de la première tentative reste en base, et ses lecteurs prennent la dernière ligne ou la dernière collecte productive. Événements `source.retry_started`, `source.retry_skipped`, `source.retry_completed`, `run.transient_retry_completed`.
    - Interrupteur : `RUN_TRANSIENT_RETRY=off`.
 
@@ -68,4 +68,5 @@ La reprise absorbe peu : 2 sources le 01/10, browns-shoes et diptyque-workday. L
 - `consecutiveRuns` ne compte que « déjà là au RUN complet précédent » (2), pas la chronicité au-delà.
 - Une reprise absorbée au RUN précédent compte comme présence : la même panne le lendemain n'est plus reprise. C'est voulu.
 - `RUN_TRANSIENT_RETRY` n'est pas encore décrit dans le `CLAUDE.md` du dépôt.
-- Le module d'état opérationnel de D-520 §2 n'existait pas sur `development` au moment du lot : il devra reprendre ces trajectoires telles quelles.
+- `sourceState.ts` présente la régression de volume, la liste non prouvée et l'identité à identifier comme « revient seule » jusqu'à leur échéance. Ces issues restent bloquantes au RUN (D-453 §1 veut qu'elles soient instruites). C'est la question métier ci-dessus : ce lot ne la tranche pas, il la mesure (option à arbitrer).
+- Le lot ne persiste pas l'état (`SourceOperationalState`) : cela revient au module d'état.

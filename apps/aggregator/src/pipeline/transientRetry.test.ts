@@ -41,14 +41,14 @@ const failedStats = (options: { only?: string } | undefined, code: string, origi
 const databaseDown = (options?: { only?: string }) => failedStats(options, 'DATABASE_FAILURE', 'INTERNAL',
   'Transaction API error: Transaction already closed: A commit cannot be executed on an expired transaction.');
 
-/** Un RUN complet antérieur où la source portait déjà `cause`. */
+/** Un RUN complet antérieur où la source portait déjà la famille passagère `cause`. */
 const previousRun = async (key: string, cause: string) => {
   const id = `previous-run-${randomUUID()}`; runs.push(id);
   await db.pipelineRun.create({ data: { id, command: 'ingest-all', startedAt: new Date(Date.now() - 86_400_000), status: 'COMPLETED' } });
   const event = (event: string, sourceKey: string | null, payload: Prisma.InputJsonValue) => db.pipelineEvent.create({ data: {
     id: randomUUID(), runId: id, level: 'info', event, sourceKey, fingerprint: randomUUID(), payload } });
   await event('source.issue_classified', key, { sourceKey: key, issues: [{ origin: 'INTERNAL', code: 'DATABASE_FAILURE', count: 1 }],
-    remediation: [{ cause }] });
+    remediation: [{ transient: cause }] });
   await event(FULL_RUN_MARKER, null, {});
 };
 
@@ -66,7 +66,7 @@ describe('D-520 : une panne passagère par sa classe est reprise une fois dans l
     vi.mocked(runIngest).mockImplementationOnce(async (_db, options) => databaseDown(options)).mockImplementation(async (_db, options) => published(options));
     const result = await ingestAllBySource(db);
     expect(result).toMatchObject({ total: 1, ok: 1, failed: 0, timedOut: 0, failures: [], issues: [], incidents: [] });
-    expect(result.retries).toEqual([{ source: source.key, cause: 'TRANSIENT_DATABASE', absorbed: true }]);
+    expect(result.retries).toEqual([{ source: source.key, cause: 'DATABASE', absorbed: true }]);
     expect(runIngest).toHaveBeenCalledTimes(2);
   });
 
@@ -76,7 +76,7 @@ describe('D-520 : une panne passagère par sa classe est reprise une fois dans l
       .mockImplementation(async (_db, options) => published(options));
     const result = await ingestAllBySource(db);
     expect(result).toMatchObject({ ok: 1, failed: 0, failures: [] });
-    expect(result.retries).toEqual([{ source: source.key, cause: 'TRANSIENT_DATABASE', absorbed: true }]);
+    expect(result.retries).toEqual([{ source: source.key, cause: 'DATABASE', absorbed: true }]);
     expect(await db.sourceRun.findMany({ where: { sourceKey: source.key }, select: { status: true } })).toEqual([{ status: 'ERROR' }]);
   });
 
@@ -85,9 +85,10 @@ describe('D-520 : une panne passagère par sa classe est reprise une fois dans l
     vi.mocked(runIngest).mockImplementation(async (_db, options) => databaseDown(options));
     const result = await ingestAllBySource(db);
     expect(result).toMatchObject({ total: 1, ok: 0, failed: 1 });
-    expect(result.retries).toEqual([{ source: source.key, cause: 'TRANSIENT_DATABASE', absorbed: false }]);
+    expect(result.retries).toEqual([{ source: source.key, cause: 'DATABASE', absorbed: false }]);
     expect(runIngest).toHaveBeenCalledTimes(2);
-    expect(result.failures).toEqual([`${source.key} (bloquant : erreurs d’ingestion · base de données indisponible ou lente (reprise échouée) → à instruire)`]);
+    expect(result.failures).toHaveLength(1);
+    expect(result.failures[0]).toMatch(new RegExp(`^${source.key} \\(bloquant : erreurs d’ingestion · défaut interne .* → à réparer .*, reprise échouée\\)$`));
     expect(result.issues).toHaveLength(1);
   });
 
@@ -101,17 +102,18 @@ describe('D-520 : une panne passagère par sa classe est reprise une fois dans l
     expect(result).toMatchObject({ ok: 0, failed: 1 });
     expect(result.retries).toBeUndefined();
     expect(runIngest).toHaveBeenCalledTimes(1);
-    expect(result.failures[0]).toContain('→ à instruire');
+    expect(result.failures[0]).not.toContain('reprise dans ce RUN');
   });
 
   it('la même cause au RUN complet précédent : à instruire, pas de reprise', async () => {
     const source = await create(); native(); active(source);
-    await previousRun(source.key, 'TRANSIENT_DATABASE');
+    await previousRun(source.key, 'DATABASE');
     vi.mocked(runIngest).mockImplementationOnce(async (_db, options) => databaseDown(options)).mockImplementation(async (_db, options) => published(options));
     const result = await ingestAllBySource(db);
     expect(result).toMatchObject({ ok: 0, failed: 1 });
     expect(runIngest).toHaveBeenCalledTimes(1);
-    expect(result.failures).toEqual([`${source.key} (bloquant : erreurs d’ingestion · base de données indisponible ou lente → à instruire, déjà là au RUN complet précédent)`]);
+    expect(result.failures).toHaveLength(1);
+    expect(result.failures[0]).toContain('→ à réparer (code ou configuration, assistant), déjà là au RUN complet précédent');
   });
 
   it('interrupteur RUN_TRANSIENT_RETRY=off : comportement d’avant', async () => {
@@ -127,14 +129,14 @@ describe('D-520 : une panne passagère par sa classe est reprise une fois dans l
     const source = await create();
     const line = `${source.key} (bloquant : échec)`;
     const result: OrchestratorResult = { total: 1, ok: 0, failed: 1, timedOut: 0, failures: [line], incidents: [], issues: [],
-      pendingRetry: [{ source: source.key, cause: 'TRANSIENT_DATABASE' }] };
+      pendingRetry: [{ source: source.key, cause: 'DATABASE' }] };
     await retryTransientFailures(db, result, () => new Date('2026-10-02T18:28:30Z'));
     expect(runIngest).not.toHaveBeenCalled();
     expect(result).toMatchObject({ failed: 1, failures: [line], retries: [] });
   });
 
   it('une panne de masse n’est pas ordinaire : au-delà du plafond, aucune reprise et le RUN reste rouge', async () => {
-    const pending = Array.from({ length: RUN_RETRY_MAX_SOURCES + 1 }, (_, i) => ({ source: `mass-${i}`, cause: 'TRANSIENT_DATABASE' as const }));
+    const pending = Array.from({ length: RUN_RETRY_MAX_SOURCES + 1 }, (_, i) => ({ source: `mass-${i}`, cause: 'DATABASE' as const }));
     const result: OrchestratorResult = { total: pending.length, ok: 0, failed: pending.length, timedOut: 0,
       failures: pending.map(p => `${p.source} (bloquant : échec)`), incidents: [], issues: [], pendingRetry: pending };
     await retryTransientFailures(db, result);
