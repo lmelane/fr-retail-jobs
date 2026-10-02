@@ -161,9 +161,10 @@ describe('D-520 — la réconciliation de fin de RUN et la lecture', () => {
     expect(states.find(s => s.sourceKey === paused)).toMatchObject({ state: 'EN_PAUSE', cause: 'MOTIF_ABSENT', trajectory: 'A_REPARER' });
     expect(await stateOf(forgotten)).toMatchObject({ cause: 'NON_COLLECTEE' });
 
+    // Le registre explicite est lisible ici : une note, même qui cite une décision, n'explique jamais la pause.
     await db.source.update({ where: { key: paused }, data: { note: 'D-516 : pause décidée' } });
     const report = await readSourceStatesReport(db);
-    expect(report.sources.find(s => s.sourceKey === paused)).toMatchObject({ state: 'EN_PAUSE', cause: 'PAUSE_DECIDEE', decision: 'D-516' });
+    expect(report.sources.find(s => s.sourceKey === paused)).toMatchObject({ state: 'EN_PAUSE', cause: 'MOTIF_ABSENT' });
     expect(report.sources.find(s => s.sourceKey === forgotten)).toMatchObject({ cause: 'NON_COLLECTEE' });
     const text = stateReportText(report).join('\n');
     expect(text).toContain(`${forgotten} (${forgotten}) : BLOQUEE, NON_COLLECTEE`);

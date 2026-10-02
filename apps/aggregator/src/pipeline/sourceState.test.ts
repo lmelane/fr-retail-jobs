@@ -253,4 +253,21 @@ describe('D-520 — verdict du RUN = réconciliation', () => {
       { scope: 'MAISON', key: 'n', cause: 'COLLECTE', gravity: 'A_REPARER' }, { scope: 'MARCHE', key: 'FR', cause: 'INEXPLIQUEE', gravity: 'INFORMATION' }]))
       .toEqual(['MAISON:Dior']);
   });
+
+  it('le registre explicite fait foi ; une note quelconque n’est jamais lue comme une décision quand le registre est lisible', () => {
+    const none = { reviewId: null, explainedFor: null, trajectory: null, decision: null, nextAction: null, reviewAt: null };
+    // Registre lisible sans explication : même une note qui cite une décision ne suffit pas (le registre dit « sans explication »).
+    for (const note of ['promu par validation-volume (4 offres)', 'D39 2026-09-06 : couverte par wttj-sector', 'User decision 2026-09-08'])
+      expect(computeSourceState({ source: { key: 'n', status: 'RETIRED', note, registry: none }, outcome: null, previous: null, now: T0 }).cause, note).toBe('MOTIF_ABSENT');
+    const explained = computeSourceState({ source: { key: 'rl', status: 'PAUSED', note: 'promu par validation-volume', registry: { reviewId: 'r1',
+      explainedFor: 'PAUSED', trajectory: 'A_REPARER', decision: 'D-516 §1', nextAction: 'enquêter sur le 406 Avature', reviewAt: '2026-10-09' } }, outcome: null, previous: null, now: T0 });
+    expect([explained.state, explained.cause, explained.trajectory, explained.decision]).toEqual(['EN_PAUSE', 'PAUSE_DECIDEE', 'A_REPARER', 'D-516 §1']);
+    expect(explained.missing).toBe('enquêter sur le 406 Avature ; réexamen le 2026-10-09');
+    // Une explication écrite pour un autre statut est périmée.
+    expect(computeSourceState({ source: { key: 'x', status: 'RETIRED', note: null, registry: { ...none, reviewId: 'r', explainedFor: 'PAUSED', trajectory: 'DECISION' } },
+      outcome: null, previous: null, now: T0 }).cause).toBe('MOTIF_ABSENT');
+    // Réexamen passé : le RUN est rouge, sans dupliquer la liste du bulletin.
+    expect(reconcileRun({ states: [explained], now: T0, runStartedAt: null, systemFailures: [], unexplainedCoverage: [], registryOverdue: ['rl'] }).reasons.map(r => r.reason))
+      .toEqual(['ECHEANCE_DEPASSEE']);
+  });
 });

@@ -155,7 +155,15 @@ export function issueCause(issue: IssueLike, note?: string | null): CauseClass |
   return 'NON_CLASSEE';
 }
 
-export type RegistryIntent = { key: string; status: string; note: string | null };
+/**
+ * L'intention d'un humain. `registry` : l'explication du registre explicite (`registry/explicitRegistry.ts`, colonnes
+ * `Source.status*`), SEULE source d'une pause ou d'une exclusion expliquée. `undefined` quand ces colonnes ne sont pas
+ * lisibles (base d'avant la migration du registre, instantané historique) : alors seulement, repli documenté sur la
+ * note, qui ne vaut décision que si elle en cite une (référence D-…, ou « décision »/« decision » écrite).
+ */
+export type RegistryExplanation = { reviewId: string | null; explainedFor: string | null; trajectory: string | null;
+  decision: string | null; nextAction: string | null; reviewAt: string | null };
+export type RegistryIntent = { key: string; status: string; note: string | null; registry?: RegistryExplanation | null };
 export type CollectionOutcome = {
   kind: CollectionKind; at: Date; runId: string | null;
   /** `SourceRun.status` de la collecte : OK, DEGRADED, BROKEN, NEW, TIMEOUT, CHALLENGED, ERROR. */
@@ -207,16 +215,22 @@ function normal(sourceKey: string, now: Date, outcome: CollectionOutcome | null,
 export function intentState(source: RegistryIntent, previous: SourceState | null, now: Date): SourceState | null {
   if (source.status === 'ACTIVE') return null;
   const note = source.note?.trim() || null;
-  // Une trace de promotion ou de validation (« promu par validation-volume… ») n'est pas un motif : seule une décision l'est.
-  const decided = !!note && DECIDED.test(note);
+  const reg = source.registry;
+  const explained = !!reg?.reviewId && reg.explainedFor === source.status && (TRAJECTORIES as readonly string[]).includes(reg.trajectory ?? '');
+  // Une trace de promotion ou de validation (« promu par validation-volume… ») n'est jamais un motif ; la note n'est lue
+  // qu'à défaut de registre lisible, et seulement si elle cite une décision.
+  const decided = reg === undefined ? !!note && DECIDED.test(note) : explained;
   const cause: CauseClass = source.status === 'PAUSED' ? (decided ? 'PAUSE_DECIDEE' : 'MOTIF_ABSENT')
     : source.status === 'RETIRED' ? (decided ? 'EXCLUSION_DECIDEE' : 'MOTIF_ABSENT') : 'ACTIVATION_A_FAIRE';
   const state: OperationalState = source.status === 'PAUSED' ? 'EN_PAUSE' : source.status === 'RETIRED' ? 'EXCLUE' : 'BLOQUEE';
   const same = previous?.cause === cause && previous.state === state;
-  return { sourceKey: source.key, state, cause, trajectory: CAUSES[cause].trajectory,
-    missing: note && (cause === 'PAUSE_DECIDEE' || cause === 'EXCLUSION_DECIDEE') ? `${CAUSES[cause].missing} ; motif : ${quoted(note)}` : CAUSES[cause].missing,
+  const fromRegistry = explained && cause !== 'MOTIF_ABSENT';
+  const missing = fromRegistry
+    ? `${quoted(reg!.nextAction ?? CAUSES[cause].missing)}${reg!.reviewAt ? ` ; réexamen le ${reg!.reviewAt}` : ''}`
+    : note && (cause === 'PAUSE_DECIDEE' || cause === 'EXCLUSION_DECIDEE') ? `${CAUSES[cause].missing} ; motif : ${quoted(note)}` : CAUSES[cause].missing;
+  return { sourceKey: source.key, state, cause, trajectory: fromRegistry ? reg!.trajectory as Trajectory : CAUSES[cause].trajectory, missing,
     since: same ? previous!.since : now, deadline: null, attempts: 0, escalated: false,
-    decision: note ? DECISION_REF.exec(note)?.[1] ?? null : null, codes: [],
+    decision: fromRegistry ? (reg!.decision ? quoted(reg!.decision).slice(0, 120) : null) : note ? DECISION_REF.exec(note)?.[1] ?? null : null, codes: [],
     lastCollectionAt: previous?.lastCollectionAt ?? null, lastCollectionKind: previous?.lastCollectionKind ?? null,
     lastRunId: previous?.lastRunId ?? null, computedAt: now };
 }
@@ -340,13 +354,16 @@ export function unexplainedCoverageOf(findings: readonly { scope: string; key: s
  * source bloquée déjà classée à réparer ou en revue humaine ne rend pas le RUN rouge : le bulletin dit son ancienneté.
  */
 export function reconcileRun(input: { states: readonly SourceState[]; now: Date; runStartedAt: Date | null;
-  systemFailures: readonly string[]; unexplainedCoverage: readonly string[] }): RunVerdict {
+  systemFailures: readonly string[]; unexplainedCoverage: readonly string[];
+  /** Les sources dont le réexamen inscrit au registre explicite est passé (`ambiguousSources`, REVIEW_OVERDUE). */
+  registryOverdue?: readonly string[] }): RunVerdict {
   const reasons: RunVerdict['reasons'] = [];
   const add = (reason: VerdictReason, detail: string, sources: string[]) => { if (sources.length || reason === 'PANNE_SYSTEME') reasons.push({ reason, detail, sources }); };
   add('SOURCE_NON_CLASSEE', 'cause non classée ou absente', input.states.filter(s => s.state !== 'NORMALE' && (!s.cause || s.cause === 'NON_CLASSEE' || !s.trajectory)).map(s => s.sourceKey));
   add('MOTIF_ABSENT', 'pause ou exclusion sans décision référencée', input.states.filter(s => s.cause === 'MOTIF_ABSENT').map(s => s.sourceKey));
   add('ECHEANCE_DEPASSEE', 'état temporaire échu sans escalade', input.states.filter(s => s.trajectory === 'AUTO' && !s.escalated && s.deadline
     && s.deadline.getTime() <= input.now.getTime()).map(s => s.sourceKey));
+  add('ECHEANCE_DEPASSEE', 'réexamen du registre échu', [...(input.registryOverdue ?? [])]);
   const ceiling = input.now.getTime() - REPAIR_CEILING_DAYS * 24 * HOUR;
   add('ANCIENNETE_DEPASSEE', `à réparer ou en revue depuis plus de ${REPAIR_CEILING_DAYS} jours : réparer, ou décider une pause ou une exclusion`,
     input.states.filter(s => (s.trajectory === 'A_REPARER' || s.trajectory === 'REVUE_HUMAINE') && s.cause !== 'MOTIF_ABSENT'
@@ -401,7 +418,8 @@ export function summaryLines(summary: StateSummary, verdict?: RunVerdict | null,
   for (const x of summary.sources) if (x.cause && x.cause !== 'PAUSE_DECIDEE' && x.cause !== 'EXCLUSION_DECIDEE')
     byCause.set(x.cause, [...(byCause.get(x.cause) ?? []), x]);
   for (const [cause, list] of [...byCause.entries()].sort((a, b) => b[1].length - a[1].length))
-    lines.push(`${CAUSES[cause].label} : ${list.length} (${keys(list.map(x => x.sourceKey))}) ; la plus ancienne depuis ${Math.max(...list.map(x => x.ageDays))} j.`);
+    if (cause === 'MOTIF_ABSENT') lines.push(`${CAUSES[cause].label} : ${list.length} (détail : section « Registre des sources »).`);
+    else lines.push(`${CAUSES[cause].label} : ${list.length} (${keys(list.map(x => x.sourceKey))}) ; la plus ancienne depuis ${Math.max(...list.map(x => x.ageDays))} j.`);
   const repair = summary.sources.filter(x => (x.trajectory === 'A_REPARER' || x.trajectory === 'REVUE_HUMAINE') && x.cause !== 'MOTIF_ABSENT');
   for (const x of repair.slice(0, detailed)) lines.push(`${x.sourceKey}, depuis ${x.ageDays} j : ${x.missing ?? ''}`);
   if (repair.length > detailed) lines.push(`Et ${repair.length - detailed} autres à réparer ou en revue : commande etat-sources.`);

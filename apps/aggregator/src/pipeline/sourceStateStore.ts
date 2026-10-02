@@ -10,7 +10,7 @@
  */
 import type { PrismaClient } from '@prisma/client';
 import { ageState, computeSourceState, intentState, summarizeStates, type CauseClass, type CollectionOutcome, type CollectionKind,
-  type IssueLike, type OperationalState, type SourceState, type StateSummary, type Trajectory } from './sourceState.js';
+  type IssueLike, type OperationalState, type RegistryIntent, type SourceState, type StateSummary, type Trajectory } from './sourceState.js';
 import { ingestionIssue } from '../lib/ingestionIssue.js';
 import { WafChallengeError } from '../lib/wafToken.js';
 import { briefError } from '../lib/normalize.js';
@@ -19,6 +19,15 @@ import type { SourceHealth } from './health.js';
 import type { IngestStats } from './ingest.js';
 
 type Db = Pick<PrismaClient, 'source' | 'sourceOperationalState'>;
+
+/** L'intention et son explication au registre explicite (`registry/explicitRegistry.ts`), lues ensemble. */
+const REGISTRY_SELECT = { key: true, status: true, note: true, statusReviewId: true, statusExplainedFor: true, statusTrajectory: true,
+  statusDecision: true, statusNextAction: true, statusReviewAt: true } as const;
+type RegistryRow = { key: string; status: string; note: string | null; statusReviewId: string | null; statusExplainedFor: string | null;
+  statusTrajectory: string | null; statusDecision: string | null; statusNextAction: string | null; statusReviewAt: Date | null };
+const intentOf = (row: RegistryRow): RegistryIntent => ({ key: row.key, status: row.status, note: row.note, registry: {
+  reviewId: row.statusReviewId, explainedFor: row.statusExplainedFor, trajectory: row.statusTrajectory, decision: row.statusDecision,
+  nextAction: row.statusNextAction, reviewAt: row.statusReviewAt ? row.statusReviewAt.toISOString().slice(0, 10) : null } });
 type Row = Awaited<ReturnType<PrismaClient['sourceOperationalState']['findMany']>>[number];
 
 const fromRow = (row: Row): SourceState => ({ sourceKey: row.sourceKey, state: row.state as OperationalState, cause: row.cause as CauseClass | null,
@@ -34,10 +43,10 @@ async function write(db: Db, state: SourceState): Promise<void> {
 /** L'état d'une source après une collecte, écrit tout de suite. */
 export async function recordCollectionState(db: Db, sourceKey: string, outcome: CollectionOutcome, now = new Date()): Promise<SourceState> {
   const [source, previous] = await Promise.all([
-    db.source.findUniqueOrThrow({ where: { key: sourceKey }, select: { key: true, status: true, note: true } }),
+    db.source.findUniqueOrThrow({ where: { key: sourceKey }, select: REGISTRY_SELECT }),
     db.sourceOperationalState.findUnique({ where: { sourceKey } }),
   ]);
-  const state = computeSourceState({ source, outcome, previous: previous ? fromRow(previous) : null, now });
+  const state = computeSourceState({ source: intentOf(source), outcome, previous: previous ? fromRow(previous) : null, now });
   await write(db, state);
   return state;
 }
@@ -72,7 +81,7 @@ export async function reconcileSourceStates(db: Db, input: { collected: Readonly
   partial?: boolean }): Promise<SourceState[]> {
   const now = input.now ?? new Date();
   const [sources, rows] = await Promise.all([
-    db.source.findMany({ select: { key: true, status: true, note: true }, orderBy: { key: 'asc' } }),
+    db.source.findMany({ select: REGISTRY_SELECT, orderBy: { key: 'asc' } }),
     db.sourceOperationalState.findMany(),
   ]);
   const previous = new Map(rows.map(row => [row.sourceKey, fromRow(row)]));
@@ -82,7 +91,7 @@ export async function reconcileSourceStates(db: Db, input: { collected: Readonly
     const kept = source.status === 'ACTIVE' && before && (input.collected.has(source.key) || input.partial)
       && !['EN_PAUSE', 'EXCLUE'].includes(before.state) && before.cause !== 'ACTIVATION_A_FAIRE';
     const state = kept ? ageState(before, now)
-      : computeSourceState({ source, outcome: null, previous: before, now });
+      : computeSourceState({ source: intentOf(source), outcome: null, previous: before, now });
     if (!before || JSON.stringify(stable(before)) !== JSON.stringify(stable(state))) await write(db, state);
     states.push(state);
   }
@@ -103,19 +112,19 @@ export type SourceStatesReport = {
 /** La lecture, sans écriture : l'intention du registre fait foi pour toute source non active, les échéances sont vieillies à `now`. */
 export async function readSourceStatesReport(db: Db, now = new Date()): Promise<SourceStatesReport> {
   const [sources, rows] = await Promise.all([
-    db.source.findMany({ select: { key: true, status: true, note: true, maison: true }, orderBy: { key: 'asc' } }),
+    db.source.findMany({ select: { ...REGISTRY_SELECT, maison: true }, orderBy: { key: 'asc' } }),
     db.sourceOperationalState.findMany(),
   ]);
   const persisted = new Map(rows.map(row => [row.sourceKey, fromRow(row)]));
   let neverComputed = 0;
   const states = sources.map(source => {
     const before = persisted.get(source.key) ?? null;
-    const intent = intentState(source, before, now);
+    const intent = intentState(intentOf(source), before, now);
     if (intent) return intent;
     if (!before) neverComputed++;
     // Une source réactivée garde la ligne de son intention passée : tant qu'aucune collecte ne l'a recalculée, elle n'est pas collectée.
     if (!before || ['EN_PAUSE', 'EXCLUE'].includes(before.state) || before.cause === 'ACTIVATION_A_FAIRE')
-      return computeSourceState({ source, outcome: null, previous: before, now });
+      return computeSourceState({ source: intentOf(source), outcome: null, previous: before, now });
     return ageState(before, now);
   });
   const { sources: list, ...summary } = summarizeStates(states, now);

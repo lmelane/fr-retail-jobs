@@ -67,7 +67,18 @@ leurs sources classées au bulletin.
   un RUN, à réparer au suivant (lecture D-492 « remédiation automatique » §4).
 - Plafond à réparer ou en revue : 14 jours ; aucun épisode mesuré ne l'atteint (8 jours au plus).
 
+## Écart hors état, classé sans correction
+
+- `richemont` porte 466 de ses 523 offres aussi sur `richemont-workday` (signalé par la réconciliation du registre) :
+  doublon de fait entre deux sources, chacune NORMALE ou DEGRADEE pour sa propre collecte. Classe : comportement
+  existant non documenté (dédoublonnage, R-143 §4), hors du vocabulaire d'état d'une source ; à traiter par le lot de
+  dédoublonnage, pas par l'état opérationnel.
+
 ## Limites
+
+- Le registre explicite (`Source.status*`, `audits/2026-10-02/registre-explicite/`) n'est pas appliqué en production :
+  la mesure lit donc le repli documenté (une note ne vaut décision que si elle en cite une). Une fois le registre
+  appliqué, seule son explication compte, et `MOTIF_ABSENT` suit exactement sa liste « sans explication ».
 
 - L'intention historique se lit dans la sélection de chaque RUN ; une source non sélectionnée prend son statut et sa
   note d'aujourd'hui. « Depuis » d'une pause ou d'une exclusion = première observation par ce calcul.

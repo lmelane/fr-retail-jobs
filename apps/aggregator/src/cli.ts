@@ -147,6 +147,17 @@ try {
       log.assertHealthy();
       await log.error('source.states_failed', { error });
     }
+    // D-520 §2 : un réexamen inscrit au registre explicite et passé est une échéance dépassée (la liste, elle, est dite
+    // par la section « Registre des sources » du bulletin, `coverage/coverageReview.ts`).
+    let registryOverdue: string[] = [];
+    try {
+      const { ambiguousSources, readRegistrySources } = await import('./registry/explicitRegistry.js');
+      registryOverdue = ambiguousSources(await readRegistrySources(prisma), new Date().toISOString().slice(0, 10))
+        .filter(source => source.why === 'REVIEW_OVERDUE').map(source => source.key);
+    } catch (error) {
+      log.assertHealthy();
+      await log.error('registry.read_failed', { error });
+    }
     const geo = await runGeocode(prisma);
     // R-143 §11, D-516 §2 : ce que le candidat voit AVANT les étapes qui retirent (refresh, disponibilité, sonde), pour
     // que la revue de couverture mesure exactement ce qu'elles retirent, dès le premier RUN qui masque.
@@ -188,7 +199,7 @@ try {
     let unexplainedCoverage: string[] = [];
     // La réconciliation telle qu'elle se lit au moment du bulletin ; le verdict final y ajoute la remise du bilan.
     const reconcile = (unexplained: string[], extra: { alertDeliveryFailed?: boolean; coverageFailed?: boolean } = {}) => reconcileRun({
-      states: sourceStates ?? [], now: new Date(), runStartedAt, unexplainedCoverage: unexplained,
+      states: sourceStates ?? [], now: new Date(), runStartedAt, unexplainedCoverage: unexplained, registryOverdue,
       systemFailures: systemFailuresOf({ blockingReasons: summarizeOrchestration(orchestration).blockingReasons, refreshRefused: refresh.refused,
         stateFailures: orchestration.stateFailures, statesUnavailable: !sourceStates, ...extra }) });
     try {
