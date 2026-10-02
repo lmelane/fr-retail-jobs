@@ -2,11 +2,11 @@
 
 État au 30/09/2026 : **lot écrit et testé dans une copie de travail, rien n'est déployé.** La source
 `ralph-lauren-avature` est `PAUSED` (D-483), aucune `SourceAccessDecision` n'existe pour elle, et la migration
-`20260930120000_waf_bootstrap_access` n'est appliquée nulle part hors des bases jetables de test.
+`20261002100000_waf_bootstrap_access` n'est appliquée nulle part hors des bases jetables de test.
 
 ## Préalables, dans l'ordre (chacun sur go explicite)
 
-1. Migration `20260930120000_waf_bootstrap_access` appliquée en production **avant** le code (additive : l'ancien
+1. Migration `20261002100000_waf_bootstrap_access` appliquée en production **avant** le code (additive : l'ancien
    code n'écrit ni `HTTP_WITH_WAF_BOOTSTRAP` ni la clé `bootstraps`, la base en avance lui reste compatible).
 2. Image de l'agrégateur contenant le lot, hors de la fenêtre du RUN de 18 h.
 3. Passage `PAUSED` → `ACTIVE` de `ralph-lauren-avature` (réouverture décidée par D-483 ; l'écriture reste un geste
