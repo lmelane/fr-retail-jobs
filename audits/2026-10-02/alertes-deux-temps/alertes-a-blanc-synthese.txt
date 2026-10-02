@@ -1,0 +1,111 @@
+252 alertes, 0 en erreur []
+== conversion
+   alertes: 189
+   inscrits: 298
+   certaines (nouvelles): 2836
+   incomplètes (nouvelles): 0
+   alertes avec certaines: 95
+   alertes avec incomplètes: 0
+   alertes SANS certaine mais avec incomplètes: 0
+   offres relues (certaines + incomplètes): 1829
+== grille-cdi
+   alertes: 35
+   inscrits: 35
+   certaines (nouvelles): 128
+   incomplètes (nouvelles): 19
+   alertes avec certaines: 11
+   alertes avec incomplètes: 7
+   alertes SANS certaine mais avec incomplètes: 1
+   offres relues (certaines + incomplètes): 147
+== grille-cdi-temps-plein
+   alertes: 7
+   inscrits: 7
+   certaines (nouvelles): 29
+   incomplètes (nouvelles): 17
+   alertes avec certaines: 2
+   alertes avec incomplètes: 2
+   alertes SANS certaine mais avec incomplètes: 0
+   offres relues (certaines + incomplètes): 46
+== grille-cdd
+   alertes: 7
+   inscrits: 7
+   certaines (nouvelles): 34
+   incomplètes (nouvelles): 8
+   alertes avec certaines: 2
+   alertes avec incomplètes: 2
+   alertes SANS certaine mais avec incomplètes: 0
+   offres relues (certaines + incomplètes): 42
+== grille-permanent
+   alertes: 14
+   inscrits: 14
+   certaines (nouvelles): 51
+   incomplètes (nouvelles): 160
+   alertes avec certaines: 11
+   alertes avec incomplètes: 13
+   alertes SANS certaine mais avec incomplètes: 3
+   offres relues (certaines + incomplètes): 211
+== violations : 0
+== par alerte de la grille (certaines / incomplètes)
+   grille-cdi               FR sales-advisor          Paris               43 /     6  ['contrat']
+   grille-cdi               FR store-manager          Paris                8 /     2  ['contrat']
+   grille-cdi               FR animateur-ventes       Paris                0 /     0  []
+   grille-cdi               FR chef-produit           Paris                0 /     0  []
+   grille-cdi               FR receptionist           Paris                0 /     0  []
+   grille-cdi               FR chef-de-projet-cosmetique Paris                0 /     0  []
+   grille-cdi               FR assistant-commercial   Paris                0 /     0  []
+   grille-cdi               FR assistant-merchandiser Paris                0 /     0  []
+   grille-cdi               FR beauty-consultant      Paris                0 /     0  []
+   grille-cdi               FR charge-de-marketing-et-communication Paris                0 /     0  []
+   grille-cdi               FR conseiller-en-image    Paris                0 /     0  []
+   grille-cdi               FR formateur              Paris                1 /     0  []
+   grille-cdi               FR makeup-artist          Paris                0 /     1  ['contrat']
+   grille-cdi               FR responsable-formation  Paris                0 /     0  []
+   grille-cdi               FR responsable-projets-retail Paris                0 /     0  []
+   grille-cdi               FR assistant-marketing-digital Paris                0 /     0  []
+   grille-cdi               FR assistant-marketing-et-ventes Paris                0 /     0  []
+   grille-cdi               FR assistant-showroom     Paris                0 /     0  []
+   grille-cdi               FR assistant-store-manager Paris                4 /     1  ['contrat']
+   grille-cdi               FR beauty-therapist       Paris                3 /     0  []
+   grille-cdi               FR cashier                Paris                9 /     0  []
+   grille-cdi               FR customer-service-advisor Paris                0 /     0  []
+   grille-cdi               FR directeur-reseau       Paris                0 /     0  []
+   grille-cdi               FR makeup-artist          Marseille            0 /     0  []
+   grille-cdi               FR manager-floor          Paris                4 /     1  ['contrat']
+   grille-cdi               FR personal-shopper       Paris                0 /     0  []
+   grille-cdi               FR sales-advisor          Marseille            3 /     1  ['contrat']
+   grille-cdi               FR sales-advisor          Paris               45 /     7  ['contrat']
+   grille-cdi               FR store-manager          Lyon                 4 /     0  []
+   grille-cdi               FR visual-merchandiser    Paris                4 /     0  []
+   grille-cdi               FR animateur-ventes       Chennevières-sur-Marne     0 /     0  []
+   grille-cdi               FR animateur-ventes       Gagny                0 /     0  []
+   grille-cdi               FR animateur-ventes       Marseille            0 /     0  []
+   grille-cdi               FR animateur-ventes       Poissy               0 /     0  []
+   grille-cdi               FR animateur-ventes       Salon-de-Provence     0 /     0  []
+   grille-cdi-temps-plein   FR sales-advisor          Paris               23 /    13  ['contrat', 'temps']
+   grille-cdi-temps-plein   FR store-manager          Paris                6 /     4  ['contrat', 'temps']
+   grille-cdi-temps-plein   FR animateur-ventes       Paris                0 /     0  []
+   grille-cdi-temps-plein   FR chef-produit           Paris                0 /     0  []
+   grille-cdi-temps-plein   FR receptionist           Paris                0 /     0  []
+   grille-cdi-temps-plein   FR chef-de-projet-cosmetique Paris                0 /     0  []
+   grille-cdi-temps-plein   FR assistant-commercial   Paris                0 /     0  []
+   grille-cdd               FR sales-advisor          Paris               29 /     6  ['contrat']
+   grille-cdd               FR store-manager          Paris                5 /     2  ['contrat']
+   grille-cdd               FR animateur-ventes       Paris                0 /     0  []
+   grille-cdd               FR chef-produit           Paris                0 /     0  []
+   grille-cdd               FR receptionist           Paris                0 /     0  []
+   grille-cdd               FR chef-de-projet-cosmetique Paris                0 /     0  []
+   grille-cdd               FR assistant-commercial   Paris                0 /     0  []
+   grille-permanent         US sales-advisor          New York             2 /    30  ['contrat']
+   grille-permanent         GB sales-advisor          London              18 /    34  ['contrat']
+   grille-permanent         DE sales-advisor          Berlin               1 /     5  ['contrat']
+   grille-permanent         IT sales-advisor          Milano               3 /    10  ['contrat']
+   grille-permanent         ES sales-advisor          Madrid               5 /    11  ['contrat']
+   grille-permanent         NL sales-advisor          Amsterdam            1 /    27  ['contrat']
+   grille-permanent         CH sales-advisor          Genève               2 /     3  ['contrat']
+   grille-permanent         JP sales-advisor          東京                   4 /     0  []
+   grille-permanent         KR sales-advisor          서울                   8 /     5  ['contrat']
+   grille-permanent         CN sales-advisor          上海                   0 /     1  ['contrat']
+   grille-permanent         CA sales-advisor          Toronto              3 /     3  ['contrat']
+   grille-permanent         AU sales-advisor          Sydney               4 /    26  ['contrat']
+   grille-permanent         BE sales-advisor          Bruxelles            0 /     2  ['contrat']
+   grille-permanent         SE sales-advisor          Stockholm            0 /     3  ['contrat']

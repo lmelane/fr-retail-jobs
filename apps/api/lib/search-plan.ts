@@ -94,8 +94,9 @@ export type Pertinence = {
  * Au contrat 2, une offre qui ne dit rien de la dimension filtrée reste servie, APRÈS les offres reconnues, et signalée
  * (« Type de contrat non précisé par la Maison ») ; une offre qui déclare autre chose (un CDD, un stage) reste écartée
  * (exigence validée de [[D-433]] : « conserver l'accès aux offres non renseignées, sans les présenter comme des
- * correspondances confirmées »). Une ALERTE, elle, n'envoie que les offres reconnues (R-143 §8) : l'examen n'en retient
- * aucune autre (`examenNouveautes`).
+ * correspondances confirmées »). Une ALERTE envoie d'abord les offres reconnues, puis, séparées et signalées, celles qui
+ * ne précisent pas la dimension (D-515 §2, qui remplace la promesse stricte de R-143 §8 version D-513) : l'examen les rend
+ * à part (`examenNouveautes`, `incompletes`).
  */
 export const DIMENSIONS_NON_PRECISEES = ['contrat', 'temps'] as const satisfies readonly Dimension[];
 export type DimensionNonPrecisee = (typeof DIMENSIONS_NON_PRECISEES)[number];

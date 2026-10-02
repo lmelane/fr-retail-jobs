@@ -182,8 +182,8 @@ function colonnesProximite(cs: ReturnType<typeof cercles>): Prisma.Sql {
  * D-510 : la distance ne trie plus ; elle ne sert qu'à retenir les offres dans leurs cercles.
  * D-513 : les rayons se choisissent sur les offres CONFIRMÉES seules. Les offres qui ne précisent pas le contrat ou le
  * temps de travail filtré s'ajoutent dans ce même cercle, après : elles ne rétrécissent jamais le cercle d'une recherche
- * « CDI » (vingt offres sans contrat à côté ne cachent pas un CDI à 40 km), et l'alerte, qui n'envoie que les
- * confirmées, garde exactement le cercle et les offres de la recherche stricte d'avant.
+ * « CDI » (vingt offres sans contrat à côté ne cachent pas un CDI à 40 km) ; la section certaine d'une alerte garde
+ * exactement le cercle et les offres de la recherche stricte d'avant, sa section incomplète (D-515 §2) ce même cercle.
  */
 function retenuesSql(cs: ReturnType<typeof cercles>): Prisma.Sql {
   const rayon = (i: number) => Prisma.raw(`a.r${i}`);
@@ -376,6 +376,14 @@ export type ExamenNouveautes = {
    * Catwalks d'abord puis le score décru par l'âge (`classement.ts`).
    */
   ids: string[];
+  /**
+   * D-515 §2 — les nouvelles qui respectent avec certitude tous les autres critères (métier, lieu, cercle, Maison…) mais
+   * ne précisent pas le contrat ou le temps de travail filtré : envoyées APRÈS les certaines, séparées et signalées.
+   * Une offre qui déclare une autre valeur n'en fait jamais partie (`predicat`). Vides sans `nonPrecisees` (contrat 1).
+   */
+  incompletes: number;
+  /** Les premières incomplètes dans l'ordre de la page, chacune avec les dimensions qu'elle ne précise pas. */
+  idsIncompletes: Array<{ id: string; dimensions: DimensionNonPrecisee[] }>;
 };
 
 /**
@@ -400,22 +408,29 @@ export async function examenNouveautes(
   // R-143 §7 : une alerte qui porte une requête rend ses nouvelles dans l'ordre pertinent de la page, à l'instant de l'examen.
   const t0 = plan.pertinence ? instantDeReference() : 0;
   const ordre = plan.pertinence ? Prisma.sql`origine, ns, nf, id` : plan.fraicheur ? Prisma.sql`origine, nf, id` : Prisma.sql`origine, ns, np, nf, id`;
-  const [r] = await prisma.$queryRaw<Array<{ total: number; nouvelles: number; ids: string[] | null }>>(Prisma.sql`
+  const [r] = await prisma.$queryRaw<Array<{ total: number; nouvelles: number; ids: string[] | null; incompletes: number;
+    "idsIncompletes": Array<{ id: string; n: DimensionNonPrecisee[] }> | null }>>(Prisma.sql`
     WITH base AS MATERIALIZED (${base}),
-    -- D-513 : la recherche de la page, offres non précisées comprises ; l'alerte n'envoie que les confirmées.
-    scoped AS MATERIALIZED (SELECT b.id, b.origine, b."postedAt", b."firstSeenAt", b.score, ${confirmeSql(plan)} AS confirme
+    -- D-513 : la recherche de la page, offres non précisées comprises. D-515 §2 : l'alerte envoie d'abord les confirmées,
+    -- puis, séparées, les non précisées du même cercle (npr : les dimensions qu'elles ne précisent pas).
+    scoped AS MATERIALIZED (SELECT b.id, b.origine, b."postedAt", b."firstSeenAt", b.score, ${confirmeSql(plan)} AS confirme,
+      ${nonPreciseesSql(plan)} AS npr
       ${prox ? Prisma.sql`, ${colonnesProximite(cs)}` : Prisma.empty} ${colonnesClassement(plan)} FROM base b WHERE ${restriction(plan)}),
     ${prox ? retenuesSql(cs) : Prisma.empty}
     nouvelles AS MATERIALIZED (
-      SELECT id, origine, ${plan.pertinence ? Prisma.sql`${scoreNegatifSql(t0)} AS ns, ${fraicheurNegative} AS nf` : plan.fraicheur ? Prisma.sql`${fraicheurNegative} AS nf`
+      SELECT id, origine, confirme, npr, ${plan.pertinence ? Prisma.sql`${scoreNegatifSql(t0)} AS ns, ${fraicheurNegative} AS nf` : plan.fraicheur ? Prisma.sql`${fraicheurNegative} AS nf`
         : Prisma.sql`-score AS ns, coalesce(-extract(epoch FROM "postedAt"), 1e15)::float8 AS np, (-extract(epoch FROM "firstSeenAt"))::float8 AS nf`}
-      FROM ${retenues} WHERE confirme AND "firstSeenAt" > (${entreeApres}::timestamptz AT TIME ZONE 'UTC')
+      FROM ${retenues} WHERE "firstSeenAt" > (${entreeApres}::timestamptz AT TIME ZONE 'UTC')
         AND ("postedAt" IS NULL OR "postedAt" >= (${publieeApres}::timestamptz AT TIME ZONE 'UTC'))
     )
     SELECT (SELECT count(*)::int FROM ${retenues} WHERE confirme) AS total,
-      (SELECT count(*)::int FROM nouvelles) AS nouvelles,
-      (SELECT jsonb_agg(id ORDER BY ${ordre}) FROM (SELECT * FROM nouvelles ORDER BY ${ordre} LIMIT ${limite}) p) AS ids`);
-  return { total: r.total, nouvelles: r.nouvelles, ids: r.ids ?? [] };
+      (SELECT count(*)::int FROM nouvelles WHERE confirme) AS nouvelles,
+      (SELECT jsonb_agg(id ORDER BY ${ordre}) FROM (SELECT * FROM nouvelles WHERE confirme ORDER BY ${ordre} LIMIT ${limite}) p) AS ids,
+      (SELECT count(*)::int FROM nouvelles WHERE NOT confirme) AS incompletes,
+      (SELECT jsonb_agg(jsonb_build_object('id', id, 'n', npr) ORDER BY ${ordre})
+         FROM (SELECT * FROM nouvelles WHERE NOT confirme ORDER BY ${ordre} LIMIT ${limite}) p) AS "idsIncompletes"`);
+  return { total: r.total, nouvelles: r.nouvelles, ids: r.ids ?? [], incompletes: r.incompletes,
+    idsIncompletes: (r.idsIncompletes ?? []).map((x) => ({ id: x.id, dimensions: x.n ?? [] })) };
 }
 
 /** Les facettes d'une recherche (une seule définition pour les deux ordres de la page). */

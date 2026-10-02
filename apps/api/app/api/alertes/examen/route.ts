@@ -21,6 +21,10 @@ import { annonceComprehension, annonceFraicheur, annonceNonPrecisees, annoncePro
  * Réponse : `total` (toute la recherche, comme le nombre affiché sur `/emplois`), `nouvelles` (entrées après le
  * filigrane et publiées après la borne, ou sans date), et les 50 premières nouvelles dans l'ordre de `/emplois`, chacune
  * avec le `chemin` de sa fiche sur le site.
+ *
+ * D-515 §2 (additif) : `incompletes` et `jobsIncompletes`, les nouvelles qui respectent avec certitude tous les autres
+ * critères mais ne précisent pas le contrat ou le temps de travail filtré, chacune avec `dimensions`. Elles ne sont
+ * JAMAIS dans `jobs` : un backend d'avant, qui ne lit pas ces champs, n'envoie que les certaines, comme avant.
  */
 export const dynamic = 'force-dynamic';
 
@@ -40,14 +44,15 @@ export async function GET(request: NextRequest) {
   // D-510 : et le même ordre, par fraîcheur.
   const filtres = { ...parseFilters(paramsMultiples(request.nextUrl.searchParams)), proximite: annonceProximite(request.headers),
     comprendre: annonceComprehension(request.headers), fraicheur: annonceFraicheur(request.headers),
-    // D-513, R-143 §8 : le cercle est celui de la page (offres non précisées comprises), mais l'alerte n'envoie que les
-    // offres qui respectent RÉELLEMENT chaque critère : jamais un « contrat non précisé » dans une alerte « CDI ».
+    // D-513, D-515 §2 : le cercle est celui de la page, choisi sur les offres reconnues ; les offres qui respectent
+    // RÉELLEMENT chaque critère sont dans `jobs`, celles qui ne précisent pas le contrat ou le temps de travail filtré à
+    // part (`jobsIncompletes`) : jamais un « contrat non précisé » présenté comme un CDI.
     nonPrecisees: annonceNonPrecisees(request.headers) };
 
   try {
     const examen = await examinerAlerte(filtres, bornes.entreeApres, bornes.publieeApres);
     console.info(JSON.stringify({ evenement: 'api.alertes.examen', requestId, statut: 200, dureeMs: Date.now() - debut,
-      marche: examen.perimetre.code, total: examen.total, nouvelles: examen.nouvelles, refus: examen.filtresRefuses.length }));
+      marche: examen.perimetre.code, total: examen.total, nouvelles: examen.nouvelles, incompletes: examen.incompletes, refus: examen.filtresRefuses.length }));
     return NextResponse.json({
       total: examen.total,
       nouvelles: examen.nouvelles,
@@ -55,6 +60,12 @@ export async function GET(request: NextRequest) {
       // Le chemin de la fiche, calculé ICI par l'algorithme unique (`offerPath`) : le backend le colle derrière l'hôte
       // du site sans jamais recopier la règle du slug.
       jobs: projeterLignes(examen.jobs, examen.perimetre.langueDesLibelles).map((j) => ({ ...j, chemin: offerPath(j) })),
+      // D-515 §2, au seul client qui l'annonce (contrat 2) : sans lui, le document d'avant, à l'identique.
+      ...(filtres.nonPrecisees ? {
+        incompletes: examen.incompletes ?? 0,
+        jobsIncompletes: projeterLignes(examen.jobsIncompletes ?? [], examen.perimetre.langueDesLibelles).map((j) => ({
+          ...j, chemin: offerPath(j), dimensions: j.correspondance?.statut === 'NON_CONFIRMEE' ? j.correspondance.dimensions : [] })),
+      } : {}),
     }, { headers: entetes });
   } catch (error) {
     if (error instanceof PerimetreRequisError || error instanceof CurseurInvalideError || error instanceof SearchQueryError) {

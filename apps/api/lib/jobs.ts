@@ -737,6 +737,13 @@ export type ExamenAlerte = {
   total: number;
   nouvelles: number;
   jobs: JobRow[];
+  /**
+   * D-515 §2 — les nouvelles qui respectent avec certitude tous les autres critères mais ne précisent pas le contrat ou le
+   * temps de travail filtré, dans l'ordre de la page ; chacune porte `correspondance: NON_CONFIRMEE` et ses dimensions.
+   * Au seul contrat 2 (`nonPrecisees`) : absentes au contrat 1, dont l'examen reste celui d'avant, au champ près.
+   */
+  incompletes?: number;
+  jobsIncompletes?: JobRow[];
   perimetre: PerimetreServi;
   filtresRefuses: FiltreRefuse[];
 };
@@ -756,10 +763,24 @@ export async function examinerAlerte(filters: JobFilters, entreeApres: Date, pub
     const plan = filters.proximite ? await localiserPlan(planTexte, filters.locale) : planTexte;
     const taxonomy = await getOptionalOccupationPresentation(langueDesLibelles(localeAffichage(filters.locale, perimetre)));
     const examen = await examenNouveautes(plan, entreeApres, publieeApres, NOUVELLES_MAX);
+    const dimensions = new Map(examen.idsIncompletes.map((x) => [x.id, x.dimensions]));
+    const [certaines, incompletes] = await Promise.all([
+      lignesDansLOrdre(examen.ids, taxonomy),
+      lignesDansLOrdre(examen.idsIncompletes.map((x) => x.id), taxonomy),
+    ]);
     return {
       total: examen.total,
       nouvelles: examen.nouvelles,
-      jobs: await lignesDansLOrdre(examen.ids, taxonomy),
+      // Au contrat 1 (sans `nonPrecisees`), les lignes d'avant, à l'identique (témoins différentiels D-496, D-500).
+      jobs: filters.nonPrecisees ? certaines.map((ligne): JobRow => ({ ...ligne, correspondance: { statut: 'CONFIRMEE' } })) : certaines,
+      ...(filters.nonPrecisees ? {
+        incompletes: examen.incompletes,
+        // Une incomplète sans dimension nommée ne peut pas se signaler : elle n'est pas servie (jamais présentée certaine).
+        jobsIncompletes: incompletes.flatMap((ligne): JobRow[] => {
+          const d = dimensions.get(ligne.id);
+          return d?.length ? [{ ...ligne, correspondance: { statut: 'NON_CONFIRMEE', dimensions: [...d] } }] : [];
+        }),
+      } : {}),
       perimetre: perimetreServi(perimetre, filters.locale),
       filtresRefuses: planTexte.refus,
     };
