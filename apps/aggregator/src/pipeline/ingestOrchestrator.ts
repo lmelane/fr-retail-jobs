@@ -255,12 +255,14 @@ export async function ingestOne(prisma: PrismaClient, key: string, result: Orche
   }
 }
 
-/** Normal and explicitly scoped runs maintain the same admission prerequisite. */
+/** Normal and explicitly scoped runs maintain the same admission prerequisite. When that maintenance had to collect a
+ * native qualification capture, the ingestion adopts it instead of reading the site a second time (lecture unique,
+ * `capture/adoption.ts`), or reads the site under its decision when the capture does not qualify. */
 export async function runQualifiedIngest(prisma: PrismaClient, key: string, skipGeocode = true, timeoutMs?: number) {
   const budget = timeoutMs ?? await sourceTimeoutFor(prisma, key);
   return withSourceBudget(async () => {
-    await maintainSourceAccess(prisma, key, budget);
-    return runIngest(prisma, { only: key, skipGeocode });
+    const access = await maintainSourceAccess(prisma, key, budget);
+    return runIngest(prisma, { only: key, skipGeocode, ...(access.qualificationCaptureId ? { adoptCaptureId: access.qualificationCaptureId } : {}) });
   }, budget, key,
   { softTimeoutMs: Math.floor(budget - Math.min(SOFT_DEADLINE_MARGIN_MS, budget / 10)) });
 }

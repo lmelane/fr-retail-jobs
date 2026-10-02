@@ -31,6 +31,7 @@ import type { NormalizedJob } from '../types.js';
 import { runGeocode } from './geocodeJobs.js';
 import { fetchAtsJobs } from '../ats/index.js';
 import { captureExtraction } from '../capture/batch.js';
+import { adoptQualificationCapture } from '../capture/adoption.js';
 import { recordIngestionCompletion, type OutputFate } from '../capture/completion.js';
 import { validateCapturedSource } from '../connectors/sourceValidation.js';
 import { SourceAdmissionGateError } from '../connectors/sourceAdmission.js';
@@ -271,6 +272,8 @@ async function ingestApiSource(
   /** Verdicts chargés une fois par run — voir `toCandidate`. */
   trust: TrustContext = new Map(),
   catalogue?: CompiledOccupationTaxonomy,
+  /** La capture de qualification que ce tour vient de valider : adoptée si elle remplit toutes les conditions (lecture unique). */
+  adoptCaptureId?: string,
 ): Promise<IngestStats> {
   const stats: IngestStats = {
     source: source.key,
@@ -298,12 +301,24 @@ async function ingestApiSource(
    * endroits opposés, et les confondre enverrait optimiser la mauvaise moitié.
    */
   const fetchStartedAt = Date.now();
-  const extraction = await captureExtraction(
+  /**
+   * LECTURE UNIQUE (lecture D-492 de D-516 §1) : la capture que la qualification de ce tour vient de valider est publiée
+   * telle quelle, rejouée hors réseau, au lieu d'une seconde lecture du site — à ses conditions (`capture/adoption.ts`).
+   * Refusée, la source relit le site sous sa décision d'accès, exactement comme avant.
+   */
+  const adoption = adoptCaptureId
+    ? await adoptQualificationCapture(prisma, { key: source.key, revisionId: source.revisionId, config }, type as AtsType, adoptCaptureId)
+    : null;
+  const adopted = adoption && 'adopted' in adoption ? adoption.adopted : null;
+  const extraction = adopted ?? await captureExtraction(
     prisma, stats.source, config, log.runId(), settings => fetchAtsJobs(type as never, settings), type, { revisionId: source.revisionId, requireActive: true });
   const { captureBatchId, jobs, declaredTotal, truncated, complete, enumeration, rejectedRows } = extraction;
   stats.fetchMs = Date.now() - fetchStartedAt;
-  const validation = await validateCapturedSource(prisma, captureBatchId);
-  if (validation.verdict !== 'VALIDATED') throw new SourceAdmissionGateError('CAPTURE_NOT_VALIDATED', 'Ingestion requires a qualified native result');
+  // An adopted capture keeps its own validation, the current one: the publication gate below checks it is still so.
+  if (!adopted) {
+    const validation = await validateCapturedSource(prisma, captureBatchId);
+    if (validation.verdict !== 'VALIDATED') throw new SourceAdmissionGateError('CAPTURE_NOT_VALIDATED', 'Ingestion requires a qualified native result');
+  }
   // Also checks empty feeds: no per-job writer will run for them.
   await prisma.$transaction(async tx => {
     await lockSourceWrites(tx, stats.source);
@@ -575,6 +590,11 @@ export type IngestOptions = {
    * look up the same cities several times at once.
    */
   skipGeocode?: boolean;
+  /**
+   * With `only`: the qualification capture this turn just validated for that source (`maintainSourceAccess`). The
+   * ingestion adopts it instead of reading the site again when every condition holds (lecture unique).
+   */
+  adoptCaptureId?: string;
 };
 
 export async function runIngest(
@@ -641,7 +661,8 @@ export async function runIngest(
       assertSourceRunning();
       // No closure happens here: the refresh reads the sealed proof of this admitted
       // collection and decides absence under its own locks and manifest.
-      const stats = await log.withContext({ sourceKey: source.key, connectorId: source.kind }, () => ingestApiSource(prisma, source, trust, occupationTaxonomy));
+      const stats = await log.withContext({ sourceKey: source.key, connectorId: source.kind }, () => ingestApiSource(prisma, source, trust, occupationTaxonomy,
+        options.only === source.key ? options.adoptCaptureId : undefined));
       results.push(stats);
       await geocodeQuietly();
     } catch (error) {

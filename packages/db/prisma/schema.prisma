@@ -1290,6 +1290,7 @@ enum CapturePurpose {
 /** One bounded capture attempt. Evidence pages never stand for job extractions. */
 model CaptureBatch {
   ingestionAdmission SourceIngestionAdmission?
+  captureAdoption SourceCaptureAdoption?
   ingestionCompletion SourceIngestionCompletion?
   identityReviews SourceIdentityReview[]
   accessReviews SourceAccessDecision[] @relation("AccessEvidenceJobs")
@@ -1325,6 +1326,7 @@ model CaptureBatch {
  * Identity and access are separate promotion requirements. */
 model SourceValidation {
   ingestionAdmissions SourceIngestionAdmission[]
+  captureAdoptions SourceCaptureAdoption[]
   id String @id @default(uuid())
   sequence BigInt @unique @default(autoincrement())
   sourceRevisionId String
@@ -1354,6 +1356,23 @@ model SourceIngestionAdmission {
   admittedAt DateTime @default(now())
   @@index([identityReviewId])
   @@index([sourceValidationId])
+}
+
+/** Lecture unique du RUN (lecture D-492 de D-516 §1, 02/10/2026) : la capture de qualification du même tour, adoptée par
+ * l'ingestion au lieu d'une seconde lecture du site. Lie la capture, SA validation et la décision d'accès qui couvre son
+ * journal entier ; le garde SQL exige fraîcheur (60 min), dernière tentative, dernière validation, énumération complète.
+ * L'admission correspondante porte la politique `native-ingestion-adoption/1`. Immuable. */
+model SourceCaptureAdoption {
+  batchId String @id
+  batch CaptureBatch @relation(fields: [batchId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  sourceValidationId String
+  sourceValidation SourceValidation @relation(fields: [sourceValidationId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  accessDecisionId String
+  accessDecision SourceAccessDecision @relation(fields: [accessDecisionId], references: [id], onDelete: Restrict, onUpdate: Restrict)
+  policyVersion String
+  adoptedAt DateTime @default(now())
+  @@index([sourceValidationId])
+  @@index([accessDecisionId])
 }
 
 /** Immutable end-of-ingestion record of an admitted, sealed collection: what became of
@@ -1455,6 +1474,7 @@ model SourceAccessDecision {
   captureBatchId String?
   captureBatch CaptureBatch? @relation("AccessEvidenceJobs", fields: [captureBatchId], references: [id], onDelete: Restrict, onUpdate: Restrict)
   collections CaptureBatch[] @relation("CollectionAccess")
+  captureAdoptions SourceCaptureAdoption[]
   verdict String
   policyVersion String
   readerRevision String

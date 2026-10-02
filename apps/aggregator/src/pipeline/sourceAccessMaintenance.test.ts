@@ -100,7 +100,9 @@ describe('normal run maintains its access prerequisite through the Golden Path',
       .rejects.toMatchObject({ code: 'CAPTURE_STALE' });
     vi.spyOn(certification, 'requireSourceValidation').mockRejectedValueOnce(
       new certification.SourceValidationGateError('CAPTURE_STALE', '24-hour native qualification expired'));
-    expect(await maintain(source)).toEqual({ renewed: false, decisionId: first.decisionId });
+    // The day's capture is handed to the ingestion, which adopts it instead of reading again (lecture unique).
+    const renewed = await maintain(source);
+    expect(renewed).toEqual({ renewed: false, decisionId: first.decisionId, qualificationCaptureId: expect.any(String) });
     expect(transport).toHaveBeenCalledTimes(1); // Native evidence; no redundant robots request.
     expect(await db.sourceAccessDecision.count({ where: { sourceKey: source.key } })).toBe(1);
     expect(await db.sourceValidation.count({ where: { sourceRevisionId: source.currentRevisionId } })).toBe(2);
@@ -215,7 +217,8 @@ describe('normal run maintains its access prerequisite through the Golden Path',
       config: source.config as Record<string, unknown>, revisionId: source.currentRevisionId })));
     const result = await ingestAllBySource(db);
     expect(result).toMatchObject({ total: 2, ok: 1, failed: 1, timedOut: 0 });
-    expect(runIngest).toHaveBeenCalledExactlyOnceWith(db, { only: allowed.key, skipGeocode: true });
+    // The allowed source was qualified in this turn: its ingestion receives that capture to adopt (lecture unique).
+    expect(runIngest).toHaveBeenCalledExactlyOnceWith(db, { only: allowed.key, skipGeocode: true, adoptCaptureId: expect.any(String) });
     expect(transport).toHaveBeenCalledTimes(2);
     expect(await db.sourceRun.findFirst({ where: { sourceKey: blocked.key } })).toMatchObject({ status: 'ERROR', canAttestAbsence: false });
     const summary = await db.source.findUniqueOrThrow({ where: { key: blocked.key } });

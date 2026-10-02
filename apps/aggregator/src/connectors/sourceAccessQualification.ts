@@ -11,7 +11,7 @@ import { log } from '../observability/logger.js';
 import { captureReaderRevision } from '../capture/revision.js';
 import { captureSourceForValidation } from './sourceValidation.js';
 import { matchingAccessScope, SourceAccessGateError, type AccessDocument } from './accessScope.js';
-import { deriveAccessBootstrap, type ObservedBootstrapRequest, type ObservedChallenge } from './wafBootstrap.js';
+import { assertJournaledBootstrap, deriveAccessBootstrap, type ObservedBootstrapRequest, type ObservedChallenge } from './wafBootstrap.js';
 import { describeRequest } from '../capture/context.js';
 import { CRAWLER_IDENTITY } from '../lib/crawlerIdentity.js';
 import { requireSourceValidation, SourceValidationGateError } from './sourceCertification.js';
@@ -90,8 +90,9 @@ export async function qualifySourceAccess(db: PrismaClient, c: { key: string; ki
 /** Maintain only a missing/stale prerequisite for an ACTIVE source in its normal run.
  * A current grant is kept unless the day's native qualification capture requests something outside
  * its scope; it is then re-derived from that capture. Denials/invalid evidence never trigger a replacement grant.
- * Qualification captures are evidence only. The subsequent normal ingestion still has to
- * obtain its own admission and pass every existing publication check. */
+ * Qualification captures are evidence. `qualificationCaptureId` names the VALIDATED capture this call made, if any:
+ * the ingestion that follows may adopt it instead of reading the site again (lecture unique, `capture/adoption.ts`),
+ * under its own admission and every existing publication check; otherwise it collects as before. */
 export async function maintainSourceAccess(db: PrismaClient, sourceKey: string, timeoutMs: number, store?: ObjectStore) {
   assertPipelineRunning(); assertSourceRunning();
   const source = await db.source.findUniqueOrThrow({ where: { key: sourceKey },
@@ -103,6 +104,9 @@ export async function maintainSourceAccess(db: PrismaClient, sourceKey: string, 
   let reason: string;
   // A fresh validated capture the grant no longer covers: the new grant is derived from it, without collecting again.
   let outgrownBy: string | null = null;
+  // The VALIDATED native capture this call collected, whichever branch collected it.
+  let qualified: string | null = null;
+  const result = (renewed: boolean, decisionId: string) => ({ renewed, decisionId, ...(qualified ? { qualificationCaptureId: qualified } : {}) });
   try {
     const { decision, document } = assertSourceAccess(source, previous);
     // Access grants live up to 30 days; native qualification lasts 24 hours. A daily run renews
@@ -114,9 +118,10 @@ export async function maintainSourceAccess(db: PrismaClient, sourceKey: string, 
       const validation = await captureSourceForValidation(db, sourceKey, timeoutMs, store);
       if (validation.verdict !== 'VALIDATED') throw new SourceAdmissionGateError('CAPTURE_NOT_VALIDATED', `Native qualification failed: ${validation.verdict}`);
       await log.info('source.native_qualification_completed', { sourceKey, captureBatchId: validation.captureBatchId });
+      qualified = validation.captureBatchId;
       if (await scopeOutgrown(db, sourceKey, document, validation.captureBatchId, store)) outgrownBy = validation.captureBatchId;
     }
-    if (!outgrownBy) return { renewed: false, decisionId: decision.id };
+    if (!outgrownBy) return result(false, decision.id);
     reason = 'ACCESS_SCOPE_OUTGROWN';
   } catch (error) {
     if (!(error instanceof SourceAccessGateError) || !['ACCESS_STALE', 'ACCESS_MISSING'].includes(error.code)) throw error;
@@ -130,6 +135,7 @@ export async function maintainSourceAccess(db: PrismaClient, sourceKey: string, 
     if (validation.verdict !== 'VALIDATED')
       throw new SourceAdmissionGateError('CAPTURE_NOT_VALIDATED', `Access qualification requires validated native evidence: ${validation.verdict}`);
     evidenceBatchId = validation.captureBatchId;
+    qualified = evidenceBatchId;
   }
   const qualification = await qualifySourceAccess(db, source, source.currentRevisionId, evidenceBatchId,
     `normal-worker:${captureReaderRevision()}`, {}, store, previous?.id ?? null);
@@ -139,7 +145,7 @@ export async function maintainSourceAccess(db: PrismaClient, sourceKey: string, 
   const { decision } = await requireSourceAccess(db, source);
   await log.info('source.access_qualification_completed', { sourceKey, reason, decisionId: decision.id,
     verdict: decision.verdict, captureBatchId: evidenceBatchId });
-  return { renewed: true, decisionId: decision.id };
+  return result(true, decision.id);
 }
 
 /**
@@ -184,6 +190,33 @@ async function scopeOutgrown(db: PrismaClient, sourceKey: string, document: Read
   await log.info('source.access_scope_outgrown', { sourceKey, captureBatchId, outside: outside.length,
     example: `${outside[0].method} ${outside[0].url.origin}${outside[0].url.pathname}` });
   return true;
+}
+
+/**
+ * Lecture unique : le journal ENTIER d'une capture collectée sans décision (qualification) est-il couvert par la
+ * décision d'accès donnée, exactement comme la collecte sous décision l'aurait exigé requête par requête ?
+ *   · chaque saut HTTP observé tombe dans un périmètre déclaré (`matchingAccessScope`, le contrôle de `requestAccess`) ;
+ *   · l'amorçage WAF inscrit est celui que la décision déclare (`assertJournaledBootstrap`, le contrôle de fin de
+ *     `captureExtraction` sous décision, D-483).
+ * Un journal illisible n'est JAMAIS couvert : le refus est le sens sûr (la source relit alors le site sous décision).
+ */
+export async function journalCoveredBy(db: PrismaClient, sourceKey: string, document: Readonly<AccessDocument>, captureBatchId: string,
+  store?: ObjectStore): Promise<{ covered: true } | { covered: false; reason: string }> {
+  let journal: Awaited<ReturnType<typeof observedJournal>>;
+  try { journal = await observedJournal(db, captureBatchId, store); }
+  catch (error) { return { covered: false, reason: `journal illisible : ${message(error)}` }; }
+  for (const request of journal.requests) {
+    try {
+      matchingAccessScope(document.scopes, describeRequest({ url: request.url.toString(), method: request.method,
+        headers: { 'user-agent': CRAWLER_IDENTITY }, format: 'HTTP_RESPONSE' }));
+    } catch (error) {
+      if (error instanceof SourceAccessGateError) return { covered: false, reason: `hors périmètre : ${request.method} ${request.url.origin}${request.url.pathname}` };
+      throw error;
+    }
+  }
+  try { assertJournaledBootstrap(sourceKey, document.bootstraps ?? [], journal.challenges, journal.bootstrap); }
+  catch (error) { return { covered: false, reason: message(error) }; }
+  return { covered: true };
 }
 
 /**

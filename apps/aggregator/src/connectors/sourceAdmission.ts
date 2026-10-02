@@ -3,6 +3,13 @@ import { readIdentitySource } from './sourceRegistryRead.js';
 import { requireSourceValidation } from './sourceCertification.js';
 
 export const SOURCE_ADMISSION_POLICY = 'native-ingestion-admission/1';
+/**
+ * Lecture unique (lecture D-492 de D-516 §1, 02/10/2026) : l'admission d'une capture de qualification ADOPTÉE par
+ * l'ingestion du même tour, sur sa propre validation, liée à la décision d'accès qui couvre son journal
+ * (`SourceCaptureAdoption`, garde SQL de la migration 20261002190000). Voir `capture/adoption.ts`.
+ */
+export const CAPTURE_ADOPTION_POLICY = 'native-ingestion-adoption/1';
+const ADMISSION_POLICIES: ReadonlySet<string> = new Set([SOURCE_ADMISSION_POLICY, CAPTURE_ADOPTION_POLICY]);
 export class SourceAdmissionGateError extends Error {
   constructor(readonly code: 'ADMISSION_MISSING' | 'IDENTITY_SUPERSEDED' | 'CAPTURE_NOT_VALIDATED', message: string) {
     super(message); this.name = 'SourceAdmissionGateError';
@@ -25,10 +32,11 @@ export async function ingestionQualifications(tx: Prisma.TransactionClient, sour
 }
 
 /** A fresh result must pass its own offline validation. The admission retains
- * the earlier calibration that justified starting the network collection. */
+ * the earlier calibration that justified starting the network collection; an adopted capture's admission retains its
+ * own validation, which must still be the current one. */
 export async function requireIngestionPublication(tx: Prisma.TransactionClient, batch: Pick<CaptureBatch, 'id' | 'sourceKey' | 'sourceRevisionId'>) {
   const admission = await tx.sourceIngestionAdmission.findUnique({ where: { batchId: batch.id } });
-  if (!admission || admission.policyVersion !== SOURCE_ADMISSION_POLICY) throw new SourceAdmissionGateError('ADMISSION_MISSING', 'Publication requires a collection admitted before transport');
+  if (!admission || !ADMISSION_POLICIES.has(admission.policyVersion)) throw new SourceAdmissionGateError('ADMISSION_MISSING', 'Publication requires a collection admitted before transport');
   const { validation } = await ingestionQualifications(tx, batch.sourceKey);
   /*
    * Le registre a-t-il changé PENDANT la collecte ? Avant F5 cette question se posait sur
@@ -42,4 +50,6 @@ export async function requireIngestionPublication(tx: Prisma.TransactionClient, 
     throw new SourceAdmissionGateError('IDENTITY_SUPERSEDED', 'Registry revision changed during collection; collect again');
   }
   if (validation.captureBatchId !== batch.id) throw new SourceAdmissionGateError('CAPTURE_NOT_VALIDATED', 'Publication requires the current validation of this exact collection');
+  if (admission.policyVersion === CAPTURE_ADOPTION_POLICY && admission.sourceValidationId !== validation.id)
+    throw new SourceAdmissionGateError('CAPTURE_NOT_VALIDATED', 'An adopted capture publishes only under the validation it was adopted on');
 }

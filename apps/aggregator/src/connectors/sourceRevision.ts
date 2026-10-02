@@ -5,7 +5,7 @@ import { evidenceHash } from '../lib/evidenceHash.js';
 import { effectiveSourceConfig } from './sourceConfig.js';
 import { requireSourceAccess } from './sourceAccess.js';
 import { SourceAccessGateError } from './accessScope.js';
-import { requireIngestionPublication } from './sourceAdmission.js';
+import { CAPTURE_ADOPTION_POLICY, requireIngestionPublication } from './sourceAdmission.js';
 
 export type SourceBinding = { revisionId: string; requireActive?: boolean };
 type RegistryState = { currentRevisionId: string; status: string; kind: string; configText: string };
@@ -38,6 +38,18 @@ export async function requireCurrentCaptureRevision(db: Prisma.TransactionClient
     SELECT "currentRevisionId", status FROM "Source" WHERE key=${batch.sourceKey} FOR SHARE`;
   if (!source || source.status !== 'ACTIVE' || source.currentRevisionId !== batch.sourceRevisionId) throw new Error('Captured source revision is no longer current');
   const access = await requireSourceAccess(db, { key: batch.sourceKey, currentRevisionId: source.currentRevisionId });
-  if (!batch.accessDecisionId || access.decision.id !== batch.accessDecisionId) throw new SourceAccessGateError('ACCESS_SUPERSEDED', 'Publication requires the access decision that governed this collection');
+  const governing = batch.accessDecisionId ?? await adoptedAccessDecision(db, batch.id);
+  if (!governing || access.decision.id !== governing) throw new SourceAccessGateError('ACCESS_SUPERSEDED', 'Publication requires the access decision that governed this collection');
   await requireIngestionPublication(db, batch);
+}
+
+/**
+ * The access decision bound to a qualification capture when the ingestion adopted it (lecture unique): that capture was
+ * collected without one, and its adoption records the decision that covers its whole journal. Read only for an
+ * adoption admission, so a database without the adoption table keeps every other path unchanged.
+ */
+async function adoptedAccessDecision(db: Prisma.TransactionClient, batchId: string): Promise<string | null> {
+  const admission = await db.sourceIngestionAdmission.findUnique({ where: { batchId }, select: { policyVersion: true } });
+  if (admission?.policyVersion !== CAPTURE_ADOPTION_POLICY) return null;
+  return (await db.sourceCaptureAdoption.findUnique({ where: { batchId }, select: { accessDecisionId: true } }))?.accessDecisionId ?? null;
 }
