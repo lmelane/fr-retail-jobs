@@ -71,7 +71,10 @@ export async function fetchGenericJsonLdJobs(config: Record<string, unknown>): P
    * expose a feed of openings; parsing it needs no per-vendor code.
    */
   if (config.feedUrl) {
-    return { jobs: await fetchRssJobs(config), complete: false };
+    // D-520 : un flux ne dit ni combien d'offres il porte ni s'il les porte toutes — la limite de la famille, nommée.
+    const jobs = await fetchRssJobs(config);
+    return { jobs, complete: false, enumeration: { method: 'PUBLISHER_FEED_NO_ENUMERATION_PROOF', endpoint: String(config.feedUrl), pages: 1,
+      rawCount: jobs.length, termination: 'FEED_READ', issues: ['PUBLISHER_FEED_WITHOUT_TOTAL', 'ENUMERATION_NOT_PROVEN'] } };
   }
 
   /**

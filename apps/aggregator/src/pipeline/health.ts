@@ -112,8 +112,21 @@ export type SourceHealth = {
 };
 
 /** `DESCRIPTION_COVERAGE_BELOW_FLOOR` (30/09/2026) : nommé pour que D-480 §1 ne reconnaisse QUE ce défaut chez On Running.
- * `NATIVE_REFUSAL_MASS` (D-484 §1) : la garde de masse d'un refus nommé par l'éditeur (`MASS_GUARDED_RETENTIONS`). */
-export type HealthFinding = 'ENUMERATION_NOT_PROVEN' | 'ENUMERATION_REFUTED' | 'NATIVE_RETENTION_JUMP' | 'DESCRIPTION_COVERAGE_BELOW_FLOOR' | 'NATIVE_REFUSAL_MASS';
+ * `NATIVE_REFUSAL_MASS` (D-484 §1) : la garde de masse d'un refus nommé par l'éditeur (`MASS_GUARDED_RETENTIONS`).
+ *
+ * D-520 (lecture D-492 du 02/10/2026) — LA CLASSE EXACTE DE CHAQUE INCIDENT. Sans nom, tout incident devenait
+ * `SOURCE_HEALTH_REGRESSION`, lu « volume anormal » : sur les 63 « régressions de volume » des RUN du 24/09 au 01/10,
+ * 2 seulement étaient des chutes de volume (Aigle, Indiska). Désormais :
+ *   · `ENUMERATION_TRUNCATED` : la collecte n'a pas lu tout ce que l'éditeur annonce (la liste, pas le marché) ;
+ *   · `RETENTION_TO_INSTRUCT` : des offres retenues sans preuve de l'éditeur ni décision (fiche illisible, identité
+ *     contredite) — le contenu, pas le volume ;
+ *   · `ENUMERATION_UNPROVABLE` : la limite de la famille (`STRUCTURAL_LIMIT_MARKERS`) — l'éditeur n'expose aucune liste
+ *     démontrable ; classée, non bloquante, jamais attestante ;
+ *   · `SOURCE_HEALTH_REGRESSION` ne nomme plus que le volume : chute non confirmée par l'éditeur, zéro, couverture d'URL. */
+export type HealthFinding = 'ENUMERATION_NOT_PROVEN' | 'ENUMERATION_REFUTED' | 'NATIVE_RETENTION_JUMP' | 'DESCRIPTION_COVERAGE_BELOW_FLOOR' | 'NATIVE_REFUSAL_MASS'
+  | 'ENUMERATION_TRUNCATED' | 'RETENTION_TO_INSTRUCT' | 'ENUMERATION_UNPROVABLE';
+/** Les incidents qui ne portent que sur la LISTE : à côté d'une retenue à instruire, c'est la retenue qui est nommée (D-480 §1 : tout autre défaut reste bloquant). */
+const LIST_FINDINGS: ReadonlySet<HealthFinding> = new Set(['ENUMERATION_NOT_PROVEN', 'ENUMERATION_REFUTED', 'ENUMERATION_TRUNCATED', 'ENUMERATION_UNPROVABLE']);
 
 /**
  * LA GARDE DE LA PREUVE NÉGATIVE — garde TECHNIQUE, pas une décision (demandée le 25/09/2026).
@@ -273,15 +286,20 @@ export function evaluateSourceHealth(stat: IngestStats, before: number | null, r
   // A drop the publisher confirms (D-484 §2), or one where fewer than ten postings disappear (D-491), is no defect of
   // the collection: it is named, and blocks nothing on its own.
   const dropped = collection.confirmedDrop ?? collection.minorDrop;
-  const otherDefect = (collection.status === 'BROKEN' || collection.status === 'DEGRADED') && !dropped;
+  // D-520 : la limite de la famille n'est pas un défaut de cette collecte ; une retenue à côté d'elle est jugée pour elle-même.
+  const unprovable = collection.finding === 'ENUMERATION_UNPROVABLE';
+  const otherDefect = (collection.status === 'BROKEN' || collection.status === 'DEGRADED') && !dropped && !unprovable;
   const guard = retention.nonBlocking && !otherDefect ? negativeProofGuard(stat, retentionBaseline) : undefined;
   const jumped = guard?.kind === 'JUMP';
   // D-484 §1 : au-delà de sa borne, un refus nommé par l'éditeur n'est plus un retrait d'offre mais une panne.
   const mass = retention.nonBlocking && !otherDefect ? refusalMassGuard(stat) : undefined;
   const note = otherDefect ? `${collection.note} · ${retention.note}`
-    : [...(dropped ? [collection.note] : []), `${retention.note} ; ${enumerationLabel(stat)}`, guard?.note, mass].filter(Boolean).join(' · ');
-  const finding = otherDefect ? collection.finding : jumped ? 'NATIVE_RETENTION_JUMP' as const : mass ? 'NATIVE_REFUSAL_MASS' as const : undefined;
-  const nonBlockingOnly = retention.nonBlocking && !otherDefect && !jumped && !mass;
+    : [...(dropped || unprovable ? [collection.note] : []), `${retention.note} ; ${enumerationLabel(stat)}`, guard?.note, mass].filter(Boolean).join(' · ');
+  // A retention to instruct is named for what it is, even next to a list defect: the list alone never hides it.
+  const toInstruct = !retention.nonBlocking && (!otherDefect || (collection.finding !== undefined && LIST_FINDINGS.has(collection.finding)));
+  const finding = toInstruct ? 'RETENTION_TO_INSTRUCT' as const : otherDefect ? collection.finding
+    : jumped ? 'NATIVE_RETENTION_JUMP' as const : mass ? 'NATIVE_REFUSAL_MASS' as const : unprovable ? 'ENUMERATION_UNPROVABLE' as const : undefined;
+  const nonBlockingOnly = retention.nonBlocking && !otherDefect && !jumped && !mass && !unprovable;
   return { ...base, status: jobs > 0 ? 'DEGRADED' : 'BROKEN', note, ...(finding ? { finding } : {}),
     ...(nonBlockingOnly ? { nonBlockingRetentionOnly: true } : {}),
     // Carried only when nothing else blocks: a blocking incident never wears the non-blocking drop.
@@ -411,7 +429,7 @@ function guardedShare(stat: IngestStats, baseline: RetentionBaseline | null, neg
 function collectionHealth(stat: IngestStats, base: Omit<SourceHealth, 'status'>, jobs: number, before: number | null,
   previousDeclaredTotal: number | null): SourceHealth {
   if (stat.truncated) {
-    return { ...base, status: 'DEGRADED',
+    return { ...base, status: 'DEGRADED', finding: 'ENUMERATION_TRUNCATED',
       note: `troncature : ${stat.fetched} collectées` +
         (stat.declaredTotal == null ? ', total inconnu' : ` sur ${stat.declaredTotal} déclarées`) };
   }
@@ -436,6 +454,11 @@ function collectionHealth(stat: IngestStats, base: Omit<SourceHealth, 'status'>,
    * digest. Le droit d'attester reste arbitré séparément par `isTrustedForAttestation`.
    */
   if (jobs > 0 && stat.complete === false) {
+    // D-520 : la famille dit que l'éditeur n'expose aucune liste démontrable. Classée, non bloquante, jamais attestante.
+    if (stat.enumerationReading === 'NOT_PROVEN' && stat.enumerationUnprovable) {
+      return { ...base, status: 'DEGRADED', finding: 'ENUMERATION_UNPROVABLE',
+        note: `liste indémontrable : l’éditeur n’expose ni total ni fin de liste (${stat.enumerationUnprovable}), limite de la famille classée (D-520), aucune absence attestée` };
+    }
     if (stat.enumerationReading === 'NOT_PROVEN') {
       return { ...base, status: 'DEGRADED', finding: 'ENUMERATION_NOT_PROVEN',
         note: 'énumération non prouvée : l’adaptateur ne démontre pas la fin du listing, aucune coupure observée, à instruire' };

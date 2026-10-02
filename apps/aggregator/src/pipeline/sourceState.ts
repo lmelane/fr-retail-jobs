@@ -84,6 +84,10 @@ export const CAUSES = {
   LISTE_NON_PROUVEE: { label: 'liste non prouvée complète (fin non démontrée, réfutée ou tronquée)', base: 'EN_ATTENTE', trajectory: 'AUTO',
     deadlineAttempts: 2, waitsWhilePublishing: true,
     missing: 'rien au premier RUN (aucune fermeture sur une liste non prouvée, D-453 §1) ; sinon, adapter la pagination du lecteur' },
+  // D-520 : le lecteur nomme pourquoi la liste ne peut pas être démontrée (`STRUCTURAL_LIMIT_MARKERS`). Bloquante comme toute
+  // liste non prouvée (D-453 §1) ; non bloquante pour les seules sources de D-480 §1 (D-482 : aucune extension).
+  LISTE_INDEMONTRABLE: { label: 'liste indémontrable en l’état : le lecteur ne lit ni total ni fin de liste (page d’accueil, flux)', base: 'DEGRADEE', trajectory: 'A_REPARER',
+    missing: 'chercher chez l’éditeur une liste complète (plan du site, page de liste paginée, API, total annoncé) et réécrire le lecteur ; s’il n’en publie aucune, carte de décision au CEO (D-453 §1, D-482)' },
   CONTENU_INCOMPLET: { label: 'contenu incomplet (descriptions manquantes, lignes rejetées)', base: 'DEGRADEE', trajectory: 'A_REPARER',
     missing: 'corriger la lecture du détail des offres, puis verifier-source' },
   ANOMALIE_VOLUME: { label: 'volume anormal (chute, zéro, saut de retenues)', base: 'EN_ATTENTE', trajectory: 'AUTO',
@@ -112,7 +116,7 @@ export const CAUSE_CLASSES = Object.keys(CAUSES) as CauseClass[];
 
 /** Quand une collecte porte plusieurs causes, la première de cet ordre l'emporte (les autres codes restent dans la preuve). */
 const PRECEDENCE: readonly CauseClass[] = ['NON_CLASSEE', 'DEFAUT_INTERNE', 'QUALIFICATION_REFUSEE', 'CERTIFICAT_TLS', 'LECTEUR', 'ACCES_REFUSE',
-  'INDISPONIBILITE_PASSAGERE', 'ANOMALIE_VOLUME', 'IDENTITE_EMPLOYEUR', 'LISTE_NON_PROUVEE', 'CONTENU_INCOMPLET'];
+  'INDISPONIBILITE_PASSAGERE', 'ANOMALIE_VOLUME', 'IDENTITE_EMPLOYEUR', 'LISTE_NON_PROUVEE', 'CONTENU_INCOMPLET', 'LISTE_INDEMONTRABLE'];
 
 const TLS_CODES = /(CERT|LEAF_SIGNATURE|SELF_SIGNED|TLS|SSL)/;
 const READER_TRANSPORT = /^TRANSPORT_(ERR_INVALID_URL|UND_ERR_INVALID_ARG)$/;
@@ -125,7 +129,8 @@ const BY_NAME: Readonly<Record<string, CauseClass>> = {
   ACCESS_SCOPE: 'QUALIFICATION_REFUSEE', ACCESS_MISSING: 'QUALIFICATION_REFUSEE', ACCESS_STALE: 'QUALIFICATION_REFUSEE', ACCESS_SUPERSEDED: 'QUALIFICATION_REFUSEE',
   ACCESS_DENIED: 'QUALIFICATION_REFUSEE', ACCESS_INVALID: 'QUALIFICATION_REFUSEE',
   EmployerIdentityReviewRequired: 'IDENTITE_EMPLOYEUR', PublisherFollowDeferred: 'IDENTITE_EMPLOYEUR',
-  ENUMERATION_NOT_PROVEN: 'LISTE_NON_PROUVEE', ENUMERATION_REFUTED: 'LISTE_NON_PROUVEE',
+  ENUMERATION_NOT_PROVEN: 'LISTE_NON_PROUVEE', ENUMERATION_REFUTED: 'LISTE_NON_PROUVEE', ENUMERATION_TRUNCATED: 'LISTE_NON_PROUVEE',
+  ENUMERATION_UNPROVABLE: 'LISTE_INDEMONTRABLE', RETENTION_TO_INSTRUCT: 'CONTENU_INCOMPLET',
   DESCRIPTION_COVERAGE_BELOW_FLOOR: 'CONTENU_INCOMPLET', REJECTED_NATIVE_ROWS: 'CONTENU_INCOMPLET', NATIVE_REFUSAL_MASS: 'CONTENU_INCOMPLET',
   SOURCE_HEALTH_REGRESSION: 'ANOMALIE_VOLUME', NATIVE_RETENTION_JUMP: 'ANOMALIE_VOLUME',
   Error: 'LECTEUR', UNCLASSIFIED_FAILURE: 'LECTEUR', SyntaxError: 'LECTEUR', BlockedUrlError: 'LECTEUR', ChainCompletionRefused: 'CERTIFICAT_TLS',

@@ -67,7 +67,7 @@ describe('ABSENTE — `complete` absent : inconnue, aucun incident (règle du 11
   });
 });
 
-describe('NON PROUVÉE — `complete: false` sans aucune coupure observée : bloquante, jamais « réfutée »', () => {
+describe('NON PROUVÉE — `complete: false` sans aucune coupure observée ni limite de famille nommée : bloquante, jamais « réfutée »', () => {
   const expectNotProven = (normalized: AdapterResult) => {
     const { stat, health, issues, summary } = runOf(normalized);
     expect(stat.enumerationReading).toBe('NOT_PROVEN');
@@ -79,17 +79,42 @@ describe('NON PROUVÉE — `complete: false` sans aucune coupure observée : blo
     expect(summary).toMatchObject({ outcome: 'FAILED', blockingReasons: ['UNRESOLVED_FAILURE'] });
   };
 
+  it('an Ashby feed with one explained rejection among twenty: the adapter declines the proof, nothing refutes it', async () => {
+    const rows = Array.from({ length: 20 }, (_, i) => ({ id: `job-${i}`, title: `Poste ${i}`, isListed: true, jobUrl: `https://jobs.ashbyhq.com/maison/job-${i}` }));
+    vi.mocked(fetchJson).mockResolvedValue({ apiVersion: '1', jobs: [...rows, { id: 'job-untitled', isListed: true, jobUrl: 'https://jobs.ashbyhq.com/maison/job-untitled' }] });
+    const raw = await fetchAshbyJobs({ board: 'maison' });
+    // Premise: a single explained rejection makes the adapter refuse its proof; coverage 20/21 is not a cut.
+    expect(raw).toMatchObject({ complete: false, declaredTotal: 21 });
+    expect(raw.rejectedRows?.map(row => row.reason)).toEqual(['MISSING_ID_TITLE_OR_PUBLICATION_FLAG']);
+    expectNotProven(normalizeAdapterResult(raw));
+  });
+});
+
+describe('LIMITE DE LA FAMILLE (D-520) — l’éditeur n’expose aucune liste démontrable : classée, non bloquante, jamais attestante', () => {
+  const expectFamilyLimit = (normalized: AdapterResult, marker: string) => {
+    const { stat, health, incidents, issues, summary } = runOf(normalized);
+    // The reading stays NOT PROVEN — only its class changes; nothing observed refutes it.
+    expect(stat).toMatchObject({ enumerationReading: 'NOT_PROVEN', enumerationUnprovable: marker });
+    expect(normalized.complete).toBe(false);
+    expect(health).toMatchObject({ status: 'DEGRADED', finding: 'ENUMERATION_UNPROVABLE' });
+    expect(health.note).toContain('liste indémontrable');
+    expect(issues).toEqual([{ origin: 'UNKNOWN', code: 'ENUMERATION_UNPROVABLE', count: 1 }]);
+    expect(incidents).toEqual([expect.objectContaining({ blocking: false, knownFailure: 'D-520 (limite de la famille)' })]);
+    // Before D-520 : outcome FAILED, blockingReasons ['UNRESOLVED_FAILURE'], every day, for a limit no reader can lift.
+    expect(summary).toMatchObject({ outcome: 'COMPLETED_WITH_ERRORS', blockingReasons: [], familyLimits: { decision: 'D-520', sources: ['witness'] } });
+  };
+
   it('picard — a careers Atom feed announces no extent', async () => {
     const entry = readFileSync(new URL('../../connectors/generic/fixtures/picard-atom-entry.xml', import.meta.url), 'utf8');
     serve(() => `<feed xmlns="http://www.w3.org/2005/Atom">${entry}</feed>`);
     const raw = await fetchGenericJsonLdJobs({ feedUrl: 'https://picard-fashion.com/blogs/karriere.atom' });
-    // Premise: the sealed adapter output is UNCHANGED — `complete: false`, verdict REFUTED, no enumeration evidence.
+    // Premise: `complete: false` stays sealed; the feed now NAMES why it cannot prove its extent (D-520).
     expect(raw.jobs).toHaveLength(1);
     expect(raw.complete).toBe(false);
-    expect(raw.enumeration).toBeUndefined();
+    expect(raw.enumeration).toMatchObject({ method: 'PUBLISHER_FEED_NO_ENUMERATION_PROOF', issues: ['PUBLISHER_FEED_WITHOUT_TOTAL', 'ENUMERATION_NOT_PROVEN'] });
     const normalized = normalizeAdapterResult(raw);
     expect(normalized).toMatchObject({ complete: false, enumerationVerdict: 'REFUTED' });
-    expectNotProven(normalized);
+    expectFamilyLimit(normalized, 'PUBLISHER_FEED_WITHOUT_TOTAL');
   });
 
   it('attaquer — a start-page link crawl names its missing proof and saw no cut', async () => {
@@ -100,17 +125,29 @@ describe('NON PROUVÉE — `complete: false` sans aucune coupure observée : blo
       issues: ['NO_PUBLISHER_LISTING_OR_SITEMAP', 'ENUMERATION_NOT_PROVEN'] });
     expect(raw).toMatchObject({ complete: false, truncated: false });
     expect(raw.jobs).toHaveLength(2);
-    expectNotProven(normalizeAdapterResult(raw));
+    expectFamilyLimit(normalizeAdapterResult(raw), 'NO_PUBLISHER_LISTING_OR_SITEMAP');
   });
 
-  it('an Ashby feed with one explained rejection among twenty: the adapter declines the proof, nothing refutes it', async () => {
-    const rows = Array.from({ length: 20 }, (_, i) => ({ id: `job-${i}`, title: `Poste ${i}`, isListed: true, jobUrl: `https://jobs.ashbyhq.com/maison/job-${i}` }));
-    vi.mocked(fetchJson).mockResolvedValue({ apiVersion: '1', jobs: [...rows, { id: 'job-untitled', isListed: true, jobUrl: 'https://jobs.ashbyhq.com/maison/job-untitled' }] });
-    const raw = await fetchAshbyJobs({ board: 'maison' });
-    // Premise: a single explained rejection makes the adapter refuse its proof; coverage 20/21 is not a cut.
-    expect(raw).toMatchObject({ complete: false, declaredTotal: 21 });
-    expect(raw.rejectedRows?.map(row => row.reason)).toEqual(['MISSING_ID_TITLE_OR_PUBLICATION_FLAG']);
-    expectNotProven(normalizeAdapterResult(raw));
+  it('the same crawl stopped at its 150-link cap is a cut, not a limit: refuted, blocking', async () => {
+    const start = 'https://www.maison.example/careers';
+    serve(url => url === start ? Array.from({ length: 151 }, (_, i) => `<a href="/jobs/p${i}">${i}</a>`).join('') : posting(url.split('/').pop()!));
+    const normalized = normalizeAdapterResult(await fetchGenericJsonLdJobs({ startUrl: start }));
+    const { stat, health, issues, summary } = runOf(normalized);
+    expect(stat.enumerationReading).toBe('REFUTED'); expect(stat.enumerationUnprovable).toBeUndefined();
+    expect(health.finding).toBe('ENUMERATION_TRUNCATED');
+    expect(issues.map(issue => issue.code)).toEqual(['ENUMERATION_TRUNCATED']);
+    expect(summary).toMatchObject({ outcome: 'FAILED', blockingReasons: ['UNRESOLVED_FAILURE'] });
+  });
+
+  it('a retention to instruct next to the family limit is named and blocks: the limit never hides another defect', () => {
+    const stat: IngestStats = { source: 'witness', complete: false, enumerationReading: 'NOT_PROVEN', enumerationUnprovable: 'NO_PUBLISHER_LISTING_OR_SITEMAP',
+      fetched: 5, inSector: 4, france: 4, created: 0, merged: 0, updated: 4, errors: 0, withDescription: 4, withDate: 4, withCountry: 4, withUrl: 4,
+      held: 1, heldReasons: { DETAIL_READ_FAILED: 1 }, captureBatchId: 'batch', completionReportHash: 'report' };
+    const health = evaluateSourceHealth(stat, 4);
+    expect(health.finding).toBe('RETENTION_TO_INSTRUCT');
+    const { issues, incidents } = classifySourceRun([stat], [health]);
+    expect(issues.map(issue => issue.code)).toEqual(['RETENTION_TO_INSTRUCT']);
+    expect(incidents[0]).toMatchObject({ blocking: true }); expect(incidents[0]!.knownFailure).toBeUndefined();
   });
 });
 

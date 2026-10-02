@@ -277,7 +277,8 @@ describe('D-484 §1: a Workday detail the publisher refuses by name (403 S22) is
   });
   it('a refusal NOT recognised as S22 stays WORKDAY_DETAIL_FETCH_FAILED: to instruct, blocking, even next to S22 refusals', async () => {
     const { issues, summary, sourceRun } = await runOne(retaining('knitwell-us-retail', 1995, { WORKDAY_DETAIL_PERMISSION_DENIED: 1, WORKDAY_DETAIL_FETCH_FAILED: 1 }));
-    expect(issues.map((issue) => issue.code)).toEqual(['SOURCE_HEALTH_REGRESSION']);
+    // D-520 : named for what it is — a posting held without proof (content), no longer « volume anormal ».
+    expect(issues.map((issue) => issue.code)).toEqual(['RETENTION_TO_INSTRUCT']);
     expect(summary.outcome).toBe('FAILED');
     expect(String(sourceRun.note)).toContain('1 à instruire (WORKDAY_DETAIL_FETCH_FAILED=1)');
   });

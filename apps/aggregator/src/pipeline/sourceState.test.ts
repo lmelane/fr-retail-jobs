@@ -30,6 +30,22 @@ describe('D-520 — vocabulaire fermé', () => {
       expect(issueCause({ origin: origin as 'UNKNOWN', code, detail }), code).not.toBe('NON_CLASSEE');
   });
 
+  it('D-520 : la troncature et la retenue à instruire ne sont plus lues « volume anormal » ; la limite de la famille a sa classe', () => {
+    expect(issueCause({ origin: 'UNKNOWN', code: 'ENUMERATION_TRUNCATED' })).toBe('LISTE_NON_PROUVEE');
+    expect(issueCause({ origin: 'UNKNOWN', code: 'RETENTION_TO_INSTRUCT' })).toBe('CONTENU_INCOMPLET');
+    expect(issueCause({ origin: 'UNKNOWN', code: 'ENUMERATION_UNPROVABLE' })).toBe('LISTE_INDEMONTRABLE');
+    // What stays « volume anormal » is the volume: a drop the publisher does not confirm, a zero.
+    expect(issueCause({ origin: 'UNKNOWN', code: 'SOURCE_HEALTH_REGRESSION' })).toBe('ANOMALIE_VOLUME');
+    // The family limit is a classified trajectory without deadline: it never escalates nor waits.
+    const s = computeSourceState({ source: active('attaquer'), previous: null, now: at(0),
+      outcome: run({ runStatus: 'DEGRADED', jobs: 3, issues: [{ origin: 'UNKNOWN', code: 'ENUMERATION_UNPROVABLE' }] }) });
+    expect(s).toMatchObject({ state: 'DEGRADEE', cause: 'LISTE_INDEMONTRABLE', trajectory: 'DECISION', deadline: null, escalated: false });
+    const later = computeSourceState({ source: active('attaquer'), previous: s, now: at(24 * 30),
+      outcome: run({ runStatus: 'DEGRADED', jobs: 3, issues: [{ origin: 'UNKNOWN', code: 'ENUMERATION_UNPROVABLE' }] }, 24 * 30) });
+    expect(later).toMatchObject({ trajectory: 'DECISION', escalated: false });
+    expect(reconcileRun({ states: [later], now: at(24 * 30), runStartedAt: at(24 * 30), systemFailures: [], unexplainedCoverage: [] }).green).toBe(true);
+  });
+
   it('un code inconnu est NON_CLASSEE, et la réconciliation passe rouge', () => {
     expect(issueCause({ origin: 'UNKNOWN', code: 'QuelqueChoseDeNeuf' })).toBe('NON_CLASSEE');
     const state = computeSourceState({ source: active(), outcome: run({ runStatus: 'ERROR', jobs: 0, issues: [{ origin: 'UNKNOWN', code: 'QuelqueChoseDeNeuf' }] }), previous: null, now: T0 });

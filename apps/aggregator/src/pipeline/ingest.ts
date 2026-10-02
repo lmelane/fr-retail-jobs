@@ -65,6 +65,8 @@ export type IngestStats = {
   enumerationReading?: EnumerationReading;
   /** Les faits observés qui réfutent l'énumération, nommés et bornés, pour la note de santé. */
   enumerationRefutedBy?: string[];
+  /** NON PROUVÉE par la limite de sa famille (`STRUCTURAL_LIMIT_MARKERS`, D-520) : le marqueur que le lecteur a nommé. */
+  enumerationUnprovable?: string;
   fetched: number;
   inSector: number;
   france: number;
@@ -365,6 +367,7 @@ async function ingestApiSource(
   const reading = readEnumeration(extraction);
   stats.enumerationReading = reading.enumerationReading;
   if (reading.enumerationRefutedBy) stats.enumerationRefutedBy = reading.enumerationRefutedBy;
+  if (reading.enumerationUnprovable) stats.enumerationUnprovable = reading.enumerationUnprovable;
   stats.declaredTotal = declaredTotal;
   stats.truncated = truncated;
   if (extraction.incremental) stats.incremental = { knownSkipped: extraction.incremental.knownSkipped.length };

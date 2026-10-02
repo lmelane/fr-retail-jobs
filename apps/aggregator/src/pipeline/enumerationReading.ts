@@ -30,7 +30,18 @@ export type EnumerationReading = 'PROVEN' | 'NOT_PROVEN' | 'REFUTED' | 'UNKNOWN'
  * Les motifs par lesquels un adaptateur dit qu'il ne DÉTIENT PAS de preuve — jamais qu'il a vu une coupure.
  * Liste POSITIVE et FERMÉE : tout autre motif de parcours réfute, comme dans `enumerationIssues.ts`.
  */
-export const ABSENCE_OF_PROOF_MARKERS: ReadonlySet<string> = new Set(['ENUMERATION_NOT_PROVEN', 'NO_PUBLISHER_LISTING_OR_SITEMAP']);
+export const ABSENCE_OF_PROOF_MARKERS: ReadonlySet<string> = new Set(['ENUMERATION_NOT_PROVEN', 'NO_PUBLISHER_LISTING_OR_SITEMAP', 'PUBLISHER_FEED_WITHOUT_TOTAL']);
+
+/**
+ * LA LIMITE D'UNE FAMILLE (D-520, lecture D-492 du 02/10/2026) : les motifs par lesquels un lecteur dit que l'ÉDITEUR
+ * n'expose aucune liste qu'une lecture pourrait démontrer complète — ni total, ni fin de liste, ni plan du site. Ce
+ * n'est pas une panne à instruire chaque jour : rien dans le lecteur ne la lèvera. La lecture reste NON PROUVÉE (aucune
+ * absence attestée, aucune offre fermée) ; seule sa classe change. Liste POSITIVE et FERMÉE, sous-ensemble des marqueurs
+ * d'absence de preuve : un fait qui réfute l'énumération l'emporte toujours (la lecture est alors RÉFUTÉE).
+ *   · `NO_PUBLISHER_LISTING_OR_SITEMAP` : les liens d'une page d'accueil, faute de liste ou de plan publiés ;
+ *   · `PUBLISHER_FEED_WITHOUT_TOTAL` : un flux RSS/Atom, qui ne dit ni combien d'offres il porte ni s'il les porte toutes.
+ */
+export const STRUCTURAL_LIMIT_MARKERS: ReadonlySet<string> = new Set(['NO_PUBLISHER_LISTING_OR_SITEMAP', 'PUBLISHER_FEED_WITHOUT_TOTAL']);
 
 /** Ce que le RUN sait de l'énumération d'une collecte : la sortie normalisée de l'adaptateur, sans les offres. */
 export type EnumerationFacts = {
@@ -77,8 +88,11 @@ export function enumerationReading(facts: EnumerationFacts): EnumerationReading 
 }
 
 /** What the RUN records of a collection's enumeration (`IngestStats`): its reading and, when refuted, why (bounded). */
-export function readEnumeration(result: AdapterResult): { enumerationReading: EnumerationReading; enumerationRefutedBy?: string[] } {
+export function readEnumeration(result: AdapterResult): { enumerationReading: EnumerationReading; enumerationRefutedBy?: string[]; enumerationUnprovable?: string } {
   const facts = enumerationFactsOf(result);
   const reading = enumerationReading(facts);
-  return { enumerationReading: reading, ...(reading === 'REFUTED' ? { enumerationRefutedBy: refutingFacts(facts).slice(0, 5) } : {}) };
+  // Only a NOT PROVEN reading can be a family's limit: nothing observed contradicts it, and the reader names why.
+  const limit = reading === 'NOT_PROVEN' ? (facts.issues ?? []).find(issue => STRUCTURAL_LIMIT_MARKERS.has(issue)) : undefined;
+  return { enumerationReading: reading, ...(reading === 'REFUTED' ? { enumerationRefutedBy: refutingFacts(facts).slice(0, 5) } : {}),
+    ...(limit ? { enumerationUnprovable: limit } : {}) };
 }
