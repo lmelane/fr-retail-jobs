@@ -1,0 +1,172 @@
+{
+ "at": "2026-10-02T11:54:53.126Z",
+ "since": "2026-09-25T11:54:53.126Z",
+ "timings": {
+  "readCoverageBefore_ms": 327,
+  "readCoverageState_ms": 3469,
+  "readLoopIndicators_ms": 4407
+ },
+ "served": 86631,
+ "maisons": 1067,
+ "marches": 41,
+ "exitsWindow": {
+  "FERMETURE_SOURCE": 5161,
+  "RETENUE_REGLE": 3,
+  "PAUSE_DECIDEE": 0,
+  "NON_REVUE": 0,
+  "COLLECTE": 0,
+  "LIEN_MORT": 0,
+  "REGROUPEE": 0
+ },
+ "threatsSinceRun_b4e6b708": [
+  {
+   "maison": "Ulta Beauty",
+   "sourceKey": "ulta-jibe",
+   "count": 1181,
+   "status": "OK",
+   "note": "desc 100% date 100% pays 100% url 100%",
+   "lastSeenAt": "2026-09-20T08:23:13.233Z"
+  },
+  {
+   "maison": "H&M Group",
+   "sourceKey": "hm-group",
+   "count": 904,
+   "status": "OK",
+   "note": "desc 100% date 100% pays 100% url 100%",
+   "lastSeenAt": "2026-09-23T16:14:39.726Z"
+  },
+  {
+   "maison": "Sephora",
+   "sourceKey": "lvmh",
+   "count": 820,
+   "status": "DEGRADED",
+   "note": "1 annonce retenue : 1 sur preuve de la source (NATIVE_TEST_PUBLICATION=1) ; énumération inconnue : aucune attestation d’absence · desc 100% date 100% pays 100% url 100%",
+   "lastSeenAt": "2026-09-19T12:03:31.854Z"
+  },
+  {
+   "maison": "Primark",
+   "sourceKey": "primark",
+   "count": 590,
+   "status": "OK",
+   "note": "desc 100% date 100% pays 100% url 100%",
+   "lastSeenAt": "2026-09-20T09:39:59.284Z"
+  },
+  {
+   "maison": "Sephora",
+   "sourceKey": "sephora-france",
+   "count": 564,
+   "status": "DEGRADED",
+   "note": "5 annonces retenues : 5 sur preuve de la source (APPLICATION_EXPLICITLY_CLOSED=5) ; énumération prouvée · desc 100% date 100% pays 100% url 100%",
+   "lastSeenAt": "2026-09-23T20:36:08.182Z"
+  },
+  {
+   "maison": "adidas",
+   "sourceKey": "adidas",
+   "count": 269,
+   "status": "OK",
+   "note": "desc 99% date 100% pays 100% url 100%",
+   "lastSeenAt": "2026-09-23T18:26:07.429Z"
+  },
+  {
+   "maison": "Nordstrom",
+   "sourceKey": "nordstrom",
+   "count": 229,
+   "status": "DEGRADED",
+   "note": "4 annonces retenues : 4 sur preuve de la source (WORKDAY_DETAIL_PERMISSION_DENIED=1, WORKDAY_EMPLOYER_ABSENT_IN_DETAIL=3) ; énumération prouvée · desc 100% date 100% pays 100% url 100%",
+   "lastSeenAt": "2026-09-29T17:15:33.829Z"
+  },
+  {
+   "maison": "Bloomingdale's",
+   "sourceKey": "bloomingdales-oracle",
+   "count": 224,
+   "status": "OK",
+   "note": "desc 100% date 100% pays 100% url 100%",
+   "lastSeenAt": "2026-09-23T16:06:42.621Z"
+  },
+  {
+   "maison": "Hermès",
+   "sourceKey": "wttj-sector",
+   "count": 215,
+   "status": "OK",
+   "note": "desc 100% date 100% pays 100% url 100%",
+   "lastSeenAt": "2026-09-23T17:34:44.305Z"
+  },
+  {
+   "maison": "Coach",
+   "sourceKey": "tapestry",
+   "count": 198,
+   "status": "DEGRADED",
+   "note": "énumération réfutée : le balayage n’a pas atteint la fin du listing (PUBLISHER_TOTAL_CAPPED, UNPARTITIONED_POSTINGS=13, UNPARTITIONED_UNDER_CAP, CANONICAL_ID_CONTRACT_BROKEN) · 2 annonces retenues : 2 sur preuve de la source (WORKDAY_EMPLOY",
+   "lastSeenAt": "2026-09-23T16:50:46.160Z"
+  },
+  {
+   "maison": "Diptyque",
+   "sourceKey": "diptyque-workday",
+   "count": 186,
+   "status": "ERROR",
+   "note": "Access qualification refused: Transaction API error: Transaction already closed: A commit cannot be executed on an expired transaction. The timeout for this transaction was 5000 ms, however 7446 ms p…",
+   "lastSeenAt": "2026-09-29T16:49:52.545Z"
+  },
+  {
+   "maison": "Louis Vuitton",
+   "sourceKey": "lvmh",
+   "count": 160,
+   "status": "DEGRADED",
+   "note": "1 annonce retenue : 1 sur preuve de la source (NATIVE_TEST_PUBLICATION=1) ; énumération inconnue : aucune attestation d’absence · desc 100% date 100% pays 100% url 100%",
+   "lastSeenAt": "2026-09-19T12:03:39.049Z"
+  }
+ ],
+ "masked": 0,
+ "knownSources": [
+  {
+   "sourceKey": "l-oreal-professionnel",
+   "label": "L'Oréal (toutes Maisons)",
+   "status": "ACTIVE",
+   "qualified": 1716,
+   "validatedAt": "2026-10-01T16:16:41.011Z",
+   "served": 0,
+   "lastRunStatus": "BROKEN",
+   "lastRunNote": "1 erreur de collecte ou d’écriture : HTTP 406 for https://careers.loreal.com/en_US/jobs/SearchJobs/?jobOffset=0"
+  },
+  {
+   "sourceKey": "ralph-lauren-avature",
+   "label": "Ralph Lauren",
+   "status": "PAUSED",
+   "qualified": 1160,
+   "validatedAt": "2026-10-02T10:05:19.779Z",
+   "served": 0,
+   "lastRunStatus": "BROKEN",
+   "lastRunNote": "1 erreur de collecte ou d’écriture : HTTP 406 for https://careers.ralphlauren.com/en_US/CareersCorporate/SearchJobsCorporate/?jobOffset=12&listFilterMode=1"
+  },
+  {
+   "sourceKey": "de-beers-london",
+   "label": "Anglo American / De Beers Group",
+   "status": "PAUSED",
+   "qualified": 112,
+   "validatedAt": "2026-09-23T14:14:26.017Z",
+   "served": 0,
+   "lastRunStatus": null,
+   "lastRunNote": null
+  },
+  {
+   "sourceKey": "dim",
+   "label": "Dim",
+   "status": "PAUSED",
+   "qualified": 41,
+   "validatedAt": "2026-09-23T14:15:05.153Z",
+   "served": 0,
+   "lastRunStatus": null,
+   "lastRunNote": null
+  },
+  {
+   "sourceKey": "markham",
+   "label": "TFG (toutes marques)",
+   "status": "PAUSED",
+   "qualified": 181,
+   "validatedAt": "2026-09-23T14:23:09.128Z",
+   "served": 0,
+   "lastRunStatus": "BROKEN",
+   "lastRunNote": "181 erreurs de collecte ou d’écriture · desc 100% date 100% pays 100% url 100%"
+  }
+ ]
+}

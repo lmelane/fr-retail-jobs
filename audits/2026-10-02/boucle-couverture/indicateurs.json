@@ -1,0 +1,53 @@
+{
+ "at": "2026-10-02T11:57:01.659Z",
+ "indicators": [
+  {
+   "question": 1,
+   "title": "Délai de découverte",
+   "measured": true,
+   "value": "médiane 17,3 h, p90 42 h",
+   "definition": "Heures entre la date de publication déclarée par la source et notre première observation, pour les offres vues pour la première fois ces 7 derniers jours chez une source déjà collectée avant. Une date au jour seul compte depuis minuit : le délai réel est surestimé pour elles.",
+   "denominator": "11 121 offres datées (dont 4 413 au jour seul ; 170 écartées, date postérieure à l'observation)"
+  },
+  {
+   "question": 2,
+   "title": "Doublons servis",
+   "measured": true,
+   "value": "2 732 groupes, 4,1 % (3592/86631) des offres en trop",
+   "definition": "Groupes d’offres servies de la même Maison, au même intitulé normalisé et dans la même ville, publiées par des sources différentes ; « en trop » compte toutes les offres d’un groupe sauf une, si tous sont de vrais doublons (majorant).",
+   "denominator": "86 631 offres servies"
+  },
+  {
+   "question": 3,
+   "title": "Rattachement : métier, contrat, lieu",
+   "measured": true,
+   "value": "métier 63,0 % (54600/86631) ; contrat 37,3 % (32353/86631) ; lieu 91,0 % (78810/86631)",
+   "definition": "Part des offres servies qui portent un métier (code du référentiel ou rôle lu dans l’intitulé), une nature d’emploi reconnue (contrat, dispositif ou indépendant) et un point de recherche de proximité. La Maison n’est pas mesurée ici : les entités juridiques à rattacher se comptent par l’aperçu `attach-maisons`.",
+   "denominator": "86 631 offres servies"
+  },
+  {
+   "question": 4,
+   "title": "Classement par préférences",
+   "measured": false,
+   "value": "non mesuré : le classement par préférences n’est pas construit (R-143 §7)",
+   "definition": "Part des recherches avec requête ou préférences où l’offre qui correspond le mieux passe devant les moins pertinentes.",
+   "denominator": "aucun"
+  },
+  {
+   "question": 5,
+   "title": "Alertes : délai jusqu’à l’envoi",
+   "measured": true,
+   "value": "médiane 12,2 h, p90 13,2 h ; prochain envoi 2026-10-06 05:30 UTC",
+   "definition": "Heures entre la première observation d’une offre servie et le prochain envoi d’alertes, mardi ou vendredi à 07:30 (D-498), calculé à l’heure de Paris pour tous les marchés. Délai du calendrier seulement : les envois réels vivent dans le backend, hors de cette base.",
+   "denominator": "2 384 offres servies vues pour la première fois dans les 24 dernières heures"
+  },
+  {
+   "question": 6,
+   "title": "Confiance au clic",
+   "measured": true,
+   "value": "masquées 0,0 % (0/86631) ; sonde : non lue hors RUN ; non revues depuis 48 h : 8,7 % (7865/89893)",
+   "definition": "Masquées : offres disponibles à la source mais retirées de l’expérience candidat par la retenue de disponibilité (R-143 §2). Sonde : les liens « Postuler » lus par ce RUN. Non revues : offres actives dont aucune source n’a été revue depuis 48 h (rapport de santé, `health-report`).",
+   "denominator": "86 631 offres disponibles à la source (masquées) ; offres actives du rapport de santé (non revues)"
+  }
+ ]
+}

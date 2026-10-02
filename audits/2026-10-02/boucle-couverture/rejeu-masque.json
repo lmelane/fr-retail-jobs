@@ -1,0 +1,1921 @@
+{
+ "total": 9933,
+ "maisons": [
+  {
+   "label": "Sephora",
+   "count": 1425
+  },
+  {
+   "label": "Ulta Beauty",
+   "count": 1220
+  },
+  {
+   "label": "H&M Group",
+   "count": 904
+  },
+  {
+   "label": "Primark",
+   "count": 590
+  },
+  {
+   "label": "adidas",
+   "count": 269
+  },
+  {
+   "label": "Nordstrom",
+   "count": 228
+  },
+  {
+   "label": "Bloomingdale's",
+   "count": 224
+  },
+  {
+   "label": "Hermès",
+   "count": 215
+  },
+  {
+   "label": "Louis Vuitton",
+   "count": 160
+  },
+  {
+   "label": "Pandora",
+   "count": 150
+  },
+  {
+   "label": "Intersport",
+   "count": 148
+  },
+  {
+   "label": "Coach",
+   "count": 129
+  },
+  {
+   "label": "Crocs, Inc.",
+   "count": 116
+  },
+  {
+   "label": "Reitmans (Canada) Ltée/Ltd",
+   "count": 103
+  },
+  {
+   "label": "Tommy Hilfiger",
+   "count": 98
+  },
+  {
+   "label": "Rituals",
+   "count": 95
+  },
+  {
+   "label": "Christian Dior Couture",
+   "count": 89
+  },
+  {
+   "label": "Anthropologie",
+   "count": 80
+  },
+  {
+   "label": "Skechers",
+   "count": 78
+  },
+  {
+   "label": "Kiabi",
+   "count": 76
+  },
+  {
+   "label": "Calvin Klein",
+   "count": 70
+  },
+  {
+   "label": "Puig",
+   "count": 64
+  },
+  {
+   "label": "Lovisa",
+   "count": 57
+  },
+  {
+   "label": "Mango",
+   "count": 57
+  },
+  {
+   "label": "Groupe Courir",
+   "count": 56
+  },
+  {
+   "label": "Prada Group",
+   "count": 54
+  },
+  {
+   "label": "Groupe MONOPRIX",
+   "count": 52
+  },
+  {
+   "label": "Kate Spade",
+   "count": 50
+  },
+  {
+   "label": "Urban Outfitters",
+   "count": 50
+  },
+  {
+   "label": "Salomon",
+   "count": 49
+  },
+  {
+   "label": "Maje",
+   "count": 48
+  },
+  {
+   "label": "Aptar Group",
+   "count": 46
+  },
+  {
+   "label": "Burberry",
+   "count": 46
+  },
+  {
+   "label": "LUSH |",
+   "count": 45
+  },
+  {
+   "label": "ba&sh",
+   "count": 43
+  },
+  {
+   "label": "On",
+   "count": 39
+  },
+  {
+   "label": "Parfums Christian Dior",
+   "count": 39
+  },
+  {
+   "label": "Dr. Martens",
+   "count": 36
+  },
+  {
+   "label": "Celine",
+   "count": 35
+  },
+  {
+   "label": "Chanel",
+   "count": 34
+  },
+  {
+   "label": "Douglas",
+   "count": 34
+  },
+  {
+   "label": "Clarkson Eyecare",
+   "count": 33
+  },
+  {
+   "label": "Free People",
+   "count": 33
+  },
+  {
+   "label": "1151 Swarovski Retail Ventures",
+   "count": 32
+  },
+  {
+   "label": "Bulgari",
+   "count": 32
+  },
+  {
+   "label": "Coty",
+   "count": 32
+  },
+  {
+   "label": "Loro Piana",
+   "count": 32
+  },
+  {
+   "label": "Quince",
+   "count": 30
+  },
+  {
+   "label": "Adopt Parfums",
+   "count": 29
+  },
+  {
+   "label": "Moët Hennessy",
+   "count": 29
+  },
+  {
+   "label": "URBN",
+   "count": 29
+  },
+  {
+   "label": "Avolta",
+   "count": 28
+  },
+  {
+   "label": "CLARINS",
+   "count": 28
+  },
+  {
+   "label": "Shiseido",
+   "count": 28
+  },
+  {
+   "label": "Cheval Blanc",
+   "count": 27
+  },
+  {
+   "label": "LuxExperience",
+   "count": 27
+  },
+  {
+   "label": "Reformation",
+   "count": 27
+  },
+  {
+   "label": "VF Corporation",
+   "count": 27
+  },
+  {
+   "label": "Armand Thiery",
+   "count": 26
+  },
+  {
+   "label": "B&S International",
+   "count": 26
+  },
+  {
+   "label": "MAC",
+   "count": 26
+  },
+  {
+   "label": "Richemont",
+   "count": 26
+  },
+  {
+   "label": "Estée Lauder Companies",
+   "count": 23
+  },
+  {
+   "label": "Fendi",
+   "count": 23
+  },
+  {
+   "label": "Brilliant Earth",
+   "count": 22
+  },
+  {
+   "label": "Lacoste",
+   "count": 22
+  },
+  {
+   "label": "Nocibé",
+   "count": 22
+  },
+  {
+   "label": "Petit Bateau",
+   "count": 22
+  },
+  {
+   "label": "PVH",
+   "count": 22
+  },
+  {
+   "label": "Valentino",
+   "count": 22
+  },
+  {
+   "label": "Neiman Marcus",
+   "count": 21
+  },
+  {
+   "label": "Claudie Pierlot",
+   "count": 20
+  },
+  {
+   "label": "Diesel",
+   "count": 20
+  },
+  {
+   "label": "Normal",
+   "count": 20
+  },
+  {
+   "label": "ASOS",
+   "count": 19
+  },
+  {
+   "label": "Boardriders",
+   "count": 19
+  },
+  {
+   "label": "Eric Bompard",
+   "count": 19
+  },
+  {
+   "label": "Le Bon Marché",
+   "count": 19
+  },
+  {
+   "label": "NIKE",
+   "count": 19
+  },
+  {
+   "label": "ROLEX SA",
+   "count": 19
+  },
+  {
+   "label": "Skin Laundry",
+   "count": 19
+  },
+  {
+   "label": "Dolce & Gabbana S.r.l.",
+   "count": 18
+  },
+  {
+   "label": "Rimowa",
+   "count": 18
+  },
+  {
+   "label": "Tiffany & Co.",
+   "count": 18
+  },
+  {
+   "label": "Max Mara Fashion Group",
+   "count": 17
+  },
+  {
+   "label": "Sézane",
+   "count": 17
+  },
+  {
+   "label": "Cache Cache",
+   "count": 16
+  },
+  {
+   "label": "Maison Margiela",
+   "count": 16
+  },
+  {
+   "label": "Van Cleef & Arpels",
+   "count": 16
+  },
+  {
+   "label": "Groupe Rocher",
+   "count": 15
+  },
+  {
+   "label": "ONIVERSE",
+   "count": 15
+  },
+  {
+   "label": "Promod",
+   "count": 15
+  },
+  {
+   "label": "Audemars Piguet",
+   "count": 14
+  },
+  {
+   "label": "Blackstore",
+   "count": 14
+  },
+  {
+   "label": "Menus and Venues",
+   "count": 14
+  },
+  {
+   "label": "Selfridges",
+   "count": 14
+  },
+  {
+   "label": "Everlane",
+   "count": 13
+  },
+  {
+   "label": "FP Movement",
+   "count": 13
+  },
+  {
+   "label": "Funky Buddha",
+   "count": 13
+  },
+  {
+   "label": "Gymshark",
+   "count": 13
+  },
+  {
+   "label": "L’Occitane",
+   "count": 13
+  },
+  {
+   "label": "Loewe",
+   "count": 13
+  },
+  {
+   "label": "LVMH Fragrance Brands",
+   "count": 13
+  },
+  {
+   "label": "Suitsupply",
+   "count": 13
+  },
+  {
+   "label": "Swatch",
+   "count": 13
+  },
+  {
+   "label": "American Vintage",
+   "count": 12
+  },
+  {
+   "label": "Bonobo",
+   "count": 12
+  },
+  {
+   "label": "Gémo",
+   "count": 12
+  },
+  {
+   "label": "Guerlain",
+   "count": 12
+  },
+  {
+   "label": "Magazine zum Globus AG",
+   "count": 12
+  },
+  {
+   "label": "Foot Locker",
+   "count": 11
+  },
+  {
+   "label": "Histoire d'Or",
+   "count": 11
+  },
+  {
+   "label": "La casa de las Carcasas",
+   "count": 11
+  },
+  {
+   "label": "La Halle",
+   "count": 11
+  },
+  {
+   "label": "LVMH Perfumes & Cosmetics",
+   "count": 11
+  },
+  {
+   "label": "1630 Swarovski Canada Limited",
+   "count": 10
+  },
+  {
+   "label": "Aroma-Zone",
+   "count": 10
+  },
+  {
+   "label": "Fenwick",
+   "count": 10
+  },
+  {
+   "label": "Jo Malone London",
+   "count": 10
+  },
+  {
+   "label": "Marni",
+   "count": 10
+  },
+  {
+   "label": "Printemps",
+   "count": 10
+  },
+  {
+   "label": "Aeropostale",
+   "count": 9
+  },
+  {
+   "label": "Chaumet",
+   "count": 9
+  },
+  {
+   "label": "Fresh",
+   "count": 9
+  },
+  {
+   "label": "Maison Francis Kurkdjian",
+   "count": 9
+  },
+  {
+   "label": "Morgan",
+   "count": 9
+  },
+  {
+   "label": "Psycho Bunny",
+   "count": 9
+  },
+  {
+   "label": "Sandro",
+   "count": 9
+  },
+  {
+   "label": "Acne Studios",
+   "count": 8
+  },
+  {
+   "label": "Balenciaga",
+   "count": 8
+  },
+  {
+   "label": "Berluti",
+   "count": 8
+  },
+  {
+   "label": "Clinique",
+   "count": 8
+  },
+  {
+   "label": "Diptyque paris",
+   "count": 8
+  },
+  {
+   "label": "Fashion Group",
+   "count": 8
+  },
+  {
+   "label": "Gucci",
+   "count": 8
+  },
+  {
+   "label": "Jonak",
+   "count": 8
+  },
+  {
+   "label": "Jules",
+   "count": 8
+  },
+  {
+   "label": "Kendo",
+   "count": 8
+  },
+  {
+   "label": "Mejuri",
+   "count": 8
+  },
+  {
+   "label": "Omega",
+   "count": 8
+  },
+  {
+   "label": "Swarovski",
+   "count": 8
+  },
+  {
+   "label": "Tom Ford",
+   "count": 8
+  },
+  {
+   "label": "A.P.C.",
+   "count": 7
+  },
+  {
+   "label": "Beiersdorf AG",
+   "count": 7
+  },
+  {
+   "label": "Breitling",
+   "count": 7
+  },
+  {
+   "label": "Chalhoub Group",
+   "count": 7
+  },
+  {
+   "label": "Club Monaco",
+   "count": 7
+  },
+  {
+   "label": "ILIA",
+   "count": 7
+  },
+  {
+   "label": "Kenzo",
+   "count": 7
+  },
+  {
+   "label": "Make Up For Ever",
+   "count": 7
+  },
+  {
+   "label": "Michael Kors",
+   "count": 7
+  },
+  {
+   "label": "Nuuly",
+   "count": 7
+  },
+  {
+   "label": "Puig France",
+   "count": 7
+  },
+  {
+   "label": "Saint Laurent",
+   "count": 7
+  },
+  {
+   "label": "Sisley",
+   "count": 7
+  },
+  {
+   "label": "SMCP",
+   "count": 7
+  },
+  {
+   "label": "Swatch Group",
+   "count": 7
+  },
+  {
+   "label": "Tapestry",
+   "count": 7
+  },
+  {
+   "label": "1590 Swarovski France S.A.",
+   "count": 6
+  },
+  {
+   "label": "ASICS",
+   "count": 6
+  },
+  {
+   "label": "Beauty Success",
+   "count": 6
+  },
+  {
+   "label": "BeneFit Cosmetics",
+   "count": 6
+  },
+  {
+   "label": "Bobbi Brown Cosmetics",
+   "count": 6
+  },
+  {
+   "label": "ETA",
+   "count": 6
+  },
+  {
+   "label": "Faguo",
+   "count": 6
+  },
+  {
+   "label": "Givenchy",
+   "count": 6
+  },
+  {
+   "label": "La Senza",
+   "count": 6
+  },
+  {
+   "label": "LVMH",
+   "count": 6
+  },
+  {
+   "label": "Meco",
+   "count": 6
+  },
+  {
+   "label": "MS Mode",
+   "count": 6
+  },
+  {
+   "label": "NIKE Retail UK",
+   "count": 6
+  },
+  {
+   "label": "PICARD",
+   "count": 6
+  },
+  {
+   "label": "Tissus des Ursules - TDU Group",
+   "count": 6
+  },
+  {
+   "label": "Vib's",
+   "count": 6
+  },
+  {
+   "label": "Beiersdorf S.A.",
+   "count": 5
+  },
+  {
+   "label": "Blancpain",
+   "count": 5
+  },
+  {
+   "label": "Bottega Veneta",
+   "count": 5
+  },
+  {
+   "label": "Cartier",
+   "count": 5
+  },
+  {
+   "label": "Charlotte Tilbury",
+   "count": 5
+  },
+  {
+   "label": "Fursac",
+   "count": 5
+  },
+  {
+   "label": "Fusalp",
+   "count": 5
+  },
+  {
+   "label": "Gemmyo",
+   "count": 5
+  },
+  {
+   "label": "Groupe Clarins",
+   "count": 5
+  },
+  {
+   "label": "JD Sports",
+   "count": 5
+  },
+  {
+   "label": "Jil Sander",
+   "count": 5
+  },
+  {
+   "label": "Madewell Stores Madewell, Inc.",
+   "count": 5
+  },
+  {
+   "label": "MECCA",
+   "count": 5
+  },
+  {
+   "label": "Mellow Yellow",
+   "count": 5
+  },
+  {
+   "label": "NIVEA India Pvt. Ltd.",
+   "count": 5
+  },
+  {
+   "label": "OTB",
+   "count": 5
+  },
+  {
+   "label": "Pierre Fabre",
+   "count": 5
+  },
+  {
+   "label": "Respire",
+   "count": 5
+  },
+  {
+   "label": "Toscane",
+   "count": 5
+  },
+  {
+   "label": "VEJA",
+   "count": 5
+  },
+  {
+   "label": "Anthro Weddings",
+   "count": 4
+  },
+  {
+   "label": "Baccarat",
+   "count": 4
+  },
+  {
+   "label": "Balmain Beauty",
+   "count": 4
+  },
+  {
+   "label": "Burnt",
+   "count": 4
+  },
+  {
+   "label": "Caroll",
+   "count": 4
+  },
+  {
+   "label": "DECJUBA",
+   "count": 4
+  },
+  {
+   "label": "Emilio Pucci",
+   "count": 4
+  },
+  {
+   "label": "Estée Lauder - Brand",
+   "count": 4
+  },
+  {
+   "label": "Ferrari",
+   "count": 4
+  },
+  {
+   "label": "FIGS",
+   "count": 4
+  },
+  {
+   "label": "FROM FUTURE",
+   "count": 4
+  },
+  {
+   "label": "Glossier",
+   "count": 4
+  },
+  {
+   "label": "Golf & Tennis Pro Shop, Inc. d/b/a PGA TOUR Superstore",
+   "count": 4
+  },
+  {
+   "label": "HADDAD BRANDS EUROPE",
+   "count": 4
+  },
+  {
+   "label": "HUGO BOSS do Brasil Ltda.",
+   "count": 4
+  },
+  {
+   "label": "HUGO BOSS México S.A. de C.V.",
+   "count": 4
+  },
+  {
+   "label": "Kastner &amp; Öhler Online Shop",
+   "count": 4
+  },
+  {
+   "label": "La Prairie",
+   "count": 4
+  },
+  {
+   "label": "Le Labo",
+   "count": 4
+  },
+  {
+   "label": "Lectra",
+   "count": 4
+  },
+  {
+   "label": "Luxury Of Retail",
+   "count": 4
+  },
+  {
+   "label": "Marc O’Polo",
+   "count": 4
+  },
+  {
+   "label": "NAOS",
+   "count": 4
+  },
+  {
+   "label": "NIKE Retail Spain",
+   "count": 4
+  },
+  {
+   "label": "Parachute",
+   "count": 4
+  },
+  {
+   "label": "Patek Philippe SA",
+   "count": 4
+  },
+  {
+   "label": "Renata",
+   "count": 4
+  },
+  {
+   "label": "RIU Paris",
+   "count": 4
+  },
+  {
+   "label": "Sessùn",
+   "count": 4
+  },
+  {
+   "label": "SSENSE",
+   "count": 4
+  },
+  {
+   "label": "The RealReal",
+   "count": 4
+  },
+  {
+   "label": "todsspa",
+   "count": 4
+  },
+  {
+   "label": "Acqua Di Parma",
+   "count": 3
+  },
+  {
+   "label": "Advance Magazine Publishers Inc.",
+   "count": 3
+  },
+  {
+   "label": "Apivita",
+   "count": 3
+  },
+  {
+   "label": "Asphalte",
+   "count": 3
+  },
+  {
+   "label": "Beiersdorf Consumer Products (Pty.) Ltd.",
+   "count": 3
+  },
+  {
+   "label": "Beiersdorf Ind&#250;stria e Com&#233;rcio Ltda.",
+   "count": 3
+  },
+  {
+   "label": "Beiersdorf S.A.C.",
+   "count": 3
+  },
+  {
+   "label": "Bellroy",
+   "count": 3
+  },
+  {
+   "label": "Bevilles External",
+   "count": 3
+  },
+  {
+   "label": "Boots",
+   "count": 3
+  },
+  {
+   "label": "Boucheron",
+   "count": 3
+  },
+  {
+   "label": "Bubble",
+   "count": 3
+  },
+  {
+   "label": "Clog",
+   "count": 3
+  },
+  {
+   "label": "DECIEM",
+   "count": 3
+  },
+  {
+   "label": "EM Microelectronic",
+   "count": 3
+  },
+  {
+   "label": "Etam",
+   "count": 3
+  },
+  {
+   "label": "Fred",
+   "count": 3
+  },
+  {
+   "label": "GOYARD",
+   "count": 3
+  },
+  {
+   "label": "Groupe Beaumanoir",
+   "count": 3
+  },
+  {
+   "label": "Kering",
+   "count": 3
+  },
+  {
+   "label": "LOFT",
+   "count": 3
+  },
+  {
+   "label": "Longines",
+   "count": 3
+  },
+  {
+   "label": "Moët & Chandon",
+   "count": 3
+  },
+  {
+   "label": "Monica Vinader",
+   "count": 3
+  },
+  {
+   "label": "Montblanc",
+   "count": 3
+  },
+  {
+   "label": "New Balance Italy S.R.L.",
+   "count": 3
+  },
+  {
+   "label": "NIVEA Polska Sp. z o.o.",
+   "count": 3
+  },
+  {
+   "label": "Orlando Bathing Suit, LLC",
+   "count": 3
+  },
+  {
+   "label": "Parfums Givenchy",
+   "count": 3
+  },
+  {
+   "label": "Perfumes Loewe",
+   "count": 3
+  },
+  {
+   "label": "PUMA North America, Inc.",
+   "count": 3
+  },
+  {
+   "label": "PUMA SE",
+   "count": 3
+  },
+  {
+   "label": "Rebag",
+   "count": 3
+  },
+  {
+   "label": "Shinola",
+   "count": 3
+  },
+  {
+   "label": "Shiseido Americas Corporation",
+   "count": 3
+  },
+  {
+   "label": "TBS",
+   "count": 3
+  },
+  {
+   "label": "Tekla",
+   "count": 3
+  },
+  {
+   "label": "Thélios",
+   "count": 3
+  },
+  {
+   "label": "Watchfinder",
+   "count": 3
+  },
+  {
+   "label": "White House Black Market",
+   "count": 3
+  },
+  {
+   "label": "1580 Swarovski Int. d'Italia",
+   "count": 2
+  },
+  {
+   "label": "1660 Swarovski Ibérica S.A.",
+   "count": 2
+  },
+  {
+   "label": "1670 Swarovski Netherlands B.V.",
+   "count": 2
+  },
+  {
+   "label": "Aime",
+   "count": 2
+  },
+  {
+   "label": "Alaia",
+   "count": 2
+  },
+  {
+   "label": "AMI Paris",
+   "count": 2
+  },
+  {
+   "label": "Antipodes Médical",
+   "count": 2
+  },
+  {
+   "label": "APM Monaco",
+   "count": 2
+  },
+  {
+   "label": "ARC'TERYX",
+   "count": 2
+  },
+  {
+   "label": "Aveda",
+   "count": 2
+  },
+  {
+   "label": "Beiersdorf India Service Private Limited",
+   "count": 2
+  },
+  {
+   "label": "Beiersdorf M&#233;xico, S.A. de C.V.",
+   "count": 2
+  },
+  {
+   "label": "Beiersdorf NIVEA LTDA.",
+   "count": 2
+  },
+  {
+   "label": "Bettina",
+   "count": 2
+  },
+  {
+   "label": "Boggi Milano",
+   "count": 2
+  },
+  {
+   "label": "Bréal",
+   "count": 2
+  },
+  {
+   "label": "Buccellati",
+   "count": 2
+  },
+  {
+   "label": "CABAIA",
+   "count": 2
+  },
+  {
+   "label": "Castore",
+   "count": 2
+  },
+  {
+   "label": "Delvaux",
+   "count": 2
+  },
+  {
+   "label": "Dr.Jart+",
+   "count": 2
+  },
+  {
+   "label": "Embryolisse",
+   "count": 2
+  },
+  {
+   "label": "Eram",
+   "count": 2
+  },
+  {
+   "label": "Eurofragance",
+   "count": 2
+  },
+  {
+   "label": "Farfetch",
+   "count": 2
+  },
+  {
+   "label": "GANT",
+   "count": 2
+  },
+  {
+   "label": "Glenmorangie",
+   "count": 2
+  },
+  {
+   "label": "Gorjana",
+   "count": 2
+  },
+  {
+   "label": "Groupe ERAM",
+   "count": 2
+  },
+  {
+   "label": "Hindbag",
+   "count": 2
+  },
+  {
+   "label": "Hour Passion",
+   "count": 2
+  },
+  {
+   "label": "HUGO BOSS Belgium Retail BVBA",
+   "count": 2
+  },
+  {
+   "label": "HUGO BOSS Magazacilik Ltd. Sir",
+   "count": 2
+  },
+  {
+   "label": "Invisible Collection",
+   "count": 2
+  },
+  {
+   "label": "Jaeger LeCoultre",
+   "count": 2
+  },
+  {
+   "label": "Jonsson Workwear",
+   "count": 2
+  },
+  {
+   "label": "Kids Foot Locker",
+   "count": 2
+  },
+  {
+   "label": "Kitsuné",
+   "count": 2
+  },
+  {
+   "label": "La Redoute",
+   "count": 2
+  },
+  {
+   "label": "La Rosée",
+   "count": 2
+  },
+  {
+   "label": "LANCEL",
+   "count": 2
+  },
+  {
+   "label": "Maison 123",
+   "count": 2
+  },
+  {
+   "label": "MASCOT Workwear",
+   "count": 2
+  },
+  {
+   "label": "Moët Hennessy Wine Estates",
+   "count": 2
+  },
+  {
+   "label": "MR MARVIS",
+   "count": 2
+  },
+  {
+   "label": "NIKE de Mexico, S. de R.L. de C.V.",
+   "count": 2
+  },
+  {
+   "label": "Nutrafol",
+   "count": 2
+  },
+  {
+   "label": "Oak Essentials",
+   "count": 2
+  },
+  {
+   "label": "Officine Universelle Buly",
+   "count": 2
+  },
+  {
+   "label": "Orchestra",
+   "count": 2
+  },
+  {
+   "label": "Polène",
+   "count": 2
+  },
+  {
+   "label": "Prisma Media",
+   "count": 2
+  },
+  {
+   "label": "PUMA Europe GmbH",
+   "count": 2
+  },
+  {
+   "label": "Repossi",
+   "count": 2
+  },
+  {
+   "label": "Rossimoda",
+   "count": 2
+  },
+  {
+   "label": "Swiss Timing",
+   "count": 2
+  },
+  {
+   "label": "TAG Heuer",
+   "count": 2
+  },
+  {
+   "label": "Terrain",
+   "count": 2
+  },
+  {
+   "label": "Tricoci",
+   "count": 2
+  },
+  {
+   "label": "Veuve Clicquot Ponsardin",
+   "count": 2
+  },
+  {
+   "label": "0301 Beiersdorf LLC",
+   "count": 1
+  },
+  {
+   "label": "1560 Swarovski Austria",
+   "count": 1
+  },
+  {
+   "label": "1610 Swarovski Australia Pty.",
+   "count": 1
+  },
+  {
+   "label": "1646 Swarovski AG, Triesen, Zweigniederlassung Männedorf",
+   "count": 1
+  },
+  {
+   "label": "1760 Swarovski Internat. N. Z.",
+   "count": 1
+  },
+  {
+   "label": "1900 Swarovski Cristais Ltda.",
+   "count": 1
+  },
+  {
+   "label": "9350 Swarovski Mobility GmbH",
+   "count": 1
+  },
+  {
+   "label": "Amantys",
+   "count": 1
+  },
+  {
+   "label": "AMPM",
+   "count": 1
+  },
+  {
+   "label": "Ann Taylor",
+   "count": 1
+  },
+  {
+   "label": "Aubade",
+   "count": 1
+  },
+  {
+   "label": "Ballantynes",
+   "count": 1
+  },
+  {
+   "label": "Beiersdorf d.o.o.",
+   "count": 1
+  },
+  {
+   "label": "Beiersdorf Dermo Medical GmbH",
+   "count": 1
+  },
+  {
+   "label": "Beiersdorf East Africa Limited",
+   "count": 1
+  },
+  {
+   "label": "Beiersdorf Gesellschaft mbH",
+   "count": 1
+  },
+  {
+   "label": "Beiersdorf Inc.",
+   "count": 1
+  },
+  {
+   "label": "Beiersdorf Manufacturing Argentona, S.L.",
+   "count": 1
+  },
+  {
+   "label": "Beiersdorf Manufacturing Hamburg GmbH",
+   "count": 1
+  },
+  {
+   "label": "Beiersdorf Manufacturing Mexico, S.A. de C.V.",
+   "count": 1
+  },
+  {
+   "label": "Beiersdorf Near East FZ-LLC",
+   "count": 1
+  },
+  {
+   "label": "Beiersdorf NV",
+   "count": 1
+  },
+  {
+   "label": "Beiersdorf Philippines Incorporated",
+   "count": 1
+  },
+  {
+   "label": "Beiersdorf Shared Services GmbH",
+   "count": 1
+  },
+  {
+   "label": "Beiersdorf Shared Services Poland Sp.z o.o.",
+   "count": 1
+  },
+  {
+   "label": "Beiersdorf SpA",
+   "count": 1
+  },
+  {
+   "label": "Beiersdorf UK Ltd.",
+   "count": 1
+  },
+  {
+   "label": "Bleu Libellule",
+   "count": 1
+  },
+  {
+   "label": "Blue Banana",
+   "count": 1
+  },
+  {
+   "label": "BOCAGE",
+   "count": 1
+  },
+  {
+   "label": "Bombas",
+   "count": 1
+  },
+  {
+   "label": "Breguet",
+   "count": 1
+  },
+  {
+   "label": "Brioni",
+   "count": 1
+  },
+  {
+   "label": "Brothers",
+   "count": 1
+  },
+  {
+   "label": "BSS HUB M&#201;XICO, S.C.",
+   "count": 1
+  },
+  {
+   "label": "Bumble and bumble",
+   "count": 1
+  },
+  {
+   "label": "Canada Goose Inc.",
+   "count": 1
+  },
+  {
+   "label": "Catbird",
+   "count": 1
+  },
+  {
+   "label": "Caudalie",
+   "count": 1
+  },
+  {
+   "label": "Certina",
+   "count": 1
+  },
+  {
+   "label": "Champs Sports",
+   "count": 1
+  },
+  {
+   "label": "Chandon",
+   "count": 1
+  },
+  {
+   "label": "Chico's",
+   "count": 1
+  },
+  {
+   "label": "Chloe",
+   "count": 1
+  },
+  {
+   "label": "Choose",
+   "count": 1
+  },
+  {
+   "label": "Chrome",
+   "count": 1
+  },
+  {
+   "label": "Comadur",
+   "count": 1
+  },
+  {
+   "label": "Courir",
+   "count": 1
+  },
+  {
+   "label": "Deckers",
+   "count": 1
+  },
+  {
+   "label": "DRESCO",
+   "count": 1
+  },
+  {
+   "label": "Editions de Parfums Frédéric Malle",
+   "count": 1
+  },
+  {
+   "label": "END",
+   "count": 1
+  },
+  {
+   "label": "Ephemera Group",
+   "count": 1
+  },
+  {
+   "label": "ERES",
+   "count": 1
+  },
+  {
+   "label": "Exemplar Luxury Group",
+   "count": 1
+  },
+  {
+   "label": "Filson",
+   "count": 1
+  },
+  {
+   "label": "Flik Flak",
+   "count": 1
+  },
+  {
+   "label": "Fred Perry Ltd",
+   "count": 1
+  },
+  {
+   "label": "Glitter",
+   "count": 1
+  },
+  {
+   "label": "Groupe Galeries Lafayette",
+   "count": 1
+  },
+  {
+   "label": "Groupe Les Echos Le Parisien",
+   "count": 1
+  },
+  {
+   "label": "Hamilton",
+   "count": 1
+  },
+  {
+   "label": "Hans Anders Nederland",
+   "count": 1
+  },
+  {
+   "label": "Hennessy",
+   "count": 1
+  },
+  {
+   "label": "Hublot",
+   "count": 1
+  },
+  {
+   "label": "HUGO BOSS Australia Pty Ltd",
+   "count": 1
+  },
+  {
+   "label": "HUGO BOSS Benelux Retail B.V.",
+   "count": 1
+  },
+  {
+   "label": "IN02 Movado Group Private Limited",
+   "count": 1
+  },
+  {
+   "label": "ISOTONER",
+   "count": 1
+  },
+  {
+   "label": "IWC",
+   "count": 1
+  },
+  {
+   "label": "J. Choo Canada Inc",
+   "count": 1
+  },
+  {
+   "label": "J. Choo Limited",
+   "count": 1
+  },
+  {
+   "label": "Jeans Centre",
+   "count": 1
+  },
+  {
+   "label": "Jimmy Choo Spain SL",
+   "count": 1
+  },
+  {
+   "label": "John Henric",
+   "count": 1
+  },
+  {
+   "label": "JoJo Maman Bébé",
+   "count": 1
+  },
+  {
+   "label": "JUNE STORE",
+   "count": 1
+  },
+  {
+   "label": "Kapten & Son",
+   "count": 1
+  },
+  {
+   "label": "Kering Eyewear",
+   "count": 1
+  },
+  {
+   "label": "Kymono",
+   "count": 1
+  },
+  {
+   "label": "LAGER 157",
+   "count": 1
+  },
+  {
+   "label": "Lascor",
+   "count": 1
+  },
+  {
+   "label": "Little Words Project",
+   "count": 1
+  },
+  {
+   "label": "Louise Misha",
+   "count": 1
+  },
+  {
+   "label": "Lounge",
+   "count": 1
+  },
+  {
+   "label": "MADNETWORK",
+   "count": 1
+  },
+  {
+   "label": "Maeve",
+   "count": 1
+  },
+  {
+   "label": "Magasin du Nord",
+   "count": 1
+  },
+  {
+   "label": "MANUCURIST",
+   "count": 1
+  },
+  {
+   "label": "Marc Jacobs",
+   "count": 1
+  },
+  {
+   "label": "Medik8",
+   "count": 1
+  },
+  {
+   "label": "Merkal",
+   "count": 1
+  },
+  {
+   "label": "Michael Kors (France) SA",
+   "count": 1
+  },
+  {
+   "label": "Michael Kors (Italy) srl con socio unico",
+   "count": 1
+  },
+  {
+   "label": "Michael Kors Spain, S.L.U.",
+   "count": 1
+  },
+  {
+   "label": "Michael Kors Stores California Inc",
+   "count": 1
+  },
+  {
+   "label": "Michael Kors Yuhanhoesa",
+   "count": 1
+  },
+  {
+   "label": "MQ Marqet AB",
+   "count": 1
+  },
+  {
+   "label": "Multiópticas",
+   "count": 1
+  },
+  {
+   "label": "My Jewellery",
+   "count": 1
+  },
+  {
+   "label": "Naturkompaniet",
+   "count": 1
+  },
+  {
+   "label": "New Balance",
+   "count": 1
+  },
+  {
+   "label": "Nike Israel",
+   "count": 1
+  },
+  {
+   "label": "NIKE Malaysia",
+   "count": 1
+  },
+  {
+   "label": "Nike NEON",
+   "count": 1
+  },
+  {
+   "label": "NIKE Retail Austria",
+   "count": 1
+  },
+  {
+   "label": "NIVEA (Shanghai) Company",
+   "count": 1
+  },
+  {
+   "label": "NIVEA (Taiwan) Ltd.",
+   "count": 1
+  },
+  {
+   "label": "NOCIBE",
+   "count": 1
+  },
+  {
+   "label": "Nooānce",
+   "count": 1
+  },
+  {
+   "label": "NORMAL Spain",
+   "count": 1
+  },
+  {
+   "label": "Oh My Cream",
+   "count": 1
+  },
+  {
+   "label": "OLAPLEX",
+   "count": 1
+  },
+  {
+   "label": "P.T. Beiersdorf Indonesia",
+   "count": 1
+  },
+  {
+   "label": "Panier Des Sens",
+   "count": 1
+  },
+  {
+   "label": "Piaget",
+   "count": 1
+  },
+  {
+   "label": "Pied de Biche",
+   "count": 1
+  },
+  {
+   "label": "PM Studio Paris",
+   "count": 1
+  },
+  {
+   "label": "Profil Optik",
+   "count": 1
+  },
+  {
+   "label": "Prose",
+   "count": 1
+  },
+  {
+   "label": "PUMA Chile SpA",
+   "count": 1
+  },
+  {
+   "label": "Puma Mexico Sport SA de CV",
+   "count": 1
+  },
+  {
+   "label": "PUMA UNITED KINGDOM LTD",
+   "count": 1
+  },
+  {
+   "label": "R187 Swarovski Bohemia spol.s.r.o.",
+   "count": 1
+  },
+  {
+   "label": "R600 Swarovski Poland Sp. z o.o.",
+   "count": 1
+  },
+  {
+   "label": "R740 Swarovski Kristal Ticaret Ltd Sti.",
+   "count": 1
+  },
+  {
+   "label": "Rado",
+   "count": 1
+  },
+  {
+   "label": "Reclectic",
+   "count": 1
+  },
+  {
+   "label": "SAFE HARBOR",
+   "count": 1
+  },
+  {
+   "label": "SHEIN",
+   "count": 1
+  },
+  {
+   "label": "Siebel Juweliers",
+   "count": 1
+  },
+  {
+   "label": "Simone Pérèle",
+   "count": 1
+  },
+  {
+   "label": "Space NK",
+   "count": 1
+  },
+  {
+   "label": "Staff International",
+   "count": 1
+  },
+  {
+   "label": "Stanley/Stella BE",
+   "count": 1
+  },
+  {
+   "label": "Sud Express",
+   "count": 1
+  },
+  {
+   "label": "Surprise-paris",
+   "count": 1
+  },
+  {
+   "label": "Talbots",
+   "count": 1
+  },
+  {
+   "label": "The Bradery",
+   "count": 1
+  },
+  {
+   "label": "ThirdLove",
+   "count": 1
+  },
+  {
+   "label": "Too Faced",
+   "count": 1
+  },
+  {
+   "label": "UGG",
+   "count": 1
+  },
+  {
+   "label": "UNIQLO",
+   "count": 1
+  },
+  {
+   "label": "UNIQLO (MALAYSIA) SDN BHD",
+   "count": 1
+  },
+  {
+   "label": "UNIQLO EUROPE LIMITED GERMAN BRANCH",
+   "count": 1
+  },
+  {
+   "label": "UNIQLO EUROPE LIMITED NETHERLANDS BRANCH",
+   "count": 1
+  },
+  {
+   "label": "United States of Aritzia Inc.",
+   "count": 1
+  },
+  {
+   "label": "US01 Movado Group, Inc.",
+   "count": 1
+  },
+  {
+   "label": "Veronica Beard",
+   "count": 1
+  },
+  {
+   "label": "Vivobarefoot",
+   "count": 1
+  },
+  {
+   "label": "Vlisco",
+   "count": 1
+  },
+  {
+   "label": "Yade",
+   "count": 1
+  },
+  {
+   "label": "Zenith",
+   "count": 1
+  }
+ ]
+}
