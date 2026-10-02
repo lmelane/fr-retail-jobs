@@ -31,7 +31,7 @@ async function fixture() {
 const base = { maison: 'x', decision: 'Aucune décision CEO : preuve du test', reason: 'Motif du test.', nextAction: 'Action du test.', question: null };
 const mine: RegistryEntry[] = [
   { ...base, key: P + 'pause', currentStatus: 'PAUSED', targetStatus: 'PAUSED', intention: 'COLLECTER', trajectory: 'A_REPARER', basis: 'PREUVE', reviewAt: '2026-10-09' },
-  { ...base, key: P + 'homonyme', currentStatus: 'PAUSED', targetStatus: 'RETIRED', intention: 'NE_PAS_COLLECTER', trajectory: 'EXCLUE_PAR_DECISION', basis: 'PREUVE', reviewAt: null },
+  { ...base, key: P + 'homonyme', currentStatus: 'PAUSED', targetStatus: 'RETIRED', intention: 'NE_PAS_COLLECTER', trajectory: 'DECISION', basis: 'PREUVE', reviewAt: null },
   { ...base, key: P + 'retiree', currentStatus: 'RETIRED', targetStatus: 'RETIRED', intention: 'A_TRANCHER', trajectory: 'REVUE_HUMAINE', basis: 'PREUVE', reviewAt: '2026-10-09', question: 'Ce tenant est-il la Maison ?' },
 ];
 /** La base de test peut porter d'autres sources non ACTIVE (autres fichiers) : le registre doit être complet, on les explique. */

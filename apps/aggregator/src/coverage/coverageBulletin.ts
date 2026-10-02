@@ -12,6 +12,7 @@ import { ANOMALY, CAUSE_GRAVITY, newAlerts, REFERENCE_RUNS, MIN_REFERENCE_RUNS, 
   type CoverageEvaluation, type CoverageFinding, type Gravity } from './coverageAlert.js';
 import type { MaskedStock } from './coverageReading.js';
 import type { Indicator } from './loopIndicators.js';
+import type { AmbiguousSource } from '../registry/explicitRegistry.js';
 
 const NUMBER = new Intl.NumberFormat('fr-FR');
 const n = (value: number) => NUMBER.format(Math.round(value));
@@ -139,7 +140,23 @@ export function summaryLines(evaluation: CoverageEvaluation, masked: MaskedStock
   return lines;
 }
 
-export function bulletinHtml(evaluation: CoverageEvaluation, indicators: readonly Indicator[], meta: { at: Date; masked?: MaskedStock | null }): string {
+/** D-520 §2 : le registre explicite lu au RUN ; `error` quand il n'a pas pu être lu (dit, jamais tu). */
+export type RegistryReading = { ambiguous: AmbiguousSource[] } | { error: string };
+const WHY_LABEL: Readonly<Record<AmbiguousSource['why'], string>> = {
+  UNEXPLAINED: 'sans explication', STALE_EXPLANATION: 'explication d’un autre statut', REVIEW_OVERDUE: 'réexamen échu',
+};
+/** Les sources hors service dont l'état n'est pas expliqué ou dont le réexamen est passé : la mesure de D-520 §2. */
+export function registryLines(registry: RegistryReading | null | undefined): string[] {
+  if (!registry) return [];
+  if ('error' in registry) return [`Registre des sources illisible : ${registry.error}.`];
+  if (!registry.ambiguous.length) return ['Registre des sources : chaque source hors service a son explication et sa date de réexamen.'];
+  const groups = (Object.keys(WHY_LABEL) as AmbiguousSource['why'][]).map(why => [why, registry.ambiguous.filter(a => a.why === why)] as const)
+    .filter(([, list]) => list.length);
+  return [`Registre des sources : ${registry.ambiguous.length} à reprendre.`,
+    ...groups.map(([why, list]) => `${WHY_LABEL[why]} : ${list.slice(0, 30).map(a => `${a.key} (${a.status})`).join(', ')}${list.length > 30 ? ` et ${list.length - 30} autres` : ''}.`)];
+}
+
+export function bulletinHtml(evaluation: CoverageEvaluation, indicators: readonly Indicator[], meta: { at: Date; masked?: MaskedStock | null; registry?: RegistryReading | null }): string {
   const events = evaluation.findings.filter(f => f.kind === 'SYNTHESE');
   const section = (gravity: Gravity, intro: string) => {
     const list = evaluation.findings.filter(f => f.gravity === gravity && f.kind !== 'SYNTHESE');
@@ -171,6 +188,7 @@ export function bulletinHtml(evaluation: CoverageEvaluation, indicators: readonl
     ${section('A_REPARER', 'De notre côté, ou sans cause trouvée : un trou à réparer.')}
     ${section('A_VERIFIER', 'Offres masquées ou retirées sans preuve de fin : vérifier sur le site de la source qu’elles n’y sont plus.')}
     ${section('INFORMATION', 'Normal : rien à faire.')}
+    ${meta.registry ? `${heading('Registre des sources (D-520)')}${registryLines(meta.registry).map(text => line(esc(text), false)).join('')}` : ''}
     ${heading('Les questions de la boucle')}
     ${indicatorBlocks}
     ${line(`${esc(rules)} Rejouer en lecture seule, sans envoi : commande coverage.`)}

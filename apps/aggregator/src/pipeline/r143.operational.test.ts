@@ -5,6 +5,7 @@ import { describe, it, expect, beforeEach, afterAll } from 'vitest';
 import { PrismaClient } from '@prisma/client';
 import { publicJobWhere, publicJobSql } from '@catwalks/db/availability';
 import { Prisma } from '@prisma/client';
+import { randomBytes } from 'node:crypto';
 import { runRefresh } from './refresh.js';
 import { runAvailabilityReview } from './availability.js';
 import { runApplyLinkProbe } from './applyLinkProbe.js';
@@ -195,13 +196,26 @@ describe('R-143 §2 — une offre non reconfirmée sort de l’expérience sans 
     expect(await prisma.job.findUniqueOrThrow({ where: { id: old.id } })).toMatchObject({ isActive: true });
   });
 
-  it('une source en pause garde ses offres servies (D-485, D-493, D-506)', async () => {
+  it('une source en pause DÉCIDÉE garde ses offres servies (D-485, D-493, D-506) ; une pause sans décision suit le plafond (D-520 §2)', async () => {
     await qualifiedSource(prisma, 'en-pause');
-    await prisma.source.update({ where: { key: 'en-pause' }, data: { status: 'PAUSED' } });
     const c = await resolvedCompany(prisma, 'en-pause');
     const old = await offer(c.id, [{ sourceKey: 'en-pause', ext: 'p', hoursAgo: 200 }]);
+    // Pause sans décision (pas d'explication au registre) : comme une source ACTIVE, l'offre non revue depuis 72 h sort.
+    await prisma.source.update({ where: { key: 'en-pause' }, data: { status: 'PAUSED' } });
+    const undecided = await runAvailabilityReview(prisma, { dryRun: true });
+    expect(undecided.sources.find(source => source.sourceKey === 'en-pause')).toMatchObject({ status: 'PAUSED', ceilingHeld: 1 });
+    // Pause posée par une décision, expliquée au registre : l'offre reste servie.
+    const reviewId = randomBytes(32).toString('hex');
+    await prisma.sourceRegistryReview.create({ data: { id: reviewId, plan: {}, before: [], reviewer: 'test D-520' } });
+    await prisma.source.update({ where: { key: 'en-pause' }, data: { statusReviewId: reviewId, statusExplainedFor: 'PAUSED',
+      statusIntention: 'COLLECTER', statusTrajectory: 'A_REPARER', statusBasis: 'DECISION', statusDecision: 'D-506 §1',
+      statusReason: 'Pause décidée.', statusNextAction: 'Sonder le site.', statusReviewAt: new Date('2026-10-05T00:00:00Z') } });
     expect((await runAvailabilityReview(prisma)).held).toBe(0);
     expect(await served()).toEqual([old.id]);
+    // La même pause, sans décision (fondement PREUVE) : masquée.
+    await prisma.source.update({ where: { key: 'en-pause' }, data: { statusBasis: 'PREUVE', statusDecision: 'Aucune décision CEO' } });
+    expect((await runAvailabilityReview(prisma)).held).toBe(1);
+    expect(await served()).toEqual([]);
   });
 
   it('une seconde représentation confirmée garde l’offre servie', async () => {

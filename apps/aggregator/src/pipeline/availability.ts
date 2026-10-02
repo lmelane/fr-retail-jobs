@@ -13,7 +13,10 @@
  *
  * LE PLAFOND (72 h, `CONFIRMATION_CEILING_HOURS`) prend le relais pour une source ACTIVE restée sans collecte crédible :
  * deux RUN manqués de suite. Il est posé par ce RUN, jamais lu à l'horloge par la requête publique : un RUN arrêté ne
- * retire rien. Une source en PAUSE garde ses offres servies, comme D-485, D-493 et D-506 l'ont décidé.
+ * retire rien. Une source en PAUSE garde ses offres servies SEULEMENT si sa pause a été posée par une décision (D-485,
+ * D-493, D-506) : le registre explicite le dit (`registry/explicitRegistry.ts`, `pauseDecided`, D-520 §2). Une pause sans
+ * décision (pause « historique », ou pas encore expliquée) suit le plafond comme une source ACTIVE : ses offres non
+ * revues depuis 72 h sortent de l'expérience candidat (le 02/10 : Sioux 19, Fastrack 15, non revues depuis le 18-19/09).
  *
  * UNE COLLECTE EST CRÉDIBLE (`collectionReconfirms`) quand elle est admise, scellée et achevée par la révision courante
  * (`readAttestingCapture`), de statut OK ou DEGRADED, non tronquée, sans parcours déclaré incomplet (`complete=false`,
@@ -32,6 +35,7 @@ import { ATTESTATION_MIN_COVERAGE } from './attestation.js';
 import { readAttestingCapture } from './attestingCapture.js';
 import { seenByCapture } from './refreshEvidence.js';
 import { MASS_ABSENCE_MIN_STOCK, type AttestationFacts } from './refreshPlan.js';
+import { pauseDecided } from '../registry/explicitRegistry.js';
 
 export const RECONFIRMATION_MAX_SHARE = 0.5;
 export const CONFIRMATION_CEILING_HOURS = 72;
@@ -96,14 +100,15 @@ export async function runAvailabilityReview(prisma: PrismaClient, options: { dry
   const keys = (await prisma.jobSource.groupBy({ by: ['sourceKey'], where: { isActive: true,
     ...(options.onlyKeys ? { sourceKey: { in: options.onlyKeys } } : {}) } })).map(row => row.sourceKey).sort();
   const store = objectStoreConfigured() ? objectStoreFromEnv() : undefined;
-  const statuses = new Map((await prisma.source.findMany({ where: { key: { in: keys } }, select: { key: true, status: true } }))
-    .map(source => [source.key, source.status as string]));
+  const registry = new Map((await prisma.source.findMany({ where: { key: { in: keys } },
+    select: { key: true, status: true, statusBasis: true, statusExplainedFor: true } })).map(source => [source.key, source]));
   const sources: SourceReview[] = [];
   let held = 0;
   for (const sourceKey of keys) {
     if (!dryRun) assertPipelineRunning();
     const now = new Date();
-    const status = statuses.get(sourceKey) ?? null;
+    const source = registry.get(sourceKey);
+    const status = source?.status ?? null;
     const result = await readAttestingCapture(prisma, sourceKey, now, store);
     const rows = await prisma.jobSource.findMany({ where: { sourceKey, isActive: true },
       select: { id: true, externalId: true, lastSeenAt: true, availabilityHold: true, availabilityHoldAt: true } });
@@ -124,9 +129,10 @@ export async function runAvailabilityReview(prisma: PrismaClient, options: { dry
         collectionStartedAt: capture.startedAt.toISOString(), declaredTotal: capture.facts.declaredTotal,
         fetched: capture.facts.fetched, published: capture.facts.published });
     }
-    // Le plafond : une source ACTIVE qui n'a plus revu la représentation depuis 72 h. Jamais une source en pause.
+    // Le plafond : une source ACTIVE, ou en pause sans décision, qui n'a plus revu la représentation depuis 72 h.
     const ceiling = new Date(now.getTime() - CONFIRMATION_CEILING_HOURS * 3_600_000);
-    const stale = status === 'ACTIVE' ? rows.filter(row => row.lastSeenAt < ceiling && !stillHeld(row) && !missed.includes(row)) : [];
+    const ceilingApplies = status === 'ACTIVE' || (status === 'PAUSED' && !pauseDecided(source!));
+    const stale = ceilingApplies ? rows.filter(row => row.lastSeenAt < ceiling && !stillHeld(row) && !missed.includes(row)) : [];
     const ceilingHeld = dryRun ? stale.length : await hold(prisma, stale.map(row => row.id), now, {
       reader: RECONFIRMATION_READER, rule: 'CEILING_72H', ceiling: ceiling.toISOString(), lastCollection: captureBatchId });
     held += written + ceilingHeld;

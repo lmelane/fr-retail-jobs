@@ -15,17 +15,19 @@ const source = (over: Partial<RegistrySource> = {}): RegistrySource => ({
 });
 
 describe('le fichier relu se refuse en nommant chaque défaut', () => {
-  it('accepte une entrée complète', () => {
+  it('accepte une entrée complète, et une pause posée par une décision (trajectoire DECISION de sourceState.ts)', () => {
     expect(() => validateRegistryPlan(plan(entry()))).not.toThrow();
+    expect(() => validateRegistryPlan(plan(entry({ trajectory: 'DECISION', basis: 'DECISION', decision: 'D-506 §1' })))).not.toThrow();
   });
   it.each([
     ['une pause sans date de réexamen', { reviewAt: null }, 'a pause needs its review date'],
-    ['une exclusion laissée en pause', { trajectory: 'EXCLUE_PAR_DECISION', intention: 'NE_PAS_COLLECTER' }, 'an exclusion is RETIRED, not PAUSED'],
+    ['une pause « décidée » sans décision', { trajectory: 'DECISION' }, 'a DECISION trajectory is an exclusion (RETIRED) or a pause a decision posed'],
+    ['une exclusion laissée en pause', { trajectory: 'DECISION', basis: 'DECISION', intention: 'NE_PAS_COLLECTER' }, 'NE_PAS_COLLECTER is an exclusion (DECISION, RETIRED)'],
     ['une revue humaine sans question', { trajectory: 'REVUE_HUMAINE', intention: 'A_TRANCHER' }, 'a human review needs its question'],
     ['une trajectoire hors vocabulaire', { trajectory: 'HISTORIQUE' }, 'trajectory HISTORIQUE unknown'],
     ['une réouverture', { targetStatus: 'ACTIVE' }, 'reopening goes through qualification'],
     ['un retrait rouvert en pause', { currentStatus: 'RETIRED', targetStatus: 'PAUSED' }, 'never reopened'],
-    ['un retrait qui « revient seul »', { currentStatus: 'RETIRED', targetStatus: 'RETIRED', trajectory: 'REVIENT_SEULE' }, 'never comes back by itself'],
+    ['un retrait qui « revient seul »', { currentStatus: 'RETIRED', targetStatus: 'RETIRED', trajectory: 'AUTO' }, 'never comes back by itself'],
     ['un canal couvert ailleurs qui ne serait pas exclu', { intention: 'COUVERTE_AILLEURS' }, 'COUVERTE_AILLEURS is an exclusion'],
     ['un motif vide', { reason: '  ' }, 'reason missing'],
     ['une décision vide', { decision: '' }, 'decision missing'],
@@ -49,14 +51,14 @@ describe("l'aperçu confronte le fichier au registre, sans rien écrire", () => 
     expect(preview.refused.map(r => `${r.key} ${r.code}`)).toEqual(['alpha STATUS_CHANGED', 'beta ACTIVE_SOURCE', 'zeta UNKNOWN_SOURCE']);
   });
   it("liste le retrait d'une pause et ses publications actives", () => {
-    const preview = previewRegistry(plan(entry({ targetStatus: 'RETIRED', trajectory: 'EXCLUE_PAR_DECISION', intention: 'NE_PAS_COLLECTER', reviewAt: null })),
+    const preview = previewRegistry(plan(entry({ targetStatus: 'RETIRED', trajectory: 'DECISION', intention: 'NE_PAS_COLLECTER', reviewAt: null })),
       [source({ activeJobs: 7 })]);
     expect(preview.retirements).toEqual([{ key: 'alpha', from: 'PAUSED', activeJobs: 7 }]);
     expect(preview.refused).toEqual([]);
   });
   it("l'empreinte suit l'état lu (une note retouchée la change), pas l'ordre des entrées", () => {
     const sources = [source(), source({ key: 'beta', status: 'RETIRED' })];
-    const entries = [entry(), entry({ key: 'beta', currentStatus: 'RETIRED', targetStatus: 'RETIRED', trajectory: 'EXCLUE_PAR_DECISION', intention: 'NE_PAS_COLLECTER', reviewAt: null })];
+    const entries = [entry(), entry({ key: 'beta', currentStatus: 'RETIRED', targetStatus: 'RETIRED', trajectory: 'DECISION', intention: 'NE_PAS_COLLECTER', reviewAt: null })];
     const a = previewRegistry(plan(...entries), sources);
     expect(previewRegistry(plan(...[...entries].reverse()), sources).hash).toBe(a.hash);
     expect(previewRegistry(plan(...entries), [source({ note: 'retouchée' }), sources[1]]).hash).not.toBe(a.hash);

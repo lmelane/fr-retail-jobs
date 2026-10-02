@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { evaluateCoverage, type EntityState, type HistoryRun } from './coverageAlert.js';
-import { bulletinHtml, bulletinSubject, findingLines } from './coverageBulletin.js';
+import { bulletinHtml, bulletinSubject, findingLines, registryLines } from './coverageBulletin.js';
+import { ambiguousSources, type RegistrySource } from '../registry/explicitRegistry.js';
 import { MARCHES } from '@catwalks/db/marches';
 import { ALERT_CALENDAR, nextAlertSlot, percentile, type Indicator } from './loopIndicators.js';
 
@@ -115,5 +116,25 @@ describe('le calendrier des alertes (D-498 : mardi et vendredi, 07:30 heure loca
   it('percentile', () => {
     expect(percentile([1, 2, 3, 4], 0.5)).toBe(2.5);
     expect(percentile([], 0.9)).toBeNull();
+  });
+});
+
+describe('D-520 §2 — le registre explicite dans le bulletin du RUN : un réexamen échu se voit', () => {
+  const explained = (over: Partial<RegistrySource>): RegistrySource => ({ key: 'x', status: 'PAUSED', note: null, statusIntention: 'COLLECTER',
+    statusTrajectory: 'A_REPARER', statusBasis: 'PREUVE', statusDecision: 'Aucune', statusReason: 'm', statusNextAction: 'a', statusQuestion: null,
+    statusReviewAt: '2026-10-09', statusExplainedFor: 'PAUSED', statusReviewId: 'r', activeJobs: 0, ...over });
+  it('la pause dont le réexamen est passé, la source sans explication et l’explication périmée paraissent, nommées', () => {
+    const registry = { ambiguous: ambiguousSources([explained({ key: 'sioux' }), explained({ key: 'ghost', statusReviewAt: '2026-10-01' }),
+      explained({ key: 'nue', statusReviewId: null }), explained({ key: 'rouverte', status: 'RETIRED' })], '2026-10-02') };
+    const html = plain(bulletinHtml(evaluateCoverage({ history: [], knownSources: [], entities: [] }), indicators, { at: new Date('2026-10-02T18:30:00Z'), registry }));
+    expect(html).toContain('Registre des sources : 3 à reprendre.');
+    expect(html).toContain('réexamen échu : ghost (PAUSED).');
+    expect(html).toContain('sans explication : nue (PAUSED).');
+    expect(html).toContain('explication d’un autre statut : rouverte (RETIRED).');
+    expect(html).not.toContain('sioux');
+  });
+  it('un registre en ordre le dit ; un registre illisible le dit aussi, jamais un silence', () => {
+    expect(registryLines({ ambiguous: [] })).toEqual(['Registre des sources : chaque source hors service a son explication et sa date de réexamen.']);
+    expect(registryLines({ error: 'column "statusReviewId" does not exist' })).toEqual(['Registre des sources illisible : column "statusReviewId" does not exist.']);
   });
 });

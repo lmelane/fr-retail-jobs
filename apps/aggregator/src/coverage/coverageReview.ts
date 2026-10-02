@@ -15,12 +15,25 @@
 import type { PrismaClient } from '@prisma/client';
 import { sendOperatorEmail } from '../pipeline/alert.js';
 import { evaluateCoverage, newAlerts, referenceWindow, type CoverageEvaluation } from './coverageAlert.js';
-import { bulletinHtml, bulletinSubject } from './coverageBulletin.js';
+import { bulletinHtml, bulletinSubject, type RegistryReading } from './coverageBulletin.js';
+import { ambiguousSources, readRegistrySources } from '../registry/explicitRegistry.js';
 import { readCoverageBefore, readCoverageHistory, readCoverageState, writeCoverageSnapshot, type CoverageBefore, type MaskedStock } from './coverageReading.js';
 import { readLoopIndicators, type Indicator, type ProbeSummary } from './loopIndicators.js';
 
 export type CoverageReview = { at: Date; evaluation: CoverageEvaluation; indicators: Indicator[]; masked: MaskedStock;
-  written: number; sent: boolean; dryRun: boolean };
+  registry: RegistryReading; written: number; sent: boolean; dryRun: boolean };
+
+/**
+ * D-520 §2 : les sources hors service sans explication, à l'explication périmée, ou dont la date de réexamen est passée
+ * (`ambiguousSources`), lues à chaque RUN et dites dans le bulletin. Une lecture impossible se dit aussi.
+ */
+async function readRegistry(prisma: PrismaClient, at: Date): Promise<RegistryReading> {
+  try {
+    return { ambiguous: ambiguousSources(await readRegistrySources(prisma), at.toISOString().slice(0, 10)) };
+  } catch (error) {
+    return { error: error instanceof Error ? error.message.split('\n')[0].slice(0, 200) : 'lecture impossible' };
+  }
+}
 
 /** Le lien vers la source : son site carrières quand le registre le connaît. */
 async function sourceLinks(prisma: PrismaClient, evaluation: CoverageEvaluation): Promise<void> {
@@ -54,12 +67,13 @@ export async function runCoverageReview(prisma: PrismaClient, options: { runId?:
   const evaluation = evaluateCoverage({ entities: state.entities, knownSources: state.knownSources, history });
   await sourceLinks(prisma, evaluation);
   const indicators = await readLoopIndicators(prisma, { at, probe: options.probe ?? null, prisma });
+  const registry = await readRegistry(prisma, at);
   // L'envoi d'abord : une photographie ne marque une alerte « posée » que si le bulletin qui la porte est parti.
-  const sent = dryRun ? false : await sendOperatorEmail({ subject: bulletinSubject(evaluation), html: bulletinHtml(evaluation, indicators, { at, masked: state.masked }),
+  const sent = dryRun ? false : await sendOperatorEmail({ subject: bulletinSubject(evaluation), html: bulletinHtml(evaluation, indicators, { at, masked: state.masked, registry }),
     context: { findings: evaluation.findings.length, newAlerts: newAlerts(evaluation).length } });
   const rows = sent ? evaluation.rows : evaluation.rows.map(row => ({ ...row, cause: null, gravity: null }));
   const written = dryRun ? 0 : await writeCoverageSnapshot(prisma, { runId: options.runId ?? null, takenAt: at, rows });
-  return { at, evaluation, indicators, masked: state.masked, written, sent, dryRun };
+  return { at, evaluation, indicators, masked: state.masked, registry, written, sent, dryRun };
 }
 
 /**

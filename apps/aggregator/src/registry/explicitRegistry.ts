@@ -2,6 +2,7 @@ import { Prisma, type PrismaClient } from '@prisma/client';
 import { createHash } from 'node:crypto';
 import { withdrawRetiredSource } from '../pipeline/deactivateSources.js';
 import { lockSourceWrites } from '../lib/writeLocks.js';
+import { TRAJECTORIES } from '../pipeline/sourceState.js';
 
 /**
  * D-520 §2 — LE REGISTRE EXPLICITE : « une source qui n'est pas opérationnelle doit toujours avoir une raison explicite
@@ -23,8 +24,9 @@ export const REGISTRY_PLAN_KIND = 'registre-explicite/1';
 export const REGISTRY_PREVIEW_KIND = 'registre-explicite-apercu/1';
 /** Ce que le registre veut de la source. */
 export const SOURCE_INTENTIONS = ['COLLECTER', 'COUVERTE_AILLEURS', 'NE_PAS_COLLECTER', 'A_TRANCHER'] as const;
-/** Les quatre sorties de D-520 §2. */
-export const SOURCE_TRAJECTORIES = ['REVIENT_SEULE', 'A_REPARER', 'REVUE_HUMAINE', 'EXCLUE_PAR_DECISION'] as const;
+/** Les quatre sorties de D-520 §2, vocabulaire unique de l'état opérationnel (`pipeline/sourceState.ts`) : AUTO (revient
+ * seule), A_REPARER, REVUE_HUMAINE, DECISION (exclusion ou pause décidée). */
+export const SOURCE_TRAJECTORIES = TRAJECTORIES;
 /** Ce qui fonde l'état : une décision (CEO ou propriétaire, datée), une règle validée, ou la seule preuve (aucune décision). */
 export const STATUS_BASES = ['DECISION', 'REGLE', 'PREUVE'] as const;
 const STATUSES = ['DRAFT', 'VALIDATED', 'ACTIVE', 'PAUSED', 'RETIRED'] as const;
@@ -79,12 +81,11 @@ export function validateRegistryPlan(raw: unknown): RegistryPlan {
     for (const field of ['maison', 'decision', 'reason', 'nextAction'] as const) if (!text(e[field])) p(`${field} missing`);
     if (e.reviewAt !== null && !isDay(e.reviewAt)) p(`reviewAt ${e.reviewAt} is not a YYYY-MM-DD day`);
     if (e.targetStatus === 'PAUSED' && !e.reviewAt) p('a pause needs its review date');
-    if (e.targetStatus === 'PAUSED' && e.trajectory === 'EXCLUE_PAR_DECISION') p('an exclusion is RETIRED, not PAUSED');
-    if (e.trajectory === 'EXCLUE_PAR_DECISION' && e.targetStatus !== 'RETIRED') p('an exclusion targets RETIRED');
-    if (e.targetStatus === 'RETIRED' && e.trajectory === 'REVIENT_SEULE') p('a RETIRED source never comes back by itself');
+    if (e.trajectory === 'DECISION' && e.targetStatus !== 'RETIRED' && e.basis !== 'DECISION') p('a DECISION trajectory is an exclusion (RETIRED) or a pause a decision posed');
+    if (e.targetStatus === 'RETIRED' && e.trajectory === 'AUTO') p('a RETIRED source never comes back by itself');
     if ((e.trajectory === 'REVUE_HUMAINE') !== (e.intention === 'A_TRANCHER')) p('REVUE_HUMAINE and A_TRANCHER go together');
     if (e.trajectory === 'REVUE_HUMAINE' && (!text(e.question) || !e.reviewAt)) p('a human review needs its question and its date');
-    if ((e.intention === 'COUVERTE_AILLEURS' || e.intention === 'NE_PAS_COLLECTER') && e.trajectory !== 'EXCLUE_PAR_DECISION') p(`${e.intention} is an exclusion`);
+    if ((e.intention === 'COUVERTE_AILLEURS' || e.intention === 'NE_PAS_COLLECTER') && (e.trajectory !== 'DECISION' || e.targetStatus !== 'RETIRED')) p(`${e.intention} is an exclusion (DECISION, RETIRED)`);
   }
   if (problems.length) throw new Error(`REVIEWED_PLAN_INVALID: ${problems.slice(0, 20).join('; ')}${problems.length > 20 ? ` (+${problems.length - 20})` : ''}`);
   return plan;
@@ -141,6 +142,14 @@ export async function previewRegistryReview(db: PrismaClient, raw: unknown): Pro
  * Les sources dont l'état n'est pas expliqué : non ACTIVE sans explication, explication d'un autre statut (périmée),
  * ou pause dont la date de réexamen est passée. C'est la mesure de D-520 §2 ; elle doit rendre zéro.
  */
+/**
+ * Une pause posée par une décision (fondement DECISION, expliquée pour ce statut) : seule celle-là garde ses offres servies
+ * hors du plafond de R-143 §2 (D-485, D-493, D-506). Une pause sans décision, ou pas encore expliquée, suit le masquage.
+ */
+export function pauseDecided(source: { status: string; statusBasis: string | null; statusExplainedFor: string | null }) {
+  return source.status === 'PAUSED' && source.statusExplainedFor === 'PAUSED' && source.statusBasis === 'DECISION';
+}
+
 export type AmbiguousSource = { key: string; status: Status; why: 'UNEXPLAINED' | 'STALE_EXPLANATION' | 'REVIEW_OVERDUE' };
 export function ambiguousSources(sources: readonly RegistrySource[], today: string): AmbiguousSource[] {
   return sources.flatMap((s): AmbiguousSource[] => {

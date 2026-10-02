@@ -1,0 +1,9 @@
+Versace — enquête du 02/10/2026, 14:40 UTC (curl, user-agent navigateur, sans authentification)
+https://capri.wd1.myworkdayjobs.com/wday/cxs/capri/Versace/jobs -> 400 (le RUN du 01/10 avait reçu 403)
+https://capri.wd1.myworkdayjobs.com/versace -> 302 https://www.myworkday.com/wday/drs/outage?t=capri&s=versace
+https://capri.wd1.myworkdayjobs.com/michael_kors -> 200 (même tenant Capri, autre site : vivant)
+https://jobs.pradagroup.com/search/?q=versace -> 200 ; premiers résultats : « VERSACE IT Infrastructure Specialist »
+  (/job/Milano-VERSACE-IT-Infrastructure-Specialist/1440199833/), « Senior Sales Associate Milano »
+Lecture : le site Versace est désactivé sur le Workday de Capri (redirection « outage » pour ce seul site) ; le portail
+SuccessFactors du groupe Prada, déjà collecté par `prada-group`, publie des postes Versace. Couverture complète de
+Versace par ce portail : non mesurée.

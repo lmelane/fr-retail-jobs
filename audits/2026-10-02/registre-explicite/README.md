@@ -33,16 +33,32 @@ rien ; 131 sources hors service, dont 39 sont des doublons déjà couverts.
 
 ## Les 131 sources non ACTIVE, par intention et trajectoire
 
+Trajectoires : le vocabulaire unique de `apps/aggregator/src/pipeline/sourceState.ts` (AUTO, A_REPARER, REVUE_HUMAINE,
+DECISION). Le fondement est un champ distinct : DECISION (CEO ou Loïc, datée), REGLE (règle validée ou cadrage de Loïc :
+R-142, R-143 §4, D58), PREUVE (aucune décision : l'état repose sur une preuve seule). Une exclusion exclut une source,
+jamais une Maison.
+
 | Intention | Trajectoire | Sources | Fondement |
 |---|---|---:|---|
-| COLLECTER | A_REPARER | 13 | 1 décision (Ralph Lauren, D-483, D-516) ; 12 sans décision |
-| COLLECTER | REVIENT_SEULE | 1 | Versace, D-506 §1 |
-| COUVERTE_AILLEURS | EXCLUE_PAR_DECISION | 39 | 35 D39 et R-142 §1 (WTTJ) ; 4 R-143 §4 (doublons prouvés) |
-| NE_PAS_COLLECTER | EXCLUE_PAR_DECISION | 68 | 8 décisions (D-453, D-477, R-142, décisions de Loïc des 08 et 10/09, D-481) ; 60 sur preuve seule |
-| A_TRANCHER | REVUE_HUMAINE | 10 | sans décision, question écrite |
+| COLLECTER | A_REPARER | 16 | 2 décisions (Ralph Lauren D-483 et D-516 ; Versace D-506 §1) ; 2 règles (miu-miu, army-logic) ; 12 sans décision |
+| COUVERTE_AILLEURS | DECISION (source exclue, doublon) | 39 | règle R-143 §4 (35 collecteurs WTTJ, urbn-stores, bizzbee, dr-jart-13) ou D58 (b2) |
+| NE_PAS_COLLECTER | DECISION (source exclue) | 76 | 17 décisions (D37, D38, D-453, D-477, Loïc 08 et 10/09) ; 55 règles (D58, R-142 §1) ; 4 sans décision (démonstrations) |
+| A_TRANCHER | REVUE_HUMAINE | 0 | |
 
-Une seule source change d'état : `miu-miu` (PAUSED → RETIRED). Sa capture native du 24/09 identifie une université
-égyptienne (MIU), dont 7 offres sont servies sous « Miu Miu ».
+**Sans décision qui justifie l'état (fondement PREUVE, 16)** : 11 pauses de la revue du 23/09 (sioux, ghost, nimble,
+rotate, minimalist, cotton-on, de-beers-london, dim, fastrack, markham, oniverse), le-slip-francais, et 4 portails de
+démonstration (ganni, jako, lindex, sport-1).
+
+**Masquage des pauses (R-143 §2)** : seule une pause posée par une décision (fondement DECISION) garde ses offres
+servies hors du plafond de 72 h ; une pause sans décision le suit. À blanc le 02/10 (`pauses-masquage-2026-10-02.json`) :
+Sioux 19 et Fastrack 15 offres non revues depuis le 18-19/09 sortiraient ; Versace (pause décidée, D-506 §1) garde ses
+49 offres ; miu-miu (7) sort par son retrait.
+
+**Changements d'état** : un seul, `miu-miu` (PAUSED → RETIRED). Sa capture native du 24/09 identifie une université
+égyptienne (MIU), dont 7 offres sont servies sous « Miu Miu ». `retire-source` ne détruit aucune donnée (R-142 §2).
+
+**Les 10 Maisons WTTJ de 3 offres ou moins** (sous le plancher de l'alerte de couverture) sont toutes servies par
+`wttj-sector` le 02/10 (`wttj-petites-maisons-2026-10-02.json`) ; réexamen à la main le 16/10.
 
 ## Application
 

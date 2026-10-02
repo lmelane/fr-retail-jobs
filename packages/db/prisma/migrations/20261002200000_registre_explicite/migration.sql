@@ -9,7 +9,7 @@
 --     l'empreinte que l'application recalcule.
 --  2. "Source"."status*" porte l'explication courante, et "statusExplainedFor" le statut qu'elle explique : une source
 --     dont le statut a changé depuis redevient lisible comme ambiguë (explication périmée), jamais faussement expliquée.
---  3. Les vocabulaires sont fermés ici (CHECK) ; une pause expliquée a toujours sa date de réexamen, une revue humaine
+--  3. Les vocabulaires sont fermés ici (CHECK), trajectoires identiques à apps/aggregator/src/pipeline/sourceState.ts ; une pause expliquée a toujours sa date de réexamen, une revue humaine
 --     sa question.
 -- Le déclencheur record_source_revision ne lit aucune de ces colonnes : les écrire ne crée pas de révision et ne
 -- remet aucune source en pause.
@@ -46,7 +46,7 @@ ALTER TABLE "Source"
 ALTER TABLE "Source" ADD CONSTRAINT source_status_intention
   CHECK ("statusIntention" IS NULL OR "statusIntention" IN ('COLLECTER', 'COUVERTE_AILLEURS', 'NE_PAS_COLLECTER', 'A_TRANCHER'));
 ALTER TABLE "Source" ADD CONSTRAINT source_status_trajectory
-  CHECK ("statusTrajectory" IS NULL OR "statusTrajectory" IN ('REVIENT_SEULE', 'A_REPARER', 'REVUE_HUMAINE', 'EXCLUE_PAR_DECISION'));
+  CHECK ("statusTrajectory" IS NULL OR "statusTrajectory" IN ('AUTO', 'A_REPARER', 'REVUE_HUMAINE', 'DECISION'));
 ALTER TABLE "Source" ADD CONSTRAINT source_status_basis
   CHECK ("statusBasis" IS NULL OR "statusBasis" IN ('DECISION', 'REGLE', 'PREUVE'));
 -- Une explication est complète ou absente : jamais un motif sans décision, ni une trajectoire sans prochaine action.
@@ -61,7 +61,8 @@ ALTER TABLE "Source" ADD CONSTRAINT source_status_pause_review
   CHECK ("statusExplainedFor" IS DISTINCT FROM 'PAUSED' OR "statusReviewAt" IS NOT NULL);
 ALTER TABLE "Source" ADD CONSTRAINT source_status_human_question
   CHECK ("statusTrajectory" IS DISTINCT FROM 'REVUE_HUMAINE' OR (length(btrim("statusQuestion")) > 0 AND "statusReviewAt" IS NOT NULL));
-ALTER TABLE "Source" ADD CONSTRAINT source_status_exclusion_retired
-  CHECK ("statusTrajectory" IS DISTINCT FROM 'EXCLUE_PAR_DECISION' OR "statusExplainedFor" = 'RETIRED');
+-- DECISION : une exclusion (RETIRED) ou une pause qu'une décision a posée, jamais une pause « historique ».
+ALTER TABLE "Source" ADD CONSTRAINT source_status_decision_trajectory
+  CHECK ("statusTrajectory" IS DISTINCT FROM 'DECISION' OR "statusExplainedFor" = 'RETIRED' OR "statusBasis" = 'DECISION');
 
 COMMIT;
