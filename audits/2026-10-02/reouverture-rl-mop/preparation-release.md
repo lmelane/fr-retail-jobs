@@ -39,7 +39,7 @@ hors de la fenêtre du RUN (jamais entre 15:30 et 18:30 UTC).
   (26 refusées par l'autorisation du lot), jeton `aws-waf-token` en **5,0 s** ; la même liste munie du jeton répond
   **200**, 6 cartes, **233 offres annoncées** (Corporate ; 225 le 30/09). robots.txt : liste et fiche autorisées.
   Une collecte complète (≈ 1 300 requêtes) n'a pas été rejouée en local : elle est la collecte ciblée de la
-  réouverture, jugée par les neuf critères de `criteres-acceptation.md`.
+  réouverture, jugée par les dix critères de `criteres-acceptation.md`.
 - **Marc O'Polo**, `collecte-locale-marc-o-polo.json` (`scripts/collecte-locale-marc-o-polo.mts`, lecteur dédié
   intégré, configuration que le registre relu écrira) : voir §6.
 
@@ -116,10 +116,11 @@ le 02/10 sur les deux lignes, la révision de Marc O'Polo remplacée par un UUID
 
 ## 5. Ce qui juge chaque réouverture (lecture seule après la collecte)
 
-- **Ralph Lauren** : les neuf critères de `audits/2026-09-30/d483-amorcage-waf/criteres-acceptation.md` (collectes
+- **Ralph Lauren** : les dix critères de `audits/2026-09-30/d483-amorcage-waf/criteres-acceptation.md` (collectes
   `HTTP_WITH_WAF_BOOTSTRAP` validées par rejeu, décision `ALLOWED` portant `bootstraps`, 5 requêtes navigateur au plus
   vers `*.awswaf.com`, aucun corps de jeton archivé, aucun 403/406/202 après l'amorçage, liste lue en entier, ≥ 70 %
-  de descriptions, aucune fermeture). La carte de décision « jeton refusé en cours de collecte » de ce fichier n'est
+  de descriptions, aucune fermeture, **offres publiées et zéro refus pour identité**, critère 10 ajouté le 02/10 :
+  il échoue si le `portalScope` de l'étape 4a manque). La carte de décision « jeton refusé en cours de collecte » de ce fichier n'est
   soumise au CEO que si la collecte reproduit ce refus.
 - **Marc O'Polo** : la collecte rend `FULL_RESPONSE` sans motif bloquant ; les offres lues = la liste de l'API
   (116 le 30/09) moins les fermées ; l'employeur déclaré par les deux pages d'offre est le même et rattache les offres

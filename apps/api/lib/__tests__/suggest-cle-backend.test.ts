@@ -7,7 +7,8 @@ import { semerVilles, viderVilles, VILLES_TEMOINS } from '../__fixtures__/villes
  * de la V2), 02/10/2026.
  *
  * Le backend réunit « Paris » et « Paris (75) » là où le site ne passe pas (préférences et recherches récentes déjà en
- * base, alertes de l'onboarding et de la conversion, liste des recherches récentes). Il lit pour cela la première
+ * base, alertes de l'onboarding, liste des recherches récentes ; la conversion R-136 lit, elle, la route des villes
+ * du site). Il lit pour cela la première
  * suggestion de lieu du même nom qui porte une subdivision (`lieux/formes-reconnues.ts` du backend :
  * `GET /api/suggest?type=city&q=<nom>&marche=XX`, `x-catwalks-client: 2`, sa clé). Avant ce lot, sa clé y recevait 401.
  *

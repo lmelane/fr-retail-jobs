@@ -9,9 +9,13 @@
 1. Migration `20261002100000_waf_bootstrap_access` appliquée en production **avant** le code (additive : l'ancien
    code n'écrit ni `HTTP_WITH_WAF_BOOTSTRAP` ni la clé `bootstraps`, la base en avance lui reste compatible).
 2. Image de l'agrégateur contenant le lot, hors de la fenêtre du RUN de 18 h.
-3. Passage `PAUSED` → `ACTIVE` de `ralph-lauren-avature` (réouverture décidée par D-483 ; l'écriture reste un geste
-   de production).
-4. Collecte ciblée en production de la seule source (D-482 §2), avant le RUN quotidien.
+3. Portail certifié de D-481 §2 : `portalScope = SINGLE_BRAND` posé sur `ralph-lauren-avature` par le registre relu
+   (`audits/2026-10-02/reouverture-rl-mop/portail-ralph-lauren-d481.csv`, `importer-registre-csv.mts --ecrire`).
+   *Ajouté le 02/10/2026* : relu en production ce jour, `portalScope` était NULL (D-481 §2 jamais exécutée) ; sans lui,
+   les offres, qui ne nomment pas leur employeur, sont refusées pour identité (1 131 le 29/09).
+4. Passage `PAUSED` → `ACTIVE` de `ralph-lauren-avature` (réouverture décidée par D-483 ; l'écriture reste un geste
+   de production), par `source-add --registered-revision` (`preparation-release.md` du même jour).
+5. Collecte ciblée en production de la seule source (D-482 §2), avant le RUN quotidien.
 
 ## Critères de la collecte ciblée (tous requis, relus en lecture seule)
 
@@ -26,6 +30,7 @@
 | 7 | Listes lues en entier : offres lues = total annoncé par Corporate + Retail (1 131 chez l'éditeur le 29/09 ; 225 annoncées pour Corporate le 30/09) | manifeste, `declaredTotal` |
 | 8 | Descriptions non vides sur au moins 70 % des offres, avec marge (le lecteur garde la carte quand une fiche échoue) | sorties de la collecte |
 | 9 | Aucune offre Ralph Lauren fermée par cette collecte (la source n'a jamais publié ; toute fermeture serait un défaut) | publication |
+| 10 | *Ajouté le 02/10/2026.* **Offres publiées, zéro refus pour identité** : la collecte d'ingestion publie ses offres (`SourceIngestionCompletion.published` > 0, égal aux offres lues moins les retenues nommées) et ne lève **aucun** `job.write_failed` `EmployerIdentityReviewRequired` (dont `PORTAL_OWNER_NOT_CERTIFIED`). Sans ce critère, les 1 131 refus du 29/09 satisferaient les neuf autres | `SourceIngestionCompletion`, `PipelineEvent` (`scripts/ops/refus-identite-employeur.mts`) |
 
 Un seul critère manqué : la source repasse en pause, le motif est consigné, rien n'est corrigé en production à chaud.
 

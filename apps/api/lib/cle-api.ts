@@ -6,8 +6,8 @@ import { NextResponse, type NextRequest } from 'next/server';
  *
  * Les appelants légitimes sont des SERVEURS, chacun avec sa clé : le rendu de
  * catwalks.io sur Vercel (`CATALOGUE_API_KEY`, toutes les routes publiques) et,
- * depuis D-471, le backend (`CATALOGUE_API_KEY_BACKEND`, quatre routes seulement,
- * voir plus bas). Pas de comptes, pas de portail : une clé par appelant, portée
+ * depuis D-471, le backend (`CATALOGUE_API_KEY_BACKEND`, six routes seulement,
+ * voir plus bas ; témoin `registre-d471.test.ts`). Pas de comptes, pas de portail : une clé par appelant, portée
  * par `Authorization: Bearer …`.
  *
  * Mesuré avant d'écrire ce fichier (14/09/2026) : sans garde, 3 338 requêtes
