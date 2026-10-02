@@ -34,9 +34,9 @@ export const ABSENCE_OF_PROOF_MARKERS: ReadonlySet<string> = new Set(['ENUMERATI
 
 /**
  * POURQUOI UNE LISTE NE PEUT PAS ÊTRE DÉMONTRÉE EN L'ÉTAT (D-520, 02/10/2026) : les motifs par lesquels un lecteur dit
- * qu'il ne lit ni total, ni fin de liste, ni plan du site. La lecture reste NON PROUVÉE (aucune absence attestée) et
- * BLOQUANTE (D-453 §1) hors des sources de D-480 §1 ; seule sa classe change (`ENUMERATION_UNPROVABLE`, à réparer :
- * trouver une liste complète chez l'éditeur). Le marqueur dit ce que fait le LECTEUR, pas ce que publie l'éditeur
+ * qu'il ne lit ni total, ni fin de liste, ni plan du site. La lecture reste NON PROUVÉE (aucune absence attestée) ; sa
+ * classe, `ENUMERATION_UNPROVABLE`, est une limite connue (D-520 §4 b, `isKnownListLimit`) : non bloquante, sans escalade.
+ * L'améliorer reste possible : trouver une liste complète chez l'éditeur. Le marqueur dit ce que fait le LECTEUR, pas ce que publie l'éditeur
  * (kastner-ohler part d'une fiche d'offre). Liste POSITIVE et FERMÉE, sous-ensemble des marqueurs d'absence de preuve :
  * un fait qui réfute l'énumération l'emporte toujours (la lecture est alors RÉFUTÉE).
  *   · `NO_PUBLISHER_LISTING_OR_SITEMAP` : les liens d'une page d'accueil, faute de liste ou de plan publiés ;

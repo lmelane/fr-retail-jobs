@@ -518,8 +518,8 @@ describe('D-480 §1 (30/09/2026): a named known failure is collected, listed in 
     expect(incidents).toEqual([expect.objectContaining({ source: 'lumentee', blocking: false, knownFailure: 'D-480' })]);
     expect(summary).toMatchObject({ executionHealthy: true, blockingReasons: [], knownFailures: { sources: ['lumentee'] } });
     const report = { degraded: 1, broken: 0, incidents };
-    expect(alertSubject(report)).toBe('[Catwalks] 0 source bloquante · 1 échec connu, non bloquant');
-    expect(alertHtml(report)).toContain('Non bloquant, échecs connus : 1 source');
+    expect(alertSubject(report)).toBe('[Catwalks] 0 source bloquante · 1 échec ou limite connu, non bloquant');
+    expect(alertHtml(report)).toContain('Non bloquant, échecs et limites connus : 1 source');
     expect(alertHtml(report)).not.toContain('pannes de l\'éditeur prouvées');
   });
   it('on-running, descriptions below the floor: named DESCRIPTION_COVERAGE_BELOW_FLOOR, a known failure; a volume collapse still blocks', async () => {

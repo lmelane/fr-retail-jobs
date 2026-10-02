@@ -11,6 +11,8 @@ import { evaluateSourceHealth } from '../../pipeline/health.js';
 import { readEnumeration } from '../../pipeline/enumerationReading.js';
 import { failureLine, summarizeOrchestration } from '../../lib/runSummary.js';
 import { classifySourceRun } from '../../pipeline/ingestOrchestrator.js';
+import { attestationFacts } from '../../pipeline/attestingCapture.js';
+import { collectionReconfirms } from '../../pipeline/availability.js';
 import type { IngestStats } from '../../pipeline/ingest.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
 
@@ -90,7 +92,7 @@ describe('NON PROUVÉE — `complete: false` sans aucune coupure observée ni li
   });
 });
 
-describe('LISTE INDÉMONTRABLE EN L’ÉTAT (D-520) — le lecteur nomme pourquoi : classée à part, BLOQUANTE (D-453 §1, D-482), sauf échec connu de D-480 §1', () => {
+describe('LISTE INDÉMONTRABLE (D-520 §4 b) — le lecteur nomme pourquoi : limite connue et classée, non bloquante, jamais attestante', () => {
   const expectFamilyLimit = (normalized: AdapterResult, marker: string) => {
     const { stat, health, issues, summary } = runOf(normalized);
     // The reading stays NOT PROVEN — only its class changes; nothing observed refutes it.
@@ -99,12 +101,25 @@ describe('LISTE INDÉMONTRABLE EN L’ÉTAT (D-520) — le lecteur nomme pourquo
     expect(health).toMatchObject({ status: 'DEGRADED', finding: 'ENUMERATION_UNPROVABLE' });
     expect(health.note).toContain('liste indémontrable');
     expect(issues).toEqual([{ origin: 'UNKNOWN', code: 'ENUMERATION_UNPROVABLE', count: 1 }]);
-    // Any other source of the family still fails the RUN: no extension of D-480 (D-482).
-    expect(summary).toMatchObject({ outcome: 'FAILED', blockingReasons: ['UNRESOLVED_FAILURE'] });
-    // The four sources D-480 §1 names keep their known, non-blocking failure under the more precise code.
+    // D-520 §4 b: any source of the family — not only the four of D-480 §1 — is a known limit: the RUN does not fail on it
+    // (before this lot: FAILED, UNRESOLVED_FAILURE), the alert names its decision, the bilan lists it.
+    const { incidents } = runOf(normalized);
+    expect(incidents).toEqual([expect.objectContaining({ blocking: false, knownFailure: 'D-520 §4 b' })]);
+    expect(summary).toMatchObject({ outcome: 'COMPLETED_WITH_ERRORS', blockingReasons: [], knownListLimits: { decision: 'D-520 §4 b', sources: ['witness'] } });
+    expect(summary.failures[0]).toContain('limite connue, liste indémontrable, aucune absence attestée (D-520 §4 b)');
+    // Never an attestation of absence: the collection stays `complete: false`, so neither the refresh nor R-143 §2's
+    // reconfirmation can retire an offer on it; only the 72 h ceiling and the link probe can.
+    const facts = attestationFacts({ sourceKey: 'witness', captureBatchId: 'batch', startedAt: new Date('2026-10-02T16:00:00Z'),
+      metadata: { complete: normalized.complete, truncated: normalized.truncated, declaredTotal: normalized.declaredTotal },
+      outputs: normalized.jobs.length, counts: { published: normalized.jobs.length, held: 0, writeFailed: 0, skipped: 0 }, unreadableRows: 0,
+      previousPublished: normalized.jobs.length });
+    expect(facts.canAttestAbsence).toBe(false);
+    expect(collectionReconfirms(facts)).toBe('parcours déclaré incomplet');
+    // The four sources D-480 §1 names keep their known failure, under its own decision.
     const known = runOf(normalized, 'attaquer');
     expect(known.incidents).toEqual([expect.objectContaining({ blocking: false, knownFailure: 'D-480' })]);
     expect(known.summary.blockingReasons).toEqual([]);
+    expect(known.summary.knownListLimits.sources).toEqual([]);
   };
 
   it('picard — a careers Atom feed announces no extent', async () => {

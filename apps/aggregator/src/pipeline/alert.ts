@@ -11,7 +11,7 @@ export function alertSubject(report: AlertReport): string {
   return [`[Catwalks] ${count(blocking.length, 'source bloquante', 'sources bloquantes')}`,
     retentions.length ? `${count(retentions.length, 'source', 'sources')} avec retenues non bloquantes (${count(retained, 'offre', 'offres')})` : '',
     outages.length ? `${count(outages.length, 'panne éditeur prouvée, non bloquante', 'pannes éditeur prouvées, non bloquantes')}` : '',
-    known.length ? `${count(known.length, 'échec connu, non bloquant', 'échecs connus, non bloquants')}` : '',
+    known.length ? `${count(known.length, 'échec ou limite connu, non bloquant', 'échecs ou limites connus, non bloquants')}` : '',
     drops.length ? `${count(drops.length, 'chute confirmée par l’éditeur, non bloquante', 'chutes confirmées par l’éditeur, non bloquantes')}` : '',
     minorDrops.length ? `${count(minorDrops.length, 'baisse de moins de 10 offres, non bloquante', 'baisses de moins de 10 offres, non bloquantes')}` : '',
     identity.length ? `${count(identity.length, 'source', 'sources')} avec employeur à identifier, en file de revue` : ''].filter(Boolean).join(' · ');
@@ -182,8 +182,8 @@ function buildHtml(report: AlertReport): string {
     ${identity.length ? `${heading(`Employeur à identifier, file de revue : ${count(identity.length, 'source', 'sources')}${overdue ? `, ${count(overdue, 'entrée échue', 'entrées échues')}` : ''}`)}
     ${line('Le RUN n’échoue pas pour ces offres (D-520) : elles sont retenues, jamais publiées sous un employeur deviné, et une publication antérieure reste telle quelle. Chaque entrée dit la question à trancher ; la file complète : commande file-identite.')}
     ${identityBlocks}` : ''}
-    ${known.length ? `${heading(`Non bloquant, échecs connus : ${count(known.length, 'source', 'sources')}`)}
-    ${line('Décidés par le CEO : la source reste collectée et publie ses offres, elle ne ferme aucune offre qu’elle ne sait pas prouver absente. Tout autre défaut de ces sources resterait bloquant.')}
+    ${known.length ? `${heading(`Non bloquant, échecs et limites connus : ${count(known.length, 'source', 'sources')}`)}
+    ${line('Décidés (D-480 par le CEO, D-520 §4 b pour une liste indémontrable) : la source reste collectée et publie ses offres, elle ne ferme aucune offre qu’elle ne sait pas prouver absente ; ses offres non revues sortent de l’expérience candidat à 72 h ou sur lien mort. Tout autre défaut de ces sources resterait bloquant.')}
     ${knownBlocks}` : ''}
     ${drops.length ? `${heading(`Non bloquant, chutes confirmées par l’éditeur : ${count(drops.length, 'source', 'sources')}`)}
     ${line('Plus de la moitié des offres en moins, et l’éditeur le dit lui-même : son total annoncé baisse dans la même proportion, la liste est prouvée complète, toutes les offres annoncées sont lues (D-484 §2). Ses offres retirées suivent la règle d’une liste prouvée : fermées dès qu’elles n’ont pas été revues depuis 48 heures.')}

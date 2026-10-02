@@ -12,7 +12,7 @@ import { FULL_RUN_MARKER } from './fullRunMarker.js';
 import { briefError } from '../lib/normalize.js';
 import { maintainSourceAccess } from '../connectors/sourceAccessQualification.js';
 import { WafChallengeError } from '../lib/wafToken.js';
-import { ingestionIssue, isDecidedKnownFailure, isNonBlockingIssue, isProvenSourceIssue, issuesFromResult, KNOWN_FAILURE_DECISION, type IngestionIssue } from '../lib/ingestionIssue.js';
+import { ingestionIssue, isDecidedKnownFailure, isKnownListLimit, isNonBlockingIssue, isProvenSourceIssue, issuesFromResult, KNOWN_FAILURE_DECISION, KNOWN_LIST_LIMIT_DECISION, type IngestionIssue } from '../lib/ingestionIssue.js';
 import { failureLine } from '../lib/runSummary.js';
 import { SOURCE_WRITE_TRANSACTION } from '../lib/writeLocks.js';
 import { incrementalPassActive } from '../lib/incrementalReading.js';
@@ -306,10 +306,13 @@ export function classifySourceRun(stats: IngestStats[], incidents: readonly Sour
   const blocking = issues.some(issue => !isNonBlockingIssue(source, issue));
   // D-480 §1 : un échec connu reste visible, nommé par sa décision, jamais confondu avec une panne prouvée.
   const known = !blocking && issues.some(issue => isDecidedKnownFailure(source, issue));
+  // D-520 §4 b : une liste indémontrable est une limite connue, nommée par sa décision dans la même section de l'alerte.
+  const limit = !blocking && !known && issues.some(isKnownListLimit);
   // D-520 : la file d'identité de la source, pour la section de l'alerte qui lui est propre.
   const review = stats[0]?.identityReview;
   const identityReview = review && (review.open > 0 || review.kept > 0) ? { open: review.open, kept: review.kept, entries: review.entries } : undefined;
-  return { issues, incidents: incidents.map(incident => ({ ...incident, blocking, ...(known ? { knownFailure: KNOWN_FAILURE_DECISION } : {}),
+  return { issues, incidents: incidents.map(incident => ({ ...incident, blocking,
+    ...(known ? { knownFailure: KNOWN_FAILURE_DECISION } : limit ? { knownFailure: KNOWN_LIST_LIMIT_DECISION } : {}),
     ...(identityReview ? { identityReview } : {}) })) };
 }
 

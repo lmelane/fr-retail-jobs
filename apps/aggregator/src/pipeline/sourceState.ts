@@ -15,7 +15,7 @@
  * remédiation automatique, la réconciliation du registre et le futur écran du back-office doivent s'y brancher, sans
  * redéfinir ces constantes.
  */
-import { isDecidedKnownFailure, isProvenSourceIssue, KNOWN_FAILURE_DECISION, NATIVE_RETENTION, type IngestionIssue } from '../lib/ingestionIssue.js';
+import { isDecidedKnownFailure, isProvenSourceIssue, KNOWN_FAILURE_DECISION, KNOWN_LIST_LIMIT_DECISION, NATIVE_RETENTION, type IngestionIssue } from '../lib/ingestionIssue.js';
 
 export const OPERATIONAL_STATES = ['NORMALE', 'DEGRADEE', 'EN_ATTENTE', 'BLOQUEE', 'EN_PAUSE', 'EXCLUE'] as const;
 export type OperationalState = typeof OPERATIONAL_STATES[number];
@@ -84,10 +84,11 @@ export const CAUSES = {
   LISTE_NON_PROUVEE: { label: 'liste non prouvée complète (fin non démontrée, réfutée ou tronquée)', base: 'EN_ATTENTE', trajectory: 'AUTO',
     deadlineAttempts: 2, waitsWhilePublishing: true,
     missing: 'rien au premier RUN (aucune fermeture sur une liste non prouvée, D-453 §1) ; sinon, adapter la pagination du lecteur' },
-  // D-520 : le lecteur nomme pourquoi la liste ne peut pas être démontrée (`STRUCTURAL_LIMIT_MARKERS`). Bloquante comme toute
-  // liste non prouvée (D-453 §1) ; non bloquante pour les seules sources de D-480 §1 (D-482 : aucune extension).
-  LISTE_INDEMONTRABLE: { label: 'liste indémontrable en l’état : le lecteur ne lit ni total ni fin de liste (page d’accueil, flux)', base: 'DEGRADEE', trajectory: 'A_REPARER',
-    missing: 'chercher chez l’éditeur une liste complète (plan du site, page de liste paginée, API, total annoncé) et réécrire le lecteur ; s’il n’en publie aucune, carte de décision au CEO (D-453 §1, D-482)' },
+  // D-520 §4 b : le lecteur nomme pourquoi la liste ne peut pas être démontrée (`STRUCTURAL_LIMIT_MARKERS`) : limite connue et
+  // classée, trajectoire de décision, sans échéance ni escalade à 14 jours ; jamais d'attestation d'absence. Une collecte
+  // qui ne publie rien contredit la limite (« elle publie, sans preuve de fin ») : elle est à réparer (`withCause`).
+  LISTE_INDEMONTRABLE: { label: 'liste indémontrable, limite connue : le lecteur ne lit ni total ni fin de liste (page d’accueil, flux)', base: 'DEGRADEE', trajectory: 'DECISION',
+    missing: 'rien au RUN (D-520 §4 b) : aucune absence attestée, la fraîcheur passe par le plafond de 72 h et la sonde des liens (R-143 §2) ; pour l’améliorer, chercher chez l’éditeur une liste complète (plan du site, liste paginée, API, total annoncé)' },
   // D-520 : une offre retenue sans preuve de l'éditeur ni décision (fiche illisible, identité contredite). Souvent passagère
   // (4 occurrences sur 5 du 24/09 au 01/10 n'ont pas duré) : elle attend un RUN, comme la liste et le volume.
   RETENUE_A_INSTRUIRE: { label: 'offres retenues sans preuve de l’éditeur (fiche illisible, identité contredite)', base: 'EN_ATTENTE', trajectory: 'AUTO',
@@ -292,11 +293,14 @@ function withCause(sourceKey: string, cause: CauseClass, state: OperationalState
   const counts = outcome ? outcome.kind !== 'PASSE' && !outcome.retried : true;
   const since = ongoing ? previous!.since : now;
   const attempts = (ongoing ? previous!.attempts : 0) + (counts ? 1 : 0);
-  let trajectory: Trajectory = known === 'PUBLIE' ? 'DECISION' : known === 'MUET' ? 'A_REPARER' : spec.trajectory;
+  // D-520 §4 b : la limite connue ne vaut que pour une collecte qui publie ; muette, elle est à réparer comme un échec connu muet.
+  const limit = !known && cause === 'LISTE_INDEMONTRABLE';
+  let trajectory: Trajectory = known === 'PUBLIE' ? 'DECISION' : known === 'MUET' || (limit && !publishes) ? 'A_REPARER' : spec.trajectory;
   let finalState = state, deadline: Date | null = null, escalated = ongoing ? previous!.escalated : false;
   let missing: string = known === 'PUBLIE' ? `rien : échec connu décidé (${KNOWN_FAILURE_DECISION}), la source publie ses offres`
     : known === 'MUET' ? `échec connu décidé (${KNOWN_FAILURE_DECISION}), mais cette collecte n’a rien publié, contrairement à la prémisse de la décision : réparer, ou proposer une pause décidée`
-      : spec.missing;
+      : limit && !publishes ? 'liste indémontrable (D-520 §4 b), mais cette collecte n’a rien publié : réparer le lecteur ou l’adresse, puis verifier-source'
+        : spec.missing;
   if (!known && trajectory === 'AUTO') {
     const waiting = state !== 'DEGRADEE';
     deadline = new Date(since.getTime() + deadlineHours(spec, waiting) * HOUR);
@@ -309,7 +313,7 @@ function withCause(sourceKey: string, cause: CauseClass, state: OperationalState
     }
   }
   return { sourceKey, state: finalState, cause, trajectory, missing, since, deadline: escalated ? null : deadline, attempts, escalated,
-    decision: known ? KNOWN_FAILURE_DECISION : null, codes: codes ?? [],
+    decision: known ? KNOWN_FAILURE_DECISION : limit && publishes ? KNOWN_LIST_LIMIT_DECISION : null, codes: codes ?? [],
     lastCollectionAt: outcome?.at ?? previous?.lastCollectionAt ?? null, lastCollectionKind: outcome?.kind ?? previous?.lastCollectionKind ?? null,
     lastRunId: outcome?.runId ?? previous?.lastRunId ?? null, computedAt: now };
 }

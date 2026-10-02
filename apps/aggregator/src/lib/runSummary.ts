@@ -1,5 +1,5 @@
 import type { OrchestratorResult } from '../pipeline/ingestOrchestrator.js';
-import { IDENTITY_NEW_ENTRY, isDecidedKnownFailure, isNonBlockingIssue, isProvenSourceIssue, isQueuedIdentityIssue, KNOWN_FAILURE_DECISION, NATIVE_RETENTION, type IngestionIssue } from './ingestionIssue.js';
+import { IDENTITY_NEW_ENTRY, isDecidedKnownFailure, isKnownListLimit, isNonBlockingIssue, isProvenSourceIssue, isQueuedIdentityIssue, KNOWN_FAILURE_DECISION, KNOWN_LIST_LIMIT_DECISION, NATIVE_RETENTION, type IngestionIssue } from './ingestionIssue.js';
 import { STATE_LABEL, SYSTEMIC_OUR_SIDE_BLOCKED } from '../pipeline/sourceState.js';
 
 /**
@@ -23,12 +23,14 @@ export function failureLine(key: string, issues: readonly IngestionIssue[], caus
   const outages = proven.filter(issue => issue.code !== NATIVE_RETENTION).map(issue => issue.code);
   const known = issues.filter(issue => !isProvenSourceIssue(issue) && isDecidedKnownFailure(key, issue)).map(issue => issue.code);
   const queued = issues.filter(isQueuedIdentityIssue).reduce((total, issue) => total + issue.count, 0);
+  const limit = issues.some(issue => !isDecidedKnownFailure(key, issue) && isKnownListLimit(issue));
   // Le vocabulaire de l'état des sources (`sourceState.ts`) : la source qui ne publie rien est bloquée, et le RUN n'échoue pas.
   const state = published === undefined ? '' : `source ${STATE_LABEL[published > 0 ? 'DEGRADEE' : 'BLOQUEE']}, `;
   return `${key} (${queued ? 'ne fait pas échouer le RUN' : 'non bloquant'} : ${[retained ? `retenue sur preuve de la source, ${retained} ${retained > 1 ? 'offres' : 'offre'}` : '',
     queued ? `${state}employeur à identifier, ${queued} ${queued > 1 ? 'offres retenues' : 'offre retenue'} en file de revue (D-520)` : '',
     outages.length ? `panne éditeur prouvée ${outages.join(', ')}` : '',
-    known.length ? `échec connu ${known.join(', ')} (${KNOWN_FAILURE_DECISION})` : ''].filter(Boolean).join(' · ')})`;
+    known.length ? `échec connu ${known.join(', ')} (${KNOWN_FAILURE_DECISION})` : '',
+    limit ? `limite connue, liste indémontrable, aucune absence attestée (${KNOWN_LIST_LIMIT_DECISION})` : ''].filter(Boolean).join(' · ')})`;
 }
 
 /** Sources and postings, never truncated, sorted by postings then key. */
@@ -48,7 +50,10 @@ export function summarizeOrchestration(result: OrchestratorResult) {
   const known = issues.filter(i => !isProvenSourceIssue(i) && isDecidedKnownFailure(i.source, i));
   const internalSources = new Set(issues.filter(i => i.origin === 'INTERNAL' && !isDecidedKnownFailure(i.source, i)).map(i => i.source));
   // D-520 : un employeur à identifier est en file de revue, avec sa question : ni une panne interne ni une cause inconnue.
-  const unknownSources = new Set(issues.filter(i => i.origin === 'UNKNOWN' && !isDecidedKnownFailure(i.source, i) && !isQueuedIdentityIssue(i)).map(i => i.source));
+  // D-520 §4 b : une liste indémontrable est une limite connue et classée, pas une cause inconnue à instruire.
+  const unknownSources = new Set(issues.filter(i => i.origin === 'UNKNOWN' && !isDecidedKnownFailure(i.source, i) && !isQueuedIdentityIssue(i)
+    && !isKnownListLimit(i)).map(i => i.source));
+  const listLimits = issues.filter(i => !isDecidedKnownFailure(i.source, i) && isKnownListLimit(i));
   const identityQueued = issues.filter(isQueuedIdentityIssue);
   const identitySources = new Set(identityQueued.map(i => i.source));
   const newIdentitySources = new Set(identityQueued.filter(i => i.detail === IDENTITY_NEW_ENTRY).map(i => i.source));
@@ -89,7 +94,8 @@ export function summarizeOrchestration(result: OrchestratorResult) {
   const stillOnline = result.incidents.map(incident => [incident.source,
     Object.values(incident.retention?.online ?? {}).reduce((total, n) => total + n, 0)] as [string, number]);
   // A failure line is non-blocking only when every issue of its source stands on its native proof.
-  const nonBlocking = (line: string) => { const key = line.split(' (', 1)[0]!; return (nativeSources.has(key) || identitySources.has(key) || known.some(i => i.source === key)) && !blockingSources.has(key); };
+  const nonBlocking = (line: string) => { const key = line.split(' (', 1)[0]!; return (nativeSources.has(key) || identitySources.has(key) || known.some(i => i.source === key)
+    || listLimits.some(i => i.source === key)) && !blockingSources.has(key); };
   const failures = [...result.failures.filter(line => !nonBlocking(line)), ...result.failures.filter(nonBlocking)];
   return {
     completed,
@@ -109,6 +115,8 @@ export function summarizeOrchestration(result: OrchestratorResult) {
     /** Échecs connus décidés par le CEO (D-480 §1) : non bloquants, jamais tronqués, chacun avec son défaut. */
     knownFailures: { decision: KNOWN_FAILURE_DECISION, sources: [...new Set(known.map(i => i.source))].sort(),
       bySource: [...new Set(known.map(i => i.source))].sort().map(source => ({ source, codes: known.filter(i => i.source === source).map(i => i.code) })) },
+    /** D-520 §4 b : les listes indémontrables, limites connues et classées ; non bloquantes, jamais attestantes, toutes listées. */
+    knownListLimits: { decision: KNOWN_LIST_LIMIT_DECISION, sources: [...new Set(listLimits.map(i => i.source))].sort() },
     /** Every retention on the source's own evidence that does not block, never truncated, with its total (D-453 §1, D-456 §1). */
     nativeRetentions: listing(retainedPostings),
     /** D-520 : offres retenues faute d'employeur prouvé, par source, en file de revue d'identité (commande `file-identite`). */

@@ -36,10 +36,11 @@ describe('D-520 — vocabulaire fermé', () => {
     expect(issueCause({ origin: 'UNKNOWN', code: 'ENUMERATION_UNPROVABLE' })).toBe('LISTE_INDEMONTRABLE');
     // What stays « volume anormal » is the volume: a drop the publisher does not confirm, a zero.
     expect(issueCause({ origin: 'UNKNOWN', code: 'SOURCE_HEALTH_REGRESSION' })).toBe('ANOMALIE_VOLUME');
-    // A list the reader cannot demonstrate is to be repaired (find a full list); under D-480 §1 it is a decision, without deadline.
+    // D-520 §4 b: a list the reader cannot demonstrate is a known, classed limit — a decision, without deadline; under
+    // D-480 §1 it keeps that decision.
     const other = computeSourceState({ source: active('maison'), previous: null, now: at(0),
       outcome: run({ runStatus: 'DEGRADED', jobs: 3, issues: [{ origin: 'UNKNOWN', code: 'ENUMERATION_UNPROVABLE' }] }) });
-    expect(other).toMatchObject({ state: 'DEGRADEE', cause: 'LISTE_INDEMONTRABLE', trajectory: 'A_REPARER' });
+    expect(other).toMatchObject({ state: 'DEGRADEE', cause: 'LISTE_INDEMONTRABLE', trajectory: 'DECISION', decision: 'D-520 §4 b', deadline: null });
     const known = computeSourceState({ source: active('attaquer'), previous: null, now: at(0),
       outcome: run({ runStatus: 'DEGRADED', jobs: 3, issues: [{ origin: 'UNKNOWN', code: 'ENUMERATION_UNPROVABLE' }] }) });
     expect(known).toMatchObject({ cause: 'LISTE_INDEMONTRABLE', trajectory: 'DECISION', decision: 'D-480', deadline: null });
@@ -320,5 +321,47 @@ describe('D-520 — verdict du RUN = réconciliation', () => {
     // Réexamen passé : le RUN est rouge, sans dupliquer la liste du bulletin.
     expect(reconcileRun({ states: [explained], now: T0, runStartedAt: null, systemFailures: [], unexplainedCoverage: [], registryOverdue: ['rl'] }).reasons.map(r => r.reason))
       .toEqual(['ECHEANCE_DEPASSEE']);
+  });
+});
+
+describe('D-520 §4 b — la liste indémontrable, limite connue : ni rouge chaque jour, ni escalade à 14 jours', () => {
+  const unprovable = (hours: number, jobs = 3) => run({ runStatus: 'DEGRADED', jobs, issues: [{ origin: 'UNKNOWN', code: 'ENUMERATION_UNPROVABLE' }] }, hours);
+
+  it('trente RUN de suite : toujours DEGRADEE sur décision, sans échéance ni escalade, et le verdict reste vert au-delà de 14 jours', () => {
+    let state: SourceState | null = null;
+    for (let day = 0; day < 30; day++)
+      state = computeSourceState({ source: active('lumentee-like'), outcome: unprovable(day * 24), previous: state, now: at(day * 24) });
+    // Prémisse : the episode is older than the repair ceiling, which turns a source « à réparer » red.
+    expect(at(29 * 24).getTime() - state!.since.getTime()).toBeGreaterThan(REPAIR_CEILING_DAYS * 24 * H);
+    expect(state).toMatchObject({ state: 'DEGRADEE', cause: 'LISTE_INDEMONTRABLE', trajectory: 'DECISION', decision: 'D-520 §4 b',
+      deadline: null, escalated: false, attempts: 30 });
+    expect(ageState(state!, at(60 * 24))).toBe(state);
+    const verdict = reconcileRun({ states: [state!], now: at(29 * 24), runStartedAt: at(29 * 24), systemFailures: [], unexplainedCoverage: [] });
+    expect(verdict).toEqual({ green: true, reasons: [], toVerify: [] });
+  });
+
+  it('la même source sans la limite (liste non prouvée sans raison nommée) attend un RUN puis est à réparer, et rougit à 14 jours', () => {
+    let state: SourceState | null = null;
+    for (let day = 0; day < 15; day++)
+      state = computeSourceState({ source: active('maison'), previous: state, now: at(day * 24),
+        outcome: run({ runStatus: 'DEGRADED', jobs: 3, issues: [{ origin: 'UNKNOWN', code: 'ENUMERATION_NOT_PROVEN' }] }, day * 24) });
+    expect(state).toMatchObject({ cause: 'LISTE_NON_PROUVEE', trajectory: 'A_REPARER' });
+    expect(reconcileRun({ states: [state!], now: at(14 * 24), runStartedAt: at(14 * 24), systemFailures: [], unexplainedCoverage: [] }).reasons
+      .map(r => r.reason)).toEqual(['ANCIENNETE_DEPASSEE']);
+  });
+
+  it('une collecte muette contredit la limite : à réparer ; un autre défaut à côté l’emporte', () => {
+    const muted = computeSourceState({ source: active('maison'), outcome: unprovable(0, 0), previous: null, now: at(0) });
+    expect(muted).toMatchObject({ cause: 'LISTE_INDEMONTRABLE', trajectory: 'A_REPARER', decision: null });
+    const other = computeSourceState({ source: active('maison'), previous: null, now: at(0),
+      outcome: run({ runStatus: 'DEGRADED', jobs: 3, issues: [{ origin: 'UNKNOWN', code: 'ENUMERATION_UNPROVABLE' }, { origin: 'UNKNOWN', code: 'RETENTION_TO_INSTRUCT' }] }) });
+    expect(other).toMatchObject({ cause: 'RETENUE_A_INSTRUIRE', trajectory: 'AUTO' });
+  });
+
+  it('le bilan ne compte pas la limite parmi les causes inconnues à instruire', () => {
+    const summary = summarizeOrchestration({ total: 2, ok: 1, failed: 1, timedOut: 0, failures: [], incidents: [],
+      issues: [{ origin: 'UNKNOWN', code: 'ENUMERATION_UNPROVABLE', count: 1, source: 'maison' }] });
+    expect(summary).toMatchObject({ blockingReasons: [], knownListLimits: { sources: ['maison'] } });
+    expect(summary.attribution.unknownSources).toBe(0);
   });
 });

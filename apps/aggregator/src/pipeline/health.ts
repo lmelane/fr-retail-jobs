@@ -121,7 +121,8 @@ export type SourceHealth = {
  *   · `RETENTION_TO_INSTRUCT` : des offres retenues sans preuve de l'éditeur ni décision (fiche illisible, identité
  *     contredite) — ni la liste ni le volume (classe RETENUE_A_INSTRUIRE, qui attend un RUN) ;
  *   · `ENUMERATION_UNPROVABLE` : une liste NON PROUVÉE dont le lecteur nomme la raison (`STRUCTURAL_LIMIT_MARKERS` : page
- *     d'accueil sans liste, flux) — bloquante comme toute liste non prouvée (D-453 §1), sauf pour les sources de D-480 §1 ;
+ *     d'accueil sans liste, flux) — limite connue et classée depuis D-520 §4 b (`isKnownListLimit`) : non bloquante, sans
+ *     escalade, jamais attestante ; posée seulement quand aucun autre défaut n'est trouvé (chute, champs, retenue à instruire) ;
  *   · `SOURCE_HEALTH_REGRESSION` ne nomme plus que le volume : chute non confirmée par l'éditeur, zéro, couverture d'URL. */
 export type HealthFinding = 'ENUMERATION_NOT_PROVEN' | 'ENUMERATION_REFUTED' | 'NATIVE_RETENTION_JUMP' | 'DESCRIPTION_COVERAGE_BELOW_FLOOR' | 'NATIVE_REFUSAL_MASS'
   | 'ENUMERATION_TRUNCATED' | 'RETENTION_TO_INSTRUCT' | 'ENUMERATION_UNPROVABLE';
@@ -470,7 +471,7 @@ function collectionHealth(stat: IngestStats, base: Omit<SourceHealth, 'status'>,
     // D-520 : le lecteur nomme pourquoi la liste ne peut pas être démontrée en l'état (page d'accueil sans liste, flux).
     if (stat.enumerationReading === 'NOT_PROVEN' && stat.enumerationUnprovable) {
       return { ...base, status: 'DEGRADED', finding: 'ENUMERATION_UNPROVABLE',
-        note: `liste indémontrable en l’état : le lecteur ne lit ni total ni fin de liste (${stat.enumerationUnprovable}), aucune absence attestée, à instruire` };
+        note: `liste indémontrable, limite connue (D-520 §4 b) : le lecteur ne lit ni total ni fin de liste (${stat.enumerationUnprovable}), aucune absence attestée` };
     }
     if (stat.enumerationReading === 'NOT_PROVEN') {
       return { ...base, status: 'DEGRADED', finding: 'ENUMERATION_NOT_PROVEN',

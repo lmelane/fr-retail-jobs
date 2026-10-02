@@ -43,7 +43,8 @@ export function isProvenSourceIssue(issue: IngestionIssue): boolean {
 type KnownFailure = { code: string; detail?: string };
 export const DECIDED_KNOWN_FAILURES: Readonly<Record<string, readonly KnownFailure[]>> = {
   // L'éditeur ne permet pas de prouver la liste complète. `ENUMERATION_UNPROVABLE` (D-520, 02/10/2026) nomme le MÊME défaut
-  // quand le lecteur dit pourquoi (page d'accueil sans liste, flux RSS) : même source, même défaut décrit, aucune extension.
+  // quand le lecteur dit pourquoi (page d'accueil sans liste, flux RSS) ; pour toute source, c'est depuis D-520 §4 b une
+  // limite connue (`isKnownListLimit`), et la décision D-480 reste celle que portent ces quatre sources.
   lumentee: [{ code: 'ENUMERATION_NOT_PROVEN' }, { code: 'ENUMERATION_UNPROVABLE' }],
   attaquer: [{ code: 'ENUMERATION_NOT_PROVEN' }, { code: 'ENUMERATION_UNPROVABLE' }],
   'kastner-ohler': [{ code: 'ENUMERATION_NOT_PROVEN' }, { code: 'ENUMERATION_UNPROVABLE' }],
@@ -73,11 +74,24 @@ export function isQueuedIdentityIssue(issue: Pick<IngestionIssue, 'code'>): bool
 }
 
 /**
- * Ce qui ne fait pas échouer le RUN : une preuve native de la source (D-453 §1), un échec connu décidé (D-480 §1), ou un
- * employeur à identifier mis en file de revue (D-520).
+ * D-520 §4 b (lecture D-492 « listes, volumes et lecteurs », 02/10/2026) : une liste que la famille de lecteur ne peut pas
+ * démontrer (page d'accueil sans liste ni plan, flux RSS sans total : `ENUMERATION_UNPROVABLE`, posé par `health.ts` sur les
+ * seuls motifs de `STRUCTURAL_LIMIT_MARKERS`, jamais à côté d'un autre défaut) est une LIMITE CONNUE ET CLASSÉE : elle ne
+ * fait pas échouer le RUN, n'escalade pas à 14 jours (`sourceState.ts`), et n'autorise JAMAIS d'attestation d'absence (sa
+ * collecte reste `complete: false`). La fraîcheur de ses offres passe par le plafond de 72 h et la sonde des liens (R-143 §2).
+ */
+export const KNOWN_LIST_LIMIT = 'ENUMERATION_UNPROVABLE';
+export const KNOWN_LIST_LIMIT_DECISION = 'D-520 §4 b';
+export function isKnownListLimit(issue: Pick<IngestionIssue, 'code'>): boolean {
+  return issue.code === KNOWN_LIST_LIMIT;
+}
+
+/**
+ * Ce qui ne fait pas échouer le RUN : une preuve native de la source (D-453 §1), un échec connu décidé (D-480 §1), un
+ * employeur à identifier mis en file de revue (D-520), ou une liste indémontrable, limite connue (D-520 §4 b).
  */
 export function isNonBlockingIssue(source: string, issue: IngestionIssue): boolean {
-  return isProvenSourceIssue(issue) || isDecidedKnownFailure(source, issue) || isQueuedIdentityIssue(issue);
+  return isProvenSourceIssue(issue) || isDecidedKnownFailure(source, issue) || isQueuedIdentityIssue(issue) || isKnownListLimit(issue);
 }
 
 /** Called only after the failed native response and outcome have been persisted. */
