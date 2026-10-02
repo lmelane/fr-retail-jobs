@@ -1,0 +1,146 @@
+Mesure à blanc du rattrapage des offres sans pays (D-520), 2026-10-02T18:33:48.706Z, 89 s, transaction READ ONLY.
+Offres actives sans pays : 3415 ; résolues 2556 ; restantes 859.
+Empreinte de l'aperçu : ec8d03d6f3078a051063092622e4eab00aaf0e2d240a5f0f0e3748250cf77986
+
+RÉSOLUES PAR MOTIF (pays)
+  COORDONNEES_ET_VILLE          1920  GB 1803, IE 113, FR 4
+  LECTURE_NATIVE                 305  CN 178, US 59, GB 23, KR 10, BR 7, JP 7, AU 5, DE 4, CH 3, IE 3, IT 2, NL 1, SE 1, DK 1, ES 1
+  VILLE_ET_SUBDIVISION           175  US 144, FR 29, CH 2
+  VILLE_UNIQUE                   126  FR 81, US 17, VN 9, BE 4, IT 4, CA 4, CH 4, BR 1, DK 1, SE 1
+  SUBDIVISION_UNIQUE              30  US 30
+
+RÉSOLUES PAR SOURCE (motif→pays)
+  boots                         1916  COORDONNEES_ET_VILLE→GB 1803, COORDONNEES_ET_VILLE→IE 113
+  on-running                     172  LECTURE_NATIVE→CN 63, LECTURE_NATIVE→US 59, LECTURE_NATIVE→KR 10, VILLE_UNIQUE→VN 9, LECTURE_NATIVE→BR 7, LECTURE_NATIVE→JP 7, LECTURE_NATIVE→AU 5, LECTURE_NATIVE→DE 3, LECTURE_NATIVE→CH 3, LECTURE_NATIVE→IT 2, LECTURE_NATIVE→NL 1, LECTURE_NATIVE→SE 1, LECTURE_NATIVE→DK 1, LECTURE_NATIVE→ES 1
+  nike                           115  LECTURE_NATIVE→CN 115
+  brilliant-earth                 69  VILLE_ET_SUBDIVISION→US 69
+  lagardere-travel-retail         60  VILLE_UNIQUE→FR 60
+  oak-essentials                  30  VILLE_ET_SUBDIVISION→US 30
+  nocibe-eqwa                     29  VILLE_ET_SUBDIVISION→FR 27, VILLE_UNIQUE→FR 2
+  veronica-beard                  28  SUBDIVISION_UNIQUE→US 28
+  molton-brown                    27  LECTURE_NATIVE→GB 23, LECTURE_NATIVE→IE 3, LECTURE_NATIVE→DE 1
+  reformation                     25  VILLE_ET_SUBDIVISION→US 15, VILLE_UNIQUE→US 10
+  gorjana                         12  VILLE_ET_SUBDIVISION→US 12
+  groupe-chantelle                10  VILLE_UNIQUE→FR 10
+  groupe-printemps                 7  VILLE_UNIQUE→FR 7
+  mejuri                           7  VILLE_UNIQUE→US 5, VILLE_UNIQUE→CA 2
+  jd-sports                        6  VILLE_UNIQUE→BE 3, VILLE_UNIQUE→IT 3
+  quince                           5  VILLE_ET_SUBDIVISION→US 5
+  shinola-retail                   5  VILLE_ET_SUBDIVISION→US 5
+  swatch-group                     5  VILLE_UNIQUE→CH 3, VILLE_UNIQUE→BE 1, VILLE_UNIQUE→IT 1
+  intersport-france                4  COORDONNEES_ET_VILLE→FR 4
+  marc-o-polo                      3  VILLE_ET_SUBDIVISION→CH 2, VILLE_UNIQUE→CH 1
+  bash-talents                     2  VILLE_ET_SUBDIVISION→FR 2
+  catbird                          2  VILLE_ET_SUBDIVISION→US 2
+  everlane                         2  VILLE_ET_SUBDIVISION→US 2
+  figs                             2  VILLE_ET_SUBDIVISION→US 2
+  ganni-talentrecruiter            2  VILLE_UNIQUE→DK 1, VILLE_UNIQUE→SE 1
+  la-senza                         2  VILLE_UNIQUE→CA 2
+  olaplex                          2  SUBDIVISION_UNIQUE→US 2
+  shinola                          2  VILLE_ET_SUBDIVISION→US 2
+  ilia                             1  VILLE_UNIQUE→BR 1
+  lagardere-duty-free              1  VILLE_UNIQUE→FR 1
+  longchamp                        1  VILLE_UNIQUE→FR 1
+  rebag                            1  VILLE_UNIQUE→US 1
+  skin-laundry                     1  VILLE_UNIQUE→US 1
+
+RESTANTES PAR CAUSE (sources)
+  LIEU_INCONNU                   239  brown-thomas-taleo 81, groupe-printemps 28, nocibe-eqwa 17, mejuri 15, boots 13, jd-sports 10, longchamp 8, rivoli-typesense 8, reformation 7, lovable 6, la-senza 5, oak-essentials 5, rebag 3, skin-laundry 3, g-label-by-goop 3, lush 3, lagardere-travel-retail-de 3, nutrafol 2, thirdlove 2, lounge 2, naos 2, jonsson-workwear 2, groupe-chantelle 2, lagardere-travel-retail 2, bellroy 1, figs 1, filson 1, quince 1, damiani 1, lagardere-duty-free 1, balmain 1
+  VILLE_AMBIGUE                  221  rivoli-typesense 31, la-senza 22, veronica-beard 22, reformation 21, lagardere-travel-retail 16, brown-thomas-taleo 14, damiani 12, boots 11, lovable 8, mejuri 8, brilliant-earth 8, hot-topic 6, on-running 5, ilia 4, groupe-chantelle 4, olaplex 3, longchamp 3, bespoke-post 3, swatch-group 3, groupe-printemps 3, herschel-supply-co 2, quince 2, g-label-by-goop 2, sephora-france 2, bernadette 1, gymshark 1, ganni-talentrecruiter 1, luxexperience 1, lagardere-duty-free 1, oak-essentials 1
+  LIEU_ABSENT                    145  caudalie 34, pvh 33, mecca 10, groupe-printemps 9, foot-locker-france 8, picard 6, galeries-lafayette 4, camper 3, celio 3, ounass 3, kering 3, nutrire 2, horace 2, singularu 2, j-lindeberg 2, kicks 2, luhta 1, frank-darling 1, hoff 1, nude-project 1, orlebar-brown 1, subset 1, trussardi 1, vivienne-westwood 1, la-casa-de-las-carcasas 1, multiopticas 1, deckers 1, gu-hk-headquarters 1, showroomprive 1, swarovski 1, bash-talents 1, white-stuff 1, oh-polly 1, normal 1, skechers-phenom 1
+  HORS_MARCHE_DE_LA_SOURCE       120  lovable 43, boots 25, on-running 22, damiani 17, quince 3, balmain 3, nocibe-eqwa 2, groupe-printemps 2, go-outdoors 1, lagardere-travel-retail 1, pvh 1
+  POINT_NON_CORROBORE             63  boots 59, intersport-france 4
+  PUBLICATION_ILLISIBLE           28  parfums-chanel 21, adidas 3, fastrack 2, nike 1, rivoli-typesense 1
+  COORDONNEES_DISCORDANTES        27  boots 25, intersport-france 2
+  MARCHE_DE_LA_SOURCE_INCONNU     14  lagardere-travel-retail-de 7, brown-thomas-taleo 5, city-beauty 1, cuyana 1
+  CONTRADICTION_DECLAREE           2  estee-lauder-companies 2
+
+RESTANTES PAR SOURCE (cause)
+  boots                          133  POINT_NON_CORROBORE 59, HORS_MARCHE_DE_LA_SOURCE 25, COORDONNEES_DISCORDANTES 25, LIEU_INCONNU 13, VILLE_AMBIGUE 11
+  brown-thomas-taleo             100  LIEU_INCONNU 81, VILLE_AMBIGUE 14, MARCHE_DE_LA_SOURCE_INCONNU 5
+  lovable                         57  HORS_MARCHE_DE_LA_SOURCE 43, VILLE_AMBIGUE 8, LIEU_INCONNU 6
+  groupe-printemps                42  LIEU_INCONNU 28, LIEU_ABSENT 9, VILLE_AMBIGUE 3, HORS_MARCHE_DE_LA_SOURCE 2
+  rivoli-typesense                40  VILLE_AMBIGUE 31, LIEU_INCONNU 8, PUBLICATION_ILLISIBLE 1
+  caudalie                        34  LIEU_ABSENT 34
+  pvh                             34  LIEU_ABSENT 33, HORS_MARCHE_DE_LA_SOURCE 1
+  damiani                         30  HORS_MARCHE_DE_LA_SOURCE 17, VILLE_AMBIGUE 12, LIEU_INCONNU 1
+  reformation                     28  VILLE_AMBIGUE 21, LIEU_INCONNU 7
+  la-senza                        27  VILLE_AMBIGUE 22, LIEU_INCONNU 5
+  on-running                      27  HORS_MARCHE_DE_LA_SOURCE 22, VILLE_AMBIGUE 5
+  mejuri                          23  LIEU_INCONNU 15, VILLE_AMBIGUE 8
+  veronica-beard                  22  VILLE_AMBIGUE 22
+  parfums-chanel                  21  PUBLICATION_ILLISIBLE 21
+  lagardere-travel-retail         19  VILLE_AMBIGUE 16, LIEU_INCONNU 2, HORS_MARCHE_DE_LA_SOURCE 1
+  nocibe-eqwa                     19  LIEU_INCONNU 17, HORS_MARCHE_DE_LA_SOURCE 2
+  longchamp                       11  LIEU_INCONNU 8, VILLE_AMBIGUE 3
+  jd-sports                       10  LIEU_INCONNU 10
+  lagardere-travel-retail-de      10  MARCHE_DE_LA_SOURCE_INCONNU 7, LIEU_INCONNU 3
+  mecca                           10  LIEU_ABSENT 10
+  brilliant-earth                  8  VILLE_AMBIGUE 8
+  foot-locker-france               8  LIEU_ABSENT 8
+  groupe-chantelle                 6  VILLE_AMBIGUE 4, LIEU_INCONNU 2
+  hot-topic                        6  VILLE_AMBIGUE 6
+  intersport-france                6  POINT_NON_CORROBORE 4, COORDONNEES_DISCORDANTES 2
+  oak-essentials                   6  LIEU_INCONNU 5, VILLE_AMBIGUE 1
+  picard                           6  LIEU_ABSENT 6
+  quince                           6  HORS_MARCHE_DE_LA_SOURCE 3, VILLE_AMBIGUE 2, LIEU_INCONNU 1
+  g-label-by-goop                  5  LIEU_INCONNU 3, VILLE_AMBIGUE 2
+  balmain                          4  HORS_MARCHE_DE_LA_SOURCE 3, LIEU_INCONNU 1
+  galeries-lafayette               4  LIEU_ABSENT 4
+  ilia                             4  VILLE_AMBIGUE 4
+  adidas                           3  PUBLICATION_ILLISIBLE 3
+  bespoke-post                     3  VILLE_AMBIGUE 3
+  camper                           3  LIEU_ABSENT 3
+  celio                            3  LIEU_ABSENT 3
+  kering                           3  LIEU_ABSENT 3
+  lush                             3  LIEU_INCONNU 3
+  olaplex                          3  VILLE_AMBIGUE 3
+  ounass                           3  LIEU_ABSENT 3
+  rebag                            3  LIEU_INCONNU 3
+  skin-laundry                     3  LIEU_INCONNU 3
+  swatch-group                     3  VILLE_AMBIGUE 3
+  estee-lauder-companies           2  CONTRADICTION_DECLAREE 2
+  fastrack                         2  PUBLICATION_ILLISIBLE 2
+  herschel-supply-co               2  VILLE_AMBIGUE 2
+  horace                           2  LIEU_ABSENT 2
+  j-lindeberg                      2  LIEU_ABSENT 2
+  jonsson-workwear                 2  LIEU_INCONNU 2
+  kicks                            2  LIEU_ABSENT 2
+  lagardere-duty-free              2  LIEU_INCONNU 1, VILLE_AMBIGUE 1
+  lounge                           2  LIEU_INCONNU 2
+  naos                             2  LIEU_INCONNU 2
+  nutrafol                         2  LIEU_INCONNU 2
+  nutrire                          2  LIEU_ABSENT 2
+  sephora-france                   2  VILLE_AMBIGUE 2
+  singularu                        2  LIEU_ABSENT 2
+  thirdlove                        2  LIEU_INCONNU 2
+  bash-talents                     1  LIEU_ABSENT 1
+  bellroy                          1  LIEU_INCONNU 1
+  bernadette                       1  VILLE_AMBIGUE 1
+  city-beauty                      1  MARCHE_DE_LA_SOURCE_INCONNU 1
+  cuyana                           1  MARCHE_DE_LA_SOURCE_INCONNU 1
+  deckers                          1  LIEU_ABSENT 1
+  figs                             1  LIEU_INCONNU 1
+  filson                           1  LIEU_INCONNU 1
+  frank-darling                    1  LIEU_ABSENT 1
+  ganni-talentrecruiter            1  VILLE_AMBIGUE 1
+  go-outdoors                      1  HORS_MARCHE_DE_LA_SOURCE 1
+  gu-hk-headquarters               1  LIEU_ABSENT 1
+  gymshark                         1  VILLE_AMBIGUE 1
+  hoff                             1  LIEU_ABSENT 1
+  la-casa-de-las-carcasas          1  LIEU_ABSENT 1
+  luhta                            1  LIEU_ABSENT 1
+  luxexperience                    1  VILLE_AMBIGUE 1
+  multiopticas                     1  LIEU_ABSENT 1
+  nike                             1  PUBLICATION_ILLISIBLE 1
+  normal                           1  LIEU_ABSENT 1
+  nude-project                     1  LIEU_ABSENT 1
+  oh-polly                         1  LIEU_ABSENT 1
+  orlebar-brown                    1  LIEU_ABSENT 1
+  showroomprive                    1  LIEU_ABSENT 1
+  skechers-phenom                  1  LIEU_ABSENT 1
+  subset                           1  LIEU_ABSENT 1
+  swarovski                        1  LIEU_ABSENT 1
+  trussardi                        1  LIEU_ABSENT 1
+  vivienne-westwood                1  LIEU_ABSENT 1
+  white-stuff                      1  LIEU_ABSENT 1

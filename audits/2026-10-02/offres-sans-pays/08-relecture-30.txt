@@ -1,0 +1,123 @@
+30 résolutions tirées au hasard (graine 20261002) sur 2556.
+Relues à la main le 02/10/2026 (lieu, ville, point natif sur la carte, Maison) : 30 justes sur 30.
+
+ 1. brilliant-earth · cmudt87vq08qsoa34del094m2
+    lieu « Baltimore, MD » · ville « Baltimore » · point ∅, ∅
+    → US (Maryland) · VILLE_ET_SUBDIVISION · marché observé [US]
+    relecture : juste : Baltimore, Maryland.
+ 2. boots · cmuf5chvk05ecms6fljzh92ia
+    lieu « Sittingbourne, High Street » · ville « Sittingbourne » · point 51.340496922, 0.7341100324
+    → GB · COORDONNEES_ET_VILLE · marché observé []
+    relecture : juste : Sittingbourne (Kent), point dans la ville.
+ 3. boots · cmuf5cfnk051pms6foed7jdl4
+    lieu « Colchester, Plume » · ville « Colchester » · point 51.876716221, 0.8684630654
+    → GB · COORDONNEES_ET_VILLE · marché observé []
+    relecture : juste : Colchester (Essex).
+ 4. boots · cmuf5bl8r00q5ms6fis1aq4na
+    lieu « Luton, The Mall » · ville « Luton » · point 51.878921642, -0.413939785
+    → GB · COORDONNEES_ET_VILLE · marché observé []
+    relecture : juste : Luton.
+ 5. boots · cmuf5ckww05v2ms6fl97wbnrr
+    lieu « Torquay, Wren Retail Park » · ville « Torquay » · point 50.489058033, -3.552639857
+    → GB · COORDONNEES_ET_VILLE · marché observé []
+    relecture : juste : Torquay (Devon).
+ 6. longchamp · cmupqdven09j0l734m1cwdr30
+    lieu « POUZAUGES » · ville « Pouzauges » · point ∅, ∅
+    → FR · VILLE_UNIQUE · marché observé [FR]
+    relecture : juste : Pouzauges (Vendée), site Longchamp.
+ 7. brilliant-earth · cmudt8d0808yyoa342rzwkimj
+    lieu « Baltimore, MD » · ville « Baltimore » · point ∅, ∅
+    → US (Maryland) · VILLE_ET_SUBDIVISION · marché observé [US]
+    relecture : juste : Baltimore, Maryland.
+ 8. boots · cmuf5c8hk03xnms6fwt08vcvs
+    lieu « St Andrews, Market Street » · ville « St Andrews » · point 56.339812362, -2.798485833
+    → GB · COORDONNEES_ET_VILLE · marché observé []
+    relecture : juste : St Andrews (Fife), Écosse.
+ 9. molton-brown · cmu85n8x4000aphdd8mmus2o9
+    lieu « Darmstadt » · ville « Darmstadt » · point ∅, ∅
+    → DE · LECTURE_NATIVE · marché observé []
+    relecture : juste : Darmstadt est en Allemagne ; pays lu par le lecteur Greenhouse d'aujourd'hui (nom du bureau).
+10. oak-essentials · cmu6ymefm003so8f02dnm3qcr
+    lieu « Palo Alto, CA » · ville « Palo Alto » · point ∅, ∅
+    → US (California) · VILLE_ET_SUBDIVISION · marché observé [US]
+    relecture : juste : Palo Alto, Californie.
+11. boots · cmuof8c1n3i7dof34xavuqu4y
+    lieu « Beckenham, High Street » · ville « Beckenham » · point 51.40834022, -0.025495425
+    → GB · COORDONNEES_ET_VILLE · marché observé []
+    relecture : juste : Beckenham (Grand Londres).
+12. boots · cmuf5cd3g04n4ms6fc871r467
+    lieu « Cranleigh, High Street » · ville « Cranleigh » · point 51.140630998, -0.488460275
+    → GB · COORDONNEES_ET_VILLE · marché observé []
+    relecture : juste : Cranleigh (Surrey).
+13. boots · cmuf5bozo019ems6fwby982o1
+    lieu « Rushden, Rushden Lakes Shopping Park » · ville « Rushden » · point 52.30222, -0.622268
+    → GB · COORDONNEES_ET_VILLE · marché observé []
+    relecture : juste : Rushden (Northamptonshire), point au centre commercial Rushden Lakes.
+14. boots · cmur9wkzu3u87o134i9ir7hid
+    lieu « Sherburn in Elmet, Finkle Hill » · ville « Sherburn In Elmet » · point 53.798963075, -1.252131264
+    → GB · COORDONNEES_ET_VILLE · marché observé []
+    relecture : juste : Sherburn in Elmet (Yorkshire du Nord).
+15. boots · cmuf5c0ch02smms6fhrx1e3h5
+    lieu « Cork, Douglas Court Shopping Centre » · ville « Cork » · point 51.878151, -8.42939
+    → IE · COORDONNEES_ET_VILLE · marché observé []
+    relecture : juste : Douglas, Cork (Irlande).
+16. boots · cmuf5bnqf012sms6f2uxd2dg8
+    lieu « Cork, Mallow » · ville « Cork » · point 52.135860202, -8.642217926
+    → IE · COORDONNEES_ET_VILLE · marché observé []
+    relecture : juste : Mallow, comté de Cork (30 km de Cork, sous le seuil de 50 km).
+17. veronica-beard · cmu6yta6b004ylh3zzusq4ao5
+    lieu « California » · ville « ∅ » · point ∅, ∅
+    → US · SUBDIVISION_UNIQUE · marché observé [FR, GE, US]
+    relecture : juste : Californie, États-Unis.
+18. nike · cmu9eqvml025pof47ufl6lpcj
+    lieu « Shanghai, China Mainland » · ville « Shanghai » · point ∅, ∅
+    → CN · LECTURE_NATIVE · marché observé []
+    relecture : juste : champ pays natif Workday « China Mainland ».
+19. boots · cmuf5cemb04w2ms6f6n7pmnw5
+    lieu « Todmorden, Bridge Street » · ville « Todmorden » · point 53.714015596, -2.097099549
+    → GB · COORDONNEES_ET_VILLE · marché observé []
+    relecture : juste : Todmorden (Yorkshire de l'Ouest).
+20. boots · cmuf5cotp06isms6fjvs7muye
+    lieu « Billericay, High St » · ville « Billericay » · point 51.62641266, 0.4180664233
+    → GB · COORDONNEES_ET_VILLE · marché observé []
+    relecture : juste : Billericay (Essex).
+21. boots · cmuf5c6v003q9ms6f0ipj1qw8
+    lieu « Ballymena, Tower Centre » · ville « Ballymena » · point 54.865804842, -6.277394478
+    → GB · COORDONNEES_ET_VILLE · marché observé []
+    relecture : juste : Ballymena, Irlande du Nord, donc Royaume-Uni (pas l'Irlande).
+22. boots · cmuf5br6a01doms6f7ci48wxz
+    lieu « Horncastle, The Old Vicarage » · ville « Horncastle » · point 53.208139672, -0.107685052
+    → GB · COORDONNEES_ET_VILLE · marché observé []
+    relecture : juste : Horncastle (Lincolnshire).
+23. boots · cmuf5cbnk04edms6fxom5idp4
+    lieu « Haverhill, High Street » · ville « Haverhill » · point 52.082377124, 0.4393420313
+    → GB · COORDONNEES_ET_VILLE · marché observé []
+    relecture : juste : Haverhill (Suffolk), pas Haverhill (Massachusetts) : le point le dit.
+24. boots · cmull3agf3b4rt234yhmisl2b
+    lieu « Norwich, Chapelfield » · ville « Norwich » · point 52.625883894, 1.2897577057
+    → GB · COORDONNEES_ET_VILLE · marché observé []
+    relecture : juste : Norwich (Norfolk), pas l'île Norfolk.
+25. boots · cmuf5cb9k04c1ms6fjvkrspho
+    lieu « Cork, Douglas Court Shopping Centre » · ville « Cork » · point 51.878151, -8.42939
+    → IE · COORDONNEES_ET_VILLE · marché observé []
+    relecture : juste : Douglas, Cork (Irlande).
+26. boots · cmuf5cs7m071nms6fim1debba
+    lieu « Lewes, Eastgate Street » · ville « Lewes » · point 50.874595369, 0.014588455
+    → GB · COORDONNEES_ET_VILLE · marché observé []
+    relecture : juste : Lewes (Sussex de l'Est).
+27. boots · cmuf5bnz1013yms6fdujiy1jb
+    lieu « London, Covent Garden Long Acre » · ville « Londres » · point 51.51299, -0.12457
+    → GB · COORDONNEES_ET_VILLE · marché observé []
+    relecture : juste : Londres, Covent Garden.
+28. boots · cmuf5c0p002ukms6fzmuiyt7p
+    lieu « Belfast, Forestside Shopping Centre » · ville « Belfast » · point 54.563864204, -5.909475908
+    → GB · COORDONNEES_ET_VILLE · marché observé []
+    relecture : juste : Belfast, Irlande du Nord, Royaume-Uni.
+29. boots · cmuf5c2gj033wms6fr5rlnjip
+    lieu « Edinburgh, Fort Retail Park » · ville « Édimbourg » · point 55.933110101, -3.106948844
+    → GB · COORDONNEES_ET_VILLE · marché observé []
+    relecture : juste : Édimbourg.
+30. marc-o-polo · cmuebct600vjzoi35qlvjsx53
+    lieu « Landquart, Grisons, 7302 » · ville « Landquart » · point ∅, ∅
+    → CH · VILLE_ET_SUBDIVISION · marché observé [CH, CZ, DE, DK, ES, FR, NL, PL]
+    relecture : juste : Landquart, canton des Grisons (Suisse).
