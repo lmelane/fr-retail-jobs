@@ -1,0 +1,19 @@
+     × lit chaque valeur de la facette sous le plafond : 2 100 offres sur 2 100, comptes concordants, preuve archivée mais NON adoptée, aucun employeur tiré de la facette 8ms
+     × une erreur pendant la lecture couvrante ne coûte pas la source : le site plafonné reste collecté, l’échec est nommé 5ms
+     × une offre servie par le site mais absente des tableaux de la facette : tout est collecté, rien n’est prouvé 3ms
+     × une seule facette à ce total : collectée en entier, NON prouvée (aucun accord) 3ms
+     × un tableau dont le total ne correspond pas au compte de la facette : NON prouvé 3ms
+     × sans facette couvrante (une valeur atteint le plafond) : la lecture reste celle d’avant, nommée 4ms
+     × knitwell, collecte locale du 02/10 à 15:13 UTC : la page au-delà du plafond ressert des offres déjà lues — les facettes disent quand même le plafond 3ms
+     × écarte une facette imbriquée et une facette dont une valeur atteint le plafond ; préfère le plus grand total, puis le moins de valeurs 0ms
+     × picard — a careers Atom feed announces no extent 5ms
+     × attaquer — a start-page link crawl names its missing proof and saw no cut 6ms
+     × the same crawl stopped at its 150-link cap is a cut, not a limit: refuted, blocking 15ms
+     × a list defect never hides a collapse nor a field coverage gone: 40 → 1 offers, 0 % descriptions — blocking, even for a D-480 source 0ms
+     × a retention to instruct next to the family limit is named and blocks: the limit never hides another defect 1ms
+     × a refusal NOT recognised as S22 stays WORKDAY_DETAIL_FETCH_FAILED: to instruct, blocking, even next to S22 refusals 4ms
+     × énumération non prouvée 3ms
+     × D-520 : la troncature et la retenue à instruire ne sont plus lues « volume anormal » ; la limite de la famille a sa classe 3ms
+⎯⎯⎯⎯⎯⎯ Failed Tests 16 ⎯⎯⎯⎯⎯⎯⎯
+ Test Files  5 failed (5)
+      Tests  16 failed | 102 passed (118)

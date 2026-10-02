@@ -17,7 +17,7 @@ Mesures en lecture seule de la production le 02/10/2026 entre 14:55 et 15:04 UTC
 | `troncatures.sql` → `.csv` | la terminaison scellée de chaque collecte tronquée | idem |
 | `rejeu.py` → `rejeu.out` | les 8 RUN rejoués, par classe : bloquantes avant / après, ce qui reste | `python3 rejeu.py > rejeu.out` |
 | `collecte-workday-plafond.mts` → `collecte-knitwell-avant.out`, `collecte-knitwell-apres.out` | collecte locale réelle de knitwell-us-retail, liste seule, avec le code d'avant puis celui du lot | commande en tête du `.mts` |
-| `temoins-classes-sur-6fad1df.out` | les témoins du lot de classes lancés sur le code d'avant (premier état du lot) : 6 échecs | voir plus bas |
+| `temoins-sur-cd85f41.out` | les témoins du lot lancés sur le code d'avant le lot (`cd85f41`) : 16 échecs | voir plus bas |
 | `knitwell-effet.sql` → `.out` | l'effet en production de la fausse preuve de knitwell | `db.py readonly` après 18:30 UTC |
 
 ## Causes racines, par famille
@@ -75,5 +75,9 @@ Mesures en lecture seule de la production le 02/10/2026 entre 14:55 et 15:04 UTC
 
 ## Témoins
 
-- `workday.covering.test.ts` : 11 témoins. Sur le code d'avant, les 6 qui ne sont pas des prémisses échouent, dont « la page au-delà du plafond ressert des offres déjà lues ». L'ancien code y rend `complete: true`.
-- `completenessContract.test.ts` (limite de famille, plafond de 150 liens, retenue à instruire à côté d'une limite), `sourceState.test.ts` et `nativeRetention.test.ts` : 6 échecs sur le code d'avant (`temoins-classes-sur-6fad1df.out`).
+Les fichiers source du lot sont remis à `cd85f41`, puis les témoins sont lancés. Les 16 témoins nouveaux ou modifiés échouent (`temoins-sur-cd85f41.out`) :
+- `workday.covering.test.ts` : 8, dont « la page au-delà du plafond ressert des offres déjà lues ». L'ancien code y rend `complete: true`.
+- `completenessContract.test.ts` : 5, dont la limite de liste, le plafond de 150 liens, la chute ou la couverture cachée, et la retenue à instruire à côté d'une limite.
+- `sourceState.test.ts`, `nativeRetention.test.ts` et `confirmedDrop.test.ts` : 3.
+
+Contrôles : `npm run typecheck`, `npm run check:layout` et `npm run test:local` sont verts sur l'état final.
