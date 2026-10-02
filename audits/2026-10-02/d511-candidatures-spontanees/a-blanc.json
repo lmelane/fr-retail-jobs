@@ -849,5 +849,885 @@
       "autresSourcesDisponibles": 0,
       "url": "https://jobs.yaya.eu/o/open-sollicitatie"
     }
-  ]
+  ],
+  "voisinsHorsRegle": {
+    "total": 124,
+    "parMotif": {
+      "talent pool / community / network": 31,
+      "vivier": 6,
+      "register your interest": 2,
+      "future opportunities": 65,
+      "expression of interest / express interest": 20
+    },
+    "liste": [
+      {
+        "sourceKey": "adidas",
+        "sourceStatus": "ACTIVE",
+        "motif": "talent pool / community / network",
+        "title": "adidas اديداس Sales Talent Pool - ممثل مبيعات - الرياض",
+        "url": "https://jobs.adidas-group.com/job/Riyadh-adidas-%D8%A7%D8%AF%D9%8A%D8%AF%D8%A7%D8%B3-Sales-Talent-Pool-%D9%85%D9%85%D8%AB%D9%84-%D9%85%D8%A8%D9%8A%D8%B9%D8%A7%D8%AA-%D8%A7%D9%84%D8%B1%D9%8A%D8%A7%D8%B6-01/1235240101/"
+      },
+      {
+        "sourceKey": "adidas",
+        "sourceStatus": "ACTIVE",
+        "motif": "talent pool / community / network",
+        "title": "Retail Associate - Talent Pool",
+        "url": "https://jobs.adidas-group.com/job/Gurgaon-Retail-Associate-Talent-Pool-HR/1429042433/"
+      },
+      {
+        "sourceKey": "adidas",
+        "sourceStatus": "ACTIVE",
+        "motif": "talent pool / community / network",
+        "title": "Store Keeper - Talent Pool - Hafr Albatin OR AlKhafji OR Jubail",
+        "url": "https://jobs.adidas-group.com/job/Riyadh-Store-Keeper-Talent-Pool-Hafr-Albatin-OR-AlKhafji-OR-Jubail-01/1437005433/"
+      },
+      {
+        "sourceKey": "adidas",
+        "sourceStatus": "ACTIVE",
+        "motif": "talent pool / community / network",
+        "title": "Talent Pool - Sales Associate Morocco FO Carrefour - Salé",
+        "url": "https://jobs.adidas-group.com/job/Rabat-Sale-Talent-Pool-Sales-Associate-Morocco-FO-Carrefour-Sal%C3%A9-07/1400449633/"
+      },
+      {
+        "sourceKey": "adidas",
+        "sourceStatus": "ACTIVE",
+        "motif": "talent pool / community / network",
+        "title": "Talent Pool - Sales Associate Morocco Talborjt - Agadir",
+        "url": "https://jobs.adidas-group.com/job/Marrakech-Talent-Pool-Sales-Associate-Morocco-Talborjt-Agadir-AGD/1371498233/"
+      },
+      {
+        "sourceKey": "adidas",
+        "sourceStatus": "ACTIVE",
+        "motif": "talent pool / community / network",
+        "title": "TALENT POOL: Sales Consultant - Eindhoven",
+        "url": "https://jobs.adidas-group.com/job/Eindhoven-TALENT-POOL-Sales-Consultant-Eindhoven-NB/1413744233/"
+      },
+      {
+        "sourceKey": "adidas",
+        "sourceStatus": "ACTIVE",
+        "motif": "talent pool / community / network",
+        "title": "TALENT POOL: Sales Consultant - Mall of the Netherlands",
+        "url": "https://jobs.adidas-group.com/job/Den-Haag-TALENT-POOL-Sales-Consultant-Mall-of-the-Netherlands-ZH/1427368233/"
+      },
+      {
+        "sourceKey": "aigle",
+        "sourceStatus": "ACTIVE",
+        "motif": "vivier",
+        "title": "VIVIER - Conseiller de vente F/H (CDI temps partiel)",
+        "url": "https://careers.aigle.com/fr/annonce/4359763-vivier-conseiller-de-vente-fh-cdi-temps-partiel-69002-lyon"
+      },
+      {
+        "sourceKey": "arcteryx",
+        "sourceStatus": "ACTIVE",
+        "motif": "talent pool / community / network",
+        "title": "キャリア登録 - Join our Talent Community",
+        "url": "https://jobs.lever.co/arcteryx.com/a5abef17-1c6b-42c8-aafa-ea0c8917a119"
+      },
+      {
+        "sourceKey": "avolta",
+        "sourceStatus": "ACTIVE",
+        "motif": "talent pool / community / network",
+        "title": "Beauty Advisor Talent Pool for luxury brands - Zurich Airport (80-100%)",
+        "url": "https://careers.avoltaworld.com/job/Beauty-Advisor-Talent-Pool-for-luxury-brands-Zurich-Airport-%2880-100%29/1215195501/"
+      },
+      {
+        "sourceKey": "beiersdorf",
+        "sourceStatus": "ACTIVE",
+        "motif": "vivier",
+        "title": "Vivier - Délégué Pharmaceutique - Région Centre",
+        "url": "https://www.beiersdorf.com/career/jobs/5691c366312ed095c32bbc60d88b6bc8"
+      },
+      {
+        "sourceKey": "beiersdorf",
+        "sourceStatus": "ACTIVE",
+        "motif": "vivier",
+        "title": "Vivier - Délégué Pharmaceutique - Région Paris Ile de France",
+        "url": "https://www.beiersdorf.com/career/jobs/59c7a1fee696f82fb65095bb27d0398f"
+      },
+      {
+        "sourceKey": "beiersdorf",
+        "sourceStatus": "ACTIVE",
+        "motif": "vivier",
+        "title": "Vivier - Délégué Pharmaceutique - Région Sud Est",
+        "url": "https://www.beiersdorf.com/career/jobs/3b1fb6f0c6fe9f9335d5b37a119c6dd6"
+      },
+      {
+        "sourceKey": "beiersdorf",
+        "sourceStatus": "ACTIVE",
+        "motif": "vivier",
+        "title": "Vivier - Délégué Pharmaceutique - Région Sud Ouest",
+        "url": "https://www.beiersdorf.com/career/jobs/6a3c263270b3d19954b453ee2d53b07f"
+      },
+      {
+        "sourceKey": "boots",
+        "sourceStatus": "ACTIVE",
+        "motif": "register your interest",
+        "title": "Boots UK Pharmacist - Register your interest",
+        "url": "https://www.boots.jobs/jobs/283300br-boots-uk-pharmacist-register-your-interest-nationwide-roles"
+      },
+      {
+        "sourceKey": "boots",
+        "sourceStatus": "ACTIVE",
+        "motif": "register your interest",
+        "title": "Boots UK Pharmacy Technician - Register your interest",
+        "url": "https://www.boots.jobs/jobs/283301br-boots-uk-pharmacy-technician-register-your-interest-nationwide-roles"
+      },
+      {
+        "sourceKey": "breitling-sf",
+        "sourceStatus": "ACTIVE",
+        "motif": "talent pool / community / network",
+        "title": "Talent Pool - Multilingual Breitling Clients Relations Advisors (ENG + DE, FR, ESP or IT)",
+        "url": "https://careers.breitling.com/job/Talent-Pool-Multilingual-Breitling-Clients-Relations-Advisors-%28ENG-%2B-DE%2C-FR%2C-ESP-or-IT%29/881-en_GB"
+      },
+      {
+        "sourceKey": "breitling-sf",
+        "sourceStatus": "ACTIVE",
+        "motif": "talent pool / community / network",
+        "title": "Talent Pool #Squadonamission",
+        "url": "https://careers.breitling.com/job/Talent-Pool-Squadonamission/540-fr_FR"
+      },
+      {
+        "sourceKey": "brown-thomas-taleo",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "Future Opportunities within our Buying & Merchandising Teams",
+        "url": "https://lde.tbe.taleo.net/lde02/ats/careers/v2/viewRequisition?org=ARNOTTS&cws=60&rid=5036"
+      },
+      {
+        "sourceKey": "brown-thomas-taleo",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "Future Opportunities within our Customer Service Team",
+        "url": "https://lde.tbe.taleo.net/lde02/ats/careers/v2/viewRequisition?org=ARNOTTS&cws=62&rid=5047"
+      },
+      {
+        "sourceKey": "brown-thomas-taleo",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "Future Opportunities within our Distribution Centre Team",
+        "url": "https://lde.tbe.taleo.net/lde02/ats/careers/v2/viewRequisition?org=ARNOTTS&cws=77&rid=5051"
+      },
+      {
+        "sourceKey": "brown-thomas-taleo",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "Future Opportunities within our IT & Digital Teams",
+        "url": "https://lde.tbe.taleo.net/lde02/ats/careers/v2/viewRequisition?org=ARNOTTS&cws=63&rid=5035"
+      },
+      {
+        "sourceKey": "brown-thomas-taleo",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "Future Opportunities within our Legal & Finance Teams",
+        "url": "https://lde.tbe.taleo.net/lde02/ats/careers/v2/viewRequisition?org=ARNOTTS&cws=64&rid=5094"
+      },
+      {
+        "sourceKey": "brown-thomas-taleo",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "Future Opportunities within our Marketing & Creative Teams",
+        "url": "https://lde.tbe.taleo.net/lde02/ats/careers/v2/viewRequisition?org=ARNOTTS&cws=61&rid=5018"
+      },
+      {
+        "sourceKey": "brown-thomas-taleo",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "Future Opportunities within our People & Sustainability Teams",
+        "url": "https://lde.tbe.taleo.net/lde02/ats/careers/v2/viewRequisition?org=ARNOTTS&cws=66&rid=5034"
+      },
+      {
+        "sourceKey": "burberry",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "Client Advisor Future Opportunities Westchester",
+        "url": "https://burberrycareers.com/job/New-York-Client-Advisor-Future-Opportunities-Westchester-New/1411969900/"
+      },
+      {
+        "sourceKey": "burberry",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "Future opportunities - Client Advisor, Mall of The Emirates, Emirati Only (Full-Time/Part-Time)",
+        "url": "https://burberrycareers.com/job/Dubai-Future-opportunities-Client-Advisor%2C-Mall-of-The-Emirates%2C-Emirati-Only-%28Full-TimePart-Time%29-Not/1359364100/"
+      },
+      {
+        "sourceKey": "caudalie",
+        "sourceStatus": "ACTIVE",
+        "motif": "talent pool / community / network",
+        "title": "TALENT POOL - SALES & EDUCATION MANAGER, UK & IRELAND",
+        "url": "https://caudalie.career/apply/offer/FGSF5G"
+      },
+      {
+        "sourceKey": "chalhoub",
+        "sourceStatus": "ACTIVE",
+        "motif": "talent pool / community / network",
+        "title": "Ru’ya Talent Community (Emiratisation)",
+        "url": "https://careers.chalhoubgroup.com/jobs/7135124-ru-ya-talent-community-emiratisation"
+      },
+      {
+        "sourceKey": "hm-group",
+        "sourceStatus": "ACTIVE",
+        "motif": "expression of interest / express interest",
+        "title": "Full Time Sales Advisor (For Floor Manager, Expression of Interest)",
+        "url": "https://jobs.smartrecruiters.com/HMGroup/744000118038635"
+      },
+      {
+        "sourceKey": "hm-group",
+        "sourceStatus": "ACTIVE",
+        "motif": "talent pool / community / network",
+        "title": "Future Department Manager Talent Pool | H&M Group Portfolio Brands",
+        "url": "https://jobs.smartrecruiters.com/HMGroup/744000152889629"
+      },
+      {
+        "sourceKey": "hm-group",
+        "sourceStatus": "ACTIVE",
+        "motif": "talent pool / community / network",
+        "title": "Future Department Manager Talent Pool | H&M Group Portfolio Brands",
+        "url": "https://jobs.smartrecruiters.com/HMGroup/744000151646839"
+      },
+      {
+        "sourceKey": "hm-group",
+        "sourceStatus": "ACTIVE",
+        "motif": "talent pool / community / network",
+        "title": "Future Department Manager Talent Pool | H&M Group Portfolio Brands",
+        "url": "https://jobs.smartrecruiters.com/HMGroup/744000150320729"
+      },
+      {
+        "sourceKey": "honey-birdette",
+        "sourceStatus": "ACTIVE",
+        "motif": "expression of interest / express interest",
+        "title": "Design Expression of Interest | Honey Birdette HQ (Sydney)",
+        "url": "https://honeybirdette.teamtailor.com/jobs/5881696-design-expression-of-interest-honey-birdette-hq-sydney"
+      },
+      {
+        "sourceKey": "hugo-boss-phenom",
+        "sourceStatus": "ACTIVE",
+        "motif": "talent pool / community / network",
+        "title": "HUGO BOSS IZMIR TALENT NETWORK",
+        "url": "https://careers.hugoboss.com/global/en/job/142944/hugo-boss-izmir-talent-network"
+      },
+      {
+        "sourceKey": "kering",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "BALENCIAGA Sales & Client Advisor (Keyholder) | Future Opportunities Dallas",
+        "url": "https://careers.kering.com/careers/job/563705892416331"
+      },
+      {
+        "sourceKey": "kering",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "BALENCIAGA Sales & Client Advisor (Keyholder) | Future Opportunities Miami",
+        "url": "https://careers.kering.com/careers/job/563705890298542"
+      },
+      {
+        "sourceKey": "kering",
+        "sourceStatus": "ACTIVE",
+        "motif": "expression of interest / express interest",
+        "title": "BRIONI APAC Expression of interest",
+        "url": "https://careers.kering.com/careers/job/563705887764827"
+      },
+      {
+        "sourceKey": "kering",
+        "sourceStatus": "ACTIVE",
+        "motif": "expression of interest / express interest",
+        "title": "BRIONI EMEA Expression of interest",
+        "url": "https://careers.kering.com/careers/job/563705887712047"
+      },
+      {
+        "sourceKey": "kering",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "GUCCI Client Advisor - Miami (Future Opportunity)",
+        "url": "https://careers.kering.com/careers/job/563705892907937"
+      },
+      {
+        "sourceKey": "lvmh",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "Beauty Advisor (Client Experience & Operations) - Bluewater Future Opportunities",
+        "url": "https://career55.sapsf.eu/sfcareer/jobreqcareer?company=SephoraUS&jobId=293891"
+      },
+      {
+        "sourceKey": "lvmh",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "Beauty Advisor (Client Experience & Operations) - Liverpool Future Opportunities",
+        "url": "https://career55.sapsf.eu/sfcareer/jobreqcareer?company=SephoraUS&jobId=293202"
+      },
+      {
+        "sourceKey": "lvmh",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "Beauty Advisor (Client Experience & Operations) - Silverburn, Glasgow Future Opportunities",
+        "url": "https://career55.sapsf.eu/sfcareer/jobreqcareer?company=SephoraUS&jobId=287100"
+      },
+      {
+        "sourceKey": "lvmh",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "Beauty Advisor (Client Experience & Operations) - St James, Edinburgh Future Opportunities",
+        "url": "https://career55.sapsf.eu/sfcareer/jobreqcareer?company=SephoraUS&jobId=284322"
+      },
+      {
+        "sourceKey": "lvmh",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "Client Advisor | Future Opportunities | London",
+        "url": "https://emea3.recruitmentplatform.com/apply-app/pages/application-form?jobId=PYZFK026203F3VBQB798N7VG6-1090148&langCode=en_US"
+      },
+      {
+        "sourceKey": "lvmh",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "Customer Experience Manager - London Future Opportunities",
+        "url": "https://career55.sapsf.eu/sfcareer/jobreqcareer?company=SephoraUS&jobId=292175"
+      },
+      {
+        "sourceKey": "lvmh",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "Department Managers (London) - Future Opportunities",
+        "url": "https://career55.sapsf.eu/sfcareer/jobreqcareer?company=SephoraUS&jobId=290117"
+      },
+      {
+        "sourceKey": "lvmh",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "Loss Prevention Professional, Part-Time, Ottawa (Future Opportunities)",
+        "url": "https://eljs.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX/job/62821"
+      },
+      {
+        "sourceKey": "lvmh",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "Operations Manager - London Future Opportunities",
+        "url": "https://career55.sapsf.eu/sfcareer/jobreqcareer?company=SephoraUS&jobId=292176"
+      },
+      {
+        "sourceKey": "lvmh",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "Store Manager - London Future Opportunities",
+        "url": "https://career55.sapsf.eu/sfcareer/jobreqcareer?company=SephoraUS&jobId=290081"
+      },
+      {
+        "sourceKey": "lvmh",
+        "sourceStatus": "ACTIVE",
+        "motif": "talent pool / community / network",
+        "title": "TALENT POOL - CHEF DE PRODUIT MARKETING DEVELOPPEMENT MAQUILLAGE - F/H",
+        "url": "https://emea3.recruitmentplatform.com/apply-app/pages/application-form?jobId=PYZFK026203F3VBQB798N7VG6-1081195&langCode=fr_FR"
+      },
+      {
+        "sourceKey": "lvmh",
+        "sourceStatus": "ACTIVE",
+        "motif": "talent pool / community / network",
+        "title": "TALENT POOL - CHEF DE PRODUIT MARKETING DEVELOPPEMENT PARFUM SENIOR - F/H",
+        "url": "https://emea3.recruitmentplatform.com/apply-app/pages/application-form?jobId=PYZFK026203F3VBQB798N7VG6-1094742&langCode=fr_FR"
+      },
+      {
+        "sourceKey": "lvmh",
+        "sourceStatus": "ACTIVE",
+        "motif": "talent pool / community / network",
+        "title": "TALENT POOL - CHEF DE PRODUIT MARKETING DEVELOPPEMENT SOIN SENIOR - F/H",
+        "url": "https://emea3.recruitmentplatform.com/apply-app/pages/application-form?jobId=PYZFK026203F3VBQB798N7VG6-1081190&langCode=fr_FR"
+      },
+      {
+        "sourceKey": "lvmh",
+        "sourceStatus": "ACTIVE",
+        "motif": "talent pool / community / network",
+        "title": "Talent Pool – Responsable de Département Maroquinerie (F/H)",
+        "url": "https://emea3.recruitmentplatform.com/apply-app/pages/application-form?jobId=PYZFK026203F3VBQB798N7VG6-1080248&langCode=en_US"
+      },
+      {
+        "sourceKey": "lvmh",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "Team Manager - Toronto (Future Opportunities)",
+        "url": "https://eljs.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX/job/62009"
+      },
+      {
+        "sourceKey": "lvmh",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "Team Manager | Future Opportunities | Heathrow",
+        "url": "https://emea3.recruitmentplatform.com/apply-app/pages/application-form?jobId=PYZFK026203F3VBQB798N7VG6-1092680&langCode=en_US"
+      },
+      {
+        "sourceKey": "lvmh",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "Team Manager | Future Opportunities | London",
+        "url": "https://emea3.recruitmentplatform.com/apply-app/pages/application-form?jobId=PYZFK026203F3VBQB798N7VG6-1089861&langCode=en_US"
+      },
+      {
+        "sourceKey": "lvmh",
+        "sourceStatus": "ACTIVE",
+        "motif": "vivier",
+        "title": "Vivier de candidats : Store Operations Manager - F/H - CDI - St Tropez/Courchevel",
+        "url": "https://emea3.recruitmentplatform.com/apply-app/pages/application-form?jobId=PYZFK026203F3VBQB798N7VG6-1075098&langCode=en_US"
+      },
+      {
+        "sourceKey": "mango",
+        "sourceStatus": "ACTIVE",
+        "motif": "talent pool / community / network",
+        "title": "Fashion Design Intern Talent Pool",
+        "url": "https://mango.wd3.myworkdayjobs.com/Mango_Work_Your_Passion/job/Palau-solit-i-Plegamans-Catalonia-Spain/Fashion-Design-Intern-Talent-Pool_JR117530"
+      },
+      {
+        "sourceKey": "mango",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "FLOOR MANAGER - FUTURE OPPORTUNITIES (London)",
+        "url": "https://mango.wd3.myworkdayjobs.com/Mango_Work_Your_Passion/job/London-England-United-Kingdom/FLOOR-MANAGER---FUTURE-OPPORTUNITIES--London-_JR139728-1"
+      },
+      {
+        "sourceKey": "mango",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "STORE MANAGER - FUTURE OPPORTUNITIES (London)",
+        "url": "https://mango.wd3.myworkdayjobs.com/Mango_Work_Your_Passion/job/London-England-United-Kingdom/STORE-MANAGER---FUTURE-OPPORTUNITIES--London-_JR139714-1"
+      },
+      {
+        "sourceKey": "mango",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "VISUAL MERCHANDISER - FUTURE OPPORTUNITIES (London)",
+        "url": "https://mango.wd3.myworkdayjobs.com/Mango_Work_Your_Passion/job/London-England-United-Kingdom/VISUAL-MERCHANDISER---FUTURE-OPPORTUNITIES--London-_JR139726-1"
+      },
+      {
+        "sourceKey": "mecca",
+        "sourceStatus": "ACTIVE",
+        "motif": "expression of interest / express interest",
+        "title": "MECCA Bayfair - Colour Specialist Expression of Interest",
+        "url": "https://mecca.wd3.myworkdayjobs.com/careers/job/New-Zealand/MECCA-Bayfair---Colour-Specialist-Expression-of-Interest_R015207"
+      },
+      {
+        "sourceKey": "mecca",
+        "sourceStatus": "ACTIVE",
+        "motif": "expression of interest / express interest",
+        "title": "MECCA Canberra - Skin Specialist Expression of Interest",
+        "url": "https://mecca.wd3.myworkdayjobs.com/careers/job/Australian-Capital-Territory/MECCA-Canberra---Skin-Specialist-Expression-of-Interest_R014568"
+      },
+      {
+        "sourceKey": "mecca",
+        "sourceStatus": "ACTIVE",
+        "motif": "expression of interest / express interest",
+        "title": "MECCA Claremont - Colour Specialist Expression of Interest",
+        "url": "https://mecca.wd3.myworkdayjobs.com/careers/job/Western-Australia/MECCA-Claremont---Colour-Specialist-Expression-of-Interest_R015264"
+      },
+      {
+        "sourceKey": "mecca",
+        "sourceStatus": "ACTIVE",
+        "motif": "expression of interest / express interest",
+        "title": "MECCA Claremont - Fragrance Specialist Expression of Interest",
+        "url": "https://mecca.wd3.myworkdayjobs.com/careers/job/Western-Australia/MECCA-Claremont---Fragrance-Specialist-Expression-of-Interest_R015266"
+      },
+      {
+        "sourceKey": "mecca",
+        "sourceStatus": "ACTIVE",
+        "motif": "expression of interest / express interest",
+        "title": "MECCA Claremont - Host Expression of Interest",
+        "url": "https://mecca.wd3.myworkdayjobs.com/careers/job/Western-Australia/MECCA-Claremont---Host-Expression-of-Interest_R015269"
+      },
+      {
+        "sourceKey": "mecca",
+        "sourceStatus": "ACTIVE",
+        "motif": "expression of interest / express interest",
+        "title": "MECCA Claremont - Operations Manager Expression of Interest",
+        "url": "https://mecca.wd3.myworkdayjobs.com/careers/job/Western-Australia/MECCA-Claremont---Operations-Manager-Expression-of-Interest_R015249"
+      },
+      {
+        "sourceKey": "mecca",
+        "sourceStatus": "ACTIVE",
+        "motif": "expression of interest / express interest",
+        "title": "MECCA Claremont - Replenishment Assistant Expression of Interest",
+        "url": "https://mecca.wd3.myworkdayjobs.com/careers/job/Western-Australia/MECCA-Claremont---Replenishment-Assistant-Expression-of-Interest_R015267"
+      },
+      {
+        "sourceKey": "mecca",
+        "sourceStatus": "ACTIVE",
+        "motif": "expression of interest / express interest",
+        "title": "MECCA Claremont - Zone Manager Expression of Interest",
+        "url": "https://mecca.wd3.myworkdayjobs.com/careers/job/Western-Australia/MECCA-Claremont---Zone-Manager-Expression-of-Interest_R015240"
+      },
+      {
+        "sourceKey": "mecca",
+        "sourceStatus": "ACTIVE",
+        "motif": "expression of interest / express interest",
+        "title": "MECCA Claremont- Skin Specialist Expression of Interest",
+        "url": "https://mecca.wd3.myworkdayjobs.com/careers/job/Western-Australia/MECCA-Claremont--Skin-Specialist-Expression-of-Interest_R015265"
+      },
+      {
+        "sourceKey": "mecca",
+        "sourceStatus": "ACTIVE",
+        "motif": "expression of interest / express interest",
+        "title": "MECCA Joondalup - Colour Specialist Expression of Interest",
+        "url": "https://mecca.wd3.myworkdayjobs.com/careers/job/Western-Australia/MECCA-Joondalup---Colour-Specialist-Expression-of-Interest_R015244"
+      },
+      {
+        "sourceKey": "mecca",
+        "sourceStatus": "ACTIVE",
+        "motif": "expression of interest / express interest",
+        "title": "MECCA Joondalup - Host Expression of Interest",
+        "url": "https://mecca.wd3.myworkdayjobs.com/careers/job/Western-Australia/MECCA-Joondalup---Host-Expression-of-Interest_R015248"
+      },
+      {
+        "sourceKey": "mecca",
+        "sourceStatus": "ACTIVE",
+        "motif": "expression of interest / express interest",
+        "title": "MECCA Joondalup - Replenishment Assistant Expression of Interest",
+        "url": "https://mecca.wd3.myworkdayjobs.com/careers/job/Western-Australia/MECCA-Joondalup---Replenishment-Assistant-Expression-of-Interest_R015250-1"
+      },
+      {
+        "sourceKey": "mecca",
+        "sourceStatus": "ACTIVE",
+        "motif": "expression of interest / express interest",
+        "title": "MECCA Joondalup - Skin Specialist Expression of Interest",
+        "url": "https://mecca.wd3.myworkdayjobs.com/careers/job/Western-Australia/MECCA-Joondalup---Skin-Specialist-Expression-of-Interest_R015245"
+      },
+      {
+        "sourceKey": "mecca",
+        "sourceStatus": "ACTIVE",
+        "motif": "expression of interest / express interest",
+        "title": "MECCA Morley - Operations Manager Expression of Interest",
+        "url": "https://mecca.wd3.myworkdayjobs.com/careers/job/Western-Australia/MECCA-Morley----Operations-Manager-Expression-of-Interest_R015252"
+      },
+      {
+        "sourceKey": "mejuri",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "Future Opportunities - (Bay Area)",
+        "url": "https://job-boards.greenhouse.io/mejuri/jobs/4628880006"
+      },
+      {
+        "sourceKey": "mejuri",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "Future Opportunities - (Boston)",
+        "url": "https://job-boards.greenhouse.io/mejuri/jobs/4638912006"
+      },
+      {
+        "sourceKey": "mejuri",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "Future Opportunities - (Chicago)",
+        "url": "https://job-boards.greenhouse.io/mejuri/jobs/4644669006"
+      },
+      {
+        "sourceKey": "mejuri",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "Future Opportunities - (DMV)",
+        "url": "https://job-boards.greenhouse.io/mejuri/jobs/4628906006"
+      },
+      {
+        "sourceKey": "mejuri",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "Future Opportunities - (Greater Seattle Area)",
+        "url": "https://job-boards.greenhouse.io/mejuri/jobs/4628877006"
+      },
+      {
+        "sourceKey": "mejuri",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "Future Opportunities - (London, UK)",
+        "url": "https://job-boards.greenhouse.io/mejuri/jobs/4638863006"
+      },
+      {
+        "sourceKey": "mejuri",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "Future Opportunities - (Los Angeles)",
+        "url": "https://job-boards.greenhouse.io/mejuri/jobs/4628881006"
+      },
+      {
+        "sourceKey": "mejuri",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "Future Opportunities - (Miami)",
+        "url": "https://job-boards.greenhouse.io/mejuri/jobs/4628905006"
+      },
+      {
+        "sourceKey": "mejuri",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "Future Opportunities - (Montreal)",
+        "url": "https://job-boards.greenhouse.io/mejuri/jobs/4638926006"
+      },
+      {
+        "sourceKey": "mejuri",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "Future Opportunities - (New Jersey)",
+        "url": "https://job-boards.greenhouse.io/mejuri/jobs/4628909006"
+      },
+      {
+        "sourceKey": "mejuri",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "Future Opportunities - (New York)",
+        "url": "https://job-boards.greenhouse.io/mejuri/jobs/4638909006"
+      },
+      {
+        "sourceKey": "mejuri",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "Future Opportunities - (Philadelphia)",
+        "url": "https://job-boards.greenhouse.io/mejuri/jobs/4644587006"
+      },
+      {
+        "sourceKey": "mejuri",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "Future Opportunities - (San Diego)",
+        "url": "https://job-boards.greenhouse.io/mejuri/jobs/4638900006"
+      },
+      {
+        "sourceKey": "mejuri",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "Future Opportunities - (Toronto)",
+        "url": "https://job-boards.greenhouse.io/mejuri/jobs/4638913006"
+      },
+      {
+        "sourceKey": "mejuri",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "Future Opportunities - (Vancouver)",
+        "url": "https://job-boards.greenhouse.io/mejuri/jobs/4628869006"
+      },
+      {
+        "sourceKey": "mejuri",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "Future Opportunities - (Washington Square)",
+        "url": "https://job-boards.greenhouse.io/mejuri/jobs/4687118006"
+      },
+      {
+        "sourceKey": "mejuri",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "Future Opportunities - Store Manager",
+        "url": "https://job-boards.greenhouse.io/mejuri/jobs/4709716006"
+      },
+      {
+        "sourceKey": "mejuri",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "Future Opportunities - Store Manager",
+        "url": "https://job-boards.greenhouse.io/mejuri/jobs/4709726006"
+      },
+      {
+        "sourceKey": "monica-vinader",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "Sales Associates - Future Opportunities",
+        "url": "https://careers.monicavinader.com/jobs/8104555-sales-associates-future-opportunities"
+      },
+      {
+        "sourceKey": "nutrafol",
+        "sourceStatus": "ACTIVE",
+        "motif": "talent pool / community / network",
+        "title": "Apply here to join Nutrafol's Talent Community!",
+        "url": "https://job-boards.greenhouse.io/nutrafol/jobs/4385354005"
+      },
+      {
+        "sourceKey": "nutrire",
+        "sourceStatus": "ACTIVE",
+        "motif": "talent pool / community / network",
+        "title": "Student Talent Community",
+        "url": "https://careers.tricoci.com/jobs/4524239-student-talent-community"
+      },
+      {
+        "sourceKey": "ounass",
+        "sourceStatus": "ACTIVE",
+        "motif": "talent pool / community / network",
+        "title": "UAE National Talent Pool",
+        "url": "https://careers.ounass.com/jobs/5275514-uae-national-talent-pool"
+      },
+      {
+        "sourceKey": "pvh",
+        "sourceStatus": "ACTIVE",
+        "motif": "talent pool / community / network",
+        "title": "Designer - Talent Pool - Tommy Hilfiger Global",
+        "url": "https://careers.pvh.com/us/en/job/R51762/designer-talent-pool-tommy-hilfiger-global"
+      },
+      {
+        "sourceKey": "pvh",
+        "sourceStatus": "ACTIVE",
+        "motif": "talent pool / community / network",
+        "title": "Join the PVH Talent Community",
+        "url": "https://careers.pvh.com/us/en/job/R33898/join-the-pvh-talent-community"
+      },
+      {
+        "sourceKey": "pvh",
+        "sourceStatus": "ACTIVE",
+        "motif": "talent pool / community / network",
+        "title": "Product Support Coordinator - Talent Pool - Tommy Hilfiger Global",
+        "url": "https://careers.pvh.com/us/en/job/R51804/product-support-coordinator-talent-pool-tommy-hilfiger-global"
+      },
+      {
+        "sourceKey": "reformation",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "District Manager - Future Opportunities/Various Locations",
+        "url": "https://job-boards.greenhouse.io/reformation/jobs/8126928"
+      },
+      {
+        "sourceKey": "richemont-workday",
+        "sourceStatus": "ACTIVE",
+        "motif": "talent pool / community / network",
+        "title": "TALENT POOL - Sales Advisor H/F",
+        "url": "https://richemont.wd3.myworkdayjobs.com/Richemont/job/PARIS/CDI-Sales-Advisor---Galeries-Lafayette-Haussmann-H-F_JR129781-1"
+      },
+      {
+        "sourceKey": "richemont-workday",
+        "sourceStatus": "ACTIVE",
+        "motif": "talent pool / community / network",
+        "title": "TALENT POOL Polisseur confirmé H/F",
+        "url": "https://richemont.wd3.myworkdayjobs.com/Richemont/job/PRE-SAINT-GERVAIS/TALENT-POOL-Polisseur-confirm-H-F_JR131894-1"
+      },
+      {
+        "sourceKey": "sandro",
+        "sourceStatus": "ACTIVE",
+        "motif": "talent pool / community / network",
+        "title": "Store Manager - Munich (m/w/d) - Talent Pool",
+        "url": "https://jobs.smartrecruiters.com/SMCP/744000133575709"
+      },
+      {
+        "sourceKey": "selfridges",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "Department Manager, Oxford Street - Future Opportunities",
+        "url": "https://jobsearch.selfridges.com/jobs/job/Department-Manager-Oxford-Street-Future-Opportunities/6396"
+      },
+      {
+        "sourceKey": "sephora-france",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "Beauty Advisor (Client Experience & Operations) - Birmingham Future Opportunities",
+        "url": "https://jobs.sephora.com/UnitedKingdom/job/Birmingham-Beauty-Advisor-%28Client-Experience-&amp;-Operations%29-Birmingham-Future-Opportunities/1337342155/"
+      },
+      {
+        "sourceKey": "sephora-france",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "Beauty Advisor (Client Experience & Operations) - Bluewater Future Opportunities",
+        "url": "https://jobs.sephora.com/UnitedKingdom/job/Dartford-Beauty-Advisor-%28Client-Experience-&amp;-Operations%29-Bluewater-Future-Opportunities/1365400555/"
+      },
+      {
+        "sourceKey": "sephora-france",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "Beauty Advisor (Client Experience & Operations) - Bristol Future Opportunities",
+        "url": "https://jobs.sephora.com/UnitedKingdom/job/Bristol-Beauty-Advisor-%28Client-Experience-&amp;-Operations%29-Bristol-Future-Opportunities/1346694455/"
+      },
+      {
+        "sourceKey": "sephora-france",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "Beauty Advisor (Client Experience & Operations) - Liverpool Future Opportunities",
+        "url": "https://jobs.sephora.com/UnitedKingdom/job/Liverpool-Beauty-Advisor-%28Client-Experience-&amp;-Operations%29-Liverpool-Future-Opportunities/1364481755/"
+      },
+      {
+        "sourceKey": "sephora-france",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "Beauty Advisor (Client Experience & Operations) - Oxford Future Opportunities",
+        "url": "https://jobs.sephora.com/UnitedKingdom/job/Oxford-Beauty-Advisor-%28Client-Experience-&amp;-Operations%29-Oxford-Future-Opportunities/1337494655/"
+      },
+      {
+        "sourceKey": "sephora-france",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "Beauty Advisor (Client Experience & Operations) - Silverburn, Glasgow Future Opportunities",
+        "url": "https://jobs.sephora.com/UnitedKingdom/job/Glasgow-Beauty-Advisor-%28Client-Experience-&amp;-Operations%29-Silverburn%2C-Glasgow-Future-Opportunities/1349476955/"
+      },
+      {
+        "sourceKey": "sephora-france",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "Beauty Advisor (Client Experience & Operations) - St James, Edinburgh Future Opportunities",
+        "url": "https://jobs.sephora.com/UnitedKingdom/job/Edinburgh-Beauty-Advisor-%28Client-Experience-&amp;-Operations%29-St-James%2C-Edinburgh-Future-Opportunities/1344427855/"
+      },
+      {
+        "sourceKey": "sephora-france",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "Customer Experience Manager - London Future Opportunities",
+        "url": "https://jobs.sephora.com/UnitedKingdom/job/London-Customer-Experience-Manager-London-Future-Opportunities/1362118855/"
+      },
+      {
+        "sourceKey": "sephora-france",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "Department Managers (London) - Future Opportunities",
+        "url": "https://jobs.sephora.com/UnitedKingdom/job/London-Department-Managers-%28London%29-Future-Opportunities/1355350955/"
+      },
+      {
+        "sourceKey": "sephora-france",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "Operations Manager - London Future Opportunities",
+        "url": "https://jobs.sephora.com/UnitedKingdom/job/London-Operations-Manager-London-Future-Opportunities/1362119455/"
+      },
+      {
+        "sourceKey": "sephora-france",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "Store Manager - London Future Opportunities",
+        "url": "https://jobs.sephora.com/UnitedKingdom/job/London-Store-Manager-London-Future-Opportunities/1355309255/"
+      },
+      {
+        "sourceKey": "ssense",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "Styliste - Sur appel (Opportunités futures) // On-call Stylist (Future Opportunities)",
+        "url": "https://careers.ssense.com/jobs/707083-styliste-sur-appel-opportunites-futures-on-call-stylist-future-opportunities"
+      },
+      {
+        "sourceKey": "tiffany-oracle",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "Loss Prevention Professional, Part-Time, Ottawa (Future Opportunities)",
+        "url": "https://eljs.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX/job/62821"
+      },
+      {
+        "sourceKey": "tiffany-oracle",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "Team Manager - Toronto (Future Opportunities)",
+        "url": "https://eljs.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX/job/62009"
+      },
+      {
+        "sourceKey": "uniqlo-au-stores",
+        "sourceStatus": "ACTIVE",
+        "motif": "expression of interest / express interest",
+        "title": "EXPRESS INTEREST: UNIQLO Melbourne Area 1 – Store Associates (Full-time)",
+        "url": "https://fastretailing.wd3.myworkdayjobs.com/store_staff_au_Uniqlo/job/UNIQLO-EMPORIUM-MELBOURNEUQAU/EXPRESS-INTEREST--UNIQLO-Melbourne-Area-1---Store-Associates--Full-time-_R00000004176280"
+      },
+      {
+        "sourceKey": "uniqlo-au-stores",
+        "sourceStatus": "ACTIVE",
+        "motif": "expression of interest / express interest",
+        "title": "EXPRESS INTEREST: UNIQLO Sunshine Plaza – Seasonal Store Associates (Full-time/Part-time)",
+        "url": "https://fastretailing.wd3.myworkdayjobs.com/store_staff_au_Uniqlo/job/UNIQLO-Sunshine-PlazaUQAU/EXPRESS-INTEREST--UNIQLO-Sunshine-Plaza---Seasonal-Store-Associates--Full-time-Part-time-_R00000004182504"
+      },
+      {
+        "sourceKey": "urbn-hub",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "Urban Outfitters Buying Admin Assistant - Future Opportunities",
+        "url": "https://homeoffice-eu-urbn.icims.com/jobs/30039/urban-outfitters-buying-admin-assistant---future-opportunities/job?hub=15&in_iframe=1"
+      },
+      {
+        "sourceKey": "urbn-hub",
+        "sourceStatus": "ACTIVE",
+        "motif": "future opportunities",
+        "title": "Urban Outfitters Merchandising Admin Assistant (12 Month FTC) - Future Opportunities",
+        "url": "https://homeoffice-eu-urbn.icims.com/jobs/6291/urban-outfitters-merchandising-admin-assistant-%2812-month-ftc%29---future-opportunities/job?hub=15&in_iframe=1"
+      }
+    ]
+  }
 }

@@ -26,7 +26,8 @@ describe('D-511 : une candidature spontanée reconnue sur sa preuve native', () 
     "General Application: You're Good at Everything",
     // langues servies, sans occurrence le 02/10
     'Candidatura espontánea', 'Candidatura spontanea - Milano', 'Candidature ouverte', 'Öppen ansökan', 'Åpen søknad',
-    'Uopfordret ansøgning', 'Avoin hakemus', 'Autocandidatura',
+    'Uopfordret ansøgning', 'Avoin hakemus', 'Autocandidatura', 'Candidatura libera', 'Candidatura abierta', 'Spontane Bewerbung',
+    'Candidatures spontanées et alternance',
   ])('retenue : « %s »', (title) => {
     expect(spontaneousApplicationProof(job(title))).toMatchObject({ kind: 'TITLE_LABEL' });
   });
@@ -39,6 +40,17 @@ describe('D-511 : une candidature spontanée reconnue sur sa preuve native', () 
     'Store Opening Manager', 'Open-to-close Sales Associate', 'Grand Opening Team Member', 'Open Application Platform Engineer',
     'Recruiter - Open Applications Team', 'General Application Support Analyst', 'Application Developer', 'General Manager',
     'Recruteur (candidatures spontanées)', 'Talent Acquisition Specialist, Spontaneous Applications',
+    // l'audit adverse du 02/10 : un pluriel après un séparateur nomme le domaine d'un poste ; une fonction ou une
+    // invitation après le libellé en fait une vraie offre ; « candidatures ouvertes » n'est pas un libellé
+    'Chargé(e) de recrutement - Candidatures spontanées et alternance', 'Talent Acquisition Specialist - Spontaneous Applications',
+    'Recruiter (m/w/d) Initiativbewerbungen', 'Sachbearbeiter (m/w/d) Initiativbewerbungen & Ausbildung',
+    'HR Assistant | Open Applications & Onboarding', 'Verkäufer (m/w/d) - Initiativbewerbung möglich',
+    'Kassierer (m/w/d) | Initiativbewerbungen willkommen', 'Client Advisor - Open applications welcome',
+    'Store Manager - Open Application Day Paris', 'Recruteur - Candidatures spontanées', 'Chargé de recrutement / Candidatures spontanées',
+    'Assistant RH | Candidatures spontanées et alternance', 'Spontaneous Applications Coordinator',
+    'Talent Acquisition: Unsolicited Applications Manager', 'Stage Marketing - Candidatures ouvertes',
+    'Candidatures ouvertes : Vendeur Saisonnier H/F', 'IT Manager - General Applications', 'General Applications/Systems Engineer',
+    'Open Application Data Engineer', 'Junior Sales - Open Application Process', 'Initiativbewerbung möglich: Verkäufer',
     // « initiativ » et « spontan » préfixes d'autres mots
     'Manager, Retail Operations, Initiatives - APAC', 'Senior Manager - Strategic Initiatives & Transformation, North Asia',
     'Initiative Management Team Leader', 'Spontaneous and creative Visual Merchandiser',
@@ -53,6 +65,14 @@ describe('D-511 : une candidature spontanée reconnue sur sa preuve native', () 
     expect(spontaneousApplicationProof(job('Εκδήλωση Ενδιαφέροντος', { opportunityType: 'OPEN_APPLICATION' })))
       .toEqual({ kind: 'NATIVE_FIELD', path: 'opportunityType', value: 'OPEN_APPLICATION' });
     expect(spontaneousApplicationProof(job('Client Advisor', { opportunityType: 'JOB_OPENING' }))).toBeNull();
+  });
+});
+
+describe('D-511 : la lecture reste bornée', () => {
+  it('un intitulé démesuré est lu en temps borné (pas de découpage quadratique)', () => {
+    const started = Date.now();
+    expect(spontaneousApplicationProof(job('Sales Advisor ' + '- '.repeat(100_000)))).toBeNull();
+    expect(Date.now() - started).toBeLessThan(500);
   });
 });
 

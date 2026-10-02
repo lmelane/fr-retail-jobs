@@ -178,6 +178,16 @@ describe('native source validation', () => {
     await expect(requireSourceValidation(db, source.currentRevisionId)).rejects.toMatchObject({ name: 'SourceValidationGateError', code: 'VALIDATION_MISSING' });
   });
 
+  it('D-511 : validates a collection made only of spontaneous applications, so that their publications are withdrawn (lerros)', async () => {
+    const { source, batch } = await capture([{ ...nativeJob, title: 'Initiativbewerbung' }]);
+    const validation = await validateCapturedSource(db, batch.id);
+    expect(validation).toMatchObject({ verdict: 'VALIDATED', report: { observed: 1, qualified: 0, held: 1, spontaneousWithdrawn: 1, reasons: {} } });
+    await expect(requireSourceValidation(db, source.currentRevisionId)).resolves.toBeTruthy();
+    // One real posting that is not readable keeps the collection rejected: the exception covers spontaneous applications only.
+    const mixed = await capture([{ ...nativeJob, title: 'Initiativbewerbung' }, { ...nativeJob, isListed: false }]);
+    expect(await validateCapturedSource(db, mixed.batch.id)).toMatchObject({ verdict: 'REJECTED', report: { reasons: { NO_QUALIFIED_PUBLICATION: 1 } } });
+  });
+
   it('rejects a captured derived value that the current reader cannot reproduce from native bytes', async () => {
     const { batch, network } = await capture([nativeJob], true);
     expect(await validateCapturedSource(db, batch.id)).toMatchObject({ verdict: 'REJECTED', report: { replayExact: false, reasons: { REPLAY_RESULT_CHANGED: 1 } } });

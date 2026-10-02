@@ -21,8 +21,10 @@ const path = process.argv[2];
 if (!path) throw new Error('usage: d511-spontanees-a-blanc.mts <publiques.jsonl>');
 const rows: Row[] = readFileSync(path, 'utf8').split('\n').filter(line => line.startsWith('{')).map(line => JSON.parse(line));
 
-const retenues = [];
-const divergences = [];
+type Retenue = { sourceKey: string; sourceStatus: string; externalId: string; jobId: string; company: string; title: string;
+  preuve: string; autresSourcesDisponibles: number; url: string };
+const retenues: Retenue[] = [];
+const divergences: Record<string, unknown>[] = [];
 for (const row of rows) {
   const opportunityType = row.opportunityType ?? undefined;
   const proofs = [row.sourceTitle, row.rawTitle, row.jobTitle].map(title => title ? spontaneousApplicationProof({ title, opportunityType }) : null);
@@ -37,10 +39,29 @@ for (const row of rows) {
 retenues.sort((a, b) => a.sourceKey.localeCompare(b.sourceKey) || a.title.localeCompare(b.title));
 const parSource: Record<string, { offres: number; statut: string }> = {};
 for (const r of retenues) parSource[r.sourceKey] = { offres: (parSource[r.sourceKey]?.offres ?? 0) + 1, statut: r.sourceStatus };
+/**
+ * Les cas voisins, HORS de la règle et à arbitrer (D-511) : viviers et « opportunités futures ». Comptés ici pour que le
+ * chiffre écrit se recompte ; leur classement « poste nommé ou non » se lit à la main dans `liste`.
+ */
+const VOISINS: Record<string, RegExp> = {
+  'talent pool / community / network': /talent\s+(?:pool|community|network)/i,
+  'future opportunities': /future\s+opportunit/i,
+  'expression of interest / express interest': /express(?:ion)?\s+(?:of\s+)?interest/i,
+  'register your interest': /register\s+your\s+interest/i,
+  'vivier': /(?<!roger\s)\bvivier\b/i,
+};
+const voisins = rows.filter(row => !retenues.some(r => r.jobId === row.jobId))
+  .flatMap(row => { const title = row.sourceTitle ?? row.jobTitle; const motif = Object.keys(VOISINS).find(k => VOISINS[k].test(title));
+    return motif ? [{ sourceKey: row.sourceKey, sourceStatus: row.sourceStatus, motif, title, url: row.url }] : []; })
+  .sort((a, b) => a.sourceKey.localeCompare(b.sourceKey) || a.title.localeCompare(b.title));
+const voisinsParMotif: Record<string, number> = {};
+for (const v of voisins) voisinsParMotif[v.motif] = (voisinsParMotif[v.motif] ?? 0) + 1;
+
 console.log(JSON.stringify({
   publicationsLues: rows.length,
   retenues: retenues.length,
   offresDistinctes: new Set(retenues.map(r => r.jobId)).size,
   dontSourceActive: retenues.filter(r => r.sourceStatus === 'ACTIVE').length,
   parSource, divergences, liste: retenues,
+  voisinsHorsRegle: { total: voisins.length, parMotif: voisinsParMotif, liste: voisins },
 }, null, 2));

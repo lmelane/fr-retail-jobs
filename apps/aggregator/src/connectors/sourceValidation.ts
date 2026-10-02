@@ -8,6 +8,7 @@ import { compareExtractionResult, readExtractionManifest } from '../capture/mani
 import { captureReaderRevision } from '../capture/revision.js';
 import { captureConfig } from '../capture/config.js';
 import { readRawBlob } from '../capture/store.js';
+import { SPONTANEOUS_APPLICATION_HOLD } from '../pipeline/spontaneousApplication.js';
 import { recoverRetainedPublication, PER_PUBLICATION_REASONS } from '../publication/recovery.js';
 import { evidenceHash } from '../lib/evidenceHash.js';
 import { effectiveSourceConfig } from './sourceConfig.js';
@@ -29,6 +30,11 @@ export type SourceValidationReport = {
   inputRejected: number;
   inputUnqualified?: number;
   nativeEmpty: boolean;
+  /**
+   * D-511 : publications held as spontaneous applications, withdrawn on their native proof. A collection made only of
+   * them publishes nothing, and is still validated so that their earlier publications are withdrawn.
+   */
+  spontaneousWithdrawn?: number;
   /** Only when the already-reviewed portal rule resolves an absent native employer. */
   registryEmployer?: CertifiedPortalIdentity;
   reasons: Record<string, number>;
@@ -61,6 +67,14 @@ async function nativeEmptyFeed(db: PrismaClient, batchId: string, kind: string, 
   return typeof value?.version === 'string' && /^https:\/\/jsonfeed\.org\/version\/1(?:\.1)?$/.test(value.version) &&
     Array.isArray(value.items) && value.items.length === 0 && value.next_url == null;
 }
+
+/**
+ * D-511 : every observed publication is a spontaneous application withdrawn on its native proof (lerros, a single
+ * « Initiativbewerbung », 02/10/2026). Nothing is published, and the validation lets the ingestion withdraw them. Only
+ * this reason: a source whose every page answers 404 stays rejected (a broken reader is not a native proof).
+ */
+const onlySpontaneous = (report: SourceValidationReport) =>
+  report.observed > 0 && report.held === report.observed && report.spontaneousWithdrawn === report.observed && report.rejected === 0;
 
 /** Validate a recorded collector with today's reader. No count supplied by an
  * operator can create a validation. The record is independent of activation;
@@ -99,7 +113,11 @@ export async function validateCapturedSource(db: PrismaClient, batchId: string, 
       report.inputUnqualified = (replayed.rejectedRows ?? []).filter(row => !EXPLAINED_NATIVE_ROWS.has(row.reason)).length;
       for (const job of replayed.jobs) {
         const eligible = portal ? employerFromCertifiedScope(job, portal.ownerName, portal.scope) : job;
-        if (eligible.publicationHold || eligible.publicationWithdrawnAt) { report.held++; continue; }
+        if (eligible.publicationHold || eligible.publicationWithdrawnAt) {
+          report.held++;
+          if (eligible.publicationHold === SPONTANEOUS_APPLICATION_HOLD && eligible.publicationWithdrawnAt) report.spontaneousWithdrawn = (report.spontaneousWithdrawn ?? 0) + 1;
+          continue;
+        }
         const registryResolved = !!job.publicationHold && !eligible.publicationHold;
         if (registryResolved) report.registryEmployer = portal!;
         const recovery = recoverRetainedPublication(revision.kind, job.raw, {
@@ -115,7 +133,7 @@ export async function validateCapturedSource(db: PrismaClient, batchId: string, 
           await nativeEmptyFeed(db, batch.id, revision.kind, store);
         if (!report.nativeEmpty) reason('EMPTY_FEED_NOT_NATIVELY_PROVEN');
       }
-      if (report.observed && !report.qualified) reason('NO_QUALIFIED_PUBLICATION');
+      if (report.observed && !report.qualified && !onlySpontaneous(report)) reason('NO_QUALIFIED_PUBLICATION');
     }
   } catch {
     // Details remain in the capture. Do not copy exception messages containing
@@ -133,7 +151,7 @@ export async function validateCapturedSource(db: PrismaClient, batchId: string, 
   const allowance = unqualifiedAllowanceFor(report.observed + (report.inputUnqualified ?? 0));
   report.allowance = { ...VALIDATION_UNQUALIFIED_ALLOWANCE, applied: allowance };
   const verdict = report.replayExact && unqualified <= allowance && batchReasons.length === 0 &&
-    (report.qualified > 0 || report.nativeEmpty) ? 'VALIDATED' : 'REJECTED';
+    (report.qualified > 0 || report.nativeEmpty || onlySpontaneous(report)) ? 'VALIDATED' : 'REJECTED';
   return db.$transaction(async tx => {
     // Serialize completed decisions with promotion. The append sequence, not a
     // millisecond timestamp or UUID order, identifies the latest decision.
