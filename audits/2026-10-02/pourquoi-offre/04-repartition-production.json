@@ -1,5 +1,5 @@
 {
-  "at": "2026-10-02T14:25:04.223Z",
+  "at": "2026-10-02T14:55:18.365Z",
   "schema": {
     "availabilityHold": false,
     "publisherClosedAt": false
@@ -12,25 +12,34 @@
   "counts": {
     "total": 95779,
     "byState": {
-      "EXPOSEE": 85223,
+      "EXPOSEE": 86582,
       "MASQUEE": 0,
       "RETENUE_PAR_REGLE": 3,
       "ABSORBEE": 0,
       "FERMEE": 5976,
       "NON_PUBLIABLE": 0,
-      "HORS_MARCHE": 4577,
+      "HORS_MARCHE": 3218,
       "INEXPLIQUEE": 0
     },
     "byCause": {
-      "EXPOSEE/CONFIRMEE": 85223,
+      "EXPOSEE/CONFIRMEE": 85147,
       "FERMEE/PAR_LA_SOURCE": 5077,
-      "HORS_MARCHE/PAYS_HORS_MARCHE": 1360,
+      "EXPOSEE/PAYS_SEUL": 1359,
       "FERMEE/PAR_ECHEANCE": 899,
       "HORS_MARCHE/SANS_PAYS": 3217,
+      "EXPOSEE/SOURCE_EN_PAUSE": 76,
+      "HORS_MARCHE/PAYS_INCONNU": 1,
       "RETENUE_PAR_REGLE/CANDIDATURE_SPONTANEE": 3
     }
   },
   "identityReview": 0,
+  "retainedAtCollection": {
+    "FERMEE/PAR_LA_SOURCE": 72,
+    "INEXPLIQUEE/SANS_CAUSE": 2,
+    "RETENUE_PAR_REGLE/PREUVE_DE_LA_SOURCE": 45,
+    "RETENUE_PAR_REGLE/CANDIDATURE_SPONTANEE": 3,
+    "NON_PUBLIABLE/IDENTITE_EN_REVUE": 2629
+  },
   "unexplained": [],
   "byMarket": [
     {
@@ -49,9 +58,10 @@
           "INEXPLIQUEE": 0
         },
         "byCause": {
-          "EXPOSEE/CONFIRMEE": 40604,
+          "EXPOSEE/CONFIRMEE": 40590,
           "FERMEE/PAR_LA_SOURCE": 1964,
-          "FERMEE/PAR_ECHEANCE": 444
+          "FERMEE/PAR_ECHEANCE": 444,
+          "EXPOSEE/SOURCE_EN_PAUSE": 14
         }
       }
     },
@@ -71,9 +81,10 @@
           "INEXPLIQUEE": 0
         },
         "byCause": {
-          "EXPOSEE/CONFIRMEE": 13584,
+          "EXPOSEE/CONFIRMEE": 13580,
           "FERMEE/PAR_LA_SOURCE": 934,
-          "FERMEE/PAR_ECHEANCE": 28
+          "FERMEE/PAR_ECHEANCE": 28,
+          "EXPOSEE/SOURCE_EN_PAUSE": 4
         }
       }
     },
@@ -93,9 +104,10 @@
           "INEXPLIQUEE": 0
         },
         "byCause": {
-          "EXPOSEE/CONFIRMEE": 4319,
+          "EXPOSEE/CONFIRMEE": 4315,
           "FERMEE/PAR_LA_SOURCE": 412,
-          "FERMEE/PAR_ECHEANCE": 113
+          "FERMEE/PAR_ECHEANCE": 113,
+          "EXPOSEE/SOURCE_EN_PAUSE": 4
         }
       }
     },
@@ -115,9 +127,10 @@
           "INEXPLIQUEE": 0
         },
         "byCause": {
-          "EXPOSEE/CONFIRMEE": 3594,
+          "EXPOSEE/CONFIRMEE": 3587,
           "FERMEE/PAR_LA_SOURCE": 273,
           "FERMEE/PAR_ECHEANCE": 11,
+          "EXPOSEE/SOURCE_EN_PAUSE": 7,
           "RETENUE_PAR_REGLE/CANDIDATURE_SPONTANEE": 3
         }
       }
@@ -138,9 +151,10 @@
           "INEXPLIQUEE": 0
         },
         "byCause": {
-          "EXPOSEE/CONFIRMEE": 3479,
+          "EXPOSEE/CONFIRMEE": 3472,
           "FERMEE/PAR_LA_SOURCE": 129,
-          "FERMEE/PAR_ECHEANCE": 21
+          "FERMEE/PAR_ECHEANCE": 21,
+          "EXPOSEE/SOURCE_EN_PAUSE": 7
         }
       }
     },
@@ -182,9 +196,10 @@
           "INEXPLIQUEE": 0
         },
         "byCause": {
-          "EXPOSEE/CONFIRMEE": 2922,
+          "EXPOSEE/CONFIRMEE": 2914,
           "FERMEE/PAR_LA_SOURCE": 130,
-          "FERMEE/PAR_ECHEANCE": 13
+          "FERMEE/PAR_ECHEANCE": 13,
+          "EXPOSEE/SOURCE_EN_PAUSE": 8
         }
       }
     },
@@ -204,8 +219,9 @@
           "INEXPLIQUEE": 0
         },
         "byCause": {
-          "EXPOSEE/CONFIRMEE": 2253,
+          "EXPOSEE/CONFIRMEE": 2237,
           "FERMEE/PAR_LA_SOURCE": 250,
+          "EXPOSEE/SOURCE_EN_PAUSE": 16,
           "FERMEE/PAR_ECHEANCE": 9
         }
       }
@@ -260,19 +276,20 @@
       "counts": {
         "total": 1471,
         "byState": {
-          "EXPOSEE": 0,
+          "EXPOSEE": 1359,
           "MASQUEE": 0,
           "RETENUE_PAR_REGLE": 0,
           "ABSORBEE": 0,
           "FERMEE": 111,
           "NON_PUBLIABLE": 0,
-          "HORS_MARCHE": 1360,
+          "HORS_MARCHE": 1,
           "INEXPLIQUEE": 0
         },
         "byCause": {
-          "HORS_MARCHE/PAYS_HORS_MARCHE": 1360,
+          "EXPOSEE/PAYS_SEUL": 1359,
           "FERMEE/PAR_ECHEANCE": 49,
-          "FERMEE/PAR_LA_SOURCE": 62
+          "FERMEE/PAR_LA_SOURCE": 62,
+          "HORS_MARCHE/PAYS_INCONNU": 1
         }
       }
     },
@@ -357,8 +374,9 @@
           "INEXPLIQUEE": 0
         },
         "byCause": {
-          "EXPOSEE/CONFIRMEE": 615,
+          "EXPOSEE/CONFIRMEE": 614,
           "FERMEE/PAR_LA_SOURCE": 30,
+          "EXPOSEE/SOURCE_EN_PAUSE": 1,
           "FERMEE/PAR_ECHEANCE": 1
         }
       }
@@ -423,7 +441,8 @@
           "INEXPLIQUEE": 0
         },
         "byCause": {
-          "EXPOSEE/CONFIRMEE": 519,
+          "EXPOSEE/CONFIRMEE": 512,
+          "EXPOSEE/SOURCE_EN_PAUSE": 7,
           "FERMEE/PAR_LA_SOURCE": 11
         }
       }
@@ -726,7 +745,8 @@
           "INEXPLIQUEE": 0
         },
         "byCause": {
-          "EXPOSEE/CONFIRMEE": 207,
+          "EXPOSEE/CONFIRMEE": 206,
+          "EXPOSEE/SOURCE_EN_PAUSE": 1,
           "FERMEE/PAR_LA_SOURCE": 10,
           "FERMEE/PAR_ECHEANCE": 2
         }
@@ -791,7 +811,8 @@
           "INEXPLIQUEE": 0
         },
         "byCause": {
-          "EXPOSEE/CONFIRMEE": 183,
+          "EXPOSEE/CONFIRMEE": 176,
+          "EXPOSEE/SOURCE_EN_PAUSE": 7,
           "FERMEE/PAR_LA_SOURCE": 5,
           "FERMEE/PAR_ECHEANCE": 3
         }

@@ -1,19 +1,19 @@
-Hermès — 889 offres au 2026-10-02T14:25:34.539Z (base sans retenue R-143 §2)
-  EXPOSEE                 886
-  HORS_MARCHE               3
+Hermès — 889 offres au 2026-10-02T14:54:28.963Z (base sans retenue R-143 §2)
+  EXPOSEE                 889
   par cause :
     EXPOSEE/CONFIRMEE                               886
-    HORS_MARCHE/PAYS_HORS_MARCHE                      3
+    EXPOSEE/PAYS_SEUL                                 3
   sans cause : 0
-France — 14 546 offres au 2026-10-02T14:25:35.654Z (base sans retenue R-143 §2)
+France — 14 546 offres au 2026-10-02T14:54:30.087Z (base sans retenue R-143 §2)
   EXPOSEE              13 584
   FERMEE                  962
   par cause :
-    EXPOSEE/CONFIRMEE                            13 584
+    EXPOSEE/CONFIRMEE                            13 580
     FERMEE/PAR_LA_SOURCE                            934
     FERMEE/PAR_ECHEANCE                              28
+    EXPOSEE/SOURCE_EN_PAUSE                           4
   sans cause : 0
-Swatch Group — 45 offres au 2026-10-02T14:25:37.266Z (base sans retenue R-143 §2)
+Swatch Group — 45 offres au 2026-10-02T14:54:31.657Z (base sans retenue R-143 §2)
   EXPOSEE                  43
   RETENUE_PAR_REGLE         1
   HORS_MARCHE               1

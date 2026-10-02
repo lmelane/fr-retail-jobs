@@ -48,8 +48,9 @@ try {
     }
     if (flag('verifier')) {
       const check = await verifyExposedAgainstSearch(tx, { at });
-      const ok = check.onlyExposedCount === 0 && check.onlyServedCount === 0;
-      return { text: [`EXPOSEE ${check.exposed} ; servies par la recherche dans un marché ouvert ${check.served} ; ${ok ? 'identiques' : `ÉCART : ${check.onlyExposedCount} exposées non servies, ${check.onlyServedCount} servies non exposées`}`],
+      const ok = check.onlyExposedCount === 0 && check.onlyServedCount === 0 && check.outsideMarketsMismatch === 0;
+      return { text: [`EXPOSEE ${check.exposed} ; servies par la recherche dans un marché ouvert ${check.served} ; ${ok ? 'identiques' : `ÉCART : ${check.onlyExposedCount} exposées non servies, ${check.onlyServedCount} servies non exposées`}`,
+        `Servies hors marché ouvert (sans pays, ou pays seul) ${check.publicOutsideMarkets} ; toutes HORS_MARCHE : ${check.outsideMarketsMismatch === 0 ? 'oui' : `non, ${check.outsideMarketsMismatch} écarts`}`],
         json: check, exit: ok ? 0 : 1 };
     }
     const sample = value('echantillon');
@@ -82,6 +83,8 @@ try {
       ...Object.entries(d.counts.byState).filter(([, v]) => v > 0).map(([s, v]) => `  ${s.padEnd(18)} ${n(v).padStart(8)}`),
       '  par cause :', ...Object.entries(d.counts.byCause).sort((a, b) => b[1] - a[1]).map(([c, v]) => `    ${c.padEnd(42)} ${n(v).padStart(8)}`),
       ...(d.identityReview ? [`  publications en revue d’identité (non rattachées) : ${n(d.identityReview)}`] : []),
+      ...(Object.keys(d.retainedAtCollection ?? {}).length ? ['  publications retenues dès la collecte, jamais publiées :',
+        ...Object.entries(d.retainedAtCollection!).sort((a, b) => b[1] - a[1]).map(([c, v]) => `    ${c.padEnd(42)} ${n(v).padStart(8)}`)] : []),
       `  sans cause : ${n(d.counts.byState.INEXPLIQUEE)}${d.unexplained.length ? ` (${d.unexplained.slice(0, 10).map(u => `${u.id} : ${u.detail}`).join(' ; ')})` : ''}`,
       ...(d.byMarket ?? []).map(m => `  ${m.market.padEnd(12)} ${n(m.counts.total).padStart(7)} : ${Object.entries(m.counts.byState).filter(([, v]) => v > 0).map(([s, v]) => `${s} ${n(v)}`).join(', ')}`)];
     return { text, json: d, exit: 0 };

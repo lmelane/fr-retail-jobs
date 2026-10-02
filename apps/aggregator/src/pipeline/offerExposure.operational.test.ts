@@ -47,11 +47,11 @@ async function offer(id: string, over: { country?: string | null; active?: boole
 
 /** Une offre par cause atteignable en base ; `expected` est l'état que chaque fixture doit porter. */
 const expected: Record<string, string> = {
-  exposee: 'EXPOSEE/CONFIRMEE', pausee: 'EXPOSEE/CONFIRMEE', boardseul: 'EXPOSEE/CONFIRMEE',
+  exposee: 'EXPOSEE/CONFIRMEE', pausee: 'EXPOSEE/SOURCE_EN_PAUSE', boardseul: 'EXPOSEE/CONFIRMEE',
   nonrevue: 'MASQUEE/NON_RECONFIRMEE', plafond: 'MASQUEE/PLAFOND_72H', lienmort: 'MASQUEE/LIEN_MORT',
   sanspreuve: 'MASQUEE/RETIREE_SANS_PREUVE', spontanee: 'RETENUE_PAR_REGLE/CANDIDATURE_SPONTANEE', sansannonce: 'RETENUE_PAR_REGLE/POSTE_SANS_ANNONCE',
   absorbee: 'ABSORBEE/DOUBLON', gagnante: 'EXPOSEE/CONFIRMEE', fermee: 'FERMEE/PAR_LA_SOURCE', echue: 'FERMEE/PAR_ECHEANCE',
-  autorite: 'FERMEE/PAR_AUTORITE', exclue: 'NON_PUBLIABLE/SOURCE_EXCLUE', sanspays: 'HORS_MARCHE/SANS_PAYS', inde: 'HORS_MARCHE/PAYS_HORS_MARCHE',
+  autorite: 'FERMEE/PAR_AUTORITE', exclue: 'NON_PUBLIABLE/SOURCE_EXCLUE', sanspays: 'HORS_MARCHE/SANS_PAYS', inde: 'EXPOSEE/PAYS_SEUL', kosovo: 'HORS_MARCHE/PAYS_INCONNU',
   incoherente: 'INEXPLIQUEE/SANS_CAUSE',
 };
 
@@ -86,10 +86,14 @@ beforeAll(async () => {
   await offer('exclue', { active: false, withdrawnAt: h(4), reason: 'SOURCE_RETIRED', reps: [{ key: 'expo-retiree', ext: 'r1', active: false }] });
   await offer('sanspays', { country: null, reps: [{ ext: 'sp1' }] });
   await offer('inde', { country: 'IN', reps: [{ ext: 'in1' }] });
+  await offer('kosovo', { country: 'XK', reps: [{ ext: 'xk1' }] });
   await offer('incoherente', { active: false, reps: [{ ext: 'i1', active: false }] });
   await prisma.sourceObservation.createMany({ data: [
     { sourceKey: 'expo-ats', externalId: 's1', contentHash: 'h-s1', annotationHash: 'a-s1', pipelineVersion: 1, publicationHold: 'NATIVE_SPONTANEOUS_APPLICATION', raw: {} },
     { sourceKey: 'expo-ats', externalId: 't1', contentHash: 'h-t1', annotationHash: 'a-t1', pipelineVersion: 1, publicationHold: 'NATIVE_ADVERTISEMENT_WITHDRAWN', raw: {} },
+    // Jamais publiées : retenues dès la collecte, l'une par une preuve de la source, l'autre pour un motif à instruire.
+    { sourceKey: 'expo-ats', externalId: 'nv1', contentHash: 'h-nv1', annotationHash: 'a-nv1', pipelineVersion: 1, publicationHold: 'NATIVE_DESCRIPTION_EMPTY', raw: {} },
+    { sourceKey: 'expo-ats', externalId: 'nv2', contentHash: 'h-nv2', annotationHash: 'a-nv2', pipelineVersion: 1, publicationHold: 'EXPO_DETAIL_FETCH_FAILED', raw: {} },
   ] });
   // Une publication non rattachée, l'employeur en revue d'identité. En production elle naît d'une collecte réelle (sa
   // capture est exigée par les déclencheurs) ; ici seul son état est posé, déclencheurs suspendus pour cette seule ligne.
@@ -113,20 +117,22 @@ describe('D-520 §3 — l’état d’exposition sur une vraie base', () => {
     const check = await verifyExposedAgainstSearch(prisma);
     // Prémisse : la base contient des offres actives que la recherche NE sert PAS (retenues, échues, hors marché).
     expect(await prisma.job.count({ where: { isActive: true, mergedIntoId: null } })).toBeGreaterThan(check.served);
-    expect(check).toMatchObject({ exposed: 4, served: 4, onlyExposedCount: 0, onlyServedCount: 0 });
+    expect(check).toMatchObject({ exposed: 5, served: 5, onlyExposedCount: 0, onlyServedCount: 0, publicOutsideMarkets: 2, outsideMarketsMismatch: 0 });
   });
 
   it('la répartition compte tout, nomme les offres sans cause et les publications en revue', async () => {
     const d = await readExposureDistribution(prisma, { byMarket: true });
     expect(d.counts.total).toBe(Object.keys(expected).length);
-    expect(d.counts.byState).toMatchObject({ EXPOSEE: 4, MASQUEE: 4, RETENUE_PAR_REGLE: 2, ABSORBEE: 1, FERMEE: 3, NON_PUBLIABLE: 1, HORS_MARCHE: 2, INEXPLIQUEE: 1 });
+    expect(d.counts.byState).toMatchObject({ EXPOSEE: 5, MASQUEE: 4, RETENUE_PAR_REGLE: 2, ABSORBEE: 1, FERMEE: 3, NON_PUBLIABLE: 1, HORS_MARCHE: 2, INEXPLIQUEE: 1 });
+    expect(d.retainedAtCollection).toEqual({ 'RETENUE_PAR_REGLE/PREUVE_DE_LA_SOURCE': 1, 'INEXPLIQUEE/SANS_CAUSE': 1 });
     expect(d.unexplained.map(u => u.id)).toEqual(['incoherente']);
     expect(d.identityReview).toBe(1);
     expect(d.byMarket?.find(m => m.market === 'FR')?.counts.byState.EXPOSEE).toBe(4);
+    expect(d.byMarket?.find(m => m.market === 'hors marché')?.counts.byCause).toEqual({ 'EXPOSEE/PAYS_SEUL': 1, 'HORS_MARCHE/PAYS_INCONNU': 1 });
     const maison = await readExposureDistribution(prisma, { scope: { kind: 'MAISON', companyId } });
     expect(maison.counts.total).toBe(Object.keys(expected).length);
     const inde = await readExposureDistribution(prisma, { scope: { kind: 'MARCHE', code: 'IN' } });
-    expect(inde.counts.byCause).toEqual({ 'HORS_MARCHE/PAYS_HORS_MARCHE': 1 });
+    expect(inde.counts.byCause).toEqual({ 'EXPOSEE/PAYS_SEUL': 1 });
   });
 
   it('pourquoi-offre : une offre absorbée nomme sa gagnante et l’état de celle-ci', async () => {
@@ -142,13 +148,14 @@ describe('D-520 §3 — l’état d’exposition sur une vraie base', () => {
     expect((await explainOffer(prisma, 'https://catwalks.io/fr/offre/conseiller-de-vente-paris-nonrevue'))?.offer?.id).toBe('nonrevue');
     const q = await explainOffer(prisma, 'expo-ats:q1');
     expect(q?.offer).toBeNull();
-    expect(q?.exposure).toMatchObject({ state: 'NON_PUBLIABLE', cause: 'IDENTITE_EN_REVUE' });
+    expect(q?.exposure).toMatchObject({ state: 'NON_PUBLIABLE', cause: 'IDENTITE_EN_REVUE', trajectory: 'SUR_DECISION' });
+    expect((await explainOffer(prisma, 'expo-ats:nv1'))?.exposure).toMatchObject({ state: 'RETENUE_PAR_REGLE', cause: 'PREUVE_DE_LA_SOURCE' });
     expect(await explainOffer(prisma, 'inconnue')).toBeNull();
   });
 
   it('pourquoi-offre : la trajectoire dit l’état opérationnel de la source qui porte la cause', async () => {
     const e = await explainOffer(prisma, 'nonrevue');
-    expect(e?.exposure.cause).toBe('NON_RECONFIRMEE');
+    expect(e?.exposure).toMatchObject({ cause: 'NON_RECONFIRMEE', trajectory: 'REVIENT_SEULE' });
     expect(e?.exposure.comeback).toContain('expo-ats (ACTIVE, aucune collecte de RUN)');
     expect(e?.sources[0]).toMatchObject({ hold: 'NOT_RECONFIRMED', sourceState: 'ACTIVE, aucune collecte de RUN' });
   });

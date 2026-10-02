@@ -1,0 +1,15 @@
+{
+  "schema": {
+    "availabilityHold": false,
+    "publisherClosedAt": false
+  },
+  "at": "2026-10-02T14:53:23.606Z",
+  "exposed": 86582,
+  "served": 86582,
+  "onlyExposedCount": 0,
+  "onlyServedCount": 0,
+  "publicOutsideMarkets": 3218,
+  "outsideMarketsMismatch": 0,
+  "onlyExposed": [],
+  "onlyServed": []
+}

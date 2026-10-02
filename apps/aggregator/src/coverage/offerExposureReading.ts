@@ -12,8 +12,9 @@ import { canonicalJobId } from '@catwalks/db';
 import { MARCHES } from '@catwalks/db/marches';
 import { LIGHT_PASS_RUN_COMMAND } from '../pipeline/referenceRuns.js';
 import { canonicalCompany, marketLabel, marketOf } from './coverageReading.js';
-import { classifyExposure, comeback, countVerdict, emptyCounts, CAUSE_LABEL, STATE_LABEL, type ExposureCounts, type ExposureJob,
-  type ExposureSource, type ExposureSummary, type ExposureVerdict } from './offerExposure.js';
+import { knownAlpha2 } from '@catwalks/db/iso-alpha2';
+import { classifyCollectionHold, classifyExposure, countVerdict, emptyCounts, trajectory, CAUSE_LABEL, STATE_LABEL, TRAJECTORY_LABEL,
+  type ExposureCounts, type ExposureJob, type ExposureSource, type ExposureSummary, type ExposureVerdict } from './offerExposure.js';
 
 type Db = Prisma.TransactionClient | PrismaClient;
 export type ExposureSchema = { availabilityHold: boolean; publisherClosedAt: boolean };
@@ -141,9 +142,22 @@ export async function readExposureDistribution(db: Db, options: { at?: Date; sco
   }
   const quarantine = scope.kind === 'CATALOGUE' ? (await db.$queryRaw<Array<{ n: number }>>`
     SELECT count(*)::int AS n FROM "JobSource" WHERE "jobId" IS NULL AND "isActive"`)[0].n : 0;
+  const retainedAtCollection: Record<string, number> = {};
+  if (scope.kind === 'CATALOGUE') {
+    // La dernière retenue de chaque publication jamais écrite comme représentation (82 ms en production, 13 807 lignes).
+    const holds = await db.$queryRaw<Array<{ hold: string; n: number }>>`
+      SELECT hold, count(*)::int AS n FROM (
+        SELECT DISTINCT ON (o."sourceKey", o."externalId") o."publicationHold" AS hold FROM "SourceObservation" o
+        WHERE o."publicationHold" IS NOT NULL AND NOT EXISTS (SELECT 1 FROM "JobSource" s WHERE s."sourceKey" = o."sourceKey" AND s."externalId" = o."externalId")
+        ORDER BY o."sourceKey", o."externalId", o."observedAt" DESC) t GROUP BY 1`;
+    for (const row of holds) {
+      const v = classifyCollectionHold(row.hold, null, row.hold), key = `${v.state}/${v.cause}`;
+      retainedAtCollection[key] = (retainedAtCollection[key] ?? 0) + row.n;
+    }
+  }
   const label = scope.kind === 'MAISON' ? maison!.label : scope.kind === 'MARCHE' ? marketLabel(scope.code.toUpperCase()) : 'catalogue';
   return { at: at.toISOString(), schema, scope: { kind: scope.kind, key: scope.kind === 'MAISON' ? scope.companyId : scope.kind === 'MARCHE' ? scope.code.toUpperCase() : null, label },
-    counts, identityReview: quarantine, unexplained,
+    counts, identityReview: quarantine, retainedAtCollection, unexplained,
     ...(options.byMarket ? { byMarket: [...markets.entries()].map(([market, c]) => ({ market,
       label: MARCHES[market as keyof typeof MARCHES] ? marketLabel(market) : market, counts: c })).sort((a, b) => b.counts.total - a.counts.total) } : {}) };
 }
@@ -166,6 +180,8 @@ export async function readExposureIds(db: Db, at = new Date()): Promise<Map<stri
 }
 
 const ALL_MARKET_COUNTRIES = Object.values(MARCHES).flatMap(m => [...m.pays]);
+/** Ce que `/emplois` atteint : les pays des marchés ouverts, et tout pays connu servi seul (`perimetreDeRecherche`, `PAYS_CONNUS`). */
+const SEARCHABLE_COUNTRIES = [...new Set([...ALL_MARKET_COUNTRIES, ...knownAlpha2()])];
 /**
  * EXPOSÉE = CE QUE SERT LA RECHERCHE. Compare les offres EXPOSEE aux offres que `/emplois` sert dans ses marchés : le
  * prédicat public (`publicJobSql` par défaut, celui de `job-search-query.ts`) et un pays de marché ouvert. `predicate`
@@ -175,11 +191,19 @@ export async function verifyExposedAgainstSearch(db: Db, options: { at?: Date; p
   const at = options.at ?? new Date();
   const { publicJobSql } = await import('@catwalks/db/availability');
   const predicate = options.predicate ?? publicJobSql;
-  const exposed = new Set((await readExposureIds(db, at)).get('EXPOSEE/CONFIRMEE') ?? []);
-  const served = new Set((await db.$queryRaw<Array<{ id: string }>>(Prisma.sql`
-    SELECT j.id FROM "Job" j WHERE ${predicate(Prisma.sql`j`, at)} AND j."countryCode" = ANY(${ALL_MARKET_COUNTRIES}::text[])`)).map(r => r.id));
+  const ids = await readExposureIds(db, at);
+  const exposed = new Set([...ids.entries()].filter(([k]) => k.startsWith('EXPOSEE/')).flatMap(([, list]) => list));
+  const rows = await db.$queryRaw<Array<{ id: string; market: boolean }>>(Prisma.sql`
+    SELECT j.id, coalesce(j."countryCode" = ANY(${SEARCHABLE_COUNTRIES}::text[]), false) AS market FROM "Job" j WHERE ${predicate(Prisma.sql`j`, at)}`);
+  const served = new Set(rows.filter(r => r.market).map(r => r.id));
   const onlyExposed = [...exposed].filter(id => !served.has(id)), onlyServed = [...served].filter(id => !exposed.has(id));
+  // Le reste du prédicat public (sans pays, ou un pays inconnu du catalogue : seul le lien l'atteint) est HORS_MARCHE, et
+  // rien d'autre : aucune offre au prédicat public ne peut porter un état qui la dit retirée.
+  const outside = new Set([...(ids.get('HORS_MARCHE/PAYS_INCONNU') ?? []), ...(ids.get('HORS_MARCHE/SANS_PAYS') ?? [])]);
+  const publicOutside = new Set(rows.filter(r => !r.market).map(r => r.id));
+  const outsideMismatch = [...publicOutside].filter(id => !outside.has(id)).length + [...outside].filter(id => !publicOutside.has(id)).length;
   return { at: at.toISOString(), exposed: exposed.size, served: served.size, onlyExposedCount: onlyExposed.length, onlyServedCount: onlyServed.length,
+    publicOutsideMarkets: publicOutside.size, outsideMarketsMismatch: outsideMismatch,
     onlyExposed: onlyExposed.slice(0, 50), onlyServed: onlyServed.slice(0, 50) };
 }
 
@@ -204,7 +228,8 @@ async function sourceStates(db: Db, keys: string[]): Promise<Map<string, { statu
 export type OfferExplanation = {
   at: string; schema: ExposureSchema; requested: string; resolvedBy: 'id' | 'url-offre' | 'url-publication' | 'publication';
   offer: { id: string; title: string; canonicalId: string | null } | null;
-  exposure: { state: string; stateLabel: string; cause: string; causeLabel: string; detail: string; sourceKey: string | null; comeback: string };
+  exposure: { state: string; stateLabel: string; cause: string; causeLabel: string; detail: string; sourceKey: string | null;
+    trajectory: string; trajectoryLabel: string; comeback: string };
   sources: Array<{ sourceKey: string; tier: string; externalId: string; url: string; active: boolean; sourceState: string;
     firstSeenAt: string; lastSeenAt: string; expiresAt: string | null; hold: string | null; holdAt: string | null; publisherClosedAt: string | null;
     lastCollectionHold: string | null; capture: { batchId: string; startedAt: string; runId: string | null; command: string | null } | null }>;
@@ -217,6 +242,10 @@ export type OfferExplanation = {
 };
 
 const iso = (d: Date | null | undefined) => d ? d.toISOString() : null;
+function exposureTrajectory(v: ExposureVerdict, context: Parameters<typeof trajectory>[1]) {
+  const t = trajectory(v, context);
+  return { trajectory: t.kind, trajectoryLabel: TRAJECTORY_LABEL[t.kind], comeback: t.text };
+}
 
 /** Retrouve l'offre : identifiant (ou slug-id de catwalks.io), lien de l'offre, lien d'une publication, ou `source:identifiant`. */
 async function resolveOffer(db: Db, ref: string): Promise<{ jobId: string | null; publication: { sourceKey: string; externalId: string } | null; by: OfferExplanation['resolvedBy'] }> {
@@ -267,18 +296,13 @@ async function explainPublicationOnly(db: Db, schema: ExposureSchema, at: Date, 
     v = { state: 'NON_PUBLIABLE', cause: 'IDENTITE_EN_REVUE', sourceKey: pub.sourceKey,
       detail: `publication en quarantaine depuis le ${iso(row.quarantinedAt) ?? '?'} : ${row.quarantineReason ?? 'identité de l’employeur non établie'}` } as ExposureVerdict;
   } else if (hold) {
-    const cause = hold.hold === 'NATIVE_SPONTANEOUS_APPLICATION' ? 'CANDIDATURE_SPONTANEE' : hold.hold === 'NATIVE_ADVERTISEMENT_WITHDRAWN' ? 'POSTE_SANS_ANNONCE'
-      : hold.hold === 'SCOPE_OUT_OF_PERIMETER' ? 'HORS_PERIMETRE' : hold.hold === 'SOURCE_UNLISTED' ? 'RETIREE_DU_LISTING' : null;
-    v = cause ? { state: 'RETENUE_PAR_REGLE', cause, sourceKey: pub.sourceKey, detail: `jamais publiée : retenue ${hold.hold} le ${iso(hold.observedAt)}` } as ExposureVerdict
-      : hold.hold.startsWith('APPLICATION_') ? { state: 'FERMEE', cause: 'PAR_LA_SOURCE', sourceKey: pub.sourceKey, detail: `jamais publiée : ${hold.hold} le ${iso(hold.observedAt)}` } as ExposureVerdict
-      : hold.hold === 'WORKDAY_EMPLOYER_ABSENT_IN_DETAIL' ? { state: 'NON_PUBLIABLE', cause: 'IDENTITE_EN_REVUE', sourceKey: pub.sourceKey, detail: `jamais publiée : l’annonce ne nomme pas son employeur (${iso(hold.observedAt)})` } as ExposureVerdict
-      : { state: 'INEXPLIQUEE', cause: 'SANS_CAUSE', sourceKey: pub.sourceKey, detail: `jamais publiée : retenue ${hold.hold} sans état d’exposition connu` } as ExposureVerdict;
+    v = classifyCollectionHold(hold.hold, pub.sourceKey, `jamais publiée : retenue ${hold.hold} le ${iso(hold.observedAt)}`);
   } else {
     v = { state: 'INEXPLIQUEE', cause: 'SANS_CAUSE', sourceKey: pub.sourceKey, detail: 'publication inactive non rattachée, sans retenue' } as ExposureVerdict;
   }
   return { at: at.toISOString(), schema, requested, resolvedBy: by, offer: null,
     exposure: { state: v.state, stateLabel: STATE_LABEL[v.state], cause: v.cause, causeLabel: CAUSE_LABEL[v.cause], detail: v.detail, sourceKey: v.sourceKey,
-      comeback: comeback(v, { sourceState: states.get(pub.sourceKey)?.text }) },
+      ...exposureTrajectory(v, { sourceState: states.get(pub.sourceKey)?.text, sourceStatus: states.get(pub.sourceKey)?.status, maskingLive: schema.availabilityHold }) },
     sources: rows.map(r => sourceView(r, states, null)), duplicates: { absorbedInto: [], winner: null, absorbed: [] },
     maison: { companyId: '', name: '', kind: '', canonicalKey: '', maisonId: '', maisonName: '', group: null, sectors: [] },
     canonical: {}, freshness: { postedAt: iso(row?.postedAt), firstSeenAt: iso(row?.firstSeenAt) ?? '', lastSeenAt: iso(row?.lastSeenAt) ?? '', lastReview: null, lastReviewBy: null },
@@ -339,7 +363,8 @@ export async function explainOffer(db: Db, ref: string, at = new Date()): Promis
     at: at.toISOString(), schema, requested: ref, resolvedBy: found.by,
     offer: { id: job.id, title: job.title, canonicalId },
     exposure: { state: v.state, stateLabel: STATE_LABEL[v.state], cause: v.cause, causeLabel: CAUSE_LABEL[v.cause], detail: v.detail, sourceKey: v.sourceKey,
-      comeback: comeback(v, { sourceState: v.sourceKey ? states.get(v.sourceKey)?.text : null, winnerId: winner?.id ?? null }) },
+      ...exposureTrajectory(v, { sourceState: v.sourceKey ? states.get(v.sourceKey)?.text : null, sourceStatus: v.sourceKey ? states.get(v.sourceKey)?.status : null,
+        winnerId: winner?.id ?? null, maskingLive: schema.availabilityHold }) },
     sources: job.sourceRows.map(r => sourceView(r, states, r.captureBatchId ? captures.get(r.captureBatchId) ?? null : null, holdOf.get(`${r.sourceKey}\u0000${r.externalId}`) ?? null)),
     duplicates: { absorbedInto: chain, winner, absorbed },
     maison: { companyId: full.company.id, name: full.company.name, kind: full.company.kind, canonicalKey: full.company.canonicalKey,
@@ -364,7 +389,7 @@ export function explanationText(e: OfferExplanation): string[] {
   const out: string[] = [];
   const d = (s: string | null | undefined) => s ? s.slice(0, 16).replace('T', ' ') + ' UTC' : '—';
   out.push(`Offre ${e.offer?.id ?? '(publication non rattachée)'}${e.offer ? ` — ${e.offer.title}` : ''}   [lu le ${d(e.at)}${e.schema.availabilityHold ? '' : ', base sans retenue R-143 §2'}]`);
-  out.push('', `ÉTAT : ${e.exposure.stateLabel.toUpperCase()} — ${e.exposure.causeLabel}`, `  ${e.exposure.detail}`, `  Ce qui la ferait revenir : ${e.exposure.comeback}`);
+  out.push('', `ÉTAT : ${e.exposure.stateLabel.toUpperCase()} — ${e.exposure.causeLabel}`, `  ${e.exposure.detail}`, `  Ce qui la ferait revenir (${e.exposure.trajectoryLabel}) : ${e.exposure.comeback}`);
   out.push('', '1. Source et collecte');
   for (const s of e.sources) {
     out.push(`  · ${s.sourceKey} [${s.tier}] ${s.active ? 'active' : 'inactive'} — ${s.externalId}`, `    ${s.url}`,
@@ -382,7 +407,7 @@ export function explanationText(e: OfferExplanation): string[] {
     const c = e.canonical as { metier: Record<string, unknown>; contrat: Record<string, unknown>; secteur: string[]; lieu: Record<string, unknown> };
     out.push('', '4. Canonisation', `  métier : ${c.metier.code ?? 'non reconnu'} (${c.metier.status}${c.metier.decision ? `, ${c.metier.decision}` : ''}) ; rôles de l’intitulé : ${(c.metier.titleRoles as string[]).join(', ') || '—'}`,
       `  contrat : ${c.contrat.terme ?? 'non précisé'}${c.contrat.natif ? ` (natif « ${c.contrat.natif} »)` : ''} ; temps : ${c.contrat.tempsDeTravail ?? 'non précisé'} ; dispositif : ${c.contrat.dispositif ?? '—'}`,
-      `  secteur (Maison) : ${c.secteur.join(', ') || 'inconnu'}`,
+      `  secteur (Maison) : ${c.secteur.join(', ') || 'inconnu'} ; langue : ${(e.canonical as { langue?: string | null }).langue ?? 'inconnue'}`,
       `  lieu : ${[c.lieu.ville, c.lieu.region, c.lieu.pays].filter(Boolean).join(', ') || 'inconnu'} ; marché ${c.lieu.marche ?? 'aucun'} ; point ${c.lieu.point ?? '—'}`);
     out.push('', '5. Fraîcheur', `  publiée (source) : ${d(e.freshness.postedAt)} ; première observation : ${d(e.freshness.firstSeenAt)} ; dernière observation : ${d(e.freshness.lastSeenAt)}`,
       `  dernière revue : ${d(e.freshness.lastReview)}${e.freshness.lastReviewBy ? ` par ${e.freshness.lastReviewBy}` : ''}`);

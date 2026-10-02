@@ -1,0 +1,37 @@
+Offre cmumx5fls2l57tj35iqjxl0al — Responsable Ressources Humaines Van Cleef & Arpels (F/H)   [lu le 2026-10-02 14:56 UTC, base sans retenue R-143 §2]
+
+ÉTAT : EXPOSÉE — confirmée par sa source
+  servie par richemont-workday, vue le 2026-10-01 17:16 UTC
+  Ce qui la ferait revenir (servie) : Servie tant que richemont-workday (ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 17:18 UTC) la liste ; fermée quand sa liste prouvée ne la contient plus (le masquage de R-143 §2 n’est pas encore en service sur cette base).
+
+1. Source et collecte
+  · richemont-workday [GROUP_OFFICIAL] active — Responsable-Ressources-Humaines_JR133797
+    https://richemont.wd3.myworkdayjobs.com/Richemont/job/PARIS/Responsable-Ressources-Humaines_JR133797
+    source : ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 17:18 UTC
+    vue du 2026-09-29 17:17 UTC au 2026-10-01 17:16 UTC
+    collecte : 46745a74-3915-4f05-9d13-43b88063f59a du 2026-10-01 17:13 UTC (ingest-all)
+  · richemont [ATS_OFFICIAL] active — Responsable-Ressources-Humaines--F-H-_JR133797
+    https://richemont.wd3.myworkdayjobs.com/broadbean_external/job/PARIS/Responsable-Ressources-Humaines--F-H-_JR133797
+    source : ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 16:41 UTC
+    vue du 2026-09-29 16:56 UTC au 2026-10-01 16:40 UTC
+    collecte : 5bab27ba-c116-49b5-9183-55d9e87f8804 du 2026-10-01 16:39 UTC (ingest-all)
+
+2. Doublons
+  2 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Richemont (UNKNOWN, RICHEMONT, cmtn69siz11vgqq5lojru10az)
+  Maison : Richemont ; groupe Richemont
+
+4. Canonisation
+  métier : non reconnu (FAMILY_ONLY) ; rôles de l’intitulé : —
+  contrat : non précisé ; temps : FULL_TIME ; dispositif : —
+  secteur (Maison) : inconnu ; langue : fr
+  lieu : Paris, FR ; marché FR ; point NATIVE
+
+5. Fraîcheur
+  publiée (source) : 2026-09-29 00:00 UTC ; première observation : 2026-09-29 16:56 UTC ; dernière observation : 2026-10-01 17:16 UTC
+  dernière revue : 2026-10-01 17:16 UTC par richemont-workday
+
+6. Événements récents
+  2026-09-29 16:56 UTC OPENED

@@ -12,6 +12,7 @@
     "./search-vocabulary": "./search-vocabulary.ts",
     "./presentation": "./presentation.ts",
     "./marches": "./marches.ts",
+    "./iso-alpha2": "./iso-alpha2.ts",
     "./colonnes-facette": "./colonnes-facette.ts",
     "./availability": "./availability.ts",
     "./publications": "./publications.ts",

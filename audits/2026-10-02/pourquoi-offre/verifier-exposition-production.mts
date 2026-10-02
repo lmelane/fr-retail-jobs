@@ -21,7 +21,7 @@ try {
     return { schema, ...(await verifyExposedAgainstSearch(tx, { predicate: productionPredicate })) };
   }, { isolationLevel: 'RepeatableRead', timeout: 600_000, maxWait: 10_000 });
   console.log(JSON.stringify(result, null, 2));
-  if (result.onlyExposedCount || result.onlyServedCount) process.exitCode = 1;
+  if (result.onlyExposedCount || result.onlyServedCount || result.outsideMarketsMismatch) process.exitCode = 1;
 } finally {
   await prisma.$disconnect();
 }
