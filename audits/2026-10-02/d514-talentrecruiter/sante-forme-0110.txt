@@ -1,0 +1,24 @@
+{
+ "published": 9,
+ "withdrawn": 10,
+ "before": 20,
+ "status": "DEGRADED",
+ "finding": null,
+ "note": "55 % d’offres en moins qu’au run précédent, retirées par l’éditeur : 10 postes listés sans annonce et 20 lues sur 20 annoncées, énumération prouvée (D-514 §4, non bloquant) · 11 annonces retenues : 11 sur preuve de la source (NATIVE_ADVERTISEMENT_WITHDRAWN=10, NATIVE_SPONTANEOUS_APPLICATION=1) ; énumération prouvée",
+ "issues": [
+  "SOURCE/NATIVE_RETENTION"
+ ],
+ "blocking": false
+}
+{
+ "published": 19,
+ "withdrawn": 1,
+ "before": 20,
+ "status": "DEGRADED",
+ "finding": null,
+ "note": "2 annonces retenues : 2 sur preuve de la source (NATIVE_ADVERTISEMENT_WITHDRAWN=1, NATIVE_SPONTANEOUS_APPLICATION=1) ; énumération prouvée",
+ "issues": [
+  "SOURCE/NATIVE_RETENTION"
+ ],
+ "blocking": false
+}

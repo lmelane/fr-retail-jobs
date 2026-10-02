@@ -432,7 +432,8 @@ function readRetainedPublication(kind: string, raw: unknown, context: Context, r
             portal.searchParams.getAll('customer').length !== 1 || portal.searchParams.get('customer')?.toLowerCase() !== config.customer.toLowerCase()) return failure('IDENTITY_MISMATCH');
         }
         if (raw.mapAddress != null && typeof raw.mapAddress !== 'string') return failure('RAW_SCHEMA_INVALID');
-        job = parseTalentRecruiterPosition(raw.position as Parameters<typeof parseTalentRecruiterPosition>[0], config.customer, raw.mapAddress as string | undefined); break;
+        job = parseTalentRecruiterPosition(raw.position as Parameters<typeof parseTalentRecruiterPosition>[0], config.customer, raw.mapAddress as string | undefined,
+          context.observedAt); break;
       }
       case 'smartrecruiters-whitelabel': case 'smartrecruiters': {
         if (!identifier(raw.id)) return failure('NATIVE_ID_MISSING');

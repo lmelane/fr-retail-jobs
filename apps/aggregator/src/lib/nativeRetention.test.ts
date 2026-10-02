@@ -582,3 +582,55 @@ describe('ingest --source (30/09/2026): the targeted command judges like the RUN
     expect(await run(stat('lumentee', 5, { complete: false, enumerationReading: 'NOT_PROVEN' }))).toMatchObject({ ok: true });
   });
 });
+
+describe('D-514 §4: a position TalentRecruiter lists without advertisement is a posting it withdraws, not an anomaly', () => {
+  it('ganni as collected on 28/09 (1 position listed without advertisement, beside the spontaneous application): non-blocking, attributed to the source', async () => {
+    const ganni = retaining('ganni-talentrecruiter', 19, { NATIVE_ADVERTISEMENT_WITHDRAWN: 1, NATIVE_SPONTANEOUS_APPLICATION: 1 });
+    // Premise: the shape of the capture of 28/09 16:25 (21 positions, 144685 without advertisement).
+    expect(ganni.fetched).toBe(21);
+    const { issues, incidents, summary, sourceRun } = await runOne(ganni, [{ jobs: 20, fetched: 21, accepted: 20 }]);
+    expect(issues).toEqual([{ origin: 'SOURCE', code: 'NATIVE_RETENTION', count: 2, captureBatchId: 'batch-ganni-talentrecruiter', completionReportHash: 'report-ganni-talentrecruiter' }]);
+    expect(incidents).toMatchObject([{ blocking: false, nonBlockingRetentionOnly: true }]);
+    expect(summary.outcome).toBe('COMPLETED_WITH_ERRORS');
+    expect(String(sourceRun.note)).toContain('2 sur preuve de la source (NATIVE_ADVERTISEMENT_WITHDRAWN=1, NATIVE_SPONTANEOUS_APPLICATION=1)');
+    expect(retentionStatus('NATIVE_ADVERTISEMENT_WITHDRAWN')).toBe('décidé');
+  });
+
+  it('ganni in the shape of 01/10 (20 listed, 10 without advertisement, 1 spontaneous application, 9 published for 20 the day before): reported, not blocking', async () => {
+    const ganni = retaining('ganni-talentrecruiter', 9, { NATIVE_ADVERTISEMENT_WITHDRAWN: 10, NATIVE_SPONTANEOUS_APPLICATION: 1 });
+    // Premise: a collapse of more than half where 11 postings disappear, which the volume guard (D-491: 10 or more) blocks.
+    expect([ganni.fetched, ganni.inSector]).toEqual([20, 9]);
+    expect(ganni.inSector).toBeLessThan(20 * 0.5);
+    const { issues, incidents, summary, sourceRun } = await runOne(ganni, [{ jobs: 20, fetched: 20, accepted: 20 }]);
+    expect(issues.map(issue => `${issue.origin}/${issue.code}`)).toEqual(['SOURCE/NATIVE_RETENTION']);
+    expect(incidents).toMatchObject([{ blocking: false, nonBlockingRetentionOnly: true, confirmedDrop: { previousDeclaredTotal: 20, declaredTotal: 20 } }]);
+    expect(summary.outcome).toBe('COMPLETED_WITH_ERRORS');
+    expect(String(sourceRun.note)).toContain('55 % d’offres en moins qu’au run précédent, retirées par l’éditeur : 10 postes listés sans annonce');
+    expect(String(sourceRun.note)).toContain('(D-514 §4, non bloquant)');
+  });
+
+  it('a drop that the withdrawals do not cover stays the blocking collapse', async () => {
+    // 11 disappear, only 6 are withdrawn on native evidence this run.
+    const { issues, summary } = await runOne(retaining('ganni-talentrecruiter', 9, { NATIVE_ADVERTISEMENT_WITHDRAWN: 5, NATIVE_SPONTANEOUS_APPLICATION: 1 }),
+      [{ jobs: 20, fetched: 20, accepted: 20 }]);
+    expect(issues.map(issue => issue.code)).toEqual(['SOURCE_HEALTH_REGRESSION']);
+    expect(summary.outcome).toBe('FAILED');
+  });
+
+  it('the mass guard wins beyond max(5, 60 %): 13 of 20 listed without advertisement block the RUN', async () => {
+    const s = retaining('ganni-talentrecruiter', 7, { NATIVE_ADVERTISEMENT_WITHDRAWN: 13 });
+    // Premise: 20 collected, the bound is max(5, 12) = 12, and every disappeared posting is withdrawn (the drop alone would pass).
+    expect(s.fetched).toBe(20);
+    const { issues, summary, sourceRun } = await runOne(s, [{ jobs: 20, fetched: 20, accepted: 20 }]);
+    expect(issues).toEqual([{ origin: 'UNKNOWN', code: 'NATIVE_REFUSAL_MASS', count: 1 }]);
+    expect(summary.outcome).toBe('FAILED');
+    expect(String(sourceRun.note)).toContain('garde de masse : 13 postes listés sans annonce (TalentRecruiter) sur 20 collectées');
+  });
+
+  it('a whole GANNI catalogue listed without advertisements (a publisher format change) is refused, never published as withdrawals', async () => {
+    const { issues, incidents, summary } = await runOne(retaining('ganni-talentrecruiter', 0, { NATIVE_ADVERTISEMENT_WITHDRAWN: 12 }), [{ jobs: 12, fetched: 12, accepted: 12 }]);
+    expect(incidents).toMatchObject([{ status: 'BROKEN' }]);
+    expect(issues.map(issue => issue.code)).not.toEqual(['NATIVE_RETENTION']);
+    expect(summary.outcome).toBe('FAILED');
+  });
+});

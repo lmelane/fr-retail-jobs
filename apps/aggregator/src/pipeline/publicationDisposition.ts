@@ -15,6 +15,12 @@ const dispositions: Readonly<Record<string, DeactivationDisposition>> = {
    * fermée au nom de l'employeur ni rouverte par une attestation (`canRefreshReactivate` ne rouvre que ATTESTATION_MISSING).
    */
   NATIVE_SPONTANEOUS_APPLICATION: { kind: 'WITHDRAWN', reason: 'OUT_OF_SCOPE' },
+  /**
+   * D-514 §4 (02/10/2026) : le poste que TalentRecruiter liste sans annonce publiée (`talentRecruiter.ts`) est une offre
+   * que l'éditeur retire. Retrait `SOURCE_UNLISTED`, jamais une fermeture au nom de l'employeur : l'éditeur ne publie plus
+   * l'offre, et seule une annonce de nouveau publiée la republie (`explicitlyListed`).
+   */
+  NATIVE_ADVERTISEMENT_WITHDRAWN: { kind: 'WITHDRAWN', reason: 'SOURCE_UNLISTED' },
 };
 export function publicationDisposition(reason: string): DeactivationDisposition | undefined {
   return Object.hasOwn(dispositions, reason) ? dispositions[reason] : undefined;
@@ -36,6 +42,8 @@ export function publicationDisposition(reason: string): DeactivationDisposition 
  *   · la description que l'éditeur laisse lui-même vide, sur une fiche LUE (D-481 §3, 30/09/2026) — jamais une
  *     fiche que nous n'avons pas su lire, qui reste refusée et comptée. C'est la seconde preuve NÉGATIVE : la garde
  *     technique de `health.ts` la surveille aussi ;
+ *   · le poste que TalentRecruiter liste avec un tableau d'annonces explicitement vide (D-514 §4, 02/10/2026) : l'offre
+ *     qu'il retire. Un tableau absent, une annonce au texte vide ou une fiche illisible restent des anomalies ;
  *   · la fiche Workday que l'éditeur refuse en la nommant, `403 {"errorCode":"S22",…,"message":"permission denied"}`
  *     (D-484 §1, 30/09/2026) : l'offre qu'il retire. La preuve est ce corps, jamais le seul statut ; sous la garde
  *     de masse de `health.ts` (`MASS_GUARDED_RETENTIONS`).
@@ -52,7 +60,7 @@ export function publicationDisposition(reason: string): DeactivationDisposition 
 const NATIVE_EVIDENCE_RETENTIONS: ReadonlySet<string> = new Set([
   'APPLICATION_EXPLICITLY_CLOSED', 'APPLICATION_HTTP_404', 'APPLICATION_HTTP_410', 'APPLICATION_TEMPLATE_EXPIRY_CONTRADICTION',
   'SOURCE_UNLISTED', 'WORKDAY_EMPLOYER_ABSENT_IN_DETAIL', 'NATIVE_TEST_PUBLICATION', 'NATIVE_RECRUITMENT_EVENT',
-  'NATIVE_DESCRIPTION_EMPTY', 'WORKDAY_DETAIL_PERMISSION_DENIED', 'NATIVE_SPONTANEOUS_APPLICATION',
+  'NATIVE_DESCRIPTION_EMPTY', 'WORKDAY_DETAIL_PERMISSION_DENIED', 'NATIVE_SPONTANEOUS_APPLICATION', 'NATIVE_ADVERTISEMENT_WITHDRAWN',
 ]);
 const TEAM_DECISION_RETENTIONS: ReadonlySet<string> = new Set(['SCOPE_OUT_OF_PERIMETER']);
 /** The Workday NEGATIVE native proof: the page does not name its employer (its registry entry stays to instruct). */
@@ -89,7 +97,18 @@ export const MASS_GUARDED_RETENTIONS: Readonly<Record<string, { label: string; f
    * Le seuil s'applique à chaque RUN, pas seulement au premier : les viviers restent listés et retenus à chaque collecte.
    */
   NATIVE_SPONTANEOUS_APPLICATION: { label: 'candidatures spontanées ou viviers sans poste retenus', floor: 20, share: 0.25 },
+  /**
+   * D-514 §4 (02/10/2026) : le poste que TalentRecruiter liste sans annonce est une preuve NÉGATIVE (un tableau vide) ; un
+   * changement de format de l'éditeur viderait d'un coup toutes les annonces et retirerait tout le catalogue. Calibré sur
+   * le seul catalogue concerné (GANNI, 12 à 21 postes) : la plus forte vague réelle est de 10 postes sur 20 lus (01/10,
+   * 50 %), les autres jours 0 ou 1. Au-delà de max(5, 60 %) des fiches collectées, la source bloque le RUN : la vague du
+   * 01/10 passe (borne 12), un catalogue entier sans annonce bloque dès 6 postes (12 sur 12 : borne 7,2). En dessous, la
+   * validation native refuse déjà une collecte sans aucune offre qualifiée (`NO_QUALIFIED_PUBLICATION`).
+   */
+  NATIVE_ADVERTISEMENT_WITHDRAWN: { label: 'postes listés sans annonce (TalentRecruiter)', floor: 5, share: 0.6 },
 };
+/** D-514 §4 : le motif de la retenue d'un poste TalentRecruiter listé sans annonce (`talentRecruiter.ts`). */
+export const ADVERTISEMENT_WITHDRAWN_RETENTION = 'NATIVE_ADVERTISEMENT_WITHDRAWN';
 
 export function isNativeEvidenceRetention(reason: string): boolean {
   return NATIVE_EVIDENCE_RETENTIONS.has(reason);
@@ -118,6 +137,7 @@ const RETENTION_TEXT: Readonly<Record<string, string>> = {
   WORKDAY_DETAIL_PERMISSION_DENIED: 'refusée par l’éditeur (Workday S22)',
   SCOPE_OUT_OF_PERIMETER: 'écartée par l’équipe (hors périmètre)',
   NATIVE_SPONTANEOUS_APPLICATION: 'candidature spontanée ou vivier sans poste publié par la source parmi ses offres',
+  NATIVE_ADVERTISEMENT_WITHDRAWN: 'listée par la source sans annonce publiée (offre retirée)',
 };
 /**
  * The standing of each non-blocking reason, with the decision that settles it. Every non-blocking reason is now
@@ -140,6 +160,7 @@ const DECIDED: Readonly<Record<string, string>> = {
   NATIVE_DESCRIPTION_EMPTY: 'D-481 §3',
   WORKDAY_DETAIL_PERMISSION_DENIED: 'D-484 §1',
   NATIVE_SPONTANEOUS_APPLICATION: 'D-508 §4, D-511, D-512',
+  NATIVE_ADVERTISEMENT_WITHDRAWN: 'D-514 §4',
 };
 export type RetentionStatus = 'décidé' | 'application non arbitrée' | 'à instruire';
 export function retentionStatus(reason: string): RetentionStatus {
@@ -165,6 +186,12 @@ export function explicitlyListed(kind: string | undefined, raw: unknown): boolea
   if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return false;
   const value = raw as Record<string, unknown>;
   if (kind === 'ASHBY') return value.isListed === true;
+  // D-514 §4 : l'annonce de nouveau publiée, symétrique exacte de la retenue (un tableau d'annonces explicitement vide).
+  if (kind === 'TALENT_RECRUITER') {
+    const position = value.position as Record<string, unknown> | undefined;
+    return !!position && typeof position === 'object' && position.ProjectType === 'RecruitmentProject' &&
+      Array.isArray(position.Advertisements) && position.Advertisements.length > 0;
+  }
   if (kind !== 'HARRI' || !value.detail || typeof value.detail !== 'object' || Array.isArray(value.detail)) return false;
   const detail = value.detail as Record<string, unknown>;
   return detail.status === 'PUBLISHED' && detail.access_mode !== 'PRIVATE' && detail.post_type !== 'PRIVATE' && detail.deleted !== true;

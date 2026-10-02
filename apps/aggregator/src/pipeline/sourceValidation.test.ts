@@ -5,7 +5,7 @@ import { randomUUID } from 'node:crypto';
 import { captureExtraction } from '../capture/batch.js';
 import { fetchAtsJobs } from '../ats/index.js';
 import { captureSourceForValidation, validateCapturedSource } from '../connectors/sourceValidation.js';
-import { requireSourceValidation, SOURCE_VALIDATION_MAX_AGE_MS } from '../connectors/sourceCertification.js';
+import { requireSourceValidation, SOURCE_VALIDATION_MAX_AGE_MS, unqualifiedAllowanceFor } from '../connectors/sourceCertification.js';
 import { archiveRawBlob } from '../capture/store.js';
 import { MemoryStore } from '../test/memoryObjectStore.js';
 import alberto from '../ats/adapters/__fixtures__/alberto-sitemap-postings.json' with { type: 'json' };
@@ -195,6 +195,45 @@ describe('native source validation', () => {
     await expect(requireSourceValidation(db, source.currentRevisionId)).resolves.toBeTruthy();
     const named = await capture([{ ...nativeJob, title: 'Future Opportunities - Store Manager' }]);
     expect(await validateCapturedSource(db, named.batch.id)).toMatchObject({ verdict: 'VALIDATED', report: { observed: 1, qualified: 1, held: 0 } });
+  });
+
+  /**
+   * D-514 §4 : le poste que TalentRecruiter liste sans annonce (`Advertisements: []`) est retenu et retiré, jamais compté
+   * comme une publication illisible. Forme du RUN du 01/10 (GANNI) : au-delà de 2 tels postes, la tolérance de la
+   * validation était dépassée (CONTENT_MISSING) et la source rejetée ; une annonce publiée au texte vide reste refusée.
+   */
+  it('D-514 §4 : validates a TalentRecruiter collection whose listed positions without advertisement are withdrawn (GANNI)', async () => {
+    const captureTalentRecruiter = async (items: object[]) => {
+      const key = `source-validation-tr-${randomUUID()}`; keys.push(key); const config = { customer: 'ganni', locale: 'en' };
+      await db.source.create({ data: { key, tenantKey: key, maison: 'GANNI', kind: 'talentrecruiter', config, tier: 'ATS_OFFICIAL' } });
+      const body = { Items: items, CustomerAlias: 'ganni', CustomerName: 'GANNI A/S', TransactionStatus: { StatusCode: 0 },
+        PositionCountCustomer: items.length, PositionCountSearch: items.length, PositionCountList: items.length, PositionCountSkipped: 0 };
+      vi.stubGlobal('fetch', vi.fn(async (input: string | URL | Request) => {
+        const url = typeof input === 'string' ? input : input instanceof URL ? input.href : input.url;
+        return url.includes('/positionlist/json/') ? new Response(JSON.stringify(body)) : new Response('<html></html>');
+      }));
+      await captureExtraction(db, key, config, undefined, settings => fetchAtsJobs('TALENT_RECRUITER', settings), 'TALENT_RECRUITER');
+      const batch = await db.captureBatch.findFirstOrThrow({ where: { sourceKey: key } });
+      vi.stubGlobal('fetch', vi.fn(async () => { throw new Error('Offline only'); }));
+      return batch;
+    };
+    const item = (Id: number, Advertisements: object[]) => ({ Id, Name: 'Client Advisor', CustomerAlias: 'ganni', CustomerName: 'GANNI A/S',
+      ProjectType: 'RecruitmentProject', Published: '/Date(1788294884000+0200)/', Advertisements,
+      AdvertisementUrlSecure: `https://candidate.hr-manager.net/ApplicationInit.aspx?cid=1970&ProjectId=${Id}&MediaId=5` });
+    const published = [item(144697, [{ Id: 1, Content: '<p>Join the store team.</p>' }])];
+    const withdrawn = [144692, 144691, 144695].map(id => item(id, []));
+    const batch = await captureTalentRecruiter([...withdrawn, ...published]);
+    // Premise: three withdrawn positions exceed the allowance of this batch of 4, whatever their order, which rejected the source before.
+    expect(unqualifiedAllowanceFor(4)).toBe(2);
+    expect(withdrawn.length).toBeGreaterThan(unqualifiedAllowanceFor(4));
+    expect(await validateCapturedSource(db, batch.id)).toMatchObject({ verdict: 'VALIDATED',
+      report: { observed: 4, qualified: 1, held: 3, rejected: 0, reasons: {}, allowance: { applied: 2 } } });
+    // A published advertisement whose text is empty is still an unreadable publication, counted against the allowance.
+    const unreadable = await captureTalentRecruiter([...[1, 2, 3].map(id => item(id, [{ Id: id, Content: '' }])), ...published]);
+    expect(await validateCapturedSource(db, unreadable.id)).toMatchObject({ verdict: 'REJECTED', report: { rejected: 3, reasons: { CONTENT_MISSING: 3 } } });
+    // A whole catalogue without advertisements (a publisher format change) is refused: no qualified publication, nothing withdrawn.
+    const emptied = await captureTalentRecruiter([...withdrawn, item(144697, [])]);
+    expect(await validateCapturedSource(db, emptied.id)).toMatchObject({ verdict: 'REJECTED', report: { qualified: 0, held: 4, reasons: { NO_QUALIFIED_PUBLICATION: 1 } } });
   });
 
   it('rejects a captured derived value that the current reader cannot reproduce from native bytes', async () => {

@@ -8,6 +8,7 @@ import { assertSourceRunning } from '../../lib/sourceBudget.js';
 import { normalizeCountry } from '../../normalize/country.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
 import { captureObservedAt } from '../../capture/context.js';
+import { ADVERTISEMENT_WITHDRAWN_RETENTION } from '../../pipeline/publicationDisposition.js';
 
 const API = 'https://recruiter-api.hr-manager.net/jobportal.svc';
 const DOCUMENTATION = 'https://gradegroup.atlassian.net/wiki/spaces/DOCS/pages/2062844104/TR+Job+Portal+API+public';
@@ -22,6 +23,26 @@ type Position = {
 };
 type Response = { Items: Position[]; CustomerAlias: string; CustomerName: string; TransactionStatus?: { StatusCode?: number };
   PositionCountCustomer: number; PositionCountSearch: number; PositionCountList: number; PositionCountSkipped: number };
+
+/**
+ * D-514 §4 (arbitrage CEO du 02/10/2026) : UN POSTE QUE TALENTRECRUITER LISTE SANS ANNONCE PUBLIÉE EST UNE OFFRE RETIRÉE.
+ *
+ * La preuve est native et explicite : le poste de recrutement (`ProjectType` « RecruitmentProject ») figure dans la liste
+ * de l'éditeur, demandée avec ses annonces (`incads=true`), et son tableau `Advertisements` est VIDE. Mesuré sur les 15
+ * captures GANNI du 25/09 au 02/10 : 12 postes dans ce cas (1 le 28/09, 1 le 29/09, 10 le 01/10), tous `[]`, et aucun
+ * n'est encore listé à la capture suivante, quelques secondes à un jour plus tard : l'éditeur retire l'annonce, puis le
+ * poste. Le poste est retenu et retiré par le mécanisme des retenues (`publicationDisposition.ts`), comme la candidature
+ * spontanée (D-511) : vu et nommé dans la preuve, jamais publié, une publication antérieure retirée, et republiée si
+ * l'éditeur publie de nouveau une annonce (`explicitlyListed`).
+ *
+ * Hors règle, donc toujours des anomalies : un tableau ABSENT (rien ne prouve que l'éditeur n'a pas d'annonce, c'est la
+ * réponse qui a changé), une annonce présente dont le texte est vide ou illisible (`DESCRIPTION_MISSING`), une fiche que
+ * nous n'avons pas su lire pour un poste publié (`DETAIL_READ_FAILED`).
+ */
+export const TALENT_RECRUITER_ADVERTISEMENT_WITHDRAWN = ADVERTISEMENT_WITHDRAWN_RETENTION;
+function advertisementWithdrawn(p: Position): boolean {
+  return p.ProjectType === 'RecruitmentProject' && Array.isArray(p.Advertisements) && p.Advertisements.length === 0;
+}
 
 /** .NET milliseconds are UTC; the optional suffix describes the source offset,
  * not another offset to add. Created / RSS pubDate are not publication fallbacks. */
@@ -117,9 +138,13 @@ export async function fetchTalentRecruiterJobs(config: Record<string, unknown>):
    * (GANNI, RUN du 01/10/2026 : 20 offres identiques, 10 `DESCRIPTION_MISSING` dans un autre ordre). Chaque lecture
    * rend ses motifs ; ils rejoignent la preuve après, offre par offre, dans l'ordre de la liste de l'éditeur.
    */
+  const observedAt=captureObservedAt();
   const read=await Promise.all([...positions.values()].map(p=>limit(async():Promise<{job:NormalizedJob;issues:string[]}>=>{
     const url=p.AdvertisementUrlSecure || p.AdvertisementUrl!;
     const own: string[] = [];
+    // D-514 §4 : la fiche d'un poste retiré est lue comme les autres (mêmes requêtes, rejeu identique), mais son échec
+    // ne compte pas : le retrait se prouve par la liste de l'éditeur, et rien de cette fiche ne sera publié.
+    const withdrawn=advertisementWithdrawn(p);
     let mapAddress: string | undefined, detailError: string | undefined;
     try {
       const html=await fetchText(url), $=cheerio.load(html);
@@ -131,10 +156,10 @@ export async function fetchTalentRecruiterJobs(config: Record<string, unknown>):
           if (address) {mapAddress=address;break;}
         }
       }
-    } catch(error) {assertSourceRunning();detailError=String(error).slice(0,500);own.push(`DETAIL_READ_FAILED:${p.Id}`);}
-    const job = parseTalentRecruiterPosition(p, customer, mapAddress);
+    } catch(error) {assertSourceRunning();detailError=String(error).slice(0,500);if(!withdrawn)own.push(`DETAIL_READ_FAILED:${p.Id}`);}
+    const job = parseTalentRecruiterPosition(p, customer, mapAddress, observedAt);
     if (!job.opportunityType) own.push(`UNRECOGNISED_PROJECT_TYPE:${p.Id}`);
-    if (!job.description && job.opportunityType !== 'OPEN_APPLICATION') own.push(`DESCRIPTION_MISSING:${p.Id}`);
+    if (!job.description && job.opportunityType !== 'OPEN_APPLICATION' && !withdrawn) own.push(`DESCRIPTION_MISSING:${p.Id}`);
     return {job:{...job,raw:{...(job.raw as object),detailError}},issues:own};
   })));
   for (const entry of read) issues.push(...entry.issues);
@@ -154,7 +179,7 @@ function talentRecruiterPublicationUrl(p: Position): string | undefined {
 }
 
 /** Reads public native position fields; corporate hierarchy is never job geography. */
-export function parseTalentRecruiterPosition(p: Position, customer: string, mapAddress?: string): NormalizedJob {
+export function parseTalentRecruiterPosition(p: Position, customer: string, mapAddress?: string, observedAt?: Date): NormalizedJob {
   const url=p&&talentRecruiterPublicationUrl(p);
   if (!p || !Number.isSafeInteger(p.Id) || p.Id<=0 || typeof p.Name!=='string' || !p.Name.trim() || !p.CustomerName || p.CustomerAlias?.toLowerCase()!==customer.toLowerCase() || !url) throw Error('TALENT_RECRUITER_POSITION_IDENTITY_MISMATCH');
   const last=mapAddress?.split(',').at(-1)?.trim();
@@ -175,6 +200,9 @@ export function parseTalentRecruiterPosition(p: Position, customer: string, mapA
     description:description||undefined,contract:p.PositionType||undefined,department:p.PositionCategory?.Name,
     postedAt:talentRecruiterDate(p.Published),validThrough:talentRecruiterDate(p.ApplicationDue),url,
     ...(!opportunityType?{publicationHold:'UNRECOGNISED_OPPORTUNITY_TYPE'}:{}),
+    // D-514 §4 : retenu, et retiré à la date de l'observation quand elle est connue (la collecte la donne toujours ; la
+    // reprise d'un RAW n'en a pas besoin, la retenue suffit à refuser la publication).
+    ...(advertisementWithdrawn(p)?{publicationHold:TALENT_RECRUITER_ADVERTISEMENT_WITHDRAWN,...(observedAt?{publicationWithdrawnAt:observedAt}:{})}:{}),
     raw:{position:p,mapAddress,publicationPath:'position.Published',
       fieldEvidence:{country:country ? {status:'EXPLICIT_NATIVE_MAP_ADDRESS',path:'detail.iframe.q'} : {status:'NOT_EXPLICIT_IN_PUBLIC_ADDRESS',hasSourceCoordinates:!!validCoordinates},
         description:description ? 'NATIVE_ADVERTISEMENT_CONTENT' : 'NO_CONTENT_PUBLISHED'}},

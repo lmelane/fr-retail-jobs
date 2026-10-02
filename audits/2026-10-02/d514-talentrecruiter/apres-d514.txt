@@ -1,0 +1,349 @@
+
+== ganni-talentrecruiter 43a3bb4a-9171-4fd4-9d5e-10f7b66bf2de (2026-09-25T16:22:37.116Z)
+  144699 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144692 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144691 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144695 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144673 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144668 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144687 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144685 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144693 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144680 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144700 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144684 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144664 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144696 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144702 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144694 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144698 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144682 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144701 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144697 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  143570 | OpenApplication | annonces=1 | sans desc | NATIVE_SPONTANEOUS_APPLICATION | retrait | RETENU
+  collecte : {"jobs":21,"complete":true,"blockers":[],"issues":[]}
+  validation : {"qualified":20,"held":1,"rejected":0,"reasons":{},"allowance":2,"withdrawn":1,"verdict":"VALIDATED (tolérance tenue)"}
+
+== ganni-talentrecruiter 9e0c8a18-c205-4243-8a70-988a2542fcdb (2026-09-25T16:22:41.059Z)
+  144699 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144692 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144691 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144695 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144673 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144668 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144687 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144685 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144693 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144680 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144700 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144684 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144664 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144696 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144702 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144694 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144698 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144682 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144701 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144697 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  143570 | OpenApplication | annonces=1 | sans desc | NATIVE_SPONTANEOUS_APPLICATION | retrait | RETENU
+  collecte : {"jobs":21,"complete":true,"blockers":[],"issues":[]}
+  validation : {"qualified":20,"held":1,"rejected":0,"reasons":{},"allowance":2,"withdrawn":1,"verdict":"VALIDATED (tolérance tenue)"}
+
+== ganni-talentrecruiter 2b5a8196-b2e9-43b9-b2a8-cd2a8c645bc3 (2026-09-26T16:21:25.609Z)
+  144699 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144692 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144691 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144695 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144673 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144668 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144687 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144685 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144693 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144680 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144700 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144684 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144664 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144696 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144702 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144694 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144698 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144682 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144701 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144697 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  143570 | OpenApplication | annonces=1 | sans desc | NATIVE_SPONTANEOUS_APPLICATION | retrait | RETENU
+  collecte : {"jobs":21,"complete":true,"blockers":[],"issues":[]}
+  validation : {"qualified":20,"held":1,"rejected":0,"reasons":{},"allowance":2,"withdrawn":1,"verdict":"VALIDATED (tolérance tenue)"}
+
+== ganni-talentrecruiter 9e4caaa5-7913-40b3-872d-e1b8fc6063ed (2026-09-26T16:21:29.476Z)
+  144699 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144692 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144691 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144695 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144673 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144668 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144687 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144685 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144693 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144680 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144700 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144684 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144664 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144696 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144702 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144694 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144698 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144682 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144701 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144697 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  143570 | OpenApplication | annonces=1 | sans desc | NATIVE_SPONTANEOUS_APPLICATION | retrait | RETENU
+  collecte : {"jobs":21,"complete":true,"blockers":[],"issues":[]}
+  validation : {"qualified":20,"held":1,"rejected":0,"reasons":{},"allowance":2,"withdrawn":1,"verdict":"VALIDATED (tolérance tenue)"}
+
+== ganni-talentrecruiter ce967b61-f22e-4ec2-bf4b-a97adfaee45b (2026-09-27T16:22:59.656Z)
+  144699 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144692 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144691 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144695 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144673 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144668 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144687 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144685 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144693 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144680 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144700 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144684 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144664 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144696 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144702 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144694 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144698 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144682 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144701 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144697 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  143570 | OpenApplication | annonces=1 | sans desc | NATIVE_SPONTANEOUS_APPLICATION | retrait | RETENU
+  collecte : {"jobs":21,"complete":true,"blockers":[],"issues":[]}
+  validation : {"qualified":20,"held":1,"rejected":0,"reasons":{},"allowance":2,"withdrawn":1,"verdict":"VALIDATED (tolérance tenue)"}
+
+== ganni-talentrecruiter f74432c7-7fe9-4ae7-948c-7ef4fce32316 (2026-09-27T16:23:02.903Z)
+  144699 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144692 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144691 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144695 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144673 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144668 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144687 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144685 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144693 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144680 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144700 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144684 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144664 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144696 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144702 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144694 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144698 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144682 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144701 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144697 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  143570 | OpenApplication | annonces=1 | sans desc | NATIVE_SPONTANEOUS_APPLICATION | retrait | RETENU
+  collecte : {"jobs":21,"complete":true,"blockers":[],"issues":[]}
+  validation : {"qualified":20,"held":1,"rejected":0,"reasons":{},"allowance":2,"withdrawn":1,"verdict":"VALIDATED (tolérance tenue)"}
+
+== ganni-talentrecruiter cb845797-4a84-4928-86b9-bec656eb6d38 (2026-09-28T16:25:17.412Z)
+  144699 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144692 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144691 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144695 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144673 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144668 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144687 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144685 | RecruitmentProject | annonces=0 | sans desc | NATIVE_ADVERTISEMENT_WITHDRAWN | retrait | RETENU
+  144693 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144680 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144700 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144684 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144664 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144696 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144702 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144694 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144698 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144682 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144701 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144697 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  143570 | OpenApplication | annonces=1 | sans desc | NATIVE_SPONTANEOUS_APPLICATION | retrait | RETENU
+  collecte : {"jobs":21,"complete":true,"blockers":[],"issues":[]}
+  validation : {"qualified":19,"held":2,"rejected":0,"reasons":{},"allowance":2,"withdrawn":2,"verdict":"VALIDATED (tolérance tenue)"}
+
+== ganni-talentrecruiter e7b822e6-93f0-4ca8-bb4a-d3382a5be53f (2026-09-28T16:25:22.808Z)
+  144699 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144692 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144691 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144695 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144673 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144668 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144687 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144693 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144680 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144700 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144684 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144664 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144696 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144702 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144694 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144698 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144682 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144701 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144697 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  143570 | OpenApplication | annonces=1 | sans desc | NATIVE_SPONTANEOUS_APPLICATION | retrait | RETENU
+  collecte : {"jobs":20,"complete":true,"blockers":[],"issues":[]}
+  validation : {"qualified":19,"held":1,"rejected":0,"reasons":{},"allowance":2,"withdrawn":1,"verdict":"VALIDATED (tolérance tenue)"}
+
+== ganni-talentrecruiter 23dfadb7-75ac-4ce8-a653-70896ed566bc (2026-09-29T16:36:43.259Z)
+  144699 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144692 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144691 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144695 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144673 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144668 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144687 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144693 | RecruitmentProject | annonces=0 | sans desc | NATIVE_ADVERTISEMENT_WITHDRAWN | retrait | RETENU
+  144680 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144700 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144684 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144664 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144696 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144702 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144694 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144698 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144682 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144701 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144697 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  143570 | OpenApplication | annonces=1 | sans desc | NATIVE_SPONTANEOUS_APPLICATION | retrait | RETENU
+  collecte : {"jobs":20,"complete":true,"blockers":[],"issues":[]}
+  validation : {"qualified":18,"held":2,"rejected":0,"reasons":{},"allowance":2,"withdrawn":2,"verdict":"VALIDATED (tolérance tenue)"}
+
+== ganni-talentrecruiter 309a1cb1-80a6-408a-9b7b-7523f0afa817 (2026-09-29T16:36:46.766Z)
+  144699 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144692 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144691 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144695 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144673 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144668 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144687 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144680 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144700 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144684 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144664 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144696 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144702 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144694 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144698 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144682 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144701 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144697 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  143570 | OpenApplication | annonces=1 | sans desc | NATIVE_SPONTANEOUS_APPLICATION | retrait | RETENU
+  collecte : {"jobs":19,"complete":true,"blockers":[],"issues":[]}
+  validation : {"qualified":18,"held":1,"rejected":0,"reasons":{},"allowance":2,"withdrawn":1,"verdict":"VALIDATED (tolérance tenue)"}
+
+== ganni-talentrecruiter fa33ccb4-72e2-4960-8811-aa2c27570fe2 (2026-09-30T16:07:26.555Z)
+  144699 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144692 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144691 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144695 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144673 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144668 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144687 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144680 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144700 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144684 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144664 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144696 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144702 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144694 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144698 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144682 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144701 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144697 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  143570 | OpenApplication | annonces=1 | sans desc | NATIVE_SPONTANEOUS_APPLICATION | retrait | RETENU
+  collecte : {"jobs":19,"complete":true,"blockers":[],"issues":[]}
+  validation : {"qualified":18,"held":1,"rejected":0,"reasons":{},"allowance":2,"withdrawn":1,"verdict":"VALIDATED (tolérance tenue)"}
+
+== ganni-talentrecruiter c148d511-fae2-409b-ba37-4273db5ca4da (2026-09-30T16:07:32.008Z)
+  144699 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144692 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144691 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144695 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144673 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144668 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144687 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144680 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144700 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144684 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144664 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144696 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144702 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144694 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144698 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144682 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144701 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144697 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144689 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  143570 | OpenApplication | annonces=1 | sans desc | NATIVE_SPONTANEOUS_APPLICATION | retrait | RETENU
+  collecte : {"jobs":20,"complete":true,"blockers":[],"issues":[]}
+  validation : {"qualified":19,"held":1,"rejected":0,"reasons":{},"allowance":2,"withdrawn":1,"verdict":"VALIDATED (tolérance tenue)"}
+
+== ganni-talentrecruiter fa0f0d46-2c4c-4552-80fd-8f5652fb68e6 (2026-10-01T16:07:21.784Z)
+  144699 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144692 | RecruitmentProject | annonces=0 | sans desc | NATIVE_ADVERTISEMENT_WITHDRAWN | retrait | RETENU
+  144691 | RecruitmentProject | annonces=0 | sans desc | NATIVE_ADVERTISEMENT_WITHDRAWN | retrait | RETENU
+  144695 | RecruitmentProject | annonces=0 | sans desc | NATIVE_ADVERTISEMENT_WITHDRAWN | retrait | RETENU
+  144673 | RecruitmentProject | annonces=0 | sans desc | NATIVE_ADVERTISEMENT_WITHDRAWN | retrait | RETENU
+  144668 | RecruitmentProject | annonces=0 | sans desc | NATIVE_ADVERTISEMENT_WITHDRAWN | retrait | RETENU
+  144687 | RecruitmentProject | annonces=0 | sans desc | NATIVE_ADVERTISEMENT_WITHDRAWN | retrait | RETENU
+  144680 | RecruitmentProject | annonces=0 | sans desc | NATIVE_ADVERTISEMENT_WITHDRAWN | retrait | RETENU
+  144700 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144684 | RecruitmentProject | annonces=0 | sans desc | NATIVE_ADVERTISEMENT_WITHDRAWN | retrait | RETENU
+  144664 | RecruitmentProject | annonces=0 | sans desc | NATIVE_ADVERTISEMENT_WITHDRAWN | retrait | RETENU
+  144696 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144702 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144694 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144698 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144682 | RecruitmentProject | annonces=0 | sans desc | NATIVE_ADVERTISEMENT_WITHDRAWN | retrait | RETENU
+  144701 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144697 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144689 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  143570 | OpenApplication | annonces=1 | sans desc | NATIVE_SPONTANEOUS_APPLICATION | retrait | RETENU
+  collecte : {"jobs":20,"complete":true,"blockers":[],"issues":[]}
+  validation : {"qualified":9,"held":11,"rejected":0,"reasons":{},"allowance":2,"withdrawn":11,"verdict":"VALIDATED (tolérance tenue)"}
+
+== ganni-talentrecruiter 022ff47b-8d20-4922-8c2c-87b35c912008 (2026-10-02T05:19:42.496Z)
+  144704 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144699 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144705 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144696 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144703 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144702 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144694 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144698 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144701 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144697 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144689 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  143570 | OpenApplication | annonces=1 | sans desc | NATIVE_SPONTANEOUS_APPLICATION | retrait | RETENU
+  collecte : {"jobs":12,"complete":true,"blockers":[],"issues":[]}
+  validation : {"qualified":11,"held":1,"rejected":0,"reasons":{},"allowance":2,"withdrawn":1,"verdict":"VALIDATED (tolérance tenue)"}
+
+== ganni-talentrecruiter d2367ec0-77ac-4563-a119-c903a712674b (2026-10-02T05:19:45.680Z)
+  144704 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144699 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144705 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144696 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144703 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144702 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144694 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144698 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144701 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144697 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  144689 | RecruitmentProject | annonces=1 | desc | - | - | QUALIFIÉ
+  143570 | OpenApplication | annonces=1 | sans desc | NATIVE_SPONTANEOUS_APPLICATION | retrait | RETENU
+  collecte : {"jobs":12,"complete":true,"blockers":[],"issues":[]}
+  validation : {"qualified":11,"held":1,"rejected":0,"reasons":{},"allowance":2,"withdrawn":1,"verdict":"VALIDATED (tolérance tenue)"}

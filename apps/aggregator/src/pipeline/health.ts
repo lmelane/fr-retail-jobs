@@ -3,7 +3,8 @@ import type { PrismaClient } from '@prisma/client';
 import type { IngestStats } from './ingest.js';
 import { isTrustedForAttestation, isDeclaredEmptyEnumeration, isPublisherConfirmedDrop } from './attestation.js';
 import { recordSourceRunSummary } from '../connectors/sourceStore.js';
-import { GUARDED_NEGATIVE_PROOFS, MASS_GUARDED_RETENTIONS, retentionClass, type RetentionClass } from './publicationDisposition.js';
+import { ADVERTISEMENT_WITHDRAWN_RETENTION, GUARDED_NEGATIVE_PROOFS, MASS_GUARDED_RETENTIONS, isNativeEvidenceRetention, publicationDisposition, retentionClass,
+  type RetentionClass } from './publicationDisposition.js';
 import { FULL_RUN_MARKER } from './fullRunMarker.js';
 
 /**
@@ -422,9 +423,13 @@ function collectionHealth(stat: IngestStats, base: Omit<SourceHealth, 'status'>,
       declaredTotal: stat.declaredTotal, complete: stat.complete, truncated: stat.truncated, errors: stat.errors });
     const confirmation = confirmed ? `, confirmée par l’éditeur : total annoncé ${previousDeclaredTotal} → ${stat.declaredTotal}, ` +
       `${stat.fetched} lues sur ${stat.declaredTotal}, énumération prouvée (D-484 §2, ${fieldIncident ? 'mais bloquant par le défaut qui suit' : 'non bloquant'})` : '';
-    // D-491 : une chute que l'éditeur ne confirme pas, mais où moins de dix offres disparaissent, est signalée sans bloquer.
     const disappeared = before - jobs;
-    const minor = !confirmed && disappeared < MINOR_DROP_BLOCKING_DISAPPEARED;
+    // D-514 §4 : la chute que l'éditeur fait lui-même en retirant les annonces de postes qu'il liste encore.
+    const withdrawals = confirmed ? 0 : advertisementWithdrawalDrop(stat, disappeared);
+    const withdrawalText = withdrawals ? `, retirées par l’éditeur : ${plural(withdrawals, 'poste listé', 'postes listés')} sans annonce ` +
+      `et ${stat.fetched} lues sur ${stat.declaredTotal} annoncées, énumération prouvée (D-514 §4, ${fieldIncident ? 'mais bloquant par le défaut qui suit' : 'non bloquant'})` : '';
+    // D-491 : une chute que l'éditeur ne confirme pas, mais où moins de dix offres disparaissent, est signalée sans bloquer.
+    const minor = !confirmed && !withdrawals && disappeared < MINOR_DROP_BLOCKING_DISAPPEARED;
     const minorText = minor ? `, ${plural(disappeared, 'offre disparue', 'offres disparues')}, moins de ${MINOR_DROP_BLOCKING_DISAPPEARED} ` +
       `(D-491, ${fieldIncident ? 'mais bloquant par le défaut qui suit' : 'non bloquant'})` : '';
     return {
@@ -432,9 +437,11 @@ function collectionHealth(stat: IngestStats, base: Omit<SourceHealth, 'status'>,
       status: 'DEGRADED',
       jobs,
       previous: before,
-      note: [`${drop}${confirmation}${minorText}`, ...((confirmed || minor) && fieldIncident ? [fieldIncident] : [])].join(' · '),
+      note: [`${drop}${confirmation}${withdrawalText}${minorText}`, ...((confirmed || withdrawals || minor) && fieldIncident ? [fieldIncident] : [])].join(' · '),
       // With a field incident too, the drop stays the blocking regression it was (no finding: never a D-480 known failure).
       ...(confirmed && !fieldIncident ? { confirmedDrop: { previousDeclaredTotal: previousDeclaredTotal!, declaredTotal: stat.declaredTotal! } } : {}),
+      // D-514 §4 : traitée comme la chute que l'éditeur confirme (D-484 §2) ; la garde de masse de la retenue l'emporte au-delà de sa borne.
+      ...(withdrawals && !fieldIncident ? { confirmedDrop: { previousDeclaredTotal: previousDeclaredTotal ?? before, declaredTotal: stat.declaredTotal! } } : {}),
       ...(minor && !fieldIncident ? { minorDrop: { disappeared } } : {}),
       coverage: coverageOf(stat),
       rates: ratesOf(stat),
@@ -463,6 +470,30 @@ function collectionHealth(stat: IngestStats, base: Omit<SourceHealth, 'status'>,
     coverage: coverageOf(stat),
     rates: ratesOf(stat),
   };
+}
+
+/**
+ * D-514 §4 (arbitrage CEO du 02/10/2026, « ne bloque plus la source ») : UNE CHUTE FAITE DE POSTES QUE L'ÉDITEUR RETIRE.
+ *
+ * TalentRecruiter retire l'annonce d'un poste avant de retirer le poste : le 01/10, GANNI listait 20 postes dont 10 sans
+ * annonce, retenus et retirés (`NATIVE_ADVERTISEMENT_WITHDRAWN`) ; 9 publiés pour 20 la veille, l'effondrement bloquait la
+ * source alors que chaque offre disparue était retirée sur la preuve de l'éditeur. Une telle chute est traitée comme celle
+ * que l'éditeur confirme (D-484 §2) quand, à la fois :
+ *   · la liste est prouvée complète, sans erreur ni troncature, toutes les offres annoncées lues ;
+ *   · au moins un poste est retenu pour annonce retirée ;
+ *   · CHAQUE offre disparue est couverte par une retenue de ce run qui retire sur preuve native (D-514 §4, et la candidature
+ *     spontanée ou le vivier de D-511/D-512 retirés le même jour : la 11e disparue du 01/10).
+ * Rend le nombre de postes retirés pour annonce, 0 sinon. Zéro offre publiée reste une source cassée (vérifié avant) ; au-delà
+ * de sa borne, la garde de masse de la retenue (`MASS_GUARDED_RETENTIONS`) rend la source bloquante.
+ */
+function advertisementWithdrawalDrop(stat: IngestStats, disappeared: number): number {
+  const withdrawn = stat.heldReasons?.[ADVERTISEMENT_WITHDRAWN_RETENTION] ?? 0;
+  if (withdrawn <= 0 || stat.complete !== true || stat.truncated === true || stat.errors > 0) return 0;
+  if (!Number.isInteger(stat.declaredTotal) || stat.fetched !== stat.declaredTotal) return 0;
+  const nativeWithdrawals = Object.entries(stat.heldReasons ?? {})
+    .filter(([reason]) => isNativeEvidenceRetention(reason) && publicationDisposition(reason)?.kind === 'WITHDRAWN')
+    .reduce((total, [, n]) => total + n, 0);
+  return disappeared <= nativeWithdrawals ? withdrawn : 0;
 }
 
 function coverageOf(stat: IngestStats): string | undefined {

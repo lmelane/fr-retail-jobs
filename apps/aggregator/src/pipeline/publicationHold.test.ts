@@ -133,3 +133,46 @@ it('D-511 : withdraws an already published spontaneous application (never closed
   for (const js of await db.jobSource.findMany({ where: { sourceKey: key } })) { await db.jobSource.delete({ where: { id: js.id } }); js.jobId && await db.job.delete({ where: { id: js.jobId } }); }
   await db.sourceObservation.deleteMany({ where: { sourceKey: key } }); await db.source.delete({ where: { key } });
 });
+
+/**
+ * D-514 §4 : un poste GANNI publié, puis listé sans annonce (`Advertisements: []`), est retiré (jamais fermé) ; il reste
+ * retiré tant qu'aucune annonce n'est publiée, et revient en ligne quand l'éditeur en publie une de nouveau.
+ */
+it('D-514 §4 : withdraws a TalentRecruiter position listed without advertisement (never closed), republishes it once an advertisement is published again', async () => {
+  const { upsertDeduplicated } = await import('../test/publicationPersistenceFixture.js');
+  const { resolveCompany } = await import('../normalize/company.js');
+  const { parseTalentRecruiterPosition } = await import('../ats/adapters/talentRecruiter.js');
+  const key = 'talentrecruiter-d514-witness';
+  for (const js of await db.jobSource.findMany({ where: { sourceKey: key } })) { await db.jobSource.delete({ where: { id: js.id } }); js.jobId && await db.job.delete({ where: { id: js.jobId } }).catch(() => undefined); }
+  await db.sourceObservation.deleteMany({ where: { sourceKey: key } });
+  await db.source.upsert({ where: { key }, update: { status: 'ACTIVE' }, create: { key, maison: 'GANNI', kind: 'talentrecruiter', tenantKey: key, tier: 'ATS_OFFICIAL', config: { customer: 'ganni' }, status: 'ACTIVE' } });
+  const position = (Advertisements: object[]) => ({ Id: 144692, Name: 'Client Advisor', CustomerAlias: 'ganni', CustomerName: 'GANNI A/S', ProjectType: 'RecruitmentProject',
+    Advertisements, AdvertisementUrlSecure: 'https://candidate.hr-manager.net/ApplicationInit.aspx?cid=1970&ProjectId=144692&MediaId=5' });
+  const observe = (Advertisements: object[], observedAt?: Date) => {
+    const job = parseTalentRecruiterPosition(position(Advertisements) as never, 'ganni', undefined, observedAt);
+    return { ...job, company: 'GANNI', companyId: resolveCompany('GANNI').companyId, sourceKey: key, sourceTier: 'ATS_OFFICIAL' as const, atsType: 'TALENT_RECRUITER' as const };
+  };
+  const advert = [{ Id: 1, Content: '<p>Join the store team.</p>' }];
+  const { jobId } = await upsertDeduplicated(db, observe(advert));
+  await db.jobSource.updateMany({ where: { jobId }, data: { lastSeenAt: new Date(Date.now() - 60_000) } });
+  const observedAt = new Date();
+  const held = observe([], observedAt);
+  // Premise: the reader holds and dates the position listed without advertisement.
+  expect(held).toMatchObject({ publicationHold: 'NATIVE_ADVERTISEMENT_WITHDRAWN', publicationWithdrawnAt: observedAt });
+  await archivePublicationHold(db, key, held); await archivePublicationHold(db, key, held);
+  expect(await db.job.findUniqueOrThrow({ where: { id: jobId } })).toMatchObject({ isActive: false, closedAt: null, withdrawalReason: 'SOURCE_UNLISTED', reopenedCount: 0 });
+  expect(await db.jobEvent.count({ where: { jobId, type: 'CLOSED' } })).toBe(0);
+  expect(await db.jobEvent.count({ where: { jobId, type: 'WITHDRAWN' } })).toBe(1);
+  expect(() => toCandidate(held, { key, company: 'GANNI', tier: 'ATS_OFFICIAL' }, 'GANNI', 'TALENT_RECRUITER')).toThrow('held');
+  // An observation without the advertisements field proves nothing: the withdrawal stands.
+  const { publicationHold: _, publicationWithdrawnAt: __, ...silent } = observe([]);
+  await upsertDeduplicated(db, { ...silent, raw: { position: { ...position([]), Advertisements: undefined } } });
+  expect(await db.job.findUniqueOrThrow({ where: { id: jobId } })).toMatchObject({ isActive: false, withdrawalReason: 'SOURCE_UNLISTED' });
+  // The publisher publishes an advertisement again: the position is back online, as a republication.
+  await upsertDeduplicated(db, observe(advert));
+  expect(await db.job.findUniqueOrThrow({ where: { id: jobId } })).toMatchObject({ isActive: true, withdrawnAt: null, withdrawalReason: null, reopenedCount: 0 });
+  expect(await db.jobEvent.count({ where: { jobId, type: 'REPUBLISHED' } })).toBe(1);
+  await clearOccupationLedger();
+  for (const js of await db.jobSource.findMany({ where: { sourceKey: key } })) { await db.jobSource.delete({ where: { id: js.id } }); js.jobId && await db.job.delete({ where: { id: js.jobId } }); }
+  await db.sourceObservation.deleteMany({ where: { sourceKey: key } }); await db.source.delete({ where: { key } });
+});
