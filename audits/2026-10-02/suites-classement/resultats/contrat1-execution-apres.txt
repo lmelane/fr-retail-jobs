@@ -1,0 +1,656 @@
+US Sales advisor
+ 10292 | 12b11eadc53131e7b5f8894e404473c6
+
+Time: 707.409 ms
+US Beauty advisor
+  4428 | e72da6469cdf9e2e14230c7adf4983ec
+
+Time: 216.555 ms
+US Hairdresser
+  4675 | aff88fe37791d7b357a21ec15d8ef96d
+
+Time: 138.791 ms
+US Store manager
+  1291 | f60e9c0157cd7735f08b91d0047d1b43
+
+Time: 178.408 ms
+US Assistant store manager
+  1377 | 19cf69291f5323a800821b94a7699fd5
+
+Time: 208.042 ms
+US Retail stock associate
+   819 | 074337590efbd67e0abbd2b607a7d5c7
+
+Time: 91.518 ms
+US Cashier
+   171 | 9e5257aec3c198b1a899dbac6e5d10c2
+
+Time: 46.231 ms
+US Visual merchandiser
+   254 | a0fd38f8b0d9f78b974797650e564781
+
+Time: 43.272 ms
+US Watchmaker
+    19 | f579b6b5c0b3b7fcea6d3b90be8a30fb
+
+Time: 29.487 ms
+US Pharmacist
+     0 | 
+
+Time: 25.570 ms
+US Recruiter
+   102 | dd7150de446fbf27aca9a08004ca2007
+
+Time: 39.159 ms
+US Financial controller
+    42 | df65a75e0c059e14984df16b4f70161a
+
+Time: 61.525 ms
+FR Conseiller de vente
+  4706 | e3ae77e1e3a6a07b38e18d5413dc0c8d
+
+Time: 320.670 ms
+FR Conseiller beauté
+   133 | 8c5204fcccebf71ebd9d3cb89ca25cd7
+
+Time: 81.663 ms
+FR Coiffeur
+     3 | c0cc6b62c8a6f6c37f0444c80f374874
+
+Time: 32.852 ms
+FR Responsable de boutique
+   706 | a63dd499fe9c15d326969edd1846a936
+
+Time: 132.164 ms
+FR Adjoint au responsable de boutique
+   425 | cc1bac2fb98683c6f064c3964467a986
+
+Time: 148.577 ms
+FR Gestionnaire de stock en boutique
+   191 | 94e48aa3b6dceb2c8b3a473e1735920e
+
+Time: 77.032 ms
+FR Hôte de caisse
+   544 | c04376c1ac6d3884ac6b9c00e02960ea
+
+Time: 78.954 ms
+FR Visual merchandiser
+    51 | 5499cf62d01d71dd0e91207fe12c2783
+
+Time: 33.179 ms
+FR Horloger
+     9 | 6d113e241ec62bb9c4e44512e3b5a192
+
+Time: 28.951 ms
+FR Pharmacien
+    15 | b94d17db875369c4fd75e9e7e4daac57
+
+Time: 26.692 ms
+FR Chargé de recrutement
+    31 | ff4c3ce81b3304b62d59893bd4d11e2c
+
+Time: 40.873 ms
+FR Contrôleur de gestion
+   189 | 6bce3404f520a1b248d5286e7ee9665a
+
+Time: 56.115 ms
+GB Sales advisor
+  1259 | c66f40c991a854ce5532f4bb3a40142c
+
+Time: 170.068 ms
+GB Beauty advisor
+   343 | 160f54347069297c7ac61c27b517f510
+
+Time: 95.461 ms
+GB Hairdresser
+     1 | d1c30d12153cb94d9ff5019cd81a6cbb
+
+Time: 48.648 ms
+GB Store manager
+   247 | 18d73844704d6c9bee69d278938b9d21
+
+Time: 90.360 ms
+GB Assistant store manager
+   180 | 9c9d6879171337df039e71e75513997e
+
+Time: 75.391 ms
+GB Retail stock associate
+    63 | b12353697d4b4c1fed9279d8630be184
+
+Time: 63.346 ms
+GB Cashier
+     6 | a848796c1bee3af1ea48da9fc836d0ca
+
+Time: 47.013 ms
+GB Visual merchandiser
+    87 | 3c7a97d15147984585a153415a9e6910
+
+Time: 102.675 ms
+GB Watchmaker
+     1 | 51abefc74748df51d6c5e8c2f494e607
+
+Time: 56.655 ms
+GB Pharmacist
+     0 | 
+
+Time: 55.033 ms
+GB Recruiter
+    14 | 5fad0af0f4c309f69b338cde628f7b3c
+
+Time: 55.870 ms
+GB Financial controller
+     9 | d1a01229946687af3632be6d8ea74087
+
+Time: 66.100 ms
+DE Verkaufsberater
+  1148 | 53d393907e0e4f8a69ad0a32c51fd1b2
+
+Time: 292.352 ms
+DE Beauty Advisor
+    53 | 4e6d025866e904eb4b10e5ffdc8de6ef
+
+Time: 60.679 ms
+DE Friseur
+     4 | 643f15a9aa00afd7ac4485af7318d181
+
+Time: 47.808 ms
+DE Store Manager
+   196 | ff4537bb06d6043e733ae6335d239d33
+
+Time: 53.298 ms
+DE Assistant Store Manager
+   200 | 4a1dfe58a136634930f7ac04a190a612
+
+Time: 67.899 ms
+DE Stock Associate
+    35 | e75758c64a6212727b7a0bc4b5c019b3
+
+Time: 48.670 ms
+DE Kassierer
+     7 | 1e91f54aef4b148213439e308483ab16
+
+Time: 50.089 ms
+DE Visual Merchandiser
+    65 | 31c840c5dffe1d3328b94f6380b74edb
+
+Time: 46.607 ms
+DE Uhrmacher
+     5 | ee9111e8afca4b48441b8a2787c96e0b
+
+Time: 43.742 ms
+DE Apotheker
+     1 | b42247a5cb2ce4a566300624240b1949
+
+Time: 102.222 ms
+DE Recruiter
+     1 | c0825ee1f016aeca0cd905b1989c7587
+
+Time: 47.079 ms
+DE Finanzcontroller
+    20 | 847f20eb1c677c0d884fe93462571922
+
+Time: 46.834 ms
+IT Sales Assistant
+  1000 | 0b755d38953d2f446a7549f176e74950
+
+Time: 173.971 ms
+IT Beauty Advisor
+   305 | 5f9b0c03b1df76f1eb86c96e9f3f99ab
+
+Time: 63.185 ms
+IT Parrucchiere
+     0 | 
+
+Time: 41.321 ms
+IT Store Manager
+   177 | f3aa3452e3d6d466151f063303c84e90
+
+Time: 56.834 ms
+IT Assistant Store Manager
+    96 | 35ed488eccb8e44080f2088ab840748e
+
+Time: 93.154 ms
+IT Stock associate
+    45 | 14a54ba668be07915a3e17c06bb72cd8
+
+Time: 43.772 ms
+IT Cassiere
+     4 | d539bbaaa8b351f17b49a50da9b6ff1a
+
+Time: 43.646 ms
+IT Visual merchandiser
+    34 | 7a8fc0302ea6c1e0eed4d638a39305db
+
+Time: 44.183 ms
+IT Orologiaio
+     0 | 
+
+Time: 42.670 ms
+IT Farmacista
+     0 | 
+
+Time: 49.727 ms
+IT Recruiter
+     0 | 
+
+Time: 42.706 ms
+IT Financial Controller
+    36 | 84886c507b8defe9a7229802a643ced6
+
+Time: 46.763 ms
+ES Asesor de ventas
+  1127 | 57c50060e33fea2c2f6e54db186f696d
+
+Time: 210.394 ms
+ES Consejero de belleza
+    64 | abd8569a1e16b058729c2b4c66e41a33
+
+Time: 45.534 ms
+ES Peluquero
+     0 | 
+
+Time: 38.261 ms
+ES Gerente de tienda
+   108 | ab5b75880d8fa1ca0cdba2eaae7546c8
+
+Time: 45.856 ms
+ES Assistant Store Manager
+    64 | 6ddce9a3d06d6937aeddc08769c2acf1
+
+Time: 45.461 ms
+ES Stockista
+    13 | 0842c695826572772f7dfa2f67d02948
+
+Time: 42.499 ms
+ES Cajero
+     1 | df8a1c7c01149096888f8f495ff54dd2
+
+Time: 38.396 ms
+ES Visual merchandiser
+    58 | 96475422760c6ada97a04141a74a453c
+
+Time: 38.110 ms
+ES Relojero
+     1 | 88a314e7cc0e453a1d6d00e154354225
+
+Time: 37.834 ms
+ES Farmacéutico
+     0 | 
+
+Time: 38.690 ms
+ES Reclutador
+     3 | 59d236bf026f8eedcf34eb623b46f9ea
+
+Time: 44.696 ms
+ES Controlador de gestión
+     6 | 894cd9e626172fcd961624685e65e0aa
+
+Time: 107.078 ms
+NL Verkoopmedewerker
+   794 | 3a353f7e2f0607ab9641d845d979bc65
+
+Time: 134.311 ms
+NL Beauty Advisor
+    12 | 31d9fa7ce2d3a86597b8175d60d841e8
+
+Time: 37.506 ms
+NL Kapper
+     0 | 
+
+Time: 34.708 ms
+NL Store Manager
+   166 | 1f797765ee64a950ec149970c2099963
+
+Time: 46.798 ms
+NL Assistant Store Manager
+    97 | 13627fca080c3faa152b81d35dd2e1e6
+
+Time: 43.365 ms
+NL Stock Associate
+    38 | df455a9d0e03d7128a4cd0549d90afe2
+
+Time: 40.538 ms
+NL Kassamedewerker
+     9 | f3db7945763cc2e89778ca442b1d2298
+
+Time: 39.550 ms
+NL Visual merchandiser
+    35 | 323f428a2edb9e1b4f40020ee0502f7e
+
+Time: 36.734 ms
+NL Horlogemaker
+     0 | 
+
+Time: 110.229 ms
+NL Apotheker
+     0 | 
+
+Time: 32.945 ms
+NL Recruiter
+     4 | 75a24293a841fd45cae6c3af2fe4f7fe
+
+Time: 37.848 ms
+NL Financial Controller
+     6 | d6e2e144485b288cf63c1b2f5c5ec74a
+
+Time: 40.398 ms
+CH Conseiller de vente
+   215 | f1362dd9caebf6447cd9d84131cd50e5
+
+Time: 75.905 ms
+CH Conseiller beauté
+    50 | 1c17d71df95794a371782a6535217724
+
+Time: 42.421 ms
+CH Coiffeur
+     0 | 
+
+Time: 32.958 ms
+CH Responsable de boutique
+    35 | 020af24c8028c4bad86193ce5f52293c
+
+Time: 36.288 ms
+CH Adjoint au responsable de boutique
+     7 | 88364531746e1575e44a8ecf292bc979
+
+Time: 30.869 ms
+CH Gestionnaire de stock en boutique
+     2 | 005945a7970fe72c4fbe926193007442
+
+Time: 33.418 ms
+CH Hôte de caisse
+     2 | 70affd4f750ab68156575072ce176c2f
+
+Time: 33.341 ms
+CH Visual merchandiser
+    13 | c05eb3af05f377614185d6f8787fa292
+
+Time: 30.339 ms
+CH Horloger
+    80 | fce188872f5f17809a4027e75c702365
+
+Time: 94.914 ms
+CH Pharmacien
+     0 | 
+
+Time: 30.887 ms
+CH Chargé de recrutement
+     0 | 
+
+Time: 29.914 ms
+CH Contrôleur de gestion
+     6 | 915162b8473616550cf413278ed6ddf7
+
+Time: 32.556 ms
+JP セールスアドバイザー
+   243 | 3947abf419dbb6a5ab05087a87be67d1
+
+Time: 70.776 ms
+JP ビューティーアドバイザー
+     3 | da30cf617065765c50131b1c031ac1eb
+
+Time: 32.031 ms
+JP 美容師
+     0 | 
+
+Time: 29.114 ms
+JP ストアマネージャー
+    34 | f1267d6235a3820668a1c8d24535a4b5
+
+Time: 30.897 ms
+JP 副店長
+    10 | 0e64b271f141b80a3a7e2407cfcbe55c
+
+Time: 26.695 ms
+JP ストック担当
+     1 | 43eedbcee3d9f17ce356f6be7c29ff63
+
+Time: 26.866 ms
+JP キャッシャー
+     2 | 34a7f743cac07a9129ae1fdfc8788e31
+
+Time: 29.433 ms
+JP ビジュアルマーチャンダイザー
+     2 | 6b9f0546542f9cafa7c064ac0a791052
+
+Time: 27.606 ms
+JP 時計職人
+     2 | f36ca1649959d76f8c748e4cb66da182
+
+Time: 24.800 ms
+JP 薬剤師
+     0 | 
+
+Time: 25.940 ms
+JP リクルーター
+     3 | d54c841689ea8fae09d88f57645775c1
+
+Time: 105.575 ms
+JP ファイナンシャルコントローラー
+     2 | a349229482abafab8a70df70f936c61d
+
+Time: 27.273 ms
+CN 销售顾问
+   159 | 51c2a32dc1c07110ea88d58767b61dcf
+
+Time: 56.298 ms
+CN 美容顾问
+   198 | 06937ef1a600ef7b5da00613334c0dba
+
+Time: 44.807 ms
+CN 美发师
+     0 | 
+
+Time: 32.803 ms
+CN 店长
+    53 | ec68d8c20cecdf042182bb4851c33074
+
+Time: 34.300 ms
+CN 副店长
+    14 | 4c0fa07bea0ffdbd65508b3467d682c0
+
+Time: 39.375 ms
+CN 库存专员
+     2 | 0670a6b80482d4d9b1a936a817b640bf
+
+Time: 31.772 ms
+CN 收银员
+     0 | 
+
+Time: 31.768 ms
+CN 陈列师
+     2 | 5500cd7e3d2d52c78d663b0a0a2e3d4d
+
+Time: 31.931 ms
+CN 钟表师
+     1 | bbef35cf70c1f4bee5df7f7b1055846d
+
+Time: 31.009 ms
+CN 药剂师
+     0 | 
+
+Time: 31.782 ms
+CN 招聘专员
+     1 | 496ff598fb34ad1567bf2dd1a6b6ef8b
+
+Time: 33.195 ms
+CN 财务控制师
+     4 | 2873eaaa6ee01f22c2b3d32fe9446558
+
+Time: 101.018 ms
+BE Conseiller de vente
+   321 | 21d280d3c3045aefdd1d2fbc00d4b983
+
+Time: 76.092 ms
+BE Conseiller beauté
+     8 | ea3001567ed49d144d44997a6963f915
+
+Time: 30.655 ms
+BE Coiffeur
+     0 | 
+
+Time: 26.473 ms
+BE Responsable de boutique
+    67 | 94718f7c2fc8d3f340ad157248b789a5
+
+Time: 31.436 ms
+BE Adjoint au responsable de boutique
+    36 | 7682654aef670cec3dc4aecd57180405
+
+Time: 32.163 ms
+BE Gestionnaire de stock en boutique
+     9 | 9bde93077355cc886bbd46f991a624fa
+
+Time: 31.094 ms
+BE Hôte de caisse
+     0 | 
+
+Time: 29.904 ms
+BE Visual merchandiser
+    16 | 186f59c3c40798badcac151b5c844fa3
+
+Time: 28.101 ms
+BE Horloger
+     0 | 
+
+Time: 29.931 ms
+BE Pharmacien
+     0 | 
+
+Time: 27.494 ms
+BE Chargé de recrutement
+     1 | ad18f407fee016cc4ef7c1a8c2a0f727
+
+Time: 29.760 ms
+BE Contrôleur de gestion
+     3 | 7152943f6c355edfbb3cb814afd337ba
+
+Time: 28.148 ms
+US chanel
+   197 | 7aa4a18fafc8a084b91294c4e2e638e7
+
+Time: 115.981 ms
+FR chanel
+   459 | 4e3500e6a18c6b9412c297ac105fd475
+
+Time: 44.318 ms
+FR stage marketing
+   997 | fbff288ffcbf0ae8b4ae2e35f8b74b00
+
+Time: 62.130 ms
+FR conseiller de vente chanel
+    26 | a115bd54ce45199a1595d890db2a16d6
+
+Time: 37.347 ms
+US sales advisor new york
+  1666 | b9bc9a116857e6a7b0380826a71a4fe6
+
+Time: 247.340 ms
+FR sans critère
+ 13638 | 2828e7600a357dd02e41fa2c8474d3e4
+
+Time: 131.806 ms
+FR Chennevières-sur-Marne
+     2 | f19ad353ac2568baf5a315541ab1cac5
+
+Time: 135.978 ms
+FR conseiller de vente, Chennevières-sur-Marne
+     1 | 670178fea484303e9f97339da3b38b0f
+
+Time: 155.821 ms
+FR Paris
+  4633 | c5045a6c5f99bf7c835537d8e4787cd6
+
+Time: 128.181 ms
+FR conseiller de vente, Paris
+   769 | 9b309c1ccf88a00c99121a6ebc08bfc3
+
+Time: 176.717 ms
+FR Lyon
+   342 | 6faf702a595345d8a95ca201447e8627
+
+Time: 118.504 ms
+FR Paris 15e (75)
+     0 | 
+
+Time: 106.718 ms
+FR 94430 (code postal)
+     1 | b37888fcfe562cfb6d3d0c41bb1a28bf
+
+Time: 41.610 ms
+FR accueil : métier + 3 villes
+   927 | 0a7d547ea1fe44bbfbd90f12b3f3185e
+
+Time: 94.054 ms
+FR lieu inconnu (repli texte)
+     0 | 
+
+Time: 212.176 ms
+US sales advisor, New York
+   738 | 7286d04c9b0b3abf405d498fc46fead4
+
+Time: 401.603 ms
+US New York
+  3124 | 1ec5cef3303344f7a030237d6f7e4b16
+
+Time: 291.669 ms
+GB London
+  1670 | 8fe1a7c0dce0640c0df35c0195e002c7
+
+Time: 126.233 ms
+DE München
+   116 | 8671536d6a1d0cc55ceb22b0da5256e6
+
+Time: 107.772 ms
+FR conseiller de vente (sans lieu)
+  4706 | e3ae77e1e3a6a07b38e18d5413dc0c8d
+
+Time: 302.337 ms
+FR secteur BEAUTY
+  2934 | 87b3a3c51cac308b0fb9e0a48f6242a0
+
+Time: 105.825 ms
+FR secteur FASHION + JEWELRY
+  6231 | e6b59e4b40376a0568e9eb0b0440b757
+
+Time: 113.863 ms
+FR secteur unclassified
+  3968 | 482e8e888663b46d16656556ad0a60b2
+
+Time: 103.218 ms
+FR langue en
+   912 | f1d13f3ed3d60c4af5ed8d1565a6ea1c
+
+Time: 106.169 ms
+FR conseiller de vente, secteur BEAUTY
+   337 | 1b431c8108bdaaa019aa7d1a7dfeddc4
+
+Time: 316.301 ms
+FR Paris, secteur FASHION, langue fr
+  2023 | 3296bb3981527a8f9db006d0d7b10e2b
+
+Time: 127.361 ms
+FR CDI, secteur BEAUTY
+  1331 | 4e7e46ad640a5ca4583a35f141697ae9
+
+Time: 118.641 ms
+US secteur RETAIL
+ 21190 | ae68569ebd1b90ec7eada8c1448ab143
+
+Time: 275.215 ms
+US sales advisor, secteur BEAUTY
+   707 | f4ba83cc1f9839b3544f6f4426e7df81
+
+Time: 757.232 ms
+DE langue de
+  2753 | deffa93f68596626892c9a9348f03e4a
+
+Time: 58.831 ms
+GB London, secteur FASHION
+   510 | 006816e37a78ab00df54881ec4dd6e12
+
+Time: 133.804 ms
+JP secteur BEAUTY, langue ja
+    91 | 140025990527d845e5f397736c7e1dfa
+
+Time: 98.988 ms

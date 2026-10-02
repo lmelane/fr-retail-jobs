@@ -1,0 +1,5 @@
+ publiables | sans_secteur | sans_langue | sans_contrat | sans_temps 
+------------+--------------+-------------+--------------+------------
+         59 |            0 |           9 |            0 |          0
+(1 row)
+

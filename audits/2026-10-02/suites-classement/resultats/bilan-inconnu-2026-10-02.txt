@@ -1,0 +1,524 @@
+440 recherches (marché × filtre × valeur), avant 2026-10-02T12:41:19.940Z, après 2026-10-02T13:13:57.644Z ; colonne de retenue en production : False
+la liste d'après (total et confirmées) = le filtre strict d'avant : 440 / 440 ; écarts : []
+
+# Cas demandés : liste (= avant) et section des inconnues à part
+US secteur EYEWEAR : liste 6 → 6 ; section à part : 15382
+US secteur WATCHMAKING : liste 131 → 131 ; section à part : 15382
+US secteur BEAUTY : liste 13087 → 13087 ; section à part : 15382
+FR secteur JEWELRY : liste 1304 → 1304 ; section à part : 3968
+FR langue en : liste 912 → 912 ; section à part : 227
+
+# Par filtre et par marché (somme sur les valeurs proposées) : liste avant = après ; section à part ; inconnues du marché
+secteur  US  10 valeurs  liste   58728  section  153820  (inconnues du marché : 15382 / 40606)
+secteur  FR  10 valeurs  liste   18153  section   39680  (inconnues du marché : 3968 / 13638)
+secteur  GB  10 valeurs  liste    4540  section   22400  (inconnues du marché : 2240 / 4320)
+secteur  DE  10 valeurs  liste    3724  section   18020  (inconnues du marché : 1802 / 3596)
+secteur  CA   9 valeurs  liste    2050  section   17334  (inconnues du marché : 1926 / 3479)
+secteur  IT  10 valeurs  liste    2838  section   10770  (inconnues du marché : 1077 / 2922)
+secteur  ES   8 valeurs  liste    3101  section    6688  (inconnues du marché : 836 / 2253)
+secteur  NL   9 valeurs  liste    2014  section    9774  (inconnues du marché : 1086 / 1969)
+secteur  AU   9 valeurs  liste    1008  section    7578  (inconnues du marché : 842 / 1504)
+secteur  CH   9 valeurs  liste     739  section    8505  (inconnues du marché : 945 / 1323)
+secteur  CN  10 valeurs  liste    1009  section    3820  (inconnues du marché : 382 / 1236)
+secteur  BE   9 valeurs  liste     914  section    1917  (inconnues du marché : 213 / 718)
+secteur  JP  10 valeurs  liste     862  section    2540  (inconnues du marché : 254 / 615)
+secteur  KR   9 valeurs  liste     740  section    1908  (inconnues du marché : 212 / 542)
+secteur  SG  10 valeurs  liste     585  section    1630  (inconnues du marché : 163 / 519)
+secteur  MX   9 valeurs  liste     489  section    2250  (inconnues du marché : 250 / 512)
+secteur  PT   9 valeurs  liste     662  section    1629  (inconnues du marché : 181 / 444)
+secteur  PL   7 valeurs  liste     626  section     917  (inconnues du marché : 131 / 388)
+secteur  HK  10 valeurs  liste     288  section    1740  (inconnues du marché : 174 / 359)
+secteur  DK   8 valeurs  liste     305  section    1072  (inconnues du marché : 134 / 348)
+secteur  CL   7 valeurs  liste     273  section    1218  (inconnues du marché : 174 / 310)
+secteur  TH   9 valeurs  liste     279  section     549  (inconnues du marché : 61 / 294)
+secteur  MY  10 valeurs  liste     264  section    1600  (inconnues du marché : 160 / 293)
+secteur  SE   7 valeurs  liste     455  section     812  (inconnues du marché : 116 / 280)
+secteur  AE   9 valeurs  liste     126  section    1449  (inconnues du marché : 161 / 269)
+secteur  TR   9 valeurs  liste     373  section     963  (inconnues du marché : 107 / 257)
+secteur  BR   9 valeurs  liste     224  section     684  (inconnues du marché : 76 / 221)
+secteur  NZ   6 valeurs  liste     169  section     702  (inconnues du marché : 117 / 220)
+secteur  NO   7 valeurs  liste     350  section     343  (inconnues du marché : 49 / 211)
+secteur  GR   6 valeurs  liste     146  section     804  (inconnues du marché : 134 / 208)
+secteur  TW   8 valeurs  liste     255  section     784  (inconnues du marché : 98 / 207)
+secteur  VN   7 valeurs  liste     211  section     567  (inconnues du marché : 81 / 183)
+secteur  ZA   5 valeurs  liste     172  section     345  (inconnues du marché : 69 / 181)
+secteur  PE   7 valeurs  liste     231  section     420  (inconnues du marché : 60 / 172)
+secteur  HU   7 valeurs  liste     378  section     133  (inconnues du marché : 19 / 132)
+secteur  CZ   9 valeurs  liste     300  section     387  (inconnues du marché : 43 / 129)
+secteur  SA   8 valeurs  liste      51  section     512  (inconnues du marché : 64 / 101)
+secteur  RO   7 valeurs  liste     214  section     154  (inconnues du marché : 22 / 98)
+secteur  PR   6 valeurs  liste      75  section     288  (inconnues du marché : 48 / 96)
+secteur  PH   5 valeurs  liste     103  section     170  (inconnues du marché : 34 / 72)
+secteur  LU   7 valeurs  liste      63  section     112  (inconnues du marché : 16 / 57)
+secteur  TOTAL  liste 108087  section 326988
+langue   US   2 valeurs  liste   40597  section      18  (inconnues du marché : 9 / 40606)
+langue   FR   7 valeurs  liste   13411  section    1589  (inconnues du marché : 227 / 13638)
+langue   GB   3 valeurs  liste    4311  section      27  (inconnues du marché : 9 / 4320)
+langue   DE   5 valeurs  liste    3483  section     565  (inconnues du marché : 113 / 3596)
+langue   CA   2 valeurs  liste    3468  section      22  (inconnues du marché : 11 / 3479)
+langue   IT   4 valeurs  liste    2865  section     228  (inconnues du marché : 57 / 2922)
+langue   ES   5 valeurs  liste    2240  section      65  (inconnues du marché : 13 / 2253)
+langue   NL   5 valeurs  liste    1961  section      40  (inconnues du marché : 8 / 1969)
+langue   CH   4 valeurs  liste    1269  section     216  (inconnues du marché : 54 / 1323)
+langue   CN   3 valeurs  liste    1126  section     330  (inconnues du marché : 110 / 1236)
+langue   BE   3 valeurs  liste     701  section      51  (inconnues du marché : 17 / 718)
+langue   JP   4 valeurs  liste     524  section     364  (inconnues du marché : 91 / 615)
+langue   MX   2 valeurs  liste     499  section      26  (inconnues du marché : 13 / 512)
+langue   PT   4 valeurs  liste     438  section      24  (inconnues du marché : 6 / 444)
+langue   PL   5 valeurs  liste     332  section     280  (inconnues du marché : 56 / 388)
+langue   DK   4 valeurs  liste     207  section     564  (inconnues du marché : 141 / 348)
+langue   CL   2 valeurs  liste     305  section      10  (inconnues du marché : 5 / 310)
+langue   AE   2 valeurs  liste     269  section       0  (inconnues du marché : 0 / 269)
+langue   TR   4 valeurs  liste     158  section     396  (inconnues du marché : 99 / 257)
+langue   BR   2 valeurs  liste     218  section       6  (inconnues du marché : 3 / 221)
+langue   GR   4 valeurs  liste     160  section     192  (inconnues du marché : 48 / 208)
+langue   VN   3 valeurs  liste     176  section      21  (inconnues du marché : 7 / 183)
+langue   PE   2 valeurs  liste     166  section      12  (inconnues du marché : 6 / 172)
+langue   HU   3 valeurs  liste     132  section       0  (inconnues du marché : 0 / 132)
+langue   CZ   7 valeurs  liste     128  section       7  (inconnues du marché : 1 / 129)
+langue   RO   5 valeurs  liste      69  section     145  (inconnues du marché : 29 / 98)
+langue   PR   2 valeurs  liste      96  section       0  (inconnues du marché : 0 / 96)
+langue   LU   2 valeurs  liste      57  section       0  (inconnues du marché : 0 / 57)
+langue   TOTAL  liste 79366  section 5198
+
+# Détail : filtre, marché, valeur, liste avant, liste après, section à part
+langue	US	en	40589	40589	9
+langue	US	fr	8	8	9
+langue	FR	de	3	3	227
+langue	FR	en	912	912	227
+langue	FR	es	1	1	227
+langue	FR	fr	12483	12483	227
+langue	FR	it	5	5	227
+langue	FR	nl	3	3	227
+langue	FR	pt	4	4	227
+langue	GB	de	1	1	9
+langue	GB	en	4298	4298	9
+langue	GB	fr	12	12	9
+langue	DE	de	2753	2753	113
+langue	DE	en	715	715	113
+langue	DE	fr	13	13	113
+langue	DE	nl	1	1	113
+langue	DE	pt	1	1	113
+langue	CA	en	2801	2801	11
+langue	CA	fr	667	667	11
+langue	IT	en	912	912	57
+langue	IT	es	2	2	57
+langue	IT	fr	8	8	57
+langue	IT	it	1943	1943	57
+langue	ES	en	389	389	13
+langue	ES	es	1847	1847	13
+langue	ES	fr	2	2	13
+langue	ES	it	1	1	13
+langue	ES	pt	1	1	13
+langue	NL	de	2	2	8
+langue	NL	en	656	656	8
+langue	NL	fr	2	2	8
+langue	NL	nl	1299	1299	8
+langue	NL	pt	2	2	8
+langue	CH	de	322	322	54
+langue	CH	en	324	324	54
+langue	CH	fr	619	619	54
+langue	CH	it	4	4	54
+langue	CN	en	499	499	110
+langue	CN	pt	1	1	110
+langue	CN	zh	626	626	110
+langue	BE	en	275	275	17
+langue	BE	fr	218	218	17
+langue	BE	nl	208	208	17
+langue	JP	en	398	398	91
+langue	JP	ja	124	124	91
+langue	JP	ko	1	1	91
+langue	JP	pt	1	1	91
+langue	MX	en	197	197	13
+langue	MX	es	302	302	13
+langue	PT	en	155	155	6
+langue	PT	es	5	5	6
+langue	PT	fr	2	2	6
+langue	PT	pt	276	276	6
+langue	PL	de	1	1	56
+langue	PL	en	95	95	56
+langue	PL	es	10	10	56
+langue	PL	pl	166	166	56
+langue	PL	pt	60	60	56
+langue	DK	da	26	26	141
+langue	DK	de	3	3	141
+langue	DK	en	175	175	141
+langue	DK	fr	3	3	141
+langue	CL	en	20	20	5
+langue	CL	es	285	285	5
+langue	AE	en	267	267	0
+langue	AE	fr	2	2	0
+langue	TR	en	82	82	99
+langue	TR	es	34	34	99
+langue	TR	pt	15	15	99
+langue	TR	tr	27	27	99
+langue	BR	en	50	50	3
+langue	BR	pt	168	168	3
+langue	GR	el	49	49	48
+langue	GR	en	58	58	48
+langue	GR	es	52	52	48
+langue	GR	pt	1	1	48
+langue	VN	en	162	162	7
+langue	VN	pt	12	12	7
+langue	VN	vi	2	2	7
+langue	PE	en	4	4	6
+langue	PE	es	162	162	6
+langue	HU	en	32	32	0
+langue	HU	hu	85	85	0
+langue	HU	pt	15	15	0
+langue	CZ	cs	54	54	1
+langue	CZ	en	37	37	1
+langue	CZ	fr	1	1	1
+langue	CZ	it	1	1	1
+langue	CZ	pt	31	31	1
+langue	CZ	ro	2	2	1
+langue	CZ	sk	2	2	1
+langue	RO	en	21	21	29
+langue	RO	es	1	1	29
+langue	RO	hu	1	1	29
+langue	RO	pt	1	1	29
+langue	RO	ro	45	45	29
+langue	PR	en	50	50	0
+langue	PR	es	46	46	0
+langue	LU	en	11	11	0
+langue	LU	fr	46	46	0
+secteur	US	BEAUTY	13087	13087	15382
+secteur	US	EYEWEAR	6	6	15382
+secteur	US	FASHION	5943	5943	15382
+secteur	US	FOOTWEAR	4162	4162	15382
+secteur	US	FRAGRANCE	11336	11336	15382
+secteur	US	HOME_LIFESTYLE	1867	1867	15382
+secteur	US	JEWELRY	854	854	15382
+secteur	US	LEATHER_GOODS	152	152	15382
+secteur	US	RETAIL	21190	21190	15382
+secteur	US	WATCHMAKING	131	131	15382
+secteur	FR	BEAUTY	2934	2934	3968
+secteur	FR	EYEWEAR	4	4	3968
+secteur	FR	FASHION	5528	5528	3968
+secteur	FR	FOOTWEAR	762	762	3968
+secteur	FR	FRAGRANCE	1180	1180	3968
+secteur	FR	HOME_LIFESTYLE	1598	1598	3968
+secteur	FR	JEWELRY	1304	1304	3968
+secteur	FR	LEATHER_GOODS	680	680	3968
+secteur	FR	RETAIL	3483	3483	3968
+secteur	FR	WATCHMAKING	680	680	3968
+secteur	GB	BEAUTY	1097	1097	2240
+secteur	GB	EYEWEAR	1	1	2240
+secteur	GB	FASHION	1321	1321	2240
+secteur	GB	FOOTWEAR	237	237	2240
+secteur	GB	FRAGRANCE	149	149	2240
+secteur	GB	HOME_LIFESTYLE	687	687	2240
+secteur	GB	JEWELRY	153	153	2240
+secteur	GB	LEATHER_GOODS	32	32	2240
+secteur	GB	RETAIL	838	838	2240
+secteur	GB	WATCHMAKING	25	25	2240
+secteur	DE	BEAUTY	703	703	1802
+secteur	DE	EYEWEAR	4	4	1802
+secteur	DE	FASHION	852	852	1802
+secteur	DE	FOOTWEAR	485	485	1802
+secteur	DE	FRAGRANCE	407	407	1802
+secteur	DE	HOME_LIFESTYLE	603	603	1802
+secteur	DE	JEWELRY	169	169	1802
+secteur	DE	LEATHER_GOODS	12	12	1802
+secteur	DE	RETAIL	477	477	1802
+secteur	DE	WATCHMAKING	12	12	1802
+secteur	CA	BEAUTY	152	152	1926
+secteur	CA	FASHION	281	281	1926
+secteur	CA	FOOTWEAR	213	213	1926
+secteur	CA	FRAGRANCE	13	13	1926
+secteur	CA	HOME_LIFESTYLE	118	118	1926
+secteur	CA	JEWELRY	239	239	1926
+secteur	CA	LEATHER_GOODS	9	9	1926
+secteur	CA	RETAIL	1016	1016	1926
+secteur	CA	WATCHMAKING	9	9	1926
+secteur	IT	BEAUTY	322	322	1077
+secteur	IT	EYEWEAR	39	39	1077
+secteur	IT	FASHION	818	818	1077
+secteur	IT	FOOTWEAR	118	118	1077
+secteur	IT	FRAGRANCE	106	106	1077
+secteur	IT	HOME_LIFESTYLE	281	281	1077
+secteur	IT	JEWELRY	62	62	1077
+secteur	IT	LEATHER_GOODS	17	17	1077
+secteur	IT	RETAIL	1056	1056	1077
+secteur	IT	WATCHMAKING	19	19	1077
+secteur	ES	BEAUTY	431	431	836
+secteur	ES	EYEWEAR	2	2	836
+secteur	ES	FASHION	1185	1185	836
+secteur	ES	FOOTWEAR	97	97	836
+secteur	ES	FRAGRANCE	90	90	836
+secteur	ES	HOME_LIFESTYLE	299	299	836
+secteur	ES	JEWELRY	15	15	836
+secteur	ES	RETAIL	982	982	836
+secteur	NL	BEAUTY	440	440	1086
+secteur	NL	FASHION	411	411	1086
+secteur	NL	FOOTWEAR	175	175	1086
+secteur	NL	FRAGRANCE	195	195	1086
+secteur	NL	HOME_LIFESTYLE	400	400	1086
+secteur	NL	JEWELRY	77	77	1086
+secteur	NL	LEATHER_GOODS	4	4	1086
+secteur	NL	RETAIL	308	308	1086
+secteur	NL	WATCHMAKING	4	4	1086
+secteur	AU	BEAUTY	96	96	842
+secteur	AU	FASHION	223	223	842
+secteur	AU	FOOTWEAR	154	154	842
+secteur	AU	FRAGRANCE	13	13	842
+secteur	AU	HOME_LIFESTYLE	73	73	842
+secteur	AU	JEWELRY	210	210	842
+secteur	AU	LEATHER_GOODS	13	13	842
+secteur	AU	RETAIL	215	215	842
+secteur	AU	WATCHMAKING	11	11	842
+secteur	CH	BEAUTY	98	98	945
+secteur	CH	FASHION	188	188	945
+secteur	CH	FOOTWEAR	57	57	945
+secteur	CH	FRAGRANCE	75	75	945
+secteur	CH	HOME_LIFESTYLE	78	78	945
+secteur	CH	JEWELRY	90	90	945
+secteur	CH	LEATHER_GOODS	39	39	945
+secteur	CH	RETAIL	66	66	945
+secteur	CH	WATCHMAKING	48	48	945
+secteur	CN	BEAUTY	212	212	382
+secteur	CN	EYEWEAR	7	7	382
+secteur	CN	FASHION	435	435	382
+secteur	CN	FOOTWEAR	106	106	382
+secteur	CN	FRAGRANCE	6	6	382
+secteur	CN	HOME_LIFESTYLE	19	19	382
+secteur	CN	JEWELRY	4	4	382
+secteur	CN	LEATHER_GOODS	7	7	382
+secteur	CN	RETAIL	211	211	382
+secteur	CN	WATCHMAKING	2	2	382
+secteur	BE	BEAUTY	151	151	213
+secteur	BE	FASHION	310	310	213
+secteur	BE	FOOTWEAR	64	64	213
+secteur	BE	FRAGRANCE	37	37	213
+secteur	BE	HOME_LIFESTYLE	91	91	213
+secteur	BE	JEWELRY	63	63	213
+secteur	BE	LEATHER_GOODS	10	10	213
+secteur	BE	RETAIL	178	178	213
+secteur	BE	WATCHMAKING	10	10	213
+secteur	JP	BEAUTY	167	167	254
+secteur	JP	EYEWEAR	2	2	254
+secteur	JP	FASHION	278	278	254
+secteur	JP	FOOTWEAR	182	182	254
+secteur	JP	FRAGRANCE	3	3	254
+secteur	JP	HOME_LIFESTYLE	154	154	254
+secteur	JP	JEWELRY	53	53	254
+secteur	JP	LEATHER_GOODS	11	11	254
+secteur	JP	RETAIL	7	7	254
+secteur	JP	WATCHMAKING	5	5	254
+secteur	KR	BEAUTY	135	135	212
+secteur	KR	FASHION	275	275	212
+secteur	KR	FOOTWEAR	116	116	212
+secteur	KR	FRAGRANCE	19	19	212
+secteur	KR	HOME_LIFESTYLE	106	106	212
+secteur	KR	JEWELRY	41	41	212
+secteur	KR	LEATHER_GOODS	20	20	212
+secteur	KR	RETAIL	6	6	212
+secteur	KR	WATCHMAKING	22	22	212
+secteur	SG	BEAUTY	105	105	163
+secteur	SG	EYEWEAR	1	1	163
+secteur	SG	FASHION	180	180	163
+secteur	SG	FOOTWEAR	45	45	163
+secteur	SG	FRAGRANCE	41	41	163
+secteur	SG	HOME_LIFESTYLE	30	30	163
+secteur	SG	JEWELRY	45	45	163
+secteur	SG	LEATHER_GOODS	28	28	163
+secteur	SG	RETAIL	82	82	163
+secteur	SG	WATCHMAKING	28	28	163
+secteur	MX	BEAUTY	122	122	250
+secteur	MX	FASHION	197	197	250
+secteur	MX	FOOTWEAR	72	72	250
+secteur	MX	FRAGRANCE	9	9	250
+secteur	MX	HOME_LIFESTYLE	67	67	250
+secteur	MX	JEWELRY	10	10	250
+secteur	MX	LEATHER_GOODS	3	3	250
+secteur	MX	RETAIL	6	6	250
+secteur	MX	WATCHMAKING	3	3	250
+secteur	PT	BEAUTY	121	121	181
+secteur	PT	FASHION	198	198	181
+secteur	PT	FOOTWEAR	41	41	181
+secteur	PT	FRAGRANCE	8	8	181
+secteur	PT	HOME_LIFESTYLE	114	114	181
+secteur	PT	JEWELRY	8	8	181
+secteur	PT	LEATHER_GOODS	3	3	181
+secteur	PT	RETAIL	166	166	181
+secteur	PT	WATCHMAKING	3	3	181
+secteur	PL	BEAUTY	139	139	131
+secteur	PL	FASHION	107	107	131
+secteur	PL	FOOTWEAR	79	79	131
+secteur	PL	FRAGRANCE	59	59	131
+secteur	PL	HOME_LIFESTYLE	132	132	131
+secteur	PL	JEWELRY	35	35	131
+secteur	PL	RETAIL	75	75	131
+secteur	HK	BEAUTY	29	29	174
+secteur	HK	EYEWEAR	3	3	174
+secteur	HK	FASHION	142	142	174
+secteur	HK	FOOTWEAR	25	25	174
+secteur	HK	FRAGRANCE	9	9	174
+secteur	HK	HOME_LIFESTYLE	18	18	174
+secteur	HK	JEWELRY	34	34	174
+secteur	HK	LEATHER_GOODS	9	9	174
+secteur	HK	RETAIL	7	7	174
+secteur	HK	WATCHMAKING	12	12	174
+secteur	DK	BEAUTY	44	44	134
+secteur	DK	EYEWEAR	1	1	134
+secteur	DK	FASHION	43	43	134
+secteur	DK	FOOTWEAR	29	29	134
+secteur	DK	FRAGRANCE	3	3	134
+secteur	DK	HOME_LIFESTYLE	28	28	134
+secteur	DK	JEWELRY	35	35	134
+secteur	DK	RETAIL	122	122	134
+secteur	CL	BEAUTY	2	2	174
+secteur	CL	FASHION	4	4	174
+secteur	CL	FOOTWEAR	133	133	174
+secteur	CL	FRAGRANCE	1	1	174
+secteur	CL	HOME_LIFESTYLE	1	1	174
+secteur	CL	JEWELRY	1	1	174
+secteur	CL	RETAIL	131	131	174
+secteur	TH	BEAUTY	10	10	61
+secteur	TH	FASHION	42	42	61
+secteur	TH	FOOTWEAR	10	10	61
+secteur	TH	FRAGRANCE	6	6	61
+secteur	TH	HOME_LIFESTYLE	6	6	61
+secteur	TH	JEWELRY	191	191	61
+secteur	TH	LEATHER_GOODS	6	6	61
+secteur	TH	RETAIL	2	2	61
+secteur	TH	WATCHMAKING	6	6	61
+secteur	MY	BEAUTY	57	57	160
+secteur	MY	EYEWEAR	1	1	160
+secteur	MY	FASHION	69	69	160
+secteur	MY	FOOTWEAR	39	39	160
+secteur	MY	FRAGRANCE	8	8	160
+secteur	MY	HOME_LIFESTYLE	39	39	160
+secteur	MY	JEWELRY	24	24	160
+secteur	MY	LEATHER_GOODS	2	2	160
+secteur	MY	RETAIL	22	22	160
+secteur	MY	WATCHMAKING	3	3	160
+secteur	SE	BEAUTY	105	105	116
+secteur	SE	FASHION	106	106	116
+secteur	SE	FOOTWEAR	81	81	116
+secteur	SE	FRAGRANCE	25	25	116
+secteur	SE	HOME_LIFESTYLE	98	98	116
+secteur	SE	JEWELRY	11	11	116
+secteur	SE	RETAIL	29	29	116
+secteur	AE	BEAUTY	13	13	161
+secteur	AE	FASHION	72	72	161
+secteur	AE	FOOTWEAR	7	7	161
+secteur	AE	FRAGRANCE	4	4	161
+secteur	AE	HOME_LIFESTYLE	1	1	161
+secteur	AE	JEWELRY	11	11	161
+secteur	AE	LEATHER_GOODS	1	1	161
+secteur	AE	RETAIL	10	10	161
+secteur	AE	WATCHMAKING	7	7	161
+secteur	TR	BEAUTY	37	37	107
+secteur	TR	FASHION	142	142	107
+secteur	TR	FOOTWEAR	46	46	107
+secteur	TR	FRAGRANCE	5	5	107
+secteur	TR	HOME_LIFESTYLE	33	33	107
+secteur	TR	JEWELRY	5	5	107
+secteur	TR	LEATHER_GOODS	5	5	107
+secteur	TR	RETAIL	95	95	107
+secteur	TR	WATCHMAKING	5	5	107
+secteur	BR	BEAUTY	31	31	76
+secteur	BR	FASHION	44	44	76
+secteur	BR	FOOTWEAR	37	37	76
+secteur	BR	FRAGRANCE	4	4	76
+secteur	BR	HOME_LIFESTYLE	15	15	76
+secteur	BR	JEWELRY	20	20	76
+secteur	BR	LEATHER_GOODS	2	2	76
+secteur	BR	RETAIL	69	69	76
+secteur	BR	WATCHMAKING	2	2	76
+secteur	NZ	BEAUTY	17	17	117
+secteur	NZ	FASHION	38	38	117
+secteur	NZ	FOOTWEAR	34	34	117
+secteur	NZ	HOME_LIFESTYLE	16	16	117
+secteur	NZ	JEWELRY	37	37	117
+secteur	NZ	RETAIL	27	27	117
+secteur	NO	BEAUTY	81	81	49
+secteur	NO	FASHION	51	51	49
+secteur	NO	FOOTWEAR	29	29	49
+secteur	NO	FRAGRANCE	51	51	49
+secteur	NO	HOME_LIFESTYLE	79	79	49
+secteur	NO	JEWELRY	5	5	49
+secteur	NO	RETAIL	54	54	49
+secteur	GR	BEAUTY	39	39	134
+secteur	GR	FASHION	40	40	134
+secteur	GR	FOOTWEAR	28	28	134
+secteur	GR	HOME_LIFESTYLE	17	17	134
+secteur	GR	JEWELRY	10	10	134
+secteur	GR	RETAIL	12	12	134
+secteur	TW	BEAUTY	42	42	98
+secteur	TW	FASHION	81	81	98
+secteur	TW	FOOTWEAR	32	32	98
+secteur	TW	FRAGRANCE	17	17	98
+secteur	TW	HOME_LIFESTYLE	23	23	98
+secteur	TW	JEWELRY	24	24	98
+secteur	TW	LEATHER_GOODS	17	17	98
+secteur	TW	WATCHMAKING	19	19	98
+secteur	VN	BEAUTY	30	30	81
+secteur	VN	FASHION	73	73	81
+secteur	VN	FOOTWEAR	69	69	81
+secteur	VN	HOME_LIFESTYLE	20	20	81
+secteur	VN	JEWELRY	7	7	81
+secteur	VN	LEATHER_GOODS	10	10	81
+secteur	VN	RETAIL	2	2	81
+secteur	ZA	BEAUTY	12	12	69
+secteur	ZA	FASHION	52	52	69
+secteur	ZA	FOOTWEAR	48	48	69
+secteur	ZA	HOME_LIFESTYLE	6	6	69
+secteur	ZA	JEWELRY	54	54	69
+secteur	PE	BEAUTY	5	5	60
+secteur	PE	FASHION	6	6	60
+secteur	PE	FOOTWEAR	109	109	60
+secteur	PE	FRAGRANCE	2	2	60
+secteur	PE	HOME_LIFESTYLE	3	3	60
+secteur	PE	JEWELRY	1	1	60
+secteur	PE	RETAIL	105	105	60
+secteur	HU	BEAUTY	90	90	19
+secteur	HU	FASHION	90	90	19
+secteur	HU	FOOTWEAR	76	76	19
+secteur	HU	FRAGRANCE	8	8	19
+secteur	HU	HOME_LIFESTYLE	87	87	19
+secteur	HU	JEWELRY	6	6	19
+secteur	HU	RETAIL	21	21	19
+secteur	CZ	BEAUTY	71	71	43
+secteur	CZ	FASHION	76	76	43
+secteur	CZ	FOOTWEAR	64	64	43
+secteur	CZ	FRAGRANCE	4	4	43
+secteur	CZ	HOME_LIFESTYLE	64	64	43
+secteur	CZ	JEWELRY	3	3	43
+secteur	CZ	LEATHER_GOODS	3	3	43
+secteur	CZ	RETAIL	12	12	43
+secteur	CZ	WATCHMAKING	3	3	43
+secteur	SA	BEAUTY	1	1	64
+secteur	SA	FASHION	29	29	64
+secteur	SA	FOOTWEAR	8	8	64
+secteur	SA	FRAGRANCE	2	2	64
+secteur	SA	JEWELRY	4	4	64
+secteur	SA	LEATHER_GOODS	2	2	64
+secteur	SA	RETAIL	1	1	64
+secteur	SA	WATCHMAKING	4	4	64
+secteur	RO	BEAUTY	48	48	22
+secteur	RO	FASHION	48	48	22
+secteur	RO	FOOTWEAR	23	23	22
+secteur	RO	FRAGRANCE	10	10	22
+secteur	RO	HOME_LIFESTYLE	45	45	22
+secteur	RO	JEWELRY	1	1	22
+secteur	RO	RETAIL	39	39	22
+secteur	PR	BEAUTY	4	4	48
+secteur	PR	FASHION	7	7	48
+secteur	PR	FOOTWEAR	19	19	48
+secteur	PR	HOME_LIFESTYLE	4	4	48
+secteur	PR	JEWELRY	8	8	48
+secteur	PR	RETAIL	33	33	48
+secteur	PH	BEAUTY	15	15	34
+secteur	PH	FASHION	35	35	34
+secteur	PH	FOOTWEAR	35	35	34
+secteur	PH	HOME_LIFESTYLE	15	15	34
+secteur	PH	RETAIL	3	3	34
+secteur	LU	BEAUTY	6	6	16
+secteur	LU	FASHION	20	20	16
+secteur	LU	FOOTWEAR	4	4	16
+secteur	LU	FRAGRANCE	1	1	16
+secteur	LU	HOME_LIFESTYLE	5	5	16
+secteur	LU	JEWELRY	5	5	16
+secteur	LU	RETAIL	22	22	16

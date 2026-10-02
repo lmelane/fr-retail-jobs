@@ -1,0 +1,4477 @@
+{
+ "code": "/private/tmp/claude-501/-Users-lmelane-Documents-beauchoix-projects-catwalks-build/df2232a3-946f-4c25-ae5f-9ea2885c576b/scratchpad/agg-suites",
+ "colonneRetenue": false,
+ "debut": "2026-10-02T13:13:57.644Z",
+ "fin": "2026-10-02T13:15:08.771Z",
+ "marches": [
+  {
+   "marche": "JP",
+   "servies": 615,
+   "secteurInconnu": 254,
+   "langueInconnue": 91,
+   "facettesServies": [
+    "secteur",
+    "ville",
+    "maison",
+    "groupe",
+    "langue"
+   ]
+  },
+  {
+   "marche": "KR",
+   "servies": 542,
+   "secteurInconnu": 212,
+   "langueInconnue": 69,
+   "facettesServies": [
+    "secteur",
+    "ville",
+    "maison",
+    "groupe"
+   ]
+  },
+  {
+   "marche": "PT",
+   "servies": 444,
+   "secteurInconnu": 181,
+   "langueInconnue": 6,
+   "facettesServies": [
+    "secteur",
+    "ville",
+    "maison",
+    "groupe",
+    "langue"
+   ]
+  },
+  {
+   "marche": "MX",
+   "servies": 512,
+   "secteurInconnu": 250,
+   "langueInconnue": 13,
+   "facettesServies": [
+    "secteur",
+    "ville",
+    "maison",
+    "groupe",
+    "langue"
+   ]
+  },
+  {
+   "marche": "SG",
+   "servies": 519,
+   "secteurInconnu": 163,
+   "langueInconnue": 0,
+   "facettesServies": [
+    "secteur",
+    "maison",
+    "groupe"
+   ]
+  },
+  {
+   "marche": "DK",
+   "servies": 348,
+   "secteurInconnu": 134,
+   "langueInconnue": 141,
+   "facettesServies": [
+    "secteur",
+    "ville",
+    "maison",
+    "langue"
+   ]
+  },
+  {
+   "marche": "HK",
+   "servies": 359,
+   "secteurInconnu": 174,
+   "langueInconnue": 13,
+   "facettesServies": [
+    "secteur",
+    "ville",
+    "maison",
+    "groupe"
+   ]
+  },
+  {
+   "marche": "PL",
+   "servies": 388,
+   "secteurInconnu": 131,
+   "langueInconnue": 56,
+   "facettesServies": [
+    "secteur",
+    "ville",
+    "maison",
+    "groupe",
+    "langue"
+   ]
+  },
+  {
+   "marche": "SE",
+   "servies": 280,
+   "secteurInconnu": 116,
+   "langueInconnue": 69,
+   "facettesServies": [
+    "secteur",
+    "ville",
+    "maison"
+   ]
+  },
+  {
+   "marche": "CL",
+   "servies": 310,
+   "secteurInconnu": 174,
+   "langueInconnue": 5,
+   "facettesServies": [
+    "secteur",
+    "ville",
+    "maison",
+    "langue"
+   ]
+  },
+  {
+   "marche": "TR",
+   "servies": 257,
+   "secteurInconnu": 107,
+   "langueInconnue": 99,
+   "facettesServies": [
+    "secteur",
+    "ville",
+    "maison",
+    "groupe",
+    "langue"
+   ]
+  },
+  {
+   "marche": "TH",
+   "servies": 294,
+   "secteurInconnu": 61,
+   "langueInconnue": 10,
+   "facettesServies": [
+    "secteur",
+    "ville",
+    "maison",
+    "groupe"
+   ]
+  },
+  {
+   "marche": "MY",
+   "servies": 293,
+   "secteurInconnu": 160,
+   "langueInconnue": 0,
+   "facettesServies": [
+    "secteur",
+    "ville",
+    "maison",
+    "groupe"
+   ]
+  },
+  {
+   "marche": "AE",
+   "servies": 269,
+   "secteurInconnu": 161,
+   "langueInconnue": 0,
+   "facettesServies": [
+    "secteur",
+    "ville",
+    "maison",
+    "groupe",
+    "langue"
+   ]
+  },
+  {
+   "marche": "NO",
+   "servies": 211,
+   "secteurInconnu": 49,
+   "langueInconnue": 76,
+   "facettesServies": [
+    "secteur",
+    "ville",
+    "maison"
+   ]
+  },
+  {
+   "marche": "TW",
+   "servies": 207,
+   "secteurInconnu": 98,
+   "langueInconnue": 15,
+   "facettesServies": [
+    "secteur",
+    "ville",
+    "maison",
+    "groupe"
+   ]
+  },
+  {
+   "marche": "BR",
+   "servies": 221,
+   "secteurInconnu": 76,
+   "langueInconnue": 3,
+   "facettesServies": [
+    "secteur",
+    "ville",
+    "maison",
+    "groupe",
+    "langue"
+   ]
+  },
+  {
+   "marche": "GR",
+   "servies": 208,
+   "secteurInconnu": 134,
+   "langueInconnue": 48,
+   "facettesServies": [
+    "secteur",
+    "ville",
+    "maison",
+    "langue"
+   ]
+  },
+  {
+   "marche": "ZA",
+   "servies": 181,
+   "secteurInconnu": 69,
+   "langueInconnue": 0,
+   "facettesServies": [
+    "secteur",
+    "ville",
+    "maison"
+   ]
+  },
+  {
+   "marche": "VN",
+   "servies": 183,
+   "secteurInconnu": 81,
+   "langueInconnue": 7,
+   "facettesServies": [
+    "secteur",
+    "ville",
+    "maison",
+    "groupe",
+    "langue"
+   ]
+  },
+  {
+   "marche": "CZ",
+   "servies": 129,
+   "secteurInconnu": 43,
+   "langueInconnue": 1,
+   "facettesServies": [
+    "secteur",
+    "ville",
+    "maison",
+    "langue"
+   ]
+  },
+  {
+   "marche": "PE",
+   "servies": 172,
+   "secteurInconnu": 60,
+   "langueInconnue": 6,
+   "facettesServies": [
+    "secteur",
+    "ville",
+    "maison",
+    "langue"
+   ]
+  },
+  {
+   "marche": "NZ",
+   "servies": 220,
+   "secteurInconnu": 117,
+   "langueInconnue": 0,
+   "facettesServies": [
+    "secteur",
+    "ville",
+    "maison",
+    "groupe"
+   ]
+  },
+  {
+   "marche": "HU",
+   "servies": 132,
+   "secteurInconnu": 19,
+   "langueInconnue": 0,
+   "facettesServies": [
+    "secteur",
+    "maison",
+    "groupe",
+    "langue"
+   ]
+  },
+  {
+   "marche": "SA",
+   "servies": 101,
+   "secteurInconnu": 64,
+   "langueInconnue": 5,
+   "facettesServies": [
+    "secteur",
+    "ville",
+    "maison",
+    "groupe"
+   ]
+  },
+  {
+   "marche": "RO",
+   "servies": 98,
+   "secteurInconnu": 22,
+   "langueInconnue": 29,
+   "facettesServies": [
+    "secteur",
+    "ville",
+    "maison",
+    "groupe",
+    "langue"
+   ]
+  },
+  {
+   "marche": "PR",
+   "servies": 96,
+   "secteurInconnu": 48,
+   "langueInconnue": 0,
+   "facettesServies": [
+    "secteur",
+    "ville",
+    "maison",
+    "langue"
+   ]
+  },
+  {
+   "marche": "PH",
+   "servies": 72,
+   "secteurInconnu": 34,
+   "langueInconnue": 0,
+   "facettesServies": [
+    "secteur",
+    "ville",
+    "maison"
+   ]
+  },
+  {
+   "marche": "LU",
+   "servies": 57,
+   "secteurInconnu": 16,
+   "langueInconnue": 0,
+   "facettesServies": [
+    "secteur",
+    "ville",
+    "maison",
+    "groupe",
+    "langue"
+   ]
+  },
+  {
+   "marche": "US",
+   "servies": 40606,
+   "secteurInconnu": 15382,
+   "langueInconnue": 9,
+   "facettesServies": [
+    "secteur",
+    "ville",
+    "maison",
+    "langue"
+   ]
+  },
+  {
+   "marche": "FR",
+   "servies": 13638,
+   "secteurInconnu": 3968,
+   "langueInconnue": 227,
+   "facettesServies": [
+    "secteur",
+    "ville",
+    "maison",
+    "groupe",
+    "langue"
+   ]
+  },
+  {
+   "marche": "GB",
+   "servies": 4320,
+   "secteurInconnu": 2240,
+   "langueInconnue": 9,
+   "facettesServies": [
+    "secteur",
+    "ville",
+    "maison",
+    "groupe",
+    "langue",
+    "pays"
+   ]
+  },
+  {
+   "marche": "CA",
+   "servies": 3479,
+   "secteurInconnu": 1926,
+   "langueInconnue": 11,
+   "facettesServies": [
+    "secteur",
+    "ville",
+    "maison",
+    "groupe",
+    "langue"
+   ]
+  },
+  {
+   "marche": "DE",
+   "servies": 3596,
+   "secteurInconnu": 1802,
+   "langueInconnue": 113,
+   "facettesServies": [
+    "secteur",
+    "ville",
+    "maison",
+    "groupe",
+    "langue",
+    "pays"
+   ]
+  },
+  {
+   "marche": "IT",
+   "servies": 2922,
+   "secteurInconnu": 1077,
+   "langueInconnue": 57,
+   "facettesServies": [
+    "secteur",
+    "ville",
+    "maison",
+    "groupe",
+    "langue"
+   ]
+  },
+  {
+   "marche": "ES",
+   "servies": 2253,
+   "secteurInconnu": 836,
+   "langueInconnue": 13,
+   "facettesServies": [
+    "secteur",
+    "ville",
+    "maison",
+    "langue"
+   ]
+  },
+  {
+   "marche": "NL",
+   "servies": 1969,
+   "secteurInconnu": 1086,
+   "langueInconnue": 8,
+   "facettesServies": [
+    "secteur",
+    "ville",
+    "maison",
+    "langue"
+   ]
+  },
+  {
+   "marche": "AU",
+   "servies": 1504,
+   "secteurInconnu": 842,
+   "langueInconnue": 2,
+   "facettesServies": [
+    "secteur",
+    "ville",
+    "maison",
+    "groupe"
+   ]
+  },
+  {
+   "marche": "CH",
+   "servies": 1323,
+   "secteurInconnu": 945,
+   "langueInconnue": 54,
+   "facettesServies": [
+    "secteur",
+    "ville",
+    "maison",
+    "groupe",
+    "langue"
+   ]
+  },
+  {
+   "marche": "BE",
+   "servies": 718,
+   "secteurInconnu": 213,
+   "langueInconnue": 17,
+   "facettesServies": [
+    "secteur",
+    "ville",
+    "maison",
+    "groupe",
+    "langue"
+   ]
+  },
+  {
+   "marche": "CN",
+   "servies": 1236,
+   "secteurInconnu": 382,
+   "langueInconnue": 110,
+   "facettesServies": [
+    "secteur",
+    "ville",
+    "maison",
+    "groupe",
+    "langue"
+   ]
+  }
+ ],
+ "lignes": [
+  {
+   "marche": "JP",
+   "filtre": "secteur",
+   "valeur": "FASHION",
+   "total": 278,
+   "totalConfirmes": 278,
+   "ms": 151,
+   "section": 254
+  },
+  {
+   "marche": "JP",
+   "filtre": "secteur",
+   "valeur": "FOOTWEAR",
+   "total": 182,
+   "totalConfirmes": 182,
+   "ms": 108,
+   "section": 254
+  },
+  {
+   "marche": "JP",
+   "filtre": "secteur",
+   "valeur": "BEAUTY",
+   "total": 167,
+   "totalConfirmes": 167,
+   "ms": 187,
+   "section": 254
+  },
+  {
+   "marche": "JP",
+   "filtre": "secteur",
+   "valeur": "HOME_LIFESTYLE",
+   "total": 154,
+   "totalConfirmes": 154,
+   "ms": 101,
+   "section": 254
+  },
+  {
+   "marche": "JP",
+   "filtre": "secteur",
+   "valeur": "JEWELRY",
+   "total": 53,
+   "totalConfirmes": 53,
+   "ms": 102,
+   "section": 254
+  },
+  {
+   "marche": "JP",
+   "filtre": "secteur",
+   "valeur": "LEATHER_GOODS",
+   "total": 11,
+   "totalConfirmes": 11,
+   "ms": 98,
+   "section": 254
+  },
+  {
+   "marche": "JP",
+   "filtre": "secteur",
+   "valeur": "RETAIL",
+   "total": 7,
+   "totalConfirmes": 7,
+   "ms": 97,
+   "section": 254
+  },
+  {
+   "marche": "JP",
+   "filtre": "secteur",
+   "valeur": "WATCHMAKING",
+   "total": 5,
+   "totalConfirmes": 5,
+   "ms": 181,
+   "section": 254
+  },
+  {
+   "marche": "JP",
+   "filtre": "secteur",
+   "valeur": "FRAGRANCE",
+   "total": 3,
+   "totalConfirmes": 3,
+   "ms": 98,
+   "section": 254
+  },
+  {
+   "marche": "JP",
+   "filtre": "secteur",
+   "valeur": "EYEWEAR",
+   "total": 2,
+   "totalConfirmes": 2,
+   "ms": 92,
+   "section": 254
+  },
+  {
+   "marche": "JP",
+   "filtre": "langue",
+   "valeur": "en",
+   "total": 398,
+   "totalConfirmes": 398,
+   "ms": 141,
+   "section": 91
+  },
+  {
+   "marche": "JP",
+   "filtre": "langue",
+   "valeur": "ja",
+   "total": 124,
+   "totalConfirmes": 124,
+   "ms": 187,
+   "section": 91
+  },
+  {
+   "marche": "JP",
+   "filtre": "langue",
+   "valeur": "ko",
+   "total": 1,
+   "totalConfirmes": 1,
+   "ms": 89,
+   "section": 91
+  },
+  {
+   "marche": "JP",
+   "filtre": "langue",
+   "valeur": "pt",
+   "total": 1,
+   "totalConfirmes": 1,
+   "ms": 87,
+   "section": 91
+  },
+  {
+   "marche": "KR",
+   "filtre": "secteur",
+   "valeur": "FASHION",
+   "total": 275,
+   "totalConfirmes": 275,
+   "ms": 135,
+   "section": 212
+  },
+  {
+   "marche": "KR",
+   "filtre": "secteur",
+   "valeur": "BEAUTY",
+   "total": 135,
+   "totalConfirmes": 135,
+   "ms": 180,
+   "section": 212
+  },
+  {
+   "marche": "KR",
+   "filtre": "secteur",
+   "valeur": "FOOTWEAR",
+   "total": 116,
+   "totalConfirmes": 116,
+   "ms": 100,
+   "section": 212
+  },
+  {
+   "marche": "KR",
+   "filtre": "secteur",
+   "valeur": "HOME_LIFESTYLE",
+   "total": 106,
+   "totalConfirmes": 106,
+   "ms": 100,
+   "section": 212
+  },
+  {
+   "marche": "KR",
+   "filtre": "secteur",
+   "valeur": "JEWELRY",
+   "total": 41,
+   "totalConfirmes": 41,
+   "ms": 95,
+   "section": 212
+  },
+  {
+   "marche": "KR",
+   "filtre": "secteur",
+   "valeur": "WATCHMAKING",
+   "total": 22,
+   "totalConfirmes": 22,
+   "ms": 181,
+   "section": 212
+  },
+  {
+   "marche": "KR",
+   "filtre": "secteur",
+   "valeur": "LEATHER_GOODS",
+   "total": 20,
+   "totalConfirmes": 20,
+   "ms": 95,
+   "section": 212
+  },
+  {
+   "marche": "KR",
+   "filtre": "secteur",
+   "valeur": "FRAGRANCE",
+   "total": 19,
+   "totalConfirmes": 19,
+   "ms": 97,
+   "section": 212
+  },
+  {
+   "marche": "KR",
+   "filtre": "secteur",
+   "valeur": "RETAIL",
+   "total": 6,
+   "totalConfirmes": 6,
+   "ms": 89,
+   "section": 212
+  },
+  {
+   "marche": "PT",
+   "filtre": "secteur",
+   "valeur": "FASHION",
+   "total": 198,
+   "totalConfirmes": 198,
+   "ms": 177,
+   "section": 181
+  },
+  {
+   "marche": "PT",
+   "filtre": "secteur",
+   "valeur": "RETAIL",
+   "total": 166,
+   "totalConfirmes": 166,
+   "ms": 98,
+   "section": 181
+  },
+  {
+   "marche": "PT",
+   "filtre": "secteur",
+   "valeur": "BEAUTY",
+   "total": 121,
+   "totalConfirmes": 121,
+   "ms": 91,
+   "section": 181
+  },
+  {
+   "marche": "PT",
+   "filtre": "secteur",
+   "valeur": "HOME_LIFESTYLE",
+   "total": 114,
+   "totalConfirmes": 114,
+   "ms": 98,
+   "section": 181
+  },
+  {
+   "marche": "PT",
+   "filtre": "secteur",
+   "valeur": "FOOTWEAR",
+   "total": 41,
+   "totalConfirmes": 41,
+   "ms": 93,
+   "section": 181
+  },
+  {
+   "marche": "PT",
+   "filtre": "secteur",
+   "valeur": "FRAGRANCE",
+   "total": 8,
+   "totalConfirmes": 8,
+   "ms": 169,
+   "section": 181
+  },
+  {
+   "marche": "PT",
+   "filtre": "secteur",
+   "valeur": "JEWELRY",
+   "total": 8,
+   "totalConfirmes": 8,
+   "ms": 94,
+   "section": 181
+  },
+  {
+   "marche": "PT",
+   "filtre": "secteur",
+   "valeur": "LEATHER_GOODS",
+   "total": 3,
+   "totalConfirmes": 3,
+   "ms": 93,
+   "section": 181
+  },
+  {
+   "marche": "PT",
+   "filtre": "secteur",
+   "valeur": "WATCHMAKING",
+   "total": 3,
+   "totalConfirmes": 3,
+   "ms": 88,
+   "section": 181
+  },
+  {
+   "marche": "PT",
+   "filtre": "langue",
+   "valeur": "pt",
+   "total": 276,
+   "totalConfirmes": 276,
+   "ms": 98,
+   "section": 6
+  },
+  {
+   "marche": "PT",
+   "filtre": "langue",
+   "valeur": "en",
+   "total": 155,
+   "totalConfirmes": 155,
+   "ms": 180,
+   "section": 6
+  },
+  {
+   "marche": "PT",
+   "filtre": "langue",
+   "valeur": "es",
+   "total": 5,
+   "totalConfirmes": 5,
+   "ms": 91,
+   "section": 6
+  },
+  {
+   "marche": "PT",
+   "filtre": "langue",
+   "valeur": "fr",
+   "total": 2,
+   "totalConfirmes": 2,
+   "ms": 96,
+   "section": 6
+  },
+  {
+   "marche": "MX",
+   "filtre": "secteur",
+   "valeur": "FASHION",
+   "total": 197,
+   "totalConfirmes": 197,
+   "ms": 100,
+   "section": 250
+  },
+  {
+   "marche": "MX",
+   "filtre": "secteur",
+   "valeur": "BEAUTY",
+   "total": 122,
+   "totalConfirmes": 122,
+   "ms": 189,
+   "section": 250
+  },
+  {
+   "marche": "MX",
+   "filtre": "secteur",
+   "valeur": "FOOTWEAR",
+   "total": 72,
+   "totalConfirmes": 72,
+   "ms": 94,
+   "section": 250
+  },
+  {
+   "marche": "MX",
+   "filtre": "secteur",
+   "valeur": "HOME_LIFESTYLE",
+   "total": 67,
+   "totalConfirmes": 67,
+   "ms": 102,
+   "section": 250
+  },
+  {
+   "marche": "MX",
+   "filtre": "secteur",
+   "valeur": "JEWELRY",
+   "total": 10,
+   "totalConfirmes": 10,
+   "ms": 97,
+   "section": 250
+  },
+  {
+   "marche": "MX",
+   "filtre": "secteur",
+   "valeur": "FRAGRANCE",
+   "total": 9,
+   "totalConfirmes": 9,
+   "ms": 180,
+   "section": 250
+  },
+  {
+   "marche": "MX",
+   "filtre": "secteur",
+   "valeur": "RETAIL",
+   "total": 6,
+   "totalConfirmes": 6,
+   "ms": 88,
+   "section": 250
+  },
+  {
+   "marche": "MX",
+   "filtre": "secteur",
+   "valeur": "LEATHER_GOODS",
+   "total": 3,
+   "totalConfirmes": 3,
+   "ms": 91,
+   "section": 250
+  },
+  {
+   "marche": "MX",
+   "filtre": "secteur",
+   "valeur": "WATCHMAKING",
+   "total": 3,
+   "totalConfirmes": 3,
+   "ms": 93,
+   "section": 250
+  },
+  {
+   "marche": "MX",
+   "filtre": "langue",
+   "valeur": "es",
+   "total": 302,
+   "totalConfirmes": 302,
+   "ms": 222,
+   "section": 13
+  },
+  {
+   "marche": "MX",
+   "filtre": "langue",
+   "valeur": "en",
+   "total": 197,
+   "totalConfirmes": 197,
+   "ms": 92,
+   "section": 13
+  },
+  {
+   "marche": "SG",
+   "filtre": "secteur",
+   "valeur": "FASHION",
+   "total": 180,
+   "totalConfirmes": 180,
+   "ms": 99,
+   "section": 163
+  },
+  {
+   "marche": "SG",
+   "filtre": "secteur",
+   "valeur": "BEAUTY",
+   "total": 105,
+   "totalConfirmes": 105,
+   "ms": 103,
+   "section": 163
+  },
+  {
+   "marche": "SG",
+   "filtre": "secteur",
+   "valeur": "RETAIL",
+   "total": 82,
+   "totalConfirmes": 82,
+   "ms": 177,
+   "section": 163
+  },
+  {
+   "marche": "SG",
+   "filtre": "secteur",
+   "valeur": "FOOTWEAR",
+   "total": 45,
+   "totalConfirmes": 45,
+   "ms": 89,
+   "section": 163
+  },
+  {
+   "marche": "SG",
+   "filtre": "secteur",
+   "valeur": "JEWELRY",
+   "total": 45,
+   "totalConfirmes": 45,
+   "ms": 100,
+   "section": 163
+  },
+  {
+   "marche": "SG",
+   "filtre": "secteur",
+   "valeur": "FRAGRANCE",
+   "total": 41,
+   "totalConfirmes": 41,
+   "ms": 93,
+   "section": 163
+  },
+  {
+   "marche": "SG",
+   "filtre": "secteur",
+   "valeur": "HOME_LIFESTYLE",
+   "total": 30,
+   "totalConfirmes": 30,
+   "ms": 98,
+   "section": 163
+  },
+  {
+   "marche": "SG",
+   "filtre": "secteur",
+   "valeur": "LEATHER_GOODS",
+   "total": 28,
+   "totalConfirmes": 28,
+   "ms": 171,
+   "section": 163
+  },
+  {
+   "marche": "SG",
+   "filtre": "secteur",
+   "valeur": "WATCHMAKING",
+   "total": 28,
+   "totalConfirmes": 28,
+   "ms": 96,
+   "section": 163
+  },
+  {
+   "marche": "SG",
+   "filtre": "secteur",
+   "valeur": "EYEWEAR",
+   "total": 1,
+   "totalConfirmes": 1,
+   "ms": 88,
+   "section": 163
+  },
+  {
+   "marche": "DK",
+   "filtre": "secteur",
+   "valeur": "RETAIL",
+   "total": 122,
+   "totalConfirmes": 122,
+   "ms": 95,
+   "section": 134
+  },
+  {
+   "marche": "DK",
+   "filtre": "secteur",
+   "valeur": "BEAUTY",
+   "total": 44,
+   "totalConfirmes": 44,
+   "ms": 173,
+   "section": 134
+  },
+  {
+   "marche": "DK",
+   "filtre": "secteur",
+   "valeur": "FASHION",
+   "total": 43,
+   "totalConfirmes": 43,
+   "ms": 91,
+   "section": 134
+  },
+  {
+   "marche": "DK",
+   "filtre": "secteur",
+   "valeur": "JEWELRY",
+   "total": 35,
+   "totalConfirmes": 35,
+   "ms": 88,
+   "section": 134
+  },
+  {
+   "marche": "DK",
+   "filtre": "secteur",
+   "valeur": "FOOTWEAR",
+   "total": 29,
+   "totalConfirmes": 29,
+   "ms": 95,
+   "section": 134
+  },
+  {
+   "marche": "DK",
+   "filtre": "secteur",
+   "valeur": "HOME_LIFESTYLE",
+   "total": 28,
+   "totalConfirmes": 28,
+   "ms": 96,
+   "section": 134
+  },
+  {
+   "marche": "DK",
+   "filtre": "secteur",
+   "valeur": "FRAGRANCE",
+   "total": 3,
+   "totalConfirmes": 3,
+   "ms": 176,
+   "section": 134
+  },
+  {
+   "marche": "DK",
+   "filtre": "secteur",
+   "valeur": "EYEWEAR",
+   "total": 1,
+   "totalConfirmes": 1,
+   "ms": 88,
+   "section": 134
+  },
+  {
+   "marche": "DK",
+   "filtre": "langue",
+   "valeur": "en",
+   "total": 175,
+   "totalConfirmes": 175,
+   "ms": 89,
+   "section": 141
+  },
+  {
+   "marche": "DK",
+   "filtre": "langue",
+   "valeur": "da",
+   "total": 26,
+   "totalConfirmes": 26,
+   "ms": 87,
+   "section": 141
+  },
+  {
+   "marche": "DK",
+   "filtre": "langue",
+   "valeur": "de",
+   "total": 3,
+   "totalConfirmes": 3,
+   "ms": 84,
+   "section": 141
+  },
+  {
+   "marche": "DK",
+   "filtre": "langue",
+   "valeur": "fr",
+   "total": 3,
+   "totalConfirmes": 3,
+   "ms": 179,
+   "section": 141
+  },
+  {
+   "marche": "HK",
+   "filtre": "secteur",
+   "valeur": "FASHION",
+   "total": 142,
+   "totalConfirmes": 142,
+   "ms": 104,
+   "section": 174
+  },
+  {
+   "marche": "HK",
+   "filtre": "secteur",
+   "valeur": "JEWELRY",
+   "total": 34,
+   "totalConfirmes": 34,
+   "ms": 99,
+   "section": 174
+  },
+  {
+   "marche": "HK",
+   "filtre": "secteur",
+   "valeur": "BEAUTY",
+   "total": 29,
+   "totalConfirmes": 29,
+   "ms": 93,
+   "section": 174
+  },
+  {
+   "marche": "HK",
+   "filtre": "secteur",
+   "valeur": "FOOTWEAR",
+   "total": 25,
+   "totalConfirmes": 25,
+   "ms": 188,
+   "section": 174
+  },
+  {
+   "marche": "HK",
+   "filtre": "secteur",
+   "valeur": "HOME_LIFESTYLE",
+   "total": 18,
+   "totalConfirmes": 18,
+   "ms": 88,
+   "section": 174
+  },
+  {
+   "marche": "HK",
+   "filtre": "secteur",
+   "valeur": "WATCHMAKING",
+   "total": 12,
+   "totalConfirmes": 12,
+   "ms": 92,
+   "section": 174
+  },
+  {
+   "marche": "HK",
+   "filtre": "secteur",
+   "valeur": "FRAGRANCE",
+   "total": 9,
+   "totalConfirmes": 9,
+   "ms": 90,
+   "section": 174
+  },
+  {
+   "marche": "HK",
+   "filtre": "secteur",
+   "valeur": "LEATHER_GOODS",
+   "total": 9,
+   "totalConfirmes": 9,
+   "ms": 87,
+   "section": 174
+  },
+  {
+   "marche": "HK",
+   "filtre": "secteur",
+   "valeur": "RETAIL",
+   "total": 7,
+   "totalConfirmes": 7,
+   "ms": 184,
+   "section": 174
+  },
+  {
+   "marche": "HK",
+   "filtre": "secteur",
+   "valeur": "EYEWEAR",
+   "total": 3,
+   "totalConfirmes": 3,
+   "ms": 88,
+   "section": 174
+  },
+  {
+   "marche": "PL",
+   "filtre": "secteur",
+   "valeur": "BEAUTY",
+   "total": 139,
+   "totalConfirmes": 139,
+   "ms": 93,
+   "section": 131
+  },
+  {
+   "marche": "PL",
+   "filtre": "secteur",
+   "valeur": "HOME_LIFESTYLE",
+   "total": 132,
+   "totalConfirmes": 132,
+   "ms": 93,
+   "section": 131
+  },
+  {
+   "marche": "PL",
+   "filtre": "secteur",
+   "valeur": "FASHION",
+   "total": 107,
+   "totalConfirmes": 107,
+   "ms": 183,
+   "section": 131
+  },
+  {
+   "marche": "PL",
+   "filtre": "secteur",
+   "valeur": "FOOTWEAR",
+   "total": 79,
+   "totalConfirmes": 79,
+   "ms": 93,
+   "section": 131
+  },
+  {
+   "marche": "PL",
+   "filtre": "secteur",
+   "valeur": "RETAIL",
+   "total": 75,
+   "totalConfirmes": 75,
+   "ms": 91,
+   "section": 131
+  },
+  {
+   "marche": "PL",
+   "filtre": "secteur",
+   "valeur": "FRAGRANCE",
+   "total": 59,
+   "totalConfirmes": 59,
+   "ms": 102,
+   "section": 131
+  },
+  {
+   "marche": "PL",
+   "filtre": "secteur",
+   "valeur": "JEWELRY",
+   "total": 35,
+   "totalConfirmes": 35,
+   "ms": 89,
+   "section": 131
+  },
+  {
+   "marche": "PL",
+   "filtre": "langue",
+   "valeur": "pl",
+   "total": 166,
+   "totalConfirmes": 166,
+   "ms": 167,
+   "section": 56
+  },
+  {
+   "marche": "PL",
+   "filtre": "langue",
+   "valeur": "en",
+   "total": 95,
+   "totalConfirmes": 95,
+   "ms": 95,
+   "section": 56
+  },
+  {
+   "marche": "PL",
+   "filtre": "langue",
+   "valeur": "pt",
+   "total": 60,
+   "totalConfirmes": 60,
+   "ms": 90,
+   "section": 56
+  },
+  {
+   "marche": "PL",
+   "filtre": "langue",
+   "valeur": "es",
+   "total": 10,
+   "totalConfirmes": 10,
+   "ms": 88,
+   "section": 56
+  },
+  {
+   "marche": "PL",
+   "filtre": "langue",
+   "valeur": "de",
+   "total": 1,
+   "totalConfirmes": 1,
+   "ms": 105,
+   "section": 56
+  },
+  {
+   "marche": "SE",
+   "filtre": "secteur",
+   "valeur": "FASHION",
+   "total": 106,
+   "totalConfirmes": 106,
+   "ms": 91,
+   "section": 116
+  },
+  {
+   "marche": "SE",
+   "filtre": "secteur",
+   "valeur": "BEAUTY",
+   "total": 105,
+   "totalConfirmes": 105,
+   "ms": 97,
+   "section": 116
+  },
+  {
+   "marche": "SE",
+   "filtre": "secteur",
+   "valeur": "HOME_LIFESTYLE",
+   "total": 98,
+   "totalConfirmes": 98,
+   "ms": 88,
+   "section": 116
+  },
+  {
+   "marche": "SE",
+   "filtre": "secteur",
+   "valeur": "FOOTWEAR",
+   "total": 81,
+   "totalConfirmes": 81,
+   "ms": 90,
+   "section": 116
+  },
+  {
+   "marche": "SE",
+   "filtre": "secteur",
+   "valeur": "RETAIL",
+   "total": 29,
+   "totalConfirmes": 29,
+   "ms": 172,
+   "section": 116
+  },
+  {
+   "marche": "SE",
+   "filtre": "secteur",
+   "valeur": "FRAGRANCE",
+   "total": 25,
+   "totalConfirmes": 25,
+   "ms": 88,
+   "section": 116
+  },
+  {
+   "marche": "SE",
+   "filtre": "secteur",
+   "valeur": "JEWELRY",
+   "total": 11,
+   "totalConfirmes": 11,
+   "ms": 87,
+   "section": 116
+  },
+  {
+   "marche": "CL",
+   "filtre": "secteur",
+   "valeur": "FOOTWEAR",
+   "total": 133,
+   "totalConfirmes": 133,
+   "ms": 94,
+   "section": 174
+  },
+  {
+   "marche": "CL",
+   "filtre": "secteur",
+   "valeur": "RETAIL",
+   "total": 131,
+   "totalConfirmes": 131,
+   "ms": 166,
+   "section": 174
+  },
+  {
+   "marche": "CL",
+   "filtre": "secteur",
+   "valeur": "FASHION",
+   "total": 4,
+   "totalConfirmes": 4,
+   "ms": 85,
+   "section": 174
+  },
+  {
+   "marche": "CL",
+   "filtre": "secteur",
+   "valeur": "BEAUTY",
+   "total": 2,
+   "totalConfirmes": 2,
+   "ms": 83,
+   "section": 174
+  },
+  {
+   "marche": "CL",
+   "filtre": "secteur",
+   "valeur": "FRAGRANCE",
+   "total": 1,
+   "totalConfirmes": 1,
+   "ms": 89,
+   "section": 174
+  },
+  {
+   "marche": "CL",
+   "filtre": "secteur",
+   "valeur": "HOME_LIFESTYLE",
+   "total": 1,
+   "totalConfirmes": 1,
+   "ms": 88,
+   "section": 174
+  },
+  {
+   "marche": "CL",
+   "filtre": "secteur",
+   "valeur": "JEWELRY",
+   "total": 1,
+   "totalConfirmes": 1,
+   "ms": 84,
+   "section": 174
+  },
+  {
+   "marche": "CL",
+   "filtre": "langue",
+   "valeur": "es",
+   "total": 285,
+   "totalConfirmes": 285,
+   "ms": 170,
+   "section": 5
+  },
+  {
+   "marche": "CL",
+   "filtre": "langue",
+   "valeur": "en",
+   "total": 20,
+   "totalConfirmes": 20,
+   "ms": 85,
+   "section": 5
+  },
+  {
+   "marche": "TR",
+   "filtre": "secteur",
+   "valeur": "FASHION",
+   "total": 142,
+   "totalConfirmes": 142,
+   "ms": 90,
+   "section": 107
+  },
+  {
+   "marche": "TR",
+   "filtre": "secteur",
+   "valeur": "RETAIL",
+   "total": 95,
+   "totalConfirmes": 95,
+   "ms": 88,
+   "section": 107
+  },
+  {
+   "marche": "TR",
+   "filtre": "secteur",
+   "valeur": "FOOTWEAR",
+   "total": 46,
+   "totalConfirmes": 46,
+   "ms": 181,
+   "section": 107
+  },
+  {
+   "marche": "TR",
+   "filtre": "secteur",
+   "valeur": "BEAUTY",
+   "total": 37,
+   "totalConfirmes": 37,
+   "ms": 93,
+   "section": 107
+  },
+  {
+   "marche": "TR",
+   "filtre": "secteur",
+   "valeur": "HOME_LIFESTYLE",
+   "total": 33,
+   "totalConfirmes": 33,
+   "ms": 88,
+   "section": 107
+  },
+  {
+   "marche": "TR",
+   "filtre": "secteur",
+   "valeur": "FRAGRANCE",
+   "total": 5,
+   "totalConfirmes": 5,
+   "ms": 83,
+   "section": 107
+  },
+  {
+   "marche": "TR",
+   "filtre": "secteur",
+   "valeur": "JEWELRY",
+   "total": 5,
+   "totalConfirmes": 5,
+   "ms": 83,
+   "section": 107
+  },
+  {
+   "marche": "TR",
+   "filtre": "secteur",
+   "valeur": "LEATHER_GOODS",
+   "total": 5,
+   "totalConfirmes": 5,
+   "ms": 172,
+   "section": 107
+  },
+  {
+   "marche": "TR",
+   "filtre": "secteur",
+   "valeur": "WATCHMAKING",
+   "total": 5,
+   "totalConfirmes": 5,
+   "ms": 83,
+   "section": 107
+  },
+  {
+   "marche": "TR",
+   "filtre": "langue",
+   "valeur": "en",
+   "total": 82,
+   "totalConfirmes": 82,
+   "ms": 93,
+   "section": 99
+  },
+  {
+   "marche": "TR",
+   "filtre": "langue",
+   "valeur": "es",
+   "total": 34,
+   "totalConfirmes": 34,
+   "ms": 87,
+   "section": 99
+  },
+  {
+   "marche": "TR",
+   "filtre": "langue",
+   "valeur": "tr",
+   "total": 27,
+   "totalConfirmes": 27,
+   "ms": 109,
+   "section": 99
+  },
+  {
+   "marche": "TR",
+   "filtre": "langue",
+   "valeur": "pt",
+   "total": 15,
+   "totalConfirmes": 15,
+   "ms": 166,
+   "section": 99
+  },
+  {
+   "marche": "TH",
+   "filtre": "secteur",
+   "valeur": "JEWELRY",
+   "total": 191,
+   "totalConfirmes": 191,
+   "ms": 83,
+   "section": 61
+  },
+  {
+   "marche": "TH",
+   "filtre": "secteur",
+   "valeur": "FASHION",
+   "total": 42,
+   "totalConfirmes": 42,
+   "ms": 91,
+   "section": 61
+  },
+  {
+   "marche": "TH",
+   "filtre": "secteur",
+   "valeur": "BEAUTY",
+   "total": 10,
+   "totalConfirmes": 10,
+   "ms": 93,
+   "section": 61
+  },
+  {
+   "marche": "TH",
+   "filtre": "secteur",
+   "valeur": "FOOTWEAR",
+   "total": 10,
+   "totalConfirmes": 10,
+   "ms": 166,
+   "section": 61
+  },
+  {
+   "marche": "TH",
+   "filtre": "secteur",
+   "valeur": "FRAGRANCE",
+   "total": 6,
+   "totalConfirmes": 6,
+   "ms": 85,
+   "section": 61
+  },
+  {
+   "marche": "TH",
+   "filtre": "secteur",
+   "valeur": "HOME_LIFESTYLE",
+   "total": 6,
+   "totalConfirmes": 6,
+   "ms": 87,
+   "section": 61
+  },
+  {
+   "marche": "TH",
+   "filtre": "secteur",
+   "valeur": "LEATHER_GOODS",
+   "total": 6,
+   "totalConfirmes": 6,
+   "ms": 96,
+   "section": 61
+  },
+  {
+   "marche": "TH",
+   "filtre": "secteur",
+   "valeur": "WATCHMAKING",
+   "total": 6,
+   "totalConfirmes": 6,
+   "ms": 91,
+   "section": 61
+  },
+  {
+   "marche": "TH",
+   "filtre": "secteur",
+   "valeur": "RETAIL",
+   "total": 2,
+   "totalConfirmes": 2,
+   "ms": 193,
+   "section": 61
+  },
+  {
+   "marche": "MY",
+   "filtre": "secteur",
+   "valeur": "FASHION",
+   "total": 69,
+   "totalConfirmes": 69,
+   "ms": 94,
+   "section": 160
+  },
+  {
+   "marche": "MY",
+   "filtre": "secteur",
+   "valeur": "BEAUTY",
+   "total": 57,
+   "totalConfirmes": 57,
+   "ms": 91,
+   "section": 160
+  },
+  {
+   "marche": "MY",
+   "filtre": "secteur",
+   "valeur": "FOOTWEAR",
+   "total": 39,
+   "totalConfirmes": 39,
+   "ms": 88,
+   "section": 160
+  },
+  {
+   "marche": "MY",
+   "filtre": "secteur",
+   "valeur": "HOME_LIFESTYLE",
+   "total": 39,
+   "totalConfirmes": 39,
+   "ms": 87,
+   "section": 160
+  },
+  {
+   "marche": "MY",
+   "filtre": "secteur",
+   "valeur": "JEWELRY",
+   "total": 24,
+   "totalConfirmes": 24,
+   "ms": 174,
+   "section": 160
+  },
+  {
+   "marche": "MY",
+   "filtre": "secteur",
+   "valeur": "RETAIL",
+   "total": 22,
+   "totalConfirmes": 22,
+   "ms": 97,
+   "section": 160
+  },
+  {
+   "marche": "MY",
+   "filtre": "secteur",
+   "valeur": "FRAGRANCE",
+   "total": 8,
+   "totalConfirmes": 8,
+   "ms": 83,
+   "section": 160
+  },
+  {
+   "marche": "MY",
+   "filtre": "secteur",
+   "valeur": "WATCHMAKING",
+   "total": 3,
+   "totalConfirmes": 3,
+   "ms": 91,
+   "section": 160
+  },
+  {
+   "marche": "MY",
+   "filtre": "secteur",
+   "valeur": "LEATHER_GOODS",
+   "total": 2,
+   "totalConfirmes": 2,
+   "ms": 168,
+   "section": 160
+  },
+  {
+   "marche": "MY",
+   "filtre": "secteur",
+   "valeur": "EYEWEAR",
+   "total": 1,
+   "totalConfirmes": 1,
+   "ms": 88,
+   "section": 160
+  },
+  {
+   "marche": "AE",
+   "filtre": "secteur",
+   "valeur": "FASHION",
+   "total": 72,
+   "totalConfirmes": 72,
+   "ms": 95,
+   "section": 161
+  },
+  {
+   "marche": "AE",
+   "filtre": "secteur",
+   "valeur": "BEAUTY",
+   "total": 13,
+   "totalConfirmes": 13,
+   "ms": 86,
+   "section": 161
+  },
+  {
+   "marche": "AE",
+   "filtre": "secteur",
+   "valeur": "JEWELRY",
+   "total": 11,
+   "totalConfirmes": 11,
+   "ms": 86,
+   "section": 161
+  },
+  {
+   "marche": "AE",
+   "filtre": "secteur",
+   "valeur": "RETAIL",
+   "total": 10,
+   "totalConfirmes": 10,
+   "ms": 171,
+   "section": 161
+  },
+  {
+   "marche": "AE",
+   "filtre": "secteur",
+   "valeur": "FOOTWEAR",
+   "total": 7,
+   "totalConfirmes": 7,
+   "ms": 94,
+   "section": 161
+  },
+  {
+   "marche": "AE",
+   "filtre": "secteur",
+   "valeur": "WATCHMAKING",
+   "total": 7,
+   "totalConfirmes": 7,
+   "ms": 93,
+   "section": 161
+  },
+  {
+   "marche": "AE",
+   "filtre": "secteur",
+   "valeur": "FRAGRANCE",
+   "total": 4,
+   "totalConfirmes": 4,
+   "ms": 82,
+   "section": 161
+  },
+  {
+   "marche": "AE",
+   "filtre": "secteur",
+   "valeur": "HOME_LIFESTYLE",
+   "total": 1,
+   "totalConfirmes": 1,
+   "ms": 87,
+   "section": 161
+  },
+  {
+   "marche": "AE",
+   "filtre": "secteur",
+   "valeur": "LEATHER_GOODS",
+   "total": 1,
+   "totalConfirmes": 1,
+   "ms": 163,
+   "section": 161
+  },
+  {
+   "marche": "AE",
+   "filtre": "langue",
+   "valeur": "en",
+   "total": 267,
+   "totalConfirmes": 267,
+   "ms": 94,
+   "section": 0
+  },
+  {
+   "marche": "AE",
+   "filtre": "langue",
+   "valeur": "fr",
+   "total": 2,
+   "totalConfirmes": 2,
+   "ms": 88,
+   "section": 0
+  },
+  {
+   "marche": "NO",
+   "filtre": "secteur",
+   "valeur": "BEAUTY",
+   "total": 81,
+   "totalConfirmes": 81,
+   "ms": 93,
+   "section": 49
+  },
+  {
+   "marche": "NO",
+   "filtre": "secteur",
+   "valeur": "HOME_LIFESTYLE",
+   "total": 79,
+   "totalConfirmes": 79,
+   "ms": 163,
+   "section": 49
+  },
+  {
+   "marche": "NO",
+   "filtre": "secteur",
+   "valeur": "RETAIL",
+   "total": 54,
+   "totalConfirmes": 54,
+   "ms": 91,
+   "section": 49
+  },
+  {
+   "marche": "NO",
+   "filtre": "secteur",
+   "valeur": "FASHION",
+   "total": 51,
+   "totalConfirmes": 51,
+   "ms": 93,
+   "section": 49
+  },
+  {
+   "marche": "NO",
+   "filtre": "secteur",
+   "valeur": "FRAGRANCE",
+   "total": 51,
+   "totalConfirmes": 51,
+   "ms": 86,
+   "section": 49
+  },
+  {
+   "marche": "NO",
+   "filtre": "secteur",
+   "valeur": "FOOTWEAR",
+   "total": 29,
+   "totalConfirmes": 29,
+   "ms": 101,
+   "section": 49
+  },
+  {
+   "marche": "NO",
+   "filtre": "secteur",
+   "valeur": "JEWELRY",
+   "total": 5,
+   "totalConfirmes": 5,
+   "ms": 176,
+   "section": 49
+  },
+  {
+   "marche": "TW",
+   "filtre": "secteur",
+   "valeur": "FASHION",
+   "total": 81,
+   "totalConfirmes": 81,
+   "ms": 89,
+   "section": 98
+  },
+  {
+   "marche": "TW",
+   "filtre": "secteur",
+   "valeur": "BEAUTY",
+   "total": 42,
+   "totalConfirmes": 42,
+   "ms": 92,
+   "section": 98
+  },
+  {
+   "marche": "TW",
+   "filtre": "secteur",
+   "valeur": "FOOTWEAR",
+   "total": 32,
+   "totalConfirmes": 32,
+   "ms": 87,
+   "section": 98
+  },
+  {
+   "marche": "TW",
+   "filtre": "secteur",
+   "valeur": "JEWELRY",
+   "total": 24,
+   "totalConfirmes": 24,
+   "ms": 86,
+   "section": 98
+  },
+  {
+   "marche": "TW",
+   "filtre": "secteur",
+   "valeur": "HOME_LIFESTYLE",
+   "total": 23,
+   "totalConfirmes": 23,
+   "ms": 167,
+   "section": 98
+  },
+  {
+   "marche": "TW",
+   "filtre": "secteur",
+   "valeur": "WATCHMAKING",
+   "total": 19,
+   "totalConfirmes": 19,
+   "ms": 90,
+   "section": 98
+  },
+  {
+   "marche": "TW",
+   "filtre": "secteur",
+   "valeur": "FRAGRANCE",
+   "total": 17,
+   "totalConfirmes": 17,
+   "ms": 94,
+   "section": 98
+  },
+  {
+   "marche": "TW",
+   "filtre": "secteur",
+   "valeur": "LEATHER_GOODS",
+   "total": 17,
+   "totalConfirmes": 17,
+   "ms": 84,
+   "section": 98
+  },
+  {
+   "marche": "BR",
+   "filtre": "secteur",
+   "valeur": "RETAIL",
+   "total": 69,
+   "totalConfirmes": 69,
+   "ms": 181,
+   "section": 76
+  },
+  {
+   "marche": "BR",
+   "filtre": "secteur",
+   "valeur": "FASHION",
+   "total": 44,
+   "totalConfirmes": 44,
+   "ms": 97,
+   "section": 76
+  },
+  {
+   "marche": "BR",
+   "filtre": "secteur",
+   "valeur": "FOOTWEAR",
+   "total": 37,
+   "totalConfirmes": 37,
+   "ms": 91,
+   "section": 76
+  },
+  {
+   "marche": "BR",
+   "filtre": "secteur",
+   "valeur": "BEAUTY",
+   "total": 31,
+   "totalConfirmes": 31,
+   "ms": 92,
+   "section": 76
+  },
+  {
+   "marche": "BR",
+   "filtre": "secteur",
+   "valeur": "JEWELRY",
+   "total": 20,
+   "totalConfirmes": 20,
+   "ms": 87,
+   "section": 76
+  },
+  {
+   "marche": "BR",
+   "filtre": "secteur",
+   "valeur": "HOME_LIFESTYLE",
+   "total": 15,
+   "totalConfirmes": 15,
+   "ms": 173,
+   "section": 76
+  },
+  {
+   "marche": "BR",
+   "filtre": "secteur",
+   "valeur": "FRAGRANCE",
+   "total": 4,
+   "totalConfirmes": 4,
+   "ms": 96,
+   "section": 76
+  },
+  {
+   "marche": "BR",
+   "filtre": "secteur",
+   "valeur": "LEATHER_GOODS",
+   "total": 2,
+   "totalConfirmes": 2,
+   "ms": 90,
+   "section": 76
+  },
+  {
+   "marche": "BR",
+   "filtre": "secteur",
+   "valeur": "WATCHMAKING",
+   "total": 2,
+   "totalConfirmes": 2,
+   "ms": 93,
+   "section": 76
+  },
+  {
+   "marche": "BR",
+   "filtre": "langue",
+   "valeur": "pt",
+   "total": 168,
+   "totalConfirmes": 168,
+   "ms": 177,
+   "section": 3
+  },
+  {
+   "marche": "BR",
+   "filtre": "langue",
+   "valeur": "en",
+   "total": 50,
+   "totalConfirmes": 50,
+   "ms": 94,
+   "section": 3
+  },
+  {
+   "marche": "GR",
+   "filtre": "secteur",
+   "valeur": "FASHION",
+   "total": 40,
+   "totalConfirmes": 40,
+   "ms": 119,
+   "section": 134
+  },
+  {
+   "marche": "GR",
+   "filtre": "secteur",
+   "valeur": "BEAUTY",
+   "total": 39,
+   "totalConfirmes": 39,
+   "ms": 105,
+   "section": 134
+  },
+  {
+   "marche": "GR",
+   "filtre": "secteur",
+   "valeur": "FOOTWEAR",
+   "total": 28,
+   "totalConfirmes": 28,
+   "ms": 159,
+   "section": 134
+  },
+  {
+   "marche": "GR",
+   "filtre": "secteur",
+   "valeur": "HOME_LIFESTYLE",
+   "total": 17,
+   "totalConfirmes": 17,
+   "ms": 81,
+   "section": 134
+  },
+  {
+   "marche": "GR",
+   "filtre": "secteur",
+   "valeur": "RETAIL",
+   "total": 12,
+   "totalConfirmes": 12,
+   "ms": 94,
+   "section": 134
+  },
+  {
+   "marche": "GR",
+   "filtre": "secteur",
+   "valeur": "JEWELRY",
+   "total": 10,
+   "totalConfirmes": 10,
+   "ms": 90,
+   "section": 134
+  },
+  {
+   "marche": "GR",
+   "filtre": "langue",
+   "valeur": "en",
+   "total": 58,
+   "totalConfirmes": 58,
+   "ms": 101,
+   "section": 48
+  },
+  {
+   "marche": "GR",
+   "filtre": "langue",
+   "valeur": "es",
+   "total": 52,
+   "totalConfirmes": 52,
+   "ms": 185,
+   "section": 48
+  },
+  {
+   "marche": "GR",
+   "filtre": "langue",
+   "valeur": "el",
+   "total": 49,
+   "totalConfirmes": 49,
+   "ms": 88,
+   "section": 48
+  },
+  {
+   "marche": "GR",
+   "filtre": "langue",
+   "valeur": "pt",
+   "total": 1,
+   "totalConfirmes": 1,
+   "ms": 81,
+   "section": 48
+  },
+  {
+   "marche": "ZA",
+   "filtre": "secteur",
+   "valeur": "JEWELRY",
+   "total": 54,
+   "totalConfirmes": 54,
+   "ms": 91,
+   "section": 69
+  },
+  {
+   "marche": "ZA",
+   "filtre": "secteur",
+   "valeur": "FASHION",
+   "total": 52,
+   "totalConfirmes": 52,
+   "ms": 87,
+   "section": 69
+  },
+  {
+   "marche": "ZA",
+   "filtre": "secteur",
+   "valeur": "FOOTWEAR",
+   "total": 48,
+   "totalConfirmes": 48,
+   "ms": 176,
+   "section": 69
+  },
+  {
+   "marche": "ZA",
+   "filtre": "secteur",
+   "valeur": "BEAUTY",
+   "total": 12,
+   "totalConfirmes": 12,
+   "ms": 89,
+   "section": 69
+  },
+  {
+   "marche": "ZA",
+   "filtre": "secteur",
+   "valeur": "HOME_LIFESTYLE",
+   "total": 6,
+   "totalConfirmes": 6,
+   "ms": 99,
+   "section": 69
+  },
+  {
+   "marche": "VN",
+   "filtre": "secteur",
+   "valeur": "FASHION",
+   "total": 73,
+   "totalConfirmes": 73,
+   "ms": 86,
+   "section": 81
+  },
+  {
+   "marche": "VN",
+   "filtre": "secteur",
+   "valeur": "FOOTWEAR",
+   "total": 69,
+   "totalConfirmes": 69,
+   "ms": 177,
+   "section": 81
+  },
+  {
+   "marche": "VN",
+   "filtre": "secteur",
+   "valeur": "BEAUTY",
+   "total": 30,
+   "totalConfirmes": 30,
+   "ms": 90,
+   "section": 81
+  },
+  {
+   "marche": "VN",
+   "filtre": "secteur",
+   "valeur": "HOME_LIFESTYLE",
+   "total": 20,
+   "totalConfirmes": 20,
+   "ms": 83,
+   "section": 81
+  },
+  {
+   "marche": "VN",
+   "filtre": "secteur",
+   "valeur": "LEATHER_GOODS",
+   "total": 10,
+   "totalConfirmes": 10,
+   "ms": 84,
+   "section": 81
+  },
+  {
+   "marche": "VN",
+   "filtre": "secteur",
+   "valeur": "JEWELRY",
+   "total": 7,
+   "totalConfirmes": 7,
+   "ms": 89,
+   "section": 81
+  },
+  {
+   "marche": "VN",
+   "filtre": "secteur",
+   "valeur": "RETAIL",
+   "total": 2,
+   "totalConfirmes": 2,
+   "ms": 174,
+   "section": 81
+  },
+  {
+   "marche": "VN",
+   "filtre": "langue",
+   "valeur": "en",
+   "total": 162,
+   "totalConfirmes": 162,
+   "ms": 90,
+   "section": 7
+  },
+  {
+   "marche": "VN",
+   "filtre": "langue",
+   "valeur": "pt",
+   "total": 12,
+   "totalConfirmes": 12,
+   "ms": 80,
+   "section": 7
+  },
+  {
+   "marche": "VN",
+   "filtre": "langue",
+   "valeur": "vi",
+   "total": 2,
+   "totalConfirmes": 2,
+   "ms": 82,
+   "section": 7
+  },
+  {
+   "marche": "CZ",
+   "filtre": "secteur",
+   "valeur": "FASHION",
+   "total": 76,
+   "totalConfirmes": 76,
+   "ms": 86,
+   "section": 43
+  },
+  {
+   "marche": "CZ",
+   "filtre": "secteur",
+   "valeur": "BEAUTY",
+   "total": 71,
+   "totalConfirmes": 71,
+   "ms": 170,
+   "section": 43
+  },
+  {
+   "marche": "CZ",
+   "filtre": "secteur",
+   "valeur": "FOOTWEAR",
+   "total": 64,
+   "totalConfirmes": 64,
+   "ms": 93,
+   "section": 43
+  },
+  {
+   "marche": "CZ",
+   "filtre": "secteur",
+   "valeur": "HOME_LIFESTYLE",
+   "total": 64,
+   "totalConfirmes": 64,
+   "ms": 89,
+   "section": 43
+  },
+  {
+   "marche": "CZ",
+   "filtre": "secteur",
+   "valeur": "RETAIL",
+   "total": 12,
+   "totalConfirmes": 12,
+   "ms": 86,
+   "section": 43
+  },
+  {
+   "marche": "CZ",
+   "filtre": "secteur",
+   "valeur": "FRAGRANCE",
+   "total": 4,
+   "totalConfirmes": 4,
+   "ms": 90,
+   "section": 43
+  },
+  {
+   "marche": "CZ",
+   "filtre": "secteur",
+   "valeur": "JEWELRY",
+   "total": 3,
+   "totalConfirmes": 3,
+   "ms": 166,
+   "section": 43
+  },
+  {
+   "marche": "CZ",
+   "filtre": "secteur",
+   "valeur": "LEATHER_GOODS",
+   "total": 3,
+   "totalConfirmes": 3,
+   "ms": 86,
+   "section": 43
+  },
+  {
+   "marche": "CZ",
+   "filtre": "secteur",
+   "valeur": "WATCHMAKING",
+   "total": 3,
+   "totalConfirmes": 3,
+   "ms": 90,
+   "section": 43
+  },
+  {
+   "marche": "CZ",
+   "filtre": "langue",
+   "valeur": "cs",
+   "total": 54,
+   "totalConfirmes": 54,
+   "ms": 91,
+   "section": 1
+  },
+  {
+   "marche": "CZ",
+   "filtre": "langue",
+   "valeur": "en",
+   "total": 37,
+   "totalConfirmes": 37,
+   "ms": 85,
+   "section": 1
+  },
+  {
+   "marche": "CZ",
+   "filtre": "langue",
+   "valeur": "pt",
+   "total": 31,
+   "totalConfirmes": 31,
+   "ms": 174,
+   "section": 1
+  },
+  {
+   "marche": "CZ",
+   "filtre": "langue",
+   "valeur": "ro",
+   "total": 2,
+   "totalConfirmes": 2,
+   "ms": 86,
+   "section": 1
+  },
+  {
+   "marche": "CZ",
+   "filtre": "langue",
+   "valeur": "sk",
+   "total": 2,
+   "totalConfirmes": 2,
+   "ms": 87,
+   "section": 1
+  },
+  {
+   "marche": "CZ",
+   "filtre": "langue",
+   "valeur": "fr",
+   "total": 1,
+   "totalConfirmes": 1,
+   "ms": 85,
+   "section": 1
+  },
+  {
+   "marche": "CZ",
+   "filtre": "langue",
+   "valeur": "it",
+   "total": 1,
+   "totalConfirmes": 1,
+   "ms": 87,
+   "section": 1
+  },
+  {
+   "marche": "PE",
+   "filtre": "secteur",
+   "valeur": "FOOTWEAR",
+   "total": 109,
+   "totalConfirmes": 109,
+   "ms": 92,
+   "section": 60
+  },
+  {
+   "marche": "PE",
+   "filtre": "secteur",
+   "valeur": "RETAIL",
+   "total": 105,
+   "totalConfirmes": 105,
+   "ms": 91,
+   "section": 60
+  },
+  {
+   "marche": "PE",
+   "filtre": "secteur",
+   "valeur": "FASHION",
+   "total": 6,
+   "totalConfirmes": 6,
+   "ms": 89,
+   "section": 60
+  },
+  {
+   "marche": "PE",
+   "filtre": "secteur",
+   "valeur": "BEAUTY",
+   "total": 5,
+   "totalConfirmes": 5,
+   "ms": 87,
+   "section": 60
+  },
+  {
+   "marche": "PE",
+   "filtre": "secteur",
+   "valeur": "HOME_LIFESTYLE",
+   "total": 3,
+   "totalConfirmes": 3,
+   "ms": 164,
+   "section": 60
+  },
+  {
+   "marche": "PE",
+   "filtre": "secteur",
+   "valeur": "FRAGRANCE",
+   "total": 2,
+   "totalConfirmes": 2,
+   "ms": 84,
+   "section": 60
+  },
+  {
+   "marche": "PE",
+   "filtre": "secteur",
+   "valeur": "JEWELRY",
+   "total": 1,
+   "totalConfirmes": 1,
+   "ms": 83,
+   "section": 60
+  },
+  {
+   "marche": "PE",
+   "filtre": "langue",
+   "valeur": "es",
+   "total": 162,
+   "totalConfirmes": 162,
+   "ms": 91,
+   "section": 6
+  },
+  {
+   "marche": "PE",
+   "filtre": "langue",
+   "valeur": "en",
+   "total": 4,
+   "totalConfirmes": 4,
+   "ms": 82,
+   "section": 6
+  },
+  {
+   "marche": "NZ",
+   "filtre": "secteur",
+   "valeur": "FASHION",
+   "total": 38,
+   "totalConfirmes": 38,
+   "ms": 167,
+   "section": 117
+  },
+  {
+   "marche": "NZ",
+   "filtre": "secteur",
+   "valeur": "JEWELRY",
+   "total": 37,
+   "totalConfirmes": 37,
+   "ms": 91,
+   "section": 117
+  },
+  {
+   "marche": "NZ",
+   "filtre": "secteur",
+   "valeur": "FOOTWEAR",
+   "total": 34,
+   "totalConfirmes": 34,
+   "ms": 87,
+   "section": 117
+  },
+  {
+   "marche": "NZ",
+   "filtre": "secteur",
+   "valeur": "RETAIL",
+   "total": 27,
+   "totalConfirmes": 27,
+   "ms": 89,
+   "section": 117
+  },
+  {
+   "marche": "NZ",
+   "filtre": "secteur",
+   "valeur": "BEAUTY",
+   "total": 17,
+   "totalConfirmes": 17,
+   "ms": 94,
+   "section": 117
+  },
+  {
+   "marche": "NZ",
+   "filtre": "secteur",
+   "valeur": "HOME_LIFESTYLE",
+   "total": 16,
+   "totalConfirmes": 16,
+   "ms": 160,
+   "section": 117
+  },
+  {
+   "marche": "HU",
+   "filtre": "secteur",
+   "valeur": "BEAUTY",
+   "total": 90,
+   "totalConfirmes": 90,
+   "ms": 90,
+   "section": 19
+  },
+  {
+   "marche": "HU",
+   "filtre": "secteur",
+   "valeur": "FASHION",
+   "total": 90,
+   "totalConfirmes": 90,
+   "ms": 92,
+   "section": 19
+  },
+  {
+   "marche": "HU",
+   "filtre": "secteur",
+   "valeur": "HOME_LIFESTYLE",
+   "total": 87,
+   "totalConfirmes": 87,
+   "ms": 89,
+   "section": 19
+  },
+  {
+   "marche": "HU",
+   "filtre": "secteur",
+   "valeur": "FOOTWEAR",
+   "total": 76,
+   "totalConfirmes": 76,
+   "ms": 168,
+   "section": 19
+  },
+  {
+   "marche": "HU",
+   "filtre": "secteur",
+   "valeur": "RETAIL",
+   "total": 21,
+   "totalConfirmes": 21,
+   "ms": 91,
+   "section": 19
+  },
+  {
+   "marche": "HU",
+   "filtre": "secteur",
+   "valeur": "FRAGRANCE",
+   "total": 8,
+   "totalConfirmes": 8,
+   "ms": 86,
+   "section": 19
+  },
+  {
+   "marche": "HU",
+   "filtre": "secteur",
+   "valeur": "JEWELRY",
+   "total": 6,
+   "totalConfirmes": 6,
+   "ms": 91,
+   "section": 19
+  },
+  {
+   "marche": "HU",
+   "filtre": "langue",
+   "valeur": "hu",
+   "total": 85,
+   "totalConfirmes": 85,
+   "ms": 88,
+   "section": 0
+  },
+  {
+   "marche": "HU",
+   "filtre": "langue",
+   "valeur": "en",
+   "total": 32,
+   "totalConfirmes": 32,
+   "ms": 166,
+   "section": 0
+  },
+  {
+   "marche": "HU",
+   "filtre": "langue",
+   "valeur": "pt",
+   "total": 15,
+   "totalConfirmes": 15,
+   "ms": 84,
+   "section": 0
+  },
+  {
+   "marche": "SA",
+   "filtre": "secteur",
+   "valeur": "FASHION",
+   "total": 29,
+   "totalConfirmes": 29,
+   "ms": 85,
+   "section": 64
+  },
+  {
+   "marche": "SA",
+   "filtre": "secteur",
+   "valeur": "FOOTWEAR",
+   "total": 8,
+   "totalConfirmes": 8,
+   "ms": 80,
+   "section": 64
+  },
+  {
+   "marche": "SA",
+   "filtre": "secteur",
+   "valeur": "JEWELRY",
+   "total": 4,
+   "totalConfirmes": 4,
+   "ms": 84,
+   "section": 64
+  },
+  {
+   "marche": "SA",
+   "filtre": "secteur",
+   "valeur": "WATCHMAKING",
+   "total": 4,
+   "totalConfirmes": 4,
+   "ms": 172,
+   "section": 64
+  },
+  {
+   "marche": "SA",
+   "filtre": "secteur",
+   "valeur": "FRAGRANCE",
+   "total": 2,
+   "totalConfirmes": 2,
+   "ms": 85,
+   "section": 64
+  },
+  {
+   "marche": "SA",
+   "filtre": "secteur",
+   "valeur": "LEATHER_GOODS",
+   "total": 2,
+   "totalConfirmes": 2,
+   "ms": 84,
+   "section": 64
+  },
+  {
+   "marche": "SA",
+   "filtre": "secteur",
+   "valeur": "BEAUTY",
+   "total": 1,
+   "totalConfirmes": 1,
+   "ms": 87,
+   "section": 64
+  },
+  {
+   "marche": "SA",
+   "filtre": "secteur",
+   "valeur": "RETAIL",
+   "total": 1,
+   "totalConfirmes": 1,
+   "ms": 86,
+   "section": 64
+  },
+  {
+   "marche": "RO",
+   "filtre": "secteur",
+   "valeur": "BEAUTY",
+   "total": 48,
+   "totalConfirmes": 48,
+   "ms": 179,
+   "section": 22
+  },
+  {
+   "marche": "RO",
+   "filtre": "secteur",
+   "valeur": "FASHION",
+   "total": 48,
+   "totalConfirmes": 48,
+   "ms": 86,
+   "section": 22
+  },
+  {
+   "marche": "RO",
+   "filtre": "secteur",
+   "valeur": "HOME_LIFESTYLE",
+   "total": 45,
+   "totalConfirmes": 45,
+   "ms": 84,
+   "section": 22
+  },
+  {
+   "marche": "RO",
+   "filtre": "secteur",
+   "valeur": "RETAIL",
+   "total": 39,
+   "totalConfirmes": 39,
+   "ms": 83,
+   "section": 22
+  },
+  {
+   "marche": "RO",
+   "filtre": "secteur",
+   "valeur": "FOOTWEAR",
+   "total": 23,
+   "totalConfirmes": 23,
+   "ms": 80,
+   "section": 22
+  },
+  {
+   "marche": "RO",
+   "filtre": "secteur",
+   "valeur": "FRAGRANCE",
+   "total": 10,
+   "totalConfirmes": 10,
+   "ms": 171,
+   "section": 22
+  },
+  {
+   "marche": "RO",
+   "filtre": "secteur",
+   "valeur": "JEWELRY",
+   "total": 1,
+   "totalConfirmes": 1,
+   "ms": 84,
+   "section": 22
+  },
+  {
+   "marche": "RO",
+   "filtre": "langue",
+   "valeur": "ro",
+   "total": 45,
+   "totalConfirmes": 45,
+   "ms": 95,
+   "section": 29
+  },
+  {
+   "marche": "RO",
+   "filtre": "langue",
+   "valeur": "en",
+   "total": 21,
+   "totalConfirmes": 21,
+   "ms": 84,
+   "section": 29
+  },
+  {
+   "marche": "RO",
+   "filtre": "langue",
+   "valeur": "es",
+   "total": 1,
+   "totalConfirmes": 1,
+   "ms": 85,
+   "section": 29
+  },
+  {
+   "marche": "RO",
+   "filtre": "langue",
+   "valeur": "hu",
+   "total": 1,
+   "totalConfirmes": 1,
+   "ms": 173,
+   "section": 29
+  },
+  {
+   "marche": "RO",
+   "filtre": "langue",
+   "valeur": "pt",
+   "total": 1,
+   "totalConfirmes": 1,
+   "ms": 86,
+   "section": 29
+  },
+  {
+   "marche": "PR",
+   "filtre": "secteur",
+   "valeur": "RETAIL",
+   "total": 33,
+   "totalConfirmes": 33,
+   "ms": 87,
+   "section": 48
+  },
+  {
+   "marche": "PR",
+   "filtre": "secteur",
+   "valeur": "FOOTWEAR",
+   "total": 19,
+   "totalConfirmes": 19,
+   "ms": 87,
+   "section": 48
+  },
+  {
+   "marche": "PR",
+   "filtre": "secteur",
+   "valeur": "JEWELRY",
+   "total": 8,
+   "totalConfirmes": 8,
+   "ms": 158,
+   "section": 48
+  },
+  {
+   "marche": "PR",
+   "filtre": "secteur",
+   "valeur": "FASHION",
+   "total": 7,
+   "totalConfirmes": 7,
+   "ms": 84,
+   "section": 48
+  },
+  {
+   "marche": "PR",
+   "filtre": "secteur",
+   "valeur": "BEAUTY",
+   "total": 4,
+   "totalConfirmes": 4,
+   "ms": 88,
+   "section": 48
+  },
+  {
+   "marche": "PR",
+   "filtre": "secteur",
+   "valeur": "HOME_LIFESTYLE",
+   "total": 4,
+   "totalConfirmes": 4,
+   "ms": 90,
+   "section": 48
+  },
+  {
+   "marche": "PR",
+   "filtre": "langue",
+   "valeur": "en",
+   "total": 50,
+   "totalConfirmes": 50,
+   "ms": 90,
+   "section": 0
+  },
+  {
+   "marche": "PR",
+   "filtre": "langue",
+   "valeur": "es",
+   "total": 46,
+   "totalConfirmes": 46,
+   "ms": 171,
+   "section": 0
+  },
+  {
+   "marche": "PH",
+   "filtre": "secteur",
+   "valeur": "FASHION",
+   "total": 35,
+   "totalConfirmes": 35,
+   "ms": 86,
+   "section": 34
+  },
+  {
+   "marche": "PH",
+   "filtre": "secteur",
+   "valeur": "FOOTWEAR",
+   "total": 35,
+   "totalConfirmes": 35,
+   "ms": 88,
+   "section": 34
+  },
+  {
+   "marche": "PH",
+   "filtre": "secteur",
+   "valeur": "BEAUTY",
+   "total": 15,
+   "totalConfirmes": 15,
+   "ms": 81,
+   "section": 34
+  },
+  {
+   "marche": "PH",
+   "filtre": "secteur",
+   "valeur": "HOME_LIFESTYLE",
+   "total": 15,
+   "totalConfirmes": 15,
+   "ms": 82,
+   "section": 34
+  },
+  {
+   "marche": "PH",
+   "filtre": "secteur",
+   "valeur": "RETAIL",
+   "total": 3,
+   "totalConfirmes": 3,
+   "ms": 158,
+   "section": 34
+  },
+  {
+   "marche": "LU",
+   "filtre": "secteur",
+   "valeur": "RETAIL",
+   "total": 22,
+   "totalConfirmes": 22,
+   "ms": 94,
+   "section": 16
+  },
+  {
+   "marche": "LU",
+   "filtre": "secteur",
+   "valeur": "FASHION",
+   "total": 20,
+   "totalConfirmes": 20,
+   "ms": 83,
+   "section": 16
+  },
+  {
+   "marche": "LU",
+   "filtre": "secteur",
+   "valeur": "BEAUTY",
+   "total": 6,
+   "totalConfirmes": 6,
+   "ms": 91,
+   "section": 16
+  },
+  {
+   "marche": "LU",
+   "filtre": "secteur",
+   "valeur": "HOME_LIFESTYLE",
+   "total": 5,
+   "totalConfirmes": 5,
+   "ms": 87,
+   "section": 16
+  },
+  {
+   "marche": "LU",
+   "filtre": "secteur",
+   "valeur": "JEWELRY",
+   "total": 5,
+   "totalConfirmes": 5,
+   "ms": 175,
+   "section": 16
+  },
+  {
+   "marche": "LU",
+   "filtre": "secteur",
+   "valeur": "FOOTWEAR",
+   "total": 4,
+   "totalConfirmes": 4,
+   "ms": 94,
+   "section": 16
+  },
+  {
+   "marche": "LU",
+   "filtre": "secteur",
+   "valeur": "FRAGRANCE",
+   "total": 1,
+   "totalConfirmes": 1,
+   "ms": 82,
+   "section": 16
+  },
+  {
+   "marche": "LU",
+   "filtre": "langue",
+   "valeur": "fr",
+   "total": 46,
+   "totalConfirmes": 46,
+   "ms": 87,
+   "section": 0
+  },
+  {
+   "marche": "LU",
+   "filtre": "langue",
+   "valeur": "en",
+   "total": 11,
+   "totalConfirmes": 11,
+   "ms": 81,
+   "section": 0
+  },
+  {
+   "marche": "US",
+   "filtre": "secteur",
+   "valeur": "RETAIL",
+   "total": 21190,
+   "totalConfirmes": 21190,
+   "ms": 980,
+   "section": 15382
+  },
+  {
+   "marche": "US",
+   "filtre": "secteur",
+   "valeur": "BEAUTY",
+   "total": 13087,
+   "totalConfirmes": 13087,
+   "ms": 928,
+   "section": 15382
+  },
+  {
+   "marche": "US",
+   "filtre": "secteur",
+   "valeur": "FRAGRANCE",
+   "total": 11336,
+   "totalConfirmes": 11336,
+   "ms": 896,
+   "section": 15382
+  },
+  {
+   "marche": "US",
+   "filtre": "secteur",
+   "valeur": "FASHION",
+   "total": 5943,
+   "totalConfirmes": 5943,
+   "ms": 795,
+   "section": 15382
+  },
+  {
+   "marche": "US",
+   "filtre": "secteur",
+   "valeur": "FOOTWEAR",
+   "total": 4162,
+   "totalConfirmes": 4162,
+   "ms": 712,
+   "section": 15382
+  },
+  {
+   "marche": "US",
+   "filtre": "secteur",
+   "valeur": "HOME_LIFESTYLE",
+   "total": 1867,
+   "totalConfirmes": 1867,
+   "ms": 863,
+   "section": 15382
+  },
+  {
+   "marche": "US",
+   "filtre": "secteur",
+   "valeur": "JEWELRY",
+   "total": 854,
+   "totalConfirmes": 854,
+   "ms": 1048,
+   "section": 15382
+  },
+  {
+   "marche": "US",
+   "filtre": "secteur",
+   "valeur": "LEATHER_GOODS",
+   "total": 152,
+   "totalConfirmes": 152,
+   "ms": 730,
+   "section": 15382
+  },
+  {
+   "marche": "US",
+   "filtre": "secteur",
+   "valeur": "WATCHMAKING",
+   "total": 131,
+   "totalConfirmes": 131,
+   "ms": 654,
+   "section": 15382
+  },
+  {
+   "marche": "US",
+   "filtre": "secteur",
+   "valeur": "EYEWEAR",
+   "total": 6,
+   "totalConfirmes": 6,
+   "ms": 712,
+   "section": 15382
+  },
+  {
+   "marche": "US",
+   "filtre": "langue",
+   "valeur": "en",
+   "total": 40589,
+   "totalConfirmes": 40589,
+   "ms": 1047,
+   "section": 9
+  },
+  {
+   "marche": "US",
+   "filtre": "langue",
+   "valeur": "fr",
+   "total": 8,
+   "totalConfirmes": 8,
+   "ms": 531,
+   "section": 9
+  },
+  {
+   "marche": "FR",
+   "filtre": "secteur",
+   "valeur": "FASHION",
+   "total": 5528,
+   "totalConfirmes": 5528,
+   "ms": 451,
+   "section": 3968
+  },
+  {
+   "marche": "FR",
+   "filtre": "secteur",
+   "valeur": "RETAIL",
+   "total": 3483,
+   "totalConfirmes": 3483,
+   "ms": 356,
+   "section": 3968
+  },
+  {
+   "marche": "FR",
+   "filtre": "secteur",
+   "valeur": "BEAUTY",
+   "total": 2934,
+   "totalConfirmes": 2934,
+   "ms": 294,
+   "section": 3968
+  },
+  {
+   "marche": "FR",
+   "filtre": "secteur",
+   "valeur": "HOME_LIFESTYLE",
+   "total": 1598,
+   "totalConfirmes": 1598,
+   "ms": 367,
+   "section": 3968
+  },
+  {
+   "marche": "FR",
+   "filtre": "secteur",
+   "valeur": "JEWELRY",
+   "total": 1304,
+   "totalConfirmes": 1304,
+   "ms": 388,
+   "section": 3968
+  },
+  {
+   "marche": "FR",
+   "filtre": "secteur",
+   "valeur": "FRAGRANCE",
+   "total": 1180,
+   "totalConfirmes": 1180,
+   "ms": 301,
+   "section": 3968
+  },
+  {
+   "marche": "FR",
+   "filtre": "secteur",
+   "valeur": "FOOTWEAR",
+   "total": 762,
+   "totalConfirmes": 762,
+   "ms": 358,
+   "section": 3968
+  },
+  {
+   "marche": "FR",
+   "filtre": "secteur",
+   "valeur": "LEATHER_GOODS",
+   "total": 680,
+   "totalConfirmes": 680,
+   "ms": 292,
+   "section": 3968
+  },
+  {
+   "marche": "FR",
+   "filtre": "secteur",
+   "valeur": "WATCHMAKING",
+   "total": 680,
+   "totalConfirmes": 680,
+   "ms": 393,
+   "section": 3968
+  },
+  {
+   "marche": "FR",
+   "filtre": "secteur",
+   "valeur": "EYEWEAR",
+   "total": 4,
+   "totalConfirmes": 4,
+   "ms": 364,
+   "section": 3968
+  },
+  {
+   "marche": "FR",
+   "filtre": "langue",
+   "valeur": "fr",
+   "total": 12483,
+   "totalConfirmes": 12483,
+   "ms": 485,
+   "section": 227
+  },
+  {
+   "marche": "FR",
+   "filtre": "langue",
+   "valeur": "en",
+   "total": 912,
+   "totalConfirmes": 912,
+   "ms": 258,
+   "section": 227
+  },
+  {
+   "marche": "FR",
+   "filtre": "langue",
+   "valeur": "it",
+   "total": 5,
+   "totalConfirmes": 5,
+   "ms": 318,
+   "section": 227
+  },
+  {
+   "marche": "FR",
+   "filtre": "langue",
+   "valeur": "pt",
+   "total": 4,
+   "totalConfirmes": 4,
+   "ms": 242,
+   "section": 227
+  },
+  {
+   "marche": "FR",
+   "filtre": "langue",
+   "valeur": "de",
+   "total": 3,
+   "totalConfirmes": 3,
+   "ms": 267,
+   "section": 227
+  },
+  {
+   "marche": "FR",
+   "filtre": "langue",
+   "valeur": "nl",
+   "total": 3,
+   "totalConfirmes": 3,
+   "ms": 255,
+   "section": 227
+  },
+  {
+   "marche": "FR",
+   "filtre": "langue",
+   "valeur": "es",
+   "total": 1,
+   "totalConfirmes": 1,
+   "ms": 250,
+   "section": 227
+  },
+  {
+   "marche": "GB",
+   "filtre": "secteur",
+   "valeur": "FASHION",
+   "total": 1321,
+   "totalConfirmes": 1321,
+   "ms": 276,
+   "section": 2240
+  },
+  {
+   "marche": "GB",
+   "filtre": "secteur",
+   "valeur": "BEAUTY",
+   "total": 1097,
+   "totalConfirmes": 1097,
+   "ms": 195,
+   "section": 2240
+  },
+  {
+   "marche": "GB",
+   "filtre": "secteur",
+   "valeur": "RETAIL",
+   "total": 838,
+   "totalConfirmes": 838,
+   "ms": 161,
+   "section": 2240
+  },
+  {
+   "marche": "GB",
+   "filtre": "secteur",
+   "valeur": "HOME_LIFESTYLE",
+   "total": 687,
+   "totalConfirmes": 687,
+   "ms": 243,
+   "section": 2240
+  },
+  {
+   "marche": "GB",
+   "filtre": "secteur",
+   "valeur": "FOOTWEAR",
+   "total": 237,
+   "totalConfirmes": 237,
+   "ms": 160,
+   "section": 2240
+  },
+  {
+   "marche": "GB",
+   "filtre": "secteur",
+   "valeur": "JEWELRY",
+   "total": 153,
+   "totalConfirmes": 153,
+   "ms": 163,
+   "section": 2240
+  },
+  {
+   "marche": "GB",
+   "filtre": "secteur",
+   "valeur": "FRAGRANCE",
+   "total": 149,
+   "totalConfirmes": 149,
+   "ms": 205,
+   "section": 2240
+  },
+  {
+   "marche": "GB",
+   "filtre": "secteur",
+   "valeur": "LEATHER_GOODS",
+   "total": 32,
+   "totalConfirmes": 32,
+   "ms": 170,
+   "section": 2240
+  },
+  {
+   "marche": "GB",
+   "filtre": "secteur",
+   "valeur": "WATCHMAKING",
+   "total": 25,
+   "totalConfirmes": 25,
+   "ms": 149,
+   "section": 2240
+  },
+  {
+   "marche": "GB",
+   "filtre": "secteur",
+   "valeur": "EYEWEAR",
+   "total": 1,
+   "totalConfirmes": 1,
+   "ms": 203,
+   "section": 2240
+  },
+  {
+   "marche": "GB",
+   "filtre": "langue",
+   "valeur": "en",
+   "total": 4298,
+   "totalConfirmes": 4298,
+   "ms": 241,
+   "section": 9
+  },
+  {
+   "marche": "GB",
+   "filtre": "langue",
+   "valeur": "fr",
+   "total": 12,
+   "totalConfirmes": 12,
+   "ms": 215,
+   "section": 9
+  },
+  {
+   "marche": "GB",
+   "filtre": "langue",
+   "valeur": "de",
+   "total": 1,
+   "totalConfirmes": 1,
+   "ms": 149,
+   "section": 9
+  },
+  {
+   "marche": "CA",
+   "filtre": "secteur",
+   "valeur": "RETAIL",
+   "total": 1016,
+   "totalConfirmes": 1016,
+   "ms": 135,
+   "section": 1926
+  },
+  {
+   "marche": "CA",
+   "filtre": "secteur",
+   "valeur": "FASHION",
+   "total": 281,
+   "totalConfirmes": 281,
+   "ms": 222,
+   "section": 1926
+  },
+  {
+   "marche": "CA",
+   "filtre": "secteur",
+   "valeur": "JEWELRY",
+   "total": 239,
+   "totalConfirmes": 239,
+   "ms": 133,
+   "section": 1926
+  },
+  {
+   "marche": "CA",
+   "filtre": "secteur",
+   "valeur": "FOOTWEAR",
+   "total": 213,
+   "totalConfirmes": 213,
+   "ms": 140,
+   "section": 1926
+  },
+  {
+   "marche": "CA",
+   "filtre": "secteur",
+   "valeur": "BEAUTY",
+   "total": 152,
+   "totalConfirmes": 152,
+   "ms": 182,
+   "section": 1926
+  },
+  {
+   "marche": "CA",
+   "filtre": "secteur",
+   "valeur": "HOME_LIFESTYLE",
+   "total": 118,
+   "totalConfirmes": 118,
+   "ms": 131,
+   "section": 1926
+  },
+  {
+   "marche": "CA",
+   "filtre": "secteur",
+   "valeur": "FRAGRANCE",
+   "total": 13,
+   "totalConfirmes": 13,
+   "ms": 152,
+   "section": 1926
+  },
+  {
+   "marche": "CA",
+   "filtre": "secteur",
+   "valeur": "LEATHER_GOODS",
+   "total": 9,
+   "totalConfirmes": 9,
+   "ms": 133,
+   "section": 1926
+  },
+  {
+   "marche": "CA",
+   "filtre": "secteur",
+   "valeur": "WATCHMAKING",
+   "total": 9,
+   "totalConfirmes": 9,
+   "ms": 236,
+   "section": 1926
+  },
+  {
+   "marche": "CA",
+   "filtre": "langue",
+   "valeur": "en",
+   "total": 2801,
+   "totalConfirmes": 2801,
+   "ms": 155,
+   "section": 11
+  },
+  {
+   "marche": "CA",
+   "filtre": "langue",
+   "valeur": "fr",
+   "total": 667,
+   "totalConfirmes": 667,
+   "ms": 134,
+   "section": 11
+  },
+  {
+   "marche": "DE",
+   "filtre": "secteur",
+   "valeur": "FASHION",
+   "total": 852,
+   "totalConfirmes": 852,
+   "ms": 170,
+   "section": 1802
+  },
+  {
+   "marche": "DE",
+   "filtre": "secteur",
+   "valeur": "BEAUTY",
+   "total": 703,
+   "totalConfirmes": 703,
+   "ms": 157,
+   "section": 1802
+  },
+  {
+   "marche": "DE",
+   "filtre": "secteur",
+   "valeur": "HOME_LIFESTYLE",
+   "total": 603,
+   "totalConfirmes": 603,
+   "ms": 250,
+   "section": 1802
+  },
+  {
+   "marche": "DE",
+   "filtre": "secteur",
+   "valeur": "FOOTWEAR",
+   "total": 485,
+   "totalConfirmes": 485,
+   "ms": 176,
+   "section": 1802
+  },
+  {
+   "marche": "DE",
+   "filtre": "secteur",
+   "valeur": "RETAIL",
+   "total": 477,
+   "totalConfirmes": 477,
+   "ms": 216,
+   "section": 1802
+  },
+  {
+   "marche": "DE",
+   "filtre": "secteur",
+   "valeur": "FRAGRANCE",
+   "total": 407,
+   "totalConfirmes": 407,
+   "ms": 152,
+   "section": 1802
+  },
+  {
+   "marche": "DE",
+   "filtre": "secteur",
+   "valeur": "JEWELRY",
+   "total": 169,
+   "totalConfirmes": 169,
+   "ms": 150,
+   "section": 1802
+  },
+  {
+   "marche": "DE",
+   "filtre": "secteur",
+   "valeur": "LEATHER_GOODS",
+   "total": 12,
+   "totalConfirmes": 12,
+   "ms": 223,
+   "section": 1802
+  },
+  {
+   "marche": "DE",
+   "filtre": "secteur",
+   "valeur": "WATCHMAKING",
+   "total": 12,
+   "totalConfirmes": 12,
+   "ms": 155,
+   "section": 1802
+  },
+  {
+   "marche": "DE",
+   "filtre": "secteur",
+   "valeur": "EYEWEAR",
+   "total": 4,
+   "totalConfirmes": 4,
+   "ms": 160,
+   "section": 1802
+  },
+  {
+   "marche": "DE",
+   "filtre": "langue",
+   "valeur": "de",
+   "total": 2753,
+   "totalConfirmes": 2753,
+   "ms": 207,
+   "section": 113
+  },
+  {
+   "marche": "DE",
+   "filtre": "langue",
+   "valeur": "en",
+   "total": 715,
+   "totalConfirmes": 715,
+   "ms": 146,
+   "section": 113
+  },
+  {
+   "marche": "DE",
+   "filtre": "langue",
+   "valeur": "fr",
+   "total": 13,
+   "totalConfirmes": 13,
+   "ms": 145,
+   "section": 113
+  },
+  {
+   "marche": "DE",
+   "filtre": "langue",
+   "valeur": "nl",
+   "total": 1,
+   "totalConfirmes": 1,
+   "ms": 233,
+   "section": 113
+  },
+  {
+   "marche": "DE",
+   "filtre": "langue",
+   "valeur": "pt",
+   "total": 1,
+   "totalConfirmes": 1,
+   "ms": 149,
+   "section": 113
+  },
+  {
+   "marche": "IT",
+   "filtre": "secteur",
+   "valeur": "RETAIL",
+   "total": 1056,
+   "totalConfirmes": 1056,
+   "ms": 141,
+   "section": 1077
+  },
+  {
+   "marche": "IT",
+   "filtre": "secteur",
+   "valeur": "FASHION",
+   "total": 818,
+   "totalConfirmes": 818,
+   "ms": 226,
+   "section": 1077
+  },
+  {
+   "marche": "IT",
+   "filtre": "secteur",
+   "valeur": "BEAUTY",
+   "total": 322,
+   "totalConfirmes": 322,
+   "ms": 131,
+   "section": 1077
+  },
+  {
+   "marche": "IT",
+   "filtre": "secteur",
+   "valeur": "HOME_LIFESTYLE",
+   "total": 281,
+   "totalConfirmes": 281,
+   "ms": 127,
+   "section": 1077
+  },
+  {
+   "marche": "IT",
+   "filtre": "secteur",
+   "valeur": "FOOTWEAR",
+   "total": 118,
+   "totalConfirmes": 118,
+   "ms": 198,
+   "section": 1077
+  },
+  {
+   "marche": "IT",
+   "filtre": "secteur",
+   "valeur": "FRAGRANCE",
+   "total": 106,
+   "totalConfirmes": 106,
+   "ms": 138,
+   "section": 1077
+  },
+  {
+   "marche": "IT",
+   "filtre": "secteur",
+   "valeur": "JEWELRY",
+   "total": 62,
+   "totalConfirmes": 62,
+   "ms": 123,
+   "section": 1077
+  },
+  {
+   "marche": "IT",
+   "filtre": "secteur",
+   "valeur": "EYEWEAR",
+   "total": 39,
+   "totalConfirmes": 39,
+   "ms": 123,
+   "section": 1077
+  },
+  {
+   "marche": "IT",
+   "filtre": "secteur",
+   "valeur": "WATCHMAKING",
+   "total": 19,
+   "totalConfirmes": 19,
+   "ms": 211,
+   "section": 1077
+  },
+  {
+   "marche": "IT",
+   "filtre": "secteur",
+   "valeur": "LEATHER_GOODS",
+   "total": 17,
+   "totalConfirmes": 17,
+   "ms": 140,
+   "section": 1077
+  },
+  {
+   "marche": "IT",
+   "filtre": "langue",
+   "valeur": "it",
+   "total": 1943,
+   "totalConfirmes": 1943,
+   "ms": 128,
+   "section": 57
+  },
+  {
+   "marche": "IT",
+   "filtre": "langue",
+   "valeur": "en",
+   "total": 912,
+   "totalConfirmes": 912,
+   "ms": 187,
+   "section": 57
+  },
+  {
+   "marche": "IT",
+   "filtre": "langue",
+   "valeur": "fr",
+   "total": 8,
+   "totalConfirmes": 8,
+   "ms": 122,
+   "section": 57
+  },
+  {
+   "marche": "IT",
+   "filtre": "langue",
+   "valeur": "es",
+   "total": 2,
+   "totalConfirmes": 2,
+   "ms": 120,
+   "section": 57
+  },
+  {
+   "marche": "ES",
+   "filtre": "secteur",
+   "valeur": "FASHION",
+   "total": 1185,
+   "totalConfirmes": 1185,
+   "ms": 212,
+   "section": 836
+  },
+  {
+   "marche": "ES",
+   "filtre": "secteur",
+   "valeur": "RETAIL",
+   "total": 982,
+   "totalConfirmes": 982,
+   "ms": 139,
+   "section": 836
+  },
+  {
+   "marche": "ES",
+   "filtre": "secteur",
+   "valeur": "BEAUTY",
+   "total": 431,
+   "totalConfirmes": 431,
+   "ms": 144,
+   "section": 836
+  },
+  {
+   "marche": "ES",
+   "filtre": "secteur",
+   "valeur": "HOME_LIFESTYLE",
+   "total": 299,
+   "totalConfirmes": 299,
+   "ms": 145,
+   "section": 836
+  },
+  {
+   "marche": "ES",
+   "filtre": "secteur",
+   "valeur": "FOOTWEAR",
+   "total": 97,
+   "totalConfirmes": 97,
+   "ms": 214,
+   "section": 836
+  },
+  {
+   "marche": "ES",
+   "filtre": "secteur",
+   "valeur": "FRAGRANCE",
+   "total": 90,
+   "totalConfirmes": 90,
+   "ms": 135,
+   "section": 836
+  },
+  {
+   "marche": "ES",
+   "filtre": "secteur",
+   "valeur": "JEWELRY",
+   "total": 15,
+   "totalConfirmes": 15,
+   "ms": 126,
+   "section": 836
+  },
+  {
+   "marche": "ES",
+   "filtre": "secteur",
+   "valeur": "EYEWEAR",
+   "total": 2,
+   "totalConfirmes": 2,
+   "ms": 216,
+   "section": 836
+  },
+  {
+   "marche": "ES",
+   "filtre": "langue",
+   "valeur": "es",
+   "total": 1847,
+   "totalConfirmes": 1847,
+   "ms": 151,
+   "section": 13
+  },
+  {
+   "marche": "ES",
+   "filtre": "langue",
+   "valeur": "en",
+   "total": 389,
+   "totalConfirmes": 389,
+   "ms": 143,
+   "section": 13
+  },
+  {
+   "marche": "ES",
+   "filtre": "langue",
+   "valeur": "fr",
+   "total": 2,
+   "totalConfirmes": 2,
+   "ms": 211,
+   "section": 13
+  },
+  {
+   "marche": "ES",
+   "filtre": "langue",
+   "valeur": "it",
+   "total": 1,
+   "totalConfirmes": 1,
+   "ms": 128,
+   "section": 13
+  },
+  {
+   "marche": "ES",
+   "filtre": "langue",
+   "valeur": "pt",
+   "total": 1,
+   "totalConfirmes": 1,
+   "ms": 144,
+   "section": 13
+  },
+  {
+   "marche": "NL",
+   "filtre": "secteur",
+   "valeur": "BEAUTY",
+   "total": 440,
+   "totalConfirmes": 440,
+   "ms": 195,
+   "section": 1086
+  },
+  {
+   "marche": "NL",
+   "filtre": "secteur",
+   "valeur": "FASHION",
+   "total": 411,
+   "totalConfirmes": 411,
+   "ms": 132,
+   "section": 1086
+  },
+  {
+   "marche": "NL",
+   "filtre": "secteur",
+   "valeur": "HOME_LIFESTYLE",
+   "total": 400,
+   "totalConfirmes": 400,
+   "ms": 144,
+   "section": 1086
+  },
+  {
+   "marche": "NL",
+   "filtre": "secteur",
+   "valeur": "RETAIL",
+   "total": 308,
+   "totalConfirmes": 308,
+   "ms": 222,
+   "section": 1086
+  },
+  {
+   "marche": "NL",
+   "filtre": "secteur",
+   "valeur": "FRAGRANCE",
+   "total": 195,
+   "totalConfirmes": 195,
+   "ms": 113,
+   "section": 1086
+  },
+  {
+   "marche": "NL",
+   "filtre": "secteur",
+   "valeur": "FOOTWEAR",
+   "total": 175,
+   "totalConfirmes": 175,
+   "ms": 114,
+   "section": 1086
+  },
+  {
+   "marche": "NL",
+   "filtre": "secteur",
+   "valeur": "JEWELRY",
+   "total": 77,
+   "totalConfirmes": 77,
+   "ms": 114,
+   "section": 1086
+  },
+  {
+   "marche": "NL",
+   "filtre": "secteur",
+   "valeur": "LEATHER_GOODS",
+   "total": 4,
+   "totalConfirmes": 4,
+   "ms": 197,
+   "section": 1086
+  },
+  {
+   "marche": "NL",
+   "filtre": "secteur",
+   "valeur": "WATCHMAKING",
+   "total": 4,
+   "totalConfirmes": 4,
+   "ms": 121,
+   "section": 1086
+  },
+  {
+   "marche": "NL",
+   "filtre": "langue",
+   "valeur": "nl",
+   "total": 1299,
+   "totalConfirmes": 1299,
+   "ms": 131,
+   "section": 8
+  },
+  {
+   "marche": "NL",
+   "filtre": "langue",
+   "valeur": "en",
+   "total": 656,
+   "totalConfirmes": 656,
+   "ms": 119,
+   "section": 8
+  },
+  {
+   "marche": "NL",
+   "filtre": "langue",
+   "valeur": "de",
+   "total": 2,
+   "totalConfirmes": 2,
+   "ms": 189,
+   "section": 8
+  },
+  {
+   "marche": "NL",
+   "filtre": "langue",
+   "valeur": "fr",
+   "total": 2,
+   "totalConfirmes": 2,
+   "ms": 117,
+   "section": 8
+  },
+  {
+   "marche": "NL",
+   "filtre": "langue",
+   "valeur": "pt",
+   "total": 2,
+   "totalConfirmes": 2,
+   "ms": 116,
+   "section": 8
+  },
+  {
+   "marche": "AU",
+   "filtre": "secteur",
+   "valeur": "FASHION",
+   "total": 223,
+   "totalConfirmes": 223,
+   "ms": 198,
+   "section": 842
+  },
+  {
+   "marche": "AU",
+   "filtre": "secteur",
+   "valeur": "RETAIL",
+   "total": 215,
+   "totalConfirmes": 215,
+   "ms": 143,
+   "section": 842
+  },
+  {
+   "marche": "AU",
+   "filtre": "secteur",
+   "valeur": "JEWELRY",
+   "total": 210,
+   "totalConfirmes": 210,
+   "ms": 129,
+   "section": 842
+  },
+  {
+   "marche": "AU",
+   "filtre": "secteur",
+   "valeur": "FOOTWEAR",
+   "total": 154,
+   "totalConfirmes": 154,
+   "ms": 223,
+   "section": 842
+  },
+  {
+   "marche": "AU",
+   "filtre": "secteur",
+   "valeur": "BEAUTY",
+   "total": 96,
+   "totalConfirmes": 96,
+   "ms": 132,
+   "section": 842
+  },
+  {
+   "marche": "AU",
+   "filtre": "secteur",
+   "valeur": "HOME_LIFESTYLE",
+   "total": 73,
+   "totalConfirmes": 73,
+   "ms": 155,
+   "section": 842
+  },
+  {
+   "marche": "AU",
+   "filtre": "secteur",
+   "valeur": "FRAGRANCE",
+   "total": 13,
+   "totalConfirmes": 13,
+   "ms": 194,
+   "section": 842
+  },
+  {
+   "marche": "AU",
+   "filtre": "secteur",
+   "valeur": "LEATHER_GOODS",
+   "total": 13,
+   "totalConfirmes": 13,
+   "ms": 159,
+   "section": 842
+  },
+  {
+   "marche": "AU",
+   "filtre": "secteur",
+   "valeur": "WATCHMAKING",
+   "total": 11,
+   "totalConfirmes": 11,
+   "ms": 127,
+   "section": 842
+  },
+  {
+   "marche": "CH",
+   "filtre": "secteur",
+   "valeur": "FASHION",
+   "total": 188,
+   "totalConfirmes": 188,
+   "ms": 170,
+   "section": 945
+  },
+  {
+   "marche": "CH",
+   "filtre": "secteur",
+   "valeur": "BEAUTY",
+   "total": 98,
+   "totalConfirmes": 98,
+   "ms": 109,
+   "section": 945
+  },
+  {
+   "marche": "CH",
+   "filtre": "secteur",
+   "valeur": "JEWELRY",
+   "total": 90,
+   "totalConfirmes": 90,
+   "ms": 109,
+   "section": 945
+  },
+  {
+   "marche": "CH",
+   "filtre": "secteur",
+   "valeur": "HOME_LIFESTYLE",
+   "total": 78,
+   "totalConfirmes": 78,
+   "ms": 128,
+   "section": 945
+  },
+  {
+   "marche": "CH",
+   "filtre": "secteur",
+   "valeur": "FRAGRANCE",
+   "total": 75,
+   "totalConfirmes": 75,
+   "ms": 178,
+   "section": 945
+  },
+  {
+   "marche": "CH",
+   "filtre": "secteur",
+   "valeur": "RETAIL",
+   "total": 66,
+   "totalConfirmes": 66,
+   "ms": 108,
+   "section": 945
+  },
+  {
+   "marche": "CH",
+   "filtre": "secteur",
+   "valeur": "FOOTWEAR",
+   "total": 57,
+   "totalConfirmes": 57,
+   "ms": 113,
+   "section": 945
+  },
+  {
+   "marche": "CH",
+   "filtre": "secteur",
+   "valeur": "WATCHMAKING",
+   "total": 48,
+   "totalConfirmes": 48,
+   "ms": 113,
+   "section": 945
+  },
+  {
+   "marche": "CH",
+   "filtre": "secteur",
+   "valeur": "LEATHER_GOODS",
+   "total": 39,
+   "totalConfirmes": 39,
+   "ms": 191,
+   "section": 945
+  },
+  {
+   "marche": "CH",
+   "filtre": "langue",
+   "valeur": "fr",
+   "total": 619,
+   "totalConfirmes": 619,
+   "ms": 115,
+   "section": 54
+  },
+  {
+   "marche": "CH",
+   "filtre": "langue",
+   "valeur": "en",
+   "total": 324,
+   "totalConfirmes": 324,
+   "ms": 113,
+   "section": 54
+  },
+  {
+   "marche": "CH",
+   "filtre": "langue",
+   "valeur": "de",
+   "total": 322,
+   "totalConfirmes": 322,
+   "ms": 114,
+   "section": 54
+  },
+  {
+   "marche": "CH",
+   "filtre": "langue",
+   "valeur": "it",
+   "total": 4,
+   "totalConfirmes": 4,
+   "ms": 181,
+   "section": 54
+  },
+  {
+   "marche": "BE",
+   "filtre": "secteur",
+   "valeur": "FASHION",
+   "total": 310,
+   "totalConfirmes": 310,
+   "ms": 116,
+   "section": 213
+  },
+  {
+   "marche": "BE",
+   "filtre": "secteur",
+   "valeur": "RETAIL",
+   "total": 178,
+   "totalConfirmes": 178,
+   "ms": 111,
+   "section": 213
+  },
+  {
+   "marche": "BE",
+   "filtre": "secteur",
+   "valeur": "BEAUTY",
+   "total": 151,
+   "totalConfirmes": 151,
+   "ms": 115,
+   "section": 213
+  },
+  {
+   "marche": "BE",
+   "filtre": "secteur",
+   "valeur": "HOME_LIFESTYLE",
+   "total": 91,
+   "totalConfirmes": 91,
+   "ms": 188,
+   "section": 213
+  },
+  {
+   "marche": "BE",
+   "filtre": "secteur",
+   "valeur": "FOOTWEAR",
+   "total": 64,
+   "totalConfirmes": 64,
+   "ms": 115,
+   "section": 213
+  },
+  {
+   "marche": "BE",
+   "filtre": "secteur",
+   "valeur": "JEWELRY",
+   "total": 63,
+   "totalConfirmes": 63,
+   "ms": 108,
+   "section": 213
+  },
+  {
+   "marche": "BE",
+   "filtre": "secteur",
+   "valeur": "FRAGRANCE",
+   "total": 37,
+   "totalConfirmes": 37,
+   "ms": 101,
+   "section": 213
+  },
+  {
+   "marche": "BE",
+   "filtre": "secteur",
+   "valeur": "LEATHER_GOODS",
+   "total": 10,
+   "totalConfirmes": 10,
+   "ms": 192,
+   "section": 213
+  },
+  {
+   "marche": "BE",
+   "filtre": "secteur",
+   "valeur": "WATCHMAKING",
+   "total": 10,
+   "totalConfirmes": 10,
+   "ms": 105,
+   "section": 213
+  },
+  {
+   "marche": "BE",
+   "filtre": "langue",
+   "valeur": "en",
+   "total": 275,
+   "totalConfirmes": 275,
+   "ms": 107,
+   "section": 17
+  },
+  {
+   "marche": "BE",
+   "filtre": "langue",
+   "valeur": "fr",
+   "total": 218,
+   "totalConfirmes": 218,
+   "ms": 106,
+   "section": 17
+  },
+  {
+   "marche": "BE",
+   "filtre": "langue",
+   "valeur": "nl",
+   "total": 208,
+   "totalConfirmes": 208,
+   "ms": 186,
+   "section": 17
+  },
+  {
+   "marche": "CN",
+   "filtre": "secteur",
+   "valeur": "FASHION",
+   "total": 435,
+   "totalConfirmes": 435,
+   "ms": 143,
+   "section": 382
+  },
+  {
+   "marche": "CN",
+   "filtre": "secteur",
+   "valeur": "BEAUTY",
+   "total": 212,
+   "totalConfirmes": 212,
+   "ms": 138,
+   "section": 382
+  },
+  {
+   "marche": "CN",
+   "filtre": "secteur",
+   "valeur": "RETAIL",
+   "total": 211,
+   "totalConfirmes": 211,
+   "ms": 224,
+   "section": 382
+  },
+  {
+   "marche": "CN",
+   "filtre": "secteur",
+   "valeur": "FOOTWEAR",
+   "total": 106,
+   "totalConfirmes": 106,
+   "ms": 139,
+   "section": 382
+  },
+  {
+   "marche": "CN",
+   "filtre": "secteur",
+   "valeur": "HOME_LIFESTYLE",
+   "total": 19,
+   "totalConfirmes": 19,
+   "ms": 137,
+   "section": 382
+  },
+  {
+   "marche": "CN",
+   "filtre": "secteur",
+   "valeur": "EYEWEAR",
+   "total": 7,
+   "totalConfirmes": 7,
+   "ms": 222,
+   "section": 382
+  },
+  {
+   "marche": "CN",
+   "filtre": "secteur",
+   "valeur": "LEATHER_GOODS",
+   "total": 7,
+   "totalConfirmes": 7,
+   "ms": 131,
+   "section": 382
+  },
+  {
+   "marche": "CN",
+   "filtre": "secteur",
+   "valeur": "FRAGRANCE",
+   "total": 6,
+   "totalConfirmes": 6,
+   "ms": 132,
+   "section": 382
+  },
+  {
+   "marche": "CN",
+   "filtre": "secteur",
+   "valeur": "JEWELRY",
+   "total": 4,
+   "totalConfirmes": 4,
+   "ms": 216,
+   "section": 382
+  },
+  {
+   "marche": "CN",
+   "filtre": "secteur",
+   "valeur": "WATCHMAKING",
+   "total": 2,
+   "totalConfirmes": 2,
+   "ms": 133,
+   "section": 382
+  },
+  {
+   "marche": "CN",
+   "filtre": "langue",
+   "valeur": "zh",
+   "total": 626,
+   "totalConfirmes": 626,
+   "ms": 145,
+   "section": 110
+  },
+  {
+   "marche": "CN",
+   "filtre": "langue",
+   "valeur": "en",
+   "total": 499,
+   "totalConfirmes": 499,
+   "ms": 134,
+   "section": 110
+  },
+  {
+   "marche": "CN",
+   "filtre": "langue",
+   "valeur": "pt",
+   "total": 1,
+   "totalConfirmes": 1,
+   "ms": 222,
+   "section": 110
+  }
+ ]
+}

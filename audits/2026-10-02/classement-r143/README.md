@@ -2,7 +2,7 @@
 
 *Statut : construit sur `development`, non livré. Code : `apps/api/lib/classement.ts` (la formule), `search-plan.ts`
 (`pertinenceDe` : quand l'ordre devient pertinent), `job-search-query.ts` (`pageClassee`, examen d'une alerte),
-`search-sql.ts` (`intituleSql`), `jobs.ts` (préférences `pref_*`, curseur à six termes, `classement` de chaque offre).
+`search-sql.ts` (`intituleSql`), `jobs.ts` (préférences `pref_*`, lues dans l’en-tête `x-catwalks-preferences` depuis les suites du 02/10/2026, jamais dans l’adresse ; curseur à six termes, `classement` de chaque offre).
 Témoins : `apps/api/lib/__tests__/classement-r143.test.ts`.*
 
 ## La formule

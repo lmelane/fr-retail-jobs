@@ -1,0 +1,3 @@
+164 requêtes, 164 identiques aux différences de forme près ; différentes : []
+exécutées en production (lecture seule, psql via db.py readonly, 02/10/2026 13:26 UTC), avant puis après :
+164 cas exécutés avant, 164 après ; réponses (total, md5 de la page) identiques : 164 ; différentes : []
