@@ -1,0 +1,14 @@
+Prisma schema loaded from ../preuve-verrou/prisma/schema.prisma
+Datasource "db": PostgreSQL database "postgres", schema "public" at "127.0.0.1:32910"
+
+108 migrations found in prisma/migrations
+
+Applying migration `20261002210000_file_identite_employeur`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 20261002210000_file_identite_employeur/
+    └─ migration.sql
+      
+All migrations have been successfully applied.

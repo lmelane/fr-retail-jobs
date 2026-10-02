@@ -1,0 +1,13 @@
+Prisma schema loaded from ../preuve-verrou/prisma/schema.prisma
+Datasource "db": PostgreSQL database "postgres", schema "public" at "127.0.0.1:32910"
+
+107 migrations found in prisma/migrations
+
+Applying migration `20261002140000_r143_disponibilite_autorite`
+Error: ERROR: current transaction is aborted, commands ignored until end of transaction block
+   0: schema_commands::commands::apply_migrations::Applying migration
+           with migration_name="20261002140000_r143_disponibilite_autorite"
+             at schema-engine/commands/src/commands/apply_migrations.rs:95
+   1: schema_core::state::ApplyMigrations
+             at schema-engine/core/src/state.rs:260
+

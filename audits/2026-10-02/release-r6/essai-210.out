@@ -1,0 +1,20 @@
+Prisma schema loaded from ../preuve-verrou/prisma/schema.prisma
+Datasource "db": PostgreSQL database "postgres", schema "public" at "127.0.0.1:32910"
+
+108 migrations found in prisma/migrations
+
+Applying migration `20261002210000_file_identite_employeur`
+Error: P3018
+
+A migration failed to apply. New migrations cannot be applied before the error is recovered from. Read more about how to resolve migration issues in a production database: https://pris.ly/d/migrate-resolve
+
+Migration name: 20261002210000_file_identite_employeur
+
+Database error code: 55P03
+
+Database error:
+ERROR: canceling statement due to lock timeout
+
+DbError { severity: "ERROR", parsed_severity: Some(Error), code: SqlState(E55P03), message: "canceling statement due to lock timeout", detail: None, hint: None, position: None, where_: None, schema: None, table: None, column: None, datatype: None, constraint: None, file: Some("postgres.c"), line: Some(3437), routine: Some("ProcessInterrupts") }
+
+

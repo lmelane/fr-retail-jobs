@@ -13,7 +13,13 @@
 --     sur preuve (DataCorrection REFRESH_LIFECYCLE, issue APPLIED) et que leur source n'a pas revues depuis.
 --     Écrit une colonne nouvelle, rien d'autre ; rejouable (même résultat).
 -- Ordre de livraison : cette migration AVANT le code. L'ancien code ne lit ni n'écrit ces colonnes.
+-- Verrou (release r6, 02/10/2026) : les ALTER et les CHECK prennent un verrou exclusif sur "JobSource" (98 869 lignes,
+-- 1,4 Go), tenu jusqu'au COMMIT. Sans borne, l'attente derrière une lecture longue mettrait en file toutes les requêtes
+-- de l'API derrière elle. `lock_timeout` borne cette ATTENTE (pas le travail une fois le verrou pris) : au-delà de 10 s,
+-- la transaction échoue sans rien écrire ; marquer la migration `prisma migrate resolve --rolled-back` puis relancer.
+-- Posé avant toute application en production (vérifié dans _prisma_migrations le 02/10 à 19:37 UTC).
 BEGIN;
+SET LOCAL lock_timeout = '10s';
 ALTER TABLE "JobSource" ADD COLUMN "availabilityHold" TEXT;
 ALTER TABLE "JobSource" ADD COLUMN "availabilityHoldAt" TIMESTAMP(3);
 ALTER TABLE "JobSource" ADD COLUMN "availabilityEvidence" JSONB;

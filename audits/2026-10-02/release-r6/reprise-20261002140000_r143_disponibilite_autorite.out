@@ -1,0 +1,26 @@
+Prisma schema loaded from ../preuve-verrou/prisma/schema.prisma
+Datasource "db": PostgreSQL database "postgres", schema "public" at "127.0.0.1:32910"
+
+107 migrations found in prisma/migrations
+
+Applying migration `20261002140000_r143_disponibilite_autorite`
+Applying migration `20261002180000_couverture_photographie`
+Applying migration `20261002190000_lecture_unique_adoption`
+Applying migration `20261002200000_registre_explicite`
+Applying migration `20261002203000_etat_operationnel_sources`
+
+The following migration(s) have been applied:
+
+migrations/
+  └─ 20261002140000_r143_disponibilite_autorite/
+    └─ migration.sql
+  └─ 20261002180000_couverture_photographie/
+    └─ migration.sql
+  └─ 20261002190000_lecture_unique_adoption/
+    └─ migration.sql
+  └─ 20261002200000_registre_explicite/
+    └─ migration.sql
+  └─ 20261002203000_etat_operationnel_sources/
+    └─ migration.sql
+      
+All migrations have been successfully applied.
