@@ -2,53 +2,53 @@
 état	servies	connu	inconnu	couverture %
 avant	89800	54308	35492	60.5
 avant + rattachement	89800	54811	34989	61.0
-après reconnaissance	89800	57655	32145	64.2
-après reconnaissance + rattachement	89800	57655	32145	64.2
+après reconnaissance	89800	80812	8988	90.0
+après reconnaissance + rattachement	89800	80812	8988	90.0
 
 == par marché (au moins 100 offres servies)
 marché	servies	avant %	avant + rattachement %	après reconnaissance %	après reconnaissance + rattachement %	inconnu après
-US	40604	62.1	62.2	63.1	63.1	14968
-FR	13536	70.8	71.0	80.6	80.6	2631
-GB	3933	45.8	47.1	51.2	51.2	1919
-CA	3479	44.6	46.2	48.1	48.1	1805
-DE	3217	48.1	49.0	49.6	49.6	1622
-??	3217	70.6	70.6	71.8	71.8	907
-IT	2922	63.1	63.8	74.4	74.4	749
-ES	2253	62.9	63.9	67.0	67.0	743
-NL	1969	44.8	45.4	53.6	53.6	913
-AU	1504	44.0	44.1	46.2	46.2	809
-CH	1323	28.6	46.9	50.0	50.0	661
-CN	1236	69.1	69.1	69.9	69.9	372
-BE	718	70.3	70.9	74.5	74.5	183
-JP	615	58.7	59.3	60.0	60.0	246
-IN	552	39.3	39.5	40.2	40.2	330
-KR	542	60.9	60.9	62.2	62.2	205
-SG	519	68.6	68.8	71.3	71.3	149
-MX	512	51.2	51.2	53.7	53.7	237
-PT	444	59.2	59.2	63.1	63.1	164
-PL	388	66.2	66.2	67.3	67.3	127
-IE	386	71.5	72.0	73.6	73.6	102
-AT	377	65.3	65.5	65.8	65.8	129
-HK	359	51.5	51.5	54.6	54.6	163
-DK	348	61.5	62.1	62.6	62.6	130
-CL	310	43.9	43.9	44.5	44.5	172
-TH	294	79.3	79.3	80.3	80.3	58
-MY	293	45.4	45.4	48.1	48.1	152
-SE	280	58.6	58.6	58.9	58.9	115
-AE	269	40.1	40.1	40.9	40.9	159
-TR	257	58.4	58.4	60.3	60.3	102
-BR	221	65.6	65.6	67.4	67.4	72
-NZ	220	46.8	46.8	49.1	49.1	112
-NO	211	76.8	76.8	78.2	78.2	46
-GR	208	35.6	35.6	52.9	52.9	98
-TW	207	52.7	52.7	56.0	56.0	91
-VN	183	55.7	55.7	56.3	56.3	80
-ZA	181	61.9	61.9	74.6	74.6	46
+US	40604	62.1	62.2	93.1	93.1	2813
+FR	13536	70.8	71.0	92.1	92.1	1065
+GB	3933	45.8	47.1	87.8	87.8	478
+CA	3479	44.6	46.2	95.4	95.4	159
+DE	3217	48.1	49.0	80.4	80.4	631
+??	3217	70.6	70.6	96.9	96.9	99
+IT	2922	63.1	63.8	88.4	88.4	339
+ES	2253	62.9	63.9	84.4	84.4	352
+NL	1969	44.8	45.4	86.7	86.7	262
+AU	1504	44.0	44.1	91.0	91.0	136
+CH	1323	28.6	46.9	72.3	72.3	367
+CN	1236	69.1	69.1	88.9	88.9	137
+BE	718	70.3	70.9	90.3	90.3	70
+JP	615	58.7	59.3	81.3	81.3	115
+IN	552	39.3	39.5	62.3	62.3	208
+KR	542	60.9	60.9	86.3	86.3	74
+SG	519	68.6	68.8	85.7	85.7	74
+MX	512	51.2	51.2	79.1	79.1	107
+PT	444	59.2	59.2	76.1	76.1	106
+PL	388	66.2	66.2	88.4	88.4	45
+IE	386	71.5	72.0	95.9	95.9	16
+AT	377	65.3	65.5	79.6	79.6	77
+HK	359	51.5	51.5	85.2	85.2	53
+DK	348	61.5	62.1	81.9	81.9	63
+CL	310	43.9	43.9	45.2	45.2	170
+TH	294	79.3	79.3	85.7	85.7	42
+MY	293	45.4	45.4	87.0	87.0	38
+SE	280	58.6	58.6	66.4	66.4	94
+AE	269	40.1	40.1	59.1	59.1	110
+TR	257	58.4	58.4	82.5	82.5	45
+BR	221	65.6	65.6	82.8	82.8	38
+NZ	220	46.8	46.8	84.5	84.5	34
+NO	211	76.8	76.8	87.2	87.2	27
+GR	208	35.6	35.6	60.1	60.1	83
+TW	207	52.7	52.7	86.0	86.0	29
+VN	183	55.7	55.7	79.2	79.2	38
+ZA	181	61.9	61.9	78.5	78.5	39
 PE	172	65.1	65.1	65.1	65.1	60
-CO	135	72.6	72.6	77.0	77.0	31
-HU	132	85.6	85.6	87.9	87.9	16
-CZ	129	66.7	66.7	69.0	69.0	40
-SA	101	36.6	36.6	36.6	36.6	64
+CO	135	72.6	72.6	79.3	79.3	28
+HU	132	85.6	85.6	93.2	93.2	9
+CZ	129	66.7	66.7	77.5	77.5	29
+SA	101	36.6	36.6	50.5	50.5	50
 
 == concentration des offres sans secteur (avant)
 sociétés	868	offres	35492
@@ -60,125 +60,128 @@ les 200 premières	31256	88.1 %
 
 == effet sur trois secteurs (confirmées = portent le secteur ; inconnues = sans secteur, « non précisé »)
 secteur	marché	avant confirmées	avant inconnues	avant + rattachement confirmées	avant + rattachement inconnues	après reconnaissance confirmées	après reconnaissance inconnues	après reconnaissance + rattachement confirmées	après reconnaissance + rattachement inconnues
-EYEWEAR	US	6	15382	6	15344	185	14968	185	14968
-FASHION	US	5943	15382	5981	15344	5984	14968	5984	14968
-WINES_SPIRITS	FR	0	3946	0	3930	87	2631	87	2631
-BEAUTY	FR	2900	3946	2900	3930	3207	2631	3207	2631
+EYEWEAR	US	6	15382	6	15344	185	2813	185	2813
+FASHION	US	5943	15382	5981	15344	15598	2813	15598	2813
+FOOTWEAR	US	4162	15382	4162	15344	7599	2813	7599	2813
+JEWELRY	US	854	15382	854	15344	2663	2813	2663	2813
+WINES_SPIRITS	FR	0	3946	0	3930	87	1065	87	1065
+BEAUTY	FR	2900	3946	2900	3930	3444	1065	3444	1065
 
-== propositions	106	sociétés	3347	offres servies
-  preuve	native	1863	offres
-  preuve	official	763	offres
+== propositions	362	sociétés	26504	offres servies
+  preuve	reviewed	23932	offres
+  preuve	native	1851	offres
   preuve	registry	503	offres
   preuve	reference	209	offres
   preuve	domain	131	offres
 == abstentions (sociétés avec offres servies)
-  	NO_EVIDENCE	651	sociétés	27699	offres
-  	GROUP	51	sociétés	2102	offres
-  	RETAIL_ONLY	16	sociétés	1648	offres
+  	REVIEWED_UNKNOWN	30	sociétés	3721	offres
+  	NO_EVIDENCE	379	sociétés	2449	offres
+  	GROUP	50	sociétés	2092	offres
   	MAISON_TO_CREATE	42	sociétés	635	offres
-  	REFUSED_AT_REVIEW	5	sociétés	71	offres
+  	RETAIL_ONLY	9	sociétés	57	offres
+  	REFUSED_AT_REVIEW	4	sociétés	34	offres
   sans décision (entité dont la Maison décide)	0	0
 
 == les 60 plus grosses propositions (à relire)
+1921	Coach	FASHION+LEATHER_GOODS	FASHION<reviewed:domain:coach.com ; LEATHER_GOODS<reviewed:domain:coach.com	
+887	Tommy Hilfiger	FASHION	FASHION<reviewed:key:SOURCE_a06690a39794ba97af55af980baffd2d957e4883c39f0c3bd1e60f71857dc4ae|Tommy Hilfiger	
+642	Crocs, Inc.	FOOTWEAR	FOOTWEAR<reviewed:domain:crocs.com	unité de 2 sociétés (R-143 §5)
+603	Kate Spade	FASHION+LEATHER_GOODS	FASHION<reviewed:domain:katespade.com ; LEATHER_GOODS<reviewed:domain:katespade.com	
+585	Calvin Klein	FASHION	FASHION<reviewed:key:SOURCE_5ae7eff6d33d5b539532e2bb5eef7711da3aa7ebaaf4617aa9df9c2ee20e4b71|Calvin Klein	
+522	Champs Sports	FASHION+FOOTWEAR+RETAIL	FASHION<reviewed:domain:champssports.com ; FOOTWEAR<reviewed:domain:champssports.com ; RETAIL<reviewed:domain:champssports.com	
+514	Tiffany & Co.	JEWELRY	JEWELRY<reviewed:domain:tiffany.com	
 494	Kiabi	FASHION+RETAIL	FASHION<native:industry:apparel and fashion ; FASHION<native:sectors:fashion-1 ; RETAIL<native:industry:retail ; RETAIL<native:sectors:mass-distribution	
-434	MAC	BEAUTY	BEAUTY<official:maccosmetics.com	
+480	Neiman Marcus	BEAUTY+FASHION+HOME_LIFESTYLE+JEWELRY+RETAIL	BEAUTY<reviewed:domain:neimanmarcus.com ; FASHION<reviewed:domain:neimanmarcus.com ; HOME_LIFESTYLE<reviewed:domain:neimanmarcus.com ; JEWELRY<reviewed:domain:neimanmarcus.com ; RETAIL<reviewed:domain:neimanmarcus.com	
+479	Chico's	FASHION+RETAIL	FASHION<reviewed:domain:chicos.com ; RETAIL<reviewed:domain:chicos.com	
+435	Kids Foot Locker	FASHION+FOOTWEAR+RETAIL	FASHION<reviewed:domain:footlocker.com ; FOOTWEAR<reviewed:domain:footlocker.com ; RETAIL<reviewed:domain:footlocker.com	
+434	MAC	BEAUTY	BEAUTY<reviewed:domain:maccosmetics.com	
+429	Reitmans (Canada) Ltée/Ltd	FASHION+RETAIL	FASHION<reviewed:key:SOURCE_763fa9762a16c29c3e6537d864f21d603b378248343adb27a6b8c94fe6049bef|Reitmans (Canada) Ltée/Ltd ; RETAIL<reviewed:key:SOURCE_763fa9762a16c29c3e6537d864f21d603b378248343adb27a6b8c94fe6049bef|Reitmans (Canada) Ltée/Ltd	
+416	LOFT	FASHION+RETAIL	FASHION<reviewed:domain:loft.com ; RETAIL<reviewed:domain:loft.com	
+405	Groupe Courir	FOOTWEAR+RETAIL	FOOTWEAR<reviewed:domain:courir.com ; RETAIL<reviewed:domain:courir.com	
+385	NIKE	FASHION+FOOTWEAR	FASHION<reviewed:domain:nike.com ; FOOTWEAR<reviewed:domain:nike.com	unité de 41 sociétés (R-143 §5)
+377	UNIQLO	FASHION+RETAIL	FASHION<reviewed:domain:uniqlo.com ; RETAIL<reviewed:domain:uniqlo.com	unité de 33 sociétés (R-143 §5)
+369	LUSH |	BEAUTY+RETAIL	BEAUTY<reviewed:domain:lush.com ; RETAIL<reviewed:domain:lush.com	
+356	HUGO BOSS Retail, Inc.	FASHION+FOOTWEAR+LEATHER_GOODS	FASHION<reviewed:domain:hugoboss.com ; FOOTWEAR<reviewed:domain:hugoboss.com ; LEATHER_GOODS<reviewed:domain:hugoboss.com	unité de 22 sociétés (R-143 §5)
+350	White House Black Market	FASHION+RETAIL	FASHION<reviewed:domain:whitehouseblackmarket.com ; RETAIL<reviewed:domain:whitehouseblackmarket.com	
+350	Douglas	BEAUTY+FRAGRANCE+RETAIL	BEAUTY<reviewed:domain:douglas.group ; FRAGRANCE<reviewed:domain:douglas.group ; RETAIL<reviewed:domain:douglas.group	
+338	Madewell Stores Madewell, Inc.	FASHION	FASHION<reviewed:domain:madewell.com	unité de 2 sociétés (R-143 §5)
+336	1151 Swarovski Retail Ventures	JEWELRY	JEWELRY<reviewed:domain:swarovski.com	
+325	Michael Kors	FASHION+FOOTWEAR+LEATHER_GOODS	FASHION<reviewed:domain:michaelkors.com ; FOOTWEAR<reviewed:domain:michaelkors.com ; LEATHER_GOODS<reviewed:domain:michaelkors.com	unité de 22 sociétés (R-143 §5)
+314	United States of Aritzia Inc.	FASHION+RETAIL	FASHION<reviewed:domain:aritzia.com ; RETAIL<reviewed:domain:aritzia.com	
+303	On	FASHION+FOOTWEAR	FASHION<reviewed:key:ON|On ; FOOTWEAR<reviewed:key:ON|On	
+295	Talbots	FASHION+FOOTWEAR+RETAIL	FASHION<reviewed:domain:talbots.com ; FOOTWEAR<reviewed:domain:talbots.com ; RETAIL<reviewed:domain:talbots.com	
+284	ARC'TERYX	FASHION	FASHION<reviewed:domain:arcteryx.com	
+277	Lane Bryant	FASHION+RETAIL	FASHION<reviewed:domain:lanebryant.com ; RETAIL<reviewed:domain:lanebryant.com	
+271	Soma	FASHION+RETAIL	FASHION<reviewed:domain:soma.com ; RETAIL<reviewed:domain:soma.com	
+247	Buck Mason	FASHION+RETAIL	FASHION<reviewed:domain:buckmason.com ; RETAIL<reviewed:domain:buckmason.com	
 242	ROLEX SA	WATCHMAKING	WATCHMAKING<registry:cmtpj0vom0xiepf5lq0cvy73h	unité Rolex
+231	Ann Taylor	FASHION+RETAIL	FASHION<reviewed:domain:anntaylor.com ; RETAIL<reviewed:domain:anntaylor.com	
+224	Dr. Martens	FOOTWEAR	FOOTWEAR<reviewed:domain:drmartens.com	
 214	Max Mara Fashion Group	FASHION	FASHION<native:industry:apparel and fashion	
-179	Clarkson Eyecare	EYEWEAR	EYEWEAR<official:clarksoneyecare.com	
+211	Saks Fifth Avenue	BEAUTY+FASHION+FOOTWEAR+FRAGRANCE+HOME_LIFESTYLE+JEWELRY+LEATHER_GOODS+RETAIL	BEAUTY<reviewed:domain:saksfifthavenue.com ; FASHION<reviewed:domain:saksfifthavenue.com ; FOOTWEAR<reviewed:domain:saksfifthavenue.com ; FRAGRANCE<reviewed:domain:saksfifthavenue.com ; HOME_LIFESTYLE<reviewed:domain:saksfifthavenue.com ; JEWELRY<reviewed:domain:saksfifthavenue.com ; LEATHER_GOODS<reviewed:domain:saksfifthavenue.com ; RETAIL<reviewed:domain:saksfifthavenue.com	
+208	Aritzia LP	FASHION+RETAIL	FASHION<reviewed:domain:aritzia.com ; RETAIL<reviewed:domain:aritzia.com	unité de 2 sociétés (R-143 §5)
+207	UGG	FOOTWEAR	FOOTWEAR<reviewed:domain:ugg.com	
+198	Cheval Blanc	HOSPITALITY	HOSPITALITY<reviewed:domain:chevalblanc.com	
+185	White Stuff	FASHION+RETAIL	FASHION<reviewed:domain:whitestuff.com ; RETAIL<reviewed:domain:whitestuff.com	
+181	Suitsupply	FASHION+RETAIL	FASHION<reviewed:domain:suitsupply.com ; RETAIL<reviewed:domain:suitsupply.com	
+179	Clarkson Eyecare	EYEWEAR	EYEWEAR<reviewed:domain:clarksoneyecare.com	
+179	Aroma-Zone	BEAUTY+RETAIL	BEAUTY<reviewed:domain:aroma-zone.com ; RETAIL<reviewed:domain:aroma-zone.com	
+176	Reformation	FASHION	FASHION<reviewed:domain:thereformation.com	
+176	Burberry	FASHION+FOOTWEAR+LEATHER_GOODS	FASHION<reviewed:domain:burberry.com ; FOOTWEAR<reviewed:domain:burberry.com ; LEATHER_GOODS<reviewed:domain:burberry.com	
+172	APM Monaco	JEWELRY+RETAIL	JEWELRY<reviewed:domain:apm.mc ; RETAIL<reviewed:domain:apm.mc	
+172	Space NK	BEAUTY+RETAIL	BEAUTY<reviewed:domain:spacenk.com ; RETAIL<reviewed:domain:spacenk.com	
+172	Mejuri	JEWELRY+RETAIL	JEWELRY<reviewed:domain:mejuri.com ; RETAIL<reviewed:domain:mejuri.com	
+170	Gorjana	JEWELRY+RETAIL	JEWELRY<reviewed:domain:gorjana.com ; RETAIL<reviewed:domain:gorjana.com	
+168	DECJUBA	FASHION+RETAIL	FASHION<reviewed:domain:decjuba.com.au ; RETAIL<reviewed:domain:decjuba.com.au	
+162	MECCA	BEAUTY+RETAIL	BEAUTY<reviewed:domain:mecca.com ; RETAIL<reviewed:domain:mecca.com	
+161	Estée Lauder - Brand	BEAUTY+FRAGRANCE	BEAUTY<reviewed:key:SOURCE_6f576fa613ed580cefd8fc06564a4d9713493504e366ce728c8db3f780c783a2|Estée Lauder - Brand ; FRAGRANCE<reviewed:key:SOURCE_6f576fa613ed580cefd8fc06564a4d9713493504e366ce728c8db3f780c783a2|Estée Lauder - Brand	
+159	Groupe Galeries Lafayette	FASHION+RETAIL	FASHION<reviewed:domain:groupegalerieslafayette.com ; RETAIL<reviewed:domain:groupegalerieslafayette.com	
+158	Psycho Bunny	FASHION	FASHION<reviewed:domain:psychobunny.com	
+155	Bulgari	FRAGRANCE+JEWELRY+LEATHER_GOODS+WATCHMAKING	FRAGRANCE<reviewed:domain:bulgari.com ; JEWELRY<reviewed:domain:bulgari.com ; LEATHER_GOODS<reviewed:domain:bulgari.com ; WATCHMAKING<reviewed:domain:bulgari.com	
 150	Moët Hennessy	WINES_SPIRITS	WINES_SPIRITS<native:businessGroup:vins and spiritueux|wine and spirits|wines and spirits	
-150	Hans Anders Nederland	EYEWEAR	EYEWEAR<official:hansanders.nl	unité de 2 sociétés (R-143 §5)
-110	CLARINS	BEAUTY	BEAUTY<reference:clarins:BEAUTY	
-109	ONIVERSE	FASHION	FASHION<native:sectors:fashion-1	
-95	Eric Bompard	FASHION	FASHION<native:industry:apparel and fashion	
-67	L'Oréal Groupe	BEAUTY	BEAUTY<domain:cmtpwvij600giql5m8iiplvov ; BEAUTY<native:sectors:cosmetics	
-67	Histoire d'Or	JEWELRY	JEWELRY<native:sectors:jewelry-1	
-60	Ysé	FASHION	FASHION<native:sectors:fashion-1	
-55	Diptyque paris	BEAUTY	BEAUTY<domain:cmtk1xe9n01a0nv2b2p3qyil0 ; BEAUTY<native:sectors:cosmetics	
-51	Sessùn	FASHION	FASHION<native:sectors:fashion-1	
-49	Sisley	BEAUTY	BEAUTY<native:industry:cosmetics	
-48	Caudalie	BEAUTY	BEAUTY<reference:caudalie:BEAUTY	
-46	Canada Goose Inc.	FASHION	FASHION<registry:cmtk1ywiz04tnnv2bym3tmeto	unité Canada Goose
-41	Sud Express	FASHION+RETAIL	FASHION<native:sectors:fashion-1 ; RETAIL<native:sectors:selective-distribution	
-36	Funky Buddha	FASHION	FASHION<native:industry:apparel and fashion	
-36	La Prairie	BEAUTY	BEAUTY<reference:la-prairie:BEAUTY	
-32	New Balance Athletic Shoes (UK) Limited	FASHION	FASHION<registry:cmtp25hct0fl7qq4zwb6y1cby	unité New Balance
-31	Fusalp	FASHION	FASHION<native:sectors:fashion-1	
-26	New Balance Germany GmbH	FASHION	FASHION<registry:cmtp25hct0fl7qq4zwb6y1cby	unité New Balance
-24	Faguo	FASHION	FASHION<native:sectors:fashion-1	
-21	Moët & Chandon	WINES_SPIRITS	WINES_SPIRITS<native:businessGroup:vins and spiritueux|wines and spirits	
-20	CABAIA	FASHION	FASHION<native:sectors:fashion-1	
-19	A.P.C.	FASHION	FASHION<native:sectors:fashion-1	
-19	HADDAD BRANDS EUROPE	FASHION+RETAIL	FASHION<native:sectors:fashion-1 ; RETAIL<native:sectors:selective-distribution	
-19	NORMAL Spain	RETAIL	RETAIL<registry:cmtk26ge70hulnv2b0qav4amw	unité Normal
-17	Groupe Clarins	BEAUTY	BEAUTY<native:sectors:cosmetics	
-16	Canada Goose, US Inc.	FASHION	FASHION<registry:cmtk1ywiz04tnnv2bym3tmeto	unité Canada Goose
-14	Versace USA, Inc.	FASHION	FASHION<registry:cmtk1xxkp025dnv2b2ssr1yjk	unité Versace
-13	Chantelle	FASHION	FASHION<reference:chantelle:FASHION	
-12	LUSH | France	BEAUTY+RETAIL	BEAUTY<native:sectors:cosmetics ; RETAIL<native:sectors:selective-distribution	
-12	Stella McCartney Italia S.r.l	FASHION	FASHION<registry:cmtk1xktt01jdnv2ba1o5xwx4	unité Stella McCartney
-11	Kitsuné	FASHION	FASHION<native:sectors:fashion-1	
-11	JUNE STORE	FASHION+RETAIL	FASHION<native:sectors:fashion-1 ; RETAIL<native:sectors:selective-distribution	
-10	Veuve Clicquot Ponsardin	WINES_SPIRITS	WINES_SPIRITS<native:businessGroup:vins and spiritueux|wines and spirits	
-10	FROM FUTURE	FASHION	FASHION<native:sectors:fashion-1	
-10	Bleu Libellule	BEAUTY+RETAIL	BEAUTY<native:sectors:cosmetics ; RETAIL<native:sectors:selective-distribution	
-9	MANUCURIST	BEAUTY	BEAUTY<native:sectors:cosmetics	
-9	New Balance France Retail SARL	FASHION	FASHION<registry:cmtp25hct0fl7qq4zwb6y1cby	unité New Balance
-9	New Balance Netherlands BV	FASHION	FASHION<registry:cmtp25hct0fl7qq4zwb6y1cby	unité New Balance
-8	Pied de Biche	FASHION	FASHION<native:sectors:fashion-1	
-8	The Bradery	FASHION	FASHION<native:sectors:fashion-1	
-8	Ruinart	WINES_SPIRITS	WINES_SPIRITS<native:businessGroup:vins and spiritueux|wines and spirits	
-8	Gianni Versace S.r.l.	FASHION	FASHION<domain:cmtk1xxkp025dnv2b2ssr1yjk	
-7	Columbia Sportswear Company	FASHION+RETAIL	FASHION<native:sectors:fashion-1 ; RETAIL<native:sectors:selective-distribution	
-7	Hindbag	FASHION	FASHION<native:sectors:fashion-1	
-7	Versace Canada	FASHION	FASHION<registry:cmtk1xxkp025dnv2b2ssr1yjk	unité Versace
-7	Stella McCartney Limited	FASHION	FASHION<registry:cmtk1xktt01jdnv2ba1o5xwx4	unité Stella McCartney
-7	New Balance Italy S.R.L.	FASHION	FASHION<registry:cmtp25hct0fl7qq4zwb6y1cby	unité New Balance
-6	Hennessy	WINES_SPIRITS	WINES_SPIRITS<native:businessGroup:vins and spiritueux|wines and spirits	
-6	Chandon	WINES_SPIRITS	WINES_SPIRITS<native:businessGroup:vins and spiritueux|wines and spirits	
-6	PATTERN	FASHION	FASHION<native:sectors:fashion-1	
-6	PM Studio Paris	BEAUTY+FASHION	BEAUTY<native:sectors:cosmetics ; FASHION<native:sectors:fashion-1	
-6	Prose	BEAUTY	BEAUTY<native:sectors:cosmetics	
-6	Canada Goose EU B.V. UK Branch	FASHION	FASHION<registry:cmtk1ywiz04tnnv2bym3tmeto	unité Canada Goose
-6	Moët Hennessy Wine Estates	WINES_SPIRITS	WINES_SPIRITS<native:businessGroup:vins and spiritueux|wines and spirits	
+150	Hans Anders Nederland	EYEWEAR	EYEWEAR<reviewed:domain:hansanders.nl	unité de 2 sociétés (R-143 §5)
+128	Brilliant Earth	JEWELRY+RETAIL	JEWELRY<reviewed:domain:brilliantearth.com ; RETAIL<reviewed:domain:brilliantearth.com	
+127	Bobbi Brown Cosmetics	BEAUTY	BEAUTY<reviewed:domain:bobbibrowncosmetics.com	
+125	HOKA	FOOTWEAR	FOOTWEAR<reviewed:domain:hoka.com	
 
 == les 40 plus grosses abstentions
-1921	Coach	NO_EVIDENCE
-887	Tommy Hilfiger	NO_EVIDENCE
-881	VF Corporation	NO_EVIDENCE
+881	VF Corporation	REVIEWED_UNKNOWN
 712	Richemont	GROUP
-690	La casa de las Carcasas	NO_EVIDENCE
-642	Crocs, Inc.	NO_EVIDENCE
-603	Kate Spade	NO_EVIDENCE
-585	Calvin Klein	NO_EVIDENCE
-522	Champs Sports	NO_EVIDENCE
-514	Tiffany & Co.	NO_EVIDENCE
-480	Neiman Marcus	NO_EVIDENCE
-479	Chico's	NO_EVIDENCE
+690	La casa de las Carcasas	REVIEWED_UNKNOWN
 470	Estée Lauder Companies	GROUP
-435	Kids Foot Locker	RETAIL_ONLY
-429	Reitmans (Canada) Ltée/Ltd	RETAIL_ONLY
-416	LOFT	NO_EVIDENCE
-405	Groupe Courir	RETAIL_ONLY
-385	NIKE	NO_EVIDENCE
-377	UNIQLO	NO_EVIDENCE
-369	LUSH |	NO_EVIDENCE
-356	HUGO BOSS Retail, Inc.	NO_EVIDENCE
-350	White House Black Market	NO_EVIDENCE
-350	Douglas	NO_EVIDENCE
-338	Madewell Stores Madewell, Inc.	NO_EVIDENCE
-336	1151 Swarovski Retail Ventures	NO_EVIDENCE
-325	Michael Kors	NO_EVIDENCE
-314	United States of Aritzia Inc.	NO_EVIDENCE
-303	On	NO_EVIDENCE
-299	Prada Group	NO_EVIDENCE
-295	Talbots	NO_EVIDENCE
-284	ARC'TERYX	NO_EVIDENCE
-277	Lane Bryant	NO_EVIDENCE
-271	Soma	NO_EVIDENCE
-262	Avolta	NO_EVIDENCE
+299	Prada Group	REVIEWED_UNKNOWN
+262	Avolta	REVIEWED_UNKNOWN
 255	Aptar Group	GROUP
-247	Buck Mason	NO_EVIDENCE
-231	Ann Taylor	NO_EVIDENCE
-224	Dr. Martens	NO_EVIDENCE
 221	PUMA North America, Inc.	MAISON_TO_CREATE
-211	Saks Fifth Avenue	NO_EVIDENCE
+181	Golf & Tennis Pro Shop, Inc. d/b/a PGA TOUR Superstore	REVIEWED_UNKNOWN
+160	Quince	REVIEWED_UNKNOWN
+147	Chalhoub Group	REVIEWED_UNKNOWN
+129	Salomon	REVIEWED_UNKNOWN
+123	Kering	GROUP
+121	The RealReal	REVIEWED_UNKNOWN
+108	Montblanc	REVIEWED_UNKNOWN
+90	LVMH	GROUP
+90	KULT | OLYMP&HADES	REVIEWED_UNKNOWN
+77	L’Occitane	GROUP
+77	B&S International	REVIEWED_UNKNOWN
+73	PUMA SE	MAISON_TO_CREATE
+66	PUMA Sports India Pvt Ltd.	MAISON_TO_CREATE
+62	Skin Laundry	REVIEWED_UNKNOWN
+58	PEPCO Germany GmbH	REVIEWED_UNKNOWN
+51	Naturalia	REVIEWED_UNKNOWN
+50	Menus and Venues	REVIEWED_UNKNOWN
+48	Exemplar Luxury Group	GROUP
+46	MASCOT Workwear	REVIEWED_UNKNOWN
+44	Swatch Group	GROUP
+41	Advance Magazine Publishers Inc.	REVIEWED_UNKNOWN
+40	FIGS	REVIEWED_UNKNOWN
+38	Ephemera Group	REVIEWED_UNKNOWN
+37	Tissus des Ursules - TDU Group	REVIEWED_UNKNOWN
+35	PUMA Europe GmbH	MAISON_TO_CREATE
+35	SMCP	GROUP
+33	Clog	REVIEWED_UNKNOWN
+31	Lectra	REVIEWED_UNKNOWN
+29	Jonsson Workwear	REVIEWED_UNKNOWN
+29	Beiersdorf AG	GROUP
+29	PUMA Canada, Inc.	MAISON_TO_CREATE
+28	SSENSE	NO_EVIDENCE

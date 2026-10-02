@@ -49,6 +49,8 @@ for (const path of walk(join(app, 'scripts'))) {
  */
 for (const entry of ['reference/maisons.csv', 'reference/country-labels.json', 'reference/UNICODE-LICENSE.txt',
   'reference/villes-exonymes.csv', 'reference/villes-non-lieux.csv', 'reference/discovery-career-signals.json',
+  // D-519 : la relecture documentée du secteur des Maisons (`src/sectors/reviewedReference.ts`).
+  'reference/secteurs-relus.tsv',
   // D-444 : le tracé Natural Earth au 1:10 000 000 qui donne son pays à une offre Catwalks (`src/geo/frontieres.ts`).
   'reference/frontieres-ne10m.json.gz']) {
   try { if (!statSync(join(app, 'data', entry)).isFile()) throw Error(); }

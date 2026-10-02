@@ -71,7 +71,7 @@ for (const k of [10, 20, 50, 100, 200]) { const s = inconnues.slice(0, k).reduce
 line('');
 line('== effet sur trois secteurs (confirmées = portent le secteur ; inconnues = sans secteur, « non précisé »)');
 line('secteur', 'marché', ...Object.keys(etats).flatMap(e => [`${e} confirmées`, `${e} inconnues`]));
-for (const [code, marche] of [['EYEWEAR', 'US'], ['FASHION', 'US'], ['WINES_SPIRITS', 'FR'], ['BEAUTY', 'FR']] as const) {
+for (const [code, marche] of [['EYEWEAR', 'US'], ['FASHION', 'US'], ['FOOTWEAR', 'US'], ['JEWELRY', 'US'], ['WINES_SPIRITS', 'FR'], ['BEAUTY', 'FR']] as const) {
   const cells = Object.values(etats).flatMap(etat => {
     let ok = 0, unknown = 0;
     for (const r of snapshot) { const n = r.marches?.[marche] ?? 0; const codes = etat(r.id); if (codes.includes(code)) ok += n; else if (!codes.length) unknown += n; }

@@ -57,9 +57,42 @@ Trois secteurs (confirmées / inconnues) : **Lunetterie aux États-Unis 6 / 15 3
 5 943 / 15 382 → 5 984 / 14 968 ; Vins & Spiritueux en France 0 / 3 946 → 87 / 2 631 ; Beauté en France
 2 900 / 3 946 → 3 207 / 2 631.
 
-**Limite honnête** : les grosses Maisons américaines (Coach, Tommy Hilfiger, Calvin Klein, Crocs, Kate Spade, Tiffany,
-Nike, Uniqlo…) n'ont aucune preuve dans ces quatre canaux ; leur site refuse la lecture (403) ou ne nomme pas ses produits.
-Elles restent inconnues. Relecture : `relecture.md`.
+**Limite du lot 1** : les grosses Maisons américaines (Coach, Tommy Hilfiger, Calvin Klein, Crocs, Kate Spade, Tiffany,
+Nike, Uniqlo…) n'avaient aucune preuve dans ces quatre canaux ; le lot 2 les traite par relecture documentée.
+Relecture du lot 1 : `relecture.md`.
+
+## Lot 2 — relecture documentée des 200 premières sociétés (02/10/2026, même extraction)
+
+`apps/aggregator/data/reference/secteurs-relus.tsv` (lu par `src/sectors/reviewedReference.ts`) : une ligne par Maison,
+source vérifiable, extrait exact, date ; identité par domaine officiel (entités juridiques comprises) ou par clé et nom.
+Quand une Maison a une ligne relue, elle fait foi seule ; une ligne `INCONNU` bloque toute preuve automatique. Le fichier
+est validé à la lecture (vocabulaire, « Retail » seul refusé, URL https, date, motif d'un INCONNU) et une ligne invalide
+fait échouer la commande. 152 Maisons relues : 118 qualifiées, 34 inconnues (`relecture-200.md`).
+
+| | Couverture | Inconnues |
+|---|---|---|
+| Avant | 60,5 % | 35 492 |
+| Lot 1 (reconnaissance automatique) | 64,2 % | 32 145 |
+| **Lot 2 (avec la relecture documentée)** | **90,0 %** | **8 988** |
+
+Par marché : **États-Unis 62,1 → 93,1 %** (15 382 → 2 813 inconnues) ; France 70,8 → 92,1 % ; Royaume-Uni 45,8 → 87,8 % ;
+Canada 44,6 → 95,4 % ; Allemagne 48,1 → 80,4 % ; Italie 63,1 → 88,4 % ; Suisse 28,6 → 72,3 % ; Inde 39,3 → 62,3 %.
+362 sociétés reçoivent un secteur (26 504 offres), dont 261 par la relecture (23 932). Restent sans secteur :
+2 449 offres sans aucune preuve (379 sociétés de la traîne), 3 721 relues inconnues, 2 092 groupes, 635 entités Puma
+(Maison à créer), 57 « Retail » seul, 34 refusées.
+
+Secteurs (confirmées / inconnues, US = États-Unis) : **Lunetterie US 6 / 15 382 → 185 / 2 813** ; Mode US
+5 943 → 15 598 ; Chaussures US 4 162 → 7 599 ; Joaillerie US 854 → 2 663 ; Vins & Spiritueux FR 0 / 3 946 → 87 / 1 065 ;
+Beauté FR 2 900 → 3 444. La Lunetterie US ne bouge pas avec ce lot : aucune Maison de lunettes américaine n'est dans les
+200 premières hors Clarkson Eyecare, déjà qualifiée.
+
+Relecture : échantillon de 40 affectations tirées au hasard, 40 extraits retrouvés mot pour mot à la source, aucun
+secteur contredit. L'audit de réconciliation a trouvé deux secteurs partiels, corrigés : Michael Kors reçoit la
+Maroquinerie (« women's footwear and bags »), Dolce & Gabbana la Joaillerie et l'Horlogerie (« Watches and Jewelry »).
+Il a aussi trouvé une abstention comptée deux fois (« Beiersdorf s.a.s. », groupe), corrigée avec un témoin.
+Écarts restants : Swarovski sans Horlogerie, Zegna et Arc'teryx sans Chaussures, grands magasins traités inégalement
+(Neiman Marcus sans Chaussures ni Maroquinerie, Saks avec) ; Groupe Galeries Lafayette qualifié bien que groupe ;
+sources secondaires pour une dizaine de Maisons. Le fichier compte 155 lignes : les 152 de ce lot et les 3 du lot 1.
 
 ## Rejouer (jamais entre 15:30 et 18:30 UTC)
 
@@ -79,7 +112,8 @@ npx tsx $D/mesure-secteur.mts <scratch>/employeurs.jsonl <scratch>/natives.jsonl
 1. `qualify-sectors --output=secteurs.json` depuis l'image déployée, relire, puis `qualify-sectors --apply --plan=secteurs.json`.
 2. **Ensuite seulement** un nouvel aperçu `attach-maisons` : les secteurs écrits changent ses groupes (motif
    `MAISON_LACKS_SECTORS`), un fichier relu avant l'écriture des secteurs est refusé (`REVIEWED_PLAN_MISMATCH`).
-3. Après la création de Puma par `attach-maisons`, un second `qualify-sectors` peut qualifier la nouvelle ligne.
+3. Après la création de Puma par `attach-maisons`, un second `qualify-sectors` qualifie la nouvelle ligne (sa relecture
+   `domain:puma.com` existe déjà) : 635 offres de plus.
 
 ## Écarts connus
 

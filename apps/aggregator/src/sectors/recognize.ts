@@ -4,6 +4,7 @@ import { findMaison, type MaisonEntry } from '../normalize/maisons.js';
 import { attachAll } from '../identity/maisonAttachment.js';
 import { EMPLOYER_SNAPSHOT_SQL, type Snapshot } from '../identity/maisonPlan.js';
 import { applySectors, previewSectors, sectorHash, type SectorEvidence, type SectorManifest } from './review.js';
+import { loadReviewedSectors, type ReviewedSector } from './reviewedReference.js';
 
 /**
  * D-519 (« canoniser assez pour filtrer ») et D-515 §1 (« une donnée inconnue ne devient jamais négative ») : reconnaître
@@ -16,8 +17,8 @@ import { applySectors, previewSectors, sectorHash, type SectorEvidence, type Sec
  *  2. CATÉGORIES NATIVES que la source publie sur l'employeur (`industry` SmartRecruiters / Workable / JSON-LD, secteurs
  *     WTTJ de l'organisation, `businessGroup` du portail LVMH), par un vocabulaire fermé : une valeur absente du
  *     vocabulaire ou ambiguë (« Watches & Jewellery », « Luxury Goods & Jewelry ») ne compte pas ;
- *  3. DOMAINE OFFICIEL : une page du domaine de la Maison lue à la main (`OFFICIAL_DOMAIN_EVIDENCE`, liée à l'identité
- *     exacte) ; et une société qui porte exactement le domaine d'une Maison au secteur relu (et qui n'est pas un groupe)
+ *  3. RELECTURE DOCUMENTÉE (`data/reference/secteurs-relus.tsv`) : site officiel ou Wikipédia lu à la main, extrait
+ *     exact et date ; quand elle existe, elle fait foi seule. DOMAINE OFFICIEL : une société qui porte exactement le domaine d'une Maison au secteur relu (et qui n'est pas un groupe)
  *     est cette Maison ;
  *  4. REGISTRE DES SOURCES : le rattachement R-143 §5 (`identity/maisonAttachment.ts`, registre + nom) réunit une Maison
  *     et ses entités ; leurs preuves valent pour toutes, et une entité reçoit les secteurs de sa Maison.
@@ -70,22 +71,6 @@ export const NATIVE_CATEGORY_SQL = `
   SELECT "companyId", "sourceKey", champ, valeur, count(*)::int n, min(url) url FROM v WHERE coalesce(trim(valeur), '') <> '' GROUP BY 1, 2, 3, 4 ORDER BY 1, 2, 3, 4`;
 
 /**
- * Pages du DOMAINE OFFICIEL lues à la main le 02/10/2026 (relecture des plus grosses Maisons sans secteur). Liée à
- * l'identité exacte (clé, nom, domaine) : une identité qui change s'abstient. La plupart des sites de marque refusent la
- * lecture (403 : Coach, Crocs, Tiffany, Lush, PVH) ou ne nomment pas leurs produits (Tapestry : « lifestyle brand »,
- * about.nike.com) : ils restent inconnus, faute de preuve.
- */
-export const OFFICIAL_DOMAIN_EVIDENCE: ReadonlyArray<{ canonicalKey: string; name: string; domain: string; codes: string[]; source: string; statement: string; checkedAt: string }> = [
-  { canonicalKey: 'CLARKSON_EYECARE', name: 'Clarkson Eyecare', domain: 'clarksoneyecare.com', codes: ['EYEWEAR'], source: 'https://www.clarksoneyecare.com/',
-    statement: 'Le site officiel propose montures (« find frames that are perfect for you »), lentilles (« Find your contacts ») et cabinets (« Find an Office »).', checkedAt: '2026-10-02T13:20:00Z' },
-  ...[['HANS_ANDERS', 'Hans Anders'], ['SOURCE_5a36ee8202f2fca5fa2ff5538dea2e0938864ecbcd615219e9bdab6b8266a0d1', 'Hans Anders Nederland']].map(([canonicalKey, name]) => ({
-    canonicalKey, name, domain: 'hansanders.nl', codes: ['EYEWEAR'], source: 'https://www.hansanders.nl/',
-    statement: 'Le site officiel : « De opticien en audicien van Nederland » ; « Brillen, Lenzen, Zonnebrillen, Hoortoestellen ».', checkedAt: '2026-10-02T13:20:00Z' })),
-  { canonicalKey: 'MAC', name: 'MAC', domain: 'maccosmetics.com', codes: ['BEAUTY'], source: 'https://www.maccosmetics.com/',
-    statement: 'Le site officiel : « Beauty and Makeup Products », rubriques « MAKEUP » et « SKINCARE ».', checkedAt: '2026-10-02T13:20:00Z' },
-];
-
-/**
  * Erreurs trouvées à la relecture manuelle du 02/10/2026 : la preuve existe mais le secteur qu'elle donne est faux ou
  * cacherait l'offre d'un filtre où elle a sa place (un secteur partiel rend l'offre NÉGATIVE pour les autres filtres de
  * secteur, D-515 §1). Ces Maisons restent inconnues.
@@ -100,10 +85,23 @@ export const REFUSED_AT_REVIEW: Readonly<Record<string, string>> = {
 
 type Origin = { code: string; origin: string; evidence: SectorEvidence };
 
-function officialOrigins(row: SectorEmployer, rules = OFFICIAL_DOMAIN_EVIDENCE): Origin[] {
-  return rules.filter(r => r.canonicalKey === row.canonicalKey && r.name === row.name && r.domain === row.domain).flatMap(r => r.codes.map(code => ({
-    code, origin: `official:${r.domain}`, evidence: { code, source: r.source, statement: r.statement, confidence: 'HIGH' as const, basis: 'OFFICIAL_SOURCE' as const, checkedAt: r.checkedAt } })));
+/**
+ * La relecture documentée (`data/reference/secteurs-relus.tsv`) : une page officielle ou Wikipédia lue à la main, avec son
+ * extrait exact. Source sur le domaine de la Maison : OFFICIAL_SOURCE ; sinon (Wikipédia, registre) : REFERENCE_LIST.
+ */
+function reviewedOrigins(row: SectorEmployer, rows: readonly ReviewedSector[]): Origin[] {
+  const hit = rows.find(r => r.cle === `key:${row.canonicalKey}|${row.name}`)
+    ?? (row.domain && row.domainSource ? rows.find(r => r.cle === `domain:${row.domain}`) : undefined);
+  if (!hit) return [];
+  const host = (() => { try { return new URL(hit.source).hostname; } catch { return ''; } })();
+  const official = !!row.domain && (host === row.domain || host.endsWith(`.${row.domain}`));
+  return hit.codes.map(code => ({ code, origin: `reviewed:${hit.cle}`, evidence: { code, source: hit.source, checkedAt: `${hit.verifieLe}T00:00:00Z`,
+    confidence: official ? 'HIGH' as const : 'MEDIUM' as const, basis: official ? 'OFFICIAL_SOURCE' as const : 'REFERENCE_LIST' as const,
+    statement: `Relecture documentée du ${hit.verifieLe} (data/reference/secteurs-relus.tsv, « ${hit.nom} ») : ${hit.extrait}` } }));
 }
+/** Une Maison relue à la main et laissée INCONNU (groupe, hors vocabulaire, doute) : aucune preuve automatique ne la qualifie. */
+const reviewedUnknown = (row: SectorEmployer, rows: readonly ReviewedSector[]) => rows.some(r => !r.codes.length &&
+  (r.cle === `key:${row.canonicalKey}|${row.name}` || (!!row.domain && !!row.domainSource && r.cle === `domain:${row.domain}`)));
 export type SectorProposal = { id: string; name: string; canonicalKey: string; servies: number; codes: string[];
   /** Ce que la relecture compare : chaque secteur et la preuve qui le fonde, sans les compteurs vivants. */
   origins: Array<{ code: string; origin: string }>; notes: string[] };
@@ -174,7 +172,8 @@ function decide(origins: Origin[]): { codes: string[]; origins: Origin[] } | { r
   return { codes: [...new Set(unique.map(o => o.code))].sort(), origins: unique };
 }
 
-export function recognizeSectors(snapshot: readonly SectorEmployer[], natives: readonly NativeCategory[], checkedAt: string): Omit<SectorRecognitionFile, 'kind'> {
+export function recognizeSectors(snapshot: readonly SectorEmployer[], natives: readonly NativeCategory[], checkedAt: string,
+  reviewedRows: readonly ReviewedSector[] = loadReviewedSectors()): Omit<SectorRecognitionFile, 'kind'> {
   const rows = new Map(snapshot.map(r => [r.id, r]));
   const groupKeys = new Set(snapshot.flatMap(r => [r.parentGroup].filter((g): g is string => !!g).map(key)));
   const parents = new Set(snapshot.map(r => r.parentGroupId).filter(Boolean));
@@ -199,7 +198,9 @@ export function recognizeSectors(snapshot: readonly SectorEmployer[], natives: r
     proposals.push({ id: r.id, name: r.name, canonicalKey: r.canonicalKey, servies: r.servies, codes, origins: origins.map(({ code, origin }) => ({ code, origin })), notes });
     manifest.companies.push({ id: r.id, canonicalKey: r.canonicalKey, codes, evidence: origins.map(o => o.evidence) });
   };
-  const abstain = (r: SectorEmployer, reason: string) => { if (r.servies > 0) abstentions.push({ id: r.id, name: r.name, servies: r.servies, reason }); };
+  // Une société s'abstient une fois : l'entité d'un groupe est vue avec sa Maison puis pour elle-même (audit de réconciliation).
+  const abstained = new Set<string>();
+  const abstain = (r: SectorEmployer, reason: string) => { if (r.servies > 0 && !abstained.has(r.id)) { abstained.add(r.id); abstentions.push({ id: r.id, name: r.name, servies: r.servies, reason }); } };
 
   for (const r of snapshot) {
     if (qualified(r)) continue;
@@ -219,9 +220,15 @@ export function recognizeSectors(snapshot: readonly SectorEmployer[], natives: r
     if (maisonId) continue; // décidée avec sa Maison, ci-dessous
     const members = [r, ...(units.get(r.id) ?? []).map(id => rows.get(id)!)];
     if (!members.some(m => m.servies > 0)) continue;
-    if (members.some(m => REFUSED_AT_REVIEW[m.canonicalKey])) { for (const m of members) if (!qualified(m)) abstain(m, 'REFUSED_AT_REVIEW'); continue; }
-    const origins = members.flatMap(m => [
-      ...officialOrigins(m), ...referenceOrigins(m, checkedAt), ...nativeOrigins(m, natives, checkedAt), ...domainOrigins(m),
+    // La relecture documentée fait foi seule ; une Maison relue et laissée INCONNU n'est qualifiée par rien d'automatique.
+    const reviewed = members.flatMap(m => reviewedOrigins(m, reviewedRows));
+    const refusal = reviewed.length ? undefined : members.some(m => reviewedUnknown(m, reviewedRows)) ? 'REVIEWED_UNKNOWN'
+      : members.some(m => REFUSED_AT_REVIEW[m.canonicalKey]) ? 'REFUSED_AT_REVIEW' : undefined;
+    if (refusal) { for (const m of members) if (!qualified(m)) abstain(m, refusal); continue; }
+    const origins = reviewed.length ? [...reviewed,
+      ...members.flatMap(m => m !== r && qualified(m) ? inheritedOrigins(m, 'registry', 'Entité rattachée par le registre des sources (R-143 §5) :') : [])]
+      : members.flatMap(m => [
+      ...referenceOrigins(m, checkedAt), ...nativeOrigins(m, natives, checkedAt), ...domainOrigins(m),
       ...(m !== r && qualified(m) ? inheritedOrigins(m, 'registry', 'Entité rattachée par le registre des sources (R-143 §5) :') : []),
     ]);
     const decision = decide(origins);

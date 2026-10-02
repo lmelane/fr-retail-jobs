@@ -1,5 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { recognitionFingerprint, recognizeSectors, type NativeCategory, type SectorEmployer } from './recognize.js';
+import { recognitionFingerprint, recognizeSectors as recognize, type NativeCategory, type SectorEmployer } from './recognize.js';
+import { parseReviewedSectors, type ReviewedSector } from './reviewedReference.js';
+
+// Les témoins automatiques ne lisent pas le fichier relu réel : ils passent leur propre relecture (vide par défaut).
+const recognizeSectors = (s: SectorEmployer[], n: NativeCategory[], at: string, rows: ReviewedSector[] = []) => recognize(s, n, at, rows);
+const HEADER = 'cle\tnom\tsecteurs\tsource\textrait\tverifie_le\tremarque';
+const relu = (...lines: string[]) => parseReviewedSectors([HEADER, ...lines].join('\n'));
 
 const at = '2026-10-02T12:00:00Z';
 const row = (id: string, name: string, extra: Partial<SectorEmployer> = {}): SectorEmployer => ({
@@ -8,8 +14,8 @@ const row = (id: string, name: string, extra: Partial<SectorEmployer> = {}): Sec
 const native = (companyId: string, champ: NativeCategory['champ'], valeur: string, n: number): NativeCategory =>
   ({ companyId, sourceKey: 'src', champ, valeur, n, url: `https://ats.example/${companyId}` });
 const reviewed = (code: string) => [{ code, source: 'https://maison.example/about', statement: 'relu', confidence: 'HIGH', basis: 'OFFICIAL_SOURCE', checkedAt: '2026-09-09T00:00:00Z' }];
-const proposed = (r: ReturnType<typeof recognizeSectors>, id: string) => r.proposals.find(p => p.id === id);
-const reason = (r: ReturnType<typeof recognizeSectors>, id: string) => r.abstentions.find(a => a.id === id)?.reason;
+const proposed = (r: ReturnType<typeof recognize>, id: string) => r.proposals.find(p => p.id === id);
+const reason = (r: ReturnType<typeof recognize>, id: string) => r.abstentions.find(a => a.id === id)?.reason;
 
 describe('D-519 — le secteur reconnu sur preuves seulement', () => {
   it('lit une catégorie native du vocabulaire, et seulement elle', () => {
@@ -34,6 +40,13 @@ describe('D-519 — le secteur reconnu sur preuves seulement', () => {
     const r = recognizeSectors([group, brand], [native('g', 'businessGroup', 'Selective Distribution', 50)], at);
     expect(reason(r, 'g')).toBe('GROUP');
     expect(proposed(r, 'g')).toBeUndefined();
+    // L'entité d'un groupe qui est elle-même un groupe ne compte qu'une fois dans les abstentions.
+    // Forme mesurée (« Beiersdorf s.a.s. » sous « Beiersdorf AG ») : la clé de l'entité, sans « SAS », est le nom du groupe.
+    const src = [{ sourceKey: 's', maison: 'Groupe AG', portalScope: null }];
+    const parent = row('p', 'Groupe AG', { sources: src }), child = row('c', 'Groupe AG s.a.s.', { sources: src });
+    const twice = recognizeSectors([parent, child, row('x', 'Marque', { parentGroup: 'Groupe AG' })], [], at);
+    expect(reason(twice, 'p')).toBe('GROUP'); // prémisse : la Maison est un groupe et l'entité lui est rattachée
+    expect(twice.abstentions.filter(a => a.id === 'c')).toHaveLength(1);
   });
   it('laisse inconnue une Maison dont deux preuves nomment des secteurs de produit disjoints', () => {
     const r = recognizeSectors([row('a', 'Alpha')], [native('a', 'industry', 'Cosmetics', 30), native('a', 'sectors', 'fashion-1', 30)], at);
@@ -89,5 +102,39 @@ describe('D-519 — le secteur reconnu sur preuves seulement', () => {
     expect(recognitionFingerprint(b.proposals)).toBe(recognitionFingerprint(a.proposals));
     const c = recognizeSectors([row('a', 'Alpha')], [native('a', 'industry', 'Apparel And Fashion', 50)], at);
     expect(recognitionFingerprint(c.proposals)).not.toBe(recognitionFingerprint(a.proposals));
+  });
+});
+
+describe('D-519 — la relecture documentée des Maisons (data/reference/secteurs-relus.tsv)', () => {
+  it('fait foi seule, avec son extrait, sa source et sa date ; sur le domaine officiel, entités comprises', () => {
+    const rows = relu('domain:coach.example\tCoach\tFASHION|LEATHER_GOODS\thttps://en.wikipedia.org/wiki/Coach\t« handbags and ready-to-wear »\t2026-10-02\t');
+    const coach = row('c', 'Coach', { domain: 'coach.example', domainSource: 'manual' });
+    const entity = row('e', 'Coach Stores Inc.', { domain: 'coach.example', domainSource: 'logos' });
+    const r = recognizeSectors([coach, entity], [native('c', 'industry', 'Retail', 50)], at, rows);
+    expect(proposed(r, 'c')).toMatchObject({ codes: ['FASHION', 'LEATHER_GOODS'], origins: [{ origin: 'reviewed:domain:coach.example' }, { origin: 'reviewed:domain:coach.example' }] });
+    expect(proposed(r, 'e')?.codes).toEqual(['FASHION', 'LEATHER_GOODS']);
+    expect(r.manifest.companies[0].evidence[0]).toMatchObject({ basis: 'REFERENCE_LIST', checkedAt: '2026-10-02T00:00:00Z', source: 'https://en.wikipedia.org/wiki/Coach' });
+    // Sans provenance de domaine, le domaine ne prouve pas l'identité.
+    expect(reason(recognizeSectors([row('x', 'X', { domain: 'coach.example' })], [], at, rows), 'x')).toBe('NO_EVIDENCE');
+  });
+  it('lit une source du domaine de la Maison comme officielle', () => {
+    const rows = relu('key:KEY|Alpha\tAlpha\tBEAUTY\thttps://www.alpha.example/about\t« skincare »\t2026-10-02\t');
+    const r = recognizeSectors([row('a', 'Alpha', { canonicalKey: 'KEY', domain: 'alpha.example' })], [], at, rows);
+    expect(r.manifest.companies[0].evidence[0]).toMatchObject({ basis: 'OFFICIAL_SOURCE', confidence: 'HIGH' });
+  });
+  it("une Maison relue et laissée INCONNU n'est qualifiée par aucune preuve automatique", () => {
+    const rows = relu('key:KEY|Alpha\tAlpha\tINCONNU\thttps://en.wikipedia.org/wiki/Alpha\t« conglomerate »\t2026-10-02\tgroupe multisectoriel');
+    const r = recognizeSectors([row('a', 'Alpha', { canonicalKey: 'KEY' })], [native('a', 'industry', 'Apparel And Fashion', 50)], at, rows);
+    expect(reason(r, 'a')).toBe('REVIEWED_UNKNOWN');
+  });
+  it("refuse un fichier qui enfreint les règles de relecture plutôt que d'ignorer la ligne", () => {
+    expect(() => relu('domain:a.example\tA\tRETAIL\thttps://a.example\t« stores »\t2026-10-02\t')).toThrow('RETAIL alone');
+    expect(() => relu('domain:a.example\tA\tMODE\thttps://a.example\t« x »\t2026-10-02\t')).toThrow('unknown or duplicate sector');
+    expect(() => relu('domain:a.example\tA\tFASHION\thttp://a.example\t« x »\t2026-10-02\t')).toThrow('https');
+    expect(() => relu('domain:a.example\tA\tINCONNU\thttps://a.example\t« x »\t2026-10-02\t')).toThrow('reason');
+    expect(() => relu('domain:a.example\tA\tFASHION\thttps://a.example\t« x »\t02/10/2026\t')).toThrow('verifie_le');
+  });
+  it('le fichier livré se lit sans erreur', () => {
+    expect(recognize([], [], at).proposals).toEqual([]);
   });
 });
