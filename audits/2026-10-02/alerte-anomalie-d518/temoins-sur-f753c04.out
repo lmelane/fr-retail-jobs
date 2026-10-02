@@ -1,0 +1,27 @@
+# Témoins de D-518 rejoués sur le code de f753c04 (coverage/ de f753c04, tests de ce lot) : chacun doit échouer s'il garde un comportement nouveau
+× le réglage mesuré : k = 4, plancher de 5 offres, événement de masse à 40 Maisons
+× la variation habituelle est la médiane des écarts d’un RUN photographié au suivant ; rien sous 3 RUN
+× anormal = au moins le plancher ET plus de k fois la variation habituelle ; sans habitude, le plancher seul
+× Louis Vuitton, 160 masquées sur 800 (20 %), variation habituelle 10 : à vérifier (les seuils fixes ne disaient rien)
+× Christian Dior Couture, 89 masquées sur 546 (16,3 %), variation habituelle 3 : à vérifier
+× H&M, qui bouge de 106 offres d’un RUN à l’autre, ne réveille pas pour 320 (les seuils fixes l’auraient fait, ≥ 200)
+× un marché suit la même règle : les États-Unis (variation 609) ne réveillent pas pour 600 ; la Hongrie (3,5) pour 40
+× 45 Maisons masquées au premier RUN de r6 : une synthèse qui les garde toutes, puis la collecte à réparer
+× sous 40 Maisons, chaque perte anormale reste une alerte à part
+× le même événement au RUN suivant est en cours : il ne réveille plus
+× une source qui perd 40 offres réparties en dix Maisons de 4 (chacune sous le plancher) : à vérifier, à la source
+× une source qui bouge habituellement de 50 offres ne réveille pas pour 40
+× une perte de source déjà dite par sa Maison n’est pas redite (Coach, 129 par tapestry)
+× une source menacée garde une seule ligne de photographie : ses offres servies, et la gravité de la menace
+× le plafond de 72 h d’une collecte en échec est à réparer (Coach, 129 sur 1 927 par tapestry : 6,7 %)
+× une source sous le plancher ne réveille pas ; un marché n’est nommé que si sa part menacée est anormale pour lui
+× la source se juge en entier : 12 offres menacées dans une Maison de 1 000 qui ne bouge pas réveillent (seuils fixes : rien)
+× la règle dite au pied du bulletin est celle d’anomalie (D-518), sans seuil propre à une Maison
+× l’événement de masse part en tête, une fois : la synthèse nomme TOUTES ses Maisons, puis viennent les anomalies
+× chaque marché ouvert a un fuseau que Node connaît et des jours d’envoi
+× New York : 07:30 locale, soit 11:30 UTC, et non 07:30 de Paris
+× Sydney : le mardi 07:30 locale tombe le lundi 20:30 UTC
+× Arabie saoudite : le jeudi, pas le vendredi chômé
+⎯⎯⎯⎯⎯⎯ Failed Tests 23 ⎯⎯⎯⎯⎯⎯⎯
+Test Files  2 failed (2)
+Tests  23 failed | 37 passed (60)

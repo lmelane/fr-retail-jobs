@@ -2,12 +2,13 @@
  * Le BULLETIN DE LA BOUCLE CANDIDAT, tel qu'il part après chaque RUN (R-143 §9, §11 ; D-515 §4, §5 ; D-516 §2). Pur.
  *
  * Court, lisible sur un écran de 375 px (blocs empilés, comme le bilan d'ingestion), sans tiret cadratin (D-319) :
- *   1. l'alerte de couverture : ce qui est à réparer, puis à vérifier, puis, pour information, ce qui ne réveille
- *      personne (fermetures prouvées, retenues et pauses décidées, doublons regroupés). Chaque ligne dit la Maison ou le
- *      marché, la part perdue, la cause et l'action ;
+ *   1. l'alerte de couverture : d'abord l'événement de masse s'il y en a un (une synthèse, D-518), puis ce qui est à
+ *      réparer, à vérifier, puis, pour information, ce qui ne réveille personne (fermetures prouvées, retenues et pauses
+ *      décidées, doublons regroupés). Chaque ligne dit la Maison, le marché ou la source, la part perdue, la cause et
+ *      l'action ;
  *   2. un indicateur par question du CEO, avec sa définition et son dénominateur.
  */
-import { CAUSE_GRAVITY, newAlerts, THRESHOLDS, REFERENCE_RUNS, MIN_REFERENCE_RUNS, KNOWN_SOURCE_FLOOR, LOSS_CAUSES, type AlertCause,
+import { ANOMALY, CAUSE_GRAVITY, newAlerts, REFERENCE_RUNS, MIN_REFERENCE_RUNS, LOSS_CAUSES, type AlertCause,
   type CoverageEvaluation, type CoverageFinding, type Gravity } from './coverageAlert.js';
 import type { MaskedStock } from './coverageReading.js';
 import type { Indicator } from './loopIndicators.js';
@@ -28,8 +29,10 @@ export const CAUSE_LABEL: Readonly<Record<AlertCause, string>> = {
   INEXPLIQUEE: 'aucune cause trouvée',
 };
 const GRAVITY_LABEL: Readonly<Record<Gravity, string>> = { A_REPARER: 'À réparer', A_VERIFIER: 'À vérifier', INFORMATION: 'Pour information' };
-const SCOPE_LABEL = { MAISON: 'Maison', MARCHE: 'Marché', SOURCE: 'Source' } as const;
-const KIND_LABEL = { PERTE: 'perte', MENACE: 'menace', NON_SERVIE: 'non servie' } as const;
+const SCOPE_LABEL = { MAISON: 'Maison', MARCHE: 'Marché', SOURCE: 'Source', CATALOGUE: 'Catalogue' } as const;
+const KIND_LABEL = { PERTE: 'perte', MENACE: 'menace', NON_SERVIE: 'non servie', SYNTHESE: 'événement de masse' } as const;
+/** La synthèse d'un événement de masse détaille ses plus grosses Maisons, puis cite TOUTES les autres, par part perdue. */
+export const SYNTHESIS_DETAILED = 30;
 
 /** Escapes a value for the HTML; an em dash from a source's own error text is reworded (D-319). */
 export function esc(value: string): string {
@@ -63,8 +66,30 @@ export function actionLines(finding: CoverageFinding): string[] {
   });
 }
 
+const named = (i: { label: string; count: number; share: number }) => `${i.label} ${n(i.count)} (${pct(i.share)})`;
+
+/**
+ * Une synthèse : l'événement, son ampleur, puis chaque entité touchée. Les `SYNTHESIS_DETAILED` plus grosses Maisons
+ * d'abord ; toutes les autres ensuite, de la plus forte part perdue à la plus faible (une petite Maison vidée ne se perd
+ * pas en fin de liste) ; tous les marchés et toutes les sources.
+ */
+function synthesisLines(finding: CoverageFinding): string[] {
+  const status = finding.ongoing ? 'en cours' : 'nouvel';
+  const of = (scope: string) => (finding.impacts ?? []).filter(i => i.scope === scope);
+  const maisons = of('MAISON'), markets = of('MARCHE'), sources = of('SOURCE');
+  const rest = maisons.slice(SYNTHESIS_DETAILED).sort((a, b) => b.share - a.share || b.count - a.count || a.label.localeCompare(b.label));
+  return [`Catalogue · événement de masse · ${CAUSE_LABEL[finding.cause]} · ${status}`,
+    `${n(finding.lost)} offres servies en moins dans ${n(finding.members ?? maisons.length)} Maisons (${pct(finding.share)} de leurs offres) : ${n(finding.served)} contre ${n(finding.reference ?? 0)}`,
+    `Maisons : ${maisons.slice(0, SYNTHESIS_DETAILED).map(named).join(' ; ')}`,
+    ...(rest.length ? [`Et les ${rest.length} autres Maisons, par part perdue : ${rest.map(named).join(' ; ')}`] : []),
+    ...(markets.length ? [`Marchés : ${markets.map(named).join(' ; ')}`] : []),
+    ...(sources.length ? [`Sources : ${sources.map(named).join(' ; ')}`] : []),
+    ...actionLines(finding)];
+}
+
 /** Les lignes d'un constat, la première dit tout : entité, part perdue, cause. */
 export function findingLines(finding: CoverageFinding): string[] {
+  if (finding.kind === 'SYNTHESE') return synthesisLines(finding);
   const status = finding.ongoing ? 'en cours' : 'nouvelle';
   const head = `${SCOPE_LABEL[finding.scope]} ${finding.label} · ${KIND_LABEL[finding.kind]} · ${CAUSE_LABEL[finding.cause]} · ${status}`;
   const amount = finding.kind === 'PERTE'
@@ -115,8 +140,9 @@ export function summaryLines(evaluation: CoverageEvaluation, masked: MaskedStock
 }
 
 export function bulletinHtml(evaluation: CoverageEvaluation, indicators: readonly Indicator[], meta: { at: Date; masked?: MaskedStock | null }): string {
+  const events = evaluation.findings.filter(f => f.kind === 'SYNTHESE');
   const section = (gravity: Gravity, intro: string) => {
-    const list = evaluation.findings.filter(f => f.gravity === gravity);
+    const list = evaluation.findings.filter(f => f.gravity === gravity && f.kind !== 'SYNTHESE');
     if (!list.length) return '';
     // Les marchés recomptent les Maisons : une ligne compacte, pas un bloc chacun.
     const markets = list.filter(f => f.scope === 'MARCHE'), others = list.filter(f => f.scope !== 'MARCHE');
@@ -130,7 +156,7 @@ export function bulletinHtml(evaluation: CoverageEvaluation, indicators: readonl
     evaluation.referenceRuns
       ? `Perte d’habitude : médiane des ${evaluation.referenceRuns} derniers RUN photographiés depuis le ${utc(evaluation.windowStart!)}, ou le dernier s’il est plus haut.`
       : `Perte d’habitude : référence en construction (${MIN_REFERENCE_RUNS} RUN photographiés nécessaires).`].filter(Boolean).join(' ');
-  const rules = `Significatif : Maison, au moins ${THRESHOLDS.MAISON.floor} offres et ${pct(THRESHOLDS.MAISON.share)}, ou ${THRESHOLDS.MAISON.big} offres ; marché, au moins ${THRESHOLDS.MARCHE.floor} offres et ${pct(THRESHOLDS.MARCHE.share)}, ou ${THRESHOLDS.MARCHE.big} offres ; source qualifiée d’au moins ${KNOWN_SOURCE_FLOOR} offres qui n’en sert aucune. Fenêtre : ${REFERENCE_RUNS} RUN au plus.`;
+  const rules = `Anormal, la même règle pour toute Maison, tout marché, toute source : au moins ${ANOMALY.floor} offres perdues ou menacées, et plus de ${ANOMALY.k} fois la variation habituelle de l’entité (médiane des écarts d’un RUN photographié au suivant ; sans habitude mesurée, le plancher seul) ; une source qualifiée d’au moins ${ANOMALY.floor} offres qui n’en sert aucune. Au moins ${ANOMALY.mass} Maisons anormales pour une même cause : un événement de masse, dit en une synthèse qui nomme chaque entité touchée. Fenêtre : ${REFERENCE_RUNS} RUN au plus.`;
   const anything = evaluation.findings.length > 0;
   const indicatorBlocks = indicators.map(i => block([`${i.question}. ${i.title} : ${i.value}`, `Définition : ${i.definition}`,
     `Dénominateur : ${i.denominator}`], `indicateur:${i.question}`)).join('');
@@ -139,7 +165,9 @@ export function bulletinHtml(evaluation: CoverageEvaluation, indicators: readonl
     ${summaryLines(evaluation, meta.masked ?? null).map(text => line(esc(text), false)).join('')}
     ${heading('7. Couverture : ce qu’on perd')}
     ${line(esc(reference))}
-    ${anything ? '' : line('Aucune Maison, aucun marché ne perd significativement de couverture, aucune collecte en échec ne menace une part significative d’une Maison ou d’un marché.', false)}
+    ${anything ? '' : line('Aucune Maison, aucun marché, aucune source ne perd anormalement de couverture, aucune collecte en échec ne menace une part anormale du catalogue.', false)}
+    ${events.length ? `${heading(`Événement de masse : ${events.length}`)}${line('Une même cause touche beaucoup de Maisons à la fois : dit une fois, ici, entité par entité ; les anomalies suivent.')}
+    ${events.map(f => block(findingLines(f), `${f.scope}:${f.key}:${f.kind}`)).join('')}` : ''}
     ${section('A_REPARER', 'De notre côté, ou sans cause trouvée : un trou à réparer.')}
     ${section('A_VERIFIER', 'Offres masquées ou retirées sans preuve de fin : vérifier sur le site de la source qu’elles n’y sont plus.')}
     ${section('INFORMATION', 'Normal : rien à faire.')}

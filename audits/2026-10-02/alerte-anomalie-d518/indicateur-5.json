@@ -1,0 +1,175 @@
+{
+ "at": "2026-10-02T12:59:52.260Z",
+ "offres": 2384,
+ "horsMarche": 94,
+ "avantParis": {
+  "mediane": 12.2,
+  "p90": 13.2
+ },
+ "apresMarche": {
+  "mediane": 13.2,
+  "p90": 18.8
+ },
+ "ecartMedianParMarche": {
+  "US": {
+   "offres": 871,
+   "ecartMedianHeures": 6
+  },
+  "FR": {
+   "offres": 334,
+   "ecartMedianHeures": 0
+  },
+  "GB": {
+   "offres": 261,
+   "ecartMedianHeures": 1
+  },
+  "DE": {
+   "offres": 166,
+   "ecartMedianHeures": 0
+  },
+  "NL": {
+   "offres": 132,
+   "ecartMedianHeures": 0
+  },
+  "hors marché": {
+   "offres": 94,
+   "ecartMedianHeures": 0
+  },
+  "ES": {
+   "offres": 85,
+   "ecartMedianHeures": 0
+  },
+  "CA": {
+   "offres": 68,
+   "ecartMedianHeures": 6
+  },
+  "IT": {
+   "offres": 50,
+   "ecartMedianHeures": 0
+  },
+  "CH": {
+   "offres": 45,
+   "ecartMedianHeures": 0
+  },
+  "PL": {
+   "offres": 33,
+   "ecartMedianHeures": 0
+  },
+  "JP": {
+   "offres": 31,
+   "ecartMedianHeures": -7
+  },
+  "HU": {
+   "offres": 31,
+   "ecartMedianHeures": 0
+  },
+  "AU": {
+   "offres": 23,
+   "ecartMedianHeures": -8
+  },
+  "BE": {
+   "offres": 15,
+   "ecartMedianHeures": 0
+  },
+  "TR": {
+   "offres": 13,
+   "ecartMedianHeures": -1
+  },
+  "SE": {
+   "offres": 12,
+   "ecartMedianHeures": 0
+  },
+  "KR": {
+   "offres": 11,
+   "ecartMedianHeures": -7
+  },
+  "NO": {
+   "offres": 11,
+   "ecartMedianHeures": 0
+  },
+  "PT": {
+   "offres": 11,
+   "ecartMedianHeures": 1
+  },
+  "CZ": {
+   "offres": 10,
+   "ecartMedianHeures": 0
+  },
+  "RO": {
+   "offres": 9,
+   "ecartMedianHeures": -1
+  },
+  "SG": {
+   "offres": 9,
+   "ecartMedianHeures": -6
+  },
+  "ZA": {
+   "offres": 8,
+   "ecartMedianHeures": 0
+  },
+  "DK": {
+   "offres": 7,
+   "ecartMedianHeures": 0
+  },
+  "GR": {
+   "offres": 6,
+   "ecartMedianHeures": -1
+  },
+  "MY": {
+   "offres": 5,
+   "ecartMedianHeures": -6
+  },
+  "BR": {
+   "offres": 5,
+   "ecartMedianHeures": 5
+  },
+  "SA": {
+   "offres": 5,
+   "ecartMedianHeures": 95
+  },
+  "NZ": {
+   "offres": 4,
+   "ecartMedianHeures": -11
+  },
+  "TW": {
+   "offres": 4,
+   "ecartMedianHeures": -6
+  },
+  "AE": {
+   "offres": 4,
+   "ecartMedianHeures": -2
+  },
+  "MX": {
+   "offres": 4,
+   "ecartMedianHeures": 8
+  },
+  "HK": {
+   "offres": 1,
+   "ecartMedianHeures": -6
+  },
+  "VN": {
+   "offres": 1,
+   "ecartMedianHeures": -5
+  },
+  "TH": {
+   "offres": 1,
+   "ecartMedianHeures": -5
+  },
+  "CN": {
+   "offres": 1,
+   "ecartMedianHeures": -6
+  },
+  "LU": {
+   "offres": 1,
+   "ecartMedianHeures": 0
+  },
+  "PE": {
+   "offres": 1,
+   "ecartMedianHeures": 7
+  },
+  "PR": {
+   "offres": 1,
+   "ecartMedianHeures": 6
+  }
+ }
+}

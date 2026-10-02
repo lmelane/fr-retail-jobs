@@ -8,6 +8,7 @@
 import { Prisma, type PrismaClient } from '@prisma/client';
 import { publicJobSql } from '@catwalks/db/availability';
 import { buildHealthReport } from '../pipeline/healthReport.js';
+import { marketOf } from './coverageReading.js';
 import { share } from './reporting.js';
 
 type Db = Prisma.TransactionClient | PrismaClient;
@@ -24,26 +25,59 @@ export function percentile(values: readonly number[], p: number): number | null 
   return sorted[low] + (sorted[high] - sorted[low]) * (rank - low);
 }
 
-/** Décalage de l'heure de Paris à un instant, en minutes (« GMT+2 » -> 120). */
-function parisOffsetMinutes(at: Date): number {
-  const part = new Intl.DateTimeFormat('en-US', { timeZone: 'Europe/Paris', timeZoneName: 'shortOffset' })
+/**
+ * LE CALENDRIER DES ALERTES PAR MARCHÉ (D-498, R-130 §1) : 07:30 à l'heure locale du marché, le mardi et le vendredi,
+ * le mardi et le jeudi en Arabie saoudite. Recopié de `catwalks-backend/src/lib/alertes/marches.ts` (`MARCHES_ALERTES`),
+ * qui en est la source : le registre des marchés (`packages/db/marches.ts`) ne porte pas de fuseau. Un marché qui couvre
+ * plusieurs fuseaux prend celui de sa capitale économique, comme le moteur. Le témoin fige un fuseau pour chaque marché.
+ */
+const TUE_FRI = [2, 5] as const, TUE_THU = [2, 4] as const;
+export const ALERT_CALENDAR: Readonly<Record<string, { timeZone: string; days: readonly number[] }>> = {
+  JP: { timeZone: 'Asia/Tokyo', days: TUE_FRI }, KR: { timeZone: 'Asia/Seoul', days: TUE_FRI },
+  PT: { timeZone: 'Europe/Lisbon', days: TUE_FRI }, MX: { timeZone: 'America/Mexico_City', days: TUE_FRI },
+  SG: { timeZone: 'Asia/Singapore', days: TUE_FRI }, DK: { timeZone: 'Europe/Copenhagen', days: TUE_FRI },
+  HK: { timeZone: 'Asia/Hong_Kong', days: TUE_FRI }, PL: { timeZone: 'Europe/Warsaw', days: TUE_FRI },
+  SE: { timeZone: 'Europe/Stockholm', days: TUE_FRI }, CL: { timeZone: 'America/Santiago', days: TUE_FRI },
+  TR: { timeZone: 'Europe/Istanbul', days: TUE_FRI }, TH: { timeZone: 'Asia/Bangkok', days: TUE_FRI },
+  MY: { timeZone: 'Asia/Kuala_Lumpur', days: TUE_FRI }, AE: { timeZone: 'Asia/Dubai', days: TUE_FRI },
+  NO: { timeZone: 'Europe/Oslo', days: TUE_FRI }, TW: { timeZone: 'Asia/Taipei', days: TUE_FRI },
+  BR: { timeZone: 'America/Sao_Paulo', days: TUE_FRI }, GR: { timeZone: 'Europe/Athens', days: TUE_FRI },
+  ZA: { timeZone: 'Africa/Johannesburg', days: TUE_FRI }, VN: { timeZone: 'Asia/Ho_Chi_Minh', days: TUE_FRI },
+  CZ: { timeZone: 'Europe/Prague', days: TUE_FRI }, PE: { timeZone: 'America/Lima', days: TUE_FRI },
+  NZ: { timeZone: 'Pacific/Auckland', days: TUE_FRI }, HU: { timeZone: 'Europe/Budapest', days: TUE_FRI },
+  SA: { timeZone: 'Asia/Riyadh', days: TUE_THU }, RO: { timeZone: 'Europe/Bucharest', days: TUE_FRI },
+  PR: { timeZone: 'America/Puerto_Rico', days: TUE_FRI }, PH: { timeZone: 'Asia/Manila', days: TUE_FRI },
+  LU: { timeZone: 'Europe/Luxembourg', days: TUE_FRI }, US: { timeZone: 'America/New_York', days: TUE_FRI },
+  FR: { timeZone: 'Europe/Paris', days: TUE_FRI }, GB: { timeZone: 'Europe/London', days: TUE_FRI },
+  CA: { timeZone: 'America/Toronto', days: TUE_FRI }, DE: { timeZone: 'Europe/Berlin', days: TUE_FRI },
+  IT: { timeZone: 'Europe/Rome', days: TUE_FRI }, ES: { timeZone: 'Europe/Madrid', days: TUE_FRI },
+  NL: { timeZone: 'Europe/Amsterdam', days: TUE_FRI }, AU: { timeZone: 'Australia/Sydney', days: TUE_FRI },
+  CH: { timeZone: 'Europe/Zurich', days: TUE_FRI }, BE: { timeZone: 'Europe/Brussels', days: TUE_FRI },
+  CN: { timeZone: 'Asia/Shanghai', days: TUE_FRI },
+};
+/** Le marché d'un inscrit sans marché connu, comme le moteur (`MARCHE_PAR_DEFAUT`). */
+export const DEFAULT_ALERT_MARKET = 'FR';
+
+/** Décalage d'un fuseau à un instant, en minutes (« GMT+2 » -> 120, « GMT-4 » -> -240). */
+function offsetMinutes(at: Date, timeZone: string): number {
+  const part = new Intl.DateTimeFormat('en-US', { timeZone, timeZoneName: 'shortOffset' })
     .formatToParts(at).find(p => p.type === 'timeZoneName')?.value ?? 'GMT';
   const match = /GMT([+-])(\d{1,2})(?::(\d{2}))?/.exec(part);
   return match ? (match[1] === '-' ? -1 : 1) * (Number(match[2]) * 60 + Number(match[3] ?? 0)) : 0;
 }
 
 /**
- * Le prochain envoi d'alertes après `at` : mardi ou vendredi, 07:30 heure de Paris (D-498, R-130). Approximation
- * assumée : l'heure locale de chaque marché et le jeudi des marchés où le vendredi est chômé ne sont pas appliqués.
+ * Le prochain envoi d'alertes après `at` pour un marché : 07:30 à l'heure locale du marché, un de ses jours d'envoi
+ * (D-498). Un marché inconnu prend celui du moteur par défaut.
  */
-export function nextAlertSlot(at: Date): Date {
+export function nextAlertSlot(at: Date, market: string | null = DEFAULT_ALERT_MARKET): Date {
+  const { timeZone, days } = ALERT_CALENDAR[market ?? DEFAULT_ALERT_MARKET] ?? ALERT_CALENDAR[DEFAULT_ALERT_MARKET];
   for (let day = 0; day <= 7; day++) {
     const probe = new Date(at.getTime() + day * 86_400_000);
-    const local = new Date(probe.getTime() + parisOffsetMinutes(probe) * 60_000);
-    const weekday = local.getUTCDay();
-    if (weekday !== 2 && weekday !== 5) continue;
+    const local = new Date(probe.getTime() + offsetMinutes(probe, timeZone) * 60_000);
+    if (!days.includes(local.getUTCDay())) continue;
     const guess = Date.UTC(local.getUTCFullYear(), local.getUTCMonth(), local.getUTCDate(), 7, 30);
-    const slot = new Date(guess - parisOffsetMinutes(new Date(guess)) * 60_000);
+    const slot = new Date(guess - offsetMinutes(new Date(guess), timeZone) * 60_000);
     if (slot.getTime() >= at.getTime()) return slot;
   }
   throw new Error('no alert slot within a week');
@@ -97,14 +131,15 @@ async function attachment(db: Db, at: Date): Promise<Indicator> {
 
 async function alertDelay(db: Db, at: Date): Promise<Indicator> {
   const j = Prisma.raw('j');
-  const rows = await db.$queryRaw<Array<{ firstSeenAt: Date }>>(Prisma.sql`
-    SELECT j."firstSeenAt" FROM "Job" j WHERE ${publicJobSql(j, at)} AND j."countryCode" IS NOT NULL
+  const rows = await db.$queryRaw<Array<{ firstSeenAt: Date; countryCode: string }>>(Prisma.sql`
+    SELECT j."firstSeenAt", j."countryCode" FROM "Job" j WHERE ${publicJobSql(j, at)} AND j."countryCode" IS NOT NULL
       AND j."firstSeenAt" > ${new Date(at.getTime() - 86_400_000)} AND j."firstSeenAt" <= ${at}`);
-  const delays = rows.map(r => (nextAlertSlot(r.firstSeenAt).getTime() - r.firstSeenAt.getTime()) / 3_600_000);
+  const delays = rows.map(r => (nextAlertSlot(r.firstSeenAt, marketOf(r.countryCode)).getTime() - r.firstSeenAt.getTime()) / 3_600_000);
+  const outside = rows.filter(r => !marketOf(r.countryCode)).length;
   return { question: 5, title: 'Alertes : délai jusqu’à l’envoi', measured: delays.length > 0,
-    value: `médiane ${hours(percentile(delays, 0.5))}, p90 ${hours(percentile(delays, 0.9))} ; prochain envoi ${nextAlertSlot(at).toISOString().slice(0, 16).replace('T', ' ')} UTC`,
-    definition: 'Heures entre la première observation d’une offre servie et le prochain envoi d’alertes, mardi ou vendredi à 07:30 (D-498), calculé à l’heure de Paris pour tous les marchés. Délai du calendrier seulement : les envois réels vivent dans le backend, hors de cette base.',
-    denominator: `${NUMBER.format(delays.length)} offres servies vues pour la première fois dans les 24 dernières heures` };
+    value: `médiane ${hours(percentile(delays, 0.5))}, p90 ${hours(percentile(delays, 0.9))} ; prochain envoi en France ${nextAlertSlot(at, 'FR').toISOString().slice(0, 16).replace('T', ' ')} UTC`,
+    definition: 'Heures entre la première observation d’une offre servie et le prochain envoi d’alertes de son marché, à 07:30 heure locale du marché, le mardi et le vendredi (le mardi et le jeudi en Arabie saoudite ; D-498). Délai du calendrier seulement : les envois réels vivent dans le backend, hors de cette base.',
+    denominator: `${NUMBER.format(delays.length)} offres servies vues pour la première fois dans les 24 dernières heures${outside ? ` (dont ${NUMBER.format(outside)} hors marché ouvert, au calendrier de la France)` : ''}` };
 }
 
 async function confidence(db: Db, at: Date, probe: ProbeSummary | null, prisma: PrismaClient | null): Promise<Indicator> {

@@ -80,7 +80,8 @@ async function readCompanies(db: Db): Promise<Companies> {
   return { merges: new Map(rows.filter(r => r.mergedIntoId).map(r => [r.id, r.mergedIntoId!])), names: new Map(rows.map(r => [r.id, r.name])) };
 }
 
-type Cell = { c: string; p: string };
+/** Une cellule : société, pays, et la source canonique de l'offre (absente pour une menace, jugée à part). */
+type Cell = { c: string; p: string; s?: string | null };
 class Entities {
   private readonly map = new Map<string, EntityState>();
   constructor(private readonly companies: Companies) {}
@@ -90,13 +91,15 @@ class Entities {
     if (!entity) this.map.set(id, entity = { scope, key, label, served: 0, exits: emptyExits(), threat: { count: 0, sources: [] } });
     return entity;
   }
-  /** La même ligne compte pour sa Maison et pour son marché (un pays hors marché ouvert ne compte que pour sa Maison). */
+  /** La même ligne compte pour sa Maison, son marché (un pays hors marché ouvert ne compte pas) et sa source canonique. */
   each(cell: Cell, apply: (entity: EntityState) => void) {
     const maison = canonicalCompany(this.companies.merges, cell.c);
     apply(this.entity('MAISON', maison, this.companies.names.get(maison) ?? maison));
     const market = marketOf(cell.p);
     if (market) apply(this.entity('MARCHE', market, marketLabel(market)));
+    if (cell.s) apply(this.source(cell.s));
   }
+  source(key: string): EntityState { return this.entity('SOURCE', key, key); }
   list(): EntityState[] { return [...this.map.values()]; }
 }
 
@@ -108,11 +111,11 @@ function addSource(list: Array<{ sourceKey: string; count: number }>, sourceKey:
 
 async function servedCells(db: Db, at: Date) {
   return db.$queryRaw<Array<Cell & { n: number }>>(Prisma.sql`
-    SELECT j."companyId" AS c, j."countryCode" AS p, count(*)::int AS n FROM "Job" j
-    WHERE ${publicJobSql(Prisma.raw('j'), at)} AND j."countryCode" IS NOT NULL GROUP BY 1, 2`);
+    SELECT j."companyId" AS c, j."countryCode" AS p, j."canonicalSourceKey" AS s, count(*)::int AS n FROM "Job" j
+    WHERE ${publicJobSql(Prisma.raw('j'), at)} AND j."countryCode" IS NOT NULL GROUP BY 1, 2, 3`);
 }
 
-/** L'avant du RUN : offres servies par entité (`MAISON:<id>`, `MARCHE:<code>`), lues avant les étapes qui retirent. */
+/** L'avant du RUN : offres servies par entité (`MAISON:<id>`, `MARCHE:<code>`, `SOURCE:<clé>`), lues avant les étapes qui retirent. */
 export type CoverageBefore = { at: Date; served: ReadonlyMap<string, number> };
 export async function readCoverageBefore(db: Db, at = new Date()): Promise<CoverageBefore> {
   const entities = new Entities(await readCompanies(db));
@@ -145,6 +148,7 @@ export async function readCoverageState(db: Db, options: { at: Date; horizons: C
       const [scope, ...rest] = id.split(':');
       const key = rest.join(':');
       if (scope === 'MAISON') entities.each({ c: key, p: '' }, e => { if (e.scope === 'MAISON') e.before = n; });
+      else if (scope === 'SOURCE') entities.source(key).before = n;
       else if (scope === 'MARCHE') {
         const country = MARCHES[key as keyof typeof MARCHES]?.pays[0];
         if (country) entities.each({ c: '', p: country }, e => { if (e.scope === 'MARCHE') e.before = n; });
@@ -168,7 +172,7 @@ export async function readCoverageState(db: Db, options: { at: Date; horizons: C
         count(*)::int AS n
       FROM last l JOIN "Job" j ON j.id = l."jobId"
       WHERE NOT j."isActive" AND j."mergedIntoId" IS NULL AND j."countryCode" IS NOT NULL GROUP BY 1, 2, 3, 4, 5, 6`);
-    const held = await db.$queryRaw<Array<Cell & { cause: LossCause; s: string | null; h: Horizon; n: number }>>(Prisma.sql`
+    const held = await db.$queryRaw<Array<Cell & { cause: LossCause; s: string | null; canon: string | null; h: Horizon; n: number }>>(Prisma.sql`
       WITH np AS (
         SELECT j.id, j."companyId" AS c, j."countryCode" AS p, j."canonicalSourceKey" AS canon,
           bool_or(js."availabilityHold" = 'APPLY_LINK_DEAD' AND js."availabilityHoldAt" >= ${since}) AS dead,
@@ -183,12 +187,14 @@ export async function readCoverageState(db: Db, options: { at: Date; horizons: C
         WHERE j."isActive" AND j."mergedIntoId" IS NULL AND j."countryCode" IS NOT NULL AND NOT (${publicJobSql(j, at)})
         GROUP BY j.id)
       SELECT c, p, CASE WHEN dead THEN 'LIEN_MORT' WHEN ceiling THEN 'COLLECTE' WHEN missed THEN 'NON_REVUE' ELSE 'FERMETURE_SOURCE' END AS cause,
-        CASE WHEN dead OR ceiling OR missed THEN held_source ELSE canon END AS s, ${phase(Prisma.sql`left_at`)} AS h, count(*)::int AS n
-      FROM np WHERE dead OR ceiling OR missed OR expired GROUP BY 1, 2, 3, 4, 5`);
+        CASE WHEN dead OR ceiling OR missed THEN held_source ELSE canon END AS s, canon, ${phase(Prisma.sql`left_at`)} AS h, count(*)::int AS n
+      FROM np WHERE dead OR ceiling OR missed OR expired GROUP BY 1, 2, 3, 4, 5, 6`);
     const grouped = await db.$queryRaw<Array<Cell & { s: string | null; h: Horizon; n: number }>>(Prisma.sql`
       SELECT j."companyId" AS c, j."countryCode" AS p, j."canonicalSourceKey" AS s, ${phase(Prisma.sql`j."updatedAt"`)} AS h, count(*)::int AS n
       FROM "Job" j WHERE j."mergedIntoId" IS NOT NULL AND j."updatedAt" >= ${since} AND j."updatedAt" <= ${at} AND j."countryCode" IS NOT NULL
       GROUP BY 1, 2, 3, 4`);
+    // La sortie compte pour la source canonique de l'offre (celle dont l'offre servie quitte le compte) ; l'action nomme la
+    // source qui a posé la retenue.
     const exit = (cell: Cell, cause: LossCause | null, source: string | null, h: Horizon, n: number) => entities.each(cell, e => {
       if (!cause) return;
       // Cumulé : une sortie de ce RUN compte aussi depuis le dernier RUN et depuis la fenêtre.
@@ -199,7 +205,7 @@ export async function readCoverageState(db: Db, options: { at: Date; horizons: C
       }
     });
     for (const row of lifecycle) exit(row, row.type === 'CLOSED' ? 'FERMETURE_SOURCE' : withdrawalCause(row.reason), row.s, row.h, row.n);
-    for (const row of held) exit(row, LOSS_CAUSES.includes(row.cause) ? row.cause : null, row.s, row.h, row.n);
+    for (const row of held) exit({ c: row.c, p: row.p, s: row.canon }, LOSS_CAUSES.includes(row.cause) ? row.cause : null, row.s, row.h, row.n);
     for (const row of grouped) exit(row, 'REGROUPEE', row.s, row.h, row.n);
   }
 
@@ -217,7 +223,8 @@ export async function readCoverageState(db: Db, options: { at: Date; horizons: C
       FROM unseen u LEFT JOIN LATERAL (SELECT sr.status, sr.note FROM "SourceRun" sr WHERE sr."sourceKey" = u.s AND ${notLightPass(Prisma.raw('sr'))}
         ORDER BY sr."ranAt" DESC LIMIT 1) r ON true
       GROUP BY 1, 2, 3, 4, 5`);
-    for (const row of threats) entities.each(row, e => {
+    // Une menace se juge à la source (`threatFindings`) : elle ne compte que pour la Maison et le marché.
+    for (const row of threats) entities.each({ c: row.c, p: row.p }, e => {
       e.threat.count += row.n;
       const existing = e.threat.sources.find(s => s.sourceKey === row.s);
       if (existing) { existing.count += row.n; if (row.seen && (!existing.lastSeenAt || row.seen < existing.lastSeenAt)) existing.lastSeenAt = row.seen; }
@@ -272,7 +279,7 @@ export async function readCoverageHistory(db: Db, at: Date): Promise<HistoryRun[
     const run = runs.get(row.takenAt.getTime()) ?? { takenAt: row.takenAt, served: new Map(), alerts: new Map(), labels: new Map() };
     runs.set(row.takenAt.getTime(), run);
     const key = row.scope === 'MAISON' ? canonicalCompany(companies.merges, row.key) : row.key;
-    const id = entityId(row.scope as EntityScope | 'SOURCE', key);
+    const id = entityId(row.scope as EntityScope, key);
     run.served.set(id, (run.served.get(id) ?? 0) + row.served);
     if (key === row.key) run.labels.set(id, row.label);
     else if (!run.labels.has(id)) run.labels.set(id, companies.names.get(key) ?? row.label);

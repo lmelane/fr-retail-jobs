@@ -81,13 +81,14 @@ afterEach(() => {
 });
 afterAll(async () => { await wipe(); await prisma.$disconnect(); });
 
-/** H&M : 20 offres ; Diptyque : 10 offres que le RUN n'a pas revues ; Swatch : 10 offres. */
+/** H&M : 30 offres ; Diptyque : 12 offres que le RUN n'a pas revues ; Swatch : 20 offres. Chaque perte de la scène
+ * atteint le plancher de la règle d'anomalie (D-518, `ANOMALY.floor`). */
 async function scene() {
   const hm = await company('hm', 'H&M'), dip = await company('dip', 'Diptyque'), sw = await company('sw', 'Swatch');
   const hmJobs = [], swJobs = [];
-  for (let i = 0; i < 20; i++) hmJobs.push(await offer(hm.id, 'cov-hm', 0.5));
-  for (let i = 0; i < 10; i++) await offer(dip.id, 'cov-dip', 30);
-  for (let i = 0; i < 10; i++) swJobs.push(await offer(sw.id, 'cov-sw', 0.5));
+  for (let i = 0; i < 30; i++) hmJobs.push(await offer(hm.id, 'cov-hm', 0.5));
+  for (let i = 0; i < 12; i++) await offer(dip.id, 'cov-dip', 30);
+  for (let i = 0; i < 20; i++) swJobs.push(await offer(sw.id, 'cov-sw', 0.5));
   await prisma.sourceRun.create({ data: { sourceKey: 'cov-dip', status: 'ERROR', jobs: 0, note: 'Access qualification refused', ranAt: ago(0.8) } });
   return { hm, dip, sw, hmJobs, swJobs };
 }
@@ -97,43 +98,48 @@ describe('le premier RUN qui masque, sans aucune photographie (CoverageSnapshot 
     const { hm, sw, hmJobs, swJobs } = await scene();
     expect(await prisma.coverageSnapshot.count()).toBe(0);
     const before = await readCoverageBefore(prisma);
-    await hold(hmJobs.slice(0, 8), 'MISSED_BY_CREDIBLE_COLLECTION');
-    await close(swJobs.slice(0, 6));
+    await hold(hmJobs.slice(0, 12), 'MISSED_BY_CREDIBLE_COLLECTION');
+    await close(swJobs.slice(0, 12));
     const review = await runCoverageReview(prisma, { before });
     expect(review.evaluation.referenceRuns).toBe(0);
     const byKey = new Map(review.evaluation.findings.map(f => [f.key, f]));
-    expect(byKey.get(hm.id)).toMatchObject({ kind: 'PERTE', basis: 'RUN', reference: 20, served: 12, lost: 8, cause: 'NON_REVUE',
-      gravity: 'A_VERIFIER', sources: [{ sourceKey: 'cov-hm', count: 8 }] });
-    expect(byKey.get(sw.id)).toMatchObject({ kind: 'PERTE', basis: 'RUN', lost: 6, cause: 'FERMETURE_SOURCE', gravity: 'INFORMATION' });
-    expect(byKey.get('cov-dip')).toMatchObject({ scope: 'SOURCE', kind: 'MENACE', lost: 10, cause: 'COLLECTE', gravity: 'A_REPARER',
+    expect(byKey.get(hm.id)).toMatchObject({ kind: 'PERTE', basis: 'RUN', reference: 30, served: 18, lost: 12, cause: 'NON_REVUE',
+      gravity: 'A_VERIFIER', sources: [{ sourceKey: 'cov-hm', count: 12 }] });
+    expect(byKey.get(sw.id)).toMatchObject({ kind: 'PERTE', basis: 'RUN', lost: 12, cause: 'FERMETURE_SOURCE', gravity: 'INFORMATION' });
+    expect(byKey.get('cov-dip')).toMatchObject({ scope: 'SOURCE', kind: 'MENACE', lost: 12, cause: 'COLLECTE', gravity: 'A_REPARER',
       sources: [expect.objectContaining({ status: 'ERROR' })] });
-    expect(review.evaluation.runExits).toEqual({ NON_REVUE: 8, FERMETURE_SOURCE: 6 });
-    expect(review.masked.total).toBe(8);
+    expect(review.evaluation.runExits).toEqual({ NON_REVUE: 12, FERMETURE_SOURCE: 12 });
+    // Le marché France perd 24 offres sur 62, dont 12 masquées : anormal, à vérifier. Les sources cov-hm et cov-sw, qui ne
+    // portent qu'une Maison chacune, ne sont pas redites ; leur ligne de photographie compte leurs offres servies.
+    expect(byKey.get('FR')).toMatchObject({ scope: 'MARCHE', lost: 24, gravity: 'A_VERIFIER' });
+    expect(review.evaluation.findings.filter(f => f.scope === 'SOURCE' && f.kind === 'PERTE')).toEqual([]);
+    expect(review.evaluation.rows.find(r => r.scope === 'SOURCE' && r.key === 'cov-hm')).toMatchObject({ served: 18 });
+    expect(review.masked.total).toBe(12);
     // Le bulletin part, puis la photographie porte l'alerte.
     expect(review.sent).toBe(true);
     expect(mails).toHaveLength(1);
-    expect(mails[0].subject).toBe('[Catwalks] Couverture : 1 à réparer, 1 à vérifier (1 pour information) · boucle candidat');
+    expect(mails[0].subject).toBe('[Catwalks] Couverture : 1 à réparer, 2 à vérifier (1 pour information) · boucle candidat');
     const row = await prisma.coverageSnapshot.findFirstOrThrow({ where: { takenAt: review.at, scope: 'MAISON', key: hm.id } });
-    expect(row).toMatchObject({ served: 12, reference: 20, cause: 'NON_REVUE', gravity: 'A_VERIFIER' });
+    expect(row).toMatchObject({ served: 18, reference: 30, cause: 'NON_REVUE', gravity: 'A_VERIFIER' });
   });
 
   it('une étape hors RUN qui masque part avec son bulletin (commandes `availability`, `probe-apply-links`)', async () => {
     const { hm, hmJobs } = await scene();
-    const outcome = await withCoverageReview(prisma, () => hold(hmJobs.slice(0, 8), 'MISSED_BY_CREDIBLE_COLLECTION'));
+    const outcome = await withCoverageReview(prisma, () => hold(hmJobs.slice(0, 12), 'MISSED_BY_CREDIBLE_COLLECTION'));
     expect(outcome.sent).toBe(true);
-    expect(outcome.review!.evaluation.findings.find(f => f.key === hm.id)).toMatchObject({ basis: 'RUN', lost: 8, gravity: 'A_VERIFIER' });
+    expect(outcome.review!.evaluation.findings.find(f => f.key === hm.id)).toMatchObject({ basis: 'RUN', lost: 12, gravity: 'A_VERIFIER' });
     expect(mails).toHaveLength(1);
   });
 
   it('un bulletin qui ne part pas ne marque aucune alerte : le RUN suivant la redit comme nouvelle', async () => {
     const { hm, hmJobs } = await scene();
     const before = await readCoverageBefore(prisma);
-    await hold(hmJobs.slice(0, 8), 'MISSED_BY_CREDIBLE_COLLECTION');
+    await hold(hmJobs.slice(0, 12), 'MISSED_BY_CREDIBLE_COLLECTION');
     vi.mocked(globalThis.fetch).mockResolvedValueOnce(new Response('quota', { status: 429 }));
     const failed = await runCoverageReview(prisma, { before });
     expect(failed.sent).toBe(false);
     expect(await prisma.coverageSnapshot.findFirstOrThrow({ where: { takenAt: failed.at, scope: 'MAISON', key: hm.id } }))
-      .toMatchObject({ served: 12, cause: null, gravity: null });
+      .toMatchObject({ served: 18, cause: null, gravity: null });
   });
 });
 
@@ -141,14 +147,14 @@ describe('la référence d’habitude, relue au RUN suivant', () => {
   it('suit la Maison absorbante, et reconnaît l’alerte en cours', async () => {
     const { hm, hmJobs } = await scene();
     const gmbh = await company('hm-gmbh', 'H & M Hennes & Mauritz GmbH', hm.id);
-    // Avant le rattachement (R-143 §5), H&M était photographiée en deux sociétés : 15 + 5.
-    for (const h of [72, 48, 24]) await snapshot(h, [['MAISON', hm.id, 15], ['MAISON', gmbh.id, 5]]);
-    await hold(hmJobs.slice(0, 8), 'MISSED_BY_CREDIBLE_COLLECTION');
+    // Avant le rattachement (R-143 §5), H&M était photographiée en deux sociétés : 22 + 8.
+    for (const h of [72, 48, 24]) await snapshot(h, [['MAISON', hm.id, 22], ['MAISON', gmbh.id, 8]]);
+    await hold(hmJobs.slice(0, 12), 'MISSED_BY_CREDIBLE_COLLECTION');
     const first = await runCoverageReview(prisma, {});
-    expect(first.evaluation.findings.find(f => f.key === hm.id)).toMatchObject({ basis: 'LAST', reference: 20, lost: 8, cause: 'NON_REVUE', ongoing: false });
+    expect(first.evaluation.findings.find(f => f.key === hm.id)).toMatchObject({ basis: 'LAST', reference: 30, lost: 12, cause: 'NON_REVUE', ongoing: false });
     const second = await runCoverageReview(prisma, { dryRun: true });
     expect(second.written).toBe(0);
-    // La perte d'habitude reste (médiane 20) ; elle est « en cours », plus nouvelle.
+    // La perte d'habitude reste (médiane 30) ; elle est « en cours », plus nouvelle.
     expect(second.evaluation.findings.find(f => f.key === hm.id)).toMatchObject({ ongoing: true });
   });
 

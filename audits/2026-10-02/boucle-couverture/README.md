@@ -42,6 +42,10 @@ et `mesure-cout` retirent du texte des requêtes la seule lecture des colonnes d
 
 ## Seuils retenus et pourquoi (`THRESHOLDS`, `apps/aggregator/src/coverage/coverageAlert.ts`)
 
+> **Remplacés le 02/10/2026 par la règle d'anomalie de D-518** (`ANOMALY`) : voir
+> [`../alerte-anomalie-d518/README.md`](../alerte-anomalie-d518/README.md). Le `rejeu.mts` de ce dossier importe
+> `THRESHOLDS` et ne se rejoue plus qu'à la révision `f753c04` (`git worktree add <dossier> f753c04`).
+
 | Entité | Significatif si | Mesure qui le fonde (`rejeu.out`, calibrage) |
 |---|---|---|
 | Maison | ≥ 5 offres **et** ≥ 30 %, **ou** ≥ 200 offres | plancher 10 : PICARD (6 sur 6) manqué ; 20 % : pertes « pour information » de 1-6 à 1-11 par jour, 82 alertes au masquage à blanc au lieu de 43 ; 30 % = le seuil de trou de la mesure R-143 §2 ; sans le volume de 200, Ulta (1 220 offres, 10,9 %) n'alerte pas |
