@@ -25,7 +25,7 @@ import type { LieuResolu } from './lieu';
  * parameters and match zero; dropping them would silently widen the search. */
 const publicSources = () => ({
   select: { sourceKey: true, externalId: true, sourceTier: true, isActive: true, url: true, expiresAt: true, sourceFacts: true, presentation: true, captureBatchId: true, captureOutputId: true,
-    lastSeenAt: true, availabilityHold: true } as const,
+    availabilityHold: true } as const,
   where: availableSourceWhere(),
 });
 
@@ -323,11 +323,11 @@ function toRow(row: {
   id: string; url: string; firstSeenAt: Date; withdrawnAt?: Date | null;
   canonicalSourceKey?: string | null; canonicalExternalId?: string | null;
   company: { id?: string; name: string; sector: string | null; parentGroup: string | null; domain: string | null; sectorCodes?: string[] };
-  sources: Array<ApplySource & PresentationSource & { lastSeenAt?: Date; availabilityHold?: string | null }>;
+  sources: Array<ApplySource & PresentationSource & { availabilityHold?: string | null }>;
 }, taxonomy: OptionalOccupationPresentation, historical = false, at = new Date()): JobRow {
   // R-143 §2 : le lien « Postuler » vient d'une publication confirmée quand l'offre en a une ; sinon, comme avant.
   const available = row.sources.filter(source => sourceIsAvailable(source, at));
-  const confirmed = available.filter(source => source.lastSeenAt && sourceIsConfirmed({ ...source, lastSeenAt: source.lastSeenAt }, at));
+  const confirmed = available.filter(source => sourceIsConfirmed(source, at));
   const live = confirmed.length ? confirmed : available;
   const publication = selectApplySource(live, row, at) ?? (historical ? row.sources.find(source => source.url === row.url) : undefined);
   const content = publication && publicationContentOf(publication);

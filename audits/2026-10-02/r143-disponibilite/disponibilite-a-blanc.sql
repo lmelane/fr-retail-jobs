@@ -4,13 +4,14 @@
 --
 -- « Servie avant » = le filtre public de 279e2ec (`publicJobSql` : offre active, non fusionnée, une représentation
 -- active non échue) + pays connu, comme la recherche. Trois règles comparées, au même instant :
---   A  plafond absolu : une représentation non revue depuis 72 h ne sert plus l'offre ;
+--   A  plafond : une représentation qu'une source ACTIVE n'a plus revue depuis 72 h ne sert plus l'offre (une source en
+--      pause garde ses offres : D-485, D-493, D-506) ;
 --   C  relatif seul : une représentation que la dernière collecte CRÉDIBLE de sa source n'a pas vue ne sert plus ;
 --   B  = C + A : la règle construite (`packages/db/availability.ts`, `apps/aggregator/src/pipeline/availability.ts`).
 -- Collecte crédible, reproduite en SQL (le code lit le manifeste scellé ; approximations signalées) : la DERNIÈRE
 -- tentative d'offres de la révision courante, source ACTIVE, admise, scellée EXTRACTED, achevée ; publiée > 0 ; non
--- tronquée, total annoncé non nul et lu à 90 % au moins (lus dans le SourceRun de la même collecte, approximation du
--- manifeste) ; pas d'effondrement (publiées >= moitié de la collecte productive précédente ; une chute confirmée par
+-- tronquée ; parcours non déclaré incomplet ; parcours prouvé complet OU total annoncé non nul lu à 90 % au moins
+-- (troncature, complétude et total lus dans le SourceRun de la même collecte, approximation du manifeste) ; pas d'effondrement (publiées >= moitié de la collecte productive précédente ; une chute confirmée par
 -- l'éditeur, D-484 §2, n'est pas reconnue ici : approximation prudente, elle masque moins) ; garde : pas plus de la
 -- moitié d'un stock d'au moins 10 représentations. « Vue » = parmi les sorties de la collecte (SourceExtraction) ; le
 -- code y ajoute les identifiants rejetés ou seulement énumérés : le SQL peut compter quelques « manquées » de plus.
@@ -33,16 +34,18 @@ faits AS (
       WHERE pb."sourceKey" = att.k AND p.published > 0 AND p."completedAt" < att."completedAt" AND p."batchId" <> att.b
       ORDER BY p."completedAt" DESC LIMIT 1) precedente,
     (SELECT r."declaredTotal" FROM "SourceRun" r WHERE r."sourceKey" = att.k AND r."ranAt" >= att.t ORDER BY r."ranAt" LIMIT 1) annonce,
-    (SELECT r.truncated FROM "SourceRun" r WHERE r."sourceKey" = att.k AND r."ranAt" >= att.t ORDER BY r."ranAt" LIMIT 1) tronquee
+    (SELECT r.truncated FROM "SourceRun" r WHERE r."sourceKey" = att.k AND r."ranAt" >= att.t ORDER BY r."ranAt" LIMIT 1) tronquee,
+    (SELECT r.complete FROM "SourceRun" r WHERE r."sourceKey" = att.k AND r."ranAt" >= att.t ORDER BY r."ranAt" LIMIT 1) complete
   FROM att),
 credible0 AS (
   SELECT k, b, t, achevee AND published > 0 AND coalesce(tronquee, false) = false AND coalesce(annonce, -1) <> 0
-    AND (annonce IS NULL OR fetched >= 0.9 * annonce) AND (precedente IS NULL OR published >= 0.5 * precedente) credible_collecte
+    AND complete IS DISTINCT FROM false AND (complete IS TRUE OR (annonce > 0 AND fetched >= 0.9 * annonce))
+    AND (precedente IS NULL OR published >= 0.5 * precedente) credible_collecte
   FROM faits),
 rep AS (
   SELECT js.id, js."jobId", js."sourceKey", js."lastSeenAt",
     (js."expiresAt" IS NULL OR js."expiresAt" > (now() AT TIME ZONE 'UTC')) dispo,
-    js."lastSeenAt" > (now() AT TIME ZONE 'UTC') - interval '72 hours' recente,
+    js."lastSeenAt" > (now() AT TIME ZONE 'UTC') - interval '72 hours' OR coalesce((SELECT x.status::text FROM "Source" x WHERE x.key = js."sourceKey"), '') <> 'ACTIVE' recente,
     c.credible_collecte AND js."lastSeenAt" < c.t AND NOT EXISTS (SELECT 1 FROM "SourceExtraction" e WHERE e."batchId" = c.b AND e."externalId" = js."externalId") manquee
   FROM "JobSource" js LEFT JOIN credible0 c ON c.k = js."sourceKey" WHERE js."isActive"),
 garde AS (SELECT "sourceKey", count(*) stock, count(*) FILTER (WHERE manquee) manquees FROM rep GROUP BY 1),
@@ -74,16 +77,18 @@ faits AS (
       WHERE pb."sourceKey" = att.k AND p.published > 0 AND p."completedAt" < att."completedAt" AND p."batchId" <> att.b
       ORDER BY p."completedAt" DESC LIMIT 1) precedente,
     (SELECT r."declaredTotal" FROM "SourceRun" r WHERE r."sourceKey" = att.k AND r."ranAt" >= att.t ORDER BY r."ranAt" LIMIT 1) annonce,
-    (SELECT r.truncated FROM "SourceRun" r WHERE r."sourceKey" = att.k AND r."ranAt" >= att.t ORDER BY r."ranAt" LIMIT 1) tronquee
+    (SELECT r.truncated FROM "SourceRun" r WHERE r."sourceKey" = att.k AND r."ranAt" >= att.t ORDER BY r."ranAt" LIMIT 1) tronquee,
+    (SELECT r.complete FROM "SourceRun" r WHERE r."sourceKey" = att.k AND r."ranAt" >= att.t ORDER BY r."ranAt" LIMIT 1) complete
   FROM att),
 credible0 AS (
   SELECT k, b, t, achevee AND published > 0 AND coalesce(tronquee, false) = false AND coalesce(annonce, -1) <> 0
-    AND (annonce IS NULL OR fetched >= 0.9 * annonce) AND (precedente IS NULL OR published >= 0.5 * precedente) credible_collecte
+    AND complete IS DISTINCT FROM false AND (complete IS TRUE OR (annonce > 0 AND fetched >= 0.9 * annonce))
+    AND (precedente IS NULL OR published >= 0.5 * precedente) credible_collecte
   FROM faits),
 rep AS (
   SELECT js.id, js."jobId", js."sourceKey", js."lastSeenAt",
     (js."expiresAt" IS NULL OR js."expiresAt" > (now() AT TIME ZONE 'UTC')) dispo,
-    js."lastSeenAt" > (now() AT TIME ZONE 'UTC') - interval '72 hours' recente,
+    js."lastSeenAt" > (now() AT TIME ZONE 'UTC') - interval '72 hours' OR coalesce((SELECT x.status::text FROM "Source" x WHERE x.key = js."sourceKey"), '') <> 'ACTIVE' recente,
     c.credible_collecte AND js."lastSeenAt" < c.t AND NOT EXISTS (SELECT 1 FROM "SourceExtraction" e WHERE e."batchId" = c.b AND e."externalId" = js."externalId") manquee
   FROM "JobSource" js LEFT JOIN credible0 c ON c.k = js."sourceKey" WHERE js."isActive"),
 garde AS (SELECT "sourceKey", count(*) stock, count(*) FILTER (WHERE manquee) manquees FROM rep GROUP BY 1),
@@ -115,16 +120,18 @@ faits AS (
       WHERE pb."sourceKey" = att.k AND p.published > 0 AND p."completedAt" < att."completedAt" AND p."batchId" <> att.b
       ORDER BY p."completedAt" DESC LIMIT 1) precedente,
     (SELECT r."declaredTotal" FROM "SourceRun" r WHERE r."sourceKey" = att.k AND r."ranAt" >= att.t ORDER BY r."ranAt" LIMIT 1) annonce,
-    (SELECT r.truncated FROM "SourceRun" r WHERE r."sourceKey" = att.k AND r."ranAt" >= att.t ORDER BY r."ranAt" LIMIT 1) tronquee
+    (SELECT r.truncated FROM "SourceRun" r WHERE r."sourceKey" = att.k AND r."ranAt" >= att.t ORDER BY r."ranAt" LIMIT 1) tronquee,
+    (SELECT r.complete FROM "SourceRun" r WHERE r."sourceKey" = att.k AND r."ranAt" >= att.t ORDER BY r."ranAt" LIMIT 1) complete
   FROM att),
 credible0 AS (
   SELECT k, b, t, achevee AND published > 0 AND coalesce(tronquee, false) = false AND coalesce(annonce, -1) <> 0
-    AND (annonce IS NULL OR fetched >= 0.9 * annonce) AND (precedente IS NULL OR published >= 0.5 * precedente) credible_collecte
+    AND complete IS DISTINCT FROM false AND (complete IS TRUE OR (annonce > 0 AND fetched >= 0.9 * annonce))
+    AND (precedente IS NULL OR published >= 0.5 * precedente) credible_collecte
   FROM faits),
 rep AS (
   SELECT js.id, js."jobId", js."sourceKey", js."lastSeenAt",
     (js."expiresAt" IS NULL OR js."expiresAt" > (now() AT TIME ZONE 'UTC')) dispo,
-    js."lastSeenAt" > (now() AT TIME ZONE 'UTC') - interval '72 hours' recente,
+    js."lastSeenAt" > (now() AT TIME ZONE 'UTC') - interval '72 hours' OR coalesce((SELECT x.status::text FROM "Source" x WHERE x.key = js."sourceKey"), '') <> 'ACTIVE' recente,
     c.credible_collecte AND js."lastSeenAt" < c.t AND NOT EXISTS (SELECT 1 FROM "SourceExtraction" e WHERE e."batchId" = c.b AND e."externalId" = js."externalId") manquee
   FROM "JobSource" js LEFT JOIN credible0 c ON c.k = js."sourceKey" WHERE js."isActive"),
 garde AS (SELECT "sourceKey", count(*) stock, count(*) FILTER (WHERE manquee) manquees FROM rep GROUP BY 1),
@@ -156,16 +163,18 @@ faits AS (
       WHERE pb."sourceKey" = att.k AND p.published > 0 AND p."completedAt" < att."completedAt" AND p."batchId" <> att.b
       ORDER BY p."completedAt" DESC LIMIT 1) precedente,
     (SELECT r."declaredTotal" FROM "SourceRun" r WHERE r."sourceKey" = att.k AND r."ranAt" >= att.t ORDER BY r."ranAt" LIMIT 1) annonce,
-    (SELECT r.truncated FROM "SourceRun" r WHERE r."sourceKey" = att.k AND r."ranAt" >= att.t ORDER BY r."ranAt" LIMIT 1) tronquee
+    (SELECT r.truncated FROM "SourceRun" r WHERE r."sourceKey" = att.k AND r."ranAt" >= att.t ORDER BY r."ranAt" LIMIT 1) tronquee,
+    (SELECT r.complete FROM "SourceRun" r WHERE r."sourceKey" = att.k AND r."ranAt" >= att.t ORDER BY r."ranAt" LIMIT 1) complete
   FROM att),
 credible0 AS (
   SELECT k, b, t, achevee AND published > 0 AND coalesce(tronquee, false) = false AND coalesce(annonce, -1) <> 0
-    AND (annonce IS NULL OR fetched >= 0.9 * annonce) AND (precedente IS NULL OR published >= 0.5 * precedente) credible_collecte
+    AND complete IS DISTINCT FROM false AND (complete IS TRUE OR (annonce > 0 AND fetched >= 0.9 * annonce))
+    AND (precedente IS NULL OR published >= 0.5 * precedente) credible_collecte
   FROM faits),
 rep AS (
   SELECT js.id, js."jobId", js."sourceKey", js."lastSeenAt",
     (js."expiresAt" IS NULL OR js."expiresAt" > (now() AT TIME ZONE 'UTC')) dispo,
-    js."lastSeenAt" > (now() AT TIME ZONE 'UTC') - interval '72 hours' recente,
+    js."lastSeenAt" > (now() AT TIME ZONE 'UTC') - interval '72 hours' OR coalesce((SELECT x.status::text FROM "Source" x WHERE x.key = js."sourceKey"), '') <> 'ACTIVE' recente,
     c.credible_collecte AND js."lastSeenAt" < c.t AND NOT EXISTS (SELECT 1 FROM "SourceExtraction" e WHERE e."batchId" = c.b AND e."externalId" = js."externalId") manquee
   FROM "JobSource" js LEFT JOIN credible0 c ON c.k = js."sourceKey" WHERE js."isActive"),
 garde AS (SELECT "sourceKey", count(*) stock, count(*) FILTER (WHERE manquee) manquees FROM rep GROUP BY 1),
@@ -197,16 +206,18 @@ faits AS (
       WHERE pb."sourceKey" = att.k AND p.published > 0 AND p."completedAt" < att."completedAt" AND p."batchId" <> att.b
       ORDER BY p."completedAt" DESC LIMIT 1) precedente,
     (SELECT r."declaredTotal" FROM "SourceRun" r WHERE r."sourceKey" = att.k AND r."ranAt" >= att.t ORDER BY r."ranAt" LIMIT 1) annonce,
-    (SELECT r.truncated FROM "SourceRun" r WHERE r."sourceKey" = att.k AND r."ranAt" >= att.t ORDER BY r."ranAt" LIMIT 1) tronquee
+    (SELECT r.truncated FROM "SourceRun" r WHERE r."sourceKey" = att.k AND r."ranAt" >= att.t ORDER BY r."ranAt" LIMIT 1) tronquee,
+    (SELECT r.complete FROM "SourceRun" r WHERE r."sourceKey" = att.k AND r."ranAt" >= att.t ORDER BY r."ranAt" LIMIT 1) complete
   FROM att),
 credible0 AS (
   SELECT k, b, t, achevee AND published > 0 AND coalesce(tronquee, false) = false AND coalesce(annonce, -1) <> 0
-    AND (annonce IS NULL OR fetched >= 0.9 * annonce) AND (precedente IS NULL OR published >= 0.5 * precedente) credible_collecte
+    AND complete IS DISTINCT FROM false AND (complete IS TRUE OR (annonce > 0 AND fetched >= 0.9 * annonce))
+    AND (precedente IS NULL OR published >= 0.5 * precedente) credible_collecte
   FROM faits),
 rep AS (
   SELECT js.id, js."jobId", js."sourceKey", js."lastSeenAt",
     (js."expiresAt" IS NULL OR js."expiresAt" > (now() AT TIME ZONE 'UTC')) dispo,
-    js."lastSeenAt" > (now() AT TIME ZONE 'UTC') - interval '72 hours' recente,
+    js."lastSeenAt" > (now() AT TIME ZONE 'UTC') - interval '72 hours' OR coalesce((SELECT x.status::text FROM "Source" x WHERE x.key = js."sourceKey"), '') <> 'ACTIVE' recente,
     c.credible_collecte AND js."lastSeenAt" < c.t AND NOT EXISTS (SELECT 1 FROM "SourceExtraction" e WHERE e."batchId" = c.b AND e."externalId" = js."externalId") manquee
   FROM "JobSource" js LEFT JOIN credible0 c ON c.k = js."sourceKey" WHERE js."isActive"),
 garde AS (SELECT "sourceKey", count(*) stock, count(*) FILTER (WHERE manquee) manquees FROM rep GROUP BY 1),
@@ -238,16 +249,18 @@ faits AS (
       WHERE pb."sourceKey" = att.k AND p.published > 0 AND p."completedAt" < att."completedAt" AND p."batchId" <> att.b
       ORDER BY p."completedAt" DESC LIMIT 1) precedente,
     (SELECT r."declaredTotal" FROM "SourceRun" r WHERE r."sourceKey" = att.k AND r."ranAt" >= att.t ORDER BY r."ranAt" LIMIT 1) annonce,
-    (SELECT r.truncated FROM "SourceRun" r WHERE r."sourceKey" = att.k AND r."ranAt" >= att.t ORDER BY r."ranAt" LIMIT 1) tronquee
+    (SELECT r.truncated FROM "SourceRun" r WHERE r."sourceKey" = att.k AND r."ranAt" >= att.t ORDER BY r."ranAt" LIMIT 1) tronquee,
+    (SELECT r.complete FROM "SourceRun" r WHERE r."sourceKey" = att.k AND r."ranAt" >= att.t ORDER BY r."ranAt" LIMIT 1) complete
   FROM att),
 credible0 AS (
   SELECT k, b, t, achevee AND published > 0 AND coalesce(tronquee, false) = false AND coalesce(annonce, -1) <> 0
-    AND (annonce IS NULL OR fetched >= 0.9 * annonce) AND (precedente IS NULL OR published >= 0.5 * precedente) credible_collecte
+    AND complete IS DISTINCT FROM false AND (complete IS TRUE OR (annonce > 0 AND fetched >= 0.9 * annonce))
+    AND (precedente IS NULL OR published >= 0.5 * precedente) credible_collecte
   FROM faits),
 rep AS (
   SELECT js.id, js."jobId", js."sourceKey", js."lastSeenAt",
     (js."expiresAt" IS NULL OR js."expiresAt" > (now() AT TIME ZONE 'UTC')) dispo,
-    js."lastSeenAt" > (now() AT TIME ZONE 'UTC') - interval '72 hours' recente,
+    js."lastSeenAt" > (now() AT TIME ZONE 'UTC') - interval '72 hours' OR coalesce((SELECT x.status::text FROM "Source" x WHERE x.key = js."sourceKey"), '') <> 'ACTIVE' recente,
     c.credible_collecte AND js."lastSeenAt" < c.t AND NOT EXISTS (SELECT 1 FROM "SourceExtraction" e WHERE e."batchId" = c.b AND e."externalId" = js."externalId") manquee
   FROM "JobSource" js LEFT JOIN credible0 c ON c.k = js."sourceKey" WHERE js."isActive"),
 garde AS (SELECT "sourceKey", count(*) stock, count(*) FILTER (WHERE manquee) manquees FROM rep GROUP BY 1),
@@ -279,16 +292,18 @@ faits AS (
       WHERE pb."sourceKey" = att.k AND p.published > 0 AND p."completedAt" < att."completedAt" AND p."batchId" <> att.b
       ORDER BY p."completedAt" DESC LIMIT 1) precedente,
     (SELECT r."declaredTotal" FROM "SourceRun" r WHERE r."sourceKey" = att.k AND r."ranAt" >= att.t ORDER BY r."ranAt" LIMIT 1) annonce,
-    (SELECT r.truncated FROM "SourceRun" r WHERE r."sourceKey" = att.k AND r."ranAt" >= att.t ORDER BY r."ranAt" LIMIT 1) tronquee
+    (SELECT r.truncated FROM "SourceRun" r WHERE r."sourceKey" = att.k AND r."ranAt" >= att.t ORDER BY r."ranAt" LIMIT 1) tronquee,
+    (SELECT r.complete FROM "SourceRun" r WHERE r."sourceKey" = att.k AND r."ranAt" >= att.t ORDER BY r."ranAt" LIMIT 1) complete
   FROM att),
 credible0 AS (
   SELECT k, b, t, achevee AND published > 0 AND coalesce(tronquee, false) = false AND coalesce(annonce, -1) <> 0
-    AND (annonce IS NULL OR fetched >= 0.9 * annonce) AND (precedente IS NULL OR published >= 0.5 * precedente) credible_collecte
+    AND complete IS DISTINCT FROM false AND (complete IS TRUE OR (annonce > 0 AND fetched >= 0.9 * annonce))
+    AND (precedente IS NULL OR published >= 0.5 * precedente) credible_collecte
   FROM faits),
 rep AS (
   SELECT js.id, js."jobId", js."sourceKey", js."lastSeenAt",
     (js."expiresAt" IS NULL OR js."expiresAt" > (now() AT TIME ZONE 'UTC')) dispo,
-    js."lastSeenAt" > (now() AT TIME ZONE 'UTC') - interval '72 hours' recente,
+    js."lastSeenAt" > (now() AT TIME ZONE 'UTC') - interval '72 hours' OR coalesce((SELECT x.status::text FROM "Source" x WHERE x.key = js."sourceKey"), '') <> 'ACTIVE' recente,
     c.credible_collecte AND js."lastSeenAt" < c.t AND NOT EXISTS (SELECT 1 FROM "SourceExtraction" e WHERE e."batchId" = c.b AND e."externalId" = js."externalId") manquee
   FROM "JobSource" js LEFT JOIN credible0 c ON c.k = js."sourceKey" WHERE js."isActive"),
 garde AS (SELECT "sourceKey", count(*) stock, count(*) FILTER (WHERE manquee) manquees FROM rep GROUP BY 1),
@@ -328,16 +343,18 @@ faits AS (
       WHERE pb."sourceKey" = att.k AND p.published > 0 AND p."completedAt" < att."completedAt" AND p."batchId" <> att.b
       ORDER BY p."completedAt" DESC LIMIT 1) precedente,
     (SELECT r."declaredTotal" FROM "SourceRun" r WHERE r."sourceKey" = att.k AND r."ranAt" >= att.t ORDER BY r."ranAt" LIMIT 1) annonce,
-    (SELECT r.truncated FROM "SourceRun" r WHERE r."sourceKey" = att.k AND r."ranAt" >= att.t ORDER BY r."ranAt" LIMIT 1) tronquee
+    (SELECT r.truncated FROM "SourceRun" r WHERE r."sourceKey" = att.k AND r."ranAt" >= att.t ORDER BY r."ranAt" LIMIT 1) tronquee,
+    (SELECT r.complete FROM "SourceRun" r WHERE r."sourceKey" = att.k AND r."ranAt" >= att.t ORDER BY r."ranAt" LIMIT 1) complete
   FROM att),
 credible0 AS (
   SELECT k, b, t, achevee AND published > 0 AND coalesce(tronquee, false) = false AND coalesce(annonce, -1) <> 0
-    AND (annonce IS NULL OR fetched >= 0.9 * annonce) AND (precedente IS NULL OR published >= 0.5 * precedente) credible_collecte
+    AND complete IS DISTINCT FROM false AND (complete IS TRUE OR (annonce > 0 AND fetched >= 0.9 * annonce))
+    AND (precedente IS NULL OR published >= 0.5 * precedente) credible_collecte
   FROM faits),
 rep AS (
   SELECT js.id, js."jobId", js."sourceKey", js."lastSeenAt",
     (js."expiresAt" IS NULL OR js."expiresAt" > (now() AT TIME ZONE 'UTC')) dispo,
-    js."lastSeenAt" > (now() AT TIME ZONE 'UTC') - interval '72 hours' recente,
+    js."lastSeenAt" > (now() AT TIME ZONE 'UTC') - interval '72 hours' OR coalesce((SELECT x.status::text FROM "Source" x WHERE x.key = js."sourceKey"), '') <> 'ACTIVE' recente,
     c.credible_collecte AND js."lastSeenAt" < c.t AND NOT EXISTS (SELECT 1 FROM "SourceExtraction" e WHERE e."batchId" = c.b AND e."externalId" = js."externalId") manquee
   FROM "JobSource" js LEFT JOIN credible0 c ON c.k = js."sourceKey" WHERE js."isActive"),
 garde AS (SELECT "sourceKey", count(*) stock, count(*) FILTER (WHERE manquee) manquees FROM rep GROUP BY 1),
@@ -370,16 +387,18 @@ faits AS (
       WHERE pb."sourceKey" = att.k AND p.published > 0 AND p."completedAt" < att."completedAt" AND p."batchId" <> att.b
       ORDER BY p."completedAt" DESC LIMIT 1) precedente,
     (SELECT r."declaredTotal" FROM "SourceRun" r WHERE r."sourceKey" = att.k AND r."ranAt" >= att.t ORDER BY r."ranAt" LIMIT 1) annonce,
-    (SELECT r.truncated FROM "SourceRun" r WHERE r."sourceKey" = att.k AND r."ranAt" >= att.t ORDER BY r."ranAt" LIMIT 1) tronquee
+    (SELECT r.truncated FROM "SourceRun" r WHERE r."sourceKey" = att.k AND r."ranAt" >= att.t ORDER BY r."ranAt" LIMIT 1) tronquee,
+    (SELECT r.complete FROM "SourceRun" r WHERE r."sourceKey" = att.k AND r."ranAt" >= att.t ORDER BY r."ranAt" LIMIT 1) complete
   FROM att),
 credible0 AS (
   SELECT k, b, t, achevee AND published > 0 AND coalesce(tronquee, false) = false AND coalesce(annonce, -1) <> 0
-    AND (annonce IS NULL OR fetched >= 0.9 * annonce) AND (precedente IS NULL OR published >= 0.5 * precedente) credible_collecte
+    AND complete IS DISTINCT FROM false AND (complete IS TRUE OR (annonce > 0 AND fetched >= 0.9 * annonce))
+    AND (precedente IS NULL OR published >= 0.5 * precedente) credible_collecte
   FROM faits),
 rep AS (
   SELECT js.id, js."jobId", js."sourceKey", js."lastSeenAt",
     (js."expiresAt" IS NULL OR js."expiresAt" > (now() AT TIME ZONE 'UTC')) dispo,
-    js."lastSeenAt" > (now() AT TIME ZONE 'UTC') - interval '72 hours' recente,
+    js."lastSeenAt" > (now() AT TIME ZONE 'UTC') - interval '72 hours' OR coalesce((SELECT x.status::text FROM "Source" x WHERE x.key = js."sourceKey"), '') <> 'ACTIVE' recente,
     c.credible_collecte AND js."lastSeenAt" < c.t AND NOT EXISTS (SELECT 1 FROM "SourceExtraction" e WHERE e."batchId" = c.b AND e."externalId" = js."externalId") manquee
   FROM "JobSource" js LEFT JOIN credible0 c ON c.k = js."sourceKey" WHERE js."isActive"),
 garde AS (SELECT "sourceKey", count(*) stock, count(*) FILTER (WHERE manquee) manquees FROM rep GROUP BY 1),
@@ -412,16 +431,18 @@ faits AS (
       WHERE pb."sourceKey" = att.k AND p.published > 0 AND p."completedAt" < att."completedAt" AND p."batchId" <> att.b
       ORDER BY p."completedAt" DESC LIMIT 1) precedente,
     (SELECT r."declaredTotal" FROM "SourceRun" r WHERE r."sourceKey" = att.k AND r."ranAt" >= att.t ORDER BY r."ranAt" LIMIT 1) annonce,
-    (SELECT r.truncated FROM "SourceRun" r WHERE r."sourceKey" = att.k AND r."ranAt" >= att.t ORDER BY r."ranAt" LIMIT 1) tronquee
+    (SELECT r.truncated FROM "SourceRun" r WHERE r."sourceKey" = att.k AND r."ranAt" >= att.t ORDER BY r."ranAt" LIMIT 1) tronquee,
+    (SELECT r.complete FROM "SourceRun" r WHERE r."sourceKey" = att.k AND r."ranAt" >= att.t ORDER BY r."ranAt" LIMIT 1) complete
   FROM att),
 credible0 AS (
   SELECT k, b, t, achevee AND published > 0 AND coalesce(tronquee, false) = false AND coalesce(annonce, -1) <> 0
-    AND (annonce IS NULL OR fetched >= 0.9 * annonce) AND (precedente IS NULL OR published >= 0.5 * precedente) credible_collecte
+    AND complete IS DISTINCT FROM false AND (complete IS TRUE OR (annonce > 0 AND fetched >= 0.9 * annonce))
+    AND (precedente IS NULL OR published >= 0.5 * precedente) credible_collecte
   FROM faits),
 rep AS (
   SELECT js.id, js."jobId", js."sourceKey", js."lastSeenAt",
     (js."expiresAt" IS NULL OR js."expiresAt" > (now() AT TIME ZONE 'UTC')) dispo,
-    js."lastSeenAt" > (now() AT TIME ZONE 'UTC') - interval '72 hours' recente,
+    js."lastSeenAt" > (now() AT TIME ZONE 'UTC') - interval '72 hours' OR coalesce((SELECT x.status::text FROM "Source" x WHERE x.key = js."sourceKey"), '') <> 'ACTIVE' recente,
     c.credible_collecte AND js."lastSeenAt" < c.t AND NOT EXISTS (SELECT 1 FROM "SourceExtraction" e WHERE e."batchId" = c.b AND e."externalId" = js."externalId") manquee
   FROM "JobSource" js LEFT JOIN credible0 c ON c.k = js."sourceKey" WHERE js."isActive"),
 garde AS (SELECT "sourceKey", count(*) stock, count(*) FILTER (WHERE manquee) manquees FROM rep GROUP BY 1),

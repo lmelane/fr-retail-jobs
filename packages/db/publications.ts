@@ -42,19 +42,21 @@ export type AuthoritySource = ApplySource & { publisherClosedAt?: Date | null };
  * R-143 §3 (D-513) — LA FERMETURE PAR LA SOURCE OFFICIELLE FAIT FOI.
  *
  * Rend la représentation officielle dont la source a elle-même prouvé la fin (`publisherClosedAt` : absence d'une
- * énumération prouvée, retrait natif « fermée », ou échéance déclarée atteinte) quand elle est de rang STRICTEMENT
- * supérieur à toutes les représentations encore disponibles : une source de rang inférieur (un job board, ou un
- * portail officiel de rang inférieur) ne maintient plus l'offre en vie. Rien quand une représentation de même rang
- * ou de rang supérieur reste disponible, ou quand la fin n'est pas prouvée par la source (retrait administratif d'une
- * source, retenue, quarantaine) : ces gestes ne disent rien de l'offre de la Maison.
+ * énumération prouvée, retrait natif « fermée », ou échéance déclarée atteinte) quand plus AUCUNE représentation
+ * officielle n'est disponible : un job board ou un agrégateur (« une source secondaire », D-513) ne maintient plus
+ * l'offre en vie. Rien quand une autre représentation officielle reste disponible : deux canaux de la Maison qui se
+ * contredisent (Richemont publie la même offre sur deux sites du même tenant Workday, l'un l'a retirée, l'autre la
+ * montre) ne se départagent pas par le rang du registre ; c'est une question ouverte au CEO. Rien non plus quand la
+ * fin n'est pas prouvée par la source (retrait administratif, retenue, quarantaine).
  *
  * L'offre se rouvre d'elle-même quand l'officiel la republie : la représentation redevient disponible et l'écrivain
  * efface `publisherClosedAt` (`dedup/upsert.ts`).
  */
 export function authorityClosure<T extends AuthoritySource>(sources: readonly T[], at = new Date()): T | undefined {
-  const best = Math.min(...sources.filter(s => sourceIsAvailable(s, at)).map(s => rank(s.sourceTier)));
+  const available = sources.filter(s => sourceIsAvailable(s, at));
+  if (!available.length || available.some(s => OFFICIAL_TIERS.has(s.sourceTier))) return undefined;
   return sources
-    .filter(s => OFFICIAL_TIERS.has(s.sourceTier) && !sourceIsAvailable(s, at) && rank(s.sourceTier) < best &&
+    .filter(s => OFFICIAL_TIERS.has(s.sourceTier) && !sourceIsAvailable(s, at) &&
       (s.publisherClosedAt != null || (s.expiresAt != null && s.expiresAt <= at)))
     .sort((a, b) => rank(a.sourceTier) - rank(b.sourceTier) || a.sourceKey.localeCompare(b.sourceKey) || a.externalId.localeCompare(b.externalId))[0];
 }

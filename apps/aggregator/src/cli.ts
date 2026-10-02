@@ -109,7 +109,7 @@ try {
     const geo = await runGeocode(prisma);
     // The daily worker owns lifecycle maintenance too. A failed/partial source
     // cannot attest absence: the existing refresh proof reader and mass-closure
-    // guard remain authoritative. Paused sources retain their publications.
+    // guard remain authoritative. Paused sources retain their publications, served (D-485, D-493, D-506).
     const activeSources = await prisma.source.findMany({ where: { status: 'ACTIVE' }, select: { key: true } });
     const refresh = await runRefresh(prisma, { onlyKeys: activeSources.map(source => source.key) });
     await log.info('refresh.completed', { command, ...refresh });
@@ -118,11 +118,11 @@ try {
       await log.error('command.failed', '[refresh] mass-closure guard refused lifecycle maintenance');
       process.exitCode = 1;
     }
-    // La garde du zéro annoncé (R-143) n'a rien appliqué pour ces sources : chacune est une anomalie à instruire.
+    // La garde du zéro annoncé (R-143) n'a rien appliqué pour ces sources : chacune est une anomalie à instruire,
+    // journalisée (`refresh.source_anomaly`) et visible au bilan. Elle ne rend pas le RUN rouge : ajouter un motif de
+    // blocage du RUN appartient au CEO (D-453, D-480, D-484, D-491).
     if (refresh.anomalousSources.length > 0) {
-      fatalFailure = true;
-      await log.error('command.failed', `[refresh] mass-absence guard kept the offers of: ${refresh.anomalousSources.join(', ')}`);
-      process.exitCode = 1;
+      await log.error('refresh.anomalies', `[refresh] mass-absence guard kept the offers of: ${refresh.anomalousSources.join(', ')}`);
     }
     // R-143 §2 : la confiance avant le volume. Rien n'est fermé ; une offre non reconfirmée ou au lien mort quitte
     // l'expérience candidat et y revient dès que sa source la revoit.
@@ -204,7 +204,6 @@ try {
     if (refresh.unverifiableSources.length > 0) {
       await log.error('command.failed', `[refresh] left offers of broken sources open: ${refresh.unverifiableSources.join(', ')}`);
     }
-    if (refresh.anomalousSources.length > 0) process.exitCode = 1;
   } else if (command === 'direct-sync') {
     /**
      * Lot 6 (D-423) — la copie de lecture des offres Catwalks : consomme le

@@ -1,0 +1,14 @@
+Z1 runs a zero annonce (declaredTotal=0) apres un passe productif, tout l historique SourceRun
+sourceKey | stock_precedent_max | runs
+lucy-yak | 2 | 4
+chrome | 1 | 8
+cuyana | 1 | 7
+bernadette | 1 | 8
+loplabbet | 1 | 7
+margaret-howell | 1 | 4
+fjallraven | 1 | 7
+(7 rows)
+Z2 distribution du stock actif par source
+sources | ge10 | ge20 | ge50
+411 | 298 | 232 | 152
+(1 row)

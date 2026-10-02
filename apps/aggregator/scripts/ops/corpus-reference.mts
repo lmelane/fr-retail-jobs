@@ -98,8 +98,9 @@ if (!url) {
 /**
  * L'ÉLIGIBILITÉ, écrite une fois et réutilisée partout.
  *
- * Recopie exacte de `publicJobSql` (packages/db/availability.ts:18) — la même condition que la
- * recherche applique. Deux formulations divergentes du même critère produiraient deux corpus qui
+ * Recopie de `publicJobSql` (packages/db/availability.ts) d'AVANT R-143 : depuis la migration 20261002140000, la
+ * recherche exclut aussi les représentations retenues (`availabilityHold`). À aligner une fois la migration en
+ * production (la colonne n'existe pas avant). Deux formulations divergentes du même critère produiraient deux corpus qui
  * se ressembleraient assez pour qu'on ne voie pas la différence.
  */
 const ELIGIBLE = `j."isActive" AND j."mergedIntoId" IS NULL AND EXISTS (

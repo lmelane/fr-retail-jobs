@@ -115,12 +115,24 @@ describe('R-143 §3 — la fermeture prouvée par la source officielle ferme l�
   it('le stock d’avant la règle : une fin officielle déjà prouvée ferme l’offre au refresh suivant', async () => {
     const c = await resolvedCompany(prisma, 'richemont-like');
     const job = await offer(c.id, [
-      { sourceKey: 'richemont-like', ext: 'r1', hoursAgo: 1, tier: 'ATS_OFFICIAL' },
+      { sourceKey: 'agregateur', ext: 'a1', hoursAgo: 1, tier: 'AGGREGATOR' },
       { sourceKey: 'groupe-portail', ext: 'g1', hoursAgo: 90, tier: 'GROUP_OFFICIAL', isActive: false, publisherClosedAt: new Date(Date.now() - 80 * 3_600_000) },
     ]);
     const refresh = await runRefresh(prisma);
     expect(refresh.authorityClosed).toBe(1);
     expect(await prisma.job.findUniqueOrThrow({ where: { id: job.id } })).toMatchObject({ isActive: false });
+  });
+
+  it('deux canaux officiels qui se contredisent (le cas Richemont) : l’offre reste ouverte, c’est une question au CEO', async () => {
+    // Mesuré le 02/10 : `richemont-workday` (GROUP_OFFICIAL, site « Richemont ») a retiré 16 offres que `richemont`
+    // (ATS_OFFICIAL, site « broadbean_external » du MÊME tenant Workday) publie encore.
+    const c = await resolvedCompany(prisma, 'richemont-like');
+    const job = await offer(c.id, [
+      { sourceKey: 'richemont-like', ext: 'r1', hoursAgo: 1, tier: 'ATS_OFFICIAL' },
+      { sourceKey: 'groupe-portail', ext: 'g1', hoursAgo: 90, tier: 'GROUP_OFFICIAL', isActive: false, publisherClosedAt: new Date(Date.now() - 80 * 3_600_000) },
+    ]);
+    expect((await runRefresh(prisma)).authorityClosed).toBe(0);
+    expect(await prisma.job.findUniqueOrThrow({ where: { id: job.id } })).toMatchObject({ isActive: true });
   });
 
   it('un retrait administratif (sans preuve de la source) ne ferme rien', async () => {
@@ -168,18 +180,35 @@ describe('R-143 §2 — une offre non reconfirmée sort de l’expérience sans 
     expect(await prisma.job.count({ where: publicJobWhere() })).toBe(12);
   });
 
-  it('le plafond : une représentation non revue depuis 72 h ne sert plus, sans rien fermer', async () => {
+  it('le plafond : une source active qui n’a plus revu une représentation depuis 72 h la retient, sans rien fermer', async () => {
+    await qualifiedSource(prisma, 'silencieuse');
     const c = await resolvedCompany(prisma, 'silencieuse');
     const fresh = await offer(c.id, [{ sourceKey: 'silencieuse', ext: 'f', hoursAgo: 47 }]);
     const old = await offer(c.id, [{ sourceKey: 'silencieuse', ext: 'o', hoursAgo: 73 }]);
+    // Aucun délai n'est lu à la requête : avant la revue du RUN, les deux sont servies (un RUN arrêté ne retire rien).
+    expect(await served()).toEqual([fresh.id, old.id].sort());
+    expect(await servedSql()).toEqual([fresh.id, old.id].sort());
+    const review = await runAvailabilityReview(prisma);
+    expect(review.sources.find(source => source.sourceKey === 'silencieuse')).toMatchObject({ ceilingHeld: 1 });
     expect(await served()).toEqual([fresh.id]);
     expect(await servedSql()).toEqual([fresh.id]);
     expect(await prisma.job.findUniqueOrThrow({ where: { id: old.id } })).toMatchObject({ isActive: true });
   });
 
+  it('une source en pause garde ses offres servies (D-485, D-493, D-506)', async () => {
+    await qualifiedSource(prisma, 'en-pause');
+    await prisma.source.update({ where: { key: 'en-pause' }, data: { status: 'PAUSED' } });
+    const c = await resolvedCompany(prisma, 'en-pause');
+    const old = await offer(c.id, [{ sourceKey: 'en-pause', ext: 'p', hoursAgo: 200 }]);
+    expect((await runAvailabilityReview(prisma)).held).toBe(0);
+    expect(await served()).toEqual([old.id]);
+  });
+
   it('une seconde représentation confirmée garde l’offre servie', async () => {
+    await qualifiedSource(prisma, 'double');
     const c = await resolvedCompany(prisma, 'double');
     const job = await offer(c.id, [{ sourceKey: 'double', ext: 'd', hoursAgo: 80 }, { sourceKey: 'double-board', ext: 'w', hoursAgo: 2, tier: 'SPECIALIST_JOBBOARD' }]);
+    expect((await runAvailabilityReview(prisma)).held).toBe(1);
     expect(await served()).toEqual([job.id]);
   });
 });

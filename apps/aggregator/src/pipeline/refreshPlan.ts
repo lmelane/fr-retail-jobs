@@ -52,7 +52,8 @@ export type AttestationFacts = {
  * TROIS NOTIONS SÉPARÉES, et la cardinalité n'en décide AUCUNE. Les confondre créait une contradiction :
  * un board réellement vide, dont la terminaison est démontrée, était traité comme un contrat rompu — alors
  * que « la source ne publie plus rien » est une preuve parfaitement valide, et même la seule qui justifie de
- * fermer tout un board.
+ * fermer tout un board — pour une petite source : au-delà de 10 représentations, `massAbsenceGuard` (R-143) refuse
+ * de l'appliquer et classe la source en anomalie.
  */
 export type EnumerationEvidence = {
   sourceKey: string;

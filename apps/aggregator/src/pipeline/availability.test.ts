@@ -19,9 +19,14 @@ describe('collectionReconfirms', () => {
     [{ truncated: true }, /tronquée/],
     [{ declaredTotal: 0, fetched: 0, published: 0 }, /zéro annoncé/],
     [{ declaredTotal: 1935, fetched: 1000, published: 1000 }, /lecture partielle/],
-    [{ declaredTotal: null, published: 900, previous: 1942 }, /effondrement/],
+    [{ complete: true, declaredTotal: null, published: 900, previous: 1942 }, /effondrement/],
+    [{ complete: false }, /incomplet/],
+    [{ declaredTotal: null }, /ni parcours prouvé, ni total annoncé/],
   ])('refuse %o', (over, motif) => {
     expect(collectionReconfirms(facts(over))).toMatch(motif);
+  });
+  it('un parcours prouvé complet sans total annoncé est crédible', () => {
+    expect(collectionReconfirms(facts({ complete: true, declaredTotal: null }))).toBeNull();
   });
   it('une chute confirmée par l’éditeur (D-484 §2) reste crédible', () => {
     expect(collectionReconfirms(facts({ declaredTotal: 60, fetched: 60, published: 60, previous: 121, confirmedDrop: { previousDeclaredTotal: 122 } }))).toBeNull();

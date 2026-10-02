@@ -2,15 +2,16 @@
 -- Rejouer (jamais entre 15:30 et 18:30 UTC) :
 --   python3 apps/aggregator/scripts/ops/db.py readonly sh -c 'psql "$DATABASE_URL" -X -A -F" | " -f <ce fichier>'
 -- A1 reproduit le rattrapage de la migration 20261002140000 (publisherClosedAt des représentations désactivées sur
--- preuve par le refresh, non revues depuis) puis la règle `authorityClosure` (packages/db/publications.ts) : une offre
--- active dont une représentation officielle (EMPLOYER_DIRECT, GROUP_OFFICIAL, ATS_OFFICIAL) a une fin prouvée par sa
--- source (ou une échéance atteinte) et est de rang STRICTEMENT supérieur à toutes ses représentations disponibles.
+-- preuve par le refresh, non revues depuis) : les offres actives dont une représentation officielle (EMPLOYER_DIRECT,
+-- GROUP_OFFICIAL, ATS_OFFICIAL) a une fin prouvée par sa source et est de rang supérieur à toutes les disponibles.
+-- A1b applique la règle construite `authorityClosure` (packages/db/publications.ts) : la fin officielle ferme l'offre
+-- quand plus AUCUNE représentation officielle n'est disponible (un job board ou un agrégateur ne la maintient pas).
 -- A3 rejoue Q16 de comparaison-indeed : les jumeaux WTTJ hors regroupement (autre offre, même Maison/intitulé/ville).
 \timing on
 SET statement_timeout = '180s';
 SHOW default_transaction_read_only;
 
-\echo A1 offres que l autorite fermerait au prochain refresh, par source fermee et source qui les garde
+\echo A1 offres dont une representation officielle a une fin prouvee et qu une representation de rang inferieur garde ouverte (avant arbitrage)
 WITH r(tier, rk) AS (VALUES ('EMPLOYER_DIRECT', 0), ('GROUP_OFFICIAL', 1), ('ATS_OFFICIAL', 2), ('SPECIALIST_JOBBOARD', 3), ('AGGREGATOR', 4)),
 preuve AS (
   SELECT DISTINCT ON (d.id) d.id, dc."createdAt" at FROM "DataCorrection" dc
@@ -27,6 +28,23 @@ j AS (
   FROM "Job" j JOIN rep ON rep."jobId" = j.id WHERE j."isActive" AND j."mergedIntoId" IS NULL GROUP BY j.id)
 SELECT fermee_par, "canonicalSourceKey" garde, count(*) offres, count(*) FILTER (WHERE "countryCode" IS NOT NULL) servies
 FROM j WHERE meilleure_fin IS NOT NULL AND meilleur_dispo IS NOT NULL AND meilleure_fin < meilleur_dispo GROUP BY 1,2 ORDER BY 3 DESC;
+\echo A1b dont celles que la regle construite ferme : aucune representation officielle (rang 0-2) n est encore disponible
+WITH r(tier, rk) AS (VALUES ('EMPLOYER_DIRECT', 0), ('GROUP_OFFICIAL', 1), ('ATS_OFFICIAL', 2), ('SPECIALIST_JOBBOARD', 3), ('AGGREGATOR', 4)),
+preuve AS (
+  SELECT DISTINCT ON (d.id) d.id, dc."createdAt" at FROM "DataCorrection" dc
+  CROSS JOIN LATERAL jsonb_array_elements_text(CASE WHEN jsonb_typeof(dc.evidence->'deactivatedIds') = 'array' THEN dc.evidence->'deactivatedIds' ELSE '[]'::jsonb END) d(id)
+  WHERE dc.finding = 'REFRESH_LIFECYCLE' AND dc.evidence->>'outcome' = 'APPLIED' ORDER BY d.id, dc."createdAt" DESC),
+rep AS (
+  SELECT js.*, rk.rk, (js."isActive" AND (js."expiresAt" IS NULL OR js."expiresAt" > (now() AT TIME ZONE 'UTC'))) dispo,
+    (NOT js."isActive" AND p.at IS NOT NULL AND js."lastSeenAt" < p.at) OR (js."expiresAt" IS NOT NULL AND js."expiresAt" <= (now() AT TIME ZONE 'UTC')) fin_prouvee
+  FROM "JobSource" js JOIN r rk ON rk.tier = js."sourceTier" LEFT JOIN preuve p ON p.id = js.id),
+j AS (
+  SELECT j.id, j."countryCode", j."canonicalSourceKey", min(rep.rk) FILTER (WHERE rep.dispo) meilleur_dispo,
+    min(rep.rk) FILTER (WHERE NOT rep.dispo AND rep.fin_prouvee AND rep.rk <= 2) meilleure_fin,
+    (array_agg(rep."sourceKey" ORDER BY rep.rk) FILTER (WHERE NOT rep.dispo AND rep.fin_prouvee AND rep.rk <= 2))[1] fermee_par
+  FROM "Job" j JOIN rep ON rep."jobId" = j.id WHERE j."isActive" AND j."mergedIntoId" IS NULL GROUP BY j.id)
+SELECT fermee_par, "canonicalSourceKey" garde, count(*) offres, count(*) FILTER (WHERE "countryCode" IS NOT NULL) servies
+FROM j WHERE meilleure_fin IS NOT NULL AND meilleur_dispo IS NOT NULL AND meilleur_dispo > 2 GROUP BY 1,2 ORDER BY 3 DESC;
 
 \echo A2 offres de A1 a echeance seulement (sans preuve d absence)
 WITH r(tier, rk) AS (VALUES ('EMPLOYER_DIRECT', 0), ('GROUP_OFFICIAL', 1), ('ATS_OFFICIAL', 2), ('SPECIALIST_JOBBOARD', 3), ('AGGREGATOR', 4))

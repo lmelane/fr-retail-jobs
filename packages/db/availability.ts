@@ -9,16 +9,15 @@ import { Prisma } from '@prisma/client';
  *     Une représentation disponible mais non reconfirmée sort de la recherche, de l'accueil et des alertes, sans être
  *     fermée, et y revient dès que sa source la revoit.
  *
- * Une représentation n'est plus confirmée quand :
- *   1. elle porte une retenue de disponibilité (`availabilityHold`) : une collecte crédible de sa source ne l'a pas vue
- *      (NOT_RECONFIRMED), ou la sonde a lu une page de candidature morte (APPLY_LINK_DEAD). Chaque écrivain qui la revoit
- *      efface la retenue (`dedup/upsert.ts`), et la revue de disponibilité du RUN efface celles que `lastSeenAt` a
- *      dépassées (`pipeline/availability.ts`) ;
- *   2. ou elle n'a pas été revue depuis `CONFIRMATION_CEILING_HOURS`, quelle qu'en soit la raison (source en panne, en
- *      pause, retenue sans motif) : le plafond absolu.
+ * Une représentation n'est plus confirmée quand elle porte une retenue de disponibilité (`availabilityHold`), posée par le
+ * RUN (`apps/aggregator/src/pipeline/availability.ts`, `applyLinkProbe.ts`) : une collecte crédible de sa source ne l'a
+ * pas vue, ou sa source active ne l'a plus revue depuis 72 h (NOT_RECONFIRMED), ou la sonde a lu une page de candidature
+ * morte (APPLY_LINK_DEAD). Chaque écrivain qui la revoit efface la retenue (`dedup/upsert.ts`), et la revue du RUN
+ * efface celles que `lastSeenAt` a dépassées.
+ *
+ * JAMAIS DE DÉLAI D'HORLOGE ICI : un délai lu à la requête viderait le catalogue entier si le RUN s'arrêtait trois jours
+ * (pause, panne du worker). Seul un RUN qui tourne peut retirer une offre ; un RUN arrêté ne retire rien.
  */
-export const CONFIRMATION_CEILING_HOURS = 72;
-const CEILING_MS = CONFIRMATION_CEILING_HOURS * 3_600_000;
 
 /** Publisher availability and a declared deadline must both permit publication. */
 export function sourceIsAvailable(source: { isActive: boolean; expiresAt?: Date | null }, at = new Date()): boolean {
@@ -29,17 +28,15 @@ export function availableSourceWhere(at = new Date()): Prisma.JobSourceWhereInpu
   return { isActive: true, OR: [{ expiresAt: null }, { expiresAt: { gt: at } }] };
 }
 
-export type ConfirmableSource = {
-  isActive: boolean; expiresAt?: Date | null; lastSeenAt: Date; availabilityHold?: string | null;
-};
+export type ConfirmableSource = { isActive: boolean; expiresAt?: Date | null; availabilityHold?: string | null };
 
-/** R-143 §2 : disponible, revue depuis moins que le plafond, et sans retenue de disponibilité. */
+/** R-143 §2 : disponible, et sans retenue de disponibilité. */
 export function sourceIsConfirmed(source: ConfirmableSource, at = new Date()): boolean {
-  return sourceIsAvailable(source, at) && source.lastSeenAt.getTime() > at.getTime() - CEILING_MS && !source.availabilityHold;
+  return sourceIsAvailable(source, at) && !source.availabilityHold;
 }
 
 export function confirmedSourceWhere(at = new Date()): Prisma.JobSourceWhereInput {
-  return { AND: [availableSourceWhere(at), { lastSeenAt: { gt: new Date(at.getTime() - CEILING_MS) }, availabilityHold: null }] };
+  return { AND: [availableSourceWhere(at), { availabilityHold: null }] };
 }
 
 /** Aggregated listings are served only with at least one confirmed publication. */
@@ -49,9 +46,8 @@ export function publicJobWhere(at = new Date()): Prisma.JobWhereInput {
 
 /** Only trusted, static SQL identifiers may be supplied as the alias. Same predicate as `publicJobWhere`. */
 export function publicJobSql(job: Prisma.Sql, at = new Date()): Prisma.Sql {
-  const ceiling = new Date(at.getTime() - CEILING_MS);
   return Prisma.sql`${job}."isActive" AND ${job}."mergedIntoId" IS NULL AND EXISTS (
     SELECT 1 FROM "JobSource" available_source WHERE available_source."jobId" = ${job}.id
       AND available_source."isActive" AND (available_source."expiresAt" IS NULL OR available_source."expiresAt" > (${at}::timestamptz AT TIME ZONE 'UTC'))
-      AND available_source."lastSeenAt" > (${ceiling}::timestamptz AT TIME ZONE 'UTC') AND available_source."availabilityHold" IS NULL)`;
+      AND available_source."availabilityHold" IS NULL)`;
 }
