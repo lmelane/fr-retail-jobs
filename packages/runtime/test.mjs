@@ -132,11 +132,18 @@ for (const day of ['2026-03-28','2026-03-29','2026-09-23','2026-10-24','2026-10-
     assert.deepEqual([...new Set(due)], [...LIGHT_PASS_HOURS_UTC]);
   });
 }
-test('light passes stay inert under the cron in force (0 16,17): the current contract launches none', () => {
+// D-517 (activation with release r6): the contract cron launches the daily RUN once (18:00 Paris) and the five light
+// passes, and nothing else. Witness that fails if the cron loses a pass hour or gains an hour in the RUN window.
+test('the contract cron (0 1,5,9,13,16,17,21) launches exactly one RUN and the five light passes per day', () => {
   const cron = target.services.find(s => s.name === 'catwalks-ingestion-worker').dailySchedule.cronSchedule;
-  assert.equal(cron, '0 16,17 * * *');
-  for (const day of ['2026-03-28','2026-10-02','2026-10-25','2026-12-01'])
-    for (const hour of [16, 17]) assert.notEqual(scheduledCommand(new Date(`${day}T${hour}:00:00Z`)), 'ingest-light');
+  assert.equal(cron, '0 1,5,9,13,16,17,21 * * *');
+  const hours = cron.split(' ')[1].split(',').map(Number);
+  for (const day of ['2026-03-28','2026-03-29','2026-10-02','2026-10-24','2026-10-25','2026-12-01']) {
+    const launched = hours.map(hour => scheduledCommand(new Date(`${day}T${String(hour).padStart(2, '0')}:00:00Z`)));
+    assert.equal(launched.filter(c => c === 'ingest-all').length, 1);
+    assert.deepEqual(hours.filter((_, i) => launched[i] === 'ingest-light'), [...LIGHT_PASS_HOURS_UTC]);
+    assert.equal(launched.filter(c => c === null).length, 1);
+  }
 });
 test('scheduled invocation uses the normal worker and rejects extra arguments', () => {
   assert.deepEqual(workerArguments(['scheduled']), ['ingest-all']);

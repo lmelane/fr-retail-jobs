@@ -46,8 +46,8 @@ export function scheduledRunDue(now = new Date()) {
  * heure d'été comme d'hiver) et jamais à l'heure du RUN. Cinq passes, au plus 4 h entre deux lectures d'une source
  * (13 → RUN de 16-17 → 21 → 01 → 05 → 09 → 13) ; celle de 05:00 finit avant les alertes de 07:30 à Paris, celle de
  * 13:00 bien avant 15:30, celle de 21:00 après la fin ordinaire du RUN (refusée tant qu'il tourne). Mesures :
- * `audits/2026-10-02/fraicheur-d517/`. INERTES tant que le cron du worker reste « 0 16,17 * * * » : les activer,
- * c'est changer ce cron (« 0 1,5,9,13,16,17,21 * * * »), un geste de production sous GO.
+ * `audits/2026-10-02/fraicheur-d517/`. Activées avec la release r6 (GO D-516, D-517) : le cron du contrat est
+ * « 0 1,5,9,13,16,17,21 * * * » ; revenir à « 0 16,17 * * * » les rend de nouveau inertes, sans autre changement.
  */
 export const LIGHT_PASS_COMMAND = 'ingest-light';
 export const LIGHT_PASS_HOURS_UTC = Object.freeze([1, 5, 9, 13, 21]);

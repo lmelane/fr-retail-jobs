@@ -159,12 +159,12 @@
         "paused": "PIPELINE_PAUSED=1: exit without operational side effects",
         "normal": "sh apps/aggregator/start.sh (or ingest-all): every ACTIVE source selected by the existing orchestrator",
         "targeted": "sh apps/aggregator/start.sh ingest --source=<key> [--no-geocode]",
-        "scheduled": "sh apps/aggregator/start.sh scheduled: one full run at 18:00 Europe/Paris; the other UTC launch exits before DB/network",
+        "scheduled": "sh apps/aggregator/start.sh scheduled: one full run at 18:00 Europe/Paris (the other UTC RUN launch exits before DB/network); at 01, 05, 09, 13 and 21 UTC a light discovery pass `ingest-light` (R-143 §1, D-517), never in the 15:30-18:30 UTC window nor during a run",
         "sourceAdd": "sh apps/aggregator/start.sh source-add <explicit public definition>: existing Golden Path parser and qualification, one candidate, no status override"
       },
       "businessEgress": "Existing source access scopes and public-URL/redirect guards; no permanent source allowlist in the runtime",
       "dailySchedule": {
-        "cronSchedule": "0 16,17 * * *",
+        "cronSchedule": "0 1,5,9,13,16,17,21 * * *",
         "startCommand": "sh apps/aggregator/start.sh scheduled",
         "timeZone": "Europe/Paris",
         "localHour": 18

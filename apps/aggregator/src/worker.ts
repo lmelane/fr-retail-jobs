@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url';
 import { pingHeartbeat } from './pipeline/heartbeat.js';
 import { log } from './observability/logger.js';
 import { exitIfPipelinePaused } from './lib/pipelinePause.js';
-import { attestRuntime, workerArguments, scheduledCommand, directSyncArguments, DIRECT_SYNC_COMMAND, LIGHT_PASS_COMMAND } from '@catwalks/runtime';
+import { attestRuntime, workerArguments, scheduledCommand, directSyncArguments, DIRECT_SYNC_COMMAND, LIGHT_PASS_COMMAND, LIGHT_PASS_HOURS_UTC } from '@catwalks/runtime';
 import { sourceLaunchArguments } from './onboarding/launch.js';
 import { isRunCompletion, workerOutcome, type RunCompletion, type CompletionStatus } from './lib/runCompletion.js';
 
@@ -17,11 +17,11 @@ if (!['0', '1'].includes(process.env.PIPELINE_PAUSED ?? '')) throw new Error('PI
 exitIfPipelinePaused(process.argv[2] ?? 'ingest-all');
 const argv = process.argv.slice(2);
 // R-143 §1 : hors de l'heure du RUN, le même cron lance une passe légère de découverte, s'il est l'heure d'en lancer une
-// (jamais dans la fenêtre 15:30-18:30 UTC). Inerte tant que le cron du service reste celui du seul RUN.
+// (jamais dans la fenêtre 15:30-18:30 UTC). Cron du contrat : « 0 1,5,9,13,16,17,21 * * * » (D-517, release r6).
 const scheduled = argv[0] === 'scheduled' ? scheduledCommand(new Date()) : null;
 const lightPass = role === 'worker' && scheduled === LIGHT_PASS_COMMAND;
 if (argv[0] === 'scheduled' && !scheduled) {
-  console.log(JSON.stringify({ event: 'worker.schedule_skipped', timeZone: 'Europe/Paris', requiredHour: 18 }));
+  console.log(JSON.stringify({ event: 'worker.schedule_skipped', timeZone: 'Europe/Paris', requiredHour: 18, lightPassHoursUtc: LIGHT_PASS_HOURS_UTC }));
   process.exit(0);
 }
 // Preserve the existing local maintenance CLI; deployed ingestion stays normal or source-scoped.

@@ -230,7 +230,7 @@ Le démarrage Docker normal est `sh apps/aggregator/start.sh`. Il appelle `src/w
 
 `PIPELINE_PAUSED=1` arrête les lanceurs avant le travail avec un événement JSON `pipeline.paused`, `workStarted:false`, code 0. Les fonctions de collecte importées refusent également les effets métier. Le worker exige explicitement `0` ou `1` ; le CLI local accepte aussi l'absence de variable. Toute autre valeur échoue. La pause n'est pas contournée par une campagne ni par les commandes bornées. Les commandes de lecture restent disponibles.
 
-La variable est lue dans l'environnement du **processus**. Pour arrêter un processus déjà démarré sur Railway, modifier la variable et arrêter/redémarrer le conteneur ; une modification distante ne réécrit pas l'environnement d'un ancien processus. Les signaux d'arrêt sont transmis aux enfants et les runs interrompus sont enregistrés. Un canari borne temporairement le calendrier ; le mode normal utilise `scheduled`, à 18 h Europe/Paris. Son état courant est attesté dans le reçu de release.
+La variable est lue dans l'environnement du **processus**. Pour arrêter un processus déjà démarré sur Railway, modifier la variable et arrêter/redémarrer le conteneur ; une modification distante ne réécrit pas l'environnement d'un ancien processus. Les signaux d'arrêt sont transmis aux enfants et les runs interrompus sont enregistrés. Un canari borne temporairement le calendrier ; le mode normal utilise `scheduled` sous le cron `0 1,5,9,13,16,17,21 * * *` : le RUN à 18 h Europe/Paris, et une passe de découverte `ingest-light` à 01, 05, 09, 13 et 21 h UTC (D-517), jamais dans la fenêtre 15:30-18:30 UTC ni pendant un run. Son état courant est attesté dans le reçu de release.
 
 ## Une nouvelle source, sans modification manuelle de la base
 
