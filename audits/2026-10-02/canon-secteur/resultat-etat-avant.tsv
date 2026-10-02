@@ -1,0 +1,171 @@
+SET
+== 1. offres servies, secteur connu / inconnu
+servies	secteur_inconnu	societe_fusionnee	societes	societes_sans_secteur
+89800	35492	0	1064	868
+(1 row)
+== 2. par marché
+marche	servies	inconnu	couverture_pct
+US	40604	15382	62.1
+FR	13536	3946	70.8
+GB	3933	2130	45.8
+CA	3479	1926	44.6
+??	3217	947	70.6
+DE	3217	1671	48.1
+IT	2922	1077	63.1
+ES	2253	836	62.9
+NL	1969	1086	44.8
+AU	1504	842	44.0
+CH	1323	945	28.6
+CN	1236	382	69.1
+BE	718	213	70.3
+JP	615	254	58.7
+IN	552	335	39.3
+KR	542	212	60.9
+SG	519	163	68.6
+MX	512	250	51.2
+PT	444	181	59.2
+PL	388	131	66.2
+IE	386	110	71.5
+AT	377	131	65.3
+HK	359	174	51.5
+DK	348	134	61.5
+CL	310	174	43.9
+TH	294	61	79.3
+MY	293	160	45.4
+SE	280	116	58.6
+AE	269	161	40.1
+TR	257	107	58.4
+BR	221	76	65.6
+NZ	220	117	46.8
+NO	211	49	76.8
+GR	208	134	35.6
+TW	207	98	52.7
+VN	183	81	55.7
+ZA	181	69	61.9
+PE	172	60	65.1
+CO	135	37	72.6
+HU	132	19	85.6
+CZ	129	43	66.7
+SA	101	64	36.6
+RO	98	22	77.6
+PR	96	48	50.0
+PH	72	34	52.8
+ID	61	30	50.8
+LU	57	16	71.9
+MC	48	22	54.2
+BG	48	3	93.8
+IL	48	40	16.7
+HR	45	8	82.2
+EG	39	27	30.8
+FI	36	12	66.7
+LT	36	2	94.4
+AR	35	17	51.4
+MO	35	17	51.4
+SK	35	0	100.0
+SC	22	22	0.0
+QA	18	5	72.2
+RS	18	4	77.8
+KH	14	6	57.1
+BH	11	9	18.2
+PA	10	0	100.0
+SI	10	0	100.0
+BD	9	9	0.0
+EC	8	1	87.5
+CY	8	0	100.0
+VI	8	4	50.0
+GG	7	5	28.6
+JO	7	5	28.6
+JE	6	0	100.0
+RU	6	2	66.7
+MV	6	6	0.0
+LV	6	0	100.0
+KW	6	1	83.3
+NA	5	0	100.0
+EE	5	2	60.0
+UA	5	1	80.0
+KZ	4	0	100.0
+LS	3	3	0.0
+GE	3	2	33.3
+NF	3	0	100.0
+MU	3	3	0.0
+AD	3	0	100.0
+PK	3	0	100.0
+BA	3	1	66.7
+MA	3	0	100.0
+OM	2	2	0.0
+MK	2	0	100.0
+LB	2	2	0.0
+IM	2	0	100.0
+SV	2	0	100.0
+SZ	2	2	0.0
+DO	2	2	0.0
+BS	2	2	0.0
+BL	2	2	0.0
+AW	2	1	50.0
+AL	2	0	100.0
+ZM	1	0	100.0
+XK	1	0	100.0
+KE	1	1	0.0
+MF	1	1	0.0
+GU	1	0	100.0
+LK	1	1	0.0
+MT	1	1	0.0
+UY	1	1	0.0
+AM	1	1	0.0
+TN	1	0	100.0
+(108 rows)
+== 3. par secteur (une offre compte dans chacun de ses secteurs)
+code	servies	us
+RETAIL	33513	21190
+BEAUTY	23658	13085
+FASHION	20657	5943
+FRAGRANCE	13944	11334
+FOOTWEAR	8668	4162
+HOME_LIFESTYLE	7679	1867
+JEWELRY	3944	854
+LEATHER_GOODS	1105	152
+WATCHMAKING	1076	131
+EYEWEAR	73	6
+(10 rows)
+== 4. sociétés qualifiées et preuves
+qualifiees	non_fusionnees	qualifiees_fusionnees
+254	1981	0
+(1 row)
+basis	confiance	methode	preuves	societes
+REFERENCE_LIST	MEDIUM	-	203	203
+OFFICIAL_SOURCE	HIGH	-	89	45
+OFFICIAL_SOURCE	HIGH	reviewed-official-evidence	13	6
+(3 rows)
+id	reviewer	createdAt	societes
+d229298b9de2c497373e55af43d7ec6734ac4013b0c4879eabb4e91499b6dc52	Lot 3 / revue documentaire 2026-09-09	2026-09-09 11:22:18.329	218
+3d05c5d3580db2e4cd8ff29a4ecbc4567722d13452d9e176f594502c78076355	Lot 3 / complément documentaire officiel 2026-09-09	2026-09-09 11:27:04.069	12
+8cb3d11c561bdb1e0fd2e48ad466e72fea053ba1689a31d6d14ff5555c736b94	Codex — official group business portfolio review	2026-09-09 13:09:29.415	2
+43fb1226ad86e72c120dcc427dfd6baa54eb5aaf754b953c5b04c578551d15e7	Codex official product catalogue review	2026-09-09 14:17:33.07	1
+c3633b8db8241fcec4ad89ed802be4ef42bda4d9ea4fed5805a3fbcb96b902fe	Codex official GANNI product catalogue review	2026-09-09 15:41:58.256	1
+5cd8fd57bd6f2459f9e77f8018e41991baa1bc89d4849aad82323be2e3b9f8b6	Official Lindex career page review (Claude, LOT 4 resume)	2026-09-09 16:23:49.926	1
+2b9df7d9b94cf0958017678989fa31f4a35d426d92038c8909acb9c01c3fdd67	Official portal and native page evidence review (Claude, LOT 4 resume)	2026-09-09 17:42:28.704	5
+96574a2dc47b7ddb2cfd9d056bf47d1f178577f08aae53b3cd6c2bb7350d299b	Official site and native JSON-LD evidence review (Claude, LOT 4 resume)	2026-09-09 19:22:27.014	5
+1338ae2973da945bb322f3546ed78edda07b1846e6f8734cbc97f9a8fc18d360	Owner decision 2026-09-09 (Loïc): sub-labels stay distinct; relation attested by the native page sameAs, recorded not merged — Claude	2026-09-09 21:39:02.598	3
+c20be007927e24c7b3259e205992166574f7cd4eb1439a0c8f9bd66d5256239d	Owner perimeter decision 2026-09-10 (Loïc) — certification on the official site (Claude, LOT 4)	2026-09-10 07:47:19.439	1
+c74ef756a9e4a7877b01261b801c8faf0bcd87286d30ff1866e66d08fc4c4ad0	Owner perimeter decision 2026-09-10 (Loïc): fashion/textile services included, not the whole FYUL group — Claude, LOT 4	2026-09-10 07:47:27.619	1
+d5b323a25dcf7e616d7b2f8ed8085de937be41847ffc655662ebd7b5857d8759	Owner perimeter decision 2026-09-10 (Loïc) — certification on the official site (Claude, LOT 4)	2026-09-10 08:42:43.1	1
+5c134ad582e0846732b1d838e466444467fae0aaf7ba20fd6a83f6023557b8ec	reviewed-official-evidence/2026-09-24-v1	2026-09-24 06:32:59.895	6
+(13 rows)
+== 5. concepts
+code	slug	position
+FASHION	mode	0
+LEATHER_GOODS	maroquinerie	1
+FOOTWEAR	chaussures	2
+JEWELRY	joaillerie	3
+WATCHMAKING	horlogerie	4
+BEAUTY	beaute	5
+FRAGRANCE	parfumerie	6
+EYEWEAR	lunetterie	7
+HOME_LIFESTYLE	maison-lifestyle	8
+WINES_SPIRITS	vins-spiritueux	9
+HOSPITALITY	hospitality	10
+LUXURY_MOBILITY	automobile-mobilite-luxe	11
+ART_DESIGN	art-design	12
+RETAIL	retail	13
+LUXURY_TECH_SERVICES	luxury-tech-services	14
+(15 rows)

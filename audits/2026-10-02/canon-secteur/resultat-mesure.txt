@@ -1,0 +1,184 @@
+== couverture du secteur, offres servies
+état	servies	connu	inconnu	couverture %
+avant	89800	54308	35492	60.5
+avant + rattachement	89800	54811	34989	61.0
+après reconnaissance	89800	57655	32145	64.2
+après reconnaissance + rattachement	89800	57655	32145	64.2
+
+== par marché (au moins 100 offres servies)
+marché	servies	avant %	avant + rattachement %	après reconnaissance %	après reconnaissance + rattachement %	inconnu après
+US	40604	62.1	62.2	63.1	63.1	14968
+FR	13536	70.8	71.0	80.6	80.6	2631
+GB	3933	45.8	47.1	51.2	51.2	1919
+CA	3479	44.6	46.2	48.1	48.1	1805
+DE	3217	48.1	49.0	49.6	49.6	1622
+??	3217	70.6	70.6	71.8	71.8	907
+IT	2922	63.1	63.8	74.4	74.4	749
+ES	2253	62.9	63.9	67.0	67.0	743
+NL	1969	44.8	45.4	53.6	53.6	913
+AU	1504	44.0	44.1	46.2	46.2	809
+CH	1323	28.6	46.9	50.0	50.0	661
+CN	1236	69.1	69.1	69.9	69.9	372
+BE	718	70.3	70.9	74.5	74.5	183
+JP	615	58.7	59.3	60.0	60.0	246
+IN	552	39.3	39.5	40.2	40.2	330
+KR	542	60.9	60.9	62.2	62.2	205
+SG	519	68.6	68.8	71.3	71.3	149
+MX	512	51.2	51.2	53.7	53.7	237
+PT	444	59.2	59.2	63.1	63.1	164
+PL	388	66.2	66.2	67.3	67.3	127
+IE	386	71.5	72.0	73.6	73.6	102
+AT	377	65.3	65.5	65.8	65.8	129
+HK	359	51.5	51.5	54.6	54.6	163
+DK	348	61.5	62.1	62.6	62.6	130
+CL	310	43.9	43.9	44.5	44.5	172
+TH	294	79.3	79.3	80.3	80.3	58
+MY	293	45.4	45.4	48.1	48.1	152
+SE	280	58.6	58.6	58.9	58.9	115
+AE	269	40.1	40.1	40.9	40.9	159
+TR	257	58.4	58.4	60.3	60.3	102
+BR	221	65.6	65.6	67.4	67.4	72
+NZ	220	46.8	46.8	49.1	49.1	112
+NO	211	76.8	76.8	78.2	78.2	46
+GR	208	35.6	35.6	52.9	52.9	98
+TW	207	52.7	52.7	56.0	56.0	91
+VN	183	55.7	55.7	56.3	56.3	80
+ZA	181	61.9	61.9	74.6	74.6	46
+PE	172	65.1	65.1	65.1	65.1	60
+CO	135	72.6	72.6	77.0	77.0	31
+HU	132	85.6	85.6	87.9	87.9	16
+CZ	129	66.7	66.7	69.0	69.0	40
+SA	101	36.6	36.6	36.6	36.6	64
+
+== concentration des offres sans secteur (avant)
+sociétés	868	offres	35492
+les 10 premières	7957	22.4 %
+les 20 premières	12384	34.9 %
+les 50 premières	20495	57.7 %
+les 100 premières	26694	75.2 %
+les 200 premières	31256	88.1 %
+
+== effet sur trois secteurs (confirmées = portent le secteur ; inconnues = sans secteur, « non précisé »)
+secteur	marché	avant confirmées	avant inconnues	avant + rattachement confirmées	avant + rattachement inconnues	après reconnaissance confirmées	après reconnaissance inconnues	après reconnaissance + rattachement confirmées	après reconnaissance + rattachement inconnues
+EYEWEAR	US	6	15382	6	15344	185	14968	185	14968
+FASHION	US	5943	15382	5981	15344	5984	14968	5984	14968
+WINES_SPIRITS	FR	0	3946	0	3930	87	2631	87	2631
+BEAUTY	FR	2900	3946	2900	3930	3207	2631	3207	2631
+
+== propositions	106	sociétés	3347	offres servies
+  preuve	native	1863	offres
+  preuve	official	763	offres
+  preuve	registry	503	offres
+  preuve	reference	209	offres
+  preuve	domain	131	offres
+== abstentions (sociétés avec offres servies)
+  	NO_EVIDENCE	651	sociétés	27699	offres
+  	GROUP	51	sociétés	2102	offres
+  	RETAIL_ONLY	16	sociétés	1648	offres
+  	MAISON_TO_CREATE	42	sociétés	635	offres
+  	REFUSED_AT_REVIEW	5	sociétés	71	offres
+  sans décision (entité dont la Maison décide)	0	0
+
+== les 60 plus grosses propositions (à relire)
+494	Kiabi	FASHION+RETAIL	FASHION<native:industry:apparel and fashion ; FASHION<native:sectors:fashion-1 ; RETAIL<native:industry:retail ; RETAIL<native:sectors:mass-distribution	
+434	MAC	BEAUTY	BEAUTY<official:maccosmetics.com	
+242	ROLEX SA	WATCHMAKING	WATCHMAKING<registry:cmtpj0vom0xiepf5lq0cvy73h	unité Rolex
+214	Max Mara Fashion Group	FASHION	FASHION<native:industry:apparel and fashion	
+179	Clarkson Eyecare	EYEWEAR	EYEWEAR<official:clarksoneyecare.com	
+150	Moët Hennessy	WINES_SPIRITS	WINES_SPIRITS<native:businessGroup:vins and spiritueux|wine and spirits|wines and spirits	
+150	Hans Anders Nederland	EYEWEAR	EYEWEAR<official:hansanders.nl	unité de 2 sociétés (R-143 §5)
+110	CLARINS	BEAUTY	BEAUTY<reference:clarins:BEAUTY	
+109	ONIVERSE	FASHION	FASHION<native:sectors:fashion-1	
+95	Eric Bompard	FASHION	FASHION<native:industry:apparel and fashion	
+67	L'Oréal Groupe	BEAUTY	BEAUTY<domain:cmtpwvij600giql5m8iiplvov ; BEAUTY<native:sectors:cosmetics	
+67	Histoire d'Or	JEWELRY	JEWELRY<native:sectors:jewelry-1	
+60	Ysé	FASHION	FASHION<native:sectors:fashion-1	
+55	Diptyque paris	BEAUTY	BEAUTY<domain:cmtk1xe9n01a0nv2b2p3qyil0 ; BEAUTY<native:sectors:cosmetics	
+51	Sessùn	FASHION	FASHION<native:sectors:fashion-1	
+49	Sisley	BEAUTY	BEAUTY<native:industry:cosmetics	
+48	Caudalie	BEAUTY	BEAUTY<reference:caudalie:BEAUTY	
+46	Canada Goose Inc.	FASHION	FASHION<registry:cmtk1ywiz04tnnv2bym3tmeto	unité Canada Goose
+41	Sud Express	FASHION+RETAIL	FASHION<native:sectors:fashion-1 ; RETAIL<native:sectors:selective-distribution	
+36	Funky Buddha	FASHION	FASHION<native:industry:apparel and fashion	
+36	La Prairie	BEAUTY	BEAUTY<reference:la-prairie:BEAUTY	
+32	New Balance Athletic Shoes (UK) Limited	FASHION	FASHION<registry:cmtp25hct0fl7qq4zwb6y1cby	unité New Balance
+31	Fusalp	FASHION	FASHION<native:sectors:fashion-1	
+26	New Balance Germany GmbH	FASHION	FASHION<registry:cmtp25hct0fl7qq4zwb6y1cby	unité New Balance
+24	Faguo	FASHION	FASHION<native:sectors:fashion-1	
+21	Moët & Chandon	WINES_SPIRITS	WINES_SPIRITS<native:businessGroup:vins and spiritueux|wines and spirits	
+20	CABAIA	FASHION	FASHION<native:sectors:fashion-1	
+19	A.P.C.	FASHION	FASHION<native:sectors:fashion-1	
+19	HADDAD BRANDS EUROPE	FASHION+RETAIL	FASHION<native:sectors:fashion-1 ; RETAIL<native:sectors:selective-distribution	
+19	NORMAL Spain	RETAIL	RETAIL<registry:cmtk26ge70hulnv2b0qav4amw	unité Normal
+17	Groupe Clarins	BEAUTY	BEAUTY<native:sectors:cosmetics	
+16	Canada Goose, US Inc.	FASHION	FASHION<registry:cmtk1ywiz04tnnv2bym3tmeto	unité Canada Goose
+14	Versace USA, Inc.	FASHION	FASHION<registry:cmtk1xxkp025dnv2b2ssr1yjk	unité Versace
+13	Chantelle	FASHION	FASHION<reference:chantelle:FASHION	
+12	LUSH | France	BEAUTY+RETAIL	BEAUTY<native:sectors:cosmetics ; RETAIL<native:sectors:selective-distribution	
+12	Stella McCartney Italia S.r.l	FASHION	FASHION<registry:cmtk1xktt01jdnv2ba1o5xwx4	unité Stella McCartney
+11	Kitsuné	FASHION	FASHION<native:sectors:fashion-1	
+11	JUNE STORE	FASHION+RETAIL	FASHION<native:sectors:fashion-1 ; RETAIL<native:sectors:selective-distribution	
+10	Veuve Clicquot Ponsardin	WINES_SPIRITS	WINES_SPIRITS<native:businessGroup:vins and spiritueux|wines and spirits	
+10	FROM FUTURE	FASHION	FASHION<native:sectors:fashion-1	
+10	Bleu Libellule	BEAUTY+RETAIL	BEAUTY<native:sectors:cosmetics ; RETAIL<native:sectors:selective-distribution	
+9	MANUCURIST	BEAUTY	BEAUTY<native:sectors:cosmetics	
+9	New Balance France Retail SARL	FASHION	FASHION<registry:cmtp25hct0fl7qq4zwb6y1cby	unité New Balance
+9	New Balance Netherlands BV	FASHION	FASHION<registry:cmtp25hct0fl7qq4zwb6y1cby	unité New Balance
+8	Pied de Biche	FASHION	FASHION<native:sectors:fashion-1	
+8	The Bradery	FASHION	FASHION<native:sectors:fashion-1	
+8	Ruinart	WINES_SPIRITS	WINES_SPIRITS<native:businessGroup:vins and spiritueux|wines and spirits	
+8	Gianni Versace S.r.l.	FASHION	FASHION<domain:cmtk1xxkp025dnv2b2ssr1yjk	
+7	Columbia Sportswear Company	FASHION+RETAIL	FASHION<native:sectors:fashion-1 ; RETAIL<native:sectors:selective-distribution	
+7	Hindbag	FASHION	FASHION<native:sectors:fashion-1	
+7	Versace Canada	FASHION	FASHION<registry:cmtk1xxkp025dnv2b2ssr1yjk	unité Versace
+7	Stella McCartney Limited	FASHION	FASHION<registry:cmtk1xktt01jdnv2ba1o5xwx4	unité Stella McCartney
+7	New Balance Italy S.R.L.	FASHION	FASHION<registry:cmtp25hct0fl7qq4zwb6y1cby	unité New Balance
+6	Hennessy	WINES_SPIRITS	WINES_SPIRITS<native:businessGroup:vins and spiritueux|wines and spirits	
+6	Chandon	WINES_SPIRITS	WINES_SPIRITS<native:businessGroup:vins and spiritueux|wines and spirits	
+6	PATTERN	FASHION	FASHION<native:sectors:fashion-1	
+6	PM Studio Paris	BEAUTY+FASHION	BEAUTY<native:sectors:cosmetics ; FASHION<native:sectors:fashion-1	
+6	Prose	BEAUTY	BEAUTY<native:sectors:cosmetics	
+6	Canada Goose EU B.V. UK Branch	FASHION	FASHION<registry:cmtk1ywiz04tnnv2bym3tmeto	unité Canada Goose
+6	Moët Hennessy Wine Estates	WINES_SPIRITS	WINES_SPIRITS<native:businessGroup:vins and spiritueux|wines and spirits	
+
+== les 40 plus grosses abstentions
+1921	Coach	NO_EVIDENCE
+887	Tommy Hilfiger	NO_EVIDENCE
+881	VF Corporation	NO_EVIDENCE
+712	Richemont	GROUP
+690	La casa de las Carcasas	NO_EVIDENCE
+642	Crocs, Inc.	NO_EVIDENCE
+603	Kate Spade	NO_EVIDENCE
+585	Calvin Klein	NO_EVIDENCE
+522	Champs Sports	NO_EVIDENCE
+514	Tiffany & Co.	NO_EVIDENCE
+480	Neiman Marcus	NO_EVIDENCE
+479	Chico's	NO_EVIDENCE
+470	Estée Lauder Companies	GROUP
+435	Kids Foot Locker	RETAIL_ONLY
+429	Reitmans (Canada) Ltée/Ltd	RETAIL_ONLY
+416	LOFT	NO_EVIDENCE
+405	Groupe Courir	RETAIL_ONLY
+385	NIKE	NO_EVIDENCE
+377	UNIQLO	NO_EVIDENCE
+369	LUSH |	NO_EVIDENCE
+356	HUGO BOSS Retail, Inc.	NO_EVIDENCE
+350	White House Black Market	NO_EVIDENCE
+350	Douglas	NO_EVIDENCE
+338	Madewell Stores Madewell, Inc.	NO_EVIDENCE
+336	1151 Swarovski Retail Ventures	NO_EVIDENCE
+325	Michael Kors	NO_EVIDENCE
+314	United States of Aritzia Inc.	NO_EVIDENCE
+303	On	NO_EVIDENCE
+299	Prada Group	NO_EVIDENCE
+295	Talbots	NO_EVIDENCE
+284	ARC'TERYX	NO_EVIDENCE
+277	Lane Bryant	NO_EVIDENCE
+271	Soma	NO_EVIDENCE
+262	Avolta	NO_EVIDENCE
+255	Aptar Group	GROUP
+247	Buck Mason	NO_EVIDENCE
+231	Ann Taylor	NO_EVIDENCE
+224	Dr. Martens	NO_EVIDENCE
+221	PUMA North America, Inc.	MAISON_TO_CREATE
+211	Saks Fifth Avenue	NO_EVIDENCE
