@@ -657,7 +657,7 @@ describe('D-520: identity refusals are queued for review and do not fail the RUN
     const identity = { errors: 2, issues: [{ origin: 'UNKNOWN' as const, code: 'EmployerIdentityReviewRequired', count: 2 }],
       writeFailures: { 'EmployerIdentityReviewRequired:PORTAL_OWNER_NOT_CERTIFIED': 2 } };
     // PRÉMISSE : sans le refus, chacune de ces collectes est un défaut bloquant.
-    for (const [s, code] of [[stat('truncated-id', 100, { truncated: true, declaredTotal: 140, fetched: 102 }), 'SOURCE_HEALTH_REGRESSION'],
+    for (const [s, code] of [[stat('truncated-id', 100, { truncated: true, declaredTotal: 140, fetched: 102 }), 'ENUMERATION_TRUNCATED'],
       [stat('unproven-id', 100, { complete: false, enumerationReading: 'NOT_PROVEN', fetched: 102 }), 'ENUMERATION_NOT_PROVEN'],
       [stat('no-descriptions-id', 100, { withDescription: 5, fetched: 102 }), 'DESCRIPTION_COVERAGE_BELOW_FLOOR']] as const) {
       expect((await runOne(s)).issues.map(issue => issue.code)).toEqual([code]);
