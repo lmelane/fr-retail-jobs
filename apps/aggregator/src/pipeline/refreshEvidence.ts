@@ -2,12 +2,20 @@ import type { Prisma } from '@prisma/client';
 import type { ObjectStore } from '../retention/objectStore.js';
 import { chunk } from '../lib/chunk.js';
 import { readAttestingCapture, type CaptureDispositions } from './attestingCapture.js';
-import { identifiersComparable, planRefresh, representationState, sourceEligibility,
+import { identifiersComparable, massAbsenceGuard, planRefresh, representationState, sourceEligibility,
   type Representation, type RepresentationState } from './refreshPlan.js';
 
 export type SourceEligibilityRow = {
   source: string; eligible: boolean; reasons: string[]; captureBatchId: string | null; startedAt: Date | null; termination: string | null;
+  /** La garde du zéro annoncé a refusé cette preuve : la source est une anomalie à instruire. */
+  anomaly?: boolean;
 };
+
+/** Every identifier the capture saw, whatever became of it. */
+export function seenByCapture(observed: ReadonlySet<string>, dispositions: CaptureDispositions): Set<string> {
+  return new Set([...observed, ...dispositions.published, ...dispositions.held, ...dispositions.writeFailed,
+    ...dispositions.skipped, ...dispositions.rejected]);
+}
 
 /** Every identifier the capture treated must have been observed, and every observed identifier must have a known fate. */
 function dispositionContract(observed: ReadonlySet<string>, dispositions: CaptureDispositions): string[] {
@@ -52,9 +60,15 @@ export async function readAbsencePlan(db: Prisma.TransactionClient, scope: Prism
     const stored = storedBy.get(source) ?? [];
     const disposed = new Set([...capture.dispositions.held, ...capture.dispositions.writeFailed, ...capture.dispositions.skipped, ...capture.dispositions.rejected]);
     if (!reasons.length && observed.size && !identifiersComparable(observed, stored, disposed)) reasons.push('identifiants observés incomparables avec ceux stockés');
+    // La garde du zéro annoncé (R-143) : sur tout le stock actif de la source, jamais sur le périmètre de la relecture.
+    const seen = seenByCapture(observed, capture.dispositions);
+    const anomaly = reasons.length ? null : massAbsenceGuard({ stock: stored.length,
+      absent: stored.filter(id => !seen.has(id)).length, confirmedDrop: !!capture.facts.confirmedDrop });
+    if (anomaly) reasons.push(anomaly);
     observedBy.set(source, observed);
     dispositionsBy.set(source, capture.dispositions);
-    return { source, eligible: reasons.length === 0, reasons, captureBatchId: capture.captureBatchId, startedAt: capture.startedAt, termination: capture.evidence.termination };
+    return { source, eligible: reasons.length === 0, reasons, captureBatchId: capture.captureBatchId, startedAt: capture.startedAt,
+      termination: capture.evidence.termination, ...(anomaly ? { anomaly: true } : {}) };
   });
   const allowed = new Set(eligibility.filter(row => row.eligible).map(row => row.source));
   const representations: Representation[] = rows.map(row => {

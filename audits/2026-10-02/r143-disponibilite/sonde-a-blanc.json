@@ -1,0 +1,680 @@
+{
+ "cibles": 658,
+ "parSource": {
+  "diptyque-workday": 186,
+  "swatch-group": 346,
+  "marc-o-polo": 15,
+  "gemmyo": 1,
+  "versace": 49,
+  "browns-shoes": 58,
+  "puma": 1,
+  "nordstrom": 1,
+  "richemont-workday": 1
+ },
+ "sondees": 64,
+ "verdicts": {
+  "NON_CONCLUSIVE": 39,
+  "OPEN": 22,
+  "DEAD": 3
+ },
+ "lignes": [
+  {
+   "sourceKey": "browns-shoes",
+   "url": "https://brownsshoes.teamtailor.com/jobs/8479953-directeur-directrice-communaute-et-editorial-director-community-and-editorial",
+   "vue": "2026-09-30T16:19:56.095",
+   "verdict": "NON_CONCLUSIVE",
+   "motif": "OUTSIDE_ACCESS_SCOPE",
+   "brut": "NON_CONCLUSIVE",
+   "statut": null,
+   "texte": null
+  },
+  {
+   "sourceKey": "browns-shoes",
+   "url": "https://brownsshoes.teamtailor.com/jobs/8479893-specialiste-du-marketing-digital-medias-payants-digital-marketing-specialist-paid-media",
+   "vue": "2026-09-30T16:19:56.321",
+   "verdict": "NON_CONCLUSIVE",
+   "motif": "OUTSIDE_ACCESS_SCOPE",
+   "brut": "NON_CONCLUSIVE",
+   "statut": null,
+   "texte": null
+  },
+  {
+   "sourceKey": "browns-shoes",
+   "url": "https://brownsshoes.teamtailor.com/jobs/8479858-redacteur-redactrice-copyrighter",
+   "vue": "2026-09-30T16:19:56.574",
+   "verdict": "NON_CONCLUSIVE",
+   "motif": "OUTSIDE_ACCESS_SCOPE",
+   "brut": "NON_CONCLUSIVE",
+   "statut": null,
+   "texte": null
+  },
+  {
+   "sourceKey": "browns-shoes",
+   "url": "https://brownsshoes.teamtailor.com/jobs/8479534-gestionnaire-medias-sociaux-et-editorial-manager-social-media-and-editorial",
+   "vue": "2026-09-30T16:19:56.803",
+   "verdict": "NON_CONCLUSIVE",
+   "motif": "OUTSIDE_ACCESS_SCOPE",
+   "brut": "NON_CONCLUSIVE",
+   "statut": null,
+   "texte": null
+  },
+  {
+   "sourceKey": "browns-shoes",
+   "url": "https://brownsshoes.teamtailor.com/jobs/8468437-part-time-stock-associate-browns-toronto-eaton-centre",
+   "vue": "2026-09-30T16:19:57.014",
+   "verdict": "NON_CONCLUSIVE",
+   "motif": "OUTSIDE_ACCESS_SCOPE",
+   "brut": "NON_CONCLUSIVE",
+   "statut": null,
+   "texte": null
+  },
+  {
+   "sourceKey": "browns-shoes",
+   "url": "https://brownsshoes.teamtailor.com/jobs/8467942-part-time-sales-associate-browns-bayshore-centre",
+   "vue": "2026-09-30T16:19:57.225",
+   "verdict": "NON_CONCLUSIVE",
+   "motif": "OUTSIDE_ACCESS_SCOPE",
+   "brut": "NON_CONCLUSIVE",
+   "statut": null,
+   "texte": null
+  },
+  {
+   "sourceKey": "browns-shoes",
+   "url": "https://brownsshoes.teamtailor.com/jobs/8465753-part-time-sales-associate-browns-yorkdale-shopping-centre",
+   "vue": "2026-09-30T16:19:57.408",
+   "verdict": "NON_CONCLUSIVE",
+   "motif": "OUTSIDE_ACCESS_SCOPE",
+   "brut": "NON_CONCLUSIVE",
+   "statut": null,
+   "texte": null
+  },
+  {
+   "sourceKey": "browns-shoes",
+   "url": "https://brownsshoes.teamtailor.com/jobs/8465079-part-time-sales-associate-browns-midtown-plaza",
+   "vue": "2026-09-30T16:19:57.64",
+   "verdict": "NON_CONCLUSIVE",
+   "motif": "OUTSIDE_ACCESS_SCOPE",
+   "brut": "NON_CONCLUSIVE",
+   "statut": null,
+   "texte": null
+  },
+  {
+   "sourceKey": "browns-shoes",
+   "url": "https://brownsshoes.teamtailor.com/jobs/8460282-part-time-cashier-browns-premium-outlet-collection-eia",
+   "vue": "2026-09-30T16:19:57.987",
+   "verdict": "NON_CONCLUSIVE",
+   "motif": "OUTSIDE_ACCESS_SCOPE",
+   "brut": "NON_CONCLUSIVE",
+   "statut": null,
+   "texte": null
+  },
+  {
+   "sourceKey": "browns-shoes",
+   "url": "https://brownsshoes.teamtailor.com/jobs/8445224-part-time-cashier-browns-outlet-vaughan-mills-shopping-centre",
+   "vue": "2026-09-30T16:19:58.287",
+   "verdict": "NON_CONCLUSIVE",
+   "motif": "OUTSIDE_ACCESS_SCOPE",
+   "brut": "NON_CONCLUSIVE",
+   "statut": null,
+   "texte": null
+  },
+  {
+   "sourceKey": "browns-shoes",
+   "url": "https://brownsshoes.teamtailor.com/jobs/8445121-part-time-stock-associate-browns-outlet-vaughan-mills-shopping-centre",
+   "vue": "2026-09-30T16:19:58.517",
+   "verdict": "NON_CONCLUSIVE",
+   "motif": "OUTSIDE_ACCESS_SCOPE",
+   "brut": "NON_CONCLUSIVE",
+   "statut": null,
+   "texte": null
+  },
+  {
+   "sourceKey": "browns-shoes",
+   "url": "https://brownsshoes.teamtailor.com/jobs/8443306-full-time-sales-associate-browns-outlet-vaughan-mills-shopping-centre",
+   "vue": "2026-09-30T16:19:58.743",
+   "verdict": "NON_CONCLUSIVE",
+   "motif": "OUTSIDE_ACCESS_SCOPE",
+   "brut": "NON_CONCLUSIVE",
+   "statut": null,
+   "texte": null
+  },
+  {
+   "sourceKey": "diptyque-workday",
+   "url": "https://diptyqueparis.wd103.myworkdayjobs.com/DiptyqueCareers/job/USA---California---Beverly-Hills/Seasonal-Brand-Ambassador--Part-time--Beverly-Hills-_JR807",
+   "vue": "2026-09-29T16:49:52.545",
+   "verdict": "NON_CONCLUSIVE",
+   "motif": "OUTSIDE_ACCESS_SCOPE",
+   "brut": "NON_CONCLUSIVE",
+   "statut": null,
+   "texte": null
+  },
+  {
+   "sourceKey": "diptyque-workday",
+   "url": "https://diptyqueparis.wd103.myworkdayjobs.com/DiptyqueCareers/job/USA---California---Beverly-Hills/Seasonal-Brand-Ambassador--Part-time--Beverly-Hills-_JR757",
+   "vue": "2026-09-29T16:49:55.01",
+   "verdict": "NON_CONCLUSIVE",
+   "motif": "OUTSIDE_ACCESS_SCOPE",
+   "brut": "NON_CONCLUSIVE",
+   "statut": null,
+   "texte": null
+  },
+  {
+   "sourceKey": "diptyque-workday",
+   "url": "https://diptyqueparis.wd103.myworkdayjobs.com/DiptyqueCareers/job/USA---New-York/Sales-Supervisor_JR717",
+   "vue": "2026-09-30T16:43:01.349",
+   "verdict": "NON_CONCLUSIVE",
+   "motif": "OUTSIDE_ACCESS_SCOPE",
+   "brut": "NON_CONCLUSIVE",
+   "statut": null,
+   "texte": null
+  },
+  {
+   "sourceKey": "diptyque-workday",
+   "url": "https://diptyqueparis.wd103.myworkdayjobs.com/DiptyqueCareers/job/USA---Illinois---Chicago/Seasonal-Brand-Ambassador--Part-time--Chicago-_JR828",
+   "vue": "2026-09-30T16:43:01.736",
+   "verdict": "NON_CONCLUSIVE",
+   "motif": "OUTSIDE_ACCESS_SCOPE",
+   "brut": "NON_CONCLUSIVE",
+   "statut": null,
+   "texte": null
+  },
+  {
+   "sourceKey": "diptyque-workday",
+   "url": "https://diptyqueparis.wd103.myworkdayjobs.com/DiptyqueCareers/job/USA---Nevada---Las-Vegas/Seasonal-Brand-Ambassador--Part-time--Caesars-Forum-Shoppes-_JR827",
+   "vue": "2026-09-30T16:43:02.063",
+   "verdict": "NON_CONCLUSIVE",
+   "motif": "OUTSIDE_ACCESS_SCOPE",
+   "brut": "NON_CONCLUSIVE",
+   "statut": null,
+   "texte": null
+  },
+  {
+   "sourceKey": "diptyque-workday",
+   "url": "https://diptyqueparis.wd103.myworkdayjobs.com/DiptyqueCareers/job/United-Kingdom---Bluewater/Sales-Assistant_JR681",
+   "vue": "2026-09-30T16:43:02.483",
+   "verdict": "NON_CONCLUSIVE",
+   "motif": "OUTSIDE_ACCESS_SCOPE",
+   "brut": "NON_CONCLUSIVE",
+   "statut": null,
+   "texte": null
+  },
+  {
+   "sourceKey": "diptyque-workday",
+   "url": "https://diptyqueparis.wd103.myworkdayjobs.com/DiptyqueCareers/job/France---Aix/COMMERCIAL-RETAIL---TempXM1---AIX_JR826",
+   "vue": "2026-09-30T16:43:02.937",
+   "verdict": "NON_CONCLUSIVE",
+   "motif": "OUTSIDE_ACCESS_SCOPE",
+   "brut": "NON_CONCLUSIVE",
+   "statut": null,
+   "texte": null
+  },
+  {
+   "sourceKey": "diptyque-workday",
+   "url": "https://diptyqueparis.wd103.myworkdayjobs.com/DiptyqueCareers/job/France---Lyon/STAGE---Conseiller-de-vente--H-F-_JR825",
+   "vue": "2026-09-30T16:43:03.495",
+   "verdict": "NON_CONCLUSIVE",
+   "motif": "OUTSIDE_ACCESS_SCOPE",
+   "brut": "NON_CONCLUSIVE",
+   "statut": null,
+   "texte": null
+  },
+  {
+   "sourceKey": "diptyque-workday",
+   "url": "https://diptyqueparis.wd103.myworkdayjobs.com/DiptyqueCareers/job/France---Paris/Stage---Assistant-Evnements---Partenariats-H-F_JR824-1",
+   "vue": "2026-09-30T16:43:03.847",
+   "verdict": "NON_CONCLUSIVE",
+   "motif": "OUTSIDE_ACCESS_SCOPE",
+   "brut": "NON_CONCLUSIVE",
+   "statut": null,
+   "texte": null
+  },
+  {
+   "sourceKey": "diptyque-workday",
+   "url": "https://diptyqueparis.wd103.myworkdayjobs.com/DiptyqueCareers/job/France---Paris/Chef-de-Projet-Formation-Marque-H-F_JR823",
+   "vue": "2026-09-30T16:43:04.273",
+   "verdict": "NON_CONCLUSIVE",
+   "motif": "OUTSIDE_ACCESS_SCOPE",
+   "brut": "NON_CONCLUSIVE",
+   "statut": null,
+   "texte": null
+  },
+  {
+   "sourceKey": "diptyque-workday",
+   "url": "https://diptyqueparis.wd103.myworkdayjobs.com/DiptyqueCareers/job/France---Paris/Stage---Assistante-Chef-de-Projets-RSE-H-F_JR821",
+   "vue": "2026-09-30T16:43:04.598",
+   "verdict": "NON_CONCLUSIVE",
+   "motif": "OUTSIDE_ACCESS_SCOPE",
+   "brut": "NON_CONCLUSIVE",
+   "statut": null,
+   "texte": null
+  },
+  {
+   "sourceKey": "diptyque-workday",
+   "url": "https://diptyqueparis.wd103.myworkdayjobs.com/DiptyqueCareers/job/Germany---Dsseldorf/Client-Advisor--m-w-d-_JR471",
+   "vue": "2026-09-30T16:43:04.939",
+   "verdict": "NON_CONCLUSIVE",
+   "motif": "OUTSIDE_ACCESS_SCOPE",
+   "brut": "NON_CONCLUSIVE",
+   "statut": null,
+   "texte": null
+  },
+  {
+   "sourceKey": "gemmyo",
+   "url": "https://join.com/companies/gemmyo/16718768-japan-retail-operations-lead-fixed-term-contract-keiyaku-shain",
+   "vue": "2026-09-30T16:01:46.581",
+   "verdict": "OPEN",
+   "motif": "OPEN",
+   "brut": "OPEN",
+   "statut": 200,
+   "texte": null
+  },
+  {
+   "sourceKey": "marc-o-polo",
+   "url": "https://company.marc-o-polo.com/en/career/start-creating-with-us/our-jobs/lagerist-outlet-radolfzell-25-30h-m-w-d-2026-4345",
+   "vue": "2026-09-30T06:45:58.106",
+   "verdict": "OPEN",
+   "motif": "OPEN",
+   "brut": "OPEN",
+   "statut": 200,
+   "texte": null
+  },
+  {
+   "sourceKey": "marc-o-polo",
+   "url": "https://company.marc-o-polo.com/en/career/start-creating-with-us/our-jobs/ausbildung-zum-zur-kaufmann-kauffrau-im-einzelhandel-outlet-zweibr-cken-m-w-d-2026-4355",
+   "vue": "2026-09-30T06:45:58.194",
+   "verdict": "OPEN",
+   "motif": "OPEN",
+   "brut": "OPEN",
+   "statut": 200,
+   "texte": null
+  },
+  {
+   "sourceKey": "marc-o-polo",
+   "url": "https://company.marc-o-polo.com/en/career/start-creating-with-us/our-jobs/ausbildung-zum-zur-kaufmann-kauffrau-im-einzelhandel-outlet-bremerhaven-m-w-d-2026-4356",
+   "vue": "2026-09-30T06:45:58.266",
+   "verdict": "OPEN",
+   "motif": "OPEN",
+   "brut": "OPEN",
+   "statut": 200,
+   "texte": null
+  },
+  {
+   "sourceKey": "marc-o-polo",
+   "url": "https://company.marc-o-polo.com/en/career/start-creating-with-us/our-jobs/ausbildung-zum-zur-kaufmann-kauffrau-im-einzelhandel-m-nchen-sendlinger-stra-e-m-w-d-2026-4379",
+   "vue": "2026-09-30T06:45:58.311",
+   "verdict": "OPEN",
+   "motif": "OPEN",
+   "brut": "OPEN",
+   "statut": 200,
+   "texte": null
+  },
+  {
+   "sourceKey": "marc-o-polo",
+   "url": "https://company.marc-o-polo.com/en/career/start-creating-with-us/our-jobs/ausbildung-zum-zur-kaufmann-kauffrau-im-einzelhandel-m-nchen-theatinerstra-e-m-w-d-2026-4378",
+   "vue": "2026-09-30T06:45:58.35",
+   "verdict": "OPEN",
+   "motif": "OPEN",
+   "brut": "OPEN",
+   "statut": 200,
+   "texte": null
+  },
+  {
+   "sourceKey": "marc-o-polo",
+   "url": "https://company.marc-o-polo.com/en/career/start-creating-with-us/our-jobs/ausbildung-zum-zur-kaufmann-kauffrau-im-einzelhandel-stuttgart-m-w-d-2026-4382",
+   "vue": "2026-09-30T06:45:58.397",
+   "verdict": "OPEN",
+   "motif": "OPEN",
+   "brut": "OPEN",
+   "statut": 200,
+   "texte": null
+  },
+  {
+   "sourceKey": "marc-o-polo",
+   "url": "https://company.marc-o-polo.com/en/career/start-creating-with-us/our-jobs/ausbildung-zum-zur-kaufmann-kauffrau-im-einzelhandel-dresden-m-w-d-2026-4377",
+   "vue": "2026-09-30T06:45:58.435",
+   "verdict": "OPEN",
+   "motif": "OPEN",
+   "brut": "OPEN",
+   "statut": 200,
+   "texte": null
+  },
+  {
+   "sourceKey": "marc-o-polo",
+   "url": "https://company.marc-o-polo.com/en/career/start-creating-with-us/our-jobs/ausbildung-zum-zur-kaufmann-kauffrau-im-einzelhandel-w-rzburg-m-w-d-2026-4381",
+   "vue": "2026-09-30T06:45:58.478",
+   "verdict": "OPEN",
+   "motif": "OPEN",
+   "brut": "OPEN",
+   "statut": 200,
+   "texte": null
+  },
+  {
+   "sourceKey": "marc-o-polo",
+   "url": "https://company.marc-o-polo.com/en/career/start-creating-with-us/our-jobs/ausbildung-zum-zur-kaufmann-kauffrau-im-einzelhandel-sindelfingen-m-w-d-2026-4380",
+   "vue": "2026-09-30T06:45:58.518",
+   "verdict": "OPEN",
+   "motif": "OPEN",
+   "brut": "OPEN",
+   "statut": 200,
+   "texte": null
+  },
+  {
+   "sourceKey": "marc-o-polo",
+   "url": "https://company.marc-o-polo.com/en/career/start-creating-with-us/our-jobs/ausbildung-zum-zur-kaufmann-kauffrau-im-einzelhandel-d-sseldorf-k-nigsallee-m-w-d-2026-4376",
+   "vue": "2026-09-30T06:45:58.556",
+   "verdict": "OPEN",
+   "motif": "OPEN",
+   "brut": "OPEN",
+   "statut": 200,
+   "texte": null
+  },
+  {
+   "sourceKey": "marc-o-polo",
+   "url": "https://company.marc-o-polo.com/en/career/start-creating-with-us/our-jobs/ausbildung-zum-zur-kaufmann-kauffrau-im-einzelhandel-outlet-metzingen-m-hlstra-e-m-w-d-2026-4354",
+   "vue": "2026-09-30T06:45:58.602",
+   "verdict": "OPEN",
+   "motif": "OPEN",
+   "brut": "OPEN",
+   "statut": 200,
+   "texte": null
+  },
+  {
+   "sourceKey": "marc-o-polo",
+   "url": "https://company.marc-o-polo.com/en/career/start-creating-with-us/our-jobs/aushilfe-outlet-radolfzell-m-w-d-2026-4374",
+   "vue": "2026-09-30T06:45:58.646",
+   "verdict": "OPEN",
+   "motif": "OPEN",
+   "brut": "OPEN",
+   "statut": 200,
+   "texte": null
+  },
+  {
+   "sourceKey": "nordstrom",
+   "url": "https://nordstrom.wd501.myworkdayjobs.com/nordstrom_careers/job/Santa-Clarita-CA/Seasonal-Retail-Customer-Service---Santa-Clarita-Valencia-Promenade-Rack_R-871288",
+   "vue": "2026-09-30T18:08:50.833",
+   "verdict": "NON_CONCLUSIVE",
+   "motif": "OUTSIDE_ACCESS_SCOPE",
+   "brut": "NON_CONCLUSIVE",
+   "statut": null,
+   "texte": null
+  },
+  {
+   "sourceKey": "puma",
+   "url": "https://puma.wd502.myworkdayjobs.com/Jobs_at_Puma/job/PUMA-Boston-International-Office/Entertainment-Marketing-Manager_R43416",
+   "vue": "2026-09-30T17:16:51.535",
+   "verdict": "NON_CONCLUSIVE",
+   "motif": "OUTSIDE_ACCESS_SCOPE",
+   "brut": "NON_CONCLUSIVE",
+   "statut": null,
+   "texte": null
+  },
+  {
+   "sourceKey": "richemont-workday",
+   "url": "https://richemont.wd3.myworkdayjobs.com/Richemont/job/LAS-VEGAS/Sales-Associate--Las-Vegas---City-Center_JR131832",
+   "vue": "2026-09-30T18:11:51.114",
+   "verdict": "NON_CONCLUSIVE",
+   "motif": "OUTSIDE_ACCESS_SCOPE",
+   "brut": "NON_CONCLUSIVE",
+   "statut": null,
+   "texte": null
+  },
+  {
+   "sourceKey": "swatch-group",
+   "url": "https://www.swatchgroup.com/it/job/32988",
+   "vue": "2026-09-29T16:54:17.398",
+   "verdict": "DEAD",
+   "motif": "HTTP_404",
+   "brut": "DEAD",
+   "statut": 404,
+   "texte": null,
+   "temoin": {
+    "verdict": "OPEN",
+    "reason": "OPEN",
+    "status": 200,
+    "finalUrl": "https://www.swatchgroup.com/de/job/32367"
+   }
+  },
+  {
+   "sourceKey": "swatch-group",
+   "url": "https://www.swatchgroup.com/de/job/32985",
+   "vue": "2026-09-29T16:54:17.448",
+   "verdict": "DEAD",
+   "motif": "HTTP_404",
+   "brut": "DEAD",
+   "statut": 404,
+   "texte": null,
+   "temoin": {
+    "verdict": "OPEN",
+    "reason": "OPEN",
+    "status": 200,
+    "finalUrl": "https://www.swatchgroup.com/de/job/32367"
+   }
+  },
+  {
+   "sourceKey": "swatch-group",
+   "url": "https://www.swatchgroup.com/en/job/32979",
+   "vue": "2026-09-29T16:54:17.605",
+   "verdict": "DEAD",
+   "motif": "HTTP_404",
+   "brut": "DEAD",
+   "statut": 404,
+   "texte": null,
+   "temoin": {
+    "verdict": "OPEN",
+    "reason": "OPEN",
+    "status": 200,
+    "finalUrl": "https://www.swatchgroup.com/de/job/32367"
+   }
+  },
+  {
+   "sourceKey": "swatch-group",
+   "url": "https://www.swatchgroup.com/fr/job/33277",
+   "vue": "2026-09-30T08:18:40.794",
+   "verdict": "OPEN",
+   "motif": "OPEN",
+   "brut": "OPEN",
+   "statut": 200,
+   "texte": null
+  },
+  {
+   "sourceKey": "swatch-group",
+   "url": "https://www.swatchgroup.com/fr/job/33276",
+   "vue": "2026-09-30T08:18:40.843",
+   "verdict": "OPEN",
+   "motif": "OPEN",
+   "brut": "OPEN",
+   "statut": 200,
+   "texte": null
+  },
+  {
+   "sourceKey": "swatch-group",
+   "url": "https://www.swatchgroup.com/en/job/33275",
+   "vue": "2026-09-30T08:18:40.891",
+   "verdict": "OPEN",
+   "motif": "OPEN",
+   "brut": "OPEN",
+   "statut": 200,
+   "texte": null
+  },
+  {
+   "sourceKey": "swatch-group",
+   "url": "https://www.swatchgroup.com/it/job/33274",
+   "vue": "2026-09-30T08:18:40.941",
+   "verdict": "OPEN",
+   "motif": "OPEN",
+   "brut": "OPEN",
+   "statut": 200,
+   "texte": null
+  },
+  {
+   "sourceKey": "swatch-group",
+   "url": "https://www.swatchgroup.com/it/job/33271",
+   "vue": "2026-09-30T08:18:40.987",
+   "verdict": "OPEN",
+   "motif": "OPEN",
+   "brut": "OPEN",
+   "statut": 200,
+   "texte": null
+  },
+  {
+   "sourceKey": "swatch-group",
+   "url": "https://www.swatchgroup.com/fr/job/33244",
+   "vue": "2026-09-30T08:18:41.638",
+   "verdict": "OPEN",
+   "motif": "OPEN",
+   "brut": "OPEN",
+   "statut": 200,
+   "texte": null
+  },
+  {
+   "sourceKey": "swatch-group",
+   "url": "https://www.swatchgroup.com/fr/job/33245",
+   "vue": "2026-09-30T08:18:41.687",
+   "verdict": "OPEN",
+   "motif": "OPEN",
+   "brut": "OPEN",
+   "statut": 200,
+   "texte": null
+  },
+  {
+   "sourceKey": "swatch-group",
+   "url": "https://www.swatchgroup.com/fr/job/33243",
+   "vue": "2026-09-30T08:18:41.728",
+   "verdict": "OPEN",
+   "motif": "OPEN",
+   "brut": "OPEN",
+   "statut": 200,
+   "texte": null
+  },
+  {
+   "sourceKey": "swatch-group",
+   "url": "https://www.swatchgroup.com/en/job/33242",
+   "vue": "2026-09-30T08:18:41.782",
+   "verdict": "OPEN",
+   "motif": "OPEN",
+   "brut": "OPEN",
+   "statut": 200,
+   "texte": null
+  },
+  {
+   "sourceKey": "versace",
+   "url": "https://capri.wd1.myworkdayjobs.com/Versace/job/GV-OUTLET-Vancouver/Sales-Associate--Full-Time---Versace-Vancouver-Outlet---BC_R_778886",
+   "vue": "2026-09-30T16:19:19.29",
+   "verdict": "NON_CONCLUSIVE",
+   "motif": "OUTSIDE_ACCESS_SCOPE",
+   "brut": "NON_CONCLUSIVE",
+   "statut": null,
+   "texte": null
+  },
+  {
+   "sourceKey": "versace",
+   "url": "https://capri.wd1.myworkdayjobs.com/Versace/job/Los-Angeles-Metropolitan-Area/Senior-Sales-Associate---Beverly-Center_R_786851",
+   "vue": "2026-09-30T16:19:19.502",
+   "verdict": "NON_CONCLUSIVE",
+   "motif": "OUTSIDE_ACCESS_SCOPE",
+   "brut": "NON_CONCLUSIVE",
+   "statut": null,
+   "texte": null
+  },
+  {
+   "sourceKey": "versace",
+   "url": "https://capri.wd1.myworkdayjobs.com/Versace/job/Metzingen/Sales-Associate_R_786844",
+   "vue": "2026-09-30T16:19:19.676",
+   "verdict": "NON_CONCLUSIVE",
+   "motif": "OUTSIDE_ACCESS_SCOPE",
+   "brut": "NON_CONCLUSIVE",
+   "statut": null,
+   "texte": null
+  },
+  {
+   "sourceKey": "versace",
+   "url": "https://capri.wd1.myworkdayjobs.com/Versace/job/GV---Royalmount/Senior-Sales-Associate--Royal-Mount---Montreal--QC-1_R_786802",
+   "vue": "2026-09-30T16:19:19.9",
+   "verdict": "NON_CONCLUSIVE",
+   "motif": "OUTSIDE_ACCESS_SCOPE",
+   "brut": "NON_CONCLUSIVE",
+   "statut": null,
+   "texte": null
+  },
+  {
+   "sourceKey": "versace",
+   "url": "https://capri.wd1.myworkdayjobs.com/Versace/job/London/Sales-Associate_R_786789",
+   "vue": "2026-09-30T16:19:20.162",
+   "verdict": "NON_CONCLUSIVE",
+   "motif": "OUTSIDE_ACCESS_SCOPE",
+   "brut": "NON_CONCLUSIVE",
+   "statut": null,
+   "texte": null
+  },
+  {
+   "sourceKey": "versace",
+   "url": "https://capri.wd1.myworkdayjobs.com/Versace/job/Greater-Atlanta/General-Manager---Versace-North-Georgia-Premium-Outlet---GA_R_786744",
+   "vue": "2026-09-30T16:19:20.381",
+   "verdict": "NON_CONCLUSIVE",
+   "motif": "OUTSIDE_ACCESS_SCOPE",
+   "brut": "NON_CONCLUSIVE",
+   "statut": null,
+   "texte": null
+  },
+  {
+   "sourceKey": "versace",
+   "url": "https://capri.wd1.myworkdayjobs.com/Versace/job/London/Sales-Associate_R_786636-1",
+   "vue": "2026-09-30T16:19:20.577",
+   "verdict": "NON_CONCLUSIVE",
+   "motif": "OUTSIDE_ACCESS_SCOPE",
+   "brut": "NON_CONCLUSIVE",
+   "statut": null,
+   "texte": null
+  },
+  {
+   "sourceKey": "versace",
+   "url": "https://capri.wd1.myworkdayjobs.com/Versace/job/London/Sales-Associate_R_786635-1",
+   "vue": "2026-09-30T16:19:20.805",
+   "verdict": "NON_CONCLUSIVE",
+   "motif": "OUTSIDE_ACCESS_SCOPE",
+   "brut": "NON_CONCLUSIVE",
+   "statut": null,
+   "texte": null
+  },
+  {
+   "sourceKey": "versace",
+   "url": "https://capri.wd1.myworkdayjobs.com/Versace/job/Marbella/Sales-Associate_R_786667",
+   "vue": "2026-09-30T16:19:21.088",
+   "verdict": "NON_CONCLUSIVE",
+   "motif": "OUTSIDE_ACCESS_SCOPE",
+   "brut": "NON_CONCLUSIVE",
+   "statut": null,
+   "texte": null
+  },
+  {
+   "sourceKey": "versace",
+   "url": "https://capri.wd1.myworkdayjobs.com/Versace/job/Venice/Sales-Associate_R_786754",
+   "vue": "2026-09-30T16:19:21.336",
+   "verdict": "NON_CONCLUSIVE",
+   "motif": "OUTSIDE_ACCESS_SCOPE",
+   "brut": "NON_CONCLUSIVE",
+   "statut": null,
+   "texte": null
+  },
+  {
+   "sourceKey": "versace",
+   "url": "https://capri.wd1.myworkdayjobs.com/Versace/job/Ingolstadt/Sales-Associate_R_786610",
+   "vue": "2026-09-30T16:19:21.572",
+   "verdict": "NON_CONCLUSIVE",
+   "motif": "OUTSIDE_ACCESS_SCOPE",
+   "brut": "NON_CONCLUSIVE",
+   "statut": null,
+   "texte": null
+  },
+  {
+   "sourceKey": "versace",
+   "url": "https://capri.wd1.myworkdayjobs.com/Versace/job/Central-Valley/Stock-Supervisor_R_786534",
+   "vue": "2026-09-30T16:19:21.808",
+   "verdict": "NON_CONCLUSIVE",
+   "motif": "OUTSIDE_ACCESS_SCOPE",
+   "brut": "NON_CONCLUSIVE",
+   "statut": null,
+   "texte": null
+  }
+ ]
+}

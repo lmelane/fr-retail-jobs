@@ -5,7 +5,7 @@ import { evidenceHash } from '../lib/evidenceHash.js';
 import { deployedCommitHash } from '../capture/revision.js';
 import { log } from '../observability/logger.js';
 import type { Prisma, PrismaClient } from '@prisma/client';
-import { selectApplySource } from '@catwalks/db/publications';
+import { authorityClosure, OFFICIAL_TIERS, selectServingSource } from '@catwalks/db/publications';
 import { lockSourceWrites, lockCompanyRows } from '../lib/writeLocks.js';
 import { chunk } from '../lib/chunk.js';
 import { recordEvents, changedEvents, diffStructuralFields, structuralValuesOf } from './jobEvents.js';
@@ -13,6 +13,10 @@ import { recordOccupationObservation } from '../occupation/persist.js';
 import { deactivateJob, reactivateJob } from './lifecycle.js';
 import { readAbsencePlan } from './refreshEvidence.js';
 import { availableSourceWhere, sourceIsAvailable } from '@catwalks/db/availability';
+
+/** What the authority rule (R-143 §3) reads of a job's representations. */
+const AUTHORITY_FIELDS = { id: true, sourceKey: true, externalId: true, sourceTier: true, url: true, isActive: true,
+  expiresAt: true, publisherClosedAt: true } as const;
 import { objectStoreConfigured, objectStoreFromEnv } from '../retention/objectStore.js';
 import { randomUUID } from 'node:crypto';
 import { quarantineSnapshot, freezeManifest, refreshSnapshot, verifyManifest, REFRESH_LIMITS, type ManifestEntry, type RefreshManifest } from './refreshManifest.js';
@@ -57,6 +61,13 @@ export type RefreshStats = {
   unverifiableSources: string[];
   /** True when a mass-closure guard refused the run without closing anything. */
   refused: boolean;
+  /**
+   * Sources dont la preuve aurait retiré tout ou presque tout un stock significatif (garde du zéro annoncé) : rien
+   * n'est appliqué pour elles, et la source est une anomalie à instruire (`massAbsenceGuard`).
+   */
+  anomalousSources: string[];
+  /** Offres fermées parce que leur source officielle de rang supérieur a prouvé leur fin (R-143 §3). */
+  authorityClosed: number;
   auditBatchId?: string;
 };
 
@@ -105,6 +116,7 @@ export async function readRefreshPlan(prisma: PrismaClient, options: RefreshOpti
 
   const absencePlan = await readAbsencePlan(prisma, sourceScope, cutoff, asOf, proofStore());
   const unverifiableSources = absencePlan.eligibility.filter(source => !source.eligible).map(source => source.source);
+  const anomalousSources = absencePlan.eligibility.filter(source => source.anomaly).map(source => source.source);
   const expiredSources = await prisma.jobSource.findMany({
     where: { AND: [sourceScope, { isActive: true, expiresAt: { lte: asOf } }] },
     select: { id: true, jobId: true, sourceKey: true, externalId: true, lastSeenAt: true, expiresAt: true, expiryEvidence: true },
@@ -126,15 +138,27 @@ export async function readRefreshPlan(prisma: PrismaClient, options: RefreshOpti
     for (const ids of chunk([...staleJobIds])) {
     const affected = await prisma.job.findMany({
       where: { id: { in: ids }, isActive: true },
-      select: { id: true, sources: { select: { id: true, isActive: true, expiresAt: true } } },
+      select: { id: true, canonicalSourceKey: true, canonicalExternalId: true, url: true, sources: { select: AUTHORITY_FIELDS } },
     });
     const staleSourceIds = new Set(staleSources.map((s) => s.id));
     for (const job of affected) {
-      const remainsActive = job.sources.some((s) => sourceIsAvailable(s, asOf) && !staleSourceIds.has(s.id));
-      if (!remainsActive) wouldClose.push(job.id);
+      // R-143 §3 : la représentation que la preuve désactive est une fin prouvée par sa source.
+      const projected = job.sources.map(s => staleSourceIds.has(s.id) ? { ...s, isActive: false, publisherClosedAt: asOf } : s);
+      if (!selectServingSource(projected, job, asOf)) wouldClose.push(job.id);
     }
     }
   }
+  /**
+   * R-143 §3 — les offres encore ouvertes qu'une fin PROUVÉE par leur source officielle de rang supérieur ferme déjà :
+   * le stock d'avant la règle (rattrapé par la migration du 02/10/2026) et une fin prouvée hors de ce refresh (retrait
+   * natif, échéance). Jamais dans une maintenance bornée par manifeste, qui ne touche que ses entrées.
+   */
+  const authorityClosures = options.manifest ? [] : (await prisma.job.findMany({
+    where: { AND: [jobScope, { isActive: true, sources: { some: { sourceTier: { in: [...OFFICIAL_TIERS] },
+      OR: [{ isActive: false, publisherClosedAt: { not: null } }, { expiresAt: { lte: asOf } }] } } }] },
+    select: { id: true, canonicalSourceKey: true, canonicalExternalId: true, url: true, sources: { select: AUTHORITY_FIELDS } },
+  })).filter(job => !wouldClose.includes(job.id) && authorityClosure(job.sources, asOf));
+  wouldClose.push(...authorityClosures.map(job => job.id));
 
   const liveTotal = await prisma.job.count({ where: { isActive: true, mergedIntoId: null,
     ...(options.onlyKeys !== undefined ? { sources: { some: { sourceKey: { in: options.onlyKeys } } } } : {}),
@@ -148,8 +172,8 @@ export async function readRefreshPlan(prisma: PrismaClient, options: RefreshOpti
       sources: { some: { AND: [sourceScope, availableSourceWhere(asOf), { lastSeenAt: { gte: cutoff } }] } },
     }] }, include: { sources: { omit: { raw: true } } }, omit: { raw: true, searchText: true },
   })).filter(job => canRefreshReactivate(job, cutoff, options, asOf));
-  return { sourceScope, jobScope, asOf, cutoff, absencePlan, staleSources, expiredSources, orphans, revived,
-    wouldClose, liveTotal, refused, unverifiableSources, options,
+  return { sourceScope, jobScope, asOf, cutoff, absencePlan, staleSources, expiredSources, orphans, revived, authorityClosures,
+    wouldClose, liveTotal, refused, unverifiableSources, anomalousSources, options,
     limits: { staleHours, maxCloseRatio, minCloseForGuard } };
 }
 
@@ -207,15 +231,20 @@ export async function runRefresh(prisma: PrismaClient, options: RefreshOptions =
   const manifest = options.manifest;
   const auditBatchId = `refresh:${manifest?.planHash ?? randomUUID()}`;
   const store = proofStore();
-  const { sourceScope, jobScope, cutoff, staleSources, orphans, revived, unverifiableSources } = plan;
+  const { sourceScope, jobScope, cutoff, staleSources, orphans, revived, authorityClosures, unverifiableSources, anomalousSources } = plan;
+  for (const row of plan.absencePlan.eligibility.filter(source => source.anomaly)) {
+    await log.error('refresh.source_anomaly', { sourceKey: row.source, reasons: row.reasons });
+  }
   if (plan.refused) {
     await log.error('refresh.refused', { liveInScope: plan.liveTotal, plannedRemovals: plan.wouldClose.length });
     return { checked: plan.liveTotal, closedSources: 0, closedJobs: 0, reopened: 0, withdrawn: 0,
-      republished: 0, unverifiableSources, refused: true };
+      republished: 0, unverifiableSources, anomalousSources, authorityClosed: 0, refused: true };
   }
   const candidates = new Set(manifest ? manifest.entries.flatMap(entry => entry.jobId ? [entry.jobId] : [])
-    : [...staleSources.flatMap(source => source.jobId ? [source.jobId] : []), ...orphans.map(job => job.id), ...revived.map(job => job.id)]);
+    : [...staleSources.flatMap(source => source.jobId ? [source.jobId] : []), ...orphans.map(job => job.id), ...revived.map(job => job.id),
+      ...authorityClosures.map(job => job.id)]);
   const closedSources = { count: 0 }, closedJobs = { count: 0 }, reopened = { count: 0 };
+  let authorityClosed = 0;
   let withdrawn = 0, republished = 0;
   for (const ids of chunk([...candidates], 100)) {
     const planned = await prisma.job.findMany({ where: { id: { in: ids } }, select: { id: true, companyId: true } });
@@ -260,8 +289,8 @@ export async function runRefresh(prisma: PrismaClient, options: RefreshOptions =
             const { consequence: _consequence, beforeHash: _beforeHash, ...expectedEvidence } = entry;
             if (evidenceHash(evidence.get(entry.jobSourceId) ?? null) !== evidenceHash(expectedEvidence)) skipped.set(job.id, 'EVIDENCE_CHANGED');
           }
-          const projected = job.sources.map(source => ({ ...source, isActive: source.isActive && !evidence.has(source.id) }));
-          const consequence = !job.isActive ? 'JOB_ALREADY_INACTIVE' : selectApplySource(projected, job, now)
+          const projected = job.sources.map(source => evidence.has(source.id) ? { ...source, isActive: false, publisherClosedAt: now } : source);
+          const consequence = !job.isActive ? 'JOB_ALREADY_INACTIVE' : selectServingSource(projected, job, now)
             ? 'JOB_KEPT_BY_ANOTHER_SOURCE' : 'JOB_CANDIDATE_FOR_CLOSURE';
           // The ledger names the root cause: a proof that changed or vanished explains the changed outcome.
           if (!skipped.has(job.id) && expected.some(entry => entry.consequence !== consequence)) skipped.set(job.id, 'OUTCOME_CHANGED');
@@ -269,19 +298,27 @@ export async function runRefresh(prisma: PrismaClient, options: RefreshOptions =
         const acceptedIds = currentIds.filter(id => !skipped.has(id));
         const deactivated = await tx.jobSource.updateMany({
           where: { AND: [sourceScope, { jobId: { in: acceptedIds }, isActive: true, id: { in: [...evidence.keys()] } }] },
-          data: { isActive: false },
+          // Every refresh proof is the source's own: an absence from its proven enumeration, or its declared deadline.
+          data: { isActive: false, publisherClosedAt: now },
         });
         const jobs = await tx.job.findMany({ where: { id: { in: acceptedIds } },
           include: { sources: { omit: { raw: true } } }, omit: { raw: true, searchText: true } });
-        let closed = 0, opened = 0, removed = 0, published = 0;
+        let closed = 0, opened = 0, removed = 0, published = 0, byAuthority = 0;
+        const authorities = new Map<string, { jobSourceId: string; sourceKey: string; sourceTier: string; publisherClosedAt: string | null }>();
         for (const job of jobs) {
           if (job.withdrawnAt && job.withdrawalReason !== 'ATTESTATION_MISSING') continue;
-          const owner = selectApplySource(job.sources, job, now);
+          const owner = selectServingSource(job.sources, job, now);
           const active = !!owner;
           if (active && !job.isActive && (manifest || !canRefreshReactivate(job, cutoff, options, now))) continue;
           const hasClosureEvidence = [...evidence.values()].some(source => source.jobId === job.id);
+          const authority = authorityClosure(job.sources, now);
           const transition = active ? reactivateJob(job) : deactivateJob(job,
-            hasClosureEvidence ? { kind: 'CLOSED' } : { kind: 'WITHDRAWN', reason: 'ATTESTATION_MISSING' }, now);
+            hasClosureEvidence || authority ? { kind: 'CLOSED' } : { kind: 'WITHDRAWN', reason: 'ATTESTATION_MISSING' }, now);
+          if (authority && transition?.type === 'CLOSED') {
+            byAuthority++;
+            authorities.set(job.id, { jobSourceId: authority.id, sourceKey: authority.sourceKey, sourceTier: authority.sourceTier,
+              publisherClosedAt: authority.publisherClosedAt?.toISOString() ?? null });
+          }
           const changedOwner = owner && (job.canonicalSourceKey !== owner.sourceKey ||
             job.canonicalExternalId !== owner.externalId || job.url !== owner.url);
           if (!transition && !changedOwner) continue;
@@ -312,11 +349,13 @@ export async function runRefresh(prisma: PrismaClient, options: RefreshOptions =
             commitHash: deployedCommitHash(), finding: 'REFRESH_LIFECYCLE', entityType: 'Job', entityId: job.id,
             before: beforeState, after: afterState,
             evidence: { outcome: skipped.get(job.id) ?? (changed ? 'APPLIED' : 'UNCHANGED'), deactivatedIds,
-              proofs: [...evidence.values()].filter(source => source.jobId === job.id), cutoff: cutoff.toISOString() },
+              proofs: [...evidence.values()].filter(source => source.jobId === job.id), cutoff: cutoff.toISOString(),
+              ...(authorities.has(job.id) ? { authority: authorities.get(job.id) } : {}) },
           } });
         }
-        return { sources: deactivated.count, closed, opened, removed, published };
+        return { sources: deactivated.count, closed, opened, removed, published, byAuthority };
       }, { maxWait: 10_000, timeout: 30_000 });
+      authorityClosed += counts.byAuthority;
       closedSources.count += counts.sources;
       closedJobs.count += counts.closed;
       reopened.count += counts.opened;
@@ -347,7 +386,7 @@ export async function runRefresh(prisma: PrismaClient, options: RefreshOptions =
         const expectedProof = expected && (({ beforeHash: _hash, consequence: _outcome, ...value }) => value)(expected);
         if (!proof || expectedProof && evidenceHash(expectedProof) !== evidenceHash(proof)) outcome = 'EVIDENCE_CHANGED';
         else {
-          await tx.jobSource.update({ where: { id }, data: { isActive: false } });
+          await tx.jobSource.update({ where: { id }, data: { isActive: false, publisherClosedAt: now } });
           outcome = 'APPLIED';
         }
       }
@@ -382,6 +421,8 @@ export async function runRefresh(prisma: PrismaClient, options: RefreshOptions =
     withdrawn,
     republished,
     unverifiableSources,
+    anomalousSources,
+    authorityClosed,
     refused: false,
     auditBatchId,
   };

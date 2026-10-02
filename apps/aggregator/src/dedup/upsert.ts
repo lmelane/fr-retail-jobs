@@ -18,7 +18,7 @@ import { assertSourceRunning } from '../lib/sourceBudget.js';
 import { requireCurrentCaptureRevision } from '../connectors/sourceRevision.js';
 import { lockCompanyRows, lockSourceWrites, SOURCE_WRITE_TRANSACTION } from '../lib/writeLocks.js';
 import { Prisma, type PrismaClient } from '@prisma/client';
-import { selectApplySource, SOURCE_PRIORITY } from '@catwalks/db/publications';
+import { authorityClosure, selectApplySource, SOURCE_PRIORITY } from '@catwalks/db/publications';
 import { hasRequisitionConflict } from './postingIdentity.js';
 import { blockingKey, provenPublicationGroup, type CandidateJob } from './match.js';
 import { enforcePublicationPolicy } from '../capture/publicationPolicy.js';
@@ -295,6 +295,8 @@ async function createJob(
         externalId: candidate.externalId, url: candidate.url, title: candidate.title,
         postedAt: candidate.postedAt, lastSeenAt: now,
         isActive: !expired,
+        // R-143 §3 : une échéance déclarée atteinte est une fin prouvée par la source.
+        publisherClosedAt: expired ? now : null,
         expiresAt: expiry?.expiresAt,
         expiryEvidence: expiry?.evidence,
         captureBatchId: candidate.captureBatchId, captureOutputId: candidate.captureOutputId,
@@ -310,6 +312,7 @@ async function createJob(
       jobId: created.id, quarantinedAt: null, quarantineReason: null,
       sourceTier: candidate.sourceTier, url: candidate.url, title: candidate.title,
       postedAt: candidate.postedAt ?? null, lastSeenAt: now, isActive: !expired,
+      ...SEEN_AGAIN, publisherClosedAt: expired ? now : null,
       expiresAt,
       ...(expiry ? { expiryEvidence: expiry.evidence } : {}),
       captureBatchId: candidate.captureBatchId, captureOutputId: candidate.captureOutputId,
@@ -320,6 +323,9 @@ async function createJob(
   await recordOccupationObservation(prisma,created,null);
   return { jobId: created.id, outcome: 'CREATED', promoted: true, occupationStatus: created.occupationStatus, occupationReleaseId: created.occupationReleaseId! };
 }
+
+/** A representation its source has just seen again carries no availability hold (R-143 §2). */
+const SEEN_AGAIN = { availabilityHold: null, availabilityHoldAt: null, availabilityEvidence: Prisma.DbNull } as const;
 
 type ExistingJob = Prisma.JobGetPayload<{ include: { sources: true }; omit: { searchText: true } }>;
 
@@ -364,6 +370,7 @@ async function attachToExisting(
       postedAt: candidate.postedAt,
       lastSeenAt: now,
       isActive: available,
+      publisherClosedAt: available ? null : now,
       ...expiryFields,
       raw: candidate.raw as Prisma.InputJsonValue | undefined,
       sourceFacts: candidate.sourceFacts as unknown as Prisma.InputJsonValue, presentation,
@@ -371,6 +378,8 @@ async function attachToExisting(
     },
     update: { ...(quarantined ? { jobId: existing.id, quarantinedAt: null, quarantineReason: null } : {}),
       url: candidate.url, title: candidate.title, postedAt: candidate.postedAt ?? null, sourceTier: candidate.sourceTier, lastSeenAt: now, isActive: available, ...expiryFields,
+      // Revue par sa source : sa retenue de disponibilité tombe (R-143 §2), et sa fin n'est plus prouvée (§3).
+      ...SEEN_AGAIN, publisherClosedAt: available ? null : now,
       sourceFacts: candidate.sourceFacts as unknown as Prisma.InputJsonValue, presentation,
       captureBatchId: candidate.captureBatchId ?? null, captureOutputId: candidate.captureOutputId ?? null,
       raw: candidate.raw == null ? Prisma.DbNull : candidate.raw as Prisma.InputJsonValue },
@@ -408,7 +417,10 @@ async function attachToExisting(
     prior && prior.sourceKey === existing.canonicalSourceKey && prior.externalId === existing.canonicalExternalId &&
     explicitlyListed(candidate.atsType, candidate.raw);
   const administrativeWithdrawal = existing.withdrawnAt && existing.withdrawalReason !== 'ATTESTATION_MISSING' && !canRelist;
-  const reactivation = administrativeWithdrawal ? null : owner
+  // R-143 §3 : une source de rang inférieur ne rouvre pas, ni ne maintient, une offre que l'officiel a terminée.
+  const allSources = [...existing.sources.filter(s => s.id !== observedSource.id), observedSource];
+  const serving = owner && !authorityClosure(allSources, now) ? owner : undefined;
+  const reactivation = administrativeWithdrawal ? null : serving
     ? reactivateJob(existing) : deactivateJob(existing, { kind: 'CLOSED' }, now);
   const events: JobEventInput[] = [
     ...(reactivation ? [{ jobId: existing.id, type: reactivation.type, at: now }] : []),

@@ -226,6 +226,41 @@ export function sourceEligibility(facts: AttestationFacts | undefined, evidence:
 }
 
 /**
+ * LA GARDE DU ZÉRO ANNONCÉ — par source, en plus du frein global du refresh (R-143 §2, D-513, 02/10/2026).
+ *
+ * Une source qui annonce elle-même un total de 0, parcours complet, atteste l'absence de tout son board
+ * (`isDeclaredEmptyEnumeration`), sans la garde d'effondrement. Le seul frein restait global (au moins 50 fermetures
+ * ET plus de 5 % du stock servi) : une source de 2 800 offres passait dessous et fermait tout. Une Maison qui recrute
+ * ne cesse pas de publier du jour au lendemain ; une clé d'API tournée, un filtre de pays changé ou un portail en
+ * maintenance qui répond « 0 », si.
+ *
+ * Mesuré en production le 02/10/2026 (lecture seule, `audits/2026-10-02/r143-disponibilite/`) : sur tout l'historique
+ * `SourceRun`, chaque zéro annoncé après un passé productif venait d'une source de 1 ou 2 offres (Margaret Howell,
+ * Fjällräven, Chrome, Cuyana, Bernadette, Lucy & Yak, Löplabbet) ; 232 sources ont au moins 20 représentations
+ * actives. Seuils :
+ *   · un stock d'au moins `MASS_ABSENCE_MIN_STOCK` représentations actives est significatif ;
+ *   · une preuve qui en retirerait tout le stock n'est jamais appliquée ;
+ *   · une preuve qui en retirerait plus de `MASS_ABSENCE_MAX_SHARE` ne l'est pas non plus, sauf chute confirmée par
+ *     l'éditeur (D-484 §2 : total annoncé en baisse dans la même proportion, liste complète, tout lu), qui reste la
+ *     décision du CEO. Une chute confirmée vers zéro n'existe pas (D-484 exige un total annoncé positif).
+ * La source n'atteste rien ce jour-là, ses offres restent telles quelles, et elle est classée en anomalie.
+ *
+ * Calculée sur tout le stock actif de la source, jamais sur le périmètre d'une relecture : la prévisualisation et la
+ * relecture sous verrou rendent le même verdict, et chaque désactivation appliquée fait baisser la part, jamais monter.
+ */
+export const MASS_ABSENCE_MIN_STOCK = 10;
+export const MASS_ABSENCE_MAX_SHARE = 0.9;
+export function massAbsenceGuard(input: { stock: number; absent: number; confirmedDrop: boolean }): string | null {
+  const { stock, absent } = input;
+  if (stock < MASS_ABSENCE_MIN_STOCK || absent === 0) return null;
+  if (absent >= stock) return `anomalie : la preuve retirerait tout le stock de la source (${absent}/${stock}), zéro annoncé ou chute totale`;
+  if (absent > stock * MASS_ABSENCE_MAX_SHARE && !input.confirmedDrop) {
+    return `anomalie : la preuve retirerait ${absent} représentations sur ${stock} (plus de ${MASS_ABSENCE_MAX_SHARE * 100} %) sans confirmation de l'éditeur`;
+  }
+  return null;
+}
+
+/**
  * L'état d'une représentation au regard de la dernière énumération prouvée de sa source.
  *
  * `observed` est l'ensemble RÉELLEMENT lu, pas une déduction de fraîcheur : c'est toute la différence entre

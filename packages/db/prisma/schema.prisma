@@ -415,6 +415,18 @@ model JobSource {
   presentation Json?
   raw         Json?
 
+  /**
+   * R-143 §2 — retenue de disponibilité : la représentation reste active pour le cycle de vie, mais ne sert plus
+   * l'offre. NOT_RECONFIRMED | APPLY_LINK_DEAD. Éteinte dès que `lastSeenAt >= availabilityHoldAt` (la source l'a
+   * revue) : `packages/db/availability.ts`.
+   */
+  availabilityHold     String?
+  availabilityHoldAt   DateTime?
+  /** Ce qui a fondé la retenue : la collecte qui ne l'a pas vue, ou la lecture de la page de candidature. */
+  availabilityEvidence Json?
+  /** R-143 §3 — l'instant où la source elle-même a prouvé la fin de cette représentation ; effacé à sa republication. */
+  publisherClosedAt    DateTime?
+
   @@unique([sourceKey, externalId])
   @@index([jobId])
   @@index([sourceKey, isActive])

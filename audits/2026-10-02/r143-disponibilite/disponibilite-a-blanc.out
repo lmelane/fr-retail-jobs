@@ -1,0 +1,368 @@
+Timing is on.
+SET
+Time: 18.324 ms
+default_transaction_read_only
+on
+(1 row)
+Time: 17.321 ms
+D1 totaux : offres servies avant, et apres chaque regle
+avant | apres_a_72h | apres_c_relatif | apres_b_construite | masquees_b_par_relatif_seul | masquees_b_par_plafond_seul
+86547 | 80711 | 76347 | 76241 | 4470 | 106
+(1 row)
+Time: 3840.934 ms (00:03.841)
+D2 sources : collecte credible ou non, et garde de la moitie
+sources | avec_manquees | gardees_moitie
+411 | 225 | 1
+(1 row)
+Time: 3387.560 ms (00:03.388)
+D3 sources gardees (plus de la moitie du stock manquee) : rien n est masque par le relatif
+sourceKey | stock | manquees
+gemmyo | 11 | 6
+(1 row)
+Time: 3729.020 ms (00:03.729)
+D4 masquees par source canonique (regle B), 40 premieres
+canonicalSourceKey | servies | masquees | pct | masquees_a
+lvmh | 7501 | 1515 | 20.2 | 967
+ulta-jibe | 11146 | 1220 | 10.9 | 974
+hm-group | 2839 | 904 | 31.8 | 452
+sephora-france | 2678 | 605 | 22.6 | 346
+primark | 1499 | 590 | 39.4 | 453
+wttj-sector | 2586 | 439 | 17.0 | 314
+tapestry | 2633 | 271 | 10.3 | 186
+adidas | 1462 | 269 | 18.4 | 122
+knitwell-us-retail | 2238 | 247 | 11.0 | 0
+urbn-hub | 1741 | 234 | 13.4 | 159
+nordstrom | 1538 | 228 | 14.8 | 0
+bloomingdales-oracle | 1203 | 224 | 18.6 | 156
+pvh | 1570 | 190 | 12.1 | 0
+intersport-france | 977 | 152 | 15.6 | 114
+pandora-talenthub | 1024 | 121 | 11.8 | 67
+crocs | 642 | 116 | 18.1 | 73
+estee-lauder-companies | 1971 | 103 | 5.2 | 0
+penningtons | 429 | 103 | 24.0 | 81
+rituals | 1005 | 95 | 9.5 | 0
+sandro | 631 | 89 | 14.1 | 74
+skechers-phenom | 1745 | 78 | 4.5 | 0
+kiabi | 270 | 76 | 28.1 | 57
+element-6 | 411 | 74 | 18.0 | 52
+swarovski | 779 | 71 | 9.1 | 0
+jean-paul-gaultier-5 | 266 | 64 | 24.1 | 43
+mango | 1673 | 57 | 3.4 | 0
+maison-margiela | 197 | 57 | 28.9 | 26
+courir | 438 | 57 | 13.0 | 54
+lovisa | 1366 | 57 | 4.2 | 0
+beiersdorf | 216 | 55 | 25.5 | 29
+prada-group | 299 | 54 | 18.1 | 28
+monoprix | 795 | 52 | 6.5 | 0
+salomon | 129 | 49 | 38.0 | 39
+richemont-workday | 1424 | 48 | 3.4 | 0
+aptar-beauty | 255 | 46 | 18.0 | 29
+burberry | 176 | 46 | 26.1 | 31
+lush | 366 | 45 | 12.3 | 32
+bash-talents | 91 | 43 | 47.3 | 25
+on-running | 104 | 39 | 37.5 | 37
+kering | 1113 | 36 | 3.2 | 0
+(40 rows)
+Time: 4549.816 ms (00:04.550)
+D5 masquees par pays (regle B et regle A)
+countryCode | servies | masquees_b | pct_b | masquees_a | pct_a
+SK | 35 | 21 | 60.0 | 10 | 28.6
+BG | 49 | 26 | 53.1 | 10 | 20.4
+LT | 36 | 14 | 38.9 | 4 | 11.1
+ZA | 181 | 70 | 38.7 | 27 | 14.9
+HU | 132 | 40 | 30.3 | 15 | 11.4
+CZ | 128 | 38 | 29.7 | 10 | 7.8
+RO | 98 | 27 | 27.6 | 13 | 13.3
+EG | 39 | 10 | 25.6 | 9 | 23.1
+BR | 221 | 56 | 25.3 | 33 | 14.9
+HR | 45 | 11 | 24.4 | 2 | 4.4
+IE | 386 | 77 | 19.9 | 50 | 13.0
+GR | 208 | 39 | 18.8 | 24 | 11.5
+CA | 3479 | 633 | 18.2 | 370 | 10.6
+AR | 35 | 6 | 17.1 | 3 | 8.6
+VN | 183 | 31 | 16.9 | 24 | 13.1
+AT | 377 | 62 | 16.4 | 25 | 6.6
+GB | 3939 | 632 | 16.0 | 350 | 8.9
+ID | 61 | 9 | 14.8 | 4 | 6.6
+SE | 280 | 39 | 13.9 | 14 | 5.0
+TR | 257 | 35 | 13.6 | 10 | 3.9
+SC | 22 | 3 | 13.6 | 2 | 9.1
+NZ | 220 | 29 | 13.2 | 4 | 1.8
+ES | 2252 | 295 | 13.1 | 172 | 7.6
+IN | 554 | 72 | 13.0 | 20 | 3.6
+PL | 386 | 49 | 12.7 | 29 | 7.5
+SG | 519 | 66 | 12.7 | 39 | 7.5
+IT | 2922 | 361 | 12.4 | 193 | 6.6
+FR | 13534 | 1664 | 12.3 | 1061 | 7.8
+KR | 542 | 65 | 12.0 | 29 | 5.4
+NL | 1963 | 235 | 12.0 | 98 | 5.0
+CH | 1315 | 156 | 11.9 | 94 | 7.1
+TW | 207 | 24 | 11.6 | 10 | 4.8
+HK | 360 | 41 | 11.4 | 23 | 6.4
+US | 40626 | 4474 | 11.0 | 2576 | 6.3
+SA | 101 | 11 | 10.9 | 4 | 4.0
+BE | 718 | 78 | 10.9 | 56 | 7.8
+FI | 37 | 4 | 10.8 | 1 | 2.7
+DE | 3166 | 328 | 10.4 | 175 | 5.5
+MC | 48 | 5 | 10.4 | 4 | 8.3
+PT | 444 | 44 | 9.9 | 20 | 4.5
+DK | 347 | 32 | 9.2 | 8 | 2.3
+MY | 293 | 26 | 8.9 | 15 | 5.1
+MO | 35 | 3 | 8.6 | 1 | 2.9
+NO | 212 | 18 | 8.5 | 11 | 5.2
+MX | 514 | 43 | 8.4 | 20 | 3.9
+PH | 72 | 6 | 8.3 | 2 | 2.8
+JP | 616 | 46 | 7.5 | 17 | 2.8
+LU | 57 | 4 | 7.0 | 4 | 7.0
+AU | 1503 | 94 | 6.3 | 55 | 3.7
+PE | 172 | 10 | 5.8 | 5 | 2.9
+CN | 1236 | 64 | 5.2 | 51 | 4.1
+CO | 135 | 7 | 5.2 | 4 | 3.0
+AE | 269 | 12 | 4.5 | 5 | 1.9
+TH | 294 | 8 | 2.7 | 5 | 1.7
+IL | 48 | 1 | 2.1 | 0 | 0.0
+CL | 310 | 6 | 1.9 | 0 | 0.0
+PR | 96 | 1 | 1.0 | 1 | 1.0
+(57 rows)
+Time: 4261.829 ms (00:04.262)
+D6 Maisons (Company) qui perdraient plus de 30 % de leurs offres servies (regle B), au moins 5 servies
+name | servies | masquees | pct | masquees_a
+H&M Group | 2839 | 904 | 31.8 | 452
+Primark | 1499 | 590 | 39.4 | 453
+ba&sh | 133 | 43 | 32.3 | 25
+Salomon | 129 | 49 | 38.0 | 39
+On | 104 | 39 | 37.5 | 37
+LuxExperience | 78 | 27 | 34.6 | 19
+B&S International | 77 | 26 | 33.8 | 13
+Petit Bateau | 67 | 22 | 32.8 | 5
+Skin Laundry | 58 | 19 | 32.8 | 13
+Brilliant Earth | 52 | 22 | 42.3 | 5
+Marc O’Polo | 50 | 35 | 70.0 | 35
+Maison Margiela | 40 | 16 | 40.0 | 11
+Magazine zum Globus AG | 37 | 12 | 32.4 | 11
+Funky Buddha | 36 | 13 | 36.1 | 12
+Gémo | 36 | 12 | 33.3 | 12
+Gymshark | 35 | 13 | 37.1 | 10
+Aeropostale | 25 | 9 | 36.0 | 6
+Sioux | 19 | 19 | 100.0 | 19
+A.P.C. | 19 | 7 | 36.8 | 7
+ILIA | 18 | 7 | 38.9 | 6
+Puig France | 16 | 7 | 43.8 | 5
+OTB | 16 | 5 | 31.3 | 1
+Jil Sander | 15 | 5 | 33.3 | 2
+Marni | 14 | 10 | 71.4 | 2
+Fastrack | 13 | 13 | 100.0 | 13
+NIKE Retail Spain | 13 | 4 | 30.8 | 0
+NIVEA India Pvt. Ltd. | 12 | 5 | 41.7 | 1
+Gemmyo | 11 | 5 | 45.5 | 5
+Emilio Pucci | 11 | 4 | 36.4 | 0
+FROM FUTURE | 10 | 4 | 40.0 | 1
+Beiersdorf S.A. | 10 | 5 | 50.0 | 2
+Tekla | 9 | 3 | 33.3 | 2
+Parfums Givenchy | 9 | 3 | 33.3 | 3
+Burnt | 8 | 4 | 50.0 | 0
+Bubble | 8 | 3 | 37.5 | 1
+New Balance Italy S.R.L. | 7 | 3 | 42.9 | 0
+NIVEA Polska Sp. z o.o. | 7 | 3 | 42.9 | 2
+Perfumes Loewe | 7 | 3 | 42.9 | 3
+Miu Miu | 7 | 7 | 100.0 | 7
+PICARD | 6 | 6 | 100.0 | 6
+La Redoute | 6 | 2 | 33.3 | 2
+Moët Hennessy Wine Estates | 6 | 2 | 33.3 | 2
+HUGO BOSS do Brasil Ltda. | 6 | 4 | 66.7 | 0
+Beiersdorf Ind&#250;stria e Com&#233;rcio Ltda. | 6 | 3 | 50.0 | 1
+Bettina | 5 | 2 | 40.0 | 1
+Groupe ERAM | 5 | 2 | 40.0 | 2
+Renata | 5 | 3 | 60.0 | 3
+(47 rows)
+Time: 4517.188 ms (00:04.517)
+D7 les memes Maisons, regle A (72 h seul)
+name | servies | masquees_a | pct_a
+Primark | 1499 | 453 | 30.2
+Salomon | 129 | 39 | 30.2
+On | 104 | 37 | 35.6
+Marc O’Polo | 50 | 35 | 70.0
+Funky Buddha | 36 | 12 | 33.3
+Gémo | 36 | 12 | 33.3
+Sioux | 19 | 19 | 100.0
+A.P.C. | 19 | 7 | 36.8
+ILIA | 18 | 6 | 33.3
+Puig France | 16 | 5 | 31.3
+Fastrack | 13 | 13 | 100.0
+Gemmyo | 11 | 5 | 45.5
+Parfums Givenchy | 9 | 3 | 33.3
+Perfumes Loewe | 7 | 3 | 42.9
+Miu Miu | 7 | 7 | 100.0
+Moët Hennessy Wine Estates | 6 | 2 | 33.3
+PICARD | 6 | 6 | 100.0
+La Redoute | 6 | 2 | 33.3
+Renata | 5 | 3 | 60.0
+Groupe ERAM | 5 | 2 | 40.0
+(20 rows)
+Time: 4200.620 ms (00:04.201)
+D8 sources silencieuses : offres servies dont aucune representation n est revue depuis 72 h (plafond), par source
+sourceKey | status | lastRunStatus | derniere_vue | offres
+ulta-jibe | ACTIVE | OK | 09-28 20:12 | 974
+lvmh | ACTIVE | DEGRADED | 09-28 20:01 | 967
+primark | ACTIVE | OK | 09-28 17:57 | 453
+hm-group | ACTIVE | OK | 09-28 18:56 | 452
+sephora-france | ACTIVE | DEGRADED | 09-27 17:23 | 346
+wttj-sector | ACTIVE | OK | 09-28 19:32 | 314
+tapestry | ACTIVE | DEGRADED | 09-28 19:39 | 186
+urbn-hub | ACTIVE | OK | 09-28 18:59 | 159
+bloomingdales-oracle | ACTIVE | OK | 09-28 18:10 | 156
+adidas | ACTIVE | OK | 09-28 18:23 | 122
+intersport-france | ACTIVE | DEGRADED | 09-28 18:04 | 118
+penningtons | ACTIVE | OK | 09-28 17:17 | 81
+sandro | ACTIVE | OK | 09-28 17:32 | 74
+crocs | ACTIVE | DEGRADED | 09-28 17:30 | 73
+pandora-talenthub | ACTIVE | OK | 09-28 18:15 | 67
+kiabi | ACTIVE | OK | 09-28 17:02 | 57
+courir | ACTIVE | OK | 09-27 16:46 | 54
+element-6 | ACTIVE | OK | 09-28 17:18 | 52
+jean-paul-gaultier-5 | ACTIVE | OK | 09-28 17:05 | 43
+salomon | ACTIVE | OK | 09-28 16:41 | 39
+on-running | ACTIVE | DEGRADED | 09-28 17:11 | 37
+marc-o-polo | PAUSED | DEGRADED | 09-28 16:23 | 35
+lush | ACTIVE | OK | 09-28 17:14 | 32
+burberry | ACTIVE | OK | 09-28 16:51 | 31
+aptar-beauty | ACTIVE | OK | 09-28 17:07 | 29
+clarkson-eyecare | ACTIVE | OK | 09-28 16:47 | 29
+beiersdorf | ACTIVE | OK | 09-28 16:55 | 29
+prada-group | ACTIVE | OK | 09-28 17:11 | 28
+quince | ACTIVE | OK | 09-28 16:45 | 28
+maison-margiela | ACTIVE | OK | 09-28 16:56 | 26
+swatch-group | PAUSED | DEGRADED | 09-28 17:18 | 26
+bash-talents | ACTIVE | OK | 09-28 16:34 | 25
+dr-martens-tf | ACTIVE | OK | 09-28 17:01 | 25
+adopt-parfums | ACTIVE | OK | 09-28 16:44 | 25
+nocibe-eqwa | ACTIVE | OK | 09-28 17:14 | 22
+drunk-elephant-2 | ACTIVE | OK | 09-28 16:58 | 22
+reformation | ACTIVE | OK | 09-28 16:45 | 22
+eram-3 | ACTIVE | OK | 09-28 16:39 | 21
+escada-parfums-16 | ACTIVE | OK | 09-28 16:58 | 20
+luxexperience | ACTIVE | OK | 09-28 16:32 | 19
+sioux | PAUSED | OK | 09-19 07:07 | 19
+douglas-sf | ACTIVE | OK | 09-28 17:16 | 19
+valentino | ACTIVE | OK | 09-28 16:38 | 18
+avolta | ACTIVE | OK | 09-28 17:09 | 18
+sezane | ACTIVE | OK | 09-28 16:43 | 17
+armand-thiery-flatchr | ACTIVE | OK | 09-27 16:37 | 17
+asos | ACTIVE | OK | 09-28 16:35 | 14
+promod | ACTIVE | OK | 09-27 16:25 | 14
+clarins | ACTIVE | DEGRADED | 09-28 16:41 | 14
+skin-laundry | ACTIVE | OK | 09-28 16:32 | 13
+b-s-international | ACTIVE | OK | 09-23 07:58 | 13
+eric-bompard | ACTIVE | OK | 09-28 16:39 | 13
+fastrack | PAUSED | OK | 09-18 20:35 | 13
+marella | ACTIVE | OK | 09-28 17:00 | 12
+funky-buddha | ACTIVE | OK | 09-23 08:12 | 12
+vf-corporation | ACTIVE | DEGRADED | 09-28 18:09 | 11
+audemars-piguet | ACTIVE | OK | 09-28 16:39 | 11
+globus | ACTIVE | OK | 09-28 16:26 | 11
+everlane | ACTIVE | OK | 09-28 16:29 | 10
+gymshark | ACTIVE | OK | 09-28 16:26 | 10
+selfridges | ACTIVE | OK | 09-27 16:28 | 10
+richemont | ACTIVE | DEGRADED | 09-28 17:28 | 10
+suitsupply | ACTIVE | OK | 09-27 16:34 | 9
+boardriders | ACTIVE | OK | 09-28 16:31 | 9
+dr-pierre-ricaud | ACTIVE | OK | 09-24 16:30 | 8
+mejuri | ACTIVE | OK | 09-27 16:34 | 8
+miu-miu | PAUSED | BROKEN | 09-23 08:53 | 7
+breitling-sf | ACTIVE | OK | 09-28 16:31 | 7
+psycho-bunny | ACTIVE | OK | 09-28 17:08 | 7
+jules | ACTIVE | OK | 09-28 16:38 | 6
+sisley | ACTIVE | OK | 09-28 16:30 | 6
+blackstore | ACTIVE | DEGRADED | 09-27 16:27 | 6
+ilia | ACTIVE | OK | 09-23 16:55 | 6
+rolex | ACTIVE | OK | 09-28 17:07 | 6
+picard | ACTIVE | DEGRADED | 09-19 07:07 | 6
+aeropostale | ACTIVE | OK | 09-28 16:24 | 6
+toscane | ACTIVE | OK | 09-24 16:24 | 5
+brilliant-earth | ACTIVE | OK | 09-25 16:28 | 5
+petit-bateau | ACTIVE | OK | 09-27 16:26 | 5
+gemmyo | ACTIVE | OK | 09-28 16:20 | 5
+jd-sports | ACTIVE | OK | 09-24 16:48 | 5
+figs | ACTIVE | OK | 09-28 16:26 | 4
+asics | ACTIVE | OK | 09-24 16:26 | 4
+fenwick-volcanic | ACTIVE | OK | 09-28 16:33 | 4
+acne-studios-jobylon | ACTIVE | OK | 09-28 16:28 | 4
+kastner-ohler | ACTIVE | DEGRADED | 09-23 16:09 | 4
+l-occitane-en-provence-2 | ACTIVE | OK | 09-27 16:24 | 4
+naos | ACTIVE | OK | 09-28 16:26 | 4
+parachute | ACTIVE | OK | 09-25 16:18 | 4
+boots | ACTIVE | OK | 09-27 17:07 | 3
+club-monaco | ACTIVE | OK | 09-28 16:25 | 3
+riu-paris | ACTIVE | OK | 09-27 16:23 | 3
+apivita | ACTIVE | OK | 09-28 16:21 | 3
+bevilles-jewellers | ACTIVE | OK | 09-27 16:23 | 3
+glossier | ACTIVE | OK | 09-24 16:25 | 3
+decjuba | ACTIVE | OK | 09-27 16:35 | 3
+ferrari | ACTIVE | OK | 09-27 16:21 | 3
+dolce-gabbana | ACTIVE | OK | 09-28 16:42 | 3
+rebag | ACTIVE | OK | 09-24 16:21 | 3
+patek-philippe | ACTIVE | OK | 09-27 16:21 | 2
+nutrafol | ACTIVE | OK | 09-28 16:22 | 2
+nars | ACTIVE | OK | 09-28 16:31 | 2
+mascot-workwear | ACTIVE | OK | 09-28 16:32 | 2
+la-redoute-talentview | ACTIVE | OK | 09-27 16:19 | 2
+la-prairie | ACTIVE | OK | 09-24 16:25 | 2
+lancel | ACTIVE | OK | 09-28 08:13 | 2
+goyard-successfactors | ACTIVE | OK | 09-28 16:25 | 2
+gorjana | ACTIVE | OK | 09-25 16:34 | 2
+tekla | ACTIVE | OK | 09-20 08:16 | 2
+bellroy | ACTIVE | OK | 09-23 16:56 | 2
+baccarat | ACTIVE | OK | 09-23 16:57 | 2
+end-clothing | ACTIVE | OK | 09-23 16:08 | 1
+filson | ACTIVE | OK | 09-23 16:55 | 1
+jonsson-workwear | ACTIVE | OK | 09-28 16:27 | 1
+chrome | ACTIVE | OK | 09-23 16:53 | 1
+bubble | ACTIVE | OK | 09-23 16:55 | 1
+la-senza | ACTIVE | OK | 09-28 16:34 | 1
+veronica-beard | ACTIVE | OK | 09-24 16:30 | 1
+thirdlove | ACTIVE | OK | 09-20 08:16 | 1
+bombas | ACTIVE | OK | 09-28 16:22 | 1
+little-words-project | ACTIVE | OK | 09-23 16:56 | 1
+olaplex | ACTIVE | OK | 09-20 08:14 | 1
+ballantynes | ACTIVE | OK | 09-24 16:19 | 1
+shein | ACTIVE | OK | 09-23 16:57 | 1
+shinola | ACTIVE | OK | 09-25 16:19 | 1
+shinola-retail | ACTIVE | OK | 09-24 16:20 | 1
+(126 rows)
+Time: 123.092 ms
+D9 offres masquees par le plafond seul (aucune collecte credible ne les a manquees), par source canonique et statut
+canonicalSourceKey | status | lastRunStatus | count
+marc-o-polo | PAUSED | DEGRADED | 35
+swatch-group | PAUSED | DEGRADED | 26
+sioux | PAUSED | OK | 19
+fastrack | PAUSED | OK | 13
+miu-miu | PAUSED | BROKEN | 7
+gemmyo | ACTIVE | OK | 5
+chrome | ACTIVE | OK | 1
+(7 rows)
+Time: 4195.689 ms (00:04.196)
+D10 Maisons entierement masquees (regle B) : source et motif
+name | canonicalSourceKey | status | servies | toutes_plafond
+Sioux | sioux | PAUSED | 19 | t
+Fastrack | fastrack | PAUSED | 13 | t
+Miu Miu | miu-miu | PAUSED | 7 | t
+PICARD | picard | ACTIVE | 6 | t
+(4 rows)
+Time: 4204.123 ms (00:04.204)
+ERROR:  syntax error at or near "\"
+LINE 40: \echo D10 Maisons entierement masquees (regle B) : source et...
+         ^
+D11
+countryCode | canonicalSourceKey | servies | masquees
+HU | hm-group | 73 | 37
+HU | adidas | 2 | 2
+HU | lvmh | 1 | 1
+ZA | lovisa | 54 | 28
+ZA | adidas | 42 | 24
+ZA | hm-group | 6 | 6
+ZA | burnt | 8 | 4
+ZA | beiersdorf | 4 | 3
+ZA | estee-lauder-companies | 34 | 2
+ZA | jonsson-workwear | 22 | 2
+ZA | clarins | 3 | 1
+(11 rows)

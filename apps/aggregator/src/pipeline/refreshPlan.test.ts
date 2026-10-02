@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import {
-  sourceEligibility, representationState, planRefresh, identifiersComparable,
-  PROVING_TERMINATIONS, DECLARED_BUT_NOT_PROVING,
+  sourceEligibility, representationState, planRefresh, identifiersComparable, massAbsenceGuard,
+  PROVING_TERMINATIONS, DECLARED_BUT_NOT_PROVING, MASS_ABSENCE_MIN_STOCK,
   type Representation, type RepresentationState,
 } from './refreshPlan.js';
 
@@ -234,15 +234,25 @@ describe('identifiersComparable — ce qu\'il garantit, et ce qu\'il ne garantit
  * Un board réellement vide, prouvé, doit rendre ses anciennes représentations ABSENTES et non INVÉRIFIABLES :
  * c'est précisément le cas où fermer est justifié. Traiter l'ensemble vide comme une indisponibilité aurait
  * rendu ce board éternellement infermable — la contradiction que ce test verrouille.
+ *
+ * AMENDÉ PAR R-143 (D-513, 02/10/2026), en conscience : ce témoin décrivait un board vide qui ferme TOUT, quelle que
+ * soit sa taille. C'est vrai pour une petite source (les zéros annoncés réels de l'historique viennent de sources de 1
+ * ou 2 offres), et faux pour un stock significatif : une source de 2 800 offres qui annonce « 0 » est une panne (clé,
+ * filtre, maintenance), pas la fin de 2 800 recrutements, et le frein global (50 fermetures ET 5 % du stock servi) la
+ * laissait passer. Le board vide reste une preuve recevable ; c'est la garde par source (`massAbsenceGuard`, appliquée
+ * par `readAbsencePlan` sur tout le stock de la source) qui refuse de l'appliquer au-delà de 10 représentations. Le
+ * cas réel est rejoué de bout en bout dans `r143.operational.test.ts`.
  */
 describe('E. board vide prouvé — de sourceEligibility à planRefresh', () => {
-  it('une JobSource ancienne face à un board vide PROUVÉ est ABSENT, puis candidate à fermeture', () => {
+  it('une JobSource ancienne face à un board vide PROUVÉ est ABSENT, puis candidate à fermeture (petite source)', () => {
     const facts = run();
     const proof = evidence({ canonicalSet: [], termination: 'FULL_XML_DOCUMENT' });
 
     // 1. la source est recevable : le contrat est déclaré, la terminaison démontrée
     const verdict = sourceEligibility(facts, proof);
     expect(verdict.eligible).toBe(true);
+    // et la garde du zéro annoncé laisse passer une source de moins de 10 représentations
+    expect(massAbsenceGuard({ stock: 1, absent: 1, confirmedDrop: false })).toBeNull();
 
     // 2. l'ancienne représentation n'est PAS dans l'ensemble observé — qui est vide, et c'est une preuve
     const old = rep({ jobSourceId: 'JS-vieille', externalId: 'partie-depuis-longtemps' });
@@ -254,6 +264,23 @@ describe('E. board vide prouvé — de sourceEligibility à planRefresh', () => 
       new Map([[old.jobId!, [old.jobSourceId]]]));
     expect(deactivations.map((d) => d.jobSourceId)).toEqual(['JS-vieille']);
     expect(jobs.get(old.jobId!)).toBe('JOB_CANDIDATE_FOR_CLOSURE');
+  });
+
+  it('le même board vide face à un stock significatif est une ANOMALIE : rien n’est appliqué (R-143)', () => {
+    expect(sourceEligibility(run(), evidence({ canonicalSet: [], termination: 'FULL_XML_DOCUMENT' })).eligible).toBe(true);
+    expect(massAbsenceGuard({ stock: 2800, absent: 2800, confirmedDrop: false })).toMatch(/anomalie.*tout le stock/);
+    expect(massAbsenceGuard({ stock: MASS_ABSENCE_MIN_STOCK, absent: MASS_ABSENCE_MIN_STOCK, confirmedDrop: false })).not.toBeNull();
+    expect(massAbsenceGuard({ stock: MASS_ABSENCE_MIN_STOCK - 1, absent: MASS_ABSENCE_MIN_STOCK - 1, confirmedDrop: false })).toBeNull();
+    // une chute vers zéro n'est jamais « confirmée par l'éditeur » (D-484 §2 exige un total annoncé positif)
+    expect(massAbsenceGuard({ stock: 2800, absent: 2800, confirmedDrop: true })).not.toBeNull();
+  });
+
+  it('au-delà de 90 % du stock sans confirmation de l’éditeur : anomalie ; confirmée (D-484 §2) : appliquée', () => {
+    expect(massAbsenceGuard({ stock: 2800, absent: 2600, confirmedDrop: false })).toMatch(/plus de 90 %/);
+    expect(massAbsenceGuard({ stock: 2800, absent: 2600, confirmedDrop: true })).toBeNull();
+    // les expirations ordinaires passent : mesuré le 02/10, la plus forte part manquée d'une source qui atteste était
+    // celle de On Running, 39 représentations sur 104 (37 %)
+    expect(massAbsenceGuard({ stock: 104, absent: 39, confirmedDrop: false })).toBeNull();
   });
 
   it('le même board vide, mais contrat NON déclaré : INVÉRIFIABLE et aucune mutation', () => {

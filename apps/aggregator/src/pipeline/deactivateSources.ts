@@ -11,7 +11,7 @@ import { randomUUID } from 'node:crypto';
 import { evidenceHash } from '../lib/evidenceHash.js';
 import { deployedCommitHash } from '../capture/revision.js';
 import { quarantineSnapshot } from './refreshManifest.js';
-import { selectApplySource } from '@catwalks/db/publications';
+import { selectServingSource } from '@catwalks/db/publications';
 import { recordEvents, changedEvents, diffStructuralFields, structuralValuesOf } from './jobEvents.js';
 import { recordOccupationObservation } from '../occupation/persist.js';
 import { assertSourceRunning } from '../lib/sourceBudget.js';
@@ -63,12 +63,14 @@ async function deactivate(prisma: PrismaClient, sourceWhere: Prisma.JobSourceWhe
         include: { sources: true }, omit: { searchText: true, raw: true },
       });
       if (!job) return null;
+      // R-143 §3 : un retrait natif « fermée » est une fin prouvée par la source ; un retrait administratif ne l'est pas.
       const changed = await tx.jobSource.updateMany({
-        where: { ...sourceWhere, jobId: job.id, isActive: true }, data: { isActive: false },
+        where: { ...sourceWhere, jobId: job.id, isActive: true },
+        data: { isActive: false, ...(disposition.kind === 'CLOSED' ? { publisherClosedAt: new Date() } : {}) },
       });
       if (!changed.count) return null;
       const sources = await tx.jobSource.findMany({ where: { jobId: job.id } });
-      const owner = selectApplySource(sources, job);
+      const owner = selectServingSource(sources, job);
       const now = new Date();
       const transition = !owner ? deactivateJob(job, disposition, now) : null;
       const changedOwner = owner && (owner.sourceKey !== job.canonicalSourceKey || owner.externalId !== job.canonicalExternalId || owner.url !== job.url);

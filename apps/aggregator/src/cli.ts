@@ -19,6 +19,9 @@ import { pingHeartbeat } from './pipeline/heartbeat.js';
  * catalogue at Google at once (the per-run cap in googleIndexing also guards it).
  */
 const INDEXING_WINDOW_MS = Number(process.env.INDEXING_WINDOW_MS ?? 6 * 60 * 60 * 1000);
+/** R-143 §2 — la sonde des liens « Postuler » du RUN : au plus 300 offres et 10 minutes, à 2 requêtes par seconde. */
+const APPLY_LINK_PROBE_LIMIT = 300;
+const APPLY_LINK_PROBE_BUDGET_MS = 10 * 60 * 1000;
 import { runRefresh, refreshScope } from './pipeline/refresh.js';
 import { retireSource } from './pipeline/retireSource.js';
 import { runGeocode } from './pipeline/geocodeJobs.js';
@@ -115,6 +118,22 @@ try {
       await log.error('command.failed', '[refresh] mass-closure guard refused lifecycle maintenance');
       process.exitCode = 1;
     }
+    // La garde du zéro annoncé (R-143) n'a rien appliqué pour ces sources : chacune est une anomalie à instruire.
+    if (refresh.anomalousSources.length > 0) {
+      fatalFailure = true;
+      await log.error('command.failed', `[refresh] mass-absence guard kept the offers of: ${refresh.anomalousSources.join(', ')}`);
+      process.exitCode = 1;
+    }
+    // R-143 §2 : la confiance avant le volume. Rien n'est fermé ; une offre non reconfirmée ou au lien mort quitte
+    // l'expérience candidat et y revient dès que sa source la revoit.
+    const { runAvailabilityReview } = await import('./pipeline/availability.js');
+    const availability = await runAvailabilityReview(prisma);
+    await log.info('availability.reviewed', { released: availability.released, held: availability.held,
+      notCredible: availability.sources.filter(source => !source.credible && source.missed > 0)
+        .map(source => ({ sourceKey: source.sourceKey, missed: source.missed, reason: source.reason })) });
+    const { runApplyLinkProbe } = await import('./pipeline/applyLinkProbe.js');
+    const probe = await runApplyLinkProbe(prisma, { limit: APPLY_LINK_PROBE_LIMIT, deadline: Date.now() + APPLY_LINK_PROBE_BUDGET_MS });
+    await log.info('availability.probed', { probed: probe.probed, held: probe.held, byVerdict: probe.byVerdict });
     // One health digest per run: email the operator every degraded/broken source
     // so the catalogue stays clean (a source dying silently is the enemy).
     const alerted = await sendHealthAlert({
@@ -151,6 +170,19 @@ try {
         alertDeliveryFailed: orchestration.incidents.length > 0 && !alerted });
       process.exitCode = 1;
     }
+  } else if (command === 'availability') {
+    /** R-143 §2 — la revue de disponibilité seule ; `--dry-run` rend le plan sans rien écrire. */
+    const { runAvailabilityReview } = await import('./pipeline/availability.js');
+    const review = await runAvailabilityReview(prisma, { dryRun: process.argv.includes('--dry-run') });
+    await log.info('command.result', { ok: true, command, dryRun: review.dryRun, released: review.released, held: review.held,
+      sources: review.sources.filter(source => source.missed > 0 || source.held > 0) });
+  } else if (command === 'probe-apply-links') {
+    /** R-143 §2 — une passe de la sonde des liens « Postuler » ; `--dry-run` lit les pages sans rien écrire. */
+    const { runApplyLinkProbe } = await import('./pipeline/applyLinkProbe.js');
+    const limit = Number(process.argv.find(arg => arg.startsWith('--limit='))?.slice('--limit='.length) ?? APPLY_LINK_PROBE_LIMIT);
+    const probe = await runApplyLinkProbe(prisma, { limit, dryRun: process.argv.includes('--dry-run') });
+    await log.info('command.result', { ok: true, command, dryRun: probe.dryRun, probed: probe.probed, held: probe.held, byVerdict: probe.byVerdict,
+      results: probe.results.map(result => ({ sourceKey: result.sourceKey, url: result.url, verdict: result.reading.verdict, reason: result.reading.reason })) });
   } else if (command === 'refresh') {
     /**
      * Le refresh a SON périmètre autorisé (`REFRESH_ONLY_KEYS`), distinct de celui de l'ingestion.
@@ -172,6 +204,7 @@ try {
     if (refresh.unverifiableSources.length > 0) {
       await log.error('command.failed', `[refresh] left offers of broken sources open: ${refresh.unverifiableSources.join(', ')}`);
     }
+    if (refresh.anomalousSources.length > 0) process.exitCode = 1;
   } else if (command === 'direct-sync') {
     /**
      * Lot 6 (D-423) — la copie de lecture des offres Catwalks : consomme le

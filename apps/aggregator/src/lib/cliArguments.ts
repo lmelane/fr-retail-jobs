@@ -4,6 +4,8 @@ type CommandOptions = { values?: string[]; flags?: string[]; positional?: 'requi
 const COMMANDS: Record<string, CommandOptions> = {
   ingest: { values: ['source'], flags: ['no-geocode'] },
   'ingest-all': {}, refresh: {}, 'health-report': {},
+  availability: { flags: ['dry-run'] },
+  'probe-apply-links': { values: ['limit'], flags: ['dry-run'] },
   'direct-sync': { values: ['depuis', 'limite'] },
   'direct-liste': {},
   'retire-source': { positional: 'required', values: ['external-prefix'] },

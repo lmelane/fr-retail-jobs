@@ -1,7 +1,7 @@
 import { SEARCH_VERSION } from './search-index';
 import { publicationContentOf, type PresentationSource } from '@catwalks/db/publication-presentation';
 import { publicAmount } from '@catwalks/db/money';
-import { availableSourceWhere, publicJobWhere, publicJobSql, sourceIsAvailable } from '@catwalks/db/availability';
+import { availableSourceWhere, publicJobWhere, publicJobSql, sourceIsAvailable, sourceIsConfirmed } from '@catwalks/db/availability';
 import { selectApplySource, type ApplySource } from '@catwalks/db/publications';
 import { publicSourceFacts, scalarSourceFacts, type PublicSourceFacts } from '@catwalks/db/source-facts';
 import { MARCHES, localeServie, type Perimetre } from '@catwalks/db/marches';
@@ -24,7 +24,8 @@ import type { LieuResolu } from './lieu';
 /** Sector keys are data, not an application enum. Unknown keys stay bound
  * parameters and match zero; dropping them would silently widen the search. */
 const publicSources = () => ({
-  select: { sourceKey: true, externalId: true, sourceTier: true, isActive: true, url: true, expiresAt: true, sourceFacts: true, presentation: true, captureBatchId: true, captureOutputId: true } as const,
+  select: { sourceKey: true, externalId: true, sourceTier: true, isActive: true, url: true, expiresAt: true, sourceFacts: true, presentation: true, captureBatchId: true, captureOutputId: true,
+    lastSeenAt: true, availabilityHold: true } as const,
   where: availableSourceWhere(),
 });
 
@@ -322,9 +323,12 @@ function toRow(row: {
   id: string; url: string; firstSeenAt: Date; withdrawnAt?: Date | null;
   canonicalSourceKey?: string | null; canonicalExternalId?: string | null;
   company: { id?: string; name: string; sector: string | null; parentGroup: string | null; domain: string | null; sectorCodes?: string[] };
-  sources: Array<ApplySource & PresentationSource>;
+  sources: Array<ApplySource & PresentationSource & { lastSeenAt?: Date; availabilityHold?: string | null }>;
 }, taxonomy: OptionalOccupationPresentation, historical = false, at = new Date()): JobRow {
-  const live = row.sources.filter(source => sourceIsAvailable(source, at));
+  // R-143 §2 : le lien « Postuler » vient d'une publication confirmée quand l'offre en a une ; sinon, comme avant.
+  const available = row.sources.filter(source => sourceIsAvailable(source, at));
+  const confirmed = available.filter(source => source.lastSeenAt && sourceIsConfirmed({ ...source, lastSeenAt: source.lastSeenAt }, at));
+  const live = confirmed.length ? confirmed : available;
   const publication = selectApplySource(live, row, at) ?? (historical ? row.sources.find(source => source.url === row.url) : undefined);
   const content = publication && publicationContentOf(publication);
   if (!content) throw new Error(`PUBLICATION_PRESENTATION_REBUILD_REQUIRED job=${row.id}`);

@@ -184,7 +184,11 @@ describe('OP6 — a broken source recovers', () => {
 });
 
 describe('OP7 — a mass outage would close most of the base', () => {
-  it('is refused by the volume guard, nothing is closed', async () => {
+  /**
+   * Amended by R-143 (D-513, 02/10/2026): ONE source losing its whole significant stock is now stopped by the per-source
+   * guard before the global one (`massAbsenceGuard`): the source is an anomaly, the run is not refused as a whole.
+   */
+  it('one source: refused by the per-source guard (anomaly), nothing is closed', async () => {
     const c = await company('bigsource');
     // 60 offers all from one source, all stale, whose latest proven board is empty
     // (it lost them between the last ingest and this refresh — the latency gap).
@@ -193,9 +197,22 @@ describe('OP7 — a mass outage would close most of the base', () => {
       await job({ companyId: c.id, ext: `m${i}`, sourceKey: 'bigsource', hoursAgo: 72 });
     }
     const refresh = await runRefresh(prisma);
-    // 60 >= 50 (floor) and 60/60 > 0.5 (ratio) -> refused.
-    expect(refresh.refused).toBe(true);
+    expect(refresh.anomalousSources).toEqual(['bigsource']);
+    expect(refresh.closedJobs).toBe(0);
     expect(await prisma.job.count({ where: { isActive: true } })).toBe(60);
+  });
+
+  it('many small sources together: still refused by the volume guard, nothing is closed', async () => {
+    const c = await company('smallsources');
+    // 6 sources of 9 offers each (under the per-source guard), all proving an empty board: 54 >= 50 and 54/54 > 5 %.
+    for (let s = 0; s < 6; s++) {
+      await attest(`small-${s}`);
+      for (let i = 0; i < 9; i++) await job({ companyId: c.id, ext: `s${s}-${i}`, sourceKey: `small-${s}`, hoursAgo: 72 });
+    }
+    const refresh = await runRefresh(prisma);
+    expect(refresh.anomalousSources).toEqual([]);
+    expect(refresh.refused).toBe(true);
+    expect(await prisma.job.count({ where: { isActive: true } })).toBe(54);
   });
 });
 
