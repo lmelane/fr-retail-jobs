@@ -1,0 +1,18 @@
+--- a. revue de disponibilité et refresh appelés par la passe
+     × l’offre que la passe ne revoit pas reste ouverte et servie, une source hors de la passe aussi ; la nouvelle est servie 1364ms
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+      Tests  1 failed | 7 passed (8)
+--- b. verrou du RUN retiré
+     × un RUN en cours : refusée avant toute requête 608ms
+     × un RUN qui commence pendant la passe : la passe s’arrête avant la source suivante 1040ms
+     × refuse dans la fenêtre, pendant un RUN, pendant une autre passe ; accepte sinon 10ms
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+      Tests  3 failed | 5 passed (8)
+--- c. pas de revérification avant chaque source
+     × un RUN qui commence pendant la passe : la passe s’arrête avant la source suivante 687ms
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+      Tests  1 failed | 7 passed (8)
+--- d. une heure de passe à 16 UTC (pendant le RUN)
+ℹ pass 16
+ℹ fail 6
+fichiers restaurés à l’identique

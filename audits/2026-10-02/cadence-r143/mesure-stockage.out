@@ -1,0 +1,53 @@
+S0 taille de la base et des tables qui grossissent à chaque collecte
+base
+29 GB
+(1 row)
+relname|taille|lignes_estimees
+RawBlobBody|15 GB|1445130
+SearchDocument|3117 MB|166736
+SourceObservation|2808 MB|420898
+Job|2627 MB|95634
+JobSource|1360 MB|96712
+RawCapture|1138 MB|1154003
+SourceExtraction|1056 MB|1786173
+RawBlob|440 MB|1491477
+GeoPostalCode|411 MB|1811382
+OccupationObservation|335 MB|190012
+EmployerObservation|279 MB|439147
+GeoCity|215 MB|235824
+(12 rows)
+S1 par source candidate, collecte du dernier RUN : lignes écrites et nouveaux octets gzip conservés
+sourceKey|requetes|sorties|nouv_mio_gz_reponses|sorties_nouvelles|nouv_mio_gz_sorties
+arcteryx|3|282|0.43|10|0.04
+arcteryx|3|282||0|
+element-6|5|337|0.41|337|1.01
+element-6|5|337|0.00|0|
+foot-locker-france|31|3007|3.60|217|0.88
+foot-locker-france|31|3007|3.60|0|
+galeries-lafayette|2|158||0|
+galeries-lafayette|2|158|0.15|6|0.01
+hm-group|1955|1935||0|
+hm-group|1955|1935|1.73|359|1.44
+knitwell-us-retail|2189|2000|0.26|6|0.02
+knitwell-us-retail|2101|2000|5.50|2000|6.04
+la-casa-de-las-carcasas|7|679||0|
+la-casa-de-las-carcasas|7|679|0.50|14|0.03
+lovisa|14|1309|0.82|26|0.05
+lovisa|14|1309||0|
+lush|1|323|0.14|8|0.04
+lush|1|323||0|
+lvmh|60|5986|7.71|0|
+lvmh|60|5986|7.71|308|0.85
+normal|5|423|0.37|24|0.04
+normal|5|423||0|
+primark|919|909|0.42|81|0.24
+primark|919|909||0|
+rituals|33|910|0.55|738|1.19
+rituals|33|910|0.35|0|
+space-nk|2|171|0.09|1|0.00
+space-nk|2|171||0|
+ulta-jibe|101|9932|18.30|851|4.55
+ulta-jibe|102|9930|1.02|1|0.01
+white-stuff|2|185|0.09|90|0.18
+white-stuff|2|185||0|
+(32 rows)

@@ -1,0 +1,32 @@
+Population : 11206 nouvelles offres datées ; 1514 nouvelles offres par jour toutes sources.
+RUN complet (médianes M1 sommées) : 111186 requêtes, 81338 offres réécrites, 126 min d’écriture cumulée.
+
+Sources de la règle (39) : rituals, lovisa, white-stuff, normal, la-casa-de-las-carcasas, lush, space-nk, element-6, arcteryx, galeries-lafayette, hans-anders, aroma-zone, etam, chalhoub, brilliant-earth, clarkson-eyecare, reformation, adopt-parfums, singularu, mejuri, soeur, armand-thiery-flatchr, eram-3, ms-mode, suitsupply, figs, boggi-milano, jeans-centre, kiko-milano, jojo-maman-bebe, kult-olymp-hades, merkal, ami-paris, my-jewellery, akira, ephemera, gymshark, monica-vinader, browns
+
+== Lot A  règle (API légères) : 39 sources, 228 nouvelles offres/jour (15 %)
+   une passe : 262 requêtes, 7366 offres réécrites, 13.3 min de collecte en série, 10.8 min d’écriture
+   aucune (RUN seul)                      médiane  17.3 h  p90  42.0 h  ≤24 h 74.9 %  | heure exacte (5251) : médiane  7.8 h p90 20.9 h
+   2 fois par jour (00, 08)               médiane  17.3 h  p90  42.0 h  ≤24 h 75.1 %  | heure exacte (5251) : médiane  6.9 h p90 20.1 h  | par jour : +524 requêtes (0 % du RUN), +14732 offres réécrites (18 %), 27 min de worker
+   toutes les 6 h (04, 10, 22)            médiane  17.3 h  p90  42.0 h  ≤24 h 75.1 %  | heure exacte (5251) : médiane  6.2 h p90 20.1 h  | par jour : +786 requêtes (1 % du RUN), +22098 offres réécrites (27 %), 40 min de worker
+   toutes les 4 h (00, 04, 08, 12, 20)    médiane  17.3 h  p90  42.0 h  ≤24 h 75.1 %  | heure exacte (5251) : médiane  6.0 h p90 20.1 h  | par jour : +1310 requêtes (1 % du RUN), +36830 offres réécrites (45 %), 66 min de worker
+
+== Lot B  A + lvmh : 40 sources, 326 nouvelles offres/jour (22 %)
+   une passe : 390 requêtes, 13606 offres réécrites, 23.2 min de collecte en série, 19.9 min d’écriture
+   aucune (RUN seul)                      médiane  17.3 h  p90  42.0 h  ≤24 h 74.9 %  | heure exacte (5251) : médiane  7.8 h p90 20.9 h
+   2 fois par jour (00, 08)               médiane  17.0 h  p90  41.9 h  ≤24 h 75.6 %  | heure exacte (5251) : médiane  6.5 h p90 19.7 h  | par jour : +780 requêtes (1 % du RUN), +27212 offres réécrites (33 %), 46 min de worker
+   toutes les 6 h (04, 10, 22)            médiane  17.0 h  p90  41.9 h  ≤24 h 75.6 %  | heure exacte (5251) : médiane  5.7 h p90 19.7 h  | par jour : +1170 requêtes (1 % du RUN), +40818 offres réécrites (50 %), 69 min de worker
+   toutes les 4 h (00, 04, 08, 12, 20)    médiane  17.0 h  p90  41.9 h  ≤24 h 75.6 %  | heure exacte (5251) : médiane  5.2 h p90 19.7 h  | par jour : +1950 requêtes (2 % du RUN), +68030 offres réécrites (84 %), 116 min de worker
+
+== Lot C  B + ulta-jibe : 41 sources, 417 nouvelles offres/jour (28 %)
+   une passe : 543 requêtes, 23580 offres réécrites, 39.5 min de collecte en série, 32.6 min d’écriture
+   aucune (RUN seul)                      médiane  17.3 h  p90  42.0 h  ≤24 h 74.9 %  | heure exacte (5251) : médiane  7.8 h p90 20.9 h
+   2 fois par jour (00, 08)               médiane  16.9 h  p90  41.9 h  ≤24 h 75.7 %  | heure exacte (5251) : médiane  5.9 h p90 18.5 h  | par jour : +1086 requêtes (1 % du RUN), +47160 offres réécrites (58 %), 79 min de worker
+   toutes les 6 h (04, 10, 22)            médiane  16.9 h  p90  41.9 h  ≤24 h 75.7 %  | heure exacte (5251) : médiane  5.0 h p90 18.5 h  | par jour : +1629 requêtes (1 % du RUN), +70740 offres réécrites (87 %), 119 min de worker
+   toutes les 4 h (00, 04, 08, 12, 20)    médiane  16.9 h  p90  41.9 h  ≤24 h 75.7 %  | heure exacte (5251) : médiane  4.2 h p90 18.5 h  | par jour : +2715 requêtes (2 % du RUN), +117900 offres réécrites (145 %), 198 min de worker
+
+== Lot Z  toutes les sources (borne) : 412 sources, 1513 nouvelles offres/jour (100 %)
+   une passe : 111186 requêtes, 81338 offres réécrites, 514.7 min de collecte en série, 126.0 min d’écriture
+   aucune (RUN seul)                      médiane  17.3 h  p90  42.0 h  ≤24 h 74.9 %  | heure exacte (5251) : médiane  7.8 h p90 20.9 h
+   2 fois par jour (00, 08)               médiane   8.7 h  p90  40.4 h  ≤24 h 76.1 %  | heure exacte (5251) : médiane  4.0 h p90  7.9 h  | par jour : +222372 requêtes (200 % du RUN), +162676 offres réécrites (200 %), 1029 min de worker
+   toutes les 6 h (04, 10, 22)            médiane   6.7 h  p90  39.9 h  ≤24 h 76.4 %  | heure exacte (5251) : médiane  3.0 h p90  5.9 h  | par jour : +333558 requêtes (300 % du RUN), +244014 offres réécrites (300 %), 1544 min de worker
+   toutes les 4 h (00, 04, 08, 12, 20)    médiane   5.3 h  p90  37.9 h  ≤24 h 76.6 %  | heure exacte (5251) : médiane  2.0 h p90  3.9 h  | par jour : +555930 requêtes (500 % du RUN), +406690 offres réécrites (500 %), 2574 min de worker
