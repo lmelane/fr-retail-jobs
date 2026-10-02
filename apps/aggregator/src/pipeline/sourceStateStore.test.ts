@@ -158,7 +158,7 @@ describe('D-520 — la réconciliation de fin de RUN et la lecture', () => {
     const states = await reconcileSourceStates(db, { collected: new Set([collected]) });
     expect(states.find(s => s.sourceKey === collected)).toMatchObject({ state: 'NORMALE' });
     expect(states.find(s => s.sourceKey === forgotten)).toMatchObject({ state: 'BLOQUEE', cause: 'NON_COLLECTEE', trajectory: 'A_REPARER' });
-    expect(states.find(s => s.sourceKey === paused)).toMatchObject({ state: 'EN_PAUSE', cause: 'MOTIF_ABSENT', trajectory: 'REVUE_HUMAINE' });
+    expect(states.find(s => s.sourceKey === paused)).toMatchObject({ state: 'EN_PAUSE', cause: 'MOTIF_ABSENT', trajectory: 'A_REPARER' });
     expect(await stateOf(forgotten)).toMatchObject({ cause: 'NON_COLLECTEE' });
 
     await db.source.update({ where: { key: paused }, data: { note: 'D-516 : pause décidée' } });

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { ageState, CAUSE_CLASSES, CAUSES, computeSourceState, ESCALATION, issueCause, reconcileRun, summarizeStates, summaryLines,
-  SYSTEMIC_NEW_BLOCKED, systemFailuresOf, unexplainedCoverageOf, type CollectionOutcome, type SourceState } from './sourceState.js';
+  REPAIR_CEILING_DAYS, SYSTEMIC_OUR_SIDE_BLOCKED, systemFailuresOf, unexplainedCoverageOf, type CollectionOutcome, type SourceState } from './sourceState.js';
 import { summarizeOrchestration } from '../lib/runSummary.js';
 
 const H = 3_600_000;
@@ -108,7 +108,7 @@ describe('D-520 — états, trajectoires, échéances', () => {
     expect([s.state, s.cause, s.trajectory]).toEqual(['DEGRADEE', 'IDENTITE_EMPLOYEUR', 'AUTO']);
     s = computeSourceState({ source: active(), outcome: run({ runStatus: 'DEGRADED', jobs: 480, issues: [issue] }, 7 * 24), previous: s, now: at(7 * 24) });
     expect([s.state, s.trajectory]).toEqual(['DEGRADEE', 'REVUE_HUMAINE']);
-    expect(s.missing).toMatch(/^échéance dépassée \(7 jours\) : revue d’identité/);
+    expect(s.missing).toMatch(/^échéance dépassée \(48 h\) : revue d’identité/);
     // Sans aucune offre publiée, la même cause bloque et suit l'échéance courte.
     const none = computeSourceState({ source: active(), outcome: run({ runStatus: 'BROKEN', jobs: 0, issues: [issue] }), previous: null, now: T0 });
     expect([none.state, none.deadline?.toISOString()]).toEqual(['BLOQUEE', at(ESCALATION.waitingHours).toISOString()]);
@@ -117,12 +117,15 @@ describe('D-520 — états, trajectoires, échéances', () => {
   it('un échec connu qui ne publie rien est BLOQUEE sur décision, jamais en attente', () => {
     const s = computeSourceState({ source: active('l-oreal-professionnel'),
       outcome: run({ runStatus: 'BROKEN', jobs: 0, issues: [{ origin: 'UNKNOWN', code: 'HttpStatusError', detail: 'HTTP_406' }] }), previous: null, now: T0 });
-    expect([s.state, s.cause, s.trajectory, s.decision]).toEqual(['BLOQUEE', 'ACCES_REFUSE', 'DECISION', 'D-480']);
+    // Muet, il contredit la prémisse de D-480 (« elles publient leurs offres ») : à réparer, la décision citée.
+    expect([s.state, s.cause, s.trajectory, s.decision]).toEqual(['BLOQUEE', 'ACCES_REFUSE', 'A_REPARER', 'D-480']);
+    expect(s.missing).toMatch(/n’a rien publié/);
   });
 
-  it('une passe réussie lève un refus d’accès, jamais une liste non prouvée', () => {
+  it('une passe réussie ne lève rien : ni un refus d’accès constaté au RUN, ni une liste non prouvée', () => {
     const refused = computeSourceState({ source: active(), outcome: run({ runStatus: 'CHALLENGED', jobs: 0, issues: [{ origin: 'UNKNOWN', code: 'WafChallengeError' }] }), previous: null, now: T0 });
-    expect(computeSourceState({ source: active(), outcome: run({ kind: 'PASSE' }, 4), previous: refused, now: at(4) }).state).toBe('NORMALE');
+    expect(computeSourceState({ source: active(), outcome: run({ kind: 'PASSE' }, 4), previous: refused, now: at(4) })).toMatchObject({ state: 'EN_ATTENTE', cause: 'ACCES_REFUSE' });
+    expect(computeSourceState({ source: active(), outcome: run({ kind: 'VERIFICATION' }, 5), previous: refused, now: at(5) }).state).toBe('NORMALE');
     const partial = computeSourceState({ source: active(), outcome: run({ runStatus: 'DEGRADED', issues: [{ origin: 'UNKNOWN', code: 'ENUMERATION_NOT_PROVEN' }] }), previous: null, now: T0 });
     const after = computeSourceState({ source: active(), outcome: run({ kind: 'PASSE' }, 4), previous: partial, now: at(4) });
     expect([after.state, after.cause, after.lastCollectionKind]).toEqual(['DEGRADEE', 'LISTE_NON_PROUVEE', 'PASSE']);
@@ -132,7 +135,13 @@ describe('D-520 — états, trajectoires, échéances', () => {
     const paused = computeSourceState({ source: { key: 'rl', status: 'PAUSED', note: 'D-516 : 406 Avature, réamorçage' }, outcome: null, previous: null, now: T0 });
     expect([paused.state, paused.cause, paused.trajectory, paused.decision]).toEqual(['EN_PAUSE', 'PAUSE_DECIDEE', 'DECISION', 'D-516']);
     const silent = computeSourceState({ source: { key: 'x', status: 'RETIRED', note: '  ' }, outcome: null, previous: null, now: T0 });
-    expect([silent.state, silent.cause]).toEqual(['EXCLUE', 'MOTIF_ABSENT']);
+    expect([silent.state, silent.cause, silent.trajectory]).toEqual(['EXCLUE', 'MOTIF_ABSENT', 'A_REPARER']);
+    // Une trace de promotion n'est pas un motif (96 notes de ce genre au 02/10) ; une décision datée écrite l'est.
+    expect(computeSourceState({ source: { key: 'y', status: 'RETIRED', note: 'promu par validation-volume (4 offres, 4 avec lieu)' }, outcome: null, previous: null, now: T0 }).cause).toBe('MOTIF_ABSENT');
+    expect(computeSourceState({ source: { key: 'z', status: 'RETIRED', note: 'User decision 2026-09-08: stop collecting' }, outcome: null, previous: null, now: T0 }).cause).toBe('EXCLUSION_DECIDEE');
+    const d39 = computeSourceState({ source: { key: 'w', status: 'RETIRED', note: 'D39 2026-09-06 : couverte par wttj-sector → PAUSED — puis RETIRED' }, outcome: null, previous: null, now: T0 });
+    expect([d39.cause, d39.decision]).toEqual(['EXCLUSION_DECIDEE', 'D39']);
+    expect(d39.missing).not.toMatch(/[\u2014\u2192]/);
     const verdict = reconcileRun({ states: [paused, silent], now: T0, runStartedAt: null, systemFailures: [], unexplainedCoverage: [] });
     expect(verdict.reasons.map(r => r.reason)).toEqual(['MOTIF_ABSENT']);
   });
@@ -152,8 +161,10 @@ describe('D-520 — verdict du RUN = réconciliation', () => {
     expect(verdict.green).toBe(true);
   });
 
-  it(`au moins ${SYSTEMIC_NEW_BLOCKED} sources bloquées de notre côté dans un même RUN : panne du système`, () => {
-    const states = Array.from({ length: SYSTEMIC_NEW_BLOCKED }, (_, i) => blocked(`s${i}`, T0));
+  it(`au moins ${SYSTEMIC_OUR_SIDE_BLOCKED} sources laissées bloquées de notre côté par ce RUN, même anciennes : panne du système`, () => {
+    // Bloquées depuis trois jours (le même défaut), recollectées en échec par ce RUN : l'ancienneté ne cache pas la panne.
+    const states = Array.from({ length: SYSTEMIC_OUR_SIDE_BLOCKED }, (_, i) => blocked(`s${i}`, at(-72)));
+    expect(states.every(s => s.since.getTime() < at(-1).getTime())).toBe(true);
     expect(reconcileRun({ states: states.slice(1), now: T0, runStartedAt: at(-1), systemFailures: [], unexplainedCoverage: [] }).green).toBe(true);
     const verdict = reconcileRun({ states, now: T0, runStartedAt: at(-1), systemFailures: [], unexplainedCoverage: [] });
     expect(verdict.reasons.map(r => r.reason)).toEqual(['PANNE_SYSTEME']);
@@ -173,15 +184,33 @@ describe('D-520 — verdict du RUN = réconciliation', () => {
     expect(reconcileRun({ states: [], now: T0, runStartedAt: null, systemFailures: [], unexplainedCoverage: ['MAISON:x'] }).reasons[0].reason).toBe('COUVERTURE_INEXPLIQUEE');
   });
 
+  it(`à réparer depuis plus de ${REPAIR_CEILING_DAYS} jours : le RUN passe rouge (l’état n’a plus de sortie)`, () => {
+    const fail = (h: number) => run({ runStatus: 'ERROR', jobs: 0, issues: [{ origin: 'INTERNAL', code: 'TypeError' }] }, h);
+    let s = computeSourceState({ source: active('vieille'), outcome: fail(0), previous: null, now: T0 });
+    s = computeSourceState({ source: active('vieille'), outcome: fail(REPAIR_CEILING_DAYS * 24), previous: s, now: at(REPAIR_CEILING_DAYS * 24) });
+    const verdict = reconcileRun({ states: [s], now: at(REPAIR_CEILING_DAYS * 24), runStartedAt: null, systemFailures: [], unexplainedCoverage: [] });
+    expect(verdict.reasons.map(r => r.reason)).toEqual(['ANCIENNETE_DEPASSEE']);
+  });
+
+  it('l’épisode court sur la cause : alterner 429 et 403 ne repousse pas l’échéance', () => {
+    const fail = (detail: string, h: number) => run({ runStatus: 'ERROR', jobs: 0, issues: [{ origin: 'UNKNOWN', code: 'HttpStatusError', detail }] }, h);
+    let s = computeSourceState({ source: active(), outcome: fail('HTTP_429', 0), previous: null, now: T0 });
+    s = computeSourceState({ source: active(), outcome: fail('HTTP_403', 24), previous: s, now: at(24) });
+    expect([s.cause, s.since.toISOString(), s.attempts]).toEqual(['ACCES_REFUSE', T0.toISOString(), 2]);
+    s = computeSourceState({ source: active(), outcome: fail('HTTP_429', 48), previous: s, now: at(48) });
+    expect([s.state, s.trajectory]).toEqual(['BLOQUEE', 'A_REPARER']);
+  });
+
   it('la synthèse compte par état et trajectoire, et ne contient aucun tiret cadratin', () => {
     const states = [computeSourceState({ source: active('ok'), outcome: run(), previous: null, now: T0 }), blocked('ko', at(-48)),
-      computeSourceState({ source: { key: 'p', status: 'PAUSED', note: 'D-1' }, outcome: null, previous: null, now: T0 })];
+      computeSourceState({ source: { key: 'p', status: 'PAUSED', note: 'D-516' }, outcome: null, previous: null, now: T0 })];
     const summary = summarizeStates(states, T0);
     expect(summary.byState).toMatchObject({ NORMALE: 1, BLOQUEE: 1, EN_PAUSE: 1 });
     expect(summary.byTrajectory).toMatchObject({ A_REPARER: 1, DECISION: 1 });
     const lines = summaryLines(summary, reconcileRun({ states, now: T0, runStartedAt: null, systemFailures: [], unexplainedCoverage: [] }));
     expect(lines[0]).toMatch(/^Réconciliation : vert/);
-    expect(lines.some(l => l.startsWith('ko : bloquée, défaut interne'))).toBe(true);
+    expect(lines.some(l => l.startsWith('défaut interne de Catwalks (code, base, capture) : 1 (ko)'))).toBe(true);
+    expect(lines.some(l => l.startsWith('ko, depuis 2 j : corriger le code'))).toBe(true);
     expect(lines.join('\n')).not.toContain('—');
   });
 

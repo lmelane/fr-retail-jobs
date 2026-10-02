@@ -192,7 +192,8 @@ try {
       const { runCoverageReview } = await import('./coverage/coverageReview.js');
       if (!coverageBefore) throw new Error('coverage: the state before the RUN steps could not be read');
       const coverage = await runCoverageReview(prisma, { runId: log.runId() ?? null, probe, before: coverageBefore,
-        header: evaluation => stateLines(summarizeStates(sourceStates ?? [], new Date()), reconcile(unexplainedCoverageOf(evaluation.findings))) });
+        header: evaluation => stateLines(summarizeStates(sourceStates ?? [], new Date()), reconcile(unexplainedCoverageOf(evaluation.findings)),
+          { provisional: true }) });
       unexplainedCoverage = unexplainedCoverageOf(coverage.evaluation.findings);
       coverageFailed = !coverage.sent;
       await log.info('coverage.reviewed', { written: coverage.written, sent: coverage.sent, referenceRuns: coverage.evaluation.referenceRuns,
