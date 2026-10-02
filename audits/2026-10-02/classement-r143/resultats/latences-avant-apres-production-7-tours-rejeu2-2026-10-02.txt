@@ -1,0 +1,153 @@
+cas                                                   avant méd     p95  après méd     p95  offres avant → après
+US Sales advisor                                          310ms   386ms      350ms   393ms  10300 → 10300
+US Beauty advisor                                         125ms   194ms      144ms   168ms  4428 → 4428
+US Hairdresser                                            102ms   107ms      108ms   194ms  4675 → 4675
+US Store manager                                          160ms   228ms      146ms   221ms  1291 → 1291
+US Assistant store manager                                139ms   152ms      129ms   145ms  1378 → 1378
+US Retail stock associate                                  79ms    85ms       81ms   144ms  820 → 820
+US Cashier                                                 43ms    48ms       47ms   131ms  172 → 172
+US Visual merchandiser                                     34ms    38ms       38ms    47ms  254 → 254
+US Watchmaker                                              26ms    29ms       28ms   102ms  19 → 19
+US Pharmacist                                              26ms    29ms       26ms    31ms  0 → 0
+US Recruiter                                               35ms    36ms       37ms    45ms  102 → 102
+US Financial controller                                    48ms   139ms       49ms    61ms  42 → 42
+FR Conseiller de vente                                    136ms   225ms      154ms   236ms  4706 → 4706
+FR Conseiller beauté                                       72ms   118ms       70ms   111ms  133 → 133
+FR Coiffeur                                                29ms    32ms       30ms    32ms  3 → 3
+FR Responsable de boutique                                123ms   143ms      123ms   194ms  706 → 706
+FR Adjoint au responsable de boutique                     122ms   188ms      127ms   218ms  425 → 425
+FR Gestionnaire de stock en boutique                       78ms   113ms       72ms    74ms  191 → 191
+FR Hôte de caisse                                          46ms   109ms       51ms   118ms  544 → 544
+FR Visual merchandiser                                     28ms    30ms       29ms   109ms  51 → 51
+FR Horloger                                                28ms   113ms       28ms    31ms  9 → 9
+FR Pharmacien                                              23ms   109ms       26ms    29ms  15 → 15
+FR Chargé de recrutement                                   38ms    41ms       43ms   101ms  31 → 31
+FR Contrôleur de gestion                                   50ms    54ms       52ms    68ms  189 → 189
+GB Sales advisor                                           69ms    77ms       76ms   123ms  1261 → 1261
+GB Beauty advisor                                          61ms   132ms       61ms   173ms  343 → 343
+GB Hairdresser                                             47ms   103ms       46ms    99ms  1 → 1
+GB Store manager                                           56ms   136ms       61ms   159ms  247 → 247
+GB Assistant store manager                                 59ms   129ms       70ms   144ms  180 → 180
+GB Retail stock associate                                  55ms   131ms       55ms    60ms  63 → 63
+GB Cashier                                                 47ms    62ms       47ms    53ms  6 → 6
+GB Visual merchandiser                                     50ms    66ms       50ms    59ms  87 → 87
+GB Watchmaker                                              51ms    53ms       50ms    54ms  1 → 1
+GB Pharmacist                                              48ms    53ms       48ms   113ms  0 → 0
+GB Recruiter                                               52ms   120ms       52ms   134ms  14 → 14
+GB Financial controller                                    50ms    58ms       52ms    57ms  9 → 9
+DE Verkaufsberater                                         90ms   173ms      103ms   159ms  1148 → 1148
+DE Beauty Advisor                                          70ms   146ms       54ms    58ms  53 → 53
+DE Friseur                                                 45ms    50ms       44ms    47ms  4 → 4
+DE Store Manager                                           49ms    52ms       49ms    51ms  196 → 196
+DE Assistant Store Manager                                 51ms    57ms       50ms    57ms  200 → 200
+DE Stock Associate                                         45ms    50ms       47ms   123ms  35 → 35
+DE Kassierer                                               44ms   129ms       47ms   123ms  7 → 7
+DE Visual Merchandiser                                     43ms    47ms       45ms    50ms  65 → 65
+DE Uhrmacher                                               42ms    47ms       45ms    51ms  5 → 5
+DE Apotheker                                               41ms    43ms       41ms    44ms  1 → 1
+DE Recruiter                                               64ms   128ms      100ms   109ms  1 → 1
+DE Finanzcontroller                                        48ms   108ms       44ms    52ms  20 → 20
+IT Sales Assistant                                         75ms    96ms       81ms   101ms  1000 → 1000
+IT Beauty Advisor                                          47ms    54ms       49ms    64ms  305 → 305
+IT Parrucchiere                                            40ms   126ms       42ms    45ms  0 → 0
+IT Store Manager                                           44ms    50ms       51ms   129ms  177 → 177
+IT Assistant Store Manager                                 42ms    99ms       44ms    51ms  96 → 96
+IT Stock associate                                         41ms    52ms       42ms    44ms  45 → 45
+IT Cassiere                                                39ms    53ms       41ms    42ms  4 → 4
+IT Visual merchandiser                                     40ms    41ms       45ms   141ms  34 → 34
+IT Orologiaio                                              41ms   127ms       39ms   131ms  0 → 0
+IT Farmacista                                              38ms   101ms       40ms    42ms  0 → 0
+IT Recruiter                                               38ms    41ms       38ms    47ms  0 → 0
+IT Financial Controller                                    42ms   129ms       40ms    50ms  36 → 36
+ES Asesor de ventas                                        70ms   160ms       76ms   163ms  1127 → 1127
+ES Consejero de belleza                                    43ms   126ms       45ms   106ms  64 → 64
+ES Peluquero                                               35ms    37ms       37ms    99ms  0 → 0
+ES Gerente de tienda                                       38ms    48ms       38ms    44ms  108 → 108
+ES Assistant Store Manager                                 40ms    52ms       37ms    41ms  64 → 64
+ES Stockista                                               34ms    43ms       37ms   128ms  13 → 13
+ES Cajero                                                  35ms    59ms       36ms   108ms  1 → 1
+ES Visual merchandiser                                     38ms   127ms       35ms    40ms  58 → 58
+ES Relojero                                                35ms   125ms       36ms    41ms  1 → 1
+ES Farmacéutico                                            35ms    37ms       35ms    40ms  0 → 0
+ES Reclutador                                              38ms   119ms       35ms    40ms  3 → 3
+ES Controlador de gestión                                  35ms    40ms       35ms    41ms  6 → 6
+NL Verkoopmedewerker                                       64ms   128ms       67ms   120ms  794 → 794
+NL Beauty Advisor                                          36ms    44ms       38ms   121ms  12 → 12
+NL Kapper                                                  34ms    38ms       34ms    98ms  0 → 0
+NL Store Manager                                           39ms    40ms       40ms    46ms  166 → 166
+NL Assistant Store Manager                                 36ms    39ms       38ms   129ms  97 → 97
+NL Stock Associate                                         35ms   157ms       36ms   105ms  38 → 38
+NL Kassamedewerker                                         35ms    38ms       36ms   107ms  9 → 9
+NL Visual merchandiser                                     34ms   111ms       34ms    39ms  35 → 35
+NL Horlogemaker                                            34ms    38ms       34ms    36ms  0 → 0
+NL Apotheker                                               32ms    35ms       33ms    35ms  0 → 0
+NL Recruiter                                               34ms   110ms       34ms    37ms  4 → 4
+NL Financial Controller                                    34ms    37ms       34ms    37ms  6 → 6
+CH Conseiller de vente                                     44ms   140ms       44ms   114ms  215 → 215
+CH Conseiller beauté                                       32ms    35ms       34ms   114ms  50 → 50
+CH Coiffeur                                                29ms    47ms       29ms    32ms  0 → 0
+CH Responsable de boutique                                 32ms    37ms       32ms   112ms  35 → 35
+CH Adjoint au responsable de boutique                      31ms    36ms       36ms   111ms  7 → 7
+CH Gestionnaire de stock en boutique                       30ms   138ms       30ms   111ms  2 → 2
+CH Hôte de caisse                                          31ms    37ms       35ms    94ms  2 → 2
+CH Visual merchandiser                                     28ms   117ms       29ms   114ms  13 → 13
+CH Horloger                                                32ms    35ms       34ms    38ms  80 → 80
+CH Pharmacien                                              32ms   109ms       29ms    46ms  0 → 0
+CH Chargé de recrutement                                   30ms    35ms       30ms    37ms  0 → 0
+CH Contrôleur de gestion                                   30ms    31ms       31ms    33ms  6 → 6
+JP セールスアドバイザー                                              34ms    39ms       38ms    40ms  243 → 243
+JP ビューティーアドバイザー                                            26ms    97ms       27ms    31ms  3 → 3
+JP 美容師                                                     26ms    27ms       26ms   108ms  0 → 0
+JP ストアマネージャー                                               30ms   117ms       28ms    31ms  34 → 34
+JP 副店長                                                     26ms    29ms       27ms   100ms  10 → 10
+JP ストック担当                                                  27ms    29ms       26ms   114ms  1 → 1
+JP キャッシャー                                                  26ms    28ms       26ms   115ms  2 → 2
+JP ビジュアルマーチャンダイザー                                          27ms    32ms       25ms    30ms  3 → 3
+JP 時計職人                                                    25ms   105ms       25ms   117ms  2 → 2
+JP 薬剤師                                                     25ms    28ms       26ms    28ms  0 → 0
+JP リクルーター                                                  25ms    29ms       27ms   113ms  3 → 3
+JP ファイナンシャルコントローラー                                         25ms   115ms       26ms    31ms  2 → 2
+CN 销售顾问                                                    42ms   119ms       41ms    49ms  159 → 159
+CN 美容顾问                                                    36ms   111ms       34ms    38ms  198 → 198
+CN 美发师                                                     28ms    30ms       29ms    31ms  0 → 0
+CN 店长                                                      30ms    33ms       31ms    36ms  53 → 53
+CN 副店长                                                     30ms    33ms       31ms    33ms  14 → 14
+CN 库存专员                                                    29ms   115ms       29ms   117ms  2 → 2
+CN 收银员                                                     29ms    33ms       29ms    31ms  0 → 0
+CN 陈列师                                                     29ms    97ms       28ms   115ms  2 → 2
+CN 钟表师                                                     29ms    32ms       30ms   109ms  1 → 1
+CN 药剂师                                                     28ms    31ms       29ms   113ms  0 → 0
+CN 招聘专员                                                    28ms    30ms       28ms    35ms  1 → 1
+CN 财务控制师                                                   29ms   111ms       30ms    32ms  4 → 4
+BE Conseiller de vente                                     37ms    40ms       44ms   130ms  321 → 321
+BE Conseiller beauté                                       25ms   113ms       26ms    30ms  8 → 8
+BE Coiffeur                                                26ms    37ms       27ms    29ms  0 → 0
+BE Responsable de boutique                                 29ms   109ms       30ms   133ms  67 → 67
+BE Adjoint au responsable de boutique                      27ms   109ms       28ms    29ms  36 → 36
+BE Gestionnaire de stock en boutique                       27ms    32ms       26ms    29ms  9 → 9
+BE Hôte de caisse                                          27ms    34ms       27ms    28ms  0 → 0
+BE Visual merchandiser                                     26ms    29ms       26ms   116ms  16 → 16
+BE Horloger                                                28ms   104ms       28ms   112ms  0 → 0
+BE Pharmacien                                              25ms    28ms       26ms    31ms  0 → 0
+BE Chargé de recrutement                                   26ms    30ms       25ms   121ms  1 → 1
+BE Contrôleur de gestion                                   27ms   109ms       26ms   137ms  3 → 3
+US chanel                                                  32ms    35ms       32ms    37ms  197 → 197
+FR chanel                                                  35ms    37ms       36ms   106ms  459 → 459
+FR stage marketing                                         47ms   105ms       54ms    65ms  997 → 997
+FR conseiller de vente chanel                              29ms    32ms       31ms   103ms  26 → 26
+US sales advisor new york                                 164ms   196ms      158ms   235ms  1669 → 1669
+FR sans critère                                           104ms   134ms      104ms   125ms  13639 → 13639
+FR Chennevières-sur-Marne                                  86ms   112ms       89ms   112ms  572 → 572
+FR conseiller de vente, Chennevières-sur-Marne            123ms   173ms      127ms   195ms  133 → 133
+FR Paris                                                   82ms   173ms       82ms   101ms  6145 → 6145
+FR conseiller de vente, Paris                             124ms   135ms      128ms   203ms  987 → 987
+FR Lyon                                                    61ms   130ms       61ms    64ms  434 → 434
+FR Paris 15e (75)                                          78ms   139ms       78ms   127ms  6208 → 6208
+FR 94430 (code postal)                                     82ms   136ms       79ms   153ms  572 → 572
+FR accueil : métier + 3 villes                            111ms   179ms      114ms   133ms  1278 → 1278
+FR lieu inconnu (repli texte)                             118ms   175ms      111ms   200ms  0 → 0
+US sales advisor, New York                                288ms   352ms      278ms   299ms  495 → 495
+US New York                                               118ms   134ms      114ms   159ms  2382 → 2382
+GB London                                                  54ms   104ms       54ms   115ms  1615 → 1615
+DE München                                                 42ms   100ms       41ms    47ms  257 → 257
+FR conseiller de vente (sans lieu)                        131ms   199ms      137ms   146ms  4706 → 4706

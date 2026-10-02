@@ -1,0 +1,53 @@
+cas                                            total   nomme / métier    âge méd.        p90        max    >30 j   Maisons  communes  contrat accord/neutre/désaccord
+FR Conseiller de vente                          4706      19 → 19      30.0 → 30.0  178 → 178  178 → 178  10 → 10  16 → 16        25  - → -
+FR Responsable de boutique                       706       7 → 7        0.9 → 1.1   170 → 170  178 → 178   5 → 5   15 → 16        21  - → -
+FR Conseiller beauté                             133      25 → 25       7.5 → 7.5    10 → 10   170 → 170   1 → 1    9 → 9         25  - → -
+FR Hôte de caisse                                544       9 → 9        1.5 → 1.5     2 → 2      2 → 2     0 → 0    6 → 6         25  - → -
+FR Visual merchandiser                            51      14 → 14       8.9 → 9.1    14 → 16    16 → 16    0 → 0   17 → 16        24  - → -
+US Sales advisor                               10300      12 → 12       0.9 → 0.9     1 → 1      1 → 1     0 → 0    6 → 6         25  - → -
+US Store manager                                1291      16 → 21       1.5 → 1.5     2 → 2     46 → 46    1 → 1   20 → 17        19  - → -
+GB Beauty advisor                                343      21 → 21       2.0 → 2.0     3 → 3      3 → 3     0 → 0    6 → 6         25  - → -
+DE Verkaufsberater                              1148       0 → 0        1.0 → 1.0     1 → 1      1 → 1     0 → 0    4 → 4         25  - → -
+ES Asesor de ventas                             1127       0 → 0        1.0 → 1.0     1 → 1      2 → 2     0 → 0   10 → 10        25  - → -
+profil-1 FR sales-advisor · Vaulx-en-Velin       218      25 → 25       3.9 → 3.9     8 → 8    170 → 170   1 → 1   19 → 20        23  1/2/22 → 1/4/20
+profil-3 DE sales-advisor · Berlin               105      25 → 25       8.6 → 8.6    11 → 11    11 → 12    0 → 0   15 → 15        23  15/9/1 → 17/8/0
+profil-5 FR sales-advisor · Rouen                 29      25 → 25      21.2 → 21.2  139 → 139  210 → 210   6 → 6   11 → 11        25  12/0/13 → 12/0/13
+profil-7 FR sales-advisor · Paris                930      24 → 25       1.6 → 1.6   178 → 178  178 → 178   8 → 8   19 → 18        22  23/0/2 → 24/0/1
+profil-8 FR directeur-reseau · Paris               3       3 → 3       67.1 → 67.1   68 → 68    68 → 68    3 → 3    2 → 2          3  2/1/0 → 2/1/0
+
+Après : offres de plus de 30 jours en première page (35), points [intitulé, lieu, contrat, télétravail, salaire, âge]
+  FR Conseiller de vente                   rang  6  CATWALKS    37.0 j  points [40, None, None, None, None, 36.97]  « Conseiller de vente en beauté capillaire »
+  FR Conseiller de vente                   rang  7  CATWALKS    56.7 j  points [40, None, None, None, None, 56.73]  « Conseiller·ère de vente »
+  FR Conseiller de vente                   rang  8  CATWALKS   170.0 j  points [40, None, None, None, None, 169.98]  « Conseiller·ère de vente »
+  FR Conseiller de vente                   rang  9  CATWALKS   170.0 j  points [40, None, None, None, None, 169.98]  « Conseiller·ère de vente »
+  FR Conseiller de vente                   rang 10  CATWALKS   170.0 j  points [40, None, None, None, None, 169.98]  « Conseiller·ère de vente »
+  FR Conseiller de vente                   rang 11  CATWALKS   170.0 j  points [40, None, None, None, None, 169.98]  « Conseiller·ère de vente »
+  FR Conseiller de vente                   rang 12  CATWALKS   170.0 j  points [40, None, None, None, None, 169.98]  « Conseiller·ère de vente »
+  FR Conseiller de vente                   rang 13  CATWALKS   178.0 j  points [40, None, None, None, None, 177.99]  « Conseiller de Vente Prêt-À-Porter Féminin Contemporain H/F »
+  FR Conseiller de vente                   rang 14  CATWALKS   178.0 j  points [40, None, None, None, None, 178.03]  « Conseiller de Vente Prêt à Porter Premium Féminin »
+  FR Conseiller de vente                   rang 15  CATWALKS   178.1 j  points [40, None, None, None, None, 178.05]  « Conseiller(e) de vente en Prêt à Porter Haut de Gamme »
+  FR Responsable de boutique               rang  2  CATWALKS    37.0 j  points [40, None, None, None, None, 36.97]  « Responsable de boutique »
+  FR Responsable de boutique               rang  3  CATWALKS   170.0 j  points [40, None, None, None, None, 169.98]  « Responsable de boutique »
+  FR Responsable de boutique               rang  4  CATWALKS   170.0 j  points [40, None, None, None, None, 169.98]  « Directeur·rice de boutique »
+  FR Responsable de boutique               rang  5  CATWALKS   170.0 j  points [40, None, None, None, None, 169.98]  « Responsable de boutique »
+  FR Responsable de boutique               rang  6  CATWALKS   178.0 j  points [40, None, None, None, None, 177.99]  « Store manager »
+  FR Conseiller beauté                     rang  1  CATWALKS   170.0 j  points [40, None, None, None, None, 169.98]  « Conseiller·ère beauté »
+  US Store manager                         rang  1  CATWALKS    45.7 j  points [40, None, None, None, None, 45.69]  « Responsable de boutique parfums — New York »
+  profil-1 FR sales-advisor · Vaulx-en-Vel rang  1  CATWALKS   170.0 j  points [40, 20, 0, None, 5, 169.98]  « Conseiller·ère de vente »
+  profil-5 FR sales-advisor · Rouen        rang 20  AGREGEE     35.7 j  points [40, 20, 30, None, 5, 35.73]  « Vendeur(euse) en CDI 10H »
+  profil-5 FR sales-advisor · Rouen        rang 21  AGREGEE     39.5 j  points [40, 20, 0, None, 5, 39.49]  « Vendeur H/F - 35H- Rouen - Boardriders »
+  profil-5 FR sales-advisor · Rouen        rang 22  AGREGEE    128.9 j  points [40, 20, 0, None, 5, 128.93]  « Vendeur.se "Ville" - X h/sem - CDD »
+  profil-5 FR sales-advisor · Rouen        rang 23  AGREGEE    139.2 j  points [40, 20, 30, None, 5, 139.19]  « Technicien Vendeur Cycle CDI 35H H/F »
+  profil-5 FR sales-advisor · Rouen        rang 24  AGREGEE    165.1 j  points [40, 20, 30, None, 5, 165.14]  « Vendeur H/F CDI »
+  profil-5 FR sales-advisor · Rouen        rang 25  AGREGEE    210.5 j  points [40, 20, 30, None, 5, 210.49]  « Vendeur H/F 35H- Rouen Barentin »
+  profil-7 FR sales-advisor · Paris        rang  5  CATWALKS    56.7 j  points [40, 20, 30, None, 10, 56.73]  « Conseiller·ère de vente »
+  profil-7 FR sales-advisor · Paris        rang  6  CATWALKS   170.0 j  points [40, 20, 30, None, 10, 169.98]  « Conseiller·ère de vente »
+  profil-7 FR sales-advisor · Paris        rang  7  CATWALKS   170.0 j  points [40, 20, 30, None, 10, 169.98]  « Conseiller·ère de vente »
+  profil-7 FR sales-advisor · Paris        rang  8  CATWALKS   170.0 j  points [40, 20, 30, None, 10, 169.98]  « Conseiller·ère de vente »
+  profil-7 FR sales-advisor · Paris        rang  9  CATWALKS   170.0 j  points [40, 20, 30, None, 10, 169.98]  « Conseiller·ère de vente »
+  profil-7 FR sales-advisor · Paris        rang 10  CATWALKS   178.0 j  points [40, 20, 30, None, 10, 178.03]  « Conseiller de Vente Prêt à Porter Premium Féminin »
+  profil-7 FR sales-advisor · Paris        rang 11  CATWALKS   178.1 j  points [40, 20, 30, None, 10, 178.05]  « Conseiller(e) de vente en Prêt à Porter Haut de Gamme »
+  profil-7 FR sales-advisor · Paris        rang 12  CATWALKS   178.0 j  points [40, 20, 30, None, 0, 177.99]  « Conseiller de Vente Prêt-À-Porter Féminin Contemporain H/F »
+  profil-8 FR directeur-reseau · Paris     rang  1  AGREGEE     39.1 j  points [40, 20, 30, None, 5, 39.15]  « Directeur(trice) Retail - CDI »
+  profil-8 FR directeur-reseau · Paris     rang  2  AGREGEE     67.1 j  points [40, 20, 30, None, 10, 67.12]  « Directeur Retail (H/F) »
+  profil-8 FR directeur-reseau · Paris     rang  3  AGREGEE     67.5 j  points [40, 20, 15, None, 5, 67.49]  « Retail Regional Manager - France (South) »

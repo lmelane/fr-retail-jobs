@@ -1,0 +1,2 @@
+152 requêtes, 152 identiques aux différences de forme près ; différentes : []
+exécutées en production (lecture seule), avant puis après : 152 cas, réponses (total, md5 de la page) identiques : 152 ; différentes : []

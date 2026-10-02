@@ -1,0 +1,323 @@
+{
+ "population": 158,
+ "eligibles": 158,
+ "profils": [
+  {
+   "profil": "profil-1",
+   "marche": "FR",
+   "metiers": [
+    "sales-advisor"
+   ],
+   "lieux": [
+    "Vaulx-en-Velin",
+    "Lyon"
+   ],
+   "contrats": [
+    "APPRENTICESHIP"
+   ],
+   "teletravail": null,
+   "salaire": {
+    "montant": 1500,
+    "devise": "EUR",
+    "periode": "MONTH"
+   }
+  },
+  {
+   "profil": "profil-2",
+   "marche": "US",
+   "metiers": [
+    "sales-advisor"
+   ],
+   "lieux": [
+    "Comté de Kings",
+    "New York"
+   ],
+   "contrats": [
+    "PERMANENT"
+   ],
+   "teletravail": null,
+   "salaire": {
+    "montant": 55000,
+    "devise": "USD",
+    "periode": "YEAR"
+   }
+  },
+  {
+   "profil": "profil-3",
+   "marche": "DE",
+   "metiers": [
+    "sales-advisor"
+   ],
+   "lieux": [
+    "Berlin"
+   ],
+   "contrats": [
+    "PERMANENT",
+    "FIXED_TERM"
+   ],
+   "teletravail": null,
+   "salaire": {
+    "montant": 2000,
+    "devise": "EUR",
+    "periode": "MONTH"
+   }
+  },
+  {
+   "profil": "profil-4",
+   "marche": "BE",
+   "metiers": [
+    "beauty-therapist",
+    "sales-advisor"
+   ],
+   "lieux": [
+    "Mouscron"
+   ],
+   "contrats": [
+    "PERMANENT",
+    "TEMPORARY"
+   ],
+   "teletravail": null,
+   "salaire": {
+    "montant": 24000,
+    "devise": "EUR",
+    "periode": "YEAR"
+   }
+  },
+  {
+   "profil": "profil-5",
+   "marche": "FR",
+   "metiers": [
+    "sales-advisor",
+    "receptionist"
+   ],
+   "lieux": [
+    "Rouen",
+    "Paris"
+   ],
+   "contrats": [
+    "PERMANENT",
+    "TEMPORARY",
+    "APPRENTICESHIP"
+   ],
+   "teletravail": null,
+   "salaire": {
+    "montant": 2500,
+    "devise": "EUR",
+    "periode": "MONTH"
+   }
+  },
+  {
+   "profil": "profil-6",
+   "marche": "FR",
+   "metiers": [
+    "conseiller-en-image"
+   ],
+   "lieux": [
+    "Lyon"
+   ],
+   "contrats": [
+    "PERMANENT",
+    "FIXED_TERM"
+   ],
+   "teletravail": null,
+   "salaire": {
+    "montant": 35000,
+    "devise": "EUR",
+    "periode": "YEAR"
+   }
+  },
+  {
+   "profil": "profil-7",
+   "marche": "FR",
+   "metiers": [
+    "sales-advisor"
+   ],
+   "lieux": [
+    "Paris"
+   ],
+   "contrats": [
+    "PERMANENT",
+    "FIXED_TERM"
+   ],
+   "teletravail": null,
+   "salaire": {
+    "montant": 28000,
+    "devise": "EUR",
+    "periode": "YEAR"
+   }
+  },
+  {
+   "profil": "profil-8",
+   "marche": "FR",
+   "metiers": [
+    "directeur-reseau",
+    "store-manager",
+    "chef-de-projet-cosmetique"
+   ],
+   "lieux": [
+    "Paris"
+   ],
+   "contrats": [
+    "PERMANENT",
+    "FIXED_TERM"
+   ],
+   "teletravail": null,
+   "salaire": {
+    "montant": 55000,
+    "devise": "EUR",
+    "periode": "YEAR"
+   }
+  },
+  {
+   "profil": "profil-9",
+   "marche": "FR",
+   "metiers": [
+    "store-manager"
+   ],
+   "lieux": [
+    "Nantes",
+    "Lyon"
+   ],
+   "contrats": [
+    "PERMANENT",
+    "FIXED_TERM"
+   ],
+   "teletravail": null,
+   "salaire": {
+    "montant": 28000,
+    "devise": "EUR",
+    "periode": "YEAR"
+   }
+  },
+  {
+   "profil": "profil-10",
+   "marche": "FR",
+   "metiers": [
+    "sales-advisor"
+   ],
+   "lieux": [
+    "Fontenay-sous-Bois"
+   ],
+   "contrats": [
+    "PERMANENT",
+    "FIXED_TERM",
+    "TEMPORARY"
+   ],
+   "teletravail": null,
+   "salaire": {
+    "montant": 32000,
+    "devise": "EUR",
+    "periode": "YEAR"
+   }
+  },
+  {
+   "profil": "profil-11",
+   "marche": "FR",
+   "metiers": [
+    "assistant-commercial"
+   ],
+   "lieux": [
+    "Paris"
+   ],
+   "contrats": [
+    "PERMANENT",
+    "FIXED_TERM",
+    "TEMPORARY"
+   ],
+   "teletravail": null,
+   "salaire": {
+    "montant": 40000,
+    "devise": "EUR",
+    "periode": "YEAR"
+   }
+  },
+  {
+   "profil": "profil-12",
+   "marche": "FR",
+   "metiers": [
+    "sales-advisor",
+    "commercial"
+   ],
+   "lieux": [
+    "Marseille",
+    "Aix-en-Provence"
+   ],
+   "contrats": [
+    "PERMANENT",
+    "FIXED_TERM"
+   ],
+   "teletravail": null,
+   "salaire": {
+    "montant": 26000,
+    "devise": "EUR",
+    "periode": "YEAR"
+   }
+  },
+  {
+   "profil": "profil-13",
+   "marche": "FR",
+   "metiers": [
+    "chef-produit"
+   ],
+   "lieux": [
+    "Paris"
+   ],
+   "contrats": [
+    "PERMANENT",
+    "FIXED_TERM",
+    "TEMPORARY"
+   ],
+   "teletravail": null,
+   "salaire": {
+    "montant": 35000,
+    "devise": "EUR",
+    "periode": "YEAR"
+   }
+  },
+  {
+   "profil": "profil-14",
+   "marche": "FR",
+   "metiers": [
+    "store-manager",
+    "assistant-store-manager"
+   ],
+   "lieux": [
+    "Lyon"
+   ],
+   "contrats": [
+    "PERMANENT",
+    "FIXED_TERM",
+    "TEMPORARY"
+   ],
+   "teletravail": null,
+   "salaire": {
+    "montant": 35000,
+    "devise": "EUR",
+    "periode": "YEAR"
+   }
+  },
+  {
+   "profil": "profil-15",
+   "marche": "FR",
+   "metiers": [
+    "directeur-centre-esthetique",
+    "directeur-reseau",
+    "spa-manager"
+   ],
+   "lieux": [
+    "Francescas"
+   ],
+   "contrats": [
+    "PERMANENT",
+    "FIXED_TERM",
+    "FREELANCE"
+   ],
+   "teletravail": null,
+   "salaire": {
+    "montant": 70000,
+    "devise": "EUR",
+    "periode": "YEAR"
+   }
+  }
+ ]
+}
