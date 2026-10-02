@@ -53,6 +53,11 @@ type Board = {
   partition?: { parameter: string; value: string; id: string };
   /** The whole site, read AFTER the partitions: postings that carry no value of the facet (Tapestry: 6 of 2 091). */
   remainder?: boolean;
+  /**
+   * One value of the COVERING facet chosen when the site total is capped (`coveringFacet`): it only enumerates, it never
+   * attributes an employer (a job family or a state is not a Maison).
+   */
+  cover?: { parameter: string; value: string; id: string };
 };
 
 /** State shared by every board of one source: postings, ids, evidence, rejects. */
@@ -85,6 +90,10 @@ type Shared = {
   prefixRule?: LocationPrefixRule;
   out: NormalizedJob[]; seen: Set<string>; pageEvidence: PageEvidence[]; issues: Set<string>;
   rejectedRows: NonNullable<AdapterResult['rejectedRows']>; pathlessRows: Set<string>;
+  /** The facets of the site's first page (unfiltered board, offset 0, first pass): what a capped site still counts. */
+  siteFacets?: WorkdayFacet[];
+  /** Ids read on the boards of the covering facet, across boards: an id met twice is an overlap of the covering facet. */
+  coverIds: Set<string>;
 };
 
 type BoardResult = {
@@ -93,6 +102,8 @@ type BoardResult = {
   overlap: number;
   /** Postings this board added to the source (on the remainder board: postings outside every partition). */
   fresh: number; termination: string; complete: boolean;
+  /** The cap probe found postings past an announced total at the cap (`WORKDAY_TOTAL_CAP`). */
+  capped?: boolean;
 };
 
 const PARTITION_RULE = 'PARTITION_FACET_VALUE';
@@ -223,15 +234,19 @@ async function readPass(shared: Shared, board: Board, memory: BoardMemory, pass:
     return [...ranks].reduce((sum, [hash, at]) => sum + (distinctByRank.has(hash) ? at.size : 1), 0);
   };
   let pages = 0, rawCount = 0, repeatedIds = 0, overlap = 0, fresh = 0, termination = 'PAGE_BUDGET_EXHAUSTED';
-  const suffix = `${board.partition ? `&${board.partition.parameter}=${encodeURIComponent(board.partition.id)}` : ''}${pass > 1 ? `&pass=${pass}` : ''}`;
+  const facetOfBoard = board.partition ?? board.cover;
+  const suffix = `${facetOfBoard ? `&${facetOfBoard.parameter}=${encodeURIComponent(facetOfBoard.id)}` : ''}${pass > 1 ? `&pass=${pass}` : ''}`;
   const take = (job: WorkdayPosting, externalId: string): boolean => {
     if (local.has(externalId)) return false;
     local.add(externalId);
     // Read by an earlier pass of this board: already collected, neither an overlap nor a new posting.
     if (memory.ids.has(externalId)) return true;
     memory.ids.add(externalId);
-    // The remainder board re-reads what the partitions read: expected, not an overlap.
-    if (shared.seen.has(externalId)) { if (!board.remainder) overlap += 1; return true; }
+    // A covering board re-reads what the capped site served: expected. Its overlap is judged among covering boards only.
+    if (board.cover) {
+      if (shared.coverIds.has(externalId)) overlap += 1; else shared.coverIds.add(externalId);
+      if (shared.seen.has(externalId)) return true;
+    } else if (shared.seen.has(externalId)) { if (!board.remainder) overlap += 1; return true; }
     shared.seen.add(externalId); fresh += 1;
     shared.out.push(toJob(shared, board, job, externalId));
     return true;
@@ -242,6 +257,7 @@ async function readPass(shared: Shared, board: Board, memory: BoardMemory, pass:
     const page = await readPage(shared, board, offset);
     const postings = page.jobPostings ?? [];
     pages += 1; rawCount += postings.length; nextOffset = offset + 20;
+    if (offset === 0 && pass === 1 && !Object.keys(board.appliedFacets).length && !shared.siteFacets && page.facets) shared.siteFacets = page.facets;
     if (page.total) {
       if (!total) total = page.total;
       else if (page.total !== total) { totalChanged = true; shared.issues.add('SOURCE_TOTAL_CHANGED'); }
@@ -283,7 +299,7 @@ async function readPass(shared: Shared, board: Board, memory: BoardMemory, pass:
        * pas figurer ici. Son absence est comptée dans `withoutPath`, jamais confondue avec une disparition.
        */
       ids: pageIds, canonicalIds: pageIds,
-      publisherCounter: page.total ? `total=${page.total}` : '', componentCounters: [`rows=${postings.length}`, `uniqueIds=${local.size}`, `repeated=${repeatedIds}`, `withoutPath=${pathlessCount()}`, ...(board.partition ? [`partition=${board.scope}`] : []), ...(pass > 1 ? [`pass=${pass}`] : [])] });
+      publisherCounter: page.total ? `total=${page.total}` : '', componentCounters: [`rows=${postings.length}`, `uniqueIds=${local.size}`, `repeated=${repeatedIds}`, `withoutPath=${pathlessCount()}`, ...(board.partition ? [`partition=${board.scope}`] : []), ...(board.cover ? [`cover=${board.scope}`] : []), ...(pass > 1 ? [`pass=${pass}`] : [])] });
     if (postings.length === 0) { termination = 'EMPTY_PAGE'; break; }
     // The announced total counts ROWS (a path-less row included): once that many
     // rows are read the board is exhausted, whether or not every row was a
@@ -362,6 +378,21 @@ async function readPass(shared: Shared, board: Board, memory: BoardMemory, pass:
     if (unseen) { capped = true; shared.issues.add('PUBLISHER_TOTAL_CAPPED'); }
   }
   /**
+   * LE PLAFOND DIT PAR LES FACETTES (D-520, 02/10/2026). La sonde ci-dessus ne voit le plafond que si la page servie
+   * au-delà porte un identifiant nouveau ; Workday y ressert une page déjà lue quand il veut. Collecte locale de
+   * knitwell-us-retail le 02/10 à 15:13 UTC avec le code d'avant : 1 999 offres + 1 ligne sans chemin = 2 000, sonde
+   * sans identifiant nouveau, liste « prouvée » — alors que ses facettes comptent 3 515 offres. En production, le RUN
+   * du 30/09 l'a enregistrée ainsi (`complete`, `canAttestAbsence`) : une fausse preuve d'absence pour 1 515 offres en
+   * ligne, la forme exacte du 27/09. Une facette à plat qui compte plus d'offres que le total annoncé au plafond est un
+   * plafond, déterministe : le tableau n'est pas prouvé. Une facette à plusieurs valeurs par offre peut compter plus
+   * sans plafond : elle rend la lecture non prouvée, jamais prouvée à tort.
+   */
+  // The remainder of a configured partition is the capped site by design: the partition judges it (`UNPARTITIONED_UNDER_CAP`).
+  if (!capped && !board.remainder && !Object.keys(board.appliedFacets).length && total >= WORKDAY_TOTAL_CAP) {
+    const counted = Math.max(0, ...flatFacets(shared.siteFacets).map((facet) => facet.sum));
+    if (counted > total) { capped = true; shared.issues.add('PUBLISHER_TOTAL_CAPPED'); shared.issues.add(`FACETS_COUNT_BEYOND_TOTAL=${counted}`); }
+  }
+  /**
    * Second sweep (2026-09-10). An unstable sort can serve the same posting on two
    * consecutive pages while another posting slides between two page boundaries and
    * is never served (Levi's: 1 314 rows announced and read, 7 repeated, 1 306 unique).
@@ -400,13 +431,13 @@ async function readPass(shared: Shared, board: Board, memory: BoardMemory, pass:
   // postings — the historical −3). A repetition across pages only passes when the
   // second sweep has reconciled every announced row.
   const complete = total > 0 && local.size + withoutPath === total && (repeatedIds === 0 || termination === 'SECOND_SWEEP_RECONCILED') && termination !== 'PAGE_BUDGET_EXHAUSTED' && !totalChanged && !capped;
-  return { scope: board.scope, total, uniqueIds: local.size, pages, rawCount, repeatedIds, withoutPath, overlap, fresh, termination, complete, totalChanged };
+  return { scope: board.scope, total, uniqueIds: local.size, pages, rawCount, repeatedIds, withoutPath, overlap, fresh, termination, complete, totalChanged, capped };
 }
 
 export async function fetchWorkdayJobs(config: Record<string, unknown>): Promise<AdapterResult> {
   const { tenant, site, origin } = workdayPortal(config);
   const endpoint = `${origin}/wday/cxs/${encodeURIComponent(tenant)}/${encodeURIComponent(site)}/jobs`;
-  const shared: Shared = { endpoint, origin, site, prefixRule: locationPrefixRule(config), out: [], seen: new Set(), pageEvidence: [], issues: new Set(), rejectedRows: [], pathlessRows: new Set() };
+  const shared: Shared = { endpoint, origin, site, prefixRule: locationPrefixRule(config), out: [], seen: new Set(), pageEvidence: [], issues: new Set(), rejectedRows: [], pathlessRows: new Set(), coverIds: new Set() };
   const { out, seen, pageEvidence, issues, rejectedRows } = shared;
 
   /**
@@ -437,6 +468,21 @@ export async function fetchWorkdayJobs(config: Record<string, unknown>): Promise
   const results: BoardResult[] = [];
   for (const board of boards) results.push(await enumerateBoard(shared, board));
   const partitioned = Boolean(boards[0]?.partition);
+  // Only a capped site read without any partition goes on to the covering facet: every other board is untouched.
+  const covering = !partitioned && results[0]?.capped ? await readCoveringFacet(shared, results[0]!) : undefined;
+  if (covering) {
+    const coverPages = covering.results.reduce((sum, r) => sum + r.pages, 0);
+    const enumeration: AdapterResult['enumeration'] = { method: 'PUBLISHER_TOTAL_COUNT_JSON_PAGINATION_COVERING_FACET', endpoint,
+      pages: results[0]!.pages + coverPages, rawCount: results[0]!.rawCount + covering.results.reduce((sum, r) => sum + r.rawCount, 0),
+      termination: covering.termination, issues: [...issues], enumerationTraversalComplete: covering.proven,
+      canonicalAbsenceProofUsable: shared.pathlessRows.size === 0,
+      scopes: [{ scope: 'jobs', declaredTotal: covering.sigma, uniqueIds: shared.coverIds.size, pages: results[0]!.pages + coverPages, complete: covering.proven },
+        { scope: 'jobs:capped-site', declaredTotal: results[0]!.total || -1, uniqueIds: results[0]!.uniqueIds, pages: results[0]!.pages, complete: false },
+        ...covering.results.map((r): Scope => ({ scope: r.scope, declaredTotal: r.total || -1, uniqueIds: r.uniqueIds, pages: r.pages, complete: r.complete }))],
+      pageEvidence };
+    const truncated = covering.results.some((r) => r.termination === 'PAGE_BUDGET_EXHAUSTED' || (r.total > 0 && r.rawCount < r.total));
+    return finishWorkday(config, out, { declaredTotal: covering.sigma, complete: covering.proven, truncated, enumeration, rejectedRows }, origin, tenant, site);
+  }
   const partitions = results.filter((r) => r.scope !== 'jobs:unpartitioned');
   const remainder = partitioned ? results.find((r) => r.scope === 'jobs:unpartitioned') : undefined;
   const unpartitioned = remainder?.fresh ?? 0;
@@ -487,7 +533,12 @@ export async function fetchWorkdayJobs(config: Record<string, unknown>): Promise
   // F-04: `total` is the tenant's own announced count — the truncation signal.
   const declaredTotal = total || undefined;
   const truncated = partitions.some((r) => r.termination === 'PAGE_BUDGET_EXHAUSTED' || (r.total > 0 && r.rawCount < r.total));
-  if (config.withDescriptions === false) return { jobs: out.map(job => ({ ...job, publicationHold: 'WORKDAY_LISTING_WITHOUT_EMPLOYER_DETAIL' })), declaredTotal, complete, truncated, enumeration, rejectedRows };
+  return finishWorkday(config, out, { declaredTotal, complete, truncated, enumeration, rejectedRows }, origin, tenant, site);
+}
+
+/** The listing read; the detail of each posting is attached unless the source reads the listing only. */
+async function finishWorkday(config: Record<string, unknown>, out: NormalizedJob[], result: Omit<AdapterResult, 'jobs'>, origin: string, tenant: string, site: string): Promise<AdapterResult> {
+  if (config.withDescriptions === false) return { jobs: out.map(job => ({ ...job, publicationHold: 'WORKDAY_LISTING_WITHOUT_EMPLOYER_DETAIL' })), ...result };
   return {
     // D-517 : en lecture incrémentale, la fiche n'est lue que pour une publication jamais vue (une requête par offre).
     jobs: await attachWorkdayDescriptions(
@@ -495,8 +546,96 @@ export async function fetchWorkdayJobs(config: Record<string, unknown>): Promise
       `${origin}/wday/cxs/${tenant}/${site}`,
       Number(config.detailConcurrency ?? 4),
     ),
-    declaredTotal, complete, truncated, enumeration, rejectedRows,
+    ...result,
   };
+}
+
+/** One facet of the site's first page whose values are flat, each named and counted: what a covering board can apply. */
+type FlatFacet = { parameter: string; values: Required<WorkdayFacetValue>[]; sum: number };
+export type CoveringFacet = FlatFacet & {
+  /** Flat facets of the page whose counts add up to exactly `sum` (the covering facet included). */
+  agreeing: number;
+  /** A flat facet counts MORE postings than the covering one: some postings carry no value of it. */
+  exceeded: boolean;
+};
+
+function flatFacets(facets: readonly WorkdayFacet[] | undefined): FlatFacet[] {
+  return (facets ?? []).flatMap((facet) => {
+    const values = facet.values ?? [];
+    if (!facet.facetParameter || !values.length) return [];
+    // A nested facet (`locationMainGroup`: country → city) counts a posting under several levels: never a partition.
+    if (values.some((v) => 'values' in (v as object) || !v.id || !v.descriptor || !Number.isSafeInteger(v.count) || v.count! < 0)) return [];
+    const flat = values as Required<WorkdayFacetValue>[];
+    return [{ parameter: facet.facetParameter, values: flat, sum: flat.reduce((total, v) => total + v.count, 0) }];
+  });
+}
+
+/**
+ * LA FACETTE COUVRANTE D'UN SITE PLAFONNÉ (D-520, lecture D-492 du 02/10/2026). Pure ; exportée pour son témoin.
+ *
+ * Workday ne déclare jamais plus de `WORKDAY_TOTAL_CAP` offres et, au-delà, ressert la même page (knitwell le 02/10 :
+ * offsets 2 000, 3 000, 3 500 et 3 520, même première offre) : la liste du site ne peut pas être lue jusqu'au bout. Ses
+ * facettes, elles, comptent le tableau entier : knitwell en tient 3 515 (Job Family, State, Job Type et Time Type
+ * donnent toutes 3 515). Lu par chaque valeur d'une facette dont aucune valeur n'atteint le plafond, chaque tableau est
+ * lisible jusqu'au bout. La facette retenue est celle qui compte le plus d'offres, puis celle qui a le moins de
+ * valeurs (le moins de requêtes), puis par nom. Aucune : `undefined`, la lecture reste celle d'avant.
+ */
+export function coveringFacet(facets: readonly WorkdayFacet[] | undefined, cap = WORKDAY_TOTAL_CAP): CoveringFacet | undefined {
+  const flat = flatFacets(facets);
+  const candidates = flat.filter((f) => f.sum >= cap && f.values.every((v) => v.count < cap))
+    .sort((a, b) => b.sum - a.sum || a.values.length - b.values.length || a.parameter.localeCompare(b.parameter));
+  const chosen = candidates[0];
+  if (!chosen) return undefined;
+  return { ...chosen, agreeing: flat.filter((f) => f.sum === chosen.sum).length, exceeded: flat.some((f) => f.sum > chosen.sum) };
+}
+
+/**
+ * LIRE UN SITE PLAFONNÉ PAR SA FACETTE COUVRANTE (D-520, lecture D-492 du 02/10/2026).
+ *
+ * Mesuré : knitwell-us-retail lisait 2 000 offres sur 3 515 chaque jour (« énumération réfutée,
+ * PUBLISHER_TOTAL_CAPPED », échec connu D-480) ; 1 515 offres en ligne n'entraient jamais au catalogue. Chaque valeur
+ * de la facette couvrante est lue comme un tableau ordinaire, sous son propre total (< plafond), avec ses deux
+ * relectures (total changé, tri instable). Les offres déjà servies par le site ne sont pas recomptées ; la facette
+ * n'attribue AUCUN employeur (une famille de métiers n'est pas une Maison) : l'attribution reste celle du détail.
+ *
+ * LA PREUVE, et toutes ses conditions : chaque tableau prouvé sous son total ; aucune offre dans deux valeurs ; la somme
+ * des totaux des tableaux égale le compte de la facette ; identifiants distincts + lignes sans chemin = ce compte ;
+ * chaque offre servie par le site plafonné retrouvée dans les tableaux ; au moins DEUX facettes à plat comptent
+ * exactement ce même total et aucune n'en compte davantage. La dernière condition est la seule inférence : une offre
+ * sans valeur de la facette ET servie au-delà du plafond resterait invisible ; elle ferait compter une autre facette
+ * de plus, sauf à n'avoir aucune valeur dans aucune. Elle est écrite ici, pas cachée.
+ *
+ * LA PREUVE N'OUVRE PAS LA FERMETURE. La terminaison `COVERING_FACET_RECONCILED` n'est pas probante pour le refresh
+ * (`refreshPlan.ts`, `PROVING_TERMINATIONS`) : la source est saine et lue en entier, mais ses absences ne ferment rien
+ * tant que le propriétaire n'a pas décidé que cette lecture fait preuve, comme la relecture de SuccessFactors.
+ */
+async function readCoveringFacet(shared: Shared, site: BoardResult): Promise<{ sigma: number; results: BoardResult[]; proven: boolean; termination: string } | undefined> {
+  const cover = coveringFacet(shared.siteFacets);
+  if (!cover) { shared.issues.add('COVERING_FACET_ABSENT'); return undefined; }
+  const siteIds = [...shared.seen];
+  shared.pageEvidence.push({ url: `${shared.endpoint}#coveringFacet=${encodeURIComponent(cover.parameter)}`, checkedAt: captureObservedAt().toISOString(),
+    sha256: createHash('sha256').update(JSON.stringify(shared.siteFacets)).digest('hex'), offset: 0, pagination: null, ids: [], publisherCounter: `total=${site.total}`,
+    componentCounters: [...cover.values.map((v) => `${cover.parameter}=${v.descriptor}:${v.count}`), `sum=${cover.sum}`, `agreeing=${cover.agreeing}`, ...(cover.exceeded ? ['exceeded=1'] : [])] });
+  const results: BoardResult[] = [];
+  // A value counted at zero has nothing to read; its zero still adds up in the facet's sum.
+  for (const v of cover.values.filter((value) => value.count > 0))
+    results.push(await enumerateBoard(shared, { appliedFacets: { [cover.parameter]: [v.id] }, scope: `${cover.parameter}=${v.descriptor}`, cover: { parameter: cover.parameter, value: v.descriptor, id: v.id } }));
+  shared.issues.add(`COVERED_BY_FACET=${cover.parameter}`);
+  const overlap = results.reduce((sum, r) => sum + r.overlap, 0);
+  const boardsTotal = results.reduce((sum, r) => sum + r.total, 0);
+  const withoutPath = results.reduce((sum, r) => sum + r.withoutPath, 0);
+  const outside = siteIds.filter((id) => !shared.coverIds.has(id)).length;
+  const failures = [
+    ...(results.some((r) => !r.complete) ? ['COVERING_BOARD_UNPROVEN'] : []),
+    ...(overlap ? [`COVERING_FACET_OVERLAP=${overlap}`] : []),
+    ...(boardsTotal !== cover.sum || shared.coverIds.size + withoutPath !== cover.sum ? [`COVERING_FACET_TOTAL_MISMATCH=${shared.coverIds.size + withoutPath}/${cover.sum}`] : []),
+    ...(outside ? [`COVERING_FACET_MISSES_SITE_POSTINGS=${outside}`] : []),
+    ...(cover.agreeing < 2 || cover.exceeded ? ['COVERING_FACET_WITHOUT_AGREEMENT'] : []),
+  ];
+  for (const failure of failures) shared.issues.add(failure);
+  const proven = failures.length === 0;
+  if (!proven) shared.issues.add('ENUMERATION_NOT_PROVEN');
+  return { sigma: cover.sum, results, proven, termination: proven ? 'COVERING_FACET_RECONCILED' : 'COVERING_FACET_UNPROVEN' };
 }
 
 type WorkdayDetail = {
