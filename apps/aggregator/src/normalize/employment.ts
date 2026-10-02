@@ -197,8 +197,10 @@ const PROGRAM_PATTERNS: ReadonlyArray<readonly [ProgramType, RegExp]> = [
  * « 정규직 전환 가능 » (conversion possible) sont exclus par l'assertion qui suit le mot.
  */
 const nfkd = (s: string) => s.normalize('NFKD');
-const PERMANENT_CJK = nfkd('正社員(?!登用|を目指|への|転換)|無期雇用(?!転換)|정규직(?!\\s*전환)');
-const DUREE_CJK = nfkd('有期雇用|有期労働|계약직');
+// Négations (« 비정규직 », non-régulier ; « 非正社員 ») et perspectives écrites avec ou sans espace, avec la particule
+// « 으로 » (« 정규직으로 전환 ») : jamais un emploi permanent (audit technique du 02/10/2026).
+const PERMANENT_CJK = nfkd('(?<!非)正社員(?!\\s*(?:登用|を目指|への|転換))|無期雇用(?!\\s*転換)|(?<!비)정규직(?!\\s*(?:으로\\s*)?전환)');
+const DUREE_CJK = nfkd('有期雇用|有期労働|契約社員|(?<!非)계약직');
 
 const TERM_PATTERNS: ReadonlyArray<readonly [EmploymentTerm, RegExp]> = [
   ['TEMPORARY', /\bINTERIM\b|INTERIMAIRE|ZERO HEURE|ZERO[ -]HOUR|\bAGENCY WORKER\b|LEIHARBEIT/],
@@ -278,9 +280,10 @@ export function readEmployment(raw?: string | null): Employment {
   for (const [type, pattern] of PROGRAM_PATTERNS) {
     if (pattern.test(value)) { out.programType = type; break; }
   }
-  for (const [type, pattern] of TERM_PATTERNS) {
-    if (pattern.test(value)) { out.employmentTerm = type; break; }
-  }
+  // R-143 §10 (D-515 §1) : une valeur qui nomme DEUX durées (« CDI ou CDD », « 정규직/계약직 », « 正社員・契約社員 ») ne
+  // tranche rien. La première lue gagnait : un « CDI ou CDD » devenait un CDD, une donnée inconnue lue comme contraire.
+  const durees = TERM_PATTERNS.filter(([, pattern]) => pattern.test(value)).map(([type]) => type);
+  if (durees.length === 1) out.employmentTerm = durees[0];
   for (const [type, pattern] of WORK_TIME_EXPLICIT) {
     if (pattern.test(value)) { out.workTime = type; out.workTimeEvidence = 'EXPLICIT'; break; }
   }
@@ -470,8 +473,8 @@ const DESCRIPTION_TERMS: ReadonlyArray<readonly [EmploymentTerm, RegExp]> = [
   // perspective (« 정규직 파트타임 », COS). Ne sont PAS lus dans une description : « 正社員 » seul, qui y nomme presque
   // toujours une perspective (« 正社員登用制度 », « 正社員を目指して ») ou une exigence (« 正社員での就労経験 ») ; « fast
   // stilling », que le gabarit de Glitter écrit aussi sous « julehjelp / ekstrahjelp » (renfort de Noël), relu le 02/10.
-  ['PERMANENT', new RegExp(`\\bCDI\\b|DUREE INDETERMINEE|TEMPO INDETERMINATO|\\bUNBEFRISTET|CONTRATO (?:DE TRABAJO )?INDEFINIDO|\\bVAST(?:E)? (?:CONTRACT|DIENSTVERBAND|AANSTELLING)\\b|\\bPERMANENT,? (?:(?:FULL|PART)[ -]TIME,? )?(?:POSITION|ROLE|CONTRACT|EMPLOYMENT|JOB)\\b|\\b(?:FULL|PART)[ -]TIME,? PERMANENT\\b|\\bTILLSVIDAREANSTALLNING|${nfkd('雇用契約期間:\\s*無期|정규직(?!\\s*전환)')}`, 'g')],
-  ['FIXED_TERM', new RegExp(`\\bCDD\\b|DUREE DETERMINEE|TEMPO DETERMINATO|(?<!UN)\\bBEFRISTET|CONTRATO TEMPORAL|TIJDELIJK(?:E)? (?:CONTRACT|DIENSTVERBAND|AANSTELLING)\\b|\\bFIXED[ -]TERM (?:CONTRACT|POSITION|ROLE|EMPLOYMENT)\\b|\\bTEMPORARY (?:CONTRACT|POSITION|ROLE|EMPLOYMENT)\\b|\\bVISSTIDSANSTALLNING|${nfkd('雇用契約期間:\\s*有期|계약직')}`, 'g')],
+  ['PERMANENT', new RegExp(`\\bCDI\\b|DUREE INDETERMINEE|TEMPO INDETERMINATO|\\bUNBEFRISTET|CONTRATO (?:DE TRABAJO )?INDEFINIDO|\\bVAST(?:E)? (?:CONTRACT|DIENSTVERBAND|AANSTELLING)\\b|\\bPERMANENT,? (?:(?:FULL|PART)[ -]TIME,? )?(?:POSITION|ROLE|CONTRACT|EMPLOYMENT|JOB)\\b|\\b(?:FULL|PART)[ -]TIME,? PERMANENT\\b|\\bTILLSVIDAREANSTALLNING|${nfkd('雇用契約期間\\s*:\\s*無期|(?<!비)정규직(?!\\s*(?:으로\\s*)?전환)')}`, 'g')],
+  ['FIXED_TERM', new RegExp(`\\bCDD\\b|DUREE DETERMINEE|TEMPO DETERMINATO|(?<!UN)\\bBEFRISTET|CONTRATO TEMPORAL|TIJDELIJK(?:E)? (?:CONTRACT|DIENSTVERBAND|AANSTELLING)\\b|\\bFIXED[ -]TERM (?:CONTRACT|POSITION|ROLE|EMPLOYMENT)\\b|\\bTEMPORARY (?:CONTRACT|POSITION|ROLE|EMPLOYMENT)\\b|\\bVISSTIDSANSTALLNING|${nfkd('雇用契約期間\\s*:\\s*有期|계약직')}`, 'g')],
   ['TEMPORARY', /\bINTERIM\b|INTERIMAIRE/g],
 ];
 
@@ -485,7 +488,7 @@ const DESCRIPTION_TERMS: ReadonlyArray<readonly [EmploymentTerm, RegExp]> = [
 // een vast dienstverband » ; allemand « Möglichkeit / Aussicht auf / Übernahme in » ; scandinave « mulighet / mulighed /
 // möjlighet » ; portugais « possibilidade ». Sans elles, un CDD néerlandais qui promet un « vast contract » ensuite était
 // lu comme un emploi permanent : une alerte « CDI » l'aurait envoyé comme certain.
-const NEGATION_OU_PERSPECTIVE = /\b(?:PAS|NON|SANS|HORS|NI|NOT|NO|POSSIBILITES?|POSSIBILITY|POSSIBLE|POSSIBLY|POUVANT|POURRA|POURRIONS|POURRAIT|EVOLU\w*|DEBOUCH\w*|PERSPECTIVES?|OPPORTUNIT\w*|POTENTIAL\w*|LEAD(?:ING)? TO|CONVER\w*|EVENTUEL\w*|ISSUE|KEINE?|NICHT|POSSIBILITA|EVENTUALE|POSIBILIDAD|POSSIBILIDADE|UITZICHT|OPTIE|INTENTIE|MOGELIJKHEID|KANS|MOGLICHKEIT|AUSSICHT|PERSPEKTIV\w*|UBERNAHME|MULIGHET|MULIGHED|MOJLIGHET)\b[^.;:!?\n]{0,40}$/;
+const NEGATION_OU_PERSPECTIVE = /\b(?:PAS|NON|SANS|HORS|NI|NOT|NO|POSSIBILITES?|POSSIBILITY|POSSIBLE|POSSIBLY|POUVANT|POURRA|POURRIONS|POURRAIT|EVOLU\w*|DEBOUCH\w*|PERSPECTIVES?|OPPORTUNIT\w*|POTENTIAL\w*|LEAD(?:ING)? TO|CONVER\w*|EVENTUEL\w*|ISSUE|KEINE?|NICHT|POSSIBILITA|EVENTUALE|POSIBILIDAD|POSSIBILIDADE|UITZICHT|OPTIE|INTENTIE|MOGELIJKHEID|KANS(?:EN)?|MOGLICHKEIT|AUSSICHT|PERSPEKTIV\w*|UBERNAHME|MULIGHET|MULIGHED|MOJLIGHET)\b[^.;:!?\n]{0,40}$/;
 
 function mentionFerme(texte: string, re: RegExp): boolean {
   for (const m of texte.matchAll(re)) {

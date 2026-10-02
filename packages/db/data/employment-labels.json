@@ -325,7 +325,7 @@
   },
   "ja": {
     "employmentTerm": {
-      "PERMANENT": "無期雇用",
+      "PERMANENT": "正社員",
       "FIXED_TERM": "有期雇用",
       "TEMPORARY": "臨時雇用"
     },
@@ -622,7 +622,7 @@
   },
   "vi": {
     "employmentTerm": {
-      "PERMANENT": "Không xác định thời hạn",
+      "PERMANENT": "Hợp đồng không thời hạn",
       "FIXED_TERM": "Có thời hạn",
       "TEMPORARY": "Tạm thời"
     },

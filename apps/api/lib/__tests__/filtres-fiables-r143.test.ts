@@ -7,11 +7,11 @@ import { drainSearchIndex, initializeSearchIndex } from '../search-index';
 
 /**
  * R-143 §6 et §8 (D-513, lecture D-492 du 02/10/2026) — UN FILTRE NE CACHE PAS CE QU'IL NE RECONNAÎT PAS ; UNE ALERTE
- * N'ENVOIE QUE CE QUI RESPECTE SES CRITÈRES.
+ * MET À PART CE QUI NE LES PRÉCISE PAS (D-515 §2, qui remplace la promesse stricte ; voir alertes-deux-temps-d515.test.ts).
  *
  * Au contrat 2 (`nonPrecisees`, posé par la route avec `x-catwalks-client: 2`), un filtre « CDI » sert d'abord les CDI
- * reconnus, puis les offres qui ne disent rien de leur contrat, signalées ; un CDD, un stage restent écartés. L'examen
- * d'une alerte « CDI » n'envoie que les CDI reconnus, dans le cercle de la recherche stricte. Sans l'en-tête (contrat 1),
+ * reconnus, puis les offres qui ne disent rien de leur contrat, signalées ; un CDD, un stage restent écartés. La section
+ * certaine (`jobs`) de l'examen d'une alerte « CDI » ne porte que les CDI reconnus, dans le cercle de la recherche stricte. Sans l'en-tête (contrat 1),
  * le filtre strict d'avant, à l'identique.
  *
  * PRÉMISSE de chaque témoin : les offres non précisées sont PLUS FRAÎCHES que les reconnues. Rangées par fraîcheur seule
@@ -109,14 +109,14 @@ describe.skipIf(!enabled)('R-143 §6, §8 — filtres d’emploi au contrat 2 et
       .rejects.toBeInstanceOf(CurseurInvalideError);
   });
 
-  it('l’alerte « CDI » n’envoie que les CDI reconnus, et son total est le leur', async () => {
+  it('la section certaine de l’alerte « CDI » ne porte que les CDI reconnus, et son total est le leur', async () => {
     const examen = await examinerAlerte(contrat2({ contrat: ['PERMANENT'] }), FILIGRANE, BORNE_PUBLICATION);
     expect(court(examen.jobs.map((j) => j.id)).sort()).toEqual(['cdi', 'cdi-partiel']);
     expect(examen.nouvelles).toBe(2);
     expect(examen.total).toBe(2);
   });
 
-  it('l’alerte « CDI · temps plein » n’envoie que l’offre qui respecte les deux critères', async () => {
+  it('la section certaine de l’alerte « CDI · temps plein » ne porte que l’offre qui respecte les deux critères', async () => {
     const examen = await examinerAlerte(contrat2({ contrat: ['PERMANENT'], temps: ['FULL_TIME'] }), FILIGRANE, BORNE_PUBLICATION);
     expect(court(examen.jobs.map((j) => j.id))).toEqual(['cdi']);
     expect(examen.total).toBe(1);

@@ -63,6 +63,28 @@ describe('une perspective, une exigence ou deux durées ne sont jamais un contra
     expect(readEmployment('Full-time').workTime).toBe('FULL_TIME');
   });
 
+  it.each([
+    // Audit technique du 02/10/2026 : négations, perspectives avec particule ou espace, deux durées dans un intitulé.
+    ['비정규직 판매 직원', undefined],
+    ['非正社員 販売スタッフ', undefined],
+    ['정규직으로 전환 가능', undefined],
+    ['정규직 전환', undefined],
+    ['正社員 登用あり', undefined],
+    ['販売スタッフ（契約社員）', 'FIXED_TERM'],
+    ['Conseiller de vente CDI ou CDD', undefined],
+    ['Sales Advisor (정규직/계약직)', undefined],
+    ['販売スタッフ（正社員・契約社員）', undefined],
+  ])('intitulé « %s » → %s (jamais une durée devinée)', (title, attendu) => {
+    expect(readEmployment(title).employmentTerm).toBe(attendu);
+  });
+
+  it('description : la rubrique japonaise avec espaces, « kansen » néerlandais, « permanent » sans formule de contrat', () => {
+    expect(terme('雇用契約期間 ： 有期労働契約（アルバイト）')).toBe('FIXED_TERM');
+    expect(terme('Een jaarcontract met goede kansen op een vast contract.')).not.toBe('PERMANENT');
+    // Le n° 28 de la relecture (Hermès, Taïwan) : « permanent entrepreneurial spirit » n'est pas un contrat.
+    expect(terme('Driven by its permanent entrepreneurial spirit and consistently high standards.')).toBeUndefined();
+  });
+
   it('le témoin éprouve sa prémisse : sans l’assertion « 登用 », la perspective japonaise serait lue permanente', () => {
     // Le mot seul est bien une forme reconnue en intitulé : c'est l'assertion qui écarte la perspective.
     expect(readEmployment('正社員').employmentTerm).toBe('PERMANENT');
@@ -79,7 +101,8 @@ describe('le libellé du contrat est celui de la langue du marché', () => {
       expect(libelles, langue).not.toContain('CDI');
       expect(libelles, langue).not.toContain('CDD');
     }
-    expect(employmentLabel('employmentTerm', 'PERMANENT', 'vi')).toBe('Không xác định thời hạn');
+    expect(employmentLabel('employmentTerm', 'PERMANENT', 'vi')).toBe('Hợp đồng không thời hạn');
+    expect(employmentLabel('employmentTerm', 'PERMANENT', 'ja')).toBe('正社員');
     expect(employmentLabel('employmentTerm', 'PERMANENT', 'fr', 'CA')).toBe('Permanent');
     expect(employmentLabel('employmentTerm', 'PERMANENT', 'de')).toBe('Unbefristet');
     expect(employmentLabel('employmentTerm', 'PERMANENT', 'it')).toBe('Tempo indeterminato');

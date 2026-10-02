@@ -1,6 +1,6 @@
 marché        n  stocké   avant   après  perm.ap  changés
 US         5090   16.9%   17.7%   17.7%      681        0
-FR         1641   68.3%   70.1%   70.1%      757        0
+FR         1641   68.3%   70.1%   70.0%      757        1
 GB          525   40.0%   45.3%   45.3%      176        0
 CA          459   28.5%   28.8%   28.8%       93        0
 DE          423   33.1%   38.5%   38.5%       88        0
@@ -10,7 +10,7 @@ NL          232   39.7%   40.9%   40.5%       45        1
 AU          183   19.1%   25.1%   25.1%       26        0
 CH          173   20.2%   22.0%   22.0%       21        0
 CN          156   46.2%   46.2%   46.2%       62        0
-JP           89   37.1%   37.1%   52.8%       34       14
+JP           89   37.1%   37.1%   53.9%       32       19
 BE           86   44.2%   47.7%   47.7%       17        0
 KR           67   38.8%   38.8%   43.3%       23        3
 SG           66   25.8%   27.3%   27.3%       15        0
@@ -40,10 +40,12 @@ RO           14   35.7%   35.7%   35.7%        3        0
 PH           10   20.0%   20.0%   20.0%        2        0
 LU           10   60.0%   60.0%   60.0%        4        0
 PR            9   33.3%   33.3%   33.3%        2        0
-TOTAL     10592   31.3%   33.1%   33.3%     2413       19
+TOTAL     10592   31.3%   33.1%   33.3%     2411       25
 == transitions avant → après (durée), par marché
-   13  None → FIXED_TERM  JP
+   16  None → FIXED_TERM  JP
     3  None → PERMANENT  KR
+    2  PERMANENT → None  JP
     1  None → PERMANENT  SE
     1  PERMANENT → None  NL
     1  None → PERMANENT  JP
+    1  FIXED_TERM → None  FR

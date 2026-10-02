@@ -1,5 +1,8 @@
-import { afterAll, beforeAll, describe, expect, it } from 'vitest';
+import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
+import { NextRequest } from 'next/server';
 import { prisma } from '@catwalks/db';
+import { oublierVilles } from '../geo';
+import { semerVilles, viderVilles, VILLES_TEMOINS } from '../__fixtures__/villes';
 import { publicationFixture } from '../../../aggregator/src/test/publication-fixture';
 import { examinerAlerte, type JobFilters } from '../jobs';
 import { drainSearchIndex, initializeSearchIndex } from '../search-index';
@@ -124,5 +127,94 @@ describe.skipIf(!enabled)('D-515 §2 — l’examen d’une alerte : certaines, 
     const e = await examinerAlerte(alerte({ contrat: ['PERMANENT'] }), new Date(Date.UTC(2026, 8, 29, 22, 30)), BORNE_PUBLICATION);
     expect(court(e.jobs)).toEqual([]);
     expect(court(e.jobsIncompletes!)).toEqual(['temps-partiel-seul']);
+  });
+});
+
+/**
+ * Audit technique du 02/10/2026 (M3, M4) — le CERCLE de la section 2 est celui des certaines, et la route HTTP au contrat 2
+ * rend les dimensions de chaque incomplète. Vingt CDI reconnus à Paris remplissent l'anneau de 15 km : une incomplète à
+ * Créteil (12 km) est dans le cercle, une incomplète à Fontainebleau (55 km) ne l'est pas, alors que le cercle de 100 km
+ * qu'on choisirait sur TOUTES les offres l'aurait gardée.
+ */
+describe.skipIf(!enabled)('D-515 §2 — le cercle de la section 2, et la route HTTP', () => {
+  const PX = 'd515-prox-';
+  const MX = `${PX}maison`;
+  const nettoyer = async () => {
+    await prisma.jobSource.deleteMany({ where: { jobId: { startsWith: PX } } });
+    await prisma.job.deleteMany({ where: { id: { startsWith: PX } } });
+    await prisma.company.deleteMany({ where: { id: { startsWith: PX } } });
+    await viderVilles(prisma);
+    oublierVilles();
+    await initializeSearchIndex();
+    while (await drainSearchIndex()) { /* index à jour */ }
+  };
+  const creer = async (id: string, ville: string, heure: number, employmentTerm: string | null) => {
+    const lien = `https://example.com/${PX}${id}`;
+    const entree = new Date(Date.UTC(2026, 8, 29, heure));
+    await prisma.job.create({ data: { id: `${PX}${id}`, companyId: MX, source: 'GENERIC_JSONLD', externalId: `${PX}${id}`, title: 'Conseiller de vente',
+      url: lien, countryCode: 'FR', city: ville, isActive: true, postedAt: entree, firstSeenAt: entree, employmentTerm,
+      sources: { create: { sourceKey: 'd515-prox', sourceTier: 'ATS_OFFICIAL', externalId: `${PX}${id}`, url: lien, isActive: true,
+        ...publicationFixture({ sourceKey: 'd515-prox', sourceTier: 'ATS_OFFICIAL', externalId: `${PX}${id}`, url: lien, title: 'Conseiller de vente', country: 'FR' }) } } } });
+  };
+  beforeAll(async () => {
+    await nettoyer();
+    await semerVilles(prisma);
+    await prisma.company.create({ data: { id: MX, name: MX, canonicalKey: MX, fashionjobsUrl: `resolved:${MX}`, sector: 'LUXURY' } });
+    for (let i = 0; i < 20; i++) await creer(`cdi-${String(i).padStart(2, '0')}`, 'Paris', 1, 'PERMANENT');
+    await creer('rien-creteil', 'Créteil', 10, null);
+    await creer('rien-fontainebleau', 'Fontainebleau', 11, null);
+    while (await drainSearchIndex()) { /* index à jour */ }
+  }, 120_000);
+  afterAll(nettoyer);
+
+  const filtres = (): JobFilters => ({ marche: 'FR', lieu: 'Paris', proximite: true, fraicheur: true, comprendre: true, nonPrecisees: true,
+    filtres: { maison: [MX], contrat: ['PERMANENT'] } });
+  const court = (ids: { id: string }[]) => ids.map((j) => j.id.slice(PX.length));
+  const km = (a: string, b: string) => {
+    const [p, q] = [a, b].map((n) => VILLES_TEMOINS.find((v) => v.name === n && v.pays === 'FR')!);
+    const r = (x: number) => (x * Math.PI) / 180;
+    const h = Math.sin(r(q.lat - p.lat) / 2) ** 2 + Math.cos(r(p.lat)) * Math.cos(r(q.lat)) * Math.sin(r(q.lon - p.lon) / 2) ** 2;
+    return 6371 * 2 * Math.asin(Math.sqrt(h));
+  };
+
+  it('PRÉMISSE : Créteil est à moins de 15 km de Paris, Fontainebleau entre 15 et 100 km ; les offres ont leur point', async () => {
+    expect(km('Paris', 'Créteil')).toBeLessThan(15);
+    expect(km('Paris', 'Fontainebleau')).toBeGreaterThan(50);
+    expect(km('Paris', 'Fontainebleau')).toBeLessThan(100);
+    expect(await prisma.job.count({ where: { id: { startsWith: PX }, geoSource: 'CITY' } })).toBe(22);
+  });
+
+  it('les deux sections : vingt CDI, puis l’incomplète de Créteil ; celle de Fontainebleau, hors du cercle, jamais', async () => {
+    const e = await examinerAlerte(filtres(), FILIGRANE, BORNE_PUBLICATION);
+    expect(e.jobs).toHaveLength(20);
+    expect(court(e.jobsIncompletes!)).toEqual(['rien-creteil']);
+  });
+
+  it('que des incomplètes : aucune certaine nouvelle, la section 2 seule, dans le même cercle', async () => {
+    const e = await examinerAlerte(filtres(), new Date(Date.UTC(2026, 8, 29, 5)), BORNE_PUBLICATION);
+    expect(e.nouvelles).toBe(0);
+    expect(e.total).toBe(20);
+    expect(court(e.jobsIncompletes!)).toEqual(['rien-creteil']);
+    expect(e.incompletes).toBe(1);
+  });
+
+  it('HTTP, contrat 2 : `jobsIncompletes[].dimensions` et `chemin` ; contrat 1 : ni l’un ni l’autre champ', async () => {
+    vi.stubEnv('CATALOGUE_API_KEY_BACKEND', 'cle-du-backend');
+    try {
+      const { GET } = await import('../../app/api/alertes/examen/route');
+      const appel = (client?: string) => GET(new NextRequest(`http://catalogue.test/api/alertes/examen?marche=FR&lieu=Paris&maison=${MX}&contrat=PERMANENT`
+        + '&entreeApres=2026-09-29T00:00:00Z&publieeApres=2026-09-01T00:00:00Z',
+      { headers: { authorization: 'Bearer cle-du-backend', ...(client ? { 'x-catwalks-client': client } : {}) } }));
+      const v2 = await (await appel('2')).json();
+      expect(v2.jobsIncompletes.map((j: { id: string; dimensions: string[]; chemin: string }) => [j.id.slice(PX.length), j.dimensions, j.chemin.startsWith('/emplois/')]))
+        .toEqual([['rien-creteil', ['contrat'], true]]);
+      expect(v2.incompletes).toBe(1);
+      expect(v2.jobs.every((j: { id: string }) => j.id.startsWith(`${PX}cdi-`))).toBe(true);
+      const v1 = await (await appel()).json();
+      expect('jobsIncompletes' in v1).toBe(false);
+      expect('incompletes' in v1).toBe(false);
+    } finally {
+      vi.unstubAllEnvs();
+    }
   });
 });
