@@ -173,13 +173,14 @@ try {
   } else if (command === 'ingest-light') {
     /**
      * R-143 §1 — la passe légère de découverte (`pipeline/lightPass.ts`) : les sources dont une collecte complète tient
-     * en quelques requêtes, collectées comme au RUN, sans rien fermer ni retenir. Refusée dans la fenêtre du RUN et
-     * pendant un RUN ; bornée à 45 minutes. Une source en échec reste visible au bilan et dans SourceRun ; le RUN suivant
+     * en quelques requêtes, collectées comme au RUN. Rien hors de sa propre lecture : une fin déclarée par la source et
+     * les retraits natifs sur les offres lues s'appliquent. Refusée dans la fenêtre du RUN et pendant un RUN ; bornée à
+     * 45 minutes. Une source en échec reste visible au bilan et dans SourceRun ; le RUN suivant
      * la recollecte, aucune alerte n'est envoyée pour elle.
      */
-    const { runLightPass } = await import('./pipeline/lightPass.js');
+    const { runLightPass, lightPassHasIncidents } = await import('./pipeline/lightPass.js');
     const pass = await runLightPass(prisma, { runId: observation.runId });
-    sourceIncidents = pass.failed + pass.timedOut > 0;
+    sourceIncidents = lightPassHasIncidents(pass);
     await log.info('command.result', { ok: !sourceIncidents, command, refused: pass.refused, stoppedBy: pass.stoppedBy,
       collected: pass.collected.length, notCollected: pass.notCollected, ignored: pass.unknown, created: pass.created,
       okSources: pass.ok, failed: pass.failed, timedOut: pass.timedOut, failures: pass.failures });

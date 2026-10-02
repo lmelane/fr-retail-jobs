@@ -5,24 +5,31 @@
  * heures après sa publication. » Entre deux RUN, la passe collecte à nouveau les sources dont une collecte COMPLÈTE ne
  * coûte que quelques requêtes (une liste d'API, pas une page par offre), avec exactement l'étape du RUN
  * (`ingestOne` : accès, collecte scellée, écriture dédoublonnée, santé). Une nouvelle offre est écrite, mise en file
- * d'indexation par les déclencheurs de la base et servie dès la fin de sa source.
+ * d'indexation par les déclencheurs de la base et servie dès la fin de sa source. Rien après la boucle : le géocodage
+ * (carte, France seule, jusqu'à 2 000 appels) et la soumission à Google (quota partagé d'environ 200 par jour,
+ * `googleIndexing.ts`, inactive en production faute de domaine configuré) restent au RUN, pour que la passe finisse
+ * avec sa dernière source.
  *
- * CE QU'ELLE NE FAIT JAMAIS. Elle ne ferme rien, ne retient rien et ne retire rien : ni refresh (preuve d'absence), ni
- * revue de disponibilité (R-143 §2), ni sonde des liens, ni garde de masse. Ces décisions restent au RUN, qui recollecte
- * chaque source avant de les prendre. Ce qu'une passe écrit ne vient que de sa propre lecture : une offre revue efface sa
- * retenue (l'écrivain, `dedup/upsert.ts`), une fin déclarée par la source sur l'offre lue ferme cette représentation,
- * comme au RUN. Une collecte coupée par la fenêtre est tronquée, donc sans droit d'attester (`attestingCapture.ts`).
+ * CE QU'ELLE NE FAIT JAMAIS. Rien hors de sa propre lecture : ni refresh (preuve d'absence), ni revue de disponibilité
+ * (R-143 §2), ni sonde des liens, ni garde de masse ; ces décisions restent au RUN, qui recollecte chaque source avant
+ * de les prendre. Sur ce qu'elle lit, l'écrivain fait comme au RUN (`dedup/upsert.ts`) : une offre revue perd sa
+ * retenue, et une fin déclarée par la source ou un retrait natif sur l'offre lue s'appliquent. Une collecte coupée par
+ * la fenêtre est tronquée, donc sans droit d'attester (`attestingCapture.ts`), et aucune collecte de passe ne sert de
+ * référence aux gardes du RUN (`referenceRuns.ts`).
  *
  * QUAND. Jamais dans la fenêtre du RUN (15:30-18:30 UTC), jamais pendant un RUN ni pendant une autre passe (lu dans
- * `PipelineRun`, revérifié avant chaque source), et jamais au-delà de 45 minutes ni de 15:30 UTC : Railway saute
+ * `PipelineRun`, revérifié avant chaque source) ; aucune source n'est commencée moins de 2 minutes avant son échéance
+ * (45 minutes, jamais au-delà de 15:30 UTC) et chacune est bornée par ce qui reste : Railway saute
  * l'exécution suivante d'un cron encore en cours, une passe qui déborderait ferait sauter le RUN du jour.
  * La surveillance Healthchecks est celle du RUN : la passe ne la touche pas (`worker.ts`, `cli.ts`).
  *
  * LES SOURCES. Une liste relue, pas une règle lue à l'exécution dans le journal : la règle (au plus 200 requêtes et au
  * plus une requête pour cinq offres, collecte toujours complète sur les 7 RUN du 25/09 au 01/10, statut OK, moins de 10
  * minutes médianes, au moins une nouvelle offre par jour) et LVMH (128 requêtes Algolia pour 6 240 offres, 97 nouvelles
- * offres par jour, DEGRADED par sa seule annonce de test retenue), dans l'ordre des durées : la plus longue en dernier.
- * Mesures : `audits/2026-10-02/cadence-r143/`. Une clé absente du registre ou non ACTIVE est ignorée.
+ * offres par jour ; DEGRADED par une annonce de test retenue sur preuve de l'éditeur et une énumération non déclarée,
+ * donc sans droit d'attester), dans l'ordre des durées : la plus longue en dernier. La règle choisit par le COÛT, pas
+ * par l'importance des offres : quelles Maisons méritent la fraîcheur reste une question du CEO, posée avec
+ * l'activation. Mesures : `audits/2026-10-02/cadence-r143/`. Une clé absente du registre ou non ACTIVE est ignorée.
  */
 import type { PrismaClient } from '@prisma/client';
 import { inRunWindow } from '@catwalks/runtime';
@@ -30,8 +37,6 @@ import { assertPipelineRunning } from '../lib/pipelinePause.js';
 import { log } from '../observability/logger.js';
 import { ingestOne, type OrchestratorResult } from './ingestOrchestrator.js';
 import { KIND_TO_ATS } from './ingest.js';
-import { runGeocode } from './geocodeJobs.js';
-import { submitOfferChanges } from './googleIndexing.js';
 
 export const LIGHT_PASS_SOURCES: readonly string[] = Object.freeze([
   'ami-paris', 'figs', 'jojo-maman-bebe', 'gymshark', 'merkal', 'ephemera', 'monica-vinader', 'soeur', 'kiko-milano',
@@ -51,7 +56,7 @@ const RUN_WINDOW_START_UTC_MINUTES = 15 * 60 + 30;
 export type RunningRun = { id: string; command: string; startedAt: Date };
 export type LightPassRefusal = 'RUN_WINDOW' | 'RUN_IN_PROGRESS' | 'LIGHT_PASS_IN_PROGRESS';
 
-/** Pourquoi une passe ne peut pas (ou plus) travailler à `now` ; null quand elle le peut. Pure. */
+/** Pourquoi une passe ne peut pas (ou plus) travailler à `now`, vu les runs en cours qu'on lui donne ; null quand elle le peut. Pure. */
 export function lightPassRefusal(now: Date, running: readonly RunningRun[]): LightPassRefusal | null {
   if (inRunWindow(now)) return 'RUN_WINDOW';
   if (running.some(run => run.command === 'ingest-all')) return 'RUN_IN_PROGRESS';
@@ -68,7 +73,7 @@ export function lightPassDeadline(start: Date): number {
 }
 
 /**
- * Le RUN et les passes en cours, hors la passe elle-même, à l'horloge réelle (celle des lignes `PipelineRun`). Un run
+ * Lecture en base, PAS pure : le RUN et les passes en cours, hors la passe elle-même, à l'horloge réelle (celle des lignes `PipelineRun`). Un run
  * sans fin depuis plus de 12 h ne compte plus.
  */
 export async function runningRuns(prisma: PrismaClient, selfId: string | null): Promise<RunningRun[]> {
@@ -85,6 +90,14 @@ export type LightPassResult = OrchestratorResult & {
   stoppedBy: LightPassRefusal | 'DEADLINE' | null;
   collected: string[]; notCollected: string[]; unknown: string[]; created: number;
 };
+
+/**
+ * La passe a-t-elle eu un incident de source ? La commande se termine alors COMPLETED_WITH_ERRORS (`cli.ts`), sans
+ * alerte e-mail ni Healthchecks : le RUN suivant recollecte la source et porte, lui, l'alerte (D-453, D-480).
+ */
+export function lightPassHasIncidents(pass: Pick<LightPassResult, 'failed' | 'timedOut'>): boolean {
+  return pass.failed + pass.timedOut > 0;
+}
 
 export async function runLightPass(prisma: PrismaClient, options: {
   runId: string | null; sources?: readonly string[]; now?: () => Date;
@@ -126,9 +139,7 @@ export async function runLightPass(prisma: PrismaClient, options: {
   }
   const created = await prisma.job.findMany({ where: { isActive: true, firstSeenAt: { gte: writtenSince } }, select: { id: true }, take: 500 });
   result.created = created.length;
-  const geo = await runGeocode(prisma);
-  const indexing = await submitOfferChanges(created.map(job => job.id), []);
   await log.info('light.completed', { collected: result.collected.length, ok: result.ok, failed: result.failed, timedOut: result.timedOut,
-    stoppedBy: result.stoppedBy, notCollected: result.notCollected, created: result.created, failures: result.failures, geo, indexing });
+    stoppedBy: result.stoppedBy, notCollected: result.notCollected, created: result.created, failures: result.failures });
   return result;
 }

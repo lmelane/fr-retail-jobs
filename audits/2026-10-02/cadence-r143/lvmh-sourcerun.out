@@ -1,0 +1,6 @@
+r|status|jobs|fetched|accepted|errors|truncated|complete|left
+10-01 18:12|DEGRADED|5985|5986|5985|0|f||1 annonce retenue : 1 sur preuve de la source (NATIVE_TEST_PUBLICATION=1) ; énumération inconnue : aucune attestation d’absence · desc 100% date 100% pays 100% url 100%
+09-30 19:49|DEGRADED|6268|6269|6268|0|f||1 annonce retenue : 1 sur preuve de la source (NATIVE_TEST_PUBLICATION=1) ; énumération inconnue : aucune attestation d’absence · desc 100% date 100% pays 100% url 100%
+09-30 04:37|DEGRADED|6233|6234|6233|0|f||1 annonce retenue : 1 sur preuve de la source (NATIVE_TEST_PUBLICATION=1) ; énumération inconnue : aucune attestation d’absence · desc 100% date 100% pays 100% url 100%
+09-29 17:39|DEGRADED|6209|6240|6239|30|f||30 erreurs de collecte ou d’écriture, dont 30 refus d’identité (employeur non certifié : 30) · 1 annonce retenue : 1 sur preuve de la source (NATIVE_TEST_PUBLICATION=1) · desc 100% date 100% pays 100%
+(4 rows)

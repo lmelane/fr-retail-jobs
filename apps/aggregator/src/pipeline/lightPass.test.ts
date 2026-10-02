@@ -5,8 +5,15 @@ import { randomUUID } from 'node:crypto';
 import { publicJobSql, publicJobWhere } from '@catwalks/db/availability';
 import { publicationFixture } from '../test/publication-fixture.js';
 import { ingestSyntheticFeed, qualifiedSource, releaseQualifiedSources, resolvedCompany, syntheticFeed, type SyntheticPosting } from '../test/ingestionFixture.js';
-import { lightPassDeadline, lightPassRefusal, runLightPass, LIGHT_PASS_BUDGET_MS, LIGHT_PASS_SOURCES } from './lightPass.js';
+import { lightPassDeadline, lightPassHasIncidents, lightPassRefusal, runLightPass, LIGHT_PASS_BUDGET_MS, LIGHT_PASS_SOURCES } from './lightPass.js';
 import { runAvailabilityReview } from './availability.js';
+import { readAttestingCapture } from './attestingCapture.js';
+import { sendHealthAlert } from './alert.js';
+import { checkSourceHealth } from './health.js';
+import { installLogger, OperationalLogger } from '../observability/logger.js';
+
+// L'alerte e-mail du RUN (Brevo) : une passe ne doit jamais l'envoyer.
+vi.mock('./alert.js', async importOriginal => ({ ...await importOriginal<typeof import('./alert.js')>(), sendHealthAlert: vi.fn(async () => true) }));
 
 /**
  * R-143 §1 — la passe légère de découverte, par la vraie étape du RUN (`ingestOne` : accès, collecte scellée,
@@ -50,6 +57,7 @@ const servedSql = async () => (await db.$queryRaw<{ externalId: string }[]>(Pris
 const at = (hh: number, mm = 0) => { const d = new Date(); d.setUTCHours(hh, mm, 0, 0); return d; };
 
 async function wipe() {
+  await db.pipelineEvent.deleteMany({ where: { run: { command: 'ingest-light' } } });
   await db.pipelineRun.deleteMany({ where: { command: { in: ['ingest-all', 'ingest-light'] }, events: { none: {} } } });
   await db.jobSource.deleteMany({});
   await db.job.deleteMany({});
@@ -106,6 +114,71 @@ describe('R-143 §1 — une passe légère ne ferme rien et ne retient rien hors
       .toEqual([{ n: 1n }]);
     // La santé de la source est tenue comme au RUN : une ligne SourceRun par collecte.
     expect(await db.sourceRun.findFirstOrThrow({ where: { sourceKey: key }, orderBy: { ranAt: 'desc' } })).toMatchObject({ jobs: 3 });
+  });
+});
+
+describe('R-143 §1 — une passe à la lecture incomplète (coupée, tronquée) n’atteste rien', () => {
+  it('capture tronquée : non attestante pour la revue du RUN, rien de fermé ni retenu, incident sans alerte', async () => {
+    const key = await establishedSource('tronquee');
+    const stock = Array.from({ length: 4 }, (_, i) => ({ id: `o${i}` }));
+    await ingestSyntheticFeed(db, key, stock);
+    await ingestSyntheticFeed(db, key, stock);
+    // La passe ne lit que o0, puis une ligne sans intitulé : parcours réfuté, collecte tronquée — les mêmes faits
+    // scellés qu'une passe arrêtée par son échéance douce (complete: false, truncated: true).
+    network([{ id: 'o0' }, { id: 'sans-intitule', title: null }]);
+    const pass = await runLightPass(db, { runId: null, sources: [key], now: () => at(4) });
+    expect(pass).toMatchObject({ collected: [key], failed: 1 });
+    // Prémisse : la dernière collecte de la source EST celle de la passe, scellée, et elle ne voit pas o1, o2, o3.
+    const latest = await readAttestingCapture(db, key, new Date());
+    expect(latest.ok).toBe(true);
+    if (!latest.ok) return;
+    expect(latest.capture.facts).toMatchObject({ truncated: true, complete: false, canAttestAbsence: false });
+    expect(latest.capture.evidence.canonicalSet).not.toContain('o1');
+    // La revue du RUN qui la lirait ne la juge pas crédible : elle ne retiendrait rien.
+    const plan = await runAvailabilityReview(db, { dryRun: true });
+    expect(plan.sources.find(source => source.sourceKey === key)).toMatchObject({ credible: false, held: 0, reason: 'collecte tronquée' });
+    // Et la passe elle-même n'a rien fermé ni retenu.
+    expect(await db.jobSource.count({ where: { sourceKey: key, isActive: true, availabilityHold: null } })).toBe(4);
+    expect(await served()).toEqual(['o0', 'o1', 'o2', 'o3']);
+    // Un incident de source : la commande finit COMPLETED_WITH_ERRORS (cli.ts), sans alerte e-mail.
+    expect(lightPassHasIncidents(pass)).toBe(true);
+    expect(lightPassHasIncidents({ failed: 0, timedOut: 0 })).toBe(false);
+    expect(vi.mocked(sendHealthAlert)).not.toHaveBeenCalled();
+  });
+});
+
+describe('R-143 §1 — une passe ne devient jamais la référence des gardes du RUN', () => {
+  it('passe à 8 sur 20, puis RUN à 8 : la santé et l’attestation du RUN comparent à 20 (le RUN précédent), jamais à 8 (la passe)', async () => {
+    const key = await establishedSource('reference');
+    const listed = (n: number) => Array.from({ length: n }, (_, i) => ({ id: `r${i}` }));
+    // Deux collectes du RUN à 20 offres (hors passe : sans run de passe légère).
+    await checkSourceHealth(db, [await ingestSyntheticFeed(db, key, listed(20))]);
+    await checkSourceHealth(db, [await ingestSyntheticFeed(db, key, listed(20))]);
+    // La passe de 04:00, sous son propre PipelineRun `ingest-light`, ne lit plus que 8 offres.
+    const light = randomUUID();
+    await db.pipelineRun.create({ data: { id: light, command: 'ingest-light' } });
+    installLogger(new OperationalLogger({ runId: light, write: async () => undefined, delay: async () => undefined,
+      persist: async record => { await db.pipelineEvent.create({ data: { ...record, payload: record.payload as Prisma.InputJsonValue } }); } }));
+    try {
+      network(listed(8));
+      expect(await runLightPass(db, { runId: light, sources: [key], now: () => at(4) })).toMatchObject({ collected: [key] });
+    } finally {
+      installLogger(new OperationalLogger({ runId: `local-${randomUUID()}` }));
+      vi.unstubAllGlobals();
+      await db.pipelineRun.update({ where: { id: light }, data: { finishedAt: new Date(), status: 'COMPLETED' } });
+    }
+    // Prémisse : la passe a bien laissé sa ligne de santé et sa collecte, à 8, sous son run.
+    expect(await db.sourceRun.findFirstOrThrow({ where: { sourceKey: key }, orderBy: { ranAt: 'desc' } })).toMatchObject({ runId: light, jobs: 8 });
+    expect(await db.captureBatch.count({ where: { sourceKey: key, runId: light } })).toBeGreaterThan(0);
+
+    // Le RUN de 16:00 lit aussi 8 offres. Sa référence est le RUN précédent (20), jamais la passe (8) : face à 8, la
+    // chute serait invisible. Le flux synthétique annonce son total (8, après 20) : c'est une chute confirmée par
+    // l'éditeur (D-484 §2), raisonnée contre 20 ; contre la passe, aucune chute n'aurait été vue du tout.
+    const run = await ingestSyntheticFeed(db, key, listed(8));
+    const health = await checkSourceHealth(db, [run]);
+    expect(health.incidents).toMatchObject([{ source: key, previous: 20, jobs: 8 }]);
+    const latest = await readAttestingCapture(db, key, new Date());
+    expect(latest.ok && latest.capture.facts).toMatchObject({ previous: 20, published: 8, confirmedDrop: { previousDeclaredTotal: 20 } });
   });
 });
 

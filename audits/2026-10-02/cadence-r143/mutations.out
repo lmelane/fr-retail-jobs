@@ -1,17 +1,21 @@
 --- a. revue de disponibilité et refresh appelés par la passe
-     × l’offre que la passe ne revoit pas reste ouverte et servie, une source hors de la passe aussi ; la nouvelle est servie 1364ms
+     × l’offre que la passe ne revoit pas reste ouverte et servie, une source hors de la passe aussi ; la nouvelle est servie 1390ms
 ⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
-      Tests  1 failed | 7 passed (8)
+      Tests  1 failed | 9 passed (10)
 --- b. verrou du RUN retiré
-     × un RUN en cours : refusée avant toute requête 608ms
-     × un RUN qui commence pendant la passe : la passe s’arrête avant la source suivante 1040ms
-     × refuse dans la fenêtre, pendant un RUN, pendant une autre passe ; accepte sinon 10ms
+     × un RUN en cours : refusée avant toute requête 325ms
+     × un RUN qui commence pendant la passe : la passe s’arrête avant la source suivante 637ms
+     × refuse dans la fenêtre, pendant un RUN, pendant une autre passe ; accepte sinon 7ms
 ⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
-      Tests  3 failed | 5 passed (8)
+      Tests  3 failed | 7 passed (10)
 --- c. pas de revérification avant chaque source
-     × un RUN qui commence pendant la passe : la passe s’arrête avant la source suivante 687ms
+     × un RUN qui commence pendant la passe : la passe s’arrête avant la source suivante 653ms
 ⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
-      Tests  1 failed | 7 passed (8)
+      Tests  1 failed | 9 passed (10)
+--- e. la collecte d’une passe redevient la référence des gardes du RUN
+     × passe à 8 sur 20, puis RUN à 8 : la santé et l’attestation du RUN comparent à 20 (le RUN précédent), jamais à 8 (la passe) 2859ms
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+      Tests  1 failed | 9 passed (10)
 --- d. une heure de passe à 16 UTC (pendant le RUN)
 ℹ pass 16
 ℹ fail 6

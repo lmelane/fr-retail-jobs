@@ -67,6 +67,9 @@ SETS = {
     'A  règle (API légères)': rule,
     'B  A + lvmh': rule + ['lvmh'],
     'C  B + ulta-jibe': rule + ['lvmh', 'ulta-jibe'],
+    # Option de la carte CEO (audit métier du 02/10) : des Maisons de luxe à la collecte petite en absolu, exclues par le
+    # ratio requêtes/offres (une page par offre) mais pas par leur coût.
+    'D  B + 6 Maisons de luxe': rule + ['lvmh', 'valentino', 'clarins', 'rolex', 'prada-group', 'burberry', 'swatch-group'],
     # Borne théorique, PAS une option : chaque source active collectée à chaque passe (coût = un RUN par passe).
     'Z  toutes les sources (borne)': sorted(m1, key=lambda k: f(m1[k]['dur_med_s'])),
 }
@@ -165,3 +168,26 @@ for name, sources in SETS.items():
         n = len(hours)
         print(f'   {cname:38s} médiane {med:5.1f} h  p90 {p90:5.1f} h  ≤24 h {100*share24:4.1f} %  | heure exacte ({en}) : médiane {emed:4.1f} h p90 {ep90:4.1f} h'
               + (f'  | par jour : +{n*req:.0f} requêtes ({100*n*req/run_req:.0f} % du RUN), +{n*off:.0f} offres réécrites ({100*n*off/run_offers:.0f} %), {n*dur/60:.0f} min de worker' if n else ''))
+
+# --- Ce qui manque pour la majorité des nouvelles offres (rejouable : chiffres du README §2 et de la lecture D-492) -----
+heavy = [k for k in m1 if f(m1[k]['offres_lues_med']) > 0 and f(m1[k]['req_med']) > 0.5 * f(m1[k]['offres_lues_med'])]
+print(f'\nSources qui lisent environ une page par offre (requêtes > offres lues / 2, M1) : {len(heavy)}')
+light = set(SETS['B  A + lvmh'])
+by_yield = sorted((k for k in m1 if k not in light), key=lambda k: -f(m3.get(k, {}).get('par_jour')))
+covered, added = sum(f(m3.get(k, {}).get('par_jour')) for k in light), []
+for k in by_yield:
+    if covered >= total_new / 2:
+        break
+    added.append(k)
+    covered += f(m3.get(k, {}).get('par_jour'))
+req, off, dur, ups, new = cost(added, 1)
+# Lecture incrémentale estimée : la liste (une page pour ~20 offres, la plus petite page des ATS concernés) plus le
+# détail des seules nouvelles offres d'une passe (le quart de la journée à 6 h).
+inc_req = sum(f(m1[k]['offres_lues_med']) / 20 + f(m3.get(k, {}).get('par_jour')) / 4 for k in added)
+print(f'Pour couvrir la moitié des nouvelles offres ({total_new/2:.0f}/jour), ajouter {len(added)} sources : {", ".join(added)}')
+print(f'   {new:.0f} nouvelles offres/jour ; collecte complète : {req:.0f} requêtes, {off:.0f} offres réécrites, {dur/60:.0f} min en série par passe'
+      f' ; lecture incrémentale estimée : ~{inc_req:.0f} requêtes par passe')
+for cname, hours in list(CADENCES.items())[2:3]:
+    med, p90, share24, emed, ep90, en = project(sorted(light | set(added), key=lambda k: f(m1[k]['dur_med_s'])), hours)
+    print(f'   {cname} : médiane {med:.1f} h p90 {p90:.1f} h ≤24 h {100*share24:.1f} % | heure exacte : médiane {emed:.1f} h p90 {ep90:.1f} h'
+          ' (borne : chaque source finie à son rang dans une passe en série)')

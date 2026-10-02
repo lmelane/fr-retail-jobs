@@ -24,9 +24,21 @@ Sources de la règle (39) : rituals, lovisa, white-stuff, normal, la-casa-de-las
    toutes les 6 h (04, 10, 22)            médiane  16.9 h  p90  41.9 h  ≤24 h 75.7 %  | heure exacte (5251) : médiane  5.0 h p90 18.5 h  | par jour : +1629 requêtes (1 % du RUN), +70740 offres réécrites (87 %), 119 min de worker
    toutes les 4 h (00, 04, 08, 12, 20)    médiane  16.9 h  p90  41.9 h  ≤24 h 75.7 %  | heure exacte (5251) : médiane  4.2 h p90 18.5 h  | par jour : +2715 requêtes (2 % du RUN), +117900 offres réécrites (145 %), 198 min de worker
 
+== Lot D  B + 6 Maisons de luxe : 46 sources, 358 nouvelles offres/jour (24 %)
+   une passe : 2609 requêtes, 14688 offres réécrites, 31.1 min de collecte en série, 21.4 min d’écriture
+   aucune (RUN seul)                      médiane  17.3 h  p90  42.0 h  ≤24 h 74.9 %  | heure exacte (5251) : médiane  7.8 h p90 20.9 h
+   2 fois par jour (00, 08)               médiane  17.0 h  p90  41.9 h  ≤24 h 75.7 %  | heure exacte (5251) : médiane  6.5 h p90 19.6 h  | par jour : +5218 requêtes (5 % du RUN), +29376 offres réécrites (36 %), 62 min de worker
+   toutes les 6 h (04, 10, 22)            médiane  17.0 h  p90  41.9 h  ≤24 h 75.8 %  | heure exacte (5251) : médiane  5.6 h p90 19.6 h  | par jour : +7827 requêtes (7 % du RUN), +44064 offres réécrites (54 %), 93 min de worker
+   toutes les 4 h (00, 04, 08, 12, 20)    médiane  17.0 h  p90  41.9 h  ≤24 h 75.8 %  | heure exacte (5251) : médiane  5.1 h p90 19.6 h  | par jour : +13045 requêtes (12 % du RUN), +73440 offres réécrites (90 %), 155 min de worker
+
 == Lot Z  toutes les sources (borne) : 412 sources, 1513 nouvelles offres/jour (100 %)
    une passe : 111186 requêtes, 81338 offres réécrites, 514.7 min de collecte en série, 126.0 min d’écriture
    aucune (RUN seul)                      médiane  17.3 h  p90  42.0 h  ≤24 h 74.9 %  | heure exacte (5251) : médiane  7.8 h p90 20.9 h
-   2 fois par jour (00, 08)               médiane   8.7 h  p90  40.4 h  ≤24 h 76.1 %  | heure exacte (5251) : médiane  4.0 h p90  7.9 h  | par jour : +222372 requêtes (200 % du RUN), +162676 offres réécrites (200 %), 1029 min de worker
+   2 fois par jour (00, 08)               médiane   8.7 h  p90  40.3 h  ≤24 h 76.1 %  | heure exacte (5251) : médiane  4.0 h p90  7.9 h  | par jour : +222372 requêtes (200 % du RUN), +162676 offres réécrites (200 %), 1029 min de worker
    toutes les 6 h (04, 10, 22)            médiane   6.7 h  p90  39.9 h  ≤24 h 76.4 %  | heure exacte (5251) : médiane  3.0 h p90  5.9 h  | par jour : +333558 requêtes (300 % du RUN), +244014 offres réécrites (300 %), 1544 min de worker
    toutes les 4 h (00, 04, 08, 12, 20)    médiane   5.3 h  p90  37.9 h  ≤24 h 76.6 %  | heure exacte (5251) : médiane  2.0 h p90  3.9 h  | par jour : +555930 requêtes (500 % du RUN), +406690 offres réécrites (500 %), 2574 min de worker
+
+Sources qui lisent environ une page par offre (requêtes > offres lues / 2, M1) : 242
+Pour couvrir la moitié des nouvelles offres (757/jour), ajouter 6 sources : hm-group, ulta-jibe, knitwell-us-retail, nordstrom, wttj-sector, tapestry
+   466 nouvelles offres/jour ; collecte complète : 20491 requêtes, 19669 offres réécrites, 83 min en série par passe ; lecture incrémentale estimée : ~1100 requêtes par passe
+   toutes les 6 h (04, 10, 22) : médiane 14.2 h p90 41.3 h ≤24 h 75.8 % | heure exacte : médiane 4.1 h p90 13.2 h (borne : chaque source finie à son rang dans une passe en série)

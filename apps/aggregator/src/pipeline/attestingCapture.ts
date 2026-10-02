@@ -27,6 +27,7 @@ import { requireCurrentCaptureRevision } from '../connectors/sourceRevision.js';
 import { evidenceHash } from '../lib/evidenceHash.js';
 import { isDeclaredEmptyEnumeration, isPublisherConfirmedDrop, isTrustedForAttestation } from './attestation.js';
 import { splitRejectedRows } from './rejectedRows.js';
+import { lightPassRunIds } from './referenceRuns.js';
 import { enumerationEvidence, type AttestationFacts, type EnumerationEvidence } from './refreshPlan.js';
 
 /** Les identifiants VUS par la capture, classés par devenir. `published` = sorties du manifeste sans disposition. */
@@ -137,8 +138,10 @@ export async function readAttestingCapture(db: Prisma.TransactionClient, sourceK
     return { ok: false, captureBatchId: batch.id, reasons: [`preuve scellée illisible : ${error instanceof Error ? error.message : 'unknown'}`] };
   }
   if (!completion || completion.report.outputs !== manifest.outputs.length) return { ok: false, captureBatchId: batch.id, reasons: ['rapport de fin d’ingestion sans correspondance avec le manifeste scellé'] };
+  // R-143 §1 : la référence n'est jamais la collecte d'une passe légère (`referenceRuns.ts`).
+  const lightPasses = [...await lightPassRunIds(db)];
   const previous = await db.sourceIngestionCompletion.findFirst({
-    where: { batch: { sourceKey }, published: { gt: 0 }, completedAt: { lt: completion.row.completedAt }, batchId: { not: batch.id } },
+    where: { batch: { sourceKey, OR: [{ runId: null }, { runId: { notIn: lightPasses } }] }, published: { gt: 0 }, completedAt: { lt: completion.row.completedAt }, batchId: { not: batch.id } },
     orderBy: [{ completedAt: 'desc' }, { batchId: 'desc' }], select: { published: true, batchId: true },
   });
   const rejectedRows = Array.isArray(manifest.metadata.rejectedRows) ? manifest.metadata.rejectedRows : [];

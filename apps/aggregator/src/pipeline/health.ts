@@ -6,6 +6,7 @@ import { recordSourceRunSummary } from '../connectors/sourceStore.js';
 import { ADVERTISEMENT_WITHDRAWN_RETENTION, GUARDED_NEGATIVE_PROOFS, MASS_GUARDED_RETENTIONS, isNativeEvidenceRetention, publicationDisposition, retentionClass,
   type RetentionClass } from './publicationDisposition.js';
 import { FULL_RUN_MARKER } from './fullRunMarker.js';
+import { lightPassRunIds } from './referenceRuns.js';
 
 /**
  * Source health, run after every ingest.
@@ -560,7 +561,10 @@ async function previousCounts(prisma: PrismaClient, sourceKeys: string[]): Promi
   const latest = new Map<string, { jobs: number; declaredTotal: number | null }>();
   // The unpublished share of the last complete RUN that COLLECTED the source: a failed collection has no share.
   const retention = new Map<string, RetentionBaseline>();
+  // R-143 §1 : la collecte d'une passe légère n'est jamais la référence d'une autre (`referenceRuns.ts`).
+  const lightPasses = await lightPassRunIds(prisma, runIds);
   for (const row of rows) {
+    if (row.runId && lightPasses.has(row.runId)) continue;
     const known = latest.get(row.sourceKey);
     if (known === undefined || known.jobs === 0 && row.jobs > 0) latest.set(row.sourceKey, { jobs: row.jobs, declaredTotal: row.declaredTotal });
     if (!retention.has(row.sourceKey) && row.runId && completeRuns.has(row.runId) && (row.fetched ?? 0) > 0 && row.accepted != null)
