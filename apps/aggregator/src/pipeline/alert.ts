@@ -7,13 +7,14 @@ type AlertReport = Pick<HealthReport, 'degraded' | 'broken' | 'incidents'>;
 
 /** The subject leads with what blocks; what is only visible follows. */
 export function alertSubject(report: AlertReport): string {
-  const { blocking, retentions, outages, known, drops, minorDrops, retained } = alertSections(report.incidents);
+  const { blocking, retentions, outages, known, drops, minorDrops, retained, identity } = alertSections(report.incidents);
   return [`[Catwalks] ${count(blocking.length, 'source bloquante', 'sources bloquantes')}`,
     retentions.length ? `${count(retentions.length, 'source', 'sources')} avec retenues non bloquantes (${count(retained, 'offre', 'offres')})` : '',
     outages.length ? `${count(outages.length, 'panne éditeur prouvée, non bloquante', 'pannes éditeur prouvées, non bloquantes')}` : '',
     known.length ? `${count(known.length, 'échec connu, non bloquant', 'échecs connus, non bloquants')}` : '',
     drops.length ? `${count(drops.length, 'chute confirmée par l’éditeur, non bloquante', 'chutes confirmées par l’éditeur, non bloquantes')}` : '',
-    minorDrops.length ? `${count(minorDrops.length, 'baisse de moins de 10 offres, non bloquante', 'baisses de moins de 10 offres, non bloquantes')}` : ''].filter(Boolean).join(' · ');
+    minorDrops.length ? `${count(minorDrops.length, 'baisse de moins de 10 offres, non bloquante', 'baisses de moins de 10 offres, non bloquantes')}` : '',
+    identity.length ? `${count(identity.length, 'source', 'sources')} avec employeur à identifier, en file de revue` : ''].filter(Boolean).join(' · ');
 }
 
 /** Exposed for the witness: the digest exactly as it is sent. */
@@ -78,7 +79,10 @@ export function alertSections(incidents: readonly SourceHealth[]) {
   const retentions = incidents.filter(incident => incident.blocking === false && incident.nonBlockingRetentionOnly)
     .sort((a, b) => (b.retained ?? 0) - (a.retained ?? 0) || a.source.localeCompare(b.source));
   const outages = incidents.filter(incident => incident.blocking === false && !incident.nonBlockingRetentionOnly && !incident.knownFailure
-    && !incident.confirmedDrop && !incident.minorDrop);
+    && !incident.confirmedDrop && !incident.minorDrop && !incident.identityReview);
+  // D-520 : employeur à identifier, en file de revue (et offres gardées telles quelles, libellé omis) : ni panne ni retenue.
+  const identity = incidents.filter(incident => incident.blocking === false && !incident.nonBlockingRetentionOnly && !incident.knownFailure
+    && incident.identityReview);
   // D-480 §1 : un échec connu décidé par le CEO n'est ni bloquant ni une panne prouvée de l'éditeur.
   const known = incidents.filter(incident => incident.blocking === false && !incident.nonBlockingRetentionOnly && incident.knownFailure);
   const drops = incidents.filter(incident => incident.blocking === false && !incident.nonBlockingRetentionOnly && !incident.knownFailure
@@ -86,7 +90,14 @@ export function alertSections(incidents: readonly SourceHealth[]) {
   const minorDrops = incidents.filter(incident => incident.blocking === false && !incident.nonBlockingRetentionOnly && !incident.knownFailure
     && incident.minorDrop);
   const retained = retentions.reduce((total, incident) => total + (incident.retained ?? 0), 0);
-  return { blocking, retentions, outages, known, drops, minorDrops, retained };
+  return { blocking, retentions, outages, known, drops, minorDrops, retained, identity };
+}
+
+/** D-520 : chaque entrée de file de la source, la plus lourde d'abord, avec sa question et son échéance. */
+function identityLines(incident: SourceHealth): string[] {
+  const review = incident.identityReview!;
+  return [...review.entries.map(e => `${e.overdue ? 'ÉCHUE, à trancher : ' : ''}${count(e.offers, 'offre retenue', 'offres retenues')}, « ${e.rawLabel} » : ${e.question}`),
+    ...(review.kept ? [`${count(review.kept, 'offre gardée', 'offres gardées')} telle${review.kept > 1 ? 's' : ''} quelle${review.kept > 1 ? 's' : ''} : la page ne nomme plus l’employeur que l’éditeur nommait (sans question)`] : [])];
 }
 
 /**
@@ -132,7 +143,7 @@ function sourceBlock(incident: SourceHealth, blocks: boolean, lines: string[]): 
 }
 
 function buildHtml(report: AlertReport): string {
-  const { blocking, retentions, outages, known, drops, minorDrops, retained } = alertSections(report.incidents);
+  const { blocking, retentions, outages, known, drops, minorDrops, retained, identity } = alertSections(report.incidents);
   const previous = (incident: SourceHealth) => incident.previous != null ? `${NUMBER.format(incident.previous)} au run précédent` : '';
   const volume = (incident: SourceHealth) => incident.notCollected
     ? [NOT_COLLECTED, previous(incident)].filter(Boolean).join(', ')
@@ -145,6 +156,8 @@ function buildHtml(report: AlertReport): string {
     volume(incident)])).join('');
   const outageBlocks = outages.map(incident => sourceBlock(incident, false,
     [...(incident.notCollected ? [volume(incident)] : []), ...(incident.note ? [incident.note] : [])])).join('');
+  const identityBlocks = identity.map(incident => sourceBlock(incident, false, [volume(incident), ...identityLines(incident)])).join('');
+  const overdue = identity.reduce((n, incident) => n + incident.identityReview!.entries.filter(e => e.overdue).length, 0);
   const knownBlocks = known.map(incident => sourceBlock(incident, false,
     [volume(incident), ...(incident.note ? [incident.note] : []), `décision ${incident.knownFailure}`])).join('');
   const dropBlocks = drops.map(incident => sourceBlock(incident, false, [volume(incident), ...(incident.note ? [incident.note] : [])])).join('');
@@ -166,6 +179,9 @@ function buildHtml(report: AlertReport): string {
     ${outages.length ? `${heading(`Non bloquant, pannes de l'éditeur prouvées : ${count(outages.length, 'source', 'sources')}`)}
     ${line('Réponse 5xx de la source, archivée : ce n’est pas une retenue.')}
     ${outageBlocks}` : ''}
+    ${identity.length ? `${heading(`Employeur à identifier, file de revue : ${count(identity.length, 'source', 'sources')}${overdue ? `, ${count(overdue, 'entrée échue', 'entrées échues')}` : ''}`)}
+    ${line('Le RUN n’échoue pas pour ces offres (D-520) : elles sont retenues, jamais publiées sous un employeur deviné, et une publication antérieure reste telle quelle. Chaque entrée dit la question à trancher ; la file complète : commande file-identite.')}
+    ${identityBlocks}` : ''}
     ${known.length ? `${heading(`Non bloquant, échecs connus : ${count(known.length, 'source', 'sources')}`)}
     ${line('Décidés par le CEO : la source reste collectée et publie ses offres, elle ne ferme aucune offre qu’elle ne sait pas prouver absente. Tout autre défaut de ces sources resterait bloquant.')}
     ${knownBlocks}` : ''}

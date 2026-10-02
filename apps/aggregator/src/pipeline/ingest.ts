@@ -39,7 +39,7 @@ import { validateCapturedSource } from '../connectors/sourceValidation.js';
 import { SourceAdmissionGateError } from '../connectors/sourceAdmission.js';
 import { requireCurrentCaptureRevision } from '../connectors/sourceRevision.js';
 import { lockSourceWrites, SOURCE_WRITE_TRANSACTION } from '../lib/writeLocks.js';
-import { addIssue, ingestionIssue, type IngestionIssue } from '../lib/ingestionIssue.js';
+import { addIssue, IDENTITY_NEW_ENTRY, ingestionIssue, type IngestionIssue } from '../lib/ingestionIssue.js';
 import { collectionEmployerLabels, PublisherFollowDeferred, publisherFollowBound, type PublisherFollowMode } from '../identity/publisherFollow.js';
 import { normalizedEmployerName } from '../normalize/employerName.js';
 import { EmployerIdentityReviewRequired } from '../identity/errors.js';
@@ -569,8 +569,13 @@ async function ingestApiSource(
    * incrémentale ne lit que le neuf et ne résout rien.
    */
   stats.identityReview = await syncIdentityQueue(prisma, { sourceKey: stats.source, refusals: identityRefusals, captureBatchId,
-    published: stats.created + stats.merged + stats.updated,
+    published: stats.created + stats.merged + stats.updated, incremental: incrementalPassActive(),
     complete: stats.complete === true && stats.truncated !== true && !incrementalPassActive() });
+  // La garde de masse du RUN (`runSummary.ts`, IDENTITY_MASS) compte les sources qui ouvrent une entrée de file dans ce RUN.
+  if (stats.identityReview.opened > 0) {
+    const issue = stats.issues?.find(i => i.code === 'EmployerIdentityReviewRequired');
+    if (issue) issue.detail = IDENTITY_NEW_ENTRY;
+  }
 
   /**
    * A retention keeps THIS collection from publishing; it withdraws an earlier publication only when its reason

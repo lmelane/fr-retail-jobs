@@ -621,7 +621,7 @@ describe('D-520: identity refusals are queued for review and do not fail the RUN
     const { issues, summary, sourceRun, incidents } = await runOne(s, history);
     expect(summary).toMatchObject({ outcome: 'COMPLETED_WITH_ERRORS', blockingReasons: [], nonBlockingCauses: ['EMPLOYER_IDENTITY_REVIEW'] });
     expect(issues.map(issue => issue.code)).toEqual(['EmployerIdentityReviewRequired']);
-    expect(summary.failures[0]).toMatch(/\(non bloquant : employeur à identifier/);
+    expect(summary.failures[0]).toMatch(/\(ne fait pas échouer le RUN : employeur à identifier/);
     expect(incidents.every(incident => incident.blocking === false)).toBe(true);
     return { issues, sourceRun, summary, incidents };
   };
@@ -637,7 +637,7 @@ describe('D-520: identity refusals are queued for review and do not fail the RUN
     expect(String(sourceRun.note)).toContain('477 erreurs de collecte ou d’écriture, dont 477 refus d’identité (employeur non certifié : 477)');
     expect(String(sourceRun.note)).toContain('1 sur preuve de la source (NATIVE_RECRUITMENT_EVENT=1)');
     expect(summary.identityReview).toEqual({ sources: 1, postings: 477, bySource: [{ source: 'luxe-talent', postings: 477 }] });
-    expect(summary.failures).toEqual(['luxe-talent (non bloquant : employeur à identifier, 477 offres retenues en file de revue (D-520))']);
+    expect(summary.failures).toEqual(['luxe-talent (ne fait pas échouer le RUN : employeur à identifier, 477 offres retenues en file de revue (D-520))']);
   });
   it('names every identity motif, most frequent first, and still names a refusal counted without its motif', async () => {
     // Synthetic: two motifs on one source (on 24/09, b-s-international had 59 « new spelling », luxe-talent 477 « not certified »).
@@ -651,5 +651,22 @@ describe('D-520: identity refusals are queued for review and do not fail the RUN
     const other = stat('db', 5, { errors: 1, issues: [{ origin: 'INTERNAL', code: 'DATABASE_FAILURE', count: 1 }], writeFailures: { PrismaClientKnownRequestError: 1 } });
     const { health } = await runOne(other);
     expect(health.incidents[0]?.note).not.toContain('refus d’identité');
+  });
+  it('a queued identity refusal never hides another defect of the collection (audit D-520)', async () => {
+    const identity = { errors: 2, issues: [{ origin: 'UNKNOWN' as const, code: 'EmployerIdentityReviewRequired', count: 2 }],
+      writeFailures: { 'EmployerIdentityReviewRequired:PORTAL_OWNER_NOT_CERTIFIED': 2 } };
+    // PRÉMISSE : sans le refus, chacune de ces collectes est un défaut bloquant.
+    for (const [s, code] of [[stat('truncated-id', 100, { truncated: true, declaredTotal: 140, fetched: 102 }), 'SOURCE_HEALTH_REGRESSION'],
+      [stat('unproven-id', 100, { complete: false, enumerationReading: 'NOT_PROVEN', fetched: 102 }), 'ENUMERATION_NOT_PROVEN'],
+      [stat('no-descriptions-id', 100, { withDescription: 5, fetched: 102 }), 'DESCRIPTION_COVERAGE_BELOW_FLOOR']] as const) {
+      expect((await runOne(s)).issues.map(issue => issue.code)).toEqual([code]);
+      const { issues, summary, incidents } = await runOne({ ...s, ...identity });
+      expect(issues.map(issue => issue.code)).toEqual(['EmployerIdentityReviewRequired', code]);
+      expect(incidents.every(incident => incident.blocking)).toBe(true);
+      expect(summary.failures[0]).toMatch(/\(bloquant : /);
+    }
+    // Les offres refusées comptent comme vues : 2 refus sur 100 ne font pas une chute.
+    const { issues } = await runOne(stat('steady-id', 98, { fetched: 100, ...identity }), [{ jobs: 100, fetched: 100, accepted: 100 }]);
+    expect(issues.map(issue => issue.code)).toEqual(['EmployerIdentityReviewRequired']);
   });
 });

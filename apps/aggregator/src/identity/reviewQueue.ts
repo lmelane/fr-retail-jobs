@@ -27,7 +27,7 @@ export const refusalOf = (error: EmployerIdentityReviewRequired): IdentityRefusa
   ({ externalId: error.externalId, rawEmployerName: error.rawEmployerName, proposedName: error.proposedName, motif: error.motif });
 
 /** Ce que la file sait de la source, lu au registre. */
-export type QueueSource = { key: string; maison: string | null; tier: string | null; portalScope: string | null; careersDomain: string | null };
+export type QueueSource = { key: string; kind?: string | null; maison: string | null; tier: string | null; portalScope: string | null; careersDomain: string | null };
 
 export type QueueEntryDraft = {
   motif: MotifIdentite; normalizedLabel: string; proposedKey: string; rawLabel: string; proposedName: string | null;
@@ -36,6 +36,10 @@ export type QueueEntryDraft = {
 
 /** Le motif porte un code, pas un employeur, dans `proposedName` pour ces deux refus : il n'y a pas d'employeur en jeu. */
 const NO_EMPLOYER_AT_STAKE: ReadonlySet<MotifIdentite> = new Set(['PORTAL_OWNER_NOT_CERTIFIED', 'ALIAS_SOURCE_OR_TENANT_CHANGED']);
+/** Ce qui ne pose aucune question : l'offre déjà nommée par l'éditeur est gardée telle quelle (`ordinaryIdentity.ts`, règle 1). */
+export const NOT_QUEUED: ReadonlySet<MotifIdentite> = new Set(['NATIVE_LABEL_OMITTED']);
+/** Welcome to the Jungle, seul job board collecté (R-142 §1) : jamais une source à retirer. */
+const isWttj = (source: QueueSource) => (source.kind ?? '').startsWith('wttj') || source.key.startsWith('wttj');
 const JOB_BOARD_TIERS: ReadonlySet<string> = new Set(['SPECIALIST_JOBBOARD', 'AGGREGATOR']);
 const SAMPLE = 5;
 
@@ -48,9 +52,12 @@ export function identityQuestion(source: QueueSource, entry: Pick<QueueEntryDraf
   const raw = quote(entry.rawLabel), proposed = entry.proposedName ? quote(entry.proposedName) : 'son employeur actuel', n = offers(entry.offers);
   switch (entry.motif) {
     case 'PORTAL_OWNER_NOT_CERTIFIED':
+      if (source.tier && JOB_BOARD_TIERS.has(source.tier) && isWttj(source)) return {
+        missingProof: 'le nom de l’employeur sur la page de chaque offre : WTTJ n’est pas un employeur, et reste collecté (R-142 §1)',
+        question: `${source.key} (WTTJ) : offres sans employeur nommé : ${entry.offers}. Quel champ de la page WTTJ nomme l’employeur de ces offres, pour que le lecteur le lise ?` };
       if (source.tier && JOB_BOARD_TIERS.has(source.tier)) return {
-        missingProof: 'le nom de l’employeur de chaque offre : un job board n’est pas un employeur (R-142 §1)',
-        question: `${source.key} est un job board ; offres sans employeur nommé : ${entry.offers}. Retirer la source (R-142 §2) ou lire l’employeur offre par offre ?` };
+        missingProof: 'rien à trancher : R-142 §1 exclut ce job board, R-142 §2 décide son retrait',
+        question: `${source.key} est un job board hors WTTJ ; offres sans employeur nommé : ${entry.offers}. Retrait déjà décidé par R-142 §2, à exécuter (retire-source ${source.key}).` };
       return {
         missingProof: 'le périmètre relu du portail (Source.portalScope), exigé par R-142 §3 pour publier une offre qui ne nomme pas son employeur',
         question: `Le portail ${source.key} (registre ${quote(maison)}${source.careersDomain ? `, ${source.careersDomain}` : ''}) publie-t-il pour un seul employeur (SINGLE_BRAND) ou pour plusieurs enseignes d’un groupe (MULTI_BRAND) ? Offres sans employeur nommé : ${entry.offers}. Une fois le portail relu, elles publient sous ${quote(maison)}.` };
@@ -69,6 +76,9 @@ export function identityQuestion(source: QueueSource, entry: Pick<QueueEntryDraf
     case 'EMPLOYER_SPELLING_DIVERGED':
       return { missingProof: `un lien officiel entre ${raw} et ${proposed} (site de la Maison, mentions légales, page carrière), ou la preuve que ce sont deux employeurs`,
         question: `Sur ${n} de ${source.key} (registre ${quote(maison)}), l’éditeur nomme désormais ${raw} à la place de ${proposed}. ${raw} est-il ${proposed} (alias limité à la source) ou un autre employeur ?` };
+    case 'NATIVE_LABEL_OMITTED':
+      return { missingProof: 'rien : l’éditeur avait nommé l’employeur de ces offres, gardées telles quelles',
+        question: `Sur ${n} de ${source.key}, la page ne nomme plus ${proposed}, que l’éditeur nommait : rien à trancher.` };
     case 'EMPLOYER_TARGET_MISMATCH':
     case 'SOURCE_NEVER_PUBLISHED_FOR_HOUSE':
       return { missingProof: `la preuve que ${raw} et ${proposed} sont le même employeur, ou que l’offre change d’employeur`,
@@ -80,6 +90,7 @@ export function identityQuestion(source: QueueSource, entry: Pick<QueueEntryDraf
 export function queueEntries(source: QueueSource, refusals: readonly IdentityRefusal[]): QueueEntryDraft[] {
   const groups = new Map<string, { refusal: IdentityRefusal; ids: Set<string> }>();
   for (const refusal of refusals) {
+    if (NOT_QUEUED.has(refusal.motif)) continue;
     const proposedKey = NO_EMPLOYER_AT_STAKE.has(refusal.motif) ? '' : normalizedEmployerName(refusal.proposedName);
     const key = JSON.stringify([refusal.motif, normalizedEmployerName(refusal.rawEmployerName), proposedKey]);
     const group = groups.get(key) ?? groups.set(key, { refusal, ids: new Set() }).get(key)!;
@@ -100,7 +111,11 @@ export function escalationDeadline(firstSeenAt: Date, published: number): Date {
   return new Date(firstSeenAt.getTime() + (published > 0 ? ESCALATION.degradedDays * 24 : ESCALATION.waitingHours) * HOUR);
 }
 
-export type IdentityQueueSync = { open: number; opened: number; escalated: number; resolved: number; offers: number };
+export type IdentityQueueSync = { open: number; opened: number; escalated: number; resolved: number; offers: number;
+  /** Offres gardées telles quelles, libellé omis (règle 1) : comptées, sans entrée. */
+  kept: number;
+  /** Les entrées ouvertes de la source après la collecte, pour l'alerte : la question, les offres, l'échéance. */
+  entries: Array<{ motif: string; rawLabel: string; offers: number; question: string; overdue: boolean }> };
 
 /**
  * Tient la file à jour après la collecte d'une source : ouvre, met à jour, escalade, et — sur une collecte complète
@@ -108,11 +123,16 @@ export type IdentityQueueSync = { open: number; opened: number; escalated: numbe
  * perdu : la file est recalculée à la collecte suivante).
  */
 export async function syncIdentityQueue(db: PrismaClient, input: { sourceKey: string; refusals: readonly IdentityRefusal[];
-  captureBatchId: string | null; published: number; complete: boolean; now?: Date }): Promise<IdentityQueueSync> {
+  captureBatchId: string | null; published: number; complete: boolean; incremental?: boolean; now?: Date }): Promise<IdentityQueueSync> {
   const now = input.now ?? new Date();
-  const source = await db.source.findUnique({ where: { key: input.sourceKey }, select: { key: true, maison: true, tier: true, portalScope: true, careersDomain: true } });
+  const kept = input.refusals.filter(r => NOT_QUEUED.has(r.motif)).length;
+  const result: IdentityQueueSync = { open: 0, opened: 0, escalated: 0, resolved: 0, offers: 0, kept, entries: [] };
+  // Rien à ouvrir ni à résoudre : une seule lecture (les entrées ouvertes de la source), pour l'alerte.
+  const queued = input.refusals.some(r => !NOT_QUEUED.has(r.motif));
+  if (!queued && !input.complete) return withOpenEntries(db, input.sourceKey, result, now);
+  const source = queued ? await db.source.findUnique({ where: { key: input.sourceKey },
+    select: { key: true, kind: true, maison: true, tier: true, portalScope: true, careersDomain: true } }) : null;
   const drafts = queueEntries(source ?? { key: input.sourceKey, maison: null, tier: null, portalScope: null, careersDomain: null }, input.refusals);
-  const result: IdentityQueueSync = { open: 0, opened: 0, escalated: 0, resolved: 0, offers: 0 };
   const seen = new Set<string>();
   for (const draft of drafts) {
     const outcome = await upsertEntry(db, input.sourceKey, draft, input, now);
@@ -139,12 +159,17 @@ export async function syncIdentityQueue(db: PrismaClient, input: { sourceKey: st
         rawLabel: entry.rawLabel, firstSeenAt: entry.firstSeenAt, decision: 'D-520' });
     }
   }
-  result.open = await db.employerIdentityQueue.count({ where: { sourceKey: input.sourceKey, resolvedAt: null } });
-  return result;
+  return withOpenEntries(db, input.sourceKey, result, now);
+}
+
+async function withOpenEntries(db: PrismaClient, sourceKey: string, result: IdentityQueueSync, now: Date): Promise<IdentityQueueSync> {
+  const open = await db.employerIdentityQueue.findMany({ where: { sourceKey, resolvedAt: null }, orderBy: { offers: 'desc' } });
+  return { ...result, open: open.length, entries: open.map(e => ({ motif: e.motif, rawLabel: e.rawLabel, offers: e.offers, question: e.question,
+    overdue: e.escalatedAt !== null || now.getTime() >= e.escalateAt.getTime() })) };
 }
 
 async function upsertEntry(db: PrismaClient, sourceKey: string, draft: QueueEntryDraft,
-  input: { captureBatchId: string | null; published: number }, now: Date, attempt = 1): Promise<{ id: string; opened: boolean; escalated: boolean; firstSeenAt: Date }> {
+  input: { captureBatchId: string | null; published: number; incremental?: boolean }, now: Date, attempt = 1): Promise<{ id: string; opened: boolean; escalated: boolean; firstSeenAt: Date }> {
   const where = { sourceKey_motif_normalizedLabel_proposedKey: { sourceKey, motif: draft.motif, normalizedLabel: draft.normalizedLabel, proposedKey: draft.proposedKey } };
   const fields = { rawLabel: draft.rawLabel, proposedName: draft.proposedName, offers: draft.offers, sampleExternalIds: draft.sampleExternalIds,
     missingProof: draft.missingProof, question: draft.question, lastSeenAt: now, lastCaptureBatchId: input.captureBatchId };
@@ -152,10 +177,17 @@ async function upsertEntry(db: PrismaClient, sourceKey: string, draft: QueueEntr
     const existing = await db.employerIdentityQueue.findUnique({ where });
     if (!existing || existing.resolvedAt) {
       // Neuve, ou rouverte : une entrée résolue qui revient repart de zéro (date, échéance, escalade).
-      const reset = { ...fields, firstSeenAt: now, collections: 1, escalateAt: escalationDeadline(now, input.published), escalatedAt: null, resolvedAt: null };
+      // Une passe ne sait pas si la source publie encore : échéance longue, la collecte complète suivante la raccourcit.
+      const reset = { ...fields, firstSeenAt: now, collections: 1, escalateAt: escalationDeadline(now, input.incremental ? 1 : input.published),
+        escalatedAt: null, resolvedAt: null };
       const row = existing ? await db.employerIdentityQueue.update({ where: { id: existing.id }, data: reset })
         : await db.employerIdentityQueue.create({ data: { sourceKey, motif: draft.motif, normalizedLabel: draft.normalizedLabel, proposedKey: draft.proposedKey, ...reset } });
       return { id: row.id, opened: true, escalated: false, firstSeenAt: row.firstSeenAt };
+    }
+    // Une passe incrémentale (D-517) ne lit que le neuf : elle ne refait ni le compte des offres ni l'échéance.
+    if (input.incremental) {
+      const row = await db.employerIdentityQueue.update({ where: { id: existing.id }, data: { lastSeenAt: now } });
+      return { id: row.id, opened: false, escalated: false, firstSeenAt: row.firstSeenAt };
     }
     // L'échéance suit la gravité actuelle : une source qui ne publie plus rien n'attend pas 7 jours.
     const escalateAt = new Date(Math.min(existing.escalateAt.getTime(), escalationDeadline(existing.firstSeenAt, input.published).getTime()));

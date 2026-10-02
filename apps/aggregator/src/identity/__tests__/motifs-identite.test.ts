@@ -73,6 +73,7 @@ describe('motifs d\'identité employeur', () => {
         'EMPLOYER_TARGET_MISMATCH',        // :111 — l'employeur courant n'est pas la cible
         'EMPLOYER_CHANGE_MASS',            // D-506 §3 — suivi de l'éditeur au-delà de la garde de masse
         'SOURCE_NEVER_PUBLISHED_FOR_HOUSE', // :139 — première publication sous un libellé tiers
+        'NATIVE_LABEL_OMITTED',            // D-520 — libellé omis d'une offre déjà nommée : gardée telle quelle, sans revue
       ];
       for (const m of attendus) expect(MOTIFS_IDENTITE, m).toContain(m);
       // La liste ne contient QUE ces motifs : un code non documenté serait un angle mort.

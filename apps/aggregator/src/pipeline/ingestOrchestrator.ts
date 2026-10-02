@@ -306,7 +306,11 @@ export function classifySourceRun(stats: IngestStats[], incidents: readonly Sour
   const blocking = issues.some(issue => !isNonBlockingIssue(source, issue));
   // D-480 §1 : un échec connu reste visible, nommé par sa décision, jamais confondu avec une panne prouvée.
   const known = !blocking && issues.some(issue => isDecidedKnownFailure(source, issue));
-  return { issues, incidents: incidents.map(incident => ({ ...incident, blocking, ...(known ? { knownFailure: KNOWN_FAILURE_DECISION } : {}) })) };
+  // D-520 : la file d'identité de la source, pour la section de l'alerte qui lui est propre.
+  const review = stats[0]?.identityReview;
+  const identityReview = review && (review.open > 0 || review.kept > 0) ? { open: review.open, kept: review.kept, entries: review.entries } : undefined;
+  return { issues, incidents: incidents.map(incident => ({ ...incident, blocking, ...(known ? { knownFailure: KNOWN_FAILURE_DECISION } : {}),
+    ...(identityReview ? { identityReview } : {}) })) };
 }
 
 /**
@@ -360,7 +364,7 @@ export async function ingestOne(prisma: PrismaClient, key: string, result: Orche
     if (issues.length) {
       // A retention decided on native evidence stays counted and listed (D-453 §1); its line says it does not block.
       result.failed++;
-      result.failures.push(failureLine(key, issues, `erreurs d’ingestion · ${notes(remediation)}`));
+      result.failures.push(failureLine(key, issues, `erreurs d’ingestion · ${notes(remediation)}`, stats.reduce((n, s) => n + s.created + s.merged + s.updated, 0)));
       // D-520 : une source dont TOUTES les issues sont passagères à leur première occurrence est reprise une fois.
       if (attempt === 'first' && !incrementalPassActive() && remediation.every(r => r.retry))
         (result.pendingRetry ??= []).push({ source: key, cause: remediation[0].transient! });

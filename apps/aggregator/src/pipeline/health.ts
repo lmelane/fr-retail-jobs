@@ -101,6 +101,14 @@ export type SourceHealth = {
    * le sens prudent pour tout chemin qui ne classe pas (commande `ingest --source`).
    */
   blocking?: boolean;
+  /**
+   * D-520 : la source n'a d'erreurs que des refus d'identité mis en file. La santé de sa collecte est quand même jugée,
+   * les offres refusées comptées comme vues ; son défaut éventuel (troncature, liste, volume, champs, retenue à
+   * instruire) reste une issue bloquante (`issuesFromResult`).
+   */
+  identityDefect?: string;
+  /** D-520 : la file d'identité de la source après la collecte (`identity/reviewQueue.ts`), pour l'alerte. */
+  identityReview?: { open: number; kept: number; entries: Array<{ motif: string; rawLabel: string; offers: number; question: string; overdue: boolean }> };
 };
 
 /** `DESCRIPTION_COVERAGE_BELOW_FLOOR` (30/09/2026) : nommé pour que D-480 §1 ne reconnaisse QUE ce défaut chez On Running.
@@ -230,6 +238,19 @@ export function evaluateSourceHealth(stat: IngestStats, before: number | null, r
   const base = { source: stat.source, jobs, previous: before, coverage: coverageOf(stat), rates: ratesOf(stat),
     ...(stat.held ? { retained: stat.held, retention: { collected: stat.fetched, byReason: countedReasons(stat),
       ...(stat.heldOnline ? { online: { ...stat.heldOnline } } : {}) } } : {}) };
+  // D-520 : des refus d'identité seuls ne coupent pas les autres contrôles de la collecte.
+  const identityRefused = Object.entries(stat.writeFailures ?? {}).filter(([code]) => code === IDENTITY_REFUSAL || code.startsWith(`${IDENTITY_REFUSAL}:`))
+    .reduce((total, [, n]) => total + n, 0);
+  if (stat.errors > 0 && identityRefused === stat.errors && !stat.errorNote && (stat.issues ?? []).every(issue => issue.code === IDENTITY_REFUSAL)) {
+    const seen = evaluateSourceHealth({ ...stat, errors: 0, issues: undefined, writeFailures: undefined, updated: stat.updated + identityRefused },
+      before, retentionBaseline, previousDeclaredTotal);
+    const defect = (seen.status === 'BROKEN' || seen.status === 'DEGRADED') && !seen.nonBlockingRetentionOnly && !seen.confirmedDrop && !seen.minorDrop
+      && seen.blocking !== false;
+    const refusals = `${plural(stat.errors, 'erreur', 'erreurs')} de collecte ou d’écriture${failureCauses(stat)}`;
+    const { nonBlockingRetentionOnly: _r, confirmedDrop: _c, minorDrop: _m, blocking: _b, finding: _f, guardWithoutReference: _g, ...rest } = seen;
+    return { ...rest, ...base, status: jobs > 0 ? 'DEGRADED' : 'BROKEN', note: [refusals, seen.note].filter(Boolean).join(' · '),
+      ...(defect ? { identityDefect: seen.finding ?? 'SOURCE_HEALTH_REGRESSION' } : {}) };
+  }
   if (stat.errors > 0) {
     const errors = `${plural(stat.errors, 'erreur', 'erreurs')} de collecte ou d’écriture${failureCauses(stat)}${stat.errorNote ? ` : ${stat.errorNote}` : ''}${stat.rejected ? ` · ${plural(stat.rejected, 'ligne rejetée', 'lignes rejetées')} avec motif (${Object.entries(stat.rejectedReasons ?? {}).map(([k, v]) => `${k}=${v}`).join(', ')})` : ''}`;
     // Nothing sealed and nothing read: the source failed before any collection completed (`runIngest` catch path).
@@ -283,6 +304,7 @@ const IDENTITY_MOTIF: Readonly<Record<string, string>> = {
   EMPLOYER_TARGET_MISMATCH: 'employeur différent de celui déjà attribué',
   EMPLOYER_CHANGE_MASS: 'changements d’employeur en masse chez l’éditeur, revue humaine (garde D-506 §3)',
   SOURCE_NEVER_PUBLISHED_FOR_HOUSE: 'source jamais publiée pour cette Maison',
+  NATIVE_LABEL_OMITTED: 'employeur déjà nommé par l’éditeur, omis sur la page : offre gardée telle quelle',
 };
 
 /**

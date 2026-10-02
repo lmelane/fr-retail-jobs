@@ -343,7 +343,9 @@ export type RunVerdict = { green: boolean; reasons: Array<{ reason: VerdictReaso
 export const COVERAGE_TO_VERIFY_DETAIL = 'perte de couverture sans cause propre, peut-être un changement de source canonique ou une réattribution de société (D-518 §2)';
 
 /** Les motifs de blocage de `lib/runSummary.ts` qui disent une panne du RUN lui-même, jamais celle d'une source. */
-export const SYSTEM_BLOCKING_REASONS: ReadonlySet<string> = new Set(['INVALID_COUNTS', 'INCOMPLETE_RUN', 'NO_ACTIVE_SOURCE', 'ALL_SOURCES_FAILED']);
+export const SYSTEM_BLOCKING_REASONS: ReadonlySet<string> = new Set(['INVALID_COUNTS', 'INCOMPLETE_RUN', 'NO_ACTIVE_SOURCE', 'ALL_SOURCES_FAILED',
+  // D-520, classe identité : trop de sources ouvrent une entrée de file d'identité dans le même RUN (`runSummary.ts`).
+  'IDENTITY_MASS']);
 
 /** La panne du système lui-même, lue sur le RUN : ses comptes, le refresh, le bilan et le bulletin, l'état des sources. */
 export function systemFailuresOf(input: { blockingReasons: readonly string[]; refreshRefused?: boolean; alertDeliveryFailed?: boolean;

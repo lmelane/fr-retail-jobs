@@ -24,3 +24,6 @@ CREATE TABLE "EmployerIdentityQueue" (
 
 CREATE UNIQUE INDEX "EmployerIdentityQueue_entry_key" ON "EmployerIdentityQueue"("sourceKey", "motif", "normalizedLabel", "proposedKey");
 CREATE INDEX "EmployerIdentityQueue_open_idx" ON "EmployerIdentityQueue"("resolvedAt", "escalateAt");
+
+-- D-520 : l'accord des sources qui ont publié un libellé (règle « même Maison du registre »), lu sans parcours de table.
+CREATE INDEX "EmployerObservation_normalizedEmployerName_idx" ON "EmployerObservation"("normalizedEmployerName");

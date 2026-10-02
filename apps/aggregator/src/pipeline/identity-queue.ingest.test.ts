@@ -64,22 +64,41 @@ async function runVerdict(key: string, stats: Awaited<ReturnType<typeof ingest>>
 const NORD = 'Atelier Nord SAS';
 
 describe('D-520 — identité d’employeur : ce qui se prouve est absorbé, le reste est retenu en file de revue', () => {
-  it('libellé omis : l’offre que l’éditeur avait nommée garde son employeur sur un portail non relu', async () => {
+  it('libellé omis : l’offre que l’éditeur avait nommée garde son employeur, n’est ni réécrite ni reconfirmée, sans revue', async () => {
     const key = `identite-omis-${randomUUID()}`;
     await ingest(key, [{ id: 'p1', employer: NORD }]);
     const before = await employerOf(key, 'p1');
+    const seenBefore = await db.jobSource.findUniqueOrThrow({ where: { sourceKey_externalId: { sourceKey: key, externalId: 'p1' } }, select: { lastSeenAt: true, title: true } });
     // PRÉMISSE : le portail n'est pas relu (aucun périmètre), et p1 a été rattachée par le libellé natif de l'éditeur.
     expect((await db.source.findUniqueOrThrow({ where: { key } })).portalScope).toBeNull();
     expect(before.company.name).toBe(NORD);
     expect(await lastRule(key, 'p1')).toBe('NATIVE_SOURCE_LABEL');
 
     const stats = await ingest(key, [{ id: 'p1' }]);
-    expect(stats).toMatchObject({ errors: 0, updated: 1 });
-    expect(stats.writeFailures).toBeUndefined();
+    expect(stats).toMatchObject({ errors: 1, writeFailures: { 'EmployerIdentityReviewRequired:NATIVE_LABEL_OMITTED': 1 } });
+    expect(stats.identityReview).toMatchObject({ kept: 1, open: 0, opened: 0 });
     expect((await employerOf(key, 'p1')).companyId).toBe(before.companyId);
-    expect(await db.employerObservation.findFirst({ where: { sourceKey: key, externalId: 'p1', rule: 'NATIVE_LABEL_OMITTED_KEPT' } }))
-      .toMatchObject({ labelOrigin: 'SOURCE_CATALOGUE_LABEL', canonicalEmployerId: before.companyId });
+    // R-143 §2 : pas une reconfirmation — la publication n'est pas réécrite, son « vue le » ne bouge pas.
+    expect(await db.jobSource.findUniqueOrThrow({ where: { sourceKey_externalId: { sourceKey: key, externalId: 'p1' } }, select: { lastSeenAt: true, title: true } }))
+      .toEqual(seenBefore);
     expect(await queueOf(key)).toEqual([]);
+    const { incidents, summary } = await runVerdict(key, stats);
+    expect(incidents).toMatchObject([{ source: key, blocking: false, identityReview: { kept: 1, open: 0 } }]);
+    expect(summary.blockingReasons).toEqual([]);
+  });
+
+  it('libellé omis sur un portail relu MULTI_BRAND : l’offre qui nommait sa Maison la garde (D-479 §2, D-515 §1)', async () => {
+    const key = `identite-omis-groupe-${randomUUID()}`;
+    await qualifiedSource(db, key);
+    await db.source.update({ where: { key }, data: { portalScope: 'MULTI_BRAND' } });
+    await ingest(key, [{ id: 'p1', employer: NORD }]);
+    const before = await employerOf(key, 'p1');
+    expect(before.company.name).toBe(NORD);
+    const stats = await ingest(key, [{ id: 'p1' }, { id: 'p2' }]);
+    // p1 garde Atelier Nord sans question ; p2, jamais nommée, publie sous le groupe (R-142 §3).
+    expect(stats).toMatchObject({ errors: 1, writeFailures: { 'EmployerIdentityReviewRequired:NATIVE_LABEL_OMITTED': 1 } });
+    expect((await employerOf(key, 'p1')).companyId).toBe(before.companyId);
+    expect(await lastRule(key, 'p2')).toBe('MULTI_BRAND_PORTAL_GROUP_OWNER');
   });
 
   it('libellé omis : rien n’est gardé si la dernière déclaration de l’éditeur a été refusée, ni pour une offre neuve', async () => {
@@ -95,23 +114,48 @@ describe('D-520 — identité d’employeur : ce qui se prouve est absorbé, le 
     expect(await db.jobSource.findUnique({ where: { sourceKey_externalId: { sourceKey: key, externalId: 'neuve' } } })).toBeNull();
   });
 
-  it('même Maison du registre : une nouvelle graphie de la Maison de la source ne bloque plus, l’offre ne bouge pas', async () => {
+  it('même Maison du registre : une nouvelle graphie native de la Maison d’un portail relu ne bloque plus, l’offre ne bouge pas', async () => {
     const tag = randomUUID().slice(0, 8);
     const key = `maison${tag}`;
     await qualifiedSource(db, key);
     await db.source.update({ where: { key }, data: { portalScope: 'SINGLE_BRAND' } });
-    // PRÉMISSE : la Maison au registre est le nom de la source ; p1 y est rattachée par le registre.
-    await ingest(key, [{ id: 'p1' }, { id: 'p2' }]);
+    // PRÉMISSE : p1 est nommée par l'éditeur (libellé natif) ; p3 ne l'est pas, le registre l'attribue (forme de b-s-international).
+    await ingest(key, [{ id: 'p1', employer: `Maison${tag} France` }, { id: 'p2', employer: `Maison${tag} France` }, { id: 'p3' }]);
     const before = await employerOf(key, 'p1');
-    expect((await db.employerObservation.findFirstOrThrow({ where: { sourceKey: key, externalId: 'p1' } })).labelOrigin).toBe('SOURCE_CATALOGUE_LABEL');
+    expect(await lastRule(key, 'p1')).toBe('NATIVE_SOURCE_LABEL');
+    expect((await db.employerObservation.findFirstOrThrow({ where: { sourceKey: key, externalId: 'p3' } })).labelOrigin).toBe('SOURCE_CATALOGUE_LABEL');
+    const registry = await employerOf(key, 'p3');
 
-    // L'éditeur nomme désormais l'entité juridique de la Maison (nom complet prolongé) — et, pour p2, un autre employeur.
-    const stats = await ingest(key, [{ id: 'p1', employer: `MAISON${tag.toUpperCase()} S.A.S.` }, { id: 'p2', employer: 'Atelier Sud SAS' }]);
-    expect(stats).toMatchObject({ errors: 1, writeFailures: { 'EmployerIdentityReviewRequired:EMPLOYER_SPELLING_DIVERGED': 1 } });
+    const stats = await ingest(key, [{ id: 'p1', employer: `MAISON${tag.toUpperCase()} S.A.S.` }, { id: 'p2', employer: 'Atelier Sud SAS' },
+      { id: 'p3', employer: `MAISON${tag.toUpperCase()} SA` }]);
+    expect(stats).toMatchObject({ errors: 2, writeFailures: { 'EmployerIdentityReviewRequired:EMPLOYER_SPELLING_DIVERGED': 2 } });
     expect(await employerOf(key, 'p1')).toEqual(before);
     expect(await lastRule(key, 'p1')).toBe('SAME_REGISTRY_MAISON');
-    // p2 (un autre nom) reste en revue, avec sa question.
-    expect((await queueOf(key)).map(e => [e.motif, e.rawLabel, e.offers])).toEqual([['EMPLOYER_SPELLING_DIVERGED', 'Atelier Sud SAS', 1]]);
+    // b-s-international : l'employeur précédent venait du registre — revue (lecture de D-506 §3), même si le libellé désigne la Maison.
+    expect(await employerOf(key, 'p3')).toEqual(registry);
+    expect((await queueOf(key)).map(e => [e.motif, e.rawLabel, e.offers]).sort()).toEqual([
+      ['EMPLOYER_SPELLING_DIVERGED', 'Atelier Sud SAS', 1], ['EMPLOYER_SPELLING_DIVERGED', `MAISON${tag.toUpperCase()} SA`, 1]]);
+  });
+
+  it('même Maison du registre : « Puma Energy » ne va jamais sous Puma, ni sur un portail non relu', async () => {
+    const tag = randomUUID().slice(0, 8);
+    const puma = `puma${tag}`, energy = `puma${tag}-energy`;
+    // Une autre source, inscrite pour « Puma… Energy », publie ce libellé : les sources ne s'accordent pas (R-143 §5).
+    await ingest(energy, [{ id: 'e1', employer: `Puma${tag} Energy` }]);
+    await qualifiedSource(db, puma);
+    await db.source.update({ where: { key: puma }, data: { portalScope: 'SINGLE_BRAND' } });
+    await ingest(puma, [{ id: 'p1', employer: `Puma${tag} SE` }, { id: 'p2', employer: `Puma${tag} SE` }]);
+    const before = await employerOf(puma, 'p1');
+    const stats = await ingest(puma, [{ id: 'p1', employer: `Puma${tag} Energy` }, { id: 'p2', employer: `PUMA${tag} North America, Inc.` }]);
+    expect(stats).toMatchObject({ errors: 1, writeFailures: { 'EmployerIdentityReviewRequired:EMPLOYER_SPELLING_DIVERGED': 1 } });
+    expect(await employerOf(puma, 'p1')).toEqual(before);
+    expect((await queueOf(puma)).map(e => e.rawLabel)).toEqual([`Puma${tag} Energy`]);
+    // PRÉMISSE du refus : la même règle garde « North America », que seule la source de Puma publie.
+    expect(await lastRule(puma, 'p2')).toBe('SAME_REGISTRY_MAISON');
+    // Portail non relu (périmètre NULL) : pas de règle 2, la nouvelle graphie va en revue.
+    await db.source.update({ where: { key: puma }, data: { portalScope: null } });
+    const unreviewed = await ingest(puma, [{ id: 'p1', employer: `Puma${tag} SE` }, { id: 'p2', employer: `PUMA${tag} Europe GmbH` }]);
+    expect(unreviewed).toMatchObject({ errors: 1, writeFailures: { 'EmployerIdentityReviewRequired:EMPLOYER_SPELLING_DIVERGED': 1 } });
   });
 
   it('le refus non prouvé est retenu, mis en file avec sa question, et ne fait plus échouer le RUN', async () => {
@@ -130,7 +174,8 @@ describe('D-520 — identité d’employeur : ce qui se prouve est absorbé, le 
     expect(entry.question).toContain('Offres sans employeur nommé : 2.');
     // Une source qui publie encore : échéance à 7 jours.
     expect(entry.escalateAt.getTime() - entry.firstSeenAt.getTime()).toBe(7 * 24 * 3_600_000);
-    expect(stats.identityReview).toEqual({ open: 1, opened: 1, escalated: 0, resolved: 0, offers: 2 });
+    expect(stats.identityReview).toMatchObject({ open: 1, opened: 1, escalated: 0, resolved: 0, offers: 2, kept: 0,
+      entries: [{ motif: 'PORTAL_OWNER_NOT_CERTIFIED', offers: 2, overdue: false }] });
     expect(events.mock.calls.filter(call => call[0] === 'employer.identity_review_opened')).toHaveLength(1);
 
     const { incidents, summary } = await runVerdict(key, stats);

@@ -38,6 +38,12 @@ export const MOTIFS_IDENTITE = [
   'EMPLOYER_CHANGE_MASS',
   /** Historical receipt code: new native labels now remain source-scoped without an inferred merge. */
   'SOURCE_NEVER_PUBLISHED_FOR_HOUSE',
+  /**
+   * D-520 : la page ne nomme plus l'employeur d'une offre que l'éditeur avait nommé (libellé natif). L'offre est retenue
+   * telle quelle, sans revue humaine : ni réécrite ni reconfirmée (R-143 §2), sa publication garde son employeur
+   * (D-515 §1). Pas une question pour la file (`identity/ordinaryIdentity.ts`).
+   */
+  'NATIVE_LABEL_OMITTED',
 ] as const;
 
 export type MotifIdentite = typeof MOTIFS_IDENTITE[number];

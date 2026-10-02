@@ -1,0 +1,43 @@
+D-520, classe identité d'employeur : relecture à la main de TOUTES les résolutions automatiques de la fenêtre (24/09 au 01/10).
+Il y en a 17, pas 30 : 13 offres de la règle 1 et 4 du suivi de l'éditeur (D-506 §3, déjà construit, rejoué ici). La règle 2
+n'en a aucune : la seule nouvelle graphie de Maison (b-s-international) avait un employeur venu du registre, elle va en revue.
+Pour chacune : l'annonce, la déclaration précédente de l'éditeur, ce que fait le lot. Relu le 02/10/2026 (`relecture.tsv`).
+
+ 1. R1 · aptar-beauty · 1290483701 · « Shift Manager in Training (SMIT) » · https://jobs.aptar.com/job/Lincolnton-Shift-Manager-in-Training-%28SMIT%29-NC-28092/1290483701/
+    L'éditeur nommait « Aptar Group » (microdata.hiringOrganization) ; la page du RUN ne nommait personne. L'offre reste sous « Aptar Group », sans réécriture. Aucune attribution nouvelle : juste.
+ 2. R1 · avolta · 1417938633 · « Senior People Technology Analyst » · https://careers.avoltaworld.com/job/Senior-People-Technology-Analyst/1417938633/
+    L'éditeur nommait « Avolta » (microdata.hiringOrganization) ; la page du RUN ne nommait personne. L'offre reste sous « Avolta », sans réécriture. Aucune attribution nouvelle : juste.
+ 3. R1 · avolta · 1422945533 · « Temporary Global Category Management Pricing Specialist » · https://careers.avoltaworld.com/job/Temporary-Global-Category-Management-Pricing-Specialist/1422945533/
+    L'éditeur nommait « Avolta » (microdata.hiringOrganization) ; la page du RUN ne nommait personne. L'offre reste sous « Avolta », sans réécriture. Aucune attribution nouvelle : juste.
+ 4. R1 · crocs · 1408989000 · « Sales Associate, Midvalley » · https://careers.crocs.com/job/KUALA-LUMPUR-Sales-Associate%2C-Midvalley-Kual-59200/1408989000/
+    L'éditeur nommait « Crocs, Inc. » (microdata.hiringOrganization) ; la page du RUN ne nommait personne. L'offre reste sous « Crocs, Inc. », sans réécriture. Aucune attribution nouvelle : juste. D-480 a établi que l'offre Crocs du 24/09 était pourvue (« position has been filled ») : la règle ne la réécrit ni ne la reconfirme, sa disponibilité suit son plafond.
+ 5. R1 · escada-parfums-16 · 1431517633 · « Senior Director, Packaging Design » · https://careers.coty.com/job/New-York-Senior-Director%2C-Packaging-Design-NY-10118/1431517633/
+    L'éditeur nommait « Coty » (microdata.hiringOrganization) ; la page du RUN ne nommait personne. L'offre reste sous « Coty », sans réécriture. Aucune attribution nouvelle : juste.
+ 6. R1 · sephora-france · 1366095555 · « Beauty Advisor - Part Time » · https://jobs.sephora.com/Canada/job/Peterborough-Beauty-Advisor-Part-Time-ON-K9J-7Y5/1366095555/
+    L'éditeur nommait « Sephora » (microdata.hiringOrganization) ; la page du RUN ne nommait personne. L'offre reste sous « Sephora », sans réécriture. Aucune attribution nouvelle : juste. D-480 range Sephora avec Crocs (page « pourvu » en anglais, lecteur corrigé) : même traitement.
+ 7. R1 · sephora-france · 1368976455 · « Beauty Advisor - Flex » · https://jobs.sephora.com/USA/job/Roseville-Beauty-Advisor-Flex-MN-55113/1368976455/
+    L'éditeur nommait « Sephora » (microdata.hiringOrganization) ; la page du RUN ne nommait personne. L'offre reste sous « Sephora », sans réécriture. Aucune attribution nouvelle : juste. D-480 range Sephora avec Crocs (page « pourvu » en anglais, lecteur corrigé) : même traitement.
+ 8. R1 · aptar-beauty · 1418020933 · « Production Supervisor -2nd Shift (51542) » · https://jobs.aptar.com/job/Cary-Production-Supervisor-2nd-Shift-%2851542%29-IL-60013/1418020933/
+    L'éditeur nommait « Aptar Group » (microdata.hiringOrganization) ; la page du RUN ne nommait personne. L'offre reste sous « Aptar Group », sans réécriture. Aucune attribution nouvelle : juste.
+ 9. R1 · drunk-elephant-2 · 1433385833 · « Interim CRM Manager (MULTIBRAND) » · https://careers.shiseido.com/job/London-Interim-CRM-Manager-%28MULTIBRAND%29-UKM/1433385833/
+    L'éditeur nommait « Shiseido » (microdata.hiringOrganization) ; la page du RUN ne nommait personne. L'offre reste sous « Shiseido », sans réécriture. Aucune attribution nouvelle : juste.
+10. R1 · prada-group · 1409373033 · « Client Service Product Owner Intern » · https://jobs.pradagroup.com/job/Milano-Client-Service-Product-Owner-Intern/1409373033/
+    L'éditeur nommait « Prada Group » (microdata.hiringOrganization) ; la page du RUN ne nommait personne. L'offre reste sous « Prada Group », sans réécriture. Aucune attribution nouvelle : juste.
+11. R1 · sephora-france · 1364681455 · « Beauty Advisor - Flex » · https://jobs.sephora.com/USA/job/Los-Angeles-Beauty-Advisor-Flex-CA-90036/1364681455/
+    L'éditeur nommait « Sephora » (microdata.hiringOrganization) ; la page du RUN ne nommait personne. L'offre reste sous « Sephora », sans réécriture. Aucune attribution nouvelle : juste. D-480 range Sephora avec Crocs (page « pourvu » en anglais, lecteur corrigé) : même traitement.
+12. R1 · crocs · 1412948000 · « Team Lead, Sales Part Time » · https://careers.crocs.com/job/Destin-Team-Lead%2C-Sales-Part-Time-FL-32550/1412948000/
+    L'éditeur nommait « Crocs, Inc. » (microdata.hiringOrganization) ; la page du RUN ne nommait personne. L'offre reste sous « Crocs, Inc. », sans réécriture. Aucune attribution nouvelle : juste. D-480 a établi que l'offre Crocs du 24/09 était pourvue (« position has been filled ») : la règle ne la réécrit ni ne la reconfirme, sa disponibilité suit son plafond.
+13. R1 · monoprix · 4438631 · « Employée, employé de rayon textile » · https://recrutement.monoprix.fr/fr/annonce/4438631-employee-employe-de-rayon-textile-92600-asnieres-sur-seine
+    L'éditeur nommait « Groupe MONOPRIX » (jsonld.hiringOrganization.name) ; la page du RUN ne nommait personne. L'offre reste sous « Groupe MONOPRIX », sans réécriture. Aucune attribution nouvelle : juste. D-480 : la fiche avait échoué ponctuellement au RUN ; l'offre était en ligne le soir même.
+14. D506 · swatch-group · 33197 · « RESPONSABLE DISTRIBUTION WHOLESALE H/F - CDD - FLIK FLAK- PARIS - (75) » · https://www.swatchgroup.com/fr/job/33197
+    L'éditeur passe de « Flik Flak » à « Swatch », qu'il publiait déjà (10 observations avant le RUN). Même résultat que la décision prise ensuite à la main : D-480 §2 (l'offre Flik Flak publie sous Swatch). Juste.
+15. D506 · richemont-workday · Sales-Associate--m-w-d-_JR133983 · « Sales Associate (m/w/d) » · https://richemont.wd3.myworkdayjobs.com/Richemont/job/MUNICH/Sales-Associate--m-w-d-_JR133983
+    L'éditeur passe de « Richemont » à « Cartier », qu'il publiait déjà (143 observations avant le RUN). Même résultat que la décision prise ensuite à la main : l'alias relu du 29/09 (« Cartier Logo » → Cartier). Juste.
+16. D506 · puma · Entertainment-Marketing-Manager_R43416 · « Entertainment Marketing Manager » · https://puma.wd502.myworkdayjobs.com/Jobs_at_Puma/job/PUMA-Boston-International-Office/Entertainment-Marketing-Manager_R43416
+    L'éditeur passe de « PUMA SE » à « PUMA North America, Inc. », qu'il publiait déjà (224 observations avant le RUN). Même résultat que la décision prise ensuite à la main : D-506 §2 (alias PUMA North America, Inc.). Juste.
+17. D506 · richemont · Security-Specialist_JR132200 · « Security Specialist » · https://richemont.wd3.myworkdayjobs.com/Richemont/job/TURIN/Security-Specialist_JR132200-1
+    L'éditeur passe de « Richemont » à « Cartier », qu'il publiait déjà (43 observations avant le RUN). Même résultat que la décision prise ensuite à la main : D-506 (« Richemont vers Cartier, déjà résolu »). Juste.
+
+Verdict : 17 justes sur 17, aucune attribution fausse. La règle 1 ne change l'employeur d'aucune offre ; le suivi de l'éditeur
+rend le résultat des décisions humaines prises après coup. Sur ces 17, au moins 3 offres étaient pourvues ou illisibles ce jour-là
+(Crocs, Sephora, Monoprix, D-480) : c'est pourquoi la règle 1 garde l'offre telle quelle au lieu de la réécrire.

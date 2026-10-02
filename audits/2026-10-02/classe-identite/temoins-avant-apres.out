@@ -1,5 +1,5 @@
 Témoin avant/après (temoin-avant-apres.test.ts.txt, copié dans apps/aggregator/src/pipeline/ le temps du rejeu), base locale
-de test (Postgres jetable), 02/10/2026 vers 15:30 UTC :
+de test (Postgres jetable), 02/10/2026 vers 15:50 UTC, version corrigée après l'audit :
 == AVANT (cd85f41, origin/development avant ce lot)
      × règle 1 : libellé omis, l’offre garde l’employeur nommé par l’éditeur
      × règle 2 : nouvelle graphie de la Maison du registre, l’offre ne bouge pas
@@ -7,4 +7,6 @@ de test (Postgres jetable), 02/10/2026 vers 15:30 UTC :
       Tests  3 failed (3)
 == APRÈS (ce lot)
       Tests  3 passed (3)
-Suite complète du lot sur la même base : unitaires 247 fichiers / 3 814 tests, intégration 83 fichiers / 983 tests, verts.
+Les témoins complets sont dans le code : pipeline/identity-queue.ingest.test.ts (7 cas, dont « Puma Energy », b-s-international,
+MULTI_BRAND, file, escalade), lib/nativeRetention.test.ts (un refus ne cache ni troncature, ni liste non prouvée, ni descriptions
+manquantes), identity/__tests__/classe-identite.test.ts (questions, WTTJ, vocabulaire du bilan, IDENTITY_MASS).

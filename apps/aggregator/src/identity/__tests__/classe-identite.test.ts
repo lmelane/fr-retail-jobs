@@ -2,7 +2,8 @@ import { describe, expect, it } from 'vitest';
 import { designatesMaison, isGroupPortal } from '../ordinaryIdentity.js';
 import { escalationDeadline, identityQuestion, queueEntries, type QueueSource } from '../reviewQueue.js';
 import { isNonBlockingIssue } from '../../lib/ingestionIssue.js';
-import { failureLine } from '../../lib/runSummary.js';
+import { failureLine, IDENTITY_MASS_SOURCES, summarizeOrchestration } from '../../lib/runSummary.js';
+import { systemFailuresOf } from '../../pipeline/sourceState.js';
 import { MOTIFS_IDENTITE } from '../errors.js';
 
 /** D-520, classe identité d'employeur : les règles pures, sur les cas réels mesurés du 24/09 au 01/10. */
@@ -46,10 +47,14 @@ describe('la file de revue : une entrée par libellé, la preuve qui manque, la 
       { externalId: '40000', rawEmployerName: 'Swatch', proposedName: 'Omega', motif: 'EMPLOYER_SPELLING_DIVERGED' }]);
     expect(swatch.map(e => e.proposedKey).sort()).toEqual(['flik flak', 'omega']);
     expect(swatch[0].question).toMatch(/^Sur 1 offre de swatch-group \(registre « Swatch Group »\), l’éditeur nomme désormais « Swatch » à la place de « (Flik Flak|Omega) »/);
-    const board = identityQuestion({ ...portal, key: 'luxe-talent', tier: 'SPECIALIST_JOBBOARD' },
+    // R-142 §1-§2 tranchent déjà : un job board hors WTTJ est à retirer, jamais une question ouverte ; WTTJ n'est jamais à retirer.
+    const board = identityQuestion({ ...portal, key: 'luxe-talent', kind: 'wordpress', tier: 'SPECIALIST_JOBBOARD' },
       { motif: 'PORTAL_OWNER_NOT_CERTIFIED', rawLabel: 'Luxe Talent', proposedName: null, offers: 477 });
-    expect(board.question).toContain('luxe-talent est un job board ; offres sans employeur nommé : 477.');
-    expect(board.missingProof).toContain('R-142 §1');
+    expect(board.question).toBe('luxe-talent est un job board hors WTTJ ; offres sans employeur nommé : 477. Retrait déjà décidé par R-142 §2, à exécuter (retire-source luxe-talent).');
+    const wttj = identityQuestion({ ...portal, key: 'wttj-sector', kind: 'wttj', tier: 'SPECIALIST_JOBBOARD' },
+      { motif: 'PORTAL_OWNER_NOT_CERTIFIED', rawLabel: 'Welcome to the Jungle', proposedName: null, offers: 3 });
+    expect(wttj.question).toContain('wttj-sector (WTTJ)');
+    expect(`${wttj.question}${wttj.missingProof}`).not.toMatch(/retir|retrait/i);
   });
   it('a une question pour chaque motif, sans tiret cadratin (D-319)', () => {
     for (const motif of MOTIFS_IDENTITE) {
@@ -70,7 +75,10 @@ describe('un employeur à identifier ne fait plus échouer le RUN', () => {
   const issue = { origin: 'UNKNOWN' as const, code: 'EmployerIdentityReviewRequired', count: 463 };
   it('l’issue est non bloquante et la ligne du bilan dit pourquoi', () => {
     expect(isNonBlockingIssue('tiffany-oracle', issue)).toBe(true);
-    expect(failureLine('tiffany-oracle', [issue], 'erreurs d’ingestion')).toBe('tiffany-oracle (non bloquant : employeur à identifier, 463 offres retenues en file de revue (D-520))');
+    expect(failureLine('tiffany-oracle', [issue], 'erreurs d’ingestion')).toBe('tiffany-oracle (ne fait pas échouer le RUN : employeur à identifier, 463 offres retenues en file de revue (D-520))');
+    // Le vocabulaire de `sourceState.ts` : une source qui ne publie rien est bloquée, une qui publie est dégradée.
+    expect(failureLine('tiffany-oracle', [issue], 'x', 0)).toBe('tiffany-oracle (ne fait pas échouer le RUN : source bloquée (ne publie pas), employeur à identifier, 463 offres retenues en file de revue (D-520))');
+    expect(failureLine('tiffany-oracle', [issue], 'x', 4)).toContain('source dégradée (publie, avec réserve), employeur à identifier');
   });
   it('une autre issue de la même source reste bloquante', () => {
     const other = { origin: 'UNKNOWN' as const, code: 'ENUMERATION_NOT_PROVEN', count: 1 };
@@ -78,3 +86,18 @@ describe('un employeur à identifier ne fait plus échouer le RUN', () => {
     expect(failureLine('tiffany-oracle', [issue, other], 'erreurs d’ingestion')).toBe('tiffany-oracle (bloquant : erreurs d’ingestion)');
   });
 });
+
+describe('la garde de masse de la file (IDENTITY_MASS) : une panne du système, pas l’ordinaire d’une source', () => {
+  const run = (sources: number, detail?: string) => summarizeOrchestration({ total: 400, ok: 400 - sources, failed: sources, timedOut: 0, incidents: [],
+    failures: [], issues: Array.from({ length: sources }, (_, i) => ({ source: `s${i}`, origin: 'UNKNOWN' as const, code: 'EmployerIdentityReviewRequired', count: 3,
+      ...(detail ? { detail } : {}) })) });
+  it('au seuil de sources qui ouvrent une entrée dans le même RUN, le verdict passe en panne du système', () => {
+    expect(run(IDENTITY_MASS_SOURCES - 1, 'NOUVELLE_ENTREE').blockingReasons).toEqual([]);
+    const mass = run(IDENTITY_MASS_SOURCES, 'NOUVELLE_ENTREE');
+    expect(mass.blockingReasons).toEqual(['IDENTITY_MASS']);
+    expect(systemFailuresOf({ blockingReasons: mass.blockingReasons })).toEqual(['IDENTITY_MASS']);
+    // Des entrées déjà ouvertes, revues chaque jour, ne sont pas une masse nouvelle.
+    expect(run(40).blockingReasons).toEqual([]);
+  });
+});
+

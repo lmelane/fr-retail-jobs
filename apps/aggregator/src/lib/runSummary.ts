@@ -1,20 +1,32 @@
 import type { OrchestratorResult } from '../pipeline/ingestOrchestrator.js';
-import { isDecidedKnownFailure, isNonBlockingIssue, isProvenSourceIssue, isQueuedIdentityIssue, KNOWN_FAILURE_DECISION, NATIVE_RETENTION, type IngestionIssue } from './ingestionIssue.js';
+import { IDENTITY_NEW_ENTRY, isDecidedKnownFailure, isNonBlockingIssue, isProvenSourceIssue, isQueuedIdentityIssue, KNOWN_FAILURE_DECISION, NATIVE_RETENTION, type IngestionIssue } from './ingestionIssue.js';
+import { STATE_LABEL, SYSTEMIC_OUR_SIDE_BLOCKED } from '../pipeline/sourceState.js';
+
+/**
+ * D-520, classe identité : au-delà de ce nombre de sources qui ouvrent une entrée de file d'identité dans le même RUN, ce
+ * n'est plus l'ordinaire d'une source mais une panne du système (résolveur, registre, lecteur qui perd l'employeur) :
+ * IDENTITY_MASS, raison système du verdict (`sourceState.ts`). Même seuil que la panne de notre côté, mesuré par le
+ * module d'état ; mesuré pour l'identité sur les 8 RUN du 24/09 au 01/10 : au plus 14 entrées ouvertes au démarrage
+ * d'une file vide, 0 à 1 ensuite (`audits/2026-10-02/classe-identite/rejeu.out`).
+ */
+export const IDENTITY_MASS_SOURCES = SYSTEMIC_OUR_SIDE_BLOCKED;
 import { isTeamDecisionRetention } from '../pipeline/publicationDisposition.js';
 
 /**
  * Each failure line says whether it fails the RUN (D-453 §1). A source fails it unless every one of its issues
  * stands on its native proof — a retention decided on the publisher's evidence, or an archived 5xx.
  */
-export function failureLine(key: string, issues: readonly IngestionIssue[], cause: string): string {
+export function failureLine(key: string, issues: readonly IngestionIssue[], cause: string, published?: number): string {
   if (!issues.length || issues.some(issue => !isNonBlockingIssue(key, issue))) return `${key} (bloquant : ${cause})`;
   const proven = issues.filter(isProvenSourceIssue);
   const retained = proven.filter(issue => issue.code === NATIVE_RETENTION).reduce((total, issue) => total + issue.count, 0);
   const outages = proven.filter(issue => issue.code !== NATIVE_RETENTION).map(issue => issue.code);
   const known = issues.filter(issue => !isProvenSourceIssue(issue) && isDecidedKnownFailure(key, issue)).map(issue => issue.code);
   const queued = issues.filter(isQueuedIdentityIssue).reduce((total, issue) => total + issue.count, 0);
-  return `${key} (non bloquant : ${[retained ? `retenue sur preuve de la source, ${retained} ${retained > 1 ? 'offres' : 'offre'}` : '',
-    queued ? `employeur à identifier, ${queued} ${queued > 1 ? 'offres retenues' : 'offre retenue'} en file de revue (D-520)` : '',
+  // Le vocabulaire de l'état des sources (`sourceState.ts`) : la source qui ne publie rien est bloquée, et le RUN n'échoue pas.
+  const state = published === undefined ? '' : `source ${STATE_LABEL[published > 0 ? 'DEGRADEE' : 'BLOQUEE']}, `;
+  return `${key} (${queued ? 'ne fait pas échouer le RUN' : 'non bloquant'} : ${[retained ? `retenue sur preuve de la source, ${retained} ${retained > 1 ? 'offres' : 'offre'}` : '',
+    queued ? `${state}employeur à identifier, ${queued} ${queued > 1 ? 'offres retenues' : 'offre retenue'} en file de revue (D-520)` : '',
     outages.length ? `panne éditeur prouvée ${outages.join(', ')}` : '',
     known.length ? `échec connu ${known.join(', ')} (${KNOWN_FAILURE_DECISION})` : ''].filter(Boolean).join(' · ')})`;
 }
@@ -39,6 +51,7 @@ export function summarizeOrchestration(result: OrchestratorResult) {
   const unknownSources = new Set(issues.filter(i => i.origin === 'UNKNOWN' && !isDecidedKnownFailure(i.source, i) && !isQueuedIdentityIssue(i)).map(i => i.source));
   const identityQueued = issues.filter(isQueuedIdentityIssue);
   const identitySources = new Set(identityQueued.map(i => i.source));
+  const newIdentitySources = new Set(identityQueued.filter(i => i.detail === IDENTITY_NEW_ENTRY).map(i => i.source));
   const classifiedSources = new Set(issues.map(i => i.source));
   const unclassifiedSources = Math.max(0, sourceErrors - classifiedSources.size);
   const proven = issues.filter(isProvenSourceIssue);
@@ -61,6 +74,7 @@ export function summarizeOrchestration(result: OrchestratorResult) {
     ...(result.total > 0 && result.ok + retentionOnlySources === 0 ? ['ALL_SOURCES_FAILED'] : []),
     ...(internalSources.size ? ['INTERNAL_FAILURE'] : []),
     ...(unknownSources.size || unclassifiedSources || invalidNativeProof ? ['UNRESOLVED_FAILURE'] : []),
+    ...(newIdentitySources.size >= IDENTITY_MASS_SOURCES ? ['IDENTITY_MASS'] : []),
   ];
   const retainedPostings = new Map<string, number>();
   for (const issue of retentions) retainedPostings.set(issue.source, (retainedPostings.get(issue.source) ?? 0) + issue.count);

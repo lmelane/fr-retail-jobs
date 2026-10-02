@@ -388,6 +388,8 @@ model EmployerObservation {
   @@unique([sourceKey, externalId, observationHash])
   @@index([canonicalEmployerId, rule])
   @@index([sourceKey, rule])
+  /// D-520 : l'accord des sources qui ont publié un libellé (règle « même Maison », `identity/ordinaryIdentity.ts`).
+  @@index([normalizedEmployerName])
 }
 
 /**

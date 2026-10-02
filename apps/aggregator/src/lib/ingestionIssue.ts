@@ -65,6 +65,8 @@ export function isDecidedKnownFailure(source: string, issue: Pick<IngestionIssue
  * classée IDENTITE_EMPLOYEUR (`pipeline/sourceState.ts`) jusqu'à la réponse, escaladée à l'échéance.
  */
 export const IDENTITY_REVIEW_ISSUE = 'EmployerIdentityReviewRequired';
+/** Le `detail` de l'issue d'identité d'une source qui ouvre une entrée de file dans cette collecte (garde IDENTITY_MASS). */
+export const IDENTITY_NEW_ENTRY = 'NOUVELLE_ENTREE';
 export function isQueuedIdentityIssue(issue: Pick<IngestionIssue, 'code'>): boolean {
   return issue.code === IDENTITY_REVIEW_ISSUE;
 }
@@ -141,13 +143,17 @@ type IssueStat = { source: string; errors: number; issues?: IngestionIssue[]; he
  * of more than half where fewer than ten postings disappear (D-491, `minorDrop`, same condition).
  */
 export function issuesFromResult(stats: IssueStat[], incidents: readonly { source: string; nonBlockingRetentionOnly?: boolean; finding?: string;
-  confirmedDrop?: object; minorDrop?: object }[]): IngestionIssue[] {
+  confirmedDrop?: object; minorDrop?: object; identityDefect?: string }[]): IngestionIssue[] {
   return stats.flatMap(stat => {
     const known = stat.issues ?? [];
     const missing = Math.max(0, stat.errors - known.reduce((sum, issue) => sum + issue.count, 0));
     const own: IngestionIssue[] = [...known, ...(missing ? [{ origin: 'UNKNOWN' as const, code: 'UNCLASSIFIED_INGEST_ERRORS', count: missing }] : [])];
-    if (own.length) return own;
     const incident = incidents.find(i => i.source === stat.source);
+    // D-520 : un refus d'identité mis en file ne cache pas le reste de la collecte (troncature, liste, volume, champs) :
+    // le défaut que la santé y trouve reste une issue, à côté du refus (`health.ts`, `identityDefect`).
+    if (own.length && own.every(isQueuedIdentityIssue) && incident?.identityDefect)
+      return [...own, { origin: 'UNKNOWN' as const, code: incident.identityDefect, count: 1 }];
+    if (own.length) return own;
     if (!incident) return [];
     if (!incident.nonBlockingRetentionOnly && !incident.confirmedDrop && !incident.minorDrop) return [{ origin: 'UNKNOWN' as const, code: incident.finding ?? 'SOURCE_HEALTH_REGRESSION', count: 1 }];
     const native = Object.entries(stat.heldReasons ?? {}).filter(([reason]) => isNativeEvidenceRetention(reason)).reduce((sum, [, n]) => sum + n, 0);

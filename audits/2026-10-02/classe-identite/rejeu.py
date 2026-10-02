@@ -8,11 +8,15 @@ observation attribuée AVANT le RUN, ses témoins D-506, son employeur actuel), 
 
 Règles rejouées, dans l'ordre du résolveur (`apps/aggregator/src/identity/resolve.ts`) :
   R1 libellé omis      : refus « portail » (l'offre ne nomme pas d'employeur) et dernière observation de l'offre
-                         venue d'un libellé NATIF, par une règle native, vers l'employeur qu'elle porte (`ordinaryIdentity.ts`) ;
+                         venue d'un libellé NATIF, par une règle native, vers l'employeur qu'elle porte (`ordinaryIdentity.ts`) :
+                         l'offre est gardée telle quelle (ni réécrite ni reconfirmée), sans entrée de file ;
   D506 suivi éditeur   : nouvelle graphie, ancien libellé natif, et d'autres offres de la source publiées sous le nouveau
                          libellé avant le RUN (règle D-506 §3, déjà construite, livrée par r4 le 02/10) ;
-  R2 même Maison       : nouvelle graphie dont l'ancien ET le nouveau libellé désignent la Maison au registre de la source
-                         (mêmes mots, ou nom prolongé : R-143 §5), hors portail de groupe ;
+  R2 même Maison       : nouvelle graphie, ancien libellé NATIF (un employeur venu du registre reste en revue, lecture de
+                         D-506 §3), portail relu SINGLE_BRAND, ancien ET nouveau libellé désignant la Maison au registre
+                         (R-143 §5). Les gardes d'accord des sources et de ligne Maison ne sont pas rejouées : sur la fenêtre,
+                         aucune occurrence n'atteint ce point (la seule nouvelle graphie de Maison, b-s-international,
+                         avait un employeur venu du registre) ;
   FILE                 : tout le reste, retenu et mis en file de revue (une entrée par source, motif, libellé, employeur).
 
 Approximations dites : l'employeur « actuel » est celui d'aujourd'hui (une offre déplacée depuis le RUN n'est pas vue) ;
@@ -73,7 +77,7 @@ def classify(r, reg):
     motif, src = r['motif'], r['src']
     if motif in PORTAL_MOTIFS:
         if native_origin(r['prev_origin']) and r['prev_rule'] in NATIVE_RULES and r['prev_company'] and r['prev_company'] == r['job_company']:
-            return 'R1', 'S1 libellé omis, offre déjà nommée par l’éditeur'
+            return 'R1', 'S1 libellé omis, offre déjà nommée par l’éditeur : gardée telle quelle'
         if reg[src]['tier'] in JOB_BOARD:
             return 'FILE', 'S5 job board, offres sans employeur'
         if not r['prev_origin']:
@@ -86,9 +90,13 @@ def classify(r, reg):
             return 'D506', 'S3 changement d’employeur chez l’éditeur, employeur déjà publié par la source'
         maison = reg[src]['maison'].split('(')[0].strip()
         group = reg[src]['scope'] == 'MULTI_BRAND' or '(' in reg[src]['maison']
-        if not group and designates(r['prev_label'], maison) and designates(r['raw'], maison):
-            return 'R2', 'S2 nouvelle graphie de la Maison du registre'
-        return 'FILE', 'S6 entité juridique qui ne porte pas le nom de la Maison'
+        same = not group and designates(r['prev_label'], maison) and designates(r['raw'], maison)
+        if not native_origin(r['prev_origin']):
+            return 'FILE', ('S2 nouvelle graphie de la Maison, employeur précédent venu du registre' if same
+                            else 'S6 entité juridique qui ne porte pas le nom de la Maison, employeur précédent venu du registre')
+        if same and reg[src]['scope'] == 'SINGLE_BRAND':
+            return 'R2', 'S2b nouvelle graphie native de la Maison d’un portail relu'
+        return 'FILE', 'S6b nouvelle graphie native, autre employeur'
     return 'FILE', 'S8 autre motif'
 
 

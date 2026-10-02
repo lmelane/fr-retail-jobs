@@ -69,7 +69,7 @@ describe('TÉMOIN AVANT/APRÈS (non commité) — comportements du lot D-520 ide
     const before = await employerOf(key, 'p1');
     expect((await db.source.findUniqueOrThrow({ where: { key } })).portalScope).toBeNull();
     const stats = await ingest(key, [{ id: 'p1' }]);
-    expect(stats.errors).toBe(0);
+    expect(stats.writeFailures).toEqual({ 'EmployerIdentityReviewRequired:NATIVE_LABEL_OMITTED': 1 });
     expect((await employerOf(key, 'p1')).companyId).toBe(before.companyId);
   });
   it('règle 2 : nouvelle graphie de la Maison du registre, l’offre ne bouge pas', async () => {
@@ -77,7 +77,7 @@ describe('TÉMOIN AVANT/APRÈS (non commité) — comportements du lot D-520 ide
     const key = `maison${tag}`;
     await qualifiedSource(db, key);
     await db.source.update({ where: { key }, data: { portalScope: 'SINGLE_BRAND' } });
-    await ingest(key, [{ id: 'p1' }]);
+    await ingest(key, [{ id: 'p1', employer: `Maison${tag} France` }]);
     const before = await employerOf(key, 'p1');
     const stats = await ingest(key, [{ id: 'p1', employer: `MAISON${tag.toUpperCase()} S.A.S.` }]);
     expect(stats.errors).toBe(0);

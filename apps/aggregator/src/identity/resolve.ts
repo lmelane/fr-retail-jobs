@@ -8,13 +8,13 @@ import { normalizedEmployerName, sameEmployerTypography } from '../normalize/emp
 import { PIPELINE_VERSION } from '../pipeline/version.js';
 import { applyNativeEmployerRules, nativeEmployerRules } from './nativeClaims.js';
 import { followsPublisherTier, PublisherFollowDeferred, sourcePublishesEmployer, type PublisherFollow } from './publisherFollow.js';
-import { LABEL_OMITTED_RULE, SAME_MAISON_RULE, employerKeptWhenLabelOmitted, sameRegistryMaison } from './ordinaryIdentity.js';
+import { SAME_MAISON_RULE, employerKeptWhenLabelOmitted, sameRegistryMaison } from './ordinaryIdentity.js';
 
 type Company = Prisma.CompanyGetPayload<Record<string, never>>;
 export type EmployerResolution = {
   company: Company | null;
   rule: 'REVIEWED_ALIAS' | 'REVIEWED_MERGE' | 'NATIVE_SOURCE_LABEL' | 'NATIVE_EMPLOYER_BRAND_RELATION' | 'LEGACY_UNREVIEWED' | 'REVIEW_REQUIRED' | 'GROUP_LABEL_KEPT_HOUSE' | 'CERTIFIED_SINGLE_BRAND_PORTAL' | 'MULTI_BRAND_PORTAL_GROUP_OWNER' | 'PUBLISHER_FOLLOWED'
-    | typeof LABEL_OMITTED_RULE | typeof SAME_MAISON_RULE;
+    | typeof SAME_MAISON_RULE;
   rawEmployerName: string;
   normalizedEmployerName: string;
   aliasId?: string;
@@ -54,9 +54,10 @@ export async function resolveEmployer(tx: Prisma.TransactionClient, candidate: C
     // groupe propriétaire ; celle qui la nomme n'arrive jamais ici (son libellé est natif). Un portail non relu
     // (périmètre NULL) reste refusé.
     if (!identity || !identity.ownerName) {
-      // D-520 : l'éditeur a déjà nommé l'employeur de CETTE offre ; son silence d'aujourd'hui ne le défait pas.
+      // D-520 : l'éditeur a déjà nommé l'employeur de CETTE offre ; son silence d'aujourd'hui ne le défait pas. L'offre
+      // n'est pas réécrite (ni reconfirmée, R-143 §2) : elle garde sa publication et son employeur, sans revue humaine.
       const kept = await employerKeptWhenLabelOmitted(tx, candidate);
-      if (kept) return { company: kept, rule: LABEL_OMITTED_RULE, rawEmployerName, normalizedEmployerName: normalized };
+      if (kept) throw new EmployerIdentityReviewRequired(candidate.sourceKey, candidate.externalId, rawEmployerName, kept.name, 'NATIVE_LABEL_OMITTED');
       throw new EmployerIdentityReviewRequired(candidate.sourceKey, candidate.externalId, rawEmployerName, 'PORTAL_OWNER_NOT_CERTIFIED', 'PORTAL_OWNER_NOT_CERTIFIED');
     }
     const owner = await tx.company.findUnique({ where: { fashionjobsUrl: `resolved:${identity.ownerKey}` } });
@@ -65,9 +66,10 @@ export async function resolveEmployer(tx: Prisma.TransactionClient, candidate: C
       select: { job: { select: { company: true } } } });
     const previous = entry?.job ? await canonicalEmployer(tx, entry.job.company) : null;
     // Missing information cannot silently replace an already attributed employer — nor remove the one the publisher named.
-    if (previous && previous.id !== root?.id) {
-      const kept = await employerKeptWhenLabelOmitted(tx, candidate);
-      if (kept) return { company: kept, rule: LABEL_OMITTED_RULE, rawEmployerName, normalizedEmployerName: normalized };
+    // D-479 §2, D-515 §1 : sur un portail relu, MULTI_BRAND compris, l'offre déjà nommée garde sa Maison quand sa page
+    // ne la nomme plus ; elle n'est ni réécrite ni reconfirmée.
+    if (previous && previous.id !== root?.id && await employerKeptWhenLabelOmitted(tx, candidate)) {
+      throw new EmployerIdentityReviewRequired(candidate.sourceKey, candidate.externalId, rawEmployerName, previous.name, 'NATIVE_LABEL_OMITTED');
     }
     if (previous && previous.id !== root?.id) throw new EmployerIdentityReviewRequired(candidate.sourceKey, candidate.externalId, rawEmployerName, previous.name, 'PORTAL_OWNER_REPLACES_EMPLOYER');
     return { company: root, rule: identity.scope === 'SINGLE_BRAND' ? 'CERTIFIED_SINGLE_BRAND_PORTAL' : 'MULTI_BRAND_PORTAL_GROUP_OWNER',
@@ -182,10 +184,11 @@ export async function resolveEmployer(tx: Prisma.TransactionClient, candidate: C
           return { company: target, rule: 'PUBLISHER_FOLLOWED', rawEmployerName, normalizedEmployerName: normalized,
             followedFrom: { companyId: current.id, name: current.name, previousLabel: previous.normalizedEmployerName } };
         }
-        // D-520 : l'ancien et le nouveau libellé désignent la même Maison du registre de cette source (R-143 §5) — la
-        // graphie change, l'employeur non. L'offre reste où l'ancien libellé l'avait mise.
-        if (previous.canonicalEmployerId && await sameRegistryMaison(tx, candidate.sourceKey, previous.normalizedEmployerName, normalized,
-          previous.canonicalEmployerId, current.id)) {
+        // D-520 : l'ancien libellé, NATIF (l'éditeur, jamais le registre : lecture de D-506 §3), et le nouveau désignent la
+        // même Maison du registre de ce portail relu, sous les gardes de R-143 §5 : la graphie change, l'employeur non.
+        // L'offre reste où l'ancien libellé l'avait mise.
+        if (previous.canonicalEmployerId && await sameRegistryMaison(tx, { sourceKey: candidate.sourceKey, previousLabel: previous.normalizedEmployerName,
+          previousOrigin: previous.labelOrigin, label: normalized, previousEmployerId: previous.canonicalEmployerId, currentEmployer: current })) {
           return { company: current, rule: SAME_MAISON_RULE, rawEmployerName, normalizedEmployerName: normalized };
         }
         throw new EmployerIdentityReviewRequired(candidate.sourceKey, candidate.externalId, rawEmployerName, current.name, 'EMPLOYER_SPELLING_DIVERGED', employerChange);
