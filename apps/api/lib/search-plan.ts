@@ -47,6 +47,43 @@ export type CriteresRecherche = {
   fraicheur?: boolean;
   /** D-513, R-143 §6 : les offres qui ne précisent pas un filtre d'emploi restent servies, après (`annonceNonPrecisees`). */
   nonPrecisees?: boolean;
+  /**
+   * D-513, R-143 §7 : les préférences de l'inscrit, envoyées par le site (`pref_*`), pour le CLASSEMENT seulement : elles
+   * ne retiennent ni n'écartent aucune offre. Lues au seul contrat 2 (`fraicheur`) ; sans lui, ignorées.
+   */
+  preferences?: PreferencesClassement;
+};
+
+/** Les préférences de recherche (R-141 §1) telles que le classement les lit. Toutes facultatives. */
+export type PreferencesClassement = {
+  /** Codes de métier (R-140). */
+  metiers?: readonly string[];
+  /** Noms de ville, tels que l'inscrit les a posés (« Paris (75) » vaut « Paris »). */
+  lieux?: readonly string[];
+  /** Valeurs du filtre `contrat` (`CONTRATS_CLASSABLES`). */
+  contrats?: readonly string[];
+  /** `true` : ouvert au télétravail ; `false` : sur site. */
+  teletravail?: boolean;
+  /** Le salaire minimum, dans le vocabulaire des offres (`salaryCurrency`, `salaryPeriod`). */
+  salaire?: { montant: number; devise: string; periode: 'HOUR' | 'MONTH' | 'YEAR' };
+};
+
+/**
+ * Les contrats qu'une préférence peut porter : les valeurs du filtre `contrat` que la carte du profil propose
+ * (`CONTRATS_PREFERABLES` de `coches.ts` du site). Une autre valeur est ignorée, jamais transmise au SQL.
+ */
+export const CONTRATS_CLASSABLES: readonly string[] = ['PERMANENT', 'FIXED_TERM', 'TEMPORARY', 'APPRENTICESHIP', 'INTERNSHIP', 'FREELANCE'];
+
+/**
+ * R-143 §7 (D-513, précision « une recherche tapée compte ») — LE CANDIDAT NOUS A-T-IL DIT CE QU'IL CHERCHE ? Une
+ * requête tapée (`q`, une Maison tapée dans la barre comprise), un métier choisi (le filtre `metier`, que pose une
+ * suggestion reconnue de la barre ou l'accueil de l'inscrit), ou des préférences transmises. Un lieu seul, le filtre
+ * `maison` seul (bloc Maison, fiche fermée), un filtre d'emploi seul ne disent pas ce qu'il cherche : l'ordre reste
+ * celui de D-510 (le plus frais d'abord dans le cercle). Lecture de l'assistant (D-492) sous D-513.
+ */
+export type Pertinence = {
+  /** Les préférences retenues pour le classement, nettoyées (vides : absentes). */
+  preferences: PreferencesClassement;
 };
 
 /**
@@ -100,7 +137,32 @@ export type PlanRecherche = {
    * après les reconnues. Absente : le filtre strict d'avant, à l'identique (contrat 1).
    */
   nonPrecisees?: boolean;
+  /**
+   * D-513, R-143 §7 : au contrat 2, quand le candidat a dit ce qu'il cherche (`Pertinence`), l'ordre devient l'origine,
+   * puis le score de pertinence décru par l'âge (`classement.ts`), puis la fraîcheur, puis l'identifiant. Absente :
+   * l'ordre de D-510 (contrat 2) ou celui d'avant (contrat 1), à l'identique.
+   */
+  pertinence?: Pertinence;
 };
+
+/** Les préférences de classement, bornées et nettoyées ; `undefined` quand il ne reste rien. */
+export function nettoyerPreferences(p: PreferencesClassement | undefined): PreferencesClassement | undefined {
+  if (!p) return undefined;
+  const liste = (v: readonly string[] | undefined, garder: (x: string) => boolean = () => true) => {
+    const propres = [...new Set((v ?? []).map((x) => x.trim()).filter((x) => x && x.length <= 120 && garder(x)))].slice(0, 12);
+    return propres.length ? propres : undefined;
+  };
+  const metiers = liste(p.metiers, (x) => /^[A-Za-z0-9._:-]+$/.test(x));
+  const lieux = liste(p.lieux);
+  const contrats = liste(p.contrats, (x) => CONTRATS_CLASSABLES.includes(x));
+  const s = p.salaire;
+  const salaire = s && Number.isFinite(s.montant) && s.montant > 0 && /^[A-Z]{3}$/.test(s.devise) && ['HOUR', 'MONTH', 'YEAR'].includes(s.periode) ? s : undefined;
+  const propre: PreferencesClassement = {
+    ...(metiers ? { metiers } : {}), ...(lieux ? { lieux } : {}), ...(contrats ? { contrats } : {}),
+    ...(typeof p.teletravail === 'boolean' ? { teletravail: p.teletravail } : {}), ...(salaire ? { salaire } : {}),
+  };
+  return Object.keys(propre).length ? propre : undefined;
+}
 
 export function planifierRecherche(perimetre: Perimetre, criteres: CriteresRecherche): PlanRecherche {
   const q = (criteres.q ?? '').trim();
@@ -158,5 +220,14 @@ export function planifierRecherche(perimetre: Perimetre, criteres: CriteresReche
     ...(criteres.comprendre ? { comprendre: true } : {}),
     ...(criteres.fraicheur ? { fraicheur: true } : {}),
     ...(criteres.nonPrecisees ? { nonPrecisees: true } : {}),
+    ...pertinenceDe(criteres, q, selections),
   };
+}
+
+/** R-143 §7 : la pertinence, au seul contrat 2, quand une requête, un métier choisi ou des préférences la demandent. */
+function pertinenceDe(criteres: CriteresRecherche, q: string, selections: Selections): { pertinence?: Pertinence } {
+  if (!criteres.fraicheur) return {};
+  const preferences = nettoyerPreferences(criteres.preferences);
+  if (!q && !selections.metier?.length && !preferences) return {};
+  return { pertinence: { preferences: preferences ?? {} } };
 }

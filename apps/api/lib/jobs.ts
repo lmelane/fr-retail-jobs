@@ -9,16 +9,17 @@ import { langueDesLibelles, type LangueLibelles } from '@catwalks/db/presentatio
 import { getOptionalOccupationPresentation, type OptionalOccupationPresentation } from './occupations';
 import { prisma, Prisma, canonicalJobId } from '@catwalks/db';
 import type { DirectOffer } from '@prisma/client';
-import { ARITE_CLE_FRAICHEUR, ARITE_CLE_RECHERCHE, examenNouveautes, searchSummary, type CleFraicheur, type CleRecherche } from './job-search-query';
+import { ARITE_CLE_FRAICHEUR, ARITE_CLE_RECHERCHE, ARITE_CLE_SCORE, examenNouveautes, searchSummary, type CleFraicheur, type CleRecherche, type CleScore } from './job-search-query';
+import { instantDeReference, lireClassement, type Classement } from './classement';
 import { fraicheurDe, trierParFraicheur } from './fraicheur';
-import { CURSEUR_MAX, decoderCurseur, empreinteCriteres, encoderCurseur } from './curseur';
+import { CURSEUR_MAX, CurseurInvalideError, decoderCurseur, empreinteCriteres, encoderCurseur } from './curseur';
 import { directPubliable, directPubliableSql, directToRow, estIdDirect, estMandatCatwalks, idDirect, statutDirect } from './direct-offers';
 import { offerIdCandidates } from './offer-url';
 import { localeAffichage } from './presentation-locale';
 import { libellerFacettes, type FacetteServie } from './facettes';
 import { exigerPerimetre, resoudrePerimetre } from './perimetre';
 import { localiserPlan } from './geo';
-import { DIMENSIONS, planifierRecherche, type CriteresRecherche, type Dimension, type FiltreRefuse, type Selections } from './search-plan';
+import { DIMENSIONS, planifierRecherche, type CriteresRecherche, type Dimension, type FiltreRefuse, type PreferencesClassement, type Selections } from './search-plan';
 import type { LieuResolu } from './lieu';
 
 /** Sector keys are data, not an application enum. Unknown keys stay bound
@@ -128,6 +129,7 @@ export function parseFilters(params: Record<string, string | string[] | undefine
 
   const apres = params.apres;
   const jeton = (Array.isArray(apres) ? apres[0] : apres)?.trim().slice(0, CURSEUR_MAX + 1) || undefined;
+  const preferences = lirePreferences(one, many);
 
   return {
     q: (Array.isArray(params.q) ? params.q[0] : params.q)?.trim() || undefined,
@@ -137,7 +139,24 @@ export function parseFilters(params: Record<string, string | string[] | undefine
     marche: one('marche') ?? one('market'),
     apres: jeton,
     locale: one('locale'),
+    ...(preferences ? { preferences } : {}),
   };
+}
+
+/**
+ * R-143 §7 — les préférences de l'inscrit que le site transmet pour le classement (`pref_metier`, `pref_lieu`,
+ * `pref_contrat` répétés ; `pref_teletravail` = `oui` | `non` ; `pref_salaire` = `montant:DEVISE:HOUR|MONTH|YEAR`). Elles
+ * ne filtrent rien ; `planifierRecherche` les nettoie et ne les lit qu'au contrat 2.
+ */
+function lirePreferences(one: (k: string) => string | undefined, many: (k: string) => string[] | undefined): PreferencesClassement | undefined {
+  const teletravail = one('pref_teletravail');
+  const salaire = one('pref_salaire')?.match(/^(\d{1,9}(?:\.\d{1,2})?):([A-Za-z]{3}):(HOUR|MONTH|YEAR)$/);
+  const p: PreferencesClassement = {
+    metiers: many('pref_metier'), lieux: many('pref_lieu'), contrats: many('pref_contrat'),
+    ...(teletravail === 'oui' ? { teletravail: true } : teletravail === 'non' ? { teletravail: false } : {}),
+    ...(salaire ? { salaire: { montant: Number(salaire[1]), devise: salaire[2].toUpperCase(), periode: salaire[3] as 'HOUR' | 'MONTH' | 'YEAR' } } : {}),
+  };
+  return p.metiers || p.lieux || p.contrats || p.teletravail !== undefined || p.salaire ? p : undefined;
 }
 
 /** Deux lettres ISO-639-1 en minuscules, sinon rien : jamais une valeur libre en SQL. */
@@ -244,6 +263,11 @@ export type JobRow = {
   firstSeenAt: Date;
   /** Posée par la recherche seulement : absente sur une fiche ou une offre similaire. */
   correspondance?: Correspondance;
+  /**
+   * R-143 §7 : posé par la recherche au classement pertinent seulement (contrat 2, requête ou préférences) : les critères
+   * qui ont joué, l'âge de l'offre et son score (`classement.ts`). Absent dans l'ordre par fraîcheur et au contrat 1.
+   */
+  classement?: Classement;
 };
 
 /** Le périmètre servi, tel que la réponse le décrit au site. */
@@ -672,6 +696,8 @@ function empreintePlan(plan: ReturnType<typeof planifierRecherche>): string {
     ...(plan.fraicheur ? { tri: 'fraicheur' } : {}),
     // D-513 : les offres non précisées retenues changent la recherche et la clé ; sans elles, l'empreinte d'avant.
     ...(plan.nonPrecisees ? { nonPrecisees: 1 } : {}),
+    // R-143 §7 : le classement pertinent change l'ordre et la forme de la clé, ses préférences changent les scores.
+    ...(plan.pertinence ? { tri: 'pertinence', preferences: plan.pertinence.preferences } : {}),
     ...(p ? { proximite: { lieu: p.lieu ? point(p.lieu) : null, villes: p.villes ? p.villes.resolues.map(point).sort((x, y) => String(x[0]).localeCompare(String(y[0]))) : null } } : {}),
   });
 }
@@ -742,6 +768,22 @@ export async function examinerAlerte(filters: JobFilters, entreeApres: Date, pub
   }
 }
 
+/**
+ * R-143 §7 — un curseur du classement pertinent : six termes, dont l'instant de référence du score. Un instant futur, ou
+ * plus vieux que 30 jours, n'est pas un curseur servi par cette API : refusé comme une autre forme.
+ */
+const DUREE_CURSEUR_CLASSE_S = 30 * 86_400;
+function curseurClasse(jeton: string, empreinte: string): CleScore {
+  const k = decoderCurseur(jeton, empreinte, ARITE_CLE_SCORE);
+  const maintenant = instantDeReference();
+  const [t0, origine, nc, ns, nf, id] = k;
+  if (typeof t0 !== 'number' || !Number.isInteger(t0) || t0 > maintenant + 300 || t0 < maintenant - DUREE_CURSEUR_CLASSE_S) throw new CurseurInvalideError('instant');
+  if (![0, 1].includes(origine as number) || ![0, 1].includes(nc as number) || !Number.isSafeInteger(ns) || typeof nf !== 'number' || typeof id !== 'string') {
+    throw new CurseurInvalideError('clé');
+  }
+  return [t0, origine as number, nc as number, ns as number, nf, id];
+}
+
 export async function getJobs(filters: JobFilters): Promise<JobsResult> {
   const perimetre = exigerPerimetre(filters.marche);
   if (!process.env.DATABASE_URL) throw new DatabaseUnavailableError();
@@ -756,7 +798,9 @@ export async function getJobs(filters: JobFilters): Promise<JobsResult> {
   }
   const empreinte = empreintePlan(plan);
   // Un curseur d'autres critères est refusé AVANT la recherche (400 CURSEUR_INVALIDE).
-  const curseur = !filters.apres ? null : plan.fraicheur
+  const curseur = !filters.apres ? null : plan.pertinence
+    ? curseurClasse(filters.apres, empreinte)
+    : plan.fraicheur
     ? (decoderCurseur(filters.apres, empreinte, ARITE_CLE_FRAICHEUR) as CleFraicheur)
     : (decoderCurseur(filters.apres, empreinte, ARITE_CLE_RECHERCHE) as CleRecherche);
   try {
@@ -765,7 +809,9 @@ export async function getJobs(filters: JobFilters): Promise<JobsResult> {
     // D-513 : une offre servie alors qu'elle ne précise pas une dimension filtrée (contrat 2) le dit sur sa carte.
     const jobs = (await lignesDansLOrdre(summary.ids, taxonomy)).map((ligne): JobRow => {
       const dimensions = summary.nonPrecisees[ligne.id];
-      return { ...ligne, correspondance: dimensions?.length ? { statut: 'NON_CONFIRMEE', dimensions: [...dimensions] } : { statut: 'CONFIRMEE' } };
+      const classement = summary.classement[ligne.id];
+      return { ...ligne, correspondance: dimensions?.length ? { statut: 'NON_CONFIRMEE', dimensions: [...dimensions] } : { statut: 'CONFIRMEE' },
+        ...(classement ? { classement: lireClassement(classement) } : {}) };
     });
     return {
       jobs,

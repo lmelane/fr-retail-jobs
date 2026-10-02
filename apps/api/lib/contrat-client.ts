@@ -33,7 +33,8 @@ export function annonceComprehension(entetes: Pick<Headers, 'get'>): boolean {
 /**
  * D-510 : le tri par fraîcheur (Catwalks d'abord, puis la plus fraîche, `fraicheur.ts`), au même client. Il remplace,
  * à ce contrat, la distance (D-496), la pertinence et le classement par le titre (D-500 Q4) et le pays du visiteur
- * (D-419 §2) ; sans l'en-tête, l'ordre d'avant, à l'identique.
+ * (D-419 §2) ; sans l'en-tête, l'ordre d'avant, à l'identique. D-513, R-143 §7 : au même client, une requête, un métier
+ * choisi ou des préférences rendent l'ordre pertinent (`classement.ts`, `pertinenceDe` de `search-plan.ts`).
  */
 export function annonceFraicheur(entetes: Pick<Headers, 'get'>): boolean {
   return annonceProximite(entetes);

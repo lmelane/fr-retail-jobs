@@ -1,5 +1,5 @@
 import { getSearchContext, requireSearchIndex, SEARCH_VERSION } from './search-index';
-import { searchSql } from './search-sql';
+import { intituleSql, searchSql } from './search-sql';
 import { metiersSansIndex, repartitionDuPerimetre } from './search-chemin';
 import { publicJobSql } from '@catwalks/db/availability';
 import { Prisma, prisma } from '@catwalks/db';
@@ -9,6 +9,7 @@ import { DIMENSIONS, DIMENSIONS_NON_PRECISEES, type Dimension, type DimensionNon
 import { RAYON_MAX_KM, boiteSql, distanceKm, type VilleResolue } from './geo';
 import { appartient, cercles, facetteDeProximite, rayonsSql } from './proximite-sql';
 import { fraicheurSql } from './fraicheur';
+import { COLONNES_CLASSEMENT, POINTS, ageJoursSql, composantes, instantDeReference, scoreNegatifSql } from './classement';
 
 export type Facet = { value: string; count: number };
 
@@ -31,16 +32,28 @@ export const ARITE_CLE_RECHERCHE = 7;
 export type CleFraicheur = [number, number, number, string];
 export const ARITE_CLE_FRAICHEUR = 4;
 
+/**
+ * R-143 §7 (D-513) — la clé du classement pertinent, au contrat 2, quand le candidat a dit ce qu'il cherche : l'instant
+ * de référence du score (secondes, `classement.ts` : il fixe l'âge de chaque offre pour toutes les pages d'une même
+ * lecture), puis origine (Catwalks = 0), non précisée sur un filtre d'emploi (0/1), score négatif quantifié, fraîcheur
+ * négative, identifiant. Six termes : un curseur de l'ordre par fraîcheur (quatre) ou du contrat 1 (sept) est refusé par
+ * son arité autant que par l'empreinte (`empreintePlan`, qui porte `tri: 'pertinence'` et les préférences).
+ */
+export type CleScore = [number, number, number, number, number, string];
+export const ARITE_CLE_SCORE = 6;
+
 export type SearchSummary = {
   ids: string[];
   /** La clé de la dernière ligne servie quand une suite existe ; `null` à la fin. */
-  suivant: CleRecherche | CleFraicheur | null;
+  suivant: CleRecherche | CleFraicheur | CleScore | null;
   /** Toutes les offres du périmètre qui répondent à la recherche, confirmées ou non. */
   total: number;
   /** Celles dont chaque dimension tolérante filtrée est renseignée (D-435) ; toutes, sans `nonPrecisees`. */
   totalConfirmes: number;
   /** D-513 : pour chaque offre de la page qui ne précise pas une dimension filtrée, ces dimensions. */
   nonPrecisees: Record<string, DimensionNonPrecisee[]>;
+  /** R-143 §7 : au classement pertinent, les points de chaque offre de la page (`lireClassement`). */
+  classement: Record<string, (number | null)[]>;
   /** Toutes les offres publiables du périmètre, deux origines, sans aucun critère. */
   totalPerimetre: number;
   facettes: Record<Dimension, Facet[]>;
@@ -180,6 +193,13 @@ function retenuesSql(cs: ReturnType<typeof cercles>): Prisma.Sql {
 
 /** D-510 — la fraîcheur négative d'une ligne (secondes) : croissante comme le reste de la clé, la plus fraîche d'abord. */
 const fraicheurNegative = Prisma.sql`(-extract(epoch FROM ${fraicheurSql()}))::float8`;
+
+/** R-143 §7 — les points de chaque critère d'une ligne de `base` (`classement.ts`), colonnes `pi` … `ps` de `scoped`. */
+function colonnesClassement(plan: PlanRecherche): Prisma.Sql {
+  if (!plan.pertinence) return Prisma.empty;
+  const c = composantes(plan);
+  return Prisma.sql`, ${c.intitule} AS pi, ${c.lieu} AS pl, ${c.contrat} AS pc, ${c.teletravail} AS pt, ${c.salaire} AS ps`;
+}
 
 /** `WHERE` composé des dimensions sélectionnées, sauf celle qu'on exclut. */
 function restriction(plan: PlanRecherche, sauf?: Dimension): Prisma.Sql {
@@ -323,19 +343,24 @@ async function sqlBase(plan: PlanRecherche, asOf: Date): Promise<Prisma.Sql> {
   const search = intention ? searchSql(intention, { metiersSansIndex: !!repartition && metiersSansIndex(intention, repartition) }) : null;
   // D-510 : triée par fraîcheur, la recherche ne calcule pas la pertinence ; la correspondance (`condition`) reste.
   const score = search && !plan.fraicheur ? search.score : Prisma.sql`0`;
+  // R-143 §7 : au classement pertinent, les points de l'intitulé (`ri`) et les colonnes que les critères relisent. Absents
+  // sinon : la requête de D-510 et celle du contrat 1 restent celles d'avant, aux espaces près (152 requêtes comparées).
+  const ri = (t: Prisma.Sql) => (plan.pertinence && intention ? intituleSql(intention, POINTS.intitule, t) : null) ?? Prisma.sql`NULL::int`;
+  const classementJ = plan.pertinence ? Prisma.sql`, ${ri(Prisma.sql`j."occupationCode"`)} AS ri ${COLONNES_CLASSEMENT.agregee}` : Prisma.empty;
+  const classementD = plan.pertinence ? Prisma.sql`, ${ri(Prisma.sql`d."occupationCode"`)} ${COLONNES_CLASSEMENT.directe}` : Prisma.empty;
   if (search) { conditions.push(search.condition); conditionsDirect.push(search.condition); }
   const aggregateIndex = search ? Prisma.sql`JOIN "SearchDocument" s ON s.id=j.id AND s.version=${SEARCH_VERSION} AND s.country IN (${pays})` : Prisma.empty;
   const directIndex = search ? Prisma.sql`JOIN "SearchDocument" s ON s.id='cw_'||d.id AND s.version=${SEARCH_VERSION} AND s.country IN (${pays})` : Prisma.empty;
   return Prisma.sql`
       SELECT j.id, 1 AS origine, j."occupationCode", j."titleRoles", j."countryCode", lower(trim(j.city)) AS ville, j."employmentTerm", j."workTime",
         j."programType", j."engagementType", j."postedAt", j."firstSeenAt", j.language, c.id AS "companyId", c.name AS maison, c."sectorCodes", c."parentGroup" AS groupe,
-        ${score} AS score ${colonnesDistance(plan, 'j')}
+        ${score} AS score ${colonnesDistance(plan, 'j')} ${classementJ}
       FROM "Job" j JOIN "Company" c ON c.id = j."companyId" ${aggregateIndex}
       WHERE ${Prisma.join(conditions, ' AND ')}
       UNION ALL
       SELECT ${PREFIXE_DIRECT} || d.id, 0 AS origine, d."occupationCode", d."titleRoles", d."countryCode", lower(trim(d.city)), d."employmentTerm", d."workTime",
         d."programType", d."engagementType", d."postedAt", d."receivedAt", d.language, d."companyId", COALESCE(dc.name, d.company), d."sectorCodes", dc."parentGroup",
-        ${score} ${colonnesDistance(plan, 'd')}
+        ${score} ${colonnesDistance(plan, 'd')} ${classementD}
       FROM "DirectOffer" d LEFT JOIN "Company" dc ON dc.id = d."companyId" ${directIndex}
       WHERE ${Prisma.join(conditionsDirect, ' AND ')}`;
 }
@@ -347,7 +372,8 @@ export type ExamenNouveautes = {
   nouvelles: number;
   /**
    * Les premières nouvelles, dans l'ordre de `/emplois` (R-126) : Catwalks d'abord, score, publication, entrée ; au
-   * contrat 2 (D-510), Catwalks d'abord puis la plus fraîche.
+   * contrat 2 (D-510), Catwalks d'abord puis la plus fraîche ; au contrat 2 avec une requête ou un métier (R-143 §7),
+   * Catwalks d'abord puis le score décru par l'âge (`classement.ts`).
    */
   ids: string[];
 };
@@ -371,15 +397,17 @@ export async function examenNouveautes(
   const cs = cercles(plan);
   const prox = cs.length > 0;
   const retenues = prox ? Prisma.sql`retenues` : Prisma.sql`scoped`;
-  const ordre = plan.fraicheur ? Prisma.sql`origine, nf, id` : Prisma.sql`origine, ns, np, nf, id`;
+  // R-143 §7 : une alerte qui porte une requête rend ses nouvelles dans l'ordre pertinent de la page, à l'instant de l'examen.
+  const t0 = plan.pertinence ? instantDeReference() : 0;
+  const ordre = plan.pertinence ? Prisma.sql`origine, ns, nf, id` : plan.fraicheur ? Prisma.sql`origine, nf, id` : Prisma.sql`origine, ns, np, nf, id`;
   const [r] = await prisma.$queryRaw<Array<{ total: number; nouvelles: number; ids: string[] | null }>>(Prisma.sql`
     WITH base AS MATERIALIZED (${base}),
     -- D-513 : la recherche de la page, offres non précisées comprises ; l'alerte n'envoie que les confirmées.
     scoped AS MATERIALIZED (SELECT b.id, b.origine, b."postedAt", b."firstSeenAt", b.score, ${confirmeSql(plan)} AS confirme
-      ${prox ? Prisma.sql`, ${colonnesProximite(cs)}` : Prisma.empty} FROM base b WHERE ${restriction(plan)}),
+      ${prox ? Prisma.sql`, ${colonnesProximite(cs)}` : Prisma.empty} ${colonnesClassement(plan)} FROM base b WHERE ${restriction(plan)}),
     ${prox ? retenuesSql(cs) : Prisma.empty}
     nouvelles AS MATERIALIZED (
-      SELECT id, origine, ${plan.fraicheur ? Prisma.sql`${fraicheurNegative} AS nf`
+      SELECT id, origine, ${plan.pertinence ? Prisma.sql`${scoreNegatifSql(t0)} AS ns, ${fraicheurNegative} AS nf` : plan.fraicheur ? Prisma.sql`${fraicheurNegative} AS nf`
         : Prisma.sql`-score AS ns, coalesce(-extract(epoch FROM "postedAt"), 1e15)::float8 AS np, (-extract(epoch FROM "firstSeenAt"))::float8 AS nf`}
       FROM ${retenues} WHERE confirme AND "firstSeenAt" > (${entreeApres}::timestamptz AT TIME ZONE 'UTC')
         AND ("postedAt" IS NULL OR "postedAt" >= (${publieeApres}::timestamptz AT TIME ZONE 'UTC'))
@@ -390,9 +418,30 @@ export async function examenNouveautes(
   return { total: r.total, nouvelles: r.nouvelles, ids: r.ids ?? [] };
 }
 
+/** Les facettes d'une recherche (une seule définition pour les deux ordres de la page). */
+function facettesSql(plan: PlanRecherche, prox: boolean): Prisma.Sql {
+  return Prisma.sql`      jsonb_build_object(
+        'pays', ${facette(Prisma.sql`b."countryCode"`, plan, 'pays')},
+        'metier', ${prox ? facetteDeProximite(plan, 'metier', { source: Prisma.sql`base b CROSS JOIN LATERAL unnest(${metiersDe}) code`,
+          valeur: Prisma.sql`code`, filtre: restriction(plan, 'metier') }) : Prisma.sql`(SELECT coalesce(jsonb_agg(jsonb_build_object('value', code, 'count', n) ORDER BY n DESC, code), '[]'::jsonb)
+          FROM (SELECT code, count(*)::int AS n FROM base b CROSS JOIN LATERAL unnest(${metiersDe}) code
+            WHERE ${restriction(plan, 'metier')} GROUP BY code) f)`},
+        'secteur', ${prox ? facetteDeProximite(plan, 'secteur', { source: Prisma.sql`base b CROSS JOIN LATERAL unnest(${secteursDe}) code`,
+          valeur: Prisma.sql`code`, filtre: restriction(plan, 'secteur') }) : Prisma.sql`(SELECT coalesce(jsonb_agg(jsonb_build_object('value', code, 'count', n) ORDER BY n DESC, code), '[]'::jsonb)
+          FROM (SELECT code, count(*)::int AS n FROM base b CROSS JOIN LATERAL unnest(${secteursDe}) code WHERE ${restriction(plan, 'secteur')} GROUP BY code) f)`},
+        'contrat', ${plan.perimetre.marche?.contratUnifie ? facetteContratUnifie(plan) : facette(Prisma.sql`b."employmentTerm"`, plan, 'contrat')},
+        'temps', ${facette(Prisma.sql`b."workTime"`, plan, 'temps')},
+        'programme', ${facette(Prisma.sql`b."programType"`, plan, 'programme')},
+        'ville', ${facette(Prisma.sql`b.ville`, plan, 'ville', 60)},
+        'maison', ${facette(Prisma.sql`b.maison`, plan, 'maison')},
+        'groupe', ${facette(Prisma.sql`b.groupe`, plan, 'groupe')},
+        'langue', ${facette(Prisma.sql`b.language`, plan, 'langue')}
+      )`;
+}
+
 export async function searchSummary(
   plan: PlanRecherche,
-  curseur: CleRecherche | CleFraicheur | null,
+  curseur: CleRecherche | CleFraicheur | CleScore | null,
   pageSize: number,
 ): Promise<SearchSummary> {
   const asOf = new Date();
@@ -410,6 +459,7 @@ export async function searchSummary(
   const fraicheur = !!plan.fraicheur;
   const priorite = !fraicheur && !prox && plan.prioritePays
     ? Prisma.sql`(CASE WHEN b."countryCode" = ${plan.prioritePays} THEN 0 ELSE 1 END)` : Prisma.sql`0`;
+  if (plan.pertinence) return pageClassee(plan, base, curseur as CleScore | null, pageSize, asOf);
   const colonnesCle = fraicheur ? Prisma.sql`origine, nc, nf, id` : Prisma.sql`origine, nc, pri, ns, np, nf, id`;
   const apres = !curseur ? Prisma.empty : fraicheur
     ? Prisma.sql`WHERE (origine, nc, nf, id) > (${curseur[0]}::int, ${curseur[1]}::int, ${curseur[2]}::float8, ${curseur[3]}::text)`
@@ -433,23 +483,7 @@ export async function searchSummary(
       (SELECT count(*)::int FROM ${retenues} WHERE confirme) AS "totalConfirmes",
       (SELECT jsonb_agg(jsonb_build_object('id', id, 'k', jsonb_build_array(${colonnesCle}), 'n', npr) ORDER BY ${colonnesCle})
          FROM (SELECT * FROM cles ${apres} ORDER BY ${colonnesCle} LIMIT ${pageSize + 1}) p) AS page,
-      jsonb_build_object(
-        'pays', ${facette(Prisma.sql`b."countryCode"`, plan, 'pays')},
-        'metier', ${prox ? facetteDeProximite(plan, 'metier', { source: Prisma.sql`base b CROSS JOIN LATERAL unnest(${metiersDe}) code`,
-          valeur: Prisma.sql`code`, filtre: restriction(plan, 'metier') }) : Prisma.sql`(SELECT coalesce(jsonb_agg(jsonb_build_object('value', code, 'count', n) ORDER BY n DESC, code), '[]'::jsonb)
-          FROM (SELECT code, count(*)::int AS n FROM base b CROSS JOIN LATERAL unnest(${metiersDe}) code
-            WHERE ${restriction(plan, 'metier')} GROUP BY code) f)`},
-        'secteur', ${prox ? facetteDeProximite(plan, 'secteur', { source: Prisma.sql`base b CROSS JOIN LATERAL unnest(${secteursDe}) code`,
-          valeur: Prisma.sql`code`, filtre: restriction(plan, 'secteur') }) : Prisma.sql`(SELECT coalesce(jsonb_agg(jsonb_build_object('value', code, 'count', n) ORDER BY n DESC, code), '[]'::jsonb)
-          FROM (SELECT code, count(*)::int AS n FROM base b CROSS JOIN LATERAL unnest(${secteursDe}) code WHERE ${restriction(plan, 'secteur')} GROUP BY code) f)`},
-        'contrat', ${plan.perimetre.marche?.contratUnifie ? facetteContratUnifie(plan) : facette(Prisma.sql`b."employmentTerm"`, plan, 'contrat')},
-        'temps', ${facette(Prisma.sql`b."workTime"`, plan, 'temps')},
-        'programme', ${facette(Prisma.sql`b."programType"`, plan, 'programme')},
-        'ville', ${facette(Prisma.sql`b.ville`, plan, 'ville', 60)},
-        'maison', ${facette(Prisma.sql`b.maison`, plan, 'maison')},
-        'groupe', ${facette(Prisma.sql`b.groupe`, plan, 'groupe')},
-        'langue', ${facette(Prisma.sql`b.language`, plan, 'langue')}
-      ) AS facettes
+${facettesSql(plan, prox)} AS facettes
   `), compterPerimetre(plan.perimetre.pays, asOf)]);
   const page = summary.page ?? [];
   const servies = page.slice(0, pageSize);
@@ -459,6 +493,50 @@ export async function searchSummary(
     total: summary.total,
     totalConfirmes: summary.totalConfirmes,
     nonPrecisees: Object.fromEntries(servies.filter((p) => p.n?.length).map((p) => [p.id, p.n])),
+    classement: {},
+    totalPerimetre,
+    facettes: summary.facettes,
+  };
+}
+
+/**
+ * R-143 §7 — LA PAGE CLASSÉE : la même recherche (base, filtres, cercles, totaux, facettes), dans l'ordre pertinent. Le
+ * score dépend de l'âge de chaque offre ; l'instant de référence `t0` vient du curseur (pages suivantes) ou de la
+ * première page, pour qu'une lecture page après page ne voie ni doublon ni trou quand le temps passe.
+ */
+async function pageClassee(plan: PlanRecherche, base: Prisma.Sql, curseur: CleScore | null, pageSize: number, asOf: Date): Promise<SearchSummary> {
+  const cs = cercles(plan);
+  const prox = cs.length > 0;
+  const retenues = prox ? Prisma.sql`retenues` : Prisma.sql`scoped`;
+  const t0 = curseur ? curseur[0] : instantDeReference(asOf.getTime());
+  const colonnesCle = Prisma.sql`origine, nc, ns, nf, id`;
+  const apres = curseur
+    ? Prisma.sql`WHERE (origine, nc, ns, nf, id) > (${curseur[1]}::int, ${curseur[2]}::int, ${curseur[3]}::bigint, ${curseur[4]}::float8, ${curseur[5]}::text)`
+    : Prisma.empty;
+  const [[summary], totalPerimetre] = await Promise.all([prisma.$queryRaw<Array<Omit<SearchSummary, 'ids' | 'suivant' | 'totalPerimetre' | 'nonPrecisees' | 'classement'> & { page: Array<{ id: string; k: CleScore; n: DimensionNonPrecisee[]; c: (number | null)[] }> | null }>>(Prisma.sql`
+    WITH base AS MATERIALIZED (${base}), scoped AS MATERIALIZED (
+      SELECT b.id, b.origine, b."countryCode", b."postedAt", b."firstSeenAt", ${confirmeSql(plan)} AS confirme, ${nonPreciseesSql(plan)} AS npr
+        ${prox ? Prisma.sql`, ${colonnesProximite(cs)}` : Prisma.empty} ${colonnesClassement(plan)}
+      FROM base b WHERE ${restriction(plan)}
+    ), ${prox ? retenuesSql(cs) : Prisma.empty}
+    cles AS (SELECT id, origine, (NOT confirme)::int AS nc, ${scoreNegatifSql(t0)} AS ns, ${fraicheurNegative} AS nf, npr,
+      jsonb_build_array(pi, pl, pc, pt, ps, round(${ageJoursSql(t0)}::numeric, 2)) AS c FROM ${retenues})
+    SELECT
+      (SELECT count(*)::int FROM ${retenues}) AS total,
+      (SELECT count(*)::int FROM ${retenues} WHERE confirme) AS "totalConfirmes",
+      (SELECT jsonb_agg(jsonb_build_object('id', id, 'k', jsonb_build_array(${t0}::bigint, ${colonnesCle}), 'n', npr, 'c', c) ORDER BY ${colonnesCle})
+         FROM (SELECT * FROM cles ${apres} ORDER BY ${colonnesCle} LIMIT ${pageSize + 1}) p) AS page,
+${facettesSql(plan, prox)} AS facettes
+  `), compterPerimetre(plan.perimetre.pays, asOf)]);
+  const page = summary.page ?? [];
+  const servies = page.slice(0, pageSize);
+  return {
+    ids: servies.map((p) => p.id),
+    suivant: page.length > pageSize ? servies[servies.length - 1].k : null,
+    total: summary.total,
+    totalConfirmes: summary.totalConfirmes,
+    nonPrecisees: Object.fromEntries(servies.filter((p) => p.n?.length).map((p) => [p.id, p.n])),
+    classement: Object.fromEntries(servies.map((p) => [p.id, p.c])),
     totalPerimetre,
     facettes: summary.facettes,
   };

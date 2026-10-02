@@ -1,6 +1,6 @@
 import { Prisma } from '@catwalks/db';
 import { createHash } from 'node:crypto';
-import { searchWords, type SearchClause, type SearchIntent } from './search-intent';
+import { MOTS_DE_LIAISON, searchWords, type SearchClause, type SearchIntent } from './search-intent';
 
 const identity = (kind: string, key: string) => `cwi${createHash('md5').update(kind + ':' + key).digest('hex')}`;
 const identityQuery = (kind: string, keys: string[]) => Prisma.sql`to_tsquery('simple', ${keys.map(k => identity(kind, k)).join(' | ')})`;
@@ -11,6 +11,39 @@ function textQuery(c: SearchClause) {
     return '(' + searchWords(p).map(w => `'${w}'${effectiveWeights ? ':' + effectiveWeights : ''}`).join(' <-> ') + ')';
   }).join(' | ');
   return Prisma.sql`to_tsquery('simple', ${query})`;
+}
+/**
+ * Les expressions d'une clause cherchées dans le seul intitulé (poids A du document) : chaque mot de l'expression, hors
+ * mots de liaison, présent dans l'intitulé, dans n'importe quel ordre. Pas une suite de mots : l'écriture inclusive
+ * découpe « Conseiller·ère de vente » en « conseiller ere de vente », et une suite exacte « conseiller de vente » ne
+ * reconnaîtrait plus l'intitulé qui nomme exactement la recherche (audit métier R-143 §7 du 02/10/2026).
+ */
+function titreQuery(c: SearchClause) {
+  const query = c.phrases.map(p => {
+    const mots = searchWords(p);
+    const utiles = mots.filter(w => !MOTS_DE_LIAISON.has(w));
+    return '(' + (utiles.length ? utiles : mots).map(w => `'${w}':A`).join(' & ') + ')';
+  }).join(' | ');
+  return Prisma.sql`to_tsquery('simple', ${query})`;
+}
+/**
+ * R-143 §7 (D-513) — LES POINTS DE L'INTITULÉ d'une offre trouvée par la requête (`classement.ts`) : `requete` si son
+ * intitulé contient la requête (chaque clause de métier, de famille ou de mots y est écrite, sous l'une de ses
+ * expressions), `metier` si elle porte un métier cherché (code ou métier lu dans l'intitulé), 0 si elle n'est trouvée que
+ * par sa description ou ses missions. Reprend le rang de D-500 Q4, retiré par D-510 quand la fraîcheur triait seule.
+ * `null` : la requête ne nomme ni métier, ni famille, ni mots (une Maison seule) ; l'intitulé n'est pas comparé.
+ */
+export function intituleSql(intent: SearchIntent, points: { requete: number; metier: number }, metierPrincipal: Prisma.Sql): Prisma.Sql | null {
+  const lues = intent.clauses.filter(c => !c.exclude && ['role', 'family', 'text'].includes(c.kind) && c.phrases.length);
+  if (!lues.length) return null;
+  const roles = lues.filter(c => c.kind === 'role').flatMap(c => c.keys);
+  const titre = Prisma.sql`s.vector @@ (${Prisma.join(lues.map(titreQuery), ' && ')})`;
+  // Le métier principal de l'offre (`occupationCode`) est le métier tapé : 40, comme le même métier choisi par le filtre
+  // `metier` (`classement.ts`) ; le métier seulement lu dans l'intitulé (identité `role`) : 25 (audit technique).
+  return roles.length
+    ? Prisma.sql`(CASE WHEN ${titre} OR ${metierPrincipal} IN (${Prisma.join(roles.map(r => Prisma.sql`${r}`))}) THEN ${points.requete}
+        WHEN s.vector @@ ${identityQuery('role', roles)} THEN ${points.metier} ELSE 0 END)`
+    : Prisma.sql`(CASE WHEN ${titre} THEN ${points.requete} ELSE 0 END)`;
 }
 /** One GIN condition: each resolved intention is required, with native text OR
  * semantic evidence within it. Fixed alias s; user values are all bound.
