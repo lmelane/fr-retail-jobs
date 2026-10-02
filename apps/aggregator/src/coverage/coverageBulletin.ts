@@ -13,6 +13,7 @@ import { ANOMALY, CAUSE_GRAVITY, newAlerts, REFERENCE_RUNS, MIN_REFERENCE_RUNS, 
 import type { MaskedStock } from './coverageReading.js';
 import type { Indicator } from './loopIndicators.js';
 import type { AmbiguousSource } from '../registry/explicitRegistry.js';
+import { exposureLines, type ExposureSummary } from './offerExposure.js';
 
 const NUMBER = new Intl.NumberFormat('fr-FR');
 const n = (value: number) => NUMBER.format(Math.round(value));
@@ -156,7 +157,8 @@ export function registryLines(registry: RegistryReading | null | undefined): str
     ...groups.map(([why, list]) => `${WHY_LABEL[why]} : ${list.slice(0, 30).map(a => `${a.key} (${a.status})`).join(', ')}${list.length > 30 ? ` et ${list.length - 30} autres` : ''}.`)];
 }
 
-export function bulletinHtml(evaluation: CoverageEvaluation, indicators: readonly Indicator[], meta: { at: Date; masked?: MaskedStock | null; registry?: RegistryReading | null }): string {
+export function bulletinHtml(evaluation: CoverageEvaluation, indicators: readonly Indicator[],
+  meta: { at: Date; masked?: MaskedStock | null; registry?: RegistryReading | null; exposure?: ExposureSummary | null }): string {
   const events = evaluation.findings.filter(f => f.kind === 'SYNTHESE');
   const section = (gravity: Gravity, intro: string) => {
     const list = evaluation.findings.filter(f => f.gravity === gravity && f.kind !== 'SYNTHESE');
@@ -189,6 +191,10 @@ export function bulletinHtml(evaluation: CoverageEvaluation, indicators: readonl
     ${section('A_VERIFIER', 'Offres masquées ou retirées sans preuve de fin : vérifier sur le site de la source qu’elles n’y sont plus.')}
     ${section('INFORMATION', 'Normal : rien à faire.')}
     ${meta.registry ? `${heading('Registre des sources (D-520)')}${registryLines(meta.registry).map(text => line(esc(text), false)).join('')}` : ''}
+    ${heading('État d’exposition des offres')}
+    ${(meta.exposure ? exposureLines(meta.exposure) : ['Répartition par état d’exposition illisible à ce RUN : relancer la commande pourquoi-offre --repartition.'])
+      .map(text => line(esc(text), false)).join('')}
+    ${line('Le détail d’une offre, d’une Maison ou d’un marché : commande pourquoi-offre.')}
     ${heading('Les questions de la boucle')}
     ${indicatorBlocks}
     ${line(`${esc(rules)} Rejouer en lecture seule, sans envoi : commande coverage.`)}

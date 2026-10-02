@@ -19,9 +19,14 @@ import { bulletinHtml, bulletinSubject, type RegistryReading } from './coverageB
 import { ambiguousSources, readRegistrySources } from '../registry/explicitRegistry.js';
 import { readCoverageBefore, readCoverageHistory, readCoverageState, writeCoverageSnapshot, type CoverageBefore, type MaskedStock } from './coverageReading.js';
 import { readLoopIndicators, type Indicator, type ProbeSummary } from './loopIndicators.js';
+import { readExposureDistribution, type ExposureDistribution } from './offerExposureReading.js';
+import { log } from '../observability/logger.js';
 
 export type CoverageReview = { at: Date; evaluation: CoverageEvaluation; indicators: Indicator[]; masked: MaskedStock;
-  registry: RegistryReading; written: number; sent: boolean; dryRun: boolean };
+  registry: RegistryReading;
+  /** D-520 §3 : la répartition des offres par état d'exposition, au même instant ; null si elle n'a pu être lue (dit au bulletin). */
+  exposure: ExposureDistribution | null;
+  written: number; sent: boolean; dryRun: boolean };
 
 /**
  * D-520 §2 : les sources hors service sans explication, à l'explication périmée, ou dont la date de réexamen est passée
@@ -59,21 +64,32 @@ export async function runCoverageReview(prisma: PrismaClient, options: { runId?:
   const window = referenceWindow(history);
   const startedAt = await runStartedAt(prisma, options.runId ?? null);
   // Un seul instant cohérent pour l'état comparé : lecture seule, instantané répétable.
-  const state = await prisma.$transaction(async tx => {
+  const { state, exposure } = await prisma.$transaction(async tx => {
     await tx.$executeRaw`SET TRANSACTION READ ONLY`;
-    return readCoverageState(tx, { at, before: options.before ?? null, runStartedAt: startedAt,
+    const state = await readCoverageState(tx, { at, before: options.before ?? null, runStartedAt: startedAt,
       horizons: { RUN: options.before?.at ?? null, LAST: window[0]?.takenAt ?? null, WINDOW: window[window.length - 1]?.takenAt ?? null } });
-  }, { isolationLevel: 'RepeatableRead', timeout: 120_000, maxWait: 10_000 });
+    // D-520 §3 : l'état d'exposition de toutes les offres, au même instant. Son échec ne retient jamais l'alerte de couverture :
+    // le bulletin part, et dit que la répartition manque.
+    const exposure = await tx.$executeRaw`SAVEPOINT exposition`
+      .then(() => readExposureDistribution(tx, { at }))
+      .catch(async (error: unknown) => {
+        await tx.$executeRaw`ROLLBACK TO SAVEPOINT exposition`;
+        log.assertHealthy();
+        await log.error('coverage.exposure_failed', { error });
+        return null;
+      });
+    return { state, exposure };
+  }, { isolationLevel: 'RepeatableRead', timeout: 180_000, maxWait: 10_000 });
   const evaluation = evaluateCoverage({ entities: state.entities, knownSources: state.knownSources, history });
   await sourceLinks(prisma, evaluation);
   const indicators = await readLoopIndicators(prisma, { at, probe: options.probe ?? null, prisma });
   const registry = await readRegistry(prisma, at);
   // L'envoi d'abord : une photographie ne marque une alerte « posée » que si le bulletin qui la porte est parti.
-  const sent = dryRun ? false : await sendOperatorEmail({ subject: bulletinSubject(evaluation), html: bulletinHtml(evaluation, indicators, { at, masked: state.masked, registry }),
+  const sent = dryRun ? false : await sendOperatorEmail({ subject: bulletinSubject(evaluation), html: bulletinHtml(evaluation, indicators, { at, masked: state.masked, registry, exposure }),
     context: { findings: evaluation.findings.length, newAlerts: newAlerts(evaluation).length } });
   const rows = sent ? evaluation.rows : evaluation.rows.map(row => ({ ...row, cause: null, gravity: null }));
   const written = dryRun ? 0 : await writeCoverageSnapshot(prisma, { runId: options.runId ?? null, takenAt: at, rows });
-  return { at, evaluation, indicators, masked: state.masked, registry, written, sent, dryRun };
+  return { at, evaluation, indicators, masked: state.masked, registry, exposure, written, sent, dryRun };
 }
 
 /**

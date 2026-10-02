@@ -239,9 +239,11 @@ try {
     /** R-143 §11 — l'alerte de couverture et le bulletin de la boucle, rejoués sans photographie ni e-mail. */
     const { runCoverageReview } = await import('./coverage/coverageReview.js');
     const { bulletinSubject, bulletinText } = await import('./coverage/coverageBulletin.js');
+    const { exposureLines } = await import('./coverage/offerExposure.js');
     const review = await runCoverageReview(prisma, { dryRun: true });
     await log.info('command.result', { ok: true, command, dryRun: true, subject: bulletinSubject(review.evaluation),
-      referenceRuns: review.evaluation.referenceRuns, lines: bulletinText(review.evaluation, review.indicators) });
+      referenceRuns: review.evaluation.referenceRuns, lines: bulletinText(review.evaluation, review.indicators),
+      exposure: review.exposure ? exposureLines(review.exposure) : null });
   } else if (command === 'probe-apply-links') {
     /** R-143 §2 — une passe de la sonde des liens « Postuler » ; `--dry-run` lit les pages sans rien écrire. Sans lui, le
      * bulletin de couverture part comme au RUN (D-516 §2). */

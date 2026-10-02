@@ -17,6 +17,7 @@
     "test": "npm run test:unit && npm run test:integration",
     "check:layout": "node scripts/check-layout.mjs",
     "verif:couverture": "tsx scripts/ops/verif-couverture-registre.mts",
+    "pourquoi-offre": "tsx scripts/ops/pourquoi-offre.mts",
     "verif:bash-live": "tsx scripts/ops/verif-bash-live.mts",
     "build:local": "node scripts/build-local.mjs"
   },

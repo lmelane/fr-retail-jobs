@@ -119,6 +119,10 @@ describe('le premier RUN qui masque, sans aucune photographie (CoverageSnapshot 
     expect(review.sent).toBe(true);
     expect(mails).toHaveLength(1);
     expect(mails[0].subject).toBe('[Catwalks] Couverture : 1 à réparer, 2 à vérifier (1 pour information) · boucle candidat');
+    // D-520 §3 : le même instant dit l'état d'exposition de chaque offre ; les 12 masquées et les 12 fermées ont leur cause.
+    expect(review.exposure?.counts.byCause).toMatchObject({ 'MASQUEE/NON_RECONFIRMEE': 12, 'FERMEE/PAR_LA_SOURCE': 12 });
+    expect(review.exposure?.counts.byState.INEXPLIQUEE).toBe(0);
+    expect(mails[0].htmlContent.replace(/[\u202f\u00a0]/g, ' ')).toContain('Masquées, par cause : non reconfirmée : une collecte crédible de sa source ne la liste plus 12.');
     const row = await prisma.coverageSnapshot.findFirstOrThrow({ where: { takenAt: review.at, scope: 'MAISON', key: hm.id } });
     expect(row).toMatchObject({ served: 18, reference: 30, cause: 'NON_REVUE', gravity: 'A_VERIFIER' });
   });
