@@ -51,6 +51,8 @@ export const LABEL_TO_ISO: Record<string, string> = {
   // Chine et ses régions administratives : rendues sous des libellés très
   // variables ("Chinese Mainland", "Mainland China", "Hong Kong S.A.R.").
   china: 'CN', chine: 'CN', 'chinese mainland': 'CN', 'mainland china': 'CN',
+  // Workday de Nike (`jobPostingInfo.country.descriptor`) : 116 offres servies sans pays le 02/10/2026 (D-520, offres sans pays).
+  'china mainland': 'CN',
   'hong kong': 'HK', 'hong kong s.a.r.': 'HK', 'hong kong sar': 'HK', 'hong kong, ras chine': 'HK',
   macao: 'MO', 'macao s.a.r.': 'MO', 'macau sar': 'MO', 'macao, ras chine': 'MO',
   taiwan: 'TW', taïwan: 'TW', 'taiwan region': 'TW',

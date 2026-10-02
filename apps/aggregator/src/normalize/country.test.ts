@@ -25,6 +25,8 @@ describe('normalizeCountry', () => {
   it('rattache les libellés Chine / régions administratives', () => {
     expect(normalizeCountry('Chinese Mainland')).toBe('CN');
     expect(normalizeCountry('Mainland China')).toBe('CN');
+    // D-520, offres sans pays (02/10/2026) : le champ pays natif Workday de Nike, 116 offres servies sans pays.
+    expect(normalizeCountry('China Mainland')).toBe('CN');
     expect(normalizeCountry('Hong Kong S.A.R.')).toBe('HK');
     expect(normalizeCountry('Macao, RAS Chine')).toBe('MO');
   });
