@@ -90,7 +90,10 @@ export const PAGE_SIZE = 25;
  * `programType`, `market`) restent LUES pour les liens déjà partagés ; rien ne
  * les émet plus.
  */
-export function parseFilters(params: Record<string, string | string[] | undefined>): JobFilters {
+type Params = Record<string, string | string[] | undefined>;
+
+/** Les deux lectures d'un ensemble de paramètres : une valeur, ou plusieurs (D-426), bornées et nettoyées. */
+function lecteurs(params: Params) {
   const one = (key: string) => {
     const value = params[key];
     return (Array.isArray(value) ? value[0] : value)?.trim().slice(0, 200) || undefined;
@@ -107,6 +110,11 @@ export function parseFilters(params: Record<string, string | string[] | undefine
     }
     return vues.size ? [...vues] : undefined;
   };
+  return { one, many };
+}
+
+export function parseFilters(params: Params): JobFilters {
+  const { one, many } = lecteurs(params);
   const filtres: Selections = {};
   // `monde` désignait « tous les pays » avant le lot 6 ; dans un périmètre, il
   // ne restreint rien et disparaît sans devenir un pays fantôme.
@@ -129,7 +137,7 @@ export function parseFilters(params: Record<string, string | string[] | undefine
 
   const apres = params.apres;
   const jeton = (Array.isArray(apres) ? apres[0] : apres)?.trim().slice(0, CURSEUR_MAX + 1) || undefined;
-  const preferences = lirePreferences(one, many);
+  // R-143 §7 : les préférences ne sont JAMAIS lues dans l'adresse (`preferencesDepuisEntete`) : un `pref_*` d'URL est ignoré.
 
   return {
     q: (Array.isArray(params.q) ? params.q[0] : params.q)?.trim() || undefined,
@@ -138,15 +146,36 @@ export function parseFilters(params: Record<string, string | string[] | undefine
     prioritePays: normalizedPriority(one('prioritePays')),
     marche: one('marche') ?? one('market'),
     apres: jeton,
+    // D-515 §1 : la section des inconnues d'une recherche (au seul contrat 2, `planifierRecherche`).
+    ...(one('section') === 'inconnues' ? { section: 'inconnues' as const } : {}),
     locale: one('locale'),
-    ...(preferences ? { preferences } : {}),
   };
 }
 
 /**
- * R-143 §7 — les préférences de l'inscrit que le site transmet pour le classement (`pref_metier`, `pref_lieu`,
- * `pref_contrat` répétés ; `pref_teletravail` = `oui` | `non` ; `pref_salaire` = `montant:DEVISE:HOUR|MONTH|YEAR`). Elles
- * ne filtrent rien ; `planifierRecherche` les nettoie et ne les lit qu'au contrat 2.
+ * R-143 §7 — L'EN-TÊTE DES PRÉFÉRENCES. Le site transmet les préférences de l'inscrit dans cet en-tête, jamais dans
+ * l'adresse : les journaux d'hébergement (Railway, Vercel) conservent l'adresse de chaque requête, et une préférence est
+ * une donnée personnelle (son salaire, ses villes). Même vocabulaire qu'une chaîne de requête (`pref_metier`, `pref_lieu`,
+ * `pref_contrat` répétés ; `pref_teletravail` = `oui` | `non` ; `pref_salaire` = `montant:DEVISE:HOUR|MONTH|YEAR`), encodé
+ * comme une chaîne de requête. Aucun journal ne l'écrit (`app/api/jobs/route.ts` ne journalise que des comptes).
+ */
+export const ENTETE_PREFERENCES = 'x-catwalks-preferences';
+/** Au-delà, l'en-tête n'est pas lu : 12 valeurs de 120 caractères par clé tiennent largement en dessous. */
+export const ENTETE_PREFERENCES_MAX = 8_192;
+
+/** Les préférences de classement lues dans l'en-tête ; `undefined` sans en-tête, illisible ou sans préférence. */
+export function preferencesDepuisEntete(valeur: string | null | undefined): PreferencesClassement | undefined {
+  if (!valeur || valeur.length > ENTETE_PREFERENCES_MAX) return undefined;
+  const sp = new URLSearchParams(valeur);
+  const params: Params = {};
+  for (const cle of new Set(sp.keys())) if (cle.startsWith('pref_')) params[cle] = sp.getAll(cle);
+  const { one, many } = lecteurs(params);
+  return lirePreferences(one, many);
+}
+
+/**
+ * Les préférences de l'inscrit (`ENTETE_PREFERENCES`), pour le classement. Elles ne filtrent rien ; `planifierRecherche`
+ * les nettoie et ne les lit qu'au contrat 2.
  */
 function lirePreferences(one: (k: string) => string | undefined, many: (k: string) => string[] | undefined): PreferencesClassement | undefined {
   const teletravail = one('pref_teletravail');
@@ -698,6 +727,8 @@ function empreintePlan(plan: ReturnType<typeof planifierRecherche>): string {
     ...(plan.nonPrecisees ? { nonPrecisees: 1 } : {}),
     // R-143 §7 : le classement pertinent change l'ordre et la forme de la clé, ses préférences changent les scores.
     ...(plan.pertinence ? { tri: 'pertinence', preferences: plan.pertinence.preferences } : {}),
+    // D-515 §1 : la section des inconnues est une autre liste ; sans elle, l'empreinte d'avant.
+    ...(plan.section ? { section: plan.section } : {}),
     ...(p ? { proximite: { lieu: p.lieu ? point(p.lieu) : null, villes: p.villes ? p.villes.resolues.map(point).sort((x, y) => String(x[0]).localeCompare(String(y[0]))) : null } } : {}),
   });
 }

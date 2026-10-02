@@ -1,7 +1,7 @@
 import { SearchQueryError } from '@/lib/search-intent';
 import { NextRequest, NextResponse } from 'next/server';
 import { randomUUID } from 'node:crypto';
-import { DatabaseUnavailableError, getJobs, parseFilters } from '@/lib/jobs';
+import { DatabaseUnavailableError, ENTETE_PREFERENCES, getJobs, parseFilters, preferencesDepuisEntete } from '@/lib/jobs';
 import { projeterListe } from '@/lib/projection';
 import { PerimetreRequisError } from '@/lib/perimetre';
 import { CurseurInvalideError } from '@/lib/curseur';
@@ -48,16 +48,22 @@ export async function GET(request: NextRequest) {
   // annulerait le multi-valeurs avant même d'atteindre le parseur.
   // D-496 : la proximité au seul client qui l'annonce (`x-catwalks-client: 2`) ; sans lui, le contrat d'avant.
   // D-500 : la requête comprise, au même client. D-510 : le tri par fraîcheur, au même client.
-  const filters = { ...parseFilters(paramsMultiples(request.nextUrl.searchParams)), proximite: annonceProximite(request.headers),
+  // R-143 §7 : les préférences de l'inscrit, dans un en-tête, jamais dans l'adresse (que les journaux d'hébergement gardent).
+  const preferences = preferencesDepuisEntete(request.headers.get(ENTETE_PREFERENCES));
+  const filters = { ...parseFilters(paramsMultiples(request.nextUrl.searchParams)), ...(preferences ? { preferences } : {}),
+    proximite: annonceProximite(request.headers),
     comprendre: annonceComprehension(request.headers), fraicheur: annonceFraicheur(request.headers),
-    // D-513 : un filtre de contrat ou de temps de travail garde, après les reconnues, les offres qui ne le précisent pas.
+    // D-513 : un filtre de contrat ou de temps de travail garde, après les reconnues, les offres qui ne le précisent pas ;
+    // D-515 §1 : celles qui ne précisent pas le secteur, la langue ou le programme forment la section `section=inconnues`.
     nonPrecisees: annonceNonPrecisees(request.headers) };
+  // Une réponse classée pour une personne n'est jamais mise en cache par un intermédiaire, ni servie à une autre.
+  const entetesReponse = preferences ? { ...entetes, 'cache-control': 'private, no-store' } : entetes;
 
   try {
     const result = await getJobs(filters);
     journaliser({ requestId, statut: 200, dureeMs: Date.now() - debut, marche: result.perimetre.code, total: result.total,
       totalConfirmes: result.totalConfirmes, suite: result.suivant !== null, resultats: result.jobs.length, refus: result.filtresRefuses.length });
-    return NextResponse.json(projeterListe(result), { headers: entetes });
+    return NextResponse.json(projeterListe(result), { headers: entetesReponse });
   } catch (error) {
     if (error instanceof PerimetreRequisError || error instanceof CurseurInvalideError || error instanceof SearchQueryError) {
       journaliser({ requestId, statut: 400, dureeMs: Date.now() - debut, erreur: error.code });

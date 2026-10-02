@@ -1,7 +1,8 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 import { prisma } from '@catwalks/db';
 import { publicationFixture } from '../../../aggregator/src/test/publication-fixture';
-import { examinerAlerte, getJobs, parseFilters, type JobFilters, type JobRow } from '../jobs';
+import { ENTETE_PREFERENCES, ENTETE_PREFERENCES_MAX, examinerAlerte, getJobs, parseFilters, preferencesDepuisEntete, type JobFilters, type JobRow } from '../jobs';
+import { NextRequest } from 'next/server';
 import { CurseurInvalideError } from '../curseur';
 import { oublierVilles } from '../geo';
 import { semerVilles, viderVilles, VILLES_TEMOINS } from '../__fixtures__/villes';
@@ -291,12 +292,45 @@ describe.skipIf(!enabled)('R-143 §7 : le classement pertinent, sur une base loc
     expect(q.jobs.every((j) => j.classement === undefined)).toBe(true);
   });
 
-  it('l’URL de l’API lit les préférences (`pref_*`) et écarte ce qui n’est pas une préférence', () => {
-    const f = parseFilters({ marche: 'FR', pref_contrat: ['PERMANENT', 'NIMPORTE'], pref_teletravail: 'oui', pref_lieu: 'Paris (75)',
-      pref_metier: 'temoin', pref_salaire: '2000:eur:MONTH' });
-    expect(f.preferences).toEqual({ metiers: ['temoin'], lieux: ['Paris (75)'], contrats: ['PERMANENT', 'NIMPORTE'], teletravail: true,
+  it('l’en-tête des préférences se lit (`pref_*`) et écarte ce qui n’est pas une préférence ; l’URL n’en porte plus aucune', () => {
+    const entete = 'pref_contrat=PERMANENT&pref_contrat=NIMPORTE&pref_teletravail=oui&pref_lieu=Paris+%2875%29&pref_metier=temoin&pref_salaire=2000%3Aeur%3AMONTH&q=ignore';
+    expect(preferencesDepuisEntete(entete)).toEqual({ metiers: ['temoin'], lieux: ['Paris (75)'], contrats: ['PERMANENT', 'NIMPORTE'], teletravail: true,
       salaire: { montant: 2000, devise: 'EUR', periode: 'MONTH' } });
-    expect(parseFilters({ marche: 'FR', pref_teletravail: 'peut-etre', pref_salaire: '2000' }).preferences).toBeUndefined();
+    expect(preferencesDepuisEntete('pref_teletravail=peut-etre&pref_salaire=2000')).toBeUndefined();
+    expect(preferencesDepuisEntete(null)).toBeUndefined();
+    expect(preferencesDepuisEntete(`pref_lieu=${'a'.repeat(ENTETE_PREFERENCES_MAX)}`)).toBeUndefined();
+    // Défaut gardé (suites du classement, 02/10/2026) : le salaire voyageait dans l'adresse, que les journaux d'hébergement
+    // conservent. Une adresse qui en porte encore n'en tire rien.
+    expect(parseFilters({ marche: 'FR', pref_contrat: 'PERMANENT', pref_salaire: '2000:EUR:MONTH' }).preferences).toBeUndefined();
+  });
+
+  it('la route : les préférences de l’en-tête classent, celles de l’adresse ne classent rien, et aucun journal ne les écrit', async () => {
+    vi.stubEnv('CATALOGUE_API_KEY', 'cle-du-site');
+    const journaux: string[] = [];
+    const espions = (['info', 'log', 'warn', 'error'] as const).map((m) => vi.spyOn(console, m).mockImplementation((...a: unknown[]) => { journaux.push(a.map(String).join(' ')); }));
+    try {
+      const { GET } = await import('../../app/api/jobs/route');
+      const appel = (chemin: string, entetes: Record<string, string> = {}) => new NextRequest(`http://catalogue.test${chemin}`,
+        { headers: { authorization: 'Bearer cle-du-site', 'x-catwalks-client': '2', ...entetes } });
+      const chemin = `/api/jobs?marche=FR&maison=${encodeURIComponent(M.sal)}`;
+      const salaire = 'pref_salaire=2000%3AEUR%3AMONTH';
+      const sans = await (await GET(appel(chemin))).json();
+      // PRÉMISSE : sans préférence, l'offre au-dessus du minimum n'ouvre pas la liste (ordre de D-510).
+      expect(sans.jobs[0].id).not.toBe(`${P}sal-dessus`);
+      const parEntete = await GET(appel(chemin, { [ENTETE_PREFERENCES]: salaire }));
+      const corps = await parEntete.json();
+      expect(corps.jobs[0].id).toBe(`${P}sal-dessus`);
+      expect(corps.jobs.at(-1).id).toBe(`${P}sal-dessous`);
+      expect(parEntete.headers.get('cache-control')).toBe('private, no-store');
+      const parAdresse = await (await GET(appel(`${chemin}&${salaire}`))).json();
+      expect(parAdresse.jobs.map((j: { id: string }) => j.id)).toEqual(sans.jobs.map((j: { id: string }) => j.id));
+      // Les journaux de la route : des comptes, jamais une préférence.
+      expect(journaux.length).toBeGreaterThan(0);
+      expect(journaux.join('\n')).not.toMatch(/pref_|2000|EUR|MONTH/);
+    } finally {
+      espions.forEach((e) => e.mockRestore());
+      vi.unstubAllEnvs();
+    }
   });
 
   it('les préférences de lieu, sans lieu cherché : la ville préférée passe devant (« Paris (75) » vaut Paris)', async () => {

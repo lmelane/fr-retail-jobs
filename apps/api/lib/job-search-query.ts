@@ -5,7 +5,7 @@ import { publicJobSql } from '@catwalks/db/availability';
 import { Prisma, prisma } from '@catwalks/db';
 import { echapperLike } from './like';
 import { PREFIXE_DIRECT, directPubliableSql } from './direct-offers';
-import { DIMENSIONS, DIMENSIONS_NON_PRECISEES, type Dimension, type DimensionNonPrecisee, type PlanRecherche } from './search-plan';
+import { DIMENSIONS, DIMENSIONS_A_PART, DIMENSIONS_EN_LISTE, DIMENSIONS_NON_PRECISEES, alerteForte, type Dimension, type DimensionNonPrecisee, type PlanRecherche } from './search-plan';
 import { RAYON_MAX_KM, boiteSql, distanceKm, type VilleResolue } from './geo';
 import { appartient, cercles, facetteDeProximite, rayonsSql } from './proximite-sql';
 import { fraicheurSql } from './fraicheur';
@@ -99,32 +99,68 @@ const facetteContratUnifie = (plan: PlanRecherche) => plan.proximite
  * (`nonPrecisees`), la question ne se pose pas : le filtre est strict, comme avant.
  */
 function precise(dimension: DimensionNonPrecisee, plan: PlanRecherche): Prisma.Sql {
-  if (dimension === 'temps') return Prisma.sql`b."workTime" IS NOT NULL`;
-  return plan.perimetre.marche?.contratUnifie ? Prisma.sql`cardinality(${choixContrat}) > 0` : Prisma.sql`b."employmentTerm" IS NOT NULL`;
+  switch (dimension) {
+    case 'temps':
+      return Prisma.sql`b."workTime" IS NOT NULL`;
+    // D-515 §1 : le secteur de la Maison, la langue du texte. Une chaîne vide ne dit rien (`facette` l'écarte aussi).
+    case 'secteur':
+      return Prisma.sql`cardinality(b."sectorCodes") > 0`;
+    case 'langue':
+      return Prisma.sql`coalesce(b.language, '') <> ''`;
+    // Le programme est un fait du contrat : une offre qui déclare sa durée, un dispositif ou le freelance le précise.
+    case 'programme':
+      return Prisma.sql`cardinality(${choixContrat}) > 0`;
+    case 'contrat':
+      return plan.perimetre.marche?.contratUnifie ? Prisma.sql`cardinality(${choixContrat}) > 0` : Prisma.sql`b."employmentTerm" IS NOT NULL`;
+  }
 }
 
-/** Les dimensions d'emploi filtrées dont une offre non précisée reste servie (contrat 2 seulement). */
-const nonPreciseesFiltrees = (plan: PlanRecherche): DimensionNonPrecisee[] =>
-  plan.nonPrecisees ? DIMENSIONS_NON_PRECISEES.filter((d) => (plan.selections[d]?.length ?? 0) > 0) : [];
+/**
+ * Une dimension filtrée, au contrat 2 seulement, dont l'inconnu peut être retenu. Le secteur « Non classé »
+ * (`unclassified`) choisi demande les offres sans secteur : elles le précisent alors, la dimension n'est pas tolérante.
+ */
+const filtree = (plan: PlanRecherche, d: DimensionNonPrecisee) => !!plan.nonPrecisees && (plan.selections[d]?.length ?? 0) > 0
+  && !(d === 'secteur' && plan.selections.secteur!.includes('unclassified'));
 
-/** Une offre CONFIRME la recherche quand elle précise chaque dimension d'emploi filtrée ; sans `nonPrecisees`, toujours. */
-function confirmeSql(plan: PlanRecherche): Prisma.Sql {
-  const dims = nonPreciseesFiltrees(plan);
+/**
+ * Les dimensions filtrées dont une offre non précisée est retenue : celles de la liste (contrat, temps : D-513) ; avec
+ * `large`, aussi celles qui forment une section à part (secteur, langue, programme : D-515 §1), pour la section elle-même
+ * et pour une alerte forte (`alerteForte`). Ordre fixe, celui de `DIMENSIONS_NON_PRECISEES`.
+ */
+const nonPreciseesFiltrees = (plan: PlanRecherche, large = false): DimensionNonPrecisee[] =>
+  DIMENSIONS_NON_PRECISEES.filter((d) => filtree(plan, d) && (large || (DIMENSIONS_EN_LISTE as readonly string[]).includes(d)));
+
+/** D-515 §1 : l'offre précise-t-elle chaque filtre de `DIMENSIONS_A_PART` ? Vrai sans aucun de ces filtres. */
+function aPartPreciseSql(plan: PlanRecherche): Prisma.Sql {
+  const dims = DIMENSIONS_A_PART.filter((d) => filtree(plan, d));
+  return dims.length ? Prisma.join(dims.map((d) => Prisma.sql`(${precise(d, plan)})`), ' AND ') : Prisma.sql`true`;
+}
+
+/**
+ * La colonne `ap` (`aPartPreciseSql`), lue par la seule section des inconnues (`sectionSql`) ; absente ailleurs : la requête
+ * de la liste reste celle d'avant, au caractère près (164 requêtes du contrat 1 comparées).
+ */
+const colonneAPart = (plan: PlanRecherche, large: boolean): Prisma.Sql => (large ? Prisma.sql`${aPartPreciseSql(plan)} AS ap, ` : Prisma.empty);
+
+/** Une offre CONFIRME la recherche quand elle précise chaque dimension tolérée filtrée ; sans `nonPrecisees`, toujours. */
+function confirmeSql(plan: PlanRecherche, large = false): Prisma.Sql {
+  const dims = nonPreciseesFiltrees(plan, large);
   return dims.length ? Prisma.join(dims.map((d) => Prisma.sql`(${precise(d, plan)})`), ' AND ') : Prisma.sql`true`;
 }
 
 /** Les dimensions filtrées que l'offre ne précise pas, pour la signaler sur sa carte (`correspondance`). */
-function nonPreciseesSql(plan: PlanRecherche): Prisma.Sql {
-  const dims = nonPreciseesFiltrees(plan);
+function nonPreciseesSql(plan: PlanRecherche, large = false): Prisma.Sql {
+  const dims = nonPreciseesFiltrees(plan, large);
   if (!dims.length) return Prisma.sql`ARRAY[]::text[]`;
   return Prisma.sql`array_remove(ARRAY[${Prisma.join(dims.map((d) => Prisma.sql`CASE WHEN ${precise(d, plan)} THEN NULL ELSE ${d} END`))}]::text[], NULL)`;
 }
 
 /** Le prédicat SQL d'une dimension sélectionnée, sur l'alias `b` de `base`. */
-function predicat(dimension: Dimension, valeurs: readonly string[], plan: PlanRecherche): Prisma.Sql {
+function predicat(dimension: Dimension, valeurs: readonly string[], plan: PlanRecherche, large = false): Prisma.Sql {
   const liste = Prisma.join(valeurs.map((v) => Prisma.sql`${v}`));
-  // D-513 : au contrat 2, une offre qui ne précise pas la dimension reste retenue ; une offre qui déclare autre chose, non.
-  const ouNonPrecisee = (strict: Prisma.Sql) => plan.nonPrecisees && (DIMENSIONS_NON_PRECISEES as readonly Dimension[]).includes(dimension)
+  // D-513, D-515 §1 : au contrat 2, une offre qui ne précise pas la dimension reste retenue ; une offre qui déclare autre
+  // chose, non. Seules les dimensions tolérées de CETTE lecture (`nonPreciseesFiltrees`) s'élargissent.
+  const ouNonPrecisee = (strict: Prisma.Sql) => (nonPreciseesFiltrees(plan, large) as readonly Dimension[]).includes(dimension)
     ? Prisma.sql`(${strict} OR NOT (${precise(dimension as DimensionNonPrecisee, plan)}))` : strict;
   if (dimension === 'contrat' && plan.perimetre.marche?.contratUnifie) {
     return ouNonPrecisee(Prisma.sql`${choixContrat} && ARRAY[${liste}]::text[]`);
@@ -138,8 +174,8 @@ function predicat(dimension: Dimension, valeurs: readonly string[], plan: PlanRe
         ? Prisma.sql`(b."occupationCode" IS NULL AND cardinality(b."titleRoles") = 0)`
         : Prisma.sql`(b."occupationCode" = ${v} OR b."titleRoles" @> ARRAY[${v}]::text[])`), ' OR ')})`;
     case 'secteur':
-      return Prisma.sql`(${Prisma.join(valeurs.map((v) => v === 'unclassified'
-        ? Prisma.sql`cardinality(b."sectorCodes") = 0` : Prisma.sql`b."sectorCodes" @> ARRAY[${v}]::text[]`), ' OR ')})`;
+      return ouNonPrecisee(Prisma.sql`(${Prisma.join(valeurs.map((v) => v === 'unclassified'
+        ? Prisma.sql`cardinality(b."sectorCodes") = 0` : Prisma.sql`b."sectorCodes" @> ARRAY[${v}]::text[]`), ' OR ')})`);
     case 'ville': {
       const texte = Prisma.sql`b.ville IN (${Prisma.join(valeurs.map((v) => Prisma.sql`lower(trim(${v}))`))})`;
       const villes = plan.proximite?.villes;
@@ -201,11 +237,14 @@ function colonnesClassement(plan: PlanRecherche): Prisma.Sql {
   return Prisma.sql`, ${c.intitule} AS pi, ${c.lieu} AS pl, ${c.contrat} AS pc, ${c.teletravail} AS pt, ${c.salaire} AS ps`;
 }
 
-/** `WHERE` composé des dimensions sélectionnées, sauf celle qu'on exclut. */
-function restriction(plan: PlanRecherche, sauf?: Dimension): Prisma.Sql {
+/**
+ * `WHERE` composé des dimensions sélectionnées, sauf celle qu'on exclut. `large` (D-515 §1) : les inconnues des
+ * dimensions à part sont retenues aussi (section des inconnues, alerte forte) ; sans lui, la liste des confirmées.
+ */
+function restriction(plan: PlanRecherche, sauf?: Dimension, large = false): Prisma.Sql {
   const conditions = DIMENSIONS.flatMap((d) => {
     const valeurs = plan.selections[d];
-    return d !== sauf && valeurs?.length ? [predicat(d, valeurs, plan)] : [];
+    return d !== sauf && valeurs?.length ? [predicat(d, valeurs, plan, large)] : [];
   });
   return conditions.length ? Prisma.join(conditions, ' AND ') : Prisma.sql`true`;
 }
@@ -378,7 +417,8 @@ export type ExamenNouveautes = {
   ids: string[];
   /**
    * D-515 §2 — les nouvelles qui respectent avec certitude tous les autres critères (métier, lieu, cercle, Maison…) mais
-   * ne précisent pas le contrat ou le temps de travail filtré : envoyées APRÈS les certaines, séparées et signalées.
+   * ne précisent pas le contrat ou le temps de travail filtré, ni, pour une alerte forte (`alerteForte`, D-515 §1), le
+   * secteur, la langue ou le programme filtrés : envoyées APRÈS les certaines, séparées et signalées.
    * Une offre qui déclare une autre valeur n'en fait jamais partie (`predicat`). Vides sans `nonPrecisees` (contrat 1).
    */
   incompletes: number;
@@ -405,6 +445,9 @@ export async function examenNouveautes(
   const cs = cercles(plan);
   const prox = cs.length > 0;
   const retenues = prox ? Prisma.sql`retenues` : Prisma.sql`scoped`;
+  // D-515 §1, §2 : les inconnues du secteur, de la langue ou du programme ne partent, à part, que si l'alerte correspond
+  // fortement (métier ou lieu confirmés, `alerteForte`) ; sinon l'alerte les filtre strictement, comme la liste.
+  const large = !!plan.nonPrecisees && alerteForte(plan);
   // R-143 §7 : une alerte qui porte une requête rend ses nouvelles dans l'ordre pertinent de la page, à l'instant de l'examen.
   const t0 = plan.pertinence ? instantDeReference() : 0;
   const ordre = plan.pertinence ? Prisma.sql`origine, ns, nf, id` : plan.fraicheur ? Prisma.sql`origine, nf, id` : Prisma.sql`origine, ns, np, nf, id`;
@@ -413,9 +456,9 @@ export async function examenNouveautes(
     WITH base AS MATERIALIZED (${base}),
     -- D-513 : la recherche de la page, offres non précisées comprises. D-515 §2 : l'alerte envoie d'abord les confirmées,
     -- puis, séparées, les non précisées du même cercle (npr : les dimensions qu'elles ne précisent pas).
-    scoped AS MATERIALIZED (SELECT b.id, b.origine, b."postedAt", b."firstSeenAt", b.score, ${confirmeSql(plan)} AS confirme,
-      ${nonPreciseesSql(plan)} AS npr
-      ${prox ? Prisma.sql`, ${colonnesProximite(cs)}` : Prisma.empty} ${colonnesClassement(plan)} FROM base b WHERE ${restriction(plan)}),
+    scoped AS MATERIALIZED (SELECT b.id, b.origine, b."postedAt", b."firstSeenAt", b.score, ${confirmeSql(plan, large)} AS confirme,
+      ${nonPreciseesSql(plan, large)} AS npr
+      ${prox ? Prisma.sql`, ${colonnesProximite(cs)}` : Prisma.empty} ${colonnesClassement(plan)} FROM base b WHERE ${restriction(plan, undefined, large)}),
     ${prox ? retenuesSql(cs) : Prisma.empty}
     nouvelles AS MATERIALIZED (
       SELECT id, origine, confirme, npr, ${plan.pertinence ? Prisma.sql`${scoreNegatifSql(t0)} AS ns, ${fraicheurNegative} AS nf` : plan.fraicheur ? Prisma.sql`${fraicheurNegative} AS nf`
@@ -431,6 +474,15 @@ export async function examenNouveautes(
          FROM (SELECT * FROM nouvelles WHERE NOT confirme ORDER BY ${ordre} LIMIT ${limite}) p) AS "idsIncompletes"`);
   return { total: r.total, nouvelles: r.nouvelles, ids: r.ids ?? [], incompletes: r.incompletes,
     idsIncompletes: (r.idsIncompletes ?? []).map((x) => ({ id: x.id, dimensions: x.n ?? [] })) };
+}
+
+/**
+ * D-515 §1 — LA SECTION DES INCONNUES : la recherche lue largement (inconnues des dimensions à part retenues), dans le
+ * cercle choisi sur les confirmées (`retenuesSql`), réduite aux offres qui ne précisent pas un filtre à part. Les facettes
+ * restent celles de la liste des confirmées (`facettesSql`, lecture stricte).
+ */
+function sectionSql(large: boolean, prox: boolean): Prisma.Sql {
+  return large ? Prisma.sql`servies AS MATERIALIZED (SELECT * FROM ${prox ? Prisma.sql`retenues` : Prisma.sql`scoped`} WHERE NOT ap),` : Prisma.empty;
 }
 
 /** Les facettes d'une recherche (une seule définition pour les deux ordres de la page). */
@@ -464,13 +516,16 @@ export async function searchSummary(
 
   // Un filtre sélectionné exige une valeur attestée. Aucun élargissement aux valeurs absentes — sauf au contrat 2
   // (`nonPrecisees`, D-513) : une offre qui ne précise pas le contrat ou le temps de travail filtré reste servie, non
-  // confirmée, après les confirmées (`nc` dans la clé), et la page dit lesquelles (`npr`).
+  // confirmée, après les confirmées (`nc` dans la clé), et la page dit lesquelles (`npr`). Celles qui ne précisent pas le
+  // secteur, la langue ou le programme filtrés ne sont jamais dans la liste : elles forment sa section à part
+  // (`section: 'inconnues'`, `sectionSql`, D-515 §1).
   // D-419 §2 (contrat 1) : le pays du visiteur d'abord, à l'intérieur du périmètre. Jamais un filtre.
   // D-496 : avec une ville cherchée, le cercle se choisit sur la recherche entière, offres reconnues (D-513, `retenues`), et totaux, page et
   // curseur portent sur lui. D-510 (contrat 2) : l'ordre est l'origine, la fraîcheur, l'identifiant.
   const cs = cercles(plan);
   const prox = cs.length > 0;
-  const retenues = prox ? Prisma.sql`retenues` : Prisma.sql`scoped`;
+  const large = plan.section === 'inconnues';
+  const retenues = large ? Prisma.sql`servies` : prox ? Prisma.sql`retenues` : Prisma.sql`scoped`;
   const fraicheur = !!plan.fraicheur;
   const priorite = !fraicheur && !prox && plan.prioritePays
     ? Prisma.sql`(CASE WHEN b."countryCode" = ${plan.prioritePays} THEN 0 ELSE 1 END)` : Prisma.sql`0`;
@@ -487,11 +542,12 @@ export async function searchSummary(
 
   const [[summary], totalPerimetre] = await Promise.all([prisma.$queryRaw<Array<Omit<SearchSummary, 'ids' | 'suivant' | 'totalPerimetre' | 'nonPrecisees'> & { page: Array<{ id: string; k: CleRecherche | CleFraicheur; n: DimensionNonPrecisee[] }> | null }>>(Prisma.sql`
     WITH base AS MATERIALIZED (${base}), scoped AS MATERIALIZED (
-      SELECT b.id, b.origine, b."countryCode", b."postedAt", b."firstSeenAt", ${confirmeSql(plan)} AS confirme, ${nonPreciseesSql(plan)} AS npr,
-        ${priorite} AS pri, b.score
+      SELECT b.id, b.origine, b."countryCode", b."postedAt", b."firstSeenAt", ${confirmeSql(plan, large)} AS confirme, ${nonPreciseesSql(plan, large)} AS npr,
+        ${colonneAPart(plan, large)}${priorite} AS pri, b.score
         ${prox ? Prisma.sql`, ${colonnesProximite(cs)}` : Prisma.empty}
-      FROM base b WHERE ${restriction(plan)}
+      FROM base b WHERE ${restriction(plan, undefined, large)}
     ), ${prox ? retenuesSql(cs) : Prisma.empty}
+    ${sectionSql(large, prox)}
     cles AS (${cles})
     SELECT
       (SELECT count(*)::int FROM ${retenues}) AS total,
@@ -522,7 +578,8 @@ ${facettesSql(plan, prox)} AS facettes
 async function pageClassee(plan: PlanRecherche, base: Prisma.Sql, curseur: CleScore | null, pageSize: number, asOf: Date): Promise<SearchSummary> {
   const cs = cercles(plan);
   const prox = cs.length > 0;
-  const retenues = prox ? Prisma.sql`retenues` : Prisma.sql`scoped`;
+  const large = plan.section === 'inconnues';
+  const retenues = large ? Prisma.sql`servies` : prox ? Prisma.sql`retenues` : Prisma.sql`scoped`;
   const t0 = curseur ? curseur[0] : instantDeReference(asOf.getTime());
   const colonnesCle = Prisma.sql`origine, nc, ns, nf, id`;
   const apres = curseur
@@ -530,10 +587,12 @@ async function pageClassee(plan: PlanRecherche, base: Prisma.Sql, curseur: CleSc
     : Prisma.empty;
   const [[summary], totalPerimetre] = await Promise.all([prisma.$queryRaw<Array<Omit<SearchSummary, 'ids' | 'suivant' | 'totalPerimetre' | 'nonPrecisees' | 'classement'> & { page: Array<{ id: string; k: CleScore; n: DimensionNonPrecisee[]; c: (number | null)[] }> | null }>>(Prisma.sql`
     WITH base AS MATERIALIZED (${base}), scoped AS MATERIALIZED (
-      SELECT b.id, b.origine, b."countryCode", b."postedAt", b."firstSeenAt", ${confirmeSql(plan)} AS confirme, ${nonPreciseesSql(plan)} AS npr
+      SELECT b.id, b.origine, b."countryCode", b."postedAt", b."firstSeenAt", ${confirmeSql(plan, large)} AS confirme, ${nonPreciseesSql(plan, large)} AS npr
+        ${large ? Prisma.sql`, ${aPartPreciseSql(plan)} AS ap` : Prisma.empty}
         ${prox ? Prisma.sql`, ${colonnesProximite(cs)}` : Prisma.empty} ${colonnesClassement(plan)}
-      FROM base b WHERE ${restriction(plan)}
+      FROM base b WHERE ${restriction(plan, undefined, large)}
     ), ${prox ? retenuesSql(cs) : Prisma.empty}
+    ${sectionSql(large, prox)}
     cles AS (SELECT id, origine, (NOT confirme)::int AS nc, ${scoreNegatifSql(t0)} AS ns, ${fraicheurNegative} AS nf, npr,
       jsonb_build_array(pi, pl, pc, pt, ps, round(${ageJoursSql(t0)}::numeric, 2)) AS c FROM ${retenues})
     SELECT

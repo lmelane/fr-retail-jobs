@@ -48,10 +48,13 @@ export type CriteresRecherche = {
   /** D-513, R-143 §6 : les offres qui ne précisent pas un filtre d'emploi restent servies, après (`annonceNonPrecisees`). */
   nonPrecisees?: boolean;
   /**
-   * D-513, R-143 §7 : les préférences de l'inscrit, envoyées par le site (`pref_*`), pour le CLASSEMENT seulement : elles
+   * D-513, R-143 §7 : les préférences de l'inscrit, envoyées par le site (`pref_*` de l'en-tête `x-catwalks-preferences`,
+   * jamais de l'adresse), pour le CLASSEMENT seulement : elles
    * ne retiennent ni n'écartent aucune offre. Lues au seul contrat 2 (`fraicheur`) ; sans lui, ignorées.
    */
   preferences?: PreferencesClassement;
+  /** D-515 §1 : la section des inconnues (`PlanRecherche.section`), lue dans l'URL (`section=inconnues`), au seul contrat 2. */
+  section?: 'inconnues';
 };
 
 /** Les préférences de recherche (R-141 §1) telles que le classement les lit. Toutes facultatives. */
@@ -97,9 +100,25 @@ export type Pertinence = {
  * correspondances confirmées »). Une ALERTE envoie d'abord les offres reconnues, puis, séparées et signalées, celles qui
  * ne précisent pas la dimension (D-515 §2, qui remplace la promesse stricte de R-143 §8 version D-513) : l'examen les rend
  * à part (`examenNouveautes`, `incompletes`).
+ *
+ * D-515 §1, R-143 §10 (lecture D-492 du 02/10/2026, suites du classement, arbitrage du coordinateur) : la règle vaut
+ * pour TOUT filtre dont la donnée peut manquer, pas pour le seul emploi. Le secteur (celui de la Maison) manque sur
+ * 33 907 des 85 282 offres servies, la langue du texte sur 1 392 : un filtre « Beauté » ou « anglais » strict les
+ * écartait comme des désaccords. Mais, mêlées à la liste, elles la noyaient (« Lunetterie » aux États-Unis : 6 offres
+ * reconnues, puis 15 382 offres de Maisons sans secteur). Ces dimensions-là (`DIMENSIONS_A_PART`) ne se mêlent donc
+ * jamais aux confirmées : la liste, ses facettes et son compte les filtrent strictement ; leurs inconnues forment une
+ * SECTION À PART (`section: 'inconnues'`), que le site annonce et borne. Une valeur connue et contraire n'est dans
+ * aucune des deux. Une alerte ne les envoie, à part, que si un autre de ses critères, le métier ou le lieu, est
+ * confirmé (« correspond fortement », D-515 §2 ; `alerteForte`). Le programme suit le contrat unifié. Le métier et le
+ * lieu restent stricts (R-141). L'option « Non classé » du secteur demande les offres sans secteur : elles y sont
+ * reconnues, jamais « non précisées ».
  */
-export const DIMENSIONS_NON_PRECISEES = ['contrat', 'temps'] as const satisfies readonly Dimension[];
+export const DIMENSIONS_NON_PRECISEES = ['contrat', 'temps', 'secteur', 'langue', 'programme'] as const satisfies readonly Dimension[];
 export type DimensionNonPrecisee = (typeof DIMENSIONS_NON_PRECISEES)[number];
+/** Les dimensions d'emploi dont les non précisées restent DANS la liste, après les reconnues (D-513, R-143 §6). */
+export const DIMENSIONS_EN_LISTE = ['contrat', 'temps'] as const satisfies readonly DimensionNonPrecisee[];
+/** Les dimensions dont les non précisées forment une section À PART, jamais mêlée aux confirmées (D-515 §1). */
+export const DIMENSIONS_A_PART = ['secteur', 'langue', 'programme'] as const satisfies readonly DimensionNonPrecisee[];
 
 export type PlanRecherche = {
   perimetre: Perimetre;
@@ -144,6 +163,11 @@ export type PlanRecherche = {
    * l'ordre de D-510 (contrat 2) ou celui d'avant (contrat 1), à l'identique.
    */
   pertinence?: Pertinence;
+  /**
+   * D-515 §1 : `inconnues` sert la section à part — les offres qui répondent à tout le reste mais ne précisent pas un
+   * filtre de `DIMENSIONS_A_PART` (ni ne le contredisent). Au seul contrat 2 ; absente : la liste des confirmées.
+   */
+  section?: 'inconnues';
 };
 
 /** Les préférences de classement, bornées et nettoyées ; `undefined` quand il ne reste rien. */
@@ -221,6 +245,7 @@ export function planifierRecherche(perimetre: Perimetre, criteres: CriteresReche
     ...(criteres.comprendre ? { comprendre: true } : {}),
     ...(criteres.fraicheur ? { fraicheur: true } : {}),
     ...(criteres.nonPrecisees ? { nonPrecisees: true } : {}),
+    ...(criteres.nonPrecisees && criteres.section === 'inconnues' ? { section: 'inconnues' as const } : {}),
     ...pertinenceDe(criteres, q, selections),
   };
 }
@@ -231,4 +256,13 @@ function pertinenceDe(criteres: CriteresRecherche, q: string, selections: Select
   const preferences = nettoyerPreferences(criteres.preferences);
   if (!q && !selections.metier?.length && !preferences) return {};
   return { pertinence: { preferences: preferences ?? {} } };
+}
+
+/**
+ * D-515 §2 (« correspond fortement au reste des préférences ») — une alerte n'envoie à part une offre au secteur, à la
+ * langue ou au programme inconnus que si un autre de ses critères, le métier (requête tapée ou métier choisi) ou le lieu
+ * (lieu ou ville), est confirmé par l'offre. Une alerte sur un seul secteur n'envoie que des confirmées.
+ */
+export function alerteForte(plan: PlanRecherche): boolean {
+  return Boolean(plan.q || plan.selections.metier?.length || plan.lieu || plan.selections.ville?.length);
 }
