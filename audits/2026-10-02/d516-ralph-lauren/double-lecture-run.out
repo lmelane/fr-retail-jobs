@@ -1,0 +1,6 @@
+jour|sources|sources_requalifiees|requetes_qualification|requetes_ingestion|ingestions_echouees|echec_apres_qualification_reussie
+09-28|414|413|56875|50569|3|3
+09-29|414|333|16014|51278|16|16
+09-30|412|406|52286|54242|3|2
+10-01|411|411|56874|54893|1|1
+raison|count

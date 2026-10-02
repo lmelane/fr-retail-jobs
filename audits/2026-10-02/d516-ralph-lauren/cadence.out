@@ -1,0 +1,51 @@
+lot|tranche|requetes|r406|r403|r202|seq_min|seq_max
+55847bbb|09-19 10:14:30|5|0|3|1|0|4
+7b16d898|09-19 12:33:00|1|0|0|1|0|0
+7b16d898|09-19 12:33:30|20|0|0|0|1|20
+7b16d898|09-19 12:34:00|26|0|0|0|21|46
+7b16d898|09-19 12:34:30|27|0|0|0|47|73
+7b16d898|09-19 12:35:00|25|0|0|0|74|98
+7b16d898|09-19 12:35:30|26|0|0|0|99|124
+7b16d898|09-19 12:36:00|26|0|0|0|125|150
+7b16d898|09-19 12:36:30|25|0|0|0|151|175
+7b16d898|09-19 12:37:00|61|0|0|0|176|236
+7b16d898|09-19 12:37:30|132|0|0|0|237|368
+7b16d898|09-19 12:38:00|129|0|0|0|369|497
+7b16d898|09-19 12:38:30|128|0|0|0|498|625
+7b16d898|09-19 12:39:00|126|0|0|0|626|751
+7b16d898|09-19 12:39:30|129|0|0|0|752|880
+7b16d898|09-19 12:40:00|131|7|0|0|881|1011
+7b16d898|09-19 12:40:30|312|312|0|0|1012|1323
+abe33bc1|09-19 14:28:30|2|1|0|1|0|1
+da424ede|10-02 09:56:00|21|0|0|2|0|20
+da424ede|10-02 09:56:30|25|0|0|0|21|45
+da424ede|10-02 09:57:00|25|0|0|0|46|70
+da424ede|10-02 09:57:30|25|0|0|0|71|95
+da424ede|10-02 09:58:00|24|0|0|0|96|119
+da424ede|10-02 09:58:30|23|0|0|0|120|142
+da424ede|10-02 09:59:00|24|0|0|0|143|166
+da424ede|10-02 09:59:30|24|0|0|0|167|190
+da424ede|10-02 10:00:00|68|0|0|0|191|258
+da424ede|10-02 10:00:30|121|0|0|0|259|379
+da424ede|10-02 10:01:00|122|0|0|0|380|501
+da424ede|10-02 10:01:30|125|0|0|0|502|626
+da424ede|10-02 10:02:00|121|0|0|0|627|747
+da424ede|10-02 10:02:30|121|0|0|0|748|868
+da424ede|10-02 10:03:00|119|0|0|0|869|987
+da424ede|10-02 10:03:30|120|0|0|0|988|1107
+da424ede|10-02 10:04:00|118|0|0|0|1108|1225
+da424ede|10-02 10:04:30|122|0|0|0|1226|1347
+da424ede|10-02 10:05:00|14|0|0|0|1348|1361
+c81e14a5|10-02 10:05:30|9|1|0|2|0|8
+55847bbb|0|202|resp|H4sIAAAAAAAAAwMAAAAAAAAAAAA=|09-19 10:14:32.390|{"date": "Sat, 19 Sep 2026 10:14:32 GMT", "content-type": "text/html; charset=UTF-8", "x-amzn-waf-action": "challenge"}|/en_US/CareersCorporate/SearchJobsCorporate/?jobOffset=%5BVA
+55847bbb|2|403|resp|H4sIAAAAAAAAA7PJKMnNsePlsslITUyxsynJLMlJtTMxMFZwyy9KykxJSc2z0YcI2uiDlfBy2STlp1SC6OTUvJLUIjubDEN0HRmGdjb6UGleLht9mA59qG0Avn5M0nYAAAA=|09-19 10:14:40.845|{"date": "Sat, 19 Sep 2026 10:14:40 GMT", "content-type": "text/html", "content-encoding": "gzip"}|/en_US/CareersCorporate/SearchJobsCorporate/?jobOffset=%5BVA
+55847bbb|3|403|resp|H4sIAAAAAAAAA7PJKMnNsePlsslITUyxsynJLMlJtTMxMFZwyy9KykxJSc2z0YcI2uiDlfBy2STlp1SC6OTUvJLUIjubDEN0HRmGdjb6UGleLht9mA59qG0Avn5M0nYAAAA=|09-19 10:14:41.492|{"date": "Sat, 19 Sep 2026 10:14:41 GMT", "content-type": "text/html", "content-encoding": "gzip"}|/en_US/CareersCorporate/SearchJobsCorporate/?jobOffset=%5BVA
+55847bbb|4|403|resp|H4sIAAAAAAAAA7PJKMnNsePlsslITUyxsynJLMlJtTMxMFZwyy9KykxJSc2z0YcI2uiDlfBy2STlp1SC6OTUvJLUIjubDEN0HRmGdjb6UGleLht9mA59qG0Avn5M0nYAAAA=|09-19 10:14:42.785|{"date": "Sat, 19 Sep 2026 10:14:42 GMT", "content-type": "text/html", "content-encoding": "gzip"}|/en_US/CareersCorporate/SearchJobsCorporate/?jobOffset=%5BVA
+7b16d898|0|202|resp|H4sIAAAAAAAAAwMAAAAAAAAAAAA=|09-19 12:33:27.207|{"date": "Sat, 19 Sep 2026 12:33:27 GMT", "content-type": "text/html; charset=UTF-8", "x-amzn-waf-action": "challenge"}|/en_US/CareersCorporate/SearchJobsCorporate/?jobOffset=%5BVA
+7b16d898|1003|406|resp|H4sIAAAAAAAAA21OSwqDMBDdC7lD8AJRkK6mA72AdzBxcAJpUsKAenuJRnDR3eP9geUbUDXANM0I4iUQDt1Lj0n0xzn6yWQDgbkUMKdPNWDTvGu7uBRSfrcre6G28I6iUEbg/m8N9wimespqxjsRFx+3p2bKxAnqxwM4eG6KrAAAAA==|09-19 12:40:29.481|{"date": "Sat, 19 Sep 2026 12:40:29 GMT", "content-type": "text/html"}|/en_US/CareersCorporate/JobDetailRetail?jobId=%5BVALUE+OMITT
+7b16d898|1004|406|resp|H4sIAAAAAAAAA21OSwqDMBDdC7lD8AJRkK6mA72AdzBxcAJpUsKAenuJRnDR3eP9geUbUDXANM0I4iUQDt1Lj0n0xzn6yWQDgbkUMKdPNWDTvGu7uBRSfrcre6G28I6iUEbg/m8N9wimespqxjsRFx+3p2bKxAnqxwM4eG6KrAAAAA==|09-19 12:40:29.566|{"date": "Sat, 19 Sep 2026 12:40:29 GMT", "content-type": "text/html"}|/en_US/CareersCorporate/JobDetailRetail?jobId=%5BVALUE+OMITT
+7b16d898|1321|406|resp|H4sIAAAAAAAAA21OSwqDMBDdC7lD8AJRkK6mA72AdzBxcAJpUsKAenuJRnDR3eP9geUbUDXANM0I4iUQDt1Lj0n0xzn6yWQDgbkUMKdPNWDTvGu7uBRSfrcre6G28I6iUEbg/m8N9wimespqxjsRFx+3p2bKxAnqxwM4eG6KrAAAAA==|09-19 12:40:54.774|{"date": "Sat, 19 Sep 2026 12:40:54 GMT", "content-type": "text/html"}|/en_US/CareersCorporate/JobDetailRetail?jobId=%5BVALUE+OMITT
+7b16d898|1322|406|resp|H4sIAAAAAAAAA21OSwqDMBDdC7lD8AJRkK6mA72AdzBxcAJpUsKAenuJRnDR3eP9geUbUDXANM0I4iUQDt1Lj0n0xzn6yWQDgbkUMKdPNWDTvGu7uBRSfrcre6G28I6iUEbg/m8N9wimespqxjsRFx+3p2bKxAnqxwM4eG6KrAAAAA==|09-19 12:40:54.848|{"date": "Sat, 19 Sep 2026 12:40:54 GMT", "content-type": "text/html"}|/en_US/CareersCorporate/JobDetailRetail?jobId=%5BVALUE+OMITT
+7b16d898|1323|406|resp|H4sIAAAAAAAAA21OSwqDMBDdC7lD8AJRkK6mA72AdzBxcAJpUsKAenuJRnDR3eP9geUbUDXANM0I4iUQDt1Lj0n0xzn6yWQDgbkUMKdPNWDTvGu7uBRSfrcre6G28I6iUEbg/m8N9wimespqxjsRFx+3p2bKxAnqxwM4eG6KrAAAAA==|09-19 12:40:54.927|{"date": "Sat, 19 Sep 2026 12:40:54 GMT", "content-type": "text/html"}|/en_US/CareersCorporate/JobDetailRetail?jobId=%5BVALUE+OMITT
+abe33bc1|0|202|resp|H4sIAAAAAAAAAwMAAAAAAAAAAAA=|09-19 14:28:43.374|{"date": "Sat, 19 Sep 2026 14:28:43 GMT", "content-type": "text/html; charset=UTF-8", "x-amzn-waf-action": "challenge"}|/en_US/CareersCorporate/SearchJobsCorporate/?jobOffset=%5BVA
+abe33bc1|1|406|resp|H4sIAAAAAAAAA21OSwqDMBDdC7lD8AJRkK6mA72AdzBxcAJpUsKAenuJRnDR3eP9geUbUDXANM0I4iUQDt1Lj0n0xzn6yWQDgbkUMKdPNWDTvGu7uBRSfrcre6G28I6iUEbg/m8N9wimespqxjsRFx+3p2bKxAnqxwM4eG6KrAAAAA==|09-19 14:28:48.653|{"date": "Sat, 19 Sep 2026 14:28:48 GMT", "content-type": "text/html"}|/en_US/CareersCorporate/SearchJobsCorporate/?jobOffset=%5BVA

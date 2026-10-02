@@ -35,8 +35,19 @@ export type CaptureContext = {
   failure?: Error;
   /** D-483 : qui peut amorcer un défi WAF dans cette collecte, et ce que son navigateur peut envoyer. */
   wafBootstrap?: WafBootstrapPolicy;
-  /** L'amorçage de cette collecte — un au plus, sur une seule origine — et le jeton qu'il a rendu. */
-  wafBootstrapRun?: { origin: string; cookie: Promise<string | undefined>; value?: string };
+  /**
+   * L'amorçage COURANT de cette collecte — sur une seule origine — et le jeton qu'il a rendu. `target` : l'adresse
+   * défiée qu'il a chargée (un renouvellement recharge la même, D-516 §1).
+   */
+  wafBootstrapRun?: { origin: string; cookie: Promise<string | undefined>; value?: string; target?: string };
+  /** Nombre d'amorçages conduits par cette collecte (au plus `MAX_COLLECTION_BOOTSTRAPS`, D-516 §1). */
+  wafBootstrapCount?: number;
+  /** Une réponse de l'origine amorcée a été acceptée avec un jeton de cette collecte (D-516 §1). */
+  wafTokenAccepted?: boolean;
+  /** `waf.token_refused` déjà inscrit pour cette collecte (une trace, pas une par fiche refusée). */
+  wafRefusalLogged?: boolean;
+  /** Rejeu : combien de réponses archivées restent pour cette empreinte de requête (D-516 §1). */
+  replayPending?: (hash: string) => number;
   /** Au moins une requête d'amorçage autorisé a été inscrite : la couverture devient `HTTP_WITH_WAF_BOOTSTRAP`. */
   wafBootstrapped?: boolean;
   /** Ce que le journal de cette collecte a inscrit, relu en fin de collecte contre l'autorisation (D-483). */

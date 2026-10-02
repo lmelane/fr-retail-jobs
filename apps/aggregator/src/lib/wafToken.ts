@@ -2,7 +2,7 @@ import { captureResponse, currentCaptureContext, describeRequest, noteUnsupporte
 import { observedHop } from '../capture/requestData.js';
 import { log } from '../observability/logger.js';
 import type { BootstrapObservation, BootstrapObserver } from './browser.js';
-import { isChallengeHost } from '../connectors/wafBootstrap.js';
+import { isChallengeHost, MAX_COLLECTION_BOOTSTRAPS } from '../connectors/wafBootstrap.js';
 /**
  * Jetons WAF par origine — la table que `fetchWithRetry` consulte pour joindre
  * un cookie amorcé à TOUTE requête sortante vers un hôte protégé (règle D25 :
@@ -16,10 +16,11 @@ import { isChallengeHost } from '../connectors/wafBootstrap.js';
  * 1 347 pages passent en HTTP simple (0 challenge, 409 s).
  *
  * DANS UNE COLLECTE (D-483, 30/09/2026), l'amorçage n'est plus un transport caché : la collecte ne l'obtient que
- * si sa politique l'autorise (`CaptureContext.wafBootstrap`, liste nommée et décision d'accès), il est conduit au
- * plus une fois, sur une seule origine, chaque requête du navigateur est inscrite à SON journal, et le jeton
- * reste à elle (jamais celui d'une autre collecte du process). Hors collecte (outils de découverte), le
- * comportement historique demeure, mémorisé par origine pour le process.
+ * si sa politique l'autorise (`CaptureContext.wafBootstrap`, liste nommée et décision d'accès), il est conduit sur
+ * une seule origine — une fois, plus un seul renouvellement si le jeton est refusé après une page acceptée (D-516 §1,
+ * `wafRefusal`) —, chaque requête du navigateur est inscrite à SON journal, et le jeton reste à elle (jamais celui
+ * d'une autre collecte du process). Hors collecte (outils de découverte), le comportement historique demeure,
+ * mémorisé par origine pour le process.
  *
  * Ce module ne dépend pas de Playwright : l'amorceur réel (`primeWafToken`
  * dans browser.ts) est chargé paresseusement, et remplaçable dans les tests.
@@ -171,30 +172,44 @@ async function recordBootstrapRequest(observation: BootstrapObservation, run: No
 }
 
 /**
- * L'amorçage d'une collecte (D-483). Au plus un par collecte, sur une seule origine : une requête défiée sur une
- * autre origine n'est pas amorcée (`WafChallengeError`). Un amorçage refusé par la décision d'accès, ou qui n'obtient pas de jeton,
- * arrête la collecte entière (échec collant) : aucune publication ne peut reposer sur une lecture partielle.
+ * L'amorçage d'une collecte (D-483). Au plus un par collecte, sur une seule origine — puis, au plus, UN renouvellement
+ * (`wafRefusal`, D-516 §1) : une requête défiée sur une autre origine n'est pas amorcée (`WafChallengeError`). Un
+ * amorçage refusé par la décision d'accès, ou qui n'obtient pas de jeton, arrête la collecte entière (échec collant) :
+ * aucune publication ne peut reposer sur une lecture partielle.
  */
 function captureBootstrap(context: CaptureContext, url: string, vendor: string): Promise<string | undefined> {
   const origin = originOf(url);
   const current = context.wafBootstrapRun;
   if (current) return current.origin === origin ? current.cookie : Promise.resolve(undefined);
   if (vendor !== 'aws') return Promise.resolve(undefined);
-  let grant: ReturnType<NonNullable<CaptureContext['wafBootstrap']>>;
-  try { grant = context.wafBootstrap?.(url) ?? null; }
+  const grant = bootstrapGrant(context, url);
+  if (grant instanceof Promise) return grant;
+  if (!grant) {
+    return (async () => { await log.warn('waf.bootstrap_refused', { origin, reason: 'SOURCE_NOT_AUTHORIZED' }); return undefined; })();
+  }
+  return startBootstrap(context, url, grant).cookie;
+}
+
+/** L'autorisation de la collecte pour l'adresse défiée ; un refus de la décision d'accès est collant (rejet rendu). */
+function bootstrapGrant(context: CaptureContext, url: string): ReturnType<NonNullable<CaptureContext['wafBootstrap']>> | Promise<never> {
+  try { return context.wafBootstrap?.(url) ?? null; }
   catch (error) {
     context.accessFailure ??= error as Error;
     return Promise.reject(error);
   }
-  if (!grant) {
-    return (async () => { await log.warn('waf.bootstrap_refused', { origin, reason: 'SOURCE_NOT_AUTHORIZED' }); return undefined; })();
-  }
+}
+
+/** Conduit un amorçage de la collecte sur l'adresse défiée `url`, sous l'autorisation `grant`, et l'installe comme courant. */
+function startBootstrap(context: CaptureContext, url: string, grant: NonNullable<ReturnType<NonNullable<CaptureContext['wafBootstrap']>>>):
+  NonNullable<CaptureContext['wafBootstrapRun']> {
+  const origin = originOf(url);
   const allow = grant.allow;
   const started = Date.now();
-  const run: NonNullable<CaptureContext['wafBootstrapRun']> = { origin, cookie: Promise.resolve(undefined) };
+  const run: NonNullable<CaptureContext['wafBootstrapRun']> = { origin, target: url, cookie: Promise.resolve(undefined) };
   // Installé AVANT de lancer l'amorceur : ses premières requêtes peuvent être inscrites avant qu'il ne rende la main,
-  // et `captureResponse` ne reconnaît une requête d'amorçage que pendant l'amorçage de cette collecte.
+  // et `captureResponse` ne reconnaît une requête d'amorçage que pendant l'amorçage COURANT de cette collecte.
   context.wafBootstrapRun = run;
+  context.wafBootstrapCount = (context.wafBootstrapCount ?? 0) + 1;
   // Les événements du navigateur arrivent dans le contexte asynchrone de SON LANCEMENT (navigateur partagé par le
   // process, mesuré avec Playwright le 30/09) — celui d'une autre collecte, ou d'aucune. L'inscription est donc
   // rattachée explicitement à CETTE collecte, et marquée par CET amorçage (`captureResponse` refuse toute autre marque).
@@ -211,5 +226,79 @@ function captureBootstrap(context: CaptureContext, url: string, vendor: string):
       context.accessFailure ??= error instanceof Error ? error : new Error(String(error));
       throw error;
     });
-  return run.cookie;
+  return run;
+}
+
+/**
+ * D-516 §1 : une réponse de l'origine amorcée a été ACCEPTÉE avec le jeton `sentWith` de cette collecte. Sans une
+ * page acceptée, un refus n'est pas un jeton « refusé en cours de collecte » : il garde le comportement d'avant.
+ */
+export function noteWafAccepted(url: string, sentWith: string | undefined): void {
+  const context = currentCaptureContext();
+  if (!context || !sentWith) return;
+  if (context.write && context.wafBootstrapRun?.origin !== originOf(url)) return;
+  context.wafTokenAccepted = true;
+}
+
+/** Avant d'envoyer une requête vers l'origine amorcée : attendre l'amorçage en cours, sans envoyer de requête sans jeton. */
+export async function settledWafBootstrap(url: string): Promise<void> {
+  const context = currentCaptureContext();
+  const run = context?.write ? context.wafBootstrapRun : undefined;
+  if (!run || run.value || run.origin !== originOf(url)) return;
+  await run.cookie.catch(() => undefined);
+}
+
+export type WafRefusalVerdict = 'retry' | 'fail' | null;
+
+/**
+ * D-516 §1 (02/10/2026) — LE JETON ANTI-ROBOT REFUSÉ EN COURS DE COLLECTE. Une réponse `status` (403, 406, ou un
+ * nouveau défi 202) de l'origine amorcée, à une requête munie du jeton `sentWith` de CETTE collecte, après au moins
+ * une page acceptée avec un jeton de cette collecte :
+ *
+ *   - `retry` : le jeton a été redemandé UNE fois (même origine, même adresse défiée, même autorisation : la politique
+ *     `wafBootstrap` de la collecte, décision d'accès réévaluée en mémoire ; trace `waf.bootstrap_renewed`), ou il
+ *     l'avait déjà été depuis l'envoi de cette requête (requêtes parallèles, renouvellement partagé) : la requête est
+ *     rejouée avec le nouveau jeton ;
+ *   - `fail` : le jeton renouvelé est refusé à son tour (trace `waf.token_refused`, une fois par collecte), ou le
+ *     renouvellement n'a pas rendu de jeton : la requête échoue comme avant le lot. Une page de LISTE refusée fait
+ *     donc échouer la collecte (le lecteur ne l'avale pas) ; une FICHE refusée garde l'offre sur sa carte, jugée par
+ *     le critère 8 de D-483 (arbitrage du 02/10/2026). Un renouvellement sans jeton ou refusé par la politique reste,
+ *     lui, l'échec collant de tout amorçage (D-483) ;
+ *   - `null` : rien de tout cela (hors collecte, autre origine, aucune page acceptée encore) : comportement d'avant.
+ *
+ * Jamais plus de `MAX_COLLECTION_BOOTSTRAPS` amorçages par collecte. `beforeRenewal` est appelé juste avant de
+ * renouveler (l'appelant y ralentit l'hôte). Au rejeu hors réseau d'une collecte dont l'amorçage est inscrit
+ * (`replayBootstrap`), rien n'est refait : la requête refusée est rejouée si, et seulement si, l'archive en porte une
+ * réponse suivante (`replayHash`) ; tout autre rejeu garde le comportement d'avant.
+ */
+export async function wafRefusal(url: string, sentWith: string | undefined, status: number, replayHash: () => string,
+  beforeRenewal: () => void = () => {}): Promise<WafRefusalVerdict> {
+  const context = currentCaptureContext();
+  if (!context || !sentWith || !context.wafTokenAccepted) return null;
+  const origin = originOf(url);
+  if (context.replay) {
+    if (!context.replayBootstrap) return null;
+    return (context.replayPending?.(replayHash()) ?? 0) > 0 ? 'retry' : 'fail';
+  }
+  if (!context.write) return null;
+  const run = context.wafBootstrapRun;
+  if (!run || run.origin !== origin) return null;
+  // Un renouvellement a eu lieu (ou est en cours) depuis l'envoi : ce refus visait l'ancien jeton.
+  if (run.value !== sentWith) return (await run.cookie.catch(() => undefined)) ? 'retry' : 'fail';
+  if ((context.wafBootstrapCount ?? 1) >= MAX_COLLECTION_BOOTSTRAPS || !run.target) {
+    if (!context.wafRefusalLogged) {
+      context.wafRefusalLogged = true;
+      await log.warn('waf.token_refused', { origin, status, bootstraps: context.wafBootstrapCount ?? 1, max: MAX_COLLECTION_BOOTSTRAPS });
+    }
+    return 'fail';
+  }
+  beforeRenewal();
+  // Décision et installation SYNCHRONES : une requête parallèle refusée au même instant voit déjà le renouvellement.
+  const grant = bootstrapGrant(context, run.target);
+  const next = grant && !(grant instanceof Promise) ? startBootstrap(context, run.target, grant) : null;
+  if (grant instanceof Promise) await grant.catch(() => undefined);
+  await log.warn('waf.bootstrap_renewed', { origin, status, bootstrap: context.wafBootstrapCount ?? 1, max: MAX_COLLECTION_BOOTSTRAPS,
+    outcome: next ? 'RENEWING' : 'REFUSED_BY_ACCESS_POLICY' });
+  if (!next) return 'fail';
+  return (await next.cookie.catch(() => undefined)) ? 'retry' : 'fail';
 }

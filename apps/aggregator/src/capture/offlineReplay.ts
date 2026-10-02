@@ -11,7 +11,9 @@ export type ReplayRow = { requestHash: string; format: string; data: RequestData
  *
  * L'AMORÇAGE WAF (D-483) n'est jamais refait : il est CONSOMMÉ. Ses requêtes inscrites (format `BROWSER_RESPONSE`,
  * transport navigateur observé) ne répondent à aucune requête HTTP ; seul `replayBootstrap` les retire, en bloc,
- * quand le lecteur rejoué rencontre le même défi que la collecte. Une collecte qui n'en a pas inscrit rend « aucun
+ * quand le lecteur rejoué rencontre le même défi que la collecte — y compris le renouvellement d'une collecte dont le
+ * jeton a été refusé (D-516 §1) : le rejeu ne le refait pas, il rejoue la requête refusée tant que l'archive en porte
+ * une réponse suivante (`replayPending`). Une collecte qui n'en a pas inscrit rend « aucun
  * jeton » (comme en direct : l'amorçage n'était pas autorisé) ; un rejeu qui en demande un pour une autre origine a
  * divergé ; un amorçage inscrit que le rejeu ne demande jamais reste compté dans `left()`.
  *
@@ -45,7 +47,8 @@ export function offlineReplay<R extends ReplayRow>(rows: readonly R[], respond: 
     consumed = true;
     return true;
   };
-  const context: CaptureContext = { sequence: 0, observedAt: options.observedAt, replayBootstrap, replay: async hash => {
+  const context: CaptureContext = { sequence: 0, observedAt: options.observedAt, replayBootstrap,
+    replayPending: hash => queues.get(hash)?.length ?? 0, replay: async hash => {
     const row = queues.get(hash)?.shift();
     if (!row) throw new OfflineReplayError('Offline replay request is absent from the capture batch');
     return respond(row);

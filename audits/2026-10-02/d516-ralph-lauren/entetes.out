@@ -1,0 +1,9 @@
+lot|sequence|status|entetes_reponse
+c81e14a5|0|202|{"date": "Fri, 02 Oct 2026 10:05:35 GMT", "content-type": "text/html; charset=UTF-8", "content-length": "0", "x-amzn-waf-action": "challenge"}
+c81e14a5|5|200|{"date": "Fri, 02 Oct 2026 10:05:38 GMT", "content-type": "text/html;charset=UTF-8", "last-modified": "Fri, 02 Oct 2026 10:05:37 GMT", "content-encoding": "gzip"}
+c81e14a5|6|200|{"date": "Fri, 02 Oct 2026 10:05:41 GMT", "content-type": "text/html;charset=UTF-8", "last-modified": "Fri, 02 Oct 2026 10:05:40 GMT", "content-encoding": "gzip"}
+c81e14a5|7|200|{"date": "Fri, 02 Oct 2026 10:05:42 GMT", "content-type": "text/html;charset=UTF-8", "last-modified": "Fri, 02 Oct 2026 10:05:41 GMT", "content-encoding": "gzip"}
+c81e14a5|8|406|{"date": "Fri, 02 Oct 2026 10:05:42 GMT", "content-type": "text/html", "content-length": "172"}
+da424ede|5|200|{"date": "Fri, 02 Oct 2026 09:56:09 GMT", "content-type": "text/html;charset=UTF-8", "last-modified": "Fri, 02 Oct 2026 09:56:08 GMT", "content-encoding": "gzip"}
+da424ede|6|200|{"date": "Fri, 02 Oct 2026 09:56:11 GMT", "content-type": "text/html;charset=UTF-8", "last-modified": "Fri, 02 Oct 2026 09:56:10 GMT", "content-encoding": "gzip"}
+da424ede|7|200|{"date": "Fri, 02 Oct 2026 09:56:13 GMT", "content-type": "text/html;charset=UTF-8", "last-modified": "Fri, 02 Oct 2026 09:56:12 GMT", "content-encoding": "gzip"}

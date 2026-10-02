@@ -7,12 +7,12 @@ import { withHostGate, reportThrottle, reportSuccess } from './hostGate.js';
 import { rateLimitKeyFor } from './rateLimitKey.js';
 import { CRAWLER_IDENTITY } from './crawlerIdentity.js';
 import { record429, noteRequest, BenchmarkStoppedOn429Error } from '../observability/rateLimitSignal.js';
-import { getWafCookie, isWafChallenge, primeWafCookie, WafChallengeError } from './wafToken.js';
+import { getWafCookie, isWafChallenge, noteWafAccepted, primeWafCookie, settledWafBootstrap, wafRefusal, WafChallengeError } from './wafToken.js';
 import { detectChallenge } from './responseIntegrity.js';
 import { publicDispatcher } from './publicTransport.js';
 import { sessionHeaders, rememberSessionCookies } from './httpSession.js';
 import { recordAttempt, recordResponse, recordFailure } from '../observability/httpTelemetry.js';
-import { assertCaptureHealthy, assertRequestAccess, auditUrl, describeRequest, capturingResponses, replayingResponses, captureResponse, replayResponse, CaptureUnavailableError, OfflineReplayError } from '../capture/context.js';
+import { assertCaptureHealthy, assertRequestAccess, auditUrl, describeRequest, capturingResponses, replayingResponses, captureResponse, replayResponse, requestFingerprint, CaptureUnavailableError, OfflineReplayError } from '../capture/context.js';
 
 import { observedHop, type RequestDescription, type TransportHop } from '../capture/requestData.js';
 import { captureFailureLabel } from './transportFailure.js';
@@ -22,11 +22,10 @@ export { WafChallengeError } from './wafToken.js';
 export { detectChallenge, type ChallengeVendor } from './responseIntegrity.js';
 
 /**
- * Joint le cookie WAF amorcé pour l'origine de `url`, s'il existe, aux en-têtes
- * de la requête — après un éventuel cookie déjà fourni par l'appelant.
+ * Joint le cookie WAF `cookie` (celui amorcé pour l'origine de la requête, lu au moment de l'envoi), s'il existe, aux
+ * en-têtes de la requête — après un éventuel cookie déjà fourni par l'appelant.
  */
-function withWafCookie(url: string, headers: Record<string, string>): Record<string, string> {
-  const cookie = getWafCookie(url);
+function withWafCookie(cookie: string | undefined, headers: Record<string, string>): Record<string, string> {
   if (!cookie) return headers;
   const existing = Object.entries(headers).find(([key]) => key.toLowerCase() === 'cookie');
   if (!existing) return { ...headers, cookie };
@@ -273,8 +272,14 @@ export async function fetchWithRetry(url: string, init: RequestInit = {}, attemp
    * franc (WafChallengeError), jamais un corps vide rendu comme une page.
    */
   let wafRetried = false;
-  for (let i = 0; i < attempts + (wafRetried ? 1 : 0); i++) {
+  /** D-516 §1 : le jeton refusé après une page acceptée a été redemandé une fois ; la requête a droit à un essai de plus. */
+  let wafRenewed = false;
+  for (let i = 0; i < attempts + (wafRetried ? 1 : 0) + (wafRenewed ? 1 : 0); i++) {
     assertSourceRunning();
+    // Un amorçage en cours sur cette origine : attendre son jeton plutôt qu'envoyer une requête sans lui (D-516 §1).
+    await settledWafBootstrap(url);
+    /** Le jeton WAF que CETTE tentative porte (lu à l'envoi) : c'est lui qu'un refus vise. */
+    let sentWafCookie: string | undefined;
     const controller = new AbortController();
     let timer: ReturnType<typeof setTimeout> | undefined;
     let startedAt = 0;
@@ -299,13 +304,14 @@ export async function fetchWithRetry(url: string, init: RequestInit = {}, attemp
         }
         startedAt = Date.now();
         timer = setTimeout(() => controller.abort(), timeoutMs);
+        sentWafCookie = getWafCookie(url);
         const replayed = await replayResponse({ url, method: init.method, body: init.body, headers: init.headers, format: 'HTTP_RESPONSE' });
         if (replayed) return replayed;
         return fetchFollowingSafely(
           url,
           {
             ...init,
-            headers: withWafCookie(url, {
+            headers: withWafCookie(sentWafCookie, {
               'user-agent': userAgent,
               'accept-language': 'fr-FR,fr;q=0.9,en;q=0.7',
               ...Object.fromEntries(new Headers(init.headers)),
@@ -338,6 +344,27 @@ export async function fetchWithRetry(url: string, init: RequestInit = {}, attemp
       // `headers` peut manquer sur une réponse simulée : la télémétrie ne doit JAMAIS faire échouer une
       // requête réelle pour une grandeur accessoire. Sans en-tête, la taille est simplement inconnue.
       if (!replaying) recordResponse(url, response.status, Date.now() - startedAt, response.headers?.get('content-length') ?? null);
+      // D-516 §1 : le jeton de cette collecte refusé APRÈS une page acceptée (403, 406, ou un nouveau défi) est redemandé
+      // une seule fois ; refusé encore, la requête échoue comme avant. Avant toute page acceptée : comportement d'avant.
+      if (sentWafCookie && (isWafChallenge(response) || response.status === 403 || response.status === 406)) {
+        // Le refus ralentit l'hôte avant de redemander le jeton, comme le faisait le chemin des 403 (D-516 §1).
+        const verdict = await wafRefusal(url, sentWafCookie, response.status,
+          () => requestFingerprint({ url, method: init.method, body: init.body, headers: init.headers, format: 'HTTP_RESPONSE' }),
+          () => reportThrottle(url));
+        // Une requête déjà rejouée après un renouvellement n'en obtient jamais un second.
+        if (verdict === 'retry' && !wafRenewed) {
+          await response.body?.cancel();
+          if (timer) clearTimeout(timer);
+          wafRenewed = true;
+          continue;
+        }
+        if (verdict !== null) {
+          if (timer) clearTimeout(timer);
+          // Échec comme avant le lot, non collant : une liste refusée arrête la collecte, une fiche garde sa carte.
+          if (isWafChallenge(response)) { await response.body?.cancel(); throw new WafChallengeError(url); }
+          throw new HttpStatusError(response.status, url, await errorBodyExcerpt(response));
+        }
+      }
       if (isWafChallenge(response)) {
         await response.body?.cancel();
         if (timer) clearTimeout(timer);
@@ -353,6 +380,7 @@ export async function fetchWithRetry(url: string, init: RequestInit = {}, attemp
       }
       if (response.ok) {
         reportSuccess(url);
+        noteWafAccepted(url, sentWafCookie);
         return response;
       }
       const errorBody = await errorBodyExcerpt(response);

@@ -35,8 +35,14 @@ export const WAF_BOOTSTRAP_SOURCES: Readonly<Record<string, readonly string[]>> 
 });
 
 export const WAF_BOOTSTRAP_VENDOR = 'AWS_WAF_CHALLENGE';
-/** Un amorçage au plus par décision : une collecte n'en conduit jamais deux (`primeWafCookie`). */
+/** Une seule autorisation d'amorçage (une origine) par décision d'accès. */
 export const MAX_ACCESS_BOOTSTRAPS = 1;
+/**
+ * D-516 §1 (02/10/2026) : une collecte conduit au plus DEUX amorçages, sur la même origine et sous la même
+ * autorisation : le premier, puis un seul renouvellement quand le jeton est refusé après une page acceptée
+ * (`wafRefusal`, lib/wafToken.ts). Un troisième n'existe pas : la collecte échoue franchement.
+ */
+export const MAX_COLLECTION_BOOTSTRAPS = 2;
 export const MAX_CHALLENGE_HOSTS = 8;
 
 export type AccessBootstrap = { vendor: typeof WAF_BOOTSTRAP_VENDOR; origin: string; challengeHosts: string[] };

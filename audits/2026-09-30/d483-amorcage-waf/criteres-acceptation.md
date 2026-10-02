@@ -24,9 +24,9 @@
 | 1 | Deux collectes `JOBS` du jour — qualification puis ingestion — `EXTRACTED`, `transportCoverage = HTTP_WITH_WAF_BOOTSTRAP`, chacune `VALIDATED` (rejeu exact) | `CaptureOutcome`, `SourceValidation` |
 | 2 | Une décision d'accès `ALLOWED` courante dont le document porte `bootstraps = [{ vendor: AWS_WAF_CHALLENGE, origin: https://careers.ralphlauren.com, challengeHosts: [https://…token.awswaf.com] }]` et dont `report.bootstrapRequestCount` égale le nombre de lignes `BROWSER_RESPONSE` de la collecte de qualification | `SourceAccessDecision` |
 | 3 | La collecte d'ingestion est liée à cette décision (`accessDecisionId`) | `CaptureBatch` |
-| 4 | Lignes `BROWSER_RESPONSE` par collecte : la page défiée et les hôtes `*.awswaf.com` seulement (mesuré le 30/09 : 5) ; aucune autre origine | `RawCapture` + enveloppes |
+| 4 | Lignes `BROWSER_RESPONSE` par collecte : la page défiée et les hôtes `*.awswaf.com` seulement, **5 par amorçage** (mesuré le 30/09 : 5 ; au plus 2 amorçages depuis D-516 §1, donc 5 ou 10) ; aucune autre origine | `RawCapture` + enveloppes |
 | 5 | Aucun corps archivé pour `inputs` / `mp_verify` (`failure = CredentialNotArchived`) : le jeton n'entre pas dans l'archive | `RawCapture` |
-| 6 | Après l'amorçage : **0** réponse 403, 406 ou 202 sur les pages de liste et de détail | `RawCapture.status` |
+| 6 | *Amendé le 02/10/2026 (D-516 §1).* **0** réponse 403, 406 ou 202 sur les pages de liste et de détail **après le dernier amorçage** ; avant lui, au plus un refus, suivi de `waf.bootstrap_renewed` | `RawCapture.status` |
 | 7 | Listes lues en entier : offres lues = total annoncé par Corporate + Retail (1 131 chez l'éditeur le 29/09 ; 225 annoncées pour Corporate le 30/09) | manifeste, `declaredTotal` |
 | 8 | Descriptions non vides sur au moins 70 % des offres, avec marge (le lecteur garde la carte quand une fiche échoue) | sorties de la collecte |
 | 9 | Aucune offre Ralph Lauren fermée par cette collecte (la source n'a jamais publié ; toute fermeture serait un défaut) | publication |
@@ -34,7 +34,9 @@
 
 Un seul critère manqué : la source repasse en pause, le motif est consigné, rien n'est corrigé en production à chaud.
 
-## Risque connu, non tranché : le jeton refusé en cours de collecte
+## Risque connu : le jeton refusé en cours de collecte — tranché par D-516 §1 (02/10/2026)
+
+*Tranché par D-516 §1 : la collecte redemande le jeton une seule fois ; voir `audits/2026-10-02/d516-ralph-lauren/enquete.md`. Correction du 02/10/2026 : la collecte `7b16d898` comptée ci-dessous comme ayant « tout lu » a reçu **319 refus 406** sur ses fiches (séquences 1 003 à 1 323) ; elle a extrait 1 131 offres, dont 319 sans leur fiche. Aucune des trois collectes du 19/09 n'a donc tout lu. Les 406 sont servis par nginx (Avature), pas par le défi AWS.*
 
 Mesuré sur les trois collectes amorcées du 19/09/2026 (production, lecture seule) : **1 sur 3** a tout lu
 (1 323 requêtes, 1 131 offres, `7b16d898`) ; une a reçu **403** trois fois dès la deuxième page après l'amorçage

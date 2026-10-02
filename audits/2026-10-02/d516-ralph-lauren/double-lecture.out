@@ -1,0 +1,13 @@
+sourceKey|lot|debut|command|sous_decision|status|extractedCount|requetes
+l-oreal-professionnel|b621eb55|09-28 16:03:59|ingest-all|f|EXTRACTED|1717|1804
+ralph-lauren-avature|923b652c|09-28 16:13:53|ingest-all|f|FAILED|0|3
+l-oreal-professionnel|f8acfe18|09-28 16:17:26|ingest-all|t|FAILED|0|3
+l-oreal-professionnel|0a99bc83|09-29 16:11:14|ingest-all|f|EXTRACTED|1735|1823
+ralph-lauren-avature|255a3166|09-29 16:20:11|ingest-all|f|FAILED|0|3
+l-oreal-professionnel|d3e7fef8|09-29 16:22:24|ingest-all|t|FAILED|0|3
+l-oreal-professionnel|570be3f1|09-30 16:00:16|ingest-all|f|EXTRACTED|1710|1797
+l-oreal-professionnel|eebb10b5|09-30 16:16:52|ingest-all|t|FAILED|0|66
+l-oreal-professionnel|f700a47d|10-01 16:03:20|ingest-all|f|EXTRACTED|1717|1804
+l-oreal-professionnel|edd62949|10-01 16:16:54|ingest-all|t|FAILED|0|3
+ralph-lauren-avature|da424ede|10-02 09:56:05|source-campaign|f|EXTRACTED|1160|1362
+ralph-lauren-avature|c81e14a5|10-02 10:05:34|ingest|t|FAILED|0|9
