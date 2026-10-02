@@ -101,6 +101,12 @@ export type CoverageFinding = {
   impacts?: Array<{ scope: EntityScope; label: string; count: number; share: number }>;
   /** SYNTHESE : le nombre de Maisons de l'événement. */
   members?: number;
+  /**
+   * PERTE et SYNTHESE : la part qu'aucune sortie n'explique (`INEXPLIQUEE`), jugée à part (D-520 §4, D-518 §2).
+   * `anomalous` : cette part SEULE est anormale (règle d'anomalie de l'entité). `corroborated` : elle se retrouve dans
+   * une portée qu'un faux « sans cause » ne touche pas (`corroborateUnexplained`).
+   */
+  unexplained?: { count: number; anomalous: boolean; corroborated: boolean };
 };
 export type SnapshotRow = { scope: EntityScope; key: string; label: string; served: number; reference: number | null;
   cause: AlertCause | null; gravity: Gravity | null };
@@ -186,8 +192,32 @@ function lossAgainst(entity: EntityState, reference: number, basis: Horizon, jud
   const wakes = waking.length > 0 && isAnomalous(wakingLost, judge.variation, judge.rule);
   const main = wakes ? dominant(waking) : dominant(informative.length ? informative : breakdown);
   const sources = main.cause === 'INEXPLIQUEE' ? [] : (exits.sources[main.cause] ?? []).slice(0, 3);
+  const unexplained = breakdown.find(p => p.cause === 'INEXPLIQUEE')?.count ?? 0;
   return { scope: entity.scope, key: entity.key, label: entity.label, kind: 'PERTE', served: entity.served, reference, basis,
-    lost, share: lost / reference, cause: main.cause, gravity: wakes ? CAUSE_GRAVITY[main.cause] : 'INFORMATION', breakdown, sources, ongoing: false };
+    lost, share: lost / reference, cause: main.cause, gravity: wakes ? CAUSE_GRAVITY[main.cause] : 'INFORMATION', breakdown, sources, ongoing: false,
+    ...(unexplained > 0 ? { unexplained: { count: unexplained, anomalous: isAnomalous(unexplained, judge.variation, judge.rule), corroborated: false } } : {}) };
+}
+
+/**
+ * LES FAUX « SANS CAUSE » (D-518 §2, lecture D-492, écart connu n° 5 ; D-520 §4). Une sortie se compte sous la Maison, le
+ * marché et la source canonique ACTUELS de l'offre. Deux mouvements font donc perdre sans sortie une offre toujours
+ * servie : un CHANGEMENT DE SOURCE CANONIQUE (la source perd, la Maison et le marché gardent l'offre) et une
+ * RÉATTRIBUTION DE SOCIÉTÉ (la Maison perd, la source et le marché la gardent). Aucun ne déplace le pays de l'offre.
+ * Une perte réelle, elle, se lit dans toutes les portées de l'offre perdue.
+ *
+ * Une part inexpliquée anormale n'est donc VRAIMENT inexpliquée que si elle se retrouve, anormale, dans une portée que
+ * le mouvement suspecté laisse intacte : un marché l'est toujours ; une source, si une Maison ou un marché perd aussi sans
+ * cause ; une Maison, si une source ou un marché perd aussi sans cause. Sans ce recoupement, elle est « à vérifier » :
+ * dite au verdict, sans le rendre rouge. Le recoupement se fait AVANT que la perte d'une source ne soit repliée sur
+ * celle de sa Maison (une source d'une seule Maison la reflète exactement : c'est la preuve d'une perte réelle).
+ * Limite assumée : le recoupement est par portée, sans lien offre par offre ; deux mouvements sans rapport le même
+ * jour se recoupent et rendent rouge (le doute penche vers le rouge, jamais vers le silence).
+ */
+export function corroborateUnexplained(findings: readonly CoverageFinding[]): CoverageFinding[] {
+  const carries = (scopes: readonly EntityScope[]) => findings.some(f => f.kind === 'PERTE' && (scopes as readonly string[]).includes(f.scope) && f.unexplained?.anomalous);
+  const bySource = carries(['MAISON', 'MARCHE']), byMaison = carries(['SOURCE', 'MARCHE']);
+  return findings.map(f => (!f.unexplained || f.kind !== 'PERTE' ? f : { ...f, unexplained: { ...f.unexplained,
+    corroborated: f.scope === 'MARCHE' || (f.scope === 'SOURCE' ? bySource : f.scope === 'MAISON' ? byMaison : false) } }));
 }
 
 /** La perte de CE RUN l'emporte : elle est le masquage au moment où il est posé, attribuée à ses seules sorties. */
@@ -270,8 +300,12 @@ function massEvents(findings: readonly CoverageFinding[], rule: AnomalyRule): Co
     for (const f of members) folded.add(f);
     const lost = maisons.reduce((s, f) => s + f.lost, 0), reference = maisons.reduce((s, f) => s + (f.reference ?? 0), 0);
     const gravity = members.map(f => f.gravity).sort((a, b) => SEVERITY[b] - SEVERITY[a])[0];
+    // Une synthèse sans cause est vraiment inexpliquée si l'un de ses membres l'est (`corroborateUnexplained`).
+    const verified = members.some(f => f.unexplained?.anomalous && f.unexplained.corroborated);
+    const unexplained = members.filter(f => f.scope === 'MAISON').reduce((t, f) => t + (f.unexplained?.count ?? 0), 0);
     events.push({ scope: 'CATALOGUE', key: cause, label: 'Catalogue', kind: 'SYNTHESE', served: reference - lost, reference, lost,
       share: reference > 0 ? lost / reference : 0, cause, gravity, breakdown: [{ cause, count: lost }],
+      ...(unexplained > 0 ? { unexplained: { count: unexplained, anomalous: verified, corroborated: verified } } : {}),
       sources: mergeSources(maisons, 5), ongoing: members.every(f => f.ongoing), members: maisons.length,
       impacts: [...maisons, ...markets, ...sources].map(f => ({ scope: f.scope as EntityScope, label: f.label, count: f.lost, share: f.share })) });
   }
@@ -324,6 +358,7 @@ export function evaluateCoverage(input: { entities: readonly EntityState[]; know
     if (entity.served > 0 || finding) mark({ scope: entity.scope, key: entity.key, label: entity.label, served: entity.served,
       reference: reference == null ? null : Math.round(reference), cause: finding?.cause ?? null, gravity: finding?.gravity ?? null });
   }
+  findings = corroborateUnexplained(findings);
   // Une perte de source déjà dite par ses Maisons (même cause, cette source nommée pour au moins autant d'offres) n'est
   // pas redite : la source n'est signalée à part que si sa perte se disperse sous le niveau d'anomalie de ses Maisons.
   findings = findings.filter(f => {

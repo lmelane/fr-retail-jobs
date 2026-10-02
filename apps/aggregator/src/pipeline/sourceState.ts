@@ -40,6 +40,9 @@ export type CollectionKind = typeof COLLECTION_KINDS[number];
  *     compte pas, elle relit la même liste plusieurs fois par jour) ; au-delà, BLOQUEE et A_REPARER ;
  *   · BLOQUEE qui devait revenir seule (volume à zéro, employeur à identifier sans aucune offre publiée) : comme
  *     EN_ATTENTE ;
+ *   · volume anormal, liste non prouvée, qualification refusée, défaut interne : EN_ATTENTE à la première occurrence,
+ *     même si la collecte publie, puis à réparer s'il persiste à la tentative complète suivante (`deadlineAttempts: 2`) ;
+ *     mesuré : 17 épisodes de défaut interne sur 17 ont duré un seul RUN ;
  *   · DEGRADEE qui devait revenir seule : 7 jours ; au-delà, A_REPARER (ou REVUE_HUMAINE, `escalatesTo` de la cause) ;
  *     l'employeur à identifier, mesuré (16 épisodes sur 29 durent 4 RUN ou plus), n'a que 48 h (`deadlineHours`) ;
  *   · « depuis », les tentatives et l'escalade courent sur l'ÉPISODE (de la sortie de NORMALE au retour), pas sur la
@@ -90,8 +93,9 @@ export const CAUSES = {
     missing: 'corriger le lecteur ou l’adresse de la source, puis verifier-source' },
   CERTIFICAT_TLS: { label: 'certificat TLS du site invalide ou incomplet', base: 'BLOQUEE', trajectory: 'A_REPARER',
     missing: 'compléter la chaîne de certificats (politesse TLS) ou corriger l’adresse, puis verifier-source' },
-  DEFAUT_INTERNE: { label: 'défaut interne de Catwalks (code, base, capture)', base: 'BLOQUEE', trajectory: 'A_REPARER',
-    missing: 'corriger le code ou l’infrastructure Catwalks, puis verifier-source' },
+  DEFAUT_INTERNE: { label: 'défaut interne de Catwalks (code, base, capture)', base: 'EN_ATTENTE', trajectory: 'AUTO',
+    deadlineAttempts: 2, waitsWhilePublishing: true,
+    missing: 'rien au premier RUN (17 épisodes sur 17 mesurés du 24/09 au 01/10 ont duré un seul RUN) ; sinon, corriger le code ou l’infrastructure Catwalks, puis verifier-source' },
   NON_COLLECTEE: { label: 'source active non collectée par le dernier RUN', base: 'BLOQUEE', trajectory: 'A_REPARER',
     missing: 'trouver pourquoi le RUN ne l’a pas sélectionnée ou terminée, puis verifier-source' },
   ACTIVATION_A_FAIRE: { label: 'source en préparation (DRAFT ou VALIDATED), pas encore dans la rotation', base: 'BLOQUEE', trajectory: 'A_REPARER',
@@ -319,16 +323,24 @@ export function ageState(state: SourceState, now: Date): SourceState {
 export const VERDICT_REASONS = ['SOURCE_NON_CLASSEE', 'MOTIF_ABSENT', 'ECHEANCE_DEPASSEE', 'ANCIENNETE_DEPASSEE', 'PANNE_SYSTEME', 'COUVERTURE_INEXPLIQUEE'] as const;
 export type VerdictReason = typeof VERDICT_REASONS[number];
 /**
- * Panne du système : au moins ce nombre de sources que CE RUN a laissées bloquées de NOTRE côté (défaut interne ou
- * qualification refusée à leur collecte de ce RUN, ou non collectées), qu'elles le soient depuis ce RUN ou depuis
- * plus longtemps : une panne large et persistante ne se cache pas derrière l'ancienneté de ses sources. Mesuré sur les
+ * Panne du système : au moins ce nombre de sources que CE RUN a laissées bloquées ou en attente de NOTRE côté (défaut
+ * interne ou qualification refusée à leur collecte de ce RUN, ou non collectées), qu'elles le soient depuis ce RUN ou
+ * depuis plus longtemps : une panne large et persistante ne se cache pas derrière l'ancienneté de ses sources, ni une
+ * panne neuve derrière l'attente d'un RUN que leur première occurrence accorde (le 29/09, 14 des 20 étaient des défauts
+ * internes à leur première occurrence). Mesuré sur les
  * RUN du 24/09 au 01/10 (`audits/2026-10-02/etat-sources/`) : 0 à 6 par RUN hors incident (5 à 6 du 25 au 28/09, des
  * qualifications refusées chroniques que le plafond de 14 jours traite), 20 le 29/09 (incident du périmètre d'accès).
  */
 export const SYSTEMIC_OUR_SIDE_BLOCKED = 10;
 const OUR_SIDE: ReadonlySet<CauseClass> = new Set(['DEFAUT_INTERNE', 'QUALIFICATION_REFUSEE', 'NON_COLLECTEE']);
 
-export type RunVerdict = { green: boolean; reasons: Array<{ reason: VerdictReason; detail: string; sources: string[] }> };
+/**
+ * `toVerify` : ce que le verdict DIT sans rougir (D-520 §4) ; aujourd'hui, la couverture perdue sans cause propre qu'un
+ * changement de source canonique ou une réattribution de société peut expliquer (D-518 §2).
+ */
+export type RunVerdict = { green: boolean; reasons: Array<{ reason: VerdictReason; detail: string; sources: string[] }>;
+  toVerify: Array<{ reason: 'COUVERTURE_A_VERIFIER'; detail: string; sources: string[] }> };
+export const COVERAGE_TO_VERIFY_DETAIL = 'perte de couverture sans cause propre, peut-être un changement de source canonique ou une réattribution de société (D-518 §2)';
 
 /** Les motifs de blocage de `lib/runSummary.ts` qui disent une panne du RUN lui-même, jamais celle d'une source. */
 export const SYSTEM_BLOCKING_REASONS: ReadonlySet<string> = new Set(['INVALID_COUNTS', 'INCOMPLETE_RUN', 'NO_ACTIVE_SOURCE', 'ALL_SOURCES_FAILED']);
@@ -342,9 +354,23 @@ export function systemFailuresOf(input: { blockingReasons: readonly string[]; re
     ...(input.statesUnavailable ? ['SOURCE_STATES_UNAVAILABLE'] : [])];
 }
 
-/** Les pertes de couverture qui réveillent sans cause trouvée (`coverage/coverageAlert.ts`, cause INEXPLIQUEE). */
-export function unexplainedCoverageOf(findings: readonly { scope: string; key: string; label?: string; cause: string; gravity: string }[]): string[] {
-  return findings.filter(f => f.cause === 'INEXPLIQUEE' && f.gravity !== 'INFORMATION').map(f => `${f.scope}:${f.label ?? f.key}`);
+type CoverageFindingLike = { scope: string; key: string; label?: string; cause: string; gravity: string;
+  unexplained?: { anomalous: boolean; corroborated: boolean } };
+/**
+ * Les pertes de couverture qui réveillent sans cause trouvée (`coverage/coverageAlert.ts`, cause INEXPLIQUEE), en deux
+ * classes (D-520 §4, D-518 §2) : `unexplained`, rouge, quand la part sans cause est SEULE anormale et se recoupe dans une
+ * portée qu'un changement de source canonique ou une réattribution de société ne touche pas (`corroborateUnexplained`) ;
+ * `toVerify`, dite au verdict sans le rendre rouge, sinon. Un constat qui ne porte pas ce jugement reste rouge.
+ */
+export function coverageVerdictOf(findings: readonly CoverageFindingLike[]): { unexplained: string[]; toVerify: string[] } {
+  const waking = findings.filter(f => f.cause === 'INEXPLIQUEE' && f.gravity !== 'INFORMATION');
+  const red = (f: CoverageFindingLike) => !f.unexplained || (f.unexplained.anomalous && f.unexplained.corroborated);
+  const id = (f: CoverageFindingLike) => `${f.scope}:${f.label ?? f.key}`;
+  return { unexplained: waking.filter(red).map(id), toVerify: waking.filter(f => !red(f)).map(id) };
+}
+/** Les seules pertes de couverture vraiment inexpliquées (rouges) ; `coverageVerdictOf` rend aussi celles à vérifier. */
+export function unexplainedCoverageOf(findings: readonly CoverageFindingLike[]): string[] {
+  return coverageVerdictOf(findings).unexplained;
 }
 
 /**
@@ -355,6 +381,8 @@ export function unexplainedCoverageOf(findings: readonly { scope: string; key: s
  */
 export function reconcileRun(input: { states: readonly SourceState[]; now: Date; runStartedAt: Date | null;
   systemFailures: readonly string[]; unexplainedCoverage: readonly string[];
+  /** Les pertes de couverture à vérifier (`coverageVerdictOf`) : dites, jamais rouges. */
+  coverageToVerify?: readonly string[];
   /** Les sources dont le réexamen inscrit au registre explicite est passé (`ambiguousSources`, REVIEW_OVERDUE). */
   registryOverdue?: readonly string[] }): RunVerdict {
   const reasons: RunVerdict['reasons'] = [];
@@ -369,12 +397,14 @@ export function reconcileRun(input: { states: readonly SourceState[]; now: Date;
     input.states.filter(s => (s.trajectory === 'A_REPARER' || s.trajectory === 'REVUE_HUMAINE') && s.cause !== 'MOTIF_ABSENT'
       && s.since.getTime() <= ceiling).map(s => s.sourceKey));
   const start = input.runStartedAt?.getTime();
-  const ourSide = start === undefined ? [] : input.states.filter(s => s.state === 'BLOQUEE' && s.cause && OUR_SIDE.has(s.cause)
+  const ourSide = start === undefined ? [] : input.states.filter(s => (s.state === 'BLOQUEE' || s.state === 'EN_ATTENTE') && s.cause && OUR_SIDE.has(s.cause)
     && (s.cause === 'NON_COLLECTEE' ? s.computedAt.getTime() >= start : (s.lastCollectionAt?.getTime() ?? 0) >= start)).map(s => s.sourceKey);
   if (input.systemFailures.length) add('PANNE_SYSTEME', input.systemFailures.join(', '), []);
   if (ourSide.length >= SYSTEMIC_OUR_SIDE_BLOCKED) add('PANNE_SYSTEME', `${ourSide.length} sources laissées bloquées de notre côté par ce RUN (seuil ${SYSTEMIC_OUR_SIDE_BLOCKED})`, ourSide);
   if (input.unexplainedCoverage.length) add('COUVERTURE_INEXPLIQUEE', 'perte de couverture sans cause trouvée', [...input.unexplainedCoverage]);
-  return { green: reasons.length === 0, reasons };
+  const toVerify: RunVerdict['toVerify'] = input.coverageToVerify?.length
+    ? [{ reason: 'COUVERTURE_A_VERIFIER', detail: COVERAGE_TO_VERIFY_DETAIL, sources: [...input.coverageToVerify] }] : [];
+  return { green: reasons.length === 0, reasons, toVerify };
 }
 
 export type StateSummary = {
@@ -412,7 +442,8 @@ export function summaryLines(summary: StateSummary, verdict?: RunVerdict | null,
     `Trajectoires : ${t.AUTO} reviennent seules, ${t.A_REPARER} à réparer, ${t.REVUE_HUMAINE} en revue humaine, ${t.DECISION} sur décision.`];
   const when = options.provisional ? ' (au moment de ce bulletin ; le verdict final du RUN y ajoute la remise du bilan)' : '';
   if (verdict) lines.unshift(verdict.green ? `Réconciliation${when} : vert, chaque source a un état expliqué.`
-    : `Réconciliation${when} : rouge ; ${verdict.reasons.map(r => `${r.detail}${r.sources.length ? ` : ${r.sources.length} (${keys(r.sources)})` : ''}`).join(' ; ')}.`);
+    : `Réconciliation${when} : rouge ; ${verdict.reasons.map(r => `${r.detail}${r.sources.length ? ` : ${r.sources.length} (${keys(r.sources)})` : ''}`).join(' ; ')}.`,
+  ...(verdict.toVerify ?? []).map(v => `À vérifier, sans rougir le RUN : ${v.detail} : ${v.sources.length} (${keys(v.sources)}).`));
   // Une ligne par cause hors décision : combien, lesquelles, la plus ancienne.
   const byCause = new Map<CauseClass, StateSummary['sources']>();
   for (const x of summary.sources) if (x.cause && x.cause !== 'PAUSE_DECIDEE' && x.cause !== 'EXCLUSION_DECIDEE')

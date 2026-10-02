@@ -142,6 +142,29 @@ describe('D-520 — états, trajectoires, échéances', () => {
     }
   });
 
+  it('un défaut interne attend un RUN (17 épisodes sur 17 mesurés n’en ont duré qu’un), puis passe à réparer s’il persiste au RUN complet suivant', () => {
+    const fail = (h: number, jobs = 0) => run({ runStatus: jobs ? 'DEGRADED' : 'ERROR', jobs, issues: [{ origin: 'INTERNAL', code: 'TypeError' }] }, h);
+    const first = computeSourceState({ source: active(), outcome: fail(0), previous: null, now: T0 });
+    // Avant ce correctif : BLOQUEE et A_REPARER dès la première occurrence.
+    expect([first.state, first.cause, first.trajectory, first.escalated]).toEqual(['EN_ATTENTE', 'DEFAUT_INTERNE', 'AUTO', false]);
+    expect(first.deadline?.toISOString()).toBe(at(ESCALATION.waitingHours).toISOString());
+    expect(first.missing).toMatch(/^rien au premier RUN/);
+    // Une passe incrémentale entre deux RUN ne compte pas.
+    const pass = computeSourceState({ source: active(), outcome: { ...fail(6), kind: 'PASSE' }, previous: first, now: at(6) });
+    expect([pass.state, pass.attempts]).toEqual(['EN_ATTENTE', 1]);
+    // Résolu au RUN suivant : normale, comme les 17 épisodes mesurés.
+    expect(computeSourceState({ source: active(), outcome: run({}, 24), previous: pass, now: at(24) }).state).toBe('NORMALE');
+    // Persistant au RUN complet suivant : à réparer, avec son « depuis ».
+    const second = computeSourceState({ source: active(), outcome: fail(24), previous: pass, now: at(24) });
+    expect([second.state, second.trajectory, second.escalated, second.since.toISOString()]).toEqual(['BLOQUEE', 'A_REPARER', true, T0.toISOString()]);
+    expect(second.missing).toMatch(/^échéance dépassée \(48 h ou 2 tentatives\) : corriger le code/);
+    // Qui publie malgré le défaut attend aussi, puis reste dite dégradée, à réparer.
+    const publishing = computeSourceState({ source: active(), outcome: fail(0, 40), previous: null, now: T0 });
+    expect([publishing.state, publishing.trajectory]).toEqual(['EN_ATTENTE', 'AUTO']);
+    expect(computeSourceState({ source: active(), outcome: fail(24, 40), previous: publishing, now: at(24) }))
+      .toMatchObject({ state: 'DEGRADEE', trajectory: 'A_REPARER' });
+  });
+
   it('une reprise dans le même RUN ne compte pas comme une tentative ; si elle échoue encore, la source passe à réparer', () => {
     const fail = (retried: boolean) => run({ runStatus: 'ERROR', jobs: 0, retried, issues: [{ origin: 'UNKNOWN', code: 'TRANSPORT_ECONNRESET' }] });
     const first = computeSourceState({ source: active(), outcome: fail(false), previous: null, now: T0 });
@@ -172,8 +195,12 @@ describe('D-520 — états, trajectoires, échéances', () => {
 });
 
 describe('D-520 — verdict du RUN = réconciliation', () => {
-  const blocked = (key: string, since: Date): SourceState => ({ ...computeSourceState({ source: active(key),
-    outcome: run({ runStatus: 'ERROR', jobs: 0, issues: [{ origin: 'INTERNAL', code: 'TypeError' }] }), previous: null, now: since }) });
+  /** Un défaut interne qui persiste au RUN complet suivant : bloqué, à réparer, depuis `since`, recollecté en échec par CE RUN (T0). */
+  const internal = (h: number) => run({ runStatus: 'ERROR', jobs: 0, issues: [{ origin: 'INTERNAL', code: 'TypeError' }] }, h);
+  const blocked = (key: string, since: Date): SourceState => {
+    const first = computeSourceState({ source: active(key), outcome: { ...internal(0), at: since }, previous: null, now: since });
+    return computeSourceState({ source: active(key), outcome: internal(0), previous: first, now: T0 });
+  };
 
   it('une source bloquée déjà classée à réparer ne rend pas le RUN rouge', () => {
     const verdict = reconcileRun({ states: [blocked('a', at(-72))], now: T0, runStartedAt: at(-1), systemFailures: [], unexplainedCoverage: [] });
@@ -187,6 +214,14 @@ describe('D-520 — verdict du RUN = réconciliation', () => {
     expect(reconcileRun({ states: states.slice(1), now: T0, runStartedAt: at(-1), systemFailures: [], unexplainedCoverage: [] }).green).toBe(true);
     const verdict = reconcileRun({ states, now: T0, runStartedAt: at(-1), systemFailures: [], unexplainedCoverage: [] });
     expect(verdict.reasons.map(r => r.reason)).toEqual(['PANNE_SYSTEME']);
+  });
+
+  it(`${SYSTEMIC_OUR_SIDE_BLOCKED} défauts internes à leur première occurrence dans ce RUN : panne du système, même en attente (29/09 : 14 sur 20)`, () => {
+    const states = Array.from({ length: SYSTEMIC_OUR_SIDE_BLOCKED }, (_, i) => computeSourceState({ source: active(`n${i}`), outcome: internal(0), previous: null, now: T0 }));
+    // Prémisse : chacune est en attente, pas bloquée ; compter les seules bloquées les laisserait passer.
+    expect(states.every(s => s.state === 'EN_ATTENTE' && s.cause === 'DEFAUT_INTERNE')).toBe(true);
+    expect(reconcileRun({ states: states.slice(1), now: T0, runStartedAt: at(-1), systemFailures: [], unexplainedCoverage: [] }).green).toBe(true);
+    expect(reconcileRun({ states, now: T0, runStartedAt: at(-1), systemFailures: [], unexplainedCoverage: [] }).reasons.map(r => r.reason)).toEqual(['PANNE_SYSTEME']);
   });
 
   it('un état temporaire persisté et échu sans escalade est rouge ; vieilli, il est escaladé', () => {
@@ -229,7 +264,7 @@ describe('D-520 — verdict du RUN = réconciliation', () => {
     const lines = summaryLines(summary, reconcileRun({ states, now: T0, runStartedAt: null, systemFailures: [], unexplainedCoverage: [] }));
     expect(lines[0]).toMatch(/^Réconciliation : vert/);
     expect(lines.some(l => l.startsWith('défaut interne de Catwalks (code, base, capture) : 1 (ko)'))).toBe(true);
-    expect(lines.some(l => l.startsWith('ko, depuis 2 j : corriger le code'))).toBe(true);
+    expect(lines.some(l => l.startsWith('ko, depuis 2 j : échéance dépassée (48 h ou 2 tentatives) : corriger le code'))).toBe(true);
     expect(lines.join('\n')).not.toContain('—');
   });
 

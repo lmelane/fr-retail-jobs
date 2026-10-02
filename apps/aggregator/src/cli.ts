@@ -137,7 +137,7 @@ try {
     const orchestration = await ingestAllBySource(prisma);
     // D-520 : chaque source du registre reçoit son état opérationnel ; une source active que ce RUN n'a pas collectée
     // devient NON_COLLECTEE, une échéance passée s'escalade. Le verdict du RUN est la réconciliation de ces états.
-    const { reconcileRun, summarizeStates, summaryLines: stateLines, systemFailuresOf, unexplainedCoverageOf } = await import('./pipeline/sourceState.js');
+    const { coverageVerdictOf, reconcileRun, summarizeStates, summaryLines: stateLines, systemFailuresOf } = await import('./pipeline/sourceState.js');
     let sourceStates: Awaited<ReturnType<typeof import('./pipeline/sourceStateStore.js').reconcileSourceStates>> | null = null;
     try {
       const { reconcileSourceStates } = await import('./pipeline/sourceStateStore.js');
@@ -196,19 +196,21 @@ try {
     // retenues sont lues en direct par la recherche ; le bulletin part quelques minutes après). Le masquage ne part
     // jamais sans lui : un bulletin non calculé ou non remis rend le RUN rouge.
     let coverageFailed = false;
-    let unexplainedCoverage: string[] = [];
+    // D-520 §4, D-518 §2 : une perte sans cause propre qu'un changement de source canonique ou une réattribution de société
+    // peut expliquer est « à vérifier », dite au verdict sans le rougir ; seule une perte vraiment inexpliquée le rougit.
+    let coverageVerdict: ReturnType<typeof coverageVerdictOf> = { unexplained: [], toVerify: [] };
     // La réconciliation telle qu'elle se lit au moment du bulletin ; le verdict final y ajoute la remise du bilan.
-    const reconcile = (unexplained: string[], extra: { alertDeliveryFailed?: boolean; coverageFailed?: boolean } = {}) => reconcileRun({
-      states: sourceStates ?? [], now: new Date(), runStartedAt, unexplainedCoverage: unexplained, registryOverdue,
+    const reconcile = (coverage: ReturnType<typeof coverageVerdictOf>, extra: { alertDeliveryFailed?: boolean; coverageFailed?: boolean } = {}) => reconcileRun({
+      states: sourceStates ?? [], now: new Date(), runStartedAt, unexplainedCoverage: coverage.unexplained, coverageToVerify: coverage.toVerify, registryOverdue,
       systemFailures: systemFailuresOf({ blockingReasons: summarizeOrchestration(orchestration).blockingReasons, refreshRefused: refresh.refused,
         stateFailures: orchestration.stateFailures, statesUnavailable: !sourceStates, ...extra }) });
     try {
       const { runCoverageReview } = await import('./coverage/coverageReview.js');
       if (!coverageBefore) throw new Error('coverage: the state before the RUN steps could not be read');
       const coverage = await runCoverageReview(prisma, { runId: log.runId() ?? null, probe, before: coverageBefore,
-        header: evaluation => stateLines(summarizeStates(sourceStates ?? [], new Date()), reconcile(unexplainedCoverageOf(evaluation.findings)),
+        header: evaluation => stateLines(summarizeStates(sourceStates ?? [], new Date()), reconcile(coverageVerdictOf(evaluation.findings)),
           { provisional: true }) });
-      unexplainedCoverage = unexplainedCoverageOf(coverage.evaluation.findings);
+      coverageVerdict = coverageVerdictOf(coverage.evaluation.findings);
       coverageFailed = !coverage.sent;
       await log.info('coverage.reviewed', { written: coverage.written, sent: coverage.sent, referenceRuns: coverage.evaluation.referenceRuns,
         findings: coverage.evaluation.findings.map(f => ({ scope: f.scope, key: f.key, label: f.label, kind: f.kind, cause: f.cause,
@@ -250,11 +252,11 @@ try {
       ...summary, geo, refresh, alerted, indexing });
     // D-520 §4 : le verdict du RUN est la réconciliation. Une source dont l'état est classé (cause, trajectoire) ne le
     // rend plus rouge ; une cause non classée, une pause sans motif, une échéance passée sans escalade, une couverture
-    // perdue sans cause ou une panne du système lui-même (comptes, refresh, bilan, bulletin, état non écrit) le rendent rouge.
+    // perdue vraiment sans cause (une perte qu'un mouvement d'offres peut expliquer est seulement « à vérifier ») ou une panne du système lui-même (comptes, refresh, bilan, bulletin, état non écrit) le rendent rouge.
     const alertDeliveryFailed = orchestration.incidents.length > 0 && !alerted;
-    const reconciliation = reconcile(unexplainedCoverage, { alertDeliveryFailed, coverageFailed });
+    const reconciliation = reconcile(coverageVerdict, { alertDeliveryFailed, coverageFailed });
     const states = summarizeStates(sourceStates ?? [], new Date());
-    await log.info('run.reconciled', { green: reconciliation.green, reasons: reconciliation.reasons, byState: states.byState,
+    await log.info('run.reconciled', { green: reconciliation.green, reasons: reconciliation.reasons, toVerify: reconciliation.toVerify, byState: states.byState,
       byTrajectory: states.byTrajectory, byCause: states.byCause });
     if (!reconciliation.green) {
       fatalFailure = true;

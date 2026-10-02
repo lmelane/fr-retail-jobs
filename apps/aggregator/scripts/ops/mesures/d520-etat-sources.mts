@@ -109,7 +109,7 @@ for (const run of runs) {
   verdicts.push({ date: run.startedAt.slice(0, 10), runId: run.id, actual: run.status, actualReasons: [...new Set(reasons)],
     actualBlockingSources: oldBlocking.length, collected: collected.size, selected: selected!.size,
     verdict: verdict.green ? 'VERT' : 'ROUGE', reasons: verdict.reasons, byState: summary.byState, byTrajectory: summary.byTrajectory,
-    ourSideBlockedThisRun: all.filter(s => s.state === 'BLOQUEE' && ['DEFAUT_INTERNE', 'QUALIFICATION_REFUSEE', 'NON_COLLECTEE'].includes(s.cause ?? '')
+    ourSideBlockedThisRun: all.filter(s => (s.state === 'BLOQUEE' || s.state === 'EN_ATTENTE') && ['DEFAUT_INTERNE', 'QUALIFICATION_REFUSEE', 'NON_COLLECTEE'].includes(s.cause ?? '')
       && (s.cause === 'NON_COLLECTEE' ? s.computedAt.getTime() >= utc(run.startedAt).getTime() : (s.lastCollectionAt?.getTime() ?? 0) >= utc(run.startedAt).getTime()))
       .map(s => `${s.sourceKey}:${s.cause}`),
     ourSideFailedThisRun: all.filter(s => s.state !== 'NORMALE' && ['DEFAUT_INTERNE', 'QUALIFICATION_REFUSEE', 'NON_COLLECTEE'].includes(s.cause ?? '')

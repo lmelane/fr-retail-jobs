@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { ANOMALY, attributeLoss, evaluateCoverage, habitualVariation, isAnomalous, newAlerts, referenceOf, referenceWindow, type EntityState,
   type Exits, type HistoryRun, type KnownSource, type LossCause, type SourceCount } from './coverageAlert.js';
+import { coverageVerdictOf, reconcileRun, summarizeStates, summaryLines } from '../pipeline/sourceState.js';
 
 /**
  * R-143 §11, D-516 §2 — l'alerte de couverture. Les chiffres sont ceux du rejeu sur l'historique réel
@@ -295,5 +296,69 @@ describe('nouvelle ou en cours : une alerte ne réveille qu’une fois', () => {
   it('la photographie porte l’alerte, pour que le RUN suivant la reconnaisse', () => {
     const e = evaluateCoverage({ history: steady('MAISON:m', 100), knownSources: [], entities: [entity({ key: 'm', served: 40, exits: exits({ last: { NON_REVUE: 60 } }) })] });
     expect(e.rows).toEqual([{ scope: 'MAISON', key: 'm', label: 'm', served: 40, reference: 100, cause: 'NON_REVUE', gravity: 'A_VERIFIER' }]);
+  });
+});
+
+describe('D-520 §4, D-518 §2 : une perte « sans cause » qu’un mouvement d’offres explique est à vérifier, jamais rouge', () => {
+  /** Sept RUN stables (variation habituelle nulle : le plancher de 5 offres suffit à l'anomalie). */
+  const history = (served: Record<string, number>) => Array.from({ length: 7 }, (_, i) => run(i, served));
+  const verdictOf = (entities: EntityState[], past: HistoryRun[]) => {
+    const evaluation = evaluateCoverage({ entities, knownSources: [], history: past });
+    const coverage = coverageVerdictOf(evaluation.findings);
+    return { evaluation, coverage, verdict: reconcileRun({ states: [], now: day(8), runStartedAt: null, systemFailures: [],
+      unexplainedCoverage: coverage.unexplained, coverageToVerify: coverage.toVerify }) };
+  };
+
+  it('changement de source canonique : la source perd 30 offres sans sortie, la Maison et le marché les servent toujours', () => {
+    const { evaluation, coverage, verdict } = verdictOf([
+      entity({ key: 'hermes', served: 100 }), entity({ scope: 'MARCHE', key: 'FR', served: 100 }),
+      entity({ scope: 'SOURCE', key: 'hermes-ancienne', served: 70 }), entity({ scope: 'SOURCE', key: 'hermes-nouvelle', served: 30 }),
+    ], history({ 'MAISON:hermes': 100, 'MARCHE:FR': 100, 'SOURCE:hermes-ancienne': 100 }));
+    // Prémisse : la perte réveille, sans cause, comme avant ce correctif (qui la rendait rouge).
+    expect(evaluation.findings).toEqual([expect.objectContaining({ scope: 'SOURCE', key: 'hermes-ancienne', cause: 'INEXPLIQUEE', gravity: 'A_REPARER', lost: 30 })]);
+    expect(coverage).toEqual({ unexplained: [], toVerify: ['SOURCE:hermes-ancienne'] });
+    expect(verdict.green).toBe(true);
+    expect(verdict.toVerify).toEqual([expect.objectContaining({ reason: 'COUVERTURE_A_VERIFIER', sources: ['SOURCE:hermes-ancienne'] })]);
+    const lines = summaryLines(summarizeStates([], day(8)), verdict);
+    expect(lines[0]).toMatch(/^Réconciliation : vert/);
+    expect(lines[1]).toMatch(/^À vérifier, sans rougir le RUN : .*changement de source canonique.* : 1 \(SOURCE:hermes-ancienne\)\.$/);
+    expect(lines.join('\n')).not.toContain('—');
+  });
+
+  it('réattribution de société : la Maison perd 30 offres sans sortie, sa source et son marché les servent toujours', () => {
+    const { evaluation, coverage, verdict } = verdictOf([
+      entity({ key: 'maison-x', served: 70 }), entity({ key: 'maison-y', served: 30 }), entity({ scope: 'MARCHE', key: 'FR', served: 100 }),
+      entity({ scope: 'SOURCE', key: 's', served: 100 }),
+    ], history({ 'MAISON:maison-x': 100, 'MARCHE:FR': 100, 'SOURCE:s': 100 }));
+    expect(evaluation.findings).toEqual([expect.objectContaining({ scope: 'MAISON', key: 'maison-x', cause: 'INEXPLIQUEE', gravity: 'A_REPARER' })]);
+    expect(coverage).toEqual({ unexplained: [], toVerify: ['MAISON:maison-x'] });
+    expect(verdict.green).toBe(true);
+  });
+
+  it('une perte réelle se lit dans la Maison ET dans sa source : anormale et vraiment inexpliquée, rouge', () => {
+    // Le marché bouge de 50 offres par RUN : ses 30 offres perdues n'y sont pas anormales ; la source, elle, recoupe.
+    const past = Array.from({ length: 7 }, (_, i) => run(i, { 'MAISON:maison-x': 100, 'SOURCE:s': 100, 'MARCHE:FR': i % 2 ? 950 : 1000 }));
+    const { evaluation, coverage, verdict } = verdictOf([
+      entity({ key: 'maison-x', served: 70 }), entity({ scope: 'SOURCE', key: 's', served: 70 }), entity({ scope: 'MARCHE', key: 'FR', served: 970 }),
+    ], past);
+    // Prémisse : seul le constat de la Maison reste (celui de la source, son reflet exact, est replié dessus).
+    expect(evaluation.findings.map(f => `${f.scope}:${f.key}`)).toEqual(['MAISON:maison-x']);
+    expect(coverage).toEqual({ unexplained: ['MAISON:maison-x'], toVerify: [] });
+    expect(verdict.reasons.map(r => r.reason)).toEqual(['COUVERTURE_INEXPLIQUEE']);
+  });
+
+  it('un marché qui perd sans cause est rouge : aucun des deux mouvements ne déplace le pays d’une offre', () => {
+    const { coverage } = verdictOf([entity({ scope: 'MARCHE', key: 'IT', served: 70 })], history({ 'MARCHE:IT': 100 }));
+    expect(coverage).toEqual({ unexplained: ['MARCHE:IT'], toVerify: [] });
+  });
+
+  it('une perte qui réveille mais dont la part sans cause est sous le niveau d’anomalie est à vérifier', () => {
+    // 7 offres perdues : 3 par une collecte en échec, 4 sans cause (sous le plancher de 5).
+    const lossExits = exits({ last: { COLLECTE: 3 } });
+    const { evaluation, coverage } = verdictOf([entity({ key: 'maison-x', served: 93, exits: lossExits }),
+      entity({ scope: 'SOURCE', key: 's', served: 93, exits: lossExits })], history({ 'MAISON:maison-x': 100, 'SOURCE:s': 100 }));
+    expect(evaluation.findings[0]).toMatchObject({ scope: 'MAISON', cause: 'INEXPLIQUEE', gravity: 'A_REPARER',
+      unexplained: { count: 4, anomalous: false } });
+    expect(coverage).toEqual({ unexplained: [], toVerify: ['MAISON:maison-x'] });
   });
 });
