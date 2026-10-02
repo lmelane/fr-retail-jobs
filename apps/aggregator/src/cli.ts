@@ -382,6 +382,33 @@ try {
       await log.info('command.result', { ok: result.refused.length === 0, command, apply, maisons: result.maisons, entities: result.entities,
         toCreate: result.toCreate, uncertain: result.uncertain.length, applied: result.applied, movedJobs: result.movedJobs, refused: result.refused.slice(0, 20), output });
     }
+  } else if (command === 'registry-review') {
+    /**
+     * D-520 §2 — le registre explicite des sources (`registry/explicitRegistry.ts`), relu en deux temps.
+     *  - Aperçu : `--decisions=<registre-explicite/1>` ; rien n'est écrit, `--output=<fichier>` garde l'aperçu à relire.
+     *  - Application : `--apply --plan=<aperçu relu>` applique CE fichier et lui seul ; l'aperçu est recalculé sous
+     *    verrou et la commande refuse, sans rien écrire, s'il en diffère (REVIEWED_PLAN_MISMATCH) ou s'il refuse une
+     *    source (REVIEWED_PLAN_REFUSED). Jamais pendant le RUN de 18 h.
+     *  - Reprise : si le retrait des publications d'une source passée RETIRED échoue après l'écriture du registre, relancer
+     *    `retire-source <clé>` pour cette clé (idempotent) ; le fichier relu, déjà appliqué, est désormais refusé.
+     */
+    const { readFile, writeFile } = await import('node:fs/promises');
+    const { applyRegistryReview, previewRegistryReview } = await import('./registry/explicitRegistry.js');
+    const arg = (name: string) => process.argv.find((a) => a.startsWith(`--${name}=`))?.slice(name.length + 3);
+    const apply = process.argv.includes('--apply'), output = arg('output'), planFile = arg('plan'), decisions = arg('decisions');
+    if (apply ? !planFile || decisions || output : !decisions || planFile) {
+      throw new Error('registry-review: preview with --decisions=<file> [--output=<file>], apply with --apply --plan=<reviewed preview>');
+    }
+    if (!apply) {
+      const preview = await previewRegistryReview(prisma, JSON.parse(await readFile(decisions!, 'utf8')));
+      if (output) await writeFile(output, JSON.stringify(preview, null, 2) + '\n', { flag: 'wx', mode: 0o600 });
+      await log.info('command.result', { ok: preview.refused.length === 0, command, apply, entries: preview.plan.entries.length,
+        retirements: preview.retirements, refused: preview.refused.length, refusedSample: preview.refused.slice(0, 20), hash: preview.hash, output });
+      if (preview.refused.length) process.exitCode = 1;
+    } else {
+      const report = await applyRegistryReview(prisma, JSON.parse(await readFile(planFile!, 'utf8')));
+      await log.info('command.result', { ok: true, command, apply, ...report });
+    }
   } else if (command === 'resolve-domains') {
     /**
      * Pose Company.domain (le logo) sur les Maisons actives qui n'en ont pas :
@@ -489,7 +516,7 @@ try {
     try { await closeBrowser(); }
     catch (error) { fatalFailure = true; process.exitCode = 1; await log.error('browser.cleanup_failed', { error }); }
     // La surveillance Healthchecks est celle du RUN : une passe légère (R-143 §1) ne la touche jamais.
-    if (observation && !['health-report', 'stats', 'export-companies', 'occupation-review-queue', 'consolidate-publications', 'attach-maisons', 'qualify-sectors', 'ingest-light', 'coverage'].includes(command)) {
+    if (observation && !['health-report', 'stats', 'export-companies', 'occupation-review-queue', 'consolidate-publications', 'attach-maisons', 'qualify-sectors', 'registry-review', 'ingest-light', 'coverage'].includes(command)) {
       const heartbeat = await pingHeartbeat(!fatalFailure && !process.exitCode);
       await log.info('pipeline.heartbeat', { heartbeat, command });
       if (heartbeat === 'failed') { fatalFailure = true; process.exitCode = 1; }

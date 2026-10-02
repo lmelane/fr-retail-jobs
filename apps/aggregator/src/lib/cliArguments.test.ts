@@ -28,3 +28,10 @@ it('requires isolated discovery output and rejects retired unsafe commands', () 
   expect(() => validateCliArguments('discover',['--input=roster.csv'])).toThrow();
   for (const command of ['identity-profile', 'review-source-identity', 'promote', 'purge', 'promote-validated', 'reconcile', 'apply-domain-sheet', 'separate-fused']) expect(() => validateCliArguments(command,[])).toThrow();
 });
+
+it('déclare les commandes relues en deux temps (D-519 qualify-sectors, D-520 §2 registry-review)', () => {
+  for (const args of [['--output=apercu.json'], ['--apply', '--plan=apercu.json']]) expect(() => validateCliArguments('qualify-sectors', args)).not.toThrow();
+  for (const args of [['--decisions=registre.json', '--output=apercu.json'], ['--apply', '--plan=apercu.json']]) expect(() => validateCliArguments('registry-review', args)).not.toThrow();
+  for (const args of [['--decisions='], ['--apply=1'], ['--limit=3']]) expect(() => validateCliArguments('registry-review', args)).toThrow();
+});
+

@@ -13,6 +13,10 @@ const COMMANDS: Record<string, CommandOptions> = {
   'resolve-domains': { values: ['limit'], flags: ['dry-run'] },
   'consolidate-publications': { values: ['limit', 'output', 'plan'], flags: ['apply'] },
   'attach-maisons': { values: ['output', 'plan'], flags: ['apply'] },
+  // D-519 : la commande existait dans cli.ts sans être déclarée ici, donc refusée « Unknown command » avant tout travail.
+  'qualify-sectors': { values: ['output', 'plan'], flags: ['apply'] },
+  // D-520 §2 : le registre explicite, aperçu (--decisions, --output) puis application du seul aperçu relu (--apply --plan).
+  'registry-review': { values: ['decisions', 'output', 'plan'], flags: ['apply'] },
   'occupation-review-queue': { values: ['output','limit'] },
   'occupation-preview': { values: ['file','output'] },
   'occupation-activate': { values: ['file','output','review','commit'], flags: ['apply'] },
