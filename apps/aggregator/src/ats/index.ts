@@ -1,5 +1,7 @@
 import { applyNativeEmployerRules, nativeEmployerRules } from '../identity/nativeClaims.js';
 import { assertPipelineRunning } from '../lib/pipelinePause.js';
+import { captureObservedAt } from '../capture/context.js';
+import { applySpontaneousApplicationRule } from '../pipeline/spontaneousApplication.js';
 import { canonicalIdContract } from './canonicalIdContract.js';
 import { fetchJobaffinityWordpressJobs } from './adapters/jobaffinityWordpress.js';
 import { fetchFlatchrJobs } from './adapters/flatchr.js';
@@ -63,7 +65,10 @@ export async function fetchAtsJobs(type: AtsType, config: Record<string, unknown
   assertPipelineRunning();
   const rules = nativeEmployerRules(config);
   const result = toResult(await dispatch(type, config));
-  return normalizeAdapterResult({ ...result, jobs: result.jobs.map(job => applyNativeEmployerRules(job, rules)) });
+  // D-511 : une candidature spontanée (preuve native) est retenue et retirée, quel que soit l'adaptateur. Datée par le
+  // début de la collecte (le même instant au rejeu hors ligne), avant le scellement de la sortie.
+  const observedAt = captureObservedAt();
+  return normalizeAdapterResult({ ...result, jobs: result.jobs.map(job => applySpontaneousApplicationRule(applyNativeEmployerRules(job, rules), observedAt)) });
 }
 
 export function normalizeAdapterResult(result: NormalizedJob[] | AdapterResult): AdapterResult {

@@ -1,6 +1,7 @@
 import { createHash } from 'node:crypto';
 import pLimit from 'p-limit';
 import { captureObservedAt, CaptureUnavailableError, OfflineReplayError } from '../../capture/context.js';
+import { SPONTANEOUS_APPLICATION_HOLD } from '../../pipeline/spontaneousApplication.js';
 import { detailRetryAllowed, waitBeforeDetailRetry } from '../../lib/detailRetry.js';
 import { DEFAULT_DETAIL_CONCURRENCY, fetchJson, fetchText } from '../../lib/http.js';
 import { htmlToPlainText } from '../../lib/html.js';
@@ -208,7 +209,8 @@ export function readPublishedList(html: string): PublishedList {
  */
 const SPONTANEOUS_CAREER_LEVEL = /^initiativ$/i;
 const SPONTANEOUS_TITLE = /\binitiativbewerbung\b|\bunsolicited\s+application\b/i;
-export const MARC_O_POLO_SPONTANEOUS_HOLD = 'NATIVE_SPONTANEOUS_APPLICATION';
+/** La même retenue que la règle générale de D-511 (`pipeline/spontaneousApplication.ts`). */
+export const MARC_O_POLO_SPONTANEOUS_HOLD = SPONTANEOUS_APPLICATION_HOLD;
 export function isMarcOPoloSpontaneousApplication(listing: Record<string, unknown>, detail: Record<string, unknown> = {}): boolean {
   return [listing.careerLevel, detail.careerLevel].some((level) => SPONTANEOUS_CAREER_LEVEL.test(text(level)))
     || [listing.title, detail.title].some((title) => SPONTANEOUS_TITLE.test(text(title)));

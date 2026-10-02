@@ -101,3 +101,35 @@ it('withholds publication on a reviewed OUT_OF_SCOPE decision: withdrawn (never 
   await db.jobSource.deleteMany({ where: { sourceKey: key } }); await db.job.delete({ where: { id: jobId } });
   await db.sourceObservation.deleteMany({ where: { sourceKey: key } }); await db.source.delete({ where: { key } });
 });
+
+it('D-511 : withdraws an already published spontaneous application (never closed), keeps the real job that names it', async () => {
+  const { upsertDeduplicated } = await import('../test/publicationPersistenceFixture.js');
+  const { resolveCompany } = await import('../normalize/company.js');
+  const { applySpontaneousApplicationRule } = await import('./spontaneousApplication.js');
+  const key = 'spontaneous-d511-witness';
+  for (const js of await db.jobSource.findMany({ where: { sourceKey: key } })) { await db.jobSource.delete({ where: { id: js.id } }); js.jobId && await db.job.delete({ where: { id: js.jobId } }).catch(() => undefined); }
+  await db.sourceObservation.deleteMany({ where: { sourceKey: key } });
+  await db.source.upsert({ where: { key }, update: { status: 'ACTIVE' }, create: { key, maison: 'Oh My Cream', kind: 'wttj', tenantKey: key, tier: 'ATS_OFFICIAL', config: {}, status: 'ACTIVE' } });
+  const base = { company: 'Oh My Cream', companyId: resolveCompany('Oh My Cream').companyId, sourceKey: key, sourceTier: 'ATS_OFFICIAL' as const, atsType: 'WTTJ' as const, country: 'FR', city: 'Paris' };
+  const spontaneous = { ...base, externalId: 'candidature-spontanee', title: 'Responsable boutique - Candidature spontanée', url: 'https://www.welcometothejungle.com/fr/companies/oh-my-cream/jobs/candidature-spontanee', raw: { revision: 1 } };
+  const real = { ...base, externalId: 'charge-candidatures', title: 'Chargé des candidatures spontanées', url: 'https://www.welcometothejungle.com/fr/companies/oh-my-cream/jobs/charge-candidatures', raw: { revision: 1 } };
+  // Both are online today, as the 02/10 measure found them.
+  const published = await upsertDeduplicated(db, spontaneous);
+  const kept = await upsertDeduplicated(db, real);
+  await db.jobSource.updateMany({ where: { sourceKey: key }, data: { lastSeenAt: new Date(Date.now() - 60_000) } });
+  const observedAt = new Date();
+  // The premise: the rule holds one and leaves the other untouched.
+  const held = applySpontaneousApplicationRule(spontaneous, observedAt);
+  expect(held).toMatchObject({ publicationHold: 'NATIVE_SPONTANEOUS_APPLICATION', publicationWithdrawnAt: observedAt });
+  expect(applySpontaneousApplicationRule(real, observedAt)).toBe(real);
+  await archivePublicationHold(db, key, held); await archivePublicationHold(db, key, held);
+  expect(await db.job.findUniqueOrThrow({ where: { id: published.jobId } })).toMatchObject({ isActive: false, closedAt: null, withdrawalReason: 'OUT_OF_SCOPE', reopenedCount: 0 });
+  expect(await db.jobEvent.count({ where: { jobId: published.jobId, type: 'CLOSED' } })).toBe(0);
+  expect(await db.jobEvent.count({ where: { jobId: published.jobId, type: 'WITHDRAWN' } })).toBe(1);
+  expect(await db.job.findUniqueOrThrow({ where: { id: kept.jobId } })).toMatchObject({ isActive: true, withdrawalReason: null });
+  // Never re-attested: the candidate path refuses the held posting.
+  expect(() => toCandidate(held, { key, company: 'Oh My Cream', tier: 'ATS_OFFICIAL' }, 'Oh My Cream', 'WTTJ')).toThrow('held');
+  await clearOccupationLedger();
+  for (const js of await db.jobSource.findMany({ where: { sourceKey: key } })) { await db.jobSource.delete({ where: { id: js.id } }); js.jobId && await db.job.delete({ where: { id: js.jobId } }); }
+  await db.sourceObservation.deleteMany({ where: { sourceKey: key } }); await db.source.delete({ where: { key } });
+});

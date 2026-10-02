@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 vi.mock('../../lib/http.js', () => ({ fetchJson: vi.fn(), fetchText: vi.fn(), DEFAULT_DETAIL_CONCURRENCY: 4 }));
 import { fetchJson, fetchText } from '../../lib/http.js';
 import { fetchTalentRecruiterJobs, talentRecruiterDate } from './talentRecruiter.js';
+import { fetchAtsJobs } from '../index.js';
 const api = vi.mocked(fetchJson), text = vi.mocked(fetchText);
 const position = (Id: number, overrides: Record<string, unknown> = {}) => ({
   Id, Name: 'Client Advisor', CustomerAlias: 'ganni', CustomerName: 'GANNI A/S', ProjectType: 'RecruitmentProject',
@@ -166,5 +167,14 @@ describe('Talent Recruiter — rejets identifiables observés avant validation',
 
     expect(r.enumeration?.issues).toContain('ROW_WITHOUT_CANONICAL_ID');
     expect(r.complete).toBe(false);
+  });
+
+  /** D-511 : la candidature spontanée que l'éditeur déclare (`ProjectType` « OpenApplication ») est retenue et retirée à la collecte. */
+  it('la collecte retient la candidature spontanée native et publie le poste voisin (GANNI, D-511)', async () => {
+    api.mockResolvedValue(feed([position(143570, { Name: 'Unsolicited applications', ProjectType: 'OpenApplication', Advertisements: [] }), position(144697)]));
+    const r = await fetchAtsJobs('TALENT_RECRUITER', { customer: 'ganni' });
+    expect(r.jobs.map(j => [j.externalId, j.publicationHold ?? null, !!j.publicationWithdrawnAt]))
+      .toEqual([['143570', 'NATIVE_SPONTANEOUS_APPLICATION', true], ['144697', null, false]]);
+    expect(r.complete).toBe(true);
   });
 });

@@ -23,13 +23,17 @@ describe('native opportunity states from the RAW audit', () => {
     expect(parseWordpressPost({ ...raw, title: { rendered: 'Recruitment Event Manager' } })?.publicationHold).toBeUndefined();
     expect(parseWordpressPost({ ...raw, content: { rendered: 'Organize job dating sessions as part of your duties.' } })?.publicationHold).toBeUndefined();
   });
-  it('keeps the explicitly unsolicited application distinct on collection and replay', () => {
+  it('reads the explicitly unsolicited application natively, and never replays it as a publication (D-511)', () => {
     const listing = { id: '744000127388160', name: 'Εκδήλωση Ενδιαφέροντος', company: { name: 'ALTEX S.A.' } };
     const jobAd = { sections: { jobDescription: { text: 'Σε περίπτωση που σας ενδιαφέρει να εργαστείτε μαζί μας και τη δεδομένη στιγμή δεν υπάρχει αντίστοιχη θέση, μπορείτε να αποστείλετε το βιογραφικό σας.' } } };
     const live = applySmartRecruitersJobAd(parseSmartRecruitersPosting(listing, 'ALTEXSA'), jobAd);
     expect(live.opportunityType).toBe('OPEN_APPLICATION');
     expect(recoverRetainedPublication('smartrecruiters', live.raw, { externalId: live.externalId, url: live.url, observedAt: new Date(), config: { company: 'ALTEXSA' } }))
-      .toMatchObject({ status: 'RECOVERABLE', job: { opportunityType: 'OPEN_APPLICATION', raw: live.raw } });
+      .toEqual({ status: 'RECOLLECT_OR_REVIEW', reason: 'PUBLICATION_HELD' });
+    // The real vacancy next to it is replayed as before.
+    const vacancy = applySmartRecruitersJobAd(parseSmartRecruitersPosting({ ...listing, name: 'Sales Advisor' }, 'ALTEXSA'), { sections: { jobDescription: { text: 'Sales role in store.' } } });
+    expect(recoverRetainedPublication('smartrecruiters', vacancy.raw, { externalId: vacancy.externalId, url: vacancy.url, observedAt: new Date(), config: { company: 'ALTEXSA' } }))
+      .toMatchObject({ status: 'RECOVERABLE' });
     expect(applySmartRecruitersJobAd({ ...live, opportunityType: undefined, title: 'Sales Advisor' }, jobAd).opportunityType).toBeUndefined();
     expect(applySmartRecruitersJobAd(parseSmartRecruitersPosting(listing, 'ALTEXSA'), undefined).opportunityType).toBeUndefined();
   });

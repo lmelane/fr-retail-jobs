@@ -49,6 +49,7 @@ import { htmlToPlainText } from '../lib/html.js';
 import { evidenceHash } from '../lib/evidenceHash.js';
 import type { NormalizedJob } from '../types.js';
 import { employerFromCertifiedScope } from '../identity/portalEmployer.js';
+import { applySpontaneousApplicationRule } from '../pipeline/spontaneousApplication.js';
 
 type Context = { externalId: string; url: string; observedAt: Date; config: Record<string, unknown>;
   /** Trusted registry context, never a field inferred from the publication or its settings. */
@@ -610,6 +611,8 @@ function readRetainedPublication(kind: string, raw: unknown, context: Context, r
       !['https:', 'http:'].includes(url.protocol) || url.username || url.password) return failure('IDENTITY_MISMATCH');
     job = applyNativeEmployerRules({ ...job, raw }, nativeEmployerRules(config));
     if (context.certifiedPortal) job = employerFromCertifiedScope(job, context.certifiedPortal.ownerName, context.certifiedPortal.scope);
+    // D-511 : la reprise du RAW lit la même règle que la collecte ; une candidature spontanée n'est jamais reprise.
+    job = applySpontaneousApplicationRule(job, context.observedAt);
     if (job.publicationHold || job.publicationWithdrawnAt) return failure('PUBLICATION_HELD');
     if (requireContent && (typeof job.description !== 'string' || !htmlToPlainText(job.description)?.trim())) return failure('CONTENT_MISSING');
     for (const date of [job.postedAt, job.validThrough]) if (date && !Number.isFinite(date.getTime())) return failure('RAW_SCHEMA_INVALID');

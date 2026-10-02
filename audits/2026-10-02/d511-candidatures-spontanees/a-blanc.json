@@ -1,0 +1,853 @@
+{
+  "publicationsLues": 90735,
+  "retenues": 62,
+  "offresDistinctes": 62,
+  "dontSourceActive": 59,
+  "parSource": {
+    "a-derma-4": {
+      "offres": 2,
+      "statut": "ACTIVE"
+    },
+    "aptar-beauty": {
+      "offres": 2,
+      "statut": "ACTIVE"
+    },
+    "axel-arigato": {
+      "offres": 1,
+      "statut": "ACTIVE"
+    },
+    "b-s-international": {
+      "offres": 1,
+      "statut": "ACTIVE"
+    },
+    "beiersdorf": {
+      "offres": 1,
+      "statut": "ACTIVE"
+    },
+    "bzb": {
+      "offres": 1,
+      "statut": "ACTIVE"
+    },
+    "capri-michael-kors": {
+      "offres": 1,
+      "statut": "ACTIVE"
+    },
+    "closed": {
+      "offres": 1,
+      "statut": "ACTIVE"
+    },
+    "drunk-elephant-2": {
+      "offres": 1,
+      "statut": "ACTIVE"
+    },
+    "funky-buddha": {
+      "offres": 1,
+      "statut": "ACTIVE"
+    },
+    "ganni-talentrecruiter": {
+      "offres": 1,
+      "statut": "ACTIVE"
+    },
+    "got-bag": {
+      "offres": 2,
+      "statut": "ACTIVE"
+    },
+    "hm-group": {
+      "offres": 4,
+      "statut": "ACTIVE"
+    },
+    "horace": {
+      "offres": 1,
+      "statut": "ACTIVE"
+    },
+    "jonsson-workwear": {
+      "offres": 1,
+      "statut": "ACTIVE"
+    },
+    "jules": {
+      "offres": 1,
+      "statut": "ACTIVE"
+    },
+    "kapten-son": {
+      "offres": 2,
+      "statut": "ACTIVE"
+    },
+    "la-prairie": {
+      "offres": 1,
+      "statut": "ACTIVE"
+    },
+    "la-redoute-talentview": {
+      "offres": 1,
+      "statut": "ACTIVE"
+    },
+    "laverana-gmbh-co-kg": {
+      "offres": 1,
+      "statut": "ACTIVE"
+    },
+    "lerros": {
+      "offres": 1,
+      "statut": "ACTIVE"
+    },
+    "lovable": {
+      "offres": 1,
+      "statut": "ACTIVE"
+    },
+    "lvmh": {
+      "offres": 1,
+      "statut": "ACTIVE"
+    },
+    "marc-o-polo": {
+      "offres": 2,
+      "statut": "PAUSED"
+    },
+    "marella": {
+      "offres": 1,
+      "statut": "ACTIVE"
+    },
+    "ms-mode": {
+      "offres": 1,
+      "statut": "ACTIVE"
+    },
+    "naos": {
+      "offres": 4,
+      "statut": "ACTIVE"
+    },
+    "nikin": {
+      "offres": 1,
+      "statut": "ACTIVE"
+    },
+    "oh-my-cream": {
+      "offres": 4,
+      "statut": "ACTIVE"
+    },
+    "peak-performance": {
+      "offres": 3,
+      "statut": "ACTIVE"
+    },
+    "picard": {
+      "offres": 1,
+      "statut": "ACTIVE"
+    },
+    "polene": {
+      "offres": 3,
+      "statut": "ACTIVE"
+    },
+    "profuomo": {
+      "offres": 1,
+      "statut": "ACTIVE"
+    },
+    "reformation": {
+      "offres": 2,
+      "statut": "ACTIVE"
+    },
+    "richemont-workday": {
+      "offres": 1,
+      "statut": "ACTIVE"
+    },
+    "swatch-group": {
+      "offres": 1,
+      "statut": "PAUSED"
+    },
+    "tekla": {
+      "offres": 1,
+      "statut": "ACTIVE"
+    },
+    "thomas-sabo": {
+      "offres": 1,
+      "statut": "ACTIVE"
+    },
+    "wttj-sector": {
+      "offres": 3,
+      "statut": "ACTIVE"
+    },
+    "yaya": {
+      "offres": 2,
+      "statut": "ACTIVE"
+    }
+  },
+  "divergences": [],
+  "liste": [
+    {
+      "sourceKey": "a-derma-4",
+      "sourceStatus": "ACTIVE",
+      "externalId": "Candidature-Spontane-Chef-fe--de-Produit-Dveloppement-et-Oprationnel-Snior---H-F_JR106872",
+      "jobId": "cmu854hep007ont43563y5nnr",
+      "company": "Pierre Fabre",
+      "title": "Candidature Spontanée Chef(fe) de Produit Développement et Opérationnel Sénior - H/F",
+      "preuve": "libellé « candidature spontanée » (segment « candidature spontanee chef(fe) de produit developpement et operationnel senior - h/f »)",
+      "autresSourcesDisponibles": 0,
+      "url": "https://pierrefabre.wd3.myworkdayjobs.com/External_Career_Site/job/Tarn-81/Candidature-Spontane-Chef-fe--de-Produit-Dveloppement-et-Oprationnel-Snior---H-F_JR106872"
+    },
+    {
+      "sourceKey": "a-derma-4",
+      "sourceStatus": "ACTIVE",
+      "externalId": "Candidatures-spontanes---Chef-fe--de-produit-dveloppement-Senior---CDI---H-F_JR111279",
+      "jobId": "cmu854hca007ant43t7sqihd8",
+      "company": "Pierre Fabre",
+      "title": "Candidatures spontanées - Chef(fe) de produit développement Senior - CDI - H/F",
+      "preuve": "libellé « candidature spontanée » (segment « candidatures spontanees - chef(fe) de produit developpement senior - cdi - h/f »)",
+      "autresSourcesDisponibles": 0,
+      "url": "https://pierrefabre.wd3.myworkdayjobs.com/External_Career_Site/job/Haute-Garonne-31/Candidatures-spontanes---Chef-fe--de-produit-dveloppement-Senior---CDI---H-F_JR111279"
+    },
+    {
+      "sourceKey": "aptar-beauty",
+      "sourceStatus": "ACTIVE",
+      "externalId": "994593001",
+      "jobId": "cmu9mvho400iymbrbkjzd0e5u",
+      "company": "Aptar Group",
+      "title": "Initiativbewerbung Gewerblich/ Technisch (m/w/d)",
+      "preuve": "libellé « Initiativbewerbung » (segment « initiativbewerbung gewerblich/ technisch (m/w/d) »)",
+      "autresSourcesDisponibles": 0,
+      "url": "https://jobs.aptar.com/job/Eigeltingen-Initiativbewerbung-Gewerblich-Technisch-%28mwd%29-BW-78253/994593001/"
+    },
+    {
+      "sourceKey": "aptar-beauty",
+      "sourceStatus": "ACTIVE",
+      "externalId": "994592701",
+      "jobId": "cmu9mvhg500hsmbrbr9jpn5vk",
+      "company": "Aptar Group",
+      "title": "Initiativbewerbung Kaufmännisch (m/w/d)",
+      "preuve": "libellé « Initiativbewerbung » (segment « initiativbewerbung kaufmannisch (m/w/d) »)",
+      "autresSourcesDisponibles": 0,
+      "url": "https://jobs.aptar.com/job/Eigeltingen-Initiativbewerbung-Kaufm%C3%A4nnisch-%28mwd%29-BW-78253/994592701/"
+    },
+    {
+      "sourceKey": "axel-arigato",
+      "sourceStatus": "ACTIVE",
+      "externalId": "dbad95d8-d7bb-46b3-bbc1-cc288d593a7a",
+      "jobId": "cmu7e6fm50012jxf2gv04op9d",
+      "company": "AXEL ARIGATO",
+      "title": "Open Application and Internships - Gothenburg",
+      "preuve": "libellé « open application » (segment « open application and internships - gothenburg »)",
+      "autresSourcesDisponibles": 0,
+      "url": "https://axelarigato.teamtailor.com/jobs/5343288-open-application-and-internships-gothenburg"
+    },
+    {
+      "sourceKey": "b-s-international",
+      "sourceStatus": "ACTIVE",
+      "externalId": "744000129117409",
+      "jobId": "cmu9lrsl400byr59xjm2g7hqx",
+      "company": "B&S International",
+      "title": "Open Sollicitatie",
+      "preuve": "libellé « open sollicitatie » (segment « open sollicitatie »)",
+      "autresSourcesDisponibles": 0,
+      "url": "https://jobs.smartrecruiters.com/bsinternational/744000129117409"
+    },
+    {
+      "sourceKey": "beiersdorf",
+      "sourceStatus": "ACTIVE",
+      "externalId": "c0941de489fdb9132a21e71afdf2ef7a06614d9f",
+      "jobId": "cmumwv1cz1sshtj35tne5n89m",
+      "company": "Beiersdorf AG",
+      "title": "Junior Manager Sales NIVEA (w/m/d) Initiativbewerbung",
+      "preuve": "libellé « Initiativbewerbung » (segment « initiativbewerbung »)",
+      "autresSourcesDisponibles": 0,
+      "url": "https://www.beiersdorf.de/karriere/jobs/87560929e37fc4fa526aab4cddbb7409"
+    },
+    {
+      "sourceKey": "bzb",
+      "sourceStatus": "ACTIVE",
+      "externalId": "6cea4763-9957-4cd2-8637-1b90fe2ee5f7",
+      "jobId": "cmudtd1g30cotoa34ql0wvx84",
+      "company": "BZB",
+      "title": "Candidature spontanée",
+      "preuve": "libellé « candidature spontanée » (segment « candidature spontanee »)",
+      "autresSourcesDisponibles": 0,
+      "url": "https://bzb.teamtailor.com/jobs/6518739-candidature-spontanee"
+    },
+    {
+      "sourceKey": "capri-michael-kors",
+      "sourceStatus": "ACTIVE",
+      "externalId": "MICHAEL-KORS---Initiativbewerbung_R_785732",
+      "jobId": "cmued5lq24glvoi353kga5bcg",
+      "company": "Michael Kors (Germany) GmbH",
+      "title": "MICHAEL KORS - Initiativbewerbung",
+      "preuve": "libellé « Initiativbewerbung » (segment « initiativbewerbung »)",
+      "autresSourcesDisponibles": 0,
+      "url": "https://capri.wd1.myworkdayjobs.com/Michael_Kors/job/Ludwigsburg/MICHAEL-KORS---Initiativbewerbung_R_785732"
+    },
+    {
+      "sourceKey": "closed",
+      "sourceStatus": "ACTIVE",
+      "externalId": "2578715",
+      "jobId": "cmudtgvez0fw1oa345rndml44",
+      "company": "Closed NewCo GmbH",
+      "title": "Initiativbewerbung (m/w/d)",
+      "preuve": "libellé « Initiativbewerbung » (segment « initiativbewerbung (m/w/d) »)",
+      "autresSourcesDisponibles": 0,
+      "url": "https://closed.jobs.personio.de/job/2578715"
+    },
+    {
+      "sourceKey": "drunk-elephant-2",
+      "sourceStatus": "ACTIVE",
+      "externalId": "554551501",
+      "jobId": "cmu8a2xwt00dil9862diu0jfh",
+      "company": "Shiseido",
+      "title": "Initiativbewerbung für eine Festanstellung (m/w/d) in Düsseldorf, Vollzeit",
+      "preuve": "libellé « Initiativbewerbung » (segment « initiativbewerbung fur eine festanstellung (m/w/d) in dusseldorf, vollzeit »)",
+      "autresSourcesDisponibles": 0,
+      "url": "https://careers.shiseido.com/job/D%C3%BCsseldorf-Initiativbewerbung-f%C3%BCr-eine-Festanstellung-%28mwd%29-in-D%C3%BCsseldorf%2C-Vollzeit-NW/554551501/"
+    },
+    {
+      "sourceKey": "funky-buddha",
+      "sourceStatus": "ACTIVE",
+      "externalId": "744000127388160",
+      "jobId": "cmu881c92004kl545e0o9w2xf",
+      "company": "Funky Buddha",
+      "title": "Εκδήλωση Ενδιαφέροντος",
+      "preuve": "opportunityType=OPEN_APPLICATION",
+      "autresSourcesDisponibles": 0,
+      "url": "https://jobs.smartrecruiters.com/ALTEXSA/744000127388160"
+    },
+    {
+      "sourceKey": "ganni-talentrecruiter",
+      "sourceStatus": "ACTIVE",
+      "externalId": "143570",
+      "jobId": "cmudts4ss0s3joa34ee445ns1",
+      "company": "GANNI",
+      "title": "Unsolicited applications",
+      "preuve": "opportunityType=OPEN_APPLICATION",
+      "autresSourcesDisponibles": 0,
+      "url": "https://candidate.hr-manager.net/ApplicationInit.aspx?cid=1970&ProjectId=143570&DepartmentId=18957&MediaId=5"
+    },
+    {
+      "sourceKey": "got-bag",
+      "sourceStatus": "ACTIVE",
+      "externalId": "604543",
+      "jobId": "cmu81twiy0003t8860gfqyc8i",
+      "company": "GOT BAG",
+      "title": "CREATE AN IMPACT // Initiativbewerbung Festanstellung",
+      "preuve": "libellé « Initiativbewerbung » (segment « initiativbewerbung festanstellung »)",
+      "autresSourcesDisponibles": 0,
+      "url": "https://got-bag-gmbh.jobs.personio.de/job/604543"
+    },
+    {
+      "sourceKey": "got-bag",
+      "sourceStatus": "ACTIVE",
+      "externalId": "872511",
+      "jobId": "cmu81twlh000at8861rpg56wm",
+      "company": "GOT BAG",
+      "title": "CREATE AN IMPACT // Initiativbewerbung Praktikum, Werkstudent:in, Aushilfe",
+      "preuve": "libellé « Initiativbewerbung » (segment « initiativbewerbung praktikum, werkstudent »)",
+      "autresSourcesDisponibles": 0,
+      "url": "https://got-bag-gmbh.jobs.personio.de/job/872511"
+    },
+    {
+      "sourceKey": "hm-group",
+      "sourceStatus": "ACTIVE",
+      "externalId": "744000148768609",
+      "jobId": "cmueb0xny0mnhoi35ni9ny6b1",
+      "company": "H&M Group",
+      "title": "Fashion Design - Open Application H&M Group",
+      "preuve": "libellé « open application » (segment « open application h&m group »)",
+      "autresSourcesDisponibles": 0,
+      "url": "https://jobs.smartrecruiters.com/HMGroup/744000148768609"
+    },
+    {
+      "sourceKey": "hm-group",
+      "sourceStatus": "ACTIVE",
+      "externalId": "744000099654232",
+      "jobId": "cmueb22zp0rkmoi3543cwy232",
+      "company": "H&M Group",
+      "title": "Fashion Designer - H&M Womens, Kids, Mens, Lifestyle - Open Application",
+      "preuve": "libellé « open application » (segment « open application »)",
+      "autresSourcesDisponibles": 0,
+      "url": "https://jobs.smartrecruiters.com/HMGroup/744000099654232"
+    },
+    {
+      "sourceKey": "hm-group",
+      "sourceStatus": "ACTIVE",
+      "externalId": "744000137500359",
+      "jobId": "cmueb1t9b0qd9oi35bskxbqgn",
+      "company": "H&M Group",
+      "title": "H&M - Print Designer - Open Application",
+      "preuve": "libellé « open application » (segment « open application »)",
+      "autresSourcesDisponibles": 0,
+      "url": "https://jobs.smartrecruiters.com/HMGroup/744000137500359"
+    },
+    {
+      "sourceKey": "hm-group",
+      "sourceStatus": "ACTIVE",
+      "externalId": "744000099515715",
+      "jobId": "cmueb231a0rktoi35oxyze3rh",
+      "company": "H&M Group",
+      "title": "Junior Fashion Designer - H&M – Open Application",
+      "preuve": "libellé « open application » (segment « open application »)",
+      "autresSourcesDisponibles": 0,
+      "url": "https://jobs.smartrecruiters.com/HMGroup/744000099515715"
+    },
+    {
+      "sourceKey": "horace",
+      "sourceStatus": "ACTIVE",
+      "externalId": "f94f67ad-3249-4e79-8c97-7343e18db594",
+      "jobId": "cmu7edbl8003zo7um3lkpyvyr",
+      "company": "Horace",
+      "title": "Candidatures spontanées",
+      "preuve": "libellé « candidature spontanée » (segment « candidatures spontanees »)",
+      "autresSourcesDisponibles": 0,
+      "url": "https://horace.teamtailor.com/jobs/5747132-candidatures-spontanees"
+    },
+    {
+      "sourceKey": "jonsson-workwear",
+      "sourceStatus": "ACTIVE",
+      "externalId": "4048773101",
+      "jobId": "cmudu0qqu1cd3oa34bfdygama",
+      "company": "Jonsson Workwear",
+      "title": "General Application",
+      "preuve": "libellé « open application » (segment « general application »)",
+      "autresSourcesDisponibles": 0,
+      "url": "https://job-boards.eu.greenhouse.io/jonssonworkwear/jobs/4048773101"
+    },
+    {
+      "sourceKey": "jules",
+      "sourceStatus": "ACTIVE",
+      "externalId": "18022",
+      "jobId": "cmue5asgf00e3ld6d100iqfri",
+      "company": "Jules",
+      "title": "Candidature spontanée",
+      "preuve": "libellé « candidature spontanée » (segment « candidature spontanee »)",
+      "autresSourcesDisponibles": 0,
+      "url": "https://jules-recrutement.talentview.io/jobs/7d8xet"
+    },
+    {
+      "sourceKey": "kapten-son",
+      "sourceStatus": "ACTIVE",
+      "externalId": "197971",
+      "jobId": "cmu6zv2g0001npc3zojrs0hiu",
+      "company": "Kapten & Son",
+      "title": "Initiativbewerbung Headquarters",
+      "preuve": "libellé « Initiativbewerbung » (segment « initiativbewerbung headquarters »)",
+      "autresSourcesDisponibles": 0,
+      "url": "https://karriere.kapten-son.com/o/initiativbewerbung-headquarters"
+    },
+    {
+      "sourceKey": "kapten-son",
+      "sourceStatus": "ACTIVE",
+      "externalId": "2532342",
+      "jobId": "cmu6zv31u004ypc3zw9ez7x0z",
+      "company": "Kapten & Son",
+      "title": "Initiativbewerbung Retail Stores",
+      "preuve": "libellé « Initiativbewerbung » (segment « initiativbewerbung retail stores »)",
+      "autresSourcesDisponibles": 0,
+      "url": "https://karriere.kapten-son.com/o/initiativbewerbung-retail-stores"
+    },
+    {
+      "sourceKey": "la-prairie",
+      "sourceStatus": "ACTIVE",
+      "externalId": "1189469701",
+      "jobId": "cmu8cgh8u000hmn6mpcp8fmby",
+      "company": "La Prairie",
+      "title": "Spontaneous Application Beauty Advisor La Prairie / Chantecaille",
+      "preuve": "libellé « spontaneous application » (segment « spontaneous application beauty advisor la prairie / chantecaille »)",
+      "autresSourcesDisponibles": 0,
+      "url": "https://www.careers.laprairiegroup.ch/job/Zurich-Spontaneous-Application-Beauty-Advisor-La-Prairie-Chantecaille-8008/1189469701/"
+    },
+    {
+      "sourceKey": "la-redoute-talentview",
+      "sourceStatus": "ACTIVE",
+      "externalId": "178511",
+      "jobId": "cmuecg3ke2ta2oi357wek0h8w",
+      "company": "La Redoute.",
+      "title": "Spontaneous applications - Portugal",
+      "preuve": "libellé « spontaneous application » (segment « spontaneous applications - portugal »)",
+      "autresSourcesDisponibles": 0,
+      "url": "https://laredoute-talent.talentview.io/jobs/62whej"
+    },
+    {
+      "sourceKey": "laverana-gmbh-co-kg",
+      "sourceStatus": "ACTIVE",
+      "externalId": "1214633",
+      "jobId": "cmu81ubl50021t8bmspdpycrc",
+      "company": "Laverana GmbH & Co. KG - Hannover",
+      "title": "Initiativbewerbung (m/w/d)",
+      "preuve": "libellé « Initiativbewerbung » (segment « initiativbewerbung (m/w/d) »)",
+      "autresSourcesDisponibles": 0,
+      "url": "https://lavera.jobs.personio.de/job/1214633"
+    },
+    {
+      "sourceKey": "lerros",
+      "sourceStatus": "ACTIVE",
+      "externalId": "2440253",
+      "jobId": "cmu81ufl80003t8dc3cnppsew",
+      "company": "LERROS Moden GmbH",
+      "title": "Initiativbewerbung",
+      "preuve": "libellé « Initiativbewerbung » (segment « initiativbewerbung »)",
+      "autresSourcesDisponibles": 0,
+      "url": "https://lerros.jobs.personio.de/job/2440253"
+    },
+    {
+      "sourceKey": "lovable",
+      "sourceStatus": "ACTIVE",
+      "externalId": "5363505",
+      "jobId": "cmu6yloro0003o89ur4vzkaib",
+      "company": "Lovable",
+      "title": "1_Candidatura Spontanea",
+      "preuve": "libellé « candidature spontanée » (segment « candidatura spontanea »)",
+      "autresSourcesDisponibles": 0,
+      "url": "https://job-boards.greenhouse.io/lovable/jobs/5363505"
+    },
+    {
+      "sourceKey": "lvmh",
+      "sourceStatus": "ACTIVE",
+      "externalId": "RIM01418",
+      "jobId": "cmu8cg3860wp7mn48bqarg98t",
+      "company": "Rimowa",
+      "title": "Initiativbewerbung (m/w/d)",
+      "preuve": "libellé « Initiativbewerbung » (segment « initiativbewerbung (m/w/d) »)",
+      "autresSourcesDisponibles": 0,
+      "url": "https://emea3.recruitmentplatform.com/apply-app/pages/application-form?jobId=PYZFK026203F3VBQB798N7VG6-1002102&langCode=en_US"
+    },
+    {
+      "sourceKey": "marc-o-polo",
+      "sourceStatus": "PAUSED",
+      "externalId": "7a0814c3e95ce7e6d9bdedeacc5c768351a646ad",
+      "jobId": "cmufqpk0o05nvmy33ydrmjmtz",
+      "company": "Marc O’Polo",
+      "title": "WE ARE LOOKING FOR YOU! - Unsolicited application Headquarters m/f/d",
+      "preuve": "libellé « spontaneous application » (segment « unsolicited application headquarters m »)",
+      "autresSourcesDisponibles": 0,
+      "url": "https://company.marc-o-polo.com/en/career/start-creating-with-us/our-jobs/-we-are-looking-for-you-unsolicited-application-headquarters-m-f-d-2026-4043"
+    },
+    {
+      "sourceKey": "marc-o-polo",
+      "sourceStatus": "PAUSED",
+      "externalId": "a9882311f2e4bed01a7acd96edc6735046a2cd67",
+      "jobId": "cmuebcsr30vi1oi35iow7y2v7",
+      "company": "Marc O’Polo",
+      "title": "WIR SUCHEN DICH! - Initiativbewerbung Ausbildung m/w/d",
+      "preuve": "libellé « Initiativbewerbung » (segment « initiativbewerbung ausbildung m »)",
+      "autresSourcesDisponibles": 0,
+      "url": "https://company.marc-o-polo.com/en/career/start-creating-with-us/our-jobs/wir-suchen-dich-initiativbewerbung-ausbildung-m-w-d-2026-4105"
+    },
+    {
+      "sourceKey": "marella",
+      "sourceStatus": "ACTIVE",
+      "externalId": "744000121759177",
+      "jobId": "cmue6ydnw00uul46evr1lodid",
+      "company": "Max Mara Fashion Group",
+      "title": "Spontaneous Application",
+      "preuve": "libellé « spontaneous application » (segment « spontaneous application »)",
+      "autresSourcesDisponibles": 0,
+      "url": "https://jobs.smartrecruiters.com/MaxMaraFashionGroup/744000121759177"
+    },
+    {
+      "sourceKey": "ms-mode",
+      "sourceStatus": "ACTIVE",
+      "externalId": "1724317",
+      "jobId": "cmu86m8y100azmpdcyuc0fqj6",
+      "company": "MS Mode",
+      "title": "Open sollicitatie",
+      "preuve": "libellé « open sollicitatie » (segment « open sollicitatie »)",
+      "autresSourcesDisponibles": 0,
+      "url": "https://careers.msmode.com/o/open-sollicitatie"
+    },
+    {
+      "sourceKey": "naos",
+      "sourceStatus": "ACTIVE",
+      "externalId": "1358810955",
+      "jobId": "cmu8cszqn004rld85iwe0ynww",
+      "company": "NAOS",
+      "title": "Candidatura espontánea",
+      "preuve": "libellé « candidatura espontánea » (segment « candidatura espontanea »)",
+      "autresSourcesDisponibles": 0,
+      "url": "https://careers.naos.com/job/Abierto-Candidatura-espont%C3%A1nea/1358810955/"
+    },
+    {
+      "sourceKey": "naos",
+      "sourceStatus": "ACTIVE",
+      "externalId": "1358811155",
+      "jobId": "cmu8csz1x003zld853xgtekau",
+      "company": "NAOS",
+      "title": "Candidatura Espontânea",
+      "preuve": "libellé « candidatura espontánea » (segment « candidatura espontanea »)",
+      "autresSourcesDisponibles": 0,
+      "url": "https://careers.naos.com/job/Abrir-Candidatura-Espont%C3%A2nea/1358811155/"
+    },
+    {
+      "sourceKey": "naos",
+      "sourceStatus": "ACTIVE",
+      "externalId": "1358811055",
+      "jobId": "cmu8cszgf004dld85msfktmo6",
+      "company": "NAOS",
+      "title": "Candidature Spontanée",
+      "preuve": "libellé « candidature spontanée » (segment « candidature spontanee »)",
+      "autresSourcesDisponibles": 0,
+      "url": "https://careers.naos.com/job/Ouvert-Candidature-Spontan%C3%A9e/1358811055/"
+    },
+    {
+      "sourceKey": "naos",
+      "sourceStatus": "ACTIVE",
+      "externalId": "1358810655",
+      "jobId": "cmu8cszvg004yld8593gmdxnj",
+      "company": "NAOS",
+      "title": "Spontaneous Application",
+      "preuve": "libellé « spontaneous application » (segment « spontaneous application »)",
+      "autresSourcesDisponibles": 0,
+      "url": "https://careers.naos.com/job/Open-Spontaneous-Application/1358810655/"
+    },
+    {
+      "sourceKey": "nikin",
+      "sourceStatus": "ACTIVE",
+      "externalId": "2016082",
+      "jobId": "cmu86mscr000hmpgs1e7k94h0",
+      "company": "NIKIN",
+      "title": "Spontanbewerbung",
+      "preuve": "libellé « Spontanbewerbung » (segment « spontanbewerbung »)",
+      "autresSourcesDisponibles": 0,
+      "url": "https://nikin.ch/o/spontanbewerbung"
+    },
+    {
+      "sourceKey": "oh-my-cream",
+      "sourceStatus": "ACTIVE",
+      "externalId": "8446b15b-1017-44c1-b234-42a6b9c19e03",
+      "jobId": "cmu7ffvuf003znldfrz5cvatc",
+      "company": "Oh My Cream",
+      "title": "Candidature spontanée",
+      "preuve": "libellé « candidature spontanée » (segment « candidature spontanee »)",
+      "autresSourcesDisponibles": 0,
+      "url": "https://careers.ohmycream.com/jobs/5676742-candidature-spontanee"
+    },
+    {
+      "sourceKey": "oh-my-cream",
+      "sourceStatus": "ACTIVE",
+      "externalId": "173509c2-652c-4991-9524-315844ffd10b",
+      "jobId": "cmu7ffvrt003lnldff1rg80np",
+      "company": "Oh My Cream",
+      "title": "Conseiller.ère de vente - Candidature spontanée",
+      "preuve": "libellé « candidature spontanée » (segment « candidature spontanee »)",
+      "autresSourcesDisponibles": 0,
+      "url": "https://careers.ohmycream.com/jobs/6850951-conseiller-ere-de-vente-candidature-spontanee"
+    },
+    {
+      "sourceKey": "oh-my-cream",
+      "sourceStatus": "ACTIVE",
+      "externalId": "6da82730-177b-43a5-b4ee-bd6bb9848737",
+      "jobId": "cmu7ffvoo0037nldfjln0soce",
+      "company": "Oh My Cream",
+      "title": "Esthéticien(ne) & Conseillèr(e) de vente - Candidature spontanée",
+      "preuve": "libellé « candidature spontanée » (segment « candidature spontanee »)",
+      "autresSourcesDisponibles": 0,
+      "url": "https://careers.ohmycream.com/jobs/7401562-estheticien-ne-conseiller-e-de-vente-candidature-spontanee"
+    },
+    {
+      "sourceKey": "oh-my-cream",
+      "sourceStatus": "ACTIVE",
+      "externalId": "597fde8d-b0fb-466c-bb54-39401dbaf435",
+      "jobId": "cmu7ffvqg003enldfnees4t53",
+      "company": "Oh My Cream",
+      "title": "Responsable boutique - Candidature spontanée",
+      "preuve": "libellé « candidature spontanée » (segment « candidature spontanee »)",
+      "autresSourcesDisponibles": 0,
+      "url": "https://careers.ohmycream.com/jobs/7394468-responsable-boutique-candidature-spontanee"
+    },
+    {
+      "sourceKey": "peak-performance",
+      "sourceStatus": "ACTIVE",
+      "externalId": "3237d1f0-c178-4c83-8279-face07225eab",
+      "jobId": "cmu7fg8of0021nlm1dl448dol",
+      "company": "Peak Performance",
+      "title": "Open application - Female Fitting Model",
+      "preuve": "libellé « open application » (segment « open application - female fitting model »)",
+      "autresSourcesDisponibles": 0,
+      "url": "https://peakperformance.teamtailor.com/jobs/8263637-open-application-female-fitting-model"
+    },
+    {
+      "sourceKey": "peak-performance",
+      "sourceStatus": "ACTIVE",
+      "externalId": "65421351-376f-488f-8ea8-ce66b9589a5e",
+      "jobId": "cmu7fg8t40030nlm187k4jkoz",
+      "company": "Peak Performance",
+      "title": "Open Application - Internship",
+      "preuve": "libellé « open application » (segment « open application - internship »)",
+      "autresSourcesDisponibles": 0,
+      "url": "https://peakperformance.teamtailor.com/jobs/1680391-open-application-internship"
+    },
+    {
+      "sourceKey": "peak-performance",
+      "sourceStatus": "ACTIVE",
+      "externalId": "4f12fcf1-bbe8-484f-9c48-1f380877d5a3",
+      "jobId": "cmu7fg8ng001unlm1wzbbulaz",
+      "company": "Peak Performance",
+      "title": "Open Application - Male Fitting Model",
+      "preuve": "libellé « open application » (segment « open application - male fitting model »)",
+      "autresSourcesDisponibles": 0,
+      "url": "https://peakperformance.teamtailor.com/jobs/8263653-open-application-male-fitting-model"
+    },
+    {
+      "sourceKey": "picard",
+      "sourceStatus": "ACTIVE",
+      "externalId": "399344",
+      "jobId": "cmu6zvy8b0012pcbj7pr14k8j",
+      "company": "PICARD",
+      "title": "Initiativbewerbung",
+      "preuve": "libellé « Initiativbewerbung » (segment « initiativbewerbung »)",
+      "autresSourcesDisponibles": 0,
+      "url": "https://picard.recruitee.com/o/initiativbewerbung"
+    },
+    {
+      "sourceKey": "polene",
+      "sourceStatus": "ACTIVE",
+      "externalId": "23e3116a-4681-4b74-a8e1-c7820f74e87c",
+      "jobId": "cmue6hpw200ehpc34atc4v8cd",
+      "company": "Polène",
+      "title": "[Candidature spontanée] Designer",
+      "preuve": "libellé « candidature spontanée » (segment « candidature spontanee] designer »)",
+      "autresSourcesDisponibles": 0,
+      "url": "https://jobs.ashbyhq.com/polene-paris/23e3116a-4681-4b74-a8e1-c7820f74e87c"
+    },
+    {
+      "sourceKey": "polene",
+      "sourceStatus": "ACTIVE",
+      "externalId": "654fb04e-97b2-4365-873e-e418c85d058a",
+      "jobId": "cmue6hpzh00evpc34ai1y8muq",
+      "company": "Polène",
+      "title": "[Candidature spontanée] Prototypiste-Modéliste",
+      "preuve": "libellé « candidature spontanée » (segment « candidature spontanee] prototypiste-modeliste »)",
+      "autresSourcesDisponibles": 0,
+      "url": "https://jobs.ashbyhq.com/polene-paris/654fb04e-97b2-4365-873e-e418c85d058a"
+    },
+    {
+      "sourceKey": "polene",
+      "sourceStatus": "ACTIVE",
+      "externalId": "73aa7177-678d-4216-a88a-091a239d052a",
+      "jobId": "cmue6hpxj00eopc34taem3ndp",
+      "company": "Polène",
+      "title": "[Spontaneous application] Designer",
+      "preuve": "libellé « spontaneous application » (segment « spontaneous application] designer »)",
+      "autresSourcesDisponibles": 0,
+      "url": "https://jobs.ashbyhq.com/polene-paris/73aa7177-678d-4216-a88a-091a239d052a"
+    },
+    {
+      "sourceKey": "profuomo",
+      "sourceStatus": "ACTIVE",
+      "externalId": "2088527",
+      "jobId": "cmu6zvzy40019pcd9ayb5r3t9",
+      "company": "Profuomo",
+      "title": "Open sollicitatie",
+      "preuve": "libellé « open sollicitatie » (segment « open sollicitatie »)",
+      "autresSourcesDisponibles": 0,
+      "url": "https://jobs.profuomo.com/o/7d7k55cv8t"
+    },
+    {
+      "sourceKey": "reformation",
+      "sourceStatus": "ACTIVE",
+      "externalId": "6749039",
+      "jobId": "cmu6ynzep003so8pc5wk3lo0y",
+      "company": "Reformation",
+      "title": "General Application: You're Good at Everything",
+      "preuve": "libellé « open application » (segment « general application: you're good at everything »)",
+      "autresSourcesDisponibles": 0,
+      "url": "https://job-boards.greenhouse.io/reformation/jobs/6749039"
+    },
+    {
+      "sourceKey": "reformation",
+      "sourceStatus": "ACTIVE",
+      "externalId": "7723939",
+      "jobId": "cmu6ynzdh003lo8pcsb1aewax",
+      "company": "Reformation",
+      "title": "General Applications - Product Development",
+      "preuve": "libellé « open application » (segment « general applications - product development »)",
+      "autresSourcesDisponibles": 0,
+      "url": "https://job-boards.greenhouse.io/reformation/jobs/7723939"
+    },
+    {
+      "sourceKey": "richemont-workday",
+      "sourceStatus": "ACTIVE",
+      "externalId": "Initiativbewerbung---Sales-Associate--m-w-d--in-einer-unserer-Boutiquen-am-Standort-Mnchen_JR133958",
+      "jobId": "cmu9fxop3005fofadf12t06hw",
+      "company": "Richemont",
+      "title": "Initiativbewerbung | Sales Associate (m/w/d) in einer unserer Boutiquen am Standort München",
+      "preuve": "libellé « Initiativbewerbung » (segment « initiativbewerbung | sales associate (m/w/d) in einer unserer boutiquen am standort munchen »)",
+      "autresSourcesDisponibles": 0,
+      "url": "https://richemont.wd3.myworkdayjobs.com/Richemont/job/MUNICH/Initiativbewerbung---Sales-Associate--m-w-d--in-einer-unserer-Boutiquen-am-Standort-Mnchen_JR133958"
+    },
+    {
+      "sourceKey": "swatch-group",
+      "sourceStatus": "PAUSED",
+      "externalId": "18551",
+      "jobId": "cmufr6h5g0q66my33ioolkzuj",
+      "company": "Swatch Group",
+      "title": "Initiativbewerbung Deutschland",
+      "preuve": "libellé « Initiativbewerbung » (segment « initiativbewerbung deutschland »)",
+      "autresSourcesDisponibles": 0,
+      "url": "https://www.swatchgroup.com/de/job/18551"
+    },
+    {
+      "sourceKey": "tekla",
+      "sourceStatus": "ACTIVE",
+      "externalId": "4594167101",
+      "jobId": "cmu6ypb9h000oo81ehkaobamr",
+      "company": "Tekla",
+      "title": "Unsolicited Applications",
+      "preuve": "libellé « spontaneous application » (segment « unsolicited applications »)",
+      "autresSourcesDisponibles": 0,
+      "url": "https://job-boards.eu.greenhouse.io/tekla/jobs/4594167101"
+    },
+    {
+      "sourceKey": "thomas-sabo",
+      "sourceStatus": "ACTIVE",
+      "externalId": "1868532",
+      "jobId": "cmu6zrbjw002hponltym9l34u",
+      "company": "THOMAS SABO GmbH & Co. KG",
+      "title": "Initiativbewerbung STORES (M/W/D)",
+      "preuve": "libellé « Initiativbewerbung » (segment « initiativbewerbung stores (m/w/d) »)",
+      "autresSourcesDisponibles": 0,
+      "url": "https://thomassabo.jobs.personio.de/job/1868532"
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "sourceStatus": "ACTIVE",
+      "externalId": "f7d9a8b2-54c9-4cfd-859f-7f0f0d879166",
+      "jobId": "cmue51g2l084ko234vluzs3ie",
+      "company": "La Rosée",
+      "title": "Candidature Spontanée",
+      "preuve": "libellé « candidature spontanée » (segment « candidature spontanee »)",
+      "autresSourcesDisponibles": 0,
+      "url": "https://www.welcometothejungle.com/fr/companies/la-rosee/jobs/candidature-spontanee_lyon"
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "sourceStatus": "ACTIVE",
+      "externalId": "88694303-b979-4700-a058-7e20b6af95db",
+      "jobId": "cmue51rha08y4o2347691563i",
+      "company": "Pandora",
+      "title": "CANDIDATURE SPONTANÉE - Responsable Adjoint H/F - Paris",
+      "preuve": "libellé « candidature spontanée » (segment « candidature spontanee - responsable adjoint h/f - paris »)",
+      "autresSourcesDisponibles": 0,
+      "url": "https://www.welcometothejungle.com/fr/companies/pandora-/jobs/candidature-spontanee-responsable-adjoint-h-f-paris_paris_PANDO_4JjR6rr"
+    },
+    {
+      "sourceKey": "wttj-sector",
+      "sourceStatus": "ACTIVE",
+      "externalId": "a2190e32-8aa1-40b1-b1ce-142c3b1dc94d",
+      "jobId": "cmue51r8k08xdo2341k0ro5xm",
+      "company": "Pandora",
+      "title": "CANDIDATURE SPONTANÉE - Responsable de Boutique H/F - Paris",
+      "preuve": "libellé « candidature spontanée » (segment « candidature spontanee - responsable de boutique h/f - paris »)",
+      "autresSourcesDisponibles": 0,
+      "url": "https://www.welcometothejungle.com/fr/companies/pandora-/jobs/candidature-spontanee-responsable-de-boutique-h-f-paris_paris_PANDO_ozg962A"
+    },
+    {
+      "sourceKey": "yaya",
+      "sourceStatus": "ACTIVE",
+      "externalId": "1920875",
+      "jobId": "cmue7z6dp004dm86doagrmiyw",
+      "company": "YAYA",
+      "title": "Initiativbewerbung",
+      "preuve": "libellé « Initiativbewerbung » (segment « initiativbewerbung »)",
+      "autresSourcesDisponibles": 0,
+      "url": "https://jobs.yaya.eu/o/initiativbewerbung"
+    },
+    {
+      "sourceKey": "yaya",
+      "sourceStatus": "ACTIVE",
+      "externalId": "1840264",
+      "jobId": "cmue7z6ch0046m86d35o8xssb",
+      "company": "YAYA",
+      "title": "Open sollicitatie",
+      "preuve": "libellé « open sollicitatie » (segment « open sollicitatie »)",
+      "autresSourcesDisponibles": 0,
+      "url": "https://jobs.yaya.eu/o/open-sollicitatie"
+    }
+  ]
+}

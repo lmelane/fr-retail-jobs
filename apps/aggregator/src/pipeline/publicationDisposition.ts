@@ -9,10 +9,10 @@ const dispositions: Readonly<Record<string, DeactivationDisposition>> = {
   /** A reviewed PostingScopeDecision OUT_OF_SCOPE: published no more, never an employer closure, never re-opened by attestation. */
   SCOPE_OUT_OF_PERIMETER: { kind: 'WITHDRAWN', reason: 'OUT_OF_SCOPE' },
   /**
-   * D-508 §4 (02/10/2026) : une candidature spontanée que la source publie dans sa liste d'offres (Marc O'Polo :
-   * catégorie « Initiativ », « Initiativbewerbung », « Unsolicited application ») n'est pas une offre. Elle n'est pas
-   * publiée, et une publication antérieure est retirée, jamais fermée au nom de l'employeur ni rouverte par une
-   * attestation (`canRefreshReactivate` ne rouvre que ATTESTATION_MISSING).
+   * D-508 §4 puis D-511 (02/10/2026) : une candidature spontanée que la source publie dans sa liste d'offres n'est pas
+   * une offre, quelle que soit la source (preuve native : champ de l'éditeur ou libellé, `spontaneousApplication.ts` ;
+   * Marc O'Polo : catégorie « Initiativ »). Elle n'est pas publiée, et une publication antérieure est retirée, jamais
+   * fermée au nom de l'employeur ni rouverte par une attestation (`canRefreshReactivate` ne rouvre que ATTESTATION_MISSING).
    */
   NATIVE_SPONTANEOUS_APPLICATION: { kind: 'WITHDRAWN', reason: 'OUT_OF_SCOPE' },
 };
@@ -128,7 +128,7 @@ const DECIDED: Readonly<Record<string, string>> = {
   NATIVE_RECRUITMENT_EVENT: 'D-462',
   NATIVE_DESCRIPTION_EMPTY: 'D-481 §3',
   WORKDAY_DETAIL_PERMISSION_DENIED: 'D-484 §1',
-  NATIVE_SPONTANEOUS_APPLICATION: 'D-508 §4',
+  NATIVE_SPONTANEOUS_APPLICATION: 'D-508 §4, D-511',
 };
 export type RetentionStatus = 'décidé' | 'application non arbitrée' | 'à instruire';
 export function retentionStatus(reason: string): RetentionStatus {
