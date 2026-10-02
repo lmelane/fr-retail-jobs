@@ -11,7 +11,7 @@ const dispositions: Readonly<Record<string, DeactivationDisposition>> = {
   /**
    * D-508 §4 puis D-511 (02/10/2026) : une candidature spontanée que la source publie dans sa liste d'offres n'est pas
    * une offre, quelle que soit la source (preuve native : champ de l'éditeur ou libellé, `spontaneousApplication.ts` ;
-   * Marc O'Polo : catégorie « Initiativ »). Elle n'est pas publiée, et une publication antérieure est retirée, jamais
+   * Marc O'Polo : catégorie « Initiativ »), et D-512 : un vivier qui ne nomme aucun poste. Elle n'est pas publiée, et une publication antérieure est retirée, jamais
    * fermée au nom de l'employeur ni rouverte par une attestation (`canRefreshReactivate` ne rouvre que ATTESTATION_MISSING).
    */
   NATIVE_SPONTANEOUS_APPLICATION: { kind: 'WITHDRAWN', reason: 'OUT_OF_SCOPE' },
@@ -78,6 +78,17 @@ export const GUARDED_NEGATIVE_PROOFS: Readonly<Record<string, string>> = {
  */
 export const MASS_GUARDED_RETENTIONS: Readonly<Record<string, { label: string; floor: number; share: number }>> = {
   WORKDAY_DETAIL_PERMISSION_DENIED: { label: 'fiches refusées par l’éditeur (Workday S22)', floor: 5, share: 0.05 },
+  /**
+   * D-511 et D-512 (02/10/2026) : le vivier sans poste est une DÉDUCTION (le reste de l'intitulé ne nomme que le lieu
+   * ou la Maison de l'offre) ; un changement d'intitulés ou de champs chez l'éditeur la produirait d'un coup sur une part
+   * de la source. Au-delà de
+   * max(20, 25 %) des fiches collectées, la source bloque le RUN (le retrait, lui, a déjà eu lieu : la garde alerte, elle
+   * ne l'empêche pas). Calibrage mesuré (`audits/2026-10-02/d512-viviers/garde-de-masse.sql`) : le premier passage
+   * légitime le plus lourd est Mejuri, 16 viviers sur 188 fiches (8,5 %, sous le plancher absolu de 20) ; lerros, faite
+   * d'une seule candidature spontanée, 1 sur 1, sous le même plancher ; aucune source de D-511 n'en retient plus de 4.
+   * Le seuil s'applique à chaque RUN, pas seulement au premier : les viviers restent listés et retenus à chaque collecte.
+   */
+  NATIVE_SPONTANEOUS_APPLICATION: { label: 'candidatures spontanées ou viviers sans poste retenus', floor: 20, share: 0.25 },
 };
 
 export function isNativeEvidenceRetention(reason: string): boolean {
@@ -106,7 +117,7 @@ const RETENTION_TEXT: Readonly<Record<string, string>> = {
   NATIVE_DESCRIPTION_EMPTY: 'la source publie l’offre sans description (fiche lue, vide ou réduite à ses titres de rubrique)',
   WORKDAY_DETAIL_PERMISSION_DENIED: 'refusée par l’éditeur (Workday S22)',
   SCOPE_OUT_OF_PERIMETER: 'écartée par l’équipe (hors périmètre)',
-  NATIVE_SPONTANEOUS_APPLICATION: 'candidature spontanée publiée par la source parmi ses offres',
+  NATIVE_SPONTANEOUS_APPLICATION: 'candidature spontanée ou vivier sans poste publié par la source parmi ses offres',
 };
 /**
  * The standing of each non-blocking reason, with the decision that settles it. Every non-blocking reason is now
@@ -128,7 +139,7 @@ const DECIDED: Readonly<Record<string, string>> = {
   NATIVE_RECRUITMENT_EVENT: 'D-462',
   NATIVE_DESCRIPTION_EMPTY: 'D-481 §3',
   WORKDAY_DETAIL_PERMISSION_DENIED: 'D-484 §1',
-  NATIVE_SPONTANEOUS_APPLICATION: 'D-508 §4, D-511',
+  NATIVE_SPONTANEOUS_APPLICATION: 'D-508 §4, D-511, D-512',
 };
 export type RetentionStatus = 'décidé' | 'application non arbitrée' | 'à instruire';
 export function retentionStatus(reason: string): RetentionStatus {

@@ -188,6 +188,15 @@ describe('native source validation', () => {
     expect(await validateCapturedSource(db, mixed.batch.id)).toMatchObject({ verdict: 'REJECTED', report: { reasons: { NO_QUALIFIED_PUBLICATION: 1 } } });
   });
 
+  it('D-512 : validates a collection made only of talent pools that name no post, so that they are withdrawn; one naming a post is qualified', async () => {
+    const { source, batch } = await capture([{ ...nativeJob, title: 'Future Opportunities - (Paris)' }]);
+    const validation = await validateCapturedSource(db, batch.id);
+    expect(validation).toMatchObject({ verdict: 'VALIDATED', report: { observed: 1, qualified: 0, held: 1, spontaneousWithdrawn: 1, reasons: {} } });
+    await expect(requireSourceValidation(db, source.currentRevisionId)).resolves.toBeTruthy();
+    const named = await capture([{ ...nativeJob, title: 'Future Opportunities - Store Manager' }]);
+    expect(await validateCapturedSource(db, named.batch.id)).toMatchObject({ verdict: 'VALIDATED', report: { observed: 1, qualified: 1, held: 0 } });
+  });
+
   it('rejects a captured derived value that the current reader cannot reproduce from native bytes', async () => {
     const { batch, network } = await capture([nativeJob], true);
     expect(await validateCapturedSource(db, batch.id)).toMatchObject({ verdict: 'REJECTED', report: { replayExact: false, reasons: { REPLAY_RESULT_CHANGED: 1 } } });

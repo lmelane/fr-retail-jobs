@@ -34,6 +34,13 @@ describe('native opportunity states from the RAW audit', () => {
     const vacancy = applySmartRecruitersJobAd(parseSmartRecruitersPosting({ ...listing, name: 'Sales Advisor' }, 'ALTEXSA'), { sections: { jobDescription: { text: 'Sales role in store.' } } });
     expect(recoverRetainedPublication('smartrecruiters', vacancy.raw, { externalId: vacancy.externalId, url: vacancy.url, observedAt: new Date(), config: { company: 'ALTEXSA' } }))
       .toMatchObject({ status: 'RECOVERABLE' });
+    // D-512 : la reprise du RAW lit aussi les viviers ; celui qui nomme un poste est repris.
+    const pool = (name: string) => applySmartRecruitersJobAd(parseSmartRecruitersPosting({ ...listing, name }, 'ALTEXSA'), { sections: { jobDescription: { text: 'Join our talent pool.' } } });
+    const [none, named] = [pool('Talent Pool'), pool('Talent Pool: Sales Associate')];
+    expect(recoverRetainedPublication('smartrecruiters', none.raw, { externalId: none.externalId, url: none.url, observedAt: new Date(), config: { company: 'ALTEXSA' } }))
+      .toEqual({ status: 'RECOLLECT_OR_REVIEW', reason: 'PUBLICATION_HELD' });
+    expect(recoverRetainedPublication('smartrecruiters', named.raw, { externalId: named.externalId, url: named.url, observedAt: new Date(), config: { company: 'ALTEXSA' } }))
+      .toMatchObject({ status: 'RECOVERABLE' });
     expect(applySmartRecruitersJobAd({ ...live, opportunityType: undefined, title: 'Sales Advisor' }, jobAd).opportunityType).toBeUndefined();
     expect(applySmartRecruitersJobAd(parseSmartRecruitersPosting(listing, 'ALTEXSA'), undefined).opportunityType).toBeUndefined();
   });

@@ -1,0 +1,10 @@
+{
+  "date": "2026-10-02T08:48Z (export), règle rejouée après les correctifs de l'audit",
+  "entree": "audits/2026-10-02/d511-candidatures-spontanees/export.sql (90 735 publications publiques)",
+  "script": "apps/aggregator/scripts/ops/mesures/d511-spontanees-a-blanc.mts, règle de ce lot (D-511 lue sur l'intitulé nettoyé, viviers de D-512 exclus du périmètre)",
+  "retraitsD511Avant": 62,
+  "retraitsD511Apres": 62,
+  "perdus": [],
+  "nouveaux": [],
+  "divergences": []
+}

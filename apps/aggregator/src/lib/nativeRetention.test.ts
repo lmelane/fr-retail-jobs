@@ -244,6 +244,29 @@ describe('D-481 §3: the description the publisher leaves empty, on the negative
   });
 });
 
+describe('D-512: spontaneous applications and talent pools without a post are withdrawn, under a mass guard', () => {
+  it('Mejuri as measured on 02/10 (16 talent pools without a post, 172 other postings): non-blocking', async () => {
+    const s = retaining('mejuri', 172, { NATIVE_SPONTANEOUS_APPLICATION: 16 });
+    // Premise: 188 collected, so the bound is max(20, 47) = 47, and 16 is also under the absolute floor.
+    expect(s.fetched).toBe(188);
+    const { issues, summary, sourceRun } = await runOne(s);
+    expect(issues.map((issue) => issue.code)).toEqual(['NATIVE_RETENTION']);
+    expect(summary.outcome).toBe('COMPLETED_WITH_ERRORS');
+    expect(String(sourceRun.note)).not.toContain('garde de masse');
+  });
+  it('a source made only of one spontaneous application (lerros, 1 of 1) stays under the floor', async () => {
+    expect((await runOne(retaining('lerros', 0, { NATIVE_SPONTANEOUS_APPLICATION: 1 }))).issues.map((i) => i.code)).not.toContain('NATIVE_REFUSAL_MASS');
+  });
+  it('30 of 100 collected is beyond max(20, 25 %): the source blocks the RUN, the reason stays named', async () => {
+    const s = retaining('viviers-en-masse', 70, { NATIVE_SPONTANEOUS_APPLICATION: 30 });
+    expect(s.fetched).toBe(100);
+    const { issues, summary, sourceRun } = await runOne(s);
+    expect(issues).toEqual([{ origin: 'UNKNOWN', code: 'NATIVE_REFUSAL_MASS', count: 1 }]);
+    expect(summary.outcome).toBe('FAILED');
+    expect(String(sourceRun.note)).toContain('garde de masse : 30 candidatures spontanées ou viviers sans poste retenus sur 100 collectées');
+  });
+});
+
 describe('D-484 §1: a Workday detail the publisher refuses by name (403 S22) is a posting it withdraws, under a mass guard', () => {
   it('swarovski as collected on 29/09 (2 refused S22, 30 without employer): non-blocking, attributed to the source, named in the note', async () => {
     const swarovski = retaining('swarovski', 660, { WORKDAY_EMPLOYER_ABSENT_IN_DETAIL: 30, WORKDAY_DETAIL_PERMISSION_DENIED: 2 });

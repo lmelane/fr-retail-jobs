@@ -27,7 +27,9 @@ const retenues: Retenue[] = [];
 const divergences: Record<string, unknown>[] = [];
 for (const row of rows) {
   const opportunityType = row.opportunityType ?? undefined;
-  const proofs = [row.sourceTitle, row.rawTitle, row.jobTitle].map(title => title ? spontaneousApplicationProof({ title, opportunityType }) : null);
+  // Les viviers sans poste (D-512) ont leur propre passage à blanc (`d512-viviers-a-blanc.mts`) : ce script garde le périmètre de D-511.
+  const proofs = [row.sourceTitle, row.rawTitle, row.jobTitle].map(title => title ? spontaneousApplicationProof({ title, opportunityType }) : null)
+    .map(proof => proof?.kind === 'TALENT_POOL' ? null : proof);
   const proof = proofs[0] ?? proofs[1];
   if (!proof && !proofs[2]) continue;
   if (new Set(proofs.map(p => !!p)).size > 1) divergences.push({ sourceKey: row.sourceKey, externalId: row.externalId, sourceTitle: row.sourceTitle, rawTitle: row.rawTitle, jobTitle: row.jobTitle });

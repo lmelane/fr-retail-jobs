@@ -65,7 +65,7 @@ export async function fetchAtsJobs(type: AtsType, config: Record<string, unknown
   assertPipelineRunning();
   const rules = nativeEmployerRules(config);
   const result = toResult(await dispatch(type, config));
-  // D-511 : une candidature spontanée (preuve native) est retenue et retirée, quel que soit l'adaptateur. Datée par le
+  // D-511 : une candidature spontanée (preuve native), et D-512 : un vivier sans poste, sont retenus et retirés, quel que soit l'adaptateur. Datée par le
   // début de la collecte (le même instant au rejeu hors ligne), avant le scellement de la sortie.
   const observedAt = captureObservedAt();
   return normalizeAdapterResult({ ...result, jobs: result.jobs.map(job => applySpontaneousApplicationRule(applyNativeEmployerRules(job, rules), observedAt)) });

@@ -177,4 +177,12 @@ describe('Talent Recruiter — rejets identifiables observés avant validation',
       .toEqual([['143570', 'NATIVE_SPONTANEOUS_APPLICATION', true], ['144697', null, false]]);
     expect(r.complete).toBe(true);
   });
+
+  /** D-512 : un vivier sans poste est retenu à la collecte comme une candidature spontanée ; un vivier qui nomme un poste est publié. */
+  it('la collecte retient le vivier sans poste et publie le vivier qui nomme un poste (D-512)', async () => {
+    api.mockResolvedValue(feed([position(201, { Name: 'GANNI Future Opportunities - (Paris)' }), position(202, { Name: 'Future Opportunities - Store Manager' })]));
+    const r = await fetchAtsJobs('TALENT_RECRUITER', { customer: 'ganni' });
+    expect(r.jobs.map(j => [j.externalId, j.publicationHold ?? null, !!j.publicationWithdrawnAt]))
+      .toEqual([['201', 'NATIVE_SPONTANEOUS_APPLICATION', true], ['202', null, false]]);
+  });
 });

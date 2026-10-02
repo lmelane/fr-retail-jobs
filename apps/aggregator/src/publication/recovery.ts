@@ -611,7 +611,7 @@ function readRetainedPublication(kind: string, raw: unknown, context: Context, r
       !['https:', 'http:'].includes(url.protocol) || url.username || url.password) return failure('IDENTITY_MISMATCH');
     job = applyNativeEmployerRules({ ...job, raw }, nativeEmployerRules(config));
     if (context.certifiedPortal) job = employerFromCertifiedScope(job, context.certifiedPortal.ownerName, context.certifiedPortal.scope);
-    // D-511 : la reprise du RAW lit la même règle que la collecte ; une candidature spontanée n'est jamais reprise.
+    // D-511, D-512 : la reprise du RAW lit la même règle que la collecte ; une candidature spontanée ou un vivier sans poste n'est jamais repris.
     job = applySpontaneousApplicationRule(job, context.observedAt);
     if (job.publicationHold || job.publicationWithdrawnAt) return failure('PUBLICATION_HELD');
     if (requireContent && (typeof job.description !== 'string' || !htmlToPlainText(job.description)?.trim())) return failure('CONTENT_MISSING');

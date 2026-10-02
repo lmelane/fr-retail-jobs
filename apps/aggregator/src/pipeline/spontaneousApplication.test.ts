@@ -28,6 +28,8 @@ describe('D-511 : une candidature spontanée reconnue sur sa preuve native', () 
     'Candidatura espontánea', 'Candidatura spontanea - Milano', 'Candidature ouverte', 'Öppen ansökan', 'Åpen søknad',
     'Uopfordret ansøgning', 'Avoin hakemus', 'Autocandidatura', 'Candidatura libera', 'Candidatura abierta', 'Spontane Bewerbung',
     'Candidatures spontanées et alternance',
+    // l'intitulé tel que l'adaptateur le rend, avant le nettoyage de l'écriture (entités, comme chez Beiersdorf)
+    'Candidature spontan&#233;e', 'Candidature <b>spontanée</b>',
   ])('retenue : « %s »', (title) => {
     expect(spontaneousApplicationProof(job(title))).toMatchObject({ kind: 'TITLE_LABEL' });
   });
@@ -91,5 +93,74 @@ describe('D-511 : la retenue et son retrait daté', () => {
     expect(applySpontaneousApplicationRule(dated, observedAt)).toBe(dated);
     expect(applySpontaneousApplicationRule(job('Initiativbewerbung', { publicationHold: 'JSONLD_EMPLOYER_NOT_RESOLVED' }), observedAt))
       .toMatchObject({ publicationHold: SPONTANEOUS_APPLICATION_HOLD, publicationWithdrawnAt: observedAt });
+  });
+});
+
+describe('D-511, D-512 : la lecture reste bornée avant le nettoyage', () => {
+  it('un intitulé fait de balises ouvrantes est lu en temps borné (tronqué avant cleanTitle)', () => {
+    const started = Date.now();
+    expect(spontaneousApplicationProof(job('<'.repeat(100_000)))).toBeNull();
+    expect(Date.now() - started).toBeLessThan(500);
+  });
+});
+
+/**
+ * D-512 — les viviers. Intitulés RÉELS des offres publiques du 02/10/2026 (`audits/2026-10-02/d512-viviers/`), avec le
+ * lieu et la Maison que l'offre porte, et les exemples de la demande. Un vivier dont le reste ne nomme qu'un lieu, une
+ * Maison, un pays, une langue ou des mots vides est retenu ; tout autre mot, connu ou non, le garde publié.
+ */
+const at = (title: string, company?: string, location?: string, country?: string) => ({ title, company, location, country });
+describe('D-512 : un vivier sans poste est retenu, tout autre mot le garde publié', () => {
+  it.each([
+    at('Talent Pool'), at('Future Opportunities - Paris', 'Mejuri', 'Paris', 'FR'), at('Mejuri Talent Community', 'Mejuri'),
+    at('Talent Pool Paris', 'Sandro', 'Paris, France', 'FR'),
+    at('Future Opportunities - (Boston)', 'Mejuri', 'Boston', 'US'), at('Future Opportunities - (Bay Area)', 'Mejuri', 'San Francisco Bay Area', 'US'),
+    at('Future Opportunities - (DMV)', 'Mejuri', 'DMV', 'US'), at('Future Opportunities - (Greater Seattle Area)', 'Mejuri', 'Greater Seattle Area', 'US'),
+    at('Future Opportunities - (London, UK)', 'Mejuri', 'London, UK', 'GB'), at('Future Opportunities - (Washington Square)', 'Mejuri', 'Washington Square, Tigard'),
+    at('BRIONI APAC Expression of interest', 'Brioni', 'Shanghai, Shanghai, Mainland China', 'CN'),
+    at('HUGO BOSS IZMIR TALENT NETWORK', 'HUGO BOSS Textile Ind. Ltd.', 'Izmir, Izmir', 'TR'), at('Join the PVH Talent Community', 'PVH'),
+    at("Apply here to join Nutrafol's Talent Community!", 'Nutrafol', 'Remote (United States)', 'US'),
+    at('Talent Pool - Germany', 'Hugo Boss'), at('Talent Pool - German speaking', 'Hugo Boss'), at('Vivier de candidats'),
+    at('VIVIER - Paris', 'Aigle', 'Paris'), at('Register your interest'), at('Expressions of Interest'), at('Opportunités futures - Lyon', 'Sézane', 'Lyon'),
+    at('Talentpool'), at('Bolsa de Talentos - Santiago 2025', 'Tiffany', 'Santiago', 'CL'),
+  ])('retenu : « $title »', (offre) => {
+    expect(spontaneousApplicationProof(job(offre.title, offre))).toMatchObject({ kind: 'TALENT_POOL' });
+    expect(applySpontaneousApplicationRule(job(offre.title, offre), observedAt))
+      .toMatchObject({ publicationHold: SPONTANEOUS_APPLICATION_HOLD, publicationWithdrawnAt: observedAt });
+  });
+
+  it.each([
+    // les exemples de la décision et de la demande
+    'Future Opportunities - Store Manager', 'Talent Pool: Sales Associate', 'Talent Acquisition Partner', 'Talent Pool Coordinator',
+    // un poste, une fonction, une famille ou une équipe, qu'ils se disent « Team » ou non
+    'Client Advisor | Future Opportunities | London', 'Customer Experience Manager - London Future Opportunities',
+    'TALENT POOL Polisseur confirmé H/F', 'Sales Associates - Future Opportunities', 'Vivier - Délégué Pharmaceutique - Région Centre',
+    'Boots UK Pharmacist - Register your interest', 'MECCA Joondalup - Host Expression of Interest',
+    'Store Keeper - Talent Pool - Hafr Albatin OR AlKhafji OR Jubail', 'Future Opportunities within our IT & Digital Teams',
+    'Future Opportunities - Sales Team', 'Talent Pool – Store Team', 'Vivier - Équipe boutique', 'Design Expression of Interest | Honey Birdette HQ (Sydney)',
+    'Expressions of Interest - Canberra Management', 'Styliste - Sur appel (Opportunités futures) // On-call Stylist (Future Opportunities)',
+    // un mot inconnu de tout vocabulaire, un contrat, un public : jamais un retrait
+    'Future Opportunities - Florist', 'Future Opportunities - Perfumer', 'Talent Pool - Nurse', 'Talent Pool - Security',
+    'Talent Pool - Stagiaire', 'Vivier Alternance', 'Talent Pool - Intern', 'Future Opportunities - Graduate', 'Student Talent Community',
+    'UAE National Talent Pool', 'Ru’ya Talent Community (Emiratisation)', 'Talent Pool #Squadonamission', 'キャリア登録 - Join our Talent Community', 'Talent Pool - Join our team',
+    // un vrai poste qui contient le mot, et la Maison Roger Vivier
+    'Talent Community Manager', 'Head of Talent Pool', 'Talent Community Partner', 'Talent Pool Sourcer', 'Chargé(e) de vivier',
+    'Gestionnaire de vivier', 'Animatrice vivier', 'Roger Vivier', 'Roger-Vivier', 'Commission Sales Associate - Womens Shoes/Roger Vivier, Full Time - 59th Street',
+    // l'intitulé tel que l'adaptateur le rend (Beiersdorf, 02/10/2026)
+    'Vivier - D&#233;l&#233;gu&#233; Pharmaceutique - R&#233;gion Centre',
+  ])('publié : « %s »', (title) => {
+    expect(spontaneousApplicationProof(job(title, { company: 'Roger Vivier', location: 'London, UK', country: 'GB' }))).toBeNull();
+  });
+
+  it('le lieu et la Maison sont ceux de l\'offre : sans eux, une ville reste un mot inconnu et l\'offre reste publiée', () => {
+    expect(spontaneousApplicationProof(job('Future Opportunities - (Boston)'))).toBeNull();
+    expect(spontaneousApplicationProof(job('Future Opportunities - (Boston)', { company: 'Mejuri', location: 'Boston' })))
+      .toEqual({ kind: 'TALENT_POOL', label: 'future opportunities', remainder: 'boston' });
+  });
+
+  it('un intitulé démesuré est lu en temps borné', () => {
+    const started = Date.now();
+    expect(spontaneousApplicationProof(job('Talent Pool ' + '- Paris '.repeat(50_000), { location: 'Paris' }))).toMatchObject({ kind: 'TALENT_POOL' });
+    expect(Date.now() - started).toBeLessThan(1_500);
   });
 });

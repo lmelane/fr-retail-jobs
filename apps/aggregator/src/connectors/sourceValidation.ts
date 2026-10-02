@@ -71,7 +71,8 @@ async function nativeEmptyFeed(db: PrismaClient, batchId: string, kind: string, 
 /**
  * D-511 : every observed publication is a spontaneous application withdrawn on its native proof (lerros, a single
  * « Initiativbewerbung », 02/10/2026). Nothing is published, and the validation lets the ingestion withdraw them. Only
- * this reason: a source whose every page answers 404 stays rejected (a broken reader is not a native proof).
+ * this reason: a source whose every page answers 404 stays rejected (a broken reader is not a native proof). D-512: a talent
+ * pool that names no post carries the same hold and counts here.
  */
 const onlySpontaneous = (report: SourceValidationReport) =>
   report.observed > 0 && report.held === report.observed && report.spontaneousWithdrawn === report.observed && report.rejected === 0;
