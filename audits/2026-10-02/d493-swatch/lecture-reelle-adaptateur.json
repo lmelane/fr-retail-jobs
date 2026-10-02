@@ -1,0 +1,816 @@
+{
+ "startedAt": "2026-10-02T05:20:20.567Z",
+ "endedAt": "2026-10-02T05:23:23.840Z",
+ "listingRequests": 71,
+ "statuses": [
+  200
+ ],
+ "cdn": {
+  "HIT": 71
+ },
+ "complete": true,
+ "declaredTotal": 331,
+ "jobs": 331,
+ "truncated": false,
+ "termination": "PARTITIONS_RECONCILED",
+ "issues": [],
+ "rawCount": 331,
+ "scopes": [
+  {
+   "scope": "links",
+   "declaredTotal": 331,
+   "uniqueIds": 331,
+   "pages": 71,
+   "complete": true
+  },
+  {
+   "scope": "listing:time=All",
+   "declaredTotal": 331,
+   "uniqueIds": 329,
+   "pages": 35,
+   "complete": false
+  },
+  {
+   "scope": "listing:time=20",
+   "declaredTotal": 274,
+   "uniqueIds": 274,
+   "pages": 29,
+   "complete": true
+  },
+  {
+   "scope": "listing:time=21",
+   "declaredTotal": 57,
+   "uniqueIds": 57,
+   "pages": 7,
+   "complete": true
+  },
+  {
+   "scope": "details",
+   "declaredTotal": 331,
+   "uniqueIds": 331,
+   "pages": 331,
+   "complete": true
+  }
+ ],
+ "ids": [
+  18551,
+  31697,
+  31885,
+  32184,
+  32336,
+  32337,
+  32338,
+  32339,
+  32340,
+  32341,
+  32342,
+  32343,
+  32344,
+  32345,
+  32346,
+  32348,
+  32350,
+  32351,
+  32352,
+  32353,
+  32354,
+  32355,
+  32356,
+  32357,
+  32358,
+  32359,
+  32360,
+  32361,
+  32362,
+  32363,
+  32364,
+  32365,
+  32366,
+  32367,
+  32368,
+  32391,
+  32412,
+  32413,
+  32414,
+  32436,
+  32439,
+  32440,
+  32452,
+  32602,
+  32634,
+  32667,
+  32682,
+  32699,
+  32706,
+  32707,
+  32708,
+  32719,
+  32732,
+  32734,
+  32735,
+  32736,
+  32737,
+  32738,
+  32747,
+  32761,
+  32762,
+  32770,
+  32784,
+  32786,
+  32793,
+  32794,
+  32796,
+  32805,
+  32806,
+  32807,
+  32814,
+  32821,
+  32831,
+  32833,
+  32854,
+  32857,
+  32866,
+  32875,
+  32881,
+  32884,
+  32888,
+  32896,
+  32899,
+  32906,
+  32907,
+  32911,
+  32915,
+  32916,
+  32919,
+  32924,
+  32953,
+  32963,
+  32965,
+  32966,
+  32977,
+  32981,
+  32983,
+  32993,
+  32994,
+  32995,
+  32997,
+  32998,
+  32999,
+  33001,
+  33006,
+  33009,
+  33010,
+  33019,
+  33022,
+  33023,
+  33024,
+  33025,
+  33026,
+  33027,
+  33028,
+  33029,
+  33030,
+  33031,
+  33032,
+  33033,
+  33034,
+  33035,
+  33036,
+  33037,
+  33040,
+  33041,
+  33043,
+  33044,
+  33045,
+  33046,
+  33047,
+  33048,
+  33049,
+  33053,
+  33054,
+  33056,
+  33060,
+  33061,
+  33062,
+  33063,
+  33067,
+  33069,
+  33071,
+  33072,
+  33074,
+  33075,
+  33076,
+  33079,
+  33080,
+  33081,
+  33082,
+  33089,
+  33091,
+  33092,
+  33095,
+  33096,
+  33098,
+  33099,
+  33100,
+  33101,
+  33104,
+  33105,
+  33106,
+  33108,
+  33109,
+  33110,
+  33111,
+  33113,
+  33114,
+  33115,
+  33117,
+  33119,
+  33120,
+  33123,
+  33124,
+  33125,
+  33129,
+  33130,
+  33132,
+  33133,
+  33134,
+  33135,
+  33136,
+  33137,
+  33138,
+  33139,
+  33141,
+  33142,
+  33143,
+  33144,
+  33146,
+  33147,
+  33148,
+  33149,
+  33150,
+  33151,
+  33152,
+  33153,
+  33154,
+  33155,
+  33157,
+  33158,
+  33159,
+  33160,
+  33161,
+  33163,
+  33164,
+  33165,
+  33167,
+  33168,
+  33169,
+  33170,
+  33171,
+  33172,
+  33173,
+  33174,
+  33177,
+  33179,
+  33180,
+  33181,
+  33183,
+  33184,
+  33185,
+  33186,
+  33187,
+  33188,
+  33190,
+  33191,
+  33193,
+  33194,
+  33195,
+  33196,
+  33197,
+  33198,
+  33199,
+  33200,
+  33201,
+  33202,
+  33203,
+  33204,
+  33205,
+  33206,
+  33207,
+  33209,
+  33210,
+  33211,
+  33212,
+  33213,
+  33214,
+  33216,
+  33217,
+  33218,
+  33219,
+  33220,
+  33221,
+  33222,
+  33224,
+  33225,
+  33226,
+  33227,
+  33229,
+  33230,
+  33231,
+  33232,
+  33233,
+  33234,
+  33235,
+  33236,
+  33237,
+  33238,
+  33239,
+  33240,
+  33241,
+  33242,
+  33243,
+  33244,
+  33245,
+  33247,
+  33249,
+  33251,
+  33252,
+  33253,
+  33254,
+  33255,
+  33256,
+  33257,
+  33259,
+  33260,
+  33264,
+  33268,
+  33271,
+  33272,
+  33273,
+  33274,
+  33275,
+  33276,
+  33277,
+  33278,
+  33279,
+  33280,
+  33281,
+  33282,
+  33283,
+  33284,
+  33285,
+  33286,
+  33287,
+  33289,
+  33290,
+  33291,
+  33295,
+  33296,
+  33297,
+  33298,
+  33299,
+  33300,
+  33301,
+  33302,
+  33303,
+  33305,
+  33306,
+  33308,
+  33309,
+  33310,
+  33311,
+  33312,
+  33313,
+  33314,
+  33315,
+  33316,
+  33318
+ ],
+ "requests": [
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=0&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=All",
+   "at": "2026-10-02T05:20:20.567Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=1&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=All",
+   "at": "2026-10-02T05:20:23.207Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=2&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=All",
+   "at": "2026-10-02T05:20:25.780Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=3&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=All",
+   "at": "2026-10-02T05:20:28.433Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=4&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=All",
+   "at": "2026-10-02T05:20:31.035Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=5&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=All",
+   "at": "2026-10-02T05:20:33.642Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=6&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=All",
+   "at": "2026-10-02T05:20:36.270Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=7&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=All",
+   "at": "2026-10-02T05:20:38.882Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=8&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=All",
+   "at": "2026-10-02T05:20:41.507Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=9&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=All",
+   "at": "2026-10-02T05:20:44.129Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=10&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=All",
+   "at": "2026-10-02T05:20:46.780Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=11&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=All",
+   "at": "2026-10-02T05:20:49.368Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=12&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=All",
+   "at": "2026-10-02T05:20:51.997Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=13&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=All",
+   "at": "2026-10-02T05:20:54.622Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=14&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=All",
+   "at": "2026-10-02T05:20:57.268Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=15&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=All",
+   "at": "2026-10-02T05:20:59.863Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=16&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=All",
+   "at": "2026-10-02T05:21:02.479Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=17&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=All",
+   "at": "2026-10-02T05:21:05.107Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=18&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=All",
+   "at": "2026-10-02T05:21:07.721Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=19&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=All",
+   "at": "2026-10-02T05:21:10.360Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=20&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=All",
+   "at": "2026-10-02T05:21:12.970Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=21&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=All",
+   "at": "2026-10-02T05:21:15.595Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=22&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=All",
+   "at": "2026-10-02T05:21:18.227Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=23&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=All",
+   "at": "2026-10-02T05:21:20.839Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=24&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=All",
+   "at": "2026-10-02T05:21:23.498Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=25&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=All",
+   "at": "2026-10-02T05:21:26.073Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=26&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=All",
+   "at": "2026-10-02T05:21:28.711Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=27&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=All",
+   "at": "2026-10-02T05:21:31.319Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=28&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=All",
+   "at": "2026-10-02T05:21:33.936Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=29&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=All",
+   "at": "2026-10-02T05:21:36.562Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=30&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=All",
+   "at": "2026-10-02T05:21:39.179Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=31&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=All",
+   "at": "2026-10-02T05:21:41.808Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=32&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=All",
+   "at": "2026-10-02T05:21:44.435Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=33&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=All",
+   "at": "2026-10-02T05:21:47.100Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=34&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=All",
+   "at": "2026-10-02T05:21:49.663Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=0&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=20",
+   "at": "2026-10-02T05:21:52.287Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=1&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=20",
+   "at": "2026-10-02T05:21:54.909Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=2&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=20",
+   "at": "2026-10-02T05:21:57.532Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=3&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=20",
+   "at": "2026-10-02T05:22:00.152Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=4&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=20",
+   "at": "2026-10-02T05:22:02.775Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=5&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=20",
+   "at": "2026-10-02T05:22:05.401Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=6&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=20",
+   "at": "2026-10-02T05:22:08.017Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=7&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=20",
+   "at": "2026-10-02T05:22:10.637Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=8&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=20",
+   "at": "2026-10-02T05:22:13.261Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=9&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=20",
+   "at": "2026-10-02T05:22:15.899Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=10&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=20",
+   "at": "2026-10-02T05:22:18.504Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=11&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=20",
+   "at": "2026-10-02T05:22:21.123Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=12&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=20",
+   "at": "2026-10-02T05:22:23.741Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=13&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=20",
+   "at": "2026-10-02T05:22:26.367Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=14&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=20",
+   "at": "2026-10-02T05:22:28.990Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=15&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=20",
+   "at": "2026-10-02T05:22:31.619Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=16&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=20",
+   "at": "2026-10-02T05:22:34.240Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=17&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=20",
+   "at": "2026-10-02T05:22:36.849Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=18&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=20",
+   "at": "2026-10-02T05:22:39.473Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=19&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=20",
+   "at": "2026-10-02T05:22:42.097Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=20&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=20",
+   "at": "2026-10-02T05:22:44.719Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=21&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=20",
+   "at": "2026-10-02T05:22:47.338Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=22&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=20",
+   "at": "2026-10-02T05:22:49.969Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=23&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=20",
+   "at": "2026-10-02T05:22:52.584Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=24&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=20",
+   "at": "2026-10-02T05:22:55.205Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=25&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=20",
+   "at": "2026-10-02T05:22:57.827Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=26&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=20",
+   "at": "2026-10-02T05:23:00.450Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=27&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=20",
+   "at": "2026-10-02T05:23:03.065Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=28&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=20",
+   "at": "2026-10-02T05:23:05.689Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=0&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=21",
+   "at": "2026-10-02T05:23:08.309Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=1&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=21",
+   "at": "2026-10-02T05:23:10.943Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=2&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=21",
+   "at": "2026-10-02T05:23:13.559Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=3&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=21",
+   "at": "2026-10-02T05:23:16.158Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=4&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=21",
+   "at": "2026-10-02T05:23:18.765Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=5&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=21",
+   "at": "2026-10-02T05:23:21.293Z",
+   "status": 200,
+   "cdn": "HIT"
+  },
+  {
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=6&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=21",
+   "at": "2026-10-02T05:23:23.840Z",
+   "status": 200,
+   "cdn": "HIT"
+  }
+ ]
+}

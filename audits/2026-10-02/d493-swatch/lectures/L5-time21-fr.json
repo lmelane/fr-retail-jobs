@@ -1,0 +1,185 @@
+{
+ "summary": {
+  "lang": "fr",
+  "label": "L5-time21",
+  "extra": "search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=21",
+  "startedAt": "2026-10-02T05:09:25.090Z",
+  "endedAt": "2026-10-02T05:09:41.928Z",
+  "lastPage": 5,
+  "pageSize": 10,
+  "lastCount": 7,
+  "announced": 57,
+  "shape": true,
+  "served": 57,
+  "distinct": 57,
+  "repeated": 0,
+  "statuses": [
+   200
+  ],
+  "lastPageEverywhere": [
+   5
+  ],
+  "cdn": {
+   "MISS": 7
+  },
+  "edges": [
+   "34639668"
+  ]
+ },
+ "pages": [
+  {
+   "page": 0,
+   "at": "2026-10-02T05:09:25.090Z",
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=0&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=21",
+   "status": 200,
+   "cdn": "MISS",
+   "originMs": 188,
+   "edge": "34639668",
+   "sha256": "f77eb259f07a54af64fae2c3cb1b326bc07ac9be746a915cc8997cb5a299a084",
+   "lastPage": 5,
+   "maxPageLink": 5,
+   "links": [
+    "en:33309",
+    "en:33301",
+    "fr:33300",
+    "de:33295",
+    "en:33283",
+    "en:33282",
+    "it:33271",
+    "en:33254",
+    "it:33251",
+    "en:33241"
+   ]
+  },
+  {
+   "page": 1,
+   "at": "2026-10-02T05:09:27.917Z",
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=1&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=21",
+   "status": 200,
+   "cdn": "MISS",
+   "originMs": 230,
+   "edge": "34639668",
+   "sha256": "122e3f098a15b664344ee1658f6d162d4e1a4cce3b5c9c23a610eccd901602e6",
+   "lastPage": 5,
+   "maxPageLink": 5,
+   "links": [
+    "fr:33239",
+    "de:33229",
+    "en:33206",
+    "en:33205",
+    "en:33204",
+    "en:33187",
+    "it:33173",
+    "de:33163",
+    "de:33154",
+    "en:33125"
+   ]
+  },
+  {
+   "page": 2,
+   "at": "2026-10-02T05:09:30.777Z",
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=2&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=21",
+   "status": 200,
+   "cdn": "MISS",
+   "originMs": 212,
+   "edge": "34639668",
+   "sha256": "8bf2a93d7dc50269bcdfdc392e91b6bf841e879407d48c6bf5e48028df8021b1",
+   "lastPage": 5,
+   "maxPageLink": 5,
+   "links": [
+    "en:33106",
+    "en:33100",
+    "en:33089",
+    "it:33082",
+    "it:33081",
+    "it:33080",
+    "en:33079",
+    "de:33075",
+    "de:33072",
+    "fr:33056"
+   ]
+  },
+  {
+   "page": 3,
+   "at": "2026-10-02T05:09:33.555Z",
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=3&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=21",
+   "status": 200,
+   "cdn": "MISS",
+   "originMs": 194,
+   "edge": "34639668",
+   "sha256": "4385e4af78b713c36c8087ccaabdce4e4434568dd9419e97385320495b5792fe",
+   "lastPage": null,
+   "maxPageLink": 5,
+   "links": [
+    "en:33041",
+    "it:33034",
+    "it:33033",
+    "it:33032",
+    "it:33031",
+    "it:33030",
+    "it:33029",
+    "it:33028",
+    "it:33027",
+    "it:33026"
+   ]
+  },
+  {
+   "page": 4,
+   "at": "2026-10-02T05:09:36.316Z",
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=4&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=21",
+   "status": 200,
+   "cdn": "MISS",
+   "originMs": 218,
+   "edge": "34639668",
+   "sha256": "33a5ae19f91f9d20929879ad04fb10d14a5ee9b8d70c6a0984d9a1a422279fe7",
+   "lastPage": null,
+   "maxPageLink": 5,
+   "links": [
+    "it:33025",
+    "en:33009",
+    "en:32966",
+    "en:32919",
+    "en:32916",
+    "en:32915",
+    "de:32881",
+    "de:32854",
+    "en:32814",
+    "en:32796"
+   ]
+  },
+  {
+   "page": 5,
+   "at": "2026-10-02T05:09:39.102Z",
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=5&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=21",
+   "status": 200,
+   "cdn": "MISS",
+   "originMs": 184,
+   "edge": "34639668",
+   "sha256": "f8d1dac771b6dfb85599f103ffcfafc07a662478c183e75b36c78936bc27b966",
+   "lastPage": null,
+   "maxPageLink": 5,
+   "links": [
+    "en:32738",
+    "en:32737",
+    "en:32699",
+    "fr:32602",
+    "en:32452",
+    "en:32440",
+    "en:32439"
+   ]
+  },
+  {
+   "page": 6,
+   "at": "2026-10-02T05:09:41.928Z",
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=6&search_api_fulltext=&jf_country=All&domain=All&position=All&contract=All&time=21",
+   "status": 200,
+   "cdn": "MISS",
+   "originMs": 216,
+   "edge": "34639668",
+   "sha256": "510f9a701b190395dca0f1b7e822629f1bab9d360dc368322d7c83d88340bec2",
+   "lastPage": null,
+   "maxPageLink": 5,
+   "links": []
+  }
+ ]
+}

@@ -1,0 +1,706 @@
+{
+ "summary": {
+  "lang": "fr",
+  "label": "L1",
+  "extra": null,
+  "startedAt": "2026-10-02T04:53:09.647Z",
+  "endedAt": "2026-10-02T04:54:46.555Z",
+  "lastPage": 33,
+  "pageSize": 10,
+  "lastCount": 1,
+  "announced": 331,
+  "shape": true,
+  "served": 331,
+  "distinct": 325,
+  "repeated": 6,
+  "statuses": [
+   200
+  ],
+  "lastPageEverywhere": [
+   33,
+   32
+  ]
+ },
+ "pages": [
+  {
+   "page": 0,
+   "at": "2026-10-02T04:53:09.647Z",
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=0",
+   "status": 200,
+   "sha256": "a41cfa491106895ba401db098a88726344cce933198d1d543cc436fb4bb4034c",
+   "lastPage": 33,
+   "links": [
+    "en:33318",
+    "en:33316",
+    "en:33315",
+    "en:33314",
+    "en:33312",
+    "en:33310",
+    "en:33313",
+    "en:33311",
+    "en:33309",
+    "en:33308"
+   ]
+  },
+  {
+   "page": 1,
+   "at": "2026-10-02T04:53:12.871Z",
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=1",
+   "status": 200,
+   "sha256": "4f6ec7b1934991192b2b220fb486d4189a803f8a78ff1792f17ad050160cca96",
+   "lastPage": 33,
+   "links": [
+    "fr:33306",
+    "en:33305",
+    "fr:33303",
+    "fr:33302",
+    "en:33301",
+    "fr:33300",
+    "en:33299",
+    "fr:33298",
+    "fr:33297",
+    "de:33296"
+   ]
+  },
+  {
+   "page": 2,
+   "at": "2026-10-02T04:53:15.456Z",
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=2",
+   "status": 200,
+   "sha256": "a636a58393d1805d47ee00648bdb299a98a3bb3952f76f1f1f9ac0864aa7bf50",
+   "lastPage": 33,
+   "links": [
+    "de:33296",
+    "en:33291",
+    "en:33290",
+    "en:33289",
+    "en:33287",
+    "en:33286",
+    "en:33285",
+    "fr:33284",
+    "en:33283",
+    "en:33282"
+   ]
+  },
+  {
+   "page": 3,
+   "at": "2026-10-02T04:53:18.354Z",
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=3",
+   "status": 200,
+   "sha256": "8c24066c4d3db0207f7c5fd4036034c2e20e869279dbd7b890ccc9da2aead0d7",
+   "lastPage": 32,
+   "links": [
+    "en:33279",
+    "fr:33277",
+    "fr:33278",
+    "fr:33276",
+    "en:33275",
+    "it:33274",
+    "fr:33272",
+    "de:33273",
+    "it:33271",
+    "de:33268"
+   ]
+  },
+  {
+   "page": 4,
+   "at": "2026-10-02T04:53:21.007Z",
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=4",
+   "status": 200,
+   "sha256": "57434bbcb882689d384eea2edd2b6b22961d86b3cb62d0ded8c878b2c58d6fab",
+   "lastPage": 33,
+   "links": [
+    "fr:33272",
+    "de:33268",
+    "de:33264",
+    "en:33260",
+    "fr:33259",
+    "en:33257",
+    "en:33256",
+    "en:33255",
+    "en:33254",
+    "en:33252"
+   ]
+  },
+  {
+   "page": 5,
+   "at": "2026-10-02T04:53:23.862Z",
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=5",
+   "status": 200,
+   "sha256": "baaa1d2ffa2be6ea30dce4502fc84ee0d45054057b178b7ad42feb403ae46ab7",
+   "lastPage": 33,
+   "links": [
+    "en:33252",
+    "it:33251",
+    "de:33249",
+    "fr:33247",
+    "fr:33245",
+    "fr:33244",
+    "fr:33243",
+    "en:33242",
+    "en:33241",
+    "fr:33240"
+   ]
+  },
+  {
+   "page": 6,
+   "at": "2026-10-02T04:53:26.488Z",
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=6",
+   "status": 200,
+   "sha256": "4f4cd07877997722bea5e5ebc6be0799667a5420040cf896ad7c673bde55a00e",
+   "lastPage": 33,
+   "links": [
+    "en:33238",
+    "fr:33239",
+    "en:33237",
+    "fr:33236",
+    "fr:33235",
+    "fr:33234",
+    "en:33233",
+    "en:33232",
+    "en:33231",
+    "de:33230"
+   ]
+  },
+  {
+   "page": 7,
+   "at": "2026-10-02T04:53:29.397Z",
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=7",
+   "status": 200,
+   "sha256": "1bf993463be711dbd57d7b1d1d2935957907a63ed5ed594f801a1287611be573",
+   "lastPage": 32,
+   "links": [
+    "en:33224",
+    "en:33226",
+    "de:33225",
+    "en:33221",
+    "en:33222",
+    "en:33220",
+    "it:33219",
+    "it:33218",
+    "en:33217",
+    "fr:33216"
+   ]
+  },
+  {
+   "page": 8,
+   "at": "2026-10-02T04:53:32.126Z",
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=8",
+   "status": 200,
+   "sha256": "de234c8a207e17786ea7b706667ef0d914840ed8a314ad672c0b7b59f77dffc2",
+   "lastPage": 33,
+   "links": [
+    "en:33217",
+    "fr:33216",
+    "fr:33214",
+    "de:33213",
+    "de:33212",
+    "de:33211",
+    "en:33210",
+    "en:33209",
+    "de:33207",
+    "en:33206"
+   ]
+  },
+  {
+   "page": 9,
+   "at": "2026-10-02T04:53:35.132Z",
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=9",
+   "status": 200,
+   "sha256": "657f348c8c70e63aab2884c42fa944b6a159bebd6f204a8ac882006cc58dbcc3",
+   "lastPage": 33,
+   "links": [
+    "en:33205",
+    "en:33204",
+    "fr:33203",
+    "en:33202",
+    "en:33201",
+    "en:33200",
+    "en:33199",
+    "en:33198",
+    "fr:33197",
+    "en:33196"
+   ]
+  },
+  {
+   "page": 10,
+   "at": "2026-10-02T04:53:37.972Z",
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=10",
+   "status": 200,
+   "sha256": "a57d846a691ad3bd74dddb58686966ee3375c2973b31b2f9a507de5f1be768c3",
+   "lastPage": 33,
+   "links": [
+    "en:33195",
+    "en:33194",
+    "fr:33193",
+    "fr:33191",
+    "en:33190",
+    "en:33188",
+    "en:33187",
+    "de:33186",
+    "fr:33185",
+    "de:33184"
+   ]
+  },
+  {
+   "page": 11,
+   "at": "2026-10-02T04:53:40.771Z",
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=11",
+   "status": 200,
+   "sha256": "6b1e7b9fd821225f6958767f352e90f8f2ee369e0c011c4e83f852845da3b334",
+   "lastPage": 33,
+   "links": [
+    "fr:33183",
+    "en:33181",
+    "en:33180",
+    "it:33179",
+    "de:33177",
+    "en:33174",
+    "it:33173",
+    "en:33172",
+    "it:33171",
+    "en:33170"
+   ]
+  },
+  {
+   "page": 12,
+   "at": "2026-10-02T04:53:43.634Z",
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=12",
+   "status": 200,
+   "sha256": "56094b608686c59167ed20cf9084cb194cdd86c6a06d6070a60d80dc4dbcc72b",
+   "lastPage": 33,
+   "links": [
+    "fr:33169",
+    "fr:33168",
+    "en:33167",
+    "en:33165",
+    "fr:33164",
+    "de:33163",
+    "de:33161",
+    "fr:33160",
+    "fr:33159",
+    "en:33158"
+   ]
+  },
+  {
+   "page": 13,
+   "at": "2026-10-02T04:53:46.459Z",
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=13",
+   "status": 200,
+   "sha256": "daec1853333df51fecb3dfa5f4ea05ce9cbd9ee66530d9fb35427438dbee34a6",
+   "lastPage": 33,
+   "links": [
+    "en:33157",
+    "en:33155",
+    "de:33154",
+    "fr:33153",
+    "de:33152",
+    "de:33151",
+    "fr:33150",
+    "en:33149",
+    "en:33148",
+    "en:33147"
+   ]
+  },
+  {
+   "page": 14,
+   "at": "2026-10-02T04:53:49.655Z",
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=14",
+   "status": 200,
+   "sha256": "947a875e4558cf78a9928b20d8b85a86fa84db6b98d307eec28a41ed34216542",
+   "lastPage": 33,
+   "links": [
+    "en:33146",
+    "fr:33144",
+    "fr:33143",
+    "en:33142",
+    "it:33141",
+    "fr:33139",
+    "fr:33138",
+    "de:33137",
+    "en:33136",
+    "en:33135"
+   ]
+  },
+  {
+   "page": 15,
+   "at": "2026-10-02T04:53:52.472Z",
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=15",
+   "status": 200,
+   "sha256": "79b228e87b3174fc181fefc896dffb5a4c834f8b43e294821d5c971a241a7ed6",
+   "lastPage": 33,
+   "links": [
+    "en:33134",
+    "en:33133",
+    "en:33132",
+    "en:33130",
+    "fr:33129",
+    "en:33125",
+    "en:33124",
+    "fr:33123",
+    "fr:33120",
+    "fr:33119"
+   ]
+  },
+  {
+   "page": 16,
+   "at": "2026-10-02T04:53:55.393Z",
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=16",
+   "status": 200,
+   "sha256": "31f167f4d424b08e63684db72a698cf60c1d6ea22b6e52d5d085942fa2721ffd",
+   "lastPage": 33,
+   "links": [
+    "en:33117",
+    "en:33115",
+    "fr:33113",
+    "fr:33114",
+    "fr:33111",
+    "en:33110",
+    "en:33109",
+    "de:33108",
+    "en:33106",
+    "en:33105"
+   ]
+  },
+  {
+   "page": 17,
+   "at": "2026-10-02T04:53:58.353Z",
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=17",
+   "status": 200,
+   "sha256": "b58005244043b84238fd5c256f62f0db419f446e7818260572f1565faddf2e6c",
+   "lastPage": 33,
+   "links": [
+    "en:33104",
+    "en:33101",
+    "en:33099",
+    "en:33100",
+    "en:33098",
+    "en:33096",
+    "de:33095",
+    "en:33091",
+    "en:33092",
+    "en:33089"
+   ]
+  },
+  {
+   "page": 18,
+   "at": "2026-10-02T04:54:01.159Z",
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=18",
+   "status": 200,
+   "sha256": "5aec547c0312726767d9830ef90987a7a343636dfb8bec9f1d58e026afb55d57",
+   "lastPage": 33,
+   "links": [
+    "it:33081",
+    "it:33082",
+    "it:33080",
+    "en:33079",
+    "de:33076",
+    "de:33075",
+    "de:33074",
+    "de:33071",
+    "de:33072",
+    "en:33069"
+   ]
+  },
+  {
+   "page": 19,
+   "at": "2026-10-02T04:54:03.967Z",
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=19",
+   "status": 200,
+   "sha256": "0275004fe436486e40512ed6156a34c26c193f83a85a471f51853f28ed846cd0",
+   "lastPage": 33,
+   "links": [
+    "en:33067",
+    "en:33063",
+    "en:33062",
+    "en:33061",
+    "fr:33060",
+    "fr:33056",
+    "en:33054",
+    "en:33053",
+    "fr:33049",
+    "fr:33048"
+   ]
+  },
+  {
+   "page": 20,
+   "at": "2026-10-02T04:54:06.758Z",
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=20",
+   "status": 200,
+   "sha256": "57c05b7868961983731764fd976a528e74df39cdf8598cc76fc8bddcb0e36e76",
+   "lastPage": 33,
+   "links": [
+    "en:33047",
+    "en:33046",
+    "fr:33045",
+    "de:33044",
+    "de:33043",
+    "en:33041",
+    "en:33040",
+    "en:33037",
+    "en:33036",
+    "en:33035"
+   ]
+  },
+  {
+   "page": 21,
+   "at": "2026-10-02T04:54:09.572Z",
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=21",
+   "status": 200,
+   "sha256": "828502e4543fa58e794cd3c60812bb756befd3e9c65d5b3b8784cb6919bd6712",
+   "lastPage": 33,
+   "links": [
+    "it:33033",
+    "it:33034",
+    "it:33028",
+    "it:33029",
+    "it:33030",
+    "it:33031",
+    "it:33032",
+    "it:33025",
+    "it:33026",
+    "it:33027"
+   ]
+  },
+  {
+   "page": 22,
+   "at": "2026-10-02T04:54:12.402Z",
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=22",
+   "status": 200,
+   "sha256": "537b63ac508c8aaf086292987d51338853801e203ddc5e1e898422caad6c8380",
+   "lastPage": 33,
+   "links": [
+    "en:33023",
+    "en:33024",
+    "fr:33022",
+    "fr:33019",
+    "fr:33010",
+    "en:33009",
+    "en:33006",
+    "en:33001",
+    "fr:32999",
+    "fr:32997"
+   ]
+  },
+  {
+   "page": 23,
+   "at": "2026-10-02T04:54:15.219Z",
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=23",
+   "status": 200,
+   "sha256": "0828ea4f33455ecf6e82de27ed55672b201d8ad2a5827bc730fcd40d62d24a18",
+   "lastPage": 33,
+   "links": [
+    "fr:32998",
+    "fr:32994",
+    "fr:32995",
+    "fr:32993",
+    "en:32983",
+    "de:32981",
+    "fr:32977",
+    "en:32966",
+    "en:32965",
+    "fr:32963"
+   ]
+  },
+  {
+   "page": 24,
+   "at": "2026-10-02T04:54:18.123Z",
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=24",
+   "status": 200,
+   "sha256": "86171c50cea3a3662b72acf39845ac64dc087584562d310b2b43083913dafeae",
+   "lastPage": 33,
+   "links": [
+    "fr:32953",
+    "en:32924",
+    "en:32919",
+    "en:32916",
+    "en:32915",
+    "en:32911",
+    "de:32907",
+    "de:32906",
+    "en:32899",
+    "en:32896"
+   ]
+  },
+  {
+   "page": 25,
+   "at": "2026-10-02T04:54:20.941Z",
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=25",
+   "status": 200,
+   "sha256": "7dee38c0a6d782592daf7c2c80c787a598e71c93c765cbc81f907e90be8d9637",
+   "lastPage": 33,
+   "links": [
+    "fr:32888",
+    "fr:32884",
+    "de:32881",
+    "en:32875",
+    "en:32866",
+    "en:32857",
+    "de:32854",
+    "en:32833",
+    "en:32831",
+    "fr:32821"
+   ]
+  },
+  {
+   "page": 26,
+   "at": "2026-10-02T04:54:23.769Z",
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=26",
+   "status": 200,
+   "sha256": "79f75d7d4d54971e97efb8abe20ddc799ac85c6e7ec0f00d211aedad3d23c316",
+   "lastPage": 33,
+   "links": [
+    "en:32814",
+    "en:32805",
+    "en:32806",
+    "en:32807",
+    "en:32796",
+    "en:32794",
+    "fr:32793",
+    "fr:32786",
+    "en:32784",
+    "en:32770"
+   ]
+  },
+  {
+   "page": 27,
+   "at": "2026-10-02T04:54:26.648Z",
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=27",
+   "status": 200,
+   "sha256": "f6699b6ab400b94daa5ba0aeebb1a0eb19f99db9cebf249121349ab5759ca581",
+   "lastPage": 33,
+   "links": [
+    "fr:32761",
+    "fr:32762",
+    "en:32747",
+    "en:32738",
+    "en:32737",
+    "fr:32736",
+    "fr:32734",
+    "fr:32735",
+    "fr:32732",
+    "en:32719"
+   ]
+  },
+  {
+   "page": 28,
+   "at": "2026-10-02T04:54:29.522Z",
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=28",
+   "status": 200,
+   "sha256": "0621748125e7422d91eadbafdeb08bbc065cdd6534d84ef9c202bc30889270ef",
+   "lastPage": 33,
+   "links": [
+    "fr:32706",
+    "fr:32707",
+    "fr:32708",
+    "en:32699",
+    "en:32682",
+    "en:32667",
+    "en:32634",
+    "fr:32602",
+    "en:32452",
+    "en:32440"
+   ]
+  },
+  {
+   "page": 29,
+   "at": "2026-10-02T04:54:32.550Z",
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=29",
+   "status": 200,
+   "sha256": "a408cd8601907cb993ba41f480e89f1fcce53331b0d167515db1313ddd7c3c3e",
+   "lastPage": 33,
+   "links": [
+    "en:32439",
+    "fr:32436",
+    "de:32414",
+    "fr:32413",
+    "fr:32412",
+    "fr:32391",
+    "de:32336",
+    "fr:32337",
+    "fr:32338",
+    "de:32339"
+   ]
+  },
+  {
+   "page": 30,
+   "at": "2026-10-02T04:54:35.445Z",
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=30",
+   "status": 200,
+   "sha256": "85f7dce5cdbd676aa9465e75183400ccef2d8fb458660b98763389977d9d06cc",
+   "lastPage": 33,
+   "links": [
+    "de:32340",
+    "fr:32341",
+    "fr:32342",
+    "de:32343",
+    "fr:32344",
+    "fr:32345",
+    "fr:32346",
+    "fr:32348",
+    "fr:32350",
+    "de:32351"
+   ]
+  },
+  {
+   "page": 31,
+   "at": "2026-10-02T04:54:38.107Z",
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=31",
+   "status": 200,
+   "sha256": "21811085f5766d2e9f2097da363ccd65923be7145f482cec84b62ad6a841d40f",
+   "lastPage": null,
+   "links": [
+    "fr:32352",
+    "fr:32353",
+    "fr:32354",
+    "fr:32355",
+    "de:32356",
+    "de:32357",
+    "de:32358",
+    "de:32359",
+    "de:32360",
+    "de:32361"
+   ]
+  },
+  {
+   "page": 32,
+   "at": "2026-10-02T04:54:40.738Z",
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=32",
+   "status": 200,
+   "sha256": "65d74b7e1bcc51cc30c4af0c1244f559c60542391a59c7616e8edb6f17fa9132",
+   "lastPage": null,
+   "links": [
+    "de:32362",
+    "de:32363",
+    "de:32364",
+    "fr:32365",
+    "de:32366",
+    "de:32367",
+    "de:32368",
+    "en:32184",
+    "en:31885",
+    "de:31697"
+   ]
+  },
+  {
+   "page": 33,
+   "at": "2026-10-02T04:54:43.596Z",
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=33",
+   "status": 200,
+   "sha256": "6cda346764eccc540b0c7c6565bf4170671bb5f3e66a5c85415af4268af2a4af",
+   "lastPage": null,
+   "links": [
+    "de:18551"
+   ]
+  },
+  {
+   "page": 34,
+   "at": "2026-10-02T04:54:46.555Z",
+   "url": "https://www.swatchgroup.com/fr/job-finder?page=34",
+   "status": 200,
+   "sha256": "0da266d666b28e269a0843b181a393ea1b2c3c066b5b0425f78f7865e3697420",
+   "lastPage": null,
+   "links": []
+  }
+ ]
+}
