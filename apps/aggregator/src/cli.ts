@@ -259,6 +259,20 @@ try {
     // porte deux (kering : flux Eightfold vivant + sitemap périmée), voir RetireOptions.
     const externalIdPrefix = process.argv.find((a) => a.startsWith('--external-prefix='))?.slice('--external-prefix='.length);
     await log.info('command.result', { ok: true, command, externalIdPrefix, ...(await retireSource(prisma, key, { externalIdPrefix })) });
+  } else if (command === 'consolidate-publications') {
+    /**
+     * R-143 §4 (D-513) : réunit les offres ACTIVES d'un même employeur qui portent la même clé d'identité native, par la
+     * réparation relue (`dedup/repair.ts`), qui recontrôle toute la preuve deux à deux sur le RAW. Sans `--apply`, rien
+     * n'est écrit : chaque plan est préparé en transaction READ ONLY. `--limit=<n>` borne les groupes (500 par défaut).
+     * À lancer après un RUN fait par le code qui pose les clés natives, jamais pendant le RUN de 18 h.
+     */
+    const { consolidateIdentityGroups } = await import('./dedup/consolidate.js');
+    const { objectStoreConfigured, objectStoreFromEnv } = await import('./retention/objectStore.js');
+    const limit = Number(process.argv.find((a) => a.startsWith('--limit='))?.slice(8) ?? 500);
+    const report = await consolidateIdentityGroups(prisma, { apply: process.argv.includes('--apply'), limit,
+      store: objectStoreConfigured() ? objectStoreFromEnv() : undefined });
+    await log.info('command.result', { ok: report.refused.length === 0, command, apply: process.argv.includes('--apply'), ...report,
+      refused: report.refused.length, refusedSample: report.refused.slice(0, 20) });
   } else if (command === 'resolve-domains') {
     /**
      * Pose Company.domain (le logo) sur les Maisons actives qui n'en ont pas :
@@ -365,7 +379,7 @@ try {
   try {
     try { await closeBrowser(); }
     catch (error) { fatalFailure = true; process.exitCode = 1; await log.error('browser.cleanup_failed', { error }); }
-    if (observation && !['health-report', 'stats', 'export-companies', 'occupation-review-queue'].includes(command)) {
+    if (observation && !['health-report', 'stats', 'export-companies', 'occupation-review-queue', 'consolidate-publications'].includes(command)) {
       const heartbeat = await pingHeartbeat(!fatalFailure && !process.exitCode);
       await log.info('pipeline.heartbeat', { heartbeat, command });
       if (heartbeat === 'failed') { fatalFailure = true; process.exitCode = 1; }
