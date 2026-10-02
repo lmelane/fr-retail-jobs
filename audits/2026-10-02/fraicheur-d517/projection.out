@@ -1,0 +1,70 @@
+== Sélection D-517 (règle exacte de la passe, F4)
+   147 sources retenues sur 285 ACTIVE avec un flux ; 96.6 % des nouvelles publications (11608 sur 12020 en 7 jours) ; avant (40 sources par coût) : 20.5 %
+   prada-group              retenue    8.9 / jour
+   rolex                    retenue    4.4 / jour
+   burberry                 retenue    2.9 / jour
+   valentino                retenue    2.1 / jour
+   clarins                  retenue    2.4 / jour
+   swatch-group             retenue   13.6 / jour
+   hm-group                 retenue  127.7 / jour
+   ulta-jibe                retenue   97.0 / jour
+   knitwell-us-retail       retenue   88.7 / jour
+   nordstrom                retenue   70.6 / jour
+   wttj-sector              retenue   61.1 / jour
+   tapestry                 retenue   52.0 / jour
+   estee-lauder-companies   retenue   59.4 / jour
+   kering                   retenue   29.6 / jour
+   pvh                      retenue   17.5 / jour
+   lvmh                     retenue  103.9 / jour
+   parfums-chanel           retenue   11.6 / jour
+   richemont-workday        retenue   20.7 / jour
+   premières sources non retenues : aeropostale 0.9, audemars-piguet 0.9, burnt 0.9, fenwick-volcanic 0.9, globus 0.9, loccitane-fr 0.9, mulberry 0.9, pepco 0.9, quince 0.9, ssense 0.9, uniqlo-us-retail 0.9, zegna-altamira 0.8
+   seuil 0.5 / jour : 200 sources, 98.7 % du flux
+   seuil 1 / jour : 147 sources, 96.6 % du flux
+   seuil 2 / jour : 103 sources, 93.2 % du flux
+
+== Coût d’une passe (lecture incrémentale de la sélection)
+   WORKDAY                 29 sources : lecture complète   38578 requêtes, incrémentale    1435
+   SUCCESSFACTORS          17 sources : lecture complète   13499 requêtes, incrémentale     437
+   SMARTRECRUITERS         12 sources : lecture complète    9624 requêtes, incrémentale     451
+   PHENOM                   4 sources : lecture complète    7618 requêtes, incrémentale      69
+   GENERIC_JSONLD           8 sources : lecture complète    6147 requêtes, incrémentale     393
+   EIGHTFOLD                2 sources : lecture complète    5499 requêtes, incrémentale     322
+   WTTJ                     1 sources : lecture complète    4449 requêtes, incrémentale     144
+   JOBAFFINITY_WORDPRESS    2 sources : lecture complète    3071 requêtes, incrémentale      10
+   ICIMS                    1 sources : lecture complète    3024 requêtes, incrémentale      40
+   ORACLE_HCM               2 sources : lecture complète    2930 requêtes, incrémentale      15
+   DIGITALRECRUITERS        5 sources : lecture complète    2857 requêtes, incrémentale     240
+   SWATCHGROUP              1 sources : lecture complète     550 requêtes, incrémentale     233
+   EQWA                     1 sources : lecture complète     539 requêtes, incrémentale     539
+   TALENT_FUNNEL            1 sources : lecture complète     393 requêtes, incrémentale     393
+   TALENTVIEW               2 sources : lecture complète     270 requêtes, incrémentale     270
+   TALEO                    1 sources : lecture complète     236 requêtes, incrémentale     236
+   TALENTSOFT               2 sources : lecture complète     222 requêtes, incrémentale     222
+   JIBE                     1 sources : lecture complète     153 requêtes, incrémentale     153
+   EASYCRUIT                1 sources : lecture complète     149 requêtes, incrémentale     149
+   LVMH_ALGOLIA             1 sources : lecture complète     128 requêtes, incrémentale     128
+   BASH_TALENTS             1 sources : lecture complète     103 requêtes, incrémentale     103
+   TEAMTAILOR              11 sources : lecture complète      97 requêtes, incrémentale      97
+   HARRI                    1 sources : lecture complète      69 requêtes, incrémentale      69
+   JOBYLON                  1 sources : lecture complète      66 requêtes, incrémentale      66
+   RITUALS                  1 sources : lecture complète      63 requêtes, incrémentale      63
+   WORKABLE                 2 sources : lecture complète      62 requêtes, incrémentale      62
+   greenhouse              12 sources : lecture complète      36 requêtes, incrémentale      36
+   teamtailor              10 sources : lecture complète      34 requêtes, incrémentale      34
+   recruitee                7 sources : lecture complète      25 requêtes, incrémentale      25
+   MAGNET                   1 sources : lecture complète      11 requêtes, incrémentale      11
+   LEVER                    1 sources : lecture complète       7 requêtes, incrémentale       7
+   flatchr                  2 sources : lecture complète       6 requêtes, incrémentale       6
+   magnet                   1 sources : lecture complète       5 requêtes, incrémentale       5
+   geodirectory             1 sources : lecture complète       3 requêtes, incrémentale       3
+   lever                    1 sources : lecture complète       3 requêtes, incrémentale       3
+   une passe : 6470 requêtes (lecture complète des mêmes sources : 100526) ; 12 min à 4 sources en parallèle (série : 31 min) ; plus longue source : psycho-bunny 6 min
+   toutes les 4 h (5 passes) : +32352 requêtes par jour (29 % du RUN)
+   par jour, 3 passes : +19411 requêtes (17 % du RUN, 111186) ; écritures : le neuf seul, ~1322 offres écrites par jour (+1.6 % des 81338 réécritures du RUN), contre +222639 si la passe relisait tout
+
+== Découverte projetée (RUN à 16:00 UTC, passes à 04, 10, 22 UTC)
+   RUN seul (aujourd’hui)                                         mesure du CEO médiane  17.3 h p90  42.0 h, ≤24 h 74.9 % | heure exacte (5251) médiane  7.8 h p90 20.9 h | offres couvertes  0.0 %
+   lecture R-143 §1 : 40 sources par coût, toutes les 6 h         mesure du CEO médiane  17.0 h p90  41.9 h, ≤24 h 75.6 % | heure exacte (5251) médiane  5.8 h p90 19.7 h | offres couvertes 21.9 %
+   D-517 : sélection par importance, incrémentale, toutes les 6 h mesure du CEO médiane   6.5 h p90  41.0 h, ≤24 h 76.6 % | heure exacte (5251) médiane  3.1 h p90  6.1 h | offres couvertes 96.5 %
+   D-517, toutes les 4 h (00, 04, 08, 12, 20)                     mesure du CEO médiane   5.2 h p90  40.4 h, ≤24 h 76.8 % | heure exacte (5251) médiane  2.4 h p90  4.7 h | offres couvertes 96.5 %
