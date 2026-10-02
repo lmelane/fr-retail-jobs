@@ -1,0 +1,35 @@
+{
+  "publications_avec_requisition": 1919,
+  "cles_second_etage": 1916,
+  "cles_portant_plusieurs_requisitions": 3,
+  "publications_concernees": 6,
+  "exemples": [
+    {
+      "intitule": "seasonal associate",
+      "ville": "boston",
+      "publiee": "2026-09-29",
+      "requisitions": [
+        "294382",
+        "294384"
+      ]
+    },
+    {
+      "intitule": "equipment operator 1 - full time",
+      "ville": "las vegas",
+      "publiee": "2026-09-20",
+      "requisitions": [
+        "292134",
+        "292135"
+      ]
+    },
+    {
+      "intitule": "seasonal associate",
+      "ville": "dallas",
+      "publiee": "2026-09-30",
+      "requisitions": [
+        "294640",
+        "294641"
+      ]
+    }
+  ]
+}

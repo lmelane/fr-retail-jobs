@@ -1,0 +1,78 @@
+{
+  "publications_lues": 20999,
+  "offres_servies_avant": 89766,
+  "offres_servies_apres": 87627,
+  "fusions_par_motif": {
+    "réquisition SAP : portail LVMH ↔ site RMK Sephora": {
+      "fusions": 1884,
+      "offres_retirees": 1884
+    },
+    "SmartRecruiters : publication citée par WTTJ": {
+      "fusions": 148,
+      "offres_retirees": 148
+    },
+    "Teamtailor : fiche de l’enseigne hébergée par le site du groupe": {
+      "fusions": 107,
+      "offres_retirees": 107
+    }
+  },
+  "refus_par_motif": {},
+  "identites_prouvees_sur_deux_employeurs": 0,
+  "doublons_visibles_avant": {
+    "groupes": 2734,
+    "offres": 6328,
+    "en_trop": 3594
+  },
+  "doublons_visibles_apres": {
+    "groupes": 1011,
+    "offres": 2148,
+    "en_trop": 1137
+  },
+  "offres_a_plusieurs_publications_actives": {
+    "avant": 967,
+    "apres": 3106
+  }
+}
+
+| # | motif | publication | intitulé | ville | publiée | preuve |
+|---|---|---|---|---|---|---|
+| 1 | réquisition SAP : portail LVMH ↔ site RMK Sephora | lvmh 292431 | Beauty Advisor - Part Time | Portland | 2026-07-29 | — |
+|  |  | sephora-france 1362496155 | Beauty Advisor - Part Time | Portland | 2026-08-27 | 292431 |
+| 2 | SmartRecruiters : publication citée par WTTJ | kiabi 744000142101778 | Vendedor/a Moda KIABI Sant Pere | Sant Pere de Ribes | 2026-08-07 | — |
+|  |  | wttj-sector 3b560c8f-e50f-4d7b-abe5-abb8f54d01d2 | Vendedor/a Moda KIABI Sant Pere | Sant Pere de Ribes | 2026-08-24 | 744000142101778 |
+| 3 | Teamtailor : fiche de l’enseigne hébergée par le site du groupe | etam 8abaa0ce-14f0-476e-b008-5ffacc0459d4 | Responsable de Boutique - Strasbourg Mundo - 35h/sem - CDI | Mundolsheim | 2026-09-11 | — |
+|  |  | maison-123 8abaa0ce-14f0-476e-b008-5ffacc0459d4 | Responsable de Boutique - Strasbourg Mundo - 35h/sem - CDI | Mundolsheim | 2026-09-11 | 8363254:8abaa0ce-14f0-476e-b008-5ffacc0459d4 |
+| 4 | réquisition SAP : portail LVMH ↔ site RMK Sephora | lvmh 294420 | Sales and Service Leader - Full Time | Denville | 2026-09-14 | — |
+|  |  | sephora-france 1366126455 | Sales and Service Leader - Full Time | Denville | 2026-09-29 | 294420 |
+| 5 | SmartRecruiters : publication citée par WTTJ | kiabi 744000147276659 | ADDETTO/A ALLA VENDITA KIABI LIVORNO- contratto a chiamata | Livourne | 2026-09-03 | — |
+|  |  | wttj-sector 5de4c8c3-788f-418c-b6d4-41ba2169b007 | ADDETTO/A ALLA VENDITA KIABI LIVORNO- contratto a chiamata | Livourne | 2026-09-03 | 744000147276659 |
+| 6 | Teamtailor : fiche de l’enseigne hébergée par le site du groupe | maison-123 dedfa9b9-3a05-4e50-a62f-54d591fdd7ff | Verkäufer Teilzeit Bonn M/W/D | Bonn | 2026-09-18 | — |
+|  |  | etam dedfa9b9-3a05-4e50-a62f-54d591fdd7ff | Verkäufer Teilzeit Bonn M/W/D | Bonn | 2026-09-18 | 8405836:dedfa9b9-3a05-4e50-a62f-54d591fdd7ff |
+| 7 | réquisition SAP : portail LVMH ↔ site RMK Sephora | lvmh 296917 | Assistant Store Manager- Easton Town Center | Columbus | 2026-09-29 | — |
+|  |  | sephora-france 1369963855 | Assistant Store Manager- Easton Town Center | Columbus | 2026-09-29 | 296917 |
+| 8 | SmartRecruiters : publication citée par WTTJ | kiabi 744000148721049 | CDD CONSEILLER DE VENTE - KIABI VILLEBON (H/F/NB) - 35H | Villebon-sur-Yvette | 2026-09-10 | — |
+|  |  | wttj-sector ea514c5a-4550-4328-a6ca-82571069cfbc | CDD CONSEILLER DE VENTE - KIABI VILLEBON (H/F/NB) - 35H | Villebon-sur-Yvette | 2026-09-10 | 744000148721049 |
+| 9 | Teamtailor : fiche de l’enseigne hébergée par le site du groupe | etam 083e13b8-2948-4826-b461-d0c097d28895 | Teilzeit Verkäufer "Konstanz" M/W/D | Konstanz | 2026-08-27 | — |
+|  |  | maison-123 083e13b8-2948-4826-b461-d0c097d28895 | Teilzeit Verkäufer "Konstanz" M/W/D | Konstanz | 2026-08-27 | 8278643:083e13b8-2948-4826-b461-d0c097d28895 |
+| 10 | réquisition SAP : portail LVMH ↔ site RMK Sephora | lvmh 294210 | Operations Leader - Full Time | New York | 2026-08-28 | — |
+|  |  | sephora-france 1365976955 | Operations Leader - Full Time | New York | 2026-08-28 | 294210 |
+| 11 | SmartRecruiters : publication citée par WTTJ | kiabi 744000148721380 | _STAGE CONSEILLER DE VENTE (H/F/NB) - VILLEBON | Villebon-sur-Yvette | 2026-09-10 | — |
+|  |  | wttj-sector fe90f88c-78cf-4cd5-8f7d-49a4e5478679 | _STAGE CONSEILLER DE VENTE (H/F/NB) - VILLEBON | Villebon-sur-Yvette | 2026-09-08 | 744000148721380 |
+| 12 | Teamtailor : fiche de l’enseigne hébergée par le site du groupe | etam 7d32a16b-39d0-45a9-ac10-79d400dea20e | Assistant.e Coordination Retail - Stage Janvier 2027 | Clichy | 2026-09-10 | — |
+|  |  | undiz 7d32a16b-39d0-45a9-ac10-79d400dea20e | Assistant.e Coordination Retail - Stage Janvier 2027 | Clichy | 2026-09-10 | 8357161:7d32a16b-39d0-45a9-ac10-79d400dea20e |
+| 13 | réquisition SAP : portail LVMH ↔ site RMK Sephora | lvmh 296047 | Seasonal Associate | Las Vegas | 2026-09-16 | — |
+|  |  | sephora-france 1368569555 | Seasonal Associate | Las Vegas | 2026-09-16 | 296047 |
+| 14 | SmartRecruiters : publication citée par WTTJ | kiabi 744000119654756 | ASSISTENTE ALLA CLIENTELA KIABI MARCIANISE - CATEGORIA PROTETTA | Marcianise | 2026-04-09 | — |
+|  |  | wttj-sector cb44fa3c-d071-47e4-aaa2-79ca4253b429 | ASSISTENTE ALLA CLIENTELA KIABI MARCIANISE - CATEGORIA PROTETTA | Marcianise | 2026-08-17 | 744000119654756 |
+| 15 | Teamtailor : fiche de l’enseigne hébergée par le site du groupe | etam cd7dedf0-2a03-4e1b-ba69-6145b2f609e4 | Vendeur.se Montreux - 20h/sem - CDI | Montreux | 2026-05-12 | — |
+|  |  | maison-123 cd7dedf0-2a03-4e1b-ba69-6145b2f609e4 | Vendeur.se Montreux - 20h/sem - CDI | Montreux | 2026-05-12 | 7720922:cd7dedf0-2a03-4e1b-ba69-6145b2f609e4 |
+| 16 | réquisition SAP : portail LVMH ↔ site RMK Sephora | lvmh 295394 | Seasonal Associate | Murfreesboro | 2026-09-08 | — |
+|  |  | sephora-france 1367658455 | Seasonal Associate | Murfreesboro | 2026-09-08 | 295394 |
+| 17 | SmartRecruiters : publication citée par WTTJ | kiabi 744000134760292 | _CONSEILLER DE VENTE (H/F/NB) | Torcy | 2026-06-29 | — |
+|  |  | wttj-sector 080785c2-7378-4a35-a395-c523444e62de | _CONSEILLER DE VENTE (H/F/NB) | Torcy | 2026-09-02 | 744000134760292 |
+| 18 | Teamtailor : fiche de l’enseigne hébergée par le site du groupe | etam f4771475-3e63-4ca0-b377-f9c009ab02eb | Vendeur.se Val Thoiry - 35 h/sem - CDI | Thoiry | 2026-08-26 | — |
+|  |  | undiz f4771475-3e63-4ca0-b377-f9c009ab02eb | Vendeur.se Val Thoiry - 35 h/sem - CDI | Thoiry | 2026-08-26 | 8271196:f4771475-3e63-4ca0-b377-f9c009ab02eb |
+| 19 | réquisition SAP : portail LVMH ↔ site RMK Sephora | lvmh 294574 | Seasonal Associate | Chestnut Hill | 2026-09-01 | — |
+|  |  | sephora-france 1366247155 | Seasonal Associate | Chestnut Hill | 2026-09-30 | 294574 |
+| 20 | SmartRecruiters : publication citée par WTTJ | kiabi 744000146433798 | _Conseiller de Vente 25h (h/f/nb) | Chambourcy | 2026-08-31 | — |
+|  |  | wttj-sector b7730904-4791-452c-8a38-6c2ed66d7ff4 | _Conseiller de Vente 25h (h/f/nb) | Chambourcy | 2026-08-31 | 744000146433798 |
