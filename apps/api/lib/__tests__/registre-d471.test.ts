@@ -52,7 +52,7 @@ describe('le garde de clé à deux appelants (D-464 §3, D-471)', () => {
     expect(refuserSiCleInvalide(requete('Bearer cle-du-site'), 'r')).toBeNull();
   });
 
-  it('les routes du backend le nomment, et elles seules (D-471, lot 2E de D-475, R-130 §10)', async () => {
+  it('les routes du backend le nomment, et elles seules (D-471, lot 2E de D-475, R-130 §10, D-496)', async () => {
     const { readFileSync, readdirSync } = await import('node:fs');
     const { join, relative } = await import('node:path');
     const racine = join(__dirname, '..', '..', 'app', 'api');
@@ -67,7 +67,9 @@ describe('le garde de clé à deux appelants (D-464 §3, D-471)', () => {
     // PRÉMISSE : le parcours voit bien toutes les routes, sinon « elles seules » ne prouverait rien.
     expect(routes.length).toBeGreaterThanOrEqual(10);
     const nommantLeBackend = routes.filter((r) => /['"]backend['"]/.test(readFileSync(r, 'utf8'))).map((r) => relative(racine, r)).sort();
-    expect(nommantLeBackend).toEqual(['alertes/examen/route.ts', 'metiers/signalements/route.ts', 'offres/[id]/route.ts', 'registre/societes/route.ts', 'taxonomie/export/route.ts']);
+    // `suggest` : les seules suggestions de lieu (`type=city`), lecture D-492 sous D-496 (02/10/2026), témoin
+    // `suggest-cle-backend.test.ts`.
+    expect(nommantLeBackend).toEqual(['alertes/examen/route.ts', 'metiers/signalements/route.ts', 'offres/[id]/route.ts', 'registre/societes/route.ts', 'suggest/route.ts', 'taxonomie/export/route.ts']);
     expect(readFileSync(join(racine, 'registre', 'societes', 'route.ts'), 'utf8')).toContain("['backend']");
   });
 });

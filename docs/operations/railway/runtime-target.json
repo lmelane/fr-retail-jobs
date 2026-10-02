@@ -79,7 +79,7 @@
       "secretBindings": {
         "DATABASE_URL": "same-environment database URL; production binding preserved",
         "CATALOGUE_API_KEY": "existing production key; isolated validation key",
-        "CATALOGUE_API_KEY_BACKEND": "backend caller key (D-464 §3, D-471, R-130, lot 2E of D-475): offer page, registry search, alert examination (/api/alertes/examen), taxonomy export and missing-job signals only; set in the same deployment as the image that declares it"
+        "CATALOGUE_API_KEY_BACKEND": "backend caller key (D-464 §3, D-471, R-130, lot 2E of D-475, D-496): offer page, registry search, alert examination (/api/alertes/examen), taxonomy export, missing-job signals, and place suggestions only (/api/suggest?type=city, read-only: the recognized form of a place, \"Paris\" -> \"Paris (75)\"; titles, companies and occupations stay site-only); set in the same deployment as the image that declares it"
       },
       "runtimeExternalBusinessHosts": [],
       "schemaReadiness": "Read-only built-in migration names/checksums; migrations are applied separately through the release workflow",

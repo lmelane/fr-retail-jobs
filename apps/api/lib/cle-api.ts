@@ -22,8 +22,11 @@ import { NextResponse, type NextRequest } from 'next/server';
  * dont il a besoin : la fiche d'une offre (les démarches, R-133), la
  * recherche du registre (le sélecteur du back-office) et, depuis le lot 2E de
  * D-475, l'export de la taxonomie des métiers et la remise des signaux
- * « métier manquant » (ces deux-là au backend seul). Une route qui ne le
- * nomme pas reste réservée au site : par défaut, `appelants = ['site']`.
+ * « métier manquant » (ces deux-là au backend seul), l'examen d'une alerte
+ * (R-130) et, depuis la lecture D-492 sous D-496 (02/10/2026), les seules
+ * suggestions de LIEU de `/api/suggest` (`type=city`, la forme reconnue
+ * « Paris (75) » d'un nom nu). Une route qui ne le nomme pas reste réservée au
+ * site : par défaut, `appelants = ['site']`.
  */
 
 /**

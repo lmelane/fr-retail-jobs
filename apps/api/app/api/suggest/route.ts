@@ -26,9 +26,14 @@ export const dynamic = 'force-dynamic';
 
 export async function GET(request: NextRequest) {
   const requestId = randomUUID();
-  const refus = refuserSiCleInvalide(request, requestId);
-  if (refus) return refus;
   const type = request.nextUrl.searchParams.get('type');
+  // Lecture D-492 sous D-496 (« Paris » et « Paris (75) », finitions de la V2) : le backend lit la forme reconnue d'un
+  // lieu (`lieux/formes-reconnues.ts` du backend : la première suggestion du même nom qui porte une subdivision) pour
+  // réunir les deux formes là où le site ne passe pas (préférences et recherches récentes déjà en base, alertes de
+  // l'onboarding et de la conversion, liste des recherches récentes). Sa clé n'ouvre QUE les suggestions de lieu
+  // (`type=city`), en lecture seule ; les intitulés, les Maisons et les métiers restent au site seul.
+  const refus = refuserSiCleInvalide(request, requestId, type === 'city' ? ['site', 'backend'] : ['site']);
+  if (refus) return refus;
   const q = request.nextUrl.searchParams.get('q') ?? '';
   let perimetre;
   try {
