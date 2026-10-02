@@ -76,6 +76,15 @@ test('D-471: the API image that declares the backend key refuses to start withou
   delete env.CATALOGUE_API_KEY_BACKEND;
   assert.throws(() => validateRuntime('api', [], env, built, now), /missing binding: CATALOGUE_API_KEY_BACKEND/);
 });
+test('signed cursor (D-492 reading of 02/10/2026): the API image refuses to start without its cursor secret, never logs it', () => {
+  const env = fixture('api'); env.CATALOGUE_API_KEY = 'credential-not-for-logs';
+  env.CATALOGUE_CURSEUR_SECRET = 'cursor-secret-not-for-logs-0123456789abcdef';
+  const result = validateRuntime('api', [], env, built, now);
+  assert.ok(result.proof.secretNames.includes('CATALOGUE_CURSEUR_SECRET'));
+  assert.ok(!JSON.stringify(result.proof).includes(env.CATALOGUE_CURSEUR_SECRET));
+  delete env.CATALOGUE_CURSEUR_SECRET;
+  assert.throws(() => validateRuntime('api', [], env, built, now), /missing binding: CATALOGUE_CURSEUR_SECRET/);
+});
 test('runtime egress follows pause; source access and SSRF remain in the HTTP layer', () => {
   const before = { profile: process.env.CATWALKS_RUNTIME_PROFILE, pause: process.env.PIPELINE_PAUSED };
   try {

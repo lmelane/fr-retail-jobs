@@ -276,11 +276,16 @@ describe.skipIf(!enabled)('R-143 §7 : le classement pertinent, sur une base loc
     await expect(getJobs({ ...v2(M.page), apres: pertinent.suivant! })).rejects.toBeInstanceOf(CurseurInvalideError);
     await expect(getJobs({ ...v1(M.page), apres: pertinent.suivant! })).rejects.toBeInstanceOf(CurseurInvalideError);
     await expect(getJobs({ ...v2(M.page, { preferences: { contrats: ['FIXED_TERM'] } }), apres: pertinent.suivant! })).rejects.toBeInstanceOf(CurseurInvalideError);
-    // Un instant de référence futur n'est pas un curseur servi par l'API.
-    const jeton = JSON.parse(Buffer.from(pertinent.suivant!, 'base64url').toString('utf8'));
-    jeton.k[0] += 86_400;
-    const futur = Buffer.from(JSON.stringify(jeton), 'utf8').toString('base64url');
-    await expect(getJobs({ ...v2(M.page, { preferences: { contrats: ['PERMANENT'] } }), apres: futur })).rejects.toBeInstanceOf(CurseurInvalideError);
+    // Le jeton est chiffré et authentifié (lecture D-492 du 02/10/2026, curseur signé) : un instant de référence modifié
+    // ne se forge plus ; un octet changé est refusé. Le garde de l'instant reste : un curseur servi il y a plus de 30 jours
+    // n'est plus repris.
+    const altere = Buffer.from(pertinent.suivant!, 'base64url');
+    altere[altere.length - 1] ^= 0x01;
+    await expect(getJobs({ ...v2(M.page, { preferences: { contrats: ['PERMANENT'] } }), apres: altere.toString('base64url') }))
+      .rejects.toBeInstanceOf(CurseurInvalideError);
+    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.setSystemTime(new Date(Date.now() + 31 * JOUR));
+    await expect(getJobs({ ...v2(M.page, { preferences: { contrats: ['PERMANENT'] } }), apres: pertinent.suivant! })).rejects.toMatchObject({ detail: 'instant' });
   });
 
   it('le contrat 1 ignore les préférences et ne change pas : même ordre, même curseur, sans classement', async () => {

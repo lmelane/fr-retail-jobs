@@ -9,6 +9,7 @@ import { exigerPerimetre } from '../perimetre';
 import { publicationFixture } from '../../../aggregator/src/test/publication-fixture';
 import { examinerAlerte, getJobs, type JobFilters } from '../jobs';
 import { suggestCities, suggestTitlesDetaillees } from '../suggestions';
+import { sansJetons } from '../__fixtures__/jetons-opaques';
 import { drainSearchIndex, initializeSearchIndex } from '../search-index';
 
 /**
@@ -145,7 +146,8 @@ describe.skipIf(!enabled)('sans le signal du client, le contrat d’avant ce lot
       return;
     }
     expect(existsSync(TEMOIN), 'le document du code d’avant le lot').toBe(true);
-    expect(document).toEqual(JSON.parse(readFileSync(TEMOIN, 'utf8')));
+    // Curseur version 3 : un jeton chiffré n'a jamais les mêmes octets ; la page qu'il sert est comparée (`sansJetons`).
+    expect(sansJetons(document)).toEqual(sansJetons(JSON.parse(readFileSync(TEMOIN, 'utf8'))));
   });
 
   it('la route : sans l’en-tête, la recherche et les suggestions d’avant ; avec `x-catwalks-client: 2`, la requête comprise', async () => {
