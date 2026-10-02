@@ -84,3 +84,21 @@ leurs sources classées au bulletin.
   note d'aujourd'hui. « Depuis » d'une pause ou d'une exclusion = première observation par ce calcul.
 - La couverture inexpliquée n'est pas rejouée : `CoverageSnapshot` n'existe pas encore en production.
 - La reprise dans le RUN (`ordinaryCauses.ts`) n'existait pas : aucune collecte rejouée n'est une reprise.
+
+## Écarts connus corrigés avant le RUN d'acceptation (lecture D-492, §4)
+
+Rejeu hors ligne du même instantané avec le code corrigé : `rejeu-ecarts-corriges.json` (même commande, sortie
+redirigée vers ce fichier). Aucune lecture de la production.
+
+- **Défaut interne** : en attente un RUN à sa première occurrence (17 épisodes sur 17 d'un seul RUN), à réparer s'il
+  persiste à la tentative complète suivante, comme le volume anormal, la liste non prouvée et la qualification refusée.
+  État actuel rejoué : `browns-shoes` passe de BLOQUEE/A_REPARER à EN_ATTENTE/AUTO (première occurrence le 01/10).
+- **Panne du système** : les sources de notre côté se comptent bloquées OU en attente ; sans cela, le 29/09 (14 défauts
+  internes à leur première occurrence sur 20) serait passé vert. Rejeu : 29/09 toujours rouge (21 sources, la 21e une
+  qualification refusée en attente) ; hors incident, 0 à 6 par RUN, inchangé ; seuil de 10 inchangé.
+- **Couverture « sans cause »** : rouge seulement si la part sans cause est seule anormale (règle de D-518 §2) et se
+  recoupe dans une portée qu'un changement de source canonique ou une réattribution de société laisse intacte
+  (`corroborateUnexplained`, `coverage/coverageAlert.ts`) ; sinon « à vérifier », dite au verdict sans le rougir. Non
+  rejouée : `CoverageSnapshot` n'existe pas encore en production.
+- **Contrainte CHECK** : témoin SQL `src/pipeline/sourceStateConstraint.test.ts` (intégration de `test:local`) ; il
+  échoue quand la contrainte `SourceOperationalState_explained_check` est retirée (prouvé sur une base jetable).
