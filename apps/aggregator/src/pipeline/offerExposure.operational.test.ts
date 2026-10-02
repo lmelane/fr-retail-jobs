@@ -158,5 +158,9 @@ describe('D-520 §3 — l’état d’exposition sur une vraie base', () => {
     expect(e?.exposure).toMatchObject({ cause: 'NON_RECONFIRMEE', trajectory: 'REVIENT_SEULE' });
     expect(e?.exposure.comeback).toContain('expo-ats (ACTIVE, aucune collecte de RUN)');
     expect(e?.sources[0]).toMatchObject({ hold: 'NOT_RECONFIRMED', sourceState: 'ACTIVE, aucune collecte de RUN' });
+    // Une source en pause : l'état, la cause et la trajectoire du vocabulaire unique des sources (sourceState.ts).
+    const p = await explainOffer(prisma, 'pausee');
+    expect(p?.sources[0].sourceState).toContain('en pause (décision), pause ou exclusion sans motif ni décision');
+    expect(p?.exposure.comeback).toContain('sans décision au registre, elle suit le plafond de 72 h');
   });
 });

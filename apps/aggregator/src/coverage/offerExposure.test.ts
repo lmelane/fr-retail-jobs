@@ -89,6 +89,10 @@ describe('classifyExposure : un état, une cause', () => {
     const v = { state: 'EXPOSEE', cause: 'CONFIRMEE', sourceKey: 'maison-ats', detail: '' } as never;
     expect(trajectory(v, { maskingLive: false }).text).not.toContain('masquée si');
     expect(trajectory(v, { maskingLive: true }).text).toContain('masquée si');
+    // availability.ts : seule une pause décidée épargne le plafond de 72 h (registre explicite, D-520 §2).
+    const paused = { state: 'EXPOSEE', cause: 'SOURCE_EN_PAUSE', sourceKey: 'p', detail: '' } as never;
+    expect(trajectory(paused, { maskingLive: true, pauseDecided: true }).text).toContain('pause de p est décidée');
+    expect(trajectory(paused, { maskingLive: true, pauseDecided: false }).text).toContain('suit le plafond de 72 h');
   });
   it('une publication retenue dès la collecte prend la cause de sa retenue ; une retenue à instruire reste inexpliquée', () => {
     const c = (hold: string) => { const v = classifyCollectionHold(hold, 's', 'd'); return `${v.state}/${v.cause}`; };

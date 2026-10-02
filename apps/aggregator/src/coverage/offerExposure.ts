@@ -233,7 +233,9 @@ export const TRAJECTORY_LABEL: Readonly<Record<Trajectory, string>> = {
 };
 export type ComebackContext = { sourceState?: string | null; sourceStatus?: string | null; winnerId?: string | null;
   /** La base porte les retenues de R-143 §2 : le masquage est en service (sinon, il n'est pas encore livré). */
-  maskingLive?: boolean };
+  maskingLive?: boolean;
+  /** La pause de la source est posée par une décision au registre explicite (D-520 §2) ; null si la base ne le dit pas. */
+  pauseDecided?: boolean | null };
 
 /** CE QUI LA FERAIT REVENIR : la classe de trajectoire et sa phrase, selon la cause et l'état de la source qui la porte. */
 export function trajectory(v: ExposureVerdict, context: ComebackContext = {}): { kind: Trajectory; text: string } {
@@ -247,8 +249,12 @@ export function trajectory(v: ExposureVerdict, context: ComebackContext = {}): {
       return { kind: 'DEJA_SERVIE', text: context.maskingLive === false
         ? `Servie tant que ${source} la liste ; fermée quand sa liste prouvée ne la contient plus (le masquage de R-143 §2 n’est pas encore en service sur cette base).`
         : `Servie tant que ${source} la revoit ; masquée si une collecte crédible ne la liste plus, ou après 72 h sans être revue.` };
-    case 'SOURCE_EN_PAUSE': return { kind: 'DEJA_SERVIE', text: `Servie telle que vue en dernier : ${source} est en pause, rien ne la revoit ni ne la ferme`
-      + (context.maskingLive === false ? ' ; elle reste servie jusqu’à la reprise de la source.' : ' ; seule la sonde des liens peut la masquer.') };
+    case 'SOURCE_EN_PAUSE':
+      if (context.maskingLive === false) return { kind: 'DEJA_SERVIE', text: `Servie telle que vue en dernier : ${source} est en pause, rien ne la revoit ni ne la ferme jusqu’à sa reprise.` };
+      // `availability.ts` : seule une pause posée par une décision épargne le plafond de 72 h ; une pause sans décision le suit.
+      return { kind: 'DEJA_SERVIE', text: context.pauseDecided
+        ? `Servie telle que vue en dernier : la pause de ${source} est décidée, rien ne la revoit ni ne la ferme ; seule la sonde des liens peut la masquer.`
+        : `Servie pour l’instant : ${source} est en pause sans décision au registre, elle suit le plafond de 72 h et sera masquée si rien ne la revoit.` };
     case 'NON_RECONFIRMEE': case 'PLAFOND_72H':
       return sourceReturn(`Revient seule dès qu’une collecte de ${source} la liste de nouveau : la retenue tombe à l’écriture.`);
     case 'LIEN_MORT': return sourceReturn(`Revient seule si ${source} la revoit après la sonde ; sinon la page de candidature est morte, rien à faire.`);

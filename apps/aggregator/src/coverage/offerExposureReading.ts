@@ -11,6 +11,8 @@ import { Prisma, type PrismaClient } from '@prisma/client';
 import { canonicalJobId } from '@catwalks/db';
 import { MARCHES } from '@catwalks/db/marches';
 import { LIGHT_PASS_RUN_COMMAND } from '../pipeline/referenceRuns.js';
+import { CAUSES as SOURCE_CAUSES, intentState, STATE_LABEL as SOURCE_STATE_LABEL, TRAJECTORY_LABEL as SOURCE_TRAJECTORY_LABEL } from '../pipeline/sourceState.js';
+import { pauseDecided } from '../registry/explicitRegistry.js';
 import { canonicalCompany, marketLabel, marketOf } from './coverageReading.js';
 import { knownAlpha2 } from '@catwalks/db/iso-alpha2';
 import { classifyCollectionHold, classifyExposure, countVerdict, emptyCounts, trajectory, CAUSE_LABEL, STATE_LABEL, TRAJECTORY_LABEL,
@@ -209,18 +211,33 @@ export async function verifyExposedAgainstSearch(db: Db, options: { at?: Date; p
 
 /* ─────────────────────────────── Le parcours d'une offre ─────────────────────────────── */
 
-/** L'état opérationnel d'une source, en clair : son statut au registre et sa dernière collecte de RUN (jamais une passe). */
-async function sourceStates(db: Db, keys: string[]): Promise<Map<string, { status: string | null; lastRun: { status: string; ranAt: Date; note: string | null } | null; text: string }>> {
-  const out = new Map<string, { status: string | null; lastRun: { status: string; ranAt: Date; note: string | null } | null; text: string }>();
+/**
+ * L'état opérationnel d'une source, en clair, dans le vocabulaire unique de `pipeline/sourceState.ts` (D-520 §2) : pour
+ * une source hors service, son état, sa cause, sa trajectoire et ce qui manque (`intentState`) ; pour toutes, sa dernière
+ * collecte de RUN (jamais une passe). `pauseDecided` (registre explicite, `pauseDecided`) dit si la pause garde ses
+ * offres hors du plafond de 72 h ; null sur une base sans registre explicite.
+ */
+type SourceStateView = { status: string | null; pauseDecided: boolean | null; lastRun: { status: string; ranAt: Date; note: string | null } | null; text: string };
+async function sourceStates(db: Db, keys: string[], at = new Date()): Promise<Map<string, SourceStateView>> {
+  const out = new Map<string, SourceStateView>();
+  const explained = (await db.$queryRaw<Array<{ n: number }>>`
+    SELECT count(*)::int AS n FROM information_schema.columns WHERE table_name = 'Source' AND table_schema = current_schema()
+      AND column_name IN ('statusBasis', 'statusExplainedFor')`)[0].n === 2;
   for (const key of [...new Set(keys)]) {
-    const source = (await db.$queryRaw<Array<{ status: string }>>`SELECT status::text AS status FROM "Source" WHERE key = ${key}`)[0] ?? null;
+    const source = (await db.$queryRaw<Array<{ status: string; note: string | null; statusBasis: string | null; statusExplainedFor: string | null }>>(explained
+      ? Prisma.sql`SELECT status::text AS status, note, "statusBasis", "statusExplainedFor"::text AS "statusExplainedFor" FROM "Source" WHERE key = ${key}`
+      : Prisma.sql`SELECT status::text AS status, note, NULL::text AS "statusBasis", NULL::text AS "statusExplainedFor" FROM "Source" WHERE key = ${key}`))[0] ?? null;
     const run = (await db.$queryRaw<Array<{ status: string; ranAt: Date; note: string | null }>>`
       SELECT r.status, r."ranAt", left(r.note, 200) AS note FROM "SourceRun" r WHERE r."sourceKey" = ${key}
         AND NOT EXISTS (SELECT 1 FROM "PipelineRun" p WHERE p.id = r."runId" AND p.command = ${LIGHT_PASS_RUN_COMMAND})
       ORDER BY r."ranAt" DESC LIMIT 1`)[0] ?? null;
     const status = source?.status ?? null;
-    const text = `${status ?? 'absente du registre'}${run ? `, dernière collecte de RUN ${run.status} le ${run.ranAt.toISOString().slice(0, 16).replace('T', ' ')} UTC` : ', aucune collecte de RUN'}`;
-    out.set(key, { status, lastRun: run, text });
+    const intent = source ? intentState({ key, status: source.status, note: source.note }, null, at) : null;
+    const state = intent ? `${SOURCE_STATE_LABEL[intent.state]}, ${intent.cause ? SOURCE_CAUSES[intent.cause].label : 'sans cause'} ; trajectoire : ${
+      intent.trajectory ? SOURCE_TRAJECTORY_LABEL[intent.trajectory] : 'aucune'} ; manque : ${intent.missing ?? 'rien'}` : status ?? 'absente du registre';
+    const text = `${state}${run ? `, dernière collecte de RUN ${run.status} le ${run.ranAt.toISOString().slice(0, 16).replace('T', ' ')} UTC` : ', aucune collecte de RUN'}`;
+    out.set(key, { status, lastRun: run, text,
+      pauseDecided: source && explained ? pauseDecided({ status: source.status, statusBasis: source.statusBasis, statusExplainedFor: source.statusExplainedFor }) : null });
   }
   return out;
 }
@@ -290,7 +307,7 @@ async function explainPublicationOnly(db: Db, schema: ExposureSchema, at: Date, 
       AND "publicationHold" IS NOT NULL ORDER BY "observedAt" DESC LIMIT 1`)[0] ?? null;
   const row = rows[0];
   if (!row && !hold) return null;
-  const states = await sourceStates(db, [pub.sourceKey]);
+  const states = await sourceStates(db, [pub.sourceKey], at);
   let v: ExposureVerdict;
   if (row?.isActive && row.jobId === null) {
     v = { state: 'NON_PUBLIABLE', cause: 'IDENTITE_EN_REVUE', sourceKey: pub.sourceKey,
@@ -302,7 +319,7 @@ async function explainPublicationOnly(db: Db, schema: ExposureSchema, at: Date, 
   }
   return { at: at.toISOString(), schema, requested, resolvedBy: by, offer: null,
     exposure: { state: v.state, stateLabel: STATE_LABEL[v.state], cause: v.cause, causeLabel: CAUSE_LABEL[v.cause], detail: v.detail, sourceKey: v.sourceKey,
-      ...exposureTrajectory(v, { sourceState: states.get(pub.sourceKey)?.text, sourceStatus: states.get(pub.sourceKey)?.status, maskingLive: schema.availabilityHold }) },
+      ...exposureTrajectory(v, { sourceState: states.get(pub.sourceKey)?.text, sourceStatus: states.get(pub.sourceKey)?.status, pauseDecided: states.get(pub.sourceKey)?.pauseDecided, maskingLive: schema.availabilityHold }) },
     sources: rows.map(r => sourceView(r, states, null)), duplicates: { absorbedInto: [], winner: null, absorbed: [] },
     maison: { companyId: '', name: '', kind: '', canonicalKey: '', maisonId: '', maisonName: '', group: null, sectors: [] },
     canonical: {}, freshness: { postedAt: iso(row?.postedAt), firstSeenAt: iso(row?.firstSeenAt) ?? '', lastSeenAt: iso(row?.lastSeenAt) ?? '', lastReview: null, lastReviewBy: null },
@@ -336,7 +353,7 @@ export async function explainOffer(db: Db, ref: string, at = new Date()): Promis
     if (target) { const tv = classifyExposure(target, at); winner = { id: canonicalId, state: tv.state, cause: tv.cause }; }
   }
   const absorbed = await db.job.findMany({ where: { mergedIntoId: job.id }, select: { id: true, title: true }, take: 50 });
-  const states = await sourceStates(db, job.sourceRows.map(s => s.sourceKey));
+  const states = await sourceStates(db, job.sourceRows.map(s => s.sourceKey), at);
   const batches = job.sourceRows.map(s => s.captureBatchId).filter((b): b is string => !!b);
   const captures = new Map((batches.length ? await db.$queryRaw<Array<{ id: string; startedAt: Date; runId: string | null; command: string | null }>>`
     SELECT cb.id, cb."startedAt", cb."runId", p.command FROM "CaptureBatch" cb LEFT JOIN "PipelineRun" p ON p.id = cb."runId"
@@ -364,6 +381,7 @@ export async function explainOffer(db: Db, ref: string, at = new Date()): Promis
     offer: { id: job.id, title: job.title, canonicalId },
     exposure: { state: v.state, stateLabel: STATE_LABEL[v.state], cause: v.cause, causeLabel: CAUSE_LABEL[v.cause], detail: v.detail, sourceKey: v.sourceKey,
       ...exposureTrajectory(v, { sourceState: v.sourceKey ? states.get(v.sourceKey)?.text : null, sourceStatus: v.sourceKey ? states.get(v.sourceKey)?.status : null,
+        pauseDecided: v.sourceKey ? states.get(v.sourceKey)?.pauseDecided : null,
         winnerId: winner?.id ?? null, maskingLive: schema.availabilityHold }) },
     sources: job.sourceRows.map(r => sourceView(r, states, r.captureBatchId ? captures.get(r.captureBatchId) ?? null : null, holdOf.get(`${r.sourceKey}\u0000${r.externalId}`) ?? null)),
     duplicates: { absorbedInto: chain, winner, absorbed },
