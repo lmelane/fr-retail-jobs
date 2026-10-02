@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { validateRuntime, contractSha256, target, assertBusinessUrl, workerArguments, scheduledRunDue, directSyncArguments, SERVICE_OF_ROLE } from './index.mjs';
+import { validateRuntime, contractSha256, target, assertBusinessUrl, workerArguments, scheduledRunDue, scheduledLightPassDue, scheduledCommand, inRunWindow, LIGHT_PASS_HOURS_UTC, directSyncArguments, SERVICE_OF_ROLE } from './index.mjs';
 
 const built = { gitSha: 'a'.repeat(40), contractSha256 };
 const now = Date.now();
@@ -106,6 +106,29 @@ for (const day of ['2026-03-28','2026-03-29','2026-09-23','2026-10-24','2026-10-
     assert.ok(scheduledRunDue(new Date(`${day}T${due[0]}:09:00Z`)));
   });
 }
+// R-143 §1 — the light discovery passes share the worker cron; they never fall in the RUN window nor at the RUN hour.
+for (const day of ['2026-03-28','2026-03-29','2026-09-23','2026-10-24','2026-10-25','2026-12-01']) {
+  test(`light passes on ${day}: only at their UTC hours, never in the 15:30-18:30 UTC window nor at the RUN`, () => {
+    const due = [];
+    for (let minute = 0; minute < 24 * 60; minute += 5) {
+      const now = new Date(`${day}T00:00:00Z`); now.setUTCMinutes(minute);
+      const command = scheduledCommand(now);
+      assert.equal(command === 'ingest-light', scheduledLightPassDue(now));
+      if (command === 'ingest-all') assert.equal(scheduledRunDue(now), true);
+      if (!scheduledLightPassDue(now)) continue;
+      due.push(now.getUTCHours());
+      assert.equal(scheduledRunDue(now), false);
+      assert.equal(inRunWindow(now), false);
+    }
+    assert.deepEqual([...new Set(due)], [...LIGHT_PASS_HOURS_UTC]);
+  });
+}
+test('light passes stay inert under the cron in force (0 16,17): the current contract launches none', () => {
+  const cron = target.services.find(s => s.name === 'catwalks-ingestion-worker').dailySchedule.cronSchedule;
+  assert.equal(cron, '0 16,17 * * *');
+  for (const day of ['2026-03-28','2026-10-02','2026-10-25','2026-12-01'])
+    for (const hour of [16, 17]) assert.notEqual(scheduledCommand(new Date(`${day}T${hour}:00:00Z`)), 'ingest-light');
+});
 test('scheduled invocation uses the normal worker and rejects extra arguments', () => {
   assert.deepEqual(workerArguments(['scheduled']), ['ingest-all']);
   assert.throws(() => workerArguments(['scheduled', '--source=one']), /argv/);

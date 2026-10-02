@@ -170,6 +170,19 @@ try {
         alertDeliveryFailed: orchestration.incidents.length > 0 && !alerted });
       process.exitCode = 1;
     }
+  } else if (command === 'ingest-light') {
+    /**
+     * R-143 §1 — la passe légère de découverte (`pipeline/lightPass.ts`) : les sources dont une collecte complète tient
+     * en quelques requêtes, collectées comme au RUN, sans rien fermer ni retenir. Refusée dans la fenêtre du RUN et
+     * pendant un RUN ; bornée à 45 minutes. Une source en échec reste visible au bilan et dans SourceRun ; le RUN suivant
+     * la recollecte, aucune alerte n'est envoyée pour elle.
+     */
+    const { runLightPass } = await import('./pipeline/lightPass.js');
+    const pass = await runLightPass(prisma, { runId: observation.runId });
+    sourceIncidents = pass.failed + pass.timedOut > 0;
+    await log.info('command.result', { ok: !sourceIncidents, command, refused: pass.refused, stoppedBy: pass.stoppedBy,
+      collected: pass.collected.length, notCollected: pass.notCollected, ignored: pass.unknown, created: pass.created,
+      okSources: pass.ok, failed: pass.failed, timedOut: pass.timedOut, failures: pass.failures });
   } else if (command === 'availability') {
     /** R-143 §2 — la revue de disponibilité seule ; `--dry-run` rend le plan sans rien écrire. */
     const { runAvailabilityReview } = await import('./pipeline/availability.js');
@@ -405,7 +418,8 @@ try {
   try {
     try { await closeBrowser(); }
     catch (error) { fatalFailure = true; process.exitCode = 1; await log.error('browser.cleanup_failed', { error }); }
-    if (observation && !['health-report', 'stats', 'export-companies', 'occupation-review-queue', 'consolidate-publications', 'attach-maisons'].includes(command)) {
+    // La surveillance Healthchecks est celle du RUN : une passe légère (R-143 §1) ne la touche jamais.
+    if (observation && !['health-report', 'stats', 'export-companies', 'occupation-review-queue', 'consolidate-publications', 'attach-maisons', 'ingest-light'].includes(command)) {
       const heartbeat = await pingHeartbeat(!fatalFailure && !process.exitCode);
       await log.info('pipeline.heartbeat', { heartbeat, command });
       if (heartbeat === 'failed') { fatalFailure = true; process.exitCode = 1; }

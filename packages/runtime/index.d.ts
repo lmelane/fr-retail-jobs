@@ -6,6 +6,11 @@ export const DIRECT_SYNC_COMMAND: 'direct-liste';
 export function directSyncArguments(argv: string[]): string[];
 export function workerArguments(argv: string[]): string[];
 export function scheduledRunDue(now?: Date): boolean;
+export const LIGHT_PASS_COMMAND: 'ingest-light';
+export const LIGHT_PASS_HOURS_UTC: readonly number[];
+export function inRunWindow(now?: Date): boolean;
+export function scheduledLightPassDue(now?: Date): boolean;
+export function scheduledCommand(now?: Date): 'ingest-all' | 'ingest-light' | null;
 export function assertBusinessUrl(value: string): void;
 export function validateRuntime(role: 'api' | 'worker' | 'direct-sync', argv: string[], env: NodeJS.ProcessEnv,
   built: { gitSha: string; contractSha256: string } | null, now?: number): {

@@ -158,13 +158,16 @@ export function ingestCommandVerdict(stats: IngestStats[], incidents: readonly S
   return { ok: stats.length > 0 && blocking.length === 0, issues, blocking, incidents: perSource.flatMap(r => r.incidents) };
 }
 
-/** One source, bounded by its own timeout; the counters it touches are shared. */
-async function ingestOne(prisma: PrismaClient, key: string, result: OrchestratorResult): Promise<void> {
+/**
+ * One source, bounded by its own timeout; the counters it touches are shared. The RUN and the light discovery pass
+ * (R-143 §1, `lightPass.ts`) run exactly this step; the pass only lowers the timeout to what its own window has left.
+ */
+export async function ingestOne(prisma: PrismaClient, key: string, result: OrchestratorResult, maxTimeoutMs = Infinity): Promise<void> {
   const started = Date.now();
   let timeoutMs = PER_SOURCE_TIMEOUT_MS;
   try {
     await log.info('source_sync_started', { sourceKey: key });
-    timeoutMs = await sourceTimeoutFor(prisma, key);
+    timeoutMs = Math.min(await sourceTimeoutFor(prisma, key), maxTimeoutMs);
     // runIngest with {only} seals the source's end-of-ingestion report; no
     // closure happens in this pass. Geocoding is skipped here and run ONCE by
     // the CLI after every source — a per-source pass would run four times over

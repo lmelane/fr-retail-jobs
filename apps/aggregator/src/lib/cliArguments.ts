@@ -3,7 +3,7 @@ type CommandOptions = { values?: string[]; flags?: string[]; positional?: 'requi
  * Unknown/empty flags must never turn a bounded request into a global run. */
 const COMMANDS: Record<string, CommandOptions> = {
   ingest: { values: ['source'], flags: ['no-geocode'] },
-  'ingest-all': {}, refresh: {}, 'health-report': {},
+  'ingest-all': {}, 'ingest-light': {}, refresh: {}, 'health-report': {},
   availability: { flags: ['dry-run'] },
   'probe-apply-links': { values: ['limit'], flags: ['dry-run'] },
   'direct-sync': { values: ['depuis', 'limite'] },

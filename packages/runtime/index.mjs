@@ -40,6 +40,28 @@ export function scheduledRunDue(now = new Date()) {
   return new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Paris', hour: '2-digit', hourCycle: 'h23' }).format(now) === '18';
 }
 
+/**
+ * R-143 §1 (D-513) — les passes légères de découverte, lancées par le MÊME cron que le RUN (Railway n'en accepte
+ * qu'un par service). Elles ne tournent qu'aux heures UTC listées, jamais dans la fenêtre du RUN (15:30-18:30 UTC,
+ * heure d'été comme d'hiver) et jamais à l'heure du RUN. INERTES tant que le cron du worker reste « 0 16,17 * * * » :
+ * les activer, c'est changer ce cron (« 0 4,10,16,17,22 * * * »), un geste de production sous GO.
+ */
+export const LIGHT_PASS_COMMAND = 'ingest-light';
+export const LIGHT_PASS_HOURS_UTC = Object.freeze([4, 10, 22]);
+const RUN_WINDOW_UTC_MINUTES = [15 * 60 + 30, 18 * 60 + 30];
+export function inRunWindow(now = new Date()) {
+  const minutes = now.getUTCHours() * 60 + now.getUTCMinutes();
+  return minutes >= RUN_WINDOW_UTC_MINUTES[0] && minutes < RUN_WINDOW_UTC_MINUTES[1];
+}
+export function scheduledLightPassDue(now = new Date()) {
+  return !scheduledRunDue(now) && !inRunWindow(now) && LIGHT_PASS_HOURS_UTC.includes(now.getUTCHours());
+}
+/** What a `scheduled` launch runs at `now`: the daily RUN, a light discovery pass, or nothing (null). */
+export function scheduledCommand(now = new Date()) {
+  if (scheduledRunDue(now)) return 'ingest-all';
+  return scheduledLightPassDue(now) ? LIGHT_PASS_COMMAND : null;
+}
+
 /** Pure validation, shared only by the catalogue API and ingestion worker. */
 export function validateRuntime(role, argv, env, built, now = Date.now()) {
   if (!Object.hasOwn(SERVICE_OF_ROLE, role)) fail('unknown role');
