@@ -329,7 +329,7 @@ try {
     // porte deux (kering : flux Eightfold vivant + sitemap périmée), voir RetireOptions.
     const externalIdPrefix = process.argv.find((a) => a.startsWith('--external-prefix='))?.slice('--external-prefix='.length);
     await log.info('command.result', { ok: true, command, externalIdPrefix, ...(await retireSource(prisma, key, { externalIdPrefix })) });
-  } else if (command === 'consolidate-publications' || command === 'attach-maisons') {
+  } else if (command === 'consolidate-publications' || command === 'attach-maisons' || command === 'qualify-sectors') {
     /**
      * R-143 §4 et §5 (D-513), deux réparations relues en deux temps.
      *  - Aperçu (sans `--apply`) : rien n'est écrit ; `--output=<fichier>` garde l'aperçu complet, à relire.
@@ -338,6 +338,8 @@ try {
      * `consolidate-publications` réunit les offres actives d'un même employeur qui portent la même clé native
      * (`dedup/consolidate.ts`, `--limit=<n>` groupes par passage, 500 par défaut) ; `attach-maisons` rattache les entités
      * juridiques prouvées à leur Maison (`identity/maisonPlan.ts`), signé du commit de l'image déployée.
+     * `qualify-sectors` (D-519) reconnaît le secteur des Maisons sur preuves (`sectors/recognize.ts`) et l'écrit par la
+     * revue de secteur relue (`sectors/review.ts`) ; à appliquer AVANT un nouvel aperçu de `attach-maisons`.
      * Jamais pendant le RUN de 18 h.
      */
     const { readFile, writeFile } = await import('node:fs/promises');
@@ -360,6 +362,17 @@ try {
       } else {
         const report = await applyReviewedConsolidation(prisma, reviewed, { store });
         await log.info('command.result', { ok: report.refused.length === 0, command, apply, ...report, refused: report.refused.length, refusedSample: report.refused.slice(0, 20) });
+      }
+    } else if (command === 'qualify-sectors') {
+      const { applySectorRecognition, previewSectorRecognition } = await import('./sectors/recognize.js');
+      if (!apply) {
+        const file = await previewSectorRecognition(prisma);
+        await save(file);
+        await log.info('command.result', { ok: true, command, apply, proposals: file.proposals.length,
+          offers: file.proposals.reduce((n, p) => n + p.servies, 0), abstentions: file.abstentions.length, output });
+      } else {
+        const report = await applySectorRecognition(prisma, reviewed);
+        await log.info('command.result', { ok: true, command, apply, ...report });
       }
     } else {
       const { attachMaisons } = await import('./identity/maisonPlan.js');
@@ -476,7 +489,7 @@ try {
     try { await closeBrowser(); }
     catch (error) { fatalFailure = true; process.exitCode = 1; await log.error('browser.cleanup_failed', { error }); }
     // La surveillance Healthchecks est celle du RUN : une passe légère (R-143 §1) ne la touche jamais.
-    if (observation && !['health-report', 'stats', 'export-companies', 'occupation-review-queue', 'consolidate-publications', 'attach-maisons', 'ingest-light', 'coverage'].includes(command)) {
+    if (observation && !['health-report', 'stats', 'export-companies', 'occupation-review-queue', 'consolidate-publications', 'attach-maisons', 'qualify-sectors', 'ingest-light', 'coverage'].includes(command)) {
       const heartbeat = await pingHeartbeat(!fatalFailure && !process.exitCode);
       await log.info('pipeline.heartbeat', { heartbeat, command });
       if (heartbeat === 'failed') { fatalFailure = true; process.exitCode = 1; }
