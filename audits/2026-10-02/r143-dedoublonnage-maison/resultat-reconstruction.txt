@@ -1,0 +1,23 @@
+{
+  "lvmh": {
+    "RECOVERABLE": 8
+  },
+  "sephora-france": {
+    "RECOVERABLE": 8
+  },
+  "kiabi": {
+    "RECOVERABLE": 8
+  },
+  "undiz": {
+    "RECOVERABLE": 3
+  },
+  "maison-123": {
+    "RECOVERABLE": 5
+  },
+  "etam": {
+    "RECOVERABLE": 8
+  },
+  "wttj-sector": {
+    "RECOVERABLE": 8
+  }
+}

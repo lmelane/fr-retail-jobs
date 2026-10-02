@@ -1,0 +1,11 @@
+{
+  "offre_conservee_par_source": {
+    "lvmh": 1884,
+    "kiabi": 148,
+    "etam": 107
+  },
+  "date_plus_ancienne_7j": 581,
+  "date_plus_ancienne_30j": 114,
+  "ville_perdue": 8,
+  "ville_changee": 18
+}

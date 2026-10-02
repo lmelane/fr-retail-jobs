@@ -34,6 +34,25 @@
   }
 }
 
+Doublons visibles restants, par couple de sources (groupes) :
+{
+  "lvmh + sephora-france": 703,
+  "pandora-talenthub + wttj-sector": 118,
+  "dr-pierre-ricaud + wttj-sector": 41,
+  "bash-talents + wttj-sector": 30,
+  "lacoste + wttj-sector": 25,
+  "wttj-sector + yse-paris": 23,
+  "american-vintage-dr + wttj-sector": 21,
+  "kiabi + wttj-sector": 14,
+  "l-occitane-en-provence-2 + wttj-sector": 10,
+  "armand-thiery-flatchr + wttj-sector": 9,
+  "faguo + wttj-sector": 9,
+  "cabaia + wttj-sector": 4,
+  "boardriders + element-6": 2,
+  "oh-my-cream + wttj-sector": 1,
+  "knitwell-us-corporate + knitwell-us-retail": 1
+}
+
 | # | motif | publication | intitulé | ville | publiée | preuve |
 |---|---|---|---|---|---|---|
 | 1 | réquisition SAP : portail LVMH ↔ site RMK Sephora | lvmh 292431 | Beauty Advisor - Part Time | Portland | 2026-07-29 | — |

@@ -9,6 +9,38 @@
   "incertaines_par_motif": {
     "MAISON_IS_GROUP": 1,
     "SOURCES_DISAGREE": 1
+  },
+  "forme_juridique_servies_q28": {
+    "entites": 303,
+    "offres": 6268,
+    "rattachees": {
+      "entites": 209,
+      "offres": 3570
+    },
+    "a_part_motif": {
+      "entites": 1,
+      "offres": 9
+    },
+    "hors_regle_NOT_AN_ENTITY": {
+      "entites": 93,
+      "offres": 2689
+    }
+  },
+  "rattachees_sans_forme_juridique": {
+    "entites": 70
+  },
+  "entites_sous_cle_historique": 35,
+  "alias_relus_poses": 282,
+  "lignes_creees": [
+    {
+      "maison": "Puma",
+      "cle": "PUMA",
+      "domaine": "puma.com"
+    }
+  ],
+  "plus_grosse_transaction": {
+    "maison": "NIKE",
+    "offres_toutes": 1137
   }
 }
 
@@ -35,6 +67,103 @@ Entités restées à part, signalées en revue :
 |---|---|---|---|
 | L’Occitane en Provence | L'Occitane | MAISON_IS_GROUP | 17 |
 | Michael Kors (Italy) srl con socio unico | Michael Kors | SOURCES_DISAGREE | 9 |
+
+Entités servies à forme juridique que la règle ne rattache pas (NOT_AN_ENTITY : le nom ne prolonge pas la Maison du registre de ses sources, ou une source sans Maison/ portail de groupe) :
+| entité | offres servies | Maisons du registre de ses sources |
+|---|---|---|
+| VF Corporation | 882 | VF Corporation |
+| Reitmans (Canada) Ltée/Ltd | 429 | Penningtons |
+| United States of Aritzia Inc. | 314 | Aritzia |
+| Golf & Tennis Pro Shop, Inc. d/b/a PGA TOUR Superstore | 181 | PGA Tour Superstore |
+| 1630 Swarovski Canada Limited | 81 | Swarovski |
+| US02 Movado Retail Group, Inc. | 69 | Movado |
+| Orlando Bathing Suit, LLC | 60 | Everything But Water |
+| Shiseido Americas Corporation | 53 | Shiseido Americas (toutes marques) |
+| 1610 Swarovski Australia Pty. | 42 | Swarovski |
+| Advance Magazine Publishers Inc. | 41 | Conde Nast France |
+| Magazine zum Globus AG | 37 | Globus |
+| 0510 Swarovski Crystal, S.A de C.V | 32 | Swarovski |
+| 1590 Swarovski France S.A. | 25 | Swarovski |
+| Advance Magazine Publishers Inc. HQ | 24 | Conde Nast France |
+| Corporate J. Crew Group, LLC | 22 | Madewell |
+| J. Choo Limited | 18 | Jimmy Choo |
+| 30000 The Condé Nast Publications Limited | 18 | Conde Nast France |
+| Foot Locker, Inc. | 17 | Foot Locker France |
+| Link Theory (UK) Ltd. | 15 | Theory |
+| US01 Movado Group, Inc. | 15 | Movado |
+| J Choo USA Inc | 14 | Jimmy Choo |
+| NIVEA India Pvt. Ltd. | 12 | Beiersdorf |
+| 1215 Swarovski (Schweiz) AG | 12 | Swarovski |
+| 30080 Les Publications Condé Nast S.A.S. | 12 | Conde Nast France |
+| Tapestry, Inc. | 11 | Tapestry (Coach, Kate Spade, Stuart Weitzman) |
+| TSJ Holding GmbH | 10 | THOMAS SABO |
+| 1670 Swarovski Netherlands B.V. | 10 | Swarovski |
+| 1840 Swarovski Hellas S.A. | 9 | Swarovski |
+| HB Retail, Inc. | 9 | HUGO BOSS |
+| World Cat Vietnam Sourcing & Development Services Co. Ltd | 9 | Puma |
+| 1660 Swarovski Ibérica S.A. | 8 | Swarovski |
+| Converse Inc. | 8 | Nike |
+| NIVEA Polska Sp. z o.o. | 7 | Beiersdorf |
+| NIVEA (Shanghai) Company Limited | 7 | Beiersdorf |
+| 30030 Condé Nast Germany GmbH | 7 | Conde Nast France |
+| 30450 Condé Nast Holdings Limited | 7 | Conde Nast France |
+| Converse Inc. | 7 | Nike |
+| BRS Nike Taiwan, Inc. | 7 | Nike |
+| NL01 Movado Group Nederland B.V. | 6 | Movado |
+| R600 Swarovski Poland Sp. z o.o. | 6 | Swarovski |
+| 1810 Swarovski Korea Ltd. | 6 | Swarovski |
+| Guangzhou World Cat Inf. Cons. Serv. Co., Ltd Shanghai Branch | 6 | Puma |
+| IN02 Movado Group Private Limited | 5 | Movado |
+| 1661 Swarovski Iberica SA PT | 5 | Swarovski |
+| 0520 D. Swarovski Tourism Services GmbH | 5 | Swarovski |
+| R740 Swarovski Kristal Ticaret Ltd Sti. | 5 | Swarovski |
+| R570 Swarovski Hungary Retail Limited Liability Company | 5 | Swarovski |
+| 30360 CONDE NAST (INDIA) PVT LTD - 30360 | 5 | Conde Nast France |
+| Distribuidora Deportiva PUMA S.A.C | 5 | Puma |
+| Julie and Grace GmbH | 4 | Julie & Grace |
+| GB01 MGS Distribution Limited | 4 | Movado |
+| 1860 Swarovski Thailand Ltd. | 4 | Swarovski |
+| 1160 Swarovski Manufacturing (Thailand) Co., Ltd. | 4 | Swarovski |
+| 30361 CONDE NAST (INDIA) PVT LTD - 30361 | 4 | Conde Nast France |
+| Converse Deutschland GmbH | 4 | Nike |
+| Guangzhou World Cat Inf. Cons. Serv. Co., Ltd Xiamen Branch | 4 | Puma |
+| N23 Premium Brands Opco LLC | 3 | KnitWell Group |
+| Link Theory (UK) Ltd. FRENCH BRANCH | 3 | Theory |
+| CA02 Movado Group of Canada Inc. (Retail) | 3 | Movado |
+| Franchoo SAS | 3 | Jimmy Choo |
+| SA Beiersdorf NV | 3 | Beiersdorf |
+| Broporma Retail SLU | 2 | New Balance |
+| VF Outdoor, LLC | 2 | JanSport |
+| THA- Levi Strauss (Thailand) Ltd | 2 | Levi's |
+| DE04 Movado Group Deutchland GmbH | 2 | Movado |
+| CN02 MGI Luxury Trading Ltd. | 2 | Movado |
+| 1010 DSW Kristall AG & Co KG | 2 | Swarovski |
+| 1300 Swarovski International Holding AG | 2 | Swarovski |
+| 1520 Swarovski Hong Kong Ltd. | 2 | Swarovski |
+| J. Choo Canada Inc | 2 | Jimmy Choo |
+| 30100 Condé Nast Digital Taiwan Co. Ltd | 2 | Conde Nast France |
+| 30120 Condé Nast Taiwan Publications Limited | 2 | Conde Nast France |
+| Converse France S.A.S | 2 | Nike |
+| World Cat Ltd. | 2 | Puma |
+| Guangzhou World Cat Information Consulting Services Co., Ltd | 2 | Puma |
+| Conde Nast de México, S.A. de C.V. | 1 | Conde Nast France |
+| NIVEA (Taiwan) Ltd. | 1 | Beiersdorf |
+| 0301 Beiersdorf LLC | 1 | Beiersdorf |
+| Capri (Australia) Pty Ltd. | 1 | Jimmy Choo |
+| A00 Premium Brands Services LLC | 1 | KnitWell Group |
+| IN01 MGI Distribution Pte Ltd. | 1 | Movado |
+| ES01 Movado Group España S.L.U. | 1 | Movado |
+| 0700 Swarovski Ireland Limited | 1 | Swarovski |
+| 1646 Swarovski AG, Triesen, Zweigniederlassung Männedorf | 1 | Swarovski |
+| 9350 Swarovski Mobility GmbH | 1 | Swarovski |
+| J. Choo Netherlands B.V. | 1 | Jimmy Choo |
+| J Choo (Switzerland) AG | 1 | Jimmy Choo |
+| 30110 Interculture Total Media Service Co., Ltd. | 1 | Conde Nast France |
+| Converse Retail UK Ltd | 1 | Nike |
+| American Converse S.L. | 1 | Nike |
+| Guangzhou World Cat Inf. Cons. Serv. Co., Ltd Ningbo Branch | 1 | Puma |
+| Austria PUMA Dassler GmbH | 1 | Puma |
+| IND- Levi Strauss (India) Pvt Ltd | 1 | Levi's |
 
 Relecture : toutes les entités rattachées
 | Maison | entité | offres servies | sources |

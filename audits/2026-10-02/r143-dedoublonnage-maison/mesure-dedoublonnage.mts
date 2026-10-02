@@ -112,6 +112,16 @@ console.log(JSON.stringify({
   offres_a_plusieurs_publications_actives: { avant: multi([...served.values()], new Map()), apres: multi(after, activeAfter) },
 }, null, 2));
 
+// Les doublons visibles qui RESTENT, par couple de sources : le résiduel que le README cite.
+const residual: Record<string, number> = {};
+{
+  const groups = new Map<string, Set<string>>();
+  for (const r of after) { if (!r.c) continue; const k = `${r.companyId} ${r.t} ${r.c}`; (groups.get(k) ?? groups.set(k, new Set()).get(k)!).add(r.src); }
+  for (const srcs of groups.values()) if (srcs.size > 1) { const k = [...srcs].sort().join(' + '); residual[k] = (residual[k] ?? 0) + 1; }
+}
+console.log('\nDoublons visibles restants, par couple de sources (groupes) :');
+console.log(JSON.stringify(Object.fromEntries(Object.entries(residual).sort((a, b) => b[1] - a[1])), null, 2));
+
 if (mergesFile) writeFileSync(mergesFile, merges.map(m => JSON.stringify({ motif: m.motif, survivor: m.survivor, jobs: m.jobs,
   publications: m.members.map(p => ({ sourceKey: p.sourceKey, externalId: p.externalId, jobId: p.jobId, title: p.title, city: p.city })) })).join('\n') + '\n');
 

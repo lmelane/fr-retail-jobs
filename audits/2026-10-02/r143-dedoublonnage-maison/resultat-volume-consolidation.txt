@@ -1,0 +1,3 @@
+SET
+genre|lecteur|groupes_retenus|groupes_hors_borne_25|offres|offres_absorbees_si_prouvees
+(0 rows)
