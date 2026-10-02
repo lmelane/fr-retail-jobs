@@ -1,0 +1,14 @@
+SET
+SET
+ranAt|status|jobs|fetched|declaredTotal|truncated|complete|canAttestAbsence|note
+2026-09-24 18:38:25.78|OK|2000|2000|2000|f|t|t|desc 100% date 100% pays 100% url 100%
+2026-09-25 17:48:36.653|OK|1999|1999|2000|f|t|t|desc 100% date 100% pays 100% url 100%
+2026-09-26 17:45:34.276|DEGRADED|1998|1998|2000|f|f|f|énumération réfutée : le balayage n’a pas atteint la fin du listing (REPEATED_IDS_ACROSS_PAGES) · desc 100% date 100% pays 100% url 100%
+2026-09-27 17:23:02.473|OK|2000|2000|2000|f|t|t|desc 100% date 100% pays 100% url 100%
+2026-09-28 19:30:42.421|OK|1999|1999|2000|f|t|t|desc 100% date 100% pays 100% url 100%
+2026-09-29 17:35:50.469|DEGRADED|1995|1996|2000|f|f|f|énumération réfutée : le balayage n’a pas atteint la fin du listing (REPEATED_IDS_ACROSS_PAGES) · 1 annonce retenue : 1 à instruire (WORKDAY
+2026-09-30 19:12:41.03|OK|2000|2000|2000|f|t|t|desc 100% date 100% pays 100% url 100%
+2026-10-01 17:54:02.773|DEGRADED|2000|2000|2000|f|f|f|énumération réfutée : le balayage n’a pas atteint la fin du listing (PUBLISHER_TOTAL_CAPPED, RECONCILED_BY_SECOND_SWEEP, REPEATED_IDS_ACROSS
+psql:audits/2026-10-02/classes-listes-lecteurs/knitwell-effet.sql:14: ERROR:  column "availabilityHold" does not exist
+LINE 1: SELECT "isActive", coalesce("availabilityHold", '-') hold, (...
+                                    ^

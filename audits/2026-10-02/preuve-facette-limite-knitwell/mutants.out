@@ -1,0 +1,61 @@
+== adopte sans vérifier
+     × une offre servie par le site mais absente des tableaux de la facette : tout est collecté, rien n’est prouvé
+     × une seule facette à ce total : collectée en entier, NON prouvée (aucun accord)
+     × un tableau dont le total ne correspond pas au compte de la facette : NON prouvé
+     × condition 1, facette NON OBLIGATOIRE : 50 offres sans famille, servies au-delà du plafond, ne sont jamais lues — aucune absence attestée
+     × condition 1, facette qui NE PARTITIONNE PAS : une offre sous deux familles — aucune absence attestée
+     × condition 2, une valeur NON LUE EN ENTIER : son tableau annonce 601 offres et en sert 600 — aucune absence attestée
+     × condition 2, une valeur lue AU PLAFOND : son tableau annonce 2 000 et la page au-delà ne dit rien — aucune absence attestée
+     × condition 3, l’UNION LUE ne fait pas la somme des comptes : une offre lue en moins — aucune absence attestée
+     × 1 : une offre du site plafonné absente des valeurs
+     × 1 : une seule facette à ce total
+     × 1 : une facette compte davantage
+     × 1 : une offre lue sous deux valeurs
+     × 2 : un tableau non prouvé
+     × 2 : un tableau au plafond
+     × 2 : les totaux des tableaux ne font pas le compte de la facette
+     × 2 : aucune valeur lue
+     × 3 : l’union lue ne fait pas la somme des comptes
+⎯⎯⎯⎯⎯⎯ Failed Tests 17 ⎯⎯⎯⎯⎯⎯⎯
+      Tests  17 failed | 14 passed (31)
+== sans recouvrement
+     × condition 1, facette qui NE PARTITIONNE PAS : une offre sous deux familles — aucune absence attestée
+     × 1 : une offre lue sous deux valeurs
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+      Tests  2 failed | 29 passed (31)
+== sans offre du site manquée
+     × 1 : une offre du site plafonné absente des valeurs
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+      Tests  1 failed | 30 passed (31)
+== sans accord des facettes
+     × une offre servie par le site mais absente des tableaux de la facette : tout est collecté, rien n’est prouvé
+     × une seule facette à ce total : collectée en entier, NON prouvée (aucun accord)
+     × condition 1, facette NON OBLIGATOIRE : 50 offres sans famille, servies au-delà du plafond, ne sont jamais lues — aucune absence attestée
+     × 1 : une seule facette à ce total
+     × 1 : une facette compte davantage
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 5 ⎯⎯⎯⎯⎯⎯⎯
+      Tests  5 failed | 26 passed (31)
+== sans tableau prouvé
+     × condition 2, une valeur NON LUE EN ENTIER : son tableau annonce 601 offres et en sert 600 — aucune absence attestée
+     × condition 2, une valeur lue AU PLAFOND : son tableau annonce 2 000 et la page au-delà ne dit rien — aucune absence attestée
+     × 2 : un tableau non prouvé
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+      Tests  3 failed | 28 passed (31)
+== sans plafond par tableau
+     × condition 2, une valeur lue AU PLAFOND : son tableau annonce 2 000 et la page au-delà ne dit rien — aucune absence attestée
+     × 2 : un tableau au plafond
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+      Tests  2 failed | 29 passed (31)
+== sans somme des totaux
+     × condition 2, une valeur NON LUE EN ENTIER : son tableau annonce 601 offres et en sert 600 — aucune absence attestée
+     × 2 : les totaux des tableaux ne font pas le compte de la facette
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+      Tests  2 failed | 29 passed (31)
+== sans union
+     × un tableau dont le total ne correspond pas au compte de la facette : NON prouvé
+     × condition 3, l’UNION LUE ne fait pas la somme des comptes : une offre lue en moins — aucune absence attestée
+     × 1 : une offre lue sous deux valeurs
+     × 3 : l’union lue ne fait pas la somme des comptes
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯
+      Tests  4 failed | 27 passed (31)
+empreinte avant 375e138a99e6, après 375e138a99e6

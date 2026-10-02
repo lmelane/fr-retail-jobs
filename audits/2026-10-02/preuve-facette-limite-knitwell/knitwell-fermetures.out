@@ -1,0 +1,24 @@
+SET
+SET
+deactivated_day|now_active|seen_again|job_active|count
+2026-09-27 00:00:00|f|f|f|200
+2026-09-27 00:00:00|t|t|t|9
+2026-09-29 00:00:00|f|f|f|1
+2026-09-30 00:00:00|f|f|f|296
+2026-09-30 00:00:00|f|f|t|1
+2026-09-30 00:00:00|t|t|t|5
+2026-10-01 00:00:00|f|f|f|7
+event_day|type|count
+2026-09-27 00:00:00|CLOSED|209
+2026-09-28 00:00:00|REOPENED|2
+2026-09-29 00:00:00|CLOSED|1
+2026-09-29 00:00:00|REOPENED|3
+2026-09-30 00:00:00|CLOSED|301
+2026-09-30 00:00:00|REOPENED|4
+2026-10-01 00:00:00|CLOSED|8
+2026-10-01 00:00:00|REOPENED|2
+2026-10-02 00:00:00|REOPENED|3
+etat|count
+désactivée sur preuve depuis le 23/09|505
+inactive, autre cause ou avant le 23/09|1
+servie|2333
