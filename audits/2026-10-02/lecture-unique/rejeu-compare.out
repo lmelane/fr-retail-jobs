@@ -1,0 +1,140 @@
+RUN b4e6b708-77b7-4436-9f9e-e5c2278cecf8 (2026-10-01T16:03:18.104Z)
+
+## fred-perry (teamtailor) — âge à l'ingestion 0.0 min
+  rejeu de la qualification (lecteur de ce code) : EXACT ; validation du RUN : VALIDATED replayExact=true énumération=COMPLETE
+  sorties : qualification 17, ingestion 17 ; IDENTIQUES (même ordre, mêmes empreintes)
+  énumération : identique {"complete":true,"declaredTotal":null,"truncated":false,"termination":"NEXT_URL_NULL","rejectedRows":0,"canonicalIds":17}
+  fin d'ingestion réelle : publiées 17, retenues 0, échecs 0, écartées 0
+
+## brunello-cucinelli (workday) — âge à l'ingestion 0.1 min
+  rejeu de la qualification (lecteur de ce code) : EXACT ; validation du RUN : VALIDATED replayExact=true énumération=COMPLETE
+  sorties : qualification 44, ingestion 44 ; IDENTIQUES (même ordre, mêmes empreintes)
+  retenues : qualification {"WORKDAY_EMPLOYER_ABSENT_IN_DETAIL":1} ; ingestion {"WORKDAY_EMPLOYER_ABSENT_IN_DETAIL":1}
+  énumération : identique {"complete":true,"declaredTotal":44,"truncated":false,"termination":"PUBLISHER_TOTAL_REACHED","rejectedRows":0,"canonicalIds":44}
+  fin d'ingestion réelle : publiées 43, retenues 1, échecs 0, écartées 0
+
+## glossier (greenhouse) — âge à l'ingestion 0.0 min
+  rejeu de la qualification (lecteur de ce code) : EXACT ; validation du RUN : VALIDATED replayExact=true énumération=COMPLETE
+  sorties : qualification 28, ingestion 28 ; IDENTIQUES (même ordre, mêmes empreintes)
+  énumération : identique {"complete":true,"declaredTotal":28,"truncated":false,"termination":null,"rejectedRows":0,"canonicalIds":0}
+  fin d'ingestion réelle : publiées 28, retenues 0, échecs 0, écartées 0
+
+## sisley (smartrecruiters-whitelabel) — âge à l'ingestion 0.1 min
+  rejeu de la qualification (lecteur de ce code) : EXACT ; validation du RUN : VALIDATED replayExact=true énumération=UNKNOWN
+  sorties : qualification 42, ingestion 42 ; IDENTIQUES (même ordre, mêmes empreintes)
+  énumération : identique {"complete":null,"declaredTotal":42,"truncated":false,"termination":null,"rejectedRows":0,"canonicalIds":0}
+  fin d'ingestion réelle : publiées 42, retenues 0, échecs 0, écartées 0
+
+## burberry (successfactors) — âge à l'ingestion 0.9 min
+  rejeu de la qualification (lecteur de ce code) : EXACT ; validation du RUN : VALIDATED replayExact=true énumération=COMPLETE
+  sorties : qualification 130, ingestion 130 ; communes identiques 0, modifiées 130, seulement qualification 0, seulement ingestion 0
+  champs modifiés (sur 50 offres) : .raw.postingEvidence.htmlSha256×50
+    .raw.postingEvidence.htmlSha256 : "cce8842c9393feb45392f1200f72c3311000f39fb3801d91fb14c4b10ac2fd0a" → "d21ad969700b23905be5850b71b94a416f24adca97cd22176fa1efc829dbe464"
+  énumération : identique {"complete":true,"declaredTotal":130,"truncated":false,"termination":"PUBLISHER_TOTAL_REACHED","rejectedRows":0,"canonicalIds":0}
+  fin d'ingestion réelle : publiées 130, retenues 0, échecs 0, écartées 0
+
+## caudalie (generic-listing) — âge à l'ingestion 0.1 min
+  rejeu de la qualification (lecteur de ce code) : EXACT ; validation du RUN : VALIDATED replayExact=true énumération=COMPLETE
+  sorties : qualification 47, ingestion 47 ; communes identiques 0, modifiées 47, seulement qualification 0, seulement ingestion 0
+  champs modifiés (sur 47 offres) : .raw.detailHtml×47
+    .raw.detailHtml : "<!DOCTYPE html>\n<html lang=\"fr\">\n<head>\n    <meta charset=\"utf- → "<!DOCTYPE html>\n<html lang=\"fr\">\n<head>\n    <meta charset=\"utf-
+  énumération : identique {"complete":true,"declaredTotal":47,"truncated":false,"termination":"FULL_RESPONSE","rejectedRows":0,"canonicalIds":47}
+  fin d'ingestion réelle : publiées 47, retenues 0, échecs 0, écartées 0
+
+## mulberry (lever) — âge à l'ingestion 0.0 min
+  rejeu de la qualification (lecteur de ce code) : EXACT ; validation du RUN : VALIDATED replayExact=true énumération=COMPLETE
+  sorties : qualification 45, ingestion 45 ; IDENTIQUES (même ordre, mêmes empreintes)
+  énumération : identique {"complete":true,"declaredTotal":null,"truncated":false,"termination":"SHORT_PAGE","rejectedRows":0,"canonicalIds":45}
+  fin d'ingestion réelle : publiées 45, retenues 0, échecs 0, écartées 0
+
+## ami-paris (recruitee) — âge à l'ingestion 0.0 min
+  rejeu de la qualification (lecteur de ce code) : EXACT ; validation du RUN : VALIDATED replayExact=true énumération=COMPLETE
+  sorties : qualification 28, ingestion 28 ; communes identiques 0, modifiées 28, seulement qualification 0, seulement ingestion 0
+  champs modifiés (sur 28 offres) : 
+  énumération : identique {"complete":true,"declaredTotal":null,"truncated":false,"termination":"FULL_RESPONSE","rejectedRows":0,"canonicalIds":28}
+  fin d'ingestion réelle : publiées 28, retenues 0, échecs 0, écartées 0
+
+## closed (personio) — âge à l'ingestion 0.0 min
+  rejeu de la qualification (lecteur de ce code) : DIFFÉRENT (sorties différentes, métadonnées identiques) — champs changés par le lecteur de ce code : publicationHold×1, publicationWithdrawnAt×1 ; lecteur du RUN git:c0b261f34e90c6bb68535dc6f2b748ca5aeefca7 ; validation du RUN : VALIDATED replayExact=true énumération=COMPLETE
+  sorties : qualification 11, ingestion 11 ; communes identiques 0, modifiées 11, seulement qualification 0, seulement ingestion 0
+  champs modifiés (sur 11 offres) : .raw.postingEvidence.htmlSha256×11, .raw.personioDetail.htmlSha256×11
+    .raw.postingEvidence.htmlSha256 : "db9c5a7f6d73a27233560397fe1fd08f49ec05908fb6b41af9a8a21d12a3e093" → "263b05614930eafa8db49dd8ba99b5ab6926a3a82eb8ec0c065eda20560acfb4"
+    .raw.personioDetail.htmlSha256 : "db9c5a7f6d73a27233560397fe1fd08f49ec05908fb6b41af9a8a21d12a3e093" → "263b05614930eafa8db49dd8ba99b5ab6926a3a82eb8ec0c065eda20560acfb4"
+  énumération : identique {"complete":true,"declaredTotal":null,"truncated":false,"termination":"FULL_RESPONSE","rejectedRows":0,"canonicalIds":11}
+  fin d'ingestion réelle : publiées 11, retenues 0, échecs 0, écartées 0
+
+## gant (digitalrecruiters) — âge à l'ingestion 0.3 min
+  rejeu de la qualification (lecteur de ce code) : EXACT ; validation du RUN : VALIDATED replayExact=true énumération=COMPLETE
+  sorties : qualification 112, ingestion 112 ; IDENTIQUES (même ordre, mêmes empreintes)
+  énumération : identique {"complete":true,"declaredTotal":113,"truncated":false,"termination":"SHORT_PAGE","rejectedRows":0,"canonicalIds":112}
+  fin d'ingestion réelle : publiées 112, retenues 0, échecs 0, écartées 0
+
+## longchamp (talentsoft) — âge à l'ingestion 0.1 min
+  rejeu de la qualification (lecteur de ce code) : EXACT ; validation du RUN : VALIDATED replayExact=true énumération=COMPLETE
+  sorties : qualification 45, ingestion 45 ; communes identiques 20, modifiées 25, seulement qualification 0, seulement ingestion 0
+  champs modifiés (sur 25 offres) : .raw.talentsoftDetail.htmlSha256×25
+    .raw.talentsoftDetail.htmlSha256 : "3c2d6430fbf54d994f6cb279d46b83894a95eca09adff0dafe23c5eaf7f1bf57" → "de8ec3b063a3dfb2c3f0e4698220c72e2b8b0c509aaba3c7818eee6448420ea2"
+  énumération : identique {"complete":true,"declaredTotal":45,"truncated":false,"termination":"ANNOUNCED_TOTAL_REACHED","rejectedRows":0,"canonicalIds":65}
+  fin d'ingestion réelle : publiées 45, retenues 0, échecs 0, écartées 0
+
+## baccarat (talentview) — âge à l'ingestion 0.0 min
+  rejeu de la qualification (lecteur de ce code) : EXACT ; validation du RUN : VALIDATED replayExact=true énumération=COMPLETE
+  sorties : qualification 15, ingestion 15 ; IDENTIQUES (même ordre, mêmes empreintes)
+  énumération : identique {"complete":true,"declaredTotal":null,"truncated":false,"termination":"SHORT_PAGE_PER_WEBSITE","rejectedRows":0,"canonicalIds":21}
+  fin d'ingestion réelle : publiées 15, retenues 0, échecs 0, écartées 0
+
+## hugo-boss-phenom (phenom) — âge à l'ingestion 2.2 min
+  rejeu de la qualification (lecteur de ce code) : DIFFÉRENT (sorties différentes, métadonnées identiques) — champs changés par le lecteur de ce code : publicationHold×1, publicationWithdrawnAt×1 ; lecteur du RUN git:c0b261f34e90c6bb68535dc6f2b748ca5aeefca7 ; validation du RUN : VALIDATED replayExact=true énumération=COMPLETE
+  sorties : qualification 761, ingestion 761 ; communes identiques 0, modifiées 761, seulement qualification 0, seulement ingestion 0
+  champs modifiés (sur 50 offres) : .raw.postingEvidence.htmlSha256×50
+    .raw.postingEvidence.htmlSha256 : "f14da9732314170929985a649fb12ff000e3f077060252a34c001c0fdc0ade27" → "34ced7f405710c1fb38bdfe09347ecb6be73aae5310afcf5e1e9cc2b428140f0"
+  énumération : DIFFÈRE sur termination, canonicalIds — qualif {"complete":true,"declaredTotal":null,"truncated":false,"termination":"ANNOUNCED_TOTAL_REACHED","rejectedRows":0,"canonicalIds":761} / ingestion {"complete":true,"declaredTotal":null,"truncated":false,"termination":"SECOND_SWEEP_RECONCILED","rejectedRows":0,"canonicalIds":1261}
+  fin d'ingestion réelle : publiées 761, retenues 0, échecs 0, écartées 0
+
+## toscane (flatchr) — âge à l'ingestion 0.0 min
+  rejeu de la qualification (lecteur de ce code) : EXACT ; validation du RUN : VALIDATED replayExact=true énumération=COMPLETE
+  sorties : qualification 22, ingestion 22 ; IDENTIQUES (même ordre, mêmes empreintes)
+  énumération : identique {"complete":true,"declaredTotal":22,"truncated":false,"termination":null,"rejectedRows":0,"canonicalIds":0}
+  fin d'ingestion réelle : publiées 22, retenues 0, échecs 0, écartées 0
+
+## sezane (workable) — âge à l'ingestion 0.3 min
+  rejeu de la qualification (lecteur de ce code) : EXACT ; validation du RUN : VALIDATED replayExact=true énumération=COMPLETE
+  sorties : qualification 124, ingestion 124 ; IDENTIQUES (même ordre, mêmes empreintes)
+  énumération : identique {"complete":true,"declaredTotal":124,"truncated":false,"termination":"CURSOR_EXHAUSTED","rejectedRows":0,"canonicalIds":248}
+  fin d'ingestion réelle : publiées 124, retenues 0, échecs 0, écartées 0
+
+## aeropostale (icims) — âge à l'ingestion 0.1 min
+  rejeu de la qualification (lecteur de ce code) : EXACT ; validation du RUN : VALIDATED replayExact=true énumération=COMPLETE
+  sorties : qualification 16, ingestion 16 ; communes identiques 0, modifiées 16, seulement qualification 0, seulement ingestion 0
+  champs modifiés (sur 16 offres) : .raw.postingEvidence.htmlSha256×16
+    .raw.postingEvidence.htmlSha256 : "e353920cb26b0e383ceb685acffdae836984a9d301b2e60fd4d879deb3ad31b7" → "8387a677b9f4bd64099db4d962ce3df7735767234f165013d2633ed5a7b714a4"
+  énumération : identique {"complete":true,"declaredTotal":null,"truncated":false,"termination":"ANNOUNCED_PAGE_COUNT_REACHED","rejectedRows":0,"canonicalIds":0}
+  fin d'ingestion réelle : publiées 16, retenues 0, échecs 0, écartées 0
+
+## bloomingdales-oracle (oraclehcm) — âge à l'ingestion 1.9 min
+  rejeu de la qualification (lecteur de ce code) : EXACT ; validation du RUN : VALIDATED replayExact=true énumération=UNKNOWN
+  sorties : qualification 987, ingestion 987 ; IDENTIQUES (même ordre, mêmes empreintes)
+  énumération : identique {"complete":null,"declaredTotal":987,"truncated":false,"termination":"NO_FRESH_ROWS_OR_TOTAL_REACHED","rejectedRows":0,"canonicalIds":987}
+  fin d'ingestion réelle : publiées 987, retenues 0, échecs 0, écartées 0
+
+## polene (ashby) — âge à l'ingestion 0.0 min
+  rejeu de la qualification (lecteur de ce code) : DIFFÉRENT (sorties différentes, métadonnées identiques) — champs changés par le lecteur de ce code : publicationHold×3, publicationWithdrawnAt×3 ; lecteur du RUN git:c0b261f34e90c6bb68535dc6f2b748ca5aeefca7 ; validation du RUN : VALIDATED replayExact=true énumération=COMPLETE
+  sorties : qualification 81, ingestion 81 ; IDENTIQUES (même ordre, mêmes empreintes)
+  énumération : identique {"complete":true,"declaredTotal":81,"truncated":false,"termination":"FULL_RESPONSE","rejectedRows":0,"canonicalIds":81}
+  fin d'ingestion réelle : publiées 81, retenues 0, échecs 0, écartées 0
+
+## acne-studios-jobylon (jobylon) — âge à l'ingestion 0.1 min
+  rejeu de la qualification (lecteur de ce code) : EXACT ; validation du RUN : VALIDATED replayExact=true énumération=UNKNOWN
+  sorties : qualification 31, ingestion 31 ; IDENTIQUES (même ordre, mêmes empreintes)
+  énumération : identique {"complete":null,"declaredTotal":31,"truncated":false,"termination":"CLIENT_SIDE_LITERAL_READ","rejectedRows":0,"canonicalIds":31}
+  fin d'ingestion réelle : publiées 31, retenues 0, échecs 0, écartées 0
+
+## brown-thomas-taleo (taleo) — âge à l'ingestion 0.2 min
+  rejeu de la qualification (lecteur de ce code) : EXACT ; validation du RUN : VALIDATED replayExact=true énumération=UNKNOWN
+  sorties : qualification 82, ingestion 82 ; communes identiques 0, modifiées 82, seulement qualification 0, seulement ingestion 0
+  champs modifiés (sur 50 offres) : .raw.detailHtml×50
+    .raw.detailHtml : "\n\n\n\n\n\n\n\n<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <met → "\n\n\n\n\n\n\n\n<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <met
+  énumération : identique {"complete":null,"declaredTotal":null,"truncated":false,"termination":"NO_FRESH_ROW","rejectedRows":0,"canonicalIds":131}
+  fin d'ingestion réelle : publiées 82, retenues 0, échecs 0, écartées 0
+
+TOTAL {"sources":20,"rejeuExact":17,"identiques":12,"offresQualif":2668,"offresIngest":2668,"memesSorties":1568}
