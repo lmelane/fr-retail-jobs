@@ -8,6 +8,13 @@ const dispositions: Readonly<Record<string, DeactivationDisposition>> = {
   SOURCE_UNLISTED: { kind: 'WITHDRAWN', reason: 'SOURCE_UNLISTED' },
   /** A reviewed PostingScopeDecision OUT_OF_SCOPE: published no more, never an employer closure, never re-opened by attestation. */
   SCOPE_OUT_OF_PERIMETER: { kind: 'WITHDRAWN', reason: 'OUT_OF_SCOPE' },
+  /**
+   * D-508 §4 (02/10/2026) : une candidature spontanée que la source publie dans sa liste d'offres (Marc O'Polo :
+   * catégorie « Initiativ », « Initiativbewerbung », « Unsolicited application ») n'est pas une offre. Elle n'est pas
+   * publiée, et une publication antérieure est retirée, jamais fermée au nom de l'employeur ni rouverte par une
+   * attestation (`canRefreshReactivate` ne rouvre que ATTESTATION_MISSING).
+   */
+  NATIVE_SPONTANEOUS_APPLICATION: { kind: 'WITHDRAWN', reason: 'OUT_OF_SCOPE' },
 };
 export function publicationDisposition(reason: string): DeactivationDisposition | undefined {
   return Object.hasOwn(dispositions, reason) ? dispositions[reason] : undefined;
@@ -45,7 +52,7 @@ export function publicationDisposition(reason: string): DeactivationDisposition 
 const NATIVE_EVIDENCE_RETENTIONS: ReadonlySet<string> = new Set([
   'APPLICATION_EXPLICITLY_CLOSED', 'APPLICATION_HTTP_404', 'APPLICATION_HTTP_410', 'APPLICATION_TEMPLATE_EXPIRY_CONTRADICTION',
   'SOURCE_UNLISTED', 'WORKDAY_EMPLOYER_ABSENT_IN_DETAIL', 'NATIVE_TEST_PUBLICATION', 'NATIVE_RECRUITMENT_EVENT',
-  'NATIVE_DESCRIPTION_EMPTY', 'WORKDAY_DETAIL_PERMISSION_DENIED',
+  'NATIVE_DESCRIPTION_EMPTY', 'WORKDAY_DETAIL_PERMISSION_DENIED', 'NATIVE_SPONTANEOUS_APPLICATION',
 ]);
 const TEAM_DECISION_RETENTIONS: ReadonlySet<string> = new Set(['SCOPE_OUT_OF_PERIMETER']);
 /** The Workday NEGATIVE native proof: the page does not name its employer (its registry entry stays to instruct). */
@@ -99,6 +106,7 @@ const RETENTION_TEXT: Readonly<Record<string, string>> = {
   NATIVE_DESCRIPTION_EMPTY: 'la source publie l’offre sans description (fiche lue, vide ou réduite à ses titres de rubrique)',
   WORKDAY_DETAIL_PERMISSION_DENIED: 'refusée par l’éditeur (Workday S22)',
   SCOPE_OUT_OF_PERIMETER: 'écartée par l’équipe (hors périmètre)',
+  NATIVE_SPONTANEOUS_APPLICATION: 'candidature spontanée publiée par la source parmi ses offres',
 };
 /**
  * The standing of each non-blocking reason, with the decision that settles it. Every non-blocking reason is now
@@ -120,6 +128,7 @@ const DECIDED: Readonly<Record<string, string>> = {
   NATIVE_RECRUITMENT_EVENT: 'D-462',
   NATIVE_DESCRIPTION_EMPTY: 'D-481 §3',
   WORKDAY_DETAIL_PERMISSION_DENIED: 'D-484 §1',
+  NATIVE_SPONTANEOUS_APPLICATION: 'D-508 §4',
 };
 export type RetentionStatus = 'décidé' | 'application non arbitrée' | 'à instruire';
 export function retentionStatus(reason: string): RetentionStatus {

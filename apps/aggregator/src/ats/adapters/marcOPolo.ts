@@ -191,8 +191,34 @@ export function readPublishedList(html: string): PublishedList {
   return { declaredApiUrl, counter, ids: ids as string[] };
 }
 
-/** Collecte et reprise du RAW retenu passent par cette seule lecture. Rend `null` pour tout RAW qui n'est pas le sien. */
-export function readMarcOPoloRaw(value: unknown): NormalizedJob | null {
+/**
+ * D-508 §4 (02/10/2026) : LES CANDIDATURES SPONTANÉES NE SONT PAS PUBLIÉES ; LES OFFRES DES MAGASINS FRANCHISÉS LE SONT,
+ * sous Marc O'Polo (l'employeur que les pages d'offre déclarent, D-489 ; rien ne les distingue ici).
+ *
+ * Reconnues, comme la carte de join.com (`joinSpontaneousCard.ts`), sur ce que la SOURCE déclare elle-même, jamais
+ * deviné : sa catégorie « Initiativ » (`careerLevel`, mesuré le 30/09 et le 02/10 sur « Unsolicited application
+ * Headquarters » et deux « Unsolicited application Retail National »), ou l'intitulé qu'elle leur donne quand elle les
+ * classe ailleurs (« WIR SUCHEN DICH! - Initiativbewerbung Ausbildung / Praktikum », catégories Apprenticeship et
+ * Internship). Une offre de franchisé (« Franchise Store », département Franchise) ne porte aucun de ces signes.
+ *
+ * À la différence de la carte de join.com (une page sans offre, jamais publiée), deux de ces candidatures sont EN LIGNE
+ * le 02/10 : une ligne rejetée les y laisserait (`PRESENT_BUT_REJECTED` ne retire rien). Elles sont donc retenues
+ * avec une disposition (`NATIVE_SPONTANEOUS_APPLICATION`, retrait) : vues et nommées dans la preuve, jamais publiées,
+ * et une publication antérieure est retirée. La collecte et la reprise du RAW lisent la même règle.
+ */
+const SPONTANEOUS_CAREER_LEVEL = /^initiativ$/i;
+const SPONTANEOUS_TITLE = /\binitiativbewerbung\b|\bunsolicited\s+application\b/i;
+export const MARC_O_POLO_SPONTANEOUS_HOLD = 'NATIVE_SPONTANEOUS_APPLICATION';
+export function isMarcOPoloSpontaneousApplication(listing: Record<string, unknown>, detail: Record<string, unknown> = {}): boolean {
+  return [listing.careerLevel, detail.careerLevel].some((level) => SPONTANEOUS_CAREER_LEVEL.test(text(level)))
+    || [listing.title, detail.title].some((title) => SPONTANEOUS_TITLE.test(text(title)));
+}
+
+/**
+ * Collecte et reprise du RAW retenu passent par cette seule lecture. Rend `null` pour tout RAW qui n'est pas le sien.
+ * `observedAt` date le retrait d'une candidature spontanée déjà publiée ; sans lui (reprise), elle reste retenue.
+ */
+export function readMarcOPoloRaw(value: unknown, observedAt?: Date): NormalizedJob | null {
   if (!isRecord(value)) return null;
   const raw = value as Partial<RetainedVacancy>;
   const language = raw.language;
@@ -212,6 +238,7 @@ export function readMarcOPoloRaw(value: unknown): NormalizedJob | null {
   const published = typeof detail.published === 'number' ? detail.published : listing.published;
   const postedAt = typeof published === 'number' && Number.isFinite(published) ? new Date(published) : undefined;
   const employer = retainedEmployerName(raw.employer, language);
+  const spontaneous = isMarcOPoloSpontaneousApplication(listing, detail);
   return {
     externalId: vacancyExternalId(pageUrl),
     title,
@@ -228,6 +255,7 @@ export function readMarcOPoloRaw(value: unknown): NormalizedJob | null {
     language: typeof detail.language === 'string' && /^[a-z]{2}$/.test(detail.language) ? detail.language : undefined,
     description: description || undefined,
     postedAt: postedAt && Number.isFinite(postedAt.getTime()) ? postedAt : undefined,
+    ...(spontaneous ? { publicationHold: MARC_O_POLO_SPONTANEOUS_HOLD, ...(observedAt ? { publicationWithdrawnAt: observedAt } : {}) } : {}),
     raw: value,
   };
 }
@@ -321,20 +349,22 @@ export async function fetchMarcOPoloJobs(config: Record<string, unknown>): Promi
   if (rows.length > 0 && outcomes.every((outcome) => 'failure' in outcome && outcome.failure === 'DETAIL_FETCH_FAILED'))
     throw new Error('MARC_O_POLO_DETAILS_UNREACHABLE: aucune fiche lue');
 
-  // 4. L'employeur que le site déclare (D-489) : les pages des deux premières offres lues, dans l'ordre de la liste.
+  // 4. L'employeur que le site déclare (D-489) : les pages des deux premières offres lues, dans l'ordre de la liste
+  // (jamais une candidature spontanée, D-508 §4 : la page d'une offre réelle).
   const employer = await readSiteEmployer(settings, rows.flatMap((row, index) => {
     const outcome = outcomes[index];
-    return 'detail' in outcome ? [{ url: vacancyPageUrl(settings.language, row.title as string, row.id), title: String(outcome.detail.title ?? '') }] : [];
+    return 'detail' in outcome && !isMarcOPoloSpontaneousApplication(row, outcome.detail) ? [{ url: vacancyPageUrl(settings.language, row.title as string, row.id), title: String(outcome.detail.title ?? '') }] : [];
   }).slice(0, EMPLOYER_PAGES));
 
   const jobs: NormalizedJob[] = [];
+  const observedAt = captureObservedAt();
   rows.forEach((row, index) => {
     const outcome = outcomes[index];
     const pageUrl = vacancyPageUrl(settings.language, row.title as string, row.id);
     const canonicalId = vacancyExternalId(pageUrl);
     if ('failure' in outcome) { rejectedRows.push({ reason: outcome.failure, raw: row, canonicalId }); return; }
     const retained: RetainedVacancy = { source: RAW_SOURCE, language: settings.language, pageUrl, listing: row, detail: outcome.detail, employer };
-    const job = readMarcOPoloRaw(retained);
+    const job = readMarcOPoloRaw(retained, observedAt);
     if (!job) { rejectedRows.push({ reason: 'DETAIL_MALFORMED_IDENTITY', raw: retained, canonicalId }); return; }
     jobs.push(job);
   });

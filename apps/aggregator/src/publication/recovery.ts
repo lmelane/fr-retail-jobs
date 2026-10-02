@@ -205,7 +205,7 @@ function readRetainedPublication(kind: string, raw: unknown, context: Context, r
         }
         // Marc O'Polo (D-485) : la liste et la fiche retenues sont relues par la même fonction que la collecte.
         if (config.reader === MARC_O_POLO_READER && raw.source === 'marc-o-polo-vacancies-v1') {
-          job = readMarcOPoloRaw(raw); break;
+          job = readMarcOPoloRaw(raw, context.observedAt); break;
         }
         if (typeof config.feedUrl === 'string' && typeof raw.feedItem === 'string') {
           const items = parseFeed(raw.feedItem);

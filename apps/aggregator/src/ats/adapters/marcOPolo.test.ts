@@ -14,6 +14,8 @@ import { fetchAtsJobs, normalizeAdapterResult } from '../index.js';
 import { recoverRetainedPublication } from '../../publication/recovery.js';
 import { readLocations } from '../../facts/locations.js';
 import { sourceDeadlineReached } from '../../lib/sourceBudget.js';
+import { isMarcOPoloSpontaneousApplication, MARC_O_POLO_SPONTANEOUS_HOLD } from './marcOPolo.js';
+import { isNativeEvidenceRetention, publicationDisposition, retentionStatus } from '../../pipeline/publicationDisposition.js';
 
 /**
  * MARC O'POLO (D-485) — le lecteur dédié, sur les réponses RÉELLES du site du 30/09/2026.
@@ -334,9 +336,12 @@ describe("Marc O'Polo — configuration, rejeu et reprise", () => {
     for (const job of live.jobs) {
       const recovered = recoverRetainedPublication('generic-listing', JSON.parse(JSON.stringify(job.raw)),
         { externalId: job.externalId, url: job.url, observedAt, config });
+      // D-508 §4 : une candidature spontanée retenue à la collecte ne se republie jamais depuis son RAW.
+      if (job.publicationHold) { expect(recovered).toEqual({ status: 'RECOLLECT_OR_REVIEW', reason: 'PUBLICATION_HELD' }); continue; }
       expect(recovered.status).toBe('RECOVERABLE');
       if (recovered.status === 'RECOVERABLE') expect(recovered.job).toMatchObject({ description: job.description, company: EMPLOYER });
     }
+    expect(live.jobs.filter((job) => job.publicationHold)).toHaveLength(5);
     // Le lieu et le code postal se lisent dans le RAW retenu, comme le JSON-LD le permettait au lecteur générique.
     const radolfzell = live.jobs.find((job) => job.url.endsWith('2026-4345'))!;
     expect(readLocations('GENERIC_JSONLD', radolfzell.raw)).toMatchObject({ status: 'DECLARED',
@@ -358,3 +363,56 @@ describe("Marc O'Polo — configuration, rejeu et reprise", () => {
 const ARCHIVE_SHA256 = 'dbd769e7c36cda3256bcb5a0ab1201c6afc0acb3d5e08e043e44e0fc5ba44f22';
 const FILTERED_SHA256 = 'b4468ad3a89cd74f1ee597eec6e8418299292072ad1eec6ab16b9952f82e911c';
 const SITEMAP_SHA256 = 'f1c0295ec077b7f36893dc06b3c2280aee61b9917b21940e0c2ff6792dcd365d';
+
+/*
+ * D-508 §4 (02/10/2026) — RÉOUVERTURE : LES OFFRES DES MAGASINS FRANCHISÉS SONT GARDÉES SOUS MARC O'POLO, LES
+ * CANDIDATURES SPONTANÉES NE SONT PAS PUBLIÉES. Sur la lecture réelle complète du 30/09 (116 offres).
+ */
+describe("Marc O'Polo — D-508 §4 : franchisés gardés, candidatures spontanées retenues et retirées", () => {
+  const SPONTANEOUS = ['2026-4040', '2026-4043', '2026-4088', '2026-4105', '2026-4126'];
+  type ApiRow = { id: string; title: string; careerLevel?: string; department?: string };
+  const rows = apiList as ApiRow[];
+  const franchise = rows.filter((row) => row.department === 'Franchise').map((row) => row.id).sort();
+  const urlOf = (id: string) => vacancyPageUrl('en', rows.find((row) => row.id === id)!.title, id);
+
+  it('prémisse : la liste réelle porte 5 candidatures spontanées (3 « Initiativ », 2 « Initiativbewerbung ») et 9 offres de franchisés', () => {
+    expect(rows.filter((row) => (row.careerLevel ?? '').trim() === 'Initiativ').map((row) => row.id).sort()).toEqual(['2026-4040', '2026-4043', '2026-4088']);
+    expect(rows.filter((row) => /Initiativbewerbung/.test(row.title)).map((row) => row.id).sort()).toEqual(['2026-4105', '2026-4126']);
+    expect(rows.filter((row) => isMarcOPoloSpontaneousApplication(row)).map((row) => row.id).sort()).toEqual(SPONTANEOUS);
+    expect(franchise).toHaveLength(9);
+    expect(rows.filter((row) => franchise.includes(row.id)).every((row) => /Franchise Store/.test(row.title))).toBe(true);
+    // Aucune offre de franchisé ne porte les signes d'une candidature spontanée.
+    expect(franchise.filter((id) => SPONTANEOUS.includes(id))).toEqual([]);
+  });
+
+  it('les 5 candidatures spontanées sont retenues avec un retrait daté ; les 9 offres de franchisés sont publiées sous Marc O’Polo', async () => {
+    const observedAt = new Date('2026-10-02T09:00:00.000Z');
+    network();
+    const result = normalizeAdapterResult(await withCaptureContext({ sequence: 0, observedAt, write: async () => {} }, () => fetchMarcOPoloJobs(config)));
+    const held = result.jobs.filter((job) => job.publicationHold);
+    expect(held.map((job) => job.url).sort()).toEqual(SPONTANEOUS.map(urlOf).sort());
+    expect(held.every((job) => job.publicationHold === MARC_O_POLO_SPONTANEOUS_HOLD && job.publicationWithdrawnAt?.getTime() === observedAt.getTime())).toBe(true);
+    const franchised = result.jobs.filter((job) => franchise.some((id) => job.url === urlOf(id)));
+    expect(franchised).toHaveLength(9);
+    expect(franchised.every((job) => !job.publicationHold && !job.publicationWithdrawnAt && job.company === EMPLOYER)).toBe(true);
+    // La preuve tient : les candidatures sont VUES et nommées (disposition « retenu »), rien ne manque ni ne casse.
+    expect(result).toMatchObject({ complete: true, enumerationVerdict: 'PROVEN' });
+    expect(result.enumeration?.issues ?? []).not.toContain('CANONICAL_ID_CONTRACT_BROKEN');
+    expect(held.every((job) => result.enumeration!.pageEvidence![0].canonicalIds!.includes(job.externalId))).toBe(true);
+    // L'employeur se lit toujours sur les pages de deux offres réelles.
+    expect(counters(result).filter((c) => c.startsWith('employeur.page=')).map((c) => /(\d{4}-\d{4})$/.exec(c)![1])).toEqual(['2026-4270', '2026-4271']);
+  });
+
+  it('la retenue retire une publication antérieure, est décidée (D-508 §4) et ne fait pas échouer le RUN', () => {
+    expect(publicationDisposition(MARC_O_POLO_SPONTANEOUS_HOLD)).toEqual({ kind: 'WITHDRAWN', reason: 'OUT_OF_SCOPE' });
+    expect(isNativeEvidenceRetention(MARC_O_POLO_SPONTANEOUS_HOLD)).toBe(true);
+    expect(retentionStatus(MARC_O_POLO_SPONTANEOUS_HOLD)).toBe('décidé');
+  });
+
+  it('contre-témoins : un intitulé voisin n’est pas une candidature spontanée', () => {
+    expect(isMarcOPoloSpontaneousApplication({ title: 'Initiative & Events Manager m/w/d', careerLevel: 'Professional' })).toBe(false);
+    expect(isMarcOPoloSpontaneousApplication({ title: 'Store Manager Franchise Store Konstanz m/w/d', careerLevel: '(Deputy) Store Manager' })).toBe(false);
+    expect(isMarcOPoloSpontaneousApplication({ title: 'Verkäufer m/w/d', careerLevel: 'Initiativ ' })).toBe(true);
+    expect(isMarcOPoloSpontaneousApplication({ title: 'Verkäufer m/w/d' }, { careerLevel: 'Initiativ' })).toBe(true);
+  });
+});
