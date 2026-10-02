@@ -1,0 +1,78 @@
+
+## liste non prouvée (D1)
+RUN | occurrences | bloquantes relevées | bloquantes, règles d’avant ce lot | bloquantes, règles de ce lot | dont lecteur corrigé depuis | dont revenue seule | reste à ce jour
+2026-09-24 | 0 | 0 | 0 | 0 | 0 | 0 | 0
+2026-09-25 | 9 | 9 | 3 | 3 | 2 | 0 | 1
+2026-09-26 | 9 | 9 | 3 | 3 | 3 | 0 | 0
+2026-09-27 | 8 | 8 | 2 | 2 | 2 | 0 | 0
+2026-09-28 | 9 | 9 | 3 | 3 | 2 | 1 | 0
+2026-09-29 | 10 | 10 | 4 | 5 | 4 | 0 | 1
+2026-09-30 | 5 | 0 | 0 | 0 | 0 | 0 | 0
+2026-10-01 | 6 | 0 | 0 | 0 | 0 | 0 | 0
+total | 56 | 45 | 15 | 16 | 13 | 1 | 2
+classe de sourceState après ce lot (toutes occurrences) : LISTE_INDEMONTRABLE 28, LISTE_NON_PROUVEE 25, non bloquante par règle 2, CONTENU_INCOMPLET 1
+reste, nommé (bloquant, aucun correctif de lecteur, pas revenue seule) :
+   2026-09-25 · swatch-group · LISTE_NON_PROUVEE · énumération non prouvée : l’adaptateur ne démontre pas la fi
+   2026-09-29 · knitwell-us-retail · CONTENU_INCOMPLET · retenue à instruire à côté de la liste → RETENTION_TO_INSTRUCT
+revenue seule, cause non établie (collectes suivantes saines et prouvées) :
+   foot-locker-france (1 : 09-28) · LISTE_NON_PROUVEE · saine et prouvée aux 2 dernières collectes (2026-10-01 18:06)
+bloquant aux règles de ce lot mais lecteur corrigé depuis (commit · preuve) :
+   hugo-boss-phenom (5 : 09-25, 09-26, 09-27, 09-28, 09-29) · 898ffb5 (30/09) ordre Phenom · prouvée depuis le 30/09 04:42
+   mango (2 : 09-26, 09-29) · D-482 (30/09) lignes sans chemin comptées par rang · prouvée depuis le 30/09 08:44
+   nordstrom (1 : 09-29) · D-482 (30/09) seconde passe quand le total change · prouvée depuis le 30/09 08:34
+   skechers-phenom (5 : 09-25, 09-26, 09-27, 09-28, 09-29) · 898ffb5 (30/09) ordre Phenom · prouvée depuis le 30/09 05:06
+
+## régression de volume (D2)
+RUN | occurrences | bloquantes relevées | bloquantes, règles d’avant ce lot | bloquantes, règles de ce lot | dont lecteur corrigé depuis | dont revenue seule | reste à ce jour
+2026-09-24 | 32 | 32 | 4 | 4 | 4 | 0 | 0
+2026-09-25 | 3 | 3 | 2 | 2 | 2 | 0 | 0
+2026-09-26 | 4 | 4 | 3 | 3 | 2 | 1 | 0
+2026-09-27 | 4 | 4 | 3 | 3 | 2 | 1 | 0
+2026-09-28 | 7 | 7 | 6 | 6 | 2 | 3 | 1
+2026-09-29 | 5 | 5 | 3 | 3 | 2 | 1 | 0
+2026-09-30 | 2 | 1 | 0 | 0 | 0 | 0 | 0
+2026-10-01 | 6 | 5 | 5 | 5 | 4 | 0 | 1
+total | 63 | 61 | 26 | 26 | 18 | 6 | 2
+classe de sourceState après ce lot (toutes occurrences) : non bloquante par règle 23, LISTE_NON_PROUVEE 22, CONTENU_INCOMPLET 13, LISTE_INDEMONTRABLE 4, ANOMALIE_VOLUME 1
+reste, nommé (bloquant, aucun correctif de lecteur, pas revenue seule) :
+   2026-09-28 · urbn-hub · CONTENU_INCOMPLET · retenue à instruire → RETENTION_TO_INSTRUCT
+   2026-10-01 · urbn-hub · CONTENU_INCOMPLET · retenue à instruire → RETENTION_TO_INSTRUCT
+revenue seule, cause non établie (collectes suivantes saines et prouvées) :
+   douglas-sf (2 : 09-27, 09-28) · LISTE_NON_PROUVEE · saine et prouvée aux 2 dernières collectes (2026-10-01 16:34)
+   nike-nke2 (1 : 09-26) · ANOMALIE_VOLUME · saine et prouvée aux 2 dernières collectes (2026-10-01 16:19)
+   nordstrom (1 : 09-28) · CONTENU_INCOMPLET · saine et prouvée aux 2 dernières collectes (2026-10-01 17:20)
+   parfums-chanel (1 : 09-28) · CONTENU_INCOMPLET · saine et prouvée aux 2 dernières collectes (2026-10-01 17:07)
+   swarovski (1 : 09-29) · CONTENU_INCOMPLET · saine et prouvée aux 2 dernières collectes (2026-10-01 16:47)
+bloquant aux règles de ce lot mais lecteur corrigé depuis (commit · preuve) :
+   crocs (1 : 10-01) · 7918aa4 (01/10 18:56 UTC) seconde passe SuccessFactors · prouvée le 02/10 04:31
+   gemmyo (7 : 09-24, 09-25, 09-26, 09-27, 09-28, 09-29, 10-01) · 4b410ee (01/10 19:08 UTC) carte join.com jamais servie · prouvée le 02/10 05:03
+   hugo-boss-phenom (1 : 09-24) · 898ffb5 (30/09) ordre Phenom · prouvée depuis le 30/09 04:42
+   pandora-talenthub (6 : 09-24, 09-25, 09-26, 09-27, 09-28, 09-29) · 898ffb5 (30/09) relecture différée des fiches · prouvée depuis le 30/09 05:31
+   sephora-france (1 : 10-01) · 7918aa4 (01/10 18:56 UTC) seconde passe SuccessFactors ; D-481/D-482 (30/09) pour la qualification · prouvée le 02/10 04:44
+   skechers-phenom (1 : 09-24) · 898ffb5 (30/09) ordre Phenom · prouvée depuis le 30/09 05:06
+   ulta-jibe (1 : 10-01) · 463f375 (01/10 18:59 UTC) seconde passe Jibe · complète le 02/10 05:02
+
+## qualification rejetée (B1)
+RUN | occurrences | bloquantes relevées | bloquantes, règles d’avant ce lot | bloquantes, règles de ce lot | dont lecteur corrigé depuis | dont revenue seule | reste à ce jour
+2026-09-24 | 3 | 3 | 3 | 3 | 3 | 0 | 0
+2026-09-25 | 4 | 4 | 4 | 4 | 4 | 0 | 0
+2026-09-26 | 4 | 4 | 4 | 4 | 4 | 0 | 0
+2026-09-27 | 4 | 4 | 4 | 4 | 4 | 0 | 0
+2026-09-28 | 4 | 4 | 4 | 4 | 4 | 0 | 0
+2026-09-29 | 6 | 6 | 6 | 6 | 6 | 0 | 0
+2026-09-30 | 0 | 0 | 0 | 0 | 0 | 0 | 0
+2026-10-01 | 1 | 1 | 1 | 1 | 1 | 0 | 0
+total | 26 | 26 | 26 | 26 | 26 | 0 | 0
+classe de sourceState après ce lot (toutes occurrences) : QUALIFICATION_REFUSEE 26
+reste, nommé (bloquant, aucun correctif de lecteur, pas revenue seule) :
+   aucun
+revenue seule, cause non établie (collectes suivantes saines et prouvées) :
+   aucune
+bloquant aux règles de ce lot mais lecteur corrigé depuis (commit · preuve) :
+   estee-lauder-companies (6 : 09-24, 09-25, 09-26, 09-27, 09-28, 09-29) · D-481 §3 (30/09) description vide native, relecture après la fenêtre du pare-feu · validée depuis le 30/09 05:56
+   ganni-talentrecruiter (1 : 10-01) · 55018b6 (01/10 18:50 UTC) motifs dans l’ordre des offres (rejeu déterministe) · validée le 02/10 05:19
+   groupe-chantelle (1 : 09-29) · 898ffb5 (30/09) relecture différée Talentsoft · validée depuis le 30/09 06:36
+   kering (4 : 09-25, 09-26, 09-27, 09-29) · D-482 (30/09) cadence partagée Eightfold et relecture · validée depuis le 30/09 06:23
+   pvh (6 : 09-24, 09-25, 09-26, 09-27, 09-28, 09-29) · D-481 §4 (30/09) bascule Phenom CareerConnect · validée depuis le 30/09 07:26
+   sephora-france (2 : 09-28, 09-29) · 7918aa4 (01/10 18:56 UTC) seconde passe SuccessFactors ; D-481/D-482 (30/09) pour la qualification · prouvée le 02/10 04:44
+   zegna-altamira (6 : 09-24, 09-25, 09-26, 09-27, 09-28, 09-29) · D-482 (30/09) lecteur Altamira · validée depuis le 30/09 06:34

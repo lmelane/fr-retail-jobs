@@ -1,0 +1,21 @@
+{
+  "source": "knitwell-us-retail",
+  "at": "2026-10-02T15:13:37.322Z",
+  "seconds": 89,
+  "jobs": 1999,
+  "distinct": 1999,
+  "declaredTotal": 2000,
+  "complete": true,
+  "truncated": false,
+  "method": "PUBLISHER_TOTAL_COUNT_JSON_PAGINATION",
+  "termination": "PUBLISHER_TOTAL_ROWS_READ",
+  "issues": [
+    "ROWS_WITHOUT_EXTERNAL_PATH"
+  ],
+  "pages": 101,
+  "rawCount": 2000,
+  "scopes": [
+    "jobs 1999/2000 prouvé"
+  ],
+  "employerFromFacet": 0
+}

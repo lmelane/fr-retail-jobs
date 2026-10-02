@@ -1,0 +1,41 @@
+{
+  "source": "knitwell-us-retail",
+  "at": "2026-10-02T15:18:49.487Z",
+  "seconds": 247,
+  "jobs": 3515,
+  "distinct": 3515,
+  "declaredTotal": 3515,
+  "complete": true,
+  "truncated": false,
+  "method": "PUBLISHER_TOTAL_COUNT_JSON_PAGINATION_COVERING_FACET",
+  "termination": "COVERING_FACET_RECONCILED",
+  "issues": [
+    "PUBLISHER_TOTAL_CAPPED",
+    "RECONCILED_BY_SECOND_SWEEP",
+    "REPEATED_IDS_ACROSS_PAGES",
+    "COVERED_BY_FACET=jobFamilyGroup"
+  ],
+  "pages": 331,
+  "rawCount": 5515,
+  "scopes": [
+    "jobs 3515/3515 prouvé",
+    "jobs:capped-site 2000/2000 non prouvé",
+    "jobFamilyGroup=PBLB - Store Job Family Group 1759/1759 prouvé",
+    "jobFamilyGroup=FAS - Stores Job Family Group 1267/1267 prouvé",
+    "jobFamilyGroup=TLB - Stores 482/482 prouvé",
+    "jobFamilyGroup=FAS - Field Leadership Job Family Group 3/3 prouvé",
+    "jobFamilyGroup=PBLB - Store Leadership Job Family Group 3/3 prouvé",
+    "jobFamilyGroup=Corporate Job Family Group 1/1 prouvé"
+  ],
+  "coveringFacet": [
+    "jobFamilyGroup=PBLB - Store Job Family Group:1758",
+    "jobFamilyGroup=FAS - Stores Job Family Group:1268",
+    "jobFamilyGroup=TLB - Stores:482",
+    "jobFamilyGroup=FAS - Field Leadership Job Family Group:3",
+    "jobFamilyGroup=PBLB - Store Leadership Job Family Group:3",
+    "jobFamilyGroup=Corporate Job Family Group:1",
+    "sum=3515",
+    "agreeing=4"
+  ],
+  "employerFromFacet": 0
+}
