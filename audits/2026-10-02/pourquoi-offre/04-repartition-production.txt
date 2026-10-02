@@ -1,0 +1,56 @@
+catalogue — 95 779 offres au 2026-10-02T14:24:59.324Z (base sans retenue R-143 §2)
+  EXPOSEE              85 223
+  RETENUE_PAR_REGLE         3
+  FERMEE                5 976
+  HORS_MARCHE           4 577
+  par cause :
+    EXPOSEE/CONFIRMEE                            85 223
+    FERMEE/PAR_LA_SOURCE                          5 077
+    HORS_MARCHE/SANS_PAYS                         3 217
+    HORS_MARCHE/PAYS_HORS_MARCHE                  1 360
+    FERMEE/PAR_ECHEANCE                             899
+    RETENUE_PAR_REGLE/CANDIDATURE_SPONTANEE           3
+  sans cause : 0
+  US            43 012 : EXPOSEE 40 604, FERMEE 2 408
+  FR            14 546 : EXPOSEE 13 584, FERMEE 962
+  GB             4 844 : EXPOSEE 4 319, FERMEE 525
+  DE             3 881 : EXPOSEE 3 594, RETENUE_PAR_REGLE 3, FERMEE 284
+  CA             3 629 : EXPOSEE 3 479, FERMEE 150
+  sans pays      3 235 : FERMEE 18, HORS_MARCHE 3 217
+  IT             3 065 : EXPOSEE 2 922, FERMEE 143
+  ES             2 512 : EXPOSEE 2 253, FERMEE 259
+  NL             2 180 : EXPOSEE 1 969, FERMEE 211
+  AU             1 607 : EXPOSEE 1 504, FERMEE 103
+  hors marché    1 471 : FERMEE 111, HORS_MARCHE 1 360
+  CH             1 425 : EXPOSEE 1 323, FERMEE 102
+  CN             1 266 : EXPOSEE 1 236, FERMEE 30
+  BE               761 : EXPOSEE 718, FERMEE 43
+  JP               646 : EXPOSEE 615, FERMEE 31
+  MX               563 : EXPOSEE 512, FERMEE 51
+  KR               563 : EXPOSEE 542, FERMEE 21
+  SG               530 : EXPOSEE 519, FERMEE 11
+  PT               502 : EXPOSEE 444, FERMEE 58
+  DK               438 : EXPOSEE 348, FERMEE 90
+  PL               419 : EXPOSEE 388, FERMEE 31
+  HK               376 : EXPOSEE 359, FERMEE 17
+  SE               349 : EXPOSEE 280, FERMEE 69
+  CL               313 : EXPOSEE 310, FERMEE 3
+  MY               309 : EXPOSEE 293, FERMEE 16
+  AE               300 : EXPOSEE 269, FERMEE 31
+  TH               299 : EXPOSEE 294, FERMEE 5
+  TR               283 : EXPOSEE 257, FERMEE 26
+  NO               270 : EXPOSEE 211, FERMEE 59
+  BR               232 : EXPOSEE 221, FERMEE 11
+  NZ               224 : EXPOSEE 220, FERMEE 4
+  TW               219 : EXPOSEE 207, FERMEE 12
+  ZA               211 : EXPOSEE 181, FERMEE 30
+  GR               210 : EXPOSEE 208, FERMEE 2
+  VN               191 : EXPOSEE 183, FERMEE 8
+  PE               175 : EXPOSEE 172, FERMEE 3
+  HU               138 : EXPOSEE 132, FERMEE 6
+  CZ               136 : EXPOSEE 129, FERMEE 7
+  RO               107 : EXPOSEE 98, FERMEE 9
+  SA               107 : EXPOSEE 101, FERMEE 6
+  PR                97 : EXPOSEE 96, FERMEE 1
+  PH                72 : EXPOSEE 72
+  LU                66 : EXPOSEE 57, FERMEE 9

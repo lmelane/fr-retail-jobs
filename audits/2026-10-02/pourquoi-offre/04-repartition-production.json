@@ -1,0 +1,971 @@
+{
+  "at": "2026-10-02T14:25:04.223Z",
+  "schema": {
+    "availabilityHold": false,
+    "publisherClosedAt": false
+  },
+  "scope": {
+    "kind": "CATALOGUE",
+    "key": null,
+    "label": "catalogue"
+  },
+  "counts": {
+    "total": 95779,
+    "byState": {
+      "EXPOSEE": 85223,
+      "MASQUEE": 0,
+      "RETENUE_PAR_REGLE": 3,
+      "ABSORBEE": 0,
+      "FERMEE": 5976,
+      "NON_PUBLIABLE": 0,
+      "HORS_MARCHE": 4577,
+      "INEXPLIQUEE": 0
+    },
+    "byCause": {
+      "EXPOSEE/CONFIRMEE": 85223,
+      "FERMEE/PAR_LA_SOURCE": 5077,
+      "HORS_MARCHE/PAYS_HORS_MARCHE": 1360,
+      "FERMEE/PAR_ECHEANCE": 899,
+      "HORS_MARCHE/SANS_PAYS": 3217,
+      "RETENUE_PAR_REGLE/CANDIDATURE_SPONTANEE": 3
+    }
+  },
+  "identityReview": 0,
+  "unexplained": [],
+  "byMarket": [
+    {
+      "market": "US",
+      "label": "États-Unis",
+      "counts": {
+        "total": 43012,
+        "byState": {
+          "EXPOSEE": 40604,
+          "MASQUEE": 0,
+          "RETENUE_PAR_REGLE": 0,
+          "ABSORBEE": 0,
+          "FERMEE": 2408,
+          "NON_PUBLIABLE": 0,
+          "HORS_MARCHE": 0,
+          "INEXPLIQUEE": 0
+        },
+        "byCause": {
+          "EXPOSEE/CONFIRMEE": 40604,
+          "FERMEE/PAR_LA_SOURCE": 1964,
+          "FERMEE/PAR_ECHEANCE": 444
+        }
+      }
+    },
+    {
+      "market": "FR",
+      "label": "France",
+      "counts": {
+        "total": 14546,
+        "byState": {
+          "EXPOSEE": 13584,
+          "MASQUEE": 0,
+          "RETENUE_PAR_REGLE": 0,
+          "ABSORBEE": 0,
+          "FERMEE": 962,
+          "NON_PUBLIABLE": 0,
+          "HORS_MARCHE": 0,
+          "INEXPLIQUEE": 0
+        },
+        "byCause": {
+          "EXPOSEE/CONFIRMEE": 13584,
+          "FERMEE/PAR_LA_SOURCE": 934,
+          "FERMEE/PAR_ECHEANCE": 28
+        }
+      }
+    },
+    {
+      "market": "GB",
+      "label": "Royaume-Uni",
+      "counts": {
+        "total": 4844,
+        "byState": {
+          "EXPOSEE": 4319,
+          "MASQUEE": 0,
+          "RETENUE_PAR_REGLE": 0,
+          "ABSORBEE": 0,
+          "FERMEE": 525,
+          "NON_PUBLIABLE": 0,
+          "HORS_MARCHE": 0,
+          "INEXPLIQUEE": 0
+        },
+        "byCause": {
+          "EXPOSEE/CONFIRMEE": 4319,
+          "FERMEE/PAR_LA_SOURCE": 412,
+          "FERMEE/PAR_ECHEANCE": 113
+        }
+      }
+    },
+    {
+      "market": "DE",
+      "label": "Allemagne",
+      "counts": {
+        "total": 3881,
+        "byState": {
+          "EXPOSEE": 3594,
+          "MASQUEE": 0,
+          "RETENUE_PAR_REGLE": 3,
+          "ABSORBEE": 0,
+          "FERMEE": 284,
+          "NON_PUBLIABLE": 0,
+          "HORS_MARCHE": 0,
+          "INEXPLIQUEE": 0
+        },
+        "byCause": {
+          "EXPOSEE/CONFIRMEE": 3594,
+          "FERMEE/PAR_LA_SOURCE": 273,
+          "FERMEE/PAR_ECHEANCE": 11,
+          "RETENUE_PAR_REGLE/CANDIDATURE_SPONTANEE": 3
+        }
+      }
+    },
+    {
+      "market": "CA",
+      "label": "Canada",
+      "counts": {
+        "total": 3629,
+        "byState": {
+          "EXPOSEE": 3479,
+          "MASQUEE": 0,
+          "RETENUE_PAR_REGLE": 0,
+          "ABSORBEE": 0,
+          "FERMEE": 150,
+          "NON_PUBLIABLE": 0,
+          "HORS_MARCHE": 0,
+          "INEXPLIQUEE": 0
+        },
+        "byCause": {
+          "EXPOSEE/CONFIRMEE": 3479,
+          "FERMEE/PAR_LA_SOURCE": 129,
+          "FERMEE/PAR_ECHEANCE": 21
+        }
+      }
+    },
+    {
+      "market": "sans pays",
+      "label": "sans pays",
+      "counts": {
+        "total": 3235,
+        "byState": {
+          "EXPOSEE": 0,
+          "MASQUEE": 0,
+          "RETENUE_PAR_REGLE": 0,
+          "ABSORBEE": 0,
+          "FERMEE": 18,
+          "NON_PUBLIABLE": 0,
+          "HORS_MARCHE": 3217,
+          "INEXPLIQUEE": 0
+        },
+        "byCause": {
+          "FERMEE/PAR_LA_SOURCE": 11,
+          "HORS_MARCHE/SANS_PAYS": 3217,
+          "FERMEE/PAR_ECHEANCE": 7
+        }
+      }
+    },
+    {
+      "market": "IT",
+      "label": "Italie",
+      "counts": {
+        "total": 3065,
+        "byState": {
+          "EXPOSEE": 2922,
+          "MASQUEE": 0,
+          "RETENUE_PAR_REGLE": 0,
+          "ABSORBEE": 0,
+          "FERMEE": 143,
+          "NON_PUBLIABLE": 0,
+          "HORS_MARCHE": 0,
+          "INEXPLIQUEE": 0
+        },
+        "byCause": {
+          "EXPOSEE/CONFIRMEE": 2922,
+          "FERMEE/PAR_LA_SOURCE": 130,
+          "FERMEE/PAR_ECHEANCE": 13
+        }
+      }
+    },
+    {
+      "market": "ES",
+      "label": "Espagne",
+      "counts": {
+        "total": 2512,
+        "byState": {
+          "EXPOSEE": 2253,
+          "MASQUEE": 0,
+          "RETENUE_PAR_REGLE": 0,
+          "ABSORBEE": 0,
+          "FERMEE": 259,
+          "NON_PUBLIABLE": 0,
+          "HORS_MARCHE": 0,
+          "INEXPLIQUEE": 0
+        },
+        "byCause": {
+          "EXPOSEE/CONFIRMEE": 2253,
+          "FERMEE/PAR_LA_SOURCE": 250,
+          "FERMEE/PAR_ECHEANCE": 9
+        }
+      }
+    },
+    {
+      "market": "NL",
+      "label": "Pays-Bas",
+      "counts": {
+        "total": 2180,
+        "byState": {
+          "EXPOSEE": 1969,
+          "MASQUEE": 0,
+          "RETENUE_PAR_REGLE": 0,
+          "ABSORBEE": 0,
+          "FERMEE": 211,
+          "NON_PUBLIABLE": 0,
+          "HORS_MARCHE": 0,
+          "INEXPLIQUEE": 0
+        },
+        "byCause": {
+          "EXPOSEE/CONFIRMEE": 1969,
+          "FERMEE/PAR_LA_SOURCE": 193,
+          "FERMEE/PAR_ECHEANCE": 18
+        }
+      }
+    },
+    {
+      "market": "AU",
+      "label": "Australie",
+      "counts": {
+        "total": 1607,
+        "byState": {
+          "EXPOSEE": 1504,
+          "MASQUEE": 0,
+          "RETENUE_PAR_REGLE": 0,
+          "ABSORBEE": 0,
+          "FERMEE": 103,
+          "NON_PUBLIABLE": 0,
+          "HORS_MARCHE": 0,
+          "INEXPLIQUEE": 0
+        },
+        "byCause": {
+          "EXPOSEE/CONFIRMEE": 1504,
+          "FERMEE/PAR_LA_SOURCE": 101,
+          "FERMEE/PAR_ECHEANCE": 2
+        }
+      }
+    },
+    {
+      "market": "hors marché",
+      "label": "hors marché",
+      "counts": {
+        "total": 1471,
+        "byState": {
+          "EXPOSEE": 0,
+          "MASQUEE": 0,
+          "RETENUE_PAR_REGLE": 0,
+          "ABSORBEE": 0,
+          "FERMEE": 111,
+          "NON_PUBLIABLE": 0,
+          "HORS_MARCHE": 1360,
+          "INEXPLIQUEE": 0
+        },
+        "byCause": {
+          "HORS_MARCHE/PAYS_HORS_MARCHE": 1360,
+          "FERMEE/PAR_ECHEANCE": 49,
+          "FERMEE/PAR_LA_SOURCE": 62
+        }
+      }
+    },
+    {
+      "market": "CH",
+      "label": "Suisse",
+      "counts": {
+        "total": 1425,
+        "byState": {
+          "EXPOSEE": 1323,
+          "MASQUEE": 0,
+          "RETENUE_PAR_REGLE": 0,
+          "ABSORBEE": 0,
+          "FERMEE": 102,
+          "NON_PUBLIABLE": 0,
+          "HORS_MARCHE": 0,
+          "INEXPLIQUEE": 0
+        },
+        "byCause": {
+          "EXPOSEE/CONFIRMEE": 1323,
+          "FERMEE/PAR_LA_SOURCE": 79,
+          "FERMEE/PAR_ECHEANCE": 23
+        }
+      }
+    },
+    {
+      "market": "CN",
+      "label": "Chine",
+      "counts": {
+        "total": 1266,
+        "byState": {
+          "EXPOSEE": 1236,
+          "MASQUEE": 0,
+          "RETENUE_PAR_REGLE": 0,
+          "ABSORBEE": 0,
+          "FERMEE": 30,
+          "NON_PUBLIABLE": 0,
+          "HORS_MARCHE": 0,
+          "INEXPLIQUEE": 0
+        },
+        "byCause": {
+          "EXPOSEE/CONFIRMEE": 1236,
+          "FERMEE/PAR_LA_SOURCE": 30
+        }
+      }
+    },
+    {
+      "market": "BE",
+      "label": "Belgique",
+      "counts": {
+        "total": 761,
+        "byState": {
+          "EXPOSEE": 718,
+          "MASQUEE": 0,
+          "RETENUE_PAR_REGLE": 0,
+          "ABSORBEE": 0,
+          "FERMEE": 43,
+          "NON_PUBLIABLE": 0,
+          "HORS_MARCHE": 0,
+          "INEXPLIQUEE": 0
+        },
+        "byCause": {
+          "FERMEE/PAR_LA_SOURCE": 42,
+          "EXPOSEE/CONFIRMEE": 718,
+          "FERMEE/PAR_ECHEANCE": 1
+        }
+      }
+    },
+    {
+      "market": "JP",
+      "label": "Japon",
+      "counts": {
+        "total": 646,
+        "byState": {
+          "EXPOSEE": 615,
+          "MASQUEE": 0,
+          "RETENUE_PAR_REGLE": 0,
+          "ABSORBEE": 0,
+          "FERMEE": 31,
+          "NON_PUBLIABLE": 0,
+          "HORS_MARCHE": 0,
+          "INEXPLIQUEE": 0
+        },
+        "byCause": {
+          "EXPOSEE/CONFIRMEE": 615,
+          "FERMEE/PAR_LA_SOURCE": 30,
+          "FERMEE/PAR_ECHEANCE": 1
+        }
+      }
+    },
+    {
+      "market": "MX",
+      "label": "Mexique",
+      "counts": {
+        "total": 563,
+        "byState": {
+          "EXPOSEE": 512,
+          "MASQUEE": 0,
+          "RETENUE_PAR_REGLE": 0,
+          "ABSORBEE": 0,
+          "FERMEE": 51,
+          "NON_PUBLIABLE": 0,
+          "HORS_MARCHE": 0,
+          "INEXPLIQUEE": 0
+        },
+        "byCause": {
+          "EXPOSEE/CONFIRMEE": 512,
+          "FERMEE/PAR_LA_SOURCE": 36,
+          "FERMEE/PAR_ECHEANCE": 15
+        }
+      }
+    },
+    {
+      "market": "KR",
+      "label": "Corée du Sud",
+      "counts": {
+        "total": 563,
+        "byState": {
+          "EXPOSEE": 542,
+          "MASQUEE": 0,
+          "RETENUE_PAR_REGLE": 0,
+          "ABSORBEE": 0,
+          "FERMEE": 21,
+          "NON_PUBLIABLE": 0,
+          "HORS_MARCHE": 0,
+          "INEXPLIQUEE": 0
+        },
+        "byCause": {
+          "EXPOSEE/CONFIRMEE": 542,
+          "FERMEE/PAR_LA_SOURCE": 18,
+          "FERMEE/PAR_ECHEANCE": 3
+        }
+      }
+    },
+    {
+      "market": "SG",
+      "label": "Singapour",
+      "counts": {
+        "total": 530,
+        "byState": {
+          "EXPOSEE": 519,
+          "MASQUEE": 0,
+          "RETENUE_PAR_REGLE": 0,
+          "ABSORBEE": 0,
+          "FERMEE": 11,
+          "NON_PUBLIABLE": 0,
+          "HORS_MARCHE": 0,
+          "INEXPLIQUEE": 0
+        },
+        "byCause": {
+          "EXPOSEE/CONFIRMEE": 519,
+          "FERMEE/PAR_LA_SOURCE": 11
+        }
+      }
+    },
+    {
+      "market": "PT",
+      "label": "Portugal",
+      "counts": {
+        "total": 502,
+        "byState": {
+          "EXPOSEE": 444,
+          "MASQUEE": 0,
+          "RETENUE_PAR_REGLE": 0,
+          "ABSORBEE": 0,
+          "FERMEE": 58,
+          "NON_PUBLIABLE": 0,
+          "HORS_MARCHE": 0,
+          "INEXPLIQUEE": 0
+        },
+        "byCause": {
+          "EXPOSEE/CONFIRMEE": 444,
+          "FERMEE/PAR_LA_SOURCE": 56,
+          "FERMEE/PAR_ECHEANCE": 2
+        }
+      }
+    },
+    {
+      "market": "DK",
+      "label": "Danemark",
+      "counts": {
+        "total": 438,
+        "byState": {
+          "EXPOSEE": 348,
+          "MASQUEE": 0,
+          "RETENUE_PAR_REGLE": 0,
+          "ABSORBEE": 0,
+          "FERMEE": 90,
+          "NON_PUBLIABLE": 0,
+          "HORS_MARCHE": 0,
+          "INEXPLIQUEE": 0
+        },
+        "byCause": {
+          "EXPOSEE/CONFIRMEE": 348,
+          "FERMEE/PAR_LA_SOURCE": 53,
+          "FERMEE/PAR_ECHEANCE": 37
+        }
+      }
+    },
+    {
+      "market": "PL",
+      "label": "Pologne",
+      "counts": {
+        "total": 419,
+        "byState": {
+          "EXPOSEE": 388,
+          "MASQUEE": 0,
+          "RETENUE_PAR_REGLE": 0,
+          "ABSORBEE": 0,
+          "FERMEE": 31,
+          "NON_PUBLIABLE": 0,
+          "HORS_MARCHE": 0,
+          "INEXPLIQUEE": 0
+        },
+        "byCause": {
+          "EXPOSEE/CONFIRMEE": 388,
+          "FERMEE/PAR_LA_SOURCE": 30,
+          "FERMEE/PAR_ECHEANCE": 1
+        }
+      }
+    },
+    {
+      "market": "HK",
+      "label": "R.A.S. chinoise de Hong Kong",
+      "counts": {
+        "total": 376,
+        "byState": {
+          "EXPOSEE": 359,
+          "MASQUEE": 0,
+          "RETENUE_PAR_REGLE": 0,
+          "ABSORBEE": 0,
+          "FERMEE": 17,
+          "NON_PUBLIABLE": 0,
+          "HORS_MARCHE": 0,
+          "INEXPLIQUEE": 0
+        },
+        "byCause": {
+          "EXPOSEE/CONFIRMEE": 359,
+          "FERMEE/PAR_LA_SOURCE": 15,
+          "FERMEE/PAR_ECHEANCE": 2
+        }
+      }
+    },
+    {
+      "market": "SE",
+      "label": "Suède",
+      "counts": {
+        "total": 349,
+        "byState": {
+          "EXPOSEE": 280,
+          "MASQUEE": 0,
+          "RETENUE_PAR_REGLE": 0,
+          "ABSORBEE": 0,
+          "FERMEE": 69,
+          "NON_PUBLIABLE": 0,
+          "HORS_MARCHE": 0,
+          "INEXPLIQUEE": 0
+        },
+        "byCause": {
+          "EXPOSEE/CONFIRMEE": 280,
+          "FERMEE/PAR_LA_SOURCE": 48,
+          "FERMEE/PAR_ECHEANCE": 21
+        }
+      }
+    },
+    {
+      "market": "CL",
+      "label": "Chili",
+      "counts": {
+        "total": 313,
+        "byState": {
+          "EXPOSEE": 310,
+          "MASQUEE": 0,
+          "RETENUE_PAR_REGLE": 0,
+          "ABSORBEE": 0,
+          "FERMEE": 3,
+          "NON_PUBLIABLE": 0,
+          "HORS_MARCHE": 0,
+          "INEXPLIQUEE": 0
+        },
+        "byCause": {
+          "EXPOSEE/CONFIRMEE": 310,
+          "FERMEE/PAR_LA_SOURCE": 3
+        }
+      }
+    },
+    {
+      "market": "MY",
+      "label": "Malaisie",
+      "counts": {
+        "total": 309,
+        "byState": {
+          "EXPOSEE": 293,
+          "MASQUEE": 0,
+          "RETENUE_PAR_REGLE": 0,
+          "ABSORBEE": 0,
+          "FERMEE": 16,
+          "NON_PUBLIABLE": 0,
+          "HORS_MARCHE": 0,
+          "INEXPLIQUEE": 0
+        },
+        "byCause": {
+          "EXPOSEE/CONFIRMEE": 293,
+          "FERMEE/PAR_LA_SOURCE": 15,
+          "FERMEE/PAR_ECHEANCE": 1
+        }
+      }
+    },
+    {
+      "market": "AE",
+      "label": "Émirats arabes unis",
+      "counts": {
+        "total": 300,
+        "byState": {
+          "EXPOSEE": 269,
+          "MASQUEE": 0,
+          "RETENUE_PAR_REGLE": 0,
+          "ABSORBEE": 0,
+          "FERMEE": 31,
+          "NON_PUBLIABLE": 0,
+          "HORS_MARCHE": 0,
+          "INEXPLIQUEE": 0
+        },
+        "byCause": {
+          "EXPOSEE/CONFIRMEE": 269,
+          "FERMEE/PAR_LA_SOURCE": 31
+        }
+      }
+    },
+    {
+      "market": "TH",
+      "label": "Thaïlande",
+      "counts": {
+        "total": 299,
+        "byState": {
+          "EXPOSEE": 294,
+          "MASQUEE": 0,
+          "RETENUE_PAR_REGLE": 0,
+          "ABSORBEE": 0,
+          "FERMEE": 5,
+          "NON_PUBLIABLE": 0,
+          "HORS_MARCHE": 0,
+          "INEXPLIQUEE": 0
+        },
+        "byCause": {
+          "EXPOSEE/CONFIRMEE": 294,
+          "FERMEE/PAR_LA_SOURCE": 5
+        }
+      }
+    },
+    {
+      "market": "TR",
+      "label": "Turquie",
+      "counts": {
+        "total": 283,
+        "byState": {
+          "EXPOSEE": 257,
+          "MASQUEE": 0,
+          "RETENUE_PAR_REGLE": 0,
+          "ABSORBEE": 0,
+          "FERMEE": 26,
+          "NON_PUBLIABLE": 0,
+          "HORS_MARCHE": 0,
+          "INEXPLIQUEE": 0
+        },
+        "byCause": {
+          "EXPOSEE/CONFIRMEE": 257,
+          "FERMEE/PAR_LA_SOURCE": 23,
+          "FERMEE/PAR_ECHEANCE": 3
+        }
+      }
+    },
+    {
+      "market": "NO",
+      "label": "Norvège",
+      "counts": {
+        "total": 270,
+        "byState": {
+          "EXPOSEE": 211,
+          "MASQUEE": 0,
+          "RETENUE_PAR_REGLE": 0,
+          "ABSORBEE": 0,
+          "FERMEE": 59,
+          "NON_PUBLIABLE": 0,
+          "HORS_MARCHE": 0,
+          "INEXPLIQUEE": 0
+        },
+        "byCause": {
+          "EXPOSEE/CONFIRMEE": 211,
+          "FERMEE/PAR_ECHEANCE": 48,
+          "FERMEE/PAR_LA_SOURCE": 11
+        }
+      }
+    },
+    {
+      "market": "BR",
+      "label": "Brésil",
+      "counts": {
+        "total": 232,
+        "byState": {
+          "EXPOSEE": 221,
+          "MASQUEE": 0,
+          "RETENUE_PAR_REGLE": 0,
+          "ABSORBEE": 0,
+          "FERMEE": 11,
+          "NON_PUBLIABLE": 0,
+          "HORS_MARCHE": 0,
+          "INEXPLIQUEE": 0
+        },
+        "byCause": {
+          "EXPOSEE/CONFIRMEE": 221,
+          "FERMEE/PAR_ECHEANCE": 1,
+          "FERMEE/PAR_LA_SOURCE": 10
+        }
+      }
+    },
+    {
+      "market": "NZ",
+      "label": "Nouvelle-Zélande",
+      "counts": {
+        "total": 224,
+        "byState": {
+          "EXPOSEE": 220,
+          "MASQUEE": 0,
+          "RETENUE_PAR_REGLE": 0,
+          "ABSORBEE": 0,
+          "FERMEE": 4,
+          "NON_PUBLIABLE": 0,
+          "HORS_MARCHE": 0,
+          "INEXPLIQUEE": 0
+        },
+        "byCause": {
+          "EXPOSEE/CONFIRMEE": 220,
+          "FERMEE/PAR_LA_SOURCE": 4
+        }
+      }
+    },
+    {
+      "market": "TW",
+      "label": "Taïwan",
+      "counts": {
+        "total": 219,
+        "byState": {
+          "EXPOSEE": 207,
+          "MASQUEE": 0,
+          "RETENUE_PAR_REGLE": 0,
+          "ABSORBEE": 0,
+          "FERMEE": 12,
+          "NON_PUBLIABLE": 0,
+          "HORS_MARCHE": 0,
+          "INEXPLIQUEE": 0
+        },
+        "byCause": {
+          "EXPOSEE/CONFIRMEE": 207,
+          "FERMEE/PAR_LA_SOURCE": 10,
+          "FERMEE/PAR_ECHEANCE": 2
+        }
+      }
+    },
+    {
+      "market": "ZA",
+      "label": "Afrique du Sud",
+      "counts": {
+        "total": 211,
+        "byState": {
+          "EXPOSEE": 181,
+          "MASQUEE": 0,
+          "RETENUE_PAR_REGLE": 0,
+          "ABSORBEE": 0,
+          "FERMEE": 30,
+          "NON_PUBLIABLE": 0,
+          "HORS_MARCHE": 0,
+          "INEXPLIQUEE": 0
+        },
+        "byCause": {
+          "EXPOSEE/CONFIRMEE": 181,
+          "FERMEE/PAR_LA_SOURCE": 20,
+          "FERMEE/PAR_ECHEANCE": 10
+        }
+      }
+    },
+    {
+      "market": "GR",
+      "label": "Grèce",
+      "counts": {
+        "total": 210,
+        "byState": {
+          "EXPOSEE": 208,
+          "MASQUEE": 0,
+          "RETENUE_PAR_REGLE": 0,
+          "ABSORBEE": 0,
+          "FERMEE": 2,
+          "NON_PUBLIABLE": 0,
+          "HORS_MARCHE": 0,
+          "INEXPLIQUEE": 0
+        },
+        "byCause": {
+          "EXPOSEE/CONFIRMEE": 208,
+          "FERMEE/PAR_LA_SOURCE": 2
+        }
+      }
+    },
+    {
+      "market": "VN",
+      "label": "Viêt Nam",
+      "counts": {
+        "total": 191,
+        "byState": {
+          "EXPOSEE": 183,
+          "MASQUEE": 0,
+          "RETENUE_PAR_REGLE": 0,
+          "ABSORBEE": 0,
+          "FERMEE": 8,
+          "NON_PUBLIABLE": 0,
+          "HORS_MARCHE": 0,
+          "INEXPLIQUEE": 0
+        },
+        "byCause": {
+          "EXPOSEE/CONFIRMEE": 183,
+          "FERMEE/PAR_LA_SOURCE": 5,
+          "FERMEE/PAR_ECHEANCE": 3
+        }
+      }
+    },
+    {
+      "market": "PE",
+      "label": "Pérou",
+      "counts": {
+        "total": 175,
+        "byState": {
+          "EXPOSEE": 172,
+          "MASQUEE": 0,
+          "RETENUE_PAR_REGLE": 0,
+          "ABSORBEE": 0,
+          "FERMEE": 3,
+          "NON_PUBLIABLE": 0,
+          "HORS_MARCHE": 0,
+          "INEXPLIQUEE": 0
+        },
+        "byCause": {
+          "EXPOSEE/CONFIRMEE": 172,
+          "FERMEE/PAR_LA_SOURCE": 3
+        }
+      }
+    },
+    {
+      "market": "HU",
+      "label": "Hongrie",
+      "counts": {
+        "total": 138,
+        "byState": {
+          "EXPOSEE": 132,
+          "MASQUEE": 0,
+          "RETENUE_PAR_REGLE": 0,
+          "ABSORBEE": 0,
+          "FERMEE": 6,
+          "NON_PUBLIABLE": 0,
+          "HORS_MARCHE": 0,
+          "INEXPLIQUEE": 0
+        },
+        "byCause": {
+          "FERMEE/PAR_LA_SOURCE": 6,
+          "EXPOSEE/CONFIRMEE": 132
+        }
+      }
+    },
+    {
+      "market": "CZ",
+      "label": "Tchéquie",
+      "counts": {
+        "total": 136,
+        "byState": {
+          "EXPOSEE": 129,
+          "MASQUEE": 0,
+          "RETENUE_PAR_REGLE": 0,
+          "ABSORBEE": 0,
+          "FERMEE": 7,
+          "NON_PUBLIABLE": 0,
+          "HORS_MARCHE": 0,
+          "INEXPLIQUEE": 0
+        },
+        "byCause": {
+          "EXPOSEE/CONFIRMEE": 129,
+          "FERMEE/PAR_ECHEANCE": 6,
+          "FERMEE/PAR_LA_SOURCE": 1
+        }
+      }
+    },
+    {
+      "market": "RO",
+      "label": "Roumanie",
+      "counts": {
+        "total": 107,
+        "byState": {
+          "EXPOSEE": 98,
+          "MASQUEE": 0,
+          "RETENUE_PAR_REGLE": 0,
+          "ABSORBEE": 0,
+          "FERMEE": 9,
+          "NON_PUBLIABLE": 0,
+          "HORS_MARCHE": 0,
+          "INEXPLIQUEE": 0
+        },
+        "byCause": {
+          "EXPOSEE/CONFIRMEE": 98,
+          "FERMEE/PAR_ECHEANCE": 2,
+          "FERMEE/PAR_LA_SOURCE": 7
+        }
+      }
+    },
+    {
+      "market": "SA",
+      "label": "Arabie saoudite",
+      "counts": {
+        "total": 107,
+        "byState": {
+          "EXPOSEE": 101,
+          "MASQUEE": 0,
+          "RETENUE_PAR_REGLE": 0,
+          "ABSORBEE": 0,
+          "FERMEE": 6,
+          "NON_PUBLIABLE": 0,
+          "HORS_MARCHE": 0,
+          "INEXPLIQUEE": 0
+        },
+        "byCause": {
+          "EXPOSEE/CONFIRMEE": 101,
+          "FERMEE/PAR_LA_SOURCE": 4,
+          "FERMEE/PAR_ECHEANCE": 2
+        }
+      }
+    },
+    {
+      "market": "PR",
+      "label": "Porto Rico",
+      "counts": {
+        "total": 97,
+        "byState": {
+          "EXPOSEE": 96,
+          "MASQUEE": 0,
+          "RETENUE_PAR_REGLE": 0,
+          "ABSORBEE": 0,
+          "FERMEE": 1,
+          "NON_PUBLIABLE": 0,
+          "HORS_MARCHE": 0,
+          "INEXPLIQUEE": 0
+        },
+        "byCause": {
+          "EXPOSEE/CONFIRMEE": 96,
+          "FERMEE/PAR_LA_SOURCE": 1
+        }
+      }
+    },
+    {
+      "market": "PH",
+      "label": "Philippines",
+      "counts": {
+        "total": 72,
+        "byState": {
+          "EXPOSEE": 72,
+          "MASQUEE": 0,
+          "RETENUE_PAR_REGLE": 0,
+          "ABSORBEE": 0,
+          "FERMEE": 0,
+          "NON_PUBLIABLE": 0,
+          "HORS_MARCHE": 0,
+          "INEXPLIQUEE": 0
+        },
+        "byCause": {
+          "EXPOSEE/CONFIRMEE": 72
+        }
+      }
+    },
+    {
+      "market": "LU",
+      "label": "Luxembourg",
+      "counts": {
+        "total": 66,
+        "byState": {
+          "EXPOSEE": 57,
+          "MASQUEE": 0,
+          "RETENUE_PAR_REGLE": 0,
+          "ABSORBEE": 0,
+          "FERMEE": 9,
+          "NON_PUBLIABLE": 0,
+          "HORS_MARCHE": 0,
+          "INEXPLIQUEE": 0
+        },
+        "byCause": {
+          "FERMEE/PAR_LA_SOURCE": 9,
+          "EXPOSEE/CONFIRMEE": 57
+        }
+      }
+    }
+  ]
+}

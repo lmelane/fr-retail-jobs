@@ -1,0 +1,3561 @@
+════ EXPOSEE/CONFIRMEE (85223 offres) ════
+Offre cmull2m3g3afqt234tbs21ijc — Retail Sales - Kids' Apparel & Shoes - NYC Flagship   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : EXPOSÉE — confirmée par sa source
+  servie par nordstrom, vue le 2026-10-01 17:19 UTC
+  Ce qui la ferait revenir : Rien : elle est servie. Elle reste servie tant que nordstrom (ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 17:20 UTC) la revoit ; masquée si une collecte crédible ne la liste plus, ou après 72 h sans être revue.
+
+1. Source et collecte
+  · nordstrom [ATS_OFFICIAL] active — Retail-Sales---Kids--Apparel---Shoes---NYC-Flagship_R-881293
+    https://nordstrom.wd501.myworkdayjobs.com/nordstrom_careers/job/New-York-NY/Retail-Sales---Kids--Apparel---Shoes---NYC-Flagship_R-881293
+    source : ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 17:20 UTC
+    vue du 2026-09-28 18:31 UTC au 2026-10-01 17:19 UTC
+    collecte : df4cfffe-d1aa-44db-ad9a-d763fc46cf8b du 2026-10-01 17:12 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Nordstrom (UNKNOWN, NORDSTROM, cmtpjpt4j2hoypf5lusxkuh9m)
+  Maison : Nordstrom
+
+4. Canonisation
+  métier : non reconnu (FAMILY_ONLY) ; rôles de l’intitulé : —
+  contrat : non précisé ; temps : non précisé ; dispositif : —
+  secteur (Maison) : FASHION, FOOTWEAR, RETAIL
+  lieu : New York, New York, US ; marché US ; point CITY
+
+5. Fraîcheur
+  publiée (source) : 2026-09-28 00:00 UTC ; première observation : 2026-09-28 18:31 UTC ; dernière observation : 2026-10-01 17:19 UTC
+  dernière revue : 2026-10-01 17:19 UTC par nordstrom
+
+6. Événements récents
+  2026-09-28 18:31 UTC OPENED
+
+════ EXPOSEE/CONFIRMEE (85223 offres) ════
+Offre cmuh8rz3w3x40p434fc31bb0c — People Generalist (Temporary Position)   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : EXPOSÉE — confirmée par sa source
+  servie par hm-group, vue le 2026-10-01 17:37 UTC
+  Ce qui la ferait revenir : Rien : elle est servie. Elle reste servie tant que hm-group (ACTIVE, dernière collecte de RUN OK le 2026-10-01 17:38 UTC) la revoit ; masquée si une collecte crédible ne la liste plus, ou après 72 h sans être revue.
+
+1. Source et collecte
+  · hm-group [GROUP_OFFICIAL] active — 744000151769389
+    https://jobs.smartrecruiters.com/HMGroup/744000151769389
+    source : ACTIVE, dernière collecte de RUN OK le 2026-10-01 17:38 UTC
+    vue du 2026-09-25 17:35 UTC au 2026-10-01 17:37 UTC
+    collecte : 078a077f-8ec1-4725-8317-69ec7eadbef7 du 2026-10-01 17:34 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : H&M Group (UNKNOWN, H_AND_M_GROUP, cmtp46ok11vbvqq4zlowazudi)
+  Maison : H&M Group
+
+4. Canonisation
+  métier : non reconnu (NO_RULE) ; rôles de l’intitulé : —
+  contrat : FIXED_TERM (natif « Fixed-term contract ») ; temps : non précisé ; dispositif : —
+  secteur (Maison) : FASHION, FOOTWEAR, BEAUTY, HOME_LIFESTYLE
+  lieu : Stockholm, SE ; marché SE ; point NATIVE
+
+5. Fraîcheur
+  publiée (source) : 2026-09-25 06:48 UTC ; première observation : 2026-09-25 17:35 UTC ; dernière observation : 2026-10-01 17:37 UTC
+  dernière revue : 2026-10-01 17:37 UTC par hm-group
+
+6. Événements récents
+  2026-09-25 17:35 UTC OPENED
+
+════ EXPOSEE/CONFIRMEE (85223 offres) ════
+Offre cmuptz6ip4b5ol73454trokp3 — Sales Lead-ANN   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : EXPOSÉE — confirmée par sa source
+  servie par knitwell-us-retail, vue le 2026-10-01 17:51 UTC
+  Ce qui la ferait revenir : Rien : elle est servie. Elle reste servie tant que knitwell-us-retail (ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 17:54 UTC) la revoit ; masquée si une collecte crédible ne la liste plus, ou après 72 h sans être revue.
+
+1. Source et collecte
+  · knitwell-us-retail [GROUP_OFFICIAL] active — Sales-Lead-ANN_R-2038367
+    https://knitwellgroup.wd1.myworkdayjobs.com/US_Retail_Jobs/job/Store-1080-Fashion-Show-ANN-Las-Vegas-NV-89109/Sales-Lead-ANN_R-2038367
+    source : ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 17:54 UTC
+    vue du 2026-10-01 17:51 UTC au 2026-10-01 17:51 UTC
+    collecte : 3eb013e7-56c2-4522-984e-c4c97792742c du 2026-10-01 17:44 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Ann Taylor (BRAND, ANN_TAYLOR, cmtvs8iu70001msh9r6ivl3cu)
+  Maison : Ann Taylor
+
+4. Canonisation
+  métier : retail-sales-lead (CLASSIFIED) ; rôles de l’intitulé : retail-sales-lead
+  contrat : non précisé ; temps : PART_TIME ; dispositif : —
+  secteur (Maison) : inconnu
+  lieu : US ; marché US ; point —
+
+5. Fraîcheur
+  publiée (source) : 2026-09-30 00:00 UTC ; première observation : 2026-10-01 17:51 UTC ; dernière observation : 2026-10-01 17:51 UTC
+  dernière revue : 2026-10-01 17:51 UTC par knitwell-us-retail
+
+6. Événements récents
+  2026-10-01 17:51 UTC OPENED
+
+════ EXPOSEE/CONFIRMEE (85223 offres) ════
+Offre cmu9juinu0262s487jlfqnm7k — Beauty Advisor   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : EXPOSÉE — confirmée par sa source
+  servie par ulta-jibe, vue le 2026-10-02 04:51 UTC
+  Ce qui la ferait revenir : Rien : elle est servie. Elle reste servie tant que ulta-jibe (ACTIVE, dernière collecte de RUN OK le 2026-10-02 05:02 UTC) la revoit ; masquée si une collecte crédible ne la liste plus, ou après 72 h sans être revue.
+
+1. Source et collecte
+  · ulta-jibe [EMPLOYER_DIRECT] active — 528184
+    https://careers.ulta.com/jobs/528184?lang=en-us
+    source : ACTIVE, dernière collecte de RUN OK le 2026-10-02 05:02 UTC
+    vue du 2026-09-20 08:23 UTC au 2026-10-02 04:51 UTC
+    collecte : dda16b0c-ceb3-4a62-a752-f0999ae64b1d du 2026-10-02 04:47 UTC (ingest)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Ulta Beauty (UNKNOWN, ULTA_BEAUTY, cmtpuyimv3pbul35m36fwuuzo)
+  Maison : Ulta Beauty
+
+4. Canonisation
+  métier : beauty-consultant (CLASSIFIED) ; rôles de l’intitulé : beauty-consultant
+  contrat : non précisé (natif « Part Time ») ; temps : PART_TIME ; dispositif : —
+  secteur (Maison) : BEAUTY, FRAGRANCE, RETAIL
+  lieu : North Conway, New Hampshire, US ; marché US ; point NATIVE
+
+5. Fraîcheur
+  publiée (source) : 2026-09-15 17:36 UTC ; première observation : 2026-09-20 08:23 UTC ; dernière observation : 2026-10-02 04:51 UTC
+  dernière revue : 2026-10-02 04:51 UTC par ulta-jibe
+
+6. Événements récents
+  2026-09-20 08:23 UTC OPENED
+
+════ EXPOSEE/CONFIRMEE (85223 offres) ════
+Offre cmunsr42l0327mu6iv57rb8eu — Samstags-Aushilfe SCS Vösendorf Tommy Hilfiger (m/w/d)   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : EXPOSÉE — confirmée par sa source
+  servie par pvh, vue le 2026-10-01 17:45 UTC
+  Ce qui la ferait revenir : Rien : elle est servie. Elle reste servie tant que pvh (ACTIVE, dernière collecte de RUN OK le 2026-10-01 17:46 UTC) la revoit ; masquée si une collecte crédible ne la liste plus, ou après 72 h sans être revue.
+
+1. Source et collecte
+  · pvh [GROUP_OFFICIAL] active — PCAPCAUSR35348EXTERNALENUS
+    https://careers.pvh.com/us/en/job/R35348/samstags-aushilfe-scs-vosendorf-tommy-hilfiger-m-w-d
+    source : ACTIVE, dernière collecte de RUN OK le 2026-10-01 17:46 UTC
+    vue du 2026-09-30 07:41 UTC au 2026-10-01 17:45 UTC
+    collecte : 08e5da1a-2601-44d7-820a-34fdf235ea3a du 2026-10-01 17:26 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Tommy Hilfiger (UNKNOWN, SOURCE_a06690a39794ba97af55af980baffd2d957e4883c39f0c3bd1e60f71857dc4ae, cmunsojk6000nmu6ih78darqs)
+  Maison : Tommy Hilfiger
+
+4. Canonisation
+  métier : non reconnu (FAMILY_ONLY) ; rôles de l’intitulé : —
+  contrat : non précisé (natif « Part time ») ; temps : PART_TIME ; dispositif : —
+  secteur (Maison) : inconnu
+  lieu : Vösendorf, AT ; marché DE ; point CITY
+
+5. Fraîcheur
+  publiée (source) : 2026-09-14 16:07 UTC ; première observation : 2026-09-30 07:41 UTC ; dernière observation : 2026-10-01 17:45 UTC
+  dernière revue : 2026-10-01 17:45 UTC par pvh
+
+6. Événements récents
+  2026-09-30 07:41 UTC OPENED
+
+════ EXPOSEE/CONFIRMEE (85223 offres) ════
+Offre cmu87uv4k0043pg6hbk8t6hj1 — Employé de Rayon Itinérant H/F   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : EXPOSÉE — confirmée par sa source
+  servie par eram-3, vue le 2026-10-01 16:16 UTC
+  Ce qui la ferait revenir : Rien : elle est servie. Elle reste servie tant que eram-3 (ACTIVE, dernière collecte de RUN OK le 2026-10-01 16:16 UTC) la revoit ; masquée si une collecte crédible ne la liste plus, ou après 72 h sans être revue.
+
+1. Source et collecte
+  · eram-3 [EMPLOYER_DIRECT] active — 10955-OTkwNzAtT2VENjF4
+    https://api.magnet.work/v2/redirect/job-offer/eram_apprecruteur_cvcatcher/99070-OeD61x?_fallback_url=https%3A%2F%2Fwww.hw-recruteur.com%2Foffer%2Fjoboffer%2Foffre-99070-OeD61x
+    source : ACTIVE, dernière collecte de RUN OK le 2026-10-01 16:16 UTC
+    vue du 2026-09-19 10:00 UTC au 2026-10-01 16:16 UTC
+    collecte : fa07144e-f933-4d78-9894-426e757934b5 du 2026-10-01 16:16 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Mellow Yellow (UNKNOWN, MELLOW_YELLOW, cmtk1yga503pknv2busrstjte)
+  Maison : Mellow Yellow ; groupe Groupe Eram
+
+4. Canonisation
+  métier : employe-de-commerce (CLASSIFIED) ; rôles de l’intitulé : employe-de-commerce
+  contrat : PERMANENT ; temps : non précisé ; dispositif : —
+  secteur (Maison) : FASHION
+  lieu : Paris, FR ; marché FR ; point NATIVE
+
+5. Fraîcheur
+  publiée (source) : 2026-09-11 14:00 UTC ; première observation : 2026-09-19 10:00 UTC ; dernière observation : 2026-10-01 16:16 UTC
+  dernière revue : 2026-10-01 16:16 UTC par eram-3
+
+6. Événements récents
+  2026-09-19 10:00 UTC OPENED
+
+════ EXPOSEE/CONFIRMEE (85223 offres) ════
+Offre cmu9lvgwm011tr5bnf84f78sw — Vendeuse / Vendeur - F/H   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : EXPOSÉE — confirmée par sa source
+  servie par courir, vue le 2026-10-01 16:35 UTC
+  Ce qui la ferait revenir : Rien : elle est servie. Elle reste servie tant que courir (ACTIVE, dernière collecte de RUN OK le 2026-10-01 16:35 UTC) la revoit ; masquée si une collecte crédible ne la liste plus, ou après 72 h sans être revue.
+
+1. Source et collecte
+  · courir [EMPLOYER_DIRECT] active — 744000121952203
+    https://jobs.smartrecruiters.com/courir/744000121952203
+    source : ACTIVE, dernière collecte de RUN OK le 2026-10-01 16:35 UTC
+    vue du 2026-09-20 09:20 UTC au 2026-10-01 16:35 UTC
+    collecte : 3d17e25d-731c-4b49-95ec-9d30e4c45051 du 2026-10-01 16:34 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Groupe Courir (UNKNOWN, COURIR, cmtjvn7mp0000ld2bc3dm4w94)
+  Maison : Groupe Courir
+
+4. Canonisation
+  métier : sales-advisor (CLASSIFIED) ; rôles de l’intitulé : sales-advisor
+  contrat : non précisé (natif « Part-time ») ; temps : PART_TIME ; dispositif : —
+  secteur (Maison) : inconnu
+  lieu : Portet-sur-Garonne, FR ; marché FR ; point NATIVE
+
+5. Fraîcheur
+  publiée (source) : 2026-04-21 07:31 UTC ; première observation : 2026-09-20 09:20 UTC ; dernière observation : 2026-10-01 16:35 UTC
+  dernière revue : 2026-10-01 16:35 UTC par courir
+
+6. Événements récents
+  2026-09-20 09:20 UTC OPENED
+
+════ EXPOSEE/CONFIRMEE (85223 offres) ════
+Offre cmudvm1bx32aloa34on2kg6yk — SALES ASSISTANT   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : EXPOSÉE — confirmée par sa source
+  servie par mango, vue le 2026-10-01 17:29 UTC
+  Ce qui la ferait revenir : Rien : elle est servie. Elle reste servie tant que mango (ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 17:31 UTC) la revoit ; masquée si une collecte crédible ne la liste plus, ou après 72 h sans être revue.
+
+1. Source et collecte
+  · mango [ATS_OFFICIAL] active — PT-SATI-DANIMANI---MULA-RYA-48_JR142539
+    https://mango.wd3.myworkdayjobs.com/Mango_Work_Your_Passion/job/MUGLA-Ruya-48-SC-WN/PT-SATI-DANIMANI---MULA-RYA-48_JR142539
+    source : ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 17:31 UTC
+    vue du 2026-09-23 09:03 UTC au 2026-10-01 17:29 UTC
+    collecte : 78a0558b-76c7-460c-bd87-3e7c965edf84 du 2026-10-01 17:24 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Mango (UNKNOWN, MANGO, cmtn89596205lqq5l0deggb1g)
+  Maison : Mango
+
+4. Canonisation
+  métier : sales-advisor (CLASSIFIED) ; rôles de l’intitulé : sales-advisor
+  contrat : PERMANENT ; temps : PART_TIME ; dispositif : —
+  secteur (Maison) : FASHION, RETAIL
+  lieu : MUGLA Ruya SC WN, TR ; marché TR ; point —
+
+5. Fraîcheur
+  publiée (source) : 2026-09-21 00:00 UTC ; première observation : 2026-09-23 09:03 UTC ; dernière observation : 2026-10-01 17:29 UTC
+  dernière revue : 2026-10-01 17:29 UTC par mango
+
+6. Événements récents
+  2026-09-23 09:03 UTC OPENED
+
+════ EXPOSEE/CONFIRMEE (85223 offres) ════
+Offre cmu9jy6770h8ys487oo7qc8su — Stylist   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : EXPOSÉE — confirmée par sa source
+  servie par ulta-jibe, vue le 2026-10-02 04:54 UTC
+  Ce qui la ferait revenir : Rien : elle est servie. Elle reste servie tant que ulta-jibe (ACTIVE, dernière collecte de RUN OK le 2026-10-02 05:02 UTC) la revoit ; masquée si une collecte crédible ne la liste plus, ou après 72 h sans être revue.
+
+1. Source et collecte
+  · ulta-jibe [EMPLOYER_DIRECT] active — 517265
+    https://careers.ulta.com/jobs/517265?lang=en-us
+    source : ACTIVE, dernière collecte de RUN OK le 2026-10-02 05:02 UTC
+    vue du 2026-09-20 08:26 UTC au 2026-10-02 04:54 UTC
+    collecte : dda16b0c-ceb3-4a62-a752-f0999ae64b1d du 2026-10-02 04:47 UTC (ingest)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Ulta Beauty (UNKNOWN, ULTA_BEAUTY, cmtpuyimv3pbul35m36fwuuzo)
+  Maison : Ulta Beauty
+
+4. Canonisation
+  métier : hairdresser (CLASSIFIED) ; rôles de l’intitulé : hairdresser
+  contrat : non précisé (natif « Part Time ») ; temps : PART_TIME ; dispositif : —
+  secteur (Maison) : BEAUTY, FRAGRANCE, RETAIL
+  lieu : Tampa, Florida, US ; marché US ; point NATIVE
+
+5. Fraîcheur
+  publiée (source) : 2026-08-11 20:30 UTC ; première observation : 2026-09-20 08:26 UTC ; dernière observation : 2026-10-02 04:54 UTC
+  dernière revue : 2026-10-02 04:54 UTC par ulta-jibe
+
+6. Événements récents
+  2026-09-20 08:26 UTC OPENED
+
+════ EXPOSEE/CONFIRMEE (85223 offres) ════
+Offre cmudvnihj38yfoa34sjbovz04 — Mağaza Müdür Yardımcısı - Muğla Rüya 48   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : EXPOSÉE — confirmée par sa source
+  servie par mango, vue le 2026-10-01 17:30 UTC
+  Ce qui la ferait revenir : Rien : elle est servie. Elle reste servie tant que mango (ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 17:31 UTC) la revoit ; masquée si une collecte crédible ne la liste plus, ou après 72 h sans être revue.
+
+1. Source et collecte
+  · mango [ATS_OFFICIAL] active — Maaza-Mdr-Yardmcs---Mula-Rya-48_JR120771
+    https://mango.wd3.myworkdayjobs.com/Mango_Work_Your_Passion/job/MUGLA-Ruya-48-SC-WN/Maaza-Mdr-Yardmcs---Mula-Rya-48_JR120771
+    source : ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 17:31 UTC
+    vue du 2026-09-23 09:05 UTC au 2026-10-01 17:30 UTC
+    collecte : 78a0558b-76c7-460c-bd87-3e7c965edf84 du 2026-10-01 17:24 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Mango (UNKNOWN, MANGO, cmtn89596205lqq5l0deggb1g)
+  Maison : Mango
+
+4. Canonisation
+  métier : non reconnu (NO_RULE) ; rôles de l’intitulé : —
+  contrat : PERMANENT ; temps : FULL_TIME ; dispositif : —
+  secteur (Maison) : FASHION, RETAIL
+  lieu : MUGLA Ruya SC WN, TR ; marché TR ; point —
+
+5. Fraîcheur
+  publiée (source) : 2025-12-24 00:00 UTC ; première observation : 2026-09-23 09:05 UTC ; dernière observation : 2026-10-01 17:30 UTC
+  dernière revue : 2026-10-01 17:30 UTC par mango
+
+6. Événements récents
+  2026-09-23 09:05 UTC OPENED
+
+════ EXPOSEE/CONFIRMEE (85223 offres) ════
+Offre cmuealket00qpoi35n1lhyoyg — Directeur, Planification financière et analyse   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : EXPOSÉE — confirmée par sa source
+  servie par clarins, vue le 2026-10-01 16:18 UTC
+  Ce qui la ferait revenir : Rien : elle est servie. Elle reste servie tant que clarins (ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 16:18 UTC) la revoit ; masquée si une collecte crédible ne la liste plus, ou après 72 h sans être revue.
+
+1. Source et collecte
+  · clarins [EMPLOYER_DIRECT] active — 1368690255
+    https://careers.groupeclarins.com/job/Laval-Directeur%2C-Planification-financi%C3%A8re-et-analyse-Qu%C3%A9b-H7W-5N4/1368690255/
+    source : ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 16:18 UTC
+    vue du 2026-09-23 16:03 UTC au 2026-10-01 16:18 UTC
+    collecte : f8bd86fd-4c67-4ac5-83e7-f9d7307b15aa du 2026-10-01 16:18 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : CLARINS (UNKNOWN, SOURCE_9eb00fff889a0ad64e863a58a601256162dfeea0770cb73a9c24b0abb702ed7c, cmuealiqt00k7oi35u2la4he4)
+  Maison : CLARINS ; groupe Clarins Group
+
+4. Canonisation
+  métier : non reconnu (FAMILY_ONLY) ; rôles de l’intitulé : —
+  contrat : non précisé ; temps : non précisé ; dispositif : —
+  secteur (Maison) : inconnu
+  lieu : Laval, CA ; marché CA ; point CITY
+
+5. Fraîcheur
+  publiée (source) : 2026-09-16 00:00 UTC ; première observation : 2026-09-23 16:03 UTC ; dernière observation : 2026-10-01 16:18 UTC
+  dernière revue : 2026-10-01 16:18 UTC par clarins
+
+6. Événements récents
+  2026-09-23 16:03 UTC OPENED
+
+════ EXPOSEE/CONFIRMEE (85223 offres) ════
+Offre cmudzwg9p001emo343p0bx1b6 — Sales Associate   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : EXPOSÉE — confirmée par sa source
+  servie par versace, vue le 2026-09-30 16:19 UTC ; source en pause : servie telle que vue en dernier
+  Ce qui la ferait revenir : Rien : elle est servie. Elle reste servie tant que versace (PAUSED, dernière collecte de RUN ERROR le 2026-10-01 16:13 UTC) la revoit ; masquée si une collecte crédible ne la liste plus, ou après 72 h sans être revue.
+
+1. Source et collecte
+  · versace [ATS_OFFICIAL] active — Sales-Associate_R_786754
+    https://capri.wd1.myworkdayjobs.com/Versace/job/Venice/Sales-Associate_R_786754
+    source : PAUSED, dernière collecte de RUN ERROR le 2026-10-01 16:13 UTC
+    vue du 2026-09-23 11:04 UTC au 2026-09-30 16:19 UTC
+    collecte : 44c3eb41-0fb0-4ae1-a702-d9d0c378d4be du 2026-09-30 16:19 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Gianni Versace S.r.l. (UNKNOWN, SOURCE_b3695c6fb45d0dfab10bd8e69a9cdc087cb4d4100915a7d266f2983888a4bcdb, cmudzwg9i001bmo34f629xim3)
+  Maison : Gianni Versace S.r.l.
+
+4. Canonisation
+  métier : sales-advisor (CLASSIFIED) ; rôles de l’intitulé : sales-advisor
+  contrat : non précisé ; temps : PART_TIME ; dispositif : —
+  secteur (Maison) : inconnu
+  lieu : Venice, IT ; marché IT ; point CITY
+
+5. Fraîcheur
+  publiée (source) : 2026-09-21 00:00 UTC ; première observation : 2026-09-23 11:04 UTC ; dernière observation : 2026-09-30 16:19 UTC
+  dernière revue : 2026-09-30 16:19 UTC par versace
+
+6. Événements récents
+  2026-09-23 11:04 UTC OPENED
+
+════ EXPOSEE/CONFIRMEE (85223 offres) ════
+Offre cmu854lou00u8nt43jaa1taa4 — Beauty Advisor   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : EXPOSÉE — confirmée par sa source
+  servie par a-derma-4, vue le 2026-10-01 16:30 UTC
+  Ce qui la ferait revenir : Rien : elle est servie. Elle reste servie tant que a-derma-4 (ACTIVE, dernière collecte de RUN OK le 2026-10-01 16:30 UTC) la revoit ; masquée si une collecte crédible ne la liste plus, ou après 72 h sans être revue.
+
+1. Source et collecte
+  · a-derma-4 [ATS_OFFICIAL] active — Beauty-Advisor_JR113436
+    https://pierrefabre.wd3.myworkdayjobs.com/External_Career_Site/job/Singapore---Office/Beauty-Advisor_JR113436
+    source : ACTIVE, dernière collecte de RUN OK le 2026-10-01 16:30 UTC
+    vue du 2026-09-19 08:43 UTC au 2026-10-01 16:30 UTC
+    collecte : 34db7179-beed-417f-aa95-0a04ce9d053a du 2026-10-01 16:29 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Pierre Fabre (UNKNOWN, PIERRE_FABRE, cmtn5ohf00ryrqq5l7babv4xg)
+  Maison : Pierre Fabre ; groupe Pierre Fabre
+
+4. Canonisation
+  métier : beauty-consultant (CLASSIFIED) ; rôles de l’intitulé : beauty-consultant
+  contrat : non précisé ; temps : FULL_TIME ; dispositif : INTERNSHIP
+  secteur (Maison) : BEAUTY
+  lieu : Singapour, SG ; marché SG ; point CITY
+
+5. Fraîcheur
+  publiée (source) : 2026-07-23 00:00 UTC ; première observation : 2026-09-19 08:43 UTC ; dernière observation : 2026-10-01 16:30 UTC
+  dernière revue : 2026-10-01 16:30 UTC par a-derma-4
+
+6. Événements récents
+  2026-09-19 08:43 UTC OPENED
+
+════ EXPOSEE/CONFIRMEE (85223 offres) ════
+Offre cmu8acd0500nml9f6y3vmq3rz — Stage - Assistant Formation Retail H/F   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : EXPOSÉE — confirmée par sa source
+  servie par diptyque-workday, vue le 2026-09-30 16:43 UTC
+  Ce qui la ferait revenir : Rien : elle est servie. Elle reste servie tant que diptyque-workday (ACTIVE, dernière collecte de RUN ERROR le 2026-10-01 16:26 UTC) la revoit ; masquée si une collecte crédible ne la liste plus, ou après 72 h sans être revue.
+
+1. Source et collecte
+  · diptyque-workday [ATS_OFFICIAL] active — Stage---Assistant-Formation-Retail-H-F_JR404
+    https://diptyqueparis.wd103.myworkdayjobs.com/DiptyqueCareers/job/France---Paris/Stage---Assistant-Formation-Retail-H-F_JR404
+    source : ACTIVE, dernière collecte de RUN ERROR le 2026-10-01 16:26 UTC
+    vue du 2026-09-19 11:09 UTC au 2026-09-30 16:43 UTC
+    collecte : 8b628548-b6f6-4a14-af9f-e2541686fc80 du 2026-09-30 16:42 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Diptyque (UNKNOWN, DIPTYQUE, cmtk1xe9n01a0nv2b2p3qyil0)
+  Maison : Diptyque
+
+4. Canonisation
+  métier : non reconnu (FAMILY_ONLY) ; rôles de l’intitulé : —
+  contrat : FIXED_TERM ; temps : FULL_TIME ; dispositif : INTERNSHIP
+  secteur (Maison) : BEAUTY
+  lieu : Paris, FR ; marché FR ; point NATIVE
+
+5. Fraîcheur
+  publiée (source) : 2026-07-06 00:00 UTC ; première observation : 2026-09-19 11:09 UTC ; dernière observation : 2026-09-30 16:43 UTC
+  dernière revue : 2026-09-30 16:43 UTC par diptyque-workday
+
+6. Événements récents
+  2026-09-19 11:09 UTC OPENED
+
+════ EXPOSEE/CONFIRMEE (85223 offres) ════
+Offre cmu6xfzot0274qj60elg4zm4g — Sales Assistant Part time 25 ore settimanali - Lonato, Il Leone   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : EXPOSÉE — confirmée par sa source
+  servie par normal, vue le 2026-10-01 16:36 UTC
+  Ce qui la ferait revenir : Rien : elle est servie. Elle reste servie tant que normal (ACTIVE, dernière collecte de RUN OK le 2026-10-01 16:36 UTC) la revoit ; masquée si une collecte crédible ne la liste plus, ou après 72 h sans être revue.
+
+1. Source et collecte
+  · normal [EMPLOYER_DIRECT] active — baf5b622-1e02-4fb7-b226-383a2e88648b
+    https://jobs.normal.eu/jobs/8072295-sales-assistant-part-time-25-ore-settimanali-lonato-il-leone
+    source : ACTIVE, dernière collecte de RUN OK le 2026-10-01 16:36 UTC
+    vue du 2026-09-18 12:20 UTC au 2026-10-01 16:36 UTC
+    collecte : 3cbbb437-6d03-4eb2-9739-195d8bfa32a9 du 2026-10-01 16:36 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Normal (UNKNOWN, NORMAL, cmtk26ge70hulnv2b0qav4amw)
+  Maison : Normal
+
+4. Canonisation
+  métier : sales-advisor (CLASSIFIED) ; rôles de l’intitulé : sales-advisor
+  contrat : non précisé ; temps : PART_TIME ; dispositif : —
+  secteur (Maison) : RETAIL
+  lieu : Lonato, IT ; marché IT ; point CITY
+
+5. Fraîcheur
+  publiée (source) : 2026-07-15 12:17 UTC ; première observation : 2026-09-18 12:20 UTC ; dernière observation : 2026-10-01 16:36 UTC
+  dernière revue : 2026-10-01 16:36 UTC par normal
+
+6. Événements récents
+  2026-09-18 12:20 UTC OPENED
+
+════ EXPOSEE/CONFIRMEE (85223 offres) ════
+Offre cmu8cbu4p0bhemn48kibxjvjf — Seasonal Associate   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : EXPOSÉE — confirmée par sa source
+  servie par lvmh, vue le 2026-10-01 18:08 UTC
+  Ce qui la ferait revenir : Rien : elle est servie. Elle reste servie tant que lvmh (ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 18:12 UTC) la revoit ; masquée si une collecte crédible ne la liste plus, ou après 72 h sans être revue.
+
+1. Source et collecte
+  · lvmh [EMPLOYER_DIRECT] active — 295011
+    https://career55.sapsf.eu/sfcareer/jobreqcareer?company=SephoraUS&jobId=295011
+    source : ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 18:12 UTC
+    vue du 2026-09-19 12:05 UTC au 2026-10-01 18:08 UTC
+    collecte : 2ba7a65d-e0a3-46cf-b98a-d13aa6f6e238 du 2026-10-01 18:01 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Sephora (UNKNOWN, SEPHORA, cmtk48dz71brqny2bsyv4ml8m)
+  Maison : Sephora ; groupe LVMH
+
+4. Canonisation
+  métier : non reconnu (FAMILY_ONLY) ; rôles de l’intitulé : —
+  contrat : non précisé (natif « Non-guaranteed hours ») ; temps : PART_TIME ; dispositif : —
+  secteur (Maison) : RETAIL
+  lieu : Hialeah, US ; marché US ; point CITY
+
+5. Fraîcheur
+  publiée (source) : 2026-09-04 17:43 UTC ; première observation : 2026-09-19 12:05 UTC ; dernière observation : 2026-10-01 18:08 UTC
+  dernière revue : 2026-10-01 18:08 UTC par lvmh
+
+6. Événements récents
+  2026-09-19 12:05 UTC OPENED
+
+════ EXPOSEE/CONFIRMEE (85223 offres) ════
+Offre cmu8ccb0q0dqlmn48d8gxvny9 — Responsable des Services Généraux et de la Sécurité F/H   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : EXPOSÉE — confirmée par sa source
+  servie par lvmh, vue le 2026-10-01 18:08 UTC
+  Ce qui la ferait revenir : Rien : elle est servie. Elle reste servie tant que lvmh (ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 18:12 UTC) la revoit ; masquée si une collecte crédible ne la liste plus, ou après 72 h sans être revue.
+
+1. Source et collecte
+  · lvmh [EMPLOYER_DIRECT] active — BERL01560
+    https://emea3.recruitmentplatform.com/apply-app/pages/application-form?jobId=PYZFK026203F3VBQB798N7VG6-1092254&langCode=fr_FR
+    source : ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 18:12 UTC
+    vue du 2026-09-19 12:05 UTC au 2026-10-01 18:08 UTC
+    collecte : 2ba7a65d-e0a3-46cf-b98a-d13aa6f6e238 du 2026-10-01 18:01 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Berluti (UNKNOWN, BERLUTI, cmtk48ek71bzkny2b9rs9hzev)
+  Maison : Berluti ; groupe LVMH
+
+4. Canonisation
+  métier : non reconnu (FAMILY_ONLY) ; rôles de l’intitulé : —
+  contrat : PERMANENT (natif « CDI ») ; temps : FULL_TIME ; dispositif : —
+  secteur (Maison) : FASHION
+  lieu : Paris, FR ; marché FR ; point NATIVE
+
+5. Fraîcheur
+  publiée (source) : 2026-09-01 22:00 UTC ; première observation : 2026-09-19 12:05 UTC ; dernière observation : 2026-10-01 18:08 UTC
+  dernière revue : 2026-10-01 18:08 UTC par lvmh
+
+6. Événements récents
+  2026-09-19 12:05 UTC OPENED
+
+════ EXPOSEE/CONFIRMEE (85223 offres) ════
+Offre cmu9mlahz02hjmb9zg2fx5rwi — Team Manager   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : EXPOSÉE — confirmée par sa source
+  servie par primark, vue le 2026-10-01 16:56 UTC
+  Ce qui la ferait revenir : Rien : elle est servie. Elle reste servie tant que primark (ACTIVE, dernière collecte de RUN OK le 2026-10-01 16:56 UTC) la revoit ; masquée si une collecte crédible ne la liste plus, ou après 72 h sans être revue.
+
+1. Source et collecte
+  · primark [ATS_OFFICIAL] active — 744000146640969
+    https://jobs.smartrecruiters.com/Primark/744000146640969
+    source : ACTIVE, dernière collecte de RUN OK le 2026-10-01 16:56 UTC
+    vue du 2026-09-20 09:40 UTC au 2026-10-01 16:56 UTC
+    collecte : e0040ad1-b0d2-4801-a033-32abfdef1157 du 2026-10-01 16:54 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Primark (UNKNOWN, PRIMARK, cmtn76cbr1guhqq5lw7243y4e)
+  Maison : Primark
+
+4. Canonisation
+  métier : manager-floor (CLASSIFIED) ; rôles de l’intitulé : manager-floor
+  contrat : PERMANENT (natif « Permanent ») ; temps : FULL_TIME ; dispositif : —
+  secteur (Maison) : FASHION, BEAUTY, HOME_LIFESTYLE, RETAIL
+  lieu : Montijo, PT ; marché PT ; point CITY
+
+5. Fraîcheur
+  publiée (source) : 2026-09-01 07:42 UTC ; première observation : 2026-09-20 09:40 UTC ; dernière observation : 2026-10-01 16:56 UTC
+  dernière revue : 2026-10-01 16:56 UTC par primark
+
+6. Événements récents
+  2026-09-20 09:40 UTC OPENED
+
+════ EXPOSEE/CONFIRMEE (85223 offres) ════
+Offre cmu8cfk7o0u50mn48zuq85bg3 — Jewelry CAD Designer   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : EXPOSÉE — confirmée par sa source
+  servie par lvmh, vue le 2026-10-01 18:11 UTC
+  Ce qui la ferait revenir : Rien : elle est servie. Elle reste servie tant que lvmh (ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 18:12 UTC) la revoit ; masquée si une collecte crédible ne la liste plus, ou après 72 h sans être revue.
+
+1. Source et collecte
+  · lvmh [EMPLOYER_DIRECT] active — 62808
+    https://eljs.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX/job/62808
+    source : ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 18:12 UTC
+    vue du 2026-09-19 12:08 UTC au 2026-10-01 18:11 UTC
+    collecte : 2ba7a65d-e0a3-46cf-b98a-d13aa6f6e238 du 2026-10-01 18:01 UTC (ingest-all)
+  · tiffany-oracle [EMPLOYER_DIRECT] active — 62808
+    https://eljs.fa.us2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX/job/62808
+    source : ACTIVE, dernière collecte de RUN OK le 2026-10-01 16:38 UTC
+    vue du 2026-09-30 07:16 UTC au 2026-10-01 16:37 UTC
+    collecte : e7ea0286-0bf1-4959-83a9-49b5a11ca029 du 2026-10-01 16:36 UTC (ingest-all)
+
+2. Doublons
+  2 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Tiffany & Co. (UNKNOWN, TIFFANY, cmtk48dyr1brmny2bmqymom3o)
+  Maison : Tiffany & Co. ; groupe LVMH
+
+4. Canonisation
+  métier : non reconnu (FAMILY_ONLY) ; rôles de l’intitulé : —
+  contrat : PERMANENT (natif « Permanent Job ») ; temps : FULL_TIME ; dispositif : —
+  secteur (Maison) : inconnu
+  lieu : New York, US ; marché US ; point CITY
+
+5. Fraîcheur
+  publiée (source) : 2026-03-13 20:38 UTC ; première observation : 2026-09-19 12:08 UTC ; dernière observation : 2026-10-01 18:11 UTC
+  dernière revue : 2026-10-01 18:11 UTC par lvmh
+
+6. Événements récents
+  2026-09-19 12:08 UTC OPENED
+
+════ EXPOSEE/CONFIRMEE (85223 offres) ════
+Offre cmuljrbn92iw3t2347y3uc7gd — Retail Assistant - Dependiente/a   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : EXPOSÉE — confirmée par sa source
+  servie par primark, vue le 2026-10-01 16:56 UTC
+  Ce qui la ferait revenir : Rien : elle est servie. Elle reste servie tant que primark (ACTIVE, dernière collecte de RUN OK le 2026-10-01 16:56 UTC) la revoit ; masquée si une collecte crédible ne la liste plus, ou après 72 h sans être revue.
+
+1. Source et collecte
+  · primark [ATS_OFFICIAL] active — 744000152148202
+    https://jobs.smartrecruiters.com/Primark/744000152148202
+    source : ACTIVE, dernière collecte de RUN OK le 2026-10-01 16:56 UTC
+    vue du 2026-09-28 17:54 UTC au 2026-10-01 16:56 UTC
+    collecte : e0040ad1-b0d2-4801-a033-32abfdef1157 du 2026-10-01 16:54 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Primark (UNKNOWN, PRIMARK, cmtn76cbr1guhqq5lw7243y4e)
+  Maison : Primark
+
+4. Canonisation
+  métier : sales-advisor (CLASSIFIED) ; rôles de l’intitulé : sales-advisor
+  contrat : non précisé (natif « Part-time ») ; temps : PART_TIME ; dispositif : —
+  secteur (Maison) : FASHION, BEAUTY, HOME_LIFESTYLE, RETAIL
+  lieu : Huelva, ES ; marché ES ; point CITY
+
+5. Fraîcheur
+  publiée (source) : 2026-09-28 11:34 UTC ; première observation : 2026-09-28 17:54 UTC ; dernière observation : 2026-10-01 16:56 UTC
+  dernière revue : 2026-10-01 16:56 UTC par primark
+
+6. Événements récents
+  2026-09-28 17:54 UTC OPENED
+
+════ FERMEE/PAR_ECHEANCE (899 offres) ════
+Offre cmu7e5uzj0082jx86qfbtsm8m — Keyholder PT - Green Acres   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : FERMÉE — échéance déclarée atteinte
+  échéance du 2026-10-02 04:59 UTC atteinte ; le prochain refresh la fermera
+  Ce qui la ferait revenir : Revient si akira (ACTIVE, dernière collecte de RUN OK le 2026-10-01 16:19 UTC) publie une nouvelle échéance (ou la retire).
+
+1. Source et collecte
+  · akira [EMPLOYER_DIRECT] active — 8dfbb037-dca1-489a-8725-7abc6c5bf4d2
+    https://careers.shopakira.com/jobs/671016-keyholder-pt-green-acres
+    source : ACTIVE, dernière collecte de RUN OK le 2026-10-01 16:19 UTC
+    vue du 2026-09-18 20:08 UTC au 2026-10-01 16:19 UTC ; échéance 2026-10-02 04:59 UTC
+    collecte : 308caf49-d666-4210-ac35-c9f99763842f du 2026-10-01 16:19 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : AKIRA (UNKNOWN, AKIRA, cmtm78ka60nacpv5ja17slmk7)
+  Maison : AKIRA
+
+4. Canonisation
+  métier : non reconnu (FAMILY_ONLY) ; rôles de l’intitulé : keyholder
+  contrat : non précisé ; temps : non précisé ; dispositif : —
+  secteur (Maison) : inconnu
+  lieu : Valley Stream, US ; marché US ; point CITY
+
+5. Fraîcheur
+  publiée (source) : 2026-08-31 05:00 UTC ; première observation : 2026-09-18 20:08 UTC ; dernière observation : 2026-10-01 16:19 UTC
+  dernière revue : 2026-10-01 16:19 UTC par akira
+
+6. Événements récents
+  2026-09-18 20:08 UTC OPENED
+
+════ FERMEE/PAR_ECHEANCE (899 offres) ════
+Offre cmudt9ru009oioa34q5grv7z4 — Intern, Product Business   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : FERMÉE — échéance déclarée atteinte
+  échéance du 2026-09-29 12:00 UTC déclarée par aritzia
+  Ce qui la ferait revenir : Revient si aritzia (ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 16:42 UTC) publie une nouvelle échéance (ou la retire).
+
+1. Source et collecte
+  · aritzia [ATS_OFFICIAL] inactive — Intern--Product-Business_R0025177-1
+    https://aritzia.wd3.myworkdayjobs.com/External/job/Vancouver-BC-Canada-SO---Vancouver-611-Alexander/Intern--Product-Business_R0025177-1
+    source : ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 16:42 UTC
+    vue du 2026-09-23 07:58 UTC au 2026-09-27 16:50 UTC ; échéance 2026-09-29 12:00 UTC
+    collecte : 20dca9fe-e44a-4d86-9b48-ee374c28874a du 2026-09-27 16:48 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Aritzia LP (UNKNOWN, ARITZIA_LP, cmtp3x7uq1hanqq4zt2cwpjve)
+  Maison : Aritzia LP
+
+4. Canonisation
+  métier : non reconnu (NO_RULE) ; rôles de l’intitulé : —
+  contrat : non précisé ; temps : FULL_TIME ; dispositif : INTERNSHIP
+  secteur (Maison) : inconnu
+  lieu : Vancouver, CA ; marché CA ; point CITY
+
+5. Fraîcheur
+  publiée (source) : 2026-09-14 00:00 UTC ; première observation : 2026-09-23 07:58 UTC ; dernière observation : 2026-09-27 16:50 UTC
+  dernière revue : 2026-09-27 16:50 UTC par aritzia
+
+6. Événements récents
+  2026-09-29 17:41 UTC CLOSED
+  2026-09-23 07:58 UTC OPENED
+
+════ FERMEE/PAR_ECHEANCE (899 offres) ════
+Offre cmudvl8242zzroa349z06uun8 — Payroll Analyst II, EMEA   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : FERMÉE — échéance déclarée atteinte
+  échéance du 2026-10-01 12:00 UTC déclarée par nike
+  Ce qui la ferait revenir : Revient si nike (ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 16:53 UTC) publie une nouvelle échéance (ou la retire).
+
+1. Source et collecte
+  · nike [ATS_OFFICIAL] inactive — Payroll-Analyst-II--EMEA_R-89113
+    https://nike.wd1.myworkdayjobs.com/nke/job/Hilversum-Netherlands/Payroll-Analyst-II--EMEA_R-89113
+    source : ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 16:53 UTC
+    vue du 2026-09-23 09:03 UTC au 2026-09-29 17:05 UTC ; échéance 2026-10-01 12:00 UTC
+    collecte : 0daf0371-f428-424e-9c9b-993a29e04f54 du 2026-09-29 17:01 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Nike NEON (UNKNOWN, NIKE_NEON, cmtrspy101ppypg5mgur3j8cw)
+  Maison : Nike NEON
+
+4. Canonisation
+  métier : non reconnu (FAMILY_ONLY) ; rôles de l’intitulé : —
+  contrat : non précisé ; temps : FULL_TIME ; dispositif : —
+  secteur (Maison) : inconnu
+  lieu : Hilversum, NL ; marché NL ; point CITY
+
+5. Fraîcheur
+  publiée (source) : 2026-09-22 00:00 UTC ; première observation : 2026-09-23 09:03 UTC ; dernière observation : 2026-09-29 17:05 UTC
+  dernière revue : 2026-09-29 17:05 UTC par nike
+
+6. Événements récents
+  2026-10-01 18:25 UTC CLOSED
+  2026-09-23 09:03 UTC OPENED
+
+════ FERMEE/PAR_ECHEANCE (899 offres) ════
+Offre cmu9fk37q028eof8lgomfaj39 — 2 stages - Visual Merchandising - Janvier 2027 (H/F)   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : FERMÉE — échéance déclarée atteinte
+  échéance du 2026-10-02 12:00 UTC atteinte ; le prochain refresh la fermera
+  Ce qui la ferait revenir : Revient si richemont (ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 16:41 UTC) publie une nouvelle échéance (ou la retire).
+
+1. Source et collecte
+  · richemont [ATS_OFFICIAL] active — XMLNAME-2-stages---Visual-Merchandising---Janvier-2027--H-F-_JR131122-1
+    https://richemont.wd3.myworkdayjobs.com/broadbean_external/job/PARIS/XMLNAME-2-stages---Visual-Merchandising---Janvier-2027--H-F-_JR131122-1
+    source : ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 16:41 UTC
+    vue du 2026-09-20 06:23 UTC au 2026-09-30 17:07 UTC ; échéance 2026-10-02 12:00 UTC
+    collecte : f1e943d8-cee6-4ab0-8b3e-c2bc70e5cccc du 2026-09-30 17:03 UTC (ingest-all)
+  · richemont-workday [GROUP_OFFICIAL] active — XMLNAME-2-stages---Visual-Merchandising---Janvier-2027--H-F-_JR131122-2
+    https://richemont.wd3.myworkdayjobs.com/Richemont/job/PARIS/XMLNAME-2-stages---Visual-Merchandising---Janvier-2027--H-F-_JR131122-2
+    source : ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 17:18 UTC
+    vue du 2026-09-20 06:34 UTC au 2026-09-30 18:12 UTC ; échéance 2026-10-02 12:00 UTC
+    collecte : 3fed92f0-90d6-4e2c-b4ec-4a669e1d7a76 du 2026-09-30 18:02 UTC (ingest-all)
+
+2. Doublons
+  2 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Van Cleef & Arpels (UNKNOWN, VAN_CLEEF, cmtpnabka00003nltzkvgh51x)
+  Maison : Van Cleef & Arpels ; groupe Richemont
+
+4. Canonisation
+  métier : non reconnu (FAMILY_ONLY) ; rôles de l’intitulé : —
+  contrat : non précisé ; temps : non précisé ; dispositif : —
+  secteur (Maison) : JEWELRY
+  lieu : Paris, FR ; marché FR ; point NATIVE
+
+5. Fraîcheur
+  publiée (source) : 2026-07-08 00:00 UTC ; première observation : 2026-09-20 06:23 UTC ; dernière observation : 2026-09-30 18:12 UTC
+  dernière revue : 2026-09-30 18:12 UTC par richemont-workday
+
+6. Événements récents
+  2026-09-20 06:23 UTC OPENED
+
+════ FERMEE/PAR_ECHEANCE (899 offres) ════
+Offre cmu9jug0101ues487gc6v6y9f — Prestige Beauty Advisor   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : FERMÉE — échéance déclarée atteinte
+  échéance du 2026-09-30 05:00 UTC déclarée par ulta-jibe
+  Ce qui la ferait revenir : Revient si ulta-jibe (ACTIVE, dernière collecte de RUN OK le 2026-10-02 05:02 UTC) publie une nouvelle échéance (ou la retire).
+
+1. Source et collecte
+  · ulta-jibe [EMPLOYER_DIRECT] inactive — 528297
+    https://careers.ulta.com/jobs/528297?lang=en-us
+    source : ACTIVE, dernière collecte de RUN OK le 2026-10-02 05:02 UTC
+    vue du 2026-09-20 08:23 UTC au 2026-09-29 16:30 UTC ; échéance 2026-09-30 05:00 UTC
+    collecte : ba8c4294-ac85-4cc7-b7b1-ec7bb2066779 du 2026-09-29 16:25 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Ulta Beauty (UNKNOWN, ULTA_BEAUTY, cmtpuyimv3pbul35m36fwuuzo)
+  Maison : Ulta Beauty
+
+4. Canonisation
+  métier : beauty-consultant (CLASSIFIED) ; rôles de l’intitulé : beauty-consultant
+  contrat : non précisé (natif « Part Time ») ; temps : PART_TIME ; dispositif : —
+  secteur (Maison) : BEAUTY, FRAGRANCE, RETAIL
+  lieu : Sault St Marie, Michigan, US ; marché US ; point NATIVE
+
+5. Fraîcheur
+  publiée (source) : 2026-09-15 19:58 UTC ; première observation : 2026-09-20 08:23 UTC ; dernière observation : 2026-09-29 16:30 UTC
+  dernière revue : 2026-09-29 16:30 UTC par ulta-jibe
+
+6. Événements récents
+  2026-09-30 20:07 UTC CLOSED
+  2026-09-20 08:23 UTC OPENED
+
+════ FERMEE/PAR_ECHEANCE (899 offres) ════
+Offre cmuecb09627phoi35djmc8qcj — Sales Associate III   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : FERMÉE — échéance déclarée atteinte
+  échéance du 2026-10-02 12:00 UTC atteinte ; le prochain refresh la fermera
+  Ce qui la ferait revenir : Revient si tapestry (ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 18:15 UTC) publie une nouvelle échéance (ou la retire).
+
+1. Source et collecte
+  · tapestry [GROUP_OFFICIAL] active — Sales-Associate-III_JR14119
+    https://tapestry.wd108.myworkdayjobs.com/Tapestry_Careers/job/Riverhead-New-York-USA-Riverhead---Coach/Sales-Associate-III_JR14119
+    source : ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 18:15 UTC
+    vue du 2026-09-23 16:51 UTC au 2026-09-30 19:21 UTC ; échéance 2026-10-02 12:00 UTC
+    collecte : 010947fb-72ba-4518-bb54-f53627bd347e du 2026-09-30 19:11 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Coach (BRAND, COACH, cmtpuwrrk3kpdl35mc7vg5ben)
+  Maison : Coach
+
+4. Canonisation
+  métier : sales-advisor (CLASSIFIED) ; rôles de l’intitulé : sales-advisor
+  contrat : non précisé ; temps : PART_TIME ; dispositif : —
+  secteur (Maison) : inconnu
+  lieu : Riverhead, US ; marché US ; point CITY
+
+5. Fraîcheur
+  publiée (source) : 2026-08-31 00:00 UTC ; première observation : 2026-09-23 16:51 UTC ; dernière observation : 2026-09-30 19:21 UTC
+  dernière revue : 2026-09-30 19:21 UTC par tapestry
+
+6. Événements récents
+  2026-09-23 16:51 UTC OPENED
+
+════ FERMEE/PAR_ECHEANCE (899 offres) ════
+Offre cmu7e5wue00jjjx863vcv5i4e — Cashier PT - Baybrook   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : FERMÉE — échéance déclarée atteinte
+  échéance du 2026-09-29 04:59 UTC déclarée par akira
+  Ce qui la ferait revenir : Revient si akira (ACTIVE, dernière collecte de RUN OK le 2026-10-01 16:19 UTC) publie une nouvelle échéance (ou la retire).
+
+1. Source et collecte
+  · akira [EMPLOYER_DIRECT] inactive — 27944e43-1de7-4cb6-b76c-17df27aacd2d
+    https://careers.shopakira.com/jobs/578715-cashier-pt-baybrook
+    source : ACTIVE, dernière collecte de RUN OK le 2026-10-01 16:19 UTC
+    vue du 2026-09-18 20:08 UTC au 2026-09-28 16:56 UTC ; échéance 2026-09-29 04:59 UTC
+    collecte : 0764190f-4168-438f-9660-faa39cb55b2b du 2026-09-28 16:54 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : AKIRA (UNKNOWN, AKIRA, cmtm78ka60nacpv5ja17slmk7)
+  Maison : AKIRA
+
+4. Canonisation
+  métier : cashier (CLASSIFIED) ; rôles de l’intitulé : cashier
+  contrat : non précisé ; temps : non précisé ; dispositif : —
+  secteur (Maison) : inconnu
+  lieu : Friendswood, US ; marché US ; point CITY
+
+5. Fraîcheur
+  publiée (source) : 2026-08-19 05:00 UTC ; première observation : 2026-09-18 20:08 UTC ; dernière observation : 2026-09-28 16:56 UTC
+  dernière revue : 2026-09-28 16:56 UTC par akira
+
+6. Événements récents
+  2026-09-29 17:41 UTC CLOSED
+  2026-09-18 20:08 UTC OPENED
+
+════ FERMEE/PAR_ECHEANCE (899 offres) ════
+Offre cmu7e5vcj00aejx86zm5bzaq3 — Fashion Stylist PT - Menlo Park   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : FERMÉE — échéance déclarée atteinte
+  échéance du 2026-10-01 04:59 UTC déclarée par akira
+  Ce qui la ferait revenir : Revient si akira (ACTIVE, dernière collecte de RUN OK le 2026-10-01 16:19 UTC) publie une nouvelle échéance (ou la retire).
+
+1. Source et collecte
+  · akira [EMPLOYER_DIRECT] inactive — f900455a-7636-4ecd-8203-e5be16dd2538
+    https://careers.shopakira.com/jobs/594839-fashion-stylist-pt-menlo-park
+    source : ACTIVE, dernière collecte de RUN OK le 2026-10-01 16:19 UTC
+    vue du 2026-09-18 20:08 UTC au 2026-09-30 16:30 UTC ; échéance 2026-10-01 04:59 UTC
+    collecte : 77d7c39d-5e27-4e2b-8d79-d112ba05490c du 2026-09-30 16:29 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : AKIRA (UNKNOWN, AKIRA, cmtm78ka60nacpv5ja17slmk7)
+  Maison : AKIRA
+
+4. Canonisation
+  métier : non reconnu (FAMILY_ONLY) ; rôles de l’intitulé : —
+  contrat : non précisé ; temps : non précisé ; dispositif : —
+  secteur (Maison) : inconnu
+  lieu : Edison, US ; marché US ; point CITY
+
+5. Fraîcheur
+  publiée (source) : 2026-08-26 05:00 UTC ; première observation : 2026-09-18 20:08 UTC ; dernière observation : 2026-09-30 16:30 UTC
+  dernière revue : 2026-09-30 16:30 UTC par akira
+
+6. Événements récents
+  2026-10-01 18:25 UTC CLOSED
+  2026-09-18 20:08 UTC OPENED
+
+════ FERMEE/PAR_ECHEANCE (899 offres) ════
+Offre cmu9rnkb903minw48gk614wtg — Senior AI Solutions Engineer, AI Studio   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : FERMÉE — échéance déclarée atteinte
+  échéance du 2026-09-29 12:00 UTC déclarée par vf-corporation
+  Ce qui la ferait revenir : Revient si vf-corporation (ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 17:01 UTC) publie une nouvelle échéance (ou la retire).
+
+1. Source et collecte
+  · vf-corporation [GROUP_OFFICIAL] inactive — Senior-Program-Manager--AI-Studio_R-20260915-0029
+    https://vfc.wd5.myworkdayjobs.com/vfc_careers/job/USCA--USA--California--Costa-Mesa-HQ---VAN/Senior-Program-Manager--AI-Studio_R-20260915-0029
+    source : ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 17:01 UTC
+    vue du 2026-09-20 12:02 UTC au 2026-09-27 16:57 UTC ; échéance 2026-09-29 12:00 UTC
+    collecte : 4c557bd7-ee33-4649-b179-77c3c4fbaa10 du 2026-09-27 16:52 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : VF Corporation (BRAND, VF, cmtvuca070000mszu6b5itjo8)
+  Maison : VF Corporation
+
+4. Canonisation
+  métier : non reconnu (FAMILY_ONLY) ; rôles de l’intitulé : —
+  contrat : non précisé ; temps : FULL_TIME ; dispositif : —
+  secteur (Maison) : inconnu
+  lieu : US ; marché US ; point —
+
+5. Fraîcheur
+  publiée (source) : 2026-09-25 00:00 UTC ; première observation : 2026-09-20 12:02 UTC ; dernière observation : 2026-09-27 16:57 UTC
+  dernière revue : 2026-09-27 16:57 UTC par vf-corporation
+
+6. Événements récents
+  2026-09-29 17:41 UTC CLOSED
+  2026-09-23 16:55 UTC CHANGED title → Senior AI Solutions Engineer, AI Studio
+  2026-09-20 12:02 UTC OPENED
+
+════ FERMEE/PAR_ECHEANCE (899 offres) ════
+Offre cmuecavey26ofoi354qqkw5nv — Sales Support Associate III   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : FERMÉE — échéance déclarée atteinte
+  échéance du 2026-10-01 12:00 UTC déclarée par tapestry
+  Ce qui la ferait revenir : Revient si tapestry (ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 18:15 UTC) publie une nouvelle échéance (ou la retire).
+
+1. Source et collecte
+  · tapestry [GROUP_OFFICIAL] inactive — Sales-Support-Associate-III_JR14704-1
+    https://tapestry.wd108.myworkdayjobs.com/Tapestry_Careers/job/Gonzales-Louisiana-USA-Gonzales---Coach/Sales-Support-Associate-III_JR14704-1
+    source : ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 18:15 UTC
+    vue du 2026-09-23 16:51 UTC au 2026-09-29 17:33 UTC ; échéance 2026-10-01 12:00 UTC
+    collecte : 50fddf5f-814e-436b-bf90-c215a942823d du 2026-09-29 17:26 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Coach (BRAND, COACH, cmtpuwrrk3kpdl35mc7vg5ben)
+  Maison : Coach
+
+4. Canonisation
+  métier : non reconnu (FAMILY_ONLY) ; rôles de l’intitulé : —
+  contrat : non précisé ; temps : PART_TIME ; dispositif : —
+  secteur (Maison) : inconnu
+  lieu : Gonzales, US ; marché US ; point CITY
+
+5. Fraîcheur
+  publiée (source) : 2026-09-04 00:00 UTC ; première observation : 2026-09-23 16:51 UTC ; dernière observation : 2026-09-29 17:33 UTC
+  dernière revue : 2026-09-29 17:33 UTC par tapestry
+
+6. Événements récents
+  2026-10-01 18:25 UTC CLOSED
+  2026-09-23 16:51 UTC OPENED
+
+════ FERMEE/PAR_ECHEANCE (899 offres) ════
+Offre cmueclfjq38dmoi35oxu74o9k — Order-to-Cash Coordinator   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : FERMÉE — échéance déclarée atteinte
+  échéance du 2026-10-01 12:00 UTC déclarée par conde-nast-france
+  Ce qui la ferait revenir : Revient si conde-nast-france (ACTIVE, dernière collecte de RUN OK le 2026-10-01 16:21 UTC) publie une nouvelle échéance (ou la retire).
+
+1. Source et collecte
+  · conde-nast-france [ATS_OFFICIAL] inactive — Order-to-Cash-Coordinator_R-24695
+    https://condenast.wd115.myworkdayjobs.com/CondeCareers/job/The-Adelphi-London-GB/Order-to-Cash-Coordinator_R-24695
+    source : ACTIVE, dernière collecte de RUN OK le 2026-10-01 16:21 UTC
+    vue du 2026-09-23 16:59 UTC au 2026-09-29 16:47 UTC ; échéance 2026-10-01 12:00 UTC
+    collecte : 1b0df274-7fb9-4a34-b976-410e7e1718cd du 2026-09-29 16:46 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : 30000 The Condé Nast Publications Limited (UNKNOWN, SOURCE_759344660bd6bc9692500cbfe4760beea8ec94414128a1b54bb5432372a6e4f2, cmueclcfy37naoi35uqza5w41)
+  Maison : 30000 The Condé Nast Publications Limited
+
+4. Canonisation
+  métier : non reconnu (FAMILY_ONLY) ; rôles de l’intitulé : —
+  contrat : non précisé ; temps : FULL_TIME ; dispositif : —
+  secteur (Maison) : inconnu
+  lieu : The Adelphi, GB ; marché GB ; point —
+
+5. Fraîcheur
+  publiée (source) : 2026-08-19 00:00 UTC ; première observation : 2026-09-23 16:59 UTC ; dernière observation : 2026-09-29 16:47 UTC
+  dernière revue : 2026-09-29 16:47 UTC par conde-nast-france
+
+6. Événements récents
+  2026-10-01 18:25 UTC CLOSED
+  2026-09-23 16:59 UTC OPENED
+
+════ FERMEE/PAR_ECHEANCE (899 offres) ════
+Offre cmue2axl300cxpc34vuqowz9n — Urban Outfitters Team Leader - Oxford Street, London   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : FERMÉE — échéance déclarée atteinte
+  échéance du 2026-09-29 04:00 UTC déclarée par urbn-hub
+  Ce qui la ferait revenir : Revient si urbn-hub (ACTIVE, dernière collecte de RUN OK le 2026-10-02 05:18 UTC) publie une nouvelle échéance (ou la retire).
+
+1. Source et collecte
+  · urbn-hub [GROUP_OFFICIAL] inactive — 32089
+    https://stores-eu-urbn.icims.com/jobs/32089/urban-outfitters-team-leader---oxford-street%2c-london/job?hub=15&in_iframe=1
+    source : ACTIVE, dernière collecte de RUN OK le 2026-10-02 05:18 UTC
+    vue du 2026-09-23 12:11 UTC au 2026-09-29 17:23 UTC ; échéance 2026-09-29 04:00 UTC
+    collecte : c6022623-6db4-48d3-b801-9943a5c5cc2c du 2026-09-29 17:15 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Urban Outfitters (BRAND, URBAN_OUTFITTERS, cr88d105073d8cbab03ce8e3ad)
+  Maison : Urban Outfitters ; groupe URBN
+
+4. Canonisation
+  métier : non reconnu (FAMILY_ONLY) ; rôles de l’intitulé : —
+  contrat : non précisé ; temps : non précisé ; dispositif : —
+  secteur (Maison) : FASHION, RETAIL
+  lieu : Londres, GB ; marché GB ; point CITY
+
+5. Fraîcheur
+  publiée (source) : 2026-09-19 04:00 UTC ; première observation : 2026-09-23 12:11 UTC ; dernière observation : 2026-09-29 17:23 UTC
+  dernière revue : 2026-09-29 17:23 UTC par urbn-hub
+
+6. Événements récents
+  2026-09-29 17:23 UTC CLOSED
+  2026-09-23 12:11 UTC OPENED
+
+════ FERMEE/PAR_ECHEANCE (899 offres) ════
+Offre cmuinyug53qjgmt34nvv8oh82 — Urban Outfitters Sales Associate / Mitarbeiter in im Verkauf - 15h Teilzeit - Cologne/K&ouml;ln, DE   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : FERMÉE — échéance déclarée atteinte
+  échéance du 2026-10-02 04:00 UTC déclarée par urbn-hub
+  Ce qui la ferait revenir : Revient si urbn-hub (ACTIVE, dernière collecte de RUN OK le 2026-10-02 05:18 UTC) publie une nouvelle échéance (ou la retire).
+
+1. Source et collecte
+  · urbn-hub [GROUP_OFFICIAL] inactive — 29553
+    https://stores-eu-urbn.icims.com/jobs/29553/urban-outfitters-sales-associate---mitarbeiter-in-im-verkauf---15h-teilzeit---cologne-k%c3%b6ln%2c-de/job?hub=15&in_iframe=1
+    source : ACTIVE, dernière collecte de RUN OK le 2026-10-02 05:18 UTC
+    vue du 2026-09-26 17:28 UTC au 2026-10-02 05:18 UTC ; échéance 2026-10-02 04:00 UTC
+    collecte : 10bb015d-101b-4458-8c6d-76fb876e57ad du 2026-10-02 05:11 UTC (ingest)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Urban Outfitters (BRAND, URBAN_OUTFITTERS, cr88d105073d8cbab03ce8e3ad)
+  Maison : Urban Outfitters ; groupe URBN
+
+4. Canonisation
+  métier : sales-advisor (CLASSIFIED) ; rôles de l’intitulé : sales-advisor
+  contrat : non précisé ; temps : PART_TIME ; dispositif : —
+  secteur (Maison) : FASHION, RETAIL
+  lieu : Cologne, DE ; marché DE ; point CITY
+
+5. Fraîcheur
+  publiée (source) : 2026-08-18 04:00 UTC ; première observation : 2026-09-26 17:28 UTC ; dernière observation : 2026-10-02 05:18 UTC
+  dernière revue : 2026-10-02 05:18 UTC par urbn-hub
+
+6. Événements récents
+  2026-10-02 05:18 UTC CLOSED
+  2026-09-26 17:28 UTC OPENED
+
+════ FERMEE/PAR_ECHEANCE (899 offres) ════
+Offre cmu9jwfkn09xas487a5yb8qb0 — Operations Manager   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : FERMÉE — échéance déclarée atteinte
+  échéance du 2026-09-29 20:38 UTC déclarée par ulta-jibe
+  Ce qui la ferait revenir : Revient si ulta-jibe (ACTIVE, dernière collecte de RUN OK le 2026-10-02 05:02 UTC) publie une nouvelle échéance (ou la retire).
+
+1. Source et collecte
+  · ulta-jibe [EMPLOYER_DIRECT] inactive — 523272
+    https://careers.ulta.com/jobs/523272?lang=en-us
+    source : ACTIVE, dernière collecte de RUN OK le 2026-10-02 05:02 UTC
+    vue du 2026-09-20 08:25 UTC au 2026-09-20 08:25 UTC ; échéance 2026-09-29 20:38 UTC
+    collecte : b061873a-2407-486a-a50f-2ccb83be72c5 du 2026-09-20 08:21 UTC (ingest)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Ulta Beauty (UNKNOWN, ULTA_BEAUTY, cmtpuyimv3pbul35m36fwuuzo)
+  Maison : Ulta Beauty
+
+4. Canonisation
+  métier : responsable-operationnel (CLASSIFIED) ; rôles de l’intitulé : responsable-operationnel
+  contrat : non précisé (natif « Full Time ») ; temps : FULL_TIME ; dispositif : —
+  secteur (Maison) : BEAUTY, FRAGRANCE, RETAIL
+  lieu : Gainesville, Florida, US ; marché US ; point NATIVE
+
+5. Fraîcheur
+  publiée (source) : 2026-08-31 20:37 UTC ; première observation : 2026-09-20 08:25 UTC ; dernière observation : 2026-09-20 08:25 UTC
+  dernière revue : 2026-09-20 08:25 UTC par ulta-jibe
+
+6. Événements récents
+  2026-09-30 20:07 UTC CLOSED
+  2026-09-20 08:25 UTC OPENED
+
+════ FERMEE/PAR_ECHEANCE (899 offres) ════
+Offre cmuecasj72619oi35ho2l5smf — Assistant Store Manager I   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : FERMÉE — échéance déclarée atteinte
+  échéance du 2026-10-01 12:00 UTC déclarée par tapestry
+  Ce qui la ferait revenir : Revient si tapestry (ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 18:15 UTC) publie une nouvelle échéance (ou la retire).
+
+1. Source et collecte
+  · tapestry [GROUP_OFFICIAL] inactive — Assistant-Store-Manager-I_JR15100
+    https://tapestry.wd108.myworkdayjobs.com/Tapestry_Careers/job/Bloomington-Minnesota-USA-Mall-Of-America---Coach/Assistant-Store-Manager-I_JR15100
+    source : ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 18:15 UTC
+    vue du 2026-09-23 16:51 UTC au 2026-09-29 17:33 UTC ; échéance 2026-10-01 12:00 UTC
+    collecte : 50fddf5f-814e-436b-bf90-c215a942823d du 2026-09-29 17:26 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Coach (BRAND, COACH, cmtpuwrrk3kpdl35mc7vg5ben)
+  Maison : Coach
+
+4. Canonisation
+  métier : assistant-store-manager (CLASSIFIED) ; rôles de l’intitulé : assistant-store-manager
+  contrat : non précisé ; temps : FULL_TIME ; dispositif : —
+  secteur (Maison) : inconnu
+  lieu : Bloomington, US ; marché US ; point CITY
+
+5. Fraîcheur
+  publiée (source) : 2026-09-09 00:00 UTC ; première observation : 2026-09-23 16:51 UTC ; dernière observation : 2026-09-29 17:33 UTC
+  dernière revue : 2026-09-29 17:33 UTC par tapestry
+
+6. Événements récents
+  2026-10-01 18:25 UTC CLOSED
+  2026-09-23 16:51 UTC OPENED
+
+════ FERMEE/PAR_ECHEANCE (899 offres) ════
+Offre cmuedeosh4z0xoi3521wwby8u — Principal, Manufacturing Engineer, India   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : FERMÉE — échéance déclarée atteinte
+  échéance du 2026-09-29 12:00 UTC déclarée par nike
+  Ce qui la ferait revenir : Revient si nike (ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 16:53 UTC) publie une nouvelle échéance (ou la retire).
+
+1. Source et collecte
+  · nike [ATS_OFFICIAL] inactive — Principal--Manufacturing-Engineer--India_R-88647
+    https://nike.wd1.myworkdayjobs.com/nke/job/NIKE-INDIA-HQ/Principal--Manufacturing-Engineer--India_R-88647
+    source : ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 16:53 UTC
+    vue du 2026-09-23 17:22 UTC au 2026-09-27 16:56 UTC ; échéance 2026-09-29 12:00 UTC
+    collecte : 8e5c112e-5668-433f-a542-f8e68ecded1d du 2026-09-27 16:52 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : NIKE Sourcing India Private Limited (UNKNOWN, SOURCE_6ea765a15b1cda3713e0a8d517dfa5fc43bebcbd86532759f0db0fd79acfae1c, cmuedefi54yfloi35aatub3zu)
+  Maison : NIKE Sourcing India Private Limited
+
+4. Canonisation
+  métier : non reconnu (FAMILY_ONLY) ; rôles de l’intitulé : —
+  contrat : non précisé ; temps : FULL_TIME ; dispositif : —
+  secteur (Maison) : inconnu
+  lieu : Nike, IN ; marché aucun ; point —
+
+5. Fraîcheur
+  publiée (source) : 2026-07-28 00:00 UTC ; première observation : 2026-09-23 17:22 UTC ; dernière observation : 2026-09-27 16:56 UTC
+  dernière revue : 2026-09-27 16:56 UTC par nike
+
+6. Événements récents
+  2026-09-29 17:41 UTC CLOSED
+  2026-09-23 17:22 UTC OPENED
+
+════ FERMEE/PAR_ECHEANCE (899 offres) ════
+Offre cmu9fk5bx02jvof8l474azwij — Chargé de projets RH (H/F) - CDM   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : FERMÉE — échéance déclarée atteinte
+  échéance du 2026-10-01 12:00 UTC déclarée par richemont
+  Ce qui la ferait revenir : Revient si richemont (ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 16:41 UTC) publie une nouvelle échéance (ou la retire).
+
+1. Source et collecte
+  · richemont [ATS_OFFICIAL] inactive — Charg-de-projets-RH--H-F----CDM_JR129049
+    https://richemont.wd3.myworkdayjobs.com/broadbean_external/job/LE-LOCLE/Charg-de-projets-RH--H-F----CDM_JR129049
+    source : ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 16:41 UTC
+    vue du 2026-09-20 06:23 UTC au 2026-09-29 16:57 UTC ; échéance 2026-10-01 12:00 UTC
+    collecte : 3b83203e-2f7a-48a8-9cb6-557cfdc5fb80 du 2026-09-29 16:55 UTC (ingest-all)
+  · richemont-workday [GROUP_OFFICIAL] inactive — Charg-de-projets-RH--H-F----CDM_JR129049-1
+    https://richemont.wd3.myworkdayjobs.com/Richemont/job/LE-LOCLE/Charg-de-projets-RH--H-F----CDM_JR129049-1
+    source : ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 17:18 UTC
+    vue du 2026-09-20 06:35 UTC au 2026-09-29 17:19 UTC ; échéance 2026-10-01 12:00 UTC
+    collecte : ee3af59b-727a-4a2a-aad1-127b20f398c9 du 2026-09-29 17:13 UTC (ingest-all)
+
+2. Doublons
+  2 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Cartier (UNKNOWN, CARTIER, cmtkgqym00xm7mn2bsqf6ewhn)
+  Maison : Cartier ; groupe Richemont
+
+4. Canonisation
+  métier : non reconnu (FAMILY_ONLY) ; rôles de l’intitulé : —
+  contrat : non précisé ; temps : FULL_TIME ; dispositif : —
+  secteur (Maison) : FRAGRANCE, JEWELRY, LEATHER_GOODS, WATCHMAKING
+  lieu : Le Locle, CH ; marché CH ; point CITY
+
+5. Fraîcheur
+  publiée (source) : 2026-05-18 00:00 UTC ; première observation : 2026-09-20 06:23 UTC ; dernière observation : 2026-09-29 17:19 UTC
+  dernière revue : 2026-09-29 17:19 UTC par richemont-workday
+
+6. Événements récents
+  2026-10-01 18:25 UTC CLOSED
+  2026-09-20 06:23 UTC OPENED
+
+════ FERMEE/PAR_ECHEANCE (899 offres) ════
+Offre cmu854kpf00oent438dw4oxlk — National Field Force Manager   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : FERMÉE — échéance déclarée atteinte
+  échéance du 2026-10-02 12:00 UTC atteinte ; le prochain refresh la fermera
+  Ce qui la ferait revenir : Revient si a-derma-4 (ACTIVE, dernière collecte de RUN OK le 2026-10-01 16:30 UTC) publie une nouvelle échéance (ou la retire).
+
+1. Source et collecte
+  · a-derma-4 [ATS_OFFICIAL] active — Medical-Representatives-Manager_JR113413
+    https://pierrefabre.wd3.myworkdayjobs.com/External_Career_Site/job/Bulgaria---Sofia---Networks/Medical-Representatives-Manager_JR113413
+    source : ACTIVE, dernière collecte de RUN OK le 2026-10-01 16:30 UTC
+    vue du 2026-09-19 08:43 UTC au 2026-09-30 16:52 UTC ; échéance 2026-10-02 12:00 UTC
+    collecte : 690b1247-a21b-4540-8288-acd70876141b du 2026-09-30 16:50 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Pierre Fabre (UNKNOWN, PIERRE_FABRE, cmtn5ohf00ryrqq5l7babv4xg)
+  Maison : Pierre Fabre ; groupe Pierre Fabre
+
+4. Canonisation
+  métier : non reconnu (FAMILY_ONLY) ; rôles de l’intitulé : —
+  contrat : non précisé ; temps : FULL_TIME ; dispositif : —
+  secteur (Maison) : BEAUTY
+  lieu : Sofia, BG ; marché aucun ; point CITY
+
+5. Fraîcheur
+  publiée (source) : 2026-08-24 00:00 UTC ; première observation : 2026-09-19 08:43 UTC ; dernière observation : 2026-09-30 16:52 UTC
+  dernière revue : 2026-09-30 16:52 UTC par a-derma-4
+
+6. Événements récents
+  2026-09-19 08:43 UTC OPENED
+
+════ FERMEE/PAR_ECHEANCE (899 offres) ════
+Offre cmu9f6url03elof6o7pqonv64 — Retail Sales - Women's Apparel - Stonebriar Centre   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : FERMÉE — échéance déclarée atteinte
+  échéance du 2026-10-02 12:00 UTC atteinte ; le prochain refresh la fermera
+  Ce qui la ferait revenir : Revient si nordstrom (ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 17:20 UTC) publie une nouvelle échéance (ou la retire).
+
+1. Source et collecte
+  · nordstrom [ATS_OFFICIAL] active — Retail-Sales---Women-s-Apparel---Stonebriar-Centre_R-875073
+    https://nordstrom.wd501.myworkdayjobs.com/nordstrom_careers/job/Frisco-TX/Retail-Sales---Women-s-Apparel---Stonebriar-Centre_R-875073
+    source : ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 17:20 UTC
+    vue du 2026-09-20 06:13 UTC au 2026-09-30 18:12 UTC ; échéance 2026-10-02 12:00 UTC
+    collecte : 1b1ff2e9-6edb-4e86-91e2-bf8f612313ec du 2026-09-30 18:01 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Nordstrom (UNKNOWN, NORDSTROM, cmtpjpt4j2hoypf5lusxkuh9m)
+  Maison : Nordstrom
+
+4. Canonisation
+  métier : non reconnu (FAMILY_ONLY) ; rôles de l’intitulé : —
+  contrat : non précisé ; temps : non précisé ; dispositif : —
+  secteur (Maison) : FASHION, FOOTWEAR, RETAIL
+  lieu : Frisco, Texas, US ; marché US ; point CITY
+
+5. Fraîcheur
+  publiée (source) : 2026-09-10 00:00 UTC ; première observation : 2026-09-20 06:13 UTC ; dernière observation : 2026-09-30 18:12 UTC
+  dernière revue : 2026-09-30 18:12 UTC par nordstrom
+
+6. Événements récents
+  2026-09-20 06:13 UTC OPENED
+
+════ FERMEE/PAR_ECHEANCE (899 offres) ════
+Offre cmu6xfq3100vmqj604gckm4p0 — Vi søker julehjelp   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : FERMÉE — échéance déclarée atteinte
+  échéance du 2026-10-01 21:59 UTC atteinte ; le prochain refresh la fermera
+  Ce qui la ferait revenir : Revient si normal (ACTIVE, dernière collecte de RUN OK le 2026-10-01 16:36 UTC) publie une nouvelle échéance (ou la retire).
+
+1. Source et collecte
+  · normal [EMPLOYER_DIRECT] active — 83bfa419-01c6-4b13-90a6-eea0c36cdab2
+    https://jobs.normal.eu/jobs/8352102-vi-soker-julehjelp
+    source : ACTIVE, dernière collecte de RUN OK le 2026-10-01 16:36 UTC
+    vue du 2026-09-18 12:20 UTC au 2026-10-01 16:36 UTC ; échéance 2026-10-01 21:59 UTC
+    collecte : 3cbbb437-6d03-4eb2-9739-195d8bfa32a9 du 2026-10-01 16:36 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Normal (UNKNOWN, NORMAL, cmtk26ge70hulnv2b0qav4amw)
+  Maison : Normal
+
+4. Canonisation
+  métier : non reconnu (FAMILY_ONLY) ; rôles de l’intitulé : —
+  contrat : non précisé ; temps : non précisé ; dispositif : —
+  secteur (Maison) : RETAIL
+  lieu : Sandefjord, NO ; marché NO ; point CITY
+
+5. Fraîcheur
+  publiée (source) : 2026-09-08 22:00 UTC ; première observation : 2026-09-18 12:20 UTC ; dernière observation : 2026-10-01 16:36 UTC
+  dernière revue : 2026-10-01 16:36 UTC par normal
+
+6. Événements récents
+  2026-09-18 12:20 UTC OPENED
+
+════ FERMEE/PAR_LA_SOURCE (5077 offres) ════
+Offre cmu6xg9cy0082qjb6o3pia6pi — Licensed Massage Therapist - $2,000 to $4,000 Sign-on Bonus   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : FERMÉE — fermée par la source (absente de sa liste prouvée, ou retrait natif)
+  fermée le 2026-09-23 17:44 UTC : absente de la liste prouvée de sa source (vue pour la dernière fois le 2026-09-20 10:33 UTC)
+  Ce qui la ferait revenir : Se rouvre seule si nutrire (ACTIVE, dernière collecte de RUN OK le 2026-10-01 16:13 UTC) la republie.
+
+1. Source et collecte
+  · nutrire [EMPLOYER_DIRECT] inactive — e58d40de-d2af-4a2e-84e3-573679e9971b
+    https://careers.tricoci.com/jobs/8061660-licensed-massage-therapist-2-000-to-4-000-sign-on-bonus
+    source : ACTIVE, dernière collecte de RUN OK le 2026-10-01 16:13 UTC
+    vue du 2026-09-18 12:21 UTC au 2026-09-20 10:33 UTC
+    collecte : c7041010-a92d-44a0-9e80-33f2453ce003 du 2026-09-20 10:33 UTC (ingest)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Tricoci (RETAILER, TRICOCI, cr89c23cf8b2391023a90ebe34)
+  Maison : Tricoci
+
+4. Canonisation
+  métier : non reconnu (FAMILY_ONLY) ; rôles de l’intitulé : —
+  contrat : non précisé ; temps : non précisé ; dispositif : —
+  secteur (Maison) : BEAUTY
+  lieu : Crystal Lake, US ; marché US ; point CITY
+
+5. Fraîcheur
+  publiée (source) : 2026-07-13 16:54 UTC ; première observation : 2026-09-18 12:21 UTC ; dernière observation : 2026-09-20 10:33 UTC
+  dernière revue : 2026-09-20 10:33 UTC par nutrire
+
+6. Événements récents
+  2026-09-23 17:44 UTC CLOSED
+  2026-09-18 12:21 UTC OPENED
+
+════ FERMEE/PAR_LA_SOURCE (5077 offres) ════
+Offre cmu9f75vt055sof6oi34dokps — Seasonal Visual Merchandiser - The Oaks   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : FERMÉE — fermée par la source (absente de sa liste prouvée, ou retrait natif)
+  fermée le 2026-09-26 18:03 UTC : absente de la liste prouvée de sa source (vue pour la dernière fois le 2026-09-23 09:12 UTC)
+  Ce qui la ferait revenir : Se rouvre seule si nordstrom (ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 17:20 UTC) la republie.
+
+1. Source et collecte
+  · nordstrom [ATS_OFFICIAL] inactive — Seasonal-Visual-Merchandiser---The-Oaks_R-866776
+    https://nordstrom.wd501.myworkdayjobs.com/nordstrom_careers/job/Thousand-Oaks-CA/Seasonal-Visual-Merchandiser---The-Oaks_R-866776
+    source : ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 17:20 UTC
+    vue du 2026-09-20 06:13 UTC au 2026-09-23 09:12 UTC
+    collecte : 4fce9cb1-7036-493a-b02f-aec7d3762e60 du 2026-09-23 09:03 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Nordstrom (UNKNOWN, NORDSTROM, cmtpjpt4j2hoypf5lusxkuh9m)
+  Maison : Nordstrom
+
+4. Canonisation
+  métier : visual-merchandiser (CLASSIFIED) ; rôles de l’intitulé : visual-merchandiser
+  contrat : non précisé ; temps : non précisé ; dispositif : —
+  secteur (Maison) : FASHION, FOOTWEAR, RETAIL
+  lieu : Thousand Oaks, California, US ; marché US ; point CITY
+
+5. Fraîcheur
+  publiée (source) : 2026-08-31 00:00 UTC ; première observation : 2026-09-20 06:13 UTC ; dernière observation : 2026-09-23 09:12 UTC
+  dernière revue : 2026-09-23 09:12 UTC par nordstrom
+
+6. Événements récents
+  2026-09-26 18:03 UTC CLOSED
+  2026-09-20 06:13 UTC OPENED
+
+════ FERMEE/PAR_LA_SOURCE (5077 offres) ════
+Offre cmu9fyx1z0582ofadbgxw8nva — Group HR Reporting Manager   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : FERMÉE — fermée par la source (absente de sa liste prouvée, ou retrait natif)
+  fermée le 2026-09-23 17:44 UTC : absente de la liste prouvée de sa source (vue pour la dernière fois le 2026-09-20 11:39 UTC)
+  Ce qui la ferait revenir : Se rouvre seule si richemont-workday (ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 17:18 UTC) la republie.
+
+1. Source et collecte
+  · richemont-workday [GROUP_OFFICIAL] inactive — Group-HR-Reporting-Manager_JR130567-2
+    https://richemont.wd3.myworkdayjobs.com/Richemont/job/BELLEVUE/Group-HR-Reporting-Manager_JR130567-2
+    source : ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 17:18 UTC
+    vue du 2026-09-20 06:34 UTC au 2026-09-20 11:39 UTC
+    collecte : d63b5ef3-b3c8-4989-b36d-d2466fb31646 du 2026-09-20 11:33 UTC (ingest)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Richemont (UNKNOWN, RICHEMONT, cmtn69siz11vgqq5lojru10az)
+  Maison : Richemont ; groupe Richemont
+
+4. Canonisation
+  métier : non reconnu (FAMILY_ONLY) ; rôles de l’intitulé : —
+  contrat : non précisé ; temps : FULL_TIME ; dispositif : —
+  secteur (Maison) : inconnu
+  lieu : Bellevue, CH ; marché CH ; point CITY
+
+5. Fraîcheur
+  publiée (source) : 2026-07-06 00:00 UTC ; première observation : 2026-09-20 06:34 UTC ; dernière observation : 2026-09-20 11:39 UTC
+  dernière revue : 2026-09-20 11:39 UTC par richemont-workday
+
+6. Événements récents
+  2026-09-23 17:44 UTC CLOSED
+  2026-09-20 06:34 UTC OPENED
+
+════ FERMEE/PAR_LA_SOURCE (5077 offres) ════
+Offre cmudvmc9733wfoa34qx5ek7nt — BECARIO/INTERN STORES   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : FERMÉE — fermée par la source (absente de sa liste prouvée, ou retrait natif)
+  fermée le 2026-10-01 18:25 UTC : absente de la liste prouvée de sa source (vue pour la dernière fois le 2026-09-27 17:14 UTC)
+  Ce qui la ferait revenir : Se rouvre seule si mango (ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 17:31 UTC) la republie.
+
+1. Source et collecte
+  · mango [ATS_OFFICIAL] inactive — STAGE-SALES-ASSISTANT--30H---Roma--Gran-Roma-_JR141783-1
+    https://mango.wd3.myworkdayjobs.com/Mango_Work_Your_Passion/job/Rome-Latium-Italy/STAGE-SALES-ASSISTANT--30H---Roma--Gran-Roma-_JR141783-1
+    source : ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 17:31 UTC
+    vue du 2026-09-23 09:04 UTC au 2026-09-27 17:14 UTC
+    collecte : 11e4bbcc-8601-40f9-b6d7-c8635ed081d3 du 2026-09-27 17:08 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Mango (UNKNOWN, MANGO, cmtn89596205lqq5l0deggb1g)
+  Maison : Mango
+
+4. Canonisation
+  métier : non reconnu (FAMILY_ONLY) ; rôles de l’intitulé : —
+  contrat : FIXED_TERM ; temps : PART_TIME ; dispositif : INTERNSHIP
+  secteur (Maison) : FASHION, RETAIL
+  lieu : Rome, IT ; marché IT ; point CITY
+
+5. Fraîcheur
+  publiée (source) : 2026-09-09 00:00 UTC ; première observation : 2026-09-23 09:04 UTC ; dernière observation : 2026-09-27 17:14 UTC
+  dernière revue : 2026-09-27 17:14 UTC par mango
+
+6. Événements récents
+  2026-10-01 18:25 UTC CLOSED
+  2026-09-23 09:04 UTC OPENED
+
+════ FERMEE/PAR_LA_SOURCE (5077 offres) ════
+Offre cmudv5g1e2l3roa34xnttekrb — Sales Lead   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : FERMÉE — fermée par la source (absente de sa liste prouvée, ou retrait natif)
+  fermée le 2026-09-30 20:07 UTC : absente de la liste prouvée de sa source (vue pour la dernière fois le 2026-09-25 17:48 UTC)
+  Ce qui la ferait revenir : Se rouvre seule si knitwell-us-retail (ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 17:54 UTC) la republie.
+
+1. Source et collecte
+  · knitwell-us-retail [GROUP_OFFICIAL] inactive — Sales-Lead_R-2033029
+    https://knitwellgroup.wd1.myworkdayjobs.com/US_Retail_Jobs/job/Store-5055-The-Shops-on-El-Paseo-Soma-Palm-Desert-CA-92260/Sales-Lead_R-2033029
+    source : ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 17:54 UTC
+    vue du 2026-09-23 08:51 UTC au 2026-09-25 17:48 UTC
+    collecte : ff525eac-5cb7-4037-bac3-315a47f68170 du 2026-09-25 17:37 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Soma (UNKNOWN, SOMA, cmtndwnrq01ihqq4z66sly7oj)
+  Maison : Soma
+
+4. Canonisation
+  métier : retail-sales-lead (CLASSIFIED) ; rôles de l’intitulé : retail-sales-lead
+  contrat : non précisé ; temps : PART_TIME ; dispositif : —
+  secteur (Maison) : inconnu
+  lieu : US ; marché US ; point —
+
+5. Fraîcheur
+  publiée (source) : 2026-08-31 00:00 UTC ; première observation : 2026-09-23 08:51 UTC ; dernière observation : 2026-09-25 17:48 UTC
+  dernière revue : 2026-09-25 17:48 UTC par knitwell-us-retail
+
+6. Événements récents
+  2026-09-30 20:07 UTC CLOSED
+  2026-09-23 08:51 UTC OPENED
+
+════ FERMEE/PAR_LA_SOURCE (5077 offres) ════
+Offre cmudvm1fj32bhoa34qztn0i72 — MULTIFUNCTIONAL SALES ASSOCIATE   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : FERMÉE — fermée par la source (absente de sa liste prouvée, ou retrait natif)
+  fermée le 2026-09-27 17:41 UTC : absente de la liste prouvée de sa source (vue pour la dernière fois le 2026-09-24 18:14 UTC)
+  Ce qui la ferait revenir : Se rouvre seule si mango (ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 17:31 UTC) la republie.
+
+1. Source et collecte
+  · mango [ATS_OFFICIAL] inactive — VENDEUR-EUSE-POLYVALENT_JR142534-1
+    https://mango.wd3.myworkdayjobs.com/Mango_Work_Your_Passion/job/Marseille-Provence-Alpes-Cte-dAzur-France/VENDEUR-EUSE-POLYVALENT_JR142534-1
+    source : ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 17:31 UTC
+    vue du 2026-09-23 09:03 UTC au 2026-09-24 18:14 UTC
+    collecte : 73f545af-e97f-4a5c-a93a-e0935ab0cdfb du 2026-09-24 18:07 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Mango (UNKNOWN, MANGO, cmtn89596205lqq5l0deggb1g)
+  Maison : Mango
+
+4. Canonisation
+  métier : sales-advisor (CLASSIFIED) ; rôles de l’intitulé : sales-advisor
+  contrat : PERMANENT ; temps : FULL_TIME ; dispositif : —
+  secteur (Maison) : FASHION, RETAIL
+  lieu : Marseille, FR ; marché FR ; point NATIVE
+
+5. Fraîcheur
+  publiée (source) : 2026-09-21 00:00 UTC ; première observation : 2026-09-23 09:03 UTC ; dernière observation : 2026-09-24 18:14 UTC
+  dernière revue : 2026-09-24 18:14 UTC par mango
+
+6. Événements récents
+  2026-09-27 17:41 UTC CLOSED
+  2026-09-23 09:03 UTC OPENED
+
+════ FERMEE/PAR_LA_SOURCE (5077 offres) ════
+Offre cmu9f72xs04ohof6oc4xaheiz — Customer Service Representative - Westchester   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : FERMÉE — fermée par la source (absente de sa liste prouvée, ou retrait natif)
+  fermée le 2026-09-30 20:07 UTC : absente de la liste prouvée de sa source (vue pour la dernière fois le 2026-09-28 18:34 UTC)
+  Ce qui la ferait revenir : Se rouvre seule si nordstrom (ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 17:20 UTC) la republie.
+
+1. Source et collecte
+  · nordstrom [ATS_OFFICIAL] inactive — Customer-Service-Representative---Westchester_R-871568
+    https://nordstrom.wd501.myworkdayjobs.com/nordstrom_careers/job/White-Plains-NY/Customer-Service-Representative---Westchester_R-871568
+    source : ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 17:20 UTC
+    vue du 2026-09-20 06:13 UTC au 2026-09-28 18:34 UTC
+    collecte : d7f8e913-b576-410d-b537-c928a980759c du 2026-09-28 18:24 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Nordstrom (UNKNOWN, NORDSTROM, cmtpjpt4j2hoypf5lusxkuh9m)
+  Maison : Nordstrom
+
+4. Canonisation
+  métier : customer-service-advisor (CLASSIFIED) ; rôles de l’intitulé : customer-service-advisor
+  contrat : non précisé ; temps : non précisé ; dispositif : —
+  secteur (Maison) : FASHION, FOOTWEAR, RETAIL
+  lieu : White Plains, New York, US ; marché US ; point CITY
+
+5. Fraîcheur
+  publiée (source) : 2026-09-01 00:00 UTC ; première observation : 2026-09-20 06:13 UTC ; dernière observation : 2026-09-28 18:34 UTC
+  dernière revue : 2026-09-28 18:34 UTC par nordstrom
+
+6. Événements récents
+  2026-09-30 20:07 UTC CLOSED
+  2026-09-20 06:13 UTC OPENED
+
+════ FERMEE/PAR_LA_SOURCE (5077 offres) ════
+Offre cmudtu2u70xvsoa34dz3aal0l — Assistant Manager   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : FERMÉE — fermée par la source (absente de sa liste prouvée, ou retrait natif)
+  fermée le 2026-09-25 18:08 UTC : absente de la liste prouvée de sa source (vue pour la dernière fois le 2026-09-23 08:14 UTC)
+  Ce qui la ferait revenir : Se rouvre seule si foot-locker-france (ACTIVE, dernière collecte de RUN OK le 2026-10-01 18:06 UTC) la republie.
+
+1. Source et collecte
+  · foot-locker-france [EMPLOYER_DIRECT] inactive — 71539
+    https://us-retail-footlocker.icims.com/jobs/71539/job
+    source : ACTIVE, dernière collecte de RUN OK le 2026-10-01 18:06 UTC
+    vue du 2026-09-23 08:14 UTC au 2026-09-23 08:14 UTC
+    collecte : abb3c5ca-a020-41e6-82d8-136cc06a6766 du 2026-09-23 08:12 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Foot Locker (UNKNOWN, FOOT_LOCKER, cmtjzhlnt0000oe2b1pugscrp)
+  Maison : Foot Locker ; groupe Foot Locker Inc.
+
+4. Canonisation
+  métier : assistant-store-manager (CLASSIFIED) ; rôles de l’intitulé : assistant-store-manager
+  contrat : PERMANENT (natif « FULL_TIME · Regular Full-Time ») ; temps : FULL_TIME ; dispositif : —
+  secteur (Maison) : RETAIL
+  lieu : King of Prussia, US ; marché US ; point NATIVE
+
+5. Fraîcheur
+  publiée (source) : 2026-08-10 13:36 UTC ; première observation : 2026-09-23 08:14 UTC ; dernière observation : 2026-09-23 08:14 UTC
+  dernière revue : 2026-09-23 08:14 UTC par foot-locker-france
+
+6. Événements récents
+  2026-09-25 18:08 UTC CLOSED
+  2026-09-23 08:14 UTC OPENED
+
+════ FERMEE/PAR_LA_SOURCE (5077 offres) ════
+Offre cmuektcbf01utmr5oymoswcpe — (Senior) Manager Demand Planning Europe   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : FERMÉE — fermée par la source (absente de sa liste prouvée, ou retrait natif)
+  fermée le 2026-09-30 20:07 UTC : absente de la liste prouvée de sa source (vue pour la dernière fois le 2026-09-28 17:39 UTC)
+  Ce qui la ferait revenir : Se rouvre seule si puma (ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 16:46 UTC) la republie.
+
+1. Source et collecte
+  · puma [EMPLOYER_DIRECT] inactive — XMLNAME--Senior--Manager-Demand-Planning-Europe_R42707
+    https://puma.wd502.myworkdayjobs.com/Jobs_at_Puma/job/PUMA-Way-Headquarters/XMLNAME--Senior--Manager-Demand-Planning-Europe_R42707
+    source : ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 16:46 UTC
+    vue du 2026-09-23 20:49 UTC au 2026-09-28 17:39 UTC
+    collecte : 0b3a6877-ea3e-49e7-ba6c-5517ab190400 du 2026-09-28 17:34 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : PUMA SE (UNKNOWN, SOURCE_e256010c878e88fde786e9790252e25a90b79901d57d465671bc161d0ee90b54, cmueks7vs003omr5o60ryy9m2)
+  Maison : PUMA SE
+
+4. Canonisation
+  métier : non reconnu (FAMILY_ONLY) ; rôles de l’intitulé : —
+  contrat : non précisé ; temps : FULL_TIME ; dispositif : —
+  secteur (Maison) : inconnu
+  lieu : PUMA Way, DE ; marché DE ; point —
+
+5. Fraîcheur
+  publiée (source) : 2026-08-07 00:00 UTC ; première observation : 2026-09-23 20:49 UTC ; dernière observation : 2026-09-28 17:39 UTC
+  dernière revue : 2026-09-28 17:39 UTC par puma
+
+6. Événements récents
+  2026-09-30 20:07 UTC CLOSED
+  2026-09-23 20:49 UTC OPENED
+
+════ FERMEE/PAR_LA_SOURCE (5077 offres) ════
+Offre cmuebz1m01jxaoi35oau3qxsu — Retail Sales Consultant - Part Time - Corte Madera - Corte Madera, CA   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : FERMÉE — fermée par la source (absente de sa liste prouvée, ou retrait natif)
+  fermée le 2026-09-26 18:03 UTC : absente de la liste prouvée de sa source (vue pour la dernière fois le 2026-09-24 17:15 UTC)
+  Ce qui la ferait revenir : Se rouvre seule si swarovski (ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 16:47 UTC) la republie.
+
+1. Source et collecte
+  · swarovski [ATS_OFFICIAL] inactive — Retail-Sales-Consultant---Part-Time---Corte-Madera---Corte-Madera--CA_R-114899-1
+    https://swarovski.wd3.myworkdayjobs.com/swarovski/job/Corte-Madera-CA-USA/Retail-Sales-Consultant---Part-Time---Corte-Madera---Corte-Madera--CA_R-114899-1
+    source : ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 16:47 UTC
+    vue du 2026-09-23 16:41 UTC au 2026-09-24 17:15 UTC
+    collecte : c26faf44-7222-4857-b0dd-4bd1f5aeb689 du 2026-09-24 17:11 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : 1151 Swarovski Retail Ventures (UNKNOWN, SOURCE_9a614f6a28291ea3eff2e6bda2f7ba1b22ca52eab08c33094e7924d78911bc3b, cmuebyotm1i94oi3546unohdu)
+  Maison : 1151 Swarovski Retail Ventures
+
+4. Canonisation
+  métier : sales-advisor (CLASSIFIED) ; rôles de l’intitulé : sales-advisor
+  contrat : non précisé ; temps : PART_TIME ; dispositif : —
+  secteur (Maison) : inconnu
+  lieu : Corte Madera, California, US ; marché US ; point CITY
+
+5. Fraîcheur
+  publiée (source) : 2026-09-03 00:00 UTC ; première observation : 2026-09-23 16:41 UTC ; dernière observation : 2026-09-24 17:15 UTC
+  dernière revue : 2026-09-24 17:15 UTC par swarovski
+
+6. Événements récents
+  2026-09-26 18:03 UTC CLOSED
+  2026-09-23 16:41 UTC OPENED
+
+════ FERMEE/PAR_LA_SOURCE (5077 offres) ════
+Offre cmuekhvaq00p7na5nz82691h6 — Employée, employé de caisse accueil   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : FERMÉE — fermée par la source (absente de sa liste prouvée, ou retrait natif)
+  fermée le 2026-09-26 18:03 UTC : absente de la liste prouvée de sa source (vue pour la dernière fois le 2026-09-23 20:40 UTC)
+  Ce qui la ferait revenir : Se rouvre seule si monoprix (ACTIVE, dernière collecte de RUN OK le 2026-10-01 16:47 UTC) la republie.
+
+1. Source et collecte
+  · monoprix [EMPLOYER_DIRECT] inactive — 4597053
+    https://recrutement.monoprix.fr/fr/annonce/4597053-employee-employe-de-caisse-accueil-06600-antibes
+    source : ACTIVE, dernière collecte de RUN OK le 2026-10-01 16:47 UTC
+    vue du 2026-09-23 20:40 UTC au 2026-09-23 20:40 UTC
+    collecte : 58dab44b-2b9e-4bf2-bcb2-777e2405b4a7 du 2026-09-23 20:38 UTC (ingest)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Groupe MONOPRIX (UNKNOWN, MONOPRIX, cmtkdvuqf1rstnf2bhwlokuxf)
+  Maison : Groupe MONOPRIX
+
+4. Canonisation
+  métier : cashier (CLASSIFIED) ; rôles de l’intitulé : cashier
+  contrat : PERMANENT (natif « CDI ») ; temps : non précisé ; dispositif : —
+  secteur (Maison) : BEAUTY, FASHION, HOME_LIFESTYLE, RETAIL
+  lieu : Antibes, FR ; marché FR ; point NATIVE
+
+5. Fraîcheur
+  publiée (source) : 2026-09-14 00:00 UTC ; première observation : 2026-09-23 20:40 UTC ; dernière observation : 2026-09-23 20:40 UTC
+  dernière revue : 2026-09-23 20:40 UTC par monoprix
+
+6. Événements récents
+  2026-09-26 18:03 UTC CLOSED
+  2026-09-23 20:40 UTC OPENED
+
+════ FERMEE/PAR_LA_SOURCE (5077 offres) ════
+Offre cmueddunt4weroi35zd3lahcq — Senior, Business Integration Transformation GC   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : FERMÉE — fermée par la source (absente de sa liste prouvée, ou retrait natif)
+  fermée le 2026-09-29 17:41 UTC : absente de la liste prouvée de sa source (vue pour la dernière fois le 2026-09-27 16:56 UTC)
+  Ce qui la ferait revenir : Se rouvre seule si nike (ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 16:53 UTC) la republie.
+
+1. Source et collecte
+  · nike [ATS_OFFICIAL] inactive — Senior--Business-Integration-Transformation-GC_R-92687
+    https://nike.wd1.myworkdayjobs.com/nke/job/Shanghai-China-Mainland/Senior--Business-Integration-Transformation-GC_R-92687
+    source : ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 16:53 UTC
+    vue du 2026-09-23 17:21 UTC au 2026-09-27 16:56 UTC
+    collecte : 8e5c112e-5668-433f-a542-f8e68ecded1d du 2026-09-27 16:52 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Nike Sports (China) Co. (UNKNOWN, NIKE_SPORTS_CHINA_CO, cmtrspy2f1pqmpg5mtx61w9oj)
+  Maison : Nike Sports (China) Co.
+
+4. Canonisation
+  métier : non reconnu (FAMILY_ONLY) ; rôles de l’intitulé : —
+  contrat : non précisé ; temps : FULL_TIME ; dispositif : —
+  secteur (Maison) : inconnu
+  lieu : Shanghai, CN ; marché CN ; point CITY
+
+5. Fraîcheur
+  publiée (source) : 2026-09-24 00:00 UTC ; première observation : 2026-09-23 17:21 UTC ; dernière observation : 2026-09-27 16:56 UTC
+  dernière revue : 2026-09-27 16:56 UTC par nike
+
+6. Événements récents
+  2026-09-29 17:41 UTC CLOSED
+  2026-09-23 17:21 UTC OPENED
+
+════ FERMEE/PAR_LA_SOURCE (5077 offres) ════
+Offre cmu9f6er600wdof6o3piwchqd — Retail Sales - Men's Apparel - Brea Mall   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : FERMÉE — fermée par la source (absente de sa liste prouvée, ou retrait natif)
+  fermée le 2026-09-26 18:03 UTC : absente de la liste prouvée de sa source (vue pour la dernière fois le 2026-09-23 09:11 UTC)
+  Ce qui la ferait revenir : Se rouvre seule si nordstrom (ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 17:20 UTC) la republie.
+
+1. Source et collecte
+  · nordstrom [ATS_OFFICIAL] inactive — Retail-Sales---Shoes---Brea-Mall_R-871605
+    https://nordstrom.wd501.myworkdayjobs.com/nordstrom_careers/job/Brea-CA/Retail-Sales---Shoes---Brea-Mall_R-871605
+    source : ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 17:20 UTC
+    vue du 2026-09-20 06:12 UTC au 2026-09-23 09:11 UTC
+    collecte : 4fce9cb1-7036-493a-b02f-aec7d3762e60 du 2026-09-23 09:03 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Nordstrom (UNKNOWN, NORDSTROM, cmtpjpt4j2hoypf5lusxkuh9m)
+  Maison : Nordstrom
+
+4. Canonisation
+  métier : non reconnu (FAMILY_ONLY) ; rôles de l’intitulé : —
+  contrat : non précisé ; temps : non précisé ; dispositif : —
+  secteur (Maison) : FASHION, FOOTWEAR, RETAIL
+  lieu : Brea, California, US ; marché US ; point CITY
+
+5. Fraîcheur
+  publiée (source) : 2026-09-17 00:00 UTC ; première observation : 2026-09-20 06:12 UTC ; dernière observation : 2026-09-23 09:11 UTC
+  dernière revue : 2026-09-23 09:11 UTC par nordstrom
+
+6. Événements récents
+  2026-09-26 18:03 UTC CLOSED
+  2026-09-20 06:12 UTC OPENED
+
+════ FERMEE/PAR_LA_SOURCE (5077 offres) ════
+Offre cmu6x35r700lepq61t5w43wn3 — Vendeur.se Parly - 30 h/sem - CDI   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : FERMÉE — fermée par la source (absente de sa liste prouvée, ou retrait natif)
+  fermée le 2026-09-26 18:03 UTC : absente de la liste prouvée de sa source (vue pour la dernière fois le 2026-09-24 16:55 UTC)
+  Ce qui la ferait revenir : Se rouvre seule si etam (ACTIVE, dernière collecte de RUN OK le 2026-10-01 16:30 UTC) la republie.
+
+1. Source et collecte
+  · etam [EMPLOYER_DIRECT] inactive — f0926dd7-4fe0-4590-8e92-338d90a7000f
+    https://career.groupeetam.com/jobs/8123228-vendeur-se-parly-30-h-sem-cdi
+    source : ACTIVE, dernière collecte de RUN OK le 2026-10-01 16:30 UTC
+    vue du 2026-09-18 12:10 UTC au 2026-09-24 16:55 UTC
+    collecte : c94a1a2e-575f-4a13-bffb-d6b1b55f537c du 2026-09-24 16:55 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Undiz (UNKNOWN, UNDIZ, cmtlyl72q0brzqf5kvz8u8x0t)
+  Maison : Undiz ; groupe Groupe Etam
+
+4. Canonisation
+  métier : sales-advisor (CLASSIFIED) ; rôles de l’intitulé : sales-advisor
+  contrat : PERMANENT ; temps : PART_TIME ; dispositif : —
+  secteur (Maison) : FASHION
+  lieu : Le Chesnay-Rocquencourt, FR ; marché FR ; point NATIVE
+
+5. Fraîcheur
+  publiée (source) : 2026-07-24 08:50 UTC ; première observation : 2026-09-18 12:10 UTC ; dernière observation : 2026-09-24 16:55 UTC
+  dernière revue : 2026-09-24 16:55 UTC par etam
+
+6. Événements récents
+  2026-09-26 18:03 UTC CLOSED
+  2026-09-24 16:55 UTC CHANGED city → Le Chesnay
+  2026-09-23 17:11 UTC CHANGED city → Le Chesnay
+  2026-09-23 08:11 UTC CHANGED city → Le Chesnay
+  2026-09-18 12:10 UTC OPENED
+
+════ FERMEE/PAR_LA_SOURCE (5077 offres) ════
+Offre cmuh6gwhs0sj3p434ew1teoiu — Watch Technician   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : FERMÉE — fermée par la source (absente de sa liste prouvée, ou retrait natif)
+  fermée le 2026-09-27 17:41 UTC : absente de la liste prouvée de sa source (vue pour la dernière fois le 2026-09-25 16:31 UTC)
+  Ce qui la ferait revenir : Se rouvre seule si therealreal (ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 16:20 UTC) la republie.
+
+1. Source et collecte
+  · therealreal [ATS_OFFICIAL] inactive — Watch-Technician_R13215
+    https://therealreal.wd1.myworkdayjobs.com/Careers/job/Onsite---Phoenix-AZ/Watch-Technician_R13215
+    source : ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 16:20 UTC
+    vue du 2026-09-25 16:31 UTC au 2026-09-25 16:31 UTC
+    collecte : 346c508f-9e7b-4652-887e-bd25d72d299f du 2026-09-25 16:30 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : The RealReal (UNKNOWN, THE_REALREAL, cmtp2asf60m9cqq4zxqq7fbli)
+  Maison : The RealReal
+
+4. Canonisation
+  métier : watchmaker (CLASSIFIED) ; rôles de l’intitulé : watchmaker
+  contrat : non précisé ; temps : FULL_TIME ; dispositif : —
+  secteur (Maison) : inconnu
+  lieu : Phoenix, Arizona, US ; marché US ; point CITY
+
+5. Fraîcheur
+  publiée (source) : 2026-09-24 00:00 UTC ; première observation : 2026-09-25 16:31 UTC ; dernière observation : 2026-09-25 16:31 UTC
+  dernière revue : 2026-09-25 16:31 UTC par therealreal
+
+6. Événements récents
+  2026-09-27 17:41 UTC CLOSED
+  2026-09-25 16:31 UTC OPENED
+
+════ FERMEE/PAR_LA_SOURCE (5077 offres) ════
+Offre cmuljhgkq2a4qt234t0fl5q6s — Sales Advisor   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : FERMÉE — fermée par la source (absente de sa liste prouvée, ou retrait natif)
+  fermée le 2026-09-30 20:07 UTC : absente de la liste prouvée de sa source (vue pour la dernière fois le 2026-09-28 17:46 UTC)
+  Ce qui la ferait revenir : Se rouvre seule si rituals (ACTIVE, dernière collecte de RUN OK le 2026-10-01 16:53 UTC) la republie.
+
+1. Source et collecte
+  · rituals [EMPLOYER_DIRECT] inactive — R8715
+    https://careers.rituals.com/en-GB/jobs/sales-advisor/R8715/
+    source : ACTIVE, dernière collecte de RUN OK le 2026-10-01 16:53 UTC
+    vue du 2026-09-28 17:46 UTC au 2026-09-28 17:46 UTC
+    collecte : e9a2154a-aaa0-455a-a7ff-e2de14f71c72 du 2026-09-28 17:43 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Rituals (UNKNOWN, RITUALS, cmtpjk6s927a5pf5la87dwntz)
+  Maison : Rituals
+
+4. Canonisation
+  métier : sales-advisor (CLASSIFIED) ; rôles de l’intitulé : sales-advisor
+  contrat : non précisé (natif « part-time ») ; temps : PART_TIME ; dispositif : —
+  secteur (Maison) : BEAUTY, FRAGRANCE, HOME_LIFESTYLE
+  lieu : Braintree, GB ; marché GB ; point NATIVE
+
+5. Fraîcheur
+  publiée (source) : 2026-09-28 07:05 UTC ; première observation : 2026-09-28 17:46 UTC ; dernière observation : 2026-09-28 17:46 UTC
+  dernière revue : 2026-09-28 17:46 UTC par rituals
+
+6. Événements récents
+  2026-09-30 20:07 UTC CLOSED
+  2026-09-28 17:46 UTC OPENED
+
+════ FERMEE/PAR_LA_SOURCE (5077 offres) ════
+Offre cmuebnm2o0zz8oi35wlkpkv32 — Weihnachtsaushilfe (m/w/d)   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : FERMÉE — fermée par la source (absente de sa liste prouvée, ou retrait natif)
+  fermée le 2026-09-30 20:07 UTC : absente de la liste prouvée de sa source (vue pour la dernière fois le 2026-09-28 17:45 UTC)
+  Ce qui la ferait revenir : Se rouvre seule si rituals (ACTIVE, dernière collecte de RUN OK le 2026-10-01 16:53 UTC) la republie.
+
+1. Source et collecte
+  · rituals [EMPLOYER_DIRECT] inactive — JOB-1215
+    https://careers.rituals.com/de-DE/jobs/weihnachtsaushilfe-m-w-d/JOB-1215/
+    source : ACTIVE, dernière collecte de RUN OK le 2026-10-01 16:53 UTC
+    vue du 2026-09-23 16:33 UTC au 2026-09-28 17:45 UTC
+    collecte : e9a2154a-aaa0-455a-a7ff-e2de14f71c72 du 2026-09-28 17:43 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Rituals (UNKNOWN, RITUALS, cmtpjk6s927a5pf5la87dwntz)
+  Maison : Rituals
+
+4. Canonisation
+  métier : non reconnu (FAMILY_ONLY) ; rôles de l’intitulé : —
+  contrat : non précisé (natif « part-time ») ; temps : PART_TIME ; dispositif : —
+  secteur (Maison) : BEAUTY, FRAGRANCE, HOME_LIFESTYLE
+  lieu : Dortmund, DE ; marché DE ; point NATIVE
+
+5. Fraîcheur
+  publiée (source) : 2026-03-17 14:04 UTC ; première observation : 2026-09-23 16:33 UTC ; dernière observation : 2026-09-28 17:45 UTC
+  dernière revue : 2026-09-28 17:45 UTC par rituals
+
+6. Événements récents
+  2026-09-30 20:07 UTC CLOSED
+  2026-09-23 16:33 UTC OPENED
+
+════ FERMEE/PAR_LA_SOURCE (5077 offres) ════
+Offre cmu7fatzq00b6qmum7qivp6n5 — Vendeur.se Thionville - 24h/sem - CDI   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : FERMÉE — fermée par la source (absente de sa liste prouvée, ou retrait natif)
+  fermée le 2026-09-27 17:41 UTC : absente de la liste prouvée de sa source (vue pour la dernière fois le 2026-09-25 16:27 UTC)
+  Ce qui la ferait revenir : Se rouvre seule si maison-123 (ACTIVE, dernière collecte de RUN OK le 2026-10-01 16:14 UTC) la republie.
+
+1. Source et collecte
+  · maison-123 [EMPLOYER_DIRECT] inactive — 0c2837e6-8e64-49d2-bc88-5fa6817cc3e6
+    https://career.maison123.com/jobs/7793236-vendeur-se-thionville-24h-sem-cdi
+    source : ACTIVE, dernière collecte de RUN OK le 2026-10-01 16:14 UTC
+    vue du 2026-09-18 20:40 UTC au 2026-09-25 16:27 UTC
+    collecte : f2863204-b7fe-41e2-b1bd-d2996d7d6bf8 du 2026-09-25 16:27 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Maison 123 (UNKNOWN, 123, cmtk1xyja02asnv2b2cq1izbi)
+  Maison : Maison 123 ; groupe Groupe Etam
+
+4. Canonisation
+  métier : sales-advisor (CLASSIFIED) ; rôles de l’intitulé : sales-advisor
+  contrat : PERMANENT ; temps : PART_TIME ; dispositif : —
+  secteur (Maison) : FASHION
+  lieu : Thionville, FR ; marché FR ; point CITY
+
+5. Fraîcheur
+  publiée (source) : 2026-05-26 06:44 UTC ; première observation : 2026-09-18 20:40 UTC ; dernière observation : 2026-09-25 16:27 UTC
+  dernière revue : 2026-09-25 16:27 UTC par maison-123
+
+6. Événements récents
+  2026-09-27 17:41 UTC CLOSED
+  2026-09-18 20:40 UTC OPENED
+
+════ FERMEE/PAR_LA_SOURCE (5077 offres) ════
+Offre cmuebnvgo11fcoi35m8vcd7vs — Winkelmedewerker   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : FERMÉE — fermée par la source (absente de sa liste prouvée, ou retrait natif)
+  fermée le 2026-09-25 18:08 UTC : absente de la liste prouvée de sa source (vue pour la dernière fois le 2026-09-23 16:33 UTC)
+  Ce qui la ferait revenir : Se rouvre seule si rituals (ACTIVE, dernière collecte de RUN OK le 2026-10-01 16:53 UTC) la republie.
+
+1. Source et collecte
+  · rituals [EMPLOYER_DIRECT] inactive — R15423
+    https://careers.rituals.com/nl-NL/jobs/winkelmedewerker/R15423/
+    source : ACTIVE, dernière collecte de RUN OK le 2026-10-01 16:53 UTC
+    vue du 2026-09-23 16:33 UTC au 2026-09-23 16:33 UTC
+    collecte : 8dafb5d6-00ee-4e96-a45b-ff678af37973 du 2026-09-23 16:32 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Rituals (UNKNOWN, RITUALS, cmtpjk6s927a5pf5la87dwntz)
+  Maison : Rituals
+
+4. Canonisation
+  métier : sales-advisor (CLASSIFIED) ; rôles de l’intitulé : sales-advisor
+  contrat : non précisé (natif « part-time ») ; temps : PART_TIME ; dispositif : —
+  secteur (Maison) : BEAUTY, FRAGRANCE, HOME_LIFESTYLE
+  lieu : Veenendaal, NL ; marché NL ; point NATIVE
+
+5. Fraîcheur
+  publiée (source) : 2026-08-11 14:13 UTC ; première observation : 2026-09-23 16:33 UTC ; dernière observation : 2026-09-23 16:33 UTC
+  dernière revue : 2026-09-23 16:33 UTC par rituals
+
+6. Événements récents
+  2026-09-25 18:08 UTC CLOSED
+  2026-09-23 16:33 UTC OPENED
+
+════ FERMEE/PAR_LA_SOURCE (5077 offres) ════
+Offre cmu6x38h300u3pq616gxmpmbp — Responsable adjoint.e La Defense - CDI   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : FERMÉE — fermée par la source (absente de sa liste prouvée, ou retrait natif)
+  fermée le 2026-09-26 18:03 UTC : absente de la liste prouvée de sa source (vue pour la dernière fois le 2026-09-24 16:56 UTC)
+  Ce qui la ferait revenir : Se rouvre seule si etam (ACTIVE, dernière collecte de RUN OK le 2026-10-01 16:30 UTC) la republie.
+
+1. Source et collecte
+  · etam [EMPLOYER_DIRECT] inactive — 438eee84-9644-48ed-8e7b-fe5f1d20f129
+    https://career.groupeetam.com/jobs/7554362-responsable-adjoint-e-la-defense-cdi
+    source : ACTIVE, dernière collecte de RUN OK le 2026-10-01 16:30 UTC
+    vue du 2026-09-18 12:10 UTC au 2026-09-24 16:56 UTC
+    collecte : c94a1a2e-575f-4a13-bffb-d6b1b55f537c du 2026-09-24 16:55 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Undiz (UNKNOWN, UNDIZ, cmtlyl72q0brzqf5kvz8u8x0t)
+  Maison : Undiz ; groupe Groupe Etam
+
+4. Canonisation
+  métier : assistant-store-manager (CLASSIFIED) ; rôles de l’intitulé : assistant-store-manager
+  contrat : PERMANENT ; temps : non précisé ; dispositif : —
+  secteur (Maison) : FASHION
+  lieu : Puteaux, FR ; marché FR ; point NATIVE
+
+5. Fraîcheur
+  publiée (source) : 2026-04-13 09:55 UTC ; première observation : 2026-09-18 12:10 UTC ; dernière observation : 2026-09-24 16:56 UTC
+  dernière revue : 2026-09-24 16:56 UTC par etam
+
+6. Événements récents
+  2026-09-26 18:03 UTC CLOSED
+  2026-09-18 12:10 UTC OPENED
+
+════ HORS_MARCHE/PAYS_HORS_MARCHE (1360 offres) ════
+Offre cmueb1kbb0pdhoi35l9mojom0 — Pardavėja (-s) konsultantė (-as) PC Akropolis, Vilnius (40h/sav., nuolatinis darbas)   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : HORS MARCHÉ — servie, dans un pays sans marché ouvert (atteignable par son seul pays)
+  pays LT, sans marché ouvert
+  Ce qui la ferait revenir : Exposée dans un marché quand un marché couvrant son pays est ouvert ; d’ici là, atteignable par la recherche de son pays.
+
+1. Source et collecte
+  · hm-group [GROUP_OFFICIAL] active — 744000144498610
+    https://jobs.smartrecruiters.com/HMGroup/744000144498610
+    source : ACTIVE, dernière collecte de RUN OK le 2026-10-01 17:38 UTC
+    vue du 2026-09-23 16:15 UTC au 2026-10-01 17:38 UTC
+    collecte : 078a077f-8ec1-4725-8317-69ec7eadbef7 du 2026-10-01 17:34 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : H&M Group (UNKNOWN, H_AND_M_GROUP, cmtp46ok11vbvqq4zlowazudi)
+  Maison : H&M Group
+
+4. Canonisation
+  métier : non reconnu (FAMILY_ONLY) ; rôles de l’intitulé : —
+  contrat : PERMANENT (natif « Permanent ») ; temps : FULL_TIME ; dispositif : —
+  secteur (Maison) : FASHION, FOOTWEAR, BEAUTY, HOME_LIFESTYLE
+  lieu : Vilnius, LT ; marché aucun ; point NATIVE
+
+5. Fraîcheur
+  publiée (source) : 2026-08-20 09:15 UTC ; première observation : 2026-09-23 16:15 UTC ; dernière observation : 2026-10-01 17:38 UTC
+  dernière revue : 2026-10-01 17:38 UTC par hm-group
+
+6. Événements récents
+  2026-09-23 16:15 UTC OPENED
+
+════ HORS_MARCHE/PAYS_HORS_MARCHE (1360 offres) ════
+Offre cmu6ynkn000k4o8lwbihg9h3g — Sourcing Director, Dress & Skirt   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : HORS MARCHÉ — servie, dans un pays sans marché ouvert (atteignable par son seul pays)
+  pays IN, sans marché ouvert
+  Ce qui la ferait revenir : Exposée dans un marché quand un marché couvrant son pays est ouvert ; d’ici là, atteignable par la recherche de son pays.
+
+1. Source et collecte
+  · quince [ATS_OFFICIAL] active — 5097953008
+    https://job-boards.greenhouse.io/quince/jobs/5097953008
+    source : ACTIVE, dernière collecte de RUN OK le 2026-10-01 16:20 UTC
+    vue du 2026-09-18 12:54 UTC au 2026-10-01 16:20 UTC
+    collecte : ad63b26b-3454-4fdc-a629-2376a42f9029 du 2026-10-01 16:19 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Quince (UNKNOWN, QUINCE, cmtlyprc70lgmqf5kya1nsksa)
+  Maison : Quince
+
+4. Canonisation
+  métier : non reconnu (NO_RULE) ; rôles de l’intitulé : —
+  contrat : non précisé ; temps : non précisé ; dispositif : —
+  secteur (Maison) : inconnu
+  lieu : Bangalore, IN ; marché aucun ; point CITY
+
+5. Fraîcheur
+  publiée (source) : 2026-02-02 07:01 UTC ; première observation : 2026-09-18 12:54 UTC ; dernière observation : 2026-10-01 16:20 UTC
+  dernière revue : 2026-10-01 16:20 UTC par quince
+
+6. Événements récents
+  2026-09-18 12:54 UTC OPENED
+
+════ HORS_MARCHE/PAYS_HORS_MARCHE (1360 offres) ════
+Offre cmueb1es70oqxoi35zd4xnifg — Visual Merchandiser   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : HORS MARCHÉ — servie, dans un pays sans marché ouvert (atteignable par son seul pays)
+  pays IN, sans marché ouvert
+  Ce qui la ferait revenir : Exposée dans un marché quand un marché couvrant son pays est ouvert ; d’ici là, atteignable par la recherche de son pays.
+
+1. Source et collecte
+  · hm-group [GROUP_OFFICIAL] active — 744000146462277
+    https://jobs.smartrecruiters.com/HMGroup/744000146462277
+    source : ACTIVE, dernière collecte de RUN OK le 2026-10-01 17:38 UTC
+    vue du 2026-09-23 16:15 UTC au 2026-10-01 17:38 UTC
+    collecte : 078a077f-8ec1-4725-8317-69ec7eadbef7 du 2026-10-01 17:34 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : H&M Group (UNKNOWN, H_AND_M_GROUP, cmtp46ok11vbvqq4zlowazudi)
+  Maison : H&M Group
+
+4. Canonisation
+  métier : visual-merchandiser (CLASSIFIED) ; rôles de l’intitulé : visual-merchandiser
+  contrat : PERMANENT (natif « Permanent ») ; temps : FULL_TIME ; dispositif : —
+  secteur (Maison) : FASHION, FOOTWEAR, BEAUTY, HOME_LIFESTYLE
+  lieu : Bhopal, IN ; marché aucun ; point CITY
+
+5. Fraîcheur
+  publiée (source) : 2026-08-31 12:45 UTC ; première observation : 2026-09-23 16:15 UTC ; dernière observation : 2026-10-01 17:38 UTC
+  dernière revue : 2026-10-01 17:38 UTC par hm-group
+
+6. Événements récents
+  2026-09-23 16:15 UTC OPENED
+
+════ HORS_MARCHE/PAYS_HORS_MARCHE (1360 offres) ════
+Offre cmuefq05p03iopm330a39f3s2 — Manager Sales Export   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : HORS MARCHÉ — servie, dans un pays sans marché ouvert (atteignable par son seul pays)
+  pays KZ, sans marché ouvert
+  Ce qui la ferait revenir : Exposée dans un marché quand un marché couvrant son pays est ouvert ; d’ici là, atteignable par la recherche de son pays.
+
+1. Source et collecte
+  · adidas [EMPLOYER_DIRECT] active — 1436664133
+    https://jobs.adidas-group.com/job/Almaty-Manager-Sales-Export-ALA/1436664133/
+    source : ACTIVE, dernière collecte de RUN OK le 2026-10-01 17:07 UTC
+    vue du 2026-09-23 18:26 UTC au 2026-10-01 17:07 UTC
+    collecte : 0b32de86-6f74-4d63-84d3-62146f3627ca du 2026-10-01 17:04 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : adidas (UNKNOWN, ADIDAS, cmtkdvv771rzinf2b3bt9vqu4)
+  Maison : adidas
+
+4. Canonisation
+  métier : non reconnu (FAMILY_ONLY) ; rôles de l’intitulé : —
+  contrat : non précisé ; temps : non précisé ; dispositif : —
+  secteur (Maison) : FASHION, FOOTWEAR
+  lieu : Almaty, KZ ; marché aucun ; point CITY
+
+5. Fraîcheur
+  publiée (source) : 2026-09-14 00:00 UTC ; première observation : 2026-09-23 18:26 UTC ; dernière observation : 2026-10-01 17:07 UTC
+  dernière revue : 2026-10-01 17:07 UTC par adidas
+
+6. Événements récents
+  2026-09-23 18:26 UTC OPENED
+
+════ HORS_MARCHE/PAYS_HORS_MARCHE (1360 offres) ════
+Offre cmueg9txc0548ld34gm1yv782 — High End Manager, Watches and Fine Jewelry   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : HORS MARCHÉ — servie, dans un pays sans marché ouvert (atteignable par son seul pays)
+  pays MO, sans marché ouvert
+  Ce qui la ferait revenir : Exposée dans un marché quand un marché couvrant son pays est ouvert ; d’ici là, atteignable par la recherche de son pays.
+
+1. Source et collecte
+  · parfums-chanel [ATS_OFFICIAL] active — High-End-Manager_JOBREQ00099689
+    https://cc.wd3.myworkdayjobs.com/ChanelCareers/job/Macao-SAR/High-End-Manager_JOBREQ00099689
+    source : ACTIVE, dernière collecte de RUN OK le 2026-10-01 17:07 UTC
+    vue du 2026-09-23 18:42 UTC au 2026-10-01 17:06 UTC
+    collecte : b1ec42e5-4aa0-42a5-9409-8b477d4448de du 2026-10-01 17:02 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Chanel (MAISON, CHANEL, cr68476d4c991498cd9a77c741)
+  Maison : Chanel ; groupe Chanel
+
+4. Canonisation
+  métier : non reconnu (NO_RULE) ; rôles de l’intitulé : —
+  contrat : non précisé ; temps : FULL_TIME ; dispositif : —
+  secteur (Maison) : FASHION
+  lieu : Macao S.A.R, MO ; marché aucun ; point —
+
+5. Fraîcheur
+  publiée (source) : 2026-05-06 00:00 UTC ; première observation : 2026-09-23 18:42 UTC ; dernière observation : 2026-10-01 17:06 UTC
+  dernière revue : 2026-10-01 17:06 UTC par parfums-chanel
+
+6. Événements récents
+  2026-09-23 18:42 UTC OPENED
+
+════ HORS_MARCHE/PAYS_HORS_MARCHE (1360 offres) ════
+Offre cmuefq9t6041xpm336gc37trj — Assistant store manager   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : HORS MARCHÉ — servie, dans un pays sans marché ouvert (atteignable par son seul pays)
+  pays BG, sans marché ouvert
+  Ce qui la ferait revenir : Exposée dans un marché quand un marché couvrant son pays est ouvert ; d’ici là, atteignable par la recherche de son pays.
+
+1. Source et collecte
+  · adidas [EMPLOYER_DIRECT] active — 1425509933
+    https://jobs.adidas-group.com/job/Sofia-Assistant-store-manager-Sofi/1425509933/
+    source : ACTIVE, dernière collecte de RUN OK le 2026-10-01 17:07 UTC
+    vue du 2026-09-23 18:27 UTC au 2026-09-30 18:00 UTC
+    collecte : 775851bc-de2c-4b12-9869-334221cb22f1 du 2026-09-30 17:53 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : adidas (UNKNOWN, ADIDAS, cmtkdvv771rzinf2b3bt9vqu4)
+  Maison : adidas
+
+4. Canonisation
+  métier : assistant-store-manager (CLASSIFIED) ; rôles de l’intitulé : assistant-store-manager
+  contrat : non précisé ; temps : non précisé ; dispositif : —
+  secteur (Maison) : FASHION, FOOTWEAR
+  lieu : Sofia, BG ; marché aucun ; point CITY
+
+5. Fraîcheur
+  publiée (source) : 2026-09-10 00:00 UTC ; première observation : 2026-09-23 18:27 UTC ; dernière observation : 2026-09-30 18:00 UTC
+  dernière revue : 2026-09-30 18:00 UTC par adidas
+
+6. Événements récents
+  2026-09-23 18:27 UTC OPENED
+
+════ HORS_MARCHE/PAYS_HORS_MARCHE (1360 offres) ════
+Offre cmu6uwcd100dgp9409eo0ym8y — Junior Sales Controlling Analyst (6 Months Contract)   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : HORS MARCHÉ — servie, dans un pays sans marché ouvert (atteignable par son seul pays)
+  pays KE, sans marché ouvert
+  Ce qui la ferait revenir : Exposée dans un marché quand un marché couvrant son pays est ouvert ; d’ici là, atteignable par la recherche de son pays.
+
+1. Source et collecte
+  · beiersdorf [GROUP_OFFICIAL] active — a23b959ac23c8e55f55dcac798d48f3099d32006
+    https://www.beiersdorf.com/career/jobs/924d66b536da26be96d8d42f715ec997
+    source : ACTIVE, dernière collecte de RUN OK le 2026-10-01 16:25 UTC
+    vue du 2026-09-18 11:09 UTC au 2026-09-19 09:22 UTC
+    collecte : eeb1da26-217c-4383-8936-600fa72f2d6d du 2026-09-19 09:21 UTC (ingest)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Beiersdorf East Africa Limited (UNKNOWN, SOURCE_8057c335a83098cc478014b8f7dc8631c89cc4e3f6919553126a9ef563284bef, cmu6uwccm00ddp9400yzvrvd5)
+  Maison : Beiersdorf East Africa Limited
+
+4. Canonisation
+  métier : non reconnu (FAMILY_ONLY) ; rôles de l’intitulé : financial-controller
+  contrat : non précisé (natif « Full-Time ») ; temps : FULL_TIME ; dispositif : —
+  secteur (Maison) : inconnu
+  lieu : Nairobi, KE ; marché aucun ; point CITY
+
+5. Fraîcheur
+  publiée (source) : 2026-09-08 00:00 UTC ; première observation : 2026-09-18 11:09 UTC ; dernière observation : 2026-09-19 09:22 UTC
+  dernière revue : 2026-09-19 09:22 UTC par beiersdorf
+
+6. Événements récents
+  2026-09-18 11:09 UTC OPENED
+
+════ HORS_MARCHE/PAYS_HORS_MARCHE (1360 offres) ════
+Offre cmuprm7jn21jbl734hx93rt56 — Senior Manager Commercial Excellence   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : HORS MARCHÉ — servie, dans un pays sans marché ouvert (atteignable par son seul pays)
+  pays IN, sans marché ouvert
+  Ce qui la ferait revenir : Exposée dans un marché quand un marché couvrant son pays est ouvert ; d’ici là, atteignable par la recherche de son pays.
+
+1. Source et collecte
+  · puma [EMPLOYER_DIRECT] active — Senior-Manager-Commercial-Excellence_R43605
+    https://puma.wd502.myworkdayjobs.com/Jobs_at_Puma/job/Local-Office-Bangalore-Global-Function/Senior-Manager-Commercial-Excellence_R43605
+    source : ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 16:46 UTC
+    vue du 2026-10-01 16:45 UTC au 2026-10-01 16:45 UTC
+    collecte : a2914a86-95b0-455d-8c75-721edef6bfa3 du 2026-10-01 16:43 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : PUMA Sports India Pvt Ltd. (UNKNOWN, SOURCE_e771da9a0c7aca9af5a1a56a53f0d2f44814d162a1ab38ca45a8175273b0d441, cmueks7du002tmr5o60qdtzia)
+  Maison : PUMA Sports India Pvt Ltd.
+
+4. Canonisation
+  métier : non reconnu (FAMILY_ONLY) ; rôles de l’intitulé : —
+  contrat : non précisé ; temps : FULL_TIME ; dispositif : —
+  secteur (Maison) : inconnu
+  lieu : IN ; marché aucun ; point —
+
+5. Fraîcheur
+  publiée (source) : 2026-10-01 00:00 UTC ; première observation : 2026-10-01 16:45 UTC ; dernière observation : 2026-10-01 16:45 UTC
+  dernière revue : 2026-10-01 16:45 UTC par puma
+
+6. Événements récents
+  2026-10-01 16:45 UTC OPENED
+
+════ HORS_MARCHE/PAYS_HORS_MARCHE (1360 offres) ════
+Offre cmu9eqg3300huof47idza8tqi — Senior Manufacturing Systems Engineer - Converse   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : HORS MARCHÉ — servie, dans un pays sans marché ouvert (atteignable par son seul pays)
+  pays ID, sans marché ouvert
+  Ce qui la ferait revenir : Exposée dans un marché quand un marché couvrant son pays est ouvert ; d’ici là, atteignable par la recherche de son pays.
+
+1. Source et collecte
+  · nike [ATS_OFFICIAL] active — Senior-Manufacturing-Systems-Engineer---Converse_R-91766
+    https://nike.wd1.myworkdayjobs.com/nke/job/Jakarta-Raya-Indonesia/Senior-Manufacturing-Systems-Engineer---Converse_R-91766
+    source : ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 16:53 UTC
+    vue du 2026-09-20 06:00 UTC au 2026-10-01 16:52 UTC
+    collecte : 5d4fa2ba-09e2-4162-9228-6289369b5d8c du 2026-10-01 16:48 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : PT Nike Indonesia (UNKNOWN, PT_NIKE_INDONESIA, cmtrspzwb1qfppg5mua9gjght)
+  Maison : PT Nike Indonesia
+
+4. Canonisation
+  métier : non reconnu (FAMILY_ONLY) ; rôles de l’intitulé : —
+  contrat : non précisé ; temps : FULL_TIME ; dispositif : —
+  secteur (Maison) : inconnu
+  lieu : Jakarta Raya, ID ; marché aucun ; point —
+
+5. Fraîcheur
+  publiée (source) : 2026-09-16 00:00 UTC ; première observation : 2026-09-20 06:00 UTC ; dernière observation : 2026-10-01 16:52 UTC
+  dernière revue : 2026-10-01 16:52 UTC par nike
+
+6. Événements récents
+  2026-09-20 06:00 UTC OPENED
+
+════ HORS_MARCHE/PAYS_HORS_MARCHE (1360 offres) ════
+Offre cmu9equmd021kof47cqores72 — Manager, Software Engineering, ITC   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : HORS MARCHÉ — servie, dans un pays sans marché ouvert (atteignable par son seul pays)
+  pays IN, sans marché ouvert
+  Ce qui la ferait revenir : Exposée dans un marché quand un marché couvrant son pays est ouvert ; d’ici là, atteignable par la recherche de son pays.
+
+1. Source et collecte
+  · nike [ATS_OFFICIAL] active — Manager--Software-Engineering--ITC_R-85514
+    https://nike.wd1.myworkdayjobs.com/nke/job/Karnataka-India/Manager--Software-Engineering--ITC_R-85514
+    source : ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 16:53 UTC
+    vue du 2026-09-20 06:00 UTC au 2026-10-01 16:51 UTC ; échéance 2026-11-02 12:00 UTC
+    collecte : 5d4fa2ba-09e2-4162-9228-6289369b5d8c du 2026-10-01 16:48 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : NIKE (UNKNOWN, NIKE, cmtm8oy381hbdpv5jzsp4t1a8)
+  Maison : NIKE
+
+4. Canonisation
+  métier : non reconnu (FAMILY_ONLY) ; rôles de l’intitulé : —
+  contrat : non précisé ; temps : FULL_TIME ; dispositif : —
+  secteur (Maison) : inconnu
+  lieu : IN ; marché aucun ; point —
+
+5. Fraîcheur
+  publiée (source) : 2026-10-01 00:00 UTC ; première observation : 2026-09-20 06:00 UTC ; dernière observation : 2026-10-01 16:51 UTC
+  dernière revue : 2026-10-01 16:51 UTC par nike
+
+6. Événements récents
+  2026-10-01 16:51 UTC REOPENED
+  2026-09-28 20:15 UTC CLOSED
+  2026-09-20 06:00 UTC OPENED
+
+════ HORS_MARCHE/PAYS_HORS_MARCHE (1360 offres) ════
+Offre cmuebz8n61ldxoi355iii9hto — Senior Sales Consultant - Palladium Ahmedabad   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : HORS MARCHÉ — servie, dans un pays sans marché ouvert (atteignable par son seul pays)
+  pays IN, sans marché ouvert
+  Ce qui la ferait revenir : Exposée dans un marché quand un marché couvrant son pays est ouvert ; d’ici là, atteignable par la recherche de son pays.
+
+1. Source et collecte
+  · swarovski [ATS_OFFICIAL] active — Sales-Consultant---Mall-of-Asia_R-113587-2
+    https://swarovski.wd3.myworkdayjobs.com/swarovski/job/Ahmedabad-Palladium-Ahmedabad-IND/Sales-Consultant---Mall-of-Asia_R-113587-2
+    source : ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 16:47 UTC
+    vue du 2026-09-23 16:42 UTC au 2026-10-01 16:47 UTC
+    collecte : 1f2b061d-bbdf-46c6-ac46-b269ad838340 du 2026-10-01 16:44 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : 1050 Swarovski India Private (UNKNOWN, SOURCE_c77bb58d737f0110a16e3745c1abe369ebb8b3dd4a6fe057e5bce5816826f351, cmuebytcw1itwoi35oha9a947)
+  Maison : 1050 Swarovski India Private
+
+4. Canonisation
+  métier : sales-advisor (CLASSIFIED) ; rôles de l’intitulé : sales-advisor
+  contrat : non précisé ; temps : FULL_TIME ; dispositif : —
+  secteur (Maison) : inconnu
+  lieu : Ahmedabad, IN ; marché aucun ; point CITY
+
+5. Fraîcheur
+  publiée (source) : 2026-07-20 00:00 UTC ; première observation : 2026-09-23 16:42 UTC ; dernière observation : 2026-10-01 16:47 UTC
+  dernière revue : 2026-10-01 16:47 UTC par swarovski
+
+6. Événements récents
+  2026-09-23 16:42 UTC OPENED
+
+════ HORS_MARCHE/PAYS_HORS_MARCHE (1360 offres) ════
+Offre cmuptgm4b40c8l734d3t86v7h — Department Manager   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : HORS MARCHÉ — servie, dans un pays sans marché ouvert (atteignable par son seul pays)
+  pays IN, sans marché ouvert
+  Ce qui la ferait revenir : Exposée dans un marché quand un marché couvrant son pays est ouvert ; d’ici là, atteignable par la recherche de son pays.
+
+1. Source et collecte
+  · hm-group [GROUP_OFFICIAL] active — 744000152906945
+    https://jobs.smartrecruiters.com/HMGroup/744000152906945
+    source : ACTIVE, dernière collecte de RUN OK le 2026-10-01 17:38 UTC
+    vue du 2026-10-01 17:36 UTC au 2026-10-01 17:36 UTC
+    collecte : 078a077f-8ec1-4725-8317-69ec7eadbef7 du 2026-10-01 17:34 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : H&M Group (UNKNOWN, H_AND_M_GROUP, cmtp46ok11vbvqq4zlowazudi)
+  Maison : H&M Group
+
+4. Canonisation
+  métier : manager-floor (CLASSIFIED) ; rôles de l’intitulé : manager-floor
+  contrat : PERMANENT (natif « Permanent ») ; temps : FULL_TIME ; dispositif : —
+  secteur (Maison) : FASHION, FOOTWEAR, BEAUTY, HOME_LIFESTYLE
+  lieu : Gurgaon, IN ; marché aucun ; point CITY
+
+5. Fraîcheur
+  publiée (source) : 2026-10-01 11:19 UTC ; première observation : 2026-10-01 17:36 UTC ; dernière observation : 2026-10-01 17:36 UTC
+  dernière revue : 2026-10-01 17:36 UTC par hm-group
+
+6. Événements récents
+  2026-10-01 17:36 UTC OPENED
+
+════ HORS_MARCHE/PAYS_HORS_MARCHE (1360 offres) ════
+Offre cmuodsqgt2glrof34xj9yglzc — Manager, Software Engineering, ITC   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : HORS MARCHÉ — servie, dans un pays sans marché ouvert (atteignable par son seul pays)
+  pays IN, sans marché ouvert
+  Ce qui la ferait revenir : Exposée dans un marché quand un marché couvrant son pays est ouvert ; d’ici là, atteignable par la recherche de son pays.
+
+1. Source et collecte
+  · nike [ATS_OFFICIAL] active — Manager--Software-Engineering--ITC_R-94476
+    https://nike.wd1.myworkdayjobs.com/nke/job/Karnataka-India/Manager--Software-Engineering--ITC_R-94476
+    source : ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 16:53 UTC
+    vue du 2026-09-30 17:30 UTC au 2026-10-01 16:52 UTC ; échéance 2026-10-10 12:00 UTC
+    collecte : 5d4fa2ba-09e2-4162-9228-6289369b5d8c du 2026-10-01 16:48 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : NIKE (UNKNOWN, NIKE, cmtm8oy381hbdpv5jzsp4t1a8)
+  Maison : NIKE
+
+4. Canonisation
+  métier : non reconnu (FAMILY_ONLY) ; rôles de l’intitulé : —
+  contrat : non précisé ; temps : FULL_TIME ; dispositif : —
+  secteur (Maison) : inconnu
+  lieu : IN ; marché aucun ; point —
+
+5. Fraîcheur
+  publiée (source) : 2026-09-30 00:00 UTC ; première observation : 2026-09-30 17:30 UTC ; dernière observation : 2026-10-01 16:52 UTC
+  dernière revue : 2026-10-01 16:52 UTC par nike
+
+6. Événements récents
+  2026-09-30 17:30 UTC OPENED
+
+════ HORS_MARCHE/PAYS_HORS_MARCHE (1360 offres) ════
+Offre cmuecbwum2dkboi3536qa1825 — Temporary Sales Associate   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : HORS MARCHÉ — servie, dans un pays sans marché ouvert (atteignable par son seul pays)
+  pays MO, sans marché ouvert
+  Ce qui la ferait revenir : Exposée dans un marché quand un marché couvrant son pays est ouvert ; d’ici là, atteignable par la recherche de son pays.
+
+1. Source et collecte
+  · tapestry [GROUP_OFFICIAL] active — Temporary-Sales-Associate_JR3428
+    https://tapestry.wd108.myworkdayjobs.com/Tapestry_Careers/job/Macau-Macau-SAR-Coh-Mc-Old-Town---Coach/Temporary-Sales-Associate_JR3428
+    source : ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 18:15 UTC
+    vue du 2026-09-23 16:51 UTC au 2026-10-01 18:14 UTC
+    collecte : 32752c7c-b2c8-4672-8174-2550d6018db2 du 2026-10-01 18:05 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Coach (BRAND, COACH, cmtpuwrrk3kpdl35mc7vg5ben)
+  Maison : Coach
+
+4. Canonisation
+  métier : sales-advisor (CLASSIFIED) ; rôles de l’intitulé : sales-advisor
+  contrat : FIXED_TERM ; temps : PART_TIME ; dispositif : —
+  secteur (Maison) : inconnu
+  lieu : Macao, MO ; marché aucun ; point CITY
+
+5. Fraîcheur
+  publiée (source) : 2026-04-30 00:00 UTC ; première observation : 2026-09-23 16:51 UTC ; dernière observation : 2026-10-01 18:14 UTC
+  dernière revue : 2026-10-01 18:14 UTC par tapestry
+
+6. Événements récents
+  2026-09-23 16:51 UTC OPENED
+
+════ HORS_MARCHE/PAYS_HORS_MARCHE (1360 offres) ════
+Offre cmueb1fl80ou1oi35hqs3166d — Department Manager   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : HORS MARCHÉ — servie, dans un pays sans marché ouvert (atteignable par son seul pays)
+  pays IN, sans marché ouvert
+  Ce qui la ferait revenir : Exposée dans un marché quand un marché couvrant son pays est ouvert ; d’ici là, atteignable par la recherche de son pays.
+
+1. Source et collecte
+  · hm-group [GROUP_OFFICIAL] active — 744000146149889
+    https://jobs.smartrecruiters.com/HMGroup/744000146149889
+    source : ACTIVE, dernière collecte de RUN OK le 2026-10-01 17:38 UTC
+    vue du 2026-09-23 16:15 UTC au 2026-09-29 17:24 UTC
+    collecte : 0b7a5a18-7487-4a34-aaab-605141e9bfd9 du 2026-09-29 17:19 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : H&M Group (UNKNOWN, H_AND_M_GROUP, cmtp46ok11vbvqq4zlowazudi)
+  Maison : H&M Group
+
+4. Canonisation
+  métier : manager-floor (CLASSIFIED) ; rôles de l’intitulé : manager-floor
+  contrat : PERMANENT (natif « Permanent ») ; temps : FULL_TIME ; dispositif : —
+  secteur (Maison) : FASHION, FOOTWEAR, BEAUTY, HOME_LIFESTYLE
+  lieu : Bangalore, IN ; marché aucun ; point CITY
+
+5. Fraîcheur
+  publiée (source) : 2026-08-28 09:36 UTC ; première observation : 2026-09-23 16:15 UTC ; dernière observation : 2026-09-29 17:24 UTC
+  dernière revue : 2026-09-29 17:24 UTC par hm-group
+
+6. Événements récents
+  2026-09-23 16:15 UTC OPENED
+
+════ HORS_MARCHE/PAYS_HORS_MARCHE (1360 offres) ════
+Offre cmuefpz5v03gqpm33y10vtg0l — Manager GBS Credit & Collections - Temp - 6 months   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : HORS MARCHÉ — servie, dans un pays sans marché ouvert (atteignable par son seul pays)
+  pays CO, sans marché ouvert
+  Ce qui la ferait revenir : Exposée dans un marché quand un marché couvrant son pays est ouvert ; d’ici là, atteignable par la recherche de son pays.
+
+1. Source et collecte
+  · adidas [EMPLOYER_DIRECT] active — 1437344233
+    https://jobs.adidas-group.com/job/Bogota-Manager-GBS-Credit-&amp;-Collections-Temp-6-months-Dist/1437344233/
+    source : ACTIVE, dernière collecte de RUN OK le 2026-10-01 17:07 UTC
+    vue du 2026-09-23 18:26 UTC au 2026-10-01 17:07 UTC
+    collecte : 0b32de86-6f74-4d63-84d3-62146f3627ca du 2026-10-01 17:04 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : adidas (UNKNOWN, ADIDAS, cmtkdvv771rzinf2b3bt9vqu4)
+  Maison : adidas
+
+4. Canonisation
+  métier : non reconnu (NO_RULE) ; rôles de l’intitulé : —
+  contrat : FIXED_TERM ; temps : non précisé ; dispositif : —
+  secteur (Maison) : FASHION, FOOTWEAR
+  lieu : Bogota, CO ; marché aucun ; point CITY
+
+5. Fraîcheur
+  publiée (source) : 2026-09-15 00:00 UTC ; première observation : 2026-09-23 18:26 UTC ; dernière observation : 2026-10-01 17:07 UTC
+  dernière revue : 2026-10-01 17:07 UTC par adidas
+
+6. Événements récents
+  2026-09-23 18:26 UTC OPENED
+
+════ HORS_MARCHE/PAYS_HORS_MARCHE (1360 offres) ════
+Offre cmuefqi6n04iupm33q7jq5zo4 — Marketing Data & Operations Specialist   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : HORS MARCHÉ — servie, dans un pays sans marché ouvert (atteignable par son seul pays)
+  pays CO, sans marché ouvert
+  Ce qui la ferait revenir : Exposée dans un marché quand un marché couvrant son pays est ouvert ; d’ici là, atteignable par la recherche de son pays.
+
+1. Source et collecte
+  · adidas [EMPLOYER_DIRECT] active — 1435526733
+    https://jobs.adidas-group.com/job/Bogota-Marketing-Data-&amp;-Operations-Specialist-Dist/1435526733/
+    source : ACTIVE, dernière collecte de RUN OK le 2026-10-01 17:07 UTC
+    vue du 2026-09-23 18:27 UTC au 2026-10-01 17:07 UTC
+    collecte : 0b32de86-6f74-4d63-84d3-62146f3627ca du 2026-10-01 17:04 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : adidas (UNKNOWN, ADIDAS, cmtkdvv771rzinf2b3bt9vqu4)
+  Maison : adidas
+
+4. Canonisation
+  métier : non reconnu (FAMILY_ONLY) ; rôles de l’intitulé : —
+  contrat : non précisé ; temps : non précisé ; dispositif : —
+  secteur (Maison) : FASHION, FOOTWEAR
+  lieu : Bogota, CO ; marché aucun ; point CITY
+
+5. Fraîcheur
+  publiée (source) : 2026-09-09 00:00 UTC ; première observation : 2026-09-23 18:27 UTC ; dernière observation : 2026-10-01 17:07 UTC
+  dernière revue : 2026-10-01 17:07 UTC par adidas
+
+6. Événements récents
+  2026-09-23 18:27 UTC OPENED
+
+════ HORS_MARCHE/PAYS_HORS_MARCHE (1360 offres) ════
+Offre cmudvl92g302loa341bqyg4g2 — Lead Technical Product Manager, ITC   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : HORS MARCHÉ — servie, dans un pays sans marché ouvert (atteignable par son seul pays)
+  pays IN, sans marché ouvert
+  Ce qui la ferait revenir : Exposée dans un marché quand un marché couvrant son pays est ouvert ; d’ici là, atteignable par la recherche de son pays.
+
+1. Source et collecte
+  · nike [ATS_OFFICIAL] active — Lead-Technical-Product-Manager--ITC_R-92521
+    https://nike.wd1.myworkdayjobs.com/nke/job/Karnataka-India/Lead-Technical-Product-Manager--ITC_R-92521
+    source : ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 16:53 UTC
+    vue du 2026-09-23 09:03 UTC au 2026-10-01 16:52 UTC ; échéance 2026-10-23 12:00 UTC
+    collecte : 5d4fa2ba-09e2-4162-9228-6289369b5d8c du 2026-10-01 16:48 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : NIKE (UNKNOWN, NIKE, cmtm8oy381hbdpv5jzsp4t1a8)
+  Maison : NIKE
+
+4. Canonisation
+  métier : non reconnu (FAMILY_ONLY) ; rôles de l’intitulé : —
+  contrat : non précisé ; temps : FULL_TIME ; dispositif : —
+  secteur (Maison) : inconnu
+  lieu : IN ; marché aucun ; point —
+
+5. Fraîcheur
+  publiée (source) : 2026-09-22 00:00 UTC ; première observation : 2026-09-23 09:03 UTC ; dernière observation : 2026-10-01 16:52 UTC
+  dernière revue : 2026-10-01 16:52 UTC par nike
+
+6. Événements récents
+  2026-09-23 09:03 UTC OPENED
+
+════ HORS_MARCHE/PAYS_HORS_MARCHE (1360 offres) ════
+Offre cmuekszfy01b7mr5om9c9fmj1 — Graphic Design Intern   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : HORS MARCHÉ — servie, dans un pays sans marché ouvert (atteignable par son seul pays)
+  pays IN, sans marché ouvert
+  Ce qui la ferait revenir : Exposée dans un marché quand un marché couvrant son pays est ouvert ; d’ici là, atteignable par la recherche de son pays.
+
+1. Source et collecte
+  · puma [EMPLOYER_DIRECT] active — Graphic-Design-Intern_R43058
+    https://puma.wd502.myworkdayjobs.com/Jobs_at_Puma/job/Local-Office-Bangalore/Graphic-Design-Intern_R43058
+    source : ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 16:46 UTC
+    vue du 2026-09-23 20:49 UTC au 2026-10-01 16:45 UTC
+    collecte : a2914a86-95b0-455d-8c75-721edef6bfa3 du 2026-10-01 16:43 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : PUMA Sports India Pvt Ltd. (UNKNOWN, SOURCE_e771da9a0c7aca9af5a1a56a53f0d2f44814d162a1ab38ca45a8175273b0d441, cmueks7du002tmr5o60qdtzia)
+  Maison : PUMA Sports India Pvt Ltd.
+
+4. Canonisation
+  métier : graphic-designer (CLASSIFIED) ; rôles de l’intitulé : graphic-designer
+  contrat : non précisé ; temps : FULL_TIME ; dispositif : INTERNSHIP
+  secteur (Maison) : inconnu
+  lieu : IN ; marché aucun ; point —
+
+5. Fraîcheur
+  publiée (source) : 2026-08-28 00:00 UTC ; première observation : 2026-09-23 20:49 UTC ; dernière observation : 2026-10-01 16:45 UTC
+  dernière revue : 2026-10-01 16:45 UTC par puma
+
+6. Événements récents
+  2026-09-23 20:49 UTC OPENED
+
+════ HORS_MARCHE/PAYS_HORS_MARCHE (1360 offres) ════
+Offre cmu9eqyuo02hkof47p9h959ib — Manager, Software Engineering, ITC   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : HORS MARCHÉ — servie, dans un pays sans marché ouvert (atteignable par son seul pays)
+  pays IN, sans marché ouvert
+  Ce qui la ferait revenir : Exposée dans un marché quand un marché couvrant son pays est ouvert ; d’ici là, atteignable par la recherche de son pays.
+
+1. Source et collecte
+  · nike [ATS_OFFICIAL] active — Manager--Software-Engineering--ITC_R-70609
+    https://nike.wd1.myworkdayjobs.com/nke/job/Karnataka-India/Manager--Software-Engineering--ITC_R-70609
+    source : ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-01 16:53 UTC
+    vue du 2026-09-20 06:00 UTC au 2026-10-01 16:52 UTC
+    collecte : 5d4fa2ba-09e2-4162-9228-6289369b5d8c du 2026-10-01 16:48 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : NIKE (UNKNOWN, NIKE, cmtm8oy381hbdpv5jzsp4t1a8)
+  Maison : NIKE
+
+4. Canonisation
+  métier : non reconnu (FAMILY_ONLY) ; rôles de l’intitulé : —
+  contrat : non précisé ; temps : FULL_TIME ; dispositif : —
+  secteur (Maison) : inconnu
+  lieu : IN ; marché aucun ; point —
+
+5. Fraîcheur
+  publiée (source) : 2026-08-03 00:00 UTC ; première observation : 2026-09-20 06:00 UTC ; dernière observation : 2026-10-01 16:52 UTC
+  dernière revue : 2026-10-01 16:52 UTC par nike
+
+6. Événements récents
+  2026-09-20 06:00 UTC OPENED
+
+════ HORS_MARCHE/SANS_PAYS (3217 offres) ════
+Offre cmuh8ihtp3iftp434bpn3p8fq — Dispenser   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : HORS MARCHÉ — servie sans pays : atteignable par son seul lien
+  aucun pays lu dans l’offre
+  Ce qui la ferait revenir : Exposée dans un marché quand un pays est lu dans l’offre (relecture du lieu à la prochaine collecte).
+
+1. Source et collecte
+  · boots [EMPLOYER_DIRECT] active — 46d459a9fc2a9b42707d2a624a86dae61140475e
+    https://www.boots.jobs/jobs/283169br-dispenser-wakefield-alverthorpe-road
+    source : ACTIVE, dernière collecte de RUN OK le 2026-10-01 17:20 UTC
+    vue du 2026-09-25 17:28 UTC au 2026-10-01 17:19 UTC
+    collecte : 25490cf7-9653-47bc-8c61-a157d49ae1d3 du 2026-10-01 17:16 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Boots (UNKNOWN, BOOTS, cmtpjx4nv2wqjpf5ljaaqw1jm)
+  Maison : Boots
+
+4. Canonisation
+  métier : pharmacy-support-worker (CLASSIFIED) ; rôles de l’intitulé : pharmacy-support-worker
+  contrat : non précisé ; temps : non précisé ; dispositif : —
+  secteur (Maison) : BEAUTY, RETAIL
+  lieu : Wakefield ; marché aucun ; point NATIVE
+
+5. Fraîcheur
+  publiée (source) : — ; première observation : 2026-09-25 17:28 UTC ; dernière observation : 2026-10-01 17:19 UTC
+  dernière revue : 2026-10-01 17:19 UTC par boots
+
+6. Événements récents
+  2026-09-25 17:28 UTC OPENED
+
+════ HORS_MARCHE/SANS_PAYS (3217 offres) ════
+Offre cmufu83rm3kkymy33ggzn4lcg — Assistant Manager   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : HORS MARCHÉ — servie sans pays : atteignable par son seul lien
+  aucun pays lu dans l’offre
+  Ce qui la ferait revenir : Exposée dans un marché quand un pays est lu dans l’offre (relecture du lieu à la prochaine collecte).
+
+1. Source et collecte
+  · boots [EMPLOYER_DIRECT] active — 336faf95c8300dda2ed45f7eef4e01cc9908b228
+    https://www.boots.jobs/jobs/279117br-assistant-manager-manchester-trafford-retail-park
+    source : ACTIVE, dernière collecte de RUN OK le 2026-10-01 17:20 UTC
+    vue du 2026-09-24 18:00 UTC au 2026-10-01 17:19 UTC
+    collecte : 25490cf7-9653-47bc-8c61-a157d49ae1d3 du 2026-10-01 17:16 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Boots (UNKNOWN, BOOTS, cmtpjx4nv2wqjpf5ljaaqw1jm)
+  Maison : Boots
+
+4. Canonisation
+  métier : assistant-store-manager (CLASSIFIED) ; rôles de l’intitulé : assistant-store-manager
+  contrat : non précisé (natif « Full-time ») ; temps : FULL_TIME ; dispositif : —
+  secteur (Maison) : BEAUTY, RETAIL
+  lieu : Manchester ; marché aucun ; point NATIVE
+
+5. Fraîcheur
+  publiée (source) : — ; première observation : 2026-09-24 18:00 UTC ; dernière observation : 2026-10-01 17:19 UTC
+  dernière revue : 2026-10-01 17:19 UTC par boots
+
+6. Événements récents
+  2026-09-24 18:00 UTC OPENED
+
+════ HORS_MARCHE/SANS_PAYS (3217 offres) ════
+Offre cmuobey8g0j2dof34ktwwzpg2 — Carl Scarpa, Sales Consultant, Part Time, Temporary   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : HORS MARCHÉ — servie sans pays : atteignable par son seul lien
+  aucun pays lu dans l’offre
+  Ce qui la ferait revenir : Exposée dans un marché quand un pays est lu dans l’offre (relecture du lieu à la prochaine collecte).
+
+1. Source et collecte
+  · brown-thomas-taleo [ATS_OFFICIAL] active — 7888
+    https://lde.tbe.taleo.net/lde02/ats/careers/v2/viewRequisition?org=ARNOTTS&cws=70&rid=7888
+    source : ACTIVE, dernière collecte de RUN OK le 2026-10-01 16:17 UTC
+    vue du 2026-09-30 16:24 UTC au 2026-10-01 16:17 UTC
+    collecte : 15e3e2b0-7fa2-4122-be50-a7bea17ebfd2 du 2026-10-01 16:17 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Brown Thomas Arnotts (UNKNOWN, BROWN_THOMAS_ARNOTTS, cmtpixdjv0fb3pf5l1rzuyhzx)
+  Maison : Brown Thomas Arnotts
+
+4. Canonisation
+  métier : sales-advisor (CLASSIFIED) ; rôles de l’intitulé : sales-advisor
+  contrat : FIXED_TERM ; temps : PART_TIME ; dispositif : —
+  secteur (Maison) : inconnu
+  lieu : Arnotts ; marché aucun ; point —
+
+5. Fraîcheur
+  publiée (source) : — ; première observation : 2026-09-30 16:24 UTC ; dernière observation : 2026-10-01 16:17 UTC
+  dernière revue : 2026-10-01 16:17 UTC par brown-thomas-taleo
+
+6. Événements récents
+  2026-10-01 16:17 UTC CHANGED title → Carl Scarpa, Sales Consultant, Part Time, Temporary
+  2026-09-30 16:24 UTC OPENED
+
+════ HORS_MARCHE/SANS_PAYS (3217 offres) ════
+Offre cmull31kt3anrt234n7rriiqi — Store Fulfilment Assistant (Seasonal)   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : HORS MARCHÉ — servie sans pays : atteignable par son seul lien
+  aucun pays lu dans l’offre
+  Ce qui la ferait revenir : Exposée dans un marché quand un pays est lu dans l’offre (relecture du lieu à la prochaine collecte).
+
+1. Source et collecte
+  · boots [EMPLOYER_DIRECT] active — 08f811bff05d35f2d87f282e05cf1fd27f4ee2e0
+    https://www.boots.jobs/jobs/280953br-store-fulfilment-assistant-seasonal-northwich-witton-street
+    source : ACTIVE, dernière collecte de RUN OK le 2026-10-01 17:20 UTC
+    vue du 2026-09-28 18:31 UTC au 2026-10-01 17:18 UTC
+    collecte : 25490cf7-9653-47bc-8c61-a157d49ae1d3 du 2026-10-01 17:16 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Boots (UNKNOWN, BOOTS, cmtpjx4nv2wqjpf5ljaaqw1jm)
+  Maison : Boots
+
+4. Canonisation
+  métier : warehouse-operative (CLASSIFIED) ; rôles de l’intitulé : warehouse-operative
+  contrat : non précisé ; temps : non précisé ; dispositif : —
+  secteur (Maison) : BEAUTY, RETAIL
+  lieu : Northwich ; marché aucun ; point NATIVE
+
+5. Fraîcheur
+  publiée (source) : — ; première observation : 2026-09-28 18:31 UTC ; dernière observation : 2026-10-01 17:18 UTC
+  dernière revue : 2026-10-01 17:18 UTC par boots
+
+6. Événements récents
+  2026-09-28 18:31 UTC OPENED
+
+════ HORS_MARCHE/SANS_PAYS (3217 offres) ════
+Offre cmuf5csfo0730ms6fkfy8qbzk — Relief Pharmacist   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : HORS MARCHÉ — servie sans pays : atteignable par son seul lien
+  aucun pays lu dans l’offre
+  Ce qui la ferait revenir : Exposée dans un marché quand un pays est lu dans l’offre (relecture du lieu à la prochaine collecte).
+
+1. Source et collecte
+  · boots [EMPLOYER_DIRECT] active — 9065fdb0d192979715dc1cc0ea9259ce69d50344
+    https://www.boots.jobs/jobs/272868br-relief-pharmacist-bangor-277-279-high-street
+    source : ACTIVE, dernière collecte de RUN OK le 2026-10-01 17:20 UTC
+    vue du 2026-09-24 06:24 UTC au 2026-10-01 17:20 UTC
+    collecte : 25490cf7-9653-47bc-8c61-a157d49ae1d3 du 2026-10-01 17:16 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Boots (UNKNOWN, BOOTS, cmtpjx4nv2wqjpf5ljaaqw1jm)
+  Maison : Boots
+
+4. Canonisation
+  métier : pharmacist (CLASSIFIED) ; rôles de l’intitulé : pharmacist
+  contrat : non précisé (natif « Full-time ») ; temps : FULL_TIME ; dispositif : —
+  secteur (Maison) : BEAUTY, RETAIL
+  lieu : Bangor ; marché aucun ; point NATIVE
+
+5. Fraîcheur
+  publiée (source) : — ; première observation : 2026-09-24 06:24 UTC ; dernière observation : 2026-10-01 17:20 UTC
+  dernière revue : 2026-10-01 17:20 UTC par boots
+
+6. Événements récents
+  2026-09-24 06:24 UTC OPENED
+
+════ HORS_MARCHE/SANS_PAYS (3217 offres) ════
+Offre cmuf5cw0q07o7ms6fh0y3b6yf — Pharmacist   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : HORS MARCHÉ — servie sans pays : atteignable par son seul lien
+  aucun pays lu dans l’offre
+  Ce qui la ferait revenir : Exposée dans un marché quand un pays est lu dans l’offre (relecture du lieu à la prochaine collecte).
+
+1. Source et collecte
+  · boots [EMPLOYER_DIRECT] active — f7a7f750aea37d2bc96175cb7e4b5f3ebb089a77
+    https://www.boots.jobs/jobs/269941br-pharmacist-burnham-on-sea-high-street
+    source : ACTIVE, dernière collecte de RUN OK le 2026-10-01 17:20 UTC
+    vue du 2026-09-24 06:24 UTC au 2026-10-01 17:20 UTC
+    collecte : 25490cf7-9653-47bc-8c61-a157d49ae1d3 du 2026-10-01 17:16 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Boots (UNKNOWN, BOOTS, cmtpjx4nv2wqjpf5ljaaqw1jm)
+  Maison : Boots
+
+4. Canonisation
+  métier : pharmacist (CLASSIFIED) ; rôles de l’intitulé : pharmacist
+  contrat : non précisé (natif « Full-time ») ; temps : FULL_TIME ; dispositif : —
+  secteur (Maison) : BEAUTY, RETAIL
+  lieu : Burnham on Sea ; marché aucun ; point NATIVE
+
+5. Fraîcheur
+  publiée (source) : — ; première observation : 2026-09-24 06:24 UTC ; dernière observation : 2026-10-01 17:20 UTC
+  dernière revue : 2026-10-01 17:20 UTC par boots
+
+6. Événements récents
+  2026-09-24 06:24 UTC OPENED
+
+════ HORS_MARCHE/SANS_PAYS (3217 offres) ════
+Offre cmuobeygv0j2oof342yqgigvt — Dior, Team Lead, Part Time, Permanent   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : HORS MARCHÉ — servie sans pays : atteignable par son seul lien
+  aucun pays lu dans l’offre
+  Ce qui la ferait revenir : Exposée dans un marché quand un pays est lu dans l’offre (relecture du lieu à la prochaine collecte).
+
+1. Source et collecte
+  · brown-thomas-taleo [ATS_OFFICIAL] active — 7889
+    https://lde.tbe.taleo.net/lde02/ats/careers/v2/viewRequisition?org=ARNOTTS&cws=70&rid=7889
+    source : ACTIVE, dernière collecte de RUN OK le 2026-10-01 16:17 UTC
+    vue du 2026-09-30 16:24 UTC au 2026-10-01 16:17 UTC
+    collecte : 15e3e2b0-7fa2-4122-be50-a7bea17ebfd2 du 2026-10-01 16:17 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Brown Thomas Arnotts (UNKNOWN, BROWN_THOMAS_ARNOTTS, cmtpixdjv0fb3pf5l1rzuyhzx)
+  Maison : Brown Thomas Arnotts
+
+4. Canonisation
+  métier : non reconnu (FAMILY_ONLY) ; rôles de l’intitulé : —
+  contrat : PERMANENT ; temps : PART_TIME ; dispositif : —
+  secteur (Maison) : inconnu
+  lieu : Arnotts ; marché aucun ; point —
+
+5. Fraîcheur
+  publiée (source) : 2026-09-30 00:00 UTC ; première observation : 2026-09-30 16:24 UTC ; dernière observation : 2026-10-01 16:17 UTC
+  dernière revue : 2026-10-01 16:17 UTC par brown-thomas-taleo
+
+6. Événements récents
+  2026-09-30 16:24 UTC OPENED
+
+════ HORS_MARCHE/SANS_PAYS (3217 offres) ════
+Offre cmuilni8h0bx1mt349d1eid39 — Sales Associate (Full Time) - Nashville   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : HORS MARCHÉ — servie sans pays : atteignable par son seul lien
+  aucun pays lu dans l’offre
+  Ce qui la ferait revenir : Exposée dans un marché quand un pays est lu dans l’offre (relecture du lieu à la prochaine collecte).
+
+1. Source et collecte
+  · oak-essentials [ATS_OFFICIAL] active — 6208627004
+    https://job-boards.greenhouse.io/jennikayne/jobs/6208627004
+    source : ACTIVE, dernière collecte de RUN OK le 2026-10-01 16:11 UTC
+    vue du 2026-09-26 16:24 UTC au 2026-10-01 16:11 UTC
+    collecte : 2644afd5-68a1-4a92-88b9-8364be520ee2 du 2026-10-01 16:11 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Oak Essentials (UNKNOWN, OAK_ESSENTIALS, cmtlyjm8j08dsqf5k7jsr5r1u)
+  Maison : Oak Essentials
+
+4. Canonisation
+  métier : sales-advisor (CLASSIFIED) ; rôles de l’intitulé : sales-advisor
+  contrat : non précisé ; temps : FULL_TIME ; dispositif : —
+  secteur (Maison) : inconnu
+  lieu : Nashville ; marché aucun ; point —
+
+5. Fraîcheur
+  publiée (source) : 2026-09-25 16:38 UTC ; première observation : 2026-09-26 16:24 UTC ; dernière observation : 2026-10-01 16:11 UTC
+  dernière revue : 2026-10-01 16:11 UTC par oak-essentials
+
+6. Événements récents
+  2026-09-26 16:24 UTC OPENED
+
+════ HORS_MARCHE/SANS_PAYS (3217 offres) ════
+Offre cmuf5cmr5065yms6fwmd5o3n2 — Newly Qualified Pharmacist   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : HORS MARCHÉ — servie sans pays : atteignable par son seul lien
+  aucun pays lu dans l’offre
+  Ce qui la ferait revenir : Exposée dans un marché quand un pays est lu dans l’offre (relecture du lieu à la prochaine collecte).
+
+1. Source et collecte
+  · boots [EMPLOYER_DIRECT] active — 713906b7b690bf8e89192f4a92275a150c605945
+    https://www.boots.jobs/jobs/276899br-newly-qualified-pharmacist-nationwide-roles
+    source : ACTIVE, dernière collecte de RUN OK le 2026-10-01 17:20 UTC
+    vue du 2026-09-24 06:24 UTC au 2026-10-01 17:20 UTC
+    collecte : 25490cf7-9653-47bc-8c61-a157d49ae1d3 du 2026-10-01 17:16 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Boots (UNKNOWN, BOOTS, cmtpjx4nv2wqjpf5ljaaqw1jm)
+  Maison : Boots
+
+4. Canonisation
+  métier : pharmacist (CLASSIFIED) ; rôles de l’intitulé : pharmacist
+  contrat : non précisé (natif « Full-time ») ; temps : FULL_TIME ; dispositif : —
+  secteur (Maison) : BEAUTY, RETAIL
+  lieu : Nationwide Roles ; marché aucun ; point —
+
+5. Fraîcheur
+  publiée (source) : — ; première observation : 2026-09-24 06:24 UTC ; dernière observation : 2026-10-01 17:20 UTC
+  dernière revue : 2026-10-01 17:20 UTC par boots
+
+6. Événements récents
+  2026-09-24 06:24 UTC OPENED
+
+════ HORS_MARCHE/SANS_PAYS (3217 offres) ════
+Offre cmu6yg6oy001un2u4v3ncyvis — SR Desenvolvimento de Soluções de IA   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : HORS MARCHÉ — servie sans pays : atteignable par son seul lien
+  aucun pays lu dans l’offre
+  Ce qui la ferait revenir : Exposée dans un marché quand un pays est lu dans l’offre (relecture du lieu à la prochaine collecte).
+
+1. Source et collecte
+  · ilia [ATS_OFFICIAL] active — 6190367004
+    https://job-boards.greenhouse.io/ilia/jobs/6190367004
+    source : ACTIVE, dernière collecte de RUN OK le 2026-10-01 16:06 UTC
+    vue du 2026-09-18 12:48 UTC au 2026-09-25 16:19 UTC
+    collecte : e065acf4-d9bc-41f0-91e1-9b49cf6bd447 du 2026-09-25 16:19 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : ILIA (UNKNOWN, ILIA, cmtlyhkdf037zqf5kdue32mhc)
+  Maison : ILIA
+
+4. Canonisation
+  métier : non reconnu (FAMILY_ONLY) ; rôles de l’intitulé : —
+  contrat : non précisé ; temps : non précisé ; dispositif : —
+  secteur (Maison) : inconnu
+  lieu : Rio de Janeiro ; marché aucun ; point —
+
+5. Fraîcheur
+  publiée (source) : 2026-09-11 17:52 UTC ; première observation : 2026-09-18 12:48 UTC ; dernière observation : 2026-09-25 16:19 UTC
+  dernière revue : 2026-09-25 16:19 UTC par ilia
+
+6. Événements récents
+  2026-09-18 12:48 UTC OPENED
+
+════ HORS_MARCHE/SANS_PAYS (3217 offres) ════
+Offre cmuf5cee604upms6fxhhnlo71 — Dispensing Optician   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : HORS MARCHÉ — servie sans pays : atteignable par son seul lien
+  aucun pays lu dans l’offre
+  Ce qui la ferait revenir : Exposée dans un marché quand un pays est lu dans l’offre (relecture du lieu à la prochaine collecte).
+
+1. Source et collecte
+  · boots [EMPLOYER_DIRECT] active — 9b97b19d0ff0c4959fc97442e765291a42f5e4eb
+    https://www.boots.jobs/jobs/279571br-dispensing-optician-nottingham-west-bridgford-central-avenue
+    source : ACTIVE, dernière collecte de RUN OK le 2026-10-01 17:20 UTC
+    vue du 2026-09-24 06:24 UTC au 2026-10-01 17:19 UTC
+    collecte : 25490cf7-9653-47bc-8c61-a157d49ae1d3 du 2026-10-01 17:16 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Boots (UNKNOWN, BOOTS, cmtpjx4nv2wqjpf5ljaaqw1jm)
+  Maison : Boots
+
+4. Canonisation
+  métier : dispensing-optician (CLASSIFIED) ; rôles de l’intitulé : dispensing-optician
+  contrat : non précisé (natif « Full-time,Part-time ») ; temps : FULL_TIME ; dispositif : —
+  secteur (Maison) : BEAUTY, RETAIL
+  lieu : Nottingham ; marché aucun ; point NATIVE
+
+5. Fraîcheur
+  publiée (source) : — ; première observation : 2026-09-24 06:24 UTC ; dernière observation : 2026-10-01 17:19 UTC
+  dernière revue : 2026-10-01 17:19 UTC par boots
+
+6. Événements récents
+  2026-09-24 06:24 UTC OPENED
+
+════ HORS_MARCHE/SANS_PAYS (3217 offres) ════
+Offre cmull35o73auvt234yfjdub36 — Optical Assistant   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : HORS MARCHÉ — servie sans pays : atteignable par son seul lien
+  aucun pays lu dans l’offre
+  Ce qui la ferait revenir : Exposée dans un marché quand un pays est lu dans l’offre (relecture du lieu à la prochaine collecte).
+
+1. Source et collecte
+  · boots [EMPLOYER_DIRECT] active — 5b89125297fd89aca0042dc3edd230929cd3b2ff
+    https://www.boots.jobs/jobs/283222br-optical-assistant-scarborough-westborough
+    source : ACTIVE, dernière collecte de RUN OK le 2026-10-01 17:20 UTC
+    vue du 2026-09-28 18:31 UTC au 2026-09-30 18:11 UTC
+    collecte : 6b7e3b70-5d38-4d8d-b974-dfb3f9452ccf du 2026-09-30 18:07 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Boots (UNKNOWN, BOOTS, cmtpjx4nv2wqjpf5ljaaqw1jm)
+  Maison : Boots
+
+4. Canonisation
+  métier : optical-assistant (CLASSIFIED) ; rôles de l’intitulé : optical-assistant
+  contrat : non précisé ; temps : non précisé ; dispositif : —
+  secteur (Maison) : BEAUTY, RETAIL
+  lieu : Scarborough ; marché aucun ; point NATIVE
+
+5. Fraîcheur
+  publiée (source) : — ; première observation : 2026-09-28 18:31 UTC ; dernière observation : 2026-09-30 18:11 UTC
+  dernière revue : 2026-09-30 18:11 UTC par boots
+
+6. Événements récents
+  2026-09-28 18:31 UTC OPENED
+
+════ HORS_MARCHE/SANS_PAYS (3217 offres) ════
+Offre cmunr6u3g00d4oc35te3odqpa — Fabricant(e) H/F - 2026-10323   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : HORS MARCHÉ — servie sans pays : atteignable par son seul lien
+  aucun pays lu dans l’offre
+  Ce qui la ferait revenir : Exposée dans un marché quand un pays est lu dans l’offre (relecture du lieu à la prochaine collecte).
+
+1. Source et collecte
+  · lagardere-travel-retail [EMPLOYER_DIRECT] active — 10323
+    https://lagardere-recrute.talent-soft.com/offre-de-emploi/emploi-fabricant-e-h-f_10323.aspx
+    source : ACTIVE, dernière collecte de RUN OK le 2026-10-01 16:19 UTC
+    vue du 2026-09-30 06:57 UTC au 2026-10-01 16:19 UTC
+    collecte : 2d0bcd86-d1f5-4dc7-bb93-75b18ea8d057 du 2026-10-01 16:19 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Lagardère Travel Retail (UNKNOWN, LAGARDERE_TRAVEL_RETAIL, cmtkdvxv61strnf2blvpva5y3)
+  Maison : Lagardère Travel Retail
+
+4. Canonisation
+  métier : non reconnu (NO_RULE) ; rôles de l’intitulé : —
+  contrat : FIXED_TERM ; temps : non précisé ; dispositif : —
+  secteur (Maison) : RETAIL
+  lieu : Vanves ; marché aucun ; point —
+
+5. Fraîcheur
+  publiée (source) : 2026-06-01 00:00 UTC ; première observation : 2026-09-30 06:57 UTC ; dernière observation : 2026-10-01 16:19 UTC
+  dernière revue : 2026-10-01 16:19 UTC par lagardere-travel-retail
+
+6. Événements récents
+  2026-09-30 06:57 UTC OPENED
+
+════ HORS_MARCHE/SANS_PAYS (3217 offres) ════
+Offre cmuf5bkxb00oems6fk74vuomp — Retail Assistant (Opticians)   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : HORS MARCHÉ — servie sans pays : atteignable par son seul lien
+  aucun pays lu dans l’offre
+  Ce qui la ferait revenir : Exposée dans un marché quand un pays est lu dans l’offre (relecture du lieu à la prochaine collecte).
+
+1. Source et collecte
+  · boots [EMPLOYER_DIRECT] active — 7383e369435e96f4de1ad63efd7f62b342124cd0
+    https://www.boots.jobs/jobs/282848br-retail-assistant-opticians-marlow-high-street
+    source : ACTIVE, dernière collecte de RUN OK le 2026-10-01 17:20 UTC
+    vue du 2026-09-24 06:23 UTC au 2026-09-27 17:06 UTC
+    collecte : f8b81e82-53d0-463e-a4fd-1178930fb469 du 2026-09-27 17:03 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Boots (UNKNOWN, BOOTS, cmtpjx4nv2wqjpf5ljaaqw1jm)
+  Maison : Boots
+
+4. Canonisation
+  métier : optical-assistant (CLASSIFIED) ; rôles de l’intitulé : optical-assistant
+  contrat : non précisé ; temps : non précisé ; dispositif : —
+  secteur (Maison) : BEAUTY, RETAIL
+  lieu : Marlow ; marché aucun ; point NATIVE
+
+5. Fraîcheur
+  publiée (source) : — ; première observation : 2026-09-24 06:23 UTC ; dernière observation : 2026-09-27 17:06 UTC
+  dernière revue : 2026-09-27 17:06 UTC par boots
+
+6. Événements récents
+  2026-09-24 06:23 UTC OPENED
+
+════ HORS_MARCHE/SANS_PAYS (3217 offres) ════
+Offre cmuf5bwi8026nms6fvzyujawz — Pharmacist   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : HORS MARCHÉ — servie sans pays : atteignable par son seul lien
+  aucun pays lu dans l’offre
+  Ce qui la ferait revenir : Exposée dans un marché quand un pays est lu dans l’offre (relecture du lieu à la prochaine collecte).
+
+1. Source et collecte
+  · boots [EMPLOYER_DIRECT] active — 9dd2d429d983b552bdc43dc5407279dec9923bec
+    https://www.boots.jobs/jobs/277871br-pharmacist-milton-keynes-crown-walk
+    source : ACTIVE, dernière collecte de RUN OK le 2026-10-01 17:20 UTC
+    vue du 2026-09-24 06:23 UTC au 2026-10-01 17:18 UTC
+    collecte : 25490cf7-9653-47bc-8c61-a157d49ae1d3 du 2026-10-01 17:16 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Boots (UNKNOWN, BOOTS, cmtpjx4nv2wqjpf5ljaaqw1jm)
+  Maison : Boots
+
+4. Canonisation
+  métier : pharmacist (CLASSIFIED) ; rôles de l’intitulé : pharmacist
+  contrat : non précisé (natif « Full-time ») ; temps : FULL_TIME ; dispositif : —
+  secteur (Maison) : BEAUTY, RETAIL
+  lieu : Milton Keynes ; marché aucun ; point NATIVE
+
+5. Fraîcheur
+  publiée (source) : — ; première observation : 2026-09-24 06:23 UTC ; dernière observation : 2026-10-01 17:18 UTC
+  dernière revue : 2026-10-01 17:18 UTC par boots
+
+6. Événements récents
+  2026-09-24 06:23 UTC OPENED
+
+════ HORS_MARCHE/SANS_PAYS (3217 offres) ════
+Offre cmuf5cjux05onms6fhszyb38n — Pharmacy Technician   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : HORS MARCHÉ — servie sans pays : atteignable par son seul lien
+  aucun pays lu dans l’offre
+  Ce qui la ferait revenir : Exposée dans un marché quand un pays est lu dans l’offre (relecture du lieu à la prochaine collecte).
+
+1. Source et collecte
+  · boots [EMPLOYER_DIRECT] active — 1742087802661c42268cc1146d9ae0c2ac587555
+    https://www.boots.jobs/jobs/275216br-pharmacy-technician-barton-upon-humber-george-street
+    source : ACTIVE, dernière collecte de RUN OK le 2026-10-01 17:20 UTC
+    vue du 2026-09-24 06:24 UTC au 2026-10-01 17:20 UTC
+    collecte : 25490cf7-9653-47bc-8c61-a157d49ae1d3 du 2026-10-01 17:16 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Boots (UNKNOWN, BOOTS, cmtpjx4nv2wqjpf5ljaaqw1jm)
+  Maison : Boots
+
+4. Canonisation
+  métier : pharmacy-technician (CLASSIFIED) ; rôles de l’intitulé : pharmacy-technician
+  contrat : non précisé (natif « Full-time ») ; temps : FULL_TIME ; dispositif : —
+  secteur (Maison) : BEAUTY, RETAIL
+  lieu : Barton upon Humber ; marché aucun ; point NATIVE
+
+5. Fraîcheur
+  publiée (source) : — ; première observation : 2026-09-24 06:24 UTC ; dernière observation : 2026-10-01 17:20 UTC
+  dernière revue : 2026-10-01 17:20 UTC par boots
+
+6. Événements récents
+  2026-09-24 06:24 UTC OPENED
+
+════ HORS_MARCHE/SANS_PAYS (3217 offres) ════
+Offre cmuf5cbwd04fxms6f982i0naw — Dispenser   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : HORS MARCHÉ — servie sans pays : atteignable par son seul lien
+  aucun pays lu dans l’offre
+  Ce qui la ferait revenir : Exposée dans un marché quand un pays est lu dans l’offre (relecture du lieu à la prochaine collecte).
+
+1. Source et collecte
+  · boots [EMPLOYER_DIRECT] active — 2e0a064dee37ebaff127b85c37a07cfef3e2b100
+    https://www.boots.jobs/jobs/280196br-dispenser-pembroke-dock-diamond-street
+    source : ACTIVE, dernière collecte de RUN OK le 2026-10-01 17:20 UTC
+    vue du 2026-09-24 06:24 UTC au 2026-09-28 18:34 UTC
+    collecte : 1da17bdb-6342-42be-8a08-e150a3042f9b du 2026-09-28 18:28 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Boots (UNKNOWN, BOOTS, cmtpjx4nv2wqjpf5ljaaqw1jm)
+  Maison : Boots
+
+4. Canonisation
+  métier : pharmacy-support-worker (CLASSIFIED) ; rôles de l’intitulé : pharmacy-support-worker
+  contrat : non précisé ; temps : non précisé ; dispositif : —
+  secteur (Maison) : BEAUTY, RETAIL
+  lieu : Pembroke Dock ; marché aucun ; point NATIVE
+
+5. Fraîcheur
+  publiée (source) : — ; première observation : 2026-09-24 06:24 UTC ; dernière observation : 2026-09-28 18:34 UTC
+  dernière revue : 2026-09-28 18:34 UTC par boots
+
+6. Événements récents
+  2026-09-24 06:24 UTC OPENED
+
+════ HORS_MARCHE/SANS_PAYS (3217 offres) ════
+Offre cmu6ylplc0046o89u3pk3c7fj — Adv_Misterbianco   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : HORS MARCHÉ — servie sans pays : atteignable par son seul lien
+  aucun pays lu dans l’offre
+  Ce qui la ferait revenir : Exposée dans un marché quand un pays est lu dans l’offre (relecture du lieu à la prochaine collecte).
+
+1. Source et collecte
+  · lovable [ATS_OFFICIAL] active — 6533967
+    https://job-boards.greenhouse.io/lovable/jobs/6533967
+    source : ACTIVE, dernière collecte de RUN OK le 2026-10-01 16:14 UTC
+    vue du 2026-09-18 12:53 UTC au 2026-10-01 16:14 UTC
+    collecte : 99102605-dbef-4a53-be4c-6cbd4f155032 du 2026-10-01 16:14 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Lovable (UNKNOWN, LOVABLE, cmtlymh890eszqf5kd0ors4g2)
+  Maison : Lovable
+
+4. Canonisation
+  métier : non reconnu (NO_RULE) ; rôles de l’intitulé : —
+  contrat : non précisé ; temps : non précisé ; dispositif : —
+  secteur (Maison) : inconnu
+  lieu : Misterbianco ; marché aucun ; point —
+
+5. Fraîcheur
+  publiée (source) : 2025-01-13 16:51 UTC ; première observation : 2026-09-18 12:53 UTC ; dernière observation : 2026-10-01 16:14 UTC
+  dernière revue : 2026-10-01 16:14 UTC par lovable
+
+6. Événements récents
+  2026-09-18 12:53 UTC OPENED
+
+════ HORS_MARCHE/SANS_PAYS (3217 offres) ════
+Offre cmu6yo2tr00kio8pcer5cqh9t — Sales Supervisor, Full Time- Ponce- Atlanta, Ga   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : HORS MARCHÉ — servie sans pays : atteignable par son seul lien
+  aucun pays lu dans l’offre
+  Ce qui la ferait revenir : Exposée dans un marché quand un pays est lu dans l’offre (relecture du lieu à la prochaine collecte).
+
+1. Source et collecte
+  · reformation [ATS_OFFICIAL] active — 8167943
+    https://job-boards.greenhouse.io/reformation/jobs/8167943
+    source : ACTIVE, dernière collecte de RUN OK le 2026-10-01 16:21 UTC
+    vue du 2026-09-18 12:55 UTC au 2026-10-01 16:21 UTC
+    collecte : f6ea9431-15bb-4421-8143-9807c33a200e du 2026-10-01 16:20 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Reformation (UNKNOWN, REFORMATION, cmtlyq4jc0m9xqf5k4ysl9hwg)
+  Maison : Reformation
+
+4. Canonisation
+  métier : non reconnu (FAMILY_ONLY) ; rôles de l’intitulé : —
+  contrat : non précisé ; temps : FULL_TIME ; dispositif : —
+  secteur (Maison) : inconnu
+  lieu : Atlanta ; marché aucun ; point —
+
+5. Fraîcheur
+  publiée (source) : 2026-08-31 20:22 UTC ; première observation : 2026-09-18 12:55 UTC ; dernière observation : 2026-10-01 16:21 UTC
+  dernière revue : 2026-10-01 16:21 UTC par reformation
+
+6. Événements récents
+  2026-09-18 12:55 UTC OPENED
+
+════ HORS_MARCHE/SANS_PAYS (3217 offres) ════
+Offre cmuh8ifii3i5gp434v60h2ijh — Customer Assistant   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : HORS MARCHÉ — servie sans pays : atteignable par son seul lien
+  aucun pays lu dans l’offre
+  Ce qui la ferait revenir : Exposée dans un marché quand un pays est lu dans l’offre (relecture du lieu à la prochaine collecte).
+
+1. Source et collecte
+  · boots [EMPLOYER_DIRECT] active — a86ec7723253ddc58baa4b744eb070500d5502ab
+    https://www.boots.jobs/jobs/277726br-customer-assistant-drogheda-scotch-hall-sc-2
+    source : ACTIVE, dernière collecte de RUN OK le 2026-10-01 17:20 UTC
+    vue du 2026-09-25 17:28 UTC au 2026-10-01 17:19 UTC
+    collecte : 25490cf7-9653-47bc-8c61-a157d49ae1d3 du 2026-10-01 17:16 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Boots (UNKNOWN, BOOTS, cmtpjx4nv2wqjpf5ljaaqw1jm)
+  Maison : Boots
+
+4. Canonisation
+  métier : sales-advisor (CLASSIFIED) ; rôles de l’intitulé : sales-advisor
+  contrat : non précisé ; temps : non précisé ; dispositif : —
+  secteur (Maison) : BEAUTY, RETAIL
+  lieu : Drogheda Scotch Hall ; marché aucun ; point NATIVE
+
+5. Fraîcheur
+  publiée (source) : — ; première observation : 2026-09-25 17:28 UTC ; dernière observation : 2026-10-01 17:19 UTC
+  dernière revue : 2026-10-01 17:19 UTC par boots
+
+6. Événements récents
+  2026-09-25 17:28 UTC OPENED
+
+════ RETENUE_PAR_REGLE/CANDIDATURE_SPONTANEE (3 offres) ════
+Offre cmufqpk0o05nvmy33ydrmjmtz — WE ARE LOOKING FOR YOU! - Unsolicited application Headquarters m/f/d   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : RETENUE PAR RÈGLE — candidature spontanée ou vivier sans poste (D-511, D-512)
+  retirée le 2026-10-02 10:34 UTC : retenue NATIVE_SPONTANEOUS_APPLICATION
+  Ce qui la ferait revenir : Jamais d’elle-même : une candidature spontanée ou un vivier sans poste n’est pas une offre (D-511, D-512). Revenir sur la règle demande une remédiation.
+
+1. Source et collecte
+  · marc-o-polo [EMPLOYER_DIRECT] inactive — 7a0814c3e95ce7e6d9bdedeacc5c768351a646ad
+    https://company.marc-o-polo.com/en/career/start-creating-with-us/our-jobs/-we-are-looking-for-you-unsolicited-application-headquarters-m-f-d-2026-4043
+    source : ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-02 10:34 UTC
+    vue du 2026-09-24 16:22 UTC au 2026-09-24 16:22 UTC ; dernière retenue de collecte NATIVE_SPONTANEOUS_APPLICATION
+    collecte : 50358816-b327-47c7-9d56-e342e0e7db89 du 2026-09-24 16:22 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Marc O’Polo (UNKNOWN, SOURCE_f576881e672f656116550a60a9e39d4a2e15e3c613d74fb22203aaf69020c9ac, cmuebcsly0vhdoi35u9q626q4)
+  Maison : Marc O’Polo
+
+4. Canonisation
+  métier : non reconnu (NO_RULE) ; rôles de l’intitulé : —
+  contrat : non précisé (natif « FULL_TIME ») ; temps : non précisé ; dispositif : —
+  secteur (Maison) : inconnu
+  lieu : Stephanskirchen, DE ; marché DE ; point CITY
+
+5. Fraîcheur
+  publiée (source) : 2026-09-16 09:29 UTC ; première observation : 2026-09-24 16:22 UTC ; dernière observation : 2026-09-24 16:22 UTC
+  dernière revue : 2026-09-24 16:22 UTC par marc-o-polo
+
+6. Événements récents
+  2026-10-02 10:34 UTC WITHDRAWN → OUT_OF_SCOPE
+  2026-09-24 16:22 UTC OPENED
+
+════ RETENUE_PAR_REGLE/CANDIDATURE_SPONTANEE (3 offres) ════
+Offre cmufr6h5g0q66my33ioolkzuj — Initiativbewerbung Deutschland   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : RETENUE PAR RÈGLE — candidature spontanée ou vivier sans poste (D-511, D-512)
+  retirée le 2026-10-02 10:38 UTC : retenue NATIVE_SPONTANEOUS_APPLICATION
+  Ce qui la ferait revenir : Jamais d’elle-même : une candidature spontanée ou un vivier sans poste n’est pas une offre (D-511, D-512). Revenir sur la règle demande une remédiation.
+
+1. Source et collecte
+  · swatch-group [GROUP_OFFICIAL] inactive — 18551
+    https://www.swatchgroup.com/de/job/18551
+    source : ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-02 10:38 UTC
+    vue du 2026-09-24 16:35 UTC au 2026-09-30 08:18 UTC ; dernière retenue de collecte NATIVE_SPONTANEOUS_APPLICATION
+    collecte : 107118b5-c485-4f8c-b51f-46851ed8e00c du 2026-09-30 08:18 UTC (ingest)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Swatch Group (UNKNOWN, SWATCH_GROUP, cmtpj2gbr1473pf5l1wfwy9ur)
+  Maison : Swatch Group
+
+4. Canonisation
+  métier : non reconnu (NO_RULE) ; rôles de l’intitulé : —
+  contrat : non précisé ; temps : non précisé ; dispositif : —
+  secteur (Maison) : inconnu
+  lieu : Eschborn, DE ; marché DE ; point CITY
+
+5. Fraîcheur
+  publiée (source) : 2026-04-02 12:54 UTC ; première observation : 2026-09-24 16:35 UTC ; dernière observation : 2026-09-30 08:18 UTC
+  dernière revue : 2026-09-30 08:18 UTC par swatch-group
+
+6. Événements récents
+  2026-10-02 10:38 UTC WITHDRAWN → OUT_OF_SCOPE
+  2026-09-24 16:35 UTC OPENED
+
+════ RETENUE_PAR_REGLE/CANDIDATURE_SPONTANEE (3 offres) ════
+Offre cmuebcsr30vi1oi35iow7y2v7 — WIR SUCHEN DICH! - Initiativbewerbung Ausbildung m/w/d   [lu le 2026-10-02 14:24 UTC, base sans retenue R-143 §2]
+
+ÉTAT : RETENUE PAR RÈGLE — candidature spontanée ou vivier sans poste (D-511, D-512)
+  retirée le 2026-10-02 10:34 UTC : retenue NATIVE_SPONTANEOUS_APPLICATION
+  Ce qui la ferait revenir : Jamais d’elle-même : une candidature spontanée ou un vivier sans poste n’est pas une offre (D-511, D-512). Revenir sur la règle demande une remédiation.
+
+1. Source et collecte
+  · marc-o-polo [EMPLOYER_DIRECT] inactive — a9882311f2e4bed01a7acd96edc6735046a2cd67
+    https://company.marc-o-polo.com/en/career/start-creating-with-us/our-jobs/wir-suchen-dich-initiativbewerbung-ausbildung-m-w-d-2026-4105
+    source : ACTIVE, dernière collecte de RUN DEGRADED le 2026-10-02 10:34 UTC
+    vue du 2026-09-23 16:24 UTC au 2026-09-27 16:22 UTC ; dernière retenue de collecte NATIVE_SPONTANEOUS_APPLICATION
+    collecte : 1538b01b-90d4-49f2-9160-503ef2abfa18 du 2026-09-27 16:21 UTC (ingest-all)
+
+2. Doublons
+  1 représentation(s) ; 0 jumelle(s) absorbée(s)
+
+3. Maison et entité
+  entité : Marc O’Polo (UNKNOWN, SOURCE_f576881e672f656116550a60a9e39d4a2e15e3c613d74fb22203aaf69020c9ac, cmuebcsly0vhdoi35u9q626q4)
+  Maison : Marc O’Polo
+
+4. Canonisation
+  métier : non reconnu (NO_RULE) ; rôles de l’intitulé : —
+  contrat : non précisé (natif « FULL_TIME ») ; temps : non précisé ; dispositif : APPRENTICESHIP
+  secteur (Maison) : inconnu
+  lieu : Stephanskirchen, DE ; marché DE ; point CITY
+
+5. Fraîcheur
+  publiée (source) : 2026-04-13 13:58 UTC ; première observation : 2026-09-23 16:24 UTC ; dernière observation : 2026-09-27 16:22 UTC
+  dernière revue : 2026-09-27 16:22 UTC par marc-o-polo
+
+6. Événements récents
+  2026-10-02 10:34 UTC WITHDRAWN → OUT_OF_SCOPE
+  2026-09-23 16:24 UTC OPENED
+
