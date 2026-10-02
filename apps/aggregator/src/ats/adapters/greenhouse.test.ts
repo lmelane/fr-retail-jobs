@@ -19,12 +19,31 @@ describe('Greenhouse country', () => {
     expect(greenhouseCountry({ location: { name: 'Melbourne' }, offices: [{ name: 'Melbourne', location: null }] })).toBeUndefined();
     expect(greenhouseCountry({ location: { name: 'Paris' }, offices: [] })).toBeUndefined();
   });
-  it('maps the real On board: the London posting gets GB, the three address-less offices stay empty', async () => {
+  /*
+   * D-520, offres sans pays (02/10/2026) : 157 offres On (« United States », « China », « Japan »…) et 26 Molton Brown
+   * (« United Kingdom », « Ireland ») portaient le pays dans le NOM de leur bureau Greenhouse, que la lecture ignorait.
+   */
+  it('reads the country from an office whose name is a country, after the address and the location', () => {
+    expect(greenhouseCountry({ location: { name: 'Seattle' }, offices: [{ name: 'United States', location: null }] })).toBe('US');
+    expect(greenhouseCountry({ location: { name: 'York' }, offices: [{ name: 'United Kingdom', location: null }] })).toBe('GB');
+    expect(greenhouseCountry({ location: { name: 'Shanghai' }, offices: [{ name: 'China', location: null }] })).toBe('CN');
+    // L'adresse d'un bureau passe avant son nom.
+    expect(greenhouseCountry({ location: { name: 'Zurich' }, offices: [{ name: 'Germany', location: 'Förrlibuckstrasse 190, 8005 Zürich, Switzerland' }] })).toBe('CH');
+  });
+  it('never reads a country from an office name that is a code, a US state, a city or a mix of countries', () => {
+    expect(greenhouseCountry({ location: { name: 'London' }, offices: [{ name: 'UK', location: null }] })).toBeUndefined();
+    expect(greenhouseCountry({ location: { name: 'Atlanta' }, offices: [{ name: 'Georgia', location: null }] })).toBeUndefined();
+    expect(greenhouseCountry({ location: { name: 'Shanghai' }, offices: [{ name: 'HQ Shanghai', location: null }] })).toBeUndefined();
+    expect(greenhouseCountry({ location: { name: 'Remote' }, offices: [{ name: 'Germany', location: null }, { name: 'France', location: null }] })).toBeUndefined();
+    expect(greenhouseCountry({ location: { name: 'Remote' }, offices: [{ name: 'Remote (United States)', location: null }] })).toBeUndefined();
+  });
+  it('maps the real On board: the London posting gets GB from its address, the three address-less offices their name', async () => {
     network.mockResolvedValueOnce(sample);
     const { jobs } = await fetchGreenhouseJobs({ board: 'onrunning' });
     expect(network.mock.calls[0][0]).toBe('https://boards-api.greenhouse.io/v1/boards/onrunning/jobs?content=true');
     expect(jobs).toHaveLength(4);
-    expect(jobs.map((j) => [j.location, j.country])).toEqual([['London', 'GB'], ['Melbourne', undefined], ['Paris', undefined], ['Amsterdam', undefined]]);
+    // Bureaux « Australia », « France », « Netherlands » sans adresse : jusqu'au 02/10/2026, ces trois offres restaient sans pays.
+    expect(jobs.map((j) => [j.location, j.country])).toEqual([['London', 'GB'], ['Melbourne', 'AU'], ['Paris', 'FR'], ['Amsterdam', 'NL']]);
     expect(jobs[0]!.externalId).toBe(String(sample.jobs[0].id));
   });
 });

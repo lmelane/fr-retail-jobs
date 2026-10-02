@@ -1,0 +1,96 @@
+src|n|sans_ville|ville_un_pays|ville_ambigue|ville_inconnue|avec_coord|exemples
+boots|1973|15|774|1128|56|1960|{"Aberdare, Commercial Street | Aberdare | ∅ → AU,GB","Aberdeen, Bon Accord Centre | Aberdeen | ∅ → AU,CA,GB,HK,US,ZA","Aberdeen, Dyce Shopping Centre | Aberdeen | ∅ → AU,CA,GB,HK,US,ZA","Aberdeen, The Bon Accord Centre | Aberdeen | ∅ → AU,CA,GB,HK,US,ZA","Abertillery, Church Street | Abertillery | ∅ → GB"}
+on-running|199|0|123|76|0|0|{"Amsterdam | Amsterdam | ∅ → NL,US,ZA","Austin | Austin | ∅ → US","Aventura | Aventura | ∅ → US","Beijing | Pékin | ∅ → AL,CN,US","Boston | Boston | ∅ → GB,IE,PH,US"}
+brown-thomas-taleo|99|0|5|14|80|0|{"Arnotts, Dublin | Arnotts | ∅ → -","Brown Thomas, Cork | Brown Thomas | ∅ → -","Brown Thomas, Dublin | Brown Thomas | ∅ → -","Brown Thomas, Dundrum | Brown Thomas | ∅ → -","Brown Thomas, Galway | Brown Thomas | ∅ → -"}
+lagardere-travel-retail|79|1|61|16|1|0|{"Abidjan | Abidjan | ∅ → CI","Aéroport d'Orly | ∅ | ∅ → -","Alsace Bourgogne Franche Conté | Alsace Bourgogne Franche Conté | ∅ → -","Avignon | Avignon | ∅ → FR","Fontenay sous bois | Fontenay-sous-Bois | ∅ → FR"}
+brilliant-earth|76|0|27|49|0|0|{"Atlanta, GA | Atlanta | ∅ → US","Baltimore, MD | Baltimore | ∅ → US","Beverly Hills, CA | Beverly Hills | ∅ → AU,US","Boston, MA | Boston | ∅ → GB,IE,PH,US","Central; East; West | Central | ∅ → BR,CA,HK,PH,US"}
+lovable|58|1|43|8|6|0|{"Affi | Affi | ∅ → IT","Ancona | Ancône | ∅ → FR,IT","Antegnate | Antegnate | ∅ → IT","Bergamo | Bergame | ∅ → IT","Bologna | Bologne | ∅ → FR,IT"}
+reformation|53|5|19|27|2|0|{"1055 Madison Ave, New York, NY 10028 | New York | ∅ → UA,US","802-4 | ∅ | ∅ → -","85 Main St., East Hampton, NY 11937 | East Hampton | ∅ → US","Atlanta, Ga | Atlanta | ∅ → US","Central | Central | ∅ → BR,CA,HK,PH,US"}
+veronica-beard|49|39|0|10|0|0|{"California | ∅ | ∅ → -","Colorado | ∅ | ∅ → -","Connecticut | ∅ | ∅ → -","District of Columbia | ∅ | ∅ → -","Florida | ∅ | ∅ → -"}
+groupe-printemps|47|9|7|3|28|0|{"∅ | ∅ | ∅ → -","Bouches du Rhône (13) | Bouches du Rhône | ∅ → -","Calvados (14) | Calvados | ∅ → -","Ille et Vilaine (35) | Ille et Vilaine | ∅ → -","Isère (38) | Isère | ∅ → -"}
+nocibe-eqwa|47|0|29|1|17|0|{"AMILLY, 45200, Centre-Val de Loire | Amilly | ∅ → FR","BOUFFERE, 85600, Pays de la Loire | Bouffere | ∅ → FR","BOURGES, 18000, Centre-Val de Loire | Bourges | ∅ → FR","CHALLANS, 85300, Pays de la Loire | Challans | ∅ → FR","CHARTRES, 28000, Centre-Val de Loire | Chartres | ∅ → FR"}
+rivoli-typesense|40|8|0|32|0|0|{"Doha | Doha | ∅ → IN,IR,QA","Dubai | Dubaï | ∅ → AE,IN","Dubai, UAE | Dubaï | ∅ → AE,IN","UAE | ∅ | ∅ → -"}
+oak-essentials|35|1|9|21|4|0|{"Boston, MA | Boston | ∅ → GB,IE,PH,US","Carmel, CA | Carmel | ∅ → AU,US","Charleston, SC | Charleston | ∅ → AU,US","Charlotte, NC | Charlotte | ∅ → US","Chicago, IL | Chicago | ∅ → US"}
+pvh|35|34|1|0|0|0|{"∅ | ∅ | ∅ → -","Taipei City, Taipei City | Taipei | ∅ → TW"}
+caudalie|33|33|0|0|0|0|{"∅ | ∅ | ∅ → -"}
+mejuri|32|1|8|9|14|0|{"Abbot Kinney, Los Angeles | Abbot Kinney | ∅ → -","Abbot Kinney, Venice | Abbot Kinney | ∅ → -","Bethesda Row, Bethesda | Bethesda Row | ∅ → -","Brickell City Centre, Miami | Miami | ∅ → AU,US","Broadway Plaza, San Francisco | San Francisco | ∅ → AR,BO,CO,CR,EC,ES,GT,HN,MX,NI,PA,PE,PH,SV,US,VE"}
+la-senza|27|2|2|20|3|0|{"Cambridge | Cambridge | ∅ → AU,CA,GB,JM,NZ,UA,US","Carrefour Laval | Carrefour Laval | ∅ → -","Delta, BC (Tsawwassen Mills) | Delta | ∅ → BR,CA,MX,US","Edmonton, AB - WEST EDMONTON MALL | Edmonton | ∅ → AU,CA,GB,UA,US","Edmonton | Edmonton | ∅ → AU,CA,GB,UA,US"}
+molton-brown|27|0|6|21|0|0|{"Bath | Bath | ∅ → CA,GB,JM,US","Belfast | Belfast | ∅ → CA,GB,NZ,US,ZA","Belfast City | Belfast City | ∅ → GB","Braintree | Braintree | ∅ → GB,US","Bridgend | Bridgend | ∅ → GB"}
+damiani|26|0|16|9|1|0|{"Abu Dhabi | Abou Dhabi | ∅ → -","Città del Messico | Città del Messico | ∅ → MX","Dubai | Dubaï | ∅ → AE,IN","Lugano | Lugano | ∅ → CH","Madrid | Madrid | ∅ → CO,ES,MX,PH,US"}
+parfums-chanel|21|17|0|0|4|0|{"JOBREQ00054977_JCP | Jcp | ∅ → -","JOBREQ00054978_JCP | Jcp | ∅ → -","JOBREQ00056305_JCP | Jcp | ∅ → -","JOBREQ00057000_JCP | Jcp | ∅ → -","JOBREQ00075710 | ∅ | ∅ → -"}
+jd-sports|16|2|6|0|8|0|{"BRUXELLES | Bruxelles | ∅ → BE","C.C. \"GRAN SHOPPING MONGOLFIERA\" | ∅ | ∅ → -","C.C. MAXIMALL POMPEI - VIA PACINOTTI, SAN NICOLA LA STRADA | C.c. Maximall Pompei | ∅ → -","EMEA | ∅ | ∅ → -","Località Piano D’Accio, 64100 Teramo TE | Località Piano d’Accio | ∅ → -"}
+groupe-chantelle|16|2|10|4|0|0|{"8 rue de provigny 94230 Cachan | ∅ | ∅ → -","Antony | Antony | ∅ → FR","Boulogne | Boulogne | ∅ → FR","Cachan (94) | Cachan | ∅ → FR","Cachan | Cachan | ∅ → FR"}
+gorjana|12|0|6|6|0|0|{"Alexandria, VA | Alexandria | ∅ → AU,BR,CA,EG,GB,GR,IR,IT,JM,RO,UA,US,ZA","Atlanta, GA | Atlanta | ∅ → US","Bethesda, MD | Bethesda | ∅ → GB,US","Boulder, CO | Boulder | ∅ → AU,US","Bozeman, MT | Bozeman | ∅ → US"}
+longchamp|12|0|1|2|9|0|{"Alpes Maritimes (06) | Alpes Maritimes | ∅ → -","LONGCHAMP ERNEE | Longchamp Ernee | ∅ → -","Maine et Loire (49) | Maine et Loire | ∅ → -","POUZAUGES | Pouzauges | ∅ → FR","segré | Segré | ∅ → CI,FR"}
+quince|11|1|8|2|0|0|{"Germany - Berlin | Berlin | ∅ → DE,HN,MX,RU,SV,UA,US,ZA","Germany - Berlin; Spain - Madrid | Berlin | ∅ → DE,HN,MX,RU,SV,UA,US,ZA","Italy - Remote; Spain - Remote | ∅ | ∅ → -","Spain - Barcelona | Barcelone | ∅ → ES","United States - Santa Fe Springs, CA | Santa Fe Springs | ∅ → US"}
+intersport-france|10|0|6|0|4|10|{"25501 MORTEAU CEDEX | Morteau | ∅ → FR","73440 VAL THORENS | Val Thorens | ∅ → FR","91140 VILLEBON | Villebon | ∅ → FR","94521 THIAIS BELLE EPINE | Thiais Belle Epine | ∅ → -"}
+mecca|10|10|0|0|0|0|{"∅ | ∅ | ∅ → -"}
+lagardere-travel-retail-de|10|0|7|0|3|0|{"Frankfurt am Main | Francfort | ∅ → DE","Frankfurt Flughafen | Frankfurt Flughafen | ∅ → -","Frankfurt-Flughafen | Frankfurt-Flughafen | ∅ → -","Leinfelden-Echterdingen | Leinfelden-Echterdingen | ∅ → DE"}
+swatch-group|8|0|5|3|0|0|{"1000 Bruxelles | Bruxelles | ∅ → BE","2000 Sydney | Sydney | ∅ → AU,CA,US","2300 La Chaux-de-Fonds | La Chaux-de-Fonds | ∅ → CH","90139 Palermo | Palerme | ∅ → IT","SW1X 9LE London | Londres | ∅ → AR,GB,US"}
+foot-locker-france|8|8|0|0|0|0|{"∅ | ∅ | ∅ → -"}
+picard|6|6|0|0|0|0|{"∅ | ∅ | ∅ → -"}
+naos|6|1|0|0|5|0|{"Abierto | Abierto | ∅ → -","Abrir | Abrir | ∅ → -","Open | Open | ∅ → -","Ouvert | Ouvert | ∅ → -","للفتح | للفتح | ∅ → -"}
+hot-topic|6|0|0|6|0|0|{"La Vergne, Tennessee (TNDC) | La Vergne | ∅ → FR,US"}
+ilia|5|0|1|4|0|0|{"Rio de Janeiro - BR | Rio de Janeiro | ∅ → BR","São Paulo - BR | São Paulo | ∅ → BR,CV,PT"}
+olaplex|5|2|0|3|0|0|{"California | ∅ | ∅ → -","New York | New York | ∅ → UA,US","Texas | ∅ | ∅ → -"}
+g-label-by-goop|5|3|0|2|0|0|{"New York Office; Remote; Santa Monica, CA (Corp HQ) | New York | ∅ → UA,US","Remote | ∅ | ∅ → -","Santa Monica, CA (Corp HQ) | Santa Monica | ∅ → BR,MX,PH,US"}
+shinola-retail|5|0|4|1|0|0|{"Chicago, IL | Chicago | ∅ → US","Los Angeles, CA | Los Angeles | ∅ → CL,ES,MX,PA,PE,PH,US","Oak Brook, IL | Oak Brook | ∅ → US","Tysons Corner, VA | Tysons | ∅ → US","Tysons, VA | Tysons | ∅ → US"}
+skin-laundry|4|0|1|0|3|0|{"Del Mar Highlands | Del Mar Highlands | ∅ → -","Upper West Side, New York City | Upper West Side | ∅ → US"}
+ganni-talentrecruiter|4|1|2|1|0|0|{"∅ | ∅ | ∅ → -","Copenhagen | Copenhague | ∅ → DK","London | Londres | ∅ → AR,GB,US","Stockholm | Stockholm | ∅ → SE"}
+galeries-lafayette|4|4|0|0|0|0|{"∅ | ∅ | ∅ → -"}
+rebag|4|0|1|0|3|0|{"Latin America | Latin America | ∅ → -","Latin América - Remote | Latin América | ∅ → -","Orlando | Orlando | ∅ → US"}
+ounass|3|3|0|0|0|0|{"∅ | ∅ | ∅ → -"}
+balmain|3|0|3|0|0|0|{"Bicester | Bicester | ∅ → GB","Leccio | Leccio | ∅ → IT","Serravalle Scrivia | Serravalle Scrivia | ∅ → IT"}
+bash-talents|3|1|2|0|0|0|{"∅ | ∅ | ∅ → -","Val d'Isère, Auvergne Rhône – Alpes | Val d'Isère | ∅ → FR"}
+bespoke-post|3|0|0|3|0|0|{"New York | New York | ∅ → UA,US"}
+camper|3|3|0|0|0|0|{"∅ | ∅ | ∅ → -"}
+celio|3|3|0|0|0|0|{"∅ | ∅ | ∅ → -"}
+figs|3|1|2|0|0|0|{"Chicago, IL | Chicago | ∅ → US","Remote | ∅ | ∅ → -"}
+kering|3|3|0|0|0|0|{"∅ | ∅ | ∅ → -"}
+lagardere-duty-free|3|1|1|1|0|0|{"Aéroport d'Orly | ∅ | ∅ → -","Levallois-Perret | Levallois-Perret | ∅ → FR","Orly | Orly | ∅ → FR,PL"}
+lush|3|3|0|0|0|0|{"North America - Remote | ∅ | ∅ → -","Remote - North America | ∅ | ∅ → -"}
+marc-o-polo|3|0|3|0|0|0|{"Landquart, Grisons, 7302 | Landquart | ∅ → CH","Zürich, Zürich, 8001 | Zurich | ∅ → CH"}
+singularu|3|3|0|0|0|0|{"∅ | ∅ | ∅ → -"}
+j-lindeberg|2|2|0|0|0|0|{"∅ | ∅ | ∅ → -"}
+horace|2|2|0|0|0|0|{"∅ | ∅ | ∅ → -"}
+sephora-france|2|0|0|2|0|0|{"São Paulo | São Paulo | ∅ → BR,CV,PT"}
+shinola|2|0|1|1|0|0|{"Chicago, IL | Chicago | ∅ → US","Los Angeles, CA | Los Angeles | ∅ → CL,ES,MX,PA,PE,PH,US"}
+catbird|2|0|0|2|0|0|{"Boston, MA | Boston | ∅ → GB,IE,PH,US"}
+orlebar-brown|2|2|0|0|0|0|{"∅ | ∅ | ∅ → -"}
+nutrafol|2|2|0|0|0|0|{"Remote | ∅ | ∅ → -"}
+nutrire|2|2|0|0|0|0|{"∅ | ∅ | ∅ → -"}
+herschel-supply-co|2|0|0|2|0|0|{"Vancouver | Vancouver | ∅ → CA,US"}
+fastrack|2|2|0|0|0|0|{"∅ | ∅ | ∅ → -"}
+jonsson-workwear|2|0|0|0|2|0|{"Gauteng | Gauteng | ∅ → -","KwaZulu-Natal | KwaZulu-Natal | ∅ → -"}
+thirdlove|2|2|0|0|0|0|{"Remote | ∅ | ∅ → -"}
+everlane|2|0|2|0|0|0|{"King of Prussia, PA | King of Prussia | ∅ → US"}
+estee-lauder-companies|2|0|0|2|0|0|{"DUNDRUM, IE-U, Ireland | Dundrum | ∅ → GB,IE","Sydney, NZ-AUK, New Zealand | Sydney | ∅ → AU,CA,US"}
+oh-my-cream|2|2|0|0|0|0|{"∅ | ∅ | ∅ → -"}
+lounge|2|2|0|0|0|0|{"Retail | ∅ | ∅ → -"}
+cuyana|1|0|0|1|0|0|{"Venice, CA | Venice | ∅ → IT,US"}
+city-beauty|1|0|0|1|0|0|{"Burbank, CA | Burbank | ∅ → AU,US"}
+showroomprive|1|1|0|0|0|0|{"∅ | ∅ | ∅ → -"}
+white-stuff|1|1|0|0|0|0|{"∅ | ∅ | ∅ → -"}
+bzb|1|1|0|0|0|0|{"∅ | ∅ | ∅ → -"}
+subset|1|1|0|0|0|0|{"∅ | ∅ | ∅ → -"}
+swarovski|1|1|0|0|0|0|{"∅ | ∅ | ∅ → -"}
+trussardi|1|1|0|0|0|0|{"∅ | ∅ | ∅ → -"}
+la-casa-de-las-carcasas|1|1|0|0|0|0|{"∅ | ∅ | ∅ → -"}
+kicks|1|1|0|0|0|0|{"∅ | ∅ | ∅ → -"}
+bernadette|1|0|0|1|0|0|{"London | Londres | ∅ → AR,GB,US"}
+luhta|1|1|0|0|0|0|{"∅ | ∅ | ∅ → -"}
+bellroy|1|1|0|0|0|0|{"Remote | ∅ | ∅ → -"}
+luxexperience|1|0|0|1|0|0|{"Miami | Miami | ∅ → AU,US"}
+vivienne-westwood|1|1|0|0|0|0|{"∅ | ∅ | ∅ → -"}
+hoff|1|1|0|0|0|0|{"∅ | ∅ | ∅ → -"}
+multiopticas|1|1|0|0|0|0|{"∅ | ∅ | ∅ → -"}
+gymshark|1|0|0|1|0|0|{"London | Londres | ∅ → AR,GB,US"}
+nude-project|1|1|0|0|0|0|{"∅ | ∅ | ∅ → -"}
+gu-hk-headquarters|1|1|0|0|0|0|{"∅ | ∅ | ∅ → -"}
+go-outdoors|1|0|1|0|0|0|{"GO 2 - North East & West | North East | ∅ → US"}
+frank-darling|1|1|0|0|0|0|{"∅ | ∅ | ∅ → -"}
+adidas|1|1|0|0|0|0|{"∅ | ∅ | ∅ → -"}
+filson|1|0|0|0|1|0|{"Filson | Filson | ∅ → -"}
+peak-performance|1|1|0|0|0|0|{"∅ | ∅ | ∅ → -"}
+deckers|1|1|0|0|0|0|{"∅ | ∅ | ∅ → -"}
+(94 rows)

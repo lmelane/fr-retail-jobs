@@ -477,6 +477,29 @@ try {
       const report = await applyRegistryReview(prisma, JSON.parse(await readFile(planFile!, 'utf8')));
       await log.info('command.result', { ok: true, command, apply, ...report });
     }
+  } else if (command === 'resoudre-pays') {
+    /**
+     * D-520, offres sans pays — le rattrapage du stock (`geo/rattrapagePays.ts`), relu en deux temps.
+     *  - Aperçu : rien n'est écrit ; `--output=<fichier>` garde l'aperçu complet (résolutions et restants avec leur cause).
+     *  - Application : `--apply --plan=<aperçu relu>` applique CE fichier et lui seul ; l'aperçu est recalculé et la
+     *    commande refuse, sans rien écrire, s'il en diffère (REVIEWED_PLAN_MISMATCH). Après la livraison du code, jamais
+     *    pendant le RUN de 18 h.
+     */
+    const { readFile, writeFile } = await import('node:fs/promises');
+    const { applyRattrapagePays, previewRattrapagePays } = await import('./geo/rattrapagePays.js');
+    const arg = (name: string) => process.argv.find((a) => a.startsWith(`--${name}=`))?.slice(name.length + 3);
+    const apply = process.argv.includes('--apply'), output = arg('output'), planFile = arg('plan');
+    if (apply ? !planFile || output : !!planFile) throw new Error('resoudre-pays: preview with [--output=<file>], apply with --apply --plan=<reviewed preview>');
+    if (!apply) {
+      const preview = await previewRattrapagePays(prisma);
+      if (output) await writeFile(output, JSON.stringify(preview, null, 2) + '\n', { flag: 'wx', mode: 0o600 });
+      await log.info('command.result', { ok: true, command, apply, resolutions: preview.resolutions.length, restants: preview.restants.length,
+        parMotif: preview.parMotif, parCause: preview.parCause, empreinte: preview.empreinte, output });
+    } else {
+      const report = await applyRattrapagePays(prisma, JSON.parse(await readFile(planFile!, 'utf8')));
+      await log.info('command.result', { ok: report.skipped === 0, command, apply, ...report });
+      if (report.skipped) process.exitCode = 1;
+    }
   } else if (command === 'resolve-domains') {
     /**
      * Pose Company.domain (le logo) sur les Maisons actives qui n'en ont pas :

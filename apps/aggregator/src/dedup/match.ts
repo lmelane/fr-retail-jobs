@@ -2,6 +2,7 @@ import type { NormalizedJob } from '../types.js';
 import type { AtsType } from '@prisma/client';
 import type { SourceTier } from '@catwalks/db/publications';
 import type { SourceFacts } from '@catwalks/db/source-facts';
+import type { PreuvePays } from '../geo/paysParPreuve.js';
 import { postingIdentity, POSTING_IDENTITY_VERSION, APPLICATION_KEY_VERSION } from './postingIdentity.js';
 import { workdayRequisitionIdentity } from '../identity/workday.js';
 import { teamtailorDelegatedIdentity, teamtailorPublicationIdentity } from '../identity/teamtailor.js';
@@ -51,6 +52,12 @@ export type CandidateJob = NormalizedJob & {
   /** Le RYTHME EXIGÉ, et le libellé source qui l'a justifié. */
   workSchedule?: string;
   rawSchedule?: string;
+  /**
+   * D-520, offres sans pays : la preuve de pays lue dans le référentiel et le marché de la source, posée par
+   * `withCountryProof` (publication/countryProof.ts) quand la chaîne ne retient aucun pays. Jamais lue ailleurs que par
+   * `publication/content.ts`.
+   */
+  paysParPreuve?: PreuvePays;
 };
 
 export type NativePublication = Pick<CandidateJob, 'sourceKey' | 'externalId' | 'url'> & { raw?: unknown };

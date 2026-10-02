@@ -64,18 +64,41 @@ export function publicationJobContent(candidate: CandidateJob, catalogue: Compil
   };
 }
 
+/**
+ * Ce que la chaîne décide du pays SANS la preuve de `geo/paysParPreuve.ts` : un pays (`DECIDED`), une abstention sur une
+ * contradiction entre champs déclarés (`ABSTAINED`, D-435/D-440, jamais levée), ou rien (`OPEN`) — le seul cas où la preuve
+ * est cherchée (`publication/countryProof.ts`).
+ */
+export function countryChainStatus(candidate: CandidateJob): 'DECIDED' | 'ABSTAINED' | 'OPEN' {
+  const { countryCode, basis } = countryWithProvenance({ ...candidate, paysParPreuve: undefined });
+  return countryCode ? 'DECIDED' : basis === 'ABSTAINED' ? 'ABSTAINED' : 'OPEN';
+}
+
+/** Le pays, sa provenance douteuse et la subdivision qu'écrirait `publicationJobContent`, sans le reste (rattrapage du stock). */
+export function publicationCountry(candidate: CandidateJob): { countryCode: string | null; countryIntegrity: string | null; adminArea1: string | null } {
+  const { countryCode, countryIntegrity, countryField } = countryWithProvenance(candidate);
+  return { countryCode: countryCode ?? null, countryIntegrity,
+    adminArea1: countryCode ? adminArea1Of(candidate, countryCode, countryField) ?? null : null };
+}
+
 function countryWithProvenance(candidate: CandidateJob): {
   countryCode: string | undefined;
   countryIntegrity: string | null;
   /** Le champ pays sous lequel lire la subdivision : celui de la source, ou le pays qui l'a remplacé. */
   countryField: string | null | undefined;
+  basis: 'RETAINED' | 'ADDRESS' | 'TERRITORY' | 'ABSTAINED';
 } {
   const geo = resolveGeography({
     rawCountry: candidate.country,
     location: candidate.location,
     city: candidate.city,
   });
-  const retained = retainedCountryOf(candidate, geo.countryCode);
+  /*
+   * D-520, offres sans pays : quand la chaîne ne retient AUCUN pays, celui que prouve `geo/paysParPreuve.ts` (point natif et
+   * ville concordants, ou ville du référentiel dans le marché de la source), calculé avant par `withCountryProof`. Il passe
+   * ensuite par la même confrontation aux lieux déclarés : une publication qui nomme un autre pays s'abstient.
+   */
+  const retained = retainedCountryOf(candidate, geo.countryCode) ?? candidate.paysParPreuve?.pays ?? undefined;
   /*
    * D-440 / D-442 : LES LIEUX DÉCLARÉS DE LA PUBLICATION CONTRÔLENT LE PAYS RETENU, APRÈS TOUTE LA CHAÎNE.
    *
@@ -99,6 +122,7 @@ function countryWithProvenance(candidate: CandidateJob): {
         countryCode,
         countryIntegrity: countryCode && countryCode === geo.countryCode ? countryIntegrityOf(geo, candidate.country) : null,
         countryField: candidate.country,
+        basis: verdict.basis,
       };
     case 'ADDRESS':
       /*
@@ -110,12 +134,13 @@ function countryWithProvenance(candidate: CandidateJob): {
         countryCode,
         countryIntegrity: verdict.countryName ? countryIntegrityOf({ countryCode, method: 'RAW_COUNTRY' }, verdict.countryName) : null,
         countryField: countryCode,
+        basis: verdict.basis,
       };
     case 'TERRITORY':
       // Lu dans un nom de lieu (libellé, ville, région), jamais dans un champ pays : aucun verdict persisté (`countryIntegrity.ts`).
-      return { countryCode, countryIntegrity: null, countryField: countryCode };
+      return { countryCode, countryIntegrity: null, countryField: countryCode, basis: verdict.basis };
     case 'ABSTAINED':
-      return { countryCode: undefined, countryIntegrity: null, countryField: undefined };
+      return { countryCode: undefined, countryIntegrity: null, countryField: undefined, basis: verdict.basis };
   }
 }
 
@@ -146,7 +171,7 @@ function adminArea1Of(candidate: CandidateJob, country: string | undefined, coun
 }
 
 /** Ville affichable — jamais un pays ou un code pays (« Ch », « Germany » : ~800 « villes », audit A1). */
-function cityOf(candidate: CandidateJob): string | undefined {
+export function cityOf(candidate: CandidateJob): string | undefined {
   // La ville de l'adaptateur si elle est un lieu (location.ts rejette pays, états,
   // codes magasin, modes de travail), SINON celle que porte le lieu : +1 231
   // offres avec ville (lot 4). Pas de garde « ≠ pays » ici : elle effaçait

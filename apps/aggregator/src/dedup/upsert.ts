@@ -4,6 +4,7 @@ import { evidenceHash } from '../lib/evidenceHash.js';
 import { captureReaderRevision } from '../capture/revision.js';
 import { KIND_TO_ATS } from '../ats/catalogKinds.js';
 import { publicationJobContent } from '../publication/content.js';
+import { withCountryProof } from '../publication/countryProof.js';
 import { readSourceFacts, projectSourceFacts } from '../facts/index.js';
 import { deactivateJob, reactivateJob } from '../pipeline/lifecycle.js';
 import { declaredExpiry } from '../normalize/expiry.js';
@@ -71,6 +72,8 @@ export async function upsertDeduplicated(
   const nativeCapture = await archiveAdapterOutput(prisma, candidate);
   const facts = readSourceFacts(candidate.atsType ?? 'GENERIC_JSONLD', candidate.raw);
   candidate = { ...candidate, ...projectSourceFacts(facts), sourceFacts: facts };
+  // D-520, offres sans pays : la preuve de pays (référentiel, point natif, marché de la source) se lit avant le contenu.
+  candidate = await withCountryProof(prisma, candidate);
   const taxonomy = catalogue ?? await loadOccupationTaxonomy(prisma);
   for (let attempt = 0; ; attempt++) {
     assertSourceRunning();

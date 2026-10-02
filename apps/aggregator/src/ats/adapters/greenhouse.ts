@@ -1,5 +1,6 @@
 import { fetchJson } from '../../lib/http.js';
-import { countryFromLocation } from '../../normalize/country.js';
+import { countryFromLocation, normalizeCountry } from '../../normalize/country.js';
+import { subdivisionCountryOf } from '../../normalize/geography.js';
 import type { AdapterResult, NormalizedJob } from '../../types.js';
 import { publisherInstant } from '../../lib/publisherInstant.js';
 
@@ -21,7 +22,29 @@ export function greenhouseCountry(job: Pick<GreenhouseJob, 'offices' | 'location
     const country = countryFromLocation(office.location ?? undefined);
     if (country) return country;
   }
-  return countryFromLocation(job.location?.name);
+  return countryFromLocation(job.location?.name) ?? officeNamedCountry(job.offices);
+}
+
+/**
+ * D-520, offres sans pays (02/10/2026) — LE NOM DU BUREAU, QUAND IL EST UN PAYS. Greenhouse range une offre sous ses bureaux,
+ * et beaucoup de tableaux nomment un bureau par son pays, sans adresse : On (« United States », « China », « Japan » :
+ * 157 offres sans pays), Molton Brown (« United Kingdom », « Ireland » : 26). C'est un champ natif, déclaré par l'employeur.
+ * Lu en dernier (l'adresse d'un bureau, puis le lieu de l'offre passent avant) et seulement quand le nom ENTIER est un nom de
+ * pays : jamais un code (« UK », « US » : R-125 §4), jamais un nom qui est aussi un État ou une province (« Georgia »),
+ * jamais un nom composé (« HQ Shanghai », « Remote (United States) »). Des bureaux qui nomment plusieurs pays n'en donnent
+ * aucun. Le pays passe ensuite par la confrontation aux lieux déclarés (`declaredPlaceCountry.ts`) : un bureau « China »
+ * pour un lieu « Hong Kong » rend Hong Kong (D-442 §2).
+ */
+function officeNamedCountry(offices: GreenhouseOffice[] | undefined): string | undefined {
+  const named = new Set<string>();
+  for (const office of offices ?? []) {
+    const name = office.name?.trim();
+    if (!name || /^[A-Za-z]{2,3}$/.test(name) || subdivisionCountryOf(name)) continue;
+    const country = normalizeCountry(name);
+    if (country) named.add(country);
+  }
+  const [only] = named;
+  return named.size === 1 ? only : undefined;
 }
 
 export async function fetchGreenhouseJobs(config: Record<string, unknown>): Promise<AdapterResult> {

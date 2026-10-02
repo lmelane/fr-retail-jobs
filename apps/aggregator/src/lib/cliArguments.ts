@@ -21,6 +21,8 @@ const COMMANDS: Record<string, CommandOptions> = {
   'registry-review': { values: ['decisions', 'output', 'plan'], flags: ['apply'] },
   // D-520 : la file de revue d'identité d'employeur, lecture seule.
   'file-identite': { values: ['output'] },
+  // D-520, offres sans pays : aperçu (--output) puis application du seul aperçu relu (--apply --plan).
+  'resoudre-pays': { values: ['output', 'plan'], flags: ['apply'] },
   'occupation-review-queue': { values: ['output','limit'] },
   'occupation-preview': { values: ['file','output'] },
   'occupation-activate': { values: ['file','output','review','commit'], flags: ['apply'] },

@@ -33,5 +33,8 @@ it('déclare les commandes relues en deux temps (D-519 qualify-sectors, D-520 §
   for (const args of [['--output=apercu.json'], ['--apply', '--plan=apercu.json']]) expect(() => validateCliArguments('qualify-sectors', args)).not.toThrow();
   for (const args of [['--decisions=registre.json', '--output=apercu.json'], ['--apply', '--plan=apercu.json']]) expect(() => validateCliArguments('registry-review', args)).not.toThrow();
   for (const args of [['--decisions='], ['--apply=1'], ['--limit=3']]) expect(() => validateCliArguments('registry-review', args)).toThrow();
+  // D-520, offres sans pays : sans déclaration ici, la commande était refusée « Unknown command » avant tout travail.
+  for (const args of [[], ['--output=apercu.json'], ['--apply', '--plan=apercu.json']]) expect(() => validateCliArguments('resoudre-pays', args)).not.toThrow();
+  for (const args of [['--apply=1'], ['--limit=3'], ['--decisions=x.json']]) expect(() => validateCliArguments('resoudre-pays', args)).toThrow();
 });
 

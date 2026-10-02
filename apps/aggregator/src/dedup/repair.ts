@@ -11,6 +11,7 @@ import { readRawBlob } from '../capture/store.js';
 import type { ObjectStore } from '../retention/objectStore.js';
 import { toCandidate } from '../pipeline/ingest.js';
 import { publicationJobContent } from '../publication/content.js';
+import { withCountryProof } from '../publication/countryProof.js';
 import { readSourceFacts, projectSourceFacts } from '../facts/index.js';
 import { recordOccupationObservation } from '../occupation/persist.js';
 import { evidenceHash } from '../lib/evidenceHash.js';
@@ -158,10 +159,11 @@ async function prepare(db: Database, request: Request, bodies: ReadonlyMap<strin
       const captured = recovered.job, outputHash = recovered.outputHash;
       const proof: InputProof = { ...provenance, rawHash: recovered.rawHash, sourceLastSeenAt: member.lastSeenAt.toISOString() };
       const facts = readSourceFacts(KIND_TO_ATS[source.kind], member.raw);
-      const candidate = { ...toCandidate(captured, { key: source.key, tier: member.sourceTier as SourceTier,
+      // D-520, offres sans pays : la même preuve de pays qu'à l'ingestion, lue avant le contenu.
+      const candidate = await withCountryProof(db, { ...toCandidate(captured, { key: source.key, tier: member.sourceTier as SourceTier,
         company: origins[0].company.name }, origins[0].company.name, KIND_TO_ATS[source.kind] as AtsType, trust),
         captureBatchId: member.captureBatchId ?? undefined, captureOutputId: member.captureOutputId ?? undefined,
-        ...projectSourceFacts(facts), sourceFacts: facts };
+        ...projectSourceFacts(facts), sourceFacts: facts });
       const content = publicationJobContent(candidate, occupations);
       rebuilt.push({ sourceId: member.id, outputHash, proof, content, facts, cache: publicationPresentation(candidate, content) });
     }
