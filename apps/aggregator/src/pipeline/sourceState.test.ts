@@ -101,6 +101,24 @@ describe('D-520 — états, trajectoires, échéances', () => {
     expect(computeSourceState({ source: active('autre'), outcome: run({ runStatus: 'DEGRADED', issues: [{ origin: 'UNKNOWN', code: 'ENUMERATION_REFUTED' }] }), previous: null, now: T0 }).trajectory).toBe('AUTO');
   });
 
+  it('un employeur à identifier revient seul, sinon passe en revue humaine à l’échéance', () => {
+    const issue = { origin: 'UNKNOWN' as const, code: 'EmployerIdentityReviewRequired' };
+    let s = computeSourceState({ source: active(), outcome: run({ runStatus: 'DEGRADED', jobs: 480, issues: [issue] }), previous: null, now: T0 });
+    expect([s.state, s.cause, s.trajectory]).toEqual(['DEGRADEE', 'IDENTITE_EMPLOYEUR', 'AUTO']);
+    s = computeSourceState({ source: active(), outcome: run({ runStatus: 'DEGRADED', jobs: 480, issues: [issue] }, 7 * 24), previous: s, now: at(7 * 24) });
+    expect([s.state, s.trajectory]).toEqual(['DEGRADEE', 'REVUE_HUMAINE']);
+    expect(s.missing).toMatch(/^échéance dépassée \(7 jours\) : revue d’identité/);
+    // Sans aucune offre publiée, la même cause bloque et suit l'échéance courte.
+    const none = computeSourceState({ source: active(), outcome: run({ runStatus: 'BROKEN', jobs: 0, issues: [issue] }), previous: null, now: T0 });
+    expect([none.state, none.deadline?.toISOString()]).toEqual(['BLOQUEE', at(ESCALATION.waitingHours).toISOString()]);
+  });
+
+  it('un échec connu qui ne publie rien est BLOQUEE sur décision, jamais en attente', () => {
+    const s = computeSourceState({ source: active('l-oreal-professionnel'),
+      outcome: run({ runStatus: 'BROKEN', jobs: 0, issues: [{ origin: 'UNKNOWN', code: 'HttpStatusError', detail: 'HTTP_406' }] }), previous: null, now: T0 });
+    expect([s.state, s.cause, s.trajectory, s.decision]).toEqual(['BLOQUEE', 'ACCES_REFUSE', 'DECISION', 'D-480']);
+  });
+
   it('une passe réussie lève un refus d’accès, jamais une liste non prouvée', () => {
     const refused = computeSourceState({ source: active(), outcome: run({ runStatus: 'CHALLENGED', jobs: 0, issues: [{ origin: 'UNKNOWN', code: 'WafChallengeError' }] }), previous: null, now: T0 });
     expect(computeSourceState({ source: active(), outcome: run({ kind: 'PASSE' }, 4), previous: refused, now: at(4) }).state).toBe('NORMALE');

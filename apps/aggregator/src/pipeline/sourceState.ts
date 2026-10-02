@@ -37,7 +37,9 @@ export type CollectionKind = typeof COLLECTION_KINDS[number];
  * Les échéances, fixées par l'assistant sur la mesure du 02/10/2026 (`audits/2026-10-02/etat-sources/`) :
  *   · EN_ATTENTE (cause passagère) : 48 h ou 3 tentatives complètes (RUN ou vérification ; une passe incrémentale ne
  *     compte pas, elle relit la même liste plusieurs fois par jour) ; au-delà, BLOQUEE et A_REPARER ;
- *   · DEGRADEE qui devait revenir seule : 7 jours ; au-delà, A_REPARER.
+ *   · BLOQUEE qui devait revenir seule (volume à zéro, employeur à identifier sans aucune offre publiée) : comme
+ *     EN_ATTENTE ;
+ *   · DEGRADEE qui devait revenir seule : 7 jours ; au-delà, A_REPARER (ou REVUE_HUMAINE, `escalatesTo` de la cause).
  */
 export const ESCALATION = { waitingHours: 48, waitingAttempts: 3, degradedDays: 7 } as const;
 
@@ -48,18 +50,21 @@ type CauseSpec = {
   trajectory: Trajectory;
   /** La prochaine action concrète. */
   missing: string;
+  /** Pour une cause qui revient seule (AUTO) : la trajectoire à l'échéance (A_REPARER par défaut). */
+  escalatesTo?: 'A_REPARER' | 'REVUE_HUMAINE';
 };
 
 /** Le vocabulaire fermé des causes. Regroupe les codes de `source.issue_classified`, `SourceRun.status` et du registre. */
 export const CAUSES = {
   INDISPONIBILITE_PASSAGERE: { label: 'indisponibilité passagère (délai dépassé, 5xx, réseau, quota)', base: 'EN_ATTENTE', trajectory: 'AUTO',
-    missing: 'rien : la prochaine collecte retente ; sans retour à la normale en 48 h ou 3 tentatives, la source passe à réparer' },
+    missing: 'rien : la prochaine collecte retente ; sinon, vérifier la disponibilité du site, la politesse par hôte et le budget de la source' },
   ACCES_REFUSE: { label: 'accès refusé par la source (anti-robot, 401, 403, 406)', base: 'EN_ATTENTE', trajectory: 'AUTO',
     missing: 'rien tant que le refus est passager ; à l’échéance, revoir l’amorçage, la politesse par hôte ou la cadence' },
   QUALIFICATION_REFUSEE: { label: 'qualification ou périmètre d’accès refusé (nos gardes)', base: 'BLOQUEE', trajectory: 'A_REPARER',
     missing: 'lire la validation ou la décision d’accès refusée, corriger le lecteur ou la configuration, puis verifier-source' },
-  IDENTITE_EMPLOYEUR: { label: 'employeur à identifier (nouvelle graphie ou employeur non certifié)', base: 'DEGRADEE', trajectory: 'REVUE_HUMAINE',
-    missing: 'revue d’identité par l’équipe Catwalks : rattacher la graphie à sa Maison ou la refuser, preuve à l’appui' },
+  IDENTITE_EMPLOYEUR: { label: 'employeur à identifier (nouvelle graphie ou employeur non certifié)', base: 'DEGRADEE', trajectory: 'AUTO',
+    escalatesTo: 'REVUE_HUMAINE',
+    missing: 'rien si la prochaine collecte rattache l’employeur (suivi de l’éditeur) ; sinon, revue d’identité par l’équipe Catwalks : rattacher la graphie à sa Maison ou la refuser, preuve à l’appui' },
   LISTE_NON_PROUVEE: { label: 'liste non prouvée complète (fin non démontrée, réfutée ou tronquée)', base: 'DEGRADEE', trajectory: 'AUTO',
     missing: 'rien si la prochaine collecte prouve sa liste ; sinon, adapter la pagination du lecteur' },
   CONTENU_INCOMPLET: { label: 'contenu incomplet (descriptions manquantes, lignes rejetées)', base: 'DEGRADEE', trajectory: 'A_REPARER',
@@ -216,10 +221,11 @@ export function computeSourceState(input: { source: RegistryIntent; outcome: Col
   }
   const cause = PRECEDENCE.find(c => causes.includes(c))!;
   const spec: CauseSpec = CAUSES[cause];
-  const state: OperationalState = outcome.jobs > 0 && outcome.runStatus !== 'TIMEOUT' && outcome.runStatus !== 'CHALLENGED' ? 'DEGRADEE'
-    : spec.base === 'DEGRADEE' ? 'BLOQUEE' : spec.base as OperationalState;
   // D-480 §1 : un échec connu décidé par le CEO a une trajectoire de décision, sans échéance ; tout autre défaut non.
   const known = outcome.issues.length > 0 && outcome.issues.every(issue => isDecidedKnownFailure(source.key, issue) || issueCause(issue, outcome.note) === null);
+  const publishes = outcome.jobs > 0 && outcome.runStatus !== 'TIMEOUT' && outcome.runStatus !== 'CHALLENGED';
+  // Un échec connu n'est jamais « en attente » : il ne revient pas seul, il publie (DEGRADEE) ou non (BLOQUEE).
+  const state: OperationalState = publishes ? 'DEGRADEE' : known || spec.base === 'DEGRADEE' ? 'BLOQUEE' : spec.base as OperationalState;
   return withCause(source.key, cause, state, outcome, previous, now, known, outcome.issues.map(codeOf));
 }
 
@@ -234,16 +240,16 @@ function withCause(sourceKey: string, cause: CauseClass, state: OperationalState
   let finalState = state, deadline: Date | null = null, escalated = same ? previous!.escalated : false;
   let missing: string = known ? `rien : échec connu décidé (${KNOWN_FAILURE_DECISION}), la source publie ses offres` : spec.missing;
   if (!known && trajectory === 'AUTO') {
-    const waiting = state === 'EN_ATTENTE';
+    const waiting = state !== 'DEGRADEE';
     deadline = new Date(since.getTime() + (waiting ? ESCALATION.waitingHours * HOUR : ESCALATION.degradedDays * 24 * HOUR));
     if (escalated || now.getTime() >= deadline.getTime() || (waiting && attempts >= ESCALATION.waitingAttempts)) {
       escalated = true;
-      trajectory = 'A_REPARER';
+      trajectory = spec.escalatesTo ?? 'A_REPARER';
       if (waiting) finalState = 'BLOQUEE';
-      missing = `échéance dépassée (${waiting ? `${ESCALATION.waitingHours} h ou ${ESCALATION.waitingAttempts} tentatives` : `${ESCALATION.degradedDays} jours`}) : ${spec.missing.replace(/^rien[^;]*; /, '')}`;
+      missing = escalatedMissing(spec, waiting);
     }
   } else if (escalated && !known) {
-    trajectory = 'A_REPARER';
+    trajectory = spec.escalatesTo ?? 'A_REPARER';
   }
   return { sourceKey, state: finalState, cause, trajectory, missing, since, deadline: escalated ? null : deadline, attempts, escalated,
     decision: known ? KNOWN_FAILURE_DECISION : null, codes: codes ?? [],
@@ -251,13 +257,18 @@ function withCause(sourceKey: string, cause: CauseClass, state: OperationalState
     lastRunId: outcome?.runId ?? previous?.lastRunId ?? null, computedAt: now };
 }
 
+function escalatedMissing(spec: CauseSpec, waiting: boolean): string {
+  const limit = waiting ? `${ESCALATION.waitingHours} h ou ${ESCALATION.waitingAttempts} tentatives` : `${ESCALATION.degradedDays} jours`;
+  return `échéance dépassée (${limit}) : ${spec.missing.replace(/^rien[^;]*; (sinon, )?/, '')}`;
+}
+
 /** Un état persisté dont l'échéance est passée, recalculé à `now` sans nouvelle collecte (lecture et réconciliation). */
 export function ageState(state: SourceState, now: Date): SourceState {
-  if (state.trajectory !== 'AUTO' || !state.deadline || now.getTime() < state.deadline.getTime()) return state;
-  const spec: CauseSpec = CAUSES[state.cause!];
-  const waiting = state.state === 'EN_ATTENTE';
-  return { ...state, state: waiting ? 'BLOQUEE' : state.state, trajectory: 'A_REPARER', escalated: true, deadline: null, computedAt: now,
-    missing: `échéance dépassée (${waiting ? `${ESCALATION.waitingHours} h ou ${ESCALATION.waitingAttempts} tentatives` : `${ESCALATION.degradedDays} jours`}) : ${spec.missing.replace(/^rien[^;]*; /, '')}` };
+  if (state.trajectory !== 'AUTO' || !state.deadline || now.getTime() < state.deadline.getTime() || !state.cause) return state;
+  const spec: CauseSpec = CAUSES[state.cause];
+  const waiting = state.state !== 'DEGRADEE';
+  return { ...state, state: waiting ? 'BLOQUEE' : state.state, trajectory: spec.escalatesTo ?? 'A_REPARER', escalated: true, deadline: null,
+    computedAt: now, missing: escalatedMissing(spec, waiting) };
 }
 
 export const VERDICT_REASONS = ['SOURCE_NON_CLASSEE', 'MOTIF_ABSENT', 'ECHEANCE_DEPASSEE', 'PANNE_SYSTEME', 'COUVERTURE_INEXPLIQUEE'] as const;
