@@ -1,0 +1,11 @@
+Preuves d'exécution des témoins R-143 (02/10/2026, base locale jetable, `npm run test:local` pour la suite complète).
+
+filtres-fiables-r143.test.ts (agrégateur, 9 témoins), passés au rouge en réintroduisant chaque défaut :
+  - l'examen d'alerte sans `confirme` (offres non précisées envoyées) : 2 rouges (alerte « CDI », alerte « CDI · temps plein ») ;
+  - la clé du contrat 2 sans `nc` (les non précisées mêlées aux reconnues par fraîcheur) : 3 rouges ;
+  - le filtre strict au contrat 2 (les non précisées cachées) : 3 rouges.
+alerte-tenue-r143.test.ts (agrégateur, 4 témoins) : un critère retiré du SQL de recherche fait partir son offre fautive :
+  métier 2 rouges, lieu 3, Maison 3, groupe 3, langue 3, temps de travail 3, contrat 3 (secteur : même prédicat,
+  éprouvé par fraicheur-d510 ; rayon : proximite-d496).
+contrat-r143.test.ts (agrégateur, 16 témoins) : 13 rouges sur le normaliseur d'avant (279e2ec).
+examen-catalogue.test.ts (backend, 12 témoins ajoutés) : retirer `temps` des paramètres envoyés au catalogue → rouge.
