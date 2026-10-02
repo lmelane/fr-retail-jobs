@@ -43,8 +43,29 @@ import { validateCliArguments } from './lib/cliArguments.js';
 const command = process.argv[2] ?? 'ingest';
 try { validateCliArguments(command, process.argv.slice(3)); }
 catch (error) { await log.error('command.invalid_arguments', { message: error instanceof Error ? error.message : 'Invalid arguments', workStarted: false }); process.exit(2); }
-if (!['health-report', 'stats', 'export-companies', 'occupation-review-queue'].includes(command)) exitIfPipelinePaused(command);
+if (!['health-report', 'stats', 'export-companies', 'occupation-review-queue', 'coverage'].includes(command)) exitIfPipelinePaused(command);
 const prisma = new PrismaClient({ errorFormat: 'minimal', log: [] });
+
+/** L'avant d'une étape qui masque (R-143 §11) ; null si la lecture échoue : la revue de couverture le dira. */
+async function readBeforeOrNull() {
+  try {
+    const { readCoverageBefore } = await import('./coverage/coverageReading.js');
+    return await readCoverageBefore(prisma);
+  } catch (error) {
+    log.assertHealthy();
+    await log.error('coverage.before_failed', { error });
+    return null;
+  }
+}
+/** Une commande qui pose des retenues hors RUN : encadrée par la revue de couverture, sauf à blanc (D-516 §2). */
+async function maskingCommand<T>(step: () => Promise<T>, dryRun: boolean, probeOf?: (result: T) => { probed: number; byVerdict: Record<string, number> }) {
+  if (dryRun) return { result: await step(), sent: true };
+  const { withCoverageReview } = await import('./coverage/coverageReview.js');
+  const outcome = await withCoverageReview(prisma, step, probeOf);
+  if (outcome.error) { log.assertHealthy(); await log.error('coverage.failed', { error: outcome.error }); }
+  await log.info('coverage.reviewed', { written: outcome.review?.written ?? 0, sent: outcome.sent, findings: outcome.review?.evaluation.findings.length ?? null });
+  return { result: outcome.result, sent: outcome.sent };
+}
 
 let fatalFailure = false;
 let sourceIncidents = false;
@@ -107,6 +128,9 @@ try {
      */
     const orchestration = await ingestAllBySource(prisma);
     const geo = await runGeocode(prisma);
+    // R-143 §11, D-516 §2 : ce que le candidat voit AVANT les étapes qui retirent (refresh, disponibilité, sonde), pour
+    // que la revue de couverture mesure exactement ce qu'elles retirent, dès le premier RUN qui masque.
+    const coverageBefore = await readBeforeOrNull();
     // The daily worker owns lifecycle maintenance too. A failed/partial source
     // cannot attest absence: the existing refresh proof reader and mass-closure
     // guard remain authoritative. Paused sources retain their publications, served (D-485, D-493, D-506).
@@ -134,6 +158,23 @@ try {
     const { runApplyLinkProbe } = await import('./pipeline/applyLinkProbe.js');
     const probe = await runApplyLinkProbe(prisma, { limit: APPLY_LINK_PROBE_LIMIT, deadline: Date.now() + APPLY_LINK_PROBE_BUDGET_MS });
     await log.info('availability.probed', { probed: probe.probed, held: probe.held, byVerdict: probe.byVerdict });
+    // R-143 §11, D-516 §2 : l'alerte de couverture et le bulletin de la boucle candidat, juste après le masquage (les
+    // retenues sont lues en direct par la recherche ; le bulletin part quelques minutes après). Le masquage ne part
+    // jamais sans lui : un bulletin non calculé ou non remis rend le RUN rouge.
+    let coverageFailed = false;
+    try {
+      const { runCoverageReview } = await import('./coverage/coverageReview.js');
+      if (!coverageBefore) throw new Error('coverage: the state before the RUN steps could not be read');
+      const coverage = await runCoverageReview(prisma, { runId: log.runId() ?? null, probe, before: coverageBefore });
+      coverageFailed = !coverage.sent;
+      await log.info('coverage.reviewed', { written: coverage.written, sent: coverage.sent, referenceRuns: coverage.evaluation.referenceRuns,
+        findings: coverage.evaluation.findings.map(f => ({ scope: f.scope, key: f.key, label: f.label, kind: f.kind, cause: f.cause,
+          gravity: f.gravity, lost: f.lost, reference: f.reference, ongoing: f.ongoing })) });
+    } catch (error) {
+      coverageFailed = true;
+      log.assertHealthy();
+      await log.error('coverage.failed', { error });
+    }
     // One health digest per run: email the operator every degraded/broken source
     // so the catalogue stays clean (a source dying silently is the enemy).
     const alerted = await sendHealthAlert({
@@ -164,10 +205,10 @@ try {
     sourceIncidents = orchestration.failed + orchestration.timedOut > 0;
     await log.info('ingest.completed', { command,
       ...summary, geo, refresh, alerted, indexing });
-    if (!summary.executionHealthy || (orchestration.incidents.length > 0 && !alerted)) {
+    if (!summary.executionHealthy || (orchestration.incidents.length > 0 && !alerted) || coverageFailed) {
       fatalFailure = true;
       await log.error('command.failed', { blockingReasons: summary.blockingReasons,
-        alertDeliveryFailed: orchestration.incidents.length > 0 && !alerted });
+        alertDeliveryFailed: orchestration.incidents.length > 0 && !alerted, coverageFailed });
       process.exitCode = 1;
     }
   } else if (command === 'ingest-light') {
@@ -185,18 +226,33 @@ try {
       collected: pass.collected.length, notCollected: pass.notCollected, ignored: pass.unknown, created: pass.created,
       okSources: pass.ok, failed: pass.failed, timedOut: pass.timedOut, failures: pass.failures });
   } else if (command === 'availability') {
-    /** R-143 §2 — la revue de disponibilité seule ; `--dry-run` rend le plan sans rien écrire. */
+    /** R-143 §2 — la revue de disponibilité seule ; `--dry-run` rend le plan sans rien écrire. Sans lui, le bulletin de
+     * couverture part comme au RUN (D-516 §2) : une retenue posée hors RUN ne part jamais sans lui. */
+    const dryRun = process.argv.includes('--dry-run');
     const { runAvailabilityReview } = await import('./pipeline/availability.js');
-    const review = await runAvailabilityReview(prisma, { dryRun: process.argv.includes('--dry-run') });
-    await log.info('command.result', { ok: true, command, dryRun: review.dryRun, released: review.released, held: review.held,
+    const { review, coverageSent } = await maskingCommand(() => runAvailabilityReview(prisma, { dryRun }), dryRun)
+      .then(({ result, sent }) => ({ review: result, coverageSent: sent }));
+    await log.info('command.result', { ok: coverageSent, command, dryRun: review.dryRun, released: review.released, held: review.held, coverageSent,
       sources: review.sources.filter(source => source.missed > 0 || source.held > 0) });
+    if (!coverageSent) process.exitCode = 1;
+  } else if (command === 'coverage') {
+    /** R-143 §11 — l'alerte de couverture et le bulletin de la boucle, rejoués sans photographie ni e-mail. */
+    const { runCoverageReview } = await import('./coverage/coverageReview.js');
+    const { bulletinSubject, bulletinText } = await import('./coverage/coverageBulletin.js');
+    const review = await runCoverageReview(prisma, { dryRun: true });
+    await log.info('command.result', { ok: true, command, dryRun: true, subject: bulletinSubject(review.evaluation),
+      referenceRuns: review.evaluation.referenceRuns, lines: bulletinText(review.evaluation, review.indicators) });
   } else if (command === 'probe-apply-links') {
-    /** R-143 §2 — une passe de la sonde des liens « Postuler » ; `--dry-run` lit les pages sans rien écrire. */
+    /** R-143 §2 — une passe de la sonde des liens « Postuler » ; `--dry-run` lit les pages sans rien écrire. Sans lui, le
+     * bulletin de couverture part comme au RUN (D-516 §2). */
+    const dryRun = process.argv.includes('--dry-run');
     const { runApplyLinkProbe } = await import('./pipeline/applyLinkProbe.js');
     const limit = Number(process.argv.find(arg => arg.startsWith('--limit='))?.slice('--limit='.length) ?? APPLY_LINK_PROBE_LIMIT);
-    const probe = await runApplyLinkProbe(prisma, { limit, dryRun: process.argv.includes('--dry-run') });
-    await log.info('command.result', { ok: true, command, dryRun: probe.dryRun, probed: probe.probed, held: probe.held, byVerdict: probe.byVerdict,
-      results: probe.results.map(result => ({ sourceKey: result.sourceKey, url: result.url, verdict: result.reading.verdict, reason: result.reading.reason })) });
+    const { probe, coverageSent } = await maskingCommand(() => runApplyLinkProbe(prisma, { limit, dryRun }), dryRun, result => result)
+      .then(({ result, sent }) => ({ probe: result, coverageSent: sent }));
+    await log.info('command.result', { ok: coverageSent, command, dryRun: probe.dryRun, probed: probe.probed, held: probe.held, byVerdict: probe.byVerdict,
+      coverageSent, results: probe.results.map(result => ({ sourceKey: result.sourceKey, url: result.url, verdict: result.reading.verdict, reason: result.reading.reason })) });
+    if (!coverageSent) process.exitCode = 1;
   } else if (command === 'refresh') {
     /**
      * Le refresh a SON périmètre autorisé (`REFRESH_ONLY_KEYS`), distinct de celui de l'ingestion.
@@ -420,7 +476,7 @@ try {
     try { await closeBrowser(); }
     catch (error) { fatalFailure = true; process.exitCode = 1; await log.error('browser.cleanup_failed', { error }); }
     // La surveillance Healthchecks est celle du RUN : une passe légère (R-143 §1) ne la touche jamais.
-    if (observation && !['health-report', 'stats', 'export-companies', 'occupation-review-queue', 'consolidate-publications', 'attach-maisons', 'ingest-light'].includes(command)) {
+    if (observation && !['health-report', 'stats', 'export-companies', 'occupation-review-queue', 'consolidate-publications', 'attach-maisons', 'ingest-light', 'coverage'].includes(command)) {
       const heartbeat = await pingHeartbeat(!fatalFailure && !process.exitCode);
       await log.info('pipeline.heartbeat', { heartbeat, command });
       if (heartbeat === 'failed') { fatalFailure = true; process.exitCode = 1; }

@@ -179,20 +179,15 @@ function buildHtml(report: AlertReport): string {
 }
 
 /**
- * Sends the health digest if there is anything to report. Returns whether an
- * email was actually sent (false = nothing wrong, or no key). Never throws — an
- * alert failure must not fail the ingest run.
+ * One e-mail to the operator through Brevo (`ALERT_EMAIL`). Returns whether it was accepted. Never throws: a failed
+ * e-mail must not fail the ingest run by itself, the caller decides. Shared by the health digest and the coverage
+ * bulletin (`coverage/coverageReview.ts`).
  */
-export async function sendHealthAlert(report: AlertReport): Promise<boolean> {
-  if (report.incidents.length === 0) return false;
-
+export async function sendOperatorEmail(message: { subject: string; html: string; context: Record<string, unknown> }): Promise<boolean> {
   const apiKey = process.env.BREVO_API_KEY;
   const sender = process.env.BREVO_SENDER_EMAIL;
   if (!apiKey || !sender) {
-    await log.warn('alert.unconfigured', '[alert] BREVO_API_KEY/SENDER not set — health digest skipped', {
-      broken: report.broken,
-      degraded: report.degraded,
-    });
+    await log.warn('alert.unconfigured', '[alert] BREVO_API_KEY/SENDER not set — e-mail skipped', message.context);
     return false;
   }
 
@@ -204,8 +199,8 @@ export async function sendHealthAlert(report: AlertReport): Promise<boolean> {
       body: JSON.stringify({
         sender: { email: sender, name: process.env.BREVO_SENDER_NAME || 'Catwalks' },
         to: [{ email: alertRecipient() }],
-        subject: alertSubject(report),
-        htmlContent: buildHtml(report),
+        subject: message.subject,
+        htmlContent: message.html,
       }),
     });
     if (!response.ok) {
@@ -218,4 +213,15 @@ export async function sendHealthAlert(report: AlertReport): Promise<boolean> {
     await log.error('alert.failed', { error });
     return false;
   }
+}
+
+/**
+ * Sends the health digest if there is anything to report. Returns whether an
+ * email was actually sent (false = nothing wrong, or no key). Never throws — an
+ * alert failure must not fail the ingest run.
+ */
+export async function sendHealthAlert(report: AlertReport): Promise<boolean> {
+  if (report.incidents.length === 0) return false;
+  return sendOperatorEmail({ subject: alertSubject(report), html: buildHtml(report),
+    context: { broken: report.broken, degraded: report.degraded } });
 }

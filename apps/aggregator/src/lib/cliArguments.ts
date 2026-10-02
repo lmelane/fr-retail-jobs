@@ -5,6 +5,7 @@ const COMMANDS: Record<string, CommandOptions> = {
   ingest: { values: ['source'], flags: ['no-geocode'] },
   'ingest-all': {}, 'ingest-light': {}, refresh: {}, 'health-report': {},
   availability: { flags: ['dry-run'] },
+  coverage: {},
   'probe-apply-links': { values: ['limit'], flags: ['dry-run'] },
   'direct-sync': { values: ['depuis', 'limite'] },
   'direct-liste': {},

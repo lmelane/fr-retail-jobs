@@ -1159,6 +1159,29 @@ model OccupationMissingSignal {
   @@index([status, receivedAt])
 }
 
+/// R-143 §11, D-515 §5, D-516 §2 — la photographie de couverture de chaque RUN : une ligne par RUN et par entité
+/// (Maison, marché, ou source qualifiée qui ne sert rien), avec les offres servies, la référence comparée et l'alerte
+/// posée. Lue par le RUN suivant (`apps/aggregator/src/coverage/`) ; écrite seulement par la revue de couverture.
+model CoverageSnapshot {
+  id        String   @id @default(cuid())
+  runId     String?
+  takenAt   DateTime
+  /// MAISON | MARCHE | SOURCE
+  scope     String
+  /// MAISON : id de la société canonique ; MARCHE : code du marché ouvert ; SOURCE : clé de la source.
+  key       String
+  label     String
+  served    Int
+  reference Int?
+  /// COLLECTE | NON_REVUE | LIEN_MORT | FERMETURE_SOURCE | RETENUE_REGLE | PAUSE_DECIDEE | REGROUPEE | INEXPLIQUEE
+  cause     String?
+  /// A_REPARER | A_VERIFIER | INFORMATION
+  gravity   String?
+
+  @@unique([takenAt, scope, key])
+  @@index([scope, key, takenAt])
+}
+
 /// D-501 : les requêtes tapées, anonymes et agrégées par marché et par requête normalisée (migration
 /// 20261001200000_requetes_tapees ; lecture et écriture dans apps/api/lib/requetes-tapees.ts).
 model RequeteTapee {
