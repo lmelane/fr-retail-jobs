@@ -88,6 +88,11 @@ export const CAUSES = {
   // liste non prouvée (D-453 §1) ; non bloquante pour les seules sources de D-480 §1 (D-482 : aucune extension).
   LISTE_INDEMONTRABLE: { label: 'liste indémontrable en l’état : le lecteur ne lit ni total ni fin de liste (page d’accueil, flux)', base: 'DEGRADEE', trajectory: 'A_REPARER',
     missing: 'chercher chez l’éditeur une liste complète (plan du site, page de liste paginée, API, total annoncé) et réécrire le lecteur ; s’il n’en publie aucune, carte de décision au CEO (D-453 §1, D-482)' },
+  // D-520 : une offre retenue sans preuve de l'éditeur ni décision (fiche illisible, identité contredite). Souvent passagère
+  // (4 occurrences sur 5 du 24/09 au 01/10 n'ont pas duré) : elle attend un RUN, comme la liste et le volume.
+  RETENUE_A_INSTRUIRE: { label: 'offres retenues sans preuve de l’éditeur (fiche illisible, identité contredite)', base: 'EN_ATTENTE', trajectory: 'AUTO',
+    deadlineAttempts: 2, waitsWhilePublishing: true,
+    missing: 'rien au premier RUN si la fiche se relit ; sinon, lire le motif de la retenue et corriger la lecture du détail ou l’identité, puis verifier-source' },
   CONTENU_INCOMPLET: { label: 'contenu incomplet (descriptions manquantes, lignes rejetées)', base: 'DEGRADEE', trajectory: 'A_REPARER',
     missing: 'corriger la lecture du détail des offres, puis verifier-source' },
   ANOMALIE_VOLUME: { label: 'volume anormal (chute, zéro, saut de retenues)', base: 'EN_ATTENTE', trajectory: 'AUTO',
@@ -116,7 +121,7 @@ export const CAUSE_CLASSES = Object.keys(CAUSES) as CauseClass[];
 
 /** Quand une collecte porte plusieurs causes, la première de cet ordre l'emporte (les autres codes restent dans la preuve). */
 const PRECEDENCE: readonly CauseClass[] = ['NON_CLASSEE', 'DEFAUT_INTERNE', 'QUALIFICATION_REFUSEE', 'CERTIFICAT_TLS', 'LECTEUR', 'ACCES_REFUSE',
-  'INDISPONIBILITE_PASSAGERE', 'ANOMALIE_VOLUME', 'IDENTITE_EMPLOYEUR', 'LISTE_NON_PROUVEE', 'CONTENU_INCOMPLET', 'LISTE_INDEMONTRABLE'];
+  'INDISPONIBILITE_PASSAGERE', 'ANOMALIE_VOLUME', 'IDENTITE_EMPLOYEUR', 'LISTE_NON_PROUVEE', 'RETENUE_A_INSTRUIRE', 'CONTENU_INCOMPLET', 'LISTE_INDEMONTRABLE'];
 
 const TLS_CODES = /(CERT|LEAF_SIGNATURE|SELF_SIGNED|TLS|SSL)/;
 const READER_TRANSPORT = /^TRANSPORT_(ERR_INVALID_URL|UND_ERR_INVALID_ARG)$/;
@@ -130,7 +135,7 @@ const BY_NAME: Readonly<Record<string, CauseClass>> = {
   ACCESS_DENIED: 'QUALIFICATION_REFUSEE', ACCESS_INVALID: 'QUALIFICATION_REFUSEE',
   EmployerIdentityReviewRequired: 'IDENTITE_EMPLOYEUR', PublisherFollowDeferred: 'IDENTITE_EMPLOYEUR',
   ENUMERATION_NOT_PROVEN: 'LISTE_NON_PROUVEE', ENUMERATION_REFUTED: 'LISTE_NON_PROUVEE', ENUMERATION_TRUNCATED: 'LISTE_NON_PROUVEE',
-  ENUMERATION_UNPROVABLE: 'LISTE_INDEMONTRABLE', RETENTION_TO_INSTRUCT: 'CONTENU_INCOMPLET',
+  ENUMERATION_UNPROVABLE: 'LISTE_INDEMONTRABLE', RETENTION_TO_INSTRUCT: 'RETENUE_A_INSTRUIRE',
   DESCRIPTION_COVERAGE_BELOW_FLOOR: 'CONTENU_INCOMPLET', REJECTED_NATIVE_ROWS: 'CONTENU_INCOMPLET', NATIVE_REFUSAL_MASS: 'CONTENU_INCOMPLET',
   SOURCE_HEALTH_REGRESSION: 'ANOMALIE_VOLUME', NATIVE_RETENTION_JUMP: 'ANOMALIE_VOLUME',
   Error: 'LECTEUR', UNCLASSIFIED_FAILURE: 'LECTEUR', SyntaxError: 'LECTEUR', BlockedUrlError: 'LECTEUR', ChainCompletionRefused: 'CERTIFICAT_TLS',

@@ -51,7 +51,7 @@ Mesures en lecture seule de la production le 02/10/2026 entre 14:55 et 15:04 UTC
    - **La preuve est archivée mais pas adoptée.** La sortie reste `complete: false` avec `COVERING_FACET_PROOF_NOT_ADOPTED`, et la terminaison n'est pas probante. Transmise, cette preuve ouvrirait l'attestation d'absence, la chute confirmée de D-484 §2 et les retenues de disponibilité. Le décider revient au CEO (carte de décision). knitwell reste sous D-480 §1 : elle collecte tout et ne ferme rien.
    - Une erreur pendant la lecture couvrante ne coûte pas la source : `COVERING_FACET_READ_FAILED`.
 2. **Classes exactes** (`b1afa2c`, corrigé à l'audit).
-   - La troncature devient `ENUMERATION_TRUNCATED` (liste non prouvée) et la retenue à instruire `RETENTION_TO_INSTRUCT` (contenu incomplet).
+   - La troncature devient `ENUMERATION_TRUNCATED` (liste non prouvée) et la retenue à instruire `RETENTION_TO_INSTRUCT` (classe `RETENUE_A_INSTRUIRE`, qui attend un RUN comme la liste et le volume).
    - Une liste non prouvée dont le lecteur nomme la raison (page d'accueil sans liste, flux RSS) devient `ENUMERATION_UNPROVABLE`, classe `LISTE_INDEMONTRABLE`, à réparer. **Elle reste bloquante** (D-453 §1, D-482 : aucune extension de D-480). Elle est non bloquante pour les quatre sources nommées par D-480 §1, sous ce code plus précis.
    - Rendre cette classe non bloquante pour toute la famille est une carte de décision, pas une décision d'architecture.
    - Un défaut de liste ne cache plus rien. Une retenue à instruire, une chute de 10 offres ou plus et une couverture de champ effondrée sont nommées et bloquent, y compris pour une source de D-480 (« tout autre défaut reste bloquant »).

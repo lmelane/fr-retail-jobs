@@ -69,7 +69,7 @@ def judge(r):
         if src == 'marc-o-polo': before = 'D-485 (pause, lecteur dédié)'
         # Ce lot : une retenue à instruire à côté d'un défaut de liste est nommée et bloque, même sous D-480 ou une limite.
         if TO_INSTRUCT.search(note):
-            return before, None, 'CONTENU_INCOMPLET', 'retenue à instruire à côté de la liste → RETENTION_TO_INSTRUCT'
+            return before, None, 'RETENUE_A_INSTRUIRE', 'retenue à instruire à côté de la liste → RETENTION_TO_INSTRUCT'
         # Le 24/09, ces sources étaient dites « réfutées » sans fait observé (correction d'étiquette de D-453, 25/09) : le code
         # de development les lit NON PROUVÉES. Ce lot nomme la raison (ENUMERATION_UNPROVABLE) sans changer le blocage :
         # bloquante, sauf échec connu de D-480 §1 (D-482). Approximation assumée : la famille est lue sur la configuration
@@ -90,7 +90,7 @@ def judge(r):
     if 'garde technique' in note:
         return None, None, 'ANOMALIE_VOLUME', 'saut de retenues (garde de la preuve négative)'
     if TO_INSTRUCT.search(note):
-        return None, None, 'CONTENU_INCOMPLET', 'retenue à instruire → RETENTION_TO_INSTRUCT'
+        return None, None, 'RETENUE_A_INSTRUIRE', 'retenue à instruire → RETENTION_TO_INSTRUCT'
     m = re.search(r"(\d+) % d’offres en moins", note)
     if m:
         jobs, prev = int(d['jobs']), int(d['previousJobs'] or 0)

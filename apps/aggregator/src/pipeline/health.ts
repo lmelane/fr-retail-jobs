@@ -119,7 +119,7 @@ export type SourceHealth = {
  * 2 seulement étaient des chutes de volume (Aigle, Indiska). Désormais :
  *   · `ENUMERATION_TRUNCATED` : la collecte n'a pas lu tout ce que l'éditeur annonce (la liste, pas le marché) ;
  *   · `RETENTION_TO_INSTRUCT` : des offres retenues sans preuve de l'éditeur ni décision (fiche illisible, identité
- *     contredite) — le contenu, pas le volume ;
+ *     contredite) — ni la liste ni le volume (classe RETENUE_A_INSTRUIRE, qui attend un RUN) ;
  *   · `ENUMERATION_UNPROVABLE` : une liste NON PROUVÉE dont le lecteur nomme la raison (`STRUCTURAL_LIMIT_MARKERS` : page
  *     d'accueil sans liste, flux) — bloquante comme toute liste non prouvée (D-453 §1), sauf pour les sources de D-480 §1 ;
  *   · `SOURCE_HEALTH_REGRESSION` ne nomme plus que le volume : chute non confirmée par l'éditeur, zéro, couverture d'URL. */

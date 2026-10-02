@@ -32,7 +32,7 @@ describe('D-520 — vocabulaire fermé', () => {
 
   it('D-520 : la troncature et la retenue à instruire ne sont plus lues « volume anormal » ; la limite de la famille a sa classe', () => {
     expect(issueCause({ origin: 'UNKNOWN', code: 'ENUMERATION_TRUNCATED' })).toBe('LISTE_NON_PROUVEE');
-    expect(issueCause({ origin: 'UNKNOWN', code: 'RETENTION_TO_INSTRUCT' })).toBe('CONTENU_INCOMPLET');
+    expect(issueCause({ origin: 'UNKNOWN', code: 'RETENTION_TO_INSTRUCT' })).toBe('RETENUE_A_INSTRUIRE');
     expect(issueCause({ origin: 'UNKNOWN', code: 'ENUMERATION_UNPROVABLE' })).toBe('LISTE_INDEMONTRABLE');
     // What stays « volume anormal » is the volume: a drop the publisher does not confirm, a zero.
     expect(issueCause({ origin: 'UNKNOWN', code: 'SOURCE_HEALTH_REGRESSION' })).toBe('ANOMALIE_VOLUME');

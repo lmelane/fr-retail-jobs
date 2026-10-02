@@ -10,10 +10,10 @@ RUN | occurrences | bloquantes relevées | bloquantes, règles d’avant ce lot 
 2026-09-30 | 5 | 0 | 0 | 0 | 0 | 0 | 0
 2026-10-01 | 6 | 0 | 0 | 0 | 0 | 0 | 0
 total | 56 | 45 | 15 | 16 | 13 | 1 | 2
-classe de sourceState après ce lot (toutes occurrences) : LISTE_INDEMONTRABLE 28, LISTE_NON_PROUVEE 27, CONTENU_INCOMPLET 1
+classe de sourceState après ce lot (toutes occurrences) : LISTE_INDEMONTRABLE 28, LISTE_NON_PROUVEE 27, RETENUE_A_INSTRUIRE 1
 reste, nommé (bloquant, aucun correctif de lecteur, pas revenue seule) :
    2026-09-25 · swatch-group · LISTE_NON_PROUVEE · énumération non prouvée : l’adaptateur ne démontre pas la fi
-   2026-09-29 · knitwell-us-retail · CONTENU_INCOMPLET · retenue à instruire à côté de la liste → RETENTION_TO_INSTRUCT
+   2026-09-29 · knitwell-us-retail · RETENUE_A_INSTRUIRE · retenue à instruire à côté de la liste → RETENTION_TO_INSTRUCT
 revenue seule, cause non établie (collectes suivantes saines et prouvées) :
    foot-locker-france (1 : 09-28) · LISTE_NON_PROUVEE · saine et prouvée aux 2 dernières collectes (2026-10-01 18:06)
 bloquant aux règles de ce lot mais lecteur corrigé depuis (commit · preuve) :
@@ -33,16 +33,16 @@ RUN | occurrences | bloquantes relevées | bloquantes, règles d’avant ce lot 
 2026-09-30 | 2 | 1 | 0 | 0 | 0 | 0 | 0
 2026-10-01 | 6 | 5 | 5 | 5 | 4 | 0 | 1
 total | 63 | 61 | 26 | 26 | 18 | 6 | 2
-classe de sourceState après ce lot (toutes occurrences) : non bloquante par règle 23, LISTE_NON_PROUVEE 22, CONTENU_INCOMPLET 13, LISTE_INDEMONTRABLE 4, ANOMALIE_VOLUME 1
+classe de sourceState après ce lot (toutes occurrences) : non bloquante par règle 23, LISTE_NON_PROUVEE 22, CONTENU_INCOMPLET 8, RETENUE_A_INSTRUIRE 5, LISTE_INDEMONTRABLE 4, ANOMALIE_VOLUME 1
 reste, nommé (bloquant, aucun correctif de lecteur, pas revenue seule) :
-   2026-09-28 · urbn-hub · CONTENU_INCOMPLET · retenue à instruire → RETENTION_TO_INSTRUCT
-   2026-10-01 · urbn-hub · CONTENU_INCOMPLET · retenue à instruire → RETENTION_TO_INSTRUCT
+   2026-09-28 · urbn-hub · RETENUE_A_INSTRUIRE · retenue à instruire → RETENTION_TO_INSTRUCT
+   2026-10-01 · urbn-hub · RETENUE_A_INSTRUIRE · retenue à instruire → RETENTION_TO_INSTRUCT
 revenue seule, cause non établie (collectes suivantes saines et prouvées) :
    douglas-sf (2 : 09-27, 09-28) · LISTE_NON_PROUVEE · saine et prouvée aux 2 dernières collectes (2026-10-01 16:34)
    nike-nke2 (1 : 09-26) · ANOMALIE_VOLUME · saine et prouvée aux 2 dernières collectes (2026-10-01 16:19)
-   nordstrom (1 : 09-28) · CONTENU_INCOMPLET · saine et prouvée aux 2 dernières collectes (2026-10-01 17:20)
-   parfums-chanel (1 : 09-28) · CONTENU_INCOMPLET · saine et prouvée aux 2 dernières collectes (2026-10-01 17:07)
-   swarovski (1 : 09-29) · CONTENU_INCOMPLET · saine et prouvée aux 2 dernières collectes (2026-10-01 16:47)
+   nordstrom (1 : 09-28) · RETENUE_A_INSTRUIRE · saine et prouvée aux 2 dernières collectes (2026-10-01 17:20)
+   parfums-chanel (1 : 09-28) · RETENUE_A_INSTRUIRE · saine et prouvée aux 2 dernières collectes (2026-10-01 17:07)
+   swarovski (1 : 09-29) · RETENUE_A_INSTRUIRE · saine et prouvée aux 2 dernières collectes (2026-10-01 16:47)
 bloquant aux règles de ce lot mais lecteur corrigé depuis (commit · preuve) :
    crocs (1 : 10-01) · 7918aa4 (01/10 18:56 UTC) seconde passe SuccessFactors · prouvée le 02/10 04:31
    gemmyo (7 : 09-24, 09-25, 09-26, 09-27, 09-28, 09-29, 10-01) · 4b410ee (01/10 19:08 UTC) carte join.com jamais servie · prouvée le 02/10 05:03
