@@ -164,7 +164,10 @@ try {
     }
     // La garde du zéro annoncé (R-143) n'a rien appliqué pour ces sources : chacune est une anomalie à instruire,
     // journalisée (`refresh.source_anomaly`) et visible au bilan. Elle ne rend pas le RUN rouge : ajouter un motif de
-    // blocage du RUN appartient au CEO (D-453, D-480, D-484, D-491).
+    // blocage du RUN appartient au CEO (D-453, D-480, D-484, D-491). Depuis D-520 §4 (architecture de l'assistant,
+    // lecture D-492), le verdict du RUN est la réconciliation des états des sources, plus bas : une source classée
+    // (cause, trajectoire) ne le rend plus rouge ; une cause non classée, une panne du système ou une ancienneté
+    // dépassée, si.
     if (refresh.anomalousSources.length > 0) {
       await log.error('refresh.anomalies', `[refresh] mass-absence guard kept the offers of: ${refresh.anomalousSources.join(', ')}`);
     }

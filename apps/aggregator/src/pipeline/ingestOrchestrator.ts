@@ -366,7 +366,7 @@ export async function ingestOne(prisma: PrismaClient, key: string, result: Orche
         (result.pendingRetry ??= []).push({ source: key, cause: remediation[0].transient! });
     } else result.ok++;
     const own = health.incidents.find(incident => incident.source === key);
-    await recordState(prisma, key, result, { runStatus: own?.status ?? 'OK', note: own?.note ?? null, issues,
+    await recordState(prisma, key, result, { runStatus: own?.status ?? 'OK', note: own?.note ?? null, issues, retried: attempt === 'retry',
       jobs: own?.jobs ?? stats.reduce((n, s) => n + s.created + s.merged + s.updated, 0) });
   } catch (error) {
     log.assertHealthy();
@@ -433,7 +433,7 @@ export async function ingestOne(prisma: PrismaClient, key: string, result: Orche
       await log.error('source.record_failed', `[orchestrator] ${key}: failed to record run — ${briefError(error)}`, { error });
       throw error;
     });
-    await recordState(prisma, key, result, { runStatus: status, jobs: 0, issues: [issue], note: briefError(error) });
+    await recordState(prisma, key, result, { runStatus: status, jobs: 0, issues: [issue], note: briefError(error), retried: attempt === 'retry' });
   } finally {
     await log.flush(key);
   }

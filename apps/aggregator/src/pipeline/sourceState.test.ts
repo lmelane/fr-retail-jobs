@@ -85,8 +85,8 @@ describe('D-520 — états, trajectoires, échéances', () => {
     expect([s.state, s.trajectory, s.attempts]).toEqual(['BLOQUEE', 'A_REPARER', 3]);
   });
 
-  it('DEGRADEE qui devait revenir seule devient à réparer après 7 jours', () => {
-    const issue = { origin: 'UNKNOWN' as const, code: 'ENUMERATION_NOT_PROVEN' };
+  it('DEGRADEE qui devait revenir seule (refus partiel, la source publie) devient à réparer après 7 jours', () => {
+    const issue = { origin: 'UNKNOWN' as const, code: 'HttpStatusError', detail: 'HTTP_403' };
     let s = computeSourceState({ source: active(), outcome: run({ runStatus: 'DEGRADED', issues: [issue] }), previous: null, now: T0 });
     expect([s.state, s.trajectory]).toEqual(['DEGRADEE', 'AUTO']);
     s = computeSourceState({ source: active(), outcome: run({ runStatus: 'DEGRADED', issues: [issue] }, 6 * 24), previous: s, now: at(6 * 24) });
@@ -128,7 +128,26 @@ describe('D-520 — états, trajectoires, échéances', () => {
     expect(computeSourceState({ source: active(), outcome: run({ kind: 'VERIFICATION' }, 5), previous: refused, now: at(5) }).state).toBe('NORMALE');
     const partial = computeSourceState({ source: active(), outcome: run({ runStatus: 'DEGRADED', issues: [{ origin: 'UNKNOWN', code: 'ENUMERATION_NOT_PROVEN' }] }), previous: null, now: T0 });
     const after = computeSourceState({ source: active(), outcome: run({ kind: 'PASSE' }, 4), previous: partial, now: at(4) });
-    expect([after.state, after.cause, after.lastCollectionKind]).toEqual(['DEGRADEE', 'LISTE_NON_PROUVEE', 'PASSE']);
+    expect([after.state, after.cause, after.lastCollectionKind]).toEqual(['EN_ATTENTE', 'LISTE_NON_PROUVEE', 'PASSE']);
+  });
+
+  it('régression de volume, liste non prouvée, qualification refusée : en attente un RUN, à réparer au RUN suivant (lecture D-492 « remédiation automatique » §4)', () => {
+    for (const [code, jobs] of [['SOURCE_HEALTH_REGRESSION', 40], ['ENUMERATION_NOT_PROVEN', 300], ['SourceAdmissionGateError', 0]] as const) {
+      const outcome = (h: number) => run({ runStatus: jobs ? 'DEGRADED' : 'ERROR', jobs, issues: [{ origin: 'UNKNOWN', code }] }, h);
+      const first = computeSourceState({ source: active(), outcome: outcome(0), previous: null, now: T0 });
+      expect([first.state, first.trajectory], code).toEqual(['EN_ATTENTE', 'AUTO']);
+      const second = computeSourceState({ source: active(), outcome: outcome(24), previous: first, now: at(24) });
+      // Qui publie reste dit « dégradée » : « bloquée » dirait qu'elle ne publie pas.
+      expect([second.state, second.trajectory], code).toEqual([jobs ? 'DEGRADEE' : 'BLOQUEE', 'A_REPARER']);
+    }
+  });
+
+  it('une reprise dans le même RUN ne compte pas comme une tentative ; si elle échoue encore, la source passe à réparer', () => {
+    const fail = (retried: boolean) => run({ runStatus: 'ERROR', jobs: 0, retried, issues: [{ origin: 'UNKNOWN', code: 'TRANSPORT_ECONNRESET' }] });
+    const first = computeSourceState({ source: active(), outcome: fail(false), previous: null, now: T0 });
+    expect([first.state, first.attempts]).toEqual(['EN_ATTENTE', 1]);
+    const again = computeSourceState({ source: active(), outcome: fail(true), previous: first, now: at(0.5) });
+    expect([again.state, again.trajectory, again.attempts]).toEqual(['BLOQUEE', 'A_REPARER', 1]);
   });
 
   it('pause avec motif : EN_PAUSE sur décision ; sans motif : rouge', () => {

@@ -61,6 +61,10 @@ type CauseSpec = {
   escalatesTo?: 'A_REPARER' | 'REVUE_HUMAINE';
   /** Échéance propre à la cause, en heures (sinon 48 h pour un état qui ne publie pas, 7 jours pour DEGRADEE). */
   deadlineHours?: number;
+  /** Tentatives complètes (RUN, vérification) avant l'escalade (sinon `ESCALATION.waitingAttempts`). */
+  deadlineAttempts?: number;
+  /** En attente à sa première occurrence même si la collecte publie (lecture D-492 « remédiation automatique » §4). */
+  waitsWhilePublishing?: true;
 };
 
 /** Le vocabulaire fermé des causes. Regroupe les codes de `source.issue_classified`, `SourceRun.status` et du registre. */
@@ -69,17 +73,19 @@ export const CAUSES = {
     missing: 'rien : la prochaine collecte retente ; sinon, vérifier la disponibilité du site, la politesse par hôte et le budget de la source' },
   ACCES_REFUSE: { label: 'accès refusé par la source (anti-robot, 401, 403, 406)', base: 'EN_ATTENTE', trajectory: 'AUTO',
     missing: 'rien tant que le refus est passager ; à l’échéance, revoir l’amorçage, la politesse par hôte ou la cadence' },
-  QUALIFICATION_REFUSEE: { label: 'qualification ou périmètre d’accès refusé (nos gardes)', base: 'BLOQUEE', trajectory: 'A_REPARER',
-    missing: 'lire la validation ou la décision d’accès refusée, corriger le lecteur ou la configuration, puis verifier-source' },
+  QUALIFICATION_REFUSEE: { label: 'qualification ou périmètre d’accès refusé (nos gardes)', base: 'EN_ATTENTE', trajectory: 'AUTO', deadlineAttempts: 2,
+    missing: 'rien au premier RUN (la qualification se refait au suivant) ; sinon, lire la validation ou la décision d’accès refusée, corriger le lecteur ou la configuration, puis verifier-source' },
   IDENTITE_EMPLOYEUR: { label: 'employeur à identifier (nouvelle graphie ou employeur non certifié)', base: 'DEGRADEE', trajectory: 'AUTO',
     escalatesTo: 'REVUE_HUMAINE', deadlineHours: 48,
     missing: 'rien si la prochaine collecte rattache l’employeur (suivi de l’éditeur) ; sinon, revue d’identité par l’équipe Catwalks : rattacher la graphie à sa Maison ou la refuser, preuve à l’appui' },
-  LISTE_NON_PROUVEE: { label: 'liste non prouvée complète (fin non démontrée, réfutée ou tronquée)', base: 'DEGRADEE', trajectory: 'AUTO',
-    missing: 'rien si la prochaine collecte prouve sa liste ; sinon, adapter la pagination du lecteur' },
+  LISTE_NON_PROUVEE: { label: 'liste non prouvée complète (fin non démontrée, réfutée ou tronquée)', base: 'EN_ATTENTE', trajectory: 'AUTO',
+    deadlineAttempts: 2, waitsWhilePublishing: true,
+    missing: 'rien au premier RUN (aucune fermeture sur une liste non prouvée, D-453 §1) ; sinon, adapter la pagination du lecteur' },
   CONTENU_INCOMPLET: { label: 'contenu incomplet (descriptions manquantes, lignes rejetées)', base: 'DEGRADEE', trajectory: 'A_REPARER',
     missing: 'corriger la lecture du détail des offres, puis verifier-source' },
-  ANOMALIE_VOLUME: { label: 'volume anormal (chute, zéro, saut de retenues)', base: 'DEGRADEE', trajectory: 'AUTO',
-    missing: 'rien si la prochaine collecte retrouve son volume ; sinon, comparer la liste à celle du site' },
+  ANOMALIE_VOLUME: { label: 'volume anormal (chute, zéro, saut de retenues)', base: 'EN_ATTENTE', trajectory: 'AUTO',
+    deadlineAttempts: 2, waitsWhilePublishing: true,
+    missing: 'rien au premier RUN si la collecte suivante retrouve son volume ; sinon, comparer la liste à celle du site' },
   LECTEUR: { label: 'lecteur ou configuration de la source en échec', base: 'BLOQUEE', trajectory: 'A_REPARER',
     missing: 'corriger le lecteur ou l’adresse de la source, puis verifier-source' },
   CERTIFICAT_TLS: { label: 'certificat TLS du site invalide ou incomplet', base: 'BLOQUEE', trajectory: 'A_REPARER',
@@ -158,6 +164,8 @@ export type CollectionOutcome = {
   jobs: number;
   issues: readonly IssueLike[];
   note?: string | null;
+  /** La reprise de la source dans le même RUN, après un premier échec passager. */
+  retried?: boolean;
 };
 export type SourceState = {
   sourceKey: string;
@@ -238,8 +246,9 @@ export function computeSourceState(input: { source: RegistryIntent; outcome: Col
   const known = outcome.issues.length > 0 && outcome.issues.every(issue => isDecidedKnownFailure(source.key, issue) || issueCause(issue, outcome.note) === null);
   const publishes = outcome.jobs > 0 && outcome.runStatus !== 'TIMEOUT' && outcome.runStatus !== 'CHALLENGED';
   // Un échec connu n'est jamais « en attente » : il ne revient pas seul, il publie (DEGRADEE) ou non (BLOQUEE).
-  const state: OperationalState = publishes ? 'DEGRADEE' : known || spec.base === 'DEGRADEE' ? 'BLOQUEE' : spec.base as OperationalState;
-  return withCause(source.key, cause, state, outcome, previous, now, known ? (publishes ? 'PUBLIE' : 'MUET') : null, outcome.issues.map(codeOf));
+  const state: OperationalState = known ? (publishes ? 'DEGRADEE' : 'BLOQUEE')
+    : spec.waitsWhilePublishing ? 'EN_ATTENTE' : publishes ? 'DEGRADEE' : spec.base === 'DEGRADEE' ? 'BLOQUEE' : spec.base as OperationalState;
+  return withCause(source.key, cause, state, outcome, previous, now, known ? (publishes ? 'PUBLIE' : 'MUET') : null, outcome.issues.map(codeOf), publishes);
 }
 
 /**
@@ -247,11 +256,12 @@ export function computeSourceState(input: { source: RegistryIntent; outcome: Col
  * rien (MUET) contredit la prémisse de la décision (« elles restent collectées et publient leurs offres ») : à réparer.
  */
 function withCause(sourceKey: string, cause: CauseClass, state: OperationalState, outcome: CollectionOutcome | null, previous: SourceState | null,
-  now: Date, known: 'PUBLIE' | 'MUET' | null, codes: string[] | null): SourceState {
+  now: Date, known: 'PUBLIE' | 'MUET' | null, codes: string[] | null, publishes = false): SourceState {
   const spec: CauseSpec = CAUSES[cause];
   // L'épisode court de la sortie de NORMALE au retour, quelle que soit la cause (une intention passée n'en est pas un).
   const ongoing = !!previous && previous.state !== 'NORMALE' && !(previous.cause && INTENT_CAUSES.has(previous.cause));
-  const counts = outcome ? outcome.kind !== 'PASSE' : true;
+  // Une passe ne compte pas ; la reprise d'une source dans le même RUN (`ingestOrchestrator.ts`) non plus.
+  const counts = outcome ? outcome.kind !== 'PASSE' && !outcome.retried : true;
   const since = ongoing ? previous!.since : now;
   const attempts = (ongoing ? previous!.attempts : 0) + (counts ? 1 : 0);
   let trajectory: Trajectory = known === 'PUBLIE' ? 'DECISION' : known === 'MUET' ? 'A_REPARER' : spec.trajectory;
@@ -262,10 +272,11 @@ function withCause(sourceKey: string, cause: CauseClass, state: OperationalState
   if (!known && trajectory === 'AUTO') {
     const waiting = state !== 'DEGRADEE';
     deadline = new Date(since.getTime() + deadlineHours(spec, waiting) * HOUR);
-    if (escalated || now.getTime() >= deadline.getTime() || (waiting && attempts >= ESCALATION.waitingAttempts)) {
+    // Une reprise dans le RUN qui échoue encore n'est plus présumée passagère (`ordinaryCauses.ts`, même règle).
+    if (escalated || outcome?.retried || now.getTime() >= deadline.getTime() || (waiting && attempts >= (spec.deadlineAttempts ?? ESCALATION.waitingAttempts))) {
       escalated = true;
       trajectory = spec.escalatesTo ?? 'A_REPARER';
-      if (waiting) finalState = 'BLOQUEE';
+      if (waiting) finalState = publishes ? 'DEGRADEE' : 'BLOQUEE';
       missing = escalatedMissing(spec, waiting);
     }
   }
@@ -278,7 +289,7 @@ function withCause(sourceKey: string, cause: CauseClass, state: OperationalState
 const deadlineHours = (spec: CauseSpec, waiting: boolean) => spec.deadlineHours ?? (waiting ? ESCALATION.waitingHours : ESCALATION.degradedDays * 24);
 function escalatedMissing(spec: CauseSpec, waiting: boolean): string {
   const hours = deadlineHours(spec, waiting);
-  const limit = waiting ? `${hours} h ou ${ESCALATION.waitingAttempts} tentatives` : hours % 24 === 0 && hours >= 72 ? `${hours / 24} jours` : `${hours} h`;
+  const limit = waiting ? `${hours} h ou ${spec.deadlineAttempts ?? ESCALATION.waitingAttempts} tentatives` : hours % 24 === 0 && hours >= 72 ? `${hours / 24} jours` : `${hours} h`;
   return `échéance dépassée (${limit}) : ${spec.missing.replace(/^rien[^;]*; (sinon, )?/, '')}`;
 }
 
@@ -296,10 +307,11 @@ export type VerdictReason = typeof VERDICT_REASONS[number];
 /**
  * Panne du système : au moins ce nombre de sources que CE RUN a laissées bloquées de NOTRE côté (défaut interne ou
  * qualification refusée à leur collecte de ce RUN, ou non collectées), qu'elles le soient depuis ce RUN ou depuis
- * plus longtemps : une panne large et persistante ne se cache pas derrière l'ancienneté de ses sources. Seuil mesuré
- * sur les RUN du 24/09 au 01/10 (`audits/2026-10-02/etat-sources/`).
+ * plus longtemps : une panne large et persistante ne se cache pas derrière l'ancienneté de ses sources. Mesuré sur les
+ * RUN du 24/09 au 01/10 (`audits/2026-10-02/etat-sources/`) : 0 à 6 par RUN hors incident (5 à 6 du 25 au 28/09, des
+ * qualifications refusées chroniques que le plafond de 14 jours traite), 20 le 29/09 (incident du périmètre d'accès).
  */
-export const SYSTEMIC_OUR_SIDE_BLOCKED = 5;
+export const SYSTEMIC_OUR_SIDE_BLOCKED = 10;
 const OUR_SIDE: ReadonlySet<CauseClass> = new Set(['DEFAUT_INTERNE', 'QUALIFICATION_REFUSEE', 'NON_COLLECTEE']);
 
 export type RunVerdict = { green: boolean; reasons: Array<{ reason: VerdictReason; detail: string; sources: string[] }> };
