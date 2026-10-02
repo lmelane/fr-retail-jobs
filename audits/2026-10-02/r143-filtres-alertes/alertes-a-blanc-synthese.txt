@@ -1,0 +1,50 @@
+Mesure à blanc du 02/10/2026, 09:55 UTC, catalogue de production en lecture seule (session default_transaction_read_only=on).
+Alertes : 0 en base backend de production (mesure-alertes-criteres-r143-2026-10-02.mjs du backend) ; 297 alertes de conversion (189 recherches distinctes,
+157 profils, mesure-alertes-conversion-r143-2026-10-02.mts du backend, critères seuls, non versionnés) + une grille de 63 alertes CDI / CDD / temps plein.
+Nouveautés depuis l'échéance du mardi 29/09 05:30 UTC, publiées depuis moins de 30 jours. « inscrits » pondère les alertes de conversion partagées.
+
+252 alertes, 0 en erreur []
+== conversion
+   alertes: 189
+   apres_nouvelles: 6783
+   avant_envoyees_examinees: 1829
+   avant_nouvelles: 6783
+   avec_nouvelles: 95
+   inscrits: 297
+   memes_offres: 189
+== grille-cdi
+   alertes: 35
+   apres_nouvelles: 102
+   avant_envoyees_examinees: 102
+   avant_nouvelles: 102
+   avec_nouvelles: 16
+   inscrits: 35
+   memes_offres: 35
+== grille-cdi-temps-plein
+   alertes: 7
+   apres_nouvelles: 37
+   avant_envoyees_examinees: 37
+   avant_nouvelles: 37
+   avec_nouvelles: 5
+   inscrits: 7
+   memes_offres: 7
+== grille-cdd
+   alertes: 7
+   apres_nouvelles: 37
+   avant_envoyees_examinees: 37
+   avant_nouvelles: 37
+   avec_nouvelles: 4
+   inscrits: 7
+   memes_offres: 7
+== grille-permanent
+   alertes: 14
+   apres_nouvelles: 45
+   avant_envoyees_examinees: 45
+   avant_nouvelles: 45
+   avec_nouvelles: 11
+   inscrits: 14
+   memes_offres: 14
+
+Aucune violation relevée (métier, lieu > 100 km ou ville sans point d'un autre nom, contrat et temps relus par le normaliseur corrigé).
+8 alertes « Île-de-France » sans ville résolue : 3 en filtre ville, artefact de l'extraction sans vérification des villes au site (la conversion réelle en fait un lieu libre).
+Après = avant, offre pour offre, sur les 252 alertes (memesOffres) : l'examen au contrat 2 avec nonPrecisees n'envoie rien de plus.
