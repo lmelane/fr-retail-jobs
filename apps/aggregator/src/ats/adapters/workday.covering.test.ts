@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 vi.mock('../../lib/http.js', () => ({ fetchJson: vi.fn(), fetchText: vi.fn() }));
 import { fetchJson } from '../../lib/http.js';
-import { coveringFacet, fetchWorkdayJobs, WORKDAY_TOTAL_CAP } from './workday.js';
+import { coveringFacet, facetProof, fetchWorkdayJobs, WORKDAY_TOTAL_CAP, type FacetProofInput } from './workday.js';
 import { PROVING_TERMINATIONS } from '../../pipeline/refreshPlan.js';
 import { normalizeAdapterResult } from '../index.js';
 
@@ -54,24 +54,24 @@ describe('Workday — un site plafonné à 2 000 lu par sa facette couvrante (D-
     expect(Math.max(...Object.values(families).map((list) => list.length))).toBeLessThan(WORKDAY_TOTAL_CAP);
   });
 
-  it('lit chaque valeur de la facette sous le plafond : 2 100 offres sur 2 100, comptes concordants, preuve archivée mais NON adoptée, aucun employeur tiré de la facette', async () => {
+  it('lit chaque valeur de la facette sous le plafond : 2 100 offres sur 2 100, comptes concordants, preuve ADOPTÉE (D-520 §4 a), aucun employeur tiré de la facette', async () => {
     server(all, { 'fam-Stores': families.Stores, 'fam-Corporate': families.Corporate, 'fam-DC': families.DC }, facetsFor(families, states));
     const r = await fetchWorkdayJobs(config);
     // Avant ce lot : 2 020 offres (les 2 000 du site et la page sondée au-delà), complete: false, PUBLISHER_TOTAL_CAPPED.
     expect(r.jobs).toHaveLength(2_100);
     expect(new Set(r.jobs.map((job) => job.externalId)).size).toBe(2_100);
     expect(r.declaredTotal).toBe(2_100);
-    // Reconciled and archived as such, but never handed on as complete: canAttestAbsence, D-484 §2 and availability holds
-    // read `complete`, not the termination. Adopting this proof is the owner's decision.
-    expect(r.complete).toBe(false); expect(r.truncated).toBe(false);
+    // D-520 §4 a: the three conditions hold, the proof is adopted. Before this lot: complete false (proof not adopted).
+    expect(r.complete).toBe(true); expect(r.truncated).toBe(false);
     expect(r.enumeration).toMatchObject({ method: 'PUBLISHER_TOTAL_COUNT_JSON_PAGINATION_COVERING_FACET', termination: 'COVERING_FACET_RECONCILED',
       enumerationTraversalComplete: true });
     expect(r.enumeration?.scopes?.[0]).toMatchObject({ scope: 'jobs', declaredTotal: 2_100, uniqueIds: 2_100, complete: true });
-    expect(r.enumeration?.issues).toEqual(expect.arrayContaining(['PUBLISHER_TOTAL_CAPPED', 'COVERED_BY_FACET=jobFamilyGroup', 'COVERING_FACET_PROOF_NOT_ADOPTED']));
+    expect(r.enumeration?.issues).toEqual(expect.arrayContaining(['PUBLISHER_TOTAL_CAPPED', 'COVERED_BY_FACET=jobFamilyGroup', 'COVERING_FACET_PROOF_ADOPTED']));
+    expect(r.enumeration?.canonicalAbsenceProofUsable).toBe(true);
     expect(r.enumeration?.issues).not.toContain('ENUMERATION_NOT_PROVEN');
     // Through the dispatcher's normalisation: the canonical contract holds on every page, nothing turns the lot into a broken contract.
     const normalized = normalizeAdapterResult(r);
-    expect(normalized.complete).toBe(false);
+    expect(normalized.complete).toBe(true);
     expect(normalized.enumeration?.issues).not.toContain('CANONICAL_ID_CONTRACT_BROKEN');
     // A job family is not a Maison: the employer stays the detail's to name.
     expect(r.jobs.every((job) => job.company === undefined && job.employerEvidence === undefined)).toBe(true);
@@ -81,8 +81,8 @@ describe('Workday — un site plafonné à 2 000 lu par sa facette couvrante (D-
       ['jobFamilyGroup=Stores:1300', 'jobFamilyGroup=Corporate:600', 'jobFamilyGroup=DC:200', 'sum=2100', 'agreeing=3']);
   });
 
-  it('la lecture prouvée n’ouvre pas la fermeture : sa terminaison n’est pas probante pour le refresh', () => {
-    expect(PROVING_TERMINATIONS.has('COVERING_FACET_RECONCILED')).toBe(false);
+  it('la lecture prouvée est probante pour le refresh ; la lecture non prouvée ne l’est jamais', () => {
+    expect(PROVING_TERMINATIONS.has('COVERING_FACET_RECONCILED')).toBe(true);
     expect(PROVING_TERMINATIONS.has('COVERING_FACET_UNPROVEN')).toBe(false);
   });
 
@@ -176,5 +176,129 @@ describe('coveringFacet — le choix de la facette, pur', () => {
   it('rien sous le plafond : aucune facette', () => {
     expect(coveringFacet([{ facetParameter: 'a', values: [{ id: '1', descriptor: 'x', count: 1_500 }] }] as never)).toBeUndefined();
     expect(coveringFacet(undefined)).toBeUndefined();
+  });
+});
+
+/**
+ * D-520 §4 a — LA PREUVE PAR FACETTE, ADOPTÉE SOUS TROIS CONDITIONS. Un témoin par condition qui manque : chacun échoue
+ * sur une version qui adopte la lecture couvrante sans vérifier (`adopted: true` quel que soit le constat), parce qu'il
+ * exige `complete: false` et une terminaison non probante. Chaque prémisse est affirmée d'abord : le jeu d'essai remplit
+ * bien la condition du défaut, et les deux autres conditions tiennent quand c'est possible.
+ */
+describe('Workday — la preuve par facette n’est adoptée que sous ses trois conditions (D-520 §4 a)', () => {
+  const site = ids(0, 2_100);
+  const states = { NY: ids(0, 600), NJ: ids(600, 1_200), CT: ids(1_200, 1_700), PA: ids(1_700, 2_100) };
+  const unproven = (r: Awaited<ReturnType<typeof fetchWorkdayJobs>>) => {
+    expect(r.complete).toBe(false);
+    expect(r.enumeration?.termination).toBe('COVERING_FACET_UNPROVEN');
+    expect(PROVING_TERMINATIONS.has(r.enumeration!.termination!)).toBe(false);
+    expect(r.enumeration?.issues).toEqual(expect.arrayContaining(['ENUMERATION_NOT_PROVEN']));
+    expect(r.enumeration?.issues).not.toContain('COVERING_FACET_PROOF_ADOPTED');
+  };
+
+  it('condition 1, facette NON OBLIGATOIRE : 50 offres sans famille, servies au-delà du plafond, ne sont jamais lues — aucune absence attestée', async () => {
+    // Families count 2 050: postings 2 050 to 2 099 carry none. The state facet counts all 2 100 but one of its values
+    // reaches the cap, so it cannot be the covering facet; it only says the families miss postings.
+    const families = { Stores: ids(0, 1_300), Corporate: ids(1_300, 1_900), DC: ids(1_900, 2_050) };
+    const facets: Facet[] = [
+      { facetParameter: 'jobFamilyGroup', values: Object.entries(families).map(([name, list]) => ({ descriptor: name, id: `fam-${name}`, count: list.length })) },
+      { facetParameter: 'Location_Region_State_Province', values: [{ descriptor: 'NY', id: 'st-NY', count: 2_050 }, { descriptor: 'NJ', id: 'st-NJ', count: 50 }] },
+    ];
+    // Prémisse : the missing postings are all beyond the cap (the site never serves them), so no site posting is missed.
+    expect(site.filter((id) => !Object.values(families).flat().includes(id))).toEqual(ids(2_050, 2_100));
+    expect(Math.min(...ids(2_050, 2_100))).toBeGreaterThanOrEqual(WORKDAY_TOTAL_CAP);
+    server(site, { 'fam-Stores': families.Stores, 'fam-Corporate': families.Corporate, 'fam-DC': families.DC }, facets);
+    const r = await fetchWorkdayJobs(config);
+    // The other two conditions hold: every value read in full, union = sum of the counts (2 050).
+    expect(r.enumeration?.scopes?.[0]).toMatchObject({ declaredTotal: 2_050, uniqueIds: 2_050 });
+    expect(r.enumeration?.issues?.some((issue) => /^COVERING_(BOARD_|FACET_VALUES_|FACET_TOTAL_)/.test(issue))).toBe(false);
+    expect(r.enumeration?.issues).toContain('COVERING_FACET_WITHOUT_AGREEMENT');
+    unproven(r);
+  });
+
+  it('condition 1, facette qui NE PARTITIONNE PAS : une offre sous deux familles — aucune absence attestée', async () => {
+    const families = { Stores: ids(0, 1_301), Corporate: ids(1_300, 1_900), DC: ids(1_900, 2_100) };
+    // Prémisse : posting 1 300 carries two values, the facet counts 2 101 for 2 100 postings.
+    expect(families.Stores.filter((id) => families.Corporate.includes(id))).toEqual([1_300]);
+    server(site, { 'fam-Stores': families.Stores, 'fam-Corporate': families.Corporate, 'fam-DC': families.DC }, facetsFor(families, states));
+    const r = await fetchWorkdayJobs(config);
+    expect(r.jobs).toHaveLength(2_100);
+    expect(r.enumeration?.issues).toEqual(expect.arrayContaining(['COVERED_BY_FACET=jobFamilyGroup', 'COVERING_FACET_OVERLAP=1']));
+    unproven(r);
+  });
+
+  it('condition 2, une valeur NON LUE EN ENTIER : son tableau annonce 601 offres et en sert 600 — aucune absence attestée', async () => {
+    const families = { Stores: ids(0, 1_300), Corporate: ids(1_300, 1_900), DC: ids(1_900, 2_100) };
+    server(site, { 'fam-Stores': families.Stores, 'fam-Corporate': families.Corporate, 'fam-DC': families.DC }, facetsFor(families, states));
+    const served = vi.mocked(fetchJson).getMockImplementation()!;
+    vi.mocked(fetchJson).mockImplementation(async (url: unknown, init: unknown) => {
+      const page = await served(url as never, init as never) as { total: number };
+      return String((init as { body: string }).body).includes('fam-Corporate') && page.total ? { ...page, total: 601 } : page;
+    });
+    const r = await fetchWorkdayJobs(config);
+    // Prémisse : every posting was still read (union = 2 100 = sum of the counts) and the facet partitions the list.
+    expect(new Set(r.jobs.map((job) => job.externalId)).size).toBe(2_100);
+    expect(r.enumeration?.issues?.some((issue) => /^COVERING_FACET_(TOTAL_MISMATCH|OVERLAP|MISSES|WITHOUT)/.test(issue))).toBe(false);
+    expect(r.enumeration?.issues).toEqual(expect.arrayContaining(['COVERING_BOARD_UNPROVEN', 'COVERING_FACET_VALUES_MISMATCH=2101/2100']));
+    unproven(r);
+  });
+
+  it('condition 2, une valeur lue AU PLAFOND : son tableau annonce 2 000 et la page au-delà ne dit rien — aucune absence attestée', async () => {
+    // At the facet read the value counted 1 999; when its board is read it announces 2 000, the cap, where Workday says
+    // nothing more. Another value lost one posting meanwhile, so the sums still agree.
+    const families = { Stores: ids(0, 2_000), DC: ids(2_000, 2_100) };
+    const facets = facetsFor({ Stores: ids(0, 1_999), DC: ids(1_999, 2_100) }, states);
+    server(site, { 'fam-Stores': families.Stores, 'fam-DC': families.DC }, facets);
+    const r = await fetchWorkdayJobs(config);
+    // Prémisse : the board itself reports complete (its probe beyond 2 000 serves nothing new), every count adds up.
+    const board = r.enumeration?.scopes?.find((scope) => scope.scope === 'jobFamilyGroup=Stores');
+    expect(board).toMatchObject({ declaredTotal: WORKDAY_TOTAL_CAP, uniqueIds: WORKDAY_TOTAL_CAP, complete: true });
+    expect(r.enumeration?.issues?.some((issue) => /^COVERING_(BOARD_UNPROVEN|FACET_)/.test(issue))).toBe(false);
+    expect(r.enumeration?.issues).toContain('COVERING_BOARD_AT_CAP=jobFamilyGroup=Stores');
+    unproven(r);
+  });
+
+  it('condition 3, l’UNION LUE ne fait pas la somme des comptes : une offre lue en moins — aucune absence attestée', async () => {
+    const families = { Stores: ids(0, 1_300), Corporate: ids(1_300, 1_900), DC: ids(1_900, 2_100) };
+    server(site, { 'fam-Stores': families.Stores, 'fam-Corporate': families.Corporate.slice(1), 'fam-DC': families.DC }, facetsFor(families, states));
+    const r = await fetchWorkdayJobs(config);
+    expect(r.enumeration?.issues).toEqual(expect.arrayContaining(['COVERING_FACET_TOTAL_MISMATCH=2099/2100']));
+    unproven(r);
+  });
+});
+
+/** Les trois conditions, pures, isolées : chaque témoin ne fait manquer qu'un contrôle, les autres tiennent. */
+describe('facetProof — chaque condition, isolée', () => {
+  const ok: FacetProofInput = { cover: { sum: 2_100, agreeing: 3, exceeded: false }, unionIds: 2_100, sitePostingsMissed: 0,
+    boards: [{ scope: 'f=A', total: 1_300, complete: true, overlap: 0, withoutPath: 0 }, { scope: 'f=B', total: 800, complete: true, overlap: 0, withoutPath: 0 }] };
+  const only = (input: FacetProofInput, failure: RegExp, condition: keyof ReturnType<typeof facetProof>['conditions']) => {
+    const proof = facetProof(input);
+    expect(proof.adopted).toBe(false);
+    expect(proof.failures).toHaveLength(1);
+    expect(proof.failures[0]).toMatch(failure);
+    expect(Object.entries(proof.conditions).filter(([, held]) => !held).map(([name]) => name)).toEqual([condition]);
+  };
+
+  it('toutes les conditions : adoptée', () => {
+    expect(facetProof(ok)).toEqual({ adopted: true, failures: [], conditions: { mandatoryPartition: true, everyValueRead: true, unionEqualsCounts: true } });
+  });
+  it('1 : une offre du site plafonné absente des valeurs', () => only({ ...ok, sitePostingsMissed: 1 }, /^COVERING_FACET_MISSES_SITE_POSTINGS=1$/, 'mandatoryPartition'));
+  it('1 : une seule facette à ce total', () => only({ ...ok, cover: { ...ok.cover, agreeing: 1 } }, /^COVERING_FACET_WITHOUT_AGREEMENT$/, 'mandatoryPartition'));
+  it('1 : une facette compte davantage', () => only({ ...ok, cover: { ...ok.cover, exceeded: true } }, /^COVERING_FACET_WITHOUT_AGREEMENT$/, 'mandatoryPartition'));
+  it('1 : une offre lue sous deux valeurs', () => {
+    // Under condition 2 an overlap also breaks the union: both are named, the proof is refused.
+    const proof = facetProof({ ...ok, unionIds: 2_099, boards: [ok.boards[0]!, { ...ok.boards[1]!, overlap: 1 }] });
+    expect(proof.adopted).toBe(false);
+    expect(proof.failures).toEqual(['COVERING_FACET_OVERLAP=1', 'COVERING_FACET_TOTAL_MISMATCH=2099/2100']);
+  });
+  it('2 : un tableau non prouvé', () => only({ ...ok, boards: [ok.boards[0]!, { ...ok.boards[1]!, complete: false }] }, /^COVERING_BOARD_UNPROVEN$/, 'everyValueRead'));
+  it('2 : un tableau au plafond', () => only({ ...ok, cover: { ...ok.cover, sum: 2_800 }, unionIds: 2_800,
+    boards: [{ ...ok.boards[0]!, total: WORKDAY_TOTAL_CAP }, ok.boards[1]!] }, /^COVERING_BOARD_AT_CAP=f=A$/, 'everyValueRead'));
+  it('2 : les totaux des tableaux ne font pas le compte de la facette', () => only({ ...ok, boards: [ok.boards[0]!, { ...ok.boards[1]!, total: 801 }] },
+    /^COVERING_FACET_VALUES_MISMATCH=2101\/2100$/, 'everyValueRead'));
+  it('2 : aucune valeur lue', () => only({ ...ok, cover: { ...ok.cover, sum: 0 }, unionIds: 0, boards: [] }, /^COVERING_FACET_NO_VALUE_READ$/, 'everyValueRead'));
+  it('3 : l’union lue ne fait pas la somme des comptes', () => only({ ...ok, unionIds: 2_099 }, /^COVERING_FACET_TOTAL_MISMATCH=2099\/2100$/, 'unionEqualsCounts'));
+  it('3 : les lignes sans chemin comptent dans l’union', () => {
+    expect(facetProof({ ...ok, unionIds: 2_099, boards: [ok.boards[0]!, { ...ok.boards[1]!, withoutPath: 1 }] }).adopted).toBe(true);
   });
 });

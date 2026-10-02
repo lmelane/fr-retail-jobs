@@ -150,6 +150,11 @@ export const PROVING_TERMINATIONS: ReadonlySet<string> = new Set([
    * Chaque page porte ses identifiants canoniques dans la preuve scellée.
    */
   'NEXT_URL_NULL',
+  /**
+   * Workday, site plafonné lu par sa facette couvrante (D-520 §4 a, lecture D-492 du 02/10/2026) : la terminaison n'est
+   * posée que si les trois conditions de `facetProof` (`workday.ts`) tiennent ; sinon `COVERING_FACET_UNPROVEN`.
+   */
+  'COVERING_FACET_RECONCILED',
 ]);
 
 /**
@@ -170,9 +175,6 @@ export const PROVING_TERMINATIONS: ReadonlySet<string> = new Set([
  *   taleo        NO_FRESH_ROW                    (assumé en commentaire dans l'adaptateur)
  *   volcanic     PAGE_COUNT_REACHED
  *   wttjSector   EVERY_ORGANIZATION_READ
- *   workday      COVERING_FACET_RECONCILED       (D-520, 02/10/2026 : site plafonné lu par sa facette couvrante ;
- *                                                la preuve repose sur l'accord des comptes de facettes, une inférence
- *                                                écrite dans `workday.ts` — fermer sur elle est une décision du propriétaire)
  *
  * Ce n'est pas un défaut à corriger ici : promouvoir une terminaison, c'est décider qu'elle DÉMONTRE la fin
  * du parcours — un arbitrage sur ce qui fait preuve, qui appartient au propriétaire et passe par une décision
@@ -183,7 +185,7 @@ export const PROVING_TERMINATIONS: ReadonlySet<string> = new Set([
  */
 export const DECLARED_BUT_NOT_PROVING = Object.freeze([
   'NO_FRESH_ROWS_OR_TOTAL_REACHED', 'DECLARED_PAGE_COUNT_REACHED', 'CURSOR_EXHAUSTED',
-  'SHORT_PAGE_PER_WEBSITE', 'NO_FRESH_ROW', 'PAGE_COUNT_REACHED', 'EVERY_ORGANIZATION_READ', 'COVERING_FACET_RECONCILED',
+  'SHORT_PAGE_PER_WEBSITE', 'NO_FRESH_ROW', 'PAGE_COUNT_REACHED', 'EVERY_ORGANIZATION_READ',
 ] as const);
 
 /**

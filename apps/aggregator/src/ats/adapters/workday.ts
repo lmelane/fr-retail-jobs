@@ -482,8 +482,8 @@ export async function fetchWorkdayJobs(config: Record<string, unknown>): Promise
         ...covering.results.map((r): Scope => ({ scope: r.scope, declaredTotal: r.total || -1, uniqueIds: r.uniqueIds, pages: r.pages, complete: r.complete }))],
       pageEvidence };
     const truncated = covering.results.some((r) => r.termination === 'PAGE_BUDGET_EXHAUSTED' || (r.total > 0 && r.rawCount < r.total));
-    // `complete` reste faux même quand les comptes concordent : voir `readCoveringFacet`, « la preuve n'est pas adoptée ».
-    return finishWorkday(config, out, { declaredTotal: covering.sigma, complete: false, truncated, enumeration, rejectedRows }, origin, tenant, site);
+    // D-520 §4 a : la preuve par facette est adoptée, et SEULEMENT quand ses trois conditions tiennent (`facetProof`).
+    return finishWorkday(config, out, { declaredTotal: covering.sigma, complete: covering.reconciled, truncated, enumeration, rejectedRows }, origin, tenant, site);
   }
   const partitions = results.filter((r) => r.scope !== 'jobs:unpartitioned');
   const remainder = partitioned ? results.find((r) => r.scope === 'jobs:unpartitioned') : undefined;
@@ -600,19 +600,11 @@ export function coveringFacet(facets: readonly WorkdayFacet[] | undefined, cap =
  * relectures (total changé, tri instable). Les offres déjà servies par le site ne sont pas recomptées ; la facette
  * n'attribue AUCUN employeur (une famille de métiers n'est pas une Maison) : l'attribution reste celle du détail.
  *
- * LA PREUVE, et toutes ses conditions : chaque tableau prouvé sous son total ; aucune offre dans deux valeurs ; la somme
- * des totaux des tableaux égale le compte de la facette ; identifiants distincts + lignes sans chemin = ce compte ;
- * chaque offre servie par le site plafonné retrouvée dans les tableaux ; au moins DEUX facettes à plat comptent
- * exactement ce même total et aucune n'en compte davantage. La dernière condition est la seule inférence : une offre
- * sans valeur de la facette ET servie au-delà du plafond resterait invisible ; elle ferait compter une autre facette
- * de plus, sauf à n'avoir aucune valeur dans aucune. Elle est écrite ici, pas cachée.
- *
- * LA PREUVE N'EST PAS ADOPTÉE (audit du 02/10/2026). Quand toutes ces conditions tiennent, la terminaison est
- * `COVERING_FACET_RECONCILED` et la preuve est archivée (portées, compteurs), mais la sortie reste `complete: false` avec
- * `COVERING_FACET_PROOF_NOT_ADOPTED` : transmise, elle donnerait `canAttestAbsence`, ouvrirait la chute confirmée de
- * D-484 §2 et les retenues de disponibilité (`availability.ts`), qui ne lisent pas la terminaison. Décider qu'une lecture
- * par facette fait preuve appartient au propriétaire (`refreshPlan.ts`). Jusque-là : toutes les offres sont collectées,
- * aucune n'est fermée ni retenue sur cette lecture, et knitwell reste sous D-480 §1.
+ * LA PREUVE PAR FACETTE EST ADOPTÉE SOUS CONDITION (D-520 §4 a, lecture D-492 « listes, volumes et lecteurs » du
+ * 02/10/2026). Ses trois conditions sont jugées par `facetProof` ; quand elles tiennent toutes, la terminaison est
+ * `COVERING_FACET_RECONCILED` (probante pour le refresh, `refreshPlan.ts`) et la sortie `complete: true`, avec
+ * `COVERING_FACET_PROOF_ADOPTED` : l'absence d'une offre devient attestable (et la chute confirmée de D-484 §2, les
+ * retenues de disponibilité). Sinon `COVERING_FACET_UNPROVEN` : tout est collecté, aucune absence n'est attestée.
  */
 async function readCoveringFacet(shared: Shared, site: BoardResult): Promise<{ sigma: number; results: BoardResult[]; reconciled: boolean; termination: string } | undefined> {
   const cover = coveringFacet(shared.siteFacets);
@@ -627,21 +619,65 @@ async function readCoveringFacet(shared: Shared, site: BoardResult): Promise<{ s
   for (const v of cover.values.filter((value) => value.count > 0))
     results.push(await enumerateBoard(shared, { appliedFacets: { [cover.parameter]: [v.id] }, scope: `${cover.parameter}=${v.descriptor}`, cover: { parameter: cover.parameter, value: v.descriptor, id: v.id } }));
   shared.issues.add(`COVERED_BY_FACET=${cover.parameter}`);
-  const overlap = results.reduce((sum, r) => sum + r.overlap, 0);
-  const boardsTotal = results.reduce((sum, r) => sum + r.total, 0);
-  const withoutPath = results.reduce((sum, r) => sum + r.withoutPath, 0);
-  const outside = siteIds.filter((id) => !shared.coverIds.has(id)).length;
-  const failures = [
-    ...(results.some((r) => !r.complete) ? ['COVERING_BOARD_UNPROVEN'] : []),
+  const proof = facetProof({ cover, boards: results, unionIds: shared.coverIds.size,
+    sitePostingsMissed: siteIds.filter((id) => !shared.coverIds.has(id)).length });
+  for (const failure of proof.failures) shared.issues.add(failure);
+  shared.issues.add(proof.adopted ? 'COVERING_FACET_PROOF_ADOPTED' : 'ENUMERATION_NOT_PROVEN');
+  return { sigma: cover.sum, results, reconciled: proof.adopted, termination: proof.adopted ? 'COVERING_FACET_RECONCILED' : 'COVERING_FACET_UNPROVEN' };
+}
+
+/**
+ * LES TROIS CONDITIONS DE LA PREUVE PAR FACETTE (D-520 §4 a). Pure ; exportée pour ses témoins. Une condition qui manque
+ * nomme son motif, et aucune absence n'est attestée.
+ *
+ *   1. LA FACETTE EST OBLIGATOIRE ET PARTITIONNE LA LISTE (chaque offre a une valeur, une seule) :
+ *      · aucune offre lue sous deux valeurs (`COVERING_FACET_OVERLAP`) ;
+ *      · chaque offre servie par le site plafonné est retrouvée sous une valeur (`COVERING_FACET_MISSES_SITE_POSTINGS`) ;
+ *      · au moins DEUX facettes à plat comptent exactement ce total, et aucune n'en compte davantage
+ *        (`COVERING_FACET_WITHOUT_AGREEMENT`). C'est la seule inférence, écrite ici : une offre sans valeur de la facette
+ *        ET servie au-delà du plafond resterait invisible ; une autre facette la compterait, sauf si cette offre n'a de
+ *        valeur dans aucune des facettes d'accord.
+ *   2. CHAQUE VALEUR EST LUE EN ENTIER, SOUS LE PLAFOND :
+ *      · chaque tableau est prouvé sous son propre total (`COVERING_BOARD_UNPROVEN`) ;
+ *      · aucun tableau n'annonce un total au plafond, où Workday ne dit plus rien (`COVERING_BOARD_AT_CAP`) ;
+ *      · les totaux annoncés des tableaux font ensemble le compte de la facette (`COVERING_FACET_VALUES_MISMATCH`).
+ *        Valeur par valeur, ils peuvent différer d'une unité (knitwell le 02/10 : 1 759 et 1 267 pour 1 758 et 1 268 au
+ *        compte, une offre passée d'une famille à l'autre avant la lecture) : seule la somme est exigée.
+ *   3. L'UNION LUE ÉGALE LA SOMME DES COMPTES PAR VALEUR : identifiants distincts + lignes sans chemin
+ *      (`COVERING_FACET_TOTAL_MISMATCH`). Sous la condition 2, elle équivaut à l'absence de recouvrement : elle garde la
+ *      condition 1 si son contrôle venait à manquer.
+ */
+export type FacetProofInput = {
+  cover: Pick<CoveringFacet, 'sum' | 'agreeing' | 'exceeded'>;
+  boards: ReadonlyArray<Pick<BoardResult, 'scope' | 'total' | 'complete' | 'overlap' | 'withoutPath'>>;
+  /** Identifiants distincts lus sur l'ensemble des tableaux de la facette. */
+  unionIds: number;
+  /** Offres servies par le site plafonné qu'aucun tableau n'a servies. */
+  sitePostingsMissed: number;
+};
+export type FacetProof = { adopted: boolean; failures: string[];
+  conditions: { mandatoryPartition: boolean; everyValueRead: boolean; unionEqualsCounts: boolean } };
+export function facetProof(input: FacetProofInput, cap = WORKDAY_TOTAL_CAP): FacetProof {
+  const { cover, boards } = input;
+  const overlap = boards.reduce((sum, r) => sum + r.overlap, 0);
+  const boardsTotal = boards.reduce((sum, r) => sum + r.total, 0);
+  const withoutPath = boards.reduce((sum, r) => sum + r.withoutPath, 0);
+  const atCap = boards.filter((r) => r.total >= cap);
+  const partition = [
     ...(overlap ? [`COVERING_FACET_OVERLAP=${overlap}`] : []),
-    ...(boardsTotal !== cover.sum || shared.coverIds.size + withoutPath !== cover.sum ? [`COVERING_FACET_TOTAL_MISMATCH=${shared.coverIds.size + withoutPath}/${cover.sum}`] : []),
-    ...(outside ? [`COVERING_FACET_MISSES_SITE_POSTINGS=${outside}`] : []),
+    ...(input.sitePostingsMissed ? [`COVERING_FACET_MISSES_SITE_POSTINGS=${input.sitePostingsMissed}`] : []),
     ...(cover.agreeing < 2 || cover.exceeded ? ['COVERING_FACET_WITHOUT_AGREEMENT'] : []),
   ];
-  for (const failure of failures) shared.issues.add(failure);
-  const reconciled = failures.length === 0;
-  shared.issues.add(reconciled ? 'COVERING_FACET_PROOF_NOT_ADOPTED' : 'ENUMERATION_NOT_PROVEN');
-  return { sigma: cover.sum, results, reconciled, termination: reconciled ? 'COVERING_FACET_RECONCILED' : 'COVERING_FACET_UNPROVEN' };
+  const values = [
+    ...(!boards.length ? ['COVERING_FACET_NO_VALUE_READ'] : []),
+    ...(boards.some((r) => !r.complete) ? ['COVERING_BOARD_UNPROVEN'] : []),
+    ...atCap.map((r) => `COVERING_BOARD_AT_CAP=${r.scope}`),
+    ...(boardsTotal !== cover.sum ? [`COVERING_FACET_VALUES_MISMATCH=${boardsTotal}/${cover.sum}`] : []),
+  ];
+  const union = input.unionIds + withoutPath !== cover.sum ? [`COVERING_FACET_TOTAL_MISMATCH=${input.unionIds + withoutPath}/${cover.sum}`] : [];
+  const failures = [...partition, ...values, ...union];
+  return { adopted: failures.length === 0, failures,
+    conditions: { mandatoryPartition: !partition.length, everyValueRead: !values.length, unionEqualsCounts: !union.length } };
 }
 
 /**
