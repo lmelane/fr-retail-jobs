@@ -4,8 +4,10 @@ import type { SourceTier } from '@catwalks/db/publications';
 import type { SourceFacts } from '@catwalks/db/source-facts';
 import { postingIdentity, POSTING_IDENTITY_VERSION, APPLICATION_KEY_VERSION } from './postingIdentity.js';
 import { workdayRequisitionIdentity } from '../identity/workday.js';
-import { teamtailorPublicationIdentity } from '../identity/teamtailor.js';
+import { teamtailorDelegatedIdentity, teamtailorPublicationIdentity } from '../identity/teamtailor.js';
 import { icimsPublicationIdentity } from '../identity/icims.js';
+import { successfactorsRequisitionIdentity } from '../identity/successfactorsRequisition.js';
+import { smartRecruitersPublicationIdentity } from '../identity/smartrecruiters.js';
 
 export type CandidateJob = NormalizedJob & {
   sourceFacts?: SourceFacts;
@@ -55,13 +57,23 @@ export type NativePublication = Pick<CandidateJob, 'sourceKey' | 'externalId' | 
 export type IdentityProof = { version: typeof POSTING_IDENTITY_VERSION; rule: 'SAME_NATIVE_PUBLICATION' | 'QUALIFIED_APPLICATION_ID' | 'QUALIFIED_REQUISITION_ID' | 'QUALIFIED_FEED_POSTING_ID';
   identity: { tenant: string; requisition: string }; paths?: [string, string] };
 
-function identityEvidence(publication: NativePublication) {
+type Evidence = { identity: { tenant: string; requisition: string }; path: string; delegated?: true };
+
+function identityEvidence(publication: NativePublication): Evidence | null {
   const icims = icimsPublicationIdentity(publication);
   if (icims) return { identity: icims, path: '/postingEvidence/jobPosting/url' };
   const workday = workdayRequisitionIdentity(publication);
   if (workday) return { identity: workday, path: '/detail/jobPostingInfo/jobReqId' };
   const teamtailor = teamtailorPublicationIdentity(publication);
   if (teamtailor) return { identity: teamtailor, path: '/_jobposting/identifier/value' };
+  // R-143 §4 (D-513) : les preuves natives ajoutées le 02/10/2026, chacune relue sur la production.
+  const delegated = teamtailorDelegatedIdentity(publication);
+  if (delegated) return { identity: { tenant: delegated.tenant, requisition: delegated.requisition }, path: '/_jobposting/hiringOrganization/sameAs', delegated: true };
+  const successfactors = successfactorsRequisitionIdentity(publication);
+  if (successfactors) return { identity: successfactors, path: (publication.raw as Record<string, unknown>)?.source === 'successfactors' ? '/successfactorsDetail/description' : '/atsId' };
+  const smartrecruiters = smartRecruitersPublicationIdentity(publication);
+  if (smartrecruiters) return { identity: { tenant: smartrecruiters.tenant, requisition: smartrecruiters.requisition },
+    path: smartrecruiters.delegated ? '/detail/apply_url' : '/ref', ...(smartrecruiters.delegated ? { delegated: true as const } : {}) };
   const identity = postingIdentity(publication.url);
   if (!identity || !publication.raw || typeof publication.raw !== 'object' || Array.isArray(publication.raw)) return null;
   const raw = publication.raw as Record<string, any>;
@@ -90,8 +102,12 @@ export function publicationIdentityProof(a: NativePublication, b: NativePublicat
       : null;
   }
   const left = identityEvidence(a), right = identityEvidence(b);
-  return left && right && left.identity.tenant === right.identity.tenant && left.identity.requisition === right.identity.requisition
-    ? { version: POSTING_IDENTITY_VERSION, rule: left.identity.tenant.startsWith('workday:') ? 'QUALIFIED_REQUISITION_ID' : left.identity.tenant.startsWith('teamtailor:') ? 'QUALIFIED_FEED_POSTING_ID' : 'QUALIFIED_APPLICATION_ID', identity: left.identity, paths: [left.path, right.path] } : null;
+  // Une identité déléguée (fiche hébergée par un tiers, lien cité par un job board) ne prouve qu'en face de la publication
+  // que l'émetteur sert lui-même : deux délégations ne se corroborent jamais l'une l'autre.
+  return left && right && !(left.delegated && right.delegated) &&
+    left.identity.tenant === right.identity.tenant && left.identity.requisition === right.identity.requisition
+    ? { version: POSTING_IDENTITY_VERSION, rule: /^(?:workday|successfactors):/.test(left.identity.tenant) ? 'QUALIFIED_REQUISITION_ID'
+      : /^(?:teamtailor|smartrecruiters):/.test(left.identity.tenant) ? 'QUALIFIED_FEED_POSTING_ID' : 'QUALIFIED_APPLICATION_ID', identity: left.identity, paths: [left.path, right.path] } : null;
 }
 
 /** Pairwise proof prevents an unqualified historical member from bridging groups. */
@@ -106,8 +122,12 @@ export function blockingKey(job: NativePublication): string {
   if (icims) return JSON.stringify(['application', 'icims-v1', icims.tenant, icims.requisition]);
   const workday = workdayRequisitionIdentity(job);
   if (workday) return JSON.stringify(['requisition', 'workday-v1', workday.tenant, workday.requisition]);
-  const teamtailor = teamtailorPublicationIdentity(job);
+  const teamtailor = teamtailorPublicationIdentity(job) ?? teamtailorDelegatedIdentity(job);
   if (teamtailor) return JSON.stringify(['feed-publication', 'teamtailor-v1', teamtailor.tenant, teamtailor.requisition]);
+  const successfactors = successfactorsRequisitionIdentity(job);
+  if (successfactors) return JSON.stringify(['requisition', 'successfactors-v1', successfactors.tenant, successfactors.requisition]);
+  const smartrecruiters = smartRecruitersPublicationIdentity(job);
+  if (smartrecruiters) return JSON.stringify(['feed-publication', 'smartrecruiters-v1', smartrecruiters.tenant, smartrecruiters.requisition]);
   const identity = postingIdentity(job.url);
   return JSON.stringify(identity ? ['application', APPLICATION_KEY_VERSION, identity.tenant, identity.requisition]
     : ['publication', job.sourceKey, job.externalId]);
