@@ -444,6 +444,36 @@ export function employmentTermsFrom(values: ReadonlyArray<unknown>): string | un
 }
 
 /**
+ * LES DURÉES QU'UNE DESCRIPTION DÉCLARE EN TOUTES LETTRES (R-143 §6, D-513, lecture D-492 du 02/10/2026).
+ *
+ * Les sigles non ambigus (CDI, CDD, intérim) et, depuis le 02/10, les formules complètes des langues servies, mesurées
+ * sur les offres servies sans contrat (1 sur 8, 7 755 offres : « fixed-term » 65, « permanent position » 20,
+ * « tempo determinato » 17, « unbefristet » 10, « contrato indefinido » 7…). Jamais un mot nu : « permanent » seul
+ * désigne aussi une collection ou un maquillage, « temporary » une boutique éphémère. Le mot doit qualifier un contrat,
+ * un poste ou un emploi.
+ */
+const DESCRIPTION_TERMS: ReadonlyArray<readonly [EmploymentTerm, RegExp]> = [
+  ['PERMANENT', /\bCDI\b|DUREE INDETERMINEE|TEMPO INDETERMINATO|\bUNBEFRISTET|CONTRATO (?:DE TRABAJO )?INDEFINIDO|\bVAST(?:E)? (?:CONTRACT|DIENSTVERBAND|AANSTELLING)\b|\bPERMANENT,? (?:(?:FULL|PART)[ -]TIME,? )?(?:POSITION|ROLE|CONTRACT|EMPLOYMENT|JOB)\b|\b(?:FULL|PART)[ -]TIME,? PERMANENT\b/g],
+  ['FIXED_TERM', /\bCDD\b|DUREE DETERMINEE|TEMPO DETERMINATO|(?<!UN)\bBEFRISTET|CONTRATO TEMPORAL|TIJDELIJK(?:E)? (?:CONTRACT|DIENSTVERBAND|AANSTELLING)\b|\bFIXED[ -]TERM (?:CONTRACT|POSITION|ROLE|EMPLOYMENT)\b|\bTEMPORARY (?:CONTRACT|POSITION|ROLE|EMPLOYMENT)\b/g],
+  ['TEMPORARY', /\bINTERIM\b|INTERIMAIRE/g],
+];
+
+/**
+ * Une mention qui DÉCLARE la durée du poste, et non une négation (« pas de CDD ») ni une perspective (« possibilité de
+ * CDI à l'issue », « pouvant déboucher sur un CDI », « opportunity for a permanent position ») : les mots qui la
+ * précèdent dans la même phrase décident. Une seule mention ferme suffit.
+ */
+const NEGATION_OU_PERSPECTIVE = /\b(?:PAS|NON|SANS|HORS|NI|NOT|NO|POSSIBILITES?|POSSIBILITY|POSSIBLE|POSSIBLY|POUVANT|POURRA|POURRIONS|POURRAIT|EVOLU\w*|DEBOUCH\w*|PERSPECTIVES?|OPPORTUNIT\w*|POTENTIAL\w*|LEAD(?:ING)? TO|CONVER\w*|EVENTUEL\w*|ISSUE|KEINE?|NICHT|POSSIBILITA|EVENTUALE|POSIBILIDAD)\b[^.;:!?\n]{0,40}$/;
+
+function mentionFerme(texte: string, re: RegExp): boolean {
+  for (const m of texte.matchAll(re)) {
+    const avant = texte.slice(Math.max(0, (m.index ?? 0) - 80), m.index ?? 0);
+    if (!NEGATION_OU_PERSPECTIVE.test(avant)) return true;
+  }
+  return false;
+}
+
+/**
  * Les dimensions lues dans les MOTS de l'annonce, quand les champs sont vides.
  *
  * Cas réel : Galeries Lafayette range « FULL_TIME » dans employmentType (un
@@ -464,14 +494,12 @@ export function extractEmployment(title?: string | null, description?: string | 
   if (!text) return out;
   const anywhere = upper(text);
 
-  const negatedBefore = (token: string) =>
-    new RegExp(`\\b(?:PAS|NON|SANS|HORS|NI)\\b[^.;:!?]{0,20}\\b${token}\\b`).test(anywhere);
-  const hasToken = (re: RegExp, token: string) => re.test(anywhere) && !negatedBefore(token);
-
   if (!out.employmentTerm) {
-    if (hasToken(/\bCDI\b/, 'CDI')) out.employmentTerm = 'PERMANENT';
-    else if (hasToken(/\bCDD\b|DUREE DETERMIN/, 'CDD')) out.employmentTerm = 'FIXED_TERM';
-    else if (hasToken(/\bINTERIM\b|INTERIMAIRE/, 'INTERIM')) out.employmentTerm = 'TEMPORARY';
+    const termes = DESCRIPTION_TERMS.filter(([, re]) => mentionFerme(anywhere, re)).map(([terme]) => terme);
+    // R-143 §8 (D-513) : une description qui nomme DEUX durées (« un CDD… un CDI à l'issue », « CDI ou CDD selon votre
+    // profil ») ne tranche rien. Le premier mot lu gagnait : 44 CDD de Noël sur un quart du catalogue étaient servis
+    // comme CDI, donc envoyés par une alerte « CDI ». Mieux vaut « non précisé ».
+    if (termes.length === 1) out.employmentTerm = termes[0];
   }
   if (!out.programType && /\bV\.I\.E\.?\b/.test(anywhere)) out.programType = 'VIE';
 

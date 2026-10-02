@@ -1,0 +1,36 @@
+SET
+kind	champ	valeur	n	sans_seniorite
+personio	seniority	experienced	89	51
+personio	seniority	entry-level	72	68
+personio	seniority	student	4	4
+personio	seniority	executive	2	0
+phenom	workExperience	Entry Position	370	364
+phenom	workExperience	Professional	211	129
+phenom	workExperience	Management	169	45
+phenom	workExperience	Internship	17	17
+phenom	workExperience	Working student	6	6
+phenom	workExperience	Apprenticeship & Dual Study	2	2
+recruitee	experience_code	entry_level	219	195
+recruitee	experience_code	mid_level	155	122
+recruitee	experience_code	experienced	90	40
+recruitee	experience_code	student_college	56	56
+recruitee	experience_code	student_school	41	41
+recruitee	experience_code	manager	16	1
+recruitee	experience_code	senior_manager	2	2
+rituals	careerLevel	mid-senior	38	10
+rituals	careerLevel	early-career	20	15
+rituals	careerLevel	management	7	0
+rituals	careerLevel	director	2	0
+rituals	careerLevel	interns	2	2
+smartrecruiters-whitelabel	experienceLevel.label	Entry Level	2730	2625
+smartrecruiters-whitelabel	experienceLevel.label	Mid-Senior Level	1803	781
+smartrecruiters-whitelabel	experienceLevel.label	Not Applicable	1749	1513
+smartrecruiters-whitelabel	experienceLevel.label	Associate	612	418
+smartrecruiters-whitelabel	experienceLevel.label	Internship	102	84
+smartrecruiters-whitelabel	experienceLevel.label	Executive	90	44
+smartrecruiters-whitelabel	experienceLevel.label	Director	16	2
+workable	experience	Associate	59	55
+workable	experience	Entry level	24	24
+workable	experience	Mid-Senior level	21	2
+workable	experience	Director	5	0
+(33 rows)

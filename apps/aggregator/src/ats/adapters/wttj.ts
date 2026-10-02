@@ -212,6 +212,29 @@ export function wttjCanonicalId(hit: WttjHit): string | null {
   return slug || null;
 }
 
+/**
+ * LE CONTRAT TEL QUE WTTJ L'AFFICHE (R-143 §6, D-513, lecture D-492 du 02/10/2026).
+ *
+ * `contract_type` est l'énumération de WTTJ ; son libellé public est la preuve native. Relu sur les fiches le 02/10 :
+ * `full_time` s'affiche « CDI » (« Sales Associate - Hermès - CDI à Kaohsiung City »), `temporary` « CDD / Temporaire »,
+ * `part_time` « Temps partiel », `freelance` « Freelance ». Lu comme un rythme (« full time »), `full_time` laissait
+ * 570 CDI servis sans contrat. Une valeur inconnue passe telle quelle : rien n'est deviné.
+ */
+const LIBELLE_CONTRAT_WTTJ: Readonly<Record<string, string>> = {
+  full_time: 'CDI',
+  temporary: 'CDD / Temporaire',
+  part_time: 'Temps partiel',
+  internship: 'Stage',
+  apprenticeship: 'Alternance',
+  freelance: 'Freelance',
+  vie: 'V.I.E',
+};
+
+export function contratWttj(contractType?: string): string | undefined {
+  if (!contractType) return undefined;
+  return Object.hasOwn(LIBELLE_CONTRAT_WTTJ, contractType) ? LIBELLE_CONTRAT_WTTJ[contractType] : contractType;
+}
+
 export function parseWttjHit(hit: WttjHit, organizationSlug: string): NormalizedJob | null {
   if (!hit.name) return null;
 
@@ -229,7 +252,7 @@ export function parseWttjHit(hit: WttjHit, organizationSlug: string): Normalized
     title: hit.name,
     location: [office?.city, office?.zip_code].filter(Boolean).join(', ') || undefined,
     country: office?.country,
-    contract: hit.contract_type,
+    contract: contratWttj(hit.contract_type),
     city: office?.city,
     postalCode: office?.zip_code,
     // WTTJ publishes what most sources never do.
