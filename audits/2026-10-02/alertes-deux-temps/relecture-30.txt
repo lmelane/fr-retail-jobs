@@ -1,0 +1,54 @@
+ 1. [NL] PERMANENT → None (NO_STRUCTURED_EVIDENCE) · 'Management Assistant' · contrat='Part-time'
+      « derstukken, presentaties en andere communicatie-uitingen. • Vastleggen van besluiten en actiepunten en zorgen voor een tijdi »
+ 2. [JP] None → FIXED_TERM (NO_STRUCTURED_EVIDENCE) · 'セールスアドバイザーアルバイト（H&M\u3000松本）' · contrat='Part-time'
+      « ィブで、新しいシステムを学びながら成長したいという意欲がある方。 ​ • 柔軟性、行動力のある方。 ​  雇用契約期間：有期労働契約（アルバイト）​  試用期間:3～6か月間（試用期間中の給与・勤務時間：本採用と同じ）​  就業場所:（雇い入れ »
+ 3. [JP] None → FIXED_TERM (NO_STRUCTURED_EVIDENCE) · 'セールスアドバイザーアルバイト（H&Mららぽーと磐田）' · contrat='Part-time'
+      « 能力がある方​ • 変化する状況や顧客のニーズに柔軟に対応し、顧客のニーズに迅速かつ効果的に対応することがでる方​ • 正社員を目指して働きたい学生（高校卒業以上）やフリーターの方​ • 副業（掛け持ち）で働きたい方​ • 外国籍の方(留学生・家 »
+ 4. [KR] None → PERMANENT (NO_STRUCTURED_EVIDENCE) · 'Sales Advisor (PT20/30) - 롯데몰 수지점' · contrat='Part-time'
+      « Sales Advisor 포지션은 주당 20/30 시간의 정규직 파트타임이며 주말과 저녁 교대 근무를 포함합니다.   주요 업무 내용은 고객에게 우수한 퀄리티의 서비스를  »
+ 5. [JP] None → FIXED_TERM (NO_STRUCTURED_EVIDENCE) · 'セ－ルスアドバイザーアルバイト（H&M春日井）' · contrat='Part-time'
+      « ステムを学びながら成長したいという意欲がある方。 ​ • 柔軟性、行動力のある方。 ​  その他の情報  雇用契約期間：有期労働契約（アルバイト）  試用期間:3～6か月間（試用期間中の給与・勤務時間：本採用と同じ）  就業場所:（雇い入れ直後 »
+ 6. [KR] None → PERMANENT (NO_STRUCTURED_EVIDENCE) · 'Sales Advisor(PT20(주말)/30)_광교 갤러리아 백화점' · contrat='Part-time'
+      « 멘토를 제공합니다.  신규 입사자에게 종합적인 교육을 실시하며 계약 형태에 따른 시급 을 지급합니다.   *정규직: 시급/13,370원+ 월 별 개인 인센티브(월 별 목표달성시 지급)       Benefits   COS »
+ 7. [JP] None → FIXED_TERM (NO_STRUCTURED_EVIDENCE) · 'セールスアドバイザーアルバイト（イオンモール和歌山）' · contrat='Part-time'
+      « システムを学びながら成長したいという意欲がある方。 ​ • 柔軟性、行動力のある方。  その他の情報​  雇用契約期間：有期労働契約（アルバイト）​  試用期間:3～6か月間（試用期間中の給与・勤務時間：本採用と同じ）​  就業場所:（雇い入れ »
+ 8. [JP] None → FIXED_TERM (NO_STRUCTURED_EVIDENCE) · 'セールスアドバイザーアルバイト(H＆Мイオンモール高知)' · contrat='Part-time'
+      «  販売のマインドセットを持ち、顧客のニーズにアプローチし、満たす能力があること。​  その他の情報 ​  雇用契約期間：有期労働契約（アルバイト）​  試用期間:3～6か月間（試用期間中の給与・勤務時間：本採用と同じ）​  就業場所:（雇い入れ »
+ 9. [JP] None → FIXED_TERM (NO_STRUCTURED_EVIDENCE) · 'セールスアドバイザーアルバイト（H&Mイオンモール鈴鹿）' · contrat='Part-time'
+      «  ​  従業員には、グローバルでのキャリアアップのチャンスと充実した福利厚生を提供しています。​  ​  雇用契約期間：有期労働契約（アルバイト）​  試用期間:3～6か月間（試用期間中の給与・勤務時間：本採用と同じ）​  就業場所:（雇い入れ »
+10. [JP] None → FIXED_TERM (NO_STRUCTURED_EVIDENCE) · 'セールスアドバイザーアルバイト(H&M ファボーレ富山)' · contrat='Part-time'
+      «  ​  従業員には、グローバルでのキャリアアップのチャンスと充実した福利厚生を提供しています。​  ​  雇用契約期間：有期労働契約（アルバイト）​  試用期間:3～6か月間（試用期間中の給与・勤務時間：本採用と同じ）​  就業場所:（雇い入れ »
+11. [JP] None → FIXED_TERM (NO_STRUCTURED_EVIDENCE) · 'セールスアドバイザーアルバイト（イオンモール常滑）' · contrat='Part-time'
+      « テムを学びながら成長したいという意欲がある方。 ​  ・柔軟性、行動力のある方。 ​  その他の情報​  雇用契約期間：有期労働契約（アルバイト）​  試用期間:3～6か月間（試用期間中の給与・勤務時間：本採用と同じ）​  就業場所:（雇い入れ »
+12. [JP] None → PERMANENT (NO_STRUCTURED_EVIDENCE) · '販売スタッフ（正社員）' · contrat='FULL_TIME'
+13. [SE] None → PERMANENT (NO_STRUCTURED_EVIDENCE) · 'Butikssäljare till Lexington på NK Stockholm.' · contrat=None
+      « kunder en unik och inspirerande köpupplevelse.  Tjänsten är tillsvidare på 9 timmar per vecka med start så snart som möjligt.   Ans »
+14. [JP] None → FIXED_TERM (NO_STRUCTURED_EVIDENCE) · 'セールスアドバイザー' · contrat='Part-time'
+      « しています。  従業員には、グローバルでのキャリアアップのチャンスと充実した福利厚生を提供しています。  雇用契約期間：有期労働契約（アルバイト）  試用期間:3～6か月間（試用期間中の給与・勤務時間：本採用と同じ）  就業場所:（雇い入れ直後 »
+15. [JP] None → FIXED_TERM (NO_STRUCTURED_EVIDENCE) · 'Sales Advisor-セールスアドバイザー/アルバイト（H&Mイオンモール徳島）' · contrat='Part-time'
+      «  ​  従業員には、グローバルでのキャリアアップのチャンスと充実した福利厚生を提供しています。​  ​  雇用契約期間：有期労働契約（アルバイト）​  試用期間:3～6か月間（試用期間中の給与・勤務時間：本採用と同じ）​  就業場所:（雇い入れ »
+16. [KR] None → PERMANENT (NO_STRUCTURED_EVIDENCE) · 'Sales Advisor(PT30)_한남 플래그쉽' · contrat='Part-time'
+      «   신규 입사자에게 종합적인 교육을 실시하며 계약 형태에 따른 시급 을 지급합니다.   Part-Time (정규직) : 시급 13,370원 + 월별 개인 인센티브(월별 목표달성시 지급)   COS의 모든 직원에게는 H&M »
+17. [JP] None → FIXED_TERM (NO_STRUCTURED_EVIDENCE) · 'セールスアドバイザーアルバイト (H&M 東員)' · contrat='Part-time'
+      « • 販売のマインドセットを持ち、顧客のニーズにアプローチし、満たす能力があること。​ • ​高校生不可  雇用契約期間：有期労働契約（アルバイト）​  試用期間:3～6か月間（試用期間中の給与・勤務時間：本採用と同じ）​  就業場所:（雇い入れ »
+18. [JP] None → FIXED_TERM (NO_STRUCTURED_EVIDENCE) · 'セールスアドバイザーアルバイト  (イオンモール土浦)' · contrat='Part-time'
+      «  ​  従業員には、グローバルでのキャリアアップのチャンスと充実した福利厚生を提供しています。​  ​  雇用契約期間：有期労働契約（アルバイト）​  試用期間:3～6か月間（試用期間中の給与・勤務時間：本採用と同じ）​  就業場所:（雇い入れ »
+19. [JP] None → FIXED_TERM (NO_STRUCTURED_EVIDENCE) · 'セールスアドバイザーアルバイト（H&Mダイバーシティ東京プラザ）' · contrat='Part-time'
+      « 味があること。​ • 販売のマインドセットを持ち、顧客のニーズにアプローチし、満たす能力があること。​  雇用契約期間：有期労働契約（アルバイト）​  試用期間:3～6か月間（試用期間中の給与・勤務時間：本採用と同じ）​  就業場所:（雇い入れ »
+20. [NL] PERMANENT → PERMANENT (STRUCTURED) · 'Future Department Manager Talent Pool | H&M Group Portfolio Brands' · contrat='Permanent'
+21. [ES] PERMANENT → PERMANENT (STRUCTURED) · 'VENDEDOR/A - CASTELLON SALERA' · contrat=None
+22. [US] PERMANENT → PERMANENT (STRUCTURED) · 'Beauty Advisor - Part Time' · contrat='Permanent Job'
+      «  (Non-Exempt) Full Time/Part Time: Part Time Position Type: Regular  Your role at Sephora: As a Beauty Advisor, you’ll be the f »
+23. [CA] PERMANENT → PERMANENT (STRUCTURED) · "Chef.fe d'équipe (Temps plein) - Carrefour Jeannois" · contrat='Permanent'
+      « itmans offre une mode ouverte et positive, proposée dans un vaste éventail de tailles allant de 0 à 22 et de XXS à 3X, en co »
+24. [HK] PERMANENT → PERMANENT (STRUCTURED) · 'BOTTEGA VENETA Client Advisor' · contrat='Regular'
+      « ed candidates, regardless of their background.    Job Type  Regular   Start Date  2026-09-29   Schedule  Full time   Organizati »
+25. [BE] PERMANENT → PERMANENT (STRUCTURED) · 'Stock Team Member' · contrat='PART_TIME · Regular Part-Time'
+26. [IT] PERMANENT → PERMANENT (NO_STRUCTURED_EVIDENCE) · 'IT Data Analyst' · contrat=None
+      « tegration within the Group’s BI community. • Contract Type: Permanent Employment Contract Collective Labour Agreement (CCNL): Mod »
+27. [DE] PERMANENT → PERMANENT (STRUCTURED) · 'Schichtleiter (m/w/d)' · contrat='Regular Full-Time/Part-Time'
+28. [TW] PERMANENT → PERMANENT (STRUCTURED) · 'Sales Associate' · contrat='full_time'
+      «  that employs nearly 25,185 people worldwide. Driven by its permanent entrepreneurial spirit and consistently high standards, Her »
+29. [TH] PERMANENT → PERMANENT (STRUCTURED) · 'The Corporate Store Operations and Marketing Associate' · contrat='Fulltime-Regular'
+30. [GB] PERMANENT → PERMANENT (STRUCTURED) · 'GUCCI Product Care Specialist' · contrat='Regular'
+      « n of the related material for Store / Corporate   Job Type  Regular   Start Date  2026-10-01   Schedule  Full time   Organizati »

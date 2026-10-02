@@ -1,0 +1,81 @@
+SET
+cle	valeur	n	marches	sources
+typeOfShop	{"id": "Regular store"}	865	BE,CH,DE,DK,ES,FR,GB,HU,IT,LU,NL,NO,PL,PT,RO,SE	rituals
+typeOfEmployment	{"id": "permanent", "label": "Full-time"}	167	CA,CH,DE,ES,FR,GB,MY,SE	asos,audemars-piguet,courir,hm-group,kiabi,penningtons,petit-bateau,primark,salomon,sandro,sisley
+contractFilter	Permanent Job	39	AU,BE,CA,CH,CN,DK,FR,GB,US	lvmh
+contract	Permanent Job	33	AU,CA,CH,DK,FR,GB,US	lvmh
+job_functions	[{"id": 17426, "name": "Permanent", "cached_slug": "permanen	25	GB	fenwick-volcanic
+custContractType	["Permanent"]	7	US	goyard-successfactors
+tags4	["DCIL Fast Fulfillment Center - Illinois"]	6	US	ulta-jibe
+contract	CDI	6	BE,FR	lvmh,monoprix
+tags4	["DCFL Fast Fulfillment Center - Florida"]	3	US	ulta-jibe
+locationsText	Wuhan, Mainland China (Wuhan Skp Permanent Store - Coach)	2	CN	tapestry
+externalPath	/job/Wuhan-Mainland-China-Wuhan-Skp-Permanent-Store---Coach/	2	CN	tapestry
+name	Conseiller(e) de Vente Tezenis - CDI 35h - Avignon	1	FR	wttj-sector
+name	Sales Advisor 5h - Permanent contract	1	SE	hm-group
+name	Vendeurs (f/h) - CDI 25h / CDD 35h - H&M Home - Paris	1	FR	hm-group
+name	セールスアドバイザー正社員(H&M 富山)	1	JP	hm-group
+name	セールスアドバイザー　正社員（H&M新小松）	1	JP	hm-group
+path	/job/Ume%C3%A5-Area-Sales-Manager-Vast/1358873755/	1	SE	mascot-workwear
+slug	ambassadeur-de-ventes-h-f-cdi-35h_paris_BP_6pWoab7	1	FR	wttj-sector
+slug	conseiller-de-vente-calzedonia-cdi-35h-nice-cap-3000_le-ches	1	FR	wttj-sector
+slug	conseiller-de-vente-paris-cdi-tp-14-33h-lundi-et-mardi_paris	1	FR	wttj-sector
+slug	conseiller-de-vente-tezenis-cdi-35h-avignon_avignon_ONIVE_WY	1	FR	wttj-sector
+slug	responsables-de-boutique-h-f-cdi-paris_paris_SE_Vz26jWp	1	FR	wttj-sector
+slug	Ume%C3%A5-Area-Sales-Manager-Vast	1	SE	mascot-workwear
+text	Coffee Shop Manager (Fast Times - Abbot Kinney)	1	US	buck-mason
+text	Coffee Shop Manager (Fast Times - Palisades)	1	US	buck-mason
+text	Full Time Barista (Fast Times - La Jolla)	1	US	buck-mason
+text	Full Time Barista (Fast Times - Palisades)	1	US	buck-mason
+text	Part-Time Barista - Fast Times Coffee @ Buck Mason (Abbot Ki	1	US	buck-mason
+text	Part-Time Barista (Fast Times - La Jolla)	1	US	buck-mason
+text	Part-Time Barista (Fast Times - Palisades)	1	US	buck-mason
+title	Contratto a Tempo Indeterminato - Assistant Store Manager (F	1	IT	soeur
+bulletFields	["PALAU SOLITÀ I PLEGAMANS", "Barcelona", "Permanent"]	1	ES	mango
+title	CRM & Promotion Manager (정규직)	1	KR	swarovski
+title	Verkoopster Antwerpen Meir - 20u/week - tijdelijk contract (	1	BE	etam
+title	販売スタッフ（正社員）	1	JP	pandora-talenthub
+title	Contratto a Tempo Indeterminato - Assistente alle vendite 40	1	IT	soeur
+bulletFields	["Permanent", "JR787"]	1	GB	diptyque-workday
+externalPath	/job/PARIS/CDI-Sales-Advisor---Galeries-Lafayette-Haussmann-	1	FR	richemont-workday
+name	BALENCIAGA - CDI Senior Sales Associate - Cannes	1	FR	kering
+name	CDI - Administrateur ERP ORACLE CLOUD H/F	1	FR	sandro
+name	CDI - Compliance Product Senior Specialist	1	FR	salomon
+name	CDI ETUDIANT CONSEILLER(E) DE MODE (H/F) KIABI RUAUDIN LE MA	1	FR	kiabi
+name	CDI - Junior Product Designer, Footwear Performance - W/M	1	FR	salomon
+name	CDI - Merchandise/Demand Planner, W/M	1	FR	salomon
+name	Conseiller(e) de mode Kiabi Herblay CDD 35h avec évolution p	1	FR	kiabi
+name	Conseiller(e) de Vente Calzedonia - CDI 35h - Nice Cap 3000	1	FR	wttj-sector
+(46 rows)
+marche	rawContract	famille	canonicalSourceKey	n
+FR	Permanent	sandro	sandro	72
+FR	Permanent	kiabi	kiabi	36
+FR	Permanent	petit-bateau	petit-bateau	18
+CA	Permanent Job	lvmh	lvmh	18
+FR	Permanent	courir	courir	12
+FR	Permanent	sisley	sisley	8
+FR	Permanent Job	lvmh	lvmh	5
+GB	Permanent Job	lvmh	lvmh	5
+GB	Permanent	asos	asos	3
+BE	CDI	lvmh	lvmh	3
+FR	Permanent	hm-group	hm-group	3
+GB	Permanent	primark	primark	3
+CH	Permanent	sandro	sandro	2
+FR	Regular	kering	kering	2
+GB	Permanent	sandro	sandro	2
+FR	Permanent	salomon	salomon	2
+FR	CDI	armand-thiery-flatchr	armand-thiery-flatchr	2
+FR	CDI	lvmh	lvmh	2
+US	Permanent Job	lvmh	lvmh	2
+US	Regular	kering	kering	1
+CA	Permanent	penningtons	penningtons	1
+CH	Permanent Job	lvmh	lvmh	1
+DE	Permanent	hm-group	hm-group	1
+DE	Permanent	sandro	sandro	1
+DK	Permanent Job	lvmh	lvmh	1
+ES	Permanent	sandro	sandro	1
+FR	CDI	adopt-parfums	adopt-parfums	1
+FR	CDI	monoprix	monoprix	1
+FR	Fulltime-Regular	estee-lauder-companies	estee-lauder-companies	1
+MY	Permanent	audemars-piguet	audemars-piguet	1
+(30 rows)

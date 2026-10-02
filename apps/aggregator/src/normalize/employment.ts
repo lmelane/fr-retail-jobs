@@ -187,15 +187,28 @@ const PROGRAM_PATTERNS: ReadonlyArray<readonly [ProgramType, RegExp]> = [
  * 1-3 offres. Aucune des 93 n'est saisonnière ; 6 portent aussi un programme ;
  * 34 ont un rythme connu.
  */
+/**
+ * D-515 §3 (lecture D-492 du 02/10/2026) — « CDI » est l'expression française d'une intention d'emploi permanent : chaque
+ * marché la dit dans sa langue. Les formes natives s'écrivent ici sous la forme que `upper` leur donne (NFKD : le hangul
+ * se décompose en jamos, `nfkd` les recompose pour le motif ; les idéogrammes et les kana restent tels quels). Mesurées
+ * sur les offres servies sans durée (`audits/2026-10-02/alertes-deux-temps/`) : « Contratto a Tempo Indeterminato » en
+ * tête d'intitulé (Soeur), « 販売スタッフ（正社員） » (H&M, Pandora au Japon), « (정규직) » (Swarovski en Corée).
+ * Une PERSPECTIVE n'est jamais un statut : « 正社員登用制度 » (passage possible en poste permanent), « 正社員を目指して »,
+ * « 정규직 전환 가능 » (conversion possible) sont exclus par l'assertion qui suit le mot.
+ */
+const nfkd = (s: string) => s.normalize('NFKD');
+const PERMANENT_CJK = nfkd('正社員(?!登用|を目指|への|転換)|無期雇用(?!転換)|정규직(?!\\s*전환)');
+const DUREE_CJK = nfkd('有期雇用|有期労働|계약직');
+
 const TERM_PATTERNS: ReadonlyArray<readonly [EmploymentTerm, RegExp]> = [
   ['TEMPORARY', /\bINTERIM\b|INTERIMAIRE|ZERO HEURE|ZERO[ -]HOUR|\bAGENCY WORKER\b|LEIHARBEIT/],
   [
     'FIXED_TERM',
-    /\bCDD\b|DUREE DETERMINEE|FIX(?:ED)?[ -]?TERM|CONTRAT TEMPORAIRE|\bTEMPORARY\b|\bTEMP\b|(?<!UN)BEFRISTET|CONTRATO TEMPORAL|\bVIKARIAT\b|\bMIDLERTIDIG\b|TIDSBEGRANSAD|\bTAHTAJALINE\b|\bTERMINUOTA\b/,
+    new RegExp(`\\bCDD\\b|DUREE DETERMINEE|FIX(?:ED)?[ -]?TERM|CONTRAT TEMPORAIRE|\\bTEMPORARY\\b|\\bTEMP\\b|(?<!UN)BEFRISTET|CONTRATO TEMPORAL|TEMPO DETERMINATO|\\bVIKARIAT\\b|\\bMIDLERTIDIG\\b|TIDSBEGRANSAD|\\bTAHTAJALINE\\b|\\bTERMINUOTA\\b|${DUREE_CJK}`),
   ],
   [
     'PERMANENT',
-    /\bCDI\b|CONTRAT A DUREE INDETERMINEE|\bPERMANENT\b|\bREGULAR\b|UNBEFRISTET|INDEFINID|^FAST$|\bFAST (?:STILLING|ANSETTELSE)\b|TILLSVIDARE|\bNUOLATINIS\b|\bPASTAVIGS\b|\bTAHTAJATU\b/,
+    new RegExp(`\\bCDI\\b|CONTRAT A DUREE INDETERMINEE|\\bPERMANENT\\b|\\bREGULAR\\b|UNBEFRISTET|FESTANSTELLUNG|INDEFINID|TEMPO INDETERMINATO|^FAST$|\\bFAST (?:STILLING|ANSETTELSE)\\b|TILLSVIDARE|\\bNUOLATINIS\\b|\\bPASTAVIGS\\b|\\bTAHTAJATU\\b|${PERMANENT_CJK}`),
   ],
 ];
 
@@ -453,8 +466,12 @@ export function employmentTermsFrom(values: ReadonlyArray<unknown>): string | un
  * un poste ou un emploi.
  */
 const DESCRIPTION_TERMS: ReadonlyArray<readonly [EmploymentTerm, RegExp]> = [
-  ['PERMANENT', /\bCDI\b|DUREE INDETERMINEE|TEMPO INDETERMINATO|\bUNBEFRISTET|CONTRATO (?:DE TRABAJO )?INDEFINIDO|\bVAST(?:E)? (?:CONTRACT|DIENSTVERBAND|AANSTELLING)\b|\bPERMANENT,? (?:(?:FULL|PART)[ -]TIME,? )?(?:POSITION|ROLE|CONTRACT|EMPLOYMENT|JOB)\b|\b(?:FULL|PART)[ -]TIME,? PERMANENT\b/g],
-  ['FIXED_TERM', /\bCDD\b|DUREE DETERMINEE|TEMPO DETERMINATO|(?<!UN)\bBEFRISTET|CONTRATO TEMPORAL|TIJDELIJK(?:E)? (?:CONTRACT|DIENSTVERBAND|AANSTELLING)\b|\bFIXED[ -]TERM (?:CONTRACT|POSITION|ROLE|EMPLOYMENT)\b|\bTEMPORARY (?:CONTRACT|POSITION|ROLE|EMPLOYMENT)\b/g],
+  // D-515 §3 : « tillsvidareanställning » (sv), la rubrique japonaise « 雇用契約期間：無期 » (H&M) et « 정규직 » hors
+  // perspective (« 정규직 파트타임 », COS). Ne sont PAS lus dans une description : « 正社員 » seul, qui y nomme presque
+  // toujours une perspective (« 正社員登用制度 », « 正社員を目指して ») ou une exigence (« 正社員での就労経験 ») ; « fast
+  // stilling », que le gabarit de Glitter écrit aussi sous « julehjelp / ekstrahjelp » (renfort de Noël), relu le 02/10.
+  ['PERMANENT', new RegExp(`\\bCDI\\b|DUREE INDETERMINEE|TEMPO INDETERMINATO|\\bUNBEFRISTET|CONTRATO (?:DE TRABAJO )?INDEFINIDO|\\bVAST(?:E)? (?:CONTRACT|DIENSTVERBAND|AANSTELLING)\\b|\\bPERMANENT,? (?:(?:FULL|PART)[ -]TIME,? )?(?:POSITION|ROLE|CONTRACT|EMPLOYMENT|JOB)\\b|\\b(?:FULL|PART)[ -]TIME,? PERMANENT\\b|\\bTILLSVIDAREANSTALLNING|${nfkd('雇用契約期間:\\s*無期|정규직(?!\\s*전환)')}`, 'g')],
+  ['FIXED_TERM', new RegExp(`\\bCDD\\b|DUREE DETERMINEE|TEMPO DETERMINATO|(?<!UN)\\bBEFRISTET|CONTRATO TEMPORAL|TIJDELIJK(?:E)? (?:CONTRACT|DIENSTVERBAND|AANSTELLING)\\b|\\bFIXED[ -]TERM (?:CONTRACT|POSITION|ROLE|EMPLOYMENT)\\b|\\bTEMPORARY (?:CONTRACT|POSITION|ROLE|EMPLOYMENT)\\b|\\bVISSTIDSANSTALLNING|${nfkd('雇用契約期間:\\s*有期|계약직')}`, 'g')],
   ['TEMPORARY', /\bINTERIM\b|INTERIMAIRE/g],
 ];
 
@@ -463,7 +480,12 @@ const DESCRIPTION_TERMS: ReadonlyArray<readonly [EmploymentTerm, RegExp]> = [
  * CDI à l'issue », « pouvant déboucher sur un CDI », « opportunity for a permanent position ») : les mots qui la
  * précèdent dans la même phrase décident. Une seule mention ferme suffit.
  */
-const NEGATION_OU_PERSPECTIVE = /\b(?:PAS|NON|SANS|HORS|NI|NOT|NO|POSSIBILITES?|POSSIBILITY|POSSIBLE|POSSIBLY|POUVANT|POURRA|POURRIONS|POURRAIT|EVOLU\w*|DEBOUCH\w*|PERSPECTIVES?|OPPORTUNIT\w*|POTENTIAL\w*|LEAD(?:ING)? TO|CONVER\w*|EVENTUEL\w*|ISSUE|KEINE?|NICHT|POSSIBILITA|EVENTUALE|POSIBILIDAD)\b[^.;:!?\n]{0,40}$/;
+// D-515 §3 : les perspectives des autres langues servies, relues sur les offres sans durée du 02/10/2026 — néerlandais
+// « uitzicht op een vast dienstverband », « de optie tot een vast contract », « met de intentie om dit om te zetten naar
+// een vast dienstverband » ; allemand « Möglichkeit / Aussicht auf / Übernahme in » ; scandinave « mulighet / mulighed /
+// möjlighet » ; portugais « possibilidade ». Sans elles, un CDD néerlandais qui promet un « vast contract » ensuite était
+// lu comme un emploi permanent : une alerte « CDI » l'aurait envoyé comme certain.
+const NEGATION_OU_PERSPECTIVE = /\b(?:PAS|NON|SANS|HORS|NI|NOT|NO|POSSIBILITES?|POSSIBILITY|POSSIBLE|POSSIBLY|POUVANT|POURRA|POURRIONS|POURRAIT|EVOLU\w*|DEBOUCH\w*|PERSPECTIVES?|OPPORTUNIT\w*|POTENTIAL\w*|LEAD(?:ING)? TO|CONVER\w*|EVENTUEL\w*|ISSUE|KEINE?|NICHT|POSSIBILITA|EVENTUALE|POSIBILIDAD|POSSIBILIDADE|UITZICHT|OPTIE|INTENTIE|MOGELIJKHEID|KANS|MOGLICHKEIT|AUSSICHT|PERSPEKTIV\w*|UBERNAHME|MULIGHET|MULIGHED|MOJLIGHET)\b[^.;:!?\n]{0,40}$/;
 
 function mentionFerme(texte: string, re: RegExp): boolean {
   for (const m of texte.matchAll(re)) {

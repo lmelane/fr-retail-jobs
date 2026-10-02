@@ -622,8 +622,8 @@
   },
   "vi": {
     "employmentTerm": {
-      "PERMANENT": "CDI",
-      "FIXED_TERM": "CDD",
+      "PERMANENT": "Không xác định thời hạn",
+      "FIXED_TERM": "Có thời hạn",
       "TEMPORARY": "Tạm thời"
     },
     "workTime": {

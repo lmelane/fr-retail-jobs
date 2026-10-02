@@ -1,0 +1,350 @@
+SET
+marche	n	contrat_pct	permanent	duree_determinee	temporaire	temps_pct	brut_sans_duree
+US	40632	16.5	5221	1443	31	80.2	15399
+FR	13585	67.7	6081	3096	17	57.5	2778
+GB	4325	37.5	1216	386	18	67.9	824
+DE	3594	32.4	676	483	7	80.3	1015
+CA	3480	28.6	743	234	18	78.8	961
+IT	2922	45.8	855	484	0	66.9	557
+ES	2254	45.7	719	309	2	66.9	349
+NL	1970	35.9	351	356	1	77.8	635
+AU	1504	16.3	193	52	0	55.1	313
+CH	1324	21.8	185	103	0	46.7	122
+CN	1236	47.7	528	61	0	82.0	158
+BE	718	44.0	152	164	0	80.6	218
+JP	616	29.5	169	13	0	71.3	143
+KR	542	36.2	152	44	0	77.7	89
+SG	519	31.0	128	33	0	76.3	98
+MX	514	35.0	112	68	0	75.7	132
+PT	444	35.6	103	54	1	77.5	122
+PL	388	24.2	48	46	0	76.8	175
+HK	360	27.8	86	13	1	76.4	55
+DK	348	13.8	37	6	5	35.9	67
+CL	310	1.0	2	1	0	48.1	132
+TH	294	10.2	29	1	0	88.1	196
+MY	293	22.5	52	14	0	70.0	42
+SE	280	37.9	76	29	1	52.5	41
+AE	269	30.9	71	12	0	55.8	12
+TR	257	54.5	112	28	0	86.0	68
+BR	221	33.5	74	0	0	61.1	57
+NZ	220	15.5	22	12	0	62.3	70
+NO	212	17.9	17	21	0	56.1	84
+GR	208	20.2	35	7	0	58.2	55
+TW	207	25.1	52	0	0	80.7	29
+VN	183	18.0	32	1	0	61.7	19
+ZA	181	53.0	55	41	0	65.2	4
+PE	172	2.3	1	3	0	82.0	110
+HU	132	37.1	39	10	0	93.9	67
+CZ	129	55.0	30	41	0	59.7	31
+SA	101	34.7	32	3	0	44.6	5
+RO	98	45.9	37	8	0	73.5	20
+PR	96	54.2	45	6	1	90.6	21
+PH	72	19.4	14	0	0	69.4	15
+LU	57	75.4	21	22	0	96.5	10
+(41 rows)
+marche	rawContract	n
+AE	Full-Time	4
+AE	Full-time	3
+AE	FullTime	2
+AE	VIE	1
+AE	Internship	1
+AE	full_time	1
+AU	INTERN	78
+AU	PART_TIME	68
+AU	FULL_TIME	53
+AU	Casual	27
+AU	Part-time	25
+AU	On-Call/Freelance	17
+BE	Part-time	59
+BE	Internship	38
+BE	PART_TIME	30
+BE	part-time	17
+BE	Part time	16
+BE	Intern	12
+BR	Full time	19
+BR	FULL_TIME	15
+BR	Full-Time	9
+BR	Full-time	6
+BR	PART_TIME	3
+BR	full_time	2
+CA	Part-time	319
+CA	Non-guaranteed hours	162
+CA	Full-time	140
+CA	PART_TIME	100
+CA	Part time	83
+CA	FULL_TIME	41
+CH	Part-time	35
+CH	part-time	31
+CH	PART_TIME	12
+CH	FULL_TIME	10
+CH	Part time	7
+CH	Full time	6
+CL	Full time	69
+CL	Part time	62
+CL	FULL_TIME	1
+CN	实习职位	142
+CN	Full-Time	9
+CN	Full time	4
+CN	full_time	1
+CN	店铺职位	1
+CN	FullTime	1
+CZ	Part-time	16
+CZ	Full time	5
+CZ	Part time	4
+CZ	Full-Time	2
+CZ	On-Call/Freelance	2
+CZ	Full-time	1
+DE	part-time	284
+DE	Part-time	213
+DE	Part time	133
+DE	Full-time	78
+DE	Full time	76
+DE	full-time	51
+DK	FULL_TIME	28
+DK	Part-time	16
+DK	Internship	6
+DK	Part time	4
+DK	Full time	3
+DK	FullTime	2
+ES	Part-time	229
+ES	Internship	34
+ES	Part time	20
+ES	full_time	15
+ES	Full-time	11
+ES	Full time	6
+FR	Stage	809
+FR	internship	509
+FR	Internship	296
+FR	full_time	292
+FR	Permanent	151
+FR	Part-time	116
+GB	Part-time	331
+GB	Part time	93
+GB	Full time	70
+GB	part-time	58
+GB	Full-time	52
+GB	FULL_TIME	49
+GR	Part-time	35
+GR	PART_TIME	7
+GR	Full-time	6
+GR	FULL_TIME	3
+GR		2
+GR	Contract	1
+HK	Full time	17
+HK	Full-time	12
+HK	full_time	8
+HK	Part-time	6
+HK	Internship	5
+HK	FULL_TIME	3
+HU	Part-time	51
+HU	part-time	8
+HU	PART_TIME	5
+HU	FULL_TIME	2
+HU	Full time	1
+IT	Part-time	168
+IT	part-time	84
+IT	Part time	84
+IT	Internship	45
+IT	FULL_TIME	32
+IT	Stage	32
+JP	Part-time	106
+JP	Full-time	17
+JP	FullTime	7
+JP	Full time	5
+JP	FULL_TIME	3
+JP	full_time	2
+KR	Part-time	62
+KR	Full-time	13
+KR	full_time	10
+KR	Full time	1
+KR	FullTime	1
+KR	Contractor	1
+LU	Part-time	3
+LU	full_time	3
+LU	PART_TIME	2
+LU	part-time	1
+LU	Part time	1
+MX	Part-time	66
+MX	Full-time	51
+MX	Full-Time	11
+MX	FULL_TIME	3
+MX	Internship	1
+MY	Part-time	23
+MY	Full-Time	5
+MY	Internship	5
+MY	Full-time	5
+MY	full_time	2
+MY	Intern	1
+NL	Part-time	206
+NL	part-time	142
+NL	Part time	71
+NL	Full time	65
+NL	PART_TIME	54
+NL	full-time	30
+NO	part-time	51
+NO	Part-time	12
+NO	PART_TIME	5
+NO	Full time	5
+NO	Ekstrahjelp	4
+NO	On-Call/Freelance	2
+NZ	Part time	27
+NZ	PART_TIME	13
+NZ	INTERN	11
+NZ	Part-time	10
+NZ	FULL_TIME	5
+NZ	Full time	3
+PE	Full time	61
+PE	Part time	44
+PE	Full-Time	3
+PE	Part-Time	1
+PE	FULL_TIME	1
+PH	Part-time	12
+PH	Full-Time	2
+PH	Full time	1
+PL	Part-time	53
+PL	part-time	36
+PL	full-time	16
+PL	PART_TIME	14
+PL	Full-Time	12
+PL	Part time	12
+PR	Part time	16
+PR	Full-time	4
+PR	Part-time	1
+PT	Part-time	64
+PT	Full-time	30
+PT	FULL_TIME	5
+PT	Contrat d'apprentissage	5
+PT	Freelancer	4
+PT	part-time	3
+RO	Part-time	8
+RO	part-time	8
+RO	Full-Time	2
+RO	full-time	2
+SA	Full-time	5
+SE	part-time	16
+SE	PART_TIME	8
+SE	Part-time	4
+SE	FULL_TIME	3
+SE	Full time	2
+SE	Part time	2
+SG	Internship	59
+SG	full_time	15
+SG	Part-time	11
+SG	FullTime	5
+SG	FULL_TIME	4
+SG	INTERN	1
+TH	FULL_TIME	177
+TH	Full-Time	9
+TH	full_time	6
+TH	Internship	3
+TH	PART_TIME	1
+TR	Full time	22
+TR	Part time	15
+TR	Part-time	15
+TR	Full-time	12
+TR	full_time	4
+TW	full_time	17
+TW	Full-time	5
+TW	Part-time	3
+TW	FULL_TIME	2
+TW	Contractor	1
+TW	Full-Time	1
+US	Part Time	9273
+US	Full Time	1814
+US	Part time	1235
+US	Part-time	854
+US	Non-guaranteed hours	682
+US	Full-time	465
+VN	Part-time	8
+VN	FULL_TIME	6
+VN	Full time	3
+VN	DIRECT_HIRE	1
+VN	Full-time	1
+ZA	Full-Time	4
+(218 rows)
+marche	sans_duree	it_indeterminato	de_festanstellung	es_indefinido	pt_efetivo	nl_vast	en_permanent	en_contrat	pl	cs	hu	tr	el	ro	nordique	ja	ko	zh	vi	ms	th	ar
+US	33937	0	0	0	1	0	44	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+FR	4391	0	1	0	0	1	6	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+GB	2705	0	0	0	0	0	37	15	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+CA	2485	0	0	0	0	0	23	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+DE	2428	0	57	0	0	0	3	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+IT	1583	41	0	0	0	0	24	16	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+NL	1262	0	0	0	0	11	7	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+AU	1259	0	0	0	0	0	3	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+ES	1224	0	0	53	0	0	16	15	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+CH	1036	1	3	0	0	0	8	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+CN	647	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+JP	434	0	0	0	0	0	0	0	0	0	0	0	0	0	0	81	0	0	0	0	0	0
+BE	402	0	0	0	0	0	6	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+SG	358	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+KR	346	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	17	0	0	0	0	0
+MX	334	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+CL	307	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+DK	300	0	0	0	0	0	2	1	0	0	0	0	0	0	8	0	0	0	0	0	0	0
+PL	294	0	0	0	0	0	1	1	3	0	0	0	0	0	0	0	0	0	0	0	0	0
+PT	286	0	0	0	0	0	7	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+TH	264	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+HK	260	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+MY	227	0	0	0	0	0	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+NZ	186	0	0	0	0	0	3	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+AE	186	0	0	0	0	0	5	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+NO	174	0	0	0	0	0	10	0	0	0	0	0	0	0	16	0	0	0	0	0	0	0
+SE	174	0	0	0	0	0	13	2	0	0	0	0	0	0	9	0	0	0	0	0	0	0
+PE	168	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+GR	166	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+TW	155	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+VN	150	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+BR	147	0	0	0	21	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+TR	117	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+ZA	85	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+HU	83	0	0	0	0	0	1	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+SA	66	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+CZ	58	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+PH	58	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+RO	53	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+PR	44	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+LU	14	0	0	0	0	0	1	1	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+(41 rows)
+marche	temps_plein_sans_duree	sans_duree
+US	7435	33937
+FR	2357	4391
+DE	797	2428
+GB	682	2705
+CA	612	2485
+CN	481	647
+IT	335	1583
+AU	321	1259
+CH	264	1036
+NL	263	1262
+TH	236	264
+KR	219	346
+SG	214	358
+JP	199	434
+MX	187	334
+HK	173	260
+ES	162	1224
+BE	130	402
+PT	105	286
+TW	96	155
+PL	89	294
+MY	86	227
+CL	84	307
+VN	73	150
+PE	71	168
+AE	68	186
+BR	67	147
+TR	53	117
+DK	51	300
+GR	27	166
+PH	25	58
+CZ	23	58
+SA	21	66
+NZ	20	186
+SE	15	174
+RO	10	53
+HU	9	83
+PR	8	44
+NO	8	174
+ZA	8	85
+LU	6	14
+(41 rows)
