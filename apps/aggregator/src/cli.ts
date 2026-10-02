@@ -43,7 +43,7 @@ import { validateCliArguments } from './lib/cliArguments.js';
 const command = process.argv[2] ?? 'ingest';
 try { validateCliArguments(command, process.argv.slice(3)); }
 catch (error) { await log.error('command.invalid_arguments', { message: error instanceof Error ? error.message : 'Invalid arguments', workStarted: false }); process.exit(2); }
-if (!['health-report', 'stats', 'export-companies', 'occupation-review-queue', 'coverage', 'etat-sources'].includes(command)) exitIfPipelinePaused(command);
+if (!['health-report', 'stats', 'export-companies', 'occupation-review-queue', 'file-identite', 'coverage', 'etat-sources'].includes(command)) exitIfPipelinePaused(command);
 const prisma = new PrismaClient({ errorFormat: 'minimal', log: [] });
 
 /** L'avant d'une étape qui masque (R-143 §11) ; null si la lecture échoue : la revue de couverture le dira. */
@@ -492,6 +492,19 @@ try {
       dryRun: process.argv.includes('--dry-run'),
     });
     await log.info('command.result', { ok: true, command, ...stats });
+  } else if (command === 'file-identite') {
+    /**
+     * D-520 — la file de revue d'identité d'employeur, lecture seule : chaque entrée ouverte, la plus urgente d'abord
+     * (échue, puis par offres retenues), avec la preuve qui manque et la question. `--output=<fichier.json>` écrit les
+     * entrées brutes ; les lignes lisibles passent par le journal (`identity.review_queue`).
+     */
+    const { readIdentityQueue, identityQueueLines } = await import('./identity/reviewQueue.js');
+    const entries = await readIdentityQueue(prisma);
+    const output = process.argv.find(a => a.startsWith('--output='))?.slice(9);
+    if (output) await (await import('node:fs/promises')).writeFile(output, JSON.stringify(entries, null, 2) + '\n');
+    await log.info('identity.review_queue', { lines: identityQueueLines(entries), ...(output ? { output } : {}) });
+    await log.info('command.result', { ok: true, command, open: entries.length, overdue: entries.filter(e => e.overdue).length,
+      offers: entries.reduce((n, e) => n + e.offers, 0) });
   } else if (command === 'occupation-review-queue') {
     const {occupationReviewQueue}=await import('./occupation/inventory.js');
     const {writeFile}=await import('node:fs/promises');

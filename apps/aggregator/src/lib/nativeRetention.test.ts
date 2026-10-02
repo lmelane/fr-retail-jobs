@@ -175,32 +175,6 @@ describe('everything else still fails the RUN', () => {
     const partlyRun = (await blocking(partly)).sourceRun;
     expect(String(partlyRun.note)).toContain('2 sans motif compté, à instruire');
   });
-  it('identity refusals are write errors, never retentions — and the retention next to them stays visible', async () => {
-    // luxe-talent on 24/09: 477 identity refusals, all « portal owner not certified » (read-only measure,
-    // `audits/2026-09-25/scripts/refus-identite-motifs-2409.mts`), next to 1 recruitment event retained.
-    const luxeTalent = retaining('luxe-talent', 30, { NATIVE_RECRUITMENT_EVENT: 1 }, { errors: 477,
-      issues: [{ origin: 'UNKNOWN', code: 'EmployerIdentityReviewRequired', count: 477, captureBatchId: 'batch-luxe-talent' }],
-      writeFailures: { 'EmployerIdentityReviewRequired:PORTAL_OWNER_NOT_CERTIFIED': 477 } });
-    const { issues, sourceRun, summary } = await blocking(luxeTalent);
-    expect(issues.map(issue => issue.code)).toEqual(['EmployerIdentityReviewRequired']);
-    // The known cause, in plain words — not a bare count of « errors ».
-    expect(String(sourceRun.note)).toContain('477 erreurs de collecte ou d’écriture, dont 477 refus d’identité (employeur non certifié : 477)');
-    expect(String(sourceRun.note)).toContain('1 sur preuve de la source (NATIVE_RECRUITMENT_EVENT=1)');
-    expect(summary.retainedOnBlockingSources).toEqual({ sources: 1, postings: 1, bySource: [{ source: 'luxe-talent', postings: 1 }] });
-  });
-  it('names every identity motif, most frequent first, and still names a refusal counted without its motif', async () => {
-    // Synthetic: two motifs on one source (on 24/09, b-s-international had 59 « new spelling », luxe-talent 477 « not certified »).
-    const mixed = stat('two-motifs', 0, { errors: 60, issues: [{ origin: 'UNKNOWN', code: 'EmployerIdentityReviewRequired', count: 60 }],
-      writeFailures: { 'EmployerIdentityReviewRequired:EMPLOYER_SPELLING_DIVERGED': 20, 'EmployerIdentityReviewRequired:PORTAL_OWNER_NOT_CERTIFIED': 40 } });
-    const { sourceRun } = await blocking(mixed, [{ jobs: 10 }]);
-    expect(String(sourceRun.note)).toContain('60 erreurs de collecte ou d’écriture, dont 60 refus d’identité (employeur non certifié : 40 ; nouvelle graphie de l’employeur : 20)');
-    const older = stat('older', 0, { errors: 3, issues: [{ origin: 'UNKNOWN', code: 'EmployerIdentityReviewRequired', count: 3 }] });
-    expect(String((await blocking(older, [{ jobs: 10 }])).sourceRun.note)).toContain('dont 3 refus d’identité (motif non compté)');
-    // Any other write failure keeps its count alone: no identity cause is invented.
-    const other = stat('db', 5, { errors: 1, issues: [{ origin: 'INTERNAL', code: 'DATABASE_FAILURE', count: 1 }], writeFailures: { PrismaClientKnownRequestError: 1 } });
-    const { health } = await runOne(other);
-    expect(health.incidents[0]?.note).not.toContain('refus d’identité');
-  });
   it('a source that failed before any collection is « not collected », never « down with 0 offers »: its offers stay online', async () => {
     // The `runIngest` catch path: nothing sealed, nothing read.
     const failed = { ...stat('kering', 0, { errors: 1, errorNote: 'HttpStatusError: 405', issues: [{ origin: 'UNKNOWN', code: 'HttpStatusError', count: 1 }] }),
@@ -634,5 +608,48 @@ describe('D-514 §4: a position TalentRecruiter lists without advertisement is a
     expect(incidents).toMatchObject([{ status: 'BROKEN' }]);
     expect(issues.map(issue => issue.code)).not.toEqual(['NATIVE_RETENTION']);
     expect(summary.outcome).toBe('FAILED');
+  });
+});
+
+/**
+ * D-520 (classe identité d'employeur) : une offre dont l'employeur n'est pas prouvé est retenue et mise en file de revue
+ * (`identity/reviewQueue.ts`) ; le refus reste compté et nommé, mais ne fait plus échouer le RUN. Jusqu'au 02/10, ces
+ * deux cas étaient dans « everything else still fails the RUN ».
+ */
+describe('D-520: identity refusals are queued for review and do not fail the RUN', () => {
+  const queued = async (s: IngestStats, history?: PastRun[]) => {
+    const { issues, summary, sourceRun, incidents } = await runOne(s, history);
+    expect(summary).toMatchObject({ outcome: 'COMPLETED_WITH_ERRORS', blockingReasons: [], nonBlockingCauses: ['EMPLOYER_IDENTITY_REVIEW'] });
+    expect(issues.map(issue => issue.code)).toEqual(['EmployerIdentityReviewRequired']);
+    expect(summary.failures[0]).toMatch(/\(non bloquant : employeur à identifier/);
+    expect(incidents.every(incident => incident.blocking === false)).toBe(true);
+    return { issues, sourceRun, summary, incidents };
+  };
+  it('identity refusals are write errors, never retentions — queued, non-blocking, and the retention next to them stays visible', async () => {
+    // luxe-talent on 24/09: 477 identity refusals, all « portal owner not certified » (read-only measure,
+    // `audits/2026-09-25/scripts/refus-identite-motifs-2409.mts`), next to 1 recruitment event retained.
+    const luxeTalent = retaining('luxe-talent', 30, { NATIVE_RECRUITMENT_EVENT: 1 }, { errors: 477,
+      issues: [{ origin: 'UNKNOWN', code: 'EmployerIdentityReviewRequired', count: 477, captureBatchId: 'batch-luxe-talent' }],
+      writeFailures: { 'EmployerIdentityReviewRequired:PORTAL_OWNER_NOT_CERTIFIED': 477 } });
+    const { issues, sourceRun, summary } = await queued(luxeTalent);
+    expect(issues.map(issue => issue.code)).toEqual(['EmployerIdentityReviewRequired']);
+    // The known cause, in plain words — not a bare count of « errors ».
+    expect(String(sourceRun.note)).toContain('477 erreurs de collecte ou d’écriture, dont 477 refus d’identité (employeur non certifié : 477)');
+    expect(String(sourceRun.note)).toContain('1 sur preuve de la source (NATIVE_RECRUITMENT_EVENT=1)');
+    expect(summary.identityReview).toEqual({ sources: 1, postings: 477, bySource: [{ source: 'luxe-talent', postings: 477 }] });
+    expect(summary.failures).toEqual(['luxe-talent (non bloquant : employeur à identifier, 477 offres retenues en file de revue (D-520))']);
+  });
+  it('names every identity motif, most frequent first, and still names a refusal counted without its motif', async () => {
+    // Synthetic: two motifs on one source (on 24/09, b-s-international had 59 « new spelling », luxe-talent 477 « not certified »).
+    const mixed = stat('two-motifs', 0, { errors: 60, issues: [{ origin: 'UNKNOWN', code: 'EmployerIdentityReviewRequired', count: 60 }],
+      writeFailures: { 'EmployerIdentityReviewRequired:EMPLOYER_SPELLING_DIVERGED': 20, 'EmployerIdentityReviewRequired:PORTAL_OWNER_NOT_CERTIFIED': 40 } });
+    const { sourceRun } = await queued(mixed, [{ jobs: 10 }]);
+    expect(String(sourceRun.note)).toContain('60 erreurs de collecte ou d’écriture, dont 60 refus d’identité (employeur non certifié : 40 ; nouvelle graphie de l’employeur : 20)');
+    const older = stat('older', 0, { errors: 3, issues: [{ origin: 'UNKNOWN', code: 'EmployerIdentityReviewRequired', count: 3 }] });
+    expect(String((await queued(older, [{ jobs: 10 }])).sourceRun.note)).toContain('dont 3 refus d’identité (motif non compté)');
+    // Any other write failure keeps its count alone: no identity cause is invented.
+    const other = stat('db', 5, { errors: 1, issues: [{ origin: 'INTERNAL', code: 'DATABASE_FAILURE', count: 1 }], writeFailures: { PrismaClientKnownRequestError: 1 } });
+    const { health } = await runOne(other);
+    expect(health.incidents[0]?.note).not.toContain('refus d’identité');
   });
 });

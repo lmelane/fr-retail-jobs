@@ -43,6 +43,7 @@ import { addIssue, ingestionIssue, type IngestionIssue } from '../lib/ingestionI
 import { collectionEmployerLabels, PublisherFollowDeferred, publisherFollowBound, type PublisherFollowMode } from '../identity/publisherFollow.js';
 import { normalizedEmployerName } from '../normalize/employerName.js';
 import { EmployerIdentityReviewRequired } from '../identity/errors.js';
+import { refusalOf, syncIdentityQueue, type IdentityQueueSync, type IdentityRefusal } from '../identity/reviewQueue.js';
 
 /**
  * INGEST — picks up new and updated offers.
@@ -128,6 +129,11 @@ export type IngestStats = {
   completionReportHash?: string;
   /** D-517 : une lecture incrémentale — `fetched` ne compte que le neuf ; `knownSkipped`, les publications connues laissées de côté. */
   incremental?: { knownSkipped: number };
+  /**
+   * D-520 : la file de revue d'identité après cette collecte (`identity/reviewQueue.ts`) — entrées ouvertes de la source,
+   * ouvertes, escaladées et résolues par elle, offres retenues. Absente quand la collecte n'est pas allée au bout.
+   */
+  identityReview?: IdentityQueueSync;
 };
 
 /**
@@ -416,6 +422,8 @@ async function ingestApiSource(
     .map(job => ({ externalId: job.externalId, label: normalizedEmployerName(postingEmployerLabel(job, employerOf(job))) })));
   const deferredFollows: { ordinal: number; job: NormalizedJob; employer: string }[] = [];
   let refusedEmployerChanges = 0;
+  // D-520 : les offres retenues faute d'identité prouvée, pour la file de revue (une entrée par libellé et motif).
+  const identityRefusals: IdentityRefusal[] = [];
 
   /**
    * PHASE 2 — l'ÉCRITURE d'une offre : normalisation, identité, déduplication, upsert. Cumulée offre par offre. Tout
@@ -448,6 +456,7 @@ async function ingestApiSource(
       log.assertHealthy();
       if (error instanceof PublisherFollowDeferred && publisherFollow === 'DEFER') return 'DEFERRED';
       if (publisherFollow === 'DEFER' && error instanceof EmployerIdentityReviewRequired && error.employerChange) refusedEmployerChanges++;
+      if (error instanceof EmployerIdentityReviewRequired) identityRefusals.push(refusalOf(error));
       stats.errors++;
       addIssue(stats, { ...ingestionIssue(error), captureBatchId });
       /*
@@ -551,6 +560,17 @@ async function ingestApiSource(
       await writePosting(deferred.ordinal, deferred.job, deferred.employer, massGuarded ? 'MASS_GUARDED' : 'FOLLOW');
     }
   }
+
+  /**
+   * D-520 — LA FILE DE REVUE D'IDENTITÉ. Chaque offre refusée faute d'employeur prouvé est retenue (rien n'est écrit) et
+   * rejoint une entrée de la file, avec la preuve qui manque et la question ; le refus reste compté (`writeFailures`,
+   * issue `EmployerIdentityReviewRequired`) mais ne fait plus échouer le RUN (`isNonBlockingIssue`). Seule une collecte
+   * complète d'un RUN ou d'une vérification résout les entrées que cette collecte ne refuse plus ; une passe
+   * incrémentale ne lit que le neuf et ne résout rien.
+   */
+  stats.identityReview = await syncIdentityQueue(prisma, { sourceKey: stats.source, refusals: identityRefusals, captureBatchId,
+    published: stats.created + stats.merged + stats.updated,
+    complete: stats.complete === true && stats.truncated !== true && !incrementalPassActive() });
 
   /**
    * A retention keeps THIS collection from publishing; it withdraws an earlier publication only when its reason

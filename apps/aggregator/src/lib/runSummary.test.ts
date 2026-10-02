@@ -52,7 +52,9 @@ describe('D-480 §1: named known failures do not fail the RUN, and nothing else 
     expect(run('on-running', 'UNKNOWN', 'DESCRIPTION_COVERAGE_BELOW_FLOOR')).toMatchObject({ executionHealthy: true });
   });
   it('the same source with ANOTHER defect still blocks', () => {
-    expect(run('lumentee', 'UNKNOWN', 'EmployerIdentityReviewRequired')).toMatchObject({ executionHealthy: false, blockingReasons: ['UNRESOLVED_FAILURE'] });
+    // (D-520 : un refus d'identité n'est plus « un autre défaut » qui bloque, il va en file de revue ; la liste
+    // non prouvée réfutée, elle, n'est pas le défaut décidé de lumentee.)
+    expect(run('lumentee', 'UNKNOWN', 'ENUMERATION_REFUTED')).toMatchObject({ executionHealthy: false, blockingReasons: ['UNRESOLVED_FAILURE'] });
     expect(run('on-running', 'INTERNAL', 'CaptureUnavailableError')).toMatchObject({ executionHealthy: false, blockingReasons: ['INTERNAL_FAILURE'] });
     // Relecture adverse du 30/09 : le code générique ne suffit pas, seul le défaut décidé est reconnu.
     expect(run('l-oreal-professionnel', 'UNKNOWN', 'HttpStatusError', 'HTTP_500')).toMatchObject({ executionHealthy: false });

@@ -1,0 +1,380 @@
+SET
+key|maison|kind|portalScope|status|tier|careersDomain|rev
+aptar-beauty|Aptar Group|successfactors||ACTIVE|GROUP_OFFICIAL|jobs.aptar.com|t
+avolta|Avolta (Dufry)|successfactors||ACTIVE|GROUP_OFFICIAL|careers.avoltaworld.com|t
+beauty-success-geodir|Beauty Success|geodirectory|SINGLE_BRAND|ACTIVE|EMPLOYER_DIRECT|recrutement.beautysuccess.fr|t
+browns|Farfetch (portail multi-enseignes)|lever|MULTI_BRAND|ACTIVE|ATS_OFFICIAL|www.brownsfashion.com|t
+brown-thomas-taleo|Brown Thomas Arnotts|taleo|SINGLE_BRAND|ACTIVE|ATS_OFFICIAL|lde.tbe.taleo.net|t
+b-s-international|B's International|smartrecruiters-whitelabel|SINGLE_BRAND|ACTIVE|EMPLOYER_DIRECT|jobs.smartrecruiters.com|t
+crocs|Crocs|successfactors||ACTIVE|EMPLOYER_DIRECT|careers.crocs.com|t
+drunk-elephant-2|Shiseido|successfactors||ACTIVE|GROUP_OFFICIAL|careers.shiseido.com|t
+escada-parfums-16|Coty|successfactors||ACTIVE|GROUP_OFFICIAL|careers.coty.com|t
+funky-buddha|Funky Buddha|smartrecruiters-whitelabel|SINGLE_BRAND|ACTIVE|EMPLOYER_DIRECT|www.funky-buddha.com|t
+groupe-printemps|Groupe Printemps|talentsoft|SINGLE_BRAND|ACTIVE|EMPLOYER_DIRECT|printemps-career.talent-soft.com|t
+hot-topic|Hot Topic|lever|SINGLE_BRAND|ACTIVE|ATS_OFFICIAL|jobs.lever.co|t
+lagardere-duty-free|Lagardère Duty Free|talentsoft|SINGLE_BRAND|ACTIVE|GROUP_OFFICIAL|lagardere-travelretaildutyfreeglobal-recrute.talent-soft.com|t
+lagardere-travel-retail|Lagardère Travel Retail|talentsoft|SINGLE_BRAND|ACTIVE|EMPLOYER_DIRECT|lagardere-recrute.talent-soft.com|t
+lagardere-travel-retail-de|Lagardère Travel Retail|talentsoft|SINGLE_BRAND|ACTIVE|EMPLOYER_DIRECT|lagardere-recrute-travelretailde.talent-soft.com|t
+luxe-talent|Luxe Talent|wordpress||RETIRED|SPECIALIST_JOBBOARD|www.luxetalent.net|t
+lvmh|LVMH (toutes Maisons)|lvmh_algolia|MULTI_BRAND|ACTIVE|EMPLOYER_DIRECT|www.lvmh.com|t
+monoprix|Monoprix|digitalrecruiters||ACTIVE|EMPLOYER_DIRECT|recrutement.monoprix.fr|t
+prada-group|Prada Group|successfactors||ACTIVE|GROUP_OFFICIAL|jobs.pradagroup.com|t
+puma|Puma|workday||ACTIVE|EMPLOYER_DIRECT|puma.wd502.myworkdayjobs.com|t
+richemont|Richemont (toutes Maisons)|workday||ACTIVE|ATS_OFFICIAL|richemont.wd3.myworkdayjobs.com|t
+richemont-workday|Richemont|workday||ACTIVE|GROUP_OFFICIAL|richemont.wd3.myworkdayjobs.com|t
+rivoli-typesense|Rivoli Group|typesense|SINGLE_BRAND|ACTIVE|EMPLOYER_DIRECT|www.rivoligroup.com|t
+sephora-france|Sephora|successfactors||ACTIVE|EMPLOYER_DIRECT|jobs.sephora.com|t
+swatch-group|Swatch Group|swatchgroup||ACTIVE|GROUP_OFFICIAL|www.swatchgroup.com|t
+tapestry|Tapestry (Coach, Kate Spade, Stuart Weitzman)|workday||ACTIVE|GROUP_OFFICIAL|tapestry.wd108.myworkdayjobs.com|t
+tiffany-oracle|Tiffany & Co.|oraclehcm|SINGLE_BRAND|ACTIVE|EMPLOYER_DIRECT|eljs.fa.us2.oraclecloud.com|t
+sourceKey|labelOrigin|rule|normalizedEmployerName|n
+aptar-beauty|microdata.hiringOrganization:EXPLICIT_JOBPOSTING_EMPLOYER|REVIEWED_ALIAS|aptar group|255
+aptar-beauty|SOURCE_CATALOGUE_LABEL|REVIEW_REQUIRED|aptar group|2
+avolta|microdata.hiringOrganization:EXPLICIT_JOBPOSTING_EMPLOYER|LEGACY_UNREVIEWED|avolta|262
+avolta|microdata.hiringOrganization:EXPLICIT_JOBPOSTING_EMPLOYER|NATIVE_SOURCE_LABEL|avolta|252
+avolta|SOURCE_CATALOGUE_LABEL|REVIEW_REQUIRED|avolta|2
+beauty-success-geodir|SOURCE_CATALOGUE_LABEL|REVIEW_REQUIRED|beauty success|147
+beauty-success-geodir|SOURCE_CATALOGUE_LABEL|CERTIFIED_SINGLE_BRAND_PORTAL|beauty success|103
+browns|ADAPTER_COMPANY|LEGACY_UNREVIEWED|farfetch|47
+browns|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|farfetch|42
+browns|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|luxclusif|6
+browns|ADAPTER_COMPANY|LEGACY_UNREVIEWED|luxclusif|6
+browns|SOURCE_CATALOGUE_LABEL|REVIEW_REQUIRED|farfetch|2
+browns|ADAPTER_COMPANY|LEGACY_UNREVIEWED|browns|2
+browns|ADAPTER_COMPANY|LEGACY_UNREVIEWED|stadium goods|2
+browns|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|browns|2
+browns|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|stadium goods|2
+browns|SOURCE_CATALOGUE_LABEL|MULTI_BRAND_PORTAL_GROUP_OWNER|farfetch|1
+brown-thomas-taleo|hiringOrganization.name:HIRING_ORGANIZATION_LABEL|LEGACY_UNREVIEWED|brown thomas arnotts|89
+brown-thomas-taleo|hiringOrganization.name:HIRING_ORGANIZATION_LABEL|NATIVE_SOURCE_LABEL|brown thomas arnotts|87
+brown-thomas-taleo|SOURCE_CATALOGUE_LABEL|REVIEW_REQUIRED|brown thomas arnotts|82
+brown-thomas-taleo|SOURCE_CATALOGUE_LABEL|CERTIFIED_SINGLE_BRAND_PORTAL|brown thomas arnotts|10
+b-s-international|SOURCE_CATALOGUE_LABEL|CERTIFIED_SINGLE_BRAND_PORTAL|b's international|68
+b-s-international|ADAPTER_COMPANY|REVIEWED_ALIAS|b&s international|64
+b-s-international|ADAPTER_COMPANY|REVIEW_REQUIRED|b&s international|62
+b-s-international|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|b&s international|4
+crocs|microdata.hiringOrganization:EXPLICIT_JOBPOSTING_EMPLOYER|NATIVE_SOURCE_LABEL|crocs, inc.|645
+crocs|microdata.hiringOrganization:EXPLICIT_JOBPOSTING_EMPLOYER|REVIEW_REQUIRED|crocs, inc.|544
+crocs|SOURCE_CATALOGUE_LABEL|REVIEW_REQUIRED|crocs|2
+drunk-elephant-2|microdata.hiringOrganization:EXPLICIT_JOBPOSTING_EMPLOYER|LEGACY_UNREVIEWED|shiseido|218
+drunk-elephant-2|microdata.hiringOrganization:EXPLICIT_JOBPOSTING_EMPLOYER|NATIVE_SOURCE_LABEL|shiseido|202
+drunk-elephant-2|SOURCE_CATALOGUE_LABEL|REVIEW_REQUIRED|shiseido|1
+escada-parfums-16|microdata.hiringOrganization:EXPLICIT_JOBPOSTING_EMPLOYER|REVIEWED_ALIAS|coty|207
+escada-parfums-16|SOURCE_CATALOGUE_LABEL|REVIEW_REQUIRED|coty|1
+funky-buddha|SOURCE_CATALOGUE_LABEL|CERTIFIED_SINGLE_BRAND_PORTAL|funky buddha|25
+funky-buddha|ADAPTER_COMPANY|REVIEWED_ALIAS|altex s.a.|24
+funky-buddha|ADAPTER_COMPANY|REVIEW_REQUIRED|altex s.a.|23
+funky-buddha|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|altex s.a.|10
+groupe-printemps|SOURCE_CATALOGUE_LABEL|REVIEW_REQUIRED|groupe printemps|111
+groupe-printemps|SOURCE_CATALOGUE_LABEL|CERTIFIED_SINGLE_BRAND_PORTAL|groupe printemps|103
+hot-topic|SOURCE_CATALOGUE_LABEL|REVIEW_REQUIRED|hot topic|21
+hot-topic|SOURCE_CATALOGUE_LABEL|CERTIFIED_SINGLE_BRAND_PORTAL|hot topic|19
+lagardere-duty-free|SOURCE_CATALOGUE_LABEL|CERTIFIED_SINGLE_BRAND_PORTAL|lagardère duty free|9
+lagardere-duty-free|SOURCE_CATALOGUE_LABEL|REVIEW_REQUIRED|lagardère duty free|9
+lagardere-travel-retail|SOURCE_CATALOGUE_LABEL|REVIEW_REQUIRED|lagardère travel retail|109
+lagardere-travel-retail|SOURCE_CATALOGUE_LABEL|CERTIFIED_SINGLE_BRAND_PORTAL|lagardère travel retail|109
+lagardere-travel-retail-de|SOURCE_CATALOGUE_LABEL|REVIEW_REQUIRED|lagardère travel retail|10
+lagardere-travel-retail-de|SOURCE_CATALOGUE_LABEL|CERTIFIED_SINGLE_BRAND_PORTAL|lagardère travel retail|10
+luxe-talent|SOURCE_CATALOGUE_LABEL|REVIEW_REQUIRED|luxe talent|478
+lvmh|ADAPTER_COMPANY|LEGACY_UNREVIEWED|sephora|3119
+lvmh|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|sephora|2868
+lvmh|ADAPTER_COMPANY|LEGACY_UNREVIEWED|louis vuitton|800
+lvmh|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|louis vuitton|750
+lvmh|ADAPTER_COMPANY|LEGACY_UNREVIEWED|christian dior couture|546
+lvmh|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|christian dior couture|527
+lvmh|ADAPTER_COMPANY|LEGACY_UNREVIEWED|tiffany & co.|484
+lvmh|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|tiffany & co.|476
+lvmh|ADAPTER_COMPANY|LEGACY_UNREVIEWED|parfums christian dior|296
+lvmh|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|parfums christian dior|271
+lvmh|ADAPTER_COMPANY|LEGACY_UNREVIEWED|cheval blanc|198
+lvmh|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|cheval blanc|180
+lvmh|ADAPTER_COMPANY|LEGACY_UNREVIEWED|loro piana|169
+lvmh|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|loro piana|162
+lvmh|ADAPTER_COMPANY|LEGACY_UNREVIEWED|celine|157
+lvmh|ADAPTER_COMPANY|LEGACY_UNREVIEWED|bulgari|155
+lvmh|ADAPTER_COMPANY|LEGACY_UNREVIEWED|guerlain|153
+lvmh|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|celine|151
+lvmh|ADAPTER_COMPANY|LEGACY_UNREVIEWED|moët hennessy|150
+lvmh|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|bulgari|147
+lvmh|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|guerlain|146
+lvmh|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|moët hennessy|140
+lvmh|ADAPTER_COMPANY|LEGACY_UNREVIEWED|rimowa|128
+lvmh|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|rimowa|123
+lvmh|ADAPTER_COMPANY|LEGACY_UNREVIEWED|fendi|106
+lvmh|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|fendi|95
+lvmh|ADAPTER_COMPANY|LEGACY_UNREVIEWED|loewe|86
+lvmh|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|loewe|85
+lvmh|ADAPTER_COMPANY|REVIEWED_ALIAS|groupe bon marché|75
+lvmh|ADAPTER_COMPANY|LEGACY_UNREVIEWED|lvmh perfumes & cosmetics|73
+lvmh|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|lvmh perfumes & cosmetics|65
+lvmh|ADAPTER_COMPANY|LEGACY_UNREVIEWED|lvmh fragrance brands|63
+lvmh|ADAPTER_COMPANY|LEGACY_UNREVIEWED|lvmh|61
+lvmh|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|lvmh|58
+lvmh|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|lvmh fragrance brands|56
+lvmh|ADAPTER_COMPANY|LEGACY_UNREVIEWED|fresh|50
+lvmh|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|fresh|49
+lvmh|ADAPTER_COMPANY|LEGACY_UNREVIEWED|maison francis kurkdjian|49
+lvmh|ADAPTER_COMPANY|LEGACY_UNREVIEWED|tag heuer|45
+lvmh|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|tag heuer|45
+lvmh|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|maison francis kurkdjian|44
+lvmh|ADAPTER_COMPANY|LEGACY_UNREVIEWED|berluti|43
+lvmh|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|berluti|43
+lvmh|ADAPTER_COMPANY|LEGACY_UNREVIEWED|givenchy|42
+lvmh|ADAPTER_COMPANY|LEGACY_UNREVIEWED|chaumet|41
+lvmh|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|givenchy|40
+lvmh|ADAPTER_COMPANY|LEGACY_UNREVIEWED|kenzo|40
+lvmh|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|kenzo|40
+lvmh|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|chaumet|38
+lvmh|ADAPTER_COMPANY|LEGACY_UNREVIEWED|kendo|33
+lvmh|SOURCE_CATALOGUE_LABEL|REVIEW_REQUIRED|lvmh|33
+lvmh|ADAPTER_COMPANY|LEGACY_UNREVIEWED|benefit cosmetics|32
+lvmh|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|benefit cosmetics|31
+lvmh|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|kendo|30
+lvmh|SOURCE_CATALOGUE_LABEL|MULTI_BRAND_PORTAL_GROUP_OWNER|lvmh|29
+lvmh|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|thélios|28
+lvmh|ADAPTER_COMPANY|LEGACY_UNREVIEWED|thélios|28
+lvmh|ADAPTER_COMPANY|LEGACY_UNREVIEWED|fashion group|27
+lvmh|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|fashion group|26
+lvmh|ADAPTER_COMPANY|LEGACY_UNREVIEWED|make up for ever|25
+lvmh|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|make up for ever|24
+lvmh|ADAPTER_COMPANY|LEGACY_UNREVIEWED|moët & chandon|21
+lvmh|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|moët & chandon|20
+lvmh|ADAPTER_COMPANY|LEGACY_UNREVIEWED|groupe les echos le parisien|19
+lvmh|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|groupe les echos le parisien|19
+lvmh|ADAPTER_COMPANY|LEGACY_UNREVIEWED|fred|18
+lvmh|ADAPTER_COMPANY|LEGACY_UNREVIEWED|acqua di parma|16
+lvmh|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|officine universelle buly|16
+lvmh|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|fred|16
+lvmh|ADAPTER_COMPANY|LEGACY_UNREVIEWED|officine universelle buly|16
+lvmh|ADAPTER_COMPANY|LEGACY_UNREVIEWED|hublot|12
+lvmh|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|acqua di parma|12
+lvmh|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|hublot|12
+lvmh|ADAPTER_COMPANY|LEGACY_UNREVIEWED|emilio pucci|11
+lvmh|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|emilio pucci|11
+lvmh|ADAPTER_COMPANY|LEGACY_UNREVIEWED|veuve clicquot ponsardin|10
+lvmh|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|veuve clicquot ponsardin|9
+lvmh|ADAPTER_COMPANY|LEGACY_UNREVIEWED|parfums givenchy|9
+lvmh|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|moynat|8
+lvmh|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|ruinart|8
+lvmh|ADAPTER_COMPANY|LEGACY_UNREVIEWED|moynat|8
+lvmh|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|perfumes loewe|7
+lvmh|ADAPTER_COMPANY|LEGACY_UNREVIEWED|perfumes loewe|7
+lvmh|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|parfums givenchy|7
+lvmh|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|chandon|6
+lvmh|ADAPTER_COMPANY|LEGACY_UNREVIEWED|chandon|6
+lvmh|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|hennessy|6
+lvmh|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|moët hennessy wine estates|6
+lvmh|ADAPTER_COMPANY|LEGACY_UNREVIEWED|hennessy|6
+lvmh|ADAPTER_COMPANY|LEGACY_UNREVIEWED|moët hennessy wine estates|6
+lvmh|ADAPTER_COMPANY|LEGACY_UNREVIEWED|zenith|4
+lvmh|ADAPTER_COMPANY|LEGACY_UNREVIEWED|repossi|4
+lvmh|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|repossi|4
+lvmh|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|zenith|4
+lvmh|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|krug|3
+lvmh|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|glenmorangie|3
+lvmh|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|moët hennessy champagne services|3
+lvmh|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|rossimoda|3
+lvmh|ADAPTER_COMPANY|LEGACY_UNREVIEWED|glenmorangie|3
+lvmh|ADAPTER_COMPANY|LEGACY_UNREVIEWED|rossimoda|3
+lvmh|ADAPTER_COMPANY|LEGACY_UNREVIEWED|krug|3
+lvmh|ADAPTER_COMPANY|REVIEW_REQUIRED|moët hennessy champagne services|3
+lvmh|ADAPTER_COMPANY|LEGACY_UNREVIEWED|fenty|2
+lvmh|ADAPTER_COMPANY|LEGACY_UNREVIEWED|marc jacobs|2
+lvmh|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|fenty|2
+lvmh|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|24s.com|1
+lvmh|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|marc jacobs|1
+lvmh|ADAPTER_COMPANY|LEGACY_UNREVIEWED|24s.com|1
+monoprix|jsonld.hiringOrganization.name:EXPLICIT_JOBPOSTING_EMPLOYER|LEGACY_UNREVIEWED|groupe monoprix|834
+monoprix|jsonld.hiringOrganization.name:EXPLICIT_JOBPOSTING_EMPLOYER|NATIVE_SOURCE_LABEL|groupe monoprix|774
+monoprix|jsonld.hiringOrganization.name:EXPLICIT_JOBPOSTING_EMPLOYER|NATIVE_SOURCE_LABEL|naturalia|56
+monoprix|SOURCE_CATALOGUE_LABEL|REVIEW_REQUIRED|monoprix|1
+prada-group|microdata.hiringOrganization:EXPLICIT_JOBPOSTING_EMPLOYER|LEGACY_UNREVIEWED|prada group|301
+prada-group|microdata.hiringOrganization:EXPLICIT_JOBPOSTING_EMPLOYER|NATIVE_SOURCE_LABEL|prada group|276
+prada-group|SOURCE_CATALOGUE_LABEL|REVIEW_REQUIRED|prada group|1
+puma|detail.hiringOrganization.name:HIRING_ORGANIZATION_LABEL|NATIVE_SOURCE_LABEL|puma north america, inc.|226
+puma|detail.hiringOrganization.name:HIRING_ORGANIZATION_LABEL|NATIVE_SOURCE_LABEL|puma se|85
+puma|detail.hiringOrganization.name:HIRING_ORGANIZATION_LABEL|NATIVE_SOURCE_LABEL|puma sports india pvt ltd.|68
+puma|detail.hiringOrganization.name:HIRING_ORGANIZATION_LABEL|NATIVE_SOURCE_LABEL|puma europe gmbh|40
+puma|detail.hiringOrganization.name:HIRING_ORGANIZATION_LABEL|NATIVE_SOURCE_LABEL|puma australia pty. ltd.|32
+puma|detail.hiringOrganization.name:HIRING_ORGANIZATION_LABEL|NATIVE_SOURCE_LABEL|puma canada, inc.|29
+puma|detail.hiringOrganization.name:HIRING_ORGANIZATION_LABEL|NATIVE_SOURCE_LABEL|puma japan k.k.|22
+puma|detail.hiringOrganization.name:HIRING_ORGANIZATION_LABEL|NATIVE_SOURCE_LABEL|puma mexico sport sa de cv|19
+puma|detail.hiringOrganization.name:HIRING_ORGANIZATION_LABEL|NATIVE_SOURCE_LABEL|puma sports philippines inc.|18
+puma|detail.hiringOrganization.name:HIRING_ORGANIZATION_LABEL|NATIVE_SOURCE_LABEL|puma europe gmbh – sede secondaria in italia|18
+puma|detail.hiringOrganization.name:HIRING_ORGANIZATION_LABEL|NATIVE_SOURCE_LABEL|puma united kingdom ltd|13
+puma|detail.hiringOrganization.name:HIRING_ORGANIZATION_LABEL|NATIVE_SOURCE_LABEL|world cat vietnam sourcing & development services co. ltd|12
+puma|detail.hiringOrganization.name:HIRING_ORGANIZATION_LABEL|NATIVE_SOURCE_LABEL|puma new zealand ltd|11
+puma|detail.hiringOrganization.name:HIRING_ORGANIZATION_LABEL|NATIVE_SOURCE_LABEL|puma south east asia pte ltd|10
+puma|detail.hiringOrganization.name:HIRING_ORGANIZATION_LABEL|NATIVE_SOURCE_LABEL|puma europe gmbh, sucursal en espana|9
+puma|detail.hiringOrganization.name:HIRING_ORGANIZATION_LABEL|NATIVE_SOURCE_LABEL|puma sports goods sdn bhd (reg no. 200701008334 (766336-v))|7
+puma|detail.hiringOrganization.name:HIRING_ORGANIZATION_LABEL|NATIVE_SOURCE_LABEL|puma chile spa|7
+puma|detail.hiringOrganization.name:HIRING_ORGANIZATION_LABEL|NATIVE_SOURCE_LABEL|puma europe gmbh vestiging nederland|7
+puma|detail.hiringOrganization.name:HIRING_ORGANIZATION_LABEL|NATIVE_SOURCE_LABEL|distribuidora deportiva puma s.a.c|6
+puma|detail.hiringOrganization.name:HIRING_ORGANIZATION_LABEL|NATIVE_SOURCE_LABEL|guangzhou world cat inf. cons. serv. co., ltd shanghai branch|6
+puma|detail.hiringOrganization.name:HIRING_ORGANIZATION_LABEL|NATIVE_SOURCE_LABEL|puma china limited|4
+puma|detail.hiringOrganization.name:HIRING_ORGANIZATION_LABEL|NATIVE_SOURCE_LABEL|puma servicios spa|4
+puma|detail.hiringOrganization.name:HIRING_ORGANIZATION_LABEL|NATIVE_SOURCE_LABEL|guangzhou world cat inf. cons. serv. co., ltd xiamen branch|4
+puma|detail.hiringOrganization.name:HIRING_ORGANIZATION_LABEL|NATIVE_SOURCE_LABEL|puma europe gmbh branch ireland|4
+puma|detail.hiringOrganization.name:HIRING_ORGANIZATION_LABEL|NATIVE_SOURCE_LABEL|puma europe gmbh succursale france|4
+puma|detail.hiringOrganization.name:HIRING_ORGANIZATION_LABEL|NATIVE_SOURCE_LABEL|puma iberia s.l.u.|4
+puma|detail.hiringOrganization.name:HIRING_ORGANIZATION_LABEL|NATIVE_SOURCE_LABEL|puma france sas|3
+puma|detail.hiringOrganization.name:HIRING_ORGANIZATION_LABEL|NATIVE_SOURCE_LABEL|puma sports argentina s.a.|3
+puma|detail.hiringOrganization.name:HIRING_ORGANIZATION_LABEL|NATIVE_SOURCE_LABEL|puma central europe gmbh|3
+puma|detail.hiringOrganization.name:HIRING_ORGANIZATION_LABEL|NATIVE_SOURCE_LABEL|puma korea ltd.|3
+puma|detail.hiringOrganization.name:HIRING_ORGANIZATION_LABEL|NATIVE_SOURCE_LABEL|puma europe gmbh branch czech republic|2
+puma|detail.hiringOrganization.name:HIRING_ORGANIZATION_LABEL|NATIVE_SOURCE_LABEL|guangzhou world cat inf. cons. serv. co., ltd ningbo branch|2
+puma|detail.hiringOrganization.name:HIRING_ORGANIZATION_LABEL|NATIVE_SOURCE_LABEL|guangzhou world cat information consulting services co., ltd|2
+puma|detail.hiringOrganization.name:HIRING_ORGANIZATION_LABEL|NATIVE_SOURCE_LABEL|pt puma cat indonesia|2
+puma|detail.hiringOrganization.name:HIRING_ORGANIZATION_LABEL|NATIVE_SOURCE_LABEL|puma denmark, filial af puma europe gmbh, tyskland|2
+puma|detail.hiringOrganization.name:HIRING_ORGANIZATION_LABEL|NATIVE_SOURCE_LABEL|puma europe gmbh - sucursal em portugal|2
+puma|detail.hiringOrganization.name:HIRING_ORGANIZATION_LABEL|NATIVE_SOURCE_LABEL|puma nordic ab|2
+puma|detail.hiringOrganization.name:HIRING_ORGANIZATION_LABEL|NATIVE_SOURCE_LABEL|puma polska sp. z o.o.|2
+puma|detail.hiringOrganization.name:HIRING_ORGANIZATION_LABEL|NATIVE_SOURCE_LABEL|puma sports ltda.|2
+puma|detail.hiringOrganization.name:HIRING_ORGANIZATION_LABEL|NATIVE_SOURCE_LABEL|puma sports vietnam co. ltd.|2
+puma|detail.hiringOrganization.name:HIRING_ORGANIZATION_LABEL|NATIVE_SOURCE_LABEL|world cat ltd.|2
+puma|detail.hiringOrganization.name:HIRING_ORGANIZATION_LABEL|NATIVE_SOURCE_LABEL|puma international trading services limited|1
+puma|detail.hiringOrganization.name:HIRING_ORGANIZATION_LABEL|NATIVE_SOURCE_LABEL|puma europe gmbh zweigniederlassung spreitenbach schweiz|1
+puma|detail.hiringOrganization.name:HIRING_ORGANIZATION_LABEL|REVIEW_REQUIRED|puma north america, inc.|1
+puma|detail.hiringOrganization.name:HIRING_ORGANIZATION_LABEL|NATIVE_SOURCE_LABEL|puma europe gmbh branch austria|1
+puma|detail.hiringOrganization.name:HIRING_ORGANIZATION_LABEL|NATIVE_SOURCE_LABEL|puma sports (thailand) co., ltd.|1
+puma|detail.hiringOrganization.name:HIRING_ORGANIZATION_LABEL|NATIVE_SOURCE_LABEL|austria puma dassler gmbh|1
+puma|detail.hiringOrganization.name:HIRING_ORGANIZATION_LABEL|NATIVE_SOURCE_LABEL|puma uae (l.l.c)|1
+puma|detail.hiringOrganization.name:HIRING_ORGANIZATION_LABEL|NATIVE_SOURCE_LABEL|puma ukraine llc|1
+puma|detail.hiringOrganization.name:HIRING_ORGANIZATION_LABEL|NATIVE_SOURCE_LABEL|puma czech republic s.r.o.|1
+puma|detail.hiringOrganization.name:HIRING_ORGANIZATION_LABEL|NATIVE_SOURCE_LABEL|puma se, zweigniederlassung schweiz|1
+puma|detail.hiringOrganization.name:HIRING_ORGANIZATION_LABEL|NATIVE_SOURCE_LABEL|puma middle east fz-llc|1
+puma|detail.hiringOrganization.name:HIRING_ORGANIZATION_LABEL|NATIVE_SOURCE_LABEL|puma intern.trading gmbh|1
+richemont|detail.jobPostingInfo.logoImage.alt:LOGO_ALT_WORD_REMOVED|LEGACY_UNREVIEWED|richemont|271
+richemont|detail.jobPostingInfo.logoImage.alt:LOGO_ALT_WORD_REMOVED|NATIVE_SOURCE_LABEL|richemont|258
+richemont|detail.jobPostingInfo.logoImage.alt:LOGO_ALT|REVIEWED_ALIAS|vancleef-aprels|143
+richemont|detail.jobPostingInfo.logoImage.alt:LOGO_ALT_WORD_REMOVED|LEGACY_UNREVIEWED|cartier|45
+richemont|detail.jobPostingInfo.logoImage.alt:LOGO_ALT_WORD_REMOVED|NATIVE_SOURCE_LABEL|cartier|42
+richemont|detail.jobPostingInfo.logoImage.alt:LOGO_ALT|LEGACY_UNREVIEWED|montblanc|38
+richemont|detail.jobPostingInfo.logoImage.alt:LOGO_ALT|NATIVE_SOURCE_LABEL|montblanc|38
+richemont|detail.jobPostingInfo.logoImage.alt:LOGO_ALT|LEGACY_UNREVIEWED|panerai|21
+richemont|detail.jobPostingInfo.logoImage.alt:LOGO_ALT|NATIVE_SOURCE_LABEL|panerai|18
+richemont|detail.jobPostingInfo.logoImage.alt:LOGO_ALT_WORD_REMOVED|LEGACY_UNREVIEWED|chloe|18
+richemont|detail.jobPostingInfo.logoImage.alt:LOGO_ALT_WORD_REMOVED|NATIVE_SOURCE_LABEL|chloe|17
+richemont|detail.jobPostingInfo.logoImage.alt:LOGO_ALT|LEGACY_UNREVIEWED|piaget|12
+richemont|detail.jobPostingInfo.logoImage.alt:LOGO_ALT|LEGACY_UNREVIEWED|delvaux|11
+richemont|detail.jobPostingInfo.logoImage.alt:LOGO_ALT|NATIVE_SOURCE_LABEL|piaget|11
+richemont|detail.jobPostingInfo.logoImage.alt:LOGO_ALT|NATIVE_SOURCE_LABEL|delvaux|10
+richemont|detail.jobPostingInfo.logoImage.alt:LOGO_ALT_WORD_REMOVED|LEGACY_UNREVIEWED|jaeger lecoultre|8
+richemont|detail.jobPostingInfo.logoImage.alt:LOGO_ALT_WORD_REMOVED|NATIVE_SOURCE_LABEL|jaeger lecoultre|8
+richemont|detail.jobPostingInfo.logoImage.alt:LOGO_ALT|LEGACY_UNREVIEWED|donzé-baume|7
+richemont|detail.jobPostingInfo.logoImage.alt:LOGO_ALT|NATIVE_SOURCE_LABEL|donzé-baume|6
+richemont|detail.jobPostingInfo.logoImage.alt:LOGO_ALT|LEGACY_UNREVIEWED|watchfinder|5
+richemont|detail.jobPostingInfo.logoImage.alt:LOGO_ALT|NATIVE_SOURCE_LABEL|roger dubuis|5
+richemont|detail.jobPostingInfo.logoImage.alt:LOGO_ALT|NATIVE_SOURCE_LABEL|watchfinder|5
+richemont|detail.jobPostingInfo.logoImage.alt:LOGO_ALT|LEGACY_UNREVIEWED|roger dubuis|5
+richemont|detail.jobPostingInfo.logoImage.alt:LOGO_ALT|NATIVE_SOURCE_LABEL|buccellati|4
+richemont|detail.jobPostingInfo.logoImage.alt:LOGO_ALT|LEGACY_UNREVIEWED|buccellati|4
+richemont|detail.jobPostingInfo.logoImage.alt:LOGO_ALT|LEGACY_UNREVIEWED|a.lange and sohne|3
+richemont|detail.jobPostingInfo.logoImage.alt:LOGO_ALT|NATIVE_SOURCE_LABEL|a.lange and sohne|3
+richemont|detail.jobPostingInfo.logoImage.alt:LOGO_ALT|NATIVE_SOURCE_LABEL|dunhill|1
+richemont|detail.jobPostingInfo.logoImage.alt:LOGO_ALT|LEGACY_UNREVIEWED|dunhill|1
+richemont|detail.jobPostingInfo.logoImage.alt:LOGO_ALT_WORD_REMOVED|REVIEW_REQUIRED|cartier|1
+richemont-workday|detail.jobPostingInfo.logoImage.alt:LOGO_ALT_WORD_REMOVED|LEGACY_UNREVIEWED|richemont|762
+richemont-workday|detail.jobPostingInfo.logoImage.alt:LOGO_ALT_WORD_REMOVED|NATIVE_SOURCE_LABEL|richemont|725
+richemont-workday|detail.jobPostingInfo.logoImage.alt:LOGO_ALT|REVIEWED_ALIAS|vancleef-aprels|312
+richemont-workday|detail.jobPostingInfo.logoImage.alt:LOGO_ALT_WORD_REMOVED|LEGACY_UNREVIEWED|cartier|152
+richemont-workday|detail.jobPostingInfo.logoImage.alt:LOGO_ALT_WORD_REMOVED|NATIVE_SOURCE_LABEL|cartier|137
+richemont-workday|detail.jobPostingInfo.logoImage.alt:LOGO_ALT_WORD_REMOVED|REVIEWED_ALIAS|cartier|124
+richemont-workday|detail.jobPostingInfo.logoImage.alt:LOGO_ALT|LEGACY_UNREVIEWED|montblanc|124
+richemont-workday|detail.jobPostingInfo.logoImage.alt:LOGO_ALT|NATIVE_SOURCE_LABEL|montblanc|121
+richemont-workday|detail.jobPostingInfo.logoImage.alt:LOGO_ALT|LEGACY_UNREVIEWED|delvaux|47
+richemont-workday|detail.jobPostingInfo.logoImage.alt:LOGO_ALT|NATIVE_SOURCE_LABEL|delvaux|46
+richemont-workday|detail.jobPostingInfo.logoImage.alt:LOGO_ALT_WORD_REMOVED|LEGACY_UNREVIEWED|jaeger lecoultre|44
+richemont-workday|detail.jobPostingInfo.logoImage.alt:LOGO_ALT_WORD_REMOVED|NATIVE_SOURCE_LABEL|jaeger lecoultre|41
+richemont-workday|detail.jobPostingInfo.logoImage.alt:LOGO_ALT|LEGACY_UNREVIEWED|a.lange and sohne|34
+richemont-workday|detail.jobPostingInfo.logoImage.alt:LOGO_ALT|NATIVE_SOURCE_LABEL|a.lange and sohne|34
+richemont-workday|detail.jobPostingInfo.logoImage.alt:LOGO_ALT|LEGACY_UNREVIEWED|panerai|32
+richemont-workday|detail.jobPostingInfo.logoImage.alt:LOGO_ALT|LEGACY_UNREVIEWED|buccellati|32
+richemont-workday|detail.jobPostingInfo.logoImage.alt:LOGO_ALT|NATIVE_SOURCE_LABEL|buccellati|30
+richemont-workday|detail.jobPostingInfo.logoImage.alt:LOGO_ALT|LEGACY_UNREVIEWED|piaget|29
+richemont-workday|detail.jobPostingInfo.logoImage.alt:LOGO_ALT|NATIVE_SOURCE_LABEL|panerai|28
+richemont-workday|detail.jobPostingInfo.logoImage.alt:LOGO_ALT|NATIVE_SOURCE_LABEL|piaget|27
+richemont-workday|detail.jobPostingInfo.logoImage.alt:LOGO_ALT_WORD_REMOVED|LEGACY_UNREVIEWED|chloe|18
+richemont-workday|detail.jobPostingInfo.logoImage.alt:LOGO_ALT_WORD_REMOVED|LEGACY_UNREVIEWED|alaia|18
+richemont-workday|detail.jobPostingInfo.logoImage.alt:LOGO_ALT_WORD_REMOVED|NATIVE_SOURCE_LABEL|chloe|17
+richemont-workday|detail.jobPostingInfo.logoImage.alt:LOGO_ALT_WORD_REMOVED|NATIVE_SOURCE_LABEL|alaia|17
+richemont-workday|detail.jobPostingInfo.logoImage.alt:LOGO_ALT|LEGACY_UNREVIEWED|dunhill|16
+richemont-workday|detail.jobPostingInfo.logoImage.alt:LOGO_ALT|LEGACY_UNREVIEWED|watchfinder|15
+richemont-workday|detail.jobPostingInfo.logoImage.alt:LOGO_ALT|NATIVE_SOURCE_LABEL|dunhill|15
+richemont-workday|detail.jobPostingInfo.logoImage.alt:LOGO_ALT|NATIVE_SOURCE_LABEL|watchfinder|14
+richemont-workday|detail.jobPostingInfo.logoImage.alt:LOGO_ALT|LEGACY_UNREVIEWED|roger dubuis|10
+richemont-workday|detail.jobPostingInfo.logoImage.alt:LOGO_ALT_WORD_REMOVED|LEGACY_UNREVIEWED|iwc|10
+richemont-workday|detail.jobPostingInfo.logoImage.alt:LOGO_ALT|NATIVE_SOURCE_LABEL|roger dubuis|10
+richemont-workday|detail.jobPostingInfo.logoImage.alt:LOGO_ALT|LEGACY_UNREVIEWED|donzé-baume|9
+richemont-workday|detail.jobPostingInfo.logoImage.alt:LOGO_ALT|NATIVE_SOURCE_LABEL|donzé-baume|8
+richemont-workday|detail.jobPostingInfo.logoImage.alt:LOGO_ALT|LEGACY_UNREVIEWED|purdey|7
+richemont-workday|detail.jobPostingInfo.logoImage.alt:LOGO_ALT_WORD_REMOVED|NATIVE_SOURCE_LABEL|iwc|7
+richemont-workday|detail.jobPostingInfo.logoImage.alt:LOGO_ALT|NATIVE_SOURCE_LABEL|purdey|7
+richemont-workday|detail.jobPostingInfo.logoImage.alt:LOGO_ALT|LEGACY_UNREVIEWED|fhh|1
+richemont-workday|detail.jobPostingInfo.logoImage.alt:LOGO_ALT|NATIVE_SOURCE_LABEL|fhh|1
+richemont-workday|detail.jobPostingInfo.logoImage.alt:LOGO_ALT_WORD_REMOVED|REVIEW_REQUIRED|cartier|1
+rivoli-typesense|SOURCE_CATALOGUE_LABEL|REVIEW_REQUIRED|rivoli group|46
+rivoli-typesense|SOURCE_CATALOGUE_LABEL|CERTIFIED_SINGLE_BRAND_PORTAL|rivoli group|46
+sephora-france|microdata.hiringOrganization:EXPLICIT_JOBPOSTING_EMPLOYER|LEGACY_UNREVIEWED|sephora|2683
+sephora-france|microdata.hiringOrganization:EXPLICIT_JOBPOSTING_EMPLOYER|NATIVE_SOURCE_LABEL|sephora|2638
+sephora-france|SOURCE_CATALOGUE_LABEL|REVIEW_REQUIRED|sephora|5
+swatch-group|ADAPTER_COMPANY|LEGACY_UNREVIEWED|swatch|94
+swatch-group|ADAPTER_COMPANY|REVIEWED_ALIAS|swatch|94
+swatch-group|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|swatch|86
+swatch-group|ADAPTER_COMPANY|LEGACY_UNREVIEWED|eta|52
+swatch-group|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|eta|51
+swatch-group|ADAPTER_COMPANY|LEGACY_UNREVIEWED|omega|51
+swatch-group|ADAPTER_COMPANY|LEGACY_UNREVIEWED|swatch group|45
+swatch-group|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|omega|45
+swatch-group|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|swatch group|36
+swatch-group|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|longines|27
+swatch-group|ADAPTER_COMPANY|LEGACY_UNREVIEWED|longines|27
+swatch-group|ADAPTER_COMPANY|LEGACY_UNREVIEWED|tissot|18
+swatch-group|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|tissot|16
+swatch-group|ADAPTER_COMPANY|LEGACY_UNREVIEWED|hour passion|13
+swatch-group|ADAPTER_COMPANY|LEGACY_UNREVIEWED|blancpain|13
+swatch-group|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|hour passion|13
+swatch-group|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|blancpain|12
+swatch-group|ADAPTER_COMPANY|LEGACY_UNREVIEWED|em microelectronic|10
+swatch-group|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|hamilton|9
+swatch-group|ADAPTER_COMPANY|LEGACY_UNREVIEWED|hamilton|9
+swatch-group|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|em microelectronic|8
+swatch-group|ADAPTER_COMPANY|LEGACY_UNREVIEWED|swiss timing|8
+swatch-group|ADAPTER_COMPANY|LEGACY_UNREVIEWED|nivarox|7
+swatch-group|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|swiss timing|7
+swatch-group|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|nivarox|7
+swatch-group|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|meco|6
+swatch-group|ADAPTER_COMPANY|LEGACY_UNREVIEWED|meco|6
+swatch-group|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|breguet|5
+swatch-group|ADAPTER_COMPANY|LEGACY_UNREVIEWED|renata|5
+swatch-group|ADAPTER_COMPANY|LEGACY_UNREVIEWED|rado|5
+swatch-group|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|rado|5
+swatch-group|ADAPTER_COMPANY|LEGACY_UNREVIEWED|universo|5
+swatch-group|ADAPTER_COMPANY|LEGACY_UNREVIEWED|breguet|5
+swatch-group|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|glashütte original|4
+swatch-group|ADAPTER_COMPANY|LEGACY_UNREVIEWED|glashütte original|4
+swatch-group|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|rubattel et weyermann|4
+swatch-group|ADAPTER_COMPANY|LEGACY_UNREVIEWED|flik flak|4
+swatch-group|ADAPTER_COMPANY|LEGACY_UNREVIEWED|comadur|4
+swatch-group|ADAPTER_COMPANY|LEGACY_UNREVIEWED|rubattel et weyermann|4
+swatch-group|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|universo|4
+swatch-group|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|comadur|4
+swatch-group|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|flik flak|3
+swatch-group|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|renata|2
+swatch-group|ADAPTER_COMPANY|REVIEW_REQUIRED|swatch|1
+swatch-group|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|cpk swatch group|1
+swatch-group|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|certina|1
+swatch-group|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|lascor|1
+swatch-group|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|mido|1
+swatch-group|ADAPTER_COMPANY|LEGACY_UNREVIEWED|lascor|1
+swatch-group|ADAPTER_COMPANY|LEGACY_UNREVIEWED|cpk swatch group|1
+swatch-group|ADAPTER_COMPANY|LEGACY_UNREVIEWED|certina|1
+swatch-group|ADAPTER_COMPANY|NATIVE_SOURCE_LABEL|union glashütte|1
+tapestry|listing.facets.Brand:PARTITION_FACET_VALUE|REVIEWED_ALIAS|coach|1977
+tapestry|listing.facets.Brand:PARTITION_FACET_VALUE|REVIEWED_ALIAS|kate spade|627
+tapestry|listing.facets.Brand:PARTITION_FACET_VALUE|REVIEWED_ALIAS|tapestry|89
+tapestry|detail.hiringOrganization.name:HIRING_ORGANIZATION_LABEL|NATIVE_SOURCE_LABEL|tapestry, inc.|22
+tapestry|detail.hiringOrganization.name:HIRING_ORGANIZATION_LABEL|REVIEW_REQUIRED|tapestry, inc.|1
+tapestry|detail.hiringOrganization.name:HIRING_ORGANIZATION_LABEL|REVIEW_REQUIRED|coach stores limited|1
+tiffany-oracle|SOURCE_CATALOGUE_LABEL|REVIEW_REQUIRED|tiffany & co.|491
+tiffany-oracle|SOURCE_CATALOGUE_LABEL|CERTIFIED_SINGLE_BRAND_PORTAL|tiffany & co.|474

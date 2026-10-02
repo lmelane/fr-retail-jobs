@@ -59,9 +59,22 @@ export function isDecidedKnownFailure(source: string, issue: Pick<IngestionIssue
   return DECIDED_KNOWN_FAILURES[source]?.some(known => known.code === issue.code && (known.detail === undefined || known.detail === issue.detail)) ?? false;
 }
 
-/** Ce qui ne fait pas échouer le RUN : une preuve native de la source (D-453 §1), ou un échec connu décidé (D-480 §1). */
+/**
+ * D-520 : une offre dont l'employeur n'est pas prouvé est retenue et rejoint la file de revue d'identité
+ * (`identity/reviewQueue.ts`) avec la question à trancher ; ce refus n'est plus une panne du RUN. La source reste
+ * classée IDENTITE_EMPLOYEUR (`pipeline/sourceState.ts`) jusqu'à la réponse, escaladée à l'échéance.
+ */
+export const IDENTITY_REVIEW_ISSUE = 'EmployerIdentityReviewRequired';
+export function isQueuedIdentityIssue(issue: Pick<IngestionIssue, 'code'>): boolean {
+  return issue.code === IDENTITY_REVIEW_ISSUE;
+}
+
+/**
+ * Ce qui ne fait pas échouer le RUN : une preuve native de la source (D-453 §1), un échec connu décidé (D-480 §1), ou un
+ * employeur à identifier mis en file de revue (D-520).
+ */
 export function isNonBlockingIssue(source: string, issue: IngestionIssue): boolean {
-  return isProvenSourceIssue(issue) || isDecidedKnownFailure(source, issue);
+  return isProvenSourceIssue(issue) || isDecidedKnownFailure(source, issue) || isQueuedIdentityIssue(issue);
 }
 
 /** Called only after the failed native response and outcome have been persisted. */

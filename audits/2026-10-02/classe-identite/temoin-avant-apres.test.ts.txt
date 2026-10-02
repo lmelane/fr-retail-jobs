@@ -1,0 +1,94 @@
+import '../test/setup-integration.js';
+import { PrismaClient } from '@prisma/client';
+import { randomUUID } from 'node:crypto';
+import { afterAll, afterEach, describe, expect, it, vi } from 'vitest';
+import { ingestSyntheticFeed, qualifiedSource, releaseQualifiedSources } from '../test/ingestionFixture.js';
+import { checkSourceHealth } from './health.js';
+import { classifySourceRun } from './ingestOrchestrator.js';
+import { summarizeOrchestration } from '../lib/runSummary.js';
+import { log } from '../observability/logger.js';
+import type { NormalizedJob } from '../types.js';
+
+/**
+ * D-520, CLASSE IDENTITÉ D'EMPLOYEUR, PAR L'INGESTION DE PRODUCTION. Seul l'amont HTTP est synthétique
+ * (`ingestionFixture.ts`) ; comme `publisher-follow.ingest.test.ts`, le flux Ashby lit `employerName` comme un libellé
+ * natif. Sans `employer`, l'offre ne nomme pas d'employeur : le registre la propose (`SOURCE_CATALOGUE_LABEL`).
+ *
+ * Chaque cas affirme d'abord sa PRÉMISSE (le défaut est bien atteint), puis le comportement. Sur la version d'avant ce
+ * lot, chacun échoue : l'offre au libellé omis et la nouvelle graphie de la Maison étaient refusées, et tout refus
+ * d'identité faisait échouer le RUN (`UNRESOLVED_FAILURE`) sans file de revue.
+ */
+vi.mock('../ats/adapters/ashby.js', async importOriginal => {
+  const original = await importOriginal<typeof import('../ats/adapters/ashby.js')>();
+  const named = (job: NormalizedJob): NormalizedJob => {
+    const label = (job.raw as { employerName?: unknown } | undefined)?.employerName;
+    return typeof label === 'string' ? { ...job, company: label, employerEvidence: { rawName: label, path: 'synthetic.employerName', rule: 'SYNTHETIC_NATIVE_LABEL' } } : job;
+  };
+  return {
+    ...original,
+    fetchAshbyJobs: async (config: Record<string, unknown>) => {
+      const result = await original.fetchAshbyJobs(config);
+      return { ...result, jobs: result.jobs.map(named) };
+    },
+    parseAshbyJob: (...args: Parameters<typeof original.parseAshbyJob>) => {
+      const job = original.parseAshbyJob(...args);
+      return job && named(job);
+    },
+  };
+});
+
+const db = new PrismaClient();
+afterAll(async () => { await releaseQualifiedSources(db); await db.$disconnect(); });
+afterEach(() => { vi.restoreAllMocks(); vi.unstubAllGlobals(); });
+
+type Posting = { id: string; employer?: string };
+const feed = (postings: Posting[]) => JSON.stringify({ apiVersion: '1', jobs: postings.map(({ id, employer }) => ({
+  id, title: `Conseiller de vente ${id}`, isListed: true, descriptionPlain: 'Native responsibilities',
+  ...(employer === undefined ? {} : { employerName: employer }) })) });
+const ingest = (key: string, postings: Posting[]) => ingestSyntheticFeed(db, key, feed(postings));
+const employerOf = async (key: string, externalId: string) => (await db.jobSource.findUniqueOrThrow({
+  where: { sourceKey_externalId: { sourceKey: key, externalId } }, select: { job: { select: { companyId: true, company: { select: { name: true } } } } } })).job!;
+const lastRule = async (key: string, externalId: string) => (await db.employerObservation.findFirstOrThrow({
+  where: { sourceKey: key, externalId }, orderBy: [{ observedAt: 'desc' }, { id: 'desc' }] })).rule;
+const queueOf = (key: string) => db.employerIdentityQueue.findMany({ where: { sourceKey: key }, orderBy: { normalizedLabel: 'asc' } });
+/** Le verdict du RUN pour cette seule source, tel que l'orchestrateur et le bilan l'appliquent. */
+async function runVerdict(key: string, stats: Awaited<ReturnType<typeof ingest>>) {
+  const health = await checkSourceHealth(db, [stats]);
+  const { issues, incidents } = classifySourceRun([stats], health.incidents);
+  const summary = summarizeOrchestration({ total: 1, ok: issues.length ? 0 : 1, failed: issues.length ? 1 : 0, timedOut: 0,
+    failures: issues.length ? [`${key} (x)`] : [], incidents, issues: issues.map(issue => ({ ...issue, source: key })) } as never);
+  return { incidents, summary };
+}
+
+const NORD = 'Atelier Nord SAS';
+
+describe('TÉMOIN AVANT/APRÈS (non commité) — comportements du lot D-520 identité', () => {
+  it('règle 1 : libellé omis, l’offre garde l’employeur nommé par l’éditeur', async () => {
+    const key = `temoin-omis-${randomUUID()}`;
+    await ingest(key, [{ id: 'p1', employer: NORD }]);
+    const before = await employerOf(key, 'p1');
+    expect((await db.source.findUniqueOrThrow({ where: { key } })).portalScope).toBeNull();
+    const stats = await ingest(key, [{ id: 'p1' }]);
+    expect(stats.errors).toBe(0);
+    expect((await employerOf(key, 'p1')).companyId).toBe(before.companyId);
+  });
+  it('règle 2 : nouvelle graphie de la Maison du registre, l’offre ne bouge pas', async () => {
+    const tag = randomUUID().slice(0, 8);
+    const key = `maison${tag}`;
+    await qualifiedSource(db, key);
+    await db.source.update({ where: { key }, data: { portalScope: 'SINGLE_BRAND' } });
+    await ingest(key, [{ id: 'p1' }]);
+    const before = await employerOf(key, 'p1');
+    const stats = await ingest(key, [{ id: 'p1', employer: `MAISON${tag.toUpperCase()} S.A.S.` }]);
+    expect(stats.errors).toBe(0);
+    expect(await employerOf(key, 'p1')).toEqual(before);
+  });
+  it('un refus d’identité non prouvé ne fait pas échouer le RUN', async () => {
+    const key = `temoin-file-${randomUUID()}`;
+    const stats = await ingest(key, [{ id: 'a' }, { id: 'c', employer: NORD }]);
+    expect(stats).toMatchObject({ errors: 1, writeFailures: { 'EmployerIdentityReviewRequired:PORTAL_OWNER_NOT_CERTIFIED': 1 } });
+    const { incidents, summary } = await runVerdict(key, stats);
+    expect(incidents).toMatchObject([{ source: key, blocking: false }]);
+    expect(summary.blockingReasons).toEqual([]);
+  });
+});

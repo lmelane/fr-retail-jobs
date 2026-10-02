@@ -19,6 +19,8 @@ const COMMANDS: Record<string, CommandOptions> = {
   'qualify-sectors': { values: ['output', 'plan'], flags: ['apply'] },
   // D-520 §2 : le registre explicite, aperçu (--decisions, --output) puis application du seul aperçu relu (--apply --plan).
   'registry-review': { values: ['decisions', 'output', 'plan'], flags: ['apply'] },
+  // D-520 : la file de revue d'identité d'employeur, lecture seule.
+  'file-identite': { values: ['output'] },
   'occupation-review-queue': { values: ['output','limit'] },
   'occupation-preview': { values: ['file','output'] },
   'occupation-activate': { values: ['file','output','review','commit'], flags: ['apply'] },

@@ -1,5 +1,5 @@
 import type { OrchestratorResult } from '../pipeline/ingestOrchestrator.js';
-import { isDecidedKnownFailure, isNonBlockingIssue, isProvenSourceIssue, KNOWN_FAILURE_DECISION, NATIVE_RETENTION, type IngestionIssue } from './ingestionIssue.js';
+import { isDecidedKnownFailure, isNonBlockingIssue, isProvenSourceIssue, isQueuedIdentityIssue, KNOWN_FAILURE_DECISION, NATIVE_RETENTION, type IngestionIssue } from './ingestionIssue.js';
 import { isTeamDecisionRetention } from '../pipeline/publicationDisposition.js';
 
 /**
@@ -12,7 +12,9 @@ export function failureLine(key: string, issues: readonly IngestionIssue[], caus
   const retained = proven.filter(issue => issue.code === NATIVE_RETENTION).reduce((total, issue) => total + issue.count, 0);
   const outages = proven.filter(issue => issue.code !== NATIVE_RETENTION).map(issue => issue.code);
   const known = issues.filter(issue => !isProvenSourceIssue(issue) && isDecidedKnownFailure(key, issue)).map(issue => issue.code);
+  const queued = issues.filter(isQueuedIdentityIssue).reduce((total, issue) => total + issue.count, 0);
   return `${key} (non bloquant : ${[retained ? `retenue sur preuve de la source, ${retained} ${retained > 1 ? 'offres' : 'offre'}` : '',
+    queued ? `employeur à identifier, ${queued} ${queued > 1 ? 'offres retenues' : 'offre retenue'} en file de revue (D-520)` : '',
     outages.length ? `panne éditeur prouvée ${outages.join(', ')}` : '',
     known.length ? `échec connu ${known.join(', ')} (${KNOWN_FAILURE_DECISION})` : ''].filter(Boolean).join(' · ')})`;
 }
@@ -33,7 +35,10 @@ export function summarizeOrchestration(result: OrchestratorResult) {
   // D-480 §1 : un échec connu décidé n'est ni une panne interne ni une cause inconnue à instruire ; il reste listé.
   const known = issues.filter(i => !isProvenSourceIssue(i) && isDecidedKnownFailure(i.source, i));
   const internalSources = new Set(issues.filter(i => i.origin === 'INTERNAL' && !isDecidedKnownFailure(i.source, i)).map(i => i.source));
-  const unknownSources = new Set(issues.filter(i => i.origin === 'UNKNOWN' && !isDecidedKnownFailure(i.source, i)).map(i => i.source));
+  // D-520 : un employeur à identifier est en file de revue, avec sa question : ni une panne interne ni une cause inconnue.
+  const unknownSources = new Set(issues.filter(i => i.origin === 'UNKNOWN' && !isDecidedKnownFailure(i.source, i) && !isQueuedIdentityIssue(i)).map(i => i.source));
+  const identityQueued = issues.filter(isQueuedIdentityIssue);
+  const identitySources = new Set(identityQueued.map(i => i.source));
   const classifiedSources = new Set(issues.map(i => i.source));
   const unclassifiedSources = Math.max(0, sourceErrors - classifiedSources.size);
   const proven = issues.filter(isProvenSourceIssue);
@@ -48,7 +53,7 @@ export function summarizeOrchestration(result: OrchestratorResult) {
    * A source whose only issue is a proven native retention collected and published: it did not fail. Counting it
    * among the failed ones made a targeted RUN of such sources end in ALL_SOURCES_FAILED.
    */
-  const retentionOnlySources = [...retainedSources].filter(source => !blockingSources.has(source) && !nativeFailureSources.has(source)).length;
+  const retentionOnlySources = [...new Set([...retainedSources, ...identitySources])].filter(source => !blockingSources.has(source) && !nativeFailureSources.has(source)).length;
   const blockingReasons = [
     ...([result.total, result.ok, result.failed, result.timedOut].some(n => !Number.isInteger(n) || n < 0) ? ['INVALID_COUNTS'] : []),
     ...(!completed ? ['INCOMPLETE_RUN'] : []),
@@ -70,7 +75,7 @@ export function summarizeOrchestration(result: OrchestratorResult) {
   const stillOnline = result.incidents.map(incident => [incident.source,
     Object.values(incident.retention?.online ?? {}).reduce((total, n) => total + n, 0)] as [string, number]);
   // A failure line is non-blocking only when every issue of its source stands on its native proof.
-  const nonBlocking = (line: string) => { const key = line.split(' (', 1)[0]!; return (nativeSources.has(key) || known.some(i => i.source === key)) && !blockingSources.has(key); };
+  const nonBlocking = (line: string) => { const key = line.split(' (', 1)[0]!; return (nativeSources.has(key) || identitySources.has(key) || known.some(i => i.source === key)) && !blockingSources.has(key); };
   const failures = [...result.failures.filter(line => !nonBlocking(line)), ...result.failures.filter(nonBlocking)];
   return {
     completed,
@@ -82,7 +87,8 @@ export function summarizeOrchestration(result: OrchestratorResult) {
      * What the NON-blocking source errors are, so that COMPLETED_WITH_ERRORS says whether a source retained
      * postings on its own evidence or went down with a proven 5xx. Empty when every source error blocks.
      */
-    nonBlockingCauses: [...(retainedSources.size ? ['NATIVE_RETENTION'] : []), ...(nativeFailureSources.size ? ['NATIVE_HTTP_5XX'] : [])],
+    nonBlockingCauses: [...(retainedSources.size ? ['NATIVE_RETENTION'] : []), ...(nativeFailureSources.size ? ['NATIVE_HTTP_5XX'] : []),
+      ...(identitySources.size ? ['EMPLOYER_IDENTITY_REVIEW'] : [])],
     attribution: { nativeSources: nativeSources.size, internalSources: internalSources.size,
       unknownSources: unknownSources.size + unclassifiedSources, nativeRetentionSources: retainedSources.size,
       nativeFailureSources: nativeFailureSources.size },
@@ -91,6 +97,8 @@ export function summarizeOrchestration(result: OrchestratorResult) {
       bySource: [...new Set(known.map(i => i.source))].sort().map(source => ({ source, codes: known.filter(i => i.source === source).map(i => i.code) })) },
     /** Every retention on the source's own evidence that does not block, never truncated, with its total (D-453 §1, D-456 §1). */
     nativeRetentions: listing(retainedPostings),
+    /** D-520 : offres retenues faute d'employeur prouvé, par source, en file de revue d'identité (commande `file-identite`). */
+    identityReview: listing(identityQueued.reduce((bySource, issue) => bySource.set(issue.source, (bySource.get(issue.source) ?? 0) + issue.count), new Map<string, number>())),
     /** Postings excluded by the TEAM's perimeter review: a Catwalks decision, not a source's proof (D-456 §2). */
     teamExclusions: listing(teamExcluded),
     /** Sources whose negative-proof guard had no complete RUN of reference: not blocking, said (D-453 §1). */
