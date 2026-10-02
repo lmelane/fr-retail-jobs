@@ -138,7 +138,7 @@ function buildHtml(report: AlertReport): string {
     ? [NOT_COLLECTED, previous(incident)].filter(Boolean).join(', ')
     : [count(incident.jobs, 'offre publiée par ce RUN', 'offres publiées par ce RUN'), previous(incident)].filter(Boolean).join(', ');
   const blockingBlocks = blocking.map(incident => sourceBlock(incident, true,
-    [volume(incident), ...(incident.note ? [incident.note] : []), ...retentionLines(incident)])).join('');
+    [volume(incident), ...(incident.note ? [incident.note] : []), ...retentionLines(incident), ...(incident.remediation ?? [])])).join('');
   const retentionBlocks = retentions.map(incident => sourceBlock(incident, false, [...((incident.confirmedDrop || incident.minorDrop) && incident.note ? [incident.note] : []),
     ...retentionLines(incident),
     ...(incident.guardWithoutReference ? ['garde technique sans référence : aucun RUN complet antérieur n’a collecté la source'] : []),

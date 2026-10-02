@@ -16,6 +16,7 @@ import { ingestionIssue, isDecidedKnownFailure, isNonBlockingIssue, isProvenSour
 import { failureLine } from '../lib/runSummary.js';
 import { SOURCE_WRITE_TRANSACTION } from '../lib/writeLocks.js';
 import { incrementalPassActive } from '../lib/incrementalReading.js';
+import { causeOf, remediationLine, remediationNote, remediationOf, retriesInRun, type Cause, type Remediation } from './ordinaryCauses.js';
 
 /**
  * Bounded source concurrency with cooperative cancellation. A timed-out source
@@ -64,7 +65,108 @@ export type OrchestratorResult = {
   /** Sources that returned degraded/broken health this run — feeds the alert. */
   incidents: SourceHealth[];
   issues?: (IngestionIssue & { source: string })[];
+  /** D-520 : les sources dont l'échec est passager à sa première occurrence, reprises une fois en fin de RUN. */
+  pendingRetry?: { source: string; cause: Cause }[];
+  /** D-520 : les reprises faites dans ce RUN, et si elles ont absorbé l'échec. */
+  retries?: { source: string; cause: Cause; absorbed: boolean }[];
 };
+
+/**
+ * D-520 — LA REPRISE UNIQUE DES ÉCHECS PASSAGERS DANS LE RUN.
+ *
+ * Mesuré sur les 8 RUN du 24/09 au 01/10/2026 (`audits/2026-10-02/remediation-auto/`) : 16 sources sont tombées pour
+ * une capture native indisponible ou une transaction de base close, jusqu'à 14 dans un même RUN (29/09), et 15 sur 15
+ * sont revenues seules au RUN suivant. Chacune rendait le RUN rouge et demandait une enquête. Ces sources sont donc
+ * relues UNE fois, après toutes les autres, par l'étape exacte du RUN (`ingestOne` : accès, qualification, collecte
+ * scellée, écriture) ; la première tentative reste au journal (`source.issue_classified`, `SourceRun` en erreur), la
+ * reprise est inscrite (`source.retry_started`, `source.retry_completed`) et le bilan la nomme.
+ *
+ * Bornes : seules les causes passagères à leur première occurrence (`retriesInRun`) ; jamais un refus de l'éditeur ni
+ * un délai dépassé ; au plus `RUN_RETRY_MAX_SOURCES` sources, sinon aucune (une panne de masse n'est pas ordinaire,
+ * elle reste rouge) ; jamais dans une passe de découverte. Interrupteur : `RUN_TRANSIENT_RETRY=off`.
+ */
+export const RUN_RETRY_MAX_SOURCES = 20;
+export function transientRetryEnabled(env: NodeJS.ProcessEnv = process.env): boolean {
+  return env.RUN_TRANSIENT_RETRY?.trim().toLowerCase() !== 'off';
+}
+
+/** Retire du résultat la première tentative d'une source reprise : ses lignes, ses issues, son incident, son échec. */
+function withdrawFirstAttempt(result: OrchestratorResult, key: string) {
+  result.failures = result.failures.filter(line => !line.startsWith(`${key} (`));
+  result.issues = (result.issues ?? []).filter(issue => issue.source !== key);
+  result.incidents = result.incidents.filter(incident => incident.source !== key);
+  result.failed--;
+}
+
+export async function retryTransientFailures(prisma: PrismaClient, result: OrchestratorResult): Promise<void> {
+  const pending = result.pendingRetry ?? [];
+  result.pendingRetry = [];
+  if (!pending.length) return;
+  const sources = pending.map(p => p.source);
+  if (!transientRetryEnabled()) { await log.info('run.transient_retry_skipped', { reason: 'DISABLED', sources }); return; }
+  if (pending.length > RUN_RETRY_MAX_SOURCES) {
+    await log.warn('run.transient_retry_skipped', { reason: 'MASS_FAILURE', sources, max: RUN_RETRY_MAX_SOURCES });
+    return;
+  }
+  const retries: NonNullable<OrchestratorResult['retries']> = [];
+  const limit = pLimit(SOURCE_CONCURRENCY);
+  const settled = await Promise.allSettled(pending.map(({ source: key, cause }) => limit(() => log.withContext({ sourceKey: key }, async () => {
+    assertPipelineRunning(); log.assertHealthy();
+    withdrawFirstAttempt(result, key);
+    await log.info('source.retry_started', { sourceKey: key, cause });
+    const kind = (await prisma.source.findUniqueOrThrow({ where: { key }, select: { kind: true } })).kind;
+    await log.withContext({ connectorId: kind }, () => ingestOne(prisma, key, result, Infinity, 'retry'));
+    const absorbed = !(result.issues ?? []).some(issue => issue.source === key && !isNonBlockingIssue(key, issue));
+    retries.push({ source: key, cause, absorbed });
+    await log.info('source.retry_completed', { sourceKey: key, cause, absorbed });
+  }))));
+  result.retries = retries;
+  const failed = settled.find((s): s is PromiseRejectedResult => s.status === 'rejected');
+  if (failed) throw failed.reason;
+  await log.info('run.transient_retry_completed', { retried: retries.length,
+    absorbed: retries.filter(r => r.absorbed).map(r => r.source), failedAgain: retries.filter(r => !r.absorbed).map(r => r.source) });
+}
+
+/**
+ * Les causes que la source portait au dernier RUN complet avant celui-ci : ce qui fait passer une cause ordinaire
+ * persistante « à réparer » (`ordinaryCauses.ts`). Lues dans `source.issue_classified` (la cause inscrite depuis D-520,
+ * sinon reclassée depuis l'issue). Le RUN complet de référence est lu une fois par run.
+ */
+const previousCompleteRun = new Map<string, Promise<string | null>>();
+export async function previousRunCauses(prisma: PrismaClient, key: string, currentRunId: string | null = log.runId() ?? null): Promise<Set<Cause>> {
+  try {
+    const cacheKey = currentRunId ?? '';
+    const lookup = () => prisma.$queryRaw<{ id: string }[]>`
+      SELECT r.id FROM "PipelineRun" r WHERE r.command = 'ingest-all' AND r.id <> ${cacheKey}
+        AND EXISTS (SELECT 1 FROM "PipelineEvent" e WHERE e."runId" = r.id AND e.event = ${FULL_RUN_MARKER})
+      ORDER BY r."startedAt" DESC LIMIT 1`.then(rows => rows[0]?.id ?? null);
+    // Mis en cache par run journalisé seulement : hors run (commande locale, témoin), chaque lecture est fraîche.
+    if (currentRunId && !previousCompleteRun.has(cacheKey)) previousCompleteRun.set(cacheKey, lookup());
+    const runId = await (currentRunId ? previousCompleteRun.get(cacheKey)! : lookup());
+    if (!runId) return new Set();
+    const events = await prisma.pipelineEvent.findMany({ where: { runId, sourceKey: key, event: 'source.issue_classified' }, select: { payload: true } });
+    const causes = new Set<Cause>();
+    for (const { payload } of events) {
+      const p = payload as { issues?: IngestionIssue[]; remediation?: { cause: Cause }[] };
+      if (Array.isArray(p.remediation)) p.remediation.forEach(r => causes.add(r.cause));
+      else (p.issues ?? []).forEach(issue => causes.add(causeOf(issue)));
+    }
+    return causes;
+  } catch (error) {
+    previousCompleteRun.delete(currentRunId ?? '');
+    // Sans l'historique, aucune escalade : la cause garde sa trajectoire de première occurrence, et l'absence se voit.
+    await log.warn('source.remediation_history_unavailable', { sourceKey: key, error: briefError(error) });
+    return new Set();
+  }
+}
+
+/** La trajectoire de chaque issue d'une source, pour le journal et la ligne du bilan. */
+async function remediationsOf(prisma: PrismaClient, key: string, issues: readonly IngestionIssue[], message = ''): Promise<Remediation[]> {
+  const previous = await previousRunCauses(prisma, key);
+  return issues.map(issue => remediationOf(key, issue, message, previous));
+}
+const notes = (remediations: readonly Remediation[]) => [...new Set(remediations.map(remediationNote))].join(' ; ');
+const alertLines = (remediations: readonly Remediation[]) => [...new Set(remediations.map(remediationLine))];
 
 /**
  * Every source key, API feeds first then sitemap sources — and within the API
@@ -121,6 +223,7 @@ export async function ingestAllBySource(prisma: PrismaClient): Promise<Orchestra
   }))));
   const failed = settlements.find((s): s is PromiseRejectedResult => s.status === 'rejected');
   if (failed) throw failed.reason;
+  await retryTransientFailures(prisma, result);
 
   if (!process.env.INGEST_ONLY_KEYS?.trim()) {
     assertPipelineRunning();
@@ -128,7 +231,8 @@ export async function ingestAllBySource(prisma: PrismaClient): Promise<Orchestra
     await log.info(FULL_RUN_MARKER, await maintainReviewedSectors(prisma));
   }
   await log.info('run.sources_completed', `[orchestrator] done: ${result.ok}/${result.total} ok, ${result.failed} failed, ${result.timedOut} timed out` +
-      (result.failures.length ? ` — ${result.failures.join(', ')}` : ''));
+      (result.failures.length ? ` — ${result.failures.join(', ')}` : '') +
+      (result.retries?.length ? ` ; reprises : ${result.retries.filter(r => r.absorbed).length}/${result.retries.length} absorbées` : ''));
   return result;
 }
 
@@ -165,7 +269,8 @@ export function ingestCommandVerdict(stats: IngestStats[], incidents: readonly S
  * reading (`ingest.ts`), its health row compares to nothing, and neither success nor failure touches `Source.lastRun*`;
  * the pass also lowers the timeout to what its own window has left.
  */
-export async function ingestOne(prisma: PrismaClient, key: string, result: OrchestratorResult, maxTimeoutMs = Infinity): Promise<void> {
+export async function ingestOne(prisma: PrismaClient, key: string, result: OrchestratorResult, maxTimeoutMs = Infinity,
+  attempt: 'first' | 'retry' = 'first'): Promise<void> {
   const started = Date.now();
   let timeoutMs = PER_SOURCE_TIMEOUT_MS;
   try {
@@ -187,13 +292,15 @@ export async function ingestOne(prisma: PrismaClient, key: string, result: Orche
     const { issues, incidents } = classifySourceRun(stats, health.incidents);
     result.incidents.push(...incidents);
     result.issues!.push(...issues.map(issue => ({ ...issue, source: key })));
+    const remediation = issues.length ? await remediationsOf(prisma, key, issues) : [];
+    if (remediation.length) incidents.forEach(incident => { incident.remediation = alertLines(remediation); });
     if (issues.length) await log.warn('source.issue_classified', { sourceKey: key, issues, acceptedNativeOnly: issues.every(isProvenSourceIssue),
-      knownFailure: issues.some(issue => isDecidedKnownFailure(key, issue)) });
+      knownFailure: issues.some(issue => isDecidedKnownFailure(key, issue)), remediation, attempt });
     await log.info('source_sync_completed', { sourceKey: key, durationMs: Date.now() - started, fetched: stats.reduce((n, s) => n + s.fetched, 0), created: stats.reduce((n, s) => n + s.created, 0), updated: stats.reduce((n, s) => n + s.updated, 0), held: stats.reduce((n, s) => n + (s.held ?? 0), 0), errors: stats.reduce((n, s) => n + s.errors, 0), http: log.counters(key), stats, health: { broken: health.broken, degraded: health.degraded } });
     if (issues.length) {
       // A retention decided on native evidence stays counted and listed (D-453 §1); its line says it does not block.
       result.failed++;
-      result.failures.push(failureLine(key, issues, 'erreurs d’ingestion'));
+      result.failures.push(failureLine(key, issues, `erreurs d’ingestion · ${notes(remediation)}`));
     } else result.ok++;
   } catch (error) {
     log.assertHealthy();
@@ -208,23 +315,27 @@ export async function ingestOne(prisma: PrismaClient, key: string, result: Orche
      */
     const challenged = error instanceof WafChallengeError;
     const issue = ingestionIssue(error);
+    const remediation = await remediationsOf(prisma, key, [issue], message);
     result.issues!.push({ ...issue, source: key });
+    // D-520 : un échec passager à sa première occurrence est repris une fois en fin de RUN (jamais dans une passe).
+    if (attempt === 'first' && !timedOut && !challenged && !incrementalPassActive() && retriesInRun(remediation[0]))
+      (result.pendingRetry ??= []).push({ source: key, cause: remediation[0].cause });
     // Nothing collected to the end: the refresh leaves the source's offers open (L-01), the alert says so.
     result.incidents.push({ source: key, status: 'BROKEN', jobs: 0, previous: null, blocking: !isNonBlockingIssue(key, issue),
       ...(isDecidedKnownFailure(key, issue) ? { knownFailure: KNOWN_FAILURE_DECISION } : {}),
-      notCollected: true, note: `${issue.origin}/${issue.code}: ${briefError(error)}` });
-    await log.warn('source.issue_classified', { sourceKey: key, issues: [issue], acceptedNativeOnly: isProvenSourceIssue(issue) });
+      notCollected: true, note: `${issue.origin}/${issue.code}: ${briefError(error)}`, remediation: alertLines(remediation) });
+    await log.warn('source.issue_classified', { sourceKey: key, issues: [issue], acceptedNativeOnly: isProvenSourceIssue(issue), remediation, attempt });
     if (timedOut) {
       result.timedOut++;
-      result.failures.push(failureLine(key, [issue], 'délai dépassé'));
+      result.failures.push(failureLine(key, [issue], `délai dépassé · ${notes(remediation)}`));
       await log.error('source.timed_out', `[orchestrator] ${key}: timed out after ${Math.round(timeoutMs / 1000)}s, moving on`, { error });
     } else if (challenged) {
       result.failed++;
-      result.failures.push(failureLine(key, [issue], 'anti-bot'));
+      result.failures.push(failureLine(key, [issue], `anti-bot · ${notes(remediation)}`));
       await log.error('source.challenged', `[orchestrator] ${key}: bloqué par un anti-bot (${error.vendor}) — offres conservées`, { error });
     } else {
       result.failed++;
-      result.failures.push(failureLine(key, [issue], 'échec'));
+      result.failures.push(failureLine(key, [issue], `échec · ${notes(remediation)}`));
       await log.error('source.failed', `[orchestrator] ${key}: failed — ${briefError(error)}`, { error });
     }
     // L-01: a source that did not finish gets a SourceRun anyway — TIMEOUT or

@@ -58,6 +58,8 @@ export type SourceHealth = {
   nonBlockingRetentionOnly?: true;
   /** Échec connu, non bloquant, par décision du CEO (D-480 §1) : la référence de la décision. */
   knownFailure?: string;
+  /** D-520 : la cause de chaque issue, sa trajectoire et ce qui est attendu (`ordinaryCauses.ts`), pour l'alerte. */
+  remediation?: string[];
   /**
    * La chute de plus de moitié que l'éditeur confirme lui-même (D-484 §2, `isPublisherConfirmedDrop`) : signalée,
    * non bloquante, et ce run atteste l'absence comme toute liste prouvée (le refresh ferme ensuite, après son délai de
