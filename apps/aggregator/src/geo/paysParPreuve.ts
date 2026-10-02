@@ -14,12 +14,16 @@ import { paysDesCoordonnees, type Frontieres } from './frontieres.js';
  *      concordent : « Aberdeen » existe dans six pays, le point de l'offre Boots en désigne un. Un point sans ville connue ne
  *      suffit pas (`POINT_NON_CORROBORE`) ; un point dont le pays ne connaît pas la ville est une contradiction
  *      (`COORDONNEES_DISCORDANTES` : Intersport publie des magasins de Morteau avec un point en Californie).
- *   2. VILLE_ET_SUBDIVISION — la ville et la subdivision écrite à sa suite (« Boston, MA ») ne désignent qu'un pays du
- *      référentiel (`subdivisionKeys`, la même clé que la recherche de proximité de D-496).
- *   3. VILLE_UNIQUE — le référentiel ne connaît le nom de la ville que dans un seul pays (« Vanves », « Shanghai »).
- *   4. SUBDIVISION_UNIQUE — sans ville, le lieu n'est qu'une subdivision qu'un seul pays connaît (« California »).
+ *   2. VILLE_ET_SUBDIVISION — la ville et la subdivision écrite à sa suite, dans un segment distinct du lieu (« Boston, MA »),
+ *      ne désignent qu'un pays du référentiel (`subdivisionKeys`, la même clé que la recherche de proximité de D-496). La
+ *      subdivision est la preuve indépendante qu'exige R-125 §1 : la même structure « ville, État » que lit déjà la chaîne
+ *      (`resolveGeography`), confirmée par le référentiel ; elle n'est jamais la ville elle-même ni un code d'une lettre.
  *
- * LE MARCHÉ DE LA SOURCE EN CONTRAINTE (2 à 4). Le référentiel propose, la source dispose : le pays n'est retenu que s'il
+ * R-125 §1 (règle validée par le CEO) : « un nom de ville seul ne suffit jamais à établir un pays ». Une ville que le
+ * référentiel ne connaît que dans un pays (« Vanves »), ou un lieu qui n'est qu'une subdivision (« California »), ne donne
+ * donc JAMAIS de pays sans autre preuve : cause `VILLE_SEULE_R125` (arbitrage du 02/10/2026, 156 offres mesurées).
+ *
+ * LE MARCHÉ DE LA SOURCE EN CONTRAINTE (2). Le référentiel propose, la source dispose : le pays n'est retenu que s'il
  * figure parmi les pays des autres offres actives de la même source (`marcheDeLaSource`). C'est une contrainte qui ne peut
  * que REFUSER, jamais choisir entre deux pays : mesuré le 02/10/2026, elle écarte « Le-Mans » lu « Mans » (Turquie) et
  * « St-Cloud » lu « Cloud » (États-Unis) chez Nocibé, « Nord (59) » (Suisse) chez Printemps, « North East » (États-Unis)
@@ -32,8 +36,10 @@ import { paysDesCoordonnees, type Frontieres } from './frontieres.js';
  * France) »). Ce qui reste sans pays garde sa cause (`CauseSansPays`) : l'état d'exposition le classe hors marché.
  */
 
-export type MotifPays = 'COORDONNEES_ET_VILLE' | 'VILLE_ET_SUBDIVISION' | 'VILLE_UNIQUE' | 'SUBDIVISION_UNIQUE';
+export type MotifPays = 'COORDONNEES_ET_VILLE' | 'VILLE_ET_SUBDIVISION';
 export type CauseSansPays =
+  /** R-125 §1 : la ville seule (ou la subdivision seule) que le référentiel ne connaît que dans un pays ; aucune autre preuve. */
+  | 'VILLE_SEULE_R125'
   /** La chaîne s'abstient sur une contradiction entre champs déclarés (D-435, D-440) : jamais levée ici. */
   | 'CONTRADICTION_DECLAREE'
   /** Ni ville, ni lieu, ni point. */
@@ -102,17 +108,18 @@ export function decidePays(e: EntreesPreuve): PreuvePays {
     const confirmes = unique(e.villeConnue.paysAvecSubdivision);
     if (confirmes.length === 1) return propose(confirmes[0], 'VILLE_ET_SUBDIVISION');
     if (confirmes.length > 1) return sansPreuve('VILLE_AMBIGUE');
-    if (villes.length === 1) return propose(villes[0], 'VILLE_UNIQUE');
+    // R-125 §1 : une ville seule, même connue d'un seul pays, ne suffit jamais.
+    if (villes.length === 1) return sansPreuve('VILLE_SEULE_R125');
     return sansPreuve(villes.length ? 'VILLE_AMBIGUE' : 'LIEU_INCONNU');
   }
   const subdivisions = unique(e.subdivisionSeule);
-  if (subdivisions.length === 1) return propose(subdivisions[0], 'SUBDIVISION_UNIQUE');
+  if (subdivisions.length === 1) return sansPreuve('VILLE_SEULE_R125');
   if (subdivisions.length > 1) return sansPreuve('VILLE_AMBIGUE');
   return sansPreuve(e.lieu?.trim() ? 'LIEU_INCONNU' : 'LIEU_ABSENT');
 }
 
 /**
- * La subdivision écrite à la suite de la ville : le dernier segment du lieu qui porte une lettre et n'est pas la ville
+ * La subdivision écrite à la suite de la ville : le dernier segment du lieu qui porte deux lettres et n'est pas la ville
  * elle-même (« AMILLY, 45200, Centre-Val de Loire » → « Centre-Val de Loire », « Landquart, Grisons, 7302 » → « Grisons »).
  * Un segment que le référentiel ne connaît pas comme subdivision (« Aberdare, Commercial Street ») ne confirme rien.
  */
@@ -121,7 +128,7 @@ export function subdivisionDuLieu(lieu: string | null | undefined, ville: string
   if (segments.length < 2) return null;
   const cle = (s: string) => s.normalize('NFKD').replace(/[̀-ͯ]/g, '').toLowerCase();
   for (const segment of segments.slice(1).reverse()) {
-    if (/\p{L}/u.test(segment) && cle(segment) !== cle(ville ?? '') && cle(segment) !== cle(segments[0])) return segment;
+    if (/\p{L}.*\p{L}/u.test(segment) && cle(segment) !== cle(ville ?? '') && cle(segment) !== cle(segments[0])) return segment;
   }
   return null;
 }

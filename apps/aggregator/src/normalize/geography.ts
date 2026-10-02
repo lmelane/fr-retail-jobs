@@ -385,7 +385,8 @@ function resolveSubdivision(country: string | undefined, token: string | undefin
  * qu'il faut interpréter. Une ville seule ne produit JAMAIS de pays ici — « Paris »
  * existe dans 4 pays de la base. Quand toute la chaîne laisse une offre sans pays,
  * `geo/paysParPreuve.ts` (D-520) en cherche un sur preuve : point natif et ville
- * concordants, ou ville du référentiel GeoNames dans le marché observé de la source.
+ * concordants, ou ville et subdivision du référentiel GeoNames dans le marché observé
+ * de la source ; jamais une ville seule (R-125 §1).
  */
 export function resolveGeography(input: GeographyInput): ResolvedGeography {
   const out: ResolvedGeography = {};

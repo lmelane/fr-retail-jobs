@@ -94,23 +94,24 @@ describe('la preuve de pays à l’ingestion', () => {
     expect((await db.job.findUniqueOrThrow({ where: { id: loin } })).countryCode).toBeNull();
   });
 
-  it('un pays posé ne se confirme jamais lui-même : seule offre de sa source, sa ville unique n’a pas de marché', async () => {
+  it('un pays posé ne se confirme jamais lui-même : seule offre de sa source, sa ville et son État n’ont pas de marché', async () => {
     const key = await source();
-    const { jobId } = await upsertDeduplicated(db, simple(key, 'x1', 'Vanves'));
-    await db.$executeRaw`UPDATE "Job" SET "countryCode" = 'FR' WHERE id = ${jobId}`; // prémisse : l'offre elle-même porte FR
-    await upsertDeduplicated(db, simple(key, 'x1', 'Vanves'));
+    const { jobId } = await upsertDeduplicated(db, simple(key, 'x1', 'Atlanta, GA'));
+    await db.$executeRaw`UPDATE "Job" SET "countryCode" = 'US' WHERE id = ${jobId}`; // prémisse : l'offre elle-même porte US
+    await upsertDeduplicated(db, simple(key, 'x1', 'Atlanta, GA'));
     expect((await db.job.findUniqueOrThrow({ where: { id: jobId } })).countryCode).toBeNull();
   });
 
-  it('une ville connue d’un seul pays, dans le marché de la source ; jamais hors du marché, jamais sans marché', async () => {
-    const seule = await source();
-    const { jobId: sansMarche } = await upsertDeduplicated(db, simple(seule, 'v0', 'Vanves'));
-    expect((await db.job.findUniqueOrThrow({ where: { id: sansMarche } })).countryCode).toBeNull();
+  it('R-125 §1 : une ville seule ne donne jamais de pays, même connue d’un seul pays et dans le marché de la source', async () => {
     const key = await source();
     const { jobId: paris } = await upsertDeduplicated(db, simple(key, 'p1', 'Paris, France'));
     expect((await db.job.findUniqueOrThrow({ where: { id: paris } })).countryCode).toBe('FR'); // prémisse : le marché est FR
+    expect(VILLES.filter((v) => v.name === 'Vanves').map((v) => v.pays)).toEqual(['FR']); // prémisse : Vanves n'est qu'en France
     const { jobId: vanves } = await upsertDeduplicated(db, simple(key, 'v1', 'Vanves'));
-    expect(await db.job.findUniqueOrThrow({ where: { id: vanves } })).toMatchObject({ countryCode: 'FR', geoCityId: 97000005, geoSource: 'CITY' });
+    expect(await db.job.findUniqueOrThrow({ where: { id: vanves } })).toMatchObject({ countryCode: null, geoCityId: null });
+    // Une ville et son État hors du marché de la source : refusée.
+    const { jobId: atlanta } = await upsertDeduplicated(db, simple(key, 'a1', 'Atlanta, GA'));
+    expect((await db.job.findUniqueOrThrow({ where: { id: atlanta } })).countryCode).toBeNull();
     const { jobId: mans } = await upsertDeduplicated(db, simple(key, 'm1', 'LE-MANS, 72000, Pays de la Loire'));
     const leMans = await db.job.findUniqueOrThrow({ where: { id: mans } });
     expect(leMans.city).toBe('Mans'); // prémisse : la ville lue n'existe qu'en Turquie

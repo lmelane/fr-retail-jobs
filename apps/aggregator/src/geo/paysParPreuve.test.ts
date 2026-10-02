@@ -32,9 +32,9 @@ describe('le pays sur preuve', () => {
     expect(decidePays(e)).toEqual({ pays: null, cause: 'COORDONNEES_DISCORDANTES' });
   });
 
-  it('un point dans un autre pays que celui du référentiel est une contradiction (« California » avec un point en France)', () => {
-    const e = { ...base, lieu: 'California', paysDuPoint: 'FR', subdivisionSeule: ['US'], marche: ['FR', 'US'] };
-    expect(decidePays({ ...e, paysDuPoint: null })).toMatchObject({ pays: 'US' }); // prémisse : sans point, la subdivision prouve
+  it('un point dans un autre pays que celui que désignent la ville et l’État est une contradiction (« Boston, MA », point en France)', () => {
+    const e = { ...base, ville: 'Boston', subdivision: 'MA', paysDuPoint: 'FR', villeConnue: { pays: ['GB', 'US'], paysAvecSubdivision: ['US'], paysProches: [] }, marche: ['FR', 'US'] };
+    expect(decidePays({ ...e, paysDuPoint: null })).toMatchObject({ pays: 'US' }); // prémisse : sans point, la ville et l'État prouvent
     expect(decidePays(e)).toEqual({ pays: null, cause: 'COORDONNEES_DISCORDANTES' });
   });
 
@@ -43,16 +43,18 @@ describe('le pays sur preuve', () => {
     expect(decidePays({ ...base, lieu: '-', paysDuPoint: 'GB', marche: ['GB'] })).toEqual({ pays: null, cause: 'POINT_NON_CORROBORE' });
   });
 
-  it('une ville que le référentiel ne connaît que dans un pays, dans le marché de la source', () => {
+  it('R-125 §1 : une ville seule ne donne jamais de pays, même connue d’un seul pays et dans le marché de la source', () => {
     const e = { ...base, ville: 'Vanves', villeConnue: { pays: ['FR'], paysAvecSubdivision: [] }, marche: ['FR', 'MA'] };
-    expect(decidePays(e)).toEqual({ pays: 'FR', motif: 'VILLE_UNIQUE', marche: ['FR', 'MA'] });
+    expect(e.villeConnue.pays).toEqual(['FR']); // prémisse : le référentiel ne connaît Vanves qu'en France
+    expect(e.marche).toContain('FR'); // prémisse : la source publie en France
+    expect(decidePays(e)).toEqual({ pays: null, cause: 'VILLE_SEULE_R125' });
+    expect(decidePays({ ...e, ville: 'Mans', villeConnue: { pays: ['TR'], paysAvecSubdivision: [] } })).toEqual({ pays: null, cause: 'VILLE_SEULE_R125' });
   });
 
-  it('le marché de la source ne fait que refuser : Le-Mans lu « Mans » (Turquie), Nord (59) lu en Suisse', () => {
-    const mans = { ...base, ville: 'Mans', villeConnue: { pays: ['TR'], paysAvecSubdivision: [] }, marche: ['FR'] };
-    expect(mans.villeConnue.pays).toHaveLength(1); // prémisse : la ville seule désignerait un pays
-    expect(decidePays(mans)).toEqual({ pays: null, cause: 'HORS_MARCHE_DE_LA_SOURCE' });
-    expect(decidePays({ ...mans, marche: [] })).toEqual({ pays: null, cause: 'MARCHE_DE_LA_SOURCE_INCONNU' });
+  it('le marché de la source ne fait que refuser une ville et son État : « Boston, MA » chez une source française', () => {
+    const e = { ...base, ville: 'Boston', subdivision: 'MA', villeConnue: { pays: ['GB', 'US'], paysAvecSubdivision: ['US'] }, marche: ['FR'] };
+    expect(decidePays(e)).toEqual({ pays: null, cause: 'HORS_MARCHE_DE_LA_SOURCE' });
+    expect(decidePays({ ...e, marche: [] })).toEqual({ pays: null, cause: 'MARCHE_DE_LA_SOURCE_INCONNU' });
   });
 
   it('le marché ne choisit jamais entre deux pays : « Amsterdam » chez On reste ambiguë même si seuls les US sont au marché', () => {
@@ -67,9 +69,9 @@ describe('le pays sur preuve', () => {
     expect(decidePays({ ...e, villeConnue: { pays: e.villeConnue.pays, paysAvecSubdivision: [] } })).toEqual({ pays: null, cause: 'VILLE_AMBIGUE' });
   });
 
-  it('un lieu sans ville qui n’est qu’une subdivision connue d’un seul pays (« California »)', () => {
+  it('R-125 §1 : un lieu qui n’est qu’une subdivision (« California ») ne donne jamais de pays', () => {
     expect(decidePays({ ...base, lieu: 'California', subdivisionSeule: ['US'], marche: ['FR', 'GE', 'US'] }))
-      .toEqual({ pays: 'US', motif: 'SUBDIVISION_UNIQUE', marche: ['FR', 'GE', 'US'] });
+      .toEqual({ pays: null, cause: 'VILLE_SEULE_R125' });
     expect(decidePays({ ...base, lieu: 'Nord', subdivisionSeule: ['BF', 'CM', 'HT'], marche: ['FR'] })).toEqual({ pays: null, cause: 'VILLE_AMBIGUE' });
     expect(decidePays({ ...base, lieu: 'Brown Thomas' })).toEqual({ pays: null, cause: 'LIEU_INCONNU' });
     expect(decidePays(base)).toEqual({ pays: null, cause: 'LIEU_ABSENT' });
@@ -81,6 +83,8 @@ describe('le pays sur preuve', () => {
     expect(subdivisionDuLieu('Landquart, Grisons, 7302', 'Landquart')).toBe('Grisons');
     expect(subdivisionDuLieu('Taipei City, Taipei City', 'Taipei')).toBeNull();
     expect(subdivisionDuLieu('Vanves', 'Vanves')).toBeNull();
+    // Une lettre seule n'est pas une subdivision (« M » est aussi la clé de la province irlandaise de Munster).
+    expect(subdivisionDuLieu('Cork, M', 'Cork')).toBeNull();
   });
 
   it('lit le pays du point par le tracé des frontières, sans jamais le point (0, 0)', () => {
@@ -97,7 +101,7 @@ describe('la preuve ne s’applique qu’après la chaîne', () => {
     externalId: '1', title: 'Advisor', url: 'https://example.com/1', ...over });
 
   it('ne remplace jamais un pays que la chaîne retient', () => {
-    const c = offre({ location: 'Paris, France', paysParPreuve: { pays: 'US', motif: 'VILLE_UNIQUE', marche: ['US'] } });
+    const c = offre({ location: 'Paris, France', paysParPreuve: { pays: 'US', motif: 'VILLE_ET_SUBDIVISION', marche: ['US'] } });
     expect(countryChainStatus(c)).toBe('DECIDED');
     expect(publicationCountry(c).countryCode).toBe('FR');
   });
@@ -106,7 +110,7 @@ describe('la preuve ne s’applique qu’après la chaîne', () => {
     const c = offre({ location: 'Atlanta, GA' });
     expect(countryChainStatus(c)).toBe('OPEN'); // prémisse : GA (Gabon) bloque la chaîne
     expect(publicationCountry(c).countryCode).toBeNull();
-    expect(publicationCountry({ ...c, paysParPreuve: { pays: 'US', motif: 'VILLE_UNIQUE', marche: ['US'] } }))
+    expect(publicationCountry({ ...c, paysParPreuve: { pays: 'US', motif: 'VILLE_ET_SUBDIVISION', marche: ['US'] } }))
       .toEqual({ countryCode: 'US', countryIntegrity: null, adminArea1: 'Georgia' });
   });
 
@@ -115,7 +119,7 @@ describe('la preuve ne s’applique qu’après la chaîne', () => {
       country: null, postalCode: null, latitude: null, longitude: null, coordinateStatus: 'NOT_OBSERVED', issues: [] }] }) as never;
     const contradite = offre({ country: 'DE', location: 'Lyon', sourceFacts: { locations: facts('Lyon, France') } as never });
     expect(countryChainStatus(contradite)).toBe('ABSTAINED');
-    expect(publicationCountry({ ...contradite, paysParPreuve: { pays: 'FR', motif: 'VILLE_UNIQUE', marche: ['FR'] } }).countryCode).toBeNull();
+    expect(publicationCountry({ ...contradite, paysParPreuve: { pays: 'FR', motif: 'VILLE_ET_SUBDIVISION', marche: ['FR'] } }).countryCode).toBeNull();
     const ailleurs = offre({ location: 'Aberdeen', sourceFacts: { locations: facts('Aberdeen, United States') } as never,
       paysParPreuve: { pays: 'GB', motif: 'COORDONNEES_ET_VILLE', marche: [] } });
     expect(publicationCountry(ailleurs).countryCode).toBeNull();

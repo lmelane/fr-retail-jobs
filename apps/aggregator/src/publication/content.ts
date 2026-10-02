@@ -95,7 +95,7 @@ function countryWithProvenance(candidate: CandidateJob): {
   });
   /*
    * D-520, offres sans pays : quand la chaîne ne retient AUCUN pays, celui que prouve `geo/paysParPreuve.ts` (point natif et
-   * ville concordants, ou ville du référentiel dans le marché de la source), calculé avant par `withCountryProof`. Il passe
+   * ville concordants, ou ville et État du référentiel dans le marché de la source ; jamais une ville seule, R-125 §1), calculé avant par `withCountryProof`. Il passe
    * ensuite par la même confrontation aux lieux déclarés : une publication qui nomme un autre pays s'abstient.
    */
   const retained = retainedCountryOf(candidate, geo.countryCode) ?? candidate.paysParPreuve?.pays ?? undefined;
