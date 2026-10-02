@@ -98,8 +98,8 @@ export const CAUSES = {
     missing: 'qualifier la source puis la promouvoir (source-campaign), ou la retirer' },
   PAUSE_DECIDEE: { label: 'pause décidée', base: 'EN_PAUSE', trajectory: 'DECISION', missing: 'rien : la pause se lève par la décision qui l’a posée' },
   EXCLUSION_DECIDEE: { label: 'exclusion décidée', base: 'EXCLUE', trajectory: 'DECISION', missing: 'rien : la source n’est plus collectée' },
-  MOTIF_ABSENT: { label: 'pause ou exclusion sans décision référencée', base: 'EN_PAUSE', trajectory: 'A_REPARER',
-    missing: 'consigner dans le registre (Source.note) la décision qui porte la pause ou l’exclusion (référence D-…, ou décision datée)' },
+  MOTIF_ABSENT: { label: 'pause ou exclusion sans motif ni décision', base: 'EN_PAUSE', trajectory: 'A_REPARER',
+    missing: 'expliquer la source au registre explicite (registry-review : motif, décision, trajectoire, réexamen)' },
   NON_CLASSEE: { label: 'cause non classée : la classe manque', base: 'BLOQUEE', trajectory: 'A_REPARER',
     missing: 'ajouter la classe de ce code dans pipeline/sourceState.ts' },
 } as const satisfies Record<string, CauseSpec>;
@@ -360,7 +360,7 @@ export function reconcileRun(input: { states: readonly SourceState[]; now: Date;
   const reasons: RunVerdict['reasons'] = [];
   const add = (reason: VerdictReason, detail: string, sources: string[]) => { if (sources.length || reason === 'PANNE_SYSTEME') reasons.push({ reason, detail, sources }); };
   add('SOURCE_NON_CLASSEE', 'cause non classée ou absente', input.states.filter(s => s.state !== 'NORMALE' && (!s.cause || s.cause === 'NON_CLASSEE' || !s.trajectory)).map(s => s.sourceKey));
-  add('MOTIF_ABSENT', 'pause ou exclusion sans décision référencée', input.states.filter(s => s.cause === 'MOTIF_ABSENT').map(s => s.sourceKey));
+  add('MOTIF_ABSENT', 'pause ou exclusion sans motif ni décision', input.states.filter(s => s.cause === 'MOTIF_ABSENT').map(s => s.sourceKey));
   add('ECHEANCE_DEPASSEE', 'état temporaire échu sans escalade', input.states.filter(s => s.trajectory === 'AUTO' && !s.escalated && s.deadline
     && s.deadline.getTime() <= input.now.getTime()).map(s => s.sourceKey));
   add('ECHEANCE_DEPASSEE', 'réexamen du registre échu', [...(input.registryOverdue ?? [])]);
