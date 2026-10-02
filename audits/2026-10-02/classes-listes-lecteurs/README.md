@@ -18,7 +18,7 @@ Mesures en lecture seule de la production le 02/10/2026 entre 14:55 et 15:04 UTC
 | `rejeu.py` → `rejeu.out` | les 8 RUN rejoués, par classe : bloquantes avant / après, ce qui reste | `python3 rejeu.py > rejeu.out` |
 | `collecte-workday-plafond.mts` → `collecte-knitwell-avant.out`, `collecte-knitwell-apres.out` | collecte locale réelle de knitwell-us-retail, liste seule, avec le code d'avant puis celui du lot | commande en tête du `.mts` |
 | `temoins-sur-cd85f41.out` | les témoins du lot lancés sur le code d'avant le lot (`cd85f41`) : 16 échecs | voir plus bas |
-| `knitwell-effet.sql` → `.out` | l'effet en production de la fausse preuve de knitwell | `db.py readonly` après 18:30 UTC |
+| `knitwell-effet.sql` | l'effet en production de la fausse preuve de knitwell — **non lancé** (fenêtre du RUN) | `db.py readonly` après 18:30 UTC |
 
 ## Causes racines, par famille
 
@@ -45,7 +45,7 @@ Mesures en lecture seule de la production le 02/10/2026 entre 14:55 et 15:04 UTC
 ## Ce que ce lot change
 
 1. **Workday, plafond de l'API** (`6fad1df`, corrigé à l'audit).
-   - **Défaut trouvé en mesurant.** Avec le code d'avant, la collecte locale de knitwell rend 1 999 offres et 1 ligne sans chemin, et déclare la liste prouvée (`collecte-knitwell-avant.out`). Les facettes comptent pourtant 3 515 offres. En production, `canAttestAbsence` vaut vrai sur des collectes de 2 000 offres lues sur 3 515 (voir `knitwell-effet.out`).
+   - **Défaut trouvé en mesurant.** Avec le code d'avant, la collecte locale de knitwell rend 1 999 offres et 1 ligne sans chemin, et déclare la liste prouvée (`collecte-knitwell-avant.out`). Les facettes comptent pourtant 3 515 offres. En production (`sourceruns.csv`), 7 collectes du 23 au 30/09 ont `complete` et `canAttestAbsence` vrais avec 2 000 offres lues sur 3 515 ; la dernière, le 30/09 à 19:12, est postérieure au correctif de la sonde (`898ffb5`). L'effet (retenues de disponibilité, fermetures) n'est **pas mesuré** dans ce lot (fenêtre du RUN) : `knitwell-effet.sql`, à lancer après 18:30 UTC.
    - Une facette qui compte plus d'offres que le total plafonné prouve désormais le plafond (`FACETS_COUNT_BEYOND_TOTAL`). La lecture n'est plus jamais prouvée à tort.
    - Le site plafonné est relu par sa facette couvrante. Collecte locale réelle (`collecte-knitwell-apres.out`) : **3 515 offres sur 3 515**, comptes concordants (4 facettes d'accord), aucun employeur tiré de la facette.
    - **La preuve est archivée mais pas adoptée.** La sortie reste `complete: false` avec `COVERING_FACET_PROOF_NOT_ADOPTED`, et la terminaison n'est pas probante. Transmise, cette preuve ouvrirait l'attestation d'absence, la chute confirmée de D-484 §2 et les retenues de disponibilité. Le décider revient au CEO (carte de décision). knitwell reste sous D-480 §1 : elle collecte tout et ne ferme rien.

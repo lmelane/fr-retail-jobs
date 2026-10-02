@@ -99,7 +99,9 @@ it('a targeted RUN of a retaining source completes with errors, annotated non-bl
  * published total unreached, which REFUTES it.
  */
 it('records not proven and refuted enumerations apart, both blocking', async () => {
-  const listed = (n: number) => Array.from({ length: n }, (_, i) => ({ id: `posting-${i}`, title: `Poste ${i}` }));
+  // A real description: since D-520 a list defect no longer hides a field coverage gone (the fixture's short text counts as none).
+  const description = 'Vous accompagnez la clientèle de la Maison, conseillez sur les collections, tenez la boutique et ses stocks, et portez les standards du service au quotidien, en équipe et avec le responsable de la boutique.';
+  const listed = (n: number) => Array.from({ length: n }, (_, i) => ({ id: `posting-${i}`, title: `Poste ${i}`, description }));
   const notProvenKey = `enumeration-not-proven-${randomUUID()}`;
   await establishedSource(notProvenKey);
   const notProven = await ingestSyntheticFeed(db, notProvenKey, [...listed(20), { id: 'untitled', title: null }]);
